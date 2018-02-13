@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.15.18])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ek5i1-0006D1-0a
- for barebox@lists.infradead.org; Fri, 09 Feb 2018 10:15:11 +0000
-From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Fri,  9 Feb 2018 11:14:44 +0100
-Message-Id: <20180209101444.2477-2-linux@rempel-privat.de>
-In-Reply-To: <20180209101444.2477-1-linux@rempel-privat.de>
+ id 1elVUB-0004mB-I3
+ for barebox@lists.infradead.org; Tue, 13 Feb 2018 07:58:45 +0000
+Date: Tue, 13 Feb 2018 08:58:31 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180213075831.u6zjnmfxlbmgkof5@pengutronix.de>
 References: <20180209101444.2477-1-linux@rempel-privat.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180209101444.2477-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,301 +18,218 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] MIPS: add initial 8devices-lima board
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
+Subject: Re: [PATCH 1/2] MIPS: add initial qca4531 support
+To: Oleksij Rempel <linux@rempel-privat.de>
+Cc: barebox@lists.infradead.org
 
-More information about this board can be found here:
-https://www.8devices.com/products/lima
+On Fri, Feb 09, 2018 at 11:14:43AM +0100, Oleksij Rempel wrote:
+> The QCA4531 is a two stream (2x2) 802.11b/g/n single-band programmable
+> Wi-Fi System-on-Chip (SoC) for the Internet of Things (IoT).
+> https://www.qualcomm.com/products/qca4531
+> 
+> Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+> ---
+>  arch/mips/dts/qca4531.dtsi                         | 89 ++++++++++++++++++++++
+>  .../mach-ath79/include/mach/pbl_ll_init_qca4531.h  | 70 +++++++++++++++++
+>  2 files changed, 159 insertions(+)
+>  create mode 100644 arch/mips/dts/qca4531.dtsi
+>  create mode 100644 arch/mips/mach-ath79/include/mach/pbl_ll_init_qca4531.h
 
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
----
- arch/mips/Makefile                                 |  1 +
- .../8devices-lima/include/board/board_pbl_start.h  | 65 +++++++++++++++++
- arch/mips/configs/8devices-lima_defconfig          | 83 ++++++++++++++++++++++
- arch/mips/dts/qca4531-8devices-lima.dts            | 71 ++++++++++++++++++
- arch/mips/mach-ath79/Kconfig                       |  8 +++
- 5 files changed, 228 insertions(+)
- create mode 100644 arch/mips/boards/8devices-lima/include/board/board_pbl_start.h
- create mode 100644 arch/mips/configs/8devices-lima_defconfig
- create mode 100644 arch/mips/dts/qca4531-8devices-lima.dts
+Applied, thanks
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 1ef44a0f1..c53c3767b 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -79,6 +79,7 @@ machine-$(CONFIG_MACH_MIPS_AR231X)	:= ar231x
- board-$(CONFIG_BOARD_NETGEAR_WG102)	:= netgear-wg102
- 
- machine-$(CONFIG_MACH_MIPS_ATH79)	:= ath79
-+board-$(CONFIG_BOARC_8DEVICES_LIMA)	:= 8devices-lima
- board-$(CONFIG_BOARC_DPTECHNICS_DPT_MODULE)	:= dptechnics-dpt-module
- board-$(CONFIG_BOARD_TPLINK_MR3020)	:= tplink-mr3020
- board-$(CONFIG_BOARD_TPLINK_WDR4300)	:= tplink-wdr4300
-diff --git a/arch/mips/boards/8devices-lima/include/board/board_pbl_start.h b/arch/mips/boards/8devices-lima/include/board/board_pbl_start.h
-new file mode 100644
-index 000000000..e95aa4925
---- /dev/null
-+++ b/arch/mips/boards/8devices-lima/include/board/board_pbl_start.h
-@@ -0,0 +1,65 @@
-+/*
-+ * Copyright (C) 2018 Oleksij Rempel <linux@rempel-privat.de>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <mach/debug_ll_ar9344.h>
-+#include <asm/pbl_macros.h>
-+#include <mach/pbl_macros.h>
-+#include <mach/pbl_ll_init_qca4531.h>
-+#include <asm/pbl_nmon.h>
-+
-+	.macro	board_pbl_start
-+	.set	push
-+	.set	noreorder
-+
-+	mips_barebox_10h
-+
-+	debug_ll_ar9344_init
-+
-+	debug_ll_outc '1'
-+
-+	hornet_mips24k_cp0_setup
-+	debug_ll_outc '2'
-+
-+	/* test if we are in the SRAM */
-+	pbl_blt 0xbd000000 1f t8
-+	debug_ll_outc '3'
-+	b skip_flash_test
-+	nop
-+1:
-+	/* test if we are in the flash */
-+	pbl_blt 0xbf000000 skip_pll_ram_config t8
-+	debug_ll_outc '4'
-+skip_flash_test:
-+
-+	pbl_qca4531_ddr2_550_550_init
-+
-+	debug_ll_outc '5'
-+	/* Initialize caches... */
-+	mips_cache_reset
-+
-+	/* ... and enable them */
-+	dcache_enable
-+skip_pll_ram_config:
-+	debug_ll_outc '6'
-+	debug_ll_outnl
-+
-+	mips_nmon
-+
-+	copy_to_link_location	pbl_start
-+
-+	.set	pop
-+	.endm
-diff --git a/arch/mips/configs/8devices-lima_defconfig b/arch/mips/configs/8devices-lima_defconfig
-new file mode 100644
-index 000000000..446369a54
---- /dev/null
-+++ b/arch/mips/configs/8devices-lima_defconfig
-@@ -0,0 +1,83 @@
-+CONFIG_BUILTIN_DTB=y
-+CONFIG_BUILTIN_DTB_NAME="qca4531-8devices-lima"
-+CONFIG_MACH_MIPS_ATH79=y
-+CONFIG_PBL_IMAGE=y
-+CONFIG_IMAGE_COMPRESSION_XZKERN=y
-+CONFIG_MMU=y
-+CONFIG_TEXT_BASE=0x81000000
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_CONSOLE_RATP=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_CMD_DMESG=y
-+CONFIG_LONGHELP=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_IMD=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_LOADB=y
-+CONFIG_CMD_LOADY=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_DEFAULTENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_SHA1SUM=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_LET=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_READF=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_DHCP=y
-+CONFIG_CMD_HOST=y
-+CONFIG_CMD_MIITOOL=y
-+CONFIG_CMD_PING=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_MEMTEST=y
-+CONFIG_CMD_MM=y
-+CONFIG_CMD_CLK=y
-+CONFIG_CMD_DETECT=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_LED=y
-+CONFIG_CMD_POWEROFF=y
-+CONFIG_CMD_SPI=y
-+CONFIG_CMD_LED_TRIGGER=y
-+CONFIG_CMD_BAREBOX_UPDATE=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_TIME=y
-+CONFIG_NET=y
-+CONFIG_NET_NFS=y
-+CONFIG_NET_NETCONSOLE=y
-+CONFIG_NET_SNTP=y
-+CONFIG_OFDEVICE=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
-+CONFIG_OF_BAREBOX_ENV_IN_FS=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_DRIVER_NET_AG71XX=y
-+CONFIG_AR8327N_PHY=y
-+CONFIG_MDIO_BITBANG=y
-+CONFIG_MDIO_GPIO=y
-+CONFIG_DRIVER_SPI_ATH79=y
-+CONFIG_MTD=y
-+# CONFIG_MTD_OOB_DEVICE is not set
-+CONFIG_MTD_M25P80=y
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_LED_GPIO_OF=y
-+CONFIG_LED_TRIGGERS=y
-+CONFIG_FS_TFTP=y
-+CONFIG_FS_NFS=y
-+CONFIG_FS_RATP=y
-+CONFIG_DIGEST_SHA224_GENERIC=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/mips/dts/qca4531-8devices-lima.dts b/arch/mips/dts/qca4531-8devices-lima.dts
-new file mode 100644
-index 000000000..7b03bc4be
---- /dev/null
-+++ b/arch/mips/dts/qca4531-8devices-lima.dts
-@@ -0,0 +1,71 @@
-+/dts-v1/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
-+
-+#include "qca4531.dtsi"
-+
-+/ {
-+	model = "8devices LIMA";
-+	compatible = "8devices,lima";
-+
-+	aliases {
-+		serial0 = &uart0;
-+		spiflash = &spiflash;
-+	};
-+
-+	memory@0 {
-+		device_type = "memory";
-+		reg = <0x0 0x8000000>;
-+	};
-+
-+	chosen {
-+		stdout-path = &uart0;
-+
-+		environment@0 {
-+			compatible = "barebox,environment";
-+			device-path = &spiflash, "partname:barebox-environment";
-+		};
-+	};
-+};
-+
-+&ref {
-+	clock-frequency = <25000000>;
-+};
-+
-+&uart0 {
-+	status = "okay";
-+	clock-frequency = <25000000>;
-+};
-+
-+&wdt0 {
-+	status = "okay";
-+};
-+
-+&spi {
-+	num-chipselects = <1>;
-+	status = "okay";
-+
-+	/* Winbond W25Q64CV SPI flash */
-+	spiflash: w25q64cv@0 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "jedec,spi-nor", "winbond,w25q64cv";
-+		spi-max-frequency = <104000000>;
-+		reg = <0>;
-+
-+		partition@0 {
-+			label = "barebox";
-+			reg = <0 0x80000>;
-+		};
-+
-+		partition@80000 {
-+			label = "barebox-environment";
-+			reg = <0x80000 0x10000>;
-+		};
-+	};
-+};
-+
-+&mac0 {
-+	status = "okay";
-+};
-diff --git a/arch/mips/mach-ath79/Kconfig b/arch/mips/mach-ath79/Kconfig
-index c7ce77568..3434e38ed 100644
---- a/arch/mips/mach-ath79/Kconfig
-+++ b/arch/mips/mach-ath79/Kconfig
-@@ -13,6 +13,14 @@ config SOC_QCA_AR9344
- choice
- 	prompt "Board type"
- 
-+config BOARC_8DEVICES_LIMA
-+	bool "8devices LIMA"
-+	select SOC_QCA_QCA4531
-+	select HAVE_PBL_IMAGE
-+	select HAVE_IMAGE_COMPRESSION
-+	select HAS_NMON
-+	select HAS_NO_BOARD_HL_CODE
-+
- config BOARC_DPTECHNICS_DPT_MODULE
- 	bool "DPTechnics DPT-Module"
- 	select SOC_QCA_AR9331
+Sascha
+
+> 
+> diff --git a/arch/mips/dts/qca4531.dtsi b/arch/mips/dts/qca4531.dtsi
+> new file mode 100644
+> index 000000000..2b0bcd816
+> --- /dev/null
+> +++ b/arch/mips/dts/qca4531.dtsi
+> @@ -0,0 +1,89 @@
+> +#include <dt-bindings/clock/ath79-clk.h>
+> +
+> +/ {
+> +	compatible = "qca,qca4531";
+> +
+> +	#address-cells = <1>;
+> +	#size-cells = <1>;
+> +
+> +	cpus {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		cpu@0 {
+> +			device_type = "cpu";
+> +			compatible = "mips,mips24Kc";
+> +			clocks = <&pll ATH79_CLK_CPU>;
+> +			reg = <0>;
+> +		};
+> +	};
+> +
+> +	ref: ref {
+> +		compatible = "fixed-clock";
+> +		#clock-cells = <0>;
+> +	};
+> +
+> +	ahb {
+> +		compatible = "simple-bus";
+> +		ranges;
+> +
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +
+> +		apb {
+> +			compatible = "simple-bus";
+> +			ranges;
+> +
+> +			#address-cells = <1>;
+> +			#size-cells = <1>;
+> +
+> +			uart0: uart@18020000 {
+> +				compatible = "ns16550a", "qca,qca4531-uart0", "qca,ar9344-uart0";
+> +				reg = <0x18020000 0x20>;
+> +
+> +				reg-shift = <2>;
+> +				reg-io-width = <4>;
+> +				big-endian;
+> +
+> +				status = "disabled";
+> +			};
+> +
+> +			pll: pll-controller@18050000 {
+> +				compatible = "qca,qca4531-pll";
+> +				reg = <0x18050000 0x100>;
+> +
+> +				clocks = <&ref>;
+> +				clock-names = "ref";
+> +
+> +				#clock-cells = <1>;
+> +			};
+> +
+> +			wdt0: wdt@18060008 {
+> +				compatible = "qca,qca4531-wdt", "qca,ar9344-wdt";
+> +				reg = <0x18060008 0x8>;
+> +				clocks = <&pll ATH79_CLK_CPU>;
+> +				status = "disabled";
+> +			};
+> +
+> +			spi: spi@1f000000 {
+> +				compatible = "qca,qca4531-spi", "qca,ar7100-spi";
+> +				reg = <0x1f000000 0x1c>;
+> +
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +
+> +				status = "disabled";
+> +			};
+> +		};
+> +
+> +		mac0: mac@19000000 {
+> +			compatible = "qca,qca4531-gmac0", "qca,ar9344-gmac0";
+> +			reg = <0x18070000 0x00000100>,
+> +			      <0x19000000 0x01000000>;
+> +			reg-names = "gmac", "ge0";
+> +			phy-mode = "rgmii";
+> +
+> +			status = "disabled";
+> +		};
+> +	};
+> +};
+> diff --git a/arch/mips/mach-ath79/include/mach/pbl_ll_init_qca4531.h b/arch/mips/mach-ath79/include/mach/pbl_ll_init_qca4531.h
+> new file mode 100644
+> index 000000000..002778b3e
+> --- /dev/null
+> +++ b/arch/mips/mach-ath79/include/mach/pbl_ll_init_qca4531.h
+> @@ -0,0 +1,70 @@
+> +#ifndef __ASM_MACH_ATH79_PBL_LL_INIT_QCA4531_H
+> +#define __ASM_MACH_ATH79_PBL_LL_INIT_QCA4531_H
+> +
+> +#include <asm/addrspace.h>
+> +#include <asm/regdef.h>
+> +
+> +
+> +.macro	pbl_qca4531_ddr2_550_550_init
+> +	.set	push
+> +	.set	noreorder
+> +
+> +	pbl_reg_writel 0xfeceffff , 0xb806001c
+> +	pbl_reg_writel 0xeeceffff , 0xb806001c
+> +	pbl_reg_writel 0xe6ceffff , 0xb806001c
+> +	pbl_reg_writel 0x633c8176 , 0xb8116c40
+> +	pbl_reg_writel 0x10200000 , 0xb8116c44
+> +	pbl_reg_writel 0x4b962100 , 0xb81162c0
+> +	pbl_reg_writel 0x480      , 0xb81162c4
+> +	pbl_reg_writel 0x04000144 , 0xb81162c8
+> +	pbl_reg_writel 0x54086000 , 0xb81161c4
+> +	pbl_reg_writel 0x54086000 , 0xb8116244
+> +	pbl_reg_writel 0x0131001c , 0xb8050008
+> +	pbl_reg_writel 0x40001580 , 0xb8050000
+> +	pbl_reg_writel 0x40015800 , 0xb8050004
+> +	pbl_reg_writel 0x0131001c , 0xb8050008
+> +	pbl_reg_writel 0x00001580 , 0xb8050000
+> +	pbl_reg_writel 0x00015800 , 0xb8050004
+> +	pbl_reg_writel 0x01310000 , 0xb8050008
+> +	pbl_reg_writel 0x781003ff , 0xb8050044
+> +	pbl_reg_writel 0x003c103f , 0xb8050048
+> +	pbl_reg_writel 0x401f0042 , 0xb8000108
+> +	pbl_reg_writel 0x0000166d , 0xb80000b8
+> +	pbl_reg_writel 0xcfaaf33b , 0xb8000000
+> +	pbl_reg_writel 0x0000000f , 0xb800015c
+> +	pbl_reg_writel 0xa272efa8 , 0xb8000004
+> +	pbl_reg_writel 0x000ffff  , 0xb8000018
+> +	pbl_reg_writel 0x74444444 , 0xb80000c4
+> +	pbl_reg_writel 0x00000444 , 0xb80000c8
+> +	pbl_reg_writel 0xa210ee28 , 0xb8000004
+> +	pbl_reg_writel 0xa2b2e1a8 , 0xb8000004
+> +	pbl_reg_writel 0x8        , 0xb8000010
+> +	pbl_reg_writel 0x0        , 0xb80000bc
+> +	pbl_reg_writel 0x10       , 0xb8000010
+> +	pbl_reg_writel 0x0        , 0xb80000c0
+> +	pbl_reg_writel 0x40       , 0xb8000010
+> +	pbl_reg_writel 0x2        , 0xb800000c
+> +	pbl_reg_writel 0x2        , 0xb8000010
+> +	pbl_reg_writel 0xb43      , 0xb8000008
+> +	pbl_reg_writel 0x1        , 0xb8000010
+> +	pbl_reg_writel 0x8        , 0xb8000010
+> +	pbl_reg_writel 0x4        , 0xb8000010
+> +	pbl_reg_writel 0x4        , 0xb8000010
+> +	pbl_reg_writel 0xa43      , 0xb8000008
+> +	pbl_reg_writel 0x1        , 0xb8000010
+> +	pbl_reg_writel 0x382      , 0xb800000c
+> +	pbl_reg_writel 0x2        , 0xb8000010
+> +	pbl_reg_writel 0x402      , 0xb800000c
+> +	pbl_reg_writel 0x2        , 0xb8000010
+> +	pbl_reg_writel 0x40be     , 0xb8000014
+> +	pbl_reg_writel 0x20       , 0xb800001C
+> +	pbl_reg_writel 0x20       , 0xb8000020
+> +	pbl_reg_writel 0xfffff    , 0xb80000cc
+> +	pbl_reg_writel 0xff30b    , 0xb8040000
+> +	pbl_reg_writel 0x908      , 0xb8040044
+> +	pbl_reg_writel 0x160000   , 0xb8040034
+> +
+> +	.set	pop
+> +.endm
+> +
+> +#endif /* __ASM_MACH_ATH79_PBL_LL_INIT_QCA4531_H */
+> -- 
+> 2.14.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.14.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
