@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.jumo.net ([193.24.15.13])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ek7o4-000071-Dq
- for barebox@lists.infradead.org; Fri, 09 Feb 2018 12:29:34 +0000
-Received: from dentln03.jumo.net ([10.10.0.23]:1395)
- by mail.jumo.net with esmtp (Exim 4.82_1-5b7a7c0-XX)
- (envelope-from <eugen.wiens@jumo.net>) id 1ek7nm-0000Vu-1r
- for barebox@lists.infradead.org; Fri, 09 Feb 2018 13:29:14 +0100
+ id 1elW5h-0004yq-V5
+ for barebox@lists.infradead.org; Tue, 13 Feb 2018 08:37:31 +0000
+Date: Tue, 13 Feb 2018 09:37:17 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180213083717.ckxlikbsibt4a2y2@pengutronix.de>
+References: <20180209122845.4113-1-eugen.wiens@jumo.net>
 MIME-Version: 1.0
-From: Eugen Wiens <eugen.wiens@jumo.net>
-Date: Fri, 9 Feb 2018 13:28:45 +0100
-Message-Id: <20180209122845.4113-1-eugen.wiens@jumo.net>
+Content-Disposition: inline
+In-Reply-To: <20180209122845.4113-1-eugen.wiens@jumo.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,79 +18,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] added colored print out of log levels
-To: barebox@lists.infradead.org
-Cc: Eugen Wiens <eugen.wiens@jumo.net>
+Subject: Re: [PATCH] added colored print out of log levels
+To: Eugen Wiens <eugen.wiens@jumo.net>
+Cc: barebox@lists.infradead.org
 
-V2hlbiB0aGUgc3lzdGVtIGlzIGJvb3RpbmcgdGhlIHdhcm5pbmdzIGFuZCBlcnJvcnMgYXJlIG5v
-dCBiZSBxdWlja2x5IGRpc2NvdmVyZWQuDQpXaXRoIHRoaXMgaW1wcm92ZW1lbnQgdGhlIGVycm9y
-cyBhcmUgY29sb3JlZCByZWQsIHRoZSB3YXJuaW5ncyB5ZWxsb3cgYW5kIHRoZSBub3RpY2VzIGJs
-dWUuDQoNClNpZ25lZC1vZmYtYnk6IEV1Z2VuIFdpZW5zIDxldWdlbi53aWVuc0BqdW1vLm5ldD4N
-Ci0tLQ0KIGNvbW1vbi9LY29uZmlnICAgICAgICAgIHwgIDggKysrKysrKysNCiBjb21tb24vY29u
-c29sZV9jb21tb24uYyB8IDI5ICsrKysrKysrKysrKysrKysrKysrKysrKysrKystDQogMiBmaWxl
-cyBjaGFuZ2VkLCAzNiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQoNCmRpZmYgLS1naXQg
-YS9jb21tb24vS2NvbmZpZyBiL2NvbW1vbi9LY29uZmlnDQppbmRleCA1NzQxOGNhLi40NjFhZDM1
-IDEwMDY0NA0KLS0tIGEvY29tbW9uL0tjb25maWcNCisrKyBiL2NvbW1vbi9LY29uZmlnDQpAQCAt
-MTAwMCw2ICsxMDAwLDE0IEBAIGNvbmZpZyBERUZBVUxUX0xPR0xFVkVMDQogCSAgNyAgICBkZWJ1
-Zy1sZXZlbCBtZXNzYWdlcyAoZGVidWcpDQogCSAgOCAgICB2ZXJib3NlIGRlYnVnIG1lc3NhZ2Vz
-ICh2ZGVidWcpDQogDQorY29uZmlnIFBSSU5UX0NPTE9SRURfTE9HX0xFVkVMDQorCXByb21wdCAi
-ZW5hYmxlIGNvbG9yZWQgcHJpbnRpbmcgb2YgdGhlIGxvZyBsZXZlbCINCisJYm9vbA0KKwlkZWZh
-dWx0IG4NCisJaGVscA0KKwkJRW5hYmxlIHRoZSBwcmludCBvdXQgb2YgdGhlIGNvbG9yZWQgbG9n
-IGxldmVsLg0KKw0KKw0KIGNvbmZpZyBERUJVR19JTkZPDQogCWJvb2wNCiAJcHJvbXB0ICJlbmFi
-bGUgZGVidWcgc3ltYm9scyINCmRpZmYgLS1naXQgYS9jb21tb24vY29uc29sZV9jb21tb24uYyBi
-L2NvbW1vbi9jb25zb2xlX2NvbW1vbi5jDQppbmRleCBkMDUxNDU4Li4xOWIxODNmIDEwMDY0NA0K
-LS0tIGEvY29tbW9uL2NvbnNvbGVfY29tbW9uLmMNCisrKyBiL2NvbW1vbi9jb25zb2xlX2NvbW1v
-bi5jDQpAQCAtMzEsNyArMzEsMjEgQEANCiAjaW5jbHVkZSA8bWFsbG9jLmg+DQogI2luY2x1ZGUg
-PGFzbS1nZW5lcmljL2RpdjY0Lmg+DQogDQotI2lmbmRlZiBDT05GSUdfQ09OU09MRV9OT05FDQor
-I2lmbmRlZiBDT05GSUdfQ09ORklHX0NPTlNPTEVfTk9ORQ0KKw0KKyNpZmRlZiBDT05GSUdfUFJJ
-TlRfQ09MT1JFRF9MT0dfTEVWRUwNCisjZGVmaW5lIE1BWF9DSEFSQUNURVJTX0NPTE9SRURfTE9H
-X0xFVkVMIAkzMA0KKyNkZWZpbmUgTUFYX0xPR19MRVZFTCAJCQkJCQlNU0dfTk9USUNFDQorDQor
-c3RhdGljIGNvbnN0IGNoYXIgY29sb3JlZF9sb2dfbGV2ZWxbTUFYX0xPR19MRVZFTCsyXVtNQVhf
-Q0hBUkFDVEVSU19DT0xPUkVEX0xPR19MRVZFTF0gPSB7DQorCSJcMDMzWzMxbUVNRVJHOlwwMzNb
-MG0gIiwJCS8qIGNvbG9yIHJlZCBmb3IgbG9nIGxldmVsIE1TR19FTUVSRyAqLw0KKwkiXDAzM1sz
-MW1BTEVSVDpcMDMzWzBtICIsCQkvKiBjb2xvciByZWQgZm9yIGxvZyBsZXZlbCBNU0dfQUxFUlQg
-Ki8NCisJIlwwMzNbMzFtQ1JJVElDQUw6XDAzM1swbSAiLAkvKiBjb2xvciByZWQgZm9yIGxvZyBs
-ZXZlbCBNU0dfQ1JJVCAqLw0KKwkiXDAzM1szMW1FUlJPUjpcMDMzWzBtICIsCQkvKiBjb2xvciBy
-ZWQgZm9yIGxvZyBsZXZlbCBNU0dfRVJSICovDQorCSJcMDMzWzMzbVdBUk5JTkc6XDAzM1swbSAi
-LAkJLyogY29sb3IgeWVsbG93IGZvciBsb2cgbGV2ZWwgTVNHX1dBUk5JTkcgKi8NCisJIlwwMzNb
-MzRtTk9USUNFOlwwMzNbMG0gIiwgCQkvKiBjb2xvciBibHVlIGZvciBsb2cgbGV2ZWwgTVNHX05P
-VElDRSAqLw0KK307DQorI2VuZGlmDQogDQogaW50IGJhcmVib3hfbG9nbGV2ZWwgPSBDT05GSUdf
-REVGQVVMVF9MT0dMRVZFTDsNCiANCkBAIC0xMDIsNiArMTE2LDE1IEBAIG5vbG9nOg0KIAlwdXRz
-KHN0cik7DQogfQ0KIA0KK3N0YXRpYyB2b2lkIHByaW50X2NvbG9yZWRfbG9nX2xldmVsKGNvbnN0
-IGludCBsZXZlbCkNCit7DQorI2lmZGVmIENPTkZJR19QUklOVF9DT0xPUkVEX0xPR19MRVZFTA0K
-KwlpZiAobGV2ZWwgPD0gTUFYX0xPR19MRVZFTCkgew0KKwkJcHJfcHV0cyhsZXZlbCwgY29sb3Jl
-ZF9sb2dfbGV2ZWxbbGV2ZWxdKTsNCisJfQ0KKyNlbmRpZg0KK30NCisNCiBpbnQgcHJfcHJpbnQo
-aW50IGxldmVsLCBjb25zdCBjaGFyICpmbXQsIC4uLikNCiB7DQogCXZhX2xpc3QgYXJnczsNCkBA
-IC0xMTEsNiArMTM0LDggQEAgaW50IHByX3ByaW50KGludCBsZXZlbCwgY29uc3QgY2hhciAqZm10
-LCAuLi4pDQogCWlmICghSVNfRU5BQkxFRChDT05GSUdfTE9HQlVGKSAmJiBsZXZlbCA+IGJhcmVi
-b3hfbG9nbGV2ZWwpDQogCQlyZXR1cm4gMDsNCiANCisJcHJpbnRfY29sb3JlZF9sb2dfbGV2ZWwo
-bGV2ZWwpOw0KKw0KIAl2YV9zdGFydChhcmdzLCBmbXQpOw0KIAlpID0gdnNwcmludGYocHJpbnRi
-dWZmZXIsIGZtdCwgYXJncyk7DQogCXZhX2VuZChhcmdzKTsNCkBAIC0xMjksNiArMTU0LDggQEAg
-aW50IGRldl9wcmludGYoaW50IGxldmVsLCBjb25zdCBzdHJ1Y3QgZGV2aWNlX2QgKmRldiwgY29u
-c3QgY2hhciAqZm9ybWF0LCAuLi4pDQogCWlmICghSVNfRU5BQkxFRChDT05GSUdfTE9HQlVGKSAm
-JiBsZXZlbCA+IGJhcmVib3hfbG9nbGV2ZWwpDQogCQlyZXR1cm4gMDsNCiANCisJcHJpbnRfY29s
-b3JlZF9sb2dfbGV2ZWwobGV2ZWwpOw0KKw0KIAlpZiAoZGV2LT5kcml2ZXIgJiYgZGV2LT5kcml2
-ZXItPm5hbWUpDQogCQlyZXQgKz0gc3ByaW50ZihwcmludGJ1ZmZlciwgIiVzICIsIGRldi0+ZHJp
-dmVyLT5uYW1lKTsNCiANCi0tIA0KMi43LjQNCg0KDQpEaWVzZSBFLU1haWwga2FubiB2ZXJ0cmF1
-bGljaGUgdW5kL29kZXIgcmVjaHRsaWNoIGdlc2Now7x0enRlIEluZm9ybWF0aW9uZW4gYmVpbmhh
-bHRlbiB1bmQgaXN0IGF1c3NjaGxpZcOfbGljaCBmw7xyIGRpZSBpbSBWZXJ0ZWlsZXIgZ2VuYW5u
-dGVuIFBlcnNvbmVuIGJlc3RpbW10LiBEYXMgdW5lcmxhdWJ0ZSBLb3BpZXJlbiBzb3dpZSBkaWUg
-dW5iZWZ1Z3RlIFdlaXRlcmdhYmUgZGllc2VyIE1haWwgc2luZCBuaWNodCBnZXN0YXR0ZXQuIEJp
-dHRlIGJlbmFjaHJpY2h0aWdlbiBTaWUgdW5zIGdlZ2ViZW5lbmZhbGxzIHRlbGVmb25pc2NoIG9k
-ZXIgbWl0IEFudHdvcnQtTWFpbCwgZmFsbHMgU2llIG5pY2h0IGRlciByaWNodGlnZSBBZHJlc3Nh
-dCBkaWVzZXIgRS1NYWlsIHNpbmQuIEJpdHRlIGzDtnNjaGVuIFNpZSBkaWVzZSBOYWNocmljaHQg
-dW5kIGFsbGUgQW5ow6RuZ2UgZGF6dSB1bnZlcnrDvGdsaWNoLiBGYWxscyBuaWNodCBhdXNkcsO8
-Y2tsaWNoIHZlcm1lcmt0LCBpc3QgZGllc2UgRS1NYWlsIGtlaW5lIHJlY2h0bGljaCBiaW5kZW5k
-ZSBWZXJlaW5iYXJ1bmcuIA0KDQpLb21tYW5kaXRnZXNlbGxzY2hhZnQ6IEpVTU8gR21iSCAmIENv
-LiBLRywgU2l0ejogMzYwMzkgRnVsZGEsIEFtdHNnZXJpY2h0IEZ1bGRhIEhSQSAzMDIsIFBlcnPD
-tm5saWNoIGhhZnRlbmRlIEdlc2VsbHNjaGFmdGVyaW46IE0uIEsuIEpVQ0hIRUlNIEdtYkgsIFNp
-dHo6IDM2MDM5IEZ1bGRhLCBBbXRzZ2VyaWNodCBGdWxkYSBIUkIgMTcsIEdlc2Now6RmdHNmw7xo
-cmVyOiBEaXBsLi1JbmcuIEJlcm5oYXJkIEp1Y2hoZWltLCBEaXBsLi1LZm0uIE1pY2hhZWwgSnVj
-aGhlaW0gDQpVc3QuLUlkLi1Oci46IERFIDExMjQxMTIzNCAKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+HI Eugen,
+
+On Fri, Feb 09, 2018 at 01:28:45PM +0100, Eugen Wiens wrote:
+> When the system is booting the warnings and errors are not be quickly discovered.
+> With this improvement the errors are colored red, the warnings yellow and the notices blue.
+
+I like this because I like colors ;)
+However, some people do not. Can we make this honour the value of the
+global.allow_color variable? This variable is currently only used in the
+environment, so we would have to move it to C code by adding a
+globalvar_add_simple_bool().
+
+> 
+> Signed-off-by: Eugen Wiens <eugen.wiens@jumo.net>
+> ---
+>  common/Kconfig          |  8 ++++++++
+>  common/console_common.c | 29 ++++++++++++++++++++++++++++-
+>  2 files changed, 36 insertions(+), 1 deletion(-)
+> 
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 57418ca..461ad35 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -1000,6 +1000,14 @@ config DEFAULT_LOGLEVEL
+>  	  7    debug-level messages (debug)
+>  	  8    verbose debug messages (vdebug)
+>  
+> +config PRINT_COLORED_LOG_LEVEL
+> +	prompt "enable colored printing of the log level"
+> +	bool
+> +	default n
+> +	help
+> +		Enable the print out of the colored log level.
+
+I don't think it's worth having an extra config option for this.
+If we get concerned about the code size, then we should rather
+add a global color control Kconfig option and let everything color
+related depend on this.
+
+Something like:
+
+config CONSOLE_ALLOW_COLOR
+	prompt "Allow colored console output"
+	bool
+
+static unsigned int allow_color;
+
+bool __console_allow_color(void)
+{
+	return allow_color;
+}
+
+Some initcall:
+	globalvar_add_simple_bool("allow_color", &allow_color);
+
+include/:
+
+static inline bool console_allow_color(void)
+{
+	if (!IS_ENABLED(CONFIG_CONSOLE_ALLOW_COLOR))
+		return false;
+	return __console_allow_color();
+}
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
