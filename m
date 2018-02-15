@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x22c.google.com ([2a00:1450:400c:c09::22c])
- by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ep8Rw-0006tY-5H
- for barebox@lists.infradead.org; Fri, 23 Feb 2018 08:11:26 +0000
-Received: by mail-wm0-x22c.google.com with SMTP id h21so3006937wmd.1
- for <barebox@lists.infradead.org>; Fri, 23 Feb 2018 00:11:12 -0800 (PST)
+Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.89 #1 (Red Hat Linux))
+ id 1emIzI-0000Km-KM
+ for barebox@lists.infradead.org; Thu, 15 Feb 2018 12:50:11 +0000
+References: <1517231051-12129-1-git-send-email-d.schultz@phytec.de>
+ <1517231051-12129-3-git-send-email-d.schultz@phytec.de>
+ <20180130071158.urvefxgjl3lvmfwd@pengutronix.de>
+From: Daniel Schultz <d.schultz@phytec.de>
+Message-ID: <21faa0a6-6514-0020-cec6-6f8af09a9c4c@phytec.de>
+Date: Thu, 15 Feb 2018 13:51:26 +0100
 MIME-Version: 1.0
-In-Reply-To: <20180223080402.zhx2klwm7jmmnght@pengutronix.de>
-References: <CAGm1_ksaqOepiKg2yRHaH2Bs+fur2ujDQEiDmaAD0HYADxj6Vw@mail.gmail.com>
- <20180223073320.6ubvlzyg76vc72ot@pengutronix.de>
- <CAGm1_ku46ngVkkDQ-Cnt4FCGKgEWjeqmuPT7mA60xw2hq3HT2Q@mail.gmail.com>
- <CAGm1_ktHTY=nv+5iKdr3i+sYX4KoDa2cytCCvGhaK47sP2498g@mail.gmail.com>
- <20180223080402.zhx2klwm7jmmnght@pengutronix.de>
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Fri, 23 Feb 2018 09:10:50 +0100
-Message-ID: <CAGm1_ksv+seEXkJfsFhSt5C-Jcfdq19fKHCFdXo-qNxFV-X=wA@mail.gmail.com>
+In-Reply-To: <20180130071158.urvefxgjl3lvmfwd@pengutronix.de>
+Content-Language: en-GB
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,124 +20,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: linux.bootargs: export mtdparts from DTS
+Subject: Re: [PATCH 3/3] drivers: mtd: nand: omap: Return stat value
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Cc: barebox@lists.infradead.org
 
-On Fri, Feb 23, 2018 at 9:04 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Fri, Feb 23, 2018 at 08:52:35AM +0100, Yegor Yefremov wrote:
->> On Fri, Feb 23, 2018 at 8:39 AM, Yegor Yefremov
->> <yegorslists@googlemail.com> wrote:
->> > On Fri, Feb 23, 2018 at 8:33 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> >> Hi Yegor,
->> >>
->> >> On Fri, Feb 23, 2018 at 08:26:56AM +0100, Yegor Yefremov wrote:
->> >>> My board will be configured via DTS file, that contains an MTD
->> >>> partition table [1]. How can it be automatically exported to
->> >>> global.inux.bootargs.mtdparts?
->> >>>
->> >>> [1] https://git.pengutronix.de/cgit/barebox/tree/arch/arm/dts/am335x-baltos-minimal.dts#n217
->> >>
->> >> Why would you want to do that? You are not going to start an ancient
->> >> kernel with ATAG support, are you?
->> >
->> > So far I'm using ancient LTS 3.18.x kernel with this DTS [1] and
->> > packaging it via FIT.
->> >
->> > [1] https://github.com/visionsystemsgmbh/onrisc_br_bsp/blob/master/board/vscom/dts/3.15/onrisc-baltos-ir-5221.dts
->>
->> I've installed dtc and dumped my loaded DTB in Linux:
->>
->>                      nand@0,0 {
->>                                 reg = <0x0 0x0 0x4>;
->>                                 gpmc,we-off-ns = <0x28>;
->>                                 gpmc,oe-on-ns = <0x0>;
->>                                 gpmc,device-nand = "true";
->>                                 gpmc,cycle2cycle-delay-ns = <0x0>;
->>                                 gpmc,wr-access-ns = <0x28>;
->>                                 gpmc,wr-data-mux-bus-ns = <0x0>;
->>                                 gpmc,adv-rd-off-ns = <0x22>;
->>                                 gpmc,oe-off-ns = <0x36>;
->>                                 gpmc,clk-activation-ns = <0x0>;
->>                                 gpmc,wait-on-write = "true";
->>                                 elm_id = <0x42>;
->>                                 ti,nand-ecc-opt = "bch8";
->>                                 gpmc,adv-on-ns = <0x6>;
->>                                 gpmc,adv-wr-off-ns = <0x2c>;
->>                                 ti,nand-xfer-type = "prefetch-polled";
->>                                 gpmc,wait-monitoring-ns = <0x0>;
->>                                 nand-bus-width = <0x8>;
->>                                 gpmc,device-width = <0x1>;
->>                                 gpmc,cs-rd-off-ns = <0x2c>;
->>                                 gpmc,rd-cycle-ns = <0x52>;
->>                                 #address-cells = <0x1>;
->>                                 gpmc,bus-turnaround-ns = <0x0>;
->>                                 gpmc,cs-on-ns = <0x0>;
->>                                 gpmc,we-on-ns = <0x0>;
->>                                 #size-cells = <0x1>;
->>                                 gpmc,wait-on-read = "true";
->>                                 gpmc,wr-cycle-ns = <0x52>;
->>                                 gpmc,access-ns = <0x40>;
->>                                 gpmc,sync-clk-ps = <0x0>;
->>                                 gpmc,cs-wr-off-ns = <0x2c>;
->>
->>                                 partitions {
->>                                         compatible = "fixed-partitions";
->>                                         #addres-cells = <0x1>;
->>                                         #size-cells = <0x1>;
->>
->>                                         partition@260000 {
->>                                                 reg = <0x260000 0xfda0000>;
->>                                                 label = "UBI";
->>                                         };
->>
->>                                         partition@0 {
->>                                                 reg = <0x0 0x20000>;
->>                                                 label = "SPL";
->>                                         };
->>
->>                                         partition@20000 {
->>                                                 reg = <0x20000 0x20000>;
->>                                                 label = "SPL.backup1";
->>                                         };
->>
->>                                         partition@40000 {
->>                                                 reg = <0x40000 0x20000>;
->>                                                 label = "SPL.backup2";
->>                                         };
->>
->>                                         partition@60000 {
->>                                                 reg = <0x60000 0x20000>;
->>                                                 label = "SPL.backup3";
->>                                         };
->>
->>                                         partition@80000 {
->>                                                 reg = <0x80000 0x1e0000>;
->>                                                 label = "u-boot";
->>                                         };
->>                                 };
->>                         };
->>
->> Somehow UBI partition is now the first partition and thus other
->> partitions were not parsed. Cat /proc/mtd says nothing and I have only
->> /dev/mtd0.
->
-> The partition ordering is strange, but not your problem. You only have
-> mtd0 because the old Kernel doesn't recognize any partition table at
-> all, note the additional partitions{} subnode which is only recognized
-> by newer kernels. You have to set global.of_partition_binding="legacy".
-
-I see now. It is working with the legacy option.
-
-Thanks.
-
-Yegor
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKCk9uIDAxLzMwLzIwMTggMDg6MTEgQU0sIFNhc2NoYSBIYXVlciB3cm90ZToK
+PiBPbiBNb24sIEphbiAyOSwgMjAxOCBhdCAwMjowNDoxMVBNICswMTAwLCBEYW5pZWwgU2NodWx0
+eiB3cm90ZToKPj4gVGhlIHJlYWQgcGFnZSBmdW5jdGlvbiBzaG91bGQgcmV0dXJuIHRoZSB0b3Rh
+bCBjb3VudCBvZiBmbGlwcGVkIGJpdHMsCj4+IG90aGVyd2lzZSB0aGUgY2FsbGVyIGFsd2F5cyB0
+aGlua3Mgbm8gYml0ZmxpcCBvY2N1cmVkLgo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgU2No
+dWx0eiA8ZC5zY2h1bHR6QHBoeXRlYy5kZT4KPj4gLS0tCj4+ICAgZHJpdmVycy9tdGQvbmFuZC9u
+YW5kX29tYXBfZ3BtYy5jIHwgMiArLQo+PiAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigr
+KSwgMSBkZWxldGlvbigtKQo+Pgo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvbmFuZC9uYW5k
+X29tYXBfZ3BtYy5jIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX29tYXBfZ3BtYy5jCj4+IGluZGV4
+IGUxOGNlNjMuLjM4ZjQ5NjAgMTAwNjQ0Cj4+IC0tLSBhL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9v
+bWFwX2dwbWMuYwo+PiArKysgYi9kcml2ZXJzL210ZC9uYW5kL25hbmRfb21hcF9ncG1jLmMKPj4g
+QEAgLTcxMiw3ICs3MTIsNyBAQCBzdGF0aWMgaW50IG9tYXBfZ3BtY19yZWFkX3BhZ2VfYmNoX3Jv
+bV9tb2RlKHN0cnVjdCBtdGRfaW5mbyAqbXRkLAo+PiAgIAllbHNlCj4+ICAgCQltdGQtPmVjY19z
+dGF0cy5jb3JyZWN0ZWQgKz0gc3RhdDsKPj4gICAKPj4gLQlyZXR1cm4gMDsKPj4gKwlyZXR1cm4g
+c3RhdDsKPj4gICB9Cj4gSSdtIGFmcmFpZCB0aGlzIGlzIG5vdCBlbm91Z2guIHJlYWRfcGFnZSBz
+aG91bGQgcmV0dXJuIHRoZSBtYXhpbXVtCj4gbnVtYmVyIG9mIGJpdGZsaXBzIGluIGFueSBFQ0Mg
+c3RlcC4gWW91IGZpcnN0IGhhdmUgdG8gY2hhbmdlCj4gb21hcF9jb3JyZWN0X2JjaCgpIHNvIHRo
+YXQgaXQgcmV0dXJucyB0aGlzIG51bWJlci4KYWhoLCB3ZSB3b3JrZWQgb24gdGhpcyBwcm9ibGVt
+IGEgaGFsZiB5ZWFyIGFnbyBhbmQgaXQgc2VlbXMgbGlrZSB0aHJlZSAKcGF0Y2hlcyBhcmUgbWlz
+c2luZyB1cHN0cmVhbToKCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL3BpcGVybWFpbC9iYXJl
+Ym94LzIwMTctSnVuZS8wMzAzODUuaHRtbApodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9waXBl
+cm1haWwvYmFyZWJveC8yMDE3LUp1bmUvMDMwMzg0Lmh0bWwKaHR0cDovL2xpc3RzLmluZnJhZGVh
+ZC5vcmcvcGlwZXJtYWlsL2JhcmVib3gvMjAxNy1KdW5lLzAzMDM1NS5odG1sCgpEYW5pZWwKCj4g
+U2FzY2hhCj4KPgoKLS0gCk1pdCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4sCldpdGggYmVzdCByZWdh
+cmRzLAogICBEYW5pZWwgU2NodWx0egoKLSBFbnR3aWNrbHVuZyAtClRlbC46IAkrNDkgNjEzMSA5
+MiAyMSA0NTcKZC5zY2h1bHR6QHBoeXRlYy5kZQp3d3cucGh5dGVjLmRlCgpTaWUgZmluZGVuIHVu
+cyBhdWNoIGF1ZjogRmFjZWJvb2ssIExpbmtlZEluLCBYaW5nLCBZb3VUdWJlCgpQSFlURUMgTWVz
+c3RlY2huaWsgR21iSCB8IFJvYmVydC1Lb2NoLVN0ci4gMzkgfCA1NTEyOSBNYWlueiwgR2VybWFu
+eQpHZXNjaMOkZnRzZsO8aHJlcjogRGlwbC4tSW5nLiBNaWNoYWVsIE1pdGV6a2ksIERpcGwuLUlu
+Zy4gQm9kbyBIdWJlciB8CkhhbmRlbHNyZWdpc3RlciBNYWlueiBIUkIgNDY1NiB8IEZpbmFuemFt
+dCBNYWluei1NaXR0ZSB8IFN0Lk5yLiAyNjY1MDA2MDgsCkRFIDE0OTA1OTg1NQpUaGlzIEUtTWFp
+bCBtYXkgY29udGFpbiBjb25maWRlbnRpYWwgb3IgcHJpdmlsZWdlZCBpbmZvcm1hdGlvbi4gSWYg
+eW91IGFyZQpub3QgdGhlIGludGVuZGVkIHJlY2lwaWVudCAob3IgaGF2ZSByZWNlaXZlZCB0aGlz
+IEUtTWFpbCBpbiBlcnJvcikgcGxlYXNlCm5vdGlmeSB0aGUgc2VuZGVyIGltbWVkaWF0ZWx5IGFu
+ZCBkZXN0cm95IHRoaXMgRS1NYWlsLiBBbnkgdW5hdXRob3JpemVkCmNvcHlpbmcsIGRpc2Nsb3N1
+cmUgb3IgZGlzdHJpYnV0aW9uIG9mIHRoZSBtYXRlcmlhbCBpbiB0aGlzIEUtTWFpbCBpcwpzdHJp
+Y3RseSBmb3JiaWRkZW4uCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
