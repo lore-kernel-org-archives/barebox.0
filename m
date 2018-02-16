@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vsmx009.vodafonemail.xion.oxcs.net ([153.92.174.87])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1emgPP-0000lD-Fo
- for barebox@lists.infradead.org; Fri, 16 Feb 2018 13:50:42 +0000
-Date: Fri, 16 Feb 2018 14:50:27 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180216135027.il7pvnf6lskw3wkb@pengutronix.de>
-References: <20180205171815.19272-1-andrew.smirnov@gmail.com>
+ id 1emc1I-0004GI-21
+ for barebox@lists.infradead.org; Fri, 16 Feb 2018 09:09:30 +0000
+Received: from vsmx001.vodafonemail.xion.oxcs.net (unknown [192.168.75.191])
+ by mta-5-out.mta.xion.oxcs.net (Postfix) with ESMTP id 96E93C0246
+ for <barebox@lists.infradead.org>; Fri, 16 Feb 2018 09:09:03 +0000 (UTC)
+Received: from null (app-40.app.xion.oxcs.net [10.10.1.40])
+ by mta-5-out.mta.xion.oxcs.net (Postfix) with ESMTPA id 80A123002DE
+ for <barebox@lists.infradead.org>; Fri, 16 Feb 2018 09:09:00 +0000 (UTC)
+Date: Fri, 16 Feb 2018 10:09:00 +0100 (CET)
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Message-ID: <4066173.3341.1518772140511@mail.vodafone.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180205171815.19272-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +25,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] partitions: Align partition numbering with that of Linux
- kernel
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: re-generate the builtin environment
+To: barebox@lists.infradead.org
 
-Hi Andrey,
+Hi,
 
-On Mon, Feb 05, 2018 at 09:18:15AM -0800, Andrey Smirnov wrote:
-> Change the way Barebox numbers DOS/EFI partitions, such that it would
-> be consistent with how Linux kernel does it. With this change:
-> 
->   - Both types of partitions are numbered starting from 1, not 0
-> 
->   - Extended DOS partitions always start from 5, leaving first 4 to
->     non-extended ones.
+I want to build a default environment in the barebox for my
+board.
 
-I am not very happy with this change because it breaks boards expecting
-a certain numbering. See for example:
 
-arch/arm/mach-omap/omap_generic.c:116:static char *envpath = "/mnt/mmc0.0/barebox.env";
-arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc:3:global.bootm.image=/mnt/mmc0.0/linuximage
-arch/arm/boards/embedsky-e9/defaultenv-e9/boot/mmc1:3:mount /dev/mmc1.0
+For this I defined the following vars in the .config file:
 
-There are more examples in-tree and for sure more out of tree.
+...
+CONFIG_DEFAULT_ENVIRONMENT=y
+CONFIG_DEFAULT_COMPRESSION_LZ4=y
+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU=y
+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/am335x-evm/defaultenv-am335x_evm"
+...
 
-We need very strong reasons to change this numbering.
+What I observe is that the first time I build barebox the default env is also built;
+but after that, if I modify something under CONFIG_DEFAULT_ENVIRONMENT_PATH and
+just rebuild the barebox dir. without a 'make clean' then the changes are missed.
 
-Sascha
+It this correct or do I do something wrong.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+The second question is: I noticed that in the board Makefile:
+
+ arch/arm/boards/am335x-evm/Makefile
+
+one can add the definition:
+
+bbenv-y += defaultenv-am335x_evm
+
+Isn't it a duplicate of the CONFIG_DEFAULT_ENVIRONMENT_PATH make var. ?
+
+giorgio
 
 _______________________________________________
 barebox mailing list
