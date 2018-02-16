@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1enevM-0007r4-BK
- for barebox@lists.infradead.org; Mon, 19 Feb 2018 06:27:42 +0000
-Date: Mon, 19 Feb 2018 07:27:25 +0100
+ id 1emaoV-0006XD-GP
+ for barebox@lists.infradead.org; Fri, 16 Feb 2018 07:52:13 +0000
+Date: Fri, 16 Feb 2018 08:51:58 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180219062724.apr4izfpiv3pai7o@pengutronix.de>
-References: <4066173.3341.1518772140511@mail.vodafone.de>
+Message-ID: <20180216075158.srw63pfrlby67oub@pengutronix.de>
+References: <ba32e817-48b6-9266-ffd7-d2397d103f7a@arcor.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <4066173.3341.1518772140511@mail.vodafone.de>
+In-Reply-To: <ba32e817-48b6-9266-ffd7-d2397d103f7a@arcor.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,55 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: re-generate the builtin environment
+Subject: Re: barebox for a ti am335x based board
 To: Giorgio Dal Molin <giorgio.nicole@arcor.de>
 Cc: barebox@lists.infradead.org
 
 Hi Giorgio,
 
-On Fri, Feb 16, 2018 at 10:09:00AM +0100, Giorgio Dal Molin wrote:
-> Hi,
+On Tue, Feb 13, 2018 at 11:12:54PM +0100, Giorgio Dal Molin wrote:
+> Hi all,
 > 
-> I want to build a default environment in the barebox for my
-> board.
+> I'm trying to add board code for an am335x based HW project.
+> I had a look at similar boards like 'boards/phytec-som-am335x'
+> or 'boards/beaglebone'.
+> I understand that I need two images: the (little) MLO and the
+> (bigger) barebox.
 > 
-> 
-> For this I defined the following vars in the .config file:
-> 
-> ...
-> CONFIG_DEFAULT_ENVIRONMENT=y
-> CONFIG_DEFAULT_COMPRESSION_LZ4=y
-> CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-> CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU=y
-> CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/am335x-evm/defaultenv-am335x_evm"
-> ...
-> 
-> What I observe is that the first time I build barebox the default env is also built;
-> but after that, if I modify something under CONFIG_DEFAULT_ENVIRONMENT_PATH and
-> just rebuild the barebox dir. without a 'make clean' then the changes are missed.
-> 
-> It this correct or do I do something wrong.
-> 
-> The second question is: I noticed that in the board Makefile:
-> 
->  arch/arm/boards/am335x-evm/Makefile
-> 
-> one can add the definition:
-> 
-> bbenv-y += defaultenv-am335x_evm
+> What it's not really clear is how the MLO loads and starts the
+> barebox.
 
-Try this one instead. Traditionally there has only been
-CONFIG_DEFAULT_ENVIRONMENT_PATH. bbenv-y is for compiling different
-separate environment snippets into the binary and to activate them
-later in the code. Adding bbenv-y like above doesn't change anything,
-the snippet needs to be loaded using:
+See arch/arm/mach-omap/xload.c. It is compiled when no shell is enabled
+(I think at least for clarity there should be a separate Kconfig
+symbol). In this file omap_xload() detects where the SoC has booted from
+and loads the full barebox from the same source.
 
-defaultenv_append_directory(defaultenv_am335x_evm);
+> 
+> Moreover I saw there's always a call to:
+> 
+>  am33xx_save_bootinfo((void *)bootinfo);
+> 
+> in the MLO lowlevel entry function; I suspect the argument
+> 'bootinfo' is the register r0 left by the function __barebox_arm_head()
+> but I cannot really understand the logic behind it.
 
-This is used for compiling barebox for multiple boards and decide during
-runtime which board specific env should be used.
+When the am335x ROM passes control to the bootloader then it passes in
+R0 a pointer to the bootinfo. This is a three word structure which has
+informations where the SoC has booted from. In am33xx_save_bootinfo() we
+copy the information to a known place where we can pick it up later, see
+am33xx_bootsource().
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
