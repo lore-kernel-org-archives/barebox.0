@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.89 #1 (Red Hat Linux))
- id 1emIzI-0000Km-KM
- for barebox@lists.infradead.org; Thu, 15 Feb 2018 12:50:11 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
+ id 1emat1-0001gz-GU
+ for barebox@lists.infradead.org; Fri, 16 Feb 2018 07:56:53 +0000
+Date: Fri, 16 Feb 2018 08:56:39 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180216075639.yenwl6sdlhqgvwqj@pengutronix.de>
 References: <1517231051-12129-1-git-send-email-d.schultz@phytec.de>
  <1517231051-12129-3-git-send-email-d.schultz@phytec.de>
  <20180130071158.urvefxgjl3lvmfwd@pengutronix.de>
-From: Daniel Schultz <d.schultz@phytec.de>
-Message-ID: <21faa0a6-6514-0020-cec6-6f8af09a9c4c@phytec.de>
-Date: Thu, 15 Feb 2018 13:51:26 +0100
+ <21faa0a6-6514-0020-cec6-6f8af09a9c4c@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <20180130071158.urvefxgjl3lvmfwd@pengutronix.de>
-Content-Language: en-GB
+Content-Disposition: inline
+In-Reply-To: <21faa0a6-6514-0020-cec6-6f8af09a9c4c@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,50 +21,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 3/3] drivers: mtd: nand: omap: Return stat value
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Daniel Schultz <d.schultz@phytec.de>
 Cc: barebox@lists.infradead.org
 
-SGkgU2FzY2hhLAoKCk9uIDAxLzMwLzIwMTggMDg6MTEgQU0sIFNhc2NoYSBIYXVlciB3cm90ZToK
-PiBPbiBNb24sIEphbiAyOSwgMjAxOCBhdCAwMjowNDoxMVBNICswMTAwLCBEYW5pZWwgU2NodWx0
-eiB3cm90ZToKPj4gVGhlIHJlYWQgcGFnZSBmdW5jdGlvbiBzaG91bGQgcmV0dXJuIHRoZSB0b3Rh
-bCBjb3VudCBvZiBmbGlwcGVkIGJpdHMsCj4+IG90aGVyd2lzZSB0aGUgY2FsbGVyIGFsd2F5cyB0
-aGlua3Mgbm8gYml0ZmxpcCBvY2N1cmVkLgo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgU2No
-dWx0eiA8ZC5zY2h1bHR6QHBoeXRlYy5kZT4KPj4gLS0tCj4+ICAgZHJpdmVycy9tdGQvbmFuZC9u
-YW5kX29tYXBfZ3BtYy5jIHwgMiArLQo+PiAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigr
-KSwgMSBkZWxldGlvbigtKQo+Pgo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvbmFuZC9uYW5k
-X29tYXBfZ3BtYy5jIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX29tYXBfZ3BtYy5jCj4+IGluZGV4
-IGUxOGNlNjMuLjM4ZjQ5NjAgMTAwNjQ0Cj4+IC0tLSBhL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9v
-bWFwX2dwbWMuYwo+PiArKysgYi9kcml2ZXJzL210ZC9uYW5kL25hbmRfb21hcF9ncG1jLmMKPj4g
-QEAgLTcxMiw3ICs3MTIsNyBAQCBzdGF0aWMgaW50IG9tYXBfZ3BtY19yZWFkX3BhZ2VfYmNoX3Jv
-bV9tb2RlKHN0cnVjdCBtdGRfaW5mbyAqbXRkLAo+PiAgIAllbHNlCj4+ICAgCQltdGQtPmVjY19z
-dGF0cy5jb3JyZWN0ZWQgKz0gc3RhdDsKPj4gICAKPj4gLQlyZXR1cm4gMDsKPj4gKwlyZXR1cm4g
-c3RhdDsKPj4gICB9Cj4gSSdtIGFmcmFpZCB0aGlzIGlzIG5vdCBlbm91Z2guIHJlYWRfcGFnZSBz
-aG91bGQgcmV0dXJuIHRoZSBtYXhpbXVtCj4gbnVtYmVyIG9mIGJpdGZsaXBzIGluIGFueSBFQ0Mg
-c3RlcC4gWW91IGZpcnN0IGhhdmUgdG8gY2hhbmdlCj4gb21hcF9jb3JyZWN0X2JjaCgpIHNvIHRo
-YXQgaXQgcmV0dXJucyB0aGlzIG51bWJlci4KYWhoLCB3ZSB3b3JrZWQgb24gdGhpcyBwcm9ibGVt
-IGEgaGFsZiB5ZWFyIGFnbyBhbmQgaXQgc2VlbXMgbGlrZSB0aHJlZSAKcGF0Y2hlcyBhcmUgbWlz
-c2luZyB1cHN0cmVhbToKCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL3BpcGVybWFpbC9iYXJl
-Ym94LzIwMTctSnVuZS8wMzAzODUuaHRtbApodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9waXBl
-cm1haWwvYmFyZWJveC8yMDE3LUp1bmUvMDMwMzg0Lmh0bWwKaHR0cDovL2xpc3RzLmluZnJhZGVh
-ZC5vcmcvcGlwZXJtYWlsL2JhcmVib3gvMjAxNy1KdW5lLzAzMDM1NS5odG1sCgpEYW5pZWwKCj4g
-U2FzY2hhCj4KPgoKLS0gCk1pdCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4sCldpdGggYmVzdCByZWdh
-cmRzLAogICBEYW5pZWwgU2NodWx0egoKLSBFbnR3aWNrbHVuZyAtClRlbC46IAkrNDkgNjEzMSA5
-MiAyMSA0NTcKZC5zY2h1bHR6QHBoeXRlYy5kZQp3d3cucGh5dGVjLmRlCgpTaWUgZmluZGVuIHVu
-cyBhdWNoIGF1ZjogRmFjZWJvb2ssIExpbmtlZEluLCBYaW5nLCBZb3VUdWJlCgpQSFlURUMgTWVz
-c3RlY2huaWsgR21iSCB8IFJvYmVydC1Lb2NoLVN0ci4gMzkgfCA1NTEyOSBNYWlueiwgR2VybWFu
-eQpHZXNjaMOkZnRzZsO8aHJlcjogRGlwbC4tSW5nLiBNaWNoYWVsIE1pdGV6a2ksIERpcGwuLUlu
-Zy4gQm9kbyBIdWJlciB8CkhhbmRlbHNyZWdpc3RlciBNYWlueiBIUkIgNDY1NiB8IEZpbmFuemFt
-dCBNYWluei1NaXR0ZSB8IFN0Lk5yLiAyNjY1MDA2MDgsCkRFIDE0OTA1OTg1NQpUaGlzIEUtTWFp
-bCBtYXkgY29udGFpbiBjb25maWRlbnRpYWwgb3IgcHJpdmlsZWdlZCBpbmZvcm1hdGlvbi4gSWYg
-eW91IGFyZQpub3QgdGhlIGludGVuZGVkIHJlY2lwaWVudCAob3IgaGF2ZSByZWNlaXZlZCB0aGlz
-IEUtTWFpbCBpbiBlcnJvcikgcGxlYXNlCm5vdGlmeSB0aGUgc2VuZGVyIGltbWVkaWF0ZWx5IGFu
-ZCBkZXN0cm95IHRoaXMgRS1NYWlsLiBBbnkgdW5hdXRob3JpemVkCmNvcHlpbmcsIGRpc2Nsb3N1
-cmUgb3IgZGlzdHJpYnV0aW9uIG9mIHRoZSBtYXRlcmlhbCBpbiB0aGlzIEUtTWFpbCBpcwpzdHJp
-Y3RseSBmb3JiaWRkZW4uCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
-Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Thu, Feb 15, 2018 at 01:51:26PM +0100, Daniel Schultz wrote:
+> Hi Sascha,
+> 
+> 
+> On 01/30/2018 08:11 AM, Sascha Hauer wrote:
+> > On Mon, Jan 29, 2018 at 02:04:11PM +0100, Daniel Schultz wrote:
+> > > The read page function should return the total count of flipped bits,
+> > > otherwise the caller always thinks no bitflip occured.
+> > > 
+> > > Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+> > > ---
+> > >   drivers/mtd/nand/nand_omap_gpmc.c | 2 +-
+> > >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+> > > index e18ce63..38f4960 100644
+> > > --- a/drivers/mtd/nand/nand_omap_gpmc.c
+> > > +++ b/drivers/mtd/nand/nand_omap_gpmc.c
+> > > @@ -712,7 +712,7 @@ static int omap_gpmc_read_page_bch_rom_mode(struct mtd_info *mtd,
+> > >   	else
+> > >   		mtd->ecc_stats.corrected += stat;
+> > > -	return 0;
+> > > +	return stat;
+> > >   }
+> > I'm afraid this is not enough. read_page should return the maximum
+> > number of bitflips in any ECC step. You first have to change
+> > omap_correct_bch() so that it returns this number.
+> ahh, we worked on this problem a half year ago and it seems like three
+> patches are missing upstream:
+> 
+> http://lists.infradead.org/pipermail/barebox/2017-June/030385.html
+> http://lists.infradead.org/pipermail/barebox/2017-June/030384.html
+> http://lists.infradead.org/pipermail/barebox/2017-June/030355.html
+
+Oh, I see. It seems I have either forgotten to merge them or I have
+waited for feedback. Could you create a series for all missing patches
+including your new patch and resend it, provided it works as expected of
+course?
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
