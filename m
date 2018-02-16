@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eol43-0000Ub-Up
- for barebox@lists.infradead.org; Thu, 22 Feb 2018 07:13:13 +0000
-Date: Thu, 22 Feb 2018 08:12:57 +0100
+ id 1emack-0006j7-9G
+ for barebox@lists.infradead.org; Fri, 16 Feb 2018 07:40:04 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180222071257.jmysyzpc72nr7ccu@pengutronix.de>
-References: <1519112870-16824-1-git-send-email-yegorslists@googlemail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1519112870-16824-1-git-send-email-yegorslists@googlemail.com>
+Date: Fri, 16 Feb 2018 08:39:46 +0100
+Message-Id: <20180216073946.1120-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,84 +14,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] DHCP: fix option 54 passing
-To: yegorslists@googlemail.com
-Cc: barebox@lists.infradead.org, linux@rempel-privat.de
+Subject: [PATCH] net: cpsw: remove unnecessary mdiobus_scan()
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Andreas Schmidt <mail@schmidt-andreas.de>
 
-On Tue, Feb 20, 2018 at 08:47:50AM +0100, yegorslists@googlemail.com wrote:
-> From: Yegor Yefremov <yegorslists@googlemail.com>
-> 
-> Though variable net_dhcp_server_ip was declared and used as a
-> function parameter it was never assigned. That's why a DHCP
-> request was sent without option 54 set. Some DHCP server for
-> example dnsmasq didn't accept such a packet.
-> 
-> As both offered IP address and server IP are stored in the global
-> dhcp_result structure we don't need either net_dhcp_server_ip or
-> OfferedIP variables and can use the addresses from dhcp_result
-> directly.
-> 
-> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
-> ---
->  net/dhcp.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+No need to call mdiobus_scan() manually. it is called from
+phy_device_connect() already in cpsw_open() which does all
+the magic to connect a network device with its phy.
 
-Applied, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/net/cpsw.c | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
-Sascha
-
-> 
-> diff --git a/net/dhcp.c b/net/dhcp.c
-> index 946efaa..d30551d 100644
-> --- a/net/dhcp.c
-> +++ b/net/dhcp.c
-> @@ -76,7 +76,6 @@ typedef enum {
->  
->  static uint32_t Bootp_id;
->  static dhcp_state_t dhcp_state;
-> -static IPaddr_t net_dhcp_server_ip;
->  static uint64_t dhcp_start;
->  static struct eth_device *dhcp_edev;
->  struct dhcp_req_param dhcp_param;
-> @@ -350,7 +349,6 @@ static void dhcp_send_request_packet(struct bootp *bp_offer)
->  {
->  	struct bootp *bp;
->  	int extlen;
-> -	IPaddr_t OfferedIP;
->  
->  	debug("%s: Sending DHCPREQUEST\n", __func__);
->  
-> @@ -378,9 +376,8 @@ static void dhcp_send_request_packet(struct bootp *bp_offer)
->  	/*
->  	 * Copy options from OFFER packet if present
->  	 */
-> -	net_copy_ip(&OfferedIP, &bp_offer->bp_yiaddr);
-> -	extlen = dhcp_extended(bp->bp_vend, DHCP_REQUEST, net_dhcp_server_ip,
-> -				OfferedIP);
-> +	extlen = dhcp_extended(bp->bp_vend, DHCP_REQUEST, dhcp_result->serverip,
-> +				dhcp_result->ip);
->  
->  	debug("Transmitting DHCPREQUEST packet\n");
->  	net_udp_send(dhcp_con, sizeof(*bp) + extlen);
-> -- 
-> 2.1.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
+index d11ca33f70..54ee5f327a 100644
+--- a/drivers/net/cpsw.c
++++ b/drivers/net/cpsw.c
+@@ -913,25 +913,13 @@ static int cpsw_slave_setup(struct cpsw_slave *slave, int slave_num,
+ 	struct eth_device	*edev = &slave->edev;
+ 	struct device_d		*dev = &slave->dev;
+ 	int ret;
+-	struct phy_device *phy;
+-
+-	phy = mdiobus_scan(&priv->miibus, priv->slaves[slave_num].phy_id);
+-	if (IS_ERR(phy)) {
+-		ret = PTR_ERR(phy);
+-		goto err_out;
+-	}
+-
+-	phy->dev.device_node = priv->slaves[slave_num].dev.device_node;
+-	ret = phy_register_device(phy);
+-	if (ret)
+-		goto err_out;
+ 
+ 	sprintf(dev->name, "cpsw-slave");
+ 	dev->id = slave->slave_num;
+ 	dev->parent = priv->dev;
+ 	ret = register_device(dev);
+ 	if (ret)
+-		goto err_register_dev;
++		return ret;
+ 
+ 	dev_dbg(&slave->dev, "* %s\n", __func__);
+ 
+@@ -956,11 +944,9 @@ static int cpsw_slave_setup(struct cpsw_slave *slave, int slave_num,
+ 
+ 	return 0;
+ 
+-err_register_dev:
+-	phy_unregister_device(phy);
+ err_register_edev:
+ 	unregister_device(dev);
+-err_out:
++
+ 	slave->slave_num = -1;
+ 
+ 	return ret;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.15.1
+
 
 _______________________________________________
 barebox mailing list
