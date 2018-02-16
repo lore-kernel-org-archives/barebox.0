@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-qk0-x242.google.com ([2607:f8b0:400d:c09::242])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1emapW-0006z1-3S
- for barebox@lists.infradead.org; Fri, 16 Feb 2018 07:53:15 +0000
-Date: Fri, 16 Feb 2018 08:53:01 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180216075301.agisydzoqr5esnxf@pengutronix.de>
-References: <20180208074856.3701-1-antonynpavlov@gmail.com>
- <20180209083636.oipcpwnnflbqcdzb@pengutronix.de>
- <20180209142224.ba82057f3efc4a88a82fc2d8@gmail.com>
- <20180213081943.cj2ty4e2u746ntja@pengutronix.de>
- <20180214091906.c73556ec3657ac331603485b@gmail.com>
+ id 1emgEV-00064p-Ao
+ for barebox@lists.infradead.org; Fri, 16 Feb 2018 13:39:26 +0000
+Received: by mail-qk0-x242.google.com with SMTP id 15so3778703qkl.3
+ for <barebox@lists.infradead.org>; Fri, 16 Feb 2018 05:39:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180214091906.c73556ec3657ac331603485b@gmail.com>
+In-Reply-To: <20180209072924.4zpt7e7vhbe2nfux@pengutronix.de>
+References: <20180205172935.25232-1-andrew.smirnov@gmail.com>
+ <20180205172935.25232-4-andrew.smirnov@gmail.com>
+ <20180209072924.4zpt7e7vhbe2nfux@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Fri, 16 Feb 2018 05:39:08 -0800
+Message-ID: <CAHQ1cqEDk4Y+XSaU+jEEZDVcnne+sGsnVJd8A3hXTNxn8x-uqg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,72 +25,166 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] commands: i2c_write: enable raw write to address
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 4/4] commands: version: Add framebuffer output support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Feb 14, 2018 at 09:19:06AM +0300, Antony Pavlov wrote:
-> On Tue, 13 Feb 2018 09:19:43 +0100
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> > On Fri, Feb 09, 2018 at 02:22:24PM +0300, Antony Pavlov wrote:
-> > > On Fri, 9 Feb 2018 09:36:36 +0100
-> > > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > > 
-> > > > Hi Antony,
-> > > > 
-> > > > On Thu, Feb 08, 2018 at 10:48:56AM +0300, Antony Pavlov wrote:
-> > > > > Sometimes for communication with a simple I2C devices
-> > > > > (e.g. PCF8574 or TM1650) it's necessary to send only
-> > > > > one data byte into the I2C device.
-> > > > > Current i2c_write command makes this impossible because
-> > > > > you can't just pass 'device address' and 'register number'
-> > > > > (or 'device address' and 'one data byte') to the command.
-> > > > > You always have to pass all three parameters:
-> > > > > 'device address', 'register number' and 'data'.
-> > > > > 
-> > > > > This commit fixes the problem.
-> > > > > 
-> > > > > Sample usage:
-> > > > > 
-> > > > >   barebox@barebox sandbox:/ i2c_write -a 0x24 0x01
-> > > > > 
-> > > > > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > > > > ---
-> > > > >  commands/i2c.c | 8 ++++++--
-> > > > >  1 file changed, 6 insertions(+), 2 deletions(-)
-> > > > 
-> > > > Looks good to me.
-> > > > 
-> > > > I applied this one despite the [RFC] tag. If for some reason you want to
-> > > > resend this, feel free to do so, but otherwise consider this applied.
-> > > 
-> > > Thanks!
-> > > 
-> > > The patch is short, it's understandable and it fixes the problem.
-> > > I prefere to apply this patch as is.
-> > > 
-> > > I see some inconsistency in drivers/i2c/i2c.c.
-> > > We have i2c_master_send() and i2c_write_reg() functions.
-> > > These functions are intended to make similar work but they are
-> > > written in very different style. I suppose that we can rewrite
-> > > i2c_master_send() (e.g. drop FIXME) and make i2c_write_reg()
-> > > work on top of i2c_master_send(). Any comments?
-> > 
-> > Rewrite i2c_master_send()? Do you mean rewrite i2c_write_reg() instead?
-> 
-> You are right, of course I propose rewrite i2c_write_reg() (there is no
-> FIXME comment inside i2c_master_send()).
+On Thu, Feb 8, 2018 at 11:29 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> Hi Andrey,
+>
+> On Mon, Feb 05, 2018 at 09:29:35AM -0800, Andrey Smirnov wrote:
+>> Extend "version" command to be capable of rendeing version information
+>> on framebuffer devices.
+>>
+>> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+>> ---
+>>  commands/Kconfig   |   8 +++
+>>  commands/version.c | 198 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
+>>  2 files changed, 204 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/commands/Kconfig b/commands/Kconfig
+>> index 095536849..1cad5d608 100644
+>> --- a/commands/Kconfig
+>> +++ b/commands/Kconfig
+>> @@ -238,6 +238,14 @@ config CMD_VERSION
+>>
+>>         barebox 2014.05.0-00142-gb289373 #177 Mon May 12 20:35:55 CEST 2014
+>>
+>> +config CMD_VERSION_OUTPUT_TO_FRAMEBUFFER
+>> +       bool
+>> +       depends on CMD_VERSION
+>> +       prompt "support displaying version via framebuffer"
+>> +       help
+>> +         Selecting this option will enable version command to output
+>> +         version information onto display backed by a frambuffer
+>> +
+>>  config CMD_MMC_EXTCSD
+>>       tristate
+>>       prompt "read/write eMMC ext. CSD register"
+>> diff --git a/commands/version.c b/commands/version.c
+>> index 090f2dd13..ba74a993c 100644
+>> --- a/commands/version.c
+>> +++ b/commands/version.c
+>> @@ -20,16 +20,210 @@
+>>  #include <common.h>
+>>  #include <command.h>
+>>  #include <complete.h>
+>> +#include <getopt.h>
+>> +#include <fb.h>
+>> +#include <gui/graphic_utils.h>
+>> +#include <gui/2d-primitives.h>
+>> +
+>> +#define FRAME_SIZE   8
+>> +
+>> +struct placement {
+>> +     int x, y;
+>> +};
+>> +
+>> +typedef struct placement placement_function_t (struct screen *, int, int);
+>> +
+>> +struct placement
+>> +placement_center(struct screen *sc, int text_width, int text_height)
+>> +{
+>> +     struct placement p;
+>> +
+>> +     p.x = (sc->info->xres - text_width) / 2;
+>> +     p.y = (sc->info->yres - text_height) / 2;
+>> +
+>> +     return p;
+>> +}
+>> +
+>> +struct placement
+>> +placement_upper_left(struct screen *sc, int text_width, int text_height)
+>> +{
+>> +     struct placement p;
+>> +
+>> +     p.x = FRAME_SIZE;
+>> +     p.y = FRAME_SIZE;
+>> +
+>> +     return p;
+>> +}
+>> +
+>> +struct placement
+>> +placement_upper_right(struct screen *sc, int text_width, int text_height)
+>> +{
+>> +     struct placement p;
+>> +
+>> +     p.x = sc->info->xres - 1 - text_width - FRAME_SIZE;
+>> +     p.y = FRAME_SIZE;
+>> +
+>> +     return p;
+>> +}
+>> +
+>> +struct placement
+>> +placement_lower_left(struct screen *sc, int text_width, int text_height)
+>> +{
+>> +     struct placement p;
+>> +
+>> +     p.x = FRAME_SIZE;
+>> +     p.y = sc->info->yres - 1 - text_height - FRAME_SIZE;
+>> +
+>> +     return p;
+>> +}
+>> +
+>> +struct placement
+>> +placement_lower_right(struct screen *sc, int text_width, int text_height)
+>> +{
+>> +     struct placement p;
+>> +
+>> +     p.x = sc->info->xres - 1 - text_width  - FRAME_SIZE;
+>> +     p.y = sc->info->yres - 1 - text_height - FRAME_SIZE;
+>> +
+>> +     return p;
+>> +}
+>>
+>>  static int do_version(int argc, char *argv[])
+>>  {
+>> -     printf ("\n%s\n", version_string);
+>> +     const struct font_desc *font;
+>> +     const char *fbdev = NULL;
+>> +     struct screen *sc;
+>> +     u8 fg[3], bg[3];
+>> +     int text_width;
+>> +     int text_height;
+>> +
+>> +     placement_function_t *place;
+>> +     struct placement placement;
+>> +
+>> +     if (IS_ENABLED(CONFIG_CMD_VERSION_OUTPUT_TO_FRAMEBUFFER)) {
+>
+> This is quite much code added to the version command, given that the
+> command previously only was a one-liner. I think this should rather be a
+> separate command. This could depend on framebuffer and other needed
+> stuff which would make the first two patches unnecessary. I think
+> stubbing away graphics functions when the user is graphics-only code is
+> a bit over the top.
+>
 
-Ok, that should work I think. Feel free to propose a patch.
+OK, will change in v2.
 
-Sascha
+> The placement functions look as if they should be moved to some font
+> handling generic code.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+OK, will do.
+
+>
+> Also it's always nice to have a C API for anything we also have as
+> command. It has proven to be useful so many times.
+>
+
+Sure, will do.
+
+>> +BAREBOX_CMD_HELP_OPT ("-f color\t", "foreground color, in hex RRGGBB format")
+>> +BAREBOX_CMD_HELP_OPT ("-b color\t", "background color, in hex RRGGBB format")
+>
+> I'm not sure how useful these are as parameters to a command. How about
+> a nv variable? This could be used by the framebuffer console aswell.
+>
+
+Sure, sounds reasonable.
+
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
