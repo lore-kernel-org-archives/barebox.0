@@ -1,20 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eoRcC-0003eu-Ss
- for barebox@lists.infradead.org; Wed, 21 Feb 2018 10:27:10 +0000
-Received: from bohne.hi.pengutronix.de ([2001:67c:670:100:9e5c:8eff:fece:ccef])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.89)
- (envelope-from <r.hieber@pengutronix.de>) id 1eoRbz-0004Jb-Go
- for barebox@lists.infradead.org; Wed, 21 Feb 2018 11:26:55 +0100
-References: <20180221095334.30747-1-l.stach@pengutronix.de>
-From: Roland Hieber <r.hieber@pengutronix.de>
-Message-ID: <802452ac-f475-66df-7498-2d9ffd4d490a@pengutronix.de>
-Date: Wed, 21 Feb 2018 11:26:53 +0100
-MIME-Version: 1.0
-In-Reply-To: <20180221095334.30747-1-l.stach@pengutronix.de>
-Content-Language: en-US
+Received: from mail.visionsystems.de ([213.209.99.202])
+ by bombadil.infradead.org with esmtp (Exim 4.89 #1 (Red Hat Linux))
+ id 1eo2er-0002Id-Km
+ for barebox@lists.infradead.org; Tue, 20 Feb 2018 07:48:15 +0000
+From: yegorslists@googlemail.com
+Date: Tue, 20 Feb 2018 08:47:50 +0100
+Message-Id: <1519112870-16824-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,43 +14,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] arm: ARM64 doen't provide the armlinux_ functions
+Subject: [PATCH] DHCP: fix option 54 passing
 To: barebox@lists.infradead.org
+Cc: linux@rempel-privat.de
 
-I guess the subject should contain a "doesn't"? :-)
+From: Yegor Yefremov <yegorslists@googlemail.com>
 
-On 21.02.2018 10:53, Lucas Stach wrote:
-> Those set parameters specific to the older ARM Linux implementation.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->   arch/arm/include/asm/armlinux.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/include/asm/armlinux.h b/arch/arm/include/asm/armlinux.h
-> index 5c39200a0c33..135f11b860ce 100644
-> --- a/arch/arm/include/asm/armlinux.h
-> +++ b/arch/arm/include/asm/armlinux.h
-> @@ -5,7 +5,7 @@
->   #include <asm/setup.h>
->   #include <asm/secure.h>
->   
-> -#if defined CONFIG_ARM_LINUX
-> +#if defined CONFIG_ARM_LINUX && defined CONFIG_CPU_32
->   void armlinux_set_bootparams(void *params);
->   void armlinux_set_architecture(int architecture);
->   void armlinux_set_revision(unsigned int);
-> 
+Though variable net_dhcp_server_ip was declared and used as a
+function parameter it was never assigned. That's why a DHCP
+request was sent without option 54 set. Some DHCP server for
+example dnsmasq didn't accept such a packet.
 
+As both offered IP address and server IP are stored in the global
+dhcp_result structure we don't need either net_dhcp_server_ip or
+OfferedIP variables and can use the addresses from dhcp_result
+directly.
+
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+ net/dhcp.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/net/dhcp.c b/net/dhcp.c
+index 946efaa..d30551d 100644
+--- a/net/dhcp.c
++++ b/net/dhcp.c
+@@ -76,7 +76,6 @@ typedef enum {
+ 
+ static uint32_t Bootp_id;
+ static dhcp_state_t dhcp_state;
+-static IPaddr_t net_dhcp_server_ip;
+ static uint64_t dhcp_start;
+ static struct eth_device *dhcp_edev;
+ struct dhcp_req_param dhcp_param;
+@@ -350,7 +349,6 @@ static void dhcp_send_request_packet(struct bootp *bp_offer)
+ {
+ 	struct bootp *bp;
+ 	int extlen;
+-	IPaddr_t OfferedIP;
+ 
+ 	debug("%s: Sending DHCPREQUEST\n", __func__);
+ 
+@@ -378,9 +376,8 @@ static void dhcp_send_request_packet(struct bootp *bp_offer)
+ 	/*
+ 	 * Copy options from OFFER packet if present
+ 	 */
+-	net_copy_ip(&OfferedIP, &bp_offer->bp_yiaddr);
+-	extlen = dhcp_extended(bp->bp_vend, DHCP_REQUEST, net_dhcp_server_ip,
+-				OfferedIP);
++	extlen = dhcp_extended(bp->bp_vend, DHCP_REQUEST, dhcp_result->serverip,
++				dhcp_result->ip);
+ 
+ 	debug("Transmitting DHCPREQUEST packet\n");
+ 	net_udp_send(dhcp_con, sizeof(*bp) + extlen);
 -- 
-Pengutronix e.K.                  | Roland Hieber               |
-Industrial Linux Solutions        | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
