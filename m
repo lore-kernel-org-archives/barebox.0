@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eol8s-0002W9-Hu
- for barebox@lists.infradead.org; Thu, 22 Feb 2018 07:18:12 +0000
-Date: Thu, 22 Feb 2018 08:17:58 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180222071758.hkyimkehvbkgb5cx@pengutronix.de>
-References: <20180216073946.1120-1-s.hauer@pengutronix.de>
- <075169cf-a231-eb73-427a-65c37b8d5465@schmidt-andreas.de>
- <20180219065402.dbiv3vke2kqwhfdj@pengutronix.de>
- <b7c837eb63fe7d64236a54b5da612904@schmidt-andreas.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <b7c837eb63fe7d64236a54b5da612904@schmidt-andreas.de>
+ id 1eo5vj-00008Z-6S
+ for barebox@lists.infradead.org; Tue, 20 Feb 2018 11:17:52 +0000
+From: Enrico Jorns <ejo@pengutronix.de>
+Date: Tue, 20 Feb 2018 12:17:06 +0100
+Message-Id: <20180220111706.5199-1-ejo@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,52 +14,99 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: cpsw: remove unnecessary mdiobus_scan()
-To: list@schmidt-andreas.de
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] efi: add bootsource detection
+To: barebox@lists.infradead.org
+Cc: Enrico Jorns <ejo@pengutronix.de>
 
-On Mon, Feb 19, 2018 at 12:08:34PM +0100, list@schmidt-andreas.de wrote:
-> On 2018-02-19 07:54, Sascha Hauer wrote:
-> > On Sat, Feb 17, 2018 at 10:18:16AM +0100, Andreas Schmidt wrote:
-> [...]
-> > > On 16.02.2018 08:39, Sascha Hauer wrote:
-> > > > No need to call mdiobus_scan() manually. it is called from
-> > > > phy_device_connect() already in cpsw_open() which does all
-> > > > the magic to connect a network device with its phy.
-> > > You added call of mdiobus_scan to check if the slave has valid phy,
-> > > I guess.
-> > > Or I misunderstood your commit:
-> > > b2568de82d62c18fd5dc8affb0e4dc050403c498
-> > > net: cpsw: ignore error on slave setup ?
-> > > 
-> > > I guess it should work in follow:
-> > > If slave has a valid phy (determined by mdiobus_scan), slave will be
-> > > continue to register (call eth_register),
-> > > if not, cpsw_clave_setup function will exit with an error and next
-> > > slave
-> > > will be try to register.
-> > 
-> > You're right. I have overlooked the case that we do not want to register
-> > ethernet devices for slaves which do not have a valid phy.
-> > 
-> > In this case, how about the following variant?
-> Yes, it's better. I tested it with fixed-link and with real phy and it
-> works.
-> Except a little bug, see comments below.
+We check the supported protocol of the parent EFI device of
+'efi_loaded_image' to see if we are booted from USB or not (HD)
 
-Ok, applied with your fixup added.
+Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
+---
+ drivers/efi/efi-device.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
-Sascha
-
+diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
+index 9975aea6f7..3a27323a00 100644
+--- a/drivers/efi/efi-device.c
++++ b/drivers/efi/efi-device.c
+@@ -17,6 +17,7 @@
+  *
+  */
+ 
++#include <bootsource.h>
+ #include <command.h>
+ #include <common.h>
+ #include <driver.h>
+@@ -385,6 +386,51 @@ static int efi_is_setup_mode(void)
+ 	return ret != 1;
+ }
+ 
++static int is_bio_usbdev(struct efi_device *efidev)
++{
++	int i;
++
++	for (i = 0; i < efidev->num_guids; i++) {
++		if (!efi_guidcmp(efidev->guids[i], EFI_USB_IO_PROTOCOL_GUID))
++			return 1;
++	}
++
++	return 0;
++}
++
++static void efi_set_bootsource(void)
++{
++	enum bootsource src = BOOTSOURCE_UNKNOWN;
++	int instance = BOOTSOURCE_INSTANCE_UNKNOWN;
++
++	efi_handle_t *efi_parent;
++	struct efi_device *bootdev;
++
++	if (!efi_loaded_image->parent_handle)
++		goto out;
++
++	efi_parent = efi_find_parent(efi_loaded_image->device_handle);
++
++	if (!efi_parent)
++		goto out;
++
++	bootdev = efi_find_device(efi_parent);
++
++	if (!bootdev)
++		goto out;
++
++	if (is_bio_usbdev(bootdev)) {
++		src = BOOTSOURCE_USB;
++	} else {
++		src = BOOTSOURCE_HD;
++	}
++
++out:
++
++	bootsource_set(src);
++	bootsource_set_instance(instance);
++}
++
+ static int efi_init_devices(void)
+ {
+ 	char *fw_vendor = NULL;
+@@ -415,6 +461,8 @@ static int efi_init_devices(void)
+ 
+ 	efi_register_devices();
+ 
++	efi_set_bootsource();
++
+ 	return 0;
+ }
+ core_initcall(efi_init_devices);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.16.1
+
 
 _______________________________________________
 barebox mailing list
