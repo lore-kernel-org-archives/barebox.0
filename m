@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.jumo.net ([193.24.15.13])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eolvA-00083a-Lu
- for barebox@lists.infradead.org; Thu, 22 Feb 2018 08:08:06 +0000
-Date: Thu, 22 Feb 2018 09:07:52 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180222080752.yaae26pawgeqo7bo@pengutronix.de>
-References: <20180221153910.24653-1-jbe@pengutronix.de>
+ id 1eoPkO-0004ez-Dn
+ for barebox@lists.infradead.org; Wed, 21 Feb 2018 08:27:30 +0000
+Received: from dentln03.jumo.net ([10.10.0.23]:3680)
+ by mail.jumo.net with esmtp (Exim 4.82_1-5b7a7c0-XX)
+ (envelope-from <eugen.wiens@jumo.net>) id 1eoPk7-0003At-1d
+ for barebox@lists.infradead.org; Wed, 21 Feb 2018 09:27:11 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180221153910.24653-1-jbe@pengutronix.de>
+From: Eugen Wiens <eugen.wiens@jumo.net>
+Date: Wed, 21 Feb 2018 09:26:38 +0100
+Message-Id: <20180221082638.30664-1-eugen.wiens@jumo.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,64 +19,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM/i.MX53: fix SDRAM setup routines
-To: Juergen Borleis <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] console: added colored print out of log levels
+To: barebox@lists.infradead.org
+Cc: Eugen Wiens <eugen.wiens@jumo.net>
 
-On Wed, Feb 21, 2018 at 04:39:10PM +0100, Juergen Borleis wrote:
-> Fix setup of the SDRAM's MR0 register: 'val' gets overwritten by the chip
-> select decision and nothing is written to the MR0 register.
-> 
-> This fix is required since some i.MX53 based platforms still use this
-> software setup routine to configure their SDRAMs.
-> 
-> Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
-> ---
->  arch/arm/mach-imx/esdctl-v4.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/arch/arm/mach-imx/esdctl-v4.c b/arch/arm/mach-imx/esdctl-v4.c
-> index 0652b492e..6de4a8d6e 100644
-> --- a/arch/arm/mach-imx/esdctl-v4.c
-> +++ b/arch/arm/mach-imx/esdctl-v4.c
-> @@ -191,9 +191,9 @@ void imx_esdctlv4_start_ddr3_sdram(int cs)
->  		ESDCTL_V4_DDR3_REG_MR0 | val_cs1;
->  
->  	if (cs)
-> -		val = ESDCTL_V4_ESDSCR_DLL_RST1;
-> +		val |= ESDCTL_V4_ESDSCR_DLL_RST1;
->  	else
-> -		val = ESDCTL_V4_ESDSCR_DLL_RST0;
-> +		val |= ESDCTL_V4_ESDSCR_DLL_RST0;
->  
->  	writel(val, base + ESDCTL_V4_ESDSCR);
->  
-> -- 
-> 2.16.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+V2hlbiB0aGUgc3lzdGVtIGlzIGJvb3RpbmcgdGhlIHdhcm5pbmdzIGFuZCBlcnJvcnMgYXJlIG5v
+dCBiZSBxdWlja2x5IGRpc2NvdmVyZWQuIFdpdGggdGhpcyBpbXByb3ZlbWVudCB0aGUgZXJyb3Jz
+IGFyZSBjb2xvcmVkIHJlZCwgdGhlIHdhcm5pbmdzIHllbGxvdyBhbmQgdGhlIG5vdGljZXMgYmx1
+ZS4NCg0KU2lnbmVkLW9mZi1ieTogRXVnZW4gV2llbnMgPGV1Z2VuLndpZW5zQGp1bW8ubmV0Pg0K
+LS0tDQogY29tbW9uL2NvbnNvbGVfY29tbW9uLmMgfCAyNSArKysrKysrKysrKysrKysrKysrKysr
+KysrDQogMSBmaWxlIGNoYW5nZWQsIDI1IGluc2VydGlvbnMoKykNCg0KZGlmZiAtLWdpdCBhL2Nv
+bW1vbi9jb25zb2xlX2NvbW1vbi5jIGIvY29tbW9uL2NvbnNvbGVfY29tbW9uLmMNCmluZGV4IDAy
+MDIzNDVhNi4uNmQ4NTdkMDY0IDEwMDY0NA0KLS0tIGEvY29tbW9uL2NvbnNvbGVfY29tbW9uLmMN
+CisrKyBiL2NvbW1vbi9jb25zb2xlX2NvbW1vbi5jDQpAQCAtMzMsNiArMzMsMTggQEANCiANCiAj
+aWZuZGVmIENPTkZJR19DT05TT0xFX05PTkUNCiANCisjZGVmaW5lIE1BWF9DSEFSQUNURVJTX0NP
+TE9SRURfTE9HX0xFVkVMCTIwDQorI2RlZmluZSBNQVhfTE9HX0xFVkVMCQkJCU1TR19OT1RJQ0UN
+CisNCitzdGF0aWMgY29uc3QgY2hhciBjb2xvcmVkX2xvZ19sZXZlbFtNQVhfTE9HX0xFVkVMKzFd
+W01BWF9DSEFSQUNURVJTX0NPTE9SRURfTE9HX0xFVkVMXSA9IHsNCisJIlwwMzNbMzFtRU1FUkc6
+XDAzM1swbSAiLAkvKiBjb2xvciByZWQgZm9yIGxvZyBsZXZlbCBNU0dfRU1FUkcgKi8NCisJIlww
+MzNbMzFtQUxFUlQ6XDAzM1swbSAiLAkvKiBjb2xvciByZWQgZm9yIGxvZyBsZXZlbCBNU0dfQUxF
+UlQgKi8NCisJIlwwMzNbMzFtQ1JJVElDQUw6XDAzM1swbSAiLAkvKiBjb2xvciByZWQgZm9yIGxv
+ZyBsZXZlbCBNU0dfQ1JJVCAqLw0KKwkiXDAzM1szMW1FUlJPUjpcMDMzWzBtICIsCS8qIGNvbG9y
+IHJlZCBmb3IgbG9nIGxldmVsIE1TR19FUlIgKi8NCisJIlwwMzNbMzNtV0FSTklORzpcMDMzWzBt
+ICIsCS8qIGNvbG9yIHllbGxvdyBmb3IgbG9nIGxldmVsIE1TR19XQVJOSU5HICovDQorCSJcMDMz
+WzM0bU5PVElDRTpcMDMzWzBtICIsCS8qIGNvbG9yIGJsdWUgZm9yIGxvZyBsZXZlbCBNU0dfTk9U
+SUNFICovDQorfTsNCisNCiBpbnQgYmFyZWJveF9sb2dsZXZlbCA9IENPTkZJR19ERUZBVUxUX0xP
+R0xFVkVMOw0KIA0KIExJU1RfSEVBRChiYXJlYm94X2xvZ2J1Zik7DQpAQCAtMTAyLDYgKzExNCwx
+NSBAQCBub2xvZzoNCiAJcHV0cyhzdHIpOw0KIH0NCiANCitzdGF0aWMgdm9pZCBwcmludF9jb2xv
+cmVkX2xvZ19sZXZlbChjb25zdCBpbnQgbGV2ZWwpDQorew0KKwlpZiAoY29uc29sZV9hbGxvd19j
+b2xvcigpKSB7DQorCQlpZiAobGV2ZWwgPD0gTUFYX0xPR19MRVZFTCkgew0KKwkJCXByX3B1dHMo
+bGV2ZWwsIGNvbG9yZWRfbG9nX2xldmVsW2xldmVsXSk7DQorCQl9DQorCX0NCit9DQorDQogaW50
+IHByX3ByaW50KGludCBsZXZlbCwgY29uc3QgY2hhciAqZm10LCAuLi4pDQogew0KIAl2YV9saXN0
+IGFyZ3M7DQpAQCAtMTExLDYgKzEzMiw4IEBAIGludCBwcl9wcmludChpbnQgbGV2ZWwsIGNvbnN0
+IGNoYXIgKmZtdCwgLi4uKQ0KIAlpZiAoIUlTX0VOQUJMRUQoQ09ORklHX0xPR0JVRikgJiYgbGV2
+ZWwgPiBiYXJlYm94X2xvZ2xldmVsKQ0KIAkJcmV0dXJuIDA7DQogDQorCXByaW50X2NvbG9yZWRf
+bG9nX2xldmVsKGxldmVsKTsNCisNCiAJdmFfc3RhcnQoYXJncywgZm10KTsNCiAJaSA9IHZzcHJp
+bnRmKHByaW50YnVmZmVyLCBmbXQsIGFyZ3MpOw0KIAl2YV9lbmQoYXJncyk7DQpAQCAtMTI5LDYg
+KzE1Miw4IEBAIGludCBkZXZfcHJpbnRmKGludCBsZXZlbCwgY29uc3Qgc3RydWN0IGRldmljZV9k
+ICpkZXYsIGNvbnN0IGNoYXIgKmZvcm1hdCwgLi4uKQ0KIAlpZiAoIUlTX0VOQUJMRUQoQ09ORklH
+X0xPR0JVRikgJiYgbGV2ZWwgPiBiYXJlYm94X2xvZ2xldmVsKQ0KIAkJcmV0dXJuIDA7DQogDQor
+CXByaW50X2NvbG9yZWRfbG9nX2xldmVsKGxldmVsKTsNCisNCiAJaWYgKGRldi0+ZHJpdmVyICYm
+IGRldi0+ZHJpdmVyLT5uYW1lKQ0KIAkJcmV0ICs9IHNwcmludGYocHJpbnRidWZmZXIsICIlcyAi
+LCBkZXYtPmRyaXZlci0+bmFtZSk7DQogDQotLSANCjIuMTYuMQ0KDQoNCkRpZXNlIEUtTWFpbCBr
+YW5uIHZlcnRyYXVsaWNoZSB1bmQvb2RlciByZWNodGxpY2ggZ2VzY2jDvHR6dGUgSW5mb3JtYXRp
+b25lbiBiZWluaGFsdGVuIHVuZCBpc3QgYXVzc2NobGllw59saWNoIGbDvHIgZGllIGltIFZlcnRl
+aWxlciBnZW5hbm50ZW4gUGVyc29uZW4gYmVzdGltbXQuIERhcyB1bmVybGF1YnRlIEtvcGllcmVu
+IHNvd2llIGRpZSB1bmJlZnVndGUgV2VpdGVyZ2FiZSBkaWVzZXIgTWFpbCBzaW5kIG5pY2h0IGdl
+c3RhdHRldC4gQml0dGUgYmVuYWNocmljaHRpZ2VuIFNpZSB1bnMgZ2VnZWJlbmVuZmFsbHMgdGVs
+ZWZvbmlzY2ggb2RlciBtaXQgQW50d29ydC1NYWlsLCBmYWxscyBTaWUgbmljaHQgZGVyIHJpY2h0
+aWdlIEFkcmVzc2F0IGRpZXNlciBFLU1haWwgc2luZC4gQml0dGUgbMO2c2NoZW4gU2llIGRpZXNl
+IE5hY2hyaWNodCB1bmQgYWxsZSBBbmjDpG5nZSBkYXp1IHVudmVyesO8Z2xpY2guIEZhbGxzIG5p
+Y2h0IGF1c2Ryw7xja2xpY2ggdmVybWVya3QsIGlzdCBkaWVzZSBFLU1haWwga2VpbmUgcmVjaHRs
+aWNoIGJpbmRlbmRlIFZlcmVpbmJhcnVuZy4gDQoNCktvbW1hbmRpdGdlc2VsbHNjaGFmdDogSlVN
+TyBHbWJIICYgQ28uIEtHLCBTaXR6OiAzNjAzOSBGdWxkYSwgQW10c2dlcmljaHQgRnVsZGEgSFJB
+IDMwMiwgUGVyc8O2bmxpY2ggaGFmdGVuZGUgR2VzZWxsc2NoYWZ0ZXJpbjogTS4gSy4gSlVDSEhF
+SU0gR21iSCwgU2l0ejogMzYwMzkgRnVsZGEsIEFtdHNnZXJpY2h0IEZ1bGRhIEhSQiAxNywgR2Vz
+Y2jDpGZ0c2bDvGhyZXI6IERpcGwuLUluZy4gQmVybmhhcmQgSnVjaGhlaW0sIERpcGwuLUtmbS4g
+TWljaGFlbCBKdWNoaGVpbSANClVzdC4tSWQuLU5yLjogREUgMTEyNDExMjM0IApfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
+dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
