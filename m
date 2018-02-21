@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eoR5u-0007bY-9q
- for barebox@lists.infradead.org; Wed, 21 Feb 2018 09:53:47 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
- helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1eoR5i-0007XQ-RR
- for barebox@lists.infradead.org; Wed, 21 Feb 2018 10:53:34 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 21 Feb 2018 10:53:33 +0100
-Message-Id: <20180221095334.30747-2-l.stach@pengutronix.de>
-In-Reply-To: <20180221095334.30747-1-l.stach@pengutronix.de>
+ id 1eoRcC-0003eu-Ss
+ for barebox@lists.infradead.org; Wed, 21 Feb 2018 10:27:10 +0000
+Received: from bohne.hi.pengutronix.de ([2001:67c:670:100:9e5c:8eff:fece:ccef])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.89)
+ (envelope-from <r.hieber@pengutronix.de>) id 1eoRbz-0004Jb-Go
+ for barebox@lists.infradead.org; Wed, 21 Feb 2018 11:26:55 +0100
 References: <20180221095334.30747-1-l.stach@pengutronix.de>
+From: Roland Hieber <r.hieber@pengutronix.de>
+Message-ID: <802452ac-f475-66df-7498-2d9ffd4d490a@pengutronix.de>
+Date: Wed, 21 Feb 2018 11:26:53 +0100
+MIME-Version: 1.0
+In-Reply-To: <20180221095334.30747-1-l.stach@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,105 +23,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] lib: add weak clz/ctz functions
+Subject: Re: [PATCH 1/3] arm: ARM64 doen't provide the armlinux_ functions
 To: barebox@lists.infradead.org
 
-This is a copy of the Linux kernel implementation. This adds weak
-functions for the clz and ctz gcc builtins. Normally GCC will map
-those builtins to CPU instructions directly, but for CPUs where those
-are unavailable, we need to provide a fallback implementation.
+I guess the subject should contain a "doesn't"? :-)
 
-Fixes build of the zlib decompressor on ARMv4 CPUs.
+On 21.02.2018 10:53, Lucas Stach wrote:
+> Those set parameters specific to the older ARM Linux implementation.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>   arch/arm/include/asm/armlinux.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/include/asm/armlinux.h b/arch/arm/include/asm/armlinux.h
+> index 5c39200a0c33..135f11b860ce 100644
+> --- a/arch/arm/include/asm/armlinux.h
+> +++ b/arch/arm/include/asm/armlinux.h
+> @@ -5,7 +5,7 @@
+>   #include <asm/setup.h>
+>   #include <asm/secure.h>
+>   
+> -#if defined CONFIG_ARM_LINUX
+> +#if defined CONFIG_ARM_LINUX && defined CONFIG_CPU_32
+>   void armlinux_set_bootparams(void *params);
+>   void armlinux_set_architecture(int architecture);
+>   void armlinux_set_revision(unsigned int);
+> 
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- lib/Makefile  |  1 +
- lib/clz_ctz.c | 59 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 60 insertions(+)
- create mode 100644 lib/clz_ctz.c
-
-diff --git a/lib/Makefile b/lib/Makefile
-index a6a32e0d1fd2..29cad3501f0c 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -64,3 +64,4 @@ obj-y			+= list_sort.o
- obj-y			+= int_sqrt.o
- obj-y			+= parseopt.o
- obj-y			+= find_bit.o
-+obj-y			+= clz_ctz.o
-diff --git a/lib/clz_ctz.c b/lib/clz_ctz.c
-new file mode 100644
-index 000000000000..b5ac7f447ac1
---- /dev/null
-+++ b/lib/clz_ctz.c
-@@ -0,0 +1,59 @@
-+/*
-+ * lib/clz_ctz.c
-+ *
-+ * Copyright (C) 2013 Chanho Min <chanho.min@lge.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ * The functions in this file aren't called directly, but are required by
-+ * GCC builtins such as __builtin_ctz, and therefore they can't be removed
-+ * despite appearing unreferenced in kernel source.
-+ *
-+ * __c[lt]z[sd]i2 can be overridden by linking arch-specific versions.
-+ */
-+
-+#include <linux/bitops.h>
-+#include <linux/kernel.h>
-+
-+int __weak __ctzsi2(int val);
-+int __weak __ctzsi2(int val)
-+{
-+	return __ffs(val);
-+}
-+
-+int __weak __clzsi2(int val);
-+int __weak __clzsi2(int val)
-+{
-+	return 32 - fls(val);
-+}
-+
-+int __weak __clzdi2(long val);
-+int __weak __ctzdi2(long val);
-+#if BITS_PER_LONG == 32
-+
-+int __weak __clzdi2(long val)
-+{
-+	return 32 - fls((int)val);
-+}
-+
-+int __weak __ctzdi2(long val)
-+{
-+	return __ffs((u32)val);
-+}
-+
-+#elif BITS_PER_LONG == 64
-+
-+int __weak __clzdi2(long val)
-+{
-+	return 64 - fls64((u64)val);
-+}
-+
-+int __weak __ctzdi2(long val)
-+{
-+	return __ffs64((u64)val);
-+}
-+
-+#else
-+#error BITS_PER_LONG not 32 or 64
-+#endif
 -- 
-2.16.1
-
+Pengutronix e.K.                  | Roland Hieber               |
+Industrial Linux Solutions        | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
