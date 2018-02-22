@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from ns1.lah-a2.de ([84.19.186.99] helo=lah-a2.de)
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1emaf6-0000l1-3p
- for barebox@lists.infradead.org; Fri, 16 Feb 2018 07:42:30 +0000
-Date: Fri, 16 Feb 2018 08:42:16 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180216074216.i47f5pswnhiayowe@pengutronix.de>
-References: <20180213214816.28520-1-mail@schmidt-andreas.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180213214816.28520-1-mail@schmidt-andreas.de>
+ id 1eozAU-0005Ji-UD
+ for barebox@lists.infradead.org; Thu, 22 Feb 2018 22:16:48 +0000
+Received: from localhost (p508514AE.dip0.t-ipconnect.de [80.133.20.174])
+ by lah-a2.de (Postfix) with ESMTPSA id 6A748408606D
+ for <barebox@lists.infradead.org>; Thu, 22 Feb 2018 23:14:11 +0100 (CET)
+From: Andreas Schmidt <mail@schmidt-andreas.de>
+Date: Thu, 22 Feb 2018 23:16:27 +0100
+Message-Id: <20180222221627.12750-1-mail@schmidt-andreas.de>
+In-Reply-To: <20180216074216.i47f5pswnhiayowe@pengutronix.de>
+References: <20180216074216.i47f5pswnhiayowe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,68 +19,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: cpsw: fix probe with fixed-link
-To: Andreas Schmidt <mail@schmidt-andreas.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] net: cpsw: fix probe with fixed-link
+To: barebox@lists.infradead.org
 
-Hi Andreas,
+While cpsw is probe dt, it accepts only slaves nodes with "phy_id" property.
+In case of fixed-link there are no "phy_id" property and probe would be failed.
+This patch avoid the failure due to missing "phy_id" in case of fixed-link.
 
-On Tue, Feb 13, 2018 at 10:48:16PM +0100, Andreas Schmidt wrote:
-> If cpsw slave is set to fixed-link cpsw probe still try to probe and use
-> a phy. This patch fix cpsw probe in case of fixed-link.
-> 
-> Signed-off-by: Andreas Schmidt <mail@schmidt-andreas.de>
-> ---
->  drivers/net/cpsw.c | 41 +++++++++++++++++++++++++++--------------
->  1 file changed, 27 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
-> index d11ca33f7..37e480248 100644
-> --- a/drivers/net/cpsw.c
-> +++ b/drivers/net/cpsw.c
-> @@ -184,6 +184,7 @@ struct cpsw_slave {
->  	struct eth_device		edev;
->  	struct cpsw_priv		*cpsw;
->  	struct device_d			dev;
-> +	int				fixed_link;
->  };
->  
->  struct cpdma_desc {
-> @@ -913,18 +914,20 @@ static int cpsw_slave_setup(struct cpsw_slave *slave, int slave_num,
->  	struct eth_device	*edev = &slave->edev;
->  	struct device_d		*dev = &slave->dev;
->  	int ret;
-> -	struct phy_device *phy;
-> +	struct phy_device *phy = NULL;
->  
-> -	phy = mdiobus_scan(&priv->miibus, priv->slaves[slave_num].phy_id);
-> -	if (IS_ERR(phy)) {
-> -		ret = PTR_ERR(phy);
-> -		goto err_out;
-> -	}
-> +	if (!slave->fixed_link) {
-> +		phy = mdiobus_scan(&priv->miibus, priv->slaves[slave_num].phy_id);
-> +		if (IS_ERR(phy)) {
-> +			ret = PTR_ERR(phy);
-> +			goto err_out;
-> +		}
+Signed-off-by: Andreas Schmidt <mail@schmidt-andreas.de>
+---
 
-Calling mdiobus_scan() here is not only wrong for a fixed phy, it is
-wrong for a regular mdiobus phy aswell. I just sent out a patch which
-just removes the call to mdiobus_scan(). Tested on a beaglebone which
-has a real phy, it should work for you aswell.
+Changes since v1:
+  - rework after "[PATCH] net: cpsw: remove unnecessary mdiobus_scan()" patch was committed.
 
-Sascha
+---
+ drivers/net/cpsw.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
+index 928b97774..3d3939cfa 100644
+--- a/drivers/net/cpsw.c
++++ b/drivers/net/cpsw.c
+@@ -1089,11 +1089,13 @@ static int cpsw_probe_dt(struct cpsw_priv *priv)
+ 
+ 		if (i < priv->num_slaves && !strncmp(child->name, "slave", 5)) {
+ 			struct cpsw_slave *slave = &priv->slaves[i];
+-			uint32_t phy_id[2];
++			uint32_t phy_id[2] = {-1, -1};
+ 
+-			ret = of_property_read_u32_array(child, "phy_id", phy_id, 2);
+-			if (ret)
+-				return ret;
++			if (!of_find_node_by_name(child, "fixed-link")) {
++				ret = of_property_read_u32_array(child, "phy_id", phy_id, 2);
++				if (ret)
++					return ret;
++			}
+ 
+ 			slave->dev.device_node = child;
+ 			slave->phy_id = phy_id[1];
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.14.1
+
 
 _______________________________________________
 barebox mailing list
