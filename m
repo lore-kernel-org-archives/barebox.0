@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x229.google.com ([2a00:1450:400c:c09::229])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ep7rL-0005CH-1L
- for barebox@lists.infradead.org; Fri, 23 Feb 2018 07:33:36 +0000
-Date: Fri, 23 Feb 2018 08:33:20 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180223073320.6ubvlzyg76vc72ot@pengutronix.de>
-References: <CAGm1_ksaqOepiKg2yRHaH2Bs+fur2ujDQEiDmaAD0HYADxj6Vw@mail.gmail.com>
+ id 1ep7xe-00008f-8m
+ for barebox@lists.infradead.org; Fri, 23 Feb 2018 07:40:08 +0000
+Received: by mail-wm0-x229.google.com with SMTP id a20so5675664wmd.1
+ for <barebox@lists.infradead.org>; Thu, 22 Feb 2018 23:39:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAGm1_ksaqOepiKg2yRHaH2Bs+fur2ujDQEiDmaAD0HYADxj6Vw@mail.gmail.com>
+In-Reply-To: <20180223073320.6ubvlzyg76vc72ot@pengutronix.de>
+References: <CAGm1_ksaqOepiKg2yRHaH2Bs+fur2ujDQEiDmaAD0HYADxj6Vw@mail.gmail.com>
+ <20180223073320.6ubvlzyg76vc72ot@pengutronix.de>
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Fri, 23 Feb 2018 08:39:33 +0100
+Message-ID: <CAGm1_ku46ngVkkDQ-Cnt4FCGKgEWjeqmuPT7mA60xw2hq3HT2Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,28 +25,28 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: linux.bootargs: export mtdparts from DTS
-To: Yegor Yefremov <yegorslists@googlemail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox <barebox@lists.infradead.org>
 
-Hi Yegor,
+On Fri, Feb 23, 2018 at 8:33 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> Hi Yegor,
+>
+> On Fri, Feb 23, 2018 at 08:26:56AM +0100, Yegor Yefremov wrote:
+>> My board will be configured via DTS file, that contains an MTD
+>> partition table [1]. How can it be automatically exported to
+>> global.inux.bootargs.mtdparts?
+>>
+>> [1] https://git.pengutronix.de/cgit/barebox/tree/arch/arm/dts/am335x-baltos-minimal.dts#n217
+>
+> Why would you want to do that? You are not going to start an ancient
+> kernel with ATAG support, are you?
 
-On Fri, Feb 23, 2018 at 08:26:56AM +0100, Yegor Yefremov wrote:
-> My board will be configured via DTS file, that contains an MTD
-> partition table [1]. How can it be automatically exported to
-> global.inux.bootargs.mtdparts?
-> 
-> [1] https://git.pengutronix.de/cgit/barebox/tree/arch/arm/dts/am335x-baltos-minimal.dts#n217
+So far I'm using ancient LTS 3.18.x kernel with this DTS [1] and
+packaging it via FIT.
 
-Why would you want to do that? You are not going to start an ancient
-kernel with ATAG support, are you?
+[1] https://github.com/visionsystemsgmbh/onrisc_br_bsp/blob/master/board/vscom/dts/3.15/onrisc-baltos-ir-5221.dts
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Yegor
 
 _______________________________________________
 barebox mailing list
