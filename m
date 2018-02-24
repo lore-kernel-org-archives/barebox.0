@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x241.google.com ([2a00:1450:400c:c0c::241])
+Received: from mail-wr0-x244.google.com ([2a00:1450:400c:c0c::244])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1epbKX-0004HD-PF
+ id 1epbKZ-0004HM-9f
  for barebox@lists.infradead.org; Sat, 24 Feb 2018 15:01:45 +0000
-Received: by mail-wr0-x241.google.com with SMTP id z12so16887421wrg.4
- for <barebox@lists.infradead.org>; Sat, 24 Feb 2018 07:01:31 -0800 (PST)
+Received: by mail-wr0-x244.google.com with SMTP id k9so16869213wre.9
+ for <barebox@lists.infradead.org>; Sat, 24 Feb 2018 07:01:32 -0800 (PST)
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Sat, 24 Feb 2018 16:01:14 +0100
-Message-Id: <20180224150121.28309-3-aleksander@aleksander.es>
+Date: Sat, 24 Feb 2018 16:01:15 +0100
+Message-Id: <20180224150121.28309-4-aleksander@aleksander.es>
 In-Reply-To: <20180224150121.28309-1-aleksander@aleksander.es>
 References: <20180224150121.28309-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
@@ -23,102 +23,110 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 2/9] ratp: moved logic to its own subdirectory
+Subject: [PATCH v3 3/9] ratp: allow building without full console support
 To: barebox@lists.infradead.org, s.hauer@pengutronix.de
 Cc: Aleksander Morgado <aleksander@aleksander.es>
 
-We are going to add new RATP command implementations in separate files
-within this subdirectory.
+Make CONFIG_RATP a selectable config option, so that the user can
+enable RATP support without explicitly needing to enable the full
+console support over RATP (e.g. only for RATP FS or built-in command
+support).
+
+The full console can still be explicitly enabled with
+CONFIG_CONSOLE_RATP.
 
 Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 ---
- common/Kconfig           | 13 +------------
- common/Makefile          |  4 ++--
- common/ratp/Kconfig      | 14 ++++++++++++++
- common/ratp/Makefile     |  1 +
- common/{ => ratp}/ratp.c |  0
- 5 files changed, 18 insertions(+), 14 deletions(-)
- create mode 100644 common/ratp/Kconfig
- create mode 100644 common/ratp/Makefile
- rename common/{ => ratp}/ratp.c (100%)
+ common/Makefile    | 1 -
+ common/ratp/ratp.c | 7 +++++--
+ fs/Kconfig         | 2 +-
+ lib/Kconfig        | 2 +-
+ lib/readline.c     | 2 +-
+ 5 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 93b1d8927..81cf72a95 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -755,18 +755,7 @@ config PBL_CONSOLE
- 	  must be running at the address it's linked at and bss must
- 	  be cleared. On ARM that would be after setup_c().
- 
--config CONSOLE_RATP
--	bool
--	select RATP
--	select CRC16
--	select POLLER
--	depends on CONSOLE_FULL
--	prompt "RATP console support"
--	help
--	  This option adds support for remote controlling barebox via serial
--	  port. The regular console is designed for human interaction whereas
--	  this option adds a machine readable interface for controlling barebox.
--	  Say yes here if you want to control barebox from a remote host.
-+source common/ratp/Kconfig
- 
- config PARTITION
- 	bool
 diff --git a/common/Makefile b/common/Makefile
-index 5351ef0f7..bc9474a3a 100644
+index bc9474a3a..a9abcd1bc 100644
 --- a/common/Makefile
 +++ b/common/Makefile
-@@ -46,7 +46,8 @@ obj-$(CONFIG_RESET_SOURCE)	+= reset_source.o
- obj-$(CONFIG_SHELL_HUSH)	+= hush.o
+@@ -47,7 +47,6 @@ obj-$(CONFIG_SHELL_HUSH)	+= hush.o
  obj-$(CONFIG_SHELL_SIMPLE)	+= parser.o
  obj-$(CONFIG_STATE)		+= state/
--obj-$(CONFIG_RATP)		+= ratp.o
-+obj-$(CONFIG_RATP)		+= ratp/
-+obj-$(CONFIG_CONSOLE_RATP)	+= ratp/
+ obj-$(CONFIG_RATP)		+= ratp/
+-obj-$(CONFIG_CONSOLE_RATP)	+= ratp/
  obj-$(CONFIG_BOOTCHOOSER)	+= bootchooser.o
  obj-$(CONFIG_UIMAGE)		+= image.o uimage.o
  obj-$(CONFIG_FITIMAGE)		+= image-fit.o
-@@ -60,7 +61,6 @@ obj-$(CONFIG_FILE_LIST)		+= file-list.o
- obj-$(CONFIG_FIRMWARE)		+= firmware.o
- obj-$(CONFIG_UBIFORMAT)		+= ubiformat.o
- obj-$(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB) += imx-bbu-nand-fcb.o
--obj-$(CONFIG_CONSOLE_RATP)	+= ratp.o
- obj-$(CONFIG_BOOT)		+= boot.o
+diff --git a/common/ratp/ratp.c b/common/ratp/ratp.c
+index b051fdee4..7c8a2f6f5 100644
+--- a/common/ratp/ratp.c
++++ b/common/ratp/ratp.c
+@@ -260,7 +260,7 @@ static int ratp_bb_dispatch(struct ratp_ctx *ctx, const void *buf, int len)
  
- ifdef CONFIG_PASSWORD
-diff --git a/common/ratp/Kconfig b/common/ratp/Kconfig
-new file mode 100644
-index 000000000..93ff75d64
---- /dev/null
-+++ b/common/ratp/Kconfig
-@@ -0,0 +1,14 @@
-+
-+config CONSOLE_RATP
-+	bool
-+	select RATP
-+	select CRC16
-+	select POLLER
-+	depends on CONSOLE_FULL
-+	prompt "RATP console support"
-+	help
-+	  This option adds support for remote controlling barebox via serial
-+	  port. The regular console is designed for human interaction whereas
-+	  this option adds a machine readable interface for controlling barebox.
-+	  Say yes here if you want to control barebox from a remote host.
-+
-diff --git a/common/ratp/Makefile b/common/ratp/Makefile
-new file mode 100644
-index 000000000..cab14c6fb
---- /dev/null
-+++ b/common/ratp/Makefile
-@@ -0,0 +1 @@
-+obj-y += ratp.o
-diff --git a/common/ratp.c b/common/ratp/ratp.c
-similarity index 100%
-rename from common/ratp.c
-rename to common/ratp/ratp.c
+ 	switch (type) {
+ 	case BB_RATP_TYPE_COMMAND:
+-		if (ratp_command)
++		if (!IS_ENABLED(CONFIG_CONSOLE_RATP) || ratp_command)
+ 			return 0;
+ 
+ 		ratp_command = xmemdup_add_zero(&rbb->data, dlen);
+@@ -274,6 +274,8 @@ static int ratp_bb_dispatch(struct ratp_ctx *ctx, const void *buf, int len)
+ 		break;
+ 
+ 	case BB_RATP_TYPE_CONSOLEMSG:
++		if (!IS_ENABLED(CONFIG_CONSOLE_RATP))
++			return 0;
+ 
+ 		kfifo_put(ctx->console_recv_fifo, rbb->data, dlen);
+ 		break;
+@@ -420,7 +422,8 @@ static void ratp_poller(struct poller_struct *poller)
+ 	size_t len;
+ 	void *buf;
+ 
+-	ratp_queue_console_tx(ctx);
++	if (IS_ENABLED(CONFIG_CONSOLE_RATP))
++		ratp_queue_console_tx(ctx);
+ 
+ 	ret = ratp_poll(&ctx->ratp);
+ 	if (ret == -EINTR)
+diff --git a/fs/Kconfig b/fs/Kconfig
+index 57f2676f4..351200055 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -94,7 +94,7 @@ source fs/squashfs/Kconfig
+ 
+ config FS_RATP
+ 	bool
+-	depends on CONSOLE_RATP
++	depends on RATP
+ 	prompt "RATP filesystem support"
+ 	help
+ 	  This enables support for transferring files over RATP. A host can
+diff --git a/lib/Kconfig b/lib/Kconfig
+index dca93b80d..4e9213f3e 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -95,7 +95,7 @@ config STMP_DEVICE
+ 
+ config RATP
+ 	select CRC16
+-	bool
++	bool "RATP protocol support"
+ 	help
+ 	  Reliable Asynchronous Transfer Protocol (RATP) is a protocol for reliably
+ 	  transferring packets over serial links described in RFC916. This implementation
+diff --git a/lib/readline.c b/lib/readline.c
+index 1e380abec..904a77639 100644
+--- a/lib/readline.c
++++ b/lib/readline.c
+@@ -202,7 +202,7 @@ int readline(const char *prompt, char *buf, int len)
+ 	while (1) {
+ 		while (!tstc()) {
+ 			poller_call();
+-			if (IS_ENABLED(CONFIG_RATP))
++			if (IS_ENABLED(CONFIG_CONSOLE_RATP))
+ 				barebox_ratp_command_run();
+ 		}
+ 
 -- 
 2.15.1
 
