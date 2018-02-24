@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x241.google.com ([2a00:1450:400c:c0c::241])
+Received: from mail-wr0-x242.google.com ([2a00:1450:400c:c0c::242])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1epbKX-0004He-PB
+ id 1epbKV-0004HE-Vd
  for barebox@lists.infradead.org; Sat, 24 Feb 2018 15:01:45 +0000
-Received: by mail-wr0-x241.google.com with SMTP id s5so16893485wra.0
- for <barebox@lists.infradead.org>; Sat, 24 Feb 2018 07:01:37 -0800 (PST)
+Received: by mail-wr0-x242.google.com with SMTP id k9so16869164wre.9
+ for <barebox@lists.infradead.org>; Sat, 24 Feb 2018 07:01:31 -0800 (PST)
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Sat, 24 Feb 2018 16:01:20 +0100
-Message-Id: <20180224150121.28309-9-aleksander@aleksander.es>
+Date: Sat, 24 Feb 2018 16:01:13 +0100
+Message-Id: <20180224150121.28309-2-aleksander@aleksander.es>
 In-Reply-To: <20180224150121.28309-1-aleksander@aleksander.es>
 References: <20180224150121.28309-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
@@ -23,202 +23,437 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 8/9] ratp: new reset command
+Subject: [PATCH v3 1/9] ratp: implement generic command support
 To: barebox@lists.infradead.org, s.hauer@pengutronix.de
 Cc: Aleksander Morgado <aleksander@aleksander.es>
 
-E.g.:
-    $ ./bbremote -v --port /dev/ttyUSB2 reset
+The RATP implementation now allows executing generic commands with a
+binary interface: binary requests are received and binary responses
+are returned.
+
+Each command can define its own RATP request contents (e.g. to specify
+command-specific options) as well as its own RATP response contents
+(if any data is to be returned).
+
+Each command is associated with a pair of numeric unique request and
+response IDs, and for easy reference these IDs are maintained in the
+common ratp_bb header. Modules may override generic implemented
+commands or include their own new ones (as long as the numeric IDs
+introduced are unique).
 
 Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 ---
- common/ratp/Makefile         |  1 +
- common/ratp/reset.c          | 55 ++++++++++++++++++++++++++++++++++++++++++++
- include/ratp_bb.h            |  1 +
- scripts/remote/controller.py |  9 +++++---
- scripts/remote/main.py       | 13 +++++++++++
- scripts/remote/messages.py   | 16 +++++++++++++
- 6 files changed, 92 insertions(+), 3 deletions(-)
- create mode 100644 common/ratp/reset.c
+ arch/arm/lib32/barebox.lds.S              |  4 ++
+ arch/arm/lib64/barebox.lds.S              |  4 ++
+ arch/blackfin/boards/ipe337/barebox.lds.S |  5 +-
+ arch/mips/lib/barebox.lds.S               |  4 ++
+ arch/nios2/cpu/barebox.lds.S              |  5 +-
+ arch/openrisc/cpu/barebox.lds.S           |  4 ++
+ arch/ppc/boards/pcm030/barebox.lds.S      |  4 ++
+ arch/ppc/mach-mpc85xx/barebox.lds.S       |  4 ++
+ arch/sandbox/board/barebox.lds.S          |  5 ++
+ arch/x86/lib/barebox.lds.S                |  7 +++
+ arch/x86/mach-efi/elf_ia32_efi.lds.S      |  5 ++
+ arch/x86/mach-efi/elf_x86_64_efi.lds.S    |  5 ++
+ common/module.lds.S                       |  2 +
+ common/ratp.c                             | 82 +++++++++++++++++++++++++------
+ include/asm-generic/barebox.lds.h         |  2 +
+ include/ratp_bb.h                         | 47 ++++++++++++++++++
+ 16 files changed, 171 insertions(+), 18 deletions(-)
 
-diff --git a/common/ratp/Makefile b/common/ratp/Makefile
-index d4cfdf95f..2c6d674f6 100644
---- a/common/ratp/Makefile
-+++ b/common/ratp/Makefile
-@@ -3,3 +3,4 @@ obj-y += ping.o
- obj-y += getenv.o
- obj-y += md.o
- obj-y += mw.o
-+obj-y += reset.o
-diff --git a/common/ratp/reset.c b/common/ratp/reset.c
-new file mode 100644
-index 000000000..ca8be4e62
---- /dev/null
-+++ b/common/ratp/reset.c
-@@ -0,0 +1,55 @@
-+/*
-+ * reset.c - reset the cpu
-+ *
-+ * Copyright (c) 2007 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
+diff --git a/arch/arm/lib32/barebox.lds.S b/arch/arm/lib32/barebox.lds.S
+index e7b87b7cd..6fadc2a35 100644
+--- a/arch/arm/lib32/barebox.lds.S
++++ b/arch/arm/lib32/barebox.lds.S
+@@ -85,6 +85,10 @@ SECTIONS
+ 	.barebox_cmd : { BAREBOX_CMDS }
+ 	__barebox_cmd_end = .;
+ 
++	__barebox_ratp_cmd_start = .;
++	.barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
++	__barebox_ratp_cmd_end = .;
 +
-+#include <common.h>
-+#include <command.h>
-+#include <ratp_bb.h>
-+#include <complete.h>
-+#include <getopt.h>
-+#include <restart.h>
+ 	__barebox_magicvar_start = .;
+ 	.barebox_magicvar : { BAREBOX_MAGICVARS }
+ 	__barebox_magicvar_end = .;
+diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
+index 240699f1a..a53b933bb 100644
+--- a/arch/arm/lib64/barebox.lds.S
++++ b/arch/arm/lib64/barebox.lds.S
+@@ -82,6 +82,10 @@ SECTIONS
+ 	.barebox_cmd : { BAREBOX_CMDS }
+ 	__barebox_cmd_end = .;
+ 
++	__barebox_ratp_cmd_start = .;
++	.barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
++	__barebox_ratp_cmd_end = .;
 +
-+struct ratp_bb_reset {
-+	struct ratp_bb header;
-+	uint8_t        force;
-+} __attribute__((packed));
+ 	__barebox_magicvar_start = .;
+ 	.barebox_magicvar : { BAREBOX_MAGICVARS }
+ 	__barebox_magicvar_end = .;
+diff --git a/arch/blackfin/boards/ipe337/barebox.lds.S b/arch/blackfin/boards/ipe337/barebox.lds.S
+index 51a586af2..7e82a1bd7 100644
+--- a/arch/blackfin/boards/ipe337/barebox.lds.S
++++ b/arch/blackfin/boards/ipe337/barebox.lds.S
+@@ -68,6 +68,10 @@ SECTIONS
+ 	.barebox_cmd : { BAREBOX_CMDS }
+ 	___barebox_cmd_end = .;
+ 
++	___barebox_ratp_cmd_start = .;
++	.barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
++	___barebox_ratp_cmd_end = .;
 +
-+static int ratp_cmd_reset(const struct ratp_bb *req, int req_len,
-+			  struct ratp_bb **rsp, int *rsp_len)
+ 	___barebox_magicvar_start = .;
+ 	.barebox_magicvar : { BAREBOX_MAGICVARS }
+ 	___barebox_magicvar_end = .;
+@@ -91,4 +95,3 @@ SECTIONS
+ 	___bss_stop = .;
+ 	_end = .;
+ }
+-
+diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
+index 899f62b96..660d4be85 100644
+--- a/arch/mips/lib/barebox.lds.S
++++ b/arch/mips/lib/barebox.lds.S
+@@ -55,6 +55,10 @@ SECTIONS
+ 	.barebox_cmd : { BAREBOX_CMDS }
+ 	__barebox_cmd_end = .;
+ 
++	__barebox_ratp_cmd_start = .;
++	.barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
++	__barebox_ratp_cmd_end = .;
++
+ 	__barebox_magicvar_start = .;
+ 	.barebox_magicvar : { BAREBOX_MAGICVARS }
+ 	__barebox_magicvar_end = .;
+diff --git a/arch/nios2/cpu/barebox.lds.S b/arch/nios2/cpu/barebox.lds.S
+index a2d7fa8cd..fbcd1cd3f 100644
+--- a/arch/nios2/cpu/barebox.lds.S
++++ b/arch/nios2/cpu/barebox.lds.S
+@@ -55,6 +55,10 @@ SECTIONS
+ 	.barebox_cmd : { BAREBOX_CMDS }
+ 	__barebox_cmd_end = .;
+ 
++	__barebox_ratp_cmd_start = .;
++	.barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
++	__barebox_ratp_cmd_end = .;
++
+ 	__barebox_magicvar_start = .;
+ 	.barebox_magicvar : { BAREBOX_MAGICVARS }
+ 	__barebox_magicvar_end = .;
+@@ -129,4 +133,3 @@ SECTIONS
+ 	_end = .;
+ 	PROVIDE (end = .);
+ }
+-
+diff --git a/arch/openrisc/cpu/barebox.lds.S b/arch/openrisc/cpu/barebox.lds.S
+index b819ca099..c6807aec3 100644
+--- a/arch/openrisc/cpu/barebox.lds.S
++++ b/arch/openrisc/cpu/barebox.lds.S
+@@ -57,6 +57,10 @@ SECTIONS
+ 	.barebox_cmd : { BAREBOX_CMDS } > ram
+ 	__barebox_cmd_end = .;
+ 
++	__barebox_ratp_cmd_start = .;
++	.barebox_ratp_cmd : { BAREBOX_RATP_CMDS } > ram
++	__barebox_ratp_cmd_end = .;
++
+ 	__barebox_magicvar_start = .;
+ 	.barebox_magicvar : { BAREBOX_MAGICVARS } > ram
+ 	__barebox_magicvar_end = .;
+diff --git a/arch/ppc/boards/pcm030/barebox.lds.S b/arch/ppc/boards/pcm030/barebox.lds.S
+index 0e34f0a41..3b8bf3c0d 100644
+--- a/arch/ppc/boards/pcm030/barebox.lds.S
++++ b/arch/ppc/boards/pcm030/barebox.lds.S
+@@ -104,6 +104,10 @@ SECTIONS
+   .barebox_cmd : { BAREBOX_CMDS }
+   __barebox_cmd_end = .;
+ 
++  __barebox_ratp_cmd_start = .;
++  .barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
++  __barebox_ratp_cmd_end = .;
++
+   __barebox_magicvar_start = .;
+   .barebox_magicvar : { BAREBOX_MAGICVARS }
+   __barebox_magicvar_end = .;
+diff --git a/arch/ppc/mach-mpc85xx/barebox.lds.S b/arch/ppc/mach-mpc85xx/barebox.lds.S
+index beebab39d..000197283 100644
+--- a/arch/ppc/mach-mpc85xx/barebox.lds.S
++++ b/arch/ppc/mach-mpc85xx/barebox.lds.S
+@@ -105,6 +105,10 @@ SECTIONS
+   .barebox_cmd : { BAREBOX_CMDS }
+   __barebox_cmd_end = .;
+ 
++  __barebox_ratp_cmd_start = .;
++  .barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
++  __barebox_ratp_cmd_end = .;
++
+   __barebox_initcalls_start = .;
+   .barebox_initcalls : { INITCALLS }
+   __barebox_initcalls_end = .;
+diff --git a/arch/sandbox/board/barebox.lds.S b/arch/sandbox/board/barebox.lds.S
+index 0d67ab660..80e27fe87 100644
+--- a/arch/sandbox/board/barebox.lds.S
++++ b/arch/sandbox/board/barebox.lds.S
+@@ -21,6 +21,11 @@ SECTIONS
+ 	__barebox_cmd_start = .;
+ 	__barebox_cmd : { BAREBOX_CMDS }
+ 	__barebox_cmd_end = .;
++
++	. = ALIGN(64);
++	__barebox_ratp_cmd_start = .;
++	__barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
++	__barebox_ratp_cmd_end = .;
+ }
+ 
+ INSERT BEFORE .rodata;
+diff --git a/arch/x86/lib/barebox.lds.S b/arch/x86/lib/barebox.lds.S
+index 23d754653..6ee9342f4 100644
+--- a/arch/x86/lib/barebox.lds.S
++++ b/arch/x86/lib/barebox.lds.S
+@@ -171,6 +171,13 @@ SECTIONS
+ 		. = ALIGN(4);
+ 	} > barebox
+ 
++	.barebox_ratp_cmd : AT ( LOADADDR(.got) + SIZEOF (.got) ) {
++		__barebox_ratp_cmd_start = .;
++		BAREBOX_RATP_CMDS
++		__barebox_ratp_cmd_end = .;
++		. = ALIGN(4);
++	} > barebox
++
+ 	.barebox_magicvars : AT ( LOADADDR(.barebox_cmd) + SIZEOF (.barebox_cmd) ) {
+ 		__barebox_magicvar_start = .;
+ 		BAREBOX_MAGICVARS
+diff --git a/arch/x86/mach-efi/elf_ia32_efi.lds.S b/arch/x86/mach-efi/elf_ia32_efi.lds.S
+index 69f43f554..9477aa7d7 100644
+--- a/arch/x86/mach-efi/elf_ia32_efi.lds.S
++++ b/arch/x86/mach-efi/elf_ia32_efi.lds.S
+@@ -70,6 +70,11 @@ SECTIONS
+ 	__barebox_cmd : { BAREBOX_CMDS }
+ 	__barebox_cmd_end = .;
+ 
++	. = ALIGN(64);
++	__barebox_ratp_cmd_start = .;
++	__barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
++	__barebox_ratp_cmd_end = .;
++
+ 	. = ALIGN(4096);
+ 	.dynamic : { *(.dynamic) }
+ 	. = ALIGN(4096);
+diff --git a/arch/x86/mach-efi/elf_x86_64_efi.lds.S b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+index 93d34d17a..90b6b9f3f 100644
+--- a/arch/x86/mach-efi/elf_x86_64_efi.lds.S
++++ b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+@@ -72,6 +72,11 @@ SECTIONS
+ 	__barebox_cmd : { BAREBOX_CMDS }
+ 	__barebox_cmd_end = .;
+ 
++	. = ALIGN(64);
++	__barebox_ratp_cmd_start = .;
++	__barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
++	__barebox_ratp_cmd_end = .;
++
+ 	. = ALIGN(4096);
+ 	.dynamic : { *(.dynamic) }
+ 	. = ALIGN(4096);
+diff --git a/common/module.lds.S b/common/module.lds.S
+index a03d04f40..f3dbb12f4 100644
+--- a/common/module.lds.S
++++ b/common/module.lds.S
+@@ -35,6 +35,8 @@ SECTIONS
+ 	.got : { *(.got) }
+ 
+ 	.barebox_cmd : { BAREBOX_CMDS }
++	.barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
++
+ 	. = ALIGN(4);
+ 	.bss : { *(.bss) }
+ }
+diff --git a/common/ratp.c b/common/ratp.c
+index 80863f81f..b051fdee4 100644
+--- a/common/ratp.c
++++ b/common/ratp.c
+@@ -31,21 +31,10 @@
+ #include <ratp_bb.h>
+ #include <fs.h>
+ 
+-#define BB_RATP_TYPE_COMMAND		1
+-#define BB_RATP_TYPE_COMMAND_RETURN	2
+-#define BB_RATP_TYPE_CONSOLEMSG		3
+-#define BB_RATP_TYPE_PING		4
+-#define BB_RATP_TYPE_PONG		5
+-#define BB_RATP_TYPE_GETENV		6
+-#define BB_RATP_TYPE_GETENV_RETURN	7
+-#define BB_RATP_TYPE_FS			8
+-#define BB_RATP_TYPE_FS_RETURN		9
+-
+-struct ratp_bb {
+-	uint16_t type;
+-	uint16_t flags;
+-	uint8_t data[];
+-};
++LIST_HEAD(ratp_command_list);
++EXPORT_SYMBOL(ratp_command_list);
++
++#define for_each_ratp_command(cmd) list_for_each_entry(cmd, &ratp_command_list, list)
+ 
+ struct ratp_bb_command_return {
+ 	uint32_t errno;
+@@ -66,6 +55,51 @@ struct ratp_ctx {
+ 	struct poller_struct poller;
+ };
+ 
++static int compare_ratp_command(struct list_head *a, struct list_head *b)
 +{
-+	struct ratp_bb_reset *reset_req = (struct ratp_bb_reset *)req;
++	int id_a = list_entry(a, struct ratp_command, list)->request_id;
++	int id_b = list_entry(b, struct ratp_command, list)->request_id;
 +
-+	if (req_len < sizeof (*reset_req)) {
-+		printf ("ratp reset ignored: size mismatch (%d < %zu)\n", req_len, sizeof (*reset_req));
-+		return 2;
-+	}
-+
-+	debug("running reset %s\n", reset_req->force ? "(forced)" : "");
-+
-+	if (!reset_req->force)
-+		shutdown_barebox();
-+
-+	restart_machine();
-+	/* Not reached */
-+	return 1;
++	return (id_a - id_b);
 +}
 +
-+BAREBOX_RATP_CMD_START(RESET)
-+	.request_id = BB_RATP_TYPE_RESET,
-+	.cmd = ratp_cmd_reset
-+BAREBOX_RATP_CMD_END
++int register_ratp_command(struct ratp_command *cmd)
++{
++	debug("register ratp command: request %hu, response %hu\n",
++	      cmd->request_id, cmd->response_id);
++	list_add_sort(&cmd->list, &ratp_command_list, compare_ratp_command);
++	return 0;
++}
++EXPORT_SYMBOL(register_ratp_command);
++
++struct ratp_command *find_ratp_request(uint16_t request_id)
++{
++	struct ratp_command *cmdtp;
++
++	for_each_ratp_command(cmdtp)
++		if (request_id == cmdtp->request_id)
++			return cmdtp;
++
++	return NULL;	/* not found */
++}
++
++extern struct ratp_command __barebox_ratp_cmd_start;
++extern struct ratp_command __barebox_ratp_cmd_end;
++
++static int init_ratp_command_list(void)
++{
++	struct ratp_command *cmdtp;
++
++	for (cmdtp = &__barebox_ratp_cmd_start;
++			cmdtp != &__barebox_ratp_cmd_end;
++			cmdtp++)
++		register_ratp_command(cmdtp);
++
++	return 0;
++}
++
++late_initcall(init_ratp_command_list);
++
+ static int console_recv(struct ratp *r, uint8_t *data)
+ {
+ 	struct ratp_ctx *ctx = container_of(r, struct ratp_ctx, ratp);
+@@ -207,8 +241,24 @@ static int ratp_bb_dispatch(struct ratp_ctx *ctx, const void *buf, int len)
+ 	int dlen = len - sizeof(struct ratp_bb);
+ 	char *varname;
+ 	int ret = 0;
++	uint16_t type = be16_to_cpu(rbb->type);
++	struct ratp_command *cmd;
++
++	/* See if there's a command registered to this type */
++	cmd = find_ratp_request(type);
++	if (cmd) {
++		struct ratp_bb *rsp = NULL;
++		int rsp_len = 0;
++
++		ret = cmd->cmd(rbb, len, &rsp, &rsp_len);
++		if (!ret)
++			ret = ratp_send(&ctx->ratp, rsp, rsp_len);
++
++		free(rsp);
++		return ret;
++	}
+ 
+-	switch (be16_to_cpu(rbb->type)) {
++	switch (type) {
+ 	case BB_RATP_TYPE_COMMAND:
+ 		if (ratp_command)
+ 			return 0;
+diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
+index c8a919b92..74d3ca4a9 100644
+--- a/include/asm-generic/barebox.lds.h
++++ b/include/asm-generic/barebox.lds.h
+@@ -44,6 +44,8 @@
+ 
+ #define BAREBOX_CMDS	KEEP(*(SORT_BY_NAME(.barebox_cmd*)))
+ 
++#define BAREBOX_RATP_CMDS	KEEP(*(SORT_BY_NAME(.barebox_ratp_cmd*)))
++
+ #define BAREBOX_SYMS	KEEP(*(__usymtab))
+ 
+ #define BAREBOX_MAGICVARS	KEEP(*(SORT_BY_NAME(.barebox_magicvar*)))
 diff --git a/include/ratp_bb.h b/include/ratp_bb.h
-index 00b165f77..3a80cf6ae 100644
+index f485f7d8a..75aabed55 100644
 --- a/include/ratp_bb.h
 +++ b/include/ratp_bb.h
-@@ -16,6 +16,7 @@
- #define BB_RATP_TYPE_MD_RETURN		11
- #define BB_RATP_TYPE_MW			12
- #define BB_RATP_TYPE_MW_RETURN		13
-+#define BB_RATP_TYPE_RESET		14
+@@ -1,6 +1,24 @@
+ #ifndef __RATP_BB_H
+ #define __RATP_BB_H
  
- struct ratp_bb {
- 	uint16_t type;
-diff --git a/scripts/remote/controller.py b/scripts/remote/controller.py
-index eaab9f8f6..2ed834613 100644
---- a/scripts/remote/controller.py
-+++ b/scripts/remote/controller.py
-@@ -46,9 +46,6 @@ def unpack(data):
-     elif p_type == BBType.fs_return:
-         logging.debug("received: fs_return")
-         return BBPacketFSReturn(raw=data)
--    elif p_type == BBType.md:
--        logging.debug("received: md")
--        return BBPacketMd(raw=data)
-     elif p_type == BBType.md_return:
-         logging.debug("received: md_return")
-         return BBPacketMdReturn(raw=data)
-@@ -58,6 +55,9 @@ def unpack(data):
-     elif p_type == BBType.mw_return:
-         logging.debug("received: mw_return")
-         return BBPacketMwReturn(raw=data)
-+    elif p_type == BBType.reset:
-+        logging.debug("received: reset")
-+        return BBPacketReset(raw=data)
-     else:
-         logging.debug("received: UNKNOWN")
-         return BBPacket(raw=data)
-@@ -136,6 +136,9 @@ class Controller(Thread):
-         logging.info("Mw return: %r", r)
-         return (r.exit_code,r.written)
++#include <linux/stringify.h>
++
++#define BB_RATP_TYPE_COMMAND		1
++#define BB_RATP_TYPE_COMMAND_RETURN	2
++#define BB_RATP_TYPE_CONSOLEMSG		3
++#define BB_RATP_TYPE_PING		4
++#define BB_RATP_TYPE_PONG		5
++#define BB_RATP_TYPE_GETENV		6
++#define BB_RATP_TYPE_GETENV_RETURN	7
++#define BB_RATP_TYPE_FS			8
++#define BB_RATP_TYPE_FS_RETURN		9
++
++struct ratp_bb {
++	uint16_t type;
++	uint16_t flags;
++	uint8_t data[];
++};
++
+ struct ratp_bb_pkt {
+ 	unsigned int len;
+ 	uint8_t data[];
+@@ -11,4 +29,33 @@ void barebox_ratp_command_run(void);
+ int  barebox_ratp_fs_call(struct ratp_bb_pkt *tx, struct ratp_bb_pkt **rx);
+ int  barebox_ratp_fs_mount(const char *path);
  
-+    def reset(self, force):
-+        self._send(BBPacketReset(force=force))
++/*
++ * RATP commands definition
++ */
 +
-     def close(self):
-         self.conn.close()
- 
-diff --git a/scripts/remote/main.py b/scripts/remote/main.py
-index 29f601e9f..38d280bfe 100644
---- a/scripts/remote/main.py
-+++ b/scripts/remote/main.py
-@@ -98,6 +98,13 @@ def handle_mw(args):
-     return res
- 
- 
-+def handle_reset(args):
-+    ctrl = get_controller(args)
-+    ctrl.reset(args.force)
-+    ctrl.close()
-+    return 0
++struct ratp_command {
++	struct list_head  list;
++	uint16_t          request_id;
++	uint16_t          response_id;
++	int		(*cmd)(const struct ratp_bb *req,
++			       int req_len,
++			       struct ratp_bb **rsp,
++			       int *rsp_len);
++}
++#ifdef __x86_64__
++/* This is required because the linker will put symbols on a 64 bit alignment */
++__attribute__((aligned(64)))
++#endif
++;
 +
++#define BAREBOX_RATP_CMD_START(_name)							\
++extern const struct ratp_command __barebox_ratp_cmd_##_name;				\
++const struct ratp_command __barebox_ratp_cmd_##_name					\
++	__attribute__ ((unused,section (".barebox_ratp_cmd_" __stringify(_name)))) = {
 +
- def handle_listen(args):
-     port = serial.serial_for_url(args.port, args.baudrate)
-     conn = SerialRatpConnection(port)
-@@ -181,6 +188,12 @@ parser_mw.add_argument('address', type=auto_int, help="address")
- parser_mw.add_argument('data', help="data")
- parser_mw.set_defaults(func=handle_mw)
- 
-+parser_reset = subparsers.add_parser('reset', help="run reset command")
-+parser_reset_force = parser_reset.add_mutually_exclusive_group(required=False)
-+parser_reset_force.add_argument('--force', dest='force', action='store_true')
-+parser_reset_force.add_argument('--no-force', dest='force', action='store_false')
-+parser_reset.set_defaults(func=handle_reset,force=False)
++#define BAREBOX_RATP_CMD_END								\
++};
 +
- parser_listen = subparsers.add_parser('listen', help="listen for an incoming connection")
- parser_listen.set_defaults(func=handle_listen)
- 
-diff --git a/scripts/remote/messages.py b/scripts/remote/messages.py
-index 4f4d8e97f..729f2e617 100644
---- a/scripts/remote/messages.py
-+++ b/scripts/remote/messages.py
-@@ -21,6 +21,7 @@ class BBType(object):
-     md_return = 11
-     mw = 12
-     mw_return = 13
-+    reset = 14
- 
- 
- class BBPacket(object):
-@@ -241,3 +242,18 @@ class BBPacketMwReturn(BBPacket):
-     def _pack_payload(self):
-         # header size is always 4 bytes (HH) and we have 8 bytes of fixed data (HLH), so buffer offset is 14
-         return struct.pack("!HLH", 12, self.exit_code, self.written)
++int register_ratp_command(struct ratp_command *cmd);
 +
-+
-+class BBPacketReset(BBPacket):
-+    def __init__(self, raw=None, force=None):
-+        self.force = force
-+        super(BBPacketReset, self).__init__(BBType.reset, raw=raw)
-+
-+    def __repr__(self):
-+        return "BBPacketReset(force=%c)" % (self.force)
-+
-+    def _unpack_payload(self, payload):
-+        self.force = struct.unpack("?", payload[:1])
-+
-+    def _pack_payload(self):
-+        return struct.pack("?", self.force)
+ #endif /* __RATP_BB_H */
 -- 
 2.15.1
 
