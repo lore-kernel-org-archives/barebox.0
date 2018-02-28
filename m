@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.15.15])
+Received: from mout.gmx.net ([212.227.15.18])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1er5R0-00056k-1U
- for barebox@lists.infradead.org; Wed, 28 Feb 2018 17:22:31 +0000
+ id 1er5R0-00056r-Rn
+ for barebox@lists.infradead.org; Wed, 28 Feb 2018 17:22:32 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Wed, 28 Feb 2018 18:22:05 +0100
-Message-Id: <20180228172206.12823-1-linux@rempel-privat.de>
+Date: Wed, 28 Feb 2018 18:22:06 +0100
+Message-Id: <20180228172206.12823-2-linux@rempel-privat.de>
+In-Reply-To: <20180228172206.12823-1-linux@rempel-privat.de>
+References: <20180228172206.12823-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 1/2] watchdog: ar9344-wdt: disable watchdog in probe
+Subject: [PATCH v1 2/2] MIPS: dts: enable heartbeat led for
+ ar9331-dptechnics-dpt-module
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-This should avoid of triggering reset if we boot barebox from
-barebox.
-
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- drivers/watchdog/ar9344_wdt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/dts/ar9331-dptechnics-dpt-module.dts | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/watchdog/ar9344_wdt.c b/drivers/watchdog/ar9344_wdt.c
-index d570cb40f..b61786b1b 100644
---- a/drivers/watchdog/ar9344_wdt.c
-+++ b/drivers/watchdog/ar9344_wdt.c
-@@ -101,6 +101,8 @@ static int ar9344_wdt_probe(struct device_d *dev)
- 	dev->priv = priv;
+diff --git a/arch/mips/dts/ar9331-dptechnics-dpt-module.dts b/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
+index 39eb36600..2c38bbc09 100644
+--- a/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
++++ b/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
+@@ -12,6 +12,12 @@
+ 			device-path = &spiflash, "partname:barebox-environment";
+ 		};
+ 	};
++
++	leds {
++		system {
++			barebox,default-trigger = "heartbeat";
++		};
++	};
+ };
  
- 	ar9344_watchdog_detect_reset_source(priv);
-+	/* disable watchdog on probe */
-+	iowrite32be(0, priv->base + AR9344_WD_REG_CTRL);
- 
- 	priv->clk = clk_get(dev, NULL);
- 	if (IS_ERR(priv->clk)) {
+ &spiflash {
 -- 
 2.14.1
 
