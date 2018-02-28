@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mout.gmx.net ([212.227.15.15])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eqyC4-0004Rd-3K
- for barebox@lists.infradead.org; Wed, 28 Feb 2018 09:38:37 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <mgr@pengutronix.de>) id 1eqyBq-0003KJ-OC
- for barebox@lists.infradead.org; Wed, 28 Feb 2018 10:38:22 +0100
-Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.90_1)
- (envelope-from <mgr@pengutronix.de>) id 1eqyBq-00056P-GC
- for barebox@lists.infradead.org; Wed, 28 Feb 2018 10:38:22 +0100
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Wed, 28 Feb 2018 10:38:20 +0100
-Message-Id: <20180228093820.19423-1-m.grzeschik@pengutronix.de>
+ id 1er5R0-00056k-1U
+ for barebox@lists.infradead.org; Wed, 28 Feb 2018 17:22:31 +0000
+From: Oleksij Rempel <linux@rempel-privat.de>
+Date: Wed, 28 Feb 2018 18:22:05 +0100
+Message-Id: <20180228172206.12823-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,28 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: spi-nor: add support for w25q16dw
+Subject: [PATCH v1 1/2] watchdog: ar9344-wdt: disable watchdog in probe
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+This should avoid of triggering reset if we boot barebox from
+barebox.
+
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- drivers/mtd/spi-nor/spi-nor.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/watchdog/ar9344_wdt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 5cf650c0e2..057638ec5a 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -641,6 +641,7 @@ static const struct spi_device_id spi_nor_ids[] = {
- 	{ "w25q20cl", INFO(0xef4012, 0, 64 * 1024,  4, SECT_4K) },
- 	{ "w25q20bw", INFO(0xef5012, 0, 64 * 1024,  4, SECT_4K) },
- 	{ "w25q20ew", INFO(0xef6012, 0, 64 * 1024,  4, SECT_4K) },
-+	{ "w25q16dw", INFO(0xef6015, 0, 64 * 1024, 32, SECT_4K) },
- 	{ "w25q32", INFO(0xef4016, 0, 64 * 1024,  64, SECT_4K) },
- 	{ "w25q32dw", INFO(0xef6016, 0, 64 * 1024,  64, SECT_4K) },
- 	{ "w25x64", INFO(0xef3017, 0, 64 * 1024, 128, SECT_4K) },
+diff --git a/drivers/watchdog/ar9344_wdt.c b/drivers/watchdog/ar9344_wdt.c
+index d570cb40f..b61786b1b 100644
+--- a/drivers/watchdog/ar9344_wdt.c
++++ b/drivers/watchdog/ar9344_wdt.c
+@@ -101,6 +101,8 @@ static int ar9344_wdt_probe(struct device_d *dev)
+ 	dev->priv = priv;
+ 
+ 	ar9344_watchdog_detect_reset_source(priv);
++	/* disable watchdog on probe */
++	iowrite32be(0, priv->base + AR9344_WD_REG_CTRL);
+ 
+ 	priv->clk = clk_get(dev, NULL);
+ 	if (IS_ERR(priv->clk)) {
 -- 
-2.16.1
+2.14.1
 
 
 _______________________________________________
