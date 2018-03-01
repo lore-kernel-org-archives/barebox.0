@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1erJtB-00017J-GA
- for barebox@lists.infradead.org; Thu, 01 Mar 2018 08:48:35 +0000
-Date: Thu, 1 Mar 2018 09:48:21 +0100
+ id 1erK47-0005hM-I7
+ for barebox@lists.infradead.org; Thu, 01 Mar 2018 08:59:53 +0000
+Date: Thu, 1 Mar 2018 09:59:39 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180301084821.3aznzoovyik254uj@pengutronix.de>
-References: <20180224150121.28309-1-aleksander@aleksander.es>
+Message-ID: <20180301085939.36ot5tfnxprvene4@pengutronix.de>
+References: <20180228093820.19423-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180224150121.28309-1-aleksander@aleksander.es>
+In-Reply-To: <20180228093820.19423-1-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,75 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 0/9] ratp: new generic RATP command support
-To: Aleksander Morgado <aleksander@aleksander.es>
+Subject: Re: [PATCH] mtd: spi-nor: add support for w25q16dw
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, Feb 24, 2018 at 04:01:12PM +0100, Aleksander Morgado wrote:
-> This v3 series includes new md, mw and reset operations in bbremote, using the new binary API interface. The actual commits including the new RATP commands include the bbremote changes as well.
-> 
-> An additional patch is also included to add a reference to the third-party libratp-barebox and ratp-barebox-cli tools.
-> 
-> Aleksander Morgado (9):
->   ratp: implement generic command support
->   ratp: moved logic to its own subdirectory
->   ratp: allow building without full console support
->   ratp: implement ping as a standard ratp command
->   ratp: implement getenv as a standard ratp command
->   ratp: use xstrndup() instead of a custom xmemdup_add_zero()
->   ratp: new md and mw commands
->   ratp: new reset command
->   docs: add reference to libratp-barebox in the remote-control docs
+On Wed, Feb 28, 2018 at 10:38:20AM +0100, Michael Grzeschik wrote:
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+> ---
+>  drivers/mtd/spi-nor/spi-nor.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-Applied, thanks
+Applied, although I would really prefer if we could start keeping the
+table in barebox in sync with the one from the kernel.
 
 Sascha
 
 > 
->  Documentation/user/remote-control.rst     |   7 ++
->  arch/arm/lib32/barebox.lds.S              |   4 +
->  arch/arm/lib64/barebox.lds.S              |   4 +
->  arch/blackfin/boards/ipe337/barebox.lds.S |   5 +-
->  arch/mips/lib/barebox.lds.S               |   4 +
->  arch/nios2/cpu/barebox.lds.S              |   5 +-
->  arch/openrisc/cpu/barebox.lds.S           |   4 +
->  arch/ppc/boards/pcm030/barebox.lds.S      |   4 +
->  arch/ppc/mach-mpc85xx/barebox.lds.S       |   4 +
->  arch/sandbox/board/barebox.lds.S          |   5 +
->  arch/x86/lib/barebox.lds.S                |   7 ++
->  arch/x86/mach-efi/elf_ia32_efi.lds.S      |   5 +
->  arch/x86/mach-efi/elf_x86_64_efi.lds.S    |   5 +
->  common/Kconfig                            |  13 +-
->  common/Makefile                           |   3 +-
->  common/module.lds.S                       |   2 +
->  common/ratp/Kconfig                       |  14 +++
->  common/ratp/Makefile                      |   6 +
->  common/ratp/getenv.c                      |  51 ++++++++
->  common/ratp/md.c                          | 202 ++++++++++++++++++++++++++++++
->  common/ratp/mw.c                          | 173 +++++++++++++++++++++++++
->  common/ratp/ping.c                        |  40 ++++++
->  common/{ => ratp}/ratp.c                  | 156 +++++++++++------------
->  common/ratp/reset.c                       |  55 ++++++++
->  fs/Kconfig                                |   2 +-
->  include/asm-generic/barebox.lds.h         |   2 +
->  include/ratp_bb.h                         |  52 ++++++++
->  lib/Kconfig                               |   2 +-
->  lib/readline.c                            |   2 +-
->  scripts/remote/controller.py              |  27 ++++
->  scripts/remote/main.py                    |  51 ++++++++
->  scripts/remote/messages.py                | 105 ++++++++++++++++
->  32 files changed, 918 insertions(+), 103 deletions(-)
->  create mode 100644 common/ratp/Kconfig
->  create mode 100644 common/ratp/Makefile
->  create mode 100644 common/ratp/getenv.c
->  create mode 100644 common/ratp/md.c
->  create mode 100644 common/ratp/mw.c
->  create mode 100644 common/ratp/ping.c
->  rename common/{ => ratp}/ratp.c (81%)
->  create mode 100644 common/ratp/reset.c
+> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+> index 5cf650c0e2..057638ec5a 100644
+> --- a/drivers/mtd/spi-nor/spi-nor.c
+> +++ b/drivers/mtd/spi-nor/spi-nor.c
+> @@ -641,6 +641,7 @@ static const struct spi_device_id spi_nor_ids[] = {
+>  	{ "w25q20cl", INFO(0xef4012, 0, 64 * 1024,  4, SECT_4K) },
+>  	{ "w25q20bw", INFO(0xef5012, 0, 64 * 1024,  4, SECT_4K) },
+>  	{ "w25q20ew", INFO(0xef6012, 0, 64 * 1024,  4, SECT_4K) },
+> +	{ "w25q16dw", INFO(0xef6015, 0, 64 * 1024, 32, SECT_4K) },
+>  	{ "w25q32", INFO(0xef4016, 0, 64 * 1024,  64, SECT_4K) },
+>  	{ "w25q32dw", INFO(0xef6016, 0, 64 * 1024,  64, SECT_4K) },
+>  	{ "w25x64", INFO(0xef3017, 0, 64 * 1024, 128, SECT_4K) },
+> -- 
+> 2.16.1
 > 
-> --
-> 2.15.1
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
