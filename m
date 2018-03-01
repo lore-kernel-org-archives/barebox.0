@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1evfNS-00040T-8q
- for barebox@lists.infradead.org; Tue, 13 Mar 2018 08:33:49 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue, 13 Mar 2018 09:33:26 +0100
-Message-Id: <20180313083328.25705-4-o.rempel@pengutronix.de>
-In-Reply-To: <20180313083328.25705-1-o.rempel@pengutronix.de>
-References: <20180313083328.25705-1-o.rempel@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
+ id 1erJsk-0000ov-7Q
+ for barebox@lists.infradead.org; Thu, 01 Mar 2018 08:48:08 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu,  1 Mar 2018 09:47:52 +0100
+Message-Id: <20180301084752.12413-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,39 +19,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/6] watchdog: set some reasonable timeout_max value if no
- other is available
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: [PATCH] ARM: dts: am33xx: do not delete no longer existing clocks
+To: Barebox List <barebox@lists.infradead.org>
 
-Some drivers do not provide timeout_max value.
-Using some value is probably better then setting timeout_max to 0.
+Several clocks are removed from the am33xx dts files with v4.16-rc1.
+Remove the corresponding /delete-node/ directives aswell to avoid
+dtc breakage.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/watchdog/wd_core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/arm/dts/am33xx-clocks-strip.dtsi | 13 -------------
+ 1 file changed, 13 deletions(-)
 
-diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
-index 0dc7aecf3..31a88a377 100644
---- a/drivers/watchdog/wd_core.c
-+++ b/drivers/watchdog/wd_core.c
-@@ -59,8 +59,14 @@ int watchdog_register(struct watchdog *wd)
- 	if (!wd->priority)
- 		wd->priority = WATCHDOG_DEFAULT_PRIORITY;
- 
--	dev_add_param_uint32_ro(&wd->dev, "timeout_max",
-+	/* set some default sane value */
-+	if (!wd->timeout_max)
-+		wd->timeout_max = 60 * 60 * 24;
-+
-+	p = dev_add_param_uint32_ro(&wd->dev, "timeout_max",
- 			&wd->timeout_max, "%u");
-+	if (IS_ERR(p))
-+		return PTR_ERR(p);
- 
- 	list_add_tail(&wd->list, &watchdog_list);
- 
+diff --git a/arch/arm/dts/am33xx-clocks-strip.dtsi b/arch/arm/dts/am33xx-clocks-strip.dtsi
+index 831f1630f9..92906deafe 100644
+--- a/arch/arm/dts/am33xx-clocks-strip.dtsi
++++ b/arch/arm/dts/am33xx-clocks-strip.dtsi
+@@ -34,10 +34,8 @@
+ /delete-node/ &dpll_per_m2_ck;
+ /delete-node/ &dpll_per_m2_div4_wkupdm_ck;
+ /delete-node/ &dpll_per_m2_div4_ck;
+-/delete-node/ &cefuse_fck;
+ /delete-node/ &clk_24mhz;
+ /delete-node/ &clkdiv32k_ck;
+-/delete-node/ &clkdiv32k_ick;
+ /delete-node/ &l3_gclk;
+ /delete-node/ &pruss_ocp_gclk;
+ /delete-node/ &mmu_fck;
+@@ -59,21 +57,10 @@
+ /delete-node/ &l4ls_gclk;
+ /delete-node/ &sysclk_div_ck;
+ /delete-node/ &gpio0_dbclk_mux_ck;
+-/delete-node/ &gpio0_dbclk;
+-/delete-node/ &gpio1_dbclk;
+-/delete-node/ &gpio2_dbclk;
+-/delete-node/ &gpio3_dbclk;
+ /delete-node/ &lcd_gclk;
+ /delete-node/ &mmc_clk;
+ /delete-node/ &gfx_fclk_clksel_ck;
+ /delete-node/ &gfx_fck_div_ck;
+ /delete-node/ &sysclkout_pre_ck;
+ /delete-node/ &clkout2_div_ck;
+-/delete-node/ &dbg_sysclk_ck;
+-/delete-node/ &dbg_clka_ck;
+-/delete-node/ &stm_pmd_clock_mux_ck;
+-/delete-node/ &trace_pmd_clk_mux_ck;
+-/delete-node/ &stm_clk_div_ck;
+-/delete-node/ &trace_clk_div_ck;
+ /delete-node/ &clkout2_ck;
+-/delete-node/ &clk_24mhz_clkdm;
 -- 
 2.16.1
 
