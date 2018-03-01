@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtpbgeu2.qq.com ([18.194.254.142])
- by merlin.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eriOG-0004Ei-9n
- for barebox@lists.infradead.org; Fri, 02 Mar 2018 10:58:20 +0000
-From: "duhuanpeng" <548708880@qq.com>
-References: <001601d3b17a$a176cbc0$e4646340$@qq.com>
- <20180302073645.az7o7zxeysrafxtw@pengutronix.de>
- <000001d3b205$12bea160$383be420$@qq.com>
- <20180302101505.iawtfiddffoswajt@pengutronix.de>
-In-Reply-To: <20180302101505.iawtfiddffoswajt@pengutronix.de>
-Date: Fri, 2 Mar 2018 18:56:26 +0800
-Message-ID: <000101d3b215$1ce01060$56a03120$@qq.com>+AED5792B453695E6
+Received: from vsmx011.vodafonemail.xion.oxcs.net ([153.92.174.89])
+ by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
+ id 1erP7i-000320-1i
+ for barebox@lists.infradead.org; Thu, 01 Mar 2018 14:23:56 +0000
+Received: from vsmx003.vodafonemail.xion.oxcs.net (unknown [192.168.75.197])
+ by mta-5-out.mta.xion.oxcs.net (Postfix) with ESMTP id B9BE13E0593
+ for <barebox@lists.infradead.org>; Thu,  1 Mar 2018 14:23:35 +0000 (UTC)
+Received: from null (app-45.app.xion.oxcs.net [10.10.1.45])
+ by mta-7-out.mta.xion.oxcs.net (Postfix) with ESMTPA id A3F17300610
+ for <barebox@lists.infradead.org>; Thu,  1 Mar 2018 14:23:33 +0000 (UTC)
+Date: Thu, 1 Mar 2018 15:23:33 +0100 (CET)
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Message-ID: <377910125.70611.1519914213534@mail.vodafone.de>
 MIME-Version: 1.0
-Content-Language: zh-cn
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,83 +21,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?gb2312?B?tPC4tDogtPC4tDogZnJlZXNjYWxlLW14MjgtZXZrIHJ1biBmcm9tIHJhbQ==?=
-To: 'Sascha Hauer' <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: problems with am335x_sdram_size()
+To: barebox@lists.infradead.org
 
-SGksIG5vdyBpdCBpcyBydW5uaW5nLiBUaGFua3MuIE5vdyB0aGUgbGNkIGlzIGRhcmsuIEhvdyB0
-byBsYXVuY2ggdGhlIGd1aT8KLSAtIC0KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9mcmVl
-c2NhbGUtbXgyOC1ldmsvbG93bGV2ZWwuYwpiL2FyY2gvYXJtL2JvYXJkcy9mcmVlc2NhbGUtbXgy
-OC1ldmsvbG93bGV2ZWwuYwppbmRleCA0ZDQ1YTAzLi4xMGY3ZWY2IDEwMDY0NAotLS0gYS9hcmNo
-L2FybS9ib2FyZHMvZnJlZXNjYWxlLW14MjgtZXZrL2xvd2xldmVsLmMKKysrIGIvYXJjaC9hcm0v
-Ym9hcmRzL2ZyZWVzY2FsZS1teDI4LWV2ay9sb3dsZXZlbC5jCkBAIC0xNCw3ICsxNCw3IEBACiAK
-IEVOVFJZX0ZVTkNUSU9OKHN0YXJ0X2JhcmVib3hfZnJlZXNjYWxlX214MjhldmssIHIwLCByMSwg
-cjIpCiB7Ci0gICAgICAgYmFyZWJveF9hcm1fZW50cnkoSU1YX01FTU9SWV9CQVNFLCBTWl8xMjhN
-LCBOVUxMKTsKKyAgICAgICBiYXJlYm94X2FybV9lbnRyeShJTVhfTUVNT1JZX0JBU0UsIFNaXzY0
-TSwgTlVMTCk7CiB9Ci0gLSAtCgpnb3QgTUFDIGFkZHJlc3MgZnJvbSBJSU06IDAwOjA0OmY4OjVk
-OmQ3OmNmCkZFQzAKV2FybmluZzogRkVDMCBNQUMgYWRkcmVzc2VzIGRvbid0IG1hdGNoOgpBZGRy
-ZXNzIGluIFNST00gaXMgICAgICAgICAwMDowNDpmODo1ZDpkNzpjZgpBZGRyZXNzIGluIGVudmly
-b25tZW50IGlzICAwMjowMDo5MjpiMzpjNDphOAoKSGl0IGFueSBrZXkgdG8gc3RvcCBhdXRvYm9v
-dDogIDAKTVgyOCBVLUJvb3QgPiA8SU5URVJSVVBUPgpNWDI4IFUtQm9vdCA+IDxJTlRFUlJVUFQ+
-Ck1YMjggVS1Cb290ID4gPElOVEVSUlVQVD4KTVgyOCBVLUJvb3QgPiA8SU5URVJSVVBUPgpNWDI4
-IFUtQm9vdCA+IDxJTlRFUlJVUFQ+Ck1YMjggVS1Cb290ID4gdGZ0cGJvb3QgYmFyZWJveC1mcmVl
-c2NhbGUtbXgyOGV2ay0ybmQuaW1nClVzaW5nIEZFQzAgZGV2aWNlClRGVFAgZnJvbSBzZXJ2ZXIg
-MTkyLjE2OC4xMi42MTsgb3VyIElQIGFkZHJlc3MgaXMgMTkyLjE2OC4xMi42MgpGaWxlbmFtZSAn
-YmFyZWJveC1mcmVlc2NhbGUtbXgyOGV2ay0ybmQuaW1nJy4KTG9hZCBhZGRyZXNzOiAweDQxNjAw
-MDAwCkxvYWRpbmc6IFQgIyMjIyMjIyMjIyMjIyMjIyMKZG9uZQpCeXRlcyB0cmFuc2ZlcnJlZCA9
-IDIzNzc4MyAoM2EwZDcgaGV4KQpNWDI4IFUtQm9vdCA+IGdvIDB4NDE2MDAwMDAKIyMgU3RhcnRp
-bmcgYXBwbGljYXRpb24gYXQgMHg0MTYwMDAwMCAuLi4KaW5pdGNhbGwtPiBnbG9iYWx2YXJfaW5p
-dCsweDAvMHgzOAppbml0Y2FsbC0+IHBsYXRmb3JtX2luaXQrMHgwLzB4Ywppbml0Y2FsbC0+IG1k
-aW9fYnVzX2luaXQrMHgwLzB4Ywppbml0Y2FsbC0+IHNwaV9idXNfaW5pdCsweDAvMHhjCmluaXRj
-YWxsLT4gZ3Bpb19kZXNjX2FsbG9jKzB4MC8weDIwCmluaXRjYWxsLT4gZnNfYnVzX2luaXQrMHgw
-LzB4Ywppbml0Y2FsbC0+IG14c19ncGlvX2FkZCsweDAvMHgxOAppbml0Y2FsbC0+IGlteDI4X2Ns
-b2Nrc291cmNlX2luaXQrMHgwLzB4NTQKaW5pdGNhbGwtPiB1bndpbmRfaW5pdCsweDAvMHgzMApp
-bml0Y2FsbC0+IGlteDI4X2NjbV9pbml0KzB4MC8weGMKaW5pdGNhbGwtPiBuZXRfaW5pdCsweDAv
-MHg4OAppbml0Y2FsbC0+IGluaXRfZnMrMHgwLzB4M2MKaW5pdGNhbGwtPiBteHNfaW5pdCsweDAv
-MHhkYwpkZXRlY3RlZCBpLk1YMjggcmV2aXNpb24gMS4yCmluaXRjYWxsLT4gaW14MjhfZGV2aWNl
-c19pbml0KzB4MC8weDE0NAppbml0Y2FsbC0+IGlteDI4X2luaXQrMHgwLzB4MmMKaW5pdGNhbGwt
-PiBzdG1fc2VyaWFsX2RyaXZlcl9yZWdpc3RlcisweDAvMHhjCmluaXRjYWxsLT4gYXVhcnRfc2Vy
-aWFsX2RyaXZlcl9yZWdpc3RlcisweDAvMHhjCmluaXRjYWxsLT4gbXgyOF9ldmtfY29uc29sZV9p
-bml0KzB4MC8weDU0ClN3aXRjaCB0byBjb25zb2xlIFtjczBdCgoKYmFyZWJveCAyMDE4LjAyLjAt
-MDAwNzctZzM1OTk2NmQtZGlydHkgIzEyIEZyaSBNYXIgMiAxODozNzoyOSBDU1QgMjAxOAoKCkJv
-YXJkOiBGcmVlc2NhbGUgaS5NWDI4IEVWSwppbml0Y2FsbC0+IGdsb2JhbHZhcl9pbml0KzB4MC8w
-eDM4CmluaXRjYWxsLT4gcGxhdGZvcm1faW5pdCsweDAvMHhjIAoKLS0tLS3Tyrz+1K28/i0tLS0t
-CreivP7IyzogJ1Nhc2NoYSBIYXVlcicgW21haWx0bzpzLmhhdWVyQHBlbmd1dHJvbml4LmRlXSAK
-t6LLzcqxvOQ6IDIwMTjE6jPUwjLI1SAxODoxNQrK1bz+yMs6IGR1aHVhbnBlbmcKs63LzTogYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCtb3zOI6IFJlOiC08Li0OiBmcmVlc2NhbGUtbXgyOC1l
-dmsgcnVuIGZyb20gcmFtCgpPbiBGcmksIE1hciAwMiwgMjAxOCBhdCAwNTowMTozN1BNICswODAw
-LCBkdWh1YW5wZW5nIHdyb3RlOgo+ID4gSSBhc3N1bWUgeW91IHVzZSBmcmVlc2NhbGUtbXgyOC1l
-dmtfZGVmY29uZmlnLCByaWdodD8KPiBZZXMuCj4gCj4gV2hpY2ggaW1hZ2UgZG8geW91IHN0YXJ0
-PyBJdCBzZWVtcyB5b3UgYXJlIHRyeWluZyB0byBzdGFydCBiYXJlYm94LmJpbi4KPiA+IGJhcmVi
-b3guYmluIGFuZCBiYXJlYm94LWZyZWVzY2FsZS1teDI4ZXZrLTJuZC5pbWcKPiBJdCBzaG91bGQg
-YmUgaW1hZ2VzL2JhcmVib3gtZnJlZXNjYWxlLW14MjhldmstMm5kLmltZyBpbnN0ZWFkLgo+IAo+
-IFRoZSBpbWFnZSBzaG91bGQgYmUgbGlua2VkIHRvIDB4MCwgdGhhdCBpcyByaWdodC4gVGhlIGNv
-ZGUgaXMgcG9zaXRpb24gCj4gaW5kZXBlbmRlbnQgdGhvdWdoIGFuZCB0aGUgZnVsbCBiYXJlYm94
-IHJlbG9jYXRlcyBpdHNlbGYgdG8gdGhlIGVuZCBvZiAKPiB0aGUgYXZhaWxhYmxlIFNEUkFNIGF1
-dG9tYXRpY2FsbHkuIFRFWFRfQkFTRSBpcyBub3QgcmVsZXZhbnQgaGVyZS4KPiBUaGUgc3RhcnQg
-c3ltYm9sIGlzIHN0aWxsIDB4MDAwMDAwMDAgZXZlbiBJIGNoYW5nZSBURVhUX0JBU0UgaW4KbWVu
-dWNvbmZpZy4KPiBteSBib2FyZCBoYXZlIDY0TWlCIHJhbS4gTW9kaWZpZWQgYm9hcmQuIAo+IFZl
-cnkgY2hlYXAgb25lLCBqdXN0IDMzPy4gOkQKPiBFYXN5QVJNLWkuTVgyODNBCgpZb3UgYXJlIHJ1
-bm5pbmcgb24gYSBib2FyZCB3aGljaCBhY3R1YWxseSBpcyBubyBteDI4LWV2aywgc28gaXQncyBu
-byB3b25kZXIKaXQgZG9lc24ndCB3b3JrLiBQbGVhc2UgbWVudGlvbiB0aGF0IG5leHQgdGltZSwg
-YmVjYXVzZSB0aGF0IGNoYW5nZXMgdGhlCnF1ZXN0aW9uIGZyb20gIldoYXQgaXMgYnJva2VuIHdp
-dGggdGhlIG14MjgtZXZrIiB0byAiV2hhdCBpcyBkaWZmZXJlbnQgb24KeW91ciBib2FyZCIuIFRo
-aXMgaXMgYSB2ZXJ5IGltcG9ydGFudCBkZXRhaWwgdG8gYW5zd2VyIHF1ZXN0aW9ucy4KCkFueXdh
-eSwgeW91IHNheSB5b3VyIGJvYXJkIG9ubHkgaGFzIDY0TWlCIG9mIFJBTSwgc28geW91IG11c3Qg
-YXQgbGVhc3QKY2hhbmdlOgoKRU5UUllfRlVOQ1RJT04oc3RhcnRfYmFyZWJveF9mcmVlc2NhbGVf
-bXgyOGV2aywgcjAsIHIxLCByMikgewogICAgICAgIGJhcmVib3hfYXJtX2VudHJ5KElNWF9NRU1P
-UllfQkFTRSwgU1pfMTI4TSwgTlVMTCk7IH0KCnRvIFNaXzY0TS4gT3RoZXIgZGlmZmVyZW5jZXMg
-bWlnaHQgaW5jbHVkZSB0aGUgcGlubXV4IGFuZCB0aGUgVUFSVCBwb3J0Cm51bWJlciB3aGljaCBp
-cyB1c2VkIGZvciBjb25zb2xlIG91dHB1dC4KClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUuSy4g
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
-CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cu
-cGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2Vy
-bWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
-aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgoK
-CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
-IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
-ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi,
+
+working with the TI AM335x Evaluation Module I noticed that the function
+am335x_sdram_size() always returns 0 instead of the computed sdram size.
+
+I could trace back the problem to the fact that the function does its 
+computation based on the value of the register CM_EMIF_SDRAM_CONFIG
+(addr. 0x44e10110), but this register is not written to by the function
+am33xx_config_sdram() and just returns its initial value (0).
+The datasheet says CM_EMIF_SDRAM_CONFIG should have the same value as
+AM33XX_EMIF4_0_REG(SDRAM_CONFIG) (addr. 0x4c000008)
+
+To conclude, to fix the problem with am335x_sdram_size() you can either
+use AM33XX_EMIF4_0_REG(SDRAM_CONFIG) instead of CM_EMIF_SDRAM_CONFIG
+in am335x_sdram_size()
+
+ or
+
+initialize CM_EMIF_SDRAM_CONFIG in am33xx_config_sdram() with the same value
+as AM33XX_EMIF4_0_REG(SDRAM_CONFIG) (regs->sdram_config)
+
+giorgio
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
