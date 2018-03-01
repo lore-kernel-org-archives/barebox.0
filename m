@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1erM3r-0004qB-69
- for barebox@lists.infradead.org; Thu, 01 Mar 2018 11:07:46 +0000
-Date: Thu, 1 Mar 2018 12:07:29 +0100
+ id 1erMQg-0007G5-Fy
+ for barebox@lists.infradead.org; Thu, 01 Mar 2018 11:31:20 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180301110729.pvdxqjqul7klrjyr@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Thu,  1 Mar 2018 12:31:05 +0100
+Message-Id: <20180301113105.18150-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,63 +14,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: MIPS parallel build breakage
+Subject: [PATCH] ARM: am335x: beaglebone: Fix DDR register values
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Hi Sam and Antony,
+For the DDR2 PHY register values there are tons of warnings that more
+than 32bit are required to store the values. Looking at the reference
+manual it seems only the lower ten bits have any meaning, so drop all
+other values.
 
-(Antony because you introduced this and Sam because you have intimate
-knowledge with our build system ;)
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/beaglebone/lowlevel.c | 26 ++++++--------------------
+ 1 file changed, 6 insertions(+), 20 deletions(-)
 
-I am trying to solve a problem that annoys me for some years now. The
-problem is that the MIPS defconfigs regularly fail in my autobuilder.
-I usually help myself with trying it again and most of the time it
-then works, but doing this for years increases the pressure to do
-something.
-
-What happens is that the MIPS builds use include/generated/compile.h:
-
-> arch/mips/include/asm/pbl_macros.h:28:#include <generated/compile.h>
-
-This often ends in:
-
-> In file included from arch/mips/boot/start.S:20:0: arch/mips/include/asm/pbl_macros.h:28:31:
-> fatal error: generated/compile.h: No such file or directory
-> compilation terminated.
-
-include/generated/compile.h is generated in common/Makefile:
-
-> include/generated/compile.h: FORCE
-> 	@$($(quiet)chk_compile.h)
-> 	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/mkcompile_h $@ \
-> 	"$(UTS_MACHINE)" "$(CC) $(KBUILD_CFLAGS)"
-
-Other users of this file add an explicit dependency on it:
-
-> # dependencies on generated files need to be listed explicitly
-> $(obj)/version.o: include/generated/compile.h
-
-This only seems to work though when the dependent file is in the same
-directory, but not when the file is in arch/mips/boot/.
-
-I tried doing the include/generated/compile.h in Makefile instead of
-common/Makefile, but then the version counting gets confused and causes
-unnecessary rebuilds.
-
-Any ideas how to solve this?
-
-Sascha
-
+diff --git a/arch/arm/boards/beaglebone/lowlevel.c b/arch/arm/boards/beaglebone/lowlevel.c
+index a56b4b6240..f2e1690b15 100644
+--- a/arch/arm/boards/beaglebone/lowlevel.c
++++ b/arch/arm/boards/beaglebone/lowlevel.c
+@@ -48,26 +48,12 @@ static const struct am33xx_emif_regs ddr2_regs = {
+ };
+ 
+ static const struct am33xx_ddr_data ddr2_data = {
+-	.rd_slave_ratio0        = (DDR2_RD_DQS << 30) | (DDR2_RD_DQS << 20) |
+-				(DDR2_RD_DQS << 10) | (DDR2_RD_DQS << 0),
+-	.wr_dqs_slave_ratio0    = (DDR2_WR_DQS << 30) | (DDR2_WR_DQS << 20) |
+-				(DDR2_WR_DQS << 10) | (DDR2_WR_DQS << 0),
+-	.wrlvl_init_ratio0	= (DDR2_PHY_WRLVL << 30) |
+-				(DDR2_PHY_WRLVL << 20) |
+-				(DDR2_PHY_WRLVL << 10) |
+-				(DDR2_PHY_WRLVL << 0),
+-	.gatelvl_init_ratio0	= (DDR2_PHY_GATELVL << 30) |
+-				(DDR2_PHY_GATELVL << 20) |
+-				(DDR2_PHY_GATELVL << 10) |
+-				(DDR2_PHY_GATELVL << 0),
+-	.fifo_we_slave_ratio0	= (DDR2_PHY_FIFO_WE << 30) |
+-				(DDR2_PHY_FIFO_WE << 20) |
+-				(DDR2_PHY_FIFO_WE << 10) |
+-				(DDR2_PHY_FIFO_WE << 0),
+-	.wr_slave_ratio0        = (DDR2_PHY_WR_DATA << 30) |
+-				(DDR2_PHY_WR_DATA << 20) |
+-				(DDR2_PHY_WR_DATA << 10) |
+-				(DDR2_PHY_WR_DATA << 0),
++	.rd_slave_ratio0        = DDR2_RD_DQS,
++	.wr_dqs_slave_ratio0    = DDR2_WR_DQS,
++	.wrlvl_init_ratio0	= DDR2_PHY_WRLVL,
++	.gatelvl_init_ratio0	= DDR2_PHY_GATELVL,
++	.fifo_we_slave_ratio0	= DDR2_PHY_FIFO_WE,
++	.wr_slave_ratio0        = DDR2_PHY_WR_DATA,
+ 	.use_rank0_delay	= 0x01,
+ 	.dll_lock_diff0		= 0x0,
+ };
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.16.1
+
 
 _______________________________________________
 barebox mailing list
