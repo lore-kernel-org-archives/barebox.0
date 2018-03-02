@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtpbg64.qq.com ([103.7.28.238])
- by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1eriN4-0004MN-Dx
- for barebox@lists.infradead.org; Fri, 02 Mar 2018 10:57:05 +0000
+Received: from smtpbgeu2.qq.com ([18.194.254.142])
+ by merlin.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
+ id 1eriOG-0004Ei-9n
+ for barebox@lists.infradead.org; Fri, 02 Mar 2018 10:58:20 +0000
 From: "duhuanpeng" <548708880@qq.com>
 References: <001601d3b17a$a176cbc0$e4646340$@qq.com>
  <20180302073645.az7o7zxeysrafxtw@pengutronix.de>
  <000001d3b205$12bea160$383be420$@qq.com>
  <20180302101505.iawtfiddffoswajt@pengutronix.de>
 In-Reply-To: <20180302101505.iawtfiddffoswajt@pengutronix.de>
-Date: Fri, 2 Mar 2018 18:55:26 +0800
-Message-ID: <000001d3b214$f92d4520$eb87cf60$@qq.com>+497C8974AAC879C2
+Date: Fri, 2 Mar 2018 18:56:26 +0800
+Message-ID: <000101d3b215$1ce01060$56a03120$@qq.com>+AED5792B453695E6
 MIME-Version: 1.0
 Content-Language: zh-cn
 List-Id: <barebox.lists.infradead.org>
@@ -98,6 +98,6 @@ CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cu
 cGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2Vy
 bWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
 aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgoK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
-YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
+IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
