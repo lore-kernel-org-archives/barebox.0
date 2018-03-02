@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x234.google.com ([2a00:1450:4010:c07::234])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1erjOW-00024c-GJ
- for barebox@lists.infradead.org; Fri, 02 Mar 2018 12:02:37 +0000
-Received: by mail-lf0-x234.google.com with SMTP id v9so12914141lfa.11
- for <barebox@lists.infradead.org>; Fri, 02 Mar 2018 04:02:25 -0800 (PST)
-Date: Fri, 2 Mar 2018 15:17:35 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20180302151735.028ad4763bfd8ae7603a5fb9@gmail.com>
-In-Reply-To: <20180301110729.pvdxqjqul7klrjyr@pengutronix.de>
+ id 1erjt8-0003SH-Bn
+ for barebox@lists.infradead.org; Fri, 02 Mar 2018 12:34:16 +0000
+Date: Fri, 2 Mar 2018 13:34:01 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180302123401.zb5ltrledrhdwbfj@pengutronix.de>
 References: <20180301110729.pvdxqjqul7klrjyr@pengutronix.de>
-Mime-Version: 1.0
+ <20180302151735.028ad4763bfd8ae7603a5fb9@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180302151735.028ad4763bfd8ae7603a5fb9@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,85 +19,88 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: MIPS parallel build breakage
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: Barebox List <barebox@lists.infradead.org>, Sam Ravnborg <sam@ravnborg.org>
 
-On Thu, 1 Mar 2018 12:07:29 +0100
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Fri, Mar 02, 2018 at 03:17:35PM +0300, Antony Pavlov wrote:
+> On Thu, 1 Mar 2018 12:07:29 +0100
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> > Hi Sam and Antony,
+> > 
+> > (Antony because you introduced this and Sam because you have intimate
+> > knowledge with our build system ;)
+> > 
+> > I am trying to solve a problem that annoys me for some years now. The
+> > problem is that the MIPS defconfigs regularly fail in my autobuilder.
+> > I usually help myself with trying it again and most of the time it
+> > then works, but doing this for years increases the pressure to do
+> > something.
+> > 
+> > What happens is that the MIPS builds use include/generated/compile.h:
+> > 
+> > > arch/mips/include/asm/pbl_macros.h:28:#include <generated/compile.h>
+> > 
+> > This often ends in:
+> > 
+> > > In file included from arch/mips/boot/start.S:20:0: arch/mips/include/asm/pbl_macros.h:28:31:
+> > > fatal error: generated/compile.h: No such file or directory
+> > > compilation terminated.
+> > 
+> > include/generated/compile.h is generated in common/Makefile:
+> > 
+> > > include/generated/compile.h: FORCE
+> > > 	@$($(quiet)chk_compile.h)
+> > > 	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/mkcompile_h $@ \
+> > > 	"$(UTS_MACHINE)" "$(CC) $(KBUILD_CFLAGS)"
+> > 
+> > Other users of this file add an explicit dependency on it:
+> > 
+> > > # dependencies on generated files need to be listed explicitly
+> > > $(obj)/version.o: include/generated/compile.h
+> > 
+> > This only seems to work though when the dependent file is in the same
+> > directory, but not when the file is in arch/mips/boot/.
+> > 
+> > I tried doing the include/generated/compile.h in Makefile instead of
+> > common/Makefile, but then the version counting gets confused and causes
+> > unnecessary rebuilds.
+> > 
+> > Any ideas how to solve this?
+> 
+> I can't reproduce parallel build breakage.
 
-> Hi Sam and Antony,
-> =
+The failure starts here when using 6 threads or more and only when
+compiling the black-swift_defconfig. After one successful build I can
+reproduce this reliably here with:
 
-> (Antony because you introduced this and Sam because you have intimate
-> knowledge with our build system ;)
-> =
+rm -f include/generated/compile.h && make -j 6
 
-> I am trying to solve a problem that annoys me for some years now. The
-> problem is that the MIPS defconfigs regularly fail in my autobuilder.
-> I usually help myself with trying it again and most of the time it
-> then works, but doing this for years increases the pressure to do
-> something.
-> =
+> But I see another problem:
+> the version string inside mips pbl binary is differ from the version string
+> inside main barebox binary.
+> 
+> I suppose that the problem is that current build system handles mips asm files
+> (which are actually use generated compile.h) and c-files in a different way.
 
-> What happens is that the MIPS builds use include/generated/compile.h:
-> =
+Ups. How do the strings differ?
 
-> > arch/mips/include/asm/pbl_macros.h:28:#include <generated/compile.h>
-> =
+Another obvious way to fix the issue is to remove UTS_RELEASE and
+UTS_VERSION from the pbl headers. Would that be an option?
 
-> This often ends in:
-> =
+Sascha
 
-> > In file included from arch/mips/boot/start.S:20:0: arch/mips/include/as=
-m/pbl_macros.h:28:31:
-> > fatal error: generated/compile.h: No such file or directory
-> > compilation terminated.
-> =
 
-> include/generated/compile.h is generated in common/Makefile:
-> =
-
-> > include/generated/compile.h: FORCE
-> > 	@$($(quiet)chk_compile.h)
-> > 	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/mkcompile_h $@ \
-> > 	"$(UTS_MACHINE)" "$(CC) $(KBUILD_CFLAGS)"
-> =
-
-> Other users of this file add an explicit dependency on it:
-> =
-
-> > # dependencies on generated files need to be listed explicitly
-> > $(obj)/version.o: include/generated/compile.h
-> =
-
-> This only seems to work though when the dependent file is in the same
-> directory, but not when the file is in arch/mips/boot/.
-> =
-
-> I tried doing the include/generated/compile.h in Makefile instead of
-> common/Makefile, but then the version counting gets confused and causes
-> unnecessary rebuilds.
-> =
-
-> Any ideas how to solve this?
-
-I can't reproduce parallel build breakage. But I see another problem:
-the version string inside mips pbl binary is differ from the version string
-inside main barebox binary.
-
-I suppose that the problem is that current build system handles mips asm fi=
-les
-(which are actually use generated compile.h) and c-files in a different way.
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
