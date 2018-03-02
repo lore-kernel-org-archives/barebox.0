@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtpbg298.qq.com ([184.105.67.102])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1erR7c-00077k-0b
- for barebox@lists.infradead.org; Thu, 01 Mar 2018 16:32:03 +0000
-Received: from STRONG (unknown [14.148.81.49])
- by esmtp4.qq.com (ESMTP) with SMTP id 0
- for <barebox@lists.infradead.org>; Fri, 02 Mar 2018 00:31:35 +0800 (CST)
-From: "duhuanpeng" <548708880@qq.com>
-Date: Fri, 2 Mar 2018 00:30:37 +0800
-Message-ID: <001601d3b17a$a176cbc0$e4646340$@qq.com>+C2394485D68CB85A
+ id 1erfFU-0005VN-Ah
+ for barebox@lists.infradead.org; Fri, 02 Mar 2018 07:37:02 +0000
+Date: Fri, 2 Mar 2018 08:36:45 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180302073645.az7o7zxeysrafxtw@pengutronix.de>
+References: <001601d3b17a$a176cbc0$e4646340$@qq.com>
 MIME-Version: 1.0
-Content-Language: zh-cn
+Content-Disposition: inline
+In-Reply-To: <001601d3b17a$a176cbc0$e4646340$@qq.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,53 +18,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: freescale-mx28-evk run from ram
-To: barebox@lists.infradead.org
+Subject: Re: freescale-mx28-evk run from ram
+To: duhuanpeng <548708880@qq.com>
+Cc: barebox@lists.infradead.org
 
-RGVhciBhbGwsDQoNCkhhcHB5IFl1YW54aWFvKExhbnRlcm4pIEZlc3RpdmFsIQ0KDQpJIGhhdmUg
-YSBtb2RpZmllZCBteDI4LWV2ayBib2FyZCwgSSB3YW50IHRvIHJ1biBiYXJlYm94IG9uIGl0LCBi
-dXQgSSBkb27igJl0IHdhbnQgdG8gbWFrZSBjaGFuZ2UgdG8gdGhlIGZsYXNoLg0KDQpJbiBTeXN0
-ZW0ubWFwDQowMDAwMDAwMCBUIF9faW1hZ2Vfc3RhcnQNCjAwMDAwMDAwIFQgc3RhcnQNCjAwMDAw
-MDAwIFQgX3N0ZXh0DQowMDAwMDAwMCBUIF90ZXh0DQowMDAwMDAwNCBUIF9fYmFyZV9pbml0X3N0
-YXJ0DQowMDAwMDAwNCBUIGdldF9ydW50aW1lX29mZnNldA0KMDAwMDAwMTQgdCBsaW5rYWRyDQow
-MDAwMDAxOCBUIF9fbGRfdmFyX2Jhc2UNCjAwMDAwMDE4IFQgX19sZF92YXJfX3RleHQNCjAwMDAw
-MDIwIHQgX19fdGV4dA0KMDAwMDAwMjQgVCBfX2xkX3Zhcl9fX3JlbF9keW5fc3RhcnQNCjAwMDAw
-MDJjIHQgX19fX3JlbF9keW5fc3RhcnQNCjAwMDAwMDMwIFQgX19sZF92YXJfX19yZWxfZHluX2Vu
-ZA0KMDAwMDAwMzggdCBfX19fcmVsX2R5bl9lbmQNCjAwMDAwMDNjIFQgX19sZF92YXJfX19keW5z
-eW1fc3RhcnQNCjAwMDAwMDQ0IHQgX19fX2R5bnN5bV9zdGFydA0KMDAwMDAwNDggVCBfX2xkX3Zh
-cl9fX2R5bnN5bV9lbmQNCjAwMDAwMDUwIHQgX19fX2R5bnN5bV9lbmQNCjAwMDAwMDU0IFQgX19s
-ZF92YXJfX19ic3Nfc3RhcnQNCjAwMDAwMDVjIHQgX19fX2Jzc19zdGFydA0KMDAwMDAwNjAgVCBf
-X2xkX3Zhcl9fX2Jzc19zdG9wDQowMDAwMDA2OCB0IF9fX19ic3Nfc3RvcA0KDQpTbywgSSBsb2Fk
-IGJhcmVib3guYmluIHRvIGFkZHJlc3MgMHgwMDAwMDAwMDoNCg0KSGl0IGFueSBrZXkgdG8gc3Rv
-cCBhdXRvYm9vdDogIDAgDQpNWDI4IFUtQm9vdCA+IHRmdHBib290IDAgYmFyZWJveC5iaW4NClVz
-aW5nIEZFQzAgZGV2aWNlDQpURlRQIGZyb20gc2VydmVyIDE5Mi4xNjguMTIuNjE7IG91ciBJUCBh
-ZGRyZXNzIGlzIDE5Mi4xNjguMTIuNjINCkZpbGVuYW1lICdiYXJlYm94LmJpbicuDQpMb2FkIGFk
-ZHJlc3M6IDB4MA0KTG9hZGluZzogVCAjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIw0KZG9u
-ZQ0KQnl0ZXMgdHJhbnNmZXJyZWQgPSA0MjQ3NzYgKDY3YjQ4IGhleCkNCk1YMjggVS1Cb290ID4g
-Z28gMA0KIyMgU3RhcnRpbmcgYXBwbGljYXRpb24gYXQgMHgwMDAwMDAwMCAuLi4NCg0KDQpJIGJl
-bGlldmUgdGhlIHNyYW0gaXMgdG9vIHNtYWxsIHRvIGxvYWQgdGhlIGJpbmFyeS4NCg0KU28sIEkg
-Y2hhbmdlIHRoZSBURVhUX0JBU0UgdG8gMHg0MTYwMDAwMCBpbiBtZW51Y29uZmlnLCBidWlsZCBh
-bmQgdXBkYXRlIGJhcmVib3guYmluLCBpdCBwcmludCBmdW5ueSBjaGFyYWN0ZXJzOg0KDQpNWDI4
-IFUtQm9vdCA+IDxJTlRFUlJVUFQ+DQpNWDI4IFUtQm9vdCA+IDxJTlRFUlJVUFQ+DQpNWDI4IFUt
-Qm9vdCA+IHRmdHBib290IDB4NDE2MDAwMDAgYmFyZWJveC5iaW4NClVzaW5nIEZFQzAgZGV2aWNl
-DQpURlRQIGZyb20gc2VydmVyIDE5Mi4xNjguMTIuNjE7IG91ciBJUCBhZGRyZXNzIGlzIDE5Mi4x
-NjguMTIuNjINCkZpbGVuYW1lICdiYXJlYm94LmJpbicuDQpMb2FkIGFkZHJlc3M6IDB4NDE2MDAw
-MDANCkxvYWRpbmc6IFQgIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMNCmRvbmUNCkJ5dGVz
-IHRyYW5zZmVycmVkID0gNDI0Nzc2ICg2N2I0OCBoZXgpDQpNWDI4IFUtQm9vdCA+IGdvIDB4NDE2
-MDAwMDANCiMjIFN0YXJ0aW5nIGFwcGxpY2F0aW9uIGF0IDB4NDE2MDAwMDAgLi4uDQrvv73vv73v
-v73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73v
-v73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73v
-v73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73v
-v73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73v
-v73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73v
-v73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73v
-v73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73vv73v
-v73vv73vv73vv73vv73vv70NCg0KRm9yIGlteDI4MywgSG93IHRvIHJ1biBiYXJlYm94IGZyb20g
-cmFtPw0KDQpUaGFua3MsDQpEdSBIdWFucGVuZw0KDQoNCg0KX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+Hi Du Huanpeng,
+
+On Fri, Mar 02, 2018 at 12:30:37AM +0800, duhuanpeng wrote:
+> Dear all,
+> 
+> Happy Yuanxiao(Lantern) Festival!
+
+Thanks, same to you. Just googled some pictures for the lantern
+Festival, it must look amazing to stand under that many lanterns ;)
+
+> In System.map
+> 00000000 T __image_start
+> 00000000 T start
+> 00000000 T _stext
+> 00000000 T _text
+> 00000004 T __bare_init_start
+> 00000004 T get_runtime_offset
+> 00000014 t linkadr
+> 00000018 T __ld_var_base
+> 00000018 T __ld_var__text
+> 00000020 t ___text
+> 00000024 T __ld_var___rel_dyn_start
+> 0000002c t ____rel_dyn_start
+> 00000030 T __ld_var___rel_dyn_end
+> 00000038 t ____rel_dyn_end
+> 0000003c T __ld_var___dynsym_start
+> 00000044 t ____dynsym_start
+> 00000048 T __ld_var___dynsym_end
+> 00000050 t ____dynsym_end
+> 00000054 T __ld_var___bss_start
+> 0000005c t ____bss_start
+> 00000060 T __ld_var___bss_stop
+> 00000068 t ____bss_stop
+> 
+> So, I load barebox.bin to address 0x00000000:
+
+I assume you use freescale-mx28-evk_defconfig, right?
+Which image do you start? It seems you are trying to start barebox.bin.
+It should be images/barebox-freescale-mx28evk-2nd.img instead.
+
+The image should be linked to 0x0, that is right. The code is position
+independent though and the full barebox relocates itself to the end of
+the available SDRAM automatically. TEXT_BASE is not relevant here.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
