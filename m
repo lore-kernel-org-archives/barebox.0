@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1erfGz-0005t9-DH
- for barebox@lists.infradead.org; Fri, 02 Mar 2018 07:38:34 +0000
-Date: Fri, 2 Mar 2018 08:38:21 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180302073821.dk2ht676voz3ecv4@pengutronix.de>
-References: <20180301183924.4126-1-linux@rempel-privat.de>
+Received: from smtpproxy19.qq.com ([184.105.206.84])
+ by merlin.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
+ id 1erhWY-0003wz-Su
+ for barebox@lists.infradead.org; Fri, 02 Mar 2018 10:02:48 +0000
+From: "duhuanpeng" <548708880@qq.com>
+Date: Fri, 2 Mar 2018 18:01:12 +0800
+Message-ID: <001101d3b20d$65218190$2f6484b0$@qq.com>+8BBD1BA01F7704C8
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180301183924.4126-1-linux@rempel-privat.de>
+Content-Language: zh-cn
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +20,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: ath79: fix different typos
-To: Oleksij Rempel <linux@rempel-privat.de>
+Subject: my mx283 board sch
+To: 'Sascha Hauer' <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Mar 01, 2018 at 07:39:24PM +0100, Oleksij Rempel wrote:
-> the CONFIG typos was not real issue.
-> The defconfig typo i detected only after clean compile.
-> I hope we can migrate barebox MIPS to multiimage soon.
-> 
-> Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
-> ---
+Sorry, that link is broken.
 
-Applied, thanks
+Sch in google driver is here:
+https://drive.google.com/file/d/1_3xW7nfQ6p9tnkjZEDK9vZiLlUnat25K/view?usp=s
+haring
 
-Sascha
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 _______________________________________________
 barebox mailing list
