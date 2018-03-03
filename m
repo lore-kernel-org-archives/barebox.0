@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mout.gmx.net ([212.227.15.19])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1erm4c-00062j-TF
- for barebox@lists.infradead.org; Fri, 02 Mar 2018 14:54:17 +0000
-Date: Fri, 2 Mar 2018 15:54:02 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180302145402.oqssaqvsh4h6dupg@pengutronix.de>
-References: <20180301110729.pvdxqjqul7klrjyr@pengutronix.de>
- <20180302151735.028ad4763bfd8ae7603a5fb9@gmail.com>
- <20180302123401.zb5ltrledrhdwbfj@pengutronix.de>
- <20180302163731.a476bd3c03884101dafbaac1@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180302163731.a476bd3c03884101dafbaac1@gmail.com>
+ id 1es359-0008Km-MT
+ for barebox@lists.infradead.org; Sat, 03 Mar 2018 09:03:57 +0000
+From: Oleksij Rempel <linux@rempel-privat.de>
+Date: Sat,  3 Mar 2018 10:03:28 +0100
+Message-Id: <20180303090328.10026-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,162 +14,117 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: MIPS parallel build breakage
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>, Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH] watchdog: add periodic watchdog ping
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-On Fri, Mar 02, 2018 at 04:37:31PM +0300, Antony Pavlov wrote:
-> On Fri, 2 Mar 2018 13:34:01 +0100
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> > On Fri, Mar 02, 2018 at 03:17:35PM +0300, Antony Pavlov wrote:
-> > > On Thu, 1 Mar 2018 12:07:29 +0100
-> > > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > > 
-> > > > Hi Sam and Antony,
-> > > > 
-> > > > (Antony because you introduced this and Sam because you have intimate
-> > > > knowledge with our build system ;)
-> > > > 
-> > > > I am trying to solve a problem that annoys me for some years now. The
-> > > > problem is that the MIPS defconfigs regularly fail in my autobuilder.
-> > > > I usually help myself with trying it again and most of the time it
-> > > > then works, but doing this for years increases the pressure to do
-> > > > something.
-> > > > 
-> > > > What happens is that the MIPS builds use include/generated/compile.h:
-> > > > 
-> > > > > arch/mips/include/asm/pbl_macros.h:28:#include <generated/compile.h>
-> > > > 
-> > > > This often ends in:
-> > > > 
-> > > > > In file included from arch/mips/boot/start.S:20:0: arch/mips/include/asm/pbl_macros.h:28:31:
-> > > > > fatal error: generated/compile.h: No such file or directory
-> > > > > compilation terminated.
-> > > > 
-> > > > include/generated/compile.h is generated in common/Makefile:
-> > > > 
-> > > > > include/generated/compile.h: FORCE
-> > > > > 	@$($(quiet)chk_compile.h)
-> > > > > 	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/mkcompile_h $@ \
-> > > > > 	"$(UTS_MACHINE)" "$(CC) $(KBUILD_CFLAGS)"
-> > > > 
-> > > > Other users of this file add an explicit dependency on it:
-> > > > 
-> > > > > # dependencies on generated files need to be listed explicitly
-> > > > > $(obj)/version.o: include/generated/compile.h
-> > > > 
-> > > > This only seems to work though when the dependent file is in the same
-> > > > directory, but not when the file is in arch/mips/boot/.
-> > > > 
-> > > > I tried doing the include/generated/compile.h in Makefile instead of
-> > > > common/Makefile, but then the version counting gets confused and causes
-> > > > unnecessary rebuilds.
-> > > > 
-> > > > Any ideas how to solve this?
-> > > 
-> > > I can't reproduce parallel build breakage.
-> > 
-> > The failure starts here when using 6 threads or more and only when
-> > compiling the black-swift_defconfig. After one successful build I can
-> > reproduce this reliably here with:
-> > 
-> > rm -f include/generated/compile.h && make -j 6
-> > 
-> > > But I see another problem:
-> > > the version string inside mips pbl binary is differ from the version string
-> > > inside main barebox binary.
-> > > 
-> > > I suppose that the problem is that current build system handles mips asm files
-> > > (which are actually use generated compile.h) and c-files in a different way.
-> > 
-> > Ups. How do the strings differ?
-> 
-> insert generated version into pbl by using mips_barebox_10h:
-> 
-> barebox$ git diff
-> diff --git a/arch/mips/boards/qemu-malta/include/board/board_pbl_start.h b/arch/mips/boards/qemu-malta/include/board/board_pbl_start.h
-> index 5c1537262e..6e85a7009a 100644
-> --- a/arch/mips/boards/qemu-malta/include/board/board_pbl_start.h
-> +++ b/arch/mips/boards/qemu-malta/include/board/board_pbl_start.h
-> @@ -43,18 +43,8 @@
->         .set    push
->         .set    noreorder
->  
-> -       b       __start
-> -        nop
-> +       mips_barebox_10h
->  
-> -       /*
-> -          On MIPS Technologies boards
-> -          0x1fc00010 address is reserved for BoardID
-> -       */
-> -       .org    0x10
-> -       .word   0xffffffff
-> -       .word   0xffffffff
-> -
-> -__start:
->         mips_disable_interrupts
->  
->         /* cpu specific setup ... */
-> barebox$ make mrproper
-> ...
-> barebox$ export ARCH=mips
-> barebox$ export CROSS_COMPILE=mips-linux-gnu-
-> barebox$ make qemu-malta_defconfig
-> ...
-> barebox$ make -j3 -s
-> ...
-> barebox$ xxd barebox-flash-image | head -n 6
-> 00000000: 1000 0017 0000 0000 0000 0000 0000 0000  ................
-> 00000010: 6261 7265 626f 7820 3230 3138 2e30 322e  barebox 2018.02.
-> 00000020: 302d 3030 3037 392d 6731 6564 6462 3064  0-00079-g1eddb0d
-> 00000030: 3338 322d 6469 7274 7920 2330 2046 7269  382-dirty #0 Fri
->                                                            ^^^^^^^
-> 00000040: 204d 6172 2032 2031 363a 3032 3a32 3920   Mar 2 16:02:29 
-> 00000050: 4d53 4b20 3230 3138 0000 0000 0000 0000  MSK 2018........
-> 
-> #0, 16:02:29 !!!!!!!!
-> 
-> barebox$ qemu-system-mips -nodefaults -M malta -m 256 \
-> >                          -nographic -serial stdio -monitor null \
-> >                          -bios barebox-flash-image
-> 
-> 
-> barebox 2018.02.0-00079-g1eddb0d382-dirty #1 Fri Mar 2 16:02:38 MSK 2018
->                                         ^^^^^^^
-> 
-> #1, 16:02:38 !!!!!!!!
+This patch should cover at least this use cases:
+- For production, for example automotive: cover as match as possible of SoC
+life time with watchdog. Since some SoCs do not provide enough control over
+watchdog timer it is not enough to enable it in PBL and retrigger in linux.
+Barebox may need to retrigger it a few times as well.
+- For remote development. If there is no way to power cycle the target except
+of manually unplug it.
 
-I can imagine this also goes down to the missing dependency. UTS_VERSION
-contains the build number (the number behind the #) and the build date.
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+---
+ drivers/watchdog/wd_core.c | 57 ++++++++++++++++++++++++++++++++++++++++++++++
+ include/watchdog.h         |  1 +
+ 2 files changed, 58 insertions(+)
 
-Now if the PBL macros lack the dependency and generated/compile.h is
-included *before* it is re-generated whereas the files in common do have
-the dependency and generated/compile.h is included after it has been
-re-generated then you get the effect that you see above.
-
-> 
-> > Another obvious way to fix the issue is to remove UTS_RELEASE and
-> > UTS_VERSION from the pbl headers. Would that be an option?
-> 
-> It isn't a __good__ option.
-
-Why not? the IMD stuff was specifically designed to read the barebox
-version from an image. What else do you need that makes the version
-necessary at a fixed offset in the binary?
-
-Sascha
-
+diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
+index 3a3f51964..e716a5f96 100644
+--- a/drivers/watchdog/wd_core.c
++++ b/drivers/watchdog/wd_core.c
+@@ -16,7 +16,11 @@
+ #include <common.h>
+ #include <command.h>
+ #include <errno.h>
++#include <globalvar.h>
+ #include <linux/ctype.h>
++#include <magicvar.h>
++#include <poller.h>
++#include <init.h>
+ #include <watchdog.h>
+ 
+ static LIST_HEAD(watchdog_list);
+@@ -101,3 +105,56 @@ unsigned int of_get_watchdog_priority(struct device_node *node)
+ 
+ 	return priority;
+ }
++
++static int watchdog_ping_enable;
++static unsigned int watchdog_ping_timeout;
++
++static void watchdog_ping_func(struct poller_struct *poller)
++{
++	struct watchdog *wd;
++	unsigned int timeout = watchdog_ping_timeout;
++
++	if (!watchdog_ping_enable)
++		return;
++
++	wd = watchdog_get_default();
++
++	if (!wd || wd->ping_next_event > get_time_ns())
++		return;
++
++	wd->ping_next_event = get_time_ns() + 500 * MSECOND;
++
++	pr_debug("setting timeout on %s to %ds\n", watchdog_name(wd), timeout);
++
++	wd->set_timeout(wd, timeout);
++}
++
++static struct poller_struct watchdog_poller = {
++	.func = watchdog_ping_func,
++};
++
++static int init_watchdog_ping_timeout(void)
++{
++	int err;
++
++	err = globalvar_add_simple_bool("watchdog.ping_enable",
++			&watchdog_ping_enable);
++	if (err)
++		return err;
++
++	err = globalvar_add_simple_int("watchdog.ping_timeout",
++			&watchdog_ping_timeout, "%u");
++	if (err)
++		return err;
++
++	return poller_register(&watchdog_poller);
++}
++late_initcall(init_watchdog_ping_timeout);
++
++BAREBOX_MAGICVAR_NAMED(global_watchdog_ping_enable,
++		       global.watchdog.ping_enable,
++		       "Enable periodic watchdog pings");
++
++BAREBOX_MAGICVAR_NAMED(global_watchdog_ping_timeout,
++		       global.watchdog.ping_timeout,
++		       "Periodic watchdog timeout in seconds");
+diff --git a/include/watchdog.h b/include/watchdog.h
+index 3e8a487a4..8966f0297 100644
+--- a/include/watchdog.h
++++ b/include/watchdog.h
+@@ -19,6 +19,7 @@ struct watchdog {
+ 	struct device_d *dev;
+ 	unsigned int priority;
+ 	struct list_head list;
++	uint64_t ping_next_event;
+ };
+ 
+ #ifdef CONFIG_WATCHDOG
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.14.1
+
 
 _______________________________________________
 barebox mailing list
