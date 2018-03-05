@@ -1,16 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qk0-x242.google.com ([2607:f8b0:400d:c09::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1esGNt-0001A2-Vo
- for barebox@lists.infradead.org; Sat, 03 Mar 2018 23:16:11 +0000
-Received: by mail-qk0-x242.google.com with SMTP id b130so16437114qkg.9
- for <barebox@lists.infradead.org>; Sat, 03 Mar 2018 15:15:58 -0800 (PST)
+ id 1eskr2-0007dA-Jp
+ for barebox@lists.infradead.org; Mon, 05 Mar 2018 07:48:19 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <sha@pengutronix.de>) id 1eskqn-0001r2-V5
+ for barebox@lists.infradead.org; Mon, 05 Mar 2018 08:48:01 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.89)
+ (envelope-from <sha@pengutronix.de>) id 1eskqn-0000Us-MO
+ for barebox@lists.infradead.org; Mon, 05 Mar 2018 08:48:01 +0100
+Date: Mon, 5 Mar 2018 08:48:01 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180305074801.mkoxhnki3n2cb2oc@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20180303090328.10026-1-linux@rempel-privat.de>
-References: <20180303090328.10026-1-linux@rempel-privat.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 3 Mar 2018 15:15:57 -0800
-Message-ID: <CAHQ1cqFmfiGKnV6cuo_x-_v=097QQ16Qp-u2Z7S1wurCnb7H9A@mail.gmail.com>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,134 +24,132 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] watchdog: add periodic watchdog ping
-To: Oleksij Rempel <linux@rempel-privat.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: v2018.03.0
+To: Barebox List <barebox@lists.infradead.org>
 
-On Sat, Mar 3, 2018 at 1:03 AM, Oleksij Rempel <linux@rempel-privat.de> wrote:
-> This patch should cover at least this use cases:
-> - For production, for example automotive: cover as match as possible of SoC
-> life time with watchdog. Since some SoCs do not provide enough control over
-> watchdog timer it is not enough to enable it in PBL and retrigger in linux.
-> Barebox may need to retrigger it a few times as well.
-> - For remote development. If there is no way to power cycle the target except
-> of manually unplug it.
->
-> Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
-> ---
->  drivers/watchdog/wd_core.c | 57 ++++++++++++++++++++++++++++++++++++++++++++++
->  include/watchdog.h         |  1 +
->  2 files changed, 58 insertions(+)
->
-> diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
-> index 3a3f51964..e716a5f96 100644
-> --- a/drivers/watchdog/wd_core.c
-> +++ b/drivers/watchdog/wd_core.c
-> @@ -16,7 +16,11 @@
->  #include <common.h>
->  #include <command.h>
->  #include <errno.h>
-> +#include <globalvar.h>
->  #include <linux/ctype.h>
-> +#include <magicvar.h>
-> +#include <poller.h>
-> +#include <init.h>
->  #include <watchdog.h>
->
->  static LIST_HEAD(watchdog_list);
-> @@ -101,3 +105,56 @@ unsigned int of_get_watchdog_priority(struct device_node *node)
->
->         return priority;
->  }
-> +
-> +static int watchdog_ping_enable;
-> +static unsigned int watchdog_ping_timeout;
-> +
-> +static void watchdog_ping_func(struct poller_struct *poller)
-> +{
-> +       struct watchdog *wd;
-> +       unsigned int timeout = watchdog_ping_timeout;
-> +
-> +       if (!watchdog_ping_enable)
-> +               return;
-> +
-> +       wd = watchdog_get_default();
-> +
-> +       if (!wd || wd->ping_next_event > get_time_ns())
-> +               return;
 
-What if for some bizarre reason (say legacy design that cannot be
-changed) I have a system with more than one watchdog that needs to be
-petted? I'd consider making pollers a per watchdog device thing and
-also converting the code to use "struct poller_async" since it'll
-already implement periodic execution.
+Hi All,
 
-> +
-> +       wd->ping_next_event = get_time_ns() + 500 * MSECOND;
-> +
+barebox-v2018.03.0 is out.
 
-I'd expect your petting frequency to be tied to watchdog timeout
-period (say half the period), and not just fixed to 0.5 seconds. Is
-this on purpose?
+Some work has been done in the area if FIT images. We have now a greater
+flexibility in which images can be opened, and when they are opened less
+memory is used since we have to do one less copy of the image.
+Another thing worth noting is that squashfs can now do zstd.
 
-> +       pr_debug("setting timeout on %s to %ds\n", watchdog_name(wd), timeout);
-> +
-> +       wd->set_timeout(wd, timeout);
+As usual, see below for a detailed list of patches.
 
-This changes the semantics of "set_timeout" callback, before, when
-notion of "petting" a watchdog didn't exist, it only changed the
-timeout setting, whereas with your patch it also becomes responsible
-for petting as well. It depends on IP block's implementation, but it
-is not that uncommon for one to have those functions -- petting and
-changing the timeout -- to be implemented separately, oftentimes via
-different registers. Just as a suggestion, it might be better to
-introduce a separate "pet()"/"ping()" callback and have the framework
-print a warning when used against a driver that was not explicitly
-ported to support the notion of "petting".
+Sascha
 
-> +}
-> +
-> +static struct poller_struct watchdog_poller = {
-> +       .func = watchdog_ping_func,
-> +};
-> +
-> +static int init_watchdog_ping_timeout(void)
-> +{
-> +       int err;
-> +
-> +       err = globalvar_add_simple_bool("watchdog.ping_enable",
-> +                       &watchdog_ping_enable);
-> +       if (err)
-> +               return err;
-> +
-> +       err = globalvar_add_simple_int("watchdog.ping_timeout",
-> +                       &watchdog_ping_timeout, "%u");
-> +       if (err)
-> +               return err;
-> +
-> +       return poller_register(&watchdog_poller);
-> +}
-> +late_initcall(init_watchdog_ping_timeout);
-> +
-> +BAREBOX_MAGICVAR_NAMED(global_watchdog_ping_enable,
-> +                      global.watchdog.ping_enable,
-> +                      "Enable periodic watchdog pings");
-> +
-> +BAREBOX_MAGICVAR_NAMED(global_watchdog_ping_timeout,
-> +                      global.watchdog.ping_timeout,
-> +                      "Periodic watchdog timeout in seconds");
+----------------------------------------------------------------
+Aleksander Morgado (5):
+      bbremote: rename command subparser variables
+      ratp: rename global context variable
+      ratp: move barebox-specific command to ratp_bb.h
+      ratp: remove unused list pointer from ratp_bb_pkt
+      ratp: remove unused context fields
 
-As another suggestion, consider porting the notion of timeout
-boundaries (max_timeout, min_timeout) similar to what exists in Linux
-kernel to allow some bounds checking and avoiding setting bogus
-timeout values.
+Andrey Smirnov (1):
+      at91sam9x5ek: Add appropriate compatibility guards to all initcalls
 
-Thanks,
-Andrey Smrinov
+Antony Pavlov (5):
+      sandbox: use 'poweroff' command for exit
+      sandbox: avoid symbol conflict for {open,read,close}dir
+      sandbox: add gpio support with libftdi1
+      sandbox: add i2c and spi libftdi1 bit-bang example
+      i2c: i2c_master_send(): don't leave flags uninitialized
+
+Daniel Schultz (2):
+      commands: ubi: ubiupdatevol: Reduce error code to 0 or 1
+      ARM: configs: am335x_defconfig: Reorder configs
+
+Lucas Stach (7):
+      net: phy: scan PHYs referenced by phandle
+      net/e1000: remove one level of indentation
+      net/e1000: use correct bit for flash detection
+      net/e1000: EEPROM isn't valid if only iNVM is available
+      net/e1000: don't check EEPROM signature if populated from iNVM
+      net/e1000: don't register EERPOM device if the content is invalid
+      net: phy: fixed-link: read link parameters from devicetree
+
+Michael Olbrich (1):
+      scripts/compiler.h: inline functions in headers must be static
+
+Philipp Zabel (7):
+      fs/parseopt: Add parseopt_llu_suffix
+      filetype: Add type detection at an offset
+      fs: add support loop mount offset
+      include linux/compiler.h in linux/unaligned/generic.h
+      lib: Add xxhash module
+      lib: Add zstd decompression module
+      squashfs: Add zstd support
+
+Sascha Hauer (51):
+      startup: create /tmp
+      fs: implement is_tftp_fs()
+      libfile: implement make_temp
+      libfile: implement a function to cache a file
+      uimage: fix memory leak in error path
+      uimage: Use is_tftp_fs() and cache_file() to ease TFTP workaround
+      fs/uimagefs: Use is_tftp_fs() and cache_file() to ease TFTP workaround
+      fs: remove now unused function can_lseek_backward()
+      fs: Fix memory leak in mount()
+      bootargs: Fix memory leak in linux_bootargs_get()
+      imd: Make all pointers into image const
+      bbu: imx-bbu-internal: Do not modify image
+      bbu: imx-bbu-internal: make pointers to image const
+      bbu: command: create temporary variable holding the pointer to the im=
+age
+      bbu: Make pointer to image const
+      usb: gadget: fastboot: allow data.image to be const
+      ARM: am33xx: bbu: Make pointers to image const
+      rsa: Add missing newline to pr_err messages
+      pinctrl: do not dereference a device tree property directly
+      libfile: Make write_file buffer const
+      of: Allow for const properties
+      of: fdt: add of_unflatten_dtb_const
+      pstore: lower message priority
+      state: refuse to set dirty parameter via setenv
+      state: Add 'init_from_defaults' parameter
+      startup: Load default environment earlier
+      boot: Make independent of command support
+      bootchooser: Drop SHELL_NONE conflict
+      bootm: FIT: do not depend on FIT pre-opened images
+      FIT: Do not pre-open images
+      FIT: Let user specify the configuration to use
+      FIT: store device_nodes in fit_handle
+      FIT: move handle->verify check to fit_verify_hash()
+      FIT: factor out some helper functions
+      FIT: Implement opening images with no configuration
+      FIT: Allow to open buffer as FIT image
+      env: Add more context to error message
+      Merge branch 'for-next/FIT'
+      Merge branch 'for-next/at91'
+      Merge branch 'for-next/constify'
+      Merge branch 'for-next/e1000'
+      Merge branch 'for-next/misc'
+      Merge branch 'for-next/of'
+      Merge branch 'for-next/ratp'
+      Merge branch 'for-next/sandbox-libftdi'
+      Merge branch 'for-next/tftp-workaround'
+      Merge branch 'for-next/zstd'
+      FIT: Use const dtb unflatten variant
+      state: remove unused arguments from state_new_from_node()
+      state: find backend node with its reproducible name
+      Release v2018.03.0
+
+Uwe Kleine-K=F6nig (1):
+      i2c: read/write_reg: don't assume client->dev to be valid
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
