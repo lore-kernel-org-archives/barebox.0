@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1ettMb-0003PI-6d
- for barebox@lists.infradead.org; Thu, 08 Mar 2018 11:05:39 +0000
+ id 1ettMb-0003PK-6a
+ for barebox@lists.infradead.org; Thu, 08 Mar 2018 11:05:41 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu,  8 Mar 2018 12:05:10 +0100
-Message-Id: <20180308110515.29574-1-o.rempel@pengutronix.de>
+Date: Thu,  8 Mar 2018 12:05:11 +0100
+Message-Id: <20180308110515.29574-2-o.rempel@pengutronix.de>
+In-Reply-To: <20180308110515.29574-1-o.rempel@pengutronix.de>
+References: <20180308110515.29574-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,138 +21,194 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 1/6] watchdog: rename dev to hwdev
+Subject: [PATCH v1 2/6] watchdog: move max timeout test in to wd_core
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Oleksij Rempel <linux@rempel-privat.de>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+this also will be needed for watchdog poller as well
+
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- drivers/watchdog/ar9344_wdt.c  | 2 +-
- drivers/watchdog/davinci_wdt.c | 2 +-
- drivers/watchdog/dw_wdt.c      | 4 ++--
- drivers/watchdog/im28wd.c      | 2 +-
- drivers/watchdog/imxwd.c       | 2 +-
- drivers/watchdog/orion_wdt.c   | 2 +-
- drivers/watchdog/wd_core.c     | 4 ++--
- include/watchdog.h             | 2 +-
- 8 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/watchdog/ar9344_wdt.c | 15 ++++-----------
+ drivers/watchdog/im28wd.c     |  4 +---
+ drivers/watchdog/imxwd.c      | 10 ++++------
+ drivers/watchdog/orion_wdt.c  |  4 +---
+ drivers/watchdog/wd_core.c    |  6 ++++++
+ include/watchdog.h            |  1 +
+ 6 files changed, 17 insertions(+), 23 deletions(-)
 
 diff --git a/drivers/watchdog/ar9344_wdt.c b/drivers/watchdog/ar9344_wdt.c
-index d570cb40f..c1dfc994a 100644
+index c1dfc994a..461528863 100644
 --- a/drivers/watchdog/ar9344_wdt.c
 +++ b/drivers/watchdog/ar9344_wdt.c
-@@ -95,7 +95,7 @@ static int ar9344_wdt_probe(struct device_d *dev)
+@@ -41,20 +41,11 @@ struct ar9344_wd {
+ static int ar9344_watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
+ {
+ 	struct ar9344_wd *priv = to_ar9344_wd(wd);
+-	u32 val, ctrl, rate, max_timout;
+-
+-	rate = clk_get_rate(priv->clk);
+-	max_timout = U32_MAX / rate;
+-
+-	if (timeout > max_timout) {
+-		dev_err(priv->dev, "timeout value out of range: %d > %d\n",
+-			timeout, max_timout);
+-		return -EINVAL;
+-	}
++	u32 val, ctrl;
  
- 	priv->base = IOMEM(iores->start);
- 	priv->wd.set_timeout = ar9344_watchdog_set_timeout;
--	priv->wd.dev = dev;
-+	priv->wd.hwdev = dev;
- 	priv->dev = dev;
+ 	if (timeout) {
+ 		ctrl = AR9344_WD_CTRL_ACTION_FCR;
+-		val = timeout * rate;
++		val = timeout * clk_get_rate(priv->clk);
+ 	} else {
+ 		ctrl = AR9344_WD_CTRL_ACTION_NONE;
+ 		val = U32_MAX;
+@@ -111,6 +102,8 @@ static int ar9344_wdt_probe(struct device_d *dev)
  
- 	dev->priv = priv;
-diff --git a/drivers/watchdog/davinci_wdt.c b/drivers/watchdog/davinci_wdt.c
-index 03dc83408..2ac5f8b38 100644
---- a/drivers/watchdog/davinci_wdt.c
-+++ b/drivers/watchdog/davinci_wdt.c
-@@ -149,7 +149,7 @@ static int davinci_wdt_probe(struct device_d *dev)
- 	clk_enable(davinci_wdt->clk);
+ 	clk_enable(priv->clk);
  
- 	davinci_wdt->wd.set_timeout = davinci_wdt_set_timeout;
--	davinci_wdt->wd.dev = dev;
-+	davinci_wdt->wd.hwdev = dev;
- 
- 	ret = watchdog_register(&davinci_wdt->wd);
- 	if (ret < 0)
-diff --git a/drivers/watchdog/dw_wdt.c b/drivers/watchdog/dw_wdt.c
-index 8fd8c81e6..85e810f24 100644
---- a/drivers/watchdog/dw_wdt.c
-+++ b/drivers/watchdog/dw_wdt.c
-@@ -73,7 +73,7 @@ static int dw_wdt_stop(struct watchdog *wdd)
- 	struct dw_wdt *dw_wdt = to_dw_wdt(wdd);
- 
- 	if (IS_ERR(dw_wdt->rst)) {
--		dev_warn(dw_wdt->wdd.dev, "No reset line. Will not stop.\n");
-+		dev_warn(dw_wdt->wdd.hwdev, "No reset line. Will not stop.\n");
- 		return PTR_ERR(dw_wdt->rst);
- 	}
- 
-@@ -157,7 +157,7 @@ static int dw_wdt_drv_probe(struct device_d *dev)
- 
- 	wdd = &dw_wdt->wdd;
- 	wdd->name = "dw_wdt";
--	wdd->dev = dev;
-+	wdd->hwdev = dev;
- 	wdd->set_timeout = dw_wdt_set_timeout;
- 
- 	ret = watchdog_register(wdd);
++	priv->wd.timeout_max = U32_MAX / clk_get_rate(priv->clk);
++
+ 	ret = watchdog_register(&priv->wd);
+ 	if (ret)
+ 		goto on_error;
 diff --git a/drivers/watchdog/im28wd.c b/drivers/watchdog/im28wd.c
-index 1956fdb73..43edea8d0 100644
+index 43edea8d0..2b233ede2 100644
 --- a/drivers/watchdog/im28wd.c
 +++ b/drivers/watchdog/im28wd.c
-@@ -199,7 +199,7 @@ static int imx28_wd_probe(struct device_d *dev)
+@@ -133,9 +133,6 @@ static int imx28_watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
+ 	struct imx28_wd *pwd = (struct imx28_wd *)to_imx28_wd(wd);
+ 	void __iomem *base;
+ 
+-	if (timeout > (ULONG_MAX / WDOG_TICK_RATE))
+-		return -EINVAL;
+-
+ 	if (timeout) {
+ 		writel(timeout * WDOG_TICK_RATE, pwd->regs + MXS_RTC_WATCHDOG);
+ 		base = pwd->regs + MXS_RTC_SET_ADDR;
+@@ -199,6 +196,7 @@ static int imx28_wd_probe(struct device_d *dev)
  		return PTR_ERR(iores);
  	priv->regs = IOMEM(iores->start);
  	priv->wd.set_timeout = imx28_watchdog_set_timeout;
--	priv->wd.dev = dev;
-+	priv->wd.hwdev = dev;
++	priv->wd.timeout_max = ULONG_MAX / WDOG_TICK_RATE;
+ 	priv->wd.hwdev = dev;
  
  	if (!(readl(priv->regs + MXS_RTC_STAT) & MXS_RTC_STAT_WD_PRESENT)) {
- 		rc = -ENODEV;
 diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
-index bd5e518bc..6b33834fe 100644
+index 6b33834fe..a66fae400 100644
 --- a/drivers/watchdog/imxwd.c
 +++ b/drivers/watchdog/imxwd.c
-@@ -218,7 +218,7 @@ static int imx_wd_probe(struct device_d *dev)
+@@ -28,6 +28,7 @@ struct imx_wd_ops {
+ 	int (*set_timeout)(struct imx_wd *, unsigned);
+ 	void (*soc_reset)(struct imx_wd *);
+ 	int (*init)(struct imx_wd *);
++	unsigned int timeout_max;
+ };
+ 
+ struct imx_wd {
+@@ -71,9 +72,6 @@ static int imx1_watchdog_set_timeout(struct imx_wd *priv, unsigned timeout)
+ 
+ 	dev_dbg(priv->dev, "%s: %d\n", __func__, timeout);
+ 
+-	if (timeout > 64)
+-		return -EINVAL;
+-
+ 	if (!timeout) {
+ 		writew(IMX1_WDOG_WCR_WHALT, priv->base + IMX1_WDOG_WCR);
+ 		return 0;
+@@ -102,9 +100,6 @@ static int imx21_watchdog_set_timeout(struct imx_wd *priv, unsigned timeout)
+ 
+ 	dev_dbg(priv->dev, "%s: %d\n", __func__, timeout);
+ 
+-	if (timeout > 128)
+-		return -EINVAL;
+-
+ 	if (timeout == 0) /* bit 2 (WDE) cannot be set to 0 again */
+ 		return -ENOSYS;
+ 
+@@ -218,6 +213,7 @@ static int imx_wd_probe(struct device_d *dev)
  	priv->base = IOMEM(iores->start);
  	priv->ops = ops;
  	priv->wd.set_timeout = imx_watchdog_set_timeout;
--	priv->wd.dev = dev;
-+	priv->wd.hwdev = dev;
++	priv->wd.timeout_max = priv->ops->timeout_max;
+ 	priv->wd.hwdev = dev;
  	priv->dev = dev;
  
- 	priv->ext_reset = of_property_read_bool(dev->device_node,
+@@ -259,11 +255,13 @@ static const struct imx_wd_ops imx21_wd_ops = {
+ 	.set_timeout = imx21_watchdog_set_timeout,
+ 	.soc_reset = imx21_soc_reset,
+ 	.init = imx21_wd_init,
++	.timeout_max = 128,
+ };
+ 
+ static const struct imx_wd_ops imx1_wd_ops = {
+ 	.set_timeout = imx1_watchdog_set_timeout,
+ 	.soc_reset = imx1_soc_reset,
++	.timeout_max = 64,
+ };
+ 
+ static __maybe_unused struct of_device_id imx_wdt_dt_ids[] = {
 diff --git a/drivers/watchdog/orion_wdt.c b/drivers/watchdog/orion_wdt.c
-index 2802033f7..4fe1ac1fd 100644
+index 4fe1ac1fd..dd1fa3a04 100644
 --- a/drivers/watchdog/orion_wdt.c
 +++ b/drivers/watchdog/orion_wdt.c
-@@ -88,7 +88,7 @@ static int orion_wdt_probe(struct device_d *dev)
+@@ -49,9 +49,6 @@ static int armada_xp_set_timeout(struct watchdog *wd, unsigned timeout)
+ 		container_of(wd, struct orion_wdt_ddata, wd);
+ 	u32 ctrl;
  
+-	if (0xffffffff / CLKRATE < timeout)
+-		return -EINVAL;
+-
+ 	ctrl = readl(ddata->timer_base + TIMER_CTRL);
+ 
+ 	if (timeout == 0) {
+@@ -89,6 +86,7 @@ static int orion_wdt_probe(struct device_d *dev)
  	ddata->wd.set_timeout = armada_xp_set_timeout;
  	ddata->wd.name = "orion_wdt";
--	ddata->wd.dev = dev;
-+	ddata->wd.hwdev = dev;
+ 	ddata->wd.hwdev = dev;
++	ddata->wd.timeout_max = U32_MAX / CLKRATE;
  
  	res_timer = dev_request_mem_resource(dev, 0);
  	if (IS_ERR(res_timer)) {
 diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
-index 3a3f51964..56436e6f8 100644
+index 56436e6f8..1d0f0de7d 100644
 --- a/drivers/watchdog/wd_core.c
 +++ b/drivers/watchdog/wd_core.c
-@@ -23,8 +23,8 @@ static LIST_HEAD(watchdog_list);
+@@ -36,6 +36,9 @@ int watchdog_register(struct watchdog *wd)
+ 	if (!wd->priority)
+ 		wd->priority = WATCHDOG_DEFAULT_PRIORITY;
  
- static const char *watchdog_name(struct watchdog *wd)
- {
--	if (wd->dev)
--		return dev_name(wd->dev);
-+	if (wd->hwdev)
-+		return dev_name(wd->hwdev);
- 	if (wd->name)
- 		return wd->name;
++	dev_add_param_uint32_ro(&wd->dev, "timeout_max",
++			&wd->timeout_max, "%u");
++
+ 	list_add_tail(&wd->list, &watchdog_list);
  
+ 	pr_debug("registering watchdog %s with priority %d\n", watchdog_name(wd),
+@@ -81,6 +84,9 @@ int watchdog_set_timeout(unsigned timeout)
+ 	if (!wd)
+ 		return -ENODEV;
+ 
++	if (timeout > wd->timeout_max)
++		return -EINVAL;
++
+ 	pr_debug("setting timeout on %s to %ds\n", watchdog_name(wd), timeout);
+ 
+ 	return wd->set_timeout(wd, timeout);
 diff --git a/include/watchdog.h b/include/watchdog.h
-index 3e8a487a4..848981cc0 100644
+index 848981cc0..1e06fbc3f 100644
 --- a/include/watchdog.h
 +++ b/include/watchdog.h
-@@ -16,7 +16,7 @@
- struct watchdog {
- 	int (*set_timeout)(struct watchdog *, unsigned);
+@@ -18,6 +18,7 @@ struct watchdog {
  	const char *name;
--	struct device_d *dev;
-+	struct device_d *hwdev;
+ 	struct device_d *hwdev;
  	unsigned int priority;
++	unsigned int timeout_max;
  	struct list_head list;
  };
+ 
 -- 
 2.16.1
 
