@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.89 #1 (Red Hat Linux))
- id 1erK47-0005hM-I7
- for barebox@lists.infradead.org; Thu, 01 Mar 2018 08:59:53 +0000
-Date: Thu, 1 Mar 2018 09:59:39 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180301085939.36ot5tfnxprvene4@pengutronix.de>
-References: <20180228093820.19423-1-m.grzeschik@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180228093820.19423-1-m.grzeschik@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1evfNS-00040V-76
+ for barebox@lists.infradead.org; Tue, 13 Mar 2018 08:33:48 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Tue, 13 Mar 2018 09:33:27 +0100
+Message-Id: <20180313083328.25705-5-o.rempel@pengutronix.de>
+In-Reply-To: <20180313083328.25705-1-o.rempel@pengutronix.de>
+References: <20180313083328.25705-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,53 +16,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: spi-nor: add support for w25q16dw
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 5/6] watchdog: provide timeout_cur value
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-On Wed, Feb 28, 2018 at 10:38:20AM +0100, Michael Grzeschik wrote:
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> ---
->  drivers/mtd/spi-nor/spi-nor.c | 1 +
->  1 file changed, 1 insertion(+)
+timeout_cur will be used for watchdog poller.
+Provided values should be good enough for most users
+and still can be changed for separate projects and
+fit to needed requirements.
 
-Applied, although I would really prefer if we could start keeping the
-table in barebox in sync with the one from the kernel.
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/watchdog/wd_core.c | 18 ++++++++++++++++++
+ include/watchdog.h         |  1 +
+ 2 files changed, 19 insertions(+)
 
-Sascha
-
-> 
-> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-> index 5cf650c0e2..057638ec5a 100644
-> --- a/drivers/mtd/spi-nor/spi-nor.c
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
-> @@ -641,6 +641,7 @@ static const struct spi_device_id spi_nor_ids[] = {
->  	{ "w25q20cl", INFO(0xef4012, 0, 64 * 1024,  4, SECT_4K) },
->  	{ "w25q20bw", INFO(0xef5012, 0, 64 * 1024,  4, SECT_4K) },
->  	{ "w25q20ew", INFO(0xef6012, 0, 64 * 1024,  4, SECT_4K) },
-> +	{ "w25q16dw", INFO(0xef6015, 0, 64 * 1024, 32, SECT_4K) },
->  	{ "w25q32", INFO(0xef4016, 0, 64 * 1024,  64, SECT_4K) },
->  	{ "w25q32dw", INFO(0xef6016, 0, 64 * 1024,  64, SECT_4K) },
->  	{ "w25x64", INFO(0xef3017, 0, 64 * 1024, 128, SECT_4K) },
-> -- 
-> 2.16.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
+index 31a88a377..69663b39c 100644
+--- a/drivers/watchdog/wd_core.c
++++ b/drivers/watchdog/wd_core.c
+@@ -31,6 +31,16 @@ static const char *watchdog_name(struct watchdog *wd)
+ 	return "unknown";
+ }
+ 
++static int watchdog_set_cur(struct param_d *param, void *priv)
++{
++	struct watchdog *wd = priv;
++
++	if (wd->timeout_cur > wd->timeout_max)
++		return -EINVAL;
++
++	return 0;
++}
++
+ static int watchdog_register_dev(struct watchdog *wd, const char *name, int id)
+ {
+ 	wd->dev.parent = wd->hwdev;
+@@ -63,11 +73,19 @@ int watchdog_register(struct watchdog *wd)
+ 	if (!wd->timeout_max)
+ 		wd->timeout_max = 60 * 60 * 24;
+ 
++	if (!wd->timeout_cur || wd->timeout_cur > wd->timeout_max)
++		wd->timeout_cur = wd->timeout_max;
++
+ 	p = dev_add_param_uint32_ro(&wd->dev, "timeout_max",
+ 			&wd->timeout_max, "%u");
+ 	if (IS_ERR(p))
+ 		return PTR_ERR(p);
+ 
++	p = dev_add_param_uint32(&wd->dev, "timeout_cur", watchdog_set_cur, NULL,
++			&wd->timeout_cur, "%u", wd);
++	if (IS_ERR(p))
++		return PTR_ERR(p);
++
+ 	list_add_tail(&wd->list, &watchdog_list);
+ 
+ 	pr_debug("registering watchdog %s with priority %d\n", watchdog_name(wd),
+diff --git a/include/watchdog.h b/include/watchdog.h
+index a2459d255..2f1874c19 100644
+--- a/include/watchdog.h
++++ b/include/watchdog.h
+@@ -20,6 +20,7 @@ struct watchdog {
+ 	struct device_d dev;
+ 	unsigned int priority;
+ 	unsigned int timeout_max;
++	unsigned int timeout_cur;
+ 	struct list_head list;
+ };
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.16.1
+
 
 _______________________________________________
 barebox mailing list
