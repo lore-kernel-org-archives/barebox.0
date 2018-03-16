@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewosI-0001qR-MV
- for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:27 +0000
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1ewosJ-0008BO-5S
+ for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 76/78] ARM: create separate mmu_64.h file
-Date: Fri, 16 Mar 2018 13:53:52 +0100
-Message-Id: <20180316125354.23462-77-s.hauer@pengutronix.de>
+Subject: [PATCH 41/78] ARM: aarch64: mmu: Fix adding additional page table
+ levels
+Date: Fri, 16 Mar 2018 13:53:17 +0100
+Message-Id: <20180316125354.23462-42-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,131 +25,80 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: Barebox List <barebox@lists.infradead.org>
 
-cpu/mmu.h has nothing in common for the 32bit and 64bit variant. Make it
-two separate files.
+When we create a higher level page table we have to initialize it
+with the settings from the previous lower level page table so that
+we do not modify unrelated mappings. split_block() is taken from
+U-Boot code and does this job.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/mmu.h    | 47 -----------------------------------------------
- arch/arm/cpu/mmu_64.c |  2 +-
- arch/arm/cpu/mmu_64.h | 37 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 38 insertions(+), 48 deletions(-)
- create mode 100644 arch/arm/cpu/mmu_64.h
+ arch/arm/cpu/mmu_64.c | 39 ++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 34 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
-index 5803cb6a83..79ebc80d7d 100644
---- a/arch/arm/cpu/mmu.h
-+++ b/arch/arm/cpu/mmu.h
-@@ -1,53 +1,6 @@
- #ifndef __ARM_MMU_H
- #define __ARM_MMU_H
- 
--#ifdef CONFIG_CPU_64v8
--
--#ifndef __ASSEMBLY__
--
--static inline void set_ttbr_tcr_mair(int el, uint64_t table, uint64_t tcr, uint64_t attr)
--{
--	asm volatile("dsb sy");
--	if (el == 1) {
--		asm volatile("msr ttbr0_el1, %0" : : "r" (table) : "memory");
--		asm volatile("msr tcr_el1, %0" : : "r" (tcr) : "memory");
--		asm volatile("msr mair_el1, %0" : : "r" (attr) : "memory");
--	} else if (el == 2) {
--		asm volatile("msr ttbr0_el2, %0" : : "r" (table) : "memory");
--		asm volatile("msr tcr_el2, %0" : : "r" (tcr) : "memory");
--		asm volatile("msr mair_el2, %0" : : "r" (attr) : "memory");
--	} else if (el == 3) {
--		asm volatile("msr ttbr0_el3, %0" : : "r" (table) : "memory");
--		asm volatile("msr tcr_el3, %0" : : "r" (tcr) : "memory");
--		asm volatile("msr mair_el3, %0" : : "r" (attr) : "memory");
--	} else {
--		hang();
--	}
--	asm volatile("isb");
--}
--
--static inline uint64_t get_ttbr(int el)
--{
--	uint64_t val;
--	if (el == 1) {
--		asm volatile("mrs %0, ttbr0_el1" : "=r" (val));
--	} else if (el == 2) {
--		asm volatile("mrs %0, ttbr0_el2" : "=r" (val));
--	} else if (el == 3) {
--		asm volatile("mrs %0, ttbr0_el3" : "=r" (val));
--	} else {
--		hang();
--	}
--
--	return val;
--}
--
--void mmu_early_enable(uint64_t membase, uint64_t memsize, uint64_t _ttb);
--
--#endif
--
--#endif /* CONFIG_CPU_64v8 */
--
- #ifdef CONFIG_MMU
- void __mmu_cache_on(void);
- void __mmu_cache_off(void);
 diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 094bc0ac62..7f29ae7623 100644
+index baa443f9e2..2934ad12cd 100644
 --- a/arch/arm/cpu/mmu_64.c
 +++ b/arch/arm/cpu/mmu_64.c
-@@ -32,7 +32,7 @@
- #include <memory.h>
- #include <asm/system_info.h>
+@@ -123,10 +123,8 @@ static uint64_t *get_level_table(uint64_t *pte)
+ {
+ 	uint64_t *table = (uint64_t *)(*pte & XLAT_ADDR_MASK);
  
--#include "mmu.h"
-+#include "mmu_64.h"
+-	if (pte_type(pte) != PTE_TYPE_TABLE) {
+-		table = create_table();
+-		set_table(pte, table);
+-	}
++	if (pte_type(pte) != PTE_TYPE_TABLE)
++		BUG();
  
- #define CACHED_MEM      (PTE_BLOCK_MEMTYPE(MT_NORMAL) | \
- 			 PTE_BLOCK_OUTER_SHARE | \
-diff --git a/arch/arm/cpu/mmu_64.h b/arch/arm/cpu/mmu_64.h
-new file mode 100644
-index 0000000000..cc01db0db9
---- /dev/null
-+++ b/arch/arm/cpu/mmu_64.h
-@@ -0,0 +1,37 @@
+ 	return table;
+ }
+@@ -154,6 +152,36 @@ static __maybe_unused uint64_t *find_pte(uint64_t addr)
+ 	return pte;
+ }
+ 
++#define MAX_PTE_ENTRIES 512
 +
-+static inline void set_ttbr_tcr_mair(int el, uint64_t table, uint64_t tcr, uint64_t attr)
++/* Splits a block PTE into table with subpages spanning the old block */
++static void split_block(uint64_t *pte, int level)
 +{
-+	asm volatile("dsb sy");
-+	if (el == 1) {
-+		asm volatile("msr ttbr0_el1, %0" : : "r" (table) : "memory");
-+		asm volatile("msr tcr_el1, %0" : : "r" (tcr) : "memory");
-+		asm volatile("msr mair_el1, %0" : : "r" (attr) : "memory");
-+	} else if (el == 2) {
-+		asm volatile("msr ttbr0_el2, %0" : : "r" (table) : "memory");
-+		asm volatile("msr tcr_el2, %0" : : "r" (tcr) : "memory");
-+		asm volatile("msr mair_el2, %0" : : "r" (attr) : "memory");
-+	} else if (el == 3) {
-+		asm volatile("msr ttbr0_el3, %0" : : "r" (table) : "memory");
-+		asm volatile("msr tcr_el3, %0" : : "r" (tcr) : "memory");
-+		asm volatile("msr mair_el3, %0" : : "r" (attr) : "memory");
-+	} else {
-+		hang();
-+	}
-+	asm volatile("isb");
-+}
++	uint64_t old_pte = *pte;
++	uint64_t *new_table;
++	uint64_t i = 0;
++	int levelshift;
 +
-+static inline uint64_t get_ttbr(int el)
-+{
-+	uint64_t val;
-+	if (el == 1) {
-+		asm volatile("mrs %0, ttbr0_el1" : "=r" (val));
-+	} else if (el == 2) {
-+		asm volatile("mrs %0, ttbr0_el2" : "=r" (val));
-+	} else if (el == 3) {
-+		asm volatile("mrs %0, ttbr0_el3" : "=r" (val));
-+	} else {
-+		hang();
++	if ((*pte & PTE_TYPE_MASK) == PTE_TYPE_TABLE)
++		return;
++
++	/* level describes the parent level, we need the child ones */
++	levelshift = level2shift(level + 1);
++
++	new_table = create_table();
++
++	for (i = 0; i < MAX_PTE_ENTRIES; i++) {
++		new_table[i] = old_pte | (i << levelshift);
++
++		/* Level 3 block PTEs have the table type */
++		if ((level + 1) == 3)
++			new_table[i] |= PTE_TYPE_TABLE;
 +	}
 +
-+	return val;
++	/* Set the new table into effect */
++	set_table(pte, new_table);
 +}
++
+ static void map_region(uint64_t virt, uint64_t phys, uint64_t size, uint64_t attr)
+ {
+ 	uint64_t block_size;
+@@ -191,7 +219,8 @@ static void map_region(uint64_t virt, uint64_t phys, uint64_t size, uint64_t att
+ 				phys += block_size;
+ 				size -= block_size;
+ 				break;
+-
++			} else {
++				split_block(pte, level);
+ 			}
+ 
+ 			table = get_level_table(pte);
 -- 
 2.16.1
 
