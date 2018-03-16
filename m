@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewosD-0008BQ-65
- for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:22 +0000
+ id 1ewosH-0008BN-Je
+ for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 16 Mar 2018 13:53:23 +0100
-Message-Id: <20180316125354.23462-48-s.hauer@pengutronix.de>
+Date: Fri, 16 Mar 2018 13:53:04 +0100
+Message-Id: <20180316125354.23462-29-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,59 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 47/78] ARM: Make some variables 64bit aware
+Subject: [PATCH 28/78] ARM: relocate_to_current_adr: Use unsigned long for
+ variables
 To: Barebox List <barebox@lists.infradead.org>
 
-Use unsigned long as type for variables that are used as addresses.
+relocate_to_current_adr() fixes up pointers in the binary, so unsigned
+long is a better match as it works on aarch64 aswell.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/start-pbl.c  | 10 +++++-----
- arch/arm/cpu/uncompress.c |  2 +-
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/arm/cpu/common.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index 73c27429da..25f91b02f3 100644
---- a/arch/arm/cpu/start-pbl.c
-+++ b/arch/arm/cpu/start-pbl.c
-@@ -48,10 +48,10 @@ extern void *input_data_end;
- __noreturn void barebox_single_pbl_start(unsigned long membase,
- 		unsigned long memsize, void *boarddata)
+diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
+index 7c07d00c1b..3766116d97 100644
+--- a/arch/arm/cpu/common.c
++++ b/arch/arm/cpu/common.c
+@@ -30,8 +30,8 @@
+  */
+ void relocate_to_current_adr(void)
  {
 -	uint32_t offset;
--	uint32_t pg_start, pg_end, pg_len, uncompressed_len;
+-	uint32_t *dstart, *dend, *dynsym, *dynend;
 +	unsigned long offset;
-+	unsigned long pg_start, pg_end, pg_len, uncompressed_len;
- 	void __noreturn (*barebox)(unsigned long, unsigned long, void *);
--	uint32_t endmem = membase + memsize;
-+	unsigned long endmem = membase + memsize;
- 	unsigned long barebox_base;
++	unsigned long *dstart, *dend, *dynsym, *dynend;
  
- 	if (IS_ENABLED(CONFIG_PBL_RELOCATABLE))
-@@ -60,8 +60,8 @@ __noreturn void barebox_single_pbl_start(unsigned long membase,
  	/* Get offset between linked address and runtime address */
  	offset = get_runtime_offset();
+@@ -43,14 +43,14 @@ void relocate_to_current_adr(void)
+ 	dynend = (void *)__dynsym_end + offset;
  
--	pg_start = (uint32_t)&input_data + global_variable_offset();
--	pg_end = (uint32_t)&input_data_end + global_variable_offset();
-+	pg_start = (unsigned long)&input_data + global_variable_offset();
-+	pg_end = (unsigned long)&input_data_end + global_variable_offset();
- 	pg_len = pg_end - pg_start;
- 	uncompressed_len = get_unaligned((const u32 *)(pg_start + pg_len - 4));
+ 	while (dstart < dend) {
+-		uint32_t *fixup = (uint32_t *)(*dstart + offset);
+-		uint32_t type = *(dstart + 1);
++		unsigned long *fixup = (unsigned long *)(*dstart + offset);
++		unsigned long type = *(dstart + 1);
  
-diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-index 37845b2259..c721eef0ad 100644
---- a/arch/arm/cpu/uncompress.c
-+++ b/arch/arm/cpu/uncompress.c
-@@ -45,7 +45,7 @@ void __noreturn barebox_multi_pbl_start(unsigned long membase,
- {
- 	uint32_t pg_len, uncompressed_len;
- 	void __noreturn (*barebox)(unsigned long, unsigned long, void *);
--	uint32_t endmem = membase + memsize;
-+	unsigned long endmem = membase + memsize;
- 	unsigned long barebox_base;
- 	uint32_t *image_end;
- 	void *pg_start;
+ 		if ((type & 0xff) == 0x17) {
+ 			*fixup = *fixup + offset;
+ 		} else {
+ 			int index = type >> 8;
+-			uint32_t r = dynsym[index * 4 + 1];
++			unsigned long r = dynsym[index * 4 + 1];
+ 
+ 			*fixup = *fixup + r + offset;
+ 		}
 -- 
 2.16.1
 
