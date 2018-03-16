@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewosI-0001qC-4r
- for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:24 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1ewos9-00068O-3H
+ for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 23/78] ARM: aarch64: cache: Add v8_inv_dcache_range
-Date: Fri, 16 Mar 2018 13:52:59 +0100
-Message-Id: <20180316125354.23462-24-s.hauer@pengutronix.de>
+Subject: [PATCH 18/78] ARM: bitops: remove unnecessary #ifdef
+Date: Fri, 16 Mar 2018 13:52:54 +0100
+Message-Id: <20180316125354.23462-19-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,58 +24,30 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: Barebox List <barebox@lists.infradead.org>
 
-implement v8_flush_dcache_range based on v8_inv_dcache_range. While
-at it add a prototype for v8_inv_dcache_range.
+__fls() must always be provided, not only for aarch64, so remove
+unnecessary #ifdef. This didn't show up because nobody directly uses
+__fls() in barebox. Only aarch64 indirectly uses __fls() for
+implementing fls64().
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/cache-armv8.S   | 19 +++++++++++++++++++
- arch/arm/include/asm/cache.h |  2 ++
- 2 files changed, 21 insertions(+)
+ arch/arm/include/asm/bitops.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm/cpu/cache-armv8.S b/arch/arm/cpu/cache-armv8.S
-index 82b2f81778..3e21b35913 100644
---- a/arch/arm/cpu/cache-armv8.S
-+++ b/arch/arm/cpu/cache-armv8.S
-@@ -148,6 +148,25 @@ ENTRY(v8_flush_dcache_range)
- 	ret
- ENDPROC(v8_flush_dcache_range)
+diff --git a/arch/arm/include/asm/bitops.h b/arch/arm/include/asm/bitops.h
+index 344e288bae..cd356c5e3d 100644
+--- a/arch/arm/include/asm/bitops.h
++++ b/arch/arm/include/asm/bitops.h
+@@ -162,9 +162,7 @@ static inline int constant_fls(int x)
+ #include <asm-generic/bitops/fls.h>
+ #endif		/* __ARM__USE_GENERIC_FF */
  
-+.section .text.v8_inv_dcache_range
-+ENTRY(v8_inv_dcache_range)
-+	mrs	x3, ctr_el0
-+	lsr	x3, x3, #16
-+	and	x3, x3, #0xf
-+	mov	x2, #4
-+	lsl	x2, x2, x3		/* cache line size */
-+
-+	/* x2 <- minimal cache line size in cache system */
-+	sub	x3, x2, #1
-+	bic	x0, x0, x3
-+1:	dc	ivac, x0	/* invalidate data or unified cache */
-+	add	x0, x0, x2
-+	cmp	x0, x1
-+	b.lo	1b
-+	dsb	sy
-+	ret
-+ENDPROC(v8_inv_dcache_range)
-+
- /*
-  * void v8_invalidate_icache_all(void)
-  *
-diff --git a/arch/arm/include/asm/cache.h b/arch/arm/include/asm/cache.h
-index 406a9d5d99..503bf8a0f7 100644
---- a/arch/arm/include/asm/cache.h
-+++ b/arch/arm/include/asm/cache.h
-@@ -5,6 +5,8 @@
- extern void v8_invalidate_icache_all(void);
- void v8_flush_dcache_all(void);
- void v8_invalidate_dcache_all(void);
-+void v8_flush_dcache_range(unsigned long start, unsigned long end);
-+void v8_inv_dcache_range(unsigned long start, unsigned long end);
- #endif
+-#if __LINUX_ARM_ARCH__ == 8
+ #include <asm-generic/bitops/__fls.h>
+-#endif
  
- static inline void icache_invalidate(void)
+ #include <asm-generic/bitops/fls64.h>
+ 
 -- 
 2.16.1
 
