@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewos8-00068K-Fr
- for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:30 +0000
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1ewosH-0008BT-NP
+ for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:26 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 12/78] ARM: aarch64: silence compiler warning
-Date: Fri, 16 Mar 2018 13:52:48 +0100
-Message-Id: <20180316125354.23462-13-s.hauer@pengutronix.de>
+Subject: [PATCH 49/78] dma: Add prototypes for dma mapping functions
+Date: Fri, 16 Mar 2018 13:53:25 +0100
+Message-Id: <20180316125354.23462-50-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,27 +24,41 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: Barebox List <barebox@lists.infradead.org>
 
-find_pte is currently unused, nevertheless it's useful for debugging
-purposes. Add a __maybe_unused to silence the compiler warning.
+Right now we only have the dma_sync_single_* functions, but no functions
+for actually mapping a pointer. The mapping functions become necessary
+when casting a pointer to unsigned long to get a dma address is not
+enough. (I'm not even going so far that we'll add IOMMU support, but on
+some architectures we need a place where we can check if a pointer is
+DMA mappable at all)
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/mmu_64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/dma.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index fd41435746..4803a85e4c 100644
---- a/arch/arm/cpu/mmu_64.c
-+++ b/arch/arm/cpu/mmu_64.c
-@@ -130,7 +130,7 @@ static uint64_t *get_level_table(uint64_t *pte)
- 	return table;
+diff --git a/include/dma.h b/include/dma.h
+index 29d94c0a52..5fdcb1733c 100644
+--- a/include/dma.h
++++ b/include/dma.h
+@@ -30,6 +30,18 @@ static inline void dma_free(void *mem)
  }
+ #endif
  
--static uint64_t *find_pte(uint64_t addr)
-+static __maybe_unused uint64_t *find_pte(uint64_t addr)
- {
- 	uint64_t *pte;
- 	uint64_t block_shift;
++dma_addr_t dma_map_single(struct device_d *dev, void *ptr, size_t size,
++			  enum dma_data_direction dir);
++void dma_unmap_single(struct device_d *dev, dma_addr_t addr, size_t size,
++		      enum dma_data_direction dir);
++
++#define DMA_ERROR_CODE  (~(dma_addr_t)0)
++
++static inline int dma_mapping_error(struct device_d *dev, dma_addr_t dma_addr)
++{
++	return dma_addr == DMA_ERROR_CODE;
++}
++
+ /* streaming DMA - implement the below calls to support HAS_DMA */
+ void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
+ 			     enum dma_data_direction dir);
 -- 
 2.16.1
 
