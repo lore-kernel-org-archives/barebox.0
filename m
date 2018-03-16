@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewosJ-0008BO-5S
+ id 1ewosJ-0008BQ-5U
  for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 41/78] ARM: aarch64: mmu: Fix adding additional page table
- levels
-Date: Fri, 16 Mar 2018 13:53:17 +0100
-Message-Id: <20180316125354.23462-42-s.hauer@pengutronix.de>
+Subject: [PATCH 40/78] ARM: aarch64: mmu: use PTE_* definitions from U-Boot
+Date: Fri, 16 Mar 2018 13:53:16 +0100
+Message-Id: <20180316125354.23462-41-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,80 +24,174 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: Barebox List <barebox@lists.infradead.org>
 
-When we create a higher level page table we have to initialize it
-with the settings from the previous lower level page table so that
-we do not modify unrelated mappings. split_block() is taken from
-U-Boot code and does this job.
+'PMD' (Page Middle Directory) is a Linuxism that is not really
+helpful in the barebox MMU code. Use the U-Boot definitions
+which only use PTE_* and seem to be more consistent for our
+usecase.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/mmu_64.c | 39 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 34 insertions(+), 5 deletions(-)
+ arch/arm/cpu/mmu_64.c            | 22 +++++++------
+ arch/arm/include/asm/pgtable64.h | 67 +++++++++++++---------------------------
+ 2 files changed, 35 insertions(+), 54 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index baa443f9e2..2934ad12cd 100644
+index 695a73262d..baa443f9e2 100644
 --- a/arch/arm/cpu/mmu_64.c
 +++ b/arch/arm/cpu/mmu_64.c
-@@ -123,10 +123,8 @@ static uint64_t *get_level_table(uint64_t *pte)
+@@ -34,8 +34,12 @@
+ 
+ #include "mmu.h"
+ 
+-#define CACHED_MEM      (PMD_ATTRINDX(MT_NORMAL) | PMD_SECT_S | PMD_SECT_AF | PMD_TYPE_SECT)
+-#define UNCACHED_MEM    (PMD_ATTRINDX(MT_DEVICE_nGnRnE) | PMD_SECT_AF)
++#define CACHED_MEM      (PTE_BLOCK_MEMTYPE(MT_NORMAL) | \
++			 PTE_BLOCK_OUTER_SHARE | \
++			 PTE_BLOCK_AF)
++#define UNCACHED_MEM    (PTE_BLOCK_MEMTYPE(MT_DEVICE_nGnRnE) | \
++			 PTE_BLOCK_OUTER_SHARE | \
++			 PTE_BLOCK_AF)
+ 
+ static uint64_t *ttb;
+ 
+@@ -94,14 +98,14 @@ static uint64_t level2mask(int level)
+ 
+ static int pte_type(uint64_t *pte)
+ {
+-	return *pte & PMD_TYPE_MASK;
++	return *pte & PTE_TYPE_MASK;
+ }
+ 
+ static void set_table(uint64_t *pt, uint64_t *table_addr)
+ {
+ 	uint64_t val;
+ 
+-	val = PMD_TYPE_TABLE | (uint64_t)table_addr;
++	val = PTE_TYPE_TABLE | (uint64_t)table_addr;
+ 	*pt = val;
+ }
+ 
+@@ -119,7 +123,7 @@ static uint64_t *get_level_table(uint64_t *pte)
  {
  	uint64_t *table = (uint64_t *)(*pte & XLAT_ADDR_MASK);
  
--	if (pte_type(pte) != PTE_TYPE_TABLE) {
--		table = create_table();
--		set_table(pte, table);
--	}
-+	if (pte_type(pte) != PTE_TYPE_TABLE)
-+		BUG();
+-	if (pte_type(pte) != PMD_TYPE_TABLE) {
++	if (pte_type(pte) != PTE_TYPE_TABLE) {
+ 		table = create_table();
+ 		set_table(pte, table);
+ 	}
+@@ -141,7 +145,7 @@ static __maybe_unused uint64_t *find_pte(uint64_t addr)
+ 		idx = (addr & level2mask(i)) >> block_shift;
+ 		pte += idx;
  
- 	return table;
- }
-@@ -154,6 +152,36 @@ static __maybe_unused uint64_t *find_pte(uint64_t addr)
- 	return pte;
- }
+-		if ((pte_type(pte) != PMD_TYPE_TABLE) || (block_shift <= GRANULE_SIZE_SHIFT))
++		if ((pte_type(pte) != PTE_TYPE_TABLE) || (block_shift <= GRANULE_SIZE_SHIFT))
+ 			break;
+ 		else
+ 			pte = (uint64_t *)(*pte & XLAT_ADDR_MASK);
+@@ -165,21 +169,21 @@ static void map_region(uint64_t virt, uint64_t phys, uint64_t size, uint64_t att
  
-+#define MAX_PTE_ENTRIES 512
-+
-+/* Splits a block PTE into table with subpages spanning the old block */
-+static void split_block(uint64_t *pte, int level)
-+{
-+	uint64_t old_pte = *pte;
-+	uint64_t *new_table;
-+	uint64_t i = 0;
-+	int levelshift;
-+
-+	if ((*pte & PTE_TYPE_MASK) == PTE_TYPE_TABLE)
-+		return;
-+
-+	/* level describes the parent level, we need the child ones */
-+	levelshift = level2shift(level + 1);
-+
-+	new_table = create_table();
-+
-+	for (i = 0; i < MAX_PTE_ENTRIES; i++) {
-+		new_table[i] = old_pte | (i << levelshift);
-+
-+		/* Level 3 block PTEs have the table type */
-+		if ((level + 1) == 3)
-+			new_table[i] |= PTE_TYPE_TABLE;
-+	}
-+
-+	/* Set the new table into effect */
-+	set_table(pte, new_table);
-+}
-+
- static void map_region(uint64_t virt, uint64_t phys, uint64_t size, uint64_t attr)
- {
- 	uint64_t block_size;
-@@ -191,7 +219,8 @@ static void map_region(uint64_t virt, uint64_t phys, uint64_t size, uint64_t att
- 				phys += block_size;
- 				size -= block_size;
- 				break;
+ 	addr = virt;
+ 
+-	attr &= ~(PMD_TYPE_SECT);
++	attr &= ~PTE_TYPE_MASK;
+ 
+ 	while (size) {
+ 		table = ttb;
+ 		for (level = 1; level < 4; level++) {
+ 			block_shift = level2shift(level);
+ 			idx = (addr & level2mask(level)) >> block_shift;
+-			block_size = (1 << block_shift);
++			block_size = (1ULL << block_shift);
+ 
+ 			pte = table + idx;
+ 
+ 			if (level == 3)
+ 				attr |= PTE_TYPE_PAGE;
+ 			else
+-				attr |= PMD_TYPE_SECT;
++				attr |= PTE_TYPE_BLOCK;
+ 
+ 			if (size >= block_size && IS_ALIGNED(addr, block_size)) {
+ 				*pte = phys | attr;
+diff --git a/arch/arm/include/asm/pgtable64.h b/arch/arm/include/asm/pgtable64.h
+index 7f7efa10ca..f2888c3ccd 100644
+--- a/arch/arm/include/asm/pgtable64.h
++++ b/arch/arm/include/asm/pgtable64.h
+@@ -47,51 +47,28 @@
+ 
+ #define GRANULE_MASK	GRANULE_SIZE
+ 
 -
-+			} else {
-+				split_block(pte, level);
- 			}
+-/*
+- * Level 2 descriptor (PMD).
+- */
+-#define PMD_TYPE_MASK		(3 << 0)
+-#define PMD_TYPE_FAULT		(0 << 0)
+-#define PMD_TYPE_TABLE		(3 << 0)
+-#define PMD_TYPE_SECT		(1 << 0)
+-#define PMD_TABLE_BIT		(1 << 1)
+-
+-/*
+- * Section
+- */
+-#define PMD_SECT_VALID		(1 << 0)
+-#define PMD_SECT_USER		(1 << 6)		/* AP[1] */
+-#define PMD_SECT_RDONLY		(1 << 7)		/* AP[2] */
+-#define PMD_SECT_S		(3 << 8)
+-#define PMD_SECT_AF		(1 << 10)
+-#define PMD_SECT_NG		(1 << 11)
+-#define PMD_SECT_CONT		(1 << 52)
+-#define PMD_SECT_PXN		(1 << 53)
+-#define PMD_SECT_UXN		(1 << 54)
+-
+-/*
+- * AttrIndx[2:0] encoding (mapping attributes defined in the MAIR* registers).
+- */
+-#define PMD_ATTRINDX(t)		((t) << 2)
+-#define PMD_ATTRINDX_MASK	(7 << 2)
+-
+-/*
+- * Level 3 descriptor (PTE).
+- */
+-#define PTE_TYPE_MASK		(3 << 0)
+-#define PTE_TYPE_FAULT		(0 << 0)
+-#define PTE_TYPE_PAGE		(3 << 0)
+-#define PTE_TABLE_BIT		(1 << 1)
+-#define PTE_USER		(1 << 6)		/* AP[1] */
+-#define PTE_RDONLY		(1 << 7)		/* AP[2] */
+-#define PTE_SHARED		(3 << 8)		/* SH[1:0], inner shareable */
+-#define PTE_AF			(1 << 10)	/* Access Flag */
+-#define PTE_NG			(1 << 11)	/* nG */
+-#define PTE_DBM			(1 << 51)	/* Dirty Bit Management */
+-#define PTE_CONT		(1 << 52)	/* Contiguous range */
+-#define PTE_PXN			(1 << 53)	/* Privileged XN */
+-#define PTE_UXN			(1 << 54)	/* User XN */
++/* Hardware page table definitions */
++#define PTE_TYPE_MASK           (3 << 0)
++#define PTE_TYPE_FAULT          (0 << 0)
++#define PTE_TYPE_TABLE          (3 << 0)
++#define PTE_TYPE_PAGE           (3 << 0)
++#define PTE_TYPE_BLOCK          (1 << 0)
++
++#define PTE_TABLE_PXN           (1UL << 59)
++#define PTE_TABLE_XN            (1UL << 60)
++#define PTE_TABLE_AP            (1UL << 61)
++#define PTE_TABLE_NS            (1UL << 63)
++
++/* Block */
++#define PTE_BLOCK_MEMTYPE(x)    ((x) << 2)
++#define PTE_BLOCK_NS            (1 << 5)
++#define PTE_BLOCK_NON_SHARE     (0 << 8)
++#define PTE_BLOCK_OUTER_SHARE   (2 << 8)
++#define PTE_BLOCK_INNER_SHARE   (3 << 8)
++#define PTE_BLOCK_AF            (1 << 10)
++#define PTE_BLOCK_NG            (1 << 11)
++#define PTE_BLOCK_PXN           (UL(1) << 53)
++#define PTE_BLOCK_UXN           (UL(1) << 54)
  
- 			table = get_level_table(pte);
+ /*
+  * AttrIndx[2:0] encoding (mapping attributes defined in the MAIR* registers).
 -- 
 2.16.1
 
