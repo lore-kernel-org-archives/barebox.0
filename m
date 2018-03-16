@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewosX-0008KG-Ud
- for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:40 +0000
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1ewosH-0001qV-Vf
+ for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 68/78] filetype: Detect ARM aarch64 Linux images
-Date: Fri, 16 Mar 2018 13:53:44 +0100
-Message-Id: <20180316125354.23462-69-s.hauer@pengutronix.de>
+Subject: [PATCH 34/78] ARM: aarch64: mmu: fix creation of flat mapping
+Date: Fri, 16 Mar 2018 13:53:10 +0100
+Message-Id: <20180316125354.23462-35-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,46 +24,38 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: Barebox List <barebox@lists.infradead.org>
 
-ARM aarch64 Linux image have a special type. Allow to detect them.
+During initialization of the page tables we want to create a flat
+uncached mapping for the whole address space. create_sections() takes
+the size in bytes, not in MiB as assumed by the callees. Fix this.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/filetype.c  | 3 +++
- include/filetype.h | 1 +
- 2 files changed, 4 insertions(+)
+ arch/arm/cpu/mmu_64.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/common/filetype.c b/common/filetype.c
-index 71691fd813..444ec14cc4 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -67,6 +67,7 @@ static const struct filetype_str filetype_str[] = {
- 	[filetype_socfpga_xload] = { "SoCFPGA prebootloader image", "socfpga-xload" },
- 	[filetype_kwbimage_v1] = { "MVEBU kwbimage (v1)", "kwb" },
- 	[filetype_android_sparse] = { "Android sparse image", "sparse" },
-+	[filetype_arm64_linux_image] = { "ARM aarch64 Linux image", "aarch64-linux" },
- };
+diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+index 6e22da9a26..fe1e5410f7 100644
+--- a/arch/arm/cpu/mmu_64.c
++++ b/arch/arm/cpu/mmu_64.c
+@@ -258,8 +258,8 @@ static int mmu_init(void)
  
- const char *file_type_to_string(enum filetype f)
-@@ -296,6 +297,8 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 		return filetype_mips_barebox;
- 	if (buf[0] == be32_to_cpu(0x534F4659))
- 		return filetype_bpk;
-+	if (le32_to_cpu(buf[14]) == 0x644d5241)
-+		return filetype_arm64_linux_image;
- 	if ((buf8[0] == 0x5a || buf8[0] == 0x69 || buf8[0] == 0x78 ||
- 	     buf8[0] == 0x8b || buf8[0] == 0x9c) &&
- 	    buf8[0x1] == 0 && buf8[0x2] == 0 && buf8[0x3] == 0 &&
-diff --git a/include/filetype.h b/include/filetype.h
-index ec5aea2635..9986938ddb 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -40,6 +40,7 @@ enum filetype {
- 	filetype_socfpga_xload,
- 	filetype_kwbimage_v1,
- 	filetype_android_sparse,
-+	filetype_arm64_linux_image,
- 	filetype_max,
- };
+ 	pr_debug("ttb: 0x%p\n", ttb);
+ 
+-	/* create a flat mapping using 1MiB sections */
+-	create_sections(0, 0, GRANULE_SIZE, UNCACHED_MEM);
++	/* create a flat mapping */
++	create_sections(0, 0, 1UL << (BITS_PER_VA - 1), UNCACHED_MEM);
+ 
+ 	/* Map sdram cached. */
+ 	for_each_memory_bank(bank)
+@@ -310,7 +310,7 @@ void mmu_early_enable(uint64_t membase, uint64_t memsize, uint64_t _ttb)
+ 
+ 	set_ttbr_tcr_mair(current_el(), (uint64_t)ttb, TCR_FLAGS, UNCACHED_MEM);
+ 
+-	create_sections(0, 0, 4096, UNCACHED_MEM);
++	create_sections(0, 0, 1UL << (BITS_PER_VA - 1), UNCACHED_MEM);
+ 
+ 	create_sections(membase, membase, memsize, CACHED_MEM);
  
 -- 
 2.16.1
