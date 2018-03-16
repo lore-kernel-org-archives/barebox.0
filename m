@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewosI-0001qS-AW
- for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:25 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1ewos8-00068L-HE
+ for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 31/78] ARM: aarch64: fix pbl linker script for aarch64
-Date: Fri, 16 Mar 2018 13:53:07 +0100
-Message-Id: <20180316125354.23462-32-s.hauer@pengutronix.de>
+Subject: [PATCH 15/78] ARM: aarch64: Add runtime-offset
+Date: Fri, 16 Mar 2018 13:52:51 +0100
+Message-Id: <20180316125354.23462-16-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,44 +24,49 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: Barebox List <barebox@lists.infradead.org>
 
-Fix output format for aarch64. Also, relocation fixup symbols are in
-rela section rather than rel section.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib/pbl.lds.S | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/arm/lib64/Makefile         |  1 +
+ arch/arm/lib64/runtime-offset.S | 19 +++++++++++++++++++
+ 2 files changed, 20 insertions(+)
+ create mode 100644 arch/arm/lib64/runtime-offset.S
 
-diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
-index be0a4a3b1a..9df1800543 100644
---- a/arch/arm/lib/pbl.lds.S
-+++ b/arch/arm/lib/pbl.lds.S
-@@ -25,8 +25,13 @@
- #define BASE	(TEXT_BASE - SZ_2M)
- #endif
+diff --git a/arch/arm/lib64/Makefile b/arch/arm/lib64/Makefile
+index 4b7b7e3cc5..679ca556e5 100644
+--- a/arch/arm/lib64/Makefile
++++ b/arch/arm/lib64/Makefile
+@@ -3,5 +3,6 @@ obj-y	+= div0.o
+ obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memcpy.o
+ obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memset.o
+ extra-y += barebox.lds
++obj-pbl-y   += runtime-offset.o
  
-+#ifdef CONFIG_CPU_32
- OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
- OUTPUT_ARCH(arm)
-+#else
-+OUTPUT_FORMAT("elf64-littleaarch64", "elf64-littleaarch64", "elf64-littleaarch64")
-+OUTPUT_ARCH(aarch64)
-+#endif
- SECTIONS
- {
- 	. = BASE;
-@@ -62,7 +67,11 @@ SECTIONS
- 	.data : { *(.data*) }
- 
- 	.rel_dyn_start : { *(.__rel_dyn_start) }
-+#ifdef CONFIG_CPU_32
- 	.rel.dyn : { *(.rel*) }
-+#else
-+	.rela.dyn : { *(.rela*) }
-+#endif
- 	.rel_dyn_end : { *(.__rel_dyn_end) }
- 
- 	.__dynsym_start :  { *(.__dynsym_start) }
+ pbl-y	+= div0.o
+diff --git a/arch/arm/lib64/runtime-offset.S b/arch/arm/lib64/runtime-offset.S
+new file mode 100644
+index 0000000000..177ca64784
+--- /dev/null
++++ b/arch/arm/lib64/runtime-offset.S
+@@ -0,0 +1,19 @@
++#include <linux/linkage.h>
++#include <asm/assembler.h>
++
++.section ".text_bare_init","ax"
++
++/*
++ * Get the offset between the link address and the address
++ * we are currently running at.
++ */
++ENTRY(get_runtime_offset)
++1:	adr x0, 1b
++	ldr x1, linkadr
++	subs x0, x0, x1
++	ret
++
++.align 3
++linkadr:
++.quad get_runtime_offset
++ENDPROC(get_runtime_offset)
 -- 
 2.16.1
 
