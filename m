@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewosH-0008BP-AE
- for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:24 +0000
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1ewosI-0001qI-3m
+ for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 16 Mar 2018 13:53:40 +0100
-Message-Id: <20180316125354.23462-65-s.hauer@pengutronix.de>
+Date: Fri, 16 Mar 2018 13:53:24 +0100
+Message-Id: <20180316125354.23462-49-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,63 +21,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 64/78] ARM: aarch64: print more information on sync exception
+Subject: [PATCH 48/78] dma: Use dma_addr_t as type for DMA addresses
 To: Barebox List <barebox@lists.infradead.org>
 
-On a sync exception more useful information can be printed than we
-currently do. Pass the ESR and FAR value to do_sync and print the
-reason for the exception along with the address that actually faulted.
+DMA addresses are not necessarily the same as unsigned long. Fix
+the type for the dma_sync_single_* operations.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/exceptions_64.S | 4 ++++
- arch/arm/cpu/interrupts_64.c | 4 ++--
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ arch/arm/cpu/mmu.c          | 4 ++--
+ arch/mips/lib/dma-default.c | 4 ++--
+ include/dma.h               | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/cpu/exceptions_64.S b/arch/arm/cpu/exceptions_64.S
-index 58ca50b709..22034eaef9 100644
---- a/arch/arm/cpu/exceptions_64.S
-+++ b/arch/arm/cpu/exceptions_64.S
-@@ -35,12 +35,15 @@
- 	switch_el x11, 3f, 2f, 1f
- 3:	mrs	x1, esr_el3
- 	mrs	x2, elr_el3
-+	mrs     x3, far_el3
- 	b	0f
- 2:	mrs	x1, esr_el2
- 	mrs	x2, elr_el2
-+	mrs     x3, far_el2
- 	b	0f
- 1:	mrs	x1, esr_el1
- 	mrs	x2, elr_el1
-+	mrs     x3, far_el1
- 0:
- 	stp	x2, x0, [sp, #-16]!
- 	mov	x0, sp
-@@ -99,6 +102,7 @@ _do_bad_error:
- 
- _do_sync:
- 	exception_entry
-+	mov	x2, x3
- 	bl	do_sync
- 	b	exception_exit
- 
-diff --git a/arch/arm/cpu/interrupts_64.c b/arch/arm/cpu/interrupts_64.c
-index c32cd4f051..ee3dc3380b 100644
---- a/arch/arm/cpu/interrupts_64.c
-+++ b/arch/arm/cpu/interrupts_64.c
-@@ -143,9 +143,9 @@ void do_bad_error(struct pt_regs *pt_regs)
- 	do_exception(pt_regs);
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index de0b631981..fc71cf03cd 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -575,7 +575,7 @@ void dma_free_coherent(void *mem, dma_addr_t dma_handle, size_t size)
+ 	free(mem);
  }
  
--void do_sync(struct pt_regs *pt_regs)
-+void do_sync(struct pt_regs *pt_regs, unsigned int esr, unsigned long far)
+-void dma_sync_single_for_cpu(unsigned long address, size_t size,
++void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
+ 			     enum dma_data_direction dir)
  {
--	printf("sync exception\n");
-+	printf("%s exception at 0x%016lx\n", esr_get_class_string(esr), far);
- 	do_exception(pt_regs);
+ 	if (dir != DMA_TO_DEVICE) {
+@@ -585,7 +585,7 @@ void dma_sync_single_for_cpu(unsigned long address, size_t size,
+ 	}
  }
  
+-void dma_sync_single_for_device(unsigned long address, size_t size,
++void dma_sync_single_for_device(dma_addr_t address, size_t size,
+ 				enum dma_data_direction dir)
+ {
+ 	if (dir == DMA_FROM_DEVICE) {
+diff --git a/arch/mips/lib/dma-default.c b/arch/mips/lib/dma-default.c
+index 9b2fe7d410..71c1e423b7 100644
+--- a/arch/mips/lib/dma-default.c
++++ b/arch/mips/lib/dma-default.c
+@@ -44,13 +44,13 @@ static inline void __dma_sync_mips(void *addr, size_t size,
+ }
+ #endif
+ 
+-void dma_sync_single_for_cpu(unsigned long address, size_t size,
++void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
+ 			     enum dma_data_direction dir)
+ {
+ 	__dma_sync_mips(address, size, dir);
+ }
+ 
+-void dma_sync_single_for_device(unsigned long address, size_t size,
++void dma_sync_single_for_device(dma_addr_t address, size_t size,
+ 				enum dma_data_direction dir)
+ {
+ 	__dma_sync_mips(address, size, dir);
+diff --git a/include/dma.h b/include/dma.h
+index 4d31797968..29d94c0a52 100644
+--- a/include/dma.h
++++ b/include/dma.h
+@@ -31,10 +31,10 @@ static inline void dma_free(void *mem)
+ #endif
+ 
+ /* streaming DMA - implement the below calls to support HAS_DMA */
+-void dma_sync_single_for_cpu(unsigned long address, size_t size,
++void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
+ 			     enum dma_data_direction dir);
+ 
+-void dma_sync_single_for_device(unsigned long address, size_t size,
++void dma_sync_single_for_device(dma_addr_t address, size_t size,
+ 				enum dma_data_direction dir);
+ 
+ void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle);
 -- 
 2.16.1
 
