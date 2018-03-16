@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewosF-0008BY-HC
- for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:24 +0000
+ id 1ewosD-0008BQ-65
+ for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:22 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 16 Mar 2018 13:53:35 +0100
-Message-Id: <20180316125354.23462-60-s.hauer@pengutronix.de>
+Date: Fri, 16 Mar 2018 13:53:23 +0100
+Message-Id: <20180316125354.23462-48-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,72 +21,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 59/78] ARM: aarch64: implement show_regs()
+Subject: [PATCH 47/78] ARM: Make some variables 64bit aware
 To: Barebox List <barebox@lists.infradead.org>
 
-Do something useful in an exception and at least print the current
-register contents.
+Use unsigned long as type for variables that are used as addresses.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/interrupts_64.c  |  8 ++++++++
- arch/arm/include/asm/ptrace.h | 19 +++++++++++++++++++
- 2 files changed, 27 insertions(+)
+ arch/arm/cpu/start-pbl.c  | 10 +++++-----
+ arch/arm/cpu/uncompress.c |  2 +-
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/cpu/interrupts_64.c b/arch/arm/cpu/interrupts_64.c
-index b3bd0aa5a4..ffdb87af94 100644
---- a/arch/arm/cpu/interrupts_64.c
-+++ b/arch/arm/cpu/interrupts_64.c
-@@ -30,6 +30,14 @@
-  */
- void show_regs(struct pt_regs *regs)
+diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+index 73c27429da..25f91b02f3 100644
+--- a/arch/arm/cpu/start-pbl.c
++++ b/arch/arm/cpu/start-pbl.c
+@@ -48,10 +48,10 @@ extern void *input_data_end;
+ __noreturn void barebox_single_pbl_start(unsigned long membase,
+ 		unsigned long memsize, void *boarddata)
  {
-+	int i;
-+
-+	printf("elr: %016lx lr : %016lx\n", regs->elr, regs->regs[30]);
-+
-+	for (i = 0; i < 29; i += 2)
-+		printf("x%-2d: %016lx x%-2d: %016lx\n",
-+			i, regs->regs[i], i + 1, regs->regs[i + 1]);
-+	printf("\n");
- }
+-	uint32_t offset;
+-	uint32_t pg_start, pg_end, pg_len, uncompressed_len;
++	unsigned long offset;
++	unsigned long pg_start, pg_end, pg_len, uncompressed_len;
+ 	void __noreturn (*barebox)(unsigned long, unsigned long, void *);
+-	uint32_t endmem = membase + memsize;
++	unsigned long endmem = membase + memsize;
+ 	unsigned long barebox_base;
  
- static void __noreturn do_exception(struct pt_regs *pt_regs)
-diff --git a/arch/arm/include/asm/ptrace.h b/arch/arm/include/asm/ptrace.h
-index 6520a0a73a..7fbd8d9b6f 100644
---- a/arch/arm/include/asm/ptrace.h
-+++ b/arch/arm/include/asm/ptrace.h
-@@ -10,6 +10,23 @@
- #ifndef __ASM_ARM_PTRACE_H
- #define __ASM_ARM_PTRACE_H
+ 	if (IS_ENABLED(CONFIG_PBL_RELOCATABLE))
+@@ -60,8 +60,8 @@ __noreturn void barebox_single_pbl_start(unsigned long membase,
+ 	/* Get offset between linked address and runtime address */
+ 	offset = get_runtime_offset();
  
-+#ifdef CONFIG_CPU_64
-+
-+#ifndef __ASSEMBLY__
-+
-+/*
-+ * This struct defines the way the registers are stored
-+ * on the stack during an exception.
-+ */
-+struct pt_regs {
-+	unsigned long elr;
-+	unsigned long regs[31];
-+};
-+
-+#endif  /* __ASSEMBLY__ */
-+
-+#else   /* CONFIG_CPU_64 */
-+
- #define PTRACE_GETREGS		12
- #define PTRACE_SETREGS		13
- #define PTRACE_GETFPREGS	14
-@@ -141,4 +158,6 @@ extern void show_regs(struct pt_regs *);
+-	pg_start = (uint32_t)&input_data + global_variable_offset();
+-	pg_end = (uint32_t)&input_data_end + global_variable_offset();
++	pg_start = (unsigned long)&input_data + global_variable_offset();
++	pg_end = (unsigned long)&input_data_end + global_variable_offset();
+ 	pg_len = pg_end - pg_start;
+ 	uncompressed_len = get_unaligned((const u32 *)(pg_start + pg_len - 4));
  
- #endif /* __ASSEMBLY__ */
- 
-+#endif /* CONFIG_CPU_64 */
-+
- #endif
+diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
+index 37845b2259..c721eef0ad 100644
+--- a/arch/arm/cpu/uncompress.c
++++ b/arch/arm/cpu/uncompress.c
+@@ -45,7 +45,7 @@ void __noreturn barebox_multi_pbl_start(unsigned long membase,
+ {
+ 	uint32_t pg_len, uncompressed_len;
+ 	void __noreturn (*barebox)(unsigned long, unsigned long, void *);
+-	uint32_t endmem = membase + memsize;
++	unsigned long endmem = membase + memsize;
+ 	unsigned long barebox_base;
+ 	uint32_t *image_end;
+ 	void *pg_start;
 -- 
 2.16.1
 
