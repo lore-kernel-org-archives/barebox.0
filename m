@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewosI-0001qI-3m
+ id 1ewosI-0001qN-CP
  for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 16 Mar 2018 13:53:24 +0100
-Message-Id: <20180316125354.23462-49-s.hauer@pengutronix.de>
+Date: Fri, 16 Mar 2018 13:53:46 +0100
+Message-Id: <20180316125354.23462-71-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,78 +21,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 48/78] dma: Use dma_addr_t as type for DMA addresses
+Subject: [PATCH 70/78] bootm: provide handlers the start of the OS image
 To: Barebox List <barebox@lists.infradead.org>
 
-DMA addresses are not necessarily the same as unsigned long. Fix
-the type for the dma_sync_single_* operations.
+The bootm code needs to read the beginning of the OS image in order to
+determine the filetype. If it does so already, then we can provide the
+handlers the buffer. This can help the handlers to find some image
+metadata before loading the full image.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/mmu.c          | 4 ++--
- arch/mips/lib/dma-default.c | 4 ++--
- include/dma.h               | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ common/bootm.c  | 10 +++++++++-
+ include/bootm.h |  7 +++++++
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index de0b631981..fc71cf03cd 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -575,7 +575,7 @@ void dma_free_coherent(void *mem, dma_addr_t dma_handle, size_t size)
- 	free(mem);
- }
+diff --git a/common/bootm.c b/common/bootm.c
+index 3e48ca1d88..5ff6683fe7 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -529,6 +529,7 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 	struct image_handler *handler;
+ 	int ret;
+ 	enum filetype os_type;
++	size_t size;
  
--void dma_sync_single_for_cpu(unsigned long address, size_t size,
-+void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
- 			     enum dma_data_direction dir)
- {
- 	if (dir != DMA_TO_DEVICE) {
-@@ -585,7 +585,7 @@ void dma_sync_single_for_cpu(unsigned long address, size_t size,
- 	}
- }
+ 	if (!bootm_data->os_file) {
+ 		printf("no image given\n");
+@@ -548,7 +549,13 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 	data->os_address = bootm_data->os_address;
+ 	data->os_entry = bootm_data->os_entry;
  
--void dma_sync_single_for_device(unsigned long address, size_t size,
-+void dma_sync_single_for_device(dma_addr_t address, size_t size,
- 				enum dma_data_direction dir)
- {
- 	if (dir == DMA_FROM_DEVICE) {
-diff --git a/arch/mips/lib/dma-default.c b/arch/mips/lib/dma-default.c
-index 9b2fe7d410..71c1e423b7 100644
---- a/arch/mips/lib/dma-default.c
-+++ b/arch/mips/lib/dma-default.c
-@@ -44,13 +44,13 @@ static inline void __dma_sync_mips(void *addr, size_t size,
- }
- #endif
+-	os_type = file_name_detect_type(data->os_file);
++	ret = read_file_2(data->os_file, &size, &data->os_header, PAGE_SIZE);
++	if (ret < 0 && ret != -EFBIG)
++		goto err_out;
++	if (size < PAGE_SIZE)
++		goto err_out;
++
++	os_type = file_detect_type(data->os_header, PAGE_SIZE);
+ 	if ((int)os_type < 0) {
+ 		printf("could not open %s: %s\n", data->os_file,
+ 				strerror(-os_type));
+@@ -674,6 +681,7 @@ err_out:
+ 		of_delete_node(data->of_root_node);
  
--void dma_sync_single_for_cpu(unsigned long address, size_t size,
-+void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
- 			     enum dma_data_direction dir)
- {
- 	__dma_sync_mips(address, size, dir);
- }
+ 	globalvar_remove("linux.bootargs.bootm.appendroot");
++	free(data->os_header);
+ 	free(data->os_file);
+ 	free(data->oftree_file);
+ 	free(data->initrd_file);
+diff --git a/include/bootm.h b/include/bootm.h
+index 35c18dc276..62951d6058 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -81,6 +81,13 @@ struct image_data {
+ 	struct fdt_header *oftree;
+ 	struct resource *oftree_res;
  
--void dma_sync_single_for_device(unsigned long address, size_t size,
-+void dma_sync_single_for_device(dma_addr_t address, size_t size,
- 				enum dma_data_direction dir)
- {
- 	__dma_sync_mips(address, size, dir);
-diff --git a/include/dma.h b/include/dma.h
-index 4d31797968..29d94c0a52 100644
---- a/include/dma.h
-+++ b/include/dma.h
-@@ -31,10 +31,10 @@ static inline void dma_free(void *mem)
- #endif
- 
- /* streaming DMA - implement the below calls to support HAS_DMA */
--void dma_sync_single_for_cpu(unsigned long address, size_t size,
-+void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
- 			     enum dma_data_direction dir);
- 
--void dma_sync_single_for_device(unsigned long address, size_t size,
-+void dma_sync_single_for_device(dma_addr_t address, size_t size,
- 				enum dma_data_direction dir);
- 
- void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle);
++	/*
++	 * The first PAGE_SIZE bytes of the OS image. Can be used by the image
++	 * handlers to analyze the OS image before actually loading the bulk of
++	 * it.
++	 */
++	void *os_header;
++
+ 	enum bootm_verify verify;
+ 	int verbose;
+ 	int force;
 -- 
 2.16.1
 
