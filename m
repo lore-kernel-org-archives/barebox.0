@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewosJ-0008BQ-5U
- for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:30 +0000
+ id 1ewosH-0008BW-PV
+ for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:29 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 40/78] ARM: aarch64: mmu: use PTE_* definitions from U-Boot
-Date: Fri, 16 Mar 2018 13:53:16 +0100
-Message-Id: <20180316125354.23462-41-s.hauer@pengutronix.de>
+Subject: [PATCH 63/78] ARM: aarch64: Add esr strings
+Date: Fri, 16 Mar 2018 13:53:39 +0100
+Message-Id: <20180316125354.23462-64-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,174 +24,197 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: Barebox List <barebox@lists.infradead.org>
 
-'PMD' (Page Middle Directory) is a Linuxism that is not really
-helpful in the barebox MMU code. Use the U-Boot definitions
-which only use PTE_* and seem to be more consistent for our
-usecase.
+The Exception Syndrome Register (ESR) holds information over an
+exception. This adds the strings necessary to dispatch this information.
+Based on Linux code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/mmu_64.c            | 22 +++++++------
- arch/arm/include/asm/pgtable64.h | 67 +++++++++++++---------------------------
- 2 files changed, 35 insertions(+), 54 deletions(-)
+ arch/arm/cpu/interrupts_64.c |  46 +++++++++++++++++
+ arch/arm/include/asm/esr.h   | 117 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 163 insertions(+)
+ create mode 100644 arch/arm/include/asm/esr.h
 
-diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 695a73262d..baa443f9e2 100644
---- a/arch/arm/cpu/mmu_64.c
-+++ b/arch/arm/cpu/mmu_64.c
-@@ -34,8 +34,12 @@
- 
- #include "mmu.h"
- 
--#define CACHED_MEM      (PMD_ATTRINDX(MT_NORMAL) | PMD_SECT_S | PMD_SECT_AF | PMD_TYPE_SECT)
--#define UNCACHED_MEM    (PMD_ATTRINDX(MT_DEVICE_nGnRnE) | PMD_SECT_AF)
-+#define CACHED_MEM      (PTE_BLOCK_MEMTYPE(MT_NORMAL) | \
-+			 PTE_BLOCK_OUTER_SHARE | \
-+			 PTE_BLOCK_AF)
-+#define UNCACHED_MEM    (PTE_BLOCK_MEMTYPE(MT_DEVICE_nGnRnE) | \
-+			 PTE_BLOCK_OUTER_SHARE | \
-+			 PTE_BLOCK_AF)
- 
- static uint64_t *ttb;
- 
-@@ -94,14 +98,14 @@ static uint64_t level2mask(int level)
- 
- static int pte_type(uint64_t *pte)
- {
--	return *pte & PMD_TYPE_MASK;
-+	return *pte & PTE_TYPE_MASK;
- }
- 
- static void set_table(uint64_t *pt, uint64_t *table_addr)
- {
- 	uint64_t val;
- 
--	val = PMD_TYPE_TABLE | (uint64_t)table_addr;
-+	val = PTE_TYPE_TABLE | (uint64_t)table_addr;
- 	*pt = val;
- }
- 
-@@ -119,7 +123,7 @@ static uint64_t *get_level_table(uint64_t *pte)
- {
- 	uint64_t *table = (uint64_t *)(*pte & XLAT_ADDR_MASK);
- 
--	if (pte_type(pte) != PMD_TYPE_TABLE) {
-+	if (pte_type(pte) != PTE_TYPE_TABLE) {
- 		table = create_table();
- 		set_table(pte, table);
- 	}
-@@ -141,7 +145,7 @@ static __maybe_unused uint64_t *find_pte(uint64_t addr)
- 		idx = (addr & level2mask(i)) >> block_shift;
- 		pte += idx;
- 
--		if ((pte_type(pte) != PMD_TYPE_TABLE) || (block_shift <= GRANULE_SIZE_SHIFT))
-+		if ((pte_type(pte) != PTE_TYPE_TABLE) || (block_shift <= GRANULE_SIZE_SHIFT))
- 			break;
- 		else
- 			pte = (uint64_t *)(*pte & XLAT_ADDR_MASK);
-@@ -165,21 +169,21 @@ static void map_region(uint64_t virt, uint64_t phys, uint64_t size, uint64_t att
- 
- 	addr = virt;
- 
--	attr &= ~(PMD_TYPE_SECT);
-+	attr &= ~PTE_TYPE_MASK;
- 
- 	while (size) {
- 		table = ttb;
- 		for (level = 1; level < 4; level++) {
- 			block_shift = level2shift(level);
- 			idx = (addr & level2mask(level)) >> block_shift;
--			block_size = (1 << block_shift);
-+			block_size = (1ULL << block_shift);
- 
- 			pte = table + idx;
- 
- 			if (level == 3)
- 				attr |= PTE_TYPE_PAGE;
- 			else
--				attr |= PMD_TYPE_SECT;
-+				attr |= PTE_TYPE_BLOCK;
- 
- 			if (size >= block_size && IS_ALIGNED(addr, block_size)) {
- 				*pte = phys | attr;
-diff --git a/arch/arm/include/asm/pgtable64.h b/arch/arm/include/asm/pgtable64.h
-index 7f7efa10ca..f2888c3ccd 100644
---- a/arch/arm/include/asm/pgtable64.h
-+++ b/arch/arm/include/asm/pgtable64.h
-@@ -47,51 +47,28 @@
- 
- #define GRANULE_MASK	GRANULE_SIZE
- 
--
--/*
-- * Level 2 descriptor (PMD).
-- */
--#define PMD_TYPE_MASK		(3 << 0)
--#define PMD_TYPE_FAULT		(0 << 0)
--#define PMD_TYPE_TABLE		(3 << 0)
--#define PMD_TYPE_SECT		(1 << 0)
--#define PMD_TABLE_BIT		(1 << 1)
--
--/*
-- * Section
-- */
--#define PMD_SECT_VALID		(1 << 0)
--#define PMD_SECT_USER		(1 << 6)		/* AP[1] */
--#define PMD_SECT_RDONLY		(1 << 7)		/* AP[2] */
--#define PMD_SECT_S		(3 << 8)
--#define PMD_SECT_AF		(1 << 10)
--#define PMD_SECT_NG		(1 << 11)
--#define PMD_SECT_CONT		(1 << 52)
--#define PMD_SECT_PXN		(1 << 53)
--#define PMD_SECT_UXN		(1 << 54)
--
--/*
-- * AttrIndx[2:0] encoding (mapping attributes defined in the MAIR* registers).
-- */
--#define PMD_ATTRINDX(t)		((t) << 2)
--#define PMD_ATTRINDX_MASK	(7 << 2)
--
--/*
-- * Level 3 descriptor (PTE).
-- */
--#define PTE_TYPE_MASK		(3 << 0)
--#define PTE_TYPE_FAULT		(0 << 0)
--#define PTE_TYPE_PAGE		(3 << 0)
--#define PTE_TABLE_BIT		(1 << 1)
--#define PTE_USER		(1 << 6)		/* AP[1] */
--#define PTE_RDONLY		(1 << 7)		/* AP[2] */
--#define PTE_SHARED		(3 << 8)		/* SH[1:0], inner shareable */
--#define PTE_AF			(1 << 10)	/* Access Flag */
--#define PTE_NG			(1 << 11)	/* nG */
--#define PTE_DBM			(1 << 51)	/* Dirty Bit Management */
--#define PTE_CONT		(1 << 52)	/* Contiguous range */
--#define PTE_PXN			(1 << 53)	/* Privileged XN */
--#define PTE_UXN			(1 << 54)	/* User XN */
-+/* Hardware page table definitions */
-+#define PTE_TYPE_MASK           (3 << 0)
-+#define PTE_TYPE_FAULT          (0 << 0)
-+#define PTE_TYPE_TABLE          (3 << 0)
-+#define PTE_TYPE_PAGE           (3 << 0)
-+#define PTE_TYPE_BLOCK          (1 << 0)
+diff --git a/arch/arm/cpu/interrupts_64.c b/arch/arm/cpu/interrupts_64.c
+index 9ed6ed9761..c32cd4f051 100644
+--- a/arch/arm/cpu/interrupts_64.c
++++ b/arch/arm/cpu/interrupts_64.c
+@@ -23,6 +23,52 @@
+ #include <asm/unwind.h>
+ #include <init.h>
+ #include <asm/system.h>
++#include <asm/esr.h>
 +
-+#define PTE_TABLE_PXN           (1UL << 59)
-+#define PTE_TABLE_XN            (1UL << 60)
-+#define PTE_TABLE_AP            (1UL << 61)
-+#define PTE_TABLE_NS            (1UL << 63)
++static const char *esr_class_str[] = {
++	[0 ... ESR_ELx_EC_MAX]		= "UNRECOGNIZED EC",
++	[ESR_ELx_EC_UNKNOWN]		= "Unknown/Uncategorized",
++	[ESR_ELx_EC_WFx]		= "WFI/WFE",
++	[ESR_ELx_EC_CP15_32]		= "CP15 MCR/MRC",
++	[ESR_ELx_EC_CP15_64]		= "CP15 MCRR/MRRC",
++	[ESR_ELx_EC_CP14_MR]		= "CP14 MCR/MRC",
++	[ESR_ELx_EC_CP14_LS]		= "CP14 LDC/STC",
++	[ESR_ELx_EC_FP_ASIMD]		= "ASIMD",
++	[ESR_ELx_EC_CP10_ID]		= "CP10 MRC/VMRS",
++	[ESR_ELx_EC_CP14_64]		= "CP14 MCRR/MRRC",
++	[ESR_ELx_EC_ILL]		= "PSTATE.IL",
++	[ESR_ELx_EC_SVC32]		= "SVC (AArch32)",
++	[ESR_ELx_EC_HVC32]		= "HVC (AArch32)",
++	[ESR_ELx_EC_SMC32]		= "SMC (AArch32)",
++	[ESR_ELx_EC_SVC64]		= "SVC (AArch64)",
++	[ESR_ELx_EC_HVC64]		= "HVC (AArch64)",
++	[ESR_ELx_EC_SMC64]		= "SMC (AArch64)",
++	[ESR_ELx_EC_SYS64]		= "MSR/MRS (AArch64)",
++	[ESR_ELx_EC_IMP_DEF]		= "EL3 IMP DEF",
++	[ESR_ELx_EC_IABT_LOW]		= "IABT (lower EL)",
++	[ESR_ELx_EC_IABT_CUR]		= "IABT (current EL)",
++	[ESR_ELx_EC_PC_ALIGN]		= "PC Alignment",
++	[ESR_ELx_EC_DABT_LOW]		= "DABT (lower EL)",
++	[ESR_ELx_EC_DABT_CUR]		= "DABT (current EL)",
++	[ESR_ELx_EC_SP_ALIGN]		= "SP Alignment",
++	[ESR_ELx_EC_FP_EXC32]		= "FP (AArch32)",
++	[ESR_ELx_EC_FP_EXC64]		= "FP (AArch64)",
++	[ESR_ELx_EC_SERROR]		= "SError",
++	[ESR_ELx_EC_BREAKPT_LOW]	= "Breakpoint (lower EL)",
++	[ESR_ELx_EC_BREAKPT_CUR]	= "Breakpoint (current EL)",
++	[ESR_ELx_EC_SOFTSTP_LOW]	= "Software Step (lower EL)",
++	[ESR_ELx_EC_SOFTSTP_CUR]	= "Software Step (current EL)",
++	[ESR_ELx_EC_WATCHPT_LOW]	= "Watchpoint (lower EL)",
++	[ESR_ELx_EC_WATCHPT_CUR]	= "Watchpoint (current EL)",
++	[ESR_ELx_EC_BKPT32]		= "BKPT (AArch32)",
++	[ESR_ELx_EC_VECTOR32]		= "Vector catch (AArch32)",
++	[ESR_ELx_EC_BRK64]		= "BRK (AArch64)",
++};
 +
-+/* Block */
-+#define PTE_BLOCK_MEMTYPE(x)    ((x) << 2)
-+#define PTE_BLOCK_NS            (1 << 5)
-+#define PTE_BLOCK_NON_SHARE     (0 << 8)
-+#define PTE_BLOCK_OUTER_SHARE   (2 << 8)
-+#define PTE_BLOCK_INNER_SHARE   (3 << 8)
-+#define PTE_BLOCK_AF            (1 << 10)
-+#define PTE_BLOCK_NG            (1 << 11)
-+#define PTE_BLOCK_PXN           (UL(1) << 53)
-+#define PTE_BLOCK_UXN           (UL(1) << 54)
++const char *esr_get_class_string(u32 esr)
++{
++	return esr_class_str[esr >> ESR_ELx_EC_SHIFT];
++}
  
- /*
-  * AttrIndx[2:0] encoding (mapping attributes defined in the MAIR* registers).
+ /**
+  * Display current register set content
+diff --git a/arch/arm/include/asm/esr.h b/arch/arm/include/asm/esr.h
+new file mode 100644
+index 0000000000..77eeb2cc64
+--- /dev/null
++++ b/arch/arm/include/asm/esr.h
+@@ -0,0 +1,117 @@
++/*
++ * Copyright (C) 2013 - ARM Ltd
++ * Author: Marc Zyngier <marc.zyngier@arm.com>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#ifndef __ASM_ESR_H
++#define __ASM_ESR_H
++
++#include <asm/memory.h>
++
++#define ESR_ELx_EC_UNKNOWN	(0x00)
++#define ESR_ELx_EC_WFx		(0x01)
++/* Unallocated EC: 0x02 */
++#define ESR_ELx_EC_CP15_32	(0x03)
++#define ESR_ELx_EC_CP15_64	(0x04)
++#define ESR_ELx_EC_CP14_MR	(0x05)
++#define ESR_ELx_EC_CP14_LS	(0x06)
++#define ESR_ELx_EC_FP_ASIMD	(0x07)
++#define ESR_ELx_EC_CP10_ID	(0x08)
++/* Unallocated EC: 0x09 - 0x0B */
++#define ESR_ELx_EC_CP14_64	(0x0C)
++/* Unallocated EC: 0x0d */
++#define ESR_ELx_EC_ILL		(0x0E)
++/* Unallocated EC: 0x0F - 0x10 */
++#define ESR_ELx_EC_SVC32	(0x11)
++#define ESR_ELx_EC_HVC32	(0x12)
++#define ESR_ELx_EC_SMC32	(0x13)
++/* Unallocated EC: 0x14 */
++#define ESR_ELx_EC_SVC64	(0x15)
++#define ESR_ELx_EC_HVC64	(0x16)
++#define ESR_ELx_EC_SMC64	(0x17)
++#define ESR_ELx_EC_SYS64	(0x18)
++/* Unallocated EC: 0x19 - 0x1E */
++#define ESR_ELx_EC_IMP_DEF	(0x1f)
++#define ESR_ELx_EC_IABT_LOW	(0x20)
++#define ESR_ELx_EC_IABT_CUR	(0x21)
++#define ESR_ELx_EC_PC_ALIGN	(0x22)
++/* Unallocated EC: 0x23 */
++#define ESR_ELx_EC_DABT_LOW	(0x24)
++#define ESR_ELx_EC_DABT_CUR	(0x25)
++#define ESR_ELx_EC_SP_ALIGN	(0x26)
++/* Unallocated EC: 0x27 */
++#define ESR_ELx_EC_FP_EXC32	(0x28)
++/* Unallocated EC: 0x29 - 0x2B */
++#define ESR_ELx_EC_FP_EXC64	(0x2C)
++/* Unallocated EC: 0x2D - 0x2E */
++#define ESR_ELx_EC_SERROR	(0x2F)
++#define ESR_ELx_EC_BREAKPT_LOW	(0x30)
++#define ESR_ELx_EC_BREAKPT_CUR	(0x31)
++#define ESR_ELx_EC_SOFTSTP_LOW	(0x32)
++#define ESR_ELx_EC_SOFTSTP_CUR	(0x33)
++#define ESR_ELx_EC_WATCHPT_LOW	(0x34)
++#define ESR_ELx_EC_WATCHPT_CUR	(0x35)
++/* Unallocated EC: 0x36 - 0x37 */
++#define ESR_ELx_EC_BKPT32	(0x38)
++/* Unallocated EC: 0x39 */
++#define ESR_ELx_EC_VECTOR32	(0x3A)
++/* Unallocted EC: 0x3B */
++#define ESR_ELx_EC_BRK64	(0x3C)
++/* Unallocated EC: 0x3D - 0x3F */
++#define ESR_ELx_EC_MAX		(0x3F)
++
++#define ESR_ELx_EC_SHIFT	(26)
++#define ESR_ELx_EC_MASK		(UL(0x3F) << ESR_ELx_EC_SHIFT)
++
++#define ESR_ELx_IL		(UL(1) << 25)
++#define ESR_ELx_ISS_MASK	(ESR_ELx_IL - 1)
++#define ESR_ELx_ISV		(UL(1) << 24)
++#define ESR_ELx_SAS_SHIFT	(22)
++#define ESR_ELx_SAS		(UL(3) << ESR_ELx_SAS_SHIFT)
++#define ESR_ELx_SSE		(UL(1) << 21)
++#define ESR_ELx_SRT_SHIFT	(16)
++#define ESR_ELx_SRT_MASK	(UL(0x1F) << ESR_ELx_SRT_SHIFT)
++#define ESR_ELx_SF 		(UL(1) << 15)
++#define ESR_ELx_AR 		(UL(1) << 14)
++#define ESR_ELx_EA 		(UL(1) << 9)
++#define ESR_ELx_CM 		(UL(1) << 8)
++#define ESR_ELx_S1PTW 		(UL(1) << 7)
++#define ESR_ELx_WNR		(UL(1) << 6)
++#define ESR_ELx_FSC		(0x3F)
++#define ESR_ELx_FSC_TYPE	(0x3C)
++#define ESR_ELx_FSC_EXTABT	(0x10)
++#define ESR_ELx_FSC_ACCESS	(0x08)
++#define ESR_ELx_FSC_FAULT	(0x04)
++#define ESR_ELx_FSC_PERM	(0x0C)
++#define ESR_ELx_CV		(UL(1) << 24)
++#define ESR_ELx_COND_SHIFT	(20)
++#define ESR_ELx_COND_MASK	(UL(0xF) << ESR_ELx_COND_SHIFT)
++#define ESR_ELx_WFx_ISS_WFE	(UL(1) << 0)
++#define ESR_ELx_xVC_IMM_MASK	((1UL << 16) - 1)
++
++/* ESR value templates for specific events */
++
++/* BRK instruction trap from AArch64 state */
++#define ESR_ELx_VAL_BRK64(imm)					\
++	((ESR_ELx_EC_BRK64 << ESR_ELx_EC_SHIFT) | ESR_ELx_IL |	\
++	 ((imm) & 0xffff))
++
++#ifndef __ASSEMBLY__
++#include <asm/types.h>
++
++const char *esr_get_class_string(u32 esr);
++#endif /* __ASSEMBLY */
++
++#endif /* __ASM_ESR_H */
 -- 
 2.16.1
 
