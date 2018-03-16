@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewosH-0008BI-NP
+ id 1ewosH-0008BJ-NH
  for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:26 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 16 Mar 2018 13:53:43 +0100
-Message-Id: <20180316125354.23462-68-s.hauer@pengutronix.de>
+Date: Fri, 16 Mar 2018 13:52:58 +0100
+Message-Id: <20180316125354.23462-23-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,52 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 67/78] ARM: aarch64: Add barebox head support
+Subject: [PATCH 22/78] ARM: aarch64: fix early cache flushing
 To: Barebox List <barebox@lists.infradead.org>
 
-Allow aarch64 images to use the same image header as arm32 images.
+v8_dcache_all() should not be used directly, but only called from
+v8_flush_dcache_all() and v8_invalidate_dcache_all() which set
+pass the type of operation in x0. While at it add the missing prototype
+for v8_invalidate_dcache_all().
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/include/asm/barebox-arm-head.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/arm/cpu/cache.c         | 2 +-
+ arch/arm/include/asm/cache.h | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/include/asm/barebox-arm-head.h b/arch/arm/include/asm/barebox-arm-head.h
-index bd9c9b1c4f..4d0da6c491 100644
---- a/arch/arm/include/asm/barebox-arm-head.h
-+++ b/arch/arm/include/asm/barebox-arm-head.h
-@@ -21,6 +21,7 @@ void cortex_a7_lowlevel_init(void);
- static inline void __barebox_arm_head(void)
- {
- 	__asm__ __volatile__ (
-+#ifdef CONFIG_CPU_32
- #ifdef CONFIG_THUMB2_BAREBOX
- 		".arm\n"
- 		"adr r9, 1f + 1\n"
-@@ -40,11 +41,23 @@ static inline void __barebox_arm_head(void)
- 		"1: b 1b\n"
- 		"1: b 1b\n"
- 		"1: b 1b\n"
-+#endif
-+#else
-+		"b 2f\n"
-+		"nop\n"
-+		"nop\n"
-+		"nop\n"
-+		"nop\n"
-+		"nop\n"
+diff --git a/arch/arm/cpu/cache.c b/arch/arm/cpu/cache.c
+index 929c385df5..1a8f49d301 100644
+--- a/arch/arm/cpu/cache.c
++++ b/arch/arm/cpu/cache.c
+@@ -146,7 +146,7 @@ void arm_early_mmu_cache_flush(void)
  #endif
- 		".asciz \"barebox\"\n"
-+#ifdef CONFIG_CPU_32
- 		".word _text\n"				/* text base. If copied there,
- 							 * barebox can skip relocation
- 							 */
-+#else
-+		".word 0xffffffff\n"
-+#endif
- 		".word _barebox_image_size\n"		/* image size to copy */
- 		".rept 8\n"
- 		".word 0x55555555\n"
+ #ifdef CONFIG_CPU_64v8
+ 	case CPU_ARCH_ARMv8:
+-		v8_dcache_all();
++		v8_flush_dcache_all();
+ 		return;
+ #endif
+ 	}
+diff --git a/arch/arm/include/asm/cache.h b/arch/arm/include/asm/cache.h
+index b5460a7876..406a9d5d99 100644
+--- a/arch/arm/include/asm/cache.h
++++ b/arch/arm/include/asm/cache.h
+@@ -3,7 +3,8 @@
+ 
+ #ifdef CONFIG_CPU_64v8
+ extern void v8_invalidate_icache_all(void);
+-extern void v8_dcache_all(void);
++void v8_flush_dcache_all(void);
++void v8_invalidate_dcache_all(void);
+ #endif
+ 
+ static inline void icache_invalidate(void)
 -- 
 2.16.1
 
