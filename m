@@ -1,11 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewosD-000688-0p
- for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:51 +0000
+ id 1ewosA-00067z-BO
+ for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 16 Mar 2018 13:53:33 +0100
-Message-Id: <20180316125354.23462-58-s.hauer@pengutronix.de>
+Subject: [PATCH 74/78] ARM: build: Remove duplicate file compilation
+Date: Fri, 16 Mar 2018 13:53:50 +0100
+Message-Id: <20180316125354.23462-75-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,43 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 57/78] ARM: aarch64: remove dead code in linker script
 To: Barebox List <barebox@lists.infradead.org>
 
-CONFIG_ARM_UNWIND does not exist for aarch64. Remove the dead code.
+cache.o is already obj-y, drop unnecessary obj-$(CONFIG_MMU)
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib64/barebox.lds.S | 16 ----------------
- 1 file changed, 16 deletions(-)
+ arch/arm/cpu/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
-index fa633e3699..08adc44e86 100644
---- a/arch/arm/lib64/barebox.lds.S
-+++ b/arch/arm/lib64/barebox.lds.S
-@@ -53,22 +53,6 @@ SECTIONS
- 	. = ALIGN(4);
- 	.rodata : { *(.rodata*) }
+diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
+index eb783481ea..edd4a290ca 100644
+--- a/arch/arm/cpu/Makefile
++++ b/arch/arm/cpu/Makefile
+@@ -18,7 +18,6 @@ obj-pbl-y += setupc$(S64).o
+ obj-$(CONFIG_CMD_ARM_CPUINFO) += cpuinfo.o
+ obj-$(CONFIG_CMD_ARM_MMUINFO) += mmuinfo.o
+ obj-$(CONFIG_OFDEVICE) += dtb.o
+-obj-$(CONFIG_MMU) += cache.o
  
--#ifdef CONFIG_ARM_UNWIND
--	/*
--	 * Stack unwinding tables
--	 */
--	. = ALIGN(8);
--	.ARM.unwind_idx : {
--		__start_unwind_idx = .;
--		*(.ARM.exidx*)
--		__stop_unwind_idx = .;
--	}
--	.ARM.unwind_tab : {
--		__start_unwind_tab = .;
--		*(.ARM.extab*)
--		__stop_unwind_tab = .;
--	}
--#endif
- 	_etext = .;			/* End of text and rodata section */
- 	_sdata = .;
- 
+ ifeq ($(CONFIG_MMU),)
+ obj-y += no-mmu.o
 -- 
 2.16.1
 
