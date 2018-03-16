@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewos8-00068N-Pi
- for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:40 +0000
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1ewosI-0001qH-2g
+ for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 16/78] ARM: aarch64: implement get_pc()
-Date: Fri, 16 Mar 2018 13:52:52 +0100
-Message-Id: <20180316125354.23462-17-s.hauer@pengutronix.de>
+Subject: [PATCH 42/78] ARM: aarch64: mmu: Fix PTE_TYPE_* flags
+Date: Fri, 16 Mar 2018 13:53:18 +0100
+Message-Id: <20180316125354.23462-43-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,40 +24,40 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: Barebox List <barebox@lists.infradead.org>
 
-The arm32 version can't be used on aarch64, implement an aarch64
-specific version.
+When we reach level 3 page tables we set the PTE_TYPE_PAGE bit in attr.
+This is wrong since in the outer loop we can fall back to a lower level
+in which case the PTE_TYPE_PAGE may not be set.
+Fix this by not modifying attr and instead compose the *pte value when
+needed.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/include/asm/common.h | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/arm/cpu/mmu_64.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/include/asm/common.h b/arch/arm/include/asm/common.h
-index 07ae619cea..97bfdc43f5 100644
---- a/arch/arm/include/asm/common.h
-+++ b/arch/arm/include/asm/common.h
-@@ -4,13 +4,19 @@
- static inline unsigned long get_pc(void)
- {
- 	unsigned long pc;
--
-+#ifdef CONFIG_CPU_32
- 	__asm__ __volatile__(
-                 "mov    %0, pc\n"
-                 : "=r" (pc)
-                 :
-                 : "memory");
--
-+#else
-+	__asm__ __volatile__(
-+                "adr    %0, .\n"
-+                : "=r" (pc)
-+                :
-+                : "memory");
-+#endif
- 	return pc;
- }
+diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+index 2934ad12cd..c7590fa33c 100644
+--- a/arch/arm/cpu/mmu_64.c
++++ b/arch/arm/cpu/mmu_64.c
+@@ -208,13 +208,12 @@ static void map_region(uint64_t virt, uint64_t phys, uint64_t size, uint64_t att
  
+ 			pte = table + idx;
+ 
+-			if (level == 3)
+-				attr |= PTE_TYPE_PAGE;
+-			else
+-				attr |= PTE_TYPE_BLOCK;
+-
+ 			if (size >= block_size && IS_ALIGNED(addr, block_size)) {
+-				*pte = phys | attr;
++				if (level == 3)
++					*pte = phys | attr | PTE_TYPE_PAGE;
++				else
++					*pte = phys | attr | PTE_TYPE_BLOCK;
++
+ 				addr += block_size;
+ 				phys += block_size;
+ 				size -= block_size;
 -- 
 2.16.1
 
