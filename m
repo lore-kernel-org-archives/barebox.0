@@ -1,11 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewosI-0001qQ-On
- for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:27 +0000
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1ewosF-0008BZ-H9
+ for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:26 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 16 Mar 2018 13:53:54 +0100
-Message-Id: <20180316125354.23462-79-s.hauer@pengutronix.de>
+Subject: [PATCH 60/78] ARM: aarch64: implement stacktraces
+Date: Fri, 16 Mar 2018 13:53:36 +0100
+Message-Id: <20180316125354.23462-61-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,404 +22,168 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 78/78] ARM: aarch64: Make early MMU support work
 To: Barebox List <barebox@lists.infradead.org>
 
-Until now it was not possible to enable the MMU in PBL because
-create_section needs memory allocations which are not available. With
-this patch we move the early MMU support to a separate file and all
-necessary aux functions to mmu_64.h. create_sections is reimplmented
-for the early case to only create 1st level pagetables.
+Implement stacktraces as a great debugging aid. On aarch64 this is cheap
+enough to be enabled unconditionally. Unwinding code is taken from the
+Kernel.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/Makefile       |   5 +-
- arch/arm/cpu/mmu-early_64.c |  88 +++++++++++++++++++++++++++++
- arch/arm/cpu/mmu_64.c       | 134 +++-----------------------------------------
- arch/arm/cpu/mmu_64.h       |  84 +++++++++++++++++++++++++++
- 4 files changed, 182 insertions(+), 129 deletions(-)
- create mode 100644 arch/arm/cpu/mmu-early_64.c
+ arch/arm/cpu/interrupts_64.c      |  4 +-
+ arch/arm/include/asm/barebox.h    |  4 +-
+ arch/arm/include/asm/stacktrace.h |  2 +
+ arch/arm/lib64/Makefile           |  1 +
+ arch/arm/lib64/stacktrace.c       | 86 +++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 95 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/lib64/stacktrace.c
 
-diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-index f79cedd085..0316d251c0 100644
---- a/arch/arm/cpu/Makefile
-+++ b/arch/arm/cpu/Makefile
-@@ -3,10 +3,7 @@ obj-y += cpu.o
- obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions$(S64).o interrupts$(S64).o
- obj-$(CONFIG_MMU) += mmu$(S64).o
- lwl-y += lowlevel$(S64).o
--
--ifeq ($(CONFIG_CPU_32), y)
--obj-pbl-$(CONFIG_MMU) += mmu-early.o
--endif
-+obj-pbl-$(CONFIG_MMU) += mmu-early$(S64).o
+diff --git a/arch/arm/cpu/interrupts_64.c b/arch/arm/cpu/interrupts_64.c
+index ffdb87af94..9ed6ed9761 100644
+--- a/arch/arm/cpu/interrupts_64.c
++++ b/arch/arm/cpu/interrupts_64.c
+@@ -44,7 +44,9 @@ static void __noreturn do_exception(struct pt_regs *pt_regs)
+ {
+ 	show_regs(pt_regs);
  
- obj-y += start.o entry.o
+-	panic("");
++	unwind_backtrace(pt_regs);
++
++	panic("panic: unhandled exception");
+ }
  
-diff --git a/arch/arm/cpu/mmu-early_64.c b/arch/arm/cpu/mmu-early_64.c
+ /**
+diff --git a/arch/arm/include/asm/barebox.h b/arch/arm/include/asm/barebox.h
+index 5a6622235b..4e89466593 100644
+--- a/arch/arm/include/asm/barebox.h
++++ b/arch/arm/include/asm/barebox.h
+@@ -2,9 +2,11 @@
+ #define _BAREBOX_H_	1
+ 
+ #ifdef CONFIG_ARM_UNWIND
+-#ifndef CONFIG_CPU_V8
+ #define ARCH_HAS_STACK_DUMP
+ #endif
++
++#ifdef CONFIG_CPU_V8
++#define ARCH_HAS_STACK_DUMP
+ #endif
+ 
+ #ifdef CONFIG_ARM_EXCEPTIONS
+diff --git a/arch/arm/include/asm/stacktrace.h b/arch/arm/include/asm/stacktrace.h
+index 10f70e1675..602e79ced4 100644
+--- a/arch/arm/include/asm/stacktrace.h
++++ b/arch/arm/include/asm/stacktrace.h
+@@ -4,7 +4,9 @@
+ struct stackframe {
+ 	unsigned long fp;
+ 	unsigned long sp;
++#ifdef CONFIG_CPU_32
+ 	unsigned long lr;
++#endif
+ 	unsigned long pc;
+ };
+ 
+diff --git a/arch/arm/lib64/Makefile b/arch/arm/lib64/Makefile
+index 679ca556e5..77647128a5 100644
+--- a/arch/arm/lib64/Makefile
++++ b/arch/arm/lib64/Makefile
+@@ -1,3 +1,4 @@
++obj-y += stacktrace.o
+ obj-$(CONFIG_ARM_LINUX)	+= armlinux.o
+ obj-y	+= div0.o
+ obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memcpy.o
+diff --git a/arch/arm/lib64/stacktrace.c b/arch/arm/lib64/stacktrace.c
 new file mode 100644
-index 0000000000..f07d107e0d
+index 0000000000..b8352c1454
 --- /dev/null
-+++ b/arch/arm/cpu/mmu-early_64.c
-@@ -0,0 +1,88 @@
++++ b/arch/arm/lib64/stacktrace.c
+@@ -0,0 +1,86 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; version 2.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License for more details.
++ */
++
 +#include <common.h>
-+#include <dma-dir.h>
-+#include <init.h>
-+#include <mmu.h>
-+#include <errno.h>
-+#include <linux/sizes.h>
-+#include <asm/memory.h>
-+#include <asm/pgtable64.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/system.h>
-+#include <asm/cache.h>
-+#include <memory.h>
-+#include <asm/system_info.h>
++#include <asm/stacktrace.h>
 +
-+#include "mmu_64.h"
++#define THREAD_SIZE 16384
 +
-+static void create_sections(void *ttb, uint64_t virt, uint64_t phys,
-+			    uint64_t size, uint64_t attr)
++/*
++ * AArch64 PCS assigns the frame pointer to x29.
++ *
++ * A simple function prologue looks like this:
++ * 	sub	sp, sp, #0x10
++ *   	stp	x29, x30, [sp]
++ *	mov	x29, sp
++ *
++ * A simple function epilogue looks like this:
++ *	mov	sp, x29
++ *	ldp	x29, x30, [sp]
++ *	add	sp, sp, #0x10
++ */
++int unwind_frame(struct stackframe *frame)
 +{
-+	uint64_t block_size;
-+	uint64_t block_shift;
-+	uint64_t *pte;
-+	uint64_t idx;
-+	uint64_t addr;
-+	uint64_t *table;
++	unsigned long high, low;
++	unsigned long fp = frame->fp;
 +
-+	addr = virt;
++	low  = frame->sp;
++	high = ALIGN(low, THREAD_SIZE);
 +
-+	attr &= ~PTE_TYPE_MASK;
++	if (fp < low || fp > high - 0x18 || fp & 0xf)
++		return -EINVAL;
 +
-+	table = ttb;
++	frame->sp = fp + 0x10;
++	frame->fp = *(unsigned long *)(fp);
++	frame->pc = *(unsigned long *)(fp + 8);
 +
++	return 0;
++}
++
++void dump_backtrace_entry(unsigned long where, unsigned long from)
++{
++#ifdef CONFIG_KALLSYMS
++	printf("[<%08lx>] (%pS) from [<%08lx>] (%pS)\n", where, (void *)where, from, (void *)from);
++#else
++	printf("Function entered at [<%08lx>] from [<%08lx>]\n", where, from);
++#endif
++}
++
++void unwind_backtrace(struct pt_regs *regs)
++{
++        struct stackframe frame = {};
++	register unsigned long current_sp asm ("sp");
++
++	if (regs) {
++		frame.fp = regs->regs[29];
++		frame.pc = regs->elr;
++	} else {
++		frame.fp = (unsigned long)__builtin_frame_address(0);
++		frame.sp = current_sp;
++		frame.pc = (unsigned long)unwind_backtrace;
++	}
++
++	printf("Call trace:\n");
 +	while (1) {
-+		block_shift = level2shift(1);
-+		idx = (addr & level2mask(1)) >> block_shift;
-+		block_size = (1ULL << block_shift);
++		unsigned long where = frame.pc;
++		int ret;
 +
-+		pte = table + idx;
-+
-+		*pte = phys | attr | PTE_TYPE_BLOCK;
-+
-+		if (size < block_size)
++		ret = unwind_frame(&frame);
++		if (ret < 0)
 +			break;
-+
-+		addr += block_size;
-+		phys += block_size;
-+		size -= block_size;
++		dump_backtrace_entry(where, frame.pc);
 +	}
 +}
 +
-+void mmu_early_enable(unsigned long membase, unsigned long memsize,
-+		      unsigned long ttb)
++void dump_stack(void)
 +{
-+	int el;
-+
-+	/*
-+	 * For the early code we only create level 1 pagetables which only
-+	 * allow for a 1GiB granularity. If our membase is not aligned to that
-+	 * bail out without enabling the MMU.
-+	 */
-+	if (membase & ((1ULL << level2shift(1)) - 1))
-+		return;
-+
-+	memset((void *)ttb, 0, GRANULE_SIZE);
-+
-+	el = current_el();
-+	set_ttbr_tcr_mair(el, ttb, calc_tcr(el), MEMORY_ATTRIBUTES);
-+	create_sections((void *)ttb, 0, 0, 1UL << (BITS_PER_VA - 1), UNCACHED_MEM);
-+	create_sections((void *)ttb, membase, membase, memsize, CACHED_MEM);
-+	tlb_invalidate();
-+	isb();
-+	set_cr(get_cr() | CR_M);
-+}
-+
-+void mmu_early_disable(void)
-+{
-+	unsigned int cr;
-+
-+	cr = get_cr();
-+	cr &= ~(CR_M | CR_C);
-+
-+	set_cr(cr);
-+	v8_flush_dcache_all();
-+	tlb_invalidate();
-+
-+	dsb();
-+	isb();
-+}
-\ No newline at end of file
-diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 31658de910..8355a4c6e8 100644
---- a/arch/arm/cpu/mmu_64.c
-+++ b/arch/arm/cpu/mmu_64.c
-@@ -34,13 +34,6 @@
- 
- #include "mmu_64.h"
- 
--#define CACHED_MEM      (PTE_BLOCK_MEMTYPE(MT_NORMAL) | \
--			 PTE_BLOCK_OUTER_SHARE | \
--			 PTE_BLOCK_AF)
--#define UNCACHED_MEM    (PTE_BLOCK_MEMTYPE(MT_DEVICE_nGnRnE) | \
--			 PTE_BLOCK_OUTER_SHARE | \
--			 PTE_BLOCK_AF)
--
- static uint64_t *ttb;
- 
- static void arm_mmu_not_initialized_error(void)
-@@ -54,74 +47,6 @@ static void arm_mmu_not_initialized_error(void)
- 	panic("MMU not initialized\n");
- }
- 
--static uint64_t calc_tcr(int el)
--{
--	u64 ips, va_bits;
--	u64 tcr;
--
--	ips = 2;
--	va_bits = BITS_PER_VA;
--
--	if (el == 1)
--		tcr = (ips << 32) | TCR_EPD1_DISABLE;
--	else if (el == 2)
--		tcr = (ips << 16);
--	else
--		tcr = (ips << 16);
--
--	/* PTWs cacheable, inner/outer WBWA and inner shareable */
--	tcr |= TCR_TG0_4K | TCR_SHARED_INNER | TCR_ORGN_WBWA | TCR_IRGN_WBWA;
--	tcr |= TCR_T0SZ(va_bits);
--
--	return tcr;
--}
--
--/*
-- * Do it the simple way for now and invalidate the entire
-- * tlb
-- */
--static inline void tlb_invalidate(void)
--{
--	unsigned int el = current_el();
--
--	dsb();
--
--	if (el == 1)
--		__asm__ __volatile__("tlbi vmalle1\n\t" : : : "memory");
--	else if (el == 2)
--		__asm__ __volatile__("tlbi alle2\n\t" : : : "memory");
--	else if (el == 3)
--		__asm__ __volatile__("tlbi alle3\n\t" : : : "memory");
--
--	dsb();
--	isb();
--}
--
--static int level2shift(int level)
--{
--	/* Page is 12 bits wide, every level translates 9 bits */
--	return (12 + 9 * (3 - level));
--}
--
--static uint64_t level2mask(int level)
--{
--	uint64_t mask = -EINVAL;
--
--	if (level == 1)
--		mask = L1_ADDR_MASK;
--	else if (level == 2)
--		mask = L2_ADDR_MASK;
--	else if (level == 3)
--		mask = L3_ADDR_MASK;
--
--	return mask;
--}
--
--static int pte_type(uint64_t *pte)
--{
--	return *pte & PTE_TYPE_MASK;
--}
--
- static void set_table(uint64_t *pt, uint64_t *table_addr)
- {
- 	uint64_t val;
-@@ -140,16 +65,6 @@ static uint64_t *create_table(void)
- 	return new_table;
- }
- 
--static uint64_t *get_level_table(uint64_t *pte)
--{
--	uint64_t *table = (uint64_t *)(*pte & XLAT_ADDR_MASK);
--
--	if (pte_type(pte) != PTE_TYPE_TABLE)
--		BUG();
--
--	return table;
--}
--
- static __maybe_unused uint64_t *find_pte(uint64_t addr)
- {
- 	uint64_t *pte;
-@@ -286,26 +201,15 @@ static int mmu_init(void)
- 		 */
- 		panic("MMU: No memory bank found! Cannot continue\n");
- 
--	if (get_cr() & CR_M) {
--		ttb = (uint64_t *)get_ttbr(current_el());
--		if (!request_sdram_region("ttb", (unsigned long)ttb, SZ_16K))
--			/*
--			* This can mean that:
--			* - the early MMU code has put the ttb into a place
--			*   which we don't have inside our available memory
--			* - Somebody else has occupied the ttb region which means
--			*   the ttb will get corrupted.
--			*/
--			pr_crit("Critical Error: Can't request SDRAM region for ttb at %p\n",
--				ttb);
--	} else {
--		ttb = xmemalign(GRANULE_SIZE, GRANULE_SIZE);
--
--		memset(ttb, 0, GRANULE_SIZE);
--
--		el = current_el();
--		set_ttbr_tcr_mair(el, (uint64_t)ttb, calc_tcr(el), MEMORY_ATTRIBUTES);
--	}
-+	if (get_cr() & CR_M)
-+		mmu_disable();
-+
-+	ttb = xmemalign(GRANULE_SIZE, GRANULE_SIZE);
-+
-+	memset(ttb, 0, GRANULE_SIZE);
-+
-+	el = current_el();
-+	set_ttbr_tcr_mair(el, (uint64_t)ttb, calc_tcr(el), MEMORY_ATTRIBUTES);
- 
- 	pr_debug("ttb: 0x%p\n", ttb);
- 
-@@ -339,26 +243,6 @@ void mmu_disable(void)
- 	isb();
- }
- 
--void mmu_early_enable(unsigned long membase, unsigned long memsize,
--		      unsigned long _ttb)
--{
--	int el;
--
--	ttb = (uint64_t *)_ttb;
--
--	memset(ttb, 0, GRANULE_SIZE);
--
--	el = current_el();
--	set_ttbr_tcr_mair(el, (uint64_t)ttb, calc_tcr(el), MEMORY_ATTRIBUTES);
--
--	create_sections(0, 0, 1UL << (BITS_PER_VA - 1), UNCACHED_MEM);
--
--	create_sections(membase, membase, memsize, CACHED_MEM);
--
--	isb();
--	set_cr(get_cr() | CR_M);
--}
--
- unsigned long virt_to_phys(volatile void *virt)
- {
- 	return (unsigned long)virt;
-diff --git a/arch/arm/cpu/mmu_64.h b/arch/arm/cpu/mmu_64.h
-index cc01db0db9..c280d2ced2 100644
---- a/arch/arm/cpu/mmu_64.h
-+++ b/arch/arm/cpu/mmu_64.h
-@@ -1,4 +1,31 @@
- 
-+#define CACHED_MEM      (PTE_BLOCK_MEMTYPE(MT_NORMAL) | \
-+			 PTE_BLOCK_OUTER_SHARE | \
-+			 PTE_BLOCK_AF)
-+#define UNCACHED_MEM    (PTE_BLOCK_MEMTYPE(MT_DEVICE_nGnRnE) | \
-+			 PTE_BLOCK_OUTER_SHARE | \
-+			 PTE_BLOCK_AF)
-+
-+/*
-+ * Do it the simple way for now and invalidate the entire tlb
-+ */
-+static inline void tlb_invalidate(void)
-+{
-+	unsigned int el = current_el();
-+
-+	dsb();
-+
-+	if (el == 1)
-+		__asm__ __volatile__("tlbi vmalle1\n\t" : : : "memory");
-+	else if (el == 2)
-+		__asm__ __volatile__("tlbi alle2\n\t" : : : "memory");
-+	else if (el == 3)
-+		__asm__ __volatile__("tlbi alle3\n\t" : : : "memory");
-+
-+	dsb();
-+	isb();
-+}
-+
- static inline void set_ttbr_tcr_mair(int el, uint64_t table, uint64_t tcr, uint64_t attr)
- {
- 	asm volatile("dsb sy");
-@@ -35,3 +62,60 @@ static inline uint64_t get_ttbr(int el)
- 
- 	return val;
- }
-+
-+static inline int level2shift(int level)
-+{
-+	/* Page is 12 bits wide, every level translates 9 bits */
-+	return (12 + 9 * (3 - level));
-+}
-+
-+static inline uint64_t level2mask(int level)
-+{
-+	uint64_t mask = -EINVAL;
-+
-+	if (level == 1)
-+		mask = L1_ADDR_MASK;
-+	else if (level == 2)
-+		mask = L2_ADDR_MASK;
-+	else if (level == 3)
-+		mask = L3_ADDR_MASK;
-+
-+	return mask;
-+}
-+
-+static inline uint64_t calc_tcr(int el)
-+{
-+	u64 ips, va_bits;
-+	u64 tcr;
-+
-+	ips = 2;
-+	va_bits = BITS_PER_VA;
-+
-+	if (el == 1)
-+		tcr = (ips << 32) | TCR_EPD1_DISABLE;
-+	else if (el == 2)
-+		tcr = (ips << 16);
-+	else
-+		tcr = (ips << 16);
-+
-+	/* PTWs cacheable, inner/outer WBWA and inner shareable */
-+	tcr |= TCR_TG0_4K | TCR_SHARED_INNER | TCR_ORGN_WBWA | TCR_IRGN_WBWA;
-+	tcr |= TCR_T0SZ(va_bits);
-+
-+	return tcr;
-+}
-+
-+static inline int pte_type(uint64_t *pte)
-+{
-+	return *pte & PTE_TYPE_MASK;
-+}
-+
-+static inline uint64_t *get_level_table(uint64_t *pte)
-+{
-+	uint64_t *table = (uint64_t *)(*pte & XLAT_ADDR_MASK);
-+
-+	if (pte_type(pte) != PTE_TYPE_TABLE)
-+		BUG();
-+
-+	return table;
++	unwind_backtrace(NULL);
 +}
 -- 
 2.16.1
