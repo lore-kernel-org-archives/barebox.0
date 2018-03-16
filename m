@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewos8-00067l-8J
- for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:24 +0000
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1ewosF-0008BX-Fi
+ for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:23 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 16 Mar 2018 13:53:13 +0100
-Message-Id: <20180316125354.23462-38-s.hauer@pengutronix.de>
+Date: Fri, 16 Mar 2018 13:53:38 +0100
+Message-Id: <20180316125354.23462-63-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,61 +21,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 37/78] ARM: aarch64: mmu: Fix mair register setting
+Subject: [PATCH 62/78] ARM: aarch64: Allow to leave exceptions
 To: Barebox List <barebox@lists.infradead.org>
 
-The memory attributes register contains the memory attribute settings
-for the corresponding to the possible AttrIndx values in the page
-table entries. Passing UNCACHED_MEM makes no sense here, pass the
-desired attributes instead.
+So far exceptions can only be entered but never left. Add code to leave
+exceptions based on U-Boot commit 4c2cc7c4e (arm64: Allow exceptions to return).
+This will be useful to implement ignoring data aborts on a 'md' command.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/mmu_64.c            | 5 +++--
- arch/arm/include/asm/pgtable64.h | 7 +++++++
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ arch/arm/cpu/exceptions_64.S | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 27b5acd6a7..639aa6d189 100644
---- a/arch/arm/cpu/mmu_64.c
-+++ b/arch/arm/cpu/mmu_64.c
-@@ -243,7 +243,8 @@ static int mmu_init(void)
+diff --git a/arch/arm/cpu/exceptions_64.S b/arch/arm/cpu/exceptions_64.S
+index a7069a8475..58ca50b709 100644
+--- a/arch/arm/cpu/exceptions_64.S
++++ b/arch/arm/cpu/exceptions_64.S
+@@ -80,34 +80,68 @@ vectors:
+ _do_bad_sync:
+ 	exception_entry
+ 	bl	do_bad_sync
++	b	exception_exit
  
- 		memset(ttb, 0, GRANULE_SIZE);
+ _do_bad_irq:
+ 	exception_entry
+ 	bl	do_bad_irq
++	b	exception_exit
  
--		set_ttbr_tcr_mair(current_el(), (uint64_t)ttb, TCR_FLAGS, UNCACHED_MEM);
-+		set_ttbr_tcr_mair(current_el(), (uint64_t)ttb, TCR_FLAGS,
-+				  MEMORY_ATTRIBUTES);
- 	}
+ _do_bad_fiq:
+ 	exception_entry
+ 	bl	do_bad_fiq
++	b	exception_exit
  
- 	pr_debug("ttb: 0x%p\n", ttb);
-@@ -298,7 +299,7 @@ void mmu_early_enable(uint64_t membase, uint64_t memsize, uint64_t _ttb)
+ _do_bad_error:
+ 	exception_entry
+ 	bl	do_bad_error
++	b	exception_exit
  
- 	memset(ttb, 0, GRANULE_SIZE);
+ _do_sync:
+ 	exception_entry
+ 	bl	do_sync
++	b	exception_exit
  
--	set_ttbr_tcr_mair(current_el(), (uint64_t)ttb, TCR_FLAGS, UNCACHED_MEM);
-+	set_ttbr_tcr_mair(current_el(), (uint64_t)ttb, TCR_FLAGS, MEMORY_ATTRIBUTES);
+ _do_irq:
+ 	exception_entry
+ 	bl	do_irq
++	b	exception_exit
  
- 	create_sections(0, 0, 1UL << (BITS_PER_VA - 1), UNCACHED_MEM);
+ _do_fiq:
+ 	exception_entry
+ 	bl	do_fiq
++	b	exception_exit
  
-diff --git a/arch/arm/include/asm/pgtable64.h b/arch/arm/include/asm/pgtable64.h
-index 20bea5b28a..7f7efa10ca 100644
---- a/arch/arm/include/asm/pgtable64.h
-+++ b/arch/arm/include/asm/pgtable64.h
-@@ -109,6 +109,13 @@
- #define MT_NORMAL		4
- #define MT_NORMAL_WT		5
- 
-+#define MEMORY_ATTRIBUTES ((0x00 << (MT_DEVICE_nGnRnE * 8))	| \
-+			  (0x04 << (MT_DEVICE_nGnRE * 8)) 	| \
-+			  (0x0c << (MT_DEVICE_GRE * 8)) 	| \
-+			  (0x44 << (MT_NORMAL_NC * 8))		| \
-+			  (UL(0xff) << (MT_NORMAL * 8))		| \
-+			  (UL(0xbb) << (MT_NORMAL_WT * 8)))
+ _do_error:
+ 	exception_entry
+ 	bl	do_error
++	b	exception_exit
 +
- /*
-  * TCR flags.
-  */
++exception_exit:
++	ldp	x2, x0, [sp],#16
++	switch_el x11, 3f, 2f, 1f
++3:     	msr	elr_el3, x2
++	b	0f
++2:     	msr	elr_el2, x2
++	b	0f
++1:     	msr	elr_el1, x2
++0:
++	ldp	x1, x2, [sp],#16
++	ldp	x3, x4, [sp],#16
++	ldp	x5, x6, [sp],#16
++	ldp	x7, x8, [sp],#16
++	ldp	x9, x10, [sp],#16
++	ldp	x11, x12, [sp],#16
++	ldp	x13, x14, [sp],#16
++	ldp	x15, x16, [sp],#16
++	ldp	x17, x18, [sp],#16
++	ldp	x19, x20, [sp],#16
++	ldp	x21, x22, [sp],#16
++	ldp	x23, x24, [sp],#16
++	ldp	x25, x26, [sp],#16
++	ldp	x27, x28, [sp],#16
++	ldp	x29, x30, [sp],#16
++	eret
+ 
+ .section .data
+ .align 4
 -- 
 2.16.1
 
