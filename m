@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewosE-0008BV-VC
- for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:22 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1ewos8-00068D-6L
+ for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 16 Mar 2018 13:53:30 +0100
-Message-Id: <20180316125354.23462-55-s.hauer@pengutronix.de>
+Date: Fri, 16 Mar 2018 13:52:49 +0100
+Message-Id: <20180316125354.23462-14-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,76 +21,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 54/78] ARM: aarch64: fix exception level mixup
+Subject: [PATCH 13/78] ARM: aarch64: Add dummy naked attribute
 To: Barebox List <barebox@lists.infradead.org>
 
-When entering an exception the we currently jump to the code handling
-EL1 when we are actually at EL3 and the other way round. Fix this by
-introducing and using the switch_el macro from U-Boot.
+The naked attribute is not supported on aarch64. To silence the compiler
+warning add a dummy naked attribute.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/exceptions_64.S       | 10 ++--------
- arch/arm/include/asm/assembler64.h | 21 +++++++++++++++++++++
- 2 files changed, 23 insertions(+), 8 deletions(-)
- create mode 100644 arch/arm/include/asm/assembler64.h
+ arch/arm/cpu/entry.c               |  2 +-
+ arch/arm/cpu/start.c               |  4 ++--
+ arch/arm/include/asm/barebox-arm.h | 17 +++++++++++++++--
+ 3 files changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/cpu/exceptions_64.S b/arch/arm/cpu/exceptions_64.S
-index 58120253a1..a7069a8475 100644
---- a/arch/arm/cpu/exceptions_64.S
-+++ b/arch/arm/cpu/exceptions_64.S
-@@ -7,6 +7,7 @@
+diff --git a/arch/arm/cpu/entry.c b/arch/arm/cpu/entry.c
+index 33b1429d4a..b48c1ca11d 100644
+--- a/arch/arm/cpu/entry.c
++++ b/arch/arm/cpu/entry.c
+@@ -24,7 +24,7 @@
+  * be fine.
+  */
  
- #include <config.h>
- #include <asm/ptrace.h>
-+#include <asm/assembler64.h>
- #include <linux/linkage.h>
+-void __naked __noreturn barebox_arm_entry(unsigned long membase,
++void NAKED __noreturn barebox_arm_entry(unsigned long membase,
+ 					  unsigned long memsize, void *boarddata)
+ {
+ 	arm_setup_stack(arm_mem_stack_top(membase, membase + memsize) - 16);
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 171e6ad0eb..9f4213bfb9 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -229,7 +229,7 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
+ 
+ #ifndef CONFIG_PBL_IMAGE
+ 
+-void __naked __section(.text_entry) start(void)
++void NAKED __section(.text_entry) start(void)
+ {
+ 	barebox_arm_head();
+ }
+@@ -239,7 +239,7 @@ void __naked __section(.text_entry) start(void)
+  * First function in the uncompressed image. We get here from
+  * the pbl. The stack already has been set up by the pbl.
+  */
+-void __naked __section(.text_entry) start(unsigned long membase,
++void NAKED __section(.text_entry) start(unsigned long membase,
+ 		unsigned long memsize, void *boarddata)
+ {
+ 	barebox_non_pbl_start(membase, memsize, boarddata);
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 3aea2e070e..170839aaad 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -161,13 +161,13 @@ static inline unsigned long arm_mem_barebox_image(unsigned long membase,
+ #define ENTRY_FUNCTION(name, arg0, arg1, arg2)				\
+ 	static void __##name(uint32_t, uint32_t, uint32_t);		\
+ 									\
+-	void __naked __section(.text_head_entry_##name)	name		\
++	void NAKED __section(.text_head_entry_##name)	name		\
+ 				(uint32_t r0, uint32_t r1, uint32_t r2)	\
+ 		{							\
+ 			__barebox_arm_head();				\
+ 			__##name(r0, r1, r2);				\
+ 		}							\
+-		static void __naked noinline __##name			\
++		static void NAKED noinline __##name			\
+ 			(uint32_t arg0, uint32_t arg1, uint32_t arg2)
  
  /*
-@@ -31,14 +32,7 @@
- 	stp	x3, x4, [sp, #-16]!
- 	stp	x1, x2, [sp, #-16]!
+@@ -181,4 +181,17 @@ static inline unsigned long arm_mem_barebox_image(unsigned long membase,
  
--	/* Could be running at EL3/EL2/EL1 */
--	mrs	x11, CurrentEL
--	cmp	x11, #0xC		/* Check EL3 state */
--	b.eq	1f
--	cmp	x11, #0x8		/* Check EL2 state */
--	b.eq	2f
--	cmp	x11, #0x4		/* Check EL1 state */
--	b.eq	3f
-+	switch_el x11, 3f, 2f, 1f
- 3:	mrs	x1, esr_el3
- 	mrs	x2, elr_el3
- 	b	0f
-diff --git a/arch/arm/include/asm/assembler64.h b/arch/arm/include/asm/assembler64.h
-new file mode 100644
-index 0000000000..26182aa5f6
---- /dev/null
-+++ b/arch/arm/include/asm/assembler64.h
-@@ -0,0 +1,21 @@
-+#ifndef __ASM_ARCH_ASSEMBLY_H
-+#define __ASM_ARCH_ASSEMBLY_H
-+
-+#ifndef __ASSEMBLY__
-+#error "Only include this from assembly code"
+ #define barebox_image_size (__image_end - __image_start)
+ 
++#ifdef CONFIG_CPU_32
++#define NAKED __naked
++#else
++/*
++ * There is no naked support for aarch64, so do not rely on it.
++ * This basically means we must have a stack configured when a
++ * function with the naked attribute is entered. On nowadays hardware
++ * the ROM should have some basic stack already. If not, set one
++ * up before jumping into the barebox entry functions.
++ */
++#define NAKED
 +#endif
 +
-+/*
-+ * Branch according to exception level
-+ */
-+.macro  switch_el, xreg, el3_label, el2_label, el1_label
-+	mrs	\xreg, CurrentEL
-+	cmp	\xreg, 0xc
-+	b.eq	\el3_label
-+	cmp	\xreg, 0x8
-+	b.eq	\el2_label
-+	cmp	\xreg, 0x4
-+	b.eq	\el1_label
-+.endm
-+
-+#endif /* __ASM_ARCH_ASSEMBLY_H */
-\ No newline at end of file
+ #endif	/* _BAREBOX_ARM_H_ */
 -- 
 2.16.1
 
