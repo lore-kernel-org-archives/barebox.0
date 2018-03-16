@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ewosD-0008BO-61
- for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:22 +0000
+ id 1ewosF-0008BY-HC
+ for barebox@lists.infradead.org; Fri, 16 Mar 2018 12:54:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 16 Mar 2018 13:53:15 +0100
-Message-Id: <20180316125354.23462-40-s.hauer@pengutronix.de>
+Date: Fri, 16 Mar 2018 13:53:35 +0100
+Message-Id: <20180316125354.23462-60-s.hauer@pengutronix.de>
 In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
 References: <20180316125354.23462-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,92 +21,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 39/78] ARM: aarch64: mmu: enable mmu in generic code
+Subject: [PATCH 59/78] ARM: aarch64: implement show_regs()
 To: Barebox List <barebox@lists.infradead.org>
 
-Using board code to enable the MMU is not nice. Do it in generic
-code. Since mmu_enable() is now done in mmu_64.c we no longer have
-to export it.
+Do something useful in an exception and at least print the current
+register contents.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/qemu-virt64/init.c | 10 ----------
- arch/arm/cpu/mmu_64.c              | 20 ++++++++------------
- arch/arm/include/asm/mmu.h         |  1 -
- 3 files changed, 8 insertions(+), 23 deletions(-)
+ arch/arm/cpu/interrupts_64.c  |  8 ++++++++
+ arch/arm/include/asm/ptrace.h | 19 +++++++++++++++++++
+ 2 files changed, 27 insertions(+)
 
-diff --git a/arch/arm/boards/qemu-virt64/init.c b/arch/arm/boards/qemu-virt64/init.c
-index 686231696e..19cfcae1f0 100644
---- a/arch/arm/boards/qemu-virt64/init.c
-+++ b/arch/arm/boards/qemu-virt64/init.c
-@@ -62,13 +62,3 @@ static int virt_core_init(void)
- 	return 0;
- }
- postcore_initcall(virt_core_init);
--
--#ifdef CONFIG_MMU
--static int virt_mmu_enable(void)
--{
--	mmu_enable();
--
--	return 0;
--}
--postmmu_initcall(virt_mmu_enable);
--#endif
-diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 639aa6d189..695a73262d 100644
---- a/arch/arm/cpu/mmu_64.c
-+++ b/arch/arm/cpu/mmu_64.c
-@@ -210,6 +210,12 @@ int arch_remap_range(void *_start, size_t size, unsigned flags)
- 	return 0;
- }
- 
-+static void mmu_enable(void)
-+{
-+	isb();
-+	set_cr(get_cr() | CR_M | CR_C | CR_I);
-+}
-+
- /*
-  * Prepare MMU for usage enable it.
+diff --git a/arch/arm/cpu/interrupts_64.c b/arch/arm/cpu/interrupts_64.c
+index b3bd0aa5a4..ffdb87af94 100644
+--- a/arch/arm/cpu/interrupts_64.c
++++ b/arch/arm/cpu/interrupts_64.c
+@@ -30,6 +30,14 @@
   */
-@@ -256,22 +262,12 @@ static int mmu_init(void)
- 	for_each_memory_bank(bank)
- 		create_sections(bank->start, bank->start, bank->size, CACHED_MEM);
- 
-+	mmu_enable();
-+
- 	return 0;
- }
- mmu_initcall(mmu_init);
- 
--void mmu_enable(void)
--{
--	if (!ttb)
--		arm_mmu_not_initialized_error();
--
--	if (!(get_cr() & CR_M)) {
--
--		isb();
--		set_cr(get_cr() | CR_M | CR_C | CR_I);
--	}
--}
--
- void mmu_disable(void)
+ void show_regs(struct pt_regs *regs)
  {
- 	unsigned int cr;
-diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
-index 2a1daeafe3..840851858f 100644
---- a/arch/arm/include/asm/mmu.h
-+++ b/arch/arm/include/asm/mmu.h
-@@ -8,7 +8,6 @@
++	int i;
++
++	printf("elr: %016lx lr : %016lx\n", regs->elr, regs->regs[30]);
++
++	for (i = 0; i < 29; i += 2)
++		printf("x%-2d: %016lx x%-2d: %016lx\n",
++			i, regs->regs[i], i + 1, regs->regs[i + 1]);
++	printf("\n");
+ }
  
- struct arm_memory;
+ static void __noreturn do_exception(struct pt_regs *pt_regs)
+diff --git a/arch/arm/include/asm/ptrace.h b/arch/arm/include/asm/ptrace.h
+index 6520a0a73a..7fbd8d9b6f 100644
+--- a/arch/arm/include/asm/ptrace.h
++++ b/arch/arm/include/asm/ptrace.h
+@@ -10,6 +10,23 @@
+ #ifndef __ASM_ARM_PTRACE_H
+ #define __ASM_ARM_PTRACE_H
  
--void mmu_enable(void);
- void mmu_disable(void);
- static inline void arm_create_section(unsigned long virt, unsigned long phys, int size_m,
- 		unsigned int flags)
++#ifdef CONFIG_CPU_64
++
++#ifndef __ASSEMBLY__
++
++/*
++ * This struct defines the way the registers are stored
++ * on the stack during an exception.
++ */
++struct pt_regs {
++	unsigned long elr;
++	unsigned long regs[31];
++};
++
++#endif  /* __ASSEMBLY__ */
++
++#else   /* CONFIG_CPU_64 */
++
+ #define PTRACE_GETREGS		12
+ #define PTRACE_SETREGS		13
+ #define PTRACE_GETFPREGS	14
+@@ -141,4 +158,6 @@ extern void show_regs(struct pt_regs *);
+ 
+ #endif /* __ASSEMBLY__ */
+ 
++#endif /* CONFIG_CPU_64 */
++
+ #endif
 -- 
 2.16.1
 
