@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.savoirfairelinux.com ([208.88.110.44])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1exqAH-0005Ew-R2
- for barebox@lists.infradead.org; Mon, 19 Mar 2018 08:29:15 +0000
-Date: Mon, 19 Mar 2018 09:28:57 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180319082857.2kxpkffblycc2tl4@pengutronix.de>
-References: <20180318211046.14239-1-akurz@blala.de>
+ id 1exgi0-00071l-50
+ for barebox@lists.infradead.org; Sun, 18 Mar 2018 22:23:21 +0000
+From: =?UTF-8?q?Ga=C3=ABl=20PORTAY?= <gael.portay@savoirfairelinux.com>
+Date: Sun, 18 Mar 2018 18:22:36 -0400
+Message-Id: <20180318222236.28296-1-gael.portay@savoirfairelinux.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180318211046.14239-1-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,47 +15,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX50: Amazon Kindle: fix setup of board specific
- environment
-To: Alexander Kurz <akurz@blala.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fs: check pointer returned by get_fsdevice_by_path before
+ dereferencing
+To: barebox@lists.infradead.org
+Cc: =?utf-8?q?Ga=C3=ABl=20PORTAY?= <gael.portay@savoirfairelinux.com>
 
-Hi Alexander,
-
-On Sun, Mar 18, 2018 at 09:10:46PM +0000, Alexander Kurz wrote:
-> With patch 5b92cfceff38 ("startup: Load default environment earlier")
-> loading of the default environment moved from environment_initcall
-> four initcalls up to fs_initcall. At this time, most of the board specific
-> environment patches inserted via defaultenv_append_directory() have not
-> been processed yet (mostly done in device_initcall) and will not appear
-> in the environment.
-> Fix this problem for the mx50 kindles by moving defaultenv_append_directory()
-> one initcall in front of fs_initcall.
-> Similar patches may be necessary for all other board implementations and the
-> efi implementation using defaultenv_append_directory() in device_initcall.
-
-You are right. Most boards do not cope with this change. Let's just
-revert the original patch instead of reworking all boards.
-
-It should be also possible to call defaultenv_load_one() instead of
-putting it to the defaultenv_list list when we have already loaded the
-environment, but for now I prefer the easy way out without possible
-regressions.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SW4gX19jYW5vbmljYWxpemVfcGF0aCgpIHdlIGRlcmVmZXJlbmNlIHRoZSBwb2ludGVyIHJldHVy
+bmVkIGJ5CmdldF9mc2RldmljZV9ieV9wYXRoKCkgd2l0aG91dCBjaGVja2luZyBpZiB0aGUgcG9p
+bnRlciBpcyBOVUxMIG9yIG5vdC4KV2hlbiB0aGUgcG9pbnRlciBpcyBOVUxMIGl0IGxlYWRzIHRv
+IGFuIE9vb3BzLgoKCU9vb3BzLCBhZGRyZXNzIGVycm9yIG9uIGxvYWQgb3IgaWZldGNoIQoKCSQg
+MCAgIDogMDAwMDAwMDAgMDAwMDAwMDEgYTAwMDAwMjYgYTA4MTFjMTAKCSQgNCAgIDogYTA0MDJl
+NjAgYTA0MDJlNDggYTA4MTFjMDAgYTA0MDJlNTgKCSQgOCAgIDogMDAwMDAwMDEgMDAwMDAwMDAg
+MDAwMDAwNWEgMDAwMDAwMjMKCSQxMiAgIDogMDAwMDAwMDAgMDAwMDAwMDIgMDA2MDEwMjEgMDAw
+MDAwMDAKCSQxNiAgIDogYTA0MDJlNjAgYTA0MDJlNTAgYTA0MDJlMzkgYTA4MTAwMDAKCSQyMCAg
+IDogYTA0MDJlMzggYTA4MTE0MjAgYTA4MTE0MjQgMDAwMDAwMDAKCSQyNCAgIDogMDAwMDAwMDAg
+YTA4MGRlMTAKCSQyOCAgIDogODdmODdkNDAgYTAzZmZhNjggYTA4MTAwMDAgYTA4MGNlMzAKCUhp
+ICAgIDogMDAwMDAwMDIKCUxvICAgIDogMDAwMDAwMDAKCWVwYyAgIDogYTA4MGNlMzQKCXJhICAg
+IDogYTA4MGNlMzAKCVN0YXR1czogMDAwMDAwMDYKCUNhdXNlIDogNDAwMDgwMTAKCUNvbmZpZzog
+ODAwNDA0ODMKCgkjIyMgRVJST1IgIyMjIFBsZWFzZSBSRVNFVCB0aGUgYm9hcmQgIyMjCgpGaXhl
+czogZDc5YTgxNzM2IGZzOiBEb24ndCBib3RoZXIgZmlsZXN5c3RlbXMgd2l0aG91dCBsaW5rIHN1
+cHBvcnQgd2l0aCBhZGRpdGlvbmFsIHN0YXQoKSBjYWxscwoKU2lnbmVkLW9mZi1ieTogR2HDq2wg
+UE9SVEFZIDxnYWVsLnBvcnRheUBzYXZvaXJmYWlyZWxpbnV4LmNvbT4KLS0tCiBmcy9mcy5jIHwg
+MiArLQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZm
+IC0tZ2l0IGEvZnMvZnMuYyBiL2ZzL2ZzLmMKaW5kZXggODhmMGIxNDc4Li41MTM1MTEyYzggMTAw
+NjQ0Ci0tLSBhL2ZzL2ZzLmMKKysrIGIvZnMvZnMuYwpAQCAtMTkxLDcgKzE5MSw3IEBAIHN0YXRp
+YyBjaGFyICpfX2Nhbm9uaWNhbGl6ZV9wYXRoKGNvbnN0IGNoYXIgKl9wYXRobmFtZSwgaW50IGxl
+dmVsKQogCQkgKiB3aXRoIGFuIGFkZGl0aW9uYWwgc3RhdCgpIGNhbGwuCiAJCSAqLwogCQlmc2Rl
+diA9IGdldF9mc2RldmljZV9ieV9wYXRoKG91dHBhdGgpOwotCQlpZiAoIWZzZGV2LT5kcml2ZXIt
+PnJlYWRsaW5rKQorCQlpZiAoIWZzZGV2IHx8ICFmc2Rldi0+ZHJpdmVyLT5yZWFkbGluaykKIAkJ
+CWNvbnRpbnVlOwogCiAJCXJldCA9IF9fbHN0YXQob3V0cGF0aCwgJnMpOwotLSAKMi4xNi4xCgoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
