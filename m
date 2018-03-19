@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.savoirfairelinux.com ([208.88.110.44])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1exqkP-00073F-WB
- for barebox@lists.infradead.org; Mon, 19 Mar 2018 09:06:31 +0000
-Date: Mon, 19 Mar 2018 05:06:17 -0400
-From: =?iso-8859-1?Q?Ga=EBl?= PORTAY <gael.portay@savoirfairelinux.com>
-Message-ID: <20180319090616.vmmb2dky3syrmuwm@archlinux.local>
-References: <20180318222236.28296-1-gael.portay@savoirfairelinux.com>
- <20180319083629.kxjdc4jnd35prif2@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180319083629.kxjdc4jnd35prif2@pengutronix.de>
+ id 1exs45-00034Q-T4
+ for barebox@lists.infradead.org; Mon, 19 Mar 2018 10:30:55 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 19 Mar 2018 11:30:41 +0100
+Message-Id: <20180319103041.19815-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,46 +14,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fs: check pointer returned by get_fsdevice_by_path
- before dereferencing
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] of: Pass barebox version to kernel
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Sascha,
+Pass the barebox version to Linux in case somebody is interested in it
+under Linux. We use put the version under /chosen/barebox-version and
+it can be read under Linux in /sys/firmware/devicetree/base/chosen/barebox-version.
 
-On Mon, Mar 19, 2018 at 09:36:29AM +0100, Sascha Hauer wrote:
-> ...
-> I wonder though what calls into the filesystem layer before / is
-> mounted in your case.
->
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/oftree.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-The issue is trigger by function stat() in start_barebox(), right before
-I expect to have a shell.
+diff --git a/common/oftree.c b/common/oftree.c
+index 40eb35f188..8a2ede4c60 100644
+--- a/common/oftree.c
++++ b/common/oftree.c
+@@ -128,6 +128,7 @@ static int of_fixup_bootargs(struct device_node *root, void *unused)
+ 	if (!node)
+ 		return -ENOMEM;
+ 
++	of_property_write_string(node, "barebox-version", release_string);
+ 
+ 	err = of_property_write_string(node, "bootargs", str);
+ 
+-- 
+2.16.1
 
-Here.
-
-	if (IS_ENABLED(CONFIG_COMMAND_SUPPORT)) {
-		pr_info("running /env/bin/init...\n");
-
-		if (!stat("/env/bin/init", &s))
-			run_command("source /env/bin/init");
-		else
-			pr_err("/env/bin/init not found\n");
-	}
-
-My configuration is very minimal for now. I do not have (yet) any FS
-selected (excepted devfs) and I do not have any root device mounted
-either in this configuration.
-
-I guess this is why fs_dev_root is NULL and why get_fsdevice_by_path()
-returns fs_dev_root (because there is nothing to iterate in list
-fs_device_list).
-
-Gael
 
 _______________________________________________
 barebox mailing list
