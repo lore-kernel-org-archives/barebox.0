@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1exqpk-0000gU-B7
- for barebox@lists.infradead.org; Mon, 19 Mar 2018 09:12:07 +0000
+ id 1exqpk-0000gJ-B6
+ for barebox@lists.infradead.org; Mon, 19 Mar 2018 09:12:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 19 Mar 2018 10:11:43 +0100
-Message-Id: <20180319091146.4112-12-s.hauer@pengutronix.de>
+Date: Mon, 19 Mar 2018 10:11:34 +0100
+Message-Id: <20180319091146.4112-3-s.hauer@pengutronix.de>
 In-Reply-To: <20180319091146.4112-1-s.hauer@pengutronix.de>
 References: <20180319091146.4112-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,49 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/14] serial: i.MX: Add i.MX8 support
+Subject: [PATCH 02/14] ARM: i.MX: compile arm32 specific errata only for CPU32
 To: Barebox List <barebox@lists.infradead.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/serial/serial_imx.c | 5 ++++-
- include/serial/imx-uart.h   | 5 +++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/cpu_init.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
-index e8c3836a66..49fb5e8340 100644
---- a/drivers/serial/serial_imx.c
-+++ b/drivers/serial/serial_imx.c
-@@ -290,9 +290,12 @@ static __maybe_unused struct of_device_id imx_serial_dt_ids[] = {
- 	}, {
- 		.compatible = "fsl,imx6ul-uart",
- 		.data = &imx21_data,
--	},  {
-+	}, {
- 		.compatible = "fsl,imx7d-uart",
- 		.data = &imx21_data,
-+	}, {
-+		.compatible = "fsl,imx8mq-uart",
-+		.data = &imx21_data,
- 	}, {
- 		/* sentinel */
- 	}
-diff --git a/include/serial/imx-uart.h b/include/serial/imx-uart.h
-index 9cab32f359..c23606569d 100644
---- a/include/serial/imx-uart.h
-+++ b/include/serial/imx-uart.h
-@@ -180,6 +180,11 @@ static inline void imx7_uart_setup(void __iomem *uartbase)
- 	imx_uart_setup(uartbase, 24000000);
- }
+diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
+index 6a6c4c5210..5b93d12da9 100644
+--- a/arch/arm/mach-imx/cpu_init.c
++++ b/arch/arm/mach-imx/cpu_init.c
+@@ -16,6 +16,7 @@
+ #include <asm/errata.h>
+ #include <linux/types.h>
  
-+static inline void imx8mq_uart_setup(void __iomem *uartbase)
-+{
-+	imx_uart_setup(uartbase, 25000000);
-+}
-+
- static inline void imx_uart_putc(void *base, int c)
++#ifdef CONFIG_CPU_32
+ void imx5_cpu_lowlevel_init(void)
  {
- 	if (!(readl(base + UCR1) & UCR1_UARTEN))
+ 	arm_cpu_lowlevel_init();
+@@ -50,3 +51,4 @@ void vf610_cpu_lowlevel_init(void)
+ {
+ 	arm_cpu_lowlevel_init();
+ }
++#endif
+\ No newline at end of file
 -- 
 2.16.1
 
