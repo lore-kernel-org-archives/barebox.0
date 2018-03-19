@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.savoirfairelinux.com ([208.88.110.44])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1exgi0-00071l-50
- for barebox@lists.infradead.org; Sun, 18 Mar 2018 22:23:21 +0000
-From: =?UTF-8?q?Ga=C3=ABl=20PORTAY?= <gael.portay@savoirfairelinux.com>
-Date: Sun, 18 Mar 2018 18:22:36 -0400
-Message-Id: <20180318222236.28296-1-gael.portay@savoirfairelinux.com>
+ id 1exqHa-0000QK-7Z
+ for barebox@lists.infradead.org; Mon, 19 Mar 2018 08:36:43 +0000
+Date: Mon, 19 Mar 2018 09:36:29 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180319083629.kxjdc4jnd35prif2@pengutronix.de>
+References: <20180318222236.28296-1-gael.portay@savoirfairelinux.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180318222236.28296-1-gael.portay@savoirfairelinux.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,39 +18,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fs: check pointer returned by get_fsdevice_by_path before
- dereferencing
-To: barebox@lists.infradead.org
-Cc: =?utf-8?q?Ga=C3=ABl=20PORTAY?= <gael.portay@savoirfairelinux.com>
+Subject: Re: [PATCH] fs: check pointer returned by get_fsdevice_by_path
+ before dereferencing
+To: =?iso-8859-15?Q?Ga=EBl?= PORTAY <gael.portay@savoirfairelinux.com>
+Cc: barebox@lists.infradead.org
 
-SW4gX19jYW5vbmljYWxpemVfcGF0aCgpIHdlIGRlcmVmZXJlbmNlIHRoZSBwb2ludGVyIHJldHVy
-bmVkIGJ5CmdldF9mc2RldmljZV9ieV9wYXRoKCkgd2l0aG91dCBjaGVja2luZyBpZiB0aGUgcG9p
-bnRlciBpcyBOVUxMIG9yIG5vdC4KV2hlbiB0aGUgcG9pbnRlciBpcyBOVUxMIGl0IGxlYWRzIHRv
-IGFuIE9vb3BzLgoKCU9vb3BzLCBhZGRyZXNzIGVycm9yIG9uIGxvYWQgb3IgaWZldGNoIQoKCSQg
-MCAgIDogMDAwMDAwMDAgMDAwMDAwMDEgYTAwMDAwMjYgYTA4MTFjMTAKCSQgNCAgIDogYTA0MDJl
-NjAgYTA0MDJlNDggYTA4MTFjMDAgYTA0MDJlNTgKCSQgOCAgIDogMDAwMDAwMDEgMDAwMDAwMDAg
-MDAwMDAwNWEgMDAwMDAwMjMKCSQxMiAgIDogMDAwMDAwMDAgMDAwMDAwMDIgMDA2MDEwMjEgMDAw
-MDAwMDAKCSQxNiAgIDogYTA0MDJlNjAgYTA0MDJlNTAgYTA0MDJlMzkgYTA4MTAwMDAKCSQyMCAg
-IDogYTA0MDJlMzggYTA4MTE0MjAgYTA4MTE0MjQgMDAwMDAwMDAKCSQyNCAgIDogMDAwMDAwMDAg
-YTA4MGRlMTAKCSQyOCAgIDogODdmODdkNDAgYTAzZmZhNjggYTA4MTAwMDAgYTA4MGNlMzAKCUhp
-ICAgIDogMDAwMDAwMDIKCUxvICAgIDogMDAwMDAwMDAKCWVwYyAgIDogYTA4MGNlMzQKCXJhICAg
-IDogYTA4MGNlMzAKCVN0YXR1czogMDAwMDAwMDYKCUNhdXNlIDogNDAwMDgwMTAKCUNvbmZpZzog
-ODAwNDA0ODMKCgkjIyMgRVJST1IgIyMjIFBsZWFzZSBSRVNFVCB0aGUgYm9hcmQgIyMjCgpGaXhl
-czogZDc5YTgxNzM2IGZzOiBEb24ndCBib3RoZXIgZmlsZXN5c3RlbXMgd2l0aG91dCBsaW5rIHN1
-cHBvcnQgd2l0aCBhZGRpdGlvbmFsIHN0YXQoKSBjYWxscwoKU2lnbmVkLW9mZi1ieTogR2HDq2wg
-UE9SVEFZIDxnYWVsLnBvcnRheUBzYXZvaXJmYWlyZWxpbnV4LmNvbT4KLS0tCiBmcy9mcy5jIHwg
-MiArLQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZm
-IC0tZ2l0IGEvZnMvZnMuYyBiL2ZzL2ZzLmMKaW5kZXggODhmMGIxNDc4Li41MTM1MTEyYzggMTAw
-NjQ0Ci0tLSBhL2ZzL2ZzLmMKKysrIGIvZnMvZnMuYwpAQCAtMTkxLDcgKzE5MSw3IEBAIHN0YXRp
-YyBjaGFyICpfX2Nhbm9uaWNhbGl6ZV9wYXRoKGNvbnN0IGNoYXIgKl9wYXRobmFtZSwgaW50IGxl
-dmVsKQogCQkgKiB3aXRoIGFuIGFkZGl0aW9uYWwgc3RhdCgpIGNhbGwuCiAJCSAqLwogCQlmc2Rl
-diA9IGdldF9mc2RldmljZV9ieV9wYXRoKG91dHBhdGgpOwotCQlpZiAoIWZzZGV2LT5kcml2ZXIt
-PnJlYWRsaW5rKQorCQlpZiAoIWZzZGV2IHx8ICFmc2Rldi0+ZHJpdmVyLT5yZWFkbGluaykKIAkJ
-CWNvbnRpbnVlOwogCiAJCXJldCA9IF9fbHN0YXQob3V0cGF0aCwgJnMpOwotLSAKMi4xNi4xCgoK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
-YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Hi Ga=EBl,
+
+On Sun, Mar 18, 2018 at 06:22:36PM -0400, Ga=EBl PORTAY wrote:
+> In __canonicalize_path() we dereference the pointer returned by
+> get_fsdevice_by_path() without checking if the pointer is NULL or not.
+> When the pointer is NULL it leads to an Ooops.
+> =
+
+> 	Ooops, address error on load or ifetch!
+> =
+
+> 	$ 0   : 00000000 00000001 a0000026 a0811c10
+> 	$ 4   : a0402e60 a0402e48 a0811c00 a0402e58
+> 	$ 8   : 00000001 00000000 0000005a 00000023
+> 	$12   : 00000000 00000002 00601021 00000000
+> 	$16   : a0402e60 a0402e50 a0402e39 a0810000
+> 	$20   : a0402e38 a0811420 a0811424 00000000
+> 	$24   : 00000000 a080de10
+> 	$28   : 87f87d40 a03ffa68 a0810000 a080ce30
+> 	Hi    : 00000002
+> 	Lo    : 00000000
+> 	epc   : a080ce34
+> 	ra    : a080ce30
+> 	Status: 00000006
+> 	Cause : 40008010
+> 	Config: 80040483
+> =
+
+> 	### ERROR ### Please RESET the board ###
+> =
+
+> Fixes: d79a81736 fs: Don't bother filesystems without link support with a=
+dditional stat() calls
+> =
+
+> Signed-off-by: Ga=EBl PORTAY <gael.portay@savoirfairelinux.com>
+> ---
+>  fs/fs.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Applied, thanks.
+
+I wonder though what calls into the filesystem layer before / is
+mounted in your case.
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
