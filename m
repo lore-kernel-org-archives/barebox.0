@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1exqq8-0000pC-I5
- for barebox@lists.infradead.org; Mon, 19 Mar 2018 09:12:32 +0000
+ id 1exqpx-0000kD-71
+ for barebox@lists.infradead.org; Mon, 19 Mar 2018 09:12:33 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 19 Mar 2018 10:11:45 +0100
-Message-Id: <20180319091146.4112-14-s.hauer@pengutronix.de>
+Date: Mon, 19 Mar 2018 10:11:41 +0100
+Message-Id: <20180319091146.4112-10-s.hauer@pengutronix.de>
 In-Reply-To: <20180319091146.4112-1-s.hauer@pengutronix.de>
 References: <20180319091146.4112-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,28 +21,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/14] gpio: i.MX: Add i.MX8mq support
+Subject: [PATCH 09/14] net: fec_imx: Use dma mapping functions
 To: Barebox List <barebox@lists.infradead.org>
+
+Rather than doing DMA on the input buffer address get a proper DMA
+address from the mapping functions.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/gpio/gpio-imx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/fec_imx.c | 15 +++++++++------
+ drivers/net/fec_imx.h |  1 +
+ 2 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpio/gpio-imx.c b/drivers/gpio/gpio-imx.c
-index d8bcea2234..d618e60119 100644
---- a/drivers/gpio/gpio-imx.c
-+++ b/drivers/gpio/gpio-imx.c
-@@ -190,6 +190,9 @@ static __maybe_unused struct of_device_id imx_gpio_dt_ids[] = {
- 	}, {
- 		.compatible = "fsl,imx6q-gpio",
- 		.data = &regs_imx31,
-+	},  {
-+		.compatible = "fsl,imx8mq-gpio",
-+		.data = &regs_imx31,
- 	}, {
- 		/* sentinel */
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 33599dd826..0ca5940821 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -453,6 +453,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
+ {
+ 	unsigned int status;
+ 	uint64_t tmo;
++	dma_addr_t dma;
+ 
+ 	/*
+ 	 * This routine transmits one frame.  This routine only accepts
+@@ -466,7 +467,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
+ 		return -1;
  	}
+ 
+-	if ((uint32_t)eth_data & (DB_DATA_ALIGNMENT-1))
++	if ((unsigned long)eth_data & (DB_DATA_ALIGNMENT - 1))
+ 		dev_warn(&dev->dev, "Transmit data not aligned: %p!\n", eth_data);
+ 
+ 	/*
+@@ -479,10 +480,12 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
+ 
+ 	writew(data_length, &fec->tbd_base[fec->tbd_index].data_length);
+ 
+-	writel((uint32_t)(eth_data), &fec->tbd_base[fec->tbd_index].data_pointer);
++	dma = dma_map_single(fec->dev, eth_data, data_length, DMA_TO_DEVICE);
++	if (dma_mapping_error(fec->dev, dma))
++		return -EIO;
++
++	writel((uint32_t)(dma), &fec->tbd_base[fec->tbd_index].data_pointer);
+ 
+-	dma_sync_single_for_device((unsigned long)eth_data, data_length,
+-				   DMA_TO_DEVICE);
+ 	/*
+ 	 * update BD's status now
+ 	 * This block:
+@@ -505,8 +508,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
+ 			break;
+ 		}
+ 	}
+-	dma_sync_single_for_cpu((unsigned long)eth_data, data_length,
+-				DMA_TO_DEVICE);
++	dma_unmap_single(fec->dev, dma, data_length, DMA_TO_DEVICE);
+ 
+ 	/* for next transmission use the other buffer */
+ 	if (fec->tbd_index)
+@@ -748,6 +750,7 @@ static int fec_probe(struct device_d *dev)
+ 
+ 	fec = xzalloc(sizeof(*fec));
+ 	fec->type = type;
++	fec->dev = dev;
+ 	edev = &fec->edev;
+ 	dev->priv = fec;
+ 	edev->priv = fec;
+diff --git a/drivers/net/fec_imx.h b/drivers/net/fec_imx.h
+index 561de0890b..e3f60dd66a 100644
+--- a/drivers/net/fec_imx.h
++++ b/drivers/net/fec_imx.h
+@@ -149,6 +149,7 @@ enum fec_opt_clock {
+  */
+ struct fec_priv {
+ 	struct eth_device edev;
++	struct device_d *dev;
+ 	void __iomem *regs;
+ 	struct buffer_descriptor __iomem *rbd_base;	/* RBD ring                  */
+ 	int rbd_index;				/* next receive BD to read   */
 -- 
 2.16.1
 
