@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-it0-x242.google.com ([2607:f8b0:4001:c0b::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f0Xfd-0000fw-7d
- for barebox@lists.infradead.org; Mon, 26 Mar 2018 19:20:47 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
- helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1f0XfN-0000ll-E7
- for barebox@lists.infradead.org; Mon, 26 Mar 2018 21:20:25 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 26 Mar 2018 21:20:19 +0200
-Message-Id: <20180326192025.28809-4-l.stach@pengutronix.de>
-In-Reply-To: <20180326192025.28809-1-l.stach@pengutronix.de>
-References: <20180326192025.28809-1-l.stach@pengutronix.de>
+ id 1eyWPi-0003DD-7z
+ for barebox@lists.infradead.org; Wed, 21 Mar 2018 05:35:56 +0000
+Received: by mail-it0-x242.google.com with SMTP id z143-v6so15010249itc.0
+ for <barebox@lists.infradead.org>; Tue, 20 Mar 2018 22:35:44 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
+References: <20180316125354.23462-1-s.hauer@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 20 Mar 2018 22:35:42 -0700
+Message-ID: <CAHQ1cqE7MiV_eq3LBSQQM8bgJZo3rVGOsZzgJ4mVXB42KFeAYA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,215 +19,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 04/10] ARM: add file for HYP mode related setup
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 00/78] ARM aarch64 updates
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-This adds routines to add hyp mode vectors and switch back to HYP
-mode from SVC. This is needed in both the PBL and Barebox proper.
+On Fri, Mar 16, 2018 at 5:52 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> Hi All,
+>
+> Here is a massive update for the ARM aarch64 port. With the following
+> series the aarch64 port should be on par with the 32bit support.
+>
+> With this aarch64 supports relocatable binaries, proper MMU support, DMA
+> cache maintenance operations, and finally starting a aarch64 Linux
+> image :)
+>
+> This all has been developed on a i.MX8MQ EVK board. The i.MX8MQ patches
+> are currently evolving, but are not yet quite ready. DDR setup is still
+> very crude and pinmux is not yet working. NXP did a nice job with the
+> i.MX8MQ: It behaves very much like a i.MX6 with a different core, so
+> we already have most of the drivers and I could concentrate on the
+> aarch64 update. I hope I can send i.MX8 patches soon.
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Tested-by: Roland Hieber <r.hieber@pengutronix.de>
----
-v3:
-- fix whitespace
-- use __BARE_INIT
----
- arch/arm/cpu/Makefile         |   4 ++
- arch/arm/cpu/hyp.S            | 116 ++++++++++++++++++++++++++++++++++++++++++
- arch/arm/cpu/sm_as.S          |  11 ----
- arch/arm/include/asm/secure.h |   8 +++
- 4 files changed, 128 insertions(+), 11 deletions(-)
- create mode 100644 arch/arm/cpu/hyp.S
+Sascha:
 
-diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-index 13fe12c31f6f..f86dff975bb4 100644
---- a/arch/arm/cpu/Makefile
-+++ b/arch/arm/cpu/Makefile
-@@ -9,6 +9,10 @@ obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions.o
- obj-$(CONFIG_MMU) += mmu.o mmu-early.o
- pbl-$(CONFIG_MMU) += mmu-early.o
- lwl-y += lowlevel.o
-+obj-y += hyp.o
-+AFLAGS_hyp.o :=-Wa,-march=armv7-a -Wa,-mcpu=all
-+pbl-y += hyp.o
-+AFLAGS_pbl-hyp.o :=-Wa,-march=armv7-a -Wa,-mcpu=all
- endif
- 
- obj-$(CONFIG_ARM_EXCEPTIONS) += interrupts.o
-diff --git a/arch/arm/cpu/hyp.S b/arch/arm/cpu/hyp.S
-new file mode 100644
-index 000000000000..1314b56eab25
---- /dev/null
-+++ b/arch/arm/cpu/hyp.S
-@@ -0,0 +1,116 @@
-+#include <linux/linkage.h>
-+#include <asm/system.h>
-+#include <asm/opcodes-virt.h>
-+#include <init.h>
-+
-+.arch_extension sec
-+.arch_extension virt
-+
-+__BARE_INIT
-+
-+.data
-+	.align  2
-+ENTRY(__boot_cpu_mode)
-+	.long   0
-+.text
-+
-+ENTRY(__hyp_install)
-+	mrs	r12, cpsr
-+	and	r12, r12, #MODE_MASK
-+
-+	@ Save the initial CPU state
-+	adr	r0, .L__boot_cpu_mode_offset
-+	ldr	r1, [r0]
-+	str	r12, [r0, r1]
-+
-+	cmp	r12, #HYP_MODE
-+	movne	pc, lr			@ give up if the CPU is not in HYP mode
-+
-+	@ Now install the hypervisor stub:
-+	adr	r12, __hyp_vectors
-+	mcr	p15, 4, r12, c12, c0, 0	@ set hypervisor vector base (HVBAR)
-+
-+	@ Disable all traps, so we don't get any nasty surprise
-+	mov	r12, #0
-+	mcr	p15, 4, r12, c1, c1, 0	@ HCR
-+	mcr	p15, 4, r12, c1, c1, 2	@ HCPTR
-+	mcr	p15, 4, r12, c1, c1, 3	@ HSTR
-+
-+THUMB(	orr	r12, #(1 << 30)	)	@ HSCTLR.TE
-+	mcr	p15, 4, r12, c1, c0, 0	@ HSCTLR
-+
-+	mrc	p15, 4, r12, c1, c1, 1	@ HDCR
-+	and	r12, #0x1f		@ Preserve HPMN
-+	mcr	p15, 4, r12, c1, c1, 1	@ HDCR
-+
-+	@ Make sure NS-SVC is initialised appropriately
-+	mrc	p15, 0, r12, c1, c0, 0	@ SCTLR
-+	orr	r12, #(1 << 5)		@ CP15 barriers enabled
-+	bic	r12, #(3 << 7)		@ Clear SED/ITD for v8 (RES0 for v7)
-+	bic	r12, #(3 << 19)		@ WXN and UWXN disabled
-+	mcr	p15, 0, r12, c1, c0, 0	@ SCTLR
-+
-+	mrc	p15, 0, r12, c0, c0, 0	@ MIDR
-+	mcr	p15, 4, r12, c0, c0, 0	@ VPIDR
-+
-+	mrc	p15, 0, r12, c0, c0, 5	@ MPIDR
-+	mcr	p15, 4, r12, c0, c0, 5	@ VMPIDR
-+	bx	lr
-+ENDPROC(__hyp_install)
-+
-+ENTRY(armv7_hyp_install)
-+	mov	r2, lr
-+
-+	bl	__hyp_install
-+
-+	/* set the cpu to SVC32 mode, mask irq and fiq */
-+	mrs	r12, cpsr
-+	eor	r12, r12, #HYP_MODE
-+	tst	r12, #MODE_MASK
-+	bic	r12, r12, #MODE_MASK
-+	orr	r12, r12, #(PSR_I_BIT | PSR_F_BIT | SVC_MODE)
-+THUMB(	orr	r12, r12, #PSR_T_BIT	)
-+	bne	1f
-+	orr	r12, r12, #PSR_A_BIT
-+	adr	lr, 2f
-+	msr	spsr_cxsf, r12
-+	__MSR_ELR_HYP(14)
-+	__ERET
-+1:	msr	cpsr_c, r12
-+2:
-+	mov	pc, r2
-+ENDPROC(armv7_hyp_install)
-+
-+ENTRY(armv7_switch_to_hyp)
-+	mov	r0, lr
-+	mov	r1, sp		@ save SVC copy of LR and SP
-+	isb
-+	hvc #0			@ for older asm: .byte 0x70, 0x00, 0x40, 0xe1
-+	mov	sp, r1
-+	mov	lr, r0		@ restore SVC copy of LR and SP
-+
-+	bx	lr
-+ENDPROC(armv7_switch_to_hyp)
-+
-+.align 2
-+.L__boot_cpu_mode_offset:
-+	.long	__boot_cpu_mode - .
-+
-+/* The HYP trap is crafted to match armv7_switch_to_hyp() */
-+__hyp_do_trap:
-+	mov lr, r0
-+	mov sp, r1
-+	bx  lr
-+ENDPROC(__hyp_do_trap)
-+
-+.align 5
-+__hyp_vectors:
-+__hyp_reset:	W(b)	.
-+__hyp_und:	W(b)	.
-+__hyp_svc:	W(b)	.
-+__hyp_pabort:	W(b)	.
-+__hyp_dabort:	W(b)	.
-+__hyp_trap:	W(b)	__hyp_do_trap
-+__hyp_irq:	W(b)	.
-+__hyp_fiq:	W(b)	.
-+ENDPROC(__hyp_vectors)
-diff --git a/arch/arm/cpu/sm_as.S b/arch/arm/cpu/sm_as.S
-index 0d01e1bf2435..de6cd0406f4f 100644
---- a/arch/arm/cpu/sm_as.S
-+++ b/arch/arm/cpu/sm_as.S
-@@ -148,17 +148,6 @@ hyp_trap:
-         mov pc, lr                              @ do no switch modes, but
-                                                 @ return to caller
- 
--ENTRY(armv7_switch_to_hyp)
--	mov	r0, lr
--	mov	r1, sp		@ save SVC copy of LR and SP
--	isb
--	hvc #0			@ for older asm: .byte 0x70, 0x00, 0x40, 0xe1
--	mov	sp, r1
--	mov	lr, r0		@ restore SVC copy of LR and SP
--
--	bx	lr
--ENDPROC(armv7_switch_to_hyp)
--
- ENTRY(psci_cpu_entry)
- 	mrc	p15, 0, r0, c1, c0, 1	@ ACTLR
- 	orr	r0, r0, #(1 << 6)	@ Set SMP bit
-diff --git a/arch/arm/include/asm/secure.h b/arch/arm/include/asm/secure.h
-index a4cb1f6c1c44..4eb2c3ec3011 100644
---- a/arch/arm/include/asm/secure.h
-+++ b/arch/arm/include/asm/secure.h
-@@ -5,9 +5,17 @@
- 
- int armv7_secure_monitor_install(void);
- int __armv7_secure_monitor_install(void);
-+
-+#ifndef CONFIG_CPU_V8
- void armv7_switch_to_hyp(void);
-+void armv7_hyp_install(void);
-+#else
-+static inline void armv7_switch_to_hyp(void) { };
-+static inline void armv7_hyp_install(void) { };
-+#endif
- 
- extern unsigned char secure_monitor_init_vectors[];
-+extern int __boot_cpu_mode;
- 
- enum arm_security_state {
- 	ARM_STATE_SECURE,
--- 
-2.16.1
+I only vaguely familiar with AARCH64, so take the tag with a grain of
+salt, but I read through the patchset and it all looks reasonable, so
+FWIW:
 
+Reviewed-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+
+I commented on individual patches with suggestions, but they are just
+that, so feel free to ignore.
+
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
