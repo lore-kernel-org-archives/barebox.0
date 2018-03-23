@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f0MU5-0002Gm-IF
- for barebox@lists.infradead.org; Mon, 26 Mar 2018 07:24:03 +0000
-Date: Mon, 26 Mar 2018 09:23:46 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180326072346.37bc425jui75vrad@pengutronix.de>
-References: <20180323084352.20931-1-m.grzeschik@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180323084352.20931-1-m.grzeschik@pengutronix.de>
+ id 1ezQDQ-0008Gi-8n
+ for barebox@lists.infradead.org; Fri, 23 Mar 2018 17:10:57 +0000
+Received: by mail-lf0-x242.google.com with SMTP id j68-v6so19324676lfg.13
+ for <barebox@lists.infradead.org>; Fri, 23 Mar 2018 10:10:40 -0700 (PDT)
+From: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
+Date: Fri, 23 Mar 2018 20:12:23 +0300
+Message-Id: <1521825143-9979-1-git-send-email-andrey.gusakov@cogentembedded.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,34 +16,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/4] i.MX53/TX53: rework to dts, fix and add samsung
- variant
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] video: tc358767: set num_modes=0 if no valid mode found
+To: barebox@lists.infradead.org
+Cc: andrey.gusakov@cogentembedded.com, cphealy@gmail.com
 
-On Fri, Mar 23, 2018 at 09:43:48AM +0100, Michael Grzeschik wrote:
-> This series fixes the imx-usb-loader based boot of the revxx30.
-> It also reworks the whole platform to dts and adds the new
-> samsung based xx30 platform.
-> 
-> Juergen reworked the interpreter logic description on the way.
-> Don't know if we should send this seperatly. For now it is
-> included in this series, as the new samsung based platform
-> was not tested without.
+Since commit f986661 "video: ipu: register framebuffer,
+even when no modes are found" value returned from
+VPL_GET_VIDEOMODES ioctl is ignored. So set valid num_modes
+in error case to avoid crash in register_framebuffer.
 
-Applied, thanks
+Signed-off-by: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
+---
+ drivers/video/tc358767.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Sascha
-
+diff --git a/drivers/video/tc358767.c b/drivers/video/tc358767.c
+index 5ad5cb4..d4749b1 100644
+--- a/drivers/video/tc358767.c
++++ b/drivers/video/tc358767.c
+@@ -1258,6 +1258,7 @@ static int tc_filter_videomodes(struct tc_data *tc, struct display_timings *timi
+ 	} while (1);
+ 
+ 	free(timings->modes);
++	timings->num_modes = 0;
+ 	timings->modes = NULL;
+ 
+ 	if (!num_modes) {
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
