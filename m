@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ezIIz-0002e5-KI
- for barebox@lists.infradead.org; Fri, 23 Mar 2018 08:44:21 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <mgr@pengutronix.de>) id 1ezIIk-0006L8-UO
- for barebox@lists.infradead.org; Fri, 23 Mar 2018 09:43:54 +0100
-Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.90_1)
- (envelope-from <mgr@pengutronix.de>) id 1ezIIk-0006rG-LV
- for barebox@lists.infradead.org; Fri, 23 Mar 2018 09:43:54 +0100
+ id 1ezIIz-0002e6-LY
+ for barebox@lists.infradead.org; Fri, 23 Mar 2018 08:44:31 +0000
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Fri, 23 Mar 2018 09:43:50 +0100
-Message-Id: <20180323084352.20931-3-m.grzeschik@pengutronix.de>
+Date: Fri, 23 Mar 2018 09:43:51 +0100
+Message-Id: <20180323084352.20931-4-m.grzeschik@pengutronix.de>
 In-Reply-To: <20180323084352.20931-1-m.grzeschik@pengutronix.de>
 References: <20180323084352.20931-1-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -29,504 +21,713 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] i.MX53/TX53: rework to dts based boot
+Subject: [PATCH 3/4] i.MX/DCD compiler and interpreter: logic is different
 To: barebox@lists.infradead.org
+Cc: Juergen Borleis <jbe@pengutronix.de>
 
-Since nobody likes to use platformcode based machines any more, we also
-switch this one to use dts based booting.
+From: Juergen Borleis <jbe@pengutronix.de>
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Reading the manual more carefully discovers a different logic for the
+DCD 'check' command. They use the term "until". In order to get the
+manual and the software in sync, this change switches to the term
+"until" as well. Changing must happen at compiler and interpreter level
+to make it work.
+
+Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
 ---
- arch/arm/Makefile                    |   2 -
- arch/arm/boards/karo-tx53/board.c    | 222 +++++------------------------------
- arch/arm/boards/karo-tx53/lowlevel.c |  56 +++++++--
- arch/arm/configs/imx_v7_defconfig    |   1 +
- arch/arm/dts/Makefile                |   1 +
- arch/arm/dts/imx53-tx53-1011.dts     |  13 ++
- arch/arm/dts/imx53-tx53-xx30.dts     |  13 ++
- arch/arm/mach-imx/Kconfig            |  25 +---
- images/Makefile.imx                  |  10 ++
- 9 files changed, 119 insertions(+), 224 deletions(-)
- create mode 100644 arch/arm/dts/imx53-tx53-1011.dts
- create mode 100644 arch/arm/dts/imx53-tx53-xx30.dts
+ Documentation/boards/imx.rst                       | 57 ++++++++++++++++++++++
+ .../element14-warp7/flash-header-mx7-warp.imxcfg   |  4 +-
+ .../flash-header-mx7-sabresd.imxcfg                |  4 +-
+ .../flash-header-vf610-twr.imxcfg                  | 10 ++--
+ .../karo-tx53/flash-header-tx53-revxx30.imxcfg     | 10 ++--
+ arch/arm/boards/karo-tx6x/1600mhz_4x128mx16.imxcfg | 24 ++++-----
+ .../karo-tx6x/flash-header-tx6dl-512m.imxcfg       | 14 +++---
+ .../boards/karo-tx6x/flash-header-tx6q-1g.imxcfg   | 18 +++----
+ .../boards/karo-tx6x/flash-header-tx6qp-2g.imxcfg  | 18 +++----
+ .../kindle-mx50/flash-header-kindle-lpddr1.imxcfg  |  6 +--
+ .../kindle-mx50/flash-header-kindle-lpddr2.imxcfg  |  6 +--
+ .../flash-header-phytec-phycore-imx7.imxcfg        |  4 +-
+ .../flash-header-zii-vf610-dev.imxcfg              | 22 ++++-----
+ scripts/imx/README                                 | 30 ++----------
+ scripts/imx/imx-usb-loader.c                       | 24 ++++-----
+ scripts/imx/imx.c                                  | 16 +++---
+ scripts/imx/imx.h                                  |  8 +--
+ 17 files changed, 155 insertions(+), 120 deletions(-)
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 620a3ccb0b..070a9903f2 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -254,8 +254,6 @@ imxcfg-$(CONFIG_MACH_EUKREA_CPUIMX25) += $(boarddir)/eukrea_cpuimx25/flash-heade
- imxcfg-$(CONFIG_MACH_EUKREA_CPUIMX35) += $(boarddir)/eukrea_cpuimx35/flash-header.imxcfg
- imxcfg-$(CONFIG_MACH_PCM043) += $(boarddir)/phytec-phycore-imx35/flash-header.imxcfg
- imxcfg-$(CONFIG_MACH_KINDLE3) += $(boarddir)/kindle3/flash-header.imxcfg
--imxcfg-$(CONFIG_TX53_REV_1011) += $(boarddir)/karo-tx53/flash-header-tx53-rev1011.imxcfg
--imxcfg-$(CONFIG_TX53_REV_XX30) += $(boarddir)/karo-tx53/flash-header-tx53-revxx30.imxcfg
- ifneq ($(imxcfg-y),)
- CFG_barebox.imximg := $(imxcfg-y)
- KBUILD_IMAGE  := barebox.imximg
-diff --git a/arch/arm/boards/karo-tx53/board.c b/arch/arm/boards/karo-tx53/board.c
-index 51b534d01f..9f1485ad0b 100644
---- a/arch/arm/boards/karo-tx53/board.c
-+++ b/arch/arm/boards/karo-tx53/board.c
-@@ -41,223 +41,55 @@
- #include <io.h>
- #include <asm/mmu.h>
+diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
+index 704aa027b6..9b1eb82d41 100644
+--- a/Documentation/boards/imx.rst
++++ b/Documentation/boards/imx.rst
+@@ -48,6 +48,63 @@ The images can also always be started second stage::
  
--static struct fec_platform_data fec_info = {
--	.xcv_type = PHY_INTERFACE_MODE_RMII,
--};
--
--static iomux_v3_cfg_t tx53_pads[] = {
--	/* UART1 */
--	MX53_PAD_PATA_DIOW__UART1_TXD_MUX,
--	MX53_PAD_PATA_DMACK__UART1_RXD_MUX,
--
--	MX53_PAD_PATA_DMARQ__UART2_TXD_MUX,
--	MX53_PAD_PATA_BUFFER_EN__UART2_RXD_MUX,
--
--	MX53_PAD_PATA_CS_0__UART3_TXD_MUX,
--	MX53_PAD_PATA_CS_1__UART3_RXD_MUX,
--
--	/* setup FEC PHY pins for GPIO function */
--	MX53_PAD_FEC_REF_CLK__GPIO1_23,
--	MX53_PAD_FEC_MDC__GPIO1_31,
--	MX53_PAD_FEC_MDIO__GPIO1_22,
--	MX53_PAD_FEC_RXD0__GPIO1_27,
--	MX53_PAD_FEC_RXD1__GPIO1_26,
--	MX53_PAD_FEC_RX_ER__GPIO1_24,
--	MX53_PAD_FEC_TX_EN__GPIO1_28,
--	MX53_PAD_FEC_TXD0__GPIO1_30,
--	MX53_PAD_FEC_TXD1__GPIO1_29,
--	MX53_PAD_FEC_CRS_DV__GPIO1_25,
--
--	/* FEC PHY reset */
--	MX53_PAD_PATA_DA_0__GPIO7_6,
--	/* FEC PHY power */
--	MX53_PAD_EIM_D20__GPIO3_20,
--
--	/* SD1 */
--	MX53_PAD_SD1_CMD__ESDHC1_CMD,
--	MX53_PAD_SD1_CLK__ESDHC1_CLK,
--	MX53_PAD_SD1_DATA0__ESDHC1_DAT0,
--	MX53_PAD_SD1_DATA1__ESDHC1_DAT1,
--	MX53_PAD_SD1_DATA2__ESDHC1_DAT2,
--	MX53_PAD_SD1_DATA3__ESDHC1_DAT3,
--
--	/* SD1_CD */
--	MX53_PAD_EIM_D24__GPIO3_24,
--
--	MX53_PAD_GPIO_3__I2C3_SCL,
--	MX53_PAD_GPIO_6__I2C3_SDA,
--
--	MX53_PAD_CSI0_DAT12__IPU_CSI0_D_12,
--	MX53_PAD_CSI0_DAT13__IPU_CSI0_D_13,
--	MX53_PAD_CSI0_DAT14__IPU_CSI0_D_14,
--	MX53_PAD_CSI0_DAT15__IPU_CSI0_D_15,
--	MX53_PAD_CSI0_DAT16__IPU_CSI0_D_16,
--	MX53_PAD_CSI0_DAT17__IPU_CSI0_D_17,
--	MX53_PAD_CSI0_DAT18__IPU_CSI0_D_18,
--	MX53_PAD_CSI0_DAT19__IPU_CSI0_D_19,
--	MX53_PAD_CSI0_VSYNC__IPU_CSI0_VSYNC,
--	MX53_PAD_CSI0_MCLK__IPU_CSI0_HSYNC,
--	MX53_PAD_CSI0_PIXCLK__IPU_CSI0_PIXCLK,
--};
--
--#define TX53_SD1_CD			IMX_GPIO_NR(3, 24)
--
--static struct esdhc_platform_data tx53_sd1_data = {
--	.cd_gpio = TX53_SD1_CD,
--	.cd_type = ESDHC_CD_GPIO,
--	.wp_type = ESDHC_WP_NONE,
--	.caps    = MMC_CAP_4_BIT_DATA,
--};
--
--struct imx_nand_platform_data nand_info = {
--	.width		= 1,
--	.hw_ecc		= 1,
--	.flash_bbt	= 1,
--};
--
--#define FEC_POWER_GPIO		IMX_GPIO_NR(3, 20)
--#define FEC_RESET_GPIO		IMX_GPIO_NR(7, 6)
--
--static struct tx53_fec_gpio_setup {
--	iomux_v3_cfg_t pad;
--	unsigned gpio:9,
--		dir:1,
--		level:1;
--} tx53_fec_gpios[] = {
--	{ MX53_PAD_PATA_DA_0__GPIO7_6, FEC_RESET_GPIO,	   1, 0, }, /* PHY reset */
--	{ MX53_PAD_EIM_D20__GPIO3_20, FEC_POWER_GPIO,	   1, 1, }, /* PHY power enable */
--	{ MX53_PAD_FEC_REF_CLK__GPIO1_23, IMX_GPIO_NR(1, 23), 0, }, /* ENET_CLK */
--	{ MX53_PAD_FEC_MDC__GPIO1_31, IMX_GPIO_NR(1, 31), 1, 0, }, /* MDC */
--	{ MX53_PAD_FEC_MDIO__GPIO1_22, IMX_GPIO_NR(1, 22), 1, 0, }, /* MDIO */
--	{ MX53_PAD_FEC_RXD0__GPIO1_27, IMX_GPIO_NR(1, 27), 1, 1, }, /* Mode0/RXD0 */
--	{ MX53_PAD_FEC_RXD1__GPIO1_26, IMX_GPIO_NR(1, 26), 1, 1, }, /* Mode1/RXD1 */
--	{ MX53_PAD_FEC_RX_ER__GPIO1_24, IMX_GPIO_NR(1, 24), 0, }, /* RX_ER */
--	{ MX53_PAD_FEC_TX_EN__GPIO1_28, IMX_GPIO_NR(1, 28), 1, 0, }, /* TX_EN */
--	{ MX53_PAD_FEC_TXD0__GPIO1_30, IMX_GPIO_NR(1, 30), 1, 0, }, /* TXD0 */
--	{ MX53_PAD_FEC_TXD1__GPIO1_29, IMX_GPIO_NR(1, 29), 1, 0, }, /* TXD1 */
--	{ MX53_PAD_FEC_CRS_DV__GPIO1_25, IMX_GPIO_NR(1, 25), 1, 1, }, /* Mode2/CRS_DV */
--};
--
--static iomux_v3_cfg_t tx53_fec_pads[] = {
--	MX53_PAD_FEC_REF_CLK__FEC_TX_CLK,
--	MX53_PAD_FEC_MDC__FEC_MDC,
--	MX53_PAD_FEC_MDIO__FEC_MDIO,
--	MX53_PAD_FEC_RXD0__FEC_RDATA_0,
--	MX53_PAD_FEC_RXD1__FEC_RDATA_1,
--	MX53_PAD_FEC_RX_ER__FEC_RX_ER,
--	MX53_PAD_FEC_TX_EN__FEC_TX_EN,
--	MX53_PAD_FEC_TXD0__FEC_TDATA_0,
--	MX53_PAD_FEC_TXD1__FEC_TDATA_1,
--	MX53_PAD_FEC_CRS_DV__FEC_RX_DV,
--};
--
--static inline void tx53_fec_init(void)
--{
--	int i;
--
--	/* Configure LAN8700 pads as GPIO and set up
--	 * necessary strap options for PHY
--	 */
--	for (i = 0; i < ARRAY_SIZE(tx53_fec_gpios); i++) {
--		struct tx53_fec_gpio_setup *gs = &tx53_fec_gpios[i];
--
--		if (gs->dir)
--			gpio_direction_output(gs->gpio, gs->level);
--		else
--			gpio_direction_input(gs->gpio);
--
--		mxc_iomux_v3_setup_pad(gs->pad);
--	}
--
--	/*
--	 *Turn on phy power, leave in reset state
--	 */
--	gpio_set_value(FEC_POWER_GPIO, 1);
--
--	/*
--	 * Wait some time to let the phy activate the internal regulator
--	 */
--	mdelay(10);
--
--	/*
--	 * Deassert reset, phy latches the rest of bootstrap pins
--	 */
--	gpio_set_value(FEC_RESET_GPIO, 1);
--
--	/* LAN7800 has an internal Power On Reset (POR) signal (OR'ed with
--	 * the external RESET signal) which is deactivated 21ms after
--	 * power on and latches the strap options.
--	 * Delay for 22ms to ensure, that the internal POR is inactive
--	 * before reconfiguring the strap pins.
--	 */
--	mdelay(22);
--
--	/*
--	 * The phy is ready, now configure imx51 pads for fec operation
--	 */
--	mxc_iomux_v3_setup_multiple_pads(tx53_fec_pads,
--			ARRAY_SIZE(tx53_fec_pads));
--}
--
- static int tx53_devices_init(void)
- {
--	imx53_iim_register_fec_ethaddr();
--	tx53_fec_init();
--	imx53_add_fec(&fec_info);
--	imx53_add_mmc0(&tx53_sd1_data);
--	imx53_add_nand(&nand_info);
--
--	armlinux_set_architecture(MACH_TYPE_TX53);
--
--	/* rev xx30 can boot from nand or USB */
--	imx53_bbu_internal_nand_register_handler("nand-xx30",
--		BBU_HANDLER_FLAG_DEFAULT, SZ_512K);
--
--	/* rev 1011 can boot from MMC/SD, other bootsource currently unknown */
--	imx53_bbu_internal_mmc_register_handler("mmc-1011", "/dev/disk0", 0);
-+	const char *envdev;
-+	uint32_t flag_nand = 0;
-+	uint32_t flag_mmc = 0;
+   bootm /mnt/tftp/barebox-freescale-imx51-babbage.img
  
--	return 0;
--}
-+	if (!of_machine_is_compatible("karo,tx53"))
-+		return 0;
++Information about the ``imx-image`` tool
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++
++The imx-image tool can be used to generate imximages from raw binaries.
++It requires an configuration file describing how to setup the SDRAM on
++a particular board. This mainly consists of a poke table. The recognized
++options in this file are:
++
++Header:
++
+++----------------+--------------------------------------------------------------+
++| soc <soctype>  | soctype can be one of imx35, imx51, imx53, imx6              |
+++----------------+--------------------------------------------------------------+
++| loadaddr <adr> |     The address the binary is uploaded to                    |
+++----------------+--------------------------------------------------------------+
++| dcdofs <ofs>   | The offset of the image header in the image. This should be: |
++|                | * ``0x400``:  MMC/SD, NAND, serial ROM, PATA, SATA           |
++|                | * ``0x1000``: NOR Flash                                      |
++|                | * ``0x100``: OneNAND                                         |
+++----------------+--------------------------------------------------------------+
++
++Memory manipulation:
++
+++------------------------------------+-----------------------------------------+
++| wm 8 <addr> <value>                | write <value> into byte <addr>          |
+++------------------------------------+-----------------------------------------+
++| wm 16 <addr> <value>               | write <value> into short <addr>         |
+++------------------------------------+-----------------------------------------+
++| wm 32 <addr> <value>               | write <value> into word <addr>          |
+++------------------------------------+-----------------------------------------+
++| set_bits <width> <addr> <value>    | set set bits in <value> in <addr>       |
+++------------------------------------+-----------------------------------------+
++| clear_bits <width> <addr> <value>  | clear set bits in <value> in <addr>     |
+++------------------------------------+-----------------------------------------+
++| nop                                | do nothing (just waste time)            |
+++------------------------------------+-----------------------------------------+
++
++<width> can be of 8, 16 or 32.
++
++Checking conditions:
++
+++------------------------------------+-----------------------------------------+
++| check <width> <cond> <addr> <mask> | Poll until condition becomes true.      |
++|                                    | with <cond> being one of:               |
++|                                    | * ``until_all_bits_clear``              |
++|                                    | * ``until_all_bits_set``                |
++|                                    | * ``until_any_bit_clear``               |
++|                                    | * ``until_any_bit_set``                 |
+++------------------------------------+-----------------------------------------+
++
++Some notes about the mentioned *conditions*.
++
++ - ``until_all_bits_clear`` waits until ``(*addr & mask) == 0`` is true
++ - ``until_all_bits_set`` waits until ``(*addr & mask) == mask`` is true
++ - ``until_any_bit_clear`` waits until ``(*addr & mask) != mask`` is true
++ - ``until_any_bit_set`` waits until ``(*addr & mask) != 0`` is true.
++
+ Internal Boot Mode Through Internal RAM(IRAM)
+ ---------------------------------------------
  
--device_initcall(tx53_devices_init);
+diff --git a/arch/arm/boards/element14-warp7/flash-header-mx7-warp.imxcfg b/arch/arm/boards/element14-warp7/flash-header-mx7-warp.imxcfg
+index d54b3ea851..7aa5dd8d45 100644
+--- a/arch/arm/boards/element14-warp7/flash-header-mx7-warp.imxcfg
++++ b/arch/arm/boards/element14-warp7/flash-header-mx7-warp.imxcfg
+@@ -72,7 +72,7 @@ wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e4c7304
+ wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e4c7306
+ wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e4c7304
+ 
+-check 32 while_any_bit_clear MX7_DDR_PHY_ZQ_CON1 0x1
++check 32 until_any_bit_set MX7_DDR_PHY_ZQ_CON1 0x1
+ 
+ wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e487304
+ 
+@@ -80,4 +80,4 @@ wm 32 0x30384130 0x00000000
+ wm 32 0x30340020 0x00000178
+ wm 32 0x30384130 0x00000002
+ 
+-check 32 while_any_bit_clear MX7_DDRC_STAT 0x1
++check 32 until_any_bit_set MX7_DDRC_STAT 0x1
+diff --git a/arch/arm/boards/freescale-mx7-sabresd/flash-header-mx7-sabresd.imxcfg b/arch/arm/boards/freescale-mx7-sabresd/flash-header-mx7-sabresd.imxcfg
+index fd4861153f..83ed2dc065 100644
+--- a/arch/arm/boards/freescale-mx7-sabresd/flash-header-mx7-sabresd.imxcfg
++++ b/arch/arm/boards/freescale-mx7-sabresd/flash-header-mx7-sabresd.imxcfg
+@@ -68,7 +68,7 @@ wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e407304
+ wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e447304
+ wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e447306
+ 
+-check 32 while_any_bit_clear MX7_DDR_PHY_ZQ_CON1 0x1
++check 32 until_any_bit_set MX7_DDR_PHY_ZQ_CON1 0x1
+ 
+ wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e447304
+ wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e407304
+@@ -79,4 +79,4 @@ wm 32 0x30384130 0x00000002
+ 
+ wm 32 MX7_DDR_PHY_LP_CON0 0x0000000f
+ 
+-check 32 while_any_bit_clear MX7_DDRC_STAT 0x1
++check 32 until_any_bit_set MX7_DDRC_STAT 0x1
+diff --git a/arch/arm/boards/freescale-vf610-twr/flash-header-vf610-twr.imxcfg b/arch/arm/boards/freescale-vf610-twr/flash-header-vf610-twr.imxcfg
+index 01ffc6998a..8dd62be210 100644
+--- a/arch/arm/boards/freescale-vf610-twr/flash-header-vf610-twr.imxcfg
++++ b/arch/arm/boards/freescale-vf610-twr/flash-header-vf610-twr.imxcfg
+@@ -65,7 +65,7 @@ CHECKPOINT(2)
+ /*
+  * Wait for PLLs to lock
+  */
+-check 32 while_any_bit_clear 0x40050030 0x80000000
++check 32 until_any_bit_set 0x40050030 0x80000000
+ 
+ 
+ CHECKPOINT(3)
+@@ -240,7 +240,7 @@ wm 32 0x400ae000 0x00000601
+ 
+ CHECKPOINT(7)
+ 
+-check 32 while_any_bit_clear 0x400ae140 0x100
++check 32 until_any_bit_set 0x400ae140 0x100
+ 
+ CHECKPOINT(8)
+ 
+@@ -268,11 +268,11 @@ CHECKPOINT(8)
+  * against that pattern
+  */
+ wm 32 0x80000000 0xa5a5a5a5
+-check 32 while_any_bit_clear 0x80000000 0xa5a5a5a5
++check 32 until_any_bit_set 0x80000000 0xa5a5a5a5
+ 
+ wm 32 0x400ae000 0x00000600
+ wm 32 0x400ae000 0x00000601
+ 
+-check 32 while_any_bit_clear 0x400ae140 0x100
++check 32 until_any_bit_set 0x400ae140 0x100
+ 
+-CHECKPOINT(9)
+\ No newline at end of file
++CHECKPOINT(9)
+diff --git a/arch/arm/boards/karo-tx53/flash-header-tx53-revxx30.imxcfg b/arch/arm/boards/karo-tx53/flash-header-tx53-revxx30.imxcfg
+index df0c2d7f10..2b47d63bd4 100644
+--- a/arch/arm/boards/karo-tx53/flash-header-tx53-revxx30.imxcfg
++++ b/arch/arm/boards/karo-tx53/flash-header-tx53-revxx30.imxcfg
+@@ -68,29 +68,29 @@ wm 32 0x63fd90d0 0x00000003
+ wm 32 0x63fd901c 0x04008010
+ wm 32 0x63fd901c 0x00008040
+ wm 32 0x63fd9040 0x0539002b
+-check 32 while_all_bits_set 0x63fd9040 0x00010000
++check 32 until_all_bits_clear 0x63fd9040 0x00010000
+ wm 32 0x63fd901c 0x00048033
+ wm 32 0x63fd901c 0x00848231
+ wm 32 0x63fd901c 0x00000000
+ wm 32 0x63fd9048 0x00000001
+-check 32 while_all_bits_set 0x63fd9048 0x00000001
++check 32 until_all_bits_clear 0x63fd9048 0x00000001
+ wm 32 0x63fd901c 0x00048031
+ wm 32 0x63fd901c 0x00008033
+ wm 32 0x63fd901c 0x04008010
+ wm 32 0x63fd901c 0x00048033
+ wm 32 0x63fd907c 0x90000000
+-check 32 while_all_bits_set 0x63fd907c 0x90000000
++check 32 until_all_bits_clear 0x63fd907c 0x90000000
+ wm 32 0x63fd901c 0x00008033
+ wm 32 0x63fd901c 0x00000000
+ wm 32 0x63fd901c 0x04008010
+ wm 32 0x63fd901c 0x00048033
+ wm 32 0x63fd90a4 0x00000010
+-check 32 while_all_bits_set 0x63fd90a4 0x00000010
++check 32 until_all_bits_clear 0x63fd90a4 0x00000010
+ wm 32 0x63fd901c 0x00008033
+ wm 32 0x63fd901c 0x04008010
+ wm 32 0x63fd901c 0x00048033
+ wm 32 0x63fd90a0 0x00000010
+-check 32 while_all_bits_set 0x63fd90a0 0x00000010
++check 32 until_all_bits_clear 0x63fd90a0 0x00000010
+ wm 32 0x63fd901c 0x00008033
+ wm 32 0x63fd901c 0x00000000
+ wm 32 0x53fa8004 0x00194005
+diff --git a/arch/arm/boards/karo-tx6x/1600mhz_4x128mx16.imxcfg b/arch/arm/boards/karo-tx6x/1600mhz_4x128mx16.imxcfg
+index b5c59e3c3c..7e244edfd3 100644
+--- a/arch/arm/boards/karo-tx6x/1600mhz_4x128mx16.imxcfg
++++ b/arch/arm/boards/karo-tx6x/1600mhz_4x128mx16.imxcfg
+@@ -1,12 +1,12 @@
+ /* MDMISC	mirroring	interleaved (row/bank/col) */
+ wm 32 MX6_MMDC_P0_MDMISC		0x00000742
+-check 32 while_all_bits_clear MX6_MMDC_P0_MDMISC 0x00000002
++check 32 until_all_bits_set MX6_MMDC_P0_MDMISC 0x00000002
+ 
+ wm 32 MX6_MMDC_P0_MDSCR			0x00008000
+-check 32 while_any_bit_clear MX6_MMDC_P0_MDSCR 0x00004000
++check 32 until_any_bit_set MX6_MMDC_P0_MDSCR 0x00004000
+ 
+ wm 32 MX6_MMDC_P0_MDCTL			0x831a0000
+-check 32 while_any_bit_clear MX6_MMDC_P0_MDMISC 0x40000000
++check 32 until_any_bit_set MX6_MMDC_P0_MDMISC 0x40000000
+ 
+ wm 32 MX6_MMDC_P0_MDCFG0		0x3f435333
+ wm 32 MX6_MMDC_P0_MDCFG1		0x926e8a63
+@@ -34,7 +34,7 @@ wm 32 MX6_MMDC_P0_MDSCR			0x04008010
+ wm 32 MX6_MMDC_P0_MDSCR			0x04008040
+ 
+ wm 32 MX6_MMDC_P0_MPZQHWCTRL		0xA1390001
+-check 32 while_all_bits_clear MX6_MMDC_P0_MPZQHWCTRL 0x00010000
++check 32 until_all_bits_set MX6_MMDC_P0_MPZQHWCTRL 0x00010000
+ wm 32 MX6_MMDC_P0_MPZQHWCTRL		0xA1380000
+ 
+ wm 32 MX6_MMDC_P0_MPWLDECTRL0	0x001e001e
+@@ -62,11 +62,11 @@ wm 32 MX6_MMDC_P1_MPWRDLCTL		0x40404040
+ wm 32 MX6_MMDC_P0_MPMUR0		0x00000800
+ 
+ wm 32 MX6_MMDC_P0_MPDGCTRL0		0x80000000
+-check 32 while_all_bits_clear MX6_MMDC_P0_MPDGCTRL0 0x80000000
++check 32 until_all_bits_set MX6_MMDC_P0_MPDGCTRL0 0x80000000
+ wm 32 MX6_MMDC_P0_MPDGCTRL0		0x80000000
+-check 32 while_all_bits_clear MX6_MMDC_P0_MPDGCTRL0 0x80000000
++check 32 until_all_bits_set MX6_MMDC_P0_MPDGCTRL0 0x80000000
+ wm 32 MX6_MMDC_P0_MPDGCTRL0		0x50800000
+-check 32 while_all_bits_clear MX6_MMDC_P0_MPDGCTRL0 0x10001000
++check 32 until_all_bits_set MX6_MMDC_P0_MPDGCTRL0 0x10001000
+ 
+ wm 32 MX6_IOM_DRAM_SDQS0		0x00000030
+ wm 32 MX6_IOM_DRAM_SDQS1		0x00000030
+@@ -81,16 +81,16 @@ wm 32 MX6_MMDC_P0_MDSCR			0x04008050
+ wm 32 MX6_MMDC_P0_MPRDDLHWCTL		0x00000030
+ wm 32 MX6_MMDC_P1_MPRDDLHWCTL		0x00000030
+ 
+-check 32 while_all_bits_clear MX6_MMDC_P0_MPRDDLHWCTL 0x0000001f
+-check 32 while_all_bits_clear MX6_MMDC_P1_MPRDDLHWCTL 0x0000001f
++check 32 until_all_bits_set MX6_MMDC_P0_MPRDDLHWCTL 0x0000001f
++check 32 until_all_bits_set MX6_MMDC_P1_MPRDDLHWCTL 0x0000001f
+ 
+ wm 32 MX6_MMDC_P0_MDSCR			0x04008050
+ wm 32 MX6_MMDC_P0_MPWRDLHWCTL		0x00000030
+-check 32 while_all_bits_clear MX6_MMDC_P0_MPWRDLHWCTL 0x0000001f
++check 32 until_all_bits_set MX6_MMDC_P0_MPWRDLHWCTL 0x0000001f
+ 
+ wm 32 MX6_MMDC_P0_MDSCR			0x04008050
+ wm 32 MX6_MMDC_P1_MPWRDLHWCTL		0x00000030
+-check 32 while_all_bits_clear MX6_MMDC_P1_MPWRDLHWCTL 0x0000001f
++check 32 until_all_bits_set MX6_MMDC_P1_MPWRDLHWCTL 0x0000001f
+ wm 32 MX6_MMDC_P0_MDSCR			0x00008033
+ wm 32 MX6_MMDC_P0_MPZQHWCTRL		0xa138002b
+ wm 32 MX6_MMDC_P0_MDREF			0x00001800
+@@ -98,4 +98,4 @@ wm 32 MX6_MMDC_P0_MAPSR			0x00001006
+ wm 32 MX6_MMDC_P0_MDPDC			0x0002556d
+ wm 32 MX6_MMDC_P1_MDPDC			0x0002556d
+ wm 32 MX6_MMDC_P0_MDSCR			0x00000000
+-check 32 while_all_bits_clear MX6_MMDC_P0_MDSCR 0x00004000
++check 32 until_all_bits_set MX6_MMDC_P0_MDSCR 0x00004000
+diff --git a/arch/arm/boards/karo-tx6x/flash-header-tx6dl-512m.imxcfg b/arch/arm/boards/karo-tx6x/flash-header-tx6dl-512m.imxcfg
+index c58ef4e35a..3f6578e19c 100644
+--- a/arch/arm/boards/karo-tx6x/flash-header-tx6dl-512m.imxcfg
++++ b/arch/arm/boards/karo-tx6x/flash-header-tx6dl-512m.imxcfg
+@@ -92,11 +92,11 @@ wm 32 MX6_MMDC_P0_MPRDDQBY2DL 0x33333333
+ wm 32 MX6_MMDC_P0_MPRDDQBY3DL 0x33333333
+ wm 32 MX6_MMDC_P0_MPMUR0 0x00000800
+ wm 32 MX6_MMDC_P0_MDMISC 0x00000742
+-check 32 while_all_bits_clear MX6_MMDC_P0_MDMISC 0x00000002
++check 32 until_all_bits_set MX6_MMDC_P0_MDMISC 0x00000002
+ wm 32 MX6_MMDC_P0_MDSCR 0x00008000
+-check 32 while_any_bit_clear MX6_MMDC_P0_MDSCR 0x00004000
++check 32 until_any_bit_set MX6_MMDC_P0_MDSCR 0x00004000
+ wm 32 MX6_MMDC_P0_MDCTL 0x83190000
+-check 32 while_any_bit_clear MX6_MMDC_P0_MDMISC 0x40000000
++check 32 until_any_bit_set MX6_MMDC_P0_MDMISC 0x40000000
+ wm 32 MX6_MMDC_P0_MDCFG0 0x3f435333
+ wm 32 MX6_MMDC_P0_MDCFG1 0xb66e8a63
+ wm 32 MX6_MMDC_P0_MDCFG2 0x01ff00db
+@@ -117,7 +117,7 @@ wm 32 MX6_MMDC_P0_MAPSR 0x00000001
+ wm 32 MX6_MMDC_P0_MDSCR 0x04008010
+ wm 32 MX6_MMDC_P0_MDSCR 0x04008040
+ wm 32 MX6_MMDC_P0_MPZQHWCTRL 0xa1390001
+-check 32 while_all_bits_clear MX6_MMDC_P0_MPZQHWCTRL 0x00010000
++check 32 until_all_bits_set MX6_MMDC_P0_MPZQHWCTRL 0x00010000
+ wm 32 MX6_MMDC_P0_MPZQHWCTRL 0xa1380000
+ wm 32 MX6_MMDC_P0_MDSCR 0x00048033
+ wm 32 MX6_IOM_DRAM_SDQS0 0x00000030
+@@ -126,14 +126,14 @@ wm 32 MX6_IOM_DRAM_SDQS2 0x00000030
+ wm 32 MX6_IOM_DRAM_SDQS3 0x00000030
+ wm 32 MX6_MMDC_P0_MDSCR 0x04008050
+ wm 32 MX6_MMDC_P0_MPRDDLHWCTL 0x00000030
+-check 32 while_all_bits_clear MX6_MMDC_P0_MPRDDLHWCTL 0x0000001f
++check 32 until_all_bits_set MX6_MMDC_P0_MPRDDLHWCTL 0x0000001f
+ wm 32 MX6_MMDC_P0_MDSCR 0x04008050
+ wm 32 MX6_MMDC_P0_MPWRDLHWCTL 0x00000030
+-check 32 while_all_bits_clear MX6_MMDC_P0_MPWRDLHWCTL 0x0000001f
++check 32 until_all_bits_set MX6_MMDC_P0_MPWRDLHWCTL 0x0000001f
+ wm 32 MX6_MMDC_P0_MDSCR 0x00008033
+ wm 32 MX6_MMDC_P0_MPZQHWCTRL 0xa138002b
+ wm 32 MX6_MMDC_P0_MDREF 0x00001800
+ wm 32 MX6_MMDC_P0_MAPSR 0x00001000
+ wm 32 MX6_MMDC_P0_MDPDC 0x0002556d
+ wm 32 MX6_MMDC_P0_MDSCR 0x00000000
+-check 32 while_all_bits_clear MX6_MMDC_P0_MDSCR 0x00004000
++check 32 until_all_bits_set MX6_MMDC_P0_MDSCR 0x00004000
+diff --git a/arch/arm/boards/karo-tx6x/flash-header-tx6q-1g.imxcfg b/arch/arm/boards/karo-tx6x/flash-header-tx6q-1g.imxcfg
+index 56cb3292a9..165b69fb19 100644
+--- a/arch/arm/boards/karo-tx6x/flash-header-tx6q-1g.imxcfg
++++ b/arch/arm/boards/karo-tx6x/flash-header-tx6q-1g.imxcfg
+@@ -119,11 +119,11 @@ wm 32 MX6_MMDC_P1_MPRDDQBY3DL 0x33333333
+ wm 32 MX6_MMDC_P0_MPMUR0 0x00000800
+ wm 32 MX6_MMDC_P1_MPMUR0 0x00000800
+ wm 32 MX6_MMDC_P0_MDMISC 0x00000742
+-check 32 while_all_bits_clear MX6_MMDC_P0_MDMISC 0x00000002
++check 32 until_all_bits_set MX6_MMDC_P0_MDMISC 0x00000002
+ wm 32 MX6_MMDC_P0_MDSCR 0x00008000
+-check 32 while_any_bit_clear MX6_MMDC_P0_MDSCR 0x00004000
++check 32 until_any_bit_set MX6_MMDC_P0_MDSCR 0x00004000
+ wm 32 MX6_MMDC_P0_MDCTL 0x831a0000
+-check 32 while_any_bit_clear MX6_MMDC_P0_MDMISC 0x40000000
++check 32 until_any_bit_set MX6_MMDC_P0_MDMISC 0x40000000
+ wm 32 MX6_MMDC_P0_MDCFG0 0x545a79a4
+ wm 32 MX6_MMDC_P0_MDCFG1 0xff538e64
+ wm 32 MX6_MMDC_P0_MDCFG2 0x01ff00dd
+@@ -145,7 +145,7 @@ wm 32 MX6_MMDC_P0_MAPSR 0x00000001
+ wm 32 MX6_MMDC_P0_MDSCR 0x04008010
+ wm 32 MX6_MMDC_P0_MDSCR 0x04008040
+ wm 32 MX6_MMDC_P0_MPZQHWCTRL 0xa1390001
+-check 32 while_all_bits_clear MX6_MMDC_P0_MPZQHWCTRL 0x00010000
++check 32 until_all_bits_set MX6_MMDC_P0_MPZQHWCTRL 0x00010000
+ wm 32 MX6_MMDC_P0_MPZQHWCTRL 0xa1380000
+ wm 32 MX6_MMDC_P0_MDSCR 0x00048033
+ wm 32 MX6_IOM_DRAM_SDQS0 0x00000030
+@@ -159,19 +159,19 @@ wm 32 MX6_IOM_DRAM_SDQS7 0x00000030
+ wm 32 MX6_MMDC_P0_MDSCR 0x04008050
+ wm 32 MX6_MMDC_P0_MPRDDLHWCTL 0x00000030
+ wm 32 MX6_MMDC_P1_MPRDDLHWCTL 0x00000030
+-check 32 while_all_bits_clear MX6_MMDC_P0_MPRDDLHWCTL 0x0000001f
+-check 32 while_all_bits_clear MX6_MMDC_P1_MPRDDLHWCTL 0x0000001f
++check 32 until_all_bits_set MX6_MMDC_P0_MPRDDLHWCTL 0x0000001f
++check 32 until_all_bits_set MX6_MMDC_P1_MPRDDLHWCTL 0x0000001f
+ wm 32 MX6_MMDC_P0_MDSCR 0x04008050
+ wm 32 MX6_MMDC_P0_MPWRDLHWCTL 0x00000030
+-check 32 while_all_bits_clear MX6_MMDC_P0_MPWRDLHWCTL 0x0000001f
++check 32 until_all_bits_set MX6_MMDC_P0_MPWRDLHWCTL 0x0000001f
+ wm 32 MX6_MMDC_P0_MDSCR 0x04008050
+ wm 32 MX6_MMDC_P1_MPWRDLHWCTL 0x00000030
+-check 32 while_all_bits_clear MX6_MMDC_P1_MPWRDLHWCTL 0x0000001f
++check 32 until_all_bits_set MX6_MMDC_P1_MPWRDLHWCTL 0x0000001f
+ wm 32 MX6_MMDC_P0_MDSCR 0x00008033
+ wm 32 MX6_MMDC_P0_MPZQHWCTRL 0xa138002b
+ wm 32 MX6_MMDC_P0_MDREF 0x00001800
+ wm 32 MX6_MMDC_P0_MAPSR 0x00001000
+ wm 32 MX6_MMDC_P0_MDPDC 0x00025576
+ wm 32 MX6_MMDC_P0_MDSCR 0x00000000
+-check 32 while_all_bits_clear MX6_MMDC_P0_MDSCR 0x00004000
++check 32 until_all_bits_set MX6_MMDC_P0_MDSCR 0x00004000
+ 
+diff --git a/arch/arm/boards/karo-tx6x/flash-header-tx6qp-2g.imxcfg b/arch/arm/boards/karo-tx6x/flash-header-tx6qp-2g.imxcfg
+index 4eaca00fc7..fc00de957c 100644
+--- a/arch/arm/boards/karo-tx6x/flash-header-tx6qp-2g.imxcfg
++++ b/arch/arm/boards/karo-tx6x/flash-header-tx6qp-2g.imxcfg
+@@ -128,11 +128,11 @@ wm 32 MX6_MMDC_P1_MPRDDQBY3DL 0x33333333
+ wm 32 MX6_MMDC_P0_MPMUR0 0x00000800
+ wm 32 MX6_MMDC_P1_MPMUR0 0x00000800
+ wm 32 MX6_MMDC_P0_MDMISC 0x00000742
+-check 32 while_all_bits_clear MX6_MMDC_P0_MDMISC 0x00000002
++check 32 until_all_bits_set MX6_MMDC_P0_MDMISC 0x00000002
+ wm 32 MX6_MMDC_P0_MDSCR 0x00008000
+-check 32 while_any_bit_clear MX6_MMDC_P0_MDSCR 0x00004000
++check 32 until_any_bit_set MX6_MMDC_P0_MDSCR 0x00004000
+ wm 32 MX6_MMDC_P0_MDCTL 0x841a0000
+-check 32 while_any_bit_clear MX6_MMDC_P0_MDMISC 0x40000000
++check 32 until_any_bit_set MX6_MMDC_P0_MDMISC 0x40000000
+ wm 32 MX6_MMDC_P0_MDCFG0 0x898f78f4
+ wm 32 MX6_MMDC_P0_MDCFG1 0xff328e64
+ wm 32 MX6_MMDC_P0_MDCFG2 0x01ff00db
+@@ -155,7 +155,7 @@ wm 32 MX6_MMDC_P0_MAPSR 0x00000001
+ wm 32 MX6_MMDC_P0_MDSCR 0x04008010
+ wm 32 MX6_MMDC_P0_MDSCR 0x04008040
+ wm 32 MX6_MMDC_P0_MPZQHWCTRL 0xa1390001
+-check 32 while_all_bits_clear MX6_MMDC_P0_MPZQHWCTRL 0x00010000
++check 32 until_all_bits_set MX6_MMDC_P0_MPZQHWCTRL 0x00010000
+ wm 32 MX6_MMDC_P0_MPZQHWCTRL 0xa1380000
+ wm 32 MX6_MMDC_P0_MDSCR 0x00048033
+ wm 32 MX6_IOM_DRAM_SDQS0 0x00000030
+@@ -169,18 +169,18 @@ wm 32 MX6_IOM_DRAM_SDQS7 0x00000030
+ wm 32 MX6_MMDC_P0_MDSCR 0x04008050
+ wm 32 MX6_MMDC_P0_MPRDDLHWCTL 0x00000030
+ wm 32 MX6_MMDC_P1_MPRDDLHWCTL 0x00000030
+-check 32 while_all_bits_clear MX6_MMDC_P0_MPRDDLHWCTL 0x0000001f
+-check 32 while_all_bits_clear MX6_MMDC_P1_MPRDDLHWCTL 0x0000001f
++check 32 until_all_bits_set MX6_MMDC_P0_MPRDDLHWCTL 0x0000001f
++check 32 until_all_bits_set MX6_MMDC_P1_MPRDDLHWCTL 0x0000001f
+ wm 32 MX6_MMDC_P0_MDSCR 0x04008050
+ wm 32 MX6_MMDC_P0_MPWRDLHWCTL 0x00000030
+-check 32 while_all_bits_clear MX6_MMDC_P0_MPWRDLHWCTL 0x0000001f
++check 32 until_all_bits_set MX6_MMDC_P0_MPWRDLHWCTL 0x0000001f
+ wm 32 MX6_MMDC_P0_MDSCR 0x04008050
+ wm 32 MX6_MMDC_P1_MPWRDLHWCTL 0x00000030
+-check 32 while_all_bits_clear MX6_MMDC_P1_MPWRDLHWCTL 0x0000001f
++check 32 until_all_bits_set MX6_MMDC_P1_MPWRDLHWCTL 0x0000001f
+ wm 32 MX6_MMDC_P0_MDSCR 0x00008033
+ wm 32 MX6_MMDC_P0_MPZQHWCTRL 0xa138002b
+ wm 32 MX6_MMDC_P0_MDREF 0x00001800
+ wm 32 MX6_MMDC_P0_MAPSR 0x00001000
+ wm 32 MX6_MMDC_P0_MDPDC 0x00025576
+ wm 32 MX6_MMDC_P0_MDSCR 0x00000000
+-check 32 while_all_bits_clear MX6_MMDC_P0_MDSCR 0x00004000
++check 32 until_all_bits_set MX6_MMDC_P0_MDSCR 0x00004000
+diff --git a/arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr1.imxcfg b/arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr1.imxcfg
+index e6b6098973..fae10423c5 100644
+--- a/arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr1.imxcfg
++++ b/arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr1.imxcfg
+@@ -21,7 +21,7 @@ wm 32 0x63f8001c 0x00000080
+ wm 32 0x63f80020 0x00000002
+ wm 32 0x63f80024 0x00000001
+ wm 32 0x63f80000 0x00001232
+-check 8 while_any_bit_clear 0x63f80000 0x01
++check 8 until_any_bit_set 0x63f80000 0x01
+ # Switch pll1_sw_clk to pll1
+ wm 32 0x53fd400c 0x00000000
+ 
+@@ -38,7 +38,7 @@ wm 32 0x53FD4098 0x80000004
+ 
+ # CCM DDR div 4 / 200MHz
+ wm 32 0x53fd4098 0x80000004
+-check 32 while_all_bits_set 0x53fd408c 0x00000004
++check 32 until_all_bits_clear 0x53fd408c 0x00000004
+ 
+ # IOMUX
+ wm 32 0x53fa8490 0x00180000
+@@ -163,4 +163,4 @@ wm 32 0x1400025c 0x00102201
+ 
+ # start DDR
+ wm 32 0x14000000 0x00000101
+-check 32 while_any_bit_clear 0x140000a8 0x00000010
++check 32 until_any_bit_set 0x140000a8 0x00000010
+diff --git a/arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr2.imxcfg b/arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr2.imxcfg
+index ffceac34b5..94436a7b54 100644
+--- a/arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr2.imxcfg
++++ b/arch/arm/boards/kindle-mx50/flash-header-kindle-lpddr2.imxcfg
+@@ -22,7 +22,7 @@ wm 32 0x63f8001c 0x00000080
+ wm 32 0x63f80020 0x000000b3
+ wm 32 0x63f80024 0x000000b4
+ wm 32 0x63f80000 0x00001236
+-check 8 while_any_bit_clear 0x63f80000 0x01
++check 8 until_any_bit_set 0x63f80000 0x01
+ # Switch pll1_sw_clk to pll1
+ wm 32 0x53fd400c 0x00000000
+ 
+@@ -39,7 +39,7 @@ wm 32 0x53FD4098 0x80000004
+ 
+ # CCM DDR div 3 / 266MHz
+ wm 32 0x53fd4098 0x80000003
+-check 32 while_all_bits_set 0x53fd408c 0x00000004
++check 32 until_all_bits_clear 0x53fd408c 0x00000004
+ 
+ # IOMUX
+ wm 32 0x53fa86ac 0x04000000
+@@ -173,4 +173,4 @@ wm 32 0x1400025c 0x00100b01
+ 
+ # start DDR
+ wm 32 0x14000000 0x00000501
+-check 32 while_any_bit_clear 0x140000a8 0x00000010
++check 32 until_any_bit_set 0x140000a8 0x00000010
+diff --git a/arch/arm/boards/phytec-phycore-imx7/flash-header-phytec-phycore-imx7.imxcfg b/arch/arm/boards/phytec-phycore-imx7/flash-header-phytec-phycore-imx7.imxcfg
+index 6c256e8fc5..6e08b6c1b1 100644
+--- a/arch/arm/boards/phytec-phycore-imx7/flash-header-phytec-phycore-imx7.imxcfg
++++ b/arch/arm/boards/phytec-phycore-imx7/flash-header-phytec-phycore-imx7.imxcfg
+@@ -65,7 +65,7 @@ wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e407304
+ wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e447304
+ wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e447306
+ 
+-check 32 while_any_bit_clear MX7_DDR_PHY_ZQ_CON1 0x1
++check 32 until_any_bit_set MX7_DDR_PHY_ZQ_CON1 0x1
+ 
+ wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e447304
+ wm 32 MX7_DDR_PHY_ZQ_CON0 0x0e407304
+@@ -75,4 +75,4 @@ wm 32 0x30340020 0x00000178
+ wm 32 0x30384130 0x00000002
+ wm 32 MX7_DDR_PHY_LP_CON0 0x0000000f
+ 
+-check 32 while_any_bit_clear MX7_DDRC_STAT 0x1
++check 32 until_any_bit_set MX7_DDRC_STAT 0x1
+diff --git a/arch/arm/boards/zii-vf610-dev/flash-header-zii-vf610-dev.imxcfg b/arch/arm/boards/zii-vf610-dev/flash-header-zii-vf610-dev.imxcfg
+index 177f4e8bdc..bb858907a4 100644
+--- a/arch/arm/boards/zii-vf610-dev/flash-header-zii-vf610-dev.imxcfg
++++ b/arch/arm/boards/zii-vf610-dev/flash-header-zii-vf610-dev.imxcfg
+@@ -45,7 +45,7 @@ CHECKPOINT(2)
+ /*
+  * Wait for PLLs to lock
+  */
+-check 32 while_any_bit_clear 0x40050030 0x80000000
++check 32 until_any_bit_set 0x40050030 0x80000000
+ 
+ 
+ CHECKPOINT(3)
+@@ -218,26 +218,26 @@ wm 32 0x400ae000 0x00000601
+ 
+ CHECKPOINT(7)
+ 
+-check 32 while_any_bit_clear 0x400ae140 0x100
+-# check 32 while_any_bit_clear 0x400ae42c 0x1
+-# check 32 while_any_bit_clear 0x400ae46c 0x1
+-# check 32 while_any_bit_clear 0x400ae4ac 0x1
++check 32 until_any_bit_set 0x400ae140 0x100
++# check 32 until_any_bit_set 0x400ae42c 0x1
++# check 32 until_any_bit_set 0x400ae46c 0x1
++# check 32 until_any_bit_set 0x400ae4ac 0x1
+ 
+ CHECKPOINT(8)
+ 
+ wm 32 0x80000000 0xa5a5a5a5
+-check 32 while_any_bit_clear 0x80000000 0xa5a5a5a5
++check 32 until_any_bit_set 0x80000000 0xa5a5a5a5
+ 
+ wm 32 0x400ae000 0x00000600
+ wm 32 0x400ae000 0x00000601
+ 
+-check 32 while_any_bit_clear 0x400ae140 0x100
+-# check 32 while_any_bit_clear 0x400ae42c 0x1
+-# check 32 while_any_bit_clear 0x400ae46c 0x1
+-# check 32 while_any_bit_clear 0x400ae4ac 0x1
++check 32 until_any_bit_set 0x400ae140 0x100
++# check 32 until_any_bit_set 0x400ae42c 0x1
++# check 32 until_any_bit_set 0x400ae46c 0x1
++# check 32 until_any_bit_set 0x400ae4ac 0x1
+ 
+ /* wm 32 0x3f040000 0xf0
+- check 32 while_any_bit_clear 0x3f040000 0x0f */
++ check 32 until_any_bit_set 0x3f040000 0x0f */
+ 
+ 
+ CHECKPOINT(9)
+diff --git a/scripts/imx/README b/scripts/imx/README
+index b5cdb487a0..d573d3a6be 100644
+--- a/scripts/imx/README
++++ b/scripts/imx/README
+@@ -7,34 +7,12 @@ The imx-usb-loader tool is used to upload and start i.MX images. These
+ are images containing a DCD (Device Configuration Data) table. To generate
+ these images from raw binaries use the imx-image tool.
+ 
+-imx-image
+----------
++Refer the i.MX related documentation about the DCD source files and their
++content.
+ 
+-The imx-image tool can be used to generate imximages from raw binaries.
+-It requires an configuration file describing how to setup the SDRAM on
+-a particular board. This mainly consists of a poke table. The recognized
+-options in this file are:
++Example for a DCD source file:
+ 
+-soc <soctype>      soctype can be one of imx35, imx51, imx53, imx6
+-loadaddr <adr>     The address the binary is uploaded to
+-dcdofs <ofs>       The offset of the image header in the image. This should be:
+-                   0x400  - MMC/SD, NAND, serial ROM, PATA, SATA
+-                   0x1000 - NOR Flash
+-                   0x100  - OneNAND
+-wm 8 <adr> <value>                    do a byte memory write
+-wm 16 <adr> <value>                   do a short memory write
+-wm 32 <adr> <value>                   do a word memory write
+-check <width> <cond> <addr> <mask>    Poll until condition becomes true.
+-                                      with <cond> being one of:
+-                                      while_all_bits_clear,
+-                                      while_all_bits_set,
+-                                      while_any_bit_clear,
+-                                      while_any_bit_set
+-set_bits <width> <addr> <bits>        set <bits> in register <addr>
+-clear_bits <width> <addr> <bits>      clear <bits> in register <addr>
+-nop                                   do nothing
 -
--static int tx53_part_init(void)
--{
--	const char *envdev;
-+	barebox_set_model("Ka-Ro TX53");
-+	barebox_set_hostname("tx53");
- 
- 	switch (bootsource_get()) {
- 	case BOOTSOURCE_MMC:
--		devfs_add_partition("disk0", 0x00000, SZ_512K, DEVFS_PARTITION_FIXED, "self0");
--		devfs_add_partition("disk0", SZ_512K, SZ_1M, DEVFS_PARTITION_FIXED, "env0");
-+		devfs_add_partition("mmc0", 0x00000, SZ_512K,
-+				DEVFS_PARTITION_FIXED, "self0");
-+		devfs_add_partition("mmc0", SZ_512K, SZ_1M,
-+				DEVFS_PARTITION_FIXED, "env0");
- 		envdev = "MMC";
-+		flag_mmc |= BBU_HANDLER_FLAG_DEFAULT;
- 		break;
- 	case BOOTSOURCE_NAND:
- 	default:
--		devfs_add_partition("nand0", 0x00000, 0x80000, DEVFS_PARTITION_FIXED, "self_raw");
-+		devfs_add_partition("nand0", 0x00000, 0x80000,
-+				DEVFS_PARTITION_FIXED, "self_raw");
- 		dev_add_bb_dev("self_raw", "self0");
--		devfs_add_partition("nand0", 0x80000, 0x100000, DEVFS_PARTITION_FIXED, "env_raw");
-+		devfs_add_partition("nand0", 0x80000, 0x100000,
-+				DEVFS_PARTITION_FIXED, "env_raw");
- 		dev_add_bb_dev("env_raw", "env0");
- 		envdev = "NAND";
-+		flag_nand |= BBU_HANDLER_FLAG_DEFAULT;
- 		break;
+-the i.MX SoCs support a wide range of fancy things doing with the flash header.
++The i.MX SoCs support a wide range of fancy things doing with the flash header.
+ We limit ourselves to a very simple case, that is the flash header has a fixed
+ size of 0x1000 bytes. The application is expected right thereafter, so if you
+ specify a loadaddr of 0x80000000 in the config file, the first 0x1000 bytes
+diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+index 6052343e00..43dde8b7f2 100644
+--- a/scripts/imx/imx-usb-loader.c
++++ b/scripts/imx/imx-usb-loader.c
+@@ -935,10 +935,10 @@ static int do_dcd_v2_cmd_check(const unsigned char *dcd)
  	}
  
--	printf("Using environment in %s\n", envdev);
-+	armlinux_set_architecture(MACH_TYPE_TX53);
+ 	switch ((check->param & 0xf8) >> 3) {
+-	case check_all_bits_clear:
+-	case check_all_bits_set:
+-	case check_any_bit_clear:
+-	case check_any_bit_set:
++	case until_all_bits_clear:
++	case until_all_bits_set:
++	case until_any_bit_clear:
++	case until_any_bit_set:
+ 		cond = (check->param & 0xf8) >> 3;
+ 		break;
+ 	default:
+@@ -966,20 +966,20 @@ static int do_dcd_v2_cmd_check(const unsigned char *dcd)
+ 		data &= mask;
  
--	return 0;
--}
--late_initcall(tx53_part_init);
-+	/* rev xx30 can boot from nand or USB */
-+	imx53_bbu_internal_nand_register_handler("nand-xx30",
-+						flag_nand, SZ_512K);
+ 		switch (cond) {
+-		case check_all_bits_clear:
+-			if (data != 0)
++		case until_all_bits_clear:
++			if (data == 0)
+ 				return 0;
+ 			break;
+-		case check_all_bits_set:
+-			if (data != mask)
++		case until_all_bits_set:
++			if (data == mask)
+ 				return 0;
+ 			break;
+-		case check_any_bit_clear:
+-			if (data == mask)
++		case until_any_bit_clear:
++			if (data != mask)
+ 				return 0;
+ 			break;
+-		case check_any_bit_set:
+-			if (data == 0)
++		case until_any_bit_set:
++			if (data != 0)
+ 				return 0;
+ 			break;
+ 		}
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+index 809d8a7f71..fb6ac001e2 100644
+--- a/scripts/imx/imx.c
++++ b/scripts/imx/imx.c
+@@ -69,10 +69,10 @@ struct command {
+ };
  
--static int tx53_console_init(void)
--{
--	mxc_iomux_v3_setup_multiple_pads(tx53_pads, ARRAY_SIZE(tx53_pads));
-+	/* rev 1011 can boot from MMC/SD, other bootsource currently unknown */
-+	imx53_bbu_internal_mmc_register_handler("mmc-1011",
-+						"/dev/mmc0", flag_mmc);
+ static const char *check_cmds[] = {
+-	"while_all_bits_clear",		/* while ((*address & mask) == 0); */
+-	"while_all_bits_set"	,	/* while ((*address & mask) == mask); */
+-	"while_any_bit_clear",		/* while ((*address & mask) != mask); */
+-	"while_any_bit_set",		/* while ((*address & mask) != 0); */
++	"until_all_bits_clear",	/* until ((*address & mask) == 0) { }; */
++	"until_any_bit_clear",	/* until ((*address & mask) != mask) { }; */
++	"until_all_bits_set",	/* until ((*address & mask) == mask) { }; */
++	"until_any_bit_set",	/* until ((*address & mask) != 0) { }; */
+ };
  
--	if (!IS_ENABLED(CONFIG_TX53_REV_XX30))
-+	if (of_machine_is_compatible("karo,tx53-1011"))
- 		imx53_init_lowlevel(1000);
- 
--	barebox_set_model("Ka-Ro TX53");
--	barebox_set_hostname("tx53");
-+	printf("Using environment in %s\n", envdev);
- 
--	imx53_add_uart0();
- 	return 0;
+ static void do_cmd_check_usage(void)
+@@ -81,10 +81,10 @@ static void do_cmd_check_usage(void)
+ 			"usage: check <width> <cmd> <addr> <mask>\n"
+ 			"<width> access width in bytes [1|2|4]\n"
+ 			"with <cmd> one of:\n"
+-			"while_all_bits_clear: while ((*addr & mask) == 0)\n"
+-			"while_all_bits_set:   while ((*addr & mask) == mask)\n"
+-			"while_any_bit_clear:  while ((*addr & mask) != mask)\n"
+-			"while_any_bit_set:    while ((*addr & mask) != 0)\n");
++			"until_all_bits_clear: while ((*addr & mask) == 0)\n"
++			"until_all_bits_set:   while ((*addr & mask) == mask)\n"
++			"until_any_bit_clear:  while ((*addr & mask) != mask)\n"
++			"until_any_bit_set:    while ((*addr & mask) != 0)\n");
  }
--console_initcall(tx53_console_init);
-+device_initcall(tx53_devices_init);
-diff --git a/arch/arm/boards/karo-tx53/lowlevel.c b/arch/arm/boards/karo-tx53/lowlevel.c
-index 9f584fa256..15dba7df22 100644
---- a/arch/arm/boards/karo-tx53/lowlevel.c
-+++ b/arch/arm/boards/karo-tx53/lowlevel.c
-@@ -1,23 +1,63 @@
- #include <common.h>
-+#include <debug_ll.h>
- #include <asm/barebox-arm-head.h>
- #include <asm/barebox-arm.h>
- #include <mach/imx5.h>
- #include <mach/imx53-regs.h>
- #include <mach/esdctl.h>
- #include <mach/generic.h>
-+#include <asm/cache.h>
  
--void __naked barebox_arm_reset_vector(void)
-+extern char __dtb_imx53_tx53_xx30_start[];
-+extern char __dtb_imx53_tx53_1011_start[];
-+
-+static inline void setup_uart(void)
- {
-+	void __iomem *uart = IOMEM(MX53_UART1_BASE_ADDR);
-+
-+	writel(0x3, MX53_IOMUXC_BASE_ADDR + 0x270);
-+	writel(0x3, MX53_IOMUXC_BASE_ADDR + 0x274);
-+	writel(0x3, MX53_IOMUXC_BASE_ADDR + 0x878);
-+
-+	imx53_ungate_all_peripherals();
-+	imx53_uart_setup(uart);
-+	pbl_set_putc(imx_uart_putc, uart);
-+
-+	putc_ll('>');
-+}
-+
-+static void __imx53_tx53_init(int is_xx30)
-+{
-+	void *fdt;
-+	void *fdt_blob_fixed_offset = __dtb_imx53_tx53_1011_start;
-+
-+	arm_early_mmu_cache_invalidate();
- 	imx5_cpu_lowlevel_init();
-+	relocate_to_current_adr();
-+	setup_c();
-+	barrier();
-+
- 	arm_setup_stack(MX53_IRAM_BASE_ADDR + MX53_IRAM_SIZE - 8);
+ static int do_cmd_check(struct config_data *data, int argc, char *argv[])
+diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
+index f32ae52abf..c7677f81a4 100644
+--- a/scripts/imx/imx.h
++++ b/scripts/imx/imx.h
+@@ -105,10 +105,10 @@ struct imx_dcd_v2_check {
+ } __attribute__((packed));
  
--	/*
--	 * For the TX53 rev 8030 the SDRAM setup is not stable without
--	 * the proper PLL setup. It will crash once we enable the MMU,
--	 * so do the PLL setup here.
--	 */
--	if (IS_ENABLED(CONFIG_TX53_REV_XX30))
-+	if (is_xx30) {
- 		imx53_init_lowlevel_early(800);
-+		fdt_blob_fixed_offset = __dtb_imx53_tx53_xx30_start;
-+	}
+ enum imx_dcd_v2_check_cond {
+-	check_all_bits_clear = 0,
+-	check_all_bits_set = 1,
+-	check_any_bit_clear = 2,
+-	check_any_bit_set = 3,
++	until_all_bits_clear = 0, /* until ((*address & mask) == 0) { ...} */
++	until_any_bit_clear = 1, /* until ((*address & mask) != mask) { ...} */
++	until_all_bits_set = 2, /* until ((*address & mask) == mask) { ...} */
++	until_any_bit_set = 3, /* until ((*address & mask) != 0) { ...} */
+ } __attribute__((packed));
  
--	imx53_barebox_entry(NULL);
-+	if (IS_ENABLED(CONFIG_DEBUG_LL))
-+		setup_uart();
-+
-+	fdt = fdt_blob_fixed_offset - get_runtime_offset();
-+
-+	imx53_barebox_entry(fdt);
-+}
-+
-+ENTRY_FUNCTION(start_imx53_tx53_xx30, r0, r1, r2)
-+{
-+	__imx53_tx53_init(1);
-+}
-+
-+ENTRY_FUNCTION(start_imx53_tx53_1011, r0, r1, r2)
-+{
-+	__imx53_tx53_init(0);
- }
-diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
-index 08ec6eb862..426bc04651 100644
---- a/arch/arm/configs/imx_v7_defconfig
-+++ b/arch/arm/configs/imx_v7_defconfig
-@@ -10,6 +10,7 @@ CONFIG_MACH_GUF_VINCELL=y
- CONFIG_MACH_GUF_VINCELL_XLOAD=y
- CONFIG_MACH_TQMA53=y
- CONFIG_MACH_FREESCALE_MX53_VMX53=y
-+CONFIG_MACH_TX53=y
- CONFIG_MACH_PHYTEC_SOM_IMX6=y
- CONFIG_MACH_KONTRON_SAMX6I=y
- CONFIG_MACH_DFI_FS700_M60=y
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index db703c1e0f..e60e0ea0c6 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -19,6 +19,7 @@ pbl-dtb-$(CONFIG_MACH_EMBEST_RIOTBOARD) += imx6s-riotboard.dtb.o
- pbl-dtb-$(CONFIG_MACH_EMBEDSKY_E9) += imx6q-embedsky-e9.dtb.o
- pbl-dtb-$(CONFIG_MACH_FREESCALE_MX51_PDK) += imx51-babbage.dtb.o
- pbl-dtb-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += imx53-qsb.dtb.o imx53-qsrb.dtb.o
-+pbl-dtb-$(CONFIG_MACH_TX53) += imx53-tx53-xx30.dtb.o imx53-tx53-1011.dtb.o
- pbl-dtb-$(CONFIG_MACH_CCMX53) += imx53-ccxmx53.dtb.o
- pbl-dtb-$(CONFIG_MACH_FREESCALE_MX53_VMX53) += imx53-voipac-bsb.dtb.o
- pbl-dtb-$(CONFIG_MACH_FREESCALE_MX7_SABRESD) += imx7d-sdb.dtb.o
-diff --git a/arch/arm/dts/imx53-tx53-1011.dts b/arch/arm/dts/imx53-tx53-1011.dts
-new file mode 100644
-index 0000000000..e9b1b3a221
---- /dev/null
-+++ b/arch/arm/dts/imx53-tx53-1011.dts
-@@ -0,0 +1,13 @@
-+/dts-v1/;
-+#include <arm/imx53-tx53.dtsi>
-+
-+/ {
-+	model = "Ka-Ro electronics TX53 module";
-+	compatible = "karo,tx53-1011", "karo,tx53", "fsl,imx53";
-+
-+	chosen {
-+		stdout-path = &uart1;
-+	};
-+
-+	sgtl5000: dummy { };
-+};
-diff --git a/arch/arm/dts/imx53-tx53-xx30.dts b/arch/arm/dts/imx53-tx53-xx30.dts
-new file mode 100644
-index 0000000000..b9d1c65a2a
---- /dev/null
-+++ b/arch/arm/dts/imx53-tx53-xx30.dts
-@@ -0,0 +1,13 @@
-+/dts-v1/;
-+#include <arm/imx53-tx53.dtsi>
-+
-+/ {
-+	model = "Ka-Ro electronics TX53 module";
-+	compatible = "karo,tx53-xx30", "karo,tx53", "fsl,imx53";
-+
-+	chosen {
-+		stdout-path = &uart1;
-+	};
-+
-+	sgtl5000: dummy { };
-+};
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index cf5338e5fa..9052a94ea0 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -289,6 +289,12 @@ config MACH_FREESCALE_MX53_VMX53
- 	  Say Y here if you are using the Voipac Technologies X53-DMM-668
- 	  module equipped with a Freescale i.MX53 Processor
- 
-+config MACH_TX53
-+	bool "Ka-Ro TX53"
-+	select ARCH_IMX53
-+	help
-+	  Say Y here if you are using the Ka-Ro tx53 board
-+
- config MACH_PHYTEC_SOM_IMX6
-         bool "Phytec phyCARD-i.MX6 and phyFLEX-i.MX6"
-         select ARCH_IMX6
-@@ -610,12 +616,6 @@ config MACH_FREESCALE_MX53_SMD
- 	bool "Freescale i.MX53 SMD"
- 	select ARCH_IMX53
- 
--config MACH_TX53
--	bool "Ka-Ro TX53"
--	select ARCH_IMX53
--	help
--	  Say Y here if you are using the Ka-Ro tx53 board
--
- endchoice
- 
- # ----------------------------------------------------------
-@@ -689,19 +689,6 @@ endchoice
- 
- endif
- 
--if MACH_TX53
--
--choice
--	prompt "TX53 board revision"
--config TX53_REV_1011
--	bool "1011"
--config TX53_REV_XX30
--	bool "8030 / 1030"
--
--endchoice
--
--endif
--
- endmenu
- 
- menu "i.MX specific settings"
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index 0428c48ade..ed2774263d 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -139,6 +139,16 @@ CFG_start_imx53_mba53_1gib.pblx.imximg = $(board)/tqma53/flash-header-tq-tqma53-
- FILE_barebox-tq-mba53-1gib.img = start_imx53_mba53_1gib.pblx.imximg
- image-$(CONFIG_MACH_TQMA53) += barebox-tq-mba53-1gib.img
- 
-+pblx-$(CONFIG_MACH_TX53) += start_imx53_imx53_tx53_xx30
-+CFG_start_imx53_tx53_xx30.pblx.imximg = $(board)/karo-tx53/flash-header-tx53-revxx30.imxcfg
-+FILE_barebox-tx53-xx30.img = start_imx53_tx53_xx30.pblx.imximg
-+image-$(CONFIG_MACH_TX53) += barebox-tx53-xx30.img
-+
-+pblx-$(CONFIG_MACH_TX53) += start_imx53_imx53_tx53_1011
-+CFG_start_imx53_tx53_1011.pblx.imximg = $(board)/karo-tx53/flash-header-tx53-rev1011.imxcfg
-+FILE_barebox-tx53-1011.img = start_imx53_tx53_1011.pblx.imximg
-+image-$(CONFIG_MACH_TX53) += barebox-tx53-1011.img
-+
- # ----------------------- i.MX6 based boards ---------------------------
- pblx-$(CONFIG_MACH_REALQ7) += start_imx6_realq7
- CFG_start_imx6_realq7.pblx.imximg = $(board)/datamodul-edm-qmx6/flash-header.imxcfg
+ int parse_config(struct config_data *data, const char *filename);
 -- 
 2.16.1
 
