@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x242.google.com ([2607:f8b0:4001:c0b::242])
+Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1eyWPi-0003DD-7z
- for barebox@lists.infradead.org; Wed, 21 Mar 2018 05:35:56 +0000
-Received: by mail-it0-x242.google.com with SMTP id z143-v6so15010249itc.0
- for <barebox@lists.infradead.org>; Tue, 20 Mar 2018 22:35:44 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20180316125354.23462-1-s.hauer@pengutronix.de>
-References: <20180316125354.23462-1-s.hauer@pengutronix.de>
+ id 1f0Rse-0003jP-EV
+ for barebox@lists.infradead.org; Mon, 26 Mar 2018 13:09:45 +0000
+Received: by mail-pg0-x243.google.com with SMTP id v26so4725786pge.11
+ for <barebox@lists.infradead.org>; Mon, 26 Mar 2018 06:09:33 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 20 Mar 2018 22:35:42 -0700
-Message-ID: <CAHQ1cqE7MiV_eq3LBSQQM8bgJZo3rVGOsZzgJ4mVXB42KFeAYA@mail.gmail.com>
+Date: Mon, 26 Mar 2018 06:09:12 -0700
+Message-Id: <20180326130915.8726-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +16,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/78] ARM aarch64 updates
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 0/3] Linux's serdev framwork port
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Fri, Mar 16, 2018 at 5:52 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> Hi All,
->
-> Here is a massive update for the ARM aarch64 port. With the following
-> series the aarch64 port should be on par with the 32bit support.
->
-> With this aarch64 supports relocatable binaries, proper MMU support, DMA
-> cache maintenance operations, and finally starting a aarch64 Linux
-> image :)
->
-> This all has been developed on a i.MX8MQ EVK board. The i.MX8MQ patches
-> are currently evolving, but are not yet quite ready. DDR setup is still
-> very crude and pinmux is not yet working. NXP did a nice job with the
-> i.MX8MQ: It behaves very much like a i.MX6 with a different core, so
-> we already have most of the drivers and I could concentrate on the
-> aarch64 update. I hope I can send i.MX8 patches soon.
+Hi everyone:
 
-Sascha:
+In an effort to bring this kernel driver
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/mfd/rave-sp.c?h=v4.16-rc7
+to Barebox, I ended up creating a miniature and extremely simplified
+version of 'serdev' subsystem which is presented in this patchset.
 
-I only vaguely familiar with AARCH64, so take the tag with a grain of
-salt, but I read through the patchset and it all looks reasonable, so
-FWIW:
-
-Reviewed-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-
-I commented on individual patches with suggestions, but they are just
-that, so feel free to ignore.
+All feedback is wellcome!
 
 Thanks,
 Andrey Smirnov
+
+Andrey Smirnov (3):
+  console: Introduce console_drain()
+  console: Add simplified 'serdev' framework from Linux kernel
+  serial: Check result of console_unregister()
+
+ common/Kconfig                   |   6 +++
+ common/Makefile                  |   1 +
+ common/console.c                 |  24 +++++++--
+ common/serdev.c                  |  87 ++++++++++++++++++++++++++++++
+ drivers/serial/serial_auart.c    |   6 ++-
+ drivers/serial/serial_cadence.c  |   6 ++-
+ drivers/serial/serial_clps711x.c |   6 ++-
+ drivers/serial/serial_imx.c      |   6 ++-
+ drivers/serial/serial_lpuart.c   |   6 ++-
+ drivers/serial/serial_pxa.c      |   6 ++-
+ drivers/serial/serial_s3c.c      |   6 ++-
+ drivers/serial/stm-serial.c      |   6 ++-
+ include/console.h                | 112 ++++++++++++++++++++++++++++++++++++++-
+ include/serdev.h                 |  36 +++++++++++++
+ lib/xymodem.c                    |  30 ++---------
+ 15 files changed, 307 insertions(+), 37 deletions(-)
+ create mode 100644 common/serdev.c
+ create mode 100644 include/serdev.h
+
+-- 
+2.14.3
+
 
 _______________________________________________
 barebox mailing list
