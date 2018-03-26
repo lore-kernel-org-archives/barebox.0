@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f0Xfd-0000fv-7b
- for barebox@lists.infradead.org; Mon, 26 Mar 2018 19:20:47 +0000
+ id 1f0Xfd-0000fx-6T
+ for barebox@lists.infradead.org; Mon, 26 Mar 2018 19:20:45 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1f0XfN-0000ll-CR
+ (envelope-from <l.stach@pengutronix.de>) id 1f0XfN-0000ll-EY
  for barebox@lists.infradead.org; Mon, 26 Mar 2018 21:20:25 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 26 Mar 2018 21:20:18 +0200
-Message-Id: <20180326192025.28809-3-l.stach@pengutronix.de>
+Date: Mon, 26 Mar 2018 21:20:20 +0200
+Message-Id: <20180326192025.28809-5-l.stach@pengutronix.de>
 In-Reply-To: <20180326192025.28809-1-l.stach@pengutronix.de>
 References: <20180326192025.28809-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -26,42 +26,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 03/10] ARM: allow secure monitor code to be built without
- PSCI
+Subject: [PATCH v3 05/10] ARM: don't try to install secure monitor when
+ entered in HYP mode
 To: barebox@lists.infradead.org
 
-The hyp mode handling added in the secure monitor code is also useful
-when Barebox doesn't have PSCI control. Allow to build without PSCI.
+When Barebox has been entered in HYP mode, the CPU is already switched
+to the non-secure world and it's not possible for Barebox to install
+it's own secure monitor.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Tested-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- arch/arm/cpu/sm_as.S | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/cpu/sm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/cpu/sm_as.S b/arch/arm/cpu/sm_as.S
-index 09580e75de5f..0d01e1bf2435 100644
---- a/arch/arm/cpu/sm_as.S
-+++ b/arch/arm/cpu/sm_as.S
-@@ -129,7 +129,9 @@ secure_monitor:
- 	sub	sp, sp, #4*4			@ allocate result structure on stack
- 	mov	r12, sp
- 	push	{r4-r6, r12}
-+#ifdef CONFIG_ARM_PSCI
- 	bl	psci_entry
-+#endif
- 	pop	{r4-r6, r12}
- 	ldm	r12, {r0-r3}
- 	add	sp, sp, #4*4
-@@ -163,6 +165,8 @@ ENTRY(psci_cpu_entry)
- 	mcr	p15, 0, r0, c1, c0, 1	@ ACTLR
+diff --git a/arch/arm/cpu/sm.c b/arch/arm/cpu/sm.c
+index 5808dfd92bdc..71bb394c8540 100644
+--- a/arch/arm/cpu/sm.c
++++ b/arch/arm/cpu/sm.c
+@@ -184,6 +184,9 @@ int armv7_secure_monitor_install(void)
+ 		return -EINVAL;
+ 	}
  
- 	bl	secure_monitor_stack_setup
-+#ifdef CONFIG_ARM_PSCI
- 	bl	psci_cpu_entry_c
-+#endif
++	if (__boot_cpu_mode == HYP_MODE)
++		return 0;
++
+ 	mmuon = get_cr() & CR_M;
  
- ENDPROC(psci_cpu_entry)
+ 	vbar = get_vbar();
 -- 
 2.16.1
 
