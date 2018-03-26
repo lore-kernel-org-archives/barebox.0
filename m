@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f0Rsg-0003jg-MG
+ id 1f0Rse-0003jc-P7
  for barebox@lists.infradead.org; Mon, 26 Mar 2018 13:09:48 +0000
-Received: by mail-pg0-x242.google.com with SMTP id 201so1842784pgg.3
- for <barebox@lists.infradead.org>; Mon, 26 Mar 2018 06:09:36 -0700 (PDT)
+Received: by mail-pg0-x241.google.com with SMTP id t10so1111204pgv.8
+ for <barebox@lists.infradead.org>; Mon, 26 Mar 2018 06:09:35 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 26 Mar 2018 06:09:15 -0700
-Message-Id: <20180326130915.8726-4-andrew.smirnov@gmail.com>
+Date: Mon, 26 Mar 2018 06:09:14 -0700
+Message-Id: <20180326130915.8726-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20180326130915.8726-1-andrew.smirnov@gmail.com>
 References: <20180326130915.8726-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,196 +23,297 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] serial: Check result of console_unregister()
+Subject: [PATCH 2/3] console: Add simplified 'serdev' framework from Linux
+ kernel
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-In order to allow 'serdev' devices to prevent parent console device
-removal and correspondign memory deallocation add code to all serial
-driver to check result of console_unregister() and bail out early if
-it is unsuccessful.
-
-One example of a use-case for this would be a reset handler relying on
-a serdev device for transport. Without this patch underlying console
-device would be removed and de-allocated before reset handler is even
-run thus leading to unpredictable behaviour and crashes.
+Port 'serdev' UART-slave deivce framework found in recent Linux
+kernels (post 4.13) in order to be able to port 'serdev' slave drivers
+from Linux.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/serial/serial_auart.c    | 6 +++++-
- drivers/serial/serial_cadence.c  | 6 +++++-
- drivers/serial/serial_clps711x.c | 6 +++++-
- drivers/serial/serial_imx.c      | 6 +++++-
- drivers/serial/serial_lpuart.c   | 6 +++++-
- drivers/serial/serial_pxa.c      | 6 +++++-
- drivers/serial/serial_s3c.c      | 6 +++++-
- drivers/serial/stm-serial.c      | 6 +++++-
- include/console.h                | 2 +-
- 9 files changed, 41 insertions(+), 9 deletions(-)
+ common/Kconfig    |  6 ++++
+ common/Makefile   |  1 +
+ common/console.c  | 24 +++++++++++++--
+ common/serdev.c   | 87 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/console.h | 27 +++++++++++++++++
+ include/serdev.h  | 36 +++++++++++++++++++++++
+ 6 files changed, 178 insertions(+), 3 deletions(-)
+ create mode 100644 common/serdev.c
+ create mode 100644 include/serdev.h
 
-diff --git a/drivers/serial/serial_auart.c b/drivers/serial/serial_auart.c
-index c3b9a1995..9bd0d991e 100644
---- a/drivers/serial/serial_auart.c
-+++ b/drivers/serial/serial_auart.c
-@@ -224,9 +224,13 @@ static int auart_serial_probe(struct device_d *dev)
- static void auart_serial_remove(struct device_d *dev)
- {
- 	struct auart_priv *priv = dev->priv;
-+	int ret;
+diff --git a/common/Kconfig b/common/Kconfig
+index 81cf72a95..601bc95a4 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -712,6 +712,12 @@ config CONSOLE_NONE
  
- 	auart_serial_flush(&priv->cdev);
--	console_unregister(&priv->cdev);
-+	ret = console_unregister(&priv->cdev);
-+	if (ret < 0)
-+		return;
+ endchoice
+ 
++config SERIAL_DEV_BUS
++	bool "Serial device bus"
++	depends on CONSOLE_FULL
++	help
++	  Core support for devices connected via a serial port.
 +
- 	free(priv);
- }
+ choice
+ 	prompt "Console activation strategy"
+ 	depends on CONSOLE_FULL
+diff --git a/common/Makefile b/common/Makefile
+index a9abcd1bc..c945dd78e 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -61,6 +61,7 @@ obj-$(CONFIG_FIRMWARE)		+= firmware.o
+ obj-$(CONFIG_UBIFORMAT)		+= ubiformat.o
+ obj-$(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB) += imx-bbu-nand-fcb.o
+ obj-$(CONFIG_BOOT)		+= boot.o
++obj-$(CONFIG_SERIAL_DEV_BUS)	+= serdev.o
  
-diff --git a/drivers/serial/serial_cadence.c b/drivers/serial/serial_cadence.c
-index 36dfa2084..f43d98172 100644
---- a/drivers/serial/serial_cadence.c
-+++ b/drivers/serial/serial_cadence.c
-@@ -270,8 +270,12 @@ err_free:
- static void cadence_serial_remove(struct device_d *dev)
+ ifdef CONFIG_PASSWORD
+ 
+diff --git a/common/console.c b/common/console.c
+index f4c799fa5..13b1360b5 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -305,10 +305,11 @@ static ssize_t fops_write(struct cdev* dev, const void* buf, size_t count,
+ 
+ int console_register(struct console_device *newcdev)
  {
- 	struct cadence_serial_priv *priv = dev->priv;
++	struct device_node *serdev_node = console_is_serdev_node(newcdev);
+ 	struct device_d *dev = &newcdev->class_dev;
+ 	int activate = 0, ret;
+ 
+-	if (initialized == CONSOLE_UNINITIALIZED)
++	if (!serdev_node && initialized == CONSOLE_UNINITIALIZED)
+ 		console_init_early();
+ 
+ 	if (newcdev->devname) {
+@@ -323,6 +324,17 @@ int console_register(struct console_device *newcdev)
+ 		dev->parent = newcdev->dev;
+ 	platform_device_register(dev);
+ 
++	newcdev->open_count = 0;
++
++	/*
++	 * If our console deive is a serdev, we skip the creation of
++	 * corresponding entry in /dev as well as registration in
++	 * console_list and just go straigh to populating child
++	 * devices.
++	 */
++	if (serdev_node)
++		return of_platform_populate(serdev_node, NULL, dev);
++
+ 	if (newcdev->setbrg) {
+ 		ret = newcdev->setbrg(newcdev, CONFIG_BAUDRATE);
+ 		if (ret)
+@@ -335,8 +347,6 @@ int console_register(struct console_device *newcdev)
+ 	if (newcdev->putc && !newcdev->puts)
+ 		newcdev->puts = __console_puts;
+ 
+-	newcdev->open_count = 0;
+-
+ 	dev_add_param_string(dev, "active", console_active_set, console_active_get,
+ 			     &newcdev->active_string, newcdev);
+ 
+@@ -386,6 +396,14 @@ int console_unregister(struct console_device *cdev)
+ 	struct device_d *dev = &cdev->class_dev;
+ 	int status;
+ 
++	/*
++	 * We don't do any sophisticated serdev device de-population
++	 * and instead claim this console busy, preventing its
++	 * de-initialization, 'till the very end of our execution.
++	 */
++	if (console_is_serdev_node(cdev))
++		return -EBUSY;
++
+ 	devfs_remove(&cdev->devfs);
+ 
+ 	list_del(&cdev->list);
+diff --git a/common/serdev.c b/common/serdev.c
+new file mode 100644
+index 000000000..58985c4b1
+--- /dev/null
++++ b/common/serdev.c
+@@ -0,0 +1,87 @@
++
++#include <common.h>
++#include <serdev.h>
++
++static void serdev_device_poller(void *context)
++{
++	struct serdev_device *serdev = context;
++	struct console_device *cdev = to_console_device(serdev);
++	unsigned char *buf = serdev->buf;
++	int ret, len;
++
++	/*
++	 * Since this callback is a part of poller infrastructure we
++	 * want to use _non_interruptible version of the function
++	 * below to prevent recursion from happening (regular
++	 * console_drain will call is_timeout, which might end up
++	 * calling this function again).
++	 */
++	len = console_drain_non_interruptible(cdev, serdev->fifo, buf,
++					      PAGE_SIZE,
++					      serdev->polling_window);
++	while (len > 0) {
++		ret = serdev->receive_buf(serdev, buf, len);
++		len -= ret;
++		buf += ret;
++	}
++
++	/*
++	 * Re-schedule ourselves in 'serdev->polling_interval'
++	 * nanoseconds
++	 */
++	poller_call_async(&serdev->poller,
++			  serdev->polling_interval,
++			  serdev_device_poller,
++			  serdev);
++}
++
++int serdev_device_open(struct serdev_device *serdev)
++{
++	struct console_device *cdev = to_console_device(serdev);
 +	int ret;
 +
-+	ret = console_unregister(&priv->cdev);
-+	if (ret < 0)
-+		return;
- 
--	console_unregister(&priv->cdev);
- 	free(priv);
- }
- 
-diff --git a/drivers/serial/serial_clps711x.c b/drivers/serial/serial_clps711x.c
-index ad14373ac..24ae3fdd3 100644
---- a/drivers/serial/serial_clps711x.c
-+++ b/drivers/serial/serial_clps711x.c
-@@ -184,9 +184,13 @@ out_err:
- static void clps711x_remove(struct device_d *dev)
- {
- 	struct clps711x_uart *s = dev->priv;
-+	int ret;
- 
- 	clps711x_flush(&s->cdev);
--	console_unregister(&s->cdev);
-+	ret = console_unregister(&s->cdev);
-+	if (ret < 0)
-+		return;
++	if (!cdev->putc || !cdev->getc)
++		return -EINVAL;
 +
- 	free(s);
- }
- 
-diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
-index e8c3836a6..fb865f554 100644
---- a/drivers/serial/serial_imx.c
-+++ b/drivers/serial/serial_imx.c
-@@ -274,9 +274,13 @@ err_free:
- static void imx_serial_remove(struct device_d *dev)
- {
- 	struct imx_serial_priv *priv = dev->priv;
-+	int ret;
- 
- 	imx_serial_flush(&priv->cdev);
--	console_unregister(&priv->cdev);
-+	ret = console_unregister(&priv->cdev);
-+	if (ret < 0)
-+		return;
++	if (!serdev->polling_window || !serdev->polling_interval)
++		return -EINVAL;
 +
- 	free(priv);
- }
- 
-diff --git a/drivers/serial/serial_lpuart.c b/drivers/serial/serial_lpuart.c
-index 52fb6d39c..42fab8a56 100644
---- a/drivers/serial/serial_lpuart.c
-+++ b/drivers/serial/serial_lpuart.c
-@@ -194,9 +194,13 @@ err_free:
- static void lpuart_serial_remove(struct device_d *dev)
- {
- 	struct lpuart *lpuart = dev->priv;
-+	int ret;
- 
- 	lpuart_serial_flush(&lpuart->cdev);
--	console_unregister(&lpuart->cdev);
-+	ret = console_unregister(&lpuart->cdev);
-+	if (ret < 0)
-+		return;
++	serdev->buf = xzalloc(PAGE_SIZE);
++	serdev->fifo = kfifo_alloc(PAGE_SIZE);
++	if (!serdev->fifo)
++		return -ENOMEM;
 +
- 	release_region(lpuart->io);
- 	clk_put(lpuart->clk);
- 
-diff --git a/drivers/serial/serial_pxa.c b/drivers/serial/serial_pxa.c
-index 1a4d7b430..146f19cf3 100644
---- a/drivers/serial/serial_pxa.c
-+++ b/drivers/serial/serial_pxa.c
-@@ -188,8 +188,12 @@ static int pxa_serial_probe(struct device_d *dev)
- static void pxa_serial_remove(struct device_d *dev)
- {
- 	struct pxa_serial_priv *priv = dev->priv;
-+	int ret;
++	ret = poller_async_register(&serdev->poller);
++	if (ret)
++		return ret;
 +
-+	ret = console_unregister(&priv->cdev);
-+	if (ret < 0)
-+		return;
- 
--	console_unregister(&priv->cdev);
- 	free(priv);
- }
- 
-diff --git a/drivers/serial/serial_s3c.c b/drivers/serial/serial_s3c.c
-index 0a6e22d97..8c6443acd 100644
---- a/drivers/serial/serial_s3c.c
-+++ b/drivers/serial/serial_s3c.c
-@@ -205,9 +205,13 @@ static int s3c_serial_probe(struct device_d *dev)
- static void s3c_serial_remove(struct device_d *dev)
- {
- 	struct s3c_uart *priv= dev->priv;
-+	int ret;
- 
- 	s3c_serial_flush(&priv->cdev);
--	console_unregister(&priv->cdev);
-+	ret = console_unregister(&priv->cdev);
-+	if (ret < 0)
-+		return;
++	return console_open(cdev);
++}
 +
- 	free(priv);
- }
- 
-diff --git a/drivers/serial/stm-serial.c b/drivers/serial/stm-serial.c
-index 83328f455..3edcdd7e8 100644
---- a/drivers/serial/stm-serial.c
-+++ b/drivers/serial/stm-serial.c
-@@ -185,9 +185,13 @@ static int stm_serial_probe(struct device_d *dev)
- static void stm_serial_remove(struct device_d *dev)
- {
- 	struct stm_priv *priv = dev->priv;
-+	int ret;
- 
- 	stm_serial_flush(&priv->cdev);
--	console_unregister(&priv->cdev);
-+	ret = console_unregister(&priv->cdev);
-+	if (ret < 0)
-+		return;
++unsigned int serdev_device_set_baudrate(struct serdev_device *serdev,
++					unsigned int speed)
++{
++	struct console_device *cdev = to_console_device(serdev);
 +
- 	free(priv);
- }
- 
++	if (console_set_baudrate(cdev, speed) < 0)
++		return 0;
++
++	return console_get_baudrate(cdev);
++}
++
++int serdev_device_write(struct serdev_device *serdev, const unsigned char *buf,
++			size_t count, unsigned long timeout)
++{
++	struct console_device *cdev = to_console_device(serdev);
++
++	while (count--)
++		cdev->putc(cdev, *buf++);
++	/*
++	 * Poll Rx once right after we just send some data in case our
++	 * serdev device implements command/response type of a
++	 * protocol and we need to start draining input as soon as
++	 * possible.
++	 */
++	serdev_device_poller(serdev);
++	return 0;
++}
 diff --git a/include/console.h b/include/console.h
-index 14f00fa1e..3870e67a4 100644
+index 4aa4c8f9e..14f00fa1e 100644
 --- a/include/console.h
 +++ b/include/console.h
-@@ -95,7 +95,7 @@ console_is_serdev_node(struct console_device *cdev)
- }
+@@ -23,6 +23,7 @@
+ #include <param.h>
+ #include <linux/list.h>
+ #include <driver.h>
++#include <serdev.h>
+ #include <clock.h>
  
+ #define CONSOLE_STDIN           (1 << 0)
+@@ -65,8 +66,34 @@ struct console_device {
+ 
+ 	struct cdev devfs;
+ 	struct file_operations fops;
++
++	struct serdev_device serdev;
+ };
+ 
++static inline struct serdev_device *to_serdev_device(struct device_d *d)
++{
++	struct console_device *cdev =
++		container_of(d, struct console_device, class_dev);
++	return &cdev->serdev;
++}
++
++static inline struct console_device *
++to_console_device(struct serdev_device *serdev)
++{
++	return container_of(serdev, struct console_device, serdev);
++}
++
++static inline struct device_node *
++console_is_serdev_node(struct console_device *cdev)
++{
++	struct device_d *dev = cdev->dev;
++	if (dev && dev->device_node &&
++	    of_get_child_count(dev->device_node))
++		return dev->device_node;
++
++	return NULL;
++}
++
  int console_register(struct console_device *cdev);
--int console_unregister(struct console_device *cdev);
-+int __must_check console_unregister(struct console_device *cdev);
+ int console_unregister(struct console_device *cdev);
  
- struct console_device *console_get_by_dev(struct device_d *dev);
- struct console_device *console_get_by_name(const char *name);
+diff --git a/include/serdev.h b/include/serdev.h
+new file mode 100644
+index 000000000..efc735fed
+--- /dev/null
++++ b/include/serdev.h
+@@ -0,0 +1,36 @@
++#ifndef _SERDEV_H_
++#define _SERDEV_H_
++
++#include <driver.h>
++#include <poller.h>
++#include <kfifo.h>
++
++/**
++ * struct serdev_device - Basic representation of an serdev device
++ *
++ * @dev:		Corresponding device
++ * @fifo:		Circular buffer used for console draining
++ * @buf:		Buffer used to pass Rx data to consumers
++ * @poller		Async poller used to poll this serdev
++ * @polling_interval:	Async poller periodicity
++ * @polling_window:	Duration of a single busy loop poll
++ * @receive_buf:	Function called with data received from device;
++ *			returns number of bytes accepted;
++ */
++struct serdev_device {
++	struct device_d *dev;
++	struct kfifo *fifo;
++	unsigned char *buf;
++	struct poller_async poller;
++	uint64_t polling_interval;
++	uint64_t polling_window;
++
++	int (*receive_buf)(struct serdev_device *, const unsigned char *,
++			   size_t);
++};
++
++int serdev_device_open(struct serdev_device *);
++unsigned int serdev_device_set_baudrate(struct serdev_device *, unsigned int);
++int serdev_device_write(struct serdev_device *, const unsigned char *,
++			size_t, unsigned long);
++#endif
 -- 
 2.14.3
 
