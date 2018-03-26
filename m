@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
+Received: from mail-lf0-x233.google.com ([2a00:1450:4010:c07::233])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f0ic6-0003jB-A9
- for barebox@lists.infradead.org; Tue, 27 Mar 2018 07:01:47 +0000
-Received: by mail-lf0-x244.google.com with SMTP id t132-v6so31741319lfe.2
- for <barebox@lists.infradead.org>; Tue, 27 Mar 2018 00:01:36 -0700 (PDT)
-Date: Tue, 27 Mar 2018 10:17:16 +0300
+ id 1f0MBp-0002x7-LZ
+ for barebox@lists.infradead.org; Mon, 26 Mar 2018 07:05:11 +0000
+Received: by mail-lf0-x233.google.com with SMTP id x205-v6so26522643lfa.0
+ for <barebox@lists.infradead.org>; Mon, 26 Mar 2018 00:04:59 -0700 (PDT)
+Date: Mon, 26 Mar 2018 10:20:37 +0300
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20180327101716.697486501ccea51c7b98644a@gmail.com>
-In-Reply-To: <20180318222236.28296-1-gael.portay@savoirfairelinux.com>
-References: <20180318222236.28296-1-gael.portay@savoirfairelinux.com>
+Message-Id: <20180326102037.57959f6175c61967d9e9c5b4@gmail.com>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,90 +21,61 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fs: check pointer returned by get_fsdevice_by_path
- before dereferencing
-To: =?ISO-8859-1?Q?Ga=EBl?= PORTAY <gael.portay@savoirfairelinux.com>
+Subject: socfpga: ethernet problem
+To: Sascha Hauer <s.hauer@pengutronix.de>, Steffen Trumtrar <s.trumtrar@pengutronix.de>, Trent Piepho <tpiepho@kymetacorp.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, 18 Mar 2018 18:22:36 -0400
-Ga=EBl PORTAY <gael.portay@savoirfairelinux.com> wrote:
+Hi!
 
-> In __canonicalize_path() we dereference the pointer returned by
-> get_fsdevice_by_path() without checking if the pointer is NULL or not.
-> When the pointer is NULL it leads to an Ooops.
-> =
+Barebox for DE0-Nano-SoC succesfully starts on Terasic DE10-Nano board
+but there is an ethernet issue.
 
-> 	Ooops, address error on load or ifetch!
-> =
+After `make ARCH=3Darm socfpga_defconfig` I see that the CONFIG_DRIVER_NET_=
+DESIGNWARE_SOCFPGA
+option is disabled.
 
-> 	$ 0   : 00000000 00000001 a0000026 a0811c10
-> 	$ 4   : a0402e60 a0402e48 a0811c00 a0402e58
-> 	$ 8   : 00000001 00000000 0000005a 00000023
-> 	$12   : 00000000 00000002 00601021 00000000
-> 	$16   : a0402e60 a0402e50 a0402e39 a0810000
-> 	$20   : a0402e38 a0811420 a0811424 00000000
-> 	$24   : 00000000 a080de10
-> 	$28   : 87f87d40 a03ffa68 a0810000 a080ce30
-> 	Hi    : 00000002
-> 	Lo    : 00000000
-> 	epc   : a080ce34
+  #
+  # Network drivers
+  #
+  ...
+  CONFIG_DRIVER_NET_DESIGNWARE=3Dy
+  # CONFIG_DRIVER_NET_DESIGNWARE_GENERIC is not set
+  # CONFIG_DRIVER_NET_DESIGNWARE_SOCFPGA is not set
 
-Salut Ga=EBl!
+after enabling CONFIG_DRIVER_NET_DESIGNWARE_SOCFPGA I see 'Could not get sy=
+smgr-syscon node'
+error message:
 
-It looks like you use MIPS board.
-Your epc =3D=3D 0xa080ce34 is inside KSEG1 region (uncached memory).
-May be there is no cache support in current barebox for your CPU.
-Which CPU core you use?
 
-Tr=E8s cordialement,
+  barebox 2018.03.0-00408-g5b07a6b67d #5 Sat Mar 24 19:50:00 MSK 2018
+
+
+  Board: Terasic DE0-Nano-SoC/Atlas-SoC Kit
+  socfpga_designware_eth ff702000.ethernet: user ID: 0x10, Synopsys ID: 0x37
+  mdio_bus: miibus0: probed
+  WARNING: at include/linux/reset.h:43/reset_control_get()!
+  socfpga_designware_eth ff702000.ethernet: Could not get sysmgr-syscon node
+  socfpga_designware_eth ff702000.ethernet: probe failed: Function not impl=
+emented
+  dw_mmc ff704000.dwmmc0: registered as ff704000.dwmmc0
+  netconsole: registered as netconsole-1
+  malloc space: 0x1fefd9c0 -> 0x3fdfb37f (size 511 MiB)
+  mmc0: detected SD card version 2.0
+  mmc0: registered mmc0
+  environment load /boot/barebox.env: No such file or directory
+  Maybe you have to create the partition.
+  running /env/bin/init...
+
+  Hit any key to stop autoboot:    3
+  barebox@Terasic DE0-Nano-SoC/Atlas-SoC Kit:/
+
+
+Any suggestions or comments, please?
+
+-- =
+
+Best regards,
 =A0 Antony Pavlov
-
-> 	ra    : a080ce30
-> 	Status: 00000006
-> 	Cause : 40008010
-> 	Config: 80040483
-> =
-
-> 	### ERROR ### Please RESET the board ###
-> =
-
-> Fixes: d79a81736 fs: Don't bother filesystems without link support with a=
-dditional stat() calls
-> =
-
-> Signed-off-by: Ga=EBl PORTAY <gael.portay@savoirfairelinux.com>
-> ---
->  fs/fs.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> =
-
-> diff --git a/fs/fs.c b/fs/fs.c
-> index 88f0b1478..5135112c8 100644
-> --- a/fs/fs.c
-> +++ b/fs/fs.c
-> @@ -191,7 +191,7 @@ static char *__canonicalize_path(const char *_pathnam=
-e, int level)
->  		 * with an additional stat() call.
->  		 */
->  		fsdev =3D get_fsdevice_by_path(outpath);
-> -		if (!fsdev->driver->readlink)
-> +		if (!fsdev || !fsdev->driver->readlink)
->  			continue;
->  =
-
->  		ret =3D __lstat(outpath, &s);
-> -- =
-
-> 2.16.1
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
 
 _______________________________________________
 barebox mailing list
