@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f0Rse-0003jS-P5
- for barebox@lists.infradead.org; Mon, 26 Mar 2018 13:09:46 +0000
-Received: by mail-pg0-x241.google.com with SMTP id n11so7237138pgp.4
- for <barebox@lists.infradead.org>; Mon, 26 Mar 2018 06:09:34 -0700 (PDT)
+ id 1f0Rsg-0003jg-MG
+ for barebox@lists.infradead.org; Mon, 26 Mar 2018 13:09:48 +0000
+Received: by mail-pg0-x242.google.com with SMTP id 201so1842784pgg.3
+ for <barebox@lists.infradead.org>; Mon, 26 Mar 2018 06:09:36 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 26 Mar 2018 06:09:13 -0700
-Message-Id: <20180326130915.8726-2-andrew.smirnov@gmail.com>
+Date: Mon, 26 Mar 2018 06:09:15 -0700
+Message-Id: <20180326130915.8726-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20180326130915.8726-1-andrew.smirnov@gmail.com>
 References: <20180326130915.8726-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,172 +23,196 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] console: Introduce console_drain()
+Subject: [PATCH 3/3] serial: Check result of console_unregister()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Generalize high baud rate UART polling code found in lib/xmodem.c and
-expose it as a generic function in console API.
+In order to allow 'serdev' devices to prevent parent console device
+removal and correspondign memory deallocation add code to all serial
+driver to check result of console_unregister() and bail out early if
+it is unsuccessful.
 
-The usecase for this -- besides X/Y-mode data transfers where the code
-originated -- is command/reply type of serial exchages at high baud
-rates (~1Mbaud) with payloads exceeding inernal UART FIFOs in
-size. Such interactions are not uncommon in serdev device and this
-patch is done in preparation for serdev support code that will follow.
+One example of a use-case for this would be a reset handler relying on
+a serdev device for transport. Without this patch underlying console
+device would be removed and de-allocated before reset handler is even
+run thus leading to unpredictable behaviour and crashes.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- include/console.h | 83 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/xymodem.c     | 30 ++++----------------
- 2 files changed, 88 insertions(+), 25 deletions(-)
+ drivers/serial/serial_auart.c    | 6 +++++-
+ drivers/serial/serial_cadence.c  | 6 +++++-
+ drivers/serial/serial_clps711x.c | 6 +++++-
+ drivers/serial/serial_imx.c      | 6 +++++-
+ drivers/serial/serial_lpuart.c   | 6 +++++-
+ drivers/serial/serial_pxa.c      | 6 +++++-
+ drivers/serial/serial_s3c.c      | 6 +++++-
+ drivers/serial/stm-serial.c      | 6 +++++-
+ include/console.h                | 2 +-
+ 9 files changed, 41 insertions(+), 9 deletions(-)
 
-diff --git a/include/console.h b/include/console.h
-index 724168e07..4aa4c8f9e 100644
---- a/include/console.h
-+++ b/include/console.h
-@@ -23,6 +23,7 @@
- #include <param.h>
- #include <linux/list.h>
- #include <driver.h>
-+#include <clock.h>
- 
- #define CONSOLE_STDIN           (1 << 0)
- #define CONSOLE_STDOUT          (1 << 1)
-@@ -88,6 +89,88 @@ unsigned console_get_active(struct console_device *cdev);
- int console_set_baudrate(struct console_device *cdev, unsigned baudrate);
- unsigned console_get_baudrate(struct console_device *cdev);
- 
-+
-+/**
-+ * console_fifo_fill - fill FIFO with as much console data as possible
-+ *
-+ * @cdev:	Console to poll for dat
-+ * @fifo:	FIFO to store the data in
-+ */
-+static inline int console_fifo_fill(struct console_device *cdev,
-+				    struct kfifo *fifo)
-+{
-+	size_t len = kfifo_len(fifo);
-+	while (cdev->tstc(cdev) && len < fifo->size) {
-+		kfifo_putc(fifo, (unsigned char)(cdev->getc(cdev)));
-+		len++;
-+	}
-+
-+	return len;
-+}
-+
-+/**
-+ * __console_drain - Drain console into a buffer via FIFO
-+ *
-+ * @__is_timeout	Callback used to determine timeout condition
-+ * @cdev		Console to drain
-+ * @fifo		FIFO to use as a transient buffer
-+ * @buf			Buffer to drain console into
-+ * @len			Size of the drain buffer
-+ * @timeout		Console polling timeout in ns
-+ *
-+ * This function is optimized to :
-+ * - maximize throughput (ie. read as much as is available in lower layer fifo)
-+ * - minimize latencies (no delay or wait timeout if data available)
-+ * - have a timeout
-+ * This is why standard getc() is not used, and input_fifo_fill() exists.
-+ */
-+static inline int __console_drain(int (*__is_timeout)(uint64_t start_ns,
-+						      uint64_t time_offset_ns),
-+				  struct console_device *cdev,
-+				  struct kfifo *fifo,
-+				  unsigned char *buf,
-+				  int len,
-+				  uint64_t timeout)
-+{
-+	int i = 0;
-+	uint64_t start = get_time_ns();
-+
-+	if (!len)
-+		return -EINVAL;
-+
-+	do {
-+		/*
-+		 * To minimize wait time before we start polling Rx
-+		 * (to potentially avoid overruning Rx FIFO) we call
-+		 * console_fifo_fill first
-+		 */
-+		if (console_fifo_fill(cdev, fifo))
-+			kfifo_getc(fifo, &buf[i++]);
-+
-+	} while (i < len && !__is_timeout(start, timeout));
-+
-+	return i;
-+}
-+
-+static inline int console_drain_non_interruptible(struct console_device *cdev,
-+						  struct kfifo *fifo,
-+						  unsigned char *buf,
-+						  int len,
-+						  uint64_t timeout)
-+{
-+	return __console_drain(is_timeout_non_interruptible,
-+			       cdev, fifo, buf, len, timeout);
-+}
-+
-+static inline int console_drain(struct console_device *cdev,
-+				struct kfifo *fifo,
-+				unsigned char *buf,
-+				int len,
-+				uint64_t timeout)
-+{
-+	return __console_drain(is_timeout, cdev, fifo, buf, len, timeout);
-+}
-+
- #ifdef CONFIG_PBL_CONSOLE
- void pbl_set_putc(void (*putcf)(void *ctx, int c), void *ctx);
- #else
-diff --git a/lib/xymodem.c b/lib/xymodem.c
-index a6c4d3cd5..ff052ef8f 100644
---- a/lib/xymodem.c
-+++ b/lib/xymodem.c
-@@ -146,36 +146,16 @@ static const char block_nack[MAX_PROTOS][MAX_CRCS] = {
- 	{ 0, 0, 0 },		/* YMODEM-G */
- };
- 
--static int input_fifo_fill(struct console_device *cdev, struct kfifo *fifo)
--{
--	while (cdev->tstc(cdev) && kfifo_len(fifo) < INPUT_FIFO_SIZE)
--		kfifo_putc(fifo, (unsigned char)(cdev->getc(cdev)));
--	return kfifo_len(fifo);
--}
--
--/*
-- * This function is optimized to :
-- * - maximize throughput (ie. read as much as is available in lower layer fifo)
-- * - minimize latencies (no delay or wait timeout if data available)
-- * - have a timeout
-- * This is why standard getc() is not used, and input_fifo_fill() exists.
-- */
- static int xy_gets(struct console_device *cdev, struct kfifo *fifo,
- 		      unsigned char *buf, int len, uint64_t timeout)
+diff --git a/drivers/serial/serial_auart.c b/drivers/serial/serial_auart.c
+index c3b9a1995..9bd0d991e 100644
+--- a/drivers/serial/serial_auart.c
++++ b/drivers/serial/serial_auart.c
+@@ -224,9 +224,13 @@ static int auart_serial_probe(struct device_d *dev)
+ static void auart_serial_remove(struct device_d *dev)
  {
--	int i, rc;
--	uint64_t start = get_time_ns();
-+	int rc;
+ 	struct auart_priv *priv = dev->priv;
++	int ret;
  
--	for (i = 0, rc = 0; rc >= 0 && i < len; ) {
--		if (is_timeout(start, timeout)) {
--			rc = -ETIMEDOUT;
--			continue;
--		}
--		if (input_fifo_fill(cdev, fifo))
--			kfifo_getc(fifo, &buf[i++]);
--	}
-+	rc = console_drain(cdev, fifo, buf, len, timeout);
-+	if (rc != len)
-+		return -ETIMEDOUT;
- 
--	return rc < 0 ? rc : i;
-+	return len;
+ 	auart_serial_flush(&priv->cdev);
+-	console_unregister(&priv->cdev);
++	ret = console_unregister(&priv->cdev);
++	if (ret < 0)
++		return;
++
+ 	free(priv);
  }
  
- static void xy_putc(struct console_device *cdev, unsigned char c)
+diff --git a/drivers/serial/serial_cadence.c b/drivers/serial/serial_cadence.c
+index 36dfa2084..f43d98172 100644
+--- a/drivers/serial/serial_cadence.c
++++ b/drivers/serial/serial_cadence.c
+@@ -270,8 +270,12 @@ err_free:
+ static void cadence_serial_remove(struct device_d *dev)
+ {
+ 	struct cadence_serial_priv *priv = dev->priv;
++	int ret;
++
++	ret = console_unregister(&priv->cdev);
++	if (ret < 0)
++		return;
+ 
+-	console_unregister(&priv->cdev);
+ 	free(priv);
+ }
+ 
+diff --git a/drivers/serial/serial_clps711x.c b/drivers/serial/serial_clps711x.c
+index ad14373ac..24ae3fdd3 100644
+--- a/drivers/serial/serial_clps711x.c
++++ b/drivers/serial/serial_clps711x.c
+@@ -184,9 +184,13 @@ out_err:
+ static void clps711x_remove(struct device_d *dev)
+ {
+ 	struct clps711x_uart *s = dev->priv;
++	int ret;
+ 
+ 	clps711x_flush(&s->cdev);
+-	console_unregister(&s->cdev);
++	ret = console_unregister(&s->cdev);
++	if (ret < 0)
++		return;
++
+ 	free(s);
+ }
+ 
+diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
+index e8c3836a6..fb865f554 100644
+--- a/drivers/serial/serial_imx.c
++++ b/drivers/serial/serial_imx.c
+@@ -274,9 +274,13 @@ err_free:
+ static void imx_serial_remove(struct device_d *dev)
+ {
+ 	struct imx_serial_priv *priv = dev->priv;
++	int ret;
+ 
+ 	imx_serial_flush(&priv->cdev);
+-	console_unregister(&priv->cdev);
++	ret = console_unregister(&priv->cdev);
++	if (ret < 0)
++		return;
++
+ 	free(priv);
+ }
+ 
+diff --git a/drivers/serial/serial_lpuart.c b/drivers/serial/serial_lpuart.c
+index 52fb6d39c..42fab8a56 100644
+--- a/drivers/serial/serial_lpuart.c
++++ b/drivers/serial/serial_lpuart.c
+@@ -194,9 +194,13 @@ err_free:
+ static void lpuart_serial_remove(struct device_d *dev)
+ {
+ 	struct lpuart *lpuart = dev->priv;
++	int ret;
+ 
+ 	lpuart_serial_flush(&lpuart->cdev);
+-	console_unregister(&lpuart->cdev);
++	ret = console_unregister(&lpuart->cdev);
++	if (ret < 0)
++		return;
++
+ 	release_region(lpuart->io);
+ 	clk_put(lpuart->clk);
+ 
+diff --git a/drivers/serial/serial_pxa.c b/drivers/serial/serial_pxa.c
+index 1a4d7b430..146f19cf3 100644
+--- a/drivers/serial/serial_pxa.c
++++ b/drivers/serial/serial_pxa.c
+@@ -188,8 +188,12 @@ static int pxa_serial_probe(struct device_d *dev)
+ static void pxa_serial_remove(struct device_d *dev)
+ {
+ 	struct pxa_serial_priv *priv = dev->priv;
++	int ret;
++
++	ret = console_unregister(&priv->cdev);
++	if (ret < 0)
++		return;
+ 
+-	console_unregister(&priv->cdev);
+ 	free(priv);
+ }
+ 
+diff --git a/drivers/serial/serial_s3c.c b/drivers/serial/serial_s3c.c
+index 0a6e22d97..8c6443acd 100644
+--- a/drivers/serial/serial_s3c.c
++++ b/drivers/serial/serial_s3c.c
+@@ -205,9 +205,13 @@ static int s3c_serial_probe(struct device_d *dev)
+ static void s3c_serial_remove(struct device_d *dev)
+ {
+ 	struct s3c_uart *priv= dev->priv;
++	int ret;
+ 
+ 	s3c_serial_flush(&priv->cdev);
+-	console_unregister(&priv->cdev);
++	ret = console_unregister(&priv->cdev);
++	if (ret < 0)
++		return;
++
+ 	free(priv);
+ }
+ 
+diff --git a/drivers/serial/stm-serial.c b/drivers/serial/stm-serial.c
+index 83328f455..3edcdd7e8 100644
+--- a/drivers/serial/stm-serial.c
++++ b/drivers/serial/stm-serial.c
+@@ -185,9 +185,13 @@ static int stm_serial_probe(struct device_d *dev)
+ static void stm_serial_remove(struct device_d *dev)
+ {
+ 	struct stm_priv *priv = dev->priv;
++	int ret;
+ 
+ 	stm_serial_flush(&priv->cdev);
+-	console_unregister(&priv->cdev);
++	ret = console_unregister(&priv->cdev);
++	if (ret < 0)
++		return;
++
+ 	free(priv);
+ }
+ 
+diff --git a/include/console.h b/include/console.h
+index 14f00fa1e..3870e67a4 100644
+--- a/include/console.h
++++ b/include/console.h
+@@ -95,7 +95,7 @@ console_is_serdev_node(struct console_device *cdev)
+ }
+ 
+ int console_register(struct console_device *cdev);
+-int console_unregister(struct console_device *cdev);
++int __must_check console_unregister(struct console_device *cdev);
+ 
+ struct console_device *console_get_by_dev(struct device_d *dev);
+ struct console_device *console_get_by_name(const char *name);
 -- 
 2.14.3
 
