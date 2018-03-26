@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f0Xfd-0000g0-60
- for barebox@lists.infradead.org; Mon, 26 Mar 2018 19:20:45 +0000
+ id 1f0Xfd-0000fv-7b
+ for barebox@lists.infradead.org; Mon, 26 Mar 2018 19:20:47 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1f0XfN-0000ll-Jd
+ (envelope-from <l.stach@pengutronix.de>) id 1f0XfN-0000ll-CR
  for barebox@lists.infradead.org; Mon, 26 Mar 2018 21:20:25 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 26 Mar 2018 21:20:23 +0200
-Message-Id: <20180326192025.28809-8-l.stach@pengutronix.de>
+Date: Mon, 26 Mar 2018 21:20:18 +0200
+Message-Id: <20180326192025.28809-3-l.stach@pengutronix.de>
 In-Reply-To: <20180326192025.28809-1-l.stach@pengutronix.de>
 References: <20180326192025.28809-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -26,48 +26,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 08/10] ARM: rpi: add revision IDs for Pi 3 Model B and Pi
- Zero
+Subject: [PATCH v3 03/10] ARM: allow secure monitor code to be built without
+ PSCI
 To: barebox@lists.infradead.org
 
-From: Enrico Joerns <ejo@pengutronix.de>
+The hyp mode handling added in the secure monitor code is also useful
+when Barebox doesn't have PSCI control. Allow to build without PSCI.
 
-Signed-off-by: Enrico Joerns <ejo@pengutronix.de>
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Tested-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- arch/arm/boards/raspberry-pi/rpi-common.c | 2 ++
- arch/arm/mach-bcm283x/include/mach/mbox.h | 4 ++++
- 2 files changed, 6 insertions(+)
+ arch/arm/cpu/sm_as.S | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-index 6e375bc984de..aec8cb27ed40 100644
---- a/arch/arm/boards/raspberry-pi/rpi-common.c
-+++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-@@ -174,6 +174,8 @@ const struct rpi_model rpi_models_old_scheme[] = {
- const struct rpi_model rpi_models_new_scheme[] = {
- 	RPI_MODEL(0, "Unknown model", NULL),
- 	RPI_MODEL(BCM2836_BOARD_REV_2_B, "2 Model B", rpi_b_plus_init),
-+	RPI_MODEL(BCM2837_BOARD_REV_3_B, "3 Model B", rpi_b_plus_init),
-+	RPI_MODEL(BCM2837_BOARD_REV_ZERO, "Zero", rpi_b_plus_init),
- };
+diff --git a/arch/arm/cpu/sm_as.S b/arch/arm/cpu/sm_as.S
+index 09580e75de5f..0d01e1bf2435 100644
+--- a/arch/arm/cpu/sm_as.S
++++ b/arch/arm/cpu/sm_as.S
+@@ -129,7 +129,9 @@ secure_monitor:
+ 	sub	sp, sp, #4*4			@ allocate result structure on stack
+ 	mov	r12, sp
+ 	push	{r4-r6, r12}
++#ifdef CONFIG_ARM_PSCI
+ 	bl	psci_entry
++#endif
+ 	pop	{r4-r6, r12}
+ 	ldm	r12, {r0-r3}
+ 	add	sp, sp, #4*4
+@@ -163,6 +165,8 @@ ENTRY(psci_cpu_entry)
+ 	mcr	p15, 0, r0, c1, c0, 1	@ ACTLR
  
- static int rpi_board_rev = 0;
-diff --git a/arch/arm/mach-bcm283x/include/mach/mbox.h b/arch/arm/mach-bcm283x/include/mach/mbox.h
-index 2b5aea88ee0a..4cddf99a8429 100644
---- a/arch/arm/mach-bcm283x/include/mach/mbox.h
-+++ b/arch/arm/mach-bcm283x/include/mach/mbox.h
-@@ -129,6 +129,10 @@ struct bcm2835_mbox_tag_hdr {
+ 	bl	secure_monitor_stack_setup
++#ifdef CONFIG_ARM_PSCI
+ 	bl	psci_cpu_entry_c
++#endif
  
- /* RPi 2 */
- #define BCM2836_BOARD_REV_2_B		0x4
-+/* RPi 3 */
-+#define BCM2837_BOARD_REV_3_B		0x8
-+/* Zero */
-+#define BCM2837_BOARD_REV_ZERO		0x9
- 
- /*
-  * 0x2..0xf from:
+ ENDPROC(psci_cpu_entry)
 -- 
 2.16.1
 
