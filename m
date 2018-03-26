@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f0Xfd-0000fz-7C
+ id 1f0Xfd-0000fw-7d
  for barebox@lists.infradead.org; Mon, 26 Mar 2018 19:20:47 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1f0XfN-0000ll-Hp
+ (envelope-from <l.stach@pengutronix.de>) id 1f0XfN-0000ll-E7
  for barebox@lists.infradead.org; Mon, 26 Mar 2018 21:20:25 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 26 Mar 2018 21:20:22 +0200
-Message-Id: <20180326192025.28809-7-l.stach@pengutronix.de>
+Date: Mon, 26 Mar 2018 21:20:19 +0200
+Message-Id: <20180326192025.28809-4-l.stach@pengutronix.de>
 In-Reply-To: <20180326192025.28809-1-l.stach@pengutronix.de>
 References: <20180326192025.28809-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -26,105 +26,207 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 07/10] ARM: install HYP vectors at PBL and Barebox entry
+Subject: [PATCH v3 04/10] ARM: add file for HYP mode related setup
 To: barebox@lists.infradead.org
 
-If the CPU was already in HYP mode when entering the PBL, install a
-simple trap handler to allow to get back from SVC to HYP before
-switching to HYP mode.
-
-As the vectors are part of the currently running binary, we need to
-do the same setup when starting the real Barebox binary, as the PBL
-setup vectors might get overwritten. To do this we trap into HYP mode
-just before jumping to Barebox and then re-do the vector setup and
-SVC switch as the first thing in Barebox proper.
+This adds routines to add hyp mode vectors and switch back to HYP
+mode from SVC. This is needed in both the PBL and Barebox proper.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Tested-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- arch/arm/cpu/lowlevel.S   | 3 +++
- arch/arm/cpu/start-pbl.c  | 4 ++++
- arch/arm/cpu/start.c      | 3 +++
- arch/arm/cpu/uncompress.c | 4 ++++
- 4 files changed, 14 insertions(+)
+v3:
+- fix whitespace
+- use __BARE_INIT
+---
+ arch/arm/cpu/Makefile         |   4 ++
+ arch/arm/cpu/hyp.S            | 116 ++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/cpu/sm_as.S          |  11 ----
+ arch/arm/include/asm/secure.h |   8 +++
+ 4 files changed, 128 insertions(+), 11 deletions(-)
+ create mode 100644 arch/arm/cpu/hyp.S
 
-diff --git a/arch/arm/cpu/lowlevel.S b/arch/arm/cpu/lowlevel.S
-index 43665981e48b..13dfe496ad17 100644
---- a/arch/arm/cpu/lowlevel.S
-+++ b/arch/arm/cpu/lowlevel.S
-@@ -8,6 +8,9 @@ ENTRY(arm_cpu_lowlevel_init)
- 	/* save lr, since it may be banked away with a processor mode change */
- 	mov	r2, lr
+diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
+index 13fe12c31f6f..f86dff975bb4 100644
+--- a/arch/arm/cpu/Makefile
++++ b/arch/arm/cpu/Makefile
+@@ -9,6 +9,10 @@ obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions.o
+ obj-$(CONFIG_MMU) += mmu.o mmu-early.o
+ pbl-$(CONFIG_MMU) += mmu-early.o
+ lwl-y += lowlevel.o
++obj-y += hyp.o
++AFLAGS_hyp.o :=-Wa,-march=armv7-a -Wa,-mcpu=all
++pbl-y += hyp.o
++AFLAGS_pbl-hyp.o :=-Wa,-march=armv7-a -Wa,-mcpu=all
+ endif
  
-+	/* careful: the hyp install corrupts r0 and r1 */
+ obj-$(CONFIG_ARM_EXCEPTIONS) += interrupts.o
+diff --git a/arch/arm/cpu/hyp.S b/arch/arm/cpu/hyp.S
+new file mode 100644
+index 000000000000..1314b56eab25
+--- /dev/null
++++ b/arch/arm/cpu/hyp.S
+@@ -0,0 +1,116 @@
++#include <linux/linkage.h>
++#include <asm/system.h>
++#include <asm/opcodes-virt.h>
++#include <init.h>
++
++.arch_extension sec
++.arch_extension virt
++
++__BARE_INIT
++
++.data
++	.align  2
++ENTRY(__boot_cpu_mode)
++	.long   0
++.text
++
++ENTRY(__hyp_install)
++	mrs	r12, cpsr
++	and	r12, r12, #MODE_MASK
++
++	@ Save the initial CPU state
++	adr	r0, .L__boot_cpu_mode_offset
++	ldr	r1, [r0]
++	str	r12, [r0, r1]
++
++	cmp	r12, #HYP_MODE
++	movne	pc, lr			@ give up if the CPU is not in HYP mode
++
++	@ Now install the hypervisor stub:
++	adr	r12, __hyp_vectors
++	mcr	p15, 4, r12, c12, c0, 0	@ set hypervisor vector base (HVBAR)
++
++	@ Disable all traps, so we don't get any nasty surprise
++	mov	r12, #0
++	mcr	p15, 4, r12, c1, c1, 0	@ HCR
++	mcr	p15, 4, r12, c1, c1, 2	@ HCPTR
++	mcr	p15, 4, r12, c1, c1, 3	@ HSTR
++
++THUMB(	orr	r12, #(1 << 30)	)	@ HSCTLR.TE
++	mcr	p15, 4, r12, c1, c0, 0	@ HSCTLR
++
++	mrc	p15, 4, r12, c1, c1, 1	@ HDCR
++	and	r12, #0x1f		@ Preserve HPMN
++	mcr	p15, 4, r12, c1, c1, 1	@ HDCR
++
++	@ Make sure NS-SVC is initialised appropriately
++	mrc	p15, 0, r12, c1, c0, 0	@ SCTLR
++	orr	r12, #(1 << 5)		@ CP15 barriers enabled
++	bic	r12, #(3 << 7)		@ Clear SED/ITD for v8 (RES0 for v7)
++	bic	r12, #(3 << 19)		@ WXN and UWXN disabled
++	mcr	p15, 0, r12, c1, c0, 0	@ SCTLR
++
++	mrc	p15, 0, r12, c0, c0, 0	@ MIDR
++	mcr	p15, 4, r12, c0, c0, 0	@ VPIDR
++
++	mrc	p15, 0, r12, c0, c0, 5	@ MPIDR
++	mcr	p15, 4, r12, c0, c0, 5	@ VMPIDR
++	bx	lr
++ENDPROC(__hyp_install)
++
++ENTRY(armv7_hyp_install)
++	mov	r2, lr
++
 +	bl	__hyp_install
 +
- 	/* set the cpu to SVC32 mode, mask irq and fiq */
- 	mrs	r12, cpsr
- 	eor	r12, r12, #HYP_MODE
-diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index e851b4a2da5e..e0793579e2e8 100644
---- a/arch/arm/cpu/start-pbl.c
-+++ b/arch/arm/cpu/start-pbl.c
-@@ -26,6 +26,7 @@
- #include <asm/barebox-arm-head.h>
- #include <asm-generic/memory_layout.h>
- #include <asm/sections.h>
-+#include <asm/secure.h>
- #include <asm/pgtable.h>
- #include <asm/cache.h>
- #include <asm/unaligned.h>
-@@ -100,5 +101,8 @@ __noreturn void barebox_single_pbl_start(unsigned long membase,
- 	else
- 		barebox = (void *)barebox_base;
- 
-+	if (__boot_cpu_mode == HYP_MODE)
-+		armv7_switch_to_hyp();
++	/* set the cpu to SVC32 mode, mask irq and fiq */
++	mrs	r12, cpsr
++	eor	r12, r12, #HYP_MODE
++	tst	r12, #MODE_MASK
++	bic	r12, r12, #MODE_MASK
++	orr	r12, r12, #(PSR_I_BIT | PSR_F_BIT | SVC_MODE)
++THUMB(	orr	r12, r12, #PSR_T_BIT	)
++	bne	1f
++	orr	r12, r12, #PSR_A_BIT
++	adr	lr, 2f
++	msr	spsr_cxsf, r12
++	__MSR_ELR_HYP(14)
++	__ERET
++1:	msr	cpsr_c, r12
++2:
++	mov	pc, r2
++ENDPROC(armv7_hyp_install)
 +
- 	barebox(membase, memsize, boarddata);
- }
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 171e6ad0eb7a..a0db6436f387 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -24,6 +24,7 @@
- #include <asm/barebox-arm-head.h>
- #include <asm-generic/memory_layout.h>
- #include <asm/sections.h>
-+#include <asm/secure.h>
- #include <asm/unaligned.h>
- #include <asm/cache.h>
- #include <memory.h>
-@@ -145,6 +146,8 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
- 	unsigned long malloc_start, malloc_end;
- 	unsigned long barebox_size = barebox_image_size + MAX_BSS_SIZE;
- 
-+	armv7_hyp_install();
++ENTRY(armv7_switch_to_hyp)
++	mov	r0, lr
++	mov	r1, sp		@ save SVC copy of LR and SP
++	isb
++	hvc #0			@ for older asm: .byte 0x70, 0x00, 0x40, 0xe1
++	mov	sp, r1
++	mov	lr, r0		@ restore SVC copy of LR and SP
 +
- 	if (IS_ENABLED(CONFIG_RELOCATABLE)) {
- 		unsigned long barebox_base = arm_mem_barebox_image(membase,
- 								   endmem,
-diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-index 9d7fe0e921a9..28636aa8101f 100644
---- a/arch/arm/cpu/uncompress.c
-+++ b/arch/arm/cpu/uncompress.c
-@@ -27,6 +27,7 @@
- #include <asm/barebox-arm-head.h>
- #include <asm-generic/memory_layout.h>
- #include <asm/sections.h>
-+#include <asm/secure.h>
- #include <asm/pgtable.h>
- #include <asm/cache.h>
- #include <asm/unaligned.h>
-@@ -109,5 +110,8 @@ void __noreturn barebox_multi_pbl_start(unsigned long membase,
- 
- 	pr_debug("jumping to uncompressed image at 0x%p\n", barebox);
- 
-+	if (__boot_cpu_mode == HYP_MODE)
-+		armv7_switch_to_hyp();
++	bx	lr
++ENDPROC(armv7_switch_to_hyp)
 +
- 	barebox(membase, memsize, boarddata);
- }
++.align 2
++.L__boot_cpu_mode_offset:
++	.long	__boot_cpu_mode - .
++
++/* The HYP trap is crafted to match armv7_switch_to_hyp() */
++__hyp_do_trap:
++	mov lr, r0
++	mov sp, r1
++	bx  lr
++ENDPROC(__hyp_do_trap)
++
++.align 5
++__hyp_vectors:
++__hyp_reset:	W(b)	.
++__hyp_und:	W(b)	.
++__hyp_svc:	W(b)	.
++__hyp_pabort:	W(b)	.
++__hyp_dabort:	W(b)	.
++__hyp_trap:	W(b)	__hyp_do_trap
++__hyp_irq:	W(b)	.
++__hyp_fiq:	W(b)	.
++ENDPROC(__hyp_vectors)
+diff --git a/arch/arm/cpu/sm_as.S b/arch/arm/cpu/sm_as.S
+index 0d01e1bf2435..de6cd0406f4f 100644
+--- a/arch/arm/cpu/sm_as.S
++++ b/arch/arm/cpu/sm_as.S
+@@ -148,17 +148,6 @@ hyp_trap:
+         mov pc, lr                              @ do no switch modes, but
+                                                 @ return to caller
+ 
+-ENTRY(armv7_switch_to_hyp)
+-	mov	r0, lr
+-	mov	r1, sp		@ save SVC copy of LR and SP
+-	isb
+-	hvc #0			@ for older asm: .byte 0x70, 0x00, 0x40, 0xe1
+-	mov	sp, r1
+-	mov	lr, r0		@ restore SVC copy of LR and SP
+-
+-	bx	lr
+-ENDPROC(armv7_switch_to_hyp)
+-
+ ENTRY(psci_cpu_entry)
+ 	mrc	p15, 0, r0, c1, c0, 1	@ ACTLR
+ 	orr	r0, r0, #(1 << 6)	@ Set SMP bit
+diff --git a/arch/arm/include/asm/secure.h b/arch/arm/include/asm/secure.h
+index a4cb1f6c1c44..4eb2c3ec3011 100644
+--- a/arch/arm/include/asm/secure.h
++++ b/arch/arm/include/asm/secure.h
+@@ -5,9 +5,17 @@
+ 
+ int armv7_secure_monitor_install(void);
+ int __armv7_secure_monitor_install(void);
++
++#ifndef CONFIG_CPU_V8
+ void armv7_switch_to_hyp(void);
++void armv7_hyp_install(void);
++#else
++static inline void armv7_switch_to_hyp(void) { };
++static inline void armv7_hyp_install(void) { };
++#endif
+ 
+ extern unsigned char secure_monitor_init_vectors[];
++extern int __boot_cpu_mode;
+ 
+ enum arm_security_state {
+ 	ARM_STATE_SECURE,
 -- 
 2.16.1
 
