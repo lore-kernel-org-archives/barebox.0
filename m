@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f0P1g-00086L-LX
- for barebox@lists.infradead.org; Mon, 26 Mar 2018 10:06:54 +0000
-Received: from bohne.hi.pengutronix.de ([2001:67c:670:100:9e5c:8eff:fece:ccef])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.89)
- (envelope-from <r.hieber@pengutronix.de>) id 1f0P1U-0001iT-Qt
- for barebox@lists.infradead.org; Mon, 26 Mar 2018 12:06:40 +0200
-References: <20180323231422.21137-1-l.stach@pengutronix.de>
-From: Roland Hieber <r.hieber@pengutronix.de>
-Message-ID: <f7fbf670-4b5e-063a-1dd8-5b1400800b57@pengutronix.de>
-Date: Mon, 26 Mar 2018 12:06:40 +0200
-MIME-Version: 1.0
-In-Reply-To: <20180323231422.21137-1-l.stach@pengutronix.de>
-Content-Language: en-US
+ id 1f0ic6-0003jB-A9
+ for barebox@lists.infradead.org; Tue, 27 Mar 2018 07:01:47 +0000
+Received: by mail-lf0-x244.google.com with SMTP id t132-v6so31741319lfe.2
+ for <barebox@lists.infradead.org>; Tue, 27 Mar 2018 00:01:36 -0700 (PDT)
+Date: Tue, 27 Mar 2018 10:17:16 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20180327101716.697486501ccea51c7b98644a@gmail.com>
+In-Reply-To: <20180318222236.28296-1-gael.portay@savoirfairelinux.com>
+References: <20180318222236.28296-1-gael.portay@savoirfairelinux.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,322 +19,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 01/10] ARM: import opcode helpers from Linux kernel
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] fs: check pointer returned by get_fsdevice_by_path
+ before dereferencing
+To: =?ISO-8859-1?Q?Ga=EBl?= PORTAY <gael.portay@savoirfairelinux.com>
+Cc: barebox@lists.infradead.org
 
-Hmm. I don't see any sdhci driver being loaded on RPi 2, resulting in no 
-SD Card. But this is probably not related to the changes in this series.
+On Sun, 18 Mar 2018 18:22:36 -0400
+Ga=EBl PORTAY <gael.portay@savoirfairelinux.com> wrote:
 
-Otherwise, as for v1:
+> In __canonicalize_path() we dereference the pointer returned by
+> get_fsdevice_by_path() without checking if the pointer is NULL or not.
+> When the pointer is NULL it leads to an Ooops.
+> =
 
-Tested-on: bcm2835-rpi, bcm2836-rpi-2, bcm2837-rpi-3
-Tested-by: Roland Hieber <r.hieber@pengutronix.de>
+> 	Ooops, address error on load or ifetch!
+> =
 
-On 24.03.2018 00:14, Lucas Stach wrote:
-> Those are needed to generate some of the ARM SEC and VIRT
-> opcodes in a portable way.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> 	$ 0   : 00000000 00000001 a0000026 a0811c10
+> 	$ 4   : a0402e60 a0402e48 a0811c00 a0402e58
+> 	$ 8   : 00000001 00000000 0000005a 00000023
+> 	$12   : 00000000 00000002 00601021 00000000
+> 	$16   : a0402e60 a0402e50 a0402e39 a0810000
+> 	$20   : a0402e38 a0811420 a0811424 00000000
+> 	$24   : 00000000 a080de10
+> 	$28   : 87f87d40 a03ffa68 a0810000 a080ce30
+> 	Hi    : 00000002
+> 	Lo    : 00000000
+> 	epc   : a080ce34
+
+Salut Ga=EBl!
+
+It looks like you use MIPS board.
+Your epc =3D=3D 0xa080ce34 is inside KSEG1 region (uncached memory).
+May be there is no cache support in current barebox for your CPU.
+Which CPU core you use?
+
+Tr=E8s cordialement,
+=A0 Antony Pavlov
+
+> 	ra    : a080ce30
+> 	Status: 00000006
+> 	Cause : 40008010
+> 	Config: 80040483
+> =
+
+> 	### ERROR ### Please RESET the board ###
+> =
+
+> Fixes: d79a81736 fs: Don't bother filesystems without link support with a=
+dditional stat() calls
+> =
+
+> Signed-off-by: Ga=EBl PORTAY <gael.portay@savoirfairelinux.com>
 > ---
->   arch/arm/include/asm/opcodes-virt.h |  39 ++++++
->   arch/arm/include/asm/opcodes.h      | 231 ++++++++++++++++++++++++++++++++++++
->   2 files changed, 270 insertions(+)
->   create mode 100644 arch/arm/include/asm/opcodes-virt.h
->   create mode 100644 arch/arm/include/asm/opcodes.h
-> 
-> diff --git a/arch/arm/include/asm/opcodes-virt.h b/arch/arm/include/asm/opcodes-virt.h
-> new file mode 100644
-> index 000000000000..efcfdf92d9d5
-> --- /dev/null
-> +++ b/arch/arm/include/asm/opcodes-virt.h
-> @@ -0,0 +1,39 @@
-> +/*
-> + * opcodes-virt.h: Opcode definitions for the ARM virtualization extensions
-> + * Copyright (C) 2012  Linaro Limited
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License as published by
-> + * the Free Software Foundation; either version 2 of the License, or
-> + * (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License along
-> + * with this program; if not, write to the Free Software Foundation, Inc.,
-> + * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-> + */
-> +#ifndef __ASM_ARM_OPCODES_VIRT_H
-> +#define __ASM_ARM_OPCODES_VIRT_H
-> +
-> +#include <asm/opcodes.h>
-> +
-> +#define __HVC(imm16) __inst_arm_thumb32(				\
-> +	0xE1400070 | (((imm16) & 0xFFF0) << 4) | ((imm16) & 0x000F),	\
-> +	0xF7E08000 | (((imm16) & 0xF000) << 4) | ((imm16) & 0x0FFF)	\
-> +)
-> +
-> +#define __ERET	__inst_arm_thumb32(					\
-> +	0xE160006E,							\
-> +	0xF3DE8F00							\
-> +)
-> +
-> +#define __MSR_ELR_HYP(regnum)	__inst_arm_thumb32(			\
-> +	0xE12EF300 | regnum,						\
-> +	0xF3808E30 | (regnum << 16)					\
-> +)
-> +
-> +#endif /* ! __ASM_ARM_OPCODES_VIRT_H */
-> diff --git a/arch/arm/include/asm/opcodes.h b/arch/arm/include/asm/opcodes.h
-> new file mode 100644
-> index 000000000000..a78bf5d2c518
-> --- /dev/null
-> +++ b/arch/arm/include/asm/opcodes.h
-> @@ -0,0 +1,231 @@
-> +/*
-> + *  arch/arm/include/asm/opcodes.h
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2 as
-> + * published by the Free Software Foundation.
-> + */
-> +
-> +#ifndef __ASM_ARM_OPCODES_H
-> +#define __ASM_ARM_OPCODES_H
-> +
-> +#ifndef __ASSEMBLY__
-> +#include <linux/linkage.h>
-> +extern asmlinkage unsigned int arm_check_condition(u32 opcode, u32 psr);
-> +#endif
-> +
-> +#define ARM_OPCODE_CONDTEST_FAIL   0
-> +#define ARM_OPCODE_CONDTEST_PASS   1
-> +#define ARM_OPCODE_CONDTEST_UNCOND 2
-> +
-> +
-> +/*
-> + * Assembler opcode byteswap helpers.
-> + * These are only intended for use by this header: don't use them directly,
-> + * because they will be suboptimal in most cases.
-> + */
-> +#define ___asm_opcode_swab32(x) (	\
-> +	  (((x) << 24) & 0xFF000000)	\
-> +	| (((x) <<  8) & 0x00FF0000)	\
-> +	| (((x) >>  8) & 0x0000FF00)	\
-> +	| (((x) >> 24) & 0x000000FF)	\
-> +)
-> +#define ___asm_opcode_swab16(x) (	\
-> +	  (((x) << 8) & 0xFF00)		\
-> +	| (((x) >> 8) & 0x00FF)		\
-> +)
-> +#define ___asm_opcode_swahb32(x) (	\
-> +	  (((x) << 8) & 0xFF00FF00)	\
-> +	| (((x) >> 8) & 0x00FF00FF)	\
-> +)
-> +#define ___asm_opcode_swahw32(x) (	\
-> +	  (((x) << 16) & 0xFFFF0000)	\
-> +	| (((x) >> 16) & 0x0000FFFF)	\
-> +)
-> +#define ___asm_opcode_identity32(x) ((x) & 0xFFFFFFFF)
-> +#define ___asm_opcode_identity16(x) ((x) & 0xFFFF)
-> +
-> +
-> +/*
-> + * Opcode byteswap helpers
-> + *
-> + * These macros help with converting instructions between a canonical integer
-> + * format and in-memory representation, in an endianness-agnostic manner.
-> + *
-> + * __mem_to_opcode_*() convert from in-memory representation to canonical form.
-> + * __opcode_to_mem_*() convert from canonical form to in-memory representation.
-> + *
-> + *
-> + * Canonical instruction representation:
-> + *
-> + *	ARM:		0xKKLLMMNN
-> + *	Thumb 16-bit:	0x0000KKLL, where KK < 0xE8
-> + *	Thumb 32-bit:	0xKKLLMMNN, where KK >= 0xE8
-> + *
-> + * There is no way to distinguish an ARM instruction in canonical representation
-> + * from a Thumb instruction (just as these cannot be distinguished in memory).
-> + * Where this distinction is important, it needs to be tracked separately.
-> + *
-> + * Note that values in the range 0x0000E800..0xE7FFFFFF intentionally do not
-> + * represent any valid Thumb-2 instruction.  For this range,
-> + * __opcode_is_thumb32() and __opcode_is_thumb16() will both be false.
-> + *
-> + * The ___asm variants are intended only for use by this header, in situations
-> + * involving inline assembler.  For .S files, the normal __opcode_*() macros
-> + * should do the right thing.
-> + */
-> +#ifdef __ASSEMBLY__
-> +
-> +#define ___opcode_swab32(x) ___asm_opcode_swab32(x)
-> +#define ___opcode_swab16(x) ___asm_opcode_swab16(x)
-> +#define ___opcode_swahb32(x) ___asm_opcode_swahb32(x)
-> +#define ___opcode_swahw32(x) ___asm_opcode_swahw32(x)
-> +#define ___opcode_identity32(x) ___asm_opcode_identity32(x)
-> +#define ___opcode_identity16(x) ___asm_opcode_identity16(x)
-> +
-> +#else /* ! __ASSEMBLY__ */
-> +
-> +#include <linux/types.h>
-> +#include <linux/swab.h>
-> +
-> +#define ___opcode_swab32(x) swab32(x)
-> +#define ___opcode_swab16(x) swab16(x)
-> +#define ___opcode_swahb32(x) swahb32(x)
-> +#define ___opcode_swahw32(x) swahw32(x)
-> +#define ___opcode_identity32(x) ((u32)(x))
-> +#define ___opcode_identity16(x) ((u16)(x))
-> +
-> +#endif /* ! __ASSEMBLY__ */
-> +
-> +
-> +#ifdef CONFIG_CPU_ENDIAN_BE8
-> +
-> +#define __opcode_to_mem_arm(x) ___opcode_swab32(x)
-> +#define __opcode_to_mem_thumb16(x) ___opcode_swab16(x)
-> +#define __opcode_to_mem_thumb32(x) ___opcode_swahb32(x)
-> +#define ___asm_opcode_to_mem_arm(x) ___asm_opcode_swab32(x)
-> +#define ___asm_opcode_to_mem_thumb16(x) ___asm_opcode_swab16(x)
-> +#define ___asm_opcode_to_mem_thumb32(x) ___asm_opcode_swahb32(x)
-> +
-> +#else /* ! CONFIG_CPU_ENDIAN_BE8 */
-> +
-> +#define __opcode_to_mem_arm(x) ___opcode_identity32(x)
-> +#define __opcode_to_mem_thumb16(x) ___opcode_identity16(x)
-> +#define ___asm_opcode_to_mem_arm(x) ___asm_opcode_identity32(x)
-> +#define ___asm_opcode_to_mem_thumb16(x) ___asm_opcode_identity16(x)
-> +#ifndef CONFIG_CPU_ENDIAN_BE32
-> +/*
-> + * On BE32 systems, using 32-bit accesses to store Thumb instructions will not
-> + * work in all cases, due to alignment constraints.  For now, a correct
-> + * version is not provided for BE32.
-> + */
-> +#define __opcode_to_mem_thumb32(x) ___opcode_swahw32(x)
-> +#define ___asm_opcode_to_mem_thumb32(x) ___asm_opcode_swahw32(x)
-> +#endif
-> +
-> +#endif /* ! CONFIG_CPU_ENDIAN_BE8 */
-> +
-> +#define __mem_to_opcode_arm(x) __opcode_to_mem_arm(x)
-> +#define __mem_to_opcode_thumb16(x) __opcode_to_mem_thumb16(x)
-> +#ifndef CONFIG_CPU_ENDIAN_BE32
-> +#define __mem_to_opcode_thumb32(x) __opcode_to_mem_thumb32(x)
-> +#endif
-> +
-> +/* Operations specific to Thumb opcodes */
-> +
-> +/* Instruction size checks: */
-> +#define __opcode_is_thumb32(x) (		\
-> +	   ((x) & 0xF8000000) == 0xE8000000	\
-> +	|| ((x) & 0xF0000000) == 0xF0000000	\
-> +)
-> +#define __opcode_is_thumb16(x) (					\
-> +	   ((x) & 0xFFFF0000) == 0					\
-> +	&& !(((x) & 0xF800) == 0xE800 || ((x) & 0xF000) == 0xF000)	\
-> +)
-> +
-> +/* Operations to construct or split 32-bit Thumb instructions: */
-> +#define __opcode_thumb32_first(x) (___opcode_identity16((x) >> 16))
-> +#define __opcode_thumb32_second(x) (___opcode_identity16(x))
-> +#define __opcode_thumb32_compose(first, second) (			\
-> +	  (___opcode_identity32(___opcode_identity16(first)) << 16)	\
-> +	| ___opcode_identity32(___opcode_identity16(second))		\
-> +)
-> +#define ___asm_opcode_thumb32_first(x) (___asm_opcode_identity16((x) >> 16))
-> +#define ___asm_opcode_thumb32_second(x) (___asm_opcode_identity16(x))
-> +#define ___asm_opcode_thumb32_compose(first, second) (			    \
-> +	  (___asm_opcode_identity32(___asm_opcode_identity16(first)) << 16) \
-> +	| ___asm_opcode_identity32(___asm_opcode_identity16(second))	    \
-> +)
-> +
-> +/*
-> + * Opcode injection helpers
-> + *
-> + * In rare cases it is necessary to assemble an opcode which the
-> + * assembler does not support directly, or which would normally be
-> + * rejected because of the CFLAGS or AFLAGS used to build the affected
-> + * file.
-> + *
-> + * Before using these macros, consider carefully whether it is feasible
-> + * instead to change the build flags for your file, or whether it really
-> + * makes sense to support old assembler versions when building that
-> + * particular kernel feature.
-> + *
-> + * The macros defined here should only be used where there is no viable
-> + * alternative.
-> + *
-> + *
-> + * __inst_arm(x): emit the specified ARM opcode
-> + * __inst_thumb16(x): emit the specified 16-bit Thumb opcode
-> + * __inst_thumb32(x): emit the specified 32-bit Thumb opcode
-> + *
-> + * __inst_arm_thumb16(arm, thumb): emit either the specified arm or
-> + *	16-bit Thumb opcode, depending on whether an ARM or Thumb-2
-> + *	kernel is being built
-> + *
-> + * __inst_arm_thumb32(arm, thumb): emit either the specified arm or
-> + *	32-bit Thumb opcode, depending on whether an ARM or Thumb-2
-> + *	kernel is being built
-> + *
-> + *
-> + * Note that using these macros directly is poor practice.  Instead, you
-> + * should use them to define human-readable wrapper macros to encode the
-> + * instructions that you care about.  In code which might run on ARMv7 or
-> + * above, you can usually use the __inst_arm_thumb{16,32} macros to
-> + * specify the ARM and Thumb alternatives at the same time.  This ensures
-> + * that the correct opcode gets emitted depending on the instruction set
-> + * used for the kernel build.
-> + *
-> + * Look at opcodes-virt.h for an example of how to use these macros.
-> + */
-> +#include <linux/stringify.h>
-> +
-> +#define __inst_arm(x) ___inst_arm(___asm_opcode_to_mem_arm(x))
-> +#define __inst_thumb32(x) ___inst_thumb32(				\
-> +	___asm_opcode_to_mem_thumb16(___asm_opcode_thumb32_first(x)),	\
-> +	___asm_opcode_to_mem_thumb16(___asm_opcode_thumb32_second(x))	\
-> +)
-> +#define __inst_thumb16(x) ___inst_thumb16(___asm_opcode_to_mem_thumb16(x))
-> +
-> +#ifdef CONFIG_THUMB2_BAREBOX
-> +#define __inst_arm_thumb16(arm_opcode, thumb_opcode) \
-> +	__inst_thumb16(thumb_opcode)
-> +#define __inst_arm_thumb32(arm_opcode, thumb_opcode) \
-> +	__inst_thumb32(thumb_opcode)
-> +#else
-> +#define __inst_arm_thumb16(arm_opcode, thumb_opcode) __inst_arm(arm_opcode)
-> +#define __inst_arm_thumb32(arm_opcode, thumb_opcode) __inst_arm(arm_opcode)
-> +#endif
-> +
-> +/* Helpers for the helpers.  Don't use these directly. */
-> +#ifdef __ASSEMBLY__
-> +#define ___inst_arm(x) .long x
-> +#define ___inst_thumb16(x) .short x
-> +#define ___inst_thumb32(first, second) .short first, second
-> +#else
-> +#define ___inst_arm(x) ".long " __stringify(x) "\n\t"
-> +#define ___inst_thumb16(x) ".short " __stringify(x) "\n\t"
-> +#define ___inst_thumb32(first, second) \
-> +	".short " __stringify(first) ", " __stringify(second) "\n\t"
-> +#endif
-> +
-> +#endif /* __ASM_ARM_OPCODES_H */
-> 
+>  fs/fs.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> =
 
--- 
-Pengutronix e.K.                  | Roland Hieber               |
-Industrial Linux Solutions        | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+> diff --git a/fs/fs.c b/fs/fs.c
+> index 88f0b1478..5135112c8 100644
+> --- a/fs/fs.c
+> +++ b/fs/fs.c
+> @@ -191,7 +191,7 @@ static char *__canonicalize_path(const char *_pathnam=
+e, int level)
+>  		 * with an additional stat() call.
+>  		 */
+>  		fsdev =3D get_fsdevice_by_path(outpath);
+> -		if (!fsdev->driver->readlink)
+> +		if (!fsdev || !fsdev->driver->readlink)
+>  			continue;
+>  =
+
+>  		ret =3D __lstat(outpath, &s);
+> -- =
+
+> 2.16.1
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
 
 _______________________________________________
 barebox mailing list
