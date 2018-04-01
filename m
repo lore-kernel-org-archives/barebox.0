@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f2Ra0-0006X4-N7
- for barebox@lists.infradead.org; Sun, 01 Apr 2018 01:14:46 +0000
-Received: by mail-pf0-x241.google.com with SMTP id l27so7646832pfk.12
- for <barebox@lists.infradead.org>; Sat, 31 Mar 2018 18:14:32 -0700 (PDT)
+ id 1f2Ra0-0006X7-NF
+ for barebox@lists.infradead.org; Sun, 01 Apr 2018 01:14:47 +0000
+Received: by mail-pf0-x241.google.com with SMTP id c78so7645391pfj.6
+ for <barebox@lists.infradead.org>; Sat, 31 Mar 2018 18:14:33 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 31 Mar 2018 18:13:56 -0700
-Message-Id: <20180401011358.11621-3-andrew.smirnov@gmail.com>
+Date: Sat, 31 Mar 2018 18:13:57 -0700
+Message-Id: <20180401011358.11621-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20180401011358.11621-1-andrew.smirnov@gmail.com>
 References: <20180401011358.11621-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,35 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] clk: Forward declare struct of_device_id in linux/clk.h
+Subject: [PATCH 3/3] dma: apbh: Enable clock as a part of probing
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Forward declare struct of_device_id in linux/clk.h in order to avoid
-warnings like the following:
-
-warning: 'struct of_device_id' declared inside parameter list will not be visible outside
-of this definition or declaration
- int of_clk_init(struct device_node *root, const struct of_device_id *matches);
-                                                        ^~~~~~~~~~~~
+Enable clock as a part of probing in order to avoid problems on SoCs
+that do not have this block ungated out of reset (e.g. i.MX7).
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- include/linux/clk.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/dma/apbh_dma.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 081a85972..c6465b1c9 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -323,6 +323,7 @@ struct clk *clk_register_composite(const char *name,
+diff --git a/drivers/dma/apbh_dma.c b/drivers/dma/apbh_dma.c
+index b84c0f798..79f25109f 100644
+--- a/drivers/dma/apbh_dma.c
++++ b/drivers/dma/apbh_dma.c
+@@ -17,6 +17,7 @@
  
- struct device_node;
- struct of_phandle_args;
-+struct of_device_id;
+ #include <dma/apbh-dma.h>
+ #include <stmp-device.h>
++#include <linux/clk.h>
+ #include <linux/list.h>
+ #include <linux/err.h>
+ #include <common.h>
+@@ -55,6 +56,7 @@ enum mxs_dma_id {
  
- #if defined(CONFIG_COMMON_CLK_OF_PROVIDER)
+ struct apbh_dma {
+ 	void __iomem *regs;
++	struct clk *clk;
+ 	enum mxs_dma_id id;
+ };
  
+@@ -606,6 +608,17 @@ static int apbh_dma_probe(struct device_d *dev)
+ 
+ 	apbh->id = id;
+ 
++	apbh->clk = clk_get(dev, NULL);
++	if (IS_ERR(apbh->clk))
++		return PTR_ERR(apbh->clk);
++
++	ret = clk_enable(apbh->clk);
++	if (ret) {
++		dev_err(dev, "Failed to enable clock: %s\n",
++			strerror(ret));
++		return ret;
++	}
++
+ 	ret = stmp_reset_block(apbh->regs, 0);
+ 	if (ret)
+ 		return ret;
 -- 
 2.14.3
 
