@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x243.google.com ([2607:f8b0:4001:c06::243])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f5ZE8-0003nv-Dq
- for barebox@lists.infradead.org; Mon, 09 Apr 2018 16:01:06 +0000
-Received: by mail-io0-x243.google.com with SMTP id b20so10206851iof.5
- for <barebox@lists.infradead.org>; Mon, 09 Apr 2018 09:00:53 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20180403070427.terivivcpl2abuuf@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1f3FqE-0005t9-CD
+ for barebox@lists.infradead.org; Tue, 03 Apr 2018 06:54:52 +0000
+Date: Tue, 3 Apr 2018 08:54:36 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180403065436.p2vec7ntdja55hts@pengutronix.de>
 References: <20180326130915.8726-1-andrew.smirnov@gmail.com>
- <20180326130915.8726-4-andrew.smirnov@gmail.com>
- <20180403070427.terivivcpl2abuuf@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 9 Apr 2018 09:00:52 -0700
-Message-ID: <CAHQ1cqHR2vmy4HRFaCLQnVgn=YCG+YOfBgBj_uzw4mn66T1nvA@mail.gmail.com>
+ <20180326130915.8726-3-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180326130915.8726-3-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,43 +23,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] serial: Check result of console_unregister()
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 2/3] console: Add simplified 'serdev' framework from
+ Linux kernel
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Tue, Apr 3, 2018 at 12:04 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Mon, Mar 26, 2018 at 06:09:15AM -0700, Andrey Smirnov wrote:
->> In order to allow 'serdev' devices to prevent parent console device
->> removal and correspondign memory deallocation add code to all serial
->> driver to check result of console_unregister() and bail out early if
->> it is unsuccessful.
->>
->> One example of a use-case for this would be a reset handler relying on
->> a serdev device for transport. Without this patch underlying console
->> device would be removed and de-allocated before reset handler is even
->> run thus leading to unpredictable behaviour and crashes.
->
-> Can't we make this sure at driver core level?
+Hi Andrey,
 
-I need to be able to prevent serial driver's "remove" function from
-ever executing to prevent any de-initialization/memory freeing from
-happening. The simplest way to solve this in driver core that comes to
-my mind is implementing simple reference counting API that children
-could use to force driver core to bail out on removing parents if they
-are still in use. Does that sound like a reasonable idea?
+Some comments inside.
 
-> So if a device decides not
-> to return -EBUSY in the remove callback then the parent devices won't be
-> removed?
 
-Remove callback currently returns void, we could change it to return
-int and use it to implement a sort of implicit refcounting, but doing
-so would result in quite a bit of code churn since all of the current
-drivers would have to be converted to return int in their .remove
-callbacks. Would you rather I do this or explicit refcounting?
+On Mon, Mar 26, 2018 at 06:09:14AM -0700, Andrey Smirnov wrote:
+> Port 'serdev' UART-slave deivce framework found in recent Linux
+> kernels (post 4.13) in order to be able to port 'serdev' slave drivers
+> from Linux.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> @@ -323,6 +324,17 @@ int console_register(struct console_device *newcdev)
+>  		dev->parent = newcdev->dev;
+>  	platform_device_register(dev);
+>  
+> +	newcdev->open_count = 0;
+> +
+> +	/*
+> +	 * If our console deive is a serdev, we skip the creation of
 
-Thanks,
-Andrey Smirnov
+s/deive/device/
+
+> +	 * corresponding entry in /dev as well as registration in
+> +	 * console_list and just go straigh to populating child
+
+s/straigh/straight/
+
+> +	 * devices.
+> +	 */
+> +	if (serdev_node)
+> +		return of_platform_populate(serdev_node, NULL, dev);
+
+How is this going to be used? A serdev driver binds to the serdev_node
+and then it probably needs to get a pointer to the console device,
+right? How does the driver accomplish this?
+
+> +/**
+> + * struct serdev_device - Basic representation of an serdev device
+> + *
+> + * @dev:		Corresponding device
+> + * @fifo:		Circular buffer used for console draining
+> + * @buf:		Buffer used to pass Rx data to consumers
+> + * @poller		Async poller used to poll this serdev
+> + * @polling_interval:	Async poller periodicity
+> + * @polling_window:	Duration of a single busy loop poll
+> + * @receive_buf:	Function called with data received from device;
+> + *			returns number of bytes accepted;
+> + */
+> +struct serdev_device {
+> +	struct device_d *dev;
+> +	struct kfifo *fifo;
+> +	unsigned char *buf;
+> +	struct poller_async poller;
+> +	uint64_t polling_interval;
+> +	uint64_t polling_window;
+> +
+> +	int (*receive_buf)(struct serdev_device *, const unsigned char *,
+> +			   size_t);
+> +};
+> +
+> +int serdev_device_open(struct serdev_device *);
+> +unsigned int serdev_device_set_baudrate(struct serdev_device *, unsigned int);
+> +int serdev_device_write(struct serdev_device *, const unsigned char *,
+> +			size_t, unsigned long);
+
+So a serdev driver uses serdev_device_write() to send characters out. To
+receive characters it has to implement serdev_device->receive_buf,
+right? What kind of devices did you implement this for? For devices
+which send data without request (GPS?) this seems the way to go. For
+others a synchronous receive function might be good, no?
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
