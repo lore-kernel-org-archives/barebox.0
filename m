@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f3Gh0-00027k-26
- for barebox@lists.infradead.org; Tue, 03 Apr 2018 07:49:27 +0000
+ id 1f3GhB-0002Bn-Hv
+ for barebox@lists.infradead.org; Tue, 03 Apr 2018 07:49:36 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  3 Apr 2018 09:48:49 +0200
-Message-Id: <20180403074851.5411-18-s.hauer@pengutronix.de>
+Date: Tue,  3 Apr 2018 09:48:45 +0200
+Message-Id: <20180403074851.5411-14-s.hauer@pengutronix.de>
 In-Reply-To: <20180403074851.5411-1-s.hauer@pengutronix.de>
 References: <20180403074851.5411-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,866 +21,570 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/19] fs: nfs: Switch to dcache implementation
+Subject: [PATCH 13/19] fs: ramfs: Switch to dcache implementation
 To: Barebox List <barebox@lists.infradead.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
  fs/Kconfig |   1 -
- fs/nfs.c   | 542 ++++++++++++++++++++++++++-----------------------------------
- 2 files changed, 234 insertions(+), 309 deletions(-)
+ fs/ramfs.c | 412 +++++++++++++++----------------------------------------------
+ 2 files changed, 101 insertions(+), 312 deletions(-)
 
 diff --git a/fs/Kconfig b/fs/Kconfig
-index e3460e4443..b2d4242e63 100644
+index c3a78eaae5..9638e27dbd 100644
 --- a/fs/Kconfig
 +++ b/fs/Kconfig
-@@ -41,7 +41,6 @@ config FS_OMAP4_USBBOOT
- 
- config FS_NFS
- 	depends on NET
--	depends on BROKEN
+@@ -20,7 +20,6 @@ source fs/ext4/Kconfig
+ config FS_RAMFS
  	bool
- 	prompt "nfs support"
+ 	default y
+-	depends on BROKEN
+ 	prompt "ramfs support"
  
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 75cd127eeb..eb5db344db 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -20,6 +20,7 @@
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
-  */
-+#define pr_fmt(fmt) "NFS: " fmt
- 
- #include <common.h>
- #include <net.h>
-@@ -127,6 +128,11 @@ struct rpc_reply {
- #define NFS_TIMEOUT	(2 * SECOND)
- #define NFS_MAX_RESEND	5
- 
-+struct nfs_fh {
-+	unsigned short size;
-+	unsigned char data[NFS3_FHSIZE];
-+};
-+
- struct nfs_priv {
- 	struct net_connection *con;
- 	IPaddr_t server;
-@@ -136,18 +142,34 @@ struct nfs_priv {
- 	uint16_t nfs_port;
- 	unsigned manual_nfs_port:1;
- 	uint32_t rpc_id;
--	uint32_t rootfh_len;
--	char rootfh[NFS3_FHSIZE];
-+	struct nfs_fh rootfh;
+ config FS_DEVFS
+diff --git a/fs/ramfs.c b/fs/ramfs.c
+index a97f0a6ebf..d346a4e755 100644
+--- a/fs/ramfs.c
++++ b/fs/ramfs.c
+@@ -35,6 +35,7 @@ struct ramfs_chunk {
  };
  
- struct file_priv {
- 	struct kfifo *fifo;
- 	void *buf;
--	uint32_t filefh_len;
--	char filefh[NFS3_FHSIZE];
-+	struct nfs_priv *npriv;
-+	struct nfs_fh fh;
-+};
-+
-+struct nfs_inode {
+ struct ramfs_inode {
 +	struct inode inode;
-+	struct nfs_fh fh;
- 	struct nfs_priv *npriv;
+ 	char *name;
+ 	struct ramfs_inode *parent;
+ 	struct ramfs_inode *next;
+@@ -52,84 +53,52 @@ struct ramfs_inode {
+ 	struct ramfs_chunk *recent_chunkp;
  };
  
-+static inline struct nfs_inode *nfsi(struct inode *inode)
++static inline struct ramfs_inode *to_ramfs_inode(struct inode *inode)
 +{
-+	return container_of(inode, struct nfs_inode, inode);
++	return container_of(inode, struct ramfs_inode, inode);
 +}
 +
-+static void nfs_set_fh(struct inode *inode, struct nfs_fh *fh)
-+{
-+	struct nfs_inode *ninode = nfsi(inode);
-+
-+	ninode->fh = *fh;
-+}
-+
- static uint64_t nfs_timer_start;
- 
- static int nfs_state;
-@@ -234,17 +256,14 @@ struct xdr_stream {
- #define XDR_QUADLEN(l)		(((l) + 3) >> 2)
- 
- struct nfs_dir {
--	DIR dir;
--
- 	/*
- 	 * stream points to the next entry3 in the reply member of READDIR3res
- 	 * (if any, to the end indicator otherwise).
- 	 */
- 	struct xdr_stream stream;
--	struct dirent ent;
--	struct file_priv *priv;
- 	uint64_t cookie;
- 	char cookieverf[NFS3_COOKIEVERFSIZE];
-+	struct nfs_fh fh;
+ struct ramfs_priv {
+ 	struct ramfs_inode root;
  };
  
- static void xdr_init(struct xdr_stream *stream, void *buf, int len)
-@@ -300,11 +319,11 @@ static int decode_filename(struct xdr_stream *xdr, char *name, u32 *length)
- 	return 0;
- 
- out_nametoolong:
--	printf("%s: returned a too long filename: %u\n", __func__, count);
-+	pr_err("%s: returned a too long filename: %u\n", __func__, count);
- 	return -ENAMETOOLONG;
- 
- out_overflow:
--	printf("%s: premature end of packet\n", __func__);
-+	pr_err("%s: premature end of packet\n", __func__);
- 	return -EIO;
- }
- 
-@@ -486,16 +505,16 @@ static uint32_t *nfs_add_uint64(uint32_t *p, uint64_t val)
- 	return p + 2;
- }
- 
--static uint32_t *nfs_add_fh3(uint32_t *p, unsigned fh_len, const char *fh)
-+static uint32_t *nfs_add_fh3(uint32_t *p, struct nfs_fh *fh)
- {
--	*p++ = hton32(fh_len);
-+	*p++ = hton32(fh->size);
- 
- 	/* zero padding */
--	if (fh_len & 3)
--		p[fh_len / 4] = 0;
-+	if (fh->size & 3)
-+		p[fh->size / 4] = 0;
- 
--	memcpy(p, fh, fh_len);
--	p += DIV_ROUND_UP(fh_len, 4);
-+	memcpy(p, fh->data, fh->size);
-+	p += DIV_ROUND_UP(fh->size, 4);
- 	return p;
- }
- 
-@@ -532,33 +551,36 @@ static const struct {
- 	{ 0x00800, S_ISUID },
- };
- 
--static int nfs_fattr3_to_stat(uint32_t *p, struct stat *s)
-+static int nfs_fattr3_to_stat(uint32_t *p, struct inode *inode)
- {
- 	uint32_t mode;
- 	size_t i;
- 
-+	if (!inode)
-+		return 0;
-+
- 	/* offsetof(struct fattr3, type) = 0 */
- 	switch (ntoh32(net_read_uint32(p + 0))) {
- 	case NF3REG:
--		s->st_mode = S_IFREG;
-+		inode->i_mode = S_IFREG;
- 		break;
- 	case NF3DIR:
--		s->st_mode = S_IFDIR;
-+		inode->i_mode = S_IFDIR;
- 		break;
- 	case NF3BLK:
--		s->st_mode = S_IFBLK;
-+		inode->i_mode = S_IFBLK;
- 		break;
- 	case NF3CHR:
--		s->st_mode = S_IFCHR;
-+		inode->i_mode = S_IFCHR;
- 		break;
- 	case NF3LNK:
--		s->st_mode = S_IFLNK;
-+		inode->i_mode = S_IFLNK;
- 		break;
- 	case NF3SOCK:
--		s->st_mode = S_IFSOCK;
-+		inode->i_mode = S_IFSOCK;
- 		break;
- 	case NF3FIFO:
--		s->st_mode = S_IFIFO;
-+		inode->i_mode = S_IFIFO;
- 		break;
- 	default:
- 		printf("%s: invalid mode %x\n",
-@@ -570,18 +592,17 @@ static int nfs_fattr3_to_stat(uint32_t *p, struct stat *s)
- 	mode = ntoh32(net_read_uint32(p + 1));
- 	for (i = 0; i < ARRAY_SIZE(nfs3_mode_bits); ++i) {
- 		if (mode & nfs3_mode_bits[i].nfsmode)
--			s->st_mode |= nfs3_mode_bits[i].statmode;
-+			inode->i_mode |= nfs3_mode_bits[i].statmode;
- 	}
- 
- 	/* offsetof(struct fattr3, size) = 20 */
--	s->st_size = ntoh64(net_read_uint64(p + 5));
-+	inode->i_size = ntoh64(net_read_uint64(p + 5));
- 
- 	return 0;
- }
- 
--static uint32_t *nfs_read_post_op_attr(uint32_t *p, struct stat **s)
-+static uint32_t *nfs_read_post_op_attr(uint32_t *p, struct inode *inode)
- {
--	struct stat dummy;
- 	/*
- 	 * union post_op_attr switch (bool attributes_follow) {
- 	 * case TRUE:
-@@ -592,11 +613,8 @@ static uint32_t *nfs_read_post_op_attr(uint32_t *p, struct stat **s)
- 	 */
- 
- 	if (ntoh32(net_read_uint32(p++))) {
--		nfs_fattr3_to_stat(p, s ? *s : &dummy);
-+		nfs_fattr3_to_stat(p, inode);
- 		p += 21;
--	} else if (s) {
--		/* no attributes available */
--		*s = NULL;
- 	}
- 
- 	return p;
-@@ -635,14 +653,14 @@ static int nfs_mount_req(struct nfs_priv *npriv)
- 
- 	p = nfs_packet + sizeof(struct rpc_reply) + 4;
- 
--	npriv->rootfh_len = ntoh32(net_read_uint32(p++));
--	if (npriv->rootfh_len > NFS3_FHSIZE) {
-+	npriv->rootfh.size = ntoh32(net_read_uint32(p++));
-+	if (npriv->rootfh.size > NFS3_FHSIZE) {
- 		printf("%s: file handle too big: %lu\n", __func__,
--				(unsigned long)npriv->rootfh_len);
-+				(unsigned long)npriv->rootfh.size);
- 		return -EIO;
- 	}
--	memcpy(npriv->rootfh, p, npriv->rootfh_len);
--	p += DIV_ROUND_UP(npriv->rootfh_len, 4);
-+	memcpy(npriv->rootfh.data, p, npriv->rootfh.size);
-+	p += DIV_ROUND_UP(npriv->rootfh.size, 4);
- 
- 	return 0;
- }
-@@ -674,9 +692,10 @@ static void nfs_umount_req(struct nfs_priv *npriv)
-  *
-  * *s is set to NULL if LOOKUP3resok doesn't contain obj_attributes.
-  */
--static int nfs_lookup_req(struct file_priv *priv,
--		uint32_t filename_len, const char *filename, struct stat **s)
-+static int nfs_lookup_req(struct nfs_priv *npriv, struct nfs_fh *fh,
-+			  const char *filename, struct inode *inode)
- {
-+	struct nfs_inode *ninode = nfsi(inode);
- 	uint32_t data[1024];
- 	uint32_t *p;
- 	int len;
-@@ -709,73 +728,29 @@ static int nfs_lookup_req(struct file_priv *priv,
- 	p = rpc_add_credentials(p);
- 
- 	/* what.dir */
--	p = nfs_add_fh3(p, priv->filefh_len, priv->filefh);
-+	p = nfs_add_fh3(p, fh);
- 
- 	/* what.name */
--	p = nfs_add_filename(p, filename_len, filename);
-+	p = nfs_add_filename(p, strlen(filename), filename);
- 
- 	len = p - &(data[0]);
- 
--	ret = rpc_req(priv->npriv, PROG_NFS, NFSPROC3_LOOKUP, data, len);
-+	ret = rpc_req(npriv, PROG_NFS, NFSPROC3_LOOKUP, data, len);
- 	if (ret)
- 		return ret;
- 
- 	p = nfs_packet + sizeof(struct rpc_reply) + 4;
- 
--	priv->filefh_len = ntoh32(net_read_uint32(p++));
--	if (priv->filefh_len > NFS3_FHSIZE) {
--		debug("%s: file handle too big: %lu\n", __func__,
--				(unsigned long)priv->filefh_len);
-+	ninode->fh.size = ntoh32(net_read_uint32(p++));
-+	if (ninode->fh.size > NFS3_FHSIZE) {
-+		debug("%s: file handle too big: %u\n", __func__,
-+		      ninode->fh.size);
- 		return -EIO;
- 	}
--	memcpy(priv->filefh, p, priv->filefh_len);
--	p += DIV_ROUND_UP(priv->filefh_len, 4);
--
--	if (s)
--		nfs_read_post_op_attr(p, s);
--
--	return 0;
--}
--
--static int nfs_attr_req(struct file_priv *priv, struct stat *s)
+ /* ---------------------------------------------------------------*/
+-static struct ramfs_inode * lookup(struct ramfs_inode *node, const char *name)
 -{
--	uint32_t data[1024];
--	uint32_t *p;
--	int len;
--	int ret;
--
--	/*
--	 * struct GETATTR3args {
--	 * 	nfs_fh3 object;
--	 * }
--	 *
--	 * struct GETATTR3resok {
--	 * 	fattr3 obj_attributes;
--	 * };
--	 *
--	 * union GETATTR3res switch (nfsstat3 status) {
--	 * case NFS3_OK:
--	 * 	GETATTR3resok resok;
--	 * default:
--	 * 	void;
--	 * }
--	 */
--
--	p = &(data[0]);
--	p = rpc_add_credentials(p);
--
--	/* object */
--	p = nfs_add_fh3(p, priv->filefh_len, priv->filefh);
--
--	len = p - &(data[0]);
--
--	ret = rpc_req(priv->npriv, PROG_NFS, NFSPROC3_GETATTR, data, len);
--	if (ret)
--		return ret;
-+	memcpy(ninode->fh.data, p, ninode->fh.size);
-+	p += DIV_ROUND_UP(ninode->fh.size, 4);
+-	debug("lookup: %s in %p\n",name, node);
+-	if(!S_ISDIR(node->mode))
+-		return NULL;
  
--	p = nfs_packet + sizeof(struct rpc_reply) + 4;
--
--	nfs_fattr3_to_stat(p, s);
-+	nfs_read_post_op_attr(p, inode);
+-	node = node->child;
+-	if (!node)
+-		return NULL;
++static const struct super_operations ramfs_ops;
++static const struct inode_operations ramfs_dir_inode_operations;
++static const struct inode_operations ramfs_file_inode_operations;
++static const struct inode_operations ramfs_symlink_inode_operations;
++static const struct file_operations ramfs_file_operations;
  
- 	return 0;
- }
-@@ -784,7 +759,7 @@ static int nfs_attr_req(struct file_priv *priv, struct stat *s)
-  * returns with dir->stream pointing to the first entry
-  * of dirlist3 res.resok.reply
-  */
--static void *nfs_readdirattr_req(struct file_priv *priv, struct nfs_dir *dir)
-+static void *nfs_readdirattr_req(struct nfs_priv *npriv, struct nfs_dir *dir)
- {
- 	uint32_t data[1024];
- 	uint32_t *p;
-@@ -833,7 +808,7 @@ static void *nfs_readdirattr_req(struct file_priv *priv, struct nfs_dir *dir)
- 	p = &(data[0]);
- 	p = rpc_add_credentials(p);
- 
--	p = nfs_add_fh3(p, priv->filefh_len, priv->filefh);
-+	p = nfs_add_fh3(p, &dir->fh);
- 	p = nfs_add_uint64(p, dir->cookie);
- 
- 	memcpy(p, dir->cookieverf, NFS3_COOKIEVERFSIZE);
-@@ -841,7 +816,7 @@ static void *nfs_readdirattr_req(struct file_priv *priv, struct nfs_dir *dir)
- 
- 	p = nfs_add_uint32(p, 1024); /* count */
- 
--	ret = rpc_req(priv->npriv, PROG_NFS, NFSPROC3_READDIR, data, p - data);
-+	ret = rpc_req(npriv, PROG_NFS, NFSPROC3_READDIR, data, p - data);
- 	if (ret)
- 		return NULL;
- 
-@@ -909,7 +884,7 @@ static int nfs_read_req(struct file_priv *priv, uint64_t offset,
- 	p = &(data[0]);
- 	p = rpc_add_credentials(p);
- 
--	p = nfs_add_fh3(p, priv->filefh_len, priv->filefh);
-+	p = nfs_add_fh3(p, &priv->fh);
- 	p = nfs_add_uint64(p, offset);
- 	p = nfs_add_uint32(p, readlen);
- 
-@@ -953,82 +928,11 @@ static void nfs_handler(void *ctx, char *packet, unsigned len)
- 	nfs_len = len;
- }
- 
--static int nfs_create(struct device_d *dev, const char *pathname, mode_t mode)
--{
--	return -ENOSYS;
--}
--
--static int nfs_unlink(struct device_d *dev, const char *pathname)
--{
--	return -ENOSYS;
--}
--
--static int nfs_mkdir(struct device_d *dev, const char *pathname)
--{
--	return -ENOSYS;
--}
--
--static int nfs_rmdir(struct device_d *dev, const char *pathname)
--{
--	return -ENOSYS;
--}
--
- static int nfs_truncate(struct device_d *dev, FILE *f, ulong size)
- {
- 	return -ENOSYS;
- }
- 
--static struct file_priv *nfs_do_open(struct device_d *dev,
--		const char *filename, struct stat **s)
--{
--	struct file_priv *priv;
--	struct nfs_priv *npriv = dev->priv;
--	int ret;
--	const char *tok;
--
--	debug("%s: filename = %s\n", __func__, filename);
--	priv = xzalloc(sizeof(*priv));
--
--	priv->npriv = npriv;
--
--	if (!*filename) {
--		priv->filefh_len = npriv->rootfh_len;
--		memcpy(priv->filefh, npriv->rootfh, npriv->rootfh_len);
--		return priv;
+-	while (node) {
+-		debug("lookup: %s\n", node->name);
+-		if (!strcmp(node->name, name)) {
+-			debug("lookup: found: 0x%p\n",node);
+-			return node;
+-		}
+-		node = node->next;
 -	}
+-        return NULL;
+-}
 -
--	filename++;
+-static struct ramfs_inode* rlookup(struct ramfs_priv *priv, const char *path)
++static struct inode *ramfs_get_inode(struct super_block *sb, const struct inode *dir,
++				     umode_t mode)
+ {
+-	struct ramfs_inode *node = &priv->root;
+-        static char *buf;
+-        char *part;
 -
--	priv->filefh_len = npriv->rootfh_len;
--	memcpy(priv->filefh, npriv->rootfh, NFS3_FHSIZE);
+-	debug("rlookup %s in %p\n",path, node);
+-        buf = strdup(path);
 -
--	while (*filename) {
--		size_t flen;
+-        part = strtok(buf, "/");
+-        if (!part)
+-		goto out;
 -
--		tok = strchr(filename, '/');
--		if (tok)
--			flen = tok - filename;
--		else
--			flen = strlen(filename);
--
--		ret = nfs_lookup_req(priv, flen, filename, s);
--		if (ret)
+-        do {
+-                node = lookup(node, part);
+-                if (!node)
 -			goto out;
--
--		if (tok)
--			filename += flen + 1;
--		else
--			break;
--	}
--
--	return priv;
+-                part = strtok(NULL, "/");
+-        } while(part);
 -
 -out:
--	free(priv);
--
--	return ERR_PTR(ret);
+-	free(buf);
+-        return node;
 -}
++	struct inode *inode = new_inode(sb);
+ 
+-static struct ramfs_inode* rlookup_parent(struct ramfs_priv *priv, const char *pathname, char **file)
+-{
+-	char *path;
+-	struct ramfs_inode *node;
 -
- static void nfs_do_close(struct file_priv *priv)
- {
- 	if (priv->fifo)
-@@ -1037,34 +941,8 @@ static void nfs_do_close(struct file_priv *priv)
- 	free(priv);
+-	pathname++;
+-	path = strdup(pathname);
++	if (!inode)
++		return NULL;
+ 
+-	if ((*file = strrchr((char *) pathname, '/'))) {
+-		char *tmp;
+-		(*file)++;
++	inode->i_ino = get_next_ino();
++	inode->i_mode = mode;
+ 
+-		tmp = strrchr(path, '/');
+-		*tmp = 0;
+-		node = rlookup(priv, path);
+-		if (!node) {
+-			errno = -ENOENT;
+-			goto out;
+-		}
+-	} else {
+-		*file = (char *)pathname;
+-		node = &priv->root;
++	switch (mode & S_IFMT) {
++	default:
++		return NULL;
++	case S_IFREG:
++		inode->i_op = &ramfs_file_inode_operations;
++		inode->i_fop = &ramfs_file_operations;
++		break;
++	case S_IFDIR:
++		inode->i_op = &ramfs_dir_inode_operations;
++		inode->i_fop = &simple_dir_operations;
++		inc_nlink(inode);
++		break;
++	case S_IFLNK:
++		inode->i_op = &ramfs_symlink_inode_operations;
++		break;
+ 	}
+ 
+-out:
+-	free(path);
+-	return node;
++	return inode;
  }
  
--static struct file_priv *nfs_do_stat(struct device_d *dev,
--		const char *filename, struct stat *s)
+ static int chunks = 0;
+@@ -158,168 +127,75 @@ static void ramfs_put_chunk(struct ramfs_chunk *data)
+ 	chunks--;
+ }
+ 
+-static struct ramfs_inode* ramfs_get_inode(void)
 -{
--	struct file_priv *priv;
--	int ret;
--	struct stat **sptr = &s;
--
--	debug("%s: filename = %s\n", __func__, filename);
--	priv = nfs_do_open(dev, filename, sptr);
--	if (IS_ERR(priv))
--		return priv;
--
--	if (!*sptr) {
--		/*
--		 * The nfs server didn't provide obj_attributes in the lookup
--		 * reply, so ask for them explicitly.
--		 */
--		ret = nfs_attr_req(priv, s);
--		if (ret) {
--			nfs_do_close(priv);
--			return ERR_PTR(ret);
--		}
--	}
--
--	return priv;
+-	struct ramfs_inode *node = xzalloc(sizeof(struct ramfs_inode));
+-	return node;
 -}
 -
--static int nfs_readlink_req(struct file_priv *priv, char* buf, size_t size)
-+static int nfs_readlink_req(struct nfs_priv *npriv, struct nfs_fh *fh,
-+			    char **target)
- {
- 	uint32_t data[1024];
- 	uint32_t *p;
-@@ -1095,11 +973,11 @@ static int nfs_readlink_req(struct file_priv *priv, char* buf, size_t size)
- 	p = &(data[0]);
- 	p = rpc_add_credentials(p);
- 
--	p = nfs_add_fh3(p, priv->filefh_len, priv->filefh);
-+	p = nfs_add_fh3(p, fh);
- 
- 	len = p - &(data[0]);
- 
--	ret = rpc_req(priv->npriv, PROG_NFS, NFSPROC3_READLINK, data, len);
-+	ret = rpc_req(npriv, PROG_NFS, NFSPROC3_READLINK, data, len);
- 	if (ret)
- 		return ret;
- 
-@@ -1110,44 +988,37 @@ static int nfs_readlink_req(struct file_priv *priv, char* buf, size_t size)
- 	len = ntoh32(net_read_uint32(p)); /* new path length */
- 	p++;
- 
--	if (len > size)
--		return -ENOMEM;
+-static void ramfs_put_inode(struct ramfs_inode *node)
+-{
+-	struct ramfs_chunk *data = node->data;
 -
--	memcpy(buf, p, len);
-+	*target = xzalloc(len + 1);
-+	memcpy(*target, p, len);
+-	while (data) {
+-		struct ramfs_chunk *tmp = data->next;
+-		ramfs_put_chunk(data);
+-		data = tmp;
+-	}
+-
+-	free(node->symlink);
+-	free(node->name);
+-	free(node);
+-}
+-
+-static struct ramfs_inode* node_insert(struct ramfs_inode *parent_node, const char *filename, ulong mode)
+-{
+-	struct ramfs_inode *node, *new_node = ramfs_get_inode();
+-	new_node->name = strdup(filename);
+-	new_node->mode = mode;
+-
+-	node = parent_node->child;
+-
+-	if (S_ISDIR(mode)) {
+-		struct ramfs_inode *n = ramfs_get_inode();
+-		n->name = strdup(".");
+-		n->mode = S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO;
+-		n->child = n;
+-		n->parent = new_node;
+-		new_node->child = n;
+-		n = ramfs_get_inode();
+-		n->name = strdup("..");
+-		n->mode = S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO;
+-		n->parent = new_node;
+-		n->child = parent_node->child;
+-		new_node->child->next = n;
+-	}
+-
+-	while (node->next)
+-		node = node->next;
+-
+-	node->next = new_node;
+-	return new_node;
+-}
+-
+ /* ---------------------------------------------------------------*/
  
+-static int __ramfs_create(struct device_d *dev, const char *pathname,
+-			  mode_t mode, const char *symlink)
++static int
++ramfs_mknod(struct inode *dir, struct dentry *dentry, umode_t mode)
+ {
+-	struct ramfs_priv *priv = dev->priv;
+-	struct ramfs_inode *node;
+-	char *file;
+-	char *__symlink = NULL;
+-
+-	node = rlookup_parent(priv, pathname, &file);
+-	if (!node)
+-		return -ENOENT;
++	struct inode *inode = ramfs_get_inode(dir->i_sb, dir, mode);
+ 
+-	if (symlink) {
+-		__symlink = strdup(symlink);
+-		if (!__symlink)
+-			return -ENOMEM;
+-	}
++	if (!inode)
++		return -ENOSPC;
+ 
+-	node = node_insert(node, file, mode);
+-	if (!node) {
+-		free(__symlink);
+-		return -ENOMEM;
++	if (inode) {
++		d_instantiate(dentry, inode);
++		dget(dentry);   /* Extra count - pin the dentry in core */
+ 	}
+ 
+-	node->symlink = __symlink;
+-
  	return 0;
  }
  
--static int nfs_readlink(struct device_d *dev, const char *filename,
--			char *realname, size_t size)
-+static const char *nfs_get_link(struct dentry *dentry, struct inode *inode)
+-static int ramfs_create(struct device_d *dev, const char *pathname, mode_t mode)
++static int ramfs_mkdir(struct inode *dir, struct dentry *dentry, umode_t mode)
  {
--	struct file_priv *priv;
-+	struct nfs_inode *ninode = nfsi(inode);
-+	struct nfs_priv *npriv = ninode->npriv;
- 	int ret;
+-	return __ramfs_create(dev, pathname, mode, NULL);
+-}
++	int ret;
  
--	priv = nfs_do_open(dev, filename, NULL);
--	if (IS_ERR(priv))
--		return PTR_ERR(priv);
+-static int ramfs_unlink(struct device_d *dev, const char *pathname)
+-{
+-	struct ramfs_priv *priv = dev->priv;
+-	struct ramfs_inode *node, *lastnode;
+-	char *file;
 -
--	ret = nfs_readlink_req(priv, realname, size);
--	if (ret) {
--		nfs_do_close(priv);
--		return ret;
--	}
-+	ret = nfs_readlink_req(npriv, &ninode->fh, &inode->i_link);
-+	if (ret)
-+		return ERR_PTR(ret);
+-	node = rlookup_parent(priv, pathname, &file);
+-
+-	lastnode = node->child->next;
+-	node = lastnode->next;
+-
+-	while (node) {
+-		if (!strcmp(node->name, file)) {
+-			struct ramfs_inode *tmp;
+-			tmp = node;
+-			lastnode->next = node->next;
+-			ramfs_put_inode(tmp);
+-			return 0;
+-		}
+-		lastnode = node;
+-		node = node->next;
+-	};
+-	return -ENOENT;
+-}
++	ret = ramfs_mknod(dir, dentry, mode | S_IFDIR);
++	if (!ret)
++		inc_nlink(dir);
  
+-static int ramfs_mkdir(struct device_d *dev, const char *pathname)
+-{
+-	return ramfs_create(dev, pathname, S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO);
++	return ret;
+ }
+ 
+-static int ramfs_rmdir(struct device_d *dev, const char *pathname)
++static int ramfs_create(struct inode *dir, struct dentry *dentry, umode_t mode)
+ {
+-	struct ramfs_priv *priv = dev->priv;
+-	struct ramfs_inode *node, *lastnode;
+-	char *file;
+-
+-	node = rlookup_parent(priv, pathname, &file);
+-
+-	lastnode = node->child->next;
+-	node = lastnode->next;
+-
+-	while (node) {
+-		if (!strcmp(node->name, file)) {
+-			struct ramfs_inode *tmp;
+-			tmp = node;
+-			lastnode->next = node->next;
+-			ramfs_put_inode(tmp->child->next);
+-			ramfs_put_inode(tmp->child);
+-			ramfs_put_inode(tmp);
+-			return 0;
+-		}
+-		lastnode = node;
+-		node = node->next;
+-	};
+-	return -ENOENT;
++	return ramfs_mknod(dir, dentry, mode | S_IFREG);
+ }
+ 
+-static int ramfs_open(struct device_d *dev, FILE *file, const char *filename)
++static int ramfs_symlink(struct inode *dir, struct dentry *dentry,
++			 const char *symname)
+ {
+-	struct ramfs_priv *priv = dev->priv;
+-	struct ramfs_inode *node = rlookup(priv, filename);
++	struct inode *inode;
+ 
+-	if (!node)
+-		return -ENOENT;
++	inode = ramfs_get_inode(dir->i_sb, dir, S_IFLNK | S_IRWXG);
++	if (!inode)
++		return -ENOSPC;
++
++	inode->i_link = xstrdup(symname);
++	d_instantiate(dentry, inode);
+ 
+-	file->size = node->size;
+-	file->priv = node;
+ 	return 0;
+ }
+ 
+-static int ramfs_close(struct device_d *dev, FILE *f)
++static const char *ramfs_get_link(struct dentry *dentry, struct inode *inode)
+ {
 -	return 0;
 +	return inode->i_link;
  }
  
- static int nfs_open(struct device_d *dev, FILE *file, const char *filename)
++static const struct inode_operations ramfs_symlink_inode_operations =
++{
++	.get_link = ramfs_get_link,
++};
++
++static const struct inode_operations ramfs_dir_inode_operations =
++{
++	.lookup = simple_lookup,
++	.symlink = ramfs_symlink,
++	.mkdir = ramfs_mkdir,
++	.rmdir = simple_rmdir,
++	.unlink = simple_unlink,
++	.create = ramfs_create,
++};
++
+ static struct ramfs_chunk *ramfs_find_chunk(struct ramfs_inode *node, int chunk)
  {
-+	struct inode *inode = file->f_inode;
-+	struct nfs_inode *ninode = nfsi(inode);
-+	struct nfs_priv *npriv = ninode->npriv;
- 	struct file_priv *priv;
--	struct stat s;
--
--	priv = nfs_do_stat(dev, filename, &s);
--	if (IS_ERR(priv))
--		return PTR_ERR(priv);
+ 	struct ramfs_chunk *data;
+@@ -351,7 +227,8 @@ static struct ramfs_chunk *ramfs_find_chunk(struct ramfs_inode *node, int chunk)
  
-+	priv = xzalloc(sizeof(*priv));
-+	priv->fh = ninode->fh;
-+	priv->npriv = npriv;
- 	file->priv = priv;
--	file->size = s.st_size;
-+	file->size = inode->i_size;
+ static int ramfs_read(struct device_d *_dev, FILE *f, void *buf, size_t insize)
+ {
+-	struct ramfs_inode *node = f->priv;
++	struct inode *inode = f->f_inode;
++	struct ramfs_inode *node = to_ramfs_inode(inode);
+ 	int chunk;
+ 	struct ramfs_chunk *data;
+ 	int ofs;
+@@ -359,12 +236,12 @@ static int ramfs_read(struct device_d *_dev, FILE *f, void *buf, size_t insize)
+ 	int pos = f->pos;
+ 	int size = insize;
  
- 	priv->fifo = kfifo_alloc(1024);
- 	if (!priv->fifo) {
-@@ -1199,115 +1070,170 @@ static loff_t nfs_lseek(struct device_d *dev, FILE *file, loff_t pos)
- 	return file->pos;
+-	chunk = f->pos / CHUNK_SIZE;
++	chunk = pos / CHUNK_SIZE;
+ 	debug("%s: reading from chunk %d\n", __FUNCTION__, chunk);
+ 
+ 	/* Position ourself in stream */
+ 	data = ramfs_find_chunk(node, chunk);
+-	ofs = f->pos % CHUNK_SIZE;
++	ofs = pos % CHUNK_SIZE;
+ 
+ 	/* Read till end of current chunk */
+ 	if (ofs) {
+@@ -400,7 +277,8 @@ static int ramfs_read(struct device_d *_dev, FILE *f, void *buf, size_t insize)
+ 
+ static int ramfs_write(struct device_d *_dev, FILE *f, const void *buf, size_t insize)
+ {
+-	struct ramfs_inode *node = f->priv;
++	struct inode *inode = f->f_inode;
++	struct ramfs_inode *node = to_ramfs_inode(inode);
+ 	int chunk;
+ 	struct ramfs_chunk *data;
+ 	int ofs;
+@@ -447,15 +325,10 @@ static int ramfs_write(struct device_d *_dev, FILE *f, const void *buf, size_t i
+ 	return insize;
  }
  
--static DIR *nfs_opendir(struct device_d *dev, const char *pathname)
-+static int nfs_iterate(struct file *file, struct dir_context *ctx)
+-static loff_t ramfs_lseek(struct device_d *dev, FILE *f, loff_t pos)
+-{
+-	f->pos = pos;
+-	return f->pos;
+-}
+-
+ static int ramfs_truncate(struct device_d *dev, FILE *f, ulong size)
  {
--	struct file_priv *priv;
-+	struct dentry *dentry = file->f_path.dentry;
-+	struct inode *dir = d_inode(dentry);
-+	struct nfs_priv *npriv = nfsi(dir)->npriv;
- 	void *buf = NULL;
--	struct nfs_dir *dir;
-+	struct nfs_dir *ndir;
-+	struct xdr_stream *xdr;
-+	int ret;
-+	uint32_t *p, len;
+-	struct ramfs_inode *node = f->priv;
++	struct inode *inode = f->f_inode;
++	struct ramfs_inode *node = to_ramfs_inode(inode);
+ 	int oldchunks, newchunks;
+ 	struct ramfs_chunk *data = node->data;
  
--	priv = nfs_do_open(dev, pathname, NULL);
--	if (IS_ERR(priv))
+@@ -502,108 +375,38 @@ static int ramfs_truncate(struct device_d *dev, FILE *f, ulong size)
+ 	return 0;
+ }
+ 
+-static DIR* ramfs_opendir(struct device_d *dev, const char *pathname)
++static struct inode *ramfs_alloc_inode(struct super_block *sb)
+ {
+-	DIR *dir;
+-	struct ramfs_priv *priv = dev->priv;
+ 	struct ramfs_inode *node;
+ 
+-	debug("opendir: %s\n", pathname);
+-
+-	node = rlookup(priv, pathname);
+-
++	node = xzalloc(sizeof(*node));
+ 	if (!node)
+ 		return NULL;
+ 
+-	if (!S_ISDIR(node->mode))
 -		return NULL;
-+	ndir = xzalloc(sizeof(*ndir));
-+	ndir->fh = nfsi(dir)->fh;
- 
--	dir = xzalloc(sizeof(*dir));
--	dir->priv = priv;
-+	while (1) {
-+		/* cookie == 0 and cookieverf == 0 means start of dir */
-+		buf = nfs_readdirattr_req(npriv, ndir);
-+		if (!buf) {
-+			pr_err("%s: nfs_readdirattr_req failed\n", __func__);
-+			ret = -EINVAL;
-+			goto out;
-+		}
- 
--	/* cookie == 0 and cookieverf == 0 means start of dir */
--	buf = nfs_readdirattr_req(priv, dir);
--	if (!buf) {
--		debug("%s: nfs_readdirattr_req failed\n", __func__);
--		goto err;
+-
+-	dir = xmalloc(sizeof(DIR));
+-
+-	dir->priv = node->child;
+-
+-	return dir;
+-}
+-
+-static struct dirent* ramfs_readdir(struct device_d *dev, DIR *dir)
+-{
+-	struct ramfs_inode *node = dir->priv;
+-
+-	if (node) {
+-		strcpy(dir->d.d_name, node->name);
+-		dir->priv = node->next;
+-		return &dir->d;
 -	}
-+		xdr = &ndir->stream;
- 
--	return &dir->dir;
-+		while (1) {
-+			char name[256];
- 
--err:
--	free(buf);
--	free(dir);
--	nfs_do_close(priv);
 -	return NULL;
 -}
-+			p = xdr_inline_decode(xdr, 4);
-+			if (!p)
-+				goto err_eop;
- 
--static struct dirent *nfs_readdir(struct device_d *dev, DIR *dir)
+-
+-static int ramfs_closedir(struct device_d *dev, DIR *dir)
 -{
--	struct nfs_dir *ndir = container_of(dir, struct nfs_dir, dir);
--	uint32_t *p;
--	int ret;
--	int len;
--	struct xdr_stream *xdr = &ndir->stream;
-+			if (!net_read_uint32(p)) {
-+				/* eof? */
-+				p = xdr_inline_decode(xdr, 4);
-+				if (!p)
-+					goto err_eop;
- 
--again:
--	p = xdr_inline_decode(xdr, 4);
--	if (!p) {
--		printf("%s: premature end of packet\n", __func__);
--		return NULL;
--	}
-+				if (net_read_uint32(p)) {
-+					ret = 0;
-+					goto out;
-+				}
- 
--	if (!net_read_uint32(p)) {
--		/* eof? */
--		p = xdr_inline_decode(xdr, 4);
--		if (!p) {
--			printf("%s: premature end of packet\n", __func__);
--			return NULL;
--		}
--		if (net_read_uint32(p))
--			return NULL;
-+				break;
-+			}
- 
--		if (!nfs_readdirattr_req(ndir->priv, ndir)) {
--			printf("%s: nfs_readdirattr_req failed\n", __func__);
--			return NULL;
--		}
-+			/* skip over fileid */
-+			p = xdr_inline_decode(xdr, 8);
-+			if (!p)
-+				goto err_eop;
- 
--		goto again;
--	}
-+			ret = decode_filename(xdr, name, &len);
-+			if (ret)
-+				goto out;
- 
--	/* there is another entry available in the last reply */
-+			dir_emit(ctx, name, len, 0, DT_UNKNOWN);
- 
--	/* skip over fileid */
--	p = xdr_inline_decode(xdr, 8);
--	if (!p) {
--		printf("%s: premature end of packet\n", __func__);
--		return NULL;
-+			p = xdr_inline_decode(xdr, 8);
-+			if (!p)
-+				goto err_eop;
-+
-+			ndir->cookie = ntoh64(net_read_uint64(p));
-+		}
-+		free(buf);
- 	}
- 
--	ret = decode_filename(xdr, ndir->ent.d_name, &len);
--	if (ret)
--		return NULL;
-+	ret = 0;
- 
--	p = xdr_inline_decode(xdr, 8);
--	if (!p) {
--		printf("%s: premature end of packet\n", __func__);
-+out:
-+	free(ndir->stream.buf);
-+	free(ndir);
-+
-+	return ret;
-+
-+err_eop:
-+	pr_err("Unexpected end of packet\n");
-+
-+	return -EIO;
-+}
-+
-+static struct inode *nfs_alloc_inode(struct super_block *sb)
-+{
-+	struct nfs_inode *node;
-+
-+	node = xzalloc(sizeof(*node));
-+	if (!node)
- 		return NULL;
--	}
--	ndir->cookie = ntoh64(net_read_uint64(p));
- 
--	return &ndir->ent;
+-	free(dir);
+-	return 0;
+-}
+-
+-static int ramfs_stat(struct device_d *dev, const char *filename, struct stat *s)
+-{
+-	struct ramfs_priv *priv = dev->priv;
+-	struct ramfs_inode *node = rlookup(priv, filename);
+-
+-	if (!node)
+-		return -ENOENT;
+-
+-	s->st_size = node->symlink ? strlen(node->symlink) : node->size;
+-	s->st_mode = node->mode;
+-
+-	return 0;
+-}
+-
+-static int ramfs_symlink(struct device_d *dev, const char *pathname,
+-		       const char *newpath)
+-{
+-	mode_t mode = S_IFLNK | S_IRWXU | S_IRWXG | S_IRWXO;
+-
+-	return __ramfs_create(dev, newpath, mode, pathname);
 +	return &node->inode;
  }
  
--static int nfs_closedir(struct device_d *dev, DIR *dir)
-+static const struct inode_operations nfs_file_inode_operations;
-+static const struct file_operations nfs_dir_operations;
-+static const struct inode_operations nfs_dir_inode_operations;
-+static const struct file_operations nfs_file_operations;
-+static const struct inode_operations nfs_symlink_inode_operations = {
-+	.get_link = nfs_get_link,
+-static int ramfs_readlink(struct device_d *dev, const char *pathname,
+-			char *buf, size_t bufsiz)
+-{
+-	struct ramfs_priv *priv = dev->priv;
+-	struct ramfs_inode *node = rlookup(priv, pathname);
+-	int len;
+-
+-	if (!node || !node->symlink)
+-		return -ENOENT;
+-
+-	len = min(bufsiz, strlen(node->symlink));
+-
+-	memcpy(buf, node->symlink, len);
+-
+-	return 0;
+-}
++static const struct super_operations ramfs_ops = {
++	.alloc_inode = ramfs_alloc_inode,
 +};
-+
-+static int nfs_init_inode(struct nfs_priv *npriv, struct inode *inode,
-+			  unsigned int mode)
+ 
+ static int ramfs_probe(struct device_d *dev)
  {
--	struct nfs_dir *ndir = (void *)dir;
-+	struct nfs_inode *ninode = nfsi(inode);
- 
--	nfs_do_close(ndir->priv);
--	free(ndir->stream.buf);
--	free(ndir);
-+	ninode->npriv = npriv;
-+
-+	inode->i_ino = get_next_ino();
-+	inode->i_mode = mode;
-+
-+	switch (inode->i_mode & S_IFMT) {
-+	default:
-+		return -EINVAL;
-+	case S_IFREG:
-+		inode->i_op = &nfs_file_inode_operations;
-+		inode->i_fop = &nfs_file_operations;
-+		break;
-+	case S_IFDIR:
-+		inode->i_op = &nfs_dir_inode_operations;
-+		inode->i_fop = &nfs_dir_operations;
-+		inc_nlink(inode);
-+		break;
-+	case S_IFLNK:
-+		inode->i_op = &nfs_symlink_inode_operations;
-+		break;
-+	}
- 
- 	return 0;
- }
- 
--static int nfs_stat(struct device_d *dev, const char *filename, struct stat *s)
-+static struct dentry *nfs_lookup(struct inode *dir, struct dentry *dentry,
-+				   unsigned int flags)
- {
--	struct file_priv *priv;
-+	struct nfs_inode *ndir = nfsi(dir);
-+	struct inode *inode = new_inode(dir->i_sb);
-+	struct nfs_priv *npriv = ndir->npriv;
-+	int ret;
- 
--	priv = nfs_do_stat(dev, filename, s);
--	if (IS_ERR(priv)) {
--		return PTR_ERR(priv);
--	} else {
--		nfs_do_close(priv);
--		return 0;
--	}
-+	if (!inode)
-+		return NULL;
-+
-+	ret = nfs_lookup_req(npriv, &ndir->fh, dentry->name, inode);
-+	if (ret)
-+		return NULL;
-+
-+	nfs_init_inode(npriv, inode, inode->i_mode);
-+
-+	d_add(dentry, inode);
-+
-+	return NULL;
- }
- 
-+static const struct file_operations nfs_dir_operations = {
-+	.iterate = nfs_iterate,
-+};
-+
-+static const struct inode_operations nfs_dir_inode_operations =
-+{
-+	.lookup = nfs_lookup,
-+};
-+
-+static const struct super_operations nfs_ops = {
-+	.alloc_inode = nfs_alloc_inode,
-+};
-+
- static char *rootnfsopts;
- 
- static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device_d *fsdev)
-@@ -1347,8 +1273,10 @@ static int nfs_probe(struct device_d *dev)
- {
- 	struct fs_device_d *fsdev = dev_to_fs_device(dev);
- 	struct nfs_priv *npriv = xzalloc(sizeof(struct nfs_priv));
-+	struct super_block *sb = &fsdev->sb;
- 	char *tmp = xstrdup(fsdev->backingstore);
- 	char *path;
+-	struct ramfs_inode *n;
 +	struct inode *inode;
- 	int ret;
+ 	struct ramfs_priv *priv = xzalloc(sizeof(struct ramfs_priv));
++	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct super_block *sb = &fsdev->sb;
  
- 	dev->priv = npriv;
-@@ -1414,6 +1342,13 @@ static int nfs_probe(struct device_d *dev)
+ 	dev->priv = priv;
  
- 	free(tmp);
- 
-+	sb->s_op = &nfs_ops;
+ 	priv->root.name = "/";
+ 	priv->root.mode = S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO;
+ 	priv->root.parent = &priv->root;
+-	n = ramfs_get_inode();
+-	n->name = strdup(".");
+-	n->mode = S_IFDIR;
+-	n->parent = &priv->root;
+-	n->child = n;
+-	priv->root.child = n;
+-	n = ramfs_get_inode();
+-	n->name = strdup("..");
+-	n->mode = S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO;
+-	n->parent = &priv->root;
+-	n->child = priv->root.child;
+-	priv->root.child->next = n;
 +
-+	inode = new_inode(sb);
-+	nfs_set_fh(inode, &npriv->rootfh);
-+	nfs_init_inode(npriv, inode, S_IFDIR);
++	sb->s_op = &ramfs_ops;
++
++	inode = ramfs_get_inode(sb, NULL, S_IFDIR);
 +	sb->s_root = d_make_root(inode);
-+
- 	return 0;
  
- err2:
-@@ -1443,17 +1378,8 @@ static struct fs_driver_d nfs_driver = {
- 	.close     = nfs_close,
- 	.read      = nfs_read,
- 	.lseek     = nfs_lseek,
--	.opendir   = nfs_opendir,
--	.readdir   = nfs_readdir,
--	.closedir  = nfs_closedir,
--	.stat      = nfs_stat,
--	.create    = nfs_create,
--	.unlink    = nfs_unlink,
--	.mkdir     = nfs_mkdir,
--	.rmdir     = nfs_rmdir,
- 	.write     = nfs_write,
- 	.truncate  = nfs_truncate,
--	.readlink  = nfs_readlink,
- 	.flags     = 0,
+ 	return 0;
+ }
+@@ -614,22 +417,9 @@ static void ramfs_remove(struct device_d *dev)
+ }
+ 
+ static struct fs_driver_d ramfs_driver = {
+-	.create    = ramfs_create,
+-	.unlink    = ramfs_unlink,
+-	.open      = ramfs_open,
+-	.close     = ramfs_close,
+-	.truncate  = ramfs_truncate,
+-	.read      = ramfs_read,
+-	.write     = ramfs_write,
+-	.lseek     = ramfs_lseek,
+-	.mkdir     = ramfs_mkdir,
+-	.rmdir     = ramfs_rmdir,
+-	.opendir   = ramfs_opendir,
+-	.readdir   = ramfs_readdir,
+-	.closedir  = ramfs_closedir,
+-	.stat      = ramfs_stat,
+-	.symlink   = ramfs_symlink,
+-	.readlink  = ramfs_readlink,
++	.read = ramfs_read,
++	.write = ramfs_write,
++	.truncate = ramfs_truncate,
+ 	.flags     = FS_DRIVER_NO_DEV,
  	.drv = {
- 		.probe  = nfs_probe,
+ 		.probe  = ramfs_probe,
 -- 
 2.16.1
 
