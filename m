@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f3Ggn-00021j-Qp
- for barebox@lists.infradead.org; Tue, 03 Apr 2018 07:49:11 +0000
+ id 1f3Ggn-00021X-Qm
+ for barebox@lists.infradead.org; Tue, 03 Apr 2018 07:49:12 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  3 Apr 2018 09:48:43 +0200
-Message-Id: <20180403074851.5411-12-s.hauer@pengutronix.de>
+Date: Tue,  3 Apr 2018 09:48:50 +0200
+Message-Id: <20180403074851.5411-19-s.hauer@pengutronix.de>
 In-Reply-To: <20180403074851.5411-1-s.hauer@pengutronix.de>
 References: <20180403074851.5411-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,42 +21,174 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/19] loadenv: Do not depend on normalise_path()
+Subject: [PATCH 18/19] fs: tftp: Switch to dcache implementation
 To: Barebox List <barebox@lists.infradead.org>
-
-normalise_path() will go away, so do without it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/loadenv.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ fs/Kconfig |  1 -
+ fs/tftp.c  | 96 +++++++++++++++++++++++++++++++++++---------------------------
+ 2 files changed, 55 insertions(+), 42 deletions(-)
 
-diff --git a/commands/loadenv.c b/commands/loadenv.c
-index 44e96c3b60..6469affadb 100644
---- a/commands/loadenv.c
-+++ b/commands/loadenv.c
-@@ -62,20 +62,16 @@ static int do_loadenv(int argc, char *argv[])
- 	if (argc - optind < 1) {
- 		filename = default_environment_path_get();
- 	} else {
--		char *str = normalise_path(argv[optind]);
--
- 		/*
- 		 * /dev/defaultenv use to contain the defaultenvironment.
- 		 * we do not have this file anymore, but maintain compatibility
- 		 * to the 'loadenv -s /dev/defaultenv' command to restore the
- 		 * default environment for some time.
- 		 */
--		if (!strcmp(str, "/dev/defaultenv"))
-+		if (!strcmp(argv[optind], "/dev/defaultenv"))
- 			defaultenv = 1;
- 		else
- 			filename = argv[optind];
--
--		free(str);
- 	}
+diff --git a/fs/Kconfig b/fs/Kconfig
+index b2d4242e63..2be883e544 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -29,7 +29,6 @@ config FS_DEVFS
  
- 	if (scrub) {
+ config FS_TFTP
+ 	bool
+-	depends on BROKEN
+ 	prompt "tftp support"
+ 	depends on NET
+ 
+diff --git a/fs/tftp.c b/fs/tftp.c
+index 847921aa56..753444c459 100644
+--- a/fs/tftp.c
++++ b/fs/tftp.c
+@@ -89,26 +89,6 @@ struct tftp_priv {
+ 	IPaddr_t server;
+ };
+ 
+-static int tftp_create(struct device_d *dev, const char *pathname, mode_t mode)
+-{
+-	return 0;
+-}
+-
+-static int tftp_unlink(struct device_d *dev, const char *pathname)
+-{
+-	return -ENOSYS;
+-}
+-
+-static int tftp_mkdir(struct device_d *dev, const char *pathname)
+-{
+-	return -ENOSYS;
+-}
+-
+-static int tftp_rmdir(struct device_d *dev, const char *pathname)
+-{
+-	return -ENOSYS;
+-}
+-
+ static int tftp_truncate(struct device_d *dev, FILE *f, ulong size)
+ {
+ 	return 0;
+@@ -466,6 +446,9 @@ out:
+ static int tftp_open(struct device_d *dev, FILE *file, const char *filename)
+ {
+ 	struct file_priv *priv;
++	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++
++	filename = dpath(file->dentry, fsdev->vfsmount.mnt_root);
+ 
+ 	priv = tftp_do_open(dev, file->flags, filename);
+ 	if (IS_ERR(priv))
+@@ -618,40 +601,77 @@ out_free:
+ 	return -ENOSYS;
+ }
+ 
+-static DIR* tftp_opendir(struct device_d *dev, const char *pathname)
++static const struct inode_operations tftp_file_inode_operations;
++static const struct inode_operations tftp_dir_inode_operations;
++static const struct file_operations tftp_file_operations;
++
++static struct inode *tftp_get_inode(struct super_block *sb, const struct inode *dir,
++                                     umode_t mode)
+ {
+-	/* not implemented in tftp protocol */
+-	return NULL;
++	struct inode *inode = new_inode(sb);
++
++	if (!inode)
++		return NULL;
++
++	inode->i_ino = get_next_ino();
++	inode->i_mode = mode;
++
++	switch (mode & S_IFMT) {
++	default:
++		return NULL;
++	case S_IFREG:
++		inode->i_op = &tftp_file_inode_operations;
++		inode->i_fop = &tftp_file_operations;
++		break;
++	case S_IFDIR:
++		inode->i_op = &tftp_dir_inode_operations;
++		inode->i_fop = &simple_dir_operations;
++		inc_nlink(inode);
++		break;
++	}
++
++	return inode;
+ }
+ 
+-static int tftp_stat(struct device_d *dev, const char *filename, struct stat *s)
++static struct dentry *tftp_lookup(struct inode *dir, struct dentry *dentry,
++			    unsigned int flags)
+ {
+-	struct file_priv *priv;
++	struct inode *inode;
+ 
+-	priv = tftp_do_open(dev, O_RDONLY, filename);
+-	if (IS_ERR(priv))
+-		return PTR_ERR(priv);
++	printf("Lookup: \"%s\"\n", dentry->name);
+ 
+-	s->st_mode = S_IFREG | S_IRWXU | S_IRWXG | S_IRWXO;
+-	if (priv->filesize)
+-		s->st_size = priv->filesize;
+-	else
+-		s->st_size = FILESIZE_MAX;
++	inode = tftp_get_inode(dir->i_sb, dir, S_IFREG | S_IRWXUGO);
++	if (!inode)
++		return ERR_PTR(-ENOSPC);
+ 
+-	tftp_do_close(priv);
++	d_add(dentry, inode);
+ 
+-	return 0;
++	return NULL;
+ }
+ 
++static const struct inode_operations tftp_dir_inode_operations =
++{
++	.lookup = tftp_lookup,
++};
++
++static const struct super_operations tftp_ops;
++
+ static int tftp_probe(struct device_d *dev)
+ {
+ 	struct fs_device_d *fsdev = dev_to_fs_device(dev);
+ 	struct tftp_priv *priv = xzalloc(sizeof(struct tftp_priv));
++	struct super_block *sb = &fsdev->sb;
++	struct inode *inode;
+ 
+ 	dev->priv = priv;
+ 
+ 	priv->server = resolv(fsdev->backingstore);
+ 
++	sb->s_op = &tftp_ops;
++
++	inode = tftp_get_inode(sb, NULL, S_IFDIR);
++	sb->s_root = d_make_root(inode);
++
+ 	return 0;
+ }
+ 
+@@ -667,12 +687,6 @@ static struct fs_driver_d tftp_driver = {
+ 	.close     = tftp_close,
+ 	.read      = tftp_read,
+ 	.lseek     = tftp_lseek,
+-	.opendir   = tftp_opendir,
+-	.stat      = tftp_stat,
+-	.create    = tftp_create,
+-	.unlink    = tftp_unlink,
+-	.mkdir     = tftp_mkdir,
+-	.rmdir     = tftp_rmdir,
+ 	.write     = tftp_write,
+ 	.truncate  = tftp_truncate,
+ 	.flags     = 0,
 -- 
 2.16.1
 
