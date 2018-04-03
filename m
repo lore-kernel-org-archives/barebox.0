@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f3Ggn-00021X-Qm
+ id 1f3Ggn-00021U-Qt
  for barebox@lists.infradead.org; Tue, 03 Apr 2018 07:49:12 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  3 Apr 2018 09:48:50 +0200
-Message-Id: <20180403074851.5411-19-s.hauer@pengutronix.de>
+Date: Tue,  3 Apr 2018 09:48:38 +0200
+Message-Id: <20180403074851.5411-7-s.hauer@pengutronix.de>
 In-Reply-To: <20180403074851.5411-1-s.hauer@pengutronix.de>
 References: <20180403074851.5411-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,174 +21,171 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/19] fs: tftp: Switch to dcache implementation
+Subject: [PATCH 06/19] fs: Move mem_write/mem_read to devfs-core
 To: Barebox List <barebox@lists.infradead.org>
+
+fs.c is already heavily filled with code. Move mem_write/mem_read
+to devfs-core where it fits better.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/Kconfig |  1 -
- fs/tftp.c  | 96 +++++++++++++++++++++++++++++++++++---------------------------
- 2 files changed, 55 insertions(+), 42 deletions(-)
+ fs/devfs-core.c | 68 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ fs/fs.c         | 66 -------------------------------------------------------
+ 2 files changed, 68 insertions(+), 66 deletions(-)
 
-diff --git a/fs/Kconfig b/fs/Kconfig
-index b2d4242e63..2be883e544 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -29,7 +29,6 @@ config FS_DEVFS
- 
- config FS_TFTP
- 	bool
--	depends on BROKEN
- 	prompt "tftp support"
- 	depends on NET
- 
-diff --git a/fs/tftp.c b/fs/tftp.c
-index 847921aa56..753444c459 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -89,26 +89,6 @@ struct tftp_priv {
- 	IPaddr_t server;
- };
- 
--static int tftp_create(struct device_d *dev, const char *pathname, mode_t mode)
--{
--	return 0;
--}
--
--static int tftp_unlink(struct device_d *dev, const char *pathname)
--{
--	return -ENOSYS;
--}
--
--static int tftp_mkdir(struct device_d *dev, const char *pathname)
--{
--	return -ENOSYS;
--}
--
--static int tftp_rmdir(struct device_d *dev, const char *pathname)
--{
--	return -ENOSYS;
--}
--
- static int tftp_truncate(struct device_d *dev, FILE *f, ulong size)
- {
- 	return 0;
-@@ -466,6 +446,9 @@ out:
- static int tftp_open(struct device_d *dev, FILE *file, const char *filename)
- {
- 	struct file_priv *priv;
-+	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+
-+	filename = dpath(file->dentry, fsdev->vfsmount.mnt_root);
- 
- 	priv = tftp_do_open(dev, file->flags, filename);
- 	if (IS_ERR(priv))
-@@ -618,40 +601,77 @@ out_free:
- 	return -ENOSYS;
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index d06a534b57..6b5e6da6a8 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -513,3 +513,71 @@ void cdev_remove_loop(struct cdev *cdev)
+ 	free(cdev->name);
+ 	free(cdev);
  }
- 
--static DIR* tftp_opendir(struct device_d *dev, const char *pathname)
-+static const struct inode_operations tftp_file_inode_operations;
-+static const struct inode_operations tftp_dir_inode_operations;
-+static const struct file_operations tftp_file_operations;
 +
-+static struct inode *tftp_get_inode(struct super_block *sb, const struct inode *dir,
-+                                     umode_t mode)
- {
--	/* not implemented in tftp protocol */
--	return NULL;
-+	struct inode *inode = new_inode(sb);
-+
-+	if (!inode)
-+		return NULL;
-+
-+	inode->i_ino = get_next_ino();
-+	inode->i_mode = mode;
-+
-+	switch (mode & S_IFMT) {
-+	default:
-+		return NULL;
-+	case S_IFREG:
-+		inode->i_op = &tftp_file_inode_operations;
-+		inode->i_fop = &tftp_file_operations;
-+		break;
-+	case S_IFDIR:
-+		inode->i_op = &tftp_dir_inode_operations;
-+		inode->i_fop = &simple_dir_operations;
-+		inc_nlink(inode);
-+		break;
++static void memcpy_sz(void *dst, const void *src, size_t count, int rwsize)
++{
++	/* no rwsize specification given. Do whatever memcpy likes best */
++	if (!rwsize) {
++		memcpy(dst, src, count);
++		return;
 +	}
 +
-+	return inode;
- }
- 
--static int tftp_stat(struct device_d *dev, const char *filename, struct stat *s)
-+static struct dentry *tftp_lookup(struct inode *dir, struct dentry *dentry,
-+			    unsigned int flags)
- {
--	struct file_priv *priv;
-+	struct inode *inode;
- 
--	priv = tftp_do_open(dev, O_RDONLY, filename);
--	if (IS_ERR(priv))
--		return PTR_ERR(priv);
-+	printf("Lookup: \"%s\"\n", dentry->name);
- 
--	s->st_mode = S_IFREG | S_IRWXU | S_IRWXG | S_IRWXO;
--	if (priv->filesize)
--		s->st_size = priv->filesize;
--	else
--		s->st_size = FILESIZE_MAX;
-+	inode = tftp_get_inode(dir->i_sb, dir, S_IFREG | S_IRWXUGO);
-+	if (!inode)
-+		return ERR_PTR(-ENOSPC);
- 
--	tftp_do_close(priv);
-+	d_add(dentry, inode);
- 
--	return 0;
-+	return NULL;
- }
- 
-+static const struct inode_operations tftp_dir_inode_operations =
++	rwsize = rwsize >> O_RWSIZE_SHIFT;
++
++	count /= rwsize;
++
++	while (count-- > 0) {
++		switch (rwsize) {
++		case 1:
++			*((u8 *)dst) = *((u8 *)src);
++			break;
++		case 2:
++			*((u16 *)dst) = *((u16 *)src);
++			break;
++		case 4:
++			*((u32  *)dst) = *((u32  *)src);
++			break;
++		case 8:
++			*((u64  *)dst) = *((u64  *)src);
++			break;
++		}
++		dst += rwsize;
++		src += rwsize;
++	}
++}
++
++ssize_t mem_read(struct cdev *cdev, void *buf, size_t count, loff_t offset,
++		 unsigned long flags)
 +{
-+	.lookup = tftp_lookup,
-+};
++	unsigned long size;
++	struct device_d *dev;
 +
-+static const struct super_operations tftp_ops;
++	if (!cdev->dev || cdev->dev->num_resources < 1)
++		return -1;
++	dev = cdev->dev;
 +
- static int tftp_probe(struct device_d *dev)
- {
- 	struct fs_device_d *fsdev = dev_to_fs_device(dev);
- 	struct tftp_priv *priv = xzalloc(sizeof(struct tftp_priv));
-+	struct super_block *sb = &fsdev->sb;
-+	struct inode *inode;
- 
- 	dev->priv = priv;
- 
- 	priv->server = resolv(fsdev->backingstore);
- 
-+	sb->s_op = &tftp_ops;
++	size = min((resource_size_t)count,
++			resource_size(&dev->resource[0]) -
++			(resource_size_t)offset);
++	memcpy_sz(buf, dev_get_mem_region(dev, 0) + offset, size, flags & O_RWSIZE_MASK);
++	return size;
++}
++EXPORT_SYMBOL(mem_read);
 +
-+	inode = tftp_get_inode(sb, NULL, S_IFDIR);
-+	sb->s_root = d_make_root(inode);
++ssize_t mem_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset,
++		  unsigned long flags)
++{
++	unsigned long size;
++	struct device_d *dev;
 +
- 	return 0;
++	if (!cdev->dev || cdev->dev->num_resources < 1)
++		return -1;
++	dev = cdev->dev;
++
++	size = min((resource_size_t)count,
++			resource_size(&dev->resource[0]) -
++			(resource_size_t)offset);
++	memcpy_sz(dev_get_mem_region(dev, 0) + offset, buf, size, flags & O_RWSIZE_MASK);
++	return size;
++}
++EXPORT_SYMBOL(mem_write);
+diff --git a/fs/fs.c b/fs/fs.c
+index 5135112c8b..ca4fe70e15 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -1739,72 +1739,6 @@ out:
  }
+ EXPORT_SYMBOL(rmdir);
  
-@@ -667,12 +687,6 @@ static struct fs_driver_d tftp_driver = {
- 	.close     = tftp_close,
- 	.read      = tftp_read,
- 	.lseek     = tftp_lseek,
--	.opendir   = tftp_opendir,
--	.stat      = tftp_stat,
--	.create    = tftp_create,
--	.unlink    = tftp_unlink,
--	.mkdir     = tftp_mkdir,
--	.rmdir     = tftp_rmdir,
- 	.write     = tftp_write,
- 	.truncate  = tftp_truncate,
- 	.flags     = 0,
+-static void memcpy_sz(void *dst, const void *src, size_t count, int rwsize)
+-{
+-	/* no rwsize specification given. Do whatever memcpy likes best */
+-	if (!rwsize) {
+-		memcpy(dst, src, count);
+-		return;
+-	}
+-
+-	rwsize = rwsize >> O_RWSIZE_SHIFT;
+-
+-	count /= rwsize;
+-
+-	while (count-- > 0) {
+-		switch (rwsize) {
+-		case 1:
+-			*((u8 *)dst) = *((u8 *)src);
+-			break;
+-		case 2:
+-			*((u16 *)dst) = *((u16 *)src);
+-			break;
+-		case 4:
+-			*((u32  *)dst) = *((u32  *)src);
+-			break;
+-		case 8:
+-			*((u64  *)dst) = *((u64  *)src);
+-			break;
+-		}
+-		dst += rwsize;
+-		src += rwsize;
+-	}
+-}
+-
+-ssize_t mem_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
+-{
+-	ulong size;
+-	struct device_d *dev;
+-
+-	if (!cdev->dev || cdev->dev->num_resources < 1)
+-		return -1;
+-	dev = cdev->dev;
+-
+-	size = min((resource_size_t)count,
+-			resource_size(&dev->resource[0]) -
+-			(resource_size_t)offset);
+-	memcpy_sz(buf, dev_get_mem_region(dev, 0) + offset, size, flags & O_RWSIZE_MASK);
+-	return size;
+-}
+-EXPORT_SYMBOL(mem_read);
+-
+-ssize_t mem_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags)
+-{
+-	ulong size;
+-	struct device_d *dev;
+-
+-	if (!cdev->dev || cdev->dev->num_resources < 1)
+-		return -1;
+-	dev = cdev->dev;
+-
+-	size = min((resource_size_t)count,
+-			resource_size(&dev->resource[0]) -
+-			(resource_size_t)offset);
+-	memcpy_sz(dev_get_mem_region(dev, 0) + offset, buf, size, flags & O_RWSIZE_MASK);
+-	return size;
+-}
+-EXPORT_SYMBOL(mem_write);
+-
+ /*
+  * cdev_get_mount_path - return the path a cdev is mounted on
+  *
 -- 
 2.16.1
 
