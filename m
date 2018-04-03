@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f5QiD-00079U-K0
- for barebox@lists.infradead.org; Mon, 09 Apr 2018 06:55:35 +0000
-Date: Mon, 9 Apr 2018 08:55:21 +0200
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1f3G3n-0001kN-Et
+ for barebox@lists.infradead.org; Tue, 03 Apr 2018 07:08:52 +0000
+Date: Tue, 3 Apr 2018 09:08:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180409065521.xdup45765li67d4w@pengutronix.de>
-References: <20180316125354.23462-1-s.hauer@pengutronix.de>
- <20180316125354.23462-62-s.hauer@pengutronix.de>
- <CAHQ1cqEAim+g-NWynFYkX_0MeB9PYzOiXPFiV5=uyfzqnDBy8A@mail.gmail.com>
+Message-ID: <20180403070848.4cygxoaji652xa3k@pengutronix.de>
+References: <20180326131445.11229-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAHQ1cqEAim+g-NWynFYkX_0MeB9PYzOiXPFiV5=uyfzqnDBy8A@mail.gmail.com>
+In-Reply-To: <20180326131445.11229-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,40 +22,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 61/78] ARM: aarch64: mmu: Make zero page faulting
+Subject: Re: [PATCH] aiodev: Constify 'unit' in 'struct aiodev'
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Cc: barebox@lists.infradead.org
 
-Hi Andrey,
-
-On Tue, Mar 20, 2018 at 09:53:56PM -0700, Andrey Smirnov wrote:
-> On Fri, Mar 16, 2018 at 5:53 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > Make zero page faulting which allows us to catch NULL pointer derefs.
-> >
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  arch/arm/cpu/mmu_64.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-> > index 20f6c387f3..094bc0ac62 100644
-> > --- a/arch/arm/cpu/mmu_64.c
-> > +++ b/arch/arm/cpu/mmu_64.c
-> > @@ -316,6 +316,8 @@ static int mmu_init(void)
-> >         for_each_memory_bank(bank)
-> >                 create_sections(bank->start, bank->start, bank->size, CACHED_MEM);
-> >
-> > +       create_sections(0x0, 0x0, 0x1000, 0x0);
+On Mon, Mar 26, 2018 at 06:14:45AM -0700, Andrey Smirnov wrote:
+> The way it is currently used, there's no reason for 'uint' field to be
+> mutable, so constify it in order to allow 'aiodev' drivers to pass
+> sting literals in that field.
 > 
-> Sascha:
-> 
-> Maybe add commit message as comment to the line above as well?
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  include/aiodev.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sorry, somehow I ended up ignoring this mail. I added a separate patch
-adding a comment.
+Applied, thanks
 
 Sascha
 
+> 
+> diff --git a/include/aiodev.h b/include/aiodev.h
+> index 0d4f7a294..5e38b4fab 100644
+> --- a/include/aiodev.h
+> +++ b/include/aiodev.h
+> @@ -23,7 +23,7 @@
+>  struct aiodevice;
+>  struct aiochannel {
+>  	int index;
+> -	char *unit;
+> +	const char *unit;
+>  	struct aiodevice *aiodev;
+>  
+>  	int value;
+> -- 
+> 2.14.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
