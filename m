@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f3bO6-0003Ru-2z
- for barebox@lists.infradead.org; Wed, 04 Apr 2018 05:55:16 +0000
-Date: Wed, 4 Apr 2018 07:55:01 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180404055501.pqohi44y2yec74ki@pengutronix.de>
+ id 1f3hqi-0006pb-81
+ for barebox@lists.infradead.org; Wed, 04 Apr 2018 12:49:28 +0000
+Date: Wed, 4 Apr 2018 14:48:58 +0200
+From: Roland Hieber <r.hieber@pengutronix.de>
+Message-ID: <20180404124858.g2kij5eb5vuoavuq@pengutronix.de>
 References: <20180403160854.5654-1-linux@rempel-privat.de>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -35,11 +35,6 @@ On Tue, Apr 03, 2018 at 06:08:54PM +0200, Oleksij Rempel wrote:
 > ---
 >  Documentation/user/framebuffer.rst | 7 ++++---
 >  1 file changed, 4 insertions(+), 3 deletions(-)
-
-Applied, thanks
-
-Sascha
-
 > 
 > diff --git a/Documentation/user/framebuffer.rst b/Documentation/user/framebuffer.rst
 > index 7d004fa1c..d033ff08f 100644
@@ -53,6 +48,11 @@ Sascha
 > -for framebuffers, so framebuffer usage is limited to splash screens only. barebox
 > -supports BMP and PNG graphics using the :ref:`command_splash` command. barebox
 > +Framebuffer spash screen
+
+s/spash/splash/
+
+ - Roland
+
 > +------------------------
 > +
 > +barebox supports BMP and PNG graphics using the :ref:`command_splash` command. barebox
@@ -70,10 +70,10 @@ Sascha
 > 
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Roland Hieber                     | r.hieber@pengutronix.de     |
+Pengutronix e.K.                  | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
