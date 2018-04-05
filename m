@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f3zc4-0002U1-24
- for barebox@lists.infradead.org; Thu, 05 Apr 2018 07:47:18 +0000
-Date: Thu, 5 Apr 2018 09:47:03 +0200
+ id 1f3zio-0005Qf-Ei
+ for barebox@lists.infradead.org; Thu, 05 Apr 2018 07:54:16 +0000
+Date: Thu, 5 Apr 2018 09:54:02 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180405074703.s7jywugclkxd47qm@pengutronix.de>
+Message-ID: <20180405075402.gbplqqwoubu7cqpg@pengutronix.de>
 References: <20180326192025.28809-1-l.stach@pengutronix.de>
  <20180326192025.28809-4-l.stach@pengutronix.de>
 MIME-Version: 1.0
@@ -90,71 +90,10 @@ On Mon, Mar 26, 2018 at 09:20:19PM +0200, Lucas Stach wrote:
 > +	adr	r0, .L__boot_cpu_mode_offset
 > +	ldr	r1, [r0]
 > +	str	r12, [r0, r1]
-> +
-> +	cmp	r12, #HYP_MODE
-> +	movne	pc, lr			@ give up if the CPU is not in HYP mode
-> +
-> +	@ Now install the hypervisor stub:
-> +	adr	r12, __hyp_vectors
-> +	mcr	p15, 4, r12, c12, c0, 0	@ set hypervisor vector base (HVBAR)
-> +
-> +	@ Disable all traps, so we don't get any nasty surprise
-> +	mov	r12, #0
-> +	mcr	p15, 4, r12, c1, c1, 0	@ HCR
-> +	mcr	p15, 4, r12, c1, c1, 2	@ HCPTR
-> +	mcr	p15, 4, r12, c1, c1, 3	@ HSTR
-> +
-> +THUMB(	orr	r12, #(1 << 30)	)	@ HSCTLR.TE
-> +	mcr	p15, 4, r12, c1, c0, 0	@ HSCTLR
-> +
-> +	mrc	p15, 4, r12, c1, c1, 1	@ HDCR
-> +	and	r12, #0x1f		@ Preserve HPMN
-> +	mcr	p15, 4, r12, c1, c1, 1	@ HDCR
-> +
-> +	@ Make sure NS-SVC is initialised appropriately
-> +	mrc	p15, 0, r12, c1, c0, 0	@ SCTLR
-> +	orr	r12, #(1 << 5)		@ CP15 barriers enabled
-> +	bic	r12, #(3 << 7)		@ Clear SED/ITD for v8 (RES0 for v7)
-> +	bic	r12, #(3 << 19)		@ WXN and UWXN disabled
-> +	mcr	p15, 0, r12, c1, c0, 0	@ SCTLR
-> +
-> +	mrc	p15, 0, r12, c0, c0, 0	@ MIDR
-> +	mcr	p15, 4, r12, c0, c0, 0	@ VPIDR
-> +
-> +	mrc	p15, 0, r12, c0, c0, 5	@ MPIDR
-> +	mcr	p15, 4, r12, c0, c0, 5	@ VMPIDR
-> +	bx	lr
-> +ENDPROC(__hyp_install)
-> +
-> +ENTRY(armv7_hyp_install)
-> +	mov	r2, lr
-> +
-> +	bl	__hyp_install
-> +
-> +	/* set the cpu to SVC32 mode, mask irq and fiq */
-> +	mrs	r12, cpsr
-> +	eor	r12, r12, #HYP_MODE
-> +	tst	r12, #MODE_MASK
-> +	bic	r12, r12, #MODE_MASK
-> +	orr	r12, r12, #(PSR_I_BIT | PSR_F_BIT | SVC_MODE)
-> +THUMB(	orr	r12, r12, #PSR_T_BIT	)
-> +	bne	1f
-> +	orr	r12, r12, #PSR_A_BIT
-> +	adr	lr, 2f
-> +	msr	spsr_cxsf, r12
-> +	__MSR_ELR_HYP(14)
-> +	__ERET
-> +1:	msr	cpsr_c, r12
-> +2:
-> +	mov	pc, r2
-> +ENDPROC(armv7_hyp_install)
 
-armv7_hyp_install does the same as arm_cpu_lowlevel_init().
-arm_cpu_lowlevel_init() was called by the board code already, why do you
-have to do this again in the generic startup path?
-
-I understand that you have to call __hyp_install in non-pbl code again,
-but wouldn't it be sufficient to call only that?
+Naa, this won't work. You save the cpsr value in __boot_cpu_mode, but
+this variable exists both in PBL and regular barebox, __hyp_install
+is called multiple times and cpsr is modified right after saving it.
 
 Sascha
 
