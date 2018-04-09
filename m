@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f3Fzi-0006Di-8f
- for barebox@lists.infradead.org; Tue, 03 Apr 2018 07:04:39 +0000
-Date: Tue, 3 Apr 2018 09:04:27 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180403070427.terivivcpl2abuuf@pengutronix.de>
+Received: from mail-io0-x243.google.com ([2607:f8b0:4001:c06::243])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1f5ZE8-0003nv-Dq
+ for barebox@lists.infradead.org; Mon, 09 Apr 2018 16:01:06 +0000
+Received: by mail-io0-x243.google.com with SMTP id b20so10206851iof.5
+ for <barebox@lists.infradead.org>; Mon, 09 Apr 2018 09:00:53 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20180403070427.terivivcpl2abuuf@pengutronix.de>
 References: <20180326130915.8726-1-andrew.smirnov@gmail.com>
  <20180326130915.8726-4-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180326130915.8726-4-andrew.smirnov@gmail.com>
+ <20180403070427.terivivcpl2abuuf@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 9 Apr 2018 09:00:52 -0700
+Message-ID: <CAHQ1cqHR2vmy4HRFaCLQnVgn=YCG+YOfBgBj_uzw4mn66T1nvA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,32 +26,42 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 3/3] serial: Check result of console_unregister()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Mar 26, 2018 at 06:09:15AM -0700, Andrey Smirnov wrote:
-> In order to allow 'serdev' devices to prevent parent console device
-> removal and correspondign memory deallocation add code to all serial
-> driver to check result of console_unregister() and bail out early if
-> it is unsuccessful.
-> 
-> One example of a use-case for this would be a reset handler relying on
-> a serdev device for transport. Without this patch underlying console
-> device would be removed and de-allocated before reset handler is even
-> run thus leading to unpredictable behaviour and crashes.
+On Tue, Apr 3, 2018 at 12:04 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Mon, Mar 26, 2018 at 06:09:15AM -0700, Andrey Smirnov wrote:
+>> In order to allow 'serdev' devices to prevent parent console device
+>> removal and correspondign memory deallocation add code to all serial
+>> driver to check result of console_unregister() and bail out early if
+>> it is unsuccessful.
+>>
+>> One example of a use-case for this would be a reset handler relying on
+>> a serdev device for transport. Without this patch underlying console
+>> device would be removed and de-allocated before reset handler is even
+>> run thus leading to unpredictable behaviour and crashes.
+>
+> Can't we make this sure at driver core level?
 
-Can't we make this sure at driver core level? So if a device decides not
-to return -EBUSY in the remove callback then the parent devices won't be
-removed?
+I need to be able to prevent serial driver's "remove" function from
+ever executing to prevent any de-initialization/memory freeing from
+happening. The simplest way to solve this in driver core that comes to
+my mind is implementing simple reference counting API that children
+could use to force driver core to bail out on removing parents if they
+are still in use. Does that sound like a reasonable idea?
 
-Sascha
+> So if a device decides not
+> to return -EBUSY in the remove callback then the parent devices won't be
+> removed?
 
+Remove callback currently returns void, we could change it to return
+int and use it to implement a sort of implicit refcounting, but doing
+so would result in quite a bit of code churn since all of the current
+drivers would have to be converted to return int in their .remove
+callbacks. Would you rather I do this or explicit refcounting?
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
