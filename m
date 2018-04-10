@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6358-0001jJ-Vu
+ id 1f6358-0001jG-Vn
  for barebox@lists.infradead.org; Tue, 10 Apr 2018 23:53:48 +0000
-Received: by mail-pf0-x242.google.com with SMTP id j2so22144pff.10
- for <barebox@lists.infradead.org>; Tue, 10 Apr 2018 16:53:37 -0700 (PDT)
+Received: by mail-pf0-x242.google.com with SMTP id c78so28373pfj.6
+ for <barebox@lists.infradead.org>; Tue, 10 Apr 2018 16:53:36 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 10 Apr 2018 16:53:19 -0700
-Message-Id: <20180410235323.5440-7-andrew.smirnov@gmail.com>
+Date: Tue, 10 Apr 2018 16:53:18 -0700
+Message-Id: <20180410235323.5440-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20180410235323.5440-1-andrew.smirnov@gmail.com>
 References: <20180410235323.5440-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,57 +23,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/10] ARM: i.MX: esdctl: Make use of min_t()
+Subject: [PATCH 05/10] ARM: i.MX6: esdctl: Use symbolic constants for RAM base
+ address
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Use min_t() instead of explicit if ().
+Use symbolic constants for RAM base address, to do that rename
+MX6_MMDC_PORT0_BASE_ADDR to MX6_MMDC_PORT01_BASE_ADDR to distinguish
+it from SoCs with only one DDR controller (i.MX6UL) where port 0 will
+always be at 0x80000000.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/esdctl.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ arch/arm/boards/zii-imx6q-rdu2/lowlevel.c  | 2 +-
+ arch/arm/mach-imx/esdctl.c                 | 8 ++++----
+ arch/arm/mach-imx/include/mach/imx6-regs.h | 4 +++-
+ 3 files changed, 8 insertions(+), 6 deletions(-)
 
+diff --git a/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c b/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
+index 22ffdf85e..c9ef16ae0 100644
+--- a/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
++++ b/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
+@@ -304,7 +304,7 @@ ENTRY_FUNCTION(start_imx6_zii_rdu2, r0, r1, r2)
+ 	 * When still running in SRAM, we need to setup the DRAM now and load
+ 	 * the remaining image.
+ 	 */
+-	if (get_pc() < MX6_MMDC_PORT0_BASE_ADDR)
++	if (get_pc() < MX6_MMDC_PORT01_BASE_ADDR)
+ 		rdu2_sram_setup();
+ 
+ 	if (__imx6_cpu_revision() == IMX_CHIP_REV_2_0)
 diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
-index 3cd7c5738..a4eb3f196 100644
+index eda8184a0..3cd7c5738 100644
 --- a/arch/arm/mach-imx/esdctl.c
 +++ b/arch/arm/mach-imx/esdctl.c
-@@ -77,10 +77,7 @@ static inline unsigned long imx_v1_sdram_size(void __iomem *esdctlbase, int num)
+@@ -378,12 +378,12 @@ static __maybe_unused struct imx_esdctl_data imx53_data = {
+ };
  
- 	size = (1 << cols) * (1 << rows) * banks * width;
+ static __maybe_unused struct imx_esdctl_data imx6q_data = {
+-	.base0 = MX6_MMDC_PORT0_BASE_ADDR,
++	.base0 = MX6_MMDC_PORT01_BASE_ADDR,
+ 	.add_mem = imx6_mmdc_add_mem,
+ };
  
--	if (size > SZ_64M)
--		size = SZ_64M;
--
--	return size;
-+	return min_t(unsigned long, size, SZ_64M);
+ static __maybe_unused struct imx_esdctl_data imx6ul_data = {
+-	.base0 = 0x80000000,
++	.base0 = MX6_MMDC_PORT0_BASE_ADDR,
+ 	.add_mem = imx6_mmdc_add_mem,
+ };
+ 
+@@ -605,10 +605,10 @@ imx6_barebox_entry(unsigned long membase, void *boarddata)
+ 
+ void __noreturn imx6q_barebox_entry(void *boarddata)
+ {
+-	imx6_barebox_entry(0x10000000, boarddata);
++	imx6_barebox_entry(MX6_MMDC_PORT01_BASE_ADDR, boarddata);
  }
  
- /*
-@@ -105,10 +102,7 @@ static inline unsigned long imx_v2_sdram_size(void __iomem *esdctlbase, int num)
- 
- 	size = (1 << cols) * (1 << rows) * banks * width;
- 
--	if (size > SZ_256M)
--		size = SZ_256M;
--
--	return size;
-+	return min_t(unsigned long, size, SZ_256M);
+ void __noreturn imx6ul_barebox_entry(void *boarddata)
+ {
+-	imx6_barebox_entry(0x80000000, boarddata);
++	imx6_barebox_entry(MX6_MMDC_PORT0_BASE_ADDR, boarddata);
  }
+diff --git a/arch/arm/mach-imx/include/mach/imx6-regs.h b/arch/arm/mach-imx/include/mach/imx6-regs.h
+index ac2aa2109..1ba22b5bc 100644
+--- a/arch/arm/mach-imx/include/mach/imx6-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx6-regs.h
+@@ -117,6 +117,8 @@
  
- /*
-@@ -123,10 +117,7 @@ static inline unsigned long imx_v3_sdram_size(void __iomem *esdctlbase, int num)
- 	if (readl(esdctlbase + IMX_ESDMISC) & ESDMISC_DDR2_8_BANK)
- 		size *= 2;
+ #define MX6_SATA_BASE_ADDR		0x02200000
  
--	if (size > SZ_256M)
--		size = SZ_256M;
--
--	return size;
-+	return min_t(unsigned long, size, SZ_256M);
- }
+-#define MX6_MMDC_PORT0_BASE_ADDR	0x10000000
++#define MX6_MMDC_PORT01_BASE_ADDR	0x10000000
++#define MX6_MMDC_PORT0_BASE_ADDR	0x80000000
++
  
- /*
+ #endif /* __MACH_IMX6_REGS_H */
 -- 
 2.14.3
 
