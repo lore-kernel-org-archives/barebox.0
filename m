@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x229.google.com ([2607:f8b0:400e:c00::229])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6356-0001j1-1B
- for barebox@lists.infradead.org; Tue, 10 Apr 2018 23:53:45 +0000
-Received: by mail-pf0-x229.google.com with SMTP id h69so18215pfe.13
- for <barebox@lists.infradead.org>; Tue, 10 Apr 2018 16:53:31 -0700 (PDT)
+ id 1f6354-0001j2-RC
+ for barebox@lists.infradead.org; Tue, 10 Apr 2018 23:53:44 +0000
+Received: by mail-pf0-x244.google.com with SMTP id y66so28008pfi.7
+ for <barebox@lists.infradead.org>; Tue, 10 Apr 2018 16:53:32 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 10 Apr 2018 16:53:13 -0700
-Message-Id: <20180410235323.5440-1-andrew.smirnov@gmail.com>
+Date: Tue, 10 Apr 2018 16:53:14 -0700
+Message-Id: <20180410235323.5440-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20180410235323.5440-1-andrew.smirnov@gmail.com>
+References: <20180410235323.5440-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,49 +23,137 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/10] Vybrid MMDC support and misc ESDCTL fixes
+Subject: [PATCH 01/10] ARM: i.MX: esdctl: Use IOMEM instead of (void *)
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Everyone:
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/mach-imx/esdctl.c | 42 +++++++++++++++++++++---------------------
+ 1 file changed, 21 insertions(+), 21 deletions(-)
 
-This series is a bit of code I developed to support automatic
-configured DRAM size detection on Vybrid platform as well as some
-small fixes/cleanup I made while looking at esdctl.c.
-
-All feedback is wellcome!
-
-Thanks,
-Andrey Smirnov
-
-Andrey Smirnov (10):
-  ARM: i.MX: esdctl: Use IOMEM instead of (void *)
-  ARM: i.MX51: esdctl: Replace magic value with ESDMISC_DDR2_8_BANK
-  ARM: i.MX6: esdctl: Share memory size calculation code
-  ARM: i.MX6: esdctl: Factor out common code in imx6*_barebox_entry()
-  ARM: i.MX6: esdctl: Use symbolic constants for RAM base address
-  ARM: i.MX: esdctl: Make use of min_t()
-  ARM: i.MX: esdctl: Introduce memory_sdram_size()
-  ARM: i.MX: esdctl: Add support for Vybrid's memory controller
-  i.MX: vf610-twr: Make use of vf610_barebox_entry()
-  i.MX: zii-vf610-dev: Make use of vf610_barebox_entry()
-
- arch/arm/boards/freescale-vf610-twr/lowlevel.c |   5 +-
- arch/arm/boards/zii-imx6q-rdu2/lowlevel.c      |   2 +-
- arch/arm/boards/zii-vf610-dev/lowlevel.c       |   3 +-
- arch/arm/dts/vf610-ddrmc.dtsi                  |  15 +++
- arch/arm/dts/vf610-twr.dts                     |   1 +
- arch/arm/dts/vf610-zii-dev.dtsi                |   4 +-
- arch/arm/mach-imx/esdctl.c                     | 144 ++++++++++++++-----------
- arch/arm/mach-imx/include/mach/esdctl.h        |   2 +
- arch/arm/mach-imx/include/mach/imx6-regs.h     |   4 +-
- arch/arm/mach-imx/include/mach/vf610-ddrmc.h   |  18 ++++
- arch/arm/mach-imx/include/mach/vf610-regs.h    |   2 +
- include/memory.h                               |   8 ++
- 12 files changed, 141 insertions(+), 67 deletions(-)
- create mode 100644 arch/arm/dts/vf610-ddrmc.dtsi
- create mode 100644 arch/arm/mach-imx/include/mach/vf610-ddrmc.h
-
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index 1eebc77b6..895761e73 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -498,9 +498,9 @@ void __noreturn imx1_barebox_entry(void *boarddata)
+ 	unsigned long base, size;
+ 
+ 	upper_or_coalesced_range(MX1_CSD0_BASE_ADDR,
+-			imx_v1_sdram_size((void *)MX1_SDRAMC_BASE_ADDR, 0),
++			imx_v1_sdram_size(IOMEM(MX1_SDRAMC_BASE_ADDR), 0),
+ 			MX1_CSD1_BASE_ADDR,
+-			imx_v1_sdram_size((void *)MX1_SDRAMC_BASE_ADDR, 1),
++			imx_v1_sdram_size(IOMEM(MX1_SDRAMC_BASE_ADDR), 1),
+ 			&base, &size);
+ 
+ 	barebox_arm_entry(base, size, boarddata);
+@@ -511,9 +511,9 @@ void __noreturn imx25_barebox_entry(void *boarddata)
+ 	unsigned long base, size;
+ 
+ 	upper_or_coalesced_range(MX25_CSD0_BASE_ADDR,
+-			imx_v2_sdram_size((void *)MX25_ESDCTL_BASE_ADDR, 0),
++			imx_v2_sdram_size(IOMEM(MX25_ESDCTL_BASE_ADDR), 0),
+ 			MX25_CSD1_BASE_ADDR,
+-			imx_v2_sdram_size((void *)MX25_ESDCTL_BASE_ADDR, 1),
++			imx_v2_sdram_size(IOMEM(MX25_ESDCTL_BASE_ADDR), 1),
+ 			&base, &size);
+ 
+ 	barebox_arm_entry(base, size, boarddata);
+@@ -523,12 +523,12 @@ void __noreturn imx27_barebox_entry(void *boarddata)
+ {
+ 	unsigned long base, size;
+ 
+-	imx_esdctl_v2_disable_default((void *)MX27_ESDCTL_BASE_ADDR);
++	imx_esdctl_v2_disable_default(IOMEM(MX27_ESDCTL_BASE_ADDR));
+ 
+ 	upper_or_coalesced_range(MX27_CSD0_BASE_ADDR,
+-			imx_v2_sdram_size((void *)MX27_ESDCTL_BASE_ADDR, 0),
++			imx_v2_sdram_size(IOMEM(MX27_ESDCTL_BASE_ADDR), 0),
+ 			MX27_CSD1_BASE_ADDR,
+-			imx_v2_sdram_size((void *)MX27_ESDCTL_BASE_ADDR, 1),
++			imx_v2_sdram_size(IOMEM(MX27_ESDCTL_BASE_ADDR), 1),
+ 			&base, &size);
+ 
+ 	barebox_arm_entry(base, size, boarddata);
+@@ -538,12 +538,12 @@ void __noreturn imx31_barebox_entry(void *boarddata)
+ {
+ 	unsigned long base, size;
+ 
+-	imx_esdctl_v2_disable_default((void *)MX31_ESDCTL_BASE_ADDR);
++	imx_esdctl_v2_disable_default(IOMEM(MX31_ESDCTL_BASE_ADDR));
+ 
+ 	upper_or_coalesced_range(MX31_CSD0_BASE_ADDR,
+-			imx_v2_sdram_size((void *)MX31_ESDCTL_BASE_ADDR, 0),
++			imx_v2_sdram_size(IOMEM(MX31_ESDCTL_BASE_ADDR), 0),
+ 			MX31_CSD1_BASE_ADDR,
+-			imx_v2_sdram_size((void *)MX31_ESDCTL_BASE_ADDR, 1),
++			imx_v2_sdram_size(IOMEM(MX31_ESDCTL_BASE_ADDR), 1),
+ 			&base, &size);
+ 
+ 	barebox_arm_entry(base, size, boarddata);
+@@ -553,12 +553,12 @@ void __noreturn imx35_barebox_entry(void *boarddata)
+ {
+ 	unsigned long base, size;
+ 
+-	imx_esdctl_v2_disable_default((void *)MX35_ESDCTL_BASE_ADDR);
++	imx_esdctl_v2_disable_default(IOMEM(MX35_ESDCTL_BASE_ADDR));
+ 
+ 	upper_or_coalesced_range(MX35_CSD0_BASE_ADDR,
+-			imx_v2_sdram_size((void *)MX35_ESDCTL_BASE_ADDR, 0),
++			imx_v2_sdram_size(IOMEM(MX35_ESDCTL_BASE_ADDR), 0),
+ 			MX35_CSD1_BASE_ADDR,
+-			imx_v2_sdram_size((void *)MX35_ESDCTL_BASE_ADDR, 1),
++			imx_v2_sdram_size(IOMEM(MX35_ESDCTL_BASE_ADDR), 1),
+ 			&base, &size);
+ 
+ 	barebox_arm_entry(base, size, boarddata);
+@@ -569,9 +569,9 @@ void __noreturn imx51_barebox_entry(void *boarddata)
+ 	unsigned long base, size;
+ 
+ 	upper_or_coalesced_range(MX51_CSD0_BASE_ADDR,
+-			imx_v3_sdram_size((void *)MX51_ESDCTL_BASE_ADDR, 0),
++			imx_v3_sdram_size(IOMEM(MX51_ESDCTL_BASE_ADDR), 0),
+ 			MX51_CSD1_BASE_ADDR,
+-			imx_v3_sdram_size((void *)MX51_ESDCTL_BASE_ADDR, 1),
++			imx_v3_sdram_size(IOMEM(MX51_ESDCTL_BASE_ADDR), 1),
+ 			&base, &size);
+ 
+ 	barebox_arm_entry(base, size, boarddata);
+@@ -582,9 +582,9 @@ void __noreturn imx53_barebox_entry(void *boarddata)
+ 	unsigned long base, size;
+ 
+ 	upper_or_coalesced_range(MX53_CSD0_BASE_ADDR,
+-			imx_v4_sdram_size((void *)MX53_ESDCTL_BASE_ADDR, 0),
++			imx_v4_sdram_size(IOMEM(MX53_ESDCTL_BASE_ADDR), 0),
+ 			MX53_CSD1_BASE_ADDR,
+-			imx_v4_sdram_size((void *)MX53_ESDCTL_BASE_ADDR, 1),
++			imx_v4_sdram_size(IOMEM(MX53_ESDCTL_BASE_ADDR), 1),
+ 			&base, &size);
+ 
+ 	barebox_arm_entry(base, size, boarddata);
+@@ -592,8 +592,8 @@ void __noreturn imx53_barebox_entry(void *boarddata)
+ 
+ void __noreturn imx6q_barebox_entry(void *boarddata)
+ {
+-	u64 size_cs0 = imx6_mmdc_sdram_size((void *)MX6_MMDC_P0_BASE_ADDR, 0);
+-	u64 size_cs1 = imx6_mmdc_sdram_size((void *)MX6_MMDC_P0_BASE_ADDR, 1);
++	u64 size_cs0 = imx6_mmdc_sdram_size(IOMEM(MX6_MMDC_P0_BASE_ADDR), 0);
++	u64 size_cs1 = imx6_mmdc_sdram_size(IOMEM(MX6_MMDC_P0_BASE_ADDR), 1);
+ 	u64 total    = size_cs0 + size_cs1;
+ 
+ 	resource_size_t size = min(total, (u64)IMX6_MAX_SDRAM_SIZE);
+@@ -603,8 +603,8 @@ void __noreturn imx6q_barebox_entry(void *boarddata)
+ 
+ void __noreturn imx6ul_barebox_entry(void *boarddata)
+ {
+-	u64 size_cs0 = imx6_mmdc_sdram_size((void *)MX6_MMDC_P0_BASE_ADDR, 0);
+-	u64 size_cs1 = imx6_mmdc_sdram_size((void *)MX6_MMDC_P0_BASE_ADDR, 1);
++	u64 size_cs0 = imx6_mmdc_sdram_size(IOMEM(MX6_MMDC_P0_BASE_ADDR), 0);
++	u64 size_cs1 = imx6_mmdc_sdram_size(IOMEM(MX6_MMDC_P0_BASE_ADDR), 1);
+ 	u64 total    = size_cs0 + size_cs1;
+ 
+ 	resource_size_t size = min(total, (u64)IMX6_MAX_SDRAM_SIZE);
 -- 
 2.14.3
 
