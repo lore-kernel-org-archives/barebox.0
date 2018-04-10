@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6BJs-0004M8-7J
- for barebox@lists.infradead.org; Wed, 11 Apr 2018 08:41:33 +0000
-Date: Wed, 11 Apr 2018 10:41:20 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180411084120.cxoyjrvp7f52aus2@pengutronix.de>
-References: <20180326192025.28809-1-l.stach@pengutronix.de>
- <20180326192025.28809-4-l.stach@pengutronix.de>
- <20180405075402.gbplqqwoubu7cqpg@pengutronix.de>
- <1523357612.4981.5.camel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1523357612.4981.5.camel@pengutronix.de>
+ id 1f62qP-0004hU-Pj
+ for barebox@lists.infradead.org; Tue, 10 Apr 2018 23:38:35 +0000
+Received: by mail-pf0-x244.google.com with SMTP id y69so6588pfb.5
+ for <barebox@lists.infradead.org>; Tue, 10 Apr 2018 16:38:23 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 10 Apr 2018 16:38:05 -0700
+Message-Id: <20180410233805.4191-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,112 +16,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 04/10] ARM: add file for HYP mode related setup
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: Make use of ALIGN_DOWN macro in barebox-arm.h
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Tue, Apr 10, 2018 at 12:53:32PM +0200, Lucas Stach wrote:
-> Am Donnerstag, den 05.04.2018, 09:54 +0200 schrieb Sascha Hauer:
-> > On Mon, Mar 26, 2018 at 09:20:19PM +0200, Lucas Stach wrote:
-> > > This adds routines to add hyp mode vectors and switch back to HYP
-> > > mode from SVC. This is needed in both the PBL and Barebox proper.
-> > > =
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/include/asm/barebox-arm.h | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-> > > > > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> > > > > Tested-by: Roland Hieber <r.hieber@pengutronix.de>
-> > > ---
-> > > v3:
-> > > - fix whitespace
-> > > - use __BARE_INIT
-> > > ---
-> > > =A0arch/arm/cpu/Makefile=A0=A0=A0=A0=A0=A0=A0=A0=A0|=A0=A0=A04 ++
-> > > =A0arch/arm/cpu/hyp.S=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0| 116 ++++++=
-++++++++++++++++++++++++++++++++++++
-> > > =A0arch/arm/cpu/sm_as.S=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0|=A0=A011 ----
-> > > =A0arch/arm/include/asm/secure.h |=A0=A0=A08 +++
-> > > =A04 files changed, 128 insertions(+), 11 deletions(-)
-> > > =A0create mode 100644 arch/arm/cpu/hyp.S
-> > > =
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 4b270e7de..67e4d964d 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -114,8 +114,7 @@ static inline unsigned long arm_mem_ttb(unsigned long membase,
+ 					unsigned long endmem)
+ {
+ 	endmem = arm_mem_stack(membase, endmem);
+-	endmem &= ~(SZ_16K - 1);
+-	endmem -= SZ_16K;
++	endmem = ALIGN_DOWN(endmem, SZ_16K) - SZ_16K;
+ 
+ 	return endmem;
+ }
+@@ -138,7 +137,7 @@ static inline unsigned long arm_mem_ramoops(unsigned long membase,
+ 	endmem = arm_mem_ttb(membase, endmem);
+ #ifdef CONFIG_FS_PSTORE_RAMOOPS
+ 	endmem -= CONFIG_FS_PSTORE_RAMOOPS_SIZE;
+-	endmem &= ~(SZ_4K - 1); /* Align to 4K */
++	endmem = ALIGN_DOWN(endmem, SZ_4K);
+ #endif
+ 
+ 	return endmem;
+@@ -151,9 +150,7 @@ static inline unsigned long arm_mem_barebox_image(unsigned long membase,
+ 	endmem = arm_mem_ramoops(membase, endmem);
+ 
+ 	if (IS_ENABLED(CONFIG_RELOCATABLE)) {
+-		endmem -= size;
+-		endmem &= ~(SZ_1M - 1);
+-		return endmem;
++		return ALIGN_DOWN(endmem - size, SZ_1M);
+ 	} else {
+ 		if (TEXT_BASE >= membase && TEXT_BASE < endmem)
+ 			return TEXT_BASE;
+-- 
+2.14.3
 
-> > > diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-> > > index 13fe12c31f6f..f86dff975bb4 100644
-> > > --- a/arch/arm/cpu/Makefile
-> > > +++ b/arch/arm/cpu/Makefile
-> > > @@ -9,6 +9,10 @@ obj-$(CONFIG_ARM_EXCEPTIONS) +=3D exceptions.o
-> > > =A0obj-$(CONFIG_MMU) +=3D mmu.o mmu-early.o
-> > > =A0pbl-$(CONFIG_MMU) +=3D mmu-early.o
-> > > =A0lwl-y +=3D lowlevel.o
-> > > +obj-y +=3D hyp.o
-> > > +AFLAGS_hyp.o :=3D-Wa,-march=3Darmv7-a -Wa,-mcpu=3Dall
-> > > +pbl-y +=3D hyp.o
-> > > +AFLAGS_pbl-hyp.o :=3D-Wa,-march=3Darmv7-a -Wa,-mcpu=3Dall
-> > > =A0endif
-> > > =A0
-> > > =A0obj-$(CONFIG_ARM_EXCEPTIONS) +=3D interrupts.o
-> > > diff --git a/arch/arm/cpu/hyp.S b/arch/arm/cpu/hyp.S
-> > > new file mode 100644
-> > > index 000000000000..1314b56eab25
-> > > --- /dev/null
-> > > +++ b/arch/arm/cpu/hyp.S
-> > > @@ -0,0 +1,116 @@
-> > > +#include <linux/linkage.h>
-> > > +#include <asm/system.h>
-> > > +#include <asm/opcodes-virt.h>
-> > > +#include <init.h>
-> > > +
-> > > +.arch_extension sec
-> > > +.arch_extension virt
-> > > +
-> > > +__BARE_INIT
-> > > +
-> > > +.data
-> > > > > +	.align=A0=A02
-> > > +ENTRY(__boot_cpu_mode)
-> > > > > +	.long=A0=A0=A00
-> > > +.text
-> > > +
-> > > +ENTRY(__hyp_install)
-> > > > > > > +	mrs	r12, cpsr
-> > > > > > > +	and	r12, r12, #MODE_MASK
-> > > +
-> > > > > +	@ Save the initial CPU state
-> > > > > > > +	adr	r0, .L__boot_cpu_mode_offset
-> > > > > > > +	ldr	r1, [r0]
-> > > +	str	r12, [r0, r1]
-> > =
-
-> > Naa, this won't work. You save the cpsr value in __boot_cpu_mode, but
-> > this variable exists both in PBL and regular barebox, __hyp_install
-> > is called multiple times and cpsr is modified right after saving it.
-> =
-
-> It does. ;)
-> =
-
-> I guess its non-obvious from the code flow, but what we do is to drop
-> down to SVC in the PBL, then jump back to HYP before starting barebox
-> proper and the dropping down to SVC again on barebox entry.
-> All in all this is less-than-pretty, but IMHO it's the lesser evil than
-> trying to implement some communication channel from PBL to barebox
-> proper to pass information like this.
-> =
-
-> So I guess this code needs some more comments...
-
-Yep ;)
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
