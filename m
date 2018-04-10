@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6355-0001jD-Nr
- for barebox@lists.infradead.org; Tue, 10 Apr 2018 23:53:44 +0000
-Received: by mail-pf0-x243.google.com with SMTP id p6so32027pfn.4
- for <barebox@lists.infradead.org>; Tue, 10 Apr 2018 16:53:33 -0700 (PDT)
+ id 1f6355-0001jF-No
+ for barebox@lists.infradead.org; Tue, 10 Apr 2018 23:53:45 +0000
+Received: by mail-pf0-x243.google.com with SMTP id l27so18824pfk.12
+ for <barebox@lists.infradead.org>; Tue, 10 Apr 2018 16:53:35 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 10 Apr 2018 16:53:15 -0700
-Message-Id: <20180410235323.5440-3-andrew.smirnov@gmail.com>
+Date: Tue, 10 Apr 2018 16:53:17 -0700
+Message-Id: <20180410235323.5440-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20180410235323.5440-1-andrew.smirnov@gmail.com>
 References: <20180410235323.5440-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,42 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/10] ARM: i.MX51: esdctl: Replace magic value with
- ESDMISC_DDR2_8_BANK
+Subject: [PATCH 04/10] ARM: i.MX6: esdctl: Factor out common code in
+ imx6*_barebox_entry()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/esdctl.c              | 2 +-
- arch/arm/mach-imx/include/mach/esdctl.h | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/esdctl.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
 diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
-index 895761e73..1d6fa2995 100644
+index a7114effa..eda8184a0 100644
 --- a/arch/arm/mach-imx/esdctl.c
 +++ b/arch/arm/mach-imx/esdctl.c
-@@ -120,7 +120,7 @@ static inline unsigned long imx_v3_sdram_size(void __iomem *esdctlbase, int num)
+@@ -595,16 +595,20 @@ void __noreturn imx53_barebox_entry(void *boarddata)
+ 	barebox_arm_entry(base, size, boarddata);
+ }
  
- 	size = imx_v2_sdram_size(esdctlbase, num);
+-void __noreturn imx6q_barebox_entry(void *boarddata)
++static void __noreturn
++imx6_barebox_entry(unsigned long membase, void *boarddata)
+ {
+-	barebox_arm_entry(0x10000000,
++	barebox_arm_entry(membase,
+ 			  imx6_mmdc_sdram_size(IOMEM(MX6_MMDC_P0_BASE_ADDR)),
+ 			  boarddata);
+ }
  
--	if (readl(esdctlbase + IMX_ESDMISC) & (1 << 6))
-+	if (readl(esdctlbase + IMX_ESDMISC) & ESDMISC_DDR2_8_BANK)
- 		size *= 2;
- 
- 	if (size > SZ_256M)
-diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/include/mach/esdctl.h
-index 66dcc8974..53710b0f2 100644
---- a/arch/arm/mach-imx/include/mach/esdctl.h
-+++ b/arch/arm/mach-imx/include/mach/esdctl.h
-@@ -48,6 +48,7 @@
- #define ESDMISC_MDDR_MDIS		0x00000010
- #define ESDMISC_LHD			0x00000020
- #define ESDMISC_SDRAMRDY		0x80000000
-+#define ESDMISC_DDR2_8_BANK		BIT(6)
- 
- #define	ESDCFGx_tXP_MASK 		0x00600000
- #define ESDCFGx_tXP_1			0x00000000
++void __noreturn imx6q_barebox_entry(void *boarddata)
++{
++	imx6_barebox_entry(0x10000000, boarddata);
++}
++
+ void __noreturn imx6ul_barebox_entry(void *boarddata)
+ {
+-	barebox_arm_entry(0x80000000,
+-			  imx6_mmdc_sdram_size(IOMEM(MX6_MMDC_P0_BASE_ADDR)),
+-			  boarddata);
++	imx6_barebox_entry(0x80000000, boarddata);
+ }
 -- 
 2.14.3
 
