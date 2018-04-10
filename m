@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
+Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f5iDa-0008Pr-DZ
- for barebox@lists.infradead.org; Tue, 10 Apr 2018 01:37:07 +0000
-Received: by mail-pl0-x242.google.com with SMTP id b6-v6so6322049pla.11
- for <barebox@lists.infradead.org>; Mon, 09 Apr 2018 18:36:56 -0700 (PDT)
+ id 1f5iDb-0008QC-Mc
+ for barebox@lists.infradead.org; Tue, 10 Apr 2018 01:37:09 +0000
+Received: by mail-pl0-x244.google.com with SMTP id 91-v6so6348735pld.3
+ for <barebox@lists.infradead.org>; Mon, 09 Apr 2018 18:36:57 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  9 Apr 2018 18:36:36 -0700
-Message-Id: <20180410013637.2513-1-andrew.smirnov@gmail.com>
+Date: Mon,  9 Apr 2018 18:36:37 -0700
+Message-Id: <20180410013637.2513-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20180410013637.2513-1-andrew.smirnov@gmail.com>
+References: <20180410013637.2513-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,7 +23,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] i.MX53/TX53: Adjust to latest get_runtime_offset()
+Subject: [PATCH 2/2] boards: samx6: Adjust to latest get_runtime_offset()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
@@ -40,21 +42,21 @@ noise if this has already been fixed.
 Thanks,
 Andrey Smirnov
 
- arch/arm/boards/karo-tx53/lowlevel.c | 2 +-
+ arch/arm/boards/kontron-samx6i/lowlevel.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/karo-tx53/lowlevel.c b/arch/arm/boards/karo-tx53/lowlevel.c
-index cb324b200..a0bce8a78 100644
---- a/arch/arm/boards/karo-tx53/lowlevel.c
-+++ b/arch/arm/boards/karo-tx53/lowlevel.c
-@@ -47,7 +47,7 @@ static void __imx53_tx53_init(int is_xx30)
+diff --git a/arch/arm/boards/kontron-samx6i/lowlevel.c b/arch/arm/boards/kontron-samx6i/lowlevel.c
+index 4113ddbb4..5c3500704 100644
+--- a/arch/arm/boards/kontron-samx6i/lowlevel.c
++++ b/arch/arm/boards/kontron-samx6i/lowlevel.c
+@@ -47,7 +47,7 @@ static void __noreturn start_imx6_samx6i_common(void *fdt_blob_fixed_offset)
  	if (IS_ENABLED(CONFIG_DEBUG_LL))
  		setup_uart();
  
 -	fdt = fdt_blob_fixed_offset - get_runtime_offset();
 +	fdt = fdt_blob_fixed_offset + get_runtime_offset();
  
- 	imx53_barebox_entry(fdt);
+ 	barebox_arm_entry(0x10000000, size, fdt);
  }
 -- 
 2.14.3
