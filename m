@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f5nOE-0002G7-C0
- for barebox@lists.infradead.org; Tue, 10 Apr 2018 07:08:28 +0000
-Date: Tue, 10 Apr 2018 09:08:14 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180410070814.y6meuwetfngkosvc@pengutronix.de>
-References: <20180130112523.20258-1-r.hieber@pengutronix.de>
- <20180409085933.27413-1-r.hieber@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180409085933.27413-1-r.hieber@pengutronix.de>
+ id 1f5qcE-0007H1-Ae
+ for barebox@lists.infradead.org; Tue, 10 Apr 2018 10:35:08 +0000
+Message-ID: <1523356494.4981.3.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Tue, 10 Apr 2018 12:34:54 +0200
+In-Reply-To: <20180405074224.mvjlnvmwfhgmn3m3@pengutronix.de>
+References: <20180326192025.28809-1-l.stach@pengutronix.de>
+ <20180326192025.28809-7-l.stach@pengutronix.de>
+ <20180405074224.mvjlnvmwfhgmn3m3@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,101 +19,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RESEND] doc: bcm283x: update documentation for Raspberry Pi
-To: Roland Hieber <r.hieber@pengutronix.de>
+Subject: Re: [PATCH v3 07/10] ARM: install HYP vectors at PBL and Barebox entry
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Apr 09, 2018 at 10:59:33AM +0200, Roland Hieber wrote:
-> The old way does not seem to work for RPi 3, as the UART pins are
-> mapped differently and the NOOBS bootcode does not seem to read a
-> config.txt.
-> 
-> Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
-> ---
->  Documentation/boards/bcm2835.rst | 34 ++++++++++++++++++++++++++--------
->  1 file changed, 26 insertions(+), 8 deletions(-)
-> ---
-> Although Sascha said he had applied the patch, I cannot find traces of
-> it in the current master. It probably got lost, so I'm resending it.
-> Note that this patch is independent of Lucas' RPi patch series and also
-> applies to the current state of RPi support.
-
-Applied, thanks. Yes, now I *really* did.
-
-Sascha
-
-> 
->  - Roland
-> 
-> diff --git a/Documentation/boards/bcm2835.rst b/Documentation/boards/bcm2835.rst
-> index 13cebb01c4..1a78cfba3c 100644
-> --- a/Documentation/boards/bcm2835.rst
-> +++ b/Documentation/boards/bcm2835.rst
-> @@ -1,17 +1,35 @@
-> -Broadcom BCM2835
-> +Broadcom BCM283x
->  ================
->  
->  Raspberry Pi
->  ------------
->  
-> -  1. Prepare a card with a FAT filesystem. Download a tiny NOOBS LITE
-> -     zip archive and unpack it into FAT partition.
-> -     See http://www.raspberrypi.org/help/noobs-setup/ for details.
-> +  1. Prepare an SD or microSD card with a FAT filesystem of at least 30 MB in size.
-> +       
-> +  2. Download the `Raspberry Pi firmware`_ (120 MB), unzip it, and copy the
-> +     contents of the ``boot/`` folder to your card.
->  
-> -  2. Compile ``barebox.bin`` image (use ``rpi_defconfig``).
-> -     Copy it to the SD/microSD card and name it ``recovery.img``.
-> +  3. Use ``make rpi_defconfig; make`` to build barebox. This will create the following images:
->  
-> -  3. Connect to board's UART (115200 8N1);
-> +     - ``images/barebox-raspberry-pi-1.img`` for the BCM2835/ARM1176JZF-S (Raspberry Pi 1)
-> +     - ``images/barebox-raspberry-pi-2.img`` for the BCM2836/CORTEX-A7 (Raspberry Pi 2)
-> +     - ``images/barebox-raspberry-pi-3.img`` for the BCM2837/CORTEX-A53 (Raspberry Pi 3, Raspberry Pi Zero)
-> +    
-> +     Copy the respective image for your model to your SD card and name it
-> +     ``barebox.img``.
-> +
-> +  4. Create a text file ``config.txt`` on the SD card with the following content::
-> +
-> +         kernel=barebox.img
-> +         enable_uart=1
-> +         dtoverlay=pi3-miniuart-bt
-> +
-> +     (For more information, refer to the `documentation for config.txt`_.)
-> +
-> +  5. Connect to board's UART (115200 8N1);
->       Use PIN6 (GND), PIN8 (UART_TX), PIN10 (UART_RX) pins.
->  
-> -  4. Turn board's power on.
-> +  6. Turn board's power on.
-> +
-> +.. _Raspberry Pi firmware: https://codeload.github.com/raspberrypi/firmware/zip/80e1fbeb78f9df06701d28c0ed3a3060a3f557ef
-> +.. _documentation for config.txt: https://www.raspberrypi.org/documentation/configuration/config-txt/
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gRG9ubmVyc3RhZywgZGVuIDA1LjA0LjIwMTgsIDA5OjQyICswMjAwIHNjaHJpZWIgU2FzY2hh
+IEhhdWVyOgo+IE9uIE1vbiwgTWFyIDI2LCAyMDE4IGF0IDA5OjIwOjIyUE0gKzAyMDAsIEx1Y2Fz
+IFN0YWNoIHdyb3RlOgo+ID4gSWYgdGhlIENQVSB3YXMgYWxyZWFkeSBpbiBIWVAgbW9kZSB3aGVu
+IGVudGVyaW5nIHRoZSBQQkwsIGluc3RhbGwgYQo+ID4gc2ltcGxlIHRyYXAgaGFuZGxlciB0byBh
+bGxvdyB0byBnZXQgYmFjayBmcm9tIFNWQyB0byBIWVAgYmVmb3JlCj4gPiBzd2l0Y2hpbmcgdG8g
+SFlQIG1vZGUuCj4gPiAKPiA+IEFzIHRoZSB2ZWN0b3JzIGFyZSBwYXJ0IG9mIHRoZSBjdXJyZW50
+bHkgcnVubmluZyBiaW5hcnksIHdlIG5lZWQgdG8KPiA+IGRvIHRoZSBzYW1lIHNldHVwIHdoZW4g
+c3RhcnRpbmcgdGhlIHJlYWwgQmFyZWJveCBiaW5hcnksIGFzIHRoZSBQQkwKPiA+IHNldHVwIHZl
+Y3RvcnMgbWlnaHQgZ2V0IG92ZXJ3cml0dGVuLiBUbyBkbyB0aGlzIHdlIHRyYXAgaW50byBIWVAg
+bW9kZQo+ID4ganVzdCBiZWZvcmUganVtcGluZyB0byBCYXJlYm94IGFuZCB0aGVuIHJlLWRvIHRo
+ZSB2ZWN0b3Igc2V0dXAgYW5kCj4gPiBTVkMgc3dpdGNoIGFzIHRoZSBmaXJzdCB0aGluZyBpbiBC
+YXJlYm94IHByb3Blci4KPiA+IAo+ID4gPiA+IFNpZ25lZC1vZmYtYnk6IEx1Y2FzIFN0YWNoIDxs
+LnN0YWNoQHBlbmd1dHJvbml4LmRlPgo+ID4gPiA+IFRlc3RlZC1ieTogUm9sYW5kIEhpZWJlciA8
+ci5oaWViZXJAcGVuZ3V0cm9uaXguZGU+Cj4gPiAtLS0KPiA+IMKgYXJjaC9hcm0vY3B1L2xvd2xl
+dmVsLlPCoMKgwqB8IDMgKysrCj4gPiDCoGFyY2gvYXJtL2NwdS9zdGFydC1wYmwuY8KgwqB8IDQg
+KysrKwo+ID4gwqBhcmNoL2FybS9jcHUvc3RhcnQuY8KgwqDCoMKgwqDCoHwgMyArKysKPiA+IMKg
+YXJjaC9hcm0vY3B1L3VuY29tcHJlc3MuYyB8IDQgKysrKwo+ID4gwqA0IGZpbGVzIGNoYW5nZWQs
+IDE0IGluc2VydGlvbnMoKykKPiA+IAo+ID4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2NwdS9sb3ds
+ZXZlbC5TIGIvYXJjaC9hcm0vY3B1L2xvd2xldmVsLlMKPiA+IGluZGV4IDQzNjY1OTgxZTQ4Yi4u
+MTNkZmU0OTZhZDE3IDEwMDY0NAo+ID4gLS0tIGEvYXJjaC9hcm0vY3B1L2xvd2xldmVsLlMKPiA+
+ICsrKyBiL2FyY2gvYXJtL2NwdS9sb3dsZXZlbC5TCj4gPiBAQCAtOCw2ICs4LDkgQEAgRU5UUlko
+YXJtX2NwdV9sb3dsZXZlbF9pbml0KQo+ID4gPiA+IMKgCS8qIHNhdmUgbHIsIHNpbmNlIGl0IG1h
+eSBiZSBiYW5rZWQgYXdheSB3aXRoIGEgcHJvY2Vzc29yIG1vZGUgY2hhbmdlICovCj4gPiA+ID4g
+PiA+IMKgCW1vdglyMiwgbHIKPiA+IMKgCj4gPiA+ID4gKwkvKiBjYXJlZnVsOiB0aGUgaHlwIGlu
+c3RhbGwgY29ycnVwdHMgcjAgYW5kIHIxICovCj4gPiA+ID4gPiA+ICsJYmwJX19oeXBfaW5zdGFs
+bAo+ID4gKwo+ID4gPiA+IMKgCS8qIHNldCB0aGUgY3B1IHRvIFNWQzMyIG1vZGUsIG1hc2sgaXJx
+IGFuZCBmaXEgKi8KPiA+ID4gPiA+ID4gwqAJbXJzCXIxMiwgY3Bzcgo+ID4gPiA+ID4gPiDCoAll
+b3IJcjEyLCByMTIsICNIWVBfTU9ERQo+ID4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2NwdS9zdGFy
+dC1wYmwuYyBiL2FyY2gvYXJtL2NwdS9zdGFydC1wYmwuYwo+ID4gaW5kZXggZTg1MWI0YTJkYTVl
+Li5lMDc5MzU3OWUyZTggMTAwNjQ0Cj4gPiAtLS0gYS9hcmNoL2FybS9jcHUvc3RhcnQtcGJsLmMK
+PiA+ICsrKyBiL2FyY2gvYXJtL2NwdS9zdGFydC1wYmwuYwo+ID4gQEAgLTI2LDYgKzI2LDcgQEAK
+PiA+IMKgI2luY2x1ZGUgPGFzbS9iYXJlYm94LWFybS1oZWFkLmg+Cj4gPiDCoCNpbmNsdWRlIDxh
+c20tZ2VuZXJpYy9tZW1vcnlfbGF5b3V0Lmg+Cj4gPiDCoCNpbmNsdWRlIDxhc20vc2VjdGlvbnMu
+aD4KPiA+ICsjaW5jbHVkZSA8YXNtL3NlY3VyZS5oPgo+ID4gwqAjaW5jbHVkZSA8YXNtL3BndGFi
+bGUuaD4KPiA+IMKgI2luY2x1ZGUgPGFzbS9jYWNoZS5oPgo+ID4gwqAjaW5jbHVkZSA8YXNtL3Vu
+YWxpZ25lZC5oPgo+ID4gQEAgLTEwMCw1ICsxMDEsOCBAQCBfX25vcmV0dXJuIHZvaWQgYmFyZWJv
+eF9zaW5nbGVfcGJsX3N0YXJ0KHVuc2lnbmVkIGxvbmcgbWVtYmFzZSwKPiA+ID4gPiDCoAllbHNl
+Cj4gPiA+ID4gwqAJCWJhcmVib3ggPSAodm9pZCAqKWJhcmVib3hfYmFzZTsKPiA+IMKgCj4gPiA+
+ID4gKwlpZiAoX19ib290X2NwdV9tb2RlID09IEhZUF9NT0RFKQo+ID4gPiA+ICsJCWFybXY3X3N3
+aXRjaF90b19oeXAoKTsKPiA+ICsKPiA+ID4gPiDCoAliYXJlYm94KG1lbWJhc2UsIG1lbXNpemUs
+IGJvYXJkZGF0YSk7Cj4gPiDCoH0KPiA+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9jcHUvc3RhcnQu
+YyBiL2FyY2gvYXJtL2NwdS9zdGFydC5jCj4gPiBpbmRleCAxNzFlNmFkMGViN2EuLmEwZGI2NDM2
+ZjM4NyAxMDA2NDQKPiA+IC0tLSBhL2FyY2gvYXJtL2NwdS9zdGFydC5jCj4gPiArKysgYi9hcmNo
+L2FybS9jcHUvc3RhcnQuYwo+ID4gQEAgLTI0LDYgKzI0LDcgQEAKPiA+IMKgI2luY2x1ZGUgPGFz
+bS9iYXJlYm94LWFybS1oZWFkLmg+Cj4gPiDCoCNpbmNsdWRlIDxhc20tZ2VuZXJpYy9tZW1vcnlf
+bGF5b3V0Lmg+Cj4gPiDCoCNpbmNsdWRlIDxhc20vc2VjdGlvbnMuaD4KPiA+ICsjaW5jbHVkZSA8
+YXNtL3NlY3VyZS5oPgo+ID4gwqAjaW5jbHVkZSA8YXNtL3VuYWxpZ25lZC5oPgo+ID4gwqAjaW5j
+bHVkZSA8YXNtL2NhY2hlLmg+Cj4gPiDCoCNpbmNsdWRlIDxtZW1vcnkuaD4KPiA+IEBAIC0xNDUs
+NiArMTQ2LDggQEAgX19ub3JldHVybiB2b2lkIGJhcmVib3hfbm9uX3BibF9zdGFydCh1bnNpZ25l
+ZCBsb25nIG1lbWJhc2UsCj4gPiA+ID4gwqAJdW5zaWduZWQgbG9uZyBtYWxsb2Nfc3RhcnQsIG1h
+bGxvY19lbmQ7Cj4gPiA+ID4gwqAJdW5zaWduZWQgbG9uZyBiYXJlYm94X3NpemUgPSBiYXJlYm94
+X2ltYWdlX3NpemUgKyBNQVhfQlNTX1NJWkU7Cj4gPiDCoAo+ID4gKwlhcm12N19oeXBfaW5zdGFs
+bCgpOwo+IAo+IENhbGxpbmcgYSBhcm12NyBzcGVjaWZpYyBmdW5jdGlvbiBpbiBhIGdlbmVyaWMg
+Y29kZSBwYXRoIGlzIG5vdCBzbyBuaWNlLgo+IElmIHRoaXMgaXMgcmVhbGx5IG5lY2Vzc2FyeSB0
+aGVuIEkgc3VnZ2VzdCB0byAjaWZkZWYgaXQgaGVyZSByYXRoZXIgdGhhbgo+IGluIHRoZSBoZWFk
+ZXIgZmlsZSAod2hlcmUgYXJtdjdfaHlwX2luc3RhbGwoKSBleHBhbmRzIHRvIGEgbm9vcCBmb3IK
+PiBhcm12OC4gQW5kIHdoYXQgYWJvdXQgdGhlIG9sZGVyIGFyY2hpdGVjdHVyZXM/IEEgcXVpY2sg
+dGVzdCByZXZlYWxlZAo+IHRoaXMgd29ya3Mgb24gYXJtdjUsIGJ1dCBpcyB0aGlzIGludGVudGlv
+bmFsIG9yIGJ5IGFjY2lkZW50PwoKWWVwLCBpdCBpcyBjb2RlZCB0byBiZSBhIHF1aWNrIHJldHVy
+biBvbiBvbGRlciA8IEFSTXY3IHdpdGggdGhlCmV4ZWN1dGVkIGluc3RydWN0aW9ucyBiZWluZyBj
+b21wYXRpYmxlLiBJJ2xsIHN0aWxsIGNoYW5nZSB0aGlzIHRvIGEKSVNfRU5BQkxFRCBjb25kaXRp
+b24sIGFzIHRoaXMgbWlnaHQgc2F2ZSBzb21lIGNvZGUgc2l6ZSBpZiBvbmx5ICFBUk12NwphcmNo
+ZXMgYXJlIGVuYWJsZWQgaW4gdGhlIGNvbmZpZy4KClRoYW5rcywKTHVjYXMKCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
+CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
