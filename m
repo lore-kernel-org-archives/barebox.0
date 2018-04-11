@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6Bla-00080l-JL
- for barebox@lists.infradead.org; Wed, 11 Apr 2018 09:10:16 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1f6FmG-0004gY-DR
+ for barebox@lists.infradead.org; Wed, 11 Apr 2018 13:27:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 11 Apr 2018 11:09:50 +0200
-Message-Id: <20180411090950.17924-1-s.hauer@pengutronix.de>
+Date: Wed, 11 Apr 2018 15:26:50 +0200
+Message-Id: <20180411132654.10620-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,45 +19,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX53 TX53: remove duplicate _imx53
+Subject: [PATCH 0/4] Fix NAND controller clock for i.MX6plus
 To: Barebox List <barebox@lists.infradead.org>
-Cc: mgr@pengutronix.de
 
-The pblx-y variables for the TX53 have _imx53 twice in their names. With
-this the names do not match the names in the FILE_* variables. This
-results in the make system removing the pblx files as intermediate
-files. Fix the names.
+The i.MX6 plus SoC variants have some changes in the clock controller,
+start integrating them beginning with the NAND controller clock.
+Before doing so we have to add proper detection code for the i.MX6 plus.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- images/Makefile.imx | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Sascha Hauer (4):
+  ARM: i.MX6: de-inline i.MX6 type detection
+  ARM: i.MX6: factor out function to read si_rev
+  ARM: i.MX6: Add cpu type for 'plus' variants
+  clk: i.MX6: Fix enfc_sel for i.MX6dqp
 
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index ac46d51c59..90da95d4d0 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -139,17 +139,17 @@ CFG_start_imx53_mba53_1gib.pblx.imximg = $(board)/tqma53/flash-header-tq-tqma53-
- FILE_barebox-tq-mba53-1gib.img = start_imx53_mba53_1gib.pblx.imximg
- image-$(CONFIG_MACH_TQMA53) += barebox-tq-mba53-1gib.img
- 
--pblx-$(CONFIG_MACH_TX53) += start_imx53_imx53_tx53_xx30_samsung
-+pblx-$(CONFIG_MACH_TX53) += start_imx53_tx53_xx30_samsung
- CFG_start_imx53_tx53_xx30_samsung.pblx.imximg = $(board)/karo-tx53/flash-header-tx53-revxx30-samsung.imxcfg
- FILE_barebox-tx53-xx30-samsung.img = start_imx53_tx53_xx30_samsung.pblx.imximg
- image-$(CONFIG_MACH_TX53) += barebox-tx53-xx30-samsung.img
- 
--pblx-$(CONFIG_MACH_TX53) += start_imx53_imx53_tx53_xx30
-+pblx-$(CONFIG_MACH_TX53) += start_imx53_tx53_xx30
- CFG_start_imx53_tx53_xx30.pblx.imximg = $(board)/karo-tx53/flash-header-tx53-revxx30.imxcfg
- FILE_barebox-tx53-xx30.img = start_imx53_tx53_xx30.pblx.imximg
- image-$(CONFIG_MACH_TX53) += barebox-tx53-xx30.img
- 
--pblx-$(CONFIG_MACH_TX53) += start_imx53_imx53_tx53_1011
-+pblx-$(CONFIG_MACH_TX53) += start_imx53_tx53_1011
- CFG_start_imx53_tx53_1011.pblx.imximg = $(board)/karo-tx53/flash-header-tx53-rev1011.imxcfg
- FILE_barebox-tx53-1011.img = start_imx53_tx53_1011.pblx.imximg
- image-$(CONFIG_MACH_TX53) += barebox-tx53-1011.img
+ arch/arm/boards/phytec-som-imx6/board.c   |  2 +-
+ arch/arm/boards/zii-imx6q-rdu2/lowlevel.c |  4 +-
+ arch/arm/mach-imx/imx6.c                  | 42 +++++++++++++---
+ arch/arm/mach-imx/include/mach/imx6.h     | 81 +++++++++++++++++--------------
+ drivers/clk/imx/clk-imx6.c                | 19 +++++++-
+ 5 files changed, 99 insertions(+), 49 deletions(-)
+
 -- 
 2.16.1
 
