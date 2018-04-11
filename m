@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6C4p-000745-Su
- for barebox@lists.infradead.org; Wed, 11 Apr 2018 09:30:05 +0000
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1f6Bla-00080l-JL
+ for barebox@lists.infradead.org; Wed, 11 Apr 2018 09:10:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 11 Apr 2018 11:29:56 +0200
-Message-Id: <20180411092956.8191-1-s.hauer@pengutronix.de>
+Date: Wed, 11 Apr 2018 11:09:50 +0200
+Message-Id: <20180411090950.17924-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +19,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX6: phycore: Enable usbotg
+Subject: [PATCH] ARM: i.MX53 TX53: remove duplicate _imx53
 To: Barebox List <barebox@lists.infradead.org>
+Cc: mgr@pengutronix.de
 
-The i.MX6 phyCORE boards have USBOTG support. Enable it.
+The pblx-y variables for the TX53 have _imx53 twice in their names. With
+this the names do not match the names in the FILE_* variables. This
+results in the make system removing the pblx files as intermediate
+files. Fix the names.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ images/Makefile.imx | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-index b10530cbcf..2ce22b9880 100644
---- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-@@ -252,6 +252,10 @@
- 	status = "okay";
- };
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index ac46d51c59..90da95d4d0 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -139,17 +139,17 @@ CFG_start_imx53_mba53_1gib.pblx.imximg = $(board)/tqma53/flash-header-tq-tqma53-
+ FILE_barebox-tq-mba53-1gib.img = start_imx53_mba53_1gib.pblx.imximg
+ image-$(CONFIG_MACH_TQMA53) += barebox-tq-mba53-1gib.img
  
-+&usbotg {
-+	status = "okay";
-+};
-+
- &usdhc1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_usdhc1>;
+-pblx-$(CONFIG_MACH_TX53) += start_imx53_imx53_tx53_xx30_samsung
++pblx-$(CONFIG_MACH_TX53) += start_imx53_tx53_xx30_samsung
+ CFG_start_imx53_tx53_xx30_samsung.pblx.imximg = $(board)/karo-tx53/flash-header-tx53-revxx30-samsung.imxcfg
+ FILE_barebox-tx53-xx30-samsung.img = start_imx53_tx53_xx30_samsung.pblx.imximg
+ image-$(CONFIG_MACH_TX53) += barebox-tx53-xx30-samsung.img
+ 
+-pblx-$(CONFIG_MACH_TX53) += start_imx53_imx53_tx53_xx30
++pblx-$(CONFIG_MACH_TX53) += start_imx53_tx53_xx30
+ CFG_start_imx53_tx53_xx30.pblx.imximg = $(board)/karo-tx53/flash-header-tx53-revxx30.imxcfg
+ FILE_barebox-tx53-xx30.img = start_imx53_tx53_xx30.pblx.imximg
+ image-$(CONFIG_MACH_TX53) += barebox-tx53-xx30.img
+ 
+-pblx-$(CONFIG_MACH_TX53) += start_imx53_imx53_tx53_1011
++pblx-$(CONFIG_MACH_TX53) += start_imx53_tx53_1011
+ CFG_start_imx53_tx53_1011.pblx.imximg = $(board)/karo-tx53/flash-header-tx53-rev1011.imxcfg
+ FILE_barebox-tx53-1011.img = start_imx53_tx53_1011.pblx.imximg
+ image-$(CONFIG_MACH_TX53) += barebox-tx53-1011.img
 -- 
 2.16.1
 
