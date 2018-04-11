@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6FmG-0004kc-CK
- for barebox@lists.infradead.org; Wed, 11 Apr 2018 13:27:22 +0000
+ id 1f6FmG-0004gc-CY
+ for barebox@lists.infradead.org; Wed, 11 Apr 2018 13:27:19 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 11 Apr 2018 15:26:52 +0200
-Message-Id: <20180411132654.10620-3-s.hauer@pengutronix.de>
+Date: Wed, 11 Apr 2018 15:26:53 +0200
+Message-Id: <20180411132654.10620-4-s.hauer@pengutronix.de>
 In-Reply-To: <20180411132654.10620-1-s.hauer@pengutronix.de>
 References: <20180411132654.10620-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,103 +21,120 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] ARM: i.MX6: factor out function to read si_rev
+Subject: [PATCH 3/4] ARM: i.MX6: Add cpu type for 'plus' variants
 To: Barebox List <barebox@lists.infradead.org>
 
-The i.MX6sl has another silicon revision register offset than the
-other i.MX6 SoCs. Finding the register is done twice. Factor out
-a function to get a common place to find the register.
+We need to distinguish between the i.MX6d/q and the i.MX6d/q plus SoC
+variants. Add a cpu type for them to make that possible in the next
+steps.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/include/mach/imx6.h | 61 +++++++++++++++++++++--------------
- 1 file changed, 36 insertions(+), 25 deletions(-)
+ arch/arm/boards/phytec-som-imx6/board.c   |  2 +-
+ arch/arm/boards/zii-imx6q-rdu2/lowlevel.c |  4 ++--
+ arch/arm/mach-imx/imx6.c                  | 16 ++++++++--------
+ arch/arm/mach-imx/include/mach/imx6.h     |  8 ++++++++
+ 4 files changed, 19 insertions(+), 11 deletions(-)
 
+diff --git a/arch/arm/boards/phytec-som-imx6/board.c b/arch/arm/boards/phytec-som-imx6/board.c
+index 717a22963a..7b63ee0e0c 100644
+--- a/arch/arm/boards/phytec-som-imx6/board.c
++++ b/arch/arm/boards/phytec-som-imx6/board.c
+@@ -66,7 +66,7 @@ static void phyflex_err006282_workaround(void)
+ 	mdelay(2);
+ 	gpio_set_value(MX6_PHYFLEX_ERR006282, 0);
+ 
+-	if (cpu_is_mx6q() || cpu_is_mx6d())
++	if (cpu_is_mx6q() || cpu_is_mx6d() || cpu_is_mx6qp() || cpu_is_mx6dp())
+ 		mxc_iomux_v3_setup_pad(MX6Q_PAD_SD4_DAT3__GPIO_2_11_PD);
+ 	else if (cpu_is_mx6dl() || cpu_is_mx6s())
+ 		mxc_iomux_v3_setup_pad(MX6DL_PAD_SD4_DAT3__GPIO_2_11);
+diff --git a/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c b/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
+index c9ef16ae05..48d02ce645 100644
+--- a/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
++++ b/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
+@@ -284,7 +284,7 @@ static noinline void rdu2_sram_setup(void)
+ 	relocate_to_current_adr();
+ 	setup_c();
+ 
+-	if (__imx6_cpu_revision() == IMX_CHIP_REV_2_0)
++	if (__imx6_cpu_type() == IMX6_CPUTYPE_IMX6QP)
+ 		write_regs(imx6qp_dcd, ARRAY_SIZE(imx6qp_dcd));
+ 	else
+ 		write_regs(imx6q_dcd, ARRAY_SIZE(imx6q_dcd));
+@@ -307,7 +307,7 @@ ENTRY_FUNCTION(start_imx6_zii_rdu2, r0, r1, r2)
+ 	if (get_pc() < MX6_MMDC_PORT01_BASE_ADDR)
+ 		rdu2_sram_setup();
+ 
+-	if (__imx6_cpu_revision() == IMX_CHIP_REV_2_0)
++	if (__imx6_cpu_type() == IMX6_CPUTYPE_IMX6QP)
+ 		imx6q_barebox_entry(__dtb_imx6qp_zii_rdu2_start +
+ 				    get_runtime_offset());
+ 	else
+diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+index 5a7cb7f8bc..88165adee3 100644
+--- a/arch/arm/mach-imx/imx6.c
++++ b/arch/arm/mach-imx/imx6.c
+@@ -186,16 +186,16 @@ int imx6_init(void)
+ 
+ 	switch (imx6_cpu_type()) {
+ 	case IMX6_CPUTYPE_IMX6Q:
+-		if (mx6_silicon_revision >= IMX_CHIP_REV_2_0)
+-			cputypestr = "i.MX6 Quad Plus";
+-		else
+-			cputypestr = "i.MX6 Quad";
++		cputypestr = "i.MX6 Quad";
++		break;
++	case IMX6_CPUTYPE_IMX6QP:
++		cputypestr = "i.MX6 Quad Plus";
+ 		break;
+ 	case IMX6_CPUTYPE_IMX6D:
+-		if (mx6_silicon_revision >= IMX_CHIP_REV_2_0)
+-			cputypestr = "i.MX6 Dual Plus";
+-		else
+-			cputypestr = "i.MX6 Dual";
++		cputypestr = "i.MX6 Dual";
++		break;
++	case IMX6_CPUTYPE_IMX6DP:
++		cputypestr = "i.MX6 Dual Plus";
+ 		break;
+ 	case IMX6_CPUTYPE_IMX6DL:
+ 		cputypestr = "i.MX6 DualLite";
 diff --git a/arch/arm/mach-imx/include/mach/imx6.h b/arch/arm/mach-imx/include/mach/imx6.h
-index 436f8fc31b..9b538db2ea 100644
+index 9b538db2ea..e06ca4e235 100644
 --- a/arch/arm/mach-imx/include/mach/imx6.h
 +++ b/arch/arm/mach-imx/include/mach/imx6.h
-@@ -33,26 +33,43 @@ static inline int scu_get_core_count(void)
- 	return (ncores & 0x03) + 1;
+@@ -16,7 +16,9 @@ void __noreturn imx6_pm_stby_poweroff(void);
+ #define IMX6_CPUTYPE_IMX6DL	0x261
+ #define IMX6_CPUTYPE_IMX6SX	0x462
+ #define IMX6_CPUTYPE_IMX6D	0x263
++#define IMX6_CPUTYPE_IMX6DP	0x1263
+ #define IMX6_CPUTYPE_IMX6Q	0x463
++#define IMX6_CPUTYPE_IMX6QP	0x1463
+ #define IMX6_CPUTYPE_IMX6UL	0x164
+ #define IMX6_CPUTYPE_IMX6ULL	0x165
+ 
+@@ -69,6 +71,10 @@ static inline int __imx6_cpu_type(void)
+ 
+ 	cpu_type |= scu_get_core_count() << 8;
+ 
++	if ((cpu_type == IMX6_CPUTYPE_IMX6D || cpu_type == IMX6_CPUTYPE_IMX6Q) &&
++	    SI_REV_MAJOR(si_rev) >= 1)
++		cpu_type |= 0x1000;
++
+ 	return cpu_type;
  }
  
-+#define SI_REV_CPUTYPE(s)	(((s) >> 16) & 0xff)
-+#define SI_REV_MAJOR(s)		(((s) >> 8) & 0xf)
-+#define SI_REV_MINOR(s)		((s) & 0xf)
-+
-+static inline uint32_t __imx6_read_si_rev(void)
-+{
-+	uint32_t si_rev;
-+	uint32_t cpu_type;
-+
-+	si_rev = readl(MX6_ANATOP_BASE_ADDR + IMX6_ANATOP_SI_REV);
-+	cpu_type = SI_REV_CPUTYPE(si_rev);
-+
-+	if (cpu_type >= 0x61 && cpu_type <= 0x65)
-+		return si_rev;
-+
-+	/* try non-MX6-standard SI_REV reg offset for MX6SL */
-+	si_rev = readl(MX6_ANATOP_BASE_ADDR + IMX6SL_ANATOP_SI_REV);
-+	cpu_type = SI_REV_CPUTYPE(si_rev);
-+
-+	if (si_rev == 0x60)
-+		return si_rev;
-+
-+	return 0;
-+}
-+
- static inline int __imx6_cpu_type(void)
- {
--	uint32_t val;
--
--	val = readl(MX6_ANATOP_BASE_ADDR + IMX6_ANATOP_SI_REV);
--	val = (val >> 16) & 0xff;
--	/* non-MX6-standard SI_REV reg offset for MX6SL */
--	if (IS_ENABLED(CONFIG_ARCH_IMX6SL) &&
--	    val < (IMX6_CPUTYPE_IMX6S & 0xff)) {
--		uint32_t tmp;
--		tmp = readl(MX6_ANATOP_BASE_ADDR + IMX6SL_ANATOP_SI_REV);
--		tmp = (tmp >> 16) & 0xff;
--		if ((IMX6_CPUTYPE_IMX6SL & 0xff) == tmp)
--			/* intentionally skip scu_get_core_count() for MX6SL */
--			return IMX6_CPUTYPE_IMX6SL;
--	}
-+	uint32_t si_rev = __imx6_read_si_rev();
-+	uint32_t cpu_type = SI_REV_CPUTYPE(si_rev);
- 
--	val |= scu_get_core_count() << 8;
-+	/* intentionally skip scu_get_core_count() for MX6SL */
-+	if (cpu_type == IMX6_CPUTYPE_IMX6SL)
-+		return IMX6_CPUTYPE_IMX6SL;
- 
--	return val;
-+	cpu_type |= scu_get_core_count() << 8;
-+
-+	return cpu_type;
- }
- 
- int imx6_cpu_type(void);
-@@ -81,17 +98,11 @@ DEFINE_MX6_CPU_TYPE(mx6ull, IMX6_CPUTYPE_IMX6ULL);
- 
- static inline int __imx6_cpu_revision(void)
- {
--	uint32_t rev;
--	uint32_t si_rev_offset = IMX6_ANATOP_SI_REV;
-+	uint32_t si_rev = __imx6_read_si_rev();
- 	u8 major_part, minor_part;
- 
--	if (IS_ENABLED(CONFIG_ARCH_IMX6SL) && cpu_mx6_is_mx6sl())
--		si_rev_offset = IMX6SL_ANATOP_SI_REV;
--
--	rev = readl(MX6_ANATOP_BASE_ADDR + si_rev_offset);
--
--	major_part = (rev >> 8) & 0xf;
--	minor_part = rev & 0xf;
-+	major_part = (si_rev >> 8) & 0xf;
-+	minor_part = si_rev & 0xf;
- 
- 	return ((major_part + 1) << 4) | minor_part;
- }
+@@ -90,7 +96,9 @@ int imx6_cpu_type(void);
+ DEFINE_MX6_CPU_TYPE(mx6s, IMX6_CPUTYPE_IMX6S);
+ DEFINE_MX6_CPU_TYPE(mx6dl, IMX6_CPUTYPE_IMX6DL);
+ DEFINE_MX6_CPU_TYPE(mx6q, IMX6_CPUTYPE_IMX6Q);
++DEFINE_MX6_CPU_TYPE(mx6qp, IMX6_CPUTYPE_IMX6QP);
+ DEFINE_MX6_CPU_TYPE(mx6d, IMX6_CPUTYPE_IMX6D);
++DEFINE_MX6_CPU_TYPE(mx6dp, IMX6_CPUTYPE_IMX6DP);
+ DEFINE_MX6_CPU_TYPE(mx6sx, IMX6_CPUTYPE_IMX6SX);
+ DEFINE_MX6_CPU_TYPE(mx6sl, IMX6_CPUTYPE_IMX6SL);
+ DEFINE_MX6_CPU_TYPE(mx6ul, IMX6_CPUTYPE_IMX6UL);
 -- 
 2.16.1
 
