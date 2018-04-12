@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6Wgh-0007wz-5L
- for barebox@lists.infradead.org; Thu, 12 Apr 2018 07:30:38 +0000
+ id 1f6Wgg-0007wu-Un
+ for barebox@lists.infradead.org; Thu, 12 Apr 2018 07:30:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Apr 2018 09:30:07 +0200
-Message-Id: <20180412073017.6750-7-s.hauer@pengutronix.de>
+Date: Thu, 12 Apr 2018 09:30:06 +0200
+Message-Id: <20180412073017.6750-6-s.hauer@pengutronix.de>
 In-Reply-To: <20180412073017.6750-1-s.hauer@pengutronix.de>
 References: <20180412073017.6750-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,33 +21,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/16] ARM: i.MX: phytec-som-imx6: add boot device emmc
+Subject: [PATCH 05/16] ARM: dts: imx6qdl: phycore: Sync muxing with kernel
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Stefan Christ <s.christ@phytec.de>, Stefan Riedmueller <s.riedmueller@phytec.de>
+Cc: Stefan Riedmueller <s.riedmueller@phytec.de>
 
-From: Stefan Christ <s.christ@phytec.de>
+From: Christian Hemp <c.hemp@phytec.de>
 
-Add boot file 'emmc' for phyCORE-i.MX6.
+Sync the USDCH drive strength muxing with kernel.
+With this drive strength we saw no sd card errors.
 
-Signed-off-by: Stefan Christ <s.christ@phytec.de>
+Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+Acked-by: Stefan Lengfeld <s.lengfeld@phytec.de>
 Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 Signed-off-by: Christian Hemp <c.hemp@phytec.de>
 ---
- .../boards/phytec-som-imx6/defaultenv-physom-imx6-phycore/boot/emmc  | 5 +++++
- 1 file changed, 5 insertions(+)
- create mode 100644 arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-phycore/boot/emmc
+ arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-phycore/boot/emmc b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-phycore/boot/emmc
-new file mode 100644
-index 0000000000..7ba1d0d0cf
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-phycore/boot/emmc
-@@ -0,0 +1,5 @@
-+#!/bin/sh
-+
-+global.bootm.image="/mnt/emmc/zImage"
-+global.bootm.oftree="/mnt/emmc/oftree"
-+global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootwait rw"
+diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
+index 3a5b0dbf24..923c79c67b 100644
+--- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
+@@ -205,12 +205,12 @@
+ 
+ 		pinctrl_usdhc1: usdhc1grp {
+ 			fsl,pins = <
+-				MX6QDL_PAD_SD1_CMD__SD1_CMD		0x17059
+-				MX6QDL_PAD_SD1_CLK__SD1_CLK		0x10059
+-				MX6QDL_PAD_SD1_DAT0__SD1_DATA0		0x17059
+-				MX6QDL_PAD_SD1_DAT1__SD1_DATA1		0x17059
+-				MX6QDL_PAD_SD1_DAT2__SD1_DATA2		0x17059
+-				MX6QDL_PAD_SD1_DAT3__SD1_DATA3		0x17059
++				MX6QDL_PAD_SD1_CMD__SD1_CMD		0x170f9
++				MX6QDL_PAD_SD1_CLK__SD1_CLK		0x100f9
++				MX6QDL_PAD_SD1_DAT0__SD1_DATA0		0x170f9
++				MX6QDL_PAD_SD1_DAT1__SD1_DATA1		0x170f9
++				MX6QDL_PAD_SD1_DAT2__SD1_DATA2		0x170f9
++				MX6QDL_PAD_SD1_DAT3__SD1_DATA3		0x170f9
+ 				MX6QDL_PAD_EIM_BCLK__GPIO6_IO31		0x80000000 /* CD */
+ 			>;
+ 		};
 -- 
 2.16.1
 
