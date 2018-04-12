@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6UuB-0008Vm-SS
- for barebox@lists.infradead.org; Thu, 12 Apr 2018 05:36:21 +0000
-Received: by mail-lf0-x242.google.com with SMTP id d20-v6so5843545lfe.3
- for <barebox@lists.infradead.org>; Wed, 11 Apr 2018 22:36:10 -0700 (PDT)
+ id 1f6UuB-0008VW-SQ
+ for barebox@lists.infradead.org; Thu, 12 Apr 2018 05:36:22 +0000
+Received: by mail-lf0-x242.google.com with SMTP id v207-v6so5847027lfa.10
+ for <barebox@lists.infradead.org>; Wed, 11 Apr 2018 22:36:09 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 12 Apr 2018 08:35:58 +0300
-Message-Id: <20180412053559.30687-4-antonynpavlov@gmail.com>
+Date: Thu, 12 Apr 2018 08:35:57 +0300
+Message-Id: <20180412053559.30687-3-antonynpavlov@gmail.com>
 In-Reply-To: <20180412053559.30687-1-antonynpavlov@gmail.com>
 References: <20180412053559.30687-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,30 +23,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] ARM: socfpga: mach/pll_config.h: add guard macro
+Subject: [PATCH 2/4] ARM: socfpga: boards: pll_config.h: remove duplicate
+ macros
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/arm/mach-socfpga/include/mach/pll_config.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/boards/ebv-socrates/pll_config.h   | 6 ------
+ arch/arm/boards/terasic-sockit/pll_config.h | 6 ------
+ 2 files changed, 12 deletions(-)
 
-diff --git a/arch/arm/mach-socfpga/include/mach/pll_config.h b/arch/arm/mach-socfpga/include/mach/pll_config.h
-index 1a7e851eda..d6fb60dd24 100644
---- a/arch/arm/mach-socfpga/include/mach/pll_config.h
-+++ b/arch/arm/mach-socfpga/include/mach/pll_config.h
-@@ -1,3 +1,5 @@
-+#ifndef _MACH_SOCFPGA_PRELOADER_PLL_CONFIG_H_
-+#define _MACH_SOCFPGA_PRELOADER_PLL_CONFIG_H_
- 
- #include <mach/cyclone5-clock-manager.h>
- 
-@@ -54,3 +56,5 @@ static struct socfpga_cm_config cm_default_cfg = {
- 	.alteragrp_mpu = CONFIG_HPS_ALTERAGRP_MPUCLK,
- 	.alteregrp_main = CONFIG_HPS_ALTERAGRP_MAINCLK,
- };
-+
-+#endif /* _MACH_SOCFPGA_PRELOADER_PLL_CONFIG_H_ */
+diff --git a/arch/arm/boards/ebv-socrates/pll_config.h b/arch/arm/boards/ebv-socrates/pll_config.h
+index 083ebd4a87..e912912c9a 100644
+--- a/arch/arm/boards/ebv-socrates/pll_config.h
++++ b/arch/arm/boards/ebv-socrates/pll_config.h
+@@ -87,12 +87,6 @@
+ #define CONFIG_HPS_CLK_MAINVCO_HZ (1600000000)
+ #define CONFIG_HPS_CLK_PERVCO_HZ (1000000000)
+ #define CONFIG_HPS_CLK_SDRVCO_HZ (666666666)
+-#define CONFIG_HPS_CLK_OSC1_HZ (25000000)
+-#define CONFIG_HPS_CLK_OSC2_HZ (25000000)
+-#define CONFIG_HPS_CLK_F2S_SDR_REF_HZ (0)
+-#define CONFIG_HPS_CLK_F2S_PER_REF_HZ (0)
+-#define CONFIG_HPS_CLK_MAINVCO_HZ (1600000000)
+-#define CONFIG_HPS_CLK_PERVCO_HZ (1000000000)
+ #define CONFIG_HPS_CLK_EMAC0_HZ (1953125)
+ #define CONFIG_HPS_CLK_EMAC1_HZ (250000000)
+ #define CONFIG_HPS_CLK_USBCLK_HZ (200000000)
+diff --git a/arch/arm/boards/terasic-sockit/pll_config.h b/arch/arm/boards/terasic-sockit/pll_config.h
+index e064e2b2b2..ef4a59a611 100644
+--- a/arch/arm/boards/terasic-sockit/pll_config.h
++++ b/arch/arm/boards/terasic-sockit/pll_config.h
+@@ -87,12 +87,6 @@
+ #define CONFIG_HPS_CLK_MAINVCO_HZ (1600000000)
+ #define CONFIG_HPS_CLK_PERVCO_HZ (1000000000)
+ #define CONFIG_HPS_CLK_SDRVCO_HZ (800000000)
+-#define CONFIG_HPS_CLK_OSC1_HZ (25000000)
+-#define CONFIG_HPS_CLK_OSC2_HZ (25000000)
+-#define CONFIG_HPS_CLK_F2S_SDR_REF_HZ (0)
+-#define CONFIG_HPS_CLK_F2S_PER_REF_HZ (0)
+-#define CONFIG_HPS_CLK_MAINVCO_HZ (1600000000)
+-#define CONFIG_HPS_CLK_PERVCO_HZ (1000000000)
+ #define CONFIG_HPS_CLK_EMAC0_HZ (1953125)
+ #define CONFIG_HPS_CLK_EMAC1_HZ (250000000)
+ #define CONFIG_HPS_CLK_USBCLK_HZ (200000000)
 -- 
 2.17.0
 
