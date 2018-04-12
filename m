@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6Wgh-0007ww-4j
+ id 1f6Wgh-0007x0-64
  for barebox@lists.infradead.org; Thu, 12 Apr 2018 07:30:40 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Apr 2018 09:30:15 +0200
-Message-Id: <20180412073017.6750-15-s.hauer@pengutronix.de>
+Date: Thu, 12 Apr 2018 09:30:12 +0200
+Message-Id: <20180412073017.6750-12-s.hauer@pengutronix.de>
 In-Reply-To: <20180412073017.6750-1-s.hauer@pengutronix.de>
 References: <20180412073017.6750-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,249 +21,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/16] ARM: dts: imx6: phyboard-mira: Remove unecessary iomuxc
- subnode
+Subject: [PATCH 11/16] ARM: i.MX: phytec-som-imx6: add phyCORE-i.MX6 Solo with
+ 1GiB RAM
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Stefan Riedmueller <s.riedmueller@phytec.de>
+Cc: Stefan Christ <s.christ@phytec.de>
 
-From: Stefan Riedmueller <s.riedmueller@phytec.de>
+From: Stefan Christ <s.christ@phytec.de>
 
-Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+Add Phytec phyCORE-i.MX6 Solo:
+  - imx6dl-phytec-phycore-som-nand:
+    - 1GiB RAM on 1 Bank with 32Bit
+    - 100Mbit Ethernet
+    - NAND
+    - SD
+    - UART
+
+Signed-off-by: Stefan Christ <s.christ@phytec.de>
 Signed-off-by: Christian Hemp <c.hemp@phytec.de>
 ---
- arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 210 +++++++++++++--------------
- 1 file changed, 103 insertions(+), 107 deletions(-)
+ .../flash-header-phytec-pcm058dl-1gib-32bit.imxcfg                | 8 ++++++++
+ arch/arm/boards/phytec-som-imx6/lowlevel.c                        | 1 +
+ images/Makefile.imx                                               | 5 +++++
+ 3 files changed, 14 insertions(+)
+ create mode 100644 arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg
 
-diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-index 1dd88b5add..c3cfa00ced 100644
---- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-@@ -159,122 +159,118 @@
- };
- 
- &iomuxc {
--	pinctrl-names = "default";
--
--	imx6qdl-phytec-phycore-som {
--		pinctrl_ecspi1: ecspi1grp {
--			fsl,pins = <
--				MX6QDL_PAD_EIM_D16__ECSPI1_SCLK		0x100b1
--				MX6QDL_PAD_EIM_D17__ECSPI1_MISO		0x100b1
--				MX6QDL_PAD_EIM_D18__ECSPI1_MOSI		0x100b1
--				MX6QDL_PAD_EIM_D19__GPIO3_IO19		0x80000000
--			>;
--		};
--
--		pinctrl_enet: enetgrp {
--			fsl,pins = <
--				MX6QDL_PAD_ENET_MDIO__ENET_MDIO		0x1b0b0
--				MX6QDL_PAD_ENET_MDC__ENET_MDC		0x1b0b0
--				MX6QDL_PAD_RGMII_TXC__RGMII_TXC		0x1b0b0
--				MX6QDL_PAD_RGMII_TD0__RGMII_TD0		0x1b0b0
--				MX6QDL_PAD_RGMII_TD1__RGMII_TD1		0x1b0b0
--				MX6QDL_PAD_RGMII_TD2__RGMII_TD2		0x1b0b0
--				MX6QDL_PAD_RGMII_TD3__RGMII_TD3		0x1b0b0
--				MX6QDL_PAD_RGMII_TX_CTL__RGMII_TX_CTL	0x1b0b0
--				MX6QDL_PAD_ENET_REF_CLK__ENET_TX_CLK	0x1b0b0
--				MX6QDL_PAD_RGMII_RXC__RGMII_RXC		0x1b0b0
--				MX6QDL_PAD_RGMII_RD0__RGMII_RD0		0x1b0b0
--				MX6QDL_PAD_RGMII_RD1__RGMII_RD1		0x1b0b0
--				MX6QDL_PAD_RGMII_RD2__RGMII_RD2		0x1b0b0
--				MX6QDL_PAD_RGMII_RD3__RGMII_RD3		0x1b0b0
--				MX6QDL_PAD_RGMII_RX_CTL__RGMII_RX_CTL	0x1b0b0
--				MX6QDL_PAD_ENET_TX_EN__ENET_TX_EN	0x1b0b0
--				MX6QDL_PAD_SD2_DAT1__GPIO1_IO14		0x80000000
--			>;
--		};
-+	pinctrl_ecspi1: ecspi1grp {
-+		fsl,pins = <
-+			MX6QDL_PAD_EIM_D16__ECSPI1_SCLK		0x100b1
-+			MX6QDL_PAD_EIM_D17__ECSPI1_MISO		0x100b1
-+			MX6QDL_PAD_EIM_D18__ECSPI1_MOSI		0x100b1
-+			MX6QDL_PAD_EIM_D19__GPIO3_IO19		0x80000000
-+		>;
-+	};
- 
--		pinctrl_gpmi_nand: gpmigrp {
--			fsl,pins = <
--				MX6QDL_PAD_NANDF_CLE__NAND_CLE		0xb0b1
--				MX6QDL_PAD_NANDF_ALE__NAND_ALE		0xb0b1
--				MX6QDL_PAD_NANDF_WP_B__NAND_WP_B	0xb0b1
--				MX6QDL_PAD_NANDF_RB0__NAND_READY_B	0xb000
--				MX6QDL_PAD_NANDF_CS0__NAND_CE0_B	0xb0b1
--				MX6QDL_PAD_NANDF_CS1__NAND_CE1_B	0xb0b1
--				MX6QDL_PAD_NANDF_CS2__NAND_CE2_B	0xb0b1
--				MX6QDL_PAD_NANDF_CS3__NAND_CE3_B	0xb0b1
--				MX6QDL_PAD_SD4_CMD__NAND_RE_B		0xb0b1
--				MX6QDL_PAD_SD4_CLK__NAND_WE_B		0xb0b1
--				MX6QDL_PAD_NANDF_D0__NAND_DATA00	0xb0b1
--				MX6QDL_PAD_NANDF_D1__NAND_DATA01	0xb0b1
--				MX6QDL_PAD_NANDF_D2__NAND_DATA02	0xb0b1
--				MX6QDL_PAD_NANDF_D3__NAND_DATA03	0xb0b1
--				MX6QDL_PAD_NANDF_D4__NAND_DATA04	0xb0b1
--				MX6QDL_PAD_NANDF_D5__NAND_DATA05	0xb0b1
--				MX6QDL_PAD_NANDF_D6__NAND_DATA06	0xb0b1
--				MX6QDL_PAD_NANDF_D7__NAND_DATA07	0xb0b1
--				MX6QDL_PAD_SD4_DAT0__NAND_DQS		0x00b1
--			>;
--		};
-+	pinctrl_enet: enetgrp {
-+		fsl,pins = <
-+			MX6QDL_PAD_ENET_MDIO__ENET_MDIO		0x1b0b0
-+			MX6QDL_PAD_ENET_MDC__ENET_MDC		0x1b0b0
-+			MX6QDL_PAD_RGMII_TXC__RGMII_TXC		0x1b0b0
-+			MX6QDL_PAD_RGMII_TD0__RGMII_TD0		0x1b0b0
-+			MX6QDL_PAD_RGMII_TD1__RGMII_TD1		0x1b0b0
-+			MX6QDL_PAD_RGMII_TD2__RGMII_TD2		0x1b0b0
-+			MX6QDL_PAD_RGMII_TD3__RGMII_TD3		0x1b0b0
-+			MX6QDL_PAD_RGMII_TX_CTL__RGMII_TX_CTL	0x1b0b0
-+			MX6QDL_PAD_ENET_REF_CLK__ENET_TX_CLK	0x1b0b0
-+			MX6QDL_PAD_RGMII_RXC__RGMII_RXC		0x1b0b0
-+			MX6QDL_PAD_RGMII_RD0__RGMII_RD0		0x1b0b0
-+			MX6QDL_PAD_RGMII_RD1__RGMII_RD1		0x1b0b0
-+			MX6QDL_PAD_RGMII_RD2__RGMII_RD2		0x1b0b0
-+			MX6QDL_PAD_RGMII_RD3__RGMII_RD3		0x1b0b0
-+			MX6QDL_PAD_RGMII_RX_CTL__RGMII_RX_CTL	0x1b0b0
-+			MX6QDL_PAD_ENET_TX_EN__ENET_TX_EN	0x1b0b0
-+			MX6QDL_PAD_SD2_DAT1__GPIO1_IO14		0x80000000
-+		>;
-+	};
- 
--		pinctrl_i2c3: i2c3grp {
--			fsl,pins = <
--				MX6QDL_PAD_GPIO_6__I2C3_SDA		0x4001b8b1
--				MX6QDL_PAD_GPIO_5__I2C3_SCL		0x4001b8b1
--			>;
--		};
-+	pinctrl_gpmi_nand: gpmigrp {
-+		fsl,pins = <
-+			MX6QDL_PAD_NANDF_CLE__NAND_CLE		0xb0b1
-+			MX6QDL_PAD_NANDF_ALE__NAND_ALE		0xb0b1
-+			MX6QDL_PAD_NANDF_WP_B__NAND_WP_B	0xb0b1
-+			MX6QDL_PAD_NANDF_RB0__NAND_READY_B	0xb000
-+			MX6QDL_PAD_NANDF_CS0__NAND_CE0_B	0xb0b1
-+			MX6QDL_PAD_NANDF_CS1__NAND_CE1_B	0xb0b1
-+			MX6QDL_PAD_NANDF_CS2__NAND_CE2_B	0xb0b1
-+			MX6QDL_PAD_NANDF_CS3__NAND_CE3_B	0xb0b1
-+			MX6QDL_PAD_SD4_CMD__NAND_RE_B		0xb0b1
-+			MX6QDL_PAD_SD4_CLK__NAND_WE_B		0xb0b1
-+			MX6QDL_PAD_NANDF_D0__NAND_DATA00	0xb0b1
-+			MX6QDL_PAD_NANDF_D1__NAND_DATA01	0xb0b1
-+			MX6QDL_PAD_NANDF_D2__NAND_DATA02	0xb0b1
-+			MX6QDL_PAD_NANDF_D3__NAND_DATA03	0xb0b1
-+			MX6QDL_PAD_NANDF_D4__NAND_DATA04	0xb0b1
-+			MX6QDL_PAD_NANDF_D5__NAND_DATA05	0xb0b1
-+			MX6QDL_PAD_NANDF_D6__NAND_DATA06	0xb0b1
-+			MX6QDL_PAD_NANDF_D7__NAND_DATA07	0xb0b1
-+			MX6QDL_PAD_SD4_DAT0__NAND_DQS		0x00b1
-+		>;
-+	};
- 
--		pinctrl_uart2: uart2grp {
--			fsl,pins = <
--				MX6QDL_PAD_EIM_D26__UART2_TX_DATA	0x1b0b1
--				MX6QDL_PAD_EIM_D27__UART2_RX_DATA	0x1b0b1
--			>;
--		};
-+	pinctrl_i2c3: i2c3grp {
-+		fsl,pins = <
-+			MX6QDL_PAD_GPIO_6__I2C3_SDA		0x4001b8b1
-+			MX6QDL_PAD_GPIO_5__I2C3_SCL		0x4001b8b1
-+		>;
-+	};
- 
--		pinctrl_usbh1_vbus: usbh1vbusgrp {
--			fsl,pins = <
--				MX6QDL_PAD_EIM_A20__GPIO2_IO18	0xb0b1
--				>;
--		};
-+	pinctrl_uart2: uart2grp {
-+		fsl,pins = <
-+			MX6QDL_PAD_EIM_D26__UART2_TX_DATA	0x1b0b1
-+			MX6QDL_PAD_EIM_D27__UART2_RX_DATA	0x1b0b1
-+		>;
-+	};
- 
--		pinctrl_usbotg: usbotggrp {
--			fsl,pins = <
--				MX6QDL_PAD_GPIO_1__USB_OTG_ID	0x17059
--				>;
--		};
-+	pinctrl_usbh1_vbus: usbh1vbusgrp {
-+		fsl,pins = <
-+			MX6QDL_PAD_EIM_A20__GPIO2_IO18		0xb0b1
-+		>;
-+	};
- 
--		pinctrl_usbotg_vbus: usbotgvbusgrp {
--			fsl,pins = <
--				MX6QDL_PAD_EIM_A19__GPIO2_IO19	0xb0b1
--				>;
--		};
-+	pinctrl_usbotg: usbotggrp {
-+		fsl,pins = <
-+			MX6QDL_PAD_GPIO_1__USB_OTG_ID		0x17059
-+		>;
-+	};
- 
--		pinctrl_usdhc1: usdhc1grp {
--			fsl,pins = <
--				MX6QDL_PAD_SD1_CMD__SD1_CMD		0x170f9
--				MX6QDL_PAD_SD1_CLK__SD1_CLK		0x100f9
--				MX6QDL_PAD_SD1_DAT0__SD1_DATA0		0x170f9
--				MX6QDL_PAD_SD1_DAT1__SD1_DATA1		0x170f9
--				MX6QDL_PAD_SD1_DAT2__SD1_DATA2		0x170f9
--				MX6QDL_PAD_SD1_DAT3__SD1_DATA3		0x170f9
--				MX6QDL_PAD_EIM_BCLK__GPIO6_IO31		0x80000000 /* CD */
-+	pinctrl_usbotg_vbus: usbotgvbusgrp {
-+		fsl,pins = <
-+			MX6QDL_PAD_EIM_A19__GPIO2_IO19		0xb0b1
- 			>;
--		};
-+	};
- 
--		pinctrl_usdhc4: usdhc4grp {
--			fsl,pins = <
--				MX6QDL_PAD_SD4_CMD__SD4_CMD		0x17059
--				MX6QDL_PAD_SD4_CLK__SD4_CLK		0x10059
--				MX6QDL_PAD_SD4_DAT0__SD4_DATA0		0x17059
--				MX6QDL_PAD_SD4_DAT1__SD4_DATA1		0x17059
--				MX6QDL_PAD_SD4_DAT2__SD4_DATA2		0x17059
--				MX6QDL_PAD_SD4_DAT3__SD4_DATA3		0x17059
--				MX6QDL_PAD_SD4_DAT4__SD4_DATA4		0x17059
--				MX6QDL_PAD_SD4_DAT5__SD4_DATA5		0x17059
--				MX6QDL_PAD_SD4_DAT6__SD4_DATA6		0x17059
--				MX6QDL_PAD_SD4_DAT7__SD4_DATA7		0x17059
--			>;
--		};
-+	pinctrl_usdhc1: usdhc1grp {
-+		fsl,pins = <
-+			MX6QDL_PAD_SD1_CMD__SD1_CMD		0x170f9
-+			MX6QDL_PAD_SD1_CLK__SD1_CLK		0x100f9
-+			MX6QDL_PAD_SD1_DAT0__SD1_DATA0		0x170f9
-+			MX6QDL_PAD_SD1_DAT1__SD1_DATA1		0x170f9
-+			MX6QDL_PAD_SD1_DAT2__SD1_DATA2		0x170f9
-+			MX6QDL_PAD_SD1_DAT3__SD1_DATA3		0x170f9
-+			MX6QDL_PAD_EIM_BCLK__GPIO6_IO31		0x80000000 /* CD */
-+		>;
-+	};
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg
+new file mode 100644
+index 0000000000..bf95d0f6ae
+--- /dev/null
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg
+@@ -0,0 +1,8 @@
++#define SETUP_MDCFG0			\
++	wm 32 0x021b000c 0x8c929b85
 +
-+	pinctrl_usdhc4: usdhc4grp {
-+		fsl,pins = <
-+			MX6QDL_PAD_SD4_CMD__SD4_CMD		0x17059
-+			MX6QDL_PAD_SD4_CLK__SD4_CLK		0x10059
-+			MX6QDL_PAD_SD4_DAT0__SD4_DATA0		0x17059
-+			MX6QDL_PAD_SD4_DAT1__SD4_DATA1		0x17059
-+			MX6QDL_PAD_SD4_DAT2__SD4_DATA2		0x17059
-+			MX6QDL_PAD_SD4_DAT3__SD4_DATA3		0x17059
-+			MX6QDL_PAD_SD4_DAT4__SD4_DATA4		0x17059
-+			MX6QDL_PAD_SD4_DAT5__SD4_DATA5		0x17059
-+			MX6QDL_PAD_SD4_DAT6__SD4_DATA6		0x17059
-+			MX6QDL_PAD_SD4_DAT7__SD4_DATA7		0x17059
-+		>;
- 	};
- };
++#define SETUP_MDASP_MDCTL		\
++	wm 32 0x021b0040 0x00000027;	\
++	wm 32 0x021b0000 0x84190000
++
++#include "flash-header-phytec-pcm058dl.h"
+diff --git a/arch/arm/boards/phytec-som-imx6/lowlevel.c b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+index 9aa2104a3c..f9d70c7450 100644
+--- a/arch/arm/boards/phytec-som-imx6/lowlevel.c
++++ b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+@@ -107,6 +107,7 @@ PHYTEC_ENTRY(start_phytec_phyboard_subra_512mb_1bank, imx6dl_phytec_phyboard_sub
+ PHYTEC_ENTRY(start_phytec_phyboard_subra_1gib_1bank, imx6q_phytec_phyboard_subra, SZ_1G, false);
  
+ PHYTEC_ENTRY(start_phytec_phycore_imx6dl_som_nand_256mb, imx6dl_phytec_phycore_som_nand, SZ_256M, true);
++PHYTEC_ENTRY(start_phytec_phycore_imx6dl_som_nand_1gib, imx6dl_phytec_phycore_som_nand, SZ_1G, true);
+ PHYTEC_ENTRY(start_phytec_phycore_imx6dl_som_emmc_1gib, imx6dl_phytec_phycore_som_emmc, SZ_1G, true);
+ PHYTEC_ENTRY(start_phytec_phycore_imx6q_som_nand_1gib, imx6q_phytec_phycore_som_nand, SZ_1G, true);
+ PHYTEC_ENTRY(start_phytec_phycore_imx6qp_som_nand_1gib, imx6qp_phytec_phycore_som_nand, SZ_1G, true);
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 5e10f4fbf3..8649c4919f 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -460,6 +460,11 @@ CFG_start_phytec_phycore_imx6dl_som_nand_256mb.pblx.imximg = $(board)/phytec-som
+ FILE_barebox-phytec-phycore-imx6dl-som-nand-256mb.img = start_phytec_phycore_imx6dl_som_nand_256mb.pblx.imximg
+ image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-phycore-imx6dl-som-nand-256mb.img
+ 
++pblx-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += start_phytec_phycore_imx6dl_som_nand_1gib
++CFG_start_phytec_phycore_imx6dl_som_nand_1gib.pblx.imximg = $(board)/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg
++FILE_barebox-phytec-phycore-imx6dl-som-nand-1gib.img = start_phytec_phycore_imx6dl_som_nand_1gib.pblx.imximg
++image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-phycore-imx6dl-som-nand-1gib.img
++
+ pblx-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += start_phytec_phycore_imx6dl_som_emmc_1gib
+ CFG_start_phytec_phycore_imx6dl_som_emmc_1gib.pblx.imximg = $(board)/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg
+ FILE_barebox-phytec-phycore-imx6dl-som-emmc-1gib.img = start_phytec_phycore_imx6dl_som_emmc_1gib.pblx.imximg
 -- 
 2.16.1
 
