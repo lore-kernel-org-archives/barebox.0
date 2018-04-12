@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
+Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6Wki-00022z-M2
- for barebox@lists.infradead.org; Thu, 12 Apr 2018 07:34:42 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Apr 2018 09:34:28 +0200
-Message-Id: <20180412073428.21094-1-s.hauer@pengutronix.de>
-MIME-Version: 1.0
+ id 1f6UuB-0008VQ-K8
+ for barebox@lists.infradead.org; Thu, 12 Apr 2018 05:36:20 +0000
+Received: by mail-lf0-x244.google.com with SMTP id o102-v6so5832011lfg.8
+ for <barebox@lists.infradead.org>; Wed, 11 Apr 2018 22:36:07 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 12 Apr 2018 08:35:55 +0300
+Message-Id: <20180412053559.30687-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,37 +16,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: phy: micrel: fix too late link up
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 0/4] ARM: socfpga: misc fixes
+To: barebox@lists.infradead.org
 
-RnJvbTogQ2hyaXN0aWFuIEhlbXAgPGMuaGVtcEBwaHl0ZWMuZGU+CgpTaW5jZSBjb21taXQgYTRj
-ZWU3MjA3YTEgKCJuZXQ6IHBoeTogbWljcmVsOiBBZGQgd29ya2Fyb3VuZCBmb3IgYmFkCmF1dG9u
-ZWciKSBieSBQaGlsaXBwIFphYmVsIDxwLnphYmVsQHBlbmd1dHJvbml4LmRlPjoKCiAgICBCYXNl
-ZCBvbiBrZXJuZWwgY29tbWl0IGQyZmQ3MTliY2IwZSAoIm5ldC9waHk6IG1pY3JlbDogQWRkIHdv
-cmthcm91bmQKICAgIGZvciBiYWQgYXV0b25lZyIpIGJ5IE5hdGhhbiBTdWxsaXZhbiA8bmF0aGFu
-LnN1bGxpdmFuQG5pLmNvbT46CgogICAgICAgIFZlcnkgcmFyZWx5LCB0aGUgS1NaOTAzMSB3aWxs
-IGFwcGVhciB0byBjb21wbGV0ZSBhdXRvbmVnb3RpYXRpb24sIGJ1dAogICAgICAgIHdpbGwgZHJv
-cCBhbGwgdHJhZmZpYyBhZnRlcndhcmRzLiAgV2hlbiB0aGlzIGhhcHBlbnMsIHRoZSBpZGxlIGVy
-cm9yCiAgICAgICAgY291bnQgd2lsbCByZWFkIDB4RkYgYWZ0ZXIgYXV0b25lZ290aWF0aW9uIGNv
-bXBsZXRlcy4gUmVzZXQgdGhlIFBIWQogICAgICAgIHdoZW4gaW4gdGhhdCBzdGF0ZS4KCmlzIGl0
-IHBvc3NpYmxlIHRoYXQgd2UgZ2V0IHRoZSBsaW5rIHRvIGxhdGUgYW5kICBiYXJlYm94IHJlcG9y
-dHMgIk5ldHdvcmsgaXMKZG93biIuIFRoZSBwcm9ibGVtIGlzIHRoYXQga3N6OTAzMV9jb25maWdf
-aW5pdCBpcyBjYWxsZWQgYWdhaW4gaW4gYW4KZXJyb3IgY2FzZS4gSW4gdGhpcyBjYXNlIGF1dG9u
-ZWcgd2lsbCByZXN0YXJ0IGJ1dCB3YWl0aW5nIGZvciBmaW5pc2ggaXMKbWlzc2luZy4KClNpZ25l
-ZC1vZmYtYnk6IENocmlzdGlhbiBIZW1wIDxjLmhlbXBAcGh5dGVjLmRlPgpUZXN0ZWQtYnk6IFN0
-ZWZhbiBNw7xsbGVyLUtsaWVzZXIgPHMubXVlbGxlci1rbGllc2VyQHBoeXRlYy5kZT4KLS0tCiBk
-cml2ZXJzL25ldC9waHkvbWljcmVsLmMgfCAxICsKIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlv
-bigrKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3BoeS9taWNyZWwuYyBiL2RyaXZlcnMvbmV0
-L3BoeS9taWNyZWwuYwppbmRleCAwY2EzNTliMGJhLi5mZTcxYmZkMWE2IDEwMDY0NAotLS0gYS9k
-cml2ZXJzL25ldC9waHkvbWljcmVsLmMKKysrIGIvZHJpdmVycy9uZXQvcGh5L21pY3JlbC5jCkBA
-IC0yOTMsNiArMjkzLDcgQEAgc3RhdGljIGludCBrc3o5MDMxX3JlYWRfc3RhdHVzKHN0cnVjdCBw
-aHlfZGV2aWNlICpwaHlkZXYpCiAJaWYgKChyZWd2YWwgJiAweGZmKSA9PSAweGZmKSB7CiAJCXBo
-eV9pbml0X2h3KHBoeWRldik7CiAJCXBoeWRldi0+bGluayA9IDA7CisJCXBoeV93YWl0X2FuZWdf
-ZG9uZShwaHlkZXYpOwogCX0KIAogCXJldHVybiAwOwotLSAKMi4xNi4xCgoKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
-YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Antony Pavlov (4):
+  net: make SoCFPGA-specific designware driver work again
+  ARM: socfpga: boards: pll_config.h: remove duplicate macros
+  ARM: socfpga: mach/pll_config.h: add guard macro
+  ARM: socfpga_defconfig: enable Altera firmware stuff
+
+ arch/arm/boards/ebv-socrates/pll_config.h       | 6 ------
+ arch/arm/boards/terasic-sockit/pll_config.h     | 6 ------
+ arch/arm/configs/socfpga_defconfig              | 3 +++
+ arch/arm/mach-socfpga/include/mach/pll_config.h | 4 ++++
+ drivers/net/Kconfig                             | 1 +
+ 5 files changed, 8 insertions(+), 12 deletions(-)
+
+-- 
+2.17.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
