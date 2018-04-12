@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6WMW-0005G5-RF
- for barebox@lists.infradead.org; Thu, 12 Apr 2018 07:09:42 +0000
+ id 1f6WZA-0003ad-8D
+ for barebox@lists.infradead.org; Thu, 12 Apr 2018 07:22:47 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Apr 2018 09:09:27 +0200
-Message-Id: <20180412070927.6374-1-s.hauer@pengutronix.de>
+Date: Thu, 12 Apr 2018 09:22:22 +0200
+Message-Id: <20180412072231.31207-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,29 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mfd: da9063: Fix compilation
+Subject: [PATCH 0/9] Dialog da9063 updates
 To: Barebox List <barebox@lists.infradead.org>
 
-Fixes: 1ef7cd07a3 watchdog: rename dev to hwdev
+Here are some patches found in the Phytec git repository.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mfd/da9063.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sascha
 
-diff --git a/drivers/mfd/da9063.c b/drivers/mfd/da9063.c
-index 4a335c9983..ac303611c0 100644
---- a/drivers/mfd/da9063.c
-+++ b/drivers/mfd/da9063.c
-@@ -126,7 +126,7 @@ static int da9063_probe(struct device_d *dev)
- 	priv = xzalloc(sizeof(struct da9063));
- 	priv->wd.priority = of_get_watchdog_priority(dev->device_node);
- 	priv->wd.set_timeout = da9063_watchdog_set_timeout;
--	priv->wd.dev = dev;
-+	priv->wd.hwdev = dev;
- 	priv->client = to_i2c_client(dev);
- 	priv->dev = dev;
- 
+Enrico Scholz (8):
+  mfd: da9063: reset watchdog timer
+  mfd: da9063: added generic reg_update() function
+  mfd: da9063: use da906x_reg_update()
+  mfd: da9063: add device specific init function
+  mfd: da9063: added of_device_id information
+  mfd: da9063: read out and report device id
+  ARM: i.MX: phycore-som: added and enabled DA9062 PMIC
+  ARM: i.MX: pfla02: set priority of da9063 watchdog
+
+Stefan Christ (1):
+  mfd: da9063: update Kconfig for DA9062
+
+ arch/arm/dts/imx6qdl-phytec-pfla02.dtsi      |   6 +
+ arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi |  10 ++
+ drivers/mfd/Kconfig                          |   2 +-
+ drivers/mfd/da9063.c                         | 159 +++++++++++++++++++++++++--
+ 4 files changed, 165 insertions(+), 12 deletions(-)
+
 -- 
 2.16.1
 
