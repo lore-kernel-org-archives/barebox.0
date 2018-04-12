@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6Wgg-0007wu-Un
+ id 1f6Wgh-0007x3-67
  for barebox@lists.infradead.org; Thu, 12 Apr 2018 07:30:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Apr 2018 09:30:06 +0200
-Message-Id: <20180412073017.6750-6-s.hauer@pengutronix.de>
+Date: Thu, 12 Apr 2018 09:30:17 +0200
+Message-Id: <20180412073017.6750-17-s.hauer@pengutronix.de>
 In-Reply-To: <20180412073017.6750-1-s.hauer@pengutronix.de>
 References: <20180412073017.6750-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,46 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/16] ARM: dts: imx6qdl: phycore: Sync muxing with kernel
+Subject: [PATCH 16/16] ARM: i.MX: phytec-som-imx6: Change kernel boot image to
+ zImage
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Stefan Riedmueller <s.riedmueller@phytec.de>
 
-From: Christian Hemp <c.hemp@phytec.de>
+From: Stefan Riedmueller <s.riedmueller@phytec.de>
 
-Sync the USDCH drive strength muxing with kernel.
-With this drive strength we saw no sd card errors.
+Use zImage instead of linuximage as kernel boot image name for mmc and
+emmc.
 
-Signed-off-by: Christian Hemp <c.hemp@phytec.de>
-Acked-by: Stefan Lengfeld <s.lengfeld@phytec.de>
 Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 Signed-off-by: Christian Hemp <c.hemp@phytec.de>
 ---
- arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/emmc | 2 +-
+ arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/mmc  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-index 3a5b0dbf24..923c79c67b 100644
---- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-@@ -205,12 +205,12 @@
+diff --git a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/emmc b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/emmc
+index 4e286dc325..f0d019c3ee 100644
+--- a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/emmc
++++ b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/emmc
+@@ -5,6 +5,6 @@ if [ -f /mnt/mmc3/android ]; then
+ 	global linux.bootargs.sec="selinux=0 enforcing=0"
+ fi
  
- 		pinctrl_usdhc1: usdhc1grp {
- 			fsl,pins = <
--				MX6QDL_PAD_SD1_CMD__SD1_CMD		0x17059
--				MX6QDL_PAD_SD1_CLK__SD1_CLK		0x10059
--				MX6QDL_PAD_SD1_DAT0__SD1_DATA0		0x17059
--				MX6QDL_PAD_SD1_DAT1__SD1_DATA1		0x17059
--				MX6QDL_PAD_SD1_DAT2__SD1_DATA2		0x17059
--				MX6QDL_PAD_SD1_DAT3__SD1_DATA3		0x17059
-+				MX6QDL_PAD_SD1_CMD__SD1_CMD		0x170f9
-+				MX6QDL_PAD_SD1_CLK__SD1_CLK		0x100f9
-+				MX6QDL_PAD_SD1_DAT0__SD1_DATA0		0x170f9
-+				MX6QDL_PAD_SD1_DAT1__SD1_DATA1		0x170f9
-+				MX6QDL_PAD_SD1_DAT2__SD1_DATA2		0x170f9
-+				MX6QDL_PAD_SD1_DAT3__SD1_DATA3		0x170f9
- 				MX6QDL_PAD_EIM_BCLK__GPIO6_IO31		0x80000000 /* CD */
- 			>;
- 		};
+-global.bootm.image="/mnt/mmc3/linuximage"
++global.bootm.image="/mnt/mmc3/zImage"
+ global.bootm.oftree="/mnt/mmc3/oftree"
+ global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootwait rw"
+diff --git a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/mmc b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/mmc
+index df874f0a38..3e175122dd 100644
+--- a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/mmc
++++ b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/mmc
+@@ -5,6 +5,6 @@ if [ -f /mnt/mmc/android ]; then
+ 	global linux.bootargs.sec="selinux=0 enforcing=0"
+ fi
+ 
+-global.bootm.image="/mnt/mmc/linuximage"
++global.bootm.image="/mnt/mmc/zImage"
+ global.bootm.oftree="/mnt/mmc/oftree"
+ global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootwait rw"
 -- 
 2.16.1
 
