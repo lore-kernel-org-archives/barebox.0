@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6Wgg-0007wr-Uk
- for barebox@lists.infradead.org; Thu, 12 Apr 2018 07:30:32 +0000
+ id 1f6Wgg-0007wn-Uq
+ for barebox@lists.infradead.org; Thu, 12 Apr 2018 07:30:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Apr 2018 09:30:05 +0200
-Message-Id: <20180412073017.6750-5-s.hauer@pengutronix.de>
+Date: Thu, 12 Apr 2018 09:30:02 +0200
+Message-Id: <20180412073017.6750-2-s.hauer@pengutronix.de>
 In-Reply-To: <20180412073017.6750-1-s.hauer@pengutronix.de>
 References: <20180412073017.6750-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,68 +21,111 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/16] ARM: i.MX: phytec-som-imx: env: add android boot options
+Subject: [PATCH 01/16] ARM: i.MX: phytec-som-imx: Remove kernel and oftree
+ partiton in NAND
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Matthias Rabe <matthias.rabe@sigma-chemnitz.de>
+Cc: Christian Hemp <christian.hemp@gmail.com>
 
-From: Matthias Rabe <matthias.rabe@sigma-chemnitz.de>
+From: Christian Hemp <christian.hemp@gmail.com>
 
-Set needed bootargs for android in mmc, emmc and nand boot.
+We store kernel and oftree in static UBI volumes now. No need
+for separate partitions any more.
 
-Signed-off-by: Matthias Rabe <matthias.rabe@sigma-chemnitz.de>
-Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+Signed-off-by: Christian Hemp <christian.hemp@gmail.com>
+Acked-by: Stefan Lengfeld <s.lengfeld@phytec.de>
 ---
- arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/emmc | 5 +++++
- arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/mmc  | 5 +++++
- arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/nand | 5 +++++
- 3 files changed, 15 insertions(+)
+ .../boards/phytec-som-imx6/defaultenv-physom-imx6/boot/nand  |  6 ++++--
+ arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi                       | 12 +-----------
+ arch/arm/dts/imx6qdl-phytec-pfla02.dtsi                      | 12 +-----------
+ arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi                 | 12 +-----------
+ 4 files changed, 7 insertions(+), 35 deletions(-)
 
-diff --git a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/emmc b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/emmc
-index 83924df5d7..4e286dc325 100644
---- a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/emmc
-+++ b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/emmc
-@@ -1,5 +1,10 @@
- #!/bin/sh
- 
-+if [ -f /mnt/mmc3/android ]; then
-+	# configure here the android specific stuff
-+	global linux.bootargs.sec="selinux=0 enforcing=0"
-+fi
-+
- global.bootm.image="/mnt/mmc3/linuximage"
- global.bootm.oftree="/mnt/mmc3/oftree"
- global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootwait rw"
-diff --git a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/mmc b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/mmc
-index 332fc26ad0..df874f0a38 100644
---- a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/mmc
-+++ b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/mmc
-@@ -1,5 +1,10 @@
- #!/bin/sh
- 
-+if [ -f /mnt/mmc/android ]; then
-+	# configure here the android specific stuff
-+	global linux.bootargs.sec="selinux=0 enforcing=0"
-+fi
-+
- global.bootm.image="/mnt/mmc/linuximage"
- global.bootm.oftree="/mnt/mmc/oftree"
- global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootwait rw"
 diff --git a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/nand b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/nand
-index e4eded530d..0c2b1cbe4c 100644
+index a23aa21cc7..e4eded530d 100644
 --- a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/nand
 +++ b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/nand
-@@ -2,6 +2,11 @@
+@@ -1,5 +1,7 @@
+ #!/bin/sh
  
- [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
- 
-+if [ -e /dev/nand0.root.ubi.system ]; then
-+	# configure here the android specific stuff
-+	global linux.bootargs.sec="selinux=0 enforcing=0"
-+fi
+-global.bootm.image="/dev/nand0.kernel.bb"
+-global.bootm.oftree="/dev/nand0.oftree.bb"
++[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
 +
- global.bootm.image="/dev/nand0.root.ubi.kernel"
- global.bootm.oftree="/dev/nand0.root.ubi.oftree"
++global.bootm.image="/dev/nand0.root.ubi.kernel"
++global.bootm.oftree="/dev/nand0.root.ubi.oftree"
  global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs rw"
+diff --git a/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
+index a6ea7b5cce..63dd966b87 100644
+--- a/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
++++ b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
+@@ -145,18 +145,8 @@
+ 	};
+ 
+ 	partition@420000 {
+-		label = "oftree";
+-		reg = <0x420000 0x20000>;
+-	};
+-
+-	partition@440000 {
+-		label = "kernel";
+-		reg = <0x440000 0x800000>;
+-	};
+-
+-	partition@C40000 {
+ 		label = "root";
+-		reg = <0xC40000 0x0>;
++		reg = <0x420000 0x0>;
+ 	};
+ };
+ 
+diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+index 9a8c7024a3..862d856d00 100644
+--- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+@@ -115,18 +115,8 @@
+ 	};
+ 
+ 	partition@500000 {
+-		label = "oftree";
+-		reg = <0x500000 0x100000>;
+-	};
+-
+-	partition@600000 {
+-		label = "kernel";
+-		reg = <0x600000 0x800000>;
+-	};
+-
+-	partition@e00000 {
+ 		label = "root";
+-		reg = <0xe00000 0x0>;
++		reg = <0x500000 0x0>;
+ 	};
+ };
+ 
+diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
+index b10530cbcf..3a5b0dbf24 100644
+--- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
+@@ -112,18 +112,8 @@
+ 	};
+ 
+ 	partition@500000 {
+-		label = "oftree";
+-		reg = <0x500000 0x100000>;
+-	};
+-
+-	partition@600000 {
+-		label = "kernel";
+-		reg = <0x600000 0x800000>;
+-	};
+-
+-	partition@e00000 {
+ 		label = "root";
+-		reg = <0xe00000 0x0>;
++		reg = <0x500000 0x0>;
+ 	};
+ };
+ 
 -- 
 2.16.1
 
