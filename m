@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
+Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6UuB-0008VQ-K8
- for barebox@lists.infradead.org; Thu, 12 Apr 2018 05:36:20 +0000
-Received: by mail-lf0-x244.google.com with SMTP id o102-v6so5832011lfg.8
- for <barebox@lists.infradead.org>; Wed, 11 Apr 2018 22:36:07 -0700 (PDT)
+ id 1f6UuB-0008Vm-SS
+ for barebox@lists.infradead.org; Thu, 12 Apr 2018 05:36:21 +0000
+Received: by mail-lf0-x242.google.com with SMTP id d20-v6so5843545lfe.3
+ for <barebox@lists.infradead.org>; Wed, 11 Apr 2018 22:36:10 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 12 Apr 2018 08:35:55 +0300
-Message-Id: <20180412053559.30687-1-antonynpavlov@gmail.com>
+Date: Thu, 12 Apr 2018 08:35:58 +0300
+Message-Id: <20180412053559.30687-4-antonynpavlov@gmail.com>
+In-Reply-To: <20180412053559.30687-1-antonynpavlov@gmail.com>
+References: <20180412053559.30687-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,22 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4] ARM: socfpga: misc fixes
+Subject: [PATCH 3/4] ARM: socfpga: mach/pll_config.h: add guard macro
 To: barebox@lists.infradead.org
 
-Antony Pavlov (4):
-  net: make SoCFPGA-specific designware driver work again
-  ARM: socfpga: boards: pll_config.h: remove duplicate macros
-  ARM: socfpga: mach/pll_config.h: add guard macro
-  ARM: socfpga_defconfig: enable Altera firmware stuff
-
- arch/arm/boards/ebv-socrates/pll_config.h       | 6 ------
- arch/arm/boards/terasic-sockit/pll_config.h     | 6 ------
- arch/arm/configs/socfpga_defconfig              | 3 +++
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
  arch/arm/mach-socfpga/include/mach/pll_config.h | 4 ++++
- drivers/net/Kconfig                             | 1 +
- 5 files changed, 8 insertions(+), 12 deletions(-)
+ 1 file changed, 4 insertions(+)
 
+diff --git a/arch/arm/mach-socfpga/include/mach/pll_config.h b/arch/arm/mach-socfpga/include/mach/pll_config.h
+index 1a7e851eda..d6fb60dd24 100644
+--- a/arch/arm/mach-socfpga/include/mach/pll_config.h
++++ b/arch/arm/mach-socfpga/include/mach/pll_config.h
+@@ -1,3 +1,5 @@
++#ifndef _MACH_SOCFPGA_PRELOADER_PLL_CONFIG_H_
++#define _MACH_SOCFPGA_PRELOADER_PLL_CONFIG_H_
+ 
+ #include <mach/cyclone5-clock-manager.h>
+ 
+@@ -54,3 +56,5 @@ static struct socfpga_cm_config cm_default_cfg = {
+ 	.alteragrp_mpu = CONFIG_HPS_ALTERAGRP_MPUCLK,
+ 	.alteregrp_main = CONFIG_HPS_ALTERAGRP_MAINCLK,
+ };
++
++#endif /* _MACH_SOCFPGA_PRELOADER_PLL_CONFIG_H_ */
 -- 
 2.17.0
 
