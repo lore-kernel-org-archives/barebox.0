@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6jqf-0005rx-NC
- for barebox@lists.infradead.org; Thu, 12 Apr 2018 21:33:43 +0000
-Received: by mail-pf0-x242.google.com with SMTP id u86so4882943pfd.2
- for <barebox@lists.infradead.org>; Thu, 12 Apr 2018 14:33:41 -0700 (PDT)
+ id 1f6jqr-0005sK-Ca
+ for barebox@lists.infradead.org; Thu, 12 Apr 2018 21:33:55 +0000
+Received: by mail-pf0-x244.google.com with SMTP id y66so4871800pfi.7
+ for <barebox@lists.infradead.org>; Thu, 12 Apr 2018 14:33:43 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 12 Apr 2018 14:33:13 -0700
-Message-Id: <20180412213317.13199-2-andrew.smirnov@gmail.com>
+Date: Thu, 12 Apr 2018 14:33:14 -0700
+Message-Id: <20180412213317.13199-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20180412213317.13199-1-andrew.smirnov@gmail.com>
 References: <20180412213317.13199-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,172 +23,299 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/5] console: Introduce console_drain()
+Subject: [PATCH v2 2/5] console: Add simplified 'serdev' framework from Linux
+ kernel
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Generalize high baud rate UART polling code found in lib/xmodem.c and
-expose it as a generic function in console API.
-
-The usecase for this -- besides X/Y-mode data transfers where the code
-originated -- is command/reply type of serial exchages at high baud
-rates (~1Mbaud) with payloads exceeding inernal UART FIFOs in
-size. Such interactions are not uncommon in serdev device and this
-patch is done in preparation for serdev support code that will follow.
+Port 'serdev' UART-slave deivce framework found in recent Linux
+kernels (post 4.13) in order to be able to port 'serdev' slave drivers
+from Linux.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- include/console.h | 83 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/xymodem.c     | 30 ++++----------------
- 2 files changed, 88 insertions(+), 25 deletions(-)
+ common/Makefile        |  1 +
+ common/console.c       | 24 ++++++++++++--
+ common/serdev.c        | 89 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/serial/Kconfig |  6 ++++
+ include/console.h      | 27 +++++++++++++++
+ include/serdev.h       | 36 ++++++++++++++++++++
+ 6 files changed, 180 insertions(+), 3 deletions(-)
+ create mode 100644 common/serdev.c
+ create mode 100644 include/serdev.h
 
+diff --git a/common/Makefile b/common/Makefile
+index 4e9681f20..1ff7d2370 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -61,6 +61,7 @@ obj-$(CONFIG_FIRMWARE)		+= firmware.o
+ obj-$(CONFIG_UBIFORMAT)		+= ubiformat.o
+ obj-$(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB) += imx-bbu-nand-fcb.o
+ obj-$(CONFIG_BOOT)		+= boot.o
++obj-$(CONFIG_SERIAL_DEV_BUS)	+= serdev.o
+ 
+ ifdef CONFIG_PASSWORD
+ 
+diff --git a/common/console.c b/common/console.c
+index f4c799fa5..ab3d4d397 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -305,10 +305,11 @@ static ssize_t fops_write(struct cdev* dev, const void* buf, size_t count,
+ 
+ int console_register(struct console_device *newcdev)
+ {
++	struct device_node *serdev_node = console_is_serdev_node(newcdev);
+ 	struct device_d *dev = &newcdev->class_dev;
+ 	int activate = 0, ret;
+ 
+-	if (initialized == CONSOLE_UNINITIALIZED)
++	if (!serdev_node && initialized == CONSOLE_UNINITIALIZED)
+ 		console_init_early();
+ 
+ 	if (newcdev->devname) {
+@@ -323,6 +324,17 @@ int console_register(struct console_device *newcdev)
+ 		dev->parent = newcdev->dev;
+ 	platform_device_register(dev);
+ 
++	newcdev->open_count = 0;
++
++	/*
++	 * If our console device is a serdev, we skip the creation of
++	 * corresponding entry in /dev as well as registration in
++	 * console_list and just go straight to populating child
++	 * devices.
++	 */
++	if (serdev_node)
++		return of_platform_populate(serdev_node, NULL, dev);
++
+ 	if (newcdev->setbrg) {
+ 		ret = newcdev->setbrg(newcdev, CONFIG_BAUDRATE);
+ 		if (ret)
+@@ -335,8 +347,6 @@ int console_register(struct console_device *newcdev)
+ 	if (newcdev->putc && !newcdev->puts)
+ 		newcdev->puts = __console_puts;
+ 
+-	newcdev->open_count = 0;
+-
+ 	dev_add_param_string(dev, "active", console_active_set, console_active_get,
+ 			     &newcdev->active_string, newcdev);
+ 
+@@ -386,6 +396,14 @@ int console_unregister(struct console_device *cdev)
+ 	struct device_d *dev = &cdev->class_dev;
+ 	int status;
+ 
++	/*
++	 * We don't do any sophisticated serdev device de-population
++	 * and instead claim this console busy, preventing its
++	 * de-initialization, 'till the very end of our execution.
++	 */
++	if (console_is_serdev_node(cdev))
++		return -EBUSY;
++
+ 	devfs_remove(&cdev->devfs);
+ 
+ 	list_del(&cdev->list);
+diff --git a/common/serdev.c b/common/serdev.c
+new file mode 100644
+index 000000000..32743738e
+--- /dev/null
++++ b/common/serdev.c
+@@ -0,0 +1,89 @@
++
++#include <common.h>
++#include <serdev.h>
++
++static void serdev_device_poller(void *context)
++{
++	struct serdev_device *serdev = context;
++	struct console_device *cdev = to_console_device(serdev);
++	unsigned char *buf = serdev->buf;
++	int ret, len;
++
++	/*
++	 * Since this callback is a part of poller infrastructure we
++	 * want to use _non_interruptible version of the function
++	 * below to prevent recursion from happening (regular
++	 * console_drain will call is_timeout, which might end up
++	 * calling this function again).
++	 */
++	len = console_drain_non_interruptible(cdev, serdev->fifo, buf,
++					      PAGE_SIZE,
++					      serdev->polling_window);
++	while (len > 0) {
++		ret = serdev->receive_buf(serdev, buf, len);
++		len -= ret;
++		buf += ret;
++	}
++
++	if (serdev->polling_interval) {
++		/*
++		 * Re-schedule ourselves in 'serdev->polling_interval'
++		 * nanoseconds
++		 */
++		poller_call_async(&serdev->poller,
++				  serdev->polling_interval,
++				  serdev_device_poller,
++				  serdev);
++	}
++}
++
++int serdev_device_open(struct serdev_device *serdev)
++{
++	struct console_device *cdev = to_console_device(serdev);
++	int ret;
++
++	if (!cdev->putc || !cdev->getc)
++		return -EINVAL;
++
++	if (!serdev->polling_window)
++		return -EINVAL;
++
++	serdev->buf = xzalloc(PAGE_SIZE);
++	serdev->fifo = kfifo_alloc(PAGE_SIZE);
++	if (!serdev->fifo)
++		return -ENOMEM;
++
++	ret = poller_async_register(&serdev->poller);
++	if (ret)
++		return ret;
++
++	return console_open(cdev);
++}
++
++unsigned int serdev_device_set_baudrate(struct serdev_device *serdev,
++					unsigned int speed)
++{
++	struct console_device *cdev = to_console_device(serdev);
++
++	if (console_set_baudrate(cdev, speed) < 0)
++		return 0;
++
++	return console_get_baudrate(cdev);
++}
++
++int serdev_device_write(struct serdev_device *serdev, const unsigned char *buf,
++			size_t count, unsigned long timeout)
++{
++	struct console_device *cdev = to_console_device(serdev);
++
++	while (count--)
++		cdev->putc(cdev, *buf++);
++	/*
++	 * Poll Rx once right after we just send some data in case our
++	 * serdev device implements command/response type of a
++	 * protocol and we need to start draining input as soon as
++	 * possible.
++	 */
++	serdev_device_poller(serdev);
++	return 0;
++}
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index cfddc2ee9..8a56d39f7 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -1,6 +1,12 @@
+ menu "serial drivers"
+ 	depends on !CONSOLE_NONE
+ 
++config SERIAL_DEV_BUS
++	bool "Serial device bus"
++	depends on CONSOLE_FULL
++	help
++	  Core support for devices connected via a serial port.
++
+ config DRIVER_SERIAL_ARM_DCC
+ 	depends on ARM && !CPU_V8
+ 	bool "ARM Debug Communications Channel (DCC) serial driver"
 diff --git a/include/console.h b/include/console.h
-index 3c14e3593..0f1fced93 100644
+index 0f1fced93..6d3e6e123 100644
 --- a/include/console.h
 +++ b/include/console.h
 @@ -23,6 +23,7 @@
  #include <param.h>
  #include <linux/list.h>
  #include <driver.h>
-+#include <clock.h>
++#include <serdev.h>
+ #include <clock.h>
  
  #define CONSOLE_STDIN           (1 << 0)
- #define CONSOLE_STDOUT          (1 << 1)
-@@ -88,6 +89,88 @@ unsigned console_get_active(struct console_device *cdev);
- int console_set_baudrate(struct console_device *cdev, unsigned baudrate);
- unsigned console_get_baudrate(struct console_device *cdev);
+@@ -65,8 +66,34 @@ struct console_device {
  
+ 	struct cdev devfs;
+ 	struct cdev_operations fops;
 +
-+/**
-+ * console_fifo_fill - fill FIFO with as much console data as possible
-+ *
-+ * @cdev:	Console to poll for dat
-+ * @fifo:	FIFO to store the data in
-+ */
-+static inline int console_fifo_fill(struct console_device *cdev,
-+				    struct kfifo *fifo)
-+{
-+	size_t len = kfifo_len(fifo);
-+	while (cdev->tstc(cdev) && len < fifo->size) {
-+		kfifo_putc(fifo, (unsigned char)(cdev->getc(cdev)));
-+		len++;
-+	}
-+
-+	return len;
-+}
-+
-+/**
-+ * __console_drain - Drain console into a buffer via FIFO
-+ *
-+ * @__is_timeout	Callback used to determine timeout condition
-+ * @cdev		Console to drain
-+ * @fifo		FIFO to use as a transient buffer
-+ * @buf			Buffer to drain console into
-+ * @len			Size of the drain buffer
-+ * @timeout		Console polling timeout in ns
-+ *
-+ * This function is optimized to :
-+ * - maximize throughput (ie. read as much as is available in lower layer fifo)
-+ * - minimize latencies (no delay or wait timeout if data available)
-+ * - have a timeout
-+ * This is why standard getc() is not used, and input_fifo_fill() exists.
-+ */
-+static inline int __console_drain(int (*__is_timeout)(uint64_t start_ns,
-+						      uint64_t time_offset_ns),
-+				  struct console_device *cdev,
-+				  struct kfifo *fifo,
-+				  unsigned char *buf,
-+				  int len,
-+				  uint64_t timeout)
-+{
-+	int i = 0;
-+	uint64_t start = get_time_ns();
-+
-+	if (!len)
-+		return -EINVAL;
-+
-+	do {
-+		/*
-+		 * To minimize wait time before we start polling Rx
-+		 * (to potentially avoid overruning Rx FIFO) we call
-+		 * console_fifo_fill first
-+		 */
-+		if (console_fifo_fill(cdev, fifo))
-+			kfifo_getc(fifo, &buf[i++]);
-+
-+	} while (i < len && !__is_timeout(start, timeout));
-+
-+	return i;
-+}
-+
-+static inline int console_drain_non_interruptible(struct console_device *cdev,
-+						  struct kfifo *fifo,
-+						  unsigned char *buf,
-+						  int len,
-+						  uint64_t timeout)
-+{
-+	return __console_drain(is_timeout_non_interruptible,
-+			       cdev, fifo, buf, len, timeout);
-+}
-+
-+static inline int console_drain(struct console_device *cdev,
-+				struct kfifo *fifo,
-+				unsigned char *buf,
-+				int len,
-+				uint64_t timeout)
-+{
-+	return __console_drain(is_timeout, cdev, fifo, buf, len, timeout);
-+}
-+
- #ifdef CONFIG_PBL_CONSOLE
- void pbl_set_putc(void (*putcf)(void *ctx, int c), void *ctx);
- #else
-diff --git a/lib/xymodem.c b/lib/xymodem.c
-index 37202e6ae..9e4ce58b6 100644
---- a/lib/xymodem.c
-+++ b/lib/xymodem.c
-@@ -144,36 +144,16 @@ static const char block_nack[MAX_PROTOS][MAX_CRCS] = {
- 	{ 0, 0, 0 },		/* YMODEM-G */
++	struct serdev_device serdev;
  };
  
--static int input_fifo_fill(struct console_device *cdev, struct kfifo *fifo)
--{
--	while (cdev->tstc(cdev) && kfifo_len(fifo) < INPUT_FIFO_SIZE)
--		kfifo_putc(fifo, (unsigned char)(cdev->getc(cdev)));
--	return kfifo_len(fifo);
--}
--
--/*
-- * This function is optimized to :
-- * - maximize throughput (ie. read as much as is available in lower layer fifo)
-- * - minimize latencies (no delay or wait timeout if data available)
-- * - have a timeout
-- * This is why standard getc() is not used, and input_fifo_fill() exists.
-- */
- static int xy_gets(struct console_device *cdev, struct kfifo *fifo,
- 		      unsigned char *buf, int len, uint64_t timeout)
- {
--	int i, rc;
--	uint64_t start = get_time_ns();
-+	int rc;
++static inline struct serdev_device *to_serdev_device(struct device_d *d)
++{
++	struct console_device *cdev =
++		container_of(d, struct console_device, class_dev);
++	return &cdev->serdev;
++}
++
++static inline struct console_device *
++to_console_device(struct serdev_device *serdev)
++{
++	return container_of(serdev, struct console_device, serdev);
++}
++
++static inline struct device_node *
++console_is_serdev_node(struct console_device *cdev)
++{
++	struct device_d *dev = cdev->dev;
++	if (dev && dev->device_node &&
++	    of_get_child_count(dev->device_node))
++		return dev->device_node;
++
++	return NULL;
++}
++
+ int console_register(struct console_device *cdev);
+ int console_unregister(struct console_device *cdev);
  
--	for (i = 0, rc = 0; rc >= 0 && i < len; ) {
--		if (is_timeout(start, timeout)) {
--			rc = -ETIMEDOUT;
--			continue;
--		}
--		if (input_fifo_fill(cdev, fifo))
--			kfifo_getc(fifo, &buf[i++]);
--	}
-+	rc = console_drain(cdev, fifo, buf, len, timeout);
-+	if (rc != len)
-+		return -ETIMEDOUT;
- 
--	return rc < 0 ? rc : i;
-+	return len;
- }
- 
- static void xy_putc(struct console_device *cdev, unsigned char c)
+diff --git a/include/serdev.h b/include/serdev.h
+new file mode 100644
+index 000000000..efc735fed
+--- /dev/null
++++ b/include/serdev.h
+@@ -0,0 +1,36 @@
++#ifndef _SERDEV_H_
++#define _SERDEV_H_
++
++#include <driver.h>
++#include <poller.h>
++#include <kfifo.h>
++
++/**
++ * struct serdev_device - Basic representation of an serdev device
++ *
++ * @dev:		Corresponding device
++ * @fifo:		Circular buffer used for console draining
++ * @buf:		Buffer used to pass Rx data to consumers
++ * @poller		Async poller used to poll this serdev
++ * @polling_interval:	Async poller periodicity
++ * @polling_window:	Duration of a single busy loop poll
++ * @receive_buf:	Function called with data received from device;
++ *			returns number of bytes accepted;
++ */
++struct serdev_device {
++	struct device_d *dev;
++	struct kfifo *fifo;
++	unsigned char *buf;
++	struct poller_async poller;
++	uint64_t polling_interval;
++	uint64_t polling_window;
++
++	int (*receive_buf)(struct serdev_device *, const unsigned char *,
++			   size_t);
++};
++
++int serdev_device_open(struct serdev_device *);
++unsigned int serdev_device_set_baudrate(struct serdev_device *, unsigned int);
++int serdev_device_write(struct serdev_device *, const unsigned char *,
++			size_t, unsigned long);
++#endif
 -- 
 2.14.3
 
