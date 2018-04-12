@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6WZA-0003af-8C
- for barebox@lists.infradead.org; Thu, 12 Apr 2018 07:22:50 +0000
+ id 1f6Wgg-0007wl-Ul
+ for barebox@lists.infradead.org; Thu, 12 Apr 2018 07:30:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Apr 2018 09:22:27 +0200
-Message-Id: <20180412072231.31207-6-s.hauer@pengutronix.de>
-In-Reply-To: <20180412072231.31207-1-s.hauer@pengutronix.de>
-References: <20180412072231.31207-1-s.hauer@pengutronix.de>
+Date: Thu, 12 Apr 2018 09:30:01 +0200
+Message-Id: <20180412073017.6750-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,119 +19,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/9] mfd: da9063: added of_device_id information
+Subject: [PATCH 00/16] ARM: i.MX: phyCORE/phyFLEX i.MX6 updates
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 
-From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Some more patches from the Phytec barebox git repository only lacking
+the final hit to the send button.
 
-Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-Tested-by: Stefan Christ <s.christ@phytec.de>
-Signed-off-by: Christian Hemp <c.hemp@phytec.de>
----
- drivers/mfd/da9063.c | 47 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
+Sascha
 
-diff --git a/drivers/mfd/da9063.c b/drivers/mfd/da9063.c
-index a1c748610a..00a61279f3 100644
---- a/drivers/mfd/da9063.c
-+++ b/drivers/mfd/da9063.c
-@@ -27,6 +27,8 @@ struct da9063 {
- 	struct restart_handler	restart;
- 	struct watchdog		wd;
- 	struct i2c_client	*client;
-+	/* dummy client for accessing bank #1 */
-+	struct i2c_client	*client1;
- 	struct device_d		*dev;
- 	unsigned int		timeout;
- };
-@@ -40,6 +42,9 @@ struct da9063 {
- #define DA9063_REG_CONTROL_D	0x11
- #define DA9063_REG_CONTROL_F	0x13
- 
-+/* bank1: control register I */
-+#define DA9063_REG1_CONFIG_I	0x10e
-+
- /* DA9063_REG_FAULT_LOG (addr=0x05) */
- #define DA9063_TWD_ERROR	0x01
- #define DA9063_POR		0x02
-@@ -52,6 +57,9 @@ struct da9063 {
- #define DA9063_WATCHDOG		0x01
- #define DA9063_SHUTDOWN		0x02
- 
-+/* DA9063_REG_CONTROL_I (addr=0x10e) */
-+#define DA9062_WATCHDOG_SD	BIT(3)
-+
- struct da906x_device_data {
- 	int	(*init)(struct da9063 *priv);
- };
-@@ -65,6 +73,8 @@ static int da906x_reg_update(struct da9063 *priv, unsigned int reg,
- 
- 	if (reg < 0x100)
- 		client = priv->client;
-+	else if (reg < 0x200)
-+		client = priv->client1;
- 	else
- 		/* this should/can not happen because function is usually
- 		 * called with a static register number; warn about it
-@@ -183,6 +193,30 @@ static void da9063_restart(struct restart_handler *rst)
- 	i2c_write_reg(priv->client, DA9063_REG_CONTROL_F, &val, 1);
- }
- 
-+static int da9062_device_init(struct da9063 *priv)
-+{
-+	int ret;
-+
-+	priv->client1 = i2c_new_dummy(priv->client->adapter,
-+				      priv->client->addr + 1);
-+	if (!priv) {
-+		dev_warn(priv->dev, "failed to create bank 1 device\n");
-+		/* TODO: return -EINVAL; i2c api does not return more
-+		 * details */
-+		return -EINVAL;
-+	}
-+
-+	/* clear CONFIG_I[WATCHDOG_SD] */
-+	ret = da906x_reg_update(priv, DA9063_REG1_CONFIG_I,
-+				DA9062_WATCHDOG_SD, DA9062_WATCHDOG_SD);
-+
-+	return ret;
-+}
-+
-+static struct da906x_device_data const	da9062_device_data = {
-+	.init	= da9062_device_init,
-+};
-+
- static int da9063_probe(struct device_d *dev)
- {
- 	struct da9063 *priv = NULL;
-@@ -229,13 +263,26 @@ on_error:
- 
- static struct platform_device_id da9063_id[] = {
- 	{ "da9063", (uintptr_t)(NULL) },
-+	{ "da9062", (uintptr_t)(&da9062_device_data) },
- 	{ }
- };
- 
-+static struct of_device_id const	da906x_dt_ids[] = {
-+	{
-+		.compatible	= "dlg,da9063",
-+		.data		= NULL,
-+	}, {
-+		.compatible	= "dlg,da9062",
-+		.data		= &da9062_device_data,
-+	}, {
-+	}
-+};
-+
- static struct driver_d da9063_driver = {
- 	.name = "da9063",
- 	.probe = da9063_probe,
- 	.id_table = da9063_id,
-+	.of_compatible  = DRV_OF_COMPAT(da906x_dt_ids),
- };
- 
- static int da9063_init(void)
+Christian Hemp (4):
+  ARM: i.MX: phytec-som-imx: Remove kernel and oftree partiton in NAND
+  ARM: dts: imx6qdl: phycore: Sync muxing with kernel
+  ARM: i.MX: phytec-som-imx6: phycore: Set BUCK mode to SYNC
+  ARM: i.MX: phytec-som-imx6: add phyCORE-i.MX6 QuadPlus with 1GiB RAM
+
+Matthias Rabe (3):
+  ARM: i.MX: phytec-som-imx: env: automount emmc if available
+  ARM: i.MX: phytec-som-imx: env: add boot script for emmc
+  ARM: i.MX: phytec-som-imx: env: add android boot options
+
+Stefan Christ (2):
+  ARM: i.MX: phytec-som-imx6: add boot device emmc
+  ARM: i.MX: phytec-som-imx6: add phyCORE-i.MX6 Solo with 1GiB RAM
+
+Stefan Riedmueller (6):
+  ARM: dts: phyCORE-imx6: Add SPINOR env node
+  ARM: dts: imx6: phyboard-mira: Add usb support
+  ARM: dts: imx6: phyboard-mira: Enable usb host and usb otg port
+  ARM: dts: imx6: phyboard-mira: Remove unecessary iomuxc subnode
+  ARM: dts: phycore-imx6: Use generic jedec spi nor compatible
+  ARM: i.MX: phytec-som-imx6: Change kernel boot image to zImage
+
+michael grassmann (1):
+  ARM: i.MX: phyFLEX: Change Ram Timing for i.MX6 DualLite\Solo (400
+    MHz)
+
+ arch/arm/boards/phytec-som-imx6/board.c            |  55 ++++-
+ .../defaultenv-physom-imx6-phycore/boot/emmc       |   5 +
+ .../defaultenv-physom-imx6/boot/emmc               |  10 +
+ .../defaultenv-physom-imx6/boot/mmc                |   7 +-
+ .../defaultenv-physom-imx6/boot/nand               |  11 +-
+ .../defaultenv-physom-imx6/init/automount          |   5 +
+ .../flash-header-phytec-pcm058dl-1gib-32bit.imxcfg |   8 +
+ .../flash-header-phytec-pcm058qp-1gib.imxcfg       |   8 +
+ .../phytec-som-imx6/flash-header-phytec-pcm058qp.h | 112 +++++++++
+ .../flash-header-phytec-pfla02dl-1gib-1bank.imxcfg |   2 +-
+ .../flash-header-phytec-pfla02dl-1gib.imxcfg       |   2 +-
+ .../phytec-som-imx6/flash-header-phytec-pfla02dl.h |   2 +-
+ .../flash-header-phytec-pfla02s-128mb-1bank.imxcfg |   2 +-
+ .../flash-header-phytec-pfla02s-256mb-1bank.imxcfg |   2 +-
+ .../flash-header-phytec-pfla02s-512mb-1bank.imxcfg |   2 +-
+ arch/arm/boards/phytec-som-imx6/lowlevel.c         |   2 +
+ arch/arm/dts/Makefile                              |   1 +
+ arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts    |   8 +
+ arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts    |   8 +
+ arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi             |  12 +-
+ arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts     |   8 +
+ arch/arm/dts/imx6q-phytec-phycore-som-nand.dts     |   8 +
+ arch/arm/dts/imx6qdl-phytec-pfla02.dtsi            |  12 +-
+ arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi       | 252 ++++++++++++---------
+ arch/arm/dts/imx6qp-phytec-phycore-som-nand.dts    |  69 ++++++
+ images/Makefile.imx                                |  10 +
+ 26 files changed, 488 insertions(+), 135 deletions(-)
+ create mode 100644 arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-phycore/boot/emmc
+ create mode 100644 arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/emmc
+ create mode 100644 arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg
+ create mode 100644 arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp-1gib.imxcfg
+ create mode 100644 arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp.h
+ create mode 100644 arch/arm/dts/imx6qp-phytec-phycore-som-nand.dts
+
 -- 
 2.16.1
 
