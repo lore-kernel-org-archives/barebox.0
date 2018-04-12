@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6Wgg-0007wn-Uq
+ id 1f6Wgg-0007wy-Uu
  for barebox@lists.infradead.org; Thu, 12 Apr 2018 07:30:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Apr 2018 09:30:02 +0200
-Message-Id: <20180412073017.6750-2-s.hauer@pengutronix.de>
+Date: Thu, 12 Apr 2018 09:30:13 +0200
+Message-Id: <20180412073017.6750-13-s.hauer@pengutronix.de>
 In-Reply-To: <20180412073017.6750-1-s.hauer@pengutronix.de>
 References: <20180412073017.6750-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,111 +21,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/16] ARM: i.MX: phytec-som-imx: Remove kernel and oftree
- partiton in NAND
+Subject: [PATCH 12/16] ARM: dts: imx6: phyboard-mira: Add usb support
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Christian Hemp <christian.hemp@gmail.com>
+Cc: Stefan Riedmueller <s.riedmueller@phytec.de>
 
-From: Christian Hemp <christian.hemp@gmail.com>
+From: Stefan Riedmueller <s.riedmueller@phytec.de>
 
-We store kernel and oftree in static UBI volumes now. No need
-for separate partitions any more.
+This patch adds USB support for the phyBOARD-Mira for the host port and
+the OTG port.
 
-Signed-off-by: Christian Hemp <christian.hemp@gmail.com>
-Acked-by: Stefan Lengfeld <s.lengfeld@phytec.de>
+Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+Signed-off-by: Christian Hemp <c.hemp@phytec.de>
 ---
- .../boards/phytec-som-imx6/defaultenv-physom-imx6/boot/nand  |  6 ++++--
- arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi                       | 12 +-----------
- arch/arm/dts/imx6qdl-phytec-pfla02.dtsi                      | 12 +-----------
- arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi                 | 12 +-----------
- 4 files changed, 7 insertions(+), 35 deletions(-)
+ arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 54 ++++++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
 
-diff --git a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/nand b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/nand
-index a23aa21cc7..e4eded530d 100644
---- a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/nand
-+++ b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/boot/nand
-@@ -1,5 +1,7 @@
- #!/bin/sh
- 
--global.bootm.image="/dev/nand0.kernel.bb"
--global.bootm.oftree="/dev/nand0.oftree.bb"
-+[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-+
-+global.bootm.image="/dev/nand0.root.ubi.kernel"
-+global.bootm.oftree="/dev/nand0.root.ubi.oftree"
- global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs rw"
-diff --git a/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
-index a6ea7b5cce..63dd966b87 100644
---- a/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
-+++ b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
-@@ -145,18 +145,8 @@
- 	};
- 
- 	partition@420000 {
--		label = "oftree";
--		reg = <0x420000 0x20000>;
--	};
--
--	partition@440000 {
--		label = "kernel";
--		reg = <0x440000 0x800000>;
--	};
--
--	partition@C40000 {
- 		label = "root";
--		reg = <0xC40000 0x0>;
-+		reg = <0x420000 0x0>;
- 	};
- };
- 
-diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-index 9a8c7024a3..862d856d00 100644
---- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-@@ -115,18 +115,8 @@
- 	};
- 
- 	partition@500000 {
--		label = "oftree";
--		reg = <0x500000 0x100000>;
--	};
--
--	partition@600000 {
--		label = "kernel";
--		reg = <0x600000 0x800000>;
--	};
--
--	partition@e00000 {
- 		label = "root";
--		reg = <0xe00000 0x0>;
-+		reg = <0x500000 0x0>;
- 	};
- };
- 
 diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-index b10530cbcf..3a5b0dbf24 100644
+index a826a8b2ef..1dd88b5add 100644
 --- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
 +++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-@@ -112,18 +112,8 @@
+@@ -39,6 +39,28 @@
+ 			status = "disabled";
+ 		};
  	};
- 
- 	partition@500000 {
--		label = "oftree";
--		reg = <0x500000 0x100000>;
--	};
--
--	partition@600000 {
--		label = "kernel";
--		reg = <0x600000 0x800000>;
--	};
--
--	partition@e00000 {
- 		label = "root";
--		reg = <0xe00000 0x0>;
-+		reg = <0x500000 0x0>;
- 	};
++
++	reg_usbh1_vbus: regulator-usbh1 {
++		compatible = "regulator-fixed";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_usbh1_vbus>;
++		regulator-name = "usbh1_vbus";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		gpio = <&gpio2 18 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
++
++	reg_usbotg_vbus: regulator-usbotg {
++		compatible = "regulator-fixed";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_usbotg_vbus>;
++		regulator-name = "usbotg_vbus";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		gpio = <&gpio2 19 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
  };
  
+ &ecspi1 {
+@@ -209,6 +231,24 @@
+ 			>;
+ 		};
+ 
++		pinctrl_usbh1_vbus: usbh1vbusgrp {
++			fsl,pins = <
++				MX6QDL_PAD_EIM_A20__GPIO2_IO18	0xb0b1
++				>;
++		};
++
++		pinctrl_usbotg: usbotggrp {
++			fsl,pins = <
++				MX6QDL_PAD_GPIO_1__USB_OTG_ID	0x17059
++				>;
++		};
++
++		pinctrl_usbotg_vbus: usbotgvbusgrp {
++			fsl,pins = <
++				MX6QDL_PAD_EIM_A19__GPIO2_IO19	0xb0b1
++				>;
++		};
++
+ 		pinctrl_usdhc1: usdhc1grp {
+ 			fsl,pins = <
+ 				MX6QDL_PAD_SD1_CMD__SD1_CMD		0x170f9
+@@ -248,6 +288,20 @@
+ 	status = "okay";
+ };
+ 
++&usbh1 {
++	vbus-supply = <&reg_usbh1_vbus>;
++	disable-over-current;
++	status = "disabled";
++};
++
++&usbotg {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usbotg>;
++	vbus-supply = <&reg_usbotg_vbus>;
++	disable-over-current;
++	status = "disabled";
++};
++
+ &usdhc1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_usdhc1>;
 -- 
 2.16.1
 
