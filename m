@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x243.google.com ([2607:f8b0:4001:c0b::243])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6grg-0002l5-1V
- for barebox@lists.infradead.org; Thu, 12 Apr 2018 18:22:34 +0000
-Received: by mail-it0-x243.google.com with SMTP id 142-v6so26124itl.5
- for <barebox@lists.infradead.org>; Thu, 12 Apr 2018 11:22:20 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20180411083957.pvagr7h4my4lyfpo@pengutronix.de>
-References: <20180326130915.8726-1-andrew.smirnov@gmail.com>
- <20180326130915.8726-3-andrew.smirnov@gmail.com>
- <20180403065436.p2vec7ntdja55hts@pengutronix.de>
- <CAHQ1cqHdhHiknrnzfU_9YLc_HiyNVDSPZyGNNsHcrAhgUoK_ig@mail.gmail.com>
- <20180411083957.pvagr7h4my4lyfpo@pengutronix.de>
+ id 1f6jql-0005rn-Qh
+ for barebox@lists.infradead.org; Thu, 12 Apr 2018 21:33:49 +0000
+Received: by mail-pf0-x241.google.com with SMTP id u86so4882921pfd.2
+ for <barebox@lists.infradead.org>; Thu, 12 Apr 2018 14:33:41 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 12 Apr 2018 11:22:18 -0700
-Message-ID: <CAHQ1cqHRuikPvLR+nNs6+=Nv0y3XvXdbkKjimCC=87uyi0HgNg@mail.gmail.com>
+Date: Thu, 12 Apr 2018 14:33:12 -0700
+Message-Id: <20180412213317.13199-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,146 +16,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] console: Add simplified 'serdev' framework from Linux
- kernel
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v2 0/5] Linux's serdev framwork port
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Wed, Apr 11, 2018 at 1:39 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Mon, Apr 09, 2018 at 09:40:46AM -0700, Andrey Smirnov wrote:
->> On Mon, Apr 2, 2018 at 11:54 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> > Hi Andrey,
->> >
->> > Some comments inside.
->> >
->> >
->> > On Mon, Mar 26, 2018 at 06:09:14AM -0700, Andrey Smirnov wrote:
->> >> Port 'serdev' UART-slave deivce framework found in recent Linux
->> >> kernels (post 4.13) in order to be able to port 'serdev' slave drivers
->> >> from Linux.
->> >>
->> >> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
->> >> @@ -323,6 +324,17 @@ int console_register(struct console_device *newcdev)
->> >>               dev->parent = newcdev->dev;
->> >>       platform_device_register(dev);
->> >>
->> >> +     newcdev->open_count = 0;
->> >> +
->> >> +     /*
->> >> +      * If our console deive is a serdev, we skip the creation of
->> >
->> > s/deive/device/
->>
->> Will fix in v2.
->>
->> >
->> >> +      * corresponding entry in /dev as well as registration in
->> >> +      * console_list and just go straigh to populating child
->> >
->> > s/straigh/straight/
->>
->> Ditto.
->>
->> >
->> >> +      * devices.
->> >> +      */
->> >> +     if (serdev_node)
->> >> +             return of_platform_populate(serdev_node, NULL, dev);
->> >
->> > How is this going to be used? A serdev driver binds to the serdev_node
->> > and then it probably needs to get a pointer to the console device,
->> > right? How does the driver accomplish this?
->> >
->>
->> Serdev slave driver doesn't hold explicit pointer to console device,
->> instead accessing it via point to serdev_device. The latter could
->> obtained by calling to_serdev_device(dev->parent), where dev is
->> device_d given to slave driver's probe function.
->>
->>
->> >> +/**
->> >> + * struct serdev_device - Basic representation of an serdev device
->> >> + *
->> >> + * @dev:             Corresponding device
->> >> + * @fifo:            Circular buffer used for console draining
->> >> + * @buf:             Buffer used to pass Rx data to consumers
->> >> + * @poller           Async poller used to poll this serdev
->> >> + * @polling_interval:        Async poller periodicity
->> >> + * @polling_window:  Duration of a single busy loop poll
->> >> + * @receive_buf:     Function called with data received from device;
->> >> + *                   returns number of bytes accepted;
->> >> + */
->> >> +struct serdev_device {
->> >> +     struct device_d *dev;
->> >> +     struct kfifo *fifo;
->> >> +     unsigned char *buf;
->> >> +     struct poller_async poller;
->> >> +     uint64_t polling_interval;
->> >> +     uint64_t polling_window;
->> >> +
->> >> +     int (*receive_buf)(struct serdev_device *, const unsigned char *,
->> >> +                        size_t);
->> >> +};
->> >> +
->> >> +int serdev_device_open(struct serdev_device *);
->> >> +unsigned int serdev_device_set_baudrate(struct serdev_device *, unsigned int);
->> >> +int serdev_device_write(struct serdev_device *, const unsigned char *,
->> >> +                     size_t, unsigned long);
->> >
->> > So a serdev driver uses serdev_device_write() to send characters out. To
->> > receive characters it has to implement serdev_device->receive_buf,
->> > right?
->>
->> Right. I tried to implement exactly the same API that Linux's serdev
->> API provides.
->>
->> > What kind of devices did you implement this for?
->>
->> I ported serdev in support of porting the driver for RAVE SP which is
->> a small microcontroller device found many ZII board including RDU2. It
->> implement a whole bunch of various functionality including watchdog,
->> parameter EEPROM, sensor access, backlight control, button input event
->> generation, etc.
->>
->> > For devices which send data without request (GPS?) this seems the way to go. For
->> > others a synchronous receive function might be good, no?
->> >
->>
->> I didn't implement anything like that mostly because Linux serdev API
->> doesn't and any ported driver wouldn't have any need for those
->> functions. But in general, I am not sure how useful synchronous
->> receive function would be. In my experience, devices like that usually
->> implement some binary transport protocol with packetization/escape
->> sequences on top of UART, which usually requires a state machine
->> operating with byte granularity as the data comes in to parse
->> responses correctly and synchronous APIs are not extremely useful for
->> that kind of a use-case.
->>
->> FWIW, since serdev API is integrated into poller infrastructure it is
->> pretty trivial to write blocking code with it. Here's how I use it in
->> my driver to implement request-response type of a function:
->>
->> rave_sp_write(sp, data, data_size);
->> /*
->> * is_timeout will implicitly poll serdev via poller
->> * infrastructure
->> */
->> while (!is_timeout(start, SECOND) && !reply.received)
->>    ;
->
-> I understand that synchronous receiving might not be that useful. Given
-> how simple it is we could add a synchronous receive wrapper function
-> just for the sake of completeness, even if it only provides an example
-> how the code can be used.
+Hi everyone:
 
-OK, will do in v2.
+In an effort to bring this kernel driver
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/mfd/rave-sp.c?h=v4.16-rc7
+to Barebox, I ended up creating a miniature and extremely simplified
+version of 'serdev' subsystem which is presented in this patchset.
+
+Changes since [v1]:
+
+	- Blocking read function was added as example of API usage
+
+	- "serial: Check result of console_unregister()" was converted
+          to become "serial: Drop .remove functions from all drivers"
+
+	- Minor spelling fixes
+
+	- Original serdev framework patch modified to allow devices
+          that do not require polling (I don't have such a usecase,
+          but for the sake of being generic I added one line needed
+          for that)
+
+	- SERIAL_DEV_BUS Kconfig symbol moved into
+          drivers/serial/Kconfig (where it, IMHO, fits much better)
+
+	- Added a patch to dynamically adjust serdev's polling
+          interval via device paramter. This was warranted by the
+          problems that arose from real-life usage.
+
+Feedback is wellcome!
 
 Thanks,
 Andrey Smirnov
+
+[v1] https://www.spinics.net/lists/u-boot-v2/msg32322.html
+
+Andrey Smirnov (5):
+  console: Introduce console_drain()
+  console: Add simplified 'serdev' framework from Linux kernel
+  serdev: Add trivial blocking read function
+  serial: Drop .remove functions from all drivers
+  serdev: Allow polling interval to be adjusted at runtime
+
+ common/Makefile                  |   1 +
+ common/console.c                 |  24 ++++-
+ common/serdev.c                  | 208 +++++++++++++++++++++++++++++++++++++++
+ drivers/serial/Kconfig           |   6 ++
+ drivers/serial/serial_auart.c    |  11 ---
+ drivers/serial/serial_cadence.c  |   9 --
+ drivers/serial/serial_clps711x.c |  10 --
+ drivers/serial/serial_imx.c      |  10 --
+ drivers/serial/serial_lpuart.c   |  13 ---
+ drivers/serial/serial_pxa.c      |   9 --
+ drivers/serial/serial_s3c.c      |  10 --
+ drivers/serial/stm-serial.c      |  10 --
+ include/console.h                | 110 +++++++++++++++++++++
+ include/serdev.h                 |  44 +++++++++
+ lib/xymodem.c                    |  30 +-----
+ 15 files changed, 395 insertions(+), 110 deletions(-)
+ create mode 100644 common/serdev.c
+ create mode 100644 include/serdev.h
+
+-- 
+2.14.3
+
 
 _______________________________________________
 barebox mailing list
