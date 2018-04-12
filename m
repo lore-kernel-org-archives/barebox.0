@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6WZA-0003al-8E
+ id 1f6WZA-0003ae-86
  for barebox@lists.infradead.org; Thu, 12 Apr 2018 07:22:50 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Apr 2018 09:22:31 +0200
-Message-Id: <20180412072231.31207-10-s.hauer@pengutronix.de>
+Date: Thu, 12 Apr 2018 09:22:29 +0200
+Message-Id: <20180412072231.31207-8-s.hauer@pengutronix.de>
 In-Reply-To: <20180412072231.31207-1-s.hauer@pengutronix.de>
 References: <20180412072231.31207-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,39 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9] ARM: i.MX: pfla02: set priority of da9063 watchdog
+Subject: [PATCH 7/9] mfd: da9063: update Kconfig for DA9062
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Cc: Stefan Christ <s.christ@phytec.de>
 
-From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+From: Stefan Christ <s.christ@phytec.de>
 
-To win against the internal imx6 or other external watchdogs, increase
-priority (default: 100) of the da9063 watchdog.
-
-Ditto for the restart handler and reset source priority.
-
-Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-Tested-by: Stefan Christ <s.christ@phytec.de>
+Signed-off-by: Stefan Christ <s.christ@phytec.de>
 Signed-off-by: Christian Hemp <c.hemp@phytec.de>
 ---
- arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/mfd/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-index 9a8c7024a3..7cc8be1951 100644
---- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-@@ -200,4 +200,10 @@
- 		pagesize = <32>;
- 		reg = <0x50>;
- 	};
-+
-+	pmic@58 {
-+		watchdog-priority = <500>;
-+		restart-priority = <500>;
-+		reset-source-priority = <500>;
-+	};
- };
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index 417c9ce96c..521cf042ae 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -13,7 +13,7 @@ config MFD_DA9053
+ 
+ config MFD_DA9063
+ 	depends on I2C
+-	bool "DA9063 PMIC driver"
++	bool "DA9063/DA9062 PMIC driver"
+ 
+ config MFD_LP3972
+ 	depends on I2C
 -- 
 2.16.1
 
