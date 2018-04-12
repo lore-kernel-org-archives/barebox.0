@@ -1,20 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f6XzL-0003TL-Qw
- for barebox@lists.infradead.org; Thu, 12 Apr 2018 08:53:53 +0000
-Received: from litschi.hi.pengutronix.de
- ([2001:67c:670:100:feaa:14ff:fe6a:8db5])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <m.tretter@pengutronix.de>) id 1f6Xz8-0003Hr-D5
- for barebox@lists.infradead.org; Thu, 12 Apr 2018 10:53:38 +0200
-Date: Thu, 12 Apr 2018 10:53:37 +0200
-From: Michael Tretter <m.tretter@pengutronix.de>
-Message-ID: <20180412105337.751ab9ce@litschi.hi.pengutronix.de>
-In-Reply-To: <20180406131639.14100-1-s.hauer@pengutronix.de>
-References: <20180406131639.14100-1-s.hauer@pengutronix.de>
-MIME-Version: 1.0
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1f6YIA-0004rh-Mm
+ for barebox@lists.infradead.org; Thu, 12 Apr 2018 09:13:20 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id A98FBA0023F
+ for <barebox@lists.infradead.org>; Thu, 12 Apr 2018 11:13:20 +0200 (CEST)
+From: Daniel Schultz <d.schultz@phytec.de>
+Date: Thu, 12 Apr 2018 11:13:01 +0200
+Message-Id: <1523524382-19217-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,89 +17,148 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: on ifup -a only detect devices when necessary
+Subject: [PATCH v2 1/2] common: state: Add property to protect existing data
 To: barebox@lists.infradead.org
 
-On Fri, 06 Apr 2018 15:16:39 +0200, Sascha Hauer wrote:
-> For network boot we once used to hardcode eth0, but in latest changes
-> this was changed to work with different network devices and the 'ifup
-> eth0' was replaced with 'ifup -a' which lead to the result that we now
-> detect all devices in order to eventually also bring up USB network
-> adapters. In most of the cases this is not desired. When a board has
-> internal network support this is likely to be used. With this patch
-> we only detect all devices when we do not have a network device already.
-> For the unusual case in which a USB network adapter shall be used
-> even when an internal network interface is present we introduce the
-> global variable "global.net.ifup_force_detect" which can be used to
-> force detection of devices.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+After an update to a newer barebox version with an enabled state
+framework, existing data in storage memories could be overwritten.
 
-Tested-by: Michael Tretter <m.tretter@pengutronix.de>
+Add a new property to check in front of every write task, if the meta
+magic field only contains the magic number, zeros or ones.
 
-Michael
+Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+---
+Changes:
+	v2: Added check for circular backend
+	    Improved error message if content was found
 
-> ---
->  net/ifup.c | 21 ++++++++++++++++++++-
->  1 file changed, 20 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/ifup.c b/net/ifup.c
-> index 827c5c03d1..d550f82530 100644
-> --- a/net/ifup.c
-> +++ b/net/ifup.c
-> @@ -28,6 +28,9 @@
->  #include <globalvar.h>
->  #include <string.h>
->  #include <driver.h>
-> +#include <init.h>
-> +#include <globalvar.h>
-> +#include <magicvar.h>
->  #include <linux/stat.h>
->  
->  static int eth_discover(char *file)
-> @@ -245,6 +248,8 @@ int ifup(const char *ethname, unsigned flags)
->  	return ifup_edev(edev, flags);
->  }
->  
-> +static int net_ifup_force_detect;
-> +
->  int ifup_all(unsigned flags)
->  {
->  	struct eth_device *edev;
-> @@ -266,7 +271,9 @@ int ifup_all(unsigned flags)
->  
->  	closedir(dir);
->  
-> -	device_detect_all();
-> +	if ((flags & IFUP_FLAG_FORCE) || net_ifup_force_detect ||
-> +	    list_empty(&netdev_list))
-> +		device_detect_all();
->  
->  	for_each_netdev(edev)
->  		ifup_edev(edev, flags);
-> @@ -274,6 +281,18 @@ int ifup_all(unsigned flags)
->  	return 0;
->  }
->  
-> +static int ifup_all_init(void)
-> +{
-> +	globalvar_add_simple_bool("net.ifup_force_detect", &net_ifup_force_detect);
-> +
-> +	return 0;
-> +}
-> +late_initcall(ifup_all_init);
-> +
-> +BAREBOX_MAGICVAR_NAMED(global_net_ifup_force_detect,
-> +                       global.net.ifup_force_detect,
-> +                       "net: force detection of devices on ifup -a");
-> +
->  #if IS_ENABLED(CONFIG_NET_CMD_IFUP)
->  
->  static int do_ifup(int argc, char *argv[])
+ .../devicetree/bindings/barebox/barebox,state.rst     |  3 +++
+ common/state/backend_bucket_circular.c                |  8 +++++---
+ common/state/backend_bucket_direct.c                  |  2 ++
+ common/state/state.c                                  | 19 ++++++++++++++++++-
+ common/state/state.h                                  |  2 ++
+ 5 files changed, 30 insertions(+), 4 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/barebox/barebox,state.rst b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+index 872bac0..2893937 100644
+--- a/Documentation/devicetree/bindings/barebox/barebox,state.rst
++++ b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+@@ -55,6 +55,9 @@ Optional Properties
+ * ``algo``: A HMAC algorithm used to detect manipulation of the data
+   or header, sensible values follow this pattern ``hmac(<HASH>)``,
+   e.g. ``hmac(sha256)``. Only available for the ``backend-type`` ``raw``.
++* ``keep-previous-content``: Check if a the bucket meta magic field contains
++  other data than the magic value. If so, the backend will not write the state
++  to prevent unconditionally overwrites of existing data.
+ 
+ .. note:: For the ``backend-storage-type`` the keyword ``noncircular`` is still
+    supported as a fall back to an old storage format. Recommendation is to not
+diff --git a/common/state/backend_bucket_circular.c b/common/state/backend_bucket_circular.c
+index 2324903..933493e 100644
+--- a/common/state/backend_bucket_circular.c
++++ b/common/state/backend_bucket_circular.c
+@@ -396,11 +396,13 @@ static int state_backend_bucket_circular_init(
+ 			meta = (struct state_backend_storage_bucket_circular_meta *)
+ 					(buf + sub_offset + circ->writesize - sizeof(*meta));
+ 
+-			if (meta->magic != circular_magic)
++			if (meta->magic != circular_magic) {
+ 				written_length = 0;
+-			else
++				if (meta->magic != ~0 && !!meta->magic)
++					bucket->wrong_magic = 1;
++			} else {
+ 				written_length = meta->written_length;
+-
++			}
+ 			break;
+ 		}
+ 	}
+diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
+index 958696e..9d6a337 100644
+--- a/common/state/backend_bucket_direct.c
++++ b/common/state/backend_bucket_direct.c
+@@ -69,6 +69,8 @@ static int state_backend_bucket_direct_read(struct state_backend_storage_bucket
+ 	if (meta.magic == direct_magic) {
+ 		read_len = meta.written_length;
+ 	} else {
++		if (meta.magic != ~0 && !!meta.magic)
++			bucket->wrong_magic = 1;
+ 		if (!IS_ENABLED(CONFIG_STATE_BACKWARD_COMPATIBLE)) {
+ 			dev_err(direct->dev, "No meta data header found\n");
+ 			dev_dbg(direct->dev, "Enable backward compatibility or increase stride size\n");
+diff --git a/common/state/state.c b/common/state/state.c
+index 73dfb58..25d9502 100644
+--- a/common/state/state.c
++++ b/common/state/state.c
+@@ -44,6 +44,8 @@ int state_save(struct state *state)
+ 	void *buf;
+ 	ssize_t len;
+ 	int ret;
++	struct state_backend_storage_bucket *bucket;
++	struct state_backend_storage *storage;
+ 
+ 	if (!state->dirty)
+ 		return 0;
+@@ -55,7 +57,19 @@ int state_save(struct state *state)
+ 		return ret;
+ 	}
+ 
+-	ret = state_storage_write(&state->storage, buf, len);
++	storage = &state->storage;
++	if (state->keep_prev_content) {
++		bool has_content = 0;
++		list_for_each_entry(bucket, &storage->buckets, bucket_list)
++			has_content |= bucket->wrong_magic;
++		if (has_content) {
++			dev_err(&state->dev, "Found foreign content on backend, won't overwrite.\n");
++			ret = -EPERM;
++			goto out;
++		}
++	}
++
++	ret = state_storage_write(storage, buf, len);
+ 	if (ret) {
+ 		dev_err(&state->dev, "Failed to write packed state, %d\n", ret);
+ 		goto out;
+@@ -623,6 +637,9 @@ struct state *state_new_from_node(struct device_node *node, bool readonly)
+ 
+ 	of_property_read_string(node, "backend-storage-type", &storage_type);
+ 
++	state->keep_prev_content = of_property_read_bool(node,
++							"keep-previous-content");
++
+ 	ret = state_format_init(state, backend_type, node, alias);
+ 	if (ret)
+ 		goto out_release_state;
+diff --git a/common/state/state.h b/common/state/state.h
+index 6670523..3a0662f 100644
+--- a/common/state/state.h
++++ b/common/state/state.h
+@@ -46,6 +46,7 @@ struct state_backend_storage_bucket {
+ 	void *buf;
+ 	ssize_t len;
+ 	bool needs_refresh;
++	bool wrong_magic;
+ };
+ 
+ /**
+@@ -105,6 +106,7 @@ struct state {
+ 	char *of_path;
+ 	const char *name;
+ 	uint32_t magic;
++	bool keep_prev_content;
+ 
+ 	struct list_head variables; /* Sorted list of variables */
+ 
+-- 
+2.7.4
+
 
 _______________________________________________
 barebox mailing list
