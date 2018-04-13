@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x229.google.com ([2607:f8b0:400e:c00::229])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f7PKb-0001p5-91
- for barebox@lists.infradead.org; Sat, 14 Apr 2018 17:51:22 +0000
-Received: by mail-pf0-x229.google.com with SMTP id p6so8522582pfn.4
- for <barebox@lists.infradead.org>; Sat, 14 Apr 2018 10:51:10 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 14 Apr 2018 10:50:46 -0700
-Message-Id: <20180414175103.10125-1-andrew.smirnov@gmail.com>
+ id 1f78A6-0008EW-56
+ for barebox@lists.infradead.org; Fri, 13 Apr 2018 23:31:24 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Sat, 14 Apr 2018 01:30:50 +0200
+Message-Id: <20180413233053.15570-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,67 +15,80 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/17] i.MX bootsource bugfixes, refactoring and VFxxx support
+Subject: [PATCH 1/4] pci: rename variable mask -> barval
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Everyone:
-
-This patchset is the result of my work on adding support for
-bootsource detection of VFxxx as well as fixing a number of
-bugs/unsupported corner cases in similar i.MX7 specific code.
-
-NOTE: While VFxxx support is added in this series the code integrating
-it into the SoC initalization sequnce is not included. Patch for that
-is dependent on recently submitted "i.MX reset reason detection
-support" and I didn't want to intertwine two otherwise independent
-submissions.
-
-Feedback is wellcome!
-
-Thanks,
-Andrey Smirnov
-
-Andrey Smirnov (17):
-  ARM: i.MX: boot: Coalesce copy-pasted code
-  ARM: i.MX: Add function to extract BMOD value
-  ARM: i.MX: Simplify serial bootsource detection for i.MX6 and 7
-  ARM: i.MX: Account for unprogrammed fuses on i.MX6 and i.MX7
-  ARM: i.MX7: boot: Add code to handle SD/MMC manufacture mode
-  ARM: i.MX7: boot: Remove incorrect NAND bootsource detection
-  ARM: i.MX7: boot: Fix SPI-NOR/QSPI boot source mixup
-  ARM: i.MX: boot: Remove unnecessary retruns
-  ARM: i.MX: boot: Move magic values into small functions
-  ARM: i.MX: boot: Share code to detect NAND as a boot source
-  ARM: i.MX: boot: Check for NAND boot only if necessary on i.MX53, 6
-  ARM: i.MX53: boot: Move magic numbers info utility functions
-  ARM: i.MX6: boot: Move magic numbers into utility functions
-  ARM: i.MX7: boot: Move magic numbers into utility functions
-  bootsource: Add BOOTSOURCE_CAN
-  ARM: VFxxx: Implement code to detect bootsource
-  ARM: i.MX6: boot: Return BOOTSOURCE_SPI_NOR, not BOOTSOURCE_SPI
-
- arch/arm/boards/datamodul-edm-qmx6/board.c |   2 +-
- arch/arm/boards/dfi-fs700-m60/board.c      |   2 +-
- arch/arm/boards/phytec-som-imx6/board.c    |   2 +-
- arch/arm/boards/zii-imx6q-rdu2/lowlevel.c  |   2 +-
- arch/arm/mach-imx/boot.c                   | 411 ++++++++++++++++++++---------
- arch/arm/mach-imx/include/mach/generic.h   |   2 +
- arch/arm/mach-imx/xload.c                  |   2 +-
- common/bootsource.c                        |   1 +
- include/bootsource.h                       |   1 +
- 9 files changed, 289 insertions(+), 136 deletions(-)
-
--- 
-2.14.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIHZhcmlhYmxlIGlzbid0IHJlYWxseSBhIG1hc2suIEFuZCBpdCBpcyBpcnJpdGF0aW5nIHRo
+YXQgdGhpcyAibWFzayIKdmFsdWUgaXMgcGFzc2VkIGFzIHBhcmFtZXRlciAibWF4YmFzZSIgdG8g
+dGhlIGZ1bmN0aW9uIHBjaV9zaXplKCkgd2hpY2gKYWxzbyBoYXMgYSBwYXJhbWV0ZXIgIm1hc2si
+LiBTbyByZW5hbWUgaXQgdG8gYSBtb3JlIGdlbmVyaWMgdGVybS4KClRoZSBtYWluIHJlYXNvbiBm
+b3IgdGhpcyBwYXRjaCBpcyB0aGF0IHRoZSBuZXh0IHBhdGNoIGludHJvZHVjZXMgYW5vdGhlcgp2
+YXJpYWJsZSB3aXRoIG5hbWUgIm1hc2siIGFuZCBzbyB0aGlzIG9yaWdpbmFsIGlzIGluIHRoZSB3
+YXkuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBl
+bmd1dHJvbml4LmRlPgotLS0KIGRyaXZlcnMvcGNpL3BjaS5jIHwgMjkgKysrKysrKysrKysrKysr
+LS0tLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAxNSBpbnNlcnRpb25zKCspLCAxNCBkZWxl
+dGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL3BjaS9wY2kuYyBiL2RyaXZlcnMvcGNpL3Bj
+aS5jCmluZGV4IGIyNTcwZWIxNTE4MS4uNTM4OTAzZWU2NjA3IDEwMDY0NAotLS0gYS9kcml2ZXJz
+L3BjaS9wY2kuYworKysgYi9kcml2ZXJzL3BjaS9wY2kuYwpAQCAtMTcwLDI1ICsxNzAsMjYgQEAg
+c3RhdGljIHZvaWQgc2V0dXBfZGV2aWNlKHN0cnVjdCBwY2lfZGV2ICpkZXYsIGludCBtYXhfYmFy
+KQogCiAJZm9yIChiYXIgPSAwOyBiYXIgPCBtYXhfYmFyOyBiYXIrKykgewogCQlyZXNvdXJjZV9z
+aXplX3QgbGFzdF9hZGRyOwotCQl1MzIgb3JpZywgbWFzaywgc2l6ZTsKKwkJdTMyIG9yaWcsIGJh
+cnZhbCwgc2l6ZTsKIAogCQlwY2lfcmVhZF9jb25maWdfZHdvcmQoZGV2LCBQQ0lfQkFTRV9BRERS
+RVNTXzAgKyBiYXIgKiA0LCAmb3JpZyk7CiAJCXBjaV93cml0ZV9jb25maWdfZHdvcmQoZGV2LCBQ
+Q0lfQkFTRV9BRERSRVNTXzAgKyBiYXIgKiA0LCAweGZmZmZmZmZlKTsKLQkJcGNpX3JlYWRfY29u
+ZmlnX2R3b3JkKGRldiwgUENJX0JBU0VfQUREUkVTU18wICsgYmFyICogNCwgJm1hc2spOworCQlw
+Y2lfcmVhZF9jb25maWdfZHdvcmQoZGV2LCBQQ0lfQkFTRV9BRERSRVNTXzAgKyBiYXIgKiA0LCAm
+YmFydmFsKTsKIAkJcGNpX3dyaXRlX2NvbmZpZ19kd29yZChkZXYsIFBDSV9CQVNFX0FERFJFU1Nf
+MCArIGJhciAqIDQsIG9yaWcpOwogCi0JCWlmIChtYXNrID09IDAgfHwgbWFzayA9PSAweGZmZmZm
+ZmZmKSB7CisJCWlmIChiYXJ2YWwgPT0gMCB8fCBiYXJ2YWwgPT0gMHhmZmZmZmZmZikgewogCQkJ
+cHJfZGVidWcoInBiYXIlZCBzZXQgYmFkIG1hc2tcbiIsIGJhcik7CiAJCQljb250aW51ZTsKIAkJ
+fQogCi0JCWlmIChtYXNrICYgMHgwMSkgeyAvKiBJTyAqLwotCQkJc2l6ZSA9IHBjaV9zaXplKG9y
+aWcsIG1hc2ssIDB4ZmZmZmZmZmUpOworCQlpZiAoYmFydmFsICYgMHgwMSkgeyAvKiBJTyAqLwor
+CQkJc2l6ZSA9IHBjaV9zaXplKG9yaWcsIGJhcnZhbCwgMHhmZmZmZmZmZSk7CiAJCQlpZiAoIXNp
+emUpIHsKIAkJCQlwcl9kZWJ1ZygicGJhciVkIGJhZCBJTyBtYXNrXG4iLCBiYXIpOwogCQkJCWNv
+bnRpbnVlOwogCQkJfQotCQkJcHJfZGVidWcoInBiYXIlZDogbWFzaz0lMDh4IGlvICVkIGJ5dGVz
+XG4iLCBiYXIsIG1hc2ssIHNpemUpOworCQkJcHJfZGVidWcoInBiYXIlZDogYmFydmFsPSUwOHgg
+aW8gJWQgYnl0ZXNcbiIsCisJCQkJIGJhciwgYmFydmFsLCBzaXplKTsKIAkJCWlmIChBTElHTihs
+YXN0X2lvLCBzaXplKSArIHNpemUgPgogCQkJICAgIGRldi0+YnVzLT5yZXNvdXJjZVtQQ0lfQlVT
+X1JFU09VUkNFX0lPXS0+ZW5kKSB7CiAJCQkJcHJfZGVidWcoIkJBUiBkb2VzIG5vdCBmaXQgd2l0
+aGluIGJ1cyBJTyByZXNcbiIpOwpAQCAtMjAwLDE1ICsyMDEsMTUgQEAgc3RhdGljIHZvaWQgc2V0
+dXBfZGV2aWNlKHN0cnVjdCBwY2lfZGV2ICpkZXYsIGludCBtYXhfYmFyKQogCQkJZGV2LT5yZXNv
+dXJjZVtiYXJdLmZsYWdzID0gSU9SRVNPVVJDRV9JTzsKIAkJCWxhc3RfYWRkciA9IGxhc3RfaW87
+CiAJCQlsYXN0X2lvICs9IHNpemU7Ci0JCX0gZWxzZSBpZiAoKG1hc2sgJiBQQ0lfQkFTRV9BRERS
+RVNTX01FTV9QUkVGRVRDSCkgJiYKKwkJfSBlbHNlIGlmICgoYmFydmFsICYgUENJX0JBU0VfQURE
+UkVTU19NRU1fUFJFRkVUQ0gpICYmCiAJCSAgICAgICAgICAgbGFzdF9tZW1fcHJlZikgLyogcHJl
+ZmV0Y2hhYmxlIE1FTSAqLyB7Ci0JCQlzaXplID0gcGNpX3NpemUob3JpZywgbWFzaywgMHhmZmZm
+ZmZmMCk7CisJCQlzaXplID0gcGNpX3NpemUob3JpZywgYmFydmFsLCAweGZmZmZmZmYwKTsKIAkJ
+CWlmICghc2l6ZSkgewogCQkJCXByX2RlYnVnKCJwYmFyJWQgYmFkIFAtTUVNIG1hc2tcbiIsIGJh
+cik7CiAJCQkJY29udGludWU7CiAJCQl9Ci0JCQlwcl9kZWJ1ZygicGJhciVkOiBtYXNrPSUwOHgg
+UCBtZW1vcnkgJWQgYnl0ZXNcbiIsCi0JCQkgICAgYmFyLCBtYXNrLCBzaXplKTsKKwkJCXByX2Rl
+YnVnKCJwYmFyJWQ6IGJhcnZhbD0lMDh4IFAgbWVtb3J5ICVkIGJ5dGVzXG4iLAorCQkJCSBiYXIs
+IGJhcnZhbCwgc2l6ZSk7CiAJCQlpZiAoQUxJR04obGFzdF9tZW1fcHJlZiwgc2l6ZSkgKyBzaXpl
+ID4KIAkJCSAgICBkZXYtPmJ1cy0+cmVzb3VyY2VbUENJX0JVU19SRVNPVVJDRV9NRU1fUFJFRl0t
+PmVuZCkgewogCQkJCXByX2RlYnVnKCJCQVIgZG9lcyBub3QgZml0IHdpdGhpbiBidXMgcC1tZW0g
+cmVzXG4iKTsKQEAgLTIyMiwxMyArMjIzLDEzIEBAIHN0YXRpYyB2b2lkIHNldHVwX2RldmljZShz
+dHJ1Y3QgcGNpX2RldiAqZGV2LCBpbnQgbWF4X2JhcikKIAkJCWxhc3RfYWRkciA9IGxhc3RfbWVt
+X3ByZWY7CiAJCQlsYXN0X21lbV9wcmVmICs9IHNpemU7CiAJCX0gZWxzZSB7IC8qIG5vbi1wcmVm
+ZXRjaCBNRU0gKi8KLQkJCXNpemUgPSBwY2lfc2l6ZShvcmlnLCBtYXNrLCAweGZmZmZmZmYwKTsK
+KwkJCXNpemUgPSBwY2lfc2l6ZShvcmlnLCBiYXJ2YWwsIDB4ZmZmZmZmZjApOwogCQkJaWYgKCFz
+aXplKSB7CiAJCQkJcHJfZGVidWcoInBiYXIlZCBiYWQgTlAtTUVNIG1hc2tcbiIsIGJhcik7CiAJ
+CQkJY29udGludWU7CiAJCQl9Ci0JCQlwcl9kZWJ1ZygicGJhciVkOiBtYXNrPSUwOHggTlAgbWVt
+b3J5ICVkIGJ5dGVzXG4iLAotCQkJICAgIGJhciwgbWFzaywgc2l6ZSk7CisJCQlwcl9kZWJ1Zygi
+cGJhciVkOiBiYXJ2YWw9JTA4eCBOUCBtZW1vcnkgJWQgYnl0ZXNcbiIsCisJCQkJIGJhciwgYmFy
+dmFsLCBzaXplKTsKIAkJCWlmIChBTElHTihsYXN0X21lbSwgc2l6ZSkgKyBzaXplID4KIAkJCSAg
+ICBkZXYtPmJ1cy0+cmVzb3VyY2VbUENJX0JVU19SRVNPVVJDRV9NRU1dLT5lbmQpIHsKIAkJCQlw
+cl9kZWJ1ZygiQkFSIGRvZXMgbm90IGZpdCB3aXRoaW4gYnVzIG5wLW1lbSByZXNcbiIpOwpAQCAt
+MjQ1LDcgKzI0Niw3IEBAIHN0YXRpYyB2b2lkIHNldHVwX2RldmljZShzdHJ1Y3QgcGNpX2RldiAq
+ZGV2LCBpbnQgbWF4X2JhcikKIAkJZGV2LT5yZXNvdXJjZVtiYXJdLnN0YXJ0ID0gbGFzdF9hZGRy
+OwogCQlkZXYtPnJlc291cmNlW2Jhcl0uZW5kID0gbGFzdF9hZGRyICsgc2l6ZSAtIDE7CiAKLQkJ
+aWYgKChtYXNrICYgUENJX0JBU0VfQUREUkVTU19NRU1fVFlQRV82NCkpIHsKKwkJaWYgKChiYXJ2
+YWwgJiBQQ0lfQkFTRV9BRERSRVNTX01FTV9UWVBFXzY0KSkgewogCQkJZGV2LT5yZXNvdXJjZVti
+YXJdLmZsYWdzIHw9IElPUkVTT1VSQ0VfTUVNXzY0OwogCQkJcGNpX3dyaXRlX2NvbmZpZ19kd29y
+ZChkZXYsCiAJCQkgICAgICAgUENJX0JBU0VfQUREUkVTU18xICsgYmFyICogNCwgMCk7Ci0tIAoy
+LjE2LjMKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
+YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
+c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
