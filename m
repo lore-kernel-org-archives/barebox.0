@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f78A7-0008EE-6K
- for barebox@lists.infradead.org; Fri, 13 Apr 2018 23:31:25 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Sat, 14 Apr 2018 01:30:52 +0200
-Message-Id: <20180413233053.15570-3-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20180413233053.15570-1-u.kleine-koenig@pengutronix.de>
+ id 1f78aJ-0000yj-Dg
+ for barebox@lists.infradead.org; Fri, 13 Apr 2018 23:58:29 +0000
+Date: Sat, 14 Apr 2018 01:58:15 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20180413235815.h4zgmhhweqexqbcx@pengutronix.de>
 References: <20180413233053.15570-1-u.kleine-koenig@pengutronix.de>
+ <20180413233053.15570-3-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180413233053.15570-3-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,46 +19,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] pci: improve debug output
+Subject: Re: [PATCH 3/4] pci: improve debug output
 To: barebox@lists.infradead.org
 
-UHJpbnQgYSBzaW5nbGUgbGluZSBwZXIgYmFyIHdpdGggYWxsIHJlbGV2YW50IGluZm9ybWF0aW9u
-IGFuZCBpbmRlbnQgaXQKYnkgYSBzcGFjZSB0byBncm91cCB0aGVtIHRvZ2V0aGVyIHBlciBkZXZp
-Y2UuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBl
-bmd1dHJvbml4LmRlPgotLS0KIGRyaXZlcnMvcGNpL3BjaS5jIHwgMTUgKysrKysrKystLS0tLS0t
-CiAxIGZpbGUgY2hhbmdlZCwgOCBpbnNlcnRpb25zKCspLCA3IGRlbGV0aW9ucygtKQoKZGlmZiAt
-LWdpdCBhL2RyaXZlcnMvcGNpL3BjaS5jIGIvZHJpdmVycy9wY2kvcGNpLmMKaW5kZXggODczNTli
-NmRlODJjLi44MzdlMTdhYTgzOTcgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvcGNpL3BjaS5jCisrKyBi
-L2RyaXZlcnMvcGNpL3BjaS5jCkBAIC0xODEsNyArMTgxLDcgQEAgc3RhdGljIHZvaWQgc2V0dXBf
-ZGV2aWNlKHN0cnVjdCBwY2lfZGV2ICpkZXYsIGludCBtYXhfYmFyKQogCQlwY2lfd3JpdGVfY29u
-ZmlnX2R3b3JkKGRldiwgUENJX0JBU0VfQUREUkVTU18wICsgYmFyICogNCwgb3JpZyk7CiAKIAkJ
-aWYgKGJhcnZhbCA9PSAwIHx8IGJhcnZhbCA9PSAweGZmZmZmZmZmKSB7Ci0JCQlwcl9kZWJ1Zygi
-cGJhciVkIHNldCBiYWQgbWFza1xuIiwgYmFyKTsKKwkJCXByX2RlYnVnKCIgcGJhciVkOiBzZXQg
-YmFkIG1hc2sgKCUwOHgpXG4iLCBiYXIsIGJhcnZhbCk7CiAJCQljb250aW51ZTsKIAkJfQogCkBA
-IC0yMDgsMjAgKzIwOCwyMSBAQCBzdGF0aWMgdm9pZCBzZXR1cF9kZXZpY2Uoc3RydWN0IHBjaV9k
-ZXYgKmRldiwgaW50IG1heF9iYXIpCiAKIAkJc2l6ZSA9IHBjaV9zaXplKG9yaWcsIGJhcnZhbCwg
-bWFzayk7CiAJCWlmICghc2l6ZSkgewotCQkJcHJfZGVidWcoInBiYXIlZCBiYWQgJXMgbWFza1xu
-IiwgYmFyLCB0eXBlKTsKKwkJCXByX2RlYnVnKCIgcGJhciVkOiBiYWQgJXMgc2l6ZSAob3JpZz0l
-MDh4LCBiYXJ2YWw9JTA4eCwgdHlwZT0lcylcbiIsCisJCQkJIGJhciwgdHlwZSwgb3JpZywgYmFy
-dmFsLCB0eXBlKTsKIAkJCWNvbnRpbnVlOwogCQl9CiAKLQkJcHJfZGVidWcoInBiYXIlZDogYmFy
-dmFsPSUwOHggdHlwZT0lcyBzaXplPTB4JXhcbiIsCi0JCQkgYmFyLCBiYXJ2YWwsIHR5cGUsIHNp
-emUpOwotCiAJCWlmIChBTElHTigqbGFzdCwgc2l6ZSkgKyBzaXplID4gZGV2LT5idXMtPnJlc291
-cmNlW3Jlc3R5cGVdLT5lbmQpIHsKLQkJCXByX2RlYnVnKCJCQVIgZG9lcyBub3QgZml0IHdpdGhp
-biBidXMgJXMgcmVzXG4iLCB0eXBlKTsKKwkJCXByX2RlYnVnKCIgcGJhciVkOiAhISB0eXBlPSVz
-IGFsbG9jYmFzZT0weCUwOHggKyBzaXplPTB4JTA4eCA+IHJlc291cmNlX2VuZD0lcGEgKGJhcnZh
-bD0lMDh4KVxuIiwKKwkJCQkgYmFyLCB0eXBlLCBBTElHTigqbGFzdCwgc2l6ZSksIHNpemUsICZk
-ZXYtPmJ1cy0+cmVzb3VyY2VbcmVzdHlwZV0tPmVuZCwgYmFydmFsKTsKIAkJCXJldHVybjsKIAkJ
-fQogCiAJCSpsYXN0ID0gQUxJR04oKmxhc3QsIHNpemUpOwotCQlwcl9kZWJ1ZygicGJhciVkOiBh
-bGxvY2F0ZWQgYXQgMHglMDh4XG4iLCBiYXIsICpsYXN0KTsKKwkJcHJfZGVidWcoIiBwYmFyJWQ6
-IHR5cGU9JXMgYWxsb2NiYXNlPTB4JTA4eCBzaXplPTB4JTA4eCAoYmFydmFsPSUwOHgpXG4iLAor
-CQkJIGJhciwgdHlwZSwgKmxhc3QsIHNpemUsIGJhcnZhbCk7CisKIAkJcGNpX3dyaXRlX2NvbmZp
-Z19kd29yZChkZXYsIFBDSV9CQVNFX0FERFJFU1NfMCArIGJhciAqIDQsICpsYXN0KTsKIAkJZGV2
-LT5yZXNvdXJjZVtiYXJdLmZsYWdzID0gcmVzZmxhZ3M7CiAJCWRldi0+cmVzb3VyY2VbYmFyXS5z
-dGFydCA9ICpsYXN0OwotLSAKMi4xNi4zCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
-YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo=
+Hello,
+
+On Sat, Apr 14, 2018 at 01:30:52AM +0200, Uwe Kleine-K=F6nig wrote:
+>  		if (ALIGN(*last, size) + size > dev->bus->resource[restype]->end) {
+> -			pr_debug("BAR does not fit within bus %s res\n", type);
+> +			pr_debug(" pbar%d: !! type=3D%s allocbase=3D0x%08x + size=3D0x%08x > =
+resource_end=3D%pa (barval=3D%08x)\n",
+> +				 bar, type, ALIGN(*last, size), size, &dev->bus->resource[restype]->=
+end, barval);
+
+slightly related: I have a machine where this new line results in:
+
+	pci:  pbar0: !! type=3DNP allocbase=3D0x01800000 + size=3D0x00800000 > res=
+ource_end=3D0x01efffff (barval=3Dff800000)
+
+This makes me wonder if the LHS of the check needs to read
+
+	ALIGN(*last, size) + size - 1
+
+. I will think about this after sleeping, and then probably send a patch
+for that.
+
+Best regards
+Uwe
+
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
