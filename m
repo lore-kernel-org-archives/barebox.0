@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x233.google.com ([2a00:1450:4010:c07::233])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f7fqa-0005hh-H0
- for barebox@lists.infradead.org; Sun, 15 Apr 2018 11:29:30 +0000
-Received: by mail-lf0-x233.google.com with SMTP id d20-v6so18155148lfe.3
- for <barebox@lists.infradead.org>; Sun, 15 Apr 2018 04:29:18 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 15 Apr 2018 14:28:58 +0300
-Message-Id: <20180415112858.5163-11-antonynpavlov@gmail.com>
-In-Reply-To: <20180415112858.5163-1-antonynpavlov@gmail.com>
-References: <20180415112858.5163-1-antonynpavlov@gmail.com>
+ id 1f78A6-0008ED-4g
+ for barebox@lists.infradead.org; Fri, 13 Apr 2018 23:31:24 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Sat, 14 Apr 2018 01:30:51 +0200
+Message-Id: <20180413233053.15570-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20180413233053.15570-1-u.kleine-koenig@pengutronix.de>
+References: <20180413233053.15570-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,136 +17,97 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/10] Documentation: add RISC-V docs
+Subject: [PATCH 2/4] pci: refactor bar configuration
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- Documentation/boards/riscv.rst | 106 +++++++++++++++++++++++++++++++++
- 1 file changed, 106 insertions(+)
-
-diff --git a/Documentation/boards/riscv.rst b/Documentation/boards/riscv.rst
-new file mode 100644
-index 0000000000..0cde02305e
---- /dev/null
-+++ b/Documentation/boards/riscv.rst
-@@ -0,0 +1,106 @@
-+RISC-V
-+======
-+
-+Running RISC-V barebox on qemu
-+------------------------------
-+
-+Obtain RISC-V GCC/Newlib Toolchain,
-+see https://github.com/riscv/riscv-tools/blob/master/README.md
-+for details. The ``build.sh`` script from ``riscv-tools`` should
-+create toolchain.
-+
-+Next compile qemu emulator::
-+
-+  $ git clone -b 20180409.erizo https://github.com/miet-riscv-workgroup/riscv-qemu
-+  $ cd riscv-qemu
-+  $ cap="no" ./configure \
-+    --extra-cflags="-Wno-maybe-uninitialized" \
-+    --audio-drv-list="" \
-+    --disable-attr \
-+    --disable-blobs \
-+    --disable-bluez \
-+    --disable-brlapi \
-+    --disable-curl \
-+    --disable-curses \
-+    --disable-docs \
-+    --disable-kvm \
-+    --disable-spice \
-+    --disable-sdl \
-+    --disable-vde \
-+    --disable-vnc-sasl \
-+    --disable-werror \
-+    --enable-trace-backend=simple \
-+    --disable-stack-protector \
-+    --target-list=riscv32-softmmu,riscv64-softmmu
-+  $ make
-+
-+
-+Next compile barebox::
-+
-+  $ make erizo_generic_defconfig ARCH=riscv
-+  ...
-+  $ make ARCH=riscv CROSS_COMPILE=<path to your riscv toolchain>/riscv32-unknown-elf-
-+
-+Run barebox::
-+
-+  $ <path to riscv-qemu source>/riscv32-softmmu/qemu-system-riscv32 \
-+      -nographic -M erizo -bios <path to barebox sources >/barebox.bin \
-+      -serial stdio -monitor none -trace file=/dev/null
-+
-+  nmon> q
-+  
-+  copy loop done
-+  restarting...
-+  
-+  nmon> q
-+  Switch to console [cs0]
-+  
-+  
-+  barebox 2018.04.0-00140-gc717a0b017 #0 Sun Apr 15 11:30:42 MSK 2018
-+  
-+  
-+  Board: generic Erizo SoC board
-+  m25p80 m25p128@00: unrecognized JEDEC id bytes: 00,  0,  0
-+  m25p80 m25p128@00: probe failed: error 2
-+  malloc space: 0x80100000 -> 0x801fffff (size 1 MiB)
-+  running /env/bin/init...
-+  /env/bin/init not found
-+  barebox:/
-+
-+
-+Running RISC-V barebox on DE0-Nano FPGA board
-+---------------------------------------------
-+
-+See https://github.com/open-design/riscv-soc-cores/ for instructions
-+on DE0-Nano bitstream generation and loading.
-+
-+Connect to board's UART with your favorite serial communication software
-+(e.g. minicom) and check 'nmon> ' prompt (nmon runs from onchip ROM).
-+
-+Next close your communication software and use ./scripts/nmon-loader
-+to load barebox image into board's DRAM, e.g.
-+
-+  # ./scripts/nmon-loader barebox.erizo.nmon /dev/ttyUSB0 115200
-+
-+Wait several munutes for 'nmon> ' prompt.
-+
-+Next, start barebox from DRAM:
-+
-+  nmon> g 80000000
-+
-+You should see one more 'nmon> ' prompt (this nmon runs from DRAM).
-+Exit nmon with 'q' command:
-+
-+  nmon> q
-+  Switch to console [cs0]
-+  
-+  
-+  barebox 2018.04.0-00140-gc717a0b017 #0 Sun Apr 15 11:30:42 MSK 2018
-+  
-+  
-+  Board: generic Erizo SoC board
-+  m25p80 m25p128@00: s25sl064p (8192 Kbytes)
-+  malloc space: 0x80100000 -> 0x801fffff (size 1 MiB)
-+  running /env/bin/init...
-+  /env/bin/init not found
-+  barebox:/ 
--- 
-2.17.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SW5zdGVhZCBvZiBkb2luZyBuZWFybHkgdGhlIHNhbWUgdGhyZWUgdGltZXMgZm9yIHRoZSB0aHJl
+ZSBkaWZmZXJlbnQKbWVtb3J5IHR5cGVzLCB1c2Ugc29tZSBoZWxwZXIgdmFyaWFibGVzIGFuZCBk
+byB0aGUgc2FtZSBpbiBhIG1vcmUKZ2VuZXJpYyB3YXkgb25seSBvbmNlLgoKQXBhcnQgZnJvbSBt
+aW5vciBjaGFuZ2VzIGluIHRoZSBwcl9kZWJ1ZyBvdXRwdXQgdGhlcmUgaXMgbm8gc2VtYW50aWMK
+Y2hhbmdlIGludGVuZGVkLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xl
+aW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBkcml2ZXJzL3BjaS9wY2kuYyB8IDEwNCAr
+KysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIDEg
+ZmlsZSBjaGFuZ2VkLCA0MyBpbnNlcnRpb25zKCspLCA2MSBkZWxldGlvbnMoLSkKCmRpZmYgLS1n
+aXQgYS9kcml2ZXJzL3BjaS9wY2kuYyBiL2RyaXZlcnMvcGNpL3BjaS5jCmluZGV4IDUzODkwM2Vl
+NjYwNy4uODczNTliNmRlODJjIDEwMDY0NAotLS0gYS9kcml2ZXJzL3BjaS9wY2kuYworKysgYi9k
+cml2ZXJzL3BjaS9wY2kuYwpAQCAtMTY5LDggKzE2OSwxMSBAQCBzdGF0aWMgdm9pZCBzZXR1cF9k
+ZXZpY2Uoc3RydWN0IHBjaV9kZXYgKmRldiwgaW50IG1heF9iYXIpCiAJCQkgICAgICBjbWQgJiB+
+KFBDSV9DT01NQU5EX0lPIHwgUENJX0NPTU1BTkRfTUVNT1JZKSk7CiAKIAlmb3IgKGJhciA9IDA7
+IGJhciA8IG1heF9iYXI7IGJhcisrKSB7Ci0JCXJlc291cmNlX3NpemVfdCBsYXN0X2FkZHI7Ci0J
+CXUzMiBvcmlnLCBiYXJ2YWwsIHNpemU7CisJCXUzMiBvcmlnLCBiYXJ2YWwsIHNpemUsIG1hc2s7
+CisJCWNvbnN0IGNoYXIgKnR5cGU7CisJCWludCByZXN0eXBlOworCQl1bnNpZ25lZCBsb25nIHJl
+c2ZsYWdzOworCQlyZXNvdXJjZV9zaXplX3QgKmxhc3Q7CiAKIAkJcGNpX3JlYWRfY29uZmlnX2R3
+b3JkKGRldiwgUENJX0JBU0VfQUREUkVTU18wICsgYmFyICogNCwgJm9yaWcpOwogCQlwY2lfd3Jp
+dGVfY29uZmlnX2R3b3JkKGRldiwgUENJX0JBU0VfQUREUkVTU18wICsgYmFyICogNCwgMHhmZmZm
+ZmZmZSk7CkBAIC0xODMsNjggKzE4Niw0NyBAQCBzdGF0aWMgdm9pZCBzZXR1cF9kZXZpY2Uoc3Ry
+dWN0IHBjaV9kZXYgKmRldiwgaW50IG1heF9iYXIpCiAJCX0KIAogCQlpZiAoYmFydmFsICYgMHgw
+MSkgeyAvKiBJTyAqLwotCQkJc2l6ZSA9IHBjaV9zaXplKG9yaWcsIGJhcnZhbCwgMHhmZmZmZmZm
+ZSk7Ci0JCQlpZiAoIXNpemUpIHsKLQkJCQlwcl9kZWJ1ZygicGJhciVkIGJhZCBJTyBtYXNrXG4i
+LCBiYXIpOwotCQkJCWNvbnRpbnVlOwotCQkJfQotCQkJcHJfZGVidWcoInBiYXIlZDogYmFydmFs
+PSUwOHggaW8gJWQgYnl0ZXNcbiIsCi0JCQkJIGJhciwgYmFydmFsLCBzaXplKTsKLQkJCWlmIChB
+TElHTihsYXN0X2lvLCBzaXplKSArIHNpemUgPgotCQkJICAgIGRldi0+YnVzLT5yZXNvdXJjZVtQ
+Q0lfQlVTX1JFU09VUkNFX0lPXS0+ZW5kKSB7Ci0JCQkJcHJfZGVidWcoIkJBUiBkb2VzIG5vdCBm
+aXQgd2l0aGluIGJ1cyBJTyByZXNcbiIpOwotCQkJCXJldHVybjsKLQkJCX0KLQkJCWxhc3RfaW8g
+PSBBTElHTihsYXN0X2lvLCBzaXplKTsKLQkJCXByX2RlYnVnKCJwYmFyJWQ6IGFsbG9jYXRlZCBh
+dCAweCUwOHhcbiIsIGJhciwgbGFzdF9pbyk7Ci0JCQlwY2lfd3JpdGVfY29uZmlnX2R3b3JkKGRl
+diwgUENJX0JBU0VfQUREUkVTU18wICsgYmFyICogNCwgbGFzdF9pbyk7Ci0JCQlkZXYtPnJlc291
+cmNlW2Jhcl0uZmxhZ3MgPSBJT1JFU09VUkNFX0lPOwotCQkJbGFzdF9hZGRyID0gbGFzdF9pbzsK
+LQkJCWxhc3RfaW8gKz0gc2l6ZTsKKwkJCW1hc2sgPSAweGZmZmZmZmZlOworCQkJdHlwZSA9ICJJ
+TyI7CisJCQlyZXN0eXBlID0gUENJX0JVU19SRVNPVVJDRV9JTzsKKwkJCXJlc2ZsYWdzID0gSU9S
+RVNPVVJDRV9JTzsKKwkJCWxhc3QgPSAmbGFzdF9pbzsKIAkJfSBlbHNlIGlmICgoYmFydmFsICYg
+UENJX0JBU0VfQUREUkVTU19NRU1fUFJFRkVUQ0gpICYmCi0JCSAgICAgICAgICAgbGFzdF9tZW1f
+cHJlZikgLyogcHJlZmV0Y2hhYmxlIE1FTSAqLyB7Ci0JCQlzaXplID0gcGNpX3NpemUob3JpZywg
+YmFydmFsLCAweGZmZmZmZmYwKTsKLQkJCWlmICghc2l6ZSkgewotCQkJCXByX2RlYnVnKCJwYmFy
+JWQgYmFkIFAtTUVNIG1hc2tcbiIsIGJhcik7Ci0JCQkJY29udGludWU7Ci0JCQl9Ci0JCQlwcl9k
+ZWJ1ZygicGJhciVkOiBiYXJ2YWw9JTA4eCBQIG1lbW9yeSAlZCBieXRlc1xuIiwKLQkJCQkgYmFy
+LCBiYXJ2YWwsIHNpemUpOwotCQkJaWYgKEFMSUdOKGxhc3RfbWVtX3ByZWYsIHNpemUpICsgc2l6
+ZSA+Ci0JCQkgICAgZGV2LT5idXMtPnJlc291cmNlW1BDSV9CVVNfUkVTT1VSQ0VfTUVNX1BSRUZd
+LT5lbmQpIHsKLQkJCQlwcl9kZWJ1ZygiQkFSIGRvZXMgbm90IGZpdCB3aXRoaW4gYnVzIHAtbWVt
+IHJlc1xuIik7Ci0JCQkJcmV0dXJuOwotCQkJfQotCQkJbGFzdF9tZW1fcHJlZiA9IEFMSUdOKGxh
+c3RfbWVtX3ByZWYsIHNpemUpOwotCQkJcHJfZGVidWcoInBiYXIlZDogYWxsb2NhdGVkIGF0IDB4
+JTA4eFxuIiwgYmFyLCBsYXN0X21lbV9wcmVmKTsKLQkJCXBjaV93cml0ZV9jb25maWdfZHdvcmQo
+ZGV2LCBQQ0lfQkFTRV9BRERSRVNTXzAgKyBiYXIgKiA0LCBsYXN0X21lbV9wcmVmKTsKLQkJCWRl
+di0+cmVzb3VyY2VbYmFyXS5mbGFncyA9IElPUkVTT1VSQ0VfTUVNIHwKLQkJCSAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIElPUkVTT1VSQ0VfUFJFRkVUQ0g7Ci0JCQlsYXN0X2FkZHIgPSBsYXN0
+X21lbV9wcmVmOwotCQkJbGFzdF9tZW1fcHJlZiArPSBzaXplOwotCQl9IGVsc2UgeyAvKiBub24t
+cHJlZmV0Y2ggTUVNICovCi0JCQlzaXplID0gcGNpX3NpemUob3JpZywgYmFydmFsLCAweGZmZmZm
+ZmYwKTsKLQkJCWlmICghc2l6ZSkgewotCQkJCXByX2RlYnVnKCJwYmFyJWQgYmFkIE5QLU1FTSBt
+YXNrXG4iLCBiYXIpOwotCQkJCWNvbnRpbnVlOwotCQkJfQotCQkJcHJfZGVidWcoInBiYXIlZDog
+YmFydmFsPSUwOHggTlAgbWVtb3J5ICVkIGJ5dGVzXG4iLAotCQkJCSBiYXIsIGJhcnZhbCwgc2l6
+ZSk7Ci0JCQlpZiAoQUxJR04obGFzdF9tZW0sIHNpemUpICsgc2l6ZSA+Ci0JCQkgICAgZGV2LT5i
+dXMtPnJlc291cmNlW1BDSV9CVVNfUkVTT1VSQ0VfTUVNXS0+ZW5kKSB7Ci0JCQkJcHJfZGVidWco
+IkJBUiBkb2VzIG5vdCBmaXQgd2l0aGluIGJ1cyBucC1tZW0gcmVzXG4iKTsKLQkJCQlyZXR1cm47
+Ci0JCQl9Ci0JCQlsYXN0X21lbSA9IEFMSUdOKGxhc3RfbWVtLCBzaXplKTsKLQkJCXByX2RlYnVn
+KCJwYmFyJWQ6IGFsbG9jYXRlZCBhdCAweCUwOHhcbiIsIGJhciwgbGFzdF9tZW0pOwotCQkJcGNp
+X3dyaXRlX2NvbmZpZ19kd29yZChkZXYsIFBDSV9CQVNFX0FERFJFU1NfMCArIGJhciAqIDQsIGxh
+c3RfbWVtKTsKLQkJCWRldi0+cmVzb3VyY2VbYmFyXS5mbGFncyA9IElPUkVTT1VSQ0VfTUVNOwot
+CQkJbGFzdF9hZGRyID0gbGFzdF9tZW07Ci0JCQlsYXN0X21lbSArPSBzaXplOworCQkJICAgbGFz
+dF9tZW1fcHJlZikgeyAvKiBwcmVmZXRjaGFibGUgTUVNICovCisJCQltYXNrID0gMHhmZmZmZmZm
+MDsKKwkJCXR5cGUgPSAiUCI7CisJCQlyZXN0eXBlID0gUENJX0JVU19SRVNPVVJDRV9NRU1fUFJF
+RjsKKwkJCXJlc2ZsYWdzID0gSU9SRVNPVVJDRV9NRU0gfCBJT1JFU09VUkNFX1BSRUZFVENIOwor
+CQkJbGFzdCA9ICZsYXN0X21lbV9wcmVmOworCQl9IGVsc2UgeyAvKiBub24tcHJlZmV0Y2hhYmxl
+IE1FTSAqLworCQkJbWFzayA9IDB4ZmZmZmZmZjA7CisJCQl0eXBlID0gIk5QIjsKKwkJCXJlc3R5
+cGUgPSBQQ0lfQlVTX1JFU09VUkNFX01FTTsKKwkJCXJlc2ZsYWdzID0gSU9SRVNPVVJDRV9NRU07
+CisJCQlsYXN0ID0gJmxhc3RfbWVtOwogCQl9CiAKLQkJZGV2LT5yZXNvdXJjZVtiYXJdLnN0YXJ0
+ID0gbGFzdF9hZGRyOwotCQlkZXYtPnJlc291cmNlW2Jhcl0uZW5kID0gbGFzdF9hZGRyICsgc2l6
+ZSAtIDE7CisJCXNpemUgPSBwY2lfc2l6ZShvcmlnLCBiYXJ2YWwsIG1hc2spOworCQlpZiAoIXNp
+emUpIHsKKwkJCXByX2RlYnVnKCJwYmFyJWQgYmFkICVzIG1hc2tcbiIsIGJhciwgdHlwZSk7CisJ
+CQljb250aW51ZTsKKwkJfQorCisJCXByX2RlYnVnKCJwYmFyJWQ6IGJhcnZhbD0lMDh4IHR5cGU9
+JXMgc2l6ZT0weCV4XG4iLAorCQkJIGJhciwgYmFydmFsLCB0eXBlLCBzaXplKTsKKworCQlpZiAo
+QUxJR04oKmxhc3QsIHNpemUpICsgc2l6ZSA+IGRldi0+YnVzLT5yZXNvdXJjZVtyZXN0eXBlXS0+
+ZW5kKSB7CisJCQlwcl9kZWJ1ZygiQkFSIGRvZXMgbm90IGZpdCB3aXRoaW4gYnVzICVzIHJlc1xu
+IiwgdHlwZSk7CisJCQlyZXR1cm47CisJCX0KKworCQkqbGFzdCA9IEFMSUdOKCpsYXN0LCBzaXpl
+KTsKKwkJcHJfZGVidWcoInBiYXIlZDogYWxsb2NhdGVkIGF0IDB4JTA4eFxuIiwgYmFyLCAqbGFz
+dCk7CisJCXBjaV93cml0ZV9jb25maWdfZHdvcmQoZGV2LCBQQ0lfQkFTRV9BRERSRVNTXzAgKyBi
+YXIgKiA0LCAqbGFzdCk7CisJCWRldi0+cmVzb3VyY2VbYmFyXS5mbGFncyA9IHJlc2ZsYWdzOwor
+CQlkZXYtPnJlc291cmNlW2Jhcl0uc3RhcnQgPSAqbGFzdDsKKwkJKmxhc3QgKz0gc2l6ZTsKKwkJ
+ZGV2LT5yZXNvdXJjZVtiYXJdLmVuZCA9ICpsYXN0IC0gMTsKIAogCQlpZiAoKGJhcnZhbCAmIFBD
+SV9CQVNFX0FERFJFU1NfTUVNX1RZUEVfNjQpKSB7CiAJCQlkZXYtPnJlc291cmNlW2Jhcl0uZmxh
+Z3MgfD0gSU9SRVNPVVJDRV9NRU1fNjQ7Ci0tIAoyLjE2LjMKCgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
+QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9iYXJlYm94Cg==
