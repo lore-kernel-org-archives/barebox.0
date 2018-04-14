@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f7PKC-0001d8-Fs
- for barebox@lists.infradead.org; Sat, 14 Apr 2018 17:50:59 +0000
-Received: by mail-pf0-x242.google.com with SMTP id l27so8512774pfk.12
- for <barebox@lists.infradead.org>; Sat, 14 Apr 2018 10:50:46 -0700 (PDT)
+ id 1f7PKI-0001do-Hb
+ for barebox@lists.infradead.org; Sat, 14 Apr 2018 17:51:05 +0000
+Received: by mail-pl0-x241.google.com with SMTP id t20-v6so7790159ply.9
+ for <barebox@lists.infradead.org>; Sat, 14 Apr 2018 10:50:52 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 14 Apr 2018 10:50:19 -0700
-Message-Id: <20180414175024.9962-6-andrew.smirnov@gmail.com>
+Date: Sat, 14 Apr 2018 10:50:24 -0700
+Message-Id: <20180414175024.9962-11-andrew.smirnov@gmail.com>
 In-Reply-To: <20180414175024.9962-1-andrew.smirnov@gmail.com>
 References: <20180414175024.9962-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,60 +23,112 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/10] common: reset_source: Introduce reset_source_name()
+Subject: [PATCH 10/10] ARM: VFxxx: Detect cpu variant and reset source on start
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Introduce reset_source_name() to get string representation of current
-reset source.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/reset_source.c  | 6 ++++++
- include/reset_source.h | 6 ++++++
- 2 files changed, 12 insertions(+)
+ arch/arm/mach-imx/Makefile               |  1 +
+ arch/arm/mach-imx/imx.c                  |  2 +-
+ arch/arm/mach-imx/include/mach/generic.h |  1 +
+ arch/arm/mach-imx/vf610.c                | 50 ++++++++++++++++++++++++++++++++
+ 4 files changed, 53 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/mach-imx/vf610.c
 
-diff --git a/common/reset_source.c b/common/reset_source.c
-index 6a6c4f5da..b2985ee85 100644
---- a/common/reset_source.c
-+++ b/common/reset_source.c
-@@ -60,6 +60,12 @@ void reset_source_set_priority(enum reset_src_type st, unsigned int priority)
- }
- EXPORT_SYMBOL(reset_source_set_priority);
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index 8ec846cce..160ed4b08 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -15,6 +15,7 @@ obj-$(CONFIG_ARCH_IMX6) += imx6.o usb-imx6.o
+ CFLAGS_imx6.o := -march=armv7-a
+ lwl-$(CONFIG_ARCH_IMX6) += imx6-mmdc.o
+ obj-$(CONFIG_ARCH_IMX7) += imx7.o
++obj-$(CONFIG_ARCH_VF610) += vf610.o
+ obj-$(CONFIG_ARCH_IMX_XLOAD) += xload.o
+ obj-$(CONFIG_IMX_IIM)	+= iim.o
+ obj-$(CONFIG_IMX_OCOTP)	+= ocotp.o
+diff --git a/arch/arm/mach-imx/imx.c b/arch/arm/mach-imx/imx.c
+index e84713766..174eff037 100644
+--- a/arch/arm/mach-imx/imx.c
++++ b/arch/arm/mach-imx/imx.c
+@@ -120,7 +120,7 @@ static int imx_init(void)
+ 	else if (cpu_is_mx7())
+ 		ret = imx7_init();
+ 	else if (cpu_is_vf610())
+-		ret = 0;
++		ret = vf610_init();
+ 	else
+ 		return -EINVAL;
  
-+const char *reset_source_name(void)
-+{
-+	return reset_src_names[reset_source];
-+}
-+EXPORT_SYMBOL(reset_source_name)
-+
- void reset_source_set_instance(enum reset_src_type type, int instance)
- {
- 	if (reset_source == type)
-diff --git a/include/reset_source.h b/include/reset_source.h
-index c9911c008..f9aed6a7a 100644
---- a/include/reset_source.h
-+++ b/include/reset_source.h
-@@ -30,6 +30,7 @@ enum reset_src_type reset_source_get(void);
- void reset_source_set_instance(enum reset_src_type type, int instance);
- int reset_source_get_instance(void);
- unsigned int of_get_reset_source_priority(struct device_node *node);
-+const char *reset_source_name(void);
- #else
- static inline void reset_source_set_priority(enum reset_src_type type,
- 		unsigned int priority)
-@@ -54,6 +55,11 @@ static inline unsigned int of_get_reset_source_priority(struct device_node *node
- {
- 	return 0;
- }
-+
-+const char *reset_source_name(void)
-+{
-+	return "unknown";
-+}
- #endif
+diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
+index f68dc875b..cb5675185 100644
+--- a/arch/arm/mach-imx/include/mach/generic.h
++++ b/arch/arm/mach-imx/include/mach/generic.h
+@@ -34,6 +34,7 @@ int imx51_init(void);
+ int imx53_init(void);
+ int imx6_init(void);
+ int imx7_init(void);
++int vf610_init(void);
  
- #define RESET_SOURCE_DEFAULT_PRIORITY 100
+ int imx1_devices_init(void);
+ int imx21_devices_init(void);
+diff --git a/arch/arm/mach-imx/vf610.c b/arch/arm/mach-imx/vf610.c
+new file mode 100644
+index 000000000..0ef3e43af
+--- /dev/null
++++ b/arch/arm/mach-imx/vf610.c
+@@ -0,0 +1,50 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <init.h>
++#include <common.h>
++#include <io.h>
++#include <linux/sizes.h>
++#include <mach/generic.h>
++#include <mach/revision.h>
++#include <mach/reset-reason.h>
++#include <mach/vf610.h>
++
++int vf610_init(void)
++{
++	const char *cputypestr;
++	void __iomem *src = IOMEM(VF610_SRC_BASE_ADDR);
++
++	switch (vf610_cpu_type()) {
++	case VF610_CPUTYPE_VF610:
++		cputypestr = "VF610";
++		break;
++	case VF610_CPUTYPE_VF600:
++		cputypestr = "VF600";
++		break;
++	case VF610_CPUTYPE_VF510:
++		cputypestr = "VF510";
++		break;
++	case VF610_CPUTYPE_VF500:
++		cputypestr = "VF500";
++		break;
++	default:
++		cputypestr = "unknown VFxxx";
++		break;
++	}
++
++	imx_set_silicon_revision(cputypestr, vf610_cpu_revision());
++	imx_set_reset_reason(src + VF610_SRC_SRSR);
++
++	return 0;
++}
 -- 
 2.14.3
 
