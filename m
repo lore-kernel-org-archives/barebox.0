@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x243.google.com ([2607:f8b0:400e:c01::243])
+Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f7PKq-00021A-65
- for barebox@lists.infradead.org; Sat, 14 Apr 2018 17:51:42 +0000
-Received: by mail-pl0-x243.google.com with SMTP id x4-v6so7785154pln.7
- for <barebox@lists.infradead.org>; Sat, 14 Apr 2018 10:51:27 -0700 (PDT)
+ id 1f7PKt-00022t-JL
+ for barebox@lists.infradead.org; Sat, 14 Apr 2018 17:51:44 +0000
+Received: by mail-pl0-x244.google.com with SMTP id s13-v6so533417plq.11
+ for <barebox@lists.infradead.org>; Sat, 14 Apr 2018 10:51:29 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 14 Apr 2018 10:51:00 -0700
-Message-Id: <20180414175103.10125-15-andrew.smirnov@gmail.com>
+Date: Sat, 14 Apr 2018 10:51:02 -0700
+Message-Id: <20180414175103.10125-17-andrew.smirnov@gmail.com>
 In-Reply-To: <20180414175103.10125-1-andrew.smirnov@gmail.com>
 References: <20180414175103.10125-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,54 +23,158 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/17] ARM: i.MX7: boot: Move magic numbers into utility
- functions
+Subject: [PATCH 16/17] ARM: VFxxx: Implement code to detect bootsource
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/boot.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/arm/mach-imx/boot.c                 | 93 ++++++++++++++++++++++++++++++++
+ arch/arm/mach-imx/include/mach/generic.h |  2 +
+ 2 files changed, 95 insertions(+)
 
 diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index cdfe3749d..0398804b0 100644
+index 0398804b0..24e2501e9 100644
 --- a/arch/arm/mach-imx/boot.c
 +++ b/arch/arm/mach-imx/boot.c
-@@ -362,6 +362,16 @@ static unsigned int imx7_bootsource_internal(uint32_t r)
- 	return sbmr(r, 15, 12);	/* BOOT_CFG[15:12] */
+@@ -26,6 +26,7 @@
+ #include <mach/imx53-regs.h>
+ #include <mach/imx6-regs.h>
+ #include <mach/imx7-regs.h>
++#include <mach/vf610-regs.h>
+ 
+ /* [CTRL][TYPE] */
+ static const enum bootsource locations[4][4] = {
+@@ -177,6 +178,8 @@ static unsigned int sbmr(uint32_t r, unsigned int msb, unsigned int lsb)
  }
  
-+static int imx7_boot_instance_spi_nor(uint32_t r)
+ #define BOOT_CFG1(r, n)	sbmr(r, n, n)
++#define BOOT_CFG2(r, n)	BOOT_CFG1(r, (n) + 8)
++#define BOOT_CFG4(r, n)	BOOT_CFG1(r, (n) + 24)
+ 
+ static unsigned int imx53_get_bmod(uint32_t r)
+ {
+@@ -447,6 +450,95 @@ void imx7_get_boot_source(enum bootsource *src, int *instance)
+ 	}
+ }
+ 
++static int vf610_boot_instance_spi(uint32_t r)
 +{
-+	return sbmr(r, 11, 9);	/* BOOT_CFG[11:9] */
++	return BOOT_CFG1(r, 1);
 +}
 +
-+static int imx7_boot_instance_mmc(uint32_t r)
++static int vf610_boot_instance_nor(uint32_t r)
 +{
-+	return sbmr(r, 11, 10);	/* BOOT_CFG[11:10] */
++	return BOOT_CFG1(r, 3);
 +}
 +
- struct imx_boot_sw_info {
- 	uint8_t  reserved_1;
- 	uint8_t  boot_device_instance;
-@@ -417,14 +427,14 @@ void imx7_get_boot_source(enum bootsource *src, int *instance)
- 	case 1:
- 	case 2:
- 		*src = BOOTSOURCE_MMC;
--		*instance = (sbmr1 >> 10 & 0x3);
-+		*instance = imx7_boot_instance_mmc(sbmr1);
- 		break;
- 	case 3:
- 		*src = BOOTSOURCE_NAND;
- 		break;
- 	case 6:
- 		*src = BOOTSOURCE_SPI_NOR,
--		*instance = (sbmr1 >> 9 & 0x7);
-+		*instance = imx7_boot_instance_spi_nor(sbmr1);
- 		break;
- 	case 4:
- 		*src = BOOTSOURCE_SPI; /* Really: qspi */
++/*
++ * Vybrid's Serial ROM boot sources (BOOT_CFG4[2:0]) are as follows:
++ *
++ *	000 - SPI0
++ *	001 - SPI1
++ *	010 - SPI2
++ *	011 - SPI3
++ *	100 - I2C0
++ *	101 - I2C1
++ *	110 - I2C2
++ *	111 - I2C3
++ *
++ * Which we can neatly divide in two halves and use MSb to detect if
++ * bootsource is I2C or SPI EEPROM and 2 LSbs directly as boot
++ * insance.
++ */
++static enum bootsource vf610_bootsource_serial_rom(uint32_t r)
++{
++	return BOOT_CFG4(r, 2) ? BOOTSOURCE_I2C : BOOTSOURCE_SPI_NOR;
++}
++
++static int vf610_boot_instance_serial_rom(uint32_t r)
++{
++	return __imx6_bootsource_serial_rom(r) & 0b11;
++}
++
++static int vf610_boot_instance_can(uint32_t r)
++{
++	return BOOT_CFG1(r, 0);
++}
++
++static int vf610_boot_instance_mmc(uint32_t r)
++{
++	return BOOT_CFG2(r, 3);
++}
++
++void vf610_get_boot_source(enum bootsource *src, int *instance)
++{
++	void __iomem *src_base = IOMEM(VF610_SRC_BASE_ADDR);
++	uint32_t sbmr1 = readl(src_base + IMX6_SRC_SBMR1);
++	uint32_t sbmr2 = readl(src_base + IMX6_SRC_SBMR2);
++
++	if (imx6_bootsource_reserved(sbmr2))
++		return;
++
++	if (imx6_bootsource_serial(sbmr2)) {
++		*src = BOOTSOURCE_SERIAL;
++		return;
++	}
++
++	switch (imx53_bootsource_internal(sbmr1)) {
++	case 0:
++		*src = BOOTSOURCE_SPI; /* Really: qspi */
++		*instance = vf610_boot_instance_spi(sbmr1);
++		break;
++	case 1:
++		*src = BOOTSOURCE_NOR;
++		*instance = vf610_boot_instance_nor(sbmr1);
++		break;
++	case 2:
++		*src = vf610_bootsource_serial_rom(sbmr1);
++		*instance = vf610_boot_instance_serial_rom(sbmr1);
++		break;
++	case 3:
++		*src = BOOTSOURCE_CAN;
++		*instance = vf610_boot_instance_can(sbmr1);
++		break;
++	case 6:
++	case 7:
++		*src = BOOTSOURCE_MMC;
++		*instance = vf610_boot_instance_mmc(sbmr1);
++		break;
++	default:
++		if (imx53_bootsource_nand(sbmr1))
++			*src = BOOTSOURCE_NAND;
++		break;
++	}
++}
++
+ static void
+ imx_boot_save_loc(void (*get_boot_source)(enum bootsource *, int *))
+ {
+@@ -472,3 +564,4 @@ IMX_BOOT_SAVE_LOC(imx51)
+ IMX_BOOT_SAVE_LOC(imx53)
+ IMX_BOOT_SAVE_LOC(imx6)
+ IMX_BOOT_SAVE_LOC(imx7)
++IMX_BOOT_SAVE_LOC(vf610)
+diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
+index cb5675185..ad9d9cb02 100644
+--- a/arch/arm/mach-imx/include/mach/generic.h
++++ b/arch/arm/mach-imx/include/mach/generic.h
+@@ -15,6 +15,7 @@ void imx51_boot_save_loc(void);
+ void imx53_boot_save_loc(void);
+ void imx6_boot_save_loc(void);
+ void imx7_boot_save_loc(void);
++void vf610_boot_save_loc(void);
+ 
+ void imx25_get_boot_source(enum bootsource *src, int *instance);
+ void imx35_get_boot_source(enum bootsource *src, int *instance);
+@@ -22,6 +23,7 @@ void imx51_get_boot_source(enum bootsource *src, int *instance);
+ void imx53_get_boot_source(enum bootsource *src, int *instance);
+ void imx6_get_boot_source(enum bootsource *src, int *instance);
+ void imx7_get_boot_source(enum bootsource *src, int *instance);
++void vf610_get_boot_source(enum bootsource *src, int *instance);
+ 
+ int imx1_init(void);
+ int imx21_init(void);
 -- 
 2.14.3
 
