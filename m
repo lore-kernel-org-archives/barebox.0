@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f7PKI-0001do-Hb
- for barebox@lists.infradead.org; Sat, 14 Apr 2018 17:51:05 +0000
-Received: by mail-pl0-x241.google.com with SMTP id t20-v6so7790159ply.9
- for <barebox@lists.infradead.org>; Sat, 14 Apr 2018 10:50:52 -0700 (PDT)
+ id 1f7PK9-0001d5-0u
+ for barebox@lists.infradead.org; Sat, 14 Apr 2018 17:50:55 +0000
+Received: by mail-pf0-x243.google.com with SMTP id u86so8530013pfd.2
+ for <barebox@lists.infradead.org>; Sat, 14 Apr 2018 10:50:44 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 14 Apr 2018 10:50:24 -0700
-Message-Id: <20180414175024.9962-11-andrew.smirnov@gmail.com>
+Date: Sat, 14 Apr 2018 10:50:17 -0700
+Message-Id: <20180414175024.9962-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20180414175024.9962-1-andrew.smirnov@gmail.com>
 References: <20180414175024.9962-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,112 +23,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/10] ARM: VFxxx: Detect cpu variant and reset source on start
+Subject: [PATCH 03/10] ARM: i.MX6: Record reset reason as a part of startup
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/Makefile               |  1 +
- arch/arm/mach-imx/imx.c                  |  2 +-
- arch/arm/mach-imx/include/mach/generic.h |  1 +
- arch/arm/mach-imx/vf610.c                | 50 ++++++++++++++++++++++++++++++++
- 4 files changed, 53 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/mach-imx/vf610.c
+ arch/arm/mach-imx/imx6.c                      | 4 +++-
+ arch/arm/mach-imx/include/mach/reset-reason.h | 2 ++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index 8ec846cce..160ed4b08 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -15,6 +15,7 @@ obj-$(CONFIG_ARCH_IMX6) += imx6.o usb-imx6.o
- CFLAGS_imx6.o := -march=armv7-a
- lwl-$(CONFIG_ARCH_IMX6) += imx6-mmdc.o
- obj-$(CONFIG_ARCH_IMX7) += imx7.o
-+obj-$(CONFIG_ARCH_VF610) += vf610.o
- obj-$(CONFIG_ARCH_IMX_XLOAD) += xload.o
- obj-$(CONFIG_IMX_IIM)	+= iim.o
- obj-$(CONFIG_IMX_OCOTP)	+= ocotp.o
-diff --git a/arch/arm/mach-imx/imx.c b/arch/arm/mach-imx/imx.c
-index e84713766..174eff037 100644
---- a/arch/arm/mach-imx/imx.c
-+++ b/arch/arm/mach-imx/imx.c
-@@ -120,7 +120,7 @@ static int imx_init(void)
- 	else if (cpu_is_mx7())
- 		ret = imx7_init();
- 	else if (cpu_is_vf610())
--		ret = 0;
-+		ret = vf610_init();
- 	else
- 		return -EINVAL;
- 
-diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
-index f68dc875b..cb5675185 100644
---- a/arch/arm/mach-imx/include/mach/generic.h
-+++ b/arch/arm/mach-imx/include/mach/generic.h
-@@ -34,6 +34,7 @@ int imx51_init(void);
- int imx53_init(void);
- int imx6_init(void);
- int imx7_init(void);
-+int vf610_init(void);
- 
- int imx1_devices_init(void);
- int imx21_devices_init(void);
-diff --git a/arch/arm/mach-imx/vf610.c b/arch/arm/mach-imx/vf610.c
-new file mode 100644
-index 000000000..0ef3e43af
---- /dev/null
-+++ b/arch/arm/mach-imx/vf610.c
-@@ -0,0 +1,50 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <init.h>
-+#include <common.h>
-+#include <io.h>
-+#include <linux/sizes.h>
-+#include <mach/generic.h>
-+#include <mach/revision.h>
+diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+index 14a1cba5a..3d81c2785 100644
+--- a/arch/arm/mach-imx/imx6.c
++++ b/arch/arm/mach-imx/imx6.c
+@@ -19,6 +19,7 @@
+ #include <mach/imx6.h>
+ #include <mach/generic.h>
+ #include <mach/revision.h>
 +#include <mach/reset-reason.h>
-+#include <mach/vf610.h>
+ #include <mach/imx6-anadig.h>
+ #include <mach/imx6-regs.h>
+ #include <mach/generic.h>
+@@ -151,6 +152,7 @@ int imx6_init(void)
+ {
+ 	const char *cputypestr;
+ 	u32 mx6_silicon_revision;
++	void __iomem *src = IOMEM(MX6_SRC_BASE_ADDR);
+ 
+ 	imx6_init_lowlevel();
+ 
+@@ -195,7 +197,7 @@ int imx6_init(void)
+ 	}
+ 
+ 	imx_set_silicon_revision(cputypestr, mx6_silicon_revision);
+-
++	imx_set_reset_reason(src + IMX6_SRC_SRSR);
+ 	imx6_setup_ipu_qos();
+ 	imx6ul_enet_clk_init();
+ 
+diff --git a/arch/arm/mach-imx/include/mach/reset-reason.h b/arch/arm/mach-imx/include/mach/reset-reason.h
+index 96b905303..f65224a55 100644
+--- a/arch/arm/mach-imx/include/mach/reset-reason.h
++++ b/arch/arm/mach-imx/include/mach/reset-reason.h
+@@ -12,6 +12,8 @@
+ #define IMX_SRC_SRSR_TEMPSENSE_RESET	BIT(9)
+ #define IMX_SRC_SRSR_WARM_BOOT		BIT(16)
+ 
++#define IMX6_SRC_SRSR	0x008
 +
-+int vf610_init(void)
-+{
-+	const char *cputypestr;
-+	void __iomem *src = IOMEM(VF610_SRC_BASE_ADDR);
-+
-+	switch (vf610_cpu_type()) {
-+	case VF610_CPUTYPE_VF610:
-+		cputypestr = "VF610";
-+		break;
-+	case VF610_CPUTYPE_VF600:
-+		cputypestr = "VF600";
-+		break;
-+	case VF610_CPUTYPE_VF510:
-+		cputypestr = "VF510";
-+		break;
-+	case VF610_CPUTYPE_VF500:
-+		cputypestr = "VF500";
-+		break;
-+	default:
-+		cputypestr = "unknown VFxxx";
-+		break;
-+	}
-+
-+	imx_set_silicon_revision(cputypestr, vf610_cpu_revision());
-+	imx_set_reset_reason(src + VF610_SRC_SRSR);
-+
-+	return 0;
-+}
+ void imx_set_reset_reason(void __iomem *srsr);
+ 
+ #endif /* __MACH_RESET_REASON_H__ */
 -- 
 2.14.3
 
