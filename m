@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
+Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f7PKB-0001dB-F7
- for barebox@lists.infradead.org; Sat, 14 Apr 2018 17:50:57 +0000
-Received: by mail-pf0-x241.google.com with SMTP id a2so8523401pff.8
- for <barebox@lists.infradead.org>; Sat, 14 Apr 2018 10:50:47 -0700 (PDT)
+ id 1f7PKA-0001dJ-Rg
+ for barebox@lists.infradead.org; Sat, 14 Apr 2018 17:50:58 +0000
+Received: by mail-pl0-x242.google.com with SMTP id 59-v6so7774184plc.13
+ for <barebox@lists.infradead.org>; Sat, 14 Apr 2018 10:50:51 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 14 Apr 2018 10:50:20 -0700
-Message-Id: <20180414175024.9962-7-andrew.smirnov@gmail.com>
+Date: Sat, 14 Apr 2018 10:50:23 -0700
+Message-Id: <20180414175024.9962-10-andrew.smirnov@gmail.com>
 In-Reply-To: <20180414175024.9962-1-andrew.smirnov@gmail.com>
 References: <20180414175024.9962-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,30 +23,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/10] ARM: i.MX: Log detected reset reason
+Subject: [PATCH 09/10] ARM: VFxxx: Add code to detect cpu variant
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Log detected reset reason as well as raw value of SRSR for better
-clarity.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/imx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/mach-imx/include/mach/vf610-regs.h |  3 ++
+ arch/arm/mach-imx/include/mach/vf610.h      | 51 +++++++++++++++++++++++++++++
+ 2 files changed, 54 insertions(+)
+ create mode 100644 arch/arm/mach-imx/include/mach/vf610.h
 
-diff --git a/arch/arm/mach-imx/imx.c b/arch/arm/mach-imx/imx.c
-index e860e298a..b7465875e 100644
---- a/arch/arm/mach-imx/imx.c
-+++ b/arch/arm/mach-imx/imx.c
-@@ -195,4 +195,7 @@ void imx_set_reset_reason(void __iomem *srsr)
- 		reset_source_set_instance(type, 2);
- 		break;
- 	}
+diff --git a/arch/arm/mach-imx/include/mach/vf610-regs.h b/arch/arm/mach-imx/include/mach/vf610-regs.h
+index 8be220b68..2afdf7edc 100644
+--- a/arch/arm/mach-imx/include/mach/vf610-regs.h
++++ b/arch/arm/mach-imx/include/mach/vf610-regs.h
+@@ -107,4 +107,7 @@
+ #define VF610_MSCM_IRSPRC_CP0_EN	1
+ #define VF610_MSCM_IRSPRC_NUM		112
+ 
++#define VF610_MSCM_CPxCOUNT		0x00c
++#define VF610_MSCM_CPxCFG1		0x014
 +
-+	pr_info("i.MX reset reason %s (SRSR: 0x%08x)\n",
-+		reset_source_name(), reg);
- }
+ #endif
+diff --git a/arch/arm/mach-imx/include/mach/vf610.h b/arch/arm/mach-imx/include/mach/vf610.h
+new file mode 100644
+index 000000000..6d00d2e45
+--- /dev/null
++++ b/arch/arm/mach-imx/include/mach/vf610.h
+@@ -0,0 +1,51 @@
++#ifndef __MACH_VF610_H
++#define __MACH_VF610_H
++
++#include <io.h>
++#include <mach/generic.h>
++#include <mach/vf610-regs.h>
++#include <mach/revision.h>
++
++#define VF610_CPUTYPE_VFx10	0x010
++
++#define VF610_CPUTYPE_VF610	0x610
++#define VF610_CPUTYPE_VF600	0x600
++#define VF610_CPUTYPE_VF510	0x510
++#define VF610_CPUTYPE_VF500	0x500
++
++#define VF610_ROM_VERSION_OFFSET	0x80
++
++static inline int __vf610_cpu_type(void)
++{
++	void __iomem *mscm = IOMEM(VF610_MSCM_BASE_ADDR);
++	const u32 cpxcount = readl(mscm + VF610_MSCM_CPxCOUNT);
++	const u32 cpxcfg1  = readl(mscm + VF610_MSCM_CPxCFG1);
++	int cpu_type;
++
++	cpu_type = cpxcount ? VF610_CPUTYPE_VF600 : VF610_CPUTYPE_VF500;
++
++	return cpxcfg1 ? cpu_type | VF610_CPUTYPE_VFx10 : cpu_type;
++}
++
++static inline int vf610_cpu_type(void)
++{
++	if (!cpu_is_vf610())
++		return 0;
++
++	return __vf610_cpu_type();
++}
++
++static inline int vf610_cpu_revision(void)
++{
++	if (!cpu_is_vf610())
++		return IMX_CHIP_REV_UNKNOWN;
++
++	/*
++	 * There doesn't seem to be a documented way of retreiving
++	 * silicon revision on VFxxx cpus, so we just report Mask ROM
++	 * version instead
++	 */
++	return readl(VF610_ROM_VERSION_OFFSET) & 0xff;
++}
++
++#endif
 -- 
 2.14.3
 
