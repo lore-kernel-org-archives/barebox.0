@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f7PKf-0001sO-LE
- for barebox@lists.infradead.org; Sat, 14 Apr 2018 17:51:28 +0000
-Received: by mail-pl0-x244.google.com with SMTP id k9-v6so3005779pll.12
- for <barebox@lists.infradead.org>; Sat, 14 Apr 2018 10:51:15 -0700 (PDT)
+ id 1f7PKf-0001zP-M6
+ for barebox@lists.infradead.org; Sat, 14 Apr 2018 17:51:29 +0000
+Received: by mail-pl0-x244.google.com with SMTP id e7-v6so7790468plt.6
+ for <barebox@lists.infradead.org>; Sat, 14 Apr 2018 10:51:24 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 14 Apr 2018 10:50:50 -0700
-Message-Id: <20180414175103.10125-5-andrew.smirnov@gmail.com>
+Date: Sat, 14 Apr 2018 10:50:58 -0700
+Message-Id: <20180414175103.10125-13-andrew.smirnov@gmail.com>
 In-Reply-To: <20180414175103.10125-1-andrew.smirnov@gmail.com>
 References: <20180414175103.10125-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,49 +23,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/17] ARM: i.MX: Account for unprogrammed fuses on i.MX6 and
- i.MX7
+Subject: [PATCH 12/17] ARM: i.MX53: boot: Move magic numbers info utility
+ functions
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On both i.MX6 and i.MX7 (also true for VFxxx) there's an additional
-path that leads mask ROM to switch into serial bootloader mode. Add
-code to support it.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/boot.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/boot.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
 diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index 7eb7a16f3..a98c716fb 100644
+index 8fbccb260..3cd79acfc 100644
 --- a/arch/arm/mach-imx/boot.c
 +++ b/arch/arm/mach-imx/boot.c
-@@ -231,6 +231,8 @@ void imx53_get_boot_source(enum bootsource *src, int *instance)
- #define IMX6_SRC_SBMR2	0x1c
- #define IMX6_BMOD_SERIAL	0b01
- #define IMX6_BMOD_RESERVED	0b11
-+#define IMX6_BMOD_FUSES		0b00
-+#define BT_FUSE_SEL		BIT(4)
- 
- static bool imx6_bootsource_reserved(uint32_t sbmr2)
- {
-@@ -239,7 +241,14 @@ static bool imx6_bootsource_reserved(uint32_t sbmr2)
- 
- static bool imx6_bootsource_serial(uint32_t sbmr2)
- {
--	return imx53_get_bmod(sbmr2) == IMX6_BMOD_SERIAL;
-+	return imx53_get_bmod(sbmr2) == IMX6_BMOD_SERIAL ||
-+		/*
-+		 * If boot from fuses is selected and fuses are not
-+		 * programmed by setting BT_FUSE_SEL, ROM code will
-+		 * fallback to serial mode
-+		 */
-+	       (imx53_get_bmod(sbmr2) == IMX6_BMOD_FUSES &&
-+		!(sbmr2 & BT_FUSE_SEL));
+@@ -169,6 +169,7 @@ void imx51_get_boot_source(enum bootsource *src, int *instance)
  }
  
- void imx6_get_boot_source(enum bootsource *src, int *instance)
+ #define IMX53_SRC_SBMR	0x4
++#define IMX53_BMOD_SERIAL	0b11
+ 
+ static unsigned int sbmr(uint32_t r, unsigned int msb, unsigned int lsb)
+ {
+@@ -187,17 +188,27 @@ static int imx53_bootsource_internal(uint32_t r)
+ 	return sbmr(r, 7, 4);	/* BOOT_CFG1[7:4] */
+ }
+ 
++static int imx53_port_select(uint32_t r)
++{
++	return sbmr(r, 21, 20);	/* BOOT_CFG3[5:4] */
++}
++
+ static bool imx53_bootsource_nand(uint32_t r)
+ {
+ 	return BOOT_CFG1(r, 7);
+ }
+ 
++static enum bootsource imx53_bootsource_serial_rom(uint32_t r)
++{
++	return BOOT_CFG1(r, 3) ? BOOTSOURCE_SPI : BOOTSOURCE_I2C;
++}
++
+ void imx53_get_boot_source(enum bootsource *src, int *instance)
+ {
+ 	void __iomem *src_base = IOMEM(MX53_SRC_BASE_ADDR);
+ 	uint32_t cfg1 = readl(src_base + IMX53_SRC_SBMR);
+ 
+-	if (imx53_get_bmod(cfg1) == 0x3) {
++	if (imx53_get_bmod(cfg1) == IMX53_BMOD_SERIAL) {
+ 		*src = BOOTSOURCE_USB;
+ 		*instance = 0;
+ 		return;
+@@ -208,10 +219,7 @@ void imx53_get_boot_source(enum bootsource *src, int *instance)
+ 		*src = BOOTSOURCE_HD;
+ 		break;
+ 	case 3:
+-		if (cfg1 & (1 << 3))
+-			*src = BOOTSOURCE_SPI;
+-		else
+-			*src = BOOTSOURCE_I2C;
++		*src = imx53_bootsource_serial_rom(cfg1);
+ 		break;
+ 	case 4:
+ 	case 5:
+@@ -229,7 +237,7 @@ void imx53_get_boot_source(enum bootsource *src, int *instance)
+ 	case BOOTSOURCE_MMC:
+ 	case BOOTSOURCE_SPI:
+ 	case BOOTSOURCE_I2C:
+-		*instance = (cfg1 >> 20) & 0x3;
++		*instance = imx53_port_select(cfg1);
+ 		break;
+ 	default:
+ 		*instance = 0;
 -- 
 2.14.3
 
