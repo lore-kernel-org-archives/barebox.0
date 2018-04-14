@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f7PKA-0001dJ-Rg
- for barebox@lists.infradead.org; Sat, 14 Apr 2018 17:50:58 +0000
-Received: by mail-pl0-x242.google.com with SMTP id 59-v6so7774184plc.13
- for <barebox@lists.infradead.org>; Sat, 14 Apr 2018 10:50:51 -0700 (PDT)
+ id 1f7PKC-0001d8-Fs
+ for barebox@lists.infradead.org; Sat, 14 Apr 2018 17:50:59 +0000
+Received: by mail-pf0-x242.google.com with SMTP id l27so8512774pfk.12
+ for <barebox@lists.infradead.org>; Sat, 14 Apr 2018 10:50:46 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 14 Apr 2018 10:50:23 -0700
-Message-Id: <20180414175024.9962-10-andrew.smirnov@gmail.com>
+Date: Sat, 14 Apr 2018 10:50:19 -0700
+Message-Id: <20180414175024.9962-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20180414175024.9962-1-andrew.smirnov@gmail.com>
 References: <20180414175024.9962-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,86 +23,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/10] ARM: VFxxx: Add code to detect cpu variant
+Subject: [PATCH 05/10] common: reset_source: Introduce reset_source_name()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Introduce reset_source_name() to get string representation of current
+reset source.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/vf610-regs.h |  3 ++
- arch/arm/mach-imx/include/mach/vf610.h      | 51 +++++++++++++++++++++++++++++
- 2 files changed, 54 insertions(+)
- create mode 100644 arch/arm/mach-imx/include/mach/vf610.h
+ common/reset_source.c  | 6 ++++++
+ include/reset_source.h | 6 ++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/arch/arm/mach-imx/include/mach/vf610-regs.h b/arch/arm/mach-imx/include/mach/vf610-regs.h
-index 8be220b68..2afdf7edc 100644
---- a/arch/arm/mach-imx/include/mach/vf610-regs.h
-+++ b/arch/arm/mach-imx/include/mach/vf610-regs.h
-@@ -107,4 +107,7 @@
- #define VF610_MSCM_IRSPRC_CP0_EN	1
- #define VF610_MSCM_IRSPRC_NUM		112
+diff --git a/common/reset_source.c b/common/reset_source.c
+index 6a6c4f5da..b2985ee85 100644
+--- a/common/reset_source.c
++++ b/common/reset_source.c
+@@ -60,6 +60,12 @@ void reset_source_set_priority(enum reset_src_type st, unsigned int priority)
+ }
+ EXPORT_SYMBOL(reset_source_set_priority);
  
-+#define VF610_MSCM_CPxCOUNT		0x00c
-+#define VF610_MSCM_CPxCFG1		0x014
++const char *reset_source_name(void)
++{
++	return reset_src_names[reset_source];
++}
++EXPORT_SYMBOL(reset_source_name)
 +
+ void reset_source_set_instance(enum reset_src_type type, int instance)
+ {
+ 	if (reset_source == type)
+diff --git a/include/reset_source.h b/include/reset_source.h
+index c9911c008..f9aed6a7a 100644
+--- a/include/reset_source.h
++++ b/include/reset_source.h
+@@ -30,6 +30,7 @@ enum reset_src_type reset_source_get(void);
+ void reset_source_set_instance(enum reset_src_type type, int instance);
+ int reset_source_get_instance(void);
+ unsigned int of_get_reset_source_priority(struct device_node *node);
++const char *reset_source_name(void);
+ #else
+ static inline void reset_source_set_priority(enum reset_src_type type,
+ 		unsigned int priority)
+@@ -54,6 +55,11 @@ static inline unsigned int of_get_reset_source_priority(struct device_node *node
+ {
+ 	return 0;
+ }
++
++const char *reset_source_name(void)
++{
++	return "unknown";
++}
  #endif
-diff --git a/arch/arm/mach-imx/include/mach/vf610.h b/arch/arm/mach-imx/include/mach/vf610.h
-new file mode 100644
-index 000000000..6d00d2e45
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/vf610.h
-@@ -0,0 +1,51 @@
-+#ifndef __MACH_VF610_H
-+#define __MACH_VF610_H
-+
-+#include <io.h>
-+#include <mach/generic.h>
-+#include <mach/vf610-regs.h>
-+#include <mach/revision.h>
-+
-+#define VF610_CPUTYPE_VFx10	0x010
-+
-+#define VF610_CPUTYPE_VF610	0x610
-+#define VF610_CPUTYPE_VF600	0x600
-+#define VF610_CPUTYPE_VF510	0x510
-+#define VF610_CPUTYPE_VF500	0x500
-+
-+#define VF610_ROM_VERSION_OFFSET	0x80
-+
-+static inline int __vf610_cpu_type(void)
-+{
-+	void __iomem *mscm = IOMEM(VF610_MSCM_BASE_ADDR);
-+	const u32 cpxcount = readl(mscm + VF610_MSCM_CPxCOUNT);
-+	const u32 cpxcfg1  = readl(mscm + VF610_MSCM_CPxCFG1);
-+	int cpu_type;
-+
-+	cpu_type = cpxcount ? VF610_CPUTYPE_VF600 : VF610_CPUTYPE_VF500;
-+
-+	return cpxcfg1 ? cpu_type | VF610_CPUTYPE_VFx10 : cpu_type;
-+}
-+
-+static inline int vf610_cpu_type(void)
-+{
-+	if (!cpu_is_vf610())
-+		return 0;
-+
-+	return __vf610_cpu_type();
-+}
-+
-+static inline int vf610_cpu_revision(void)
-+{
-+	if (!cpu_is_vf610())
-+		return IMX_CHIP_REV_UNKNOWN;
-+
-+	/*
-+	 * There doesn't seem to be a documented way of retreiving
-+	 * silicon revision on VFxxx cpus, so we just report Mask ROM
-+	 * version instead
-+	 */
-+	return readl(VF610_ROM_VERSION_OFFSET) & 0xff;
-+}
-+
-+#endif
+ 
+ #define RESET_SOURCE_DEFAULT_PRIORITY 100
 -- 
 2.14.3
 
