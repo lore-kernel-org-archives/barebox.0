@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f7PKi-0001tw-0u
- for barebox@lists.infradead.org; Sat, 14 Apr 2018 17:51:34 +0000
-Received: by mail-pf0-x241.google.com with SMTP id u86so8530603pfd.2
- for <barebox@lists.infradead.org>; Sat, 14 Apr 2018 10:51:17 -0700 (PDT)
+ id 1f7PKi-0001ww-0Y
+ for barebox@lists.infradead.org; Sat, 14 Apr 2018 17:51:36 +0000
+Received: by mail-pf0-x241.google.com with SMTP id l27so8513400pfk.12
+ for <barebox@lists.infradead.org>; Sat, 14 Apr 2018 10:51:22 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 14 Apr 2018 10:50:52 -0700
-Message-Id: <20180414175103.10125-7-andrew.smirnov@gmail.com>
+Date: Sat, 14 Apr 2018 10:50:56 -0700
+Message-Id: <20180414175103.10125-11-andrew.smirnov@gmail.com>
 In-Reply-To: <20180414175103.10125-1-andrew.smirnov@gmail.com>
 References: <20180414175103.10125-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,32 +23,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/17] ARM: i.MX7: boot: Remove incorrect NAND bootsource
- detection
+Subject: [PATCH 10/17] ARM: i.MX: boot: Share code to detect NAND as a boot
+ source
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-i.MX7 differs from i.MX6 and i.MX53 and bit 7 in SBMR is not used to
-signify boot from NAND.
+Share code to detect NAND as a boot source between i.MX53 and i.MX6
+which behave the same in that aspect.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/boot.c | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/arm/mach-imx/boot.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index 4082f46ae..1c5a47f37 100644
+index 66e1a9254..c092dc827 100644
 --- a/arch/arm/mach-imx/boot.c
 +++ b/arch/arm/mach-imx/boot.c
-@@ -383,10 +383,6 @@ void imx7_get_boot_source(enum bootsource *src, int *instance)
+@@ -175,6 +175,8 @@ static unsigned int sbmr(uint32_t r, unsigned int msb, unsigned int lsb)
+ 	return (r & GENMASK(msb, lsb)) >> lsb;
+ }
+ 
++#define BOOT_CFG1(r, n)	sbmr(r, n, n)
++
+ static unsigned int imx53_get_bmod(uint32_t r)
+ {
+ 	return sbmr(r, 25, 24);
+@@ -185,6 +187,11 @@ static int imx53_bootsource_internal(uint32_t r)
+ 	return sbmr(r, 7, 4);	/* BOOT_CFG1[7:4] */
+ }
+ 
++static bool imx53_bootsource_nand(uint32_t r)
++{
++	return BOOT_CFG1(r, 7);
++}
++
+ void imx53_get_boot_source(enum bootsource *src, int *instance)
+ {
+ 	void __iomem *src_base = IOMEM(MX53_SRC_BASE_ADDR);
+@@ -216,7 +223,7 @@ void imx53_get_boot_source(enum bootsource *src, int *instance)
+ 		break;
+ 	}
+ 
+-	if (cfg1 & (1 << 7))
++	if (imx53_bootsource_nand(cfg1))
+ 		*src = BOOTSOURCE_NAND;
+ 
+ 
+@@ -300,8 +307,7 @@ void imx6_get_boot_source(enum bootsource *src, int *instance)
  		break;
  	}
  
 -	/* BOOT_CFG1[7:0] */
 -	if (sbmr1 & (1 << 7))
--		*src = BOOTSOURCE_NAND;
--
- 	return;
++	if (imx53_bootsource_nand(sbmr1))
+ 		*src = BOOTSOURCE_NAND;
  }
  
 -- 
