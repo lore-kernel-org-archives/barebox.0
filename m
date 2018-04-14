@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f7PK7-0001cs-JJ
- for barebox@lists.infradead.org; Sat, 14 Apr 2018 17:50:53 +0000
-Received: by mail-pf0-x244.google.com with SMTP id o16so8511669pfk.9
- for <barebox@lists.infradead.org>; Sat, 14 Apr 2018 10:50:41 -0700 (PDT)
+ id 1f7PK9-0001dC-0t
+ for barebox@lists.infradead.org; Sat, 14 Apr 2018 17:50:55 +0000
+Received: by mail-pf0-x243.google.com with SMTP id z9so1706688pfe.6
+ for <barebox@lists.infradead.org>; Sat, 14 Apr 2018 10:50:48 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 14 Apr 2018 10:50:15 -0700
-Message-Id: <20180414175024.9962-2-andrew.smirnov@gmail.com>
+Date: Sat, 14 Apr 2018 10:50:21 -0700
+Message-Id: <20180414175024.9962-8-andrew.smirnov@gmail.com>
 In-Reply-To: <20180414175024.9962-1-andrew.smirnov@gmail.com>
 References: <20180414175024.9962-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,108 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/10] common: reset_source: Add the notion of "reset source
- instance"
+Subject: [PATCH 07/10] ARM: i.MX: Print "revision unknown" if that is the case
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-In order to accomodate SoCs that come with multiple watchdogs (or any
-other reset sources of the same kind) add a notion of "reset source
-instance", similar to what we already have for bootsource API.
+Printing "revision 16.16" if i.MX SoC's revision is unknown is a bit
+confusing so modify the code to actually say "revision unknown" in
+such a case.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/reset_source.c  | 17 +++++++++++++++++
- include/reset_source.h | 11 +++++++++++
- 2 files changed, 28 insertions(+)
+ arch/arm/mach-imx/imx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/common/reset_source.c b/common/reset_source.c
-index 06e2ca85f..6a6c4f5da 100644
---- a/common/reset_source.c
-+++ b/common/reset_source.c
-@@ -32,6 +32,7 @@ static const char * const reset_src_names[] = {
- 
- static enum reset_src_type reset_source;
- static unsigned int reset_source_priority;
-+static int reset_source_instance;
- 
- enum reset_src_type reset_source_get(void)
+diff --git a/arch/arm/mach-imx/imx.c b/arch/arm/mach-imx/imx.c
+index b7465875e..fb1160de9 100644
+--- a/arch/arm/mach-imx/imx.c
++++ b/arch/arm/mach-imx/imx.c
+@@ -31,7 +31,10 @@ void imx_set_silicon_revision(const char *soc, int revision)
  {
-@@ -39,6 +40,12 @@ enum reset_src_type reset_source_get(void)
+ 	__imx_silicon_revision = revision;
+ 
+-	pr_info("detected %s revision %d.%d\n", soc,
++	if (revision == IMX_CHIP_REV_UNKNOWN)
++		pr_info("detected %s revision unknown\n", soc);
++	else
++		pr_info("detected %s revision %d.%d\n", soc,
+ 			(revision >> 4) & 0xf,
+ 			revision & 0xf);
  }
- EXPORT_SYMBOL(reset_source_get);
- 
-+int reset_source_get_instance(void)
-+{
-+	return reset_source_instance;
-+}
-+EXPORT_SYMBOL(reset_source_get_instance);
-+
- void reset_source_set_priority(enum reset_src_type st, unsigned int priority)
- {
- 	if (priority <= reset_source_priority)
-@@ -46,17 +53,27 @@ void reset_source_set_priority(enum reset_src_type st, unsigned int priority)
- 
- 	reset_source = st;
- 	reset_source_priority = priority;
-+	reset_source_instance = 0;
- 
- 	pr_debug("Setting reset source to %s with priority %d\n",
- 			reset_src_names[reset_source], priority);
- }
- EXPORT_SYMBOL(reset_source_set_priority);
- 
-+void reset_source_set_instance(enum reset_src_type type, int instance)
-+{
-+	if (reset_source == type)
-+		reset_source_instance = instance;
-+}
-+EXPORT_SYMBOL(reset_source_set_instance);
-+
- static int reset_source_init(void)
- {
- 	globalvar_add_simple_enum("system.reset", (unsigned int *)&reset_source,
- 			reset_src_names, ARRAY_SIZE(reset_src_names));
- 
-+	globalvar_add_simple_int("system.reset_instance", &reset_source_instance,
-+				 "%d");
- 	return 0;
- }
- 
-diff --git a/include/reset_source.h b/include/reset_source.h
-index 3ff06b70a..c9911c008 100644
---- a/include/reset_source.h
-+++ b/include/reset_source.h
-@@ -27,6 +27,8 @@ enum reset_src_type {
- #ifdef CONFIG_RESET_SOURCE
- void reset_source_set_priority(enum reset_src_type, unsigned int priority);
- enum reset_src_type reset_source_get(void);
-+void reset_source_set_instance(enum reset_src_type type, int instance);
-+int reset_source_get_instance(void);
- unsigned int of_get_reset_source_priority(struct device_node *node);
- #else
- static inline void reset_source_set_priority(enum reset_src_type type,
-@@ -34,11 +36,20 @@ static inline void reset_source_set_priority(enum reset_src_type type,
- {
- }
- 
-+static inline void reset_source_set_instance(enum reset_src_type type, int instance)
-+{
-+}
-+
- static inline enum reset_src_type reset_source_get(void)
- {
- 	return RESET_UKWN;
- }
- 
-+static inline int reset_source_get_instance(void)
-+{
-+	return 0;
-+}
-+
- static inline unsigned int of_get_reset_source_priority(struct device_node *node)
- {
- 	return 0;
 -- 
 2.14.3
 
