@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f7fqT-0005hf-RS
+ id 1f7fqT-0005gs-S3
  for barebox@lists.infradead.org; Sun, 15 Apr 2018 11:29:24 +0000
-Received: by mail-lf0-x243.google.com with SMTP id p142-v6so18146165lfd.6
- for <barebox@lists.infradead.org>; Sun, 15 Apr 2018 04:29:16 -0700 (PDT)
+Received: by mail-lf0-x243.google.com with SMTP id v207-v6so18137944lfa.10
+ for <barebox@lists.infradead.org>; Sun, 15 Apr 2018 04:29:12 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 15 Apr 2018 14:28:57 +0300
-Message-Id: <20180415112858.5163-10-antonynpavlov@gmail.com>
+Date: Sun, 15 Apr 2018 14:28:53 +0300
+Message-Id: <20180415112858.5163-6-antonynpavlov@gmail.com>
 In-Reply-To: <20180415112858.5163-1-antonynpavlov@gmail.com>
 References: <20180415112858.5163-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,51 +23,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/10] scripts: add nmon-loader
+Subject: [PATCH 05/10] RISC-V: erizo: add DEBUG_LL support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- scripts/nmon-loader | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ arch/riscv/Kconfig                            |  1 +
+ arch/riscv/mach-erizo/include/mach/debug_ll.h | 37 +++++++++++++++++++
+ 2 files changed, 38 insertions(+)
 
-diff --git a/scripts/nmon-loader b/scripts/nmon-loader
-new file mode 100755
-index 0000000000..d80a53097a
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 9e7faf11d0..ff3e6b96ab 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -24,6 +24,7 @@ choice
+ 
+ config MACH_ERIZO
+ 	bool "erizo family"
++	select HAS_DEBUG_LL
+ 
+ endchoice
+ 
+diff --git a/arch/riscv/mach-erizo/include/mach/debug_ll.h b/arch/riscv/mach-erizo/include/mach/debug_ll.h
+new file mode 100644
+index 0000000000..913b323d99
 --- /dev/null
-+++ b/scripts/nmon-loader
-@@ -0,0 +1,31 @@
-+#!/usr/bin/expect -f
++++ b/arch/riscv/mach-erizo/include/mach/debug_ll.h
+@@ -0,0 +1,37 @@
++/*
++ * Copyright (C) 2017 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
 +
-+# device
-+set image [lindex $argv 0];
-+set modem [lindex $argv 1];
-+set speed [lindex $argv 2];
++#ifndef __MACH_ERIZO_DEBUG_LL__
++#define __MACH_ERIZO_DEBUG_LL__
 +
-+if {$argc != 3} {
-+    puts "Usage:"
-+    puts "    nmon-loader.expect <file> <device> <speed>"
-+    exit 2
-+}
++/** @file
++ *  This File contains declaration for early output support
++ */
 +
-+# keep it open
-+exec sh -c "sleep 3 < $modem" &
++#include <linux/kconfig.h>
 +
-+# serial port parameters
-+exec stty -F $modem $speed raw -clocal -echo -istrip -hup
++#define DEBUG_LL_UART_ADDR	0x90000000
++#define DEBUG_LL_UART_SHIFT	2
++#define DEBUG_LL_UART_IOSIZE32
 +
-+# connect
-+send_user "connecting to $modem, exit with ~.\n"
-+spawn -open [open $modem w+]
-+send_user "connected\n"
-+send "\r"
++#define DEBUG_LL_UART_CLK       (24000000 / 16)
++#define DEBUG_LL_UART_BPS       CONFIG_BAUDRATE
++#define DEBUG_LL_UART_DIVISOR   (DEBUG_LL_UART_CLK / DEBUG_LL_UART_BPS)
 +
-+source $image
++#include <asm/debug_ll_ns16550.h>
 +
-+interact {
-+    ~- exit
-+    ~~ {send "\034"}
-+}
++#endif /* __MACH_ERIZO_DEBUG_LL__ */
 -- 
 2.17.0
 
