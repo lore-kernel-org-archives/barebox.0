@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f7fqT-0005gW-RP
+ id 1f7fqR-0005gJ-0L
  for barebox@lists.infradead.org; Sun, 15 Apr 2018 11:29:25 +0000
-Received: by mail-lf0-x243.google.com with SMTP id q5-v6so18115172lff.12
- for <barebox@lists.infradead.org>; Sun, 15 Apr 2018 04:29:11 -0700 (PDT)
+Received: by mail-lf0-x242.google.com with SMTP id v207-v6so18137835lfa.10
+ for <barebox@lists.infradead.org>; Sun, 15 Apr 2018 04:29:08 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 15 Apr 2018 14:28:52 +0300
-Message-Id: <20180415112858.5163-5-antonynpavlov@gmail.com>
+Date: Sun, 15 Apr 2018 14:28:49 +0300
+Message-Id: <20180415112858.5163-2-antonynpavlov@gmail.com>
 In-Reply-To: <20180415112858.5163-1-antonynpavlov@gmail.com>
 References: <20180415112858.5163-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,110 +23,258 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/10] RISC-V: add nmon nano-monitor
+Subject: [PATCH 01/10] Add initial RISC-V architecture support
 To: barebox@lists.infradead.org
-
-nmon is a tiny (<1024 bytes) monitor program
-for the RV32I processors.
-
-It can operate with NO working RAM at all!
-
-It uses only the processor registers and NS16550-compatible
-UART port for operation, so it can be used for a memory
-controller setup code debugging.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/riscv/Kconfig                  |  24 +++
- arch/riscv/boot/start.S             |  13 ++
- arch/riscv/include/asm/riscv_nmon.h | 234 ++++++++++++++++++++++++++++
- 3 files changed, 271 insertions(+)
+ arch/riscv/Kconfig                   | 62 +++++++++++++++++++
+ arch/riscv/Makefile                  | 72 ++++++++++++++++++++++
+ arch/riscv/boot/Makefile             |  2 +
+ arch/riscv/boot/main_entry.c         | 40 +++++++++++++
+ arch/riscv/boot/start.S              | 63 ++++++++++++++++++++
+ arch/riscv/dts/.gitignore            |  1 +
+ arch/riscv/dts/Makefile              |  9 +++
+ arch/riscv/dts/skeleton.dtsi         | 13 ++++
+ arch/riscv/include/asm/barebox.h     |  1 +
+ arch/riscv/include/asm/bitops.h      | 35 +++++++++++
+ arch/riscv/include/asm/bitsperlong.h | 10 ++++
+ arch/riscv/include/asm/byteorder.h   |  6 ++
+ arch/riscv/include/asm/common.h      |  6 ++
+ arch/riscv/include/asm/elf.h         | 11 ++++
+ arch/riscv/include/asm/io.h          |  8 +++
+ arch/riscv/include/asm/mmu.h         |  6 ++
+ arch/riscv/include/asm/posix_types.h |  1 +
+ arch/riscv/include/asm/sections.h    |  1 +
+ arch/riscv/include/asm/string.h      |  1 +
+ arch/riscv/include/asm/swab.h        |  6 ++
+ arch/riscv/include/asm/types.h       | 60 +++++++++++++++++++
+ arch/riscv/include/asm/unaligned.h   | 19 ++++++
+ arch/riscv/lib/.gitignore            |  1 +
+ arch/riscv/lib/Makefile              |  9 +++
+ arch/riscv/lib/ashldi3.c             | 28 +++++++++
+ arch/riscv/lib/ashrdi3.c             | 30 ++++++++++
+ arch/riscv/lib/asm-offsets.c         | 12 ++++
+ arch/riscv/lib/barebox.lds.S         | 89 ++++++++++++++++++++++++++++
+ arch/riscv/lib/dtb.c                 | 41 +++++++++++++
+ arch/riscv/lib/libgcc.h              | 29 +++++++++
+ arch/riscv/lib/lshrdi3.c             | 28 +++++++++
+ arch/riscv/lib/riscv_timer.c         | 67 +++++++++++++++++++++
+ drivers/of/Kconfig                   |  2 +-
+ 33 files changed, 768 insertions(+), 1 deletion(-)
 
 diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index fe79cb49b5..9e7faf11d0 100644
---- a/arch/riscv/Kconfig
+new file mode 100644
+index 0000000000..d65e87acd8
+--- /dev/null
 +++ b/arch/riscv/Kconfig
-@@ -64,6 +64,30 @@ source arch/riscv/mach-erizo/Kconfig
- 
- endmenu
- 
-+menu "RISC-V specific settings"
+@@ -0,0 +1,62 @@
++config RISCV
++	def_bool y
++	select GENERIC_FIND_NEXT_BIT
++	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
++	select HAVE_CONFIGURABLE_TEXT_BASE
++	select GPIOLIB
++	select OFTREE
++	select COMMON_CLK
++	select COMMON_CLK_OF_PROVIDER
++	select CLKDEV_LOOKUP
 +
-+config HAS_NMON
++config ARCH_TEXT_BASE
++	hex
++	default 0x0
++
++config GENERIC_LINKER_SCRIPT
++	def_bool y
++
++menu "Machine selection"
++
++choice
++	prompt "Base ISA"
++	default ARCH_RV32I
++
++config ARCH_RV32I
++	bool "RV32I"
++	select CPU_SUPPORTS_32BIT_KERNEL
++
++endchoice
++
++config CPU_SUPPORTS_32BIT_KERNEL
 +	bool
 +
-+config NMON
-+	bool "nmon"
-+	depends on HAS_NMON
-+	depends on DEBUG_LL
-+	help
-+	  Say yes here to add the nmon to pbl.
-+	  nmon -- nano-monitor program for the RISC-V processors.
-+	  It can operate with NO working RAM, using only
-+	  the processor registers.
++choice
++	prompt "barebox code model"
++	default 32BIT
 +
-+config NMON_HELP
-+	bool "nmon help message"
-+	depends on NMON
++config 32BIT
++	bool "32-bit barebox"
++	depends on CPU_SUPPORTS_32BIT_KERNEL
 +	help
-+	  Say yes here to get the nmon commands message on
-+	  every nmon start.
++	  Select this option to build a 32-bit barebox.
++
++endchoice
++
++config BUILTIN_DTB
++	bool "link a DTB into the barebox image"
++	depends on OFTREE
++
++config BUILTIN_DTB_NAME
++	string "DTB to build into the barebox image"
++	depends on BUILTIN_DTB
 +
 +endmenu
 +
- source common/Kconfig
- source commands/Kconfig
- source net/Kconfig
-diff --git a/arch/riscv/boot/start.S b/arch/riscv/boot/start.S
-index be3aed1507..4ae2f77f9d 100644
---- a/arch/riscv/boot/start.S
-+++ b/arch/riscv/boot/start.S
-@@ -21,12 +21,20 @@
- 
- #include <asm-generic/memory_layout.h>
- 
-+#include "mach/debug_ll.h"
-+
-+#include "asm/riscv_nmon.h"
-+
- 	.text
- 	.section ".text_entry"
- 	.align 2
- 
- .globl _start
- _start:
-+	debug_ll_ns16550_init
-+
-+	riscv_nmon
-+
- 	li	sp, STACK_BASE + STACK_SIZE
- 
- 	/* copy barebox to link location */
-@@ -55,9 +63,14 @@ copy_loop:
- 	addi	a1, a1, LONGSIZE * 4
- 	bgeu	a2, a0, copy_loop
- 
-+	nmon_outs copy_loop_done_message
-+
- 	/* Alas! At the moment I can't load main_entry __link__ address
- 	   into a0 with la. Use CONFIG_TEXT_BASE instead. This solution
- 	   leads to extra cycles for repeat sp initialization. */
- 
- 	li	a0, CONFIG_TEXT_BASE
- 	jalr	a0
-+
-+copy_loop_done_message:
-+	.asciz "\r\ncopy loop done\r\nrestarting...\r\n"
-diff --git a/arch/riscv/include/asm/riscv_nmon.h b/arch/riscv/include/asm/riscv_nmon.h
++source common/Kconfig
++source commands/Kconfig
++source net/Kconfig
++source drivers/Kconfig
++source fs/Kconfig
++source lib/Kconfig
++source crypto/Kconfig
+diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
 new file mode 100644
-index 0000000000..717f613349
+index 0000000000..e9c407354c
 --- /dev/null
-+++ b/arch/riscv/include/asm/riscv_nmon.h
-@@ -0,0 +1,234 @@
++++ b/arch/riscv/Makefile
+@@ -0,0 +1,72 @@
++CPPFLAGS += -fno-strict-aliasing
++
++ifeq ($(CONFIG_ARCH_RV32I),y)
++	cflags-y += -march=rv32im
++endif
++
++cflags-y += -fno-pic -pipe
++cflags-y += -Wall -Wmissing-prototypes -Wstrict-prototypes \
++	-Wno-uninitialized -Wno-format -Wno-main -mcmodel=medany
++
++LDFLAGS += $(ldflags-y)
++LDFLAGS_barebox += -nostdlib
++
++TEXT_BASE = $(CONFIG_TEXT_BASE)
++CPPFLAGS += -DTEXT_BASE=$(CONFIG_TEXT_BASE)
++
++ifndef CONFIG_MODULES
++# Add cleanup flags
++CPPFLAGS += -fdata-sections -ffunction-sections
++LDFLAGS_barebox += -static --gc-sections
++endif
++
++KBUILD_BINARY := barebox.bin
++
++machdirs := $(patsubst %,arch/riscv/mach-%/,$(machine-y))
++
++ifneq ($(board-y),)
++BOARD := arch/riscv/boards/$(board-y)/
++else
++BOARD :=
++endif
++
++ifeq ($(KBUILD_SRC),)
++CPPFLAGS += -I$(BOARD)/include
++else
++CPPFLAGS += -I$(srctree)/$(BOARD)/include
++endif
++
++ifeq ($(KBUILD_SRC),)
++CPPFLAGS += $(patsubst %,-I%include,$(machdirs))
++else
++CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
++endif
++
++archprepare: maketools
++
++PHONY += maketools
++
++ifneq ($(machine-y),)
++MACH  := arch/riscv/mach-$(machine-y)/
++else
++MACH  :=
++endif
++
++ifneq ($(board-y),)
++BOARD := arch/riscv/boards/$(board-y)/
++else
++BOARD :=
++endif
++
++common-y += $(BOARD) $(MACH)
++common-y += arch/riscv/lib/
++common-y += arch/riscv/boot/
++
++common-$(CONFIG_OFTREE) += arch/riscv/dts/
++
++CPPFLAGS += $(cflags-y)
++CFLAGS += $(cflags-y)
++
++lds-y	:= arch/riscv/lib/barebox.lds
++
++CLEAN_FILES += arch/riscv/lib/barebox.lds
+diff --git a/arch/riscv/boot/Makefile b/arch/riscv/boot/Makefile
+new file mode 100644
+index 0000000000..d6d28ce652
+--- /dev/null
++++ b/arch/riscv/boot/Makefile
+@@ -0,0 +1,2 @@
++obj-y += start.o
++obj-y += main_entry.o
+diff --git a/arch/riscv/boot/main_entry.c b/arch/riscv/boot/main_entry.c
+new file mode 100644
+index 0000000000..18db86da58
+--- /dev/null
++++ b/arch/riscv/boot/main_entry.c
+@@ -0,0 +1,40 @@
 +/*
-+ * nano-monitor for RISC-V CPU
++ * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
 + *
-+ * Copyright (C) 2016, 2017 Antony Pavlov <antonynpavlov@gmail.com>
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++#include <memory.h>
++#include <asm-generic/memory_layout.h>
++#include <asm/sections.h>
++
++void main_entry(void);
++
++/**
++ * Called plainly from assembler code
++ *
++ * @note The C environment isn't initialized yet
++ */
++void main_entry(void)
++{
++	/* clear the BSS first */
++	memset(__bss_start, 0x00, __bss_stop - __bss_start);
++
++	mem_malloc_init((void *)MALLOC_BASE,
++			(void *)(MALLOC_BASE + MALLOC_SIZE - 1));
++
++	start_barebox();
++}
+diff --git a/arch/riscv/boot/start.S b/arch/riscv/boot/start.S
+new file mode 100644
+index 0000000000..be3aed1507
+--- /dev/null
++++ b/arch/riscv/boot/start.S
+@@ -0,0 +1,63 @@
++/*
++ * Startup Code for RISC-V CPU
++ *
++ * based on coreboot/src/arch/riscv/bootblock.S
++ *
++ * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
 + *
 + * This file is part of barebox.
 + * See file CREDITS for list of people who contributed to this project.
@@ -137,226 +285,756 @@ index 0000000000..717f613349
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
 + *
 + */
 +
-+#ifndef __ASM_RISCV_NMON_H
-+#define __ASM_RISCV_NMON_H
++#include <asm-generic/memory_layout.h>
 +
-+#define CODE_ESC	0x1b
++	.text
++	.section ".text_entry"
++	.align 2
 +
-+.macro nmon_outs msg
++.globl _start
++_start:
++	li	sp, STACK_BASE + STACK_SIZE
 +
-+	la	a1, \msg
++	/* copy barebox to link location */
 +
-+	jal	_nmon_outs
++	la	a0, _start	/* a0 <- _start actual address */
++	li	a1, CONFIG_TEXT_BASE	/* a1 <- _start link address */
 +
-+.endm
++	beq	a0, a1, main_entry
++
++	la	a2, __bss_start
++
++#define LONGSIZE 4
++
++copy_loop:
++	/* copy from source address [a0] */
++	lw	t0, LONGSIZE * 0(a0)
++	lw	t1, LONGSIZE * 1(a0)
++	lw	t2, LONGSIZE * 2(a0)
++	lw	t3, LONGSIZE * 3(a0)
++	/* copy to target address [a1] */
++	sw	t0, LONGSIZE * 0(a1)
++	sw	t1, LONGSIZE * 1(a1)
++	sw	t2, LONGSIZE * 2(a1)
++	sw	t3, LONGSIZE * 3(a1)
++	addi	a0, a0, LONGSIZE * 4
++	addi	a1, a1, LONGSIZE * 4
++	bgeu	a2, a0, copy_loop
++
++	/* Alas! At the moment I can't load main_entry __link__ address
++	   into a0 with la. Use CONFIG_TEXT_BASE instead. This solution
++	   leads to extra cycles for repeat sp initialization. */
++
++	li	a0, CONFIG_TEXT_BASE
++	jalr	a0
+diff --git a/arch/riscv/dts/.gitignore b/arch/riscv/dts/.gitignore
+new file mode 100644
+index 0000000000..077903c50a
+--- /dev/null
++++ b/arch/riscv/dts/.gitignore
+@@ -0,0 +1 @@
++*dtb*
+diff --git a/arch/riscv/dts/Makefile b/arch/riscv/dts/Makefile
+new file mode 100644
+index 0000000000..f8380b11c9
+--- /dev/null
++++ b/arch/riscv/dts/Makefile
+@@ -0,0 +1,9 @@
++BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
++obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
++
++# just to build a built-in.o. Otherwise compilation fails when no devicetree is
++# created.
++obj- += dummy.o
++
++always := $(dtb-y)
++clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
+diff --git a/arch/riscv/dts/skeleton.dtsi b/arch/riscv/dts/skeleton.dtsi
+new file mode 100644
+index 0000000000..38ead821bb
+--- /dev/null
++++ b/arch/riscv/dts/skeleton.dtsi
+@@ -0,0 +1,13 @@
++/*
++ * Skeleton device tree; the bare minimum needed to boot; just include and
++ * add a compatible value.  The bootloader will typically populate the memory
++ * node.
++ */
++
++/ {
++	#address-cells = <2>;
++	#size-cells = <1>;
++	chosen { };
++	aliases { };
++	memory { device_type = "memory"; reg = <0 0 0>; };
++};
+diff --git a/arch/riscv/include/asm/barebox.h b/arch/riscv/include/asm/barebox.h
+new file mode 100644
+index 0000000000..2997587d82
+--- /dev/null
++++ b/arch/riscv/include/asm/barebox.h
+@@ -0,0 +1 @@
++/* dummy */
+diff --git a/arch/riscv/include/asm/bitops.h b/arch/riscv/include/asm/bitops.h
+new file mode 100644
+index 0000000000..e77ab83202
+--- /dev/null
++++ b/arch/riscv/include/asm/bitops.h
+@@ -0,0 +1,35 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ *
++ */
++
++#ifndef _ASM_BITOPS_H_
++#define _ASM_BITOPS_H_
++
++#include <asm-generic/bitops/__ffs.h>
++#include <asm-generic/bitops/__fls.h>
++#include <asm-generic/bitops/ffs.h>
++#include <asm-generic/bitops/fls.h>
++#include <asm-generic/bitops/ffz.h>
++#include <asm-generic/bitops/hweight.h>
++#include <asm-generic/bitops/fls64.h>
++#include <asm-generic/bitops/find.h>
++#include <asm-generic/bitops/ops.h>
++
++#define set_bit(x, y)			__set_bit(x, y)
++#define clear_bit(x, y)			__clear_bit(x, y)
++#define change_bit(x, y)		__change_bit(x, y)
++#define test_and_set_bit(x, y)		__test_and_set_bit(x, y)
++#define test_and_clear_bit(x, y)	__test_and_clear_bit(x, y)
++#define test_and_change_bit(x, y)	__test_and_change_bit(x, y)
++
++#endif /* _ASM_BITOPS_H_ */
+diff --git a/arch/riscv/include/asm/bitsperlong.h b/arch/riscv/include/asm/bitsperlong.h
+new file mode 100644
+index 0000000000..4641e7e485
+--- /dev/null
++++ b/arch/riscv/include/asm/bitsperlong.h
+@@ -0,0 +1,10 @@
++#ifndef __ASM_BITSPERLONG_H
++#define __ASM_BITSPERLONG_H
++
++#ifdef __riscv64
++#define BITS_PER_LONG 64
++#else
++#define BITS_PER_LONG 32
++#endif
++
++#endif /* __ASM_BITSPERLONG_H */
+diff --git a/arch/riscv/include/asm/byteorder.h b/arch/riscv/include/asm/byteorder.h
+new file mode 100644
+index 0000000000..0be826927b
+--- /dev/null
++++ b/arch/riscv/include/asm/byteorder.h
+@@ -0,0 +1,6 @@
++#ifndef _ASM_RISCV_BYTEORDER_H
++#define _ASM_RISCV_BYTEORDER_H
++
++#include <linux/byteorder/little_endian.h>
++
++#endif /* _ASM_RISCV_BYTEORDER_H */
+diff --git a/arch/riscv/include/asm/common.h b/arch/riscv/include/asm/common.h
+new file mode 100644
+index 0000000000..bc8a17e30b
+--- /dev/null
++++ b/arch/riscv/include/asm/common.h
+@@ -0,0 +1,6 @@
++#ifndef ASM_RISCV_COMMON_H
++#define ASM_RISCV_COMMON_H
++
++/* nothing special yet */
++
++#endif /* ASM_RISCV_COMMON_H */
+diff --git a/arch/riscv/include/asm/elf.h b/arch/riscv/include/asm/elf.h
+new file mode 100644
+index 0000000000..7134fa0582
+--- /dev/null
++++ b/arch/riscv/include/asm/elf.h
+@@ -0,0 +1,11 @@
++#ifndef __ASM_RISCV_ELF_H__
++#define __ASM_RISCV_ELF_H__
++
++#if __SIZEOF_POINTER__ == 8
++#define ELF_CLASS	ELFCLASS64
++#define CONFIG_PHYS_ADDR_T_64BIT
++#else
++#define ELF_CLASS	ELFCLASS32
++#endif
++
++#endif /* __ASM_RISCV_ELF_H__ */
+diff --git a/arch/riscv/include/asm/io.h b/arch/riscv/include/asm/io.h
+new file mode 100644
+index 0000000000..3cdea7fcac
+--- /dev/null
++++ b/arch/riscv/include/asm/io.h
+@@ -0,0 +1,8 @@
++#ifndef __ASM_RISCV_IO_H
++#define __ASM_RISCV_IO_H
++
++#define IO_SPACE_LIMIT 0
++
++#include <asm-generic/io.h>
++
++#endif /* __ASM_RISCV_IO_H */
+diff --git a/arch/riscv/include/asm/mmu.h b/arch/riscv/include/asm/mmu.h
+new file mode 100644
+index 0000000000..95af871420
+--- /dev/null
++++ b/arch/riscv/include/asm/mmu.h
+@@ -0,0 +1,6 @@
++#ifndef __ASM_MMU_H
++#define __ASM_MMU_H
++
++#define MAP_ARCH_DEFAULT MAP_UNCACHED
++
++#endif /* __ASM_MMU_H */
+diff --git a/arch/riscv/include/asm/posix_types.h b/arch/riscv/include/asm/posix_types.h
+new file mode 100644
+index 0000000000..22cae6230c
+--- /dev/null
++++ b/arch/riscv/include/asm/posix_types.h
+@@ -0,0 +1 @@
++#include <asm-generic/posix_types.h>
+diff --git a/arch/riscv/include/asm/sections.h b/arch/riscv/include/asm/sections.h
+new file mode 100644
+index 0000000000..2b8c516038
+--- /dev/null
++++ b/arch/riscv/include/asm/sections.h
+@@ -0,0 +1 @@
++#include <asm-generic/sections.h>
+diff --git a/arch/riscv/include/asm/string.h b/arch/riscv/include/asm/string.h
+new file mode 100644
+index 0000000000..2997587d82
+--- /dev/null
++++ b/arch/riscv/include/asm/string.h
+@@ -0,0 +1 @@
++/* dummy */
+diff --git a/arch/riscv/include/asm/swab.h b/arch/riscv/include/asm/swab.h
+new file mode 100644
+index 0000000000..60a90120b6
+--- /dev/null
++++ b/arch/riscv/include/asm/swab.h
+@@ -0,0 +1,6 @@
++#ifndef _ASM_SWAB_H
++#define _ASM_SWAB_H
++
++/* nothing. use generic functions */
++
++#endif /* _ASM_SWAB_H */
+diff --git a/arch/riscv/include/asm/types.h b/arch/riscv/include/asm/types.h
+new file mode 100644
+index 0000000000..ba386ab4c5
+--- /dev/null
++++ b/arch/riscv/include/asm/types.h
+@@ -0,0 +1,60 @@
++#ifndef __ASM_RISCV_TYPES_H
++#define __ASM_RISCV_TYPES_H
++
++#ifdef __riscv64
++/*
++ * This is used in dlmalloc. On RISCV64 we need it to be 64 bit
++ */
++#define INTERNAL_SIZE_T unsigned long
 +
 +/*
-+ * output a 32-bit value in hex
++ * This is a Kconfig variable in the Kernel, but we want to detect
++ * this during compile time, so we set it here.
 + */
-+.macro debug_ll_outhexw
-+#ifdef CONFIG_DEBUG_LL
-+	move	t6, a0
-+	li	t5, 32
++#define CONFIG_PHYS_ADDR_T_64BIT
 +
-+202:
-+	addi	t5, t5, -4
-+	srl	a0, t6, t5
++#endif
 +
-+	/* output one hex digit */
-+	andi	a0, a0, 15
-+	li	t4, 10
-+	blt	a0, t4, 203f
++typedef unsigned short umode_t;
 +
-+	addi	a0, a0, ('a' - '9' - 1)
++/*
++ * __xx is ok: it doesn't pollute the POSIX namespace. Use these in the
++ * header files exported to user space
++ */
 +
-+203:
-+	addi	a0, a0, '0'
++typedef __signed__ char __s8;
++typedef unsigned char __u8;
 +
-+	debug_ll_outc_a0
++typedef __signed__ short __s16;
++typedef unsigned short __u16;
 +
-+	li	t4, 1
-+	bge	t5, t4, 202b
++typedef __signed__ int __s32;
++typedef unsigned int __u32;
 +
-+#endif /* CONFIG_DEBUG_LL */
-+.endm
++#if defined(__GNUC__) && !defined(__STRICT_ANSI__)
++typedef __signed__ long long __s64;
++typedef unsigned long long __u64;
++#endif
 +
-+.macro riscv_nmon
++/*
++ * These aren't exported outside the kernel to avoid name space clashes
++ */
++#ifdef __KERNEL__
 +
-+nmon_main_help:
-+#ifdef CONFIG_NMON_HELP
-+	nmon_outs	msg_nmon_help
-+#endif /* CONFIG_NMON_HELP */
++typedef signed char s8;
++typedef unsigned char u8;
 +
-+nmon_main:
-+	nmon_outs	msg_prompt
++typedef signed short s16;
++typedef unsigned short u16;
 +
-+	debug_ll_getc
++typedef signed int s32;
++typedef unsigned int u32;
 +
-+	li	a0, 'q'
-+	bne	s0, a0, 3f
++typedef signed long long s64;
++typedef unsigned long long u64;
 +
-+	jal	_nmon_outc_a0
++#include <asm/bitsperlong.h>
 +
-+	j	nmon_exit
++#endif /* __KERNEL__ */
 +
-+3:
-+	li	a0, 'd'
-+	beq	s0, a0, nmon_cmd_d
++#endif /* __ASM_RISCV_TYPES_H */
+diff --git a/arch/riscv/include/asm/unaligned.h b/arch/riscv/include/asm/unaligned.h
+new file mode 100644
+index 0000000000..aaebc06411
+--- /dev/null
++++ b/arch/riscv/include/asm/unaligned.h
+@@ -0,0 +1,19 @@
++#ifndef _ASM_RISCV_UNALIGNED_H
++#define _ASM_RISCV_UNALIGNED_H
 +
-+	li	a0, 'w'
-+	beq	s0, a0, nmon_cmd_w
++/*
++ * FIXME: this file is copy-n-pasted from sandbox's unaligned.h
++ */
 +
-+	li	a0, 'g'
-+	beq	s0, a0, nmon_cmd_g
++#include <linux/unaligned/access_ok.h>
++#include <linux/unaligned/generic.h>
 +
-+	j	nmon_main_help
++#if __BYTE_ORDER == __LITTLE_ENDIAN
++#define get_unaligned __get_unaligned_le
++#define put_unaligned __put_unaligned_le
++#else
++#define get_unaligned __get_unaligned_be
++#define put_unaligned __put_unaligned_be
++#endif
 +
-+nmon_cmd_d:
-+	jal	_nmon_outc_a0
++#endif /* _ASM_RISCV_UNALIGNED_H */
+diff --git a/arch/riscv/lib/.gitignore b/arch/riscv/lib/.gitignore
+new file mode 100644
+index 0000000000..d1165788c9
+--- /dev/null
++++ b/arch/riscv/lib/.gitignore
+@@ -0,0 +1 @@
++barebox.lds
+diff --git a/arch/riscv/lib/Makefile b/arch/riscv/lib/Makefile
+new file mode 100644
+index 0000000000..313363c1a5
+--- /dev/null
++++ b/arch/riscv/lib/Makefile
+@@ -0,0 +1,9 @@
++extra-$(CONFIG_GENERIC_LINKER_SCRIPT) += barebox.lds
 +
-+	li	a0, ' '
-+	jal	_nmon_outc_a0
++obj-y += riscv_timer.o
 +
-+	jal	_nmon_gethexw
++obj-$(CONFIG_32BIT) += lshrdi3.o
++obj-$(CONFIG_32BIT) += ashldi3.o
++obj-$(CONFIG_32BIT) += ashrdi3.o
 +
-+	nmon_outs	msg_nl
++obj-$(CONFIG_BUILTIN_DTB) += dtb.o
+diff --git a/arch/riscv/lib/ashldi3.c b/arch/riscv/lib/ashldi3.c
+new file mode 100644
+index 0000000000..cbdbcbb6a9
+--- /dev/null
++++ b/arch/riscv/lib/ashldi3.c
+@@ -0,0 +1,28 @@
++#include <module.h>
 +
-+	lw	a0, (s0)
-+	debug_ll_outhexw
++#include "libgcc.h"
 +
-+	j	nmon_main
++long long __ashldi3(long long u, word_type b)
++{
++	DWunion uu, w;
++	word_type bm;
 +
-+nmon_cmd_w:
-+	jal	_nmon_outc_a0
++	if (b == 0)
++		return u;
 +
-+	li	a0, ' '
-+	jal	_nmon_outc_a0
++	uu.ll = u;
++	bm = 32 - b;
 +
-+	jal	_nmon_gethexw
-+	move	s2, s0
++	if (bm <= 0) {
++		w.s.low = 0;
++		w.s.high = (unsigned int) uu.s.low << -bm;
++	} else {
++		const unsigned int carries = (unsigned int) uu.s.low >> bm;
 +
-+	li	a0, ' '
-+	jal	_nmon_outc_a0
-+	jal	_nmon_gethexw
++		w.s.low = (unsigned int) uu.s.low << b;
++		w.s.high = ((unsigned int) uu.s.high << b) | carries;
++	}
 +
-+	sw	s0, 0(s2)
-+	j	nmon_main
++	return w.ll;
++}
++EXPORT_SYMBOL(__ashldi3);
+diff --git a/arch/riscv/lib/ashrdi3.c b/arch/riscv/lib/ashrdi3.c
+new file mode 100644
+index 0000000000..928d6d97ce
+--- /dev/null
++++ b/arch/riscv/lib/ashrdi3.c
+@@ -0,0 +1,30 @@
++#include <module.h>
 +
-+nmon_cmd_g:
-+	jal	_nmon_outc_a0
++#include "libgcc.h"
 +
-+	li	a0, ' '
-+	jal	_nmon_outc_a0
++long long __ashrdi3(long long u, word_type b)
++{
++	DWunion uu, w;
++	word_type bm;
 +
-+	jal	_nmon_gethexw
-+	move	s2, s0
++	if (b == 0)
++		return u;
 +
-+	nmon_outs	msg_nl
++	uu.ll = u;
++	bm = 32 - b;
 +
-+	jalr	s2
-+	j	nmon_main
++	if (bm <= 0) {
++		/* w.s.high = 1..1 or 0..0 */
++		w.s.high =
++		    uu.s.high >> 31;
++		w.s.low = uu.s.high >> -bm;
++	} else {
++		const unsigned int carries = (unsigned int) uu.s.high << bm;
 +
-+_nmon_outc_a0:
-+	debug_ll_outc_a0
-+	jr	ra
++		w.s.high = uu.s.high >> b;
++		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
++	}
 +
-+_nmon_outs:
++	return w.ll;
++}
++EXPORT_SYMBOL(__ashrdi3);
+diff --git a/arch/riscv/lib/asm-offsets.c b/arch/riscv/lib/asm-offsets.c
+new file mode 100644
+index 0000000000..22f382b71e
+--- /dev/null
++++ b/arch/riscv/lib/asm-offsets.c
+@@ -0,0 +1,12 @@
++/*
++ * Generate definitions needed by assembly language modules.
++ * This code generates raw asm output which is post-processed to extract
++ * and format the required data.
++ */
 +
-+	lb	a0, 0(a1)
-+	addi	a1, a1, 1
-+	beqz	a0, _nmon_jr_ra_exit
++#include <linux/kbuild.h>
 +
-+	debug_ll_outc_a0
++int main(void)
++{
++	return 0;
++}
+diff --git a/arch/riscv/lib/barebox.lds.S b/arch/riscv/lib/barebox.lds.S
+new file mode 100644
+index 0000000000..9468fb8b5e
+--- /dev/null
++++ b/arch/riscv/lib/barebox.lds.S
+@@ -0,0 +1,89 @@
++/*
++ * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
 +
-+	j	_nmon_outs
++#include <asm-generic/barebox.lds.h>
 +
-+_nmon_gethexw:
++OUTPUT_ARCH(riscv)
++ENTRY(_start)
++SECTIONS
++{
++	. = TEXT_BASE;
 +
-+	li	t3, 8
-+	li	t2, 0
++	. = ALIGN(8);
++	.text      :
++	{
++		_stext = .;
++		_start = .;
++		KEEP(*(.text_entry*))
++		_text = .;
++		__bare_init_start = .;
++		*(.text_bare_init*)
++		__bare_init_end = .;
++		*(.text*)
++	}
++	BAREBOX_BARE_INIT_SIZE
 +
-+_get_hex_digit:
-+	debug_ll_getc
++	PRE_IMAGE
 +
-+	li	s1, CODE_ESC
-+	beq	s0, s1, nmon_main
++	. = ALIGN(8);
++	.rodata : { *(.rodata*) }
 +
-+	li	s1, '0'
-+	bge	s0, s1, 0f
-+	j	_get_hex_digit
++	_etext = .;			/* End of text and rodata section */
++	_sdata = .;
 +
-+0:
-+	li	s1, '9'
-+	ble	s0, s1, 9f
++	. = ALIGN(8);
++	.data : { *(.data*) }
 +
-+	li	s1, 'f'
-+	ble	s0, s1, 1f
-+	j	_get_hex_digit
++	.barebox_imd : { BAREBOX_IMD }
 +
-+1:
-+	li	s1, 'a'
-+	bge	s0, s1, 8f
++	. = ALIGN(8);
++	.got : { *(.got*) }
 +
-+	j	_get_hex_digit
++	. = .;
++	__barebox_cmd_start = .;
++	.barebox_cmd : { BAREBOX_CMDS }
++	__barebox_cmd_end = .;
 +
-+8: /* s0 \in {'a', 'b' ... 'f'} */
-+	sub	a3, s0, s1
-+	addi	a3, a3, 0xa
-+	j	0f
++	__barebox_magicvar_start = .;
++	.barebox_magicvar : { BAREBOX_MAGICVARS }
++	__barebox_magicvar_end = .;
 +
-+9: /* s0 \in {'0', '1' ... '9'} */
-+	li	a3, '0'
-+	sub	a3, s0, a3
++	__barebox_initcalls_start = .;
++	.barebox_initcalls : { INITCALLS }
++	__barebox_initcalls_end = .;
 +
-+0:	move	a0, s0
-+	debug_ll_outc_a0
++	__barebox_exitcalls_start = .;
++	.barebox_exitcalls : { EXITCALLS }
++	__barebox_exitcalls_end = .;
 +
-+	sll	t2, t2, 4
-+	or	t2, t2, a3
-+	li	t0, 1
-+	sub	t3, t3, t0
++	__usymtab_start = .;
++	__usymtab : { BAREBOX_SYMS }
++	__usymtab_end = .;
 +
-+	beqz	t3, 0f
++	.rela.dyn : { *(.rela*) }
 +
-+	j	_get_hex_digit
++	.oftables : { BAREBOX_CLK_TABLE() }
 +
-+0:
-+	move	s0, t2
++	.dtb : { BAREBOX_DTB() }
 +
-+_nmon_jr_ra_exit:
-+	jr	ra
++	_edata = .;
++	. = ALIGN(8);
++	__bss_start = .;
++	.bss : { *(.bss*) *(.sbss*) }
++	__bss_stop = .;
++	_end = .;
++}
+diff --git a/arch/riscv/lib/dtb.c b/arch/riscv/lib/dtb.c
+new file mode 100644
+index 0000000000..09f519dcc2
+--- /dev/null
++++ b/arch/riscv/lib/dtb.c
+@@ -0,0 +1,41 @@
++/*
++ * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++#include <common.h>
++#include <init.h>
++#include <of.h>
 +
-+msg_prompt:
-+	.asciz "\r\nnmon> "
++extern char __dtb_start[];
 +
-+msg_nl:
-+	.asciz "\r\n"
++static int of_riscv_init(void)
++{
++	struct device_node *root;
 +
-+msg_bsp:
-+	.asciz "\b \b"
++	root = of_get_root_node();
++	if (root)
++		return 0;
 +
-+#ifdef CONFIG_NMON_HELP
-+msg_nmon_help:
-+	.ascii "\r\n\r\nnmon commands:\r\n"
-+	.ascii " q - quit\r\n"
-+	.ascii " d <addr> - read 32-bit word from <addr>\r\n"
-+	.ascii " w <addr> <val> - write 32-bit word to <addr>\r\n"
-+	.ascii " g <addr> - jump to <addr>\r\n"
-+	.asciz "   use <ESC> key to interrupt current command\r\n"
-+#endif /* CONFIG_NMON_HELP */
++	root = of_unflatten_dtb(__dtb_start);
++	if (!IS_ERR(root)) {
++		pr_debug("using internal DTB\n");
++		of_set_root_node(root);
++		if (IS_ENABLED(CONFIG_OFDEVICE))
++			of_probe();
++	}
 +
-+	.align 2
-+nmon_exit:
-+	nmon_outs	msg_nl
++	return 0;
++}
++core_initcall(of_riscv_init);
+diff --git a/arch/riscv/lib/libgcc.h b/arch/riscv/lib/libgcc.h
+new file mode 100644
+index 0000000000..593e598022
+--- /dev/null
++++ b/arch/riscv/lib/libgcc.h
+@@ -0,0 +1,29 @@
++#ifndef __ASM_LIBGCC_H
++#define __ASM_LIBGCC_H
 +
-+.endm
++#include <asm/byteorder.h>
 +
-+#endif /* __ASM_RISCV_NMON_H */
++typedef int word_type __attribute__ ((mode (__word__)));
++
++#ifdef __BIG_ENDIAN
++struct DWstruct {
++	int high, low;
++};
++#elif defined(__LITTLE_ENDIAN)
++struct DWstruct {
++	int low, high;
++};
++#else
++#error I feel sick.
++#endif
++
++typedef union {
++	struct DWstruct s;
++	long long ll;
++} DWunion;
++
++long long __lshrdi3(long long u, word_type b);
++long long __ashldi3(long long u, word_type b);
++long long __ashrdi3(long long u, word_type b);
++
++#endif /* __ASM_LIBGCC_H */
+diff --git a/arch/riscv/lib/lshrdi3.c b/arch/riscv/lib/lshrdi3.c
+new file mode 100644
+index 0000000000..74a4846e97
+--- /dev/null
++++ b/arch/riscv/lib/lshrdi3.c
+@@ -0,0 +1,28 @@
++#include <module.h>
++
++#include "libgcc.h"
++
++long long __lshrdi3(long long u, word_type b)
++{
++	DWunion uu, w;
++	word_type bm;
++
++	if (b == 0)
++		return u;
++
++	uu.ll = u;
++	bm = 32 - b;
++
++	if (bm <= 0) {
++		w.s.high = 0;
++		w.s.low = (unsigned int) uu.s.high >> -bm;
++	} else {
++		const unsigned int carries = (unsigned int) uu.s.high << bm;
++
++		w.s.high = (unsigned int) uu.s.high >> b;
++		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
++	}
++
++	return w.ll;
++}
++EXPORT_SYMBOL(__lshrdi3);
+diff --git a/arch/riscv/lib/riscv_timer.c b/arch/riscv/lib/riscv_timer.c
+new file mode 100644
+index 0000000000..0bae8e9a89
+--- /dev/null
++++ b/arch/riscv/lib/riscv_timer.c
+@@ -0,0 +1,67 @@
++/*
++ * Copyright (C) 2017 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++/**
++ * @file
++ * @brief Clocksource based on RISCV cycle CSR timer
++ */
++
++#include <init.h>
++#include <of.h>
++#include <linux/clk.h>
++#include <clock.h>
++
++static uint64_t rdcycle_read(void)
++{
++	register unsigned long __v;
++
++	__asm__ __volatile__ ("rdcycle %0" : "=r" (__v));
++
++	return __v;
++}
++
++static struct clocksource rdcycle_cs = {
++	.read	= rdcycle_read,
++	.mask	= CLOCKSOURCE_MASK(32),
++};
++
++static int rdcycle_cs_init(void)
++{
++	unsigned int cycle_frequency;
++
++	/* default rate: 100 MHz */
++	cycle_frequency = 100000000;
++
++	if (IS_ENABLED(CONFIG_OFTREE)) {
++		struct device_node *np;
++		struct clk *clk;
++
++		np = of_get_cpu_node(0, NULL);
++		if (np) {
++			clk = of_clk_get(np, 0);
++			if (!IS_ERR(clk)) {
++				cycle_frequency = clk_get_rate(clk);
++			}
++		}
++	}
++
++	clocks_calc_mult_shift(&rdcycle_cs.mult, &rdcycle_cs.shift,
++		cycle_frequency, NSEC_PER_SEC, 10);
++
++	return init_clock(&rdcycle_cs);
++}
++postcore_initcall(rdcycle_cs_init);
+diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+index a1fac0e613..24cf4465a8 100644
+--- a/drivers/of/Kconfig
++++ b/drivers/of/Kconfig
+@@ -4,7 +4,7 @@ config OFTREE
+ 
+ config OFTREE_MEM_GENERIC
+ 	depends on OFTREE
+-	depends on PPC || ARM || EFI_BOOTUP || OPENRISC || SANDBOX
++	depends on PPC || ARM || EFI_BOOTUP || OPENRISC || SANDBOX || RISCV
+ 	def_bool y
+ 
+ config DTC
 -- 
 2.17.0
 
