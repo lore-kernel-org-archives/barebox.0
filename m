@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x22a.google.com ([2607:f8b0:4001:c0b::22a])
+Received: from mail-io0-x22a.google.com ([2607:f8b0:4001:c06::22a])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f874b-0000DX-2K
- for barebox@lists.infradead.org; Mon, 16 Apr 2018 16:33:46 +0000
-Received: by mail-it0-x22a.google.com with SMTP id 19-v6so12360712itw.3
- for <barebox@lists.infradead.org>; Mon, 16 Apr 2018 09:33:33 -0700 (PDT)
+ id 1f875C-0000MB-9J
+ for barebox@lists.infradead.org; Mon, 16 Apr 2018 16:34:23 +0000
+Received: by mail-io0-x22a.google.com with SMTP id c26so6200569iob.3
+ for <barebox@lists.infradead.org>; Mon, 16 Apr 2018 09:34:11 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <2824671.pASI2u4fUC@dev4>
+In-Reply-To: <2408243.jW0yOUZQgv@dev4>
 References: <20180414175103.10125-1-andrew.smirnov@gmail.com>
- <20180414175103.10125-10-andrew.smirnov@gmail.com> <2824671.pASI2u4fUC@dev4>
+ <20180414175103.10125-9-andrew.smirnov@gmail.com> <2408243.jW0yOUZQgv@dev4>
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 16 Apr 2018 09:33:32 -0700
-Message-ID: <CAHQ1cqGCV56U-98-v_6=M7XMdnC8R571AVc0UiWN+87Q=ifhqQ@mail.gmail.com>
+Date: Mon, 16 Apr 2018 09:34:10 -0700
+Message-ID: <CAHQ1cqHL+R54dXaRbPeM28tUOPiBT0DVbxbugS_+1JHXXCKPRA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,19 +24,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 09/17] ARM: i.MX: boot: Move magic values into small
- functions
+Subject: Re: [PATCH 08/17] ARM: i.MX: boot: Remove unnecessary retruns
 To: Marc Reilly <marc@cpdesign.com.au>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Sat, Apr 14, 2018 at 7:24 PM, Marc Reilly <marc@cpdesign.com.au> wrote:
-> On Sunday, April 15, 2018 3:50:55 AM AEST Andrey Smirnov wrote:
->> Move code to extract appropiate BOOT_CFG bits to decode booutsource on
->
-> s/booutsource/bootsource
+On Sat, Apr 14, 2018 at 7:22 PM, Marc Reilly <marc@cpdesign.com.au> wrote:
+> Nitpick: in subject s/retruns/returns
 >
 
-Fixed in v2.
+ Fixed in v2.
 
 Thanks,
 Andrey Smirnov
