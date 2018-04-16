@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f78A6-0008EF-6X
- for barebox@lists.infradead.org; Fri, 13 Apr 2018 23:31:25 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Sat, 14 Apr 2018 01:30:53 +0200
-Message-Id: <20180413233053.15570-4-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20180413233053.15570-1-u.kleine-koenig@pengutronix.de>
-References: <20180413233053.15570-1-u.kleine-koenig@pengutronix.de>
+ id 1f7y8X-00081j-Sy
+ for barebox@lists.infradead.org; Mon, 16 Apr 2018 07:01:15 +0000
+Date: Mon, 16 Apr 2018 09:00:59 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180416070059.zxdebttdji7yi6rr@pengutronix.de>
+References: <20180412213317.13199-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180412213317.13199-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,59 +18,98 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] pci: don't hide hard to understand sanity check in size
- calculation
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 0/5] Linux's serdev framwork port
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-cGNpX3NpemUoKSBoYWQgYSBjaGVjayB0aGF0IG1hZGUgaXQgcmV0dXJuIDAgKGkuZS4gYW4gZXJy
-b3IpIGluIHNvbWUKY2FzZXMuIEl0IHRvb2sgbWUgYSB3aGlsZSB0byB3b3JrIG91dCBpbiB3aGlj
-aCBzaXR1YXRpb25zIGV4YWN0bHkgdGhpcwpjaGVjayB0cmlnZ2VyZWQ6IElmIHdyaXRpbmcgMHhm
-ZmZmZmZmZSB0byB0aGUgQkFSIHJlZ2lzdGVyIGRvZXNuJ3QKY2hhbmdlIGl0J3MgdmFsdWUgYW5k
-IHRoZSBtYXNrZWQgdmFsdWUgaXNuJ3QgaW4gdGhlIGZvcm0gMGIxLi4uLjEwLi4uMC4KClRoaXMg
-cGF0Y2ggcmVwbGFjZXMgdGhlIGNoZWNrIGluIHBjaV9zaXplKCkgYnkgYSBzaW1pbGFyIGNoZWNr
-IGluCnNldHVwX2RldmljZSgpIHdoZXJlIGl0IGlzIG1vcmUgZXhwZWN0ZWQgdG8gaGFwcGVuLiBU
-aGlzIGFsbG93cyB0bwpzaW1wbGlmeSBwY2lfc2l6ZSgpIGNvbnNpZGVyYWJseS4KClRoZSBuZXcg
-Y2hlY2sgaXMgYSBiaXQgbW9yZSBzdHJpY3QgYXMgaXQgZG9lc24ndCBjb25zaWRlciB0aGUgdmFs
-dWUgdGhlCkJBUiByZWdpc3RlciBob2xkcyBpbml0aWFsbHkgYW5kIGJhaWxzIG91dCBpZmYgdGhl
-IG1heGltYWwgYmFzZSB2YWx1ZQppc24ndCBpbiB0aGUgZXhwZWN0ZWQgZm9ybWF0LgoKU2lnbmVk
-LW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5k
-ZT4KLS0tCiBkcml2ZXJzL3BjaS9wY2kuYyB8IDMwICsrKysrKysrKysrKysrLS0tLS0tLS0tLS0t
-LS0tLQogMSBmaWxlIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKyksIDE2IGRlbGV0aW9ucygtKQoK
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvcGNpL3BjaS5jIGIvZHJpdmVycy9wY2kvcGNpLmMKaW5kZXgg
-ODM3ZTE3YWE4Mzk3Li43MjY4OTU2MGQ1OTggMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvcGNpL3BjaS5j
-CisrKyBiL2RyaXZlcnMvcGNpL3BjaS5jCkBAIC0xNDQsMTggKzE0NCwxMCBAQCBzdGF0aWMgc3Ry
-dWN0IHBjaV9kZXYgKmFsbG9jX3BjaV9kZXYodm9pZCkKIAlyZXR1cm4gZGV2OwogfQogCi1zdGF0
-aWMgdTMyIHBjaV9zaXplKHUzMiBiYXNlLCB1MzIgbWF4YmFzZSwgdTMyIG1hc2spCitzdGF0aWMg
-dTMyIHBjaV9zaXplKHUzMiBtYXhiYXNlKQogewotCXUzMiBzaXplID0gbWF4YmFzZSAmIG1hc2s7
-Ci0JaWYgKCFzaXplKQotCQlyZXR1cm4gMDsKLQotCXNpemUgPSAoc2l6ZSAmIH4oc2l6ZS0xKSkg
-LSAxOwotCi0JaWYgKGJhc2UgPT0gbWF4YmFzZSAmJiAoKGJhc2UgfCBzaXplKSAmIG1hc2spICE9
-IG1hc2spCi0JCXJldHVybiAwOwotCi0JcmV0dXJuIHNpemUgKyAxOworCS8qIGlzb2xhdGUgcmln
-aHQtbW9zdCBzZXQgYml0ICovCisJcmV0dXJuIG1heGJhc2UgJiB+KG1heGJhc2UgLSAxKTsKIH0K
-IAogCkBAIC0xNjksNyArMTYxLDcgQEAgc3RhdGljIHZvaWQgc2V0dXBfZGV2aWNlKHN0cnVjdCBw
-Y2lfZGV2ICpkZXYsIGludCBtYXhfYmFyKQogCQkJICAgICAgY21kICYgfihQQ0lfQ09NTUFORF9J
-TyB8IFBDSV9DT01NQU5EX01FTU9SWSkpOwogCiAJZm9yIChiYXIgPSAwOyBiYXIgPCBtYXhfYmFy
-OyBiYXIrKykgewotCQl1MzIgb3JpZywgYmFydmFsLCBzaXplLCBtYXNrOworCQl1MzIgb3JpZywg
-YmFydmFsLCBtYXhiYXNlLCBzaXplLCBtYXNrOwogCQljb25zdCBjaGFyICp0eXBlOwogCQlpbnQg
-cmVzdHlwZTsKIAkJdW5zaWduZWQgbG9uZyByZXNmbGFnczsKQEAgLTIwNiwxMyArMTk4LDE5IEBA
-IHN0YXRpYyB2b2lkIHNldHVwX2RldmljZShzdHJ1Y3QgcGNpX2RldiAqZGV2LCBpbnQgbWF4X2Jh
-cikKIAkJCWxhc3QgPSAmbGFzdF9tZW07CiAJCX0KIAotCQlzaXplID0gcGNpX3NpemUob3JpZywg
-YmFydmFsLCBtYXNrKTsKLQkJaWYgKCFzaXplKSB7Ci0JCQlwcl9kZWJ1ZygiIHBiYXIlZDogYmFk
-ICVzIHNpemUgKG9yaWc9JTA4eCwgYmFydmFsPSUwOHgsIHR5cGU9JXMpXG4iLAotCQkJCSBiYXIs
-IHR5cGUsIG9yaWcsIGJhcnZhbCwgdHlwZSk7CisJCW1heGJhc2UgPSBiYXJ2YWwgJiBtYXNrOwor
-CisJCS8qCisJCSAqIGlmIG1heGJhc2UgaXNuJ3QgaW4gdGhlIGZvcm0gMGIxLi4uMTAuLi4wIHRo
-ZXJlIGlzIHNvbWV0aGluZworCQkgKiBmaXNoeQorCQkgKi8KKwkJaWYgKChtYXhiYXNlIHwgKG1h
-eGJhc2UgLSAxKSkgIT0gKHUzMiktMSB8fCBtYXhiYXNlID09IDApIHsKKwkJCXByX2RlYnVnKCIg
-cGJhciVkOiAhISBiYXJ2YWw9JTA4eCBtYXhiYXNlPTB4JTA4eFxuIiwgYmFyLCBiYXJ2YWwsIG1h
-eGJhc2UpOwogCQkJY29udGludWU7CiAJCX0KIAorCQlzaXplID0gcGNpX3NpemUobWF4YmFzZSk7
-CisKIAkJaWYgKEFMSUdOKCpsYXN0LCBzaXplKSArIHNpemUgPiBkZXYtPmJ1cy0+cmVzb3VyY2Vb
-cmVzdHlwZV0tPmVuZCkgewogCQkJcHJfZGVidWcoIiBwYmFyJWQ6ICEhIHR5cGU9JXMgYWxsb2Ni
-YXNlPTB4JTA4eCArIHNpemU9MHglMDh4ID4gcmVzb3VyY2VfZW5kPSVwYSAoYmFydmFsPSUwOHgp
-XG4iLAogCQkJCSBiYXIsIHR5cGUsIEFMSUdOKCpsYXN0LCBzaXplKSwgc2l6ZSwgJmRldi0+YnVz
-LT5yZXNvdXJjZVtyZXN0eXBlXS0+ZW5kLCBiYXJ2YWwpOwotLSAKMi4xNi4zCgoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
-c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Thu, Apr 12, 2018 at 02:33:12PM -0700, Andrey Smirnov wrote:
+> Hi everyone:
+> 
+> In an effort to bring this kernel driver
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/mfd/rave-sp.c?h=v4.16-rc7
+> to Barebox, I ended up creating a miniature and extremely simplified
+> version of 'serdev' subsystem which is presented in this patchset.
+> 
+> Changes since [v1]:
+> 
+> 	- Blocking read function was added as example of API usage
+> 
+> 	- "serial: Check result of console_unregister()" was converted
+>           to become "serial: Drop .remove functions from all drivers"
+> 
+> 	- Minor spelling fixes
+> 
+> 	- Original serdev framework patch modified to allow devices
+>           that do not require polling (I don't have such a usecase,
+>           but for the sake of being generic I added one line needed
+>           for that)
+> 
+> 	- SERIAL_DEV_BUS Kconfig symbol moved into
+>           drivers/serial/Kconfig (where it, IMHO, fits much better)
+> 
+> 	- Added a patch to dynamically adjust serdev's polling
+>           interval via device paramter. This was warranted by the
+>           problems that arose from real-life usage.
+> 
+> Feedback is wellcome!
+> 
+> Thanks,
+> Andrey Smirnov
+> 
+> [v1] https://www.spinics.net/lists/u-boot-v2/msg32322.html
+
+Applied, thanks
+
+Sascha
+
+> 
+> Andrey Smirnov (5):
+>   console: Introduce console_drain()
+>   console: Add simplified 'serdev' framework from Linux kernel
+>   serdev: Add trivial blocking read function
+>   serial: Drop .remove functions from all drivers
+>   serdev: Allow polling interval to be adjusted at runtime
+> 
+>  common/Makefile                  |   1 +
+>  common/console.c                 |  24 ++++-
+>  common/serdev.c                  | 208 +++++++++++++++++++++++++++++++++++++++
+>  drivers/serial/Kconfig           |   6 ++
+>  drivers/serial/serial_auart.c    |  11 ---
+>  drivers/serial/serial_cadence.c  |   9 --
+>  drivers/serial/serial_clps711x.c |  10 --
+>  drivers/serial/serial_imx.c      |  10 --
+>  drivers/serial/serial_lpuart.c   |  13 ---
+>  drivers/serial/serial_pxa.c      |   9 --
+>  drivers/serial/serial_s3c.c      |  10 --
+>  drivers/serial/stm-serial.c      |  10 --
+>  include/console.h                | 110 +++++++++++++++++++++
+>  include/serdev.h                 |  44 +++++++++
+>  lib/xymodem.c                    |  30 +-----
+>  15 files changed, 395 insertions(+), 110 deletions(-)
+>  create mode 100644 common/serdev.c
+>  create mode 100644 include/serdev.h
+> 
+> -- 
+> 2.14.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
