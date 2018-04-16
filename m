@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x244.google.com ([2607:f8b0:4001:c0b::244])
+Received: from mail-it0-x243.google.com ([2607:f8b0:4001:c0b::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f83w4-0001Be-Kj
- for barebox@lists.infradead.org; Mon, 16 Apr 2018 13:12:46 +0000
-Received: by mail-it0-x244.google.com with SMTP id n81-v6so4751455ita.1
- for <barebox@lists.infradead.org>; Mon, 16 Apr 2018 06:12:33 -0700 (PDT)
+ id 1f84BD-00006g-Cq
+ for barebox@lists.infradead.org; Mon, 16 Apr 2018 13:28:24 +0000
+Received: by mail-it0-x243.google.com with SMTP id 71-v6so11530030ith.2
+ for <barebox@lists.infradead.org>; Mon, 16 Apr 2018 06:28:13 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20180416071951.2is6xqlwlzju4wk2@pengutronix.de>
+In-Reply-To: <20180416071304.2gm2b6noqof3kokw@pengutronix.de>
 References: <20180414175024.9962-1-andrew.smirnov@gmail.com>
- <20180414175024.9962-9-andrew.smirnov@gmail.com>
- <20180416071951.2is6xqlwlzju4wk2@pengutronix.de>
+ <20180414175024.9962-4-andrew.smirnov@gmail.com>
+ <20180416071304.2gm2b6noqof3kokw@pengutronix.de>
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 16 Apr 2018 06:12:32 -0700
-Message-ID: <CAHQ1cqEvxmdTuEMPe-L-9puhNi_t_YvMxqY1RRVxQ6Uc96nZ=A@mail.gmail.com>
+Date: Mon, 16 Apr 2018 06:28:11 -0700
+Message-ID: <CAHQ1cqHjLt+UczgWu+_Pe3NLWZM6QWu_M07Odj_5++puaMNs3w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,62 +25,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 08/10] ARM: VFxxx: Add code to detect reset reason
+Subject: Re: [PATCH 03/10] ARM: i.MX6: Record reset reason as a part of startup
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Apr 16, 2018 at 12:19 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Sat, Apr 14, 2018 at 10:50:22AM -0700, Andrey Smirnov wrote:
+On Mon, Apr 16, 2018 at 12:13 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> Hi Andrey,
+>
+> On Sat, Apr 14, 2018 at 10:50:17AM -0700, Andrey Smirnov wrote:
 >> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 >> ---
->>  arch/arm/mach-imx/imx.c                       | 78 +++++++++++++++++----------
->>  arch/arm/mach-imx/include/mach/reset-reason.h | 11 ++++
->>  2 files changed, 62 insertions(+), 27 deletions(-)
+>>  arch/arm/mach-imx/imx6.c                      | 4 +++-
+>>  arch/arm/mach-imx/include/mach/reset-reason.h | 2 ++
+>>  2 files changed, 5 insertions(+), 1 deletion(-)
 >>
->> diff --git a/arch/arm/mach-imx/imx.c b/arch/arm/mach-imx/imx.c
->> index fb1160de9..e84713766 100644
->> --- a/arch/arm/mach-imx/imx.c
->> +++ b/arch/arm/mach-imx/imx.c
->> @@ -158,6 +158,7 @@ void imx_set_reset_reason(void __iomem *srsr)
+>> diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+>> index 14a1cba5a..3d81c2785 100644
+>> --- a/arch/arm/mach-imx/imx6.c
+>> +++ b/arch/arm/mach-imx/imx6.c
+>> @@ -19,6 +19,7 @@
+>>  #include <mach/imx6.h>
+>>  #include <mach/generic.h>
+>>  #include <mach/revision.h>
+>> +#include <mach/reset-reason.h>
+>>  #include <mach/imx6-anadig.h>
+>>  #include <mach/imx6-regs.h>
+>>  #include <mach/generic.h>
+>> @@ -151,6 +152,7 @@ int imx6_init(void)
 >>  {
->>       enum reset_src_type type = RESET_UKWN;
->>       const u32 reg = readl(srsr);
->> +     const bool is_vf610 = cpu_is_vf610();
+>>       const char *cputypestr;
+>>       u32 mx6_silicon_revision;
+>> +     void __iomem *src = IOMEM(MX6_SRC_BASE_ADDR);
 >>
->>       /*
->>        * SRSR register captures ALL reset event that occured since
->> @@ -166,37 +167,60 @@ void imx_set_reset_reason(void __iomem *srsr)
->>        */
->>       writel(reg, srsr);
+>>       imx6_init_lowlevel();
 >>
->> -     switch (reg) {
->> -     case IMX_SRC_SRSR_IPP_RESET: /* FALLTHROUGH */
->> -     case IMX_SRC_SRSR_IPP_RESET | IMX_SRC_SRSR_WDOG1_RESET:
->> -             type = RESET_POR;
->> -             break;
->> -     case IMX_SRC_SRSR_WDOG3_RESET: /* FALLTHROUGH */
->> -     case IMX_SRC_SRSR_WDOG4_RESET: /* FALLTHROUGH */
->> -     case IMX_SRC_SRSR_WDOG1_RESET:
->> -             type = RESET_WDG;
->> -             break;
->> -     case IMX_SRC_SRSR_JTAG_RESET: /* FALLTHROUGH */
->> -     case IMX_SRC_SRSR_JTAG_SW_RESET:
->> -             type = RESET_JTAG;
->> -             break;
->> -     case IMX_SRC_SRSR_TEMPSENSE_RESET:
->> -             type = RESET_THERM;
->> -             break;
->> -     case IMX_SRC_SRSR_WARM_BOOT:
->> -             type = RESET_RST;
->> -             break;
->> +     if (is_vf610) {
+>> @@ -195,7 +197,7 @@ int imx6_init(void)
+>>       }
+>>
+>>       imx_set_silicon_revision(cputypestr, mx6_silicon_revision);
+>> -
+>> +     imx_set_reset_reason(src + IMX6_SRC_SRSR);
 >
-> The caller already knows this is a vf610 and the code path for vf610 is
-> completely different. Please add a vf610_set_reset_reason() instead of
-> clobbering the i.MX function with this.
+> This will get overwritten by the watchdog driver if enabled.
 >
 
-They do share code fore clearing RSRS register, but sure, will do in v2.
+I am not sure I see how. Imx_watchdog_detect_reset_source() reports
+reset sources with the same priority as this code, so
+reset_source_set_priority() should bail out early without changing
+anything in that case.
+
+Regardless, even if it were true, I think that behavior is perfectly
+OK. First of all, startup log will still be present, which is IMHO
+pretty useful. Second, the platforms that doen't use/rely on built-in
+watchdog would benefit from this.
+
+Another thing we can do is add code to respect "reset-source-priority"
+to imxwd.c, so that people could ajdust what reset source info they
+want to see via DT.
+
+Let me know what you think.
 
 Thanks,
 Andrey Smirnov
