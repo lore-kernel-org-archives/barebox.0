@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f89rY-0003qt-2d
+ id 1f89rZ-0003pn-6Z
  for barebox@lists.infradead.org; Mon, 16 Apr 2018 19:32:31 +0000
-Received: by mail-pl0-x241.google.com with SMTP id a39-v6so10579362pla.10
- for <barebox@lists.infradead.org>; Mon, 16 Apr 2018 12:32:25 -0700 (PDT)
+Received: by mail-pf0-x244.google.com with SMTP id f15so11020123pfn.0
+ for <barebox@lists.infradead.org>; Mon, 16 Apr 2018 12:32:19 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 16 Apr 2018 12:31:47 -0700
-Message-Id: <20180416193157.16094-10-andrew.smirnov@gmail.com>
+Date: Mon, 16 Apr 2018 12:31:42 -0700
+Message-Id: <20180416193157.16094-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20180416193157.16094-1-andrew.smirnov@gmail.com>
 References: <20180416193157.16094-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,38 +23,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 09/19] ARM: i.MX7: boot: Fix SPI-NOR/QSPI boot source mixup
+Subject: [PATCH v2 04/19] ARM: i.MX: Add a function to extract BMOD value
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-As per "Table 6-33. Boot device selection" from "i.MX 7Dual
-Applications Processor Reference Manual, Rev. 1, 01/2018" QSPI is
-encoded with 0b0100 and Serial ROM with 0b0110. Fix the original code
-to use correct values.
+The location of BMDO field in SBMR/SBMR2 registers is consistent
+across all i.MX SoCs starting from i.MX53. Add simple helper function
+imx53_get_bmod and use it to avoid code duplication.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/boot.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/mach-imx/boot.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index 5484812a6..f9d730f6d 100644
+index 4657fa017..9f5ddf629 100644
 --- a/arch/arm/mach-imx/boot.c
 +++ b/arch/arm/mach-imx/boot.c
-@@ -366,11 +366,11 @@ void imx7_get_boot_source(enum bootsource *src, int *instance)
- 	case 3:
- 		*src = BOOTSOURCE_NAND;
- 		break;
--	case 4:
-+	case 6:
- 		*src = BOOTSOURCE_SPI_NOR,
- 		*instance = (sbmr1 >> 9 & 0x7);
- 		break;
--	case 6:
-+	case 4:
- 		*src = BOOTSOURCE_SPI; /* Really: qspi */
- 		break;
- 	case 5:
+@@ -15,6 +15,7 @@
+ #include <bootsource.h>
+ #include <environment.h>
+ #include <init.h>
++#include <linux/bitfield.h>
+ #include <magicvar.h>
+ 
+ #include <io.h>
+@@ -169,12 +170,19 @@ void imx51_get_boot_source(enum bootsource *src, int *instance)
+ }
+ 
+ #define IMX53_SRC_SBMR	0x4
++#define SRC_SBMR_BMOD	GENMASK(25, 24)
++
++static unsigned int imx53_get_bmod(uint32_t r)
++{
++	return FIELD_GET(SRC_SBMR_BMOD, r);
++}
++
+ void imx53_get_boot_source(enum bootsource *src, int *instance)
+ {
+ 	void __iomem *src_base = IOMEM(MX53_SRC_BASE_ADDR);
+ 	uint32_t cfg1 = readl(src_base + IMX53_SRC_SBMR);
+ 
+-	if (((cfg1 >> 24) & 0x3) == 0x3) {
++	if (imx53_get_bmod(cfg1) == 0x3) {
+ 		*src = BOOTSOURCE_USB;
+ 		*instance = 0;
+ 		return;
+@@ -225,12 +233,8 @@ void imx6_get_boot_source(enum bootsource *src, int *instance)
+ 	uint32_t sbmr1 = readl(src_base + IMX6_SRC_SBMR1);
+ 	uint32_t sbmr2 = readl(src_base + IMX6_SRC_SBMR2);
+ 	uint32_t boot_cfg_4_2_0;
+-	int boot_mode;
+-
+-	/* BMOD[1:0] */
+-	boot_mode = (sbmr2 >> 24) & 0x3;
+ 
+-	switch (boot_mode) {
++	switch (imx53_get_bmod(sbmr2)) {
+ 	case 0: /* Fuses, fall through */
+ 	case 2: /* internal boot */
+ 		goto internal_boot;
+@@ -290,12 +294,8 @@ void imx7_get_boot_source(enum bootsource *src, int *instance)
+ 	void __iomem *src_base = IOMEM(MX7_SRC_BASE_ADDR);
+ 	uint32_t sbmr1 = readl(src_base + IMX7_SRC_SBMR1);
+ 	uint32_t sbmr2 = readl(src_base + IMX7_SRC_SBMR2);
+-	int boot_mode;
+-
+-	/* BMOD[1:0] */
+-	boot_mode = (sbmr2 >> 24) & 0x3;
+ 
+-	switch (boot_mode) {
++	switch (imx53_get_bmod(sbmr2)) {
+ 	case 0: /* Fuses, fall through */
+ 	case 2: /* internal boot */
+ 		goto internal_boot;
 -- 
 2.14.3
 
