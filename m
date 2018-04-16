@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x230.google.com ([2607:f8b0:400e:c05::230])
+Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f89rV-0003pN-65
- for barebox@lists.infradead.org; Mon, 16 Apr 2018 19:32:26 +0000
-Received: by mail-pg0-x230.google.com with SMTP id e9so3187010pgr.7
- for <barebox@lists.infradead.org>; Mon, 16 Apr 2018 12:32:13 -0700 (PDT)
+ id 1f89rV-0003py-Mh
+ for barebox@lists.infradead.org; Mon, 16 Apr 2018 19:32:28 +0000
+Received: by mail-pl0-x244.google.com with SMTP id s13-v6so3335759plq.11
+ for <barebox@lists.infradead.org>; Mon, 16 Apr 2018 12:32:22 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 16 Apr 2018 12:31:38 -0700
-Message-Id: <20180416193157.16094-1-andrew.smirnov@gmail.com>
+Date: Mon, 16 Apr 2018 12:31:45 -0700
+Message-Id: <20180416193157.16094-8-andrew.smirnov@gmail.com>
+In-Reply-To: <20180416193157.16094-1-andrew.smirnov@gmail.com>
+References: <20180416193157.16094-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,74 +23,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 00/19] i.MX bootsource bugfixes,
- refactoring and VFxxx support
+Subject: [PATCH v2 07/19] ARM: i.MX7: boot: Add code to handle SD/MMC
+ manufacture mode
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Everyone:
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/mach-imx/boot.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-This patchset is the result of my work on adding support for
-bootsource detection of VFxxx as well as fixing a number of
-bugs/unsupported corner cases in similar i.MX7 specific code.
-
-NOTE: While VFxxx support is added in this series the code integrating
-it into the SoC initalization sequnce is not included. Patch for that
-is dependent on recently submitted "i.MX reset reason detection
-support" and I didn't want to intertwine two otherwise independent
-submissions.
-
-Changes since [v1]:
-
-	- Patchset converted to use FIELD_GET macro (which was ported
-          from the kernel)
-
-	- Spelling fixes
-
-[v1] https://www.spinics.net/lists/u-boot-v2/msg32506.html
-
-Feedback is wellcome!
-
-Thanks,
-Andrey Smirnov
-
-Andrey Smirnov (19):
-  ARM: i.MX: boot: Coalesce copy-pasted code
-  include: Port linux/build_bug.h from Linux kernel
-  include: Port linux/bitfield.h from Linux kernel
-  ARM: i.MX: Add a function to extract BMOD value
-  ARM: i.MX: Simplify serial bootsource detection for i.MX6 and 7
-  ARM: i.MX: Account for unprogrammed fuses on i.MX6 and i.MX7
-  ARM: i.MX7: boot: Add code to handle SD/MMC manufacture mode
-  ARM: i.MX7: boot: Remove incorrect NAND bootsource detection
-  ARM: i.MX7: boot: Fix SPI-NOR/QSPI boot source mixup
-  ARM: i.MX: boot: Remove unnecessary returns
-  ARM: i.MX: boot: Move magic values into small functions
-  ARM: i.MX: boot: Share code to detect NAND as a boot source
-  ARM: i.MX: boot: Check for NAND boot only if necessary on i.MX53, 6
-  ARM: i.MX53: boot: Move magic numbers info utility functions
-  ARM: i.MX6: boot: Move magic numbers into utility functions
-  ARM: i.MX7: boot: Move magic numbers into utility functions
-  bootsource: Add BOOTSOURCE_CAN
-  ARM: VFxxx: Implement code to detect bootsource
-  ARM: i.MX6: boot: Return BOOTSOURCE_SPI_NOR, not BOOTSOURCE_SPI
-
- arch/arm/boards/datamodul-edm-qmx6/board.c |   2 +-
- arch/arm/boards/dfi-fs700-m60/board.c      |   2 +-
- arch/arm/boards/phytec-som-imx6/board.c    |   2 +-
- arch/arm/boards/zii-imx6q-rdu2/lowlevel.c  |   2 +-
- arch/arm/mach-imx/boot.c                   | 436 ++++++++++++++++++++---------
- arch/arm/mach-imx/include/mach/generic.h   |   2 +
- arch/arm/mach-imx/xload.c                  |   2 +-
- common/bootsource.c                        |   1 +
- include/bootsource.h                       |   1 +
- include/linux/bitfield.h                   | 152 ++++++++++
- include/linux/bug.h                        |  25 +-
- include/linux/build_bug.h                  |  83 ++++++
- 12 files changed, 550 insertions(+), 160 deletions(-)
- create mode 100644 include/linux/bitfield.h
- create mode 100644 include/linux/build_bug.h
-
+diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+index 7c59c2181..e2696a934 100644
+--- a/arch/arm/mach-imx/boot.c
++++ b/arch/arm/mach-imx/boot.c
+@@ -303,6 +303,19 @@ void imx6_get_boot_source(enum bootsource *src, int *instance)
+ #define IMX7_SRC_SBMR1	0x58
+ #define IMX7_SRC_SBMR2	0x70
+ 
++#define IMX_BOOT_SW_INFO_POINTER_ADDR	0x000001E8
++#define IMX_BOOT_SW_INFO_BDT_SD		0x1
++
++struct imx_boot_sw_info {
++	uint8_t  reserved_1;
++	uint8_t  boot_device_instance;
++	uint8_t  boot_device_type;
++	uint8_t  reserved_2;
++	uint32_t frequency_hz[4]; /* Various frequencies (ARM, AXI,
++				   * DDR, etc.). Not used */
++	uint32_t reserved_3[3];
++} __packed;
++
+ void imx7_get_boot_source(enum bootsource *src, int *instance)
+ {
+ 	void __iomem *src_base = IOMEM(MX7_SRC_BASE_ADDR);
+@@ -313,6 +326,33 @@ void imx7_get_boot_source(enum bootsource *src, int *instance)
+ 		return;
+ 
+ 	if (imx6_bootsource_serial(sbmr2)) {
++		/*
++		 * On i.MX7 ROM code will try to bood from uSDHC1
++		 * before entering serial mode. It doesn't seem to be
++		 * reflected in the contents of SBMR1 in any way when
++		 * that happens, so we check "Boot_SW_Info" structure
++		 * (per 6.6.14 Boot information for software) to see
++		 * if that really happened.
++		 *
++		 * FIXME: This behaviour can be inhibited by
++		 * DISABLE_SDMMC_MFG, but location of that fuse
++		 * doesn't seem to be documented anywhere. Once that
++		 * is known it should be taken into account here.
++		 */
++		const struct imx_boot_sw_info *info;
++
++		info = (const void *)readl(IMX_BOOT_SW_INFO_POINTER_ADDR);
++
++		if (info->boot_device_type == IMX_BOOT_SW_INFO_BDT_SD) {
++			*src = BOOTSOURCE_MMC;
++			/*
++			 * We are expecting to only ever boot from
++			 * uSDHC1 here
++			 */
++			WARN_ON(*instance = info->boot_device_instance);
++			return;
++		}
++
+ 		*src = BOOTSOURCE_SERIAL;
+ 		return;
+ 	}
 -- 
 2.14.3
 
