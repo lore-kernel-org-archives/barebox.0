@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-io0-x236.google.com ([2607:f8b0:4001:c06::236])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f7mNp-0002g3-3b
- for barebox@lists.infradead.org; Sun, 15 Apr 2018 18:28:15 +0000
-Date: Sun, 15 Apr 2018 20:27:58 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20180415182758.2gvkmxp7e5zzxtev@pengutronix.de>
+ id 1f84P5-0005ed-N6
+ for barebox@lists.infradead.org; Mon, 16 Apr 2018 13:42:45 +0000
+Received: by mail-io0-x236.google.com with SMTP id q84so18078096iod.10
+ for <barebox@lists.infradead.org>; Mon, 16 Apr 2018 06:42:33 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20180415182758.2gvkmxp7e5zzxtev@pengutronix.de>
 References: <20180413233053.15570-1-u.kleine-koenig@pengutronix.de>
  <20180413233053.15570-4-u.kleine-koenig@pengutronix.de>
  <CAHQ1cqFkU=9aPg9xr3gbmApgx-rSfM3toH3m-Br3=PjN1Voqvw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqFkU=9aPg9xr3gbmApgx-rSfM3toH3m-Br3=PjN1Voqvw@mail.gmail.com>
+ <20180415182758.2gvkmxp7e5zzxtev@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 16 Apr 2018 06:42:31 -0700
+Message-ID: <CAHQ1cqGaupXUAaBCsgKeA2Gby+xE85qxrXs1AE0PvBVsTUOayA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,44 +22,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 4/4] pci: don't hide hard to understand sanity check in
  size calculation
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-Hello Andrey,
-
-On Sat, Apr 14, 2018 at 09:25:59AM -0700, Andrey Smirnov wrote:
-> On Fri, Apr 13, 2018 at 4:30 PM, Uwe Kleine-K=F6nig
-> <u.kleine-koenig@pengutronix.de> wrote:
-> > +               /*
-> > +                * if maxbase isn't in the form 0b1...10...0 there is s=
-omething
-> > +                * fishy
-> > +                */
-> > +               if ((maxbase | (maxbase - 1)) !=3D (u32)-1 || maxbase =
-=3D=3D 0) {
-> =
-
-> U32_MAX instead of (u32)-1 ?
-
-I don't feel strong here. Given that the LHS uses some characteristics
-of the binary representation I slightly prefer (u32)-1, but I can change
-it to U32_MAX, too.
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gU3VuLCBBcHIgMTUsIDIwMTggYXQgMTE6MjcgQU0sIFV3ZSBLbGVpbmUtS8O2bmlnCjx1Lmts
+ZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+IHdyb3RlOgo+IEhlbGxvIEFuZHJleSwKPgo+IE9u
+IFNhdCwgQXByIDE0LCAyMDE4IGF0IDA5OjI1OjU5QU0gLTA3MDAsIEFuZHJleSBTbWlybm92IHdy
+b3RlOgo+PiBPbiBGcmksIEFwciAxMywgMjAxOCBhdCA0OjMwIFBNLCBVd2UgS2xlaW5lLUvDtm5p
+Zwo+PiA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPj4gPiArICAgICAg
+ICAgICAgICAgLyoKPj4gPiArICAgICAgICAgICAgICAgICogaWYgbWF4YmFzZSBpc24ndCBpbiB0
+aGUgZm9ybSAwYjEuLi4xMC4uLjAgdGhlcmUgaXMgc29tZXRoaW5nCj4+ID4gKyAgICAgICAgICAg
+ICAgICAqIGZpc2h5Cj4+ID4gKyAgICAgICAgICAgICAgICAqLwo+PiA+ICsgICAgICAgICAgICAg
+ICBpZiAoKG1heGJhc2UgfCAobWF4YmFzZSAtIDEpKSAhPSAodTMyKS0xIHx8IG1heGJhc2UgPT0g
+MCkgewo+Pgo+PiBVMzJfTUFYIGluc3RlYWQgb2YgKHUzMiktMSA/Cj4KPiBJIGRvbid0IGZlZWwg
+c3Ryb25nIGhlcmUuCgpNZSBuZWl0aGVyLiBJIGp1c3QgcmVhZCAodTMyKS0xIGFzIGEgc2hvcnRj
+dXQgZm9yIDB4ZmZmZmZmZmYgYW5kIHdlCmFscmVhZHkgaGF2ZSBhIHNob3J0Y3V0IGZvciB0aGF0
+LiBCdXQgaWYgeW91IHdhbnQgdG8ga2VlcCB1c2luZwoodTMyKS0xLCB0aGVuIGJ5IGFsbCBtZWFu
+cy4KClRoYW5rcywKQW5kcmV5IFNtaXJub3YKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
+cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
+cmVib3gK
