@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from guitar.tcltek.co.il ([192.115.133.116] helo=mx.tkos.co.il)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f81Es-0000xH-M2
- for barebox@lists.infradead.org; Mon, 16 Apr 2018 10:20:01 +0000
-Date: Mon, 16 Apr 2018 13:19:39 +0300
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20180416101939.yggybypgs3ahr76b@sapphire.tkos.co.il>
-References: <38a86524d3ed4ff2b2306a3bb52fb312@eckelmann.de>
+ id 1f839d-0004EY-5j
+ for barebox@lists.infradead.org; Mon, 16 Apr 2018 12:22:47 +0000
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Date: Mon, 16 Apr 2018 14:22:24 +0200
+Message-Id: <20180416122225.6302-1-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <38a86524d3ed4ff2b2306a3bb52fb312@eckelmann.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,51 +15,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Question about barebox*/drivers/mfd/mc34704.c and =?utf-8?Q?A?=
- =?utf-8?Q?CCURATE_I=C2=B2C?= mode ...
-To: "Mainz, Roland" <R.Mainz@eckelmann.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] fs: fix error path in __canonicalize_path()
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Roland,
-
-On Mon, Apr 16, 2018 at 09:52:14AM +0000, Mainz, Roland wrote:
-> Two small questions about drivers/mfd/mc34704.c in the barebox codebase:
-> 1. mc34704 has an ACCURATE bit (I2CSET1, see =
-
-> https://www.nxp.com/docs/en/data-sheet/MC34704.pdf) which requires that a=
-ll =
-
-> read/write commands are send twice - does the barebox code have any suppo=
-rt =
-
-> for that in the current versions ?
-> 2. Is this "accurate I=B2C communication mode" enabled by that bit a =
-
-> vendor-specific protocol extension or is it part of the I=B2C standard ?
-
-Please send your Barebox related questions to the barebox mailing list. I =
-
-added the list to Cc.
-
-To the best of my knowledge there is no "twice" mode in the I2C standard. T=
-he =
-
-mc34704 driver does not seem to support this mode.
-
-baruch
-
--- =
-
-     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
-=3D}------------------------------------------------ooO--U--Ooo------------=
-{=3D
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+UmVwb3J0IGZhaWx1cmUgaW4gcmVzb2x2aW5nIGxpbmtzIHRvIHRoZSBjYWxsZXIgYW5kIG9ubHkg
+Y2xlYW4gdXAgbWVtb3J5IHRoZW4uCgpTaWduZWQtb2ZmLWJ5OiBVbHJpY2ggw5ZsbWFubiA8dS5v
+ZWxtYW5uQHBlbmd1dHJvbml4LmRlPgotLS0KIGZzL2ZzLmMgfCAxMCArKysrKysrLS0tCiAxIGZp
+bGUgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBh
+L2ZzL2ZzLmMgYi9mcy9mcy5jCmluZGV4IDUxMzUxMTJjOGI4MS4uN2M4MThlY2EwMjRmIDEwMDY0
+NAotLS0gYS9mcy9mcy5jCisrKyBiL2ZzL2ZzLmMKQEAgLTIwMiw4ICsyMDIsMTEgQEAgc3RhdGlj
+IGNoYXIgKl9fY2Fub25pY2FsaXplX3BhdGgoY29uc3QgY2hhciAqX3BhdGhuYW1lLCBpbnQgbGV2
+ZWwpCiAJCQljb250aW51ZTsKIAogCQlyZXQgPSByZWFkbGluayhvdXRwYXRoLCBsaW5rLCBQQVRI
+X01BWCAtIDEpOwotCQlpZiAocmV0IDwgMCkKKwkJaWYgKHJldCA8IDApIHsKKwkJCWZyZWUob3V0
+cGF0aCk7CisJCQlvdXRwYXRoID0gRVJSX1BUUihyZXQpOwogCQkJZ290byBvdXQ7CisJCX0KIAog
+CQlpZiAobGlua1swXSA9PSAnLycpIHsKIAkJCWZyZWUob3V0cGF0aCk7CkBAIC0yMTgsMTQgKzIy
+MSwxNSBAQCBzdGF0aWMgY2hhciAqX19jYW5vbmljYWxpemVfcGF0aChjb25zdCBjaGFyICpfcGF0
+aG5hbWUsIGludCBsZXZlbCkKIAkJaWYgKElTX0VSUihvdXRwYXRoKSkKIAkJCWdvdG8gb3V0Owog
+CX0KLW91dDoKLQlmcmVlKGZyZWVwKTsKIAogCWlmICghKm91dHBhdGgpIHsKIAkJZnJlZShvdXRw
+YXRoKTsKIAkJb3V0cGF0aCA9IHhzdHJkdXAoIi8iKTsKIAl9CiAKK291dDoKKwlmcmVlKGZyZWVw
+KTsKKwogCXJldHVybiBvdXRwYXRoOwogfQogCi0tIAoyLjE2LjMKCgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
+Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9iYXJlYm94Cg==
