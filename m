@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f7yho-0000C5-3V
- for barebox@lists.infradead.org; Mon, 16 Apr 2018 07:37:41 +0000
-Date: Mon, 16 Apr 2018 09:37:27 +0200
+ id 1f7z04-0000T0-Bi
+ for barebox@lists.infradead.org; Mon, 16 Apr 2018 07:56:34 +0000
+Date: Mon, 16 Apr 2018 09:56:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180416073727.z777ff4fuecb2anv@pengutronix.de>
-References: <20180414175103.10125-1-andrew.smirnov@gmail.com>
- <20180414175103.10125-3-andrew.smirnov@gmail.com>
+Message-ID: <20180416075620.plnlyaoppuazuy4r@pengutronix.de>
+References: <1523524382-19217-1-git-send-email-d.schultz@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180414175103.10125-3-andrew.smirnov@gmail.com>
+In-Reply-To: <1523524382-19217-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,90 +22,150 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 02/17] ARM: i.MX: Add function to extract BMOD value
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH v2 1/2] common: state: Add property to protect existing
+ data
+To: Daniel Schultz <d.schultz@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, Apr 14, 2018 at 10:50:48AM -0700, Andrey Smirnov wrote:
-> The location of BMDO field in SBMR/SBMR2 registers is consistent
-> across all i.MX SoCs starting from i.MX53. Add simple helper function
-> imx53_get_bmod and use it to avoid code duplication.
+On Thu, Apr 12, 2018 at 11:13:01AM +0200, Daniel Schultz wrote:
+> After an update to a newer barebox version with an enabled state
+> framework, existing data in storage memories could be overwritten.
 > 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> Add a new property to check in front of every write task, if the meta
+> magic field only contains the magic number, zeros or ones.
+> 
+> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 > ---
->  arch/arm/mach-imx/boot.c | 25 ++++++++++++++-----------
->  1 file changed, 14 insertions(+), 11 deletions(-)
+> Changes:
+> 	v2: Added check for circular backend
+> 	    Improved error message if content was found
 > 
-> diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-> index 4657fa017..56f9fb5d4 100644
-> --- a/arch/arm/mach-imx/boot.c
-> +++ b/arch/arm/mach-imx/boot.c
-> @@ -169,12 +169,23 @@ void imx51_get_boot_source(enum bootsource *src, int *instance)
->  }
->  
->  #define IMX53_SRC_SBMR	0x4
-> +
-> +static unsigned int sbmr(uint32_t r, unsigned int msb, unsigned int lsb)
-> +{
-> +	return (r & GENMASK(msb, lsb)) >> lsb;
-> +}
 
-If you like GENMASK then maybe the FIELD_GET and FIELD_PREP macros from
-the Linux kernel are for you aswell.
-
-#define SRC_SBMR_BMOD	GENMASK(25, 24)
-
-> +
-> +static unsigned int imx53_get_bmod(uint32_t r)
-> +{
-> +	return sbmr(r, 25, 24);
-
-return FIELD_GET(SRC_SBMR_BMOD, r);
+Applied, thanks
 
 Sascha
 
-> +}
+>  .../devicetree/bindings/barebox/barebox,state.rst     |  3 +++
+>  common/state/backend_bucket_circular.c                |  8 +++++---
+>  common/state/backend_bucket_direct.c                  |  2 ++
+>  common/state/state.c                                  | 19 ++++++++++++++++++-
+>  common/state/state.h                                  |  2 ++
+>  5 files changed, 30 insertions(+), 4 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/barebox/barebox,state.rst b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+> index 872bac0..2893937 100644
+> --- a/Documentation/devicetree/bindings/barebox/barebox,state.rst
+> +++ b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+> @@ -55,6 +55,9 @@ Optional Properties
+>  * ``algo``: A HMAC algorithm used to detect manipulation of the data
+>    or header, sensible values follow this pattern ``hmac(<HASH>)``,
+>    e.g. ``hmac(sha256)``. Only available for the ``backend-type`` ``raw``.
+> +* ``keep-previous-content``: Check if a the bucket meta magic field contains
+> +  other data than the magic value. If so, the backend will not write the state
+> +  to prevent unconditionally overwrites of existing data.
+>  
+>  .. note:: For the ``backend-storage-type`` the keyword ``noncircular`` is still
+>     supported as a fall back to an old storage format. Recommendation is to not
+> diff --git a/common/state/backend_bucket_circular.c b/common/state/backend_bucket_circular.c
+> index 2324903..933493e 100644
+> --- a/common/state/backend_bucket_circular.c
+> +++ b/common/state/backend_bucket_circular.c
+> @@ -396,11 +396,13 @@ static int state_backend_bucket_circular_init(
+>  			meta = (struct state_backend_storage_bucket_circular_meta *)
+>  					(buf + sub_offset + circ->writesize - sizeof(*meta));
+>  
+> -			if (meta->magic != circular_magic)
+> +			if (meta->magic != circular_magic) {
+>  				written_length = 0;
+> -			else
+> +				if (meta->magic != ~0 && !!meta->magic)
+> +					bucket->wrong_magic = 1;
+> +			} else {
+>  				written_length = meta->written_length;
+> -
+> +			}
+>  			break;
+>  		}
+>  	}
+> diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
+> index 958696e..9d6a337 100644
+> --- a/common/state/backend_bucket_direct.c
+> +++ b/common/state/backend_bucket_direct.c
+> @@ -69,6 +69,8 @@ static int state_backend_bucket_direct_read(struct state_backend_storage_bucket
+>  	if (meta.magic == direct_magic) {
+>  		read_len = meta.written_length;
+>  	} else {
+> +		if (meta.magic != ~0 && !!meta.magic)
+> +			bucket->wrong_magic = 1;
+>  		if (!IS_ENABLED(CONFIG_STATE_BACKWARD_COMPATIBLE)) {
+>  			dev_err(direct->dev, "No meta data header found\n");
+>  			dev_dbg(direct->dev, "Enable backward compatibility or increase stride size\n");
+> diff --git a/common/state/state.c b/common/state/state.c
+> index 73dfb58..25d9502 100644
+> --- a/common/state/state.c
+> +++ b/common/state/state.c
+> @@ -44,6 +44,8 @@ int state_save(struct state *state)
+>  	void *buf;
+>  	ssize_t len;
+>  	int ret;
+> +	struct state_backend_storage_bucket *bucket;
+> +	struct state_backend_storage *storage;
+>  
+>  	if (!state->dirty)
+>  		return 0;
+> @@ -55,7 +57,19 @@ int state_save(struct state *state)
+>  		return ret;
+>  	}
+>  
+> -	ret = state_storage_write(&state->storage, buf, len);
+> +	storage = &state->storage;
+> +	if (state->keep_prev_content) {
+> +		bool has_content = 0;
+> +		list_for_each_entry(bucket, &storage->buckets, bucket_list)
+> +			has_content |= bucket->wrong_magic;
+> +		if (has_content) {
+> +			dev_err(&state->dev, "Found foreign content on backend, won't overwrite.\n");
+> +			ret = -EPERM;
+> +			goto out;
+> +		}
+> +	}
 > +
->  void imx53_get_boot_source(enum bootsource *src, int *instance)
->  {
->  	void __iomem *src_base = IOMEM(MX53_SRC_BASE_ADDR);
->  	uint32_t cfg1 = readl(src_base + IMX53_SRC_SBMR);
+> +	ret = state_storage_write(storage, buf, len);
+>  	if (ret) {
+>  		dev_err(&state->dev, "Failed to write packed state, %d\n", ret);
+>  		goto out;
+> @@ -623,6 +637,9 @@ struct state *state_new_from_node(struct device_node *node, bool readonly)
 >  
-> -	if (((cfg1 >> 24) & 0x3) == 0x3) {
-> +	if (imx53_get_bmod(cfg1) == 0x3) {
->  		*src = BOOTSOURCE_USB;
->  		*instance = 0;
->  		return;
-> @@ -225,12 +236,8 @@ void imx6_get_boot_source(enum bootsource *src, int *instance)
->  	uint32_t sbmr1 = readl(src_base + IMX6_SRC_SBMR1);
->  	uint32_t sbmr2 = readl(src_base + IMX6_SRC_SBMR2);
->  	uint32_t boot_cfg_4_2_0;
-> -	int boot_mode;
+>  	of_property_read_string(node, "backend-storage-type", &storage_type);
 >  
-> -	/* BMOD[1:0] */
-> -	boot_mode = (sbmr2 >> 24) & 0x3;
-> -
-> -	switch (boot_mode) {
-> +	switch (imx53_get_bmod(sbmr2)) {
->  	case 0: /* Fuses, fall through */
->  	case 2: /* internal boot */
->  		goto internal_boot;
-> @@ -290,12 +297,8 @@ void imx7_get_boot_source(enum bootsource *src, int *instance)
->  	void __iomem *src_base = IOMEM(MX7_SRC_BASE_ADDR);
->  	uint32_t sbmr1 = readl(src_base + IMX7_SRC_SBMR1);
->  	uint32_t sbmr2 = readl(src_base + IMX7_SRC_SBMR2);
-> -	int boot_mode;
-> -
-> -	/* BMOD[1:0] */
-> -	boot_mode = (sbmr2 >> 24) & 0x3;
+> +	state->keep_prev_content = of_property_read_bool(node,
+> +							"keep-previous-content");
+> +
+>  	ret = state_format_init(state, backend_type, node, alias);
+>  	if (ret)
+>  		goto out_release_state;
+> diff --git a/common/state/state.h b/common/state/state.h
+> index 6670523..3a0662f 100644
+> --- a/common/state/state.h
+> +++ b/common/state/state.h
+> @@ -46,6 +46,7 @@ struct state_backend_storage_bucket {
+>  	void *buf;
+>  	ssize_t len;
+>  	bool needs_refresh;
+> +	bool wrong_magic;
+>  };
 >  
-> -	switch (boot_mode) {
-> +	switch (imx53_get_bmod(sbmr2)) {
->  	case 0: /* Fuses, fall through */
->  	case 2: /* internal boot */
->  		goto internal_boot;
+>  /**
+> @@ -105,6 +106,7 @@ struct state {
+>  	char *of_path;
+>  	const char *name;
+>  	uint32_t magic;
+> +	bool keep_prev_content;
+>  
+>  	struct list_head variables; /* Sorted list of variables */
+>  
 > -- 
-> 2.14.3
+> 2.7.4
 > 
 > 
 > _______________________________________________
