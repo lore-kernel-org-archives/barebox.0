@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
+Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f89rY-0003sH-2j
- for barebox@lists.infradead.org; Mon, 16 Apr 2018 19:32:31 +0000
-Received: by mail-pl0-x241.google.com with SMTP id w12-v6so9674304plp.0
- for <barebox@lists.infradead.org>; Mon, 16 Apr 2018 12:32:27 -0700 (PDT)
+ id 1f89ra-0003pr-Og
+ for barebox@lists.infradead.org; Mon, 16 Apr 2018 19:32:32 +0000
+Received: by mail-pl0-x242.google.com with SMTP id e7-v6so10596248plt.6
+ for <barebox@lists.infradead.org>; Mon, 16 Apr 2018 12:32:20 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 16 Apr 2018 12:31:49 -0700
-Message-Id: <20180416193157.16094-12-andrew.smirnov@gmail.com>
+Date: Mon, 16 Apr 2018 12:31:43 -0700
+Message-Id: <20180416193157.16094-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20180416193157.16094-1-andrew.smirnov@gmail.com>
 References: <20180416193157.16094-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,111 +23,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 11/19] ARM: i.MX: boot: Move magic values into small
- functions
+Subject: [PATCH v2 05/19] ARM: i.MX: Simplify serial bootsource detection for
+ i.MX6 and 7
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Move code to extract appropiate BOOT_CFG bits to decode bootsource on
-i.MX53, 6, and 7 into small functions for clarity and to allow sharing
-the code between i.MX53 and i.MX6.
+The algorithm to detect serial mode can be shared between i.M6 and
+i.MX7 as wall as simplified a bit by replacing swich goto/break/return
+termination logic with more trivial if statements.
+
+This commit also sets the stage for additional improvements in the
+commits that follow.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/boot.c | 44 ++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 40 insertions(+), 4 deletions(-)
+ arch/arm/mach-imx/boot.c | 50 +++++++++++++++++++++++-------------------------
+ 1 file changed, 24 insertions(+), 26 deletions(-)
 
 diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index 4bb26d942..61ac8dadf 100644
+index 9f5ddf629..dc385ceae 100644
 --- a/arch/arm/mach-imx/boot.c
 +++ b/arch/arm/mach-imx/boot.c
-@@ -172,11 +172,38 @@ void imx51_get_boot_source(enum bootsource *src, int *instance)
- #define IMX53_SRC_SBMR	0x4
- #define SRC_SBMR_BMOD	GENMASK(25, 24)
+@@ -226,6 +226,18 @@ void imx53_get_boot_source(enum bootsource *src, int *instance)
  
-+#define __BOOT_CFG(n, m, l)	GENMASK((m) + ((n) - 1) * 8, \
-+					(l) + ((n) - 1) * 8)
-+#define BOOT_CFG1(m, l)		__BOOT_CFG(1, m, l)
+ #define IMX6_SRC_SBMR1	0x04
+ #define IMX6_SRC_SBMR2	0x1c
++#define IMX6_BMOD_SERIAL	0b01
++#define IMX6_BMOD_RESERVED	0b11
 +
-+#define ___BOOT_CFG(n, i)	__BOOT_CFG(n, i, i)
-+#define __MAKE_BOOT_CFG_BITS(idx)					\
-+	enum {								\
-+		BOOT_CFG##idx##_0 = ___BOOT_CFG(idx, 0),		\
-+		BOOT_CFG##idx##_1 = ___BOOT_CFG(idx, 1),		\
-+		BOOT_CFG##idx##_2 = ___BOOT_CFG(idx, 2),		\
-+		BOOT_CFG##idx##_3 = ___BOOT_CFG(idx, 3),		\
-+		BOOT_CFG##idx##_4 = ___BOOT_CFG(idx, 4),		\
-+		BOOT_CFG##idx##_5 = ___BOOT_CFG(idx, 5),		\
-+		BOOT_CFG##idx##_6 = ___BOOT_CFG(idx, 6),		\
-+		BOOT_CFG##idx##_7 = ___BOOT_CFG(idx, 7),		\
-+	};
-+
-+__MAKE_BOOT_CFG_BITS(1)
-+#undef __MAKE_BOOT_CFG
-+#undef ___BOOT_CFG
-+
-+
- static unsigned int imx53_get_bmod(uint32_t r)
- {
- 	return FIELD_GET(SRC_SBMR_BMOD, r);
- }
- 
-+static int imx53_bootsource_internal(uint32_t r)
++static bool imx6_bootsource_reserved(uint32_t sbmr2)
 +{
-+	return FIELD_GET(BOOT_CFG1(7, 4), r);
++	return imx53_get_bmod(sbmr2) == IMX6_BMOD_RESERVED;
 +}
 +
- void imx53_get_boot_source(enum bootsource *src, int *instance)
- {
- 	void __iomem *src_base = IOMEM(MX53_SRC_BASE_ADDR);
-@@ -188,7 +215,7 @@ void imx53_get_boot_source(enum bootsource *src, int *instance)
- 		return;
- 	}
- 
--	switch ((cfg1 & 0xff) >> 4) {
-+	switch (imx53_bootsource_internal(cfg1)) {
- 	case 2:
- 		*src = BOOTSOURCE_HD;
- 		break;
-@@ -263,8 +290,7 @@ void imx6_get_boot_source(enum bootsource *src, int *instance)
- 		return;
- 	}
- 
--	/* BOOT_CFG1[7:4] */
--	switch ((sbmr1 >> 4) & 0xf) {
-+	switch (imx53_bootsource_internal(sbmr1)) {
- 	case 2:
- 		*src = BOOTSOURCE_HD;
- 		break;
-@@ -301,9 +327,19 @@ void imx6_get_boot_source(enum bootsource *src, int *instance)
- #define IMX7_SRC_SBMR1	0x58
- #define IMX7_SRC_SBMR2	0x70
- 
-+/*
-+ * Re-defined to match the naming in reference manual
-+ */
-+#define BOOT_CFG(m, l)	BOOT_CFG1(m, l)
-+
- #define IMX_BOOT_SW_INFO_POINTER_ADDR	0x000001E8
- #define IMX_BOOT_SW_INFO_BDT_SD		0x1
- 
-+static unsigned int imx7_bootsource_internal(uint32_t r)
++static bool imx6_bootsource_serial(uint32_t sbmr2)
 +{
-+	return FIELD_GET(BOOT_CFG(15, 12), r);
++	return imx53_get_bmod(sbmr2) == IMX6_BMOD_SERIAL;
 +}
-+
- struct imx_boot_sw_info {
- 	uint8_t  reserved_1;
- 	uint8_t  boot_device_instance;
-@@ -355,7 +391,7 @@ void imx7_get_boot_source(enum bootsource *src, int *instance)
- 		return;
- 	}
  
--	switch ((sbmr1 >> 12) & 0xf) {
-+	switch (imx7_bootsource_internal(sbmr1)) {
+ void imx6_get_boot_source(enum bootsource *src, int *instance)
+ {
+@@ -234,20 +246,13 @@ void imx6_get_boot_source(enum bootsource *src, int *instance)
+ 	uint32_t sbmr2 = readl(src_base + IMX6_SRC_SBMR2);
+ 	uint32_t boot_cfg_4_2_0;
+ 
+-	switch (imx53_get_bmod(sbmr2)) {
+-	case 0: /* Fuses, fall through */
+-	case 2: /* internal boot */
+-		goto internal_boot;
+-	case 1: /* Serial Downloader */
+-		*src = BOOTSOURCE_SERIAL;
+-		break;
+-	case 3: /* reserved */
+-		break;
+-	};
+-
+-	return;
++	if (imx6_bootsource_reserved(sbmr2))
++		return;
+ 
+-internal_boot:
++	if (imx6_bootsource_serial(sbmr2)) {
++		*src = BOOTSOURCE_SERIAL;
++		return;
++	}
+ 
+ 	/* BOOT_CFG1[7:4] */
+ 	switch ((sbmr1 >> 4) & 0xf) {
+@@ -295,20 +300,13 @@ void imx7_get_boot_source(enum bootsource *src, int *instance)
+ 	uint32_t sbmr1 = readl(src_base + IMX7_SRC_SBMR1);
+ 	uint32_t sbmr2 = readl(src_base + IMX7_SRC_SBMR2);
+ 
+-	switch (imx53_get_bmod(sbmr2)) {
+-	case 0: /* Fuses, fall through */
+-	case 2: /* internal boot */
+-		goto internal_boot;
+-	case 1: /* Serial Downloader */
+-		*src = BOOTSOURCE_SERIAL;
+-		break;
+-	case 3: /* reserved */
+-		break;
+-	};
+-
+-	return;
++	if (imx6_bootsource_reserved(sbmr2))
++		return;
+ 
+-internal_boot:
++	if (imx6_bootsource_serial(sbmr2)) {
++		*src = BOOTSOURCE_SERIAL;
++		return;
++	}
+ 
+ 	switch ((sbmr1 >> 12) & 0xf) {
  	case 1:
- 	case 2:
- 		*src = BOOTSOURCE_MMC;
 -- 
 2.14.3
 
