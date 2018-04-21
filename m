@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f9gyV-0006ff-U8
+ id 1f9gyV-0006fn-U6
  for barebox@lists.infradead.org; Sat, 21 Apr 2018 01:06:03 +0000
-Received: by mail-pf0-x243.google.com with SMTP id g14so4986139pfh.3
- for <barebox@lists.infradead.org>; Fri, 20 Apr 2018 18:05:49 -0700 (PDT)
+Received: by mail-pf0-x243.google.com with SMTP id f15so4986849pfn.0
+ for <barebox@lists.infradead.org>; Fri, 20 Apr 2018 18:05:52 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 20 Apr 2018 18:05:30 -0700
-Message-Id: <20180421010538.16488-3-andrew.smirnov@gmail.com>
+Date: Fri, 20 Apr 2018 18:05:32 -0700
+Message-Id: <20180421010538.16488-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20180421010538.16488-1-andrew.smirnov@gmail.com>
 References: <20180421010538.16488-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,99 +23,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 02/10] ARM: i.MX: Add infrastructure to record SoC reset
- reason
+Subject: [PATCH v2 04/10] ARM: i.MX7: Record reset reason as a part of startup
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/imx.c                       | 33 +++++++++++++++++++++++++++
- arch/arm/mach-imx/include/mach/reset-reason.h | 25 ++++++++++++++++++++
- 2 files changed, 58 insertions(+)
- create mode 100644 arch/arm/mach-imx/include/mach/reset-reason.h
+ arch/arm/mach-imx/imx7.c                      | 14 ++++++++++++++
+ arch/arm/mach-imx/include/mach/reset-reason.h |  1 +
+ 2 files changed, 15 insertions(+)
 
-diff --git a/arch/arm/mach-imx/imx.c b/arch/arm/mach-imx/imx.c
-index 9400105c6..29dad9a41 100644
---- a/arch/arm/mach-imx/imx.c
-+++ b/arch/arm/mach-imx/imx.c
-@@ -14,8 +14,10 @@
- #include <common.h>
- #include <of.h>
- #include <init.h>
-+#include <io.h>
- #include <mach/revision.h>
+diff --git a/arch/arm/mach-imx/imx7.c b/arch/arm/mach-imx/imx7.c
+index 4eef99c87..5ad91c2d7 100644
+--- a/arch/arm/mach-imx/imx7.c
++++ b/arch/arm/mach-imx/imx7.c
+@@ -19,6 +19,7 @@
+ #include <mach/imx7.h>
  #include <mach/generic.h>
+ #include <mach/revision.h>
 +#include <mach/reset-reason.h>
+ #include <mach/imx7-regs.h>
  
- static int __imx_silicon_revision = IMX_CHIP_REV_UNKNOWN;
+ void imx7_init_lowlevel(void)
+@@ -167,10 +168,22 @@ static struct psci_ops imx7_psci_ops = {
+ 	.cpu_off = imx7_cpu_off,
+ };
  
-@@ -147,3 +149,34 @@ static int imx_init(void)
- 	return ret;
- }
- postcore_initcall(imx_init);
-+
-+void imx_set_reset_reason(void __iomem *srsr,
-+			  const struct imx_reset_reason *reasons)
-+{
-+	enum reset_src_type type = RESET_UKWN;
-+	const u32 reg = readl(srsr);
-+	int i, instance = 0;
-+
-+	/*
-+	 * SRSR register captures ALL reset event that occured since
-+	 * POR, so we need to clear it to make sure we only caputre
-+	 * the latest one.
-+	 */
-+	writel(reg, srsr);
-+
-+	for (i = 0; reasons[i].mask; i++) {
-+		if (reg & reasons[i].mask) {
-+			type     = reasons[i].type;
-+			instance = reasons[i].instance;
-+			break;
-+		}
-+	}
-+
-+	/*
-+	 * Report this with above default priority in order to make
-+	 * sure we'll always override info from watchdog driver.
-+	 */
-+	reset_source_set_priority(type,
-+				  RESET_SOURCE_DEFAULT_PRIORITY + 1);
-+	reset_source_set_instance(type, instance);
-+}
-diff --git a/arch/arm/mach-imx/include/mach/reset-reason.h b/arch/arm/mach-imx/include/mach/reset-reason.h
-new file mode 100644
-index 000000000..39afc4b28
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/reset-reason.h
-@@ -0,0 +1,25 @@
-+#ifndef __MACH_RESET_REASON_H__
-+#define __MACH_RESET_REASON_H__
-+
-+#include <reset_source.h>
-+
-+#define IMX_SRC_SRSR_IPP_RESET		BIT(0)
-+#define IMX_SRC_SRSR_CSU_RESET		BIT(1)
-+#define IMX_SRC_SRSR_IPP_USER_RESET	BIT(3)
-+#define IMX_SRC_SRSR_WDOG1_RESET	BIT(4)
-+#define IMX_SRC_SRSR_JTAG_RESET		BIT(5)
-+#define IMX_SRC_SRSR_JTAG_SW_RESET	BIT(6)
-+#define IMX_SRC_SRSR_WDOG3_RESET	BIT(7)
-+#define IMX_SRC_SRSR_WDOG4_RESET	BIT(8)
-+#define IMX_SRC_SRSR_TEMPSENSE_RESET	BIT(9)
-+#define IMX_SRC_SRSR_WARM_BOOT		BIT(16)
-+
-+struct imx_reset_reason {
-+	uint32_t mask;
-+	enum reset_src_type type;
-+	int instance;
++static const struct imx_reset_reason imx7_reset_reasons[] = {
++	{ IMX_SRC_SRSR_IPP_RESET,       RESET_POR,   0 },
++	{ IMX_SRC_SRSR_WDOG1_RESET,     RESET_WDG,   0 },
++	{ IMX_SRC_SRSR_JTAG_RESET,      RESET_JTAG,  0 },
++	{ IMX_SRC_SRSR_JTAG_SW_RESET,   RESET_JTAG,  0 },
++	{ IMX_SRC_SRSR_WDOG3_RESET,     RESET_WDG,   1 },
++	{ IMX_SRC_SRSR_WDOG4_RESET,     RESET_WDG,   2 },
++	{ IMX_SRC_SRSR_TEMPSENSE_RESET, RESET_THERM, 0 },
++	{ /* sentinel */ }
 +};
 +
-+void imx_set_reset_reason(void __iomem *, const struct imx_reset_reason *);
-+
-+#endif /* __MACH_RESET_REASON_H__ */
+ int imx7_init(void)
+ {
+ 	const char *cputypestr;
+ 	u32 imx7_silicon_revision;
++	void __iomem *src = IOMEM(MX7_SRC_BASE_ADDR);
+ 
+ 	imx7_init_lowlevel();
+ 
+@@ -197,6 +210,7 @@ int imx7_init(void)
+ 	}
+ 
+ 	imx_set_silicon_revision(cputypestr, imx7_silicon_revision);
++	imx_set_reset_reason(src + IMX7_SRC_SRSR, imx7_reset_reasons);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-imx/include/mach/reset-reason.h b/arch/arm/mach-imx/include/mach/reset-reason.h
+index f2544a303..96e52486c 100644
+--- a/arch/arm/mach-imx/include/mach/reset-reason.h
++++ b/arch/arm/mach-imx/include/mach/reset-reason.h
+@@ -15,6 +15,7 @@
+ #define IMX_SRC_SRSR_WARM_BOOT		BIT(16)
+ 
+ #define IMX6_SRC_SRSR	0x008
++#define IMX7_SRC_SRSR	0x05c
+ 
+ struct imx_reset_reason {
+ 	uint32_t mask;
 -- 
 2.14.3
 
