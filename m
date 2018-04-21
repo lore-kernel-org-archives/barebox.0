@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f9gyZ-0006g7-Jq
- for barebox@lists.infradead.org; Sat, 21 Apr 2018 01:06:05 +0000
-Received: by mail-pf0-x244.google.com with SMTP id h69so4978818pfe.13
- for <barebox@lists.infradead.org>; Fri, 20 Apr 2018 18:05:57 -0700 (PDT)
+ id 1f9gyf-0006gC-At
+ for barebox@lists.infradead.org; Sat, 21 Apr 2018 01:06:11 +0000
+Received: by mail-pf0-x242.google.com with SMTP id g14so4986248pfh.3
+ for <barebox@lists.infradead.org>; Fri, 20 Apr 2018 18:05:59 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 20 Apr 2018 18:05:36 -0700
-Message-Id: <20180421010538.16488-9-andrew.smirnov@gmail.com>
+Date: Fri, 20 Apr 2018 18:05:37 -0700
+Message-Id: <20180421010538.16488-10-andrew.smirnov@gmail.com>
 In-Reply-To: <20180421010538.16488-1-andrew.smirnov@gmail.com>
 References: <20180421010538.16488-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,86 +23,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 08/10] ARM: VFxxx: Add code to detect cpu variant
+Subject: [PATCH v2 09/10] ARM: VFxxx: Detect cpu variant on start
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/vf610-regs.h |  3 ++
- arch/arm/mach-imx/include/mach/vf610.h      | 51 +++++++++++++++++++++++++++++
- 2 files changed, 54 insertions(+)
- create mode 100644 arch/arm/mach-imx/include/mach/vf610.h
+ arch/arm/mach-imx/Makefile               |  1 +
+ arch/arm/mach-imx/imx.c                  |  2 +-
+ arch/arm/mach-imx/include/mach/generic.h |  1 +
+ arch/arm/mach-imx/vf610.c                | 47 ++++++++++++++++++++++++++++++++
+ 4 files changed, 50 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/mach-imx/vf610.c
 
-diff --git a/arch/arm/mach-imx/include/mach/vf610-regs.h b/arch/arm/mach-imx/include/mach/vf610-regs.h
-index 87772ee76..416b457af 100644
---- a/arch/arm/mach-imx/include/mach/vf610-regs.h
-+++ b/arch/arm/mach-imx/include/mach/vf610-regs.h
-@@ -109,4 +109,7 @@
- #define VF610_MSCM_IRSPRC_CP0_EN	1
- #define VF610_MSCM_IRSPRC_NUM		112
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index 8ec846cce..160ed4b08 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -15,6 +15,7 @@ obj-$(CONFIG_ARCH_IMX6) += imx6.o usb-imx6.o
+ CFLAGS_imx6.o := -march=armv7-a
+ lwl-$(CONFIG_ARCH_IMX6) += imx6-mmdc.o
+ obj-$(CONFIG_ARCH_IMX7) += imx7.o
++obj-$(CONFIG_ARCH_VF610) += vf610.o
+ obj-$(CONFIG_ARCH_IMX_XLOAD) += xload.o
+ obj-$(CONFIG_IMX_IIM)	+= iim.o
+ obj-$(CONFIG_IMX_OCOTP)	+= ocotp.o
+diff --git a/arch/arm/mach-imx/imx.c b/arch/arm/mach-imx/imx.c
+index 32d8e11a7..bf15f0b06 100644
+--- a/arch/arm/mach-imx/imx.c
++++ b/arch/arm/mach-imx/imx.c
+@@ -119,7 +119,7 @@ static int imx_init(void)
+ 	else if (cpu_is_mx7())
+ 		ret = imx7_init();
+ 	else if (cpu_is_vf610())
+-		ret = 0;
++		ret = vf610_init();
+ 	else
+ 		return -EINVAL;
  
-+#define VF610_MSCM_CPxCOUNT		0x00c
-+#define VF610_MSCM_CPxCFG1		0x014
-+
- #endif
-diff --git a/arch/arm/mach-imx/include/mach/vf610.h b/arch/arm/mach-imx/include/mach/vf610.h
+diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
+index dedb4bbf0..ad9d9cb02 100644
+--- a/arch/arm/mach-imx/include/mach/generic.h
++++ b/arch/arm/mach-imx/include/mach/generic.h
+@@ -36,6 +36,7 @@ int imx51_init(void);
+ int imx53_init(void);
+ int imx6_init(void);
+ int imx7_init(void);
++int vf610_init(void);
+ 
+ int imx1_devices_init(void);
+ int imx21_devices_init(void);
+diff --git a/arch/arm/mach-imx/vf610.c b/arch/arm/mach-imx/vf610.c
 new file mode 100644
-index 000000000..6d00d2e45
+index 000000000..c2d02632f
 --- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/vf610.h
-@@ -0,0 +1,51 @@
-+#ifndef __MACH_VF610_H
-+#define __MACH_VF610_H
++++ b/arch/arm/mach-imx/vf610.c
+@@ -0,0 +1,47 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
 +
++#include <init.h>
++#include <common.h>
 +#include <io.h>
++#include <linux/sizes.h>
 +#include <mach/generic.h>
-+#include <mach/vf610-regs.h>
 +#include <mach/revision.h>
++#include <mach/vf610.h>
 +
-+#define VF610_CPUTYPE_VFx10	0x010
-+
-+#define VF610_CPUTYPE_VF610	0x610
-+#define VF610_CPUTYPE_VF600	0x600
-+#define VF610_CPUTYPE_VF510	0x510
-+#define VF610_CPUTYPE_VF500	0x500
-+
-+#define VF610_ROM_VERSION_OFFSET	0x80
-+
-+static inline int __vf610_cpu_type(void)
++int vf610_init(void)
 +{
-+	void __iomem *mscm = IOMEM(VF610_MSCM_BASE_ADDR);
-+	const u32 cpxcount = readl(mscm + VF610_MSCM_CPxCOUNT);
-+	const u32 cpxcfg1  = readl(mscm + VF610_MSCM_CPxCFG1);
-+	int cpu_type;
++	const char *cputypestr;
++	void __iomem *src = IOMEM(VF610_SRC_BASE_ADDR);
 +
-+	cpu_type = cpxcount ? VF610_CPUTYPE_VF600 : VF610_CPUTYPE_VF500;
++	switch (vf610_cpu_type()) {
++	case VF610_CPUTYPE_VF610:
++		cputypestr = "VF610";
++		break;
++	case VF610_CPUTYPE_VF600:
++		cputypestr = "VF600";
++		break;
++	case VF610_CPUTYPE_VF510:
++		cputypestr = "VF510";
++		break;
++	case VF610_CPUTYPE_VF500:
++		cputypestr = "VF500";
++		break;
++	default:
++		cputypestr = "unknown VFxxx";
++		break;
++	}
 +
-+	return cpxcfg1 ? cpu_type | VF610_CPUTYPE_VFx10 : cpu_type;
++	imx_set_silicon_revision(cputypestr, vf610_cpu_revision());
++	return 0;
 +}
-+
-+static inline int vf610_cpu_type(void)
-+{
-+	if (!cpu_is_vf610())
-+		return 0;
-+
-+	return __vf610_cpu_type();
-+}
-+
-+static inline int vf610_cpu_revision(void)
-+{
-+	if (!cpu_is_vf610())
-+		return IMX_CHIP_REV_UNKNOWN;
-+
-+	/*
-+	 * There doesn't seem to be a documented way of retreiving
-+	 * silicon revision on VFxxx cpus, so we just report Mask ROM
-+	 * version instead
-+	 */
-+	return readl(VF610_ROM_VERSION_OFFSET) & 0xff;
-+}
-+
-+#endif
 -- 
 2.14.3
 
