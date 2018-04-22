@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from [84.19.187.99] (helo=lah-a2.de)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f9hfb-00076K-Qe
- for barebox@lists.infradead.org; Sat, 21 Apr 2018 01:50:33 +0000
-Received: by mail-pg0-x243.google.com with SMTP id f132so4701113pgc.10
- for <barebox@lists.infradead.org>; Fri, 20 Apr 2018 18:50:21 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 20 Apr 2018 18:50:13 -0700
-Message-Id: <20180421015013.11620-1-andrew.smirnov@gmail.com>
+ id 1fAI9i-0001a5-T1
+ for barebox@lists.infradead.org; Sun, 22 Apr 2018 16:48:04 +0000
+Received: from localhost (p50851871.dip0.t-ipconnect.de [80.133.24.113])
+ by lah-a2.de (Postfix) with ESMTPSA id 35370408086E
+ for <barebox@lists.infradead.org>; Sun, 22 Apr 2018 18:39:18 +0200 (CEST)
+From: Andreas Schmidt <mail@schmidt-andreas.de>
+Date: Sun, 22 Apr 2018 18:41:57 +0200
+Message-Id: <20180422164157.30691-1-mail@schmidt-andreas.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,49 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: imx_v7_defconfig: Select various missing v7 boards by
- default
+Subject: [PATCH] ARM: arm32: fix realocate_to_curr_addr
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add the following boards:
+After add aarch64 support (commit 868df08038a91d674a0c50b0c0a2f70dbc445510)
+to realocation, MLO on beaglebone black do not boot any more.
+The issue is, that addition of offset in one if-case was not done.
+This patch fix this.
 
-    - ZII RDU2 (all variants)
-    - ZII Vybrid Dev Board (and its derivatives)
-    - Freescale/NXP i.MX7D SabreSD
-    - NXP i.MX6ULL EVK
-    - element 14 WaRP7
-
-to be selected by default by imx_v7_defconfig.
-
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Signed-off-by: Andreas Schmidt <mail@schmidt-andreas.de>
 ---
- arch/arm/configs/imx_v7_defconfig | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Hi!
 
-diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
-index 13135f2b3..8aef9d6ef 100644
---- a/arch/arm/configs/imx_v7_defconfig
-+++ b/arch/arm/configs/imx_v7_defconfig
-@@ -33,10 +33,15 @@ CONFIG_MACH_VARISCITE_MX6=y
- CONFIG_MACH_GW_VENTANA=y
- CONFIG_MACH_CM_FX6=y
- CONFIG_MACH_ADVANTECH_ROM_742X=y
-+CONFIG_MACH_WARP7=y
-+CONFIG_MACH_VF610_TWR=y
-+CONFIG_MACH_ZII_RDU2=y
-+CONFIG_MACH_ZII_VF610_DEV=y
- CONFIG_MACH_PHYTEC_PHYCORE_IMX7=y
-+CONFIG_MACH_FREESCALE_MX7_SABRESD=y
-+CONFIG_MACH_NXP_IMX6ULL_EVK=y
- CONFIG_IMX_IIM=y
- CONFIG_IMX_IIM_FUSE_BLOW=y
--CONFIG_IMX_OCOTP=y
- CONFIG_THUMB2_BAREBOX=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_ARM_UNWIND=y
+I've tested this patch only on beablebone black REV C.
+
+Regards,
+Andreas
+---
+ arch/arm/cpu/common.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
+index 00ce3efb2..51fe7ed98 100644
+--- a/arch/arm/cpu/common.c
++++ b/arch/arm/cpu/common.c
+@@ -85,6 +85,7 @@ void relocate_to_current_adr(void)
+ 			unsigned long *fixup = (unsigned long *)(rel->r_offset + offset);
+ 
+ 			*fixup = *fixup + r + offset;
++			rel->r_offset += offset;
+ 		} else {
+ 			putc_ll('>');
+ 			puthex_ll(rel->r_info);
 -- 
-2.14.3
+2.14.1
 
 
 _______________________________________________
