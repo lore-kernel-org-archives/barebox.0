@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fAX0c-0008PS-Hc
- for barebox@lists.infradead.org; Mon, 23 Apr 2018 08:39:49 +0000
-Date: Mon, 23 Apr 2018 10:39:26 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180423083926.cemu3wzcosahvm4f@pengutronix.de>
+Received: from mail.high-consulting.de ([62.245.247.194])
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fAaxs-0003Rj-Gl
+ for barebox@lists.infradead.org; Mon, 23 Apr 2018 12:53:11 +0000
+Message-ID: <1524487970.8922.2.camel@high-consulting.de>
+From: Gerd Pauli <gp@high-consulting.de>
+Date: Mon, 23 Apr 2018 14:52:50 +0200
+In-Reply-To: <20180423083926.cemu3wzcosahvm4f@pengutronix.de>
 References: <20180420080114.9148-1-gp@high-consulting.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180420080114.9148-1-gp@high-consulting.de>
+ <20180423083926.cemu3wzcosahvm4f@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,78 +18,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v1] Crypt and decrypt files using password in keystore.
-To: Gerd Pauli <gp@high-consulting.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Gerd,
-
-On Fri, Apr 20, 2018 at 10:01:14AM +0200, Gerd Pauli wrote:
-> Adds ccryptlib library in crypto which implements a
-> stream cipher based on the block cipher Rijndael,
-> the candidate for the AES standard.
-> Compatible with the ccrypt tool in linux
-> from Peter Selinger.
-> 
-> +BAREBOX_CMD_START(ccrypt)
-> +.cmd	= do_ccrypt,
-> +	BAREBOX_CMD_DESC("Crypt and Decrypt Files")
-> +	BAREBOX_CMD_OPTS("[-e|-d] -k NAME SRC DST")
-> +        BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-> +	BAREBOX_CMD_HELP(cmd_ccrypt_help)
-> +	BAREBOX_CMD_END
-> diff --git a/crypto/Kconfig b/crypto/Kconfig
-> index 6d65c24d4..08669a2de 100644
-> --- a/crypto/Kconfig
-> +++ b/crypto/Kconfig
-> @@ -101,4 +101,11 @@ config CRYPTO_KEYSTORE
->  	  This is a simple keystore, which can be used to pass keys
->  	  between several components via simple interface.
->  
-> +config CRYPTO_CCRYPTLIB
-> +        bool "ccryptlib"
-> +        help
-> +          This option provides functions implementing a stream cipher based
-> +          on the block cipher rijandel.
-> +          The cipher is based on Peter Selingers ccrypt implementation.
-> +
->  endmenu
-> diff --git a/crypto/Makefile b/crypto/Makefile
-> index a7240d1d6..1231bc76d 100644
-> --- a/crypto/Makefile
-> +++ b/crypto/Makefile
-> @@ -14,3 +14,4 @@ obj-$(CONFIG_DIGEST_SHA512_GENERIC)	+= sha4.o
->  obj-$(CONFIG_CRYPTO_PBKDF2)	+= pbkdf2.o
->  obj-$(CONFIG_CRYPTO_RSA)	+= rsa.o
->  obj-$(CONFIG_CRYPTO_KEYSTORE)	+= keystore.o
-> +obj-$(CONFIG_CRYPTO_CCRYPTLIB)  += ccryptlib.o
-> diff --git a/crypto/ccryptlib.c b/crypto/ccryptlib.c
-> new file mode 100644
-> index 000000000..78f0ac843
-> --- /dev/null
-> +++ b/crypto/ccryptlib.c
-
-Is this the same as the Linux Kernel has in crypto/aes_generic.c? If
-yes, then please use it. If no, then why not? ;)
-
-Generally any crypto code should integrate into the barebox crypto API
-(which is basically the same as the Linux crypto API). This is the main
-road blocker that must be removed before we can merge this into barebox.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKVGhpcyBpcyBub3QgdGhlIHNhbWUgYXMgaW4gTGludXggQ3J5cHRvcCBBcGku
+IFRoZSBnb2FsIG9mIHRoaXMgY29tbWFuZAphbmQgbGlicmFyeSBpcyB0byBwcm92aWRlIGEgY29t
+cGF0aWJsZSBjb21tYW5kIHdpdGggdGhlIGNjcnlwdCB0b29sCmZyb20gbGludXguCmh0dHBzOi8v
+cGFja2FnZXMuZGViaWFuLm9yZy9zdHJldGNoL2NjcnlwdApJdCBpcyBub3QgaW50ZW5kZWQgdG8g
+d3JpdGUgYSBzdGFuZGFyZCBBRVMgQ3J5cHRpbmcgVG9vbC4KClBsZWFzZSB0ZWxsIG1lIGlmIHRo
+aXMgaXMgdXNlZnVsIGZvciBtZXJnaW5nIGxpa2UgdGhpcy7CoApUaGVuIGkgY2xlYW4gdXAgc29t
+ZSBzcGFjZXMgaW4gdGhlIGNvZGUgYW5kIHNlbmQgYWdhaW4gKCBjaGVja3NjcmlwdCApLgoKSWYg
+bm90LiBTb3JyeSBmb3IgdGhlIGR1c3QgOi0pCgpBbSBNb250YWcsIGRlbiAyMy4wNC4yMDE4LCAx
+MDozOSArMDIwMCBzY2hyaWViIFNhc2NoYSBIYXVlcjoKPiBIaSBHZXJkLAo+IAo+IE9uIEZyaSwg
+QXByIDIwLCAyMDE4IGF0IDEwOjAxOjE0QU0gKzAyMDAsIEdlcmQgUGF1bGkgd3JvdGU6Cj4gPiBB
+ZGRzIGNjcnlwdGxpYiBsaWJyYXJ5IGluIGNyeXB0byB3aGljaCBpbXBsZW1lbnRzIGEKPiA+IHN0
+cmVhbSBjaXBoZXIgYmFzZWQgb24gdGhlIGJsb2NrIGNpcGhlciBSaWpuZGFlbCwKPiA+IHRoZSBj
+YW5kaWRhdGUgZm9yIHRoZSBBRVMgc3RhbmRhcmQuCj4gPiBDb21wYXRpYmxlIHdpdGggdGhlIGNj
+cnlwdCB0b29sIGluIGxpbnV4Cj4gPiBmcm9tIFBldGVyIFNlbGluZ2VyLgo+ID4gCj4gPiArQkFS
+RUJPWF9DTURfU1RBUlQoY2NyeXB0KQo+ID4gKy5jbWQJPSBkb19jY3J5cHQsCj4gPiArCUJBUkVC
+T1hfQ01EX0RFU0MoIkNyeXB0IGFuZCBEZWNyeXB0IEZpbGVzIikKPiA+ICsJQkFSRUJPWF9DTURf
+T1BUUygiWy1lfC1kXSAtayBOQU1FIFNSQyBEU1QiKQo+ID4gK8KgwqDCoMKgwqDCoMKgwqBCQVJF
+Qk9YX0NNRF9HUk9VUChDTURfR1JQX01JU0MpCj4gPiArCUJBUkVCT1hfQ01EX0hFTFAoY21kX2Nj
+cnlwdF9oZWxwKQo+ID4gKwlCQVJFQk9YX0NNRF9FTkQKPiA+IGRpZmYgLS1naXQgYS9jcnlwdG8v
+S2NvbmZpZyBiL2NyeXB0by9LY29uZmlnCj4gPiBpbmRleCA2ZDY1YzI0ZDQuLjA4NjY5YTJkZSAx
+MDA2NDQKPiA+IC0tLSBhL2NyeXB0by9LY29uZmlnCj4gPiArKysgYi9jcnlwdG8vS2NvbmZpZwo+
+ID4gQEAgLTEwMSw0ICsxMDEsMTEgQEAgY29uZmlnIENSWVBUT19LRVlTVE9SRQo+ID4gwqAJwqDC
+oFRoaXMgaXMgYSBzaW1wbGUga2V5c3RvcmUsIHdoaWNoIGNhbiBiZSB1c2VkIHRvIHBhc3MKPiA+
+IGtleXMKPiA+IMKgCcKgwqBiZXR3ZWVuIHNldmVyYWwgY29tcG9uZW50cyB2aWEgc2ltcGxlIGlu
+dGVyZmFjZS4KPiA+IMKgCj4gPiArY29uZmlnIENSWVBUT19DQ1JZUFRMSUIKPiA+ICvCoMKgwqDC
+oMKgwqDCoMKgYm9vbCAiY2NyeXB0bGliIgo+ID4gK8KgwqDCoMKgwqDCoMKgwqBoZWxwCj4gPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqBUaGlzIG9wdGlvbiBwcm92aWRlcyBmdW5jdGlvbnMgaW1wbGVt
+ZW50aW5nIGEgc3RyZWFtCj4gPiBjaXBoZXIgYmFzZWQKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
+oG9uIHRoZSBibG9jayBjaXBoZXIgcmlqYW5kZWwuCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqBU
+aGUgY2lwaGVyIGlzIGJhc2VkIG9uIFBldGVyIFNlbGluZ2VycyBjY3J5cHQKPiA+IGltcGxlbWVu
+dGF0aW9uLgo+ID4gKwo+ID4gwqBlbmRtZW51Cj4gPiBkaWZmIC0tZ2l0IGEvY3J5cHRvL01ha2Vm
+aWxlIGIvY3J5cHRvL01ha2VmaWxlCj4gPiBpbmRleCBhNzI0MGQxZDYuLjEyMzFiYzc2ZCAxMDA2
+NDQKPiA+IC0tLSBhL2NyeXB0by9NYWtlZmlsZQo+ID4gKysrIGIvY3J5cHRvL01ha2VmaWxlCj4g
+PiBAQCAtMTQsMyArMTQsNCBAQCBvYmotJChDT05GSUdfRElHRVNUX1NIQTUxMl9HRU5FUklDKQkr
+PQo+ID4gc2hhNC5vCj4gPiDCoG9iai0kKENPTkZJR19DUllQVE9fUEJLREYyKQkrPSBwYmtkZjIu
+bwo+ID4gwqBvYmotJChDT05GSUdfQ1JZUFRPX1JTQSkJKz0gcnNhLm8KPiA+IMKgb2JqLSQoQ09O
+RklHX0NSWVBUT19LRVlTVE9SRSkJKz0ga2V5c3RvcmUubwo+ID4gK29iai0kKENPTkZJR19DUllQ
+VE9fQ0NSWVBUTElCKcKgwqArPSBjY3J5cHRsaWIubwo+ID4gZGlmZiAtLWdpdCBhL2NyeXB0by9j
+Y3J5cHRsaWIuYyBiL2NyeXB0by9jY3J5cHRsaWIuYwo+ID4gbmV3IGZpbGUgbW9kZSAxMDA2NDQK
+PiA+IGluZGV4IDAwMDAwMDAwMC4uNzhmMGFjODQzCj4gPiAtLS0gL2Rldi9udWxsCj4gPiArKysg
+Yi9jcnlwdG8vY2NyeXB0bGliLmMKPiAKPiBJcyB0aGlzIHRoZSBzYW1lIGFzIHRoZSBMaW51eCBL
+ZXJuZWwgaGFzIGluIGNyeXB0by9hZXNfZ2VuZXJpYy5jPyBJZgo+IHllcywgdGhlbiBwbGVhc2Ug
+dXNlIGl0LiBJZiBubywgdGhlbiB3aHkgbm90PyA7KQo+IAo+IEdlbmVyYWxseSBhbnkgY3J5cHRv
+IGNvZGUgc2hvdWxkIGludGVncmF0ZSBpbnRvIHRoZSBiYXJlYm94IGNyeXB0bwo+IEFQSQo+ICh3
+aGljaCBpcyBiYXNpY2FsbHkgdGhlIHNhbWUgYXMgdGhlIExpbnV4IGNyeXB0byBBUEkpLiBUaGlz
+IGlzIHRoZQo+IG1haW4KPiByb2FkIGJsb2NrZXIgdGhhdCBtdXN0IGJlIHJlbW92ZWQgYmVmb3Jl
+IHdlIGNhbiBtZXJnZSB0aGlzIGludG8KPiBiYXJlYm94Lgo+IAo+IFNhc2NoYQo+IAo+IAoKQ1UK
+LS0KR2VyZAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
+bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
