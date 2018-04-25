@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from plesk.mkt-sys.de ([37.120.188.101])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fBGtj-0003PD-QO
- for barebox@lists.infradead.org; Wed, 25 Apr 2018 09:39:48 +0000
-Date: Wed, 25 Apr 2018 11:39:23 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180425093923.r7mziguellrz7nue@pengutronix.de>
-References: <20180421015013.11620-1-andrew.smirnov@gmail.com>
+ id 1fBGzM-000756-Ok
+ for barebox@lists.infradead.org; Wed, 25 Apr 2018 09:45:44 +0000
+Received: from mktsys.MKT.local
+ (static-leasedline-087-245-017-222-teleos.ewe-ip-backbone.de [87.245.17.222])
+ by plesk.mkt-sys.de (Postfix) with ESMTPA id D633580010
+ for <barebox@lists.infradead.org>; Wed, 25 Apr 2018 11:45:09 +0200 (CEST)
+Date: Wed, 25 Apr 2018 11:45:06 +0200
+From: Marc Ohlf <ohlf@mkt-sys.de>
+Message-ID: <20180425094502.GA27294@ohlf-Precision-7720>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180421015013.11620-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,68 +24,110 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: imx_v7_defconfig: Select various missing v7 boards
- by default
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] arm: imx6: don't reset PFDs that are used by periph_clk
+To: barebox@lists.infradead.org
 
-On Fri, Apr 20, 2018 at 06:50:13PM -0700, Andrey Smirnov wrote:
-> Add the following boards:
-> 
->     - ZII RDU2 (all variants)
->     - ZII Vybrid Dev Board (and its derivatives)
->     - Freescale/NXP i.MX7D SabreSD
->     - NXP i.MX6ULL EVK
->     - element 14 WaRP7
-> 
-> to be selected by default by imx_v7_defconfig.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
+Check if PLL2 PFD0 or PLL2 PFD2 is selected as clock source in
+register CCM CBCMR->pre_periph_clk_sel or CCM CBCMR->pre_periph2_clk.
+Don't reset the used PFDs to avoid system hang.
 
-Applied, thanks
+ported from https://github.com/Freescale/u-boot-fslc/
+commit/9293d7fd502ce29302fadb8b4ccb9231ec0bcc66
 
-Sascha
+Signed-off-by: Marc Ohlf <ohlf@mkt-sys.de>
+---
+ arch/arm/mach-imx/imx6.c | 58 +++++++++++++++++++++++++++++-------------------
+ 1 file changed, 35 insertions(+), 23 deletions(-)
 
->  arch/arm/configs/imx_v7_defconfig | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
-> index 13135f2b3..8aef9d6ef 100644
-> --- a/arch/arm/configs/imx_v7_defconfig
-> +++ b/arch/arm/configs/imx_v7_defconfig
-> @@ -33,10 +33,15 @@ CONFIG_MACH_VARISCITE_MX6=y
->  CONFIG_MACH_GW_VENTANA=y
->  CONFIG_MACH_CM_FX6=y
->  CONFIG_MACH_ADVANTECH_ROM_742X=y
-> +CONFIG_MACH_WARP7=y
-> +CONFIG_MACH_VF610_TWR=y
-> +CONFIG_MACH_ZII_RDU2=y
-> +CONFIG_MACH_ZII_VF610_DEV=y
->  CONFIG_MACH_PHYTEC_PHYCORE_IMX7=y
-> +CONFIG_MACH_FREESCALE_MX7_SABRESD=y
-> +CONFIG_MACH_NXP_IMX6ULL_EVK=y
->  CONFIG_IMX_IIM=y
->  CONFIG_IMX_IIM_FUSE_BLOW=y
-> -CONFIG_IMX_OCOTP=y
->  CONFIG_THUMB2_BAREBOX=y
->  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
->  CONFIG_ARM_UNWIND=y
-> -- 
-> 2.14.3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+index 14a1cba..2b55a3c 100644
+--- a/arch/arm/mach-imx/imx6.c
++++ b/arch/arm/mach-imx/imx6.c
+@@ -16,6 +16,7 @@
+ #include <io.h>
+ #include <linux/sizes.h>
+ #include <mfd/imx6q-iomuxc-gpr.h>
++#include <mach/clock-imx6.h>
+ #include <mach/imx6.h>
+ #include <mach/generic.h>
+ #include <mach/revision.h>
+@@ -44,6 +45,11 @@ static void imx6_init_lowlevel(void)
+ 	void __iomem *aips2 = (void *)MX6_AIPS2_ON_BASE_ADDR;
+ 	bool is_imx6q = __imx6_cpu_type() == IMX6_CPUTYPE_IMX6Q;
+ 	bool is_imx6d = __imx6_cpu_type() == IMX6_CPUTYPE_IMX6D;
++	uint32_t val_480;
++	uint32_t val_528;
++	uint32_t periph_sel_1;
++	uint32_t periph_sel_2;
++	uint32_t reg;
+ 
+ 	/*
+ 	 * Set all MPROTx to be non-bufferable, trusted for R/W,
+@@ -68,32 +74,38 @@ static void imx6_init_lowlevel(void)
+ 	/* Due to hardware limitation, on MX6Q we need to gate/ungate all PFDs
+ 	 * to make sure PFD is working right, otherwise, PFDs may
+ 	 * not output clock after reset, MX6DL and MX6SL have added 396M pfd
+-	 * workaround in ROM code, as bus clock need it
++	 * workaround in ROM code, as bus clock need it.
++	 * Don't reset PLL2 PFD0 / PLL2 PFD2 if is's used by periph_clk.
+ 	 */
+ 	if (is_imx6q || is_imx6d) {
+-		writel(BM_ANADIG_PFD_480_PFD3_CLKGATE |
+-		       BM_ANADIG_PFD_480_PFD2_CLKGATE |
+-		       BM_ANADIG_PFD_480_PFD1_CLKGATE |
+-		       BM_ANADIG_PFD_480_PFD0_CLKGATE,
+-		       MX6_ANATOP_BASE_ADDR + HW_ANADIG_PFD_480_SET);
+-		writel(BM_ANADIG_PFD_528_PFD3_CLKGATE |
+-		       BM_ANADIG_PFD_528_PFD2_CLKGATE |
+-		       BM_ANADIG_PFD_528_PFD1_CLKGATE |
+-		       BM_ANADIG_PFD_528_PFD0_CLKGATE,
+-		       MX6_ANATOP_BASE_ADDR + HW_ANADIG_PFD_528_SET);
+-
+-		writel(BM_ANADIG_PFD_480_PFD3_CLKGATE |
+-		       BM_ANADIG_PFD_480_PFD2_CLKGATE |
+-		       BM_ANADIG_PFD_480_PFD1_CLKGATE |
+-		       BM_ANADIG_PFD_480_PFD0_CLKGATE,
+-		       MX6_ANATOP_BASE_ADDR + HW_ANADIG_PFD_480_CLR);
+-		writel(BM_ANADIG_PFD_528_PFD3_CLKGATE |
+-		       BM_ANADIG_PFD_528_PFD2_CLKGATE |
+-		       BM_ANADIG_PFD_528_PFD1_CLKGATE |
+-		       BM_ANADIG_PFD_528_PFD0_CLKGATE,
+-		       MX6_ANATOP_BASE_ADDR + HW_ANADIG_PFD_528_CLR);
+-	}
++		val_480 = BM_ANADIG_PFD_480_PFD3_CLKGATE |
++			   BM_ANADIG_PFD_480_PFD2_CLKGATE |
++			   BM_ANADIG_PFD_480_PFD1_CLKGATE |
++			   BM_ANADIG_PFD_480_PFD0_CLKGATE;
++
++		val_528 = BM_ANADIG_PFD_528_PFD3_CLKGATE |
++			   BM_ANADIG_PFD_528_PFD1_CLKGATE;
++
++		reg = readl(MXC_CCM_CBCMR);
++		periph_sel_1 = (reg & MXC_CCM_CBCMR_PRE_PERIPH_CLK_SEL_MASK)
++			>> MXC_CCM_CBCMR_PRE_PERIPH_CLK_SEL_OFFSET;
++
++		periph_sel_2 = (reg & MXC_CCM_CBCMR_PRE_PERIPH2_CLK_SEL_MASK)
++			>> MXC_CCM_CBCMR_PRE_PERIPH2_CLK_SEL_OFFSET;
+ 
++		if ((periph_sel_1 != 0x2) && (periph_sel_2 != 0x2))
++			val_528 |= BM_ANADIG_PFD_528_PFD0_CLKGATE;
++
++		if ((periph_sel_1 != 0x1) && (periph_sel_2 != 0x1)
++		    && (periph_sel_1 != 0x3) && (periph_sel_2 != 0x3))
++			val_528 |= BM_ANADIG_PFD_528_PFD2_CLKGATE;
++
++		writel(val_480, MX6_ANATOP_BASE_ADDR + HW_ANADIG_PFD_480_SET);
++		writel(val_528, MX6_ANATOP_BASE_ADDR + HW_ANADIG_PFD_528_SET);
++
++		writel(val_480, MX6_ANATOP_BASE_ADDR + HW_ANADIG_PFD_480_CLR);
++		writel(val_528, MX6_ANATOP_BASE_ADDR + HW_ANADIG_PFD_528_CLR);
++	}
+ }
+ 
+ static void imx6_setup_ipu_qos(void)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.4
+
 
 _______________________________________________
 barebox mailing list
