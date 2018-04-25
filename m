@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fBFuV-0004jA-Sc
- for barebox@lists.infradead.org; Wed, 25 Apr 2018 08:36:26 +0000
-Date: Wed, 25 Apr 2018 10:36:17 +0200
+ id 1fBGl2-00078O-Ql
+ for barebox@lists.infradead.org; Wed, 25 Apr 2018 09:30:47 +0000
+Date: Wed, 25 Apr 2018 11:30:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180425083617.ugyiosdtusotkjax@pengutronix.de>
-References: <20180422183007.23235-1-mail@schmidt-andreas.de>
+Message-ID: <20180425093024.joj7fo72khes57ba@pengutronix.de>
+References: <20180422164157.30691-1-mail@schmidt-andreas.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180422183007.23235-1-mail@schmidt-andreas.de>
+In-Reply-To: <20180422164157.30691-1-mail@schmidt-andreas.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +22,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] watchdog: omap: set hwdev before call watchdog_register
-To: Andreas Schmidt <mail@schmidt-andreas.de>
+Subject: Re: [PATCH] ARM: arm32: fix realocate_to_curr_addr
+To: Andreas Schmidt <mail@schmidt-andreas.de>, g@pengutronix.de
 Cc: barebox@lists.infradead.org
 
-On Sun, Apr 22, 2018 at 08:30:07PM +0200, Andreas Schmidt wrote:
-> Since watchdog_register access to hwdev (see
-> commit 65a644388e845bde01215bf378d4df2a6a260a6a)
-> hwdev has to be initiate/set before calling watchdog_register.
+Hi Andreas,
+
+On Sun, Apr 22, 2018 at 06:41:57PM +0200, Andreas Schmidt wrote:
+> After add aarch64 support (commit 868df08038a91d674a0c50b0c0a2f70dbc445510)
+> to realocation, MLO on beaglebone black do not boot any more.
+> The issue is, that addition of offset in one if-case was not done.
+> This patch fix this.
 > 
 > Signed-off-by: Andreas Schmidt <mail@schmidt-andreas.de>
 > ---
->  drivers/watchdog/omap_wdt.c | 1 +
->  1 file changed, 1 insertion(+)
+> Hi!
+> 
+> I've tested this patch only on beablebone black REV C.
 
-Applied, thanks
+Applied, thanks.
+
+It took me a while to reproduce this. I switched to gcc7 a while ago and
+this gcc version no longer uses these types of relocation. Then after
+using a gcc-4.9.2 I could really see the same issue. The problem arises
+when relocate_to_current_adr() is called multiple times, as happens when
+the board lowlevel code calls it and the startup code later again. Some
+boards do this, one of them being the beagle bone.
 
 Sascha
-
-> 
-> diff --git a/drivers/watchdog/omap_wdt.c b/drivers/watchdog/omap_wdt.c
-> index 27fdfd13a..c8a7ccf60 100644
-> --- a/drivers/watchdog/omap_wdt.c
-> +++ b/drivers/watchdog/omap_wdt.c
-> @@ -160,6 +160,7 @@ static int omap_wdt_probe(struct device_d *dev)
->  
->  	wdev = xzalloc(sizeof(*wdev));
->  	wdev->wdog.set_timeout	= omap_wdt_set_timeout;
-> +	wdev->wdog.hwdev = dev;
->  	wdev->wdt_trgr_pattern	= 0x1234;
->  
->  	/* reserve static register mappings */
-> -- 
-> 2.14.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
