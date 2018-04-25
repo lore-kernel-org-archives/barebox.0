@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fBFuV-0004Hc-Sb
- for barebox@lists.infradead.org; Wed, 25 Apr 2018 08:36:22 +0000
-Date: Wed, 25 Apr 2018 10:36:02 +0200
+ id 1fBFuV-0004jA-Sc
+ for barebox@lists.infradead.org; Wed, 25 Apr 2018 08:36:26 +0000
+Date: Wed, 25 Apr 2018 10:36:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180425083602.hylx5g56iztydjih@pengutronix.de>
-References: <20180422182111.22256-1-mail@schmidt-andreas.de>
+Message-ID: <20180425083617.ugyiosdtusotkjax@pengutronix.de>
+References: <20180422183007.23235-1-mail@schmidt-andreas.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180422182111.22256-1-mail@schmidt-andreas.de>
+In-Reply-To: <20180422183007.23235-1-mail@schmidt-andreas.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,43 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] watchdog: core: check hwdev before use it
+Subject: Re: [PATCH] watchdog: omap: set hwdev before call watchdog_register
 To: Andreas Schmidt <mail@schmidt-andreas.de>
 Cc: barebox@lists.infradead.org
 
-On Sun, Apr 22, 2018 at 08:21:11PM +0200, Andreas Schmidt wrote:
-> Avoid null pointer access, if hwdev was not
-> set before call watchdog_register.
+On Sun, Apr 22, 2018 at 08:30:07PM +0200, Andreas Schmidt wrote:
+> Since watchdog_register access to hwdev (see
+> commit 65a644388e845bde01215bf378d4df2a6a260a6a)
+> hwdev has to be initiate/set before calling watchdog_register.
 > 
 > Signed-off-by: Andreas Schmidt <mail@schmidt-andreas.de>
 > ---
->  drivers/watchdog/wd_core.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+>  drivers/watchdog/omap_wdt.c | 1 +
+>  1 file changed, 1 insertion(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
-> index d3305443d..56e8626cb 100644
-> --- a/drivers/watchdog/wd_core.c
-> +++ b/drivers/watchdog/wd_core.c
-> @@ -112,10 +112,12 @@ static int watchdog_register_dev(struct watchdog *wd, const char *name, int id)
->  int watchdog_register(struct watchdog *wd)
->  {
->  	struct param_d *p;
-> -	const char *alias;
-> +	const char *alias = NULL;
->  	int ret = 0;
+> diff --git a/drivers/watchdog/omap_wdt.c b/drivers/watchdog/omap_wdt.c
+> index 27fdfd13a..c8a7ccf60 100644
+> --- a/drivers/watchdog/omap_wdt.c
+> +++ b/drivers/watchdog/omap_wdt.c
+> @@ -160,6 +160,7 @@ static int omap_wdt_probe(struct device_d *dev)
 >  
-> -	alias = of_alias_get(wd->hwdev->device_node);
-> +	if (wd->hwdev)
-> +		alias = of_alias_get(wd->hwdev->device_node);
-> +
->  	if (alias)
->  		ret = watchdog_register_dev(wd, alias, DEVICE_ID_SINGLE);
+>  	wdev = xzalloc(sizeof(*wdev));
+>  	wdev->wdog.set_timeout	= omap_wdt_set_timeout;
+> +	wdev->wdog.hwdev = dev;
+>  	wdev->wdt_trgr_pattern	= 0x1234;
 >  
+>  	/* reserve static register mappings */
 > -- 
 > 2.14.1
 > 
