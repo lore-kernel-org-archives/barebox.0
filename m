@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.high-consulting.de ([62.245.247.194])
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fAaxs-0003Rj-Gl
- for barebox@lists.infradead.org; Mon, 23 Apr 2018 12:53:11 +0000
-Message-ID: <1524487970.8922.2.camel@high-consulting.de>
-From: Gerd Pauli <gp@high-consulting.de>
-Date: Mon, 23 Apr 2018 14:52:50 +0200
-In-Reply-To: <20180423083926.cemu3wzcosahvm4f@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fBFi5-000492-9G
+ for barebox@lists.infradead.org; Wed, 25 Apr 2018 08:23:31 +0000
+Date: Wed, 25 Apr 2018 10:23:13 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180425082313.ur6rzyepbxhtcvao@pengutronix.de>
 References: <20180420080114.9148-1-gp@high-consulting.de>
  <20180423083926.cemu3wzcosahvm4f@pengutronix.de>
-Mime-Version: 1.0
+ <1524487970.8922.2.camel@high-consulting.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1524487970.8922.2.camel@high-consulting.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,61 +20,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v1] Crypt and decrypt files using password in keystore.
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Gerd Pauli <gp@high-consulting.de>
 Cc: barebox@lists.infradead.org
 
-SGkgU2FzY2hhLAoKVGhpcyBpcyBub3QgdGhlIHNhbWUgYXMgaW4gTGludXggQ3J5cHRvcCBBcGku
-IFRoZSBnb2FsIG9mIHRoaXMgY29tbWFuZAphbmQgbGlicmFyeSBpcyB0byBwcm92aWRlIGEgY29t
-cGF0aWJsZSBjb21tYW5kIHdpdGggdGhlIGNjcnlwdCB0b29sCmZyb20gbGludXguCmh0dHBzOi8v
-cGFja2FnZXMuZGViaWFuLm9yZy9zdHJldGNoL2NjcnlwdApJdCBpcyBub3QgaW50ZW5kZWQgdG8g
-d3JpdGUgYSBzdGFuZGFyZCBBRVMgQ3J5cHRpbmcgVG9vbC4KClBsZWFzZSB0ZWxsIG1lIGlmIHRo
-aXMgaXMgdXNlZnVsIGZvciBtZXJnaW5nIGxpa2UgdGhpcy7CoApUaGVuIGkgY2xlYW4gdXAgc29t
-ZSBzcGFjZXMgaW4gdGhlIGNvZGUgYW5kIHNlbmQgYWdhaW4gKCBjaGVja3NjcmlwdCApLgoKSWYg
-bm90LiBTb3JyeSBmb3IgdGhlIGR1c3QgOi0pCgpBbSBNb250YWcsIGRlbiAyMy4wNC4yMDE4LCAx
-MDozOSArMDIwMCBzY2hyaWViIFNhc2NoYSBIYXVlcjoKPiBIaSBHZXJkLAo+IAo+IE9uIEZyaSwg
-QXByIDIwLCAyMDE4IGF0IDEwOjAxOjE0QU0gKzAyMDAsIEdlcmQgUGF1bGkgd3JvdGU6Cj4gPiBB
-ZGRzIGNjcnlwdGxpYiBsaWJyYXJ5IGluIGNyeXB0byB3aGljaCBpbXBsZW1lbnRzIGEKPiA+IHN0
-cmVhbSBjaXBoZXIgYmFzZWQgb24gdGhlIGJsb2NrIGNpcGhlciBSaWpuZGFlbCwKPiA+IHRoZSBj
-YW5kaWRhdGUgZm9yIHRoZSBBRVMgc3RhbmRhcmQuCj4gPiBDb21wYXRpYmxlIHdpdGggdGhlIGNj
-cnlwdCB0b29sIGluIGxpbnV4Cj4gPiBmcm9tIFBldGVyIFNlbGluZ2VyLgo+ID4gCj4gPiArQkFS
-RUJPWF9DTURfU1RBUlQoY2NyeXB0KQo+ID4gKy5jbWQJPSBkb19jY3J5cHQsCj4gPiArCUJBUkVC
-T1hfQ01EX0RFU0MoIkNyeXB0IGFuZCBEZWNyeXB0IEZpbGVzIikKPiA+ICsJQkFSRUJPWF9DTURf
-T1BUUygiWy1lfC1kXSAtayBOQU1FIFNSQyBEU1QiKQo+ID4gK8KgwqDCoMKgwqDCoMKgwqBCQVJF
-Qk9YX0NNRF9HUk9VUChDTURfR1JQX01JU0MpCj4gPiArCUJBUkVCT1hfQ01EX0hFTFAoY21kX2Nj
-cnlwdF9oZWxwKQo+ID4gKwlCQVJFQk9YX0NNRF9FTkQKPiA+IGRpZmYgLS1naXQgYS9jcnlwdG8v
-S2NvbmZpZyBiL2NyeXB0by9LY29uZmlnCj4gPiBpbmRleCA2ZDY1YzI0ZDQuLjA4NjY5YTJkZSAx
-MDA2NDQKPiA+IC0tLSBhL2NyeXB0by9LY29uZmlnCj4gPiArKysgYi9jcnlwdG8vS2NvbmZpZwo+
-ID4gQEAgLTEwMSw0ICsxMDEsMTEgQEAgY29uZmlnIENSWVBUT19LRVlTVE9SRQo+ID4gwqAJwqDC
-oFRoaXMgaXMgYSBzaW1wbGUga2V5c3RvcmUsIHdoaWNoIGNhbiBiZSB1c2VkIHRvIHBhc3MKPiA+
-IGtleXMKPiA+IMKgCcKgwqBiZXR3ZWVuIHNldmVyYWwgY29tcG9uZW50cyB2aWEgc2ltcGxlIGlu
-dGVyZmFjZS4KPiA+IMKgCj4gPiArY29uZmlnIENSWVBUT19DQ1JZUFRMSUIKPiA+ICvCoMKgwqDC
-oMKgwqDCoMKgYm9vbCAiY2NyeXB0bGliIgo+ID4gK8KgwqDCoMKgwqDCoMKgwqBoZWxwCj4gPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqBUaGlzIG9wdGlvbiBwcm92aWRlcyBmdW5jdGlvbnMgaW1wbGVt
-ZW50aW5nIGEgc3RyZWFtCj4gPiBjaXBoZXIgYmFzZWQKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oG9uIHRoZSBibG9jayBjaXBoZXIgcmlqYW5kZWwuCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqBU
-aGUgY2lwaGVyIGlzIGJhc2VkIG9uIFBldGVyIFNlbGluZ2VycyBjY3J5cHQKPiA+IGltcGxlbWVu
-dGF0aW9uLgo+ID4gKwo+ID4gwqBlbmRtZW51Cj4gPiBkaWZmIC0tZ2l0IGEvY3J5cHRvL01ha2Vm
-aWxlIGIvY3J5cHRvL01ha2VmaWxlCj4gPiBpbmRleCBhNzI0MGQxZDYuLjEyMzFiYzc2ZCAxMDA2
-NDQKPiA+IC0tLSBhL2NyeXB0by9NYWtlZmlsZQo+ID4gKysrIGIvY3J5cHRvL01ha2VmaWxlCj4g
-PiBAQCAtMTQsMyArMTQsNCBAQCBvYmotJChDT05GSUdfRElHRVNUX1NIQTUxMl9HRU5FUklDKQkr
-PQo+ID4gc2hhNC5vCj4gPiDCoG9iai0kKENPTkZJR19DUllQVE9fUEJLREYyKQkrPSBwYmtkZjIu
-bwo+ID4gwqBvYmotJChDT05GSUdfQ1JZUFRPX1JTQSkJKz0gcnNhLm8KPiA+IMKgb2JqLSQoQ09O
-RklHX0NSWVBUT19LRVlTVE9SRSkJKz0ga2V5c3RvcmUubwo+ID4gK29iai0kKENPTkZJR19DUllQ
-VE9fQ0NSWVBUTElCKcKgwqArPSBjY3J5cHRsaWIubwo+ID4gZGlmZiAtLWdpdCBhL2NyeXB0by9j
-Y3J5cHRsaWIuYyBiL2NyeXB0by9jY3J5cHRsaWIuYwo+ID4gbmV3IGZpbGUgbW9kZSAxMDA2NDQK
-PiA+IGluZGV4IDAwMDAwMDAwMC4uNzhmMGFjODQzCj4gPiAtLS0gL2Rldi9udWxsCj4gPiArKysg
-Yi9jcnlwdG8vY2NyeXB0bGliLmMKPiAKPiBJcyB0aGlzIHRoZSBzYW1lIGFzIHRoZSBMaW51eCBL
-ZXJuZWwgaGFzIGluIGNyeXB0by9hZXNfZ2VuZXJpYy5jPyBJZgo+IHllcywgdGhlbiBwbGVhc2Ug
-dXNlIGl0LiBJZiBubywgdGhlbiB3aHkgbm90PyA7KQo+IAo+IEdlbmVyYWxseSBhbnkgY3J5cHRv
-IGNvZGUgc2hvdWxkIGludGVncmF0ZSBpbnRvIHRoZSBiYXJlYm94IGNyeXB0bwo+IEFQSQo+ICh3
-aGljaCBpcyBiYXNpY2FsbHkgdGhlIHNhbWUgYXMgdGhlIExpbnV4IGNyeXB0byBBUEkpLiBUaGlz
-IGlzIHRoZQo+IG1haW4KPiByb2FkIGJsb2NrZXIgdGhhdCBtdXN0IGJlIHJlbW92ZWQgYmVmb3Jl
-IHdlIGNhbiBtZXJnZSB0aGlzIGludG8KPiBiYXJlYm94Lgo+IAo+IFNhc2NoYQo+IAo+IAoKQ1UK
-LS0KR2VyZAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Mon, Apr 23, 2018 at 02:52:50PM +0200, Gerd Pauli wrote:
+> Hi Sascha,
+> =
+
+> This is not the same as in Linux Cryptop Api. The goal of this command
+> and library is to provide a compatible command with the ccrypt tool
+> from linux.
+> https://packages.debian.org/stretch/ccrypt
+> It is not intended to write a standard AES Crypting Tool.
+> =
+
+> Please tell me if this is useful for merging like this.=A0
+> Then i clean up some spaces in the code and send again ( checkscript ).
+
+Sorry, I don't think adding a crypto implementation that is not using
+the crypto API is acceptable for merging. Possible options for
+upstreaming would be to either the Rijndael cipher with 128 bit block
+size aka AES, based on the Kernel AES implementation or to convert
+the Rijndael cipher with 256 bit block size as used by ccrypt to the
+existing crypto API.
+
+> If not. Sorry for the dust :-)
+
+Don't worry, it's always nice to see what people do with barebox and
+to get a view what might be missing.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
