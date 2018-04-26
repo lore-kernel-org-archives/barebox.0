@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from plesk.mkt-sys.de ([37.120.188.101])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fBGzM-000756-Ok
- for barebox@lists.infradead.org; Wed, 25 Apr 2018 09:45:44 +0000
-Received: from mktsys.MKT.local
- (static-leasedline-087-245-017-222-teleos.ewe-ip-backbone.de [87.245.17.222])
- by plesk.mkt-sys.de (Postfix) with ESMTPA id D633580010
- for <barebox@lists.infradead.org>; Wed, 25 Apr 2018 11:45:09 +0200 (CEST)
-Date: Wed, 25 Apr 2018 11:45:06 +0200
-From: Marc Ohlf <ohlf@mkt-sys.de>
-Message-ID: <20180425094502.GA27294@ohlf-Precision-7720>
+ id 1fBgQa-0004ND-Je
+ for barebox@lists.infradead.org; Thu, 26 Apr 2018 12:55:20 +0000
+Date: Thu, 26 Apr 2018 14:54:56 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180426125456.afjcgysoq5ehb7tv@pengutronix.de>
+References: <20180421010538.16488-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <20180421010538.16488-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,110 +22,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] arm: imx6: don't reset PFDs that are used by periph_clk
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 00/10] i.MX reset reason detection support
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Check if PLL2 PFD0 or PLL2 PFD2 is selected as clock source in
-register CCM CBCMR->pre_periph_clk_sel or CCM CBCMR->pre_periph2_clk.
-Don't reset the used PFDs to avoid system hang.
+On Fri, Apr 20, 2018 at 06:05:28PM -0700, Andrey Smirnov wrote:
+> Everyone:
+> 
+> This patchset is the result of my work on adding support for detecting
+> and reporting reset reason as can be obtained from System Reset
+> Controller (to be more precise via SRSR register) on i.MX family of
+> SoC.
+> 
+> Currently list of supported SoC is as follows:
+> 
+> 	  - i.MX6 (tested on i.MX6Q)
+> 	  - i.MX7 (tested on i.MX7D)
+> 	  - VFxxx (tested on VF610)
+> 
+> 
+> Changes since [v1]:
+> 
+> 	- i.MX reset reason detection code was converted to do detect
+>           the source with bitmasking as opposed to having a switch
+>           statement, due to potential problems with the latter as was
+>           pointed out by Philipp in [thread1]
+> 
+> 	- Change above also allowed to unify VFxxx and i.MX codepaths
+>           without the need to introduce a dedicated VFxxx centric
+>           function
+> 
+> [v1] http://lists.infradead.org/pipermail/barebox/2018-April/032614.html
+> [thread1] http://lists.infradead.org/pipermail/barebox/2018-April/032708.html
+> 
+> Feedback is wellcome!
+> 
+> Thanks,
+> Andrey Smirnov
 
-ported from https://github.com/Freescale/u-boot-fslc/
-commit/9293d7fd502ce29302fadb8b4ccb9231ec0bcc66
+Applied, thanks
 
-Signed-off-by: Marc Ohlf <ohlf@mkt-sys.de>
----
- arch/arm/mach-imx/imx6.c | 58 +++++++++++++++++++++++++++++-------------------
- 1 file changed, 35 insertions(+), 23 deletions(-)
+Sascha
 
-diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-index 14a1cba..2b55a3c 100644
---- a/arch/arm/mach-imx/imx6.c
-+++ b/arch/arm/mach-imx/imx6.c
-@@ -16,6 +16,7 @@
- #include <io.h>
- #include <linux/sizes.h>
- #include <mfd/imx6q-iomuxc-gpr.h>
-+#include <mach/clock-imx6.h>
- #include <mach/imx6.h>
- #include <mach/generic.h>
- #include <mach/revision.h>
-@@ -44,6 +45,11 @@ static void imx6_init_lowlevel(void)
- 	void __iomem *aips2 = (void *)MX6_AIPS2_ON_BASE_ADDR;
- 	bool is_imx6q = __imx6_cpu_type() == IMX6_CPUTYPE_IMX6Q;
- 	bool is_imx6d = __imx6_cpu_type() == IMX6_CPUTYPE_IMX6D;
-+	uint32_t val_480;
-+	uint32_t val_528;
-+	uint32_t periph_sel_1;
-+	uint32_t periph_sel_2;
-+	uint32_t reg;
- 
- 	/*
- 	 * Set all MPROTx to be non-bufferable, trusted for R/W,
-@@ -68,32 +74,38 @@ static void imx6_init_lowlevel(void)
- 	/* Due to hardware limitation, on MX6Q we need to gate/ungate all PFDs
- 	 * to make sure PFD is working right, otherwise, PFDs may
- 	 * not output clock after reset, MX6DL and MX6SL have added 396M pfd
--	 * workaround in ROM code, as bus clock need it
-+	 * workaround in ROM code, as bus clock need it.
-+	 * Don't reset PLL2 PFD0 / PLL2 PFD2 if is's used by periph_clk.
- 	 */
- 	if (is_imx6q || is_imx6d) {
--		writel(BM_ANADIG_PFD_480_PFD3_CLKGATE |
--		       BM_ANADIG_PFD_480_PFD2_CLKGATE |
--		       BM_ANADIG_PFD_480_PFD1_CLKGATE |
--		       BM_ANADIG_PFD_480_PFD0_CLKGATE,
--		       MX6_ANATOP_BASE_ADDR + HW_ANADIG_PFD_480_SET);
--		writel(BM_ANADIG_PFD_528_PFD3_CLKGATE |
--		       BM_ANADIG_PFD_528_PFD2_CLKGATE |
--		       BM_ANADIG_PFD_528_PFD1_CLKGATE |
--		       BM_ANADIG_PFD_528_PFD0_CLKGATE,
--		       MX6_ANATOP_BASE_ADDR + HW_ANADIG_PFD_528_SET);
--
--		writel(BM_ANADIG_PFD_480_PFD3_CLKGATE |
--		       BM_ANADIG_PFD_480_PFD2_CLKGATE |
--		       BM_ANADIG_PFD_480_PFD1_CLKGATE |
--		       BM_ANADIG_PFD_480_PFD0_CLKGATE,
--		       MX6_ANATOP_BASE_ADDR + HW_ANADIG_PFD_480_CLR);
--		writel(BM_ANADIG_PFD_528_PFD3_CLKGATE |
--		       BM_ANADIG_PFD_528_PFD2_CLKGATE |
--		       BM_ANADIG_PFD_528_PFD1_CLKGATE |
--		       BM_ANADIG_PFD_528_PFD0_CLKGATE,
--		       MX6_ANATOP_BASE_ADDR + HW_ANADIG_PFD_528_CLR);
--	}
-+		val_480 = BM_ANADIG_PFD_480_PFD3_CLKGATE |
-+			   BM_ANADIG_PFD_480_PFD2_CLKGATE |
-+			   BM_ANADIG_PFD_480_PFD1_CLKGATE |
-+			   BM_ANADIG_PFD_480_PFD0_CLKGATE;
-+
-+		val_528 = BM_ANADIG_PFD_528_PFD3_CLKGATE |
-+			   BM_ANADIG_PFD_528_PFD1_CLKGATE;
-+
-+		reg = readl(MXC_CCM_CBCMR);
-+		periph_sel_1 = (reg & MXC_CCM_CBCMR_PRE_PERIPH_CLK_SEL_MASK)
-+			>> MXC_CCM_CBCMR_PRE_PERIPH_CLK_SEL_OFFSET;
-+
-+		periph_sel_2 = (reg & MXC_CCM_CBCMR_PRE_PERIPH2_CLK_SEL_MASK)
-+			>> MXC_CCM_CBCMR_PRE_PERIPH2_CLK_SEL_OFFSET;
- 
-+		if ((periph_sel_1 != 0x2) && (periph_sel_2 != 0x2))
-+			val_528 |= BM_ANADIG_PFD_528_PFD0_CLKGATE;
-+
-+		if ((periph_sel_1 != 0x1) && (periph_sel_2 != 0x1)
-+		    && (periph_sel_1 != 0x3) && (periph_sel_2 != 0x3))
-+			val_528 |= BM_ANADIG_PFD_528_PFD2_CLKGATE;
-+
-+		writel(val_480, MX6_ANATOP_BASE_ADDR + HW_ANADIG_PFD_480_SET);
-+		writel(val_528, MX6_ANATOP_BASE_ADDR + HW_ANADIG_PFD_528_SET);
-+
-+		writel(val_480, MX6_ANATOP_BASE_ADDR + HW_ANADIG_PFD_480_CLR);
-+		writel(val_528, MX6_ANATOP_BASE_ADDR + HW_ANADIG_PFD_528_CLR);
-+	}
- }
- 
- static void imx6_setup_ipu_qos(void)
+> 
+> Andrey Smirnov (10):
+>   common: reset_source: Add the notion of "reset source instance"
+>   ARM: i.MX: Add infrastructure to record SoC reset reason
+>   ARM: i.MX6: Record reset reason as a part of startup
+>   ARM: i.MX7: Record reset reason as a part of startup
+>   common: reset_source: Introduce reset_source_name()
+>   ARM: i.MX: Log detected reset reason
+>   ARM: i.MX: Print "revision unknown" if that is the case
+>   ARM: VFxxx: Add code to detect cpu variant
+>   ARM: VFxxx: Detect cpu variant on start
+>   ARM: VFxxx: Record reset reason as a part of startup
+> 
+>  arch/arm/mach-imx/Makefile                    |  1 +
+>  arch/arm/mach-imx/imx.c                       | 43 ++++++++++++++++++-
+>  arch/arm/mach-imx/imx6.c                      | 13 +++++-
+>  arch/arm/mach-imx/imx7.c                      | 14 +++++++
+>  arch/arm/mach-imx/include/mach/generic.h      |  1 +
+>  arch/arm/mach-imx/include/mach/reset-reason.h | 37 +++++++++++++++++
+>  arch/arm/mach-imx/include/mach/vf610-regs.h   |  3 ++
+>  arch/arm/mach-imx/include/mach/vf610.h        | 51 +++++++++++++++++++++++
+>  arch/arm/mach-imx/vf610.c                     | 59 +++++++++++++++++++++++++++
+>  common/reset_source.c                         | 23 +++++++++++
+>  include/reset_source.h                        | 17 ++++++++
+>  11 files changed, 259 insertions(+), 3 deletions(-)
+>  create mode 100644 arch/arm/mach-imx/include/mach/reset-reason.h
+>  create mode 100644 arch/arm/mach-imx/include/mach/vf610.h
+>  create mode 100644 arch/arm/mach-imx/vf610.c
+> 
+> -- 
+> 2.14.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.7.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
