@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x242.google.com ([2a00:1450:400c:c0c::242])
+Received: from vs10.datenmanufaktur-hosting.net ([185.138.26.202]
+ helo=vs81.iboxed.net)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fBgYB-0000ft-Dd
- for barebox@lists.infradead.org; Thu, 26 Apr 2018 13:03:09 +0000
-Received: by mail-wr0-x242.google.com with SMTP id o15-v6so56700692wro.11
- for <barebox@lists.infradead.org>; Thu, 26 Apr 2018 06:02:52 -0700 (PDT)
-From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Message-ID: <216a62f9-5450-5ed6-945f-b3d26d65ae3e@cogentembedded.com>
-Date: Thu, 26 Apr 2018 16:02:48 +0300
-MIME-Version: 1.0
-Content-Language: en-US
+ id 1fBl8c-0003ov-P4
+ for barebox@lists.infradead.org; Thu, 26 Apr 2018 17:57:00 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Thu, 26 Apr 2018 17:56:44 +0000
+Message-Id: <20180426175645.15105-1-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +15,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usbnet: increase bulk message timeout
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: Nikita Yushchenko <nikita.yoush@cogentembedded.com>, Andrew Lunn <andrew@lunn.ch>, Chris Healy <cphealy@gmail.com>, barebox@lists.infradead.org
+Subject: [PATCH 1/2] ARM omap beagle xload_defconfig: do not load drivers from
+ DT
+To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Alexander Kurz <akurz@blala.de>
 
-Timeout of 1ms is too low for case when device operates in Full Speed
-mode. This causes most incoming frames to be lost.
+The first stage loader must run in SRAM and is limited in size.
+Remove unused support to load drivers from DT at this stage and
+save precious 9kB of code size.
+Regenerating the defconfig removes CONFIG_TEXT_BASE.
 
-Since timeout is only used to get out of polling loop in case of no
-response from hardware, increasing it should be safe for all platforms.
-
-Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Tested-By: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Alexander Kurz <akurz@blala.de>
 ---
- drivers/net/usb/usbnet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/configs/omap3530_beagle_xload_defconfig | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 33d900b70..60e67ff1a 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -125,7 +125,7 @@ static int usbnet_recv(struct eth_device *edev)
-  	len = dev->rx_urb_size;
- -	ret = usb_bulk_msg(dev->udev, dev->in, rx_buf, len, &alen, 1);
-+	ret = usb_bulk_msg(dev->udev, dev->in, rx_buf, len, &alen, 100);
- 	if (ret)
- 		return ret;
- -- 2.11.0
+diff --git a/arch/arm/configs/omap3530_beagle_xload_defconfig b/arch/arm/configs/omap3530_beagle_xload_defconfig
+index d36aaf319..2105c0b9d 100644
+--- a/arch/arm/configs/omap3530_beagle_xload_defconfig
++++ b/arch/arm/configs/omap3530_beagle_xload_defconfig
+@@ -8,7 +8,6 @@ CONFIG_THUMB2_BAREBOX=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_UNWIND=y
+ CONFIG_MMU=y
+-CONFIG_TEXT_BASE=0x0
+ CONFIG_STACK_SIZE=0xc00
+ CONFIG_MALLOC_SIZE=0x0
+ CONFIG_MALLOC_DUMMY=y
+@@ -18,7 +17,6 @@ CONFIG_SHELL_NONE=y
+ # CONFIG_ERRNO_MESSAGES is not set
+ # CONFIG_TIMESTAMP is not set
+ CONFIG_CONSOLE_SIMPLE=y
+-CONFIG_OFDEVICE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ # CONFIG_SPI is not set
+@@ -36,7 +34,6 @@ CONFIG_MCI=y
+ CONFIG_MCI_STARTUP=y
+ # CONFIG_MCI_WRITE is not set
+ CONFIG_MCI_OMAP_HSMMC=y
+-# CONFIG_PINCTRL is not set
+ # CONFIG_FS_RAMFS is not set
+ # CONFIG_FS_DEVFS is not set
+ CONFIG_FS_FAT=y
+-- 
+2.11.0
 
 
 _______________________________________________
