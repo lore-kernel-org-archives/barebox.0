@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vs10.datenmanufaktur-hosting.net ([185.138.26.202]
- helo=vs81.iboxed.net)
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fBl8c-0003oc-Fb
- for barebox@lists.infradead.org; Thu, 26 Apr 2018 17:57:00 +0000
-From: Alexander Kurz <akurz@blala.de>
-Date: Thu, 26 Apr 2018 17:56:45 +0000
-Message-Id: <20180426175645.15105-2-akurz@blala.de>
-In-Reply-To: <20180426175645.15105-1-akurz@blala.de>
-References: <20180426175645.15105-1-akurz@blala.de>
+ id 1fBvzn-00024d-0p
+ for barebox@lists.infradead.org; Fri, 27 Apr 2018 05:32:36 +0000
+Received: by mail-pf0-x242.google.com with SMTP id p6so630554pfn.4
+ for <barebox@lists.infradead.org>; Thu, 26 Apr 2018 22:32:24 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Thu, 26 Apr 2018 22:32:16 -0700
+Message-Id: <20180427053216.10040-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM omap beagle defconfig: remove trace initcalls
-To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Alexander Kurz <akurz@blala.de>
+Subject: [PATCH] ARM: i.MX7: Remove unnecessary local variable
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Debug output may be switched on when needed, but should not be on by default.
-Regenerating the defconfig removes CONFIG_TEXT_BASE.
+It looks this code was based on analogous code for i.MX6, but there
+that variable was being used as a part of following switch
+statement. Since this is not the case for i.MX7, just replace the
+variable with direct function call.
 
-Signed-off-by: Alexander Kurz <akurz@blala.de>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/configs/omap3530_beagle_defconfig | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm/mach-imx/imx7.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/arm/configs/omap3530_beagle_defconfig b/arch/arm/configs/omap3530_beagle_defconfig
-index b454cf2b4..cf7914855 100644
---- a/arch/arm/configs/omap3530_beagle_defconfig
-+++ b/arch/arm/configs/omap3530_beagle_defconfig
-@@ -5,7 +5,6 @@ CONFIG_THUMB2_BAREBOX=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_ARM_UNWIND=y
- CONFIG_MMU=y
--CONFIG_TEXT_BASE=0x0
- CONFIG_MALLOC_SIZE=0x0
- CONFIG_MALLOC_TLSF=y
- CONFIG_KALLSYMS=y
-@@ -26,7 +25,6 @@ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
- CONFIG_RESET_SOURCE=y
- CONFIG_DEBUG_LL=y
- CONFIG_DEBUG_OMAP_UART_PORT=3
--CONFIG_DEBUG_INITCALLS=y
- CONFIG_CMD_DMESG=y
- CONFIG_LONGHELP=y
- CONFIG_CMD_IOMEM=y
+diff --git a/arch/arm/mach-imx/imx7.c b/arch/arm/mach-imx/imx7.c
+index 5ad91c2d7..e49baf6f7 100644
+--- a/arch/arm/mach-imx/imx7.c
++++ b/arch/arm/mach-imx/imx7.c
+@@ -182,7 +182,6 @@ static const struct imx_reset_reason imx7_reset_reasons[] = {
+ int imx7_init(void)
+ {
+ 	const char *cputypestr;
+-	u32 imx7_silicon_revision;
+ 	void __iomem *src = IOMEM(MX7_SRC_BASE_ADDR);
+ 
+ 	imx7_init_lowlevel();
+@@ -193,8 +192,6 @@ int imx7_init(void)
+ 
+ 	imx7_boot_save_loc();
+ 
+-	imx7_silicon_revision = imx7_cpu_revision();
+-
+ 	psci_set_ops(&imx7_psci_ops);
+ 
+ 	switch (imx7_cpu_type()) {
+@@ -209,7 +206,7 @@ int imx7_init(void)
+ 		break;
+ 	}
+ 
+-	imx_set_silicon_revision(cputypestr, imx7_silicon_revision);
++	imx_set_silicon_revision(cputypestr, imx7_cpu_revision());
+ 	imx_set_reset_reason(src + IMX7_SRC_SRSR, imx7_reset_reasons);
+ 
+ 	return 0;
 -- 
-2.11.0
+2.14.3
 
 
 _______________________________________________
