@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mout.gmx.net ([212.227.15.19])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fCm54-0008W6-6u
+ id 1fCm54-0008W4-6s
  for barebox@lists.infradead.org; Sun, 29 Apr 2018 13:09:33 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Sun, 29 Apr 2018 15:09:01 +0200
-Message-Id: <20180429130907.20506-2-linux@rempel-privat.de>
+Date: Sun, 29 Apr 2018 15:09:02 +0200
+Message-Id: <20180429130907.20506-3-linux@rempel-privat.de>
 In-Reply-To: <20180429130907.20506-1-linux@rempel-privat.de>
 References: <20180429130907.20506-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,53 +21,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 1/7] resource: add create_resource() helper function
+Subject: [RFC PATCH 2/7] filetype: add ELF type
 To: barebox@lists.infradead.org
 
 From: Antony Pavlov <antonynpavlov@gmail.com>
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- common/resource.c      | 15 +++++++++++++++
- include/linux/ioport.h |  2 ++
- 2 files changed, 17 insertions(+)
+ common/filetype.c  | 5 +++++
+ include/filetype.h | 1 +
+ 2 files changed, 6 insertions(+)
 
-diff --git a/common/resource.c b/common/resource.c
-index e4bbe15fd..fa9ffd084 100644
---- a/common/resource.c
-+++ b/common/resource.c
-@@ -150,3 +150,18 @@ struct resource *request_ioport_region(const char *name,
+diff --git a/common/filetype.c b/common/filetype.c
+index 444ec14cc..77cf9a105 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -27,6 +27,7 @@
+ #include <envfs.h>
+ #include <disks.h>
+ #include <image-sparse.h>
++#include <elf.h>
  
- 	return res;
+ struct filetype_str {
+ 	const char *name;	/* human readable filetype */
+@@ -68,6 +69,7 @@ static const struct filetype_str filetype_str[] = {
+ 	[filetype_kwbimage_v1] = { "MVEBU kwbimage (v1)", "kwb" },
+ 	[filetype_android_sparse] = { "Android sparse image", "sparse" },
+ 	[filetype_arm64_linux_image] = { "ARM aarch64 Linux image", "aarch64-linux" },
++	[filetype_elf] = { "ELF", "elf" },
+ };
+ 
+ const char *file_type_to_string(enum filetype f)
+@@ -344,6 +346,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+ 		buf[7] == 0x47530000)
+ 		return filetype_ch_image_be;
+ 
++	if (strncmp(buf8, ELFMAG, 4) == 0)
++		return filetype_elf;
++
+ 	return filetype_unknown;
  }
-+
-+struct resource *create_resource(const char *name,
-+	resource_size_t start, resource_size_t end)
-+{
-+	struct resource *t;
-+
-+	t = xzalloc(sizeof *t);
-+	INIT_LIST_HEAD(&t->children);
-+	t->parent = NULL;
-+	t->name = xstrdup(name);
-+	t->start = start;
-+	t->end = end;
-+
-+	return t;
-+}
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index 3d375a874..2a944cc73 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -140,6 +140,8 @@ struct resource *__request_region(struct resource *parent,
- 		resource_size_t size);
  
- int release_region(struct resource *res);
-+struct resource *create_resource(const char *name,
-+	resource_size_t start, resource_size_t end);
+diff --git a/include/filetype.h b/include/filetype.h
+index 9986938dd..3b930bf94 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -41,6 +41,7 @@ enum filetype {
+ 	filetype_kwbimage_v1,
+ 	filetype_android_sparse,
+ 	filetype_arm64_linux_image,
++	filetype_elf,
+ 	filetype_max,
+ };
  
- extern struct resource iomem_resource;
- extern struct resource ioport_resource;
 -- 
 2.14.1
 
