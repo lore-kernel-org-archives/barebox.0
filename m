@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fDozh-0005Ld-VO
- for barebox@lists.infradead.org; Wed, 02 May 2018 10:28:20 +0000
-Date: Wed, 2 May 2018 12:28:05 +0200
+ id 1fDp3k-0008BA-Q5
+ for barebox@lists.infradead.org; Wed, 02 May 2018 10:32:31 +0000
+Date: Wed, 2 May 2018 12:32:16 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180502102805.ybftrnosjp2zqtd3@pengutronix.de>
-References: <20180426175645.15105-1-akurz@blala.de>
+Message-ID: <20180502103216.e2beep74jby7ufrd@pengutronix.de>
+References: <20180427054946.11687-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180426175645.15105-1-akurz@blala.de>
+In-Reply-To: <20180427054946.11687-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,58 +22,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM omap beagle xload_defconfig: do not load drivers
- from DT
-To: Alexander Kurz <akurz@blala.de>
+Subject: Re: [PATCH 0/6] i.MX51, 53 reset reason detection support
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Apr 26, 2018 at 05:56:44PM +0000, Alexander Kurz wrote:
-> The first stage loader must run in SRAM and is limited in size.
-> Remove unused support to load drivers from DT at this stage and
-> save precious 9kB of code size.
-> Regenerating the defconfig removes CONFIG_TEXT_BASE.
+On Thu, Apr 26, 2018 at 10:49:40PM -0700, Andrey Smirnov wrote:
+> Everyone:
 > 
-> Signed-off-by: Alexander Kurz <akurz@blala.de>
-> ---
->  arch/arm/configs/omap3530_beagle_xload_defconfig | 3 ---
->  1 file changed, 3 deletions(-)
+> This patchset is a followup to "i.MX reset reason detection support"
+> series I submited a couple of days ago. Mostly bits and pieces needed
+> for i.MX51 and i.MX53 integration with the rest of reset reason code.
+> 
+> Feedback is wellcome!
+> 
+> Sascha:
+> 
+> Let me know if you want me to squash these patches back into original
+> "i.MX reset reason detection support" series and re-submit it.
 
-Applied, thanks
+Applied, thanks. No need to squash the patches.
 
 Sascha
 
 > 
-> diff --git a/arch/arm/configs/omap3530_beagle_xload_defconfig b/arch/arm/configs/omap3530_beagle_xload_defconfig
-> index d36aaf319..2105c0b9d 100644
-> --- a/arch/arm/configs/omap3530_beagle_xload_defconfig
-> +++ b/arch/arm/configs/omap3530_beagle_xload_defconfig
-> @@ -8,7 +8,6 @@ CONFIG_THUMB2_BAREBOX=y
->  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
->  CONFIG_ARM_UNWIND=y
->  CONFIG_MMU=y
-> -CONFIG_TEXT_BASE=0x0
->  CONFIG_STACK_SIZE=0xc00
->  CONFIG_MALLOC_SIZE=0x0
->  CONFIG_MALLOC_DUMMY=y
-> @@ -18,7 +17,6 @@ CONFIG_SHELL_NONE=y
->  # CONFIG_ERRNO_MESSAGES is not set
->  # CONFIG_TIMESTAMP is not set
->  CONFIG_CONSOLE_SIMPLE=y
-> -CONFIG_OFDEVICE=y
->  CONFIG_DRIVER_SERIAL_NS16550=y
->  CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
->  # CONFIG_SPI is not set
-> @@ -36,7 +34,6 @@ CONFIG_MCI=y
->  CONFIG_MCI_STARTUP=y
->  # CONFIG_MCI_WRITE is not set
->  CONFIG_MCI_OMAP_HSMMC=y
-> -# CONFIG_PINCTRL is not set
->  # CONFIG_FS_RAMFS is not set
->  # CONFIG_FS_DEVFS is not set
->  CONFIG_FS_FAT=y
-> -- 
-> 2.11.0
+> Thanks,
+> Andrey Smirnov
 > 
+> Andrey Smirnov (6):
+>   ARM: i.MX51: Replace expicit casts with IOMEM
+>   ARM: i.MX: Fix incorrect IMX_SRC_SRSR_CSU_RESET
+>   ARM: i.MX: Make imx6_reset_reasons global
+>   ARM: i.MX: Introduce IMX_SRC_SRSR
+>   ARM: i.MX53: Record reset reason as a part of startup
+>   ARM: i.MX51: Record reset reason as a part of startup
+> 
+>  arch/arm/mach-imx/imx.c                       |  9 +++++++++
+>  arch/arm/mach-imx/imx51.c                     | 20 ++++++++++++--------
+>  arch/arm/mach-imx/imx53.c                     |  4 ++++
+>  arch/arm/mach-imx/imx6.c                      | 11 +----------
+>  arch/arm/mach-imx/include/mach/reset-reason.h |  8 ++++----
+>  arch/arm/mach-imx/vf610.c                     |  2 +-
+>  6 files changed, 31 insertions(+), 23 deletions(-)
+> 
+> -- 
+> 2.14.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
