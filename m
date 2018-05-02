@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x22d.google.com ([2607:f8b0:4001:c06::22d])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fDvr8-0004lE-8i
- for barebox@lists.infradead.org; Wed, 02 May 2018 17:47:55 +0000
-Received: by mail-io0-x22d.google.com with SMTP id g14-v6so14800189ioc.7
- for <barebox@lists.infradead.org>; Wed, 02 May 2018 10:47:43 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20180502102436.avptoe2l6h4hpkqy@pengutronix.de>
-References: <20180421013338.10115-1-andrew.smirnov@gmail.com>
- <20180421013338.10115-3-andrew.smirnov@gmail.com>
- <20180502102436.avptoe2l6h4hpkqy@pengutronix.de>
+ id 1fDxR9-000579-D0
+ for barebox@lists.infradead.org; Wed, 02 May 2018 19:29:13 +0000
+Received: by mail-pg0-x244.google.com with SMTP id m21-v6so11345061pgv.8
+ for <barebox@lists.infradead.org>; Wed, 02 May 2018 12:29:01 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 2 May 2018 10:47:42 -0700
-Message-ID: <CAHQ1cqHvq-QcOA4buRq23Wueh5w8n=3KJZ+u5S-V3zMbs7mM9w@mail.gmail.com>
+Date: Wed,  2 May 2018 12:28:43 -0700
+Message-Id: <20180502192845.12483-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +16,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] watchdog: Port RAVE SP watchdog driver from Linux
- kernel
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v2 0/2] Initial RAVE SP Linux driver port
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Wed, May 2, 2018 at 3:24 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Fri, Apr 20, 2018 at 06:33:38PM -0700, Andrey Smirnov wrote:
->> +static int rave_sp_wdt_set_timeout(struct watchdog *wdd,
->> +                                unsigned int timeout)
->> +{
->> +     struct rave_sp_wdt *sp_wd = to_rave_sp_wdt(wdd);
->> +
->> +     if (timeout < sp_wd->variant->min_timeout ||
->> +         timeout > sp_wd->variant->max_timeout)
->> +             return -EINVAL;
->> +
->> +     if (!timeout)
->> +             return rave_sp_wdt_stop(wdd);
->
-> Since min_timeout is > 0 this is never reached. You should move this up.
->
+Everyone:
 
-Good catch! Will do in v2.
+These two patches are first results of an effort to port RAVE SP
+(Supervisory Processor) MFD and it's children drivers from Linux
+kernel to Barebox. Patch 1/2 brings MFD driver with its core API and
+patch 2/2 adds support for watchdog "cell" of the RAVE SP device.
+
+With a very few exceptions, the code of the drivers is identical to
+the code of their Linux counterparts.
+
+These drivers are also first users of "serdev" API work that was
+recently merged and should server as a reasonable example of its
+usage.
+
+Feedback is wellcome!
+
+Changes since [v1]:
+
+ - rave_sp_wdt_set_timeout fixed to correctly handle timeout of zero
+   (as pointed out by Sascha)
 
 Thanks,
 Andrey Smirnov
+
+[v1] http://lists.infradead.org/pipermail/barebox/2018-April/032725.html
+
+Andrey Smirnov (2):
+  watchdog: Port RAVE SP watchdog driver from Linux kernel
+  mfd: rave-sp: Add temporary workaround for missing GET_STATUS
+
+ drivers/mfd/rave-sp.c          |  18 +-
+ drivers/watchdog/Kconfig       |   5 +
+ drivers/watchdog/Makefile      |   1 +
+ drivers/watchdog/rave-sp-wdt.c | 426 +++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 448 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/watchdog/rave-sp-wdt.c
+
+-- 
+2.14.3
+
 
 _______________________________________________
 barebox mailing list
