@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x242.google.com ([2a00:1450:4010:c07::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fEaD0-0001Kw-Rn
- for barebox@lists.infradead.org; Fri, 04 May 2018 12:53:12 +0000
-Received: by mail-lf0-x242.google.com with SMTP id m18-v6so30786572lfb.0
- for <barebox@lists.infradead.org>; Fri, 04 May 2018 05:53:00 -0700 (PDT)
-Date: Fri, 4 May 2018 16:09:28 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20180504160928.1bff26bf7e9853754be00d83@gmail.com>
-In-Reply-To: <c55d956a-84e3-0a6c-0505-c5f0d722a9ae@rempel-privat.de>
-References: <20180429130907.20506-1-linux@rempel-privat.de>
- <20180429130907.20506-4-linux@rempel-privat.de>
- <20180504055408.lnzhtx6tozemob4p@pengutronix.de>
- <20180504130851.8b5f6f69b0475b929e533e01@gmail.com>
- <c55d956a-84e3-0a6c-0505-c5f0d722a9ae@rempel-privat.de>
-Mime-Version: 1.0
+ id 1fDpKq-0007Or-9f
+ for barebox@lists.infradead.org; Wed, 02 May 2018 10:50:10 +0000
+Date: Wed, 2 May 2018 12:49:56 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180502104956.rcrnkvcwqk3fy5qc@pengutronix.de>
+References: <1524222061-8825-1-git-send-email-s.riedmueller@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1524222061-8825-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,59 +18,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 3/7] bootm: add kexec ELF support
-To: Oleksij Rempel <linux@rempel-privat.de>
+Subject: Re: [PATCH] commands: of_display_timings: Add simple-panel support
+To: Stefan Riedmueller <s.riedmueller@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, 4 May 2018 11:53:48 +0200
-Oleksij Rempel <linux@rempel-privat.de> wrote:
+Hi Stefan,
 
-> Am 04.05.2018 um 12:08 schrieb Antony Pavlov:
-> > On Fri, 4 May 2018 07:54:08 +0200
-> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > =
+On Fri, Apr 20, 2018 at 01:01:01PM +0200, Stefan Riedmueller wrote:
+> Display timings can now be set with simple-panel method which selects
+> the required timings by the compatible of the simple panel devicetree
+> node.
+> 
+> This patch adds an option to set simple panel timings with the
+> of_display_timings command by setting the compatible of the display node.
+> The options -P and -c were implemented. The -P option requires the display
+> node path as argument and the -c option requires the compatible to set.
+> 
+> This has one downside. The available simple panel timings cannot be
+> listed since the timings are defined in the kernel. Account for this in the
+> help text.
+> 
+> Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+> ---
+>  commands/of_display_timings.c | 65 ++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 61 insertions(+), 4 deletions(-)
 
-> >> On Sun, Apr 29, 2018 at 03:09:03PM +0200, Oleksij Rempel wrote:
-> >>> +static int do_bootm_elf(struct image_data *data)
-> >>> +{
-> >>> +	kexec_load_bootm_data(data);
-> >>> +
-> >>> +	reboot(LINUX_REBOOT_CMD_KEXEC, data);
-> >>> +
-> >>> +	return -ERESTARTSYS;
-> >>> +}
-> >>> +
-> >>
-> >> I can't really judge this series. This is the only thing I stumbled
-> >> upon: I see no reason to name the architecture specific kexec function
-> >> 'reboot'. I would expect some kexec specific name, like arch_kexec or
-> >> similar.
-> >>
-> > =
+This patch seems to be a way to manipulate a device tree property in the
+Linux device tree. How about adding a new option to the of_property
+command which would register a of_fixup instead of doing the operation
+now?
 
-> > This reboot function is copy-n-paste from linux kernel reboot syscall (=
-see linux/kernel/reboot.c
-> > for details).
-> > At the moment there is only one constant for reboot()'s first argument =
-(LINUX_REBOOT_CMD_KEXEC),
-> > so it's reasonable to elimenate this first argument and rename function=
- to kexec_reboot().
-> =
+Like this:
 
-> amy be better to rename it to kexec_arch or kexec_mach. kexec_reboot is
-> kind if misleading
+of_property -f -s /path/to/node compatible vendor,foo-display
 
-Linux uses machine_kexec(struct kimage *image) in arch/mips/kernel/machine_=
-kexec.c.
+> +		case 'c':
+> +			compatible = optarg;
+> +			break;
+>  		case 'S':
+>  			timingpath = xzalloc(strlen(optarg) + 1);
+>  			strcpy(timingpath, optarg);
 
--- =
+xstrdup() is what you want here.
 
-Best regards,
-=A0 Antony Pavlov
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
