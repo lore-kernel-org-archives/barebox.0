@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x234.google.com ([2607:f8b0:400e:c05::234])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fDxYv-0001KO-Om
+ id 1fDxYw-0001L9-Ss
  for barebox@lists.infradead.org; Wed, 02 May 2018 19:37:17 +0000
-Received: by mail-pg0-x234.google.com with SMTP id k11-v6so10246782pgo.10
- for <barebox@lists.infradead.org>; Wed, 02 May 2018 12:37:03 -0700 (PDT)
+Received: by mail-pf0-x243.google.com with SMTP id j11so12632793pff.10
+ for <barebox@lists.infradead.org>; Wed, 02 May 2018 12:37:04 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  2 May 2018 12:36:52 -0700
-Message-Id: <20180502193653.12960-2-andrew.smirnov@gmail.com>
+Date: Wed,  2 May 2018 12:36:53 -0700
+Message-Id: <20180502193653.12960-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20180502193653.12960-1-andrew.smirnov@gmail.com>
 References: <20180502193653.12960-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,896 +23,476 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RESEND PATCH v2 1/2] mfd: Port RAVE SP driver from Linux kernel
+Subject: [RESEND PATCH v2 2/2] watchdog: Port RAVE SP watchdog driver from
+ Linux kernel
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port MFD driver for RAVE SP from Linux kernel.
+Port RAVE SP watchdog driver from Linux kernel
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mfd/Kconfig         |   8 +
- drivers/mfd/Makefile        |   1 +
- drivers/mfd/rave-sp.c       | 758 ++++++++++++++++++++++++++++++++++++++++++++
- include/linux/mfd/rave-sp.h |  78 +++++
- 4 files changed, 845 insertions(+)
- create mode 100644 drivers/mfd/rave-sp.c
- create mode 100644 include/linux/mfd/rave-sp.h
+ drivers/watchdog/Kconfig       |   5 +
+ drivers/watchdog/Makefile      |   1 +
+ drivers/watchdog/rave-sp-wdt.c | 426 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 432 insertions(+)
+ create mode 100644 drivers/watchdog/rave-sp-wdt.c
 
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index 521cf042a..d04431fbc 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -53,4 +53,12 @@ config MFD_TWL6030
- 	select MFD_TWLCORE
- 	bool "TWL6030 driver"
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index 1d6b15617..27e9f6d8b 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -70,4 +70,9 @@ config WATCHDOG_BCM2835
+ 	help
+ 	  Add support for watchdog on the Broadcom BCM283X SoCs.
  
-+config RAVE_SP_CORE
-+	tristate "RAVE SP MCU core driver"
-+	depends on SERIAL_DEV_BUS
-+	select CRC_CCITT
++config RAVE_SP_WATCHDOG
++	bool "RAVE SP Watchdog timer"
++	depends on RAVE_SP_CORE
 +	help
-+	  Select this to get support for the Supervisory Processor
-+	  device found on several devices in RAVE line of hardware.
-+
- endmenu
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index 041915a7c..8b23a1023 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -10,3 +10,4 @@ obj-$(CONFIG_MFD_SYSCON)	+= syscon.o
- obj-$(CONFIG_MFD_TWLCORE)	+= twl-core.o
- obj-$(CONFIG_MFD_TWL4030)	+= twl4030.o
- obj-$(CONFIG_MFD_TWL6030)	+= twl6030.o
-+obj-$(CONFIG_RAVE_SP_CORE)	+= rave-sp.o
-diff --git a/drivers/mfd/rave-sp.c b/drivers/mfd/rave-sp.c
++	  Support for the watchdog on RAVE SP device.
+ endif
+diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+index 237640121..faf06110a 100644
+--- a/drivers/watchdog/Makefile
++++ b/drivers/watchdog/Makefile
+@@ -8,3 +8,4 @@ obj-$(CONFIG_WATCHDOG_JZ4740) += jz4740.o
+ obj-$(CONFIG_WATCHDOG_IMX_RESET_SOURCE) += imxwd.o
+ obj-$(CONFIG_WATCHDOG_ORION) += orion_wdt.o
+ obj-$(CONFIG_ARCH_BCM283X) += bcm2835_wdt.o
++obj-$(CONFIG_RAVE_SP_WATCHDOG) += rave-sp-wdt.o
+diff --git a/drivers/watchdog/rave-sp-wdt.c b/drivers/watchdog/rave-sp-wdt.c
 new file mode 100644
-index 000000000..d55e913ff
+index 000000000..164316785
 --- /dev/null
-+++ b/drivers/mfd/rave-sp.c
-@@ -0,0 +1,758 @@
++++ b/drivers/watchdog/rave-sp-wdt.c
+@@ -0,0 +1,426 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +
 +/*
-+ * Multifunction core driver for Zodiac Inflight Innovations RAVE
-+ * Supervisory Processor(SP) MCU that is connected via dedicated UART
-+ * port
++ * Driver for watchdog aspect of for Zodiac Inflight Innovations RAVE
++ * Supervisory Processor(SP) MCU
 + *
-+ * Copyright (C) 2017 Zodiac Inflight Innovations
++ * Copyright (C) 2018 Zodiac Inflight Innovation
++ *
 + */
 +
 +#include <common.h>
 +#include <init.h>
 +#include <of_device.h>
++#include <restart.h>
++#include <watchdog.h>
 +
-+#include <asm/unaligned.h>
++#include <debug_ll.h>
 +
-+#include <linux/crc-ccitt.h>
 +#include <linux/mfd/rave-sp.h>
++#include <linux/nvmem-consumer.h>
 +
-+#define DUMP_PREFIX_NONE 0
++enum {
++	RAVE_SP_RESET_BYTE = 1,
++	RAVE_SP_RESET_REASON_NORMAL         = 0,
++	RAVE_SP_RESET_REASON_HW_WATCHDOG    = 1,
++	RAVE_SP_RESET_REASON_SW_WATCHDOG    = 2,
++	RAVE_SP_RESET_REASON_VOLTAGE        = 3,
++	RAVE_SP_RESET_REASON_HOST_REQUEST   = 4,
++	RAVE_SP_RESET_REASON_TEMPERATURE    = 5,
++	RAVE_SP_RESET_REASON_BUTTON_PRESS   = 6,
++	RAVE_SP_RESET_REASON_PIC_CM         = 7,
++	RAVE_SP_RESET_REASON_PIC_ILL_INST   = 8,
++	RAVE_SP_RESET_REASON_PIC_TRAP       = 9,
++	RAVE_SP_RESET_REASON_UKNOWN_REASON  = 10,
++	RAVE_SP_RESET_REASON_THERMAL_SENSOR = 11,
++	RAVE_SP_RESET_REASON_SW_VOLTAGE     = 12,
++	RAVE_SP_RESET_REASON_CP_REQUEST     = 13,
 +
-+/*
-+ * UART protocol using following entities:
-+ *  - message to MCU => ACK response
-+ *  - event from MCU => event ACK
-+ *
-+ * Frame structure:
-+ * <STX> <DATA> <CHECKSUM> <ETX>
-+ * Where:
-+ * - STX - is start of transmission character
-+ * - ETX - end of transmission
-+ * - DATA - payload
-+ * - CHECKSUM - checksum calculated on <DATA>
-+ *
-+ * If <DATA> or <CHECKSUM> contain one of control characters, then it is
-+ * escaped using <DLE> control code. Added <DLE> does not participate in
-+ * checksum calculation.
-+ */
-+#define RAVE_SP_STX			0x02
-+#define RAVE_SP_ETX			0x03
-+#define RAVE_SP_DLE			0x10
++	RAVE_SP_RESET_DELAY_MS = 500,
 +
-+#define RAVE_SP_MAX_DATA_SIZE		64
-+#define RAVE_SP_CHECKSUM_SIZE		2  /* Worst case scenario on RDU2 */
-+/*
-+ * We don't store STX, ETX and unescaped bytes, so Rx is only
-+ * DATA + CSUM
-+ */
-+#define RAVE_SP_RX_BUFFER_SIZE				\
-+	(RAVE_SP_MAX_DATA_SIZE + RAVE_SP_CHECKSUM_SIZE)
-+
-+#define RAVE_SP_STX_ETX_SIZE		2
-+/*
-+ * For Tx we have to have space for everything, STX, EXT and
-+ * potentially stuffed DATA + CSUM data + csum
-+ */
-+#define RAVE_SP_TX_BUFFER_SIZE				\
-+	(RAVE_SP_STX_ETX_SIZE + 2 * RAVE_SP_RX_BUFFER_SIZE)
-+
-+#define RAVE_SP_BOOT_SOURCE_GET		0
-+#define RAVE_SP_BOOT_SOURCE_SET		1
-+
-+#define RAVE_SP_RDU2_BOARD_TYPE_RMB	0
-+#define RAVE_SP_RDU2_BOARD_TYPE_DEB	1
-+
-+#define RAVE_SP_BOOT_SOURCE_SD		0
-+#define RAVE_SP_BOOT_SOURCE_EMMC	1
-+#define RAVE_SP_BOOT_SOURCE_NOR		2
-+
-+/**
-+ * enum rave_sp_deframer_state - Possible state for de-framer
-+ *
-+ * @RAVE_SP_EXPECT_SOF:		 Scanning input for start-of-frame marker
-+ * @RAVE_SP_EXPECT_DATA:	 Got start of frame marker, collecting frame
-+ * @RAVE_SP_EXPECT_ESCAPED_DATA: Got escape character, collecting escaped byte
-+ */
-+enum rave_sp_deframer_state {
-+	RAVE_SP_EXPECT_SOF,
-+	RAVE_SP_EXPECT_DATA,
-+	RAVE_SP_EXPECT_ESCAPED_DATA,
++	RAVE_SP_BOOT_SOURCE_GET = 0,
++	RAVE_SP_BOOT_SOURCE_SET = 1,
 +};
 +
 +/**
-+ * struct rave_sp_deframer - Device protocol deframer
++ * struct rave_sp_wdt_variant - RAVE SP watchdog variant
 + *
-+ * @state:  Current state of the deframer
-+ * @data:   Buffer used to collect deframed data
-+ * @length: Number of bytes de-framed so far
++ * @max_timeout:	Largest possible watchdog timeout setting
++ * @min_timeout:	Smallest possible watchdog timeout setting
++ *
++ * @configure:		Function to send configuration command
++ * @restart:		Function to send "restart" command
 + */
-+struct rave_sp_deframer {
-+	enum rave_sp_deframer_state state;
-+	unsigned char data[RAVE_SP_RX_BUFFER_SIZE];
-+	size_t length;
++struct rave_sp_wdt_variant {
++	unsigned int max_timeout;
++	unsigned int min_timeout;
++
++	int (*configure)(struct watchdog *, bool);
++	int (*restart)(struct watchdog *);
++	int (*reset_reason)(struct watchdog *);
 +};
 +
 +/**
-+ * struct rave_sp_reply - Reply as per RAVE device protocol
++ * struct rave_sp_wdt - RAVE SP watchdog
 + *
-+ * @length:	Expected reply length
-+ * @data:	Buffer to store reply payload in
-+ * @code:	Expected reply code
-+ * @ackid:	Expected reply ACK ID
-+ * @completion: Successful reply reception completion
++ * @wdd:		Underlying watchdog device
++ * @sp:			Pointer to parent RAVE SP device
++ * @variant:		Device specific variant information
++ * @reboot_notifier:	Reboot notifier implementing machine reset
 + */
-+struct rave_sp_reply {
-+	size_t length;
-+	void  *data;
-+	u8     code;
-+	u8     ackid;
-+
-+	bool   received;
++struct rave_sp_wdt {
++	struct watchdog wdd;
++	struct rave_sp *sp;
++	const struct rave_sp_wdt_variant *variant;
++	struct restart_handler restart;
++	unsigned int timeout;
++	unsigned int boot_source;
++	struct device_d dev;
 +};
 +
-+/**
-+ * struct rave_sp_checksum - Variant specific checksum implementation details
-+ *
-+ * @length:	Caculated checksum length
-+ * @subroutine:	Utilized checksum algorithm implementation
-+ */
-+struct rave_sp_checksum {
-+	size_t length;
-+	void (*subroutine)(const u8 *, size_t, u8 *);
-+};
-+
-+/**
-+ * struct rave_sp_variant_cmds - Variant specific command routines
-+ *
-+ * @translate:	Generic to variant specific command mapping routine
-+ */
-+struct rave_sp_variant_cmds {
-+	int (*translate)(enum rave_sp_command);
-+};
-+
-+/**
-+ * struct rave_sp_variant - RAVE supervisory processor core variant
-+ *
-+ * @checksum:	Variant specific checksum implementation
-+ * @cmd:	Variant specific command pointer table
-+ *
-+ */
-+struct rave_sp_variant {
-+	const struct rave_sp_checksum *checksum;
-+	struct rave_sp_variant_cmds cmd;
-+};
-+
-+/**
-+ * struct rave_sp - RAVE supervisory processor core
-+ *
-+ * @serdev:			Pointer to underlying serdev
-+ * @deframer:			Stored state of the protocol deframer
-+ * @ackid:			ACK ID used in last reply sent to the device
-+ * @bus_lock:			Lock to serialize access to the device
-+ * @reply_lock:			Lock protecting @reply
-+ * @reply:			Pointer to memory to store reply payload
-+ *
-+ * @variant:			Device variant specific information
-+ * @event_notifier_list:	Input event notification chain
-+ *
-+ * @part_number_firmware:	Firmware version
-+ * @part_number_bootloader:	Bootloader version
-+ */
-+struct rave_sp {
-+	struct serdev_device *serdev;
-+	struct rave_sp_deframer deframer;
-+	unsigned int ackid;
-+	struct rave_sp_reply *reply;
-+
-+	const struct rave_sp_variant *variant;
-+
-+	const char *part_number_firmware;
-+	const char *part_number_bootloader;
-+};
-+
-+struct rave_sp_version {
-+	u8     hardware;
-+	__le16 major;
-+	u8     minor;
-+	u8     letter[2];
-+} __packed;
-+
-+struct rave_sp_status {
-+	struct rave_sp_version bootloader_version;
-+	struct rave_sp_version firmware_version;
-+	u16 rdu_eeprom_flag;
-+	u16 dds_eeprom_flag;
-+	u8  pic_flag;
-+	u8  orientation;
-+	u32 etc;
-+	s16 temp[2];
-+	u8  backlight_current[3];
-+	u8  dip_switch;
-+	u8  host_interrupt;
-+	u16 voltage_28;
-+	u8  i2c_device_status;
-+	u8  power_status;
-+	u8  general_status;
-+#define RAVE_SP_STATUS_GS_FIRMWARE_MODE	BIT(1)
-+
-+	u8  deprecated1;
-+	u8  power_led_status;
-+	u8  deprecated2;
-+	u8  periph_power_shutoff;
-+} __packed;
-+
-+static bool rave_sp_id_is_event(u8 code)
++static struct rave_sp_wdt *to_rave_sp_wdt(struct watchdog *wdd)
 +{
-+	return (code & 0xF0) == RAVE_SP_EVNT_BASE;
++	return container_of(wdd, struct rave_sp_wdt, wdd);
 +}
 +
-+static void csum_8b2c(const u8 *buf, size_t size, u8 *crc)
++static int rave_sp_wdt_exec(struct watchdog *wdd, void *data,
++			    size_t data_size)
 +{
-+	*crc = *buf++;
-+	size--;
-+
-+	while (size--)
-+		*crc += *buf++;
-+
-+	*crc = 1 + ~(*crc);
++	return rave_sp_exec(to_rave_sp_wdt(wdd)->sp,
++			    data, data_size, NULL, 0);
 +}
 +
-+static void csum_ccitt(const u8 *buf, size_t size, u8 *crc)
-+{
-+	const u16 calculated = crc_ccitt_false(0xffff, buf, size);
 +
-+	/*
-+	 * While the rest of the wire protocol is little-endian,
-+	 * CCITT-16 CRC in RDU2 device is sent out in big-endian order.
-+	 */
-+	put_unaligned_be16(calculated, crc);
-+}
-+
-+static void *stuff(unsigned char *dest, const unsigned char *src, size_t n)
-+{
-+	while (n--) {
-+		const unsigned char byte = *src++;
-+
-+		switch (byte) {
-+		case RAVE_SP_STX:
-+		case RAVE_SP_ETX:
-+		case RAVE_SP_DLE:
-+			*dest++ = RAVE_SP_DLE;
-+			/* FALLTHROUGH */
-+		default:
-+			*dest++ = byte;
-+		}
-+	}
-+
-+	return dest;
-+}
-+
-+static int rave_sp_write(struct rave_sp *sp, const u8 *data, u8 data_size)
-+{
-+	const size_t checksum_length = sp->variant->checksum->length;
-+	unsigned char frame[RAVE_SP_TX_BUFFER_SIZE];
-+	unsigned char crc[RAVE_SP_CHECKSUM_SIZE];
-+	unsigned char *dest = frame;
-+	size_t length;
-+
-+	if (WARN_ON(checksum_length > sizeof(crc)))
-+		return -ENOMEM;
-+
-+	if (WARN_ON(data_size > sizeof(frame)))
-+		return -ENOMEM;
-+
-+	sp->variant->checksum->subroutine(data, data_size, crc);
-+
-+	*dest++ = RAVE_SP_STX;
-+	dest = stuff(dest, data, data_size);
-+	dest = stuff(dest, crc, checksum_length);
-+	*dest++ = RAVE_SP_ETX;
-+
-+	length = dest - frame;
-+
-+	if (IS_ENABLED(DEBUG))
-+		print_hex_dump(0, "rave-sp tx: ", DUMP_PREFIX_NONE,
-+			       16, 1, frame, length, false);
-+
-+	return serdev_device_write(sp->serdev, frame, length, SECOND);
-+}
-+
-+static u8 rave_sp_reply_code(u8 command)
-+{
-+	/*
-+	 * There isn't a single rule that describes command code ->
-+	 * ACK code transformation, but, going through various
-+	 * versions of ICDs, there appear to be three distinct groups
-+	 * that can be described by simple transformation.
-+	 */
-+	switch (command) {
-+	case 0xA0 ... 0xBE:
-+		/*
-+		 * Commands implemented by firmware found in RDU1 and
-+		 * older devices all seem to obey the following rule
-+		 */
-+		return command + 0x20;
-+	case 0xE0 ... 0xEF:
-+		/*
-+		 * Events emitted by all versions of the firmare use
-+		 * least significant bit to get an ACK code
-+		 */
-+		return command | 0x01;
-+	default:
-+		/*
-+		 * Commands implemented by firmware found in RDU2 are
-+		 * similar to "old" commands, but they use slightly
-+		 * different offset
-+		 */
-+		return command + 0x40;
-+	}
-+}
-+
-+int rave_sp_exec(struct rave_sp *sp,
-+		 void *__data,  size_t data_size,
-+		 void *reply_data, size_t reply_data_size)
-+{
-+	struct device_d *dev = sp->serdev->dev;
-+	struct rave_sp_reply reply = {
-+		.data     = reply_data,
-+		.length   = reply_data_size,
-+		.received = false,
-+	};
-+	unsigned char *data = __data;
-+	int command, ret = 0;
-+	u8 ackid;
-+	uint64_t start = get_time_ns();
-+
-+	command = sp->variant->cmd.translate(data[0]);
-+	if (command < 0)
-+		return command;
-+
-+	ackid       = sp->ackid++;
-+	reply.ackid = ackid;
-+	reply.code  = rave_sp_reply_code((u8)command),
-+
-+	sp->reply = &reply;
-+
-+	data[0] = command;
-+	data[1] = ackid;
-+
-+	rave_sp_write(sp, data, data_size);
-+	/*
-+	 * is_timeout will implicitly poll serdev via poller
-+	 * infrastructure
-+	 */
-+	while (!is_timeout(start, SECOND) && !reply.received)
-+		;
-+
-+	if (!reply.received) {
-+		dev_err(dev, "Command timeout\n");
-+		ret = -ETIMEDOUT;
-+		sp->reply = NULL;
-+	}
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(rave_sp_exec);
-+
-+static void rave_sp_receive_event(struct rave_sp *sp,
-+				  const unsigned char *data, size_t length)
++static int rave_sp_wdt_access_boot_source(struct rave_sp_wdt *sp_wd, u8 set_get)
 +{
 +	u8 cmd[] = {
-+		[0] = rave_sp_reply_code(data[0]),
-+		[1] = data[1],
++		[0] = RAVE_SP_CMD_BOOT_SOURCE,
++		[1] = 0,
++		[2] = set_get,
++		[3] = sp_wd->boot_source,
 +	};
-+
-+	/*
-+	 * The only thing we do for event, in case we get one, is to
-+	 * acknowledge it to prevent RAVE SP from spamming us
-+	 */
-+	rave_sp_write(sp, cmd, sizeof(cmd));
-+}
-+
-+static void rave_sp_receive_reply(struct rave_sp *sp,
-+				  const unsigned char *data, size_t length)
-+{
-+	struct device_d *dev = sp->serdev->dev;
-+	struct rave_sp_reply *reply;
-+	const  size_t payload_length = length - 2;
-+
-+	reply = sp->reply;
-+
-+	if (reply) {
-+		if (reply->code == data[0] && reply->ackid == data[1] &&
-+		    payload_length >= reply->length) {
-+			/*
-+			 * We are relying on memcpy(dst, src, 0) to be a no-op
-+			 * when handling commands that have a no-payload reply
-+			 */
-+			memcpy(reply->data, &data[2], reply->length);
-+			reply->received = true;
-+			sp->reply = NULL;
-+		} else {
-+			dev_err(dev, "Ignoring incorrect reply\n");
-+			dev_dbg(dev, "Code:   expected = 0x%08x received = 0x%08x\n",
-+				reply->code, data[0]);
-+			dev_dbg(dev, "ACK ID: expected = 0x%08x received = 0x%08x\n",
-+				reply->ackid, data[1]);
-+			dev_dbg(dev, "Length: expected = %zu received = %zu\n",
-+				reply->length, payload_length);
-+		}
-+	}
-+
-+}
-+
-+static void rave_sp_receive_frame(struct rave_sp *sp,
-+				  const unsigned char *data,
-+				  size_t length)
-+{
-+	const size_t checksum_length = sp->variant->checksum->length;
-+	const size_t payload_length  = length - checksum_length;
-+	const u8 *crc_reported       = &data[payload_length];
-+	struct device_d *dev         = sp->serdev->dev;
-+	u8 crc_calculated[checksum_length];
-+
-+	if (IS_ENABLED(DEBUG))
-+		print_hex_dump(0, "rave-sp rx: ", DUMP_PREFIX_NONE,
-+			       16, 1, data, length, false);
-+
-+	if (unlikely(length <= checksum_length)) {
-+		dev_warn(dev, "Dropping short frame\n");
-+		return;
-+	}
-+
-+	sp->variant->checksum->subroutine(data, payload_length,
-+					  crc_calculated);
-+
-+	if (memcmp(crc_calculated, crc_reported, checksum_length)) {
-+		dev_warn(dev, "Dropping bad frame\n");
-+		return;
-+	}
-+
-+	if (rave_sp_id_is_event(data[0]))
-+		rave_sp_receive_event(sp, data, length);
-+	else
-+		rave_sp_receive_reply(sp, data, length);
-+}
-+
-+static int rave_sp_receive_buf(struct serdev_device *serdev,
-+			       const unsigned char *buf, size_t size)
-+{
-+	struct device_d *dev = serdev->dev;
-+	struct rave_sp *sp = dev->priv;
-+	struct rave_sp_deframer *deframer = &sp->deframer;
-+	const unsigned char *src = buf;
-+	const unsigned char *end = buf + size;
-+
-+	while (src < end) {
-+		const unsigned char byte = *src++;
-+
-+		switch (deframer->state) {
-+		case RAVE_SP_EXPECT_SOF:
-+			if (byte == RAVE_SP_STX)
-+				deframer->state = RAVE_SP_EXPECT_DATA;
-+			break;
-+
-+		case RAVE_SP_EXPECT_DATA:
-+			/*
-+			 * Treat special byte values first
-+			 */
-+			switch (byte) {
-+			case RAVE_SP_ETX:
-+				rave_sp_receive_frame(sp,
-+						      deframer->data,
-+						      deframer->length);
-+				/*
-+				 * Once we extracted a complete frame
-+				 * out of a stream, we call it done
-+				 * and proceed to bailing out while
-+				 * resetting the framer to initial
-+				 * state, regardless if we've consumed
-+				 * all of the stream or not.
-+				 */
-+				goto reset_framer;
-+			case RAVE_SP_STX:
-+				dev_warn(dev, "Bad frame: STX before ETX\n");
-+				/*
-+				 * If we encounter second "start of
-+				 * the frame" marker before seeing
-+				 * corresponding "end of frame", we
-+				 * reset the framer and ignore both:
-+				 * frame started by first SOF and
-+				 * frame started by current SOF.
-+				 *
-+				 * NOTE: The above means that only the
-+				 * frame started by third SOF, sent
-+				 * after this one will have a chance
-+				 * to get throught.
-+				 */
-+				goto reset_framer;
-+			case RAVE_SP_DLE:
-+				deframer->state = RAVE_SP_EXPECT_ESCAPED_DATA;
-+				/*
-+				 * If we encounter escape sequence we
-+				 * need to skip it and collect the
-+				 * byte that follows. We do it by
-+				 * forcing the next iteration of the
-+				 * encompassing while loop.
-+				 */
-+				continue;
-+			}
-+			/*
-+			 * For the rest of the bytes, that are not
-+			 * speical snoflakes, we do the same thing
-+			 * that we do to escaped data - collect it in
-+			 * deframer buffer
-+			 */
-+
-+			/* FALLTHROUGH */
-+
-+		case RAVE_SP_EXPECT_ESCAPED_DATA:
-+			if (deframer->length == sizeof(deframer->data)) {
-+				dev_warn(dev, "Bad frame: Too long\n");
-+				/*
-+				 * If the amount of data we've
-+				 * accumulated for current frame so
-+				 * far starts to exceed the capacity
-+				 * of deframer's buffer, there's
-+				 * nothing else we can do but to
-+				 * discard that data and start
-+				 * assemblying a new frame again
-+				 */
-+				goto reset_framer;
-+			}
-+
-+			deframer->data[deframer->length++] = byte;
-+
-+			/*
-+			 * We've extracted out special byte, now we
-+			 * can go back to regular data collecting
-+			 */
-+			deframer->state = RAVE_SP_EXPECT_DATA;
-+			break;
-+		}
-+	}
-+
-+	/*
-+	 * The only way to get out of the above loop and end up here
-+	 * is throught consuming all of the supplied data, so here we
-+	 * report that we processed it all.
-+	 */
-+	return size;
-+
-+reset_framer:
-+	/*
-+	 * NOTE: A number of codepaths that will drop us here will do
-+	 * so before consuming all 'size' bytes of the data passed by
-+	 * serdev layer. We rely on the fact that serdev layer will
-+	 * re-execute this handler with the remainder of the Rx bytes
-+	 * once we report actual number of bytes that we processed.
-+	 */
-+	deframer->state  = RAVE_SP_EXPECT_SOF;
-+	deframer->length = 0;
-+
-+	return src - buf;
-+}
-+
-+static int rave_sp_rdu1_cmd_translate(enum rave_sp_command command)
-+{
-+	if (command >= RAVE_SP_CMD_STATUS &&
-+	    command <= RAVE_SP_CMD_CONTROL_EVENTS)
-+		return command;
-+
-+	return -EINVAL;
-+}
-+
-+static int rave_sp_rdu2_cmd_translate(enum rave_sp_command command)
-+{
-+	if (command >= RAVE_SP_CMD_GET_FIRMWARE_VERSION &&
-+	    command <= RAVE_SP_CMD_GET_GPIO_STATE)
-+		return command;
-+
-+	if (command == RAVE_SP_CMD_REQ_COPPER_REV) {
-+		/*
-+		 * As per RDU2 ICD 3.4.47 CMD_GET_COPPER_REV code is
-+		 * different from that for RDU1 and it is set to 0x28.
-+		 */
-+		return 0x28;
-+	}
-+
-+	return rave_sp_rdu1_cmd_translate(command);
-+}
-+
-+static int rave_sp_default_cmd_translate(enum rave_sp_command command)
-+{
-+	/*
-+	 * All of the following command codes were taken from "Table :
-+	 * Communications Protocol Message Types" in section 3.3
-+	 * "MESSAGE TYPES" of Rave PIC24 ICD.
-+	 */
-+	switch (command) {
-+	case RAVE_SP_CMD_GET_FIRMWARE_VERSION:
-+		return 0x11;
-+	case RAVE_SP_CMD_GET_BOOTLOADER_VERSION:
-+		return 0x12;
-+	case RAVE_SP_CMD_BOOT_SOURCE:
-+		return 0x14;
-+	case RAVE_SP_CMD_SW_WDT:
-+		return 0x1C;
-+	case RAVE_SP_CMD_RESET:
-+		return 0x1E;
-+	case RAVE_SP_CMD_RESET_REASON:
-+		return 0x1F;
-+	case RAVE_SP_CMD_BOOTLOADER:
-+		return 0x2A;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const char *devm_rave_sp_version(struct device_d *dev,
-+					struct rave_sp_version *version)
-+{
-+       /*
-+        * NOTE: The format string below uses %02d to display u16
-+        * intentionally for the sake of backwards compatibility with
-+        * legacy software.
-+        */
-+       return basprintf("%02d%02d%02d.%c%c\n",
-+			version->hardware,
-+			le16_to_cpu(version->major),
-+			version->minor,
-+			version->letter[0],
-+			version->letter[1]);
-+}
-+
-+static int rave_sp_get_status(struct rave_sp *sp)
-+{
-+	struct device_d *dev = sp->serdev->dev;
-+	u8 cmd[] = {
-+		[0] = RAVE_SP_CMD_STATUS,
-+		[1] = 0
-+	};
-+	struct rave_sp_status status;
-+	const char *mode;
++	u8 response;
 +	int ret;
 +
-+	ret = rave_sp_exec(sp, cmd, sizeof(cmd), &status, sizeof(status));
++	ret = rave_sp_exec(sp_wd->sp, cmd, sizeof(cmd), &response,
++			   sizeof(response));
 +	if (ret)
 +		return ret;
 +
-+	if (status.general_status & RAVE_SP_STATUS_GS_FIRMWARE_MODE)
-+		mode = "Application";
-+	else
-+		mode = "Bootloader";
-+
-+	dev_info(dev, "Device is in %s mode\n", mode);
-+
-+	sp->part_number_firmware   = devm_rave_sp_version(dev,
-+						   &status.firmware_version);
-+	sp->part_number_bootloader = devm_rave_sp_version(dev,
-+						   &status.bootloader_version);
-+	return 0;
++	return response;
 +}
 +
-+static const struct rave_sp_checksum rave_sp_checksum_8b2c = {
-+	.length     = 1,
-+	.subroutine = csum_8b2c,
++static int __rave_sp_wdt_rdu_reset_reason(struct watchdog *wdd,
++					  uint8_t response[],
++					  size_t response_len)
++{
++	u8 cmd[] = {
++		[0] = RAVE_SP_CMD_RESET_REASON,
++		[1] = 0,
++	};
++	int ret;
++
++	ret = rave_sp_exec(to_rave_sp_wdt(wdd)->sp, cmd, sizeof(cmd),
++			   response, response_len);
++	if (ret)
++		return ret;
++	/*
++	 * Non "legacy" watchdog variants return 2 bytes as response
++	 * whereas "legacy" ones return only one. Both however send
++	 * the data we need as a first byte of the response.
++	 */
++	return response[0];
++}
++
++static int rave_sp_wdt_rdu_reset_reason(struct watchdog *wdd)
++{
++	u8 response[2];
++	return __rave_sp_wdt_rdu_reset_reason(wdd, response, sizeof(response));
++}
++
++static int rave_sp_wdt_legacy_reset_reason(struct watchdog *wdd)
++{
++	u8 response[1];
++	return __rave_sp_wdt_rdu_reset_reason(wdd, response, sizeof(response));
++}
++
++static int rave_sp_wdt_legacy_configure(struct watchdog *wdd, bool on)
++{
++	struct rave_sp_wdt *sp_wd = to_rave_sp_wdt(wdd);
++
++	u8 cmd[] = {
++		[0] = RAVE_SP_CMD_SW_WDT,
++		[1] = 0,
++		[2] = 0,
++		[3] = on,
++		[4] = on ? sp_wd->timeout : 0,
++	};
++
++	return rave_sp_wdt_exec(wdd, cmd, sizeof(cmd));
++}
++
++static int rave_sp_wdt_rdu_configure(struct watchdog *wdd, bool on)
++{
++	struct rave_sp_wdt *sp_wd = to_rave_sp_wdt(wdd);
++
++	u8 cmd[] = {
++		[0] = RAVE_SP_CMD_SW_WDT,
++		[1] = 0,
++		[2] = on,
++		[3] = sp_wd->timeout,
++		[4] = (u8)(sp_wd->timeout >> 8),
++	};
++
++	return rave_sp_wdt_exec(wdd, cmd, sizeof(cmd));
++}
++
++static int rave_sp_wdt_configure(struct watchdog *wdd, bool on)
++{
++	return to_rave_sp_wdt(wdd)->variant->configure(wdd, on);
++}
++
++static int rave_sp_wdt_legacy_restart(struct watchdog *wdd)
++{
++	u8 cmd[] = {
++		[0] = RAVE_SP_CMD_RESET,
++		[1] = 0,
++		[2] = RAVE_SP_RESET_BYTE
++	};
++
++	return rave_sp_wdt_exec(wdd, cmd, sizeof(cmd));
++}
++
++static int rave_sp_wdt_rdu_restart(struct watchdog *wdd)
++{
++	u8 cmd[] = {
++		[0] = RAVE_SP_CMD_RESET,
++		[1] = 0,
++		[2] = RAVE_SP_RESET_BYTE,
++		[3] = RAVE_SP_RESET_REASON_NORMAL
++	};
++
++	return rave_sp_wdt_exec(wdd, cmd, sizeof(cmd));
++}
++
++static void __noreturn rave_sp_wdt_restart_handler(struct restart_handler *rst)
++{
++	struct rave_sp_wdt *sp_wd =
++			container_of(rst, struct rave_sp_wdt, restart);
++
++	const int ret = sp_wd->variant->restart(&sp_wd->wdd);
++
++	if (ret < 0)
++		dev_err(&sp_wd->wdd.dev,
++			"Failed to issue restart command (%d)", ret);
++	/*
++	 * The actual work was done by reboot notifier above. SP
++	 * firmware waits 500 ms before issuing reset, so let's hang
++	 * here for twice that delay and hopefuly we'd never reach
++	 * the return statement.
++	 */
++	mdelay(2 * RAVE_SP_RESET_DELAY_MS);
++	hang();
++}
++
++static int rave_sp_wdt_start(struct watchdog *wdd)
++{
++	return rave_sp_wdt_configure(wdd, true);
++}
++
++static int rave_sp_wdt_stop(struct watchdog *wdd)
++{
++	return rave_sp_wdt_configure(wdd, false);
++}
++
++static int rave_sp_wdt_set_timeout(struct watchdog *wdd,
++				   unsigned int timeout)
++{
++	struct rave_sp_wdt *sp_wd = to_rave_sp_wdt(wdd);
++
++	if (!timeout)
++		return rave_sp_wdt_stop(wdd);
++
++	if (timeout < sp_wd->variant->min_timeout ||
++	    timeout > sp_wd->variant->max_timeout)
++		return -EINVAL;
++
++	sp_wd->timeout = timeout;
++	return rave_sp_wdt_start(wdd);
++}
++
++static const struct rave_sp_wdt_variant rave_sp_wdt_legacy = {
++	.max_timeout  = 255,
++	.min_timeout  = 1,
++	.configure    = rave_sp_wdt_legacy_configure,
++	.restart      = rave_sp_wdt_legacy_restart,
++	.reset_reason = rave_sp_wdt_legacy_reset_reason,
 +};
 +
-+static const struct rave_sp_checksum rave_sp_checksum_ccitt = {
-+	.length     = 2,
-+	.subroutine = csum_ccitt,
++static const struct rave_sp_wdt_variant rave_sp_wdt_rdu = {
++	.max_timeout  = 180,
++	.min_timeout  = 60,
++	.configure    = rave_sp_wdt_rdu_configure,
++	.restart      = rave_sp_wdt_rdu_restart,
++	.reset_reason = rave_sp_wdt_rdu_reset_reason,
 +};
 +
-+static const struct rave_sp_variant rave_sp_legacy = {
-+	.checksum = &rave_sp_checksum_8b2c,
-+	.cmd = {
-+		.translate = rave_sp_default_cmd_translate,
++static const struct of_device_id rave_sp_wdt_of_match[] = {
++	{
++		.compatible = "zii,rave-sp-watchdog-legacy",
++		.data = &rave_sp_wdt_legacy,
 +	},
-+};
-+
-+static const struct rave_sp_variant rave_sp_rdu1 = {
-+	.checksum = &rave_sp_checksum_8b2c,
-+	.cmd = {
-+		.translate = rave_sp_rdu1_cmd_translate,
++	{
++		.compatible = "zii,rave-sp-watchdog",
++		.data = &rave_sp_wdt_rdu,
 +	},
-+};
-+
-+static const struct rave_sp_variant rave_sp_rdu2 = {
-+	.checksum = &rave_sp_checksum_ccitt,
-+	.cmd = {
-+		.translate = rave_sp_rdu2_cmd_translate,
-+	},
-+};
-+
-+static const struct of_device_id __maybe_unused rave_sp_dt_ids[] = {
-+	{ .compatible = "zii,rave-sp-niu",  .data = &rave_sp_legacy },
-+	{ .compatible = "zii,rave-sp-mezz", .data = &rave_sp_legacy },
-+	{ .compatible = "zii,rave-sp-esb",  .data = &rave_sp_legacy },
-+	{ .compatible = "zii,rave-sp-rdu1", .data = &rave_sp_rdu1   },
-+	{ .compatible = "zii,rave-sp-rdu2", .data = &rave_sp_rdu2   },
 +	{ /* sentinel */ }
 +};
 +
-+static int rave_sp_probe(struct device_d *dev)
++static int rave_sp_wdt_set_boot_source(struct param_d *param, void *priv)
 +{
-+	struct serdev_device *serdev = to_serdev_device(dev->parent);
-+	struct rave_sp *sp;
-+	u32 baud;
 +	int ret;
 +
-+	if (of_property_read_u32(dev->device_node, "current-speed", &baud)) {
-+		dev_err(dev,
-+			"'current-speed' is not specified in device node\n");
-+		return -EINVAL;
-+	}
-+
-+	sp = xzalloc(sizeof(*sp));
-+	sp->serdev = serdev;
-+	dev->priv = sp;
-+	serdev->dev = dev;
-+	serdev->receive_buf = rave_sp_receive_buf;
-+	serdev->polling_interval = 500 * MSECOND;
-+	/*
-+	 * We have to set polling window to 200ms initially in order
-+	 * to avoid timing out on get_status below when coming out of
-+	 * power-cycle induced reset. It's adjusted right after
-+	 */
-+	serdev->polling_window = 200 * MSECOND;
-+
-+	sp->variant = of_device_get_match_data(dev);
-+	if (!sp->variant)
-+		return -ENODEV;
-+
-+	ret = serdev_device_open(serdev);
-+	if (ret)
++	ret = rave_sp_wdt_access_boot_source(priv, RAVE_SP_BOOT_SOURCE_SET);
++	if (ret < 0)
 +		return ret;
 +
-+	serdev_device_set_baudrate(serdev, baud);
++	return 0;
++}
 +
-+	ret = rave_sp_get_status(sp);
++static int rave_sp_wdt_get_boot_source(struct param_d *param, void *priv)
++{
++	struct rave_sp_wdt *sp_wd = priv;
++	int ret;
++
++	ret = rave_sp_wdt_access_boot_source(sp_wd, RAVE_SP_BOOT_SOURCE_GET);
++	if (ret < 0)
++		return ret;
++
++	sp_wd->boot_source = ret;
++	return 0;
++}
++
++static int rave_sp_wdt_probe(struct device_d *dev)
++{
++	struct rave_sp_wdt *sp_wd;
++	const char *reset_reason;
++	struct nvmem_cell *cell;
++	struct watchdog *wdd;
++	__le16 timeout = 60;
++	struct param_d *p;
++	int ret;
++
++	sp_wd = xzalloc(sizeof(*sp_wd));
++	sp_wd->variant = of_device_get_match_data(dev);
++	sp_wd->sp      = dev->parent->priv;
++
++	cell = nvmem_cell_get(dev, "wdt-timeout");
++	if (!IS_ERR(cell)) {
++		size_t len;
++		void *value = nvmem_cell_read(cell, &len);
++
++		if (!IS_ERR(value)) {
++			memcpy(&timeout, value, min(len, sizeof(timeout)));
++			kfree(value);
++		}
++		nvmem_cell_put(cell);
++	}
++	sp_wd->timeout = le16_to_cpu(timeout);
++
++	wdd              = &sp_wd->wdd;
++	wdd->hwdev       = dev;
++	wdd->set_timeout = rave_sp_wdt_set_timeout;
++
++	ret = rave_sp_wdt_stop(wdd);
 +	if (ret) {
-+		dev_warn(dev, "Failed to get firmware status: %d\n", ret);
++		dev_err(dev, "Failed to stop watchdog device\n");
 +		return ret;
 +	}
-+	/*
-+	 * 10ms is just a setting that was arrived at empirically when
-+	 * trying to make sure that EEPROM or MAC address access
-+	 * commnads to not time out.
-+	 */
-+	serdev->polling_window = 10 * MSECOND;
 +
-+	/*
-+	 * Those strings already have a \n embedded, so there's no
-+	 * need to have one in format string.
-+	 */
-+	dev_info(dev, "Firmware version: %s",   sp->part_number_firmware);
-+	dev_info(dev, "Bootloader version: %s", sp->part_number_bootloader);
++	ret = watchdog_register(wdd);
++	if (ret) {
++		dev_err(dev, "Failed to register watchdog device\n");
 +
-+	return of_platform_populate(dev->device_node, NULL, dev);
++		return ret;
++	}
++
++	sp_wd->restart.name = "rave-sp-wdt";
++	sp_wd->restart.restart = rave_sp_wdt_restart_handler;
++	sp_wd->restart.priority = 200;
++
++	ret = restart_handler_register(&sp_wd->restart);
++	if (ret)
++		dev_warn(dev, "Cannot register restart handler\n");
++
++
++	p = dev_add_param_int(&wdd->dev, "boot_source",
++			      rave_sp_wdt_set_boot_source,
++			      rave_sp_wdt_get_boot_source,
++			      &sp_wd->boot_source, "%u", sp_wd);
++	if (IS_ERR(p)) {
++		unregister_device(&sp_wd->dev);
++		return PTR_ERR(p);
++	}
++
++	ret = sp_wd->variant->reset_reason(wdd);
++	if (ret < 0) {
++		dev_warn(dev, "Failed to query reset reason\n");
++		return 0;
++	}
++
++	switch (ret) {
++	case RAVE_SP_RESET_REASON_NORMAL:
++		reset_reason = "Normal poweroff";
++		break;
++	case RAVE_SP_RESET_REASON_HW_WATCHDOG:
++		reset_reason = "PIC hardware watchdog";
++		break;
++	case RAVE_SP_RESET_REASON_SW_WATCHDOG:
++		reset_reason = "PIC software watchdog";
++		break;
++	case RAVE_SP_RESET_REASON_VOLTAGE:
++		reset_reason = "Input voltage out of range";
++		break;
++	case RAVE_SP_RESET_REASON_HOST_REQUEST:
++		reset_reason = "Host requested";
++		break;
++	case RAVE_SP_RESET_REASON_TEMPERATURE:
++		reset_reason = "Temperature out of range";
++		break;
++	case RAVE_SP_RESET_REASON_BUTTON_PRESS:
++		reset_reason = "User requested";
++		break;
++	case RAVE_SP_RESET_REASON_PIC_CM:
++		reset_reason = "Illegal configuration word";
++		break;
++	case RAVE_SP_RESET_REASON_PIC_ILL_INST:
++		reset_reason = "Illegal instruction";
++		break;
++	case RAVE_SP_RESET_REASON_PIC_TRAP:
++		reset_reason = "Illegal trap";
++		break;
++	default:
++	case RAVE_SP_RESET_REASON_UKNOWN_REASON:
++		reset_reason = "Unknown";
++		break;
++	case RAVE_SP_RESET_REASON_THERMAL_SENSOR:
++		reset_reason = "Thermal sensor";
++		break;
++	case RAVE_SP_RESET_REASON_SW_VOLTAGE:
++		reset_reason = "Software detected brownout";
++		break;
++	case RAVE_SP_RESET_REASON_CP_REQUEST:
++		reset_reason = "Command request";
++		break;
++	}
++
++	dev_info(dev, "Reset reason: %s\n", reset_reason);
++	return 0;
 +}
 +
-+static struct driver_d rave_sp_drv = {
-+	.name = "rave-sp",
-+	.probe = rave_sp_probe,
-+	.of_compatible = DRV_OF_COMPAT(rave_sp_dt_ids),
++static struct driver_d rave_sp_wdt_driver = {
++	.name  = "rave-sp-wdt",
++	.probe = rave_sp_wdt_probe,
++	.of_compatible = DRV_OF_COMPAT(rave_sp_wdt_of_match),
 +};
-+console_platform_driver(rave_sp_drv);
-diff --git a/include/linux/mfd/rave-sp.h b/include/linux/mfd/rave-sp.h
-new file mode 100644
-index 000000000..e0d97a55d
---- /dev/null
-+++ b/include/linux/mfd/rave-sp.h
-@@ -0,0 +1,78 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+
-+/*
-+ * Core definitions for RAVE SP MFD driver.
-+ *
-+ * Copyright (C) 2017 Zodiac Inflight Innovations
-+ */
-+
-+#ifndef _LINUX_RAVE_SP_H_
-+#define _LINUX_RAVE_SP_H_
-+
-+/* #include <linux/notifier.h> */
-+
-+enum rave_sp_command {
-+	RAVE_SP_CMD_GET_FIRMWARE_VERSION	= 0x20,
-+	RAVE_SP_CMD_GET_BOOTLOADER_VERSION	= 0x21,
-+	RAVE_SP_CMD_BOOT_SOURCE			= 0x26,
-+	RAVE_SP_CMD_GET_BOARD_COPPER_REV	= 0x2B,
-+	RAVE_SP_CMD_GET_GPIO_STATE		= 0x2F,
-+
-+	RAVE_SP_CMD_STATUS			= 0xA0,
-+	RAVE_SP_CMD_SW_WDT			= 0xA1,
-+	RAVE_SP_CMD_PET_WDT			= 0xA2,
-+	RAVE_SP_CMD_SET_BACKLIGHT		= 0xA6,
-+	RAVE_SP_CMD_RESET			= 0xA7,
-+	RAVE_SP_CMD_RESET_REASON		= 0xA8,
-+
-+	RAVE_SP_CMD_JUMP_TO_BOOTLOADER		= 0xB0,
-+	RAVE_SP_CMD_BOOTLOADER			= 0xB1,
-+	RAVE_SP_CMD_REQ_COPPER_REV		= 0xB6,
-+	RAVE_SP_CMD_GET_I2C_DEVICE_STATUS	= 0xBA,
-+	RAVE_SP_CMD_GET_SP_SILICON_REV		= 0xB9,
-+	RAVE_SP_CMD_CONTROL_EVENTS		= 0xBB,
-+
-+	RAVE_SP_EVNT_BASE			= 0xE0,
-+};
-+
-+enum rave_sp_bootloader_command {
-+	RAVE_SP_BOOTLOADER_CMD_QUERY_DEVICE	= 0xA1,
-+	RAVE_SP_BOOTLOADER_CMD_ERASE_APP	= 0xA3,
-+	RAVE_SP_BOOTLOADER_CMD_PROGRAM_DEVICE	= 0xA4,
-+	RAVE_SP_BOOTLOADER_CMD_PROGRAM_COMPLETE = 0xA5,
-+	RAVE_SP_BOOTLOADER_CMD_READ_APP		= 0xA6,
-+	RAVE_SP_BOOTLOADER_CMD_RESET_DEVICE	= 0xA7,
-+	RAVE_SP_BOOTLOADER_CMD_LAUNCH_APP	= 0xA8,
-+};
-+
-+struct rave_sp;
-+
-+static inline unsigned long rave_sp_action_pack(u8 event, u8 value)
-+{
-+	return ((unsigned long)value << 8) | event;
-+}
-+
-+static inline u8 rave_sp_action_unpack_event(unsigned long action)
-+{
-+	return action;
-+}
-+
-+static inline u8 rave_sp_action_unpack_value(unsigned long action)
-+{
-+	return action >> 8;
-+}
-+
-+int rave_sp_exec(struct rave_sp *sp,
-+		 void *__data,  size_t data_size,
-+		 void *reply_data, size_t reply_data_size);
-+
-+struct device;
-+/* int devm_rave_sp_register_event_notifier(struct device *dev, */
-+/* 					 struct notifier_block *nb); */
-+
-+bool rave_sp_is_in_bootloader_mode(struct rave_sp *sp);
-+const struct firmware *rave_sp_get_firmware(struct rave_sp *sp);
-+void rave_sp_release_firmware(struct rave_sp *sp);
-+void rave_sp_set_update_fw_status(struct rave_sp *sp, int status);
-+
-+#endif /* _LINUX_RAVE_SP_H_ */
++console_platform_driver(rave_sp_wdt_driver);
 -- 
 2.14.3
 
