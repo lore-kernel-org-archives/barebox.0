@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fDonP-0007JJ-Lk
- for barebox@lists.infradead.org; Wed, 02 May 2018 10:15:37 +0000
-Date: Wed, 2 May 2018 12:15:22 +0200
-From: Sascha Hauer <sha@pengutronix.de>
-Message-ID: <20180502101522.socnzxrz3d37frgf@pengutronix.de>
-References: <216a62f9-5450-5ed6-945f-b3d26d65ae3e@cogentembedded.com>
+ id 1fDoy8-0004Xn-PD
+ for barebox@lists.infradead.org; Wed, 02 May 2018 10:26:43 +0000
+Date: Wed, 2 May 2018 12:26:28 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180502102628.xuzgf3o6aeijxl6z@pengutronix.de>
+References: <20180427053216.10040-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <216a62f9-5450-5ed6-945f-b3d26d65ae3e@cogentembedded.com>
+In-Reply-To: <20180427053216.10040-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +22,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usbnet: increase bulk message timeout
-To: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Chris Healy <cphealy@gmail.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: i.MX7: Remove unnecessary local variable
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Thu, Apr 26, 2018 at 04:02:48PM +0300, Nikita Yushchenko wrote:
-> Timeout of 1ms is too low for case when device operates in Full Speed
-> mode. This causes most incoming frames to be lost.
+On Thu, Apr 26, 2018 at 10:32:16PM -0700, Andrey Smirnov wrote:
+> It looks this code was based on analogous code for i.MX6, but there
+> that variable was being used as a part of following switch
+> statement. Since this is not the case for i.MX7, just replace the
+> variable with direct function call.
 > 
-> Since timeout is only used to get out of polling loop in case of no
-> response from hardware, increasing it should be safe for all platforms.
-> 
-> Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-> Tested-By: Andrew Lunn <andrew@lunn.ch>
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
+>  arch/arm/mach-imx/imx7.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
 
-Applied, thanks.
-
-The patch is whitespace damaged, I fixed this up manually this time.
+Applied, thanks
 
 Sascha
 
->  drivers/net/usb/usbnet.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-> index 33d900b70..60e67ff1a 100644
-> --- a/drivers/net/usb/usbnet.c
-> +++ b/drivers/net/usb/usbnet.c
-> @@ -125,7 +125,7 @@ static int usbnet_recv(struct eth_device *edev)
->   	len = dev->rx_urb_size;
->  -	ret = usb_bulk_msg(dev->udev, dev->in, rx_buf, len, &alen, 1);
-> +	ret = usb_bulk_msg(dev->udev, dev->in, rx_buf, len, &alen, 100);
->  	if (ret)
->  		return ret;
->  -- 2.11.0
+> diff --git a/arch/arm/mach-imx/imx7.c b/arch/arm/mach-imx/imx7.c
+> index 5ad91c2d7..e49baf6f7 100644
+> --- a/arch/arm/mach-imx/imx7.c
+> +++ b/arch/arm/mach-imx/imx7.c
+> @@ -182,7 +182,6 @@ static const struct imx_reset_reason imx7_reset_reasons[] = {
+>  int imx7_init(void)
+>  {
+>  	const char *cputypestr;
+> -	u32 imx7_silicon_revision;
+>  	void __iomem *src = IOMEM(MX7_SRC_BASE_ADDR);
+>  
+>  	imx7_init_lowlevel();
+> @@ -193,8 +192,6 @@ int imx7_init(void)
+>  
+>  	imx7_boot_save_loc();
+>  
+> -	imx7_silicon_revision = imx7_cpu_revision();
+> -
+>  	psci_set_ops(&imx7_psci_ops);
+>  
+>  	switch (imx7_cpu_type()) {
+> @@ -209,7 +206,7 @@ int imx7_init(void)
+>  		break;
+>  	}
+>  
+> -	imx_set_silicon_revision(cputypestr, imx7_silicon_revision);
+> +	imx_set_silicon_revision(cputypestr, imx7_cpu_revision());
+>  	imx_set_reset_reason(src + IMX7_SRC_SRSR, imx7_reset_reasons);
+>  
+>  	return 0;
+> -- 
+> 2.14.3
 > 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
