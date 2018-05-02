@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-io0-x243.google.com ([2607:f8b0:4001:c06::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fDsy0-0005qo-98
- for barebox@lists.infradead.org; Wed, 02 May 2018 14:42:51 +0000
-Message-ID: <1525272153.17782.15.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Wed, 02 May 2018 16:42:33 +0200
-In-Reply-To: <20180421010538.16488-4-andrew.smirnov@gmail.com>
+ id 1fDvqR-0004bn-E0
+ for barebox@lists.infradead.org; Wed, 02 May 2018 17:47:15 +0000
+Received: by mail-io0-x243.google.com with SMTP id g1-v6so9131423iob.2
+ for <barebox@lists.infradead.org>; Wed, 02 May 2018 10:47:00 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <1525272153.17782.15.camel@pengutronix.de>
 References: <20180421010538.16488-1-andrew.smirnov@gmail.com>
  <20180421010538.16488-4-andrew.smirnov@gmail.com>
-Mime-Version: 1.0
+ <1525272153.17782.15.camel@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 2 May 2018 10:46:59 -0700
+Message-ID: <CAHQ1cqELJdWpbiVGNb0R4-Z5dPPaBqR0fSu-QYbbQ2Kmq5kUkQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,88 +21,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2 03/10] ARM: i.MX6: Record reset reason as a part of
  startup
-To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+To: =?UTF-8?Q?Jan_L=C3=BCbbe?= <jlu@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-There is already code in drivers/watchdog/imxwd.c to handle this. Is
-that obsolete now?
-
-On Fri, 2018-04-20 at 18:05 -0700, Andrey Smirnov wrote:
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  arch/arm/mach-imx/imx6.c                      | 13 ++++++++++++-
->  arch/arm/mach-imx/include/mach/reset-reason.h |  2 ++
->  2 files changed, 14 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-> index 88165adee..49610bf08 100644
-> --- a/arch/arm/mach-imx/imx6.c
-> +++ b/arch/arm/mach-imx/imx6.c
-> @@ -19,6 +19,7 @@
->  #include <mach/imx6.h>
->  #include <mach/generic.h>
->  #include <mach/revision.h>
-> +#include <mach/reset-reason.h>
->  #include <mach/imx6-anadig.h>
->  #include <mach/imx6-regs.h>
->  #include <mach/generic.h>
-> @@ -173,10 +174,20 @@ int imx6_cpu_revision(void)
->  	return soc_revision;
->  }
->  
-> +static const struct imx_reset_reason imx6_reset_reasons[] = {
-> +	{ IMX_SRC_SRSR_IPP_RESET,     RESET_POR,  0 },
-> +	{ IMX_SRC_SRSR_WDOG1_RESET,   RESET_WDG,  0 },
-> +	{ IMX_SRC_SRSR_JTAG_RESET,    RESET_JTAG, 0 },
-> +	{ IMX_SRC_SRSR_JTAG_SW_RESET, RESET_JTAG, 0 },
-> +	{ IMX_SRC_SRSR_WARM_BOOT,     RESET_RST,  0 },
-> +	{ /* sentinel */ }
-> +};
-> +
->  int imx6_init(void)
->  {
->  	const char *cputypestr;
->  	u32 mx6_silicon_revision;
-> +	void __iomem *src = IOMEM(MX6_SRC_BASE_ADDR);
->  
->  	imx6_init_lowlevel();
->  
-> @@ -221,7 +232,7 @@ int imx6_init(void)
->  	}
->  
->  	imx_set_silicon_revision(cputypestr, mx6_silicon_revision);
-> -
-> +	imx_set_reset_reason(src + IMX6_SRC_SRSR,
-> imx6_reset_reasons);
->  	imx6_setup_ipu_qos();
->  	imx6ul_enet_clk_init();
->  
-> diff --git a/arch/arm/mach-imx/include/mach/reset-reason.h
-> b/arch/arm/mach-imx/include/mach/reset-reason.h
-> index 39afc4b28..f2544a303 100644
-> --- a/arch/arm/mach-imx/include/mach/reset-reason.h
-> +++ b/arch/arm/mach-imx/include/mach/reset-reason.h
-> @@ -14,6 +14,8 @@
->  #define IMX_SRC_SRSR_TEMPSENSE_RESET	BIT(9)
->  #define IMX_SRC_SRSR_WARM_BOOT		BIT(16)
->  
-> +#define IMX6_SRC_SRSR	0x008
-> +
->  struct imx_reset_reason {
->  	uint32_t mask;
->  	enum reset_src_type type;
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gV2VkLCBNYXkgMiwgMjAxOCBhdCA3OjQyIEFNLCBKYW4gTMO8YmJlIDxqbHVAcGVuZ3V0cm9u
+aXguZGU+IHdyb3RlOgo+IFRoZXJlIGlzIGFscmVhZHkgY29kZSBpbiBkcml2ZXJzL3dhdGNoZG9n
+L2lteHdkLmMgdG8gaGFuZGxlIHRoaXMuIElzCj4gdGhhdCBvYnNvbGV0ZSBub3c/Cj4KCkFGQUlL
+LCB3YXRjaGRvZyBJUCBibG9jayBkb2Vzbid0IGhhdmUgYXMgcHJlY2lzZSBpbmZvcm1hdGlvbiBh
+Ym91dApyZXNldCBzb3VyY2UgYXMgU1JTUiByZWdpc3RlciBvbiBpLk1YIFNvQ3MgdGhhdCBoYXZl
+IHRoZSBsYXR0ZXIuClRoZXJlLCB0aGlzIGNvZGUgc3VwZXJzZWRlcyBpbXh3ZC5jLiBPVEhPICBT
+b0NzIHRoYXQgZG9uJ3QgaGF2ZSBTUlNSCihpLk1YMjEsIGkuTVgzMSwgZXRjKSBzdGlsbCByZWx5
+IG9uIGNvZGUgaW14d2QuYyAgZm9yIHJlc2V0IHNvdXJjZQpkZXRlY3Rpb24uCgpIb3BlIHRoaXMg
+YW5zd2VycyB5b3VyIHF1ZXN0aW9uLgoKVGhhbmtzLApBbmRyZXkgU21pcm5vdgoKPiBPbiBGcmks
+IDIwMTgtMDQtMjAgYXQgMTg6MDUgLTA3MDAsIEFuZHJleSBTbWlybm92IHdyb3RlOgo+PiBTaWdu
+ZWQtb2ZmLWJ5OiBBbmRyZXkgU21pcm5vdiA8YW5kcmV3LnNtaXJub3ZAZ21haWwuY29tPgo+PiAt
+LS0KPj4gIGFyY2gvYXJtL21hY2gtaW14L2lteDYuYyAgICAgICAgICAgICAgICAgICAgICB8IDEz
+ICsrKysrKysrKysrKy0KPj4gIGFyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9yZXNldC1y
+ZWFzb24uaCB8ICAyICsrCj4+ICAyIGZpbGVzIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKyksIDEg
+ZGVsZXRpb24oLSkKPj4KPj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtaW14L2lteDYuYyBi
+L2FyY2gvYXJtL21hY2gtaW14L2lteDYuYwo+PiBpbmRleCA4ODE2NWFkZWUuLjQ5NjEwYmYwOCAx
+MDA2NDQKPj4gLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW14Ni5jCj4+ICsrKyBiL2FyY2gvYXJt
+L21hY2gtaW14L2lteDYuYwo+PiBAQCAtMTksNiArMTksNyBAQAo+PiAgI2luY2x1ZGUgPG1hY2gv
+aW14Ni5oPgo+PiAgI2luY2x1ZGUgPG1hY2gvZ2VuZXJpYy5oPgo+PiAgI2luY2x1ZGUgPG1hY2gv
+cmV2aXNpb24uaD4KPj4gKyNpbmNsdWRlIDxtYWNoL3Jlc2V0LXJlYXNvbi5oPgo+PiAgI2luY2x1
+ZGUgPG1hY2gvaW14Ni1hbmFkaWcuaD4KPj4gICNpbmNsdWRlIDxtYWNoL2lteDYtcmVncy5oPgo+
+PiAgI2luY2x1ZGUgPG1hY2gvZ2VuZXJpYy5oPgo+PiBAQCAtMTczLDEwICsxNzQsMjAgQEAgaW50
+IGlteDZfY3B1X3JldmlzaW9uKHZvaWQpCj4+ICAgICAgIHJldHVybiBzb2NfcmV2aXNpb247Cj4+
+ICB9Cj4+Cj4+ICtzdGF0aWMgY29uc3Qgc3RydWN0IGlteF9yZXNldF9yZWFzb24gaW14Nl9yZXNl
+dF9yZWFzb25zW10gPSB7Cj4+ICsgICAgIHsgSU1YX1NSQ19TUlNSX0lQUF9SRVNFVCwgICAgIFJF
+U0VUX1BPUiwgIDAgfSwKPj4gKyAgICAgeyBJTVhfU1JDX1NSU1JfV0RPRzFfUkVTRVQsICAgUkVT
+RVRfV0RHLCAgMCB9LAo+PiArICAgICB7IElNWF9TUkNfU1JTUl9KVEFHX1JFU0VULCAgICBSRVNF
+VF9KVEFHLCAwIH0sCj4+ICsgICAgIHsgSU1YX1NSQ19TUlNSX0pUQUdfU1dfUkVTRVQsIFJFU0VU
+X0pUQUcsIDAgfSwKPj4gKyAgICAgeyBJTVhfU1JDX1NSU1JfV0FSTV9CT09ULCAgICAgUkVTRVRf
+UlNULCAgMCB9LAo+PiArICAgICB7IC8qIHNlbnRpbmVsICovIH0KPj4gK307Cj4+ICsKPj4gIGlu
+dCBpbXg2X2luaXQodm9pZCkKPj4gIHsKPj4gICAgICAgY29uc3QgY2hhciAqY3B1dHlwZXN0cjsK
+Pj4gICAgICAgdTMyIG14Nl9zaWxpY29uX3JldmlzaW9uOwo+PiArICAgICB2b2lkIF9faW9tZW0g
+KnNyYyA9IElPTUVNKE1YNl9TUkNfQkFTRV9BRERSKTsKPj4KPj4gICAgICAgaW14Nl9pbml0X2xv
+d2xldmVsKCk7Cj4+Cj4+IEBAIC0yMjEsNyArMjMyLDcgQEAgaW50IGlteDZfaW5pdCh2b2lkKQo+
+PiAgICAgICB9Cj4+Cj4+ICAgICAgIGlteF9zZXRfc2lsaWNvbl9yZXZpc2lvbihjcHV0eXBlc3Ry
+LCBteDZfc2lsaWNvbl9yZXZpc2lvbik7Cj4+IC0KPj4gKyAgICAgaW14X3NldF9yZXNldF9yZWFz
+b24oc3JjICsgSU1YNl9TUkNfU1JTUiwKPj4gaW14Nl9yZXNldF9yZWFzb25zKTsKPj4gICAgICAg
+aW14Nl9zZXR1cF9pcHVfcW9zKCk7Cj4+ICAgICAgIGlteDZ1bF9lbmV0X2Nsa19pbml0KCk7Cj4+
+Cj4+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvcmVzZXQtcmVh
+c29uLmgKPj4gYi9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvcmVzZXQtcmVhc29uLmgK
+Pj4gaW5kZXggMzlhZmM0YjI4Li5mMjU0NGEzMDMgMTAwNjQ0Cj4+IC0tLSBhL2FyY2gvYXJtL21h
+Y2gtaW14L2luY2x1ZGUvbWFjaC9yZXNldC1yZWFzb24uaAo+PiArKysgYi9hcmNoL2FybS9tYWNo
+LWlteC9pbmNsdWRlL21hY2gvcmVzZXQtcmVhc29uLmgKPj4gQEAgLTE0LDYgKzE0LDggQEAKPj4g
+ICNkZWZpbmUgSU1YX1NSQ19TUlNSX1RFTVBTRU5TRV9SRVNFVCBCSVQoOSkKPj4gICNkZWZpbmUg
+SU1YX1NSQ19TUlNSX1dBUk1fQk9PVCAgICAgICAgICAgICAgIEJJVCgxNikKPj4KPj4gKyNkZWZp
+bmUgSU1YNl9TUkNfU1JTUiAgICAgICAgMHgwMDgKPj4gKwo+PiAgc3RydWN0IGlteF9yZXNldF9y
+ZWFzb24gewo+PiAgICAgICB1aW50MzJfdCBtYXNrOwo+PiAgICAgICBlbnVtIHJlc2V0X3NyY190
+eXBlIHR5cGU7Cj4gLS0KPiBQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfAo+IEluZHVzdHJpYWwgTGludXggU29s
+dXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8Cj4g
+UGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01
+MTIxLTIwNjkxNy0wICAgIHwKPiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAg
+ICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
+eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
+bGlzdGluZm8vYmFyZWJveAo=
