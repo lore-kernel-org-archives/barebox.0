@@ -1,23 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat
- Linux)) id 1fEVaf-000739-7r
- for barebox@lists.infradead.org; Fri, 04 May 2018 07:57:19 +0000
-Received: from mail2.data-modul.de (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7F09C3E0F8
- for <barebox@lists.infradead.org>; Fri,  4 May 2018 09:57:04 +0200 (CEST)
-Received: from mail2.data-modul.de (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 742733E0F7
- for <barebox@lists.infradead.org>; Fri,  4 May 2018 09:57:04 +0200 (CEST)
-Received: from mail.data-modul.de (unknown [10.1.1.120])
- by mail2.data-modul.de (Postfix) with ESMTPS
- for <barebox@lists.infradead.org>; Fri,  4 May 2018 09:57:04 +0200 (CEST)
-From: "Albert, Elmar" <EAlbert@data-modul.com>
-Date: Fri, 4 May 2018 07:57:03 +0000
-Message-ID: <24f0c042-64a4-eaeb-36eb-6fffe8cdb65d@data-modul.com>
-Content-Language: de-DE
-Content-ID: <AA60AB2209502440A36A09E609859099@data-modul.com>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fEVuL-0004C9-1b
+ for barebox@lists.infradead.org; Fri, 04 May 2018 08:17:44 +0000
+Date: Fri, 4 May 2018 10:17:24 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180504081724.wuphf3gr6rmax2os@pengutronix.de>
+References: <24f0c042-64a4-eaeb-36eb-6fffe8cdb65d@data-modul.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <24f0c042-64a4-eaeb-36eb-6fffe8cdb65d@data-modul.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,39 +18,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Dynamic RAM configuration on iMX6 board
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: Dynamic RAM configuration on iMX6 board
+To: "Albert, Elmar" <EAlbert@data-modul.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-SGVsbG8gZXZlcnlib2R5LA0KDQpJJ20gd29ya2luZyBvbiBhIGJvYXJkIHVzaW5nIGlNWDYuIFRo
-ZXJlIGFyZSB2YXJpYW50cyBvZiB0aGUgYm9hcmQNCmRpZmZlcmluZyBpbiBpTVg2Uy9ETC9EL1Eg
-YW5kIHRoZSBzaXplIG9mIHRoZSBtZW1vcnkgb24gQ1MwLiBUaGUNCmlNWDZTL0RML0QgdmFyaWFu
-dHMgYXJlIHVzaW5nIDMyYml0IGludGVyZmFjZSB0byB0d28gRERSMyBkZXZpY2VzIChlLmcuDQox
-R0J5dGUpLCB0aGUgaU1YNlEgdmFyaWFudCBpcyB1c2luZyA2NGJpdCBpbnRlcmZhY2UgdG8gZm91
-ciBERFIzIGRldmljZXMNCihlLmcuIDJHQnl0ZSkuIFRoaXMgaXMgbGVhZGluZyBpbiBhdCBsZWFz
-dCB0d28gZGlmZmVyZW50IC5pbXhjZmcgZmlsZXMNCmZvciBEUkFNLWNvbnRyb2xsZXIgaW5pdGlh
-bGl6YXRpb24uDQpUaGUgRFJBTSBEZW5zaXR5IGFuZCB0aGUgbnVtYmVyIG9mIG1vdW50ZWQgRERS
-MyBkZXZpY2VzIGNhbiBiZSByZWFkIGZyb20NCnRoZSBib2FyZCB2aWEgR1BJTy1waW5zLg0KDQpU
-byBwcmV2ZW50IG11bHRpcGxlIGJhcmVib3gtaW1hZ2VzIGFuZCBzbyBtdWx0aXBsZSBwcmUtcHJv
-Z3JhbW1lZA0KU1BJLUZsYXNoZXMgb24gc3RvY2sgaW4gdGhlIGZhY3RvcnksIEknbSBsb29raW5n
-IGZvciBhIHNvbHV0aW9uIHRvDQpjb25maWd1cmUgdGhlIERSQU0tQ29udHJvbGxlciBkeW5hbWlj
-YWxseSBkdXJpbmcgYmFyZWJveCBib290Lg0KDQpJcyBpdCBwb3NzaWJsZSB0byBoYXZlIG1vcmUg
-dGhhbiBvbmUgLmlteGNmZyBmaWxlcyBpbiBvbmUgaW1hZ2UgYW5kIGlmDQpzbywgaG93IGNhbiBp
-dCBiZSBzZWxlY3RlZCB0byBjb25maWd1cmUgdGhlIERSQU0gY29udHJvbGxlciBkZXBlbmRpbmcg
-b24NCmJvYXJkLWluZm8gcmVhZCBmcm9tIEdQSU8tcGlucz8NCg0KLS0NCg0KTWl0IGZyZXVuZGxp
-Y2hlbiBHcsO8w59lbiAvIEJlc3QgUmVnYXJkcw0KDQpFbG1hciBBbGJlcnQNCkVtYmVkZGVkIFIm
-RA0KDQpEQVRBIE1PRFVMIEFHDQpMYW5kc2JlcmdlciBTdHIuIDMyMg0KODA2ODcgTXVuaWNoDQpH
-ZXJtYW55DQoNClRlbDogKzQ5IDg5IDU2MDE3IDE5Nw0KRmF4OiArNDkgODkgNTYwMTcgMzQ1DQoN
-Ck1haWwgdG86ICBlYWxiZXJ0QGRhdGEtbW9kdWwuY29tDQpJbnRlcm5ldDogaHR0cDovL3d3dy5k
-YXRhLW1vZHVsLmNvbQ0KDQoNClZlcnRyYXVsaWNoZSBFLU1haWwgdm9uIC8gQ29uZmlkZW50aWFs
-IGUtbWFpbCBmcm9tOiBEQVRBIE1PRFVMIEFHDQpWb3JzdGFuZCAvIENFTzogRHIuIEZsb3JpYW4g
-UGVzYWhsDQpWb3JzaXR6ZW5kZSBkZXMgQXVmc2ljaHRzcmF0ZXMgLyBDaGFpcndvbWFuIG9mIHRo
-ZSBTdXBlcnZpc29yeSBCb2FyZDogS3Jpc3RpbiBELiBSdXNzZWxsDQpTaXR6IGRlciBHZXNlbGxz
-Y2hhZnQgLyBSZWdpc3RlcmVkIE9mZmljZTogTcO8bmNoZW4NClJlZ2lzdGVyZ2VyaWNodCAvIFJl
-Z2lzdHJhdGlvbiBDb3VydDogTcO8bmNoZW4gSGFuZGVsc3JlZ2lzdGVyIEIgODUgNTkxDQoNCg0K
-DQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
-IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
-ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi Elmar,
+
+On Fri, May 04, 2018 at 07:57:03AM +0000, Albert, Elmar wrote:
+> Hello everybody,
+> 
+> I'm working on a board using iMX6. There are variants of the board
+> differing in iMX6S/DL/D/Q and the size of the memory on CS0. The
+> iMX6S/DL/D variants are using 32bit interface to two DDR3 devices (e.g.
+> 1GByte), the iMX6Q variant is using 64bit interface to four DDR3 devices
+> (e.g. 2GByte). This is leading in at least two different .imxcfg files
+> for DRAM-controller initialization.
+> The DRAM Density and the number of mounted DDR3 devices can be read from
+> the board via GPIO-pins.
+> 
+> To prevent multiple barebox-images and so multiple pre-programmed
+> SPI-Flashes on stock in the factory, I'm looking for a solution to
+> configure the DRAM-Controller dynamically during barebox boot.
+> 
+> Is it possible to have more than one .imxcfg files in one image and if
+> so, how can it be selected to configure the DRAM controller depending on
+> board-info read from GPIO-pins?
+
+It's not possible to have multiple .imxcfg in one image.
+
+It is however possible to create a barebox with for multiple boards with
+different SDRAM setups. Unfortunately it is rather complicated to get
+there. First you need a .imxcfg file which doesn't setup the SDRAM and
+which loads (the initial part of) the image to the i.MX6 internal SRAM.
+In your entry function you must first decide what hardware you are on.
+You must be able to get that information during runtime (Some GPIO or
+so?). Once you know which machine you are on setup the SDRAM
+accordingly. You can do that by either poking a your former .imxcfg
+file into the registers or by using mx6dq_dram_iocfg() and friends. Once
+your SDRAM is configured use one of the xload functions to load the
+whole image into SDRAM. For SPI NOR that would be
+imx6_spi_start_image(). Note that the whole image will be started again,
+so you need to detect whether you are running from internal SRAM (in
+which case you setup SDRAM) or if you are running from SDRAM already (in
+which case you call imx6q_barebox_entry()).
+Note that you also need a slightly adjusted entry in
+images/Makefile.imx to make sure that the ROM only loads the initial
+portion of the image to SRAM.
+
+For an example see the wandboard which does exactly this. It's in
+arch/arm/boards/technexion-wandboard/
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
