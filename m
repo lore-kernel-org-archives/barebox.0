@@ -1,15 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fETDk-0005wZ-TW
- for barebox@lists.infradead.org; Fri, 04 May 2018 05:25:31 +0000
-Date: Fri, 4 May 2018 07:25:10 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180504052510.pry7ny534dhnk6gr@pengutronix.de>
-References: <20180502193653.12960-1-andrew.smirnov@gmail.com>
+Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat
+ Linux)) id 1fEVaf-000739-7r
+ for barebox@lists.infradead.org; Fri, 04 May 2018 07:57:19 +0000
+Received: from mail2.data-modul.de (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7F09C3E0F8
+ for <barebox@lists.infradead.org>; Fri,  4 May 2018 09:57:04 +0200 (CEST)
+Received: from mail2.data-modul.de (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 742733E0F7
+ for <barebox@lists.infradead.org>; Fri,  4 May 2018 09:57:04 +0200 (CEST)
+Received: from mail.data-modul.de (unknown [10.1.1.120])
+ by mail2.data-modul.de (Postfix) with ESMTPS
+ for <barebox@lists.infradead.org>; Fri,  4 May 2018 09:57:04 +0200 (CEST)
+From: "Albert, Elmar" <EAlbert@data-modul.com>
+Date: Fri, 4 May 2018 07:57:03 +0000
+Message-ID: <24f0c042-64a4-eaeb-36eb-6fffe8cdb65d@data-modul.com>
+Content-Language: de-DE
+Content-ID: <AA60AB2209502440A36A09E609859099@data-modul.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180502193653.12960-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,79 +26,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RESEND PATCH v2 0/2] Initial RAVE SP Linux driver port
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Dynamic RAM configuration on iMX6 board
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Wed, May 02, 2018 at 12:36:51PM -0700, Andrey Smirnov wrote:
-> Everyone:
-> 
-> These two patches are first results of an effort to port RAVE SP
-> (Supervisory Processor) MFD and it's children drivers from Linux
-> kernel to Barebox. Patch 1/2 brings MFD driver with its core API and
-> patch 2/2 adds support for watchdog "cell" of the RAVE SP device.
-> 
-> With a very few exceptions, the code of the drivers is identical to
-> the code of their Linux counterparts.
-> 
-> These drivers are also first users of "serdev" API work that was
-> recently merged and should server as a reasonable example of its
-> usage.
-> 
-> Feedback is wellcome!
-> 
-> Changes since [v1]:
-> 
->  - rave_sp_wdt_set_timeout fixed to correctly handle timeout of zero
->    (as pointed out by Sascha)
-> 
-> Thanks,
-> Andrey Smirnov
-
-Applied, thanks
-
-Sascha
-
-> 
-> [v1] http://lists.infradead.org/pipermail/barebox/2018-April/032725.html
-> 
-> Andrey Smirnov (2):
->   mfd: Port RAVE SP driver from Linux kernel
->   watchdog: Port RAVE SP watchdog driver from Linux kernel
-> 
->  drivers/mfd/Kconfig            |   8 +
->  drivers/mfd/Makefile           |   1 +
->  drivers/mfd/rave-sp.c          | 758 +++++++++++++++++++++++++++++++++++++++++
->  drivers/watchdog/Kconfig       |   5 +
->  drivers/watchdog/Makefile      |   1 +
->  drivers/watchdog/rave-sp-wdt.c | 426 +++++++++++++++++++++++
->  include/linux/mfd/rave-sp.h    |  78 +++++
->  7 files changed, 1277 insertions(+)
->  create mode 100644 drivers/mfd/rave-sp.c
->  create mode 100644 drivers/watchdog/rave-sp-wdt.c
->  create mode 100644 include/linux/mfd/rave-sp.h
-> 
-> -- 
-> 2.14.3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gZXZlcnlib2R5LA0KDQpJJ20gd29ya2luZyBvbiBhIGJvYXJkIHVzaW5nIGlNWDYuIFRo
+ZXJlIGFyZSB2YXJpYW50cyBvZiB0aGUgYm9hcmQNCmRpZmZlcmluZyBpbiBpTVg2Uy9ETC9EL1Eg
+YW5kIHRoZSBzaXplIG9mIHRoZSBtZW1vcnkgb24gQ1MwLiBUaGUNCmlNWDZTL0RML0QgdmFyaWFu
+dHMgYXJlIHVzaW5nIDMyYml0IGludGVyZmFjZSB0byB0d28gRERSMyBkZXZpY2VzIChlLmcuDQox
+R0J5dGUpLCB0aGUgaU1YNlEgdmFyaWFudCBpcyB1c2luZyA2NGJpdCBpbnRlcmZhY2UgdG8gZm91
+ciBERFIzIGRldmljZXMNCihlLmcuIDJHQnl0ZSkuIFRoaXMgaXMgbGVhZGluZyBpbiBhdCBsZWFz
+dCB0d28gZGlmZmVyZW50IC5pbXhjZmcgZmlsZXMNCmZvciBEUkFNLWNvbnRyb2xsZXIgaW5pdGlh
+bGl6YXRpb24uDQpUaGUgRFJBTSBEZW5zaXR5IGFuZCB0aGUgbnVtYmVyIG9mIG1vdW50ZWQgRERS
+MyBkZXZpY2VzIGNhbiBiZSByZWFkIGZyb20NCnRoZSBib2FyZCB2aWEgR1BJTy1waW5zLg0KDQpU
+byBwcmV2ZW50IG11bHRpcGxlIGJhcmVib3gtaW1hZ2VzIGFuZCBzbyBtdWx0aXBsZSBwcmUtcHJv
+Z3JhbW1lZA0KU1BJLUZsYXNoZXMgb24gc3RvY2sgaW4gdGhlIGZhY3RvcnksIEknbSBsb29raW5n
+IGZvciBhIHNvbHV0aW9uIHRvDQpjb25maWd1cmUgdGhlIERSQU0tQ29udHJvbGxlciBkeW5hbWlj
+YWxseSBkdXJpbmcgYmFyZWJveCBib290Lg0KDQpJcyBpdCBwb3NzaWJsZSB0byBoYXZlIG1vcmUg
+dGhhbiBvbmUgLmlteGNmZyBmaWxlcyBpbiBvbmUgaW1hZ2UgYW5kIGlmDQpzbywgaG93IGNhbiBp
+dCBiZSBzZWxlY3RlZCB0byBjb25maWd1cmUgdGhlIERSQU0gY29udHJvbGxlciBkZXBlbmRpbmcg
+b24NCmJvYXJkLWluZm8gcmVhZCBmcm9tIEdQSU8tcGlucz8NCg0KLS0NCg0KTWl0IGZyZXVuZGxp
+Y2hlbiBHcsO8w59lbiAvIEJlc3QgUmVnYXJkcw0KDQpFbG1hciBBbGJlcnQNCkVtYmVkZGVkIFIm
+RA0KDQpEQVRBIE1PRFVMIEFHDQpMYW5kc2JlcmdlciBTdHIuIDMyMg0KODA2ODcgTXVuaWNoDQpH
+ZXJtYW55DQoNClRlbDogKzQ5IDg5IDU2MDE3IDE5Nw0KRmF4OiArNDkgODkgNTYwMTcgMzQ1DQoN
+Ck1haWwgdG86ICBlYWxiZXJ0QGRhdGEtbW9kdWwuY29tDQpJbnRlcm5ldDogaHR0cDovL3d3dy5k
+YXRhLW1vZHVsLmNvbQ0KDQoNClZlcnRyYXVsaWNoZSBFLU1haWwgdm9uIC8gQ29uZmlkZW50aWFs
+IGUtbWFpbCBmcm9tOiBEQVRBIE1PRFVMIEFHDQpWb3JzdGFuZCAvIENFTzogRHIuIEZsb3JpYW4g
+UGVzYWhsDQpWb3JzaXR6ZW5kZSBkZXMgQXVmc2ljaHRzcmF0ZXMgLyBDaGFpcndvbWFuIG9mIHRo
+ZSBTdXBlcnZpc29yeSBCb2FyZDogS3Jpc3RpbiBELiBSdXNzZWxsDQpTaXR6IGRlciBHZXNlbGxz
+Y2hhZnQgLyBSZWdpc3RlcmVkIE9mZmljZTogTcO8bmNoZW4NClJlZ2lzdGVyZ2VyaWNodCAvIFJl
+Z2lzdHJhdGlvbiBDb3VydDogTcO8bmNoZW4gSGFuZGVsc3JlZ2lzdGVyIEIgODUgNTkxDQoNCg0K
+DQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
+IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
