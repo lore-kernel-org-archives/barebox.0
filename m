@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fEbYb-0007I7-DT
- for barebox@lists.infradead.org; Fri, 04 May 2018 14:19:36 +0000
-References: <1524222061-8825-1-git-send-email-s.riedmueller@phytec.de>
- <20180502104956.rcrnkvcwqk3fy5qc@pengutronix.de>
-From: =?UTF-8?Q?Stefan_Riedm=c3=bcller?= <s.riedmueller@phytec.de>
-Message-ID: <1a84b0b2-fe9d-6a41-5c77-4a84481591fd@phytec.de>
-Date: Fri, 4 May 2018 16:19:15 +0200
-MIME-Version: 1.0
-In-Reply-To: <20180502104956.rcrnkvcwqk3fy5qc@pengutronix.de>
-Content-Language: en-US
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fFhSf-0006ea-L5
+ for barebox@lists.infradead.org; Mon, 07 May 2018 14:49:59 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1fFhSS-0005mm-VN
+ for barebox@lists.infradead.org; Mon, 07 May 2018 16:49:45 +0200
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon,  7 May 2018 16:49:44 +0200
+Message-Id: <20180507144944.17128-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,65 +19,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: of_display_timings: Add simple-panel support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] bbu: imx-bbu-internal: add i.MX51 SPI/I2C flash handler
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/mach-imx/imx-bbu-internal.c | 14 ++++++++++++++
+ arch/arm/mach-imx/include/mach/bbu.h |  9 +++++++++
+ 2 files changed, 23 insertions(+)
 
-On 02.05.2018 12:49, Sascha Hauer wrote:
-> Hi Stefan,
->
-> On Fri, Apr 20, 2018 at 01:01:01PM +0200, Stefan Riedmueller wrote:
->> Display timings can now be set with simple-panel method which selects
->> the required timings by the compatible of the simple panel devicetree
->> node.
->>
->> This patch adds an option to set simple panel timings with the
->> of_display_timings command by setting the compatible of the display node.
->> The options -P and -c were implemented. The -P option requires the display
->> node path as argument and the -c option requires the compatible to set.
->>
->> This has one downside. The available simple panel timings cannot be
->> listed since the timings are defined in the kernel. Account for this in the
->> help text.
->>
->> Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
->> ---
->>   commands/of_display_timings.c | 65 ++++++++++++++++++++++++++++++++++++++++---
->>   1 file changed, 61 insertions(+), 4 deletions(-)
-> This patch seems to be a way to manipulate a device tree property in the
-> Linux device tree. How about adding a new option to the of_property
-> command which would register a of_fixup instead of doing the operation
-> now?
->
-> Like this:
->
-> of_property -f -s /path/to/node compatible vendor,foo-display
+diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+index d03be7248742..c7375ff52aee 100644
+--- a/arch/arm/mach-imx/imx-bbu-internal.c
++++ b/arch/arm/mach-imx/imx-bbu-internal.c
+@@ -490,6 +490,20 @@ int imx51_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
+ 	return __register_handler(imx_handler);
+ }
+ 
++int imx51_bbu_internal_spi_i2c_register_handler(const char *name,
++		char *devicefile, unsigned long flags)
++{
++	struct imx_internal_bbu_handler *imx_handler;
++
++	imx_handler = __init_handler(name, devicefile, flags);
++	imx_handler->flash_header_offset = FLASH_HEADER_OFFSET_MMC;
++
++	imx_handler->flags = IMX_INTERNAL_FLAG_ERASE;
++	imx_handler->handler.handler = imx_bbu_internal_v1_update;
++
++	return __register_handler(imx_handler);
++}
++
+ /*
+  * Register an i.MX53 internal boot update handler for MMC/SD
+  */
+diff --git a/arch/arm/mach-imx/include/mach/bbu.h b/arch/arm/mach-imx/include/mach/bbu.h
+index 15bdbe1bec0d..bde3e02d2790 100644
+--- a/arch/arm/mach-imx/include/mach/bbu.h
++++ b/arch/arm/mach-imx/include/mach/bbu.h
+@@ -12,6 +12,9 @@ struct imx_dcd_v2_entry;
+ int imx51_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
+ 		unsigned long flags);
+ 
++int imx51_bbu_internal_spi_i2c_register_handler(const char *name,
++		char *devicefile, unsigned long flags);
++
+ int imx53_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
+ 		unsigned long flags);
+ 
+@@ -41,6 +44,12 @@ static inline int imx51_bbu_internal_mmc_register_handler(const char *name, char
+ 	return -ENOSYS;
+ }
+ 
++static inline int imx51_bbu_internal_spi_i2c_register_handler(const char *name,
++		char *devicefile, unsigned long flags)
++{
++	return -ENOSYS;
++}
++
+ static inline int imx53_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
+ 		unsigned long flags)
+ {
+-- 
+2.17.0
 
-Thats a good idea. My intention was to put it in of_display_timings 
-because it is display timing related but I see the advantage of having a 
-more generic solution for this. So I put it on my todo and try to send a 
-patch soon.
-
-Thanks
-Stefan
-
->
->> +		case 'c':
->> +			compatible = optarg;
->> +			break;
->>   		case 'S':
->>   			timingpath = xzalloc(strlen(optarg) + 1);
->>   			strcpy(timingpath, optarg);
-> xstrdup() is what you want here.
->
-> Sascha
->
 
 _______________________________________________
 barebox mailing list
