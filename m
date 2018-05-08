@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fG4lb-0007hi-QS
+ id 1fG4lb-0007hj-Sc
  for barebox@lists.infradead.org; Tue, 08 May 2018 15:43:05 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Tue,  8 May 2018 17:42:48 +0200
-Message-Id: <20180508154249.30171-1-r.hieber@pengutronix.de>
+Date: Tue,  8 May 2018 17:42:49 +0200
+Message-Id: <20180508154249.30171-2-r.hieber@pengutronix.de>
+In-Reply-To: <20180508154249.30171-1-r.hieber@pengutronix.de>
+References: <20180508154249.30171-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,28 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] README: describe how to build the documentation
+Subject: [PATCH 2/2] doc: boards: imx: link to mxs documentation
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
 ---
- README | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/boards/imx.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/README b/README
-index 3862f6091e..8025bdf4a2 100644
---- a/README
-+++ b/README
-@@ -179,7 +179,8 @@ net/                  -> Networking stuff
+diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
+index 9b1eb82d41..343643cd75 100644
+--- a/Documentation/boards/imx.rst
++++ b/Documentation/boards/imx.rst
+@@ -7,7 +7,7 @@ SoCs up to i.MX31 support only the external Boot Mode. Newer SoCs
+ can be configured for internal or external Boot Mode with the internal
+ boot mode being the more popular mode. The i.MX23 and i.MX28, also
+ known as i.MXs, are special. These SoCs have a completely different
+-boot mechanism.
++boot mechanism, see :doc:`mxs` instead.
  
- scripts/              -> Kconfig system
- 
--Documentation/        -> Sphinx generated documentation
-+Documentation/        -> Sphinx generated documentation. Call "make docs" to
-+                         generate a HTML version in Documentation/html.
- 
- 
- Release Strategy
+ Internal Boot Mode
+ ------------------
 -- 
 2.11.0
 
