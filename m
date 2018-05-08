@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fGABx-0001Sv-Kh
- for barebox@lists.infradead.org; Tue, 08 May 2018 21:30:38 +0000
-Received: by mail-pg0-x242.google.com with SMTP id m21-v6so21714084pgv.8
- for <barebox@lists.infradead.org>; Tue, 08 May 2018 14:30:27 -0700 (PDT)
+ id 1fGABk-0001Re-QH
+ for barebox@lists.infradead.org; Tue, 08 May 2018 21:30:25 +0000
+Received: by mail-pg0-x243.google.com with SMTP id a13-v6so21710325pgu.4
+ for <barebox@lists.infradead.org>; Tue, 08 May 2018 14:30:14 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue,  8 May 2018 14:29:44 -0700
-Message-Id: <20180508212951.6446-22-andrew.smirnov@gmail.com>
+Date: Tue,  8 May 2018 14:29:34 -0700
+Message-Id: <20180508212951.6446-12-andrew.smirnov@gmail.com>
 In-Reply-To: <20180508212951.6446-1-andrew.smirnov@gmail.com>
 References: <20180508212951.6446-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,66 +23,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 21/28] ARM: mmu: Share code between dma_alloc_*() functions
+Subject: [PATCH 11/28] ARM: mmu: Share PMD_SECT_DEF_CACHED
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Code of dma_alloc_coherent() and dma_alloc_writecombine() is almost
-identical with exception of the flags passed to undelying call to
-__remap_range(). Move commong code into a shared subroutine and
-convert both functions to use it.
+Share PMD_SECT_DEF_CACHED between mmu.c and mmu-early.c.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 22 ++++++++--------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
+ arch/arm/cpu/mmu-early.c | 3 +--
+ arch/arm/cpu/mmu.h       | 1 +
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 5e8d439bf..339ab8e82 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -500,7 +500,7 @@ void mmu_disable(void)
- 	__mmu_cache_off();
+diff --git a/arch/arm/cpu/mmu-early.c b/arch/arm/cpu/mmu-early.c
+index 1ff48d1da..18df78370 100644
+--- a/arch/arm/cpu/mmu-early.c
++++ b/arch/arm/cpu/mmu-early.c
+@@ -15,8 +15,7 @@ static void map_cachable(unsigned long start, unsigned long size)
+ 	start = ALIGN_DOWN(start, SZ_1M);
+ 	size  = ALIGN(size, SZ_1M);
+ 
+-	create_sections(ttb, start, size, PMD_SECT_AP_WRITE |
+-			PMD_SECT_AP_READ | PMD_TYPE_SECT | PMD_SECT_WB);
++	create_sections(ttb, start, size, PMD_SECT_DEF_CACHED);
  }
  
--void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
-+static void *dma_alloc(size_t size, dma_addr_t *dma_handle, uint32_t pte_flags)
+ void mmu_early_enable(unsigned long membase, unsigned long memsize,
+diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
+index 659bcfffd..0b82cf738 100644
+--- a/arch/arm/cpu/mmu.h
++++ b/arch/arm/cpu/mmu.h
+@@ -40,6 +40,7 @@ create_sections(uint32_t *ttb, unsigned long addr,
+ }
+ 
+ #define PMD_SECT_DEF_UNCACHED (PMD_SECT_AP_WRITE | PMD_SECT_AP_READ | PMD_TYPE_SECT)
++#define PMD_SECT_DEF_CACHED (PMD_SECT_WB | PMD_SECT_DEF_UNCACHED)
+ 
+ static inline void create_flat_mapping(uint32_t *ttb)
  {
- 	void *ret;
- 
-@@ -511,25 +511,19 @@ void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
- 
- 	dma_inv_range((unsigned long)ret, (unsigned long)ret + size);
- 
--	__remap_range(ret, size, pte_flags_uncached);
-+	__remap_range(ret, size, pte_flags);
- 
- 	return ret;
- }
- 
--void *dma_alloc_writecombine(size_t size, dma_addr_t *dma_handle)
-+void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
- {
--	void *ret;
--
--	size = PAGE_ALIGN(size);
--	ret = xmemalign(PAGE_SIZE, size);
--	if (dma_handle)
--		*dma_handle = (dma_addr_t)ret;
--
--	dma_inv_range((unsigned long)ret, (unsigned long)ret + size);
--
--	__remap_range(ret, size, pte_flags_wc);
-+	return dma_alloc(size, dma_handle, pte_flags_uncached);
-+}
- 
--	return ret;
-+void *dma_alloc_writecombine(size_t size, dma_addr_t *dma_handle)
-+{
-+	return dma_alloc(size, dma_handle, pte_flags_wc);
- }
- 
- unsigned long virt_to_phys(volatile void *virt)
 -- 
 2.17.0
 
