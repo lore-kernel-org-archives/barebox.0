@@ -1,24 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fG4pM-0001Bw-Di
- for barebox@lists.infradead.org; Tue, 08 May 2018 15:46:58 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <rhi@pengutronix.de>) id 1fG4p8-00042E-Vp
- for barebox@lists.infradead.org; Tue, 08 May 2018 17:46:42 +0200
-Received: from rhi by ptx.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <rhi@pengutronix.de>) id 1fG4p8-0002uF-L0
- for barebox@lists.infradead.org; Tue, 08 May 2018 17:46:42 +0200
-Date: Tue, 8 May 2018 17:46:42 +0200
-From: Roland Hieber <r.hieber@pengutronix.de>
-Message-ID: <20180508154642.lpauozcpszxonpxx@pengutronix.de>
-References: <20180508154249.30171-1-r.hieber@pengutronix.de>
- <20180508154249.30171-2-r.hieber@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180508154249.30171-2-r.hieber@pengutronix.de>
+ id 1fG9xS-00009Y-If
+ for barebox@lists.infradead.org; Tue, 08 May 2018 21:15:40 +0000
+Received: by mail-pl0-x241.google.com with SMTP id f7-v6so2956960plr.4
+ for <barebox@lists.infradead.org>; Tue, 08 May 2018 14:15:28 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue,  8 May 2018 14:15:02 -0700
+Message-Id: <20180508211502.5476-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,50 +16,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] doc: boards: imx: link to mxs documentation
+Subject: [PATCH] serial: lpuart: Avoid division by zero when requested
+ baudrate is
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-For both:
+With serdev device support added there's now a corner case where:
 
-Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
+ 1. There is a DT node for a serdev device on one of the UARTs
+ 2. There is no driver that binds against serdev device's compatibility
+    string
 
-On Tue, May 08, 2018 at 05:42:49PM +0200, Roland Hieber wrote:
-> ---
->  Documentation/boards/imx.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
-> index 9b1eb82d41..343643cd75 100644
-> --- a/Documentation/boards/imx.rst
-> +++ b/Documentation/boards/imx.rst
-> @@ -7,7 +7,7 @@ SoCs up to i.MX31 support only the external Boot Mode. Newer SoCs
->  can be configured for internal or external Boot Mode with the internal
->  boot mode being the more popular mode. The i.MX23 and i.MX28, also
->  known as i.MXs, are special. These SoCs have a completely different
-> -boot mechanism.
-> +boot mechanism, see :doc:`mxs` instead.
->  
->  Internal Boot Mode
->  ------------------
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+with 1 and 2 being true it is possible to end up in a situation where
+a particualr UART has not been initalized to any baudrate when
+clock_notifier_call_chain() gets called. This effectively translates
+to
 
+	set_baudrate(uart, 0);
+
+which for LPUART driver result in a division by zero.
+
+To avoid this problem, convert lpuart_serial_setbaudrate() to treat
+zero baudrate as a request to disable the UART. While we are at it add
+a BUG_ON() to lpuart_setbrg() to simplify finding any future bugs.
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/serial/serial_lpuart.c | 13 ++++++++-----
+ include/serial/lpuart.h        |  2 ++
+ 2 files changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/serial/serial_lpuart.c b/drivers/serial/serial_lpuart.c
+index f28035a32..246fc3d3a 100644
+--- a/drivers/serial/serial_lpuart.c
++++ b/drivers/serial/serial_lpuart.c
+@@ -68,11 +68,14 @@ static int lpuart_serial_setbaudrate(struct console_device *cdev,
+ 
+ 	lpuart_enable(lpuart, false);
+ 
+-	lpuart_setbrg(lpuart->base,
+-		      clk_get_rate(lpuart->clk),
+-		      baudrate);
+-
+-	lpuart_enable(lpuart, true);
++	/*
++	 * We treat baudrate of 0 as a request to disable UART
++	 */
++	if (baudrate) {
++		lpuart_setbrg(lpuart->base, clk_get_rate(lpuart->clk),
++			      baudrate);
++		lpuart_enable(lpuart, true);
++	}
+ 
+ 	lpuart->baudrate = baudrate;
+ 
+diff --git a/include/serial/lpuart.h b/include/serial/lpuart.h
+index a920291de..9c6e271eb 100644
+--- a/include/serial/lpuart.h
++++ b/include/serial/lpuart.h
+@@ -228,6 +228,8 @@ static inline void lpuart_setbrg(void __iomem *base,
+ 	unsigned int bfra;
+ 	u16 sbr;
+ 
++	BUG_ON(!baudrate);
++
+ 	sbr = (u16) (refclock / (16 * baudrate));
+ 
+ 	writeb(sbr >> 8,   base + UARTBDH);
 -- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.17.0
+
 
 _______________________________________________
 barebox mailing list
