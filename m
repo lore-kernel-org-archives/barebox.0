@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fGABY-0005O7-FO
- for barebox@lists.infradead.org; Tue, 08 May 2018 21:30:14 +0000
-Received: by mail-pl0-x244.google.com with SMTP id i5-v6so2972005plt.2
- for <barebox@lists.infradead.org>; Tue, 08 May 2018 14:30:02 -0700 (PDT)
+ id 1fGABa-0005P8-13
+ for barebox@lists.infradead.org; Tue, 08 May 2018 21:30:15 +0000
+Received: by mail-pg0-x244.google.com with SMTP id a13-v6so21710145pgu.4
+ for <barebox@lists.infradead.org>; Tue, 08 May 2018 14:30:03 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue,  8 May 2018 14:29:25 -0700
-Message-Id: <20180508212951.6446-3-andrew.smirnov@gmail.com>
+Date: Tue,  8 May 2018 14:29:26 -0700
+Message-Id: <20180508212951.6446-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20180508212951.6446-1-andrew.smirnov@gmail.com>
 References: <20180508212951.6446-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,29 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/28] ARM: mmu: Make use of IS_ALIGNED in
- arm_mmu_remap_sdram()
+Subject: [PATCH 03/28] ARM: mmu: Use ALIGN and ALIGN_DOWN in map_cachable()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/cpu/mmu-early.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 9472013ca..c70e9e782 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -241,7 +241,7 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
- 	 * We replace each 1MiB section in this range with second level page
- 	 * tables, therefore we must have 1Mib aligment here.
- 	 */
--	if ((phys & (SZ_1M - 1)) || (bank->size & (SZ_1M - 1)))
-+	if (!IS_ALIGNED(phys, SZ_1M) || !IS_ALIGNED(bank->size, SZ_1M))
- 		return -EINVAL;
+diff --git a/arch/arm/cpu/mmu-early.c b/arch/arm/cpu/mmu-early.c
+index 70cb5fe31..fc14d5cac 100644
+--- a/arch/arm/cpu/mmu-early.c
++++ b/arch/arm/cpu/mmu-early.c
+@@ -23,8 +23,8 @@ static void create_sections(unsigned long addr, int size_m, unsigned int flags)
  
- 	ptes = xmemalign(PAGE_SIZE, num_ptes * sizeof(u32));
+ static void map_cachable(unsigned long start, unsigned long size)
+ {
+-	start &= ~(SZ_1M - 1);
+-	size = (size + (SZ_1M - 1)) & ~(SZ_1M - 1);
++	start = ALIGN_DOWN(start, SZ_1M);
++	size  = ALIGN(size, SZ_1M);
+ 
+ 	create_sections(start, size >> 20, PMD_SECT_AP_WRITE |
+ 			PMD_SECT_AP_READ | PMD_TYPE_SECT | PMD_SECT_WB);
 -- 
 2.17.0
 
