@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fGA3k-0001MX-7f
- for barebox@lists.infradead.org; Tue, 08 May 2018 21:22:09 +0000
-Received: by mail-pf0-x241.google.com with SMTP id a14so24569448pfi.1
- for <barebox@lists.infradead.org>; Tue, 08 May 2018 14:21:53 -0700 (PDT)
+Received: from mail-pg0-x232.google.com ([2607:f8b0:400e:c05::232])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fGABY-0005Mu-45
+ for barebox@lists.infradead.org; Tue, 08 May 2018 21:30:14 +0000
+Received: by mail-pg0-x232.google.com with SMTP id l2-v6so21700860pgc.7
+ for <barebox@lists.infradead.org>; Tue, 08 May 2018 14:29:59 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue,  8 May 2018 14:21:24 -0700
-Message-Id: <20180508212125.5923-2-andrew.smirnov@gmail.com>
-In-Reply-To: <20180508212125.5923-1-andrew.smirnov@gmail.com>
-References: <20180508212125.5923-1-andrew.smirnov@gmail.com>
+Date: Tue,  8 May 2018 14:29:23 -0700
+Message-Id: <20180508212951.6446-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,59 +21,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] common: oftree: Pass bootsource and bootsource instance
- to kernel
+Subject: [PATCH 00/28] ARM MMU code improvements and on-demand PTE allocation
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Pass barebox-detected bootsource and bootsource instance to Linux to
-make it availible to Linux userspace. We use put the version under
-/chosen/bootsource and it can be read under Linux in
+Everyone:
 
-/sys/firmware/devicetree/base/chosen/bootsource
+With exeception of patch 27/28, all patches in this series are just
+small improvements(IMHO) that I made while working with ARM MMU code.
 
-and
+Patch 27/28, OTOH, brings a bit of a change to how MMU code allocates
+PTEs, postponing that until the users of DMA API actually request
+that.
 
-/sys/firmware/devicetree/base/chosen/bootsource-instance.
+Feedback is welcome!
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- common/oftree.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Thanks,
+Andrey Smirnov
 
-diff --git a/common/oftree.c b/common/oftree.c
-index 8a2ede4c6..9c94ca116 100644
---- a/common/oftree.c
-+++ b/common/oftree.c
-@@ -11,6 +11,7 @@
- #include <getopt.h>
- #include <init.h>
- #include <boot.h>
-+#include <bootsource.h>
- #include <i2c/i2c.h>
- 
- #define MAX_LEVEL	32		/* how deeply nested we will go */
-@@ -118,6 +119,7 @@ static int of_fixup_bootargs(struct device_node *root, void *unused)
- {
- 	struct device_node *node;
- 	const char *str;
-+	int instance;
- 	int err;
- 
- 	str = linux_bootargs_get();
-@@ -130,6 +132,12 @@ static int of_fixup_bootargs(struct device_node *root, void *unused)
- 
- 	of_property_write_string(node, "barebox-version", release_string);
- 
-+	of_property_write_string(node, "bootsource", getenv("bootsource"));
-+	instance = bootsource_get_instance();
-+	of_property_write_u32(node, "bootsource-instance",
-+			      (instance == BOOTSOURCE_INSTANCE_UNKNOWN) ?
-+			      0 : instance);
-+
- 	err = of_property_write_string(node, "bootargs", str);
- 
- 	return err;
+Andrey Smirnov (28):
+  ARM: mmu: Remove unused ARM_VECTORS_SIZE
+  ARM: mmu: Make use of IS_ALIGNED in arm_mmu_remap_sdram()
+  ARM: mmu: Use ALIGN and ALIGN_DOWN in map_cachable()
+  ARM: mmu: Introduce set_ttbr()
+  ARM: mmu: Introduce set_domain()
+  ARM: mmu: Share code for create_sections()
+  ARM: mmu: Separate index and address in create_sections()
+  sizes.h: Sync with Linux 4.16
+  ARM: mmu: Specify size in bytes in create_sections()
+  ARM: mmu: Share code for initial flat mapping creation
+  ARM: mmu: Share PMD_SECT_DEF_CACHED
+  ARM: mmu: Drop needless shifting in map_io_sections()
+  ARM: mmu: Replace hardcoded shifts with pgd_index() from Linux
+  ARM: mmu: Trivial simplification in arm_mmu_remap_sdram()
+  ARM: mmu: Replace various SZ_1M with PGDIR_SIZE
+  ARM: mmu: Use PAGE_SIZE when specifying size of one page
+  ARM: mmu: Define and use PTRS_PER_PTE
+  ARM: mmu: Use PAGE_SIZE instead of magic right shift by 12
+  ARM: mmu: Use xmemalign in arm_create_pte()
+  ARM: mmu: Use xmemalign in mmu_init()
+  ARM: mmu: Share code between dma_alloc_*() functions
+  ARM: mmu: Pass PTE flags a parameter to arm_create_pte()
+  ARM: mmu: Make sure that address is 1M aligned in arm_create_pte()
+  ARM: mmu: Use find_pte() to find PTE in create_vector_table()
+  ARM: mmu: Use dma_inv_range() in dma_sync_single_for_cpu()
+  ARM: mmu: Simplify the use of dma_flush_range()
+  ARM: mmu: Implement on-demand PTE allocation
+  ARM: mmu: Introduce ARM_TTB_SIZE
+
+ arch/arm/boards/phytec-som-imx6/lowlevel.c |   1 +
+ arch/arm/cpu/mmu-early.c                   |  31 +-
+ arch/arm/cpu/mmu.c                         | 321 ++++++++++-----------
+ arch/arm/cpu/mmu.h                         |  42 +++
+ arch/arm/include/asm/barebox-arm.h         |   8 +-
+ include/linux/sizes.h                      |   4 +
+ 6 files changed, 210 insertions(+), 197 deletions(-)
+
 -- 
 2.17.0
 
