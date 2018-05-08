@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fGA3e-0002J2-2x
- for barebox@lists.infradead.org; Tue, 08 May 2018 21:22:20 +0000
-Received: by mail-pf0-x241.google.com with SMTP id a22so10454230pfn.6
- for <barebox@lists.infradead.org>; Tue, 08 May 2018 14:21:51 -0700 (PDT)
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fGA3k-0001MZ-8V
+ for barebox@lists.infradead.org; Tue, 08 May 2018 21:22:09 +0000
+Received: by mail-pf0-x241.google.com with SMTP id f189so24538563pfa.7
+ for <barebox@lists.infradead.org>; Tue, 08 May 2018 14:21:55 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue,  8 May 2018 14:21:23 -0700
-Message-Id: <20180508212125.5923-1-andrew.smirnov@gmail.com>
+Date: Tue,  8 May 2018 14:21:25 -0700
+Message-Id: <20180508212125.5923-3-andrew.smirnov@gmail.com>
+In-Reply-To: <20180508212125.5923-1-andrew.smirnov@gmail.com>
+References: <20180508212125.5923-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,28 +23,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/2] Pass reset and boot sources via /chosen node
+Subject: [PATCH 2/2] common: oftree: Pass reset source and reset source
+ instance to kernel
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Everyone:
+Detecting reset reason is, in some cases, a destructive operation and
+in such cases it is impossible to obtain that information in the
+kernel without some help from barebox.
 
-The following two patches are really usefull for Linux userspace
-applications that need to know the details about reset and boot
-sources.
+Pass reset source and reset source instance to kernel to Linux to
+make it availible to Linux userspace. We use put the version under
+/chosen/bootsource and it can be read under Linux in
 
-Feedback is welcome!
+/sys/firmware/devicetree/base/chosen/reset-source.
 
-Thanks,
-Andrey Smirnov
+and
 
-Andrey Smirnov (2):
-  common: oftree: Pass bootsource and bootsource instance to kernel
-  common: oftree: Pass reset source and reset source instance to kernel
+/sys/firmware/devicetree/base/chosen/reset-source-instance.
 
- common/oftree.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ common/oftree.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
+diff --git a/common/oftree.c b/common/oftree.c
+index 9c94ca116..a6633c453 100644
+--- a/common/oftree.c
++++ b/common/oftree.c
+@@ -13,6 +13,7 @@
+ #include <boot.h>
+ #include <bootsource.h>
+ #include <i2c/i2c.h>
++#include <reset_source.h>
+ 
+ #define MAX_LEVEL	32		/* how deeply nested we will go */
+ 
+@@ -132,6 +133,10 @@ static int of_fixup_bootargs(struct device_node *root, void *unused)
+ 
+ 	of_property_write_string(node, "barebox-version", release_string);
+ 
++	of_property_write_string(node, "reset-source", reset_source_name());
++	of_property_write_u32(node, "reset-source-instance",
++			      reset_source_get_instance());
++
+ 	of_property_write_string(node, "bootsource", getenv("bootsource"));
+ 	instance = bootsource_get_instance();
+ 	of_property_write_u32(node, "bootsource-instance",
 -- 
 2.17.0
 
