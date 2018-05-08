@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fGABt-00015P-Am
- for barebox@lists.infradead.org; Tue, 08 May 2018 21:30:34 +0000
-Received: by mail-pg0-x243.google.com with SMTP id g20-v6so15031467pgv.1
- for <barebox@lists.infradead.org>; Tue, 08 May 2018 14:30:22 -0700 (PDT)
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fGABw-0001Se-3a
+ for barebox@lists.infradead.org; Tue, 08 May 2018 21:30:36 +0000
+Received: by mail-pf0-x243.google.com with SMTP id v63so24548780pfk.8
+ for <barebox@lists.infradead.org>; Tue, 08 May 2018 14:30:25 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue,  8 May 2018 14:29:41 -0700
-Message-Id: <20180508212951.6446-19-andrew.smirnov@gmail.com>
+Date: Tue,  8 May 2018 14:29:43 -0700
+Message-Id: <20180508212951.6446-21-andrew.smirnov@gmail.com>
 In-Reply-To: <20180508212951.6446-1-andrew.smirnov@gmail.com>
 References: <20180508212951.6446-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,10 +23,12 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/28] ARM: mmu: Use PAGE_SIZE instead of magic right shift by
- 12
+Subject: [PATCH 20/28] ARM: mmu: Use xmemalign in mmu_init()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+
+We don't handle OOM case in that code, so using xmemalign seems like a
+better option.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
@@ -34,18 +36,18 @@ Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index d70516f9c..314867282 100644
+index 42341a7a3..5e8d439bf 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -215,7 +215,7 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
- 	unsigned long phys = (unsigned long)bank->start;
- 	unsigned long ttb_start = pgd_index(phys);
- 	unsigned long ttb_end = ttb_start + pgd_index(bank->size);
--	unsigned long num_ptes = bank->size >> 12;
-+	unsigned long num_ptes = bank->size / PAGE_SIZE;
- 	int i, pte;
- 	u32 *ptes;
+@@ -450,7 +450,7 @@ static int mmu_init(void)
+ 			pr_crit("Critical Error: Can't request SDRAM region for ttb at %p\n",
+ 					ttb);
+ 	} else {
+-		ttb = memalign(0x10000, 0x4000);
++		ttb = xmemalign(0x10000, 0x4000);
+ 	}
  
+ 	pr_debug("ttb: 0x%p\n", ttb);
 -- 
 2.17.0
 
