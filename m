@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x231.google.com ([2607:f8b0:4001:c0b::231])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fIN1p-0001J1-Oz
- for barebox@lists.infradead.org; Mon, 14 May 2018 23:37:19 +0000
-Received: by mail-it0-x231.google.com with SMTP id n64-v6so14664504itb.3
- for <barebox@lists.infradead.org>; Mon, 14 May 2018 16:37:07 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <1525855717.17568.16.camel@pengutronix.de>
+ id 1fI7GT-0000ol-GW
+ for barebox@lists.infradead.org; Mon, 14 May 2018 06:47:23 +0000
+Date: Mon, 14 May 2018 08:47:07 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180514064707.73mfuvjbhhgnlhmw@pengutronix.de>
 References: <20180508212951.6446-1-andrew.smirnov@gmail.com>
- <20180508212951.6446-27-andrew.smirnov@gmail.com>
- <1525855717.17568.16.camel@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 14 May 2018 16:37:05 -0700
-Message-ID: <CAHQ1cqFJSxzOk_w74zVRR2JNxkb6XcgxA49LHFE3DNMK3eTASg@mail.gmail.com>
+ <20180508212951.6446-8-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180508212951.6446-8-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,48 +23,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 26/28] ARM: mmu: Simplify the use of dma_flush_range()
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 07/28] ARM: mmu: Separate index and address in
+ create_sections()
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Wed, May 9, 2018 at 1:48 AM, Lucas Stach <l.stach@pengutronix.de> wrote:
-> Am Dienstag, den 08.05.2018, 14:29 -0700 schrieb Andrey Smirnov:
->> Simplify the use of dma_flush_range() by changing its signature to
->> accept pointer to start of the data and data size. This change allows
->> us to avoid a whole bunch of repetitive arithmetic currently done by
->> all of the callers.
->>
->> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
->
-> One nit below, otherwise
-> Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
->
->> ---
->>  arch/arm/cpu/mmu.c | 16 ++++++++--------
->>  1 file changed, 8 insertions(+), 8 deletions(-)
->>
->> diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
->> index b14a869af..fc7102700 100644
->> --- a/arch/arm/cpu/mmu.c
->> +++ b/arch/arm/cpu/mmu.c
->> @@ -142,8 +142,11 @@ static u32 *find_pte(unsigned long adr)
->> >     return &table[(adr >> PAGE_SHIFT) & 0xff];
->>  }
->>
->> -static void dma_flush_range(unsigned long start, unsigned long end)
->> +static void dma_flush_range(void *ptr, size_t size)
->>  {
->> > +   unsigned long start = (unsigned long)ptr;
->> +     unsigned long end   = start + size;
->
-> Personal taste, but I don't like those extra spaces. They tend to not
-> line up as well after a few future code changes.
->
+Hi Andrey,
 
-Sure, I can fix that in v2.
+On Tue, May 08, 2018 at 02:29:30PM -0700, Andrey Smirnov wrote:
+> Both TTB index and address used to fill that entry are derived from
+> the same variable 'addr' which requires shifting right and left by 20
+> and somewhat confusing.
+> 
+> Split the counter used to iterate over elements of  TTB into a
+> separate variable to make this code a bit easier to read.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  arch/arm/cpu/mmu.h | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
+> index 59f72049f..8b51e3f9f 100644
+> --- a/arch/arm/cpu/mmu.h
+> +++ b/arch/arm/cpu/mmu.h
+> @@ -28,8 +28,12 @@ static inline void
+>  create_sections(uint32_t *ttb, unsigned long addr,
+>  		int size_m, unsigned int flags)
+>  {
+> -	for (addr >>= 20; addr < size_m; addr++)
+> -		ttb[addr] = (addr << 20) | flags;
+> +	unsigned long ttb_start = add >> 20;
 
-Thanks,
-Andrey Smirnov
+This will break compilation. "addr" instead of "add".
+
+Sascha
+
+> +	unsigned long ttb_end   = ttb_start + size_m;
+> +	unsigned int i;
+> +
+> +	for (i = ttb_start; i < ttb_end; i++, addr += SZ_1M)
+> +		ttb[i] = addr | flags;
+>  }
+>  
+>  
+> -- 
+> 2.17.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
