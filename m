@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-it0-x231.google.com ([2607:f8b0:4001:c0b::231])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fGKmL-0004Y2-7g
- for barebox@lists.infradead.org; Wed, 09 May 2018 08:48:55 +0000
-Message-ID: <1525855717.17568.16.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 09 May 2018 10:48:37 +0200
-In-Reply-To: <20180508212951.6446-27-andrew.smirnov@gmail.com>
+ id 1fIN1p-0001J1-Oz
+ for barebox@lists.infradead.org; Mon, 14 May 2018 23:37:19 +0000
+Received: by mail-it0-x231.google.com with SMTP id n64-v6so14664504itb.3
+ for <barebox@lists.infradead.org>; Mon, 14 May 2018 16:37:07 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <1525855717.17568.16.camel@pengutronix.de>
 References: <20180508212951.6446-1-andrew.smirnov@gmail.com>
  <20180508212951.6446-27-andrew.smirnov@gmail.com>
-Mime-Version: 1.0
+ <1525855717.17568.16.camel@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 14 May 2018 16:37:05 -0700
+Message-ID: <CAHQ1cqFJSxzOk_w74zVRR2JNxkb6XcgxA49LHFE3DNMK3eTASg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,56 +21,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 26/28] ARM: mmu: Simplify the use of dma_flush_range()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-QW0gRGllbnN0YWcsIGRlbiAwOC4wNS4yMDE4LCAxNDoyOSAtMDcwMCBzY2hyaWViIEFuZHJleSBT
-bWlybm92Ogo+IFNpbXBsaWZ5IHRoZSB1c2Ugb2YgZG1hX2ZsdXNoX3JhbmdlKCkgYnkgY2hhbmdp
-bmcgaXRzIHNpZ25hdHVyZSB0bwo+IGFjY2VwdCBwb2ludGVyIHRvIHN0YXJ0IG9mIHRoZSBkYXRh
-IGFuZCBkYXRhIHNpemUuIFRoaXMgY2hhbmdlIGFsbG93cwo+IHVzIHRvIGF2b2lkIGEgd2hvbGUg
-YnVuY2ggb2YgcmVwZXRpdGl2ZSBhcml0aG1ldGljIGN1cnJlbnRseSBkb25lIGJ5Cj4gYWxsIG9m
-IHRoZSBjYWxsZXJzLgo+IAo+IFNpZ25lZC1vZmYtYnk6IEFuZHJleSBTbWlybm92IDxhbmRyZXcu
-c21pcm5vdkBnbWFpbC5jb20+CgpPbmUgbml0IGJlbG93LCBvdGhlcndpc2UKUmV2aWV3ZWQtYnk6
-IEx1Y2FzIFN0YWNoIDxsLnN0YWNoQHBlbmd1dHJvbml4LmRlPgoKPiAtLS0KPiDCoGFyY2gvYXJt
-L2NwdS9tbXUuYyB8IDE2ICsrKysrKysrLS0tLS0tLS0KPiDCoDEgZmlsZSBjaGFuZ2VkLCA4IGlu
-c2VydGlvbnMoKyksIDggZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2Nw
-dS9tbXUuYyBiL2FyY2gvYXJtL2NwdS9tbXUuYwo+IGluZGV4IGIxNGE4NjlhZi4uZmM3MTAyNzAw
-IDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL2NwdS9tbXUuYwo+ICsrKyBiL2FyY2gvYXJtL2NwdS9t
-bXUuYwo+IEBAIC0xNDIsOCArMTQyLDExIEBAIHN0YXRpYyB1MzIgKmZpbmRfcHRlKHVuc2lnbmVk
-IGxvbmcgYWRyKQo+ID4gwqAJcmV0dXJuICZ0YWJsZVsoYWRyID4+IFBBR0VfU0hJRlQpICYgMHhm
-Zl07Cj4gwqB9Cj4gwqAKPiAtc3RhdGljIHZvaWQgZG1hX2ZsdXNoX3JhbmdlKHVuc2lnbmVkIGxv
-bmcgc3RhcnQsIHVuc2lnbmVkIGxvbmcgZW5kKQo+ICtzdGF0aWMgdm9pZCBkbWFfZmx1c2hfcmFu
-Z2Uodm9pZCAqcHRyLCBzaXplX3Qgc2l6ZSkKPiDCoHsKPiA+ICsJdW5zaWduZWQgbG9uZyBzdGFy
-dCA9ICh1bnNpZ25lZCBsb25nKXB0cjsKPiArCXVuc2lnbmVkIGxvbmcgZW5kwqDCoMKgPSBzdGFy
-dCArIHNpemU7CgpQZXJzb25hbCB0YXN0ZSwgYnV0IEkgZG9uJ3QgbGlrZSB0aG9zZSBleHRyYSBz
-cGFjZXMuIFRoZXkgdGVuZCB0byBub3QKbGluZSB1cCBhcyB3ZWxsIGFmdGVyIGEgZmV3IGZ1dHVy
-ZSBjb2RlIGNoYW5nZXMuCgo+ICsKPiA+IMKgCV9fZG1hX2ZsdXNoX3JhbmdlKHN0YXJ0LCBlbmQp
-Owo+ID4gwqAJaWYgKG91dGVyX2NhY2hlLmZsdXNoX3JhbmdlKQo+ID4gwqAJCW91dGVyX2NhY2hl
-LmZsdXNoX3JhbmdlKHN0YXJ0LCBlbmQpOwo+IEBAIC0xNzAsOSArMTczLDcgQEAgc3RhdGljIGlu
-dCBfX3JlbWFwX3JhbmdlKHZvaWQgKl9zdGFydCwgc2l6ZV90IHNpemUsIHUzMiBwdGVfZmxhZ3Mp
-Cj4gPiDCoAkJcFtpXSB8PSBwdGVfZmxhZ3MgfCBQVEVfVFlQRV9TTUFMTDsKPiA+IMKgCX0KPiDC
-oAo+ID4gLQlkbWFfZmx1c2hfcmFuZ2UoKHVuc2lnbmVkIGxvbmcpcCwKPiA+IC0JCQkodW5zaWdu
-ZWQgbG9uZylwICsgbnVtZW50cmllcyAqIHNpemVvZih1MzIpKTsKPiAtCj4gPiArCWRtYV9mbHVz
-aF9yYW5nZShwLCBudW1lbnRyaWVzICogc2l6ZW9mKHUzMikpOwo+ID4gwqAJdGxiX2ludmFsaWRh
-dGUoKTsKPiDCoAo+ID4gwqAJcmV0dXJuIDA7Cj4gQEAgLTIwMyw3ICsyMDQsNyBAQCB2b2lkICpt
-YXBfaW9fc2VjdGlvbnModW5zaWduZWQgbG9uZyBwaHlzLCB2b2lkICpfc3RhcnQsIHNpemVfdCBz
-aXplKQo+ID4gwqAJZm9yIChzZWMgPSBzdGFydDsgc2VjIDwgc3RhcnQgKyBzaXplOyBzZWMgKz0g
-UEdESVJfU0laRSwgcGh5cyArPSBQR0RJUl9TSVpFKQo+ID4gwqAJCXR0YltwZ2RfaW5kZXgoc2Vj
-KV0gPSBwaHlzIHwgUE1EX1NFQ1RfREVGX1VOQ0FDSEVEOwo+IMKgCj4gPiAtCWRtYV9mbHVzaF9y
-YW5nZSgodW5zaWduZWQgbG9uZyl0dGIsICh1bnNpZ25lZCBsb25nKXR0YiArIDB4NDAwMCk7Cj4g
-PiArCWRtYV9mbHVzaF9yYW5nZSh0dGIsIDB4NDAwMCk7Cj4gPiDCoAl0bGJfaW52YWxpZGF0ZSgp
-Owo+ID4gwqAJcmV0dXJuIF9zdGFydDsKPiDCoH0KPiBAQCAtMjQ5LDkgKzI1MCw4IEBAIHN0YXRp
-YyBpbnQgYXJtX21tdV9yZW1hcF9zZHJhbShzdHJ1Y3QgbWVtb3J5X2JhbmsgKmJhbmspCj4gPiDC
-oAkJcHRlICs9IFBUUlNfUEVSX1BURTsKPiA+IMKgCX0KPiDCoAo+ID4gLQlkbWFfZmx1c2hfcmFu
-Z2UoKHVuc2lnbmVkIGxvbmcpdHRiLCAodW5zaWduZWQgbG9uZyl0dGIgKyAweDQwMDApOwo+ID4g
-LQlkbWFfZmx1c2hfcmFuZ2UoKHVuc2lnbmVkIGxvbmcpcHRlcywKPiA+IC0JCQkodW5zaWduZWQg
-bG9uZylwdGVzICsgbnVtX3B0ZXMgKiBzaXplb2YodTMyKSk7Cj4gPiArCWRtYV9mbHVzaF9yYW5n
-ZSh0dGIsIDB4NDAwMCk7Cj4gPiArCWRtYV9mbHVzaF9yYW5nZShwdGVzLCBudW1fcHRlcyAqIHNp
-emVvZih1MzIpKTsKPiDCoAo+ID4gwqAJdGxiX2ludmFsaWRhdGUoKTsKPiDCoAoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
-c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Wed, May 9, 2018 at 1:48 AM, Lucas Stach <l.stach@pengutronix.de> wrote:
+> Am Dienstag, den 08.05.2018, 14:29 -0700 schrieb Andrey Smirnov:
+>> Simplify the use of dma_flush_range() by changing its signature to
+>> accept pointer to start of the data and data size. This change allows
+>> us to avoid a whole bunch of repetitive arithmetic currently done by
+>> all of the callers.
+>>
+>> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+>
+> One nit below, otherwise
+> Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+>
+>> ---
+>>  arch/arm/cpu/mmu.c | 16 ++++++++--------
+>>  1 file changed, 8 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+>> index b14a869af..fc7102700 100644
+>> --- a/arch/arm/cpu/mmu.c
+>> +++ b/arch/arm/cpu/mmu.c
+>> @@ -142,8 +142,11 @@ static u32 *find_pte(unsigned long adr)
+>> >     return &table[(adr >> PAGE_SHIFT) & 0xff];
+>>  }
+>>
+>> -static void dma_flush_range(unsigned long start, unsigned long end)
+>> +static void dma_flush_range(void *ptr, size_t size)
+>>  {
+>> > +   unsigned long start = (unsigned long)ptr;
+>> +     unsigned long end   = start + size;
+>
+> Personal taste, but I don't like those extra spaces. They tend to not
+> line up as well after a few future code changes.
+>
+
+Sure, I can fix that in v2.
+
+Thanks,
+Andrey Smirnov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
