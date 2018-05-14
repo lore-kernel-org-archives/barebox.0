@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fGKmg-0004bJ-Rx
- for barebox@lists.infradead.org; Wed, 09 May 2018 08:49:16 +0000
-Message-ID: <1525855742.17568.17.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 09 May 2018 10:49:02 +0200
-In-Reply-To: <20180508212951.6446-26-andrew.smirnov@gmail.com>
+ id 1fI7Z2-0007PU-J2
+ for barebox@lists.infradead.org; Mon, 14 May 2018 07:06:34 +0000
+Date: Mon, 14 May 2018 09:06:20 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180514070620.6g7enpkjen7vouqx@pengutronix.de>
 References: <20180508212951.6446-1-andrew.smirnov@gmail.com>
- <20180508212951.6446-26-andrew.smirnov@gmail.com>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180508212951.6446-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,33 +18,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 25/28] ARM: mmu: Use dma_inv_range() in
- dma_sync_single_for_cpu()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH 00/28] ARM MMU code improvements and on-demand PTE
+ allocation
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-QW0gRGllbnN0YWcsIGRlbiAwOC4wNS4yMDE4LCAxNDoyOSAtMDcwMCBzY2hyaWViIEFuZHJleSBT
-bWlybm92Ogo+IFRoZSBjb2RlIGluIHRoZSBpZiAoKSBzdGF0ZW1lbnQgaXMgaWRlbnRpY2FsIHRv
-IGFscmVhZHkgZXhpc3RpbmcKPiBkbWFfaW52X3JhbmQoKS4gVXNlIGl0IGluc3RlYWQuCj4gCj4g
-U2lnbmVkLW9mZi1ieTogQW5kcmV5IFNtaXJub3YgPGFuZHJldy5zbWlybm92QGdtYWlsLmNvbT4K
-ClJldmlld2VkLWJ5OiBMdWNhcyBTdGFjaCA8bC5zdGFjaEBwZW5ndXRyb25peC5kZT4KCj4gLS0t
-Cj4gwqBhcmNoL2FybS9jcHUvbW11LmMgfCA3ICsrLS0tLS0KPiDCoDEgZmlsZSBjaGFuZ2VkLCAy
-IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJt
-L2NwdS9tbXUuYyBiL2FyY2gvYXJtL2NwdS9tbXUuYwo+IGluZGV4IGNlYjg1NGFjOC4uYjE0YTg2
-OWFmIDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL2NwdS9tbXUuYwo+ICsrKyBiL2FyY2gvYXJtL2Nw
-dS9tbXUuYwo+IEBAIC01NDgsMTEgKzU0OCw4IEBAIHZvaWQgZG1hX2ZyZWVfY29oZXJlbnQodm9p
-ZCAqbWVtLCBkbWFfYWRkcl90IGRtYV9oYW5kbGUsIHNpemVfdCBzaXplKQo+IMKgdm9pZCBkbWFf
-c3luY19zaW5nbGVfZm9yX2NwdShkbWFfYWRkcl90IGFkZHJlc3MsIHNpemVfdCBzaXplLAo+ID4g
-wqAJCQnCoMKgwqDCoMKgZW51bSBkbWFfZGF0YV9kaXJlY3Rpb24gZGlyKQo+IMKgewo+ID4gLQlp
-ZiAoZGlyICE9IERNQV9UT19ERVZJQ0UpIHsKPiA+IC0JCWlmIChvdXRlcl9jYWNoZS5pbnZfcmFu
-Z2UpCj4gPiAtCQkJb3V0ZXJfY2FjaGUuaW52X3JhbmdlKGFkZHJlc3MsIGFkZHJlc3MgKyBzaXpl
-KTsKPiA+IC0JCV9fZG1hX2ludl9yYW5nZShhZGRyZXNzLCBhZGRyZXNzICsgc2l6ZSk7Cj4gPiAt
-CX0KPiA+ICsJaWYgKGRpciAhPSBETUFfVE9fREVWSUNFKQo+ID4gKwkJZG1hX2ludl9yYW5nZShh
-ZGRyZXNzLCBhZGRyZXNzICsgc2l6ZSk7Cj4gwqB9Cj4gwqAKPiDCoHZvaWQgZG1hX3N5bmNfc2lu
-Z2xlX2Zvcl9kZXZpY2UoZG1hX2FkZHJfdCBhZGRyZXNzLCBzaXplX3Qgc2l6ZSwKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
-aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi Andrey,
+
+On Tue, May 08, 2018 at 02:29:23PM -0700, Andrey Smirnov wrote:
+> Everyone:
+> 
+> With exeception of patch 27/28, all patches in this series are just
+> small improvements(IMHO) that I made while working with ARM MMU code.
+> 
+> Patch 27/28, OTOH, brings a bit of a change to how MMU code allocates
+> PTEs, postponing that until the users of DMA API actually request
+> that.
+> 
+> Feedback is welcome!
+
+Very nice cleanup series, thanks for that. Besides the comment I made
+for 9/28 this all looks very nice.
+
+Sascha
+
+> 
+> Thanks,
+> Andrey Smirnov
+> 
+> Andrey Smirnov (28):
+>   ARM: mmu: Remove unused ARM_VECTORS_SIZE
+>   ARM: mmu: Make use of IS_ALIGNED in arm_mmu_remap_sdram()
+>   ARM: mmu: Use ALIGN and ALIGN_DOWN in map_cachable()
+>   ARM: mmu: Introduce set_ttbr()
+>   ARM: mmu: Introduce set_domain()
+>   ARM: mmu: Share code for create_sections()
+>   ARM: mmu: Separate index and address in create_sections()
+>   sizes.h: Sync with Linux 4.16
+>   ARM: mmu: Specify size in bytes in create_sections()
+>   ARM: mmu: Share code for initial flat mapping creation
+>   ARM: mmu: Share PMD_SECT_DEF_CACHED
+>   ARM: mmu: Drop needless shifting in map_io_sections()
+>   ARM: mmu: Replace hardcoded shifts with pgd_index() from Linux
+>   ARM: mmu: Trivial simplification in arm_mmu_remap_sdram()
+>   ARM: mmu: Replace various SZ_1M with PGDIR_SIZE
+>   ARM: mmu: Use PAGE_SIZE when specifying size of one page
+>   ARM: mmu: Define and use PTRS_PER_PTE
+>   ARM: mmu: Use PAGE_SIZE instead of magic right shift by 12
+>   ARM: mmu: Use xmemalign in arm_create_pte()
+>   ARM: mmu: Use xmemalign in mmu_init()
+>   ARM: mmu: Share code between dma_alloc_*() functions
+>   ARM: mmu: Pass PTE flags a parameter to arm_create_pte()
+>   ARM: mmu: Make sure that address is 1M aligned in arm_create_pte()
+>   ARM: mmu: Use find_pte() to find PTE in create_vector_table()
+>   ARM: mmu: Use dma_inv_range() in dma_sync_single_for_cpu()
+>   ARM: mmu: Simplify the use of dma_flush_range()
+>   ARM: mmu: Implement on-demand PTE allocation
+>   ARM: mmu: Introduce ARM_TTB_SIZE
+> 
+>  arch/arm/boards/phytec-som-imx6/lowlevel.c |   1 +
+>  arch/arm/cpu/mmu-early.c                   |  31 +-
+>  arch/arm/cpu/mmu.c                         | 321 ++++++++++-----------
+>  arch/arm/cpu/mmu.h                         |  42 +++
+>  arch/arm/include/asm/barebox-arm.h         |   8 +-
+>  include/linux/sizes.h                      |   4 +
+>  6 files changed, 210 insertions(+), 197 deletions(-)
+> 
+> -- 
+> 2.17.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
