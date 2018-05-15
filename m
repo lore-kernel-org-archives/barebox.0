@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-it0-x243.google.com ([2607:f8b0:4001:c0b::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fI7GT-0000ol-GW
- for barebox@lists.infradead.org; Mon, 14 May 2018 06:47:23 +0000
-Date: Mon, 14 May 2018 08:47:07 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180514064707.73mfuvjbhhgnlhmw@pengutronix.de>
+ id 1fISi9-0004Ec-TB
+ for barebox@lists.infradead.org; Tue, 15 May 2018 05:41:23 +0000
+Received: by mail-it0-x243.google.com with SMTP id q72-v6so17214302itc.0
+ for <barebox@lists.infradead.org>; Mon, 14 May 2018 22:41:11 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20180514064707.73mfuvjbhhgnlhmw@pengutronix.de>
 References: <20180508212951.6446-1-andrew.smirnov@gmail.com>
  <20180508212951.6446-8-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180508212951.6446-8-andrew.smirnov@gmail.com>
+ <20180514064707.73mfuvjbhhgnlhmw@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 14 May 2018 22:41:10 -0700
+Message-ID: <CAHQ1cqGZLwrJKiQ1Q8fCiC=+ZL9UxawF8DXp0QrhSc4Th1Cmfg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,63 +27,44 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 07/28] ARM: mmu: Separate index and address in
  create_sections()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi Andrey,
+On Sun, May 13, 2018 at 11:47 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> Hi Andrey,
+>
+> On Tue, May 08, 2018 at 02:29:30PM -0700, Andrey Smirnov wrote:
+>> Both TTB index and address used to fill that entry are derived from
+>> the same variable 'addr' which requires shifting right and left by 20
+>> and somewhat confusing.
+>>
+>> Split the counter used to iterate over elements of  TTB into a
+>> separate variable to make this code a bit easier to read.
+>>
+>> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+>> ---
+>>  arch/arm/cpu/mmu.h | 8 ++++++--
+>>  1 file changed, 6 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
+>> index 59f72049f..8b51e3f9f 100644
+>> --- a/arch/arm/cpu/mmu.h
+>> +++ b/arch/arm/cpu/mmu.h
+>> @@ -28,8 +28,12 @@ static inline void
+>>  create_sections(uint32_t *ttb, unsigned long addr,
+>>               int size_m, unsigned int flags)
+>>  {
+>> -     for (addr >>= 20; addr < size_m; addr++)
+>> -             ttb[addr] = (addr << 20) | flags;
+>> +     unsigned long ttb_start = add >> 20;
+>
+> This will break compilation. "addr" instead of "add".
+>
 
-On Tue, May 08, 2018 at 02:29:30PM -0700, Andrey Smirnov wrote:
-> Both TTB index and address used to fill that entry are derived from
-> the same variable 'addr' which requires shifting right and left by 20
-> and somewhat confusing.
-> 
-> Split the counter used to iterate over elements of  TTB into a
-> separate variable to make this code a bit easier to read.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  arch/arm/cpu/mmu.h | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
-> index 59f72049f..8b51e3f9f 100644
-> --- a/arch/arm/cpu/mmu.h
-> +++ b/arch/arm/cpu/mmu.h
-> @@ -28,8 +28,12 @@ static inline void
->  create_sections(uint32_t *ttb, unsigned long addr,
->  		int size_m, unsigned int flags)
->  {
-> -	for (addr >>= 20; addr < size_m; addr++)
-> -		ttb[addr] = (addr << 20) | flags;
-> +	unsigned long ttb_start = add >> 20;
+My bad. Will fix in v2.
 
-This will break compilation. "addr" instead of "add".
-
-Sascha
-
-> +	unsigned long ttb_end   = ttb_start + size_m;
-> +	unsigned int i;
-> +
-> +	for (i = ttb_start; i < ttb_end; i++, addr += SZ_1M)
-> +		ttb[i] = addr | flags;
->  }
->  
->  
-> -- 
-> 2.17.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
