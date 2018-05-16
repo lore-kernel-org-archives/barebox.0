@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x242.google.com ([2607:f8b0:4001:c0b::242])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJ6Uz-0005co-Et
- for barebox@lists.infradead.org; Thu, 17 May 2018 00:10:27 +0000
-Received: by mail-it0-x242.google.com with SMTP id j186-v6so6675014ita.5
- for <barebox@lists.infradead.org>; Wed, 16 May 2018 17:10:13 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20180516204929.GA12718@ravnborg.org>
-References: <20180516200036.29829-1-andrew.smirnov@gmail.com>
- <20180516200036.29829-7-andrew.smirnov@gmail.com>
- <20180516204929.GA12718@ravnborg.org>
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fJ2c3-0004Q2-MQ
+ for barebox@lists.infradead.org; Wed, 16 May 2018 20:01:28 +0000
+Received: by mail-pg0-x242.google.com with SMTP id w3-v6so737524pgv.12
+ for <barebox@lists.infradead.org>; Wed, 16 May 2018 13:01:17 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 16 May 2018 17:10:12 -0700
-Message-ID: <CAHQ1cqFo_Wsn33mqgYgiiknNap+_X2jKuXEEeBm98U3iD97y-w@mail.gmail.com>
+Date: Wed, 16 May 2018 13:00:15 -0700
+Message-Id: <20180516200036.29829-8-andrew.smirnov@gmail.com>
+In-Reply-To: <20180516200036.29829-1-andrew.smirnov@gmail.com>
+References: <20180516200036.29829-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,88 +18,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 06/28] ARM: mmu: Share code for create_sections()
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v2 07/28] ARM: mmu: Separate index and address in
+ create_sections()
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Wed, May 16, 2018 at 1:49 PM, Sam Ravnborg <sam@ravnborg.org> wrote:
-> Hi Andrey
->
-> On Wed, May 16, 2018 at 01:00:14PM -0700, Andrey Smirnov wrote:
->> Regular MMU code never creates anything but 1:1 mapping, and barring
->> that plus the call to __mmu_cache_flush(), early MMU code version of
->> the function is pretty much identical. To avoid code duplication, move
->> it to mmu.h and convert both regular and early MMU code to use it.
->>
->> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
->> ---
->>  arch/arm/cpu/mmu-early.c | 14 ++------------
->>  arch/arm/cpu/mmu.c       | 25 +++++++------------------
->>  arch/arm/cpu/mmu.h       |  8 ++++++++
->>  3 files changed, 17 insertions(+), 30 deletions(-)
->>
->> diff --git a/arch/arm/cpu/mmu-early.c b/arch/arm/cpu/mmu-early.c
->> index f75cc7e4a..70ece0d2f 100644
->> --- a/arch/arm/cpu/mmu-early.c
->> +++ b/arch/arm/cpu/mmu-early.c
->> @@ -11,22 +11,12 @@
->>
->>  static uint32_t *ttb;
->>
->> -static void create_sections(unsigned long addr, int size_m, unsigned int flags)
->> -{
->> -     int i;
->> -
->> -     addr >>= 20;
->> -
->> -     for (i = size_m; i > 0; i--, addr++)
->> -             ttb[addr] = (addr << 20) | flags;
->> -}
-> This iterates in the for loop size_m times.
->
->> -
->> -static void create_sections(unsigned long virt, unsigned long phys, int size_m,
->> -             unsigned int flags)
->> -{
->> -     int i;
->> -
->> -     phys >>= 20;
->> -     virt >>= 20;
->> -
->> -     for (i = size_m; i > 0; i--, virt++, phys++)
->> -             ttb[virt] = (phys << 20) | flags;
->> -
->> -     __mmu_cache_flush();
->> -}
-> likewise
->
->> +++ b/arch/arm/cpu/mmu.h
->> @@ -24,5 +24,13 @@ static inline void set_domain(unsigned val)
->>       asm volatile ("mcr  p15,0,%0,c3,c0,0" : : "r"(val) /*:*/);
->>  }
->>
->> +static inline void
->> +create_sections(uint32_t *ttb, unsigned long addr,
->> +             int size_m, unsigned int flags)
->> +{
->> +     for (addr >>= 20; addr < size_m; addr++)
->> +             ttb[addr] = (addr << 20) | flags;
->> +}
->
-> But this iterates in the for loop while addr >> 20 is less than size_m.
-> I cannot see from the code nor the changelog if this is an intentional change
->
-> (I only stumbled over this while browsing the patch, no testing done)
->
+Both TTB index and address used to fill that entry are derived from
+the same variable 'addr' which requires shifting right and left by 20
+and somewhat confusing.
 
-Good catch! Not intentional at all. Will fix in v3.
+Split the counter used to iterate over elements of  TTB into a
+separate variable to make this code a bit easier to read.
 
-Thanks,
-Andrey Smirnov
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/cpu/mmu.h | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
+index 59f72049f..d71cd7e38 100644
+--- a/arch/arm/cpu/mmu.h
++++ b/arch/arm/cpu/mmu.h
+@@ -1,6 +1,8 @@
+ #ifndef __ARM_MMU_H
+ #define __ARM_MMU_H
+ 
++#include <linux/sizes.h>
++
+ #ifdef CONFIG_MMU
+ void __mmu_cache_on(void);
+ void __mmu_cache_off(void);
+@@ -28,8 +30,12 @@ static inline void
+ create_sections(uint32_t *ttb, unsigned long addr,
+ 		int size_m, unsigned int flags)
+ {
+-	for (addr >>= 20; addr < size_m; addr++)
+-		ttb[addr] = (addr << 20) | flags;
++	unsigned long ttb_start = addr >> 20;
++	unsigned long ttb_end   = ttb_start + size_m;
++	unsigned int i;
++
++	for (i = ttb_start; i < ttb_end; i++, addr += SZ_1M)
++		ttb[i] = addr | flags;
+ }
+ 
+ 
+-- 
+2.17.0
+
 
 _______________________________________________
 barebox mailing list
