@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJ2by-0005wY-3V
- for barebox@lists.infradead.org; Wed, 16 May 2018 20:01:24 +0000
-Received: by mail-pf0-x244.google.com with SMTP id j20-v6so881766pff.10
- for <barebox@lists.infradead.org>; Wed, 16 May 2018 13:01:11 -0700 (PDT)
+Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fJ2by-0004Pw-N8
+ for barebox@lists.infradead.org; Wed, 16 May 2018 20:01:23 +0000
+Received: by mail-pl0-x241.google.com with SMTP id c19-v6so1048517pls.6
+ for <barebox@lists.infradead.org>; Wed, 16 May 2018 13:01:09 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 16 May 2018 13:00:12 -0700
-Message-Id: <20180516200036.29829-5-andrew.smirnov@gmail.com>
+Date: Wed, 16 May 2018 13:00:09 -0700
+Message-Id: <20180516200036.29829-2-andrew.smirnov@gmail.com>
 In-Reply-To: <20180516200036.29829-1-andrew.smirnov@gmail.com>
 References: <20180516200036.29829-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,59 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 04/28] ARM: mmu: Introduce set_ttbr()
+Subject: [PATCH v2 01/28] ARM: mmu: Remove unused ARM_VECTORS_SIZE
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu-early.c | 3 +--
- arch/arm/cpu/mmu.c       | 3 +--
- arch/arm/cpu/mmu.h       | 5 +++++
- 3 files changed, 7 insertions(+), 4 deletions(-)
+ arch/arm/cpu/mmu.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/arch/arm/cpu/mmu-early.c b/arch/arm/cpu/mmu-early.c
-index fc14d5cac..79fc3080a 100644
---- a/arch/arm/cpu/mmu-early.c
-+++ b/arch/arm/cpu/mmu-early.c
-@@ -39,8 +39,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize,
- 
- 	arm_set_cache_functions();
- 
--	/* Set the ttb register */
--	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
-+	set_ttbr(ttb);
- 
- 	/* Set the Domain Access Control Register */
- 	i = 0x3;
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index c70e9e782..28732b795 100644
+index 6ccd5893b..9472013ca 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -471,8 +471,7 @@ static int mmu_init(void)
+@@ -270,12 +270,6 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
  
- 	pr_debug("ttb: 0x%p\n", ttb);
+ 	return 0;
+ }
+-/*
+- * We have 8 exception vectors and the table consists of absolute
+- * jumps, so we need 8 * 4 bytes for the instructions and another
+- * 8 * 4 bytes for the addresses.
+- */
+-#define ARM_VECTORS_SIZE	(sizeof(u32) * 8 * 2)
  
--	/* Set the ttb register */
--	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
-+	set_ttbr(ttb);
- 
- 	/* Set the Domain Access Control Register */
- 	i = 0x3;
-diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
-index 79ebc80d7..5dcf4b53a 100644
---- a/arch/arm/cpu/mmu.h
-+++ b/arch/arm/cpu/mmu.h
-@@ -11,4 +11,9 @@ static inline void __mmu_cache_off(void) {}
- static inline void __mmu_cache_flush(void) {}
- #endif
- 
-+static inline void set_ttbr(void *ttb)
-+{
-+	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
-+}
-+
- #endif /* __ARM_MMU_H */
+ #define ARM_HIGH_VECTORS	0xffff0000
+ #define ARM_LOW_VECTORS		0x0
 -- 
 2.17.0
 
