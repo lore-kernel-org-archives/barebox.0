@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from mail-pg0-x22c.google.com ([2607:f8b0:400e:c05::22c])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJ2cN-00067e-Ax
- for barebox@lists.infradead.org; Wed, 16 May 2018 20:01:48 +0000
-Received: by mail-pf0-x242.google.com with SMTP id f189-v6so887228pfa.7
- for <barebox@lists.infradead.org>; Wed, 16 May 2018 13:01:37 -0700 (PDT)
+ id 1fJ2cQ-00069D-4V
+ for barebox@lists.infradead.org; Wed, 16 May 2018 20:01:51 +0000
+Received: by mail-pg0-x22c.google.com with SMTP id p9-v6so743053pgc.9
+ for <barebox@lists.infradead.org>; Wed, 16 May 2018 13:01:39 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 16 May 2018 13:00:32 -0700
-Message-Id: <20180516200036.29829-25-andrew.smirnov@gmail.com>
+Date: Wed, 16 May 2018 13:00:34 -0700
+Message-Id: <20180516200036.29829-27-andrew.smirnov@gmail.com>
 In-Reply-To: <20180516200036.29829-1-andrew.smirnov@gmail.com>
 References: <20180516200036.29829-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,47 +23,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 24/28] ARM: mmu: Use find_pte() to find PTE in
- create_vector_table()
+Subject: [PATCH v2 26/28] ARM: mmu: Simplify the use of dma_flush_range()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-There's already a function that implement necessary arithemtic to find
-offset within page table for a given address, so make use of it
-instead of re-implementing it again.
+Simplify the use of dma_flush_range() by changing its signature to
+accept pointer to start of the data and data size. This change allows
+us to avoid a whole bunch of repetitive arithmetic currently done by
+all of the callers.
 
+Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/arm/cpu/mmu.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 94388f11a..ceb854ac8 100644
+index b14a869af..30f321691 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -272,8 +272,7 @@ static void create_vector_table(unsigned long adr)
- {
- 	struct resource *vectors_sdram;
- 	void *vectors;
--	u32 *exc;
--	int idx;
-+	u32 *pte;
+@@ -142,8 +142,11 @@ static u32 *find_pte(unsigned long adr)
+ 	return &table[(adr >> PAGE_SHIFT) & 0xff];
+ }
  
- 	vectors_sdram = request_sdram_region("vector table", adr, PAGE_SIZE);
- 	if (vectors_sdram) {
-@@ -293,9 +292,9 @@ static void create_vector_table(unsigned long adr)
- 		vectors = xmemalign(PAGE_SIZE, PAGE_SIZE);
- 		pr_debug("Creating vector table, virt = 0x%p, phys = 0x%08lx\n",
- 			 vectors, adr);
--		exc = arm_create_pte(adr, pte_flags_uncached);
--		idx = (adr & (PGDIR_SIZE - 1)) >> PAGE_SHIFT;
--		exc[idx] = (u32)vectors | PTE_TYPE_SMALL | pte_flags_cached;
-+		arm_create_pte(adr, pte_flags_uncached);
-+		pte = find_pte(adr);
-+		*pte = (u32)vectors | PTE_TYPE_SMALL | pte_flags_cached;
+-static void dma_flush_range(unsigned long start, unsigned long end)
++static void dma_flush_range(void *ptr, size_t size)
+ {
++	unsigned long start = (unsigned long)ptr;
++	unsigned long end = start + size;
++
+ 	__dma_flush_range(start, end);
+ 	if (outer_cache.flush_range)
+ 		outer_cache.flush_range(start, end);
+@@ -170,9 +173,7 @@ static int __remap_range(void *_start, size_t size, u32 pte_flags)
+ 		p[i] |= pte_flags | PTE_TYPE_SMALL;
  	}
  
- 	arm_fixup_vectors();
+-	dma_flush_range((unsigned long)p,
+-			(unsigned long)p + numentries * sizeof(u32));
+-
++	dma_flush_range(p, numentries * sizeof(u32));
+ 	tlb_invalidate();
+ 
+ 	return 0;
+@@ -203,7 +204,7 @@ void *map_io_sections(unsigned long phys, void *_start, size_t size)
+ 	for (sec = start; sec < start + size; sec += PGDIR_SIZE, phys += PGDIR_SIZE)
+ 		ttb[pgd_index(sec)] = phys | PMD_SECT_DEF_UNCACHED;
+ 
+-	dma_flush_range((unsigned long)ttb, (unsigned long)ttb + 0x4000);
++	dma_flush_range(ttb, 0x4000);
+ 	tlb_invalidate();
+ 	return _start;
+ }
+@@ -249,9 +250,8 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
+ 		pte += PTRS_PER_PTE;
+ 	}
+ 
+-	dma_flush_range((unsigned long)ttb, (unsigned long)ttb + 0x4000);
+-	dma_flush_range((unsigned long)ptes,
+-			(unsigned long)ptes + num_ptes * sizeof(u32));
++	dma_flush_range(ttb, 0x4000);
++	dma_flush_range(ptes, num_ptes * sizeof(u32));
+ 
+ 	tlb_invalidate();
+ 
 -- 
 2.17.0
 
