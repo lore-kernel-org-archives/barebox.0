@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.20])
+Received: from mout.gmx.net ([212.227.17.22])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fIzVy-0002wY-Qq
- for barebox@lists.infradead.org; Wed, 16 May 2018 16:43:21 +0000
+ id 1fIzao-0006k7-Dl
+ for barebox@lists.infradead.org; Wed, 16 May 2018 16:48:14 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Wed, 16 May 2018 18:42:26 +0200
-Message-Id: <20180516164233.27581-4-linux@rempel-privat.de>
+Date: Wed, 16 May 2018 18:42:30 +0200
+Message-Id: <20180516164233.27581-8-linux@rempel-privat.de>
 In-Reply-To: <20180516164233.27581-1-linux@rempel-privat.de>
 References: <20180516164233.27581-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,59 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 03/10] filetype: add ELF type
+Subject: [PATCH v1 07/10] MIPS: malta: enable kexec
 To: barebox@lists.infradead.org
 
 From: Antony Pavlov <antonynpavlov@gmail.com>
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- common/filetype.c  | 5 +++++
- include/filetype.h | 1 +
- 2 files changed, 6 insertions(+)
+ arch/mips/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/common/filetype.c b/common/filetype.c
-index 444ec14cc..77cf9a105 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -27,6 +27,7 @@
- #include <envfs.h>
- #include <disks.h>
- #include <image-sparse.h>
-+#include <elf.h>
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 2b549373a..ab5a05e0d 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -51,6 +51,7 @@ config MACH_MIPS_MALTA
+ 	select HAS_DEBUG_LL
+ 	select GPIOLIB
+ 	select HW_HAS_PCI
++	select HAS_KEXEC
  
- struct filetype_str {
- 	const char *name;	/* human readable filetype */
-@@ -68,6 +69,7 @@ static const struct filetype_str filetype_str[] = {
- 	[filetype_kwbimage_v1] = { "MVEBU kwbimage (v1)", "kwb" },
- 	[filetype_android_sparse] = { "Android sparse image", "sparse" },
- 	[filetype_arm64_linux_image] = { "ARM aarch64 Linux image", "aarch64-linux" },
-+	[filetype_elf] = { "ELF", "elf" },
- };
- 
- const char *file_type_to_string(enum filetype f)
-@@ -344,6 +346,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 		buf[7] == 0x47530000)
- 		return filetype_ch_image_be;
- 
-+	if (strncmp(buf8, ELFMAG, 4) == 0)
-+		return filetype_elf;
-+
- 	return filetype_unknown;
- }
- 
-diff --git a/include/filetype.h b/include/filetype.h
-index 9986938dd..3b930bf94 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -41,6 +41,7 @@ enum filetype {
- 	filetype_kwbimage_v1,
- 	filetype_android_sparse,
- 	filetype_arm64_linux_image,
-+	filetype_elf,
- 	filetype_max,
- };
- 
+ config MACH_MIPS_AR231X
+ 	bool "Atheros ar231x-based boards"
 -- 
 2.14.1
 
