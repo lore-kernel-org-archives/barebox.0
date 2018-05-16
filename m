@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJ2c6-00062I-TF
- for barebox@lists.infradead.org; Wed, 16 May 2018 20:01:32 +0000
-Received: by mail-pl0-x244.google.com with SMTP id c41-v6so1040295plj.10
- for <barebox@lists.infradead.org>; Wed, 16 May 2018 13:01:27 -0700 (PDT)
+ id 1fJ2c7-00064H-P2
+ for barebox@lists.infradead.org; Wed, 16 May 2018 20:01:33 +0000
+Received: by mail-pl0-x244.google.com with SMTP id c19-v6so1049207pls.6
+ for <barebox@lists.infradead.org>; Wed, 16 May 2018 13:01:31 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 16 May 2018 13:00:25 -0700
-Message-Id: <20180516200036.29829-18-andrew.smirnov@gmail.com>
+Date: Wed, 16 May 2018 13:00:28 -0700
+Message-Id: <20180516200036.29829-21-andrew.smirnov@gmail.com>
 In-Reply-To: <20180516200036.29829-1-andrew.smirnov@gmail.com>
 References: <20180516200036.29829-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,54 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 17/28] ARM: mmu: Define and use PTRS_PER_PTE
+Subject: [PATCH v2 20/28] ARM: mmu: Use xmemalign in mmu_init()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+We don't handle OOM case in that code, so using xmemalign seems like a
+better option.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/arm/cpu/mmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index b4cc474d8..d70516f9c 100644
+index 42341a7a3..5e8d439bf 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -34,6 +34,7 @@
- #include "mmu.h"
- 
- #define PMD_SECT_DEF_CACHED (PMD_SECT_WB | PMD_SECT_DEF_UNCACHED)
-+#define PTRS_PER_PTE		(PGDIR_SIZE / PAGE_SIZE)
- 
- static uint32_t *ttb;
- 
-@@ -91,14 +92,15 @@ static u32 *arm_create_pte(unsigned long virt)
- 	u32 *table;
- 	int i;
- 
--	table = memalign(0x400, 0x400);
-+	table = memalign(PTRS_PER_PTE * sizeof(u32),
-+			 PTRS_PER_PTE * sizeof(u32));
- 
- 	if (!ttb)
- 		arm_mmu_not_initialized_error();
- 
- 	ttb[pgd_index(virt)] = (unsigned long)table | PMD_TYPE_TABLE;
- 
--	for (i = 0; i < 256; i++) {
-+	for (i = 0; i < PTRS_PER_PTE; i++) {
- 		table[i] = virt | PTE_TYPE_SMALL | pte_flags_uncached;
- 		virt += PAGE_SIZE;
- 	}
-@@ -242,7 +244,7 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
- 	for (i = ttb_start; i < ttb_end; i++) {
- 		ttb[i] = (unsigned long)(&ptes[pte]) | PMD_TYPE_TABLE |
- 			(0 << 4);
--		pte += 256;
-+		pte += PTRS_PER_PTE;
+@@ -450,7 +450,7 @@ static int mmu_init(void)
+ 			pr_crit("Critical Error: Can't request SDRAM region for ttb at %p\n",
+ 					ttb);
+ 	} else {
+-		ttb = memalign(0x10000, 0x4000);
++		ttb = xmemalign(0x10000, 0x4000);
  	}
  
- 	dma_flush_range((unsigned long)ttb, (unsigned long)ttb + 0x4000);
+ 	pr_debug("ttb: 0x%p\n", ttb);
 -- 
 2.17.0
 
