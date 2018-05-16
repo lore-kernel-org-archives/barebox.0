@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x22c.google.com ([2607:f8b0:400e:c05::22c])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJ2cQ-00069D-4V
- for barebox@lists.infradead.org; Wed, 16 May 2018 20:01:51 +0000
-Received: by mail-pg0-x22c.google.com with SMTP id p9-v6so743053pgc.9
- for <barebox@lists.infradead.org>; Wed, 16 May 2018 13:01:39 -0700 (PDT)
+ id 1fJ2cP-00068N-AN
+ for barebox@lists.infradead.org; Wed, 16 May 2018 20:01:50 +0000
+Received: by mail-pg0-x244.google.com with SMTP id n9-v6so747950pgq.5
+ for <barebox@lists.infradead.org>; Wed, 16 May 2018 13:01:38 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 16 May 2018 13:00:34 -0700
-Message-Id: <20180516200036.29829-27-andrew.smirnov@gmail.com>
+Date: Wed, 16 May 2018 13:00:33 -0700
+Message-Id: <20180516200036.29829-26-andrew.smirnov@gmail.com>
 In-Reply-To: <20180516200036.29829-1-andrew.smirnov@gmail.com>
 References: <20180516200036.29829-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,70 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 26/28] ARM: mmu: Simplify the use of dma_flush_range()
+Subject: [PATCH v2 25/28] ARM: mmu: Use dma_inv_range() in
+ dma_sync_single_for_cpu()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Simplify the use of dma_flush_range() by changing its signature to
-accept pointer to start of the data and data size. This change allows
-us to avoid a whole bunch of repetitive arithmetic currently done by
-all of the callers.
+The code in the if () statement is identical to already existing
+dma_inv_rand(). Use it instead.
 
 Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/arm/cpu/mmu.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index b14a869af..30f321691 100644
+index ceb854ac8..b14a869af 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -142,8 +142,11 @@ static u32 *find_pte(unsigned long adr)
- 	return &table[(adr >> PAGE_SHIFT) & 0xff];
- }
- 
--static void dma_flush_range(unsigned long start, unsigned long end)
-+static void dma_flush_range(void *ptr, size_t size)
+@@ -548,11 +548,8 @@ void dma_free_coherent(void *mem, dma_addr_t dma_handle, size_t size)
+ void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
+ 			     enum dma_data_direction dir)
  {
-+	unsigned long start = (unsigned long)ptr;
-+	unsigned long end = start + size;
-+
- 	__dma_flush_range(start, end);
- 	if (outer_cache.flush_range)
- 		outer_cache.flush_range(start, end);
-@@ -170,9 +173,7 @@ static int __remap_range(void *_start, size_t size, u32 pte_flags)
- 		p[i] |= pte_flags | PTE_TYPE_SMALL;
- 	}
- 
--	dma_flush_range((unsigned long)p,
--			(unsigned long)p + numentries * sizeof(u32));
--
-+	dma_flush_range(p, numentries * sizeof(u32));
- 	tlb_invalidate();
- 
- 	return 0;
-@@ -203,7 +204,7 @@ void *map_io_sections(unsigned long phys, void *_start, size_t size)
- 	for (sec = start; sec < start + size; sec += PGDIR_SIZE, phys += PGDIR_SIZE)
- 		ttb[pgd_index(sec)] = phys | PMD_SECT_DEF_UNCACHED;
- 
--	dma_flush_range((unsigned long)ttb, (unsigned long)ttb + 0x4000);
-+	dma_flush_range(ttb, 0x4000);
- 	tlb_invalidate();
- 	return _start;
+-	if (dir != DMA_TO_DEVICE) {
+-		if (outer_cache.inv_range)
+-			outer_cache.inv_range(address, address + size);
+-		__dma_inv_range(address, address + size);
+-	}
++	if (dir != DMA_TO_DEVICE)
++		dma_inv_range(address, address + size);
  }
-@@ -249,9 +250,8 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
- 		pte += PTRS_PER_PTE;
- 	}
  
--	dma_flush_range((unsigned long)ttb, (unsigned long)ttb + 0x4000);
--	dma_flush_range((unsigned long)ptes,
--			(unsigned long)ptes + num_ptes * sizeof(u32));
-+	dma_flush_range(ttb, 0x4000);
-+	dma_flush_range(ptes, num_ptes * sizeof(u32));
- 
- 	tlb_invalidate();
- 
+ void dma_sync_single_for_device(dma_addr_t address, size_t size,
 -- 
 2.17.0
 
