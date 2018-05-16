@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJ2c7-00064H-P2
- for barebox@lists.infradead.org; Wed, 16 May 2018 20:01:33 +0000
-Received: by mail-pl0-x244.google.com with SMTP id c19-v6so1049207pls.6
- for <barebox@lists.infradead.org>; Wed, 16 May 2018 13:01:31 -0700 (PDT)
+ id 1fJ2c6-0005zB-UZ
+ for barebox@lists.infradead.org; Wed, 16 May 2018 20:01:32 +0000
+Received: by mail-pl0-x244.google.com with SMTP id e6-v6so1036364plt.11
+ for <barebox@lists.infradead.org>; Wed, 16 May 2018 13:01:20 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 16 May 2018 13:00:28 -0700
-Message-Id: <20180516200036.29829-21-andrew.smirnov@gmail.com>
+Date: Wed, 16 May 2018 13:00:20 -0700
+Message-Id: <20180516200036.29829-13-andrew.smirnov@gmail.com>
 In-Reply-To: <20180516200036.29829-1-andrew.smirnov@gmail.com>
 References: <20180516200036.29829-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,31 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 20/28] ARM: mmu: Use xmemalign in mmu_init()
+Subject: [PATCH v2 12/28] ARM: mmu: Drop needless shifting in map_io_sections()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-We don't handle OOM case in that code, so using xmemalign seems like a
-better option.
+Instead of shifting phys right by 20 and then again left by the same
+amount, just convert the code to expect it to be in unit of bytes all
+the time.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/cpu/mmu.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 42341a7a3..5e8d439bf 100644
+index 5600cfbe2..40bef016b 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -450,7 +450,7 @@ static int mmu_init(void)
- 			pr_crit("Critical Error: Can't request SDRAM region for ttb at %p\n",
- 					ttb);
- 	} else {
--		ttb = memalign(0x10000, 0x4000);
-+		ttb = xmemalign(0x10000, 0x4000);
- 	}
+@@ -196,9 +196,8 @@ void *map_io_sections(unsigned long phys, void *_start, size_t size)
+ {
+ 	unsigned long start = (unsigned long)_start, sec;
  
- 	pr_debug("ttb: 0x%p\n", ttb);
+-	phys >>= 20;
+-	for (sec = start; sec < start + size; sec += (1 << 20))
+-		ttb[sec >> 20] = (phys++ << 20) | PMD_SECT_DEF_UNCACHED;
++	for (sec = start; sec < start + size; sec += (1 << 20), phys += SZ_1M)
++		ttb[sec >> 20] = phys | PMD_SECT_DEF_UNCACHED;
+ 
+ 	dma_flush_range((unsigned long)ttb, (unsigned long)ttb + 0x4000);
+ 	tlb_invalidate();
 -- 
 2.17.0
 
