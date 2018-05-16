@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x22a.google.com ([2607:f8b0:400e:c01::22a])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJ2cJ-00065J-Ht
- for barebox@lists.infradead.org; Wed, 16 May 2018 20:01:45 +0000
-Received: by mail-pl0-x22a.google.com with SMTP id n10-v6so1051409plp.0
- for <barebox@lists.infradead.org>; Wed, 16 May 2018 13:01:32 -0700 (PDT)
+ id 1fJ2cM-00066f-La
+ for barebox@lists.infradead.org; Wed, 16 May 2018 20:01:48 +0000
+Received: by mail-pf0-x243.google.com with SMTP id a22-v6so885553pfn.6
+ for <barebox@lists.infradead.org>; Wed, 16 May 2018 13:01:36 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 16 May 2018 13:00:29 -0700
-Message-Id: <20180516200036.29829-22-andrew.smirnov@gmail.com>
+Date: Wed, 16 May 2018 13:00:31 -0700
+Message-Id: <20180516200036.29829-24-andrew.smirnov@gmail.com>
 In-Reply-To: <20180516200036.29829-1-andrew.smirnov@gmail.com>
 References: <20180516200036.29829-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,66 +23,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 21/28] ARM: mmu: Share code between dma_alloc_*() functions
+Subject: [PATCH v2 23/28] ARM: mmu: Make sure that address is 1M aligned in
+ arm_create_pte()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Code of dma_alloc_coherent() and dma_alloc_writecombine() is almost
-identical with exception of the flags passed to undelying call to
-__remap_range(). Move commong code into a shared subroutine and
-convert both functions to use it.
+If address passed arm_create_pte() is not 1M (PGDIR_SIZE) aligned,
+page table that is created will end up having unexpected mapping
+offset, breaking "1:1 mapping" assumption and leading to bugs that are
+not immediately obvious in their nature.
+
+To prevent this and because all of the callers already do said
+alignement in-place, move the alignment code to be a part of
+are_create_pte().
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 22 ++++++++--------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
+ arch/arm/cpu/mmu.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 5e8d439bf..339ab8e82 100644
+index eeab0a749..94388f11a 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -500,7 +500,7 @@ void mmu_disable(void)
- 	__mmu_cache_off();
- }
+@@ -92,6 +92,8 @@ static u32 *arm_create_pte(unsigned long virt, uint32_t flags)
+ 	u32 *table;
+ 	int i;
  
--void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
-+static void *dma_alloc(size_t size, dma_addr_t *dma_handle, uint32_t pte_flags)
- {
- 	void *ret;
++	virt = ALIGN_DOWN(virt, PGDIR_SIZE);
++
+ 	table = xmemalign(PTRS_PER_PTE * sizeof(u32),
+ 			  PTRS_PER_PTE * sizeof(u32));
  
-@@ -511,25 +511,19 @@ void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
- 
- 	dma_inv_range((unsigned long)ret, (unsigned long)ret + size);
- 
--	__remap_range(ret, size, pte_flags_uncached);
-+	__remap_range(ret, size, pte_flags);
- 
- 	return ret;
- }
- 
--void *dma_alloc_writecombine(size_t size, dma_addr_t *dma_handle)
-+void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
- {
--	void *ret;
--
--	size = PAGE_ALIGN(size);
--	ret = xmemalign(PAGE_SIZE, size);
--	if (dma_handle)
--		*dma_handle = (dma_addr_t)ret;
--
--	dma_inv_range((unsigned long)ret, (unsigned long)ret + size);
--
--	__remap_range(ret, size, pte_flags_wc);
-+	return dma_alloc(size, dma_handle, pte_flags_uncached);
-+}
- 
--	return ret;
-+void *dma_alloc_writecombine(size_t size, dma_addr_t *dma_handle)
-+{
-+	return dma_alloc(size, dma_handle, pte_flags_wc);
- }
- 
- unsigned long virt_to_phys(volatile void *virt)
+@@ -291,8 +293,7 @@ static void create_vector_table(unsigned long adr)
+ 		vectors = xmemalign(PAGE_SIZE, PAGE_SIZE);
+ 		pr_debug("Creating vector table, virt = 0x%p, phys = 0x%08lx\n",
+ 			 vectors, adr);
+-		exc = arm_create_pte(ALIGN_DOWN(adr, PGDIR_SIZE),
+-				     pte_flags_uncached);
++		exc = arm_create_pte(adr, pte_flags_uncached);
+ 		idx = (adr & (PGDIR_SIZE - 1)) >> PAGE_SHIFT;
+ 		exc[idx] = (u32)vectors | PTE_TYPE_SMALL | pte_flags_cached;
+ 	}
 -- 
 2.17.0
 
