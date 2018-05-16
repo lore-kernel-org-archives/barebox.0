@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from mout.gmx.net ([212.227.17.21])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJQSv-0005A8-2l
- for barebox@lists.infradead.org; Thu, 17 May 2018 21:29:39 +0000
-Received: by mail-pg0-x243.google.com with SMTP id k2-v6so2378713pgc.1
- for <barebox@lists.infradead.org>; Thu, 17 May 2018 14:29:26 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 17 May 2018 14:29:17 -0700
-Message-Id: <20180517212917.3628-5-andrew.smirnov@gmail.com>
-In-Reply-To: <20180517212917.3628-1-andrew.smirnov@gmail.com>
-References: <20180517212917.3628-1-andrew.smirnov@gmail.com>
+ id 1fIzVx-0002w8-Ud
+ for barebox@lists.infradead.org; Wed, 16 May 2018 16:43:14 +0000
+From: Oleksij Rempel <linux@rempel-privat.de>
+Date: Wed, 16 May 2018 18:42:23 +0200
+Message-Id: <20180516164233.27581-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,55 +19,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 4/4] common: oftree: Pass reset source and reset source
- instance to kernel
+Subject: [PATCH v1 00/10] provide ELF/KEXEC support for MIPS ath79 and malta
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-Detecting reset reason is, in some cases, a destructive operation and
-in such cases it is impossible to obtain that information in the
-kernel without some help from barebox.
+This patch set is a squashed and rebased patch set of work primely done by:
+Antony Pavlov, Peter Mamonov and Yegor Yefremov.
 
-Pass reset source and reset source instance to kernel to Linux to make
-it availible to Linux userspace. This info is placeed under
-/chosen/bootsource and it can be read under Linux in
+I did some clean-ups and updates.
 
-/sys/firmware/devicetree/base/chosen/reset-source.
+This code suppose provide kernel start support for some MIPS machines.
+For example ath79 (Atheros) and malta should be able to work with it.
 
-and
+So far only two UHI boot protocols are supported:
+- second argument is command line
+- second argument is address to devicetree
 
-/sys/firmware/devicetree/base/chosen/reset-source-instance.
+Some work should be done to start using barebox internal devicetree patching to provide
+cmdline over patched devicetree.
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- common/oftree.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ARM and other arches would probably work with some more or less work.
 
-diff --git a/common/oftree.c b/common/oftree.c
-index a38dfff29..5bb5420a7 100644
---- a/common/oftree.c
-+++ b/common/oftree.c
-@@ -13,6 +13,7 @@
- #include <boot.h>
- #include <bootsource.h>
- #include <i2c/i2c.h>
-+#include <reset_source.h>
- 
- #define MAX_LEVEL	32		/* how deeply nested we will go */
- 
-@@ -158,6 +159,10 @@ static int of_fixup_bootargs(struct device_node *root, void *unused)
- 	if (err)
- 		return err;
- 
-+	of_property_write_string(node, "reset-source", reset_source_name());
-+	of_property_write_u32(node, "reset-source-instance",
-+			      reset_source_get_instance());
-+
- 	return of_fixup_bootargs_bootsource(root, node);
- }
- 
+Antony Pavlov (5):
+  resource: add create_resource() helper function
+  filetype: add ELF type
+  bootm: add kexec ELF support
+  MIPS: add kexec ELF loading support
+  MIPS: malta: enable kexec
+
+Oleksij Rempel (5):
+  port resource_overlaps() from kernel
+  MIPS: ath79: enable kexec
+  MIPS: configs: add KEXEC=y to atheros devices
+  MIPS: configs: dptechnics-dpt-module: enable watchdog poller
+  MIPS: malta: update malta qemu defconfig
+
+ arch/mips/Kconfig                                 |   2 +
+ arch/mips/configs/8devices-lima_defconfig         |   1 +
+ arch/mips/configs/black-swift_defconfig           |   1 +
+ arch/mips/configs/dptechnics-dpt-module_defconfig |   2 +
+ arch/mips/configs/qemu-malta_defconfig            |  13 +-
+ arch/mips/configs/tplink-mr3020_defconfig         |   1 +
+ arch/mips/configs/tplink-wdr4300_defconfig        |   1 +
+ arch/mips/include/asm/elf.h                       |   8 +-
+ arch/mips/lib/Makefile                            |   4 +
+ arch/mips/lib/kexec-mach-generic.c                |  21 +
+ arch/mips/lib/kexec-mips.c                        | 307 ++++++++++++
+ arch/mips/lib/machine_kexec.h                     |  21 +
+ arch/mips/lib/relocate_kernel.S                   | 108 +++++
+ commands/Kconfig                                  |   7 +
+ common/Kconfig                                    |   3 +
+ common/filetype.c                                 |   5 +
+ common/resource.c                                 |  15 +
+ include/bootm.h                                   |   3 +
+ include/filetype.h                                |   1 +
+ include/kexec.h                                   | 118 +++++
+ include/linux/ioport.h                            |   8 +
+ lib/Makefile                                      |   1 +
+ lib/kexec/Makefile                                |   4 +
+ lib/kexec/kexec-bootm-elf.c                       |  42 ++
+ lib/kexec/kexec-elf-exec.c                        |  70 +++
+ lib/kexec/kexec-elf.c                             | 565 ++++++++++++++++++++++
+ lib/kexec/kexec.c                                 | 255 ++++++++++
+ 27 files changed, 1583 insertions(+), 4 deletions(-)
+ create mode 100644 arch/mips/lib/kexec-mach-generic.c
+ create mode 100644 arch/mips/lib/kexec-mips.c
+ create mode 100644 arch/mips/lib/machine_kexec.h
+ create mode 100644 arch/mips/lib/relocate_kernel.S
+ create mode 100644 include/kexec.h
+ create mode 100644 lib/kexec/Makefile
+ create mode 100644 lib/kexec/kexec-bootm-elf.c
+ create mode 100644 lib/kexec/kexec-elf-exec.c
+ create mode 100644 lib/kexec/kexec-elf.c
+ create mode 100644 lib/kexec/kexec.c
+
 -- 
-2.17.0
+2.14.1
 
 
 _______________________________________________
