@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mout.gmx.net ([212.227.17.22])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fIzVy-0002wL-6E
- for barebox@lists.infradead.org; Wed, 16 May 2018 16:43:18 +0000
+ id 1fIzVy-0002wT-Az
+ for barebox@lists.infradead.org; Wed, 16 May 2018 16:43:22 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Wed, 16 May 2018 18:42:25 +0200
-Message-Id: <20180516164233.27581-3-linux@rempel-privat.de>
+Date: Wed, 16 May 2018 18:42:24 +0200
+Message-Id: <20180516164233.27581-2-linux@rempel-privat.de>
 In-Reply-To: <20180516164233.27581-1-linux@rempel-privat.de>
 References: <20180516164233.27581-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,34 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 02/10] port resource_overlaps() from kernel
+Subject: [PATCH v1 01/10] resource: add create_resource() helper function
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
+
+From: Antony Pavlov <antonynpavlov@gmail.com>
 
 needed for kexec support
 
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- include/linux/ioport.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ common/resource.c      | 15 +++++++++++++++
+ include/linux/ioport.h |  2 ++
+ 2 files changed, 17 insertions(+)
 
+diff --git a/common/resource.c b/common/resource.c
+index e4bbe15fd..fa9ffd084 100644
+--- a/common/resource.c
++++ b/common/resource.c
+@@ -150,3 +150,18 @@ struct resource *request_ioport_region(const char *name,
+ 
+ 	return res;
+ }
++
++struct resource *create_resource(const char *name,
++	resource_size_t start, resource_size_t end)
++{
++	struct resource *t;
++
++	t = xzalloc(sizeof *t);
++	INIT_LIST_HEAD(&t->children);
++	t->parent = NULL;
++	t->name = xstrdup(name);
++	t->start = start;
++	t->end = end;
++
++	return t;
++}
 diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index 2a944cc73..f05937ead 100644
+index 3d375a874..2a944cc73 100644
 --- a/include/linux/ioport.h
 +++ b/include/linux/ioport.h
-@@ -130,6 +130,12 @@ static inline unsigned long resource_type(const struct resource *res)
- 	return res->flags & IORESOURCE_TYPE_BITS;
- }
+@@ -140,6 +140,8 @@ struct resource *__request_region(struct resource *parent,
+ 		resource_size_t size);
  
-+/* True if any part of r1 overlaps r2 */
-+static inline bool resource_overlaps(struct resource *r1, struct resource *r2)
-+{
-+       return (r1->start <= r2->end && r1->end >= r2->start);
-+}
-+
- struct resource *request_iomem_region(const char *name,
- 		resource_size_t start, resource_size_t end);
- struct resource *request_ioport_region(const char *name,
+ int release_region(struct resource *res);
++struct resource *create_resource(const char *name,
++	resource_size_t start, resource_size_t end);
+ 
+ extern struct resource iomem_resource;
+ extern struct resource ioport_resource;
 -- 
 2.14.1
 
