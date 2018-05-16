@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJ2t9-0008CT-MU
- for barebox@lists.infradead.org; Wed, 16 May 2018 20:19:10 +0000
-Received: by mail-pg0-x243.google.com with SMTP id w3-v6so756026pgv.12
- for <barebox@lists.infradead.org>; Wed, 16 May 2018 13:18:57 -0700 (PDT)
+ id 1fJ2tD-0008EE-5t
+ for barebox@lists.infradead.org; Wed, 16 May 2018 20:19:13 +0000
+Received: by mail-pf0-x242.google.com with SMTP id o76-v6so910365pfi.5
+ for <barebox@lists.infradead.org>; Wed, 16 May 2018 13:19:01 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 16 May 2018 13:18:24 -0700
-Message-Id: <20180516201827.6430-2-andrew.smirnov@gmail.com>
+Date: Wed, 16 May 2018 13:18:27 -0700
+Message-Id: <20180516201827.6430-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20180516201827.6430-1-andrew.smirnov@gmail.com>
 References: <20180516201827.6430-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,51 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/4] of: Make of_property_get_value() public
+Subject: [PATCH v2 4/4] common: oftree: Pass reset source and reset source
+ instance to kernel
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Make of_property_get_value() public, so it can be used in other part
-of the system.
+Detecting reset reason is, in some cases, a destructive operation and
+in such cases it is impossible to obtain that information in the
+kernel without some help from barebox.
+
+Pass reset source and reset source instance to kernel to Linux to make
+it availible to Linux userspace. This info is placeed under
+/chosen/bootsource and it can be read under Linux in
+
+/sys/firmware/devicetree/base/chosen/reset-source.
+
+and
+
+/sys/firmware/devicetree/base/chosen/reset-source-instance.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/of/base.c | 5 -----
- include/of.h      | 6 ++++++
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ common/oftree.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 4bcc11364..fc01a99ef 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -129,11 +129,6 @@ struct property *of_find_property(const struct device_node *np,
- }
- EXPORT_SYMBOL(of_find_property);
+diff --git a/common/oftree.c b/common/oftree.c
+index 5ab6bf089..5b592fb07 100644
+--- a/common/oftree.c
++++ b/common/oftree.c
+@@ -13,6 +13,7 @@
+ #include <boot.h>
+ #include <bootsource.h>
+ #include <i2c/i2c.h>
++#include <reset_source.h>
  
--static const void *of_property_get_value(struct property *pp)
--{
--	return pp->value ? pp->value : pp->value_const;
--}
--
- static void of_alias_add(struct alias_prop *ap, struct device_node *np,
- 			 int id, const char *stem, int stem_len)
- {
-diff --git a/include/of.h b/include/of.h
-index fec51bb94..7fc4b7791 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -94,6 +94,12 @@ static inline void of_write_number(void *__cell, u64 val, int size)
- 	}
- }
+ #define MAX_LEVEL	32		/* how deeply nested we will go */
  
-+static inline const void *of_property_get_value(struct property *pp)
-+{
-+	return pp->value ? pp->value : pp->value_const;
-+}
+@@ -176,6 +177,10 @@ static int of_fixup_bootargs(struct device_node *root, void *unused)
+ 	if (err)
+ 		return err;
+ 
++	of_property_write_string(node, "reset-source", reset_source_name());
++	of_property_write_u32(node, "reset-source-instance",
++			      reset_source_get_instance());
 +
-+
- void of_print_property(const void *data, int len);
- void of_print_cmdline(struct device_node *root);
+ 	return of_fixup_bootargs_bootsource(root, node);
+ }
  
 -- 
 2.17.0
