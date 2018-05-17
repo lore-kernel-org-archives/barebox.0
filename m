@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x233.google.com ([2607:f8b0:400e:c01::233])
+Received: from mail-pf0-x22a.google.com ([2607:f8b0:400e:c00::22a])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJPzg-0005Os-QC
- for barebox@lists.infradead.org; Thu, 17 May 2018 20:59:46 +0000
-Received: by mail-pl0-x233.google.com with SMTP id az12-v6so3243335plb.8
- for <barebox@lists.infradead.org>; Thu, 17 May 2018 13:59:14 -0700 (PDT)
+ id 1fJPzj-0005QU-SJ
+ for barebox@lists.infradead.org; Thu, 17 May 2018 20:59:50 +0000
+Received: by mail-pf0-x22a.google.com with SMTP id o76-v6so2665728pfi.5
+ for <barebox@lists.infradead.org>; Thu, 17 May 2018 13:59:17 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 17 May 2018 13:58:19 -0700
-Message-Id: <20180517205837.32421-11-andrew.smirnov@gmail.com>
+Date: Thu, 17 May 2018 13:58:21 -0700
+Message-Id: <20180517205837.32421-13-andrew.smirnov@gmail.com>
 In-Reply-To: <20180517205837.32421-1-andrew.smirnov@gmail.com>
 References: <20180517205837.32421-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,98 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 10/28] ARM: mmu: Share code for initial flat mapping
- creation
+Subject: [PATCH v3 12/28] ARM: mmu: Drop needless shifting in map_io_sections()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Code creating inital 4GiB flat mapping is identical between mmu.c and
-mmu-early.c, so move it to mmu.h and share.
+Instead of shifting phys right by 20 and then again left by the same
+amount, just convert the code to expect it to be in unit of bytes all
+the time.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu-early.c | 4 +---
- arch/arm/cpu/mmu.c       | 6 +-----
- arch/arm/cpu/mmu.h       | 8 ++++++++
- 3 files changed, 10 insertions(+), 8 deletions(-)
+ arch/arm/cpu/mmu.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/cpu/mmu-early.c b/arch/arm/cpu/mmu-early.c
-index b10aa6fde..d9aafdd8a 100644
---- a/arch/arm/cpu/mmu-early.c
-+++ b/arch/arm/cpu/mmu-early.c
-@@ -5,7 +5,6 @@
- #include <asm/memory.h>
- #include <asm/system.h>
- #include <asm/cache.h>
--#include <asm/pgtable.h>
- 
- #include "mmu.h"
- 
-@@ -30,8 +29,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize,
- 	set_ttbr(ttb);
- 	set_domain(DOMAIN_MANAGER);
- 
--	create_sections(ttb, 0, SZ_4G - 1, PMD_SECT_AP_WRITE |
--			PMD_SECT_AP_READ | PMD_TYPE_SECT);
-+	create_flat_mapping(ttb);
- 
- 	map_cachable(membase, memsize);
- 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index a9a5f2f8c..f0f279ffa 100644
+index f0f279ffa..06c9045b7 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -27,14 +27,12 @@
- #include <asm/barebox-arm.h>
- #include <asm/system.h>
- #include <asm/cache.h>
--#include <asm/pgtable.h>
- #include <memory.h>
- #include <asm/system_info.h>
- #include <asm/sections.h>
+@@ -196,9 +196,8 @@ void *map_io_sections(unsigned long phys, void *_start, size_t size)
+ {
+ 	unsigned long start = (unsigned long)_start, sec;
  
- #include "mmu.h"
+-	phys >>= 20;
+-	for (sec = start; sec < start + size; sec += (1 << 20))
+-		ttb[sec >> 20] = (phys++ << 20) | PMD_SECT_DEF_UNCACHED;
++	for (sec = start; sec < start + size; sec += (1 << 20), phys += SZ_1M)
++		ttb[sec >> 20] = phys | PMD_SECT_DEF_UNCACHED;
  
--#define PMD_SECT_DEF_UNCACHED (PMD_SECT_AP_WRITE | PMD_SECT_AP_READ | PMD_TYPE_SECT)
- #define PMD_SECT_DEF_CACHED (PMD_SECT_WB | PMD_SECT_DEF_UNCACHED)
- 
- static uint32_t *ttb;
-@@ -459,9 +457,7 @@ static int mmu_init(void)
- 	set_ttbr(ttb);
- 	set_domain(DOMAIN_MANAGER);
- 
--	/* create a flat mapping using 1MiB sections */
--	create_sections(ttb, 0, SZ_4G - 1, PMD_SECT_AP_WRITE | PMD_SECT_AP_READ |
--			PMD_TYPE_SECT);
-+	create_flat_mapping(ttb);
- 	__mmu_cache_flush();
- 
- 	vectors_init();
-diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
-index fa01cbe4e..0c9e44cd2 100644
---- a/arch/arm/cpu/mmu.h
-+++ b/arch/arm/cpu/mmu.h
-@@ -1,6 +1,7 @@
- #ifndef __ARM_MMU_H
- #define __ARM_MMU_H
- 
-+#include <asm/pgtable.h>
- #include <linux/sizes.h>
- 
- #ifdef CONFIG_MMU
-@@ -40,5 +41,12 @@ create_sections(uint32_t *ttb, unsigned long first,
- 	}
- }
- 
-+#define PMD_SECT_DEF_UNCACHED (PMD_SECT_AP_WRITE | PMD_SECT_AP_READ | PMD_TYPE_SECT)
-+
-+static inline void create_flat_mapping(uint32_t *ttb)
-+{
-+	/* create a flat mapping using 1MiB sections */
-+	create_sections(ttb, 0, SZ_4G - 1, PMD_SECT_DEF_UNCACHED);
-+}
- 
- #endif /* __ARM_MMU_H */
+ 	dma_flush_range((unsigned long)ttb, (unsigned long)ttb + 0x4000);
+ 	tlb_invalidate();
 -- 
 2.17.0
 
