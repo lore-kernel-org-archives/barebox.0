@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJPzU-0005La-6H
- for barebox@lists.infradead.org; Thu, 17 May 2018 20:59:13 +0000
-Received: by mail-pg0-x243.google.com with SMTP id l2-v6so2330083pgc.7
- for <barebox@lists.infradead.org>; Thu, 17 May 2018 13:59:02 -0700 (PDT)
+ id 1fJPzV-0005Lq-TQ
+ for barebox@lists.infradead.org; Thu, 17 May 2018 20:59:15 +0000
+Received: by mail-pf0-x244.google.com with SMTP id x9-v6so2668154pfm.2
+ for <barebox@lists.infradead.org>; Thu, 17 May 2018 13:59:03 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 17 May 2018 13:58:10 -0700
-Message-Id: <20180517205837.32421-2-andrew.smirnov@gmail.com>
+Date: Thu, 17 May 2018 13:58:11 -0700
+Message-Id: <20180517205837.32421-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20180517205837.32421-1-andrew.smirnov@gmail.com>
 References: <20180517205837.32421-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,32 +23,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 01/28] ARM: mmu: Remove unused ARM_VECTORS_SIZE
+Subject: [PATCH v3 02/28] ARM: mmu: Make use of IS_ALIGNED in
+ arm_mmu_remap_sdram()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 6 ------
- 1 file changed, 6 deletions(-)
+ arch/arm/cpu/mmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 6ccd5893b..9472013ca 100644
+index 9472013ca..c70e9e782 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -270,12 +270,6 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
+@@ -241,7 +241,7 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
+ 	 * We replace each 1MiB section in this range with second level page
+ 	 * tables, therefore we must have 1Mib aligment here.
+ 	 */
+-	if ((phys & (SZ_1M - 1)) || (bank->size & (SZ_1M - 1)))
++	if (!IS_ALIGNED(phys, SZ_1M) || !IS_ALIGNED(bank->size, SZ_1M))
+ 		return -EINVAL;
  
- 	return 0;
- }
--/*
-- * We have 8 exception vectors and the table consists of absolute
-- * jumps, so we need 8 * 4 bytes for the instructions and another
-- * 8 * 4 bytes for the addresses.
-- */
--#define ARM_VECTORS_SIZE	(sizeof(u32) * 8 * 2)
- 
- #define ARM_HIGH_VECTORS	0xffff0000
- #define ARM_LOW_VECTORS		0x0
+ 	ptes = xmemalign(PAGE_SIZE, num_ptes * sizeof(u32));
 -- 
 2.17.0
 
