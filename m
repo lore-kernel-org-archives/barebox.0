@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x22f.google.com ([2607:f8b0:400e:c00::22f])
+Received: from mail-pg0-x22a.google.com ([2607:f8b0:400e:c05::22a])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJPze-0005NJ-6Q
- for barebox@lists.infradead.org; Thu, 17 May 2018 20:59:37 +0000
-Received: by mail-pf0-x22f.google.com with SMTP id p14-v6so2658471pfh.9
- for <barebox@lists.infradead.org>; Thu, 17 May 2018 13:59:11 -0700 (PDT)
+ id 1fJPzc-0005Mm-HH
+ for barebox@lists.infradead.org; Thu, 17 May 2018 20:59:38 +0000
+Received: by mail-pg0-x22a.google.com with SMTP id p9-v6so2327684pgc.9
+ for <barebox@lists.infradead.org>; Thu, 17 May 2018 13:59:10 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 17 May 2018 13:58:17 -0700
-Message-Id: <20180517205837.32421-9-andrew.smirnov@gmail.com>
+Date: Thu, 17 May 2018 13:58:16 -0700
+Message-Id: <20180517205837.32421-8-andrew.smirnov@gmail.com>
 In-Reply-To: <20180517205837.32421-1-andrew.smirnov@gmail.com>
 References: <20180517205837.32421-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,50 +23,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 08/28] sizes.h: Sync with Linux 4.16
+Subject: [PATCH v3 07/28] ARM: mmu: Separate index and address in
+ create_sections()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Sync with Linux 4.16 to get SZ_4G.
+Both TTB index and address used to fill that entry are derived from
+the same variable 'addr' which requires shifting right and left by 20
+and somewhat confusing.
+
+Split the counter used to iterate over elements of  TTB into a
+separate variable to make this code a bit easier to read.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/phytec-som-imx6/lowlevel.c | 1 +
- include/linux/sizes.h                      | 4 ++++
- 2 files changed, 5 insertions(+)
+ arch/arm/cpu/mmu.h | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/phytec-som-imx6/lowlevel.c b/arch/arm/boards/phytec-som-imx6/lowlevel.c
-index f9d70c745..05f918f6c 100644
---- a/arch/arm/boards/phytec-som-imx6/lowlevel.c
-+++ b/arch/arm/boards/phytec-som-imx6/lowlevel.c
-@@ -38,6 +38,7 @@ static inline void setup_uart(void)
- 	putc_ll('>');
+diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
+index af429edbc..56e78c715 100644
+--- a/arch/arm/cpu/mmu.h
++++ b/arch/arm/cpu/mmu.h
+@@ -1,6 +1,8 @@
+ #ifndef __ARM_MMU_H
+ #define __ARM_MMU_H
+ 
++#include <linux/sizes.h>
++
+ #ifdef CONFIG_MMU
+ void __mmu_cache_on(void);
+ void __mmu_cache_off(void);
+@@ -28,10 +30,14 @@ static inline void
+ create_sections(uint32_t *ttb, unsigned long addr,
+ 		int size_m, unsigned int flags)
+ {
++	unsigned long ttb_start = addr >> 20;
++	unsigned long ttb_end = ttb_start + size_m;
+ 	unsigned int i;
+ 
+-	for (i = 0, addr >>= 20; i < size_m; i++, addr++)
+-		ttb[addr] = (addr << 20) | flags;
++	for (i = ttb_start; i < ttb_end; i++) {
++		ttb[i] = addr | flags;
++		addr += SZ_1M;
++	}
  }
  
-+#undef SZ_4G
- #define SZ_4G 0xEFFFFFF8
  
- BAREBOX_IMD_TAG_STRING(physom_mx6_memsize_SZ_128M, IMD_TYPE_PARAMETER, "memsize=128", 0);
-diff --git a/include/linux/sizes.h b/include/linux/sizes.h
-index ce3e8150c..fbde0bc7e 100644
---- a/include/linux/sizes.h
-+++ b/include/linux/sizes.h
-@@ -8,6 +8,8 @@
- #ifndef __LINUX_SIZES_H__
- #define __LINUX_SIZES_H__
- 
-+#include <linux/const.h>
-+
- #define SZ_1				0x00000001
- #define SZ_2				0x00000002
- #define SZ_4				0x00000004
-@@ -44,4 +46,6 @@
- #define SZ_1G				0x40000000
- #define SZ_2G				0x80000000
- 
-+#define SZ_4G				_AC(0x100000000, ULL)
-+
- #endif /* __LINUX_SIZES_H__ */
 -- 
 2.17.0
 
