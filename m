@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
+Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJPzx-0005Xw-1f
- for barebox@lists.infradead.org; Thu, 17 May 2018 21:00:27 +0000
-Received: by mail-pf0-x241.google.com with SMTP id a20-v6so2669419pfo.0
- for <barebox@lists.infradead.org>; Thu, 17 May 2018 13:59:30 -0700 (PDT)
+ id 1fJQ05-0005dd-Hq
+ for barebox@lists.infradead.org; Thu, 17 May 2018 21:00:43 +0000
+Received: by mail-pg0-x243.google.com with SMTP id 63-v6so181903pgg.3
+ for <barebox@lists.infradead.org>; Thu, 17 May 2018 13:59:39 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 17 May 2018 13:58:31 -0700
-Message-Id: <20180517205837.32421-23-andrew.smirnov@gmail.com>
+Date: Thu, 17 May 2018 13:58:37 -0700
+Message-Id: <20180517205837.32421-29-andrew.smirnov@gmail.com>
 In-Reply-To: <20180517205837.32421-1-andrew.smirnov@gmail.com>
 References: <20180517205837.32421-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,62 +23,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 22/28] ARM: mmu: Pass PTE flags a parameter to
- arm_create_pte()
+Subject: [PATCH v3 28/28] ARM: mmu: Introduce ARM_TTB_SIZE
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-In order to make it possible to use this functions in contexts where
-creating a new PTE of uncached pages in not appropriate, pass PTE
-flags a parameter to arm_create_pte() and fix all of the current users
-as necessary.
+Commit 1c33aacf8a247ab45814b43ac0ca903677afffae ("ARM: use memalign to
+allocate page table"), reasonalby changed TTB allocation size from
+SZ_32K to SZ_16K (TTB's real size), but it also changed alignment from
+SZ_16K to SZ_64K for unclear reasons.
+
+Reading various TTBR related ARM documentation it seems that worst
+case alignment for it is 16KiB (bits [0, 13 - N] must be zero) which
+also matches early TTB allocation code.
+
+Since both early and regular MMU code has to share this paramter,
+introduce ARM_TTB_SIZE and use it in both cases for both size and
+alignment.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/arm/cpu/mmu.c                 | 2 +-
+ arch/arm/include/asm/barebox-arm.h | 8 +++++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 7d4432b98..1713238ad 100644
+index 5f82b63ca..a89f420f2 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -87,7 +87,7 @@ static void arm_mmu_not_initialized_error(void)
-  * We initially create a flat uncached mapping on it.
-  * Not yet exported, but may be later if someone finds use for it.
-  */
--static u32 *arm_create_pte(unsigned long virt)
-+static u32 *arm_create_pte(unsigned long virt, uint32_t flags)
- {
- 	u32 *table;
- 	int i;
-@@ -101,7 +101,7 @@ static u32 *arm_create_pte(unsigned long virt)
- 	ttb[pgd_index(virt)] = (unsigned long)table | PMD_TYPE_TABLE;
- 
- 	for (i = 0; i < PTRS_PER_PTE; i++) {
--		table[i] = virt | PTE_TYPE_SMALL | pte_flags_uncached;
-+		table[i] = virt | PTE_TYPE_SMALL | flags;
- 		virt += PAGE_SIZE;
- 	}
- 
-@@ -291,7 +291,8 @@ static void create_vector_table(unsigned long adr)
- 		vectors = xmemalign(PAGE_SIZE, PAGE_SIZE);
- 		pr_debug("Creating vector table, virt = 0x%p, phys = 0x%08lx\n",
- 			 vectors, adr);
--		exc = arm_create_pte(ALIGN_DOWN(adr, PGDIR_SIZE));
-+		exc = arm_create_pte(ALIGN_DOWN(adr, PGDIR_SIZE),
-+				     pte_flags_uncached);
- 		idx = (adr & (PGDIR_SIZE - 1)) >> PAGE_SHIFT;
- 		exc[idx] = (u32)vectors | PTE_TYPE_SMALL | pte_flags_cached;
- 	}
-@@ -362,7 +363,7 @@ static void create_zero_page(void)
- 		 */
- 		pr_debug("zero page is in SDRAM area, currently not supported\n");
+@@ -469,7 +469,7 @@ static int mmu_init(void)
+ 			pr_crit("Critical Error: Can't request SDRAM region for ttb at %p\n",
+ 					ttb);
  	} else {
--		zero = arm_create_pte(0x0);
-+		zero = arm_create_pte(0x0, pte_flags_uncached);
- 		zero[0] = 0;
- 		pr_debug("Created zero page\n");
+-		ttb = xmemalign(0x10000, 0x4000);
++		ttb = xmemalign(ARM_TTB_SIZE, ARM_TTB_SIZE);
  	}
+ 
+ 	pr_debug("ttb: 0x%p\n", ttb);
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index f55c8bb0c..d97f68c54 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -32,6 +32,12 @@
+ #include <linux/compiler.h>
+ #include <asm/barebox-arm-head.h>
+ 
++/*
++ * We have a 4GiB address space split into 1MiB sections, with each
++ * section header taking 4 bytes
++ */
++#define ARM_TTB_SIZE	(SZ_4G / SZ_1M * sizeof(u32))
++
+ unsigned long get_runtime_offset(void);
+ 
+ /* global_variable_offset() - Access global variables when not running at link address
+@@ -117,7 +123,7 @@ static inline unsigned long arm_mem_ttb(unsigned long membase,
+ 					unsigned long endmem)
+ {
+ 	endmem = arm_mem_stack(membase, endmem);
+-	endmem = ALIGN_DOWN(endmem, SZ_16K) - SZ_16K;
++	endmem = ALIGN_DOWN(endmem, ARM_TTB_SIZE) - ARM_TTB_SIZE;
+ 
+ 	return endmem;
+ }
 -- 
 2.17.0
 
