@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x233.google.com ([2607:f8b0:400e:c05::233])
+Received: from mail-pl0-x231.google.com ([2607:f8b0:400e:c01::231])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJQ03-0003A5-Fu
- for barebox@lists.infradead.org; Thu, 17 May 2018 20:59:48 +0000
-Received: by mail-pg0-x233.google.com with SMTP id n9-v6so2333126pgq.5
- for <barebox@lists.infradead.org>; Thu, 17 May 2018 13:59:37 -0700 (PDT)
+ id 1fJPzx-0003A2-Pt
+ for barebox@lists.infradead.org; Thu, 17 May 2018 20:59:43 +0000
+Received: by mail-pl0-x231.google.com with SMTP id ay10-v6so3254960plb.1
+ for <barebox@lists.infradead.org>; Thu, 17 May 2018 13:59:30 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 17 May 2018 13:58:35 -0700
-Message-Id: <20180517205837.32421-27-andrew.smirnov@gmail.com>
+Date: Thu, 17 May 2018 13:58:30 -0700
+Message-Id: <20180517205837.32421-22-andrew.smirnov@gmail.com>
 In-Reply-To: <20180517205837.32421-1-andrew.smirnov@gmail.com>
 References: <20180517205837.32421-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,70 +23,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 26/28] ARM: mmu: Simplify the use of dma_flush_range()
+Subject: [PATCH v3 21/28] ARM: mmu: Share code between dma_alloc_*() functions
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Simplify the use of dma_flush_range() by changing its signature to
-accept pointer to start of the data and data size. This change allows
-us to avoid a whole bunch of repetitive arithmetic currently done by
-all of the callers.
+Code of dma_alloc_coherent() and dma_alloc_writecombine() is almost
+identical with exception of the flags passed to undelying call to
+__remap_range(). Move commong code into a shared subroutine and
+convert both functions to use it.
 
-Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/arm/cpu/mmu.c | 22 ++++++++--------------
+ 1 file changed, 8 insertions(+), 14 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 5e1e613d9..c3c23c639 100644
+index fc4046e85..7d4432b98 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -142,8 +142,11 @@ static u32 *find_pte(unsigned long adr)
- 	return &table[(adr >> PAGE_SHIFT) & 0xff];
+@@ -500,7 +500,7 @@ void mmu_disable(void)
+ 	__mmu_cache_off();
  }
  
--static void dma_flush_range(unsigned long start, unsigned long end)
-+static void dma_flush_range(void *ptr, size_t size)
+-void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
++static void *dma_alloc(size_t size, dma_addr_t *dma_handle, uint32_t pte_flags)
  {
-+	unsigned long start = (unsigned long)ptr;
-+	unsigned long end = start + size;
-+
- 	__dma_flush_range(start, end);
- 	if (outer_cache.flush_range)
- 		outer_cache.flush_range(start, end);
-@@ -170,9 +173,7 @@ static int __remap_range(void *_start, size_t size, u32 pte_flags)
- 		p[i] |= pte_flags | PTE_TYPE_SMALL;
- 	}
+ 	void *ret;
  
--	dma_flush_range((unsigned long)p,
--			(unsigned long)p + numentries * sizeof(u32));
--
-+	dma_flush_range(p, numentries * sizeof(u32));
- 	tlb_invalidate();
+@@ -511,25 +511,19 @@ void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
  
- 	return 0;
-@@ -203,7 +204,7 @@ void *map_io_sections(unsigned long phys, void *_start, size_t size)
- 	for (sec = start; sec < start + size; sec += PGDIR_SIZE, phys += PGDIR_SIZE)
- 		ttb[pgd_index(sec)] = phys | PMD_SECT_DEF_UNCACHED;
+ 	dma_inv_range((unsigned long)ret, (unsigned long)ret + size);
  
--	dma_flush_range((unsigned long)ttb, (unsigned long)ttb + 0x4000);
-+	dma_flush_range(ttb, 0x4000);
- 	tlb_invalidate();
- 	return _start;
+-	__remap_range(ret, size, pte_flags_uncached);
++	__remap_range(ret, size, pte_flags);
+ 
+ 	return ret;
  }
-@@ -249,9 +250,8 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
- 		pte += PTRS_PER_PTE;
- 	}
  
--	dma_flush_range((unsigned long)ttb, (unsigned long)ttb + 0x4000);
--	dma_flush_range((unsigned long)ptes,
--			(unsigned long)ptes + num_ptes * sizeof(u32));
-+	dma_flush_range(ttb, 0x4000);
-+	dma_flush_range(ptes, num_ptes * sizeof(u32));
+-void *dma_alloc_writecombine(size_t size, dma_addr_t *dma_handle)
++void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
+ {
+-	void *ret;
+-
+-	size = PAGE_ALIGN(size);
+-	ret = xmemalign(PAGE_SIZE, size);
+-	if (dma_handle)
+-		*dma_handle = (dma_addr_t)ret;
+-
+-	dma_inv_range((unsigned long)ret, (unsigned long)ret + size);
+-
+-	__remap_range(ret, size, pte_flags_wc);
++	return dma_alloc(size, dma_handle, pte_flags_uncached);
++}
  
- 	tlb_invalidate();
+-	return ret;
++void *dma_alloc_writecombine(size_t size, dma_addr_t *dma_handle)
++{
++	return dma_alloc(size, dma_handle, pte_flags_wc);
+ }
  
+ unsigned long virt_to_phys(volatile void *virt)
 -- 
 2.17.0
 
