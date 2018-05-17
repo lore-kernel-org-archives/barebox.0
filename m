@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
+Received: from mail-pf0-x22f.google.com ([2607:f8b0:400e:c00::22f])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJPzZ-0005MG-TK
- for barebox@lists.infradead.org; Thu, 17 May 2018 20:59:31 +0000
-Received: by mail-pg0-x241.google.com with SMTP id p8-v6so2323726pgq.10
- for <barebox@lists.infradead.org>; Thu, 17 May 2018 13:59:07 -0700 (PDT)
+ id 1fJPze-0005NJ-6Q
+ for barebox@lists.infradead.org; Thu, 17 May 2018 20:59:37 +0000
+Received: by mail-pf0-x22f.google.com with SMTP id p14-v6so2658471pfh.9
+ for <barebox@lists.infradead.org>; Thu, 17 May 2018 13:59:11 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 17 May 2018 13:58:14 -0700
-Message-Id: <20180517205837.32421-6-andrew.smirnov@gmail.com>
+Date: Thu, 17 May 2018 13:58:17 -0700
+Message-Id: <20180517205837.32421-9-andrew.smirnov@gmail.com>
 In-Reply-To: <20180517205837.32421-1-andrew.smirnov@gmail.com>
 References: <20180517205837.32421-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,85 +23,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 05/28] ARM: mmu: Introduce set_domain()
+Subject: [PATCH v3 08/28] sizes.h: Sync with Linux 4.16
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port set_domain() form Linux kernel and share it between regular and
-early MMU code to avoid duplication.
+Sync with Linux 4.16 to get SZ_4G.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu-early.c | 7 +------
- arch/arm/cpu/mmu.c       | 6 +-----
- arch/arm/cpu/mmu.h       | 9 +++++++++
- 3 files changed, 11 insertions(+), 11 deletions(-)
+ arch/arm/boards/phytec-som-imx6/lowlevel.c | 1 +
+ include/linux/sizes.h                      | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/arch/arm/cpu/mmu-early.c b/arch/arm/cpu/mmu-early.c
-index 79fc3080a..f75cc7e4a 100644
---- a/arch/arm/cpu/mmu-early.c
-+++ b/arch/arm/cpu/mmu-early.c
-@@ -33,17 +33,12 @@ static void map_cachable(unsigned long start, unsigned long size)
- void mmu_early_enable(unsigned long membase, unsigned long memsize,
- 		      unsigned long _ttb)
- {
--	int i;
--
- 	ttb = (uint32_t *)_ttb;
- 
- 	arm_set_cache_functions();
- 
- 	set_ttbr(ttb);
--
--	/* Set the Domain Access Control Register */
--	i = 0x3;
--	asm volatile ("mcr  p15,0,%0,c3,c0,0" : : "r"(i) /*:*/);
-+	set_domain(DOMAIN_MANAGER);
- 
- 	create_sections(0, 4096, PMD_SECT_AP_WRITE |
- 			PMD_SECT_AP_READ | PMD_TYPE_SECT);
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 28732b795..7e087d08f 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -422,7 +422,6 @@ static void vectors_init(void)
- static int mmu_init(void)
- {
- 	struct memory_bank *bank;
--	int i;
- 
- 	if (list_empty(&memory_banks))
- 		/*
-@@ -472,10 +471,7 @@ static int mmu_init(void)
- 	pr_debug("ttb: 0x%p\n", ttb);
- 
- 	set_ttbr(ttb);
--
--	/* Set the Domain Access Control Register */
--	i = 0x3;
--	asm volatile ("mcr  p15,0,%0,c3,c0,0" : : "r"(i) /*:*/);
-+	set_domain(DOMAIN_MANAGER);
- 
- 	/* create a flat mapping using 1MiB sections */
- 	create_sections(0, 0, PAGE_SIZE, PMD_SECT_AP_WRITE | PMD_SECT_AP_READ |
-diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
-index 5dcf4b53a..e71ff8e9a 100644
---- a/arch/arm/cpu/mmu.h
-+++ b/arch/arm/cpu/mmu.h
-@@ -16,4 +16,13 @@ static inline void set_ttbr(void *ttb)
- 	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
+diff --git a/arch/arm/boards/phytec-som-imx6/lowlevel.c b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+index f9d70c745..05f918f6c 100644
+--- a/arch/arm/boards/phytec-som-imx6/lowlevel.c
++++ b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+@@ -38,6 +38,7 @@ static inline void setup_uart(void)
+ 	putc_ll('>');
  }
  
-+#define DOMAIN_MANAGER	3
++#undef SZ_4G
+ #define SZ_4G 0xEFFFFFF8
+ 
+ BAREBOX_IMD_TAG_STRING(physom_mx6_memsize_SZ_128M, IMD_TYPE_PARAMETER, "memsize=128", 0);
+diff --git a/include/linux/sizes.h b/include/linux/sizes.h
+index ce3e8150c..fbde0bc7e 100644
+--- a/include/linux/sizes.h
++++ b/include/linux/sizes.h
+@@ -8,6 +8,8 @@
+ #ifndef __LINUX_SIZES_H__
+ #define __LINUX_SIZES_H__
+ 
++#include <linux/const.h>
 +
-+static inline void set_domain(unsigned val)
-+{
-+	/* Set the Domain Access Control Register */
-+	asm volatile ("mcr  p15,0,%0,c3,c0,0" : : "r"(val) /*:*/);
-+}
+ #define SZ_1				0x00000001
+ #define SZ_2				0x00000002
+ #define SZ_4				0x00000004
+@@ -44,4 +46,6 @@
+ #define SZ_1G				0x40000000
+ #define SZ_2G				0x80000000
+ 
++#define SZ_4G				_AC(0x100000000, ULL)
 +
-+
- #endif /* __ARM_MMU_H */
+ #endif /* __LINUX_SIZES_H__ */
 -- 
 2.17.0
 
