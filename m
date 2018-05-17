@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x244.google.com ([2a00:1450:400c:c0c::244])
+Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJJRa-0002jF-7N
- for barebox@lists.infradead.org; Thu, 17 May 2018 13:59:48 +0000
-Received: by mail-wr0-x244.google.com with SMTP id 94-v6so5809812wrf.5
- for <barebox@lists.infradead.org>; Thu, 17 May 2018 06:59:39 -0700 (PDT)
+ id 1fJJRb-0002j1-4P
+ for barebox@lists.infradead.org; Thu, 17 May 2018 13:59:49 +0000
+Received: by mail-wm0-x242.google.com with SMTP id m129-v6so9266854wmb.3
+ for <barebox@lists.infradead.org>; Thu, 17 May 2018 06:59:36 -0700 (PDT)
 From: Peter Mamonov <pmamonov@gmail.com>
-Date: Thu, 17 May 2018 16:58:50 +0300
-Message-Id: <20180517135858.16202-8-pmamonov@gmail.com>
+Date: Thu, 17 May 2018 16:58:47 +0300
+Message-Id: <20180517135858.16202-5-pmamonov@gmail.com>
 In-Reply-To: <20180517135858.16202-1-pmamonov@gmail.com>
 References: <20180517135858.16202-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,26 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 07/15] mips: 64BIT selects PHYS_ADDR_T_64BIT
+Subject: [RFC PATCH 04/15] mips: fix warnings from CPHYSADDR() macro
 To: barebox@lists.infradead.org
 Cc: Peter Mamonov <pmamonov@gmail.com>
 
 Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- arch/mips/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/include/asm/addrspace.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index c2c555dc3..deeda62ea 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -275,6 +275,7 @@ config 64BIT
- 	bool "64-bit barebox"
- 	depends on CPU_SUPPORTS_64BIT_KERNEL && SYS_SUPPORTS_64BIT_KERNEL
- 	select ARCH_DMA_ADDR_T_64BIT
-+	select PHYS_ADDR_T_64BIT
- 	help
- 	  Select this option if you want to build a 64-bit barebox.
+diff --git a/arch/mips/include/asm/addrspace.h b/arch/mips/include/asm/addrspace.h
+index 17d480d08..04d0f95db 100644
+--- a/arch/mips/include/asm/addrspace.h
++++ b/arch/mips/include/asm/addrspace.h
+@@ -48,7 +48,12 @@
+ /*
+  * Returns the physical address of a CKSEGx / XKPHYS address
+  */
++#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
++#define CPHYSADDR(a)		((_ACAST64_(a)) & 0x1fffffff)
++#else
+ #define CPHYSADDR(a)		((_ACAST32_(a)) & 0x1fffffff)
++#endif
++
+ #define XPHYSADDR(a)            ((_ACAST64_(a)) &			\
+ 				 _CONST64_(0x000000ffffffffff))
  
 -- 
 2.17.0
