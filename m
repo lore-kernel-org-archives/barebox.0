@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x22f.google.com ([2607:f8b0:400e:c01::22f])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJPzo-0005Sj-69
- for barebox@lists.infradead.org; Thu, 17 May 2018 21:00:00 +0000
-Received: by mail-pl0-x22f.google.com with SMTP id n10-v6so3249602plp.0
- for <barebox@lists.infradead.org>; Thu, 17 May 2018 13:59:21 -0700 (PDT)
+ id 1fJPzl-0005RL-I4
+ for barebox@lists.infradead.org; Thu, 17 May 2018 21:00:02 +0000
+Received: by mail-pf0-x242.google.com with SMTP id f189-v6so2664170pfa.7
+ for <barebox@lists.infradead.org>; Thu, 17 May 2018 13:59:18 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 17 May 2018 13:58:24 -0700
-Message-Id: <20180517205837.32421-16-andrew.smirnov@gmail.com>
+Date: Thu, 17 May 2018 13:58:22 -0700
+Message-Id: <20180517205837.32421-14-andrew.smirnov@gmail.com>
 In-Reply-To: <20180517205837.32421-1-andrew.smirnov@gmail.com>
 References: <20180517205837.32421-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,70 +23,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 15/28] ARM: mmu: Replace various SZ_1M with PGDIR_SIZE
+Subject: [PATCH v3 13/28] ARM: mmu: Replace hardcoded shifts with pgd_index()
+ from Linux
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 8 ++++----
- arch/arm/cpu/mmu.h | 3 ++-
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ arch/arm/cpu/mmu.c | 12 ++++++------
+ arch/arm/cpu/mmu.h |  8 ++++++--
+ 2 files changed, 12 insertions(+), 8 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 83577300f..de242e0d7 100644
+index 06c9045b7..1dbfcee16 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -196,7 +196,7 @@ void *map_io_sections(unsigned long phys, void *_start, size_t size)
- {
+@@ -96,7 +96,7 @@ static u32 *arm_create_pte(unsigned long virt)
+ 	if (!ttb)
+ 		arm_mmu_not_initialized_error();
+ 
+-	ttb[virt >> 20] = (unsigned long)table | PMD_TYPE_TABLE;
++	ttb[pgd_index(virt)] = (unsigned long)table | PMD_TYPE_TABLE;
+ 
+ 	for (i = 0; i < 256; i++) {
+ 		table[i] = virt | PTE_TYPE_SMALL | pte_flags_uncached;
+@@ -113,7 +113,7 @@ static u32 *find_pte(unsigned long adr)
+ 	if (!ttb)
+ 		arm_mmu_not_initialized_error();
+ 
+-	if ((ttb[adr >> 20] & PMD_TYPE_MASK) != PMD_TYPE_TABLE) {
++	if ((ttb[pgd_index(adr)] & PMD_TYPE_MASK) != PMD_TYPE_TABLE) {
+ 		struct memory_bank *bank;
+ 		int i = 0;
+ 
+@@ -132,7 +132,7 @@ static u32 *find_pte(unsigned long adr)
+ 	}
+ 
+ 	/* find the coarse page table base address */
+-	table = (u32 *)(ttb[adr >> 20] & ~0x3ff);
++	table = (u32 *)(ttb[pgd_index(adr)] & ~0x3ff);
+ 
+ 	/* find second level descriptor */
+ 	return &table[(adr >> PAGE_SHIFT) & 0xff];
+@@ -197,7 +197,7 @@ void *map_io_sections(unsigned long phys, void *_start, size_t size)
  	unsigned long start = (unsigned long)_start, sec;
  
--	for (sec = start; sec < start + size; sec += (1 << 20), phys += SZ_1M)
-+	for (sec = start; sec < start + size; sec += PGDIR_SIZE, phys += PGDIR_SIZE)
- 		ttb[pgd_index(sec)] = phys | PMD_SECT_DEF_UNCACHED;
+ 	for (sec = start; sec < start + size; sec += (1 << 20), phys += SZ_1M)
+-		ttb[sec >> 20] = phys | PMD_SECT_DEF_UNCACHED;
++		ttb[pgd_index(sec)] = phys | PMD_SECT_DEF_UNCACHED;
  
  	dma_flush_range((unsigned long)ttb, (unsigned long)ttb + 0x4000);
-@@ -224,7 +224,7 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
- 	 * We replace each 1MiB section in this range with second level page
- 	 * tables, therefore we must have 1Mib aligment here.
- 	 */
--	if (!IS_ALIGNED(phys, SZ_1M) || !IS_ALIGNED(bank->size, SZ_1M))
-+	if (!IS_ALIGNED(phys, PGDIR_SIZE) || !IS_ALIGNED(bank->size, PGDIR_SIZE))
- 		return -EINVAL;
- 
- 	ptes = xmemalign(PAGE_SIZE, num_ptes * sizeof(u32));
-@@ -289,8 +289,8 @@ static void create_vector_table(unsigned long adr)
- 		vectors = xmemalign(PAGE_SIZE, PAGE_SIZE);
- 		pr_debug("Creating vector table, virt = 0x%p, phys = 0x%08lx\n",
- 			 vectors, adr);
--		exc = arm_create_pte(ALIGN_DOWN(adr, SZ_1M));
--		idx = (adr & (SZ_1M - 1)) >> PAGE_SHIFT;
-+		exc = arm_create_pte(ALIGN_DOWN(adr, PGDIR_SIZE));
-+		idx = (adr & (PGDIR_SIZE - 1)) >> PAGE_SHIFT;
- 		exc[idx] = (u32)vectors | PTE_TYPE_SMALL | pte_flags_cached;
- 	}
- 
+ 	tlb_invalidate();
+@@ -211,8 +211,8 @@ void *map_io_sections(unsigned long phys, void *_start, size_t size)
+ static int arm_mmu_remap_sdram(struct memory_bank *bank)
+ {
+ 	unsigned long phys = (unsigned long)bank->start;
+-	unsigned long ttb_start = phys >> 20;
+-	unsigned long ttb_end = (phys >> 20) + (bank->size >> 20);
++	unsigned long ttb_start = pgd_index(phys);
++	unsigned long ttb_end = pgd_index(phys) + pgd_index(bank->size);
+ 	unsigned long num_ptes = bank->size >> 12;
+ 	int i, pte;
+ 	u32 *ptes;
 diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
-index 4f6ab2e71..211770af8 100644
+index efe4091c6..4f6ab2e71 100644
 --- a/arch/arm/cpu/mmu.h
 +++ b/arch/arm/cpu/mmu.h
-@@ -5,6 +5,7 @@
+@@ -4,6 +4,10 @@
+ #include <asm/pgtable.h>
  #include <linux/sizes.h>
  
- #define PGDIR_SHIFT	20
-+#define PGDIR_SIZE	(1UL << PGDIR_SHIFT)
- 
- #define pgd_index(addr)		((addr) >> PGDIR_SHIFT)
- 
-@@ -41,7 +42,7 @@ create_sections(uint32_t *ttb, unsigned long first,
++#define PGDIR_SHIFT	20
++
++#define pgd_index(addr)		((addr) >> PGDIR_SHIFT)
++
+ #ifdef CONFIG_MMU
+ void __mmu_cache_on(void);
+ void __mmu_cache_off(void);
+@@ -31,8 +35,8 @@ static inline void
+ create_sections(uint32_t *ttb, unsigned long first,
+ 		unsigned long last, unsigned int flags)
+ {
+-	unsigned long ttb_start = first >> 20;
+-	unsigned long ttb_end = (last >> 20) + 1;
++	unsigned long ttb_start = pgd_index(first);
++	unsigned long ttb_end = pgd_index(last) + 1;
+ 	unsigned int i, addr = first;
  
  	for (i = ttb_start; i < ttb_end; i++) {
- 		ttb[i] = addr | flags;
--		addr += SZ_1M;
-+		addr += PGDIR_SIZE;
- 	}
- }
- 
 -- 
 2.17.0
 
