@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x22d.google.com ([2a00:1450:400c:c0c::22d])
+Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJJRl-0002kK-Hy
- for barebox@lists.infradead.org; Thu, 17 May 2018 14:00:03 +0000
-Received: by mail-wr0-x22d.google.com with SMTP id h5-v6so5814839wrm.4
+ id 1fJJRm-0002l1-4y
+ for barebox@lists.infradead.org; Thu, 17 May 2018 14:00:00 +0000
+Received: by mail-wm0-x243.google.com with SMTP id f8-v6so9323026wmc.4
  for <barebox@lists.infradead.org>; Thu, 17 May 2018 06:59:47 -0700 (PDT)
 From: Peter Mamonov <pmamonov@gmail.com>
-Date: Thu, 17 May 2018 16:58:57 +0300
-Message-Id: <20180517135858.16202-15-pmamonov@gmail.com>
+Date: Thu, 17 May 2018 16:58:58 +0300
+Message-Id: <20180517135858.16202-16-pmamonov@gmail.com>
 In-Reply-To: <20180517135858.16202-1-pmamonov@gmail.com>
 References: <20180517135858.16202-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,28 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 14/15] mtd: cfi-flash: fix write_buff() for 64BIT
+Subject: [RFC PATCH 15/15] i2c/muxes/i2c-mux-pca954x: fix private data
+ retrieval for 64bit mode
 To: barebox@lists.infradead.org
 Cc: Peter Mamonov <pmamonov@gmail.com>
 
 Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- drivers/mtd/nor/cfi_flash.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/muxes/i2c-mux-pca954x.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nor/cfi_flash.c b/drivers/mtd/nor/cfi_flash.c
-index 5bdcccae1..01ab1aa27 100644
---- a/drivers/mtd/nor/cfi_flash.c
-+++ b/drivers/mtd/nor/cfi_flash.c
-@@ -515,7 +515,7 @@ static int write_buff(struct flash_info *info, const u8 *src,
- 	int buffered_size;
- #endif
- 	/* get lower aligned address */
--	wp = addr & ~(info->portwidth - 1);
-+	wp = addr & ~((unsigned long)info->portwidth - 1);
+diff --git a/drivers/i2c/muxes/i2c-mux-pca954x.c b/drivers/i2c/muxes/i2c-mux-pca954x.c
+index 0d5515b71..395254cdc 100644
+--- a/drivers/i2c/muxes/i2c-mux-pca954x.c
++++ b/drivers/i2c/muxes/i2c-mux-pca954x.c
+@@ -180,6 +180,7 @@ static int pca954x_probe(struct device_d *dev)
+ 	struct i2c_adapter *adap = to_i2c_adapter(client->dev.parent);
+ 	int num, force;
+ 	struct pca954x *data;
++	uintptr_t tmp;
+ 	int ret = -ENODEV;
+ 	int gpio;
  
- 	/* handle unaligned start */
- 	aln = addr - wp;
+@@ -203,7 +204,8 @@ static int pca954x_probe(struct device_d *dev)
+ 		goto exit_free;
+ 	}
+ 
+-	ret = dev_get_drvdata(dev, (const void **)&data->type);
++	ret = dev_get_drvdata(dev, (const void **)&tmp);
++	data->type = tmp;
+ 	if (ret)
+ 		goto exit_free;
+ 
 -- 
 2.17.0
 
