@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
+Received: from mail-wr0-x241.google.com ([2a00:1450:400c:c0c::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJJRb-0002jG-4u
- for barebox@lists.infradead.org; Thu, 17 May 2018 13:59:50 +0000
-Received: by mail-wm0-x242.google.com with SMTP id a67-v6so8564914wmf.3
- for <barebox@lists.infradead.org>; Thu, 17 May 2018 06:59:40 -0700 (PDT)
+ id 1fJJRc-0002j7-E3
+ for barebox@lists.infradead.org; Thu, 17 May 2018 13:59:51 +0000
+Received: by mail-wr0-x241.google.com with SMTP id p18-v6so5829025wrm.1
+ for <barebox@lists.infradead.org>; Thu, 17 May 2018 06:59:38 -0700 (PDT)
 From: Peter Mamonov <pmamonov@gmail.com>
-Date: Thu, 17 May 2018 16:58:51 +0300
-Message-Id: <20180517135858.16202-9-pmamonov@gmail.com>
+Date: Thu, 17 May 2018 16:58:49 +0300
+Message-Id: <20180517135858.16202-7-pmamonov@gmail.com>
 In-Reply-To: <20180517135858.16202-1-pmamonov@gmail.com>
 References: <20180517135858.16202-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,28 +23,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 08/15] fixup! MIPS: import optimized string functions from
- Linux
+Subject: [RFC PATCH 06/15] common/Kconfig: add PHYS_ADDR_T_64BIT option
 To: barebox@lists.infradead.org
 Cc: Peter Mamonov <pmamonov@gmail.com>
 
 Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- arch/mips/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ common/Kconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index deeda62ea..9e8341e9f 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -338,6 +338,7 @@ config NMON_HELP
+diff --git a/common/Kconfig b/common/Kconfig
+index b7000c4d7..a5b53b2e4 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -95,6 +95,9 @@ config FILE_LIST
+ config ARCH_DMA_ADDR_T_64BIT
+ 	bool
  
- config MIPS_OPTIMIZED_STRING_FUNCTIONS
- 	bool "use assembler optimized string functions"
-+	depends on !64BIT
- 	default y
- 	help
- 	  Say yes here to use assembler optimized memcpy / memset functions.
++config PHYS_ADDR_T_64BIT
++	bool
++
+ config BAREBOX_UPDATE_IMX_NAND_FCB
+ 	bool
+ 	depends on ARCH_IMX6 || ARCH_IMX28
 -- 
 2.17.0
 
