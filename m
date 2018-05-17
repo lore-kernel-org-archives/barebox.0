@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJdxr-0007RE-Ex
- for barebox@lists.infradead.org; Fri, 18 May 2018 11:54:31 +0000
-Message-ID: <1526644453.3948.8.camel@pengutronix.de>
-From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Fri, 18 May 2018 13:54:13 +0200
-In-Reply-To: <20180403074851.5411-19-s.hauer@pengutronix.de>
-References: <20180403074851.5411-1-s.hauer@pengutronix.de>
- <20180403074851.5411-19-s.hauer@pengutronix.de>
-Mime-Version: 1.0
+ id 1fJJRX-0002gM-6I
+ for barebox@lists.infradead.org; Thu, 17 May 2018 13:59:44 +0000
+Received: by mail-wm0-x243.google.com with SMTP id a67-v6so8564127wmf.3
+ for <barebox@lists.infradead.org>; Thu, 17 May 2018 06:59:32 -0700 (PDT)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Thu, 17 May 2018 16:58:43 +0300
+Message-Id: <20180517135858.16202-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +16,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 18/19] fs: tftp: Switch to dcache implementation
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Subject: [RFC PATCH 00/15] MIPS64 support
+To: barebox@lists.infradead.org
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-SGkgU2FzY2hhLAoKT24gVHVlLCAyMDE4LTA0LTAzIGF0IDA5OjQ4ICswMjAwLCBTYXNjaGEgSGF1
-ZXIgd3JvdGU6ClsuLi5dCj4gLXN0YXRpYyBpbnQgdGZ0cF9zdGF0KHN0cnVjdCBkZXZpY2VfZCAq
-ZGV2LCBjb25zdCBjaGFyICpmaWxlbmFtZSwgc3RydWN0IHN0YXQgKnMpCj4gK3N0YXRpYyBzdHJ1
-Y3QgZGVudHJ5ICp0ZnRwX2xvb2t1cChzdHJ1Y3QgaW5vZGUgKmRpciwgc3RydWN0IGRlbnRyeSAq
-ZGVudHJ5LAo+ICsJCQkgICAgdW5zaWduZWQgaW50IGZsYWdzKQo+ICB7Cj4gLQlzdHJ1Y3QgZmls
-ZV9wcml2ICpwcml2Owo+ICsJc3RydWN0IGlub2RlICppbm9kZTsKPiAgCj4gLQlwcml2ID0gdGZ0
-cF9kb19vcGVuKGRldiwgT19SRE9OTFksIGZpbGVuYW1lKTsKPiAtCWlmIChJU19FUlIocHJpdikp
-Cj4gLQkJcmV0dXJuIFBUUl9FUlIocHJpdik7Cj4gKwlwcmludGYoIkxvb2t1cDogXCIlc1wiXG4i
-LCBkZW50cnktPm5hbWUpOwo+ICAKPiAtCXMtPnN0X21vZGUgPSBTX0lGUkVHIHwgU19JUldYVSB8
-IFNfSVJXWEcgfCBTX0lSV1hPOwo+IC0JaWYgKHByaXYtPmZpbGVzaXplKQo+IC0JCXMtPnN0X3Np
-emUgPSBwcml2LT5maWxlc2l6ZTsKPiAtCWVsc2UKPiAtCQlzLT5zdF9zaXplID0gRklMRVNJWkVf
-TUFYOwoKV2l0aCB0aGlzIGNoYW5nZSwgc3RhdCgpIG9uIGZpbGVzIG9uIFRGVFAgbW91bnRzIHdp
-bGwgcmV0dXJuIDAgd2hlcmUgaXQKcmV0dXJuZWQgRklMRVNJWkVfTUFYIGJlZm9yZSwgaWYgdGhl
-IFRGVFAgc2VydmVyIGRvZXMgbm90IHNlbmQKaW5mb3JtYXRpb24gYWJvdXQgdGhlIGZpbGUgc2l6
-ZS4gVGhpcyBjYXVzZXMgcmVhZF9maWxlXzIoKSB0byBmYWlsLAp3aGljaCB1c2VzIHN0YXQoKSB0
-byBkZXRlcm1pbmUgZmlsZSBzaXplLiByZWFkX2ZpbGVfMigpIGlzIHVzZWQgZm9yCmV4YW1wbGUg
-YnkgYm9vdG0gdG8gbG9hZCB0aGUgZGV2aWNlIHRyZWUuCgo+ICsJaW5vZGUgPSB0ZnRwX2dldF9p
-bm9kZShkaXItPmlfc2IsIGRpciwgU19JRlJFRyB8IFNfSVJXWFVHTyk7Cj4gKwlpZiAoIWlub2Rl
-KQo+ICsJCXJldHVybiBFUlJfUFRSKC1FTk9TUEMpOwo+ICAKCkNhbiB3ZSBqdXN0IHN0b3JlIHRo
-ZSBmYWtlIGZpbGVzaXplIGluIHRoZSBkX2lub2RlIGhlcmU/CsKgCivCoMKgwqDCoMKgwqDCoGlm
-IChpbm9kZS0+aV9zaXplID09IDApCivCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpbm9k
-ZS0+aV9zaXplID0gRklMRVNJWkVfTUFYOworCgo+IC0JdGZ0cF9kb19jbG9zZShwcml2KTsKPiAr
-CWRfYWRkKGRlbnRyeSwgaW5vZGUpOwo+ICAKPiAtCXJldHVybiAwOwo+ICsJcmV0dXJuIE5VTEw7
-Cj4gIH0KCnJlZ2FyZHMKUGhpbGlwcAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
-YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
-eAo=
+Hi,
+
+Recently I've resolved a couple of issues that prevented 64bit Barebox from 
+running on MIPS64 CPUs. By the way, 32bit Barebox runs on MIPS64 without any 
+issues, since MIPS64 supports 32 bit addressing mode. Here is a relevant patch 
+series.  This is mostly for discussion, yet some patches can be applied as is.  
+Please, give your comments.
+
+Regards,
+Peter
+
+Peter Mamonov (15):
+  FIXME: add t4..t7 definitions for MIPS64
+  MIPS: use CKSEG1 instead of KSEG1
+  FIXME: mips: fix copy_to_link_location for 64 bit mode
+  mips: fix warnings from CPHYSADDR() macro
+  mips: fix dma_sync_* stuff for MIPS64
+  common/Kconfig: add PHYS_ADDR_T_64BIT option
+  mips: 64BIT selects PHYS_ADDR_T_64BIT
+  fixup! MIPS: import optimized string functions from Linux
+  MIPS: import 64-bit address conversion macros
+  common.h: fix IOMEM() for MIPS64
+  resource: fix iomem root resource for 64 bit
+  FIXME: commands/mem: fix /dev/mem size
+  FIXME: fs: fix memory access for 64bit MIPS
+  mtd: cfi-flash: fix write_buff() for 64BIT
+  i2c/muxes/i2c-mux-pca954x: fix private data retrieval for 64bit mode
+
+ arch/mips/Kconfig                   |  2 ++
+ arch/mips/boot/dtb.c                |  4 ++--
+ arch/mips/include/asm/addrspace.h   | 25 +++++++++++++++++++++++++
+ arch/mips/include/asm/dma-mapping.h |  2 +-
+ arch/mips/include/asm/io.h          |  4 ++--
+ arch/mips/include/asm/pbl_macros.h  | 24 ++++++++++++++++--------
+ arch/mips/include/asm/regdef.h      |  4 ++++
+ arch/mips/lib/c-r4k.c               | 26 +++++++++++++-------------
+ arch/mips/lib/dma-default.c         |  6 ++++--
+ commands/mem.c                      |  2 +-
+ common/Kconfig                      |  3 +++
+ common/resource.c                   |  4 ++++
+ drivers/i2c/muxes/i2c-mux-pca954x.c |  4 +++-
+ drivers/mtd/nor/cfi_flash.c         |  2 +-
+ fs/fs.c                             |  6 ------
+ include/common.h                    |  4 ++++
+ 16 files changed, 85 insertions(+), 37 deletions(-)
+
+-- 
+2.17.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
