@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.20])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fIzVy-0002wr-Pv
- for barebox@lists.infradead.org; Wed, 16 May 2018 16:43:28 +0000
-From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Wed, 16 May 2018 18:42:28 +0200
-Message-Id: <20180516164233.27581-6-linux@rempel-privat.de>
-In-Reply-To: <20180516164233.27581-1-linux@rempel-privat.de>
+ id 1fJFdv-0000q2-A2
+ for barebox@lists.infradead.org; Thu, 17 May 2018 09:56:19 +0000
+Date: Thu, 17 May 2018 11:56:03 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180517095603.rmr3gdh2kgjkqkgz@pengutronix.de>
 References: <20180516164233.27581-1-linux@rempel-privat.de>
+ <20180516164233.27581-6-linux@rempel-privat.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180516164233.27581-6-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,553 +19,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 05/10] MIPS: add kexec ELF loading support
-To: barebox@lists.infradead.org
-Cc: Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: [PATCH v1 05/10] MIPS: add kexec ELF loading support
+To: Oleksij Rempel <linux@rempel-privat.de>
+Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-From: Antony Pavlov <antonynpavlov@gmail.com>
+On Wed, May 16, 2018 at 06:42:28PM +0200, Oleksij Rempel wrote:
+> From: Antony Pavlov <antonynpavlov@gmail.com>
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> ---
+>  arch/mips/include/asm/elf.h        |   8 +-
+>  arch/mips/lib/Makefile             |   4 +
+>  arch/mips/lib/kexec-mach-generic.c |  21 +++
+>  arch/mips/lib/kexec-mips.c         | 307 +++++++++++++++++++++++++++++++++++++
+>  arch/mips/lib/machine_kexec.h      |  21 +++
+>  arch/mips/lib/relocate_kernel.S    | 108 +++++++++++++
+>  6 files changed, 468 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/mips/lib/kexec-mach-generic.c
+>  create mode 100644 arch/mips/lib/kexec-mips.c
+>  create mode 100644 arch/mips/lib/machine_kexec.h
+>  create mode 100644 arch/mips/lib/relocate_kernel.S
+> 
+> +int kexec_load(struct image_data *data, void *entry,
+> +	       unsigned long nr_segments,
+> +	       struct kexec_segment *segments)
+> +{
+> +	int i;
+> +	struct resource *elf;
+> +	resource_size_t start;
+> +	LIST_HEAD(elf_segments);
+> +
+> +	for (i = 0; i < nr_segments; i++) {
+> +		resource_size_t mem = (resource_size_t)segments[i].mem;
+> +
+> +		elf = create_resource("elf segment",
+> +			mem, mem + segments[i].memsz - 1);
+> +
+> +		list_add_used_region(&elf->sibling, &elf_segments);
+> +	}
+> +
+> +	if (check_room_for_elf(&elf_segments)) {
+> +		pr_err("ELF can't be loaded!\n");
+> +		return -ENOSPC;
+> +	}
+> +
+> +	start = dcheck_res(&elf_segments);
+> +
+> +	/* relocate_new_kernel() copy by register (4 or 8 bytes)
+> +	   so start address must be aligned to 4/8 */
+> +	start = (start + 15) & 0xfffffff0;
+> +
+> +	for (i = 0; i < nr_segments; i++) {
+> +		segments[i].mem = (void *)(phys_to_virt((unsigned long)segments[i].mem));
+> +		memcpy(phys_to_virt(start), segments[i].buf, segments[i].bufsz);
+> +		request_sdram_region("kexec relocatable segment",
+> +			(unsigned long)phys_to_virt(start),
+> +			(unsigned long)segments[i].bufsz);
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
----
- arch/mips/include/asm/elf.h        |   8 +-
- arch/mips/lib/Makefile             |   4 +
- arch/mips/lib/kexec-mach-generic.c |  21 +++
- arch/mips/lib/kexec-mips.c         | 307 +++++++++++++++++++++++++++++++++++++
- arch/mips/lib/machine_kexec.h      |  21 +++
- arch/mips/lib/relocate_kernel.S    | 108 +++++++++++++
- 6 files changed, 468 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/lib/kexec-mach-generic.c
- create mode 100644 arch/mips/lib/kexec-mips.c
- create mode 100644 arch/mips/lib/machine_kexec.h
- create mode 100644 arch/mips/lib/relocate_kernel.S
+The return value of request_sdram_region should be checked and of course
+the resource should be used after having checked the return value, not
+before. Same for the other calls to request_sdram_region.
 
-diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
-index b8b82191c..bf974f521 100644
---- a/arch/mips/include/asm/elf.h
-+++ b/arch/mips/include/asm/elf.h
-@@ -17,12 +17,18 @@
- 
- #ifndef ELF_ARCH
- 
-+/* Legal values for e_machine (architecture).  */
-+
-+#define EM_MIPS		 8		/* MIPS R3000 big-endian */
-+#define EM_MIPS_RS4_BE	10		/* MIPS R4000 big-endian */
-+
- #ifdef CONFIG_32BIT
- 
- /*
-  * This is used to ensure we don't load something for the wrong architecture.
-  */
--#define elf_check_arch(hdr)						\
-+#define elf_check_arch(x) ((x)->e_machine == EM_MIPS)
-+
- /*
-  * These are used to set parameters in the core dumps.
-  */
-diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-index d25d0969f..29f6581b0 100644
---- a/arch/mips/lib/Makefile
-+++ b/arch/mips/lib/Makefile
-@@ -18,4 +18,8 @@ obj-$(CONFIG_CPU_MIPS64) += c-r4k.o
- obj-$(CONFIG_CMD_MIPS_CPUINFO) += cpuinfo.o
- obj-$(CONFIG_CMD_BOOTM)	+= bootm.o
- 
-+obj-$(CONFIG_KEXEC) += kexec-mips.o
-+obj-$(CONFIG_KEXEC) += relocate_kernel.o
-+obj-$(CONFIG_KEXEC) += kexec-mach-generic.o
-+
- pbl-y	+= ashldi3.o
-diff --git a/arch/mips/lib/kexec-mach-generic.c b/arch/mips/lib/kexec-mach-generic.c
-new file mode 100644
-index 000000000..def38cbc0
---- /dev/null
-+++ b/arch/mips/lib/kexec-mach-generic.c
-@@ -0,0 +1,21 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2018 Antony Pavlov <antonynpavlov@gmail.com>
-+ */
-+
-+#include <asm/io.h>
-+#include <common.h>
-+#include <kexec.h>
-+
-+void kexec_arch(void *opaque)
-+{
-+	extern unsigned long reboot_code_buffer;
-+	void (*kexec_code_buffer)(void);
-+
-+	shutdown_barebox();
-+
-+	kexec_code_buffer = phys_to_virt(reboot_code_buffer);
-+
-+	kexec_code_buffer();
-+}
-+EXPORT_SYMBOL(kexec_arch);
-diff --git a/arch/mips/lib/kexec-mips.c b/arch/mips/lib/kexec-mips.c
-new file mode 100644
-index 000000000..781552f01
---- /dev/null
-+++ b/arch/mips/lib/kexec-mips.c
-@@ -0,0 +1,307 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * kexec-mips.c - kexec for mips
-+ * Copyright (C) 2007 Francesco Chiechi, Alessandro Rubini
-+ * Copyright (C) 2007 Tvblob s.r.l.
-+ *
-+ * derived from ../ppc/kexec-mips.c
-+ * Copyright (C) 2004, 2005 Albert Herranz
-+ *
-+ */
-+
-+#include <asm/io.h>
-+#include <common.h>
-+#include <elf.h>
-+#include <environment.h>
-+#include <globalvar.h>
-+#include <init.h>
-+#include <kexec.h>
-+#include <magicvar.h>
-+#include <memory.h>
-+#include "machine_kexec.h"
-+
-+static unsigned int mips_boot_protocol;
-+
-+enum mips_boot_names {
-+	MIPS_BOOT_FDT,
-+	MIPS_BOOT_LEGACY,
-+};
-+
-+static int elf_mips_probe(const char *buf, off_t len)
-+{
-+	struct mem_ehdr ehdr;
-+	int ret;
-+
-+	ret = build_elf_exec_info(buf, len, &ehdr);
-+	if (IS_ERR_VALUE(ret)) {
-+		goto out;
-+	}
-+
-+	if (ehdr.e_machine != EM_MIPS) {
-+		pr_err("Not for this architecture.\n");
-+		ret = -EFAULT;
-+		goto out;
-+	}
-+
-+ out:
-+	free_elf_info(&ehdr);
-+
-+	return ret;
-+}
-+
-+static int elf_mips_load(const char *buf, off_t len, struct kexec_info *info)
-+{
-+	struct mem_ehdr ehdr;
-+	int ret;
-+	size_t i;
-+
-+	ret = build_elf_exec_info(buf, len, &ehdr);
-+	if (IS_ERR_VALUE(ret)) {
-+		pr_err("ELF exec parse failed\n");
-+		goto out;
-+	}
-+
-+	/* Read in the PT_LOAD segments and remove CKSEG0 mask from address */
-+	for (i = 0; i < ehdr.e_phnum; i++) {
-+		struct mem_phdr *phdr;
-+		phdr = &ehdr.e_phdr[i];
-+		if (phdr->p_type == PT_LOAD) {
-+			phdr->p_paddr = virt_to_phys((const void *)phdr->p_paddr);
-+		}
-+	}
-+
-+	/* Load the ELF data */
-+	ret = elf_exec_load(&ehdr, info);
-+	if (IS_ERR_VALUE(ret)) {
-+		pr_err("ELF exec load failed\n");
-+		goto out;
-+	}
-+
-+	info->entry = (void *)virt_to_phys((void *)ehdr.e_entry);
-+
-+out:
-+	return ret;
-+}
-+
-+struct kexec_file_type kexec_file_type[] = {
-+	{"elf-mips", elf_mips_probe, elf_mips_load },
-+};
-+int kexec_file_types = sizeof(kexec_file_type) / sizeof(kexec_file_type[0]);
-+
-+/*
-+ * add_segment() should convert base to a physical address on mips,
-+ * while the default is just to work with base as is */
-+void add_segment(struct kexec_info *info, const void *buf, size_t bufsz,
-+		 unsigned long base, size_t memsz)
-+{
-+	add_segment_phys_virt(info, buf, bufsz,
-+		virt_to_phys((void *)base), memsz, 1);
-+}
-+
-+/* relocator parameters */
-+extern unsigned long relocate_new_kernel;
-+extern unsigned long relocate_new_kernel_size;
-+extern unsigned long kexec_start_address;
-+extern unsigned long kexec_segments;
-+extern unsigned long kexec_nr_segments;
-+
-+unsigned long reboot_code_buffer;
-+
-+static void machine_kexec_print_args(bool have_argv)
-+{
-+	unsigned long argc = (int)kexec_args[0];
-+	int i;
-+
-+	pr_info("kexec_args[0] (argc): %lu\n", argc);
-+	pr_info("kexec_args[1] (argv): %p\n", (void *)kexec_args[1]);
-+	pr_info("kexec_args[2] (env ): %p\n", (void *)kexec_args[2]);
-+	pr_info("kexec_args[3] (desc): %p\n", (void *)kexec_args[3]);
-+
-+	if (!have_argv)
-+		return;
-+
-+	for (i = 0; i < argc; i++) {
-+		pr_info("kexec_argv[%d] = %p, %s\n",
-+				i, kexec_argv[i], kexec_argv[i]);
-+	}
-+}
-+
-+static void machine_kexec_init_argv(struct kexec_segment *segments, unsigned long nr_segments)
-+{
-+	const void __user *buf = NULL;
-+	size_t bufsz;
-+	size_t size;
-+	int i;
-+
-+	bufsz = 0;
-+	for (i = 0; i < nr_segments; i++) {
-+		struct kexec_segment *seg;
-+
-+		seg = &segments[i];
-+		if (seg->bufsz < 6)
-+			continue;
-+
-+		if (strncmp((char *) seg->buf, "kexec ", 6)) {
-+			continue;
-+		}
-+
-+		buf = seg->buf + 6;
-+		bufsz = seg->bufsz - 6;
-+		break;
-+	}
-+
-+	if (!buf)
-+		return;
-+
-+	size = KEXEC_COMMAND_LINE_SIZE;
-+	size = min(size, bufsz);
-+	if (size < bufsz)
-+		pr_warn("kexec command line truncated to %zu bytes\n", size);
-+
-+	/* Copy to kernel space */
-+	memcpy(kexec_argv_buf, buf, size);
-+	kexec_argv_buf[size - 1] = 0;
-+}
-+
-+static void machine_kexec_parse_argv(void)
-+{
-+	char *ptr;
-+	int argc;
-+
-+	ptr = kexec_argv_buf;
-+	argc = 1;
-+
-+	/*
-+	 * convert command line string to array of parameters
-+	 * (as bootloader does).
-+	 */
-+	while (ptr && *ptr && (KEXEC_MAX_ARGC > argc)) {
-+		if (*ptr == ' ') {
-+			*ptr++ = '\0';
-+			continue;
-+		}
-+
-+		kexec_argv[argc++] = ptr;
-+		ptr = strchr(ptr, ' ');
-+	}
-+
-+	if (!argc)
-+		return;
-+
-+	kexec_args[0] = argc;
-+	kexec_args[1] = (unsigned long)kexec_argv;
-+	kexec_args[2] = 0;
-+	kexec_args[3] = 0;
-+}
-+
-+static void machine_kexec_fdt(struct image_data *data)
-+{
-+	kexec_args[0] = -2;
-+	kexec_args[1] = (unsigned long)data->oftree_address;
-+	kexec_args[2] = 0;
-+	kexec_args[3] = 0;
-+}
-+
-+
-+static int machine_kexec_prepare(struct image_data *data,
-+				 struct kexec_segment *segments,
-+				 unsigned long nr_segments)
-+{
-+	if (mips_boot_protocol == MIPS_BOOT_FDT) {
-+		machine_kexec_fdt(data);
-+		machine_kexec_print_args(0);
-+	} else {
-+		machine_kexec_init_argv(segments, nr_segments);
-+		machine_kexec_parse_argv();
-+		machine_kexec_print_args(1);
-+	}
-+
-+	return 0;
-+}
-+
-+int kexec_load(struct image_data *data, void *entry,
-+	       unsigned long nr_segments,
-+	       struct kexec_segment *segments)
-+{
-+	int i;
-+	struct resource *elf;
-+	resource_size_t start;
-+	LIST_HEAD(elf_segments);
-+
-+	for (i = 0; i < nr_segments; i++) {
-+		resource_size_t mem = (resource_size_t)segments[i].mem;
-+
-+		elf = create_resource("elf segment",
-+			mem, mem + segments[i].memsz - 1);
-+
-+		list_add_used_region(&elf->sibling, &elf_segments);
-+	}
-+
-+	if (check_room_for_elf(&elf_segments)) {
-+		pr_err("ELF can't be loaded!\n");
-+		return -ENOSPC;
-+	}
-+
-+	start = dcheck_res(&elf_segments);
-+
-+	/* relocate_new_kernel() copy by register (4 or 8 bytes)
-+	   so start address must be aligned to 4/8 */
-+	start = (start + 15) & 0xfffffff0;
-+
-+	for (i = 0; i < nr_segments; i++) {
-+		segments[i].mem = (void *)(phys_to_virt((unsigned long)segments[i].mem));
-+		memcpy(phys_to_virt(start), segments[i].buf, segments[i].bufsz);
-+		request_sdram_region("kexec relocatable segment",
-+			(unsigned long)phys_to_virt(start),
-+			(unsigned long)segments[i].bufsz);
-+
-+		/* relocate_new_kernel() copy by register (4 or 8 bytes)
-+		   so bufsz must be aligned to 4/8 */
-+		segments[i].bufsz = (segments[i].bufsz + 15) & 0xfffffff0;
-+		segments[i].buf = phys_to_virt(start);
-+		start = start + segments[i].bufsz;
-+	}
-+
-+	start = (start + 15) & 0xfffffff0;
-+
-+	reboot_code_buffer = start;
-+
-+	memcpy(phys_to_virt(start), &relocate_new_kernel,
-+		relocate_new_kernel_size);
-+	request_sdram_region("kexec relocator",
-+		(unsigned long)phys_to_virt(start),
-+		(unsigned long)relocate_new_kernel_size);
-+
-+	start = start + relocate_new_kernel_size;
-+	start = (start + 15) & 0xfffffff0;
-+
-+	kexec_start_address = (unsigned long)phys_to_virt((unsigned long)entry);
-+	kexec_segments = (unsigned long)phys_to_virt((unsigned long)start);
-+	kexec_nr_segments = nr_segments;
-+
-+	memcpy(phys_to_virt(start), segments, nr_segments * sizeof(*segments));
-+	request_sdram_region("kexec control segments",
-+		(unsigned long)phys_to_virt(start),
-+		(unsigned long)nr_segments * sizeof(*segments));
-+
-+	machine_kexec_prepare(data, segments, nr_segments);
-+
-+	return 0;
-+}
-+
-+static const char *mips_boot_names[] = {
-+	"fdt", "legacy"
-+};
-+
-+static int mips_kexec_globalvars_init(void)
-+{
-+	globalvar_add_simple_enum("bootm.mips.boot_protocol",
-+				   &mips_boot_protocol, mips_boot_names,
-+				   ARRAY_SIZE(mips_boot_names));
-+	return 0;
-+}
-+device_initcall(mips_kexec_globalvars_init);
-+
-+BAREBOX_MAGICVAR_NAMED(global_bootm_mips_boot_protocol,
-+		       global_bootm_mips_boot_protocol,
-+		       "bootm.mips.boot_protocol: boot protocol used to start kernel");
-diff --git a/arch/mips/lib/machine_kexec.h b/arch/mips/lib/machine_kexec.h
-new file mode 100644
-index 000000000..b495d15c2
---- /dev/null
-+++ b/arch/mips/lib/machine_kexec.h
-@@ -0,0 +1,21 @@
-+#ifndef _MACHINE_KEXEC_H
-+#define _MACHINE_KEXEC_H
-+
-+#ifndef __ASSEMBLY__
-+extern const unsigned char kexec_relocate_new_kernel[];
-+extern unsigned long kexec_relocate_new_kernel_end;
-+extern unsigned long kexec_start_address;
-+extern unsigned long kexec_indirection_page;
-+
-+extern unsigned long kexec_args[4];
-+extern char kexec_argv_buf[];
-+extern char *kexec_argv[];
-+
-+#define KEXEC_RELOCATE_NEW_KERNEL_SIZE	((unsigned long)&kexec_relocate_new_kernel_end - (unsigned long)kexec_relocate_new_kernel)
-+#endif /* !__ASSEMBLY__ */
-+
-+#define KEXEC_COMMAND_LINE_SIZE		256
-+#define KEXEC_ARGV_SIZE			(KEXEC_COMMAND_LINE_SIZE / 16)
-+#define KEXEC_MAX_ARGC			(KEXEC_ARGV_SIZE / sizeof(long))
-+
-+#endif
-diff --git a/arch/mips/lib/relocate_kernel.S b/arch/mips/lib/relocate_kernel.S
-new file mode 100644
-index 000000000..d9a61353a
---- /dev/null
-+++ b/arch/mips/lib/relocate_kernel.S
-@@ -0,0 +1,108 @@
-+/*
-+ * Copyright (C) 2012, 2016 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * based on relocate_kernel.S for kexec
-+ * Created by <nschichan@corp.free.fr> on Thu Oct 12 17:49:57 2006
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <asm/asm.h>
-+#include <asm/regdef.h>
-+#include <asm/mipsregs.h>
-+#include <asm/addrspace.h>
-+#include "machine_kexec.h"
-+
-+LEAF(relocate_new_kernel)
-+	.set	push
-+	.set	reorder
-+	PTR_L		a0, arg0
-+	PTR_L		a1, arg1
-+	PTR_L		a2, arg2
-+	PTR_L		a3, arg3
-+
-+	PTR_L		s0, kexec_segments
-+	PTR_L		s1, kexec_nr_segments
-+	PTR_L		s2, kexec_start_address
-+
-+process_segment:
-+	PTR_L		s4, (s0) /* buf */
-+	PTR_L		s5, SZREG (s0) /* bufsz */
-+	PTR_L		s6, 2*SZREG (s0) /* mem */
-+
-+copy_segment:
-+	/* copy segment word by word */
-+	REG_L		s7, (s4)
-+	REG_S		s7, (s6)
-+	PTR_ADD		s4, s4, SZREG
-+	PTR_ADD		s6, s6, SZREG
-+	LONG_SUB	s5, s5, SZREG
-+	bne		s5, zero, copy_segment
-+
-+	LONG_SUB	s1, s1, 1
-+	beq		s1, zero, done
-+
-+	PTR_ADD		s0, s0, 4*SZREG
-+
-+	b		process_segment
-+
-+done:
-+	/* jump to kexec_start_address */
-+	j		s2
-+	END(relocate_new_kernel)
-+
-+/* All parameters to new kernel are passed in registers a0-a3.
-+ * kexec_args[0..3] are uses to prepare register values.
-+ */
-+
-+kexec_args:
-+	EXPORT(kexec_args)
-+arg0:	PTR		0x0
-+arg1:	PTR		0x0
-+arg2:	PTR		0x0
-+arg3:	PTR		0x0
-+	.size	kexec_args,PTRSIZE*4
-+
-+kexec_start_address:
-+	EXPORT(kexec_start_address)
-+	PTR		0x0
-+	.size		kexec_start_address, PTRSIZE
-+
-+kexec_argv_buf:
-+	EXPORT(kexec_argv_buf)
-+	.skip		KEXEC_COMMAND_LINE_SIZE
-+	.size		kexec_argv_buf, KEXEC_COMMAND_LINE_SIZE
-+
-+kexec_argv:
-+	EXPORT(kexec_argv)
-+	.skip		KEXEC_ARGV_SIZE
-+	.size		kexec_argv, KEXEC_ARGV_SIZE
-+
-+kexec_segments:
-+	EXPORT(kexec_segments)
-+	PTR		0x0
-+	.size		kexec_segments, PTRSIZE
-+
-+kexec_nr_segments:
-+	EXPORT(kexec_nr_segments)
-+	PTR		0x0
-+	.size		kexec_nr_segments, PTRSIZE
-+
-+relocate_new_kernel_end:
-+
-+relocate_new_kernel_size:
-+	EXPORT(relocate_new_kernel_size)
-+	PTR		relocate_new_kernel_end - relocate_new_kernel
-+	.size		relocate_new_kernel_size, PTRSIZE
-+	.set	pop
+Sascha
+
 -- 
-2.14.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
