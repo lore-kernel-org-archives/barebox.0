@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJPzY-0005M5-A5
- for barebox@lists.infradead.org; Thu, 17 May 2018 20:59:29 +0000
-Received: by mail-pg0-x244.google.com with SMTP id p9-v6so2327609pgc.9
- for <barebox@lists.infradead.org>; Thu, 17 May 2018 13:59:06 -0700 (PDT)
+ id 1fJPzZ-0005MG-TK
+ for barebox@lists.infradead.org; Thu, 17 May 2018 20:59:31 +0000
+Received: by mail-pg0-x241.google.com with SMTP id p8-v6so2323726pgq.10
+ for <barebox@lists.infradead.org>; Thu, 17 May 2018 13:59:07 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 17 May 2018 13:58:13 -0700
-Message-Id: <20180517205837.32421-5-andrew.smirnov@gmail.com>
+Date: Thu, 17 May 2018 13:58:14 -0700
+Message-Id: <20180517205837.32421-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20180517205837.32421-1-andrew.smirnov@gmail.com>
 References: <20180517205837.32421-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,57 +23,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 04/28] ARM: mmu: Introduce set_ttbr()
+Subject: [PATCH v3 05/28] ARM: mmu: Introduce set_domain()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Port set_domain() form Linux kernel and share it between regular and
+early MMU code to avoid duplication.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu-early.c | 3 +--
- arch/arm/cpu/mmu.c       | 3 +--
- arch/arm/cpu/mmu.h       | 5 +++++
- 3 files changed, 7 insertions(+), 4 deletions(-)
+ arch/arm/cpu/mmu-early.c | 7 +------
+ arch/arm/cpu/mmu.c       | 6 +-----
+ arch/arm/cpu/mmu.h       | 9 +++++++++
+ 3 files changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu-early.c b/arch/arm/cpu/mmu-early.c
-index fc14d5cac..79fc3080a 100644
+index 79fc3080a..f75cc7e4a 100644
 --- a/arch/arm/cpu/mmu-early.c
 +++ b/arch/arm/cpu/mmu-early.c
-@@ -39,8 +39,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize,
+@@ -33,17 +33,12 @@ static void map_cachable(unsigned long start, unsigned long size)
+ void mmu_early_enable(unsigned long membase, unsigned long memsize,
+ 		      unsigned long _ttb)
+ {
+-	int i;
+-
+ 	ttb = (uint32_t *)_ttb;
  
  	arm_set_cache_functions();
  
--	/* Set the ttb register */
--	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
-+	set_ttbr(ttb);
+ 	set_ttbr(ttb);
+-
+-	/* Set the Domain Access Control Register */
+-	i = 0x3;
+-	asm volatile ("mcr  p15,0,%0,c3,c0,0" : : "r"(i) /*:*/);
++	set_domain(DOMAIN_MANAGER);
  
- 	/* Set the Domain Access Control Register */
- 	i = 0x3;
+ 	create_sections(0, 4096, PMD_SECT_AP_WRITE |
+ 			PMD_SECT_AP_READ | PMD_TYPE_SECT);
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index c70e9e782..28732b795 100644
+index 28732b795..7e087d08f 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -471,8 +471,7 @@ static int mmu_init(void)
+@@ -422,7 +422,6 @@ static void vectors_init(void)
+ static int mmu_init(void)
+ {
+ 	struct memory_bank *bank;
+-	int i;
  
+ 	if (list_empty(&memory_banks))
+ 		/*
+@@ -472,10 +471,7 @@ static int mmu_init(void)
  	pr_debug("ttb: 0x%p\n", ttb);
  
--	/* Set the ttb register */
--	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
-+	set_ttbr(ttb);
+ 	set_ttbr(ttb);
+-
+-	/* Set the Domain Access Control Register */
+-	i = 0x3;
+-	asm volatile ("mcr  p15,0,%0,c3,c0,0" : : "r"(i) /*:*/);
++	set_domain(DOMAIN_MANAGER);
  
- 	/* Set the Domain Access Control Register */
- 	i = 0x3;
+ 	/* create a flat mapping using 1MiB sections */
+ 	create_sections(0, 0, PAGE_SIZE, PMD_SECT_AP_WRITE | PMD_SECT_AP_READ |
 diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
-index 79ebc80d7..5dcf4b53a 100644
+index 5dcf4b53a..e71ff8e9a 100644
 --- a/arch/arm/cpu/mmu.h
 +++ b/arch/arm/cpu/mmu.h
-@@ -11,4 +11,9 @@ static inline void __mmu_cache_off(void) {}
- static inline void __mmu_cache_flush(void) {}
- #endif
+@@ -16,4 +16,13 @@ static inline void set_ttbr(void *ttb)
+ 	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
+ }
  
-+static inline void set_ttbr(void *ttb)
++#define DOMAIN_MANAGER	3
++
++static inline void set_domain(unsigned val)
 +{
-+	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
++	/* Set the Domain Access Control Register */
++	asm volatile ("mcr  p15,0,%0,c3,c0,0" : : "r"(val) /*:*/);
 +}
++
 +
  #endif /* __ARM_MMU_H */
 -- 
