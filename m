@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
+Received: from mail-wm0-x231.google.com ([2a00:1450:400c:c09::231])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJJRj-0002js-C2
- for barebox@lists.infradead.org; Thu, 17 May 2018 13:59:56 +0000
-Received: by mail-wm0-x244.google.com with SMTP id l1-v6so9336048wmb.2
- for <barebox@lists.infradead.org>; Thu, 17 May 2018 06:59:44 -0700 (PDT)
+ id 1fJJRk-0002k6-IU
+ for barebox@lists.infradead.org; Thu, 17 May 2018 13:59:58 +0000
+Received: by mail-wm0-x231.google.com with SMTP id m129-v6so9267801wmb.3
+ for <barebox@lists.infradead.org>; Thu, 17 May 2018 06:59:46 -0700 (PDT)
 From: Peter Mamonov <pmamonov@gmail.com>
-Date: Thu, 17 May 2018 16:58:55 +0300
-Message-Id: <20180517135858.16202-13-pmamonov@gmail.com>
+Date: Thu, 17 May 2018 16:58:56 +0300
+Message-Id: <20180517135858.16202-14-pmamonov@gmail.com>
 In-Reply-To: <20180517135858.16202-1-pmamonov@gmail.com>
 References: <20180517135858.16202-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,27 +23,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 12/15] FIXME: commands/mem: fix /dev/mem size
+Subject: [RFC PATCH 13/15] FIXME: fs: fix memory access for 64bit MIPS
 To: barebox@lists.infradead.org
 Cc: Peter Mamonov <pmamonov@gmail.com>
 
+Address 0xFFFFFFFFxxxxxxxx is a valid MIPS64 address.
+
 Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- commands/mem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/fs.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/commands/mem.c b/commands/mem.c
-index eb91ade05..80cf5c79d 100644
---- a/commands/mem.c
-+++ b/commands/mem.c
-@@ -96,7 +96,7 @@ static int mem_probe(struct device_d *dev)
- 	dev->priv = cdev;
+diff --git a/fs/fs.c b/fs/fs.c
+index b66cc9b17..d4965c85e 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -962,8 +962,6 @@ loff_t lseek(int fildes, loff_t offset, int whence)
+ 	case SEEK_SET:
+ 		if (f->size != FILE_SIZE_STREAM && offset > f->size)
+ 			goto out;
+-		if (offset < 0)
+-			goto out;
+ 		pos = offset;
+ 		break;
+ 	case SEEK_CUR:
+@@ -981,10 +979,6 @@ loff_t lseek(int fildes, loff_t offset, int whence)
+ 	}
  
- 	cdev->name = (char*)dev->resource[0].name;
--	cdev->size = (unsigned long)resource_size(&dev->resource[0]);
-+	cdev->size = (loff_t)-1;
- 	cdev->ops = &memops;
- 	cdev->dev = dev;
+ 	pos = fsdrv->lseek(&f->fsdev->dev, f, pos);
+-	if (pos < 0) {
+-		errno = -pos;
+-		return -1;
+-	}
+ 
+ 	return pos;
  
 -- 
 2.17.0
