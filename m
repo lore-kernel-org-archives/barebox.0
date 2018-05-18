@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJQ04-0004w0-Le
- for barebox@lists.infradead.org; Thu, 17 May 2018 20:59:50 +0000
-Received: by mail-pf0-x244.google.com with SMTP id a14-v6so2666835pfi.1
- for <barebox@lists.infradead.org>; Thu, 17 May 2018 13:59:35 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 17 May 2018 13:58:33 -0700
-Message-Id: <20180517205837.32421-25-andrew.smirnov@gmail.com>
-In-Reply-To: <20180517205837.32421-1-andrew.smirnov@gmail.com>
+Received: from asavdk4.altibox.net ([109.247.116.15])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fJmCF-0007MS-Mf
+ for barebox@lists.infradead.org; Fri, 18 May 2018 20:41:53 +0000
+Date: Fri, 18 May 2018 22:41:37 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20180518204137.GC26895@ravnborg.org>
 References: <20180517205837.32421-1-andrew.smirnov@gmail.com>
+ <20180517205837.32421-25-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180517205837.32421-25-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,55 +19,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 24/28] ARM: mmu: Use find_pte() to find PTE in
+Subject: Re: [PATCH v3 24/28] ARM: mmu: Use find_pte() to find PTE in
  create_vector_table()
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-There's already a function that implement necessary arithemtic to find
-offset within page table for a given address, so make use of it
-instead of re-implementing it again.
+Hi Andrey.
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- arch/arm/cpu/mmu.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+On Thu, May 17, 2018 at 01:58:33PM -0700, Andrey Smirnov wrote:
+> There's already a function that implement necessary arithemtic to find
+> offset within page table for a given address, so make use of it
+> instead of re-implementing it again.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  arch/arm/cpu/mmu.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+> index 21394deb1..f9e4d1a50 100644
+> --- a/arch/arm/cpu/mmu.c
+> +++ b/arch/arm/cpu/mmu.c
+> @@ -272,8 +272,7 @@ static void create_vector_table(unsigned long adr)
+>  {
+>  	struct resource *vectors_sdram;
+>  	void *vectors;
+> -	u32 *exc;
+> -	int idx;
+> +	u32 *pte;
+>  
+>  	vectors_sdram = request_sdram_region("vector table", adr, PAGE_SIZE);
+>  	if (vectors_sdram) {
+> @@ -293,9 +292,9 @@ static void create_vector_table(unsigned long adr)
+>  		vectors = xmemalign(PAGE_SIZE, PAGE_SIZE);
+>  		pr_debug("Creating vector table, virt = 0x%p, phys = 0x%08lx\n",
+>  			 vectors, adr);
+> -		exc = arm_create_pte(adr, pte_flags_uncached);
+> -		idx = (adr & (PGDIR_SIZE - 1)) >> PAGE_SHIFT;
+> -		exc[idx] = (u32)vectors | PTE_TYPE_SMALL | pte_flags_cached;
+> +		arm_create_pte(adr, pte_flags_uncached);
+> +		pte = find_pte(adr);
+> +		*pte = (u32)vectors | PTE_TYPE_SMALL | pte_flags_cached;
 
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 21394deb1..f9e4d1a50 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -272,8 +272,7 @@ static void create_vector_table(unsigned long adr)
- {
- 	struct resource *vectors_sdram;
- 	void *vectors;
--	u32 *exc;
--	int idx;
-+	u32 *pte;
- 
- 	vectors_sdram = request_sdram_region("vector table", adr, PAGE_SIZE);
- 	if (vectors_sdram) {
-@@ -293,9 +292,9 @@ static void create_vector_table(unsigned long adr)
- 		vectors = xmemalign(PAGE_SIZE, PAGE_SIZE);
- 		pr_debug("Creating vector table, virt = 0x%p, phys = 0x%08lx\n",
- 			 vectors, adr);
--		exc = arm_create_pte(adr, pte_flags_uncached);
--		idx = (adr & (PGDIR_SIZE - 1)) >> PAGE_SHIFT;
--		exc[idx] = (u32)vectors | PTE_TYPE_SMALL | pte_flags_cached;
-+		arm_create_pte(adr, pte_flags_uncached);
-+		pte = find_pte(adr);
-+		*pte = (u32)vectors | PTE_TYPE_SMALL | pte_flags_cached;
- 	}
- 
- 	arm_fixup_vectors();
--- 
-2.17.0
+This looks more elegant, but the cost here is that
+find_pte() is more expensive than the simple array
+operations done before.
 
+I am not sure if this is needed in followig patches,
+it just looks a bit expensive.
+
+	Sam
 
 _______________________________________________
 barebox mailing list
