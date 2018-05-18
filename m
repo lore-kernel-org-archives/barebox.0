@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
+Received: from mail.savoirfairelinux.com ([208.88.110.44])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fJhFG-0007cY-Lu
- for barebox@lists.infradead.org; Fri, 18 May 2018 15:24:40 +0000
-Received: by mail-lf0-x241.google.com with SMTP id z142-v6so14525304lff.5
- for <barebox@lists.infradead.org>; Fri, 18 May 2018 08:24:28 -0700 (PDT)
-Date: Fri, 18 May 2018 18:24:24 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20180518152422.u3uhzozqh2kpeqhx@localhost.localdomain>
-References: <20180517135858.16202-1-pmamonov@gmail.com>
- <20180517135858.16202-6-pmamonov@gmail.com>
- <20180518055734.sl3vlnyr7tooitih@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180518055734.sl3vlnyr7tooitih@pengutronix.de>
+ id 1fJjmN-0003ji-Md
+ for barebox@lists.infradead.org; Fri, 18 May 2018 18:07:01 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by mail.savoirfairelinux.com (Postfix) with ESMTP id 9FEAA9C31B0
+ for <barebox@lists.infradead.org>; Fri, 18 May 2018 14:06:44 -0400 (EDT)
+From: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
+Date: Fri, 18 May 2018 14:06:36 -0400
+Message-Id: <20180518180636.24885-1-vivien.didelot@savoirfairelinux.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,73 +17,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 05/15] mips: fix dma_sync_* stuff for MIPS64
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] net: specify device name in warning
+To: barebox@lists.infradead.org
+Cc: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
 
-Hi, Sascha,
+When a SoC such as VF610 has no addresses programmed for both its
+interfaces, the "No MAC address set" warning can be confusing:
 
-On Fri, May 18, 2018 at 07:57:34AM +0200, Sascha Hauer wrote:
-> On Thu, May 17, 2018 at 04:58:48PM +0300, Peter Mamonov wrote:
-> > Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> > ---
-> >  arch/mips/include/asm/dma-mapping.h |  2 +-
-> >  arch/mips/include/asm/io.h          |  4 ++--
-> >  arch/mips/lib/c-r4k.c               | 26 +++++++++++++-------------
-> >  arch/mips/lib/dma-default.c         |  6 ++++--
-> >  4 files changed, 20 insertions(+), 18 deletions(-)
-> > 
-> > diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
-> > index c71a08703..d4cbb3cac 100644
-> > --- a/arch/mips/include/asm/dma-mapping.h
-> > +++ b/arch/mips/include/asm/dma-mapping.h
-> > @@ -19,7 +19,7 @@ static inline void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
-> >  	if (dma_handle)
-> >  		*dma_handle = CPHYSADDR(ret);
-> >  
-> > -	dma_flush_range((unsigned long)ret, (unsigned long)(ret + size));
-> > +	dma_flush_range(ret, ret + size);
-> >  
-> >  	return (void *)CKSEG1ADDR(ret);
-> >  }
-> > diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-> > index 5a4cbf564..07b337e76 100644
-> > --- a/arch/mips/include/asm/io.h
-> > +++ b/arch/mips/include/asm/io.h
-> > @@ -15,8 +15,8 @@
-> >  #include <asm/addrspace.h>
-> >  #include <asm/byteorder.h>
-> >  
-> > -void dma_flush_range(unsigned long, unsigned long);
-> > -void dma_inv_range(unsigned long, unsigned long);
-> > +void dma_flush_range(void *, void *);
-> > +void dma_inv_range(void *, void *);
-> 
-> Why is this changed? unsigned long should normally be wide enough to
-> hold an address.
+    booting 'net'
+    WARNING: net: warning: No MAC address set. Using random address a2:e8:be:79:72:01
+    WARNING: net: warning: No MAC address set. Using random address aa:d5:d7:10:c0:42
 
-You are right, it doesn't fix anything. I've made these changes after taking a 
-look at __dma_sync_virtual in linux/arch/mips/mm/dma-default.c, which accepts 
-void* argument. So, I decided to change call signature of __dma_sync_mips() and 
-this decision triggered the rest of the edits :). Sorry for misleading commit 
-message.
+This patch simply specifies the device name in the warning for clarity:
 
-Regards,
-Peter
+    booting 'net'
+    WARNING: net: warning: No MAC address set for eth0. Using random address 5e:92:6b:b8:6e:92
+    WARNING: net: warning: No MAC address set for eth1. Using random address 7e:bb:cd:7a:c1:e8
 
-> 
-> Sascha
-> 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Signed-off-by: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
+---
+ net/net.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/net.c b/net/net.c
+index 94954677c..da7afb014 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -330,7 +330,7 @@ static struct net_connection *net_new(struct eth_device *edev, IPaddr_t dest,
+ 		char str[sizeof("xx:xx:xx:xx:xx:xx")];
+ 		random_ether_addr(edev->ethaddr);
+ 		ethaddr_to_string(edev->ethaddr, str);
+-		pr_warn("warning: No MAC address set. Using random address %s\n", str);
++		pr_warn("warning: No MAC address set for %s. Using random address %s\n", edev->devname, str);
+ 		eth_set_ethaddr(edev, edev->ethaddr);
+ 	}
+ 
+-- 
+2.17.0
+
 
 _______________________________________________
 barebox mailing list
