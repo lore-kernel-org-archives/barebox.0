@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
+Received: from mail-wm0-x234.google.com ([2a00:1450:400c:c09::234])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fKjPB-0004Wm-KF
- for barebox@lists.infradead.org; Mon, 21 May 2018 11:55:24 +0000
-Received: by mail-wm0-x242.google.com with SMTP id a8-v6so24827344wmg.5
- for <barebox@lists.infradead.org>; Mon, 21 May 2018 04:55:01 -0700 (PDT)
+ id 1fKjPC-0004Uu-EQ
+ for barebox@lists.infradead.org; Mon, 21 May 2018 11:55:27 +0000
+Received: by mail-wm0-x234.google.com with SMTP id o78-v6so26226076wmg.0
+ for <barebox@lists.infradead.org>; Mon, 21 May 2018 04:54:59 -0700 (PDT)
 From: Peter Mamonov <pmamonov@gmail.com>
-Date: Mon, 21 May 2018 14:54:30 +0300
-Message-Id: <20180521115438.26493-5-pmamonov@gmail.com>
+Date: Mon, 21 May 2018 14:54:28 +0300
+Message-Id: <20180521115438.26493-3-pmamonov@gmail.com>
 In-Reply-To: <20180521115438.26493-1-pmamonov@gmail.com>
 References: <20180521115438.26493-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,38 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 04/12] i2c/muxes/i2c-mux-pca954x: fix private data
- retrieval for 64bit mode
+Subject: [PATCH v2 02/12] fs: fix memory access for 64bit MIPS
 To: barebox@lists.infradead.org
 Cc: Peter Mamonov <pmamonov@gmail.com>
 
 Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- drivers/i2c/muxes/i2c-mux-pca954x.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/fs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/muxes/i2c-mux-pca954x.c b/drivers/i2c/muxes/i2c-mux-pca954x.c
-index 0d5515b71..395254cdc 100644
---- a/drivers/i2c/muxes/i2c-mux-pca954x.c
-+++ b/drivers/i2c/muxes/i2c-mux-pca954x.c
-@@ -180,6 +180,7 @@ static int pca954x_probe(struct device_d *dev)
- 	struct i2c_adapter *adap = to_i2c_adapter(client->dev.parent);
- 	int num, force;
- 	struct pca954x *data;
-+	uintptr_t tmp;
- 	int ret = -ENODEV;
- 	int gpio;
- 
-@@ -203,7 +204,8 @@ static int pca954x_probe(struct device_d *dev)
- 		goto exit_free;
+diff --git a/fs/fs.c b/fs/fs.c
+index b66cc9b17..4322d307d 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -962,7 +962,7 @@ loff_t lseek(int fildes, loff_t offset, int whence)
+ 	case SEEK_SET:
+ 		if (f->size != FILE_SIZE_STREAM && offset > f->size)
+ 			goto out;
+-		if (offset < 0)
++		if (IS_ERR(offset))
+ 			goto out;
+ 		pos = offset;
+ 		break;
+@@ -981,7 +981,7 @@ loff_t lseek(int fildes, loff_t offset, int whence)
  	}
  
--	ret = dev_get_drvdata(dev, (const void **)&data->type);
-+	ret = dev_get_drvdata(dev, (const void **)&tmp);
-+	data->type = tmp;
- 	if (ret)
- 		goto exit_free;
- 
+ 	pos = fsdrv->lseek(&f->fsdev->dev, f, pos);
+-	if (pos < 0) {
++	if (IS_ERR(pos)) {
+ 		errno = -pos;
+ 		return -1;
+ 	}
 -- 
 2.17.0
 
