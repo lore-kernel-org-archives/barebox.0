@@ -1,24 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-it0-x22c.google.com ([2607:f8b0:4001:c0b::22c])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fNdjT-00035v-H1
- for barebox@lists.infradead.org; Tue, 29 May 2018 12:28:30 +0000
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <ukl@pengutronix.de>) id 1fNdjG-0003aN-FV
- for barebox@lists.infradead.org; Tue, 29 May 2018 14:27:54 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <ukl@pengutronix.de>) id 1fNdjG-0006BZ-7W
- for barebox@lists.infradead.org; Tue, 29 May 2018 14:27:54 +0200
-Date: Tue, 29 May 2018 14:27:54 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20180529122754.2bhg5ysfcj33luq4@pengutronix.de>
-References: <20180528214400.28252-1-u.kleine-koenig@pengutronix.de>
- <20180528214400.28252-2-u.kleine-koenig@pengutronix.de>
+ id 1fKn6A-0005FY-C6
+ for barebox@lists.infradead.org; Mon, 21 May 2018 15:51:58 +0000
+Received: by mail-it0-x22c.google.com with SMTP id c3-v6so21648237itj.4
+ for <barebox@lists.infradead.org>; Mon, 21 May 2018 08:51:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180528214400.28252-2-u.kleine-koenig@pengutronix.de>
+From: Pascal Vizeli <pascal.vizeli@syshack.ch>
+Date: Mon, 21 May 2018 17:51:33 +0200
+Message-ID: <CACvFaDfqmKOB20kdH=XeGRQv4e5spqCegjmaphsLhCOK_ZDSVA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,36 +17,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] dove: fix bit layout of DOVE_CPU_CTRL register
+Subject: RaspberryPi 1/2(/3)
 To: barebox@lists.infradead.org
 
-Hello,
+Hi,
 
-On Mon, May 28, 2018 at 11:44:00PM +0200, Uwe Kleine-K=F6nig wrote:
-> While creating the previous patch I checked the cpu's reference manual
-> to see what the affected registers actually do and noticed that bits
-> of the DOVE_CPU_CTRL actually used by the code doesn't match the bits
-> described as AHBSlaveBase in the manual.
-> =
+I try to build a bootable barebox for raspberry with 2018.05.00 and buildroot:
+https://github.com/home-assistant/hassos/tree/dev/buildroot-external
 
-> I'm not aware of any effect (neither positive nor negative) of this
-> patch.
+I build the origin rpi_defconfig but I'm was not able to boot the
+'barebox.bin' and become a output on UART. I can boot the linux kernel
+from rpi loader. If I try the barebox, it will be flash the green
+light and if I disable the LED support, only the red power light is
+seen.
 
-Just a little amendment:
-I didn't find a usage of this register neither in Linux nor in the
-vendor U-Boot for the cubox.
+I try also the RPi3 patches and end in same result.
+I follow also this guide:
+https://www.barebox.org/doc/latest/boards/bcm2835.html
 
-Best regards
-Uwe
+Have anyone a idea what will be the problem or what I doing wrong?
 
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Thanks for any support and hint what my brain do wrongly :)
+Pascal
 
 _______________________________________________
 barebox mailing list
