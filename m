@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fKmQ4-000844-A9
- for barebox@lists.infradead.org; Mon, 21 May 2018 15:08:17 +0000
-Date: Mon, 21 May 2018 17:08:03 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20180521150803.GB12008@ravnborg.org>
+ id 1fKpN8-0005BJ-R3
+ for barebox@lists.infradead.org; Mon, 21 May 2018 18:17:28 +0000
+Received: by mail-lf0-x244.google.com with SMTP id h197-v6so25237532lfg.11
+ for <barebox@lists.infradead.org>; Mon, 21 May 2018 11:17:16 -0700 (PDT)
+Date: Mon, 21 May 2018 21:17:08 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20180521181707.gk5e6uo6eknkksd6@localhost.localdomain>
 References: <20180521115438.26493-1-pmamonov@gmail.com>
  <20180521115438.26493-9-pmamonov@gmail.com>
+ <20180521150803.GB12008@ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180521115438.26493-9-pmamonov@gmail.com>
+In-Reply-To: <20180521150803.GB12008@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,32 +22,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2 08/12] MIPS: use CKSEG1 instead of KSEG1
-To: Peter Mamonov <pmamonov@gmail.com>
+To: Sam Ravnborg <sam@ravnborg.org>
 Cc: barebox@lists.infradead.org
 
-Hi Peter.
-
-On Mon, May 21, 2018 at 02:54:34PM +0300, Peter Mamonov wrote:
-> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> ---
-
-Can you elaborate a little over this change?
-Earlier IOMEM was fixed to use KSEG1 and not CKSEG1
-
-And now something else moves the other way.
-
-For readers like me that has no clue what KSEG0 and CKSEG0
-is the change looks like noise.
-It may be perfectly fine, but there is no backgrond info to tell why
-
-	Sam
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksIFNhbSwKCk9uIE1vbiwgTWF5IDIxLCAyMDE4IGF0IDA1OjA4OjAzUE0gKzAyMDAsIFNhbSBS
+YXZuYm9yZyB3cm90ZToKPiBIaSBQZXRlci4KPiAKPiBPbiBNb24sIE1heSAyMSwgMjAxOCBhdCAw
+Mjo1NDozNFBNICswMzAwLCBQZXRlciBNYW1vbm92IHdyb3RlOgo+ID4gU2lnbmVkLW9mZi1ieTog
+UGV0ZXIgTWFtb25vdiA8cG1hbW9ub3ZAZ21haWwuY29tPgo+ID4gLS0tCj4gCj4gQ2FuIHlvdSBl
+bGFib3JhdGUgYSBsaXR0bGUgb3ZlciB0aGlzIGNoYW5nZT8KPiBFYXJsaWVyIElPTUVNIHdhcyBm
+aXhlZCB0byB1c2UgS1NFRzEgYW5kIG5vdCBDS1NFRzEKPgo+IEFuZCBub3cgc29tZXRoaW5nIGVs
+c2UgbW92ZXMgdGhlIG90aGVyIHdheS4KCldlbGwsIGJlZm9yZSBwYXRjaCA2IG9mIHRoaXMgcGF0
+Y2ggc2VyaWVzIElPTUVNIGZvciBNSVBTIHdhcyBkZWZpbmVkIHVzaW5nIApDS1NFRzFBRERSKCkg
+bWFjcm8uICBQYXRjaCA2IGludHJvZHVjZWQgYSBuZXcgZGVmaW5pdGlvbiBmb3IgTUlQUzY0IHVz
+aW5nIApQSFlTX1RPX1hLU0VHX1VOQ0FDSEVEIG1hY3JvLiBJIGNhbid0IHNlZSBhbnkgdXNlIG9m
+IEtTRUcxIGluIElPTUVNIGRlZmluaXRpb24gCmZvciBNSVBTLi4uCgo+ID4gRm9yIHJlYWRlcnMg
+bGlrZSBtZSB0aGF0IGhhcyBubyBjbHVlIHdoYXQgS1NFRzAgYW5kIENLU0VHMAo+IGlzIHRoZSBj
+aGFuZ2UgbG9va3MgbGlrZSBub2lzZS4KPiBJdCBtYXkgYmUgcGVyZmVjdGx5IGZpbmUsIGJ1dCB0
+aGVyZSBpcyBubyBiYWNrZ3JvbmQgaW5mbyB0byB0ZWxsIHdoeQoKQW55d2F5LCBoZXJlIGlzIHRo
+ZSBzdG9yeS4gTUlQUyB2aXJ0dWFsIGFkZHJlc3Mgc3BhY2UgaXMgcGFydGl0aW9uZWQgaW50byAK
+c2V2ZXJhbCBzZWdtZW50cy4gIEhlcmUgaXMgYW4gZXhjZXJwdCBmcm9tIHRoZSAiU2VlIE1JUFMg
+cnVuIChMaW51eCkiIGJvb2sgCndoaWNoIGRlc2NyaWJlcyBLU0VHMCBhbmQgS1NFRzE6CgoJa3Nl
+ZzAgMHg4MDAwLjAwMDAg4oCTIDlGRkYuRkZGRiAoNTEyTUIpOiBUaGVzZSBhZGRyZXNzZXMgYXJl
+IHRyYW5zbGF0ZWQKCQlpbnRvIHBoeXNpY2FsIGFkZHJlc3NlcyBieSBtZXJlbHkgc3RyaXBwaW5n
+IG9mZiB0aGUgdG9wIGJpdCBhbmQgCgkJbWFwcGluZyB0aGVtIGNvbnRpZ3VvdXNseSBpbnRvIHRo
+ZSBsb3cgNTEyIE1CIG9mIHBoeXNpY2FsIAoJCW1lbW9yeS4gWy4uLl0gQWRkcmVzc2VzIGluIHRo
+aXMgcmVnaW9uIGFyZSBhbG1vc3QgYWx3YXlzIAoJCWFjY2Vzc2VkIHRocm91Z2ggdGhlIGNhY2hl
+LCBzbyB0aGV5IG1heSBub3QgYmUgdXNlZCB1bnRpbCB0aGUgCgkJY2FjaGVzIGFyZSBwcm9wZXJs
+eSBpbml0aWFsaXplZC4gVGhleSB3aWxsIGJlIHVzZWQgZm9yIG1vc3QgCgkJcHJvZ3JhbXMgYW5k
+IGRhdGEgaW4gc3lzdGVtcyBub3QgdXNpbmcgdGhlIE1NVSBhbmQgd2lsbCBiZSB1c2VkIAoJCWZv
+ciB0aGUgT1Mga2VybmVsIGZvciBzeXN0ZW1zIHRoYXQgZG8gdXNlIHRoZSBNTVUuCgoJa3NlZzEg
+MHhBMDAwLjAwMDAg4oCTIEJGRkYuRkZGRiAoNTEyTUIpOiBUaGVzZSBhZGRyZXNzZXMgYXJlIG1h
+cHBlZAoJCWludG8gcGh5c2ljYWwgYWRkcmVzc2VzIGJ5IHN0cmlwcGluZyBvZmYgdGhlIGxlYWRp
+bmcgMyBiaXRzLCAKCQlnaXZpbmcgYSBkdXBsaWNhdGUgbWFwcGluZyBvZiB0aGUgbG93IDUxMiBN
+QiBvZiBwaHlzaWNhbCAKCQltZW1vcnkuIEJ1dCB0aGlzIHRpbWUsIGFjY2VzcyB3aWxsIG5vdCB1
+c2UgdGhlIGNhY2hlLiBUaGUga3NlZzEgCgkJcmVnaW9uIGlzIHRoZSBvbmx5IGNodW5rIG9mIHRo
+ZSBtZW1vcnkgbWFwIHRoYXQgaXMgZ3VhcmFudGVlZCAKCQl0byBiZWhhdmUgcHJvcGVybHkgZnJv
+bSBzeXN0ZW0gcmVzZXQ7IHRoYXTigJlzIHdoeSB0aGUgCQkKCQlhZnRlci1yZXNldCBzdGFydGlu
+ZyBwb2ludCAoIDB4QkZDMC4wMDAwICkgbGllcyB3aXRoaW4gaXQuCgpOb3csIGFmdGVyIGludHJv
+ZHVjdGlvbiBvZiBNSVBTNjQgdGhlc2Ugc2VnbWVudHMgd2VyZSBwcmVzZXJ2ZWQgZm9yIApjb21w
+YXRpYmlsaXR5IHJlYXNvbnMsIGFuZCBpdHMgNjRiaXQgZXF1aXZhbGVudHMgYXJlIGxvY2F0ZWQg
+YXQgIAoweGZmZmZmZmZmODAwMDAwMDAgYW5kIDB4ZmZmZmZmZmZhMDAwMDAwMCByZXNwZWN0aXZl
+bHkuCgpBcyB5b3UgY2FuIHNlZSBmcm9tIHRoZSBhcmNoL21pcHMvaW5jbHVkZS9hc20vYWRkcnNw
+YWNlLmggS1NFRzAvMSBhcmUgZGVmaW5lZCAKZm9yIDMyIGJpdHMgb25seToKCgkjaWZkZWYgQ09O
+RklHXzY0QklUCgkuLi4KCSNlbHNlCgkuLi4KCSNkZWZpbmUgS1NFRzAgICAgICAgICAgICAgICAg
+ICAgMHg4MDAwMDAwMAoJI2RlZmluZSBLU0VHMSAgICAgICAgICAgICAgICAgICAweGEwMDAwMDAw
+CgkuLi4KCSNlbmRpZgoKV2hpbGUgQ0tTRUcwLzEgYXJlIGRlZmluZWQgZm9yIGJvdGggNjQgYW5k
+IDMyIGJpdHM6CgoJI2lmZGVmIENPTkZJR182NEJJVAoJLi4uCgkjZGVmaW5lIENLU0VHMCAgICAg
+ICAgICAgICAgICAgIF9DT05TVDY0XygweGZmZmZmZmZmODAwMDAwMDApCgkjZGVmaW5lIENLU0VH
+MSAgICAgICAgICAgICAgICAgIF9DT05TVDY0XygweGZmZmZmZmZmYTAwMDAwMDApCgkuLi4KCSNl
+bHNlCgkuLi4KCSNkZWZpbmUgQ0tTRUcwICAgICAgICAgICAgICAgICAgIDB4ODAwMDAwMDAKCSNk
+ZWZpbmUgQ0tTRUcxICAgICAgICAgICAgICAgICAgIDB4YTAwMDAwMDAKCS4uLgoJI2VuZGlmCgpM
+aW51eCBkZWZpbmVzIHRoZXNlIGNvbnN0YW50cyBpbiB0aGUgc2FtZSB3YXkuIEkgYmVsaXZlIHRo
+ZSAiQyIgcHJlZml4IHRvIApjb250YW50cyBuYW1lcyBzdGFuZHMgZm9yIENvbXBhdGlibGUuCgpB
+bnl3YXksIGlmIHlvdSB0cnkgdG8gY29tcGlsZSA2NCBiaXQgYmFyZWJveCBhbmQgdXNlIEtTRUcx
+IGluIHlvdXIgY29kZSwgCmNvbXBpbGF0aW9uIHdpbGwgZmFpbC4KClJlZ2FyZHMsClBldGVyCgo+
+IAo+IAlTYW0KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
+bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
