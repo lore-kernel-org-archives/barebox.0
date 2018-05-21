@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x243.google.com ([2607:f8b0:4001:c0b::243])
+Received: from mail-io0-x244.google.com ([2607:f8b0:4001:c06::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fKpnw-0005mV-IH
- for barebox@lists.infradead.org; Mon, 21 May 2018 18:45:10 +0000
-Received: by mail-it0-x243.google.com with SMTP id q4-v6so22297473ite.3
- for <barebox@lists.infradead.org>; Mon, 21 May 2018 11:44:57 -0700 (PDT)
+ id 1fKpid-0003rO-9I
+ for barebox@lists.infradead.org; Mon, 21 May 2018 18:39:42 +0000
+Received: by mail-io0-x244.google.com with SMTP id g1-v6so15468574iob.2
+ for <barebox@lists.infradead.org>; Mon, 21 May 2018 11:39:27 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20180521115438.26493-2-pmamonov@gmail.com>
+In-Reply-To: <20180521115438.26493-1-pmamonov@gmail.com>
 References: <20180521115438.26493-1-pmamonov@gmail.com>
- <20180521115438.26493-2-pmamonov@gmail.com>
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 21 May 2018 11:44:52 -0700
-Message-ID: <CAHQ1cqHGNnf6FbtvnN+J_4uBHbEf3V8NdAZ4Nzt3Od58JTgCgQ@mail.gmail.com>
+Date: Mon, 21 May 2018 11:39:26 -0700
+Message-ID: <CAHQ1cqEYc51YSOyGS8ZsFSCep3nb7t0X2B_z=1gOtiFc2GAP6A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,17 +23,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 01/12] resource: fix iomem root resource for 64 bit
+Subject: Re: [PATCH v2 00/12] various fixes for MIPS64
 To: Peter Mamonov <pmamonov@gmail.com>
 Cc: Barebox List <barebox@lists.infradead.org>
 
 On Mon, May 21, 2018 at 4:54 AM, Peter Mamonov <pmamonov@gmail.com> wrote:
-> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> Hi,
+>
+> Here is a second revision of the patchset which fixes various issues with 64 bit
+> barebox, primarily MIPS related. IMHO all of these patches are ready for
+> application.
+>
 
-IMHO, Signed-off-by is a bit of an overkill for this. I am perfectly
-fine not getting credit for trivial suggestions as was this one in
-general, but if we must, Suggested-by seems like a better fit.
+Don't  think I've seen any comments on:
+http://lists.infradead.org/pipermail/barebox/2018-May/032985.html
+Right now it's not clear if that thread just slipped though the cracks
+or you decided to keep the code as is. Latter is fine with me, I just
+want to make sure it is not the former.
 
 Thanks,
 Andrey Smirnov
