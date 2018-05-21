@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fKjPF-00035D-92
- for barebox@lists.infradead.org; Mon, 21 May 2018 11:55:14 +0000
-Received: by mail-wm0-x244.google.com with SMTP id f6-v6so24846425wmc.4
- for <barebox@lists.infradead.org>; Mon, 21 May 2018 04:55:02 -0700 (PDT)
+Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fKjPB-0004m6-K7
+ for barebox@lists.infradead.org; Mon, 21 May 2018 11:55:24 +0000
+Received: by mail-wm0-x242.google.com with SMTP id j4-v6so24936158wme.1
+ for <barebox@lists.infradead.org>; Mon, 21 May 2018 04:55:06 -0700 (PDT)
 From: Peter Mamonov <pmamonov@gmail.com>
-Date: Mon, 21 May 2018 14:54:31 +0300
-Message-Id: <20180521115438.26493-6-pmamonov@gmail.com>
+Date: Mon, 21 May 2018 14:54:35 +0300
+Message-Id: <20180521115438.26493-10-pmamonov@gmail.com>
 In-Reply-To: <20180521115438.26493-1-pmamonov@gmail.com>
 References: <20180521115438.26493-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,46 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 05/12] MIPS: import 64-bit address conversion macros
+Subject: [PATCH v2 09/12] mips: fix warnings from CPHYSADDR() macro
 To: barebox@lists.infradead.org
 Cc: Peter Mamonov <pmamonov@gmail.com>
 
 Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- arch/mips/include/asm/addrspace.h | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ arch/mips/include/asm/addrspace.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/arch/mips/include/asm/addrspace.h b/arch/mips/include/asm/addrspace.h
-index 17d480d08..dc44d7f79 100644
+index dc44d7f79..688620472 100644
 --- a/arch/mips/include/asm/addrspace.h
 +++ b/arch/mips/include/asm/addrspace.h
-@@ -73,6 +73,26 @@
- #define CKSEG2ADDR(a)		(CPHYSADDR(a) | CKSEG2)
- #define CKSEG3ADDR(a)		(CPHYSADDR(a) | CKSEG3)
- 
-+/*
-+ * Cache modes for XKPHYS address conversion macros
-+ */
-+#define K_CALG_COH_EXCL1_NOL2	0
-+#define K_CALG_COH_SHRL1_NOL2	1
-+#define K_CALG_UNCACHED		2
-+#define K_CALG_NONCOHERENT	3
-+#define K_CALG_COH_EXCL		4
-+#define K_CALG_COH_SHAREABLE	5
-+#define K_CALG_NOTUSED		6
-+#define K_CALG_UNCACHED_ACCEL	7
+@@ -48,7 +48,12 @@
+ /*
+  * Returns the physical address of a CKSEGx / XKPHYS address
+  */
++#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
++#define CPHYSADDR(a)		((_ACAST64_(a)) & 0x1fffffff)
++#else
+ #define CPHYSADDR(a)		((_ACAST32_(a)) & 0x1fffffff)
++#endif
 +
-+/*
-+ * 64-bit address conversions
-+ */
-+#define PHYS_TO_XKSEG_UNCACHED(p)	PHYS_TO_XKPHYS(K_CALG_UNCACHED, (p))
-+#define PHYS_TO_XKSEG_CACHED(p)		PHYS_TO_XKPHYS(K_CALG_COH_SHAREABLE, (p))
-+#define XKPHYS_TO_PHYS(p)		((p) & TO_PHYS_MASK)
-+#define PHYS_TO_XKPHYS(cm, a)		(XKPHYS | (_ACAST64_(cm) << 59) | (a))
-+
- #else
+ #define XPHYSADDR(a)            ((_ACAST64_(a)) &			\
+ 				 _CONST64_(0x000000ffffffffff))
  
- #define CKSEG0ADDR(a)		(CPHYSADDR(a) | KSEG0)
 -- 
 2.17.0
 
