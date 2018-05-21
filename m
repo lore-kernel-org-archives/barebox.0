@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x242.google.com ([2607:f8b0:4001:c06::242])
+Received: from mail-wm0-x232.google.com ([2a00:1450:400c:c09::232])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fKqEP-0007nr-Mc
- for barebox@lists.infradead.org; Mon, 21 May 2018 19:12:31 +0000
-Received: by mail-io0-x242.google.com with SMTP id d11-v6so15576267iof.11
- for <barebox@lists.infradead.org>; Mon, 21 May 2018 12:12:18 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20180518202315.GB26895@ravnborg.org>
-References: <20180517205837.32421-1-andrew.smirnov@gmail.com>
- <20180517205837.32421-24-andrew.smirnov@gmail.com>
- <20180518202315.GB26895@ravnborg.org>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 21 May 2018 12:12:16 -0700
-Message-ID: <CAHQ1cqFgOZS+zTL81WGciWVDTAaE_b6qPjG6r-qHp04RnS1ChA@mail.gmail.com>
+ id 1fKjPB-0004TB-6s
+ for barebox@lists.infradead.org; Mon, 21 May 2018 11:55:22 +0000
+Received: by mail-wm0-x232.google.com with SMTP id f6-v6so24846083wmc.4
+ for <barebox@lists.infradead.org>; Mon, 21 May 2018 04:54:57 -0700 (PDT)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Mon, 21 May 2018 14:54:26 +0300
+Message-Id: <20180521115438.26493-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,39 +16,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 23/28] ARM: mmu: Make sure that address is 1M aligned
- in arm_create_pte()
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v2 00/12] various fixes for MIPS64
+To: barebox@lists.infradead.org
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-On Fri, May 18, 2018 at 1:23 PM, Sam Ravnborg <sam@ravnborg.org> wrote:
-> On Thu, May 17, 2018 at 01:58:32PM -0700, Andrey Smirnov wrote:
->> If address passed arm_create_pte() is not 1M (PGDIR_SIZE) aligned,
->> page table that is created will end up having unexpected mapping
->> offset, breaking "1:1 mapping" assumption and leading to bugs that are
->> not immediately obvious in their nature.
->>
->> To prevent this and because all of the callers already do said
->> alignement in-place, move the alignment code to be a part of
->   alignment
->
->> are_create_pte().
->   arm_create_pte()
->
->
-> It is so easy to spot spelling errors made by others,
-> so why is it that one so often fails to find spelling
-> errors made by one self :-(
->
+Hi,
 
-My bad, will fix in v4.
+Here is a second revision of the patchset which fixes various issues with 64 bit 
+barebox, primarily MIPS related. IMHO all of these patches are ready for 
+application.
 
-Thanks,
-Andrey Smirnov
+Regards,
+Peter
+
+Peter Mamonov (12):
+  resource: fix iomem root resource for 64 bit
+  fs: fix memory access for 64bit MIPS
+  mtd: cfi-flash: fix write_buff() for 64BIT
+  i2c/muxes/i2c-mux-pca954x: fix private data retrieval for 64bit mode
+  MIPS: import 64-bit address conversion macros
+  common.h: fix IOMEM() for MIPS64
+  mips: fix copy_to_link_location for 64 bit mode
+  MIPS: use CKSEG1 instead of KSEG1
+  mips: fix warnings from CPHYSADDR() macro
+  mips: add PHYS_ADDR_T_64BIT option
+  mips: 64BIT selects PHYS_ADDR_T_64BIT
+  fixup! MIPS: import optimized string functions from Linux
+
+ arch/mips/Kconfig                   |  6 ++++++
+ arch/mips/boot/dtb.c                |  4 ++--
+ arch/mips/include/asm/addrspace.h   | 25 +++++++++++++++++++++++++
+ arch/mips/include/asm/pbl_macros.h  | 21 +++++++++++----------
+ arch/mips/lib/c-r4k.c               |  8 ++++----
+ common/resource.c                   |  2 +-
+ drivers/i2c/muxes/i2c-mux-pca954x.c |  4 +++-
+ drivers/mtd/nor/cfi_flash.c         |  2 +-
+ fs/fs.c                             |  4 ++--
+ include/common.h                    |  4 ++++
+ 10 files changed, 59 insertions(+), 21 deletions(-)
+
+-- 
+2.17.0
+
 
 _______________________________________________
 barebox mailing list
