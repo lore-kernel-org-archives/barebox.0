@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x236.google.com ([2a00:1450:400c:c09::236])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fKjPD-0004Vw-GY
- for barebox@lists.infradead.org; Mon, 21 May 2018 11:55:30 +0000
-Received: by mail-wm0-x236.google.com with SMTP id o78-v6so26226163wmg.0
- for <barebox@lists.infradead.org>; Mon, 21 May 2018 04:55:00 -0700 (PDT)
+Received: from mail-wm0-x241.google.com ([2a00:1450:400c:c09::241])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fKjPJ-00035V-Ed
+ for barebox@lists.infradead.org; Mon, 21 May 2018 11:55:19 +0000
+Received: by mail-wm0-x241.google.com with SMTP id m129-v6so26046778wmb.3
+ for <barebox@lists.infradead.org>; Mon, 21 May 2018 04:55:07 -0700 (PDT)
 From: Peter Mamonov <pmamonov@gmail.com>
-Date: Mon, 21 May 2018 14:54:29 +0300
-Message-Id: <20180521115438.26493-4-pmamonov@gmail.com>
+Date: Mon, 21 May 2018 14:54:36 +0300
+Message-Id: <20180521115438.26493-11-pmamonov@gmail.com>
 In-Reply-To: <20180521115438.26493-1-pmamonov@gmail.com>
 References: <20180521115438.26493-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,28 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 03/12] mtd: cfi-flash: fix write_buff() for 64BIT
+Subject: [PATCH v2 10/12] mips: add PHYS_ADDR_T_64BIT option
 To: barebox@lists.infradead.org
 Cc: Peter Mamonov <pmamonov@gmail.com>
 
 Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- drivers/mtd/nor/cfi_flash.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/Kconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/mtd/nor/cfi_flash.c b/drivers/mtd/nor/cfi_flash.c
-index 5bdcccae1..01ab1aa27 100644
---- a/drivers/mtd/nor/cfi_flash.c
-+++ b/drivers/mtd/nor/cfi_flash.c
-@@ -515,7 +515,7 @@ static int write_buff(struct flash_info *info, const u8 *src,
- 	int buffered_size;
- #endif
- 	/* get lower aligned address */
--	wp = addr & ~(info->portwidth - 1);
-+	wp = addr & ~((unsigned long)info->portwidth - 1);
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index c2c555dc3..433d914c2 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -25,6 +25,10 @@ config GENERIC_LINKER_SCRIPT
+ config HAS_NO_BOARD_HL_CODE
+ 	bool
  
- 	/* handle unaligned start */
- 	aln = addr - wp;
++config PHYS_ADDR_T_64BIT
++	bool
++	default n
++
+ menu "Machine selection"
+ 
+ config BUILTIN_DTB
 -- 
 2.17.0
 
