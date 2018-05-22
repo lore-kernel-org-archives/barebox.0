@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fKxm0-0002DS-PB
+ id 1fKxm1-0002DT-BG
  for barebox@lists.infradead.org; Tue, 22 May 2018 03:15:42 +0000
-Received: by mail-pf0-x242.google.com with SMTP id o76-v6so8035642pfi.5
- for <barebox@lists.infradead.org>; Mon, 21 May 2018 20:15:29 -0700 (PDT)
+Received: by mail-pf0-x241.google.com with SMTP id a22-v6so8032714pfn.6
+ for <barebox@lists.infradead.org>; Mon, 21 May 2018 20:15:30 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 21 May 2018 20:14:41 -0700
-Message-Id: <20180522031510.25505-1-andrew.smirnov@gmail.com>
+Date: Mon, 21 May 2018 20:14:42 -0700
+Message-Id: <20180522031510.25505-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20180522031510.25505-1-andrew.smirnov@gmail.com>
+References: <20180522031510.25505-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,89 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 00/29] ARM MMU code improvements and on-demand PTE
- allocation
+Subject: [PATCH v4 01/29] ARM: mmu: Remove unused ARM_VECTORS_SIZE
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Everyone:
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/cpu/mmu.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-With exeception of patch 27/28, all patches in this series are just
-small improvements(IMHO) that I made while working with ARM MMU code.
-
-Patch 27/28, OTOH, brings a bit of a change to how MMU code allocates
-PTEs, postponing that until the users of DMA API actually request
-that.
-
-Feedback is welcome!
-
-Changes since [v3]:
-
-	- Fixed spelling in commit message for 23/28
-
-Changes since [v2]:
-
-	- Dropped create_sections() macro.
-
-	- Fixed a bug in 6/28, pointed out by Sam
-
-	- Minor style changes and comment re-wording
-
-Changes since [v1]:
-
-	- create_sections() reworked to keep all of its arguments
-          32-bits
-
-	- Fixed compliation error in 9/28
-
-	- Small style fix for 26/28
-
-	- Collected Reviewed-by's from Lucas
-
-[v1] http://lists.infradead.org/pipermail/barebox/2018-May/032816.html
-[v2] http://lists.infradead.org/pipermail/barebox/2018-May/032880.html
-[v3] http://lists.infradead.org/pipermail/barebox/2018-May/032951.html
-
-
-Andrey Smirnov (29):
-  ARM: mmu: Remove unused ARM_VECTORS_SIZE
-  ARM: mmu: Make use of IS_ALIGNED in arm_mmu_remap_sdram()
-  ARM: mmu: Use ALIGN and ALIGN_DOWN in map_cachable()
-  ARM: mmu: Introduce set_ttbr()
-  ARM: mmu: Introduce set_domain()
-  ARM: mmu: Share code for create_sections()
-  ARM: mmu: Separate index and address in create_sections()
-  sizes.h: Sync with Linux 4.16
-  ARM: mmu: Specify size in bytes in create_sections()
-  ARM: mmu: Share code for initial flat mapping creation
-  ARM: mmu: Share PMD_SECT_DEF_CACHED
-  ARM: mmu: Drop needless shifting in map_io_sections()
-  ARM: mmu: Replace hardcoded shifts with pgd_index() from Linux
-  ARM: mmu: Trivial simplification in arm_mmu_remap_sdram()
-  ARM: mmu: Replace various SZ_1M with PGDIR_SIZE
-  ARM: mmu: Use PAGE_SIZE when specifying size of one page
-  ARM: mmu: Define and use PTRS_PER_PTE
-  ARM: mmu: Use PAGE_SIZE instead of magic right shift by 12
-  ARM: mmu: Use xmemalign in arm_create_pte()
-  ARM: mmu: Use xmemalign in mmu_init()
-  ARM: mmu: Share code between dma_alloc_*() functions
-  ARM: mmu: Pass PTE flags a parameter to arm_create_pte()
-  ARM: mmu: Make sure that address is 1M aligned in arm_create_pte()
-  ARM: mmu: Use find_pte() to find PTE in create_vector_table()
-  ARM: mmu: Use dma_inv_range() in dma_sync_single_for_cpu()
-  ARM: mmu: Simplify the use of dma_flush_range()
-  ARM: mmu: Implement on-demand PTE allocation
-  ARM: mmu: Introduce ARM_TTB_SIZE
-  ARM: mmu: Do not try to pick early TTB up
-
- arch/arm/boards/phytec-som-imx6/lowlevel.c |   1 +
- arch/arm/cpu/mmu-early.c                   |  31 +-
- arch/arm/cpu/mmu.c                         | 341 +++++++++------------
- arch/arm/cpu/mmu.h                         |  44 +++
- arch/arm/include/asm/barebox-arm.h         |   8 +-
- include/linux/sizes.h                      |   4 +
- 6 files changed, 213 insertions(+), 216 deletions(-)
-
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index 6ccd5893b..9472013ca 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -270,12 +270,6 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
+ 
+ 	return 0;
+ }
+-/*
+- * We have 8 exception vectors and the table consists of absolute
+- * jumps, so we need 8 * 4 bytes for the instructions and another
+- * 8 * 4 bytes for the addresses.
+- */
+-#define ARM_VECTORS_SIZE	(sizeof(u32) * 8 * 2)
+ 
+ #define ARM_HIGH_VECTORS	0xffff0000
+ #define ARM_LOW_VECTORS		0x0
 -- 
 2.17.0
 
