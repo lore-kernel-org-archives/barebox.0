@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x22e.google.com ([2a00:1450:400c:c09::22e])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fLnOq-0005Eo-BD
- for barebox@lists.infradead.org; Thu, 24 May 2018 10:23:14 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 24 May 2018 12:22:57 +0200
-Message-Id: <20180524102257.14171-1-s.hauer@pengutronix.de>
+ id 1fL9Ie-0003Fw-4f
+ for barebox@lists.infradead.org; Tue, 22 May 2018 15:34:10 +0000
+Received: by mail-wm0-x22e.google.com with SMTP id j5-v6so916560wme.5
+ for <barebox@lists.infradead.org>; Tue, 22 May 2018 08:33:57 -0700 (PDT)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Tue, 22 May 2018 18:33:32 +0300
+Message-Id: <20180522153342.24933-3-pmamonov@gmail.com>
+In-Reply-To: <20180522153342.24933-1-pmamonov@gmail.com>
+References: <20180522153342.24933-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,49 +23,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] imx-usb-loader: Align uploaded file length
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v3 02/12] fs: fix memory access via /dev/mem for MIPS64
+To: barebox@lists.infradead.org
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-At least i.MX25 does not properly upload a non word aligned file length.
-Align the uploaded length to word length to make sure the end of the
-file is also transferred properly.
+lseek checks for non-negative in-memory offsets (addresses), failing otherwise.
+However negative address 0xffffffffXXXXXXXX is a valid MIPS64 virtual address.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- scripts/imx/imx-usb-loader.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/fs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-index 43dde8b7f2..cbb17cbab9 100644
---- a/scripts/imx/imx-usb-loader.c
-+++ b/scripts/imx/imx-usb-loader.c
-@@ -40,6 +40,8 @@
- 
- #define get_min(a, b) (((a) < (b)) ? (a) : (b))
- 
-+#define ALIGN(x, a)        (((x) + (a) - 1) & ~((a) - 1))
-+
- #define FT_APP	0xaa
- #define FT_CSF	0xcc
- #define FT_DCD	0xee
-@@ -412,7 +414,7 @@ static int read_file(const char *name, unsigned char **buffer, unsigned *size)
- 		return -2;
+diff --git a/fs/fs.c b/fs/fs.c
+index b66cc9b17..4322d307d 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -962,7 +962,7 @@ loff_t lseek(int fildes, loff_t offset, int whence)
+ 	case SEEK_SET:
+ 		if (f->size != FILE_SIZE_STREAM && offset > f->size)
+ 			goto out;
+-		if (offset < 0)
++		if (IS_ERR(offset))
+ 			goto out;
+ 		pos = offset;
+ 		break;
+@@ -981,7 +981,7 @@ loff_t lseek(int fildes, loff_t offset, int whence)
  	}
  
--	buf = malloc(fsize);
-+	buf = malloc(ALIGN(fsize, 4));
- 	if (!buf) {
- 		printf("error, out of memory\n");
- 		fclose(xfile);
-@@ -762,6 +764,8 @@ static int load_file(void *buf, unsigned len, unsigned dladdr, unsigned char typ
- 	void *p;
- 	int cnt;
- 
-+	len = ALIGN(len, 4);
-+
- 	dl_command.addr = htonl(dladdr);
- 	dl_command.cnt = htonl(len);
- 	dl_command.rsvd = type;
+ 	pos = fsdrv->lseek(&f->fsdev->dev, f, pos);
+-	if (pos < 0) {
++	if (IS_ERR(pos)) {
+ 		errno = -pos;
+ 		return -1;
+ 	}
 -- 
 2.17.0
 
