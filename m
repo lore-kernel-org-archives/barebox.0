@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x243.google.com ([2607:f8b0:400e:c01::243])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fKxmf-0001YE-2k
- for barebox@lists.infradead.org; Tue, 22 May 2018 03:16:22 +0000
-Received: by mail-pl0-x243.google.com with SMTP id e6-v6so9972176plt.11
- for <barebox@lists.infradead.org>; Mon, 21 May 2018 20:16:07 -0700 (PDT)
+Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fKxmU-0002PN-TV
+ for barebox@lists.infradead.org; Tue, 22 May 2018 03:16:32 +0000
+Received: by mail-pl0-x241.google.com with SMTP id u6-v6so9985385pls.9
+ for <barebox@lists.infradead.org>; Mon, 21 May 2018 20:16:00 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 21 May 2018 20:15:09 -0700
-Message-Id: <20180522031510.25505-29-andrew.smirnov@gmail.com>
+Date: Mon, 21 May 2018 20:15:05 -0700
+Message-Id: <20180522031510.25505-25-andrew.smirnov@gmail.com>
 In-Reply-To: <20180522031510.25505-1-andrew.smirnov@gmail.com>
 References: <20180522031510.25505-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,68 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 28/29] ARM: mmu: Introduce ARM_TTB_SIZE
+Subject: [PATCH v4 24/29] ARM: mmu: Use find_pte() to find PTE in
+ create_vector_table()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Commit 1c33aacf8a247ab45814b43ac0ca903677afffae ("ARM: use memalign to
-allocate page table"), reasonalby changed TTB allocation size from
-SZ_32K to SZ_16K (TTB's real size), but it also changed alignment from
-SZ_16K to SZ_64K for unclear reasons.
-
-Reading various TTBR related ARM documentation it seems that worst
-case alignment for it is 16KiB (bits [0, 13 - N] must be zero) which
-also matches early TTB allocation code.
-
-Since both early and regular MMU code has to share this paramter,
-introduce ARM_TTB_SIZE and use it in both cases for both size and
-alignment.
+There's already a function that implement necessary arithemtic to find
+offset within page table for a given address, so make use of it
+instead of re-implementing it again.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c                 | 2 +-
- arch/arm/include/asm/barebox-arm.h | 8 +++++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ arch/arm/cpu/mmu.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 5f82b63ca..a89f420f2 100644
+index 21394deb1..f9e4d1a50 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -469,7 +469,7 @@ static int mmu_init(void)
- 			pr_crit("Critical Error: Can't request SDRAM region for ttb at %p\n",
- 					ttb);
- 	} else {
--		ttb = xmemalign(0x10000, 0x4000);
-+		ttb = xmemalign(ARM_TTB_SIZE, ARM_TTB_SIZE);
+@@ -272,8 +272,7 @@ static void create_vector_table(unsigned long adr)
+ {
+ 	struct resource *vectors_sdram;
+ 	void *vectors;
+-	u32 *exc;
+-	int idx;
++	u32 *pte;
+ 
+ 	vectors_sdram = request_sdram_region("vector table", adr, PAGE_SIZE);
+ 	if (vectors_sdram) {
+@@ -293,9 +292,9 @@ static void create_vector_table(unsigned long adr)
+ 		vectors = xmemalign(PAGE_SIZE, PAGE_SIZE);
+ 		pr_debug("Creating vector table, virt = 0x%p, phys = 0x%08lx\n",
+ 			 vectors, adr);
+-		exc = arm_create_pte(adr, pte_flags_uncached);
+-		idx = (adr & (PGDIR_SIZE - 1)) >> PAGE_SHIFT;
+-		exc[idx] = (u32)vectors | PTE_TYPE_SMALL | pte_flags_cached;
++		arm_create_pte(adr, pte_flags_uncached);
++		pte = find_pte(adr);
++		*pte = (u32)vectors | PTE_TYPE_SMALL | pte_flags_cached;
  	}
  
- 	pr_debug("ttb: 0x%p\n", ttb);
-diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-index f55c8bb0c..d97f68c54 100644
---- a/arch/arm/include/asm/barebox-arm.h
-+++ b/arch/arm/include/asm/barebox-arm.h
-@@ -32,6 +32,12 @@
- #include <linux/compiler.h>
- #include <asm/barebox-arm-head.h>
- 
-+/*
-+ * We have a 4GiB address space split into 1MiB sections, with each
-+ * section header taking 4 bytes
-+ */
-+#define ARM_TTB_SIZE	(SZ_4G / SZ_1M * sizeof(u32))
-+
- unsigned long get_runtime_offset(void);
- 
- /* global_variable_offset() - Access global variables when not running at link address
-@@ -117,7 +123,7 @@ static inline unsigned long arm_mem_ttb(unsigned long membase,
- 					unsigned long endmem)
- {
- 	endmem = arm_mem_stack(membase, endmem);
--	endmem = ALIGN_DOWN(endmem, SZ_16K) - SZ_16K;
-+	endmem = ALIGN_DOWN(endmem, ARM_TTB_SIZE) - ARM_TTB_SIZE;
- 
- 	return endmem;
- }
+ 	arm_fixup_vectors();
 -- 
 2.17.0
 
