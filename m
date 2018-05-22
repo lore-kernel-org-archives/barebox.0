@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-io0-x235.google.com ([2607:f8b0:4001:c06::235])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fL2TT-0006HA-Q5
- for barebox@lists.infradead.org; Tue, 22 May 2018 08:16:53 +0000
-Date: Tue, 22 May 2018 10:16:37 +0200
-From: Roland Hieber <r.hieber@pengutronix.de>
-Message-ID: <20180522081637.b2mm4raotn5ggqsb@pengutronix.de>
-References: <CACvFaDfqmKOB20kdH=XeGRQv4e5spqCegjmaphsLhCOK_ZDSVA@mail.gmail.com>
+ id 1fL7Ly-0004bi-On
+ for barebox@lists.infradead.org; Tue, 22 May 2018 13:29:32 +0000
+Received: by mail-io0-x235.google.com with SMTP id g14-v6so18448466ioc.7
+ for <barebox@lists.infradead.org>; Tue, 22 May 2018 06:29:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CACvFaDfqmKOB20kdH=XeGRQv4e5spqCegjmaphsLhCOK_ZDSVA@mail.gmail.com>
+In-Reply-To: <CACvFaDfa+Od__ZcB=hcFBzJ3eqRv1ZAnwG4-EjVGHsaq3zmnEw@mail.gmail.com>
+References: <CACvFaDfqmKOB20kdH=XeGRQv4e5spqCegjmaphsLhCOK_ZDSVA@mail.gmail.com>
+ <20180522081637.b2mm4raotn5ggqsb@pengutronix.de>
+ <CACvFaDfa+Od__ZcB=hcFBzJ3eqRv1ZAnwG4-EjVGHsaq3zmnEw@mail.gmail.com>
+From: Pascal Vizeli <pascal.vizeli@syshack.ch>
+Date: Tue, 22 May 2018 15:29:13 +0200
+Message-ID: <CACvFaDdQXFGV6Qmqk3_H_UebDvzzc_+uEq=v5zyCk-mKL7Oktg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +25,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: RaspberryPi 1/2(/3)
-To: Pascal Vizeli <pascal.vizeli@syshack.ch>
-Cc: barebox@lists.infradead.org
+Subject: Fwd: RaspberryPi 1/2(/3)
+To: barebox@lists.infradead.org
 
-On Mon, May 21, 2018 at 05:51:33PM +0200, Pascal Vizeli wrote:
-> Hi,
-> 
-> I try to build a bootable barebox for raspberry with 2018.05.00 and buildroot:
-> https://github.com/home-assistant/hassos/tree/dev/buildroot-external
-> 
-> I build the origin rpi_defconfig but I'm was not able to boot the
-> 'barebox.bin' and become a output on UART. I can boot the linux kernel
-> from rpi loader. If I try the barebox, it will be flash the green
-> light and if I disable the LED support, only the red power light is
-> seen.
-> 
-> I try also the RPi3 patches and end in same result.
-> I follow also this guide:
-> https://www.barebox.org/doc/latest/boards/bcm2835.html
-> 
-> Have anyone a idea what will be the problem or what I doing wrong?
+Hi Roland
 
-Which version of the RPi firmware are you using? I wrote that section
-while using the git tag 1.20171029, maybe they changed something
-again...
+Roland Hieber <r.hieber@pengutronix.de> schrieb am Di., 22. Mai 2018, 10:16:
+>
+>
+> Which version of the RPi firmware are you using? I wrote that section
+> while using the git tag 1.20171029, maybe they changed something
+> again...
 
-What you can try to do is enable "low level debug messages" make
-menuconfig under "Debugging",  and try to set the log level to something
-higher and see if you get any output. I think you also need to set
-"System Type" -> "Lowlevel debug UART" to the model you're using.
+I use the latest one. I was not sure if the 20170129 is workable on a RPi3+
 
- - Roland
+Anyway I try this version to release a beta, if they will work.
 
--- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+>
+> What you can try to do is enable "low level debug messages" make
+> menuconfig under "Debugging",  and try to set the log level to something
+> higher and see if you get any output. I think you also need to set
+> "System Type" -> "Lowlevel debug UART" to the model you're using.
+
+Perfect. I will debug it on new Firmware and maybe I can fix this and
+make it runable on a RPi3+ too. They use same kind of CPU but need a
+other DTS.
+
+I'm happy if I can help on this amazing project.
+
+Best regards
+Pascal
 
 _______________________________________________
 barebox mailing list
