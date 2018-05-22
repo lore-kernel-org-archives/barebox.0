@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x235.google.com ([2607:f8b0:4001:c06::235])
+Received: from mail-io0-x22c.google.com ([2607:f8b0:4001:c06::22c])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fL7Ly-0004bi-On
- for barebox@lists.infradead.org; Tue, 22 May 2018 13:29:32 +0000
-Received: by mail-io0-x235.google.com with SMTP id g14-v6so18448466ioc.7
- for <barebox@lists.infradead.org>; Tue, 22 May 2018 06:29:15 -0700 (PDT)
+ id 1fL8Dy-0006s0-0A
+ for barebox@lists.infradead.org; Tue, 22 May 2018 14:25:15 +0000
+Received: by mail-io0-x22c.google.com with SMTP id d11-v6so18702776iof.11
+ for <barebox@lists.infradead.org>; Tue, 22 May 2018 07:25:03 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CACvFaDfa+Od__ZcB=hcFBzJ3eqRv1ZAnwG4-EjVGHsaq3zmnEw@mail.gmail.com>
+In-Reply-To: <20180522081637.b2mm4raotn5ggqsb@pengutronix.de>
 References: <CACvFaDfqmKOB20kdH=XeGRQv4e5spqCegjmaphsLhCOK_ZDSVA@mail.gmail.com>
  <20180522081637.b2mm4raotn5ggqsb@pengutronix.de>
- <CACvFaDfa+Od__ZcB=hcFBzJ3eqRv1ZAnwG4-EjVGHsaq3zmnEw@mail.gmail.com>
 From: Pascal Vizeli <pascal.vizeli@syshack.ch>
-Date: Tue, 22 May 2018 15:29:13 +0200
-Message-ID: <CACvFaDdQXFGV6Qmqk3_H_UebDvzzc_+uEq=v5zyCk-mKL7Oktg@mail.gmail.com>
+Date: Tue, 22 May 2018 16:25:02 +0200
+Message-ID: <CACvFaDcWk_b+1-dpPckOb3_N6Uf=Pd2Jg7cAHHtP=dn-h2VFRQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,35 +24,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Fwd: RaspberryPi 1/2(/3)
-To: barebox@lists.infradead.org
+Subject: Re: RaspberryPi 1/2(/3)
+To: Roland Hieber <r.hieber@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Roland
-
-Roland Hieber <r.hieber@pengutronix.de> schrieb am Di., 22. Mai 2018, 10:16:
->
->
+2018-05-22 10:16 GMT+02:00 Roland Hieber <r.hieber@pengutronix.de>:
 > Which version of the RPi firmware are you using? I wrote that section
 > while using the git tag 1.20171029, maybe they changed something
 > again...
 
-I use the latest one. I was not sure if the 20170129 is workable on a RPi3+
+1.20171029 Firmware don't work why my barebox config and the origin
+rpi_defconfig. Same effect.
+I try now the debug modus to find out where are the problem.
 
-Anyway I try this version to release a beta, if they will work.
-
->
-> What you can try to do is enable "low level debug messages" make
-> menuconfig under "Debugging",  and try to set the log level to something
-> higher and see if you get any output. I think you also need to set
-> "System Type" -> "Lowlevel debug UART" to the model you're using.
-
-Perfect. I will debug it on new Firmware and maybe I can fix this and
-make it runable on a RPi3+ too. They use same kind of CPU but need a
-other DTS.
-
-I'm happy if I can help on this amazing project.
-
-Best regards
+Greets
 Pascal
 
 _______________________________________________
