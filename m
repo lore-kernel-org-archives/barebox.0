@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fL1rx-00021i-QK
- for barebox@lists.infradead.org; Tue, 22 May 2018 07:38:07 +0000
-Date: Tue, 22 May 2018 09:37:52 +0200
+ id 1fL1TK-0002Gs-Ev
+ for barebox@lists.infradead.org; Tue, 22 May 2018 07:12:40 +0000
+Date: Tue, 22 May 2018 09:12:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180522073752.nvlykff25ejrbwnz@pengutronix.de>
-References: <1526637461-42085-1-git-send-email-t.remmet@phytec.de>
+Message-ID: <20180522071226.zarehvvh5xktfe5t@pengutronix.de>
+References: <20180403074851.5411-1-s.hauer@pengutronix.de>
+ <20180403074851.5411-19-s.hauer@pengutronix.de>
+ <1526644453.3948.8.camel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1526637461-42085-1-git-send-email-t.remmet@phytec.de>
+In-Reply-To: <1526644453.3948.8.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,136 +20,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: nand: nand_omap_gpmc: Fix ecc steps
-To: Teresa Remmet <t.remmet@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 18/19] fs: tftp: Switch to dcache implementation
+To: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Fri, May 18, 2018 at 11:57:41AM +0200, Teresa Remmet wrote:
-> The eccsteps where set wrong for OMAP_ECC_BCH8_CODE_HW_ROMCODE.
-> So the ECC was only corrected for the first 512 bytes chunk of a 2k page.
-> 
-> Moved out the ecc step iteration out of the correcting loop to make
-> it more alike the generic nand functions. And made sure that
-> the ECC is caclulated for all chunks.
-> 
-> This patch is based on work of Sascha Hauer.
-> 
-> Fixes commit dec7b4d2bf9c ("mtd: nand_omap_gpmc: fix BCH error correction").
-> 
-> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
-> ---
-> Hello,
-> 
-> this patch hopefully finally fixes the nand issue in the nand_omap_gpmc driver.
-> Sascha and Daniel worked on this before but thier final solution was not correct.
-> The problem was that we can not get rid of the 14 byte ECC
-> size used in OMAP_ECC_BCH8_CODE_HW_ROMCODE. The generic nand write function
-> needs to consider the offset, too. Or we read wrong ECC after writing.
-> 
-> Maybe there is someone out there to test if this is also working with
-> OMAP_ECC_BCH8_CODE_HW.
-> 
-> Teresa
-> 
->  drivers/mtd/nand/nand_omap_gpmc.c | 115 +++++++++++++++++++-------------------
->  1 file changed, 56 insertions(+), 59 deletions(-)
-> 
-> diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
-> index e18ce6358a73..97bdb8f19753 100644
-> --- a/drivers/mtd/nand/nand_omap_gpmc.c
-> +++ b/drivers/mtd/nand/nand_omap_gpmc.c
-> @@ -297,19 +297,18 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
->  {
->  	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
->  	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
-> -	int i, j, eccflag, totalcount, actual_eccsize;
-> +	int j, actual_eccsize;
->  	const uint8_t *erased_ecc_vec;
->  	unsigned int err_loc[8];
-> -	int bitflip_count;
->  	int bch_max_err;
-> +	int bitflip_count = 0;
-> +	int eccflag = 0;
-> +	bool is_error_reported = false;
->  
-> -	int eccsteps = (nand->ecc.mode == NAND_ECC_HW) &&
-> -			(nand->ecc.size == 2048) ? 4 : 1;
->  	int eccsize = oinfo->nand.ecc.bytes;
->  
->  	switch (oinfo->ecc_mode) {
->  	case OMAP_ECC_BCH8_CODE_HW:
-> -		eccsize /= eccsteps;
->  		actual_eccsize = eccsize;
->  		erased_ecc_vec = bch8_vector;
->  		bch_max_err = BCH8_MAX_ERROR;
-> @@ -324,58 +323,45 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
->  		return -EINVAL;
->  	}
->  
-> -	totalcount = 0;
-> -
-> -	for (i = 0; i < eccsteps; i++) {
-> -		bool is_error_reported = false;
-> -		bitflip_count = 0;
-> -		eccflag = 0;
-> -
-> -		/* check for any ecc error */
-> -		for (j = 0; (j < actual_eccsize) && (eccflag == 0); j++) {
-> -			if (calc_ecc[j] != 0) {
-> -				eccflag = 1;
-> -				break;
-> -			}
-> -		}
-> -
-> -		if (eccflag == 1) {
-> -			if (memcmp(calc_ecc, erased_ecc_vec, actual_eccsize) == 0) {
-> -				/*
-> -				 * calc_ecc[] matches pattern for ECC
-> -				 * (all 0xff) so this is definitely
-> -				 * an erased-page
-> -				 */
-> -			} else {
-> -				bitflip_count = nand_check_erased_ecc_chunk(
-> -						dat, oinfo->nand.ecc.size, read_ecc,
-> -						eccsize, NULL, 0, bch_max_err);
-> -				if (bitflip_count < 0)
-> -					is_error_reported = true;
-> -			}
-> +	/* check for any ecc error */
-> +	for (j = 0; (j < actual_eccsize) && (eccflag == 0); j++) {
-> +		if (calc_ecc[j] != 0) {
-> +			eccflag = 1;
-> +			break;
->  		}
+On Fri, May 18, 2018 at 01:54:13PM +0200, Philipp Zabel wrote:
+> Hi Sascha,
+> =
 
-The additional (eccflag == 0) check is unnecessary. You already leave
-the loop one eccflag is set to one anyway. Also using bool for eccflag
-looks a little better IMO.
+> On Tue, 2018-04-03 at 09:48 +0200, Sascha Hauer wrote:
+> [...]
+> > -static int tftp_stat(struct device_d *dev, const char *filename, struc=
+t stat *s)
+> > +static struct dentry *tftp_lookup(struct inode *dir, struct dentry *de=
+ntry,
+> > +			    unsigned int flags)
+> >  {
+> > -	struct file_priv *priv;
+> > +	struct inode *inode;
+> >  =
 
+> > -	priv =3D tftp_do_open(dev, O_RDONLY, filename);
+> > -	if (IS_ERR(priv))
+> > -		return PTR_ERR(priv);
+> > +	printf("Lookup: \"%s\"\n", dentry->name);
+> >  =
 
-> +	}
->  
-> -		if (is_error_reported) {
-> -			bitflip_count = omap_gpmc_decode_bch(1,
-> -					calc_ecc, err_loc);
-> +	if (eccflag == 1) {
-> +		if (memcmp(calc_ecc, erased_ecc_vec, actual_eccsize) == 0) {
-> +			/*
-> +			 * calc_ecc[] matches pattern for ECC
-> +			 * (all 0xff) so this is definitely
-> +			 * an erased-page
-> +			 */
+> > -	s->st_mode =3D S_IFREG | S_IRWXU | S_IRWXG | S_IRWXO;
+> > -	if (priv->filesize)
+> > -		s->st_size =3D priv->filesize;
+> > -	else
+> > -		s->st_size =3D FILESIZE_MAX;
+> =
 
-The function could be made a bit easier to read by returning early when
-(eccflag == 0) and also when the memcmp above returns 0.
+> With this change, stat() on files on TFTP mounts will return 0 where it
+> returned FILESIZE_MAX before, if the TFTP server does not send
+> information about the file size. This causes read_file_2() to fail,
+> which uses stat() to determine file size. read_file_2() is used for
+> example by bootm to load the device tree.
+> =
+
+> > +	inode =3D tftp_get_inode(dir->i_sb, dir, S_IFREG | S_IRWXUGO);
+> > +	if (!inode)
+> > +		return ERR_PTR(-ENOSPC);
+> >  =
+
+> =
+
+> Can we just store the fake filesize in the d_inode here?
+> =A0
+> +=A0=A0=A0=A0=A0=A0=A0if (inode->i_size =3D=3D 0)
+> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0inode->i_size =3D FILESIZE_=
+MAX;
+
+Have you tried it? Does it work as expected?
 
 Sascha
 
--- 
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
