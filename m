@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x243.google.com ([2607:f8b0:400e:c01::243])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fKxmQ-0002M6-Mc
- for barebox@lists.infradead.org; Tue, 22 May 2018 03:16:25 +0000
-Received: by mail-pl0-x243.google.com with SMTP id u6-v6so9985288pls.9
- for <barebox@lists.infradead.org>; Mon, 21 May 2018 20:15:56 -0700 (PDT)
+ id 1fKxmO-0002LA-RG
+ for barebox@lists.infradead.org; Tue, 22 May 2018 03:16:24 +0000
+Received: by mail-pg0-x241.google.com with SMTP id a13-v6so7210689pgu.4
+ for <barebox@lists.infradead.org>; Mon, 21 May 2018 20:15:54 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 21 May 2018 20:15:01 -0700
-Message-Id: <20180522031510.25505-21-andrew.smirnov@gmail.com>
+Date: Mon, 21 May 2018 20:15:00 -0700
+Message-Id: <20180522031510.25505-20-andrew.smirnov@gmail.com>
 In-Reply-To: <20180522031510.25505-1-andrew.smirnov@gmail.com>
 References: <20180522031510.25505-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,31 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 20/29] ARM: mmu: Use xmemalign in mmu_init()
+Subject: [PATCH v4 19/29] ARM: mmu: Use xmemalign in arm_create_pte()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-We don't handle OOM case in that code, so using xmemalign seems like a
-better option.
+We don't handle the OOM case in that code, so using xmemalign seems
+like a better option.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/cpu/mmu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 9fbefa453..fc4046e85 100644
+index 4090f7da9..9fbefa453 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -450,7 +450,7 @@ static int mmu_init(void)
- 			pr_crit("Critical Error: Can't request SDRAM region for ttb at %p\n",
- 					ttb);
- 	} else {
--		ttb = memalign(0x10000, 0x4000);
-+		ttb = xmemalign(0x10000, 0x4000);
- 	}
+@@ -92,8 +92,8 @@ static u32 *arm_create_pte(unsigned long virt)
+ 	u32 *table;
+ 	int i;
  
- 	pr_debug("ttb: 0x%p\n", ttb);
+-	table = memalign(PTRS_PER_PTE * sizeof(u32),
+-			 PTRS_PER_PTE * sizeof(u32));
++	table = xmemalign(PTRS_PER_PTE * sizeof(u32),
++			  PTRS_PER_PTE * sizeof(u32));
+ 
+ 	if (!ttb)
+ 		arm_mmu_not_initialized_error();
 -- 
 2.17.0
 
