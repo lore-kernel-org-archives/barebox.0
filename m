@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x231.google.com ([2607:f8b0:400e:c05::231])
+Received: from mail-pl0-x243.google.com ([2607:f8b0:400e:c01::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fKxmY-0002RQ-GA
- for barebox@lists.infradead.org; Tue, 22 May 2018 03:16:42 +0000
-Received: by mail-pg0-x231.google.com with SMTP id l2-v6so7207879pgc.7
- for <barebox@lists.infradead.org>; Mon, 21 May 2018 20:16:03 -0700 (PDT)
+ id 1fKxmQ-0002M6-Mc
+ for barebox@lists.infradead.org; Tue, 22 May 2018 03:16:25 +0000
+Received: by mail-pl0-x243.google.com with SMTP id u6-v6so9985288pls.9
+ for <barebox@lists.infradead.org>; Mon, 21 May 2018 20:15:56 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 21 May 2018 20:15:07 -0700
-Message-Id: <20180522031510.25505-27-andrew.smirnov@gmail.com>
+Date: Mon, 21 May 2018 20:15:01 -0700
+Message-Id: <20180522031510.25505-21-andrew.smirnov@gmail.com>
 In-Reply-To: <20180522031510.25505-1-andrew.smirnov@gmail.com>
 References: <20180522031510.25505-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,70 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 26/29] ARM: mmu: Simplify the use of dma_flush_range()
+Subject: [PATCH v4 20/29] ARM: mmu: Use xmemalign in mmu_init()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Simplify the use of dma_flush_range() by changing its signature to
-accept pointer to start of the data and data size. This change allows
-us to avoid a whole bunch of repetitive arithmetic currently done by
-all of the callers.
+We don't handle OOM case in that code, so using xmemalign seems like a
+better option.
 
-Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/arm/cpu/mmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 5e1e613d9..c3c23c639 100644
+index 9fbefa453..fc4046e85 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -142,8 +142,11 @@ static u32 *find_pte(unsigned long adr)
- 	return &table[(adr >> PAGE_SHIFT) & 0xff];
- }
- 
--static void dma_flush_range(unsigned long start, unsigned long end)
-+static void dma_flush_range(void *ptr, size_t size)
- {
-+	unsigned long start = (unsigned long)ptr;
-+	unsigned long end = start + size;
-+
- 	__dma_flush_range(start, end);
- 	if (outer_cache.flush_range)
- 		outer_cache.flush_range(start, end);
-@@ -170,9 +173,7 @@ static int __remap_range(void *_start, size_t size, u32 pte_flags)
- 		p[i] |= pte_flags | PTE_TYPE_SMALL;
+@@ -450,7 +450,7 @@ static int mmu_init(void)
+ 			pr_crit("Critical Error: Can't request SDRAM region for ttb at %p\n",
+ 					ttb);
+ 	} else {
+-		ttb = memalign(0x10000, 0x4000);
++		ttb = xmemalign(0x10000, 0x4000);
  	}
  
--	dma_flush_range((unsigned long)p,
--			(unsigned long)p + numentries * sizeof(u32));
--
-+	dma_flush_range(p, numentries * sizeof(u32));
- 	tlb_invalidate();
- 
- 	return 0;
-@@ -203,7 +204,7 @@ void *map_io_sections(unsigned long phys, void *_start, size_t size)
- 	for (sec = start; sec < start + size; sec += PGDIR_SIZE, phys += PGDIR_SIZE)
- 		ttb[pgd_index(sec)] = phys | PMD_SECT_DEF_UNCACHED;
- 
--	dma_flush_range((unsigned long)ttb, (unsigned long)ttb + 0x4000);
-+	dma_flush_range(ttb, 0x4000);
- 	tlb_invalidate();
- 	return _start;
- }
-@@ -249,9 +250,8 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
- 		pte += PTRS_PER_PTE;
- 	}
- 
--	dma_flush_range((unsigned long)ttb, (unsigned long)ttb + 0x4000);
--	dma_flush_range((unsigned long)ptes,
--			(unsigned long)ptes + num_ptes * sizeof(u32));
-+	dma_flush_range(ttb, 0x4000);
-+	dma_flush_range(ptes, num_ptes * sizeof(u32));
- 
- 	tlb_invalidate();
- 
+ 	pr_debug("ttb: 0x%p\n", ttb);
 -- 
 2.17.0
 
