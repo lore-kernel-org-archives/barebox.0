@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fL9Ic-0003Fp-WB
+ id 1fL9Id-0003GR-00
  for barebox@lists.infradead.org; Tue, 22 May 2018 15:34:09 +0000
-Received: by mail-wm0-x243.google.com with SMTP id f6-v6so912854wmc.4
- for <barebox@lists.infradead.org>; Tue, 22 May 2018 08:33:56 -0700 (PDT)
+Received: by mail-wm0-x243.google.com with SMTP id m129-v6so957698wmb.3
+ for <barebox@lists.infradead.org>; Tue, 22 May 2018 08:34:05 -0700 (PDT)
 From: Peter Mamonov <pmamonov@gmail.com>
-Date: Tue, 22 May 2018 18:33:31 +0300
-Message-Id: <20180522153342.24933-2-pmamonov@gmail.com>
+Date: Tue, 22 May 2018 18:33:40 +0300
+Message-Id: <20180522153342.24933-11-pmamonov@gmail.com>
 In-Reply-To: <20180522153342.24933-1-pmamonov@gmail.com>
 References: <20180522153342.24933-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,31 +23,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 01/12] resource: fix iomem_resource.end for 64 bit systems
+Subject: [PATCH v3 10/12] MIPS: add PHYS_ADDR_T_64BIT option
 To: barebox@lists.infradead.org
 Cc: Peter Mamonov <pmamonov@gmail.com>
 
-Fix iomem_resource.end to cover the whole address space addressable by a
-variable of type resource_size_t.
-
 Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- common/resource.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/Kconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/common/resource.c b/common/resource.c
-index e4bbe15fd..abc0814d2 100644
---- a/common/resource.c
-+++ b/common/resource.c
-@@ -114,7 +114,7 @@ int release_region(struct resource *res)
- /* The root resource for the whole memory-mapped io space */
- struct resource iomem_resource = {
- 	.start = 0,
--	.end = 0xffffffff,
-+	.end = ~(resource_size_t)0,
- 	.name = "iomem",
- 	.children = LIST_HEAD_INIT(iomem_resource.children),
- };
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index c2c555dc3..25c310a49 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -25,6 +25,9 @@ config GENERIC_LINKER_SCRIPT
+ config HAS_NO_BOARD_HL_CODE
+ 	bool
+ 
++config PHYS_ADDR_T_64BIT
++	bool
++
+ menu "Machine selection"
+ 
+ config BUILTIN_DTB
 -- 
 2.17.0
 
