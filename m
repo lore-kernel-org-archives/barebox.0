@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fL2YF-0000Zo-Ko
- for barebox@lists.infradead.org; Tue, 22 May 2018 08:21:50 +0000
-Message-ID: <1526977294.3671.1.camel@pengutronix.de>
-From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Tue, 22 May 2018 10:21:34 +0200
-In-Reply-To: <20180522071226.zarehvvh5xktfe5t@pengutronix.de>
-References: <20180403074851.5411-1-s.hauer@pengutronix.de>
- <20180403074851.5411-19-s.hauer@pengutronix.de>
- <1526644453.3948.8.camel@pengutronix.de>
- <20180522071226.zarehvvh5xktfe5t@pengutronix.de>
-Mime-Version: 1.0
+ id 1fL1GP-00050L-4O
+ for barebox@lists.infradead.org; Tue, 22 May 2018 06:59:18 +0000
+Date: Tue, 22 May 2018 08:59:05 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180522065905.2aj7ukhwlfwsjks7@pengutronix.de>
+References: <20180521115438.26493-1-pmamonov@gmail.com>
+ <20180521115438.26493-11-pmamonov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180521115438.26493-11-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,45 +19,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 18/19] fs: tftp: Switch to dcache implementation
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2 10/12] mips: add PHYS_ADDR_T_64BIT option
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-T24gVHVlLCAyMDE4LTA1LTIyIGF0IDA5OjEyICswMjAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4g
-T24gRnJpLCBNYXkgMTgsIDIwMTggYXQgMDE6NTQ6MTNQTSArMDIwMCwgUGhpbGlwcCBaYWJlbCB3
-cm90ZToKPiA+IEhpIFNhc2NoYSwKPiA+IAo+ID4gT24gVHVlLCAyMDE4LTA0LTAzIGF0IDA5OjQ4
-ICswMjAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4gPiBbLi4uXQo+ID4gPiAtc3RhdGljIGludCB0
-ZnRwX3N0YXQoc3RydWN0IGRldmljZV9kICpkZXYsIGNvbnN0IGNoYXIgKmZpbGVuYW1lLCBzdHJ1
-Y3Qgc3RhdCAqcykKPiA+ID4gK3N0YXRpYyBzdHJ1Y3QgZGVudHJ5ICp0ZnRwX2xvb2t1cChzdHJ1
-Y3QgaW5vZGUgKmRpciwgc3RydWN0IGRlbnRyeSAqZGVudHJ5LAo+ID4gPiArCQkJICAgIHVuc2ln
-bmVkIGludCBmbGFncykKPiA+ID4gIHsKPiA+ID4gLQlzdHJ1Y3QgZmlsZV9wcml2ICpwcml2Owo+
-ID4gPiArCXN0cnVjdCBpbm9kZSAqaW5vZGU7Cj4gPiA+ICAKPiA+ID4gLQlwcml2ID0gdGZ0cF9k
-b19vcGVuKGRldiwgT19SRE9OTFksIGZpbGVuYW1lKTsKPiA+ID4gLQlpZiAoSVNfRVJSKHByaXYp
-KQo+ID4gPiAtCQlyZXR1cm4gUFRSX0VSUihwcml2KTsKPiA+ID4gKwlwcmludGYoIkxvb2t1cDog
-XCIlc1wiXG4iLCBkZW50cnktPm5hbWUpOwo+ID4gPiAgCj4gPiA+IC0Jcy0+c3RfbW9kZSA9IFNf
-SUZSRUcgfCBTX0lSV1hVIHwgU19JUldYRyB8IFNfSVJXWE87Cj4gPiA+IC0JaWYgKHByaXYtPmZp
-bGVzaXplKQo+ID4gPiAtCQlzLT5zdF9zaXplID0gcHJpdi0+ZmlsZXNpemU7Cj4gPiA+IC0JZWxz
-ZQo+ID4gPiAtCQlzLT5zdF9zaXplID0gRklMRVNJWkVfTUFYOwo+ID4gCj4gPiBXaXRoIHRoaXMg
-Y2hhbmdlLCBzdGF0KCkgb24gZmlsZXMgb24gVEZUUCBtb3VudHMgd2lsbCByZXR1cm4gMCB3aGVy
-ZSBpdAo+ID4gcmV0dXJuZWQgRklMRVNJWkVfTUFYIGJlZm9yZSwgaWYgdGhlIFRGVFAgc2VydmVy
-IGRvZXMgbm90IHNlbmQKPiA+IGluZm9ybWF0aW9uIGFib3V0IHRoZSBmaWxlIHNpemUuIFRoaXMg
-Y2F1c2VzIHJlYWRfZmlsZV8yKCkgdG8gZmFpbCwKPiA+IHdoaWNoIHVzZXMgc3RhdCgpIHRvIGRl
-dGVybWluZSBmaWxlIHNpemUuIHJlYWRfZmlsZV8yKCkgaXMgdXNlZCBmb3IKPiA+IGV4YW1wbGUg
-YnkgYm9vdG0gdG8gbG9hZCB0aGUgZGV2aWNlIHRyZWUuCj4gPiAKPiA+ID4gKwlpbm9kZSA9IHRm
-dHBfZ2V0X2lub2RlKGRpci0+aV9zYiwgZGlyLCBTX0lGUkVHIHwgU19JUldYVUdPKTsKPiA+ID4g
-KwlpZiAoIWlub2RlKQo+ID4gPiArCQlyZXR1cm4gRVJSX1BUUigtRU5PU1BDKTsKPiA+ID4gIAo+
-ID4gCj4gPiBDYW4gd2UganVzdCBzdG9yZSB0aGUgZmFrZSBmaWxlc2l6ZSBpbiB0aGUgZF9pbm9k
-ZSBoZXJlPwo+ID4gwqAKPiA+ICvCoMKgwqDCoMKgwqDCoGlmIChpbm9kZS0+aV9zaXplID09IDAp
-Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaW5vZGUtPmlfc2l6ZSA9IEZJTEVT
-SVpFX01BWDsKPiAKPiBIYXZlIHlvdSB0cmllZCBpdD8gRG9lcyBpdCB3b3JrIGFzIGV4cGVjdGVk
-PwoKRm9yIHRoZSBjYXNlIEkgdGVzdGVkIChib290bSAtbyAvbW50L3RmdHAvLi4uKSBpdCB3b3Jr
-ZWQgYXMgZXhwZWN0ZWQuCgpJJ20ganVzdCBub3Qgc3VyZSBpZiBzdG9yaW5nIHRoZSBURlRQIGZh
-a2UgZmlsZXNpemUgaW4gdGhlIGRfaW5vZGUgY291bGQKaGF2ZSBvdGhlciB1bmRlc2lyYWJsZSBz
-aWRlIGVmZmVjdHMuCgpyZWdhcmRzClBoaWxpcHAKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+On Mon, May 21, 2018 at 02:54:36PM +0300, Peter Mamonov wrote:
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> ---
+>  arch/mips/Kconfig | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index c2c555dc3..433d914c2 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -25,6 +25,10 @@ config GENERIC_LINKER_SCRIPT
+>  config HAS_NO_BOARD_HL_CODE
+>  	bool
+>  
+> +config PHYS_ADDR_T_64BIT
+> +	bool
+> +	default n
+
+'n' is the default already. You can skip this line.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
