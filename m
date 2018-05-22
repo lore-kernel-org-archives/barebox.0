@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
+Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fL2Uo-0006vk-Df
- for barebox@lists.infradead.org; Tue, 22 May 2018 08:18:15 +0000
-Received: by mail-lf0-x241.google.com with SMTP id n18-v6so27797301lfh.10
- for <barebox@lists.infradead.org>; Tue, 22 May 2018 01:18:03 -0700 (PDT)
-Date: Tue, 22 May 2018 11:17:58 +0300
+ id 1fL8kq-00057S-KW
+ for barebox@lists.infradead.org; Tue, 22 May 2018 14:59:13 +0000
+Received: by mail-wm0-x244.google.com with SMTP id a137-v6so16903095wme.1
+ for <barebox@lists.infradead.org>; Tue, 22 May 2018 07:59:01 -0700 (PDT)
+Date: Tue, 22 May 2018 17:58:57 +0300
 From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20180522081757.yqdoqckwcu524cik@sheep>
+Message-ID: <20180522145856.lwqyf52cgab74c2g@localhost.localdomain>
 References: <20180521115438.26493-1-pmamonov@gmail.com>
- <20180522071111.sipxro5c46rs6zxd@pengutronix.de>
+ <20180521115438.26493-13-pmamonov@gmail.com>
+ <71181caa-caa9-1f41-81ba-53aaf55aef9e@rempel-privat.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180522071111.sipxro5c46rs6zxd@pengutronix.de>
+In-Reply-To: <71181caa-caa9-1f41-81ba-53aaf55aef9e@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,40 +26,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 00/12] various fixes for MIPS64
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v2 12/12] fixup! MIPS: import optimized string functions
+ from Linux
+To: Oleksij Rempel <linux@rempel-privat.de>
 Cc: barebox@lists.infradead.org
 
-Hi, Sascha,
+On Mon, May 21, 2018 at 05:50:55PM +0200, Oleksij Rempel wrote:
+> Please, no fixup in master log.
 
-On Tue, May 22, 2018 at 09:11:11AM +0200, Sascha Hauer wrote:
-> Hi Peter,
-> 
-> On Mon, May 21, 2018 at 02:54:26PM +0300, Peter Mamonov wrote:
-> > Hi,
-> > 
-> > Here is a second revision of the patchset which fixes various issues with 64 bit 
-> > barebox, primarily MIPS related. IMHO all of these patches are ready for 
-> > application.
-> 
-> Overall the commit messages in this series could be better. At least for
-> the non trivial changes they should answer the question why a particular
-> change has been made. You'll be glad having added proper commit messages
-> once a 'git blame' run points to your own code ;)
-
-Ok, I will work on that in the next version of the series.
+Ok, will fix it in the upcoming revision of the patch series.
 
 Regards,
 Peter
 
 > 
-> Sascha
+> Am 21.05.2018 um 13:54 schrieb Peter Mamonov:
+> > Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> > ---
+> >  arch/mips/Kconfig | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> > index ef23837f4..ce63ec1ae 100644
+> > --- a/arch/mips/Kconfig
+> > +++ b/arch/mips/Kconfig
+> > @@ -342,6 +342,7 @@ config NMON_HELP
+> >  
+> >  config MIPS_OPTIMIZED_STRING_FUNCTIONS
+> >  	bool "use assembler optimized string functions"
+> > +	depends on !64BIT
+> >  	default y
+> >  	help
+> >  	  Say yes here to use assembler optimized memcpy / memset functions.
+> > 
+> 
 > 
 > -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> Regards,
+> Oleksij
+> 
+
+
+
 
 _______________________________________________
 barebox mailing list
