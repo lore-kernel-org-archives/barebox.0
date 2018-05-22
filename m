@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
+Received: from mail-pl0-x232.google.com ([2607:f8b0:400e:c01::232])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fLGLe-0000FS-1Q
- for barebox@lists.infradead.org; Tue, 22 May 2018 23:05:44 +0000
-Received: by mail-pl0-x242.google.com with SMTP id c19-v6so11781202pls.6
- for <barebox@lists.infradead.org>; Tue, 22 May 2018 16:05:33 -0700 (PDT)
+ id 1fLGLe-0000FN-SI
+ for barebox@lists.infradead.org; Tue, 22 May 2018 23:05:47 +0000
+Received: by mail-pl0-x232.google.com with SMTP id m24-v6so400569pls.11
+ for <barebox@lists.infradead.org>; Tue, 22 May 2018 16:05:31 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 22 May 2018 16:05:15 -0700
-Message-Id: <20180522230518.9070-5-andrew.smirnov@gmail.com>
+Date: Tue, 22 May 2018 16:05:14 -0700
+Message-Id: <20180522230518.9070-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20180522230518.9070-1-andrew.smirnov@gmail.com>
 References: <20180522230518.9070-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,39 +23,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] i.MX: ocotp: Simplify BF macro
+Subject: [PATCH 3/7] i.MX: ocotp: Simplify OCOTP field packing/unpacking
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Vivien Didelot <vivien.didelot@savoirfairelinux.com>
+
+Simplify OCOTP field packing/unpacking with macros from
+<linux/bitfield.h>.
 
 Cc: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
 Tested-by: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/ocotp.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/arm/mach-imx/include/mach/ocotp.h | 18 +++++++++---------
+ arch/arm/mach-imx/ocotp.c              |  8 ++++----
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
+diff --git a/arch/arm/mach-imx/include/mach/ocotp.h b/arch/arm/mach-imx/include/mach/ocotp.h
+index b53000b16..76a6da53d 100644
+--- a/arch/arm/mach-imx/include/mach/ocotp.h
++++ b/arch/arm/mach-imx/include/mach/ocotp.h
+@@ -1,6 +1,8 @@
+ #ifndef __MACH_IMX_OCOTP_H
+ #define __MACH_IMX_OCOTP_H
+ 
++#include <linux/bitfield.h>
++
+ #define OCOTP_SHADOW_OFFSET		0x400
+ #define OCOTP_SHADOW_SPACING		0x10
+ 
+@@ -14,17 +16,15 @@
+ #define OCOTP_OFFSET_TO_INDEX(o)		\
+ 	(((o) - OCOTP_SHADOW_OFFSET) / OCOTP_SHADOW_SPACING)
+ 
+-#define OCOTP_WORD_MASK_WIDTH	8
+-#define OCOTP_WORD_MASK_SHIFT	0
+-#define OCOTP_WORD(n)		(OCOTP_OFFSET_TO_INDEX(n) & ((1 << OCOTP_WORD_MASK_WIDTH) - 1))
++#define OCOTP_WORD_MASK		GENMASK( 7,  0)
++#define OCOTP_BIT_MASK		GENMASK(12,  8)
++#define OCOTP_WIDTH_MASK 	GENMASK(17, 13)
+ 
+-#define OCOTP_BIT_MASK_WIDTH	5
+-#define OCOTP_BIT_MASK_SHIFT	(OCOTP_WORD_MASK_SHIFT + OCOTP_WORD_MASK_WIDTH)
+-#define OCOTP_BIT(n)		(((n) & ((1 << OCOTP_BIT_MASK_WIDTH) - 1)) << OCOTP_BIT_MASK_SHIFT)
++#define OCOTP_WORD(n)		FIELD_PREP(OCOTP_WORD_MASK, \
++					   OCOTP_OFFSET_TO_INDEX(n))
++#define OCOTP_BIT(n)		FIELD_PREP(OCOTP_BIT_MASK, n)
++#define OCOTP_WIDTH(n)		FIELD_PREP(OCOTP_WIDTH_MASK, (n) - 1)
+ 
+-#define OCOTP_WIDTH_MASK_WIDTH	5
+-#define OCOTP_WIDTH_MASK_SHIFT	(OCOTP_BIT_MASK_SHIFT + OCOTP_BIT_MASK_WIDTH)
+-#define OCOTP_WIDTH(n)		((((n) - 1) & ((1 << OCOTP_WIDTH_MASK_WIDTH) - 1)) << OCOTP_WIDTH_MASK_SHIFT)
+ 
+ int imx_ocotp_read_field(uint32_t field, unsigned *value);
+ int imx_ocotp_write_field(uint32_t field, unsigned value);
 diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
-index 026d23cad..4c9927b37 100644
+index a70adee37..026d23cad 100644
 --- a/arch/arm/mach-imx/ocotp.c
 +++ b/arch/arm/mach-imx/ocotp.c
-@@ -55,16 +55,13 @@
- #define OCOTP_CTRL_ERROR		(1 << 9)
- #define OCOTP_CTRL_RELOAD_SHADOWS	(1 << 10)
+@@ -314,10 +314,10 @@ static void imx_ocotp_field_decode(uint32_t field, unsigned *word,
+ {
+ 	unsigned width;
  
--#define OCOTP_TIMING_STROBE_READ	16
- #define OCOTP_TIMING_STROBE_READ_MASK	0x003F0000
--#define OCOTP_TIMING_RELAX		12
- #define OCOTP_TIMING_RELAX_MASK		0x0000F000
--#define OCOTP_TIMING_STROBE_PROG	0
- #define OCOTP_TIMING_STROBE_PROG_MASK	0x00000FFF
+-	*word = ((field >> OCOTP_WORD_MASK_SHIFT) & ((1 << OCOTP_WORD_MASK_WIDTH) - 1)) * 4;
+-	*bit = (field >> OCOTP_BIT_MASK_SHIFT) & ((1 << OCOTP_BIT_MASK_WIDTH) - 1);
+-	width = ((field >> OCOTP_WIDTH_MASK_SHIFT) & ((1 << OCOTP_WIDTH_MASK_WIDTH) - 1)) + 1;
+-	*mask = (1 << width) - 1;
++	*word = FIELD_GET(OCOTP_WORD_MASK, field) * 4;
++	*bit = FIELD_GET(OCOTP_BIT_MASK, field);
++	width = FIELD_GET(OCOTP_WIDTH_MASK, field);
++	*mask = GENMASK(width, 0);
+ }
  
- #define OCOTP_READ_CTRL_READ_FUSE	0x00000001
- 
--#define BF(value, field)		(((value) << field) & field##_MASK)
-+#define BF(value, field)		FIELD_PREP(field##_MASK, value)
- 
- #define OCOTP_OFFSET_TO_ADDR(o)		(OCOTP_OFFSET_TO_INDEX(o) * 4)
- 
+ int imx_ocotp_read_field(uint32_t field, unsigned *value)
 -- 
 2.17.0
 
