@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x241.google.com ([2a00:1450:400c:c09::241])
+Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fL9Ib-0003GD-UD
- for barebox@lists.infradead.org; Tue, 22 May 2018 15:34:08 +0000
-Received: by mail-wm0-x241.google.com with SMTP id l1-v6so992364wmb.2
- for <barebox@lists.infradead.org>; Tue, 22 May 2018 08:34:00 -0700 (PDT)
+ id 1fL9Ic-0003G0-WF
+ for barebox@lists.infradead.org; Tue, 22 May 2018 15:34:09 +0000
+Received: by mail-wm0-x243.google.com with SMTP id f8-v6so942629wmc.4
+ for <barebox@lists.infradead.org>; Tue, 22 May 2018 08:33:59 -0700 (PDT)
 From: Peter Mamonov <pmamonov@gmail.com>
-Date: Tue, 22 May 2018 18:33:35 +0300
-Message-Id: <20180522153342.24933-6-pmamonov@gmail.com>
+Date: Tue, 22 May 2018 18:33:34 +0300
+Message-Id: <20180522153342.24933-5-pmamonov@gmail.com>
 In-Reply-To: <20180522153342.24933-1-pmamonov@gmail.com>
 References: <20180522153342.24933-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,46 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 05/12] MIPS: import 64-bit address conversion macros
+Subject: [PATCH v3 04/12] i2c-mux-pca954x: fix out-of-bounds write for 64 bit
+ systems
 To: barebox@lists.infradead.org
 Cc: Peter Mamonov <pmamonov@gmail.com>
 
+get_drv_data(..., &data->type) overwrites memory beyond data->type member due
+to mismatch of sizeof(enum pca_type) and sizeof(void *) on 64 bit systems.
+
 Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- arch/mips/include/asm/addrspace.h | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/i2c/muxes/i2c-mux-pca954x.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/addrspace.h b/arch/mips/include/asm/addrspace.h
-index 17d480d08..dc44d7f79 100644
---- a/arch/mips/include/asm/addrspace.h
-+++ b/arch/mips/include/asm/addrspace.h
-@@ -73,6 +73,26 @@
- #define CKSEG2ADDR(a)		(CPHYSADDR(a) | CKSEG2)
- #define CKSEG3ADDR(a)		(CPHYSADDR(a) | CKSEG3)
+diff --git a/drivers/i2c/muxes/i2c-mux-pca954x.c b/drivers/i2c/muxes/i2c-mux-pca954x.c
+index 0d5515b71..395254cdc 100644
+--- a/drivers/i2c/muxes/i2c-mux-pca954x.c
++++ b/drivers/i2c/muxes/i2c-mux-pca954x.c
+@@ -180,6 +180,7 @@ static int pca954x_probe(struct device_d *dev)
+ 	struct i2c_adapter *adap = to_i2c_adapter(client->dev.parent);
+ 	int num, force;
+ 	struct pca954x *data;
++	uintptr_t tmp;
+ 	int ret = -ENODEV;
+ 	int gpio;
  
-+/*
-+ * Cache modes for XKPHYS address conversion macros
-+ */
-+#define K_CALG_COH_EXCL1_NOL2	0
-+#define K_CALG_COH_SHRL1_NOL2	1
-+#define K_CALG_UNCACHED		2
-+#define K_CALG_NONCOHERENT	3
-+#define K_CALG_COH_EXCL		4
-+#define K_CALG_COH_SHAREABLE	5
-+#define K_CALG_NOTUSED		6
-+#define K_CALG_UNCACHED_ACCEL	7
-+
-+/*
-+ * 64-bit address conversions
-+ */
-+#define PHYS_TO_XKSEG_UNCACHED(p)	PHYS_TO_XKPHYS(K_CALG_UNCACHED, (p))
-+#define PHYS_TO_XKSEG_CACHED(p)		PHYS_TO_XKPHYS(K_CALG_COH_SHAREABLE, (p))
-+#define XKPHYS_TO_PHYS(p)		((p) & TO_PHYS_MASK)
-+#define PHYS_TO_XKPHYS(cm, a)		(XKPHYS | (_ACAST64_(cm) << 59) | (a))
-+
- #else
+@@ -203,7 +204,8 @@ static int pca954x_probe(struct device_d *dev)
+ 		goto exit_free;
+ 	}
  
- #define CKSEG0ADDR(a)		(CPHYSADDR(a) | KSEG0)
+-	ret = dev_get_drvdata(dev, (const void **)&data->type);
++	ret = dev_get_drvdata(dev, (const void **)&tmp);
++	data->type = tmp;
+ 	if (ret)
+ 		goto exit_free;
+ 
 -- 
 2.17.0
 
