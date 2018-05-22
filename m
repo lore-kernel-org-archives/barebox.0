@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fL1TK-0002Gs-Ev
- for barebox@lists.infradead.org; Tue, 22 May 2018 07:12:40 +0000
-Date: Tue, 22 May 2018 09:12:26 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180522071226.zarehvvh5xktfe5t@pengutronix.de>
+ id 1fL2YF-0000Zo-Ko
+ for barebox@lists.infradead.org; Tue, 22 May 2018 08:21:50 +0000
+Message-ID: <1526977294.3671.1.camel@pengutronix.de>
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Tue, 22 May 2018 10:21:34 +0200
+In-Reply-To: <20180522071226.zarehvvh5xktfe5t@pengutronix.de>
 References: <20180403074851.5411-1-s.hauer@pengutronix.de>
  <20180403074851.5411-19-s.hauer@pengutronix.de>
  <1526644453.3948.8.camel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1526644453.3948.8.camel@pengutronix.de>
+ <20180522071226.zarehvvh5xktfe5t@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,75 +20,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 18/19] fs: tftp: Switch to dcache implementation
-To: Philipp Zabel <p.zabel@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Fri, May 18, 2018 at 01:54:13PM +0200, Philipp Zabel wrote:
-> Hi Sascha,
-> =
-
-> On Tue, 2018-04-03 at 09:48 +0200, Sascha Hauer wrote:
-> [...]
-> > -static int tftp_stat(struct device_d *dev, const char *filename, struc=
-t stat *s)
-> > +static struct dentry *tftp_lookup(struct inode *dir, struct dentry *de=
-ntry,
-> > +			    unsigned int flags)
-> >  {
-> > -	struct file_priv *priv;
-> > +	struct inode *inode;
-> >  =
-
-> > -	priv =3D tftp_do_open(dev, O_RDONLY, filename);
-> > -	if (IS_ERR(priv))
-> > -		return PTR_ERR(priv);
-> > +	printf("Lookup: \"%s\"\n", dentry->name);
-> >  =
-
-> > -	s->st_mode =3D S_IFREG | S_IRWXU | S_IRWXG | S_IRWXO;
-> > -	if (priv->filesize)
-> > -		s->st_size =3D priv->filesize;
-> > -	else
-> > -		s->st_size =3D FILESIZE_MAX;
-> =
-
-> With this change, stat() on files on TFTP mounts will return 0 where it
-> returned FILESIZE_MAX before, if the TFTP server does not send
-> information about the file size. This causes read_file_2() to fail,
-> which uses stat() to determine file size. read_file_2() is used for
-> example by bootm to load the device tree.
-> =
-
-> > +	inode =3D tftp_get_inode(dir->i_sb, dir, S_IFREG | S_IRWXUGO);
-> > +	if (!inode)
-> > +		return ERR_PTR(-ENOSPC);
-> >  =
-
-> =
-
-> Can we just store the fake filesize in the d_inode here?
-> =A0
-> +=A0=A0=A0=A0=A0=A0=A0if (inode->i_size =3D=3D 0)
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0inode->i_size =3D FILESIZE_=
-MAX;
-
-Have you tried it? Does it work as expected?
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVHVlLCAyMDE4LTA1LTIyIGF0IDA5OjEyICswMjAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4g
+T24gRnJpLCBNYXkgMTgsIDIwMTggYXQgMDE6NTQ6MTNQTSArMDIwMCwgUGhpbGlwcCBaYWJlbCB3
+cm90ZToKPiA+IEhpIFNhc2NoYSwKPiA+IAo+ID4gT24gVHVlLCAyMDE4LTA0LTAzIGF0IDA5OjQ4
+ICswMjAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4gPiBbLi4uXQo+ID4gPiAtc3RhdGljIGludCB0
+ZnRwX3N0YXQoc3RydWN0IGRldmljZV9kICpkZXYsIGNvbnN0IGNoYXIgKmZpbGVuYW1lLCBzdHJ1
+Y3Qgc3RhdCAqcykKPiA+ID4gK3N0YXRpYyBzdHJ1Y3QgZGVudHJ5ICp0ZnRwX2xvb2t1cChzdHJ1
+Y3QgaW5vZGUgKmRpciwgc3RydWN0IGRlbnRyeSAqZGVudHJ5LAo+ID4gPiArCQkJICAgIHVuc2ln
+bmVkIGludCBmbGFncykKPiA+ID4gIHsKPiA+ID4gLQlzdHJ1Y3QgZmlsZV9wcml2ICpwcml2Owo+
+ID4gPiArCXN0cnVjdCBpbm9kZSAqaW5vZGU7Cj4gPiA+ICAKPiA+ID4gLQlwcml2ID0gdGZ0cF9k
+b19vcGVuKGRldiwgT19SRE9OTFksIGZpbGVuYW1lKTsKPiA+ID4gLQlpZiAoSVNfRVJSKHByaXYp
+KQo+ID4gPiAtCQlyZXR1cm4gUFRSX0VSUihwcml2KTsKPiA+ID4gKwlwcmludGYoIkxvb2t1cDog
+XCIlc1wiXG4iLCBkZW50cnktPm5hbWUpOwo+ID4gPiAgCj4gPiA+IC0Jcy0+c3RfbW9kZSA9IFNf
+SUZSRUcgfCBTX0lSV1hVIHwgU19JUldYRyB8IFNfSVJXWE87Cj4gPiA+IC0JaWYgKHByaXYtPmZp
+bGVzaXplKQo+ID4gPiAtCQlzLT5zdF9zaXplID0gcHJpdi0+ZmlsZXNpemU7Cj4gPiA+IC0JZWxz
+ZQo+ID4gPiAtCQlzLT5zdF9zaXplID0gRklMRVNJWkVfTUFYOwo+ID4gCj4gPiBXaXRoIHRoaXMg
+Y2hhbmdlLCBzdGF0KCkgb24gZmlsZXMgb24gVEZUUCBtb3VudHMgd2lsbCByZXR1cm4gMCB3aGVy
+ZSBpdAo+ID4gcmV0dXJuZWQgRklMRVNJWkVfTUFYIGJlZm9yZSwgaWYgdGhlIFRGVFAgc2VydmVy
+IGRvZXMgbm90IHNlbmQKPiA+IGluZm9ybWF0aW9uIGFib3V0IHRoZSBmaWxlIHNpemUuIFRoaXMg
+Y2F1c2VzIHJlYWRfZmlsZV8yKCkgdG8gZmFpbCwKPiA+IHdoaWNoIHVzZXMgc3RhdCgpIHRvIGRl
+dGVybWluZSBmaWxlIHNpemUuIHJlYWRfZmlsZV8yKCkgaXMgdXNlZCBmb3IKPiA+IGV4YW1wbGUg
+YnkgYm9vdG0gdG8gbG9hZCB0aGUgZGV2aWNlIHRyZWUuCj4gPiAKPiA+ID4gKwlpbm9kZSA9IHRm
+dHBfZ2V0X2lub2RlKGRpci0+aV9zYiwgZGlyLCBTX0lGUkVHIHwgU19JUldYVUdPKTsKPiA+ID4g
+KwlpZiAoIWlub2RlKQo+ID4gPiArCQlyZXR1cm4gRVJSX1BUUigtRU5PU1BDKTsKPiA+ID4gIAo+
+ID4gCj4gPiBDYW4gd2UganVzdCBzdG9yZSB0aGUgZmFrZSBmaWxlc2l6ZSBpbiB0aGUgZF9pbm9k
+ZSBoZXJlPwo+ID4gwqAKPiA+ICvCoMKgwqDCoMKgwqDCoGlmIChpbm9kZS0+aV9zaXplID09IDAp
+Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaW5vZGUtPmlfc2l6ZSA9IEZJTEVT
+SVpFX01BWDsKPiAKPiBIYXZlIHlvdSB0cmllZCBpdD8gRG9lcyBpdCB3b3JrIGFzIGV4cGVjdGVk
+PwoKRm9yIHRoZSBjYXNlIEkgdGVzdGVkIChib290bSAtbyAvbW50L3RmdHAvLi4uKSBpdCB3b3Jr
+ZWQgYXMgZXhwZWN0ZWQuCgpJJ20ganVzdCBub3Qgc3VyZSBpZiBzdG9yaW5nIHRoZSBURlRQIGZh
+a2UgZmlsZXNpemUgaW4gdGhlIGRfaW5vZGUgY291bGQKaGF2ZSBvdGhlciB1bmRlc2lyYWJsZSBz
+aWRlIGVmZmVjdHMuCgpyZWdhcmRzClBoaWxpcHAKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
+aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2JhcmVib3gK
