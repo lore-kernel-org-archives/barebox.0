@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fKxmH-0002K9-EB
- for barebox@lists.infradead.org; Tue, 22 May 2018 03:16:11 +0000
-Received: by mail-pf0-x244.google.com with SMTP id f189-v6so8043711pfa.7
- for <barebox@lists.infradead.org>; Mon, 21 May 2018 20:15:53 -0700 (PDT)
+Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fKxmT-00047e-2u
+ for barebox@lists.infradead.org; Tue, 22 May 2018 03:16:10 +0000
+Received: by mail-pl0-x242.google.com with SMTP id n10-v6so9994642plp.0
+ for <barebox@lists.infradead.org>; Mon, 21 May 2018 20:15:58 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 21 May 2018 20:14:59 -0700
-Message-Id: <20180522031510.25505-19-andrew.smirnov@gmail.com>
+Date: Mon, 21 May 2018 20:15:02 -0700
+Message-Id: <20180522031510.25505-22-andrew.smirnov@gmail.com>
 In-Reply-To: <20180522031510.25505-1-andrew.smirnov@gmail.com>
 References: <20180522031510.25505-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,29 +23,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 18/29] ARM: mmu: Use PAGE_SIZE instead of magic right shift
- by 12
+Subject: [PATCH v4 21/29] ARM: mmu: Share code between dma_alloc_*() functions
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Code of dma_alloc_coherent() and dma_alloc_writecombine() is almost
+identical with exception of the flags passed to undelying call to
+__remap_range(). Move commong code into a shared subroutine and
+convert both functions to use it.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/cpu/mmu.c | 22 ++++++++--------------
+ 1 file changed, 8 insertions(+), 14 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 627962fea..4090f7da9 100644
+index fc4046e85..7d4432b98 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -215,7 +215,7 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
- 	unsigned long phys = (unsigned long)bank->start;
- 	unsigned long ttb_start = pgd_index(phys);
- 	unsigned long ttb_end = ttb_start + pgd_index(bank->size);
--	unsigned long num_ptes = bank->size >> 12;
-+	unsigned long num_ptes = bank->size / PAGE_SIZE;
- 	int i, pte;
- 	u32 *ptes;
+@@ -500,7 +500,7 @@ void mmu_disable(void)
+ 	__mmu_cache_off();
+ }
  
+-void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
++static void *dma_alloc(size_t size, dma_addr_t *dma_handle, uint32_t pte_flags)
+ {
+ 	void *ret;
+ 
+@@ -511,25 +511,19 @@ void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
+ 
+ 	dma_inv_range((unsigned long)ret, (unsigned long)ret + size);
+ 
+-	__remap_range(ret, size, pte_flags_uncached);
++	__remap_range(ret, size, pte_flags);
+ 
+ 	return ret;
+ }
+ 
+-void *dma_alloc_writecombine(size_t size, dma_addr_t *dma_handle)
++void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
+ {
+-	void *ret;
+-
+-	size = PAGE_ALIGN(size);
+-	ret = xmemalign(PAGE_SIZE, size);
+-	if (dma_handle)
+-		*dma_handle = (dma_addr_t)ret;
+-
+-	dma_inv_range((unsigned long)ret, (unsigned long)ret + size);
+-
+-	__remap_range(ret, size, pte_flags_wc);
++	return dma_alloc(size, dma_handle, pte_flags_uncached);
++}
+ 
+-	return ret;
++void *dma_alloc_writecombine(size_t size, dma_addr_t *dma_handle)
++{
++	return dma_alloc(size, dma_handle, pte_flags_wc);
+ }
+ 
+ unsigned long virt_to_phys(volatile void *virt)
 -- 
 2.17.0
 
