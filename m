@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
+Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fKxm5-0002Dj-6c
- for barebox@lists.infradead.org; Tue, 22 May 2018 03:15:51 +0000
-Received: by mail-pl0-x241.google.com with SMTP id w19-v6so9987924plq.4
- for <barebox@lists.infradead.org>; Mon, 21 May 2018 20:15:34 -0700 (PDT)
+ id 1fKxm8-0002Dy-2T
+ for barebox@lists.infradead.org; Tue, 22 May 2018 03:15:59 +0000
+Received: by mail-pl0-x244.google.com with SMTP id c41-v6so9973360plj.10
+ for <barebox@lists.infradead.org>; Mon, 21 May 2018 20:15:38 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 21 May 2018 20:14:45 -0700
-Message-Id: <20180522031510.25505-5-andrew.smirnov@gmail.com>
+Date: Mon, 21 May 2018 20:14:48 -0700
+Message-Id: <20180522031510.25505-8-andrew.smirnov@gmail.com>
 In-Reply-To: <20180522031510.25505-1-andrew.smirnov@gmail.com>
 References: <20180522031510.25505-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,59 +23,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 04/29] ARM: mmu: Introduce set_ttbr()
+Subject: [PATCH v4 07/29] ARM: mmu: Separate index and address in
+ create_sections()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Both TTB index and address used to fill that entry are derived from
+the same variable 'addr' which requires shifting right and left by 20
+and somewhat confusing.
+
+Split the counter used to iterate over elements of  TTB into a
+separate variable to make this code a bit easier to read.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu-early.c | 3 +--
- arch/arm/cpu/mmu.c       | 3 +--
- arch/arm/cpu/mmu.h       | 5 +++++
- 3 files changed, 7 insertions(+), 4 deletions(-)
+ arch/arm/cpu/mmu.h | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/cpu/mmu-early.c b/arch/arm/cpu/mmu-early.c
-index fc14d5cac..79fc3080a 100644
---- a/arch/arm/cpu/mmu-early.c
-+++ b/arch/arm/cpu/mmu-early.c
-@@ -39,8 +39,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize,
- 
- 	arm_set_cache_functions();
- 
--	/* Set the ttb register */
--	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
-+	set_ttbr(ttb);
- 
- 	/* Set the Domain Access Control Register */
- 	i = 0x3;
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index c70e9e782..28732b795 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -471,8 +471,7 @@ static int mmu_init(void)
- 
- 	pr_debug("ttb: 0x%p\n", ttb);
- 
--	/* Set the ttb register */
--	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
-+	set_ttbr(ttb);
- 
- 	/* Set the Domain Access Control Register */
- 	i = 0x3;
 diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
-index 79ebc80d7..5dcf4b53a 100644
+index af429edbc..56e78c715 100644
 --- a/arch/arm/cpu/mmu.h
 +++ b/arch/arm/cpu/mmu.h
-@@ -11,4 +11,9 @@ static inline void __mmu_cache_off(void) {}
- static inline void __mmu_cache_flush(void) {}
- #endif
+@@ -1,6 +1,8 @@
+ #ifndef __ARM_MMU_H
+ #define __ARM_MMU_H
  
-+static inline void set_ttbr(void *ttb)
-+{
-+	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
-+}
++#include <linux/sizes.h>
 +
- #endif /* __ARM_MMU_H */
+ #ifdef CONFIG_MMU
+ void __mmu_cache_on(void);
+ void __mmu_cache_off(void);
+@@ -28,10 +30,14 @@ static inline void
+ create_sections(uint32_t *ttb, unsigned long addr,
+ 		int size_m, unsigned int flags)
+ {
++	unsigned long ttb_start = addr >> 20;
++	unsigned long ttb_end = ttb_start + size_m;
+ 	unsigned int i;
+ 
+-	for (i = 0, addr >>= 20; i < size_m; i++, addr++)
+-		ttb[addr] = (addr << 20) | flags;
++	for (i = ttb_start; i < ttb_end; i++) {
++		ttb[i] = addr | flags;
++		addr += SZ_1M;
++	}
+ }
+ 
+ 
 -- 
 2.17.0
 
