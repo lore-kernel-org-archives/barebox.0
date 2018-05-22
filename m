@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fLOtT-0001yX-3o
- for barebox@lists.infradead.org; Wed, 23 May 2018 08:13:12 +0000
-Date: Wed, 23 May 2018 10:12:59 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180523081259.axqonqh3eaguaigp@pengutronix.de>
-References: <20180522222644.26425-1-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180522222644.26425-1-andrew.smirnov@gmail.com>
+ id 1fLFki-0005Yu-4f
+ for barebox@lists.infradead.org; Tue, 22 May 2018 22:27:34 +0000
+Received: by mail-pf0-x242.google.com with SMTP id c10-v6so9431229pfi.12
+ for <barebox@lists.infradead.org>; Tue, 22 May 2018 15:27:21 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 22 May 2018 15:27:14 -0700
+Message-Id: <20180522222714.26549-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,43 +16,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts/mkimage: Fix strncpy usage
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] nvmem: snvs_lpgpr: Drop stray commas
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-T24gVHVlLCBNYXkgMjIsIDIwMTggYXQgMDM6MjY6NDRQTSAtMDcwMCwgQW5kcmV5IFNtaXJub3Yg
-d3JvdGU6Cj4gT3JpZ2luYWwgY29kZSBwcm9kdWNlcyB0aGUgZm9sbG93aW5nIHdhcm5pbmcgd2hl
-biBjb21waWxlZCB3aXRoIEdDQzg6Cj4gCj4gICBIT1NUQ0MgIHNjcmlwdHMvbWtpbWFnZQo+IElu
-IGZ1bmN0aW9uIOKAmGltYWdlX3NldF9uYW1l4oCZLAo+ICAgICBpbmxpbmVkIGZyb20g4oCYbWFp
-buKAmSBhdCBzY3JpcHRzL21raW1hZ2UuYzo2MTQ6MjoKPiBzY3JpcHRzL21raW1hZ2UuYzoxNTM6
-Mjogd2FybmluZzog4oCYc3RybmNweeKAmSBzcGVjaWZpZWQgYm91bmQgMzIgZXF1YWxzIGRlc3Rp
-bmF0aW9uIHNpemUgWy1Xc3RyaW5nb3AtdHJ1bmNhdGlvbl0KPiAgIHN0cm5jcHkoaW1hZ2VfZ2V0
-X25hbWUoaGRyKSwgbmFtZSwgSUhfTk1MRU4pOwo+ICAgXn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+
-fn5+fn5+fn5+fn5+fn5+fn5+fn4KPiAKPiByZWR1Y2Ugc3BlY2lmaWVkIGJvdW5kIGJ5IG9uZSB0
-byBtYWtlIHN1cmUgdGhhdCBOVUxMLXRlcm1pbmF0b3IgaXMKPiBuZXZlciBvdmVyd3JpdHRlbi4K
-PiAKPiBTaWduZWQtb2ZmLWJ5OiBBbmRyZXkgU21pcm5vdiA8YW5kcmV3LnNtaXJub3ZAZ21haWwu
-Y29tPgo+IC0tLQo+ICBzY3JpcHRzL21raW1hZ2UuYyB8IDIgKy0KPiAgMSBmaWxlIGNoYW5nZWQs
-IDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCgpBcHBsaWVkLCB0aGFua3MKClNhc2NoYQoK
-PiAKPiBkaWZmIC0tZ2l0IGEvc2NyaXB0cy9ta2ltYWdlLmMgYi9zY3JpcHRzL21raW1hZ2UuYwo+
-IGluZGV4IGM3MjY3YTJkMS4uODkxZDdiNmRlIDEwMDY0NAo+IC0tLSBhL3NjcmlwdHMvbWtpbWFn
-ZS5jCj4gKysrIGIvc2NyaXB0cy9ta2ltYWdlLmMKPiBAQCAtMTUwLDcgKzE1MCw3IEBAIGltYWdl
-X3NldF9oZHJfdTgoY29tcCk7CQkvKiBpbWFnZV9zZXRfY29tcCAqLwo+ICAKPiAgc3RhdGljIGlu
-bGluZSB2b2lkIGltYWdlX3NldF9uYW1lKGltYWdlX2hlYWRlcl90ICpoZHIsIGNvbnN0IGNoYXIg
-Km5hbWUpCj4gIHsKPiAtCXN0cm5jcHkoaW1hZ2VfZ2V0X25hbWUoaGRyKSwgbmFtZSwgSUhfTk1M
-RU4pOwo+ICsJc3RybmNweShpbWFnZV9nZXRfbmFtZShoZHIpLCBuYW1lLCBJSF9OTUxFTiAtIDEp
-Owo+ICB9Cj4gIAo+ICAvKioKPiAtLSAKPiAyLjE3LjAKPiAKPiAKPiBfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4g
-YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9iYXJlYm94CgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlh
-bCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25p
-eC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhv
-bmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2
-ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
-CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/nvmem/snvs_lpgpr.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/nvmem/snvs_lpgpr.c b/drivers/nvmem/snvs_lpgpr.c
+index 6c79743cc..fe7fe599f 100644
+--- a/drivers/nvmem/snvs_lpgpr.c
++++ b/drivers/nvmem/snvs_lpgpr.c
+@@ -113,10 +113,10 @@ static int snvs_lpgpr_probe(struct device_d *dev)
+ 	cfg = &priv->cfg;
+ 	cfg->name = dev_name(dev);
+ 	cfg->dev = dev;
+-	cfg->stride = 4,
+-	cfg->word_size = 4,
+-	cfg->size = 4,
+-	cfg->bus = &snvs_lpgpr_nvmem_bus,
++	cfg->stride = 4;
++	cfg->word_size = 4;
++	cfg->size = 4;
++	cfg->bus = &snvs_lpgpr_nvmem_bus;
+ 
+ 	nvmem = nvmem_register(cfg);
+ 	if (IS_ERR(nvmem)) {
+-- 
+2.17.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
