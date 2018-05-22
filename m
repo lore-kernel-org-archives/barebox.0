@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wm0-x241.google.com ([2a00:1450:400c:c09::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fL9Ib-0003Fm-UF
- for barebox@lists.infradead.org; Tue, 22 May 2018 15:34:07 +0000
-Received: by mail-wm0-x241.google.com with SMTP id t11-v6so981920wmt.0
- for <barebox@lists.infradead.org>; Tue, 22 May 2018 08:33:55 -0700 (PDT)
+ id 1fL9Ib-0003GD-UD
+ for barebox@lists.infradead.org; Tue, 22 May 2018 15:34:08 +0000
+Received: by mail-wm0-x241.google.com with SMTP id l1-v6so992364wmb.2
+ for <barebox@lists.infradead.org>; Tue, 22 May 2018 08:34:00 -0700 (PDT)
 From: Peter Mamonov <pmamonov@gmail.com>
-Date: Tue, 22 May 2018 18:33:30 +0300
-Message-Id: <20180522153342.24933-1-pmamonov@gmail.com>
+Date: Tue, 22 May 2018 18:33:35 +0300
+Message-Id: <20180522153342.24933-6-pmamonov@gmail.com>
+In-Reply-To: <20180522153342.24933-1-pmamonov@gmail.com>
+References: <20180522153342.24933-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,53 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 00/12]  various fixes for MIPS64
+Subject: [PATCH v3 05/12] MIPS: import 64-bit address conversion macros
 To: barebox@lists.infradead.org
 Cc: Peter Mamonov <pmamonov@gmail.com>
 
-Hi,
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+---
+ arch/mips/include/asm/addrspace.h | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-This is a third revision of of the patchset which fixes various issues with 64 
-bit barebox, primarily MIPS related.
-
-Differences from v2:
- - add some comments to commits
- - move MIPS' IOMEM declarations to arch/mips/include/asm/io.h
- - skip `[PATCH v2 09/12] mips: fix warnings from CPHYSADDR() macro` for now
- - Kconfig' options are disabled by default
- - don't credit Andrey for trivial suggestions :)
-
-Regards,
-Peter
-
-Peter Mamonov (12):
-  resource: fix iomem_resource.end for 64 bit systems
-  fs: fix memory access via /dev/mem for MIPS64
-  mtd: cfi-flash: fix write_buff() for 64 bit systems
-  i2c-mux-pca954x: fix out-of-bounds write for 64 bit systems
-  MIPS: import 64-bit address conversion macros
-  include/common.h: move IOMEM declaration for MIPS to
-    arch/mips/include/asm/io.h
-  MIPS: add proper IOMEM() declaration for MIPS64
-  MIPS: fix copy_to_link_location for 64 bit mode
-  MIPS: use CKSEG1 instead of KSEG1
-  MIPS: add PHYS_ADDR_T_64BIT option
-  MIPS: 64BIT selects PHYS_ADDR_T_64BIT
-  MIPS: don't use optimized string functions for MIPS64
-
- arch/mips/Kconfig                   |  5 +++++
- arch/mips/boot/dtb.c                |  4 ++--
- arch/mips/include/asm/addrspace.h   | 20 ++++++++++++++++++++
- arch/mips/include/asm/io.h          |  6 ++++++
- arch/mips/include/asm/pbl_macros.h  | 21 +++++++++++----------
- arch/mips/lib/c-r4k.c               |  8 ++++----
- common/resource.c                   |  2 +-
- drivers/i2c/muxes/i2c-mux-pca954x.c |  4 +++-
- drivers/mtd/nor/cfi_flash.c         |  2 +-
- fs/fs.c                             |  4 ++--
- include/common.h                    |  7 ++-----
- 11 files changed, 57 insertions(+), 26 deletions(-)
-
+diff --git a/arch/mips/include/asm/addrspace.h b/arch/mips/include/asm/addrspace.h
+index 17d480d08..dc44d7f79 100644
+--- a/arch/mips/include/asm/addrspace.h
++++ b/arch/mips/include/asm/addrspace.h
+@@ -73,6 +73,26 @@
+ #define CKSEG2ADDR(a)		(CPHYSADDR(a) | CKSEG2)
+ #define CKSEG3ADDR(a)		(CPHYSADDR(a) | CKSEG3)
+ 
++/*
++ * Cache modes for XKPHYS address conversion macros
++ */
++#define K_CALG_COH_EXCL1_NOL2	0
++#define K_CALG_COH_SHRL1_NOL2	1
++#define K_CALG_UNCACHED		2
++#define K_CALG_NONCOHERENT	3
++#define K_CALG_COH_EXCL		4
++#define K_CALG_COH_SHAREABLE	5
++#define K_CALG_NOTUSED		6
++#define K_CALG_UNCACHED_ACCEL	7
++
++/*
++ * 64-bit address conversions
++ */
++#define PHYS_TO_XKSEG_UNCACHED(p)	PHYS_TO_XKPHYS(K_CALG_UNCACHED, (p))
++#define PHYS_TO_XKSEG_CACHED(p)		PHYS_TO_XKPHYS(K_CALG_COH_SHAREABLE, (p))
++#define XKPHYS_TO_PHYS(p)		((p) & TO_PHYS_MASK)
++#define PHYS_TO_XKPHYS(cm, a)		(XKPHYS | (_ACAST64_(cm) << 59) | (a))
++
+ #else
+ 
+ #define CKSEG0ADDR(a)		(CPHYSADDR(a) | KSEG0)
 -- 
 2.17.0
 
