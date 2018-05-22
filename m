@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-f67.google.com ([74.125.83.67])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fKxmc-0002U0-2r
- for barebox@lists.infradead.org; Tue, 22 May 2018 03:16:48 +0000
-Received: by mail-pg0-f67.google.com with SMTP id 63-v6so5059991pgg.3
- for <barebox@lists.infradead.org>; Mon, 21 May 2018 20:16:07 -0700 (PDT)
+ id 1fKxmZ-0002SE-A7
+ for barebox@lists.infradead.org; Tue, 22 May 2018 03:16:53 +0000
+Received: by mail-pf0-x241.google.com with SMTP id x9-v6so8048112pfm.2
+ for <barebox@lists.infradead.org>; Mon, 21 May 2018 20:16:05 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 21 May 2018 20:15:10 -0700
-Message-Id: <20180522031510.25505-30-andrew.smirnov@gmail.com>
+Date: Mon, 21 May 2018 20:15:08 -0700
+Message-Id: <20180522031510.25505-28-andrew.smirnov@gmail.com>
 In-Reply-To: <20180522031510.25505-1-andrew.smirnov@gmail.com>
 References: <20180522031510.25505-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,153 +23,379 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 29/29] ARM: mmu: Do not try to pick early TTB up
+Subject: [PATCH v4 27/29] ARM: mmu: Implement on-demand PTE allocation
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-TODO: Fix the message below
+Allocating PTEs for every 4K page corresponding to SDRAM upfront costs
+us quite a bit of memory: 1KB per 1MB or RAM. This is far from being a
+deal-breaker for majority of use-cases, but for builds where amount of
+free memory is in hundres of KBs* it becomes a real hurdle for being
+able to use MMU (which also means no L1 cache).
 
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index aa1a7c09c..650e20828 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -419,6 +419,11 @@ static void vectors_init(void)
- 	create_vector_table(ARM_LOW_VECTORS);
- }
+Given how we really only need PTEs for a very few regions of memory
+dedicated from DMA buffers (Ethernet, USB, etc), changing MMU code to
+do on-demand section splitting can allow us to save significant amount
+of memory without any functionality loss.
 
-+static void dump_bank(struct memory_bank *b)
-+{
-+	pr_crit("0x%08lx - 0x%08lx\n", b->start, b->start + b->size - 1);
-+}
-+
- /*
-  * Prepare MMU for usage enable it.
-  */
-@@ -494,6 +499,7 @@ static int mmu_init(void)
- 	 * below
- 	 */
- 	for_each_memory_bank(bank) {
-+		dump_bank(bank);
- 		create_sections(ttb, bank->start, bank->size,
- 				PMD_SECT_DEF_CACHED);
- 		__mmu_cache_flush();
-@@ -501,6 +507,10 @@ static int mmu_init(void)
+Below is a very trivial comparison of memory usages on start before
+and after this patch is applied.
 
- 	__mmu_cache_on();
+Before:
 
-+	pr_info("%s %d\n", __func__, __LINE__);
-+	for_each_memory_bank(bank)
-+		dump_bank(bank);
-+
- 	return 0;
- }
- mmu_initcall(mmu_init);
+barebox@ZII VF610 Development Board, Rev B:/ meminfo
+used: 1271584
+free: 265553032
 
-barebox 2018.04.0-00195-ge7ba82254-dirty #552 Thu Apr 19 11:32:56 PDT 2018
+After:
 
-Board: VF610 OCRAM
-i.MX clk 9: register failed with -22
-i.MX clk 10: register failed with -22
-i.MX clk 160: register failed with -22
-mmu: Critical Error: Can't request SDRAM region for ttb at 3f078000
-mmu: 0x80000000 - 0x9fffffff
-mmu: 0x80000000 - 0x9fffffff
-mmu: mmu_init 510
-unable to handle NULL pointer dereference at address 0x00000000
-pc : [<3f01b7da>]    lr : [<3f01b7d1>]
-sp : 3f07ff38  ip : 00000000  fp : 00000000
-r10: 00000000  r9 : 3f000009  r8 : 00000c0e
-r7 : 3f0258aa  r6 : 3f0258aa  r5 : 3f413b80  r4 : 00000000
-r3 : 3f02f1b4  r2 : b0000000  r1 : 0000000a  r0 : 00000012
-Flags: nZCv  IRQs off  FIQs off  Mode SVC_32
-[<3f01b7da>] (mmu_init+0xce/0x168) from [<3f000b9d>] (start_barebox+0x45/0x98)
-[<3f000b9d>] (start_barebox+0x45/0x98) from [<3f01bb19>] (barebox_non_pbl_start+0x95/0xd4)
-[<3f01bb19>] (barebox_non_pbl_start+0x95/0xd4) from [<3f01bb71>] (barebox_arm_entry+0x19/0x1c)
+barebox@ZII VF610 Development Board, Rev B:/ meminfo
+used: 795276
+free: 266024448
 
-[<3f01d085>] (unwind_backtrace+0x1/0x58) from [<3f000e45>] (panic+0x1d/0x2c)
-[<3f000e45>] (panic+0x1d/0x2c) from [<3f01b5d1>] (do_exception+0xd/0x10)
-[<3f01b5d1>] (do_exception+0xd/0x10) from [<3f01b631>] (do_data_abort+0x21/0x2c)
-[<3f01b631>] (do_data_abort+0x21/0x2c) from [<3f01b3d4>] (do_abort_6+0x48/0x54)
-\### ERROR ### Please RESET the board ###
+Tested on:
 
-barebox 2018.04.0-00195-ge7ba82254-dirty #553 Thu Apr 19 12:03:17 PDT 2018
+       - VF610 Tower Board,
+       - VF610 ZII Development Board (Rev. C)
+       - i.MX51 Babbage Board
+       - i.MX7 SabreSD Board
+       - i.MX6 ZII RDU2 Board
+        - AT91SAM9X5-EK Board
 
-Board: VF610 OCRAM
-i.MX clk 9: register failed with -22
-i.MX clk 10: register failed with -22
-i.MX clk 160: register failed with -22
-mmu: 0x80000000 - 0x9fffffff
-mmu: mmu_init 493
-mmu: 0x80000000 - 0x9fffffff
-Error: Cannot request SDRAM region for stack
-Warning: Using dummy clocksource
-malloc space: 0x3f400000 -> 0x3f47ffff (size 512 KiB)
-environment load /dev/env0: No such file or directory
-Maybe you have to create the partition.
-running /env/bin/init...
-
-Hit any key to stop autoboot:    3
-barebox@VF610 OCRAM:/
+* One example of such use-case is memory testing while running purely
+  out of SRAM
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 27 +++++----------------------
- 1 file changed, 5 insertions(+), 22 deletions(-)
+ arch/arm/cpu/mmu.c | 209 ++++++++++++++++++++++++---------------------
+ 1 file changed, 110 insertions(+), 99 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index a89f420f2..bb25f6b4f 100644
+index c3c23c639..5f82b63ca 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -450,36 +450,20 @@ static int mmu_init(void)
+@@ -35,6 +35,7 @@
  
- 	if (get_cr() & CR_M) {
- 		/*
--		 * Early MMU code has already enabled the MMU. We assume a
--		 * flat 1:1 section mapping in this case.
-+		 * Early MMU code has already enabled the MMU. To
-+		 * start form a clean slate we need to disable it
-+		 * first.
- 		 */
--		asm volatile ("mrc  p15,0,%0,c2,c0,0" : "=r"(ttb));
+ #define PMD_SECT_DEF_CACHED (PMD_SECT_WB | PMD_SECT_DEF_UNCACHED)
+ #define PTRS_PER_PTE		(PGDIR_SIZE / PAGE_SIZE)
++#define ARCH_MAP_WRITECOMBINE	((unsigned)-1)
+ 
+ static uint32_t *ttb;
+ 
+@@ -60,6 +61,7 @@ static inline void tlb_invalidate(void)
+ #define PTE_FLAGS_UNCACHED_V7 (0)
+ #define PTE_FLAGS_CACHED_V4 (PTE_SMALL_AP_UNO_SRW | PTE_BUFFERABLE | PTE_CACHEABLE)
+ #define PTE_FLAGS_UNCACHED_V4 PTE_SMALL_AP_UNO_SRW
++#define PGD_FLAGS_WC_V7 PMD_SECT_TEX(1)
+ 
+ /*
+  * PTE flags to set cached and uncached areas.
+@@ -68,6 +70,7 @@ static inline void tlb_invalidate(void)
+ static uint32_t pte_flags_cached;
+ static uint32_t pte_flags_wc;
+ static uint32_t pte_flags_uncached;
++static uint32_t pgd_flags_wc;
+ 
+ #define PTE_MASK ((1 << 12) - 1)
+ 
+@@ -110,6 +113,11 @@ static u32 *arm_create_pte(unsigned long virt, uint32_t flags)
+ 	return table;
+ }
+ 
++static bool pgd_type_table(u32 pgd)
++{
++	return (pgd & PMD_TYPE_MASK) == PMD_TYPE_TABLE;
++}
++
+ static u32 *find_pte(unsigned long adr)
+ {
+ 	u32 *table;
+@@ -117,23 +125,8 @@ static u32 *find_pte(unsigned long adr)
+ 	if (!ttb)
+ 		arm_mmu_not_initialized_error();
+ 
+-	if ((ttb[pgd_index(adr)] & PMD_TYPE_MASK) != PMD_TYPE_TABLE) {
+-		struct memory_bank *bank;
+-		int i = 0;
 -
--		/* Clear unpredictable bits [13:0] */
--		ttb = (uint32_t *)((unsigned long)ttb & ~0x3fff);
+-		/*
+-		 * This should only be called for page mapped memory inside our
+-		 * memory banks. It's a bug to call it with section mapped memory
+-		 * locations.
+-		 */
+-		pr_crit("%s: TTB for address 0x%08lx is not of type table\n",
+-				__func__, adr);
+-		pr_crit("Memory banks:\n");
+-		for_each_memory_bank(bank)
+-			pr_crit("#%d 0x%08lx - 0x%08lx\n", i, bank->start,
+-					bank->start + bank->size - 1);
+-		BUG();
+-	}
++	if (!pgd_type_table(ttb[pgd_index(adr)]))
++		return NULL;
+ 
+ 	/* find the coarse page table base address */
+ 	table = (u32 *)(ttb[pgd_index(adr)] & ~0x3ff);
+@@ -159,42 +152,114 @@ static void dma_inv_range(unsigned long start, unsigned long end)
+ 	__dma_inv_range(start, end);
+ }
+ 
+-static int __remap_range(void *_start, size_t size, u32 pte_flags)
+-{
+-	unsigned long start = (unsigned long)_start;
+-	u32 *p;
+-	int numentries, i;
 -
--		if (!request_sdram_region("ttb", (unsigned long)ttb, SZ_16K))
--			/*
--			 * This can mean that:
--			 * - the early MMU code has put the ttb into a place
--			 *   which we don't have inside our available memory
--			 * - Somebody else has occupied the ttb region which means
--			 *   the ttb will get corrupted.
--			 */
--			pr_crit("Critical Error: Can't request SDRAM region for ttb at %p\n",
--					ttb);
--	} else {
--		ttb = xmemalign(ARM_TTB_SIZE, ARM_TTB_SIZE);
-+		mmu_disable();
+-	numentries = size >> PAGE_SHIFT;
+-	p = find_pte(start);
+-
+-	for (i = 0; i < numentries; i++) {
+-		p[i] &= ~PTE_MASK;
+-		p[i] |= pte_flags | PTE_TYPE_SMALL;
+-	}
+-
+-	dma_flush_range(p, numentries * sizeof(u32));
+-	tlb_invalidate();
+-
+-	return 0;
+-}
+-
+ int arch_remap_range(void *start, size_t size, unsigned flags)
+ {
++	u32 addr = (u32)start;
+ 	u32 pte_flags;
++	u32 pgd_flags;
++
++	BUG_ON(!IS_ALIGNED(addr, PAGE_SIZE));
+ 
+ 	switch (flags) {
+ 	case MAP_CACHED:
+ 		pte_flags = pte_flags_cached;
++		pgd_flags = PMD_SECT_DEF_CACHED;
+ 		break;
+ 	case MAP_UNCACHED:
+ 		pte_flags = pte_flags_uncached;
++		pgd_flags = PMD_SECT_DEF_UNCACHED;
++		break;
++	case ARCH_MAP_WRITECOMBINE:
++		pte_flags = pte_flags_wc;
++		pgd_flags = pgd_flags_wc;
+ 		break;
+ 	default:
+ 		return -EINVAL;
  	}
  
-+	ttb = xmemalign(ARM_TTB_SIZE, ARM_TTB_SIZE);
- 	pr_debug("ttb: 0x%p\n", ttb);
+-	return __remap_range(start, size, pte_flags);
++	while (size) {
++		const bool pgdir_size_aligned = IS_ALIGNED(addr, PGDIR_SIZE);
++		u32 *pgd = (u32 *)&ttb[pgd_index(addr)];
++		size_t chunk;
++
++		if (size >= PGDIR_SIZE && pgdir_size_aligned &&
++		    !pgd_type_table(*pgd)) {
++			/*
++			 * TODO: Add code to discard a page table and
++			 * replace it with a section
++			 */
++			chunk = PGDIR_SIZE;
++			*pgd = addr | pgd_flags;
++			dma_flush_range(pgd, sizeof(*pgd));
++		} else {
++			unsigned int num_ptes;
++			u32 *table = NULL;
++			unsigned int i;
++			u32 *pte;
++			/*
++			 * We only want to cover pages up until next
++			 * section boundary in case there we would
++			 * have an opportunity to re-map the whole
++			 * section (say if we got here becasue address
++			 * was not aligned on PGDIR_SIZE boundary)
++			 */
++			chunk = pgdir_size_aligned ?
++				PGDIR_SIZE : ALIGN(addr, PGDIR_SIZE) - addr;
++			/*
++			 * At the same time we want to make sure that
++			 * we don't go on remapping past requested
++			 * size in case that is less that the distance
++			 * to next PGDIR_SIZE boundary.
++			 */
++			chunk = min(chunk, size);
++			num_ptes = chunk / PAGE_SIZE;
++
++			pte = find_pte(addr);
++			if (!pte) {
++				/*
++				 * If PTE is not found it means that
++				 * we needs to split this section and
++				 * create a new page table for it
++				 *
++				 * NOTE: Here we assume that section
++				 * we just split was mapped as cached
++				 */
++				table = arm_create_pte(addr, pte_flags_cached);
++				pte = find_pte(addr);
++				BUG_ON(!pte);
++				/*
++				 * We just split this section and
++				 * modified it's Level 1 descriptor,
++				 * so it needs to be flushed.
++				 */
++				dma_flush_range(pgd, sizeof(*pgd));
++			}
++
++			for (i = 0; i < num_ptes; i++) {
++				pte[i] &= ~PTE_MASK;
++				pte[i] |= pte_flags | PTE_TYPE_SMALL;
++			}
++
++			if (table) {
++				/*
++				 * If we just created a new page
++				 * table, the whole table would have
++				 * to be flushed, not just PTEs that
++				 * we touched when re-mapping.
++				 */
++				pte = table;
++				num_ptes = PTRS_PER_PTE;
++			}
++
++			dma_flush_range(pte, num_ptes * sizeof(u32));
++		}
++
++		addr += chunk;
++		size -= chunk;
++	}
++
++	tlb_invalidate();
++	return 0;
+ }
  
- 	set_ttbr(ttb);
- 	set_domain(DOMAIN_MANAGER);
+ void *map_io_sections(unsigned long phys, void *_start, size_t size)
+@@ -209,55 +274,6 @@ void *map_io_sections(unsigned long phys, void *_start, size_t size)
+ 	return _start;
+ }
  
- 	create_flat_mapping(ttb);
--	__mmu_cache_flush();
+-/*
+- * remap the memory bank described by mem cachable and
+- * bufferable
+- */
+-static int arm_mmu_remap_sdram(struct memory_bank *bank)
+-{
+-	unsigned long phys = (unsigned long)bank->start;
+-	unsigned long ttb_start = pgd_index(phys);
+-	unsigned long ttb_end = ttb_start + pgd_index(bank->size);
+-	unsigned long num_ptes = bank->size / PAGE_SIZE;
+-	int i, pte;
+-	u32 *ptes;
 -
- 	vectors_init();
+-	pr_debug("remapping SDRAM from 0x%08lx (size 0x%08lx)\n",
+-			phys, bank->size);
+-
+-	/*
+-	 * We replace each 1MiB section in this range with second level page
+-	 * tables, therefore we must have 1Mib aligment here.
+-	 */
+-	if (!IS_ALIGNED(phys, PGDIR_SIZE) || !IS_ALIGNED(bank->size, PGDIR_SIZE))
+-		return -EINVAL;
+-
+-	ptes = xmemalign(PAGE_SIZE, num_ptes * sizeof(u32));
+-
+-	pr_debug("ptes: 0x%p ttb_start: 0x%08lx ttb_end: 0x%08lx\n",
+-			ptes, ttb_start, ttb_end);
+-
+-	for (i = 0; i < num_ptes; i++) {
+-		ptes[i] = (phys + i * PAGE_SIZE) | PTE_TYPE_SMALL |
+-			pte_flags_cached;
+-	}
+-
+-	pte = 0;
+-
+-	for (i = ttb_start; i < ttb_end; i++) {
+-		ttb[i] = (unsigned long)(&ptes[pte]) | PMD_TYPE_TABLE |
+-			(0 << 4);
+-		pte += PTRS_PER_PTE;
+-	}
+-
+-	dma_flush_range(ttb, 0x4000);
+-	dma_flush_range(ptes, num_ptes * sizeof(u32));
+-
+-	tlb_invalidate();
+-
+-	return 0;
+-}
+-
+ #define ARM_HIGH_VECTORS	0xffff0000
+ #define ARM_LOW_VECTORS		0x0
  
- 	/*
-@@ -490,7 +474,6 @@ static int mmu_init(void)
- 	for_each_memory_bank(bank) {
- 		create_sections(ttb, bank->start, bank->start + bank->size - 1,
- 				PMD_SECT_DEF_CACHED);
--		__mmu_cache_flush();
+@@ -423,10 +439,12 @@ static int mmu_init(void)
+ 	if (cpu_architecture() >= CPU_ARCH_ARMv7) {
+ 		pte_flags_cached = PTE_FLAGS_CACHED_V7;
+ 		pte_flags_wc = PTE_FLAGS_WC_V7;
++		pgd_flags_wc = PGD_FLAGS_WC_V7;
+ 		pte_flags_uncached = PTE_FLAGS_UNCACHED_V7;
+ 	} else {
+ 		pte_flags_cached = PTE_FLAGS_CACHED_V4;
+ 		pte_flags_wc = PTE_FLAGS_UNCACHED_V4;
++		pgd_flags_wc = PMD_SECT_DEF_UNCACHED;
+ 		pte_flags_uncached = PTE_FLAGS_UNCACHED_V4;
  	}
+ 
+@@ -477,13 +495,6 @@ static int mmu_init(void)
  
  	__mmu_cache_on();
+ 
+-	/*
+-	 * Now that we have the MMU and caches on remap sdram again using
+-	 * page tables
+-	 */
+-	for_each_memory_bank(bank)
+-		arm_mmu_remap_sdram(bank);
+-
+ 	return 0;
+ }
+ mmu_initcall(mmu_init);
+@@ -501,7 +512,7 @@ void mmu_disable(void)
+ 	__mmu_cache_off();
+ }
+ 
+-static void *dma_alloc(size_t size, dma_addr_t *dma_handle, uint32_t pte_flags)
++static void *dma_alloc(size_t size, dma_addr_t *dma_handle, unsigned flags)
+ {
+ 	void *ret;
+ 
+@@ -512,19 +523,19 @@ static void *dma_alloc(size_t size, dma_addr_t *dma_handle, uint32_t pte_flags)
+ 
+ 	dma_inv_range((unsigned long)ret, (unsigned long)ret + size);
+ 
+-	__remap_range(ret, size, pte_flags);
++	arch_remap_range(ret, size, flags);
+ 
+ 	return ret;
+ }
+ 
+ void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
+ {
+-	return dma_alloc(size, dma_handle, pte_flags_uncached);
++	return dma_alloc(size, dma_handle, MAP_UNCACHED);
+ }
+ 
+ void *dma_alloc_writecombine(size_t size, dma_addr_t *dma_handle)
+ {
+-	return dma_alloc(size, dma_handle, pte_flags_wc);
++	return dma_alloc(size, dma_handle, ARCH_MAP_WRITECOMBINE);
+ }
+ 
+ unsigned long virt_to_phys(volatile void *virt)
+@@ -540,7 +551,7 @@ void *phys_to_virt(unsigned long phys)
+ void dma_free_coherent(void *mem, dma_addr_t dma_handle, size_t size)
+ {
+ 	size = PAGE_ALIGN(size);
+-	__remap_range(mem, size, pte_flags_cached);
++	arch_remap_range(mem, size, MAP_CACHED);
+ 
+ 	free(mem);
+ }
 -- 
 2.17.0
 
