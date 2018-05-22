@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
+Received: from mail-pl0-x233.google.com ([2607:f8b0:400e:c01::233])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fKxmT-00047g-NP
- for barebox@lists.infradead.org; Tue, 22 May 2018 03:16:11 +0000
-Received: by mail-pg0-x244.google.com with SMTP id l2-v6so7207790pgc.7
- for <barebox@lists.infradead.org>; Mon, 21 May 2018 20:15:59 -0700 (PDT)
+ id 1fKxmU-00047k-ON
+ for barebox@lists.infradead.org; Tue, 22 May 2018 03:16:12 +0000
+Received: by mail-pl0-x233.google.com with SMTP id c19-v6so9990417pls.6
+ for <barebox@lists.infradead.org>; Mon, 21 May 2018 20:16:00 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 21 May 2018 20:15:03 -0700
-Message-Id: <20180522031510.25505-23-andrew.smirnov@gmail.com>
+Date: Mon, 21 May 2018 20:15:04 -0700
+Message-Id: <20180522031510.25505-24-andrew.smirnov@gmail.com>
 In-Reply-To: <20180522031510.25505-1-andrew.smirnov@gmail.com>
 References: <20180522031510.25505-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,61 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 22/29] ARM: mmu: Pass PTE flags a parameter to
+Subject: [PATCH v4 23/29] ARM: mmu: Make sure that address is 1M aligned in
  arm_create_pte()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-In order to make it possible to use this functions in contexts where
-creating a new PTE of uncached pages in not appropriate, pass PTE
-flags a parameter to arm_create_pte() and fix all of the current users
-as necessary.
+If address passed arm_create_pte() is not 1M (PGDIR_SIZE) aligned,
+page table that is created will end up having unexpected mapping
+offset, breaking "1:1 mapping" assumption and leading to bugs that are
+not immediately obvious in their nature.
+
+To prevent this and because all of the callers already do said
+alignement in-place, move the alignment code to be a part of
+arm_create_pte().
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/arm/cpu/mmu.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 7d4432b98..1713238ad 100644
+index 1713238ad..21394deb1 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -87,7 +87,7 @@ static void arm_mmu_not_initialized_error(void)
-  * We initially create a flat uncached mapping on it.
-  * Not yet exported, but may be later if someone finds use for it.
-  */
--static u32 *arm_create_pte(unsigned long virt)
-+static u32 *arm_create_pte(unsigned long virt, uint32_t flags)
- {
+@@ -92,6 +92,8 @@ static u32 *arm_create_pte(unsigned long virt, uint32_t flags)
  	u32 *table;
  	int i;
-@@ -101,7 +101,7 @@ static u32 *arm_create_pte(unsigned long virt)
- 	ttb[pgd_index(virt)] = (unsigned long)table | PMD_TYPE_TABLE;
  
- 	for (i = 0; i < PTRS_PER_PTE; i++) {
--		table[i] = virt | PTE_TYPE_SMALL | pte_flags_uncached;
-+		table[i] = virt | PTE_TYPE_SMALL | flags;
- 		virt += PAGE_SIZE;
- 	}
++	virt = ALIGN_DOWN(virt, PGDIR_SIZE);
++
+ 	table = xmemalign(PTRS_PER_PTE * sizeof(u32),
+ 			  PTRS_PER_PTE * sizeof(u32));
  
-@@ -291,7 +291,8 @@ static void create_vector_table(unsigned long adr)
+@@ -291,8 +293,7 @@ static void create_vector_table(unsigned long adr)
  		vectors = xmemalign(PAGE_SIZE, PAGE_SIZE);
  		pr_debug("Creating vector table, virt = 0x%p, phys = 0x%08lx\n",
  			 vectors, adr);
--		exc = arm_create_pte(ALIGN_DOWN(adr, PGDIR_SIZE));
-+		exc = arm_create_pte(ALIGN_DOWN(adr, PGDIR_SIZE),
-+				     pte_flags_uncached);
+-		exc = arm_create_pte(ALIGN_DOWN(adr, PGDIR_SIZE),
+-				     pte_flags_uncached);
++		exc = arm_create_pte(adr, pte_flags_uncached);
  		idx = (adr & (PGDIR_SIZE - 1)) >> PAGE_SHIFT;
  		exc[idx] = (u32)vectors | PTE_TYPE_SMALL | pte_flags_cached;
- 	}
-@@ -362,7 +363,7 @@ static void create_zero_page(void)
- 		 */
- 		pr_debug("zero page is in SDRAM area, currently not supported\n");
- 	} else {
--		zero = arm_create_pte(0x0);
-+		zero = arm_create_pte(0x0, pte_flags_uncached);
- 		zero[0] = 0;
- 		pr_debug("Created zero page\n");
  	}
 -- 
 2.17.0
