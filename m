@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wr0-x244.google.com ([2a00:1450:400c:c0c::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fL9If-0003Ga-2E
+ id 1fL9If-0003Fy-1x
  for barebox@lists.infradead.org; Tue, 22 May 2018 15:34:13 +0000
-Received: by mail-wr0-x244.google.com with SMTP id p3-v6so2188982wrn.7
- for <barebox@lists.infradead.org>; Tue, 22 May 2018 08:34:06 -0700 (PDT)
+Received: by mail-wr0-x244.google.com with SMTP id w3-v6so13271325wrl.12
+ for <barebox@lists.infradead.org>; Tue, 22 May 2018 08:33:58 -0700 (PDT)
 From: Peter Mamonov <pmamonov@gmail.com>
-Date: Tue, 22 May 2018 18:33:41 +0300
-Message-Id: <20180522153342.24933-12-pmamonov@gmail.com>
+Date: Tue, 22 May 2018 18:33:33 +0300
+Message-Id: <20180522153342.24933-4-pmamonov@gmail.com>
 In-Reply-To: <20180522153342.24933-1-pmamonov@gmail.com>
 References: <20180522153342.24933-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,27 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 11/12] MIPS: 64BIT selects PHYS_ADDR_T_64BIT
+Subject: [PATCH v3 03/12] mtd: cfi-flash: fix write_buff() for 64 bit systems
 To: barebox@lists.infradead.org
 Cc: Peter Mamonov <pmamonov@gmail.com>
 
+write_buff() uses ~(flash_info.portwidth - 1) to mask lower bits of addr. This
+causes higher 32 bits of addr to be discarded on a 64 bit system, since
+flash_info.portwidth is 32 bits long (unsigned int) and addr is 64 bits long
+(unsigned long).
+
 Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- arch/mips/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/nor/cfi_flash.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 25c310a49..da613eb39 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -278,6 +278,7 @@ config 64BIT
- 	bool "64-bit barebox"
- 	depends on CPU_SUPPORTS_64BIT_KERNEL && SYS_SUPPORTS_64BIT_KERNEL
- 	select ARCH_DMA_ADDR_T_64BIT
-+	select PHYS_ADDR_T_64BIT
- 	help
- 	  Select this option if you want to build a 64-bit barebox.
+diff --git a/drivers/mtd/nor/cfi_flash.c b/drivers/mtd/nor/cfi_flash.c
+index 5bdcccae1..01ab1aa27 100644
+--- a/drivers/mtd/nor/cfi_flash.c
++++ b/drivers/mtd/nor/cfi_flash.c
+@@ -515,7 +515,7 @@ static int write_buff(struct flash_info *info, const u8 *src,
+ 	int buffered_size;
+ #endif
+ 	/* get lower aligned address */
+-	wp = addr & ~(info->portwidth - 1);
++	wp = addr & ~((unsigned long)info->portwidth - 1);
  
+ 	/* handle unaligned start */
+ 	aln = addr - wp;
 -- 
 2.17.0
 
