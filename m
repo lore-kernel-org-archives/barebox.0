@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-f66.google.com ([74.125.82.66])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fLqoX-00019o-ED
- for barebox@lists.infradead.org; Thu, 24 May 2018 14:02:28 +0000
-Received: by mail-wm0-f66.google.com with SMTP id a8-v6so5429548wmg.5
- for <barebox@lists.infradead.org>; Thu, 24 May 2018 07:01:46 -0700 (PDT)
-From: Peter Mamonov <pmamonov@gmail.com>
-Date: Thu, 24 May 2018 17:01:33 +0300
-Message-Id: <20180524140133.6124-1-pmamonov@gmail.com>
-In-Reply-To: <20180524104745.3yk6uunekrjtl2cm@pengutronix.de>
-References: <20180524104745.3yk6uunekrjtl2cm@pengutronix.de>
+Received: from mail-co1nam03on0119.outbound.protection.outlook.com
+ ([104.47.40.119] helo=NAM03-CO1-obe.outbound.protection.outlook.com)
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fLRUZ-0002Ph-Ei
+ for barebox@lists.infradead.org; Wed, 23 May 2018 10:59:40 +0000
+From: "Baeuerle, Florian" <Florian.Baeuerle@allegion.com>
+Date: Wed, 23 May 2018 10:59:21 +0000
+Message-ID: <7b0617ad32db44235a2f7efbe19b31e802a9493b.camel@allegion.com>
+Content-Language: en-US
+Content-ID: <6F2DAB8911485746A2A5CD10E8115B59@prod.exchangelabs.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,47 +18,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4] fs: fix memory access via /dev/mem for MIPS64
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
+Subject: Modifying device-tree: /chosen
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-lseek checks for non-negative in-memory offsets (addresses), failing otherwise.
-However negative address 0xffffffffXXXXXXXX is a valid MIPS64 virtual address.
----
- fs/fs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Hi,
 
-diff --git a/fs/fs.c b/fs/fs.c
-index b66cc9b17..8a49e32b5 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -962,7 +962,7 @@ loff_t lseek(int fildes, loff_t offset, int whence)
- 	case SEEK_SET:
- 		if (f->size != FILE_SIZE_STREAM && offset > f->size)
- 			goto out;
--		if (offset < 0)
-+		if (IS_ERR_VALUE(offset))
- 			goto out;
- 		pos = offset;
- 		break;
-@@ -981,7 +981,7 @@ loff_t lseek(int fildes, loff_t offset, int whence)
- 	}
- 
- 	pos = fsdrv->lseek(&f->fsdev->dev, f, pos);
--	if (pos < 0) {
-+	if (IS_ERR_VALUE(pos)) {
- 		errno = -pos;
- 		return -1;
- 	}
--- 
-2.17.0
+I haven't found a (good) way to modify the kernel device tree before booting
+when using the bootchooser in combination with blspec.  What seems to be done
+quite often is registering fixup functions (of_register_fixup) in board-specific
+code.
+
+I'd prefer not patch board-specific code, because my use case is rather specific
+(passing the device serial number, the bootloader version, and a few other
+things to the kernel). So the question is, if this use case is common enough to
+provide a more generic way.
+
+My proposal is providing a command like this:
+
+of_fixup_chosen [PROPERTY] [VALUE]
+
+I guess it would suffice to only store strings in /chosen.
+
+Example:
+of_fixup_chosen bootloader-version $global.version 
+of_fixup_chosen reset-reason $global.system.reset
+of_fixup_chosen serial $serial_number
 
 
+I'm open for other suggestions, as this could also be implementend in a more
+generic (and also more complex) way by allowing to fix up random nodes and
+properties throughout the device tree.
+
+
+Best Regards
+Florian
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
