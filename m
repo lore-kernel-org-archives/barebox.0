@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fLivT-00058O-HK
- for barebox@lists.infradead.org; Thu, 24 May 2018 05:36:37 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 24 May 2018 07:36:21 +0200
-Message-Id: <20180524053621.995-2-s.hauer@pengutronix.de>
-In-Reply-To: <20180524053621.995-1-s.hauer@pengutronix.de>
-References: <20180524053621.995-1-s.hauer@pengutronix.de>
+ id 1fLSDp-0003BA-41
+ for barebox@lists.infradead.org; Wed, 23 May 2018 11:46:26 +0000
+Received: by mail-wm0-x244.google.com with SMTP id j4-v6so8166348wme.1
+ for <barebox@lists.infradead.org>; Wed, 23 May 2018 04:46:14 -0700 (PDT)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Wed, 23 May 2018 14:45:55 +0300
+Message-Id: <20180523114555.6031-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,65 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] imx-usb-loader: dump memory bytewise on verification
- mismatch
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] mw command: add `-x` option description
+To: barebox@lists.infradead.org
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-dump_long only prints the full words and does not print the unaligned
-rest. This means that some bytes (and maybe actually the interesting
-ones) may not be printed. Use dump_bytes instead which does not have
-this problem.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- scripts/imx/imx-usb-loader.c | 26 ++------------------------
- 1 file changed, 2 insertions(+), 24 deletions(-)
+ commands/mw.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-index 684e3f8a06..9a690e49c8 100644
---- a/scripts/imx/imx-usb-loader.c
-+++ b/scripts/imx/imx-usb-loader.c
-@@ -329,28 +329,6 @@ static libusb_device *find_imx_dev(libusb_device **devs, const struct mach_id **
- 	return NULL;
- }
+diff --git a/commands/mw.c b/commands/mw.c
+index bb6a16ef3..7ff589abb 100644
+--- a/commands/mw.c
++++ b/commands/mw.c
+@@ -107,12 +107,13 @@ BAREBOX_CMD_HELP_OPT ("-w",  "word access (16 bit)")
+ BAREBOX_CMD_HELP_OPT ("-l",  "long access (32 bit)")
+ BAREBOX_CMD_HELP_OPT ("-q",  "quad access (64 bit)")
+ BAREBOX_CMD_HELP_OPT ("-d FILE",  "write file (default /dev/mem)")
++BAREBOX_CMD_HELP_OPT ("-x",       "swap bytes")
+ BAREBOX_CMD_HELP_END
  
--static void dump_long(const void *src, unsigned cnt, unsigned addr)
--{
--	const unsigned *p = (unsigned *)src;
--
--	while (cnt >= 32) {
--		printf("%08x: %08x %08x %08x %08x  %08x %08x %08x %08x\n",
--				addr, p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7]);
--		p += 8;
--		cnt -= 32;
--		addr += 32;
--	}
--	if (cnt) {
--		printf("%08x:", addr);
--		while (cnt >= 4) {
--			printf(" %08x", p[0]);
--			p++;
--			cnt -= 4;
--		}
--		printf("\n");
--	}
--}
--
- static void dump_bytes(const void *src, unsigned cnt, unsigned addr)
- {
- 	const unsigned char *p = src;
-@@ -1177,9 +1155,9 @@ static int verify_memory(const void *buf, unsigned len, unsigned addr)
- 
- 		if (memcmp(buf + offset, readbuf + offset, now)) {
- 			printf("mismatch at offset 0x%08x. expected:\n", offset);
--			dump_long(buf + offset, now, addr + offset);
-+			dump_bytes(buf + offset, now, addr + offset);
- 			printf("read:\n");
--			dump_long(readbuf + offset, now, addr + offset);
-+			dump_bytes(readbuf + offset, now, addr + offset);
- 			ret = -EINVAL;
- 			mismatch++;
- 			if (mismatch > 4)
+ BAREBOX_CMD_START(mw)
+ 	.cmd		= do_mem_mw,
+ 	BAREBOX_CMD_DESC("memory write")
+-	BAREBOX_CMD_OPTS("[-bwld] REGION DATA...")
++	BAREBOX_CMD_OPTS("[-bwldx] REGION DATA...")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_MEM)
+ 	BAREBOX_CMD_HELP(cmd_mw_help)
+ BAREBOX_CMD_END
 -- 
 2.17.0
 
