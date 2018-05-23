@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x241.google.com ([2a00:1450:400c:c0c::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fL9Io-0003Gy-8h
- for barebox@lists.infradead.org; Tue, 22 May 2018 15:34:26 +0000
-Received: by mail-wr0-x241.google.com with SMTP id r13-v6so8643417wrj.10
- for <barebox@lists.infradead.org>; Tue, 22 May 2018 08:34:07 -0700 (PDT)
-From: Peter Mamonov <pmamonov@gmail.com>
-Date: Tue, 22 May 2018 18:33:42 +0300
-Message-Id: <20180522153342.24933-13-pmamonov@gmail.com>
-In-Reply-To: <20180522153342.24933-1-pmamonov@gmail.com>
+ id 1fLOrf-0001nL-IY
+ for barebox@lists.infradead.org; Wed, 23 May 2018 08:11:21 +0000
+Date: Wed, 23 May 2018 10:11:05 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180523081105.lpgqk4ha72azmrwk@pengutronix.de>
 References: <20180522153342.24933-1-pmamonov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180522153342.24933-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +18,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 12/12] MIPS: don't use optimized string functions for MIPS64
-To: barebox@lists.infradead.org
-Cc: Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: [PATCH v3 00/12]  various fixes for MIPS64
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Barebox port of optimized string functions from Linux lacks support for MIPS64.
+On Tue, May 22, 2018 at 06:33:30PM +0300, Peter Mamonov wrote:
+> Hi,
+> 
+> This is a third revision of of the patchset which fixes various issues with 64 
+> bit barebox, primarily MIPS related.
+> 
+> Differences from v2:
+>  - add some comments to commits
+>  - move MIPS' IOMEM declarations to arch/mips/include/asm/io.h
+>  - skip `[PATCH v2 09/12] mips: fix warnings from CPHYSADDR() macro` for now
+>  - Kconfig' options are disabled by default
+>  - don't credit Andrey for trivial suggestions :)
 
-Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
----
- arch/mips/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Thanks for the commit messages, they really give the warm feeling that
+I'm doing the right thing applying these patches ;)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index da613eb39..359f67883 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -341,6 +341,7 @@ config NMON_HELP
- 
- config MIPS_OPTIMIZED_STRING_FUNCTIONS
- 	bool "use assembler optimized string functions"
-+	depends on !64BIT
- 	default y
- 	help
- 	  Say yes here to use assembler optimized memcpy / memset functions.
+Applied, thanks
+
+Sascha
+
+
 -- 
-2.17.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
