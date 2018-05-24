@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x22d.google.com ([2607:f8b0:400e:c01::22d])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fMg5U-0005vQ-Hl
- for barebox@lists.infradead.org; Sat, 26 May 2018 20:46:54 +0000
-Received: by mail-pl0-x22d.google.com with SMTP id v24-v6so5019480plo.3
- for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:46:42 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Subject: [PATCH v2 23/48] ARM: boot: Add trivial i.MX8 support
-Date: Sat, 26 May 2018 13:44:26 -0700
-Message-Id: <20180526204451.16530-24-andrew.smirnov@gmail.com>
-In-Reply-To: <20180526204451.16530-1-andrew.smirnov@gmail.com>
-References: <20180526204451.16530-1-andrew.smirnov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fLnOq-0005Eo-BD
+ for barebox@lists.infradead.org; Thu, 24 May 2018 10:23:14 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 24 May 2018 12:22:57 +0200
+Message-Id: <20180524102257.14171-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,51 +19,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: [PATCH] imx-usb-loader: Align uploaded file length
+To: Barebox List <barebox@lists.infradead.org>
 
-It appears that boot sources for i.MX8 are just a subset of those of
-i.MX7 and both can be handled by the same code.
+At least i.MX25 does not properly upload a non word aligned file length.
+Align the uploaded length to word length to make sure the end of the
+file is also transferred properly.
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/boot.c                 | 5 +++++
- arch/arm/mach-imx/include/mach/generic.h | 2 ++
- 2 files changed, 7 insertions(+)
+ scripts/imx/imx-usb-loader.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index 11105a148..ab25f75b2 100644
---- a/arch/arm/mach-imx/boot.c
-+++ b/arch/arm/mach-imx/boot.c
-@@ -624,3 +624,8 @@ void vf610_boot_save_loc(void)
- {
- 	imx_boot_save_loc(vf610_get_boot_source);
- }
-+
-+void imx8_get_boot_source(enum bootsource *src, int *instance)
-+	__alias(imx7_get_boot_source);
-+
-+void imx8_boot_save_loc(void) __alias(imx7_boot_save_loc);
-diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
-index 204bd40f7..ccb04078c 100644
---- a/arch/arm/mach-imx/include/mach/generic.h
-+++ b/arch/arm/mach-imx/include/mach/generic.h
-@@ -16,6 +16,7 @@ void imx53_boot_save_loc(void);
- void imx6_boot_save_loc(void);
- void imx7_boot_save_loc(void);
- void vf610_boot_save_loc(void);
-+void imx8_boot_save_loc(void);
+diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+index 43dde8b7f2..cbb17cbab9 100644
+--- a/scripts/imx/imx-usb-loader.c
++++ b/scripts/imx/imx-usb-loader.c
+@@ -40,6 +40,8 @@
  
- void imx25_get_boot_source(enum bootsource *src, int *instance);
- void imx35_get_boot_source(enum bootsource *src, int *instance);
-@@ -24,6 +25,7 @@ void imx53_get_boot_source(enum bootsource *src, int *instance);
- void imx6_get_boot_source(enum bootsource *src, int *instance);
- void imx7_get_boot_source(enum bootsource *src, int *instance);
- void vf610_get_boot_source(enum bootsource *src, int *instance);
-+void imx8_get_boot_source(enum bootsource *src, int *instance);
+ #define get_min(a, b) (((a) < (b)) ? (a) : (b))
  
- int imx1_init(void);
- int imx21_init(void);
++#define ALIGN(x, a)        (((x) + (a) - 1) & ~((a) - 1))
++
+ #define FT_APP	0xaa
+ #define FT_CSF	0xcc
+ #define FT_DCD	0xee
+@@ -412,7 +414,7 @@ static int read_file(const char *name, unsigned char **buffer, unsigned *size)
+ 		return -2;
+ 	}
+ 
+-	buf = malloc(fsize);
++	buf = malloc(ALIGN(fsize, 4));
+ 	if (!buf) {
+ 		printf("error, out of memory\n");
+ 		fclose(xfile);
+@@ -762,6 +764,8 @@ static int load_file(void *buf, unsigned len, unsigned dladdr, unsigned char typ
+ 	void *p;
+ 	int cnt;
+ 
++	len = ALIGN(len, 4);
++
+ 	dl_command.addr = htonl(dladdr);
+ 	dl_command.cnt = htonl(len);
+ 	dl_command.rsvd = type;
 -- 
 2.17.0
 
