@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-sn1nam01on0108.outbound.protection.outlook.com
+ ([104.47.32.108] helo=NAM01-SN1-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fLTqk-0002RL-JF
- for barebox@lists.infradead.org; Wed, 23 May 2018 13:30:45 +0000
-Date: Wed, 23 May 2018 15:30:30 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180523133030.tjxqfxri5fxbaxor@pengutronix.de>
+ id 1fLqyn-0006cT-76
+ for barebox@lists.infradead.org; Thu, 24 May 2018 14:12:38 +0000
+From: "Baeuerle, Florian" <Florian.Baeuerle@allegion.com>
+Date: Thu, 24 May 2018 14:12:20 +0000
+Message-ID: <6fc771578dc59b189cebf73a3a9510042fce0c60.camel@allegion.com>
 References: <7b0617ad32db44235a2f7efbe19b31e802a9493b.camel@allegion.com>
+ <20180523133030.tjxqfxri5fxbaxor@pengutronix.de>
+ <e77f7ef6c9ab77ca5fb2cdee4125efa6c9ae8fd2.camel@allegion.com>
+ <20180524082047.44njsmnrvpxyar27@pengutronix.de>
+In-Reply-To: <20180524082047.44njsmnrvpxyar27@pengutronix.de>
+Content-Language: en-US
+Content-ID: <463B7A98E1783C4D90F2B398FD4EC6DB@prod.exchangelabs.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <7b0617ad32db44235a2f7efbe19b31e802a9493b.camel@allegion.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,61 +28,34 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Modifying device-tree: /chosen
-To: "Baeuerle, Florian" <Florian.Baeuerle@allegion.com>
+To: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Florian,
+Hi Sascha,
 
-On Wed, May 23, 2018 at 10:59:21AM +0000, Baeuerle, Florian wrote:
-> Hi,
+Am Donnerstag, den 24.05.2018, 10:20 +0200 schrieb s.hauer@pengutronix.de:
+> On Thu, May 24, 2018 at 08:13:44AM +0000, Baeuerle, Florian wrote:
+> > Hi Sascha,
+> > 
+> > so I think we need a command, similar to of_property:
+> > 
+> > of_fixup_property [-sd] NODE PROPERTY VALUE
+> > 
+> > or should it rather be a new option for of_property, like this:
+> > 
+> > of_property [-sdf] NODE [PROPERTY] [VALUES]
 > 
-> I haven't found a (good) way to modify the kernel device tree before booting
-> when using the bootchooser in combination with blspec.  What seems to be done
-> quite often is registering fixup functions (of_register_fixup) in board-specific
-> code.
-> 
-> I'd prefer not patch board-specific code, because my use case is rather specific
-> (passing the device serial number, the bootloader version, and a few other
-> things to the kernel). So the question is, if this use case is common enough to
-> provide a more generic way.
-> 
-> My proposal is providing a command like this:
-> 
-> of_fixup_chosen [PROPERTY] [VALUE]
+> I would first try it as a new option to of_property.
+> If for some reason this turns out to be ugly, let me know.
 
-This seems to be very similar to what I suggested here:
+of_property and of_node are pretty similar with regard to their options.
 
-https://www.spinics.net/lists/u-boot-v2/msg32661.html
-
-I see no reason to limit this command to the /chosen node, we could
-equally well accept a full path to the node rather than just a property
-name.
+Do you want them to stay the same, so I'd also have to implement this
+fixup functionality to of_node?
 
 > 
-> I guess it would suffice to only store strings in /chosen.
+> Sascha
 > 
-> Example:
-> of_fixup_chosen bootloader-version $global.version
-
-This is already done, See commit e96dc23280c43dd6b026ea71bcbaf3353abb4c83
-
-> of_fixup_chosen reset-reason $global.system.reset
-
-See 58243d98b3f8e000c674a78a9466bd2fce213cc6
-
-> of_fixup_chosen serial $serial_number
-
-No generic support for this one though.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
