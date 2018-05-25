@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx009.vodafonemail.xion.oxcs.net ([153.92.174.39])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fM8tX-0005y6-Ry
- for barebox@lists.infradead.org; Fri, 25 May 2018 09:20:25 +0000
-Received: from vsmx002.vodafonemail.xion.oxcs.net (unknown [192.168.75.192])
- by mta-6-out.mta.xion.oxcs.net (Postfix) with ESMTP id 82D48D9B5AA
- for <barebox@lists.infradead.org>; Fri, 25 May 2018 09:19:55 +0000 (UTC)
-Received: from null (app-30.app.xion.oxcs.net [10.10.1.30])
- by mta-6-out.mta.xion.oxcs.net (Postfix) with ESMTPA id 70968199C1C
- for <barebox@lists.infradead.org>; Fri, 25 May 2018 09:19:53 +0000 (UTC)
-Date: Fri, 25 May 2018 11:19:53 +0200 (CEST)
-From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
-Message-ID: <847290015.313235.1527239993231@mail.vodafone.de>
-MIME-Version: 1.0
+Received: from mail-wr0-x233.google.com ([2a00:1450:400c:c0c::233])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fMBzk-00035u-5Z
+ for barebox@lists.infradead.org; Fri, 25 May 2018 12:40:56 +0000
+Received: by mail-wr0-x233.google.com with SMTP id i14-v6so8988017wre.2
+ for <barebox@lists.infradead.org>; Fri, 25 May 2018 05:38:44 -0700 (PDT)
+Date: Fri, 25 May 2018 15:55:40 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20180525155540.91ff25f4f2d02a10da2d9b05@gmail.com>
+In-Reply-To: <847290015.313235.1527239993231@mail.vodafone.de>
+References: <847290015.313235.1527239993231@mail.vodafone.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,39 +19,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: barebox for an i586 board
-To: barebox@lists.infradead.org
+Subject: Re: barebox for an i586 board
+To: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Cc: barebox@lists.infradead.org
 
-Hi,
+On Fri, 25 May 2018 11:19:53 +0200 (CEST)
+Giorgio Dal Molin <giorgio.nicole@arcor.de> wrote:
 
-I'm trying to build a barebox image for an i586 (Vortex86) based board.
+> Hi,
+> =
 
-The config file I'm using was derived from the arch/x86/configs/generic_defconfig
+> I'm trying to build a barebox image for an i586 (Vortex86) based board.
+> =
 
-The build error I see is:
+> The config file I'm using was derived from the arch/x86/configs/generic_d=
+efconfig
+> =
 
-...
-  LD      defaultenv/built-in.o
-  GEN     .version
-  CHK     include/generated/compile.h
-  UPD     include/generated/compile.h
-  CC      common/version.o
-  LD      common/built-in.o
-  LD      barebox
-ld: section .bootstrapping VMA [0000000000007e00,000000000000826b] overlaps section .bootsector VMA [0000000000007c00,0000000000007fff]
-make[1]: *** [/tmp/barebox/Makefile:767: barebox] Error 1
-make: *** [Makefile:123: _all] Error 2
+> The build error I see is:
+> =
 
-First of all: does barebox really support booting such a 'normal PC'
-without EFI bios ?
+> ...
+>   LD      defaultenv/built-in.o
+>   GEN     .version
+>   CHK     include/generated/compile.h
+>   UPD     include/generated/compile.h
+>   CC      common/version.o
+>   LD      common/built-in.o
+>   LD      barebox
+> ld: section .bootstrapping VMA [0000000000007e00,000000000000826b] overla=
+ps section .bootsector VMA [0000000000007c00,0000000000007fff]
+> make[1]: *** [/tmp/barebox/Makefile:767: barebox] Error 1
+> make: *** [Makefile:123: _all] Error 2
+> =
 
-If yes can someone suggest me a direction how to fix this ?
+> First of all: does barebox really support booting such a 'normal PC'
+> without EFI bios ?
 
-giorgio
+There is very interesting video at youtube:
+
+  https://www.youtube.com/watch?v=3DDLGzcbOqaCY
+
+Alas AFAIK Bach Nguyen has not shared his results with community.
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
