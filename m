@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x235.google.com ([2607:f8b0:4001:c06::235])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fMwuU-000483-5f
- for barebox@lists.infradead.org; Sun, 27 May 2018 14:44:39 +0000
-Received: by mail-io0-x235.google.com with SMTP id e15-v6so3068678iog.1
- for <barebox@lists.infradead.org>; Sun, 27 May 2018 07:44:27 -0700 (PDT)
+Received: from mx009.vodafonemail.xion.oxcs.net ([153.92.174.39])
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fM8tX-0005y6-Ry
+ for barebox@lists.infradead.org; Fri, 25 May 2018 09:20:25 +0000
+Received: from vsmx002.vodafonemail.xion.oxcs.net (unknown [192.168.75.192])
+ by mta-6-out.mta.xion.oxcs.net (Postfix) with ESMTP id 82D48D9B5AA
+ for <barebox@lists.infradead.org>; Fri, 25 May 2018 09:19:55 +0000 (UTC)
+Received: from null (app-30.app.xion.oxcs.net [10.10.1.30])
+ by mta-6-out.mta.xion.oxcs.net (Postfix) with ESMTPA id 70968199C1C
+ for <barebox@lists.infradead.org>; Fri, 25 May 2018 09:19:53 +0000 (UTC)
+Date: Fri, 25 May 2018 11:19:53 +0200 (CEST)
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Message-ID: <847290015.313235.1527239993231@mail.vodafone.de>
 MIME-Version: 1.0
-In-Reply-To: <CACvFaDcXB3kAcKGkX_rR7iPUr4qscogz6nwzPs9cNPkiAHODaQ@mail.gmail.com>
-References: <CACvFaDcXB3kAcKGkX_rR7iPUr4qscogz6nwzPs9cNPkiAHODaQ@mail.gmail.com>
-From: Pascal Vizeli <pascal.vizeli@syshack.ch>
-Date: Sun, 27 May 2018 16:44:26 +0200
-Message-ID: <CACvFaDchGoj77fZrfVhqp1jeUphZjn_HhoXUhfxRWXLCPUt6zg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,31 +25,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Device Tree Overlay Support v2
-To: Pascal Vizeli <pvizeli@syshack.ch>
-Cc: barebox@lists.infradead.org
+Subject: barebox for an i586 board
+To: barebox@lists.infradead.org
 
-There was some missing files inside patches. I fix that.
-Actual version work on my local site with fresh environment.
+Hi,
 
-2018-05-27 11:39 GMT+02:00 Pascal Vizeli <pvizeli@syshack.ch>:
-> Hi,
->
-> I rebase and update the patch from Jan Luebbe. They did a amazing job with:
-> http://lists.infradead.org/pipermail/barebox/2015-March/022674.html
->
-> I think it is now at the time to support overlay like uboot and other
-> bootloaders. They will help on raspberry, I think also on other
-> platforms, to update the device tree without a big shell script of
-> of_properties/of_fixup_status.
->
-> This features is very common today and missed by barebox.
-> I update the dtc scripts to the same version they we use on dts kernel level.
->
-> Patch are here:
-> https://github.com/home-assistant/hassos/tree/dev/buildroot-external/patches/barebox
->
-> Greets
+I'm trying to build a barebox image for an i586 (Vortex86) based board.
+
+The config file I'm using was derived from the arch/x86/configs/generic_defconfig
+
+The build error I see is:
+
+...
+  LD      defaultenv/built-in.o
+  GEN     .version
+  CHK     include/generated/compile.h
+  UPD     include/generated/compile.h
+  CC      common/version.o
+  LD      common/built-in.o
+  LD      barebox
+ld: section .bootstrapping VMA [0000000000007e00,000000000000826b] overlaps section .bootsector VMA [0000000000007c00,0000000000007fff]
+make[1]: *** [/tmp/barebox/Makefile:767: barebox] Error 1
+make: *** [Makefile:123: _all] Error 2
+
+First of all: does barebox really support booting such a 'normal PC'
+without EFI bios ?
+
+If yes can someone suggest me a direction how to fix this ?
+
+giorgio
 
 _______________________________________________
 barebox mailing list
