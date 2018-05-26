@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fMg4Z-000467-Gw
- for barebox@lists.infradead.org; Sat, 26 May 2018 20:46:10 +0000
-Received: by mail-pl0-x244.google.com with SMTP id z9-v6so1665985plk.11
- for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:45:48 -0700 (PDT)
+ id 1fMg6M-0005Cj-JU
+ for barebox@lists.infradead.org; Sat, 26 May 2018 20:48:30 +0000
+Received: by mail-pg0-x244.google.com with SMTP id w3-v6so3664047pgv.12
+ for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:47:36 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 26 May 2018 13:44:12 -0700
-Message-Id: <20180526204451.16530-10-andrew.smirnov@gmail.com>
+Date: Sat, 26 May 2018 13:44:49 -0700
+Message-Id: <20180526204451.16530-47-andrew.smirnov@gmail.com>
 In-Reply-To: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 References: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,28 +23,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 09/48] net: fec_imx: Make use of IS_ALIGNED
+Subject: [PATCH v2 46/48] ARM: include: dma: Add missing no-MMU stubs
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Add stubs for dma_map_single() and dma_unmap_single() that were needed
+for no-MMU build for ARM64 to succeed.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/fec_imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/include/asm/dma.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 0ca594082..98711baa7 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -467,7 +467,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
- 		return -1;
- 	}
+diff --git a/arch/arm/include/asm/dma.h b/arch/arm/include/asm/dma.h
+index a68886b16..bb7e62af0 100644
+--- a/arch/arm/include/asm/dma.h
++++ b/arch/arm/include/asm/dma.h
+@@ -34,6 +34,17 @@ static inline void dma_free_coherent(void *mem, dma_addr_t dma_handle,
+ 	free(mem);
+ }
  
--	if ((unsigned long)eth_data & (DB_DATA_ALIGNMENT - 1))
-+	if (!IS_ALIGNED((unsigned long)eth_data, DB_DATA_ALIGNMENT))
- 		dev_warn(&dev->dev, "Transmit data not aligned: %p!\n", eth_data);
- 
- 	/*
++static inline dma_addr_t dma_map_single(struct device_d *dev, void *ptr, size_t size,
++					enum dma_data_direction dir)
++{
++	return (dma_addr_t)ptr;
++}
++
++static inline void dma_unmap_single(struct device_d *dev, dma_addr_t addr, size_t size,
++				    enum dma_data_direction dir)
++{
++}
++
+ static inline void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
+ 					   enum dma_data_direction dir)
+ {
 -- 
 2.17.0
 
