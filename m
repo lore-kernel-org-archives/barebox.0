@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fMg6G-0005zP-TZ
- for barebox@lists.infradead.org; Sat, 26 May 2018 20:47:43 +0000
-Received: by mail-pg0-x243.google.com with SMTP id a13-v6so3669860pgu.4
- for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:47:35 -0700 (PDT)
+ id 1fMg6G-0005yp-Ta
+ for barebox@lists.infradead.org; Sat, 26 May 2018 20:47:42 +0000
+Received: by mail-pg0-x243.google.com with SMTP id p21-v6so3669545pgd.11
+ for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:47:30 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 26 May 2018 13:44:48 -0700
-Message-Id: <20180526204451.16530-46-andrew.smirnov@gmail.com>
+Date: Sat, 26 May 2018 13:44:45 -0700
+Message-Id: <20180526204451.16530-43-andrew.smirnov@gmail.com>
 In-Reply-To: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 References: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,40 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 45/48] ARM: mmu64: Convert flags in arch_remap_range()
+Subject: [PATCH v2 42/48] ARM: interrupts64: Include ESR value in exception
+ traceback
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Flags passed to arch_remap_range() are architecture independent, so it
-can't be passed as is to map_region(). Add code to do the proper
-conversion to avoid subtle bugs that this confusion brings.
+Oftentimes knowing the class of exception is not enough and full ESR
+value is needed to decode the specifics. Add code to print ESR as a
+part of excpetion traceback to provide that information.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu_64.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/arm/cpu/interrupts_64.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 820d8cf75..11928352b 100644
---- a/arch/arm/cpu/mmu_64.c
-+++ b/arch/arm/cpu/mmu_64.c
-@@ -171,6 +171,17 @@ static void create_sections(uint64_t virt, uint64_t phys, uint64_t size, uint64_
+diff --git a/arch/arm/cpu/interrupts_64.c b/arch/arm/cpu/interrupts_64.c
+index 32c8dfcb2..f6f0c9d09 100644
+--- a/arch/arm/cpu/interrupts_64.c
++++ b/arch/arm/cpu/interrupts_64.c
+@@ -155,7 +155,8 @@ void do_sync(struct pt_regs *pt_regs, unsigned int esr, unsigned long far)
+ 		return;
+ 	}
  
- int arch_remap_range(void *_start, size_t size, unsigned flags)
- {
-+ 	switch (flags) {
-+ 	case MAP_CACHED:
-+ 		flags = CACHED_MEM;
-+ 		break;
-+ 	case MAP_UNCACHED:
-+		flags = UNCACHED_MEM;
-+		break;
-+ 	default:
-+ 		return -EINVAL;
-+ 	}
-+
- 	map_region((uint64_t)_start, (uint64_t)_start, (uint64_t)size, flags);
- 	tlb_invalidate();
+-	printf("%s exception at 0x%016lx\n", esr_get_class_string(esr), far);
++	printf("%s exception (ESR 0x%08x) at 0x%016lx\n", esr_get_class_string(esr),
++	       esr, far);
+ 	do_exception(pt_regs);
+ }
  
 -- 
 2.17.0
