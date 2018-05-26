@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fMg5X-0004gh-HB
- for barebox@lists.infradead.org; Sat, 26 May 2018 20:47:55 +0000
-Received: by mail-pf0-x242.google.com with SMTP id v63-v6so4086350pfk.8
- for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:46:45 -0700 (PDT)
+ id 1fMg5l-0004qO-HH
+ for barebox@lists.infradead.org; Sat, 26 May 2018 20:48:01 +0000
+Received: by mail-pf0-x241.google.com with SMTP id p12-v6so4083039pff.13
+ for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:46:59 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 26 May 2018 13:44:27 -0700
-Message-Id: <20180526204451.16530-25-andrew.smirnov@gmail.com>
+Date: Sat, 26 May 2018 13:44:30 -0700
+Message-Id: <20180526204451.16530-28-andrew.smirnov@gmail.com>
 In-Reply-To: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 References: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,160 +23,156 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 24/48] ARM: i.MX: xload-esdhc: Rework to make code be less
- i.MX6-specific
+Subject: [PATCH v2 27/48] pinctrl: i.MX: Add support for i.MX8
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Convert imx6_esdhc_start_image() into a generic esdhc_start_image() by
-making accept already filled "struct esdhc" as well as use
-esdhc_read_blocks().
-
-With that change, create new imx6_esdhc_start_image() whose sole task
-is to properly fill a struct esdhc with appropriate offset and to pass
-it on to esdhc_start_image().
-
-Both changes are made with a goal of simplifying adding support of new
-SoC in mind (see following commits adding support for i.MX8 as example).
-
-NOTE: This commit does not re-implement imx6_esdhc_load_image(),
-instead opting for dropping it, due to lack of any users in the
-codebase.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/xload.h |  1 -
- arch/arm/mach-imx/xload-esdhc.c        | 87 ++++++++++++--------------
- 2 files changed, 41 insertions(+), 47 deletions(-)
+ arch/arm/mach-imx/include/mach/iomux-v3.h |  9 ++++
+ drivers/pinctrl/imx-iomux-v3.c            | 56 ++++++++++++++++++++---
+ 2 files changed, 59 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/xload.h b/arch/arm/mach-imx/include/mach/xload.h
-index 3898d664e..4e38ac7e2 100644
---- a/arch/arm/mach-imx/include/mach/xload.h
-+++ b/arch/arm/mach-imx/include/mach/xload.h
-@@ -4,7 +4,6 @@
- int imx53_nand_start_image(void);
- int imx6_spi_load_image(int instance, unsigned int flash_offset, void *buf, int len);
- int imx6_spi_start_image(int instance);
--int imx6_esdhc_load_image(int instance, void *buf, int len);
- int imx6_esdhc_start_image(int instance);
+diff --git a/arch/arm/mach-imx/include/mach/iomux-v3.h b/arch/arm/mach-imx/include/mach/iomux-v3.h
+index 40f6e5999..994c15c04 100644
+--- a/arch/arm/mach-imx/include/mach/iomux-v3.h
++++ b/arch/arm/mach-imx/include/mach/iomux-v3.h
+@@ -17,6 +17,7 @@
+ #define __MACH_IOMUX_V3_H__
  
- int imx_image_size(void);
-diff --git a/arch/arm/mach-imx/xload-esdhc.c b/arch/arm/mach-imx/xload-esdhc.c
-index bd58bdc64..4580f53cd 100644
---- a/arch/arm/mach-imx/xload-esdhc.c
-+++ b/arch/arm/mach-imx/xload-esdhc.c
-@@ -216,50 +216,7 @@ static int esdhc_read_blocks(struct esdhc *esdhc, void *dst, size_t len)
- 	return 0;
- }
+ #include <io.h>
++#include <linux/bitfield.h>
  
--int imx6_esdhc_load_image(int instance, void *buf, int len)
--{
--	struct esdhc esdhc;
--	int ret;
--
--	switch (instance) {
--	case 0:
--		esdhc.regs = IOMEM(MX6_USDHC1_BASE_ADDR);
--		break;
--	case 1:
--		esdhc.regs = IOMEM(MX6_USDHC2_BASE_ADDR);
--		break;
--	case 2:
--		esdhc.regs = IOMEM(MX6_USDHC3_BASE_ADDR);
--		break;
--	case 3:
--		esdhc.regs = IOMEM(MX6_USDHC4_BASE_ADDR);
--		break;
--	default:
--		return -EINVAL;
--	}
--
--	esdhc.is_mx6 = 1;
--
--	ret = esdhc_read_blocks(&esdhc, buf, len);
--	if (ret)
--		return ret;
--
--	return 0;
--}
--
--/**
-- * imx6_esdhc_start_image - Load and start an image from USDHC controller
-- * @instance: The USDHC controller instance (0..4)
-- *
-- * This uses imx6_esdhc_load_image() to load an image from SD/MMC.
-- * It is assumed that the image is the currently running barebox image
-- * (This information is used to calculate the length of the image). The
-- * image is started afterwards.
-- *
-- * Return: If successful, this function does not return. A negative error
-- * code is returned when this function fails.
-- */
--int imx6_esdhc_start_image(int instance)
-+static int esdhc_start_image(struct esdhc *esdhc)
+ /*
+  *	build IOMUX_PAD structure
+@@ -95,6 +96,13 @@ typedef u64 iomux_v3_cfg_t;
+ #define PAD_CTL_DVS			(1 << 13)
+ #define PAD_CTL_HYS			(1 << 8)
+ 
++#define SHARE_CONF_PAD_CTL_DSE	GENMASK(2, 0)
++#define SHARE_CONF_PAD_CTL_SRE	GENMASK(4, 3)
++
++#define SHARE_CONF_PAD_CTL_ODE	BIT(5)
++#define SHARE_CONF_PAD_CTL_PUE	BIT(6)
++#define SHARE_CONF_PAD_CTL_HYS	BIT(7)
++
+ #define PAD_CTL_PKE			(1 << 7)
+ #define PAD_CTL_PUE			(1 << 6 | PAD_CTL_PKE)
+ #define PAD_CTL_PUS_100K_DOWN		(0 << 4 | PAD_CTL_PUE)
+@@ -118,6 +126,7 @@ typedef u64 iomux_v3_cfg_t;
+ #define SHARE_MUX_CONF_REG		0x1
+ #define ZERO_OFFSET_VALID		0x2
+ #define IMX7_PINMUX_LPSR		0x4
++#define SHARE_CONF			BIT(3)
+ 
+ static inline void iomux_v3_setup_pad(void __iomem *iomux, unsigned int flags,
+ 				      u32 mux_reg, u32 conf_reg, u32 input_reg,
+diff --git a/drivers/pinctrl/imx-iomux-v3.c b/drivers/pinctrl/imx-iomux-v3.c
+index 50d717736..38451875e 100644
+--- a/drivers/pinctrl/imx-iomux-v3.c
++++ b/drivers/pinctrl/imx-iomux-v3.c
+@@ -73,6 +73,7 @@ EXPORT_SYMBOL(mxc_iomux_v3_setup_multiple_pads);
+  * 1 u32 CONFIG, so 24 types in total for each pin.
+  */
+ #define FSL_PIN_SIZE 24
++#define SHARE_CONF_FSL_PIN_SIZE (FSL_PIN_SIZE - 1 * sizeof(u32))
+ 
+ #define IMX_DT_NO_PAD_CTL	(1 << 31)
+ #define IMX_PAD_SION		(1 << 30)
+@@ -83,22 +84,57 @@ static int imx_iomux_v3_set_state(struct pinctrl_device *pdev, struct device_nod
  {
- 	void *buf = (void *)0x10000000;
- 	u32 *ivt = buf + SZ_1K;
-@@ -270,7 +227,7 @@ int imx6_esdhc_start_image(int instance)
- 	len = imx_image_size();
- 	len = ALIGN(len, SECTOR_SIZE);
+ 	struct imx_iomux_v3 *iomux = container_of(pdev, struct imx_iomux_v3, pinctrl);
+ 	const __be32 *list;
+-	int npins, size, i;
++	const bool share_conf = iomux->flags & SHARE_CONF;
++	int npins, size, i, fsl_pin_size;
++	const char *name;
++	u32 share_conf_val;
  
--	ret = imx6_esdhc_load_image(instance, buf, 3 * SECTOR_SIZE);
-+	ret = esdhc_read_blocks(esdhc, buf, 3 * SECTOR_SIZE);
- 	if (ret)
- 		return ret;
- 	if (*(u32 *)(ivt) != 0x402000d1) {
-@@ -281,7 +238,7 @@ int imx6_esdhc_start_image(int instance)
+ 	dev_dbg(iomux->pinctrl.dev, "set state: %s\n", np->full_name);
  
- 	pr_debug("Check ok, loading image\n");
- 
--	ret = imx6_esdhc_load_image(instance, buf, len);
-+	ret = esdhc_read_blocks(esdhc, buf, len);
- 	if (ret) {
- 		pr_err("Loading image failed with %d\n", ret);
- 		return ret;
-@@ -295,3 +252,41 @@ int imx6_esdhc_start_image(int instance)
- 
- 	bb();
- }
+-	list = of_get_property(np, "fsl,pins", &size);
++	if (share_conf) {
++		u32 drive_strength, slew_rate;
++		int ret;
 +
-+/**
-+ * imx6_esdhc_start_image - Load and start an image from USDHC controller
-+ * @instance: The USDHC controller instance (0..4)
-+ *
-+ * This uses esdhc_start_image() to load an image from SD/MMC.  It is
-+ * assumed that the image is the currently running barebox image (This
-+ * information is used to calculate the length of the image). The
-+ * image is started afterwards.
-+ *
-+ * Return: If successful, this function does not return. A negative error
-+ * code is returned when this function fails.
-+ */
-+int imx6_esdhc_start_image(int instance)
-+{
-+	struct esdhc esdhc;
++		fsl_pin_size = SHARE_CONF_FSL_PIN_SIZE;
++		name = "pinmux";
 +
-+	switch (instance) {
-+	case 0:
-+		esdhc.regs = IOMEM(MX6_USDHC1_BASE_ADDR);
-+		break;
-+	case 1:
-+		esdhc.regs = IOMEM(MX6_USDHC2_BASE_ADDR);
-+		break;
-+	case 2:
-+		esdhc.regs = IOMEM(MX6_USDHC3_BASE_ADDR);
-+		break;
-+	case 3:
-+		esdhc.regs = IOMEM(MX6_USDHC4_BASE_ADDR);
-+		break;
-+	default:
-+		return -EINVAL;
++		ret = of_property_read_u32(np, "drive-strength",
++					   &drive_strength);
++		if (ret)
++			return ret;
++
++		ret = of_property_read_u32(np, "slew-rate", &slew_rate);
++		if (ret)
++			return ret;
++
++		share_conf_val =
++			FIELD_PREP(SHARE_CONF_PAD_CTL_DSE, drive_strength) |
++			FIELD_PREP(SHARE_CONF_PAD_CTL_SRE, slew_rate);
++
++		if (of_get_property(np, "drive-open-drain", NULL))
++			share_conf_val |= SHARE_CONF_PAD_CTL_ODE;
++
++		if (of_get_property(np, "input-schmitt-enable", NULL))
++			share_conf_val |= SHARE_CONF_PAD_CTL_HYS;
++
++		if (of_get_property(np, "bias-pull-up", NULL))
++			share_conf_val |= SHARE_CONF_PAD_CTL_PUE;
++	} else {
++		fsl_pin_size = FSL_PIN_SIZE;
++		name = "fsl,pins";
 +	}
 +
-+	esdhc.is_mx6 = 1;
++	list = of_get_property(np, name, &size);
+ 	if (!list)
+ 		return -EINVAL;
+ 
+-
+-	if (!size || size % FSL_PIN_SIZE) {
++	if (!size || size % fsl_pin_size) {
+ 		dev_err(iomux->pinctrl.dev, "Invalid fsl,pins property in %s\n",
+ 				np->full_name);
+ 		return -EINVAL;
+ 	}
+ 
+-	npins = size / FSL_PIN_SIZE;
++	npins = size / fsl_pin_size;
+ 
+ 	for (i = 0; i < npins; i++) {
+ 		u32 mux_reg = be32_to_cpu(*list++);
+@@ -106,7 +142,8 @@ static int imx_iomux_v3_set_state(struct pinctrl_device *pdev, struct device_nod
+ 		u32 input_reg = be32_to_cpu(*list++);
+ 		u32 mux_val = be32_to_cpu(*list++);
+ 		u32 input_val = be32_to_cpu(*list++);
+-		u32 conf_val = be32_to_cpu(*list++);
++		u32 conf_val = share_conf ?
++			share_conf_val : be32_to_cpu(*list++);
+ 
+ 		if (conf_val & IMX_PAD_SION) {
+ 			mux_val |= IOMUXC_CONFIG_SION;
+@@ -180,6 +217,10 @@ static struct imx_iomux_v3_data imx_iomux_imx7_lpsr_data = {
+ 	.flags = ZERO_OFFSET_VALID | IMX7_PINMUX_LPSR,
+ };
+ 
++static struct imx_iomux_v3_data imx_iomux_imx8_data = {
++	.flags = SHARE_CONF,
++};
 +
-+	return esdhc_start_image(&esdhc);
-+}
+ static __maybe_unused struct of_device_id imx_iomux_v3_dt_ids[] = {
+ 	{
+ 		.compatible = "fsl,imx25-iomuxc",
+@@ -204,6 +245,9 @@ static __maybe_unused struct of_device_id imx_iomux_v3_dt_ids[] = {
+ 	}, {
+ 		.compatible = "fsl,imx7d-iomuxc-lpsr",
+ 		.data = &imx_iomux_imx7_lpsr_data,
++	}, {
++		.compatible = "fsl,imx8mq-iomuxc",
++		.data = &imx_iomux_imx8_data,
+ 	}, {
+ 		/* sentinel */
+ 	}
 -- 
 2.17.0
 
