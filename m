@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fMg4b-00045F-Sb
- for barebox@lists.infradead.org; Sat, 26 May 2018 20:46:22 +0000
-Received: by mail-pl0-x242.google.com with SMTP id f1-v6so4568453plt.6
- for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:45:47 -0700 (PDT)
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fMg4z-0005uA-NY
+ for barebox@lists.infradead.org; Sat, 26 May 2018 20:46:23 +0000
+Received: by mail-pf0-x243.google.com with SMTP id j20-v6so4085494pff.10
+ for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:46:11 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 26 May 2018 13:44:11 -0700
-Message-Id: <20180526204451.16530-9-andrew.smirnov@gmail.com>
+Date: Sat, 26 May 2018 13:44:17 -0700
+Message-Id: <20180526204451.16530-15-andrew.smirnov@gmail.com>
 In-Reply-To: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 References: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,87 +23,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 08/48] net: fec_imx: Use dma mapping functions
+Subject: [PATCH v2 14/48] ARM: i.MX: ocotp: Add i.MX8MQ support
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Rather than doing DMA on the input buffer address get a proper DMA
-address from the mapping functions.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/fec_imx.c | 15 +++++++++------
- drivers/net/fec_imx.h |  1 +
- 2 files changed, 10 insertions(+), 6 deletions(-)
+ arch/arm/mach-imx/Kconfig |  2 +-
+ arch/arm/mach-imx/ocotp.c | 10 ++++++++++
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 33599dd82..0ca594082 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -453,6 +453,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
- {
- 	unsigned int status;
- 	uint64_t tmo;
-+	dma_addr_t dma;
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 85143bd26..020b6fa05 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -736,7 +736,7 @@ config IMX_IIM_FUSE_BLOW
  
- 	/*
- 	 * This routine transmits one frame.  This routine only accepts
-@@ -466,7 +467,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
- 		return -1;
- 	}
+ config IMX_OCOTP
+ 	tristate "i.MX6 On Chip OTP controller"
+-	depends on ARCH_IMX6 || ARCH_VF610
++	depends on ARCH_IMX6 || ARCH_VF610 || ARCH_IMX8MQ
+ 	depends on OFDEVICE
+ 	help
+ 	  This adds support for the i.MX6 On-Chip OTP controller. Currently the
+diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
+index 99b365aad..09f8cf4ff 100644
+--- a/arch/arm/mach-imx/ocotp.c
++++ b/arch/arm/mach-imx/ocotp.c
+@@ -584,6 +584,13 @@ static struct imx_ocotp_data vf610_ocotp_data = {
+ 	.mac_offsets = { MAC_OFFSET_0, MAC_OFFSET_1 },
+ };
  
--	if ((uint32_t)eth_data & (DB_DATA_ALIGNMENT-1))
-+	if ((unsigned long)eth_data & (DB_DATA_ALIGNMENT - 1))
- 		dev_warn(&dev->dev, "Transmit data not aligned: %p!\n", eth_data);
- 
- 	/*
-@@ -479,10 +480,12 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
- 
- 	writew(data_length, &fec->tbd_base[fec->tbd_index].data_length);
- 
--	writel((uint32_t)(eth_data), &fec->tbd_base[fec->tbd_index].data_pointer);
-+	dma = dma_map_single(fec->dev, eth_data, data_length, DMA_TO_DEVICE);
-+	if (dma_mapping_error(fec->dev, dma))
-+		return -EIO;
++static struct imx_ocotp_data imx8mq_ocotp_data = {
++	.num_regs = 2048,
++	.addr_to_offset = imx6sl_addr_to_offset,
++	.mac_offsets_num = 1,
++	.mac_offsets = { 0x90 },
++};
 +
-+	writel((uint32_t)(dma), &fec->tbd_base[fec->tbd_index].data_pointer);
- 
--	dma_sync_single_for_device((unsigned long)eth_data, data_length,
--				   DMA_TO_DEVICE);
- 	/*
- 	 * update BD's status now
- 	 * This block:
-@@ -505,8 +508,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
- 			break;
- 		}
- 	}
--	dma_sync_single_for_cpu((unsigned long)eth_data, data_length,
--				DMA_TO_DEVICE);
-+	dma_unmap_single(fec->dev, dma, data_length, DMA_TO_DEVICE);
- 
- 	/* for next transmission use the other buffer */
- 	if (fec->tbd_index)
-@@ -748,6 +750,7 @@ static int fec_probe(struct device_d *dev)
- 
- 	fec = xzalloc(sizeof(*fec));
- 	fec->type = type;
-+	fec->dev = dev;
- 	edev = &fec->edev;
- 	dev->priv = fec;
- 	edev->priv = fec;
-diff --git a/drivers/net/fec_imx.h b/drivers/net/fec_imx.h
-index 561de0890..e3f60dd66 100644
---- a/drivers/net/fec_imx.h
-+++ b/drivers/net/fec_imx.h
-@@ -149,6 +149,7 @@ enum fec_opt_clock {
-  */
- struct fec_priv {
- 	struct eth_device edev;
-+	struct device_d *dev;
- 	void __iomem *regs;
- 	struct buffer_descriptor __iomem *rbd_base;	/* RBD ring                  */
- 	int rbd_index;				/* next receive BD to read   */
+ static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
+ 	{
+ 		.compatible = "fsl,imx6q-ocotp",
+@@ -597,6 +604,9 @@ static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
+ 	}, {
+ 		.compatible = "fsl,imx6ul-ocotp",
+ 		.data = &imx6q_ocotp_data,
++	}, {
++		.compatible = "fsl,imx8mq-ocotp",
++		.data = &imx8mq_ocotp_data,
+ 	}, {
+ 		.compatible = "fsl,vf610-ocotp",
+ 		.data = &vf610_ocotp_data,
 -- 
 2.17.0
 
