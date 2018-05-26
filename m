@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fMg5g-00070o-Oi
- for barebox@lists.infradead.org; Sat, 26 May 2018 20:47:05 +0000
-Received: by mail-pf0-x241.google.com with SMTP id q22-v6so4087977pff.11
- for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:46:54 -0700 (PDT)
+ id 1fMg5e-00070n-3h
+ for barebox@lists.infradead.org; Sat, 26 May 2018 20:47:03 +0000
+Received: by mail-pf0-x242.google.com with SMTP id w129-v6so4092992pfd.3
+ for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:46:49 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 26 May 2018 13:44:29 -0700
-Message-Id: <20180526204451.16530-27-andrew.smirnov@gmail.com>
+Date: Sat, 26 May 2018 13:44:28 -0700
+Message-Id: <20180526204451.16530-26-andrew.smirnov@gmail.com>
 In-Reply-To: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 References: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,78 +23,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 26/48] ARM: i.MX: xload-esdhc: Add support for i.MX8
+Subject: [PATCH v2 25/48] ARM: i.MX: xload-esdhc: Allow custom buffer address,
+ device offset
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Add code to support specifying different buffer address and SD/MMC
+device offset to read it from in esdhc_start_image(). This change is
+needed to support i.MX8.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/xload.h |  1 +
- arch/arm/mach-imx/xload-esdhc.c        | 34 ++++++++++++++++++++++++++
- 2 files changed, 35 insertions(+)
+ arch/arm/mach-imx/xload-esdhc.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/xload.h b/arch/arm/mach-imx/include/mach/xload.h
-index 4e38ac7e2..8f141bc37 100644
---- a/arch/arm/mach-imx/include/mach/xload.h
-+++ b/arch/arm/mach-imx/include/mach/xload.h
-@@ -5,6 +5,7 @@ int imx53_nand_start_image(void);
- int imx6_spi_load_image(int instance, unsigned int flash_offset, void *buf, int len);
- int imx6_spi_start_image(int instance);
- int imx6_esdhc_start_image(int instance);
-+int imx8_esdhc_start_image(int instance);
- 
- int imx_image_size(void);
- 
 diff --git a/arch/arm/mach-imx/xload-esdhc.c b/arch/arm/mach-imx/xload-esdhc.c
-index d4c1dfa28..28f4fdcf2 100644
+index 4580f53cd..d4c1dfa28 100644
 --- a/arch/arm/mach-imx/xload-esdhc.c
 +++ b/arch/arm/mach-imx/xload-esdhc.c
-@@ -15,6 +15,7 @@
- #include <io.h>
- #include <mci.h>
- #include <mach/imx6-regs.h>
-+#include <mach/imx8mq-regs.h>
- #include <mach/xload.h>
- #include <linux/sizes.h>
- #include "../../../drivers/mci/sdhci.h"
-@@ -290,3 +291,36 @@ int imx6_esdhc_start_image(int instance)
- 
- 	return esdhc_start_image(&esdhc, 0x10000000, 0);
+@@ -176,7 +176,7 @@ esdhc_send_cmd(struct esdhc *esdhc, struct mci_cmd *cmd, struct mci_data *data)
+ 	return 0;
  }
-+
-+/**
-+ * imx8_esdhc_start_image - Load and start an image from USDHC controller
-+ * @instance: The USDHC controller instance (0..2)
-+ *
-+ * This uses esdhc_start_image() to load an image from SD/MMC.  It is
-+ * assumed that the image is the currently running barebox image (This
-+ * information is used to calculate the length of the image). The
-+ * image is started afterwards.
-+ *
-+ * Return: If successful, this function does not return. A negative error
-+ * code is returned when this function fails.
-+ */
-+int imx8_esdhc_start_image(int instance)
-+{
-+	struct esdhc esdhc;
-+
-+	switch (instance) {
-+	case 0:
-+		esdhc.regs = IOMEM(MX8MQ_USDHC1_BASE_ADDR);
-+		break;
-+	case 1:
-+		esdhc.regs = IOMEM(MX8MQ_USDHC2_BASE_ADDR);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	esdhc.is_mx6 = 1;
-+
-+	return esdhc_start_image(&esdhc, MX8MQ_DDR_CSD1_BASE_ADDR,
-+				 32 * 2 * SECTOR_SIZE);
-+}
-\ No newline at end of file
+ 
+-static int esdhc_read_blocks(struct esdhc *esdhc, void *dst, size_t len)
++static int esdhc_read_blocks(struct esdhc *esdhc, u32 offset, void *dst, size_t len)
+ {
+ 	struct mci_cmd cmd;
+ 	struct mci_data data;
+@@ -193,7 +193,7 @@ static int esdhc_read_blocks(struct esdhc *esdhc, void *dst, size_t len)
+ 	writel(val, esdhc->regs + SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET);
+ 
+ 	cmd.cmdidx = MMC_CMD_READ_MULTIPLE_BLOCK;
+-	cmd.cmdarg = 0;
++	cmd.cmdarg = offset;
+ 	cmd.resp_type = MMC_RSP_R1;
+ 
+ 	data.dest = dst;
+@@ -216,9 +216,9 @@ static int esdhc_read_blocks(struct esdhc *esdhc, void *dst, size_t len)
+ 	return 0;
+ }
+ 
+-static int esdhc_start_image(struct esdhc *esdhc)
++static int esdhc_start_image(struct esdhc *esdhc, ptrdiff_t address, u32 offset)
+ {
+-	void *buf = (void *)0x10000000;
++	void *buf = (void *)address;
+ 	u32 *ivt = buf + SZ_1K;
+ 	int ret, len;
+ 	void __noreturn (*bb)(void);
+@@ -227,7 +227,7 @@ static int esdhc_start_image(struct esdhc *esdhc)
+ 	len = imx_image_size();
+ 	len = ALIGN(len, SECTOR_SIZE);
+ 
+-	ret = esdhc_read_blocks(esdhc, buf, 3 * SECTOR_SIZE);
++	ret = esdhc_read_blocks(esdhc, offset, buf, 3 * SECTOR_SIZE);
+ 	if (ret)
+ 		return ret;
+ 	if (*(u32 *)(ivt) != 0x402000d1) {
+@@ -238,7 +238,7 @@ static int esdhc_start_image(struct esdhc *esdhc)
+ 
+ 	pr_debug("Check ok, loading image\n");
+ 
+-	ret = esdhc_read_blocks(esdhc, buf, len);
++	ret = esdhc_read_blocks(esdhc, offset, buf, len);
+ 	if (ret) {
+ 		pr_err("Loading image failed with %d\n", ret);
+ 		return ret;
+@@ -288,5 +288,5 @@ int imx6_esdhc_start_image(int instance)
+ 
+ 	esdhc.is_mx6 = 1;
+ 
+-	return esdhc_start_image(&esdhc);
++	return esdhc_start_image(&esdhc, 0x10000000, 0);
+ }
 -- 
 2.17.0
 
