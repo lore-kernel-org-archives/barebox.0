@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fLPNB-0001Ev-Kp
- for barebox@lists.infradead.org; Wed, 23 May 2018 08:43:58 +0000
-Date: Wed, 23 May 2018 10:43:41 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180523084341.i5edq2nznd7spbi3@pengutronix.de>
-References: <20180523051012.26148-1-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180523051012.26148-1-andrew.smirnov@gmail.com>
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fMg5r-0005xg-Q6
+ for barebox@lists.infradead.org; Sat, 26 May 2018 20:47:17 +0000
+Received: by mail-pf0-x244.google.com with SMTP id j20-v6so4085931pff.10
+ for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:47:08 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: [PATCH v2 32/48] Port <linux/iopoll.h> from U-Boot
+Date: Sat, 26 May 2018 13:44:35 -0700
+Message-Id: <20180526204451.16530-33-andrew.smirnov@gmail.com>
+In-Reply-To: <20180526204451.16530-1-andrew.smirnov@gmail.com>
+References: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,75 +19,98 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] ARM: mmu: Do not try to pick early TTB up
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Tue, May 22, 2018 at 10:10:12PM -0700, Andrey Smirnov wrote:
-> The call to create_flat_mapping() in mmu.c will change both memory
-> type and shareability of all RAM in use by barebox while MMU is on
-> when done in conjunction with CONFIG_MMU_EARLY.
-
-I notice that with MMU_EARLY enabled we call create_flat_mapping()
-twice, once in the early MMU code and once when setting up the MMU for
-real. In between we remap the the SDRAM cached which then is reverted
-during the second call to create_flat_mapping().
-
-This seems unnecessary. Does the following help you?
-
-Sascha
-
-------------------------8<-----------------------------
-
-From 8abcb2fae2ee642bdcbf79aab2d9a3bdbb3dacc1 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 23 May 2018 10:39:23 +0200
-Subject: [PATCH] ARM: mmu: only create flat mapping when early MMU hasn't done
- it already
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/linux/iopoll.h | 69 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
+ create mode 100644 include/linux/iopoll.h
 
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index a89f420f20..7e2e5bf7e0 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -470,15 +470,15 @@ static int mmu_init(void)
- 					ttb);
- 	} else {
- 		ttb = xmemalign(ARM_TTB_SIZE, ARM_TTB_SIZE);
--	}
- 
--	pr_debug("ttb: 0x%p\n", ttb);
-+		set_ttbr(ttb);
-+		set_domain(DOMAIN_MANAGER);
- 
--	set_ttbr(ttb);
--	set_domain(DOMAIN_MANAGER);
-+		create_flat_mapping(ttb);
-+		__mmu_cache_flush();
-+	}
- 
--	create_flat_mapping(ttb);
--	__mmu_cache_flush();
-+	pr_debug("ttb: 0x%p\n", ttb);
- 
- 	vectors_init();
- 
+diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
+new file mode 100644
+index 000000000..6e8a6fd71
+--- /dev/null
++++ b/include/linux/iopoll.h
+@@ -0,0 +1,69 @@
++/*
++ * Copyright (c) 2012-2014 The Linux Foundation. All rights reserved.
++ *
++ * SPDX-License-Identifier:	GPL-2.0
++ */
++
++#ifndef _LINUX_IOPOLL_H
++#define _LINUX_IOPOLL_H
++
++#include <errno.h>
++#include <io.h>
++#include <clock.h>
++
++/**
++ * readx_poll_timeout - Periodically poll an address until a condition is met or a timeout occurs
++ * @op: accessor function (takes @addr as its only argument)
++ * @addr: Address to poll
++ * @val: Variable to read the value into
++ * @cond: Break condition (usually involving @val)
++ * @timeout_ns: Timeout in ns, 0 means never timeout
++ *
++ * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
++ * case, the last read value at @addr is stored in @val.
++ *
++ * When available, you'll probably want to use one of the specialized
++ * macros defined below rather than this macro directly.
++ */
++#define readx_poll_timeout(op, addr, val, cond, timeout_ns)	\
++({ \
++	uint64_t start = get_time_ns(); \
++	for (;;) { \
++		(val) = op(addr); \
++		if (cond) \
++			break; \
++		if (timeout_ns && \
++		    is_timeout(start, (timeout_ns))) {	\
++			(val) = op(addr); \
++			break; \
++		} \
++	} \
++	(cond) ? 0 : -ETIMEDOUT; \
++})
++
++
++#define readb_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readb, addr, val, cond, timeout_us)
++
++#define readw_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readw, addr, val, cond, timeout_us)
++
++#define readl_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readl, addr, val, cond, timeout_us)
++
++#define readq_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readq, addr, val, cond, timeout_us)
++
++#define readb_relaxed_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readb_relaxed, addr, val, cond, timeout_us)
++
++#define readw_relaxed_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readw_relaxed, addr, val, cond, timeout_us)
++
++#define readl_relaxed_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readl_relaxed, addr, val, cond, timeout_us)
++
++#define readq_relaxed_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readq_relaxed, addr, val, cond, timeout_us)
++
++#endif /* _LINUX_IOPOLL_H */
 -- 
 2.17.0
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
