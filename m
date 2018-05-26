@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x229.google.com ([2607:f8b0:400e:c05::229])
+Received: from mail-pf0-x22a.google.com ([2607:f8b0:400e:c00::22a])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fMg5y-0004zd-67
- for barebox@lists.infradead.org; Sat, 26 May 2018 20:48:14 +0000
-Received: by mail-pg0-x229.google.com with SMTP id k2-v6so3680262pgc.1
- for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:47:11 -0700 (PDT)
+ id 1fMg60-00050s-Ty
+ for barebox@lists.infradead.org; Sat, 26 May 2018 20:48:25 +0000
+Received: by mail-pf0-x22a.google.com with SMTP id v63-v6so4086543pfk.8
+ for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:47:14 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 26 May 2018 13:44:37 -0700
-Message-Id: <20180526204451.16530-35-andrew.smirnov@gmail.com>
+Date: Sat, 26 May 2018 13:44:38 -0700
+Message-Id: <20180526204451.16530-36-andrew.smirnov@gmail.com>
 In-Reply-To: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 References: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,30 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 34/48] clock: Use udelay() to implement mdelay()
+Subject: [PATCH v2 35/48] ARM: i.MX8: Add DDRC PHY and DDR CTL base addresses
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- include/clock.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm/mach-imx/include/mach/imx8mq-regs.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/clock.h b/include/clock.h
-index 38b335c2c..8e40451a3 100644
---- a/include/clock.h
-+++ b/include/clock.h
-@@ -86,9 +86,7 @@ static inline void udelay(unsigned long usecs)
+diff --git a/arch/arm/mach-imx/include/mach/imx8mq-regs.h b/arch/arm/mach-imx/include/mach/imx8mq-regs.h
+index 6dac00107..51936f526 100644
+--- a/arch/arm/mach-imx/include/mach/imx8mq-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx8mq-regs.h
+@@ -114,8 +114,10 @@
+ #define MX8MQ_SRC_DDRC_RCR_ADDR		0x30391000
+ #define MX8MQ_SRC_DDRC2_RCR_ADDR	0x30391004
  
- static inline void mdelay(unsigned long msecs)
- {
--	uint64_t start = get_time_ns();
--
--	while(!is_timeout(start, msecs * MSECOND));
-+	udelay(msecs * MSECOND / USECOND);
- }
+-#define MX8MQ_DDRC_DDR_SS_GPR0		0x3d000000
++#define MX8MQ_DDRC_PHY_BASE_ADDR	0x3c000000
++#define MX8MQ_DDRC_DDR_SS_GPR0		(MX8MQ_DDRC_PHY_BASE_ADDR + 0x01000000)
+ #define MX8MQ_DDRC_IPS_BASE_ADDR(X)	(0x3d400000 + ((X) * 0x2000000))
++#define MX8MQ_DDRC_CTL_BASE_ADDR	MX8MQ_DDRC_IPS_BASE_ADDR(0)
+ #define MX8MQ_DDR_CSD1_BASE_ADDR	0x40000000
  
- static inline void mdelay_non_interruptible(unsigned long msecs)
+ #endif /* __MACH_IMX8MQ_REGS_H */
 -- 
 2.17.0
 
