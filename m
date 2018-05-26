@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fMg4z-0005uA-NY
- for barebox@lists.infradead.org; Sat, 26 May 2018 20:46:23 +0000
-Received: by mail-pf0-x243.google.com with SMTP id j20-v6so4085494pff.10
- for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:46:11 -0700 (PDT)
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fMg5g-00070o-Oi
+ for barebox@lists.infradead.org; Sat, 26 May 2018 20:47:05 +0000
+Received: by mail-pf0-x241.google.com with SMTP id q22-v6so4087977pff.11
+ for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:46:54 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 26 May 2018 13:44:17 -0700
-Message-Id: <20180526204451.16530-15-andrew.smirnov@gmail.com>
+Date: Sat, 26 May 2018 13:44:29 -0700
+Message-Id: <20180526204451.16530-27-andrew.smirnov@gmail.com>
 In-Reply-To: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 References: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,58 +23,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 14/48] ARM: i.MX: ocotp: Add i.MX8MQ support
+Subject: [PATCH v2 26/48] ARM: i.MX: xload-esdhc: Add support for i.MX8
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/Kconfig |  2 +-
- arch/arm/mach-imx/ocotp.c | 10 ++++++++++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/include/mach/xload.h |  1 +
+ arch/arm/mach-imx/xload-esdhc.c        | 34 ++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+)
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 85143bd26..020b6fa05 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -736,7 +736,7 @@ config IMX_IIM_FUSE_BLOW
+diff --git a/arch/arm/mach-imx/include/mach/xload.h b/arch/arm/mach-imx/include/mach/xload.h
+index 4e38ac7e2..8f141bc37 100644
+--- a/arch/arm/mach-imx/include/mach/xload.h
++++ b/arch/arm/mach-imx/include/mach/xload.h
+@@ -5,6 +5,7 @@ int imx53_nand_start_image(void);
+ int imx6_spi_load_image(int instance, unsigned int flash_offset, void *buf, int len);
+ int imx6_spi_start_image(int instance);
+ int imx6_esdhc_start_image(int instance);
++int imx8_esdhc_start_image(int instance);
  
- config IMX_OCOTP
- 	tristate "i.MX6 On Chip OTP controller"
--	depends on ARCH_IMX6 || ARCH_VF610
-+	depends on ARCH_IMX6 || ARCH_VF610 || ARCH_IMX8MQ
- 	depends on OFDEVICE
- 	help
- 	  This adds support for the i.MX6 On-Chip OTP controller. Currently the
-diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
-index 99b365aad..09f8cf4ff 100644
---- a/arch/arm/mach-imx/ocotp.c
-+++ b/arch/arm/mach-imx/ocotp.c
-@@ -584,6 +584,13 @@ static struct imx_ocotp_data vf610_ocotp_data = {
- 	.mac_offsets = { MAC_OFFSET_0, MAC_OFFSET_1 },
- };
+ int imx_image_size(void);
  
-+static struct imx_ocotp_data imx8mq_ocotp_data = {
-+	.num_regs = 2048,
-+	.addr_to_offset = imx6sl_addr_to_offset,
-+	.mac_offsets_num = 1,
-+	.mac_offsets = { 0x90 },
-+};
+diff --git a/arch/arm/mach-imx/xload-esdhc.c b/arch/arm/mach-imx/xload-esdhc.c
+index d4c1dfa28..28f4fdcf2 100644
+--- a/arch/arm/mach-imx/xload-esdhc.c
++++ b/arch/arm/mach-imx/xload-esdhc.c
+@@ -15,6 +15,7 @@
+ #include <io.h>
+ #include <mci.h>
+ #include <mach/imx6-regs.h>
++#include <mach/imx8mq-regs.h>
+ #include <mach/xload.h>
+ #include <linux/sizes.h>
+ #include "../../../drivers/mci/sdhci.h"
+@@ -290,3 +291,36 @@ int imx6_esdhc_start_image(int instance)
+ 
+ 	return esdhc_start_image(&esdhc, 0x10000000, 0);
+ }
 +
- static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
- 	{
- 		.compatible = "fsl,imx6q-ocotp",
-@@ -597,6 +604,9 @@ static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
- 	}, {
- 		.compatible = "fsl,imx6ul-ocotp",
- 		.data = &imx6q_ocotp_data,
-+	}, {
-+		.compatible = "fsl,imx8mq-ocotp",
-+		.data = &imx8mq_ocotp_data,
- 	}, {
- 		.compatible = "fsl,vf610-ocotp",
- 		.data = &vf610_ocotp_data,
++/**
++ * imx8_esdhc_start_image - Load and start an image from USDHC controller
++ * @instance: The USDHC controller instance (0..2)
++ *
++ * This uses esdhc_start_image() to load an image from SD/MMC.  It is
++ * assumed that the image is the currently running barebox image (This
++ * information is used to calculate the length of the image). The
++ * image is started afterwards.
++ *
++ * Return: If successful, this function does not return. A negative error
++ * code is returned when this function fails.
++ */
++int imx8_esdhc_start_image(int instance)
++{
++	struct esdhc esdhc;
++
++	switch (instance) {
++	case 0:
++		esdhc.regs = IOMEM(MX8MQ_USDHC1_BASE_ADDR);
++		break;
++	case 1:
++		esdhc.regs = IOMEM(MX8MQ_USDHC2_BASE_ADDR);
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	esdhc.is_mx6 = 1;
++
++	return esdhc_start_image(&esdhc, MX8MQ_DDR_CSD1_BASE_ADDR,
++				 32 * 2 * SECTOR_SIZE);
++}
+\ No newline at end of file
 -- 
 2.17.0
 
