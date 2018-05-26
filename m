@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fMg5t-00071V-Ov
- for barebox@lists.infradead.org; Sat, 26 May 2018 20:47:18 +0000
-Received: by mail-pf0-x242.google.com with SMTP id a14-v6so4097029pfi.1
- for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:47:07 -0700 (PDT)
+Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fMg4C-0003z0-P2
+ for barebox@lists.infradead.org; Sat, 26 May 2018 20:45:34 +0000
+Received: by mail-pl0-x241.google.com with SMTP id c41-v6so5005762plj.10
+ for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:45:22 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 26 May 2018 13:44:34 -0700
-Message-Id: <20180526204451.16530-32-andrew.smirnov@gmail.com>
+Date: Sat, 26 May 2018 13:44:04 -0700
+Message-Id: <20180526204451.16530-2-andrew.smirnov@gmail.com>
 In-Reply-To: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 References: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,31 +23,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 31/48] clocksource: armv8-timer: Make use of
- postcore_platform_driver()
+Subject: [PATCH v2 01/48] ARM: i.MX: xload: Fix compiler warning
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
+
+the ESDHC controller is a 32bit device, so can do DMA only on the
+lower 32bit. Fix the compiler warning about casting a pointer to integer
+of different size on aarch64 by casting to unsigned long first. Error
+out if the destination does not fit into 32bit though.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clocksource/armv8-timer.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ arch/arm/mach-imx/xload-esdhc.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/armv8-timer.c b/drivers/clocksource/armv8-timer.c
-index 5e0b9ef3c..918232e0e 100644
---- a/drivers/clocksource/armv8-timer.c
-+++ b/drivers/clocksource/armv8-timer.c
-@@ -48,9 +48,5 @@ static struct driver_d armv8_timer_driver = {
- 	.probe = armv8_timer_probe,
- 	.of_compatible = DRV_OF_COMPAT(armv8_timer_dt_ids),
- };
-+postcore_platform_driver(armv8_timer_driver);
+diff --git a/arch/arm/mach-imx/xload-esdhc.c b/arch/arm/mach-imx/xload-esdhc.c
+index e774e4e68..bd58bdc64 100644
+--- a/arch/arm/mach-imx/xload-esdhc.c
++++ b/arch/arm/mach-imx/xload-esdhc.c
+@@ -109,8 +109,13 @@ esdhc_send_cmd(struct esdhc *esdhc, struct mci_cmd *cmd, struct mci_data *data)
+ 	__udelay(1);
  
--static int armv8_timer_init(void)
--{
--	return platform_driver_register(&armv8_timer_driver);
--}
--postcore_initcall(armv8_timer_init);
+ 	if (data) {
++		unsigned long dest = (unsigned long)data->dest;
++
++		if (dest > 0xffffffff)
++			return -EINVAL;
++
+ 		/* Set up for a data transfer if we have one */
+-		esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->dest);
++		esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)dest);
+ 		esdhc_write32(regs + SDHCI_BLOCK_SIZE__BLOCK_COUNT, data->blocks << 16 | SECTOR_SIZE);
+ 	}
+ 
 -- 
 2.17.0
 
