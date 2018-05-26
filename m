@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x22e.google.com ([2a00:1450:400c:c09::22e])
+Received: from mail-pl0-x243.google.com ([2607:f8b0:400e:c01::243])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fLkdr-0001DB-8S
- for barebox@lists.infradead.org; Thu, 24 May 2018 07:26:35 +0000
-Received: by mail-wm0-x22e.google.com with SMTP id a8-v6so2146685wmg.5
- for <barebox@lists.infradead.org>; Thu, 24 May 2018 00:26:20 -0700 (PDT)
-MIME-Version: 1.0
-From: Franz Forstmayr <f.forstmayr@gmail.com>
-Date: Thu, 24 May 2018 09:26:18 +0200
-Message-ID: <CAGKTrWLu-r7OOFRW-JsbOz64O0jOz0CvJjVvHWzr-UFtVkcntg@mail.gmail.com>
+ id 1fMg5K-0005uq-M8
+ for barebox@lists.infradead.org; Sat, 26 May 2018 20:46:44 +0000
+Received: by mail-pl0-x243.google.com with SMTP id t12-v6so5019651plo.7
+ for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:46:37 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: [PATCH v2 20/48] clocksource: armv8-timer: Convert explicit assembly
+ into helpers
+Date: Sat, 26 May 2018 13:44:23 -0700
+Message-Id: <20180526204451.16530-21-andrew.smirnov@gmail.com>
+In-Reply-To: <20180526204451.16530-1-andrew.smirnov@gmail.com>
+References: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,104 +20,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [BUG] TFTP: No access to subdirectories
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hi,
+Move inline assembly related to querying and counter value as well as
+getting and setting counter frequency register into asm/system.h as
+well as converting it inot helper functions. This is done to make the
+code availible to other parts of the system.
 
-I just saw this old thread and wanted to ask, if this one has been
-fixed already? I just ran into a similar/same problem using
-barebox-2018-04 from the  phytec repository
-(https://git.phytec.de/barebox/log/?h=v2018.04.0-phy).
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/include/asm/system.h     | 24 ++++++++++++++++++++++++
+ drivers/clocksource/armv8-timer.c | 13 ++-----------
+ 2 files changed, 26 insertions(+), 11 deletions(-)
 
-When i want to boot net the first time, it fails the second time successes.
+diff --git a/arch/arm/include/asm/system.h b/arch/arm/include/asm/system.h
+index 57c76186b..5cf828ea3 100644
+--- a/arch/arm/include/asm/system.h
++++ b/arch/arm/include/asm/system.h
+@@ -77,6 +77,30 @@ static inline unsigned long read_mpidr(void)
+ 
+ 	return val;
+ }
++
++static inline void set_cntfrq(unsigned long cntfrq)
++{
++	asm volatile("msr cntfrq_el0, %0" : : "r" (cntfrq) : "memory");
++}
++
++static inline unsigned long get_cntfrq(void)
++{
++	unsigned long cntfrq;
++
++	asm volatile("mrs %0, cntfrq_el0" : "=r" (cntfrq));
++	return cntfrq;
++}
++
++static inline unsigned long get_cntpct(void)
++{
++	unsigned long cntpct;
++
++	isb();
++	asm volatile("mrs %0, cntpct_el0" : "=r" (cntpct));
++
++	return cntpct;
++}
++
+ #endif
+ static inline unsigned int get_cr(void)
+ {
+diff --git a/drivers/clocksource/armv8-timer.c b/drivers/clocksource/armv8-timer.c
+index 57b0b694c..c5306dcd2 100644
+--- a/drivers/clocksource/armv8-timer.c
++++ b/drivers/clocksource/armv8-timer.c
+@@ -22,12 +22,7 @@
+ 
+ uint64_t armv8_clocksource_read(void)
+ {
+-	unsigned long cntpct;
+-
+-	isb();
+-	asm volatile("mrs %0, cntpct_el0" : "=r" (cntpct));
+-
+-	return cntpct;
++	return get_cntpct();
+ }
+ 
+ static struct clocksource cs = {
+@@ -38,11 +33,7 @@ static struct clocksource cs = {
+ 
+ static int armv8_timer_probe(struct device_d *dev)
+ {
+-	unsigned long cntfrq;
+-
+-	asm volatile("mrs %0, cntfrq_el0" : "=r" (cntfrq));
+-
+-	cs.mult = clocksource_hz2mult(cntfrq, cs.shift);
++	cs.mult = clocksource_hz2mult(get_cntfrq(), cs.shift);
+ 
+ 	return init_clock(&cs);
+ }
+-- 
+2.17.0
 
-barebox@Phytec phyCORE-i.MX6 Ultra Lite SOM:/ boot
-booting 'net'
-eth0: 100Mbps full duplex link detected
-T open: Invalid argument
-could not open /mnt/tftp/segin1/Image: Invalid argument
-Booting 'net' failed: Invalid argument
-booting 'net' failed: Invalid argument
-boot: Invalid argument
-barebox@Phytec phyCORE-i.MX6 Ultra Lite SOM:/ boot
-booting 'net'
-
-This is my /env/boot/net/
-
-#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-path="/mnt/tftp/${global.hostname}"
-
-global.bootm.image="${path}/Image"
-global.bootm.oftree="${path}/oftree"
-
-nfsroot="${nv.net.server}:/nfs/${global.hostname}"
-global.linux.bootargs.base="ip=$nv.dev.eth0.ipaddr:$nv.net.server:$nv.net.gateway:$nv.dev.eth0.netmask::eth0:off"
-global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=${nfsroot},vers=3"
-
-My workaround is, to set up an md5sum global.bootm.oftree and for some
-strange reason, the boot command successes.
-Any thoughts?
-
-Regards
-Franz
-
-Am 03.09.2017 um 14:45 schrieb Antony Pavlov:
-> On Sun, 3 Sep 2017 10:49:21 +0200
-> Dennis Menschel <menschel-d at posteo.de> wrote:
->
->> Hello,
->>
->> I've noticed that since barebox version 2017.07.0, accessing files via TFTP only works for files that are located in the root directory of the TFTP server.
->> Accessing files that reside in subdirectories doesn't work anymore.
->> The bug affects both access via /mnt/tftp/ and via the tftp shell command.
->>
->> I've tested the following versions of barebox:
->>
->> - 2017.05.0: works
->> - 2017.06.0: works
->> - 2017.07.0: doesn't work anymore
->> - 2017.08.0: doesn't work anymore
->>
->> Below follows the test scenario I've used to reproduce the bug:
->>
->>
->> Scenario
->> ========
->>
->> For the server, I'm using a Raspberry Pi 2 with:
->> - a DHCP server (isc-dhcp-server) and
->> - a TFTP server (tftpd-hpa).
->
-> I have seen the same problem, please see this message:
->
-> http://lists.infradead.org/pipermail/barebox/2017-July/030587.html
->
-> I use tftpd-hpa too.
->
-> I want to note again that reverting 944bf0e1 ('fixup! fs: Implement links to directories') and
-> a602bebc ('fs: Implement links to directories') fixes the problem.
->
->> [...]
-
-Thanks for the info, Antony!
-
-I must admit that I was only searching the mailing list archive for the
-subject concerning "bug" or "tftp", but not the content of the residual
-mails before I wrote my bug report.
-
-Good to see that you've already found that commits that cause the
-problem. Hopefully it will be fixed in one of the next releases.
-
-Best regards,
-Dennis Menschel
 
 _______________________________________________
 barebox mailing list
