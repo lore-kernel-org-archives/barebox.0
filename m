@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
+Received: from mail-pl0-f66.google.com ([209.85.160.66])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fMg64-00053T-Vd
- for barebox@lists.infradead.org; Sat, 26 May 2018 20:48:28 +0000
-Received: by mail-pl0-x244.google.com with SMTP id 30-v6so5010751pld.13
- for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:47:18 -0700 (PDT)
+ id 1fMg69-000567-Sv
+ for barebox@lists.infradead.org; Sat, 26 May 2018 20:48:29 +0000
+Received: by mail-pl0-f66.google.com with SMTP id t12-v6so5020135plo.7
+ for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:47:23 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 26 May 2018 13:44:40 -0700
-Message-Id: <20180526204451.16530-38-andrew.smirnov@gmail.com>
+Date: Sat, 26 May 2018 13:44:42 -0700
+Message-Id: <20180526204451.16530-40-andrew.smirnov@gmail.com>
 In-Reply-To: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 References: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,27 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 37/48] ARM: Specify HAVE_PBL_IMAGE for CPU_64
+Subject: [PATCH v2 39/48] ARM: mmu: Make use of dsb() and isb() helpers
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/cpu/mmu_64.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
-index d889e9afb..2359c56b3 100644
---- a/arch/arm/cpu/Kconfig
-+++ b/arch/arm/cpu/Kconfig
-@@ -12,6 +12,7 @@ config CPU_32
- config CPU_64
- 	bool
- 	select PHYS_ADDR_T_64BIT
-+	select HAVE_PBL_IMAGE
+diff --git a/arch/arm/cpu/mmu_64.h b/arch/arm/cpu/mmu_64.h
+index c280d2ced..2cbe72062 100644
+--- a/arch/arm/cpu/mmu_64.h
++++ b/arch/arm/cpu/mmu_64.h
+@@ -28,7 +28,7 @@ static inline void tlb_invalidate(void)
  
- # Select CPU types depending on the architecture selected. This selects
- # which CPUs we support in the kernel image, and the compiler instruction
+ static inline void set_ttbr_tcr_mair(int el, uint64_t table, uint64_t tcr, uint64_t attr)
+ {
+-	asm volatile("dsb sy");
++	dsb();
+ 	if (el == 1) {
+ 		asm volatile("msr ttbr0_el1, %0" : : "r" (table) : "memory");
+ 		asm volatile("msr tcr_el1, %0" : : "r" (tcr) : "memory");
+@@ -44,7 +44,7 @@ static inline void set_ttbr_tcr_mair(int el, uint64_t table, uint64_t tcr, uint6
+ 	} else {
+ 		hang();
+ 	}
+-	asm volatile("isb");
++	isb();
+ }
+ 
+ static inline uint64_t get_ttbr(int el)
 -- 
 2.17.0
 
