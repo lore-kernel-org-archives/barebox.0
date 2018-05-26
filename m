@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fMg4Z-00044B-Gu
- for barebox@lists.infradead.org; Sat, 26 May 2018 20:46:10 +0000
-Received: by mail-pl0-x244.google.com with SMTP id w19-v6so5021384plq.4
- for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:45:44 -0700 (PDT)
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fMg4x-0005u9-Cq
+ for barebox@lists.infradead.org; Sat, 26 May 2018 20:46:21 +0000
+Received: by mail-pg0-x242.google.com with SMTP id p9-v6so3666837pgc.9
+ for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:46:08 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 26 May 2018 13:44:10 -0700
-Message-Id: <20180526204451.16530-8-andrew.smirnov@gmail.com>
+Date: Sat, 26 May 2018 13:44:16 -0700
+Message-Id: <20180526204451.16530-14-andrew.smirnov@gmail.com>
 In-Reply-To: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 References: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,35 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 07/48] net: fec_imx: remove unnecessary DMA sync ops
+Subject: [PATCH v2 13/48] gpio: i.MX: Add i.MX8mq support
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-The fec receive buffers are coherently mapped, no need to dma_sync on
-them.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/fec_imx.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/gpio/gpio-imx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index d506fd64f..33599dd82 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -580,11 +580,7 @@ static int fec_recv(struct eth_device *dev)
- 			 */
- 			frame = phys_to_virt(readl(&rbd->data_pointer));
- 			frame_length = readw(&rbd->data_length) - 4;
--			dma_sync_single_for_cpu((unsigned long)frame->data,
--						frame_length, DMA_FROM_DEVICE);
- 			net_receive(dev, frame->data, frame_length);
--			dma_sync_single_for_device((unsigned long)frame->data,
--						   frame_length, DMA_FROM_DEVICE);
- 			len = frame_length;
- 		} else {
- 			if (bd_status & FEC_RBD_ERR) {
+diff --git a/drivers/gpio/gpio-imx.c b/drivers/gpio/gpio-imx.c
+index d8bcea223..d618e6011 100644
+--- a/drivers/gpio/gpio-imx.c
++++ b/drivers/gpio/gpio-imx.c
+@@ -190,6 +190,9 @@ static __maybe_unused struct of_device_id imx_gpio_dt_ids[] = {
+ 	}, {
+ 		.compatible = "fsl,imx6q-gpio",
+ 		.data = &regs_imx31,
++	},  {
++		.compatible = "fsl,imx8mq-gpio",
++		.data = &regs_imx31,
+ 	}, {
+ 		/* sentinel */
+ 	}
 -- 
 2.17.0
 
