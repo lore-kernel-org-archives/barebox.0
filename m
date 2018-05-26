@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
+Received: from mail-pl0-x22a.google.com ([2607:f8b0:400e:c01::22a])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fMg4v-0004JV-Dl
- for barebox@lists.infradead.org; Sat, 26 May 2018 20:47:12 +0000
-Received: by mail-pg0-x244.google.com with SMTP id w12-v6so2462211pgc.6
- for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:46:06 -0700 (PDT)
+ id 1fMg54-0004Og-2l
+ for barebox@lists.infradead.org; Sat, 26 May 2018 20:47:23 +0000
+Received: by mail-pl0-x22a.google.com with SMTP id n10-v6so5023153plp.0
+ for <barebox@lists.infradead.org>; Sat, 26 May 2018 13:46:15 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 26 May 2018 13:44:15 -0700
-Message-Id: <20180526204451.16530-13-andrew.smirnov@gmail.com>
+Date: Sat, 26 May 2018 13:44:18 -0700
+Message-Id: <20180526204451.16530-16-andrew.smirnov@gmail.com>
 In-Reply-To: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 References: <20180526204451.16530-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,28 +23,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 12/48] mmc: i.MX esdhc: Add i.MX8 support
+Subject: [PATCH v2 15/48] ARM: i.MX: Split shared CCM code into a separate file
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+Both i.MX8 and i.MX7 have similar CCMs, so move any code that can be
+share into a separate file.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mci/imx-esdhc.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/mach-imx/include/mach/ccm.h          | 20 +++++++++++++++++++
+ .../arm/mach-imx/include/mach/imx7-ccm-regs.h | 16 +--------------
+ 2 files changed, 21 insertions(+), 15 deletions(-)
+ create mode 100644 arch/arm/mach-imx/include/mach/ccm.h
 
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index 8929901d4..c4daa9d12 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -728,6 +728,7 @@ static __maybe_unused struct of_device_id fsl_esdhc_compatible[] = {
- 	{ .compatible = "fsl,imx6q-usdhc",  .data = &usdhc_imx6q_data  },
- 	{ .compatible = "fsl,imx6sl-usdhc", .data = &usdhc_imx6sl_data },
- 	{ .compatible = "fsl,imx6sx-usdhc", .data = &usdhc_imx6sx_data },
-+	{ .compatible = "fsl,imx8mq-usdhc", .data = &usdhc_imx6sx_data },
- 	{ /* sentinel */ }
- };
+diff --git a/arch/arm/mach-imx/include/mach/ccm.h b/arch/arm/mach-imx/include/mach/ccm.h
+new file mode 100644
+index 000000000..32254a85b
+--- /dev/null
++++ b/arch/arm/mach-imx/include/mach/ccm.h
+@@ -0,0 +1,20 @@
++#ifndef __IMX_CCM_H__
++
++/* 0 <= n <= 190 */
++#define CCM_CCGRn_SET(n)	(0x4004 + 16 * (n))
++#define CCM_CCGRn_CLR(n)	(0x4008 + 16 * (n))
++
++/* 0 <= n <= 120 */
++#define CCM_TARGET_ROOTn(n)	(0x8000 + 128 * (n))
++
++#define CCM_TARGET_ROOTn_MUX(x)		((x) << 24)
++#define CCM_TARGET_ROOTn_ENABLE		BIT(28)
++
++
++#define CCM_CCGR_SETTINGn(n, s)  ((s) << ((n) * 4))
++#define CCM_CCGR_SETTINGn_NOT_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b00)
++#define CCM_CCGR_SETTINGn_NEEDED_RUN(n)		CCM_CCGR_SETTINGn(n, 0b01)
++#define CCM_CCGR_SETTINGn_NEEDED_RUN_WAIT(n)	CCM_CCGR_SETTINGn(n, 0b10)
++#define CCM_CCGR_SETTINGn_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b11)
++
++#endif
+\ No newline at end of file
+diff --git a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
+index 97fe240fc..43b9425df 100644
+--- a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
+@@ -1,25 +1,11 @@
+ #ifndef __MACH_IMX7_CCM_REGS_H__
+ #define __MACH_IMX7_CCM_REGS_H__
  
+-/* 0 <= n <= 190 */
+-#define CCM_CCGRn_SET(n)	(0x4004 + 16 * (n))
+-#define CCM_CCGRn_CLR(n)	(0x4008 + 16 * (n))
++#include "ccm.h"
+ 
+ #define CCM_CCGR_UART1		148
+ #define CCM_CCGR_UART2		149
+ 
+-#define CCM_CCGR_SETTINGn(n, s)  ((s) << ((n) * 4))
+-#define CCM_CCGR_SETTINGn_NOT_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b00)
+-#define CCM_CCGR_SETTINGn_NEEDED_RUN(n)		CCM_CCGR_SETTINGn(n, 0b01)
+-#define CCM_CCGR_SETTINGn_NEEDED_RUN_WAIT(n)	CCM_CCGR_SETTINGn(n, 0b10)
+-#define CCM_CCGR_SETTINGn_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b11)
+-
+-/* 0 <= n <= 120 */
+-#define CCM_TARGET_ROOTn(n)	(0x8000 + 128 * (n))
+-
+-#define CCM_TARGET_ROOTn_MUX(x)		((x) << 24)
+-#define CCM_TARGET_ROOTn_ENABLE		BIT(28)
+-
+ #define CLOCK_ROOT_INDEX(x)	(((x) - 0x8000) / 128)
+ 
+ /*
 -- 
 2.17.0
 
