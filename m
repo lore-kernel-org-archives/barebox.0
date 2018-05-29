@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+Received: from mail-pl0-x229.google.com ([2607:f8b0:400e:c01::229])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fNWYQ-0006vo-Gj
- for barebox@lists.infradead.org; Tue, 29 May 2018 04:48:16 +0000
-Received: by mail-pf0-x243.google.com with SMTP id c10-v6so6667632pfi.12
- for <barebox@lists.infradead.org>; Mon, 28 May 2018 21:48:04 -0700 (PDT)
+ id 1fNWYR-0006vy-Q4
+ for barebox@lists.infradead.org; Tue, 29 May 2018 04:48:17 +0000
+Received: by mail-pl0-x229.google.com with SMTP id v24-v6so8220698plo.3
+ for <barebox@lists.infradead.org>; Mon, 28 May 2018 21:48:05 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 28 May 2018 21:47:26 -0700
-Message-Id: <20180529044731.3964-3-andrew.smirnov@gmail.com>
+Date: Mon, 28 May 2018 21:47:27 -0700
+Message-Id: <20180529044731.3964-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20180529044731.3964-1-andrew.smirnov@gmail.com>
 References: <20180529044731.3964-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,180 +23,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/7] i.MX: ocotp: Change MAC address layout for VFxxx
+Subject: [PATCH v2 3/7] i.MX: ocotp: Simplify OCOTP field packing/unpacking
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Vivien Didelot <vivien.didelot@savoirfairelinux.com>
 
-For reasons unclear VFxxx port of U-Boot chose to store MAC address in
-OCOTP using a layout that is incompatible with rest of i.MX
-world (both in U-Boot and Barebox). Unfortunately for us, that means
-that there are a number of boards out there that have had their MAC
-addresses programmed using U-Boot and in order to properly support
-those boards we need to change VFxxx port of Barebox to be compatible.
-
-Since the number of Barebox users on VFxx is in single digits, just
-chage the layout to that of U-Boot without trying to make this a
-configurable option.
+Simplify OCOTP field packing/unpacking with macros from
+<linux/bitfield.h>.
 
 Cc: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
 Tested-by: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/ocotp.c | 64 +++++++++++++++++++++++++++++++++------
- 1 file changed, 54 insertions(+), 10 deletions(-)
+ arch/arm/mach-imx/include/mach/ocotp.h | 18 +++++++++---------
+ arch/arm/mach-imx/ocotp.c              |  8 ++++----
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
+diff --git a/arch/arm/mach-imx/include/mach/ocotp.h b/arch/arm/mach-imx/include/mach/ocotp.h
+index b53000b16..76a6da53d 100644
+--- a/arch/arm/mach-imx/include/mach/ocotp.h
++++ b/arch/arm/mach-imx/include/mach/ocotp.h
+@@ -1,6 +1,8 @@
+ #ifndef __MACH_IMX_OCOTP_H
+ #define __MACH_IMX_OCOTP_H
+ 
++#include <linux/bitfield.h>
++
+ #define OCOTP_SHADOW_OFFSET		0x400
+ #define OCOTP_SHADOW_SPACING		0x10
+ 
+@@ -14,17 +16,15 @@
+ #define OCOTP_OFFSET_TO_INDEX(o)		\
+ 	(((o) - OCOTP_SHADOW_OFFSET) / OCOTP_SHADOW_SPACING)
+ 
+-#define OCOTP_WORD_MASK_WIDTH	8
+-#define OCOTP_WORD_MASK_SHIFT	0
+-#define OCOTP_WORD(n)		(OCOTP_OFFSET_TO_INDEX(n) & ((1 << OCOTP_WORD_MASK_WIDTH) - 1))
++#define OCOTP_WORD_MASK		GENMASK( 7,  0)
++#define OCOTP_BIT_MASK		GENMASK(12,  8)
++#define OCOTP_WIDTH_MASK 	GENMASK(17, 13)
+ 
+-#define OCOTP_BIT_MASK_WIDTH	5
+-#define OCOTP_BIT_MASK_SHIFT	(OCOTP_WORD_MASK_SHIFT + OCOTP_WORD_MASK_WIDTH)
+-#define OCOTP_BIT(n)		(((n) & ((1 << OCOTP_BIT_MASK_WIDTH) - 1)) << OCOTP_BIT_MASK_SHIFT)
++#define OCOTP_WORD(n)		FIELD_PREP(OCOTP_WORD_MASK, \
++					   OCOTP_OFFSET_TO_INDEX(n))
++#define OCOTP_BIT(n)		FIELD_PREP(OCOTP_BIT_MASK, n)
++#define OCOTP_WIDTH(n)		FIELD_PREP(OCOTP_WIDTH_MASK, (n) - 1)
+ 
+-#define OCOTP_WIDTH_MASK_WIDTH	5
+-#define OCOTP_WIDTH_MASK_SHIFT	(OCOTP_BIT_MASK_SHIFT + OCOTP_BIT_MASK_WIDTH)
+-#define OCOTP_WIDTH(n)		((((n) - 1) & ((1 << OCOTP_WIDTH_MASK_WIDTH) - 1)) << OCOTP_WIDTH_MASK_SHIFT)
+ 
+ int imx_ocotp_read_field(uint32_t field, unsigned *value);
+ int imx_ocotp_write_field(uint32_t field, unsigned value);
 diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
-index d5e6b3d3e..151c10cc3 100644
+index 151c10cc3..5b21479eb 100644
 --- a/arch/arm/mach-imx/ocotp.c
 +++ b/arch/arm/mach-imx/ocotp.c
-@@ -76,9 +76,16 @@
- #define MAX_MAC_OFFSETS			2
- #define MAC_BYTES			8
- 
-+enum imx_ocotp_format_mac_direction {
-+	OCOTP_HW_TO_MAC,
-+	OCOTP_MAC_TO_HW,
-+};
-+
- struct imx_ocotp_data {
- 	int num_regs;
- 	u32 (*addr_to_offset)(u32 addr);
-+	void (*format_mac)(u8 *dst, const u8 *src,
-+			   enum imx_ocotp_format_mac_direction dir);
- 	u8  mac_offsets[MAX_MAC_OFFSETS];
- 	u8  mac_offsets_num;
- };
-@@ -87,6 +94,7 @@ struct ocotp_priv_ethaddr {
- 	char value[MAC_BYTES];
- 	struct regmap *map;
- 	u8 offset;
-+	const struct imx_ocotp_data *data;
- };
- 
- struct ocotp_priv {
-@@ -368,16 +376,46 @@ bool imx_ocotp_sense_enable(bool enable)
- 	return old_value;
- }
- 
--static void memreverse(void *dest, const void *src, size_t n)
-+static void imx_ocotp_format_mac(u8 *dst, const u8 *src,
-+				 enum imx_ocotp_format_mac_direction dir)
+@@ -314,10 +314,10 @@ static void imx_ocotp_field_decode(uint32_t field, unsigned *word,
  {
--	char *destp = dest;
--	const char *srcp = src + n - 1;
-+	/*
-+	 * This transformation is symmetic, so we don't care about the
-+	 * value of 'dir'.
-+	 */
-+	dst[5] = src[0];
-+	dst[4] = src[1];
-+	dst[3] = src[2];
-+	dst[2] = src[3];
-+	dst[1] = src[4];
-+	dst[0] = src[5];
-+}
+ 	unsigned width;
  
--	while(n--)
--		*destp++ = *srcp--;
-+static void vf610_ocotp_format_mac(u8 *dst, const u8 *src,
-+				   enum imx_ocotp_format_mac_direction dir)
-+{
-+	switch (dir) {
-+	case OCOTP_HW_TO_MAC:
-+		dst[1] = src[0];
-+		dst[0] = src[1];
-+		dst[5] = src[4];
-+		dst[4] = src[5];
-+		dst[3] = src[6];
-+		dst[2] = src[7];
-+		break;
-+	case OCOTP_MAC_TO_HW:
-+		dst[0] = src[1];
-+		dst[1] = src[0];
-+		dst[4] = src[5];
-+		dst[5] = src[4];
-+		dst[6] = src[3];
-+		dst[7] = src[2];
-+		break;
-+	}
+-	*word = ((field >> OCOTP_WORD_MASK_SHIFT) & ((1 << OCOTP_WORD_MASK_WIDTH) - 1)) * 4;
+-	*bit = (field >> OCOTP_BIT_MASK_SHIFT) & ((1 << OCOTP_BIT_MASK_WIDTH) - 1);
+-	width = ((field >> OCOTP_WIDTH_MASK_SHIFT) & ((1 << OCOTP_WIDTH_MASK_WIDTH) - 1)) + 1;
+-	*mask = (1 << width) - 1;
++	*word = FIELD_GET(OCOTP_WORD_MASK, field) * 4;
++	*bit = FIELD_GET(OCOTP_BIT_MASK, field);
++	width = FIELD_GET(OCOTP_WIDTH_MASK, field);
++	*mask = GENMASK(width, 0);
  }
  
--static int imx_ocotp_read_mac(struct regmap *map, unsigned int offset,
-+static int imx_ocotp_read_mac(const struct imx_ocotp_data *data,
-+			      struct regmap *map, unsigned int offset,
- 			      u8 mac[])
- {
- 	u8 buf[MAC_BYTES];
-@@ -387,7 +425,8 @@ static int imx_ocotp_read_mac(struct regmap *map, unsigned int offset,
- 	if (ret < 0)
- 		return ret;
- 
--	memreverse(mac, buf, 6);
-+	data->format_mac(mac, buf, OCOTP_HW_TO_MAC);
-+
- 	return 0;
- }
- 
-@@ -395,7 +434,7 @@ static int imx_ocotp_get_mac(struct param_d *param, void *priv)
- {
- 	struct ocotp_priv_ethaddr *ethaddr = priv;
- 
--	return imx_ocotp_read_mac(ethaddr->map, ethaddr->offset,
-+	return imx_ocotp_read_mac(ethaddr->data, ethaddr->map, ethaddr->offset,
- 				  ethaddr->value);
- }
- 
-@@ -404,7 +443,8 @@ static int imx_ocotp_set_mac(struct param_d *param, void *priv)
- 	char buf[MAC_BYTES];
- 	struct ocotp_priv_ethaddr *ethaddr = priv;
- 
--	memreverse(buf, ethaddr->value, 6);
-+	ethaddr->data->format_mac(buf, ethaddr->value,
-+				  OCOTP_MAC_TO_HW);
- 
- 	return regmap_bulk_write(ethaddr->map, ethaddr->offset,
- 				 buf, MAC_BYTES);
-@@ -438,7 +478,7 @@ static void imx_ocotp_init_dt(struct ocotp_priv *priv)
- 		rnode = of_find_node_by_phandle(phandle);
- 		offset = be32_to_cpup(prop++);
- 
--		if (imx_ocotp_read_mac(priv->map,
-+		if (imx_ocotp_read_mac(priv->data, priv->map,
- 				       OCOTP_OFFSET_TO_ADDR(offset),
- 				       mac))
- 			continue;
-@@ -502,6 +542,7 @@ static int imx_ocotp_probe(struct device_d *dev)
- 			ethaddr = &priv->ethaddr[i];
- 			ethaddr->map = priv->map;
- 			ethaddr->offset = priv->data->mac_offsets[i];
-+			ethaddr->data = data;
- 
- 			dev_add_param_mac(&priv->dev, xasprintf("mac_addr%d", i),
- 					  imx_ocotp_set_mac, imx_ocotp_get_mac,
-@@ -558,6 +599,7 @@ static struct imx_ocotp_data imx6q_ocotp_data = {
- 	.addr_to_offset = imx6q_addr_to_offset,
- 	.mac_offsets_num = 1,
- 	.mac_offsets = { MAC_OFFSET_0 },
-+	.format_mac = imx_ocotp_format_mac,
- };
- 
- static struct imx_ocotp_data imx6sl_ocotp_data = {
-@@ -565,6 +607,7 @@ static struct imx_ocotp_data imx6sl_ocotp_data = {
- 	.addr_to_offset = imx6sl_addr_to_offset,
- 	.mac_offsets_num = 1,
- 	.mac_offsets = { MAC_OFFSET_0 },
-+	.format_mac = imx_ocotp_format_mac,
- };
- 
- static struct imx_ocotp_data vf610_ocotp_data = {
-@@ -572,6 +615,7 @@ static struct imx_ocotp_data vf610_ocotp_data = {
- 	.addr_to_offset = vf610_addr_to_offset,
- 	.mac_offsets_num = 2,
- 	.mac_offsets = { MAC_OFFSET_0, MAC_OFFSET_1 },
-+	.format_mac = vf610_ocotp_format_mac,
- };
- 
- static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
+ int imx_ocotp_read_field(uint32_t field, unsigned *value)
 -- 
 2.17.0
 
