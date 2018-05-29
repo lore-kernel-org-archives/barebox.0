@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fNPwH-0002Rr-6k
- for barebox@lists.infradead.org; Mon, 28 May 2018 21:44:26 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Mon, 28 May 2018 23:44:00 +0200
-Message-Id: <20180528214400.28252-2-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20180528214400.28252-1-u.kleine-koenig@pengutronix.de>
-References: <20180528214400.28252-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1fNWYO-0006vh-GQ
+ for barebox@lists.infradead.org; Tue, 29 May 2018 04:48:14 +0000
+Received: by mail-pg0-x241.google.com with SMTP id p8-v6so6024937pgq.10
+ for <barebox@lists.infradead.org>; Mon, 28 May 2018 21:48:01 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 28 May 2018 21:47:24 -0700
+Message-Id: <20180529044731.3964-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,33 +16,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] dove: fix bit layout of DOVE_CPU_CTRL register
+Subject: [PATCH v2 0/7] VF610 OCOTP MAC address layout change
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Vivien Didelot <vivien.didelot@savoirfairelinux.com>
 
-V2hpbGUgY3JlYXRpbmcgdGhlIHByZXZpb3VzIHBhdGNoIEkgY2hlY2tlZCB0aGUgY3B1J3MgcmVm
-ZXJlbmNlIG1hbnVhbAp0byBzZWUgd2hhdCB0aGUgYWZmZWN0ZWQgcmVnaXN0ZXJzIGFjdHVhbGx5
-IGRvIGFuZCBub3RpY2VkIHRoYXQgYml0cwpvZiB0aGUgRE9WRV9DUFVfQ1RSTCBhY3R1YWxseSB1
-c2VkIGJ5IHRoZSBjb2RlIGRvZXNuJ3QgbWF0Y2ggdGhlIGJpdHMKZGVzY3JpYmVkIGFzIEFIQlNs
-YXZlQmFzZSBpbiB0aGUgbWFudWFsLgoKSSdtIG5vdCBhd2FyZSBvZiBhbnkgZWZmZWN0IChuZWl0
-aGVyIHBvc2l0aXZlIG5vciBuZWdhdGl2ZSkgb2YgdGhpcwpwYXRjaC4KClNpZ25lZC1vZmYtYnk6
-IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQog
-YXJjaC9hcm0vbWFjaC1tdmVidS9jb21tb24uYyB8IDQgKystLQogMSBmaWxlIGNoYW5nZWQsIDIg
-aW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNo
-LW12ZWJ1L2NvbW1vbi5jIGIvYXJjaC9hcm0vbWFjaC1tdmVidS9jb21tb24uYwppbmRleCBlOTUx
-YmMwNjI3NmEuLjgzYWViNDFhZTIyNSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1tdmVidS9j
-b21tb24uYworKysgYi9hcmNoL2FybS9tYWNoLW12ZWJ1L2NvbW1vbi5jCkBAIC0yMTksOCArMjE5
-LDggQEAgdm9pZCBfX25ha2VkIF9fbm9yZXR1cm4gZG92ZV9iYXJlYm94X2VudHJ5KHZvaWQgKmJv
-YXJkZGF0YSkKIAkgKiBUaGUgQVhJIHVuaXRzIGludGVybmFsIHNwYWNlIGJhc2Ugc3RhcnRzIGF0
-IHRoZSBzYW1lIGFkZHJlc3MgYXMgdGhlCiAJICogRERSIGNvbnRyb2xsZXIuCiAJICovCi0JdmFs
-ID0gcmVhZGwoRE9WRV9DUFVfQ1RSTCkgJiAweGZmZmYwMDAwOwotCXZhbCB8PSAoKHVuc2lnbmVk
-IGxvbmcpRE9WRV9TRFJBTV9CQVNFICYgMHhmZmZmMDAwMCkgPj4gMTY7CisJdmFsID0gcmVhZGwo
-RE9WRV9DUFVfQ1RSTCkgJiAweGZmZjAwN2ZmOworCXZhbCB8PSAoKHVuc2lnbmVkIGxvbmcpRE9W
-RV9TRFJBTV9CQVNFICYgMHhmZjgwMDAwMCkgPj4gMTI7CiAJd3JpdGVsKHZhbCwgRE9WRV9DUFVf
-Q1RSTCk7CiAKIAliYXJlYm94X2FybV9lbnRyeSgwLCBkb3ZlX21lbW9yeV9maW5kKCksIGJvYXJk
-ZGF0YSk7Ci0tIAoyLjE3LjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Everyone:
+
+This patchset is as a result of dealing with VF610 U-Boot OCOTP/MAC
+quirk.
+
+	- Patch 1 and 2 are the actual patches dealing with U-Boot's
+          idiosyncrasy (see individual commit messages for more
+          details)
+
+	- Patch 3 and 4 are trivial refactoring made possible with
+          <linux/bitfield.h>
+
+	- Patches 5, 6 and 7 are very much optional. IMHO,
+          drivers/nvmem is a better place for OCOTP code, but if we
+          want to keep the code as is, I am more than happy to drop
+          these from the series.
+
+Changes since [v1]:
+
+	- Fixed a bug in MAC formatting spotted by Sascha.
+
+
+[v1] http://lists.infradead.org/pipermail/barebox/2018-May/033094.html
+
+Feedback is wellcome!
+
+Thanks,
+Andrey Smirnov
+
+Andrey Smirnov (7):
+  i.MX: ocotp: Unify code paths for reading MAC address
+  i.MX: ocotp: Change MAC address layout for VFxxx
+  i.MX: ocotp: Simplify OCOTP field packing/unpacking
+  i.MX: ocotp: Simplify BF macro
+  i.MX: ocotp: Move OCOTP driver to drivers/nvmem
+  nvmem: Use name from struct nvmem_config for cdev
+  nvmem: ocotp: Convert to NVMEM device
+
+ arch/arm/mach-imx/Kconfig                    |  23 +--
+ arch/arm/mach-imx/Makefile                   |   1 -
+ arch/arm/mach-imx/include/mach/ocotp.h       |  31 ++-
+ drivers/nvmem/Kconfig                        |  21 ++
+ drivers/nvmem/Makefile                       |   3 +
+ drivers/nvmem/core.c                         |  18 +-
+ {arch/arm/mach-imx => drivers/nvmem}/ocotp.c | 201 ++++++++++++-------
+ 7 files changed, 183 insertions(+), 115 deletions(-)
+ rename {arch/arm/mach-imx => drivers/nvmem}/ocotp.c (79%)
+
+-- 
+2.17.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
