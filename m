@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fNWYT-0006w8-3s
- for barebox@lists.infradead.org; Tue, 29 May 2018 04:48:21 +0000
-Received: by mail-pl0-x242.google.com with SMTP id i5-v6so8222420plt.2
- for <barebox@lists.infradead.org>; Mon, 28 May 2018 21:48:06 -0700 (PDT)
+ id 1fNWYV-0006wP-Ix
+ for barebox@lists.infradead.org; Tue, 29 May 2018 04:48:23 +0000
+Received: by mail-pf0-x244.google.com with SMTP id c10-v6so6667718pfi.12
+ for <barebox@lists.infradead.org>; Mon, 28 May 2018 21:48:09 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 28 May 2018 21:47:28 -0700
-Message-Id: <20180529044731.3964-5-andrew.smirnov@gmail.com>
+Date: Mon, 28 May 2018 21:47:30 -0700
+Message-Id: <20180529044731.3964-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20180529044731.3964-1-andrew.smirnov@gmail.com>
 References: <20180529044731.3964-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,39 +23,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/7] i.MX: ocotp: Simplify BF macro
+Subject: [PATCH v2 6/7] nvmem: Use name from struct nvmem_config for cdev
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Vivien Didelot <vivien.didelot@savoirfairelinux.com>
+
+Original name, 'nvmemN', doesn't really give any hint about which
+physical HW it may represent, so change the code to either pick up an
+DT alias or use the name passed via 'struct nvmem_config'.
 
 Cc: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
 Tested-by: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/ocotp.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/nvmem/core.c | 18 +++---------------
+ 1 file changed, 3 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
-index 5b21479eb..8c44bbb16 100644
---- a/arch/arm/mach-imx/ocotp.c
-+++ b/arch/arm/mach-imx/ocotp.c
-@@ -55,16 +55,13 @@
- #define OCOTP_CTRL_ERROR		(1 << 9)
- #define OCOTP_CTRL_RELOAD_SHADOWS	(1 << 10)
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index 172fa8b72..53b934bb3 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -88,26 +88,14 @@ static struct cdev_operations nvmem_chrdev_ops = {
+ 	.lseek = dev_lseek_default,
+ };
  
--#define OCOTP_TIMING_STROBE_READ	16
- #define OCOTP_TIMING_STROBE_READ_MASK	0x003F0000
--#define OCOTP_TIMING_RELAX		12
- #define OCOTP_TIMING_RELAX_MASK		0x0000F000
--#define OCOTP_TIMING_STROBE_PROG	0
- #define OCOTP_TIMING_STROBE_PROG_MASK	0x00000FFF
+-static int nvmem_register_cdev(struct nvmem_device *nvmem)
++static int nvmem_register_cdev(struct nvmem_device *nvmem, const char *name)
+ {
+ 	struct device_d *dev = &nvmem->dev;
+ 	const char *alias;
+-	char *devname;
+-	int err;
  
- #define OCOTP_READ_CTRL_READ_FUSE	0x00000001
+ 	alias = of_alias_get(dev->device_node);
+-	if (alias) {
+-		devname = xstrdup(alias);
+-	} else {
+-		err = cdev_find_free_index("nvmem");
+-		if (err < 0) {
+-			dev_err(dev, "no index found to name device\n");
+-			return err;
+-		}
+-		devname = xasprintf("nvmem%d", err);
+-	}
  
--#define BF(value, field)		(((value) << field) & field##_MASK)
-+#define BF(value, field)		FIELD_PREP(field##_MASK, value)
+-	nvmem->cdev.name = devname;
++	nvmem->cdev.name = xstrdup(alias ?: name);
+ 	nvmem->cdev.flags = DEVFS_IS_CHARACTER_DEV;
+ 	nvmem->cdev.ops = &nvmem_chrdev_ops;
+ 	nvmem->cdev.dev = &nvmem->dev;
+@@ -222,7 +210,7 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
+ 		return ERR_PTR(rval);
+ 	}
  
- #define OCOTP_OFFSET_TO_ADDR(o)		(OCOTP_OFFSET_TO_INDEX(o) * 4)
- 
+-	rval = nvmem_register_cdev(nvmem);
++	rval = nvmem_register_cdev(nvmem, config->name);
+ 	if (rval) {
+ 		kfree(nvmem);
+ 		return ERR_PTR(rval);
 -- 
 2.17.0
 
