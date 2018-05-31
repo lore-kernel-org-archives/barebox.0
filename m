@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fOPNY-0002iI-Qa
- for barebox@lists.infradead.org; Thu, 31 May 2018 15:20:47 +0000
-Date: Thu, 31 May 2018 17:20:28 +0200
+ id 1fOPU0-0006Eb-Vq
+ for barebox@lists.infradead.org; Thu, 31 May 2018 15:27:33 +0000
+Date: Thu, 31 May 2018 17:27:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180531152028.kbprl3tnv3qyrpep@pengutronix.de>
-References: <1527590457-27742-1-git-send-email-heinrich.toews@wago.com>
+Message-ID: <20180531152707.44dmzdu4pa3ypupq@pengutronix.de>
+References: <20180529044731.3964-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1527590457-27742-1-git-send-email-heinrich.toews@wago.com>
+In-Reply-To: <20180529044731.3964-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,41 +22,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: nand: omap_gpmc: fix: remove bch4 string extant
-To: Heinrich.Toews@wago.com
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 0/7] VF610 OCOTP MAC address layout change
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org, Vivien Didelot <vivien.didelot@savoirfairelinux.com>
 
-On Tue, May 29, 2018 at 10:41:11AM +0000, Heinrich.Toews@wago.com wrote:
-> Remove an erroneous bch4 string leftover that
-> leads to a false ecc mode mapping.
+On Mon, May 28, 2018 at 09:47:24PM -0700, Andrey Smirnov wrote:
+> Everyone:
 > 
-> BCH4 support was previously removed by Teresa Remmet:
-> d316cda 'mtd: nand: omap_gpmc: Remove BCH4 support'
+> This patchset is as a result of dealing with VF610 U-Boot OCOTP/MAC
+> quirk.
 > 
-> Signed-off-by: Heinrich Toews <heinrich.toews@wago.com>
-> ---
->  drivers/mtd/nand/nand_omap_gpmc.c | 1 -
->  1 file changed, 1 deletion(-)
+> 	- Patch 1 and 2 are the actual patches dealing with U-Boot's
+>           idiosyncrasy (see individual commit messages for more
+>           details)
+> 
+> 	- Patch 3 and 4 are trivial refactoring made possible with
+>           <linux/bitfield.h>
+> 
+> 	- Patches 5, 6 and 7 are very much optional. IMHO,
+>           drivers/nvmem is a better place for OCOTP code, but if we
+>           want to keep the code as is, I am more than happy to drop
+>           these from the series.
+> 
+> Changes since [v1]:
+> 
+> 	- Fixed a bug in MAC formatting spotted by Sascha.
+> 
+> 
+> [v1] http://lists.infradead.org/pipermail/barebox/2018-May/033094.html
+> 
+> Feedback is wellcome!
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
-> index e18ce63..ce03c7a 100644
-> --- a/drivers/mtd/nand/nand_omap_gpmc.c
-> +++ b/drivers/mtd/nand/nand_omap_gpmc.c
-> @@ -95,7 +95,6 @@ int omap_gpmc_decode_bch(int select_4_8, unsigned char *ecc, unsigned int *err_l
->  static const char *ecc_mode_strings[] = {
->  	"software",
->  	"hamming_hw_romcode",
-> -	"bch4_hw",
->  	"bch8_hw",
->  	"bch8_hw_romcode",
->  };
+> Thanks,
+> Andrey Smirnov
+> 
+> Andrey Smirnov (7):
+>   i.MX: ocotp: Unify code paths for reading MAC address
+>   i.MX: ocotp: Change MAC address layout for VFxxx
+>   i.MX: ocotp: Simplify OCOTP field packing/unpacking
+>   i.MX: ocotp: Simplify BF macro
+>   i.MX: ocotp: Move OCOTP driver to drivers/nvmem
+>   nvmem: Use name from struct nvmem_config for cdev
+>   nvmem: ocotp: Convert to NVMEM device
+> 
+>  arch/arm/mach-imx/Kconfig                    |  23 +--
+>  arch/arm/mach-imx/Makefile                   |   1 -
+>  arch/arm/mach-imx/include/mach/ocotp.h       |  31 ++-
+>  drivers/nvmem/Kconfig                        |  21 ++
+>  drivers/nvmem/Makefile                       |   3 +
+>  drivers/nvmem/core.c                         |  18 +-
+>  {arch/arm/mach-imx => drivers/nvmem}/ocotp.c | 201 ++++++++++++-------
+>  7 files changed, 183 insertions(+), 115 deletions(-)
+>  rename {arch/arm/mach-imx => drivers/nvmem}/ocotp.c (79%)
+> 
 > -- 
-> 2.7.4
+> 2.17.0
+> 
 > 
 > _______________________________________________
 > barebox mailing list
