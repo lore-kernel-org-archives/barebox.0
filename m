@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fOPU0-0006Eb-Vq
- for barebox@lists.infradead.org; Thu, 31 May 2018 15:27:33 +0000
-Date: Thu, 31 May 2018 17:27:07 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180531152707.44dmzdu4pa3ypupq@pengutronix.de>
-References: <20180529044731.3964-1-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180529044731.3964-1-andrew.smirnov@gmail.com>
+ id 1fOUVQ-00082Y-Ab
+ for barebox@lists.infradead.org; Thu, 31 May 2018 20:49:12 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Thu, 31 May 2018 22:48:48 +0200
+Message-Id: <20180531204851.1719-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,83 +14,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/7] VF610 OCOTP MAC address layout change
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org, Vivien Didelot <vivien.didelot@savoirfairelinux.com>
+Subject: [PATCH 1/4] filetype: add ELF type
+To: barebox@lists.infradead.org
 
-On Mon, May 28, 2018 at 09:47:24PM -0700, Andrey Smirnov wrote:
-> Everyone:
-> 
-> This patchset is as a result of dealing with VF610 U-Boot OCOTP/MAC
-> quirk.
-> 
-> 	- Patch 1 and 2 are the actual patches dealing with U-Boot's
->           idiosyncrasy (see individual commit messages for more
->           details)
-> 
-> 	- Patch 3 and 4 are trivial refactoring made possible with
->           <linux/bitfield.h>
-> 
-> 	- Patches 5, 6 and 7 are very much optional. IMHO,
->           drivers/nvmem is a better place for OCOTP code, but if we
->           want to keep the code as is, I am more than happy to drop
->           these from the series.
-> 
-> Changes since [v1]:
-> 
-> 	- Fixed a bug in MAC formatting spotted by Sascha.
-> 
-> 
-> [v1] http://lists.infradead.org/pipermail/barebox/2018-May/033094.html
-> 
-> Feedback is wellcome!
+From: Antony Pavlov <antonynpavlov@gmail.com>
 
-Applied, thanks
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ common/filetype.c  | 5 +++++
+ include/filetype.h | 1 +
+ 2 files changed, 6 insertions(+)
 
-Sascha
-
-> 
-> Thanks,
-> Andrey Smirnov
-> 
-> Andrey Smirnov (7):
->   i.MX: ocotp: Unify code paths for reading MAC address
->   i.MX: ocotp: Change MAC address layout for VFxxx
->   i.MX: ocotp: Simplify OCOTP field packing/unpacking
->   i.MX: ocotp: Simplify BF macro
->   i.MX: ocotp: Move OCOTP driver to drivers/nvmem
->   nvmem: Use name from struct nvmem_config for cdev
->   nvmem: ocotp: Convert to NVMEM device
-> 
->  arch/arm/mach-imx/Kconfig                    |  23 +--
->  arch/arm/mach-imx/Makefile                   |   1 -
->  arch/arm/mach-imx/include/mach/ocotp.h       |  31 ++-
->  drivers/nvmem/Kconfig                        |  21 ++
->  drivers/nvmem/Makefile                       |   3 +
->  drivers/nvmem/core.c                         |  18 +-
->  {arch/arm/mach-imx => drivers/nvmem}/ocotp.c | 201 ++++++++++++-------
->  7 files changed, 183 insertions(+), 115 deletions(-)
->  rename {arch/arm/mach-imx => drivers/nvmem}/ocotp.c (79%)
-> 
-> -- 
-> 2.17.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/common/filetype.c b/common/filetype.c
+index 444ec14cc..77cf9a105 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -27,6 +27,7 @@
+ #include <envfs.h>
+ #include <disks.h>
+ #include <image-sparse.h>
++#include <elf.h>
+ 
+ struct filetype_str {
+ 	const char *name;	/* human readable filetype */
+@@ -68,6 +69,7 @@ static const struct filetype_str filetype_str[] = {
+ 	[filetype_kwbimage_v1] = { "MVEBU kwbimage (v1)", "kwb" },
+ 	[filetype_android_sparse] = { "Android sparse image", "sparse" },
+ 	[filetype_arm64_linux_image] = { "ARM aarch64 Linux image", "aarch64-linux" },
++	[filetype_elf] = { "ELF", "elf" },
+ };
+ 
+ const char *file_type_to_string(enum filetype f)
+@@ -344,6 +346,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+ 		buf[7] == 0x47530000)
+ 		return filetype_ch_image_be;
+ 
++	if (strncmp(buf8, ELFMAG, 4) == 0)
++		return filetype_elf;
++
+ 	return filetype_unknown;
+ }
+ 
+diff --git a/include/filetype.h b/include/filetype.h
+index 9986938dd..3b930bf94 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -41,6 +41,7 @@ enum filetype {
+ 	filetype_kwbimage_v1,
+ 	filetype_android_sparse,
+ 	filetype_arm64_linux_image,
++	filetype_elf,
+ 	filetype_max,
+ };
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
