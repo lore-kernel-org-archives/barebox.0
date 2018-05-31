@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fOP8O-0000Zk-EH
+ id 1fOP8O-0000Yv-AO
  for barebox@lists.infradead.org; Thu, 31 May 2018 15:05:23 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 31 May 2018 17:04:38 +0200
-Message-Id: <20180531150442.16208-7-s.hauer@pengutronix.de>
+Date: Thu, 31 May 2018 17:04:37 +0200
+Message-Id: <20180531150442.16208-6-s.hauer@pengutronix.de>
 In-Reply-To: <20180531150442.16208-1-s.hauer@pengutronix.de>
 References: <20180531150442.16208-1-s.hauer@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,876 +17,547 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/10] fs: nfs: Switch to dentry cache implementation
+Subject: [PATCH 05/10] fs: ubifs: Switch to dentry cache implementation
 To: Barebox List <barebox@lists.infradead.org>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- fs/Kconfig |   1 -
- fs/nfs.c   | 542 +++++++++++++++++++++++------------------------------
- 2 files changed, 234 insertions(+), 309 deletions(-)
-
-diff --git a/fs/Kconfig b/fs/Kconfig
-index 195a5cb060..4d0e2787af 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -52,7 +52,6 @@ config FS_OMAP4_USBBOOT
- 
- config FS_NFS
- 	depends on NET
--	select FS_LEGACY
- 	bool
- 	prompt "nfs support"
- 
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 75cd127eeb..eb5db344db 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -20,6 +20,7 @@
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
-  */
-+#define pr_fmt(fmt) "NFS: " fmt
- 
- #include <common.h>
- #include <net.h>
-@@ -127,6 +128,11 @@ struct rpc_reply {
- #define NFS_TIMEOUT	(2 * SECOND)
- #define NFS_MAX_RESEND	5
- 
-+struct nfs_fh {
-+	unsigned short size;
-+	unsigned char data[NFS3_FHSIZE];
-+};
-+
- struct nfs_priv {
- 	struct net_connection *con;
- 	IPaddr_t server;
-@@ -136,18 +142,34 @@ struct nfs_priv {
- 	uint16_t nfs_port;
- 	unsigned manual_nfs_port:1;
- 	uint32_t rpc_id;
--	uint32_t rootfh_len;
--	char rootfh[NFS3_FHSIZE];
-+	struct nfs_fh rootfh;
- };
- 
- struct file_priv {
- 	struct kfifo *fifo;
- 	void *buf;
--	uint32_t filefh_len;
--	char filefh[NFS3_FHSIZE];
-+	struct nfs_priv *npriv;
-+	struct nfs_fh fh;
-+};
-+
-+struct nfs_inode {
-+	struct inode inode;
-+	struct nfs_fh fh;
- 	struct nfs_priv *npriv;
- };
- 
-+static inline struct nfs_inode *nfsi(struct inode *inode)
-+{
-+	return container_of(inode, struct nfs_inode, inode);
-+}
-+
-+static void nfs_set_fh(struct inode *inode, struct nfs_fh *fh)
-+{
-+	struct nfs_inode *ninode = nfsi(inode);
-+
-+	ninode->fh = *fh;
-+}
-+
- static uint64_t nfs_timer_start;
- 
- static int nfs_state;
-@@ -234,17 +256,14 @@ struct xdr_stream {
- #define XDR_QUADLEN(l)		(((l) + 3) >> 2)
- 
- struct nfs_dir {
--	DIR dir;
--
- 	/*
- 	 * stream points to the next entry3 in the reply member of READDIR3res
- 	 * (if any, to the end indicator otherwise).
- 	 */
- 	struct xdr_stream stream;
--	struct dirent ent;
--	struct file_priv *priv;
- 	uint64_t cookie;
- 	char cookieverf[NFS3_COOKIEVERFSIZE];
-+	struct nfs_fh fh;
- };
- 
- static void xdr_init(struct xdr_stream *stream, void *buf, int len)
-@@ -300,11 +319,11 @@ static int decode_filename(struct xdr_stream *xdr, char *name, u32 *length)
- 	return 0;
- 
- out_nametoolong:
--	printf("%s: returned a too long filename: %u\n", __func__, count);
-+	pr_err("%s: returned a too long filename: %u\n", __func__, count);
- 	return -ENAMETOOLONG;
- 
- out_overflow:
--	printf("%s: premature end of packet\n", __func__);
-+	pr_err("%s: premature end of packet\n", __func__);
- 	return -EIO;
- }
- 
-@@ -486,16 +505,16 @@ static uint32_t *nfs_add_uint64(uint32_t *p, uint64_t val)
- 	return p + 2;
- }
- 
--static uint32_t *nfs_add_fh3(uint32_t *p, unsigned fh_len, const char *fh)
-+static uint32_t *nfs_add_fh3(uint32_t *p, struct nfs_fh *fh)
- {
--	*p++ = hton32(fh_len);
-+	*p++ = hton32(fh->size);
- 
- 	/* zero padding */
--	if (fh_len & 3)
--		p[fh_len / 4] = 0;
-+	if (fh->size & 3)
-+		p[fh->size / 4] = 0;
- 
--	memcpy(p, fh, fh_len);
--	p += DIV_ROUND_UP(fh_len, 4);
-+	memcpy(p, fh->data, fh->size);
-+	p += DIV_ROUND_UP(fh->size, 4);
- 	return p;
- }
- 
-@@ -532,33 +551,36 @@ static const struct {
- 	{ 0x00800, S_ISUID },
- };
- 
--static int nfs_fattr3_to_stat(uint32_t *p, struct stat *s)
-+static int nfs_fattr3_to_stat(uint32_t *p, struct inode *inode)
- {
- 	uint32_t mode;
- 	size_t i;
- 
-+	if (!inode)
-+		return 0;
-+
- 	/* offsetof(struct fattr3, type) = 0 */
- 	switch (ntoh32(net_read_uint32(p + 0))) {
- 	case NF3REG:
--		s->st_mode = S_IFREG;
-+		inode->i_mode = S_IFREG;
- 		break;
- 	case NF3DIR:
--		s->st_mode = S_IFDIR;
-+		inode->i_mode = S_IFDIR;
- 		break;
- 	case NF3BLK:
--		s->st_mode = S_IFBLK;
-+		inode->i_mode = S_IFBLK;
- 		break;
- 	case NF3CHR:
--		s->st_mode = S_IFCHR;
-+		inode->i_mode = S_IFCHR;
- 		break;
- 	case NF3LNK:
--		s->st_mode = S_IFLNK;
-+		inode->i_mode = S_IFLNK;
- 		break;
- 	case NF3SOCK:
--		s->st_mode = S_IFSOCK;
-+		inode->i_mode = S_IFSOCK;
- 		break;
- 	case NF3FIFO:
--		s->st_mode = S_IFIFO;
-+		inode->i_mode = S_IFIFO;
- 		break;
- 	default:
- 		printf("%s: invalid mode %x\n",
-@@ -570,18 +592,17 @@ static int nfs_fattr3_to_stat(uint32_t *p, struct stat *s)
- 	mode = ntoh32(net_read_uint32(p + 1));
- 	for (i = 0; i < ARRAY_SIZE(nfs3_mode_bits); ++i) {
- 		if (mode & nfs3_mode_bits[i].nfsmode)
--			s->st_mode |= nfs3_mode_bits[i].statmode;
-+			inode->i_mode |= nfs3_mode_bits[i].statmode;
- 	}
- 
- 	/* offsetof(struct fattr3, size) = 20 */
--	s->st_size = ntoh64(net_read_uint64(p + 5));
-+	inode->i_size = ntoh64(net_read_uint64(p + 5));
- 
- 	return 0;
- }
- 
--static uint32_t *nfs_read_post_op_attr(uint32_t *p, struct stat **s)
-+static uint32_t *nfs_read_post_op_attr(uint32_t *p, struct inode *inode)
- {
--	struct stat dummy;
- 	/*
- 	 * union post_op_attr switch (bool attributes_follow) {
- 	 * case TRUE:
-@@ -592,11 +613,8 @@ static uint32_t *nfs_read_post_op_attr(uint32_t *p, struct stat **s)
- 	 */
- 
- 	if (ntoh32(net_read_uint32(p++))) {
--		nfs_fattr3_to_stat(p, s ? *s : &dummy);
-+		nfs_fattr3_to_stat(p, inode);
- 		p += 21;
--	} else if (s) {
--		/* no attributes available */
--		*s = NULL;
- 	}
- 
- 	return p;
-@@ -635,14 +653,14 @@ static int nfs_mount_req(struct nfs_priv *npriv)
- 
- 	p = nfs_packet + sizeof(struct rpc_reply) + 4;
- 
--	npriv->rootfh_len = ntoh32(net_read_uint32(p++));
--	if (npriv->rootfh_len > NFS3_FHSIZE) {
-+	npriv->rootfh.size = ntoh32(net_read_uint32(p++));
-+	if (npriv->rootfh.size > NFS3_FHSIZE) {
- 		printf("%s: file handle too big: %lu\n", __func__,
--				(unsigned long)npriv->rootfh_len);
-+				(unsigned long)npriv->rootfh.size);
- 		return -EIO;
- 	}
--	memcpy(npriv->rootfh, p, npriv->rootfh_len);
--	p += DIV_ROUND_UP(npriv->rootfh_len, 4);
-+	memcpy(npriv->rootfh.data, p, npriv->rootfh.size);
-+	p += DIV_ROUND_UP(npriv->rootfh.size, 4);
- 
- 	return 0;
- }
-@@ -674,9 +692,10 @@ static void nfs_umount_req(struct nfs_priv *npriv)
-  *
-  * *s is set to NULL if LOOKUP3resok doesn't contain obj_attributes.
-  */
--static int nfs_lookup_req(struct file_priv *priv,
--		uint32_t filename_len, const char *filename, struct stat **s)
-+static int nfs_lookup_req(struct nfs_priv *npriv, struct nfs_fh *fh,
-+			  const char *filename, struct inode *inode)
- {
-+	struct nfs_inode *ninode = nfsi(inode);
- 	uint32_t data[1024];
- 	uint32_t *p;
- 	int len;
-@@ -709,73 +728,29 @@ static int nfs_lookup_req(struct file_priv *priv,
- 	p = rpc_add_credentials(p);
- 
- 	/* what.dir */
--	p = nfs_add_fh3(p, priv->filefh_len, priv->filefh);
-+	p = nfs_add_fh3(p, fh);
- 
- 	/* what.name */
--	p = nfs_add_filename(p, filename_len, filename);
-+	p = nfs_add_filename(p, strlen(filename), filename);
- 
- 	len = p - &(data[0]);
- 
--	ret = rpc_req(priv->npriv, PROG_NFS, NFSPROC3_LOOKUP, data, len);
-+	ret = rpc_req(npriv, PROG_NFS, NFSPROC3_LOOKUP, data, len);
- 	if (ret)
- 		return ret;
- 
- 	p = nfs_packet + sizeof(struct rpc_reply) + 4;
- 
--	priv->filefh_len = ntoh32(net_read_uint32(p++));
--	if (priv->filefh_len > NFS3_FHSIZE) {
--		debug("%s: file handle too big: %lu\n", __func__,
--				(unsigned long)priv->filefh_len);
-+	ninode->fh.size = ntoh32(net_read_uint32(p++));
-+	if (ninode->fh.size > NFS3_FHSIZE) {
-+		debug("%s: file handle too big: %u\n", __func__,
-+		      ninode->fh.size);
- 		return -EIO;
- 	}
--	memcpy(priv->filefh, p, priv->filefh_len);
--	p += DIV_ROUND_UP(priv->filefh_len, 4);
--
--	if (s)
--		nfs_read_post_op_attr(p, s);
--
--	return 0;
--}
--
--static int nfs_attr_req(struct file_priv *priv, struct stat *s)
--{
--	uint32_t data[1024];
--	uint32_t *p;
--	int len;
--	int ret;
--
--	/*
--	 * struct GETATTR3args {
--	 * 	nfs_fh3 object;
--	 * }
--	 *
--	 * struct GETATTR3resok {
--	 * 	fattr3 obj_attributes;
--	 * };
--	 *
--	 * union GETATTR3res switch (nfsstat3 status) {
--	 * case NFS3_OK:
--	 * 	GETATTR3resok resok;
--	 * default:
--	 * 	void;
--	 * }
--	 */
--
--	p = &(data[0]);
--	p = rpc_add_credentials(p);
--
--	/* object */
--	p = nfs_add_fh3(p, priv->filefh_len, priv->filefh);
--
--	len = p - &(data[0]);
--
--	ret = rpc_req(priv->npriv, PROG_NFS, NFSPROC3_GETATTR, data, len);
--	if (ret)
--		return ret;
-+	memcpy(ninode->fh.data, p, ninode->fh.size);
-+	p += DIV_ROUND_UP(ninode->fh.size, 4);
- 
--	p = nfs_packet + sizeof(struct rpc_reply) + 4;
--
--	nfs_fattr3_to_stat(p, s);
-+	nfs_read_post_op_attr(p, inode);
- 
- 	return 0;
- }
-@@ -784,7 +759,7 @@ static int nfs_attr_req(struct file_priv *priv, struct stat *s)
-  * returns with dir->stream pointing to the first entry
-  * of dirlist3 res.resok.reply
-  */
--static void *nfs_readdirattr_req(struct file_priv *priv, struct nfs_dir *dir)
-+static void *nfs_readdirattr_req(struct nfs_priv *npriv, struct nfs_dir *dir)
- {
- 	uint32_t data[1024];
- 	uint32_t *p;
-@@ -833,7 +808,7 @@ static void *nfs_readdirattr_req(struct file_priv *priv, struct nfs_dir *dir)
- 	p = &(data[0]);
- 	p = rpc_add_credentials(p);
- 
--	p = nfs_add_fh3(p, priv->filefh_len, priv->filefh);
-+	p = nfs_add_fh3(p, &dir->fh);
- 	p = nfs_add_uint64(p, dir->cookie);
- 
- 	memcpy(p, dir->cookieverf, NFS3_COOKIEVERFSIZE);
-@@ -841,7 +816,7 @@ static void *nfs_readdirattr_req(struct file_priv *priv, struct nfs_dir *dir)
- 
- 	p = nfs_add_uint32(p, 1024); /* count */
- 
--	ret = rpc_req(priv->npriv, PROG_NFS, NFSPROC3_READDIR, data, p - data);
-+	ret = rpc_req(npriv, PROG_NFS, NFSPROC3_READDIR, data, p - data);
- 	if (ret)
- 		return NULL;
- 
-@@ -909,7 +884,7 @@ static int nfs_read_req(struct file_priv *priv, uint64_t offset,
- 	p = &(data[0]);
- 	p = rpc_add_credentials(p);
- 
--	p = nfs_add_fh3(p, priv->filefh_len, priv->filefh);
-+	p = nfs_add_fh3(p, &priv->fh);
- 	p = nfs_add_uint64(p, offset);
- 	p = nfs_add_uint32(p, readlen);
- 
-@@ -953,82 +928,11 @@ static void nfs_handler(void *ctx, char *packet, unsigned len)
- 	nfs_len = len;
- }
- 
--static int nfs_create(struct device_d *dev, const char *pathname, mode_t mode)
--{
--	return -ENOSYS;
--}
--
--static int nfs_unlink(struct device_d *dev, const char *pathname)
--{
--	return -ENOSYS;
--}
--
--static int nfs_mkdir(struct device_d *dev, const char *pathname)
--{
--	return -ENOSYS;
--}
--
--static int nfs_rmdir(struct device_d *dev, const char *pathname)
--{
--	return -ENOSYS;
--}
--
- static int nfs_truncate(struct device_d *dev, FILE *f, ulong size)
- {
- 	return -ENOSYS;
- }
- 
--static struct file_priv *nfs_do_open(struct device_d *dev,
--		const char *filename, struct stat **s)
--{
--	struct file_priv *priv;
--	struct nfs_priv *npriv = dev->priv;
--	int ret;
--	const char *tok;
--
--	debug("%s: filename = %s\n", __func__, filename);
--	priv = xzalloc(sizeof(*priv));
--
--	priv->npriv = npriv;
--
--	if (!*filename) {
--		priv->filefh_len = npriv->rootfh_len;
--		memcpy(priv->filefh, npriv->rootfh, npriv->rootfh_len);
--		return priv;
--	}
--
--	filename++;
--
--	priv->filefh_len = npriv->rootfh_len;
--	memcpy(priv->filefh, npriv->rootfh, NFS3_FHSIZE);
--
--	while (*filename) {
--		size_t flen;
--
--		tok = strchr(filename, '/');
--		if (tok)
--			flen = tok - filename;
--		else
--			flen = strlen(filename);
--
--		ret = nfs_lookup_req(priv, flen, filename, s);
--		if (ret)
--			goto out;
--
--		if (tok)
--			filename += flen + 1;
--		else
--			break;
--	}
--
--	return priv;
--
--out:
--	free(priv);
--
--	return ERR_PTR(ret);
--}
--
- static void nfs_do_close(struct file_priv *priv)
- {
- 	if (priv->fifo)
-@@ -1037,34 +941,8 @@ static void nfs_do_close(struct file_priv *priv)
- 	free(priv);
- }
- 
--static struct file_priv *nfs_do_stat(struct device_d *dev,
--		const char *filename, struct stat *s)
--{
--	struct file_priv *priv;
--	int ret;
--	struct stat **sptr = &s;
--
--	debug("%s: filename = %s\n", __func__, filename);
--	priv = nfs_do_open(dev, filename, sptr);
--	if (IS_ERR(priv))
--		return priv;
--
--	if (!*sptr) {
--		/*
--		 * The nfs server didn't provide obj_attributes in the lookup
--		 * reply, so ask for them explicitly.
--		 */
--		ret = nfs_attr_req(priv, s);
--		if (ret) {
--			nfs_do_close(priv);
--			return ERR_PTR(ret);
--		}
--	}
--
--	return priv;
--}
--
--static int nfs_readlink_req(struct file_priv *priv, char* buf, size_t size)
-+static int nfs_readlink_req(struct nfs_priv *npriv, struct nfs_fh *fh,
-+			    char **target)
- {
- 	uint32_t data[1024];
- 	uint32_t *p;
-@@ -1095,11 +973,11 @@ static int nfs_readlink_req(struct file_priv *priv, char* buf, size_t size)
- 	p = &(data[0]);
- 	p = rpc_add_credentials(p);
- 
--	p = nfs_add_fh3(p, priv->filefh_len, priv->filefh);
-+	p = nfs_add_fh3(p, fh);
- 
- 	len = p - &(data[0]);
- 
--	ret = rpc_req(priv->npriv, PROG_NFS, NFSPROC3_READLINK, data, len);
-+	ret = rpc_req(npriv, PROG_NFS, NFSPROC3_READLINK, data, len);
- 	if (ret)
- 		return ret;
- 
-@@ -1110,44 +988,37 @@ static int nfs_readlink_req(struct file_priv *priv, char* buf, size_t size)
- 	len = ntoh32(net_read_uint32(p)); /* new path length */
- 	p++;
- 
--	if (len > size)
--		return -ENOMEM;
--
--	memcpy(buf, p, len);
-+	*target = xzalloc(len + 1);
-+	memcpy(*target, p, len);
- 
- 	return 0;
- }
- 
--static int nfs_readlink(struct device_d *dev, const char *filename,
--			char *realname, size_t size)
-+static const char *nfs_get_link(struct dentry *dentry, struct inode *inode)
- {
--	struct file_priv *priv;
-+	struct nfs_inode *ninode = nfsi(inode);
-+	struct nfs_priv *npriv = ninode->npriv;
- 	int ret;
- 
--	priv = nfs_do_open(dev, filename, NULL);
--	if (IS_ERR(priv))
--		return PTR_ERR(priv);
--
--	ret = nfs_readlink_req(priv, realname, size);
--	if (ret) {
--		nfs_do_close(priv);
--		return ret;
--	}
-+	ret = nfs_readlink_req(npriv, &ninode->fh, &inode->i_link);
-+	if (ret)
-+		return ERR_PTR(ret);
- 
--	return 0;
-+	return inode->i_link;
- }
- 
- static int nfs_open(struct device_d *dev, FILE *file, const char *filename)
- {
-+	struct inode *inode = file->f_inode;
-+	struct nfs_inode *ninode = nfsi(inode);
-+	struct nfs_priv *npriv = ninode->npriv;
- 	struct file_priv *priv;
--	struct stat s;
--
--	priv = nfs_do_stat(dev, filename, &s);
--	if (IS_ERR(priv))
--		return PTR_ERR(priv);
- 
-+	priv = xzalloc(sizeof(*priv));
-+	priv->fh = ninode->fh;
-+	priv->npriv = npriv;
- 	file->priv = priv;
--	file->size = s.st_size;
-+	file->size = inode->i_size;
- 
- 	priv->fifo = kfifo_alloc(1024);
- 	if (!priv->fifo) {
-@@ -1199,115 +1070,170 @@ static loff_t nfs_lseek(struct device_d *dev, FILE *file, loff_t pos)
- 	return file->pos;
- }
- 
--static DIR *nfs_opendir(struct device_d *dev, const char *pathname)
-+static int nfs_iterate(struct file *file, struct dir_context *ctx)
- {
--	struct file_priv *priv;
-+	struct dentry *dentry = file->f_path.dentry;
-+	struct inode *dir = d_inode(dentry);
-+	struct nfs_priv *npriv = nfsi(dir)->npriv;
- 	void *buf = NULL;
--	struct nfs_dir *dir;
-+	struct nfs_dir *ndir;
-+	struct xdr_stream *xdr;
-+	int ret;
-+	uint32_t *p, len;
- 
--	priv = nfs_do_open(dev, pathname, NULL);
--	if (IS_ERR(priv))
--		return NULL;
-+	ndir = xzalloc(sizeof(*ndir));
-+	ndir->fh = nfsi(dir)->fh;
- 
--	dir = xzalloc(sizeof(*dir));
--	dir->priv = priv;
-+	while (1) {
-+		/* cookie == 0 and cookieverf == 0 means start of dir */
-+		buf = nfs_readdirattr_req(npriv, ndir);
-+		if (!buf) {
-+			pr_err("%s: nfs_readdirattr_req failed\n", __func__);
-+			ret = -EINVAL;
-+			goto out;
-+		}
- 
--	/* cookie == 0 and cookieverf == 0 means start of dir */
--	buf = nfs_readdirattr_req(priv, dir);
--	if (!buf) {
--		debug("%s: nfs_readdirattr_req failed\n", __func__);
--		goto err;
--	}
-+		xdr = &ndir->stream;
- 
--	return &dir->dir;
-+		while (1) {
-+			char name[256];
- 
--err:
--	free(buf);
--	free(dir);
--	nfs_do_close(priv);
--	return NULL;
--}
-+			p = xdr_inline_decode(xdr, 4);
-+			if (!p)
-+				goto err_eop;
- 
--static struct dirent *nfs_readdir(struct device_d *dev, DIR *dir)
--{
--	struct nfs_dir *ndir = container_of(dir, struct nfs_dir, dir);
--	uint32_t *p;
--	int ret;
--	int len;
--	struct xdr_stream *xdr = &ndir->stream;
-+			if (!net_read_uint32(p)) {
-+				/* eof? */
-+				p = xdr_inline_decode(xdr, 4);
-+				if (!p)
-+					goto err_eop;
- 
--again:
--	p = xdr_inline_decode(xdr, 4);
--	if (!p) {
--		printf("%s: premature end of packet\n", __func__);
--		return NULL;
--	}
-+				if (net_read_uint32(p)) {
-+					ret = 0;
-+					goto out;
-+				}
- 
--	if (!net_read_uint32(p)) {
--		/* eof? */
--		p = xdr_inline_decode(xdr, 4);
--		if (!p) {
--			printf("%s: premature end of packet\n", __func__);
--			return NULL;
--		}
--		if (net_read_uint32(p))
--			return NULL;
-+				break;
-+			}
- 
--		if (!nfs_readdirattr_req(ndir->priv, ndir)) {
--			printf("%s: nfs_readdirattr_req failed\n", __func__);
--			return NULL;
--		}
-+			/* skip over fileid */
-+			p = xdr_inline_decode(xdr, 8);
-+			if (!p)
-+				goto err_eop;
- 
--		goto again;
--	}
-+			ret = decode_filename(xdr, name, &len);
-+			if (ret)
-+				goto out;
- 
--	/* there is another entry available in the last reply */
-+			dir_emit(ctx, name, len, 0, DT_UNKNOWN);
- 
--	/* skip over fileid */
--	p = xdr_inline_decode(xdr, 8);
--	if (!p) {
--		printf("%s: premature end of packet\n", __func__);
--		return NULL;
-+			p = xdr_inline_decode(xdr, 8);
-+			if (!p)
-+				goto err_eop;
-+
-+			ndir->cookie = ntoh64(net_read_uint64(p));
-+		}
-+		free(buf);
- 	}
- 
--	ret = decode_filename(xdr, ndir->ent.d_name, &len);
--	if (ret)
--		return NULL;
-+	ret = 0;
- 
--	p = xdr_inline_decode(xdr, 8);
--	if (!p) {
--		printf("%s: premature end of packet\n", __func__);
-+out:
-+	free(ndir->stream.buf);
-+	free(ndir);
-+
-+	return ret;
-+
-+err_eop:
-+	pr_err("Unexpected end of packet\n");
-+
-+	return -EIO;
-+}
-+
-+static struct inode *nfs_alloc_inode(struct super_block *sb)
-+{
-+	struct nfs_inode *node;
-+
-+	node = xzalloc(sizeof(*node));
-+	if (!node)
- 		return NULL;
--	}
--	ndir->cookie = ntoh64(net_read_uint64(p));
- 
--	return &ndir->ent;
-+	return &node->inode;
- }
- 
--static int nfs_closedir(struct device_d *dev, DIR *dir)
-+static const struct inode_operations nfs_file_inode_operations;
-+static const struct file_operations nfs_dir_operations;
-+static const struct inode_operations nfs_dir_inode_operations;
-+static const struct file_operations nfs_file_operations;
-+static const struct inode_operations nfs_symlink_inode_operations = {
-+	.get_link = nfs_get_link,
-+};
-+
-+static int nfs_init_inode(struct nfs_priv *npriv, struct inode *inode,
-+			  unsigned int mode)
- {
--	struct nfs_dir *ndir = (void *)dir;
-+	struct nfs_inode *ninode = nfsi(inode);
- 
--	nfs_do_close(ndir->priv);
--	free(ndir->stream.buf);
--	free(ndir);
-+	ninode->npriv = npriv;
-+
-+	inode->i_ino = get_next_ino();
-+	inode->i_mode = mode;
-+
-+	switch (inode->i_mode & S_IFMT) {
-+	default:
-+		return -EINVAL;
-+	case S_IFREG:
-+		inode->i_op = &nfs_file_inode_operations;
-+		inode->i_fop = &nfs_file_operations;
-+		break;
-+	case S_IFDIR:
-+		inode->i_op = &nfs_dir_inode_operations;
-+		inode->i_fop = &nfs_dir_operations;
-+		inc_nlink(inode);
-+		break;
-+	case S_IFLNK:
-+		inode->i_op = &nfs_symlink_inode_operations;
-+		break;
-+	}
- 
- 	return 0;
- }
- 
--static int nfs_stat(struct device_d *dev, const char *filename, struct stat *s)
-+static struct dentry *nfs_lookup(struct inode *dir, struct dentry *dentry,
-+				   unsigned int flags)
- {
--	struct file_priv *priv;
-+	struct nfs_inode *ndir = nfsi(dir);
-+	struct inode *inode = new_inode(dir->i_sb);
-+	struct nfs_priv *npriv = ndir->npriv;
-+	int ret;
- 
--	priv = nfs_do_stat(dev, filename, s);
--	if (IS_ERR(priv)) {
--		return PTR_ERR(priv);
--	} else {
--		nfs_do_close(priv);
--		return 0;
--	}
-+	if (!inode)
-+		return NULL;
-+
-+	ret = nfs_lookup_req(npriv, &ndir->fh, dentry->name, inode);
-+	if (ret)
-+		return NULL;
-+
-+	nfs_init_inode(npriv, inode, inode->i_mode);
-+
-+	d_add(dentry, inode);
-+
-+	return NULL;
- }
- 
-+static const struct file_operations nfs_dir_operations = {
-+	.iterate = nfs_iterate,
-+};
-+
-+static const struct inode_operations nfs_dir_inode_operations =
-+{
-+	.lookup = nfs_lookup,
-+};
-+
-+static const struct super_operations nfs_ops = {
-+	.alloc_inode = nfs_alloc_inode,
-+};
-+
- static char *rootnfsopts;
- 
- static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device_d *fsdev)
-@@ -1347,8 +1273,10 @@ static int nfs_probe(struct device_d *dev)
- {
- 	struct fs_device_d *fsdev = dev_to_fs_device(dev);
- 	struct nfs_priv *npriv = xzalloc(sizeof(struct nfs_priv));
-+	struct super_block *sb = &fsdev->sb;
- 	char *tmp = xstrdup(fsdev->backingstore);
- 	char *path;
-+	struct inode *inode;
- 	int ret;
- 
- 	dev->priv = npriv;
-@@ -1414,6 +1342,13 @@ static int nfs_probe(struct device_d *dev)
- 
- 	free(tmp);
- 
-+	sb->s_op = &nfs_ops;
-+
-+	inode = new_inode(sb);
-+	nfs_set_fh(inode, &npriv->rootfh);
-+	nfs_init_inode(npriv, inode, S_IFDIR);
-+	sb->s_root = d_make_root(inode);
-+
- 	return 0;
- 
- err2:
-@@ -1443,17 +1378,8 @@ static struct fs_driver_d nfs_driver = {
- 	.close     = nfs_close,
- 	.read      = nfs_read,
- 	.lseek     = nfs_lseek,
--	.opendir   = nfs_opendir,
--	.readdir   = nfs_readdir,
--	.closedir  = nfs_closedir,
--	.stat      = nfs_stat,
--	.create    = nfs_create,
--	.unlink    = nfs_unlink,
--	.mkdir     = nfs_mkdir,
--	.rmdir     = nfs_rmdir,
- 	.write     = nfs_write,
- 	.truncate  = nfs_truncate,
--	.readlink  = nfs_readlink,
- 	.flags     = 0,
- 	.drv = {
- 		.probe  = nfs_probe,
--- 
-2.17.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgotLS0K
+IGZzL3ViaWZzL0tjb25maWcgIHwgICAzIC0KIGZzL3ViaWZzL01ha2VmaWxlIHwgICAyICstCiBm
+cy91Ymlmcy9kaXIuYyAgICB8IDQxMCArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrCiBmcy91Ymlmcy9zdXBlci5jICB8IDE1MyArKy0tLS0tLS0tLS0tLS0tLQog
+ZnMvdWJpZnMvdWJpZnMuYyAgfCAzNDEgKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0KIGZzL3ViaWZzL3ViaWZzLmggIHwgICA3ICstCiA2IGZpbGVzIGNoYW5nZWQsIDQzMiBp
+bnNlcnRpb25zKCspLCA0ODQgZGVsZXRpb25zKC0pCiBjcmVhdGUgbW9kZSAxMDA2NDQgZnMvdWJp
+ZnMvZGlyLmMKCmRpZmYgLS1naXQgYS9mcy91Ymlmcy9LY29uZmlnIGIvZnMvdWJpZnMvS2NvbmZp
+ZwppbmRleCA5YWEwMTcyMjg5Li44ODlhMmJlOTdhIDEwMDY0NAotLS0gYS9mcy91Ymlmcy9LY29u
+ZmlnCisrKyBiL2ZzL3ViaWZzL0tjb25maWcKQEAgLTEsOSArMSw2IEBACiBtZW51Y29uZmlnIEZT
+X1VCSUZTCiAJYm9vbAogCWRlcGVuZHMgb24gTVREX1VCSQotCXNlbGVjdCBGU19MRUdBQ1kKLSMg
+RHVlIHRvIGR1cGxpY2F0ZSBkZWZpbml0aW9uIG9mIGlwdXQKLQlkZXBlbmRzIG9uIEJST0tFTgog
+CXByb21wdCAidWJpZnMgc3VwcG9ydCIKIAogaWYgRlNfVUJJRlMKZGlmZiAtLWdpdCBhL2ZzL3Vi
+aWZzL01ha2VmaWxlIGIvZnMvdWJpZnMvTWFrZWZpbGUKaW5kZXggZTM5YWUzYjBmZC4uNDRlZjFi
+NTYxYyAxMDA2NDQKLS0tIGEvZnMvdWJpZnMvTWFrZWZpbGUKKysrIGIvZnMvdWJpZnMvTWFrZWZp
+bGUKQEAgLTEsNCArMSw0IEBACiBvYmoteSArPSB1Ymlmcy5vIGlvLm8gc3VwZXIubyBzYi5vIG1h
+c3Rlci5vIGxwdC5vCi1vYmoteSArPSBscHRfY29tbWl0Lm8gc2Nhbi5vIGxwcm9wcy5vCitvYmot
+eSArPSBscHRfY29tbWl0Lm8gc2Nhbi5vIGxwcm9wcy5vIGRpci5vCiBvYmoteSArPSB0bmMubyB0
+bmNfbWlzYy5vIGRlYnVnLm8gY3JjMTYubyBidWRnZXQubwogb2JqLXkgKz0gbG9nLm8gb3JwaGFu
+Lm8gcmVjb3ZlcnkubyByZXBsYXkubyBnYy5vCmRpZmYgLS1naXQgYS9mcy91Ymlmcy9kaXIuYyBi
+L2ZzL3ViaWZzL2Rpci5jCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAwMDAuLmU5
+MGJkYjgzNDgKLS0tIC9kZXYvbnVsbAorKysgYi9mcy91Ymlmcy9kaXIuYwpAQCAtMCwwICsxLDQx
+MCBAQAorLyogKiBUaGlzIGZpbGUgaXMgcGFydCBvZiBVQklGUy4KKyAqCisgKiBDb3B5cmlnaHQg
+KEMpIDIwMDYtMjAwOCBOb2tpYSBDb3Jwb3JhdGlvbi4KKyAqIENvcHlyaWdodCAoQykgMjAwNiwg
+MjAwNyBVbml2ZXJzaXR5IG9mIFN6ZWdlZCwgSHVuZ2FyeQorICoKKyAqIFRoaXMgcHJvZ3JhbSBp
+cyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IgbW9kaWZ5IGl0
+CisgKiB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIHZl
+cnNpb24gMiBhcyBwdWJsaXNoZWQgYnkKKyAqIHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb24u
+CisgKgorICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQg
+d2lsbCBiZSB1c2VmdWwsIGJ1dCBXSVRIT1VUCisgKiBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZl
+biB0aGUgaW1wbGllZCB3YXJyYW50eSBvZiBNRVJDSEFOVEFCSUxJVFkgb3IKKyAqIEZJVE5FU1Mg
+Rk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGlj
+ZW5zZSBmb3IKKyAqIG1vcmUgZGV0YWlscy4KKyAqCisgKiBZb3Ugc2hvdWxkIGhhdmUgcmVjZWl2
+ZWQgYSBjb3B5IG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhbG9uZyB3aXRoCisg
+KiB0aGlzIHByb2dyYW07IGlmIG5vdCwgd3JpdGUgdG8gdGhlIEZyZWUgU29mdHdhcmUgRm91bmRh
+dGlvbiwgSW5jLiwgNTEKKyAqIEZyYW5rbGluIFN0LCBGaWZ0aCBGbG9vciwgQm9zdG9uLCBNQSAw
+MjExMC0xMzAxIFVTQQorICoKKyAqIEF1dGhvcnM6IEFydGVtIEJpdHl1dHNraXkgKNCR0LjRgtGO
+0YbQutC40Lkg0JDRgNGC0ZHQvCkKKyAqICAgICAgICAgIEFkcmlhbiBIdW50ZXIKKyAqICAgICAg
+ICAgIFpvbHRhbiBTb2dvcgorICovCisKKy8qCisgKiBUaGlzIGZpbGUgaW1wbGVtZW50cyBkaXJl
+Y3Rvcnkgb3BlcmF0aW9ucy4KKyAqCisgKiBBbGwgRlMgb3BlcmF0aW9ucyBpbiB0aGlzIGZpbGUg
+YWxsb2NhdGUgYnVkZ2V0IGJlZm9yZSB3cml0aW5nIGFueXRoaW5nIHRvIHRoZQorICogbWVkaWEu
+IElmIHRoZXkgZmFpbCB0byBhbGxvY2F0ZSBpdCwgdGhlIGVycm9yIGlzIHJldHVybmVkLiBUaGUg
+b25seQorICogZXhjZXB0aW9ucyBhcmUgJ3ViaWZzX3VubGluaygpJyBhbmQgJ3ViaWZzX3JtZGly
+KCknIHdoaWNoIGtlZXAgd29ya2luZyBldmVuCisgKiBpZiB0aGV5IHVuYWJsZSB0byBhbGxvY2F0
+ZSB0aGUgYnVkZ2V0LCBiZWNhdXNlIGRlbGV0aW9uICUtRU5PU1BDIGZhaWx1cmUgaXMKKyAqIG5v
+dCB3aGF0IHVzZXJzIGFyZSB1c3VhbGx5IHJlYWR5IHRvIGdldC4gVUJJRlMgYnVkZ2V0aW5nIHN1
+YnN5c3RlbSBoYXMgc29tZQorICogc3BhY2UgcmVzZXJ2ZWQgZm9yIHRoZXNlIHB1cnBvc2VzLgor
+ICoKKyAqIEFsbCBvcGVyYXRpb25zIGluIHRoaXMgZmlsZSB3cml0ZSBhbGwgaW5vZGVzIHdoaWNo
+IHRoZXkgY2hhbmdlIHN0cmFpZ2h0CisgKiBhd2F5LCBpbnN0ZWFkIG9mIG1hcmtpbmcgdGhlbSBk
+aXJ0eS4gRm9yIGV4YW1wbGUsICd1Ymlmc19saW5rKCknIGNoYW5nZXMKKyAqIEBpX3NpemUgb2Yg
+dGhlIHBhcmVudCBpbm9kZSBhbmQgd3JpdGVzIHRoZSBwYXJlbnQgaW5vZGUgdG9nZXRoZXIgd2l0
+aCB0aGUKKyAqIHRhcmdldCBpbm9kZS4gVGhpcyB3YXMgZG9uZSB0byBzaW1wbGlmeSBmaWxlLXN5
+c3RlbSByZWNvdmVyeSB3aGljaCB3b3VsZAorICogb3RoZXJ3aXNlIGJlIHZlcnkgZGlmZmljdWx0
+IHRvIGRvLiBUaGUgb25seSBleGNlcHRpb24gaXMgcmVuYW1lIHdoaWNoIG1hcmtzCisgKiB0aGUg
+cmUtbmFtZWQgaW5vZGUgZGlydHkgKGJlY2F1c2UgaXRzIEBpX2N0aW1lIGlzIHVwZGF0ZWQpIGJ1
+dCBkb2VzIG5vdAorICogd3JpdGUgaXQsIGJ1dCBqdXN0IG1hcmtzIGl0IGFzIGRpcnR5LgorICov
+CisKKyNpbmNsdWRlICJ1Ymlmcy5oIgorCisvKioKKyAqIGluaGVyaXRfZmxhZ3MgLSBpbmhlcml0
+IGZsYWdzIG9mIHRoZSBwYXJlbnQgaW5vZGUuCisgKiBAZGlyOiBwYXJlbnQgaW5vZGUKKyAqIEBt
+b2RlOiBuZXcgaW5vZGUgbW9kZSBmbGFncworICoKKyAqIFRoaXMgaXMgYSBoZWxwZXIgZnVuY3Rp
+b24gZm9yICd1Ymlmc19uZXdfaW5vZGUoKScgd2hpY2ggaW5oZXJpdHMgZmxhZyBvZiB0aGUKKyAq
+IHBhcmVudCBkaXJlY3RvcnkgaW5vZGUgQGRpci4gVUJJRlMgaW5vZGVzIGluaGVyaXQgdGhlIGZv
+bGxvd2luZyBmbGFnczoKKyAqIG8gJVVCSUZTX0NPTVBSX0ZMLCB3aGljaCBpcyB1c2VmdWwgdG8g
+c3dpdGNoIGNvbXByZXNzaW9uIG9uL29mIG9uCisgKiAgIHN1Yi1kaXJlY3RvcnkgYmFzaXM7Cisg
+KiBvICVVQklGU19TWU5DX0ZMIC0gdXNlZnVsIGZvciB0aGUgc2FtZSByZWFzb25zOworICogbyAl
+VUJJRlNfRElSU1lOQ19GTCAtIHNpbWlsYXIsIGJ1dCByZWxldmFudCBvbmx5IHRvIGRpcmVjdG9y
+aWVzLgorICoKKyAqIFRoaXMgZnVuY3Rpb24gcmV0dXJucyB0aGUgaW5oZXJpdGVkIGZsYWdzLgor
+ICovCitzdGF0aWMgaW50IGluaGVyaXRfZmxhZ3MoY29uc3Qgc3RydWN0IGlub2RlICpkaXIsIHVt
+b2RlX3QgbW9kZSkKK3sKKwlpbnQgZmxhZ3M7CisJY29uc3Qgc3RydWN0IHViaWZzX2lub2RlICp1
+aSA9IHViaWZzX2lub2RlKGRpcik7CisKKwlpZiAoIVNfSVNESVIoZGlyLT5pX21vZGUpKQorCQkv
+KgorCQkgKiBUaGUgcGFyZW50IGlzIG5vdCBhIGRpcmVjdG9yeSwgd2hpY2ggbWVhbnMgdGhhdCBh
+biBleHRlbmRlZAorCQkgKiBhdHRyaWJ1dGUgaW5vZGUgaXMgYmVpbmcgY3JlYXRlZC4gTm8gZmxh
+Z3MuCisJCSAqLworCQlyZXR1cm4gMDsKKworCWZsYWdzID0gdWktPmZsYWdzICYgKFVCSUZTX0NP
+TVBSX0ZMIHwgVUJJRlNfU1lOQ19GTCB8IFVCSUZTX0RJUlNZTkNfRkwpOworCWlmICghU19JU0RJ
+Uihtb2RlKSkKKwkJLyogVGhlICJESVJTWU5DIiBmbGFnIG9ubHkgYXBwbGllcyB0byBkaXJlY3Rv
+cmllcyAqLworCQlmbGFncyAmPSB+VUJJRlNfRElSU1lOQ19GTDsKKwlyZXR1cm4gZmxhZ3M7Cit9
+CisKKy8qKgorICogdWJpZnNfbmV3X2lub2RlIC0gYWxsb2NhdGUgbmV3IFVCSUZTIGlub2RlIG9i
+amVjdC4KKyAqIEBjOiBVQklGUyBmaWxlLXN5c3RlbSBkZXNjcmlwdGlvbiBvYmplY3QKKyAqIEBk
+aXI6IHBhcmVudCBkaXJlY3RvcnkgaW5vZGUKKyAqIEBtb2RlOiBpbm9kZSBtb2RlIGZsYWdzCisg
+KgorICogVGhpcyBmdW5jdGlvbiBmaW5kcyBhbiB1bnVzZWQgaW5vZGUgbnVtYmVyLCBhbGxvY2F0
+ZXMgbmV3IGlub2RlIGFuZAorICogaW5pdGlhbGl6ZXMgaXQuIFJldHVybnMgbmV3IGlub2RlIGlu
+IGNhc2Ugb2Ygc3VjY2VzcyBhbmQgYW4gZXJyb3IgY29kZSBpbgorICogY2FzZSBvZiBmYWlsdXJl
+LgorICovCitzdHJ1Y3QgaW5vZGUgKnViaWZzX25ld19pbm9kZShzdHJ1Y3QgdWJpZnNfaW5mbyAq
+YywgY29uc3Qgc3RydWN0IGlub2RlICpkaXIsCisJCQkgICAgICB1bW9kZV90IG1vZGUpCit7CisJ
+c3RydWN0IGlub2RlICppbm9kZTsKKwlzdHJ1Y3QgdWJpZnNfaW5vZGUgKnVpOworCisJaW5vZGUg
+PSBuZXdfaW5vZGUoYy0+dmZzX3NiKTsKKwl1aSA9IHViaWZzX2lub2RlKGlub2RlKTsKKwlpZiAo
+IWlub2RlKQorCQlyZXR1cm4gRVJSX1BUUigtRU5PTUVNKTsKKworCS8qCisJICogU2V0ICdTX05P
+Q01USU1FJyB0byBwcmV2ZW50IFZGUyBmb3JtIHVwZGF0aW5nIFttY110aW1lIG9mIGlub2RlcyBh
+bmQKKwkgKiBtYXJraW5nIHRoZW0gZGlydHkgaW4gZmlsZSB3cml0ZSBwYXRoIChzZWUgJ2ZpbGVf
+dXBkYXRlX3RpbWUoKScpLgorCSAqIFVCSUZTIGhhcyB0byBmdWxseSBjb250cm9sICJjbGVhbiA8
+LT4gZGlydHkiIHRyYW5zaXRpb25zIG9mIGlub2RlcworCSAqIHRvIG1ha2UgYnVkZ2V0aW5nIHdv
+cmsuCisJICovCisJaW5vZGUtPmlfZmxhZ3MgfD0gU19OT0NNVElNRTsKKworCXN3aXRjaCAobW9k
+ZSAmIFNfSUZNVCkgeworCWNhc2UgU19JRlJFRzoKKwkJaW5vZGUtPmlfb3AgPSAmdWJpZnNfZmls
+ZV9pbm9kZV9vcGVyYXRpb25zOworCQlpbm9kZS0+aV9mb3AgPSAmdWJpZnNfZmlsZV9vcGVyYXRp
+b25zOworCQlicmVhazsKKwljYXNlIFNfSUZESVI6CisJCWlub2RlLT5pX29wICA9ICZ1Ymlmc19k
+aXJfaW5vZGVfb3BlcmF0aW9uczsKKwkJaW5vZGUtPmlfZm9wID0gJnViaWZzX2Rpcl9vcGVyYXRp
+b25zOworCQlpbm9kZS0+aV9zaXplID0gdWktPnVpX3NpemUgPSBVQklGU19JTk9fTk9ERV9TWjsK
+KwkJYnJlYWs7CisJY2FzZSBTX0lGTE5LOgorCQlpbm9kZS0+aV9vcCA9ICZ1Ymlmc19zeW1saW5r
+X2lub2RlX29wZXJhdGlvbnM7CisJCWJyZWFrOworCWNhc2UgU19JRlNPQ0s6CisJY2FzZSBTX0lG
+SUZPOgorCWNhc2UgU19JRkJMSzoKKwljYXNlIFNfSUZDSFI6CisJCWlub2RlLT5pX29wICA9ICZ1
+Ymlmc19maWxlX2lub2RlX29wZXJhdGlvbnM7CisJCWJyZWFrOworCWRlZmF1bHQ6CisJCUJVRygp
+OworCX0KKworCXVpLT5mbGFncyA9IGluaGVyaXRfZmxhZ3MoZGlyLCBtb2RlKTsKKwl1Ymlmc19z
+ZXRfaW5vZGVfZmxhZ3MoaW5vZGUpOworCWlmIChTX0lTUkVHKG1vZGUpKQorCQl1aS0+Y29tcHJf
+dHlwZSA9IGMtPmRlZmF1bHRfY29tcHI7CisJZWxzZQorCQl1aS0+Y29tcHJfdHlwZSA9IFVCSUZT
+X0NPTVBSX05PTkU7CisJdWktPnN5bmNlZF9pX3NpemUgPSAwOworCisJc3Bpbl9sb2NrKCZjLT5j
+bnRfbG9jayk7CisJLyogSW5vZGUgbnVtYmVyIG92ZXJmbG93IGlzIGN1cnJlbnRseSBub3Qgc3Vw
+cG9ydGVkICovCisJaWYgKGMtPmhpZ2hlc3RfaW51bSA+PSBJTlVNX1dBUk5fV0FURVJNQVJLKSB7
+CisJCWlmIChjLT5oaWdoZXN0X2ludW0gPj0gSU5VTV9XQVRFUk1BUkspIHsKKwkJCXNwaW5fdW5s
+b2NrKCZjLT5jbnRfbG9jayk7CisJCQl1Ymlmc19lcnIoYywgIm91dCBvZiBpbm9kZSBudW1iZXJz
+Iik7CisJCQlpcHV0KGlub2RlKTsKKwkJCXJldHVybiBFUlJfUFRSKC1FSU5WQUwpOworCQl9CisJ
+CXViaWZzX3dhcm4oYywgInJ1bm5pbmcgb3V0IG9mIGlub2RlIG51bWJlcnMgKGN1cnJlbnQgJWx1
+LCBtYXggJXUpIiwKKwkJCSAgICh1bnNpZ25lZCBsb25nKWMtPmhpZ2hlc3RfaW51bSwgSU5VTV9X
+QVRFUk1BUkspOworCX0KKworCWlub2RlLT5pX2lubyA9ICsrYy0+aGlnaGVzdF9pbnVtOworCS8q
+CisJICogVGhlIGNyZWF0aW9uIHNlcXVlbmNlIG51bWJlciByZW1haW5zIHdpdGggdGhpcyBpbm9k
+ZSBmb3IgaXRzCisJICogbGlmZXRpbWUuIEFsbCBub2RlcyBmb3IgdGhpcyBpbm9kZSBoYXZlIGEg
+Z3JlYXRlciBzZXF1ZW5jZSBudW1iZXIsCisJICogYW5kIHNvIGl0IGlzIHBvc3NpYmxlIHRvIGRp
+c3Rpbmd1aXNoIG9ic29sZXRlIG5vZGVzIGJlbG9uZ2luZyB0byBhCisJICogcHJldmlvdXMgaW5j
+YXJuYXRpb24gb2YgdGhlIHNhbWUgaW5vZGUgbnVtYmVyIC0gZm9yIGV4YW1wbGUsIGZvciB0aGUK
+KwkgKiBwdXJwb3NlIG9mIHJlYnVpbGRpbmcgdGhlIGluZGV4LgorCSAqLworCXVpLT5jcmVhdF9z
+cW51bSA9ICsrYy0+bWF4X3NxbnVtOworCXNwaW5fdW5sb2NrKCZjLT5jbnRfbG9jayk7CisJcmV0
+dXJuIGlub2RlOworfQorCitzdGF0aWMgaW50IGRiZ19jaGVja19uYW1lKGNvbnN0IHN0cnVjdCB1
+Ymlmc19pbmZvICpjLAorCQkJICBjb25zdCBzdHJ1Y3QgdWJpZnNfZGVudF9ub2RlICpkZW50LAor
+CQkJICBjb25zdCBzdHJ1Y3QgcXN0ciAqbm0pCit7CisJaWYgKCFkYmdfaXNfY2hrX2dlbihjKSkK
+KwkJcmV0dXJuIDA7CisJaWYgKGxlMTZfdG9fY3B1KGRlbnQtPm5sZW4pICE9IG5tLT5sZW4pCisJ
+CXJldHVybiAtRUlOVkFMOworCWlmIChtZW1jbXAoZGVudC0+bmFtZSwgbm0tPm5hbWUsIG5tLT5s
+ZW4pKQorCQlyZXR1cm4gLUVJTlZBTDsKKwlyZXR1cm4gMDsKK30KKworc3RhdGljIHN0cnVjdCBk
+ZW50cnkgKnViaWZzX2xvb2t1cChzdHJ1Y3QgaW5vZGUgKmRpciwgc3RydWN0IGRlbnRyeSAqZGVu
+dHJ5LAorCQkJCSAgIHVuc2lnbmVkIGludCBmbGFncykKK3sKKwlpbnQgZXJyOworCXVuaW9uIHVi
+aWZzX2tleSBrZXk7CisJc3RydWN0IGlub2RlICppbm9kZSA9IE5VTEw7CisJc3RydWN0IHViaWZz
+X2RlbnRfbm9kZSAqZGVudDsKKwlzdHJ1Y3QgdWJpZnNfaW5mbyAqYyA9IGRpci0+aV9zYi0+c19m
+c19pbmZvOworCisJZGJnX2dlbigiJyVwZCcgaW4gZGlyIGlubyAlbHUiLCBkZW50cnksIGRpci0+
+aV9pbm8pOworCisJaWYgKGRlbnRyeS0+ZF9uYW1lLmxlbiA+IFVCSUZTX01BWF9OTEVOKQorCQly
+ZXR1cm4gRVJSX1BUUigtRU5BTUVUT09MT05HKTsKKworCWRlbnQgPSBrbWFsbG9jKFVCSUZTX01B
+WF9ERU5UX05PREVfU1osIEdGUF9OT0ZTKTsKKwlpZiAoIWRlbnQpCisJCXJldHVybiBFUlJfUFRS
+KC1FTk9NRU0pOworCisJZGVudF9rZXlfaW5pdChjLCAma2V5LCBkaXItPmlfaW5vLCAmZGVudHJ5
+LT5kX25hbWUpOworCisJZXJyID0gdWJpZnNfdG5jX2xvb2t1cF9ubShjLCAma2V5LCBkZW50LCAm
+ZGVudHJ5LT5kX25hbWUpOworCWlmIChlcnIpIHsKKwkJaWYgKGVyciA9PSAtRU5PRU5UKSB7CisJ
+CQlkYmdfZ2VuKCJub3QgZm91bmQiKTsKKwkJCWdvdG8gZG9uZTsKKwkJfQorCQlnb3RvIG91dDsK
+Kwl9CisKKwlpZiAoZGJnX2NoZWNrX25hbWUoYywgZGVudCwgJmRlbnRyeS0+ZF9uYW1lKSkgewor
+CQllcnIgPSAtRUlOVkFMOworCQlnb3RvIG91dDsKKwl9CisKKwlpbm9kZSA9IHViaWZzX2lnZXQo
+ZGlyLT5pX3NiLCBsZTY0X3RvX2NwdShkZW50LT5pbnVtKSk7CisJaWYgKElTX0VSUihpbm9kZSkp
+IHsKKwkJLyoKKwkJICogVGhpcyBzaG91bGQgbm90IGhhcHBlbi4gUHJvYmFibHkgdGhlIGZpbGUt
+c3lzdGVtIG5lZWRzCisJCSAqIGNoZWNraW5nLgorCQkgKi8KKwkJZXJyID0gUFRSX0VSUihpbm9k
+ZSk7CisJCXViaWZzX2VycihjLCAiZGVhZCBkaXJlY3RvcnkgZW50cnkgJyVwZCcsIGVycm9yICVk
+IiwKKwkJCWRlbnRyeSwgZXJyKTsKKwkJdWJpZnNfcm9fbW9kZShjLCBlcnIpOworCQlnb3RvIG91
+dDsKKwl9CisKK2RvbmU6CisJa2ZyZWUoZGVudCk7CisJLyoKKwkgKiBOb3RlLCBkX3NwbGljZV9h
+bGlhcygpIHdvdWxkIGJlIHJlcXVpcmVkIGluc3RlYWQgaWYgd2Ugc3VwcG9ydGVkCisJICogTkZT
+LgorCSAqLworCWRfYWRkKGRlbnRyeSwgaW5vZGUpOworCXJldHVybiBOVUxMOworCitvdXQ6CisJ
+a2ZyZWUoZGVudCk7CisJcmV0dXJuIEVSUl9QVFIoZXJyKTsKK30KKworLyoqCisgKiB2ZnNfZGVu
+dF90eXBlIC0gZ2V0IFZGUyBkaXJlY3RvcnkgZW50cnkgdHlwZS4KKyAqIEB0eXBlOiBVQklGUyBk
+aXJlY3RvcnkgZW50cnkgdHlwZQorICoKKyAqIFRoaXMgZnVuY3Rpb24gY29udmVydHMgVUJJRlMg
+ZGlyZWN0b3J5IGVudHJ5IHR5cGUgaW50byBWRlMgZGlyZWN0b3J5IGVudHJ5CisgKiB0eXBlLgor
+ICovCitzdGF0aWMgdW5zaWduZWQgaW50IHZmc19kZW50X3R5cGUodWludDhfdCB0eXBlKQorewor
+CXN3aXRjaCAodHlwZSkgeworCWNhc2UgVUJJRlNfSVRZUEVfUkVHOgorCQlyZXR1cm4gRFRfUkVH
+OworCWNhc2UgVUJJRlNfSVRZUEVfRElSOgorCQlyZXR1cm4gRFRfRElSOworCWNhc2UgVUJJRlNf
+SVRZUEVfTE5LOgorCQlyZXR1cm4gRFRfTE5LOworCWNhc2UgVUJJRlNfSVRZUEVfQkxLOgorCQly
+ZXR1cm4gRFRfQkxLOworCWNhc2UgVUJJRlNfSVRZUEVfQ0hSOgorCQlyZXR1cm4gRFRfQ0hSOwor
+CWNhc2UgVUJJRlNfSVRZUEVfRklGTzoKKwkJcmV0dXJuIERUX0ZJRk87CisJY2FzZSBVQklGU19J
+VFlQRV9TT0NLOgorCQlyZXR1cm4gRFRfU09DSzsKKwlkZWZhdWx0OgorCQlCVUcoKTsKKwl9CisJ
+cmV0dXJuIDA7Cit9CisKKy8qCisgKiBUaGUgY2xhc3NpY2FsIFVuaXggdmlldyBmb3IgZGlyZWN0
+b3J5IGlzIHRoYXQgaXQgaXMgYSBsaW5lYXIgYXJyYXkgb2YKKyAqIChuYW1lLCBpbm9kZSBudW1i
+ZXIpIGVudHJpZXMuIExpbnV4L1ZGUyBhc3N1bWVzIHRoaXMgbW9kZWwgYXMgd2VsbC4KKyAqIFBh
+cnRpY3VsYXJseSwgJ3JlYWRkaXIoKScgY2FsbCB3YW50cyB1cyB0byByZXR1cm4gYSBkaXJlY3Rv
+cnkgZW50cnkgb2Zmc2V0CisgKiB3aGljaCBsYXRlciBtYXkgYmUgdXNlZCB0byBjb250aW51ZSAn
+cmVhZGRpcigpJ2luZyB0aGUgZGlyZWN0b3J5IG9yIHRvCisgKiAnc2VlaygpJyB0byB0aGF0IHNw
+ZWNpZmljIGRpcmVudHJ5LiBPYnZpb3VzbHkgVUJJRlMgZG9lcyBub3QgcmVhbGx5IGZpdCB0aGlz
+CisgKiBtb2RlbCBiZWNhdXNlIGRpcmVjdG9yeSBlbnRyaWVzIGFyZSBpZGVudGlmaWVkIGJ5IGtl
+eXMsIHdoaWNoIG1heSBjb2xsaWRlLgorICoKKyAqIFVCSUZTIHVzZXMgZGlyZWN0b3J5IGVudHJ5
+IGhhc2ggdmFsdWUgZm9yIGRpcmVjdG9yeSBvZmZzZXRzLCBzbworICogJ3NlZWtkaXIoKScvJ3Rl
+bGxkaXIoKScgbWF5IG5vdCBhbHdheXMgd29yayBiZWNhdXNlIG9mIHBvc3NpYmxlIGtleQorICog
+Y29sbGlzaW9ucy4gQnV0IFVCSUZTIGd1YXJhbnRlZXMgdGhhdCBjb25zZWN1dGl2ZSAncmVhZGRp
+cigpJyBjYWxscyB3b3JrCisgKiBwcm9wZXJseSBieSBtZWFucyBvZiBzYXZpbmcgZnVsbCBkaXJl
+Y3RvcnkgZW50cnkgbmFtZSBpbiB0aGUgcHJpdmF0ZSBmaWVsZAorICogb2YgdGhlIGZpbGUgZGVz
+Y3JpcHRpb24gb2JqZWN0LgorICoKKyAqIFRoaXMgbWVhbnMgdGhhdCBVQklGUyBjYW5ub3Qgc3Vw
+cG9ydCBORlMgd2hpY2ggcmVxdWlyZXMgZnVsbAorICogJ3NlZWtkaXIoKScvJ3RlbGxkaXIoKScg
+c3VwcG9ydC4KKyAqLworc3RhdGljIGludCB1Ymlmc19yZWFkZGlyKHN0cnVjdCBmaWxlICpmaWxl
+LCBzdHJ1Y3QgZGlyX2NvbnRleHQgKmN0eCkKK3sKKwlpbnQgZXJyID0gMDsKKwlzdHJ1Y3QgcXN0
+ciBubTsKKwl1bmlvbiB1Ymlmc19rZXkga2V5OworCXN0cnVjdCB1Ymlmc19kZW50X25vZGUgKmRl
+bnQ7CisJc3RydWN0IGRlbnRyeSAqZGVudHJ5ID0gZmlsZS0+Zl9wYXRoLmRlbnRyeTsKKwlzdHJ1
+Y3QgaW5vZGUgKmRpciA9IGRfaW5vZGUoZGVudHJ5KTsKKwlzdHJ1Y3QgdWJpZnNfaW5mbyAqYyA9
+IGRpci0+aV9zYi0+c19mc19pbmZvOworCisJZGJnX2dlbigiZGlyIGlubyAlbHUsIGZfcG9zICUj
+bGx4IiwgZGlyLT5pX2lubywgY3R4LT5wb3MpOworCisJaWYgKGN0eC0+cG9zID4gVUJJRlNfU19L
+RVlfSEFTSF9NQVNLIHx8IGN0eC0+cG9zID09IDIpCisJCS8qCisJCSAqIFRoZSBkaXJlY3Rvcnkg
+d2FzIHNlZWsnZWQgdG8gYSBzZW5zZWxlc3MgcG9zaXRpb24gb3IgdGhlcmUKKwkJICogYXJlIG5v
+IG1vcmUgZW50cmllcy4KKwkJICovCisJCXJldHVybiAwOworCisJaWYgKGZpbGUtPmZfdmVyc2lv
+biA9PSAwKSB7CisJCS8qCisJCSAqIFRoZSBmaWxlIHdhcyBzZWVrJ2VkLCB3aGljaCBtZWFucyB0
+aGF0IEBmaWxlLT5wcml2YXRlX2RhdGEKKwkJICogaXMgbm93IGludmFsaWQuIFRoaXMgbWF5IGFs
+c28gYmUganVzdCB0aGUgZmlyc3QKKwkJICogJ3ViaWZzX3JlYWRkaXIoKScgaW52b2NhdGlvbiwg
+aW4gd2hpY2ggY2FzZQorCQkgKiBAZmlsZS0+cHJpdmF0ZV9kYXRhIGlzIE5VTEwsIGFuZCB0aGUg
+YmVsb3cgY29kZSBpcworCQkgKiBiYXNpY2FsbHkgYSBuby1vcC4KKwkJICovCisJCWtmcmVlKGZp
+bGUtPnByaXZhdGVfZGF0YSk7CisJCWZpbGUtPnByaXZhdGVfZGF0YSA9IE5VTEw7CisJfQorCisJ
+LyoKKwkgKiAnZ2VuZXJpY19maWxlX2xsc2VlaygpJyB1bmNvbmRpdGlvbmFsbHkgc2V0cyBAZmls
+ZS0+Zl92ZXJzaW9uIHRvCisJICogemVybywgYW5kIHdlIHVzZSB0aGlzIGZvciBkZXRlY3Rpbmcg
+d2hldGhlciB0aGUgZmlsZSB3YXMgc2VlaydlZC4KKwkgKi8KKwlmaWxlLT5mX3ZlcnNpb24gPSAx
+OworCisJLyogRmlsZSBwb3NpdGlvbnMgMCBhbmQgMSBjb3JyZXNwb25kIHRvICIuIiBhbmQgIi4u
+IiAqLworCWlmIChjdHgtPnBvcyA8IDIpIHsKKwkJdWJpZnNfYXNzZXJ0KCFmaWxlLT5wcml2YXRl
+X2RhdGEpOworCQlkaXJfZW1pdF9kb3RzKGZpbGUsIGN0eCk7CisKKwkJLyogRmluZCB0aGUgZmly
+c3QgZW50cnkgaW4gVE5DIGFuZCBzYXZlIGl0ICovCisJCWxvd2VzdF9kZW50X2tleShjLCAma2V5
+LCBkaXItPmlfaW5vKTsKKwkJbm0ubmFtZSA9IE5VTEw7CisJCWRlbnQgPSB1Ymlmc190bmNfbmV4
+dF9lbnQoYywgJmtleSwgJm5tKTsKKwkJaWYgKElTX0VSUihkZW50KSkgeworCQkJZXJyID0gUFRS
+X0VSUihkZW50KTsKKwkJCWdvdG8gb3V0OworCQl9CisKKwkJY3R4LT5wb3MgPSBrZXlfaGFzaF9m
+bGFzaChjLCAmZGVudC0+a2V5KTsKKwkJZmlsZS0+cHJpdmF0ZV9kYXRhID0gZGVudDsKKwl9CisK
+KwlkZW50ID0gZmlsZS0+cHJpdmF0ZV9kYXRhOworCWlmICghZGVudCkgeworCQkvKgorCQkgKiBU
+aGUgZGlyZWN0b3J5IHdhcyBzZWVrJ2VkIHRvIGFuZCBpcyBub3cgcmVhZGRpcidlZC4KKwkJICog
+RmluZCB0aGUgZW50cnkgY29ycmVzcG9uZGluZyB0byBAY3R4LT5wb3Mgb3IgdGhlIGNsb3Nlc3Qg
+b25lLgorCQkgKi8KKwkJZGVudF9rZXlfaW5pdF9oYXNoKGMsICZrZXksIGRpci0+aV9pbm8sIGN0
+eC0+cG9zKTsKKwkJbm0ubmFtZSA9IE5VTEw7CisJCWRlbnQgPSB1Ymlmc190bmNfbmV4dF9lbnQo
+YywgJmtleSwgJm5tKTsKKwkJaWYgKElTX0VSUihkZW50KSkgeworCQkJZXJyID0gUFRSX0VSUihk
+ZW50KTsKKwkJCWdvdG8gb3V0OworCQl9CisJCWN0eC0+cG9zID0ga2V5X2hhc2hfZmxhc2goYywg
+JmRlbnQtPmtleSk7CisJCWZpbGUtPnByaXZhdGVfZGF0YSA9IGRlbnQ7CisJfQorCisJd2hpbGUg
+KDEpIHsKKwkJZGJnX2dlbigiZmVlZCAnJXMnLCBpbm8gJWxsdSwgbmV3IGZfcG9zICUjeCIsCisJ
+CQlkZW50LT5uYW1lLCAodW5zaWduZWQgbG9uZyBsb25nKWxlNjRfdG9fY3B1KGRlbnQtPmludW0p
+LAorCQkJa2V5X2hhc2hfZmxhc2goYywgJmRlbnQtPmtleSkpOworCQl1Ymlmc19hc3NlcnQobGU2
+NF90b19jcHUoZGVudC0+Y2guc3FudW0pID4KKwkJCSAgICAgdWJpZnNfaW5vZGUoZGlyKS0+Y3Jl
+YXRfc3FudW0pOworCisJCW5tLmxlbiA9IGxlMTZfdG9fY3B1KGRlbnQtPm5sZW4pOworCQlkaXJf
+ZW1pdChjdHgsIGRlbnQtPm5hbWUsIG5tLmxlbiwKKwkJCSAgICAgICBsZTY0X3RvX2NwdShkZW50
+LT5pbnVtKSwKKwkJCSAgICAgICB2ZnNfZGVudF90eXBlKGRlbnQtPnR5cGUpKTsKKworCQkvKiBT
+d2l0Y2ggdG8gdGhlIG5leHQgZW50cnkgKi8KKwkJa2V5X3JlYWQoYywgJmRlbnQtPmtleSwgJmtl
+eSk7CisJCW5tLm5hbWUgPSBkZW50LT5uYW1lOworCQlkZW50ID0gdWJpZnNfdG5jX25leHRfZW50
+KGMsICZrZXksICZubSk7CisJCWlmIChJU19FUlIoZGVudCkpIHsKKwkJCWVyciA9IFBUUl9FUlIo
+ZGVudCk7CisJCQlnb3RvIG91dDsKKwkJfQorCisJCWtmcmVlKGZpbGUtPnByaXZhdGVfZGF0YSk7
+CisJCWN0eC0+cG9zID0ga2V5X2hhc2hfZmxhc2goYywgJmRlbnQtPmtleSk7CisJCWZpbGUtPnBy
+aXZhdGVfZGF0YSA9IGRlbnQ7CisJCWNvbmRfcmVzY2hlZCgpOworCX0KKworb3V0OgorCWtmcmVl
+KGZpbGUtPnByaXZhdGVfZGF0YSk7CisJZmlsZS0+cHJpdmF0ZV9kYXRhID0gTlVMTDsKKworCWlm
+IChlcnIgIT0gLUVOT0VOVCkKKwkJdWJpZnNfZXJyKGMsICJjYW5ub3QgZmluZCBuZXh0IGRpcmVu
+dHJ5LCBlcnJvciAlZCIsIGVycik7CisJZWxzZQorCQkvKgorCQkgKiAtRU5PRU5UIGlzIGEgbm9u
+LWZhdGFsIGVycm9yIGluIHRoaXMgY29udGV4dCwgdGhlIFROQyB1c2VzCisJCSAqIGl0IHRvIGlu
+ZGljYXRlIHRoYXQgdGhlIGN1cnNvciBtb3ZlZCBwYXN0IHRoZSBjdXJyZW50IGRpcmVjdG9yeQor
+CQkgKiBhbmQgcmVhZGRpcigpIGhhcyB0byBzdG9wLgorCQkgKi8KKwkJZXJyID0gMDsKKworCisJ
+LyogMiBpcyBhIHNwZWNpYWwgdmFsdWUgaW5kaWNhdGluZyB0aGF0IHRoZXJlIGFyZSBubyBtb3Jl
+IGRpcmVudHJpZXMgKi8KKwljdHgtPnBvcyA9IDI7CisJcmV0dXJuIGVycjsKK30KKworY29uc3Qg
+c3RydWN0IGlub2RlX29wZXJhdGlvbnMgdWJpZnNfZGlyX2lub2RlX29wZXJhdGlvbnMgPSB7CisJ
+Lmxvb2t1cCAgICAgID0gdWJpZnNfbG9va3VwLAorfTsKKworY29uc3Qgc3RydWN0IGZpbGVfb3Bl
+cmF0aW9ucyB1Ymlmc19kaXJfb3BlcmF0aW9ucyA9IHsKKwkuaXRlcmF0ZSAgICAgICAgPSB1Ymlm
+c19yZWFkZGlyLAorfTsKZGlmZiAtLWdpdCBhL2ZzL3ViaWZzL3N1cGVyLmMgYi9mcy91Ymlmcy9z
+dXBlci5jCmluZGV4IGI0ZWI3NjIwMmIuLmFiZjhlZjYzYzkgMTAwNjQ0Ci0tLSBhL2ZzL3ViaWZz
+L3N1cGVyLmMKKysrIGIvZnMvdWJpZnMvc3VwZXIuYwpAQCAtMzAsNiArMzAsNyBAQAogCiAjaW5j
+bHVkZSA8Y29tbW9uLmg+CiAjaW5jbHVkZSA8aW5pdC5oPgorI2luY2x1ZGUgPGZzLmg+CiAjaW5j
+bHVkZSA8bWFsbG9jLmg+CiAjaW5jbHVkZSA8bGludXgvYnVnLmg+CiAjaW5jbHVkZSA8bGludXgv
+bG9nMi5oPgpAQCAtNDksOCArNTAsNiBAQCBzdHJ1Y3QgdmZzbW91bnQ7CiBzdHJ1Y3Qgc3VwZXJf
+YmxvY2sgKnViaWZzX3NiOwogTElTVF9IRUFEKHN1cGVyX2Jsb2Nrcyk7CiAKLXN0YXRpYyBzdHJ1
+Y3QgaW5vZGUgKmlub2Rlc19sb2NrZWRfZG93bltJTk9ERV9MT0NLRURfTUFYXTsKLQogaW50IHNl
+dF9hbm9uX3N1cGVyKHN0cnVjdCBzdXBlcl9ibG9jayAqcywgdm9pZCAqZGF0YSkKIHsKIAlyZXR1
+cm4gMDsKQEAgLTg0LDM5ICs4Myw2IEBAIGludCB1Ymlmc19pcHV0KHN0cnVjdCBpbm9kZSAqaW5v
+ZGUpCiAJcmV0dXJuIDA7CiB9CiAKLS8qCi0gKiBMb2NrIChzYXZlKSBpbm9kZSBpbiBpbm9kZSBh
+cnJheSBmb3IgcmVhZGJhY2sgYWZ0ZXIgcmVjb3ZlcnkKLSAqLwotdm9pZCBpcHV0KHN0cnVjdCBp
+bm9kZSAqaW5vZGUpCi17Ci0JaW50IGk7Ci0Jc3RydWN0IGlub2RlICppbm87Ci0KLQkvKgotCSAq
+IFNlYXJjaCBlbmQgb2YgbGlzdAotCSAqLwotCWZvciAoaSA9IDA7IGkgPCBJTk9ERV9MT0NLRURf
+TUFYOyBpKyspIHsKLQkJaWYgKGlub2Rlc19sb2NrZWRfZG93bltpXSA9PSBOVUxMKQotCQkJYnJl
+YWs7Ci0JfQotCi0JaWYgKGkgPj0gSU5PREVfTE9DS0VEX01BWCkgewotCQlkYmdfZ2VuKCJFcnJv
+ciwgY2FuJ3QgbG9jayAoc2F2ZSkgbW9yZSBpbm9kZXMgd2hpbGUgcmVjb3ZlcnkhISEiKTsKLQkJ
+cmV0dXJuOwotCX0KLQotCS8qCi0JICogQWxsb2NhdGUgYW5kIHVzZSBuZXcgaW5vZGUKLQkgKi8K
+LQlpbm8gPSAoc3RydWN0IGlub2RlICopa3phbGxvYyhzaXplb2Yoc3RydWN0IHViaWZzX2lub2Rl
+KSwgMCk7Ci0JbWVtY3B5KGlubywgaW5vZGUsIHNpemVvZihzdHJ1Y3QgdWJpZnNfaW5vZGUpKTsK
+LQotCS8qCi0JICogRmluYWxseSBzYXZlIGlub2RlIGluIGFycmF5Ci0JICovCi0JaW5vZGVzX2xv
+Y2tlZF9kb3duW2ldID0gaW5vOwotfQotCiAvKiBmcm9tIGZzL2lub2RlLmMgKi8KIC8qKgogICog
+Y2xlYXJfbmxpbmsgLSBkaXJlY3RseSB6ZXJvIGFuIGlub2RlJ3MgbGluayBjb3VudApAQCAtMjMx
+LDYgKzE5Nyw5IEBAIHN0YXRpYyBpbnQgdmFsaWRhdGVfaW5vZGUoc3RydWN0IHViaWZzX2luZm8g
+KmMsIGNvbnN0IHN0cnVjdCBpbm9kZSAqaW5vZGUpCiAJcmV0dXJuIGVycjsKIH0KIAorY29uc3Qg
+c3RydWN0IGlub2RlX29wZXJhdGlvbnMgdWJpZnNfZmlsZV9pbm9kZV9vcGVyYXRpb25zOworY29u
+c3Qgc3RydWN0IGZpbGVfb3BlcmF0aW9ucyB1Ymlmc19maWxlX29wZXJhdGlvbnM7CisKIHN0cnVj
+dCBpbm9kZSAqdWJpZnNfaWdldChzdHJ1Y3Qgc3VwZXJfYmxvY2sgKnNiLCB1bnNpZ25lZCBsb25n
+IGludW0pCiB7CiAJaW50IGVycjsKQEAgLTIzOSwzNSArMjA4LDkgQEAgc3RydWN0IGlub2RlICp1
+Ymlmc19pZ2V0KHN0cnVjdCBzdXBlcl9ibG9jayAqc2IsIHVuc2lnbmVkIGxvbmcgaW51bSkKIAlz
+dHJ1Y3QgdWJpZnNfaW5mbyAqYyA9IHNiLT5zX2ZzX2luZm87CiAJc3RydWN0IGlub2RlICppbm9k
+ZTsKIAlzdHJ1Y3QgdWJpZnNfaW5vZGUgKnVpOwotI2lmZGVmIF9fQkFSRUJPWF9fCi0JaW50IGk7
+Ci0jZW5kaWYKIAogCWRiZ19nZW4oImlub2RlICVsdSIsIGludW0pOwogCi0jaWZkZWYgX19CQVJF
+Qk9YX18KLQkvKgotCSAqIFUtQm9vdCBzcGVjaWFsIGhhbmRsaW5nIG9mIGxvY2tlZCBkb3duIGlu
+b2RlcyB2aWEgcmVjb3ZlcnkKLQkgKiBlLmcuIHViaWZzX3JlY292ZXJfc2l6ZSgpCi0JICovCi0J
+Zm9yIChpID0gMDsgaSA8IElOT0RFX0xPQ0tFRF9NQVg7IGkrKykgewotCQkvKgotCQkgKiBFeGl0
+IG9uIGxhc3QgZW50cnkgKE5VTEwpLCBpbm9kZSBub3QgZm91bmQgaW4gbGlzdAotCQkgKi8KLQkJ
+aWYgKGlub2Rlc19sb2NrZWRfZG93bltpXSA9PSBOVUxMKQotCQkJYnJlYWs7Ci0KLQkJaWYgKGlu
+b2Rlc19sb2NrZWRfZG93bltpXS0+aV9pbm8gPT0gaW51bSkgewotCQkJLyoKLQkJCSAqIFdlIGZv
+dW5kIHRoZSBsb2NrZWQgZG93biBpbm9kZSBpbiBvdXIgYXJyYXksCi0JCQkgKiBzbyBqdXN0IHJl
+dHVybiB0aGlzIHBvaW50ZXIgaW5zdGVhZCBvZiBjcmVhdGluZwotCQkJICogYSBuZXcgb25lLgot
+CQkJICovCi0JCQlyZXR1cm4gaW5vZGVzX2xvY2tlZF9kb3duW2ldOwotCQl9Ci0JfQotI2VuZGlm
+Ci0KIAlpbm9kZSA9IGlnZXRfbG9ja2VkKHNiLCBpbnVtKTsKIAlpZiAoIWlub2RlKQogCQlyZXR1
+cm4gRVJSX1BUUigtRU5PTUVNKTsKQEAgLTMxNSwxMCArMjU4LDggQEAgc3RydWN0IGlub2RlICp1
+Ymlmc19pZ2V0KHN0cnVjdCBzdXBlcl9ibG9jayAqc2IsIHVuc2lnbmVkIGxvbmcgaW51bSkKIAlp
+ZiAoZXJyKQogCQlnb3RvIG91dF9pbnZhbGlkOwogCi0jaWZuZGVmIF9fQkFSRUJPWF9fCiAJc3dp
+dGNoIChpbm9kZS0+aV9tb2RlICYgU19JRk1UKSB7CiAJY2FzZSBTX0lGUkVHOgotCQlpbm9kZS0+
+aV9tYXBwaW5nLT5hX29wcyA9ICZ1Ymlmc19maWxlX2FkZHJlc3Nfb3BlcmF0aW9uczsKIAkJaW5v
+ZGUtPmlfb3AgPSAmdWJpZnNfZmlsZV9pbm9kZV9vcGVyYXRpb25zOwogCQlpbm9kZS0+aV9mb3Ag
+PSAmdWJpZnNfZmlsZV9vcGVyYXRpb25zOwogCQlpZiAodWktPnhhdHRyKSB7CkBAIC0zNDMsNyAr
+Mjg0LDcgQEAgc3RydWN0IGlub2RlICp1Ymlmc19pZ2V0KHN0cnVjdCBzdXBlcl9ibG9jayAqc2Is
+IHVuc2lnbmVkIGxvbmcgaW51bSkKIAkJfQogCQlicmVhazsKIAljYXNlIFNfSUZMTks6Ci0JCWlu
+b2RlLT5pX29wID0gJnViaWZzX3N5bWxpbmtfaW5vZGVfb3BlcmF0aW9uczsKKwkJaW5vZGUtPmlf
+b3AgPSAmc2ltcGxlX3N5bWxpbmtfaW5vZGVfb3BlcmF0aW9uczsKIAkJaWYgKHVpLT5kYXRhX2xl
+biA8PSAwIHx8IHVpLT5kYXRhX2xlbiA+IFVCSUZTX01BWF9JTk9fREFUQSkgewogCQkJZXJyID0g
+MTI7CiAJCQlnb3RvIG91dF9pbnZhbGlkOwpAQCAtMzU3LDYwICsyOTgsMTAgQEAgc3RydWN0IGlu
+b2RlICp1Ymlmc19pZ2V0KHN0cnVjdCBzdXBlcl9ibG9jayAqc2IsIHVuc2lnbmVkIGxvbmcgaW51
+bSkKIAkJKChjaGFyICopdWktPmRhdGEpW3VpLT5kYXRhX2xlbl0gPSAnXDAnOwogCQlpbm9kZS0+
+aV9saW5rID0gdWktPmRhdGE7CiAJCWJyZWFrOwotCWNhc2UgU19JRkJMSzoKLQljYXNlIFNfSUZD
+SFI6Ci0JewotCQlkZXZfdCByZGV2OwotCQl1bmlvbiB1Ymlmc19kZXZfZGVzYyAqZGV2OwotCi0J
+CXVpLT5kYXRhID0ga21hbGxvYyhzaXplb2YodW5pb24gdWJpZnNfZGV2X2Rlc2MpLCBHRlBfTk9G
+Uyk7Ci0JCWlmICghdWktPmRhdGEpIHsKLQkJCWVyciA9IC1FTk9NRU07Ci0JCQlnb3RvIG91dF9p
+bm87Ci0JCX0KLQotCQlkZXYgPSAodW5pb24gdWJpZnNfZGV2X2Rlc2MgKilpbm8tPmRhdGE7Ci0J
+CWlmICh1aS0+ZGF0YV9sZW4gPT0gc2l6ZW9mKGRldi0+bmV3KSkKLQkJCXJkZXYgPSBuZXdfZGVj
+b2RlX2RldihsZTMyX3RvX2NwdShkZXYtPm5ldykpOwotCQllbHNlIGlmICh1aS0+ZGF0YV9sZW4g
+PT0gc2l6ZW9mKGRldi0+aHVnZSkpCi0JCQlyZGV2ID0gaHVnZV9kZWNvZGVfZGV2KGxlNjRfdG9f
+Y3B1KGRldi0+aHVnZSkpOwotCQllbHNlIHsKLQkJCWVyciA9IDEzOwotCQkJZ290byBvdXRfaW52
+YWxpZDsKLQkJfQotCQltZW1jcHkodWktPmRhdGEsIGluby0+ZGF0YSwgdWktPmRhdGFfbGVuKTsK
+LQkJaW5vZGUtPmlfb3AgPSAmdWJpZnNfZmlsZV9pbm9kZV9vcGVyYXRpb25zOwotCQlpbml0X3Nw
+ZWNpYWxfaW5vZGUoaW5vZGUsIGlub2RlLT5pX21vZGUsIHJkZXYpOwotCQlicmVhazsKLQl9Ci0J
+Y2FzZSBTX0lGU09DSzoKLQljYXNlIFNfSUZJRk86Ci0JCWlub2RlLT5pX29wID0gJnViaWZzX2Zp
+bGVfaW5vZGVfb3BlcmF0aW9uczsKLQkJaW5pdF9zcGVjaWFsX2lub2RlKGlub2RlLCBpbm9kZS0+
+aV9tb2RlLCAwKTsKLQkJaWYgKHVpLT5kYXRhX2xlbiAhPSAwKSB7Ci0JCQllcnIgPSAxNDsKLQkJ
+CWdvdG8gb3V0X2ludmFsaWQ7Ci0JCX0KLQkJYnJlYWs7CiAJZGVmYXVsdDoKIAkJZXJyID0gMTU7
+CiAJCWdvdG8gb3V0X2ludmFsaWQ7CiAJfQotI2Vsc2UKLQlpZiAoKGlub2RlLT5pX21vZGUgJiBT
+X0lGTVQpID09IFNfSUZMTkspIHsKLQkJaWYgKHVpLT5kYXRhX2xlbiA8PSAwIHx8IHVpLT5kYXRh
+X2xlbiA+IFVCSUZTX01BWF9JTk9fREFUQSkgewotCQkJZXJyID0gMTI7Ci0JCQlnb3RvIG91dF9p
+bnZhbGlkOwotCQl9Ci0JCXVpLT5kYXRhID0ga21hbGxvYyh1aS0+ZGF0YV9sZW4gKyAxLCBHRlBf
+Tk9GUyk7Ci0JCWlmICghdWktPmRhdGEpIHsKLQkJCWVyciA9IC1FTk9NRU07Ci0JCQlnb3RvIG91
+dF9pbm87Ci0JCX0KLQkJbWVtY3B5KHVpLT5kYXRhLCBpbm8tPmRhdGEsIHVpLT5kYXRhX2xlbik7
+Ci0JCSgoY2hhciAqKXVpLT5kYXRhKVt1aS0+ZGF0YV9sZW5dID0gJ1wwJzsKLQl9Ci0jZW5kaWYK
+IAogCWtmcmVlKGlubyk7CiAjaWZuZGVmIF9fQkFSRUJPWF9fCkBAIC00NDcsMjIgKzMzOCwxNSBA
+QCBzdGF0aWMgc3RydWN0IGlub2RlICp1Ymlmc19hbGxvY19pbm9kZShzdHJ1Y3Qgc3VwZXJfYmxv
+Y2sgKnNiKQogCXJldHVybiAmdWktPnZmc19pbm9kZTsKIH07CiAKLSNpZm5kZWYgX19CQVJFQk9Y
+X18KLXN0YXRpYyB2b2lkIHViaWZzX2lfY2FsbGJhY2soc3RydWN0IHJjdV9oZWFkICpoZWFkKQot
+ewotCXN0cnVjdCBpbm9kZSAqaW5vZGUgPSBjb250YWluZXJfb2YoaGVhZCwgc3RydWN0IGlub2Rl
+LCBpX3JjdSk7Ci0Jc3RydWN0IHViaWZzX2lub2RlICp1aSA9IHViaWZzX2lub2RlKGlub2RlKTsK
+LQlrbWVtX2NhY2hlX2ZyZWUodWJpZnNfaW5vZGVfc2xhYiwgdWkpOwotfQotCiBzdGF0aWMgdm9p
+ZCB1Ymlmc19kZXN0cm95X2lub2RlKHN0cnVjdCBpbm9kZSAqaW5vZGUpCiB7CiAJc3RydWN0IHVi
+aWZzX2lub2RlICp1aSA9IHViaWZzX2lub2RlKGlub2RlKTsKIAogCWtmcmVlKHVpLT5kYXRhKTsK
+LQljYWxsX3JjdSgmaW5vZGUtPmlfcmN1LCB1Ymlmc19pX2NhbGxiYWNrKTsKKwlrZnJlZSh1aSk7
+CiB9CiAKKyNpZm5kZWYgX19CQVJFQk9YX18KIC8qCiAgKiBOb3RlLCBMaW51eCB3cml0ZS1iYWNr
+IGNvZGUgY2FsbHMgdGhpcyB3aXRob3V0ICdpX211dGV4Jy4KICAqLwpAQCAtMTMzMCwxNSArMTIx
+NCw5IEBAIHN0YXRpYyBpbnQgbW91bnRfdWJpZnMoc3RydWN0IHViaWZzX2luZm8gKmMpCiAJbG9u
+ZyBsb25nIHgsIHk7CiAJc2l6ZV90IHN6OwogCi0JYy0+cm9fbW91bnQgPSAhIShjLT52ZnNfc2It
+PnNfZmxhZ3MgJiBNU19SRE9OTFkpOworCWMtPnJvX21vdW50ID0gdHJ1ZTsKIAkvKiBTdXBwcmVz
+cyBlcnJvciBtZXNzYWdlcyB3aGlsZSBwcm9iaW5nIGlmIE1TX1NJTEVOVCBpcyBzZXQgKi8KIAlj
+LT5wcm9iaW5nID0gISEoYy0+dmZzX3NiLT5zX2ZsYWdzICYgTVNfU0lMRU5UKTsKLSNpZmRlZiBf
+X0JBUkVCT1hfXwotCWlmICghYy0+cm9fbW91bnQpIHsKLQkJcHJpbnRmKCJVQklGUzogb25seSBy
+byBtb2RlIGluIEJhcmVib3ggYWxsb3dlZC5cbiIpOwotCQlyZXR1cm4gLUVBQ0NFUzsKLQl9Ci0j
+ZW5kaWYKIAogCWVyciA9IGluaXRfY29uc3RhbnRzX2Vhcmx5KGMpOwogCWlmIChlcnIpCkBAIC0y
+MDk5LDggKzE5NzcsOCBAQCBzdGF0aWMgaW50IHViaWZzX3JlbW91bnRfZnMoc3RydWN0IHN1cGVy
+X2Jsb2NrICpzYiwgaW50ICpmbGFncywgY2hhciAqZGF0YSkKIAogY29uc3Qgc3RydWN0IHN1cGVy
+X29wZXJhdGlvbnMgdWJpZnNfc3VwZXJfb3BlcmF0aW9ucyA9IHsKIAkuYWxsb2NfaW5vZGUgICA9
+IHViaWZzX2FsbG9jX2lub2RlLAotI2lmbmRlZiBfX0JBUkVCT1hfXwogCS5kZXN0cm95X2lub2Rl
+ID0gdWJpZnNfZGVzdHJveV9pbm9kZSwKKyNpZm5kZWYgX19CQVJFQk9YX18KIAkucHV0X3N1cGVy
+ICAgICA9IHViaWZzX3B1dF9zdXBlciwKIAkud3JpdGVfaW5vZGUgICA9IHViaWZzX3dyaXRlX2lu
+b2RlLAogCS5ldmljdF9pbm9kZSAgID0gdWJpZnNfZXZpY3RfaW5vZGUsCkBAIC0yMjk4LDE1ICsy
+MTc2LDExIEBAIHN0YXRpYyBpbnQgdWJpZnNfZmlsbF9zdXBlcihzdHJ1Y3Qgc3VwZXJfYmxvY2sg
+KnNiLCB2b2lkICpkYXRhLCBpbnQgc2lsZW50KQogCQlnb3RvIG91dF91bW91bnQ7CiAJfQogCi0j
+aWZuZGVmIF9fQkFSRUJPWF9fCiAJc2ItPnNfcm9vdCA9IGRfbWFrZV9yb290KHJvb3QpOwogCWlm
+ICghc2ItPnNfcm9vdCkgewogCQllcnIgPSAtRU5PTUVNOwogCQlnb3RvIG91dF91bW91bnQ7CiAJ
+fQotI2Vsc2UKLQlzYi0+c19yb290ID0gTlVMTDsKLSNlbmRpZgogCiAJbXV0ZXhfdW5sb2NrKCZj
+LT51bW91bnRfbXV0ZXgpOwogCXJldHVybiAwOwpAQCAtMjY4MCwxMyArMjU1NCwxNCBAQCBNT0RV
+TEVfQVVUSE9SKCJBcnRlbSBCaXR5dXRza2l5LCBBZHJpYW4gSHVudGVyIik7CiBNT0RVTEVfREVT
+Q1JJUFRJT04oIlVCSUZTIC0gVUJJIEZpbGUgU3lzdGVtIik7CiAjZW5kaWYKIAotc3RydWN0IHN1
+cGVyX2Jsb2NrICp1Ymlmc19nZXRfc3VwZXIoc3RydWN0IGRldmljZV9kICpkZXYsIHN0cnVjdCB1
+Ymlfdm9sdW1lX2Rlc2MgKnViaSwgaW50IHNpbGVudCkKK2ludCB1Ymlmc19nZXRfc3VwZXIoc3Ry
+dWN0IGRldmljZV9kICpkZXYsIHN0cnVjdCB1Ymlfdm9sdW1lX2Rlc2MgKnViaSwgaW50IHNpbGVu
+dCkKIHsKKwlzdHJ1Y3QgZnNfZGV2aWNlX2QgKmZzZGV2ID0gZGV2X3RvX2ZzX2RldmljZShkZXYp
+OwogCXN0cnVjdCBzdXBlcl9ibG9jayAqc2I7CiAJc3RydWN0IHViaWZzX2luZm8gKmM7CiAJaW50
+IGVycjsKIAotCXNiID0gYWxsb2Nfc3VwZXIoTlVMTCwgTVNfUkRPTkxZIHwgTVNfQUNUSVZFIHwg
+TVNfTk9BVElNRSk7CisJc2IgPSAmZnNkZXYtPnNiOwogCWMgPSBhbGxvY191Ymlmc19pbmZvKHVi
+aSk7CiAKIAljLT5kZXYgPSBkZXY7CkBAIC0yNzEyLDkgKzI1ODcsOSBAQCBzdHJ1Y3Qgc3VwZXJf
+YmxvY2sgKnViaWZzX2dldF9zdXBlcihzdHJ1Y3QgZGV2aWNlX2QgKmRldiwgc3RydWN0IHViaV92
+b2x1bWVfZGVzYwogCQlnb3RvIG91dDsKIAl9CiAKLQlyZXR1cm4gc2I7CisJcmV0dXJuIDA7CiBv
+dXQ6CiAJa2ZyZWUoYyk7CiAJa2ZyZWUoc2IpOwotCXJldHVybiBFUlJfUFRSKGVycik7CisJcmV0
+dXJuIGVycjsKIH0KZGlmZiAtLWdpdCBhL2ZzL3ViaWZzL3ViaWZzLmMgYi9mcy91Ymlmcy91Ymlm
+cy5jCmluZGV4IGE1MjViMDQ0YjguLmY5YjRmNGJhYmMgMTAwNjQ0Ci0tLSBhL2ZzL3ViaWZzL3Vi
+aWZzLmMKKysrIGIvZnMvdWJpZnMvdWJpZnMuYwpAQCAtMjY5LDE2MSArMjY5LDYgQEAgaW50IF9f
+aW5pdCB1Ymlmc19jb21wcmVzc29yc19pbml0KHZvaWQpCiAJcmV0dXJuIDA7CiB9CiAKLS8qCi0g
+KiB1Ymlmc2xzLi4uCi0gKi8KLQotc3RhdGljIGludCB1Ymlmc19maW5kZGlyKHN0cnVjdCBzdXBl
+cl9ibG9jayAqc2IsIGNoYXIgKmRpcm5hbWUsCi0JCQkgdW5zaWduZWQgbG9uZyByb290X2ludW0s
+IHVuc2lnbmVkIGxvbmcgKmludW0pCi17Ci0JaW50IGVycjsKLQlzdHJ1Y3QgcXN0ciBubTsKLQl1
+bmlvbiB1Ymlmc19rZXkga2V5OwotCXN0cnVjdCB1Ymlmc19kZW50X25vZGUgKmRlbnQ7Ci0Jc3Ry
+dWN0IHViaWZzX2luZm8gKmM7Ci0Jc3RydWN0IGZpbGUgKmZpbGU7Ci0Jc3RydWN0IGRlbnRyeSAq
+ZGVudHJ5OwotCXN0cnVjdCBpbm9kZSAqZGlyOwotCWludCByZXQgPSAwOwotCi0JZmlsZSA9IGt6
+YWxsb2Moc2l6ZW9mKHN0cnVjdCBmaWxlKSwgMCk7Ci0JZGVudHJ5ID0ga3phbGxvYyhzaXplb2Yo
+c3RydWN0IGRlbnRyeSksIDApOwotCWRpciA9IGt6YWxsb2Moc2l6ZW9mKHN0cnVjdCBpbm9kZSks
+IDApOwotCWlmICghZmlsZSB8fCAhZGVudHJ5IHx8ICFkaXIpIHsKLQkJcHJpbnRmKCIlczogRXJy
+b3IsIG5vIG1lbW9yeSBmb3IgbWFsbG9jIVxuIiwgX19mdW5jX18pOwotCQllcnIgPSAtRU5PTUVN
+OwotCQlnb3RvIG91dDsKLQl9Ci0KLQlkaXItPmlfc2IgPSBzYjsKLQlmaWxlLT5mX3BhdGguZGVu
+dHJ5ID0gZGVudHJ5OwotCWZpbGUtPmZfcGF0aC5kZW50cnktPmRfcGFyZW50ID0gZGVudHJ5Owot
+CWZpbGUtPmZfcGF0aC5kZW50cnktPmRfaW5vZGUgPSBkaXI7Ci0JZmlsZS0+Zl9wYXRoLmRlbnRy
+eS0+ZF9pbm9kZS0+aV9pbm8gPSByb290X2ludW07Ci0JYyA9IHNiLT5zX2ZzX2luZm87Ci0KLQlk
+YmdfZ2VuKCJkaXIgaW5vICVsdSwgZl9wb3MgJSNsbHgiLCBkaXItPmlfaW5vLCBmaWxlLT5mX3Bv
+cyk7Ci0KLQkvKiBGaW5kIHRoZSBmaXJzdCBlbnRyeSBpbiBUTkMgYW5kIHNhdmUgaXQgKi8KLQls
+b3dlc3RfZGVudF9rZXkoYywgJmtleSwgZGlyLT5pX2lubyk7Ci0Jbm0ubmFtZSA9IE5VTEw7Ci0J
+ZGVudCA9IHViaWZzX3RuY19uZXh0X2VudChjLCAma2V5LCAmbm0pOwotCWlmIChJU19FUlIoZGVu
+dCkpIHsKLQkJZXJyID0gUFRSX0VSUihkZW50KTsKLQkJZ290byBvdXQ7Ci0JfQotCi0JZmlsZS0+
+Zl9wb3MgPSBrZXlfaGFzaF9mbGFzaChjLCAmZGVudC0+a2V5KTsKLQlmaWxlLT5wcml2YXRlX2Rh
+dGEgPSBkZW50OwotCi0Jd2hpbGUgKDEpIHsKLQkJZGJnX2dlbigiZmVlZCAnJXMnLCBpbm8gJWxs
+dSwgbmV3IGZfcG9zICUjeCIsCi0JCQlkZW50LT5uYW1lLCAodW5zaWduZWQgbG9uZyBsb25nKWxl
+NjRfdG9fY3B1KGRlbnQtPmludW0pLAotCQkJa2V5X2hhc2hfZmxhc2goYywgJmRlbnQtPmtleSkp
+OwotCQl1Ymlmc19hc3NlcnQobGU2NF90b19jcHUoZGVudC0+Y2guc3FudW0pID4gdWJpZnNfaW5v
+ZGUoZGlyKS0+Y3JlYXRfc3FudW0pOwotCi0JCW5tLmxlbiA9IGxlMTZfdG9fY3B1KGRlbnQtPm5s
+ZW4pOwotCQlpZiAoKHN0cm5jbXAoZGlybmFtZSwgKGNoYXIgKilkZW50LT5uYW1lLCBubS5sZW4p
+ID09IDApICYmCi0JCSAgICAoc3RybGVuKGRpcm5hbWUpID09IG5tLmxlbikpIHsKLQkJCSppbnVt
+ID0gbGU2NF90b19jcHUoZGVudC0+aW51bSk7Ci0JCQlyZXQgPSAxOwotCQkJZ290byBvdXRfZnJl
+ZTsKLQkJfQotCi0JCS8qIFN3aXRjaCB0byB0aGUgbmV4dCBlbnRyeSAqLwotCQlrZXlfcmVhZChj
+LCAmZGVudC0+a2V5LCAma2V5KTsKLQkJbm0ubmFtZSA9IChjaGFyICopZGVudC0+bmFtZTsKLQkJ
+ZGVudCA9IHViaWZzX3RuY19uZXh0X2VudChjLCAma2V5LCAmbm0pOwotCQlpZiAoSVNfRVJSKGRl
+bnQpKSB7Ci0JCQllcnIgPSBQVFJfRVJSKGRlbnQpOwotCQkJZ290byBvdXQ7Ci0JCX0KLQotCQlr
+ZnJlZShmaWxlLT5wcml2YXRlX2RhdGEpOwotCQlmaWxlLT5mX3BvcyA9IGtleV9oYXNoX2ZsYXNo
+KGMsICZkZW50LT5rZXkpOwotCQlmaWxlLT5wcml2YXRlX2RhdGEgPSBkZW50OwotCQljb25kX3Jl
+c2NoZWQoKTsKLQl9Ci0KLW91dDoKLQlpZiAoZXJyICE9IC1FTk9FTlQpCi0JCWRiZ19nZW4oImNh
+bm5vdCBmaW5kIG5leHQgZGlyZW50cnksIGVycm9yICVkIiwgZXJyKTsKLQotb3V0X2ZyZWU6Ci0J
+aWYgKGZpbGUtPnByaXZhdGVfZGF0YSkKLQkJa2ZyZWUoZmlsZS0+cHJpdmF0ZV9kYXRhKTsKLQlp
+ZiAoZmlsZSkKLQkJZnJlZShmaWxlKTsKLQlpZiAoZGVudHJ5KQotCQlmcmVlKGRlbnRyeSk7Ci0J
+aWYgKGRpcikKLQkJZnJlZShkaXIpOwotCi0JcmV0dXJuIHJldDsKLX0KLQotc3RhdGljIHVuc2ln
+bmVkIGxvbmcgdWJpZnNfZmluZGZpbGUoc3RydWN0IHN1cGVyX2Jsb2NrICpzYiwgY29uc3QgY2hh
+ciAqZmlsZW5hbWUpCi17Ci0JaW50IHJldDsKLQljaGFyICpuZXh0OwotCWNoYXIgZnBhdGhbMTI4
+XTsKLQljaGFyICpuYW1lID0gZnBhdGg7Ci0JdW5zaWduZWQgbG9uZyByb290X2ludW0gPSAxOwot
+CXVuc2lnbmVkIGxvbmcgaW51bTsKLQotCXN0cmNweShmcGF0aCwgZmlsZW5hbWUpOwotCi0JLyog
+UmVtb3ZlIGFsbCBsZWFkaW5nIHNsYXNoZXMgKi8KLQl3aGlsZSAoKm5hbWUgPT0gJy8nKQotCQlu
+YW1lKys7Ci0KLQkvKgotCSAqIEhhbmRsZSByb290LWRpcmVjb3R5ICgnLycpCi0JICovCi0JaW51
+bSA9IHJvb3RfaW51bTsKLQlpZiAoIW5hbWUgfHwgKm5hbWUgPT0gJ1wwJykKLQkJcmV0dXJuIGlu
+dW07Ci0KLQlmb3IgKDs7KSB7Ci0JCXN0cnVjdCBpbm9kZSAqaW5vZGU7Ci0JCXN0cnVjdCB1Ymlm
+c19pbm9kZSAqdWk7Ci0KLQkJLyogRXh0cmFjdCB0aGUgYWN0dWFsIHBhcnQgZnJvbSB0aGUgcGF0
+aG5hbWUuICAqLwotCQluZXh0ID0gc3RyY2hyKG5hbWUsICcvJyk7Ci0JCWlmIChuZXh0KSB7Ci0J
+CQkvKiBSZW1vdmUgYWxsIGxlYWRpbmcgc2xhc2hlcy4gICovCi0JCQl3aGlsZSAoKm5leHQgPT0g
+Jy8nKQotCQkJCSoobmV4dCsrKSA9ICdcMCc7Ci0JCX0KLQotCQlyZXQgPSB1Ymlmc19maW5kZGly
+KHNiLCBuYW1lLCByb290X2ludW0sICZpbnVtKTsKLQkJaWYgKCFyZXQpCi0JCQlyZXR1cm4gMDsK
+LQkJaW5vZGUgPSB1Ymlmc19pZ2V0KHNiLCBpbnVtKTsKLQotCQlpZiAoSVNfRVJSKGlub2RlKSkK
+LQkJCXJldHVybiAwOwotCQl1aSA9IHViaWZzX2lub2RlKGlub2RlKTsKLQotCQkvKgotCQkgKiBD
+aGVjayBpZiBkaXJlY3Rvcnkgd2l0aCB0aGlzIG5hbWUgZXhpc3RzCi0JCSAqLwotCi0JCS8qIEZv
+dW5kIHRoZSBub2RlISAgKi8KLQkJaWYgKCFuZXh0IHx8ICpuZXh0ID09ICdcMCcpCi0JCQlyZXR1
+cm4gaW51bTsKLQotCQlyb290X2ludW0gPSBpbnVtOwotCQluYW1lID0gbmV4dDsKLQl9Ci0KLQly
+ZXR1cm4gMDsKLX0KLQotLyoKLSAqIHViaWZzbG9hZC4uLgotICovCi0KIC8qIGZpbGUuYyAqLwog
+CiBzdGF0aWMgaW5saW5lIHZvaWQgKmttYXAoc3RydWN0IHBhZ2UgKnBhZ2UpCkBAIC00ODcsMTgg
+KzMzMiw4IEBAIHN0cnVjdCB1Ymlmc19maWxlIHsKIAogc3RhdGljIGludCB1Ymlmc19vcGVuKHN0
+cnVjdCBkZXZpY2VfZCAqZGV2LCBGSUxFICpmaWxlLCBjb25zdCBjaGFyICpmaWxlbmFtZSkKIHsK
+LQlzdHJ1Y3QgdWJpZnNfcHJpdiAqcHJpdiA9IGRldi0+cHJpdjsKLQlzdHJ1Y3QgaW5vZGUgKmlu
+b2RlOworCXN0cnVjdCBpbm9kZSAqaW5vZGUgPSBmaWxlLT5mX2lub2RlOwogCXN0cnVjdCB1Ymlm
+c19maWxlICp1ZjsKLQl1bnNpZ25lZCBsb25nIGludW07Ci0KLQlpbnVtID0gdWJpZnNfZmluZGZp
+bGUocHJpdi0+c2IsIGZpbGVuYW1lKTsKLQlpZiAoIWludW0pCi0JCXJldHVybiAtRU5PRU5UOwot
+Ci0JaW5vZGUgPSB1Ymlmc19pZ2V0KHByaXYtPnNiLCBpbnVtKTsKLQlpZiAoSVNfRVJSKGlub2Rl
+KSkKLQkJcmV0dXJuIC1FTk9FTlQ7CiAKIAl1ZiA9IHh6YWxsb2Moc2l6ZW9mKCp1ZikpOwogCkBA
+IC01MTYsOSArMzUxLDYgQEAgc3RhdGljIGludCB1Ymlmc19vcGVuKHN0cnVjdCBkZXZpY2VfZCAq
+ZGV2LCBGSUxFICpmaWxlLCBjb25zdCBjaGFyICpmaWxlbmFtZSkKIHN0YXRpYyBpbnQgdWJpZnNf
+Y2xvc2Uoc3RydWN0IGRldmljZV9kICpkZXYsIEZJTEUgKmYpCiB7CiAJc3RydWN0IHViaWZzX2Zp
+bGUgKnVmID0gZi0+cHJpdjsKLQlzdHJ1Y3QgaW5vZGUgKmlub2RlID0gdWYtPmlub2RlOwotCi0J
+dWJpZnNfaXB1dChpbm9kZSk7CiAKIAlmcmVlKHVmLT5idWYpOwogCWZyZWUodWYtPmRuKTsKQEAg
+LTU5NiwxNjMgKzQyOCw2IEBAIHN0YXRpYyBsb2ZmX3QgdWJpZnNfbHNlZWsoc3RydWN0IGRldmlj
+ZV9kICpkZXYsIEZJTEUgKmYsIGxvZmZfdCBwb3MpCiAJcmV0dXJuIHBvczsKIH0KIAotc3RydWN0
+IHViaWZzX2RpciB7Ci0Jc3RydWN0IGZpbGUgZmlsZTsKLQlzdHJ1Y3QgZGVudHJ5IGRlbnRyeTsK
+LQlzdHJ1Y3QgaW5vZGUgaW5vZGU7Ci0JRElSIGRpcjsKLQl1bmlvbiB1Ymlmc19rZXkga2V5Owot
+CXN0cnVjdCB1Ymlmc19kZW50X25vZGUgKmRlbnQ7Ci0Jc3RydWN0IHViaWZzX3ByaXYgKnByaXY7
+Ci0Jc3RydWN0IHFzdHIgbm07Ci19OwotCi1zdGF0aWMgRElSICp1Ymlmc19vcGVuZGlyKHN0cnVj
+dCBkZXZpY2VfZCAqZGV2LCBjb25zdCBjaGFyICpwYXRobmFtZSkKLXsKLQlzdHJ1Y3QgdWJpZnNf
+cHJpdiAqcHJpdiA9IGRldi0+cHJpdjsKLQlzdHJ1Y3QgdWJpZnNfZGlyICpkaXI7Ci0Jc3RydWN0
+IGZpbGUgKmZpbGU7Ci0Jc3RydWN0IGRlbnRyeSAqZGVudHJ5OwotCXN0cnVjdCBpbm9kZSAqaW5v
+ZGU7Ci0JdW5zaWduZWQgbG9uZyBpbnVtOwotCXN0cnVjdCB1Ymlmc19pbmZvICpjID0gcHJpdi0+
+c2ItPnNfZnNfaW5mbzsKLQotCWludW0gPSB1Ymlmc19maW5kZmlsZShwcml2LT5zYiwgcGF0aG5h
+bWUpOwotCWlmICghaW51bSkKLQkJcmV0dXJuIE5VTEw7Ci0KLQlpbm9kZSA9IHViaWZzX2lnZXQo
+cHJpdi0+c2IsIGludW0pOwotCWlmIChJU19FUlIoaW5vZGUpKQotCQlyZXR1cm4gTlVMTDsKLQot
+CXViaWZzX2lwdXQoaW5vZGUpOwotCi0JZGlyID0geHphbGxvYyhzaXplb2YoKmRpcikpOwotCi0J
+ZGlyLT5wcml2ID0gcHJpdjsKLQotCWZpbGUgPSAmZGlyLT5maWxlOwotCWRlbnRyeSA9ICZkaXIt
+PmRlbnRyeTsKLQlpbm9kZSA9ICZkaXItPmlub2RlOwotCi0JaW5vZGUtPmlfc2IgPSBwcml2LT5z
+YjsKLQlmaWxlLT5mX3BhdGguZGVudHJ5ID0gZGVudHJ5OwotCWZpbGUtPmZfcGF0aC5kZW50cnkt
+PmRfcGFyZW50ID0gZGVudHJ5OwotCWZpbGUtPmZfcGF0aC5kZW50cnktPmRfaW5vZGUgPSBpbm9k
+ZTsKLQlmaWxlLT5mX3BhdGguZGVudHJ5LT5kX2lub2RlLT5pX2lubyA9IGludW07Ci0JZmlsZS0+
+Zl9wb3MgPSAxOwotCi0JLyogRmluZCB0aGUgZmlyc3QgZW50cnkgaW4gVE5DIGFuZCBzYXZlIGl0
+ICovCi0JbG93ZXN0X2RlbnRfa2V5KGMsICZkaXItPmtleSwgaW5vZGUtPmlfaW5vKTsKLQotCXJl
+dHVybiAmZGlyLT5kaXI7Ci19Ci0KLXN0YXRpYyBzdHJ1Y3QgZGlyZW50ICp1Ymlmc19yZWFkZGly
+KHN0cnVjdCBkZXZpY2VfZCAqZGV2LCBESVIgKl9kaXIpCi17Ci0Jc3RydWN0IHViaWZzX2RpciAq
+ZGlyID0gY29udGFpbmVyX29mKF9kaXIsIHN0cnVjdCB1Ymlmc19kaXIsIGRpcik7Ci0Jc3RydWN0
+IHViaWZzX2luZm8gKmMgPSBkaXItPnByaXYtPnNiLT5zX2ZzX2luZm87Ci0Jc3RydWN0IHViaWZz
+X2RlbnRfbm9kZSAqZGVudDsKLQlzdHJ1Y3QgcXN0ciAqbm0gPSAmZGlyLT5ubTsKLQlzdHJ1Y3Qg
+ZmlsZSAqZmlsZSA9ICZkaXItPmZpbGU7Ci0KLQlkZW50ID0gdWJpZnNfdG5jX25leHRfZW50KGMs
+ICZkaXItPmtleSwgbm0pOwotCWlmIChJU19FUlIoZGVudCkpCi0JCXJldHVybiBOVUxMOwotCi0J
+ZGVidWcoImZlZWQgJyVzJywgaW5vICVsbHUsIG5ldyBmX3BvcyAlI3hcbiIsCi0JCWRlbnQtPm5h
+bWUsICh1bnNpZ25lZCBsb25nIGxvbmcpbGU2NF90b19jcHUoZGVudC0+aW51bSksCi0JCWtleV9o
+YXNoX2ZsYXNoKGMsICZkZW50LT5rZXkpKTsKLQotCXViaWZzX2Fzc2VydChsZTY0X3RvX2NwdShk
+ZW50LT5jaC5zcW51bSkgPiB1Ymlmc19pbm9kZSgmZGlyLT5pbm9kZSktPmNyZWF0X3NxbnVtKTsK
+LQotCWtleV9yZWFkKGMsICZkZW50LT5rZXksICZkaXItPmtleSk7Ci0JZmlsZS0+Zl9wb3MgPSBr
+ZXlfaGFzaF9mbGFzaChjLCAmZGVudC0+a2V5KTsKLQlmaWxlLT5wcml2YXRlX2RhdGEgPSBkZW50
+OwotCi0Jbm0tPmxlbiA9IGxlMTZfdG9fY3B1KGRlbnQtPm5sZW4pOwotCW5tLT5uYW1lID0gZGVu
+dC0+bmFtZTsKLQotCXN0cmNweShfZGlyLT5kLmRfbmFtZSwgZGVudC0+bmFtZSk7Ci0KLQlmcmVl
+KGRpci0+ZGVudCk7Ci0JZGlyLT5kZW50ID0gZGVudDsKLQotCXJldHVybiAmX2Rpci0+ZDsKLX0K
+LQotc3RhdGljIGludCB1Ymlmc19jbG9zZWRpcihzdHJ1Y3QgZGV2aWNlX2QgKmRldiwgRElSICpf
+ZGlyKQotewotCXN0cnVjdCB1Ymlmc19kaXIgKmRpciA9IGNvbnRhaW5lcl9vZihfZGlyLCBzdHJ1
+Y3QgdWJpZnNfZGlyLCBkaXIpOwotCi0JZnJlZShkaXItPmRlbnQpOwotCWZyZWUoZGlyKTsKLQot
+CXJldHVybiAwOwotfQotCi1zdGF0aWMgaW50IHViaWZzX3N0YXQoc3RydWN0IGRldmljZV9kICpk
+ZXYsIGNvbnN0IGNoYXIgKmZpbGVuYW1lLCBzdHJ1Y3Qgc3RhdCAqcykKLXsKLQlzdHJ1Y3QgdWJp
+ZnNfcHJpdiAqcHJpdiA9IGRldi0+cHJpdjsKLQlzdHJ1Y3QgaW5vZGUgKmlub2RlOwotCXVuc2ln
+bmVkIGxvbmcgaW51bTsKLQotCWludW0gPSB1Ymlmc19maW5kZmlsZShwcml2LT5zYiwgZmlsZW5h
+bWUpOwotCWlmICghaW51bSkKLQkJcmV0dXJuIC1FTk9FTlQ7Ci0KLQlpbm9kZSA9IHViaWZzX2ln
+ZXQocHJpdi0+c2IsIGludW0pOwotCWlmIChJU19FUlIoaW5vZGUpKQotCQlyZXR1cm4gLUVOT0VO
+VDsKLQotCXMtPnN0X3NpemUgPSBpbm9kZS0+aV9zaXplOwotCXMtPnN0X21vZGUgPSBpbm9kZS0+
+aV9tb2RlOwotCi0JdWJpZnNfaXB1dChpbm9kZSk7Ci0KLQlyZXR1cm4gMDsKLX0KLQotc3RhdGlj
+IGNoYXIgKnViaWZzX3N5bWxpbmsoc3RydWN0IGlub2RlICppbm9kZSkKLXsKLQlzdHJ1Y3QgdWJp
+ZnNfaW5vZGUgKnVpOwotCWNoYXIgKnN5bWxpbms7Ci0KLQl1aSA9IHViaWZzX2lub2RlKGlub2Rl
+KTsKLQlzeW1saW5rID0gbWFsbG9jKHVpLT5kYXRhX2xlbiArIDEpOwotCi0JbWVtY3B5KHN5bWxp
+bmssIHVpLT5kYXRhLCB1aS0+ZGF0YV9sZW4pOwotCXN5bWxpbmtbdWktPmRhdGFfbGVuXSA9ICdc
+MCc7Ci0KLQlyZXR1cm4gc3ltbGluazsKLX0KLQotc3RhdGljIGludCB1Ymlmc19yZWFkbGluayhz
+dHJ1Y3QgZGV2aWNlX2QgKmRldiwgY29uc3QgY2hhciAqcGF0aG5hbWUsIGNoYXIgKmJ1ZiwKLQkJ
+CXNpemVfdCBidWZzeikKLXsKLQlzdHJ1Y3QgdWJpZnNfcHJpdiAqcHJpdiA9IGRldi0+cHJpdjsK
+LQlzdHJ1Y3QgaW5vZGUgKmlub2RlOwotCWNoYXIgKnN5bWxpbms7Ci0JaW50IGxlbjsKLQl1bnNp
+Z25lZCBsb25nIGludW07Ci0KLQlpbnVtID0gdWJpZnNfZmluZGZpbGUocHJpdi0+c2IsIHBhdGhu
+YW1lKTsKLQlpZiAoIWludW0pCi0JCXJldHVybiAtRU5PRU5UOwotCi0JaW5vZGUgPSB1Ymlmc19p
+Z2V0KHByaXYtPnNiLCBpbnVtKTsKLQlpZiAoIWlub2RlKQotCQlyZXR1cm4gLUVOT0VOVDsKLQot
+CXN5bWxpbmsgPSB1Ymlmc19zeW1saW5rKGlub2RlKTsKLQotCWxlbiA9IG1pbihidWZzeiwgc3Ry
+bGVuKHN5bWxpbmspKTsKLQltZW1jcHkoYnVmLCBzeW1saW5rLCBsZW4pOwotCWZyZWUoc3ltbGlu
+ayk7Ci0KLQlyZXR1cm4gMDsKLX0KLQogdm9pZCB1Ymlmc19zZXRfcm9vdGFyZyhzdHJ1Y3QgdWJp
+ZnNfcHJpdiAqcHJpdiwgc3RydWN0IGZzX2RldmljZV9kICpmc2RldikKIHsKIAlzdHJ1Y3QgdWJp
+X3ZvbHVtZV9pbmZvIHZpID0ge307CkBAIC03OTUsMTEgKzQ3MCwxMSBAQCBzdGF0aWMgaW50IHVi
+aWZzX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQogCQlnb3RvIGVycl9mcmVlOwogCX0KIAot
+CXByaXYtPnNiID0gdWJpZnNfZ2V0X3N1cGVyKGRldiwgcHJpdi0+dWJpLCAwKTsKLQlpZiAoSVNf
+RVJSKHByaXYtPnNiKSkgewotCQlyZXQgPSBQVFJfRVJSKHByaXYtPnNiKTsKKwlyZXQgPSB1Ymlm
+c19nZXRfc3VwZXIoZGV2LCBwcml2LT51YmksIDApOworCWlmIChyZXQpCiAJCWdvdG8gZXJyOwot
+CX0KKworCXByaXYtPnNiID0gJmZzZGV2LT5zYjsKIAogCXViaWZzX3NldF9yb290YXJnKHByaXYs
+IGZzZGV2KTsKIApAQCAtODIxLDcgKzQ5Niw2IEBAIHN0YXRpYyB2b2lkIHViaWZzX3JlbW92ZShz
+dHJ1Y3QgZGV2aWNlX2QgKmRldikKIAl1YmlfY2xvc2Vfdm9sdW1lKHByaXYtPnViaSk7CiAKIAlm
+cmVlKGMpOwotCWZyZWUoc2IpOwogCiAJZnJlZShwcml2KTsKIH0KQEAgLTgzMSwxMSArNTA1LDYg
+QEAgc3RhdGljIHN0cnVjdCBmc19kcml2ZXJfZCB1Ymlmc19kcml2ZXIgPSB7CiAJLmNsb3NlICAg
+ICA9IHViaWZzX2Nsb3NlLAogCS5yZWFkICAgICAgPSB1Ymlmc19yZWFkLAogCS5sc2VlayAgICAg
+PSB1Ymlmc19sc2VlaywKLQkub3BlbmRpciAgID0gdWJpZnNfb3BlbmRpciwKLQkucmVhZGRpciAg
+ID0gdWJpZnNfcmVhZGRpciwKLQkuY2xvc2VkaXIgID0gdWJpZnNfY2xvc2VkaXIsCi0JLnN0YXQg
+ICAgICA9IHViaWZzX3N0YXQsCi0JLnJlYWRsaW5rICA9IHViaWZzX3JlYWRsaW5rLAogCS50eXBl
+ID0gZmlsZXR5cGVfdWJpZnMsCiAJLmZsYWdzICAgICA9IDAsCiAJLmRydiA9IHsKZGlmZiAtLWdp
+dCBhL2ZzL3ViaWZzL3ViaWZzLmggYi9mcy91Ymlmcy91Ymlmcy5oCmluZGV4IDIyYjI0YTExNjEu
+LjRjNGM5MjdkZTkgMTAwNjQ0Ci0tLSBhL2ZzL3ViaWZzL3ViaWZzLmgKKysrIGIvZnMvdWJpZnMv
+dWJpZnMuaApAQCAtMzYsNiArMzYsNyBAQAogI2luY2x1ZGUgPGx6by5oPgogI2luY2x1ZGUgPGNy
+Yy5oPgogI2luY2x1ZGUgPGxpbnV4L2ZzLmg+CisjaW5jbHVkZSA8bGludXgvc3RhdC5oPgogI2lu
+Y2x1ZGUgPGxpbnV4L3NjaGVkLmg+CiAjaW5jbHVkZSA8bGludXgvY3R5cGUuaD4KICNpbmNsdWRl
+IDxsaW51eC90aW1lLmg+CkBAIC00OSwxMSArNTAsOSBAQAogCiAjZGVmaW5lIGNyYzMyKHNlZWQs
+IGRhdGEsIGxlbmd0aCkgIGNyYzMyX25vX2NvbXAoc2VlZCwgKHVuc2lnbmVkIGNoYXIgY29uc3Qg
+KilkYXRhLCBsZW5ndGgpCiAKLXN0cnVjdCBkZW50cnk7CiBzdHJ1Y3QgZmlsZTsKIHN0cnVjdCBp
+YXR0cjsKIHN0cnVjdCBrc3RhdDsKLXN0cnVjdCB2ZnNtb3VudDsKIAogZXh0ZXJuIHN0cnVjdCBz
+dXBlcl9ibG9jayAqdWJpZnNfc2I7CiAKQEAgLTcyLDggKzcxLDYgQEAgc3RydWN0IHBhZ2Ugewog
+CXN0cnVjdCBpbm9kZSAqaW5vZGU7CiB9OwogCi12b2lkIGlwdXQoc3RydWN0IGlub2RlICppbm9k
+ZSk7Ci0KIHN0cnVjdCBrbWVtX2NhY2hlIHsgaW50IHN6OyB9OwogCiBzdHJ1Y3Qga21lbV9jYWNo
+ZSAqZ2V0X21lbShpbnQgZWxlbWVudF9zeik7CkBAIC0xOTAxLDcgKzE4OTgsNyBAQCBpbnQgdWJp
+ZnNfZGVjb21wcmVzcyhjb25zdCBzdHJ1Y3QgdWJpZnNfaW5mbyAqYywgY29uc3Qgdm9pZCAqYnVm
+LCBpbnQgbGVuLAogCiAjaWZkZWYgX19CQVJFQk9YX18KIHZvaWQgdWJpZnNfdW1vdW50KHN0cnVj
+dCB1Ymlmc19pbmZvICpjKTsKLXN0cnVjdCBzdXBlcl9ibG9jayAqdWJpZnNfZ2V0X3N1cGVyKHN0
+cnVjdCBkZXZpY2VfZCAqZGV2LCBzdHJ1Y3QgdWJpX3ZvbHVtZV9kZXNjICp1YmksIGludCBzaWxl
+bnQpOworaW50IHViaWZzX2dldF9zdXBlcihzdHJ1Y3QgZGV2aWNlX2QgKmRldiwgc3RydWN0IHVi
+aV92b2x1bWVfZGVzYyAqdWJpLCBpbnQgc2lsZW50KTsKICNlbmRpZgogCiAjZW5kaWYgLyogIV9f
+VUJJRlNfSF9fICovCi0tIAoyLjE3LjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
+ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
+Ym94Cg==
