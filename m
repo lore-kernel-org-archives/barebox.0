@@ -1,12 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fOV7e-0000k2-4E
- for barebox@lists.infradead.org; Thu, 31 May 2018 21:28:40 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu, 31 May 2018 23:28:17 +0200
-Message-Id: <20180531212817.32604-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1fOP8b-0001Cj-Km
+ for barebox@lists.infradead.org; Thu, 31 May 2018 15:05:17 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 31 May 2018 17:04:32 +0200
+Message-Id: <20180531150442.16208-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,75 +14,104 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] kwbimage_v0: add support to detect and boot a mvebu v0 image
-To: barebox@lists.infradead.org
+Subject: [PATCH v2 00/10] dentry cache support
+To: Barebox List <barebox@lists.infradead.org>
 
-VGhlIGRpZmZlcmVuY2VzIGJldHdlZW4gdjAgYW5kIHYxIG9mIHRoZSBtdmVidSBrd2JpbWFnZSBh
-cmUgc21hbGwgZW5vdWdoCnRoYXQgdGhlIGZ1bmN0aW9uIHRvIGJvb3Qgc3VjaCBhbiBpbWFnZSBj
-YW4gYmUgc2hhcmVkIGJldHdlZW4gYm90aAp2YXJpYW50cy4KClNpZ25lZC1vZmYtYnk6IFV3ZSBL
-bGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogYXJjaC9h
-cm0vbWFjaC1tdmVidS9rd2Jvb3RpbWFnZS5jIHwgMTEgKysrKysrKysrLS0KIGNvbW1vbi9maWxl
-dHlwZS5jICAgICAgICAgICAgICAgICB8IDIyICsrKysrKysrKysrKysrKysrLS0tLS0KIGluY2x1
-ZGUvZmlsZXR5cGUuaCAgICAgICAgICAgICAgICB8ICAxICsKIDMgZmlsZXMgY2hhbmdlZCwgMjcg
-aW5zZXJ0aW9ucygrKSwgNyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNo
-LW12ZWJ1L2t3Ym9vdGltYWdlLmMgYi9hcmNoL2FybS9tYWNoLW12ZWJ1L2t3Ym9vdGltYWdlLmMK
-aW5kZXggOGQzNjRjZWI3YjMxLi5lMzc5ZDczMmZlZDYgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21h
-Y2gtbXZlYnUva3dib290aW1hZ2UuYworKysgYi9hcmNoL2FybS9tYWNoLW12ZWJ1L2t3Ym9vdGlt
-YWdlLmMKQEAgLTEwLDcgKzEwLDcgQEAKICNpbmNsdWRlIDxhc20vdW5hbGlnbmVkLmg+CiAjaW5j
-bHVkZSA8bWFjaC9jb21tb24uaD4KIAotc3RhdGljIGludCBkb19ib290bV9rd2JpbWFnZV92MShz
-dHJ1Y3QgaW1hZ2VfZGF0YSAqZGF0YSkKK3N0YXRpYyBpbnQgZG9fYm9vdG1fa3diaW1hZ2VfdjBf
-djEoc3RydWN0IGltYWdlX2RhdGEgKmRhdGEpCiB7CiAJaW50IGZkLCByZXQ7CiAJbG9mZl90IG9m
-ZnNldDsKQEAgLTY5LDE0ICs2OSwyMSBAQCBvdXRfZnJlZToKIAlyZXR1cm4gcmV0OwogfQogCitz
-dGF0aWMgc3RydWN0IGltYWdlX2hhbmRsZXIgaW1hZ2VfaGFuZGxlcl9rd2JpbWFnZV92MF9oYW5k
-bGVyID0geworCS5uYW1lID0gIk1WRUJVIGt3YmltYWdlIHYwIiwKKwkuYm9vdG0gPSBkb19ib290
-bV9rd2JpbWFnZV92MF92MSwKKwkuZmlsZXR5cGUgPSBmaWxldHlwZV9rd2JpbWFnZV92MCwKK307
-CisKIHN0YXRpYyBzdHJ1Y3QgaW1hZ2VfaGFuZGxlciBpbWFnZV9oYW5kbGVyX2t3YmltYWdlX3Yx
-X2hhbmRsZXIgPSB7CiAJLm5hbWUgPSAiTVZFQlUga3diaW1hZ2UgdjEiLAotCS5ib290bSA9IGRv
-X2Jvb3RtX2t3YmltYWdlX3YxLAorCS5ib290bSA9IGRvX2Jvb3RtX2t3YmltYWdlX3YwX3YxLAog
-CS5maWxldHlwZSA9IGZpbGV0eXBlX2t3YmltYWdlX3YxLAogfTsKIAogc3RhdGljIGludCBtdmVi
-dV9yZWdpc3Rlcl9rd2JpbWFnZV9pbWFnZV9oYW5kbGVyKHZvaWQpCiB7CisJcmVnaXN0ZXJfaW1h
-Z2VfaGFuZGxlcigmaW1hZ2VfaGFuZGxlcl9rd2JpbWFnZV92MF9oYW5kbGVyKTsKIAlyZWdpc3Rl
-cl9pbWFnZV9oYW5kbGVyKCZpbWFnZV9oYW5kbGVyX2t3YmltYWdlX3YxX2hhbmRsZXIpOwogCiAJ
-cmV0dXJuIDA7CmRpZmYgLS1naXQgYS9jb21tb24vZmlsZXR5cGUuYyBiL2NvbW1vbi9maWxldHlw
-ZS5jCmluZGV4IDQ0NGVjMTRjYzRiNi4uYmI4MDdkZjcyMWQ5IDEwMDY0NAotLS0gYS9jb21tb24v
-ZmlsZXR5cGUuYworKysgYi9jb21tb24vZmlsZXR5cGUuYwpAQCAtNjUsNyArNjUsOCBAQCBzdGF0
-aWMgY29uc3Qgc3RydWN0IGZpbGV0eXBlX3N0ciBmaWxldHlwZV9zdHJbXSA9IHsKIAlbZmlsZXR5
-cGVfZXhlXSA9IHsgIk1TLURPUyBleGVjdXRhYmxlIiwgImV4ZSIgfSwKIAlbZmlsZXR5cGVfbXhz
-X2Jvb3RzdHJlYW1dID0geyAiRnJlZXNjYWxlIE1YUyBib290c3RyZWFtIiwgIm14c2JzIiB9LAog
-CVtmaWxldHlwZV9zb2NmcGdhX3hsb2FkXSA9IHsgIlNvQ0ZQR0EgcHJlYm9vdGxvYWRlciBpbWFn
-ZSIsICJzb2NmcGdhLXhsb2FkIiB9LAotCVtmaWxldHlwZV9rd2JpbWFnZV92MV0gPSB7ICJNVkVC
-VSBrd2JpbWFnZSAodjEpIiwgImt3YiIgfSwKKwlbZmlsZXR5cGVfa3diaW1hZ2VfdjBdID0geyAi
-TVZFQlUga3diaW1hZ2UgKHYwKSIsICJrd2IwIiB9LAorCVtmaWxldHlwZV9rd2JpbWFnZV92MV0g
-PSB7ICJNVkVCVSBrd2JpbWFnZSAodjEpIiwgImt3YjEiIH0sCiAJW2ZpbGV0eXBlX2FuZHJvaWRf
-c3BhcnNlXSA9IHsgIkFuZHJvaWQgc3BhcnNlIGltYWdlIiwgInNwYXJzZSIgfSwKIAlbZmlsZXR5
-cGVfYXJtNjRfbGludXhfaW1hZ2VdID0geyAiQVJNIGFhcmNoNjQgTGludXggaW1hZ2UiLCAiYWFy
-Y2g2NC1saW51eCIgfSwKIH07CkBAIC0zMDIsMTAgKzMwMywyMSBAQCBlbnVtIGZpbGV0eXBlIGZp
-bGVfZGV0ZWN0X3R5cGUoY29uc3Qgdm9pZCAqX2J1Ziwgc2l6ZV90IGJ1ZnNpemUpCiAJaWYgKChi
-dWY4WzBdID09IDB4NWEgfHwgYnVmOFswXSA9PSAweDY5IHx8IGJ1ZjhbMF0gPT0gMHg3OCB8fAog
-CSAgICAgYnVmOFswXSA9PSAweDhiIHx8IGJ1ZjhbMF0gPT0gMHg5YykgJiYKIAkgICAgYnVmOFsw
-eDFdID09IDAgJiYgYnVmOFsweDJdID09IDAgJiYgYnVmOFsweDNdID09IDAgJiYKLQkgICAgYnVm
-OFsweDhdID09IDEgJiYgYnVmOFsweDE4XSA9PSAwICYmIGJ1ZjhbMHgxYl0gPT0gMCAmJgotCSAg
-ICBidWY4WzB4MWNdID09IDAgJiYgYnVmOFsweDFkXSA9PSAwICYmCi0JICAgIChidWY4WzB4MWVd
-ID09IDAgfHwgYnVmOFsweDFlXSA9PSAxKSkKLQkJcmV0dXJuIGZpbGV0eXBlX2t3YmltYWdlX3Yx
-OworCSAgICBidWY4WzB4MThdID09IDAgJiYgYnVmOFsweDFiXSA9PSAwICYmIGJ1ZjhbMHgxY10g
-PT0gMCkgeworCQl1bnNpZ25lZCBjaGFyIHN1bSA9IDA7CisJCWludCBpOworCisJCWZvciAoaSA9
-IDA7IGkgPD0gMHgxZTsgKytpKQorCQkJc3VtICs9IGJ1ZjhbaV07CisKKwkJaWYgKHN1bSA9PSBi
-dWY4WzB4MWZdICYmIGJ1ZjhbMHg4XSA9PSAwKQorCQkJcmV0dXJuIGZpbGV0eXBlX2t3YmltYWdl
-X3YwOworCisJCWlmIChzdW0gPT0gYnVmOFsweDFmXSAmJgorCQkgICAgYnVmOFsweDhdID09IDEg
-JiYgYnVmOFsweDFkXSA9PSAwICYmCisJCSAgICAoYnVmOFsweDFlXSA9PSAwIHx8IGJ1ZjhbMHgx
-ZV0gPT0gMSkpCisJCQlyZXR1cm4gZmlsZXR5cGVfa3diaW1hZ2VfdjE7CisJfQogCiAJaWYgKGlz
-X3NwYXJzZV9pbWFnZShfYnVmKSkKIAkJcmV0dXJuIGZpbGV0eXBlX2FuZHJvaWRfc3BhcnNlOwpk
-aWZmIC0tZ2l0IGEvaW5jbHVkZS9maWxldHlwZS5oIGIvaW5jbHVkZS9maWxldHlwZS5oCmluZGV4
-IDk5ODY5MzhkZGI3Yy4uZDk5NjNhMjQ0OTZjIDEwMDY0NAotLS0gYS9pbmNsdWRlL2ZpbGV0eXBl
-LmgKKysrIGIvaW5jbHVkZS9maWxldHlwZS5oCkBAIC0zOCw2ICszOCw3IEBAIGVudW0gZmlsZXR5
-cGUgewogCWZpbGV0eXBlX3h6X2NvbXByZXNzZWQsCiAJZmlsZXR5cGVfbXhzX2Jvb3RzdHJlYW0s
-CiAJZmlsZXR5cGVfc29jZnBnYV94bG9hZCwKKwlmaWxldHlwZV9rd2JpbWFnZV92MCwKIAlmaWxl
-dHlwZV9rd2JpbWFnZV92MSwKIAlmaWxldHlwZV9hbmRyb2lkX3NwYXJzZSwKIAlmaWxldHlwZV9h
-cm02NF9saW51eF9pbWFnZSwKLS0gCjIuMTcuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+This series adds the Linux dcache implementation to barebox.
+
+Until now every filesystem driver resolves the full path to a file for
+itself. This leads to code duplication and is error prone since
+resolving paths is a complicated task. Also it can narrow down the
+lookup performance since barebox only knows ASCII paths and has no way
+of caching lookups. Since with this barebox provides a interface to
+dentries much like the Linux Kernel does it gets easier to share
+filesystem code between barebox and Linux.
+
+With this series we get the Linux dcache implementation. The path
+resolving code from fs/namei.c is nearly taken as-is, minus the RCU and
+locking code. Dcaching is made simple as of now: We simply cache
+everything and never release any dentries. Although we do reference
+counting for inodes and dentries it is effectively not used yet.  We
+never free anything until a fs is unmounted in which case we free
+everything no matter if references are taken or not.
+
+To still support filesystems with the old API I now introduced a wrapper
+layer which binds between the new dentry cache API and old filesystems.
+Hopefully this can go away soon once all filesystems are converted.
+
+Changes since v1:
+
+- introduce wrapper layer so we do not have to mark any FS as broken
+  anymore
+  - change squashfs and cramfs to the new API
+  - let tftp return FILESIZE_MAX as inode size as Philipp suggested
+  - lots of small changes
+
+Sascha Hauer (10):
+  fs: dentry cache implementation
+  fs: ramfs: Switch to dentry cache implementation
+  fs: devfs: Switch to dentry cache implementation
+  fs: ext4: Switch to dentry cache implementation
+  fs: ubifs: Switch to dentry cache implementation
+  fs: nfs: Switch to dentry cache implementation
+  fs: tftp: Switch to dentry cache implementation
+  fs: cramfs: Switch to dentry cache implementation
+  fs: squashfs: Switch to dentry cache implementation
+  block: Adjust cache sizes
+
+ common/block.c         |    4 +-
+ fs/Kconfig             |   18 +
+ fs/Makefile            |    3 +-
+ fs/cramfs/cramfs.c     |  523 +++---
+ fs/devfs.c             |  150 +-
+ fs/ext4/ext_barebox.c  |  279 +--
+ fs/ext4/ext_common.h   |    3 +
+ fs/fat/Kconfig         |    1 +
+ fs/fs.c                | 3632 ++++++++++++++++++++++++++--------------
+ fs/legacy.c            |  315 ++++
+ fs/libfs.c             |   97 ++
+ fs/nfs.c               |  542 +++---
+ fs/pstore/Kconfig      |    1 +
+ fs/ramfs.c             |  401 ++---
+ fs/squashfs/Makefile   |    2 +
+ fs/squashfs/dir.c      |  232 +++
+ fs/squashfs/inode.c    |    9 +
+ fs/squashfs/namei.c    |   17 +-
+ fs/squashfs/squashfs.c |  186 +-
+ fs/squashfs/squashfs.h |    9 +-
+ fs/squashfs/super.c    |   13 +-
+ fs/squashfs/symlink.c  |   82 +
+ fs/tftp.c              |   97 +-
+ fs/ubifs/Makefile      |    2 +-
+ fs/ubifs/dir.c         |  410 +++++
+ fs/ubifs/super.c       |  153 +-
+ fs/ubifs/ubifs.c       |  341 +---
+ fs/ubifs/ubifs.h       |    7 +-
+ include/dirent.h       |    3 +
+ include/fs.h           |   38 +-
+ include/linux/dcache.h |  109 +-
+ include/linux/fs.h     |  131 +-
+ include/linux/mount.h  |    3 +
+ include/linux/namei.h  |   52 +
+ include/linux/stat.h   |    2 +
+ 35 files changed, 4832 insertions(+), 3035 deletions(-)
+ create mode 100644 fs/legacy.c
+ create mode 100644 fs/libfs.c
+ create mode 100644 fs/squashfs/dir.c
+ create mode 100644 fs/squashfs/symlink.c
+ create mode 100644 fs/ubifs/dir.c
+ create mode 100644 include/linux/namei.h
+
+-- 
+2.17.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
