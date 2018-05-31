@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1f8KKz-0003li-FI
- for barebox@lists.infradead.org; Tue, 17 Apr 2018 06:43:35 +0000
-Date: Tue, 17 Apr 2018 08:43:20 +0200
+ id 1fOPLN-00014J-6b
+ for barebox@lists.infradead.org; Thu, 31 May 2018 15:18:38 +0000
+Date: Thu, 31 May 2018 17:18:12 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180417064320.hw3helj6mtr5a3v4@pengutronix.de>
-References: <38a86524d3ed4ff2b2306a3bb52fb312@eckelmann.de>
- <20180416101939.yggybypgs3ahr76b@sapphire.tkos.co.il>
+Message-ID: <20180531151812.4ayinus52lte2cbn@pengutronix.de>
+References: <20180528214400.28252-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180416101939.yggybypgs3ahr76b@sapphire.tkos.co.il>
+In-Reply-To: <20180528214400.28252-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,38 +22,147 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Question about =?iso-8859-15?Q?barebox?=
- =?iso-8859-15?Q?*=2Fdrivers=2Fmfd=2Fmc34704=2Ec_and_ACCURATE_I=B2?=
- =?iso-8859-15?Q?C?= mode ...
-To: Baruch Siach <baruch@tkos.co.il>
-Cc: "Mainz, Roland" <R.Mainz@eckelmann.de>, barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] dove: move memory controller remapping before RAM
+ detection
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Roland,
-
-On Mon, Apr 16, 2018 at 01:19:39PM +0300, Baruch Siach wrote:
-> Hi Roland,
+On Mon, May 28, 2018 at 11:43:59PM +0200, Uwe Kleine-K=F6nig wrote:
+> Compared to other mvebu cpus the memory controller registers are in
+> their own register window that can be moved independently of the mbus
+> register window.
 > =
 
-> On Mon, Apr 16, 2018 at 09:52:14AM +0000, Mainz, Roland wrote:
-> > Two small questions about drivers/mfd/mc34704.c in the barebox codebase:
-> > 1. mc34704 has an ACCURATE bit (I2CSET1, see =
+> Since commit f05c6e095cf8 the available RAM configured by the boot ROM
+> is read out earlier. This happens to be before the memory controller
+> register window is moved and so dove_memory_find() fails. To fix this
+> move the memory controller window together with the mbus window.
+> =
 
-> > https://www.nxp.com/docs/en/data-sheet/MC34704.pdf) which requires that=
- all =
+> This change allows to boot barebox first stage again on a Solidrun
+> Cubox.
+> =
 
-> > read/write commands are send twice - does the barebox code have any sup=
-port =
+> Fixes: f05c6e095cf8 ("mvebu: rework how memory is detected")
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
 
-> > for that in the current versions ?
-> > 2. Is this "accurate I=B2C communication mode" enabled by that bit a =
-
-> > vendor-specific protocol extension or is it part of the I=B2C standard ?
-
-I never heard of "accurate I=B2C", it must be something the chip designers
-have invented. Also there is no support for it neither in the mc34704
-driver nor in the generic I=B2C support.
+Applied, thanks
 
 Sascha
+
+>  arch/arm/mach-mvebu/common.c | 29 +++++++++++++++++++++++++++++
+>  arch/arm/mach-mvebu/dove.c   | 22 ----------------------
+>  2 files changed, 29 insertions(+), 22 deletions(-)
+> =
+
+> diff --git a/arch/arm/mach-mvebu/common.c b/arch/arm/mach-mvebu/common.c
+> index fa971da11e75..e951bc06276a 100644
+> --- a/arch/arm/mach-mvebu/common.c
+> +++ b/arch/arm/mach-mvebu/common.c
+> @@ -37,6 +37,10 @@
+>  #define DOVE_SDRAM_MAP_VALID		BIT(0)
+>  #define DOVE_SDRAM_LENGTH_SHIFT		16
+>  #define DOVE_SDRAM_LENGTH_MASK		(0x00f << DOVE_SDRAM_LENGTH_SHIFT)
+> +#define DOVE_SDRAM_REGS_BASE_DECODE	0x10
+> +
+> +#define DOVE_CPU_CTRL			(MVEBU_REMAP_INT_REG_BASE + 0xd025c)
+> +#define DOVE_AXI_CTRL			(MVEBU_REMAP_INT_REG_BASE + 0xd0224)
+>  =
+
+>  #define KIRKWOOD_SDRAM_BASE		(IOMEM(MVEBU_REMAP_INT_REG_BASE) + 0x00000)
+>  #define KIRKWOOD_DDR_BASE_CSn(n)	(0x1500 + ((n) * 0x8))
+> @@ -192,8 +196,33 @@ static void mvebu_remap_registers(void)
+>  =
+
+>  void __naked __noreturn dove_barebox_entry(void *boarddata)
+>  {
+> +	uint32_t val;
+> +	void __iomem *mcbase =3D mvebu_get_initial_int_reg_base() + 0x800000;
+> +
+>  	mvebu_remap_registers();
+>  =
+
+> +	/*
+> +	 * On dove there is an additional register window that is expected to be
+> +	 * located 0x800000 after the main register window. This contains the
+> +	 * DDR registers.
+> +	 */
+> +	val =3D readl(mcbase + DOVE_SDRAM_REGS_BASE_DECODE) & 0x0000ffff;
+> +	val |=3D (unsigned long)DOVE_SDRAM_BASE & 0xffff0000;
+> +	writel(val, mcbase + DOVE_SDRAM_REGS_BASE_DECODE);
+> +
+> +	/* tell the axi controller about where to find the DDR controller */
+> +	val =3D readl(DOVE_AXI_CTRL) & 0x007fffff;
+> +	val |=3D (unsigned long)DOVE_SDRAM_BASE & 0xff800000;
+> +	writel(val, DOVE_AXI_CTRL);
+> +
+> +	/*
+> +	 * The AXI units internal space base starts at the same address as the
+> +	 * DDR controller.
+> +	 */
+> +	val =3D readl(DOVE_CPU_CTRL) & 0xffff0000;
+> +	val |=3D ((unsigned long)DOVE_SDRAM_BASE & 0xffff0000) >> 16;
+> +	writel(val, DOVE_CPU_CTRL);
+> +
+>  	barebox_arm_entry(0, dove_memory_find(), boarddata);
+>  }
+>  =
+
+> diff --git a/arch/arm/mach-mvebu/dove.c b/arch/arm/mach-mvebu/dove.c
+> index 1cdb7e1b8296..37fde63f18de 100644
+> --- a/arch/arm/mach-mvebu/dove.c
+> +++ b/arch/arm/mach-mvebu/dove.c
+> @@ -22,27 +22,6 @@
+>  #include <linux/mbus.h>
+>  #include <mach/dove-regs.h>
+>  =
+
+> -static inline void dove_remap_mc_regs(void)
+> -{
+> -	void __iomem *mcboot =3D IOMEM(DOVE_BOOTUP_MC_REGS);
+> -	uint32_t val;
+> -
+> -	/* remap ahb slave base */
+> -	val  =3D readl(DOVE_CPU_CTRL) & 0xffff0000;
+> -	val |=3D (DOVE_REMAP_MC_REGS & 0xffff0000) >> 16;
+> -	writel(val, DOVE_CPU_CTRL);
+> -
+> -	/* remap axi bridge address */
+> -	val  =3D readl(DOVE_AXI_CTRL) & 0x007fffff;
+> -	val |=3D DOVE_REMAP_MC_REGS & 0xff800000;
+> -	writel(val, DOVE_AXI_CTRL);
+> -
+> -	/* remap memory controller base address */
+> -	val =3D readl(mcboot + SDRAM_REGS_BASE_DECODE) & 0x0000ffff;
+> -	val |=3D DOVE_REMAP_MC_REGS & 0xffff0000;
+> -	writel(val, mcboot + SDRAM_REGS_BASE_DECODE);
+> -}
+> -
+>  static void __noreturn dove_restart_soc(struct restart_handler *rst)
+>  {
+>  	/* enable and assert RSTOUTn */
+> @@ -62,7 +41,6 @@ static int dove_init_soc(void)
+>  	barebox_set_model("Marvell Dove");
+>  	barebox_set_hostname("dove");
+>  =
+
+> -	dove_remap_mc_regs();
+>  	mvebu_mbus_init();
+>  =
+
+>  	return 0;
+> -- =
+
+> 2.17.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 -- =
 
