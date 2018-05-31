@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fOUVQ-00082W-9R
- for barebox@lists.infradead.org; Thu, 31 May 2018 20:49:10 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 31 May 2018 22:48:49 +0200
-Message-Id: <20180531204851.1719-2-o.rempel@pengutronix.de>
-In-Reply-To: <20180531204851.1719-1-o.rempel@pengutronix.de>
-References: <20180531204851.1719-1-o.rempel@pengutronix.de>
+ id 1fOV7e-0000k2-4E
+ for barebox@lists.infradead.org; Thu, 31 May 2018 21:28:40 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu, 31 May 2018 23:28:17 +0200
+Message-Id: <20180531212817.32604-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,221 +15,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] add basic ELF parser
+Subject: [PATCH] kwbimage_v0: add support to detect and boot a mvebu v0 image
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-This parser is needed for kernel boot support on MIPS
-and can potentially reused on other platforms.
-
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- common/Makefile |   1 +
- common/elf.c    | 146 ++++++++++++++++++++++++++++++++++++++++++++++++
- include/elf.h   |  10 ++++
- 3 files changed, 157 insertions(+)
- create mode 100644 common/elf.c
-
-diff --git a/common/Makefile b/common/Makefile
-index 1ff7d2370..4fe7eaaf6 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -8,6 +8,7 @@ obj-y				+= misc.o
- obj-pbl-y			+= memsize.o
- obj-y				+= resource.o
- obj-y				+= bootsource.o
-+obj-y				+= elf.o
- obj-y				+= restart.o
- obj-y				+= poweroff.o
- obj-$(CONFIG_AUTO_COMPLETE)	+= complete.o
-diff --git a/common/elf.c b/common/elf.c
-new file mode 100644
-index 000000000..d6a1f8b6a
---- /dev/null
-+++ b/common/elf.c
-@@ -0,0 +1,146 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2018 Pengutronix, Oleksij Rempel <o.rempel@pengutronix.de>
-+ */
-+
-+#include <common.h>
-+#include <elf.h>
-+#include <memory.h>
-+
-+struct elf_section {
-+	struct list_head list;
-+	struct resource *r;
-+};
-+
-+static int elf_request_region(struct elf_image *elf, resource_size_t start,
-+			      resource_size_t size)
-+{
-+	struct list_head *list = &elf->list;
-+	struct resource *r_new;
-+	struct elf_section *r;
-+
-+	r = xzalloc(sizeof(*r));
-+	r_new = request_sdram_region("elf_section", start, size);
-+	if (!r_new) {
-+		pr_err("Failed to request region: %x %x\n", start, size);
-+		return -EINVAL;
-+	}
-+
-+	r->r = r_new;
-+	list_add_tail(&r->list, list);
-+
-+	return 0;
-+}
-+
-+static void elf_release_regions(struct elf_image *elf)
-+{
-+	struct list_head *list = &elf->list;
-+	struct elf_section *r, *r_tmp;
-+
-+	list_for_each_entry_safe(r, r_tmp, list, list) {
-+		release_sdram_region(r->r);
-+		free(r);
-+	}
-+}
-+
-+
-+static int load_elf_phdr_segment(struct elf_image *elf, void *src,
-+				 Elf32_Phdr *phdr)
-+{
-+	void *dst = (void *)phdr->p_paddr;
-+	int ret;
-+
-+	/* we care only about PT_LOAD segments */
-+	if (phdr->p_type != PT_LOAD)
-+		return 0;
-+
-+	if (!phdr->p_filesz)
-+		return 0;
-+
-+	pr_debug("Loading phdr to 0x%p (%i bytes)\n", dst, phdr->p_filesz);
-+
-+	ret = elf_request_region(elf, (resource_size_t)dst, phdr->p_filesz);
-+	if (ret)
-+		return ret;
-+
-+	memcpy(dst, src, phdr->p_filesz);
-+
-+	if (phdr->p_filesz < phdr->p_memsz)
-+		memset(dst + phdr->p_filesz, 0x00,
-+		       phdr->p_memsz - phdr->p_filesz);
-+
-+	return 0;
-+}
-+
-+static int load_elf_image_phdr(struct elf_image *elf)
-+{
-+	void *buf = elf->buf;
-+	Elf32_Ehdr *ehdr = buf;
-+	Elf32_Phdr *phdr = (Elf32_Phdr *)(buf + ehdr->e_phoff);
-+	int i, ret;
-+
-+	elf->entry = ehdr->e_entry;
-+
-+	for (i = 0; i < ehdr->e_phnum; ++i) {
-+		void *src = buf + phdr->p_offset;
-+
-+		ret = load_elf_phdr_segment(elf, src, phdr);
-+		/* in case of error elf_load_image() caller should clean up and
-+		 * call elf_release_image() */
-+		if (ret)
-+			return ret;
-+
-+		++phdr;
-+	}
-+
-+	return 0;
-+}
-+
-+static int elf_check_image(void *buf)
-+{
-+	Elf32_Ehdr *ehdr = (Elf32_Ehdr *)buf;
-+
-+	if (strncmp(buf, ELFMAG, SELFMAG)) {
-+		pr_err("ELF magic not found.\n");
-+                return -EINVAL;
-+        }
-+
-+	if (ehdr->e_type != ET_EXEC) {
-+		pr_err("Non EXEC ELF image.\n");
-+                return -ENOEXEC;
-+	}
-+
-+	return 0;
-+}
-+
-+struct elf_image *elf_load_image(void *buf)
-+{
-+	struct elf_image *elf;
-+	int ret;
-+
-+	elf = xzalloc(sizeof(*elf));
-+
-+	INIT_LIST_HEAD(&elf->list);
-+
-+	elf->buf = buf;
-+
-+	ret = elf_check_image(buf);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	ret = load_elf_image_phdr(elf);
-+	if (ret) {
-+		elf_release_image(elf);
-+		return ERR_PTR(ret);
-+	}
-+
-+	return elf;
-+}
-+
-+void elf_release_image(struct elf_image *elf)
-+{
-+	elf_release_regions(elf);
-+
-+	free(elf->buf);
-+	free(elf);
-+}
-diff --git a/include/elf.h b/include/elf.h
-index ebcec7db0..92c8d9c12 100644
---- a/include/elf.h
-+++ b/include/elf.h
-@@ -2,6 +2,7 @@
- #define _LINUX_ELF_H
- 
- #include <linux/types.h>
-+#include <linux/list.h>
- //#include <linux/auxvec.h>
- //#include <linux/elf-em.h>
- #include <asm/elf.h>
-@@ -397,4 +398,13 @@ static inline void arch_write_notes(struct file *file) { }
- #define ELF_CORE_WRITE_EXTRA_NOTES arch_write_notes(file)
- #endif /* ARCH_HAVE_EXTRA_ELF_NOTES */
- 
-+struct elf_image {
-+	struct list_head list;
-+	unsigned long entry;
-+	void *buf;
-+};
-+
-+struct elf_image *elf_load_image(void *buf);
-+void elf_release_image(struct elf_image *elf);
-+
- #endif /* _LINUX_ELF_H */
--- 
-2.17.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIGRpZmZlcmVuY2VzIGJldHdlZW4gdjAgYW5kIHYxIG9mIHRoZSBtdmVidSBrd2JpbWFnZSBh
+cmUgc21hbGwgZW5vdWdoCnRoYXQgdGhlIGZ1bmN0aW9uIHRvIGJvb3Qgc3VjaCBhbiBpbWFnZSBj
+YW4gYmUgc2hhcmVkIGJldHdlZW4gYm90aAp2YXJpYW50cy4KClNpZ25lZC1vZmYtYnk6IFV3ZSBL
+bGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogYXJjaC9h
+cm0vbWFjaC1tdmVidS9rd2Jvb3RpbWFnZS5jIHwgMTEgKysrKysrKysrLS0KIGNvbW1vbi9maWxl
+dHlwZS5jICAgICAgICAgICAgICAgICB8IDIyICsrKysrKysrKysrKysrKysrLS0tLS0KIGluY2x1
+ZGUvZmlsZXR5cGUuaCAgICAgICAgICAgICAgICB8ICAxICsKIDMgZmlsZXMgY2hhbmdlZCwgMjcg
+aW5zZXJ0aW9ucygrKSwgNyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNo
+LW12ZWJ1L2t3Ym9vdGltYWdlLmMgYi9hcmNoL2FybS9tYWNoLW12ZWJ1L2t3Ym9vdGltYWdlLmMK
+aW5kZXggOGQzNjRjZWI3YjMxLi5lMzc5ZDczMmZlZDYgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21h
+Y2gtbXZlYnUva3dib290aW1hZ2UuYworKysgYi9hcmNoL2FybS9tYWNoLW12ZWJ1L2t3Ym9vdGlt
+YWdlLmMKQEAgLTEwLDcgKzEwLDcgQEAKICNpbmNsdWRlIDxhc20vdW5hbGlnbmVkLmg+CiAjaW5j
+bHVkZSA8bWFjaC9jb21tb24uaD4KIAotc3RhdGljIGludCBkb19ib290bV9rd2JpbWFnZV92MShz
+dHJ1Y3QgaW1hZ2VfZGF0YSAqZGF0YSkKK3N0YXRpYyBpbnQgZG9fYm9vdG1fa3diaW1hZ2VfdjBf
+djEoc3RydWN0IGltYWdlX2RhdGEgKmRhdGEpCiB7CiAJaW50IGZkLCByZXQ7CiAJbG9mZl90IG9m
+ZnNldDsKQEAgLTY5LDE0ICs2OSwyMSBAQCBvdXRfZnJlZToKIAlyZXR1cm4gcmV0OwogfQogCitz
+dGF0aWMgc3RydWN0IGltYWdlX2hhbmRsZXIgaW1hZ2VfaGFuZGxlcl9rd2JpbWFnZV92MF9oYW5k
+bGVyID0geworCS5uYW1lID0gIk1WRUJVIGt3YmltYWdlIHYwIiwKKwkuYm9vdG0gPSBkb19ib290
+bV9rd2JpbWFnZV92MF92MSwKKwkuZmlsZXR5cGUgPSBmaWxldHlwZV9rd2JpbWFnZV92MCwKK307
+CisKIHN0YXRpYyBzdHJ1Y3QgaW1hZ2VfaGFuZGxlciBpbWFnZV9oYW5kbGVyX2t3YmltYWdlX3Yx
+X2hhbmRsZXIgPSB7CiAJLm5hbWUgPSAiTVZFQlUga3diaW1hZ2UgdjEiLAotCS5ib290bSA9IGRv
+X2Jvb3RtX2t3YmltYWdlX3YxLAorCS5ib290bSA9IGRvX2Jvb3RtX2t3YmltYWdlX3YwX3YxLAog
+CS5maWxldHlwZSA9IGZpbGV0eXBlX2t3YmltYWdlX3YxLAogfTsKIAogc3RhdGljIGludCBtdmVi
+dV9yZWdpc3Rlcl9rd2JpbWFnZV9pbWFnZV9oYW5kbGVyKHZvaWQpCiB7CisJcmVnaXN0ZXJfaW1h
+Z2VfaGFuZGxlcigmaW1hZ2VfaGFuZGxlcl9rd2JpbWFnZV92MF9oYW5kbGVyKTsKIAlyZWdpc3Rl
+cl9pbWFnZV9oYW5kbGVyKCZpbWFnZV9oYW5kbGVyX2t3YmltYWdlX3YxX2hhbmRsZXIpOwogCiAJ
+cmV0dXJuIDA7CmRpZmYgLS1naXQgYS9jb21tb24vZmlsZXR5cGUuYyBiL2NvbW1vbi9maWxldHlw
+ZS5jCmluZGV4IDQ0NGVjMTRjYzRiNi4uYmI4MDdkZjcyMWQ5IDEwMDY0NAotLS0gYS9jb21tb24v
+ZmlsZXR5cGUuYworKysgYi9jb21tb24vZmlsZXR5cGUuYwpAQCAtNjUsNyArNjUsOCBAQCBzdGF0
+aWMgY29uc3Qgc3RydWN0IGZpbGV0eXBlX3N0ciBmaWxldHlwZV9zdHJbXSA9IHsKIAlbZmlsZXR5
+cGVfZXhlXSA9IHsgIk1TLURPUyBleGVjdXRhYmxlIiwgImV4ZSIgfSwKIAlbZmlsZXR5cGVfbXhz
+X2Jvb3RzdHJlYW1dID0geyAiRnJlZXNjYWxlIE1YUyBib290c3RyZWFtIiwgIm14c2JzIiB9LAog
+CVtmaWxldHlwZV9zb2NmcGdhX3hsb2FkXSA9IHsgIlNvQ0ZQR0EgcHJlYm9vdGxvYWRlciBpbWFn
+ZSIsICJzb2NmcGdhLXhsb2FkIiB9LAotCVtmaWxldHlwZV9rd2JpbWFnZV92MV0gPSB7ICJNVkVC
+VSBrd2JpbWFnZSAodjEpIiwgImt3YiIgfSwKKwlbZmlsZXR5cGVfa3diaW1hZ2VfdjBdID0geyAi
+TVZFQlUga3diaW1hZ2UgKHYwKSIsICJrd2IwIiB9LAorCVtmaWxldHlwZV9rd2JpbWFnZV92MV0g
+PSB7ICJNVkVCVSBrd2JpbWFnZSAodjEpIiwgImt3YjEiIH0sCiAJW2ZpbGV0eXBlX2FuZHJvaWRf
+c3BhcnNlXSA9IHsgIkFuZHJvaWQgc3BhcnNlIGltYWdlIiwgInNwYXJzZSIgfSwKIAlbZmlsZXR5
+cGVfYXJtNjRfbGludXhfaW1hZ2VdID0geyAiQVJNIGFhcmNoNjQgTGludXggaW1hZ2UiLCAiYWFy
+Y2g2NC1saW51eCIgfSwKIH07CkBAIC0zMDIsMTAgKzMwMywyMSBAQCBlbnVtIGZpbGV0eXBlIGZp
+bGVfZGV0ZWN0X3R5cGUoY29uc3Qgdm9pZCAqX2J1Ziwgc2l6ZV90IGJ1ZnNpemUpCiAJaWYgKChi
+dWY4WzBdID09IDB4NWEgfHwgYnVmOFswXSA9PSAweDY5IHx8IGJ1ZjhbMF0gPT0gMHg3OCB8fAog
+CSAgICAgYnVmOFswXSA9PSAweDhiIHx8IGJ1ZjhbMF0gPT0gMHg5YykgJiYKIAkgICAgYnVmOFsw
+eDFdID09IDAgJiYgYnVmOFsweDJdID09IDAgJiYgYnVmOFsweDNdID09IDAgJiYKLQkgICAgYnVm
+OFsweDhdID09IDEgJiYgYnVmOFsweDE4XSA9PSAwICYmIGJ1ZjhbMHgxYl0gPT0gMCAmJgotCSAg
+ICBidWY4WzB4MWNdID09IDAgJiYgYnVmOFsweDFkXSA9PSAwICYmCi0JICAgIChidWY4WzB4MWVd
+ID09IDAgfHwgYnVmOFsweDFlXSA9PSAxKSkKLQkJcmV0dXJuIGZpbGV0eXBlX2t3YmltYWdlX3Yx
+OworCSAgICBidWY4WzB4MThdID09IDAgJiYgYnVmOFsweDFiXSA9PSAwICYmIGJ1ZjhbMHgxY10g
+PT0gMCkgeworCQl1bnNpZ25lZCBjaGFyIHN1bSA9IDA7CisJCWludCBpOworCisJCWZvciAoaSA9
+IDA7IGkgPD0gMHgxZTsgKytpKQorCQkJc3VtICs9IGJ1ZjhbaV07CisKKwkJaWYgKHN1bSA9PSBi
+dWY4WzB4MWZdICYmIGJ1ZjhbMHg4XSA9PSAwKQorCQkJcmV0dXJuIGZpbGV0eXBlX2t3YmltYWdl
+X3YwOworCisJCWlmIChzdW0gPT0gYnVmOFsweDFmXSAmJgorCQkgICAgYnVmOFsweDhdID09IDEg
+JiYgYnVmOFsweDFkXSA9PSAwICYmCisJCSAgICAoYnVmOFsweDFlXSA9PSAwIHx8IGJ1ZjhbMHgx
+ZV0gPT0gMSkpCisJCQlyZXR1cm4gZmlsZXR5cGVfa3diaW1hZ2VfdjE7CisJfQogCiAJaWYgKGlz
+X3NwYXJzZV9pbWFnZShfYnVmKSkKIAkJcmV0dXJuIGZpbGV0eXBlX2FuZHJvaWRfc3BhcnNlOwpk
+aWZmIC0tZ2l0IGEvaW5jbHVkZS9maWxldHlwZS5oIGIvaW5jbHVkZS9maWxldHlwZS5oCmluZGV4
+IDk5ODY5MzhkZGI3Yy4uZDk5NjNhMjQ0OTZjIDEwMDY0NAotLS0gYS9pbmNsdWRlL2ZpbGV0eXBl
+LmgKKysrIGIvaW5jbHVkZS9maWxldHlwZS5oCkBAIC0zOCw2ICszOCw3IEBAIGVudW0gZmlsZXR5
+cGUgewogCWZpbGV0eXBlX3h6X2NvbXByZXNzZWQsCiAJZmlsZXR5cGVfbXhzX2Jvb3RzdHJlYW0s
+CiAJZmlsZXR5cGVfc29jZnBnYV94bG9hZCwKKwlmaWxldHlwZV9rd2JpbWFnZV92MCwKIAlmaWxl
+dHlwZV9rd2JpbWFnZV92MSwKIAlmaWxldHlwZV9hbmRyb2lkX3NwYXJzZSwKIAlmaWxldHlwZV9h
+cm02NF9saW51eF9pbWFnZSwKLS0gCjIuMTcuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
+aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2JhcmVib3gK
