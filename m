@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fOUVQ-00082Y-Ab
+ id 1fOUVQ-00082V-AA
  for barebox@lists.infradead.org; Thu, 31 May 2018 20:49:12 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 31 May 2018 22:48:48 +0200
-Message-Id: <20180531204851.1719-1-o.rempel@pengutronix.de>
+Date: Thu, 31 May 2018 22:48:50 +0200
+Message-Id: <20180531204851.1719-3-o.rempel@pengutronix.de>
+In-Reply-To: <20180531204851.1719-1-o.rempel@pengutronix.de>
+References: <20180531204851.1719-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,58 +21,96 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] filetype: add ELF type
+Subject: [PATCH 3/4] bootm: split split bootm_load_devicetree function
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-From: Antony Pavlov <antonynpavlov@gmail.com>
+In some cases we don't won't to load devicetree some where in free ram
+area, it is easier to keep it withing allocated area of barebox
+and then give the pointer to the kernel.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- common/filetype.c  | 5 +++++
- include/filetype.h | 1 +
- 2 files changed, 6 insertions(+)
+ common/bootm.c  | 39 +++++++++++++++++++++++++++++++++------
+ include/bootm.h |  1 +
+ 2 files changed, 34 insertions(+), 6 deletions(-)
 
-diff --git a/common/filetype.c b/common/filetype.c
-index 444ec14cc..77cf9a105 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -27,6 +27,7 @@
- #include <envfs.h>
- #include <disks.h>
- #include <image-sparse.h>
-+#include <elf.h>
- 
- struct filetype_str {
- 	const char *name;	/* human readable filetype */
-@@ -68,6 +69,7 @@ static const struct filetype_str filetype_str[] = {
- 	[filetype_kwbimage_v1] = { "MVEBU kwbimage (v1)", "kwb" },
- 	[filetype_android_sparse] = { "Android sparse image", "sparse" },
- 	[filetype_arm64_linux_image] = { "ARM aarch64 Linux image", "aarch64-linux" },
-+	[filetype_elf] = { "ELF", "elf" },
- };
- 
- const char *file_type_to_string(enum filetype f)
-@@ -344,6 +346,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 		buf[7] == 0x47530000)
- 		return filetype_ch_image_be;
- 
-+	if (strncmp(buf8, ELFMAG, 4) == 0)
-+		return filetype_elf;
-+
- 	return filetype_unknown;
+diff --git a/common/bootm.c b/common/bootm.c
+index 5ff6683fe..a9d18fb57 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -320,20 +320,17 @@ static int bootm_open_oftree_uimage(struct image_data *data, size_t *size,
  }
  
-diff --git a/include/filetype.h b/include/filetype.h
-index 9986938dd..3b930bf94 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -41,6 +41,7 @@ enum filetype {
- 	filetype_kwbimage_v1,
- 	filetype_android_sparse,
- 	filetype_arm64_linux_image,
-+	filetype_elf,
- 	filetype_max,
- };
+ /*
+- * bootm_load_devicetree() - load devicetree
++ * bootm_get_devicetree() - get devicetree
+  *
+  * @data:		image data context
+- * @load_address:	The address where the devicetree should be loaded to
+  *
+- * This loads the devicetree to a RAM location. load_address must be a valid
+- * address. The resulting devicetree will be found at data->oftree.
++ * Prepare devicetree for later use by boot handler.
+  *
+  * Return: 0 on success, negative error code otherwise
+  */
+-int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
++int bootm_get_devicetree(struct image_data *data)
+ {
+ 	enum filetype type;
+-	int fdt_size;
+ 	struct fdt_header *oftree;
+ 	int ret;
+ 
+@@ -410,6 +407,36 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
+ 	if (!oftree)
+ 		return -EINVAL;
+ 
++	data->oftree = oftree;
++
++	return 0;
++}
++
++/*
++ * bootm_load_devicetree() - load devicetree
++ *
++ * @data:		image data context
++ * @load_address:	The address where the devicetree should be loaded to
++ *
++ * This loads the devicetree to a RAM location. load_address must be a valid
++ * address. The resulting devicetree will be found at data->oftree.
++ *
++ * Return: 0 on success, negative error code otherwise
++ */
++
++int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
++{
++	struct fdt_header *oftree;
++	int fdt_size;
++	int ret;
++
++	ret = bootm_get_devicetree(data);
++	if (ret)
++		return ret;
++
++	oftree = data->oftree;
++
++
+ 	fdt_size = be32_to_cpu(oftree->totalsize);
+ 
+ 	data->oftree_res = request_sdram_region("oftree", load_address,
+diff --git a/include/bootm.h b/include/bootm.h
+index 62951d605..410b42cde 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -126,6 +126,7 @@ int bootm_load_os(struct image_data *data, unsigned long load_address);
+ bool bootm_has_initrd(struct image_data *data);
+ int bootm_load_initrd(struct image_data *data, unsigned long load_address);
+ 
++int bootm_get_devicetree(struct image_data *data);
+ int bootm_load_devicetree(struct image_data *data, unsigned long load_address);
+ int bootm_get_os_size(struct image_data *data);
  
 -- 
 2.17.1
