@@ -1,24 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conuserg-08.nifty.com ([210.131.2.75])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fR1uE-0006Pp-VB
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 20:53:16 +0000
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <ukl@pengutronix.de>) id 1fR1u1-0003hg-RC
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 22:53:01 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <ukl@pengutronix.de>) id 1fR1u1-0008Sd-Hl
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 22:53:01 +0200
-Date: Thu, 7 Jun 2018 22:53:01 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20180607205301.wepjy427l3dyuqds@pengutronix.de>
-References: <20180601180750.5436-1-u.kleine-koenig@pengutronix.de>
- <20180601180750.5436-2-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180601180750.5436-2-u.kleine-koenig@pengutronix.de>
+ id 1fOZmS-0003uw-Qo
+ for barebox@lists.infradead.org; Fri, 01 Jun 2018 02:27:06 +0000
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Fri,  1 Jun 2018 11:26:09 +0900
+Message-Id: <1527819969-26797-1-git-send-email-yamada.masahiro@socionext.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,31 +14,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] libfile: implement new helper write_file_flash()
+Subject: [PATCH] .gitignore: sort normal pattern rules alphabetically
 To: barebox@lists.infradead.org
 
-Hello,
+Follow Linux commit 1377dd3e2987 (".gitignore: sort normal pattern
+rules alphabetically").
 
-On Fri, Jun 01, 2018 at 08:07:48PM +0200, Uwe Kleine-K=F6nig wrote:
-> +	fd =3D open(filename, O_WRONLY | O_TRUNC | O_CREAT);
+This would allow us to easily catch duplicated patterns if any.
 
-This doesn't work on the target machine (dove cubox) I intended to use
-it on an m25p0 device. It returns -28. When dropping O_TRUNC | O_CREAT
-it works though. So I suggest to either back out patches 3 and 4, or
-change the line above to O_WRONLY (which also matches the function
-removed in patch 4).
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
 
-Best regards
-Uwe
+ .gitignore | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
--- =
+diff --git a/.gitignore b/.gitignore
+index bbcfa22..d83d317 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -7,29 +7,29 @@
+ # command after changing this file, to see if there are
+ # any tracked files which get ignored after the change.
+ #
+-# Normal rules
++# Normal rules (sorted alphabetically)
+ #
+ .*
++*.a
++*.bbenv
++*.bbenv.*
++*.bct
++*.dcd
++*.dcd.S
++*.elf
++*.i
++*.ko
++*.lst
++*.mcp
++*.mod.c
+ *.o
+ *.o.*
+-*.a
++*.patch
++*.pyc
+ *.s
+-*.ko
+ *.so
+ *.so.dbg
+-*.mod.c
+-*.i
+-*.lst
+ *.symtypes
+-*.elf
+-*.patch
+-*.pyc
+-*.mcp
+-*.bct
+-*.dcd
+-*.dcd.S
+-*.bbenv
+-*.bbenv.*
+ Module.symvers
+ 
+ #
+-- 
+2.7.4
 
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
