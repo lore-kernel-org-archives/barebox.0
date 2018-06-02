@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x22d.google.com ([2607:f8b0:4001:c0b::22d])
+Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fP8xB-0007dJ-Rm
- for barebox@lists.infradead.org; Sat, 02 Jun 2018 16:00:33 +0000
-Received: by mail-it0-x22d.google.com with SMTP id j186-v6so5374918ita.5
- for <barebox@lists.infradead.org>; Sat, 02 Jun 2018 09:00:19 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <CACvFaDchGoj77fZrfVhqp1jeUphZjn_HhoXUhfxRWXLCPUt6zg@mail.gmail.com>
-References: <CACvFaDcXB3kAcKGkX_rR7iPUr4qscogz6nwzPs9cNPkiAHODaQ@mail.gmail.com>
- <CACvFaDchGoj77fZrfVhqp1jeUphZjn_HhoXUhfxRWXLCPUt6zg@mail.gmail.com>
-From: Pascal Vizeli <pascal.vizeli@syshack.ch>
-Date: Sat, 2 Jun 2018 18:00:17 +0200
-Message-ID: <CACvFaDcTLm-XbCZH363y1izaqRMxoOXo29k2ANWrQND=tsCV7w@mail.gmail.com>
+ id 1fPFBB-0003Sg-Ma
+ for barebox@lists.infradead.org; Sat, 02 Jun 2018 22:39:23 +0000
+Received: by mail-wm0-x244.google.com with SMTP id r15-v6so8953133wmc.1
+ for <barebox@lists.infradead.org>; Sat, 02 Jun 2018 15:39:10 -0700 (PDT)
+From: Pascal Vizeli <pvizeli@syshack.ch>
+Date: Sat,  2 Jun 2018 22:39:04 +0000
+Message-Id: <20180602223904.29018-1-pvizeli@syshack.ch>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,38 +16,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Device Tree Overlay Support v2
+Subject: [PATCH 1/1] common: state: allow to overlay state backend
 To: barebox@lists.infradead.org
+Cc: Pascal Vizeli <pvizeli@syshack.ch>
 
-Look like there is a bug with resolve __local_fixups__
-I try to fix that and make a patch for this.
+This allow to use overlay for state backends. I.e. on raspberry you need
+use barebox with SDHCI (slow) and after linux boot it will use SDHOST driver.
+But the problem now is, that the state is on SDHCI and dt-utils need it on
+SDHOST. Actual it is not possible to overwrite this.
 
-2018-05-27 16:44 GMT+02:00 Pascal Vizeli <pascal.vizeli@syshack.ch>:
-> There was some missing files inside patches. I fix that.
-> Actual version work on my local site with fresh environment.
->
-> 2018-05-27 11:39 GMT+02:00 Pascal Vizeli <pvizeli@syshack.ch>:
->> Hi,
->>
->> I rebase and update the patch from Jan Luebbe. They did a amazing job with:
->> http://lists.infradead.org/pipermail/barebox/2015-March/022674.html
->>
->> I think it is now at the time to support overlay like uboot and other
->> bootloaders. They will help on raspberry, I think also on other
->> platforms, to update the device tree without a big shell script of
->> of_properties/of_fixup_status.
->>
->> This features is very common today and missed by barebox.
->> I update the dtc scripts to the same version they we use on dts kernel level.
->>
->> Patch are here:
->> https://github.com/home-assistant/hassos/tree/dev/buildroot-external/patches/barebox
->>
->> Greets
+Signed-off-by: Pascal Vizeli <pvizeli@syshack.ch>
+---
+ common/state/state.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/common/state/state.c b/common/state/state.c
+index 25d950211..e6259043f 100644
+--- a/common/state/state.c
++++ b/common/state/state.c
+@@ -494,8 +494,17 @@ static int of_state_fixup(struct device_node *root, void *ctx)
+ 	}
+ 
+ 	/* backend phandle */
+-	backend_node = of_find_node_by_reproducible_name(root,
+-						state->backend_reproducible_name);
++	if (node) {
++		ret = of_property_read_u32(node, "backend", &phandle);
++		if (ret)
++			goto out;
++
++		backend_node = of_find_node_by_phandle_from(phandle, root);
++	} else {
++		backend_node = of_find_node_by_reproducible_name(root,
++					state->backend_reproducible_name);
++	}
++
+ 	if (!backend_node) {
+ 		ret = -ENODEV;
+ 		goto out;
+-- 
+2.17.0
+
 
 _______________________________________________
 barebox mailing list
