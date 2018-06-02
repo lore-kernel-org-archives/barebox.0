@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from mail-it0-x22d.google.com ([2607:f8b0:4001:c0b::22d])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fOoZQ-0005Cd-MN
- for barebox@lists.infradead.org; Fri, 01 Jun 2018 18:14:39 +0000
-Date: Fri, 1 Jun 2018 20:12:18 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20180601181218.GA29728@ravnborg.org>
-References: <20180531204851.1719-1-o.rempel@pengutronix.de>
- <20180531204851.1719-2-o.rempel@pengutronix.de>
+ id 1fP8xB-0007dJ-Rm
+ for barebox@lists.infradead.org; Sat, 02 Jun 2018 16:00:33 +0000
+Received: by mail-it0-x22d.google.com with SMTP id j186-v6so5374918ita.5
+ for <barebox@lists.infradead.org>; Sat, 02 Jun 2018 09:00:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180531204851.1719-2-o.rempel@pengutronix.de>
+In-Reply-To: <CACvFaDchGoj77fZrfVhqp1jeUphZjn_HhoXUhfxRWXLCPUt6zg@mail.gmail.com>
+References: <CACvFaDcXB3kAcKGkX_rR7iPUr4qscogz6nwzPs9cNPkiAHODaQ@mail.gmail.com>
+ <CACvFaDchGoj77fZrfVhqp1jeUphZjn_HhoXUhfxRWXLCPUt6zg@mail.gmail.com>
+From: Pascal Vizeli <pascal.vizeli@syshack.ch>
+Date: Sat, 2 Jun 2018 18:00:17 +0200
+Message-ID: <CACvFaDcTLm-XbCZH363y1izaqRMxoOXo29k2ANWrQND=tsCV7w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,38 +24,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] add basic ELF parser
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: Device Tree Overlay Support v2
+To: barebox@lists.infradead.org
 
-Hi Oleksij
+Look like there is a bug with resolve __local_fixups__
+I try to fix that and make a patch for this.
 
-On Thu, May 31, 2018 at 10:48:49PM +0200, Oleksij Rempel wrote:
-> This parser is needed for kernel boot support on MIPS
-> and can potentially reused on other platforms.
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  common/Makefile |   1 +
->  common/elf.c    | 146 ++++++++++++++++++++++++++++++++++++++++++++++++
->  include/elf.h   |  10 ++++
->  3 files changed, 157 insertions(+)
->  create mode 100644 common/elf.c
-> 
-> diff --git a/common/Makefile b/common/Makefile
-> index 1ff7d2370..4fe7eaaf6 100644
-> --- a/common/Makefile
-> +++ b/common/Makefile
-> @@ -8,6 +8,7 @@ obj-y				+= misc.o
->  obj-pbl-y			+= memsize.o
->  obj-y				+= resource.o
->  obj-y				+= bootsource.o
-> +obj-y				+= elf.o
-Do we always wnat this to be preset?
-There most be many arch's where this is not relevant,
-so a few bytes can be saved if this is not compiled in.
-
-	Sam
+2018-05-27 16:44 GMT+02:00 Pascal Vizeli <pascal.vizeli@syshack.ch>:
+> There was some missing files inside patches. I fix that.
+> Actual version work on my local site with fresh environment.
+>
+> 2018-05-27 11:39 GMT+02:00 Pascal Vizeli <pvizeli@syshack.ch>:
+>> Hi,
+>>
+>> I rebase and update the patch from Jan Luebbe. They did a amazing job with:
+>> http://lists.infradead.org/pipermail/barebox/2015-March/022674.html
+>>
+>> I think it is now at the time to support overlay like uboot and other
+>> bootloaders. They will help on raspberry, I think also on other
+>> platforms, to update the device tree without a big shell script of
+>> of_properties/of_fixup_status.
+>>
+>> This features is very common today and missed by barebox.
+>> I update the dtc scripts to the same version they we use on dts kernel level.
+>>
+>> Patch are here:
+>> https://github.com/home-assistant/hassos/tree/dev/buildroot-external/patches/barebox
+>>
+>> Greets
 
 _______________________________________________
 barebox mailing list
