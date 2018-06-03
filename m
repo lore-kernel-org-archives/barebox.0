@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fPMQN-0006C9-RZ
+ id 1fPMQN-0006C8-Qn
  for barebox@lists.infradead.org; Sun, 03 Jun 2018 06:23:36 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Sun,  3 Jun 2018 08:23:13 +0200
-Message-Id: <20180603062314.26960-4-o.rempel@pengutronix.de>
+Date: Sun,  3 Jun 2018 08:23:12 +0200
+Message-Id: <20180603062314.26960-3-o.rempel@pengutronix.de>
 In-Reply-To: <20180603062314.26960-1-o.rempel@pengutronix.de>
 References: <20180603062314.26960-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,97 +21,234 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/4] bootm: split split bootm_load_devicetree function
+Subject: [PATCH v2 2/4] add basic ELF parser
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-In some cases we don't won't to load devicetree some where in free ram
-area, it is easier to keep it withing allocated area of barebox
-and then give the pointer to the kernel.
+This parser is needed for kernel boot support on MIPS
+and can potentially reused on other platforms.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- common/bootm.c  | 39 +++++++++++++++++++++++++++++++++------
- include/bootm.h |  1 +
- 2 files changed, 34 insertions(+), 6 deletions(-)
+ common/Kconfig  |   5 ++
+ common/Makefile |   1 +
+ common/elf.c    | 145 ++++++++++++++++++++++++++++++++++++++++++++++++
+ include/elf.h   |  10 ++++
+ 4 files changed, 161 insertions(+)
+ create mode 100644 common/elf.c
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 5ff6683fe..a9d18fb57 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -320,20 +320,17 @@ static int bootm_open_oftree_uimage(struct image_data *data, size_t *size,
- }
+diff --git a/common/Kconfig b/common/Kconfig
+index b7000c4d7..b9adc4c39 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -46,6 +46,10 @@ config BLOCK
+ config BLOCK_WRITE
+ 	bool
  
- /*
-- * bootm_load_devicetree() - load devicetree
-+ * bootm_get_devicetree() - get devicetree
-  *
-  * @data:		image data context
-- * @load_address:	The address where the devicetree should be loaded to
-  *
-- * This loads the devicetree to a RAM location. load_address must be a valid
-- * address. The resulting devicetree will be found at data->oftree.
-+ * Prepare devicetree for later use by boot handler.
-  *
-  * Return: 0 on success, negative error code otherwise
-  */
--int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
-+int bootm_get_devicetree(struct image_data *data)
- {
- 	enum filetype type;
--	int fdt_size;
- 	struct fdt_header *oftree;
- 	int ret;
++config ELF
++	bool
++	depends on MIPS
++
+ config FILETYPE
+ 	bool
  
-@@ -410,6 +407,36 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
- 	if (!oftree)
- 		return -EINVAL;
+@@ -548,6 +552,7 @@ config TIMESTAMP
+ 	  automatically enabled when you select CFG_CMD_DATE .
  
-+	data->oftree = oftree;
+ menuconfig BOOTM
++	select ELF
+ 	select UIMAGE
+ 	default y if COMMAND_SUPPORT
+ 	bool "bootm support"
+diff --git a/common/Makefile b/common/Makefile
+index 1ff7d2370..b6284c255 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -8,6 +8,7 @@ obj-y				+= misc.o
+ obj-pbl-y			+= memsize.o
+ obj-y				+= resource.o
+ obj-y				+= bootsource.o
++obj-$(CONFIG_ELF)		+= elf.o
+ obj-y				+= restart.o
+ obj-y				+= poweroff.o
+ obj-$(CONFIG_AUTO_COMPLETE)	+= complete.o
+diff --git a/common/elf.c b/common/elf.c
+new file mode 100644
+index 000000000..51b29b145
+--- /dev/null
++++ b/common/elf.c
+@@ -0,0 +1,145 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2018 Pengutronix, Oleksij Rempel <o.rempel@pengutronix.de>
++ */
++
++#include <common.h>
++#include <elf.h>
++#include <memory.h>
++
++struct elf_section {
++	struct list_head list;
++	struct resource *r;
++};
++
++static int elf_request_region(struct elf_image *elf, resource_size_t start,
++			      resource_size_t size)
++{
++	struct list_head *list = &elf->list;
++	struct resource *r_new;
++	struct elf_section *r;
++
++	r = xzalloc(sizeof(*r));
++	r_new = request_sdram_region("elf_section", start, size);
++	if (!r_new) {
++		pr_err("Failed to request region: %pa %pa\n", start, size);
++		return -EINVAL;
++	}
++
++	r->r = r_new;
++	list_add_tail(&r->list, list);
 +
 +	return 0;
 +}
 +
-+/*
-+ * bootm_load_devicetree() - load devicetree
-+ *
-+ * @data:		image data context
-+ * @load_address:	The address where the devicetree should be loaded to
-+ *
-+ * This loads the devicetree to a RAM location. load_address must be a valid
-+ * address. The resulting devicetree will be found at data->oftree.
-+ *
-+ * Return: 0 on success, negative error code otherwise
-+ */
-+
-+int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
++static void elf_release_regions(struct elf_image *elf)
 +{
-+	struct fdt_header *oftree;
-+	int fdt_size;
++	struct list_head *list = &elf->list;
++	struct elf_section *r, *r_tmp;
++
++	list_for_each_entry_safe(r, r_tmp, list, list) {
++		release_sdram_region(r->r);
++		free(r);
++	}
++}
++
++
++static int load_elf_phdr_segment(struct elf_image *elf, void *src,
++				 Elf32_Phdr *phdr)
++{
++	void *dst = (void *)phdr->p_paddr;
 +	int ret;
 +
-+	ret = bootm_get_devicetree(data);
++	/* we care only about PT_LOAD segments */
++	if (phdr->p_type != PT_LOAD)
++		return 0;
++
++	if (!phdr->p_filesz)
++		return 0;
++
++	pr_debug("Loading phdr to 0x%p (%i bytes)\n", dst, phdr->p_filesz);
++
++	ret = elf_request_region(elf, (resource_size_t)dst, phdr->p_filesz);
 +	if (ret)
 +		return ret;
 +
-+	oftree = data->oftree;
++	memcpy(dst, src, phdr->p_filesz);
 +
++	if (phdr->p_filesz < phdr->p_memsz)
++		memset(dst + phdr->p_filesz, 0x00,
++		       phdr->p_memsz - phdr->p_filesz);
 +
- 	fdt_size = be32_to_cpu(oftree->totalsize);
++	return 0;
++}
++
++static int load_elf_image_phdr(struct elf_image *elf)
++{
++	void *buf = elf->buf;
++	Elf32_Ehdr *ehdr = buf;
++	Elf32_Phdr *phdr = (Elf32_Phdr *)(buf + ehdr->e_phoff);
++	int i, ret;
++
++	elf->entry = ehdr->e_entry;
++
++	for (i = 0; i < ehdr->e_phnum; ++i) {
++		void *src = buf + phdr->p_offset;
++
++		ret = load_elf_phdr_segment(elf, src, phdr);
++		/* in case of error elf_load_image() caller should clean up and
++		 * call elf_release_image() */
++		if (ret)
++			return ret;
++
++		++phdr;
++	}
++
++	return 0;
++}
++
++static int elf_check_image(void *buf)
++{
++	Elf32_Ehdr *ehdr = (Elf32_Ehdr *)buf;
++
++	if (strncmp(buf, ELFMAG, SELFMAG)) {
++		pr_err("ELF magic not found.\n");
++		return -EINVAL;
++	}
++
++	if (ehdr->e_type != ET_EXEC) {
++		pr_err("Non EXEC ELF image.\n");
++		return -ENOEXEC;
++	}
++
++	return 0;
++}
++
++struct elf_image *elf_load_image(void *buf)
++{
++	struct elf_image *elf;
++	int ret;
++
++	elf = xzalloc(sizeof(*elf));
++
++	INIT_LIST_HEAD(&elf->list);
++
++	elf->buf = buf;
++
++	ret = elf_check_image(buf);
++	if (ret)
++		return ERR_PTR(ret);
++
++	ret = load_elf_image_phdr(elf);
++	if (ret) {
++		elf_release_image(elf);
++		return ERR_PTR(ret);
++	}
++
++	return elf;
++}
++
++void elf_release_image(struct elf_image *elf)
++{
++	elf_release_regions(elf);
++
++	free(elf);
++}
+diff --git a/include/elf.h b/include/elf.h
+index ebcec7db0..92c8d9c12 100644
+--- a/include/elf.h
++++ b/include/elf.h
+@@ -2,6 +2,7 @@
+ #define _LINUX_ELF_H
  
- 	data->oftree_res = request_sdram_region("oftree", load_address,
-diff --git a/include/bootm.h b/include/bootm.h
-index 62951d605..410b42cde 100644
---- a/include/bootm.h
-+++ b/include/bootm.h
-@@ -126,6 +126,7 @@ int bootm_load_os(struct image_data *data, unsigned long load_address);
- bool bootm_has_initrd(struct image_data *data);
- int bootm_load_initrd(struct image_data *data, unsigned long load_address);
+ #include <linux/types.h>
++#include <linux/list.h>
+ //#include <linux/auxvec.h>
+ //#include <linux/elf-em.h>
+ #include <asm/elf.h>
+@@ -397,4 +398,13 @@ static inline void arch_write_notes(struct file *file) { }
+ #define ELF_CORE_WRITE_EXTRA_NOTES arch_write_notes(file)
+ #endif /* ARCH_HAVE_EXTRA_ELF_NOTES */
  
-+int bootm_get_devicetree(struct image_data *data);
- int bootm_load_devicetree(struct image_data *data, unsigned long load_address);
- int bootm_get_os_size(struct image_data *data);
- 
++struct elf_image {
++	struct list_head list;
++	unsigned long entry;
++	void *buf;
++};
++
++struct elf_image *elf_load_image(void *buf);
++void elf_release_image(struct elf_image *elf);
++
+ #endif /* _LINUX_ELF_H */
 -- 
 2.17.1
 
