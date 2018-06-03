@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQ5jt-0008Pg-AB
- for barebox@lists.infradead.org; Tue, 05 Jun 2018 06:46:43 +0000
-Date: Tue, 5 Jun 2018 08:46:30 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180605064630.bzmufxmt4bejoz46@pengutronix.de>
-References: <20180602211715.10989-1-pvizeli@syshack.ch>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180602211715.10989-1-pvizeli@syshack.ch>
+Received: from mail-wr0-x242.google.com ([2a00:1450:400c:c0c::242])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fPcZz-00074y-Ty
+ for barebox@lists.infradead.org; Sun, 03 Jun 2018 23:38:33 +0000
+Received: by mail-wr0-x242.google.com with SMTP id w7-v6so29386504wrn.6
+ for <barebox@lists.infradead.org>; Sun, 03 Jun 2018 16:38:20 -0700 (PDT)
+From: Pascal Vizeli <pvizeli@syshack.ch>
+Date: Sun,  3 Jun 2018 23:38:12 +0000
+Message-Id: <20180603233812.2466-1-pvizeli@syshack.ch>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,300 +16,214 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] drivers: of: implement overlay support
-To: Pascal Vizeli <pvizeli@syshack.ch>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/3] drivers: of: bugfix local fixups resolving
+To: barebox@lists.infradead.org
+Cc: Pascal Vizeli <pvizeli@syshack.ch>
 
-On Sat, Jun 02, 2018 at 09:17:13PM +0000, Pascal Vizeli wrote:
-> Signed-off-by: Pascal Vizeli <pvizeli@syshack.ch>
+Signed-off-by: Pascal Vizeli <pvizeli@syshack.ch>
+---
+ drivers/of/resolver.c | 147 +++++++++++++++++-------------------------
+ 1 file changed, 60 insertions(+), 87 deletions(-)
 
-This lacks the original Signed-off-by tag from Jan. In case Jan didn't
-provide a Signed-off-by tag please ignore.
-
-What are your changes compared to Jans version? Just rebased or more?
-
-> ---
->  Documentation/user/devicetree.rst | 101 ++++++++-
->  arch/sandbox/dts/Makefile         |   5 +-
->  arch/sandbox/dts/sandbox.dts      |   6 +
->  commands/oftree.c                 |  65 +++++-
->  drivers/of/Kconfig                |   6 +
->  drivers/of/Makefile               |   1 +
->  drivers/of/overlay.c              | 234 ++++++++++++++++++++
->  drivers/of/resolver.c             | 346 ++++++++++++++++++++++++++++++
->  include/of.h                      |  71 ++++++
->  scripts/Makefile.lib              |   5 +-
->  10 files changed, 831 insertions(+), 9 deletions(-)
->  create mode 100644 drivers/of/overlay.c
->  create mode 100644 drivers/of/resolver.c
-> 
-> diff --git a/Documentation/user/devicetree.rst b/Documentation/user/devicetree.rst
-> index 17934d86e..b2220997d 100644
-> --- a/Documentation/user/devicetree.rst
-> +++ b/Documentation/user/devicetree.rst
-> @@ -21,7 +21,7 @@ The internal devicetree
->  -----------------------
->  
->  The devicetree consulted by barebox plays a special role. It is referred to
-> -as the "internal devicetree." The barebox devicetree commands work on this
-> +as the "internal devicetree". The barebox devicetree commands work on this
->  devicetree. The devicetree source (DTS) files are kept in sync with the kernel DTS
->  files. As the FDT files are meant to be backward compatible, it should always be possible
->  to start a kernel with the barebox internal devicetree. However, since the barebox
-> @@ -83,3 +83,102 @@ you can exchange the internal devicetree during runtime using the
->  
->     oftree -f
->     oftree -l /new/dtb
-> +
-> +Devicetree overlays
-> +-------------------
-> +
-> +Since version 3.19, the Linux kernel supports applying "devicetree overlays" to
-> +its loaded device tree. This can be used to inform the kernel about additional
-> +non-discoverable devices after the system has booted, which is useful for modular
-> +boards and FPGAs. The details of the overlay format are specified in the Linux
-> +`kernel documentation <https://www.kernel.org/doc/Documentation/devicetree/overlay-notes.txt>`_
-> +and an updated DTC is required to compile the overlays.
-> +
-> +The use cases for overlays in barebox are a bit different:
-> +
-> +* some of the modular devices are needed to boot Linux to userspace, but barebox
-> +  can detect which module variant is connected
-> +* one of several parallel or LVDS displays (which use timing data from devicetree)
-> +  can be connected to the SoC and should be used for boot messages
-> +* a generic Linux (distribution) kernel should be booted on a modular
-> +  system and support additional hardware on modules
-> +
-> +barebox supports applying overlays in the internal devicetree was well using the
-> +:ref:`command_oftree` command with option ``-o``:
-> +
-> +.. code-block:: sh
-> +
-> +   $ ./barebox -d arch/sandbox/dts/sandbox.dtb -i arch/sandbox/dts/sandbox-overlay.dtbo
-> +   add fd0 backed by file arch/sandbox/dts/sandbox-overlay.dtbo
-> +
-> +   barebox 2015.02.0 #26 Wed Mar 4 09:41:19 CET 2015
-> +   ...
-> +   barebox@barebox sandbox:/ of_dump
-> +   ...
-> +     dummy@0 {
-> +       status = "disabled";
-> +       linux,phandle = <0x1>;
-> +       phandle = <0x1>;
-> +     };
-> +     dummy@1 {
-> +       status = "disabled";
-> +       linux,phandle = <0x2>;
-> +       phandle = <0x2>;
-> +     };
-> +     __symbols__ {
-> +       dummy0 = "/dummy@0";
-> +       dummy1 = "/dummy@1";
-> +     };
-> +   ...
-> +   barebox@barebox sandbox:/ of_dump -f /dev/fd0
-> +    {
-> +     fragment@0 {
-> +       target = <0xdeadbeef>;
-> +       __overlay__ {
-> +         status = "okay";
-> +         child {
-> +           compatible = "barebox,dummy";
-> +         };
-> +       };
-> +     };
-> +     fragment@1 {
-> +       target = <0xdeadbeef>;
-> +       __overlay__ {
-> +         status = "okay";
-> +         child {
-> +           compatible = "barebox,dummy";
-> +         };
-> +       };
-> +     };
-> +     __fixups__ {
-> +       dummy0 = "/fragment@0:target:0";
-> +       dummy1 = "/fragment@1:target:0";
-> +     };
-> +   };
-> +   barebox@barebox sandbox:/ oftree -o /dev/fd0
-> +   barebox@barebox sandbox:/ of_dump
-> +   ...
-> +     dummy@0 {
-> +       linux,phandle = <0x1>;
-> +       phandle = <0x1>;
-> +       status = "okay";
-> +       child {
-> +         compatible = "barebox,dummy";
-> +       };
-> +     };
-> +     dummy@1 {
-> +       linux,phandle = <0x2>;
-> +       phandle = <0x2>;
-> +       status = "okay";
-> +       child {
-> +         compatible = "barebox,dummy";
-> +       };
-> +     };
-> +     __symbols__ {
-> +       dummy0 = "/dummy@0";
-> +       dummy1 = "/dummy@1";
-> +     };
-> +   ...
-> +
-> +If you need to use a different base devicetree instead of the one compiled into
-> +barebox, it needs to be replaced as described in the previous section.
-> diff --git a/arch/sandbox/dts/Makefile b/arch/sandbox/dts/Makefile
-> index 6f6838857..ede219e6f 100644
-> --- a/arch/sandbox/dts/Makefile
-> +++ b/arch/sandbox/dts/Makefile
-> @@ -1,6 +1,7 @@
->  ifeq ($(CONFIG_OFTREE),y)
->  dtb-y += \
-> -	sandbox.dtb
-> +	sandbox.dtb \
-> +	sandbox-overlay.dtbo
->  endif
->  
->  # just to build a built-in.o. Otherwise compilation fails when no devicetree is
-> @@ -8,4 +9,4 @@ endif
->  obj- += dummy.o
->  
->  always := $(dtb-y)
-> -clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
-> +clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtbo
-> diff --git a/arch/sandbox/dts/sandbox.dts b/arch/sandbox/dts/sandbox.dts
-> index 2595aa13f..1b99a4960 100644
-> --- a/arch/sandbox/dts/sandbox.dts
-> +++ b/arch/sandbox/dts/sandbox.dts
-> @@ -3,5 +3,11 @@
->  #include "skeleton.dtsi"
->  
->  / {
-> +	dummy0: dummy@0 {
-> +		status = "disabled";
-> +	};
->  
-> +	dummy1: dummy@1 {
-> +		status = "disabled";
-> +	};
->  };
-> diff --git a/commands/oftree.c b/commands/oftree.c
-> index 8a47c0be5..e0624ad34 100644
-> --- a/commands/oftree.c
-> +++ b/commands/oftree.c
-> @@ -2,6 +2,7 @@
->   * oftree.c - device tree command support
->   *
->   * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-> + * Copyright (C) 2015 Pengutronix, Jan Luebbe <jlu@pengutronix.de>
->   *
->   * based on U-Boot code by:
->   *
-> @@ -48,11 +49,14 @@ static int do_oftree(int argc, char *argv[])
->  	int probe = 0;
->  	char *load = NULL;
->  	char *save = NULL;
-> +	char *overlay = NULL;
->  	int free_of = 0;
->  	int ret;
->  	struct device_node *root;
-> +	int ovinfo_cnt;
-> +	struct of_overlay_info *ovinfo;
->  
-> -	while ((opt = getopt(argc, argv, "pfl:s:")) > 0) {
-> +	while ((opt = getopt(argc, argv, "pfl:o:s:")) > 0) {
->  		switch (opt) {
->  		case 'l':
->  			load = optarg;
-> @@ -68,6 +72,9 @@ static int do_oftree(int argc, char *argv[])
->  		case 'f':
->  			free_of = 1;
->  			break;
-> +		case 'o':
-> +			overlay = optarg;
-> +			break;
->  		case 's':
->  			save = optarg;
->  			break;
-> @@ -84,7 +91,7 @@ static int do_oftree(int argc, char *argv[])
->  			return 0;
->  	}
->  
-> -	if (!probe && !load && !save)
-> +	if (!probe && !load && !save && !overlay)
->  		return COMMAND_ERROR_USAGE;
->  
->  	if (save) {
-> @@ -123,6 +130,53 @@ static int do_oftree(int argc, char *argv[])
->  		}
->  	}
->  
-> +	if (IS_ENABLED(CONFIG_OFTREE_OVERLAY) && overlay) {
-
-Better make the overlay handling code a separate function, the result is
-probably a bit better readable.
-
-> +		struct device_node *ov;
-> +
-> +		root = of_get_root_node();
-> +		if (!root) {
-> +			printf("no oftree loaded\n");
-> +			goto out;
-> +		}
-> +
-> +		fdt = read_file(overlay, &size);
-> +		if (!fdt) {
-> +			printf("unable to read %s\n", overlay);
-> +			return 1;
-> +		}
-> +
-> +		ov = of_unflatten_dtb(fdt);
-> +		free(fdt);
-> +
-> +		if (IS_ERR(ov)) {
-> +			printf("parse oftree: %s\n", strerror(-ret));
-> +			return PTR_ERR(ov);
-> +		}
-> +
-> +		ret = of_resolve(ov);
-> +		if (ret) {
-> +			printf("resolve oftree overlay: %s\n", strerror(-ret));
-> +			of_delete_node(ov);
-> +			goto out;
-> +		}
-> +
-> +		ret = of_build_overlay_info(ov, &ovinfo_cnt, &ovinfo);
-> +		if (ret) {
-> +			printf("prepare oftree overlay: %s\n", strerror(-ret));
-> +			of_delete_node(ov);
-> +			goto out;
-> +		}
-> +
-> +		ret = of_overlay(ovinfo_cnt, ovinfo);
-> +		if (ret) {
-> +			printf("apply oftree overlay: %s\n", strerror(-ret));
-> +			of_delete_node(ov);
-> +			goto out;
-> +		}
-> +
-> +		of_delete_node(ov);
-> +	}
-
-It's probably an interesting option to be able to apply the overlay to
-the devicetree the kernel is started with rather than the live tree.
-
-Sascha
-
+diff --git a/drivers/of/resolver.c b/drivers/of/resolver.c
+index 62476093c..fbab565c5 100644
+--- a/drivers/of/resolver.c
++++ b/drivers/of/resolver.c
+@@ -66,108 +66,73 @@ static void of_adjust_tree_phandles(struct device_node *node,
+  * of the tree. Does not take any devtree locks so make sure you
+  * call this on a tree which is at the detached state.
+  */
+-static int of_adjust_tree_phandle_references(struct device_node *node,
+-		int phandle_delta)
++static int of_adjust_tree_phandle_references(struct device_node *local_fixups,
++		struct device_node *overlay, int phandle_delta)
+ {
+ 	phandle phandle;
+-	struct device_node *refnode, *child;
+-	struct property *rprop, *sprop;
+-	char *propval, *propcur, *propend, *nodestr, *propstr, *s;
+-	int offset, propcurlen;
+-	int err;
++	struct device_node *child, *overlay_child;
++	struct property *fixprop, *prop;
++	int i, count, err;
++	unsigned int off;
+ 	bool found = false;
+ 
+-	/* locate the symbols & fixups nodes on resolve */
+-	for_each_child_of_node(node, child)
+-		if (of_node_cmp(child->name, "__local_fixups__") == 0) {
+-			found = true;
+-			break;
+-		}
+-
+-	/* no local fixups */
+-	if (!found)
+-		return 0;
+-
+-	/* find the local fixups property */
+-	for_each_property_of_node(child, rprop) {
++	for_each_property_of_node(local_fixups, fixprop) {
+ 		/* skip properties added automatically */
+-		if (of_prop_cmp(rprop->name, "name") == 0)
++		if (!of_prop_cmp(fixprop->name, "name") ||
++		    !of_prop_cmp(fixprop->name, "phandle") ||
++		    !of_prop_cmp(fixprop->name, "linux,phandle"))
+ 			continue;
+ 
+-		/* make a copy */
+-		propval = kmalloc(rprop->length, GFP_KERNEL);
+-		if (propval == NULL) {
+-			pr_err("%s: Could not copy value of '%s'\n",
+-					__func__, rprop->name);
+-			return -ENOMEM;
+-		}
+-		memcpy(propval, rprop->value, rprop->length);
+-
+-		propend = propval + rprop->length;
+-		for (propcur = propval; propcur < propend;
+-				propcur += propcurlen + 1) {
++		if ((fixprop->length % 4) != 0 || fixprop->length == 0)
++			return -EINVAL;
++		count = fixprop->length / sizeof(uint32_t);
+ 
+-			propcurlen = strlen(propcur);
+-
+-			nodestr = propcur;
+-			s = strchr(propcur, ':');
+-			if (s == NULL) {
+-				pr_err("%s: Illegal symbol entry '%s' (1)\n",
+-					__func__, propcur);
+-				err = -EINVAL;
+-				goto err_fail;
+-			}
+-			*s++ = '\0';
+-
+-			propstr = s;
+-			s = strchr(s, ':');
+-			if (s == NULL) {
+-				pr_err("%s: Illegal symbol entry '%s' (2)\n",
+-					__func__, (char *)rprop->value);
+-				err = -EINVAL;
+-				goto err_fail;
++		for_each_property_of_node(overlay, prop) {
++			if (!of_prop_cmp(fixprop->name, prop->name)) {
++				found = true;
++				break;
+ 			}
++		}
+ 
+-			*s++ = '\0';
+-			offset = simple_strtoul(s, NULL, 10);
++		if (!found)
++			return -EINVAL;
+ 
+-			/* look into the resolve node for the full path */
+-			refnode = of_find_node_by_path_from(node, nodestr);
+-			if (refnode == NULL) {
+-				pr_warn("%s: Could not find refnode '%s'\n",
+-					__func__, (char *)rprop->value);
+-				continue;
+-			}
++		for (i=0; i < count; i++) {
++			off = be32_to_cpu(((uint32_t *)fixprop->value)[i]);
++			if ((off + 4) > prop->length)
++				return -EINVAL;
+ 
+-			/* now find the property */
+-			found = false;
+-			for_each_property_of_node(refnode, sprop)
+-				if (of_prop_cmp(sprop->name, propstr) == 0) {
+-					found = true;
+-					break;
+-				}
++			phandle = be32_to_cpu(*(uint32_t *)(prop->value + off));
++			phandle += phandle_delta;
++			*(uint32_t *)(prop->value + off) = cpu_to_be32(phandle);
++		}
++	}
+ 
+-			if (!found) {
+-				pr_err("%s: Could not find property '%s'\n",
+-					__func__, (char *)rprop->value);
+-				err = -ENOENT;
+-				goto err_fail;
++	/*
++	 * These nested loops recurse down two subtrees in parallel, where the
++	 * node names in the two subtrees match.
++	 *
++	 * The roots of the subtrees are the overlay's __local_fixups__ node
++	 * and the overlay's root node.
++	 */
++	for_each_child_of_node(local_fixups, child) {
++
++		for_each_child_of_node(overlay, overlay_child)
++			if (!of_node_cmp(child->name, overlay_child->name)) {
++				found = true;
++				break;
+ 			}
+ 
+-			phandle = be32_to_cpu(*(uint32_t *)
+-					(sprop->value + offset));
+-			*(uint32_t *)(sprop->value + offset) =
+-				cpu_to_be32(phandle + phandle_delta);
+-		}
++		if (!found)
++			return -EINVAL;
+ 
+-		kfree(propval);
++		err = of_adjust_tree_phandle_references(child, overlay_child,
++				phandle_delta);
++		if (err)
++			return err;
+ 	}
+ 
+ 	return 0;
+-
+-err_fail:
+-	kfree(propval);
+-	return err;
+ }
+ 
+ /**
+@@ -185,7 +150,7 @@ err_fail:
+  */
+ int of_resolve(struct device_node *resolve)
+ {
+-	struct device_node *child, *refnode;
++	struct device_node *child, *refnode, *local_fixups;
+ 	struct device_node *root_sym, *resolve_sym, *resolve_fix;
+ 	struct property *rprop, *sprop;
+ 	const char *refpath;
+@@ -203,9 +168,17 @@ int of_resolve(struct device_node *resolve)
+ 	/* first we need to adjust the phandles */
+ 	phandle_delta = of_get_tree_max_phandle(NULL) + 1;
+ 	of_adjust_tree_phandles(resolve, phandle_delta);
+-	err = of_adjust_tree_phandle_references(resolve, phandle_delta);
+-	if (err != 0)
+-		return err;
++
++	/* second we need lookup local fixups of phandles */
++	for_each_child_of_node(resolve, local_fixups) {
++		if (!of_node_cmp(local_fixups->name, "__local_fixups__")) {
++			err = of_adjust_tree_phandle_references(local_fixups,
++					resolve, phandle_delta);
++			if (err != 0)
++				return err;
++			break;
++		}
++	}
+ 
+ 	root_sym = NULL;
+ 	resolve_sym = NULL;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.0
+
 
 _______________________________________________
 barebox mailing list
