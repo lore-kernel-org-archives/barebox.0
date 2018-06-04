@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQpcl-0008OH-AR
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 07:46:25 +0000
-Date: Thu, 7 Jun 2018 09:46:11 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180607074611.dafexjqwcberzhkg@pengutronix.de>
-References: <20180606054651.11813-1-o.rempel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180606054651.11813-1-o.rempel@pengutronix.de>
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fPotq-00011K-RU
+ for barebox@lists.infradead.org; Mon, 04 Jun 2018 12:47:53 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id C00F6A0041B
+ for <barebox@lists.infradead.org>; Mon,  4 Jun 2018 14:47:35 +0200 (CEST)
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Mon, 4 Jun 2018 14:47:31 +0200
+Message-Id: <1528116451-40149-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,110 +17,98 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] defaultenv-2: make abort key to stop autoboot
- configurable
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] commands: mmc_extcsd: Add support to write multibyte registers
+To: barebox@lists.infradead.org
 
-On Wed, Jun 06, 2018 at 07:46:51AM +0200, Oleksij Rempel wrote:
-> currently supported only two options: any key and ctrl-c
-> "any key" is default option.
-> To configure it, use:
-> nv autoboot_abort_key=any
-> or
-> nv autoboot_abort_key=ctrl-c
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
+It has been possible to write only the first byte of a multibyte register.
+Updated the command to write the complete value of a multibyte register at once.
 
-Applied, thanks
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ commands/mmc_extcsd.c | 44 +++++++++++++++++++++++++++-----------------
+ 1 file changed, 27 insertions(+), 17 deletions(-)
 
-Sascha
-
->  Documentation/user/defaultenv-2.rst   |  3 +++
->  defaultenv/defaultenv-2-base/bin/init | 17 ++++++++++++++---
->  2 files changed, 17 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/user/defaultenv-2.rst b/Documentation/user/defaultenv-2.rst
-> index db74176b0..7502d3de1 100644
-> --- a/Documentation/user/defaultenv-2.rst
-> +++ b/Documentation/user/defaultenv-2.rst
-> @@ -93,6 +93,9 @@ the :ref:`command_edit` command. Typical content:
->    # timeout in seconds before the default boot entry is started
->    #global.autoboot_timeout=3
->  
-> +  # key to abort autoboot. Supported options are: "any" and "ctrl-c"
-> +  #global.autoboot_abort_key=any
-> +
->    # list of boot entries. These are executed in order until one
->    # succeeds. An entry can be:
->    # - a filename in /env/boot/
-> diff --git a/defaultenv/defaultenv-2-base/bin/init b/defaultenv/defaultenv-2-base/bin/init
-> index 6f3a34dba..8d02e3d3a 100644
-> --- a/defaultenv/defaultenv-2-base/bin/init
-> +++ b/defaultenv/defaultenv-2-base/bin/init
-> @@ -5,6 +5,7 @@ export PATH=/env/bin
->  global hostname
->  global user
->  global autoboot_timeout
-> +global autoboot_abort_key
->  global boot.default
->  global linux.bootargs.base
->  global linux.bootargs.console
-> @@ -18,6 +19,8 @@ global editcmd
->  magicvar -a global.user "username (used in network filenames)"
->  [ -z "${global.autoboot_timeout}" ] && global.autoboot_timeout=3
->  magicvar -a global.autoboot_timeout "timeout in seconds before automatic booting"
-> +[ -z "${global.autoboot_abort_key}" ] && global.autoboot_abort_key=any
-> +magicvar -a global.autoboot_abort_key "key to abort automatic booting (valid options: any, ctrl-c)"
->  [ -z "${global.boot.default}" ] && global.boot.default=net
->  [ -z "${global.editcmd}" ] && global.editcmd=sedit
->  
-> @@ -38,14 +41,22 @@ for i in /env/init/*; do
->  	. $i
->  done
->  
-> +if [ "${global.autoboot_abort_key}" = "ctrl-c" ]; then
-> +	abort_string="ctrl-c"
-> +	abort_args="-c"
-> +else
-> +	abort_string="any key"
-> +	abort_args="-a"
-> +fi
-> +
->  if [ -e /env/menu ]; then
-> -	echo -e -n "\nHit m for menu or any other key to stop autoboot: "
-> +	echo -e -n "\nHit m for menu or $abort_string to stop autoboot: "
->  else
-> -	echo -e -n "\nHit any key to stop autoboot: "
-> +	echo -e -n "\nHit $abort_string to stop autoboot: "
->  fi
->  
->  if [ "$autoboot" = 0 ]; then
-> -	timeout -a $global.autoboot_timeout -v key
-> +	timeout $abort_args $global.autoboot_timeout -v key
->  	autoboot="$?"
->  fi
->  
-> -- 
-> 2.17.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/commands/mmc_extcsd.c b/commands/mmc_extcsd.c
+index acd23a466bcb..a5af97fbbaf1 100644
+--- a/commands/mmc_extcsd.c
++++ b/commands/mmc_extcsd.c
+@@ -2306,10 +2306,8 @@ static int request_write_operation(void)
+ 	return 0;
+ }
+ 
+-static void write_field(struct mci *mci, u8 *reg, u16 index, u8 value,
+-				int always_write)
++int request_one_time_programmable(u16 index)
+ {
+-
+ 	switch (index) {
+ 	case EXT_CSD_BOOT_CONFIG_PROT:
+ 	case EXT_CSD_BOOT_WP:
+@@ -2349,18 +2347,15 @@ static void write_field(struct mci *mci, u8 *reg, u16 index, u8 value,
+ 	case 52:
+ 	case EXT_CSD_BARRIER_CTRL:
+ 	case EXT_CSD_SECURE_REMOVAL_TYPE:
+-		if (!always_write)
+-			if (request_write_operation() == 0) {
+-				printf("Abort write operation!\n");
+-				goto out;
+-			}
+-		break;
++		if (request_write_operation() == 0) {
++			printf("Abort write operation!\n");
++			return 1;
++		} else {
++			return 0;
++		}
+ 	}
+ 
+-	mci_switch(mci, index, value);
+-
+-out:
+-	return;
++	return 0;
+ }
+ 
+ static int do_mmc_extcsd(int argc, char *argv[])
+@@ -2430,11 +2425,26 @@ static int do_mmc_extcsd(int argc, char *argv[])
+ 		if (!print_field(dst, index)) {
+ 			printf("No field with this index found. Abort write operation!\n");
+ 		} else {
+-			write_field(mci, dst, index, value, always_write);
++			struct extcsd_reg *ext;
++			int i;
++			int val = 0;
++
++			if (!always_write) {
++				retval = request_one_time_programmable(index);
++				if (retval)
++					goto error_with_mem;
++			}
++
++			ext = &extcsd[index];
++			for (i = 0; i < ext->width; i++) {
++				val = (value >> (i * 8)) & 0xFF;
++
++				mci_switch(mci, index + i, val);
++				retval = mci_send_ext_csd(mci, dst);
++				if (retval != 0)
++					goto error_with_mem;
++			}
+ 			printf("\nValue written!\n\n");
+-			retval = mci_send_ext_csd(mci, dst);
+-			if (retval != 0)
+-				goto error_with_mem;
+ 			print_field(dst, index);
+ 		}
+ 	else
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.4
+
 
 _______________________________________________
 barebox mailing list
