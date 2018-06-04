@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSHmq-0003bT-Hq
- for barebox@lists.infradead.org; Mon, 11 Jun 2018 08:02:50 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Mon, 11 Jun 2018 10:02:29 +0200
-Message-Id: <20180611080229.7591-1-u.kleine-koenig@pengutronix.de>
+ id 1fPjW1-0000p7-Pp
+ for barebox@lists.infradead.org; Mon, 04 Jun 2018 07:02:56 +0000
+Date: Mon, 4 Jun 2018 09:02:40 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20180604070240.odea3uigzlkytl32@pengutronix.de>
+References: <20180601180750.5436-1-u.kleine-koenig@pengutronix.de>
+ <20180604070137.tu5p6hulsxhejluo@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180604070137.tu5p6hulsxhejluo@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,62 +19,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation: use https for Pengutronix services
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/4] kwbimage_v0: add support to detect and boot a mvebu
+ v0 image
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-QWxzbyBhZGFwdCB0aGUgbGlua3MgdG8gZ2l0LnBlbmd1dHJvbml4LmRlIHRvIHVzZSB0aGUgY2dp
-dCBVUkxzIGluc3RlYWQgdGhlCm9sZCBnaXR3ZWIgb25lcy4KClNpZ25lZC1vZmYtYnk6IFV3ZSBL
-bGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogRG9jdW1l
-bnRhdGlvbi91c2VyL2JhcmVib3gucnN0ICAgICAgfCA0ICsrLS0KIERvY3VtZW50YXRpb24vdXNl
-ci9ib290Y2hvb3Nlci5yc3QgIHwgMiArLQogRG9jdW1lbnRhdGlvbi91c2VyL3N5c3RlbS1zZXR1
-cC5yc3QgfCAyICstCiBSRUFETUUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8IDIgKy0K
-IDQgZmlsZXMgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQoKZGlmZiAt
-LWdpdCBhL0RvY3VtZW50YXRpb24vdXNlci9iYXJlYm94LnJzdCBiL0RvY3VtZW50YXRpb24vdXNl
-ci9iYXJlYm94LnJzdAppbmRleCAxMjAzYzEwY2QxNDUuLjgyYTMzYTMyMTlhMiAxMDA2NDQKLS0t
-IGEvRG9jdW1lbnRhdGlvbi91c2VyL2JhcmVib3gucnN0CisrKyBiL0RvY3VtZW50YXRpb24vdXNl
-ci9iYXJlYm94LnJzdApAQCAtMTEsNyArMTEsNyBAQCB0aGUgc3VmZml4IChmb3IgZXhhbXBsZSAy
-MDE0LjA2LjEpLgogCiBBbGwgcmVsZWFzZXMgY2FuIGJlIGRvd25sb2FkZWQgZnJvbToKIAotaHR0
-cDovL3d3dy5iYXJlYm94Lm9yZy9kb3dubG9hZC8KK2h0dHBzOi8vd3d3LmJhcmVib3gub3JnL2Rv
-d25sb2FkLwogCiBEZXZlbG9wbWVudCB2ZXJzaW9ucyBvZiBiYXJlYm94IGFyZSBhY2Nlc3NpYmxl
-IHZpYSBHaXQuIEEgbG9jYWwgcmVwb3NpdG9yeSBjbG9uZQogY2FuIGJlIGNoZWNrZWQgb3V0IGFz
-IGZvbGxvd3M6CkBAIC0zOSw3ICszOSw3IEBAIHlvdSBjYW4gbG9vayBhdCB0aGUgYGBuZXh0YGAg
-YnJhbmNoOgogICAkIGdpdCBjaGVja291dCAtYiBuZXh0IG9yaWdpbi9yZW1vdGVzL25leHQKIAog
-QSB3ZWIgaW50ZXJmYWNlIHRvIHRoZSByZXBvc2l0b3J5IGlzIGF2YWlsYWJsZSBhdAotaHR0cDov
-L2dpdC5wZW5ndXRyb25peC5kZS8/cD1iYXJlYm94LmdpdC4KK2h0dHBzOi8vZ2l0LnBlbmd1dHJv
-bml4LmRlL2NnaXQvYmFyZWJveAogCiAuLiBfY29uZmlndXJhdGlvbjoKIApkaWZmIC0tZ2l0IGEv
-RG9jdW1lbnRhdGlvbi91c2VyL2Jvb3RjaG9vc2VyLnJzdCBiL0RvY3VtZW50YXRpb24vdXNlci9i
-b290Y2hvb3Nlci5yc3QKaW5kZXggOWE3NWFmYmY1ZTM2Li4wNTcyNWQ4ZjIxYjUgMTAwNjQ0Ci0t
-LSBhL0RvY3VtZW50YXRpb24vdXNlci9ib290Y2hvb3Nlci5yc3QKKysrIGIvRG9jdW1lbnRhdGlv
-bi91c2VyL2Jvb3RjaG9vc2VyLnJzdApAQCAtNzYsNyArNzYsNyBAQCBJbiBjYXNlIG9ubHkgdGhl
-IGJvb3RlZCBzeXN0ZW0gaXRzZWxmIGtub3dzIHdoZW4gaXQgaXMgaW4gYSBnb29kIHN0YXRlLCB0
-aGUKIGJhcmVib3gtc3RhdGUgdG9vbCBmcm9tIHRoZSBkdC11dGlsc18gcGFja2FnZSBjYW4gYmUg
-dXNlZCB0byByZXNldCB0aGUKIGBgcmVtYWluaW5nX2F0dGVtcHRzYGAgY291bnRlciBmcm9tIHRo
-ZSBydW5uaW5nIHN5c3RlbS4KIAotLi4gX2R0LXV0aWxzOiBodHRwOi8vZ2l0LnBlbmd1dHJvbml4
-LmRlLz9wPXRvb2xzL2R0LXV0aWxzLmdpdDthPXN1bW1hcnkKKy4uIF9kdC11dGlsczogaHR0cHM6
-Ly9naXQucGVuZ3V0cm9uaXguZGUvY2dpdC90b29scy9kdC11dGlscwogCiBHZW5lcmFsIEJvb3Rj
-aG9vc2VyIE9wdGlvbnMKIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpkaWZmIC0tZ2l0IGEv
-RG9jdW1lbnRhdGlvbi91c2VyL3N5c3RlbS1zZXR1cC5yc3QgYi9Eb2N1bWVudGF0aW9uL3VzZXIv
-c3lzdGVtLXNldHVwLnJzdAppbmRleCA3ZTRhNzY2OWE4ZmUuLmYwNTk4YmMyYjU2ZCAxMDA2NDQK
-LS0tIGEvRG9jdW1lbnRhdGlvbi91c2VyL3N5c3RlbS1zZXR1cC5yc3QKKysrIGIvRG9jdW1lbnRh
-dGlvbi91c2VyL3N5c3RlbS1zZXR1cC5yc3QKQEAgLTI5LDcgKzI5LDcgQEAgQSBnb29kIGFsdGVy
-bmF0aXZlIHRlcm1pbmFsIHByb2dyYW0gaXMgbWljcm9jb20uIE9uIERlYmlhbiBpdCBjYW4gYmUg
-aW5zdGFsbGVkCiB3aXRoIGBgYXB0LWdldCBpbnN0YWxsIG1pY3JvY29tYGAsIG9uIG90aGVyIGRp
-c3RyaWJ1dGlvbnMgaXQgY2FuIGJlIGluc3RhbGxlZAogZnJvbSBzb3VyY2U6CiAKLWh0dHA6Ly9n
-aXQucGVuZ3V0cm9uaXguZGUvP3A9dG9vbHMvbWljcm9jb20uZ2l0O2E9c3VtbWFyeQoraHR0cHM6
-Ly9naXQucGVuZ3V0cm9uaXguZGUvY2dpdC90b29scy9taWNyb2NvbQogCiBVc2FnZSBpcyBzaW1w
-bGU6OgogCmRpZmYgLS1naXQgYS9SRUFETUUgYi9SRUFETUUKaW5kZXggMzg2MmY2MDkxZTRkLi42
-OTBiMzE0MWMyZjUgMTAwNjQ0Ci0tLSBhL1JFQURNRQorKysgYi9SRUFETUUKQEAgLTIxNyw3ICsy
-MTcsNyBAQCBhcmUgdGhlIHJlbGVhc2UgcnVsZXM6CiAgIG5lY2Vzc2FyeSwgdGhpcyBpcyB0aGUg
-c2NoZW1lIHdlIGZvbGxvdy4KIAogLSBPbmx5IHRoZSBtb250aGx5IHJlbGVhc2VzIGFyZSBhcmNo
-aXZlZCBvbiB0aGUgd2ViIHNpdGUuIFRoZSB0YXJiYWxscwotICBhcmUgbG9jYXRlZCBpbiBodHRw
-Oi8vd3d3LmJhcmVib3gub3JnL2Rvd25sb2FkLyBhbmQgdGhpcyBsb2NhdGlvbgorICBhcmUgbG9j
-YXRlZCBpbiBodHRwczovL3d3dy5iYXJlYm94Lm9yZy9kb3dubG9hZC8gYW5kIHRoaXMgbG9jYXRp
-b24KICAgZG9lcyBuZXZlciBjaGFuZ2UsIGluIG9yZGVyIHRvIG1ha2UgbGlmZSBlYXNpZXIgZm9y
-IGRpc3RyaWJ1dGlvbgogICBwZW9wbGUuCiAKLS0gCjIuMTcuMQoKCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+Hello Sascha,
+
+On Mon, Jun 04, 2018 at 09:01:37AM +0200, Sascha Hauer wrote:
+> On Fri, Jun 01, 2018 at 08:07:47PM +0200, Uwe Kleine-K=F6nig wrote:
+> > The differences between v0 and v1 of the mvebu kwbimage are small enough
+> > that the function to boot such an image can be shared between both
+> > variants.
+> > =
+
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > ---
+> >  arch/arm/mach-mvebu/kwbootimage.c | 11 +++++++++--
+> >  common/filetype.c                 | 22 +++++++++++++++++-----
+> >  include/filetype.h                |  1 +
+> >  3 files changed, 27 insertions(+), 7 deletions(-)
+> =
+
+> Applied 2-4. This patch is the same as the first time you sent it,
+> right?
+
+ack, seems I forgot I already sent it separately.
+
+Thanks
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
