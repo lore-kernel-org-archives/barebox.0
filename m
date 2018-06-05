@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x243.google.com ([2a00:1450:400c:c0c::243])
+Received: from mail-wr0-x244.google.com ([2a00:1450:400c:c0c::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQKmz-0005Nu-Au
- for barebox@lists.infradead.org; Tue, 05 Jun 2018 22:50:58 +0000
-Received: by mail-wr0-x243.google.com with SMTP id l41-v6so4134711wre.7
- for <barebox@lists.infradead.org>; Tue, 05 Jun 2018 15:50:43 -0700 (PDT)
+ id 1fQFxI-0007GL-9I
+ for barebox@lists.infradead.org; Tue, 05 Jun 2018 17:41:19 +0000
+Received: by mail-wr0-x244.google.com with SMTP id o12-v6so3313392wrm.12
+ for <barebox@lists.infradead.org>; Tue, 05 Jun 2018 10:40:59 -0700 (PDT)
 From: Pascal Vizeli <pvizeli@syshack.ch>
-Date: Tue,  5 Jun 2018 22:50:35 +0000
-Message-Id: <20180605225035.1736-1-pvizeli@syshack.ch>
+Date: Tue,  5 Jun 2018 17:40:51 +0000
+Message-Id: <20180605174052.23679-1-pvizeli@syshack.ch>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,20 +21,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] drivers: of: implement overlay support
+Subject: [PATCH 1/2] drivers: of: implement overlay support
 To: barebox@lists.infradead.org
 Cc: Pascal Vizeli <pvizeli@syshack.ch>
 
-Origin patches are from Jan Luebbe.
+Origin by Jan Luebbe:
+http://lists.infradead.org/pipermail/barebox/2015-March/022674.html
 
-This is based on Pantelis Antoniou's overlay support for the kernel. It
-has been simplified by leaving out transaction support, locking and
-other details required by the Linux DT support.
+I rebase the patches and fix the resolve for __local_fixups__, they
+was wrong copy/ported from linux kernel.
 
-Pascal Vizeli fix some parts of resolver they was wrong ported from
-linux source.
+I merge the overlay code from oftree into own command: of_overlay
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+Signed-off-by: Pascal Vizeli <pvizeli@syshack.ch>
 ---
  Documentation/user/devicetree.rst     | 101 ++++++++-
  arch/sandbox/dts/Makefile             |   5 +-
@@ -273,14 +272,14 @@ index eb4796389..f404338fa 100644
  obj-$(CONFIG_CMD_OF_DISPLAY_TIMINGS)	+= of_display_timings.o
 diff --git a/commands/of_overlay.c b/commands/of_overlay.c
 new file mode 100644
-index 000000000..1b3e857bb
+index 000000000..6c74c72bc
 --- /dev/null
 +++ b/commands/of_overlay.c
 @@ -0,0 +1,106 @@
 +/*
 + * of_overlay.c - device tree overlay command support
 + *
-+ * Copyright (C) 2015 Pengutronix, Jan Luebbe <jlu@pengutronix.de>
++ * Copyright (c) 2018 Pascal Vizeli <pvizeli@syshack.ch>, Hass.io
 + *
 + * See file CREDITS for list of people who contributed to this
 + * project.
@@ -322,7 +321,7 @@ index 000000000..1b3e857bb
 +	struct device_node *overlay = NULL, *root;
 +	struct of_overlay_info *ovinfo;
 +
-+	if (argc != 2)
++	if (argc != 2 || !IS_ENABLED(CONFIG_OFTREE_OVERLAY))
 +		return COMMAND_ERROR_USAGE;
 +
 +	filename = argv[1];
@@ -330,7 +329,7 @@ index 000000000..1b3e857bb
 +	root = of_get_root_node();
 +	if (!root) {
 +		printf("no oftree loaded\n");
-+		return 1;
++		goto out;
 +	}
 +
 +	fdt = read_file(filename, &size);
@@ -348,19 +347,19 @@ index 000000000..1b3e857bb
 +	}
 +
 +	ret = of_resolve(overlay);
-+	if (ret != 0) {
++	if (ret) {
 +		printf("resolve oftree overlay: %s\n", strerror(-ret));
 +		goto out;
 +	}
 +
 +	ret = of_build_overlay_info(overlay, &ovinfo_cnt, &ovinfo);
-+	if (ret != 0) {
++	if (ret) {
 +		printf("prepare oftree overlay: %s\n", strerror(-ret));
 +		goto out;
 +	}
 +
 +	ret = of_overlay(ovinfo_cnt, ovinfo);
-+	if (ret != 0) {
++	if (ret) {
 +		printf("apply oftree overlay: %s\n", strerror(-ret));
 +		goto out;
 +	}
