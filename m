@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQTLr-0007eV-DM
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 07:59:55 +0000
+ id 1fQGPl-00029m-87
+ for barebox@lists.infradead.org; Tue, 05 Jun 2018 18:10:43 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed,  6 Jun 2018 09:59:11 +0200
-Message-Id: <20180606075912.2470-3-o.rempel@pengutronix.de>
-In-Reply-To: <20180606075912.2470-1-o.rempel@pengutronix.de>
-References: <20180606075912.2470-1-o.rempel@pengutronix.de>
+Date: Tue,  5 Jun 2018 20:10:19 +0200
+Message-Id: <20180605181021.10467-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,234 +19,148 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 2/3] add basic ELF parser
+Subject: [PATCH v1 1/3] MIPS: ath79: provide driver for Atheros ART partition
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-This parser is needed for kernel boot support on MIPS
-and can potentially reused on other platforms.
+From: Oleksij Rempel <linux@rempel-privat.de>
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+this partition contains calibration data for WiFi and
+some board specific data, like MAC address.
+
+For now we care only about MAC.
+
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- common/Kconfig  |   5 ++
- common/Makefile |   1 +
- common/elf.c    | 145 ++++++++++++++++++++++++++++++++++++++++++++++++
- include/elf.h   |  10 ++++
- 4 files changed, 161 insertions(+)
- create mode 100644 common/elf.c
+ arch/mips/mach-ath79/Makefile |   1 +
+ arch/mips/mach-ath79/art.c    | 110 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 111 insertions(+)
+ create mode 100644 arch/mips/mach-ath79/art.c
 
-diff --git a/common/Kconfig b/common/Kconfig
-index b7000c4d7..b9adc4c39 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -46,6 +46,10 @@ config BLOCK
- config BLOCK_WRITE
- 	bool
- 
-+config ELF
-+	bool
-+	depends on MIPS
-+
- config FILETYPE
- 	bool
- 
-@@ -548,6 +552,7 @@ config TIMESTAMP
- 	  automatically enabled when you select CFG_CMD_DATE .
- 
- menuconfig BOOTM
-+	select ELF
- 	select UIMAGE
- 	default y if COMMAND_SUPPORT
- 	bool "bootm support"
-diff --git a/common/Makefile b/common/Makefile
-index 1ff7d2370..b6284c255 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -8,6 +8,7 @@ obj-y				+= misc.o
- obj-pbl-y			+= memsize.o
- obj-y				+= resource.o
- obj-y				+= bootsource.o
-+obj-$(CONFIG_ELF)		+= elf.o
- obj-y				+= restart.o
- obj-y				+= poweroff.o
- obj-$(CONFIG_AUTO_COMPLETE)	+= complete.o
-diff --git a/common/elf.c b/common/elf.c
+diff --git a/arch/mips/mach-ath79/Makefile b/arch/mips/mach-ath79/Makefile
+index 3772daeba..b827b363c 100644
+--- a/arch/mips/mach-ath79/Makefile
++++ b/arch/mips/mach-ath79/Makefile
+@@ -1,2 +1,3 @@
+ obj-y += reset.o
+ obj-y += bbu.o
++obj-y += art.o
+diff --git a/arch/mips/mach-ath79/art.c b/arch/mips/mach-ath79/art.c
 new file mode 100644
-index 000000000..51b29b145
+index 000000000..cf482f8fb
 --- /dev/null
-+++ b/common/elf.c
-@@ -0,0 +1,145 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/arch/mips/mach-ath79/art.c
+@@ -0,0 +1,110 @@
++// SPDX-License-Identifier: GPL-2.
 +/*
-+ * Copyright (c) 2018 Pengutronix, Oleksij Rempel <o.rempel@pengutronix.de>
++ * Copyright (c) 2018 Oleksij Rempel <linux@rempel-privat.de>
 + */
 +
 +#include <common.h>
-+#include <elf.h>
-+#include <memory.h>
++#include <fcntl.h>
++#include <init.h>
++#include <libfile.h>
++#include <net.h>
++#include <unistd.h>
 +
-+struct elf_section {
-+	struct list_head list;
-+	struct resource *r;
++struct ar9300_eeprom {
++	u8 eeprom_version;
++	u8 template_version;
++	u8 mac_addr[6];
 +};
 +
-+static int elf_request_region(struct elf_image *elf, resource_size_t start,
-+			      resource_size_t size)
++static int art_set_mac(struct device_d *dev, struct ar9300_eeprom *eeprom)
 +{
-+	struct list_head *list = &elf->list;
-+	struct resource *r_new;
-+	struct elf_section *r;
++	struct device_node *node = dev->device_node;
++	struct device_node *rnode;
 +
-+	r = xzalloc(sizeof(*r));
-+	r_new = request_sdram_region("elf_section", start, size);
-+	if (!r_new) {
-+		pr_err("Failed to request region: %pa %pa\n", start, size);
-+		return -EINVAL;
-+	}
++	if (!node)
++		return -ENOENT;
 +
-+	r->r = r_new;
-+	list_add_tail(&r->list, list);
++	rnode = of_parse_phandle_from(node, NULL,
++				     "barebox,provide-mac-address", 0);
++	if (!rnode)
++		return -ENOENT;
++
++	of_eth_register_ethaddr(rnode, &eeprom->mac_addr[0]);
 +
 +	return 0;
 +}
 +
-+static void elf_release_regions(struct elf_image *elf)
++static int art_read_mac(struct device_d *dev, const char *file)
 +{
-+	struct list_head *list = &elf->list;
-+	struct elf_section *r, *r_tmp;
++	int fd, rbytes;
++	struct ar9300_eeprom eeprom;
 +
-+	list_for_each_entry_safe(r, r_tmp, list, list) {
-+		release_sdram_region(r->r);
-+		free(r);
++	fd = open_and_lseek(file, O_RDONLY, 0x1000);
++	if (fd < 0) {
++		dev_err(dev, "Failed to open eeprom path %s %d\n",
++		       file, -errno);
++		return -errno;
 +	}
++
++	rbytes = read_full(fd, &eeprom, sizeof(eeprom));
++	close(fd);
++	if (rbytes <= 0 || rbytes < sizeof(eeprom)) {
++		dev_err(dev, "Failed to read %s\n", file);
++		return -EIO;
++	}
++
++	dev_dbg(dev, "ART version: %x.%x\n",
++		 eeprom.eeprom_version, eeprom.template_version);
++	dev_dbg(dev, "mac: %02x:%02x:%02x:%02x:%02x:%02x\n",
++	       eeprom.mac_addr[0],
++	       eeprom.mac_addr[1],
++	       eeprom.mac_addr[2],
++	       eeprom.mac_addr[3],
++	       eeprom.mac_addr[4],
++	       eeprom.mac_addr[5]);
++
++	if (!is_valid_ether_addr(&eeprom.mac_addr[0])) {
++		dev_err(dev, "bad MAC addr\n");
++		return -EILSEQ;
++	}
++
++	return art_set_mac(dev, &eeprom);
 +}
 +
-+
-+static int load_elf_phdr_segment(struct elf_image *elf, void *src,
-+				 Elf32_Phdr *phdr)
++static int art_probe(struct device_d *dev)
 +{
-+	void *dst = (void *)phdr->p_paddr;
++	char *path;
 +	int ret;
 +
-+	/* we care only about PT_LOAD segments */
-+	if (phdr->p_type != PT_LOAD)
-+		return 0;
++	dev_dbg(dev, "found ART partition\n");
 +
-+	if (!phdr->p_filesz)
-+		return 0;
-+
-+	pr_debug("Loading phdr to 0x%p (%i bytes)\n", dst, phdr->p_filesz);
-+
-+	ret = elf_request_region(elf, (resource_size_t)dst, phdr->p_filesz);
-+	if (ret)
-+		return ret;
-+
-+	memcpy(dst, src, phdr->p_filesz);
-+
-+	if (phdr->p_filesz < phdr->p_memsz)
-+		memset(dst + phdr->p_filesz, 0x00,
-+		       phdr->p_memsz - phdr->p_filesz);
-+
-+	return 0;
-+}
-+
-+static int load_elf_image_phdr(struct elf_image *elf)
-+{
-+	void *buf = elf->buf;
-+	Elf32_Ehdr *ehdr = buf;
-+	Elf32_Phdr *phdr = (Elf32_Phdr *)(buf + ehdr->e_phoff);
-+	int i, ret;
-+
-+	elf->entry = ehdr->e_entry;
-+
-+	for (i = 0; i < ehdr->e_phnum; ++i) {
-+		void *src = buf + phdr->p_offset;
-+
-+		ret = load_elf_phdr_segment(elf, src, phdr);
-+		/* in case of error elf_load_image() caller should clean up and
-+		 * call elf_release_image() */
-+		if (ret)
-+			return ret;
-+
-+		++phdr;
-+	}
-+
-+	return 0;
-+}
-+
-+static int elf_check_image(void *buf)
-+{
-+	Elf32_Ehdr *ehdr = (Elf32_Ehdr *)buf;
-+
-+	if (strncmp(buf, ELFMAG, SELFMAG)) {
-+		pr_err("ELF magic not found.\n");
-+		return -EINVAL;
-+	}
-+
-+	if (ehdr->e_type != ET_EXEC) {
-+		pr_err("Non EXEC ELF image.\n");
-+		return -ENOEXEC;
-+	}
-+
-+	return 0;
-+}
-+
-+struct elf_image *elf_load_image(void *buf)
-+{
-+	struct elf_image *elf;
-+	int ret;
-+
-+	elf = xzalloc(sizeof(*elf));
-+
-+	INIT_LIST_HEAD(&elf->list);
-+
-+	elf->buf = buf;
-+
-+	ret = elf_check_image(buf);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	ret = load_elf_image_phdr(elf);
++	ret = of_find_path(dev->device_node, "device-path", &path, 0);
 +	if (ret) {
-+		elf_release_image(elf);
-+		return ERR_PTR(ret);
++		dev_err(dev, "can't find path\n");
++		return ret;
 +	}
 +
-+	return elf;
++	return art_read_mac(dev, path);
 +}
 +
-+void elf_release_image(struct elf_image *elf)
-+{
-+	elf_release_regions(elf);
-+
-+	free(elf);
-+}
-diff --git a/include/elf.h b/include/elf.h
-index ebcec7db0..92c8d9c12 100644
---- a/include/elf.h
-+++ b/include/elf.h
-@@ -2,6 +2,7 @@
- #define _LINUX_ELF_H
- 
- #include <linux/types.h>
-+#include <linux/list.h>
- //#include <linux/auxvec.h>
- //#include <linux/elf-em.h>
- #include <asm/elf.h>
-@@ -397,4 +398,13 @@ static inline void arch_write_notes(struct file *file) { }
- #define ELF_CORE_WRITE_EXTRA_NOTES arch_write_notes(file)
- #endif /* ARCH_HAVE_EXTRA_ELF_NOTES */
- 
-+struct elf_image {
-+	struct list_head list;
-+	unsigned long entry;
-+	void *buf;
++static struct of_device_id art_dt_ids[] = {
++	{
++		.compatible = "qca,art",
++	}, {
++		/* sentinel */
++	}
 +};
 +
-+struct elf_image *elf_load_image(void *buf);
-+void elf_release_image(struct elf_image *elf);
++static struct driver_d art_driver = {
++	.name		= "qca-art",
++	.probe		= art_probe,
++	.of_compatible	= art_dt_ids,
++};
 +
- #endif /* _LINUX_ELF_H */
++static int art_of_driver_init(void)
++{
++	platform_driver_register(&art_driver);
++
++	return 0;
++}
++late_initcall(art_of_driver_init);
 -- 
 2.17.1
 
