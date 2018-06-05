@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-it0-x232.google.com ([2607:f8b0:4001:c0b::232])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSTaG-0005Jk-Sa
- for barebox@lists.infradead.org; Mon, 11 Jun 2018 20:38:38 +0000
-Date: Mon, 11 Jun 2018 22:38:22 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180611203822.dpc6qtgvydg66veg@pengutronix.de>
-References: <20180608084244.12816-1-u.kleine-koenig@pengutronix.de>
+ id 1fQL3D-0004Pn-8S
+ for barebox@lists.infradead.org; Tue, 05 Jun 2018 23:07:40 +0000
+Received: by mail-it0-x232.google.com with SMTP id m194-v6so5671497itg.2
+ for <barebox@lists.infradead.org>; Tue, 05 Jun 2018 16:07:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180608084244.12816-1-u.kleine-koenig@pengutronix.de>
+From: Pascal Vizeli <pvizeli@syshack.ch>
+Date: Wed, 6 Jun 2018 01:07:27 +0200
+Message-ID: <CACvFaDeA6k7d=1hOxCkOo1cXoxB566S3249XhZk3-zSNkQU3ag@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,72 +17,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mvebu: create bbu handler for kwb images and use it on
- cubox
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Oftree from memory and access to start arguments
+To: barebox@lists.infradead.org
 
-On Fri, Jun 08, 2018 at 10:42:44AM +0200, Uwe Kleine-K=F6nig wrote:
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
-> Hello,
-> =
+Hi,
 
-> together with the fixup for write_file_flash to not use O_TRUNC and
-> O_CREAT, this was tested on top of next.
-> =
+I'm working on a functionality to load a device tree with oftree from
+memory. The use case is like raspberry platform they have his own
+device tree for linux kernel. If I known the address (config.txt), I
+will load this from memory and read out the dynamic linux args and use
+other overlays for states with bootchoiser and boot the kernel
+correctly.
 
-> Best regards
-> Uwe
-> =
+On raspberry, I can write the device-tree to a memory address with
+config.txt. It would be nice, if I can access to barebox (start.c)
+main arguments, while the raspberry pi load barebox like a linux
+kernel and give him the device-address on r2.
 
->  arch/arm/boards/solidrun-cubox/board.c | 15 ++++++-
->  arch/arm/mach-mvebu/Makefile           |  1 +
->  arch/arm/mach-mvebu/include/mach/bbu.h |  3 ++
->  arch/arm/mach-mvebu/kwb_bbu.c          | 54 ++++++++++++++++++++++++++
->  4 files changed, 72 insertions(+), 1 deletion(-)
->  create mode 100644 arch/arm/mach-mvebu/include/mach/bbu.h
->  create mode 100644 arch/arm/mach-mvebu/kwb_bbu.c
-> =
+I'm not sure if the access to the arguments really wanted, so I do
+that only with fixed address. In other case, I don't see how I could
+access to this arguments.
 
-> diff --git a/arch/arm/boards/solidrun-cubox/board.c b/arch/arm/boards/sol=
-idrun-cubox/board.c
-> index a28f4197dfd4..aac93afb0c89 100644
-> --- a/arch/arm/boards/solidrun-cubox/board.c
-> +++ b/arch/arm/boards/solidrun-cubox/board.c
-> @@ -14,4 +14,17 @@
->   *
->   */
->  =
+The idea is to have a function like `oftree -l 0x100`. Extended maybe
+a global variable with the memory address, passed from start.
 
-> -/* empty */
-> +#include <common.h>
-> +#include <init.h>
-> +#include <mach/bbu.h>
-> +
-> +static int cubox_devices_init(void)
-> +{
-> +	if (!of_machine_is_compatible("solidrun,cubox"))
-> +		return 0;
-> +
-> +	mvebu_bbu_flash_register_handler("flash", "/dev/m25p0", 0, true);
+Anyway it work also with config.txt:
+device_tree_address=0x100
 
-This breaks linking when bbu support is disabled. You'll have to
-provide some static inline wrapper for this case.
-
-Sascha
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Greets
+Pascal
 
 _______________________________________________
 barebox mailing list
