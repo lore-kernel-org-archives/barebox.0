@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQGPl-00029m-87
- for barebox@lists.infradead.org; Tue, 05 Jun 2018 18:10:43 +0000
+ id 1fQGPl-00026z-88
+ for barebox@lists.infradead.org; Tue, 05 Jun 2018 18:10:39 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue,  5 Jun 2018 20:10:19 +0200
-Message-Id: <20180605181021.10467-1-o.rempel@pengutronix.de>
+Date: Tue,  5 Jun 2018 20:10:20 +0200
+Message-Id: <20180605181021.10467-2-o.rempel@pengutronix.de>
+In-Reply-To: <20180605181021.10467-1-o.rempel@pengutronix.de>
+References: <20180605181021.10467-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,148 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 1/3] MIPS: ath79: provide driver for Atheros ART partition
+Subject: [PATCH v1 2/3] MIPS: dts: tl_wdr4300: add Atheros ART partition
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
 From: Oleksij Rempel <linux@rempel-privat.de>
 
-this partition contains calibration data for WiFi and
-some board specific data, like MAC address.
-
-For now we care only about MAC.
+and define it as source of MAC address for ag71xx driver
 
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- arch/mips/mach-ath79/Makefile |   1 +
- arch/mips/mach-ath79/art.c    | 110 ++++++++++++++++++++++++++++++++++
- 2 files changed, 111 insertions(+)
- create mode 100644 arch/mips/mach-ath79/art.c
+ arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/mips/mach-ath79/Makefile b/arch/mips/mach-ath79/Makefile
-index 3772daeba..b827b363c 100644
---- a/arch/mips/mach-ath79/Makefile
-+++ b/arch/mips/mach-ath79/Makefile
-@@ -1,2 +1,3 @@
- obj-y += reset.o
- obj-y += bbu.o
-+obj-y += art.o
-diff --git a/arch/mips/mach-ath79/art.c b/arch/mips/mach-ath79/art.c
-new file mode 100644
-index 000000000..cf482f8fb
---- /dev/null
-+++ b/arch/mips/mach-ath79/art.c
-@@ -0,0 +1,110 @@
-+// SPDX-License-Identifier: GPL-2.
-+/*
-+ * Copyright (c) 2018 Oleksij Rempel <linux@rempel-privat.de>
-+ */
+diff --git a/arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts b/arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts
+index 5216cdc1e..d3bd7a3d2 100644
+--- a/arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts
++++ b/arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts
+@@ -26,6 +26,12 @@
+ 			compatible = "barebox,environment";
+ 			device-path = &spiflash, "partname:barebox-environment";
+ 		};
 +
-+#include <common.h>
-+#include <fcntl.h>
-+#include <init.h>
-+#include <libfile.h>
-+#include <net.h>
-+#include <unistd.h>
++		art@0 {
++			compatible = "qca,art-ar9344", "qca,art";
++			device-path = &spiflash, "partname:art";
++			barebox,provide-mac-address = <&mac0>;
++		};
+ 	};
+ };
+ 
+@@ -63,6 +69,11 @@
+ 			label = "barebox-environment";
+ 			reg = <0x80000 0x10000>;
+ 		};
 +
-+struct ar9300_eeprom {
-+	u8 eeprom_version;
-+	u8 template_version;
-+	u8 mac_addr[6];
-+};
-+
-+static int art_set_mac(struct device_d *dev, struct ar9300_eeprom *eeprom)
-+{
-+	struct device_node *node = dev->device_node;
-+	struct device_node *rnode;
-+
-+	if (!node)
-+		return -ENOENT;
-+
-+	rnode = of_parse_phandle_from(node, NULL,
-+				     "barebox,provide-mac-address", 0);
-+	if (!rnode)
-+		return -ENOENT;
-+
-+	of_eth_register_ethaddr(rnode, &eeprom->mac_addr[0]);
-+
-+	return 0;
-+}
-+
-+static int art_read_mac(struct device_d *dev, const char *file)
-+{
-+	int fd, rbytes;
-+	struct ar9300_eeprom eeprom;
-+
-+	fd = open_and_lseek(file, O_RDONLY, 0x1000);
-+	if (fd < 0) {
-+		dev_err(dev, "Failed to open eeprom path %s %d\n",
-+		       file, -errno);
-+		return -errno;
-+	}
-+
-+	rbytes = read_full(fd, &eeprom, sizeof(eeprom));
-+	close(fd);
-+	if (rbytes <= 0 || rbytes < sizeof(eeprom)) {
-+		dev_err(dev, "Failed to read %s\n", file);
-+		return -EIO;
-+	}
-+
-+	dev_dbg(dev, "ART version: %x.%x\n",
-+		 eeprom.eeprom_version, eeprom.template_version);
-+	dev_dbg(dev, "mac: %02x:%02x:%02x:%02x:%02x:%02x\n",
-+	       eeprom.mac_addr[0],
-+	       eeprom.mac_addr[1],
-+	       eeprom.mac_addr[2],
-+	       eeprom.mac_addr[3],
-+	       eeprom.mac_addr[4],
-+	       eeprom.mac_addr[5]);
-+
-+	if (!is_valid_ether_addr(&eeprom.mac_addr[0])) {
-+		dev_err(dev, "bad MAC addr\n");
-+		return -EILSEQ;
-+	}
-+
-+	return art_set_mac(dev, &eeprom);
-+}
-+
-+static int art_probe(struct device_d *dev)
-+{
-+	char *path;
-+	int ret;
-+
-+	dev_dbg(dev, "found ART partition\n");
-+
-+	ret = of_find_path(dev->device_node, "device-path", &path, 0);
-+	if (ret) {
-+		dev_err(dev, "can't find path\n");
-+		return ret;
-+	}
-+
-+	return art_read_mac(dev, path);
-+}
-+
-+static struct of_device_id art_dt_ids[] = {
-+	{
-+		.compatible = "qca,art",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
-+static struct driver_d art_driver = {
-+	.name		= "qca-art",
-+	.probe		= art_probe,
-+	.of_compatible	= art_dt_ids,
-+};
-+
-+static int art_of_driver_init(void)
-+{
-+	platform_driver_register(&art_driver);
-+
-+	return 0;
-+}
-+late_initcall(art_of_driver_init);
++		partition@7f0000 {
++			label = "art";
++			reg = <0x7f0000 0x10000>;
++		};
+ 	};
+ };
+ 
 -- 
 2.17.1
 
