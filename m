@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fPnHc-0008QI-7r
- for barebox@lists.infradead.org; Mon, 04 Jun 2018 11:04:18 +0000
-Date: Mon, 4 Jun 2018 13:04:00 +0200
-From: Roland Hieber <r.hieber@pengutronix.de>
-Message-ID: <20180604110400.vtvbxiocuteqk7ww@pengutronix.de>
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fQ5jt-0008Pg-AB
+ for barebox@lists.infradead.org; Tue, 05 Jun 2018 06:46:43 +0000
+Date: Tue, 5 Jun 2018 08:46:30 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180605064630.bzmufxmt4bejoz46@pengutronix.de>
 References: <20180602211715.10989-1-pvizeli@syshack.ch>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -18,95 +18,302 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/3] drivers: of: implement overlay support
 To: Pascal Vizeli <pvizeli@syshack.ch>
 Cc: barebox@lists.infradead.org
 
-T24gU2F0LCBKdW4gMDIsIDIwMTggYXQgMDk6MTc6MTNQTSArMDAwMCwgUGFzY2FsIFZpemVsaSB3
-cm90ZToKPiBkaWZmIC0tZ2l0IGEvRG9jdW1lbnRhdGlvbi91c2VyL2RldmljZXRyZWUucnN0IGIv
-RG9jdW1lbnRhdGlvbi91c2VyL2RldmljZXRyZWUucnN0Cj4gaW5kZXggMTc5MzRkODZlLi5iMjIy
-MDk5N2QgMTAwNjQ0Cj4gLS0tIGEvRG9jdW1lbnRhdGlvbi91c2VyL2RldmljZXRyZWUucnN0Cj4g
-KysrIGIvRG9jdW1lbnRhdGlvbi91c2VyL2RldmljZXRyZWUucnN0Cj4gQEAgLTIxLDcgKzIxLDcg
-QEAgVGhlIGludGVybmFsIGRldmljZXRyZWUKPiAgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiAg
-Cj4gIFRoZSBkZXZpY2V0cmVlIGNvbnN1bHRlZCBieSBiYXJlYm94IHBsYXlzIGEgc3BlY2lhbCBy
-b2xlLiBJdCBpcyByZWZlcnJlZCB0bwo+IC1hcyB0aGUgImludGVybmFsIGRldmljZXRyZWUuIiBU
-aGUgYmFyZWJveCBkZXZpY2V0cmVlIGNvbW1hbmRzIHdvcmsgb24gdGhpcwo+ICthcyB0aGUgImlu
-dGVybmFsIGRldmljZXRyZWUiLiBUaGUgYmFyZWJveCBkZXZpY2V0cmVlIGNvbW1hbmRzIHdvcmsg
-b24gdGhpcwo+ICBkZXZpY2V0cmVlLiBUaGUgZGV2aWNldHJlZSBzb3VyY2UgKERUUykgZmlsZXMg
-YXJlIGtlcHQgaW4gc3luYyB3aXRoIHRoZSBrZXJuZWwgRFRTCj4gIGZpbGVzLiBBcyB0aGUgRkRU
-IGZpbGVzIGFyZSBtZWFudCB0byBiZSBiYWNrd2FyZCBjb21wYXRpYmxlLCBpdCBzaG91bGQgYWx3
-YXlzIGJlIHBvc3NpYmxlCj4gIHRvIHN0YXJ0IGEga2VybmVsIHdpdGggdGhlIGJhcmVib3ggaW50
-ZXJuYWwgZGV2aWNldHJlZS4gSG93ZXZlciwgc2luY2UgdGhlIGJhcmVib3gKPiBAQCAtODMsMyAr
-ODMsMTAyIEBAIHlvdSBjYW4gZXhjaGFuZ2UgdGhlIGludGVybmFsIGRldmljZXRyZWUgZHVyaW5n
-IHJ1bnRpbWUgdXNpbmcgdGhlCj4gIAo+ICAgICBvZnRyZWUgLWYKPiAgICAgb2Z0cmVlIC1sIC9u
-ZXcvZHRiCj4gKwo+ICtEZXZpY2V0cmVlIG92ZXJsYXlzCj4gKy0tLS0tLS0tLS0tLS0tLS0tLS0K
-PiArCj4gK1NpbmNlIHZlcnNpb24gMy4xOSwgdGhlIExpbnV4IGtlcm5lbCBzdXBwb3J0cyBhcHBs
-eWluZyAiZGV2aWNldHJlZSBvdmVybGF5cyIgdG8KPiAraXRzIGxvYWRlZCBkZXZpY2UgdHJlZS4g
-VGhpcyBjYW4gYmUgdXNlZCB0byBpbmZvcm0gdGhlIGtlcm5lbCBhYm91dCBhZGRpdGlvbmFsCj4g
-K25vbi1kaXNjb3ZlcmFibGUgZGV2aWNlcyBhZnRlciB0aGUgc3lzdGVtIGhhcyBib290ZWQsIHdo
-aWNoIGlzIHVzZWZ1bCBmb3IgbW9kdWxhcgo+ICtib2FyZHMgYW5kIEZQR0FzLiBUaGUgZGV0YWls
-cyBvZiB0aGUgb3ZlcmxheSBmb3JtYXQgYXJlIHNwZWNpZmllZCBpbiB0aGUgTGludXgKPiArYGtl
-cm5lbCBkb2N1bWVudGF0aW9uIDxodHRwczovL3d3dy5rZXJuZWwub3JnL2RvYy9Eb2N1bWVudGF0
-aW9uL2RldmljZXRyZWUvb3ZlcmxheS1ub3Rlcy50eHQ+YF8KPiArYW5kIGFuIHVwZGF0ZWQgRFRD
-IGlzIHJlcXVpcmVkIHRvIGNvbXBpbGUgdGhlIG92ZXJsYXlzLgo+ICsKPiArVGhlIHVzZSBjYXNl
-cyBmb3Igb3ZlcmxheXMgaW4gYmFyZWJveCBhcmUgYSBiaXQgZGlmZmVyZW50Ogo+ICsKPiArKiBz
-b21lIG9mIHRoZSBtb2R1bGFyIGRldmljZXMgYXJlIG5lZWRlZCB0byBib290IExpbnV4IHRvIHVz
-ZXJzcGFjZSwgYnV0IGJhcmVib3gKPiArICBjYW4gZGV0ZWN0IHdoaWNoIG1vZHVsZSB2YXJpYW50
-IGlzIGNvbm5lY3RlZAo+ICsqIG9uZSBvZiBzZXZlcmFsIHBhcmFsbGVsIG9yIExWRFMgZGlzcGxh
-eXMgKHdoaWNoIHVzZSB0aW1pbmcgZGF0YSBmcm9tIGRldmljZXRyZWUpCj4gKyAgY2FuIGJlIGNv
-bm5lY3RlZCB0byB0aGUgU29DIGFuZCBzaG91bGQgYmUgdXNlZCBmb3IgYm9vdCBtZXNzYWdlcwo+
-ICsqIGEgZ2VuZXJpYyBMaW51eCAoZGlzdHJpYnV0aW9uKSBrZXJuZWwgc2hvdWxkIGJlIGJvb3Rl
-ZCBvbiBhIG1vZHVsYXIKPiArICBzeXN0ZW0gYW5kIHN1cHBvcnQgYWRkaXRpb25hbCBoYXJkd2Fy
-ZSBvbiBtb2R1bGVzCj4gKwo+ICtiYXJlYm94IHN1cHBvcnRzIGFwcGx5aW5nIG92ZXJsYXlzIGlu
-IHRoZSBpbnRlcm5hbCBkZXZpY2V0cmVlIHdhcyB3ZWxsIHVzaW5nIHRoZQo+ICs6cmVmOmBjb21t
-YW5kX29mdHJlZWAgY29tbWFuZCB3aXRoIG9wdGlvbiBgYC1vYGA6Cj4gKwo+ICsuLiBjb2RlLWJs
-b2NrOjogc2gKClRoYXQgaGlnaGxpZ2h0aW5nIGxvb2tzIHdlaXJkIHdpdGggbWl4ZWQgbGFuZ3Vh
-Z2VzLiBJIHN1Z2dlc3QgCgogIC4uIGNvZGUtYmxvY2s6OiBub25lCgppbnN0ZWFkLiAoSWRlYWxs
-eSwgdGhpcyBzaG91bGQgYWxzbyBiZSB1c2VkIGZvciBhbGwgdGhlIG90aGVyIGNvZGUKYmxvY2tz
-IG9uIHRoYXQgcGFnZSwgSU1PIOKYuikKCiAtIFJvbGFuZAoKPiArCj4gKyAgICQgLi9iYXJlYm94
-IC1kIGFyY2gvc2FuZGJveC9kdHMvc2FuZGJveC5kdGIgLWkgYXJjaC9zYW5kYm94L2R0cy9zYW5k
-Ym94LW92ZXJsYXkuZHRibwo+ICsgICBhZGQgZmQwIGJhY2tlZCBieSBmaWxlIGFyY2gvc2FuZGJv
-eC9kdHMvc2FuZGJveC1vdmVybGF5LmR0Ym8KPiArCj4gKyAgIGJhcmVib3ggMjAxNS4wMi4wICMy
-NiBXZWQgTWFyIDQgMDk6NDE6MTkgQ0VUIDIwMTUKPiArICAgLi4uCj4gKyAgIGJhcmVib3hAYmFy
-ZWJveCBzYW5kYm94Oi8gb2ZfZHVtcAo+ICsgICAuLi4KPiArICAgICBkdW1teUAwIHsKPiArICAg
-ICAgIHN0YXR1cyA9ICJkaXNhYmxlZCI7Cj4gKyAgICAgICBsaW51eCxwaGFuZGxlID0gPDB4MT47
-Cj4gKyAgICAgICBwaGFuZGxlID0gPDB4MT47Cj4gKyAgICAgfTsKPiArICAgICBkdW1teUAxIHsK
-PiArICAgICAgIHN0YXR1cyA9ICJkaXNhYmxlZCI7Cj4gKyAgICAgICBsaW51eCxwaGFuZGxlID0g
-PDB4Mj47Cj4gKyAgICAgICBwaGFuZGxlID0gPDB4Mj47Cj4gKyAgICAgfTsKPiArICAgICBfX3N5
-bWJvbHNfXyB7Cj4gKyAgICAgICBkdW1teTAgPSAiL2R1bW15QDAiOwo+ICsgICAgICAgZHVtbXkx
-ID0gIi9kdW1teUAxIjsKPiArICAgICB9Owo+ICsgICAuLi4KPiArICAgYmFyZWJveEBiYXJlYm94
-IHNhbmRib3g6LyBvZl9kdW1wIC1mIC9kZXYvZmQwCj4gKyAgICB7Cj4gKyAgICAgZnJhZ21lbnRA
-MCB7Cj4gKyAgICAgICB0YXJnZXQgPSA8MHhkZWFkYmVlZj47Cj4gKyAgICAgICBfX292ZXJsYXlf
-XyB7Cj4gKyAgICAgICAgIHN0YXR1cyA9ICJva2F5IjsKPiArICAgICAgICAgY2hpbGQgewo+ICsg
-ICAgICAgICAgIGNvbXBhdGlibGUgPSAiYmFyZWJveCxkdW1teSI7Cj4gKyAgICAgICAgIH07Cj4g
-KyAgICAgICB9Owo+ICsgICAgIH07Cj4gKyAgICAgZnJhZ21lbnRAMSB7Cj4gKyAgICAgICB0YXJn
-ZXQgPSA8MHhkZWFkYmVlZj47Cj4gKyAgICAgICBfX292ZXJsYXlfXyB7Cj4gKyAgICAgICAgIHN0
-YXR1cyA9ICJva2F5IjsKPiArICAgICAgICAgY2hpbGQgewo+ICsgICAgICAgICAgIGNvbXBhdGli
-bGUgPSAiYmFyZWJveCxkdW1teSI7Cj4gKyAgICAgICAgIH07Cj4gKyAgICAgICB9Owo+ICsgICAg
-IH07Cj4gKyAgICAgX19maXh1cHNfXyB7Cj4gKyAgICAgICBkdW1teTAgPSAiL2ZyYWdtZW50QDA6
-dGFyZ2V0OjAiOwo+ICsgICAgICAgZHVtbXkxID0gIi9mcmFnbWVudEAxOnRhcmdldDowIjsKPiAr
-ICAgICB9Owo+ICsgICB9Owo+ICsgICBiYXJlYm94QGJhcmVib3ggc2FuZGJveDovIG9mdHJlZSAt
-byAvZGV2L2ZkMAo+ICsgICBiYXJlYm94QGJhcmVib3ggc2FuZGJveDovIG9mX2R1bXAKPiArICAg
-Li4uCj4gKyAgICAgZHVtbXlAMCB7Cj4gKyAgICAgICBsaW51eCxwaGFuZGxlID0gPDB4MT47Cj4g
-KyAgICAgICBwaGFuZGxlID0gPDB4MT47Cj4gKyAgICAgICBzdGF0dXMgPSAib2theSI7Cj4gKyAg
-ICAgICBjaGlsZCB7Cj4gKyAgICAgICAgIGNvbXBhdGlibGUgPSAiYmFyZWJveCxkdW1teSI7Cj4g
-KyAgICAgICB9Owo+ICsgICAgIH07Cj4gKyAgICAgZHVtbXlAMSB7Cj4gKyAgICAgICBsaW51eCxw
-aGFuZGxlID0gPDB4Mj47Cj4gKyAgICAgICBwaGFuZGxlID0gPDB4Mj47Cj4gKyAgICAgICBzdGF0
-dXMgPSAib2theSI7Cj4gKyAgICAgICBjaGlsZCB7Cj4gKyAgICAgICAgIGNvbXBhdGlibGUgPSAi
-YmFyZWJveCxkdW1teSI7Cj4gKyAgICAgICB9Owo+ICsgICAgIH07Cj4gKyAgICAgX19zeW1ib2xz
-X18gewo+ICsgICAgICAgZHVtbXkwID0gIi9kdW1teUAwIjsKPiArICAgICAgIGR1bW15MSA9ICIv
-ZHVtbXlAMSI7Cj4gKyAgICAgfTsKPiArICAgLi4uCj4gKwo+ICtJZiB5b3UgbmVlZCB0byB1c2Ug
-YSBkaWZmZXJlbnQgYmFzZSBkZXZpY2V0cmVlIGluc3RlYWQgb2YgdGhlIG9uZSBjb21waWxlZCBp
-bnRvCj4gK2JhcmVib3gsIGl0IG5lZWRzIHRvIGJlIHJlcGxhY2VkIGFzIGRlc2NyaWJlZCBpbiB0
-aGUgcHJldmlvdXMgc2VjdGlvbi4KClsuLi5dCi0tIApSb2xhbmQgSGllYmVyICAgICAgICAgICAg
-ICAgICAgICAgfCByLmhpZWJlckBwZW5ndXRyb25peC5kZSAgICAgfApQZW5ndXRyb25peCBlLksu
-ICAgICAgICAgICAgICAgICAgfCBodHRwczovL3d3dy5wZW5ndXRyb25peC5kZS8gfApQZWluZXIg
-U3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0gfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTUwODYg
-fApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2
-OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
-Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Sat, Jun 02, 2018 at 09:17:13PM +0000, Pascal Vizeli wrote:
+> Signed-off-by: Pascal Vizeli <pvizeli@syshack.ch>
+
+This lacks the original Signed-off-by tag from Jan. In case Jan didn't
+provide a Signed-off-by tag please ignore.
+
+What are your changes compared to Jans version? Just rebased or more?
+
+> ---
+>  Documentation/user/devicetree.rst | 101 ++++++++-
+>  arch/sandbox/dts/Makefile         |   5 +-
+>  arch/sandbox/dts/sandbox.dts      |   6 +
+>  commands/oftree.c                 |  65 +++++-
+>  drivers/of/Kconfig                |   6 +
+>  drivers/of/Makefile               |   1 +
+>  drivers/of/overlay.c              | 234 ++++++++++++++++++++
+>  drivers/of/resolver.c             | 346 ++++++++++++++++++++++++++++++
+>  include/of.h                      |  71 ++++++
+>  scripts/Makefile.lib              |   5 +-
+>  10 files changed, 831 insertions(+), 9 deletions(-)
+>  create mode 100644 drivers/of/overlay.c
+>  create mode 100644 drivers/of/resolver.c
+> 
+> diff --git a/Documentation/user/devicetree.rst b/Documentation/user/devicetree.rst
+> index 17934d86e..b2220997d 100644
+> --- a/Documentation/user/devicetree.rst
+> +++ b/Documentation/user/devicetree.rst
+> @@ -21,7 +21,7 @@ The internal devicetree
+>  -----------------------
+>  
+>  The devicetree consulted by barebox plays a special role. It is referred to
+> -as the "internal devicetree." The barebox devicetree commands work on this
+> +as the "internal devicetree". The barebox devicetree commands work on this
+>  devicetree. The devicetree source (DTS) files are kept in sync with the kernel DTS
+>  files. As the FDT files are meant to be backward compatible, it should always be possible
+>  to start a kernel with the barebox internal devicetree. However, since the barebox
+> @@ -83,3 +83,102 @@ you can exchange the internal devicetree during runtime using the
+>  
+>     oftree -f
+>     oftree -l /new/dtb
+> +
+> +Devicetree overlays
+> +-------------------
+> +
+> +Since version 3.19, the Linux kernel supports applying "devicetree overlays" to
+> +its loaded device tree. This can be used to inform the kernel about additional
+> +non-discoverable devices after the system has booted, which is useful for modular
+> +boards and FPGAs. The details of the overlay format are specified in the Linux
+> +`kernel documentation <https://www.kernel.org/doc/Documentation/devicetree/overlay-notes.txt>`_
+> +and an updated DTC is required to compile the overlays.
+> +
+> +The use cases for overlays in barebox are a bit different:
+> +
+> +* some of the modular devices are needed to boot Linux to userspace, but barebox
+> +  can detect which module variant is connected
+> +* one of several parallel or LVDS displays (which use timing data from devicetree)
+> +  can be connected to the SoC and should be used for boot messages
+> +* a generic Linux (distribution) kernel should be booted on a modular
+> +  system and support additional hardware on modules
+> +
+> +barebox supports applying overlays in the internal devicetree was well using the
+> +:ref:`command_oftree` command with option ``-o``:
+> +
+> +.. code-block:: sh
+> +
+> +   $ ./barebox -d arch/sandbox/dts/sandbox.dtb -i arch/sandbox/dts/sandbox-overlay.dtbo
+> +   add fd0 backed by file arch/sandbox/dts/sandbox-overlay.dtbo
+> +
+> +   barebox 2015.02.0 #26 Wed Mar 4 09:41:19 CET 2015
+> +   ...
+> +   barebox@barebox sandbox:/ of_dump
+> +   ...
+> +     dummy@0 {
+> +       status = "disabled";
+> +       linux,phandle = <0x1>;
+> +       phandle = <0x1>;
+> +     };
+> +     dummy@1 {
+> +       status = "disabled";
+> +       linux,phandle = <0x2>;
+> +       phandle = <0x2>;
+> +     };
+> +     __symbols__ {
+> +       dummy0 = "/dummy@0";
+> +       dummy1 = "/dummy@1";
+> +     };
+> +   ...
+> +   barebox@barebox sandbox:/ of_dump -f /dev/fd0
+> +    {
+> +     fragment@0 {
+> +       target = <0xdeadbeef>;
+> +       __overlay__ {
+> +         status = "okay";
+> +         child {
+> +           compatible = "barebox,dummy";
+> +         };
+> +       };
+> +     };
+> +     fragment@1 {
+> +       target = <0xdeadbeef>;
+> +       __overlay__ {
+> +         status = "okay";
+> +         child {
+> +           compatible = "barebox,dummy";
+> +         };
+> +       };
+> +     };
+> +     __fixups__ {
+> +       dummy0 = "/fragment@0:target:0";
+> +       dummy1 = "/fragment@1:target:0";
+> +     };
+> +   };
+> +   barebox@barebox sandbox:/ oftree -o /dev/fd0
+> +   barebox@barebox sandbox:/ of_dump
+> +   ...
+> +     dummy@0 {
+> +       linux,phandle = <0x1>;
+> +       phandle = <0x1>;
+> +       status = "okay";
+> +       child {
+> +         compatible = "barebox,dummy";
+> +       };
+> +     };
+> +     dummy@1 {
+> +       linux,phandle = <0x2>;
+> +       phandle = <0x2>;
+> +       status = "okay";
+> +       child {
+> +         compatible = "barebox,dummy";
+> +       };
+> +     };
+> +     __symbols__ {
+> +       dummy0 = "/dummy@0";
+> +       dummy1 = "/dummy@1";
+> +     };
+> +   ...
+> +
+> +If you need to use a different base devicetree instead of the one compiled into
+> +barebox, it needs to be replaced as described in the previous section.
+> diff --git a/arch/sandbox/dts/Makefile b/arch/sandbox/dts/Makefile
+> index 6f6838857..ede219e6f 100644
+> --- a/arch/sandbox/dts/Makefile
+> +++ b/arch/sandbox/dts/Makefile
+> @@ -1,6 +1,7 @@
+>  ifeq ($(CONFIG_OFTREE),y)
+>  dtb-y += \
+> -	sandbox.dtb
+> +	sandbox.dtb \
+> +	sandbox-overlay.dtbo
+>  endif
+>  
+>  # just to build a built-in.o. Otherwise compilation fails when no devicetree is
+> @@ -8,4 +9,4 @@ endif
+>  obj- += dummy.o
+>  
+>  always := $(dtb-y)
+> -clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
+> +clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtbo
+> diff --git a/arch/sandbox/dts/sandbox.dts b/arch/sandbox/dts/sandbox.dts
+> index 2595aa13f..1b99a4960 100644
+> --- a/arch/sandbox/dts/sandbox.dts
+> +++ b/arch/sandbox/dts/sandbox.dts
+> @@ -3,5 +3,11 @@
+>  #include "skeleton.dtsi"
+>  
+>  / {
+> +	dummy0: dummy@0 {
+> +		status = "disabled";
+> +	};
+>  
+> +	dummy1: dummy@1 {
+> +		status = "disabled";
+> +	};
+>  };
+> diff --git a/commands/oftree.c b/commands/oftree.c
+> index 8a47c0be5..e0624ad34 100644
+> --- a/commands/oftree.c
+> +++ b/commands/oftree.c
+> @@ -2,6 +2,7 @@
+>   * oftree.c - device tree command support
+>   *
+>   * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+> + * Copyright (C) 2015 Pengutronix, Jan Luebbe <jlu@pengutronix.de>
+>   *
+>   * based on U-Boot code by:
+>   *
+> @@ -48,11 +49,14 @@ static int do_oftree(int argc, char *argv[])
+>  	int probe = 0;
+>  	char *load = NULL;
+>  	char *save = NULL;
+> +	char *overlay = NULL;
+>  	int free_of = 0;
+>  	int ret;
+>  	struct device_node *root;
+> +	int ovinfo_cnt;
+> +	struct of_overlay_info *ovinfo;
+>  
+> -	while ((opt = getopt(argc, argv, "pfl:s:")) > 0) {
+> +	while ((opt = getopt(argc, argv, "pfl:o:s:")) > 0) {
+>  		switch (opt) {
+>  		case 'l':
+>  			load = optarg;
+> @@ -68,6 +72,9 @@ static int do_oftree(int argc, char *argv[])
+>  		case 'f':
+>  			free_of = 1;
+>  			break;
+> +		case 'o':
+> +			overlay = optarg;
+> +			break;
+>  		case 's':
+>  			save = optarg;
+>  			break;
+> @@ -84,7 +91,7 @@ static int do_oftree(int argc, char *argv[])
+>  			return 0;
+>  	}
+>  
+> -	if (!probe && !load && !save)
+> +	if (!probe && !load && !save && !overlay)
+>  		return COMMAND_ERROR_USAGE;
+>  
+>  	if (save) {
+> @@ -123,6 +130,53 @@ static int do_oftree(int argc, char *argv[])
+>  		}
+>  	}
+>  
+> +	if (IS_ENABLED(CONFIG_OFTREE_OVERLAY) && overlay) {
+
+Better make the overlay handling code a separate function, the result is
+probably a bit better readable.
+
+> +		struct device_node *ov;
+> +
+> +		root = of_get_root_node();
+> +		if (!root) {
+> +			printf("no oftree loaded\n");
+> +			goto out;
+> +		}
+> +
+> +		fdt = read_file(overlay, &size);
+> +		if (!fdt) {
+> +			printf("unable to read %s\n", overlay);
+> +			return 1;
+> +		}
+> +
+> +		ov = of_unflatten_dtb(fdt);
+> +		free(fdt);
+> +
+> +		if (IS_ERR(ov)) {
+> +			printf("parse oftree: %s\n", strerror(-ret));
+> +			return PTR_ERR(ov);
+> +		}
+> +
+> +		ret = of_resolve(ov);
+> +		if (ret) {
+> +			printf("resolve oftree overlay: %s\n", strerror(-ret));
+> +			of_delete_node(ov);
+> +			goto out;
+> +		}
+> +
+> +		ret = of_build_overlay_info(ov, &ovinfo_cnt, &ovinfo);
+> +		if (ret) {
+> +			printf("prepare oftree overlay: %s\n", strerror(-ret));
+> +			of_delete_node(ov);
+> +			goto out;
+> +		}
+> +
+> +		ret = of_overlay(ovinfo_cnt, ovinfo);
+> +		if (ret) {
+> +			printf("apply oftree overlay: %s\n", strerror(-ret));
+> +			of_delete_node(ov);
+> +			goto out;
+> +		}
+> +
+> +		of_delete_node(ov);
+> +	}
+
+It's probably an interesting option to be able to apply the overlay to
+the devicetree the kernel is started with rather than the live tree.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
