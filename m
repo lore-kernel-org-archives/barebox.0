@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQHHR-0002qW-0a
- for barebox@lists.infradead.org; Tue, 05 Jun 2018 19:06:06 +0000
-Date: Tue, 5 Jun 2018 21:03:45 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20180605190345.GA32198@ravnborg.org>
-References: <20180605181021.10467-1-o.rempel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
+ id 1fQGPl-00026b-85
+ for barebox@lists.infradead.org; Tue, 05 Jun 2018 18:10:39 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Tue,  5 Jun 2018 20:10:21 +0200
+Message-Id: <20180605181021.10467-3-o.rempel@pengutronix.de>
 In-Reply-To: <20180605181021.10467-1-o.rempel@pengutronix.de>
+References: <20180605181021.10467-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,76 +16,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 1/3] MIPS: ath79: provide driver for Atheros ART
- partition
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org, Oleksij Rempel <linux@rempel-privat.de>
+Subject: [PATCH v1 3/3] MIPS: dts: dpt-module: add Atheros ART partition
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Hi Oleksij
+and define it as source of MAC address for ag71xx driver
 
-Some nitpicks.
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ arch/mips/dts/ar9331-dptechnics-dpt-module.dts | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-On Tue, Jun 05, 2018 at 08:10:19PM +0200, Oleksij Rempel wrote:
-> From: Oleksij Rempel <linux@rempel-privat.de>
-> 
-> this partition contains calibration data for WiFi and
-> some board specific data, like MAC address.
-> 
-> For now we care only about MAC.
-> 
-> Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
-> ---
-> +static int art_read_mac(struct device_d *dev, const char *file)
-> +{
-> +	int fd, rbytes;
-> +	struct ar9300_eeprom eeprom;
-> +
-> +	fd = open_and_lseek(file, O_RDONLY, 0x1000);
-> +	if (fd < 0) {
-> +		dev_err(dev, "Failed to open eeprom path %s %d\n",
-> +		       file, -errno);
-> +		return -errno;
-> +	}
-open_and_lseek says:
-otherwise a negative error code is returned
-So it is wrong to convert this to a positive errocode
+diff --git a/arch/mips/dts/ar9331-dptechnics-dpt-module.dts b/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
+index 2c38bbc09..2adf02438 100644
+--- a/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
++++ b/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
+@@ -11,6 +11,12 @@
+ 			compatible = "barebox,environment";
+ 			device-path = &spiflash, "partname:barebox-environment";
+ 		};
++
++		art@0 {
++			compatible = "qca,art-ar9331", "qca,art";
++			device-path = &spiflash, "partname:art";
++			barebox,provide-mac-address = <&mac0>;
++		};
+ 	};
+ 
+ 	leds {
+@@ -30,6 +36,11 @@
+ 		label = "barebox-environment";
+ 		reg = <0x80000 0x10000>;
+ 	};
++
++	partition@7f0000 {
++		label = "art";
++		reg = <0x7f0000 0x10000>;
++	};
+ };
+ 
+ &mac0 {
+-- 
+2.17.1
 
-> +
-> +	rbytes = read_full(fd, &eeprom, sizeof(eeprom));
-> +	close(fd);
-> +	if (rbytes <= 0 || rbytes < sizeof(eeprom)) {
-> +		dev_err(dev, "Failed to read %s\n", file);
-> +		return -EIO;
-> +	}
-Because here you convert a positive number to a negative number.
-
-> +
-> +	dev_dbg(dev, "ART version: %x.%x\n",
-> +		 eeprom.eeprom_version, eeprom.template_version);
-> +	dev_dbg(dev, "mac: %02x:%02x:%02x:%02x:%02x:%02x\n",
-> +	       eeprom.mac_addr[0],
-> +	       eeprom.mac_addr[1],
-> +	       eeprom.mac_addr[2],
-> +	       eeprom.mac_addr[3],
-> +	       eeprom.mac_addr[4],
-> +	       eeprom.mac_addr[5]);
-We should add support for %pM...
-But this is not done, so the above is fine
-
-> +
-> +	if (!is_valid_ether_addr(&eeprom.mac_addr[0])) {
-> +		dev_err(dev, "bad MAC addr\n");
-> +		return -EILSEQ;
-> +	}
-> +
-> +	return art_set_mac(dev, &eeprom);
-> +}
-
-	Sam
 
 _______________________________________________
 barebox mailing list
