@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQSbi-0004DO-MM
+ id 1fQSbi-0004DS-Kc
  for barebox@lists.infradead.org; Wed, 06 Jun 2018 07:11:48 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  6 Jun 2018 09:11:25 +0200
-Message-Id: <20180606071129.28884-3-s.hauer@pengutronix.de>
+Date: Wed,  6 Jun 2018 09:11:28 +0200
+Message-Id: <20180606071129.28884-6-s.hauer@pengutronix.de>
 In-Reply-To: <20180606071129.28884-1-s.hauer@pengutronix.de>
 References: <20180606071129.28884-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,71 +21,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] ppc: bootm: rename variables
+Subject: [PATCH 5/6] bootm: Drop data->oftree
 To: Barebox List <barebox@lists.infradead.org>
 
-In bootm_relocate_fdt 'addr' is used for two different purposes, once for the
-os address and once for the new fdt. Make the code more readable by
-using two variables describing their meaning, 'os' and 'newfdt'.
+It's no longer necessary to store the devicetree pointer in struct
+image_data, it can be replaced with a local variable.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/ppc/lib/ppclinux.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ common/bootm.c  | 6 ------
+ include/bootm.h | 1 -
+ 2 files changed, 7 deletions(-)
 
-diff --git a/arch/ppc/lib/ppclinux.c b/arch/ppc/lib/ppclinux.c
-index 3fca6b2720..ed2f769c25 100644
---- a/arch/ppc/lib/ppclinux.c
-+++ b/arch/ppc/lib/ppclinux.c
-@@ -14,34 +14,36 @@
- #include <restart.h>
- #include <fs.h>
+diff --git a/common/bootm.c b/common/bootm.c
+index 5ff6683fe7..8167c3a603 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -337,9 +337,6 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
+ 	struct fdt_header *oftree;
+ 	int ret;
  
--static int bootm_relocate_fdt(void *addr, struct image_data *data)
-+static int bootm_relocate_fdt(void *os, struct image_data *data)
- {
--	if (addr < LINUX_TLB1_MAX_ADDR) {
-+	void *newfdt;
-+
-+	if (os < LINUX_TLB1_MAX_ADDR) {
- 		/* The kernel is within  the boot TLB mapping.
- 		 * Put the DTB above if there is no space
- 		 * below.
- 		 */
--		if (addr < (void *)data->oftree->totalsize) {
--			addr = (void *)PAGE_ALIGN((phys_addr_t)addr +
-+		if (os < (void *)data->oftree->totalsize) {
-+			os = (void *)PAGE_ALIGN((phys_addr_t)os +
- 					data->os->header.ih_size);
--			addr += data->oftree->totalsize;
--			if (addr < LINUX_TLB1_MAX_ADDR)
--				addr = LINUX_TLB1_MAX_ADDR;
-+			os += data->oftree->totalsize;
-+			if (os < LINUX_TLB1_MAX_ADDR)
-+				os = LINUX_TLB1_MAX_ADDR;
- 		}
- 	}
+-	if (data->oftree)
+-		return 0;
+-
+ 	if (!IS_ENABLED(CONFIG_OFTREE))
+ 		return 0;
  
--	if (addr > LINUX_TLB1_MAX_ADDR) {
-+	if (os > LINUX_TLB1_MAX_ADDR) {
- 		pr_crit("Unable to relocate DTB to Linux TLB\n");
- 		return 1;
- 	}
+@@ -431,8 +428,6 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
+ 	if (bootm_verbose(data) > 1)
+ 		of_print_nodes(data->of_root_node, 0);
  
--	addr = (void *)PAGE_ALIGN_DOWN((phys_addr_t)addr -
-+	newfdt = (void *)PAGE_ALIGN_DOWN((phys_addr_t)os -
- 			data->oftree->totalsize);
--	memcpy(addr, data->oftree, data->oftree->totalsize);
-+	memcpy(newfdt, data->oftree, data->oftree->totalsize);
- 	free(data->oftree);
--	data->oftree = addr;
-+	data->oftree = newfdt;
- 
--	pr_info("Relocating device tree to 0x%p\n", addr);
-+	pr_info("Relocating device tree to 0x%p\n", newfdt);
+-	data->oftree = oftree;
+-
  	return 0;
  }
  
+@@ -576,7 +571,6 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		 * When we only allow booting signed images make sure everything
+ 		 * we boot is in the OS image and not given separately.
+ 		 */
+-		data->oftree = NULL;
+ 		data->oftree_file = NULL;
+ 		data->initrd_file = NULL;
+ 		if (os_type != filetype_oftree) {
+diff --git a/include/bootm.h b/include/bootm.h
+index 62951d6058..03779772c4 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -78,7 +78,6 @@ struct image_data {
+ 	void *fit_config;
+ 
+ 	struct device_node *of_root_node;
+-	struct fdt_header *oftree;
+ 	struct resource *oftree_res;
+ 
+ 	/*
 -- 
 2.17.1
 
