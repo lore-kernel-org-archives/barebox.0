@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x22e.google.com ([2607:f8b0:400e:c05::22e])
+Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQdQz-0000gf-AH
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:55 +0000
-Received: by mail-pg0-x22e.google.com with SMTP id l65-v6so3433266pgl.8
- for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:15 -0700 (PDT)
+ id 1fQdR2-0000qo-MN
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:46:05 +0000
+Received: by mail-pg0-x243.google.com with SMTP id m5-v6so3441428pgd.3
+ for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:23 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Jun 2018 11:44:08 -0700
-Message-Id: <20180606184431.10348-16-andrew.smirnov@gmail.com>
+Date: Wed,  6 Jun 2018 11:44:15 -0700
+Message-Id: <20180606184431.10348-23-andrew.smirnov@gmail.com>
 In-Reply-To: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 References: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,78 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 15/38] ARM: i.MX: Split shared CCM code into a separate file
+Subject: [PATCH v3 22/38] ARM: boot: Add trivial i.MX8 support
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Both i.MX8 and i.MX7 have similar CCMs, so move any code that can be
-share into a separate file.
+It appears that boot sources for i.MX8 are just a subset of those of
+i.MX7 and both can be handled by the same code.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/ccm.h          | 20 +++++++++++++++++++
- .../arm/mach-imx/include/mach/imx7-ccm-regs.h | 16 +--------------
- 2 files changed, 21 insertions(+), 15 deletions(-)
- create mode 100644 arch/arm/mach-imx/include/mach/ccm.h
+ arch/arm/mach-imx/boot.c                 | 5 +++++
+ arch/arm/mach-imx/include/mach/generic.h | 2 ++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/arch/arm/mach-imx/include/mach/ccm.h b/arch/arm/mach-imx/include/mach/ccm.h
-new file mode 100644
-index 000000000..32254a85b
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/ccm.h
-@@ -0,0 +1,20 @@
-+#ifndef __IMX_CCM_H__
+diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+index 11105a148..ab25f75b2 100644
+--- a/arch/arm/mach-imx/boot.c
++++ b/arch/arm/mach-imx/boot.c
+@@ -624,3 +624,8 @@ void vf610_boot_save_loc(void)
+ {
+ 	imx_boot_save_loc(vf610_get_boot_source);
+ }
 +
-+/* 0 <= n <= 190 */
-+#define CCM_CCGRn_SET(n)	(0x4004 + 16 * (n))
-+#define CCM_CCGRn_CLR(n)	(0x4008 + 16 * (n))
++void imx8_get_boot_source(enum bootsource *src, int *instance)
++	__alias(imx7_get_boot_source);
 +
-+/* 0 <= n <= 120 */
-+#define CCM_TARGET_ROOTn(n)	(0x8000 + 128 * (n))
-+
-+#define CCM_TARGET_ROOTn_MUX(x)		((x) << 24)
-+#define CCM_TARGET_ROOTn_ENABLE		BIT(28)
-+
-+
-+#define CCM_CCGR_SETTINGn(n, s)  ((s) << ((n) * 4))
-+#define CCM_CCGR_SETTINGn_NOT_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b00)
-+#define CCM_CCGR_SETTINGn_NEEDED_RUN(n)		CCM_CCGR_SETTINGn(n, 0b01)
-+#define CCM_CCGR_SETTINGn_NEEDED_RUN_WAIT(n)	CCM_CCGR_SETTINGn(n, 0b10)
-+#define CCM_CCGR_SETTINGn_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b11)
-+
-+#endif
-\ No newline at end of file
-diff --git a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-index 97fe240fc..43b9425df 100644
---- a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-@@ -1,25 +1,11 @@
- #ifndef __MACH_IMX7_CCM_REGS_H__
- #define __MACH_IMX7_CCM_REGS_H__
++void imx8_boot_save_loc(void) __alias(imx7_boot_save_loc);
+diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
+index 62838c691..dc537941a 100644
+--- a/arch/arm/mach-imx/include/mach/generic.h
++++ b/arch/arm/mach-imx/include/mach/generic.h
+@@ -16,6 +16,7 @@ void imx53_boot_save_loc(void);
+ void imx6_boot_save_loc(void);
+ void imx7_boot_save_loc(void);
+ void vf610_boot_save_loc(void);
++void imx8_boot_save_loc(void);
  
--/* 0 <= n <= 190 */
--#define CCM_CCGRn_SET(n)	(0x4004 + 16 * (n))
--#define CCM_CCGRn_CLR(n)	(0x4008 + 16 * (n))
-+#include "ccm.h"
+ void imx25_get_boot_source(enum bootsource *src, int *instance);
+ void imx35_get_boot_source(enum bootsource *src, int *instance);
+@@ -24,6 +25,7 @@ void imx53_get_boot_source(enum bootsource *src, int *instance);
+ void imx6_get_boot_source(enum bootsource *src, int *instance);
+ void imx7_get_boot_source(enum bootsource *src, int *instance);
+ void vf610_get_boot_source(enum bootsource *src, int *instance);
++void imx8_get_boot_source(enum bootsource *src, int *instance);
  
- #define CCM_CCGR_UART1		148
- #define CCM_CCGR_UART2		149
- 
--#define CCM_CCGR_SETTINGn(n, s)  ((s) << ((n) * 4))
--#define CCM_CCGR_SETTINGn_NOT_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b00)
--#define CCM_CCGR_SETTINGn_NEEDED_RUN(n)		CCM_CCGR_SETTINGn(n, 0b01)
--#define CCM_CCGR_SETTINGn_NEEDED_RUN_WAIT(n)	CCM_CCGR_SETTINGn(n, 0b10)
--#define CCM_CCGR_SETTINGn_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b11)
--
--/* 0 <= n <= 120 */
--#define CCM_TARGET_ROOTn(n)	(0x8000 + 128 * (n))
--
--#define CCM_TARGET_ROOTn_MUX(x)		((x) << 24)
--#define CCM_TARGET_ROOTn_ENABLE		BIT(28)
--
- #define CLOCK_ROOT_INDEX(x)	(((x) - 0x8000) / 128)
- 
- /*
+ int imx1_init(void);
+ int imx21_init(void);
 -- 
 2.17.0
 
