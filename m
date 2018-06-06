@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQSbu-0004Fy-Mc
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 07:12:06 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  6 Jun 2018 09:11:26 +0200
-Message-Id: <20180606071129.28884-4-s.hauer@pengutronix.de>
-In-Reply-To: <20180606071129.28884-1-s.hauer@pengutronix.de>
-References: <20180606071129.28884-1-s.hauer@pengutronix.de>
+ id 1fQTLr-0007eR-DJ
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 07:59:33 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Wed,  6 Jun 2018 09:59:09 +0200
+Message-Id: <20180606075912.2470-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,43 +19,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] ppc: bootm: remove unnecessary parameter
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v4 0/3] MIPS: provide basic ELF support
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-bootm_relocate_fdt takes the os address as parameter, but this can be
-extracted from struct image_data, so drop the parameter.
+changes v4:
+- rebase against latest bootm changes
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/ppc/lib/ppclinux.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+changes v3:
+- select ELF by MIPS
 
-diff --git a/arch/ppc/lib/ppclinux.c b/arch/ppc/lib/ppclinux.c
-index ed2f769c25..67649f3b46 100644
---- a/arch/ppc/lib/ppclinux.c
-+++ b/arch/ppc/lib/ppclinux.c
-@@ -14,8 +14,9 @@
- #include <restart.h>
- #include <fs.h>
- 
--static int bootm_relocate_fdt(void *os, struct image_data *data)
-+static int bootm_relocate_fdt(struct image_data *data)
- {
-+	void *os = (void *)data->os_address;
- 	void *newfdt;
- 
- 	if (os < LINUX_TLB1_MAX_ADDR) {
-@@ -73,9 +74,7 @@ static int do_bootm_linux(struct image_data *data)
- 		void *addr = data->oftree;
- 
- 		if ((addr + data->oftree->totalsize) > LINUX_TLB1_MAX_ADDR) {
--			addr = (void *)data->os_address;
--
--			if (bootm_relocate_fdt(addr, data))
-+			if (bootm_relocate_fdt(data))
- 				goto error;
- 		}
- 	}
+changes v2:
+- add dryrun support
+- some style fixes
+- enable ELF parser only on supported platform (currently only MIPS)
+
+Antony Pavlov (1):
+  filetype: add ELF type
+
+Oleksij Rempel (2):
+  add basic ELF parser
+  MIPS: bootm: add ELF handler
+
+ arch/mips/lib/bootm.c |  59 +++++++++++++++++
+ common/Kconfig        |   5 ++
+ common/Makefile       |   1 +
+ common/elf.c          | 145 ++++++++++++++++++++++++++++++++++++++++++
+ common/filetype.c     |   5 ++
+ include/elf.h         |  10 +++
+ include/filetype.h    |   1 +
+ 7 files changed, 226 insertions(+)
+ create mode 100644 common/elf.c
+
 -- 
 2.17.1
 
