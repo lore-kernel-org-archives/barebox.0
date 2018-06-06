@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.megiteam.pl ([31.186.83.105])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQazC-0004Lk-25
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 16:08:36 +0000
+ id 1fQazC-0004LJ-7Y
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 16:08:37 +0000
 From: Marcin Niestroj <m.niestroj@grinn-global.com>
-Date: Wed,  6 Jun 2018 18:08:09 +0200
-Message-Id: <20180606160809.16233-6-m.niestroj@grinn-global.com>
+Date: Wed,  6 Jun 2018 18:08:05 +0200
+Message-Id: <20180606160809.16233-2-m.niestroj@grinn-global.com>
 In-Reply-To: <20180606160809.16233-1-m.niestroj@grinn-global.com>
 References: <20180606160809.16233-1-m.niestroj@grinn-global.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,31 +21,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 5/5] images: imx: Add targets for signed encrypted images
+Subject: [RFC PATCH 1/5] scripts: imx: add optional argument to hab_blocks
+ command
 To: barebox@lists.infradead.org
 Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
 
-Add .esimximg target for signed and encrypted images.
+hab_blocks command is used to specify image authentication blocks for
+HAB. Currently it was configured to authenticate full barebox
+image. However in case of booting from SD card and adding MBR
+partition table, HAB authentication fails, as final boot image is
+modified.
+
+Add an optional argument to hab_blocks command, to select between
+3 types of authentication areas:
+ - full: whole barebox image will be authenticated (this is default to
+   keep compatibility),
+ - from-dcdofs: image area up to dcdofs is not authenticated, so any
+   changes up to dcdofs are possible,
+ - skip-mbr: image area from 440 to 512 bytes is excluded from beeing
+   authenticated, which allows to add / modify MBR partition table
+   after building barebox image.
 
 Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
 ---
- images/Makefile.imx | 3 +++
- 1 file changed, 3 insertions(+)
+ scripts/imx/imx.c | 31 ++++++++++++++++++++++++++++---
+ 1 file changed, 28 insertions(+), 3 deletions(-)
 
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index 5fcfbbefb..c1a601ea9 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -20,6 +20,9 @@ $(obj)/%.simximg: $(obj)/% FORCE
- $(obj)/%.usimximg: $(obj)/% FORCE
- 	$(call if_changed,imx_image,$(CFG_$(patsubst %.usimximg,%.imximg,$(@F))),-s -u)
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+index fb6ac001e..b47671f14 100644
+--- a/scripts/imx/imx.c
++++ b/scripts/imx/imx.c
+@@ -310,15 +310,40 @@ static int do_hab(struct config_data *data, int argc, char *argv[])
  
-+$(obj)/%.esimximg: $(obj)/% FORCE
-+	$(call if_changed,imx_image,$(CFG_$(patsubst %.esimximg,%.imximg,$(@F))),-s -e)
+ static int do_hab_blocks(struct config_data *data, int argc, char *argv[])
+ {
++	const char *type;
+ 	char *str;
+ 	int ret;
+ 
+ 	if (!data->csf)
+ 		return -EINVAL;
+ 
+-	ret = asprintf(&str, "Blocks = 0x%08x 0 %d \"%s\"\n",
+-		       data->image_load_addr,
+-		       data->load_size, data->outfile);
++	if (argc < 2)
++		type = "full";
++	else
++		type = argv[1];
 +
- quiet_cmd_imx_sram_img ?= IMX-SRAM-IMG    $@
-       cmd_imx_sram_img ?= cat $(obj)/$(patsubst %.imx-sram-img,%.pblb,$(2)) > $@; \
- 		  $(call size_append, $(obj)/barebox.z) >> $@; \
++	if (!strcmp(type, "full")) {
++		ret = asprintf(&str, "Blocks = 0x%08x 0 %d \"%s\"\n",
++			       data->image_load_addr, data->load_size,
++			       data->outfile);
++	} else if (!strcmp(type, "from-dcdofs")) {
++		ret = asprintf(&str, "Blocks = 0x%08x 0x%x %d \"%s\"\n",
++			       data->image_load_addr + data->image_dcd_offset,
++			       data->image_dcd_offset,
++			       data->load_size - data->image_dcd_offset,
++			       data->outfile);
++	} else if (!strcmp(type, "skip-mbr")) {
++		ret = asprintf(&str,
++			       "Blocks = 0x%08x 0 440 \"%s\", \\\n"
++			       "         0x%08x 512 %d \"%s\"\n",
++			       data->image_load_addr, data->outfile,
++			       data->image_load_addr + 512,
++			       data->load_size - 512, data->outfile);
++	} else {
++		fprintf(stderr, "Invalid hab_blocks option: %s\n", type);
++		return -EINVAL;
++	}
++
+ 	if (ret < 0)
+ 		return -ENOMEM;
+ 
 -- 
 2.17.0
 
