@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x22e.google.com ([2607:f8b0:400e:c05::22e])
+Received: from mail-pf0-x22f.google.com ([2607:f8b0:400e:c00::22f])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQdRP-0000Sp-Pn
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:52 +0000
-Received: by mail-pg0-x22e.google.com with SMTP id r21-v6so3107734pgv.4
- for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:41 -0700 (PDT)
+ id 1fQdRN-0000Sn-7W
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:49 +0000
+Received: by mail-pf0-x22f.google.com with SMTP id b17-v6so3576865pfi.0
+ for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:38 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Jun 2018 11:44:28 -0700
-Message-Id: <20180606184431.10348-36-andrew.smirnov@gmail.com>
+Date: Wed,  6 Jun 2018 11:44:26 -0700
+Message-Id: <20180606184431.10348-34-andrew.smirnov@gmail.com>
 In-Reply-To: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 References: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,28 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 35/38] Kbuild: Add $(quote)
+Subject: [PATCH v3 33/38] clock: Use udelay() to implement mdelay()
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- scripts/Kbuild.include | 1 +
- 1 file changed, 1 insertion(+)
+ include/clock.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
-index f3771902b..512d21732 100644
---- a/scripts/Kbuild.include
-+++ b/scripts/Kbuild.include
-@@ -3,6 +3,7 @@
+diff --git a/include/clock.h b/include/clock.h
+index 38b335c2c..8e40451a3 100644
+--- a/include/clock.h
++++ b/include/clock.h
+@@ -86,9 +86,7 @@ static inline void udelay(unsigned long usecs)
  
- # Convenient variables
- comma   := ,
-+quote   := "
- squote  := '
- empty   :=
- space   := $(empty) $(empty)
+ static inline void mdelay(unsigned long msecs)
+ {
+-	uint64_t start = get_time_ns();
+-
+-	while(!is_timeout(start, msecs * MSECOND));
++	udelay(msecs * MSECOND / USECOND);
+ }
+ 
+ static inline void mdelay_non_interruptible(unsigned long msecs)
 -- 
 2.17.0
 
