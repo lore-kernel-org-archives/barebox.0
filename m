@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQSct-0004su-F3
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 07:13:10 +0000
-Date: Wed, 6 Jun 2018 09:12:47 +0200
+ id 1fQSbi-0004EI-MS
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 07:11:49 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180606071247.7zkervnjgwv7gvhu@pengutronix.de>
-References: <20180604100546.19140-1-o.rempel@pengutronix.de>
- <20180604100546.19140-4-o.rempel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180604100546.19140-4-o.rempel@pengutronix.de>
+Date: Wed,  6 Jun 2018 09:11:23 +0200
+Message-Id: <20180606071129.28884-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,123 +14,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 3/4] bootm: split split bootm_load_devicetree function
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/6] bootm: split bootm_load_devicetree into two functions
+To: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Jun 04, 2018 at 12:05:45PM +0200, Oleksij Rempel wrote:
-> In some cases we don't won't to load devicetree some where in free ram
-> area, it is easier to keep it withing allocated area of barebox
-> and then give the pointer to the kernel.
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  common/bootm.c  | 39 +++++++++++++++++++++++++++++++++------
->  include/bootm.h |  1 +
->  2 files changed, 34 insertions(+), 6 deletions(-)
+This splits bootm_load_devicetree into two functions to be able to load
+the devicetree to an allocated address without having to specify a SDRAM
+region, which is sometimes enough.
 
-Unfortunately this split is not so easy because it opens some memory
-leaks. Please drop this patch and rebaase on the series I just sent.
+The rest of the series deals with getting rid of data->oftree as it's
+not really clear who owns this field. If we are using
+bootm_load_devicetree then this is just a reference to the SDRAM region,
+which gets released by generic code, but sometimes it points to
+allocated memory instead which is forgotten to be freed. So we get rid
+of this field altogether.
 
 Sascha
 
-> 
-> diff --git a/common/bootm.c b/common/bootm.c
-> index 5ff6683fe..a9d18fb57 100644
-> --- a/common/bootm.c
-> +++ b/common/bootm.c
-> @@ -320,20 +320,17 @@ static int bootm_open_oftree_uimage(struct image_data *data, size_t *size,
->  }
->  
->  /*
-> - * bootm_load_devicetree() - load devicetree
-> + * bootm_get_devicetree() - get devicetree
->   *
->   * @data:		image data context
-> - * @load_address:	The address where the devicetree should be loaded to
->   *
-> - * This loads the devicetree to a RAM location. load_address must be a valid
-> - * address. The resulting devicetree will be found at data->oftree.
-> + * Prepare devicetree for later use by boot handler.
->   *
->   * Return: 0 on success, negative error code otherwise
->   */
-> -int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
-> +int bootm_get_devicetree(struct image_data *data)
->  {
->  	enum filetype type;
-> -	int fdt_size;
->  	struct fdt_header *oftree;
->  	int ret;
->  
-> @@ -410,6 +407,36 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
->  	if (!oftree)
->  		return -EINVAL;
->  
-> +	data->oftree = oftree;
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * bootm_load_devicetree() - load devicetree
-> + *
-> + * @data:		image data context
-> + * @load_address:	The address where the devicetree should be loaded to
-> + *
-> + * This loads the devicetree to a RAM location. load_address must be a valid
-> + * address. The resulting devicetree will be found at data->oftree.
-> + *
-> + * Return: 0 on success, negative error code otherwise
-> + */
-> +
-> +int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
-> +{
-> +	struct fdt_header *oftree;
-> +	int fdt_size;
-> +	int ret;
-> +
-> +	ret = bootm_get_devicetree(data);
-> +	if (ret)
-> +		return ret;
-> +
-> +	oftree = data->oftree;
-> +
-> +
->  	fdt_size = be32_to_cpu(oftree->totalsize);
->  
->  	data->oftree_res = request_sdram_region("oftree", load_address,
-> diff --git a/include/bootm.h b/include/bootm.h
-> index 62951d605..410b42cde 100644
-> --- a/include/bootm.h
-> +++ b/include/bootm.h
-> @@ -126,6 +126,7 @@ int bootm_load_os(struct image_data *data, unsigned long load_address);
->  bool bootm_has_initrd(struct image_data *data);
->  int bootm_load_initrd(struct image_data *data, unsigned long load_address);
->  
-> +int bootm_get_devicetree(struct image_data *data);
->  int bootm_load_devicetree(struct image_data *data, unsigned long load_address);
->  int bootm_get_os_size(struct image_data *data);
->  
-> -- 
-> 2.17.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Sascha Hauer (6):
+  ARM: bootm: drop usage of data->oftree
+  ppc: bootm: rename variables
+  ppc: bootm: remove unnecessary parameter
+  ppc: bootm: Drop usage of data->oftree
+  bootm: Drop data->oftree
+  bootm: Split bootm_load_devicetree into two functions
+
+ arch/arm/lib32/bootm.c    | 50 ++++++++++++++++-----------
+ arch/arm/lib64/armlinux.c | 12 ++++++-
+ arch/ppc/lib/ppclinux.c   | 52 ++++++++++++++--------------
+ common/bootm.c            | 72 ++++++++++++++++++++++-----------------
+ include/bootm.h           |  5 +--
+ 5 files changed, 111 insertions(+), 80 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
