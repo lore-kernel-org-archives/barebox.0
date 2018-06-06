@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x22c.google.com ([2607:f8b0:400e:c05::22c])
+Received: from mail-pf0-x22d.google.com ([2607:f8b0:400e:c00::22d])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQdQk-0007od-DG
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:12 +0000
-Received: by mail-pg0-x22c.google.com with SMTP id l2-v6so3434543pgc.7
- for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:44:59 -0700 (PDT)
+ id 1fQdQn-0007sL-Ty
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:16 +0000
+Received: by mail-pf0-x22d.google.com with SMTP id b17-v6so3576183pfi.0
+ for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:03 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Jun 2018 11:43:55 -0700
-Message-Id: <20180606184431.10348-3-andrew.smirnov@gmail.com>
+Date: Wed,  6 Jun 2018 11:43:58 -0700
+Message-Id: <20180606184431.10348-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 References: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,35 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 02/38] ARM: i.MX: compile arm32 specific errata only for
- CPU32
+Subject: [PATCH v3 05/38] Include our own include/dt-bindings
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
+Allow to use dt-bindings files that are not yet upstreamed. They can
+be put into include/dt-bindings.
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/cpu_init.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/dts/include/dt-bindings | 1 -
+ scripts/Makefile.lib              | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+ delete mode 120000 arch/mips/dts/include/dt-bindings
 
-diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
-index 6a6c4c521..5b93d12da 100644
---- a/arch/arm/mach-imx/cpu_init.c
-+++ b/arch/arm/mach-imx/cpu_init.c
-@@ -16,6 +16,7 @@
- #include <asm/errata.h>
- #include <linux/types.h>
- 
-+#ifdef CONFIG_CPU_32
- void imx5_cpu_lowlevel_init(void)
- {
- 	arm_cpu_lowlevel_init();
-@@ -50,3 +51,4 @@ void vf610_cpu_lowlevel_init(void)
- {
- 	arm_cpu_lowlevel_init();
- }
-+#endif
+diff --git a/arch/mips/dts/include/dt-bindings b/arch/mips/dts/include/dt-bindings
+deleted file mode 120000
+index 0cecb3d08..000000000
+--- a/arch/mips/dts/include/dt-bindings
++++ /dev/null
+@@ -1 +0,0 @@
+-../../../../include/dt-bindings
 \ No newline at end of file
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 272b5981e..3024b068e 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -154,6 +154,7 @@ ld_flags       = $(LDFLAGS) $(EXTRA_LDFLAGS)
+ dtc_cpp_flags  = -Wp,-MD,$(depfile).pre -nostdinc                        \
+ 		 -I$(srctree)/arch/$(SRCARCH)/dts/include		 \
+ 		 -I$(srctree)/dts/include                                \
++		 -I$(srctree)/include                                    \
+ 		 -I$(srctree)/dts/src/                                   \
+ 		 -undef -D__DTS__
+ 
 -- 
 2.17.0
 
