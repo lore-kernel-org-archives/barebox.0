@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQSbu-0004Jz-Md
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 07:12:10 +0000
+ id 1fQSbi-0004EJ-MO
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 07:11:52 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  6 Jun 2018 09:11:24 +0200
-Message-Id: <20180606071129.28884-2-s.hauer@pengutronix.de>
+Date: Wed,  6 Jun 2018 09:11:29 +0200
+Message-Id: <20180606071129.28884-7-s.hauer@pengutronix.de>
 In-Reply-To: <20180606071129.28884-1-s.hauer@pengutronix.de>
 References: <20180606071129.28884-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,155 +21,234 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] ARM: bootm: drop usage of data->oftree
+Subject: [PATCH 6/6] bootm: Split bootm_load_devicetree into two functions
 To: Barebox List <barebox@lists.infradead.org>
 
-data->oftree can be replaced with a variable local to the arm code, so
-drop usage of data->oftree.
+It is not always desired to get the devicetree from image data and load
+it to a SDRAM region at the same time. Sometimes it's enough to just
+load it to an allocated address (in case the user has no constraints
+where the devicetree should be placed.
+
+This patch splits bootm_load_devicetree into bootm_get_devicetree which
+returns a pointer to the allocated devicetree and bootm_load_devicetree
+which loads the devicetree to a specified region.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib32/bootm.c | 43 +++++++++++++++++++++++-------------------
- 1 file changed, 24 insertions(+), 19 deletions(-)
+ arch/arm/lib32/bootm.c    | 13 ++++++--
+ arch/arm/lib64/armlinux.c | 12 ++++++-
+ common/bootm.c            | 66 ++++++++++++++++++++++++---------------
+ include/bootm.h           |  4 ++-
+ 4 files changed, 64 insertions(+), 31 deletions(-)
 
 diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
-index c8bf72f0e0..7817e1bdc1 100644
+index 7817e1bdc1..a205228b43 100644
 --- a/arch/arm/lib32/bootm.c
 +++ b/arch/arm/lib32/bootm.c
-@@ -130,11 +130,13 @@ static int get_kernel_addresses(size_t image_size,
- 	return 0;
- }
- 
--static int __do_bootm_linux(struct image_data *data, unsigned long free_mem, int swap)
-+static int __do_bootm_linux(struct image_data *data, unsigned long free_mem,
-+			    int swap, void *fdt)
- {
- 	unsigned long kernel;
- 	unsigned long initrd_start = 0, initrd_size = 0, initrd_end = 0;
- 	enum arm_security_state state = bootm_arm_security_state();
-+	void *fdt_load_address = NULL;
- 	int ret;
- 
- 	kernel = data->os_res->start + data->os_entry;
-@@ -163,16 +165,21 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem, int
+@@ -165,11 +165,18 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem,
  		free_mem = PAGE_ALIGN(initrd_end + 1);
  	}
  
--	ret = bootm_load_devicetree(data, free_mem);
--	if (ret)
--		return ret;
-+	if (fdt) {
-+		fdt_load_address = fdt;
-+	} else {
-+		fdt_load_address = (void *)free_mem;
-+		ret = bootm_load_devicetree(data, free_mem);
-+		if (ret)
-+			return ret;
++	if (!fdt) {
++		fdt = bootm_get_devicetree(data);
++		if (IS_ERR(fdt))
++			return PTR_ERR(fdt);
 +	}
- 
- 	if (bootm_verbose(data)) {
- 		printf("\nStarting kernel at 0x%08lx", kernel);
- 		if (initrd_size)
- 			printf(", initrd at 0x%08lx", initrd_start);
--		if (data->oftree)
--			printf(", oftree at 0x%p", data->oftree);
-+		if (fdt_load_address)
-+			printf(", oftree at 0x%p", fdt_load_address);
- 		printf("...\n");
++
+ 	if (fdt) {
+-		fdt_load_address = fdt;
+-	} else {
+ 		fdt_load_address = (void *)free_mem;
+-		ret = bootm_load_devicetree(data, free_mem);
++		ret = bootm_load_devicetree(data, fdt, free_mem);
++
++		free(fdt);
++
+ 		if (ret)
+ 			return ret;
  	}
- 
-@@ -188,8 +195,8 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem, int
- 	if (data->dryrun)
- 		return 0;
- 
--	start_linux((void *)kernel, swap, initrd_start, initrd_size, data->oftree,
--		    state);
-+	start_linux((void *)kernel, swap, initrd_start, initrd_size,
-+		    fdt_load_address, state);
- 
- 	restart_machine();
- 
-@@ -212,7 +219,7 @@ static int do_bootm_linux(struct image_data *data)
- 	if (ret)
- 		return ret;
- 
--	return __do_bootm_linux(data, mem_free, 0);
-+	return __do_bootm_linux(data, mem_free, 0, NULL);
- }
- 
- static struct image_handler uimage_handler = {
-@@ -237,7 +244,7 @@ struct zimage_header {
- 
- #define ZIMAGE_MAGIC 0x016F2818
- 
--static int do_bootz_linux_fdt(int fd, struct image_data *data)
-+static int do_bootz_linux_fdt(int fd, struct image_data *data, void **outfdt)
- {
- 	struct fdt_header __header, *header;
- 	void *oftree;
-@@ -245,9 +252,6 @@ static int do_bootz_linux_fdt(int fd, struct image_data *data)
- 
- 	u32 end;
- 
--	if (data->oftree)
--		return -ENXIO;
--
- 	header = &__header;
- 	ret = read(fd, header, sizeof(*header));
- 	if (ret < 0)
-@@ -287,8 +291,8 @@ static int do_bootz_linux_fdt(int fd, struct image_data *data)
- 			pr_err("unable to unflatten devicetree\n");
- 			goto err_free;
- 		}
--		data->oftree = of_get_fixed_tree(root);
--		if (!data->oftree) {
-+		*outfdt = of_get_fixed_tree(root);
-+		if (!*outfdt) {
- 			pr_err("Unable to get fixed tree\n");
- 			ret = -EINVAL;
- 			goto err_free;
-@@ -296,7 +300,7 @@ static int do_bootz_linux_fdt(int fd, struct image_data *data)
- 
- 		free(oftree);
- 	} else {
--		data->oftree = oftree;
-+		*outfdt = oftree;
- 	}
- 
- 	pr_info("zImage: concatenated oftree detected\n");
-@@ -318,6 +322,7 @@ static int do_bootz_linux(struct image_data *data)
- 	size_t image_size;
- 	unsigned long load_address = data->os_address;
- 	unsigned long mem_free;
+diff --git a/arch/arm/lib64/armlinux.c b/arch/arm/lib64/armlinux.c
+index 238e8b67a4..afa56792fb 100644
+--- a/arch/arm/lib64/armlinux.c
++++ b/arch/arm/lib64/armlinux.c
+@@ -38,6 +38,7 @@ static int do_bootm_linux(struct image_data *data)
+ 	resource_size_t start, end;
+ 	unsigned long text_offset, image_size, devicetree, kernel;
+ 	int ret;
 +	void *fdt;
  
- 	fd = open(data->os_file, O_RDONLY);
- 	if (fd < 0) {
-@@ -388,13 +393,13 @@ static int do_bootz_linux(struct image_data *data)
- 			*(u32 *)ptr = swab32(*(u32 *)ptr);
- 	}
+ 	text_offset = le64_to_cpup(data->os_header + 8);
+ 	image_size = le64_to_cpup(data->os_header + 16);
+@@ -54,7 +55,16 @@ static int do_bootm_linux(struct image_data *data)
  
--	ret = do_bootz_linux_fdt(fd, data);
-+	ret = do_bootz_linux_fdt(fd, data, &fdt);
- 	if (ret && ret != -ENXIO)
- 		goto err_out;
+ 	devicetree = ALIGN(kernel + image_size, PAGE_SIZE);
  
- 	close(fd);
+-	ret = bootm_load_devicetree(data, devicetree);
++	fdt = bootm_get_devicetree(data);
++	if (IS_ERR(fdt)) {
++		ret = PTR_ERR(fdt);
++		goto out;
++	}
++
++	ret = bootm_load_devicetree(data, fdt, devicetree);
++
++	free(fdt);
++
+ 	if (ret)
+ 		goto out;
  
--	return __do_bootm_linux(data, mem_free, swap);
-+	return __do_bootm_linux(data, mem_free, swap, fdt);
+diff --git a/common/bootm.c b/common/bootm.c
+index 8167c3a603..b95bca4984 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -320,25 +320,24 @@ static int bootm_open_oftree_uimage(struct image_data *data, size_t *size,
+ }
  
- err_out:
- 	close(fd);
-@@ -559,7 +564,7 @@ static int do_bootm_aimage(struct image_data *data)
- 	else
- 		mem_free = PAGE_ALIGN(data->os_res->end + SZ_1M);
+ /*
+- * bootm_load_devicetree() - load devicetree
++ * bootm_get_devicetree() - get devicetree
+  *
+  * @data:		image data context
+- * @load_address:	The address where the devicetree should be loaded to
+  *
+- * This loads the devicetree to a RAM location. load_address must be a valid
+- * address. The resulting devicetree will be found at data->oftree.
++ * This gets the fixed devicetree from the various image sources or the internal
++ * devicetree. It returns a pointer to the allocated devicetree which must be
++ * freed after use.
+  *
+- * Return: 0 on success, negative error code otherwise
++ * Return: pointer to the fixed devicetree or a ERR_PTR() on failure.
+  */
+-int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
++void *bootm_get_devicetree(struct image_data *data)
+ {
+ 	enum filetype type;
+-	int fdt_size;
+ 	struct fdt_header *oftree;
+ 	int ret;
  
--	return __do_bootm_linux(data, mem_free, 0);
-+	return __do_bootm_linux(data, mem_free, 0, NULL);
+ 	if (!IS_ENABLED(CONFIG_OFTREE))
+-		return 0;
++		return ERR_PTR(-ENOSYS);
  
- err_out:
- 	linux_bootargs_overwrite(NULL);
+ 	if (IS_ENABLED(CONFIG_FITIMAGE) && data->os_fit &&
+ 	    fit_has_image(data->os_fit, data->fit_config, "fdt")) {
+@@ -348,7 +347,7 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
+ 		ret = fit_open_image(data->os_fit, data->fit_config, "fdt",
+ 				     &of_tree, &of_size);
+ 		if (ret)
+-			return ret;
++			return ERR_PTR(ret);
+ 
+ 		data->of_root_node = of_unflatten_dtb(of_tree);
+ 	} else if (data->oftree_file) {
+@@ -359,7 +358,7 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
+ 		if ((int)type < 0) {
+ 			printf("could not open %s: %s\n", data->oftree_file,
+ 					strerror(-type));
+-			return (int)type;
++			return ERR_PTR((int)type);
+ 		}
+ 
+ 		switch (type) {
+@@ -372,11 +371,11 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
+ 					  FILESIZE_MAX);
+ 			break;
+ 		default:
+-			return -EINVAL;
++			return ERR_PTR(-EINVAL);
+ 		}
+ 
+ 		if (ret)
+-			return ret;
++			return ERR_PTR(ret);
+ 
+ 		data->of_root_node = of_unflatten_dtb(oftree);
+ 
+@@ -385,13 +384,13 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
+ 		if (IS_ERR(data->of_root_node)) {
+ 			data->of_root_node = NULL;
+ 			pr_err("unable to unflatten devicetree\n");
+-			return -EINVAL;
++			return ERR_PTR(-EINVAL);
+ 		}
+ 
+ 	} else {
+ 		data->of_root_node = of_get_root_node();
+ 		if (!data->of_root_node)
+-			return 0;
++			return NULL;
+ 
+ 		if (bootm_verbose(data) > 1 && data->of_root_node)
+ 			printf("using internal devicetree\n");
+@@ -405,24 +404,39 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
+ 
+ 	oftree = of_get_fixed_tree(data->of_root_node);
+ 	if (!oftree)
+-		return -EINVAL;
++		return ERR_PTR(-EINVAL);
+ 
+-	fdt_size = be32_to_cpu(oftree->totalsize);
++	fdt_add_reserve_map(oftree);
+ 
+-	data->oftree_res = request_sdram_region("oftree", load_address,
+-			fdt_size);
+-	if (!data->oftree_res) {
+-		free(oftree);
+-		return -ENOMEM;
+-	}
++	return oftree;
++}
+ 
+-	memcpy((void *)data->oftree_res->start, oftree, fdt_size);
++/*
++ * bootm_load_devicetree() - load devicetree
++ *
++ * @data:		image data context
++ * @fdt:		The flat device tree to load
++ * @load_address:	The address where the devicetree should be loaded to
++ *
++ * This loads the devicetree to a RAM location. load_address must be a valid
++ * address which is requested with request_sdram_region. The associated region
++ * is released automatically in the bootm error path.
++ *
++ * Return: 0 on success, negative error code otherwise
++ */
++int bootm_load_devicetree(struct image_data *data, void *fdt,
++			    unsigned long load_address)
++{
++	int fdt_size;
+ 
+-	free(oftree);
++	fdt_size = be32_to_cpu(((struct fdt_header *)fdt)->totalsize);
+ 
+-	oftree = (void *)data->oftree_res->start;
++	data->oftree_res = request_sdram_region("oftree", load_address,
++			fdt_size);
++	if (!data->oftree_res)
++		return -ENOMEM;
+ 
+-	fdt_add_reserve_map(oftree);
++	memcpy((void *)data->oftree_res->start, fdt, fdt_size);
+ 
+ 	of_print_cmdline(data->of_root_node);
+ 	if (bootm_verbose(data) > 1)
+diff --git a/include/bootm.h b/include/bootm.h
+index 03779772c4..fdc73f711a 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -125,7 +125,9 @@ int bootm_load_os(struct image_data *data, unsigned long load_address);
+ bool bootm_has_initrd(struct image_data *data);
+ int bootm_load_initrd(struct image_data *data, unsigned long load_address);
+ 
+-int bootm_load_devicetree(struct image_data *data, unsigned long load_address);
++void *bootm_get_devicetree(struct image_data *data);
++int bootm_load_devicetree(struct image_data *data, void *fdt,
++			  unsigned long load_address);
+ int bootm_get_os_size(struct image_data *data);
+ 
+ enum bootm_verify bootm_get_verify_mode(void);
 -- 
 2.17.1
 
