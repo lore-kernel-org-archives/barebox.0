@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQdRS-0000Sv-39
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:54 +0000
-Received: by mail-pf0-x244.google.com with SMTP id a11-v6so3568136pff.8
- for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:43 -0700 (PDT)
+ id 1fQdRT-0000TB-Hx
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:56 +0000
+Received: by mail-pf0-x242.google.com with SMTP id h12-v6so3568472pfk.11
+ for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:45 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Jun 2018 11:44:30 -0700
-Message-Id: <20180606184431.10348-38-andrew.smirnov@gmail.com>
+Date: Wed,  6 Jun 2018 11:44:31 -0700
+Message-Id: <20180606184431.10348-39-andrew.smirnov@gmail.com>
 In-Reply-To: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 References: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,230 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 37/38] ARM: i.MX8: Add DDRC PHY support code
+Subject: [PATCH v3 38/38] ARM: Specify HAVE_PBL_IMAGE for CPU_64
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add DDRC PHY support code needed to upload DDR training firwmare as
-well as to wait for the training process to complete.
-
-Those are needed to support board specific DDR initialization code.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/Makefile                 |   1 +
- arch/arm/mach-imx/imx8-ddrc.c              | 114 +++++++++++++++++++++
- arch/arm/mach-imx/include/mach/imx8-ddrc.h |  66 ++++++++++++
- 3 files changed, 181 insertions(+)
- create mode 100644 arch/arm/mach-imx/imx8-ddrc.c
- create mode 100644 arch/arm/mach-imx/include/mach/imx8-ddrc.h
+ arch/arm/cpu/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index 442039a27..28fe60dba 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -17,6 +17,7 @@ lwl-$(CONFIG_ARCH_IMX6) += imx6-mmdc.o
- obj-$(CONFIG_ARCH_IMX7) += imx7.o
- obj-$(CONFIG_ARCH_VF610) += vf610.o
- obj-$(CONFIG_ARCH_IMX8MQ) += imx8mq.o
-+lwl-$(CONFIG_ARCH_IMX8MQ) += imx8-ddrc.o
- obj-$(CONFIG_ARCH_IMX_XLOAD) += xload.o
- obj-$(CONFIG_IMX_IIM)	+= iim.o
- obj-$(CONFIG_NAND_IMX) += nand.o
-diff --git a/arch/arm/mach-imx/imx8-ddrc.c b/arch/arm/mach-imx/imx8-ddrc.c
-new file mode 100644
-index 000000000..5a9a78876
---- /dev/null
-+++ b/arch/arm/mach-imx/imx8-ddrc.c
-@@ -0,0 +1,114 @@
-+/*
-+ * Define dummy get_time_ns() in order to be able to use
-+ * readl_poll_timeout(). This has to happen before inclusion of
-+ * <clock.h> which will happen in <common.h>
-+ */
-+#define get_time_ns()	0
-+
-+#include <common.h>
-+#include <linux/iopoll.h>
-+#include <mach/imx8-ddrc.h>
-+#include <debug_ll.h>
-+
-+void ddrc_phy_load_firmware(void __iomem *phy,
-+			    enum ddrc_phy_firmware_offset offset,
-+			    const u16 *blob, size_t size)
-+{
-+	while (size) {
-+		writew(*blob++, phy + DDRC_PHY_REG(offset));
-+		offset++;
-+		size -= sizeof(*blob);
-+	}
-+}
-+
-+enum pmc_constants {
-+	PMC_MESSAGE_ID,
-+	PMC_MESSAGE_STREAM,
-+
-+	PMC_TRAIN_SUCCESS	= 0x07,
-+	PMC_TRAIN_STREAM_START	= 0x08,
-+	PMC_TRAIN_FAIL		= 0xff,
-+};
-+
-+static u32 ddrc_phy_get_message(void __iomem *phy, int type)
-+{
-+	u32 r, message;
-+
-+	/*
-+	 * When BIT0 set to 0, the PMU has a message for the user
-+	 * 10ms seems not enough for poll message, so use 1s here.
-+	 */
-+	readl_poll_timeout(phy + DDRC_PHY_REG(0xd0004),
-+			   r, !(r & BIT(0)), 0);
-+
-+	switch (type) {
-+	case PMC_MESSAGE_ID:
-+		/*
-+		 * Get the major message ID
-+		 */
-+		message = readl(phy + DDRC_PHY_REG(0xd0032));
-+		break;
-+	case PMC_MESSAGE_STREAM:
-+		message = readl(phy + DDRC_PHY_REG(0xd0034));
-+		message <<= 16;
-+		message |= readl(phy + DDRC_PHY_REG(0xd0032));
-+		break;
-+	}
-+
-+	/*
-+	 * By setting this register to 0, the user acknowledges the
-+	 * receipt of the message.
-+	 */
-+	writel(0x00000000, phy + DDRC_PHY_REG(0xd0031));
-+	/*
-+	 * When BIT0 set to 0, the PMU has a message for the user
-+	 */
-+	readl_poll_timeout(phy + DDRC_PHY_REG(0xd0004),
-+			   r, r & BIT(0), 0);
-+
-+	writel(0x00000001, phy + DDRC_PHY_REG(0xd0031));
-+
-+	return message;
-+}
-+
-+static void ddrc_phy_fetch_streaming_message(void __iomem *phy)
-+{
-+	const u16 index = ddrc_phy_get_message(phy, PMC_MESSAGE_STREAM);
-+	u16 i;
-+
-+	putc_ll('|');
-+	puthex_ll(index);
-+
-+	for (i = 0; i < index; i++) {
-+		const u32 arg = ddrc_phy_get_message(phy, PMC_MESSAGE_STREAM);
-+
-+		putc_ll('|');
-+		puthex_ll(arg);
-+	}
-+}
-+
-+void ddrc_phy_wait_training_complete(void __iomem *phy)
-+{
-+	for (;;) {
-+		const u32 m = ddrc_phy_get_message(phy, PMC_MESSAGE_ID);
-+
-+		puthex_ll(m);
-+
-+		switch (m) {
-+		case PMC_TRAIN_STREAM_START:
-+			ddrc_phy_fetch_streaming_message(phy);
-+			break;
-+		case PMC_TRAIN_SUCCESS:
-+			putc_ll('P');
-+			putc_ll('\r');
-+			putc_ll('\n');
-+			return;
-+		case PMC_TRAIN_FAIL:
-+			putc_ll('F');
-+			hang();
-+		}
-+
-+		putc_ll('\r');
-+		putc_ll('\n');
-+	}
-+}
-\ No newline at end of file
-diff --git a/arch/arm/mach-imx/include/mach/imx8-ddrc.h b/arch/arm/mach-imx/include/mach/imx8-ddrc.h
-new file mode 100644
-index 000000000..d49e29f26
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/imx8-ddrc.h
-@@ -0,0 +1,66 @@
-+#ifndef __IMX8_DDRC_H__
-+#define __IMX8_DDRC_H__
-+
-+#include <mach/imx8mq-regs.h>
-+#include <io.h>
-+#include <firmware.h>
-+#include <linux/compiler.h>
-+
-+enum ddrc_phy_firmware_offset {
-+	DDRC_PHY_IMEM = 0x00050000U,
-+	DDRC_PHY_DMEM = 0x00054000U,
-+};
-+
-+void ddrc_phy_load_firmware(void __iomem *,
-+			    enum ddrc_phy_firmware_offset,
-+			    const u16 *, size_t);
-+
-+#define DDRC_PHY_REG(x)	((x) * 4)
-+
-+void ddrc_phy_wait_training_complete(void __iomem *phy);
-+
-+
-+/*
-+ * i.MX8M DDR Tool compatibility layer
-+ */
-+
-+#define reg32_write(a, v)	writel(v, a)
-+#define reg32_read(a)		readl(a)
-+
-+static inline void wait_ddrphy_training_complete(void)
-+{
-+	ddrc_phy_wait_training_complete(IOMEM(MX8MQ_DDRC_PHY_BASE_ADDR));
-+}
-+
-+#define __ddr_load_train_code(imem, dmem)				\
-+	do {								\
-+		const u16 *__mem;					\
-+		size_t __size;						\
-+									\
-+		get_builtin_firmware(imem, &__mem, &__size);		\
-+		ddrc_phy_load_firmware(IOMEM(MX8MQ_DDRC_PHY_BASE_ADDR),	\
-+				       DDRC_PHY_IMEM, __mem, __size);	\
-+									\
-+		get_builtin_firmware(dmem, &__mem, &__size);		\
-+		ddrc_phy_load_firmware(IOMEM(MX8MQ_DDRC_PHY_BASE_ADDR),	\
-+				       DDRC_PHY_DMEM, __mem, __size);	\
-+	} while (0)
-+
-+#define ddr_load_train_code(imem_dmem) __ddr_load_train_code(imem_dmem)
-+
-+#define DDRC_IPS_BASE_ADDR(X) (0x3d400000 + (X * 0x2000000))
-+
-+#define DDRC_STAT(X)             (DDRC_IPS_BASE_ADDR(X) + 0x04)
-+#define DDRC_MRSTAT(X)           (DDRC_IPS_BASE_ADDR(X) + 0x18)
-+#define DDRC_PWRCTL(X)           (DDRC_IPS_BASE_ADDR(X) + 0x30)
-+#define DDRC_RFSHCTL3(X)         (DDRC_IPS_BASE_ADDR(X) + 0x60)
-+#define DDRC_CRCPARSTAT(X)       (DDRC_IPS_BASE_ADDR(X) + 0xcc)
-+#define DDRC_DFIMISC(X)          (DDRC_IPS_BASE_ADDR(X) + 0x1b0)
-+#define DDRC_DFISTAT(X)          (DDRC_IPS_BASE_ADDR(X) + 0x1bc)
-+#define DDRC_SWCTL(X)            (DDRC_IPS_BASE_ADDR(X) + 0x320)
-+#define DDRC_SWSTAT(X)           (DDRC_IPS_BASE_ADDR(X) + 0x324)
-+#define DDRC_PCTRL_0(X)          (DDRC_IPS_BASE_ADDR(X) + 0x490)
-+
-+#define IP2APB_DDRPHY_IPS_BASE_ADDR(X) (0x3c000000 + (X * 0x2000000))
-+
-+#endif
-\ No newline at end of file
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index d889e9afb..2359c56b3 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -12,6 +12,7 @@ config CPU_32
+ config CPU_64
+ 	bool
+ 	select PHYS_ADDR_T_64BIT
++	select HAVE_PBL_IMAGE
+ 
+ # Select CPU types depending on the architecture selected. This selects
+ # which CPUs we support in the kernel image, and the compiler instruction
 -- 
 2.17.0
 
