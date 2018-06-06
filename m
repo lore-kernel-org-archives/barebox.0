@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQSbi-0004DS-Kc
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 07:11:48 +0000
+ id 1fQSbi-0004DR-KS
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 07:11:50 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  6 Jun 2018 09:11:28 +0200
-Message-Id: <20180606071129.28884-6-s.hauer@pengutronix.de>
+Date: Wed,  6 Jun 2018 09:11:27 +0200
+Message-Id: <20180606071129.28884-5-s.hauer@pengutronix.de>
 In-Reply-To: <20180606071129.28884-1-s.hauer@pengutronix.de>
 References: <20180606071129.28884-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,61 +21,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/6] bootm: Drop data->oftree
+Subject: [PATCH 4/6] ppc: bootm: Drop usage of data->oftree
 To: Barebox List <barebox@lists.infradead.org>
 
-It's no longer necessary to store the devicetree pointer in struct
-image_data, it can be replaced with a local variable.
+The ppc bootm code uses data->oftree to store its private data pointers.
+Drop this and use a local variable instead.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/bootm.c  | 6 ------
- include/bootm.h | 1 -
- 2 files changed, 7 deletions(-)
+ arch/ppc/lib/ppclinux.c | 35 +++++++++++++++++------------------
+ 1 file changed, 17 insertions(+), 18 deletions(-)
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 5ff6683fe7..8167c3a603 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -337,9 +337,6 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
- 	struct fdt_header *oftree;
- 	int ret;
+diff --git a/arch/ppc/lib/ppclinux.c b/arch/ppc/lib/ppclinux.c
+index 67649f3b46..05c29be7da 100644
+--- a/arch/ppc/lib/ppclinux.c
++++ b/arch/ppc/lib/ppclinux.c
+@@ -14,7 +14,8 @@
+ #include <restart.h>
+ #include <fs.h>
  
--	if (data->oftree)
--		return 0;
--
- 	if (!IS_ENABLED(CONFIG_OFTREE))
- 		return 0;
+-static int bootm_relocate_fdt(struct image_data *data)
++static struct fdt_header *bootm_relocate_fdt(struct image_data *data,
++					     struct fdt_header *fdt)
+ {
+ 	void *os = (void *)data->os_address;
+ 	void *newfdt;
+@@ -24,10 +25,10 @@ static int bootm_relocate_fdt(struct image_data *data)
+ 		 * Put the DTB above if there is no space
+ 		 * below.
+ 		 */
+-		if (os < (void *)data->oftree->totalsize) {
++		if (os < (void *)fdt->totalsize) {
+ 			os = (void *)PAGE_ALIGN((phys_addr_t)os +
+ 					data->os->header.ih_size);
+-			os += data->oftree->totalsize;
++			os += fdt->totalsize;
+ 			if (os < LINUX_TLB1_MAX_ADDR)
+ 				os = LINUX_TLB1_MAX_ADDR;
+ 		}
+@@ -35,17 +36,15 @@ static int bootm_relocate_fdt(struct image_data *data)
  
-@@ -431,8 +428,6 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
- 	if (bootm_verbose(data) > 1)
- 		of_print_nodes(data->of_root_node, 0);
+ 	if (os > LINUX_TLB1_MAX_ADDR) {
+ 		pr_crit("Unable to relocate DTB to Linux TLB\n");
+-		return 1;
++		return NULL;
+ 	}
  
--	data->oftree = oftree;
--
- 	return 0;
+-	newfdt = (void *)PAGE_ALIGN_DOWN((phys_addr_t)os -
+-			data->oftree->totalsize);
+-	memcpy(newfdt, data->oftree, data->oftree->totalsize);
+-	free(data->oftree);
+-	data->oftree = newfdt;
++	newfdt = (void *)PAGE_ALIGN_DOWN((phys_addr_t)os - fdt->totalsize);
++	memcpy(newfdt, fdt, fdt->totalsize);
++	free(fdt);
+ 
+ 	pr_info("Relocating device tree to 0x%p\n", newfdt);
+-	return 0;
++	return newfdt;
  }
  
-@@ -576,7 +571,6 @@ int bootm_boot(struct bootm_data *bootm_data)
- 		 * When we only allow booting signed images make sure everything
- 		 * we boot is in the OS image and not given separately.
- 		 */
--		data->oftree = NULL;
- 		data->oftree_file = NULL;
- 		data->initrd_file = NULL;
- 		if (os_type != filetype_oftree) {
-diff --git a/include/bootm.h b/include/bootm.h
-index 62951d6058..03779772c4 100644
---- a/include/bootm.h
-+++ b/include/bootm.h
-@@ -78,7 +78,6 @@ struct image_data {
- 	void *fit_config;
+ static int do_bootm_linux(struct image_data *data)
+@@ -53,13 +52,14 @@ static int do_bootm_linux(struct image_data *data)
+ 	void	(*kernel)(void *, void *, unsigned long,
+ 			unsigned long, unsigned long);
+ 	int ret;
++	struct fdt_header *fdt;
  
- 	struct device_node *of_root_node;
--	struct fdt_header *oftree;
- 	struct resource *oftree_res;
+ 	ret = bootm_load_os(data, data->os_address);
+ 	if (ret)
+ 		return ret;
  
- 	/*
+-	data->oftree = of_get_fixed_tree(data->of_root_node);
+-	if (!data->oftree) {
++	fdt = of_get_fixed_tree(data->of_root_node);
++	if (!fdt) {
+ 		pr_err("bootm: No devicetree given.\n");
+ 		return -EINVAL;
+ 	}
+@@ -71,15 +71,14 @@ static int do_bootm_linux(struct image_data *data)
+ 	 * Linux mapped TLB.
+ 	 */
+ 	if (IS_ENABLED(CONFIG_MPC85xx)) {
+-		void *addr = data->oftree;
+-
+-		if ((addr + data->oftree->totalsize) > LINUX_TLB1_MAX_ADDR) {
+-			if (bootm_relocate_fdt(data))
++		if (((void *)fdt + fdt->totalsize) > LINUX_TLB1_MAX_ADDR) {
++			fdt = bootm_relocate_fdt(data, fdt);
++			if (!fdt)
+ 				goto error;
+ 		}
+ 	}
+ 
+-	fdt_add_reserve_map(data->oftree);
++	fdt_add_reserve_map(fdt);
+ 
+ 	kernel = (void *)(data->os_address + data->os_entry);
+ 
+@@ -91,7 +90,7 @@ static int do_bootm_linux(struct image_data *data)
+ 	 *   r6: NULL
+ 	 *   r7: NULL
+ 	 */
+-	kernel(data->oftree, kernel, 0, 0, 0);
++	kernel(fdt, kernel, 0, 0, 0);
+ 
+ 	restart_machine();
+ 
 -- 
 2.17.1
 
