@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQdRM-0000Sm-06
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:49 +0000
-Received: by mail-pl0-x241.google.com with SMTP id z9-v6so4356428plk.11
- for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:37 -0700 (PDT)
+ id 1fQdRM-0000Su-07
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:48 +0000
+Received: by mail-pl0-x241.google.com with SMTP id 31-v6so4366685plc.4
+ for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:42 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Jun 2018 11:44:25 -0700
-Message-Id: <20180606184431.10348-33-andrew.smirnov@gmail.com>
+Date: Wed,  6 Jun 2018 11:44:29 -0700
+Message-Id: <20180606184431.10348-37-andrew.smirnov@gmail.com>
 In-Reply-To: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 References: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,199 +23,138 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 32/38] common/clock: Move delay and timeout functions to
- clock.h
+Subject: [PATCH v3 36/38] Add builtin firmware support
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Move delay and timeout functions to clock.h and add necessary
-preprocessor code in order to make them availible in PBL. The header
-is written such that by providing a pre-define get_time_ns
-macro (before the inclusion point of clock.h) user can make use of all
-of the timeout/delay functionality without having to have a
-functioning clock source.
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-An example of simple use-case would be using any variant of
-readx_poll_timeout with timeout of zero (infinite timeout) by
-providing the following trivial definition:
-
-\#define get_time_ns()	0
-
-before <linux/iopoll.h> is included.
-
-More sophisticated use-case would be providing a definition for a very
-simplistic get_time_ns() function and using actual timekeeping
-functionality such as is_timeout() or udelay().
-
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+[andrew.smirnov@gmail.com: Add dummy.o in case directory is empty]
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/clock.c  | 52 ------------------------------------
- include/clock.h | 70 +++++++++++++++++++++++++++++++++++++++++++------
- 2 files changed, 62 insertions(+), 60 deletions(-)
+ Makefile           |  2 +-
+ arch/arm/Kconfig   |  1 +
+ firmware/Kconfig   |  7 ++++++
+ firmware/Makefile  | 55 ++++++++++++++++++++++++++++++++++++++++++++++
+ include/firmware.h |  8 +++++++
+ 5 files changed, 72 insertions(+), 1 deletion(-)
+ create mode 100644 firmware/Kconfig
+ create mode 100644 firmware/Makefile
 
-diff --git a/common/clock.c b/common/clock.c
-index f98176dd5..c356a88b5 100644
---- a/common/clock.c
-+++ b/common/clock.c
-@@ -25,7 +25,6 @@
- #include <init.h>
- #include <asm-generic/div64.h>
- #include <clock.h>
--#include <poller.h>
+diff --git a/Makefile b/Makefile
+index 88c199173..b335f2054 100644
+--- a/Makefile
++++ b/Makefile
+@@ -426,7 +426,7 @@ scripts: scripts_basic include/config/auto.conf
+ 	$(Q)$(MAKE) $(build)=$(@)
  
- static uint64_t time_ns;
+ # Objects we will link into barebox / subdirs we need to visit
+-common-y		:= common/ drivers/ commands/ lib/ crypto/ net/ fs/
++common-y		:= common/ drivers/ commands/ lib/ crypto/ net/ fs/ firmware/
  
-@@ -170,57 +169,6 @@ uint32_t clocksource_hz2mult(uint32_t hz, uint32_t shift_constant)
- 	return (uint32_t)tmp;
- }
+ ifeq ($(dot-config),1)
+ # Read in config
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 37cde0c0c..bd736284f 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -414,3 +414,4 @@ source drivers/Kconfig
+ source fs/Kconfig
+ source lib/Kconfig
+ source crypto/Kconfig
++source firmware/Kconfig
+diff --git a/firmware/Kconfig b/firmware/Kconfig
+new file mode 100644
+index 000000000..e0cc7abef
+--- /dev/null
++++ b/firmware/Kconfig
+@@ -0,0 +1,7 @@
++menu "Firmware files"
++
++config EXTRA_FIRMWARE_DIR
++	string "Firmware blobs root directory"
++	default "firmware"
++
++endmenu
+diff --git a/firmware/Makefile b/firmware/Makefile
+new file mode 100644
+index 000000000..b4074ca4f
+--- /dev/null
++++ b/firmware/Makefile
+@@ -0,0 +1,55 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# kbuild file for firmware/
++#
++
++# Create $(fwabs) from $(CONFIG_EXTRA_FIRMWARE_DIR) -- if it doesn't have a
++# leading /, it's relative to $(srctree).
++fwdir := $(subst $(quote),,$(CONFIG_EXTRA_FIRMWARE_DIR))
++fwabs := $(addprefix $(srctree)/,$(filter-out /%,$(fwdir)))$(filter /%,$(fwdir))
++
++fw-external-y := $(firmware-y)
++
++quiet_cmd_fwbin = MK_FW   $@
++      cmd_fwbin = FWNAME="$(patsubst firmware/%.gen.S,%,$@)";		     \
++		  FWSTR="$(subst /,_,$(subst .,_,$(subst -,_,$(patsubst	     \
++				firmware/%.gen.S,%,$@))))";		     \
++		  ASM_WORD=$(if $(CONFIG_64BIT),.quad,.long);		     \
++		  ASM_ALIGN=$(if $(CONFIG_64BIT),3,2);			     \
++		  PROGBITS=$(if $(CONFIG_ARM),%,@)progbits;		     \
++		  echo "/* Generated by firmware/Makefile */"		> $@;\
++		  echo "    .section .rodata.$${FWSTR}"			>>$@;\
++		  echo "    .p2align $${ASM_ALIGN}"			>>$@;\
++		  echo ".global _fw_$${FWSTR}_start"			>>$@;\
++		  echo "_fw_$${FWSTR}_start:"				>>$@;\
++		  echo "    .incbin \"$(2)\""				>>$@;\
++		  echo ".global _fw_$${FWSTR}_end"			>>$@;\
++		  echo "_fw_$${FWSTR}_end:"				>>$@;
++
++# One of these files will change, or come into existence, whenever
++# the configuration changes between 32-bit and 64-bit. The .S files
++# need to change when that happens.
++wordsize_deps := $(wildcard include/config/64bit.h include/config/32bit.h)
++
++$(patsubst %,$(obj)/%.gen.S, $(fw-external-y)): %: $(wordsize_deps) \
++		include/config/extra/firmware/dir.h
++	$(call cmd,fwbin,$(fwabs)/$(patsubst $(obj)/%.gen.S,%,$@))
++
++# The .o files depend on the binaries directly; the .S files don't.
++$(patsubst %,$(obj)/%.gen.o, $(fw-external-y)): $(obj)/%.gen.o: $(fwdir)/%
++
++obj-pbl-y			 += $(patsubst %,%.gen.o, $(fw-external-y))
++
++ifeq ($(KBUILD_SRC),)
++# Makefile.build only creates subdirectories for O= builds, but external
++# firmware might live outside the kernel source tree
++_dummy := $(foreach d,$(addprefix $(obj)/,$(dir $(fw-external-y))), $(shell [ -d $(d) ] || mkdir -p $(d)))
++endif
++
++targets := $(patsubst $(obj)/%,%, \
++                                $(shell find $(obj) -name \*.gen.S 2>/dev/null))
++
++# just to build a built-in.o. Otherwise compilation fails when no devicetree is
++# created.
++obj- += dummy.o
++
+diff --git a/include/firmware.h b/include/firmware.h
+index f6f78c840..284e0f970 100644
+--- a/include/firmware.h
++++ b/include/firmware.h
+@@ -39,4 +39,12 @@ void firmwaremgr_list_handlers(void);
  
--int is_timeout_non_interruptible(uint64_t start_ns, uint64_t time_offset_ns)
--{
--	if ((int64_t)(start_ns + time_offset_ns - get_time_ns()) < 0)
--		return 1;
--	else
--		return 0;
--}
--EXPORT_SYMBOL(is_timeout_non_interruptible);
--
--int is_timeout(uint64_t start_ns, uint64_t time_offset_ns)
--{
--	if (time_offset_ns >= 100 * USECOND)
--		poller_call();
--
--	return is_timeout_non_interruptible(start_ns, time_offset_ns);
--}
--EXPORT_SYMBOL(is_timeout);
--
--void ndelay(unsigned long nsecs)
--{
--	uint64_t start = get_time_ns();
--
--	while(!is_timeout_non_interruptible(start, nsecs));
--}
--EXPORT_SYMBOL(ndelay);
--
--void udelay(unsigned long usecs)
--{
--	uint64_t start = get_time_ns();
--
--	while(!is_timeout(start, usecs * USECOND));
--}
--EXPORT_SYMBOL(udelay);
--
--void mdelay(unsigned long msecs)
--{
--	uint64_t start = get_time_ns();
--
--	while(!is_timeout(start, msecs * MSECOND));
--}
--EXPORT_SYMBOL(mdelay);
--
--void mdelay_non_interruptible(unsigned long msecs)
--{
--	uint64_t start = get_time_ns();
--
--	while (!is_timeout_non_interruptible(start, msecs * MSECOND))
--		;
--}
--EXPORT_SYMBOL(mdelay_non_interruptible);
--
- int init_clock(struct clocksource *cs)
- {
- 	if (current_clock && cs->priority <= current_clock->priority)
-diff --git a/include/clock.h b/include/clock.h
-index 5f2f53ab6..38b335c2c 100644
---- a/include/clock.h
-+++ b/include/clock.h
-@@ -25,26 +25,80 @@ static inline uint32_t cyc2ns(struct clocksource *cs, uint64_t cycles)
+ int firmwaremgr_load_file(struct firmware_mgr *, const char *path);
  
- int init_clock(struct clocksource *);
- 
-+#ifndef get_time_ns
-+#define get_time_ns get_time_ns
++#define get_builtin_firmware(name, start, size) \
++	{							\
++		extern char _fw_##name##_start[];		\
++		extern char _fw_##name##_end[];			\
++		*start = (typeof(*start)) _fw_##name##_start;	\
++		*size = _fw_##name##_end - _fw_##name##_start;	\
++	}
 +
- uint64_t get_time_ns(void);
-+#endif
- 
- void clocks_calc_mult_shift(uint32_t *mult, uint32_t *shift, uint32_t from, uint32_t to, uint32_t maxsec);
- 
- uint32_t clocksource_hz2mult(uint32_t hz, uint32_t shift_constant);
- 
--int is_timeout(uint64_t start_ns, uint64_t time_offset_ns);
--int is_timeout_non_interruptible(uint64_t start_ns, uint64_t time_offset_ns);
--
--void ndelay(unsigned long nsecs);
--void udelay(unsigned long usecs);
--void mdelay(unsigned long msecs);
--void mdelay_non_interruptible(unsigned long msecs);
--
- #define SECOND ((uint64_t)(1000 * 1000 * 1000))
- #define MSECOND ((uint64_t)(1000 * 1000))
- #define USECOND ((uint64_t)(1000))
- 
- extern uint64_t time_beginning;
- 
-+static inline int
-+is_timeout_non_interruptible(uint64_t start_ns, uint64_t time_offset_ns)
-+{
-+	if ((int64_t)(start_ns + time_offset_ns - get_time_ns()) < 0)
-+		return 1;
-+	else
-+		return 0;
-+}
-+
-+#if defined(__PBL__)
-+/*
-+ * Poller infrastructure is not available in PBL, so we just define
-+ * is_timeout to be a synonym for is_timeout_non_interruptible
-+ */
-+static inline int is_timeout(uint64_t start_ns, uint64_t time_offset_ns)
-+	__alias(is_timeout_non_interruptible);
-+#else
-+#include <poller.h>
-+
-+static inline int is_timeout(uint64_t start_ns, uint64_t time_offset_ns)
-+{
-+
-+	if (time_offset_ns >= 100 * USECOND)
-+		poller_call();
-+
-+	return is_timeout_non_interruptible(start_ns, time_offset_ns);
-+}
-+#endif
-+
-+static inline void ndelay(unsigned long nsecs)
-+{
-+	uint64_t start = get_time_ns();
-+
-+	while(!is_timeout_non_interruptible(start, nsecs));
-+}
-+
-+static inline void udelay(unsigned long usecs)
-+{
-+	uint64_t start = get_time_ns();
-+
-+	while(!is_timeout(start, usecs * USECOND));
-+}
-+
-+static inline void mdelay(unsigned long msecs)
-+{
-+	uint64_t start = get_time_ns();
-+
-+	while(!is_timeout(start, msecs * MSECOND));
-+}
-+
-+static inline void mdelay_non_interruptible(unsigned long msecs)
-+{
-+	uint64_t start = get_time_ns();
-+
-+	while (!is_timeout_non_interruptible(start, msecs * MSECOND))
-+		;
-+}
-+
- /*
-  * Convenience wrapper to implement a typical polling loop with
-  * timeout. returns 0 if the condition became true within the
+ #endif /* FIRMWARE_H */
 -- 
 2.17.0
 
