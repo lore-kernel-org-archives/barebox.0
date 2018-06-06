@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQdQm-0007op-5d
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:17 +0000
-Received: by mail-pl0-x241.google.com with SMTP id f1-v6so4361994plt.6
- for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:01 -0700 (PDT)
+ id 1fQdQm-00084g-QW
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:21 +0000
+Received: by mail-pf0-x244.google.com with SMTP id a12-v6so3578938pfi.3
+ for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:04 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Jun 2018 11:43:57 -0700
-Message-Id: <20180606184431.10348-5-andrew.smirnov@gmail.com>
+Date: Wed,  6 Jun 2018 11:43:59 -0700
+Message-Id: <20180606184431.10348-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 References: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,89 +23,143 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 04/38] aarch64: Add i.MX8 debug UART support
+Subject: [PATCH v3 06/38] mci: imx-esdhc: use dma mapping functions
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-[andrew.smirnov@gmail.com: Added imx8_uart_setup_ll()]
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- arch/arm/mach-imx/include/mach/debug_ll.h | 11 +++++++++++
- common/Kconfig                            |  8 ++++++++
- 2 files changed, 19 insertions(+)
+Rather than relying on the fact that addresses can be just casted
+into DMA addresses use proper DMA mapping functions.
 
-diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
-index d54d601db..1550e059e 100644
---- a/arch/arm/mach-imx/include/mach/debug_ll.h
-+++ b/arch/arm/mach-imx/include/mach/debug_ll.h
-@@ -15,6 +15,7 @@
- #include <mach/imx53-regs.h>
- #include <mach/imx6-regs.h>
- #include <mach/imx7-regs.h>
-+#include <mach/imx8mq-regs.h>
- #include <mach/vf610-regs.h>
- 
- #include <serial/imx-uart.h>
-@@ -47,6 +48,8 @@
- #define IMX_DEBUG_SOC MX6
- #elif defined CONFIG_DEBUG_IMX7D_UART
- #define IMX_DEBUG_SOC MX7
-+#elif defined CONFIG_DEBUG_IMX8MQ_UART
-+#define IMX_DEBUG_SOC MX8MQ
- #elif defined CONFIG_DEBUG_VF610_UART
- #define IMX_DEBUG_SOC VF610
- #else
-@@ -95,6 +98,13 @@ static inline void vf610_uart_setup_ll(void)
- 	lpuart_setup(base, 66000000);
+This fixes compiler warnings when we do DMA on this 32bit only device
+on aarch64 SoCs.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mci/imx-esdhc.c | 53 ++++++++++++++++++++---------------------
+ 1 file changed, 26 insertions(+), 27 deletions(-)
+
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index b91f94b99..8929901d4 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -211,18 +211,14 @@ esdhc_pio_read_write(struct mci_host *mci, struct mci_data *data)
+ 	return 0;
  }
  
-+static inline void imx8_uart_setup_ll(void)
-+{
-+	void *base = IOMEM(IMX_UART_BASE(IMX_DEBUG_SOC,
-+					 CONFIG_DEBUG_IMX_UART_PORT));
-+	imx8mq_uart_setup(base);
-+}
-+
- static inline void PUTC_LL(int c)
+-static int esdhc_setup_data(struct mci_host *mci, struct mci_data *data)
++static int esdhc_setup_data(struct mci_host *mci, struct mci_data *data,
++			    dma_addr_t dma)
  {
- 	void __iomem *base = IOMEM(IMX_UART_BASE(IMX_DEBUG_SOC,
-@@ -117,6 +127,7 @@ static inline void imx53_uart_setup_ll(void) {}
- static inline void imx6_uart_setup_ll(void)  {}
- static inline void imx7_uart_setup_ll(void)  {}
- static inline void vf610_uart_setup_ll(void) {}
-+static inline void imx8_uart_setup_ll(void)  {}
+ 	struct fsl_esdhc_host *host = to_fsl_esdhc(mci);
+ 	void __iomem *regs = host->regs;
+ 	u32 wml_value;
  
- #endif /* CONFIG_DEBUG_LL */
+-	if (IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO)) {
+-		if (!(data->flags & MMC_DATA_READ))
+-			esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->src);
+-		else
+-			esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->dest);
+-	} else {
++	if (!IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO)) {
+ 		wml_value = data->blocksize/4;
  
-diff --git a/common/Kconfig b/common/Kconfig
-index b7000c4d7..75aea460a 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1099,6 +1099,13 @@ config DEBUG_IMX7D_UART
- 	  Say Y here if you want barebox low-level debugging support
- 	  on i.MX7D.
+ 		if (data->flags & MMC_DATA_READ) {
+@@ -230,15 +226,14 @@ static int esdhc_setup_data(struct mci_host *mci, struct mci_data *data)
+ 				wml_value = 0x10;
  
-+config DEBUG_IMX8MQ_UART
-+	bool "i.MX8MQ Debug UART"
-+	depends on ARCH_IMX8MQ
-+	help
-+	  Say Y here if you want barebox low-level debugging support
-+	  on i.MX8MQ.
+ 			esdhc_clrsetbits32(regs + IMX_SDHCI_WML, WML_RD_WML_MASK, wml_value);
+-			esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->dest);
+ 		} else {
+ 			if (wml_value > 0x80)
+ 				wml_value = 0x80;
+ 
+ 			esdhc_clrsetbits32(regs + IMX_SDHCI_WML, WML_WR_WML_MASK,
+ 						wml_value << 16);
+-			esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->src);
+ 		}
++		esdhc_write32(regs + SDHCI_DMA_ADDRESS, dma);
+ 	}
+ 
+ 	esdhc_write32(regs + SDHCI_BLOCK_SIZE__BLOCK_COUNT, data->blocks << 16 | data->blocksize);
+@@ -250,7 +245,6 @@ static int esdhc_do_data(struct mci_host *mci, struct mci_data *data)
+ {
+ 	struct fsl_esdhc_host *host = to_fsl_esdhc(mci);
+ 	void __iomem *regs = host->regs;
+-	unsigned int num_bytes = data->blocks * data->blocksize;
+ 	u32 irqstat;
+ 
+ 	if (IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO))
+@@ -267,13 +261,6 @@ static int esdhc_do_data(struct mci_host *mci, struct mci_data *data)
+ 	} while (!(irqstat & IRQSTAT_TC) &&
+ 		(esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_DLA));
+ 
+-	if (data->flags & MMC_DATA_WRITE)
+-		dma_sync_single_for_cpu((unsigned long)data->src,
+-					num_bytes, DMA_TO_DEVICE);
+-	else
+-		dma_sync_single_for_cpu((unsigned long)data->dest,
+-					num_bytes, DMA_FROM_DEVICE);
+-
+ 	return 0;
+ }
+ 
+@@ -290,6 +277,9 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+ 	void __iomem *regs = host->regs;
+ 	unsigned int num_bytes = 0;
+ 	int ret;
++	void *ptr;
++	enum dma_data_direction dir = 0;
++	dma_addr_t dma = 0;
+ 
+ 	esdhc_write32(regs + SDHCI_INT_STATUS, -1);
+ 
+@@ -300,19 +290,25 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+ 	if (data) {
+ 		int err;
+ 
+-		err = esdhc_setup_data(mci, data);
+-		if(err)
+-			return err;
++		if (!IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO)) {
++			num_bytes = data->blocks * data->blocksize;
+ 
+-		num_bytes = data->blocks * data->blocksize;
++			if (data->flags & MMC_DATA_WRITE) {
++				ptr = (void *)data->src;
++				dir = DMA_TO_DEVICE;
++			} else {
++				ptr = data->dest;
++				dir = DMA_FROM_DEVICE;
++			}
+ 
+-		if (data->flags & MMC_DATA_WRITE)
+-			dma_sync_single_for_device((unsigned long)data->src,
+-						   num_bytes, DMA_TO_DEVICE);
+-		else
+-			dma_sync_single_for_device((unsigned long)data->dest,
+-						   num_bytes, DMA_FROM_DEVICE);
++			dma = dma_map_single(host->dev, ptr, num_bytes, dir);
++			if (dma_mapping_error(host->dev, dma))
++				return -EIO;
++		}
+ 
++		err = esdhc_setup_data(mci, data, dma);
++		if(err)
++			return err;
+ 	}
+ 
+ 	/* Figure out the transfer arguments */
+@@ -383,6 +379,9 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+ 		ret = esdhc_do_data(mci, data);
+ 		if (ret)
+ 			return ret;
 +
- config DEBUG_VF610_UART
- 	bool "VF610 Debug UART"
- 	depends on ARCH_VF610
-@@ -1163,6 +1170,7 @@ config DEBUG_IMX_UART_PORT
- 						DEBUG_IMX6Q_UART || \
- 						DEBUG_IMX6SL_UART || \
- 						DEBUG_IMX7D_UART || \
-+						DEBUG_IMX8MQ_UART || \
- 						DEBUG_VF610_UART
- 	default 1
- 	depends on ARCH_IMX
++		if (!IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO))
++			dma_unmap_single(host->dev, dma, num_bytes, dir);
+ 	}
+ 
+ 	esdhc_write32(regs + SDHCI_INT_STATUS, -1);
 -- 
 2.17.0
 
