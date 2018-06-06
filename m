@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x22d.google.com ([2607:f8b0:400e:c00::22d])
+Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQdQn-0007sL-Ty
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:16 +0000
-Received: by mail-pf0-x22d.google.com with SMTP id b17-v6so3576183pfi.0
- for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:03 -0700 (PDT)
+ id 1fQdQm-0007op-5d
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:17 +0000
+Received: by mail-pl0-x241.google.com with SMTP id f1-v6so4361994plt.6
+ for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:01 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Jun 2018 11:43:58 -0700
-Message-Id: <20180606184431.10348-6-andrew.smirnov@gmail.com>
+Date: Wed,  6 Jun 2018 11:43:57 -0700
+Message-Id: <20180606184431.10348-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 References: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,41 +23,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 05/38] Include our own include/dt-bindings
+Subject: [PATCH v3 04/38] aarch64: Add i.MX8 debug UART support
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Allow to use dt-bindings files that are not yet upstreamed. They can
-be put into include/dt-bindings.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+[andrew.smirnov@gmail.com: Added imx8_uart_setup_ll()]
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/mips/dts/include/dt-bindings | 1 -
- scripts/Makefile.lib              | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
- delete mode 120000 arch/mips/dts/include/dt-bindings
+ arch/arm/mach-imx/include/mach/debug_ll.h | 11 +++++++++++
+ common/Kconfig                            |  8 ++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/arch/mips/dts/include/dt-bindings b/arch/mips/dts/include/dt-bindings
-deleted file mode 120000
-index 0cecb3d08..000000000
---- a/arch/mips/dts/include/dt-bindings
-+++ /dev/null
-@@ -1 +0,0 @@
--../../../../include/dt-bindings
-\ No newline at end of file
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 272b5981e..3024b068e 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -154,6 +154,7 @@ ld_flags       = $(LDFLAGS) $(EXTRA_LDFLAGS)
- dtc_cpp_flags  = -Wp,-MD,$(depfile).pre -nostdinc                        \
- 		 -I$(srctree)/arch/$(SRCARCH)/dts/include		 \
- 		 -I$(srctree)/dts/include                                \
-+		 -I$(srctree)/include                                    \
- 		 -I$(srctree)/dts/src/                                   \
- 		 -undef -D__DTS__
+diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
+index d54d601db..1550e059e 100644
+--- a/arch/arm/mach-imx/include/mach/debug_ll.h
++++ b/arch/arm/mach-imx/include/mach/debug_ll.h
+@@ -15,6 +15,7 @@
+ #include <mach/imx53-regs.h>
+ #include <mach/imx6-regs.h>
+ #include <mach/imx7-regs.h>
++#include <mach/imx8mq-regs.h>
+ #include <mach/vf610-regs.h>
  
+ #include <serial/imx-uart.h>
+@@ -47,6 +48,8 @@
+ #define IMX_DEBUG_SOC MX6
+ #elif defined CONFIG_DEBUG_IMX7D_UART
+ #define IMX_DEBUG_SOC MX7
++#elif defined CONFIG_DEBUG_IMX8MQ_UART
++#define IMX_DEBUG_SOC MX8MQ
+ #elif defined CONFIG_DEBUG_VF610_UART
+ #define IMX_DEBUG_SOC VF610
+ #else
+@@ -95,6 +98,13 @@ static inline void vf610_uart_setup_ll(void)
+ 	lpuart_setup(base, 66000000);
+ }
+ 
++static inline void imx8_uart_setup_ll(void)
++{
++	void *base = IOMEM(IMX_UART_BASE(IMX_DEBUG_SOC,
++					 CONFIG_DEBUG_IMX_UART_PORT));
++	imx8mq_uart_setup(base);
++}
++
+ static inline void PUTC_LL(int c)
+ {
+ 	void __iomem *base = IOMEM(IMX_UART_BASE(IMX_DEBUG_SOC,
+@@ -117,6 +127,7 @@ static inline void imx53_uart_setup_ll(void) {}
+ static inline void imx6_uart_setup_ll(void)  {}
+ static inline void imx7_uart_setup_ll(void)  {}
+ static inline void vf610_uart_setup_ll(void) {}
++static inline void imx8_uart_setup_ll(void)  {}
+ 
+ #endif /* CONFIG_DEBUG_LL */
+ 
+diff --git a/common/Kconfig b/common/Kconfig
+index b7000c4d7..75aea460a 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1099,6 +1099,13 @@ config DEBUG_IMX7D_UART
+ 	  Say Y here if you want barebox low-level debugging support
+ 	  on i.MX7D.
+ 
++config DEBUG_IMX8MQ_UART
++	bool "i.MX8MQ Debug UART"
++	depends on ARCH_IMX8MQ
++	help
++	  Say Y here if you want barebox low-level debugging support
++	  on i.MX8MQ.
++
+ config DEBUG_VF610_UART
+ 	bool "VF610 Debug UART"
+ 	depends on ARCH_VF610
+@@ -1163,6 +1170,7 @@ config DEBUG_IMX_UART_PORT
+ 						DEBUG_IMX6Q_UART || \
+ 						DEBUG_IMX6SL_UART || \
+ 						DEBUG_IMX7D_UART || \
++						DEBUG_IMX8MQ_UART || \
+ 						DEBUG_VF610_UART
+ 	default 1
+ 	depends on ARCH_IMX
 -- 
 2.17.0
 
