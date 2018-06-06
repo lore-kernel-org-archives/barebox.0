@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from mail-pg0-x22e.google.com ([2607:f8b0:400e:c05::22e])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQdRT-0000TB-Hx
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:56 +0000
-Received: by mail-pf0-x242.google.com with SMTP id h12-v6so3568472pfk.11
- for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:45 -0700 (PDT)
+ id 1fQdRP-0000Sp-Pn
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:52 +0000
+Received: by mail-pg0-x22e.google.com with SMTP id r21-v6so3107734pgv.4
+ for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:41 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Jun 2018 11:44:31 -0700
-Message-Id: <20180606184431.10348-39-andrew.smirnov@gmail.com>
+Date: Wed,  6 Jun 2018 11:44:28 -0700
+Message-Id: <20180606184431.10348-36-andrew.smirnov@gmail.com>
 In-Reply-To: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 References: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,27 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 38/38] ARM: Specify HAVE_PBL_IMAGE for CPU_64
+Subject: [PATCH v3 35/38] Kbuild: Add $(quote)
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/Kconfig | 1 +
+ scripts/Kbuild.include | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
-index d889e9afb..2359c56b3 100644
---- a/arch/arm/cpu/Kconfig
-+++ b/arch/arm/cpu/Kconfig
-@@ -12,6 +12,7 @@ config CPU_32
- config CPU_64
- 	bool
- 	select PHYS_ADDR_T_64BIT
-+	select HAVE_PBL_IMAGE
+diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
+index f3771902b..512d21732 100644
+--- a/scripts/Kbuild.include
++++ b/scripts/Kbuild.include
+@@ -3,6 +3,7 @@
  
- # Select CPU types depending on the architecture selected. This selects
- # which CPUs we support in the kernel image, and the compiler instruction
+ # Convenient variables
+ comma   := ,
++quote   := "
+ squote  := '
+ empty   :=
+ space   := $(empty) $(empty)
 -- 
 2.17.0
 
