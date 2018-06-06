@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
+Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQdRI-0000Sj-3k
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:44 +0000
-Received: by mail-pl0-x244.google.com with SMTP id g20-v6so4373573plq.1
- for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:31 -0700 (PDT)
+ id 1fQdRK-0000Sk-Ad
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:46 +0000
+Received: by mail-pg0-x243.google.com with SMTP id c9-v6so3437836pgf.5
+ for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:35 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Jun 2018 11:44:20 -0700
-Message-Id: <20180606184431.10348-28-andrew.smirnov@gmail.com>
+Date: Wed,  6 Jun 2018 11:44:23 -0700
+Message-Id: <20180606184431.10348-31-andrew.smirnov@gmail.com>
 In-Reply-To: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 References: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,32 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 27/38] Documentation: imx: Change block size for 'dd' to
- 1024
+Subject: [PATCH v3 30/38] clocksource: armv8-timer: Make use of
+ postcore_platform_driver()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Real image starts at offset 0x400 (1024), so we can skip copying extra
-512 bytes of zeros.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- Documentation/boards/imx.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clocksource/armv8-timer.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
-index 343643cd7..8de2bd5c5 100644
---- a/Documentation/boards/imx.rst
-+++ b/Documentation/boards/imx.rst
-@@ -42,7 +42,7 @@ The above will overwrite the MBR (and consequently the partition table)
- on the destination SD card. To preserve the MBR while writing the rest
- of the image to the card, use::
+diff --git a/drivers/clocksource/armv8-timer.c b/drivers/clocksource/armv8-timer.c
+index 5e0b9ef3c..918232e0e 100644
+--- a/drivers/clocksource/armv8-timer.c
++++ b/drivers/clocksource/armv8-timer.c
+@@ -48,9 +48,5 @@ static struct driver_d armv8_timer_driver = {
+ 	.probe = armv8_timer_probe,
+ 	.of_compatible = DRV_OF_COMPAT(armv8_timer_dt_ids),
+ };
++postcore_platform_driver(armv8_timer_driver);
  
--  dd if=images/barebox-freescale-imx51-babbage.img of=/dev/sdd bs=512 skip=1 seek=1
-+  dd if=images/barebox-freescale-imx51-babbage.img of=/dev/sdd bs=1024 skip=1 seek=1
- 
- The images can also always be started second stage::
- 
+-static int armv8_timer_init(void)
+-{
+-	return platform_driver_register(&armv8_timer_driver);
+-}
+-postcore_initcall(armv8_timer_init);
 -- 
 2.17.0
 
