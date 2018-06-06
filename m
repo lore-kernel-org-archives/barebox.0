@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from mail-pg0-x22e.google.com ([2607:f8b0:400e:c05::22e])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQdR2-0000nA-MJ
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:56 +0000
-Received: by mail-pg0-x243.google.com with SMTP id r21-v6so3107304pgv.4
- for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:18 -0700 (PDT)
+ id 1fQdQz-0000gf-AH
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:55 +0000
+Received: by mail-pg0-x22e.google.com with SMTP id l65-v6so3433266pgl.8
+ for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:15 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Jun 2018 11:44:11 -0700
-Message-Id: <20180606184431.10348-19-andrew.smirnov@gmail.com>
+Date: Wed,  6 Jun 2018 11:44:08 -0700
+Message-Id: <20180606184431.10348-16-andrew.smirnov@gmail.com>
 In-Reply-To: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 References: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,52 +23,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 18/38] ARM: Add constants and helpers for system counter
- interface
+Subject: [PATCH v3 15/38] ARM: i.MX: Split shared CCM code into a separate file
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add constants and helpers for system counter interface as can be found
-in section "I1.3 Generic Timer registers" of "ARM Architecture
-Reference Manual ARMv8, for ARMv8-A architecture"
+Both i.MX8 and i.MX7 have similar CCMs, so move any code that can be
+share into a separate file.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/include/asm/syscounter.h | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
- create mode 100644 arch/arm/include/asm/syscounter.h
+ arch/arm/mach-imx/include/mach/ccm.h          | 20 +++++++++++++++++++
+ .../arm/mach-imx/include/mach/imx7-ccm-regs.h | 16 +--------------
+ 2 files changed, 21 insertions(+), 15 deletions(-)
+ create mode 100644 arch/arm/mach-imx/include/mach/ccm.h
 
-diff --git a/arch/arm/include/asm/syscounter.h b/arch/arm/include/asm/syscounter.h
+diff --git a/arch/arm/mach-imx/include/mach/ccm.h b/arch/arm/mach-imx/include/mach/ccm.h
 new file mode 100644
-index 000000000..a644cfaad
+index 000000000..32254a85b
 --- /dev/null
-+++ b/arch/arm/include/asm/syscounter.h
-@@ -0,0 +1,24 @@
-+#ifndef _ASM_SYSCNT_H_
-+#define _ASM_SYSCNT_H_
++++ b/arch/arm/mach-imx/include/mach/ccm.h
+@@ -0,0 +1,20 @@
++#ifndef __IMX_CCM_H__
 +
-+#include <io.h>
++/* 0 <= n <= 190 */
++#define CCM_CCGRn_SET(n)	(0x4004 + 16 * (n))
++#define CCM_CCGRn_CLR(n)	(0x4008 + 16 * (n))
 +
-+#define SYSCNT_CNTCR		0x0000
-+#define SYSCNT_CNTCR_EN		BIT(0)
-+#define SYSCNT_CNTCR_HDBG	BIT(1)
-+#define SYSCNT_CNTCR_FCREQ(n)	BIT(8 + (n))
++/* 0 <= n <= 120 */
++#define CCM_TARGET_ROOTn(n)	(0x8000 + 128 * (n))
 +
-+#define SYSCNT_CNTFID(n)	(0x0020 + 4 * (n))
++#define CCM_TARGET_ROOTn_MUX(x)		((x) << 24)
++#define CCM_TARGET_ROOTn_ENABLE		BIT(28)
 +
-+static inline void syscnt_enable(void __iomem *syscnt)
-+{
-+	writel(SYSCNT_CNTCR_EN | SYSCNT_CNTCR_HDBG | SYSCNT_CNTCR_FCREQ(0),
-+	       syscnt + SYSCNT_CNTCR);
-+}
 +
-+static inline u32 syscnt_get_cntfrq(void __iomem *syscnt)
-+{
-+	return readl(syscnt + SYSCNT_CNTFID(0));
-+}
++#define CCM_CCGR_SETTINGn(n, s)  ((s) << ((n) * 4))
++#define CCM_CCGR_SETTINGn_NOT_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b00)
++#define CCM_CCGR_SETTINGn_NEEDED_RUN(n)		CCM_CCGR_SETTINGn(n, 0b01)
++#define CCM_CCGR_SETTINGn_NEEDED_RUN_WAIT(n)	CCM_CCGR_SETTINGn(n, 0b10)
++#define CCM_CCGR_SETTINGn_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b11)
 +
 +#endif
 \ No newline at end of file
+diff --git a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
+index 97fe240fc..43b9425df 100644
+--- a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
+@@ -1,25 +1,11 @@
+ #ifndef __MACH_IMX7_CCM_REGS_H__
+ #define __MACH_IMX7_CCM_REGS_H__
+ 
+-/* 0 <= n <= 190 */
+-#define CCM_CCGRn_SET(n)	(0x4004 + 16 * (n))
+-#define CCM_CCGRn_CLR(n)	(0x4008 + 16 * (n))
++#include "ccm.h"
+ 
+ #define CCM_CCGR_UART1		148
+ #define CCM_CCGR_UART2		149
+ 
+-#define CCM_CCGR_SETTINGn(n, s)  ((s) << ((n) * 4))
+-#define CCM_CCGR_SETTINGn_NOT_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b00)
+-#define CCM_CCGR_SETTINGn_NEEDED_RUN(n)		CCM_CCGR_SETTINGn(n, 0b01)
+-#define CCM_CCGR_SETTINGn_NEEDED_RUN_WAIT(n)	CCM_CCGR_SETTINGn(n, 0b10)
+-#define CCM_CCGR_SETTINGn_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b11)
+-
+-/* 0 <= n <= 120 */
+-#define CCM_TARGET_ROOTn(n)	(0x8000 + 128 * (n))
+-
+-#define CCM_TARGET_ROOTn_MUX(x)		((x) << 24)
+-#define CCM_TARGET_ROOTn_ENABLE		BIT(28)
+-
+ #define CLOCK_ROOT_INDEX(x)	(((x) - 0x8000) / 128)
+ 
+ /*
 -- 
 2.17.0
 
