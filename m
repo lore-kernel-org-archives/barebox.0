@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQTLr-0007eR-DJ
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 07:59:33 +0000
+ id 1fQTLr-0007eT-DK
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 07:59:35 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed,  6 Jun 2018 09:59:09 +0200
-Message-Id: <20180606075912.2470-1-o.rempel@pengutronix.de>
+Date: Wed,  6 Jun 2018 09:59:12 +0200
+Message-Id: <20180606075912.2470-4-o.rempel@pengutronix.de>
+In-Reply-To: <20180606075912.2470-1-o.rempel@pengutronix.de>
+References: <20180606075912.2470-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,38 +21,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 0/3] MIPS: provide basic ELF support
+Subject: [PATCH v4 3/3] MIPS: bootm: add ELF handler
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-changes v4:
-- rebase against latest bootm changes
+With this handler barebox will be able to start linux kernel as
+is, without additional image conversion.
 
-changes v3:
-- select ELF by MIPS
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ arch/mips/lib/bootm.c | 59 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
 
-changes v2:
-- add dryrun support
-- some style fixes
-- enable ELF parser only on supported platform (currently only MIPS)
-
-Antony Pavlov (1):
-  filetype: add ELF type
-
-Oleksij Rempel (2):
-  add basic ELF parser
-  MIPS: bootm: add ELF handler
-
- arch/mips/lib/bootm.c |  59 +++++++++++++++++
- common/Kconfig        |   5 ++
- common/Makefile       |   1 +
- common/elf.c          | 145 ++++++++++++++++++++++++++++++++++++++++++
- common/filetype.c     |   5 ++
- include/elf.h         |  10 +++
- include/filetype.h    |   1 +
- 7 files changed, 226 insertions(+)
- create mode 100644 common/elf.c
-
+diff --git a/arch/mips/lib/bootm.c b/arch/mips/lib/bootm.c
+index 91e7e1c68..f14540a4c 100644
+--- a/arch/mips/lib/bootm.c
++++ b/arch/mips/lib/bootm.c
+@@ -10,6 +10,7 @@
+ #include <restart.h>
+ 
+ #include <asm/byteorder.h>
++#include <asm/io.h>
+ 
+ static int do_bootm_barebox(struct image_data *data)
+ {
+@@ -42,11 +43,69 @@ static struct binfmt_hook binfmt_barebox_hook = {
+ 	.exec = "bootm",
+ };
+ 
++static int do_bootm_elf(struct image_data *data)
++{
++	void (*entry)(int, void *);
++	struct elf_image *elf;
++	void *fdt, *buf;
++	int ret = 0;
++
++	buf = read_file(data->os_file, NULL);
++	if (!buf)
++		return -EINVAL;
++
++	elf = elf_load_image(buf);
++	if (IS_ERR(elf))
++		return PTR_ERR(elf);
++
++	fdt = bootm_get_devicetree(data);
++	if (IS_ERR(fdt)) {
++		ret = PTR_ERR(fdt);
++		goto bootm_elf_done;
++	}
++
++	pr_info("Starting application at 0x%08lx, dts 0x%08lx...\n",
++		phys_to_virt(elf->entry), data->of_root_node);
++
++	if (data->dryrun)
++		goto bootm_elf_done;
++
++	shutdown_barebox();
++
++	entry = (void *)elf->entry;
++
++	entry(-2, phys_to_virt((unsigned long)fdt));
++
++	pr_err("ELF application terminated\n");
++	ret = -EINVAL;
++
++bootm_elf_done:
++	elf_release_image(elf);
++	free(fdt);
++	free(buf);
++
++	return ret;
++}
++
++static struct image_handler elf_handler = {
++	.name = "ELF",
++	.bootm = do_bootm_elf,
++	.filetype = filetype_elf,
++};
++
++static struct binfmt_hook binfmt_elf_hook = {
++	.type = filetype_elf,
++	.exec = "bootm",
++};
++
+ static int mips_register_image_handler(void)
+ {
+ 	register_image_handler(&barebox_handler);
+ 	binfmt_register(&binfmt_barebox_hook);
+ 
++	register_image_handler(&elf_handler);
++	binfmt_register(&binfmt_elf_hook);
++
+ 	return 0;
+ }
+ late_initcall(mips_register_image_handler);
 -- 
 2.17.1
 
