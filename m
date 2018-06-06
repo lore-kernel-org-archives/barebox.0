@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x22c.google.com ([2607:f8b0:400e:c01::22c])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQdR5-0000pQ-NI
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:46:14 +0000
-Received: by mail-pl0-x22c.google.com with SMTP id t12-v6so4356561plo.7
- for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:21 -0700 (PDT)
+ id 1fQdR7-0000qC-3n
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:46:23 +0000
+Received: by mail-pg0-x244.google.com with SMTP id l65-v6so3433421pgl.8
+ for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:22 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Jun 2018 11:44:13 -0700
-Message-Id: <20180606184431.10348-21-andrew.smirnov@gmail.com>
+Date: Wed,  6 Jun 2018 11:44:14 -0700
+Message-Id: <20180606184431.10348-22-andrew.smirnov@gmail.com>
 In-Reply-To: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 References: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,55 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 20/38] ARM: i.MX8: Initialize system counter
+Subject: [PATCH v3 21/38] ARM: i.MX: boot: Fix address casting on 64-bit
+ platforms
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add code to properly initialize system counter, so it would be posible
-to get accurate time delays.
+Add an intermediary casting step in order to avoid casting 32-bit
+integer to 64-bit pointer on 64-bit platforms.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/imx8mq.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/arm/mach-imx/boot.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/imx8mq.c b/arch/arm/mach-imx/imx8mq.c
-index 74fa8aca7..f3246e437 100644
---- a/arch/arm/mach-imx/imx8mq.c
-+++ b/arch/arm/mach-imx/imx8mq.c
-@@ -14,6 +14,8 @@
- #include <init.h>
- #include <common.h>
- #include <io.h>
-+#include <asm/syscounter.h>
-+#include <asm/system.h>
- #include <mach/generic.h>
- #include <mach/revision.h>
- #include <mach/imx8mq-regs.h>
-@@ -58,6 +60,23 @@ static void imx8mq_silicon_revision(void)
- 	imx_set_silicon_revision(cputypestr, reg);
- }
+diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+index 22cf08e6a..11105a148 100644
+--- a/arch/arm/mach-imx/boot.c
++++ b/arch/arm/mach-imx/boot.c
+@@ -485,7 +485,8 @@ void imx7_get_boot_source(enum bootsource *src, int *instance)
+ 		 */
+ 		const struct imx_boot_sw_info *info;
  
-+static int imx8mq_init_syscnt_frequency(void)
-+{
-+	void __iomem *syscnt = IOMEM(MX8MQ_SYSCNT_CTRL_BASE_ADDR);
-+	/*
-+	 * Update with accurate clock frequency
-+	 */
-+	set_cntfrq(syscnt_get_cntfrq(syscnt));
-+	syscnt_enable(syscnt);
-+
-+	return 0;
-+}
-+/*
-+ * This call needs to happen before timer driver gets probed and
-+ * requests its update frequency via cntfrq_el0
-+ */
-+core_initcall(imx8mq_init_syscnt_frequency);
-+
- int imx8mq_init(void)
- {
- 	imx8mq_silicon_revision();
+-		info = (const void *)readl(IMX_BOOT_SW_INFO_POINTER_ADDR);
++		info = (const void *)(unsigned long)
++			readl(IMX_BOOT_SW_INFO_POINTER_ADDR);
+ 
+ 		if (info->boot_device_type == IMX_BOOT_SW_INFO_BDT_SD) {
+ 			*src = BOOTSOURCE_MMC;
 -- 
 2.17.0
 
