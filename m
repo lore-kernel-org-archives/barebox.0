@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x244.google.com ([2607:f8b0:4001:c06::244])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQuIq-00070f-QS
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 12:46:10 +0000
-Received: by mail-io0-x244.google.com with SMTP id d22-v6so11605692iof.13
- for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 05:45:58 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <CACvFaDehzoBCPQRELost2kPNOMM-RaXxjk+pk59H7at4WRr68Q@mail.gmail.com>
-References: <20180606151602.11094-1-pvizeli@syshack.ch>
- <20180607072037.3jw4exty4huobpm6@pengutronix.de>
- <CACvFaDd0CUgO8+ExRriuXd4cSNLhvv5pvE=Ar07LX0ytLJiHTQ@mail.gmail.com>
- <20180607085312.xtrjlsmuxfvfv4jj@pengutronix.de>
- <CACvFaDehzoBCPQRELost2kPNOMM-RaXxjk+pk59H7at4WRr68Q@mail.gmail.com>
-From: Pascal Vizeli <pascal.vizeli@syshack.ch>
-Date: Thu, 7 Jun 2018 14:45:57 +0200
-Message-ID: <CACvFaDfDqWxCXp6dLr=9k3tT1vyNfSUcfA7agK4T8JKj_WLKWA@mail.gmail.com>
+ id 1fQdQh-0007oZ-V2
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:45:10 +0000
+Received: by mail-pg0-x241.google.com with SMTP id e11-v6so3445662pgq.0
+ for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:44:57 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed,  6 Jun 2018 11:43:53 -0700
+Message-Id: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,78 +16,185 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] command: oftree: support load device tree from memory
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Pascal Vizeli <pvizeli@syshack.ch>
+Subject: [PATCH v3 00/38] ARM: i.MX8MQ and EVK support
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Okay. I found out the problem with bad magic and they is fix now. I
-was needed a higher position into memory.
+Everyone:
 
-Anyway I found also a bug, that the fixup for partition hungs in a loop:
-Dump on internal
-flatten
-unflatten
-Run fix
-Run fixup
-Fixup memory
-End fixup
-Run fixup
-fixup boot
-End fixup
-Run fixup
-Fixup partition
+Picking up where Sascha left off, this is the next version of the
+patchset that adds support for i.MX8MQ EVK board.
 
-I will find the bug and provide a bugfix. After that all should work :)
+This patchest is also availible at:
 
-Greets
-Pascal
+  https://github.com/ndreys/barebox/tree/imx8m-support-v3
 
-2018-06-07 12:42 GMT+02:00 Pascal Vizeli <pascal.vizeli@syshack.ch>:
-> That sounds good. Thanks for the direction.
->
-> My workaround look like:
-> memcpy -d /tmp/rpi.dtb 0xf42400 0 0x10000
-> of_dump -f /tmp/rpi.dtb > /dev/null
-> oftree -f -l /tmp/rpi.dtb
->
-> Without 'of_dump', the 'oftree' give a bad magic 0x5.... error.
->
-> I need add support for HassOS to raspberry and in a second round I
-> will try to implement your suggestion.
->
-> best regards
-> Pascal
->
-> 2018-06-07 10:53 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
->> On Thu, Jun 07, 2018 at 10:29:53AM +0200, Pascal Vizeli wrote:
->>> Thanks for this workaround. I will use this.
->>>
->>> I will later send a patch they store the device tree address on
->>> raspberry into a variable.
->>> So that user can load this, if he need it.
->>>
->>> The question is now, would you allow to load a device tree with a
->>> memory address on oftree utility?
->>> And if yes, where is the best place to add this function.
->>
->> Instead of a command I would prefer if you could just store r2 from
->> the original bootloader you have been started with, and in a board
->> specific initcall you copy the devicetree you found in memory to a
->> file. Then the user has access to the devicetree with regular file
->> commands and there is no need to guess the memory address where the
->> original bootloader stored the device tree.
->>
->> Sascha
->>
->> --
->> Pengutronix e.K.                           |                             |
->> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
->> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Changes since [v2]:
+
+  - i.MX8 specific eSDHC bootstrap code code fixed to function
+    correctly with high capacity SD cards
+
+  - DDR PHY firmware converted to use Sascha's firmware framework and
+    be SoC specific (can be shared among different boards)
+
+  - DDR register definitions moved to imx8-ddrc.h as well as cleaned
+    up to contain only constants that are being used
+
+  - Incorporated imx-image i.MX8 work done by Sascha as well as extend
+    it to create valid AArch64 header
+
+  - Patchset is rebase on latest 'next' branch to accomodate recent
+    OCOTP changes
+
+Changes since [v1]:
+
+  - The patchset now allows building 1st stage bootloader that can be
+    progammed on SD card and booted standalone
+
+Currently out of scope of this patch (not tested or documented, will
+be coming in a follow up series):
+
+  - Integration of ARM Trusted Firmware
+
+  - Booting Linux kernel
+
+Current assumptions (all subject to change, but listed below to be
+explicit):
+
+  - DDR initialization code is auto-generated by i.MX8M DDR Tool and
+    used as close to as-is as possible.
+
+Feedback is wellcome!
+
+Thanks,
+Andrey Smirnov
+
+[v1] http://lists.infradead.org/pipermail/barebox/2018-March/032386.html
+[v2] http://lists.infradead.org/pipermail/barebox/2018-May/033149.html
+
+Andrey Smirnov (23):
+  net: fec_imx: Make use of IS_ALIGNED
+  ARM: i.MX: Split shared CCM code into a separate file
+  ARM: i.MX: Add IOMUX pad constants for i.MX8
+  ARM: i.MX: Add basic CCM constants for i.MX8
+  ARM: Add constants and helpers for system counter interface
+  clocksource: armv8-timer: Convert explicit assembly into helpers
+  ARM: i.MX8: Initialize system counter
+  ARM: i.MX: boot: Fix address casting on 64-bit platforms
+  ARM: boot: Add trivial i.MX8 support
+  ARM: i.MX: xload-esdhc: Rework to make code be less i.MX6-specific
+  ARM: i.MX: xload-esdhc: Allow custom buffer address, device offset
+  ARM: i.MX: xload-esdhc: Add support for i.MX8
+  pinctrl: i.MX: Add support for i.MX8
+  Documentation: imx: Change block size for 'dd' to 1024
+  Documentation: i.MX: Add missing <soctype>
+  clocksource: armv8-timer: Make armv8_clocksource_read() static
+  clocksource: armv8-timer: Make use of postcore_platform_driver()
+  Port <linux/iopoll.h> from U-Boot
+  common/clock: Move delay and timeout functions to clock.h
+  clock: Use udelay() to implement mdelay()
+  ARM: i.MX8: Add DDRC PHY and DDR CTL base addresses
+  ARM: i.MX8: Add DDRC PHY support code
+  ARM: Specify HAVE_PBL_IMAGE for CPU_64
+
+Sascha Hauer (15):
+  ARM: i.MX: xload: Fix compiler warning
+  ARM: i.MX: compile arm32 specific errata only for CPU32
+  ARM: Add i.MX8 support
+  aarch64: Add i.MX8 debug UART support
+  Include our own include/dt-bindings
+  mci: imx-esdhc: use dma mapping functions
+  net: fec_imx: remove unnecessary DMA sync ops
+  net: fec_imx: Use dma mapping functions
+  clock: Add i.MX8MQ clock driver
+  serial: i.MX: Add i.MX8 support
+  mmc: i.MX esdhc: Add i.MX8 support
+  gpio: i.MX: Add i.MX8mq support
+  ARM: i.MX: ocotp: Add i.MX8MQ support
+  Kbuild: Add $(quote)
+  Add builtin firmware support
+
+ Documentation/boards/imx.rst                  |   4 +-
+ Makefile                                      |   2 +-
+ arch/arm/Kconfig                              |   1 +
+ arch/arm/cpu/Kconfig                          |   1 +
+ arch/arm/dts/imx8mq-pinfunc.h                 | 623 +++++++++++++++++
+ arch/arm/dts/imx8mq.dtsi                      | 624 +++++++++++++++++
+ arch/arm/include/asm/syscounter.h             |  24 +
+ arch/arm/include/asm/system.h                 |  24 +
+ arch/arm/mach-imx/Kconfig                     |   9 +
+ arch/arm/mach-imx/Makefile                    |   2 +
+ arch/arm/mach-imx/boot.c                      |   8 +-
+ arch/arm/mach-imx/cpu_init.c                  |   2 +
+ arch/arm/mach-imx/imx.c                       |   4 +
+ arch/arm/mach-imx/imx8-ddrc.c                 | 114 ++++
+ arch/arm/mach-imx/imx8mq.c                    |  85 +++
+ arch/arm/mach-imx/include/mach/ccm.h          |  20 +
+ arch/arm/mach-imx/include/mach/debug_ll.h     |  11 +
+ arch/arm/mach-imx/include/mach/generic.h      |  15 +
+ .../arm/mach-imx/include/mach/imx7-ccm-regs.h |  16 +-
+ .../arm/mach-imx/include/mach/imx8-ccm-regs.h |  15 +
+ arch/arm/mach-imx/include/mach/imx8-ddrc.h    |  66 ++
+ arch/arm/mach-imx/include/mach/imx8mq-regs.h  | 123 ++++
+ .../arm/mach-imx/include/mach/imx_cpu_types.h |   1 +
+ arch/arm/mach-imx/include/mach/iomux-mx8.h    | 645 ++++++++++++++++++
+ arch/arm/mach-imx/include/mach/iomux-v3.h     |   9 +
+ arch/arm/mach-imx/include/mach/xload.h        |   2 +-
+ arch/arm/mach-imx/xload-esdhc.c               | 121 ++--
+ arch/mips/dts/include/dt-bindings             |   1 -
+ common/Kconfig                                |   8 +
+ common/clock.c                                |  52 --
+ drivers/clk/imx/Makefile                      |   3 +
+ drivers/clk/imx/clk-frac-pll.c                | 226 ++++++
+ drivers/clk/imx/clk-imx8mq.c                  | 580 ++++++++++++++++
+ drivers/clk/imx/clk-sccg-pll.c                | 242 +++++++
+ drivers/clk/imx/clk.h                         |  27 +
+ drivers/clocksource/armv8-timer.c             |  21 +-
+ drivers/gpio/gpio-imx.c                       |   3 +
+ drivers/mci/imx-esdhc.c                       |  54 +-
+ drivers/net/fec_imx.c                         |  19 +-
+ drivers/net/fec_imx.h                         |   1 +
+ drivers/nvmem/Kconfig                         |   2 +-
+ drivers/nvmem/ocotp.c                         |  10 +
+ drivers/pinctrl/imx-iomux-v3.c                |  56 +-
+ drivers/serial/serial_imx.c                   |   5 +-
+ firmware/Kconfig                              |   7 +
+ firmware/Makefile                             |  55 ++
+ include/clock.h                               |  68 +-
+ include/dt-bindings/clock/imx8mq-clock.h      | 629 +++++++++++++++++
+ include/firmware.h                            |   8 +
+ include/linux/iopoll.h                        |  69 ++
+ include/serial/imx-uart.h                     |   5 +
+ scripts/Kbuild.include                        |   1 +
+ scripts/Makefile.lib                          |   1 +
+ 53 files changed, 4538 insertions(+), 186 deletions(-)
+ create mode 100644 arch/arm/dts/imx8mq-pinfunc.h
+ create mode 100644 arch/arm/dts/imx8mq.dtsi
+ create mode 100644 arch/arm/include/asm/syscounter.h
+ create mode 100644 arch/arm/mach-imx/imx8-ddrc.c
+ create mode 100644 arch/arm/mach-imx/imx8mq.c
+ create mode 100644 arch/arm/mach-imx/include/mach/ccm.h
+ create mode 100644 arch/arm/mach-imx/include/mach/imx8-ccm-regs.h
+ create mode 100644 arch/arm/mach-imx/include/mach/imx8-ddrc.h
+ create mode 100644 arch/arm/mach-imx/include/mach/imx8mq-regs.h
+ create mode 100644 arch/arm/mach-imx/include/mach/iomux-mx8.h
+ delete mode 120000 arch/mips/dts/include/dt-bindings
+ create mode 100644 drivers/clk/imx/clk-frac-pll.c
+ create mode 100644 drivers/clk/imx/clk-imx8mq.c
+ create mode 100644 drivers/clk/imx/clk-sccg-pll.c
+ create mode 100644 firmware/Kconfig
+ create mode 100644 firmware/Makefile
+ create mode 100644 include/dt-bindings/clock/imx8mq-clock.h
+ create mode 100644 include/linux/iopoll.h
+
+-- 
+2.17.0
+
 
 _______________________________________________
 barebox mailing list
