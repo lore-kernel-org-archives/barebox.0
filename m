@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQdR2-0000qo-MN
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:46:05 +0000
-Received: by mail-pg0-x243.google.com with SMTP id m5-v6so3441428pgd.3
- for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:23 -0700 (PDT)
+ id 1fQdR4-0000oT-Ad
+ for barebox@lists.infradead.org; Wed, 06 Jun 2018 18:46:06 +0000
+Received: by mail-pf0-x243.google.com with SMTP id a22-v6so3565140pfo.12
+ for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 11:45:20 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Jun 2018 11:44:15 -0700
-Message-Id: <20180606184431.10348-23-andrew.smirnov@gmail.com>
+Date: Wed,  6 Jun 2018 11:44:12 -0700
+Message-Id: <20180606184431.10348-20-andrew.smirnov@gmail.com>
 In-Reply-To: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 References: <20180606184431.10348-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,52 +23,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 22/38] ARM: boot: Add trivial i.MX8 support
+Subject: [PATCH v3 19/38] clocksource: armv8-timer: Convert explicit assembly
+ into helpers
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-It appears that boot sources for i.MX8 are just a subset of those of
-i.MX7 and both can be handled by the same code.
+Move inline assembly related to querying and counter value as well as
+getting and setting counter frequency register into asm/system.h as
+well as converting it inot helper functions. This is done to make the
+code availible to other parts of the system.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/boot.c                 | 5 +++++
- arch/arm/mach-imx/include/mach/generic.h | 2 ++
- 2 files changed, 7 insertions(+)
+ arch/arm/include/asm/system.h     | 24 ++++++++++++++++++++++++
+ drivers/clocksource/armv8-timer.c | 13 ++-----------
+ 2 files changed, 26 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index 11105a148..ab25f75b2 100644
---- a/arch/arm/mach-imx/boot.c
-+++ b/arch/arm/mach-imx/boot.c
-@@ -624,3 +624,8 @@ void vf610_boot_save_loc(void)
- {
- 	imx_boot_save_loc(vf610_get_boot_source);
+diff --git a/arch/arm/include/asm/system.h b/arch/arm/include/asm/system.h
+index 57c76186b..5cf828ea3 100644
+--- a/arch/arm/include/asm/system.h
++++ b/arch/arm/include/asm/system.h
+@@ -77,6 +77,30 @@ static inline unsigned long read_mpidr(void)
+ 
+ 	return val;
  }
 +
-+void imx8_get_boot_source(enum bootsource *src, int *instance)
-+	__alias(imx7_get_boot_source);
++static inline void set_cntfrq(unsigned long cntfrq)
++{
++	asm volatile("msr cntfrq_el0, %0" : : "r" (cntfrq) : "memory");
++}
 +
-+void imx8_boot_save_loc(void) __alias(imx7_boot_save_loc);
-diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
-index 62838c691..dc537941a 100644
---- a/arch/arm/mach-imx/include/mach/generic.h
-+++ b/arch/arm/mach-imx/include/mach/generic.h
-@@ -16,6 +16,7 @@ void imx53_boot_save_loc(void);
- void imx6_boot_save_loc(void);
- void imx7_boot_save_loc(void);
- void vf610_boot_save_loc(void);
-+void imx8_boot_save_loc(void);
++static inline unsigned long get_cntfrq(void)
++{
++	unsigned long cntfrq;
++
++	asm volatile("mrs %0, cntfrq_el0" : "=r" (cntfrq));
++	return cntfrq;
++}
++
++static inline unsigned long get_cntpct(void)
++{
++	unsigned long cntpct;
++
++	isb();
++	asm volatile("mrs %0, cntpct_el0" : "=r" (cntpct));
++
++	return cntpct;
++}
++
+ #endif
+ static inline unsigned int get_cr(void)
+ {
+diff --git a/drivers/clocksource/armv8-timer.c b/drivers/clocksource/armv8-timer.c
+index 57b0b694c..c5306dcd2 100644
+--- a/drivers/clocksource/armv8-timer.c
++++ b/drivers/clocksource/armv8-timer.c
+@@ -22,12 +22,7 @@
  
- void imx25_get_boot_source(enum bootsource *src, int *instance);
- void imx35_get_boot_source(enum bootsource *src, int *instance);
-@@ -24,6 +25,7 @@ void imx53_get_boot_source(enum bootsource *src, int *instance);
- void imx6_get_boot_source(enum bootsource *src, int *instance);
- void imx7_get_boot_source(enum bootsource *src, int *instance);
- void vf610_get_boot_source(enum bootsource *src, int *instance);
-+void imx8_get_boot_source(enum bootsource *src, int *instance);
+ uint64_t armv8_clocksource_read(void)
+ {
+-	unsigned long cntpct;
+-
+-	isb();
+-	asm volatile("mrs %0, cntpct_el0" : "=r" (cntpct));
+-
+-	return cntpct;
++	return get_cntpct();
+ }
  
- int imx1_init(void);
- int imx21_init(void);
+ static struct clocksource cs = {
+@@ -38,11 +33,7 @@ static struct clocksource cs = {
+ 
+ static int armv8_timer_probe(struct device_d *dev)
+ {
+-	unsigned long cntfrq;
+-
+-	asm volatile("mrs %0, cntfrq_el0" : "=r" (cntfrq));
+-
+-	cs.mult = clocksource_hz2mult(cntfrq, cs.shift);
++	cs.mult = clocksource_hz2mult(get_cntfrq(), cs.shift);
+ 
+ 	return init_clock(&cs);
+ }
 -- 
 2.17.0
 
