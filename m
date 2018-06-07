@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQuY0-0006Ic-OG
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:01:49 +0000
-Received: by mail-pg0-x243.google.com with SMTP id r21-v6so4402249pgv.4
- for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:01:37 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu,  7 Jun 2018 06:00:25 -0700
-Message-Id: <20180607130108.5339-10-andrew.smirnov@gmail.com>
-In-Reply-To: <20180607130108.5339-1-andrew.smirnov@gmail.com>
-References: <20180607130108.5339-1-andrew.smirnov@gmail.com>
+Received: from mail-wr0-x243.google.com ([2a00:1450:400c:c0c::243])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fQyte-0004h4-W0
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 17:40:28 +0000
+Received: by mail-wr0-x243.google.com with SMTP id v13-v6so10702754wrp.13
+ for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 10:40:16 -0700 (PDT)
+From: Pascal Vizeli <pvizeli@syshack.ch>
+Date: Thu,  7 Jun 2018 17:40:11 +0000
+Message-Id: <20180607174011.13130-1-pvizeli@syshack.ch>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,30 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RESEND v3 09/52] net: fec_imx: Make use of IS_ALIGNED
+Subject: [PATCH 1/1] drivers: of: bugfix partition fixups
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Pascal Vizeli <pvizeli@syshack.ch>
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+If we load a new device tree for linux kernel with a diferent layout,
+the fixup of partition going into endless loop. Exactly the of_find_property
+function will never come back on a invalid device_node.
+
+My patch check, if the device will exists on device tree before we run the
+fixup.
+
+Signed-off-by: Pascal Vizeli <pvizeli@syshack.ch>
 ---
- drivers/net/fec_imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/of/partition.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 0ca594082..98711baa7 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -467,7 +467,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
- 		return -1;
- 	}
+diff --git a/drivers/of/partition.c b/drivers/of/partition.c
+index aa6e601b7..17e420964 100644
+--- a/drivers/of/partition.c
++++ b/drivers/of/partition.c
+@@ -140,6 +140,9 @@ static int of_partition_fixup(struct device_node *root, void *ctx)
+ 	if (!cdev->device_node)
+ 		return -EINVAL;
  
--	if ((unsigned long)eth_data & (DB_DATA_ALIGNMENT - 1))
-+	if (!IS_ALIGNED((unsigned long)eth_data, DB_DATA_ALIGNMENT))
- 		dev_warn(&dev->dev, "Transmit data not aligned: %p!\n", eth_data);
- 
- 	/*
++	if (!of_find_node_by_path(cdev->device_node->full_name))
++		return -EINVAL;
++
+ 	list_for_each_entry(partcdev, &cdev->partitions, partition_entry) {
+ 		if (partcdev->flags & DEVFS_PARTITION_FROM_TABLE)
+ 			continue;
 -- 
-2.17.0
+2.17.1
 
 
 _______________________________________________
