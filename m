@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x242.google.com ([2607:f8b0:4001:c0b::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQeYu-0001le-JU
- for barebox@lists.infradead.org; Wed, 06 Jun 2018 19:57:41 +0000
-Received: by mail-it0-x242.google.com with SMTP id n7-v6so9828413itn.1
- for <barebox@lists.infradead.org>; Wed, 06 Jun 2018 12:57:29 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20180606151602.11094-1-pvizeli@syshack.ch>
+ id 1fQpE2-0000Po-EY
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 07:20:52 +0000
+Date: Thu, 7 Jun 2018 09:20:37 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180607072037.3jw4exty4huobpm6@pengutronix.de>
 References: <20180606151602.11094-1-pvizeli@syshack.ch>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 6 Jun 2018 12:57:28 -0700
-Message-ID: <CAHQ1cqFr4ASW-hD96HOM7WyeRjPCFf5CnXcbBMX1fkQJQTEcUg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180606151602.11094-1-pvizeli@syshack.ch>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,33 +24,32 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/1] command: oftree: support load device tree from memory
 To: Pascal Vizeli <pvizeli@syshack.ch>
-Cc: Barebox List <barebox@lists.infradead.org>
+Cc: barebox@lists.infradead.org
 
-On Wed, Jun 6, 2018 at 8:16 AM, Pascal Vizeli <pvizeli@syshack.ch> wrote:
+On Wed, Jun 06, 2018 at 03:16:02PM +0000, Pascal Vizeli wrote:
 > DON'T MERGE: this is only a concept patch.
->
+> 
 > On some device, barebox is the second bootloader. The first bootloader provide
 > some times allready a better device tree as the linux kernel own.
 > Mostly barebox can't boot from this device tree but the linux kernel can.
->
+> 
 > This patch allow to load a device tree from memory from first bootloader.
->
-> For implementation:
->
-> Not sure what is the best. Maybe we can create a of_unflatten_file_dtb() and
-> of_unflatten_memory_dtb() they return fdt. There are a lot place they load
-> a fdt from a file and repeat the same code.
->
 
-IMHO, an ideal solution to this problem would be to either extend
-RAMFS or create a separate FS that would allow mounting an arbitrary
-blob in RAM as a file with size determined using
-file_name_detect_type() + custom code or specified explicitly.
+Note while it may be handy to have a command for that, you can already
+do this without writing code:
 
-That's quite a bit more work that this patch, though.
+memcpy -d /mydtb <dtbaddress> 0 0x10000
+oftree -l /mydtb
 
-Thanks,
-Andrey Smirnov
+The only drawback is that you have to guess the size of the dtb.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
