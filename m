@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x229.google.com ([2607:f8b0:400e:c01::229])
+Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQuYD-00069j-Lu
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:07 +0000
-Received: by mail-pl0-x229.google.com with SMTP id b14-v6so6112828pls.5
- for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:01:51 -0700 (PDT)
+ id 1fQuY8-00069L-SC
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:06 +0000
+Received: by mail-pl0-x244.google.com with SMTP id f1-v6so6108207plt.6
+ for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:01:46 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu,  7 Jun 2018 06:00:38 -0700
-Message-Id: <20180607130108.5339-23-andrew.smirnov@gmail.com>
+Date: Thu,  7 Jun 2018 06:00:34 -0700
+Message-Id: <20180607130108.5339-19-andrew.smirnov@gmail.com>
 In-Reply-To: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 References: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,52 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RESEND v3 22/52] ARM: boot: Add trivial i.MX8 support
+Subject: [RESEND v3 18/52] ARM: Add constants and helpers for system counter
+ interface
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-It appears that boot sources for i.MX8 are just a subset of those of
-i.MX7 and both can be handled by the same code.
+Add constants and helpers for system counter interface as can be found
+in section "I1.3 Generic Timer registers" of "ARM Architecture
+Reference Manual ARMv8, for ARMv8-A architecture"
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/boot.c                 | 5 +++++
- arch/arm/mach-imx/include/mach/generic.h | 2 ++
- 2 files changed, 7 insertions(+)
+ arch/arm/include/asm/syscounter.h | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+ create mode 100644 arch/arm/include/asm/syscounter.h
 
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index 11105a148..ab25f75b2 100644
---- a/arch/arm/mach-imx/boot.c
-+++ b/arch/arm/mach-imx/boot.c
-@@ -624,3 +624,8 @@ void vf610_boot_save_loc(void)
- {
- 	imx_boot_save_loc(vf610_get_boot_source);
- }
+diff --git a/arch/arm/include/asm/syscounter.h b/arch/arm/include/asm/syscounter.h
+new file mode 100644
+index 000000000..a644cfaad
+--- /dev/null
++++ b/arch/arm/include/asm/syscounter.h
+@@ -0,0 +1,24 @@
++#ifndef _ASM_SYSCNT_H_
++#define _ASM_SYSCNT_H_
 +
-+void imx8_get_boot_source(enum bootsource *src, int *instance)
-+	__alias(imx7_get_boot_source);
++#include <io.h>
 +
-+void imx8_boot_save_loc(void) __alias(imx7_boot_save_loc);
-diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
-index 62838c691..dc537941a 100644
---- a/arch/arm/mach-imx/include/mach/generic.h
-+++ b/arch/arm/mach-imx/include/mach/generic.h
-@@ -16,6 +16,7 @@ void imx53_boot_save_loc(void);
- void imx6_boot_save_loc(void);
- void imx7_boot_save_loc(void);
- void vf610_boot_save_loc(void);
-+void imx8_boot_save_loc(void);
- 
- void imx25_get_boot_source(enum bootsource *src, int *instance);
- void imx35_get_boot_source(enum bootsource *src, int *instance);
-@@ -24,6 +25,7 @@ void imx53_get_boot_source(enum bootsource *src, int *instance);
- void imx6_get_boot_source(enum bootsource *src, int *instance);
- void imx7_get_boot_source(enum bootsource *src, int *instance);
- void vf610_get_boot_source(enum bootsource *src, int *instance);
-+void imx8_get_boot_source(enum bootsource *src, int *instance);
- 
- int imx1_init(void);
- int imx21_init(void);
++#define SYSCNT_CNTCR		0x0000
++#define SYSCNT_CNTCR_EN		BIT(0)
++#define SYSCNT_CNTCR_HDBG	BIT(1)
++#define SYSCNT_CNTCR_FCREQ(n)	BIT(8 + (n))
++
++#define SYSCNT_CNTFID(n)	(0x0020 + 4 * (n))
++
++static inline void syscnt_enable(void __iomem *syscnt)
++{
++	writel(SYSCNT_CNTCR_EN | SYSCNT_CNTCR_HDBG | SYSCNT_CNTCR_FCREQ(0),
++	       syscnt + SYSCNT_CNTCR);
++}
++
++static inline u32 syscnt_get_cntfrq(void __iomem *syscnt)
++{
++	return readl(syscnt + SYSCNT_CNTFID(0));
++}
++
++#endif
+\ No newline at end of file
 -- 
 2.17.0
 
