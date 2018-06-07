@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x22c.google.com ([2607:f8b0:400e:c00::22c])
+Received: from mail-pl0-x243.google.com ([2607:f8b0:400e:c01::243])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQuYX-0006L1-MG
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:22 +0000
-Received: by mail-pf0-x22c.google.com with SMTP id y5-v6so3985889pfn.4
- for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:02:10 -0700 (PDT)
+ id 1fQuYZ-0006Lz-Bu
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:28 +0000
+Received: by mail-pl0-x243.google.com with SMTP id a7-v6so3613130plp.3
+ for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:02:23 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu,  7 Jun 2018 06:00:51 -0700
-Message-Id: <20180607130108.5339-36-andrew.smirnov@gmail.com>
+Date: Thu,  7 Jun 2018 06:01:03 -0700
+Message-Id: <20180607130108.5339-48-andrew.smirnov@gmail.com>
 In-Reply-To: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 References: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,28 +23,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RESEND v3 35/52] Kbuild: Add $(quote)
+Subject: [RESEND v3 47/52] ARM: include: dma: Add missing no-MMU stubs
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+Add stubs for dma_map_single() and dma_unmap_single() that were needed
+for no-MMU build for ARM64 to succeed.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- scripts/Kbuild.include | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/include/asm/dma.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
-index f3771902b..512d21732 100644
---- a/scripts/Kbuild.include
-+++ b/scripts/Kbuild.include
-@@ -3,6 +3,7 @@
+diff --git a/arch/arm/include/asm/dma.h b/arch/arm/include/asm/dma.h
+index a68886b16..bb7e62af0 100644
+--- a/arch/arm/include/asm/dma.h
++++ b/arch/arm/include/asm/dma.h
+@@ -34,6 +34,17 @@ static inline void dma_free_coherent(void *mem, dma_addr_t dma_handle,
+ 	free(mem);
+ }
  
- # Convenient variables
- comma   := ,
-+quote   := "
- squote  := '
- empty   :=
- space   := $(empty) $(empty)
++static inline dma_addr_t dma_map_single(struct device_d *dev, void *ptr, size_t size,
++					enum dma_data_direction dir)
++{
++	return (dma_addr_t)ptr;
++}
++
++static inline void dma_unmap_single(struct device_d *dev, dma_addr_t addr, size_t size,
++				    enum dma_data_direction dir)
++{
++}
++
+ static inline void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
+ 					   enum dma_data_direction dir)
+ {
 -- 
 2.17.0
 
