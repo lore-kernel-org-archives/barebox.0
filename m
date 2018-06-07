@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x243.google.com ([2607:f8b0:400e:c01::243])
+Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQuYA-0008H3-8V
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:56 +0000
-Received: by mail-pl0-x243.google.com with SMTP id c41-v6so6099224plj.10
- for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:01:48 -0700 (PDT)
+ id 1fQuYO-0008QK-CK
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:03:10 +0000
+Received: by mail-pl0-x242.google.com with SMTP id 31-v6so6107628plc.4
+ for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:02:02 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu,  7 Jun 2018 06:00:35 -0700
-Message-Id: <20180607130108.5339-20-andrew.smirnov@gmail.com>
+Date: Thu,  7 Jun 2018 06:00:47 -0700
+Message-Id: <20180607130108.5339-32-andrew.smirnov@gmail.com>
 In-Reply-To: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 References: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,88 +23,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RESEND v3 19/52] clocksource: armv8-timer: Convert explicit assembly
- into helpers
+Subject: [RESEND v3 31/52] Port <linux/iopoll.h> from U-Boot
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Move inline assembly related to querying and counter value as well as
-getting and setting counter frequency register into asm/system.h as
-well as converting it inot helper functions. This is done to make the
-code availible to other parts of the system.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/include/asm/system.h     | 24 ++++++++++++++++++++++++
- drivers/clocksource/armv8-timer.c | 13 ++-----------
- 2 files changed, 26 insertions(+), 11 deletions(-)
+ include/linux/iopoll.h | 69 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
+ create mode 100644 include/linux/iopoll.h
 
-diff --git a/arch/arm/include/asm/system.h b/arch/arm/include/asm/system.h
-index 57c76186b..5cf828ea3 100644
---- a/arch/arm/include/asm/system.h
-+++ b/arch/arm/include/asm/system.h
-@@ -77,6 +77,30 @@ static inline unsigned long read_mpidr(void)
- 
- 	return val;
- }
+diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
+new file mode 100644
+index 000000000..6e8a6fd71
+--- /dev/null
++++ b/include/linux/iopoll.h
+@@ -0,0 +1,69 @@
++/*
++ * Copyright (c) 2012-2014 The Linux Foundation. All rights reserved.
++ *
++ * SPDX-License-Identifier:	GPL-2.0
++ */
 +
-+static inline void set_cntfrq(unsigned long cntfrq)
-+{
-+	asm volatile("msr cntfrq_el0, %0" : : "r" (cntfrq) : "memory");
-+}
++#ifndef _LINUX_IOPOLL_H
++#define _LINUX_IOPOLL_H
 +
-+static inline unsigned long get_cntfrq(void)
-+{
-+	unsigned long cntfrq;
++#include <errno.h>
++#include <io.h>
++#include <clock.h>
 +
-+	asm volatile("mrs %0, cntfrq_el0" : "=r" (cntfrq));
-+	return cntfrq;
-+}
++/**
++ * readx_poll_timeout - Periodically poll an address until a condition is met or a timeout occurs
++ * @op: accessor function (takes @addr as its only argument)
++ * @addr: Address to poll
++ * @val: Variable to read the value into
++ * @cond: Break condition (usually involving @val)
++ * @timeout_ns: Timeout in ns, 0 means never timeout
++ *
++ * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
++ * case, the last read value at @addr is stored in @val.
++ *
++ * When available, you'll probably want to use one of the specialized
++ * macros defined below rather than this macro directly.
++ */
++#define readx_poll_timeout(op, addr, val, cond, timeout_ns)	\
++({ \
++	uint64_t start = get_time_ns(); \
++	for (;;) { \
++		(val) = op(addr); \
++		if (cond) \
++			break; \
++		if (timeout_ns && \
++		    is_timeout(start, (timeout_ns))) {	\
++			(val) = op(addr); \
++			break; \
++		} \
++	} \
++	(cond) ? 0 : -ETIMEDOUT; \
++})
 +
-+static inline unsigned long get_cntpct(void)
-+{
-+	unsigned long cntpct;
 +
-+	isb();
-+	asm volatile("mrs %0, cntpct_el0" : "=r" (cntpct));
++#define readb_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readb, addr, val, cond, timeout_us)
 +
-+	return cntpct;
-+}
++#define readw_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readw, addr, val, cond, timeout_us)
 +
- #endif
- static inline unsigned int get_cr(void)
- {
-diff --git a/drivers/clocksource/armv8-timer.c b/drivers/clocksource/armv8-timer.c
-index 57b0b694c..c5306dcd2 100644
---- a/drivers/clocksource/armv8-timer.c
-+++ b/drivers/clocksource/armv8-timer.c
-@@ -22,12 +22,7 @@
- 
- uint64_t armv8_clocksource_read(void)
- {
--	unsigned long cntpct;
--
--	isb();
--	asm volatile("mrs %0, cntpct_el0" : "=r" (cntpct));
--
--	return cntpct;
-+	return get_cntpct();
- }
- 
- static struct clocksource cs = {
-@@ -38,11 +33,7 @@ static struct clocksource cs = {
- 
- static int armv8_timer_probe(struct device_d *dev)
- {
--	unsigned long cntfrq;
--
--	asm volatile("mrs %0, cntfrq_el0" : "=r" (cntfrq));
--
--	cs.mult = clocksource_hz2mult(cntfrq, cs.shift);
-+	cs.mult = clocksource_hz2mult(get_cntfrq(), cs.shift);
- 
- 	return init_clock(&cs);
- }
++#define readl_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readl, addr, val, cond, timeout_us)
++
++#define readq_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readq, addr, val, cond, timeout_us)
++
++#define readb_relaxed_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readb_relaxed, addr, val, cond, timeout_us)
++
++#define readw_relaxed_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readw_relaxed, addr, val, cond, timeout_us)
++
++#define readl_relaxed_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readl_relaxed, addr, val, cond, timeout_us)
++
++#define readq_relaxed_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readq_relaxed, addr, val, cond, timeout_us)
++
++#endif /* _LINUX_IOPOLL_H */
 -- 
 2.17.0
 
