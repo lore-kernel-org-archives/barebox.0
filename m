@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x243.google.com ([2607:f8b0:400e:c01::243])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQuYh-0006Dd-Ht
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:33 +0000
-Received: by mail-pl0-x243.google.com with SMTP id c23-v6so6097615plz.12
- for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:02:21 -0700 (PDT)
+ id 1fQuYR-0006Bx-T2
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:20 +0000
+Received: by mail-pf0-x241.google.com with SMTP id q1-v6so4885861pff.13
+ for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:02:05 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu,  7 Jun 2018 06:01:02 -0700
-Message-Id: <20180607130108.5339-47-andrew.smirnov@gmail.com>
+Date: Thu,  7 Jun 2018 06:00:49 -0700
+Message-Id: <20180607130108.5339-34-andrew.smirnov@gmail.com>
 In-Reply-To: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 References: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,41 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RESEND v3 46/52] ARM: mmu64: Convert flags in arch_remap_range()
+Subject: [RESEND v3 33/52] clock: Use udelay() to implement mdelay()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Flags passed to arch_remap_range() are architecture independent, so it
-can't be passed as is to map_region(). Add code to do the proper
-conversion to avoid subtle bugs that this confusion brings.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu_64.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ include/clock.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 820d8cf75..11928352b 100644
---- a/arch/arm/cpu/mmu_64.c
-+++ b/arch/arm/cpu/mmu_64.c
-@@ -171,6 +171,17 @@ static void create_sections(uint64_t virt, uint64_t phys, uint64_t size, uint64_
+diff --git a/include/clock.h b/include/clock.h
+index 38b335c2c..8e40451a3 100644
+--- a/include/clock.h
++++ b/include/clock.h
+@@ -86,9 +86,7 @@ static inline void udelay(unsigned long usecs)
  
- int arch_remap_range(void *_start, size_t size, unsigned flags)
+ static inline void mdelay(unsigned long msecs)
  {
-+ 	switch (flags) {
-+ 	case MAP_CACHED:
-+ 		flags = CACHED_MEM;
-+ 		break;
-+ 	case MAP_UNCACHED:
-+		flags = UNCACHED_MEM;
-+		break;
-+ 	default:
-+ 		return -EINVAL;
-+ 	}
-+
- 	map_region((uint64_t)_start, (uint64_t)_start, (uint64_t)size, flags);
- 	tlb_invalidate();
+-	uint64_t start = get_time_ns();
+-
+-	while(!is_timeout(start, msecs * MSECOND));
++	udelay(msecs * MSECOND / USECOND);
+ }
  
+ static inline void mdelay_non_interruptible(unsigned long msecs)
 -- 
 2.17.0
 
