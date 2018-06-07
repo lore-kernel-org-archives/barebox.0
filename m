@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQuY1-0008DN-Bh
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:39 +0000
-Received: by mail-pl0-x241.google.com with SMTP id g20-v6so6118006plq.1
- for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:01:41 -0700 (PDT)
+ id 1fQuY4-0008Dg-KP
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:46 +0000
+Received: by mail-pg0-x244.google.com with SMTP id m5-v6so4736514pgd.3
+ for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:01:42 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu,  7 Jun 2018 06:00:30 -0700
-Message-Id: <20180607130108.5339-15-andrew.smirnov@gmail.com>
+Date: Thu,  7 Jun 2018 06:00:31 -0700
+Message-Id: <20180607130108.5339-16-andrew.smirnov@gmail.com>
 In-Reply-To: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 References: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,61 +23,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RESEND v3 14/52] ARM: i.MX: ocotp: Add i.MX8MQ support
+Subject: [RESEND v3 15/52] ARM: i.MX: Split shared CCM code into a separate
+ file
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+Both i.MX8 and i.MX7 have similar CCMs, so move any code that can be
+share into a separate file.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-[andrew.smirnov@gmail.com: Rebased to account for move to nvmem]
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/nvmem/Kconfig |  2 +-
- drivers/nvmem/ocotp.c | 10 ++++++++++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/include/mach/ccm.h          | 20 +++++++++++++++++++
+ .../arm/mach-imx/include/mach/imx7-ccm-regs.h | 16 +--------------
+ 2 files changed, 21 insertions(+), 15 deletions(-)
+ create mode 100644 arch/arm/mach-imx/include/mach/ccm.h
 
-diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
-index 53086d1aa..a3797b4aa 100644
---- a/drivers/nvmem/Kconfig
-+++ b/drivers/nvmem/Kconfig
-@@ -18,7 +18,7 @@ config NVMEM_SNVS_LPGPR
- 
- config IMX_OCOTP
- 	tristate "i.MX6 On Chip OTP controller"
--	depends on ARCH_IMX6 || ARCH_VF610
-+	depends on ARCH_IMX6 || ARCH_VF610 || ARCH_IMX8MQ
- 	depends on OFDEVICE
- 	help
- 	  This adds support for the i.MX6 On-Chip OTP controller. Currently the
-diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index 86d0b9cd0..f3af8620e 100644
---- a/drivers/nvmem/ocotp.c
-+++ b/drivers/nvmem/ocotp.c
-@@ -647,6 +647,13 @@ static struct imx_ocotp_data vf610_ocotp_data = {
- 	.format_mac = vf610_ocotp_format_mac,
- };
- 
-+static struct imx_ocotp_data imx8mq_ocotp_data = {
-+	.num_regs = 2048,
-+	.addr_to_offset = imx6sl_addr_to_offset,
-+	.mac_offsets_num = 1,
-+	.mac_offsets = { 0x90 },
-+};
+diff --git a/arch/arm/mach-imx/include/mach/ccm.h b/arch/arm/mach-imx/include/mach/ccm.h
+new file mode 100644
+index 000000000..32254a85b
+--- /dev/null
++++ b/arch/arm/mach-imx/include/mach/ccm.h
+@@ -0,0 +1,20 @@
++#ifndef __IMX_CCM_H__
 +
- static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
- 	{
- 		.compatible = "fsl,imx6q-ocotp",
-@@ -660,6 +667,9 @@ static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
- 	}, {
- 		.compatible = "fsl,imx6ul-ocotp",
- 		.data = &imx6q_ocotp_data,
-+	}, {
-+		.compatible = "fsl,imx8mq-ocotp",
-+		.data = &imx8mq_ocotp_data,
- 	}, {
- 		.compatible = "fsl,vf610-ocotp",
- 		.data = &vf610_ocotp_data,
++/* 0 <= n <= 190 */
++#define CCM_CCGRn_SET(n)	(0x4004 + 16 * (n))
++#define CCM_CCGRn_CLR(n)	(0x4008 + 16 * (n))
++
++/* 0 <= n <= 120 */
++#define CCM_TARGET_ROOTn(n)	(0x8000 + 128 * (n))
++
++#define CCM_TARGET_ROOTn_MUX(x)		((x) << 24)
++#define CCM_TARGET_ROOTn_ENABLE		BIT(28)
++
++
++#define CCM_CCGR_SETTINGn(n, s)  ((s) << ((n) * 4))
++#define CCM_CCGR_SETTINGn_NOT_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b00)
++#define CCM_CCGR_SETTINGn_NEEDED_RUN(n)		CCM_CCGR_SETTINGn(n, 0b01)
++#define CCM_CCGR_SETTINGn_NEEDED_RUN_WAIT(n)	CCM_CCGR_SETTINGn(n, 0b10)
++#define CCM_CCGR_SETTINGn_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b11)
++
++#endif
+\ No newline at end of file
+diff --git a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
+index 97fe240fc..43b9425df 100644
+--- a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
+@@ -1,25 +1,11 @@
+ #ifndef __MACH_IMX7_CCM_REGS_H__
+ #define __MACH_IMX7_CCM_REGS_H__
+ 
+-/* 0 <= n <= 190 */
+-#define CCM_CCGRn_SET(n)	(0x4004 + 16 * (n))
+-#define CCM_CCGRn_CLR(n)	(0x4008 + 16 * (n))
++#include "ccm.h"
+ 
+ #define CCM_CCGR_UART1		148
+ #define CCM_CCGR_UART2		149
+ 
+-#define CCM_CCGR_SETTINGn(n, s)  ((s) << ((n) * 4))
+-#define CCM_CCGR_SETTINGn_NOT_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b00)
+-#define CCM_CCGR_SETTINGn_NEEDED_RUN(n)		CCM_CCGR_SETTINGn(n, 0b01)
+-#define CCM_CCGR_SETTINGn_NEEDED_RUN_WAIT(n)	CCM_CCGR_SETTINGn(n, 0b10)
+-#define CCM_CCGR_SETTINGn_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b11)
+-
+-/* 0 <= n <= 120 */
+-#define CCM_TARGET_ROOTn(n)	(0x8000 + 128 * (n))
+-
+-#define CCM_TARGET_ROOTn_MUX(x)		((x) << 24)
+-#define CCM_TARGET_ROOTn_ENABLE		BIT(28)
+-
+ #define CLOCK_ROOT_INDEX(x)	(((x) - 0x8000) / 128)
+ 
+ /*
 -- 
 2.17.0
 
