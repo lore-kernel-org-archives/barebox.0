@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fR112-0003QY-SE
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 19:56:14 +0000
+ id 1fR112-0003QZ-S8
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 19:56:16 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu,  7 Jun 2018 21:55:52 +0200
-Message-Id: <20180607195552.15246-3-o.rempel@pengutronix.de>
+Date: Thu,  7 Jun 2018 21:55:51 +0200
+Message-Id: <20180607195552.15246-2-o.rempel@pengutronix.de>
 In-Reply-To: <20180607195552.15246-1-o.rempel@pengutronix.de>
 References: <20180607195552.15246-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,46 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/3] MIPS: dts: dpt-module: add Atheros ART partition
+Subject: [PATCH v2 2/3] MIPS: dts: tl_wdr4300: add Atheros ART partition
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Oleksij Rempel <linux@rempel-privat.de>
+
+From: Oleksij Rempel <linux@rempel-privat.de>
 
 and define it as source of MAC address for ag71xx driver
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- arch/mips/dts/ar9331-dptechnics-dpt-module.dts | 11 +++++++++++
+ arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts | 11 +++++++++++
  1 file changed, 11 insertions(+)
 
-diff --git a/arch/mips/dts/ar9331-dptechnics-dpt-module.dts b/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
-index 2c38bbc09..59bb0dd40 100644
---- a/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
-+++ b/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
-@@ -11,6 +11,12 @@
+diff --git a/arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts b/arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts
+index 5216cdc1e..c9ce12058 100644
+--- a/arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts
++++ b/arch/mips/dts/ar9344-tl-wdr4300-v1.7.dts
+@@ -26,6 +26,12 @@
  			compatible = "barebox,environment";
  			device-path = &spiflash, "partname:barebox-environment";
  		};
 +
 +		art@0 {
-+			compatible = "qca,art-ar9331", "qca,art";
++			compatible = "qca,art-ar9344", "qca,art";
 +			device-path = &spiflash_art;
 +			barebox,provide-mac-address = <&mac0>;
 +		};
  	};
- 
- 	leds {
-@@ -30,6 +36,11 @@
- 		label = "barebox-environment";
- 		reg = <0x80000 0x10000>;
- 	};
-+
-+	spiflash_art: partition@7f0000 {
-+		label = "art";
-+		reg = <0x7f0000 0x10000>;
-+	};
  };
  
- &mac0 {
+@@ -63,6 +69,11 @@
+ 			label = "barebox-environment";
+ 			reg = <0x80000 0x10000>;
+ 		};
++
++		spiflash_art: partition@7f0000 {
++			label = "art";
++			reg = <0x7f0000 0x10000>;
++		};
+ 	};
+ };
+ 
 -- 
 2.17.1
 
