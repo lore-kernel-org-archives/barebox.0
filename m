@@ -1,13 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fPFBB-0003Sg-Ma
- for barebox@lists.infradead.org; Sat, 02 Jun 2018 22:39:23 +0000
-Received: by mail-wm0-x244.google.com with SMTP id r15-v6so8953133wmc.1
- for <barebox@lists.infradead.org>; Sat, 02 Jun 2018 15:39:10 -0700 (PDT)
-From: Pascal Vizeli <pvizeli@syshack.ch>
-Date: Sat,  2 Jun 2018 22:39:04 +0000
-Message-Id: <20180602223904.29018-1-pvizeli@syshack.ch>
+ id 1fR1uE-0006Pp-VB
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 20:53:16 +0000
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <ukl@pengutronix.de>) id 1fR1u1-0003hg-RC
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 22:53:01 +0200
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+ (envelope-from <ukl@pengutronix.de>) id 1fR1u1-0008Sd-Hl
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 22:53:01 +0200
+Date: Thu, 7 Jun 2018 22:53:01 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20180607205301.wepjy427l3dyuqds@pengutronix.de>
+References: <20180601180750.5436-1-u.kleine-koenig@pengutronix.de>
+ <20180601180750.5436-2-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180601180750.5436-2-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,52 +27,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] common: state: allow to overlay state backend
+Subject: Re: [PATCH 2/4] libfile: implement new helper write_file_flash()
 To: barebox@lists.infradead.org
-Cc: Pascal Vizeli <pvizeli@syshack.ch>
 
-This allow to use overlay for state backends. I.e. on raspberry you need
-use barebox with SDHCI (slow) and after linux boot it will use SDHOST driver.
-But the problem now is, that the state is on SDHCI and dt-utils need it on
-SDHOST. Actual it is not possible to overwrite this.
+Hello,
 
-Signed-off-by: Pascal Vizeli <pvizeli@syshack.ch>
----
- common/state/state.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+On Fri, Jun 01, 2018 at 08:07:48PM +0200, Uwe Kleine-K=F6nig wrote:
+> +	fd =3D open(filename, O_WRONLY | O_TRUNC | O_CREAT);
 
-diff --git a/common/state/state.c b/common/state/state.c
-index 25d950211..e6259043f 100644
---- a/common/state/state.c
-+++ b/common/state/state.c
-@@ -494,8 +494,17 @@ static int of_state_fixup(struct device_node *root, void *ctx)
- 	}
- 
- 	/* backend phandle */
--	backend_node = of_find_node_by_reproducible_name(root,
--						state->backend_reproducible_name);
-+	if (node) {
-+		ret = of_property_read_u32(node, "backend", &phandle);
-+		if (ret)
-+			goto out;
-+
-+		backend_node = of_find_node_by_phandle_from(phandle, root);
-+	} else {
-+		backend_node = of_find_node_by_reproducible_name(root,
-+					state->backend_reproducible_name);
-+	}
-+
- 	if (!backend_node) {
- 		ret = -ENODEV;
- 		goto out;
--- 
-2.17.0
+This doesn't work on the target machine (dove cubox) I intended to use
+it on an m25p0 device. It returns -28. When dropping O_TRUNC | O_CREAT
+it works though. So I suggest to either back out patches 3 and 4, or
+change the line above to O_WRONLY (which also matches the function
+removed in patch 4).
 
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
