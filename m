@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x231.google.com ([2607:f8b0:400e:c00::231])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQuYm-0000CG-Rk
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:03:59 +0000
-Received: by mail-pf0-x231.google.com with SMTP id r11-v6so4897184pfl.6
- for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:02:26 -0700 (PDT)
+Received: from mail-pl0-x243.google.com ([2607:f8b0:400e:c01::243])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fQuYh-0006Dd-Ht
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:33 +0000
+Received: by mail-pl0-x243.google.com with SMTP id c23-v6so6097615plz.12
+ for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:02:21 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu,  7 Jun 2018 06:01:07 -0700
-Message-Id: <20180607130108.5339-52-andrew.smirnov@gmail.com>
+Date: Thu,  7 Jun 2018 06:01:02 -0700
+Message-Id: <20180607130108.5339-47-andrew.smirnov@gmail.com>
 In-Reply-To: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 References: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,177 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RESEND v3 51/52] scripts: imx-image: Add i.MX8MQ support
+Subject: [RESEND v3 46/52] ARM: mmu64: Convert flags in arch_remap_range()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+Flags passed to arch_remap_range() are architecture independent, so it
+can't be passed as is to map_region(). Add code to do the proper
+conversion to avoid subtle bugs that this confusion brings.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- scripts/imx/imx-image.c | 55 +++++++++++++++++++++++++++++++++++++----
- scripts/imx/imx.c       | 23 +++++++++++------
- scripts/imx/imx.h       |  2 ++
- 3 files changed, 67 insertions(+), 13 deletions(-)
+ arch/arm/cpu/mmu_64.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index 09686f69c..3f36b6a26 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -57,8 +57,8 @@ static char *prgname;
-  */
+diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+index 820d8cf75..11928352b 100644
+--- a/arch/arm/cpu/mmu_64.c
++++ b/arch/arm/cpu/mmu_64.c
+@@ -171,6 +171,17 @@ static void create_sections(uint64_t virt, uint64_t phys, uint64_t size, uint64_
  
- 
--static uint32_t bb_header[] = {
--	0xea0003fe,	/* b 0x1000 */
-+static uint32_t bb_header_aarch32[] = {
-+	0xeafffffe,	/* 1: b 1b  */
- 	0xeafffffe,	/* 1: b 1b  */
- 	0xeafffffe,	/* 1: b 1b  */
- 	0xeafffffe,	/* 1: b 1b  */
-@@ -80,6 +80,29 @@ static uint32_t bb_header[] = {
- 	0x55555555,
- };
- 
-+static uint32_t bb_header_aarch64[] = {
-+	0x14000000,	/* 1: b 1b  */
-+	0x14000000,	/* 1: b 1b  */
-+	0x14000000,	/* 1: b 1b  */
-+	0x14000000,	/* 1: b 1b  */
-+	0x14000000,	/* 1: b 1b  */
-+	0x14000000,	/* 1: b 1b  */
-+	0x14000000,	/* 1: b 1b  */
-+	0x14000000,	/* 1: b 1b  */
-+	0x65726162,	/* 'bare'   */
-+	0x00786f62,	/* 'box\0'  */
-+	0x00000000,
-+	0x00000000,
-+	0x55555555,
-+	0x55555555,
-+	0x55555555,
-+	0x55555555,
-+	0x55555555,
-+	0x55555555,
-+	0x55555555,
-+	0x55555555,
-+};
-+
- struct hab_rsa_public_key {
- 	uint8_t rsa_exponent[4]; /* RSA public exponent */
- 	uint32_t rsa_modulus; /* RSA modulus pointer */
-@@ -660,6 +683,11 @@ static void *read_file(const char *filename, size_t *size)
- 	return buf;
- }
- 
-+static bool cpu_is_aarch64(const struct config_data *data)
-+{
-+	return data->cpu_type == IMX_CPU_IMX8MQ;
-+}
-+
- int main(int argc, char *argv[])
+ int arch_remap_range(void *_start, size_t size, unsigned flags)
  {
- 	int opt, ret;
-@@ -679,6 +707,8 @@ int main(int argc, char *argv[])
- 		.check = check,
- 		.nop = nop,
- 	};
-+	uint32_t *bb_header;
-+	size_t sizeof_bb_header;
- 
- 	prgname = argv[0];
- 
-@@ -818,15 +848,30 @@ int main(int argc, char *argv[])
- 		exit(1);
- 	}
- 
-+	if (cpu_is_aarch64(&data)) {
-+		bb_header = bb_header_aarch64;
-+		sizeof_bb_header = sizeof(bb_header_aarch64);
-+	} else {
-+		bb_header = bb_header_aarch32;
-+		sizeof_bb_header = sizeof(bb_header_aarch32);
-+	}
++ 	switch (flags) {
++ 	case MAP_CACHED:
++ 		flags = CACHED_MEM;
++ 		break;
++ 	case MAP_UNCACHED:
++		flags = UNCACHED_MEM;
++		break;
++ 	default:
++ 		return -EINVAL;
++ 	}
 +
-+	bb_header[0] = data.first_opcode;
-+
- 	ret = xwrite(outfd, add_barebox_header ? bb_header : buf,
--		     sizeof(bb_header));
-+		     sizeof_bb_header);
- 	if (ret < 0) {
- 		perror("write");
- 		exit(1);
- 	}
+ 	map_region((uint64_t)_start, (uint64_t)_start, (uint64_t)size, flags);
+ 	tlb_invalidate();
  
--	ret = xwrite(outfd, buf + sizeof(bb_header),
--		     HEADER_LEN - sizeof(bb_header));
-+	if (lseek(outfd, data.header_gap, SEEK_CUR) < 0) {
-+		perror("lseek");
-+		exit(1);
-+	}
-+
-+	ret = xwrite(outfd, buf + sizeof_bb_header,
-+		     HEADER_LEN - sizeof_bb_header);
- 	if (ret < 0) {
- 		perror("write");
- 		exit(1);
-diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-index fb6ac001e..d3786b6e1 100644
---- a/scripts/imx/imx.c
-+++ b/scripts/imx/imx.c
-@@ -222,17 +222,22 @@ struct soc_type {
- 	char *name;
- 	int header_version;
- 	int cpu_type;
-+	off_t header_gap;
-+	uint32_t first_opcode;
- };
- 
-+#define SZ_32K	(32 * 1024)
-+
- static struct soc_type socs[] = {
--	{ .name = "imx25", .header_version = 1, .cpu_type = IMX_CPU_IMX25 },
--	{ .name = "imx35", .header_version = 1, .cpu_type = IMX_CPU_IMX35 },
--	{ .name = "imx50", .header_version = 2, .cpu_type = IMX_CPU_IMX50 },
--	{ .name = "imx51", .header_version = 1, .cpu_type = IMX_CPU_IMX51 },
--	{ .name = "imx53", .header_version = 2, .cpu_type = IMX_CPU_IMX53 },
--	{ .name = "imx6", .header_version = 2, .cpu_type = IMX_CPU_IMX6 },
--	{ .name = "imx7", .header_version = 2, .cpu_type = IMX_CPU_IMX7 },
--	{ .name = "vf610", .header_version = 2, .cpu_type = IMX_CPU_VF610 },
-+	{ .name = "imx25",  .header_version = 1, .cpu_type = IMX_CPU_IMX25,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
-+	{ .name = "imx35",  .header_version = 1, .cpu_type = IMX_CPU_IMX35,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
-+	{ .name = "imx50",  .header_version = 2, .cpu_type = IMX_CPU_IMX50,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
-+	{ .name = "imx51",  .header_version = 1, .cpu_type = IMX_CPU_IMX51,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
-+	{ .name = "imx53",  .header_version = 2, .cpu_type = IMX_CPU_IMX53,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
-+	{ .name = "imx6",   .header_version = 2, .cpu_type = IMX_CPU_IMX6,   .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
-+	{ .name = "imx7",   .header_version = 2, .cpu_type = IMX_CPU_IMX7,   .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
-+	{ .name = "imx8mq", .header_version = 2, .cpu_type = IMX_CPU_IMX8MQ, .header_gap = SZ_32K, .first_opcode = 0x14009000 /* b 0x9000 */},
-+	{ .name = "vf610",  .header_version = 2, .cpu_type = IMX_CPU_VF610,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
- };
- 
- static int do_soc(struct config_data *data, int argc, char *argv[])
-@@ -249,6 +254,8 @@ static int do_soc(struct config_data *data, int argc, char *argv[])
- 		if (!strcmp(socs[i].name, soc)) {
- 			data->header_version = socs[i].header_version;
- 			data->cpu_type = socs[i].cpu_type;
-+			data->header_gap = socs[i].header_gap;
-+			data->first_opcode = socs[i].first_opcode;
- 
- 			if (data->cpu_type == IMX_CPU_IMX35)
- 				data->load_size += HEADER_LEN;
-diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
-index c7677f81a..92a3fd316 100644
---- a/scripts/imx/imx.h
-+++ b/scripts/imx/imx.h
-@@ -72,6 +72,8 @@ struct config_data {
- 	char *outfile;
- 	char *srkfile;
- 	int header_version;
-+	off_t header_gap;
-+	uint32_t first_opcode;
- 	int cpu_type;
- 	int (*check)(const struct config_data *data, uint32_t cmd,
- 		     uint32_t addr, uint32_t mask);
 -- 
 2.17.0
 
