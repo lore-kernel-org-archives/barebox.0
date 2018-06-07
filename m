@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x231.google.com ([2607:f8b0:400e:c00::231])
+Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQuXt-00089n-Nn
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:11 +0000
-Received: by mail-pf0-x231.google.com with SMTP id b74-v6so4895381pfl.5
- for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:01:31 -0700 (PDT)
+ id 1fQuXv-0008Cm-U0
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:25 +0000
+Received: by mail-pl0-x242.google.com with SMTP id i5-v6so6106325plt.2
+ for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:01:39 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu,  7 Jun 2018 06:00:21 -0700
-Message-Id: <20180607130108.5339-6-andrew.smirnov@gmail.com>
+Date: Thu,  7 Jun 2018 06:00:27 -0700
+Message-Id: <20180607130108.5339-12-andrew.smirnov@gmail.com>
 In-Reply-To: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 References: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,41 +23,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RESEND v3 05/52] Include our own include/dt-bindings
+Subject: [RESEND v3 11/52] serial: i.MX: Add i.MX8 support
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Allow to use dt-bindings files that are not yet upstreamed. They can
-be put into include/dt-bindings.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/mips/dts/include/dt-bindings | 1 -
- scripts/Makefile.lib              | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
- delete mode 120000 arch/mips/dts/include/dt-bindings
+ drivers/serial/serial_imx.c | 5 ++++-
+ include/serial/imx-uart.h   | 5 +++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/dts/include/dt-bindings b/arch/mips/dts/include/dt-bindings
-deleted file mode 120000
-index 0cecb3d08..000000000
---- a/arch/mips/dts/include/dt-bindings
-+++ /dev/null
-@@ -1 +0,0 @@
--../../../../include/dt-bindings
-\ No newline at end of file
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 272b5981e..3024b068e 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -154,6 +154,7 @@ ld_flags       = $(LDFLAGS) $(EXTRA_LDFLAGS)
- dtc_cpp_flags  = -Wp,-MD,$(depfile).pre -nostdinc                        \
- 		 -I$(srctree)/arch/$(SRCARCH)/dts/include		 \
- 		 -I$(srctree)/dts/include                                \
-+		 -I$(srctree)/include                                    \
- 		 -I$(srctree)/dts/src/                                   \
- 		 -undef -D__DTS__
+diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
+index c8af995aa..09341af87 100644
+--- a/drivers/serial/serial_imx.c
++++ b/drivers/serial/serial_imx.c
+@@ -281,9 +281,12 @@ static __maybe_unused struct of_device_id imx_serial_dt_ids[] = {
+ 	}, {
+ 		.compatible = "fsl,imx6ul-uart",
+ 		.data = &imx21_data,
+-	},  {
++	}, {
+ 		.compatible = "fsl,imx7d-uart",
+ 		.data = &imx21_data,
++	}, {
++		.compatible = "fsl,imx8mq-uart",
++		.data = &imx21_data,
+ 	}, {
+ 		/* sentinel */
+ 	}
+diff --git a/include/serial/imx-uart.h b/include/serial/imx-uart.h
+index 9cab32f35..c23606569 100644
+--- a/include/serial/imx-uart.h
++++ b/include/serial/imx-uart.h
+@@ -180,6 +180,11 @@ static inline void imx7_uart_setup(void __iomem *uartbase)
+ 	imx_uart_setup(uartbase, 24000000);
+ }
  
++static inline void imx8mq_uart_setup(void __iomem *uartbase)
++{
++	imx_uart_setup(uartbase, 25000000);
++}
++
+ static inline void imx_uart_putc(void *base, int c)
+ {
+ 	if (!(readl(base + UCR1) & UCR1_UARTEN))
 -- 
 2.17.0
 
