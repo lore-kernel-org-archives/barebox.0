@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
+Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQuXv-0008Cw-WF
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:25 +0000
-Received: by mail-pl0-x242.google.com with SMTP id g20-v6so6117953plq.1
- for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:01:40 -0700 (PDT)
+ id 1fQuY1-0008Cp-Bg
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:39 +0000
+Received: by mail-pl0-x241.google.com with SMTP id c23-v6so6096262plz.12
+ for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:01:39 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu,  7 Jun 2018 06:00:29 -0700
-Message-Id: <20180607130108.5339-14-andrew.smirnov@gmail.com>
+Date: Thu,  7 Jun 2018 06:00:28 -0700
+Message-Id: <20180607130108.5339-13-andrew.smirnov@gmail.com>
 In-Reply-To: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 References: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,30 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RESEND v3 13/52] gpio: i.MX: Add i.MX8mq support
+Subject: [RESEND v3 12/52] mmc: i.MX esdhc: Add i.MX8 support
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/gpio/gpio-imx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mci/imx-esdhc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpio/gpio-imx.c b/drivers/gpio/gpio-imx.c
-index d8bcea223..d618e6011 100644
---- a/drivers/gpio/gpio-imx.c
-+++ b/drivers/gpio/gpio-imx.c
-@@ -190,6 +190,9 @@ static __maybe_unused struct of_device_id imx_gpio_dt_ids[] = {
- 	}, {
- 		.compatible = "fsl,imx6q-gpio",
- 		.data = &regs_imx31,
-+	},  {
-+		.compatible = "fsl,imx8mq-gpio",
-+		.data = &regs_imx31,
- 	}, {
- 		/* sentinel */
- 	}
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 8929901d4..c4daa9d12 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -728,6 +728,7 @@ static __maybe_unused struct of_device_id fsl_esdhc_compatible[] = {
+ 	{ .compatible = "fsl,imx6q-usdhc",  .data = &usdhc_imx6q_data  },
+ 	{ .compatible = "fsl,imx6sl-usdhc", .data = &usdhc_imx6sl_data },
+ 	{ .compatible = "fsl,imx6sx-usdhc", .data = &usdhc_imx6sx_data },
++	{ .compatible = "fsl,imx8mq-usdhc", .data = &usdhc_imx6sx_data },
+ 	{ /* sentinel */ }
+ };
+ 
 -- 
 2.17.0
 
