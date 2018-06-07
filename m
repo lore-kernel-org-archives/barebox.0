@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x243.google.com ([2607:f8b0:400e:c01::243])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQuXx-000695-Tg
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:01:47 +0000
-Received: by mail-pl0-x243.google.com with SMTP id w17-v6so6105132pll.9
- for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:01:35 -0700 (PDT)
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fQuXt-00089i-0a
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:01 +0000
+Received: by mail-pg0-x244.google.com with SMTP id e11-v6so4741006pgq.0
+ for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:01:30 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu,  7 Jun 2018 06:00:24 -0700
-Message-Id: <20180607130108.5339-9-andrew.smirnov@gmail.com>
+Date: Thu,  7 Jun 2018 06:00:20 -0700
+Message-Id: <20180607130108.5339-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 References: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,87 +23,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RESEND v3 08/52] net: fec_imx: Use dma mapping functions
+Subject: [RESEND v3 04/52] aarch64: Add i.MX8 debug UART support
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Rather than doing DMA on the input buffer address get a proper DMA
-address from the mapping functions.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+[andrew.smirnov@gmail.com: Added imx8_uart_setup_ll()]
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/fec_imx.c | 15 +++++++++------
- drivers/net/fec_imx.h |  1 +
- 2 files changed, 10 insertions(+), 6 deletions(-)
+ arch/arm/mach-imx/include/mach/debug_ll.h | 11 +++++++++++
+ common/Kconfig                            |  8 ++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 33599dd82..0ca594082 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -453,6 +453,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
- {
- 	unsigned int status;
- 	uint64_t tmo;
-+	dma_addr_t dma;
+diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
+index d54d601db..1550e059e 100644
+--- a/arch/arm/mach-imx/include/mach/debug_ll.h
++++ b/arch/arm/mach-imx/include/mach/debug_ll.h
+@@ -15,6 +15,7 @@
+ #include <mach/imx53-regs.h>
+ #include <mach/imx6-regs.h>
+ #include <mach/imx7-regs.h>
++#include <mach/imx8mq-regs.h>
+ #include <mach/vf610-regs.h>
  
- 	/*
- 	 * This routine transmits one frame.  This routine only accepts
-@@ -466,7 +467,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
- 		return -1;
- 	}
+ #include <serial/imx-uart.h>
+@@ -47,6 +48,8 @@
+ #define IMX_DEBUG_SOC MX6
+ #elif defined CONFIG_DEBUG_IMX7D_UART
+ #define IMX_DEBUG_SOC MX7
++#elif defined CONFIG_DEBUG_IMX8MQ_UART
++#define IMX_DEBUG_SOC MX8MQ
+ #elif defined CONFIG_DEBUG_VF610_UART
+ #define IMX_DEBUG_SOC VF610
+ #else
+@@ -95,6 +98,13 @@ static inline void vf610_uart_setup_ll(void)
+ 	lpuart_setup(base, 66000000);
+ }
  
--	if ((uint32_t)eth_data & (DB_DATA_ALIGNMENT-1))
-+	if ((unsigned long)eth_data & (DB_DATA_ALIGNMENT - 1))
- 		dev_warn(&dev->dev, "Transmit data not aligned: %p!\n", eth_data);
- 
- 	/*
-@@ -479,10 +480,12 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
- 
- 	writew(data_length, &fec->tbd_base[fec->tbd_index].data_length);
- 
--	writel((uint32_t)(eth_data), &fec->tbd_base[fec->tbd_index].data_pointer);
-+	dma = dma_map_single(fec->dev, eth_data, data_length, DMA_TO_DEVICE);
-+	if (dma_mapping_error(fec->dev, dma))
-+		return -EIO;
++static inline void imx8_uart_setup_ll(void)
++{
++	void *base = IOMEM(IMX_UART_BASE(IMX_DEBUG_SOC,
++					 CONFIG_DEBUG_IMX_UART_PORT));
++	imx8mq_uart_setup(base);
++}
 +
-+	writel((uint32_t)(dma), &fec->tbd_base[fec->tbd_index].data_pointer);
+ static inline void PUTC_LL(int c)
+ {
+ 	void __iomem *base = IOMEM(IMX_UART_BASE(IMX_DEBUG_SOC,
+@@ -117,6 +127,7 @@ static inline void imx53_uart_setup_ll(void) {}
+ static inline void imx6_uart_setup_ll(void)  {}
+ static inline void imx7_uart_setup_ll(void)  {}
+ static inline void vf610_uart_setup_ll(void) {}
++static inline void imx8_uart_setup_ll(void)  {}
  
--	dma_sync_single_for_device((unsigned long)eth_data, data_length,
--				   DMA_TO_DEVICE);
- 	/*
- 	 * update BD's status now
- 	 * This block:
-@@ -505,8 +508,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
- 			break;
- 		}
- 	}
--	dma_sync_single_for_cpu((unsigned long)eth_data, data_length,
--				DMA_TO_DEVICE);
-+	dma_unmap_single(fec->dev, dma, data_length, DMA_TO_DEVICE);
+ #endif /* CONFIG_DEBUG_LL */
  
- 	/* for next transmission use the other buffer */
- 	if (fec->tbd_index)
-@@ -748,6 +750,7 @@ static int fec_probe(struct device_d *dev)
+diff --git a/common/Kconfig b/common/Kconfig
+index b7000c4d7..75aea460a 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1099,6 +1099,13 @@ config DEBUG_IMX7D_UART
+ 	  Say Y here if you want barebox low-level debugging support
+ 	  on i.MX7D.
  
- 	fec = xzalloc(sizeof(*fec));
- 	fec->type = type;
-+	fec->dev = dev;
- 	edev = &fec->edev;
- 	dev->priv = fec;
- 	edev->priv = fec;
-diff --git a/drivers/net/fec_imx.h b/drivers/net/fec_imx.h
-index 561de0890..e3f60dd66 100644
---- a/drivers/net/fec_imx.h
-+++ b/drivers/net/fec_imx.h
-@@ -149,6 +149,7 @@ enum fec_opt_clock {
-  */
- struct fec_priv {
- 	struct eth_device edev;
-+	struct device_d *dev;
- 	void __iomem *regs;
- 	struct buffer_descriptor __iomem *rbd_base;	/* RBD ring                  */
- 	int rbd_index;				/* next receive BD to read   */
++config DEBUG_IMX8MQ_UART
++	bool "i.MX8MQ Debug UART"
++	depends on ARCH_IMX8MQ
++	help
++	  Say Y here if you want barebox low-level debugging support
++	  on i.MX8MQ.
++
+ config DEBUG_VF610_UART
+ 	bool "VF610 Debug UART"
+ 	depends on ARCH_VF610
+@@ -1163,6 +1170,7 @@ config DEBUG_IMX_UART_PORT
+ 						DEBUG_IMX6Q_UART || \
+ 						DEBUG_IMX6SL_UART || \
+ 						DEBUG_IMX7D_UART || \
++						DEBUG_IMX8MQ_UART || \
+ 						DEBUG_VF610_UART
+ 	default 1
+ 	depends on ARCH_IMX
 -- 
 2.17.0
 
