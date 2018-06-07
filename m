@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr0-x243.google.com ([2a00:1450:400c:c0c::243])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQyte-0004h4-W0
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 17:40:28 +0000
-Received: by mail-wr0-x243.google.com with SMTP id v13-v6so10702754wrp.13
- for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 10:40:16 -0700 (PDT)
-From: Pascal Vizeli <pvizeli@syshack.ch>
-Date: Thu,  7 Jun 2018 17:40:11 +0000
-Message-Id: <20180607174011.13130-1-pvizeli@syshack.ch>
+ id 1fR112-0003Qa-S8
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 19:56:14 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Thu,  7 Jun 2018 21:55:50 +0200
+Message-Id: <20180607195552.15246-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +19,150 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] drivers: of: bugfix partition fixups
+Subject: [PATCH v2 1/3] MIPS: ath79: provide driver for Atheros ART partition
 To: barebox@lists.infradead.org
-Cc: Pascal Vizeli <pvizeli@syshack.ch>
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-If we load a new device tree for linux kernel with a diferent layout,
-the fixup of partition going into endless loop. Exactly the of_find_property
-function will never come back on a invalid device_node.
+From: Oleksij Rempel <linux@rempel-privat.de>
 
-My patch check, if the device will exists on device tree before we run the
-fixup.
+this partition contains calibration data for WiFi and
+some board specific data, like MAC address.
 
-Signed-off-by: Pascal Vizeli <pvizeli@syshack.ch>
+For now we care only about MAC.
+
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- drivers/of/partition.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/mips/mach-ath79/Makefile |   1 +
+ arch/mips/mach-ath79/art.c    | 112 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 113 insertions(+)
+ create mode 100644 arch/mips/mach-ath79/art.c
 
-diff --git a/drivers/of/partition.c b/drivers/of/partition.c
-index aa6e601b7..17e420964 100644
---- a/drivers/of/partition.c
-+++ b/drivers/of/partition.c
-@@ -140,6 +140,9 @@ static int of_partition_fixup(struct device_node *root, void *ctx)
- 	if (!cdev->device_node)
- 		return -EINVAL;
- 
-+	if (!of_find_node_by_path(cdev->device_node->full_name))
-+		return -EINVAL;
+diff --git a/arch/mips/mach-ath79/Makefile b/arch/mips/mach-ath79/Makefile
+index 3772daeba..b827b363c 100644
+--- a/arch/mips/mach-ath79/Makefile
++++ b/arch/mips/mach-ath79/Makefile
+@@ -1,2 +1,3 @@
+ obj-y += reset.o
+ obj-y += bbu.o
++obj-y += art.o
+diff --git a/arch/mips/mach-ath79/art.c b/arch/mips/mach-ath79/art.c
+new file mode 100644
+index 000000000..984d08736
+--- /dev/null
++++ b/arch/mips/mach-ath79/art.c
+@@ -0,0 +1,112 @@
++// SPDX-License-Identifier: GPL-2.
++/*
++ * Copyright (c) 2018 Oleksij Rempel <linux@rempel-privat.de>
++ */
 +
- 	list_for_each_entry(partcdev, &cdev->partitions, partition_entry) {
- 		if (partcdev->flags & DEVFS_PARTITION_FROM_TABLE)
- 			continue;
++#include <common.h>
++#include <fcntl.h>
++#include <init.h>
++#include <libfile.h>
++#include <net.h>
++#include <unistd.h>
++
++#define AR93000_EPPROM_OFFSET	0x1000
++
++struct ar9300_eeprom {
++	u8 eeprom_version;
++	u8 template_version;
++	u8 mac_addr[6];
++};
++
++static int art_set_mac(struct device_d *dev, struct ar9300_eeprom *eeprom)
++{
++	struct device_node *node = dev->device_node;
++	struct device_node *rnode;
++
++	if (!node)
++		return -ENOENT;
++
++	rnode = of_parse_phandle_from(node, NULL,
++				     "barebox,provide-mac-address", 0);
++	if (!rnode)
++		return -ENOENT;
++
++	of_eth_register_ethaddr(rnode, &eeprom->mac_addr[0]);
++
++	return 0;
++}
++
++static int art_read_mac(struct device_d *dev, const char *file)
++{
++	int fd, rbytes;
++	struct ar9300_eeprom eeprom;
++
++	fd = open_and_lseek(file, O_RDONLY, AR93000_EPPROM_OFFSET);
++	if (fd < 0) {
++		dev_err(dev, "Failed to open eeprom path %s %d\n",
++		       file, fd);
++		return fd;
++	}
++
++	rbytes = read_full(fd, &eeprom, sizeof(eeprom));
++	close(fd);
++	if (rbytes < sizeof(eeprom)) {
++		dev_err(dev, "Failed to read %s\n", file);
++		return rbytes < 0 ? rbytes : -EIO;
++	}
++
++	dev_dbg(dev, "ART version: %x.%x\n",
++		 eeprom.eeprom_version, eeprom.template_version);
++	dev_dbg(dev, "mac: %02x:%02x:%02x:%02x:%02x:%02x\n",
++	       eeprom.mac_addr[0],
++	       eeprom.mac_addr[1],
++	       eeprom.mac_addr[2],
++	       eeprom.mac_addr[3],
++	       eeprom.mac_addr[4],
++	       eeprom.mac_addr[5]);
++
++	if (!is_valid_ether_addr(&eeprom.mac_addr[0])) {
++		dev_err(dev, "bad MAC addr\n");
++		return -EILSEQ;
++	}
++
++	return art_set_mac(dev, &eeprom);
++}
++
++static int art_probe(struct device_d *dev)
++{
++	char *path;
++	int ret;
++
++	dev_dbg(dev, "found ART partition\n");
++
++	ret = of_find_path(dev->device_node, "device-path", &path, 0);
++	if (ret) {
++		dev_err(dev, "can't find path\n");
++		return ret;
++	}
++
++	return art_read_mac(dev, path);
++}
++
++static struct of_device_id art_dt_ids[] = {
++	{
++		.compatible = "qca,art",
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct driver_d art_driver = {
++	.name		= "qca-art",
++	.probe		= art_probe,
++	.of_compatible	= art_dt_ids,
++};
++
++static int art_of_driver_init(void)
++{
++	platform_driver_register(&art_driver);
++
++	return 0;
++}
++late_initcall(art_of_driver_init);
 -- 
 2.17.1
 
