@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+Received: from mail-pf0-x22c.google.com ([2607:f8b0:400e:c00::22c])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQuYd-0006Le-TV
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:29 +0000
-Received: by mail-pf0-x243.google.com with SMTP id b17-v6so4900234pfi.0
- for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:02:17 -0700 (PDT)
+ id 1fQuYX-0006L1-MG
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:22 +0000
+Received: by mail-pf0-x22c.google.com with SMTP id y5-v6so3985889pfn.4
+ for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:02:10 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu,  7 Jun 2018 06:00:58 -0700
-Message-Id: <20180607130108.5339-43-andrew.smirnov@gmail.com>
+Date: Thu,  7 Jun 2018 06:00:51 -0700
+Message-Id: <20180607130108.5339-36-andrew.smirnov@gmail.com>
 In-Reply-To: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 References: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,30 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RESEND v3 42/52] ARM: no-mmu: Disable building for ARMv8
+Subject: [RESEND v3 35/52] Kbuild: Add $(quote)
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Disable building for ARMv8 since no-mmu.c only supports ARMv7
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/Kbuild.include | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-index 0316d251c..5b4b832e8 100644
---- a/arch/arm/cpu/Makefile
-+++ b/arch/arm/cpu/Makefile
-@@ -17,7 +17,7 @@ obj-$(CONFIG_CMD_ARM_MMUINFO) += mmuinfo.o
- obj-$(CONFIG_OFDEVICE) += dtb.o
+diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
+index f3771902b..512d21732 100644
+--- a/scripts/Kbuild.include
++++ b/scripts/Kbuild.include
+@@ -3,6 +3,7 @@
  
- ifeq ($(CONFIG_MMU),)
--obj-y += no-mmu.o
-+obj-$(CONFIG_CPU_32v7) += no-mmu.o
- endif
- 
- obj-$(CONFIG_ARM_PSCI) += psci.o
+ # Convenient variables
+ comma   := ,
++quote   := "
+ squote  := '
+ empty   :=
+ space   := $(empty) $(empty)
 -- 
 2.17.0
 
