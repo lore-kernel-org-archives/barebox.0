@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQqEY-0005dM-Hx
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 08:25:29 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id AA70CA00288
- for <barebox@lists.infradead.org>; Thu,  7 Jun 2018 10:25:20 +0200 (CEST)
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Thu, 7 Jun 2018 10:25:10 +0200
-Message-Id: <1528359910-5868-1-git-send-email-t.remmet@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fQqO6-0003xE-GU
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 08:35:32 +0000
+References: <1528359910-5868-1-git-send-email-t.remmet@phytec.de>
+From: Bastian Stender <bst@pengutronix.de>
+Message-ID: <eee6aff7-c1cf-ec09-a531-827c877954b0@pengutronix.de>
+Date: Thu, 7 Jun 2018 10:35:06 +0200
+MIME-Version: 1.0
+In-Reply-To: <1528359910-5868-1-git-send-email-t.remmet@phytec.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,102 +18,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] commands: mmc_extcsd: Add support to write multibyte
+Subject: Re: [PATCH v2] commands: mmc_extcsd: Add support to write multibyte
  registers
-To: barebox@lists.infradead.org
+To: Teresa Remmet <t.remmet@phytec.de>
+Cc: barebox@lists.infradead.org
 
-It has been possible to write only the first byte of a multibyte register.
-Updated the command to write the complete value of a multibyte register at once.
+On 06/07/2018 10:25 AM, Teresa Remmet wrote:
+> It has been possible to write only the first byte of a multibyte register.
+> Updated the command to write the complete value of a multibyte register at once.
+> 
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 
-Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
----
-Changes in v2:
-- Readded removed static from fuction
+Reviewed-by: Bastian Stender <bst@pengutronix.de>
 
- commands/mmc_extcsd.c | 44 +++++++++++++++++++++++++++-----------------
- 1 file changed, 27 insertions(+), 17 deletions(-)
-
-diff --git a/commands/mmc_extcsd.c b/commands/mmc_extcsd.c
-index acd23a466bcb..82e0600eaf67 100644
---- a/commands/mmc_extcsd.c
-+++ b/commands/mmc_extcsd.c
-@@ -2306,10 +2306,8 @@ static int request_write_operation(void)
- 	return 0;
- }
- 
--static void write_field(struct mci *mci, u8 *reg, u16 index, u8 value,
--				int always_write)
-+static int request_one_time_programmable(u16 index)
- {
--
- 	switch (index) {
- 	case EXT_CSD_BOOT_CONFIG_PROT:
- 	case EXT_CSD_BOOT_WP:
-@@ -2349,18 +2347,15 @@ static void write_field(struct mci *mci, u8 *reg, u16 index, u8 value,
- 	case 52:
- 	case EXT_CSD_BARRIER_CTRL:
- 	case EXT_CSD_SECURE_REMOVAL_TYPE:
--		if (!always_write)
--			if (request_write_operation() == 0) {
--				printf("Abort write operation!\n");
--				goto out;
--			}
--		break;
-+		if (request_write_operation() == 0) {
-+			printf("Abort write operation!\n");
-+			return 1;
-+		} else {
-+			return 0;
-+		}
- 	}
- 
--	mci_switch(mci, index, value);
--
--out:
--	return;
-+	return 0;
- }
- 
- static int do_mmc_extcsd(int argc, char *argv[])
-@@ -2430,11 +2425,26 @@ static int do_mmc_extcsd(int argc, char *argv[])
- 		if (!print_field(dst, index)) {
- 			printf("No field with this index found. Abort write operation!\n");
- 		} else {
--			write_field(mci, dst, index, value, always_write);
-+			struct extcsd_reg *ext;
-+			int i;
-+			int val = 0;
-+
-+			if (!always_write) {
-+				retval = request_one_time_programmable(index);
-+				if (retval)
-+					goto error_with_mem;
-+			}
-+
-+			ext = &extcsd[index];
-+			for (i = 0; i < ext->width; i++) {
-+				val = (value >> (i * 8)) & 0xFF;
-+
-+				mci_switch(mci, index + i, val);
-+				retval = mci_send_ext_csd(mci, dst);
-+				if (retval != 0)
-+					goto error_with_mem;
-+			}
- 			printf("\nValue written!\n\n");
--			retval = mci_send_ext_csd(mci, dst);
--			if (retval != 0)
--				goto error_with_mem;
- 			print_field(dst, index);
- 		}
- 	else
 -- 
-2.7.4
-
+Pengutronix e.K.
+Industrial Linux Solutions
+http://www.pengutronix.de/
+Peiner Str. 6-8, 31137 Hildesheim, Germany
+Amtsgericht Hildesheim, HRA 2686
 
 _______________________________________________
 barebox mailing list
