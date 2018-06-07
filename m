@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQuYT-0006By-BC
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:19 +0000
-Received: by mail-pf0-x243.google.com with SMTP id r11-v6so4896667pfl.6
- for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:02:07 -0700 (PDT)
+ id 1fQuYO-0006BA-3V
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 13:02:18 +0000
+Received: by mail-pg0-x241.google.com with SMTP id e11-v6so4741708pgq.0
+ for <barebox@lists.infradead.org>; Thu, 07 Jun 2018 06:02:01 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu,  7 Jun 2018 06:00:50 -0700
-Message-Id: <20180607130108.5339-35-andrew.smirnov@gmail.com>
+Date: Thu,  7 Jun 2018 06:00:46 -0700
+Message-Id: <20180607130108.5339-31-andrew.smirnov@gmail.com>
 In-Reply-To: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 References: <20180607130108.5339-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,31 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RESEND v3 34/52] ARM: i.MX8: Add DDRC PHY and DDR CTL base addresses
+Subject: [RESEND v3 30/52] clocksource: armv8-timer: Make use of
+ postcore_platform_driver()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/imx8mq-regs.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/clocksource/armv8-timer.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/imx8mq-regs.h b/arch/arm/mach-imx/include/mach/imx8mq-regs.h
-index 6dac00107..51936f526 100644
---- a/arch/arm/mach-imx/include/mach/imx8mq-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx8mq-regs.h
-@@ -114,8 +114,10 @@
- #define MX8MQ_SRC_DDRC_RCR_ADDR		0x30391000
- #define MX8MQ_SRC_DDRC2_RCR_ADDR	0x30391004
+diff --git a/drivers/clocksource/armv8-timer.c b/drivers/clocksource/armv8-timer.c
+index 5e0b9ef3c..918232e0e 100644
+--- a/drivers/clocksource/armv8-timer.c
++++ b/drivers/clocksource/armv8-timer.c
+@@ -48,9 +48,5 @@ static struct driver_d armv8_timer_driver = {
+ 	.probe = armv8_timer_probe,
+ 	.of_compatible = DRV_OF_COMPAT(armv8_timer_dt_ids),
+ };
++postcore_platform_driver(armv8_timer_driver);
  
--#define MX8MQ_DDRC_DDR_SS_GPR0		0x3d000000
-+#define MX8MQ_DDRC_PHY_BASE_ADDR	0x3c000000
-+#define MX8MQ_DDRC_DDR_SS_GPR0		(MX8MQ_DDRC_PHY_BASE_ADDR + 0x01000000)
- #define MX8MQ_DDRC_IPS_BASE_ADDR(X)	(0x3d400000 + ((X) * 0x2000000))
-+#define MX8MQ_DDRC_CTL_BASE_ADDR	MX8MQ_DDRC_IPS_BASE_ADDR(0)
- #define MX8MQ_DDR_CSD1_BASE_ADDR	0x40000000
- 
- #endif /* __MACH_IMX8MQ_REGS_H */
+-static int armv8_timer_init(void)
+-{
+-	return platform_driver_register(&armv8_timer_driver);
+-}
+-postcore_initcall(armv8_timer_init);
 -- 
 2.17.0
 
