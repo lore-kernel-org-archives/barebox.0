@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fQq0w-00052s-I4
- for barebox@lists.infradead.org; Thu, 07 Jun 2018 08:11:24 +0000
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fQq6K-0001l0-2v
+ for barebox@lists.infradead.org; Thu, 07 Jun 2018 08:16:58 +0000
+Message-ID: <1528359400.7592.1.camel@phytec.de>
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Thu, 07 Jun 2018 10:16:40 +0200
+In-Reply-To: <3b71243d-a672-e895-c30d-974b7f50922d@pengutronix.de>
 References: <1528116451-40149-1-git-send-email-t.remmet@phytec.de>
-From: Bastian Stender <bst@pengutronix.de>
-Message-ID: <3b71243d-a672-e895-c30d-974b7f50922d@pengutronix.de>
-Date: Thu, 7 Jun 2018 10:11:08 +0200
-MIME-Version: 1.0
-In-Reply-To: <1528116451-40149-1-git-send-email-t.remmet@phytec.de>
-Content-Language: en-US
+ <3b71243d-a672-e895-c30d-974b7f50922d@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,117 +18,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] commands: mmc_extcsd: Add support to write multibyte
  registers
-To: Teresa Remmet <t.remmet@phytec.de>
+To: Bastian Stender <bst@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Teresa,
-
-On 06/04/2018 02:47 PM, Teresa Remmet wrote:
-> It has been possible to write only the first byte of a multibyte register.
-> Updated the command to write the complete value of a multibyte register at once.
-> 
-> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
-> ---
->   commands/mmc_extcsd.c | 44 +++++++++++++++++++++++++++-----------------
->   1 file changed, 27 insertions(+), 17 deletions(-)
-> 
-> diff --git a/commands/mmc_extcsd.c b/commands/mmc_extcsd.c
-> index acd23a466bcb..a5af97fbbaf1 100644
-> --- a/commands/mmc_extcsd.c
-> +++ b/commands/mmc_extcsd.c
-> @@ -2306,10 +2306,8 @@ static int request_write_operation(void)
->   	return 0;
->   }
->   
-> -static void write_field(struct mci *mci, u8 *reg, u16 index, u8 value,
-> -				int always_write)
-> +int request_one_time_programmable(u16 index)
-
-Why do you remove "static" here?
-
->   {
-> -
->   	switch (index) {
->   	case EXT_CSD_BOOT_CONFIG_PROT:
->   	case EXT_CSD_BOOT_WP:
-> @@ -2349,18 +2347,15 @@ static void write_field(struct mci *mci, u8 *reg, u16 index, u8 value,
->   	case 52:
->   	case EXT_CSD_BARRIER_CTRL:
->   	case EXT_CSD_SECURE_REMOVAL_TYPE:
-> -		if (!always_write)
-> -			if (request_write_operation() == 0) {
-> -				printf("Abort write operation!\n");
-> -				goto out;
-> -			}
-> -		break;
-> +		if (request_write_operation() == 0) {
-> +			printf("Abort write operation!\n");
-> +			return 1;
-> +		} else {
-> +			return 0;
-> +		}
->   	}
->   
-> -	mci_switch(mci, index, value);
-> -
-> -out:
-> -	return;
-> +	return 0;
->   }
->   
->   static int do_mmc_extcsd(int argc, char *argv[])
-> @@ -2430,11 +2425,26 @@ static int do_mmc_extcsd(int argc, char *argv[])
->   		if (!print_field(dst, index)) {
->   			printf("No field with this index found. Abort write operation!\n");
->   		} else {
-> -			write_field(mci, dst, index, value, always_write);
-> +			struct extcsd_reg *ext;
-> +			int i;
-> +			int val = 0;
-> +
-> +			if (!always_write) {
-> +				retval = request_one_time_programmable(index);
-> +				if (retval)
-> +					goto error_with_mem;
-> +			}
-> +
-> +			ext = &extcsd[index];
-> +			for (i = 0; i < ext->width; i++) {
-> +				val = (value >> (i * 8)) & 0xFF;
-> +
-> +				mci_switch(mci, index + i, val);
-> +				retval = mci_send_ext_csd(mci, dst);
-> +				if (retval != 0)
-> +					goto error_with_mem;
-> +			}
->   			printf("\nValue written!\n\n");
-> -			retval = mci_send_ext_csd(mci, dst);
-> -			if (retval != 0)
-> -				goto error_with_mem;
->   			print_field(dst, index);
->   		}
->   	else
-> 
-
-Everything else looks good to me.
-
-Regards,
-Bastian
-
--- 
-Pengutronix e.K.
-Industrial Linux Solutions
-http://www.pengutronix.de/
-Peiner Str. 6-8, 31137 Hildesheim, Germany
-Amtsgericht Hildesheim, HRA 2686
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gQmFzdGlhbiwKCkFtIERvbm5lcnN0YWcsIGRlbiAwNy4wNi4yMDE4LCAxMDoxMSArMDIw
+MCBzY2hyaWViIEJhc3RpYW4gU3RlbmRlcjoKPiBIaSBUZXJlc2EsCj4gCj4gT24gMDYvMDQvMjAx
+OCAwMjo0NyBQTSwgVGVyZXNhIFJlbW1ldCB3cm90ZToKPiA+IAo+ID4gSXQgaGFzIGJlZW4gcG9z
+c2libGUgdG8gd3JpdGUgb25seSB0aGUgZmlyc3QgYnl0ZSBvZiBhIG11bHRpYnl0ZQo+ID4gcmVn
+aXN0ZXIuCj4gPiBVcGRhdGVkIHRoZSBjb21tYW5kIHRvIHdyaXRlIHRoZSBjb21wbGV0ZSB2YWx1
+ZSBvZiBhIG11bHRpYnl0ZQo+ID4gcmVnaXN0ZXIgYXQgb25jZS4KPiA+IAo+ID4gU2lnbmVkLW9m
+Zi1ieTogVGVyZXNhIFJlbW1ldCA8dC5yZW1tZXRAcGh5dGVjLmRlPgo+ID4gLS0tCj4gPiDCoCBj
+b21tYW5kcy9tbWNfZXh0Y3NkLmMgfCA0NCArKysrKysrKysrKysrKysrKysrKysrKysrKystLS0t
+LS0tLS0tLQo+ID4gLS0tLS0tCj4gPiDCoCAxIGZpbGUgY2hhbmdlZCwgMjcgaW5zZXJ0aW9ucygr
+KSwgMTcgZGVsZXRpb25zKC0pCj4gPiAKPiA+IGRpZmYgLS1naXQgYS9jb21tYW5kcy9tbWNfZXh0
+Y3NkLmMgYi9jb21tYW5kcy9tbWNfZXh0Y3NkLmMKPiA+IGluZGV4IGFjZDIzYTQ2NmJjYi4uYTVh
+Zjk3ZmJiYWYxIDEwMDY0NAo+ID4gLS0tIGEvY29tbWFuZHMvbW1jX2V4dGNzZC5jCj4gPiArKysg
+Yi9jb21tYW5kcy9tbWNfZXh0Y3NkLmMKPiA+IEBAIC0yMzA2LDEwICsyMzA2LDggQEAgc3RhdGlj
+IGludCByZXF1ZXN0X3dyaXRlX29wZXJhdGlvbih2b2lkKQo+ID4gwqDCoAlyZXR1cm4gMDsKPiA+
+IMKgIH0KPiA+IMKgwqAKPiA+IC1zdGF0aWMgdm9pZCB3cml0ZV9maWVsZChzdHJ1Y3QgbWNpICpt
+Y2ksIHU4ICpyZWcsIHUxNiBpbmRleCwgdTgKPiA+IHZhbHVlLAo+ID4gLQkJCQlpbnQgYWx3YXlz
+X3dyaXRlKQo+ID4gK2ludCByZXF1ZXN0X29uZV90aW1lX3Byb2dyYW1tYWJsZSh1MTYgaW5kZXgp
+Cj4gV2h5IGRvIHlvdSByZW1vdmUgInN0YXRpYyIgaGVyZT8KCnRoaXMgd2FzIG5vdCBvbiBwdXJw
+b3NlLiBJIHdpbGwgc2VuZCBhbiB2Mi7CoApUaGFuayB5b3UuCgpUZXJlc2EKCj4gCj4gPiAKPiA+
+IMKgIHsKPiA+IC0KPiA+IMKgwqAJc3dpdGNoIChpbmRleCkgewo+ID4gwqDCoAljYXNlIEVYVF9D
+U0RfQk9PVF9DT05GSUdfUFJPVDoKPiA+IMKgwqAJY2FzZSBFWFRfQ1NEX0JPT1RfV1A6Cj4gPiBA
+QCAtMjM0OSwxOCArMjM0NywxNSBAQCBzdGF0aWMgdm9pZCB3cml0ZV9maWVsZChzdHJ1Y3QgbWNp
+ICptY2ksIHU4Cj4gPiAqcmVnLCB1MTYgaW5kZXgsIHU4IHZhbHVlLAo+ID4gwqDCoAljYXNlIDUy
+Ogo+ID4gwqDCoAljYXNlIEVYVF9DU0RfQkFSUklFUl9DVFJMOgo+ID4gwqDCoAljYXNlIEVYVF9D
+U0RfU0VDVVJFX1JFTU9WQUxfVFlQRToKPiA+IC0JCWlmICghYWx3YXlzX3dyaXRlKQo+ID4gLQkJ
+CWlmIChyZXF1ZXN0X3dyaXRlX29wZXJhdGlvbigpID09IDApIHsKPiA+IC0JCQkJcHJpbnRmKCJB
+Ym9ydCB3cml0ZQo+ID4gb3BlcmF0aW9uIVxuIik7Cj4gPiAtCQkJCWdvdG8gb3V0Owo+ID4gLQkJ
+CX0KPiA+IC0JCWJyZWFrOwo+ID4gKwkJaWYgKHJlcXVlc3Rfd3JpdGVfb3BlcmF0aW9uKCkgPT0g
+MCkgewo+ID4gKwkJCXByaW50ZigiQWJvcnQgd3JpdGUgb3BlcmF0aW9uIVxuIik7Cj4gPiArCQkJ
+cmV0dXJuIDE7Cj4gPiArCQl9IGVsc2Ugewo+ID4gKwkJCXJldHVybiAwOwo+ID4gKwkJfQo+ID4g
+wqDCoAl9Cj4gPiDCoMKgCj4gPiAtCW1jaV9zd2l0Y2gobWNpLCBpbmRleCwgdmFsdWUpOwo+ID4g
+LQo+ID4gLW91dDoKPiA+IC0JcmV0dXJuOwo+ID4gKwlyZXR1cm4gMDsKPiA+IMKgIH0KPiA+IMKg
+wqAKPiA+IMKgIHN0YXRpYyBpbnQgZG9fbW1jX2V4dGNzZChpbnQgYXJnYywgY2hhciAqYXJndltd
+KQo+ID4gQEAgLTI0MzAsMTEgKzI0MjUsMjYgQEAgc3RhdGljIGludCBkb19tbWNfZXh0Y3NkKGlu
+dCBhcmdjLCBjaGFyCj4gPiAqYXJndltdKQo+ID4gwqDCoAkJaWYgKCFwcmludF9maWVsZChkc3Qs
+IGluZGV4KSkgewo+ID4gwqDCoAkJCXByaW50ZigiTm8gZmllbGQgd2l0aCB0aGlzIGluZGV4IGZv
+dW5kLgo+ID4gQWJvcnQgd3JpdGUgb3BlcmF0aW9uIVxuIik7Cj4gPiDCoMKgCQl9IGVsc2Ugewo+
+ID4gLQkJCXdyaXRlX2ZpZWxkKG1jaSwgZHN0LCBpbmRleCwgdmFsdWUsCj4gPiBhbHdheXNfd3Jp
+dGUpOwo+ID4gKwkJCXN0cnVjdCBleHRjc2RfcmVnICpleHQ7Cj4gPiArCQkJaW50IGk7Cj4gPiAr
+CQkJaW50IHZhbCA9IDA7Cj4gPiArCj4gPiArCQkJaWYgKCFhbHdheXNfd3JpdGUpIHsKPiA+ICsJ
+CQkJcmV0dmFsID0KPiA+IHJlcXVlc3Rfb25lX3RpbWVfcHJvZ3JhbW1hYmxlKGluZGV4KTsKPiA+
+ICsJCQkJaWYgKHJldHZhbCkKPiA+ICsJCQkJCWdvdG8gZXJyb3Jfd2l0aF9tZW07Cj4gPiArCQkJ
+fQo+ID4gKwo+ID4gKwkJCWV4dCA9ICZleHRjc2RbaW5kZXhdOwo+ID4gKwkJCWZvciAoaSA9IDA7
+IGkgPCBleHQtPndpZHRoOyBpKyspIHsKPiA+ICsJCQkJdmFsID0gKHZhbHVlID4+IChpICogOCkp
+ICYgMHhGRjsKPiA+ICsKPiA+ICsJCQkJbWNpX3N3aXRjaChtY2ksIGluZGV4ICsgaSwgdmFsKTsK
+PiA+ICsJCQkJcmV0dmFsID0gbWNpX3NlbmRfZXh0X2NzZChtY2ksCj4gPiBkc3QpOwo+ID4gKwkJ
+CQlpZiAocmV0dmFsICE9IDApCj4gPiArCQkJCQlnb3RvIGVycm9yX3dpdGhfbWVtOwo+ID4gKwkJ
+CX0KPiA+IMKgwqAJCQlwcmludGYoIlxuVmFsdWUgd3JpdHRlbiFcblxuIik7Cj4gPiAtCQkJcmV0
+dmFsID0gbWNpX3NlbmRfZXh0X2NzZChtY2ksIGRzdCk7Cj4gPiAtCQkJaWYgKHJldHZhbCAhPSAw
+KQo+ID4gLQkJCQlnb3RvIGVycm9yX3dpdGhfbWVtOwo+ID4gwqDCoAkJCXByaW50X2ZpZWxkKGRz
+dCwgaW5kZXgpOwo+ID4gwqDCoAkJfQo+ID4gwqDCoAllbHNlCj4gPiAKPiBFdmVyeXRoaW5nIGVs
+c2UgbG9va3MgZ29vZCB0byBtZS4KPiAKPiBSZWdhcmRzLAo+IEJhc3RpYW4KPiAKCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
+aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
