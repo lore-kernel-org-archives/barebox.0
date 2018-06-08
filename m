@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSGdz-0004OH-4a
- for barebox@lists.infradead.org; Mon, 11 Jun 2018 06:49:35 +0000
-Date: Mon, 11 Jun 2018 08:49:22 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20180611064922.qmf3k7mfanv5g4j5@pengutronix.de>
-References: <20180608084244.12816-1-u.kleine-koenig@pengutronix.de>
- <20180611064326.zkre4wacg2zkluov@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180611064326.zkre4wacg2zkluov@pengutronix.de>
+Received: from vs10.datenmanufaktur-hosting.net ([185.138.26.202]
+ helo=vs81.iboxed.net)
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fRMPa-0002lS-KC
+ for barebox@lists.infradead.org; Fri, 08 Jun 2018 18:47:00 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Fri,  8 Jun 2018 18:46:50 +0000
+Message-Id: <20180608184650.25489-1-akurz@blala.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,54 +15,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mvebu: create bbu handler for kwb images and use it on
- cubox
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] DTS ARM: i.MX50: resolve warning
+To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Alexander Kurz <akurz@blala.de>
 
-Hallo Sascha,
+Resolve the warning "node has a unit name, but no reg property".
 
-On Mon, Jun 11, 2018 at 08:43:26AM +0200, Sascha Hauer wrote:
-> On Fri, Jun 08, 2018 at 10:42:44AM +0200, Uwe Kleine-K=F6nig wrote:
-> > +static int mvebu_bbu_flash_update_handler(struct bbu_handler *bbuh,
-> > +					  struct bbu_data *data)
-> > +{
-> > +	struct mvebu_bbu_handler *mbbuh =3D
-> > +		container_of(bbuh, struct mvebu_bbu_handler, bbuh);
-> > +	const void *image =3D data->image;
-> > +	size_t size =3D data->len;
-> > +	enum filetype ft =3D file_detect_type(image, size);
-> > +
-> > +	if ((mbbuh->version =3D=3D 0 && ft =3D=3D filetype_kwbimage_v0) ||
-> > +	    (mbbuh->version =3D=3D 1 && ft =3D=3D filetype_kwbimage_v1) ||
-> > +	    data->flags & BBU_FLAG_FORCE) {
-> > +		int ret =3D bbu_confirm(data);
-> > +		if (ret)
-> > +			return ret;
-> > +
-> > +		return write_file_flash(bbuh->devicefile, image, size);
-> > +	} else {
-> > +		pr_err("%s is not a valid kwbimage\n", data->imagefile);
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> =
+Signed-off-by: Alexander Kurz <akurz@blala.de>
+---
+ arch/arm/dts/imx50.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> Could this code be shared with other boards?
+diff --git a/arch/arm/dts/imx50.dtsi b/arch/arm/dts/imx50.dtsi
+index 8737d4f33..c3804cfdc 100644
+--- a/arch/arm/dts/imx50.dtsi
++++ b/arch/arm/dts/imx50.dtsi
+@@ -3,14 +3,14 @@
+ / {
+ 	soc {
+ 		aips@50000000 { /* AIPS1 */
+-			usbphy0: usbphy@0 {
++			usbphy0: usbphy0 {
+ 				compatible = "usb-nop-xceiv";
+ 				clocks = <&clks IMX5_CLK_USB_PHY1_GATE>;
+ 				clock-names = "main_clk";
+ 				status = "okay";
+ 			};
+ 
+-			usbphy1: usbphy@1 {
++			usbphy1: usbphy1 {
+ 				compatible = "usb-nop-xceiv";
+ 				clocks = <&clks IMX5_CLK_USB_PHY2_GATE>;
+ 				clock-names = "main_clk";
+-- 
+2.11.0
 
-Sure. It should work on all mvebu targets that boot from a flash memory.
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
