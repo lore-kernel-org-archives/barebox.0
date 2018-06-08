@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x241.google.com ([2607:f8b0:4001:c0b::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fRC7Y-0000fU-H2
- for barebox@lists.infradead.org; Fri, 08 Jun 2018 07:47:43 +0000
-Received: by mail-it0-x241.google.com with SMTP id 188-v6so320822ita.5
- for <barebox@lists.infradead.org>; Fri, 08 Jun 2018 00:47:30 -0700 (PDT)
+ id 1fRCz6-0005xQ-7Q
+ for barebox@lists.infradead.org; Fri, 08 Jun 2018 08:43:01 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri,  8 Jun 2018 10:42:44 +0200
+Message-Id: <20180608084244.12816-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20180608074133.30653-1-pvizeli@syshack.ch>
-References: <20180608074133.30653-1-pvizeli@syshack.ch>
-From: Pascal Vizeli <pvizeli@syshack.ch>
-Date: Fri, 8 Jun 2018 09:47:28 +0200
-Message-ID: <CACvFaDexRYbp__7979o9-iirVZ6DP11AaBgK5OOMtz60YDtXqA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,132 +15,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] arm: boards: support native fdt for raspberry pi
+Subject: [PATCH] mvebu: create bbu handler for kwb images and use it on cubox
 To: barebox@lists.infradead.org
 
-That is a RFC, the command `--subject-prefix="RFC"` had not work...
-
-2018-06-08 9:41 GMT+02:00 Pascal Vizeli <pvizeli@syshack.ch>:
-> It store the native device tree from bootloader to '/rpi_native.dtb'.
-> This device tree is not compatible with barebox but needed to boot the
-> linux kernel correctly. With new overlay support we can patch this
-> device tree on runtime.
->
-> Now barebox can be the middle bootloader and we have no limitations to
-> origin bootloader.
->
-> Question: How I can share a address between PBL and barebox?
->
-> Signed-off-by: Pascal Vizeli <pvizeli@syshack.ch>
-> ---
->  arch/arm/boards/raspberry-pi/lowlevel.c   |  4 +++
->  arch/arm/boards/raspberry-pi/rpi-common.c | 40 +++++++++++++++++++++++
->  2 files changed, 44 insertions(+)
->
-> diff --git a/arch/arm/boards/raspberry-pi/lowlevel.c b/arch/arm/boards/raspberry-pi/lowlevel.c
-> index cbc6caa4b..07d6f1101 100644
-> --- a/arch/arm/boards/raspberry-pi/lowlevel.c
-> +++ b/arch/arm/boards/raspberry-pi/lowlevel.c
-> @@ -4,10 +4,13 @@
->  #include <asm/barebox-arm-head.h>
->  #include <mach/platform.h>
->
-> +extern uint32_t rpi_fdt_addr;
-> +
->  extern char __dtb_bcm2835_rpi_start[];
->  ENTRY_FUNCTION(start_raspberry_pi1, r0, r1, r2)
->  {
->         void *fdt = __dtb_bcm2835_rpi_start + get_runtime_offset();
-> +       rpi_fdt_addr = r2;
->
->         arm_cpu_lowlevel_init();
->
-> @@ -18,6 +21,7 @@ extern char __dtb_bcm2836_rpi_2_start[];
->  ENTRY_FUNCTION(start_raspberry_pi2, r0, r1, r2)
->  {
->         void *fdt = __dtb_bcm2836_rpi_2_start + get_runtime_offset();
-> +       rpi_fdt_addr = r2;
->
->         arm_cpu_lowlevel_init();
->
-> diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-> index 6e375bc98..43326e55d 100644
-> --- a/arch/arm/boards/raspberry-pi/rpi-common.c
-> +++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-> @@ -16,11 +16,13 @@
->  #include <common.h>
->  #include <init.h>
->  #include <fs.h>
-> +#include <of.h>
->  #include <linux/stat.h>
->  #include <linux/clk.h>
->  #include <linux/clkdev.h>
->  #include <envfs.h>
->  #include <malloc.h>
-> +#include <libfile.h>
->  #include <gpio.h>
->  #include <net.h>
->  #include <led.h>
-> @@ -321,12 +323,50 @@ static int rpi_env_init(void)
->         return 0;
->  }
->
-> +uint32_t rpi_fdt_addr;
-> +
-> +static int rpi_native_fdt(void)
-> +{
-> +       struct fdt_header *oftree;
-> +       int mode = O_RWSIZE_4 | O_RDONLY;
-> +       int fd = 0;
-> +       uint32_t size;
-> +       void *map;
-> +
-> +       fd = open_and_lseek("/dev/mem", mode, rpi_fdt_addr);
-> +       if (fd < 0) {
-> +               printf("failed open /dev/mem for fdt");
-> +               goto end;
-> +       }
-> +
-> +       map = memmap(fd, PROT_READ);
-> +       if (map == (void *)-1) {
-> +               printf("failed map memory for fdt");
-> +               goto end;
-> +       }
-> +
-> +       oftree = map;
-> +       size = be32_to_cpu(oftree->totalsize);
-> +       if (!size) {
-> +               printf("failed read fdt");
-> +               goto end;
-> +       }
-> +
-> +       if (!write_file("/rpi_native.dtb", map, size))
-> +               printf("Failed to write rpi_native.dtb");
-> +
-> +end:
-> +       close(fd);
-> +       return 0;
-> +}
-> +
->  static int rpi_devices_init(void)
->  {
->         rpi_model_init();
->         bcm2835_register_fb();
->         armlinux_set_architecture(MACH_TYPE_BCM2708);
->         rpi_env_init();
-> +       rpi_native_fdt();
->         return 0;
->  }
->  late_initcall(rpi_devices_init);
-> --
-> 2.17.1
->
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
+b25peC5kZT4KLS0tCkhlbGxvLAoKdG9nZXRoZXIgd2l0aCB0aGUgZml4dXAgZm9yIHdyaXRlX2Zp
+bGVfZmxhc2ggdG8gbm90IHVzZSBPX1RSVU5DIGFuZApPX0NSRUFULCB0aGlzIHdhcyB0ZXN0ZWQg
+b24gdG9wIG9mIG5leHQuCgpCZXN0IHJlZ2FyZHMKVXdlCgogYXJjaC9hcm0vYm9hcmRzL3NvbGlk
+cnVuLWN1Ym94L2JvYXJkLmMgfCAxNSArKysrKystCiBhcmNoL2FybS9tYWNoLW12ZWJ1L01ha2Vm
+aWxlICAgICAgICAgICB8ICAxICsKIGFyY2gvYXJtL21hY2gtbXZlYnUvaW5jbHVkZS9tYWNoL2Ji
+dS5oIHwgIDMgKysKIGFyY2gvYXJtL21hY2gtbXZlYnUva3diX2JidS5jICAgICAgICAgIHwgNTQg
+KysrKysrKysrKysrKysrKysrKysrKysrKysKIDQgZmlsZXMgY2hhbmdlZCwgNzIgaW5zZXJ0aW9u
+cygrKSwgMSBkZWxldGlvbigtKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtbXZl
+YnUvaW5jbHVkZS9tYWNoL2JidS5oCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1t
+dmVidS9rd2JfYmJ1LmMKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvc29saWRydW4tY3Vi
+b3gvYm9hcmQuYyBiL2FyY2gvYXJtL2JvYXJkcy9zb2xpZHJ1bi1jdWJveC9ib2FyZC5jCmluZGV4
+IGEyOGY0MTk3ZGZkNC4uYWFjOTNhZmIwYzg5IDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMv
+c29saWRydW4tY3Vib3gvYm9hcmQuYworKysgYi9hcmNoL2FybS9ib2FyZHMvc29saWRydW4tY3Vi
+b3gvYm9hcmQuYwpAQCAtMTQsNCArMTQsMTcgQEAKICAqCiAgKi8KIAotLyogZW1wdHkgKi8KKyNp
+bmNsdWRlIDxjb21tb24uaD4KKyNpbmNsdWRlIDxpbml0Lmg+CisjaW5jbHVkZSA8bWFjaC9iYnUu
+aD4KKworc3RhdGljIGludCBjdWJveF9kZXZpY2VzX2luaXQodm9pZCkKK3sKKwlpZiAoIW9mX21h
+Y2hpbmVfaXNfY29tcGF0aWJsZSgic29saWRydW4sY3Vib3giKSkKKwkJcmV0dXJuIDA7CisKKwlt
+dmVidV9iYnVfZmxhc2hfcmVnaXN0ZXJfaGFuZGxlcigiZmxhc2giLCAiL2Rldi9tMjVwMCIsIDAs
+IHRydWUpOworCisJcmV0dXJuIDA7Cit9CitkZXZpY2VfaW5pdGNhbGwoY3Vib3hfZGV2aWNlc19p
+bml0KTsKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtbXZlYnUvTWFrZWZpbGUgYi9hcmNoL2Fy
+bS9tYWNoLW12ZWJ1L01ha2VmaWxlCmluZGV4IDg3YTg1MTE5MTkzZS4uY2MyYjkyNjQzOGU0IDEw
+MDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW12ZWJ1L01ha2VmaWxlCisrKyBiL2FyY2gvYXJtL21h
+Y2gtbXZlYnUvTWFrZWZpbGUKQEAgLTEsNCArMSw1IEBACiBvYmotcGJsLXkJCQkrPSBjb21tb24u
+bworb2JqLXkJCQkJKz0ga3diX2JidS5vCiBvYmotJChDT05GSUdfQVJDSF9BUk1BREFfMzcwKQkr
+PSBhcm1hZGEtMzcwLXhwLm8KIG9iai0kKENPTkZJR19BUkNIX0FSTUFEQV9YUCkJKz0gYXJtYWRh
+LTM3MC14cC5vCiBvYmotJChDT05GSUdfQVJDSF9BUk1BREFfMzhYKQkrPSBhcm1hZGEtMzcwLXhw
+Lm8KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtbXZlYnUvaW5jbHVkZS9tYWNoL2JidS5oIGIv
+YXJjaC9hcm0vbWFjaC1tdmVidS9pbmNsdWRlL21hY2gvYmJ1LmgKbmV3IGZpbGUgbW9kZSAxMDA2
+NDQKaW5kZXggMDAwMDAwMDAwMDAwLi5mMTAyMWU1MmNlOWYKLS0tIC9kZXYvbnVsbAorKysgYi9h
+cmNoL2FybS9tYWNoLW12ZWJ1L2luY2x1ZGUvbWFjaC9iYnUuaApAQCAtMCwwICsxLDMgQEAKK2lu
+dCBtdmVidV9iYnVfZmxhc2hfcmVnaXN0ZXJfaGFuZGxlcihjb25zdCBjaGFyICpuYW1lLAorCQkJ
+CSAgICAgY2hhciAqZGV2aWNlZmlsZSwgaW50IHZlcnNpb24sCisJCQkJICAgICBib29sIGlzZGVm
+YXVsdCk7CmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW12ZWJ1L2t3Yl9iYnUuYyBiL2FyY2gv
+YXJtL21hY2gtbXZlYnUva3diX2JidS5jCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAw
+MDAwMDAwMC4uZjc5NDY0ZmU1M2U0Ci0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vbWFjaC1t
+dmVidS9rd2JfYmJ1LmMKQEAgLTAsMCArMSw1NCBAQAorI2luY2x1ZGUgPGJidS5oPgorI2luY2x1
+ZGUgPGxpYmZpbGUuaD4KKyNpbmNsdWRlIDxwcmludGsuaD4KKworI2luY2x1ZGUgPG1hY2gvYmJ1
+Lmg+CisKK3N0cnVjdCBtdmVidV9iYnVfaGFuZGxlciB7CisJc3RydWN0IGJidV9oYW5kbGVyIGJi
+dWg7CisJaW50IHZlcnNpb247Cit9OworCitzdGF0aWMgaW50IG12ZWJ1X2JidV9mbGFzaF91cGRh
+dGVfaGFuZGxlcihzdHJ1Y3QgYmJ1X2hhbmRsZXIgKmJidWgsCisJCQkJCSAgc3RydWN0IGJidV9k
+YXRhICpkYXRhKQoreworCXN0cnVjdCBtdmVidV9iYnVfaGFuZGxlciAqbWJidWggPQorCQljb250
+YWluZXJfb2YoYmJ1aCwgc3RydWN0IG12ZWJ1X2JidV9oYW5kbGVyLCBiYnVoKTsKKwljb25zdCB2
+b2lkICppbWFnZSA9IGRhdGEtPmltYWdlOworCXNpemVfdCBzaXplID0gZGF0YS0+bGVuOworCWVu
+dW0gZmlsZXR5cGUgZnQgPSBmaWxlX2RldGVjdF90eXBlKGltYWdlLCBzaXplKTsKKworCWlmICgo
+bWJidWgtPnZlcnNpb24gPT0gMCAmJiBmdCA9PSBmaWxldHlwZV9rd2JpbWFnZV92MCkgfHwKKwkg
+ICAgKG1iYnVoLT52ZXJzaW9uID09IDEgJiYgZnQgPT0gZmlsZXR5cGVfa3diaW1hZ2VfdjEpIHx8
+CisJICAgIGRhdGEtPmZsYWdzICYgQkJVX0ZMQUdfRk9SQ0UpIHsKKwkJaW50IHJldCA9IGJidV9j
+b25maXJtKGRhdGEpOworCQlpZiAocmV0KQorCQkJcmV0dXJuIHJldDsKKworCQlyZXR1cm4gd3Jp
+dGVfZmlsZV9mbGFzaChiYnVoLT5kZXZpY2VmaWxlLCBpbWFnZSwgc2l6ZSk7CisJfSBlbHNlIHsK
+KwkJcHJfZXJyKCIlcyBpcyBub3QgYSB2YWxpZCBrd2JpbWFnZVxuIiwgZGF0YS0+aW1hZ2VmaWxl
+KTsKKwkJcmV0dXJuIC1FSU5WQUw7CisJfQorfQorCitpbnQgbXZlYnVfYmJ1X2ZsYXNoX3JlZ2lz
+dGVyX2hhbmRsZXIoY29uc3QgY2hhciAqbmFtZSwKKwkJCQkgICAgIGNoYXIgKmRldmljZWZpbGUs
+IGludCB2ZXJzaW9uLAorCQkJCSAgICAgYm9vbCBpc2RlZmF1bHQpCit7CisJc3RydWN0IG12ZWJ1
+X2JidV9oYW5kbGVyICptYmJ1aDsKKwlpbnQgcmV0OworCisJbWJidWggPSB4emFsbG9jKHNpemVv
+ZigqbWJidWgpKTsKKwltYmJ1aC0+YmJ1aC5kZXZpY2VmaWxlID0gZGV2aWNlZmlsZTsKKwltYmJ1
+aC0+YmJ1aC5oYW5kbGVyID0gbXZlYnVfYmJ1X2ZsYXNoX3VwZGF0ZV9oYW5kbGVyOworCW1iYnVo
+LT5iYnVoLmZsYWdzID0gaXNkZWZhdWx0ID8gQkJVX0hBTkRMRVJfRkxBR19ERUZBVUxUIDogMDsK
+KwltYmJ1aC0+YmJ1aC5uYW1lID0gbmFtZTsKKwltYmJ1aC0+dmVyc2lvbiA9IHZlcnNpb247CisK
+KwlyZXQgPSBiYnVfcmVnaXN0ZXJfaGFuZGxlcigmbWJidWgtPmJidWgpOworCWlmIChyZXQpCisJ
+CWZyZWUobWJidWgpOworCisJcmV0dXJuIHJldDsKK30KLS0gCjIuMTcuMQoKCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
+CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
