@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fPjW1-0000p7-Pp
- for barebox@lists.infradead.org; Mon, 04 Jun 2018 07:02:56 +0000
-Date: Mon, 4 Jun 2018 09:02:40 +0200
+ id 1fRD0l-0007Eo-Ug
+ for barebox@lists.infradead.org; Fri, 08 Jun 2018 08:45:27 +0000
+Date: Fri, 8 Jun 2018 10:44:30 +0200
 From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20180604070240.odea3uigzlkytl32@pengutronix.de>
+Message-ID: <20180608084430.ojrdnn5oonfo3twb@pengutronix.de>
 References: <20180601180750.5436-1-u.kleine-koenig@pengutronix.de>
- <20180604070137.tu5p6hulsxhejluo@pengutronix.de>
+ <20180601180750.5436-2-u.kleine-koenig@pengutronix.de>
+ <20180607205301.wepjy427l3dyuqds@pengutronix.de>
+ <20180608071044.d2zobfrrwkluuaei@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180604070137.tu5p6hulsxhejluo@pengutronix.de>
+In-Reply-To: <20180608071044.d2zobfrrwkluuaei@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,32 +25,26 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] kwbimage_v0: add support to detect and boot a mvebu
- v0 image
+Subject: Re: [PATCH 2/4] libfile: implement new helper write_file_flash()
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
 Hello Sascha,
 
-On Mon, Jun 04, 2018 at 09:01:37AM +0200, Sascha Hauer wrote:
-> On Fri, Jun 01, 2018 at 08:07:47PM +0200, Uwe Kleine-K=F6nig wrote:
-> > The differences between v0 and v1 of the mvebu kwbimage are small enough
-> > that the function to boot such an image can be shared between both
-> > variants.
+On Fri, Jun 08, 2018 at 09:10:44AM +0200, Sascha Hauer wrote:
+> On Thu, Jun 07, 2018 at 10:53:01PM +0200, Uwe Kleine-K=F6nig wrote:
+> > On Fri, Jun 01, 2018 at 08:07:48PM +0200, Uwe Kleine-K=F6nig wrote:
+> > > +	fd =3D open(filename, O_WRONLY | O_TRUNC | O_CREAT);
 > > =
 
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > ---
-> >  arch/arm/mach-mvebu/kwbootimage.c | 11 +++++++++--
-> >  common/filetype.c                 | 22 +++++++++++++++++-----
-> >  include/filetype.h                |  1 +
-> >  3 files changed, 27 insertions(+), 7 deletions(-)
+> > This doesn't work on the target machine (dove cubox) I intended to use
+> > it on an m25p0 device. It returns -28. When dropping O_TRUNC | O_CREAT
+> > it works though. So I suggest to either back out patches 3 and 4, or
+> > change the line above to O_WRONLY (which also matches the function
+> > removed in patch 4).
 > =
 
-> Applied 2-4. This patch is the same as the first time you sent it,
-> right?
-
-ack, seems I forgot I already sent it separately.
+> Ok, changed to O_WRONLY only.
 
 Thanks
 Uwe
