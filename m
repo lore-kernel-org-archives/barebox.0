@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fOoTC-0002Ki-VW
- for barebox@lists.infradead.org; Fri, 01 Jun 2018 18:08:13 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri,  1 Jun 2018 20:07:50 +0200
-Message-Id: <20180601180750.5436-4-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20180601180750.5436-1-u.kleine-koenig@pengutronix.de>
+ id 1fRBY0-0006N9-VP
+ for barebox@lists.infradead.org; Fri, 08 Jun 2018 07:10:58 +0000
+Date: Fri, 8 Jun 2018 09:10:44 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180608071044.d2zobfrrwkluuaei@pengutronix.de>
 References: <20180601180750.5436-1-u.kleine-koenig@pengutronix.de>
+ <20180601180750.5436-2-u.kleine-koenig@pengutronix.de>
+ <20180607205301.wepjy427l3dyuqds@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180607205301.wepjy427l3dyuqds@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,66 +20,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] scripts/kwboot: fix image check for v0 images
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/4] libfile: implement new helper write_file_flash()
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-U2luY2Uga3dib290IGNoZWNrcyB0aGUgY29udGVudHMgb2YgdGhlIGZpbGUgdG8gc2VuZCBpdCBv
-bmx5IHdvcmtzIGZvcgp2MSBpbWFnZXMgKG9yIHdpdGggLWYpLiBFeHRlbmQgdGhlIGNoZWNrIHRv
-IGtub3cgYWJvdXQgdjAgaW1hZ2VzLCB0b28uCgpGaXhlczogMzllYmQ3ZTczYmVjICgia3dib290
-OiBkbyBhIGZpbGV0eXBlIGNoZWNrIGJlZm9yZSBzZW5kaW5nIHRoZSBpbWFnZSIpClNpZ25lZC1v
-ZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+
-Ci0tLQogc2NyaXB0cy9rd2Jvb3QuYyB8IDYzICsrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKystLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDUzIGluc2VydGlvbnMoKyksIDEw
-IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL3NjcmlwdHMva3dib290LmMgYi9zY3JpcHRzL2t3
-Ym9vdC5jCmluZGV4IGRiMTc3Y2ViNWYyZS4uZGY1MjE0NGU0NWM0IDEwMDY0NAotLS0gYS9zY3Jp
-cHRzL2t3Ym9vdC5jCisrKyBiL3NjcmlwdHMva3dib290LmMKQEAgLTYwMiwxMiArNjAyLDI0IEBA
-IG91dDoKIAlyZXR1cm4gcmM7CiB9CiAKK3N0YXRpYyB1bnNpZ25lZCBjaGFyIGNyYyhjb25zdCB1
-bnNpZ25lZCBjaGFyICppbWcsIHNpemVfdCBsZW4pCit7CisJdW5zaWduZWQgY2hhciByZXQgPSAw
-OworCXNpemVfdCBpOworCisJZm9yIChpID0gMDsgaSA8IGxlbjsgKytpKQorCQlyZXQgKz0gaW1n
-W2ldOworCisJcmV0dXJuIHJldDsKK30KKwogc3RhdGljIGludAoga3dib290X2NoZWNrX2ltYWdl
-KHVuc2lnbmVkIGNoYXIgKmltZywgc2l6ZV90IHNpemUpCiB7CiAJc2l6ZV90IGk7CiAJc2l6ZV90
-IGhlYWRlcl9zaXplLCBpbWFnZV9zaXplLCBpbWFnZV9vZmZzZXQ7CiAJdW5zaWduZWQgY2hhciBj
-c3VtID0gMDsKKwl1bnNpZ25lZCBjaGFyIGltZ3ZlcnNpb247CiAKIAlpZiAoc2l6ZSA8IDB4MjAp
-IHsKIAkJZnByaW50ZihzdGRlcnIsCkBAIC02MzYsNyArNjQ4LDggQEAga3dib290X2NoZWNrX2lt
-YWdlKHVuc2lnbmVkIGNoYXIgKmltZywgc2l6ZV90IHNpemUpCiAJCQlyZXR1cm4gMTsKIAl9CiAK
-LQlpZiAoaW1nWzB4OF0gIT0gMSkgeworCWltZ3ZlcnNpb24gPSBpbWdbMHg4XTsKKwlpZiAoaW1n
-dmVyc2lvbiA+IDEpIHsKIAkJZnByaW50ZihzdGRlcnIsICJVbmtub3duIHZlcnNpb246IDB4JWho
-eFxuIiwgaW1nWzB4OF0pOwogCQlyZXR1cm4gMTsKIAl9CkBAIC02NDYsNyArNjU5LDE1IEBAIGt3
-Ym9vdF9jaGVja19pbWFnZSh1bnNpZ25lZCBjaGFyICppbWcsIHNpemVfdCBzaXplKQogCWltYWdl
-X29mZnNldCA9IGltZ1sweGNdIHwgKGltZ1sweGRdIDw8IDgpIHwKIAkJKGltZ1sweGVdIDw8IDE2
-KSB8IChpbWdbMHhmXSA8PCAyNCk7CiAKLQloZWFkZXJfc2l6ZSA9IChpbWdbMHg5XSA8PCAxNikg
-fCBpbWdbMHhhXSB8IChpbWdbMHhiXSA8PCA4KTsKKwlpZiAoaW1ndmVyc2lvbiA9PSAwKSB7CisJ
-CS8qIEltYWdlIGZvcm1hdCAwICovCisJCWhlYWRlcl9zaXplID0KKwkJCWltZ1sweDFlXSAqIDB4
-MjAwIC8qIGhlYWRlciBleHRlbnNpb25zICovICsKKwkJCWltZ1sweDFkXSAqIDB4ODAwIC8qIGJp
-bmFyeSBoZWFkZXIgZXh0ZW5zaW9ucyAqLzsKKwl9IGVsc2UgeworCQkvKiBJbWFnZSBmb3JtYXQg
-MSAqLworCQloZWFkZXJfc2l6ZSA9IChpbWdbMHg5XSA8PCAxNikgfCBpbWdbMHhhXSB8IChpbWdb
-MHhiXSA8PCA4KTsKKwl9CiAKIAlpZiAoaGVhZGVyX3NpemUgPiBpbWFnZV9vZmZzZXQpIHsKIAkJ
-ZnByaW50ZihzdGRlcnIsICJIZWFkZXIgKCV6dSkgZXhwYW5kcyBvdmVyIGltYWdlIHN0YXJ0ICgl
-enUpXG4iLApAQCAtNjYwLDE2ICs2ODEsMzggQEAga3dib290X2NoZWNrX2ltYWdlKHVuc2lnbmVk
-IGNoYXIgKmltZywgc2l6ZV90IHNpemUpCiAJCXJldHVybiAxOwogCX0KIAotCWZvciAoaSA9IDA7
-IGkgPCBoZWFkZXJfc2l6ZTsgKytpKQotCQljc3VtICs9IGltZ1tpXTsKIAotCWNzdW0gLT0gaW1n
-WzB4MWZdOworCWlmIChpbWd2ZXJzaW9uID09IDApIHsKKwkJLyogY2hlY2sgTWFpbiBIZWFkZXIg
-Ki8KKwkJY3N1bSA9IGNyYyhpbWcsIDB4MWYpOworCQlpZiAoY3N1bSAhPSBpbWdbMHgxZl0pIHsK
-KwkJCWZwcmludGYoc3RkZXJyLAorCQkJCSJNYWluIEhlYWRlciBjaGVja3N1bSBtaXNtYXRjaDog
-c3BlY2lmaWVkOiAweCUwMmhoeCwgY2FsY3VsYXRlZDogMHglMDJoaHhcbiIsCisJCQkJaW1nWzB4
-MWZdLCBjc3VtKTsKKwkJCXJldHVybiAxOworCQl9CisKKwkJLyogY2hlY2sgSGVhZGVyIEV4dGVu
-c2lvbnMgKi8KKwkJZm9yIChpID0gMDsgaSA8IGltZ1sweDFlXTsgKytpKSB7CisJCQljc3VtID0g
-Y3JjKGltZyArIDB4MjAgKyBpICogMHgyMDAsIDB4MWRmKTsKKwkJCWlmIChjc3VtICE9IGltZ1tp
-ICogMHgyMDAgKyAweDFmZl0pIHsKKwkJCQlmcHJpbnRmKHN0ZGVyciwKKwkJCQkJIkV4dGVuc2lv
-biBIZWFkZXIgIyV6dSBjaGVja3N1bSBtaXNtYXRjaDogc3BlY2lmaWVkOiAweCUwMmhoeCwgY2Fs
-Y3VsYXRlZDogMHglMDJoaHhcbiIsCisJCQkJCWksIGltZ1tpICogMHgyMDAgKyAweDFmZl0sIGNz
-dW0pOworCQkJCXJldHVybiAxOworCQkJfQorCQl9CisJfSBlbHNlIHsKKwkJY3N1bSA9IGNyYyhp
-bWcsIGhlYWRlcl9zaXplKTsKKwkJY3N1bSAtPSBpbWdbMHgxZl07CisKKwkJaWYgKGNzdW0gIT0g
-aW1nWzB4MWZdKSB7CisJCQlmcHJpbnRmKHN0ZGVyciwKKwkJCQkiQ2hlY2tzdW0gbWlzbWF0Y2g6
-IHNwZWNpZmllZDogMHglMDJoaHgsIGNhbGN1bGF0ZWQ6IDB4JTAyaGh4XG4iLAorCQkJCWltZ1sw
-eDFmXSwgY3N1bSk7CisJCQlyZXR1cm4gMTsKKwkJfQogCi0JaWYgKGNzdW0gIT0gaW1nWzB4MWZd
-KSB7Ci0JCWZwcmludGYoc3RkZXJyLAotCQkJIkNoZWNrc3VtIG1pc21hdGNoOiBzcGVjaWZpZWQ6
-IDB4JTAyaGh4LCBjYWxjdWxhdGVkOiAweCUwMmhoeFxuIiwKLQkJCWltZ1sweDFmXSwgY3N1bSk7
-Ci0JCXJldHVybiAxOwogCX0KIAogCXJldHVybiAwOwotLSAKMi4xNy4wCgoKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
-YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Thu, Jun 07, 2018 at 10:53:01PM +0200, Uwe Kleine-K=F6nig wrote:
+> Hello,
+> =
+
+> On Fri, Jun 01, 2018 at 08:07:48PM +0200, Uwe Kleine-K=F6nig wrote:
+> > +	fd =3D open(filename, O_WRONLY | O_TRUNC | O_CREAT);
+> =
+
+> This doesn't work on the target machine (dove cubox) I intended to use
+> it on an m25p0 device. It returns -28. When dropping O_TRUNC | O_CREAT
+> it works though. So I suggest to either back out patches 3 and 4, or
+> change the line above to O_WRONLY (which also matches the function
+> removed in patch 4).
+
+Ok, changed to O_WRONLY only.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
