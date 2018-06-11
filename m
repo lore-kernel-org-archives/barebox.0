@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x244.google.com ([2607:f8b0:4001:c06::244])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSR3d-0007zm-OA
- for barebox@lists.infradead.org; Mon, 11 Jun 2018 17:56:47 +0000
-Received: by mail-io0-x244.google.com with SMTP id s26-v6so24929227ioj.4
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 10:56:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <20180607130108.5339-1-andrew.smirnov@gmail.com>
- <20180608064636.cv7nx5vpkdioea4f@pengutronix.de>
-In-Reply-To: <20180608064636.cv7nx5vpkdioea4f@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 10:56:22 -0700
-Message-ID: <CAHQ1cqHRaU6PY6dtGP2LLr=4myKzO9A5G0SzffmmPa0JZp394A@mail.gmail.com>
+ id 1fSTeT-0000Bf-Le
+ for barebox@lists.infradead.org; Mon, 11 Jun 2018 20:43:00 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 11 Jun 2018 22:42:42 +0200
+Message-Id: <20180611204245.8351-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,43 +14,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RESEND v3 00/52] ARM: i.MX8MQ and EVK support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v2 0/3] kill oftree -f
+To: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Jun 7, 2018 at 11:46 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> Hi Andrey,
->
-> On Thu, Jun 07, 2018 at 06:00:16AM -0700, Andrey Smirnov wrote:
-> > RESEND to include ALL of the patches in the series (not just first 38)
-> >
-> > Everyone:
-> >
-> > Picking up where Sascha left off, this is the next version of the
-> > patchset that adds support for i.MX8MQ EVK board.
->
->
-> Applied up to 30/52 and most of the rest. For 32 I'd like to ask if it's
-> really worth making several clock functions static inline. It increases
-> the image size by a few kb. We do more often than I like, so isn't there
-> another solution?
->
+Alexander mentioned that oftree -f is used to force a legacy ATAG boot
+on ARM, so we cannot remove it without providing an alternative. The
+alternative is implemented in this series. We provide a
+global.bootm.boot_atag variable which, if set to true, forces ATAG boot.
+Also the documentation is updated accordingly which was also missing in
+the first patch.
 
-Very early versions of the series were relying on functioning udelay()
-function, but that's not the case any more, so I can move all of those
-shared functions into lib/ and link them against a dummy
-get_time_ns(). This should still allow me to use readx_poll_timeout()
-for infinite timeouts and not increase the image size.
+Sascha
 
-I'll make that change in v4.
+Sascha Hauer (3):
+  ARM: bootm: Add option boot using ATAGs
+  commands: oftree: kill oftree -f
+  Documentation: explain new way to boot using ATAGs
 
-Thanks,
-Andrey Smirnov
+ Documentation/user/booting-linux.rst          |  4 +--
+ Documentation/user/devicetree.rst             | 16 +++---------
+ .../defaultenv-kindle-mx50/boot/mmc_kernel    |  4 +--
+ arch/arm/boards/radxa-rock/env/boot/mshc1     |  2 +-
+ arch/arm/boards/radxa-rock/env/boot/mshc1-old |  2 +-
+ arch/arm/lib32/bootm.c                        | 26 +++++++++++++++----
+ commands/oftree.c                             | 17 +-----------
+ 7 files changed, 32 insertions(+), 39 deletions(-)
+
+-- 
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
