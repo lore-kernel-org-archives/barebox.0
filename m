@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fRFFO-0005bo-K6
- for barebox@lists.infradead.org; Fri, 08 Jun 2018 11:08:00 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
- helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1fRFFD-000426-6j
- for barebox@lists.infradead.org; Fri, 08 Jun 2018 13:07:47 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri,  8 Jun 2018 13:07:47 +0200
-Message-Id: <20180608110747.23789-1-l.stach@pengutronix.de>
+ id 1fSTeT-0000Bg-Ld
+ for barebox@lists.infradead.org; Mon, 11 Jun 2018 20:43:00 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 11 Jun 2018 22:42:45 +0200
+Message-Id: <20180611204245.8351-4-s.hauer@pengutronix.de>
+In-Reply-To: <20180611204245.8351-1-s.hauer@pengutronix.de>
+References: <20180611204245.8351-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,98 +21,101 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] scripts: imx-image: fix build with OpenSSL 1.1.x
-To: barebox@lists.infradead.org
+Subject: [PATCH 3/3] Documentation: explain new way to boot using ATAGs
+To: Barebox List <barebox@lists.infradead.org>
 
-OpenSSL 1.1.x made some of the types opaque, so peeking inside directly
-doesn't work anymore. Use the correct accessors instead.
+oftree -f is gone and now global.bootm.boot_atag must be set to true
+if boot using ATAGs is desired. Update the documentation accordingly.
 
-I've dropped the algorithm check, as EVP_PKEY_get0_RSA() already verifies
-that the pubkey is RSA and returns NULL if it isn't.
-
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
-This is compile tested only, so I would appreciate some testing and/or
-a close look at this change.
----
- scripts/imx/imx-image.c | 40 ++++++++++++++++++++--------------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ Documentation/user/booting-linux.rst             |  4 ++--
+ Documentation/user/devicetree.rst                | 16 ++++------------
+ .../defaultenv-kindle-mx50/boot/mmc_kernel       |  4 ++--
+ arch/arm/boards/radxa-rock/env/boot/mshc1        |  2 +-
+ arch/arm/boards/radxa-rock/env/boot/mshc1-old    |  2 +-
+ 5 files changed, 10 insertions(+), 18 deletions(-)
 
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index b241e8c4b68e..d50c755456c3 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -94,12 +94,23 @@ struct hab_rsa_public_key {
- #include <openssl/pem.h>
- #include <openssl/bio.h>
+diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
+index 408f87d8e8..437f4e80ca 100644
+--- a/Documentation/user/booting-linux.rst
++++ b/Documentation/user/booting-linux.rst
+@@ -49,8 +49,8 @@ variable:
+   bootm
  
-+#if OPENSSL_VERSION_NUMBER < 0x10100000L
-+void RSA_get0_key(const RSA *r, const BIGNUM **n,
-+		  const BIGNUM **e, const BIGNUM **d)
-+{
-+	if (n != NULL)
-+		*n = r->n;
-+	if (e != NULL)
-+		*e = r->e;
-+	if (d != NULL)
-+		*d = r->d;
-+}
-+#endif
-+
- static int extract_key(const char *certfile, uint8_t **modulus, int *modulus_len,
- 	uint8_t **exponent, int *exponent_len)
- {
--	char buf[PUBKEY_ALGO_LEN];
--	int pubkey_algonid;
--	const char *sslbuf;
-+	const BIGNUM *n, *e;
- 	EVP_PKEY *pkey;
- 	FILE *fp;
- 	X509 *cert;
-@@ -120,37 +131,26 @@ static int extract_key(const char *certfile, uint8_t **modulus, int *modulus_len
+ **NOTE:** it may happen that barebox is probed from the devicetree, but you have
+-want to start a Kernel without passing a devicetree. In this case call ``oftree -f``
+-to free the internal devicetree before calling ``bootm``
++want to start a Kernel without passing a devicetree. In this case set the
++``global.bootm.boot_atag`` variable to ``true``.
  
- 	fclose(fp);
+ Passing Kernel Arguments
+ ^^^^^^^^^^^^^^^^^^^^^^^^
+diff --git a/Documentation/user/devicetree.rst b/Documentation/user/devicetree.rst
+index 17934d86e3..679cae7f00 100644
+--- a/Documentation/user/devicetree.rst
++++ b/Documentation/user/devicetree.rst
+@@ -71,15 +71,7 @@ work on the internal devicetree. It is possible to add/remove nodes using the
+   # add a property to it
+   of_property -s /chosen/mynode/ myproperty myvalue
  
--	pubkey_algonid = OBJ_obj2nid(cert->cert_info->key->algor->algorithm);
--	if (pubkey_algonid == NID_undef) {
--		fprintf(stderr, "unable to find specified public key algorithm name.\n");
--		return -EINVAL;
--	}
+-It is important to know that these commands always work on the internal
+-devicetree. If you modify the internal devicetree to influence the behaviour of
+-a kernel booted later, make sure that you start the kernel with the internal
+-devicetree (i.e. don't pass a devicetree to the :ref:`command_bootm` command). If you
+-wish to use another devicetree than the internal devicetree for starting the kernel,
+-you can exchange the internal devicetree during runtime using the
+-:ref:`command_oftree` command:
 -
--	if (pubkey_algonid != NID_rsaEncryption)
--		return -EINVAL;
+-.. code-block:: sh
 -
--	sslbuf = OBJ_nid2ln(pubkey_algonid);
--	strncpy(buf, sslbuf, PUBKEY_ALGO_LEN);
--
- 	pkey = X509_get_pubkey(cert);
- 	if (!pkey) {
- 		fprintf(stderr, "unable to extract public key from certificate");
- 		return -EINVAL;
- 	}
+-   oftree -f
+-   oftree -l /new/dtb
++It is important to know that these commands normally work on the internal
++devicetree. If you want to modify the devicetree the kernel is started with
++see the -f options to of_property and of_node. This option will register the
++operation for later execution on the Kernel devicetree.
+diff --git a/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/boot/mmc_kernel b/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/boot/mmc_kernel
+index a43ee0cc92..4f2cabd54e 100644
+--- a/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/boot/mmc_kernel
++++ b/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/boot/mmc_kernel
+@@ -2,8 +2,8 @@
+ # Boot the Amazon factory-shipped kernel uimage stored on
+ # the eMMC at CONFIG_MMC_BOOTFLASH_ADDR 0x41000
  
--	rsa_key = pkey->pkey.rsa;
-+	rsa_key = EVP_PKEY_get0_RSA(pkey);
- 	if (!rsa_key) {
- 		fprintf(stderr, "unable to extract RSA public key");
- 		return -EINVAL;
- 	}
+-# Purge the OF tree to enable passing of ATAGs
+-oftree -f
++# Force ATAG boot
++global.bootm.boot_atag=true
  
--	*modulus_len = BN_num_bytes(rsa_key->n);
-+	RSA_get0_key(rsa_key, &n, &e, NULL);
-+	*modulus_len = BN_num_bytes(n);
- 	*modulus = malloc(*modulus_len);
--	BN_bn2bin(rsa_key->n, *modulus);
-+	BN_bn2bin(n, *modulus);
+ # The same machine type introduced with freescale ENGR00124359
+ armlinux_architecture=2955
+diff --git a/arch/arm/boards/radxa-rock/env/boot/mshc1 b/arch/arm/boards/radxa-rock/env/boot/mshc1
+index 964b6cc3eb..7393c4e63b 100644
+--- a/arch/arm/boards/radxa-rock/env/boot/mshc1
++++ b/arch/arm/boards/radxa-rock/env/boot/mshc1
+@@ -2,7 +2,7 @@
  
--	*exponent_len = BN_num_bytes(rsa_key->e);
-+	*exponent_len = BN_num_bytes(e);
- 	*exponent = malloc(*exponent_len);
--	BN_bn2bin(rsa_key->e, *exponent);
-+	BN_bn2bin(e, *exponent);
+ mount /dev/mshc1.0
  
- 	EVP_PKEY_free(pkey);
- 	X509_free(cert);
+-oftree -f
++global.bootm.boot_atag=true
+ oftree -l /mnt/mshc1.0/rk3188-radxarock.dtb
+ 
+ global.bootm.image=/mnt/mshc1.0/zImage
+diff --git a/arch/arm/boards/radxa-rock/env/boot/mshc1-old b/arch/arm/boards/radxa-rock/env/boot/mshc1-old
+index 1e1b57751d..2e43a3aafe 100644
+--- a/arch/arm/boards/radxa-rock/env/boot/mshc1-old
++++ b/arch/arm/boards/radxa-rock/env/boot/mshc1-old
+@@ -2,7 +2,7 @@
+ 
+ mount /dev/mshc1.0
+ 
+-oftree -f
++global.bootm.boot_atag=true
+ 
+ global.bootm.image=/mnt/mshc1.0/zImage-old
+ global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootwait"
 -- 
 2.17.1
 
