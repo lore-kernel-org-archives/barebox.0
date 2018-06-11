@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSGN4-00030P-MZ
- for barebox@lists.infradead.org; Mon, 11 Jun 2018 06:32:20 +0000
-Date: Mon, 11 Jun 2018 08:31:52 +0200
+ id 1fSGPp-0004zy-0b
+ for barebox@lists.infradead.org; Mon, 11 Jun 2018 06:34:58 +0000
+Date: Mon, 11 Jun 2018 08:34:45 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180611063152.kior6txkjqi2n5j5@pengutronix.de>
-References: <CACvFaDeA6k7d=1hOxCkOo1cXoxB566S3249XhZk3-zSNkQU3ag@mail.gmail.com>
- <20180607073113.7k7rupezic6t3iwj@pengutronix.de>
- <CACvFaDdHP13W4=GWoSmejJTN5qgwmbWzqhpOiK2S2ss+wVeq7A@mail.gmail.com>
+Message-ID: <20180611063445.fwbw2m5ha6p2nhlj@pengutronix.de>
+References: <20180608074133.30653-1-pvizeli@syshack.ch>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CACvFaDdHP13W4=GWoSmejJTN5qgwmbWzqhpOiK2S2ss+wVeq7A@mail.gmail.com>
+In-Reply-To: <20180608074133.30653-1-pvizeli@syshack.ch>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,28 +22,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Oftree from memory and access to start arguments
+Subject: Re: [PATCH 1/1] arm: boards: support native fdt for raspberry pi
 To: Pascal Vizeli <pvizeli@syshack.ch>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jun 08, 2018 at 01:03:11AM +0200, Pascal Vizeli wrote:
-> Hi Sascha,
+On Fri, Jun 08, 2018 at 07:41:33AM +0000, Pascal Vizeli wrote:
+> It store the native device tree from bootloader to '/rpi_native.dtb'.
+> This device tree is not compatible with barebox but needed to boot the
+> linux kernel correctly. With new overlay support we can patch this
+> device tree on runtime.
 > 
-> I wrote a patch they do that what you have suggest. It write the dtb
-> from memory into a file.
+> Now barebox can be the middle bootloader and we have no limitations to
+> origin bootloader.
 > 
-> My problem is, I don't know how I can share data between PBL and the
-> main process?
-> That are not the same binary, so I can't use extern keyword and on
-> this early boot step I don't know how I can access to memory.
-> I think with a simple pointer, I can't access to a memory area they
-> are not my own?
+> Question: How I can share a address between PBL and barebox?
 
-I have a patch in the queue that shall solve this problem, but I never
-came to it to make it ready. So far I would recommend some internal SRAM
-to store a pointer. Another possibility would be to pass some less
-memory to barebox_arm_entry() and pick up the data there. (I would
-recommend at least 4k of memory to steal)
+See other mail I just sent you.
+
+> +static int rpi_native_fdt(void)
+> +{
+> +	struct fdt_header *oftree;
+> +	int mode = O_RWSIZE_4 | O_RDONLY;
+> +	int fd = 0;
+> +	uint32_t size;
+> +	void *map;
+> +
+> +	fd = open_and_lseek("/dev/mem", mode, rpi_fdt_addr);
+> +	if (fd < 0) {
+> +		printf("failed open /dev/mem for fdt");
+> +		goto end;
+> +	}
+> +
+> +	map = memmap(fd, PROT_READ);
+> +	if (map == (void *)-1) {
+> +		printf("failed map memory for fdt");
+> +		goto end;
+> +	}
+
+No need to open/memmap /dev/mem. Just dereference the memory location.
 
 Sascha
 
