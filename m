@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fOoTC-0002K2-Vr
- for barebox@lists.infradead.org; Fri, 01 Jun 2018 18:08:16 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri,  1 Jun 2018 20:07:48 +0200
-Message-Id: <20180601180750.5436-2-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20180601180750.5436-1-u.kleine-koenig@pengutronix.de>
-References: <20180601180750.5436-1-u.kleine-koenig@pengutronix.de>
+ id 1fSTaG-0005Jk-Sa
+ for barebox@lists.infradead.org; Mon, 11 Jun 2018 20:38:38 +0000
+Date: Mon, 11 Jun 2018 22:38:22 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180611203822.dpc6qtgvydg66veg@pengutronix.de>
+References: <20180608084244.12816-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180608084244.12816-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,44 +18,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] libfile: implement new helper write_file_flash()
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] mvebu: create bbu handler for kwb images and use it on
+ cubox
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Q29tcGFyZWQgdG8gd3JpdGVfZmlsZSgpIHRoaXMgbmV3IGZ1bmN0aW9uIGFsc28gY2FsbHMgZXJh
-c2UoKSB0byBiZQpzdWl0YWJsZSBmb3IgZmxhc2ggZGV2aWNlcy4KClNpZ25lZC1vZmYtYnk6IFV3
-ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogaW5j
-bHVkZS9saWJmaWxlLmggfCAgMSArCiBsaWIvbGliZmlsZS5jICAgICB8IDMzICsrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKwogMiBmaWxlcyBjaGFuZ2VkLCAzNCBpbnNlcnRpb25zKCsp
-CgpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9saWJmaWxlLmggYi9pbmNsdWRlL2xpYmZpbGUuaAppbmRl
-eCBmZDJmYWRlYWE4MWEuLjJjNWVlZjcxZjE2OSAxMDA2NDQKLS0tIGEvaW5jbHVkZS9saWJmaWxl
-LmgKKysrIGIvaW5jbHVkZS9saWJmaWxlLmgKQEAgLTEyLDYgKzEyLDcgQEAgaW50IHJlYWRfZmls
-ZV8yKGNvbnN0IGNoYXIgKmZpbGVuYW1lLCBzaXplX3QgKnNpemUsIHZvaWQgKipvdXRidWYsCiAJ
-CWxvZmZfdCBtYXhfc2l6ZSk7CiAKIGludCB3cml0ZV9maWxlKGNvbnN0IGNoYXIgKmZpbGVuYW1l
-LCBjb25zdCB2b2lkICpidWYsIHNpemVfdCBzaXplKTsKK2ludCB3cml0ZV9maWxlX2ZsYXNoKGNv
-bnN0IGNoYXIgKmZpbGVuYW1lLCBjb25zdCB2b2lkICpidWYsIHNpemVfdCBzaXplKTsKIAogaW50
-IGNvcHlfZmlsZShjb25zdCBjaGFyICpzcmMsIGNvbnN0IGNoYXIgKmRzdCwgaW50IHZlcmJvc2Up
-OwogCmRpZmYgLS1naXQgYS9saWIvbGliZmlsZS5jIGIvbGliL2xpYmZpbGUuYwppbmRleCBiN2Ri
-MjJkNjk0MGEuLjJkNDMzNWRiN2RiZCAxMDA2NDQKLS0tIGEvbGliL2xpYmZpbGUuYworKysgYi9s
-aWIvbGliZmlsZS5jCkBAIC0yNTAsNiArMjUwLDM5IEBAIGludCB3cml0ZV9maWxlKGNvbnN0IGNo
-YXIgKmZpbGVuYW1lLCBjb25zdCB2b2lkICpidWYsIHNpemVfdCBzaXplKQogfQogRVhQT1JUX1NZ
-TUJPTCh3cml0ZV9maWxlKTsKIAorLyoqCisgKiB3cml0ZV9maWxlX2ZsYXNoIC0gd3JpdGUgYSBi
-dWZmZXIgdG8gYSBmaWxlIGJhY2tlZCBieSBmbGFzaAorICogQGZpbGVuYW1lOiAgICBUaGUgZmls
-ZW5hbWUgdG8gd3JpdGUKKyAqIEBzaXplOiAgICAgICAgVGhlIHNpemUgb2YgdGhlIGJ1ZmZlcgor
-ICoKKyAqIEZ1bmN0aW9uYWwgdGhpcyBpcyBpZGVudGljYWwgdG8gd3JpdGVfZmlsZSBidXQgY2Fs
-bHMgZXJhc2UoKSBiZWZvcmUgd3JpdGluZy4KKyAqCisgKiBSZXR1cm46IDAgZm9yIHN1Y2Nlc3Mg
-b3IgbmVnYXRpdmUgZXJyb3IgdmFsdWUKKyAqLworaW50IHdyaXRlX2ZpbGVfZmxhc2goY29uc3Qg
-Y2hhciAqZmlsZW5hbWUsIGNvbnN0IHZvaWQgKmJ1Ziwgc2l6ZV90IHNpemUpCit7CisJaW50IGZk
-LCByZXQ7CisKKwlmZCA9IG9wZW4oZmlsZW5hbWUsIE9fV1JPTkxZIHwgT19UUlVOQyB8IE9fQ1JF
-QVQpOworCWlmIChmZCA8IDApCisJCXJldHVybiBmZDsKKworCXJldCA9IGVyYXNlKGZkLCBzaXpl
-LCAwKTsKKwlpZiAocmV0IDwgMCkKKwkJZ290byBvdXRfY2xvc2U7CisKKwlyZXQgPSB3cml0ZV9m
-dWxsKGZkLCBidWYsIHNpemUpOworCitvdXRfY2xvc2U6CisJY2xvc2UoZmQpOworCisJaWYgKHJl
-dCA8IDApCisJCXJldHVybiByZXQ7CisKKwlyZXR1cm4gMDsKK30KK0VYUE9SVF9TWU1CT0wod3Jp
-dGVfZmlsZV9mbGFzaCk7CisKIC8qKgogICogY29weV9maWxlIC0gQ29weSBhIGZpbGUKICAqIEBz
-cmM6CVRoZSBzb3VyY2UgZmlsZW5hbWUKLS0gCjIuMTcuMAoKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
-bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2JhcmVib3gK
+On Fri, Jun 08, 2018 at 10:42:44AM +0200, Uwe Kleine-K=F6nig wrote:
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+> Hello,
+> =
+
+> together with the fixup for write_file_flash to not use O_TRUNC and
+> O_CREAT, this was tested on top of next.
+> =
+
+> Best regards
+> Uwe
+> =
+
+>  arch/arm/boards/solidrun-cubox/board.c | 15 ++++++-
+>  arch/arm/mach-mvebu/Makefile           |  1 +
+>  arch/arm/mach-mvebu/include/mach/bbu.h |  3 ++
+>  arch/arm/mach-mvebu/kwb_bbu.c          | 54 ++++++++++++++++++++++++++
+>  4 files changed, 72 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/arm/mach-mvebu/include/mach/bbu.h
+>  create mode 100644 arch/arm/mach-mvebu/kwb_bbu.c
+> =
+
+> diff --git a/arch/arm/boards/solidrun-cubox/board.c b/arch/arm/boards/sol=
+idrun-cubox/board.c
+> index a28f4197dfd4..aac93afb0c89 100644
+> --- a/arch/arm/boards/solidrun-cubox/board.c
+> +++ b/arch/arm/boards/solidrun-cubox/board.c
+> @@ -14,4 +14,17 @@
+>   *
+>   */
+>  =
+
+> -/* empty */
+> +#include <common.h>
+> +#include <init.h>
+> +#include <mach/bbu.h>
+> +
+> +static int cubox_devices_init(void)
+> +{
+> +	if (!of_machine_is_compatible("solidrun,cubox"))
+> +		return 0;
+> +
+> +	mvebu_bbu_flash_register_handler("flash", "/dev/m25p0", 0, true);
+
+This breaks linking when bbu support is disabled. You'll have to
+provide some static inline wrapper for this case.
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
