@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSTg0-00016E-4o
- for barebox@lists.infradead.org; Mon, 11 Jun 2018 20:44:33 +0000
-Date: Mon, 11 Jun 2018 22:44:20 +0200
+ id 1fSGN4-00030P-MZ
+ for barebox@lists.infradead.org; Mon, 11 Jun 2018 06:32:20 +0000
+Date: Mon, 11 Jun 2018 08:31:52 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180611204420.ximo5tp7jv5g4444@pengutronix.de>
-References: <20180611064103.10531-1-s.hauer@pengutronix.de>
- <alpine.DEB.2.20.1806111811470.16589@blala.de>
+Message-ID: <20180611063152.kior6txkjqi2n5j5@pengutronix.de>
+References: <CACvFaDeA6k7d=1hOxCkOo1cXoxB566S3249XhZk3-zSNkQU3ag@mail.gmail.com>
+ <20180607073113.7k7rupezic6t3iwj@pengutronix.de>
+ <CACvFaDdHP13W4=GWoSmejJTN5qgwmbWzqhpOiK2S2ss+wVeq7A@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.20.1806111811470.16589@blala.de>
+In-Reply-To: <CACvFaDdHP13W4=GWoSmejJTN5qgwmbWzqhpOiK2S2ss+wVeq7A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,40 +24,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: oftree: kill oftree -f
-To: Alexander Kurz <akurz@blala.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: Oftree from memory and access to start arguments
+To: Pascal Vizeli <pvizeli@syshack.ch>
+Cc: barebox@lists.infradead.org
 
-On Mon, Jun 11, 2018 at 06:35:48PM +0000, Alexander Kurz wrote:
+On Fri, Jun 08, 2018 at 01:03:11AM +0200, Pascal Vizeli wrote:
 > Hi Sascha,
-> On Mon, 11 Jun 2018, Sascha Hauer wrote:
 > 
-> > Being able to free the live device tree seemed like a good idea in the
-> > early days of device tree support when the first boards were brought up.
-> > It turned out to be illusory that noone stores pointers to the live tree
-> > which become invalid when oftree -f is executed. Enough people stumbled
-> > upon crashed boards with this option, so remove it finally.
+> I wrote a patch they do that what you have suggest. It write the dtb
+> from memory into a file.
 > 
-> oftree -f is still in use in boot scripts, e.g. for the kindle-mx50,
-> and at least one other board.
-> The usecase for the kindle-mx50 is
-> * DT based barebox
-> * ATAGs dependent antiquated, non upgradeable kernel
-> 
-> start_linux() (arch/arm/lib32/armlinux.c) wont do setup_tags() if there
-> still exists an oftree.
-> If there is an alternative way to make boot issue 
-> ATAGs, removing the -f option would be fine.
-> 
-> May I mention an old (rejected) proposal about this issue
-> http://lists.infradead.org/pipermail/barebox/2016-December/028633.html
-> 
-> Also note: it's still in Documentation/user/devicetree.rst
+> My problem is, I don't know how I can share data between PBL and the
+> main process?
+> That are not the same binary, so I can't use extern keyword and on
+> this early boot step I don't know how I can access to memory.
+> I think with a simple pointer, I can't access to a memory area they
+> are not my own?
 
-Thanks for noting. I was a bit enthusiastic that I finally found the
-energy to kill this option and forgot why I haven't done it earlier ;)
-I just sent an updated series which should solve the issue of being able
-to do a ATAG boot.
+I have a patch in the queue that shall solve this problem, but I never
+came to it to make it ready. So far I would recommend some internal SRAM
+to store a pointer. Another possibility would be to pass some less
+memory to barebox_arm_entry() and pick up the data there. (I would
+recommend at least 4k of memory to steal)
 
 Sascha
 
