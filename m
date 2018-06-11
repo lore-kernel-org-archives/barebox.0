@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from calrissian.rohieb.name ([81.20.132.56] helo=rohieb.name)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSUv4-0001VB-83
- for barebox@lists.infradead.org; Mon, 11 Jun 2018 22:04:14 +0000
+ id 1fSUv4-0001VY-7z
+ for barebox@lists.infradead.org; Mon, 11 Jun 2018 22:04:11 +0000
 From: Roland Hieber <rohieb@rohieb.name>
-Date: Tue, 12 Jun 2018 00:02:26 +0200
-Message-Id: <20180611220235.15995-1-rohieb@rohieb.name>
+Date: Tue, 12 Jun 2018 00:02:30 +0200
+Message-Id: <20180611220235.15995-5-rohieb@rohieb.name>
+In-Reply-To: <20180611220235.15995-1-rohieb@rohieb.name>
+References: <20180611220235.15995-1-rohieb@rohieb.name>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,49 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/9] small nit-picks for the i.MX boards documentation
+Subject: [PATCH 4/9] doc: boards: element14 WaRP7: fix header level and nested
+ list
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <rohieb@rohieb.name>
 
-Roland Hieber (9):
-  doc: boards: imx: order table of contents alphabetically
-  doc: boards: Amazon Kindle 4/5: apply some more formatting
-  doc: boards: Amazon Kindle 3: apply more formatting
-  doc: boards: element14 WaRP7: fix header level and nested list
-  doc: boards: Garz+Fricke Vincell: fix header level, capitalization and
-    punctuation
-  doc: boards: Ka-Ro TX6: use official spelling of Ka-Ro
-  doc: boards: Phytec phyCORE-i.MX31: fix formatting, style
-  doc: boards: Synertronixx SCB9328: use official uppercase spelling
-  doc: boards: Wandboard: fix formatting and punctuation
+Signed-off-by: Roland Hieber <rohieb@rohieb.name>
+---
+ Documentation/boards/imx/element14-warp7.rst | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
- ...amazon-kindle3.rst => amazon-kindle-3.rst} | 12 ++++--
- ...-kindle-mx50.rst => amazon-kindle-4-5.rst} | 39 ++++++++++++-------
- ...lement14-WaRP7.rst => element14-warp7.rst} |  5 ++-
- ...Fricke-Cupid.rst => garz-fricke-cupid.rst} |  0
- ...ke-Vincell.rst => garz-fricke-vincell.rst} |  4 +-
- .../imx/{Karo-TX25.rst => karo-tx25.rst}      |  0
- .../boards/imx/{Karo-TX6.rst => karo-tx6.rst} |  4 +-
- ...D-i.MX27.rst => phytec-phycard-i.mx27.rst} |  0
- ...E-i.MX27.rst => phytec-phycore-i.mx27.rst} |  0
- ...E-i.MX31.rst => phytec-phycore-i.mx31.rst} |  8 ++--
- ...E-i.MX35.rst => phytec-phycore-i.mx35.rst} |  0
- .../boards/imx/synertronixx_scb9328.rst       |  2 +-
- .../imx/{Wandboard.rst => wandboard.rst}      | 11 +++---
- 13 files changed, 51 insertions(+), 34 deletions(-)
- rename Documentation/boards/imx/{amazon-kindle3.rst => amazon-kindle-3.rst} (78%)
- rename Documentation/boards/imx/{amazon-kindle-mx50.rst => amazon-kindle-4-5.rst} (73%)
- rename Documentation/boards/imx/{Element14-WaRP7.rst => element14-warp7.rst} (95%)
- rename Documentation/boards/imx/{Garz-Fricke-Cupid.rst => garz-fricke-cupid.rst} (100%)
- rename Documentation/boards/imx/{Garz-Fricke-Vincell.rst => garz-fricke-vincell.rst} (90%)
- rename Documentation/boards/imx/{Karo-TX25.rst => karo-tx25.rst} (100%)
- rename Documentation/boards/imx/{Karo-TX6.rst => karo-tx6.rst} (93%)
- rename Documentation/boards/imx/{Phytec-phyCARD-i.MX27.rst => phytec-phycard-i.mx27.rst} (100%)
- rename Documentation/boards/imx/{Phytec-phyCORE-i.MX27.rst => phytec-phycore-i.mx27.rst} (100%)
- rename Documentation/boards/imx/{Phytec-phyCORE-i.MX31.rst => phytec-phycore-i.mx31.rst} (81%)
- rename Documentation/boards/imx/{Phytec-phyCORE-i.MX35.rst => phytec-phycore-i.mx35.rst} (100%)
- rename Documentation/boards/imx/{Wandboard.rst => wandboard.rst} (67%)
-
+diff --git a/Documentation/boards/imx/element14-warp7.rst b/Documentation/boards/imx/element14-warp7.rst
+index df14f84dc4..830a2fb55b 100644
+--- a/Documentation/boards/imx/element14-warp7.rst
++++ b/Documentation/boards/imx/element14-warp7.rst
+@@ -4,15 +4,16 @@ element14 WaRP7
+ This CPU card is based on an NXP i.MX7S SoC.
+ 
+ Supported hardware
+-==================
++------------------
+ 
+ - NXP PMIC PFUZE3000
+ - Kingston 08EMCP04-EL3AV100 eMCP (eMMC and LPDDR3 memory in one package)
++
+   - 8 GiB eMMC Triple-Level cell NAND flash, eMMC standard 5.0 (HS400)
+   - 512 MiB LPDDR3 SDRAM starting at address 0x80000000
+ 
+ Bootstrapping barebox
+-=====================
++---------------------
+ 
+ The device boots in internal boot mode from eMMC and is shipped with a
+ vendor modified u-boot imximage.
 -- 
 2.17.1
 
