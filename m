@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vs10.datenmanufaktur-hosting.net ([185.138.26.202]
+ helo=vs81.iboxed.net)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSc4e-0002m4-BU
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 05:42:34 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue, 12 Jun 2018 07:42:14 +0200
-Message-Id: <20180612054214.23261-1-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20180611203822.dpc6qtgvydg66veg@pengutronix.de>
-References: <20180611203822.dpc6qtgvydg66veg@pengutronix.de>
+ id 1fSRfc-0005ND-EF
+ for barebox@lists.infradead.org; Mon, 11 Jun 2018 18:36:02 +0000
+Date: Mon, 11 Jun 2018 18:35:48 +0000 (UTC)
+From: Alexander Kurz <akurz@blala.de>
+In-Reply-To: <20180611064103.10531-1-s.hauer@pengutronix.de>
+Message-ID: <alpine.DEB.2.20.1806111811470.16589@blala.de>
+References: <20180611064103.10531-1-s.hauer@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,55 +18,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! mvebu: create bbu handler for kwb images and use it on
- cubox
+Subject: Re: [PATCH] commands: oftree: kill oftree -f
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: Barebox List <barebox@lists.infradead.org>
 
----
- arch/arm/mach-mvebu/Makefile           | 2 +-
- arch/arm/mach-mvebu/include/mach/bbu.h | 9 +++++++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+Hi Sascha,
+On Mon, 11 Jun 2018, Sascha Hauer wrote:
 
-diff --git a/arch/arm/mach-mvebu/Makefile b/arch/arm/mach-mvebu/Makefile
-index cc2b926438e4..6079403b83dd 100644
---- a/arch/arm/mach-mvebu/Makefile
-+++ b/arch/arm/mach-mvebu/Makefile
-@@ -1,8 +1,8 @@
- obj-pbl-y			+= common.o
--obj-y				+= kwb_bbu.o
- obj-$(CONFIG_ARCH_ARMADA_370)	+= armada-370-xp.o
- obj-$(CONFIG_ARCH_ARMADA_XP)	+= armada-370-xp.o
- obj-$(CONFIG_ARCH_ARMADA_38X)	+= armada-370-xp.o
- obj-$(CONFIG_ARCH_DOVE)		+= dove.o
- obj-$(CONFIG_ARCH_KIRKWOOD)	+= kirkwood.o
-+obj-$(CONFIG_BAREBOX_UPDATE)	+= kwb_bbu.o
- obj-$(CONFIG_BOOTM)		+= kwbootimage.o
-diff --git a/arch/arm/mach-mvebu/include/mach/bbu.h b/arch/arm/mach-mvebu/include/mach/bbu.h
-index f1021e52ce9f..a06db2b1442e 100644
---- a/arch/arm/mach-mvebu/include/mach/bbu.h
-+++ b/arch/arm/mach-mvebu/include/mach/bbu.h
-@@ -1,3 +1,12 @@
-+#ifdef CONFIG_BAREBOX_UPDATE
- int mvebu_bbu_flash_register_handler(const char *name,
- 				     char *devicefile, int version,
- 				     bool isdefault);
-+#else
-+int mvebu_bbu_flash_register_handler(const char *name,
-+                                     char *devicefile, int version,
-+                                     bool isdefault)
-+{
-+	return -ENOSYS;
-+}
-+#endif
--- 
-2.17.1
+> Being able to free the live device tree seemed like a good idea in the
+> early days of device tree support when the first boards were brought up.
+> It turned out to be illusory that noone stores pointers to the live tree
+> which become invalid when oftree -f is executed. Enough people stumbled
+> upon crashed boards with this option, so remove it finally.
 
+oftree -f is still in use in boot scripts, e.g. for the kindle-mx50,
+and at least one other board.
+The usecase for the kindle-mx50 is
+* DT based barebox
+* ATAGs dependent antiquated, non upgradeable kernel
+
+start_linux() (arch/arm/lib32/armlinux.c) wont do setup_tags() if there
+still exists an oftree.
+If there is an alternative way to make boot issue 
+ATAGs, removing the -f option would be fine.
+
+May I mention an old (rejected) proposal about this issue
+http://lists.infradead.org/pipermail/barebox/2016-December/028633.html
+
+Also note: it's still in Documentation/user/devicetree.rst
+
+Regards, Alexander
 
 _______________________________________________
 barebox mailing list
