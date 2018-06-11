@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from calrissian.rohieb.name ([81.20.132.56] helo=rohieb.name)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSUvk-0001qT-M9
- for barebox@lists.infradead.org; Mon, 11 Jun 2018 22:05:13 +0000
+ id 1fSUvk-0001qQ-MQ
+ for barebox@lists.infradead.org; Mon, 11 Jun 2018 22:05:17 +0000
 From: Roland Hieber <rohieb@rohieb.name>
-Date: Tue, 12 Jun 2018 00:02:33 +0200
-Message-Id: <20180611220235.15995-8-rohieb@rohieb.name>
+Date: Tue, 12 Jun 2018 00:02:32 +0200
+Message-Id: <20180611220235.15995-7-rohieb@rohieb.name>
 In-Reply-To: <20180611220235.15995-1-rohieb@rohieb.name>
 References: <20180611220235.15995-1-rohieb@rohieb.name>
 List-Id: <barebox.lists.infradead.org>
@@ -21,41 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/9] doc: boards: Phytec phyCORE-i.MX31: fix formatting, style
+Subject: [PATCH 6/9] doc: boards: Ka-Ro TX6: use official spelling of Ka-Ro
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <rohieb@rohieb.name>
 
+Now both Ka-Ro entries in the table of contents look similar.
+
 Signed-off-by: Roland Hieber <rohieb@rohieb.name>
 ---
- Documentation/boards/imx/phytec-phycore-i.mx31.rst | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ Documentation/boards/imx/karo-tx6.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/boards/imx/phytec-phycore-i.mx31.rst b/Documentation/boards/imx/phytec-phycore-i.mx31.rst
-index 6c05bcdfdc..d9a981b998 100644
---- a/Documentation/boards/imx/phytec-phycore-i.mx31.rst
-+++ b/Documentation/boards/imx/phytec-phycore-i.mx31.rst
-@@ -23,8 +23,8 @@ Supported baseboards
- Supported baseboards are:
-   * Silica / Phytec PCM-970 via phyMAP-i.MX31, PMA-001
+diff --git a/Documentation/boards/imx/karo-tx6.rst b/Documentation/boards/imx/karo-tx6.rst
+index 8dd26b5964..acd6d68eeb 100644
+--- a/Documentation/boards/imx/karo-tx6.rst
++++ b/Documentation/boards/imx/karo-tx6.rst
+@@ -1,5 +1,5 @@
+-KaRo TX6x
+-=========
++Ka-Ro TX6x
++==========
  
--How to get barebox for 'Phytec's phyCORE-i.MX31'
--------------------------------------------------
-+How to get barebox for Phytec's phyCORE-i.MX31
-+----------------------------------------------
- 
- Using the default configuration::
- 
-@@ -34,8 +34,8 @@ Build the binary image::
- 
-   make ARCH=arm CROSS_COMPILE=armv5compiler
- 
--**NOTE:** replace ''armv5compiler'' with your ARM v5 cross compiler,
-- e.g.: ''arm-1136jfs-linux-gnueabi-''
-+.. note:: replace ``armv5compiler`` with your ARM v5 cross compiler prefix,
-+ e.g.: ``arm-1136jfs-linux-gnueabi-``
- 
- The resulting binary image to be flashed will be ``barebox.bin``, whereas
- the file named just ``barebox`` is an ELF executable for ARM.
+ This CPU cards are based on a Freescale i.MX6 SoC.
+ There are currently six variants of this module, that are distinguished
 -- 
 2.17.1
 
