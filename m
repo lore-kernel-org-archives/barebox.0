@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-io0-x232.google.com ([2607:f8b0:4001:c06::232])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fRYIR-0005rq-20
- for barebox@lists.infradead.org; Sat, 09 Jun 2018 07:28:25 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Sat,  9 Jun 2018 09:27:56 +0200
-Message-Id: <20180609072756.24160-1-u.kleine-koenig@pengutronix.de>
+ id 1fSQoi-00033b-RG
+ for barebox@lists.infradead.org; Mon, 11 Jun 2018 17:41:29 +0000
+Received: by mail-io0-x232.google.com with SMTP id l19-v6so24865622ioj.5
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 10:41:09 -0700 (PDT)
 MIME-Version: 1.0
+References: <alpine.DEB.2.20.1806110631180.5797@blala.de>
+In-Reply-To: <alpine.DEB.2.20.1806110631180.5797@blala.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 10:40:56 -0700
+Message-ID: <CAHQ1cqG_ww_s4JriYUfiWejKgBOTn=p4Yk3R5E3Sk_5E6GYjAA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,112 +19,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] scripts: create a separate section for host tools
-To: barebox@lists.infradead.org
-Cc: Roland Hieber <r.hieber@pengutronix.de>
+Subject: Re: [RESEND v3 50/52] scripts: imx-image: Share the code to write
+ barebox header
+To: Alexander Kurz <akurz@blala.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-VGhpcyBhbGxvd3MgdG8gZW5hYmxlIGhvc3QgdG9vbHMgZXZlbiBpZiB0aGV5IGFyZSBub3QgbmVl
-ZGVkIGZvciB0aGUKY3VycmVudCBjb25maWd1cmF0aW9uIHRvIGltcHJvdmUgY29tcGlsZSBjb3Zl
-cmFnZSBhbmQgc2ltcGxpZnkgcGFja2FnaW5nCnRoZXNlIHRvb2xzLiBUaGUgY29udmVyc2lvbiBk
-b2Vzbid0IGNvdmVyIGFsbCB0b29scyBhdmFpbGFibGUgYnV0IGNhbiBiZQpleHRlbmRlZCBsYXRl
-ci4KClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVu
-Z3V0cm9uaXguZGU+Ci0tLQogS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgfCAgMiArKwogYXJj
-aC9hcm0vS2NvbmZpZyAgICAgICAgICAgfCAgMSAtCiBhcmNoL2FybS9tYWNoLW9tYXAvS2NvbmZp
-ZyB8ICA2IC0tLS0tCiBzY3JpcHRzL0tjb25maWcgICAgICAgICAgICB8IDUxICsrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrCiBzY3JpcHRzL01ha2VmaWxlICAgICAgICAgICB8
-ICA2ICsrLS0tCiBzY3JpcHRzL2lteC9LY29uZmlnICAgICAgICB8ICA0ICstLQogNiBmaWxlcyBj
-aGFuZ2VkLCA1OCBpbnNlcnRpb25zKCspLCAxMiBkZWxldGlvbnMoLSkKIGNyZWF0ZSBtb2RlIDEw
-MDY0NCBzY3JpcHRzL0tjb25maWcKCmRpZmYgLS1naXQgYS9LY29uZmlnIGIvS2NvbmZpZwppbmRl
-eCA1M2Q0ZjVhMjc2YjcuLjE5N2RkMWM0YjNlZiAxMDA2NDQKLS0tIGEvS2NvbmZpZworKysgYi9L
-Y29uZmlnCkBAIC05LDMgKzksNSBAQCBjb25maWcgU1JDQVJDSAogCW9wdGlvbiBlbnY9IlNSQ0FS
-Q0giCiAKIHNvdXJjZSAiYXJjaC8kU1JDQVJDSC9LY29uZmlnIgorCitzb3VyY2UgInNjcmlwdHMv
-S2NvbmZpZyIKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL0tjb25maWcgYi9hcmNoL2FybS9LY29uZmln
-CmluZGV4IDM3Y2RlMGMwYzUyNy4uYzFhODllMTg1ZDVjIDEwMDY0NAotLS0gYS9hcmNoL2FybS9L
-Y29uZmlnCisrKyBiL2FyY2gvYXJtL0tjb25maWcKQEAgLTI2NSw3ICsyNjUsNiBAQCBzb3VyY2Ug
-YXJjaC9hcm0vbWFjaC1lcDkzeHgvS2NvbmZpZwogc291cmNlIGFyY2gvYXJtL21hY2gtaGlnaGJh
-bmsvS2NvbmZpZwogc291cmNlIGFyY2gvYXJtL21hY2gtaW14L0tjb25maWcKIHNvdXJjZSBhcmNo
-L2FybS9tYWNoLW14cy9LY29uZmlnCi1zb3VyY2Ugc2NyaXB0cy9pbXgvS2NvbmZpZwogc291cmNl
-IGFyY2gvYXJtL21hY2gtbXZlYnUvS2NvbmZpZwogc291cmNlIGFyY2gvYXJtL21hY2gtbmV0eC9L
-Y29uZmlnCiBzb3VyY2UgYXJjaC9hcm0vbWFjaC1ub21hZGlrL0tjb25maWcKZGlmZiAtLWdpdCBh
-L2FyY2gvYXJtL21hY2gtb21hcC9LY29uZmlnIGIvYXJjaC9hcm0vbWFjaC1vbWFwL0tjb25maWcK
-aW5kZXggZThmYzRiODQzYTFiLi5jNDUxY2YwZDQ3ZmQgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21h
-Y2gtb21hcC9LY29uZmlnCisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9LY29uZmlnCkBAIC0xMzgs
-MTIgKzEzOCw2IEBAIGNvbmZpZyBPTUFQM19VU0JCT09UCiAJICB3aGljaCBpcyBhbHJlYWR5IGlu
-aXRpYWxpemVkIGJ5IHRoZSBST00gY29kZS4gVXNlIHRoZSBvbWFwMy11c2ItbG9hZGVyCiAJICB0
-b29sIHNlbGVjdGFibGUgYmVsb3cgdG8gdXBsb2FkIGltYWdlcy4KIAotY29uZmlnIE9NQVAzX1VT
-Ql9MT0FERVIKLQlib29sICJlbmFibGUgb21hcDMgVVNCIGxvYWRlciBob3N0IHRvb2wiCi0JZGVw
-ZW5kcyBvbiBBUkNIX09NQVAzCi0JaGVscAotCSAgU2F5IFkgaGVyZSB0byBidWlsZCB0aGUgb21h
-cDMgdXNiIGxvYWRlciB0b29sLgotCiBjb25maWcgT01BUF9TRVJJQUxCT09UCiAJYm9vbCAiZW5h
-YmxlIGJvb3RpbmcgZnJvbSBzZXJpYWwiCiAJc2VsZWN0IFhZTU9ERU0KZGlmZiAtLWdpdCBhL3Nj
-cmlwdHMvS2NvbmZpZyBiL3NjcmlwdHMvS2NvbmZpZwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRl
-eCAwMDAwMDAwMDAwMDAuLjE0YTU3N2FjNGY4YgotLS0gL2Rldi9udWxsCisrKyBiL3NjcmlwdHMv
-S2NvbmZpZwpAQCAtMCwwICsxLDUxIEBACittZW51ICJIb3N0IFRvb2xzIgorCitjb25maWcgQ09N
-UElMRV9IT1NUX1RPT0xTCisJYm9vbCAiQWxsb3cgdG8gZW5hYmxlIHVudXNlZCBob3N0IHRvb2xz
-IgorCWhlbHAKKwkgIFVzdWFsbHkgdGhlIG5lZWRlZCBob3N0IHRvb2xzIGFyZSBzZWxlY3RlZCAo
-b3Igc2VsZWN0YWJsZSkgZGVwZW5kaW5nCisJICBvbiBzb21lIGNvbmZpZyBvcHRpb25zLiBJZiB5
-b3Ugc2F5IHllcyBoZXJlLCB0aGUgaG9zdCB0b29scyB0aGF0IGFyZQorCSAgbm90IG5lZWRlZCBj
-YW4gYmUgc2VsZWN0ZWQsIHRvby4KKworCSAgVGhpcyBpcyB1c2VmdWxsIGZvciBjb21waWxlIGNv
-dmVyYWdlIHRlc3RpbmcgYW5kIGZvciBwYWNrYWdpbmcgdGhlCisJICBob3N0IHRvb2xzLgorCitz
-b3VyY2Ugc2NyaXB0cy9pbXgvS2NvbmZpZworCitjb25maWcgTVZFQlVfSE9TVFRPT0xTCisJYm9v
-bCAibXZlYnUgaG9zdHRvb2xzIiBpZiBDT01QSUxFX0hPU1RfVE9PTFMKKwlkZXBlbmRzIG9uIEFS
-Q0hfTVZFQlUgfHwgQ09NUElMRV9IT1NUX1RPT0xTCisJZGVmYXVsdCB5IGlmIEFSQ0hfTVZFQlUK
-KwloZWxwCisJICBUaGlzIGVuYWJsZXMgYnVpbGRpbmcgdGhlIHRvb2xzIGt3YmltYWdlIHRvIGNy
-ZWF0ZSBhbiBpbWFnZSBzdWl0YWJsZQorCSAgZm9yIE1hcnZlbGwgbXZlYnUgbWFjaGluZXMgYW5k
-IGt3Ym9vdCB0byBib290IHZpYSBVQVJULgorCitjb25maWcgTVhTX0hPU1RUT09MUworCWJvb2wg
-Im14cyBob3N0dG9vbHMiIGlmIENPTVBJTEVfSE9TVF9UT09MUworCWRlcGVuZHMgb24gQVJDSF9N
-WFMgfHwgQ09NUElMRV9IT1NUX1RPT0xTCisJZGVmYXVsdCB5IGlmIEFSQ0hfTVhTCisJaGVscAor
-CSAgVGhpcyBidWlsZHMgdGhlIHRvb2xzIG14c2ltYWdlIGFuZCBteHNib290IHdoaWNoIGFyZSBu
-ZWVkZWQgdG8KKwkgIGNyZWF0ZSBib290YWJsZSBpbWFnZSBmaWxlcyBmb3IgbXhzLiBZb3UgbmVl
-ZCBvcGVuc3NsIGRldmVsb3BtZW50CisJICBmaWxlcyB0byBjb21waWxlIHRoaXMgdG9vbC4KKwor
-Y29uZmlnIE9NQVAzX1VTQl9MT0FERVIKKwlib29sICJvbWFwMyBVU0IgbG9hZGVyIgorCWRlcGVu
-ZHMgb24gQVJDSF9PTUFQMyB8fCBDT01QSUxFX0hPU1RfVE9PTFMKKwloZWxwCisJICBTYXkgWSBo
-ZXJlIHRvIGJ1aWxkIHRoZSBvbWFwMyB1c2IgbG9hZGVyIHRvb2wuCisKKwkgIFlvdSBuZWVkIGxp
-YnVzYi0xLjAgdG8gY29tcGlsZSB0aGlzIHRvb2wuCisKK2NvbmZpZyBPTUFQNF9IT1NUVE9PTF9V
-U0JCT09UCisJYm9vbCAib21hcDQgdXNiYm9vdCIKKwlkZXBlbmRzIG9uIChBUkNIX09NQVA0ICYm
-ICFNTVUpIHx8IENPTVBJTEVfSE9TVF9UT09MUworCWRlZmF1bHQgeSBpZiBPTUFQNF9VU0JCT09U
-CisJaGVscAorCSAgU2F5IFkgaGVyZSB0byBidWlsZCB0aGUgb21hcDQgdXNiIGxvYWRlciB0b29s
-LgorCSAgTm90ZSB0aGF0IHlvdSBuZWVkIHRvIGVuYWJsZSBPTUFQNF9VU0JCT09UIHRvIGNyZWF0
-ZSBhbiBpbWFnZQorCSAgc3VpdGFibGUgdG8gYm9vdCB1c2luZyB0aGlzIHRvb2wuCisKKwkgIFlv
-dSBuZWVkIGxpYnVzYi0xLjAgdG8gY29tcGlsZSB0aGlzIHRvb2wuCisKK2VuZG1lbnUKZGlmZiAt
-LWdpdCBhL3NjcmlwdHMvTWFrZWZpbGUgYi9zY3JpcHRzL01ha2VmaWxlCmluZGV4IDhlZGE0MWUx
-M2IxMy4uNTlkMjJlMThiZGQxIDEwMDY0NAotLS0gYS9zY3JpcHRzL01ha2VmaWxlCisrKyBiL3Nj
-cmlwdHMvTWFrZWZpbGUKQEAgLTEyLDE0ICsxMiwxNCBAQCBob3N0cHJvZ3MteSAgICAgICAgICAg
-ICAgICAgICAgICArPSBiYXJlYm94Y3JjMzIKIGhvc3Rwcm9ncy15ICAgICAgICAgICAgICAgICAg
-ICAgICs9IGtlcm5lbC1pbnN0YWxsCiBob3N0cHJvZ3MtJChDT05GSUdfSU1EKSAgICAgICAgICAr
-PSBiYXJlYm94aW1kCiBob3N0cHJvZ3MtJChDT05GSUdfS0FMTFNZTVMpICAgICArPSBrYWxsc3lt
-cwotaG9zdHByb2dzLSQoQ09ORklHX0FSQ0hfTVZFQlUpICAgKz0ga3diaW1hZ2Uga3dib290Cito
-b3N0cHJvZ3MtJChDT05GSUdfTVZFQlVfSE9TVFRPT0xTKSArPSBrd2JpbWFnZSBrd2Jvb3QKIGhv
-c3Rwcm9ncy0kKENPTkZJR19BUkNIX05FVFgpICAgICs9IGdlbl9uZXR4X2ltYWdlCiBob3N0cHJv
-Z3MtJChDT05GSUdfQVJDSF9PTUFQKSAgICArPSBvbWFwX3NpZ25HUCBtay1vbWFwLWltYWdlCiBo
-b3N0cHJvZ3MtJChDT05GSUdfQVJDSF9TNVBDeHgpICArPSBzNXBfY2tzdW0KIGhvc3Rwcm9ncy0k
-KENPTkZJR19BUkNIX0RBVklOQ0kpICs9IG1rdWJsaGVhZGVyCiBob3N0cHJvZ3MtJChDT05GSUdf
-QVJDSF9aWU5RKQkgKz0genlucV9ta2ltYWdlCiBob3N0cHJvZ3MtJChDT05GSUdfQVJDSF9TT0NG
-UEdBKSArPSBzb2NmcGdhX21raW1hZ2UKLWhvc3Rwcm9ncy0kKENPTkZJR19BUkNIX01YUykgICAg
-ICs9IG14c2ltYWdlIG14c2Jvb3QKK2hvc3Rwcm9ncy0kKENPTkZJR19NWFNfSE9TVFRPT0xTKSs9
-IG14c2ltYWdlIG14c2Jvb3QKIEhPU1RDRkxBR1MgKz0gLUkkKHNyY3RyZWUpL3NjcmlwdHMvaW5j
-bHVkZS8KIEhPU1RMT0FETElCRVNfbXhzaW1hZ2UgID0gYHBrZy1jb25maWcgLS1saWJzIG9wZW5z
-c2xgCiBIT1NUQ0ZMQUdTX29tYXAzLXVzYi1sb2FkZXIubyA9IGBwa2ctY29uZmlnIC0tY2ZsYWdz
-IGxpYnVzYi0xLjBgCkBAIC0yNyw3ICsyNyw3IEBAIEhPU1RMT0FETElCRVNfb21hcDMtdXNiLWxv
-YWRlciAgPSBgcGtnLWNvbmZpZyAtLWxpYnMgbGlidXNiLTEuMGAKIGhvc3Rwcm9ncy0kKENPTkZJ
-R19PTUFQM19VU0JfTE9BREVSKSAgKz0gb21hcDMtdXNiLWxvYWRlcgogSE9TVENGTEFHU19vbWFw
-NF91c2Jib290Lm8gPSBgcGtnLWNvbmZpZyAtLWNmbGFncyBsaWJ1c2ItMS4wYAogSE9TVExPQURM
-SUJFU19vbWFwNF91c2Jib290ID0gLWxwdGhyZWFkIGBwa2ctY29uZmlnIC0tbGlicyBsaWJ1c2It
-MS4wYAotaG9zdHByb2dzLSQoQ09ORklHX09NQVA0X1VTQkJPT1QpICs9IG9tYXA0X3VzYmJvb3QK
-K2hvc3Rwcm9ncy0kKENPTkZJR19PTUFQNF9IT1NUVE9PTF9VU0JCT09UKSArPSBvbWFwNF91c2Ji
-b290CiAKIHN1YmRpci15CQkJKz0gbW9kCiBzdWJkaXIteQkJCSs9IGlteApkaWZmIC0tZ2l0IGEv
-c2NyaXB0cy9pbXgvS2NvbmZpZyBiL3NjcmlwdHMvaW14L0tjb25maWcKaW5kZXggZmRhOWM2Mzlj
-MWQ0Li5lZjgzZmExNGRkMTQgMTAwNjQ0Ci0tLSBhL3NjcmlwdHMvaW14L0tjb25maWcKKysrIGIv
-c2NyaXB0cy9pbXgvS2NvbmZpZwpAQCAtMSw2ICsxLDYgQEAKIGNvbmZpZyBBUkNIX0lNWF9VU0JM
-T0FERVIKLQlkZXBlbmRzIG9uIEFSQ0hfTVhTIHx8IEFSQ0hfSU1YCi0JYm9vbCAiY29tcGlsZSBp
-bXgtdXNiLWxvYWRlciIKKwlkZXBlbmRzIG9uIEFSQ0hfTVhTIHx8IEFSQ0hfSU1YIHx8IENPTVBJ
-TEVfSE9TVF9UT09MUworCWJvb2wgImlteC11c2ItbG9hZGVyIgogCWhlbHAKIAkgIGlteC11c2It
-bG9hZGVyIGlzIGEgdG9vbCB0byB1cGxvYWQgYW5kIHN0YXJ0IGlteGltYWdlcyB0byBhbiBpLk1Y
-IFNvQwogCSAgaW4gUk9NIGJvb3QgbW9kZS4gSXQgcmVxdWlyZXMgbGlidXNiLCBzbyBtYWtlIHN1
-cmUgeW91IGhhdmUgdGhlIGxpYnVzYgotLSAKMi4xNy4xCgoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+On Sun, Jun 10, 2018 at 11:46 PM Alexander Kurz <akurz@blala.de> wrote:
+>
+> Hi Andrey,
+> there's something wrong with this patch,
+> when generating e.g. the kindle3 image (imx35 / kindle3_defconfig)
+> with this patch, the generated imximage differs and the device wont
+> boot.
+
+My bad, thanks for testing and noticing this! I'll work on fixing this
+in v4 of the patchset.
+
+>  "Share the code to ..." should not change the program behaviour.
+
+Yes, agreed.
+
+Thanks,
+Andrey Smirnov
+
+>
+> Regards, Alexander
+>
+> --- barebox.imximg_x4_1 2018-06-11 08:27:31.660011787 +0200
+> +++ barebox.imximg_x4_2 2018-06-11 08:27:26.676011669 +0200
+> @@ -1,6 +1,6 @@
+>  000000 ea0003fe eafffffe eafffffe eafffffe
+>  000010 eafffffe eafffffe eafffffe eafffffe
+> -000020 65726162 00786f62 00000000 00022000
+> +000020 65726162 00786f62 00000000 00000000
+>  000030 55555555 55555555 55555555 55555555
+>  *
+>  000050 00000000 00000000 00000000 00000000
+> @@ -25,12 +25,8 @@
+>  000510 00000000 00022000 00000000 00000000
+>  000520 00000000 00000000 00000000 00000000
+>  *
+> -001000 ea0003fe eafffffe eafffffe eafffffe
+> -001010 eafffffe eafffffe eafffffe eafffffe
+> -001020 65726162 00786f62 00000000 00022000
+> -001030 55555555 55555555 55555555 55555555
+> -*
+> -001050 00000000 00000000 00000000 00000000
+> +001020 00000000 00000000 00000000 00022000
+> +001030 00000000 00000000 00000000 00000000
+>  *
+>  001400 87f00400 000000b1 00000000 87eff814
+>  001410 00000000 87eff81c 87eff400 b17219e9
+>
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
