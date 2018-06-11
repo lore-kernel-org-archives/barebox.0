@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fRCz6-0005xQ-7Q
- for barebox@lists.infradead.org; Fri, 08 Jun 2018 08:43:01 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri,  8 Jun 2018 10:42:44 +0200
-Message-Id: <20180608084244.12816-1-u.kleine-koenig@pengutronix.de>
+ id 1fSGYE-0003XE-N2
+ for barebox@lists.infradead.org; Mon, 11 Jun 2018 06:43:40 +0000
+Date: Mon, 11 Jun 2018 08:43:26 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180611064326.zkre4wacg2zkluov@pengutronix.de>
+References: <20180608084244.12816-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180608084244.12816-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,74 +18,136 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mvebu: create bbu handler for kwb images and use it on cubox
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] mvebu: create bbu handler for kwb images and use it on
+ cubox
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCkhlbGxvLAoKdG9nZXRoZXIgd2l0aCB0aGUgZml4dXAgZm9yIHdyaXRlX2Zp
-bGVfZmxhc2ggdG8gbm90IHVzZSBPX1RSVU5DIGFuZApPX0NSRUFULCB0aGlzIHdhcyB0ZXN0ZWQg
-b24gdG9wIG9mIG5leHQuCgpCZXN0IHJlZ2FyZHMKVXdlCgogYXJjaC9hcm0vYm9hcmRzL3NvbGlk
-cnVuLWN1Ym94L2JvYXJkLmMgfCAxNSArKysrKystCiBhcmNoL2FybS9tYWNoLW12ZWJ1L01ha2Vm
-aWxlICAgICAgICAgICB8ICAxICsKIGFyY2gvYXJtL21hY2gtbXZlYnUvaW5jbHVkZS9tYWNoL2Ji
-dS5oIHwgIDMgKysKIGFyY2gvYXJtL21hY2gtbXZlYnUva3diX2JidS5jICAgICAgICAgIHwgNTQg
-KysrKysrKysrKysrKysrKysrKysrKysrKysKIDQgZmlsZXMgY2hhbmdlZCwgNzIgaW5zZXJ0aW9u
-cygrKSwgMSBkZWxldGlvbigtKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtbXZl
-YnUvaW5jbHVkZS9tYWNoL2JidS5oCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1t
-dmVidS9rd2JfYmJ1LmMKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvc29saWRydW4tY3Vi
-b3gvYm9hcmQuYyBiL2FyY2gvYXJtL2JvYXJkcy9zb2xpZHJ1bi1jdWJveC9ib2FyZC5jCmluZGV4
-IGEyOGY0MTk3ZGZkNC4uYWFjOTNhZmIwYzg5IDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMv
-c29saWRydW4tY3Vib3gvYm9hcmQuYworKysgYi9hcmNoL2FybS9ib2FyZHMvc29saWRydW4tY3Vi
-b3gvYm9hcmQuYwpAQCAtMTQsNCArMTQsMTcgQEAKICAqCiAgKi8KIAotLyogZW1wdHkgKi8KKyNp
-bmNsdWRlIDxjb21tb24uaD4KKyNpbmNsdWRlIDxpbml0Lmg+CisjaW5jbHVkZSA8bWFjaC9iYnUu
-aD4KKworc3RhdGljIGludCBjdWJveF9kZXZpY2VzX2luaXQodm9pZCkKK3sKKwlpZiAoIW9mX21h
-Y2hpbmVfaXNfY29tcGF0aWJsZSgic29saWRydW4sY3Vib3giKSkKKwkJcmV0dXJuIDA7CisKKwlt
-dmVidV9iYnVfZmxhc2hfcmVnaXN0ZXJfaGFuZGxlcigiZmxhc2giLCAiL2Rldi9tMjVwMCIsIDAs
-IHRydWUpOworCisJcmV0dXJuIDA7Cit9CitkZXZpY2VfaW5pdGNhbGwoY3Vib3hfZGV2aWNlc19p
-bml0KTsKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtbXZlYnUvTWFrZWZpbGUgYi9hcmNoL2Fy
-bS9tYWNoLW12ZWJ1L01ha2VmaWxlCmluZGV4IDg3YTg1MTE5MTkzZS4uY2MyYjkyNjQzOGU0IDEw
-MDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW12ZWJ1L01ha2VmaWxlCisrKyBiL2FyY2gvYXJtL21h
-Y2gtbXZlYnUvTWFrZWZpbGUKQEAgLTEsNCArMSw1IEBACiBvYmotcGJsLXkJCQkrPSBjb21tb24u
-bworb2JqLXkJCQkJKz0ga3diX2JidS5vCiBvYmotJChDT05GSUdfQVJDSF9BUk1BREFfMzcwKQkr
-PSBhcm1hZGEtMzcwLXhwLm8KIG9iai0kKENPTkZJR19BUkNIX0FSTUFEQV9YUCkJKz0gYXJtYWRh
-LTM3MC14cC5vCiBvYmotJChDT05GSUdfQVJDSF9BUk1BREFfMzhYKQkrPSBhcm1hZGEtMzcwLXhw
-Lm8KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtbXZlYnUvaW5jbHVkZS9tYWNoL2JidS5oIGIv
-YXJjaC9hcm0vbWFjaC1tdmVidS9pbmNsdWRlL21hY2gvYmJ1LmgKbmV3IGZpbGUgbW9kZSAxMDA2
-NDQKaW5kZXggMDAwMDAwMDAwMDAwLi5mMTAyMWU1MmNlOWYKLS0tIC9kZXYvbnVsbAorKysgYi9h
-cmNoL2FybS9tYWNoLW12ZWJ1L2luY2x1ZGUvbWFjaC9iYnUuaApAQCAtMCwwICsxLDMgQEAKK2lu
-dCBtdmVidV9iYnVfZmxhc2hfcmVnaXN0ZXJfaGFuZGxlcihjb25zdCBjaGFyICpuYW1lLAorCQkJ
-CSAgICAgY2hhciAqZGV2aWNlZmlsZSwgaW50IHZlcnNpb24sCisJCQkJICAgICBib29sIGlzZGVm
-YXVsdCk7CmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW12ZWJ1L2t3Yl9iYnUuYyBiL2FyY2gv
-YXJtL21hY2gtbXZlYnUva3diX2JidS5jCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAw
-MDAwMDAwMC4uZjc5NDY0ZmU1M2U0Ci0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vbWFjaC1t
-dmVidS9rd2JfYmJ1LmMKQEAgLTAsMCArMSw1NCBAQAorI2luY2x1ZGUgPGJidS5oPgorI2luY2x1
-ZGUgPGxpYmZpbGUuaD4KKyNpbmNsdWRlIDxwcmludGsuaD4KKworI2luY2x1ZGUgPG1hY2gvYmJ1
-Lmg+CisKK3N0cnVjdCBtdmVidV9iYnVfaGFuZGxlciB7CisJc3RydWN0IGJidV9oYW5kbGVyIGJi
-dWg7CisJaW50IHZlcnNpb247Cit9OworCitzdGF0aWMgaW50IG12ZWJ1X2JidV9mbGFzaF91cGRh
-dGVfaGFuZGxlcihzdHJ1Y3QgYmJ1X2hhbmRsZXIgKmJidWgsCisJCQkJCSAgc3RydWN0IGJidV9k
-YXRhICpkYXRhKQoreworCXN0cnVjdCBtdmVidV9iYnVfaGFuZGxlciAqbWJidWggPQorCQljb250
-YWluZXJfb2YoYmJ1aCwgc3RydWN0IG12ZWJ1X2JidV9oYW5kbGVyLCBiYnVoKTsKKwljb25zdCB2
-b2lkICppbWFnZSA9IGRhdGEtPmltYWdlOworCXNpemVfdCBzaXplID0gZGF0YS0+bGVuOworCWVu
-dW0gZmlsZXR5cGUgZnQgPSBmaWxlX2RldGVjdF90eXBlKGltYWdlLCBzaXplKTsKKworCWlmICgo
-bWJidWgtPnZlcnNpb24gPT0gMCAmJiBmdCA9PSBmaWxldHlwZV9rd2JpbWFnZV92MCkgfHwKKwkg
-ICAgKG1iYnVoLT52ZXJzaW9uID09IDEgJiYgZnQgPT0gZmlsZXR5cGVfa3diaW1hZ2VfdjEpIHx8
-CisJICAgIGRhdGEtPmZsYWdzICYgQkJVX0ZMQUdfRk9SQ0UpIHsKKwkJaW50IHJldCA9IGJidV9j
-b25maXJtKGRhdGEpOworCQlpZiAocmV0KQorCQkJcmV0dXJuIHJldDsKKworCQlyZXR1cm4gd3Jp
-dGVfZmlsZV9mbGFzaChiYnVoLT5kZXZpY2VmaWxlLCBpbWFnZSwgc2l6ZSk7CisJfSBlbHNlIHsK
-KwkJcHJfZXJyKCIlcyBpcyBub3QgYSB2YWxpZCBrd2JpbWFnZVxuIiwgZGF0YS0+aW1hZ2VmaWxl
-KTsKKwkJcmV0dXJuIC1FSU5WQUw7CisJfQorfQorCitpbnQgbXZlYnVfYmJ1X2ZsYXNoX3JlZ2lz
-dGVyX2hhbmRsZXIoY29uc3QgY2hhciAqbmFtZSwKKwkJCQkgICAgIGNoYXIgKmRldmljZWZpbGUs
-IGludCB2ZXJzaW9uLAorCQkJCSAgICAgYm9vbCBpc2RlZmF1bHQpCit7CisJc3RydWN0IG12ZWJ1
-X2JidV9oYW5kbGVyICptYmJ1aDsKKwlpbnQgcmV0OworCisJbWJidWggPSB4emFsbG9jKHNpemVv
-ZigqbWJidWgpKTsKKwltYmJ1aC0+YmJ1aC5kZXZpY2VmaWxlID0gZGV2aWNlZmlsZTsKKwltYmJ1
-aC0+YmJ1aC5oYW5kbGVyID0gbXZlYnVfYmJ1X2ZsYXNoX3VwZGF0ZV9oYW5kbGVyOworCW1iYnVo
-LT5iYnVoLmZsYWdzID0gaXNkZWZhdWx0ID8gQkJVX0hBTkRMRVJfRkxBR19ERUZBVUxUIDogMDsK
-KwltYmJ1aC0+YmJ1aC5uYW1lID0gbmFtZTsKKwltYmJ1aC0+dmVyc2lvbiA9IHZlcnNpb247CisK
-KwlyZXQgPSBiYnVfcmVnaXN0ZXJfaGFuZGxlcigmbWJidWgtPmJidWgpOworCWlmIChyZXQpCisJ
-CWZyZWUobWJidWgpOworCisJcmV0dXJuIHJldDsKK30KLS0gCjIuMTcuMQoKCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
-CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Fri, Jun 08, 2018 at 10:42:44AM +0200, Uwe Kleine-K=F6nig wrote:
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+> Hello,
+> =
+
+> together with the fixup for write_file_flash to not use O_TRUNC and
+> O_CREAT, this was tested on top of next.
+> =
+
+> Best regards
+> Uwe
+> =
+
+>  arch/arm/boards/solidrun-cubox/board.c | 15 ++++++-
+>  arch/arm/mach-mvebu/Makefile           |  1 +
+>  arch/arm/mach-mvebu/include/mach/bbu.h |  3 ++
+>  arch/arm/mach-mvebu/kwb_bbu.c          | 54 ++++++++++++++++++++++++++
+>  4 files changed, 72 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/arm/mach-mvebu/include/mach/bbu.h
+>  create mode 100644 arch/arm/mach-mvebu/kwb_bbu.c
+> =
+
+> diff --git a/arch/arm/boards/solidrun-cubox/board.c b/arch/arm/boards/sol=
+idrun-cubox/board.c
+> index a28f4197dfd4..aac93afb0c89 100644
+> --- a/arch/arm/boards/solidrun-cubox/board.c
+> +++ b/arch/arm/boards/solidrun-cubox/board.c
+> @@ -14,4 +14,17 @@
+>   *
+>   */
+>  =
+
+> -/* empty */
+> +#include <common.h>
+> +#include <init.h>
+> +#include <mach/bbu.h>
+> +
+> +static int cubox_devices_init(void)
+> +{
+> +	if (!of_machine_is_compatible("solidrun,cubox"))
+> +		return 0;
+> +
+> +	mvebu_bbu_flash_register_handler("flash", "/dev/m25p0", 0, true);
+> +
+> +	return 0;
+> +}
+> +device_initcall(cubox_devices_init);
+> diff --git a/arch/arm/mach-mvebu/Makefile b/arch/arm/mach-mvebu/Makefile
+> index 87a85119193e..cc2b926438e4 100644
+> --- a/arch/arm/mach-mvebu/Makefile
+> +++ b/arch/arm/mach-mvebu/Makefile
+> @@ -1,4 +1,5 @@
+>  obj-pbl-y			+=3D common.o
+> +obj-y				+=3D kwb_bbu.o
+>  obj-$(CONFIG_ARCH_ARMADA_370)	+=3D armada-370-xp.o
+>  obj-$(CONFIG_ARCH_ARMADA_XP)	+=3D armada-370-xp.o
+>  obj-$(CONFIG_ARCH_ARMADA_38X)	+=3D armada-370-xp.o
+> diff --git a/arch/arm/mach-mvebu/include/mach/bbu.h b/arch/arm/mach-mvebu=
+/include/mach/bbu.h
+> new file mode 100644
+> index 000000000000..f1021e52ce9f
+> --- /dev/null
+> +++ b/arch/arm/mach-mvebu/include/mach/bbu.h
+> @@ -0,0 +1,3 @@
+> +int mvebu_bbu_flash_register_handler(const char *name,
+> +				     char *devicefile, int version,
+> +				     bool isdefault);
+> diff --git a/arch/arm/mach-mvebu/kwb_bbu.c b/arch/arm/mach-mvebu/kwb_bbu.c
+> new file mode 100644
+> index 000000000000..f79464fe53e4
+> --- /dev/null
+> +++ b/arch/arm/mach-mvebu/kwb_bbu.c
+> @@ -0,0 +1,54 @@
+> +#include <bbu.h>
+> +#include <libfile.h>
+> +#include <printk.h>
+> +
+> +#include <mach/bbu.h>
+> +
+> +struct mvebu_bbu_handler {
+> +	struct bbu_handler bbuh;
+> +	int version;
+> +};
+> +
+> +static int mvebu_bbu_flash_update_handler(struct bbu_handler *bbuh,
+> +					  struct bbu_data *data)
+> +{
+> +	struct mvebu_bbu_handler *mbbuh =3D
+> +		container_of(bbuh, struct mvebu_bbu_handler, bbuh);
+> +	const void *image =3D data->image;
+> +	size_t size =3D data->len;
+> +	enum filetype ft =3D file_detect_type(image, size);
+> +
+> +	if ((mbbuh->version =3D=3D 0 && ft =3D=3D filetype_kwbimage_v0) ||
+> +	    (mbbuh->version =3D=3D 1 && ft =3D=3D filetype_kwbimage_v1) ||
+> +	    data->flags & BBU_FLAG_FORCE) {
+> +		int ret =3D bbu_confirm(data);
+> +		if (ret)
+> +			return ret;
+> +
+> +		return write_file_flash(bbuh->devicefile, image, size);
+> +	} else {
+> +		pr_err("%s is not a valid kwbimage\n", data->imagefile);
+> +		return -EINVAL;
+> +	}
+> +}
+
+Could this code be shared with other boards?
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
