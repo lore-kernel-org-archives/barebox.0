@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from calrissian.rohieb.name ([81.20.132.56] helo=rohieb.name)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSUv4-0001VC-80
- for barebox@lists.infradead.org; Mon, 11 Jun 2018 22:04:14 +0000
+ id 1fSUvk-0001qT-M9
+ for barebox@lists.infradead.org; Mon, 11 Jun 2018 22:05:13 +0000
 From: Roland Hieber <rohieb@rohieb.name>
-Date: Tue, 12 Jun 2018 00:02:27 +0200
-Message-Id: <20180611220235.15995-2-rohieb@rohieb.name>
+Date: Tue, 12 Jun 2018 00:02:33 +0200
+Message-Id: <20180611220235.15995-8-rohieb@rohieb.name>
 In-Reply-To: <20180611220235.15995-1-rohieb@rohieb.name>
 References: <20180611220235.15995-1-rohieb@rohieb.name>
 List-Id: <barebox.lists.infradead.org>
@@ -21,90 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/9] doc: boards: imx: order table of contents alphabetically
+Subject: [PATCH 7/9] doc: boards: Phytec phyCORE-i.MX31: fix formatting, style
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <rohieb@rohieb.name>
 
-Upper and lower case are significant when sorting file names. Stay with
-lower case file names for now, and make sure the file name order is the
-same as the order of the page titles in the table of contents.
-
 Signed-off-by: Roland Hieber <rohieb@rohieb.name>
 ---
- .../boards/imx/{amazon-kindle3.rst => amazon-kindle-3.rst}        | 0
- .../boards/imx/{amazon-kindle-mx50.rst => amazon-kindle-4-5.rst}  | 0
- .../boards/imx/{Element14-WaRP7.rst => element14-warp7.rst}       | 0
- .../boards/imx/{Garz-Fricke-Cupid.rst => garz-fricke-cupid.rst}   | 0
- .../imx/{Garz-Fricke-Vincell.rst => garz-fricke-vincell.rst}      | 0
- Documentation/boards/imx/{Karo-TX25.rst => karo-tx25.rst}         | 0
- Documentation/boards/imx/{Karo-TX6.rst => karo-tx6.rst}           | 0
- .../imx/{Phytec-phyCARD-i.MX27.rst => phytec-phycard-i.mx27.rst}  | 0
- .../imx/{Phytec-phyCORE-i.MX27.rst => phytec-phycore-i.mx27.rst}  | 0
- .../imx/{Phytec-phyCORE-i.MX31.rst => phytec-phycore-i.mx31.rst}  | 0
- .../imx/{Phytec-phyCORE-i.MX35.rst => phytec-phycore-i.mx35.rst}  | 0
- Documentation/boards/imx/{Wandboard.rst => wandboard.rst}         | 0
- 12 files changed, 0 insertions(+), 0 deletions(-)
- rename Documentation/boards/imx/{amazon-kindle3.rst => amazon-kindle-3.rst} (100%)
- rename Documentation/boards/imx/{amazon-kindle-mx50.rst => amazon-kindle-4-5.rst} (100%)
- rename Documentation/boards/imx/{Element14-WaRP7.rst => element14-warp7.rst} (100%)
- rename Documentation/boards/imx/{Garz-Fricke-Cupid.rst => garz-fricke-cupid.rst} (100%)
- rename Documentation/boards/imx/{Garz-Fricke-Vincell.rst => garz-fricke-vincell.rst} (100%)
- rename Documentation/boards/imx/{Karo-TX25.rst => karo-tx25.rst} (100%)
- rename Documentation/boards/imx/{Karo-TX6.rst => karo-tx6.rst} (100%)
- rename Documentation/boards/imx/{Phytec-phyCARD-i.MX27.rst => phytec-phycard-i.mx27.rst} (100%)
- rename Documentation/boards/imx/{Phytec-phyCORE-i.MX27.rst => phytec-phycore-i.mx27.rst} (100%)
- rename Documentation/boards/imx/{Phytec-phyCORE-i.MX31.rst => phytec-phycore-i.mx31.rst} (100%)
- rename Documentation/boards/imx/{Phytec-phyCORE-i.MX35.rst => phytec-phycore-i.mx35.rst} (100%)
- rename Documentation/boards/imx/{Wandboard.rst => wandboard.rst} (100%)
+ Documentation/boards/imx/phytec-phycore-i.mx31.rst | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/boards/imx/amazon-kindle3.rst b/Documentation/boards/imx/amazon-kindle-3.rst
-similarity index 100%
-rename from Documentation/boards/imx/amazon-kindle3.rst
-rename to Documentation/boards/imx/amazon-kindle-3.rst
-diff --git a/Documentation/boards/imx/amazon-kindle-mx50.rst b/Documentation/boards/imx/amazon-kindle-4-5.rst
-similarity index 100%
-rename from Documentation/boards/imx/amazon-kindle-mx50.rst
-rename to Documentation/boards/imx/amazon-kindle-4-5.rst
-diff --git a/Documentation/boards/imx/Element14-WaRP7.rst b/Documentation/boards/imx/element14-warp7.rst
-similarity index 100%
-rename from Documentation/boards/imx/Element14-WaRP7.rst
-rename to Documentation/boards/imx/element14-warp7.rst
-diff --git a/Documentation/boards/imx/Garz-Fricke-Cupid.rst b/Documentation/boards/imx/garz-fricke-cupid.rst
-similarity index 100%
-rename from Documentation/boards/imx/Garz-Fricke-Cupid.rst
-rename to Documentation/boards/imx/garz-fricke-cupid.rst
-diff --git a/Documentation/boards/imx/Garz-Fricke-Vincell.rst b/Documentation/boards/imx/garz-fricke-vincell.rst
-similarity index 100%
-rename from Documentation/boards/imx/Garz-Fricke-Vincell.rst
-rename to Documentation/boards/imx/garz-fricke-vincell.rst
-diff --git a/Documentation/boards/imx/Karo-TX25.rst b/Documentation/boards/imx/karo-tx25.rst
-similarity index 100%
-rename from Documentation/boards/imx/Karo-TX25.rst
-rename to Documentation/boards/imx/karo-tx25.rst
-diff --git a/Documentation/boards/imx/Karo-TX6.rst b/Documentation/boards/imx/karo-tx6.rst
-similarity index 100%
-rename from Documentation/boards/imx/Karo-TX6.rst
-rename to Documentation/boards/imx/karo-tx6.rst
-diff --git a/Documentation/boards/imx/Phytec-phyCARD-i.MX27.rst b/Documentation/boards/imx/phytec-phycard-i.mx27.rst
-similarity index 100%
-rename from Documentation/boards/imx/Phytec-phyCARD-i.MX27.rst
-rename to Documentation/boards/imx/phytec-phycard-i.mx27.rst
-diff --git a/Documentation/boards/imx/Phytec-phyCORE-i.MX27.rst b/Documentation/boards/imx/phytec-phycore-i.mx27.rst
-similarity index 100%
-rename from Documentation/boards/imx/Phytec-phyCORE-i.MX27.rst
-rename to Documentation/boards/imx/phytec-phycore-i.mx27.rst
-diff --git a/Documentation/boards/imx/Phytec-phyCORE-i.MX31.rst b/Documentation/boards/imx/phytec-phycore-i.mx31.rst
-similarity index 100%
-rename from Documentation/boards/imx/Phytec-phyCORE-i.MX31.rst
-rename to Documentation/boards/imx/phytec-phycore-i.mx31.rst
-diff --git a/Documentation/boards/imx/Phytec-phyCORE-i.MX35.rst b/Documentation/boards/imx/phytec-phycore-i.mx35.rst
-similarity index 100%
-rename from Documentation/boards/imx/Phytec-phyCORE-i.MX35.rst
-rename to Documentation/boards/imx/phytec-phycore-i.mx35.rst
-diff --git a/Documentation/boards/imx/Wandboard.rst b/Documentation/boards/imx/wandboard.rst
-similarity index 100%
-rename from Documentation/boards/imx/Wandboard.rst
-rename to Documentation/boards/imx/wandboard.rst
+diff --git a/Documentation/boards/imx/phytec-phycore-i.mx31.rst b/Documentation/boards/imx/phytec-phycore-i.mx31.rst
+index 6c05bcdfdc..d9a981b998 100644
+--- a/Documentation/boards/imx/phytec-phycore-i.mx31.rst
++++ b/Documentation/boards/imx/phytec-phycore-i.mx31.rst
+@@ -23,8 +23,8 @@ Supported baseboards
+ Supported baseboards are:
+   * Silica / Phytec PCM-970 via phyMAP-i.MX31, PMA-001
+ 
+-How to get barebox for 'Phytec's phyCORE-i.MX31'
+-------------------------------------------------
++How to get barebox for Phytec's phyCORE-i.MX31
++----------------------------------------------
+ 
+ Using the default configuration::
+ 
+@@ -34,8 +34,8 @@ Build the binary image::
+ 
+   make ARCH=arm CROSS_COMPILE=armv5compiler
+ 
+-**NOTE:** replace ''armv5compiler'' with your ARM v5 cross compiler,
+- e.g.: ''arm-1136jfs-linux-gnueabi-''
++.. note:: replace ``armv5compiler`` with your ARM v5 cross compiler prefix,
++ e.g.: ``arm-1136jfs-linux-gnueabi-``
+ 
+ The resulting binary image to be flashed will be ``barebox.bin``, whereas
+ the file named just ``barebox`` is an ELF executable for ARM.
 -- 
 2.17.1
 
