@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSGPp-0004zy-0b
- for barebox@lists.infradead.org; Mon, 11 Jun 2018 06:34:58 +0000
-Date: Mon, 11 Jun 2018 08:34:45 +0200
+ id 1fSGVw-0002Su-17
+ for barebox@lists.infradead.org; Mon, 11 Jun 2018 06:41:17 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180611063445.fwbw2m5ha6p2nhlj@pengutronix.de>
-References: <20180608074133.30653-1-pvizeli@syshack.ch>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180608074133.30653-1-pvizeli@syshack.ch>
+Date: Mon, 11 Jun 2018 08:41:03 +0200
+Message-Id: <20180611064103.10531-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,56 +14,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] arm: boards: support native fdt for raspberry pi
-To: Pascal Vizeli <pvizeli@syshack.ch>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] commands: oftree: kill oftree -f
+To: Barebox List <barebox@lists.infradead.org>
 
-On Fri, Jun 08, 2018 at 07:41:33AM +0000, Pascal Vizeli wrote:
-> It store the native device tree from bootloader to '/rpi_native.dtb'.
-> This device tree is not compatible with barebox but needed to boot the
-> linux kernel correctly. With new overlay support we can patch this
-> device tree on runtime.
-> 
-> Now barebox can be the middle bootloader and we have no limitations to
-> origin bootloader.
-> 
-> Question: How I can share a address between PBL and barebox?
+Being able to free the live device tree seemed like a good idea in the
+early days of device tree support when the first boards were brought up.
+It turned out to be illusory that noone stores pointers to the live tree
+which become invalid when oftree -f is executed. Enough people stumbled
+upon crashed boards with this option, so remove it finally.
 
-See other mail I just sent you.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/oftree.c | 17 +----------------
+ 1 file changed, 1 insertion(+), 16 deletions(-)
 
-> +static int rpi_native_fdt(void)
-> +{
-> +	struct fdt_header *oftree;
-> +	int mode = O_RWSIZE_4 | O_RDONLY;
-> +	int fd = 0;
-> +	uint32_t size;
-> +	void *map;
-> +
-> +	fd = open_and_lseek("/dev/mem", mode, rpi_fdt_addr);
-> +	if (fd < 0) {
-> +		printf("failed open /dev/mem for fdt");
-> +		goto end;
-> +	}
-> +
-> +	map = memmap(fd, PROT_READ);
-> +	if (map == (void *)-1) {
-> +		printf("failed map memory for fdt");
-> +		goto end;
-> +	}
-
-No need to open/memmap /dev/mem. Just dereference the memory location.
-
-Sascha
-
+diff --git a/commands/oftree.c b/commands/oftree.c
+index 8a47c0be58..26a47bb581 100644
+--- a/commands/oftree.c
++++ b/commands/oftree.c
+@@ -48,7 +48,6 @@ static int do_oftree(int argc, char *argv[])
+ 	int probe = 0;
+ 	char *load = NULL;
+ 	char *save = NULL;
+-	int free_of = 0;
+ 	int ret;
+ 	struct device_node *root;
+ 
+@@ -65,25 +64,12 @@ static int do_oftree(int argc, char *argv[])
+ 				return COMMAND_ERROR_USAGE;
+ 			}
+ 			break;
+-		case 'f':
+-			free_of = 1;
+-			break;
+ 		case 's':
+ 			save = optarg;
+ 			break;
+ 		}
+ 	}
+ 
+-	if (free_of) {
+-		struct device_node *root = of_get_root_node();
+-
+-		if (root)
+-			of_delete_node(root);
+-
+-		if (!load)
+-			return 0;
+-	}
+-
+ 	if (!probe && !load && !save)
+ 		return COMMAND_ERROR_USAGE;
+ 
+@@ -140,13 +126,12 @@ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT ("-l <DTB>",  "Load <DTB> to internal devicetree\n")
+ BAREBOX_CMD_HELP_OPT ("-s <DTB>",  "save internal devicetree to <DTB>\n")
+ BAREBOX_CMD_HELP_OPT ("-p",  "probe devices from stored device tree")
+-BAREBOX_CMD_HELP_OPT ("-f",  "free stored device tree")
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(oftree)
+ 	.cmd		= do_oftree,
+ 	BAREBOX_CMD_DESC("handle device trees")
+-	BAREBOX_CMD_OPTS("[-lspf]")
++	BAREBOX_CMD_OPTS("[-lsp]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
+ 	BAREBOX_CMD_HELP(cmd_oftree_help)
+ BAREBOX_CMD_END
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
