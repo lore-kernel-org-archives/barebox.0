@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSTeT-0000DR-Le
- for barebox@lists.infradead.org; Mon, 11 Jun 2018 20:43:02 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 11 Jun 2018 22:42:43 +0200
-Message-Id: <20180611204245.8351-2-s.hauer@pengutronix.de>
-In-Reply-To: <20180611204245.8351-1-s.hauer@pengutronix.de>
-References: <20180611204245.8351-1-s.hauer@pengutronix.de>
+Received: from calrissian.rohieb.name ([81.20.132.56] helo=rohieb.name)
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fSUv4-0001VB-83
+ for barebox@lists.infradead.org; Mon, 11 Jun 2018 22:04:14 +0000
+From: Roland Hieber <rohieb@rohieb.name>
+Date: Tue, 12 Jun 2018 00:02:26 +0200
+Message-Id: <20180611220235.15995-1-rohieb@rohieb.name>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,94 +19,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] ARM: bootm: Add option boot using ATAGs
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 0/9] small nit-picks for the i.MX boards documentation
+To: barebox@lists.infradead.org
+Cc: Roland Hieber <rohieb@rohieb.name>
 
-So far we can only force legacy boot using ATAGs by executing
-'oftree -f'. Said command is going away as often this command
-is not safe to call. Add an alternative way using the
-global.bootm.boot_atag environment variable.
+Roland Hieber (9):
+  doc: boards: imx: order table of contents alphabetically
+  doc: boards: Amazon Kindle 4/5: apply some more formatting
+  doc: boards: Amazon Kindle 3: apply more formatting
+  doc: boards: element14 WaRP7: fix header level and nested list
+  doc: boards: Garz+Fricke Vincell: fix header level, capitalization and
+    punctuation
+  doc: boards: Ka-Ro TX6: use official spelling of Ka-Ro
+  doc: boards: Phytec phyCORE-i.MX31: fix formatting, style
+  doc: boards: Synertronixx SCB9328: use official uppercase spelling
+  doc: boards: Wandboard: fix formatting and punctuation
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/lib32/bootm.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ ...amazon-kindle3.rst => amazon-kindle-3.rst} | 12 ++++--
+ ...-kindle-mx50.rst => amazon-kindle-4-5.rst} | 39 ++++++++++++-------
+ ...lement14-WaRP7.rst => element14-warp7.rst} |  5 ++-
+ ...Fricke-Cupid.rst => garz-fricke-cupid.rst} |  0
+ ...ke-Vincell.rst => garz-fricke-vincell.rst} |  4 +-
+ .../imx/{Karo-TX25.rst => karo-tx25.rst}      |  0
+ .../boards/imx/{Karo-TX6.rst => karo-tx6.rst} |  4 +-
+ ...D-i.MX27.rst => phytec-phycard-i.mx27.rst} |  0
+ ...E-i.MX27.rst => phytec-phycore-i.mx27.rst} |  0
+ ...E-i.MX31.rst => phytec-phycore-i.mx31.rst} |  8 ++--
+ ...E-i.MX35.rst => phytec-phycore-i.mx35.rst} |  0
+ .../boards/imx/synertronixx_scb9328.rst       |  2 +-
+ .../imx/{Wandboard.rst => wandboard.rst}      | 11 +++---
+ 13 files changed, 51 insertions(+), 34 deletions(-)
+ rename Documentation/boards/imx/{amazon-kindle3.rst => amazon-kindle-3.rst} (78%)
+ rename Documentation/boards/imx/{amazon-kindle-mx50.rst => amazon-kindle-4-5.rst} (73%)
+ rename Documentation/boards/imx/{Element14-WaRP7.rst => element14-warp7.rst} (95%)
+ rename Documentation/boards/imx/{Garz-Fricke-Cupid.rst => garz-fricke-cupid.rst} (100%)
+ rename Documentation/boards/imx/{Garz-Fricke-Vincell.rst => garz-fricke-vincell.rst} (90%)
+ rename Documentation/boards/imx/{Karo-TX25.rst => karo-tx25.rst} (100%)
+ rename Documentation/boards/imx/{Karo-TX6.rst => karo-tx6.rst} (93%)
+ rename Documentation/boards/imx/{Phytec-phyCARD-i.MX27.rst => phytec-phycard-i.mx27.rst} (100%)
+ rename Documentation/boards/imx/{Phytec-phyCORE-i.MX27.rst => phytec-phycore-i.mx27.rst} (100%)
+ rename Documentation/boards/imx/{Phytec-phyCORE-i.MX31.rst => phytec-phycore-i.mx31.rst} (81%)
+ rename Documentation/boards/imx/{Phytec-phyCORE-i.MX35.rst => phytec-phycore-i.mx35.rst} (100%)
+ rename Documentation/boards/imx/{Wandboard.rst => wandboard.rst} (67%)
 
-diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
-index c8bf72f0e0..17eb78c6b2 100644
---- a/arch/arm/lib32/bootm.c
-+++ b/arch/arm/lib32/bootm.c
-@@ -26,6 +26,9 @@
- #include <asm/armlinux.h>
- #include <asm/system.h>
- 
-+/* If true, ignore device tree and boot with ATAGs */
-+static int bootm_boot_atag;
-+
- /*
-  * sdram_start_and_size() - determine place for putting the kernel/oftree/initrd
-  *
-@@ -135,8 +138,14 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem, int
- 	unsigned long kernel;
- 	unsigned long initrd_start = 0, initrd_size = 0, initrd_end = 0;
- 	enum arm_security_state state = bootm_arm_security_state();
-+	void *oftree;
- 	int ret;
- 
-+	if (bootm_boot_atag)
-+		oftree = NULL;
-+	else
-+		oftree = data->oftree;
-+
- 	kernel = data->os_res->start + data->os_entry;
- 
- 	initrd_start = data->initrd_address;
-@@ -163,16 +172,18 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem, int
- 		free_mem = PAGE_ALIGN(initrd_end + 1);
- 	}
- 
--	ret = bootm_load_devicetree(data, free_mem);
--	if (ret)
--		return ret;
-+	if (oftree) {
-+		ret = bootm_load_devicetree(data, free_mem);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	if (bootm_verbose(data)) {
- 		printf("\nStarting kernel at 0x%08lx", kernel);
- 		if (initrd_size)
- 			printf(", initrd at 0x%08lx", initrd_start);
- 		if (data->oftree)
--			printf(", oftree at 0x%p", data->oftree);
-+			printf(", oftree at 0x%p", oftree);
- 		printf("...\n");
- 	}
- 
-@@ -188,7 +199,7 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem, int
- 	if (data->dryrun)
- 		return 0;
- 
--	start_linux((void *)kernel, swap, initrd_start, initrd_size, data->oftree,
-+	start_linux((void *)kernel, swap, initrd_start, initrd_size, oftree,
- 		    state);
- 
- 	restart_machine();
-@@ -600,8 +611,13 @@ static struct binfmt_hook binfmt_barebox_hook = {
- 	.exec = "bootm",
- };
- 
-+BAREBOX_MAGICVAR_NAMED(global_bootm_boot_atag, global.bootm.boot_atag,
-+		       "If true, ignore device tree and boot using ATAGs");
-+
- static int armlinux_register_image_handler(void)
- {
-+	globalvar_add_simple_bool("bootm.boot_atag", &bootm_boot_atag);
-+
- 	register_image_handler(&barebox_handler);
- 	register_image_handler(&uimage_handler);
- 	register_image_handler(&rawimage_handler);
 -- 
 2.17.1
 
