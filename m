@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x243.google.com ([2607:f8b0:400e:c01::243])
+Received: from mail-pl0-x235.google.com ([2607:f8b0:400e:c01::235])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYXD-0007Qn-4P
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:55:48 +0000
-Received: by mail-pl0-x243.google.com with SMTP id b14-v6so13411624pls.5
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:36 -0700 (PDT)
+ id 1fSYXN-0007Qw-D5
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:55:59 +0000
+Received: by mail-pl0-x235.google.com with SMTP id z9-v6so13396190plk.11
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:47 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:52:57 -0700
-Message-Id: <20180612015326.26192-26-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:53:05 -0700
+Message-Id: <20180612015326.26192-34-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,77 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 25/54] ARM: i.MX: xload-esdhc: Add support for i.MX8
+Subject: [PATCH v4 33/54] clock: Use udelay() to implement mdelay()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/xload.h |  1 +
- arch/arm/mach-imx/xload-esdhc.c        | 33 ++++++++++++++++++++++++++
- 2 files changed, 34 insertions(+)
+ lib/clock.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/xload.h b/arch/arm/mach-imx/include/mach/xload.h
-index 4e38ac7e2..8f141bc37 100644
---- a/arch/arm/mach-imx/include/mach/xload.h
-+++ b/arch/arm/mach-imx/include/mach/xload.h
-@@ -5,6 +5,7 @@ int imx53_nand_start_image(void);
- int imx6_spi_load_image(int instance, unsigned int flash_offset, void *buf, int len);
- int imx6_spi_start_image(int instance);
- int imx6_esdhc_start_image(int instance);
-+int imx8_esdhc_start_image(int instance);
+diff --git a/lib/clock.c b/lib/clock.c
+index b7cc49fa6..842aabc42 100644
+--- a/lib/clock.c
++++ b/lib/clock.c
+@@ -50,9 +50,11 @@ EXPORT_SYMBOL(udelay);
  
- int imx_image_size(void);
- 
-diff --git a/arch/arm/mach-imx/xload-esdhc.c b/arch/arm/mach-imx/xload-esdhc.c
-index 6ab4cabb7..08ba9b08d 100644
---- a/arch/arm/mach-imx/xload-esdhc.c
-+++ b/arch/arm/mach-imx/xload-esdhc.c
-@@ -15,6 +15,7 @@
- #include <io.h>
- #include <mci.h>
- #include <mach/imx6-regs.h>
-+#include <mach/imx8mq-regs.h>
- #include <mach/xload.h>
- #include <linux/sizes.h>
- #include "../../../drivers/mci/sdhci.h"
-@@ -292,3 +293,35 @@ int imx6_esdhc_start_image(int instance)
- 
- 	return esdhc_start_image(&esdhc, 0x10000000, 0);
+ void mdelay(unsigned long msecs)
+ {
+-	uint64_t start = get_time_ns();
+-
+-	while(!is_timeout(start, msecs * MSECOND));
++	/*
++	 * Parens around division below are needed to pervent ARM/EABI
++	 * toolchain from emiiting a call to __aeabi_uldivmod here
++	 */
++	udelay(msecs * (MSECOND / USECOND));
  }
-+
-+/**
-+ * imx8_esdhc_start_image - Load and start an image from USDHC controller
-+ * @instance: The USDHC controller instance (0..2)
-+ *
-+ * This uses esdhc_start_image() to load an image from SD/MMC.  It is
-+ * assumed that the image is the currently running barebox image (This
-+ * information is used to calculate the length of the image). The
-+ * image is started afterwards.
-+ *
-+ * Return: If successful, this function does not return. A negative error
-+ * code is returned when this function fails.
-+ */
-+int imx8_esdhc_start_image(int instance)
-+{
-+	struct esdhc esdhc;
-+
-+	switch (instance) {
-+	case 0:
-+		esdhc.regs = IOMEM(MX8MQ_USDHC1_BASE_ADDR);
-+		break;
-+	case 1:
-+		esdhc.regs = IOMEM(MX8MQ_USDHC2_BASE_ADDR);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	esdhc.is_mx6 = 1;
-+
-+	return esdhc_start_image(&esdhc, MX8MQ_DDR_CSD1_BASE_ADDR, SZ_32K);
-+}
-\ No newline at end of file
+ EXPORT_SYMBOL(mdelay);
+ 
 -- 
 2.17.0
 
