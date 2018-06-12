@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYWm-0006Kn-39
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:55:23 +0000
-Received: by mail-pl0-x244.google.com with SMTP id 30-v6so13376397pld.13
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:09 -0700 (PDT)
+ id 1fSYWq-0006oq-D6
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:55:33 +0000
+Received: by mail-pg0-x242.google.com with SMTP id 15-v6so10662007pge.2
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:22 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:52:36 -0700
-Message-Id: <20180612015326.26192-5-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:52:46 -0700
+Message-Id: <20180612015326.26192-15-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,89 +23,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 04/54] aarch64: Add i.MX8 debug UART support
+Subject: [PATCH v4 14/54] ARM: i.MX: ocotp: Add i.MX8MQ support
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-[andrew.smirnov@gmail.com: Added imx8_uart_setup_ll()]
+[andrew.smirnov@gmail.com: Rebased to account for move to nvmem]
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/debug_ll.h | 11 +++++++++++
- common/Kconfig                            |  8 ++++++++
- 2 files changed, 19 insertions(+)
+ drivers/nvmem/Kconfig |  2 +-
+ drivers/nvmem/ocotp.c | 10 ++++++++++
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
-index d54d601db..1550e059e 100644
---- a/arch/arm/mach-imx/include/mach/debug_ll.h
-+++ b/arch/arm/mach-imx/include/mach/debug_ll.h
-@@ -15,6 +15,7 @@
- #include <mach/imx53-regs.h>
- #include <mach/imx6-regs.h>
- #include <mach/imx7-regs.h>
-+#include <mach/imx8mq-regs.h>
- #include <mach/vf610-regs.h>
+diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
+index 53086d1aa..a3797b4aa 100644
+--- a/drivers/nvmem/Kconfig
++++ b/drivers/nvmem/Kconfig
+@@ -18,7 +18,7 @@ config NVMEM_SNVS_LPGPR
  
- #include <serial/imx-uart.h>
-@@ -47,6 +48,8 @@
- #define IMX_DEBUG_SOC MX6
- #elif defined CONFIG_DEBUG_IMX7D_UART
- #define IMX_DEBUG_SOC MX7
-+#elif defined CONFIG_DEBUG_IMX8MQ_UART
-+#define IMX_DEBUG_SOC MX8MQ
- #elif defined CONFIG_DEBUG_VF610_UART
- #define IMX_DEBUG_SOC VF610
- #else
-@@ -95,6 +98,13 @@ static inline void vf610_uart_setup_ll(void)
- 	lpuart_setup(base, 66000000);
- }
+ config IMX_OCOTP
+ 	tristate "i.MX6 On Chip OTP controller"
+-	depends on ARCH_IMX6 || ARCH_VF610
++	depends on ARCH_IMX6 || ARCH_VF610 || ARCH_IMX8MQ
+ 	depends on OFDEVICE
+ 	help
+ 	  This adds support for the i.MX6 On-Chip OTP controller. Currently the
+diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
+index 86d0b9cd0..f3af8620e 100644
+--- a/drivers/nvmem/ocotp.c
++++ b/drivers/nvmem/ocotp.c
+@@ -647,6 +647,13 @@ static struct imx_ocotp_data vf610_ocotp_data = {
+ 	.format_mac = vf610_ocotp_format_mac,
+ };
  
-+static inline void imx8_uart_setup_ll(void)
-+{
-+	void *base = IOMEM(IMX_UART_BASE(IMX_DEBUG_SOC,
-+					 CONFIG_DEBUG_IMX_UART_PORT));
-+	imx8mq_uart_setup(base);
-+}
++static struct imx_ocotp_data imx8mq_ocotp_data = {
++	.num_regs = 2048,
++	.addr_to_offset = imx6sl_addr_to_offset,
++	.mac_offsets_num = 1,
++	.mac_offsets = { 0x90 },
++};
 +
- static inline void PUTC_LL(int c)
- {
- 	void __iomem *base = IOMEM(IMX_UART_BASE(IMX_DEBUG_SOC,
-@@ -117,6 +127,7 @@ static inline void imx53_uart_setup_ll(void) {}
- static inline void imx6_uart_setup_ll(void)  {}
- static inline void imx7_uart_setup_ll(void)  {}
- static inline void vf610_uart_setup_ll(void) {}
-+static inline void imx8_uart_setup_ll(void)  {}
- 
- #endif /* CONFIG_DEBUG_LL */
- 
-diff --git a/common/Kconfig b/common/Kconfig
-index b7000c4d7..75aea460a 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1099,6 +1099,13 @@ config DEBUG_IMX7D_UART
- 	  Say Y here if you want barebox low-level debugging support
- 	  on i.MX7D.
- 
-+config DEBUG_IMX8MQ_UART
-+	bool "i.MX8MQ Debug UART"
-+	depends on ARCH_IMX8MQ
-+	help
-+	  Say Y here if you want barebox low-level debugging support
-+	  on i.MX8MQ.
-+
- config DEBUG_VF610_UART
- 	bool "VF610 Debug UART"
- 	depends on ARCH_VF610
-@@ -1163,6 +1170,7 @@ config DEBUG_IMX_UART_PORT
- 						DEBUG_IMX6Q_UART || \
- 						DEBUG_IMX6SL_UART || \
- 						DEBUG_IMX7D_UART || \
-+						DEBUG_IMX8MQ_UART || \
- 						DEBUG_VF610_UART
- 	default 1
- 	depends on ARCH_IMX
+ static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
+ 	{
+ 		.compatible = "fsl,imx6q-ocotp",
+@@ -660,6 +667,9 @@ static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
+ 	}, {
+ 		.compatible = "fsl,imx6ul-ocotp",
+ 		.data = &imx6q_ocotp_data,
++	}, {
++		.compatible = "fsl,imx8mq-ocotp",
++		.data = &imx8mq_ocotp_data,
+ 	}, {
+ 		.compatible = "fsl,vf610-ocotp",
+ 		.data = &vf610_ocotp_data,
 -- 
 2.17.0
 
