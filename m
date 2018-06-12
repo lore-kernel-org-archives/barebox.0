@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYX2-0006xA-2I
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:13 +0000
-Received: by mail-pg0-x244.google.com with SMTP id c10-v6so5034534pgu.9
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:25 -0700 (PDT)
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fSYXc-0007Uh-UK
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:14 +0000
+Received: by mail-pf0-x242.google.com with SMTP id a12-v6so11225822pfi.3
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:56:02 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:52:49 -0700
-Message-Id: <20180612015326.26192-18-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:53:18 -0700
+Message-Id: <20180612015326.26192-47-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,37 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 17/54] ARM: i.MX: Add basic CCM constants for i.MX8
+Subject: [PATCH v4 46/54] ARM: mmu64: Convert flags in arch_remap_range()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Flags passed to arch_remap_range() are architecture independent, so it
+can't be passed as is to map_region(). Add code to do the proper
+conversion to avoid subtle bugs that this confusion brings.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/imx8-ccm-regs.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
- create mode 100644 arch/arm/mach-imx/include/mach/imx8-ccm-regs.h
+ arch/arm/cpu/mmu_64.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/arm/mach-imx/include/mach/imx8-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx8-ccm-regs.h
-new file mode 100644
-index 000000000..93b584ebe
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/imx8-ccm-regs.h
-@@ -0,0 +1,15 @@
-+#ifndef __MACH_IMX8_CCM_REGS_H__
-+#define __MACH_IMX8_CCM_REGS_H__
+diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+index 820d8cf75..11928352b 100644
+--- a/arch/arm/cpu/mmu_64.c
++++ b/arch/arm/cpu/mmu_64.c
+@@ -171,6 +171,17 @@ static void create_sections(uint64_t virt, uint64_t phys, uint64_t size, uint64_
+ 
+ int arch_remap_range(void *_start, size_t size, unsigned flags)
+ {
++ 	switch (flags) {
++ 	case MAP_CACHED:
++ 		flags = CACHED_MEM;
++ 		break;
++ 	case MAP_UNCACHED:
++		flags = UNCACHED_MEM;
++		break;
++ 	default:
++ 		return -EINVAL;
++ 	}
 +
-+#include "ccm.h"
-+
-+#define CCM_CCGR_UART1		73
-+
-+/*
-+ * Taken from "Table 5-1. Clock Root Table" from i.MX8M Quad
-+ * Applications Processor Reference Manual
-+ */
-+#define UART1_CLK_ROOT		94
-+#define UART1_CLK_ROOT__25M_REF_CLK CCM_TARGET_ROOTn_MUX(0b000)
-+
-+#endif
+ 	map_region((uint64_t)_start, (uint64_t)_start, (uint64_t)size, flags);
+ 	tlb_invalidate();
+ 
 -- 
 2.17.0
 
