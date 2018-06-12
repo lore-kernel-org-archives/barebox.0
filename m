@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x22d.google.com ([2607:f8b0:400e:c01::22d])
+Received: from mail-pf0-x22c.google.com ([2607:f8b0:400e:c00::22c])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYXk-0007VW-9k
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:21 +0000
-Received: by mail-pl0-x22d.google.com with SMTP id w17-v6so13405127pll.9
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:56:10 -0700 (PDT)
+ id 1fSYXg-0007Uj-Nw
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:18 +0000
+Received: by mail-pf0-x22c.google.com with SMTP id q1-v6so11210863pff.13
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:56:06 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:53:24 -0700
-Message-Id: <20180612015326.26192-53-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:53:21 -0700
+Message-Id: <20180612015326.26192-50-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,182 +23,128 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 52/54] scripts: imx-image: Add i.MX8MQ support
+Subject: [PATCH v4 49/54] scripts: imx-image: Limit v2 header size to
+ HEADER_LEN
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+Given the following:
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+ 1. Assembly code, namely "b 0x1000" instruction, in bb_header[]
+    assumes that i.MX image header occupies first HEADER_LEN bytes and
+    bootloader executable is located right after.
+
+ 2. Code in imx_image_size() assumes that i.MX image header is
+    HEADER_LEN bytes
+
+ 3. Original code handling v2 header allocated more than HEADER_LEN
+    buffer to store IVT + boot data + DCD. However, the code writing
+    that buffer to disk is only set up to use first HEADER_LEN bytes
+    and to silently discard the rest as a side effect.
+
+Let's be conservative and limit total size of v2 header to not exceed
+Inital Load Region (4K or HEADER_LEN) to match what's being done for
+v1.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- scripts/imx/imx-image.c | 54 +++++++++++++++++++++++++++++++++++++----
- scripts/imx/imx.c       | 23 ++++++++++++------
- scripts/imx/imx.h       |  2 ++
- 3 files changed, 66 insertions(+), 13 deletions(-)
+ scripts/imx/imx-image.c | 31 +++++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
 
 diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index 4a08581fb..6ebae2256 100644
+index a8a26e0ee..294f51a90 100644
 --- a/scripts/imx/imx-image.c
 +++ b/scripts/imx/imx-image.c
-@@ -57,8 +57,7 @@ static char *prgname;
+@@ -35,7 +35,13 @@
+ 
+ #include <include/filetype.h>
+ 
+-#define MAX_DCD 1024
++#define FLASH_HEADER_OFFSET 0x400
++
++/*
++ * Conservative DCD element limit set to restriction v2 header size to
++ * HEADER_SIZE
++ */
++#define MAX_DCD ((HEADER_LEN - FLASH_HEADER_OFFSET - sizeof(struct imx_flash_header_v2)) / sizeof(u32))
+ #define CSF_LEN 0x2000		/* length of the CSF (needed for HAB) */
+ 
+ static uint32_t dcdtable[MAX_DCD];
+@@ -50,7 +56,6 @@ static char *prgname;
+  * ============================================================================
   */
  
+-#define FLASH_HEADER_OFFSET 0x400
  
--static uint32_t bb_header[] = {
--	0xea0003fe,	/* b 0x1000 */
-+static uint32_t bb_header_aarch32[] = {
- 	0xeafffffe,	/* 1: b 1b  */
- 	0xeafffffe,	/* 1: b 1b  */
- 	0xeafffffe,	/* 1: b 1b  */
-@@ -66,6 +65,30 @@ static uint32_t bb_header[] = {
- 	0xeafffffe,	/* 1: b 1b  */
- 	0xeafffffe,	/* 1: b 1b  */
- 	0xeafffffe,	/* 1: b 1b  */
-+	0xeafffffe,	/* 1: b 1b  */
-+	0x65726162,	/* 'bare'   */
-+	0x00786f62,	/* 'box\0'  */
-+	0x00000000,
-+	0x00000000,
-+	0x55555555,
-+	0x55555555,
-+	0x55555555,
-+	0x55555555,
-+	0x55555555,
-+	0x55555555,
-+	0x55555555,
-+	0x55555555,
-+};
-+
-+static uint32_t bb_header_aarch64[] = {
-+	0x14000000,	/* 1: b 1b  */
-+	0x14000000,	/* 1: b 1b  */
-+	0x14000000,	/* 1: b 1b  */
-+	0x14000000,	/* 1: b 1b  */
-+	0x14000000,	/* 1: b 1b  */
-+	0x14000000,	/* 1: b 1b  */
-+	0x14000000,	/* 1: b 1b  */
-+	0x14000000,	/* 1: b 1b  */
- 	0x65726162,	/* 'bare'   */
- 	0x00786f62,	/* 'box\0'  */
- 	0x00000000,
-@@ -652,6 +675,11 @@ static void *read_file(const char *filename, size_t *size)
- 	return buf;
- }
- 
-+static bool cpu_is_aarch64(const struct config_data *data)
-+{
-+	return data->cpu_type == IMX_CPU_IMX8MQ;
-+}
-+
- int main(int argc, char *argv[])
- {
- 	int opt, ret;
-@@ -674,6 +702,8 @@ int main(int argc, char *argv[])
- 		.check = check,
- 		.nop = nop,
- 	};
-+	uint32_t *bb_header;
-+	size_t sizeof_bb_header;
- 
- 	prgname = argv[0];
- 
-@@ -803,6 +833,15 @@ int main(int argc, char *argv[])
- 		exit(1);
+ static uint32_t bb_header[] = {
+ 	0xea0003fe,	/* b 0x1000 */
+@@ -261,7 +266,7 @@ static int write_mem_v1(uint32_t addr, uint32_t val, int width, int set_bits, in
  	}
  
-+	if (cpu_is_aarch64(&data)) {
-+		bb_header = bb_header_aarch64;
-+		sizeof_bb_header = sizeof(bb_header_aarch64);
-+	} else {
-+		bb_header = bb_header_aarch32;
-+		sizeof_bb_header = sizeof(bb_header_aarch32);
-+	}
-+
-+	bb_header[0] = data.first_opcode;
- 	bb_header[ARM_HEAD_SIZE_INDEX] = barebox_image_size;
+ 	if (curdcd > MAX_DCD - 3) {
+-		fprintf(stderr, "At maximum %d dcd entried are allowed\n", MAX_DCD);
++		fprintf(stderr, "At maximum %d dcd entried are allowed\n", (int)MAX_DCD);
+ 		return -ENOMEM;
+ 	}
  
- 	infile = read_file(imagename, &insize);
-@@ -819,14 +858,19 @@ int main(int argc, char *argv[])
+@@ -383,7 +388,7 @@ static int write_mem_v2(uint32_t addr, uint32_t val, int width, int set_bits, in
+ 		cmd |= 1 << 3;
  
- 	for (i = 0; i < header_copies; i++) {
- 		ret = xwrite(outfd, add_barebox_header ? bb_header : buf,
--			     sizeof(bb_header));
-+			     sizeof_bb_header);
- 		if (ret < 0) {
- 			perror("write");
- 			exit(1);
+ 	if (curdcd > MAX_DCD - 3) {
+-		fprintf(stderr, "At maximum %d dcd entried are allowed\n", MAX_DCD);
++		fprintf(stderr, "At maximum %d dcd entried are allowed\n", (int)MAX_DCD);
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -454,7 +459,7 @@ static int check(const struct config_data *data, uint32_t cmd, uint32_t addr,
+ 		return -EINVAL;
+ 	}
+ 	if (curdcd > MAX_DCD - 3) {
+-		fprintf(stderr, "At maximum %d dcd entried are allowed\n", MAX_DCD);
++		fprintf(stderr, "At maximum %d dcd entried are allowed\n", (int)MAX_DCD);
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -495,7 +500,7 @@ static int nop(const struct config_data *data)
+ 	case 2:
+ 		if (curdcd > MAX_DCD - 1) {
+ 			fprintf(stderr, "At maximum %d DCD entries allowed\n",
+-				MAX_DCD);
++				(int)MAX_DCD);
+ 			return -ENOMEM;
  		}
  
--		ret = xwrite(outfd, buf + sizeof(bb_header),
--			     HEADER_LEN - sizeof(bb_header));
-+		if (lseek(outfd, data.header_gap, SEEK_CUR) < 0) {
-+			perror("lseek");
-+			exit(1);
-+		}
+@@ -780,12 +785,12 @@ int main(int argc, char *argv[])
+ 		exit(0);
+ 	}
+ 
++	buf = calloc(1, HEADER_LEN);
++	if (!buf)
++		exit(1);
 +
-+		ret = xwrite(outfd, buf + sizeof_bb_header,
-+			     HEADER_LEN - sizeof_bb_header);
- 		if (ret < 0) {
- 			perror("write");
+ 	switch (data.header_version) {
+ 	case 1:
+-		buf = calloc(1, HEADER_LEN);
+-		if (!buf)
+-			exit(1);
+-
+ 		add_header_v1(&data, buf);
+ 		if (data.srkfile) {
+ 			ret = add_srk(buf, data.image_dcd_offset, data.image_load_addr,
+@@ -795,9 +800,11 @@ int main(int argc, char *argv[])
+ 		}
+ 		break;
+ 	case 2:
+-		buf = calloc(1, data.image_dcd_offset + sizeof(struct imx_flash_header_v2) + MAX_DCD * sizeof(u32));
+-		if (!buf)
++		if (data.image_dcd_offset + sizeof(struct imx_flash_header_v2) +
++		    MAX_DCD * sizeof(u32) > HEADER_LEN) {
++			fprintf(stderr, "i.MX v2 header exceeds SW limit set by imx-image\n");
  			exit(1);
-diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-index fb6ac001e..d3786b6e1 100644
---- a/scripts/imx/imx.c
-+++ b/scripts/imx/imx.c
-@@ -222,17 +222,22 @@ struct soc_type {
- 	char *name;
- 	int header_version;
- 	int cpu_type;
-+	off_t header_gap;
-+	uint32_t first_opcode;
- };
++		}
  
-+#define SZ_32K	(32 * 1024)
-+
- static struct soc_type socs[] = {
--	{ .name = "imx25", .header_version = 1, .cpu_type = IMX_CPU_IMX25 },
--	{ .name = "imx35", .header_version = 1, .cpu_type = IMX_CPU_IMX35 },
--	{ .name = "imx50", .header_version = 2, .cpu_type = IMX_CPU_IMX50 },
--	{ .name = "imx51", .header_version = 1, .cpu_type = IMX_CPU_IMX51 },
--	{ .name = "imx53", .header_version = 2, .cpu_type = IMX_CPU_IMX53 },
--	{ .name = "imx6", .header_version = 2, .cpu_type = IMX_CPU_IMX6 },
--	{ .name = "imx7", .header_version = 2, .cpu_type = IMX_CPU_IMX7 },
--	{ .name = "vf610", .header_version = 2, .cpu_type = IMX_CPU_VF610 },
-+	{ .name = "imx25",  .header_version = 1, .cpu_type = IMX_CPU_IMX25,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
-+	{ .name = "imx35",  .header_version = 1, .cpu_type = IMX_CPU_IMX35,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
-+	{ .name = "imx50",  .header_version = 2, .cpu_type = IMX_CPU_IMX50,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
-+	{ .name = "imx51",  .header_version = 1, .cpu_type = IMX_CPU_IMX51,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
-+	{ .name = "imx53",  .header_version = 2, .cpu_type = IMX_CPU_IMX53,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
-+	{ .name = "imx6",   .header_version = 2, .cpu_type = IMX_CPU_IMX6,   .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
-+	{ .name = "imx7",   .header_version = 2, .cpu_type = IMX_CPU_IMX7,   .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
-+	{ .name = "imx8mq", .header_version = 2, .cpu_type = IMX_CPU_IMX8MQ, .header_gap = SZ_32K, .first_opcode = 0x14009000 /* b 0x9000 */},
-+	{ .name = "vf610",  .header_version = 2, .cpu_type = IMX_CPU_VF610,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
- };
- 
- static int do_soc(struct config_data *data, int argc, char *argv[])
-@@ -249,6 +254,8 @@ static int do_soc(struct config_data *data, int argc, char *argv[])
- 		if (!strcmp(socs[i].name, soc)) {
- 			data->header_version = socs[i].header_version;
- 			data->cpu_type = socs[i].cpu_type;
-+			data->header_gap = socs[i].header_gap;
-+			data->first_opcode = socs[i].first_opcode;
- 
- 			if (data->cpu_type == IMX_CPU_IMX35)
- 				data->load_size += HEADER_LEN;
-diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
-index c7677f81a..92a3fd316 100644
---- a/scripts/imx/imx.h
-+++ b/scripts/imx/imx.h
-@@ -72,6 +72,8 @@ struct config_data {
- 	char *outfile;
- 	char *srkfile;
- 	int header_version;
-+	off_t header_gap;
-+	uint32_t first_opcode;
- 	int cpu_type;
- 	int (*check)(const struct config_data *data, uint32_t cmd,
- 		     uint32_t addr, uint32_t mask);
+ 		add_header_v2(&data, buf);
+ 		break;
 -- 
 2.17.0
 
