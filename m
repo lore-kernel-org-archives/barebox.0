@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x234.google.com ([2607:f8b0:400e:c01::234])
+Received: from mail-pf0-x230.google.com ([2607:f8b0:400e:c00::230])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYXP-0007RO-Rf
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:01 +0000
-Received: by mail-pl0-x234.google.com with SMTP id f1-v6so13411997plt.6
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:49 -0700 (PDT)
+ id 1fSYXO-0007RA-Lc
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:00 +0000
+Received: by mail-pf0-x230.google.com with SMTP id w7-v6so11205449pfn.9
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:48 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:53:07 -0700
-Message-Id: <20180612015326.26192-36-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:53:06 -0700
+Message-Id: <20180612015326.26192-35-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,28 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 35/54] Kbuild: Add $(quote)
+Subject: [PATCH v4 34/54] ARM: i.MX8: Add DDRC PHY and DDR CTL base addresses
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- scripts/Kbuild.include | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/mach-imx/include/mach/imx8mq-regs.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
-index f3771902b..512d21732 100644
---- a/scripts/Kbuild.include
-+++ b/scripts/Kbuild.include
-@@ -3,6 +3,7 @@
+diff --git a/arch/arm/mach-imx/include/mach/imx8mq-regs.h b/arch/arm/mach-imx/include/mach/imx8mq-regs.h
+index 6dac00107..51936f526 100644
+--- a/arch/arm/mach-imx/include/mach/imx8mq-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx8mq-regs.h
+@@ -114,8 +114,10 @@
+ #define MX8MQ_SRC_DDRC_RCR_ADDR		0x30391000
+ #define MX8MQ_SRC_DDRC2_RCR_ADDR	0x30391004
  
- # Convenient variables
- comma   := ,
-+quote   := "
- squote  := '
- empty   :=
- space   := $(empty) $(empty)
+-#define MX8MQ_DDRC_DDR_SS_GPR0		0x3d000000
++#define MX8MQ_DDRC_PHY_BASE_ADDR	0x3c000000
++#define MX8MQ_DDRC_DDR_SS_GPR0		(MX8MQ_DDRC_PHY_BASE_ADDR + 0x01000000)
+ #define MX8MQ_DDRC_IPS_BASE_ADDR(X)	(0x3d400000 + ((X) * 0x2000000))
++#define MX8MQ_DDRC_CTL_BASE_ADDR	MX8MQ_DDRC_IPS_BASE_ADDR(0)
+ #define MX8MQ_DDR_CSD1_BASE_ADDR	0x40000000
+ 
+ #endif /* __MACH_IMX8MQ_REGS_H */
 -- 
 2.17.0
 
