@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
+Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYWr-0006Wg-Cd
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:55:41 +0000
-Received: by mail-pf0-x241.google.com with SMTP id b74-v6so11222875pfl.5
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:15 -0700 (PDT)
+ id 1fSYWu-0006rl-EA
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:55:51 +0000
+Received: by mail-pg0-x243.google.com with SMTP id c10-v6so5034462pgu.9
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:23 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:52:40 -0700
-Message-Id: <20180612015326.26192-9-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:52:47 -0700
+Message-Id: <20180612015326.26192-16-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,87 +23,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 08/54] net: fec_imx: Use dma mapping functions
+Subject: [PATCH v4 15/54] ARM: i.MX: Split shared CCM code into a separate file
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+Both i.MX8 and i.MX7 have similar CCMs, so move any code that can be
+share into a separate file.
 
-Rather than doing DMA on the input buffer address get a proper DMA
-address from the mapping functions.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/fec_imx.c | 15 +++++++++------
- drivers/net/fec_imx.h |  1 +
- 2 files changed, 10 insertions(+), 6 deletions(-)
+ arch/arm/mach-imx/include/mach/ccm.h          | 20 +++++++++++++++++++
+ .../arm/mach-imx/include/mach/imx7-ccm-regs.h | 16 +--------------
+ 2 files changed, 21 insertions(+), 15 deletions(-)
+ create mode 100644 arch/arm/mach-imx/include/mach/ccm.h
 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 33599dd82..0ca594082 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -453,6 +453,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
- {
- 	unsigned int status;
- 	uint64_t tmo;
-+	dma_addr_t dma;
- 
- 	/*
- 	 * This routine transmits one frame.  This routine only accepts
-@@ -466,7 +467,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
- 		return -1;
- 	}
- 
--	if ((uint32_t)eth_data & (DB_DATA_ALIGNMENT-1))
-+	if ((unsigned long)eth_data & (DB_DATA_ALIGNMENT - 1))
- 		dev_warn(&dev->dev, "Transmit data not aligned: %p!\n", eth_data);
- 
- 	/*
-@@ -479,10 +480,12 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
- 
- 	writew(data_length, &fec->tbd_base[fec->tbd_index].data_length);
- 
--	writel((uint32_t)(eth_data), &fec->tbd_base[fec->tbd_index].data_pointer);
-+	dma = dma_map_single(fec->dev, eth_data, data_length, DMA_TO_DEVICE);
-+	if (dma_mapping_error(fec->dev, dma))
-+		return -EIO;
+diff --git a/arch/arm/mach-imx/include/mach/ccm.h b/arch/arm/mach-imx/include/mach/ccm.h
+new file mode 100644
+index 000000000..32254a85b
+--- /dev/null
++++ b/arch/arm/mach-imx/include/mach/ccm.h
+@@ -0,0 +1,20 @@
++#ifndef __IMX_CCM_H__
 +
-+	writel((uint32_t)(dma), &fec->tbd_base[fec->tbd_index].data_pointer);
++/* 0 <= n <= 190 */
++#define CCM_CCGRn_SET(n)	(0x4004 + 16 * (n))
++#define CCM_CCGRn_CLR(n)	(0x4008 + 16 * (n))
++
++/* 0 <= n <= 120 */
++#define CCM_TARGET_ROOTn(n)	(0x8000 + 128 * (n))
++
++#define CCM_TARGET_ROOTn_MUX(x)		((x) << 24)
++#define CCM_TARGET_ROOTn_ENABLE		BIT(28)
++
++
++#define CCM_CCGR_SETTINGn(n, s)  ((s) << ((n) * 4))
++#define CCM_CCGR_SETTINGn_NOT_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b00)
++#define CCM_CCGR_SETTINGn_NEEDED_RUN(n)		CCM_CCGR_SETTINGn(n, 0b01)
++#define CCM_CCGR_SETTINGn_NEEDED_RUN_WAIT(n)	CCM_CCGR_SETTINGn(n, 0b10)
++#define CCM_CCGR_SETTINGn_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b11)
++
++#endif
+\ No newline at end of file
+diff --git a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
+index 97fe240fc..43b9425df 100644
+--- a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
+@@ -1,25 +1,11 @@
+ #ifndef __MACH_IMX7_CCM_REGS_H__
+ #define __MACH_IMX7_CCM_REGS_H__
  
--	dma_sync_single_for_device((unsigned long)eth_data, data_length,
--				   DMA_TO_DEVICE);
- 	/*
- 	 * update BD's status now
- 	 * This block:
-@@ -505,8 +508,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
- 			break;
- 		}
- 	}
--	dma_sync_single_for_cpu((unsigned long)eth_data, data_length,
--				DMA_TO_DEVICE);
-+	dma_unmap_single(fec->dev, dma, data_length, DMA_TO_DEVICE);
+-/* 0 <= n <= 190 */
+-#define CCM_CCGRn_SET(n)	(0x4004 + 16 * (n))
+-#define CCM_CCGRn_CLR(n)	(0x4008 + 16 * (n))
++#include "ccm.h"
  
- 	/* for next transmission use the other buffer */
- 	if (fec->tbd_index)
-@@ -748,6 +750,7 @@ static int fec_probe(struct device_d *dev)
+ #define CCM_CCGR_UART1		148
+ #define CCM_CCGR_UART2		149
  
- 	fec = xzalloc(sizeof(*fec));
- 	fec->type = type;
-+	fec->dev = dev;
- 	edev = &fec->edev;
- 	dev->priv = fec;
- 	edev->priv = fec;
-diff --git a/drivers/net/fec_imx.h b/drivers/net/fec_imx.h
-index 561de0890..e3f60dd66 100644
---- a/drivers/net/fec_imx.h
-+++ b/drivers/net/fec_imx.h
-@@ -149,6 +149,7 @@ enum fec_opt_clock {
-  */
- struct fec_priv {
- 	struct eth_device edev;
-+	struct device_d *dev;
- 	void __iomem *regs;
- 	struct buffer_descriptor __iomem *rbd_base;	/* RBD ring                  */
- 	int rbd_index;				/* next receive BD to read   */
+-#define CCM_CCGR_SETTINGn(n, s)  ((s) << ((n) * 4))
+-#define CCM_CCGR_SETTINGn_NOT_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b00)
+-#define CCM_CCGR_SETTINGn_NEEDED_RUN(n)		CCM_CCGR_SETTINGn(n, 0b01)
+-#define CCM_CCGR_SETTINGn_NEEDED_RUN_WAIT(n)	CCM_CCGR_SETTINGn(n, 0b10)
+-#define CCM_CCGR_SETTINGn_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b11)
+-
+-/* 0 <= n <= 120 */
+-#define CCM_TARGET_ROOTn(n)	(0x8000 + 128 * (n))
+-
+-#define CCM_TARGET_ROOTn_MUX(x)		((x) << 24)
+-#define CCM_TARGET_ROOTn_ENABLE		BIT(28)
+-
+ #define CLOCK_ROOT_INDEX(x)	(((x) - 0x8000) / 128)
+ 
+ /*
 -- 
 2.17.0
 
