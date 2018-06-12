@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSqIV-0001YL-Fu
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:02 +0000
-Received: by mail-pf0-x244.google.com with SMTP id a11-v6so151456pff.8
- for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:37 -0700 (PDT)
+ id 1fSqIV-0001a1-Ft
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:04 +0000
+Received: by mail-pf0-x244.google.com with SMTP id b17-v6so161546pfi.0
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:42 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Jun 2018 13:52:23 -0700
-Message-Id: <20180612205310.25745-8-andrew.smirnov@gmail.com>
+Date: Tue, 12 Jun 2018 13:52:28 -0700
+Message-Id: <20180612205310.25745-13-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,35 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 07/54] net: fec_imx: remove unnecessary DMA sync ops
+Subject: [PATCH v5 12/54] mmc: i.MX esdhc: Add i.MX8 support
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-The fec receive buffers are coherently mapped, no need to dma_sync on
-them.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/fec_imx.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/mci/imx-esdhc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index d506fd64f..33599dd82 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -580,11 +580,7 @@ static int fec_recv(struct eth_device *dev)
- 			 */
- 			frame = phys_to_virt(readl(&rbd->data_pointer));
- 			frame_length = readw(&rbd->data_length) - 4;
--			dma_sync_single_for_cpu((unsigned long)frame->data,
--						frame_length, DMA_FROM_DEVICE);
- 			net_receive(dev, frame->data, frame_length);
--			dma_sync_single_for_device((unsigned long)frame->data,
--						   frame_length, DMA_FROM_DEVICE);
- 			len = frame_length;
- 		} else {
- 			if (bd_status & FEC_RBD_ERR) {
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 8929901d4..c4daa9d12 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -728,6 +728,7 @@ static __maybe_unused struct of_device_id fsl_esdhc_compatible[] = {
+ 	{ .compatible = "fsl,imx6q-usdhc",  .data = &usdhc_imx6q_data  },
+ 	{ .compatible = "fsl,imx6sl-usdhc", .data = &usdhc_imx6sl_data },
+ 	{ .compatible = "fsl,imx6sx-usdhc", .data = &usdhc_imx6sx_data },
++	{ .compatible = "fsl,imx8mq-usdhc", .data = &usdhc_imx6sx_data },
+ 	{ /* sentinel */ }
+ };
+ 
 -- 
 2.17.0
 
