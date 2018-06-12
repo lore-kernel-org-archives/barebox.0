@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fT3du-0003QJ-S2
- for barebox@lists.infradead.org; Wed, 13 Jun 2018 11:08:59 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 13 Jun 2018 13:08:33 +0200
-Message-Id: <20180613110833.19760-1-o.rempel@pengutronix.de>
+ id 1fSqIN-0001Xl-7E
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:53:44 +0000
+Received: by mail-pg0-x241.google.com with SMTP id 15-v6so145937pge.2
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:29 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 12 Jun 2018 13:52:16 -0700
+Message-Id: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,94 +21,284 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1] ARM: i.MX6SX SDB: drop deprecated DT overwrites
+Subject: [PATCH v5 00/54] ARM: i.MX8MQ and EVK support
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Latest kernel ./dts/ is providing proper pin and fec
-configs. This overwrites are preventing kernel from
-net boot if barebox is DT source.
+Everyone:
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- arch/arm/dts/imx6sx-sdb.dts | 58 -------------------------------------
- 1 file changed, 58 deletions(-)
+Picking up where Sascha left off, this is the next version of the
+patchset that adds support for i.MX8MQ EVK board.
 
-diff --git a/arch/arm/dts/imx6sx-sdb.dts b/arch/arm/dts/imx6sx-sdb.dts
-index 7b60f9326..643039f4a 100644
---- a/arch/arm/dts/imx6sx-sdb.dts
-+++ b/arch/arm/dts/imx6sx-sdb.dts
-@@ -19,31 +19,6 @@
- 	};
- };
- 
--&fec1 {
--	phy-handle = <&phy1>;
--
--	mdio {
--		#address-cells = <1>;
--		#size-cells = <0>;
--
--		phy1: phy@1 {
--			reg = <1>;
--		};
--
--		phy2: phy@2 {
--			reg = <2>;
--		};
--	};
--};
--
--&fec2 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_enet2>;
--	phy-mode = "rgmii";
--	status = "okay";
--	phy-handle = <&phy2>;
--};
--
- &ocotp {
- 	barebox,provide-mac-address = <&fec1 0x620 &fec2 0x632>;
- };
-@@ -57,36 +32,3 @@
- 		reg = <0xe0000 0x20000>;
- 	};
- };
--
--&iomuxc {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_hog>;
--
--	imx6x-sdb {
--		pinctrl_hog: hoggrp {
--			fsl,pins = <
--				MX6SX_PAD_QSPI1A_DATA0__GPIO4_IO_16	0x17059 /* PERI_3V3 */
--				MX6SX_PAD_ENET2_COL__GPIO2_IO_6		0x17059 /* ENET PHY Power */
--				MX6SX_PAD_ENET2_CRS__GPIO2_IO_7		0x17059 /* AR8031 PHY Reset. */
--				MX6SX_PAD_ENET2_RX_CLK__ENET2_REF_CLK_25M	0x17059 /* Phy 25M Clock */
--			>;
--		};
--
--		pinctrl_enet2: enet2grp {
--			fsl,pins = <
--				MX6SX_PAD_RGMII2_TXC__ENET2_RGMII_TXC	0xa0b1
--				MX6SX_PAD_RGMII2_TD0__ENET2_TX_DATA_0	0xa0b1
--				MX6SX_PAD_RGMII2_TD1__ENET2_TX_DATA_1	0xa0b1
--				MX6SX_PAD_RGMII2_TD2__ENET2_TX_DATA_2	0xa0b1
--				MX6SX_PAD_RGMII2_TD3__ENET2_TX_DATA_3	0xa0b1
--				MX6SX_PAD_RGMII2_TX_CTL__ENET2_TX_EN	0xa0b1
--				MX6SX_PAD_RGMII2_RXC__ENET2_RX_CLK	0x3081
--				MX6SX_PAD_RGMII2_RD0__ENET2_RX_DATA_0	0x3081
--				MX6SX_PAD_RGMII2_RD1__ENET2_RX_DATA_1	0x3081
--				MX6SX_PAD_RGMII2_RD2__ENET2_RX_DATA_2	0x3081
--				MX6SX_PAD_RGMII2_RD3__ENET2_RX_DATA_3	0x3081
--				MX6SX_PAD_RGMII2_RX_CTL__ENET2_RX_EN	0x3081
--			>;
--		};
--	};
--};
+This patchest is also availible at:
+
+  https://github.com/ndreys/barebox/tree/imx8m-support-v5
+
+Changes since [v4]:
+
+  - Fix a critical OCOTP bug (missing .format_mac in "ARM: i.MX:
+    ocotp: Add i.MX8MQ support") introduced in v3 and was exposed by
+    defconfig change in v4
+
+  - Minor spelling/gramatical fixes in various commits and commit
+    messages
+
+Changes since [v3]:
+
+  - Timeout/delay functions were moved into lib/ instead of being
+    inline in order to avoid image size increase.
+
+  - Imx-image chages were reworked to fix regression identified by
+    Alexander Kurz in [regression1]
+
+  - Minor fix to "clock: Use udelay() to implement mdelay()" (33/54)
+    to prevent 32-bit ARM EABI toolchain from issuing a call to
+    unsigned long division helper
+
+  - Imx_v8_defconfig was modified to be as close to imx_v7_defconfig
+    as possible.
+
+        Removed options:
+		CONFIG_PBL_CONSOLE=y
+		CONFIG_CONSOLE_RATP=y
+
+    	Added options:
+		CONFIG_CONSOLE_ACTIVATE_NONE=y
+		CONFIG_CMD_DHCP=y
+		CONFIG_CMD_MIITOOL=y
+		CONFIG_CMD_PING=y
+		CONFIG_CMD_I2C=y
+		CONFIG_NET=y
+		CONFIG_NET_NETCONSOLE=y
+		CONFIG_NET_RESOLV=y
+		CONFIG_DRIVER_NET_FEC_IMX=y
+		CONFIG_I2C=y
+		CONFIG_I2C_IMX=y
+		CONFIG_FS_TFTP=y
+		CONFIG_FS_NFS=y
+
+Changes since [v2]:
+
+  - i.MX8 specific eSDHC bootstrap code code fixed to function
+    correctly with high capacity SD cards
+
+  - DDR PHY firmware converted to use Sascha's firmware framework and
+    be SoC specific (can be shared among different boards)
+
+  - DDR register definitions moved to imx8-ddrc.h as well as cleaned
+    up to contain only constants that are being used
+
+  - Incorporated imx-image i.MX8 work done by Sascha as well as extend
+    it to create valid AArch64 header
+
+  - Patchset is rebase on latest 'next' branch to accomodate recent
+    OCOTP changes
+
+Changes since [v1]:
+
+  - The patchset now allows building 1st stage bootloader that can be
+    progammed on SD card and booted standalone
+
+Currently out of scope of this patch (not tested or documented, will
+be coming in a follow up series):
+
+  - Integration of ARM Trusted Firmware
+
+  - Booting Linux kernel
+
+Current assumptions (all subject to change, but listed below to be
+explicit):
+
+  - DDR initialization code is auto-generated by i.MX8M DDR Tool and
+    used as close to as-is as possible.
+
+Feedback is wellcome!
+
+Thanks,
+Andrey Smirnov
+
+[v1] http://lists.infradead.org/pipermail/barebox/2018-March/032386.html
+[v2] http://lists.infradead.org/pipermail/barebox/2018-May/033149.html
+[v3] http://lists.infradead.org/pipermail/barebox/2018-June/033390.html
+[regression1] http://lists.infradead.org/pipermail/barebox/2018-June/033475.html
+[v4] http://lists.infradead.org/pipermail/barebox/2018-June/033504.html
+
+Andrey Smirnov (37):
+  net: fec_imx: Make use of IS_ALIGNED
+  ARM: i.MX: Split shared CCM code into a separate file
+  ARM: i.MX: Add IOMUX pad constants for i.MX8
+  ARM: i.MX: Add basic CCM constants for i.MX8
+  ARM: Add constants and helpers for system counter interface
+  clocksource: armv8-timer: Convert explicit assembly into helpers
+  ARM: i.MX8: Initialize system counter
+  ARM: i.MX: boot: Fix address casting on 64-bit platforms
+  ARM: boot: Add trivial i.MX8 support
+  ARM: i.MX: xload-esdhc: Rework to make code be less i.MX6-specific
+  ARM: i.MX: xload-esdhc: Allow custom buffer address, device offset
+  ARM: i.MX: xload-esdhc: Add support for i.MX8
+  pinctrl: i.MX: Add support for i.MX8
+  Documentation: imx: Change block size for 'dd' to 1024
+  Documentation: i.MX: Add missing <soctype>
+  clocksource: armv8-timer: Make armv8_clocksource_read() static
+  clocksource: armv8-timer: Make use of postcore_platform_driver()
+  Port <linux/iopoll.h> from U-Boot
+  common/clock: Move delay and timeout functions to lib/
+  clock: Use udelay() to implement mdelay()
+  ARM: i.MX8: Add DDRC PHY and DDR CTL base addresses
+  ARM: i.MX8: Add DDRC PHY support code
+  ARM: Specify HAVE_PBL_IMAGE for CPU_64
+  ARM: lib64: Make string functions aware of MMU configuration
+  ARM: mmu: Make use of dsb() and isb() helpers
+  ARM: cache: Remove unused cache ops struct
+  ARM: no-mmu: Disable building for ARMv8
+  ARM: interrupts64: Include ESR value in exception traceback
+  ARM: mmu64: Trivial code simplification
+  ARM: mmu64: Make use of create_table()
+  ARM: mmu64: Convert flags in arch_remap_range()
+  ARM: include: dma: Add missing no-MMU stubs
+  scripts: imx-image: Drop error return from write_dcd()
+  scripts: imx-image: Limit v2 header size to HEADER_LEN
+  scripts: imx-image: Use a loop to create multiple header copies
+  scripts: imx-image: Share the code to write barebox header
+  ARM: Introduce imx_v8_defconfig
+
+Sascha Hauer (17):
+  ARM: i.MX: xload: Fix compiler warning
+  ARM: i.MX: compile arm32 specific errata only for CPU32
+  ARM: Add i.MX8 support
+  aarch64: Add i.MX8 debug UART support
+  Include our own include/dt-bindings
+  mci: imx-esdhc: use dma mapping functions
+  net: fec_imx: remove unnecessary DMA sync ops
+  net: fec_imx: Use dma mapping functions
+  clock: Add i.MX8MQ clock driver
+  serial: i.MX: Add i.MX8 support
+  mmc: i.MX esdhc: Add i.MX8 support
+  gpio: i.MX: Add i.MX8mq support
+  ARM: i.MX: ocotp: Add i.MX8MQ support
+  Kbuild: Add $(quote)
+  Add builtin firmware support
+  scripts: imx-image: Add i.MX8MQ support
+  ARM: i.MX8: Add i.MX8mq EVK support
+
+ Documentation/boards/imx.rst                  |   15 +-
+ Documentation/boards/imx/nxp-imx8mq-evk.rst   |  116 ++
+ Makefile                                      |    2 +-
+ arch/arm/Kconfig                              |    8 +
+ arch/arm/boards/Makefile                      |    1 +
+ arch/arm/boards/nxp-imx8mq-evk/.gitignore     |    1 +
+ arch/arm/boards/nxp-imx8mq-evk/Makefile       |    4 +
+ arch/arm/boards/nxp-imx8mq-evk/board.c        |   44 +
+ arch/arm/boards/nxp-imx8mq-evk/ddr.h          |   28 +
+ arch/arm/boards/nxp-imx8mq-evk/ddr_init.c     |  223 ++++
+ arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c | 1026 +++++++++++++++++
+ .../flash-header-imx8mq-evk.imxcfg            |    4 +
+ arch/arm/boards/nxp-imx8mq-evk/lowlevel.c     |   81 ++
+ arch/arm/configs/imx_v8_defconfig             |  107 ++
+ arch/arm/cpu/Kconfig                          |    1 +
+ arch/arm/cpu/Makefile                         |    2 +-
+ arch/arm/cpu/cache.c                          |    1 -
+ arch/arm/cpu/interrupts_64.c                  |    3 +-
+ arch/arm/cpu/mmu_64.c                         |   25 +-
+ arch/arm/cpu/mmu_64.h                         |    4 +-
+ arch/arm/dts/Makefile                         |    1 +
+ arch/arm/dts/imx8mq-evk.dts                   |  444 +++++++
+ arch/arm/dts/imx8mq-pinfunc.h                 |  623 ++++++++++
+ arch/arm/dts/imx8mq.dtsi                      |  624 ++++++++++
+ arch/arm/include/asm/dma.h                    |   11 +
+ arch/arm/include/asm/syscounter.h             |   24 +
+ arch/arm/include/asm/system.h                 |   24 +
+ arch/arm/lib64/Makefile                       |    2 +-
+ arch/arm/lib64/memcpy.S                       |    6 +-
+ arch/arm/lib64/memset.S                       |    4 +-
+ arch/arm/lib64/string.c                       |   22 +
+ arch/arm/mach-imx/Kconfig                     |   14 +
+ arch/arm/mach-imx/Makefile                    |    2 +
+ arch/arm/mach-imx/boot.c                      |    8 +-
+ arch/arm/mach-imx/cpu_init.c                  |    2 +
+ arch/arm/mach-imx/imx.c                       |    4 +
+ arch/arm/mach-imx/imx8-ddrc.c                 |  107 ++
+ arch/arm/mach-imx/imx8mq.c                    |   85 ++
+ arch/arm/mach-imx/include/mach/ccm.h          |   20 +
+ arch/arm/mach-imx/include/mach/debug_ll.h     |   11 +
+ arch/arm/mach-imx/include/mach/generic.h      |   15 +
+ .../arm/mach-imx/include/mach/imx7-ccm-regs.h |   16 +-
+ .../arm/mach-imx/include/mach/imx8-ccm-regs.h |   15 +
+ arch/arm/mach-imx/include/mach/imx8-ddrc.h    |   66 ++
+ arch/arm/mach-imx/include/mach/imx8mq-regs.h  |  123 ++
+ .../arm/mach-imx/include/mach/imx_cpu_types.h |    1 +
+ arch/arm/mach-imx/include/mach/iomux-mx8.h    |  645 +++++++++++
+ arch/arm/mach-imx/include/mach/iomux-v3.h     |    9 +
+ arch/arm/mach-imx/include/mach/xload.h        |    2 +-
+ arch/arm/mach-imx/xload-esdhc.c               |  121 +-
+ arch/mips/dts/include/dt-bindings             |    1 -
+ common/Kconfig                                |    8 +
+ common/clock.c                                |   52 -
+ drivers/clk/imx/Makefile                      |    3 +
+ drivers/clk/imx/clk-frac-pll.c                |  226 ++++
+ drivers/clk/imx/clk-imx8mq.c                  |  580 ++++++++++
+ drivers/clk/imx/clk-sccg-pll.c                |  242 ++++
+ drivers/clk/imx/clk.h                         |   27 +
+ drivers/clocksource/armv8-timer.c             |   21 +-
+ drivers/gpio/gpio-imx.c                       |    3 +
+ drivers/mci/imx-esdhc.c                       |   54 +-
+ drivers/net/fec_imx.c                         |   19 +-
+ drivers/net/fec_imx.h                         |    1 +
+ drivers/nvmem/Kconfig                         |    2 +-
+ drivers/nvmem/ocotp.c                         |   11 +
+ drivers/pinctrl/imx-iomux-v3.c                |   56 +-
+ drivers/serial/serial_imx.c                   |    5 +-
+ firmware/Kconfig                              |   10 +
+ firmware/Makefile                             |   61 +
+ images/Makefile.imx                           |    7 +
+ include/dt-bindings/clock/imx8mq-clock.h      |  629 ++++++++++
+ include/firmware.h                            |    8 +
+ include/linux/iopoll.h                        |   69 ++
+ include/serial/imx-uart.h                     |    5 +
+ include/string.h                              |    3 +
+ lib/Makefile                                  |    1 +
+ lib/clock.c                                   |   74 ++
+ lib/string.c                                  |   18 +-
+ scripts/Kbuild.include                        |    1 +
+ scripts/Makefile.lib                          |    1 +
+ scripts/imx/imx-image.c                       |  140 ++-
+ scripts/imx/imx.c                             |   23 +-
+ scripts/imx/imx.h                             |    2 +
+ 83 files changed, 6849 insertions(+), 261 deletions(-)
+ create mode 100644 Documentation/boards/imx/nxp-imx8mq-evk.rst
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/.gitignore
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/Makefile
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/board.c
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/ddr.h
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/ddr_init.c
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
+ create mode 100644 arch/arm/configs/imx_v8_defconfig
+ create mode 100644 arch/arm/dts/imx8mq-evk.dts
+ create mode 100644 arch/arm/dts/imx8mq-pinfunc.h
+ create mode 100644 arch/arm/dts/imx8mq.dtsi
+ create mode 100644 arch/arm/include/asm/syscounter.h
+ create mode 100644 arch/arm/lib64/string.c
+ create mode 100644 arch/arm/mach-imx/imx8-ddrc.c
+ create mode 100644 arch/arm/mach-imx/imx8mq.c
+ create mode 100644 arch/arm/mach-imx/include/mach/ccm.h
+ create mode 100644 arch/arm/mach-imx/include/mach/imx8-ccm-regs.h
+ create mode 100644 arch/arm/mach-imx/include/mach/imx8-ddrc.h
+ create mode 100644 arch/arm/mach-imx/include/mach/imx8mq-regs.h
+ create mode 100644 arch/arm/mach-imx/include/mach/iomux-mx8.h
+ delete mode 120000 arch/mips/dts/include/dt-bindings
+ create mode 100644 drivers/clk/imx/clk-frac-pll.c
+ create mode 100644 drivers/clk/imx/clk-imx8mq.c
+ create mode 100644 drivers/clk/imx/clk-sccg-pll.c
+ create mode 100644 firmware/Kconfig
+ create mode 100644 firmware/Makefile
+ create mode 100644 include/dt-bindings/clock/imx8mq-clock.h
+ create mode 100644 include/linux/iopoll.h
+ create mode 100644 lib/clock.c
+
 -- 
-2.17.1
+2.17.0
 
 
 _______________________________________________
