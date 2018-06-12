@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x232.google.com ([2607:f8b0:400e:c05::232])
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYX5-000768-U9
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:46 +0000
-Received: by mail-pg0-x232.google.com with SMTP id d2-v6so10655491pga.13
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:29 -0700 (PDT)
+ id 1fSYXe-0007jR-QZ
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:57:20 +0000
+Received: by mail-pg0-x242.google.com with SMTP id d2-v6so10656088pga.13
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:56:04 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:52:52 -0700
-Message-Id: <20180612015326.26192-21-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:53:20 -0700
+Message-Id: <20180612015326.26192-49-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,55 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 20/54] ARM: i.MX8: Initialize system counter
+Subject: [PATCH v4 48/54] scripts: imx-image: Drop error return from
+ write_dcd()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add code to properly initialize system counter, so it would be posible
-to get accurate time delays.
+Write_dcd() exits early in case of failure, so there's no realy reason
+to have it return a error code as a result. Drop it and simplify the
+caller code.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/imx8mq.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ scripts/imx/imx-image.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/mach-imx/imx8mq.c b/arch/arm/mach-imx/imx8mq.c
-index 74fa8aca7..f3246e437 100644
---- a/arch/arm/mach-imx/imx8mq.c
-+++ b/arch/arm/mach-imx/imx8mq.c
-@@ -14,6 +14,8 @@
- #include <init.h>
- #include <common.h>
- #include <io.h>
-+#include <asm/syscounter.h>
-+#include <asm/system.h>
- #include <mach/generic.h>
- #include <mach/revision.h>
- #include <mach/imx8mq-regs.h>
-@@ -58,6 +60,23 @@ static void imx8mq_silicon_revision(void)
- 	imx_set_silicon_revision(cputypestr, reg);
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index b241e8c4b..a8a26e0ee 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -427,7 +427,7 @@ static int xwrite(int fd, void *buf, int len)
+ 	return 0;
  }
  
-+static int imx8mq_init_syscnt_frequency(void)
-+{
-+	void __iomem *syscnt = IOMEM(MX8MQ_SYSCNT_CTRL_BASE_ADDR);
-+	/*
-+	 * Update with accurate clock frequency
-+	 */
-+	set_cntfrq(syscnt_get_cntfrq(syscnt));
-+	syscnt_enable(syscnt);
-+
-+	return 0;
-+}
-+/*
-+ * This call needs to happen before timer driver gets probed and
-+ * requests its update frequency via cntfrq_el0
-+ */
-+core_initcall(imx8mq_init_syscnt_frequency);
-+
- int imx8mq_init(void)
+-static int write_dcd(const char *outfile)
++static void write_dcd(const char *outfile)
  {
- 	imx8mq_silicon_revision();
+ 	int outfd, ret;
+ 	int dcdsize = curdcd * sizeof(uint32_t);
+@@ -443,8 +443,6 @@ static int write_dcd(const char *outfile)
+ 		perror("write");
+ 		exit(1);
+ 	}
+-
+-	return 0;
+ }
+ 
+ static int check(const struct config_data *data, uint32_t cmd, uint32_t addr,
+@@ -778,10 +776,8 @@ int main(int argc, char *argv[])
+ 		check_last_dcd(0);
+ 
+ 	if (dcd_only) {
+-		ret = write_dcd(data.outfile);
+-		if (ret)
+-			exit(1);
+-		exit (0);
++		write_dcd(data.outfile);
++		exit(0);
+ 	}
+ 
+ 	switch (data.header_version) {
 -- 
 2.17.0
 
