@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSqIu-0001CW-BP
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:13 +0000
-Received: by mail-pf0-x241.google.com with SMTP id y5-v6so157167pfn.4
- for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:54:02 -0700 (PDT)
+Received: from mail-pf0-x22e.google.com ([2607:f8b0:400e:c00::22e])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fSqIP-0001Xy-SR
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:53:51 +0000
+Received: by mail-pf0-x22e.google.com with SMTP id a12-v6so157741pfi.3
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:31 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Subject: [PATCH v5 28/54] Documentation: i.MX: Add missing <soctype>
-Date: Tue, 12 Jun 2018 13:52:44 -0700
-Message-Id: <20180612205310.25745-29-andrew.smirnov@gmail.com>
+Date: Tue, 12 Jun 2018 13:52:18 -0700
+Message-Id: <20180612205310.25745-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -24,27 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
+Subject: [PATCH v5 02/54] ARM: i.MX: compile arm32 specific errata only for
+ CPU32
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Documentation/boards/imx.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-imx/cpu_init.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
-index 8de2bd5c5..b3002badf 100644
---- a/Documentation/boards/imx.rst
-+++ b/Documentation/boards/imx.rst
-@@ -59,7 +59,7 @@ options in this file are:
- Header:
+diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
+index 6a6c4c521..5b93d12da 100644
+--- a/arch/arm/mach-imx/cpu_init.c
++++ b/arch/arm/mach-imx/cpu_init.c
+@@ -16,6 +16,7 @@
+ #include <asm/errata.h>
+ #include <linux/types.h>
  
- +----------------+--------------------------------------------------------------+
--| soc <soctype>  | soctype can be one of imx35, imx51, imx53, imx6              |
-+| soc <soctype>  | soctype can be one of imx35, imx51, imx53, imx6, imx7, vf610 |
- +----------------+--------------------------------------------------------------+
- | loadaddr <adr> |     The address the binary is uploaded to                    |
- +----------------+--------------------------------------------------------------+
++#ifdef CONFIG_CPU_32
+ void imx5_cpu_lowlevel_init(void)
+ {
+ 	arm_cpu_lowlevel_init();
+@@ -50,3 +51,4 @@ void vf610_cpu_lowlevel_init(void)
+ {
+ 	arm_cpu_lowlevel_init();
+ }
++#endif
+\ No newline at end of file
 -- 
 2.17.0
 
