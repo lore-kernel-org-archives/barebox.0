@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pf0-x236.google.com ([2607:f8b0:400e:c00::236])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSqJ8-0001si-47
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:46 +0000
-Received: by mail-pg0-x242.google.com with SMTP id c9-v6so143457pgf.5
- for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:54:15 -0700 (PDT)
+ id 1fSqJ2-0001pU-AJ
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:44 +0000
+Received: by mail-pf0-x236.google.com with SMTP id c22-v6so159827pfi.2
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:54:09 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Jun 2018 13:52:56 -0700
-Message-Id: <20180612205310.25745-41-andrew.smirnov@gmail.com>
+Date: Tue, 12 Jun 2018 13:52:51 -0700
+Message-Id: <20180612205310.25745-36-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,37 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 40/54] ARM: mmu: Make use of dsb() and isb() helpers
+Subject: [PATCH v5 35/54] Kbuild: Add $(quote)
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/mmu_64.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/Kbuild.include | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/cpu/mmu_64.h b/arch/arm/cpu/mmu_64.h
-index c280d2ced..2cbe72062 100644
---- a/arch/arm/cpu/mmu_64.h
-+++ b/arch/arm/cpu/mmu_64.h
-@@ -28,7 +28,7 @@ static inline void tlb_invalidate(void)
+diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
+index f3771902b..512d21732 100644
+--- a/scripts/Kbuild.include
++++ b/scripts/Kbuild.include
+@@ -3,6 +3,7 @@
  
- static inline void set_ttbr_tcr_mair(int el, uint64_t table, uint64_t tcr, uint64_t attr)
- {
--	asm volatile("dsb sy");
-+	dsb();
- 	if (el == 1) {
- 		asm volatile("msr ttbr0_el1, %0" : : "r" (table) : "memory");
- 		asm volatile("msr tcr_el1, %0" : : "r" (tcr) : "memory");
-@@ -44,7 +44,7 @@ static inline void set_ttbr_tcr_mair(int el, uint64_t table, uint64_t tcr, uint6
- 	} else {
- 		hang();
- 	}
--	asm volatile("isb");
-+	isb();
- }
- 
- static inline uint64_t get_ttbr(int el)
+ # Convenient variables
+ comma   := ,
++quote   := "
+ squote  := '
+ empty   :=
+ space   := $(empty) $(empty)
 -- 
 2.17.0
 
