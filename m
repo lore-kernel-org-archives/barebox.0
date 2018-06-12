@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from mail-pl0-x231.google.com ([2607:f8b0:400e:c01::231])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSqJG-0007Ff-Cm
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:34 +0000
-Received: by mail-pg0-x243.google.com with SMTP id p21-v6so134603pgd.11
- for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:54:24 -0700 (PDT)
+ id 1fSqJE-0007Fe-Hd
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:33 +0000
+Received: by mail-pl0-x231.google.com with SMTP id w17-v6so165503pll.9
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:54:22 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Jun 2018 13:53:02 -0700
-Message-Id: <20180612205310.25745-47-andrew.smirnov@gmail.com>
+Date: Tue, 12 Jun 2018 13:53:00 -0700
+Message-Id: <20180612205310.25745-45-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,41 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 46/54] ARM: mmu64: Convert flags in arch_remap_range()
+Subject: [PATCH v5 44/54] ARM: mmu64: Trivial code simplification
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Flags passed to arch_remap_range() are architecture independent, so it
-can't be passed as is to map_region(). Add code to do the proper
-conversion to avoid subtle bugs that this confusion brings.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu_64.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/arm/cpu/mmu_64.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 820d8cf75..11928352b 100644
+index d5a3d2223..80cf240d3 100644
 --- a/arch/arm/cpu/mmu_64.c
 +++ b/arch/arm/cpu/mmu_64.c
-@@ -171,6 +171,17 @@ static void create_sections(uint64_t virt, uint64_t phys, uint64_t size, uint64_
+@@ -126,6 +126,7 @@ static void map_region(uint64_t virt, uint64_t phys, uint64_t size, uint64_t att
+ 	uint64_t idx;
+ 	uint64_t addr;
+ 	uint64_t *table;
++	uint64_t type;
+ 	int level;
  
- int arch_remap_range(void *_start, size_t size, unsigned flags)
- {
-+ 	switch (flags) {
-+ 	case MAP_CACHED:
-+ 		flags = CACHED_MEM;
-+ 		break;
-+ 	case MAP_UNCACHED:
-+		flags = UNCACHED_MEM;
-+		break;
-+ 	default:
-+ 		return -EINVAL;
-+ 	}
-+
- 	map_region((uint64_t)_start, (uint64_t)_start, (uint64_t)size, flags);
- 	tlb_invalidate();
+ 	if (!ttb)
+@@ -145,11 +146,9 @@ static void map_region(uint64_t virt, uint64_t phys, uint64_t size, uint64_t att
+ 			pte = table + idx;
  
+ 			if (size >= block_size && IS_ALIGNED(addr, block_size)) {
+-				if (level == 3)
+-					*pte = phys | attr | PTE_TYPE_PAGE;
+-				else
+-					*pte = phys | attr | PTE_TYPE_BLOCK;
+-
++				type = (level == 3) ?
++					PTE_TYPE_PAGE : PTE_TYPE_BLOCK;
++				*pte = phys | attr | type;
+ 				addr += block_size;
+ 				phys += block_size;
+ 				size -= block_size;
 -- 
 2.17.0
 
