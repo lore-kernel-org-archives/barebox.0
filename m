@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x236.google.com ([2607:f8b0:400e:c05::236])
+Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSqIT-0001YA-Si
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:53:57 +0000
-Received: by mail-pg0-x236.google.com with SMTP id p21-v6so133729pgd.11
- for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:35 -0700 (PDT)
+ id 1fSqIS-0001YW-AW
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:53:56 +0000
+Received: by mail-pg0-x243.google.com with SMTP id 15-v6so146105pge.2
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:38 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Jun 2018 13:52:21 -0700
-Message-Id: <20180612205310.25745-6-andrew.smirnov@gmail.com>
+Date: Tue, 12 Jun 2018 13:52:24 -0700
+Message-Id: <20180612205310.25745-9-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,41 +23,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 05/54] Include our own include/dt-bindings
+Subject: [PATCH v5 08/54] net: fec_imx: Use dma mapping functions
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Allow to use dt-bindings files that are not yet upstreamed. They can
-be put into include/dt-bindings.
+Rather than doing DMA on the input buffer address get a proper DMA
+address from the mapping functions.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/mips/dts/include/dt-bindings | 1 -
- scripts/Makefile.lib              | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
- delete mode 120000 arch/mips/dts/include/dt-bindings
+ drivers/net/fec_imx.c | 15 +++++++++------
+ drivers/net/fec_imx.h |  1 +
+ 2 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/dts/include/dt-bindings b/arch/mips/dts/include/dt-bindings
-deleted file mode 120000
-index 0cecb3d08..000000000
---- a/arch/mips/dts/include/dt-bindings
-+++ /dev/null
-@@ -1 +0,0 @@
--../../../../include/dt-bindings
-\ No newline at end of file
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 272b5981e..3024b068e 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -154,6 +154,7 @@ ld_flags       = $(LDFLAGS) $(EXTRA_LDFLAGS)
- dtc_cpp_flags  = -Wp,-MD,$(depfile).pre -nostdinc                        \
- 		 -I$(srctree)/arch/$(SRCARCH)/dts/include		 \
- 		 -I$(srctree)/dts/include                                \
-+		 -I$(srctree)/include                                    \
- 		 -I$(srctree)/dts/src/                                   \
- 		 -undef -D__DTS__
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 33599dd82..0ca594082 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -453,6 +453,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
+ {
+ 	unsigned int status;
+ 	uint64_t tmo;
++	dma_addr_t dma;
  
+ 	/*
+ 	 * This routine transmits one frame.  This routine only accepts
+@@ -466,7 +467,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
+ 		return -1;
+ 	}
+ 
+-	if ((uint32_t)eth_data & (DB_DATA_ALIGNMENT-1))
++	if ((unsigned long)eth_data & (DB_DATA_ALIGNMENT - 1))
+ 		dev_warn(&dev->dev, "Transmit data not aligned: %p!\n", eth_data);
+ 
+ 	/*
+@@ -479,10 +480,12 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
+ 
+ 	writew(data_length, &fec->tbd_base[fec->tbd_index].data_length);
+ 
+-	writel((uint32_t)(eth_data), &fec->tbd_base[fec->tbd_index].data_pointer);
++	dma = dma_map_single(fec->dev, eth_data, data_length, DMA_TO_DEVICE);
++	if (dma_mapping_error(fec->dev, dma))
++		return -EIO;
++
++	writel((uint32_t)(dma), &fec->tbd_base[fec->tbd_index].data_pointer);
+ 
+-	dma_sync_single_for_device((unsigned long)eth_data, data_length,
+-				   DMA_TO_DEVICE);
+ 	/*
+ 	 * update BD's status now
+ 	 * This block:
+@@ -505,8 +508,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
+ 			break;
+ 		}
+ 	}
+-	dma_sync_single_for_cpu((unsigned long)eth_data, data_length,
+-				DMA_TO_DEVICE);
++	dma_unmap_single(fec->dev, dma, data_length, DMA_TO_DEVICE);
+ 
+ 	/* for next transmission use the other buffer */
+ 	if (fec->tbd_index)
+@@ -748,6 +750,7 @@ static int fec_probe(struct device_d *dev)
+ 
+ 	fec = xzalloc(sizeof(*fec));
+ 	fec->type = type;
++	fec->dev = dev;
+ 	edev = &fec->edev;
+ 	dev->priv = fec;
+ 	edev->priv = fec;
+diff --git a/drivers/net/fec_imx.h b/drivers/net/fec_imx.h
+index 561de0890..e3f60dd66 100644
+--- a/drivers/net/fec_imx.h
++++ b/drivers/net/fec_imx.h
+@@ -149,6 +149,7 @@ enum fec_opt_clock {
+  */
+ struct fec_priv {
+ 	struct eth_device edev;
++	struct device_d *dev;
+ 	void __iomem *regs;
+ 	struct buffer_descriptor __iomem *rbd_base;	/* RBD ring                  */
+ 	int rbd_index;				/* next receive BD to read   */
 -- 
 2.17.0
 
