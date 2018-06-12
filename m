@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYXd-0007Ui-Ue
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:15 +0000
-Received: by mail-pg0-x242.google.com with SMTP id c10-v6so5035147pgu.9
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:56:03 -0700 (PDT)
+ id 1fSYXY-0007TP-Ex
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:11 +0000
+Received: by mail-pl0-x242.google.com with SMTP id 31-v6so13393621plc.4
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:58 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:53:19 -0700
-Message-Id: <20180612015326.26192-48-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:53:14 -0700
+Message-Id: <20180612015326.26192-43-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,40 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 47/54] ARM: include: dma: Add missing no-MMU stubs
+Subject: [PATCH v4 42/54] ARM: no-mmu: Disable building for ARMv8
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add stubs for dma_map_single() and dma_unmap_single() that were needed
-for no-MMU build for ARM64 to succeed.
+Disable building for ARMv8 since no-mmu.c only supports ARMv7
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/include/asm/dma.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/arm/cpu/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/dma.h b/arch/arm/include/asm/dma.h
-index a68886b16..bb7e62af0 100644
---- a/arch/arm/include/asm/dma.h
-+++ b/arch/arm/include/asm/dma.h
-@@ -34,6 +34,17 @@ static inline void dma_free_coherent(void *mem, dma_addr_t dma_handle,
- 	free(mem);
- }
+diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
+index 0316d251c..5b4b832e8 100644
+--- a/arch/arm/cpu/Makefile
++++ b/arch/arm/cpu/Makefile
+@@ -17,7 +17,7 @@ obj-$(CONFIG_CMD_ARM_MMUINFO) += mmuinfo.o
+ obj-$(CONFIG_OFDEVICE) += dtb.o
  
-+static inline dma_addr_t dma_map_single(struct device_d *dev, void *ptr, size_t size,
-+					enum dma_data_direction dir)
-+{
-+	return (dma_addr_t)ptr;
-+}
-+
-+static inline void dma_unmap_single(struct device_d *dev, dma_addr_t addr, size_t size,
-+				    enum dma_data_direction dir)
-+{
-+}
-+
- static inline void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
- 					   enum dma_data_direction dir)
- {
+ ifeq ($(CONFIG_MMU),)
+-obj-y += no-mmu.o
++obj-$(CONFIG_CPU_32v7) += no-mmu.o
+ endif
+ 
+ obj-$(CONFIG_ARM_PSCI) += psci.o
 -- 
 2.17.0
 
