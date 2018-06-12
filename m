@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYXc-0007Uh-UK
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:14 +0000
-Received: by mail-pf0-x242.google.com with SMTP id a12-v6so11225822pfi.3
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:56:02 -0700 (PDT)
+Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fSYXR-0007Wb-Sy
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:02 +0000
+Received: by mail-pl0-x241.google.com with SMTP id 31-v6so13393478plc.4
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:51 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:53:18 -0700
-Message-Id: <20180612015326.26192-47-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:53:08 -0700
+Message-Id: <20180612015326.26192-37-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,41 +23,138 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 46/54] ARM: mmu64: Convert flags in arch_remap_range()
+Subject: [PATCH v4 36/54] Add builtin firmware support
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Flags passed to arch_remap_range() are architecture independent, so it
-can't be passed as is to map_region(). Add code to do the proper
-conversion to avoid subtle bugs that this confusion brings.
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+[andrew.smirnov@gmail.com: Add dummy.o in case directory is empty]
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu_64.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ Makefile           |  2 +-
+ arch/arm/Kconfig   |  1 +
+ firmware/Kconfig   |  7 ++++++
+ firmware/Makefile  | 55 ++++++++++++++++++++++++++++++++++++++++++++++
+ include/firmware.h |  8 +++++++
+ 5 files changed, 72 insertions(+), 1 deletion(-)
+ create mode 100644 firmware/Kconfig
+ create mode 100644 firmware/Makefile
 
-diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 820d8cf75..11928352b 100644
---- a/arch/arm/cpu/mmu_64.c
-+++ b/arch/arm/cpu/mmu_64.c
-@@ -171,6 +171,17 @@ static void create_sections(uint64_t virt, uint64_t phys, uint64_t size, uint64_
+diff --git a/Makefile b/Makefile
+index 88c199173..b335f2054 100644
+--- a/Makefile
++++ b/Makefile
+@@ -426,7 +426,7 @@ scripts: scripts_basic include/config/auto.conf
+ 	$(Q)$(MAKE) $(build)=$(@)
  
- int arch_remap_range(void *_start, size_t size, unsigned flags)
- {
-+ 	switch (flags) {
-+ 	case MAP_CACHED:
-+ 		flags = CACHED_MEM;
-+ 		break;
-+ 	case MAP_UNCACHED:
-+		flags = UNCACHED_MEM;
-+		break;
-+ 	default:
-+ 		return -EINVAL;
-+ 	}
+ # Objects we will link into barebox / subdirs we need to visit
+-common-y		:= common/ drivers/ commands/ lib/ crypto/ net/ fs/
++common-y		:= common/ drivers/ commands/ lib/ crypto/ net/ fs/ firmware/
+ 
+ ifeq ($(dot-config),1)
+ # Read in config
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 37cde0c0c..bd736284f 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -414,3 +414,4 @@ source drivers/Kconfig
+ source fs/Kconfig
+ source lib/Kconfig
+ source crypto/Kconfig
++source firmware/Kconfig
+diff --git a/firmware/Kconfig b/firmware/Kconfig
+new file mode 100644
+index 000000000..e0cc7abef
+--- /dev/null
++++ b/firmware/Kconfig
+@@ -0,0 +1,7 @@
++menu "Firmware files"
 +
- 	map_region((uint64_t)_start, (uint64_t)_start, (uint64_t)size, flags);
- 	tlb_invalidate();
++config EXTRA_FIRMWARE_DIR
++	string "Firmware blobs root directory"
++	default "firmware"
++
++endmenu
+diff --git a/firmware/Makefile b/firmware/Makefile
+new file mode 100644
+index 000000000..b4074ca4f
+--- /dev/null
++++ b/firmware/Makefile
+@@ -0,0 +1,55 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# kbuild file for firmware/
++#
++
++# Create $(fwabs) from $(CONFIG_EXTRA_FIRMWARE_DIR) -- if it doesn't have a
++# leading /, it's relative to $(srctree).
++fwdir := $(subst $(quote),,$(CONFIG_EXTRA_FIRMWARE_DIR))
++fwabs := $(addprefix $(srctree)/,$(filter-out /%,$(fwdir)))$(filter /%,$(fwdir))
++
++fw-external-y := $(firmware-y)
++
++quiet_cmd_fwbin = MK_FW   $@
++      cmd_fwbin = FWNAME="$(patsubst firmware/%.gen.S,%,$@)";		     \
++		  FWSTR="$(subst /,_,$(subst .,_,$(subst -,_,$(patsubst	     \
++				firmware/%.gen.S,%,$@))))";		     \
++		  ASM_WORD=$(if $(CONFIG_64BIT),.quad,.long);		     \
++		  ASM_ALIGN=$(if $(CONFIG_64BIT),3,2);			     \
++		  PROGBITS=$(if $(CONFIG_ARM),%,@)progbits;		     \
++		  echo "/* Generated by firmware/Makefile */"		> $@;\
++		  echo "    .section .rodata.$${FWSTR}"			>>$@;\
++		  echo "    .p2align $${ASM_ALIGN}"			>>$@;\
++		  echo ".global _fw_$${FWSTR}_start"			>>$@;\
++		  echo "_fw_$${FWSTR}_start:"				>>$@;\
++		  echo "    .incbin \"$(2)\""				>>$@;\
++		  echo ".global _fw_$${FWSTR}_end"			>>$@;\
++		  echo "_fw_$${FWSTR}_end:"				>>$@;
++
++# One of these files will change, or come into existence, whenever
++# the configuration changes between 32-bit and 64-bit. The .S files
++# need to change when that happens.
++wordsize_deps := $(wildcard include/config/64bit.h include/config/32bit.h)
++
++$(patsubst %,$(obj)/%.gen.S, $(fw-external-y)): %: $(wordsize_deps) \
++		include/config/extra/firmware/dir.h
++	$(call cmd,fwbin,$(fwabs)/$(patsubst $(obj)/%.gen.S,%,$@))
++
++# The .o files depend on the binaries directly; the .S files don't.
++$(patsubst %,$(obj)/%.gen.o, $(fw-external-y)): $(obj)/%.gen.o: $(fwdir)/%
++
++obj-pbl-y			 += $(patsubst %,%.gen.o, $(fw-external-y))
++
++ifeq ($(KBUILD_SRC),)
++# Makefile.build only creates subdirectories for O= builds, but external
++# firmware might live outside the kernel source tree
++_dummy := $(foreach d,$(addprefix $(obj)/,$(dir $(fw-external-y))), $(shell [ -d $(d) ] || mkdir -p $(d)))
++endif
++
++targets := $(patsubst $(obj)/%,%, \
++                                $(shell find $(obj) -name \*.gen.S 2>/dev/null))
++
++# just to build a built-in.o. Otherwise compilation fails when no devicetree is
++# created.
++obj- += dummy.o
++
+diff --git a/include/firmware.h b/include/firmware.h
+index f6f78c840..284e0f970 100644
+--- a/include/firmware.h
++++ b/include/firmware.h
+@@ -39,4 +39,12 @@ void firmwaremgr_list_handlers(void);
  
+ int firmwaremgr_load_file(struct firmware_mgr *, const char *path);
+ 
++#define get_builtin_firmware(name, start, size) \
++	{							\
++		extern char _fw_##name##_start[];		\
++		extern char _fw_##name##_end[];			\
++		*start = (typeof(*start)) _fw_##name##_start;	\
++		*size = _fw_##name##_end - _fw_##name##_start;	\
++	}
++
+ #endif /* FIRMWARE_H */
 -- 
 2.17.0
 
