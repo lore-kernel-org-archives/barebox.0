@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x229.google.com ([2607:f8b0:400e:c05::229])
+Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSqIe-0001b9-PP
+ id 1fSqIg-0001d6-Ah
  for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:27 +0000
-Received: by mail-pg0-x229.google.com with SMTP id e11-v6so149269pgq.0
- for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:46 -0700 (PDT)
+Received: by mail-pl0-x241.google.com with SMTP id c23-v6so159893plz.12
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:50 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Jun 2018 13:52:31 -0700
-Message-Id: <20180612205310.25745-16-andrew.smirnov@gmail.com>
+Date: Tue, 12 Jun 2018 13:52:35 -0700
+Message-Id: <20180612205310.25745-20-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,78 +23,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 15/54] ARM: i.MX: Split shared CCM code into a separate file
+Subject: [PATCH v5 19/54] clocksource: armv8-timer: Convert explicit assembly
+ into helpers
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Both i.MX8 and i.MX7 have similar CCMs, so move any code that can be
-shared into a separate file.
+Move inline assembly related to querying counter value as well as
+getting and setting counter frequency register into asm/system.h as
+well as converting it inot helper functions. This is done to make the
+code availible to other parts of the system.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/ccm.h          | 20 +++++++++++++++++++
- .../arm/mach-imx/include/mach/imx7-ccm-regs.h | 16 +--------------
- 2 files changed, 21 insertions(+), 15 deletions(-)
- create mode 100644 arch/arm/mach-imx/include/mach/ccm.h
+ arch/arm/include/asm/system.h     | 24 ++++++++++++++++++++++++
+ drivers/clocksource/armv8-timer.c | 13 ++-----------
+ 2 files changed, 26 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/ccm.h b/arch/arm/mach-imx/include/mach/ccm.h
-new file mode 100644
-index 000000000..32254a85b
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/ccm.h
-@@ -0,0 +1,20 @@
-+#ifndef __IMX_CCM_H__
-+
-+/* 0 <= n <= 190 */
-+#define CCM_CCGRn_SET(n)	(0x4004 + 16 * (n))
-+#define CCM_CCGRn_CLR(n)	(0x4008 + 16 * (n))
-+
-+/* 0 <= n <= 120 */
-+#define CCM_TARGET_ROOTn(n)	(0x8000 + 128 * (n))
-+
-+#define CCM_TARGET_ROOTn_MUX(x)		((x) << 24)
-+#define CCM_TARGET_ROOTn_ENABLE		BIT(28)
-+
-+
-+#define CCM_CCGR_SETTINGn(n, s)  ((s) << ((n) * 4))
-+#define CCM_CCGR_SETTINGn_NOT_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b00)
-+#define CCM_CCGR_SETTINGn_NEEDED_RUN(n)		CCM_CCGR_SETTINGn(n, 0b01)
-+#define CCM_CCGR_SETTINGn_NEEDED_RUN_WAIT(n)	CCM_CCGR_SETTINGn(n, 0b10)
-+#define CCM_CCGR_SETTINGn_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b11)
-+
-+#endif
-\ No newline at end of file
-diff --git a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-index 97fe240fc..43b9425df 100644
---- a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-@@ -1,25 +1,11 @@
- #ifndef __MACH_IMX7_CCM_REGS_H__
- #define __MACH_IMX7_CCM_REGS_H__
+diff --git a/arch/arm/include/asm/system.h b/arch/arm/include/asm/system.h
+index 57c76186b..5cf828ea3 100644
+--- a/arch/arm/include/asm/system.h
++++ b/arch/arm/include/asm/system.h
+@@ -77,6 +77,30 @@ static inline unsigned long read_mpidr(void)
  
--/* 0 <= n <= 190 */
--#define CCM_CCGRn_SET(n)	(0x4004 + 16 * (n))
--#define CCM_CCGRn_CLR(n)	(0x4008 + 16 * (n))
-+#include "ccm.h"
+ 	return val;
+ }
++
++static inline void set_cntfrq(unsigned long cntfrq)
++{
++	asm volatile("msr cntfrq_el0, %0" : : "r" (cntfrq) : "memory");
++}
++
++static inline unsigned long get_cntfrq(void)
++{
++	unsigned long cntfrq;
++
++	asm volatile("mrs %0, cntfrq_el0" : "=r" (cntfrq));
++	return cntfrq;
++}
++
++static inline unsigned long get_cntpct(void)
++{
++	unsigned long cntpct;
++
++	isb();
++	asm volatile("mrs %0, cntpct_el0" : "=r" (cntpct));
++
++	return cntpct;
++}
++
+ #endif
+ static inline unsigned int get_cr(void)
+ {
+diff --git a/drivers/clocksource/armv8-timer.c b/drivers/clocksource/armv8-timer.c
+index 57b0b694c..c5306dcd2 100644
+--- a/drivers/clocksource/armv8-timer.c
++++ b/drivers/clocksource/armv8-timer.c
+@@ -22,12 +22,7 @@
  
- #define CCM_CCGR_UART1		148
- #define CCM_CCGR_UART2		149
- 
--#define CCM_CCGR_SETTINGn(n, s)  ((s) << ((n) * 4))
--#define CCM_CCGR_SETTINGn_NOT_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b00)
--#define CCM_CCGR_SETTINGn_NEEDED_RUN(n)		CCM_CCGR_SETTINGn(n, 0b01)
--#define CCM_CCGR_SETTINGn_NEEDED_RUN_WAIT(n)	CCM_CCGR_SETTINGn(n, 0b10)
--#define CCM_CCGR_SETTINGn_NEEDED(n)		CCM_CCGR_SETTINGn(n, 0b11)
+ uint64_t armv8_clocksource_read(void)
+ {
+-	unsigned long cntpct;
 -
--/* 0 <= n <= 120 */
--#define CCM_TARGET_ROOTn(n)	(0x8000 + 128 * (n))
+-	isb();
+-	asm volatile("mrs %0, cntpct_el0" : "=r" (cntpct));
 -
--#define CCM_TARGET_ROOTn_MUX(x)		((x) << 24)
--#define CCM_TARGET_ROOTn_ENABLE		BIT(28)
--
- #define CLOCK_ROOT_INDEX(x)	(((x) - 0x8000) / 128)
+-	return cntpct;
++	return get_cntpct();
+ }
  
- /*
+ static struct clocksource cs = {
+@@ -38,11 +33,7 @@ static struct clocksource cs = {
+ 
+ static int armv8_timer_probe(struct device_d *dev)
+ {
+-	unsigned long cntfrq;
+-
+-	asm volatile("mrs %0, cntfrq_el0" : "=r" (cntfrq));
+-
+-	cs.mult = clocksource_hz2mult(cntfrq, cs.shift);
++	cs.mult = clocksource_hz2mult(get_cntfrq(), cs.shift);
+ 
+ 	return init_clock(&cs);
+ }
 -- 
 2.17.0
 
