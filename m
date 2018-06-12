@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x22a.google.com ([2607:f8b0:400e:c05::22a])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSqIn-0001fB-6w
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:30 +0000
-Received: by mail-pg0-x22a.google.com with SMTP id m5-v6so147169pgd.3
- for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:54 -0700 (PDT)
+ id 1fSqIq-0001ho-8O
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:33 +0000
+Received: by mail-pf0-x244.google.com with SMTP id a11-v6so151837pff.8
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:57 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Jun 2018 13:52:38 -0700
-Message-Id: <20180612205310.25745-23-andrew.smirnov@gmail.com>
+Date: Tue, 12 Jun 2018 13:52:41 -0700
+Message-Id: <20180612205310.25745-26-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,52 +23,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 22/54] ARM: boot: Add trivial i.MX8 support
+Subject: [PATCH v5 25/54] ARM: i.MX: xload-esdhc: Add support for i.MX8
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-It appears that boot sources for i.MX8 are just a subset of those of
-i.MX7 and both can be handled by the same code.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/boot.c                 | 5 +++++
- arch/arm/mach-imx/include/mach/generic.h | 2 ++
- 2 files changed, 7 insertions(+)
+ arch/arm/mach-imx/include/mach/xload.h |  1 +
+ arch/arm/mach-imx/xload-esdhc.c        | 33 ++++++++++++++++++++++++++
+ 2 files changed, 34 insertions(+)
 
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index 11105a148..ab25f75b2 100644
---- a/arch/arm/mach-imx/boot.c
-+++ b/arch/arm/mach-imx/boot.c
-@@ -624,3 +624,8 @@ void vf610_boot_save_loc(void)
- {
- 	imx_boot_save_loc(vf610_get_boot_source);
+diff --git a/arch/arm/mach-imx/include/mach/xload.h b/arch/arm/mach-imx/include/mach/xload.h
+index 4e38ac7e2..8f141bc37 100644
+--- a/arch/arm/mach-imx/include/mach/xload.h
++++ b/arch/arm/mach-imx/include/mach/xload.h
+@@ -5,6 +5,7 @@ int imx53_nand_start_image(void);
+ int imx6_spi_load_image(int instance, unsigned int flash_offset, void *buf, int len);
+ int imx6_spi_start_image(int instance);
+ int imx6_esdhc_start_image(int instance);
++int imx8_esdhc_start_image(int instance);
+ 
+ int imx_image_size(void);
+ 
+diff --git a/arch/arm/mach-imx/xload-esdhc.c b/arch/arm/mach-imx/xload-esdhc.c
+index 6ab4cabb7..08ba9b08d 100644
+--- a/arch/arm/mach-imx/xload-esdhc.c
++++ b/arch/arm/mach-imx/xload-esdhc.c
+@@ -15,6 +15,7 @@
+ #include <io.h>
+ #include <mci.h>
+ #include <mach/imx6-regs.h>
++#include <mach/imx8mq-regs.h>
+ #include <mach/xload.h>
+ #include <linux/sizes.h>
+ #include "../../../drivers/mci/sdhci.h"
+@@ -292,3 +293,35 @@ int imx6_esdhc_start_image(int instance)
+ 
+ 	return esdhc_start_image(&esdhc, 0x10000000, 0);
  }
 +
-+void imx8_get_boot_source(enum bootsource *src, int *instance)
-+	__alias(imx7_get_boot_source);
++/**
++ * imx8_esdhc_start_image - Load and start an image from USDHC controller
++ * @instance: The USDHC controller instance (0..2)
++ *
++ * This uses esdhc_start_image() to load an image from SD/MMC.  It is
++ * assumed that the image is the currently running barebox image (This
++ * information is used to calculate the length of the image). The
++ * image is started afterwards.
++ *
++ * Return: If successful, this function does not return. A negative error
++ * code is returned when this function fails.
++ */
++int imx8_esdhc_start_image(int instance)
++{
++	struct esdhc esdhc;
 +
-+void imx8_boot_save_loc(void) __alias(imx7_boot_save_loc);
-diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
-index 62838c691..dc537941a 100644
---- a/arch/arm/mach-imx/include/mach/generic.h
-+++ b/arch/arm/mach-imx/include/mach/generic.h
-@@ -16,6 +16,7 @@ void imx53_boot_save_loc(void);
- void imx6_boot_save_loc(void);
- void imx7_boot_save_loc(void);
- void vf610_boot_save_loc(void);
-+void imx8_boot_save_loc(void);
- 
- void imx25_get_boot_source(enum bootsource *src, int *instance);
- void imx35_get_boot_source(enum bootsource *src, int *instance);
-@@ -24,6 +25,7 @@ void imx53_get_boot_source(enum bootsource *src, int *instance);
- void imx6_get_boot_source(enum bootsource *src, int *instance);
- void imx7_get_boot_source(enum bootsource *src, int *instance);
- void vf610_get_boot_source(enum bootsource *src, int *instance);
-+void imx8_get_boot_source(enum bootsource *src, int *instance);
- 
- int imx1_init(void);
- int imx21_init(void);
++	switch (instance) {
++	case 0:
++		esdhc.regs = IOMEM(MX8MQ_USDHC1_BASE_ADDR);
++		break;
++	case 1:
++		esdhc.regs = IOMEM(MX8MQ_USDHC2_BASE_ADDR);
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	esdhc.is_mx6 = 1;
++
++	return esdhc_start_image(&esdhc, MX8MQ_DDR_CSD1_BASE_ADDR, SZ_32K);
++}
+\ No newline at end of file
 -- 
 2.17.0
 
