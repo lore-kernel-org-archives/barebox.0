@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSqIZ-0001Zn-Va
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:08 +0000
-Received: by mail-pf0-x243.google.com with SMTP id y8-v6so148855pfm.10
- for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:41 -0700 (PDT)
+ id 1fSqIc-0001cD-BS
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:14 +0000
+Received: by mail-pl0-x244.google.com with SMTP id k1-v6so174258plt.2
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:48 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Jun 2018 13:52:27 -0700
-Message-Id: <20180612205310.25745-12-andrew.smirnov@gmail.com>
+Date: Tue, 12 Jun 2018 13:52:33 -0700
+Message-Id: <20180612205310.25745-18-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,51 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 11/54] serial: i.MX: Add i.MX8 support
+Subject: [PATCH v5 17/54] ARM: i.MX: Add basic CCM constants for i.MX8
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/serial/serial_imx.c | 5 ++++-
- include/serial/imx-uart.h   | 5 +++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/include/mach/imx8-ccm-regs.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+ create mode 100644 arch/arm/mach-imx/include/mach/imx8-ccm-regs.h
 
-diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
-index c8af995aa..09341af87 100644
---- a/drivers/serial/serial_imx.c
-+++ b/drivers/serial/serial_imx.c
-@@ -281,9 +281,12 @@ static __maybe_unused struct of_device_id imx_serial_dt_ids[] = {
- 	}, {
- 		.compatible = "fsl,imx6ul-uart",
- 		.data = &imx21_data,
--	},  {
-+	}, {
- 		.compatible = "fsl,imx7d-uart",
- 		.data = &imx21_data,
-+	}, {
-+		.compatible = "fsl,imx8mq-uart",
-+		.data = &imx21_data,
- 	}, {
- 		/* sentinel */
- 	}
-diff --git a/include/serial/imx-uart.h b/include/serial/imx-uart.h
-index 9cab32f35..c23606569 100644
---- a/include/serial/imx-uart.h
-+++ b/include/serial/imx-uart.h
-@@ -180,6 +180,11 @@ static inline void imx7_uart_setup(void __iomem *uartbase)
- 	imx_uart_setup(uartbase, 24000000);
- }
- 
-+static inline void imx8mq_uart_setup(void __iomem *uartbase)
-+{
-+	imx_uart_setup(uartbase, 25000000);
-+}
+diff --git a/arch/arm/mach-imx/include/mach/imx8-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx8-ccm-regs.h
+new file mode 100644
+index 000000000..93b584ebe
+--- /dev/null
++++ b/arch/arm/mach-imx/include/mach/imx8-ccm-regs.h
+@@ -0,0 +1,15 @@
++#ifndef __MACH_IMX8_CCM_REGS_H__
++#define __MACH_IMX8_CCM_REGS_H__
 +
- static inline void imx_uart_putc(void *base, int c)
- {
- 	if (!(readl(base + UCR1) & UCR1_UARTEN))
++#include "ccm.h"
++
++#define CCM_CCGR_UART1		73
++
++/*
++ * Taken from "Table 5-1. Clock Root Table" from i.MX8M Quad
++ * Applications Processor Reference Manual
++ */
++#define UART1_CLK_ROOT		94
++#define UART1_CLK_ROOT__25M_REF_CLK CCM_TARGET_ROOTn_MUX(0b000)
++
++#endif
 -- 
 2.17.0
 
