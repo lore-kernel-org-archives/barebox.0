@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-f65.google.com ([209.85.160.65])
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYXH-0007Vp-HM
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:57:02 +0000
-Received: by mail-pl0-f65.google.com with SMTP id g20-v6so13410629plq.1
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:41 -0700 (PDT)
+ id 1fSYXI-0007X2-Ay
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:57:07 +0000
+Received: by mail-pg0-x242.google.com with SMTP id 15-v6so10662387pge.2
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:42 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:53:01 -0700
-Message-Id: <20180612015326.26192-30-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:53:02 -0700
+Message-Id: <20180612015326.26192-31-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,32 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 29/54] clocksource: armv8-timer: Make
- armv8_clocksource_read() static
+Subject: [PATCH v4 30/54] clocksource: armv8-timer: Make use of
+ postcore_platform_driver()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-There are no users of that function outside of the driver itself, so
-re-declare it as static.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/clocksource/armv8-timer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clocksource/armv8-timer.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
 diff --git a/drivers/clocksource/armv8-timer.c b/drivers/clocksource/armv8-timer.c
-index c5306dcd2..5e0b9ef3c 100644
+index 5e0b9ef3c..918232e0e 100644
 --- a/drivers/clocksource/armv8-timer.c
 +++ b/drivers/clocksource/armv8-timer.c
-@@ -20,7 +20,7 @@
- #include <io.h>
- #include <asm/system.h>
+@@ -48,9 +48,5 @@ static struct driver_d armv8_timer_driver = {
+ 	.probe = armv8_timer_probe,
+ 	.of_compatible = DRV_OF_COMPAT(armv8_timer_dt_ids),
+ };
++postcore_platform_driver(armv8_timer_driver);
  
--uint64_t armv8_clocksource_read(void)
-+static uint64_t armv8_clocksource_read(void)
- {
- 	return get_cntpct();
- }
+-static int armv8_timer_init(void)
+-{
+-	return platform_driver_register(&armv8_timer_driver);
+-}
+-postcore_initcall(armv8_timer_init);
 -- 
 2.17.0
 
