@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-f196.google.com ([209.85.223.196])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fT4ry-0008M5-6w
- for barebox@lists.infradead.org; Wed, 13 Jun 2018 12:27:32 +0000
-Received: by mail-io0-f196.google.com with SMTP id u4-v6so3231579iof.2
- for <barebox@lists.infradead.org>; Wed, 13 Jun 2018 05:27:11 -0700 (PDT)
-MIME-Version: 1.0
-References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
- <20180612205310.25745-33-andrew.smirnov@gmail.com>
- <20180613081951.tufqqixzv7mdgg2i@pengutronix.de>
-In-Reply-To: <20180613081951.tufqqixzv7mdgg2i@pengutronix.de>
+ id 1fSqIw-0001mD-6E
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:38 +0000
+Received: by mail-pf0-x243.google.com with SMTP id z24-v6so154058pfe.7
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:54:05 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 13 Jun 2018 05:26:59 -0700
-Message-ID: <CAHQ1cqEONK13ULDZZDk2Bei1en-vv44mcCuh59JpfWNWjsvULw@mail.gmail.com>
+Date: Tue, 12 Jun 2018 13:52:47 -0700
+Message-Id: <20180612205310.25745-32-andrew.smirnov@gmail.com>
+In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
+References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,105 +18,99 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v5 32/54] common/clock: Move delay and timeout functions
- to lib/
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v5 31/54] Port <linux/iopoll.h> from U-Boot
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Wed, Jun 13, 2018 at 1:19 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Tue, Jun 12, 2018 at 01:52:48PM -0700, Andrey Smirnov wrote:
-> > Move delay and timeout functions to lib/ in order to share them with
-> > PBL. Currently only the most trivial implementation of get_time_ns()
-> > usefull to implement never-expiring timeouts is provided. More work is
-> > needed to allow board specific overrides.
-> >
-> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > ---
-> >  common/clock.c | 52 ------------------------------------
-> >  lib/Makefile   |  1 +
-> >  lib/clock.c    | 72 ++++++++++++++++++++++++++++++++++++++++++++++++++
-> >  3 files changed, 73 insertions(+), 52 deletions(-)
-> >  create mode 100644 lib/clock.c
-> >
-> > +#if defined(__PBL__)
-> > +/*
-> > + * Poller infrastructure is not available in PBL, so we just define
-> > + * is_timeout to be a synonym for is_timeout_non_interruptible
-> > + */
-> > +int is_timeout(uint64_t start_ns, uint64_t time_offset_ns)
-> > +     __alias(is_timeout_non_interruptible);
-> > +#else
-> > +#include <poller.h>
-> > +
-> > +int is_timeout(uint64_t start_ns, uint64_t time_offset_ns)
-> > +{
-> > +
-> > +     if (time_offset_ns >= 100 * USECOND)
-> > +             poller_call();
-> > +
-> > +     return is_timeout_non_interruptible(start_ns, time_offset_ns);
-> > +}
-> > +#endif
-> > +EXPORT_SYMBOL(is_timeout);
-> > +
-> > +void ndelay(unsigned long nsecs)
-> > +{
-> > +     uint64_t start = get_time_ns();
-> > +
-> > +     while(!is_timeout_non_interruptible(start, nsecs));
-> > +}
-> > +EXPORT_SYMBOL(ndelay);
-> > +
-> > +void udelay(unsigned long usecs)
-> > +{
-> > +     uint64_t start = get_time_ns();
-> > +
-> > +     while(!is_timeout(start, usecs * USECOND));
-> > +}
-> > +EXPORT_SYMBOL(udelay);
-> > +
-> > +void mdelay(unsigned long msecs)
-> > +{
-> > +     uint64_t start = get_time_ns();
-> > +
-> > +     while(!is_timeout(start, msecs * MSECOND));
-> > +}
-> > +EXPORT_SYMBOL(mdelay);
-> > +
-> > +void mdelay_non_interruptible(unsigned long msecs)
-> > +{
-> > +     uint64_t start = get_time_ns();
-> > +
-> > +     while (!is_timeout_non_interruptible(start, msecs * MSECOND))
-> > +             ;
-> > +}
-> > +EXPORT_SYMBOL(mdelay_non_interruptible);
-> > +
-> > +__weak uint64_t get_time_ns(void)
-> > +{
-> > +     return 0;
-> > +}
->
-> So in PBL we now have [num]delay functions which will lockup the system
-> forever when called. This is not good.
->
-> Given that you only need is_timeout() to implement the iopoll.h functions
-> and this patch is only a complicated way to shortcircuit the timeout, I
-> think it would be better to just put a #ifndef __PBL__ around the call
-> to is_timeout() in readx_poll_timeout(). This would at least make it
-> clearer to the reader that there actually is no timeout in the PBL
-> case.
->
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ include/linux/iopoll.h | 69 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
+ create mode 100644 include/linux/iopoll.h
 
-OK, sure, will do in v6.
+diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
+new file mode 100644
+index 000000000..6e8a6fd71
+--- /dev/null
++++ b/include/linux/iopoll.h
+@@ -0,0 +1,69 @@
++/*
++ * Copyright (c) 2012-2014 The Linux Foundation. All rights reserved.
++ *
++ * SPDX-License-Identifier:	GPL-2.0
++ */
++
++#ifndef _LINUX_IOPOLL_H
++#define _LINUX_IOPOLL_H
++
++#include <errno.h>
++#include <io.h>
++#include <clock.h>
++
++/**
++ * readx_poll_timeout - Periodically poll an address until a condition is met or a timeout occurs
++ * @op: accessor function (takes @addr as its only argument)
++ * @addr: Address to poll
++ * @val: Variable to read the value into
++ * @cond: Break condition (usually involving @val)
++ * @timeout_ns: Timeout in ns, 0 means never timeout
++ *
++ * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
++ * case, the last read value at @addr is stored in @val.
++ *
++ * When available, you'll probably want to use one of the specialized
++ * macros defined below rather than this macro directly.
++ */
++#define readx_poll_timeout(op, addr, val, cond, timeout_ns)	\
++({ \
++	uint64_t start = get_time_ns(); \
++	for (;;) { \
++		(val) = op(addr); \
++		if (cond) \
++			break; \
++		if (timeout_ns && \
++		    is_timeout(start, (timeout_ns))) {	\
++			(val) = op(addr); \
++			break; \
++		} \
++	} \
++	(cond) ? 0 : -ETIMEDOUT; \
++})
++
++
++#define readb_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readb, addr, val, cond, timeout_us)
++
++#define readw_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readw, addr, val, cond, timeout_us)
++
++#define readl_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readl, addr, val, cond, timeout_us)
++
++#define readq_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readq, addr, val, cond, timeout_us)
++
++#define readb_relaxed_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readb_relaxed, addr, val, cond, timeout_us)
++
++#define readw_relaxed_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readw_relaxed, addr, val, cond, timeout_us)
++
++#define readl_relaxed_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readl_relaxed, addr, val, cond, timeout_us)
++
++#define readq_relaxed_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readq_relaxed, addr, val, cond, timeout_us)
++
++#endif /* _LINUX_IOPOLL_H */
+-- 
+2.17.0
 
-Thanks,
-Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
