@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x22e.google.com ([2607:f8b0:400e:c01::22e])
+Received: from mail-pl0-x22a.google.com ([2607:f8b0:400e:c01::22a])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYXj-0007Xy-00
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:21 +0000
-Received: by mail-pl0-x22e.google.com with SMTP id t12-v6so13387938plo.7
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:56:08 -0700 (PDT)
+ id 1fSYXb-0007X9-JO
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:12 +0000
+Received: by mail-pl0-x22a.google.com with SMTP id t12-v6so13387809plo.7
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:56:01 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:53:22 -0700
-Message-Id: <20180612015326.26192-51-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:53:16 -0700
+Message-Id: <20180612015326.26192-45-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,47 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 50/54] scripts: imx-image: Use a loop to create multiple
- header copies
+Subject: [PATCH v4 44/54] ARM: mmu64: Trivial code simplification
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Use a loop to create multiple header copies on i.MX35 to avoid code
-duplication.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- scripts/imx/imx-image.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ arch/arm/cpu/mmu_64.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index 294f51a90..bc1f821bd 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -679,6 +679,7 @@ int main(int argc, char *argv[])
- 	int dcd_only = 0;
- 	int now = 0;
- 	int sign_image = 0;
-+	int i, header_copies;
- 	struct config_data data = {
- 		.image_dcd_offset = 0xffffffff,
- 		.write_mem = write_mem,
-@@ -824,13 +825,9 @@ int main(int argc, char *argv[])
- 		exit(1);
- 	}
+diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+index d5a3d2223..80cf240d3 100644
+--- a/arch/arm/cpu/mmu_64.c
++++ b/arch/arm/cpu/mmu_64.c
+@@ -126,6 +126,7 @@ static void map_region(uint64_t virt, uint64_t phys, uint64_t size, uint64_t att
+ 	uint64_t idx;
+ 	uint64_t addr;
+ 	uint64_t *table;
++	uint64_t type;
+ 	int level;
  
--	ret = xwrite(outfd, buf, HEADER_LEN);
--	if (ret < 0) {
--		perror("write");
--		exit(1);
--	}
-+	header_copies = (data.cpu_type == IMX_CPU_IMX35) ? 2 : 1;
+ 	if (!ttb)
+@@ -145,11 +146,9 @@ static void map_region(uint64_t virt, uint64_t phys, uint64_t size, uint64_t att
+ 			pte = table + idx;
  
--	if (data.cpu_type == IMX_CPU_IMX35) {
-+	for (i = 0; i < header_copies; i++) {
- 		ret = xwrite(outfd, buf, HEADER_LEN);
- 		if (ret < 0) {
- 			perror("write");
+ 			if (size >= block_size && IS_ALIGNED(addr, block_size)) {
+-				if (level == 3)
+-					*pte = phys | attr | PTE_TYPE_PAGE;
+-				else
+-					*pte = phys | attr | PTE_TYPE_BLOCK;
+-
++				type = (level == 3) ?
++					PTE_TYPE_PAGE : PTE_TYPE_BLOCK;
++				*pte = phys | attr | type;
+ 				addr += block_size;
+ 				phys += block_size;
+ 				size -= block_size;
 -- 
 2.17.0
 
