@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pl0-x243.google.com ([2607:f8b0:400e:c01::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSqId-0001cb-NI
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:24 +0000
-Received: by mail-pl0-x243.google.com with SMTP id az12-v6so165499plb.8
- for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:49 -0700 (PDT)
+ id 1fSqId-0001ae-N4
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:25 +0000
+Received: by mail-pl0-x243.google.com with SMTP id az12-v6so165391plb.8
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:45 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Jun 2018 13:52:34 -0700
-Message-Id: <20180612205310.25745-19-andrew.smirnov@gmail.com>
+Date: Tue, 12 Jun 2018 13:52:30 -0700
+Message-Id: <20180612205310.25745-15-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,52 +23,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 18/54] ARM: Add constants and helpers for system counter
- interface
+Subject: [PATCH v5 14/54] ARM: i.MX: ocotp: Add i.MX8MQ support
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add constants and helpers for system counter interface as can be found
-in section "I1.3 Generic Timer registers" of "ARM Architecture
-Reference Manual ARMv8, for ARMv8-A architecture"
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+[andrew.smirnov@gmail.com: Rebased to account for move to nvmem]
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/include/asm/syscounter.h | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
- create mode 100644 arch/arm/include/asm/syscounter.h
+ drivers/nvmem/Kconfig |  2 +-
+ drivers/nvmem/ocotp.c | 11 +++++++++++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/syscounter.h b/arch/arm/include/asm/syscounter.h
-new file mode 100644
-index 000000000..a644cfaad
---- /dev/null
-+++ b/arch/arm/include/asm/syscounter.h
-@@ -0,0 +1,24 @@
-+#ifndef _ASM_SYSCNT_H_
-+#define _ASM_SYSCNT_H_
+diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
+index 53086d1aa..a3797b4aa 100644
+--- a/drivers/nvmem/Kconfig
++++ b/drivers/nvmem/Kconfig
+@@ -18,7 +18,7 @@ config NVMEM_SNVS_LPGPR
+ 
+ config IMX_OCOTP
+ 	tristate "i.MX6 On Chip OTP controller"
+-	depends on ARCH_IMX6 || ARCH_VF610
++	depends on ARCH_IMX6 || ARCH_VF610 || ARCH_IMX8MQ
+ 	depends on OFDEVICE
+ 	help
+ 	  This adds support for the i.MX6 On-Chip OTP controller. Currently the
+diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
+index 86d0b9cd0..c2d2982ee 100644
+--- a/drivers/nvmem/ocotp.c
++++ b/drivers/nvmem/ocotp.c
+@@ -647,6 +647,14 @@ static struct imx_ocotp_data vf610_ocotp_data = {
+ 	.format_mac = vf610_ocotp_format_mac,
+ };
+ 
++static struct imx_ocotp_data imx8mq_ocotp_data = {
++	.num_regs = 2048,
++	.addr_to_offset = imx6sl_addr_to_offset,
++	.mac_offsets_num = 1,
++	.mac_offsets = { 0x90 },
++	.format_mac = imx_ocotp_format_mac,
++};
 +
-+#include <io.h>
-+
-+#define SYSCNT_CNTCR		0x0000
-+#define SYSCNT_CNTCR_EN		BIT(0)
-+#define SYSCNT_CNTCR_HDBG	BIT(1)
-+#define SYSCNT_CNTCR_FCREQ(n)	BIT(8 + (n))
-+
-+#define SYSCNT_CNTFID(n)	(0x0020 + 4 * (n))
-+
-+static inline void syscnt_enable(void __iomem *syscnt)
-+{
-+	writel(SYSCNT_CNTCR_EN | SYSCNT_CNTCR_HDBG | SYSCNT_CNTCR_FCREQ(0),
-+	       syscnt + SYSCNT_CNTCR);
-+}
-+
-+static inline u32 syscnt_get_cntfrq(void __iomem *syscnt)
-+{
-+	return readl(syscnt + SYSCNT_CNTFID(0));
-+}
-+
-+#endif
-\ No newline at end of file
+ static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
+ 	{
+ 		.compatible = "fsl,imx6q-ocotp",
+@@ -660,6 +668,9 @@ static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
+ 	}, {
+ 		.compatible = "fsl,imx6ul-ocotp",
+ 		.data = &imx6q_ocotp_data,
++	}, {
++		.compatible = "fsl,imx8mq-ocotp",
++		.data = &imx8mq_ocotp_data,
+ 	}, {
+ 		.compatible = "fsl,vf610-ocotp",
+ 		.data = &vf610_ocotp_data,
 -- 
 2.17.0
 
