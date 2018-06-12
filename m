@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pg0-f68.google.com ([74.125.83.68])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYXe-0007jR-QZ
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:57:20 +0000
-Received: by mail-pg0-x242.google.com with SMTP id d2-v6so10656088pga.13
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:56:04 -0700 (PDT)
+ id 1fSYXU-0007eW-7Z
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:57:23 +0000
+Received: by mail-pg0-f68.google.com with SMTP id l65-v6so10655423pgl.8
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:53 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:53:20 -0700
-Message-Id: <20180612015326.26192-49-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:53:11 -0700
+Message-Id: <20180612015326.26192-40-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,55 +23,219 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 48/54] scripts: imx-image: Drop error return from
- write_dcd()
+Subject: [PATCH v4 39/54] ARM: lib64: Make string functions aware of MMU
+ configuration
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Write_dcd() exits early in case of failure, so there's no realy reason
-to have it return a error code as a result. Drop it and simplify the
-caller code.
+Optimized version of memset() in memset.S if called as:
+
+    memset(foo, 0, size)
+
+will try to explicitly zero out data cache with:
+
+    dc	zva, dst
+
+which will result in Alignement Exception (DABT) if MMU is not
+enabled.
+
+For more info see:
+
+    - C4.4.8 "DC ZVA, Data Cache Zero by VA"
+    - D5.2.8 "The effects of disabling a stage of address translation"
+
+in "ARM Architecture Reference Manual. ARMv8, for ARMv8-A architecture
+profile"
+
+In similar vein, using optimized version of memcpy() could lead to a
+unaligned 16-byte write (using 'stp'), which is not allowed for
+Device-nGnRnE type of memory (see D5.2.8) and would liead to
+Alignement Exception.
+
+To fix both problems expose non-optimized and optimzied versions of
+the function and created a wrapper to dispatch the call to either one
+based on if MMU is enabled or not.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- scripts/imx/imx-image.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ arch/arm/Kconfig        |  7 +++++++
+ arch/arm/lib64/Makefile |  2 +-
+ arch/arm/lib64/memcpy.S |  6 +++---
+ arch/arm/lib64/memset.S |  4 ++--
+ arch/arm/lib64/string.c | 22 ++++++++++++++++++++++
+ include/string.h        |  3 +++
+ lib/string.c            | 18 ++++++++++++------
+ 7 files changed, 50 insertions(+), 12 deletions(-)
+ create mode 100644 arch/arm/lib64/string.c
 
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index b241e8c4b..a8a26e0ee 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -427,7 +427,7 @@ static int xwrite(int fd, void *buf, int len)
- 	return 0;
- }
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index bd736284f..c330a5a18 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -353,6 +353,13 @@ menu "ARM specific settings"
  
--static int write_dcd(const char *outfile)
-+static void write_dcd(const char *outfile)
+ config ARM_OPTIMZED_STRING_FUNCTIONS
+ 	bool "use assembler optimized string functions"
++	#
++	# memset() and memcpy() in arm/lib64/mem[set|cpy].S are
++	# written with assumption of enabled MMU and cache. Depending
++	# on the inputs in may fail with Alignement exception if used
++	# without MMU
++	#
++	depends on !CPU_V8 || MMU
+ 	help
+ 	  Say yes here to use assembler optimized memcpy / memset functions.
+ 	  These functions work much faster than the normal versions but
+diff --git a/arch/arm/lib64/Makefile b/arch/arm/lib64/Makefile
+index 77647128a..4c0019fab 100644
+--- a/arch/arm/lib64/Makefile
++++ b/arch/arm/lib64/Makefile
+@@ -2,7 +2,7 @@ obj-y += stacktrace.o
+ obj-$(CONFIG_ARM_LINUX)	+= armlinux.o
+ obj-y	+= div0.o
+ obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memcpy.o
+-obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memset.o
++obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memset.o string.o
+ extra-y += barebox.lds
+ obj-pbl-y   += runtime-offset.o
+ 
+diff --git a/arch/arm/lib64/memcpy.S b/arch/arm/lib64/memcpy.S
+index cfed3191c..a70e96ca2 100644
+--- a/arch/arm/lib64/memcpy.S
++++ b/arch/arm/lib64/memcpy.S
+@@ -67,8 +67,8 @@
+ 	stp \ptr, \regB, [\regC], \val
+ 	.endm
+ 
+-	.weak memcpy
+-ENTRY(memcpy)
++	.weak __arch_memcpy
++ENTRY(__arch_memcpy)
+ #include "copy_template.S"
+ 	ret
+-ENDPROC(memcpy)
++ENDPROC(__arch_memcpy)
+diff --git a/arch/arm/lib64/memset.S b/arch/arm/lib64/memset.S
+index 380a54097..d17bcc612 100644
+--- a/arch/arm/lib64/memset.S
++++ b/arch/arm/lib64/memset.S
+@@ -54,7 +54,7 @@ tmp3w		.req	w9
+ tmp3		.req	x9
+ 
+ 	.weak memset
+-ENTRY(memset)
++ENTRY(__arch_memset)
+ 	mov	dst, dstin	/* Preserve return value.  */
+ 	and	A_lw, val, #255
+ 	orr	A_lw, A_lw, A_lw, lsl #8
+@@ -212,4 +212,4 @@ ENTRY(memset)
+ 	ands	count, count, zva_bits_x
+ 	b.ne	.Ltail_maybe_long
+ 	ret
+-ENDPROC(memset)
++ENDPROC(__arch_memset)
+diff --git a/arch/arm/lib64/string.c b/arch/arm/lib64/string.c
+new file mode 100644
+index 000000000..cb2633152
+--- /dev/null
++++ b/arch/arm/lib64/string.c
+@@ -0,0 +1,22 @@
++#include <common.h>
++#include <asm/system.h>
++#include <string.h>
++
++void *__arch_memset(void *dst, int c, __kernel_size_t size);
++void *__arch_memcpy(void * dest, const void *src, size_t count);
++
++void *memset(void *dst, int c, __kernel_size_t size)
++{
++	if (likely(get_cr() & CR_M))
++		return __arch_memset(dst, c, size);
++
++	return __default_memset(dst, c, size);
++}
++
++void *memcpy(void * dest, const void *src, size_t count)
++{
++	if (likely(get_cr() & CR_M))
++		return __arch_memcpy(dest, src, count);
++
++	return __default_memcpy(dest, src, count);
++}
+\ No newline at end of file
+diff --git a/include/string.h b/include/string.h
+index 0c557d6f1..6ceb33224 100644
+--- a/include/string.h
++++ b/include/string.h
+@@ -6,4 +6,7 @@
+ void *memdup(const void *, size_t);
+ int strtobool(const char *str, int *val);
+ 
++void *__default_memset(void *, int, __kernel_size_t);
++void *__default_memcpy(void * dest,const void *src,size_t count);
++
+ #endif /* __STRING_H */
+diff --git a/lib/string.c b/lib/string.c
+index f588933e8..717b59aa5 100644
+--- a/lib/string.c
++++ b/lib/string.c
+@@ -479,7 +479,6 @@ char *strswab(const char *s)
+ }
+ #endif
+ 
+-#ifndef __HAVE_ARCH_MEMSET
+ /**
+  * memset - Fill a region of memory with the given value
+  * @s: Pointer to the start of the area.
+@@ -488,7 +487,7 @@ char *strswab(const char *s)
+  *
+  * Do not use memset() to access IO space, use memset_io() instead.
+  */
+-void * memset(void * s,int c,size_t count)
++void *__default_memset(void * s,int c,size_t count)
  {
- 	int outfd, ret;
- 	int dcdsize = curdcd * sizeof(uint32_t);
-@@ -443,8 +443,6 @@ static int write_dcd(const char *outfile)
- 		perror("write");
- 		exit(1);
- 	}
--
--	return 0;
+ 	char *xs = (char *) s;
+ 
+@@ -497,10 +496,12 @@ void * memset(void * s,int c,size_t count)
+ 
+ 	return s;
  }
++EXPORT_SYMBOL(__default_memset);
++
++#ifndef __HAVE_ARCH_MEMSET
++void *memset(void *s, int c, size_t count) __alias(__default_memset);
+ #endif
+-EXPORT_SYMBOL(memset);
  
- static int check(const struct config_data *data, uint32_t cmd, uint32_t addr,
-@@ -778,10 +776,8 @@ int main(int argc, char *argv[])
- 		check_last_dcd(0);
+-#ifndef __HAVE_ARCH_MEMCPY
+ /**
+  * memcpy - Copy one area of memory to another
+  * @dest: Where to copy to
+@@ -510,7 +511,7 @@ EXPORT_SYMBOL(memset);
+  * You should not use this function to access IO space, use memcpy_toio()
+  * or memcpy_fromio() instead.
+  */
+-void * memcpy(void * dest,const void *src,size_t count)
++void *__default_memcpy(void * dest,const void *src,size_t count)
+ {
+ 	char *tmp = (char *) dest, *s = (char *) src;
  
- 	if (dcd_only) {
--		ret = write_dcd(data.outfile);
--		if (ret)
--			exit(1);
--		exit (0);
-+		write_dcd(data.outfile);
-+		exit(0);
- 	}
+@@ -519,9 +520,14 @@ void * memcpy(void * dest,const void *src,size_t count)
  
- 	switch (data.header_version) {
+ 	return dest;
+ }
+-#endif
+ EXPORT_SYMBOL(memcpy);
+ 
++#ifndef __HAVE_ARCH_MEMCPY
++void *memcpy(void * dest, const void *src, size_t count)
++	__alias(__default_memcpy);
++#endif
++
++
+ #ifndef __HAVE_ARCH_MEMMOVE
+ /**
+  * memmove - Copy one area of memory to another
 -- 
 2.17.0
 
