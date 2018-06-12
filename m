@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSqIU-0001YJ-He
+Received: from mail-pl0-x22c.google.com ([2607:f8b0:400e:c01::22c])
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fSqIl-0007DZ-VE
  for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:04 +0000
-Received: by mail-pg0-x242.google.com with SMTP id c10-v6so138972pgu.9
- for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:36 -0700 (PDT)
+Received: by mail-pl0-x22c.google.com with SMTP id k1-v6so174338plt.2
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:53 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Jun 2018 13:52:22 -0700
-Message-Id: <20180612205310.25745-7-andrew.smirnov@gmail.com>
+Date: Tue, 12 Jun 2018 13:52:36 -0700
+Message-Id: <20180612205310.25745-21-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,143 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 06/54] mci: imx-esdhc: use dma mapping functions
+Subject: [PATCH v5 20/54] ARM: i.MX8: Initialize system counter
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+Add code to properly initialize system counter, so it would be posible
+to get accurate time delays.
 
-Rather than relying on the fact that addresses can be just casted
-into DMA addresses use proper DMA mapping functions.
-
-This fixes compiler warnings when we do DMA on this 32bit only device
-on aarch64 SoCs.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mci/imx-esdhc.c | 53 ++++++++++++++++++++---------------------
- 1 file changed, 26 insertions(+), 27 deletions(-)
+ arch/arm/mach-imx/imx8mq.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index b91f94b99..8929901d4 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -211,18 +211,14 @@ esdhc_pio_read_write(struct mci_host *mci, struct mci_data *data)
- 	return 0;
+diff --git a/arch/arm/mach-imx/imx8mq.c b/arch/arm/mach-imx/imx8mq.c
+index 74fa8aca7..f3246e437 100644
+--- a/arch/arm/mach-imx/imx8mq.c
++++ b/arch/arm/mach-imx/imx8mq.c
+@@ -14,6 +14,8 @@
+ #include <init.h>
+ #include <common.h>
+ #include <io.h>
++#include <asm/syscounter.h>
++#include <asm/system.h>
+ #include <mach/generic.h>
+ #include <mach/revision.h>
+ #include <mach/imx8mq-regs.h>
+@@ -58,6 +60,23 @@ static void imx8mq_silicon_revision(void)
+ 	imx_set_silicon_revision(cputypestr, reg);
  }
  
--static int esdhc_setup_data(struct mci_host *mci, struct mci_data *data)
-+static int esdhc_setup_data(struct mci_host *mci, struct mci_data *data,
-+			    dma_addr_t dma)
- {
- 	struct fsl_esdhc_host *host = to_fsl_esdhc(mci);
- 	void __iomem *regs = host->regs;
- 	u32 wml_value;
- 
--	if (IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO)) {
--		if (!(data->flags & MMC_DATA_READ))
--			esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->src);
--		else
--			esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->dest);
--	} else {
-+	if (!IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO)) {
- 		wml_value = data->blocksize/4;
- 
- 		if (data->flags & MMC_DATA_READ) {
-@@ -230,15 +226,14 @@ static int esdhc_setup_data(struct mci_host *mci, struct mci_data *data)
- 				wml_value = 0x10;
- 
- 			esdhc_clrsetbits32(regs + IMX_SDHCI_WML, WML_RD_WML_MASK, wml_value);
--			esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->dest);
- 		} else {
- 			if (wml_value > 0x80)
- 				wml_value = 0x80;
- 
- 			esdhc_clrsetbits32(regs + IMX_SDHCI_WML, WML_WR_WML_MASK,
- 						wml_value << 16);
--			esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->src);
- 		}
-+		esdhc_write32(regs + SDHCI_DMA_ADDRESS, dma);
- 	}
- 
- 	esdhc_write32(regs + SDHCI_BLOCK_SIZE__BLOCK_COUNT, data->blocks << 16 | data->blocksize);
-@@ -250,7 +245,6 @@ static int esdhc_do_data(struct mci_host *mci, struct mci_data *data)
- {
- 	struct fsl_esdhc_host *host = to_fsl_esdhc(mci);
- 	void __iomem *regs = host->regs;
--	unsigned int num_bytes = data->blocks * data->blocksize;
- 	u32 irqstat;
- 
- 	if (IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO))
-@@ -267,13 +261,6 @@ static int esdhc_do_data(struct mci_host *mci, struct mci_data *data)
- 	} while (!(irqstat & IRQSTAT_TC) &&
- 		(esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_DLA));
- 
--	if (data->flags & MMC_DATA_WRITE)
--		dma_sync_single_for_cpu((unsigned long)data->src,
--					num_bytes, DMA_TO_DEVICE);
--	else
--		dma_sync_single_for_cpu((unsigned long)data->dest,
--					num_bytes, DMA_FROM_DEVICE);
--
- 	return 0;
- }
- 
-@@ -290,6 +277,9 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 	void __iomem *regs = host->regs;
- 	unsigned int num_bytes = 0;
- 	int ret;
-+	void *ptr;
-+	enum dma_data_direction dir = 0;
-+	dma_addr_t dma = 0;
- 
- 	esdhc_write32(regs + SDHCI_INT_STATUS, -1);
- 
-@@ -300,19 +290,25 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 	if (data) {
- 		int err;
- 
--		err = esdhc_setup_data(mci, data);
--		if(err)
--			return err;
-+		if (!IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO)) {
-+			num_bytes = data->blocks * data->blocksize;
- 
--		num_bytes = data->blocks * data->blocksize;
-+			if (data->flags & MMC_DATA_WRITE) {
-+				ptr = (void *)data->src;
-+				dir = DMA_TO_DEVICE;
-+			} else {
-+				ptr = data->dest;
-+				dir = DMA_FROM_DEVICE;
-+			}
- 
--		if (data->flags & MMC_DATA_WRITE)
--			dma_sync_single_for_device((unsigned long)data->src,
--						   num_bytes, DMA_TO_DEVICE);
--		else
--			dma_sync_single_for_device((unsigned long)data->dest,
--						   num_bytes, DMA_FROM_DEVICE);
-+			dma = dma_map_single(host->dev, ptr, num_bytes, dir);
-+			if (dma_mapping_error(host->dev, dma))
-+				return -EIO;
-+		}
- 
-+		err = esdhc_setup_data(mci, data, dma);
-+		if(err)
-+			return err;
- 	}
- 
- 	/* Figure out the transfer arguments */
-@@ -383,6 +379,9 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 		ret = esdhc_do_data(mci, data);
- 		if (ret)
- 			return ret;
++static int imx8mq_init_syscnt_frequency(void)
++{
++	void __iomem *syscnt = IOMEM(MX8MQ_SYSCNT_CTRL_BASE_ADDR);
++	/*
++	 * Update with accurate clock frequency
++	 */
++	set_cntfrq(syscnt_get_cntfrq(syscnt));
++	syscnt_enable(syscnt);
 +
-+		if (!IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO))
-+			dma_unmap_single(host->dev, dma, num_bytes, dir);
- 	}
- 
- 	esdhc_write32(regs + SDHCI_INT_STATUS, -1);
++	return 0;
++}
++/*
++ * This call needs to happen before timer driver gets probed and
++ * requests its update frequency via cntfrq_el0
++ */
++core_initcall(imx8mq_init_syscnt_frequency);
++
+ int imx8mq_init(void)
+ {
+ 	imx8mq_silicon_revision();
 -- 
 2.17.0
 
