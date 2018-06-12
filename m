@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYWq-0006oq-D6
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:55:33 +0000
-Received: by mail-pg0-x242.google.com with SMTP id 15-v6so10662007pge.2
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:22 -0700 (PDT)
+ id 1fSYWs-0006ZX-If
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:55:40 +0000
+Received: by mail-pf0-x244.google.com with SMTP id c22-v6so10806082pfi.2
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:16 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:52:46 -0700
-Message-Id: <20180612015326.26192-15-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:52:41 -0700
+Message-Id: <20180612015326.26192-10-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,61 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 14/54] ARM: i.MX: ocotp: Add i.MX8MQ support
+Subject: [PATCH v4 09/54] net: fec_imx: Make use of IS_ALIGNED
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-[andrew.smirnov@gmail.com: Rebased to account for move to nvmem]
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/nvmem/Kconfig |  2 +-
- drivers/nvmem/ocotp.c | 10 ++++++++++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/fec_imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
-index 53086d1aa..a3797b4aa 100644
---- a/drivers/nvmem/Kconfig
-+++ b/drivers/nvmem/Kconfig
-@@ -18,7 +18,7 @@ config NVMEM_SNVS_LPGPR
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 0ca594082..98711baa7 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -467,7 +467,7 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
+ 		return -1;
+ 	}
  
- config IMX_OCOTP
- 	tristate "i.MX6 On Chip OTP controller"
--	depends on ARCH_IMX6 || ARCH_VF610
-+	depends on ARCH_IMX6 || ARCH_VF610 || ARCH_IMX8MQ
- 	depends on OFDEVICE
- 	help
- 	  This adds support for the i.MX6 On-Chip OTP controller. Currently the
-diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index 86d0b9cd0..f3af8620e 100644
---- a/drivers/nvmem/ocotp.c
-+++ b/drivers/nvmem/ocotp.c
-@@ -647,6 +647,13 @@ static struct imx_ocotp_data vf610_ocotp_data = {
- 	.format_mac = vf610_ocotp_format_mac,
- };
+-	if ((unsigned long)eth_data & (DB_DATA_ALIGNMENT - 1))
++	if (!IS_ALIGNED((unsigned long)eth_data, DB_DATA_ALIGNMENT))
+ 		dev_warn(&dev->dev, "Transmit data not aligned: %p!\n", eth_data);
  
-+static struct imx_ocotp_data imx8mq_ocotp_data = {
-+	.num_regs = 2048,
-+	.addr_to_offset = imx6sl_addr_to_offset,
-+	.mac_offsets_num = 1,
-+	.mac_offsets = { 0x90 },
-+};
-+
- static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
- 	{
- 		.compatible = "fsl,imx6q-ocotp",
-@@ -660,6 +667,9 @@ static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
- 	}, {
- 		.compatible = "fsl,imx6ul-ocotp",
- 		.data = &imx6q_ocotp_data,
-+	}, {
-+		.compatible = "fsl,imx8mq-ocotp",
-+		.data = &imx8mq_ocotp_data,
- 	}, {
- 		.compatible = "fsl,vf610-ocotp",
- 		.data = &vf610_ocotp_data,
+ 	/*
 -- 
 2.17.0
 
