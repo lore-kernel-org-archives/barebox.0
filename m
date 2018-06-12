@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
+Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYXS-0007XA-Jp
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:03 +0000
-Received: by mail-pl0-x241.google.com with SMTP id n10-v6so13397282plp.0
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:56:02 -0700 (PDT)
+ id 1fSYXH-0007WR-57
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:55:52 +0000
+Received: by mail-pg0-x243.google.com with SMTP id m5-v6so10656682pgd.3
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:39 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:53:17 -0700
-Message-Id: <20180612015326.26192-46-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:52:59 -0700
+Message-Id: <20180612015326.26192-28-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,33 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 45/54] ARM: mmu64: Make use of create_table()
+Subject: [PATCH v4 27/54] Documentation: imx: Change block size for 'dd' to
+ 1024
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Make use of create_table() instead of calling xmemalign() and memset()
-explicitly.
+Real image starts at offset 0x400 (1024), so we can skip copying extra
+512 bytes of zeros.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu_64.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ Documentation/boards/imx.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 80cf240d3..820d8cf75 100644
---- a/arch/arm/cpu/mmu_64.c
-+++ b/arch/arm/cpu/mmu_64.c
-@@ -203,10 +203,7 @@ static int mmu_init(void)
- 	if (get_cr() & CR_M)
- 		mmu_disable();
+diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
+index 343643cd7..8de2bd5c5 100644
+--- a/Documentation/boards/imx.rst
++++ b/Documentation/boards/imx.rst
+@@ -42,7 +42,7 @@ The above will overwrite the MBR (and consequently the partition table)
+ on the destination SD card. To preserve the MBR while writing the rest
+ of the image to the card, use::
  
--	ttb = xmemalign(GRANULE_SIZE, GRANULE_SIZE);
--
--	memset(ttb, 0, GRANULE_SIZE);
--
-+	ttb = create_table();
- 	el = current_el();
- 	set_ttbr_tcr_mair(el, (uint64_t)ttb, calc_tcr(el), MEMORY_ATTRIBUTES);
+-  dd if=images/barebox-freescale-imx51-babbage.img of=/dev/sdd bs=512 skip=1 seek=1
++  dd if=images/barebox-freescale-imx51-babbage.img of=/dev/sdd bs=1024 skip=1 seek=1
+ 
+ The images can also always be started second stage::
  
 -- 
 2.17.0
