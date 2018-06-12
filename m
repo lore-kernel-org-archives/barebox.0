@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pf0-x231.google.com ([2607:f8b0:400e:c00::231])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSqJO-00020n-DG
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:55:29 +0000
-Received: by mail-pg0-x242.google.com with SMTP id l2-v6so141647pgc.7
- for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:54:32 -0700 (PDT)
+ id 1fSqJM-00020J-EQ
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:55:31 +0000
+Received: by mail-pf0-x231.google.com with SMTP id h12-v6so148409pfk.11
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:54:30 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Jun 2018 13:53:10 -0700
-Message-Id: <20180612205310.25745-55-andrew.smirnov@gmail.com>
+Date: Tue, 12 Jun 2018 13:53:08 -0700
+Message-Id: <20180612205310.25745-53-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,132 +23,182 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 54/54] ARM: Introduce imx_v8_defconfig
+Subject: [PATCH v5 52/54] scripts: imx-image: Add i.MX8MQ support
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Similar to imx_v7_defconfig, add imx_v8_defconfig as a default
-configuration encompassing all ARMv8 based i.MX SoCs.
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/configs/imx_v8_defconfig | 107 ++++++++++++++++++++++++++++++
- 1 file changed, 107 insertions(+)
- create mode 100644 arch/arm/configs/imx_v8_defconfig
+ scripts/imx/imx-image.c | 54 +++++++++++++++++++++++++++++++++++++----
+ scripts/imx/imx.c       | 23 ++++++++++++------
+ scripts/imx/imx.h       |  2 ++
+ 3 files changed, 66 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm/configs/imx_v8_defconfig b/arch/arm/configs/imx_v8_defconfig
-new file mode 100644
-index 000000000..cc41f4975
---- /dev/null
-+++ b/arch/arm/configs/imx_v8_defconfig
-@@ -0,0 +1,107 @@
-+CONFIG_ARCH_IMX=y
-+CONFIG_IMX_MULTI_BOARDS=y
-+CONFIG_MACH_NXP_IMX8MQ_EVK=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_MMU=y
-+CONFIG_MALLOC_SIZE=0x0
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_KALLSYMS=y
-+CONFIG_RELOCATABLE=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_MENU=y
-+CONFIG_BOOTM_SHOW_TYPE=y
-+CONFIG_BOOTM_VERBOSE=y
-+CONFIG_BOOTM_INITRD=y
-+CONFIG_BOOTM_OFTREE=y
-+CONFIG_BOOTM_OFTREE_UIMAGE=y
-+CONFIG_BLSPEC=y
-+CONFIG_CONSOLE_ACTIVATE_NONE=y
-+CONFIG_PARTITION_DISK_EFI=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_RESET_SOURCE=y
-+CONFIG_CMD_DMESG=y
-+CONFIG_LONGHELP=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_IMD=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_REGULATOR=y
-+CONFIG_CMD_MMC_EXTCSD=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_UIMAGE=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_FILETYPE=y
-+CONFIG_CMD_LN=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_LET=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_READF=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_DHCP=y
-+CONFIG_CMD_MIITOOL=y
-+CONFIG_CMD_PING=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_MENU=y
-+CONFIG_CMD_MENU_MANAGEMENT=y
-+CONFIG_CMD_MENUTREE=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
-+CONFIG_CMD_MEMTEST=y
-+CONFIG_CMD_MM=y
-+CONFIG_CMD_CLK=y
-+CONFIG_CMD_DETECT=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_I2C=y
-+CONFIG_CMD_LED=y
-+CONFIG_CMD_SPI=y
-+CONFIG_CMD_LED_TRIGGER=y
-+CONFIG_CMD_WD=y
-+CONFIG_CMD_BAREBOX_UPDATE=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_TIME=y
-+CONFIG_NET=y
-+CONFIG_NET_NETCONSOLE=y
-+CONFIG_NET_RESOLV=y
-+CONFIG_OFDEVICE=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
-+CONFIG_DRIVER_NET_FEC_IMX=y
-+CONFIG_DRIVER_SPI_IMX=y
-+CONFIG_I2C=y
-+CONFIG_I2C_IMX=y
-+CONFIG_MCI=y
-+CONFIG_MCI_MMC_BOOT_PARTITIONS=y
-+CONFIG_MCI_IMX_ESDHC=y
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_LED_GPIO_OF=y
-+CONFIG_LED_TRIGGERS=y
-+CONFIG_EEPROM_AT25=y
-+CONFIG_WATCHDOG=y
-+CONFIG_WATCHDOG_IMX=y
-+CONFIG_NVMEM=y
-+CONFIG_IMX_OCOTP=y
-+CONFIG_REGULATOR=y
-+CONFIG_REGULATOR_FIXED=y
-+CONFIG_FS_EXT4=y
-+CONFIG_FS_TFTP=y
-+CONFIG_FS_NFS=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
-+CONFIG_ZLIB=y
-+CONFIG_LZO_DECOMPRESS=y
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index 4a08581fb..6ebae2256 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -57,8 +57,7 @@ static char *prgname;
+  */
+ 
+ 
+-static uint32_t bb_header[] = {
+-	0xea0003fe,	/* b 0x1000 */
++static uint32_t bb_header_aarch32[] = {
+ 	0xeafffffe,	/* 1: b 1b  */
+ 	0xeafffffe,	/* 1: b 1b  */
+ 	0xeafffffe,	/* 1: b 1b  */
+@@ -66,6 +65,30 @@ static uint32_t bb_header[] = {
+ 	0xeafffffe,	/* 1: b 1b  */
+ 	0xeafffffe,	/* 1: b 1b  */
+ 	0xeafffffe,	/* 1: b 1b  */
++	0xeafffffe,	/* 1: b 1b  */
++	0x65726162,	/* 'bare'   */
++	0x00786f62,	/* 'box\0'  */
++	0x00000000,
++	0x00000000,
++	0x55555555,
++	0x55555555,
++	0x55555555,
++	0x55555555,
++	0x55555555,
++	0x55555555,
++	0x55555555,
++	0x55555555,
++};
++
++static uint32_t bb_header_aarch64[] = {
++	0x14000000,	/* 1: b 1b  */
++	0x14000000,	/* 1: b 1b  */
++	0x14000000,	/* 1: b 1b  */
++	0x14000000,	/* 1: b 1b  */
++	0x14000000,	/* 1: b 1b  */
++	0x14000000,	/* 1: b 1b  */
++	0x14000000,	/* 1: b 1b  */
++	0x14000000,	/* 1: b 1b  */
+ 	0x65726162,	/* 'bare'   */
+ 	0x00786f62,	/* 'box\0'  */
+ 	0x00000000,
+@@ -652,6 +675,11 @@ static void *read_file(const char *filename, size_t *size)
+ 	return buf;
+ }
+ 
++static bool cpu_is_aarch64(const struct config_data *data)
++{
++	return data->cpu_type == IMX_CPU_IMX8MQ;
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	int opt, ret;
+@@ -674,6 +702,8 @@ int main(int argc, char *argv[])
+ 		.check = check,
+ 		.nop = nop,
+ 	};
++	uint32_t *bb_header;
++	size_t sizeof_bb_header;
+ 
+ 	prgname = argv[0];
+ 
+@@ -803,6 +833,15 @@ int main(int argc, char *argv[])
+ 		exit(1);
+ 	}
+ 
++	if (cpu_is_aarch64(&data)) {
++		bb_header = bb_header_aarch64;
++		sizeof_bb_header = sizeof(bb_header_aarch64);
++	} else {
++		bb_header = bb_header_aarch32;
++		sizeof_bb_header = sizeof(bb_header_aarch32);
++	}
++
++	bb_header[0] = data.first_opcode;
+ 	bb_header[ARM_HEAD_SIZE_INDEX] = barebox_image_size;
+ 
+ 	infile = read_file(imagename, &insize);
+@@ -819,14 +858,19 @@ int main(int argc, char *argv[])
+ 
+ 	for (i = 0; i < header_copies; i++) {
+ 		ret = xwrite(outfd, add_barebox_header ? bb_header : buf,
+-			     sizeof(bb_header));
++			     sizeof_bb_header);
+ 		if (ret < 0) {
+ 			perror("write");
+ 			exit(1);
+ 		}
+ 
+-		ret = xwrite(outfd, buf + sizeof(bb_header),
+-			     HEADER_LEN - sizeof(bb_header));
++		if (lseek(outfd, data.header_gap, SEEK_CUR) < 0) {
++			perror("lseek");
++			exit(1);
++		}
++
++		ret = xwrite(outfd, buf + sizeof_bb_header,
++			     HEADER_LEN - sizeof_bb_header);
+ 		if (ret < 0) {
+ 			perror("write");
+ 			exit(1);
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+index fb6ac001e..d3786b6e1 100644
+--- a/scripts/imx/imx.c
++++ b/scripts/imx/imx.c
+@@ -222,17 +222,22 @@ struct soc_type {
+ 	char *name;
+ 	int header_version;
+ 	int cpu_type;
++	off_t header_gap;
++	uint32_t first_opcode;
+ };
+ 
++#define SZ_32K	(32 * 1024)
++
+ static struct soc_type socs[] = {
+-	{ .name = "imx25", .header_version = 1, .cpu_type = IMX_CPU_IMX25 },
+-	{ .name = "imx35", .header_version = 1, .cpu_type = IMX_CPU_IMX35 },
+-	{ .name = "imx50", .header_version = 2, .cpu_type = IMX_CPU_IMX50 },
+-	{ .name = "imx51", .header_version = 1, .cpu_type = IMX_CPU_IMX51 },
+-	{ .name = "imx53", .header_version = 2, .cpu_type = IMX_CPU_IMX53 },
+-	{ .name = "imx6", .header_version = 2, .cpu_type = IMX_CPU_IMX6 },
+-	{ .name = "imx7", .header_version = 2, .cpu_type = IMX_CPU_IMX7 },
+-	{ .name = "vf610", .header_version = 2, .cpu_type = IMX_CPU_VF610 },
++	{ .name = "imx25",  .header_version = 1, .cpu_type = IMX_CPU_IMX25,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
++	{ .name = "imx35",  .header_version = 1, .cpu_type = IMX_CPU_IMX35,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
++	{ .name = "imx50",  .header_version = 2, .cpu_type = IMX_CPU_IMX50,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
++	{ .name = "imx51",  .header_version = 1, .cpu_type = IMX_CPU_IMX51,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
++	{ .name = "imx53",  .header_version = 2, .cpu_type = IMX_CPU_IMX53,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
++	{ .name = "imx6",   .header_version = 2, .cpu_type = IMX_CPU_IMX6,   .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
++	{ .name = "imx7",   .header_version = 2, .cpu_type = IMX_CPU_IMX7,   .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
++	{ .name = "imx8mq", .header_version = 2, .cpu_type = IMX_CPU_IMX8MQ, .header_gap = SZ_32K, .first_opcode = 0x14009000 /* b 0x9000 */},
++	{ .name = "vf610",  .header_version = 2, .cpu_type = IMX_CPU_VF610,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
+ };
+ 
+ static int do_soc(struct config_data *data, int argc, char *argv[])
+@@ -249,6 +254,8 @@ static int do_soc(struct config_data *data, int argc, char *argv[])
+ 		if (!strcmp(socs[i].name, soc)) {
+ 			data->header_version = socs[i].header_version;
+ 			data->cpu_type = socs[i].cpu_type;
++			data->header_gap = socs[i].header_gap;
++			data->first_opcode = socs[i].first_opcode;
+ 
+ 			if (data->cpu_type == IMX_CPU_IMX35)
+ 				data->load_size += HEADER_LEN;
+diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
+index c7677f81a..92a3fd316 100644
+--- a/scripts/imx/imx.h
++++ b/scripts/imx/imx.h
+@@ -72,6 +72,8 @@ struct config_data {
+ 	char *outfile;
+ 	char *srkfile;
+ 	int header_version;
++	off_t header_gap;
++	uint32_t first_opcode;
+ 	int cpu_type;
+ 	int (*check)(const struct config_data *data, uint32_t cmd,
+ 		     uint32_t addr, uint32_t mask);
 -- 
 2.17.0
 
