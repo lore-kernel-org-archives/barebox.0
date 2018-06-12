@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x22a.google.com ([2607:f8b0:400e:c01::22a])
+Received: from mail-pl0-x22c.google.com ([2607:f8b0:400e:c01::22c])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYXb-0007X9-JO
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:12 +0000
-Received: by mail-pl0-x22a.google.com with SMTP id t12-v6so13387809plo.7
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:56:01 -0700 (PDT)
+ id 1fSYXY-0007X7-FZ
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:09 +0000
+Received: by mail-pl0-x22c.google.com with SMTP id c41-v6so13389812plj.10
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:58 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:53:16 -0700
-Message-Id: <20180612015326.26192-45-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:53:13 -0700
+Message-Id: <20180612015326.26192-42-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,42 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 44/54] ARM: mmu64: Trivial code simplification
+Subject: [PATCH v4 41/54] ARM: cache: Remove unused cache ops struct
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Remove what appears to be a leftover from moving ARMv8 cache function
+into a separate file that happened in 4b57aae26 ("ARM: Create own
+cache.c file for aarch64")
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu_64.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/arm/cpu/cache.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index d5a3d2223..80cf240d3 100644
---- a/arch/arm/cpu/mmu_64.c
-+++ b/arch/arm/cpu/mmu_64.c
-@@ -126,6 +126,7 @@ static void map_region(uint64_t virt, uint64_t phys, uint64_t size, uint64_t att
- 	uint64_t idx;
- 	uint64_t addr;
- 	uint64_t *table;
-+	uint64_t type;
- 	int level;
+diff --git a/arch/arm/cpu/cache.c b/arch/arm/cpu/cache.c
+index 7047470f0..f4781fe3b 100644
+--- a/arch/arm/cpu/cache.c
++++ b/arch/arm/cpu/cache.c
+@@ -36,7 +36,6 @@ DEFINE_CPU_FNS(v4)
+ DEFINE_CPU_FNS(v5)
+ DEFINE_CPU_FNS(v6)
+ DEFINE_CPU_FNS(v7)
+-DEFINE_CPU_FNS(v8)
  
- 	if (!ttb)
-@@ -145,11 +146,9 @@ static void map_region(uint64_t virt, uint64_t phys, uint64_t size, uint64_t att
- 			pte = table + idx;
- 
- 			if (size >= block_size && IS_ALIGNED(addr, block_size)) {
--				if (level == 3)
--					*pte = phys | attr | PTE_TYPE_PAGE;
--				else
--					*pte = phys | attr | PTE_TYPE_BLOCK;
--
-+				type = (level == 3) ?
-+					PTE_TYPE_PAGE : PTE_TYPE_BLOCK;
-+				*pte = phys | attr | type;
- 				addr += block_size;
- 				phys += block_size;
- 				size -= block_size;
+ void __dma_clean_range(unsigned long start, unsigned long end)
+ {
 -- 
 2.17.0
 
