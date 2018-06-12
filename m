@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSqIq-0001ho-8O
+ id 1fSqIq-0001iu-4d
  for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:33 +0000
-Received: by mail-pf0-x244.google.com with SMTP id a11-v6so151837pff.8
- for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:57 -0700 (PDT)
+Received: by mail-pf0-x244.google.com with SMTP id h12-v6so147789pfk.11
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:53:58 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Jun 2018 13:52:41 -0700
-Message-Id: <20180612205310.25745-26-andrew.smirnov@gmail.com>
+Date: Tue, 12 Jun 2018 13:52:42 -0700
+Message-Id: <20180612205310.25745-27-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,77 +23,156 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 25/54] ARM: i.MX: xload-esdhc: Add support for i.MX8
+Subject: [PATCH v5 26/54] pinctrl: i.MX: Add support for i.MX8
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/xload.h |  1 +
- arch/arm/mach-imx/xload-esdhc.c        | 33 ++++++++++++++++++++++++++
- 2 files changed, 34 insertions(+)
+ arch/arm/mach-imx/include/mach/iomux-v3.h |  9 ++++
+ drivers/pinctrl/imx-iomux-v3.c            | 56 ++++++++++++++++++++---
+ 2 files changed, 59 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/xload.h b/arch/arm/mach-imx/include/mach/xload.h
-index 4e38ac7e2..8f141bc37 100644
---- a/arch/arm/mach-imx/include/mach/xload.h
-+++ b/arch/arm/mach-imx/include/mach/xload.h
-@@ -5,6 +5,7 @@ int imx53_nand_start_image(void);
- int imx6_spi_load_image(int instance, unsigned int flash_offset, void *buf, int len);
- int imx6_spi_start_image(int instance);
- int imx6_esdhc_start_image(int instance);
-+int imx8_esdhc_start_image(int instance);
+diff --git a/arch/arm/mach-imx/include/mach/iomux-v3.h b/arch/arm/mach-imx/include/mach/iomux-v3.h
+index 40f6e5999..994c15c04 100644
+--- a/arch/arm/mach-imx/include/mach/iomux-v3.h
++++ b/arch/arm/mach-imx/include/mach/iomux-v3.h
+@@ -17,6 +17,7 @@
+ #define __MACH_IOMUX_V3_H__
  
- int imx_image_size(void);
- 
-diff --git a/arch/arm/mach-imx/xload-esdhc.c b/arch/arm/mach-imx/xload-esdhc.c
-index 6ab4cabb7..08ba9b08d 100644
---- a/arch/arm/mach-imx/xload-esdhc.c
-+++ b/arch/arm/mach-imx/xload-esdhc.c
-@@ -15,6 +15,7 @@
  #include <io.h>
- #include <mci.h>
- #include <mach/imx6-regs.h>
-+#include <mach/imx8mq-regs.h>
- #include <mach/xload.h>
- #include <linux/sizes.h>
- #include "../../../drivers/mci/sdhci.h"
-@@ -292,3 +293,35 @@ int imx6_esdhc_start_image(int instance)
++#include <linux/bitfield.h>
  
- 	return esdhc_start_image(&esdhc, 0x10000000, 0);
- }
+ /*
+  *	build IOMUX_PAD structure
+@@ -95,6 +96,13 @@ typedef u64 iomux_v3_cfg_t;
+ #define PAD_CTL_DVS			(1 << 13)
+ #define PAD_CTL_HYS			(1 << 8)
+ 
++#define SHARE_CONF_PAD_CTL_DSE	GENMASK(2, 0)
++#define SHARE_CONF_PAD_CTL_SRE	GENMASK(4, 3)
 +
-+/**
-+ * imx8_esdhc_start_image - Load and start an image from USDHC controller
-+ * @instance: The USDHC controller instance (0..2)
-+ *
-+ * This uses esdhc_start_image() to load an image from SD/MMC.  It is
-+ * assumed that the image is the currently running barebox image (This
-+ * information is used to calculate the length of the image). The
-+ * image is started afterwards.
-+ *
-+ * Return: If successful, this function does not return. A negative error
-+ * code is returned when this function fails.
-+ */
-+int imx8_esdhc_start_image(int instance)
-+{
-+	struct esdhc esdhc;
++#define SHARE_CONF_PAD_CTL_ODE	BIT(5)
++#define SHARE_CONF_PAD_CTL_PUE	BIT(6)
++#define SHARE_CONF_PAD_CTL_HYS	BIT(7)
 +
-+	switch (instance) {
-+	case 0:
-+		esdhc.regs = IOMEM(MX8MQ_USDHC1_BASE_ADDR);
-+		break;
-+	case 1:
-+		esdhc.regs = IOMEM(MX8MQ_USDHC2_BASE_ADDR);
-+		break;
-+	default:
-+		return -EINVAL;
+ #define PAD_CTL_PKE			(1 << 7)
+ #define PAD_CTL_PUE			(1 << 6 | PAD_CTL_PKE)
+ #define PAD_CTL_PUS_100K_DOWN		(0 << 4 | PAD_CTL_PUE)
+@@ -118,6 +126,7 @@ typedef u64 iomux_v3_cfg_t;
+ #define SHARE_MUX_CONF_REG		0x1
+ #define ZERO_OFFSET_VALID		0x2
+ #define IMX7_PINMUX_LPSR		0x4
++#define SHARE_CONF			BIT(3)
+ 
+ static inline void iomux_v3_setup_pad(void __iomem *iomux, unsigned int flags,
+ 				      u32 mux_reg, u32 conf_reg, u32 input_reg,
+diff --git a/drivers/pinctrl/imx-iomux-v3.c b/drivers/pinctrl/imx-iomux-v3.c
+index 50d717736..38451875e 100644
+--- a/drivers/pinctrl/imx-iomux-v3.c
++++ b/drivers/pinctrl/imx-iomux-v3.c
+@@ -73,6 +73,7 @@ EXPORT_SYMBOL(mxc_iomux_v3_setup_multiple_pads);
+  * 1 u32 CONFIG, so 24 types in total for each pin.
+  */
+ #define FSL_PIN_SIZE 24
++#define SHARE_CONF_FSL_PIN_SIZE (FSL_PIN_SIZE - 1 * sizeof(u32))
+ 
+ #define IMX_DT_NO_PAD_CTL	(1 << 31)
+ #define IMX_PAD_SION		(1 << 30)
+@@ -83,22 +84,57 @@ static int imx_iomux_v3_set_state(struct pinctrl_device *pdev, struct device_nod
+ {
+ 	struct imx_iomux_v3 *iomux = container_of(pdev, struct imx_iomux_v3, pinctrl);
+ 	const __be32 *list;
+-	int npins, size, i;
++	const bool share_conf = iomux->flags & SHARE_CONF;
++	int npins, size, i, fsl_pin_size;
++	const char *name;
++	u32 share_conf_val;
+ 
+ 	dev_dbg(iomux->pinctrl.dev, "set state: %s\n", np->full_name);
+ 
+-	list = of_get_property(np, "fsl,pins", &size);
++	if (share_conf) {
++		u32 drive_strength, slew_rate;
++		int ret;
++
++		fsl_pin_size = SHARE_CONF_FSL_PIN_SIZE;
++		name = "pinmux";
++
++		ret = of_property_read_u32(np, "drive-strength",
++					   &drive_strength);
++		if (ret)
++			return ret;
++
++		ret = of_property_read_u32(np, "slew-rate", &slew_rate);
++		if (ret)
++			return ret;
++
++		share_conf_val =
++			FIELD_PREP(SHARE_CONF_PAD_CTL_DSE, drive_strength) |
++			FIELD_PREP(SHARE_CONF_PAD_CTL_SRE, slew_rate);
++
++		if (of_get_property(np, "drive-open-drain", NULL))
++			share_conf_val |= SHARE_CONF_PAD_CTL_ODE;
++
++		if (of_get_property(np, "input-schmitt-enable", NULL))
++			share_conf_val |= SHARE_CONF_PAD_CTL_HYS;
++
++		if (of_get_property(np, "bias-pull-up", NULL))
++			share_conf_val |= SHARE_CONF_PAD_CTL_PUE;
++	} else {
++		fsl_pin_size = FSL_PIN_SIZE;
++		name = "fsl,pins";
 +	}
 +
-+	esdhc.is_mx6 = 1;
++	list = of_get_property(np, name, &size);
+ 	if (!list)
+ 		return -EINVAL;
+ 
+-
+-	if (!size || size % FSL_PIN_SIZE) {
++	if (!size || size % fsl_pin_size) {
+ 		dev_err(iomux->pinctrl.dev, "Invalid fsl,pins property in %s\n",
+ 				np->full_name);
+ 		return -EINVAL;
+ 	}
+ 
+-	npins = size / FSL_PIN_SIZE;
++	npins = size / fsl_pin_size;
+ 
+ 	for (i = 0; i < npins; i++) {
+ 		u32 mux_reg = be32_to_cpu(*list++);
+@@ -106,7 +142,8 @@ static int imx_iomux_v3_set_state(struct pinctrl_device *pdev, struct device_nod
+ 		u32 input_reg = be32_to_cpu(*list++);
+ 		u32 mux_val = be32_to_cpu(*list++);
+ 		u32 input_val = be32_to_cpu(*list++);
+-		u32 conf_val = be32_to_cpu(*list++);
++		u32 conf_val = share_conf ?
++			share_conf_val : be32_to_cpu(*list++);
+ 
+ 		if (conf_val & IMX_PAD_SION) {
+ 			mux_val |= IOMUXC_CONFIG_SION;
+@@ -180,6 +217,10 @@ static struct imx_iomux_v3_data imx_iomux_imx7_lpsr_data = {
+ 	.flags = ZERO_OFFSET_VALID | IMX7_PINMUX_LPSR,
+ };
+ 
++static struct imx_iomux_v3_data imx_iomux_imx8_data = {
++	.flags = SHARE_CONF,
++};
 +
-+	return esdhc_start_image(&esdhc, MX8MQ_DDR_CSD1_BASE_ADDR, SZ_32K);
-+}
-\ No newline at end of file
+ static __maybe_unused struct of_device_id imx_iomux_v3_dt_ids[] = {
+ 	{
+ 		.compatible = "fsl,imx25-iomuxc",
+@@ -204,6 +245,9 @@ static __maybe_unused struct of_device_id imx_iomux_v3_dt_ids[] = {
+ 	}, {
+ 		.compatible = "fsl,imx7d-iomuxc-lpsr",
+ 		.data = &imx_iomux_imx7_lpsr_data,
++	}, {
++		.compatible = "fsl,imx8mq-iomuxc",
++		.data = &imx_iomux_imx8_data,
+ 	}, {
+ 		/* sentinel */
+ 	}
 -- 
 2.17.0
 
