@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x22d.google.com ([2607:f8b0:400e:c00::22d])
+Received: from mail-pf0-x234.google.com ([2607:f8b0:400e:c00::234])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSqJI-0001xy-AV
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:55:17 +0000
-Received: by mail-pf0-x22d.google.com with SMTP id y8-v6so149721pfm.10
- for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:54:26 -0700 (PDT)
+ id 1fSqJK-0001zy-TJ
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:55:19 +0000
+Received: by mail-pf0-x234.google.com with SMTP id b74-v6so156584pfl.5
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:54:28 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Jun 2018 13:53:05 -0700
-Message-Id: <20180612205310.25745-50-andrew.smirnov@gmail.com>
+Date: Tue, 12 Jun 2018 13:53:07 -0700
+Message-Id: <20180612205310.25745-52-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,128 +23,162 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 49/54] scripts: imx-image: Limit v2 header size to
- HEADER_LEN
+Subject: [PATCH v5 51/54] scripts: imx-image: Share the code to write barebox
+ header
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Given the following:
-
- 1. Assembly code, namely "b 0x1000" instruction, in bb_header[]
-    assumes that i.MX image header occupies first HEADER_LEN bytes and
-    bootloader executable is located right after.
-
- 2. Code in imx_image_size() assumes that i.MX image header is
-    HEADER_LEN bytes
-
- 3. Original code handling v2 header allocated more than HEADER_LEN
-    buffer to store IVT + boot data + DCD. However, the code writing
-    that buffer to disk is only set up to use first HEADER_LEN bytes
-    and to silently discard the rest as a side effect.
-
-Let's be conservative and limit total size of v2 header to not exceed
-Inital Load Region (4K or HEADER_LEN) to match what's being done for
-v1.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- scripts/imx/imx-image.c | 31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ scripts/imx/imx-image.c | 42 ++++++++++++++++++++---------------------
+ 1 file changed, 20 insertions(+), 22 deletions(-)
 
 diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index a8a26e0ee..294f51a90 100644
+index bc1f821bd..4a08581fb 100644
 --- a/scripts/imx/imx-image.c
 +++ b/scripts/imx/imx-image.c
-@@ -35,7 +35,13 @@
- 
+@@ -36,6 +36,7 @@
  #include <include/filetype.h>
  
--#define MAX_DCD 1024
-+#define FLASH_HEADER_OFFSET 0x400
-+
-+/*
-+ * Conservative DCD element limit set to restriction v2 header size to
-+ * HEADER_SIZE
-+ */
-+#define MAX_DCD ((HEADER_LEN - FLASH_HEADER_OFFSET - sizeof(struct imx_flash_header_v2)) / sizeof(u32))
- #define CSF_LEN 0x2000		/* length of the CSF (needed for HAB) */
+ #define FLASH_HEADER_OFFSET 0x400
++#define ARM_HEAD_SIZE_INDEX	(ARM_HEAD_SIZE_OFFSET / sizeof(uint32_t))
+ 
+ /*
+  * Conservative DCD element limit set to restriction v2 header size to
+@@ -46,7 +47,6 @@
  
  static uint32_t dcdtable[MAX_DCD];
-@@ -50,7 +56,6 @@ static char *prgname;
+ static int curdcd;
+-static int add_barebox_header;
+ static int create_usb_image;
+ static char *prgname;
+ 
+@@ -207,18 +207,14 @@ static int add_srk(void *buf, int offset, uint32_t loadaddr, const char *srkfile
+ static int dcd_ptr_offset;
+ static uint32_t dcd_ptr_content;
+ 
+-static int add_header_v1(struct config_data *data, void *buf)
++static size_t add_header_v1(struct config_data *data, void *buf)
+ {
+ 	struct imx_flash_header *hdr;
+ 	int dcdsize = curdcd * sizeof(uint32_t);
+-	uint32_t *psize = buf + ARM_HEAD_SIZE_OFFSET;
+ 	int offset = data->image_dcd_offset;
+ 	uint32_t loadaddr = data->image_load_addr;
+ 	uint32_t imagesize = data->load_size;
+ 
+-	if (add_barebox_header)
+-		memcpy(buf, bb_header, sizeof(bb_header));
+-
+ 	buf += offset;
+ 	hdr = buf;
+ 
+@@ -250,12 +246,9 @@ static int add_header_v1(struct config_data *data, void *buf)
+ 		imagesize += CSF_LEN;
+ 	}
+ 
+-	if (add_barebox_header)
+-		*psize = imagesize;
+-
+ 	*(uint32_t *)buf = imagesize;
+ 
+-	return 0;
++	return imagesize;
+ }
+ 
+ static int write_mem_v1(uint32_t addr, uint32_t val, int width, int set_bits, int clear_bits)
+@@ -283,18 +276,14 @@ static int write_mem_v1(uint32_t addr, uint32_t val, int width, int set_bits, in
   * ============================================================================
   */
  
--#define FLASH_HEADER_OFFSET 0x400
+-static int add_header_v2(const struct config_data *data, void *buf)
++static size_t add_header_v2(const struct config_data *data, void *buf)
+ {
+ 	struct imx_flash_header_v2 *hdr;
+ 	int dcdsize = curdcd * sizeof(uint32_t);
+-	uint32_t *psize = buf + ARM_HEAD_SIZE_OFFSET;
+ 	int offset = data->image_dcd_offset;
+ 	uint32_t loadaddr = data->image_load_addr;
+ 	uint32_t imagesize = data->load_size;
  
- static uint32_t bb_header[] = {
- 	0xea0003fe,	/* b 0x1000 */
-@@ -261,7 +266,7 @@ static int write_mem_v1(uint32_t addr, uint32_t val, int width, int set_bits, in
+-	if (add_barebox_header)
+-		memcpy(buf, bb_header, sizeof(bb_header));
+-
+ 	buf += offset;
+ 	hdr = buf;
+ 
+@@ -320,9 +309,6 @@ static int add_header_v2(const struct config_data *data, void *buf)
+ 		hdr->boot_data.size += CSF_LEN;
  	}
  
- 	if (curdcd > MAX_DCD - 3) {
--		fprintf(stderr, "At maximum %d dcd entried are allowed\n", MAX_DCD);
-+		fprintf(stderr, "At maximum %d dcd entried are allowed\n", (int)MAX_DCD);
- 		return -ENOMEM;
- 	}
+-	if (add_barebox_header)
+-		*psize = hdr->boot_data.size;
+-
+ 	hdr->dcd_header.tag	= TAG_DCD_HEADER;
+ 	hdr->dcd_header.length	= htobe16(sizeof(uint32_t) + dcdsize);
+ 	hdr->dcd_header.version	= DCD_VERSION;
+@@ -331,7 +317,7 @@ static int add_header_v2(const struct config_data *data, void *buf)
  
-@@ -383,7 +388,7 @@ static int write_mem_v2(uint32_t addr, uint32_t val, int width, int set_bits, in
- 		cmd |= 1 << 3;
+ 	memcpy(buf, dcdtable, dcdsize);
  
- 	if (curdcd > MAX_DCD - 3) {
--		fprintf(stderr, "At maximum %d dcd entried are allowed\n", MAX_DCD);
-+		fprintf(stderr, "At maximum %d dcd entried are allowed\n", (int)MAX_DCD);
- 		return -ENOMEM;
- 	}
+-	return 0;
++	return imagesize;
+ }
  
-@@ -454,7 +459,7 @@ static int check(const struct config_data *data, uint32_t cmd, uint32_t addr,
- 		return -EINVAL;
- 	}
- 	if (curdcd > MAX_DCD - 3) {
--		fprintf(stderr, "At maximum %d dcd entried are allowed\n", MAX_DCD);
-+		fprintf(stderr, "At maximum %d dcd entried are allowed\n", (int)MAX_DCD);
- 		return -ENOMEM;
- 	}
+ static void usage(const char *prgname)
+@@ -680,6 +666,8 @@ int main(int argc, char *argv[])
+ 	int now = 0;
+ 	int sign_image = 0;
+ 	int i, header_copies;
++	int add_barebox_header;
++	uint32_t barebox_image_size;
+ 	struct config_data data = {
+ 		.image_dcd_offset = 0xffffffff,
+ 		.write_mem = write_mem,
+@@ -792,7 +780,7 @@ int main(int argc, char *argv[])
  
-@@ -495,7 +500,7 @@ static int nop(const struct config_data *data)
- 	case 2:
- 		if (curdcd > MAX_DCD - 1) {
- 			fprintf(stderr, "At maximum %d DCD entries allowed\n",
--				MAX_DCD);
-+				(int)MAX_DCD);
- 			return -ENOMEM;
- 		}
- 
-@@ -780,12 +785,12 @@ int main(int argc, char *argv[])
- 		exit(0);
- 	}
- 
-+	buf = calloc(1, HEADER_LEN);
-+	if (!buf)
-+		exit(1);
-+
  	switch (data.header_version) {
  	case 1:
--		buf = calloc(1, HEADER_LEN);
--		if (!buf)
--			exit(1);
--
- 		add_header_v1(&data, buf);
+-		add_header_v1(&data, buf);
++		barebox_image_size = add_header_v1(&data, buf);
  		if (data.srkfile) {
  			ret = add_srk(buf, data.image_dcd_offset, data.image_load_addr,
-@@ -795,9 +800,11 @@ int main(int argc, char *argv[])
- 		}
- 		break;
- 	case 2:
--		buf = calloc(1, data.image_dcd_offset + sizeof(struct imx_flash_header_v2) + MAX_DCD * sizeof(u32));
--		if (!buf)
-+		if (data.image_dcd_offset + sizeof(struct imx_flash_header_v2) +
-+		    MAX_DCD * sizeof(u32) > HEADER_LEN) {
-+			fprintf(stderr, "i.MX v2 header exceeds SW limit set by imx-image\n");
+ 				      data.srkfile);
+@@ -807,7 +795,7 @@ int main(int argc, char *argv[])
  			exit(1);
-+		}
+ 		}
  
- 		add_header_v2(&data, buf);
+-		add_header_v2(&data, buf);
++		barebox_image_size = add_header_v2(&data, buf);
  		break;
+ 	default:
+ 		fprintf(stderr, "Congratulations! You're welcome to implement header version %d\n",
+@@ -815,6 +803,8 @@ int main(int argc, char *argv[])
+ 		exit(1);
+ 	}
+ 
++	bb_header[ARM_HEAD_SIZE_INDEX] = barebox_image_size;
++
+ 	infile = read_file(imagename, &insize);
+ 	if (!infile)
+ 		exit(1);
+@@ -828,7 +818,15 @@ int main(int argc, char *argv[])
+ 	header_copies = (data.cpu_type == IMX_CPU_IMX35) ? 2 : 1;
+ 
+ 	for (i = 0; i < header_copies; i++) {
+-		ret = xwrite(outfd, buf, HEADER_LEN);
++		ret = xwrite(outfd, add_barebox_header ? bb_header : buf,
++			     sizeof(bb_header));
++		if (ret < 0) {
++			perror("write");
++			exit(1);
++		}
++
++		ret = xwrite(outfd, buf + sizeof(bb_header),
++			     HEADER_LEN - sizeof(bb_header));
+ 		if (ret < 0) {
+ 			perror("write");
+ 			exit(1);
 -- 
 2.17.0
 
