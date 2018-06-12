@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from mail-pl0-x243.google.com ([2607:f8b0:400e:c01::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYWu-0006ew-E8
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:55:53 +0000
-Received: by mail-pg0-x243.google.com with SMTP id q4-v6so9597374pgr.1
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:18 -0700 (PDT)
+ id 1fSYWv-0006hq-W6
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:03 +0000
+Received: by mail-pl0-x243.google.com with SMTP id t12-v6so13387032plo.7
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:19 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:52:43 -0700
-Message-Id: <20180612015326.26192-12-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:52:44 -0700
+Message-Id: <20180612015326.26192-13-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,51 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 11/54] serial: i.MX: Add i.MX8 support
+Subject: [PATCH v4 12/54] mmc: i.MX esdhc: Add i.MX8 support
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/serial/serial_imx.c | 5 ++++-
- include/serial/imx-uart.h   | 5 +++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/mci/imx-esdhc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
-index c8af995aa..09341af87 100644
---- a/drivers/serial/serial_imx.c
-+++ b/drivers/serial/serial_imx.c
-@@ -281,9 +281,12 @@ static __maybe_unused struct of_device_id imx_serial_dt_ids[] = {
- 	}, {
- 		.compatible = "fsl,imx6ul-uart",
- 		.data = &imx21_data,
--	},  {
-+	}, {
- 		.compatible = "fsl,imx7d-uart",
- 		.data = &imx21_data,
-+	}, {
-+		.compatible = "fsl,imx8mq-uart",
-+		.data = &imx21_data,
- 	}, {
- 		/* sentinel */
- 	}
-diff --git a/include/serial/imx-uart.h b/include/serial/imx-uart.h
-index 9cab32f35..c23606569 100644
---- a/include/serial/imx-uart.h
-+++ b/include/serial/imx-uart.h
-@@ -180,6 +180,11 @@ static inline void imx7_uart_setup(void __iomem *uartbase)
- 	imx_uart_setup(uartbase, 24000000);
- }
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 8929901d4..c4daa9d12 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -728,6 +728,7 @@ static __maybe_unused struct of_device_id fsl_esdhc_compatible[] = {
+ 	{ .compatible = "fsl,imx6q-usdhc",  .data = &usdhc_imx6q_data  },
+ 	{ .compatible = "fsl,imx6sl-usdhc", .data = &usdhc_imx6sl_data },
+ 	{ .compatible = "fsl,imx6sx-usdhc", .data = &usdhc_imx6sx_data },
++	{ .compatible = "fsl,imx8mq-usdhc", .data = &usdhc_imx6sx_data },
+ 	{ /* sentinel */ }
+ };
  
-+static inline void imx8mq_uart_setup(void __iomem *uartbase)
-+{
-+	imx_uart_setup(uartbase, 25000000);
-+}
-+
- static inline void imx_uart_putc(void *base, int c)
- {
- 	if (!(readl(base + UCR1) & UCR1_UARTEN))
 -- 
 2.17.0
 
