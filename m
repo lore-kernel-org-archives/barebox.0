@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x236.google.com ([2607:f8b0:400e:c05::236])
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYWn-0006Nl-L0
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:55:31 +0000
-Received: by mail-pg0-x236.google.com with SMTP id d2-v6so10655142pga.13
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:11 -0700 (PDT)
+ id 1fSYWq-0006UC-Dn
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:55:32 +0000
+Received: by mail-pg0-x242.google.com with SMTP id l2-v6so10648747pgc.7
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:14 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:52:37 -0700
-Message-Id: <20180612015326.26192-6-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:52:39 -0700
+Message-Id: <20180612015326.26192-8-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,41 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 05/54] Include our own include/dt-bindings
+Subject: [PATCH v4 07/54] net: fec_imx: remove unnecessary DMA sync ops
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Allow to use dt-bindings files that are not yet upstreamed. They can
-be put into include/dt-bindings.
+The fec receive buffers are coherently mapped, no need to dma_sync on
+them.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/mips/dts/include/dt-bindings | 1 -
- scripts/Makefile.lib              | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
- delete mode 120000 arch/mips/dts/include/dt-bindings
+ drivers/net/fec_imx.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/mips/dts/include/dt-bindings b/arch/mips/dts/include/dt-bindings
-deleted file mode 120000
-index 0cecb3d08..000000000
---- a/arch/mips/dts/include/dt-bindings
-+++ /dev/null
-@@ -1 +0,0 @@
--../../../../include/dt-bindings
-\ No newline at end of file
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 272b5981e..3024b068e 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -154,6 +154,7 @@ ld_flags       = $(LDFLAGS) $(EXTRA_LDFLAGS)
- dtc_cpp_flags  = -Wp,-MD,$(depfile).pre -nostdinc                        \
- 		 -I$(srctree)/arch/$(SRCARCH)/dts/include		 \
- 		 -I$(srctree)/dts/include                                \
-+		 -I$(srctree)/include                                    \
- 		 -I$(srctree)/dts/src/                                   \
- 		 -undef -D__DTS__
- 
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index d506fd64f..33599dd82 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -580,11 +580,7 @@ static int fec_recv(struct eth_device *dev)
+ 			 */
+ 			frame = phys_to_virt(readl(&rbd->data_pointer));
+ 			frame_length = readw(&rbd->data_length) - 4;
+-			dma_sync_single_for_cpu((unsigned long)frame->data,
+-						frame_length, DMA_FROM_DEVICE);
+ 			net_receive(dev, frame->data, frame_length);
+-			dma_sync_single_for_device((unsigned long)frame->data,
+-						   frame_length, DMA_FROM_DEVICE);
+ 			len = frame_length;
+ 		} else {
+ 			if (bd_status & FEC_RBD_ERR) {
 -- 
 2.17.0
 
