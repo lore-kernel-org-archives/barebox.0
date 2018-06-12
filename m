@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSqIw-0001lf-6C
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:36 +0000
-Received: by mail-pf0-x243.google.com with SMTP id a63-v6so163056pfl.1
- for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:54:03 -0700 (PDT)
+ id 1fSqJ8-0001si-47
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:46 +0000
+Received: by mail-pg0-x242.google.com with SMTP id c9-v6so143457pgf.5
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:54:15 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Jun 2018 13:52:46 -0700
-Message-Id: <20180612205310.25745-31-andrew.smirnov@gmail.com>
+Date: Tue, 12 Jun 2018 13:52:56 -0700
+Message-Id: <20180612205310.25745-41-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,31 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 30/54] clocksource: armv8-timer: Make use of
- postcore_platform_driver()
+Subject: [PATCH v5 40/54] ARM: mmu: Make use of dsb() and isb() helpers
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/clocksource/armv8-timer.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ arch/arm/cpu/mmu_64.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clocksource/armv8-timer.c b/drivers/clocksource/armv8-timer.c
-index 5e0b9ef3c..918232e0e 100644
---- a/drivers/clocksource/armv8-timer.c
-+++ b/drivers/clocksource/armv8-timer.c
-@@ -48,9 +48,5 @@ static struct driver_d armv8_timer_driver = {
- 	.probe = armv8_timer_probe,
- 	.of_compatible = DRV_OF_COMPAT(armv8_timer_dt_ids),
- };
-+postcore_platform_driver(armv8_timer_driver);
+diff --git a/arch/arm/cpu/mmu_64.h b/arch/arm/cpu/mmu_64.h
+index c280d2ced..2cbe72062 100644
+--- a/arch/arm/cpu/mmu_64.h
++++ b/arch/arm/cpu/mmu_64.h
+@@ -28,7 +28,7 @@ static inline void tlb_invalidate(void)
  
--static int armv8_timer_init(void)
--{
--	return platform_driver_register(&armv8_timer_driver);
--}
--postcore_initcall(armv8_timer_init);
+ static inline void set_ttbr_tcr_mair(int el, uint64_t table, uint64_t tcr, uint64_t attr)
+ {
+-	asm volatile("dsb sy");
++	dsb();
+ 	if (el == 1) {
+ 		asm volatile("msr ttbr0_el1, %0" : : "r" (table) : "memory");
+ 		asm volatile("msr tcr_el1, %0" : : "r" (tcr) : "memory");
+@@ -44,7 +44,7 @@ static inline void set_ttbr_tcr_mair(int el, uint64_t table, uint64_t tcr, uint6
+ 	} else {
+ 		hang();
+ 	}
+-	asm volatile("isb");
++	isb();
+ }
+ 
+ static inline uint64_t get_ttbr(int el)
 -- 
 2.17.0
 
