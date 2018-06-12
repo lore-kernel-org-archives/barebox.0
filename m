@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSYXY-0007Tc-F1
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:09 +0000
-Received: by mail-pl0-x242.google.com with SMTP id c23-v6so13399676plz.12
- for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:59 -0700 (PDT)
+ id 1fSYXW-0007T6-75
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 01:56:07 +0000
+Received: by mail-pf0-x244.google.com with SMTP id y5-v6so10311065pfn.4
+ for <barebox@lists.infradead.org>; Mon, 11 Jun 2018 18:55:56 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Jun 2018 18:53:15 -0700
-Message-Id: <20180612015326.26192-44-andrew.smirnov@gmail.com>
+Date: Mon, 11 Jun 2018 18:53:12 -0700
+Message-Id: <20180612015326.26192-41-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 References: <20180612015326.26192-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,34 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 43/54] ARM: interrupts64: Include ESR value in exception
- traceback
+Subject: [PATCH v4 40/54] ARM: mmu: Make use of dsb() and isb() helpers
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Oftentimes knowing the class of exception is not enough and full ESR
-value is needed to decode the specifics. Add code to print ESR as a
-part of excpetion traceback to provide that information.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/interrupts_64.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/cpu/mmu_64.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/cpu/interrupts_64.c b/arch/arm/cpu/interrupts_64.c
-index 32c8dfcb2..f6f0c9d09 100644
---- a/arch/arm/cpu/interrupts_64.c
-+++ b/arch/arm/cpu/interrupts_64.c
-@@ -155,7 +155,8 @@ void do_sync(struct pt_regs *pt_regs, unsigned int esr, unsigned long far)
- 		return;
- 	}
+diff --git a/arch/arm/cpu/mmu_64.h b/arch/arm/cpu/mmu_64.h
+index c280d2ced..2cbe72062 100644
+--- a/arch/arm/cpu/mmu_64.h
++++ b/arch/arm/cpu/mmu_64.h
+@@ -28,7 +28,7 @@ static inline void tlb_invalidate(void)
  
--	printf("%s exception at 0x%016lx\n", esr_get_class_string(esr), far);
-+	printf("%s exception (ESR 0x%08x) at 0x%016lx\n", esr_get_class_string(esr),
-+	       esr, far);
- 	do_exception(pt_regs);
+ static inline void set_ttbr_tcr_mair(int el, uint64_t table, uint64_t tcr, uint64_t attr)
+ {
+-	asm volatile("dsb sy");
++	dsb();
+ 	if (el == 1) {
+ 		asm volatile("msr ttbr0_el1, %0" : : "r" (table) : "memory");
+ 		asm volatile("msr tcr_el1, %0" : : "r" (tcr) : "memory");
+@@ -44,7 +44,7 @@ static inline void set_ttbr_tcr_mair(int el, uint64_t table, uint64_t tcr, uint6
+ 	} else {
+ 		hang();
+ 	}
+-	asm volatile("isb");
++	isb();
  }
  
+ static inline uint64_t get_ttbr(int el)
 -- 
 2.17.0
 
