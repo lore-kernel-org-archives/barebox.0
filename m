@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x236.google.com ([2607:f8b0:400e:c00::236])
+Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSqJ2-0001pU-AJ
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:44 +0000
-Received: by mail-pf0-x236.google.com with SMTP id c22-v6so159827pfi.2
- for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:54:09 -0700 (PDT)
+ id 1fSqJ8-0001wE-4w
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:53 +0000
+Received: by mail-pg0-x242.google.com with SMTP id m5-v6so147710pgd.3
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:54:21 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Jun 2018 13:52:51 -0700
-Message-Id: <20180612205310.25745-36-andrew.smirnov@gmail.com>
+Date: Tue, 12 Jun 2018 13:53:01 -0700
+Message-Id: <20180612205310.25745-46-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,28 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 35/54] Kbuild: Add $(quote)
+Subject: [PATCH v5 45/54] ARM: mmu64: Make use of create_table()
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+Make use of create_table() instead of calling xmemalign() and memset()
+explicitly.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- scripts/Kbuild.include | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/cpu/mmu_64.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
-index f3771902b..512d21732 100644
---- a/scripts/Kbuild.include
-+++ b/scripts/Kbuild.include
-@@ -3,6 +3,7 @@
+diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+index 80cf240d3..820d8cf75 100644
+--- a/arch/arm/cpu/mmu_64.c
++++ b/arch/arm/cpu/mmu_64.c
+@@ -203,10 +203,7 @@ static int mmu_init(void)
+ 	if (get_cr() & CR_M)
+ 		mmu_disable();
  
- # Convenient variables
- comma   := ,
-+quote   := "
- squote  := '
- empty   :=
- space   := $(empty) $(empty)
+-	ttb = xmemalign(GRANULE_SIZE, GRANULE_SIZE);
+-
+-	memset(ttb, 0, GRANULE_SIZE);
+-
++	ttb = create_table();
+ 	el = current_el();
+ 	set_ttbr_tcr_mair(el, (uint64_t)ttb, calc_tcr(el), MEMORY_ATTRIBUTES);
+ 
 -- 
 2.17.0
 
