@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSqJ8-0007FB-9m
- for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:26 +0000
-Received: by mail-pf0-x243.google.com with SMTP id y8-v6so149482pfm.10
- for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:54:16 -0700 (PDT)
+ id 1fSqJ4-0007Er-U2
+ for barebox@lists.infradead.org; Tue, 12 Jun 2018 20:54:23 +0000
+Received: by mail-pf0-x241.google.com with SMTP id a11-v6so152091pff.8
+ for <barebox@lists.infradead.org>; Tue, 12 Jun 2018 13:54:13 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Jun 2018 13:52:55 -0700
-Message-Id: <20180612205310.25745-40-andrew.smirnov@gmail.com>
+Date: Tue, 12 Jun 2018 13:52:53 -0700
+Message-Id: <20180612205310.25745-38-andrew.smirnov@gmail.com>
 In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,219 +23,223 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 39/54] ARM: lib64: Make string functions aware of MMU
- configuration
+Subject: [PATCH v5 37/54] ARM: i.MX8: Add DDRC PHY support code
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Optimized version of memset() in memset.S if called as:
+Add DDRC PHY support code needed to upload DDR training firwmare as
+well as to wait for the training process to complete.
 
-    memset(foo, 0, size)
-
-will try to explicitly zero out data cache with:
-
-    dc	zva, dst
-
-which will result in Alignement Exception (DABT) if MMU is not
-enabled.
-
-For more info see:
-
-    - C4.4.8 "DC ZVA, Data Cache Zero by VA"
-    - D5.2.8 "The effects of disabling a stage of address translation"
-
-in "ARM Architecture Reference Manual. ARMv8, for ARMv8-A architecture
-profile"
-
-In similar vein, using optimized version of memcpy() could lead to a
-unaligned 16-byte write (using 'stp'), which is not allowed for
-Device-nGnRnE type of memory (see D5.2.8) and would liead to
-Alignement Exception.
-
-To fix both problems expose non-optimized and optimzied versions of
-the function and created a wrapper to dispatch the call to either one
-based on if MMU is enabled or not.
+Those are needed to support board specific DDR initialization code.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/Kconfig        |  7 +++++++
- arch/arm/lib64/Makefile |  2 +-
- arch/arm/lib64/memcpy.S |  6 +++---
- arch/arm/lib64/memset.S |  4 ++--
- arch/arm/lib64/string.c | 22 ++++++++++++++++++++++
- include/string.h        |  3 +++
- lib/string.c            | 18 ++++++++++++------
- 7 files changed, 50 insertions(+), 12 deletions(-)
- create mode 100644 arch/arm/lib64/string.c
+ arch/arm/mach-imx/Makefile                 |   1 +
+ arch/arm/mach-imx/imx8-ddrc.c              | 107 +++++++++++++++++++++
+ arch/arm/mach-imx/include/mach/imx8-ddrc.h |  66 +++++++++++++
+ 3 files changed, 174 insertions(+)
+ create mode 100644 arch/arm/mach-imx/imx8-ddrc.c
+ create mode 100644 arch/arm/mach-imx/include/mach/imx8-ddrc.h
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index bd736284f..c330a5a18 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -353,6 +353,13 @@ menu "ARM specific settings"
- 
- config ARM_OPTIMZED_STRING_FUNCTIONS
- 	bool "use assembler optimized string functions"
-+	#
-+	# memset() and memcpy() in arm/lib64/mem[set|cpy].S are
-+	# written with assumption of enabled MMU and cache. Depending
-+	# on the inputs in may fail with Alignement exception if used
-+	# without MMU
-+	#
-+	depends on !CPU_V8 || MMU
- 	help
- 	  Say yes here to use assembler optimized memcpy / memset functions.
- 	  These functions work much faster than the normal versions but
-diff --git a/arch/arm/lib64/Makefile b/arch/arm/lib64/Makefile
-index 77647128a..4c0019fab 100644
---- a/arch/arm/lib64/Makefile
-+++ b/arch/arm/lib64/Makefile
-@@ -2,7 +2,7 @@ obj-y += stacktrace.o
- obj-$(CONFIG_ARM_LINUX)	+= armlinux.o
- obj-y	+= div0.o
- obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memcpy.o
--obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memset.o
-+obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memset.o string.o
- extra-y += barebox.lds
- obj-pbl-y   += runtime-offset.o
- 
-diff --git a/arch/arm/lib64/memcpy.S b/arch/arm/lib64/memcpy.S
-index cfed3191c..a70e96ca2 100644
---- a/arch/arm/lib64/memcpy.S
-+++ b/arch/arm/lib64/memcpy.S
-@@ -67,8 +67,8 @@
- 	stp \ptr, \regB, [\regC], \val
- 	.endm
- 
--	.weak memcpy
--ENTRY(memcpy)
-+	.weak __arch_memcpy
-+ENTRY(__arch_memcpy)
- #include "copy_template.S"
- 	ret
--ENDPROC(memcpy)
-+ENDPROC(__arch_memcpy)
-diff --git a/arch/arm/lib64/memset.S b/arch/arm/lib64/memset.S
-index 380a54097..d17bcc612 100644
---- a/arch/arm/lib64/memset.S
-+++ b/arch/arm/lib64/memset.S
-@@ -54,7 +54,7 @@ tmp3w		.req	w9
- tmp3		.req	x9
- 
- 	.weak memset
--ENTRY(memset)
-+ENTRY(__arch_memset)
- 	mov	dst, dstin	/* Preserve return value.  */
- 	and	A_lw, val, #255
- 	orr	A_lw, A_lw, A_lw, lsl #8
-@@ -212,4 +212,4 @@ ENTRY(memset)
- 	ands	count, count, zva_bits_x
- 	b.ne	.Ltail_maybe_long
- 	ret
--ENDPROC(memset)
-+ENDPROC(__arch_memset)
-diff --git a/arch/arm/lib64/string.c b/arch/arm/lib64/string.c
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index 442039a27..28fe60dba 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -17,6 +17,7 @@ lwl-$(CONFIG_ARCH_IMX6) += imx6-mmdc.o
+ obj-$(CONFIG_ARCH_IMX7) += imx7.o
+ obj-$(CONFIG_ARCH_VF610) += vf610.o
+ obj-$(CONFIG_ARCH_IMX8MQ) += imx8mq.o
++lwl-$(CONFIG_ARCH_IMX8MQ) += imx8-ddrc.o
+ obj-$(CONFIG_ARCH_IMX_XLOAD) += xload.o
+ obj-$(CONFIG_IMX_IIM)	+= iim.o
+ obj-$(CONFIG_NAND_IMX) += nand.o
+diff --git a/arch/arm/mach-imx/imx8-ddrc.c b/arch/arm/mach-imx/imx8-ddrc.c
 new file mode 100644
-index 000000000..cb2633152
+index 000000000..18454a915
 --- /dev/null
-+++ b/arch/arm/lib64/string.c
-@@ -0,0 +1,22 @@
++++ b/arch/arm/mach-imx/imx8-ddrc.c
+@@ -0,0 +1,107 @@
 +#include <common.h>
-+#include <asm/system.h>
-+#include <string.h>
++#include <linux/iopoll.h>
++#include <mach/imx8-ddrc.h>
++#include <debug_ll.h>
 +
-+void *__arch_memset(void *dst, int c, __kernel_size_t size);
-+void *__arch_memcpy(void * dest, const void *src, size_t count);
-+
-+void *memset(void *dst, int c, __kernel_size_t size)
++void ddrc_phy_load_firmware(void __iomem *phy,
++			    enum ddrc_phy_firmware_offset offset,
++			    const u16 *blob, size_t size)
 +{
-+	if (likely(get_cr() & CR_M))
-+		return __arch_memset(dst, c, size);
-+
-+	return __default_memset(dst, c, size);
++	while (size) {
++		writew(*blob++, phy + DDRC_PHY_REG(offset));
++		offset++;
++		size -= sizeof(*blob);
++	}
 +}
 +
-+void *memcpy(void * dest, const void *src, size_t count)
-+{
-+	if (likely(get_cr() & CR_M))
-+		return __arch_memcpy(dest, src, count);
++enum pmc_constants {
++	PMC_MESSAGE_ID,
++	PMC_MESSAGE_STREAM,
 +
-+	return __default_memcpy(dest, src, count);
++	PMC_TRAIN_SUCCESS	= 0x07,
++	PMC_TRAIN_STREAM_START	= 0x08,
++	PMC_TRAIN_FAIL		= 0xff,
++};
++
++static u32 ddrc_phy_get_message(void __iomem *phy, int type)
++{
++	u32 r, message;
++
++	/*
++	 * When BIT0 set to 0, the PMU has a message for the user
++	 * 10ms seems not enough for poll message, so use 1s here.
++	 */
++	readl_poll_timeout(phy + DDRC_PHY_REG(0xd0004),
++			   r, !(r & BIT(0)), 0);
++
++	switch (type) {
++	case PMC_MESSAGE_ID:
++		/*
++		 * Get the major message ID
++		 */
++		message = readl(phy + DDRC_PHY_REG(0xd0032));
++		break;
++	case PMC_MESSAGE_STREAM:
++		message = readl(phy + DDRC_PHY_REG(0xd0034));
++		message <<= 16;
++		message |= readl(phy + DDRC_PHY_REG(0xd0032));
++		break;
++	}
++
++	/*
++	 * By setting this register to 0, the user acknowledges the
++	 * receipt of the message.
++	 */
++	writel(0x00000000, phy + DDRC_PHY_REG(0xd0031));
++	/*
++	 * When BIT0 set to 0, the PMU has a message for the user
++	 */
++	readl_poll_timeout(phy + DDRC_PHY_REG(0xd0004),
++			   r, r & BIT(0), 0);
++
++	writel(0x00000001, phy + DDRC_PHY_REG(0xd0031));
++
++	return message;
++}
++
++static void ddrc_phy_fetch_streaming_message(void __iomem *phy)
++{
++	const u16 index = ddrc_phy_get_message(phy, PMC_MESSAGE_STREAM);
++	u16 i;
++
++	putc_ll('|');
++	puthex_ll(index);
++
++	for (i = 0; i < index; i++) {
++		const u32 arg = ddrc_phy_get_message(phy, PMC_MESSAGE_STREAM);
++
++		putc_ll('|');
++		puthex_ll(arg);
++	}
++}
++
++void ddrc_phy_wait_training_complete(void __iomem *phy)
++{
++	for (;;) {
++		const u32 m = ddrc_phy_get_message(phy, PMC_MESSAGE_ID);
++
++		puthex_ll(m);
++
++		switch (m) {
++		case PMC_TRAIN_STREAM_START:
++			ddrc_phy_fetch_streaming_message(phy);
++			break;
++		case PMC_TRAIN_SUCCESS:
++			putc_ll('P');
++			putc_ll('\r');
++			putc_ll('\n');
++			return;
++		case PMC_TRAIN_FAIL:
++			putc_ll('F');
++			hang();
++		}
++
++		putc_ll('\r');
++		putc_ll('\n');
++	}
 +}
 \ No newline at end of file
-diff --git a/include/string.h b/include/string.h
-index 0c557d6f1..6ceb33224 100644
---- a/include/string.h
-+++ b/include/string.h
-@@ -6,4 +6,7 @@
- void *memdup(const void *, size_t);
- int strtobool(const char *str, int *val);
- 
-+void *__default_memset(void *, int, __kernel_size_t);
-+void *__default_memcpy(void * dest,const void *src,size_t count);
+diff --git a/arch/arm/mach-imx/include/mach/imx8-ddrc.h b/arch/arm/mach-imx/include/mach/imx8-ddrc.h
+new file mode 100644
+index 000000000..d49e29f26
+--- /dev/null
++++ b/arch/arm/mach-imx/include/mach/imx8-ddrc.h
+@@ -0,0 +1,66 @@
++#ifndef __IMX8_DDRC_H__
++#define __IMX8_DDRC_H__
 +
- #endif /* __STRING_H */
-diff --git a/lib/string.c b/lib/string.c
-index f588933e8..717b59aa5 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -479,7 +479,6 @@ char *strswab(const char *s)
- }
- #endif
- 
--#ifndef __HAVE_ARCH_MEMSET
- /**
-  * memset - Fill a region of memory with the given value
-  * @s: Pointer to the start of the area.
-@@ -488,7 +487,7 @@ char *strswab(const char *s)
-  *
-  * Do not use memset() to access IO space, use memset_io() instead.
-  */
--void * memset(void * s,int c,size_t count)
-+void *__default_memset(void * s,int c,size_t count)
- {
- 	char *xs = (char *) s;
- 
-@@ -497,10 +496,12 @@ void * memset(void * s,int c,size_t count)
- 
- 	return s;
- }
-+EXPORT_SYMBOL(__default_memset);
++#include <mach/imx8mq-regs.h>
++#include <io.h>
++#include <firmware.h>
++#include <linux/compiler.h>
 +
-+#ifndef __HAVE_ARCH_MEMSET
-+void *memset(void *s, int c, size_t count) __alias(__default_memset);
- #endif
--EXPORT_SYMBOL(memset);
- 
--#ifndef __HAVE_ARCH_MEMCPY
- /**
-  * memcpy - Copy one area of memory to another
-  * @dest: Where to copy to
-@@ -510,7 +511,7 @@ EXPORT_SYMBOL(memset);
-  * You should not use this function to access IO space, use memcpy_toio()
-  * or memcpy_fromio() instead.
-  */
--void * memcpy(void * dest,const void *src,size_t count)
-+void *__default_memcpy(void * dest,const void *src,size_t count)
- {
- 	char *tmp = (char *) dest, *s = (char *) src;
- 
-@@ -519,9 +520,14 @@ void * memcpy(void * dest,const void *src,size_t count)
- 
- 	return dest;
- }
--#endif
- EXPORT_SYMBOL(memcpy);
- 
-+#ifndef __HAVE_ARCH_MEMCPY
-+void *memcpy(void * dest, const void *src, size_t count)
-+	__alias(__default_memcpy);
++enum ddrc_phy_firmware_offset {
++	DDRC_PHY_IMEM = 0x00050000U,
++	DDRC_PHY_DMEM = 0x00054000U,
++};
++
++void ddrc_phy_load_firmware(void __iomem *,
++			    enum ddrc_phy_firmware_offset,
++			    const u16 *, size_t);
++
++#define DDRC_PHY_REG(x)	((x) * 4)
++
++void ddrc_phy_wait_training_complete(void __iomem *phy);
++
++
++/*
++ * i.MX8M DDR Tool compatibility layer
++ */
++
++#define reg32_write(a, v)	writel(v, a)
++#define reg32_read(a)		readl(a)
++
++static inline void wait_ddrphy_training_complete(void)
++{
++	ddrc_phy_wait_training_complete(IOMEM(MX8MQ_DDRC_PHY_BASE_ADDR));
++}
++
++#define __ddr_load_train_code(imem, dmem)				\
++	do {								\
++		const u16 *__mem;					\
++		size_t __size;						\
++									\
++		get_builtin_firmware(imem, &__mem, &__size);		\
++		ddrc_phy_load_firmware(IOMEM(MX8MQ_DDRC_PHY_BASE_ADDR),	\
++				       DDRC_PHY_IMEM, __mem, __size);	\
++									\
++		get_builtin_firmware(dmem, &__mem, &__size);		\
++		ddrc_phy_load_firmware(IOMEM(MX8MQ_DDRC_PHY_BASE_ADDR),	\
++				       DDRC_PHY_DMEM, __mem, __size);	\
++	} while (0)
++
++#define ddr_load_train_code(imem_dmem) __ddr_load_train_code(imem_dmem)
++
++#define DDRC_IPS_BASE_ADDR(X) (0x3d400000 + (X * 0x2000000))
++
++#define DDRC_STAT(X)             (DDRC_IPS_BASE_ADDR(X) + 0x04)
++#define DDRC_MRSTAT(X)           (DDRC_IPS_BASE_ADDR(X) + 0x18)
++#define DDRC_PWRCTL(X)           (DDRC_IPS_BASE_ADDR(X) + 0x30)
++#define DDRC_RFSHCTL3(X)         (DDRC_IPS_BASE_ADDR(X) + 0x60)
++#define DDRC_CRCPARSTAT(X)       (DDRC_IPS_BASE_ADDR(X) + 0xcc)
++#define DDRC_DFIMISC(X)          (DDRC_IPS_BASE_ADDR(X) + 0x1b0)
++#define DDRC_DFISTAT(X)          (DDRC_IPS_BASE_ADDR(X) + 0x1bc)
++#define DDRC_SWCTL(X)            (DDRC_IPS_BASE_ADDR(X) + 0x320)
++#define DDRC_SWSTAT(X)           (DDRC_IPS_BASE_ADDR(X) + 0x324)
++#define DDRC_PCTRL_0(X)          (DDRC_IPS_BASE_ADDR(X) + 0x490)
++
++#define IP2APB_DDRPHY_IPS_BASE_ADDR(X) (0x3c000000 + (X * 0x2000000))
++
 +#endif
-+
-+
- #ifndef __HAVE_ARCH_MEMMOVE
- /**
-  * memmove - Copy one area of memory to another
+\ No newline at end of file
 -- 
 2.17.0
 
