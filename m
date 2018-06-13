@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fT18j-0001eU-2Z
- for barebox@lists.infradead.org; Wed, 13 Jun 2018 08:28:26 +0000
-Date: Wed, 13 Jun 2018 10:28:14 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180613082814.dwu573h3omqdatna@pengutronix.de>
-References: <20180611203822.dpc6qtgvydg66veg@pengutronix.de>
- <20180612054214.23261-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180612054214.23261-1-u.kleine-koenig@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fT3du-0003QJ-S2
+ for barebox@lists.infradead.org; Wed, 13 Jun 2018 11:08:59 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Wed, 13 Jun 2018 13:08:33 +0200
+Message-Id: <20180613110833.19760-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,73 +14,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! mvebu: create bbu handler for kwb images and use
- it on cubox
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v1] ARM: i.MX6SX SDB: drop deprecated DT overwrites
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-On Tue, Jun 12, 2018 at 07:42:14AM +0200, Uwe Kleine-K=F6nig wrote:
-> ---
->  arch/arm/mach-mvebu/Makefile           | 2 +-
->  arch/arm/mach-mvebu/include/mach/bbu.h | 9 +++++++++
->  2 files changed, 10 insertions(+), 1 deletion(-)
-> =
+Latest kernel ./dts/ is providing proper pin and fec
+configs. This overwrites are preventing kernel from
+net boot if barebox is DT source.
 
-> diff --git a/arch/arm/mach-mvebu/Makefile b/arch/arm/mach-mvebu/Makefile
-> index cc2b926438e4..6079403b83dd 100644
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ arch/arm/dts/imx6sx-sdb.dts | 58 -------------------------------------
+ 1 file changed, 58 deletions(-)
 
-Applied, thanks
+diff --git a/arch/arm/dts/imx6sx-sdb.dts b/arch/arm/dts/imx6sx-sdb.dts
+index 7b60f9326..643039f4a 100644
+--- a/arch/arm/dts/imx6sx-sdb.dts
++++ b/arch/arm/dts/imx6sx-sdb.dts
+@@ -19,31 +19,6 @@
+ 	};
+ };
+ 
+-&fec1 {
+-	phy-handle = <&phy1>;
+-
+-	mdio {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		phy1: phy@1 {
+-			reg = <1>;
+-		};
+-
+-		phy2: phy@2 {
+-			reg = <2>;
+-		};
+-	};
+-};
+-
+-&fec2 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_enet2>;
+-	phy-mode = "rgmii";
+-	status = "okay";
+-	phy-handle = <&phy2>;
+-};
+-
+ &ocotp {
+ 	barebox,provide-mac-address = <&fec1 0x620 &fec2 0x632>;
+ };
+@@ -57,36 +32,3 @@
+ 		reg = <0xe0000 0x20000>;
+ 	};
+ };
+-
+-&iomuxc {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_hog>;
+-
+-	imx6x-sdb {
+-		pinctrl_hog: hoggrp {
+-			fsl,pins = <
+-				MX6SX_PAD_QSPI1A_DATA0__GPIO4_IO_16	0x17059 /* PERI_3V3 */
+-				MX6SX_PAD_ENET2_COL__GPIO2_IO_6		0x17059 /* ENET PHY Power */
+-				MX6SX_PAD_ENET2_CRS__GPIO2_IO_7		0x17059 /* AR8031 PHY Reset. */
+-				MX6SX_PAD_ENET2_RX_CLK__ENET2_REF_CLK_25M	0x17059 /* Phy 25M Clock */
+-			>;
+-		};
+-
+-		pinctrl_enet2: enet2grp {
+-			fsl,pins = <
+-				MX6SX_PAD_RGMII2_TXC__ENET2_RGMII_TXC	0xa0b1
+-				MX6SX_PAD_RGMII2_TD0__ENET2_TX_DATA_0	0xa0b1
+-				MX6SX_PAD_RGMII2_TD1__ENET2_TX_DATA_1	0xa0b1
+-				MX6SX_PAD_RGMII2_TD2__ENET2_TX_DATA_2	0xa0b1
+-				MX6SX_PAD_RGMII2_TD3__ENET2_TX_DATA_3	0xa0b1
+-				MX6SX_PAD_RGMII2_TX_CTL__ENET2_TX_EN	0xa0b1
+-				MX6SX_PAD_RGMII2_RXC__ENET2_RX_CLK	0x3081
+-				MX6SX_PAD_RGMII2_RD0__ENET2_RX_DATA_0	0x3081
+-				MX6SX_PAD_RGMII2_RD1__ENET2_RX_DATA_1	0x3081
+-				MX6SX_PAD_RGMII2_RD2__ENET2_RX_DATA_2	0x3081
+-				MX6SX_PAD_RGMII2_RD3__ENET2_RX_DATA_3	0x3081
+-				MX6SX_PAD_RGMII2_RX_CTL__ENET2_RX_EN	0x3081
+-			>;
+-		};
+-	};
+-};
+-- 
+2.17.1
 
-Sascha
-
-> --- a/arch/arm/mach-mvebu/Makefile
-> +++ b/arch/arm/mach-mvebu/Makefile
-> @@ -1,8 +1,8 @@
->  obj-pbl-y			+=3D common.o
-> -obj-y				+=3D kwb_bbu.o
->  obj-$(CONFIG_ARCH_ARMADA_370)	+=3D armada-370-xp.o
->  obj-$(CONFIG_ARCH_ARMADA_XP)	+=3D armada-370-xp.o
->  obj-$(CONFIG_ARCH_ARMADA_38X)	+=3D armada-370-xp.o
->  obj-$(CONFIG_ARCH_DOVE)		+=3D dove.o
->  obj-$(CONFIG_ARCH_KIRKWOOD)	+=3D kirkwood.o
-> +obj-$(CONFIG_BAREBOX_UPDATE)	+=3D kwb_bbu.o
->  obj-$(CONFIG_BOOTM)		+=3D kwbootimage.o
-> diff --git a/arch/arm/mach-mvebu/include/mach/bbu.h b/arch/arm/mach-mvebu=
-/include/mach/bbu.h
-> index f1021e52ce9f..a06db2b1442e 100644
-> --- a/arch/arm/mach-mvebu/include/mach/bbu.h
-> +++ b/arch/arm/mach-mvebu/include/mach/bbu.h
-> @@ -1,3 +1,12 @@
-> +#ifdef CONFIG_BAREBOX_UPDATE
->  int mvebu_bbu_flash_register_handler(const char *name,
->  				     char *devicefile, int version,
->  				     bool isdefault);
-> +#else
-> +int mvebu_bbu_flash_register_handler(const char *name,
-> +                                     char *devicefile, int version,
-> +                                     bool isdefault)
-> +{
-> +	return -ENOSYS;
-> +}
-> +#endif
-> -- =
-
-> 2.17.1
-> =
-
-> =
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
