@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSGWW-0002dQ-2I
- for barebox@lists.infradead.org; Mon, 11 Jun 2018 06:41:53 +0000
-Date: Mon, 11 Jun 2018 08:41:39 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180611064139.tadrdsen76zhcq6e@pengutronix.de>
-References: <20180607174011.13130-1-pvizeli@syshack.ch>
- <20180608070540.m6etfu37vu6s64ic@pengutronix.de>
- <CACvFaDf3ivn2jQxTKdT1b1VbzhnxdEXGojd4-8pVyiSz=rcvuw@mail.gmail.com>
+ id 1fT8Un-00025w-2M
+ for barebox@lists.infradead.org; Wed, 13 Jun 2018 16:19:42 +0000
+Date: Wed, 13 Jun 2018 18:19:29 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20180613161929.numlxerifgi5cfj4@pengutronix.de>
+References: <20180613152644.12998-1-u.kleine-koenig@pengutronix.de>
+ <20180613154316.GA5463@ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CACvFaDf3ivn2jQxTKdT1b1VbzhnxdEXGojd4-8pVyiSz=rcvuw@mail.gmail.com>
+In-Reply-To: <20180613154316.GA5463@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,46 +19,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] drivers: of: bugfix partition fixups
-To: Pascal Vizeli <pascal.vizeli@syshack.ch>
-Cc: barebox@lists.infradead.org, Pascal Vizeli <pvizeli@syshack.ch>
+Subject: Re: [PATCH] scripts: gitignore += omap3-usb-loader
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: barebox@lists.infradead.org
 
-On Fri, Jun 08, 2018 at 09:31:24AM +0200, Pascal Vizeli wrote:
-> 2018-06-08 9:05 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
-> > of_find_property is not called directly from the code you are changing,
-> > so how excatly is the code path that fails?
-> 
-> of_get_reproducible_name -> of_get_property -> of_find_property
-> 
-> >
-> > What are you doing to get into this situation? This test should never
-> > fail or else we are in trouble. Is there some "oftree -f" command
-> > involved? I should really remove this command since in a device tree
-> > based system there are always references to device nodes which are not
-> > expected to become invalid.
-> >
-> 
-> Yes, I load the device tree from first bootloader and overlay some state dtbo.
-> But how I should do this without flush? I can do that also an a file
-> and load this
-> to bootm, but the fixups will also run on this and fails too.
-> 
-> I think we need remove `oftree -f` or apply this patch for hardening.
+On Wed, Jun 13, 2018 at 05:43:16PM +0200, Sam Ravnborg wrote:
+> On Wed, Jun 13, 2018 at 05:26:44PM +0200, Uwe Kleine-K=F6nig wrote:
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > ---
+> >  scripts/.gitignore | 1 +
+> >  1 file changed, 1 insertion(+)
+> > =
 
-Just sent a patch for the former as the latter is a goal we do not seem
-to reach.
+> > diff --git a/scripts/.gitignore b/scripts/.gitignore
+> > index 2a9ae6bdcf36..adcb4fe16b73 100644
+> > --- a/scripts/.gitignore
+> > +++ b/scripts/.gitignore
+> > @@ -25,4 +25,5 @@ mk-am35xx-spi-image
+> >  mxsimage
+> >  mxsboot
+> >  mxs-usb-loader
+> > +/omap3-usb-loader
+> =
 
-Sascha
+> Was it on purpose that a "/" was added?
 
--- 
-Pengutronix e.K.                           |                             |
+Yes, the effect is that the pattern is only applied to the current
+directory but not subdirs.
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
