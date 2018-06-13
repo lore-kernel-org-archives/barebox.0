@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fT15a-0001Wz-R4
- for barebox@lists.infradead.org; Wed, 13 Jun 2018 08:25:12 +0000
-Date: Wed, 13 Jun 2018 10:24:59 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180613082459.ktu4dsyq54qtu6qj@pengutronix.de>
-References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
+Received: from mail-it0-x243.google.com ([2607:f8b0:4001:c0b::243])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fT4uR-0001jF-9Y
+ for barebox@lists.infradead.org; Wed, 13 Jun 2018 12:29:57 +0000
+Received: by mail-it0-x243.google.com with SMTP id u4-v6so3455984itg.0
+ for <barebox@lists.infradead.org>; Wed, 13 Jun 2018 05:29:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180612205310.25745-1-andrew.smirnov@gmail.com>
+References: <20180612205310.25745-1-andrew.smirnov@gmail.com>
+ <20180613082459.ktu4dsyq54qtu6qj@pengutronix.de>
+In-Reply-To: <20180613082459.ktu4dsyq54qtu6qj@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 13 Jun 2018 05:29:32 -0700
+Message-ID: <CAHQ1cqF2TdTov7M6PdU_YiTf7asKB08JT2_1qg_2z=qLzy5Rrg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,26 +25,25 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v5 00/54] ARM: i.MX8MQ and EVK support
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Jun 12, 2018 at 01:52:16PM -0700, Andrey Smirnov wrote:
-> Everyone:
-> 
-> Picking up where Sascha left off, this is the next version of the
-> patchset that adds support for i.MX8MQ EVK board.
+On Wed, Jun 13, 2018 at 1:25 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>
+> On Tue, Jun 12, 2018 at 01:52:16PM -0700, Andrey Smirnov wrote:
+> > Everyone:
+> >
+> > Picking up where Sascha left off, this is the next version of the
+> > patchset that adds support for i.MX8MQ EVK board.
+>
+> Please rebase onto barebox master before resending. I already applied
+> the majority of the patches.
+>
 
-Please rebase onto barebox master before resending. I already applied
-the majority of the patches.
+Will do in v6.
 
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
