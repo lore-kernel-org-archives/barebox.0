@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from calrissian.rohieb.name ([81.20.132.56] helo=rohieb.name)
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fSUvk-0001qR-MA
- for barebox@lists.infradead.org; Mon, 11 Jun 2018 22:05:27 +0000
-From: Roland Hieber <rohieb@rohieb.name>
-Date: Tue, 12 Jun 2018 00:02:31 +0200
-Message-Id: <20180611220235.15995-6-rohieb@rohieb.name>
-In-Reply-To: <20180611220235.15995-1-rohieb@rohieb.name>
-References: <20180611220235.15995-1-rohieb@rohieb.name>
+Received: from asavdk4.altibox.net ([109.247.116.15])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fT7vr-0001B4-Uj
+ for barebox@lists.infradead.org; Wed, 13 Jun 2018 15:43:43 +0000
+Date: Wed, 13 Jun 2018 17:43:16 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20180613154316.GA5463@ravnborg.org>
+References: <20180613152644.12998-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180613152644.12998-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,42 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/9] doc: boards: Garz+Fricke Vincell: fix header level,
- capitalization and punctuation
-To: barebox@lists.infradead.org
-Cc: Roland Hieber <rohieb@rohieb.name>
+Subject: Re: [PATCH] scripts: gitignore += omap3-usb-loader
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Roland Hieber <rohieb@rohieb.name>
----
- Documentation/boards/imx/garz-fricke-vincell.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Wed, Jun 13, 2018 at 05:26:44PM +0200, Uwe Kleine-K=F6nig wrote:
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  scripts/.gitignore | 1 +
+>  1 file changed, 1 insertion(+)
+> =
 
-diff --git a/Documentation/boards/imx/garz-fricke-vincell.rst b/Documentation/boards/imx/garz-fricke-vincell.rst
-index 58ab0ab42f..09d87d67c3 100644
---- a/Documentation/boards/imx/garz-fricke-vincell.rst
-+++ b/Documentation/boards/imx/garz-fricke-vincell.rst
-@@ -7,11 +7,11 @@ This CPU card is based on a Freescale i.MX53 CPU. The card is shipped with:
-   * 512MiB synchronous dynamic RAM
-   * microSD slot
- 
--see http://www.garz-fricke.com/en/products/embedded-systems/single-board-computer/ia-0086r/ for more information
-+See http://www.garz-fricke.com/en/products/embedded-systems/single-board-computer/ia-0086r/ for more information.
- 
- 
- Bootstrapping barebox
--=====================
-+---------------------
- 
- The Vincell is shipped with the RedBoot bootloader. To replace RedBoot with
- barebox, you first need to connect a serial console to the device.
--- 
-2.17.1
+> diff --git a/scripts/.gitignore b/scripts/.gitignore
+> index 2a9ae6bdcf36..adcb4fe16b73 100644
+> --- a/scripts/.gitignore
+> +++ b/scripts/.gitignore
+> @@ -25,4 +25,5 @@ mk-am35xx-spi-image
+>  mxsimage
+>  mxsboot
+>  mxs-usb-loader
+> +/omap3-usb-loader
 
+Was it on purpose that a "/" was added?
+
+	Sam
 
 _______________________________________________
 barebox mailing list
