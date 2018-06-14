@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fT2Un-00047L-Ls
- for barebox@lists.infradead.org; Wed, 13 Jun 2018 09:55:18 +0000
-From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Wed, 13 Jun 2018 11:55:02 +0200
-Message-Id: <20180613095502.26470-1-r.hieber@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fTKu0-0006BO-Po
+ for barebox@lists.infradead.org; Thu, 14 Jun 2018 05:34:35 +0000
+Date: Thu, 14 Jun 2018 07:34:19 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180614053419.htu7i7hsz5qpzl4w@pengutronix.de>
+References: <20180613095502.26470-1-r.hieber@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180613095502.26470-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,144 +18,163 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] TODO: remove unused file
-To: barebox@lists.infradead.org
-Cc: Roland Hieber <r.hieber@pengutronix.de>
+Subject: Re: [PATCH] TODO: remove unused file
+To: Roland Hieber <r.hieber@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This file was last touched in 2014-12, 2010-07 and 2009-12 and has at
-most historical value. Most of the open tasks are done, if not, they are
-probably out of date anyway.
+On Wed, Jun 13, 2018 at 11:55:02AM +0200, Roland Hieber wrote:
+> This file was last touched in 2014-12, 2010-07 and 2009-12 and has at
+> most historical value. Most of the open tasks are done, if not, they are
+> probably out of date anyway.
+> 
+> Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
+> ---
 
-Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
----
- TODO | 110 -------------------------------------------------------------------
- 1 file changed, 110 deletions(-)
- delete mode 100644 TODO
+Uh, that was about time ;)
 
-diff --git a/TODO b/TODO
-deleted file mode 100644
-index 8527e577e0..0000000000
---- a/TODO
-+++ /dev/null
-@@ -1,110 +0,0 @@
--TODO
------
--
--[ ] ask jbe about:
--    ./commands/Makefile:40:obj-$(CONFIG_SIMPLE_PARSER)      += setenv.o
--[ ] bark on partition not ending on flash sector boundaries
--[ ] Every driver should have a remove function.
--    (It must have. Currently there is no provision to given to remove my
--    interrupt handlers and to reset all hardware in use, before the target
--    OS is called. csc 21.03.2008 19:50:34)
--[ ] Global shutdown_drivers() function is needed to carefully clean up all
--    interrupt handlers and reset hardware to initial post reset or otherwise
--    save state.
--    (Ideally the hardware is set back to post-reset state after this call.
--    Run-up and run-down should be reentrant, so if bootm is failing the system
--    can re-initialize devices. csc 21.03.2008 19:48:49)
--[ ] Clean up make system. Currently I think there are many things from the
--    Linux make system which are not needed for barebox.
--    (Please retain definitions and related for module loading and relocation, so
--    that special barebox modules containing an ELF object can be linked to the
--    running barebox. csc 21.03.2008 19:52:49)
--[ ] get/set for nonextisting parameters crashes
--[ ] There is a xmalloc function which panics when out of memory. Use this
--    function where we don't want to check for oom. Same applies to
--    strdup/xstrdup.
--[ ] cleanup common.h. There are far too many things in it where we better have
--    a seperate header file.
--    (Use doxygen to track header file hierarchy)
--[ ] Rewrite network stack. The one-loop-for-all-protocols stack is just too
--    ugly and big and uses thousands of global variables. Identify common
--    functions and make a loop per network protocol
--[-] Cleanup cpu/*. Many functions there are not cpu specific. For example the
--    cache functions for arm are common for most arm processors. (done for ARM)
--    (I will check this for m68k arch - csc 21.03.2008 19:56:24)
--[ ] Move SoC specific header files from include/ to include/asm/arch/
--[ ] Several .c/.h files do not have GNU/copyright headers.
--[ ] The cramfs driver currently uses direct memory accesses instead of read().
--    This disqualifies it for real block devices.
--[ ] Add documentation for:
--	[ ] driver model
--	[ ] device parameter
--	[ ] big picture
--[ ] Add example driver and filesystem for reference purposes. Or denote a driver
--    and a filesystem to be the reference.
--[ ] realloc seems to crash without further notice when out of memory.
--[ ] implement a mmap() function. Of course we cannot really mmap without mmu,
--    but for memory mapped devices like nor flash we could provide a pointer to
--    it. With this we would not have to copy uimages to memory.
--[ ] command line editing is somewhat broken
--[ ] how to select a ethernet channel for tftp when more than one interface
--    of this type exists in the system?
--[ ] Cleanup headers. I propose to rearrange the files in a way to reflect the
--    organisation of the source tree. This requires changing the include paths
--    in nearly all files, therefore a merge window for this change must be
--    opened and merge in of all other topic branches must happen before.
--    Week 23 or 42 issue? csc, 21.03.2008 19:36:06
--[ ] Merge similiar information into a single common and a single arch dependant
--    file. E.g. all those general typedefs should be located in include types.h
--    and arch/asm/types.h. csc 21.03.2008 19:38:57
--[ ] Get rid of the current linux include dir. It should only contain information
--    required to boot linux. csc 21.03.2008 19:39:02
--[ ] Unify source headers to show up the GPL lic stuff followed by a doxygen file
--    description.
--[ ] Enhance and complete doxygen comments.
--[ ] Eliminate all #ifdef CONFIG_??? in C code. Disabled APIs should be defined
--    as empty macros, so that code is removed by the compiler, not the
--    preprocessor.
--    The #ifdefs should be located in their related header files only.
--[ ] Create an example board, which implements all functions stubs required
--    to compile a full barebox build. Functions are just stubs containing a
--    panic() call - Real code must be filled in accordingly.
--    Can be copied as starting point for a new target board.
--[ ] Add generic PCI bios code and a PCI bus driver model. The driver should
--    be configured by an appropriate platformconfig. Detected PCI buses and
--    devices should be represented as a hierarchical tree in /dev
--[ ] Work out, how to mount driver on PCI devices. The mechanism should be
--    transparent to the driver code.
--
--DONE
------
--
--[x] Rename vmlinux -> barebox
--[x] Implement current work directory
--[x] ARCH=linux should catch ctrl-c
--[x] Implement 'rm'
--[x] the mount command currently does not accept a full path (i.e. /dev/nor0) but
--    only a device id string (nor0). This sucks.
--[x] FS support is not optional eventhough the Kconfig system claims it.
--[x] barebox used to have support for different consoles. The old code was huge and
--    ineffective, so I removed it. Reimplement it using the driver model.
--[x] Mount without options should show mounted filesystems
--[x] Add/fix help texts for commands
--[x] mw is broken. Add common option parsing for mm/md
--[x] Implement a info command for malloced space. Use it to find memory holes.
--[x] patch hush.c so that you can get/set device parameters with dev.param= and remove
--    get/set applets
--[x] rsc: switching on CONFIG_AUTO_COMPLETE fails, because env_complete()
--    isn't there
--[x] The header files in include/asm-linux/ are i386 specific. Make it work on
--    your i-Book (bigendian...)
--[x] Globbing support? Might be too expensive, but on the other hand, if you
--    have the space, why not?
--[x] Implement protect/unprotect support for cfi devices.
--[x] Implement a command 'countdown' or similar. It should delay the boot
--    process and interrupt it if a certain string is received. The string could
--    be any key, ctrl-c or a certain string. Maybe like this:
--    countdown -m msg -t timeout -x [ctrl-c|anykey|string]
--    If done, remove the corresponding stuff from common/main.c
--[X] Board support should go to arch/*/boards/*
--[X] distclean doesn't work without a config
+Applied, thanks
+
+Sascha
+
+>  TODO | 110 -------------------------------------------------------------------
+>  1 file changed, 110 deletions(-)
+>  delete mode 100644 TODO
+> 
+> diff --git a/TODO b/TODO
+> deleted file mode 100644
+> index 8527e577e0..0000000000
+> --- a/TODO
+> +++ /dev/null
+> @@ -1,110 +0,0 @@
+> -TODO
+> -----
+> -
+> -[ ] ask jbe about:
+> -    ./commands/Makefile:40:obj-$(CONFIG_SIMPLE_PARSER)      += setenv.o
+> -[ ] bark on partition not ending on flash sector boundaries
+> -[ ] Every driver should have a remove function.
+> -    (It must have. Currently there is no provision to given to remove my
+> -    interrupt handlers and to reset all hardware in use, before the target
+> -    OS is called. csc 21.03.2008 19:50:34)
+> -[ ] Global shutdown_drivers() function is needed to carefully clean up all
+> -    interrupt handlers and reset hardware to initial post reset or otherwise
+> -    save state.
+> -    (Ideally the hardware is set back to post-reset state after this call.
+> -    Run-up and run-down should be reentrant, so if bootm is failing the system
+> -    can re-initialize devices. csc 21.03.2008 19:48:49)
+> -[ ] Clean up make system. Currently I think there are many things from the
+> -    Linux make system which are not needed for barebox.
+> -    (Please retain definitions and related for module loading and relocation, so
+> -    that special barebox modules containing an ELF object can be linked to the
+> -    running barebox. csc 21.03.2008 19:52:49)
+> -[ ] get/set for nonextisting parameters crashes
+> -[ ] There is a xmalloc function which panics when out of memory. Use this
+> -    function where we don't want to check for oom. Same applies to
+> -    strdup/xstrdup.
+> -[ ] cleanup common.h. There are far too many things in it where we better have
+> -    a seperate header file.
+> -    (Use doxygen to track header file hierarchy)
+> -[ ] Rewrite network stack. The one-loop-for-all-protocols stack is just too
+> -    ugly and big and uses thousands of global variables. Identify common
+> -    functions and make a loop per network protocol
+> -[-] Cleanup cpu/*. Many functions there are not cpu specific. For example the
+> -    cache functions for arm are common for most arm processors. (done for ARM)
+> -    (I will check this for m68k arch - csc 21.03.2008 19:56:24)
+> -[ ] Move SoC specific header files from include/ to include/asm/arch/
+> -[ ] Several .c/.h files do not have GNU/copyright headers.
+> -[ ] The cramfs driver currently uses direct memory accesses instead of read().
+> -    This disqualifies it for real block devices.
+> -[ ] Add documentation for:
+> -	[ ] driver model
+> -	[ ] device parameter
+> -	[ ] big picture
+> -[ ] Add example driver and filesystem for reference purposes. Or denote a driver
+> -    and a filesystem to be the reference.
+> -[ ] realloc seems to crash without further notice when out of memory.
+> -[ ] implement a mmap() function. Of course we cannot really mmap without mmu,
+> -    but for memory mapped devices like nor flash we could provide a pointer to
+> -    it. With this we would not have to copy uimages to memory.
+> -[ ] command line editing is somewhat broken
+> -[ ] how to select a ethernet channel for tftp when more than one interface
+> -    of this type exists in the system?
+> -[ ] Cleanup headers. I propose to rearrange the files in a way to reflect the
+> -    organisation of the source tree. This requires changing the include paths
+> -    in nearly all files, therefore a merge window for this change must be
+> -    opened and merge in of all other topic branches must happen before.
+> -    Week 23 or 42 issue? csc, 21.03.2008 19:36:06
+> -[ ] Merge similiar information into a single common and a single arch dependant
+> -    file. E.g. all those general typedefs should be located in include types.h
+> -    and arch/asm/types.h. csc 21.03.2008 19:38:57
+> -[ ] Get rid of the current linux include dir. It should only contain information
+> -    required to boot linux. csc 21.03.2008 19:39:02
+> -[ ] Unify source headers to show up the GPL lic stuff followed by a doxygen file
+> -    description.
+> -[ ] Enhance and complete doxygen comments.
+> -[ ] Eliminate all #ifdef CONFIG_??? in C code. Disabled APIs should be defined
+> -    as empty macros, so that code is removed by the compiler, not the
+> -    preprocessor.
+> -    The #ifdefs should be located in their related header files only.
+> -[ ] Create an example board, which implements all functions stubs required
+> -    to compile a full barebox build. Functions are just stubs containing a
+> -    panic() call - Real code must be filled in accordingly.
+> -    Can be copied as starting point for a new target board.
+> -[ ] Add generic PCI bios code and a PCI bus driver model. The driver should
+> -    be configured by an appropriate platformconfig. Detected PCI buses and
+> -    devices should be represented as a hierarchical tree in /dev
+> -[ ] Work out, how to mount driver on PCI devices. The mechanism should be
+> -    transparent to the driver code.
+> -
+> -DONE
+> -----
+> -
+> -[x] Rename vmlinux -> barebox
+> -[x] Implement current work directory
+> -[x] ARCH=linux should catch ctrl-c
+> -[x] Implement 'rm'
+> -[x] the mount command currently does not accept a full path (i.e. /dev/nor0) but
+> -    only a device id string (nor0). This sucks.
+> -[x] FS support is not optional eventhough the Kconfig system claims it.
+> -[x] barebox used to have support for different consoles. The old code was huge and
+> -    ineffective, so I removed it. Reimplement it using the driver model.
+> -[x] Mount without options should show mounted filesystems
+> -[x] Add/fix help texts for commands
+> -[x] mw is broken. Add common option parsing for mm/md
+> -[x] Implement a info command for malloced space. Use it to find memory holes.
+> -[x] patch hush.c so that you can get/set device parameters with dev.param= and remove
+> -    get/set applets
+> -[x] rsc: switching on CONFIG_AUTO_COMPLETE fails, because env_complete()
+> -    isn't there
+> -[x] The header files in include/asm-linux/ are i386 specific. Make it work on
+> -    your i-Book (bigendian...)
+> -[x] Globbing support? Might be too expensive, but on the other hand, if you
+> -    have the space, why not?
+> -[x] Implement protect/unprotect support for cfi devices.
+> -[x] Implement a command 'countdown' or similar. It should delay the boot
+> -    process and interrupt it if a certain string is received. The string could
+> -    be any key, ctrl-c or a certain string. Maybe like this:
+> -    countdown -m msg -t timeout -x [ctrl-c|anykey|string]
+> -    If done, remove the corresponding stuff from common/main.c
+> -[X] Board support should go to arch/*/boards/*
+> -[X] distclean doesn't work without a config
+> -- 
+> 2.11.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.11.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
