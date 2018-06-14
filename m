@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fTLk3-0000Fi-Lr
- for barebox@lists.infradead.org; Thu, 14 Jun 2018 06:28:23 +0000
-Received: by mail-pl0-x242.google.com with SMTP id f1-v6so2941093plt.6
- for <barebox@lists.infradead.org>; Wed, 13 Jun 2018 23:28:09 -0700 (PDT)
+ id 1fTLk9-0000G8-0Y
+ for barebox@lists.infradead.org; Thu, 14 Jun 2018 06:28:28 +0000
+Received: by mail-pg0-x241.google.com with SMTP id l65-v6so2430117pgl.8
+ for <barebox@lists.infradead.org>; Wed, 13 Jun 2018 23:28:14 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 13 Jun 2018 23:27:42 -0700
-Message-Id: <20180614062751.29856-2-andrew.smirnov@gmail.com>
+Date: Wed, 13 Jun 2018 23:27:46 -0700
+Message-Id: <20180614062751.29856-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20180614062751.29856-1-andrew.smirnov@gmail.com>
 References: <20180614062751.29856-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,33 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v6 01/10] ARM: i.MX: ocotp: Provide missing .format_mac for
- i.MX8MQ
+Subject: [PATCH v6 05/10] ARM: Specify HAVE_PBL_IMAGE for CPU_64
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
-
-Provide missing .format_mac for i.MX8MQ to prevent driver from
-crashing on start.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/nvmem/ocotp.c | 1 +
+ arch/arm/cpu/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index f3af8620e..c2d2982ee 100644
---- a/drivers/nvmem/ocotp.c
-+++ b/drivers/nvmem/ocotp.c
-@@ -652,6 +652,7 @@ static struct imx_ocotp_data imx8mq_ocotp_data = {
- 	.addr_to_offset = imx6sl_addr_to_offset,
- 	.mac_offsets_num = 1,
- 	.mac_offsets = { 0x90 },
-+	.format_mac = imx_ocotp_format_mac,
- };
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index d889e9afb..2359c56b3 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -12,6 +12,7 @@ config CPU_32
+ config CPU_64
+ 	bool
+ 	select PHYS_ADDR_T_64BIT
++	select HAVE_PBL_IMAGE
  
- static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
+ # Select CPU types depending on the architecture selected. This selects
+ # which CPUs we support in the kernel image, and the compiler instruction
 -- 
 2.17.0
 
