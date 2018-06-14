@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fTLk3-0000GI-Iq
- for barebox@lists.infradead.org; Thu, 14 Jun 2018 06:28:23 +0000
-Received: by mail-pg0-x243.google.com with SMTP id r21-v6so2439070pgv.4
- for <barebox@lists.infradead.org>; Wed, 13 Jun 2018 23:28:17 -0700 (PDT)
+ id 1fTLk5-0000Ft-9V
+ for barebox@lists.infradead.org; Thu, 14 Jun 2018 06:28:24 +0000
+Received: by mail-pf0-x242.google.com with SMTP id c22-v6so2703739pfi.2
+ for <barebox@lists.infradead.org>; Wed, 13 Jun 2018 23:28:10 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 13 Jun 2018 23:27:48 -0700
-Message-Id: <20180614062751.29856-8-andrew.smirnov@gmail.com>
+Date: Wed, 13 Jun 2018 23:27:43 -0700
+Message-Id: <20180614062751.29856-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20180614062751.29856-1-andrew.smirnov@gmail.com>
 References: <20180614062751.29856-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,162 +23,124 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v6 07/10] scripts: imx-image: Share the code to write barebox
- header
+Subject: [PATCH v6 02/10] Port <linux/iopoll.h> from U-Boot
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- scripts/imx/imx-image.c | 42 ++++++++++++++++++++---------------------
- 1 file changed, 20 insertions(+), 22 deletions(-)
+ include/clock.h        | 14 +++++++++
+ include/linux/iopoll.h | 69 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 83 insertions(+)
+ create mode 100644 include/linux/iopoll.h
 
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index bc1f821bd..4a08581fb 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -36,6 +36,7 @@
- #include <include/filetype.h>
+diff --git a/include/clock.h b/include/clock.h
+index 5f2f53ab6..58d84b912 100644
+--- a/include/clock.h
++++ b/include/clock.h
+@@ -25,13 +25,27 @@ static inline uint32_t cyc2ns(struct clocksource *cs, uint64_t cycles)
  
- #define FLASH_HEADER_OFFSET 0x400
-+#define ARM_HEAD_SIZE_INDEX	(ARM_HEAD_SIZE_OFFSET / sizeof(uint32_t))
+ int init_clock(struct clocksource *);
  
- /*
-  * Conservative DCD element limit set to restriction v2 header size to
-@@ -46,7 +47,6 @@
++#ifndef __PBL__
+ uint64_t get_time_ns(void);
++#else
++static inline uint64_t get_time_ns(void)
++{
++	return 0;
++}
++#endif
  
- static uint32_t dcdtable[MAX_DCD];
- static int curdcd;
--static int add_barebox_header;
- static int create_usb_image;
- static char *prgname;
+ void clocks_calc_mult_shift(uint32_t *mult, uint32_t *shift, uint32_t from, uint32_t to, uint32_t maxsec);
  
-@@ -207,18 +207,14 @@ static int add_srk(void *buf, int offset, uint32_t loadaddr, const char *srkfile
- static int dcd_ptr_offset;
- static uint32_t dcd_ptr_content;
+ uint32_t clocksource_hz2mult(uint32_t hz, uint32_t shift_constant);
  
--static int add_header_v1(struct config_data *data, void *buf)
-+static size_t add_header_v1(struct config_data *data, void *buf)
- {
- 	struct imx_flash_header *hdr;
- 	int dcdsize = curdcd * sizeof(uint32_t);
--	uint32_t *psize = buf + ARM_HEAD_SIZE_OFFSET;
- 	int offset = data->image_dcd_offset;
- 	uint32_t loadaddr = data->image_load_addr;
- 	uint32_t imagesize = data->load_size;
++#ifndef __PBL__
+ int is_timeout(uint64_t start_ns, uint64_t time_offset_ns);
++#else
++static inline int is_timeout(uint64_t start_ns, uint64_t time_offset_ns)
++{
++	return 0;
++}
++#endif
+ int is_timeout_non_interruptible(uint64_t start_ns, uint64_t time_offset_ns);
  
--	if (add_barebox_header)
--		memcpy(buf, bb_header, sizeof(bb_header));
--
- 	buf += offset;
- 	hdr = buf;
- 
-@@ -250,12 +246,9 @@ static int add_header_v1(struct config_data *data, void *buf)
- 		imagesize += CSF_LEN;
- 	}
- 
--	if (add_barebox_header)
--		*psize = imagesize;
--
- 	*(uint32_t *)buf = imagesize;
- 
--	return 0;
-+	return imagesize;
- }
- 
- static int write_mem_v1(uint32_t addr, uint32_t val, int width, int set_bits, int clear_bits)
-@@ -283,18 +276,14 @@ static int write_mem_v1(uint32_t addr, uint32_t val, int width, int set_bits, in
-  * ============================================================================
-  */
- 
--static int add_header_v2(const struct config_data *data, void *buf)
-+static size_t add_header_v2(const struct config_data *data, void *buf)
- {
- 	struct imx_flash_header_v2 *hdr;
- 	int dcdsize = curdcd * sizeof(uint32_t);
--	uint32_t *psize = buf + ARM_HEAD_SIZE_OFFSET;
- 	int offset = data->image_dcd_offset;
- 	uint32_t loadaddr = data->image_load_addr;
- 	uint32_t imagesize = data->load_size;
- 
--	if (add_barebox_header)
--		memcpy(buf, bb_header, sizeof(bb_header));
--
- 	buf += offset;
- 	hdr = buf;
- 
-@@ -320,9 +309,6 @@ static int add_header_v2(const struct config_data *data, void *buf)
- 		hdr->boot_data.size += CSF_LEN;
- 	}
- 
--	if (add_barebox_header)
--		*psize = hdr->boot_data.size;
--
- 	hdr->dcd_header.tag	= TAG_DCD_HEADER;
- 	hdr->dcd_header.length	= htobe16(sizeof(uint32_t) + dcdsize);
- 	hdr->dcd_header.version	= DCD_VERSION;
-@@ -331,7 +317,7 @@ static int add_header_v2(const struct config_data *data, void *buf)
- 
- 	memcpy(buf, dcdtable, dcdsize);
- 
--	return 0;
-+	return imagesize;
- }
- 
- static void usage(const char *prgname)
-@@ -680,6 +666,8 @@ int main(int argc, char *argv[])
- 	int now = 0;
- 	int sign_image = 0;
- 	int i, header_copies;
-+	int add_barebox_header;
-+	uint32_t barebox_image_size;
- 	struct config_data data = {
- 		.image_dcd_offset = 0xffffffff,
- 		.write_mem = write_mem,
-@@ -792,7 +780,7 @@ int main(int argc, char *argv[])
- 
- 	switch (data.header_version) {
- 	case 1:
--		add_header_v1(&data, buf);
-+		barebox_image_size = add_header_v1(&data, buf);
- 		if (data.srkfile) {
- 			ret = add_srk(buf, data.image_dcd_offset, data.image_load_addr,
- 				      data.srkfile);
-@@ -807,7 +795,7 @@ int main(int argc, char *argv[])
- 			exit(1);
- 		}
- 
--		add_header_v2(&data, buf);
-+		barebox_image_size = add_header_v2(&data, buf);
- 		break;
- 	default:
- 		fprintf(stderr, "Congratulations! You're welcome to implement header version %d\n",
-@@ -815,6 +803,8 @@ int main(int argc, char *argv[])
- 		exit(1);
- 	}
- 
-+	bb_header[ARM_HEAD_SIZE_INDEX] = barebox_image_size;
+ void ndelay(unsigned long nsecs);
+diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
+new file mode 100644
+index 000000000..0213e5c8d
+--- /dev/null
++++ b/include/linux/iopoll.h
+@@ -0,0 +1,69 @@
++/*
++ * Copyright (c) 2012-2014 The Linux Foundation. All rights reserved.
++ *
++ * SPDX-License-Identifier:	GPL-2.0
++ */
 +
- 	infile = read_file(imagename, &insize);
- 	if (!infile)
- 		exit(1);
-@@ -828,7 +818,15 @@ int main(int argc, char *argv[])
- 	header_copies = (data.cpu_type == IMX_CPU_IMX35) ? 2 : 1;
- 
- 	for (i = 0; i < header_copies; i++) {
--		ret = xwrite(outfd, buf, HEADER_LEN);
-+		ret = xwrite(outfd, add_barebox_header ? bb_header : buf,
-+			     sizeof(bb_header));
-+		if (ret < 0) {
-+			perror("write");
-+			exit(1);
-+		}
++#ifndef _LINUX_IOPOLL_H
++#define _LINUX_IOPOLL_H
 +
-+		ret = xwrite(outfd, buf + sizeof(bb_header),
-+			     HEADER_LEN - sizeof(bb_header));
- 		if (ret < 0) {
- 			perror("write");
- 			exit(1);
++#include <errno.h>
++#include <io.h>
++#include <clock.h>
++
++/**
++ * readx_poll_timeout - Periodically poll an address until a condition is met or a timeout occurs
++ * @op: accessor function (takes @addr as its only argument)
++ * @addr: Address to poll
++ * @val: Variable to read the value into
++ * @cond: Break condition (usually involving @val)
++ * @timeout_us: Timeout in us, 0 means never timeout
++ *
++ * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
++ * case, the last read value at @addr is stored in @val.
++ *
++ * When available, you'll probably want to use one of the specialized
++ * macros defined below rather than this macro directly.
++ */
++#define readx_poll_timeout(op, addr, val, cond, timeout_us)	\
++({ \
++	uint64_t start = get_time_ns(); \
++	for (;;) { \
++		(val) = op(addr); \
++		if (cond) \
++			break; \
++		if (timeout_us && \
++		    is_timeout(start, ((timeout_us) * USECOND))) { \
++			(val) = op(addr); \
++			break; \
++		} \
++	} \
++	(cond) ? 0 : -ETIMEDOUT; \
++})
++
++
++#define readb_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readb, addr, val, cond, timeout_us)
++
++#define readw_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readw, addr, val, cond, timeout_us)
++
++#define readl_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readl, addr, val, cond, timeout_us)
++
++#define readq_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readq, addr, val, cond, timeout_us)
++
++#define readb_relaxed_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readb_relaxed, addr, val, cond, timeout_us)
++
++#define readw_relaxed_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readw_relaxed, addr, val, cond, timeout_us)
++
++#define readl_relaxed_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readl_relaxed, addr, val, cond, timeout_us)
++
++#define readq_relaxed_poll_timeout(addr, val, cond, timeout_us) \
++	readx_poll_timeout(readq_relaxed, addr, val, cond, timeout_us)
++
++#endif /* _LINUX_IOPOLL_H */
 -- 
 2.17.0
 
