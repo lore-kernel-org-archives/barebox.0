@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg0-x243.google.com ([2607:f8b0:400e:c05::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fTLOf-0002Mk-Bc
- for barebox@lists.infradead.org; Thu, 14 Jun 2018 06:07:37 +0000
-Date: Thu, 14 Jun 2018 08:06:01 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180614060601.mzcga35ajznxupm7@pengutronix.de>
-References: <20180607195552.15246-1-o.rempel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180607195552.15246-1-o.rempel@pengutronix.de>
+ id 1fTLk3-0000Fb-JN
+ for barebox@lists.infradead.org; Thu, 14 Jun 2018 06:28:21 +0000
+Received: by mail-pg0-x243.google.com with SMTP id l2-v6so2429576pgc.7
+ for <barebox@lists.infradead.org>; Wed, 13 Jun 2018 23:28:09 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 13 Jun 2018 23:27:41 -0700
+Message-Id: <20180614062751.29856-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,176 +16,185 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] MIPS: ath79: provide driver for Atheros ART
- partition
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org, Oleksij Rempel <linux@rempel-privat.de>
+Subject: [PATCH v6 00/10] ARM: i.MX8MQ and EVK support
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Thu, Jun 07, 2018 at 09:55:50PM +0200, Oleksij Rempel wrote:
-> From: Oleksij Rempel <linux@rempel-privat.de>
-> 
-> this partition contains calibration data for WiFi and
-> some board specific data, like MAC address.
-> 
-> For now we care only about MAC.
-> 
-> Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
-> ---
+Everyone:
 
-Applied, thanks
+Picking up where Sascha left off, this is the next version of the
+patchset that adds support for i.MX8MQ EVK board.
 
-Sascha
+This patchest is also availible at:
 
->  arch/mips/mach-ath79/Makefile |   1 +
->  arch/mips/mach-ath79/art.c    | 112 ++++++++++++++++++++++++++++++++++
->  2 files changed, 113 insertions(+)
->  create mode 100644 arch/mips/mach-ath79/art.c
-> 
-> diff --git a/arch/mips/mach-ath79/Makefile b/arch/mips/mach-ath79/Makefile
-> index 3772daeba..b827b363c 100644
-> --- a/arch/mips/mach-ath79/Makefile
-> +++ b/arch/mips/mach-ath79/Makefile
-> @@ -1,2 +1,3 @@
->  obj-y += reset.o
->  obj-y += bbu.o
-> +obj-y += art.o
-> diff --git a/arch/mips/mach-ath79/art.c b/arch/mips/mach-ath79/art.c
-> new file mode 100644
-> index 000000000..984d08736
-> --- /dev/null
-> +++ b/arch/mips/mach-ath79/art.c
-> @@ -0,0 +1,112 @@
-> +// SPDX-License-Identifier: GPL-2.
-> +/*
-> + * Copyright (c) 2018 Oleksij Rempel <linux@rempel-privat.de>
-> + */
-> +
-> +#include <common.h>
-> +#include <fcntl.h>
-> +#include <init.h>
-> +#include <libfile.h>
-> +#include <net.h>
-> +#include <unistd.h>
-> +
-> +#define AR93000_EPPROM_OFFSET	0x1000
-> +
-> +struct ar9300_eeprom {
-> +	u8 eeprom_version;
-> +	u8 template_version;
-> +	u8 mac_addr[6];
-> +};
-> +
-> +static int art_set_mac(struct device_d *dev, struct ar9300_eeprom *eeprom)
-> +{
-> +	struct device_node *node = dev->device_node;
-> +	struct device_node *rnode;
-> +
-> +	if (!node)
-> +		return -ENOENT;
-> +
-> +	rnode = of_parse_phandle_from(node, NULL,
-> +				     "barebox,provide-mac-address", 0);
-> +	if (!rnode)
-> +		return -ENOENT;
-> +
-> +	of_eth_register_ethaddr(rnode, &eeprom->mac_addr[0]);
-> +
-> +	return 0;
-> +}
-> +
-> +static int art_read_mac(struct device_d *dev, const char *file)
-> +{
-> +	int fd, rbytes;
-> +	struct ar9300_eeprom eeprom;
-> +
-> +	fd = open_and_lseek(file, O_RDONLY, AR93000_EPPROM_OFFSET);
-> +	if (fd < 0) {
-> +		dev_err(dev, "Failed to open eeprom path %s %d\n",
-> +		       file, fd);
-> +		return fd;
-> +	}
-> +
-> +	rbytes = read_full(fd, &eeprom, sizeof(eeprom));
-> +	close(fd);
-> +	if (rbytes < sizeof(eeprom)) {
-> +		dev_err(dev, "Failed to read %s\n", file);
-> +		return rbytes < 0 ? rbytes : -EIO;
-> +	}
-> +
-> +	dev_dbg(dev, "ART version: %x.%x\n",
-> +		 eeprom.eeprom_version, eeprom.template_version);
-> +	dev_dbg(dev, "mac: %02x:%02x:%02x:%02x:%02x:%02x\n",
-> +	       eeprom.mac_addr[0],
-> +	       eeprom.mac_addr[1],
-> +	       eeprom.mac_addr[2],
-> +	       eeprom.mac_addr[3],
-> +	       eeprom.mac_addr[4],
-> +	       eeprom.mac_addr[5]);
-> +
-> +	if (!is_valid_ether_addr(&eeprom.mac_addr[0])) {
-> +		dev_err(dev, "bad MAC addr\n");
-> +		return -EILSEQ;
-> +	}
-> +
-> +	return art_set_mac(dev, &eeprom);
-> +}
-> +
-> +static int art_probe(struct device_d *dev)
-> +{
-> +	char *path;
-> +	int ret;
-> +
-> +	dev_dbg(dev, "found ART partition\n");
-> +
-> +	ret = of_find_path(dev->device_node, "device-path", &path, 0);
-> +	if (ret) {
-> +		dev_err(dev, "can't find path\n");
-> +		return ret;
-> +	}
-> +
-> +	return art_read_mac(dev, path);
-> +}
-> +
-> +static struct of_device_id art_dt_ids[] = {
-> +	{
-> +		.compatible = "qca,art",
-> +	}, {
-> +		/* sentinel */
-> +	}
-> +};
-> +
-> +static struct driver_d art_driver = {
-> +	.name		= "qca-art",
-> +	.probe		= art_probe,
-> +	.of_compatible	= art_dt_ids,
-> +};
-> +
-> +static int art_of_driver_init(void)
-> +{
-> +	platform_driver_register(&art_driver);
-> +
-> +	return 0;
-> +}
-> +late_initcall(art_of_driver_init);
-> -- 
-> 2.17.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+  https://github.com/ndreys/barebox/tree/imx8m-support-v6
+
+Changes since [v6]:
+
+  - Patchset rebased on latest master, so it is now down to 10 patches
+
+  - <linux/iopoll.h> support in PBL is now done by stubbing out
+    get_time_ns() and is_timeout() in clock.h
+
+  - Additional speeling fixes
+
+Changes since [v4]:
+
+  - Fix a critical OCOTP bug (missing .format_mac in "ARM: i.MX:
+    ocotp: Add i.MX8MQ support") introduced in v3 and was exposed by
+    defconfig change in v4
+
+  - Minor spelling/gramatical fixes in various commits and commit
+    messages
+
+Changes since [v3]:
+
+  - Timeout/delay functions were moved into lib/ instead of being
+    inline in order to avoid image size increase.
+
+  - Imx-image chages were reworked to fix regression identified by
+    Alexander Kurz in [regression1]
+
+  - Minor fix to "clock: Use udelay() to implement mdelay()" (33/54)
+    to prevent 32-bit ARM EABI toolchain from issuing a call to
+    unsigned long division helper
+
+  - Imx_v8_defconfig was modified to be as close to imx_v7_defconfig
+    as possible.
+
+        Removed options:
+		CONFIG_PBL_CONSOLE=y
+		CONFIG_CONSOLE_RATP=y
+
+    	Added options:
+		CONFIG_CONSOLE_ACTIVATE_NONE=y
+		CONFIG_CMD_DHCP=y
+		CONFIG_CMD_MIITOOL=y
+		CONFIG_CMD_PING=y
+		CONFIG_CMD_I2C=y
+		CONFIG_NET=y
+		CONFIG_NET_NETCONSOLE=y
+		CONFIG_NET_RESOLV=y
+		CONFIG_DRIVER_NET_FEC_IMX=y
+		CONFIG_I2C=y
+		CONFIG_I2C_IMX=y
+		CONFIG_FS_TFTP=y
+		CONFIG_FS_NFS=y
+
+Changes since [v2]:
+
+  - i.MX8 specific eSDHC bootstrap code code fixed to function
+    correctly with high capacity SD cards
+
+  - DDR PHY firmware converted to use Sascha's firmware framework and
+    be SoC specific (can be shared among different boards)
+
+  - DDR register definitions moved to imx8-ddrc.h as well as cleaned
+    up to contain only constants that are being used
+
+  - Incorporated imx-image i.MX8 work done by Sascha as well as extend
+    it to create valid AArch64 header
+
+  - Patchset is rebase on latest 'next' branch to accomodate recent
+    OCOTP changes
+
+Changes since [v1]:
+
+  - The patchset now allows building 1st stage bootloader that can be
+    progammed on SD card and booted standalone
+
+Currently out of scope of this patch (not tested or documented, will
+be coming in a follow up series):
+
+  - Integration of ARM Trusted Firmware
+
+  - Booting Linux kernel
+
+Current assumptions (all subject to change, but listed below to be
+explicit):
+
+  - DDR initialization code is auto-generated by i.MX8M DDR Tool and
+    used as close to as-is as possible.
+
+Feedback is wellcome!
+
+Thanks,
+Andrey Smirnov
+
+[v1] http://lists.infradead.org/pipermail/barebox/2018-March/032386.html
+[v2] http://lists.infradead.org/pipermail/barebox/2018-May/033149.html
+[v3] http://lists.infradead.org/pipermail/barebox/2018-June/033390.html
+[regression1] http://lists.infradead.org/pipermail/barebox/2018-June/033475.html
+[v4] http://lists.infradead.org/pipermail/barebox/2018-June/033504.html
+[v5] http://lists.infradead.org/pipermail/barebox/2018-June/033592.html
+
+Andrey Smirnov (7):
+  Port <linux/iopoll.h> from U-Boot
+  clock: Use udelay() to implement mdelay()
+  ARM: i.MX8: Add DDRC PHY support code
+  ARM: Specify HAVE_PBL_IMAGE for CPU_64
+  scripts: imx-image: Use a loop to create multiple header copies
+  scripts: imx-image: Share the code to write barebox header
+  ARM: Introduce imx_v8_defconfig
+
+Sascha Hauer (3):
+  ARM: i.MX: ocotp: Provide missing .format_mac for i.MX8MQ
+  scripts: imx-image: Add i.MX8MQ support
+  ARM: i.MX8: Add i.MX8mq EVK support
+
+ Documentation/boards/imx.rst                  |   13 +-
+ Documentation/boards/imx/nxp-imx8mq-evk.rst   |  116 ++
+ arch/arm/boards/Makefile                      |    1 +
+ arch/arm/boards/nxp-imx8mq-evk/.gitignore     |    1 +
+ arch/arm/boards/nxp-imx8mq-evk/Makefile       |    4 +
+ arch/arm/boards/nxp-imx8mq-evk/board.c        |   44 +
+ arch/arm/boards/nxp-imx8mq-evk/ddr.h          |   28 +
+ arch/arm/boards/nxp-imx8mq-evk/ddr_init.c     |  223 ++++
+ arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c | 1026 +++++++++++++++++
+ .../flash-header-imx8mq-evk.imxcfg            |    4 +
+ arch/arm/boards/nxp-imx8mq-evk/lowlevel.c     |   81 ++
+ arch/arm/configs/imx_v8_defconfig             |  107 ++
+ arch/arm/cpu/Kconfig                          |    1 +
+ arch/arm/dts/Makefile                         |    1 +
+ arch/arm/dts/imx8mq-evk.dts                   |  444 +++++++
+ arch/arm/mach-imx/Kconfig                     |    5 +
+ arch/arm/mach-imx/Makefile                    |    1 +
+ arch/arm/mach-imx/imx8-ddrc.c                 |  107 ++
+ arch/arm/mach-imx/include/mach/imx8-ddrc.h    |   66 ++
+ common/clock.c                                |    8 +-
+ drivers/nvmem/ocotp.c                         |    1 +
+ firmware/Kconfig                              |    3 +
+ firmware/Makefile                             |    6 +
+ images/Makefile.imx                           |    7 +
+ include/clock.h                               |   14 +
+ include/linux/iopoll.h                        |   69 ++
+ scripts/imx/imx-image.c                       |   99 +-
+ scripts/imx/imx.c                             |   23 +-
+ scripts/imx/imx.h                             |    2 +
+ 29 files changed, 2463 insertions(+), 42 deletions(-)
+ create mode 100644 Documentation/boards/imx/nxp-imx8mq-evk.rst
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/.gitignore
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/Makefile
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/board.c
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/ddr.h
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/ddr_init.c
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
+ create mode 100644 arch/arm/configs/imx_v8_defconfig
+ create mode 100644 arch/arm/dts/imx8mq-evk.dts
+ create mode 100644 arch/arm/mach-imx/imx8-ddrc.c
+ create mode 100644 arch/arm/mach-imx/include/mach/imx8-ddrc.h
+ create mode 100644 include/linux/iopoll.h
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.0
+
 
 _______________________________________________
 barebox mailing list
