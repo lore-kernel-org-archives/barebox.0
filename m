@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x243.google.com ([2607:f8b0:4001:c0b::243])
+Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fTnky-0003ou-RX
- for barebox@lists.infradead.org; Fri, 15 Jun 2018 12:23:10 +0000
-Received: by mail-it0-x243.google.com with SMTP id a195-v6so2385385itd.3
- for <barebox@lists.infradead.org>; Fri, 15 Jun 2018 05:22:58 -0700 (PDT)
-MIME-Version: 1.0
-References: <20180615041136.23492-1-andrew.smirnov@gmail.com>
- <20180615041136.23492-5-andrew.smirnov@gmail.com>
- <20180615044944.GA10093@ravnborg.org>
-In-Reply-To: <20180615044944.GA10093@ravnborg.org>
+ id 1fTffA-0004UJ-3a
+ for barebox@lists.infradead.org; Fri, 15 Jun 2018 03:44:38 +0000
+Received: by mail-pl0-x244.google.com with SMTP id w8-v6so3130093ply.8
+ for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 20:44:25 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 15 Jun 2018 05:22:46 -0700
-Message-ID: <CAHQ1cqG+RA8rihzeJiszrF0omKU2G1JL7vc2YF=DuzX08E93aw@mail.gmail.com>
+Date: Thu, 14 Jun 2018 20:43:59 -0700
+Message-Id: <20180615034409.22180-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,55 +16,190 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 02/27] console: Unify console_simple.c and pbl/console.c
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v7 00/10] ARM: i.MX8MQ and EVK support
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Thu, Jun 14, 2018 at 9:49 PM Sam Ravnborg <sam@ravnborg.org> wrote:
->
-> Hi Andrey.
->
-> On Thu, Jun 14, 2018 at 09:11:10PM -0700, Andrey Smirnov wrote:
-> > Move all of the shared code into lib/console.c and convert both files
-> > to use that.
-> >
-> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > ---
-> > +++ b/lib/console.c
-> > @@ -0,0 +1,130 @@
-> > +// SPDX-License-Identifier: GPL-2.0+
-> > +
-> > +/*
-> > + * File containing all of the console-related code that is used by all
-> > + * possible consumers: PBL, CONSOLE_FULL, CONSOLE_SIMPLE, etc.
-> > + *
-> > + * Copyright (C) 2018 Zodiac Inflight Innovations
-> > + * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > + */
-> > +
-> > +#include <debug_ll.h>
-> > +#include <console.h>
-> > +
-> > +/*
-> > + * Put this in the data section so that it survives the clearing of
-> > + * the BSS segment.
-> > + */
-> > +#define __data __attribute__ ((section(".data")))
-> This definition would be better placed in compiler.h
-> together with all the __naked etc. definitions.
->
+Everyone:
 
-I thought about it, but AFAIK, there's only a single user of this in
-the whole codebase and __data, unlike, say, __naked, seems like a
-generic enough name to cause name collisions, so I opted at keeping it
-in .c file.
+Picking up where Sascha left off, this is the next version of the
+patchset that adds support for i.MX8MQ EVK board.
+
+This patchest is also availible at:
+
+  https://github.com/ndreys/barebox/tree/imx8m-support-v7
+
+Changes since [v6]:
+
+  - Minor misspelling fix
+
+Changes since [v5]:
+
+  - Patchset rebased on latest master, so it is now down to 10 patches
+
+  - <linux/iopoll.h> support in PBL is now done by stubbing out
+    get_time_ns() and is_timeout() in clock.h
+
+  - Additional speeling fixes
+
+Changes since [v4]:
+
+  - Fix a critical OCOTP bug (missing .format_mac in "ARM: i.MX:
+    ocotp: Add i.MX8MQ support") introduced in v3 and was exposed by
+    defconfig change in v4
+
+  - Minor spelling/gramatical fixes in various commits and commit
+    messages
+
+Changes since [v3]:
+
+  - Timeout/delay functions were moved into lib/ instead of being
+    inline in order to avoid image size increase.
+
+  - Imx-image chages were reworked to fix regression identified by
+    Alexander Kurz in [regression1]
+
+  - Minor fix to "clock: Use udelay() to implement mdelay()" (33/54)
+    to prevent 32-bit ARM EABI toolchain from issuing a call to
+    unsigned long division helper
+
+  - Imx_v8_defconfig was modified to be as close to imx_v7_defconfig
+    as possible.
+
+        Removed options:
+		CONFIG_PBL_CONSOLE=y
+		CONFIG_CONSOLE_RATP=y
+
+    	Added options:
+		CONFIG_CONSOLE_ACTIVATE_NONE=y
+		CONFIG_CMD_DHCP=y
+		CONFIG_CMD_MIITOOL=y
+		CONFIG_CMD_PING=y
+		CONFIG_CMD_I2C=y
+		CONFIG_NET=y
+		CONFIG_NET_NETCONSOLE=y
+		CONFIG_NET_RESOLV=y
+		CONFIG_DRIVER_NET_FEC_IMX=y
+		CONFIG_I2C=y
+		CONFIG_I2C_IMX=y
+		CONFIG_FS_TFTP=y
+		CONFIG_FS_NFS=y
+
+Changes since [v2]:
+
+  - i.MX8 specific eSDHC bootstrap code code fixed to function
+    correctly with high capacity SD cards
+
+  - DDR PHY firmware converted to use Sascha's firmware framework and
+    be SoC specific (can be shared among different boards)
+
+  - DDR register definitions moved to imx8-ddrc.h as well as cleaned
+    up to contain only constants that are being used
+
+  - Incorporated imx-image i.MX8 work done by Sascha as well as extend
+    it to create valid AArch64 header
+
+  - Patchset is rebase on latest 'next' branch to accomodate recent
+    OCOTP changes
+
+Changes since [v1]:
+
+  - The patchset now allows building 1st stage bootloader that can be
+    progammed on SD card and booted standalone
+
+Currently out of scope of this patch (not tested or documented, will
+be coming in a follow up series):
+
+  - Integration of ARM Trusted Firmware
+
+  - Booting Linux kernel
+
+Current assumptions (all subject to change, but listed below to be
+explicit):
+
+  - DDR initialization code is auto-generated by i.MX8M DDR Tool and
+    used as close to as-is as possible.
+
+Feedback is wellcome!
 
 Thanks,
 Andrey Smirnov
+
+[v1] http://lists.infradead.org/pipermail/barebox/2018-March/032386.html
+[v2] http://lists.infradead.org/pipermail/barebox/2018-May/033149.html
+[v3] http://lists.infradead.org/pipermail/barebox/2018-June/033390.html
+[regression1] http://lists.infradead.org/pipermail/barebox/2018-June/033475.html
+[v4] http://lists.infradead.org/pipermail/barebox/2018-June/033504.html
+[v5] http://lists.infradead.org/pipermail/barebox/2018-June/033592.html
+[v6] http://lists.infradead.org/pipermail/barebox/2018-June/033677.html
+
+Andrey Smirnov (7):
+  Port <linux/iopoll.h> from U-Boot
+  clock: Use udelay() to implement mdelay()
+  ARM: i.MX8: Add DDRC PHY support code
+  ARM: Specify HAVE_PBL_IMAGE for CPU_64
+  scripts: imx-image: Use a loop to create multiple header copies
+  scripts: imx-image: Share the code to write barebox header
+  ARM: Introduce imx_v8_defconfig
+
+Sascha Hauer (3):
+  ARM: i.MX: ocotp: Provide missing .format_mac for i.MX8MQ
+  scripts: imx-image: Add i.MX8MQ support
+  ARM: i.MX8: Add i.MX8mq EVK support
+
+ Documentation/boards/imx.rst                  |   13 +-
+ Documentation/boards/imx/nxp-imx8mq-evk.rst   |  116 ++
+ arch/arm/boards/Makefile                      |    1 +
+ arch/arm/boards/nxp-imx8mq-evk/.gitignore     |    1 +
+ arch/arm/boards/nxp-imx8mq-evk/Makefile       |    4 +
+ arch/arm/boards/nxp-imx8mq-evk/board.c        |   44 +
+ arch/arm/boards/nxp-imx8mq-evk/ddr.h          |   28 +
+ arch/arm/boards/nxp-imx8mq-evk/ddr_init.c     |  223 ++++
+ arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c | 1026 +++++++++++++++++
+ .../flash-header-imx8mq-evk.imxcfg            |    4 +
+ arch/arm/boards/nxp-imx8mq-evk/lowlevel.c     |   81 ++
+ arch/arm/configs/imx_v8_defconfig             |  107 ++
+ arch/arm/cpu/Kconfig                          |    1 +
+ arch/arm/dts/Makefile                         |    1 +
+ arch/arm/dts/imx8mq-evk.dts                   |  444 +++++++
+ arch/arm/mach-imx/Kconfig                     |    5 +
+ arch/arm/mach-imx/Makefile                    |    1 +
+ arch/arm/mach-imx/imx8-ddrc.c                 |  107 ++
+ arch/arm/mach-imx/include/mach/imx8-ddrc.h    |   66 ++
+ common/clock.c                                |    8 +-
+ drivers/nvmem/ocotp.c                         |    1 +
+ firmware/Kconfig                              |    3 +
+ firmware/Makefile                             |    6 +
+ images/Makefile.imx                           |    7 +
+ include/clock.h                               |   14 +
+ include/linux/iopoll.h                        |   69 ++
+ scripts/imx/imx-image.c                       |   99 +-
+ scripts/imx/imx.c                             |   23 +-
+ scripts/imx/imx.h                             |    2 +
+ 29 files changed, 2463 insertions(+), 42 deletions(-)
+ create mode 100644 Documentation/boards/imx/nxp-imx8mq-evk.rst
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/.gitignore
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/Makefile
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/board.c
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/ddr.h
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/ddr_init.c
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
+ create mode 100644 arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
+ create mode 100644 arch/arm/configs/imx_v8_defconfig
+ create mode 100644 arch/arm/dts/imx8mq-evk.dts
+ create mode 100644 arch/arm/mach-imx/imx8-ddrc.c
+ create mode 100644 arch/arm/mach-imx/include/mach/imx8-ddrc.h
+ create mode 100644 include/linux/iopoll.h
+
+-- 
+2.17.0
+
 
 _______________________________________________
 barebox mailing list
