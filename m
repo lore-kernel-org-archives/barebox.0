@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x243.google.com ([2607:f8b0:400e:c01::243])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fTg6E-0005a3-7k
- for barebox@lists.infradead.org; Fri, 15 Jun 2018 04:12:36 +0000
-Received: by mail-pl0-x243.google.com with SMTP id t12-v6so4666894plo.7
- for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 21:12:22 -0700 (PDT)
+Received: from mail-pl0-x231.google.com ([2607:f8b0:400e:c01::231])
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fTg6E-00032A-9e
+ for barebox@lists.infradead.org; Fri, 15 Jun 2018 04:12:35 +0000
+Received: by mail-pl0-x231.google.com with SMTP id f1-v6so4668294plt.6
+ for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 21:12:19 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 14 Jun 2018 21:11:32 -0700
-Message-Id: <20180615041136.23492-27-andrew.smirnov@gmail.com>
+Date: Thu, 14 Jun 2018 21:11:29 -0700
+Message-Id: <20180615041136.23492-24-andrew.smirnov@gmail.com>
 In-Reply-To: <20180615041136.23492-1-andrew.smirnov@gmail.com>
 References: <20180615041136.23492-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,78 +23,114 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 23/27] console: Remove dputc()
+Subject: [PATCH 20/27] console: Share definition for printf with PBL
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-The only use of dputc() is commands/echo.c and the code there can
-easily be converted to dputs(). Do that and drop dputc() to avoid
-duplicating fd selection logic already found in dputs().
+Both CONSOLE_* and PBL have almost identical implementations of
+pritnf(). Move the code to a common location so it can be share
+between the two.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- commands/echo.c         |  4 ++--
- common/console_common.c | 15 +--------------
- include/stdio.h         |  1 -
- 3 files changed, 3 insertions(+), 17 deletions(-)
+ common/console_common.c | 22 ----------------------
+ lib/console.c           | 24 +++++++++++++++++++++++-
+ pbl/console.c           | 15 ---------------
+ 3 files changed, 23 insertions(+), 38 deletions(-)
 
-diff --git a/commands/echo.c b/commands/echo.c
-index 8853ee0a3..233f804a2 100644
---- a/commands/echo.c
-+++ b/commands/echo.c
-@@ -81,7 +81,7 @@ exit_parse:
- 
- 	for (i = optind; i < argc; i++) {
- 		if (i > optind)
--			dputc(fd, ' ');
-+			dputs(fd, " ");
- 		if (process_escape) {
- 			process_escape_sequence(argv[i], str, CONFIG_CBSIZE);
- 			dputs(fd, str);
-@@ -91,7 +91,7 @@ exit_parse:
- 	}
- 
- 	if (newline)
--		dputc(fd, '\n');
-+		dputs(fd, "\n");
- 
- 	if (file)
- 		close(fd);
 diff --git a/common/console_common.c b/common/console_common.c
-index 296b181d9..ce7e50dbc 100644
+index 06ed74fc2..f440a9448 100644
 --- a/common/console_common.c
 +++ b/common/console_common.c
-@@ -362,17 +362,4 @@ int dputs(int fd, const char *s)
- 	else
- 		return write(fd, s, strlen(s));
+@@ -227,28 +227,6 @@ void log_print(unsigned flags)
+ 	}
  }
--EXPORT_SYMBOL(dputs);
--
--int dputc(int fd, char c)
+ 
+-int printf(const char *fmt, ...)
 -{
--	if (fd == 1)
--		putchar(c);
--	else if (fd == 2)
--		console_putc(CONSOLE_STDERR, c);
--	else
--		return write(fd, &c, 1);
+-	va_list args;
+-	int i;
+-	char printbuffer[CFG_PBSIZE];
 -
--	return 0;
+-	va_start(args, fmt);
+-
+-	/*
+-	 * For this to work, printbuffer must be larger than
+-	 * anything we ever want to print.
+-	 */
+-	i = vsprintf (printbuffer, fmt, args);
+-	va_end(args);
+-
+-	/* Print the string */
+-	puts(printbuffer);
+-
+-	return i;
 -}
--EXPORT_SYMBOL(dputc);
-+EXPORT_SYMBOL(dputs);
+-EXPORT_SYMBOL(printf);
+-
+ int vprintf(const char *fmt, va_list args)
+ {
+ 	int i;
+diff --git a/lib/console.c b/lib/console.c
+index 03563c9de..57c3578d6 100644
+--- a/lib/console.c
++++ b/lib/console.c
+@@ -215,4 +215,26 @@ __weak int ctrlc (void)
+ 		return 1;
+ 	return 0;
+ }
+-EXPORT_SYMBOL(ctrlc);
 \ No newline at end of file
-diff --git a/include/stdio.h b/include/stdio.h
-index d918f3682..3b80b4bd7 100644
---- a/include/stdio.h
-+++ b/include/stdio.h
-@@ -95,6 +95,5 @@ static inline void putchar(char c)
++EXPORT_SYMBOL(ctrlc);
++
++int printf(const char *fmt, ...)
++{
++	va_list args;
++	int i;
++	char printbuffer[CFG_PBSIZE];
++
++	va_start(args, fmt);
++
++	/*
++	 * For this to work, printbuffer must be larger than
++	 * anything we ever want to print.
++	 */
++	i = vsprintf(printbuffer, fmt, args);
++	va_end(args);
++
++	/* Print the string */
++	puts(printbuffer);
++
++	return i;
++}
++EXPORT_SYMBOL(printf);
+\ No newline at end of file
+diff --git a/pbl/console.c b/pbl/console.c
+index 6c277052f..18df1efca 100644
+--- a/pbl/console.c
++++ b/pbl/console.c
+@@ -17,21 +17,6 @@ void pbl_set_putc(putc_func_t putcf, void *ctx)
+ 	__console_set_putc(&console_ll, putcf, ctx);
+ }
  
- int dprintf(int file, const char *fmt, ...) __attribute__ ((format(__printf__, 2, 3)));
- int dputs(int file, const char *s);
--int dputc(int file, const char c);
- 
- #endif /* __STDIO_H */
+-int printf(const char *fmt, ...)
+-{
+-	va_list args;
+-	uint i;
+-	char printbuffer[CFG_PBSIZE];
+-
+-	va_start(args, fmt);
+-	i = vsprintf(printbuffer, fmt, args);
+-	va_end(args);
+-
+-	console_puts(CONSOLE_STDOUT, printbuffer);
+-
+-	return i;
+-}
+-
+ int pr_print(int level, const char *fmt, ...)
+ {
+ 	va_list args;
 -- 
 2.17.0
 
