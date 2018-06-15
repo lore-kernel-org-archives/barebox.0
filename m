@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x22b.google.com ([2607:f8b0:400e:c01::22b])
+Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fTg6G-0000sQ-4o
- for barebox@lists.infradead.org; Fri, 15 Jun 2018 04:13:00 +0000
-Received: by mail-pl0-x22b.google.com with SMTP id t12-v6so4666965plo.7
- for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 21:12:25 -0700 (PDT)
+ id 1fTg6A-0000ns-1c
+ for barebox@lists.infradead.org; Fri, 15 Jun 2018 04:12:58 +0000
+Received: by mail-pg0-x244.google.com with SMTP id c9-v6so3858757pgf.5
+ for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 21:12:19 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 14 Jun 2018 21:11:35 -0700
-Message-Id: <20180615041136.23492-30-andrew.smirnov@gmail.com>
+Date: Thu, 14 Jun 2018 21:11:30 -0700
+Message-Id: <20180615041136.23492-25-andrew.smirnov@gmail.com>
 In-Reply-To: <20180615041136.23492-1-andrew.smirnov@gmail.com>
 References: <20180615041136.23492-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,115 +23,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 26/27] console: Convert printf() into a single line #define
+Subject: [PATCH 21/27] pbl: console: Convert pr_print into a single line
+ #define
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Since printf() is just a special case of dprintf(), we can re-arrange
-our codebase to share that definition for dprintf() and have printf()
-as a simple marcro expanding into appropriate call to dprintf() thus
-allowing us to drop a bit of code.
+PBL's implementation of pr_print(), doesn't use its 'level' argument
+at all, so it is identical in its behaviour to simple printf(). In
+light of that drop the custom code implementing that and convert it to
+be a CPP macro that is expanded into simple printf().
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/console_common.c | 19 -------------------
- include/stdio.h         |  2 +-
- lib/console.c           | 35 +++++++++++++----------------------
- 3 files changed, 14 insertions(+), 42 deletions(-)
+ include/printk.h |  5 +++--
+ pbl/console.c    | 14 --------------
+ 2 files changed, 3 insertions(+), 16 deletions(-)
 
-diff --git a/common/console_common.c b/common/console_common.c
-index 121f511e6..8211589b3 100644
---- a/common/console_common.c
-+++ b/common/console_common.c
-@@ -316,25 +316,6 @@ __weak int getchar(void) __alias(getc_raw);
- 
- #endif /* !CONFIG_CONSOLE_NONE */
- 
--int dprintf(int file, const char *fmt, ...)
--{
--	va_list args;
--	char printbuffer[CFG_PBSIZE];
--
--	va_start(args, fmt);
--
--	/*
--	 * For this to work, printbuffer must be larger than
--	 * anything we ever want to print.
--	 */
--	vsprintf(printbuffer, fmt, args);
--	va_end(args);
--
--	/* Print the string */
--	return dputs(file, printbuffer);
--}
--EXPORT_SYMBOL(dprintf);
--
- int dputs(int fd, const char *s)
- {
- 	unsigned int ch;
-diff --git a/include/stdio.h b/include/stdio.h
-index 3b80b4bd7..ae3904340 100644
---- a/include/stdio.h
-+++ b/include/stdio.h
-@@ -62,7 +62,7 @@ static inline int vprintf(const char *fmt, va_list args)
- 
- #if (!defined(__PBL__) && !defined(CONFIG_CONSOLE_NONE)) || \
- 	(defined(__PBL__) && defined(CONFIG_PBL_CONSOLE))
--int printf(const char *fmt, ...) __attribute__ ((format(__printf__, 1, 2)));
-+#define printf(fmt, arg...)	dprintf(STDOUT_FILENO, fmt, ## arg)
- #else
- static int printf(const char *fmt, ...) __attribute__ ((format(__printf__, 1, 2)));
- static inline int printf(const char *fmt, ...)
-diff --git a/lib/console.c b/lib/console.c
-index 43eeb4cdf..84f2b5126 100644
---- a/lib/console.c
-+++ b/lib/console.c
-@@ -217,28 +217,6 @@ __weak int ctrlc (void)
+diff --git a/include/printk.h b/include/printk.h
+index b4ae0b321..9f1831fbe 100644
+--- a/include/printk.h
++++ b/include/printk.h
+@@ -34,10 +34,11 @@ static inline int dev_printf(int level, const struct device_d *dev, const char *
  }
- EXPORT_SYMBOL(ctrlc);
+ #endif
  
--int printf(const char *fmt, ...)
+-#if (!defined(__PBL__) && !defined(CONFIG_CONSOLE_NONE)) || \
+-	(defined(__PBL__) && defined(CONFIG_PBL_CONSOLE))
++#if (!defined(__PBL__) && !defined(CONFIG_CONSOLE_NONE))
+ int pr_print(int level, const char *format, ...)
+ 	__attribute__ ((format(__printf__, 2, 3)));
++#elif defined(__PBL__) && defined(CONFIG_PBL_CONSOLE)
++#define pr_print(level, format, arg...)	printf(format, ## arg)
+ #else
+ static int pr_print(int level, const char *format, ...)
+ 	__attribute__ ((format(__printf__, 2, 3)));
+diff --git a/pbl/console.c b/pbl/console.c
+index 18df1efca..78beab688 100644
+--- a/pbl/console.c
++++ b/pbl/console.c
+@@ -17,17 +17,3 @@ void pbl_set_putc(putc_func_t putcf, void *ctx)
+ 	__console_set_putc(&console_ll, putcf, ctx);
+ }
+ 
+-int pr_print(int level, const char *fmt, ...)
 -{
 -	va_list args;
--	int i;
+-	uint i;
 -	char printbuffer[CFG_PBSIZE];
 -
 -	va_start(args, fmt);
--
--	/*
--	 * For this to work, printbuffer must be larger than
--	 * anything we ever want to print.
--	 */
 -	i = vsprintf(printbuffer, fmt, args);
 -	va_end(args);
 -
--	/* Print the string */
--	puts(printbuffer);
+-	console_puts(CONSOLE_STDOUT, printbuffer);
 -
 -	return i;
 -}
--EXPORT_SYMBOL(printf);
--
- /**
-  * dputs() - Dummy dputs() implementation
-  *
-@@ -283,3 +261,16 @@ int vprintf(const char *fmt, va_list args)
- 	return dvprintf(STDOUT_FILENO, fmt, args);
- }
- EXPORT_SYMBOL(vprintf);
-+
-+int dprintf(int file, const char *fmt, ...)
-+{
-+	int i;
-+	va_list args;
-+
-+	va_start(args, fmt);
-+	i = dvprintf(file, fmt, args);
-+	va_end(args);
-+
-+	return i;
-+}
-+EXPORT_SYMBOL(dprintf);
 -- 
 2.17.0
 
