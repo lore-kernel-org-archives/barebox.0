@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
+Received: from mail-pl0-x235.google.com ([2607:f8b0:400e:c01::235])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fTg5t-0000dj-8W
- for barebox@lists.infradead.org; Fri, 15 Jun 2018 04:12:25 +0000
-Received: by mail-pl0-x244.google.com with SMTP id f1-v6so4668068plt.6
- for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 21:12:05 -0700 (PDT)
+ id 1fTg5u-0000d6-PU
+ for barebox@lists.infradead.org; Fri, 15 Jun 2018 04:12:31 +0000
+Received: by mail-pl0-x235.google.com with SMTP id 6-v6so4127358plb.0
+ for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 21:12:04 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 14 Jun 2018 21:11:18 -0700
-Message-Id: <20180615041136.23492-13-andrew.smirnov@gmail.com>
+Date: Thu, 14 Jun 2018 21:11:17 -0700
+Message-Id: <20180615041136.23492-12-andrew.smirnov@gmail.com>
 In-Reply-To: <20180615041136.23492-1-andrew.smirnov@gmail.com>
 References: <20180615041136.23492-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,37 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/27] console: Fix console_get_first_active()
+Subject: [PATCH 08/27] console: Make use of __console_putc()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Fix if condition in console_get_first_active() to actually check that
-both bit are set.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/console_common.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ common/console.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/common/console_common.c b/common/console_common.c
-index 00e020bd3..0131a1190 100644
---- a/common/console_common.c
-+++ b/common/console_common.c
-@@ -301,12 +301,13 @@ EXPORT_SYMBOL(console_get_by_name);
- struct console_device *console_get_first_active(void)
- {
- 	struct console_device *cdev;
-+	const unsigned char active = CONSOLE_STDIN | CONSOLE_STDOUT;
- 	/*
- 	 * Assumption to have BOTH CONSOLE_STDIN AND STDOUT in the
- 	 * same output console
- 	 */
- 	for_each_console(cdev) {
--		if ((cdev->f_active & (CONSOLE_STDIN | CONSOLE_STDOUT)))
-+		if ((cdev->f_active & active) == active)
- 			return cdev;
- 	}
- 
+diff --git a/common/console.c b/common/console.c
+index d64a7be25..0c098c5eb 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -503,9 +503,7 @@ void console_putc(unsigned int ch, char c)
+ 	case CONSOLE_INIT_FULL:
+ 		for_each_console(cdev) {
+ 			if (cdev->f_active & ch) {
+-				if (c == '\n')
+-					cdev->putc(cdev, '\r');
+-				cdev->putc(cdev, c);
++				__console_putc(cdev, c);
+ 			}
+ 		}
+ 		return;
 -- 
 2.17.0
 
