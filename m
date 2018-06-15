@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pl0-x243.google.com ([2607:f8b0:400e:c01::243])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fTg5w-0000hA-UY
- for barebox@lists.infradead.org; Fri, 15 Jun 2018 04:12:35 +0000
-Received: by mail-pl0-x243.google.com with SMTP id a7-v6so4674549plp.3
- for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 21:12:10 -0700 (PDT)
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fTg6E-0005a3-7k
+ for barebox@lists.infradead.org; Fri, 15 Jun 2018 04:12:36 +0000
+Received: by mail-pl0-x243.google.com with SMTP id t12-v6so4666894plo.7
+ for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 21:12:22 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 14 Jun 2018 21:11:22 -0700
-Message-Id: <20180615041136.23492-17-andrew.smirnov@gmail.com>
+Date: Thu, 14 Jun 2018 21:11:32 -0700
+Message-Id: <20180615041136.23492-27-andrew.smirnov@gmail.com>
 In-Reply-To: <20180615041136.23492-1-andrew.smirnov@gmail.com>
 References: <20180615041136.23492-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,133 +23,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/27] console: Consolidate DEBUG_LL and CONSOLE_* '\n' ->
- '\n\r' code
+Subject: [PATCH 23/27] console: Remove dputc()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Consolidate code doing '\n' -> '\n\r' compensation in DEBUG_LL and
-CONSOLE_* subsystems. While at it move it from puts_ll() to putc_ll()
-in order to match the semantics of other puts()/putc()
-implementations.
-
-This is done as a macro in order to avoid putting any restrictions on
-the signature of __putc.
+The only use of dputc() is commands/echo.c and the code there can
+easily be converted to dputs(). Do that and drop dputc() to avoid
+duplicating fd selection logic already found in dputs().
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- include/debug_ll.h | 38 ++++++++++++++++++++++++++++++++------
- lib/console.c      | 17 +++++++----------
- 2 files changed, 39 insertions(+), 16 deletions(-)
+ commands/echo.c         |  4 ++--
+ common/console_common.c | 15 +--------------
+ include/stdio.h         |  1 -
+ 3 files changed, 3 insertions(+), 17 deletions(-)
 
-diff --git a/include/debug_ll.h b/include/debug_ll.h
-index 504751639..4032ced95 100644
---- a/include/debug_ll.h
-+++ b/include/debug_ll.h
-@@ -31,9 +31,32 @@
- #include <mach/debug_ll.h>
- #endif
+diff --git a/commands/echo.c b/commands/echo.c
+index 8853ee0a3..233f804a2 100644
+--- a/commands/echo.c
++++ b/commands/echo.c
+@@ -81,7 +81,7 @@ exit_parse:
  
-+/**
-+ * __do_putc - Macro implementing '\n'-> '\n\r' substituting putc()
-+ *
-+ * @__putc:	Single argument or a macro that implements plain putc()
-+ * @__c:	Character to print
-+ *
-+ * Internal macro used to implement putc_ll() and __console_putc() and
-+ * intended to be the only place where '\n' -> '\n\r' substitution is
-+ * codified
-+ */
-+#define __do_putc(__putc, ___c)			\
-+	({					\
-+		typeof(___c) __c = (___c);	\
-+		int __n = 1;			\
-+						\
-+		__putc(__c);			\
-+		if (__c == '\n') {		\
-+			__putc('\r');		\
-+			__n = 2;		\
-+		}				\
-+		__n;				\
-+	})
-+
- #if defined (CONFIG_DEBUG_LL)
- 
--static inline void putc_ll(char value)
-+static inline void __putc_ll(char value)
- {
- 	PUTC_LL(value);
- }
-@@ -45,10 +68,11 @@ static inline void puthex_ll(unsigned long value)
- 	for (i = sizeof(unsigned long) * 2; i--; ) {
- 		ch = ((value >> (i * 4)) & 0xf);
- 		ch += (ch >= 10) ? 'a' - 10 : '0';
--		putc_ll(ch);
-+		__putc_ll(ch);
+ 	for (i = optind; i < argc; i++) {
+ 		if (i > optind)
+-			dputc(fd, ' ');
++			dputs(fd, " ");
+ 		if (process_escape) {
+ 			process_escape_sequence(argv[i], str, CONFIG_CBSIZE);
+ 			dputs(fd, str);
+@@ -91,7 +91,7 @@ exit_parse:
  	}
+ 
+ 	if (newline)
+-		dputc(fd, '\n');
++		dputs(fd, "\n");
+ 
+ 	if (file)
+ 		close(fd);
+diff --git a/common/console_common.c b/common/console_common.c
+index 296b181d9..ce7e50dbc 100644
+--- a/common/console_common.c
++++ b/common/console_common.c
+@@ -362,17 +362,4 @@ int dputs(int fd, const char *s)
+ 	else
+ 		return write(fd, s, strlen(s));
  }
- 
-+static inline int putc_ll(char value);
- /*
-  * Be careful with puts_ll, it only works if the binary is running at the
-  * link address which often is not the case during early startup. If in doubt
-@@ -57,9 +81,6 @@ static inline void puthex_ll(unsigned long value)
- static inline void puts_ll(const char * str)
- {
- 	while (*str) {
--		if (*str == '\n')
--			putc_ll('\r');
+-EXPORT_SYMBOL(dputs);
 -
- 		putc_ll(*str);
- 		str++;
- 	}
-@@ -67,7 +88,7 @@ static inline void puts_ll(const char * str)
- 
- #else
- 
--static inline void putc_ll(char value)
-+static inline void __putc_ll(char value)
- {
- }
- 
-@@ -86,4 +107,9 @@ static inline void puts_ll(const char * str)
- 
- #endif
- 
-+static inline int putc_ll(char value)
-+{
-+	return __do_putc(__putc_ll, value);
-+}
-+
- #endif  /* __INCLUDE_DEBUG_LL_H__ */
-diff --git a/lib/console.c b/lib/console.c
-index 12c0ae2de..f97deca97 100644
---- a/lib/console.c
-+++ b/lib/console.c
-@@ -134,16 +134,13 @@ void __cdev_putc(struct console_device *cdev, char c)
-  */
- int __console_putc(struct console_device *cdev, char c)
- {
--	int n = 0;
+-int dputc(int fd, char c)
+-{
+-	if (fd == 1)
+-		putchar(c);
+-	else if (fd == 2)
+-		console_putc(CONSOLE_STDERR, c);
+-	else
+-		return write(fd, &c, 1);
 -
--	__cdev_putc(cdev, c);
--	n++;
--	if (c == '\n') {
--		__cdev_putc(cdev, '\r');
--		n++;
--	}
--
--	return n;
-+/*
-+ * __do_putc expects a macro or a function of a single argument so we
-+ * create this dummy adapter to work around that
-+ */
-+#define __CDEV_PUTC(__c)	__cdev_putc(cdev, __c)
-+	
-+	return __do_putc(__CDEV_PUTC, c);
- }
+-	return 0;
+-}
+-EXPORT_SYMBOL(dputc);
++EXPORT_SYMBOL(dputs);
+\ No newline at end of file
+diff --git a/include/stdio.h b/include/stdio.h
+index d918f3682..3b80b4bd7 100644
+--- a/include/stdio.h
++++ b/include/stdio.h
+@@ -95,6 +95,5 @@ static inline void putchar(char c)
  
- /**
+ int dprintf(int file, const char *fmt, ...) __attribute__ ((format(__printf__, 2, 3)));
+ int dputs(int file, const char *s);
+-int dputc(int file, const char c);
+ 
+ #endif /* __STDIO_H */
 -- 
 2.17.0
 
