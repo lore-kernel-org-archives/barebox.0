@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
+Received: from mail-pl0-x231.google.com ([2607:f8b0:400e:c01::231])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fTg61-0000iu-Tb
- for barebox@lists.infradead.org; Fri, 15 Jun 2018 04:12:49 +0000
-Received: by mail-pl0-x242.google.com with SMTP id g20-v6so4676245plq.1
- for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 21:12:12 -0700 (PDT)
+ id 1fTg65-0000kw-93
+ for barebox@lists.infradead.org; Fri, 15 Jun 2018 04:12:50 +0000
+Received: by mail-pl0-x231.google.com with SMTP id g20-v6so4676286plq.1
+ for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 21:12:14 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 14 Jun 2018 21:11:24 -0700
-Message-Id: <20180615041136.23492-19-andrew.smirnov@gmail.com>
+Date: Thu, 14 Jun 2018 21:11:26 -0700
+Message-Id: <20180615041136.23492-21-andrew.smirnov@gmail.com>
 In-Reply-To: <20180615041136.23492-1-andrew.smirnov@gmail.com>
 References: <20180615041136.23492-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,117 +23,139 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/27] console_simple: Use console_flush() from CONSOLE_FULL
+Subject: [PATCH 17/27] console_simple: Use getc_raw() as getchar()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Both implementations of console_flush() should behave the same way.
-Arguably CONSOLE_FULL's implementation is a bit bulkier that what
-CONSOLE_SIMPLE has, but this replacement allows us to share more code
-between CONSOLE_SIMPLE and CONSOLE_FULL as well as reduce our
-dependencies on global console pointer in CONSOLE_SIMPLE.
+Semantics implemented by getc_raw() in CONSOLE_FULL is reasonably
+close to what getchar() in CONSOLE_SIMPLE does. Arguably getc_raw() is
+bulkier than what CONSOLE_SIMPLE has, but this replacement allows us
+to share more code between CONSOLE_SIMPLE and CONSOLE_FULL as well as
+reduce our dependencies on global console pointer in CONSOLE_SIMPLE.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/console.c        | 14 --------------
- common/console_common.c | 11 +++++++++++
- common/console_simple.c |  9 ---------
- lib/console.c           |  2 ++
- 4 files changed, 13 insertions(+), 23 deletions(-)
+ common/console.c        | 27 ---------------------------
+ common/console_common.c | 29 +++++++++++++++++++++++++++++
+ common/console_simple.c |  8 --------
+ include/console.h       |  1 +
+ 4 files changed, 30 insertions(+), 35 deletions(-)
 
 diff --git a/common/console.c b/common/console.c
-index 6f195e882..f454f91c0 100644
+index c8c413a5e..a6f8ac445 100644
 --- a/common/console.c
 +++ b/common/console.c
-@@ -38,9 +38,6 @@
- #include <linux/stringify.h>
- #include <debug_ll.h>
- 
--LIST_HEAD(console_list);
--EXPORT_SYMBOL(console_list);
--
- #define CONSOLE_UNINITIALIZED		0
- #define CONSOLE_INITIALIZED_BUFFER	1
- #define CONSOLE_INIT_FULL		2
-@@ -560,16 +557,5 @@ int console_puts(unsigned int ch, const char *str)
+@@ -427,33 +427,6 @@ int console_unregister(struct console_device *cdev)
  }
- EXPORT_SYMBOL(console_puts);
+ EXPORT_SYMBOL(console_unregister);
  
--void console_flush(void)
+-static int getc_raw(void)
 -{
 -	struct console_device *cdev;
+-	int active = 0;
 -
--	for_each_console(cdev) {
--		if (cdev->flush)
--			cdev->flush(cdev);
+-	while (1) {
+-		for_each_console(cdev) {
+-			if (!(cdev->f_active & CONSOLE_STDIN))
+-				continue;
+-			active = 1;
+-			if (cdev->tstc(cdev)) {
+-				int ch = cdev->getc(cdev);
+-
+-				if (IS_ENABLED(CONFIG_RATP) && ch == 0x01) {
+-					barebox_ratp(cdev);
+-					return -1;
+-				}
+-
+-				return ch;
+-			}
+-		}
+-		if (!active)
+-			/* no active console found. bail out */
+-			return -1;
 -	}
 -}
--EXPORT_SYMBOL(console_flush);
 -
- BAREBOX_MAGICVAR_NAMED(global_linux_bootargs_console, global.linux.bootargs.console,
- 		"console= argument for Linux from the linux,stdout-path property in /chosen node");
+ int getchar(void)
+ {
+ 	unsigned char ch;
 diff --git a/common/console_common.c b/common/console_common.c
-index 0131a1190..324d42915 100644
+index 0653cb916..06ed74fc2 100644
 --- a/common/console_common.c
 +++ b/common/console_common.c
-@@ -315,6 +315,17 @@ struct console_device *console_get_first_active(void)
- }
- EXPORT_SYMBOL(console_get_first_active);
+@@ -30,6 +30,7 @@
+ #include <clock.h>
+ #include <malloc.h>
+ #include <asm-generic/div64.h>
++#include <ratp_bb.h>
  
-+void console_flush(void)
+ #ifndef CONFIG_CONSOLE_NONE
+ 
+@@ -343,6 +344,34 @@ int tstc_raw(void)
+ __weak int tstc(void) __alias(tstc_raw);
+ EXPORT_SYMBOL(tstc);
+ 
++int getc_raw(void)
 +{
 +	struct console_device *cdev;
++	int active = 0;
 +
-+	for_each_console(cdev) {
-+		if (cdev->flush)
-+			cdev->flush(cdev);
++	while (1) {
++		for_each_console(cdev) {
++			if (!(cdev->f_active & CONSOLE_STDIN))
++				continue;
++			active = 1;
++			if (cdev->tstc(cdev)) {
++				int ch = cdev->getc(cdev);
++
++				if (IS_ENABLED(CONFIG_RATP) && ch == 0x01) {
++					barebox_ratp(cdev);
++					return -1;
++				}
++
++				return ch;
++			}
++		}
++		if (!active)
++			/* no active console found. bail out */
++			return -1;
 +	}
 +}
-+EXPORT_SYMBOL(console_flush);
++__weak int getchar(void) __alias(getc_raw);
 +
  #endif /* !CONFIG_CONSOLE_NONE */
  
  int dprintf(int file, const char *fmt, ...)
 diff --git a/common/console_simple.c b/common/console_simple.c
-index e2456e987..9da516ee9 100644
+index 475d96b68..ac22a2592 100644
 --- a/common/console_simple.c
 +++ b/common/console_simple.c
-@@ -5,8 +5,6 @@
- #include <debug_ll.h>
- #include <console.h>
+@@ -7,14 +7,6 @@
  
--LIST_HEAD(console_list);
--EXPORT_SYMBOL(console_list);
  extern struct console_device *console;
  
- int tstc(void)
-@@ -26,13 +24,6 @@ int getchar(void)
- }
- EXPORT_SYMBOL(getchar);
- 
--void console_flush(void)
+-int getchar(void)
 -{
--	if (console && console->flush)
--		console->flush(console);
+-	if (!console)
+-		return -EINVAL;
+-	return console->getc(console);
 -}
--EXPORT_SYMBOL(console_flush);
+-EXPORT_SYMBOL(getchar);
 -
  int console_register(struct console_device *newcdev)
  {
  	if (console)
-diff --git a/lib/console.c b/lib/console.c
-index 91c446d6e..b8d6456c9 100644
---- a/lib/console.c
-+++ b/lib/console.c
-@@ -29,6 +29,8 @@ __data struct console_device console_ll = {
- 	.ctx  = NULL,
- };
- __data struct console_device *console;
-+LIST_HEAD(console_list);
-+EXPORT_SYMBOL(console_list);
+diff --git a/include/console.h b/include/console.h
+index d8d36f219..2a9f5fb79 100644
+--- a/include/console.h
++++ b/include/console.h
+@@ -219,5 +219,6 @@ void __console_set_putc(struct console_device *cdev,
+ 			putc_func_t putcf, void *ctx);
  
- /**
-  * __console_ll_putc - Early, most primitive putc() implemenatation
+ int tstc_raw(void);
++int getc_raw(void);
+ 
+ #endif
 -- 
 2.17.0
 
