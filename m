@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x22d.google.com ([2607:f8b0:400e:c01::22d])
+Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fTffH-0004Vk-VI
- for barebox@lists.infradead.org; Fri, 15 Jun 2018 03:45:00 +0000
-Received: by mail-pl0-x22d.google.com with SMTP id z9-v6so4633301plk.11
- for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 20:44:33 -0700 (PDT)
+ id 1fTffJ-0004Vn-6C
+ for barebox@lists.infradead.org; Fri, 15 Jun 2018 03:45:07 +0000
+Received: by mail-pl0-x242.google.com with SMTP id 31-v6so4645746plc.4
+ for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 20:44:34 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 14 Jun 2018 20:44:06 -0700
-Message-Id: <20180615034409.22180-8-andrew.smirnov@gmail.com>
+Date: Thu, 14 Jun 2018 20:44:07 -0700
+Message-Id: <20180615034409.22180-9-andrew.smirnov@gmail.com>
 In-Reply-To: <20180615034409.22180-1-andrew.smirnov@gmail.com>
 References: <20180615034409.22180-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,162 +23,182 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v7 07/10] scripts: imx-image: Share the code to write barebox
- header
+Subject: [PATCH v7 08/10] scripts: imx-image: Add i.MX8MQ support
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+From: Sascha Hauer <s.hauer@pengutronix.de>
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- scripts/imx/imx-image.c | 42 ++++++++++++++++++++---------------------
- 1 file changed, 20 insertions(+), 22 deletions(-)
+ scripts/imx/imx-image.c | 54 +++++++++++++++++++++++++++++++++++++----
+ scripts/imx/imx.c       | 23 ++++++++++++------
+ scripts/imx/imx.h       |  2 ++
+ 3 files changed, 66 insertions(+), 13 deletions(-)
 
 diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index bc1f821bd..4a08581fb 100644
+index 4a08581fb..6ebae2256 100644
 --- a/scripts/imx/imx-image.c
 +++ b/scripts/imx/imx-image.c
-@@ -36,6 +36,7 @@
- #include <include/filetype.h>
- 
- #define FLASH_HEADER_OFFSET 0x400
-+#define ARM_HEAD_SIZE_INDEX	(ARM_HEAD_SIZE_OFFSET / sizeof(uint32_t))
- 
- /*
-  * Conservative DCD element limit set to restriction v2 header size to
-@@ -46,7 +47,6 @@
- 
- static uint32_t dcdtable[MAX_DCD];
- static int curdcd;
--static int add_barebox_header;
- static int create_usb_image;
- static char *prgname;
- 
-@@ -207,18 +207,14 @@ static int add_srk(void *buf, int offset, uint32_t loadaddr, const char *srkfile
- static int dcd_ptr_offset;
- static uint32_t dcd_ptr_content;
- 
--static int add_header_v1(struct config_data *data, void *buf)
-+static size_t add_header_v1(struct config_data *data, void *buf)
- {
- 	struct imx_flash_header *hdr;
- 	int dcdsize = curdcd * sizeof(uint32_t);
--	uint32_t *psize = buf + ARM_HEAD_SIZE_OFFSET;
- 	int offset = data->image_dcd_offset;
- 	uint32_t loadaddr = data->image_load_addr;
- 	uint32_t imagesize = data->load_size;
- 
--	if (add_barebox_header)
--		memcpy(buf, bb_header, sizeof(bb_header));
--
- 	buf += offset;
- 	hdr = buf;
- 
-@@ -250,12 +246,9 @@ static int add_header_v1(struct config_data *data, void *buf)
- 		imagesize += CSF_LEN;
- 	}
- 
--	if (add_barebox_header)
--		*psize = imagesize;
--
- 	*(uint32_t *)buf = imagesize;
- 
--	return 0;
-+	return imagesize;
- }
- 
- static int write_mem_v1(uint32_t addr, uint32_t val, int width, int set_bits, int clear_bits)
-@@ -283,18 +276,14 @@ static int write_mem_v1(uint32_t addr, uint32_t val, int width, int set_bits, in
-  * ============================================================================
+@@ -57,8 +57,7 @@ static char *prgname;
   */
  
--static int add_header_v2(const struct config_data *data, void *buf)
-+static size_t add_header_v2(const struct config_data *data, void *buf)
- {
- 	struct imx_flash_header_v2 *hdr;
- 	int dcdsize = curdcd * sizeof(uint32_t);
--	uint32_t *psize = buf + ARM_HEAD_SIZE_OFFSET;
- 	int offset = data->image_dcd_offset;
- 	uint32_t loadaddr = data->image_load_addr;
- 	uint32_t imagesize = data->load_size;
  
--	if (add_barebox_header)
--		memcpy(buf, bb_header, sizeof(bb_header));
--
- 	buf += offset;
- 	hdr = buf;
- 
-@@ -320,9 +309,6 @@ static int add_header_v2(const struct config_data *data, void *buf)
- 		hdr->boot_data.size += CSF_LEN;
- 	}
- 
--	if (add_barebox_header)
--		*psize = hdr->boot_data.size;
--
- 	hdr->dcd_header.tag	= TAG_DCD_HEADER;
- 	hdr->dcd_header.length	= htobe16(sizeof(uint32_t) + dcdsize);
- 	hdr->dcd_header.version	= DCD_VERSION;
-@@ -331,7 +317,7 @@ static int add_header_v2(const struct config_data *data, void *buf)
- 
- 	memcpy(buf, dcdtable, dcdsize);
- 
--	return 0;
-+	return imagesize;
+-static uint32_t bb_header[] = {
+-	0xea0003fe,	/* b 0x1000 */
++static uint32_t bb_header_aarch32[] = {
+ 	0xeafffffe,	/* 1: b 1b  */
+ 	0xeafffffe,	/* 1: b 1b  */
+ 	0xeafffffe,	/* 1: b 1b  */
+@@ -66,6 +65,30 @@ static uint32_t bb_header[] = {
+ 	0xeafffffe,	/* 1: b 1b  */
+ 	0xeafffffe,	/* 1: b 1b  */
+ 	0xeafffffe,	/* 1: b 1b  */
++	0xeafffffe,	/* 1: b 1b  */
++	0x65726162,	/* 'bare'   */
++	0x00786f62,	/* 'box\0'  */
++	0x00000000,
++	0x00000000,
++	0x55555555,
++	0x55555555,
++	0x55555555,
++	0x55555555,
++	0x55555555,
++	0x55555555,
++	0x55555555,
++	0x55555555,
++};
++
++static uint32_t bb_header_aarch64[] = {
++	0x14000000,	/* 1: b 1b  */
++	0x14000000,	/* 1: b 1b  */
++	0x14000000,	/* 1: b 1b  */
++	0x14000000,	/* 1: b 1b  */
++	0x14000000,	/* 1: b 1b  */
++	0x14000000,	/* 1: b 1b  */
++	0x14000000,	/* 1: b 1b  */
++	0x14000000,	/* 1: b 1b  */
+ 	0x65726162,	/* 'bare'   */
+ 	0x00786f62,	/* 'box\0'  */
+ 	0x00000000,
+@@ -652,6 +675,11 @@ static void *read_file(const char *filename, size_t *size)
+ 	return buf;
  }
  
- static void usage(const char *prgname)
-@@ -680,6 +666,8 @@ int main(int argc, char *argv[])
- 	int now = 0;
- 	int sign_image = 0;
- 	int i, header_copies;
-+	int add_barebox_header;
-+	uint32_t barebox_image_size;
- 	struct config_data data = {
- 		.image_dcd_offset = 0xffffffff,
- 		.write_mem = write_mem,
-@@ -792,7 +780,7 @@ int main(int argc, char *argv[])
++static bool cpu_is_aarch64(const struct config_data *data)
++{
++	return data->cpu_type == IMX_CPU_IMX8MQ;
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	int opt, ret;
+@@ -674,6 +702,8 @@ int main(int argc, char *argv[])
+ 		.check = check,
+ 		.nop = nop,
+ 	};
++	uint32_t *bb_header;
++	size_t sizeof_bb_header;
  
- 	switch (data.header_version) {
- 	case 1:
--		add_header_v1(&data, buf);
-+		barebox_image_size = add_header_v1(&data, buf);
- 		if (data.srkfile) {
- 			ret = add_srk(buf, data.image_dcd_offset, data.image_load_addr,
- 				      data.srkfile);
-@@ -807,7 +795,7 @@ int main(int argc, char *argv[])
- 			exit(1);
- 		}
+ 	prgname = argv[0];
  
--		add_header_v2(&data, buf);
-+		barebox_image_size = add_header_v2(&data, buf);
- 		break;
- 	default:
- 		fprintf(stderr, "Congratulations! You're welcome to implement header version %d\n",
-@@ -815,6 +803,8 @@ int main(int argc, char *argv[])
+@@ -803,6 +833,15 @@ int main(int argc, char *argv[])
  		exit(1);
  	}
  
-+	bb_header[ARM_HEAD_SIZE_INDEX] = barebox_image_size;
++	if (cpu_is_aarch64(&data)) {
++		bb_header = bb_header_aarch64;
++		sizeof_bb_header = sizeof(bb_header_aarch64);
++	} else {
++		bb_header = bb_header_aarch32;
++		sizeof_bb_header = sizeof(bb_header_aarch32);
++	}
 +
++	bb_header[0] = data.first_opcode;
+ 	bb_header[ARM_HEAD_SIZE_INDEX] = barebox_image_size;
+ 
  	infile = read_file(imagename, &insize);
- 	if (!infile)
- 		exit(1);
-@@ -828,7 +818,15 @@ int main(int argc, char *argv[])
- 	header_copies = (data.cpu_type == IMX_CPU_IMX35) ? 2 : 1;
+@@ -819,14 +858,19 @@ int main(int argc, char *argv[])
  
  	for (i = 0; i < header_copies; i++) {
--		ret = xwrite(outfd, buf, HEADER_LEN);
-+		ret = xwrite(outfd, add_barebox_header ? bb_header : buf,
-+			     sizeof(bb_header));
-+		if (ret < 0) {
-+			perror("write");
-+			exit(1);
-+		}
-+
-+		ret = xwrite(outfd, buf + sizeof(bb_header),
-+			     HEADER_LEN - sizeof(bb_header));
+ 		ret = xwrite(outfd, add_barebox_header ? bb_header : buf,
+-			     sizeof(bb_header));
++			     sizeof_bb_header);
  		if (ret < 0) {
  			perror("write");
  			exit(1);
+ 		}
+ 
+-		ret = xwrite(outfd, buf + sizeof(bb_header),
+-			     HEADER_LEN - sizeof(bb_header));
++		if (lseek(outfd, data.header_gap, SEEK_CUR) < 0) {
++			perror("lseek");
++			exit(1);
++		}
++
++		ret = xwrite(outfd, buf + sizeof_bb_header,
++			     HEADER_LEN - sizeof_bb_header);
+ 		if (ret < 0) {
+ 			perror("write");
+ 			exit(1);
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+index fb6ac001e..d3786b6e1 100644
+--- a/scripts/imx/imx.c
++++ b/scripts/imx/imx.c
+@@ -222,17 +222,22 @@ struct soc_type {
+ 	char *name;
+ 	int header_version;
+ 	int cpu_type;
++	off_t header_gap;
++	uint32_t first_opcode;
+ };
+ 
++#define SZ_32K	(32 * 1024)
++
+ static struct soc_type socs[] = {
+-	{ .name = "imx25", .header_version = 1, .cpu_type = IMX_CPU_IMX25 },
+-	{ .name = "imx35", .header_version = 1, .cpu_type = IMX_CPU_IMX35 },
+-	{ .name = "imx50", .header_version = 2, .cpu_type = IMX_CPU_IMX50 },
+-	{ .name = "imx51", .header_version = 1, .cpu_type = IMX_CPU_IMX51 },
+-	{ .name = "imx53", .header_version = 2, .cpu_type = IMX_CPU_IMX53 },
+-	{ .name = "imx6", .header_version = 2, .cpu_type = IMX_CPU_IMX6 },
+-	{ .name = "imx7", .header_version = 2, .cpu_type = IMX_CPU_IMX7 },
+-	{ .name = "vf610", .header_version = 2, .cpu_type = IMX_CPU_VF610 },
++	{ .name = "imx25",  .header_version = 1, .cpu_type = IMX_CPU_IMX25,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
++	{ .name = "imx35",  .header_version = 1, .cpu_type = IMX_CPU_IMX35,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
++	{ .name = "imx50",  .header_version = 2, .cpu_type = IMX_CPU_IMX50,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
++	{ .name = "imx51",  .header_version = 1, .cpu_type = IMX_CPU_IMX51,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
++	{ .name = "imx53",  .header_version = 2, .cpu_type = IMX_CPU_IMX53,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
++	{ .name = "imx6",   .header_version = 2, .cpu_type = IMX_CPU_IMX6,   .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
++	{ .name = "imx7",   .header_version = 2, .cpu_type = IMX_CPU_IMX7,   .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
++	{ .name = "imx8mq", .header_version = 2, .cpu_type = IMX_CPU_IMX8MQ, .header_gap = SZ_32K, .first_opcode = 0x14009000 /* b 0x9000 */},
++	{ .name = "vf610",  .header_version = 2, .cpu_type = IMX_CPU_VF610,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
+ };
+ 
+ static int do_soc(struct config_data *data, int argc, char *argv[])
+@@ -249,6 +254,8 @@ static int do_soc(struct config_data *data, int argc, char *argv[])
+ 		if (!strcmp(socs[i].name, soc)) {
+ 			data->header_version = socs[i].header_version;
+ 			data->cpu_type = socs[i].cpu_type;
++			data->header_gap = socs[i].header_gap;
++			data->first_opcode = socs[i].first_opcode;
+ 
+ 			if (data->cpu_type == IMX_CPU_IMX35)
+ 				data->load_size += HEADER_LEN;
+diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
+index c7677f81a..92a3fd316 100644
+--- a/scripts/imx/imx.h
++++ b/scripts/imx/imx.h
+@@ -72,6 +72,8 @@ struct config_data {
+ 	char *outfile;
+ 	char *srkfile;
+ 	int header_version;
++	off_t header_gap;
++	uint32_t first_opcode;
+ 	int cpu_type;
+ 	int (*check)(const struct config_data *data, uint32_t cmd,
+ 		     uint32_t addr, uint32_t mask);
 -- 
 2.17.0
 
