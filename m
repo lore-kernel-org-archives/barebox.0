@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
+Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fTgEl-000786-9H
- for barebox@lists.infradead.org; Fri, 15 Jun 2018 04:21:24 +0000
-Received: by mail-pl0-x241.google.com with SMTP id z9-v6so4673618plk.11
- for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 21:21:13 -0700 (PDT)
+ id 1fTgEm-00078G-CN
+ for barebox@lists.infradead.org; Fri, 15 Jun 2018 04:21:25 +0000
+Received: by mail-pl0-x242.google.com with SMTP id c23-v6so4668677plz.12
+ for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 21:21:14 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 14 Jun 2018 21:21:00 -0700
-Message-Id: <20180615042102.12345-1-andrew.smirnov@gmail.com>
+Date: Thu, 14 Jun 2018 21:21:01 -0700
+Message-Id: <20180615042102.12345-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20180615042102.12345-1-andrew.smirnov@gmail.com>
+References: <20180615042102.12345-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,35 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] ARM: psci: Remove unused code in psci_entry()
+Subject: [PATCH 2/3] ARM: psci: Make use of set_ttbr() in
+ armv7_secure_monitor_install()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Remove what looks like a leftover code that doesn't appear to be
-referenced anywhere.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/psci.c | 6 ------
- 1 file changed, 6 deletions(-)
+ arch/arm/cpu/sm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm/cpu/psci.c b/arch/arm/cpu/psci.c
-index 435ec92cc..f63f66855 100644
---- a/arch/arm/cpu/psci.c
-+++ b/arch/arm/cpu/psci.c
-@@ -139,12 +139,6 @@ static unsigned long psci_system_reset(void)
- void psci_entry(u32 r0, u32 r1, u32 r2, u32 r3, u32 r4, u32 r5, u32 r6,
- 		struct arm_smccc_res *res)
- {
--	int mmuon;
--	unsigned long ttb;
--
--	mmuon = get_cr() & CR_M;
--	asm volatile ("mrc p15, 0, %0, c2, c0, 0" : "=r"(ttb));
--
- 	psci_printf("%s entry, function: 0x%08x\n", __func__, r0);
+diff --git a/arch/arm/cpu/sm.c b/arch/arm/cpu/sm.c
+index 5808dfd92..b0bf16405 100644
+--- a/arch/arm/cpu/sm.c
++++ b/arch/arm/cpu/sm.c
+@@ -193,8 +193,7 @@ int armv7_secure_monitor_install(void)
+ 	armv7_init_nonsec();
+ 	__armv7_secure_monitor_install();
  
- 	switch (r0) {
+-	asm volatile ("mcr p15, 0, %0, c2, c0, 0" : : "r"(ttb));
+-
++	set_ttbr((void *)ttb);
+ 	set_vbar(vbar);
+ 
+ 	if (mmuon) {
 -- 
 2.17.0
 
