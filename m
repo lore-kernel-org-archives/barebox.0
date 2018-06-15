@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x22c.google.com ([2607:f8b0:400e:c00::22c])
+Received: from mail-pf0-x231.google.com ([2607:f8b0:400e:c00::231])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fTffD-0004V1-GX
- for barebox@lists.infradead.org; Fri, 15 Jun 2018 03:44:46 +0000
-Received: by mail-pf0-x22c.google.com with SMTP id b17-v6so4232803pfi.0
- for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 20:44:29 -0700 (PDT)
+ id 1fTffG-0004Vi-Tf
+ for barebox@lists.infradead.org; Fri, 15 Jun 2018 03:44:52 +0000
+Received: by mail-pf0-x231.google.com with SMTP id h12-v6so4217996pfk.11
+ for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 20:44:32 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 14 Jun 2018 20:44:02 -0700
-Message-Id: <20180615034409.22180-4-andrew.smirnov@gmail.com>
+Date: Thu, 14 Jun 2018 20:44:05 -0700
+Message-Id: <20180615034409.22180-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20180615034409.22180-1-andrew.smirnov@gmail.com>
 References: <20180615034409.22180-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,34 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v7 03/10] clock: Use udelay() to implement mdelay()
+Subject: [PATCH v7 06/10] scripts: imx-image: Use a loop to create multiple
+ header copies
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Use a loop to create multiple header copies on i.MX35 to avoid code
+duplication.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/clock.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ scripts/imx/imx-image.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/common/clock.c b/common/clock.c
-index f98176dd5..0c6cb399b 100644
---- a/common/clock.c
-+++ b/common/clock.c
-@@ -206,9 +206,11 @@ EXPORT_SYMBOL(udelay);
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index 294f51a90..bc1f821bd 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -679,6 +679,7 @@ int main(int argc, char *argv[])
+ 	int dcd_only = 0;
+ 	int now = 0;
+ 	int sign_image = 0;
++	int i, header_copies;
+ 	struct config_data data = {
+ 		.image_dcd_offset = 0xffffffff,
+ 		.write_mem = write_mem,
+@@ -824,13 +825,9 @@ int main(int argc, char *argv[])
+ 		exit(1);
+ 	}
  
- void mdelay(unsigned long msecs)
- {
--	uint64_t start = get_time_ns();
--
--	while(!is_timeout(start, msecs * MSECOND));
-+	/*
-+	 * Parens around division below are needed to prevent ARM/EABI
-+	 * toolchain from emitting a call to __aeabi_uldivmod.
-+	 */
-+	udelay(msecs * (MSECOND / USECOND));
- }
- EXPORT_SYMBOL(mdelay);
+-	ret = xwrite(outfd, buf, HEADER_LEN);
+-	if (ret < 0) {
+-		perror("write");
+-		exit(1);
+-	}
++	header_copies = (data.cpu_type == IMX_CPU_IMX35) ? 2 : 1;
  
+-	if (data.cpu_type == IMX_CPU_IMX35) {
++	for (i = 0; i < header_copies; i++) {
+ 		ret = xwrite(outfd, buf, HEADER_LEN);
+ 		if (ret < 0) {
+ 			perror("write");
 -- 
 2.17.0
 
