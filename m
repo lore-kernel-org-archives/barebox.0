@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x22a.google.com ([2607:f8b0:400e:c01::22a])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fTg5z-0000fP-KC
- for barebox@lists.infradead.org; Fri, 15 Jun 2018 04:12:38 +0000
-Received: by mail-pl0-x22a.google.com with SMTP id 6-v6so4127442plb.0
- for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 21:12:09 -0700 (PDT)
+Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fTg6E-0005a7-AX
+ for barebox@lists.infradead.org; Fri, 15 Jun 2018 04:12:36 +0000
+Received: by mail-pl0-x242.google.com with SMTP id g20-v6so4676444plq.1
+ for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 21:12:24 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 14 Jun 2018 21:11:21 -0700
-Message-Id: <20180615041136.23492-16-andrew.smirnov@gmail.com>
+Date: Thu, 14 Jun 2018 21:11:33 -0700
+Message-Id: <20180615041136.23492-28-andrew.smirnov@gmail.com>
 In-Reply-To: <20180615041136.23492-1-andrew.smirnov@gmail.com>
 References: <20180615041136.23492-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,79 +23,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/27] console: Drop ARCH_HAS_CTRLC
+Subject: [PATCH 24/27] console: Simplify dputs()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-If we declare our default ctrlc() implementation as __weak we should
-be easily override it with a platform specific implementation without
-needing ARCH_HAS_CTRLC.
+Knowing that puts() is just a wrapper around a call to
+console_puts(CONSOLE_STDOUT, str) we can simplify the code of
+dputs(). While at it, make use of *_FILENO constants to get rid of
+magic numbers.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/sandbox/include/asm/common.h | 2 --
- include/stdio.h                   | 9 ---------
- lib/console.c                     | 9 +++++----
- 3 files changed, 5 insertions(+), 15 deletions(-)
+ common/console_common.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/arch/sandbox/include/asm/common.h b/arch/sandbox/include/asm/common.h
-index 9b8bd2d94..b0e6b7fb1 100644
---- a/arch/sandbox/include/asm/common.h
-+++ b/arch/sandbox/include/asm/common.h
-@@ -1,6 +1,4 @@
- #ifndef ASM_COMMON_H
- #define ASM_COMMON_H
+diff --git a/common/console_common.c b/common/console_common.c
+index ce7e50dbc..6e098b27d 100644
+--- a/common/console_common.c
++++ b/common/console_common.c
+@@ -355,11 +355,19 @@ EXPORT_SYMBOL(dprintf);
  
--#define ARCH_HAS_CTRLC
--
- #endif /* ASM_COMMON_H */
-diff --git a/include/stdio.h b/include/stdio.h
-index f5004cd07..d918f3682 100644
---- a/include/stdio.h
-+++ b/include/stdio.h
-@@ -22,15 +22,6 @@ int vasprintf(char **strp, const char *fmt, va_list ap);
- int vsnprintf(char *buf, size_t size, const char *fmt, va_list args);
- int vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
- 
--#if !defined(ARCH_HAS_CTRLC) && \
--	(defined(CONFIG_CONSOLE_NONE) || defined(__PBL__))
--/* test if ctrl-c was pressed */
--static inline int ctrlc (void)
--{
--	return 0;
--}
--#endif /* ARCH_HAS_CTRLC */
--
- #ifndef CONFIG_CONSOLE_NONE
- /* stdin */
- int tstc(void);
-diff --git a/lib/console.c b/lib/console.c
-index 356392e54..12c0ae2de 100644
---- a/lib/console.c
-+++ b/lib/console.c
-@@ -205,10 +205,12 @@ __weak int console_puts(unsigned int ch, const char *str)
- 	return __console_puts(__console_get_default(), str);
- }
- 
--#if !defined(ARCH_HAS_CTRLC) && !defined(__PBL__)
- /* test if ctrl-c was pressed */
--int ctrlc (void)
-+__weak int ctrlc (void)
+ int dputs(int fd, const char *s)
  {
-+	if (IS_ENABLED(__PBL__) || IS_ENABLED(CONFIG_CONSOLE_NONE))
-+		return 0;
+-	if (fd == 1)
+-		return puts(s);
+-	else if (fd == 2)
+-		return console_puts(CONSOLE_STDERR, s);
+-	else
++	unsigned int ch;
 +
- 	if (IS_ENABLED(CONFIG_CONSOLE_FULL))
- 		poller_call();
- 
-@@ -216,5 +218,4 @@ int ctrlc (void)
- 		return 1;
- 	return 0;
++	switch (fd) {
++	case STDOUT_FILENO:
++		ch = CONSOLE_STDOUT;
++		break;
++	case STDERR_FILENO:
++		ch = CONSOLE_STDERR;
++		break;
++	default:
+ 		return write(fd, s, strlen(s));
++	}
++
++	return console_puts(ch, s);
  }
--EXPORT_SYMBOL(ctrlc);
--#endif /* ARCH_HAS_CTRC */
-\ No newline at end of file
-+EXPORT_SYMBOL(ctrlc);
+ EXPORT_SYMBOL(dputs);
 \ No newline at end of file
 -- 
 2.17.0
