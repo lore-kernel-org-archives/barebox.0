@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x243.google.com ([2607:f8b0:400e:c01::243])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fTg6E-00032C-7U
- for barebox@lists.infradead.org; Fri, 15 Jun 2018 04:12:36 +0000
-Received: by mail-pl0-x243.google.com with SMTP id w17-v6so4674818pll.9
- for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 21:12:21 -0700 (PDT)
+Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fTg61-0000hr-TW
+ for barebox@lists.infradead.org; Fri, 15 Jun 2018 04:12:43 +0000
+Received: by mail-pl0-x242.google.com with SMTP id z9-v6so4663759plk.11
+ for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 21:12:11 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 14 Jun 2018 21:11:31 -0700
-Message-Id: <20180615041136.23492-26-andrew.smirnov@gmail.com>
+Date: Thu, 14 Jun 2018 21:11:23 -0700
+Message-Id: <20180615041136.23492-18-andrew.smirnov@gmail.com>
 In-Reply-To: <20180615041136.23492-1-andrew.smirnov@gmail.com>
 References: <20180615041136.23492-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,83 +23,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 22/27] console: Convert pr_print into a single line #define
+Subject: [PATCH 14/27] console: Consolidate DEBUG_LL and CONSOLE_* puts()
+ implementations
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-If we change dev_printf() to not print device related info at the
-start if NULL is passed as device pointer, we can easliy use that
-function to do what pr_print does. With this change we can convert
-pr_print to be a simple macro that expands into a dev_printf() and
-drop a bit of exctra code.
+Similar to previous commit, consolidate DEBUG_LL and CONSOLE_* puts()
+implementations by putting them into a shared macro.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/console_common.c | 28 +++++-----------------------
- include/printk.h        |  3 +--
- 2 files changed, 6 insertions(+), 25 deletions(-)
+ include/debug_ll.h | 23 +++++++++++++++++++----
+ lib/console.c      | 13 ++++++-------
+ 2 files changed, 25 insertions(+), 11 deletions(-)
 
-diff --git a/common/console_common.c b/common/console_common.c
-index f440a9448..296b181d9 100644
---- a/common/console_common.c
-+++ b/common/console_common.c
-@@ -124,26 +124,6 @@ static void print_colored_log_level(const int level)
- 	pr_puts(level, colored_log_level[level]);
+diff --git a/include/debug_ll.h b/include/debug_ll.h
+index 4032ced95..4dcbd0434 100644
+--- a/include/debug_ll.h
++++ b/include/debug_ll.h
+@@ -54,6 +54,24 @@
+ 		__n;				\
+ 	})
+ 
++/**
++ * __do_puts - Macro implementing puts()
++ *
++ * @__putc:	Single argument or a macro that implements putc()
++ * @___s:	String to print
++ *
++ * Internal macro used to implement puts_ll() and __console_puts()
++ */
++#define __do_puts(__putc, ___s)			\
++	({					\
++		const char *__s = (___s);	\
++		int __n = 0;			\
++						\
++		while (*__s)			\
++			__n += __putc(*__s++);	\
++		__n;				\
++	})
++
+ #if defined (CONFIG_DEBUG_LL)
+ 
+ static inline void __putc_ll(char value)
+@@ -80,10 +98,7 @@ static inline int putc_ll(char value);
+  */
+ static inline void puts_ll(const char * str)
+ {
+-	while (*str) {
+-		putc_ll(*str);
+-		str++;
+-	}
++	__do_puts(putc_ll, str);
  }
  
--int pr_print(int level, const char *fmt, ...)
--{
--	va_list args;
--	int i;
--	char printbuffer[CFG_PBSIZE];
--
--	if (!IS_ENABLED(CONFIG_LOGBUF) && level > barebox_loglevel)
--		return 0;
--
--	print_colored_log_level(level);
--
--	va_start(args, fmt);
--	i = vsprintf(printbuffer, fmt, args);
--	va_end(args);
--
--	pr_puts(level, printbuffer);
--
--	return i;
--}
--
- int dev_printf(int level, const struct device_d *dev, const char *format, ...)
- {
- 	va_list args;
-@@ -155,10 +135,12 @@ int dev_printf(int level, const struct device_d *dev, const char *format, ...)
- 
- 	print_colored_log_level(level);
- 
--	if (dev->driver && dev->driver->name)
--		ret += sprintf(printbuffer, "%s ", dev->driver->name);
-+	if (dev) {
-+		if (dev->driver && dev->driver->name)
-+			ret += sprintf(printbuffer, "%s ", dev->driver->name);
- 
--	ret += sprintf(printbuffer + ret, "%s: ", dev_name(dev));
-+		ret += sprintf(printbuffer + ret, "%s: ", dev_name(dev));
-+	}
- 
- 	va_start(args, format);
- 
-diff --git a/include/printk.h b/include/printk.h
-index 9f1831fbe..2bf0cb25b 100644
---- a/include/printk.h
-+++ b/include/printk.h
-@@ -35,8 +35,7 @@ static inline int dev_printf(int level, const struct device_d *dev, const char *
- #endif
- 
- #if (!defined(__PBL__) && !defined(CONFIG_CONSOLE_NONE))
--int pr_print(int level, const char *format, ...)
--	__attribute__ ((format(__printf__, 2, 3)));
-+#define pr_print(level, format, arg...)	dev_printf(level, NULL, format, ## arg)
- #elif defined(__PBL__) && defined(CONFIG_PBL_CONSOLE)
- #define pr_print(level, format, arg...)	printf(format, ## arg)
  #else
+diff --git a/lib/console.c b/lib/console.c
+index f97deca97..91c446d6e 100644
+--- a/lib/console.c
++++ b/lib/console.c
+@@ -177,14 +177,13 @@ __weak void console_putc(unsigned int ch, char c)
+  */
+ int __console_puts(struct console_device *cdev, const char *str)
+ {
+-	int n = 0;
+-
+-	while (*str) {
+-		n += __console_putc(cdev, *str);
+-		str++;
+-	}
++/*
++ * __do_puts expects a macro or a function of a single argument so we
++ * create this dummy adapter to work around that
++ */
++#define __CONSOLE_PUTC(__c)	__console_putc(cdev, __c)
+ 
+-	return n;
++	return __do_puts(__CONSOLE_PUTC, str);
+ }
+ 
+ /**
 -- 
 2.17.0
 
