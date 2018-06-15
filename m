@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x230.google.com ([2607:f8b0:4001:c0b::230])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fTnZt-0006vY-5a
- for barebox@lists.infradead.org; Fri, 15 Jun 2018 12:11:43 +0000
-Received: by mail-it0-x230.google.com with SMTP id p185-v6so2374777itp.4
- for <barebox@lists.infradead.org>; Fri, 15 Jun 2018 05:11:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20180615041136.23492-1-andrew.smirnov@gmail.com>
- <20180615092857.yrvh4pgs4ccu2pum@pengutronix.de>
-In-Reply-To: <20180615092857.yrvh4pgs4ccu2pum@pengutronix.de>
+ id 1fTg5n-0000cD-7c
+ for barebox@lists.infradead.org; Fri, 15 Jun 2018 04:12:18 +0000
+Received: by mail-pg0-x241.google.com with SMTP id w8-v6so827001pgp.7
+ for <barebox@lists.infradead.org>; Thu, 14 Jun 2018 21:11:56 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 15 Jun 2018 05:11:17 -0700
-Message-ID: <CAHQ1cqGXm=cBNq0SnWm33QrXDzeiexUsWm_YG5dp1jT+PXoH-w@mail.gmail.com>
+Date: Thu, 14 Jun 2018 21:11:10 -0700
+Message-Id: <20180615041136.23492-5-andrew.smirnov@gmail.com>
+In-Reply-To: <20180615041136.23492-1-andrew.smirnov@gmail.com>
+References: <20180615041136.23492-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,88 +18,272 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/27] Console code consolidation
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 02/27] console: Unify console_simple.c and pbl/console.c
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Fri, Jun 15, 2018 at 2:28 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> Hi Andrey,
->
-> On Thu, Jun 14, 2018 at 09:11:06PM -0700, Andrey Smirnov wrote:
-> > Everyone:
-> >
-> > While debugging the reason behind print_hex_dump() not producing
-> > carriage return properly, when used in PBL, I realised that current
-> > codebase contained:
-> >
-> >  - at least 5 places where '\n' was replaced with '\n\r'
-> >  - at least 3 almost identical implementations of puts()
-> >  - at least 3 almost identical implementations of printf()
-> >
-> > so this patcheset is an attempt to consolidate, share and simplify
-> > console related code.
->
-> The console support really deserves some cleanup. We have the LL console
-> support, PBL console support, regular console support and simple console
-> support, all mixed into a single codebase so that it's sometimes really
-> hard to understand what is going on.
->
-> Instead of optimizing the different variants for better code sharing I
-> wonder if we could not consolidate some of the console types to reduce
-> the number of variants in the code.  PBL console works by calling
-> pbl_set_putc() to specify a putc function.  PUTC_LL instead works by
-> putting a PUTC_LL function into a SoC specific header function. Instead
-> each board could provide its own putc function, say board_putc() or so.
-> This would be enough to replace the DEBUG_LL and the PBL console
-> support.
->
+Move all of the shared code into lib/console.c and convert both files
+to use that.
 
-- That still leaves psci_set_putc(), which currently is handled the
-same way pbl_set_putc() does
-- Dropping pbl_set_putc(), would require making direct changes to the
-code for boards I don't have access to (as opposed to indirect API
-changes that I can test with on boards that I do have)
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ common/console_simple.c |  11 +---
+ include/console.h       |   8 +++
+ lib/Makefile            |   6 +-
+ lib/console.c           | 130 ++++++++++++++++++++++++++++++++++++++++
+ pbl/console.c           |  15 +----
+ 5 files changed, 148 insertions(+), 22 deletions(-)
+ create mode 100644 lib/console.c
 
-IMHO, what you are proposing is orthogonal to the work in this
-patchset. One can unify PUTC_LL and pbl_set_putc() usecases, but it
-wouldn't change the fact that PBL code has it's own, yet another,
-implementation of puts() and printf().
+diff --git a/common/console_simple.c b/common/console_simple.c
+index 9675cbb0a..62b811b3f 100644
+--- a/common/console_simple.c
++++ b/common/console_simple.c
+@@ -7,7 +7,7 @@
+ 
+ LIST_HEAD(console_list);
+ EXPORT_SYMBOL(console_list);
+-static struct console_device *console;
++extern struct console_device *console;
+ 
+ int console_puts(unsigned int ch, const char *str)
+ {
+@@ -28,14 +28,7 @@ EXPORT_SYMBOL(console_puts);
+ 
+ void console_putc(unsigned int ch, char c)
+ {
+-	if (!console) {
+-		putc_ll(c);
+-		return;
+-	}
+-
+-	console->putc(console, c);
+-	if (c == '\n')
+-		console->putc(console, '\r');
++	__console_putc(__console_get_default(), c);
+ }
+ EXPORT_SYMBOL(console_putc);
+ 
+diff --git a/include/console.h b/include/console.h
+index c671be859..b3001ad16 100644
+--- a/include/console.h
++++ b/include/console.h
+@@ -69,6 +69,7 @@ struct console_device {
+ 	struct cdev_operations fops;
+ 
+ 	struct serdev_device serdev;
++	void *ctx;
+ };
+ 
+ static inline struct serdev_device *to_serdev_device(struct device_d *d)
+@@ -209,4 +210,11 @@ static inline void pbl_set_putc(putc_func_t putcf, void *ctx) {}
+ 
+ bool console_allow_color(void);
+ 
++void __cdev_putc(struct console_device *cdev, char c);
++void __console_putc(struct console_device *cdev, char c);
++
++struct console_device *__console_get_default(void);
++void __console_set_putc(struct console_device *cdev,
++			putc_func_t putcf, void *ctx);
++
+ #endif
+diff --git a/lib/Makefile b/lib/Makefile
+index 09c250a1c..44188dc5a 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -65,4 +65,8 @@ obj-y			+= int_sqrt.o
+ obj-y			+= parseopt.o
+ obj-y			+= clz_ctz.o
+ obj-$(CONFIG_CRC_CCITT) += crc-ccitt.o
+-obj-pbl-y		+= clock.o
+\ No newline at end of file
++obj-pbl-y		+= clock.o
++pbl-$(CONFIG_PBL_CONSOLE)	+= console.o
++obj-$(CONFIG_CONSOLE_FULL)	+= console.o
++obj-$(CONFIG_CONSOLE_SIMPLE)	+= console.o
++
+diff --git a/lib/console.c b/lib/console.c
+new file mode 100644
+index 000000000..d2d2ae775
+--- /dev/null
++++ b/lib/console.c
+@@ -0,0 +1,130 @@
++// SPDX-License-Identifier: GPL-2.0+
++
++/*
++ * File containing all of the console-related code that is used by all
++ * possible consumers: PBL, CONSOLE_FULL, CONSOLE_SIMPLE, etc.
++ *
++ * Copyright (C) 2018 Zodiac Inflight Innovations
++ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
++ */
++
++#include <debug_ll.h>
++#include <console.h>
++
++/*
++ * Put this in the data section so that it survives the clearing of
++ * the BSS segment.
++ */
++#define __data __attribute__ ((section(".data")))
++
++/**
++ * console_ll - most basic low-level console
++ */
++__data struct console_device console_ll = {
++	.putc = NULL,
++	.ctx  = NULL,
++};
++__data struct console_device *console;
++
++/**
++ * __console_ll_putc - Early, most primitive putc() implemenatation
++ *
++ * Internal function used as a .putc() callback in console_ll when
++ * nothing better is configured.
++ */
++static void __console_ll_putc(struct console_device *cdev, char c)
++{
++	putc_ll(c);
++}
++
++/**
++ * __console_get_default - Return default output console
++ *
++ * Internal function used to determine which console to use for early
++ * output. It has the following two use-cases:
++ *
++ *   1. PBL, where it falls back onto console_ll and whatever it is
++ *      set up to (either putc_ll or custome callback set with
++ *      pbl_set_putc())
++ *
++ *   2. CONSOLE_SIMPLE, where it falls back onto console_ll (which in
++ *      this case always boils down to a putc_ll() call) until first
++ *      (and only) console is registered via console_register().
++ */
++struct console_device *__console_get_default(void)
++{
++	/*
++	 * Doing on-demand initialization here as opposed to in the
++	 * definition of console_ll above has that advantage that on
++	 * some architecutres (e.g. AArch64) it allows us to avoid
++	 * additional relocation and makes it possible to use console
++	 * infrastructure before any relocation happens
++	 */
++	if (unlikely(!console_ll.putc))
++		console_ll.putc = __console_ll_putc;
++
++	if (IS_ENABLED(__PBL__) || !console)
++		return &console_ll;
++
++	return console;
++}
++
++/**
++ * __console_set_putc - Early console initalization helper
++ *
++ * @cdev:	Console device to initialize
++ * @putcf:	putc() implementation to be used for this console
++ * @ctx:	Context to pass to putc()
++ *
++ * Internal function used to initialize early/trivial console devices
++ * capable of only outputting a single character
++ */
++void __console_set_putc(struct console_device *cdev,
++			putc_func_t putcf, void *ctx)
++{
++	cdev->putc = (void *)putcf;
++	cdev->ctx = ctx;
++}
++
++/**
++ * __cdev_putc - Internal .putc() callback dispatcher
++ *
++ * @cdev:	Console device to use
++ * @c:		Character to print
++ *
++ * Internal .putc() callback dispatcher needed to correctly select
++ * which context to pass.
++ *
++ * This is needed becuase when being used in PBL in conjunction with
++ * pbl_set_putc(), .putc() callback is expecting to receive a void *
++ * context that was registered earlier.
++ *
++ * In the "normal" world, however all of the .putc() callback are
++ * written with expectation of receiving struct console_device * as a
++ * first argument.
++ *
++ * Accomodation of both of those use-cases is the purpoese of this
++ * function
++ */
++void __cdev_putc(struct console_device *cdev, char c)
++{
++	void *ctx = cdev->ctx ? : cdev;
++
++	cdev->putc(ctx, c);
++}
++
++/**
++ * __console_putc - Internal high-level putc() implementation
++ *
++ * @cdev:	Console device to use
++ * @c:		Character to print
++ *
++ * Internal high-level putc() implementation based on __cdev_putc()
++ * that performs correct '\n' -> '\n\r' substitution.
++ */
++void __console_putc(struct console_device *cdev, char c)
++{
++	__cdev_putc(cdev, c);
++	if (c == '\n')
++		__cdev_putc(cdev, '\r');
++}
+diff --git a/pbl/console.c b/pbl/console.c
+index 75576ec79..c1c3e1dde 100644
+--- a/pbl/console.c
++++ b/pbl/console.c
+@@ -2,12 +2,7 @@
+ #include <debug_ll.h>
+ #include <linux/err.h>
+ 
+-/*
+- * Put these in the data section so that they survive the clearing of the
+- * BSS segment.
+- */
+-static __attribute__ ((section(".data"))) putc_func_t __putc;
+-static __attribute__ ((section(".data"))) void *putc_ctx;
++extern struct console_device console_ll;
+ 
+ /**
+  * pbl_set_putc() - setup UART used for PBL console
+@@ -19,16 +14,12 @@ static __attribute__ ((section(".data"))) void *putc_ctx;
+  */
+ void pbl_set_putc(putc_func_t putcf, void *ctx)
+ {
+-	__putc = putcf;
+-	putc_ctx = ctx;
++	__console_set_putc(&console_ll, putcf, ctx);
+ }
+ 
+ void console_putc(unsigned int ch, char c)
+ {
+-	if (__putc)
+-		__putc(putc_ctx, c);
+-	else
+-		putc_ll(c);
++	__cdev_putc(__console_get_default(), c);
+ }
+ 
+ int console_puts(unsigned int ch, const char *str)
+-- 
+2.17.0
 
-I guess what I am saying is that I don't see a reason why one has to
-be done _instead_ of the other and simplification that you propose
-could (and IMHO should) be done on top of this work.
-
-More importantly, I think that that work is really outside of the
-scope of this patch. I am happy to bring this patchset over the finish
-line and get it into merge-able state, but I already spent as much
-time as I could on this, so any further improvement might have to wait
-until some other time or some other developer.
-
-> Then I don't like weak functions. It can provide nifty solutions to some
-> problems, but I think it also often leads to situations where you don't
-> really know if something has been overwritten or with what is has been
-> overwritten with.
-
-And with #ifdefs you do? I regularly find myself having to inject
-#error statements or look at the final disassembly to make sure I
-interpret the preprocessor logic right, but that might be my unique
-experience.
-
-> I don't consider replacing ifdefs with weak functions
-> a general improvment.
->
-
-OK, do you want me to get rid of all of the uses of __weak in this
-patch set or does your comment apply only to "console: Drop
-ARCH_HAS_CTRLC"?
-
-Thanks,
-Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
