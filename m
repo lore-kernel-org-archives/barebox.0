@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x243.google.com ([2607:f8b0:4001:c06::243])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fV0iv-0000bX-H5
- for barebox@lists.infradead.org; Mon, 18 Jun 2018 20:26:02 +0000
-Received: by mail-io0-x243.google.com with SMTP id r24-v6so18022138ioh.9
- for <barebox@lists.infradead.org>; Mon, 18 Jun 2018 13:25:50 -0700 (PDT)
-MIME-Version: 1.0
+ id 1fV0fp-0007XE-MU
+ for barebox@lists.infradead.org; Mon, 18 Jun 2018 20:22:51 +0000
+Date: Mon, 18 Jun 2018 22:22:38 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180618202237.pxfxnmp2eb2mp62o@pengutronix.de>
 References: <20180615041136.23492-1-andrew.smirnov@gmail.com>
- <20180615041136.23492-17-andrew.smirnov@gmail.com>
- <20180618201837.w643qn2tddubbg5z@pengutronix.de>
-In-Reply-To: <20180618201837.w643qn2tddubbg5z@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 18 Jun 2018 13:25:37 -0700
-Message-ID: <CAHQ1cqHLFb9UEfJGU8JW2kwX+Ww2V-bUgMkqZfAZbZzw9V0s-g@mail.gmail.com>
+ <20180615041136.23492-18-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180615041136.23492-18-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,82 +23,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 13/27] console: Consolidate DEBUG_LL and CONSOLE_* '\n' ->
- '\n\r' code
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 14/27] console: Consolidate DEBUG_LL and CONSOLE_* puts()
+ implementations
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Mon, Jun 18, 2018 at 1:18 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Thu, Jun 14, 2018 at 09:11:22PM -0700, Andrey Smirnov wrote:
-> > Consolidate code doing '\n' -> '\n\r' compensation in DEBUG_LL and
-> > CONSOLE_* subsystems. While at it move it from puts_ll() to putc_ll()
-> > in order to match the semantics of other puts()/putc()
-> > implementations.
-> >
-> > This is done as a macro in order to avoid putting any restrictions on
-> > the signature of __putc.
-> >
-> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > ---
-> >  include/debug_ll.h | 38 ++++++++++++++++++++++++++++++++------
-> >  lib/console.c      | 17 +++++++----------
-> >  2 files changed, 39 insertions(+), 16 deletions(-)
-> >
-> > diff --git a/include/debug_ll.h b/include/debug_ll.h
-> > index 504751639..4032ced95 100644
-> > --- a/include/debug_ll.h
-> > +++ b/include/debug_ll.h
-> > @@ -31,9 +31,32 @@
-> >  #include <mach/debug_ll.h>
-> >  #endif
-> >
-> > +/**
-> > + * __do_putc - Macro implementing '\n'-> '\n\r' substituting putc()
-> > + *
-> > + * @__putc:  Single argument or a macro that implements plain putc()
-> > + * @__c:     Character to print
-> > + *
-> > + * Internal macro used to implement putc_ll() and __console_putc() and
-> > + * intended to be the only place where '\n' -> '\n\r' substitution is
-> > + * codified
-> > + */
-> > +#define __do_putc(__putc, ___c)                      \
-> > +     ({                                      \
-> > +             typeof(___c) __c = (___c);      \
-> > +             int __n = 1;                    \
-> > +                                             \
-> > +             __putc(__c);                    \
-> > +             if (__c == '\n') {              \
-> > +                     __putc('\r');           \
-> > +                     __n = 2;                \
-> > +             }                               \
-> > +             __n;                            \
-> > +     })
-> > +
-> >  #if defined (CONFIG_DEBUG_LL)
-> >
->
-> ...
->
-> > +/*
-> > + * __do_putc expects a macro or a function of a single argument so we
-> > + * create this dummy adapter to work around that
-> > + */
-> > +#define __CDEV_PUTC(__c)     __cdev_putc(cdev, __c)
-> > +
-> > +     return __do_putc(__CDEV_PUTC, c);
-> >  }
->
-> Creating a macro for the "\n" -> "\r\n" conversion doesn't look like an
-> improvement to me, especially when another macro is necessary to make
-> the first one usable.
->
+On Thu, Jun 14, 2018 at 09:11:23PM -0700, Andrey Smirnov wrote:
+> Similar to previous commit, consolidate DEBUG_LL and CONSOLE_* puts()
+> implementations by putting them into a shared macro.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  include/debug_ll.h | 23 +++++++++++++++++++----
+>  lib/console.c      | 13 ++++++-------
+>  2 files changed, 25 insertions(+), 11 deletions(-)
+> 
+> diff --git a/include/debug_ll.h b/include/debug_ll.h
+> index 4032ced95..4dcbd0434 100644
+> --- a/include/debug_ll.h
+> +++ b/include/debug_ll.h
+> @@ -54,6 +54,24 @@
+>  		__n;				\
+>  	})
+>  
+> +/**
+> + * __do_puts - Macro implementing puts()
+> + *
+> + * @__putc:	Single argument or a macro that implements putc()
+> + * @___s:	String to print
+> + *
+> + * Internal macro used to implement puts_ll() and __console_puts()
+> + */
+> +#define __do_puts(__putc, ___s)			\
+> +	({					\
+> +		const char *__s = (___s);	\
+> +		int __n = 0;			\
+> +						\
+> +		while (*__s)			\
+> +			__n += __putc(*__s++);	\
+> +		__n;				\
+> +	})
 
-OK, will drop this in v2.
+I don't like this. It's a simple loop and there's nothing bad with it
+when the same loop is present twice in barebox. No need to dig into
+CPP here.
 
-Thanks,
-Andrey Smirnov
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
