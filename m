@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fVAKY-0003Wx-Id
- for barebox@lists.infradead.org; Tue, 19 Jun 2018 06:41:32 +0000
+ id 1fV0by-0005v3-Ka
+ for barebox@lists.infradead.org; Mon, 18 Jun 2018 20:18:52 +0000
+Date: Mon, 18 Jun 2018 22:18:37 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 19 Jun 2018 08:41:17 +0200
-Message-Id: <20180619064117.13904-5-s.hauer@pengutronix.de>
-In-Reply-To: <20180619064117.13904-1-s.hauer@pengutronix.de>
-References: <20180619064117.13904-1-s.hauer@pengutronix.de>
+Message-ID: <20180618201837.w643qn2tddubbg5z@pengutronix.de>
+References: <20180615041136.23492-1-andrew.smirnov@gmail.com>
+ <20180615041136.23492-17-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180615041136.23492-17-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,38 +19,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] console_simple: add newline conversion for putc_ll case
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 13/27] console: Consolidate DEBUG_LL and CONSOLE_* '\n'
+ -> '\n\r' code
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-When console_putc uses putc_ll for early printing then it must
-do a newline conversion as putc_ll doesn't do it.
+On Thu, Jun 14, 2018 at 09:11:22PM -0700, Andrey Smirnov wrote:
+> Consolidate code doing '\n' -> '\n\r' compensation in DEBUG_LL and
+> CONSOLE_* subsystems. While at it move it from puts_ll() to putc_ll()
+> in order to match the semantics of other puts()/putc()
+> implementations.
+> 
+> This is done as a macro in order to avoid putting any restrictions on
+> the signature of __putc.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  include/debug_ll.h | 38 ++++++++++++++++++++++++++++++++------
+>  lib/console.c      | 17 +++++++----------
+>  2 files changed, 39 insertions(+), 16 deletions(-)
+> 
+> diff --git a/include/debug_ll.h b/include/debug_ll.h
+> index 504751639..4032ced95 100644
+> --- a/include/debug_ll.h
+> +++ b/include/debug_ll.h
+> @@ -31,9 +31,32 @@
+>  #include <mach/debug_ll.h>
+>  #endif
+>  
+> +/**
+> + * __do_putc - Macro implementing '\n'-> '\n\r' substituting putc()
+> + *
+> + * @__putc:	Single argument or a macro that implements plain putc()
+> + * @__c:	Character to print
+> + *
+> + * Internal macro used to implement putc_ll() and __console_putc() and
+> + * intended to be the only place where '\n' -> '\n\r' substitution is
+> + * codified
+> + */
+> +#define __do_putc(__putc, ___c)			\
+> +	({					\
+> +		typeof(___c) __c = (___c);	\
+> +		int __n = 1;			\
+> +						\
+> +		__putc(__c);			\
+> +		if (__c == '\n') {		\
+> +			__putc('\r');		\
+> +			__n = 2;		\
+> +		}				\
+> +		__n;				\
+> +	})
+> +
+>  #if defined (CONFIG_DEBUG_LL)
+>  
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/console_simple.c | 2 ++
- 1 file changed, 2 insertions(+)
+...
 
-diff --git a/common/console_simple.c b/common/console_simple.c
-index ee87b8c52f..385da2fd86 100644
---- a/common/console_simple.c
-+++ b/common/console_simple.c
-@@ -27,6 +27,8 @@ EXPORT_SYMBOL(console_puts);
- void console_putc(unsigned int ch, char c)
- {
- 	if (!console) {
-+		if (c == '\n')
-+			putc_ll('\r');
- 		putc_ll(c);
- 		return;
- 	}
+> +/*
+> + * __do_putc expects a macro or a function of a single argument so we
+> + * create this dummy adapter to work around that
+> + */
+> +#define __CDEV_PUTC(__c)	__cdev_putc(cdev, __c)
+> +	
+> +	return __do_putc(__CDEV_PUTC, c);
+>  }
+
+Creating a macro for the "\n" -> "\r\n" conversion doesn't look like an
+improvement to me, especially when another macro is necessary to make
+the first one usable.
+
+Sascha
+
 -- 
-2.17.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
