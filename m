@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-it0-x242.google.com ([2607:f8b0:4001:c0b::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fVCMC-0002AU-Te
- for barebox@lists.infradead.org; Tue, 19 Jun 2018 08:51:22 +0000
-Message-ID: <1529398268.7211.9.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 19 Jun 2018 10:51:08 +0200
-In-Reply-To: <20180619054307.30618-1-andrew.smirnov@gmail.com>
+ id 1fVJuf-0004So-K3
+ for barebox@lists.infradead.org; Tue, 19 Jun 2018 16:55:27 +0000
+Received: by mail-it0-x242.google.com with SMTP id j135-v6so1401192itj.1
+ for <barebox@lists.infradead.org>; Tue, 19 Jun 2018 09:55:15 -0700 (PDT)
+MIME-Version: 1.0
 References: <20180619054307.30618-1-andrew.smirnov@gmail.com>
-Mime-Version: 1.0
+ <1529398268.7211.9.camel@pengutronix.de>
+In-Reply-To: <1529398268.7211.9.camel@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 19 Jun 2018 09:55:02 -0700
+Message-ID: <CAHQ1cqHsVi8pftSbWB8dGQm_ZnxUt+ua2CDqiGUF0q3_AGGn2w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,28 +20,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/2] ARM: babbage: Make PMIC initialization shareable
-To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-QW0gTW9udGFnLCBkZW4gMTguMDYuMjAxOCwgMjI6NDMgLTA3MDAgc2NocmllYiBBbmRyZXkgU21p
-cm5vdjoKPiBTb21lIGJvYXJkIGRlc2lnbnMgY29weSBpLk1YNTEgQmFiYmFkZ2UgYm9hcmQncyBQ
-TUlDIGRlc2lnbiBhbmQgc28KPiByZXF1aXJlIGV4YWN0bHkgdGhlIHNhbWUgaW5pdGlhbGl6YXRp
-b24uIE1vdmUgY29ycmVzcG9kaW5nIGNvZGUgaW50byBhCj4gc2VwYXJhdGUgZmlsZSwgYWRkIG5l
-dyBjb21wYXRpYmxpdHkgc3RyaW5nIGFuZCBtYWtlIGFwcHJvcHJpYXRlCj4gS2NvbmZpZyBjaGFu
-Z2UgdG8gYWxsb3cgb3RoZXIgYm9hcmRzIHRvIHNoYXJlIHRoYXQgY29kZS4KPiAKPiA+IFNpZ25l
-ZC1vZmYtYnk6IEFuZHJleSBTbWlybm92IDxhbmRyZXcuc21pcm5vdkBnbWFpbC5jb20+Cj4gLS0t
-CgpbLi4uXQoKPiArc3RhdGljIGludCBpbXg1MV9iYWJiYWdlX3Bvd2VyX2luaXQodm9pZCkKPiAr
-ewo+ID4gKwlpZiAoIW9mX21hY2hpbmVfaXNfY29tcGF0aWJsZSgiZnNsLGlteDUxLWJhYmJhZ2Ui
-KSAmJgo+ID4gKwnCoMKgwqDCoCFvZl9tYWNoaW5lX2lzX2NvbXBhdGlibGUoImZzbCxpbXg1MS1i
-YWJiYWdlLXBvd2VyIikpCj4gPiArCQlyZXR1cm4gMDsKPiArCj4gPiArCW1jMTN4eHhfcmVnaXN0
-ZXJfaW5pdF9jYWxsYmFjayhiYWJiYWdlX3Bvd2VyX2luaXQpOwoKSSB0aGluayBpdCB3b3VsZCBi
-ZSBiZXR0ZXIgZm9yIHRoZSBib2FyZCBjb2RlIHRvIGV4cGxpY2l0bHkgY2FsbCB0aGlzCnNldHVw
-IGZ1bmN0aW9uLiBHYXRpbmcgdGhpcyBieSBEVCBjb21wYXRpYmxlIGlzIGEgYml0IHRvbyBtdWNo
-IG1hZ2ljLgoKUmVnYXJkcywKTHVjYXMKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+On Tue, Jun 19, 2018 at 1:51 AM Lucas Stach <l.stach@pengutronix.de> wrote:
+>
+> Am Montag, den 18.06.2018, 22:43 -0700 schrieb Andrey Smirnov:
+> > Some board designs copy i.MX51 Babbadge board's PMIC design and so
+> > require exactly the same initialization. Move correspoding code into a
+> > separate file, add new compatiblity string and make appropriate
+> > Kconfig change to allow other boards to share that code.
+> >
+> > > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> > ---
+>
+> [...]
+>
+> > +static int imx51_babbage_power_init(void)
+> > +{
+> > > +   if (!of_machine_is_compatible("fsl,imx51-babbage") &&
+> > > +       !of_machine_is_compatible("fsl,imx51-babbage-power"))
+> > > +           return 0;
+> > +
+> > > +   mc13xxx_register_init_callback(babbage_power_init);
+>
+> I think it would be better for the board code to explicitly call this
+> setup function. Gating this by DT compatible is a bit too much magic.
+>
+
+Where do you see magic here? There's nothing unusual in gating board
+initialization code on "compatible", it's used all over the place. And
+having multiple level of compatibility one of the intended use-cases
+of "compatible" property.
+
+Thanks,
+Andrey Smirnov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
