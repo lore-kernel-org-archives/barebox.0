@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x244.google.com ([2607:f8b0:400e:c05::244])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fV9QX-0003O8-Be
- for barebox@lists.infradead.org; Tue, 19 Jun 2018 05:43:42 +0000
-Received: by mail-pg0-x244.google.com with SMTP id a14-v6so8626686pgw.10
- for <barebox@lists.infradead.org>; Mon, 18 Jun 2018 22:43:26 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 18 Jun 2018 22:43:07 -0700
-Message-Id: <20180619054307.30618-2-andrew.smirnov@gmail.com>
-In-Reply-To: <20180619054307.30618-1-andrew.smirnov@gmail.com>
+ id 1fVCMC-0002BC-Tg
+ for barebox@lists.infradead.org; Tue, 19 Jun 2018 08:51:23 +0000
+Message-ID: <1529398276.7211.10.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Tue, 19 Jun 2018 10:51:16 +0200
+In-Reply-To: <20180619054307.30618-2-andrew.smirnov@gmail.com>
 References: <20180619054307.30618-1-andrew.smirnov@gmail.com>
+ <20180619054307.30618-2-andrew.smirnov@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,335 +18,217 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: i.MX: Add support for ZII RDU1 board
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Subject: Re: [PATCH 2/2] ARM: i.MX: Add support for ZII RDU1 board
+To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+Cc: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 
-ZII RDU1 is a i.MX51 based, Babbade board derivative supported by
-upstream kernel. This commit adds support for it to Barebox.
-
-Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- arch/arm/boards/Makefile                      |  1 +
- arch/arm/boards/zii-imx51-rdu1/Makefile       |  2 +
- arch/arm/boards/zii-imx51-rdu1/board.c        | 38 ++++++++++++
- .../flash-header-imx51-zii-rdu1.imxcfg        | 60 +++++++++++++++++++
- arch/arm/boards/zii-imx51-rdu1/lowlevel.c     | 46 ++++++++++++++
- arch/arm/configs/imx_v7_defconfig             |  1 +
- arch/arm/dts/Makefile                         |  1 +
- arch/arm/dts/imx51-zii-rdu1.dts               | 46 ++++++++++++++
- arch/arm/mach-imx/Kconfig                     |  5 ++
- images/Makefile.imx                           |  5 ++
- 10 files changed, 205 insertions(+)
- create mode 100644 arch/arm/boards/zii-imx51-rdu1/Makefile
- create mode 100644 arch/arm/boards/zii-imx51-rdu1/board.c
- create mode 100644 arch/arm/boards/zii-imx51-rdu1/flash-header-imx51-zii-rdu1.imxcfg
- create mode 100644 arch/arm/boards/zii-imx51-rdu1/lowlevel.c
- create mode 100644 arch/arm/dts/imx51-zii-rdu1.dts
-
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index f1dc4c685..e5d217f52 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -150,5 +150,6 @@ obj-$(CONFIG_MACH_VSCOM_BALTOS)			+= vscom-baltos/
- obj-$(CONFIG_MACH_QEMU_VIRT64)			+= qemu-virt64/
- obj-$(CONFIG_MACH_WARP7)			+= element14-warp7/
- obj-$(CONFIG_MACH_VF610_TWR)			+= freescale-vf610-twr/
-+obj-$(CONFIG_MACH_ZII_RDU1)			+= zii-imx51-rdu1/
- obj-$(CONFIG_MACH_ZII_RDU2)			+= zii-imx6q-rdu2/
- obj-$(CONFIG_MACH_ZII_VF610_DEV)		+= zii-vf610-dev/
-diff --git a/arch/arm/boards/zii-imx51-rdu1/Makefile b/arch/arm/boards/zii-imx51-rdu1/Makefile
-new file mode 100644
-index 000000000..01c7a259e
---- /dev/null
-+++ b/arch/arm/boards/zii-imx51-rdu1/Makefile
-@@ -0,0 +1,2 @@
-+obj-y += board.o
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/zii-imx51-rdu1/board.c b/arch/arm/boards/zii-imx51-rdu1/board.c
-new file mode 100644
-index 000000000..5e8f96ebd
---- /dev/null
-+++ b/arch/arm/boards/zii-imx51-rdu1/board.c
-@@ -0,0 +1,38 @@
-+/*
-+ * Copyright (C) 2015 Nikita Yushchenko, CogentEmbedded, Inc
-+ * Copyright (C) 2015 Andrey Gusakov, CogentEmbedded, Inc
-+ * Copyright (C) 2007 Sascha Hauer, Pengutronix
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ *
-+ */
-+
-+#define pr_fmt(fmt) "zii-rdu1: " fmt
-+
-+#include <common.h>
-+#include <init.h>
-+#include <mach/bbu.h>
-+
-+static int zii_rdu1_init(void)
-+{
-+	if (!of_machine_is_compatible("zii,imx51-rdu1"))
-+		return 0;
-+
-+	barebox_set_hostname("rdu1");
-+
-+	imx51_bbu_internal_mmc_register_handler("mmc", "/dev/mmc0", 0);
-+	imx51_bbu_internal_spi_i2c_register_handler("spi",
-+						    "/dev/dataflash0.barebox",
-+						    BBU_HANDLER_FLAG_DEFAULT);
-+	return 0;
-+}
-+coredevice_initcall(zii_rdu1_init);
-\ No newline at end of file
-diff --git a/arch/arm/boards/zii-imx51-rdu1/flash-header-imx51-zii-rdu1.imxcfg b/arch/arm/boards/zii-imx51-rdu1/flash-header-imx51-zii-rdu1.imxcfg
-new file mode 100644
-index 000000000..76f4c6b59
---- /dev/null
-+++ b/arch/arm/boards/zii-imx51-rdu1/flash-header-imx51-zii-rdu1.imxcfg
-@@ -0,0 +1,60 @@
-+soc imx51
-+loadaddr 0x90000000
-+dcdofs 0x400
-+
-+wm 32 0x73fa88a0 0x00000200
-+wm 32 0x73fa850c 0x000020c5
-+wm 32 0x73fa8510 0x000020c5
-+wm 32 0x73fa883c 0x00000002
-+wm 32 0x73fa8848 0x00000002
-+wm 32 0x73fa84b8 0x000000e7
-+wm 32 0x73fa84bc 0x00000045
-+wm 32 0x73fa84c0 0x00000045
-+wm 32 0x73fa84c4 0x00000045
-+wm 32 0x73fa84c8 0x00000045
-+wm 32 0x73fa8820 0x00000000
-+wm 32 0x73fa84a4 0x00000003
-+wm 32 0x73fa84a8 0x00000003
-+wm 32 0x73fa84ac 0x000000e3
-+wm 32 0x73fa84b0 0x000000e3
-+wm 32 0x73fa84b4 0x000000e3
-+wm 32 0x73fa84cc 0x000000e3
-+wm 32 0x73fa84d0 0x000000e2
-+wm 32 0x73fa882c 0x00000004
-+wm 32 0x73fa88a4 0x00000004
-+wm 32 0x73fa88ac 0x00000004
-+wm 32 0x73fa88b8 0x00000004
-+wm 32 0x83fd9000 0x82a20000
-+wm 32 0x83fd9008 0x82a20000
-+wm 32 0x83fd9010 0x000ad0d0
-+wm 32 0x83fd9004 0x3f3584ab
-+wm 32 0x83fd900c 0x3f3584ab
-+wm 32 0x83fd9014 0x04008008
-+wm 32 0x83fd9014 0x0000801a
-+wm 32 0x83fd9014 0x0000801b
-+wm 32 0x83fd9014 0x00448019
-+wm 32 0x83fd9014 0x07328018
-+wm 32 0x83fd9014 0x04008008
-+wm 32 0x83fd9014 0x00008010
-+wm 32 0x83fd9014 0x00008010
-+wm 32 0x83fd9014 0x06328018
-+wm 32 0x83fd9014 0x03808019
-+wm 32 0x83fd9014 0x00408019
-+wm 32 0x83fd9014 0x00008000
-+wm 32 0x83fd9014 0x0400800c
-+wm 32 0x83fd9014 0x0000801e
-+wm 32 0x83fd9014 0x0000801f
-+wm 32 0x83fd9014 0x0000801d
-+wm 32 0x83fd9014 0x0732801c
-+wm 32 0x83fd9014 0x0400800c
-+wm 32 0x83fd9014 0x00008014
-+wm 32 0x83fd9014 0x00008014
-+wm 32 0x83fd9014 0x0632801c
-+wm 32 0x83fd9014 0x0380801d
-+wm 32 0x83fd9014 0x0040801d
-+wm 32 0x83fd9014 0x00008004
-+wm 32 0x83fd9000 0xb2a20000
-+wm 32 0x83fd9008 0xb2a20000
-+wm 32 0x83fd9010 0x000ad6d0
-+wm 32 0x83fd9034 0x90000000
-+wm 32 0x83fd9014 0x00000000
-diff --git a/arch/arm/boards/zii-imx51-rdu1/lowlevel.c b/arch/arm/boards/zii-imx51-rdu1/lowlevel.c
-new file mode 100644
-index 000000000..c28ca8653
---- /dev/null
-+++ b/arch/arm/boards/zii-imx51-rdu1/lowlevel.c
-@@ -0,0 +1,46 @@
-+#include <debug_ll.h>
-+#include <mach/clock-imx51_53.h>
-+#include <mach/iomux-mx51.h>
-+#include <common.h>
-+#include <mach/esdctl.h>
-+#include <mach/generic.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+
-+static inline void setup_uart(void)
-+{
-+	void __iomem *iomuxbase = IOMEM(MX51_IOMUXC_BASE_ADDR);
-+	void __iomem *ccmbase = IOMEM(MX51_CCM_BASE_ADDR);
-+
-+	/*
-+	 * Restore CCM values that might be changed by the Mask ROM
-+	 * code.
-+	 *
-+	 * Source: RealView debug scripts provided by Freescale
-+	 */
-+	writel(MX5_CCM_CBCDR_RESET_VALUE,  ccmbase + MX5_CCM_CBCDR);
-+	writel(MX5_CCM_CSCMR1_RESET_VALUE, ccmbase + MX5_CCM_CSCMR1);
-+	writel(MX5_CCM_CSCDR1_RESET_VALUE, ccmbase + MX5_CCM_CSCDR1);
-+
-+	imx_setup_pad(iomuxbase, MX51_PAD_UART1_TXD__UART1_TXD);
-+
-+	imx51_uart_setup_ll();
-+
-+	putc_ll('>');
-+}
-+
-+extern char __dtb_imx51_zii_rdu1_start[];
-+
-+ENTRY_FUNCTION(start_imx51_zii_rdu1, r0, r1, r2)
-+{
-+	void *fdt;
-+
-+	imx5_cpu_lowlevel_init();
-+
-+	if (IS_ENABLED(CONFIG_DEBUG_LL))
-+		setup_uart();
-+
-+	fdt = __dtb_imx51_zii_rdu1_start + get_runtime_offset();
-+
-+	imx51_barebox_entry(fdt);
-+}
-\ No newline at end of file
-diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
-index 8aef9d6ef..0fc3c9c50 100644
---- a/arch/arm/configs/imx_v7_defconfig
-+++ b/arch/arm/configs/imx_v7_defconfig
-@@ -35,6 +35,7 @@ CONFIG_MACH_CM_FX6=y
- CONFIG_MACH_ADVANTECH_ROM_742X=y
- CONFIG_MACH_WARP7=y
- CONFIG_MACH_VF610_TWR=y
-+CONFIG_MACH_ZII_RDU1=y
- CONFIG_MACH_ZII_RDU2=y
- CONFIG_MACH_ZII_VF610_DEV=y
- CONFIG_MACH_PHYTEC_PHYCORE_IMX7=y
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index b69592e64..1c94193d1 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -102,6 +102,7 @@ pbl-dtb-$(CONFIG_MACH_VEXPRESS) += vexpress-v2p-ca15.dtb.o
- pbl-dtb-$(CONFIG_MACH_VSCOM_BALTOS) += am335x-baltos-minimal.dtb.o
- pbl-dtb-$(CONFIG_MACH_WARP7) += imx7s-warp.dtb.o
- pbl-dtb-$(CONFIG_MACH_VF610_TWR) += vf610-twr.dtb.o
-+pbl-dtb-$(CONFIG_MACH_ZII_RDU1) += imx51-zii-rdu1.dtb.o
- pbl-dtb-$(CONFIG_MACH_ZII_RDU2) += imx6q-zii-rdu2.dtb.o imx6qp-zii-rdu2.dtb.o
- pbl-dtb-$(CONFIG_MACH_ZII_VF610_DEV) += \
- 	vf610-zii-dev-rev-b.dtb.o 	\
-diff --git a/arch/arm/dts/imx51-zii-rdu1.dts b/arch/arm/dts/imx51-zii-rdu1.dts
-new file mode 100644
-index 000000000..e7b0bc743
---- /dev/null
-+++ b/arch/arm/dts/imx51-zii-rdu1.dts
-@@ -0,0 +1,46 @@
-+/*
-+ * Copyright 2018 CogentEmbedded, Inc.
-+ * Copyright 2011 Freescale Semiconductor, Inc.
-+ * Copyright 2011 Linaro Ltd.
-+ *
-+ * The code contained herein is licensed under the GNU General Public
-+ * License. You may obtain a copy of the GNU General Public License
-+ * Version 2 or later at the following locations:
-+ *
-+ * http://www.opensource.org/licenses/gpl-license.html
-+ * http://www.gnu.org/copyleft/gpl.html
-+ */
-+
-+#include <arm/imx51-zii-rdu1.dts>
-+
-+/ {
-+	compatible = "zii,imx51-rdu1", "fsl,imx51-babbage-power", "fsl,imx51";
-+
-+	chosen {
-+		stdout-path = &uart1;
-+
-+		environment-spi {
-+			compatible = "barebox,environment";
-+			device-path = &spinor, "partname:barebox-environment";
-+		};
-+	};
-+};
-+
-+&ecspi1 {
-+	spinor: flash@1 {
-+		partition@0 {
-+			label = "config";
-+			reg = <0x0 0x400>;
-+		};
-+
-+		partition@400 {
-+			label = "barebox";
-+			reg = <0x400 0xdfc00>;
-+		};
-+
-+		partition@e0000 {
-+			label = "barebox-environment";
-+			reg = <0xe0000 0x20000>;
-+		};
-+	};
-+};
-\ No newline at end of file
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 6a6710c39..83d32f30c 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -423,6 +423,11 @@ config MACH_VF610_TWR
- 	bool "Freescale VF610 Tower Board"
- 	select ARCH_VF610
- 
-+config MACH_ZII_RDU1
-+	bool "ZII i.MX51 RDU1"
-+	select ARCH_IMX51
-+	select MACH_FREESCALE_MX51_PDK_POWER
-+
- config MACH_ZII_RDU2
- 	bool "ZII i.MX6Q(+) RDU2"
- 	select ARCH_IMX6
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index 43505b1ff..e3f3b2c8c 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -76,6 +76,11 @@ CFG_start_imx51_babbage_xload.pblx.imximg = $(board)/freescale-mx51-babbage/flas
- FILE_barebox-freescale-imx51-babbage-xload.img = start_imx51_babbage_xload.pblx.imximg
- imx-xload-$(CONFIG_MACH_FREESCALE_MX51_PDK) += barebox-freescale-imx51-babbage-xload.img
- 
-+pblx-$(CONFIG_MACH_ZII_RDU1) += start_imx51_zii_rdu1
-+CFG_start_imx51_zii_rdu1.pblx.imximg = $(board)/zii-imx51-rdu1/flash-header-imx51-zii-rdu1.imxcfg
-+FILE_barebox-zii-imx51-rdu1.img = start_imx51_zii_rdu1.pblx.imximg
-+imx-barebox-$(CONFIG_MACH_ZII_RDU1) += barebox-zii-imx51-rdu1.img
-+
- ifdef CONFIG_ARCH_IMX_XLOAD
- image-y += $(imx-xload-y)
- else
--- 
-2.17.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gTW9udGFnLCBkZW4gMTguMDYuMjAxOCwgMjI6NDMgLTA3MDAgc2NocmllYiBBbmRyZXkgU21p
+cm5vdjoKPiBaSUkgUkRVMSBpcyBhIGkuTVg1MSBiYXNlZCwgQmFiYmFkZSBib2FyZCBkZXJpdmF0
+aXZlIHN1cHBvcnRlZCBieQo+IHVwc3RyZWFtIGtlcm5lbC4gVGhpcyBjb21taXQgYWRkcyBzdXBw
+b3J0IGZvciBpdCB0byBCYXJlYm94Lgo+IAo+ID4gU2lnbmVkLW9mZi1ieTogTmlraXRhIFl1c2hj
+aGVua28gPG5pa2l0YS55b3VzaEBjb2dlbnRlbWJlZGRlZC5jb20+Cj4gPiBTaWduZWQtb2ZmLWJ5
+OiBBbmRyZXkgU21pcm5vdiA8YW5kcmV3LnNtaXJub3ZAZ21haWwuY29tPgo+IC0tLQo+IMKgYXJj
+aC9hcm0vYm9hcmRzL01ha2VmaWxlwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqB8wqDCoDEgKwo+IMKgYXJjaC9hcm0vYm9hcmRzL3ppaS1pbXg1MS1yZHUxL01ha2Vm
+aWxlwqDCoMKgwqDCoMKgwqB8wqDCoDIgKwo+IMKgYXJjaC9hcm0vYm9hcmRzL3ppaS1pbXg1MS1y
+ZHUxL2JvYXJkLmPCoMKgwqDCoMKgwqDCoMKgfCAzOCArKysrKysrKysrKysKPiDCoC4uLi9mbGFz
+aC1oZWFkZXItaW14NTEtemlpLXJkdTEuaW14Y2ZnwqDCoMKgwqDCoMKgwqDCoHwgNjAgKysrKysr
+KysrKysrKysrKysrKwo+IMKgYXJjaC9hcm0vYm9hcmRzL3ppaS1pbXg1MS1yZHUxL2xvd2xldmVs
+LmPCoMKgwqDCoMKgfCA0NiArKysrKysrKysrKysrKwo+IMKgYXJjaC9hcm0vY29uZmlncy9pbXhf
+djdfZGVmY29uZmlnwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB8wqDCoDEgKwo+IMKgYXJjaC9h
+cm0vZHRzL01ha2VmaWxlwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqB8wqDCoDEgKwo+IMKgYXJjaC9hcm0vZHRzL2lteDUxLXppaS1yZHUxLmR0c8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHwgNDYgKysrKysrKysrKysrKysKPiDCoGFyY2gvYXJt
+L21hY2gtaW14L0tjb25maWfCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqB8wqDCoDUgKysKPiDCoGltYWdlcy9NYWtlZmlsZS5pbXjCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB8wqDCoDUgKysKPiDCoDEwIGZpbGVzIGNo
+YW5nZWQsIDIwNSBpbnNlcnRpb25zKCspCj4gwqBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0v
+Ym9hcmRzL3ppaS1pbXg1MS1yZHUxL01ha2VmaWxlCj4gwqBjcmVhdGUgbW9kZSAxMDA2NDQgYXJj
+aC9hcm0vYm9hcmRzL3ppaS1pbXg1MS1yZHUxL2JvYXJkLmMKPiDCoGNyZWF0ZSBtb2RlIDEwMDY0
+NCBhcmNoL2FybS9ib2FyZHMvemlpLWlteDUxLXJkdTEvZmxhc2gtaGVhZGVyLWlteDUxLXppaS1y
+ZHUxLmlteGNmZwo+IMKgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy96aWktaW14
+NTEtcmR1MS9sb3dsZXZlbC5jCj4gwqBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vZHRzL2lt
+eDUxLXppaS1yZHUxLmR0cwo+IAo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvTWFrZWZp
+bGUgYi9hcmNoL2FybS9ib2FyZHMvTWFrZWZpbGUKPiBpbmRleCBmMWRjNGM2ODUuLmU1ZDIxN2Y1
+MiAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9ib2FyZHMvTWFrZWZpbGUKPiArKysgYi9hcmNoL2Fy
+bS9ib2FyZHMvTWFrZWZpbGUKPiA+IEBAIC0xNTAsNSArMTUwLDYgQEAgb2JqLSQoQ09ORklHX01B
+Q0hfVlNDT01fQkFMVE9TKQkJCSs9IHZzY29tLWJhbHRvcy8KPiA+IMKgb2JqLSQoQ09ORklHX01B
+Q0hfUUVNVV9WSVJUNjQpCQkJKz0gcWVtdS12aXJ0NjQvCj4gPiDCoG9iai0kKENPTkZJR19NQUNI
+X1dBUlA3KQkJCSs9IGVsZW1lbnQxNC13YXJwNy8KPiA+IMKgb2JqLSQoQ09ORklHX01BQ0hfVkY2
+MTBfVFdSKQkJCSs9IGZyZWVzY2FsZS12ZjYxMC10d3IvCj4gPiArb2JqLSQoQ09ORklHX01BQ0hf
+WklJX1JEVTEpCQkJKz0gemlpLWlteDUxLXJkdTEvCj4gPiDCoG9iai0kKENPTkZJR19NQUNIX1pJ
+SV9SRFUyKQkJCSs9IHppaS1pbXg2cS1yZHUyLwo+ID4gwqBvYmotJChDT05GSUdfTUFDSF9aSUlf
+VkY2MTBfREVWKQkJKz0gemlpLXZmNjEwLWRldi8KPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9h
+cmRzL3ppaS1pbXg1MS1yZHUxL01ha2VmaWxlIGIvYXJjaC9hcm0vYm9hcmRzL3ppaS1pbXg1MS1y
+ZHUxL01ha2VmaWxlCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAwMDAuLjAx
+YzdhMjU5ZQo+IC0tLSAvZGV2L251bGwKPiArKysgYi9hcmNoL2FybS9ib2FyZHMvemlpLWlteDUx
+LXJkdTEvTWFrZWZpbGUKPiBAQCAtMCwwICsxLDIgQEAKPiArb2JqLXkgKz0gYm9hcmQubwo+ICts
+d2wteSArPSBsb3dsZXZlbC5vCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy96aWktaW14
+NTEtcmR1MS9ib2FyZC5jIGIvYXJjaC9hcm0vYm9hcmRzL3ppaS1pbXg1MS1yZHUxL2JvYXJkLmMK
+PiBuZXcgZmlsZSBtb2RlIDEwMDY0NAo+IGluZGV4IDAwMDAwMDAwMC4uNWU4Zjk2ZWJkCj4gLS0t
+IC9kZXYvbnVsbAo+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy96aWktaW14NTEtcmR1MS9ib2FyZC5j
+Cj4gQEAgLTAsMCArMSwzOCBAQAo+ICsvKgo+ICsgKiBDb3B5cmlnaHQgKEMpIDIwMTUgTmlraXRh
+IFl1c2hjaGVua28sIENvZ2VudEVtYmVkZGVkLCBJbmMKPiArICogQ29weXJpZ2h0IChDKSAyMDE1
+IEFuZHJleSBHdXNha292LCBDb2dlbnRFbWJlZGRlZCwgSW5jCj4gKyAqIENvcHlyaWdodCAoQykg
+MjAwNyBTYXNjaGEgSGF1ZXIsIFBlbmd1dHJvbml4Cj4gKyAqCj4gKyAqIFRoaXMgcHJvZ3JhbSBp
+cyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IKPiArICogbW9k
+aWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2Ug
+YXMKPiArICogcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb247IGVpdGhl
+ciB2ZXJzaW9uIDIgb2YKPiArICogdGhlIExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlvbikgYW55
+IGxhdGVyIHZlcnNpb24uCj4gKyAqCj4gKyAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBp
+biB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAo+ICsgKiBidXQgV0lUSE9VVCBBTlkg
+V0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgo+ICsgKiBNRVJD
+SEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuwqDCoFNlZSB0
+aGUKPiArICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KPiAr
+ICoKPiArICoKPiArICovCj4gKwo+ICsjZGVmaW5lIHByX2ZtdChmbXQpICJ6aWktcmR1MTogIiBm
+bXQKPiArCj4gKyNpbmNsdWRlIDxjb21tb24uaD4KPiArI2luY2x1ZGUgPGluaXQuaD4KPiArI2lu
+Y2x1ZGUgPG1hY2gvYmJ1Lmg+Cj4gKwo+ICtzdGF0aWMgaW50IHppaV9yZHUxX2luaXQodm9pZCkK
+PiArewo+ID4gKwlpZiAoIW9mX21hY2hpbmVfaXNfY29tcGF0aWJsZSgiemlpLGlteDUxLXJkdTEi
+KSkKPiA+ICsJCXJldHVybiAwOwo+ICsKPiA+ICsJYmFyZWJveF9zZXRfaG9zdG5hbWUoInJkdTEi
+KTsKPiArCj4gPiArCWlteDUxX2JidV9pbnRlcm5hbF9tbWNfcmVnaXN0ZXJfaGFuZGxlcigibW1j
+IiwgIi9kZXYvbW1jMCIsIDApOwo+ID4gKwlpbXg1MV9iYnVfaW50ZXJuYWxfc3BpX2kyY19yZWdp
+c3Rlcl9oYW5kbGVyKCJzcGkiLAo+ID4gKwkJCQkJCcKgwqDCoMKgIi9kZXYvZGF0YWZsYXNoMC5i
+YXJlYm94IiwKPiArCQkJCQkJwqDCoMKgwqBCQlVfSEFORExFUl9GTEFHX0RFRkFVTFQpOwoKRGlk
+IHlvdSB0ZXN0IHRoYXQgdGhpcyB3b3Jrcz8gVGhlIEJhcmVib3ggcGFydGl0aW9uIGhhcyBhbiBv
+ZmZzZXQgYW5kCmFjY29yZGluZyB0aGUgUk0gdGhlIEJvb3RST00gbG9va3MgYXQgYSBzcGVjaWZp
+YyBsb2NhdGlvbiBmb3IgdGhlIGltYWdlCmhlYWRlciwgc28gSSB0aGluayB0aGUgQmFyZWJveCBp
+bWFnZSBuZWVkcyB0byBiZSB0cnVuY2F0ZWQgZm9yIHRoaXMgdG8Kd29yay4KClJlZ2FyZHMsCkx1
+Y2FzCgo+ICsJcmV0dXJuIDA7Cj4gK30KPiArY29yZWRldmljZV9pbml0Y2FsbCh6aWlfcmR1MV9p
+bml0KTsKPiBcIE5vIG5ld2xpbmUgYXQgZW5kIG9mIGZpbGUKClBsZWFzZSBhZGQgdGhlIG5ld2xp
+bmUuCgo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvemlpLWlteDUxLXJkdTEvZmxhc2gt
+aGVhZGVyLWlteDUxLXppaS1yZHUxLmlteGNmZyBiL2FyY2gvYXJtL2JvYXJkcy96aWktaW14NTEt
+cmR1MS9mbGFzaC1oZWFkZXItaW14NTEtemlpLXJkdTEuaW14Y2ZnCj4gbmV3IGZpbGUgbW9kZSAx
+MDA2NDQKPiBpbmRleCAwMDAwMDAwMDAuLjc2ZjRjNmI1OQo+IC0tLSAvZGV2L251bGwKPiArKysg
+Yi9hcmNoL2FybS9ib2FyZHMvemlpLWlteDUxLXJkdTEvZmxhc2gtaGVhZGVyLWlteDUxLXppaS1y
+ZHUxLmlteGNmZwo+IEBAIC0wLDAgKzEsNjAgQEAKPiArc29jIGlteDUxCj4gK2xvYWRhZGRyIDB4
+OTAwMDAwMDAKPiArZGNkb2ZzIDB4NDAwCj4gKwo+ICt3bSAzMiAweDczZmE4OGEwIDB4MDAwMDAy
+MDAKPiArd20gMzIgMHg3M2ZhODUwYyAweDAwMDAyMGM1Cj4gK3dtIDMyIDB4NzNmYTg1MTAgMHgw
+MDAwMjBjNQo+ICt3bSAzMiAweDczZmE4ODNjIDB4MDAwMDAwMDIKPiArd20gMzIgMHg3M2ZhODg0
+OCAweDAwMDAwMDAyCj4gK3dtIDMyIDB4NzNmYTg0YjggMHgwMDAwMDBlNwo+ICt3bSAzMiAweDcz
+ZmE4NGJjIDB4MDAwMDAwNDUKPiArd20gMzIgMHg3M2ZhODRjMCAweDAwMDAwMDQ1Cj4gK3dtIDMy
+IDB4NzNmYTg0YzQgMHgwMDAwMDA0NQo+ICt3bSAzMiAweDczZmE4NGM4IDB4MDAwMDAwNDUKPiAr
+d20gMzIgMHg3M2ZhODgyMCAweDAwMDAwMDAwCj4gK3dtIDMyIDB4NzNmYTg0YTQgMHgwMDAwMDAw
+Mwo+ICt3bSAzMiAweDczZmE4NGE4IDB4MDAwMDAwMDMKPiArd20gMzIgMHg3M2ZhODRhYyAweDAw
+MDAwMGUzCj4gK3dtIDMyIDB4NzNmYTg0YjAgMHgwMDAwMDBlMwo+ICt3bSAzMiAweDczZmE4NGI0
+IDB4MDAwMDAwZTMKPiArd20gMzIgMHg3M2ZhODRjYyAweDAwMDAwMGUzCj4gK3dtIDMyIDB4NzNm
+YTg0ZDAgMHgwMDAwMDBlMgo+ICt3bSAzMiAweDczZmE4ODJjIDB4MDAwMDAwMDQKPiArd20gMzIg
+MHg3M2ZhODhhNCAweDAwMDAwMDA0Cj4gK3dtIDMyIDB4NzNmYTg4YWMgMHgwMDAwMDAwNAo+ICt3
+bSAzMiAweDczZmE4OGI4IDB4MDAwMDAwMDQKPiArd20gMzIgMHg4M2ZkOTAwMCAweDgyYTIwMDAw
+Cj4gK3dtIDMyIDB4ODNmZDkwMDggMHg4MmEyMDAwMAo+ICt3bSAzMiAweDgzZmQ5MDEwIDB4MDAw
+YWQwZDAKPiArd20gMzIgMHg4M2ZkOTAwNCAweDNmMzU4NGFiCj4gK3dtIDMyIDB4ODNmZDkwMGMg
+MHgzZjM1ODRhYgo+ICt3bSAzMiAweDgzZmQ5MDE0IDB4MDQwMDgwMDgKPiArd20gMzIgMHg4M2Zk
+OTAxNCAweDAwMDA4MDFhCj4gK3dtIDMyIDB4ODNmZDkwMTQgMHgwMDAwODAxYgo+ICt3bSAzMiAw
+eDgzZmQ5MDE0IDB4MDA0NDgwMTkKPiArd20gMzIgMHg4M2ZkOTAxNCAweDA3MzI4MDE4Cj4gK3dt
+IDMyIDB4ODNmZDkwMTQgMHgwNDAwODAwOAo+ICt3bSAzMiAweDgzZmQ5MDE0IDB4MDAwMDgwMTAK
+PiArd20gMzIgMHg4M2ZkOTAxNCAweDAwMDA4MDEwCj4gK3dtIDMyIDB4ODNmZDkwMTQgMHgwNjMy
+ODAxOAo+ICt3bSAzMiAweDgzZmQ5MDE0IDB4MDM4MDgwMTkKPiArd20gMzIgMHg4M2ZkOTAxNCAw
+eDAwNDA4MDE5Cj4gK3dtIDMyIDB4ODNmZDkwMTQgMHgwMDAwODAwMAo+ICt3bSAzMiAweDgzZmQ5
+MDE0IDB4MDQwMDgwMGMKPiArd20gMzIgMHg4M2ZkOTAxNCAweDAwMDA4MDFlCj4gK3dtIDMyIDB4
+ODNmZDkwMTQgMHgwMDAwODAxZgo+ICt3bSAzMiAweDgzZmQ5MDE0IDB4MDAwMDgwMWQKPiArd20g
+MzIgMHg4M2ZkOTAxNCAweDA3MzI4MDFjCj4gK3dtIDMyIDB4ODNmZDkwMTQgMHgwNDAwODAwYwo+
+ICt3bSAzMiAweDgzZmQ5MDE0IDB4MDAwMDgwMTQKPiArd20gMzIgMHg4M2ZkOTAxNCAweDAwMDA4
+MDE0Cj4gK3dtIDMyIDB4ODNmZDkwMTQgMHgwNjMyODAxYwo+ICt3bSAzMiAweDgzZmQ5MDE0IDB4
+MDM4MDgwMWQKPiArd20gMzIgMHg4M2ZkOTAxNCAweDAwNDA4MDFkCj4gK3dtIDMyIDB4ODNmZDkw
+MTQgMHgwMDAwODAwNAo+ICt3bSAzMiAweDgzZmQ5MDAwIDB4YjJhMjAwMDAKPiArd20gMzIgMHg4
+M2ZkOTAwOCAweGIyYTIwMDAwCj4gK3dtIDMyIDB4ODNmZDkwMTAgMHgwMDBhZDZkMAo+ICt3bSAz
+MiAweDgzZmQ5MDM0IDB4OTAwMDAwMDAKPiArd20gMzIgMHg4M2ZkOTAxNCAweDAwMDAwMDAwCj4g
+ZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy96aWktaW14NTEtcmR1MS9sb3dsZXZlbC5jIGIv
+YXJjaC9hcm0vYm9hcmRzL3ppaS1pbXg1MS1yZHUxL2xvd2xldmVsLmMKPiBuZXcgZmlsZSBtb2Rl
+IDEwMDY0NAo+IGluZGV4IDAwMDAwMDAwMC4uYzI4Y2E4NjUzCj4gLS0tIC9kZXYvbnVsbAo+ICsr
+KyBiL2FyY2gvYXJtL2JvYXJkcy96aWktaW14NTEtcmR1MS9sb3dsZXZlbC5jCj4gQEAgLTAsMCAr
+MSw0NiBAQAo+ICsjaW5jbHVkZSA8ZGVidWdfbGwuaD4KPiArI2luY2x1ZGUgPG1hY2gvY2xvY2st
+aW14NTFfNTMuaD4KPiArI2luY2x1ZGUgPG1hY2gvaW9tdXgtbXg1MS5oPgo+ICsjaW5jbHVkZSA8
+Y29tbW9uLmg+Cj4gKyNpbmNsdWRlIDxtYWNoL2VzZGN0bC5oPgo+ICsjaW5jbHVkZSA8bWFjaC9n
+ZW5lcmljLmg+Cj4gKyNpbmNsdWRlIDxhc20vYmFyZWJveC1hcm0taGVhZC5oPgo+ICsjaW5jbHVk
+ZSA8YXNtL2JhcmVib3gtYXJtLmg+Cj4gKwo+ICtzdGF0aWMgaW5saW5lIHZvaWQgc2V0dXBfdWFy
+dCh2b2lkKQo+ICt7Cj4gPiArCXZvaWQgX19pb21lbSAqaW9tdXhiYXNlID0gSU9NRU0oTVg1MV9J
+T01VWENfQkFTRV9BRERSKTsKPiA+ICsJdm9pZCBfX2lvbWVtICpjY21iYXNlID0gSU9NRU0oTVg1
+MV9DQ01fQkFTRV9BRERSKTsKPiArCj4gPiArCS8qCj4gPiArCcKgKiBSZXN0b3JlIENDTSB2YWx1
+ZXMgdGhhdCBtaWdodCBiZSBjaGFuZ2VkIGJ5IHRoZSBNYXNrIFJPTQo+ID4gKwnCoCogY29kZS4K
+PiA+ICsJwqAqCj4gPiArCcKgKiBTb3VyY2U6IFJlYWxWaWV3IGRlYnVnIHNjcmlwdHMgcHJvdmlk
+ZWQgYnkgRnJlZXNjYWxlCj4gPiArCcKgKi8KPiA+ICsJd3JpdGVsKE1YNV9DQ01fQ0JDRFJfUkVT
+RVRfVkFMVUUswqDCoGNjbWJhc2UgKyBNWDVfQ0NNX0NCQ0RSKTsKPiA+ICsJd3JpdGVsKE1YNV9D
+Q01fQ1NDTVIxX1JFU0VUX1ZBTFVFLCBjY21iYXNlICsgTVg1X0NDTV9DU0NNUjEpOwo+ID4gKwl3
+cml0ZWwoTVg1X0NDTV9DU0NEUjFfUkVTRVRfVkFMVUUsIGNjbWJhc2UgKyBNWDVfQ0NNX0NTQ0RS
+MSk7Cj4gKwo+ID4gKwlpbXhfc2V0dXBfcGFkKGlvbXV4YmFzZSwgTVg1MV9QQURfVUFSVDFfVFhE
+X19VQVJUMV9UWEQpOwo+ICsKPiA+ICsJaW14NTFfdWFydF9zZXR1cF9sbCgpOwo+ICsKPiA+ICsJ
+cHV0Y19sbCgnPicpOwo+ICt9Cj4gKwo+ICtleHRlcm4gY2hhciBfX2R0Yl9pbXg1MV96aWlfcmR1
+MV9zdGFydFtdOwo+ICsKPiArRU5UUllfRlVOQ1RJT04oc3RhcnRfaW14NTFfemlpX3JkdTEsIHIw
+LCByMSwgcjIpCj4gK3sKPiA+ICsJdm9pZCAqZmR0Owo+ICsKPiA+ICsJaW14NV9jcHVfbG93bGV2
+ZWxfaW5pdCgpOwo+ICsKPiA+ICsJaWYgKElTX0VOQUJMRUQoQ09ORklHX0RFQlVHX0xMKSkKPiA+
+ICsJCXNldHVwX3VhcnQoKTsKPiArCj4gPiArCWZkdCA9IF9fZHRiX2lteDUxX3ppaV9yZHUxX3N0
+YXJ0ICsgZ2V0X3J1bnRpbWVfb2Zmc2V0KCk7Cj4gKwo+ID4gKwlpbXg1MV9iYXJlYm94X2VudHJ5
+KGZkdCk7Cj4gK30KPiBcIE5vIG5ld2xpbmUgYXQgZW5kIG9mIGZpbGUKPiBkaWZmIC0tZ2l0IGEv
+YXJjaC9hcm0vY29uZmlncy9pbXhfdjdfZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmlncy9pbXhf
+djdfZGVmY29uZmlnCj4gaW5kZXggOGFlZjlkNmVmLi4wZmMzYzljNTAgMTAwNjQ0Cj4gLS0tIGEv
+YXJjaC9hcm0vY29uZmlncy9pbXhfdjdfZGVmY29uZmlnCj4gKysrIGIvYXJjaC9hcm0vY29uZmln
+cy9pbXhfdjdfZGVmY29uZmlnCj4gQEAgLTM1LDYgKzM1LDcgQEAgQ09ORklHX01BQ0hfQ01fRlg2
+PXkKPiDCoENPTkZJR19NQUNIX0FEVkFOVEVDSF9ST01fNzQyWD15Cj4gwqBDT05GSUdfTUFDSF9X
+QVJQNz15Cj4gwqBDT05GSUdfTUFDSF9WRjYxMF9UV1I9eQo+ICtDT05GSUdfTUFDSF9aSUlfUkRV
+MT15Cj4gwqBDT05GSUdfTUFDSF9aSUlfUkRVMj15Cj4gwqBDT05GSUdfTUFDSF9aSUlfVkY2MTBf
+REVWPXkKPiDCoENPTkZJR19NQUNIX1BIWVRFQ19QSFlDT1JFX0lNWDc9eQo+IGRpZmYgLS1naXQg
+YS9hcmNoL2FybS9kdHMvTWFrZWZpbGUgYi9hcmNoL2FybS9kdHMvTWFrZWZpbGUKPiBpbmRleCBi
+Njk1OTJlNjQuLjFjOTQxOTNkMSAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9kdHMvTWFrZWZpbGUK
+PiArKysgYi9hcmNoL2FybS9kdHMvTWFrZWZpbGUKPiBAQCAtMTAyLDYgKzEwMiw3IEBAIHBibC1k
+dGItJChDT05GSUdfTUFDSF9WRVhQUkVTUykgKz0gdmV4cHJlc3MtdjJwLWNhMTUuZHRiLm8KPiDC
+oHBibC1kdGItJChDT05GSUdfTUFDSF9WU0NPTV9CQUxUT1MpICs9IGFtMzM1eC1iYWx0b3MtbWlu
+aW1hbC5kdGIubwo+IMKgcGJsLWR0Yi0kKENPTkZJR19NQUNIX1dBUlA3KSArPSBpbXg3cy13YXJw
+LmR0Yi5vCj4gwqBwYmwtZHRiLSQoQ09ORklHX01BQ0hfVkY2MTBfVFdSKSArPSB2ZjYxMC10d3Iu
+ZHRiLm8KPiArcGJsLWR0Yi0kKENPTkZJR19NQUNIX1pJSV9SRFUxKSArPSBpbXg1MS16aWktcmR1
+MS5kdGIubwo+IMKgcGJsLWR0Yi0kKENPTkZJR19NQUNIX1pJSV9SRFUyKSArPSBpbXg2cS16aWkt
+cmR1Mi5kdGIubyBpbXg2cXAtemlpLXJkdTIuZHRiLm8KPiDCoHBibC1kdGItJChDT05GSUdfTUFD
+SF9aSUlfVkY2MTBfREVWKSArPSBcCj4gPiA+IMKgCXZmNjEwLXppaS1kZXYtcmV2LWIuZHRiLm/C
+oAlcCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2R0cy9pbXg1MS16aWktcmR1MS5kdHMgYi9hcmNo
+L2FybS9kdHMvaW14NTEtemlpLXJkdTEuZHRzCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQKPiBpbmRl
+eCAwMDAwMDAwMDAuLmU3YjBiYzc0Mwo+IC0tLSAvZGV2L251bGwKPiArKysgYi9hcmNoL2FybS9k
+dHMvaW14NTEtemlpLXJkdTEuZHRzCj4gQEAgLTAsMCArMSw0NiBAQAo+ICsvKgo+ICsgKiBDb3B5
+cmlnaHQgMjAxOCBDb2dlbnRFbWJlZGRlZCwgSW5jLgo+ICsgKiBDb3B5cmlnaHQgMjAxMSBGcmVl
+c2NhbGUgU2VtaWNvbmR1Y3RvciwgSW5jLgo+ICsgKiBDb3B5cmlnaHQgMjAxMSBMaW5hcm8gTHRk
+Lgo+ICsgKgo+ICsgKiBUaGUgY29kZSBjb250YWluZWQgaGVyZWluIGlzIGxpY2Vuc2VkIHVuZGVy
+IHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMKPiArICogTGljZW5zZS4gWW91IG1heSBvYnRhaW4gYSBj
+b3B5IG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZQo+ICsgKiBWZXJzaW9uIDIgb3Ig
+bGF0ZXIgYXQgdGhlIGZvbGxvd2luZyBsb2NhdGlvbnM6Cj4gKyAqCj4gKyAqIGh0dHA6Ly93d3cu
+b3BlbnNvdXJjZS5vcmcvbGljZW5zZXMvZ3BsLWxpY2Vuc2UuaHRtbAo+ICsgKiBodHRwOi8vd3d3
+LmdudS5vcmcvY29weWxlZnQvZ3BsLmh0bWwKPiArICovCj4gKwo+ICsjaW5jbHVkZSA8YXJtL2lt
+eDUxLXppaS1yZHUxLmR0cz4KPiArCj4gKy8gewo+ID4gKwljb21wYXRpYmxlID0gInppaSxpbXg1
+MS1yZHUxIiwgImZzbCxpbXg1MS1iYWJiYWdlLXBvd2VyIiwgImZzbCxpbXg1MSI7Cj4gKwo+ID4g
+KwljaG9zZW4gewo+ID4gKwkJc3Rkb3V0LXBhdGggPSAmdWFydDE7Cj4gKwo+ID4gKwkJZW52aXJv
+bm1lbnQtc3BpIHsKPiA+ICsJCQljb21wYXRpYmxlID0gImJhcmVib3gsZW52aXJvbm1lbnQiOwo+
+ID4gKwkJCWRldmljZS1wYXRoID0gJnNwaW5vciwgInBhcnRuYW1lOmJhcmVib3gtZW52aXJvbm1l
+bnQiOwo+ID4gKwkJfTsKPiA+ICsJfTsKPiArfTsKPiArCj4gKyZlY3NwaTEgewo+ID4gPiArCXNw
+aW5vcjogZmxhc2hAMSB7Cj4gPiArCQlwYXJ0aXRpb25AMCB7Cj4gPiArCQkJbGFiZWwgPSAiY29u
+ZmlnIjsKPiA+ICsJCQlyZWcgPSA8MHgwIDB4NDAwPjsKPiA+ICsJCX07Cj4gKwo+ID4gKwkJcGFy
+dGl0aW9uQDQwMCB7Cj4gPiArCQkJbGFiZWwgPSAiYmFyZWJveCI7Cj4gPiArCQkJcmVnID0gPDB4
+NDAwIDB4ZGZjMDA+Owo+ID4gKwkJfTsKPiArCj4gPiArCQlwYXJ0aXRpb25AZTAwMDAgewo+ID4g
+KwkJCWxhYmVsID0gImJhcmVib3gtZW52aXJvbm1lbnQiOwo+ID4gKwkJCXJlZyA9IDwweGUwMDAw
+IDB4MjAwMDA+Owo+ID4gKwkJfTsKPiA+ICsJfTsKPiArfTsKPiBcIE5vIG5ld2xpbmUgYXQgZW5k
+IG9mIGZpbGUKPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvS2NvbmZpZyBiL2FyY2gv
+YXJtL21hY2gtaW14L0tjb25maWcKPiBpbmRleCA2YTY3MTBjMzkuLjgzZDMyZjMwYyAxMDA2NDQK
+PiAtLS0gYS9hcmNoL2FybS9tYWNoLWlteC9LY29uZmlnCj4gKysrIGIvYXJjaC9hcm0vbWFjaC1p
+bXgvS2NvbmZpZwo+IEBAIC00MjMsNiArNDIzLDExIEBAIGNvbmZpZyBNQUNIX1ZGNjEwX1RXUgo+
+ID4gwqAJYm9vbCAiRnJlZXNjYWxlIFZGNjEwIFRvd2VyIEJvYXJkIgo+ID4gwqAJc2VsZWN0IEFS
+Q0hfVkY2MTAKPiDCoAo+ICtjb25maWcgTUFDSF9aSUlfUkRVMQo+ID4gKwlib29sICJaSUkgaS5N
+WDUxIFJEVTEiCj4gPiArCXNlbGVjdCBBUkNIX0lNWDUxCj4gPiArCXNlbGVjdCBNQUNIX0ZSRUVT
+Q0FMRV9NWDUxX1BES19QT1dFUgo+ICsKPiDCoGNvbmZpZyBNQUNIX1pJSV9SRFUyCj4gPiDCoAli
+b29sICJaSUkgaS5NWDZRKCspIFJEVTIiCj4gPiDCoAlzZWxlY3QgQVJDSF9JTVg2Cj4gZGlmZiAt
+LWdpdCBhL2ltYWdlcy9NYWtlZmlsZS5pbXggYi9pbWFnZXMvTWFrZWZpbGUuaW14Cj4gaW5kZXgg
+NDM1MDViMWZmLi5lM2YzYjJjOGMgMTAwNjQ0Cj4gLS0tIGEvaW1hZ2VzL01ha2VmaWxlLmlteAo+
+ICsrKyBiL2ltYWdlcy9NYWtlZmlsZS5pbXgKPiBAQCAtNzYsNiArNzYsMTEgQEAgQ0ZHX3N0YXJ0
+X2lteDUxX2JhYmJhZ2VfeGxvYWQucGJseC5pbXhpbWcgPSAkKGJvYXJkKS9mcmVlc2NhbGUtbXg1
+MS1iYWJiYWdlL2ZsYXMKPiDCoEZJTEVfYmFyZWJveC1mcmVlc2NhbGUtaW14NTEtYmFiYmFnZS14
+bG9hZC5pbWcgPSBzdGFydF9pbXg1MV9iYWJiYWdlX3hsb2FkLnBibHguaW14aW1nCj4gwqBpbXgt
+eGxvYWQtJChDT05GSUdfTUFDSF9GUkVFU0NBTEVfTVg1MV9QREspICs9IGJhcmVib3gtZnJlZXNj
+YWxlLWlteDUxLWJhYmJhZ2UteGxvYWQuaW1nCj4gwqAKPiArcGJseC0kKENPTkZJR19NQUNIX1pJ
+SV9SRFUxKSArPSBzdGFydF9pbXg1MV96aWlfcmR1MQo+ICtDRkdfc3RhcnRfaW14NTFfemlpX3Jk
+dTEucGJseC5pbXhpbWcgPSAkKGJvYXJkKS96aWktaW14NTEtcmR1MS9mbGFzaC1oZWFkZXItaW14
+NTEtemlpLXJkdTEuaW14Y2ZnCj4gK0ZJTEVfYmFyZWJveC16aWktaW14NTEtcmR1MS5pbWcgPSBz
+dGFydF9pbXg1MV96aWlfcmR1MS5wYmx4LmlteGltZwo+ICtpbXgtYmFyZWJveC0kKENPTkZJR19N
+QUNIX1pJSV9SRFUxKSArPSBiYXJlYm94LXppaS1pbXg1MS1yZHUxLmltZwo+ICsKPiDCoGlmZGVm
+IENPTkZJR19BUkNIX0lNWF9YTE9BRAo+IMKgaW1hZ2UteSArPSAkKGlteC14bG9hZC15KQo+IMKg
+ZWxzZQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
+ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
+cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
