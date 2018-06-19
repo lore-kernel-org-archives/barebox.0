@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fVAKY-0003XI-IW
+ id 1fVAKY-0003Ww-Ia
  for barebox@lists.infradead.org; Tue, 19 Jun 2018 06:41:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 19 Jun 2018 08:41:13 +0200
-Message-Id: <20180619064117.13904-1-s.hauer@pengutronix.de>
+Date: Tue, 19 Jun 2018 08:41:15 +0200
+Message-Id: <20180619064117.13904-3-s.hauer@pengutronix.de>
+In-Reply-To: <20180619064117.13904-1-s.hauer@pengutronix.de>
+References: <20180619064117.13904-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,32 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] console: add missing newline conversion for putc_ll
+Subject: [PATCH 3/5] console_simple: Remove duplicated newline conversion
 To: Barebox List <barebox@lists.infradead.org>
 
-putc_ll doesn't do newline conversion (and it shouldn't do, as it's
-a static inline function for early debugging, adding more code there
-is not nice), so add newline conversion to the console code when
-it uses putc_ll for printing early messages.
+console_puts uses console_putc for printing which already does newline
+conversion, so do not do it again in console_puts.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/console.c | 2 ++
- 1 file changed, 2 insertions(+)
+ common/console_simple.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/common/console.c b/common/console.c
-index ab3d4d397c..c40eba6d55 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -513,6 +513,8 @@ void console_putc(unsigned int ch, char c)
+diff --git a/common/console_simple.c b/common/console_simple.c
+index 9675cbb0a6..0825ec07ec 100644
+--- a/common/console_simple.c
++++ b/common/console_simple.c
+@@ -16,8 +16,6 @@ int console_puts(unsigned int ch, const char *str)
  
- 	case CONSOLE_INITIALIZED_BUFFER:
- 		kfifo_putc(console_output_fifo, c);
-+		if (c == '\n')
-+			putc_ll('\r');
- 		putc_ll(c);
- 		return;
- 
+ 	while (*s) {
+ 		console_putc(ch, *s);
+-		if (*s == '\n')
+-			console_putc(ch, '\r');
+ 		s++;
+ 		i++;
+ 	}
 -- 
 2.17.1
 
