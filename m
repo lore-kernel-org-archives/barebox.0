@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fV9pa-0007u1-4t
- for barebox@lists.infradead.org; Tue, 19 Jun 2018 06:09:34 +0000
+ id 1fV9pa-0007tM-4s
+ for barebox@lists.infradead.org; Tue, 19 Jun 2018 06:09:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 19 Jun 2018 08:09:12 +0200
-Message-Id: <20180619060915.13141-3-s.hauer@pengutronix.de>
+Date: Tue, 19 Jun 2018 08:09:14 +0200
+Message-Id: <20180619060915.13141-5-s.hauer@pengutronix.de>
 In-Reply-To: <20180619060915.13141-1-s.hauer@pengutronix.de>
 References: <20180619060915.13141-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,27 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] console: Update description for
- global.linux.bootargs.console
+Subject: [PATCH 4/5] ARM: dts: imx6q-var-custom: remove some accidently pasted
+ text
 To: Barebox List <barebox@lists.infradead.org>
-
-Replace linux,stdout-path with stdout-path as the former is deprecated.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/console.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/dts/imx6q-var-custom.dts | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/common/console.c b/common/console.c
-index ab3d4d397c..d5f93c65df 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -587,4 +587,4 @@ EXPORT_SYMBOL(ctrlc);
- #endif /* ARCH_HAS_CTRC */
+diff --git a/arch/arm/dts/imx6q-var-custom.dts b/arch/arm/dts/imx6q-var-custom.dts
+index 9fc364ed9a..ddb220fb0a 100644
+--- a/arch/arm/dts/imx6q-var-custom.dts
++++ b/arch/arm/dts/imx6q-var-custom.dts
+@@ -8,13 +8,6 @@
+  *
+  * http://www.opensource.org/licenses/gpl-license.html
+  * http://www.gnu.org/copyleft/gpl.html
+- *
+- *
+- * 		environment@0 {
+-			compatible = "barebox,environment";
+-			device-path = &usdhc2, "partname:barebox-environment";
+-		};
+-
+  *
+  */
  
- BAREBOX_MAGICVAR_NAMED(global_linux_bootargs_console, global.linux.bootargs.console,
--		"console= argument for Linux from the linux,stdout-path property in /chosen node");
-+		"console= argument for Linux from the stdout-path property in /chosen node");
 -- 
 2.17.1
 
