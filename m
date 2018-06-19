@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fVAKY-0003Ww-Ia
+ id 1fVAKY-0003Wy-IX
  for barebox@lists.infradead.org; Tue, 19 Jun 2018 06:41:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 19 Jun 2018 08:41:15 +0200
-Message-Id: <20180619064117.13904-3-s.hauer@pengutronix.de>
+Date: Tue, 19 Jun 2018 08:41:16 +0200
+Message-Id: <20180619064117.13904-4-s.hauer@pengutronix.de>
 In-Reply-To: <20180619064117.13904-1-s.hauer@pengutronix.de>
 References: <20180619064117.13904-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] console_simple: Remove duplicated newline conversion
+Subject: [PATCH 4/5] console_simple: Fix newline conversion
 To: Barebox List <barebox@lists.infradead.org>
 
-console_puts uses console_putc for printing which already does newline
-conversion, so do not do it again in console_puts.
+Newline should be "\r\n" rather than "\n\r"
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/console_simple.c | 2 --
- 1 file changed, 2 deletions(-)
+ common/console_simple.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/common/console_simple.c b/common/console_simple.c
-index 9675cbb0a6..0825ec07ec 100644
+index 0825ec07ec..ee87b8c52f 100644
 --- a/common/console_simple.c
 +++ b/common/console_simple.c
-@@ -16,8 +16,6 @@ int console_puts(unsigned int ch, const char *str)
- 
- 	while (*s) {
- 		console_putc(ch, *s);
--		if (*s == '\n')
--			console_putc(ch, '\r');
- 		s++;
- 		i++;
+@@ -31,9 +31,10 @@ void console_putc(unsigned int ch, char c)
+ 		return;
  	}
+ 
+-	console->putc(console, c);
+ 	if (c == '\n')
+ 		console->putc(console, '\r');
++
++	console->putc(console, c);
+ }
+ EXPORT_SYMBOL(console_putc);
+ 
 -- 
 2.17.1
 
