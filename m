@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fVGda-0005kF-OH
- for barebox@lists.infradead.org; Tue, 19 Jun 2018 13:25:38 +0000
-Date: Tue, 19 Jun 2018 15:25:22 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180619132522.zisos7vvvjbet3s5@pengutronix.de>
-References: <1529316238.3364.3.camel@googlemail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1529316238.3364.3.camel@googlemail.com>
+ id 1fVKDc-000309-4m
+ for barebox@lists.infradead.org; Tue, 19 Jun 2018 17:15:08 +0000
+Received: by mail-lf0-x243.google.com with SMTP id x13-v6so616647lff.10
+ for <barebox@lists.infradead.org>; Tue, 19 Jun 2018 10:14:49 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Tue, 19 Jun 2018 20:14:33 +0300
+Message-Id: <20180619171433.24921-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,117 +16,200 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mmc_extcsd command: Add cmd option to set bkops-enable
-To: Christoph Fritz <chf.fritz@googlemail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] MIPS: dts: drop skeleton.dtsi
+To: barebox@lists.infradead.org
 
-On Mon, Jun 18, 2018 at 12:03:58PM +0200, Christoph Fritz wrote:
-> This patch is for convenience to set bkops-enable (EXT_CSD_BKOPS_EN[163])
-> on devices which have it not yet activated.
-> 
-> Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
-> ---
+Based on feedback from Sascha:
 
-Applied, thanks
+    http://lists.infradead.org/pipermail/barebox/2018-April/032694.html
+    "
+    skeleton.dtsi should no longer be used
+    "
 
-Sascha
+Several reasons to remove skeleton.dtsi ares explained in
+the linux commit 3ebee5a2e141 ("arm64: dts: kill skeleton.dtsi").
 
->  commands/mmc_extcsd.c | 26 +++++++++++++++++++++++---
->  1 file changed, 23 insertions(+), 3 deletions(-)
-> 
-> diff --git a/commands/mmc_extcsd.c b/commands/mmc_extcsd.c
-> index 82e0600..3a418ea 100644
-> --- a/commands/mmc_extcsd.c
-> +++ b/commands/mmc_extcsd.c
-> @@ -1482,7 +1482,7 @@ static int print_field(u8 *reg, int index)
->  			str = "may";
->  		else
->  			str = "shall not";
-> -		printf("\t[1] AUTO_EN: Device %s perform background ops while"
-> +		printf("\t[1] AUTO_EN: Device %s perform background ops while\n"
->  		       "\t    not servicing the host\n", str);
->  		return 1;
->  
-> @@ -2371,11 +2371,12 @@ static int do_mmc_extcsd(int argc, char *argv[])
->  	int			write_operation = 0;
->  	int			always_write = 0;
->  	int			print_as_raw = 0;
-> +	int			set_bkops_en = 0;
->  
->  	if (argc < 2)
->  		return COMMAND_ERROR_USAGE;
->  
-> -	while ((opt = getopt(argc, argv, "i:v:yr")) > 0)
-> +	while ((opt = getopt(argc, argv, "i:v:yrb")) > 0)
->  		switch (opt) {
->  		case 'i':
->  			index = simple_strtoul(optarg, NULL, 0);
-> @@ -2390,6 +2391,13 @@ static int do_mmc_extcsd(int argc, char *argv[])
->  		case 'r':
->  			print_as_raw = 1;
->  			break;
-> +		case 'b':
-> +			set_bkops_en = 1;
-> +			index = EXT_CSD_BKOPS_EN;
-> +			value = BIT(0);
-> +			write_operation = 1;
-> +			always_write = 1;
-> +			break;
->  		}
->  
->  	if (optind == argc)
-> @@ -2421,6 +2429,16 @@ static int do_mmc_extcsd(int argc, char *argv[])
->  		goto error_with_mem;
->  	}
->  
-> +	if (set_bkops_en) {
-> +		if (dst[index]) {
-> +			printf("Abort: EXT_CSD [%u] already set to %#02x!\n",
-> +			       index, dst[index]);
-> +			goto error_with_mem;
-> +		}
-> +		if (dst[EXT_CSD_REV] >= 7)
-> +			value |= BIT(1);	/* set AUTO_EN bit too */
-> +	}
-> +
->  	if (write_operation)
->  		if (!print_field(dst, index)) {
->  			printf("No field with this index found. Abort write operation!\n");
-> @@ -2466,12 +2484,14 @@ BAREBOX_CMD_HELP_OPT("-r", "print the register as raw data")
->  BAREBOX_CMD_HELP_OPT("-v", "value which will be written")
->  BAREBOX_CMD_HELP_OPT("-y", "don't request when writing to one time programmable fields")
->  BAREBOX_CMD_HELP_OPT("",   "__CAUTION__: this could damage the device!")
-> +BAREBOX_CMD_HELP_OPT("-b", "set bkops-enable (EXT_CSD_BKOPS_EN[163])")
-> +BAREBOX_CMD_HELP_OPT("",   "__WARNING__: this is a write-once setting!")
->  BAREBOX_CMD_HELP_END
->  
->  BAREBOX_CMD_START(mmc_extcsd)
->  	.cmd		= do_mmc_extcsd,
->  	BAREBOX_CMD_DESC("Read/write the extended CSD register.")
-> -	BAREBOX_CMD_OPTS("dev [-r | -i index [-r | -v value [-y]]]")
-> +	BAREBOX_CMD_OPTS("dev [-r | -b | -i index [-r | -v value [-y]]]")
->  	BAREBOX_CMD_GROUP(CMD_GRP_CONSOLE)
->  	BAREBOX_CMD_HELP(cmd_mmc_extcsd_help)
->  BAREBOX_CMD_END
-> -- 
-> 2.1.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Unit number is added to the /memory nodes to fix this dtc warning:
 
+  Warning (unit_address_vs_reg): /memory: node has a reg or ranges
+  property, but no unit name
+
+Also this commit adds #address-cells and #size-cells definitions
+to board and SoC dts file to avoid dtc warning, e.g.
+
+  Warning (avoid_default_addr_size): /memory@0: Relying on default
+  #address-cells value
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/dts/dlink-dir-320.dts |  7 ++++---
+ arch/mips/dts/img-ci20.dts      |  2 +-
+ arch/mips/dts/jz4755.dtsi       |  5 +++--
+ arch/mips/dts/jz4780.dtsi       |  5 +++--
+ arch/mips/dts/loongson-ls1b.dts |  2 +-
+ arch/mips/dts/ls1b.dtsi         |  5 +++--
+ arch/mips/dts/qemu-malta.dts    |  7 ++++---
+ arch/mips/dts/rzx50.dts         |  2 +-
+ arch/mips/dts/skeleton.dtsi     | 13 -------------
+ 9 files changed, 20 insertions(+), 28 deletions(-)
+
+diff --git a/arch/mips/dts/dlink-dir-320.dts b/arch/mips/dts/dlink-dir-320.dts
+index b961c9dca3..e21700637f 100644
+--- a/arch/mips/dts/dlink-dir-320.dts
++++ b/arch/mips/dts/dlink-dir-320.dts
+@@ -1,12 +1,13 @@
+ /dts-v1/;
+ 
+-#include "skeleton.dtsi"
+-
+ / {
+ 	model = "D-Link DIR-320";
+ 	compatible = "dlink,dir320";
+ 
+-	memory {
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	memory@0 {
+ 		reg = <0x00000000 0x2000000>;
+ 	};
+ 
+diff --git a/arch/mips/dts/img-ci20.dts b/arch/mips/dts/img-ci20.dts
+index da2a5bf625..d985666020 100644
+--- a/arch/mips/dts/img-ci20.dts
++++ b/arch/mips/dts/img-ci20.dts
+@@ -24,7 +24,7 @@
+ 	model = "MIPS Creator CI20";
+ 	compatible = "img,ci20";
+ 
+-	memory {
++	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x0 0x10000000>;
+ 	};
+diff --git a/arch/mips/dts/jz4755.dtsi b/arch/mips/dts/jz4755.dtsi
+index 137156df7e..5d929c5d83 100644
+--- a/arch/mips/dts/jz4755.dtsi
++++ b/arch/mips/dts/jz4755.dtsi
+@@ -1,6 +1,7 @@
+-#include "skeleton.dtsi"
+-
+ / {
++	#address-cells = <1>;
++	#size-cells = <1>;
++
+ 	soc {
+ 		compatible = "simple-bus";
+ 		model = "Ingenic JZ4755";
+diff --git a/arch/mips/dts/jz4780.dtsi b/arch/mips/dts/jz4780.dtsi
+index 9f0de5d1ae..fbffe814bb 100644
+--- a/arch/mips/dts/jz4780.dtsi
++++ b/arch/mips/dts/jz4780.dtsi
+@@ -1,6 +1,7 @@
+-#include "skeleton.dtsi"
+-
+ / {
++	#address-cells = <1>;
++	#size-cells = <1>;
++
+ 	soc {
+ 		model = "Ingenic JZ4780";
+ 		#address-cells = <1>;
+diff --git a/arch/mips/dts/loongson-ls1b.dts b/arch/mips/dts/loongson-ls1b.dts
+index b81a951dc7..39e44eba35 100644
+--- a/arch/mips/dts/loongson-ls1b.dts
++++ b/arch/mips/dts/loongson-ls1b.dts
+@@ -6,7 +6,7 @@
+ 	model = "Loongson Tech LS1B Demo Board";
+ 	compatible = "loongson,ls1b";
+ 
+-	memory {
++	memory@0 {
+ 		reg = <0x00000000 0x4000000>;
+ 	};
+ };
+diff --git a/arch/mips/dts/ls1b.dtsi b/arch/mips/dts/ls1b.dtsi
+index af7119f1d0..cb85814af4 100644
+--- a/arch/mips/dts/ls1b.dtsi
++++ b/arch/mips/dts/ls1b.dtsi
+@@ -1,6 +1,7 @@
+-#include "skeleton.dtsi"
+-
+ / {
++	#address-cells = <1>;
++	#size-cells = <1>;
++
+ 	soc {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+diff --git a/arch/mips/dts/qemu-malta.dts b/arch/mips/dts/qemu-malta.dts
+index 9b0c594e87..0311baed41 100644
+--- a/arch/mips/dts/qemu-malta.dts
++++ b/arch/mips/dts/qemu-malta.dts
+@@ -1,11 +1,12 @@
+ /dts-v1/;
+ 
+-/include/ "skeleton.dtsi"
+-
+ / {
+ 	model = "qemu malta";
+ 	compatible = "qemu,malta";
+ 
++	#address-cells = <1>;
++	#size-cells = <1>;
++
+ 	chosen {
+ 		environment@0 {
+ 			compatible = "barebox,environment";
+@@ -13,7 +14,7 @@
+ 		};
+ 	};
+ 
+-	memory {
++	memory@0 {
+ 		reg = <0x00000000 0x10000000>;
+ 	};
+ 
+diff --git a/arch/mips/dts/rzx50.dts b/arch/mips/dts/rzx50.dts
+index 7ec3352666..8d4f92c98a 100644
+--- a/arch/mips/dts/rzx50.dts
++++ b/arch/mips/dts/rzx50.dts
+@@ -6,7 +6,7 @@
+ 	model = "Ritmix RZX-50";
+ 	compatible = "ritmix,rzx50";
+ 
+-	memory {
++	memory@0 {
+ 		reg = <0x00000000 0x4000000>;
+ 	};
+ 
+diff --git a/arch/mips/dts/skeleton.dtsi b/arch/mips/dts/skeleton.dtsi
+deleted file mode 100644
+index b41d241de2..0000000000
+--- a/arch/mips/dts/skeleton.dtsi
++++ /dev/null
+@@ -1,13 +0,0 @@
+-/*
+- * Skeleton device tree; the bare minimum needed to boot; just include and
+- * add a compatible value.  The bootloader will typically populate the memory
+- * node.
+- */
+-
+-/ {
+-	#address-cells = <1>;
+-	#size-cells = <1>;
+-	chosen { };
+-	aliases { };
+-	memory { device_type = "memory"; reg = <0 0>; };
+-};
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.0
+
 
 _______________________________________________
 barebox mailing list
