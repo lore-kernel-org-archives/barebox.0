@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-it0-x242.google.com ([2607:f8b0:4001:c0b::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fVFxy-0005ya-ST
- for barebox@lists.infradead.org; Tue, 19 Jun 2018 12:42:37 +0000
-Message-ID: <1529412140.7211.22.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 19 Jun 2018 14:42:20 +0200
-In-Reply-To: <5226f251-0465-e9ca-6f5a-c0b29f5eda39@cogentembedded.com>
+ id 1fVJQo-0008Hm-8c
+ for barebox@lists.infradead.org; Tue, 19 Jun 2018 16:24:35 +0000
+Received: by mail-it0-x242.google.com with SMTP id v83-v6so1246501itc.3
+ for <barebox@lists.infradead.org>; Tue, 19 Jun 2018 09:24:23 -0700 (PDT)
+MIME-Version: 1.0
 References: <20180619054307.30618-1-andrew.smirnov@gmail.com>
  <20180619054307.30618-2-andrew.smirnov@gmail.com>
  <1529398276.7211.10.camel@pengutronix.de>
- <5226f251-0465-e9ca-6f5a-c0b29f5eda39@cogentembedded.com>
-Content-Type: multipart/mixed; boundary="=-+FATZr79oMuUGs+gg/Oi"
-Mime-Version: 1.0
+In-Reply-To: <1529398276.7211.10.camel@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 19 Jun 2018 09:24:11 -0700
+Message-ID: <CAHQ1cqGXRaf1qQ4MmKRvtnejANvkezvMPng9MJuKmBhXJn+7mw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,107 +21,126 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/2] ARM: i.MX: Add support for ZII RDU1 board
-To: Nikita Yushchenko <nikita.yoush@cogentembedded.com>, Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org, Andrey Gusakov <andrey.gusakov@cogentembedded.com>
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: Nikita Yushchenko <nikita.yoush@cogentembedded.com>, Barebox List <barebox@lists.infradead.org>
 
+On Tue, Jun 19, 2018 at 1:51 AM Lucas Stach <l.stach@pengutronix.de> wrote:
+>
+> Am Montag, den 18.06.2018, 22:43 -0700 schrieb Andrey Smirnov:
+> > ZII RDU1 is a i.MX51 based, Babbade board derivative supported by
+> > upstream kernel. This commit adds support for it to Barebox.
+> >
+> > > Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+> > > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> > ---
+> >  arch/arm/boards/Makefile                      |  1 +
+> >  arch/arm/boards/zii-imx51-rdu1/Makefile       |  2 +
+> >  arch/arm/boards/zii-imx51-rdu1/board.c        | 38 ++++++++++++
+> >  .../flash-header-imx51-zii-rdu1.imxcfg        | 60 +++++++++++++++++++
+> >  arch/arm/boards/zii-imx51-rdu1/lowlevel.c     | 46 ++++++++++++++
+> >  arch/arm/configs/imx_v7_defconfig             |  1 +
+> >  arch/arm/dts/Makefile                         |  1 +
+> >  arch/arm/dts/imx51-zii-rdu1.dts               | 46 ++++++++++++++
+> >  arch/arm/mach-imx/Kconfig                     |  5 ++
+> >  images/Makefile.imx                           |  5 ++
+> >  10 files changed, 205 insertions(+)
+> >  create mode 100644 arch/arm/boards/zii-imx51-rdu1/Makefile
+> >  create mode 100644 arch/arm/boards/zii-imx51-rdu1/board.c
+> >  create mode 100644 arch/arm/boards/zii-imx51-rdu1/flash-header-imx51-zii-rdu1.imxcfg
+> >  create mode 100644 arch/arm/boards/zii-imx51-rdu1/lowlevel.c
+> >  create mode 100644 arch/arm/dts/imx51-zii-rdu1.dts
+> >
+> > diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+> > index f1dc4c685..e5d217f52 100644
+> > --- a/arch/arm/boards/Makefile
+> > +++ b/arch/arm/boards/Makefile
+> > > @@ -150,5 +150,6 @@ obj-$(CONFIG_MACH_VSCOM_BALTOS)                 += vscom-baltos/
+> > >  obj-$(CONFIG_MACH_QEMU_VIRT64)                     += qemu-virt64/
+> > >  obj-$(CONFIG_MACH_WARP7)                   += element14-warp7/
+> > >  obj-$(CONFIG_MACH_VF610_TWR)                       += freescale-vf610-twr/
+> > > +obj-$(CONFIG_MACH_ZII_RDU1)                        += zii-imx51-rdu1/
+> > >  obj-$(CONFIG_MACH_ZII_RDU2)                        += zii-imx6q-rdu2/
+> > >  obj-$(CONFIG_MACH_ZII_VF610_DEV)           += zii-vf610-dev/
+> > diff --git a/arch/arm/boards/zii-imx51-rdu1/Makefile b/arch/arm/boards/zii-imx51-rdu1/Makefile
+> > new file mode 100644
+> > index 000000000..01c7a259e
+> > --- /dev/null
+> > +++ b/arch/arm/boards/zii-imx51-rdu1/Makefile
+> > @@ -0,0 +1,2 @@
+> > +obj-y += board.o
+> > +lwl-y += lowlevel.o
+> > diff --git a/arch/arm/boards/zii-imx51-rdu1/board.c b/arch/arm/boards/zii-imx51-rdu1/board.c
+> > new file mode 100644
+> > index 000000000..5e8f96ebd
+> > --- /dev/null
+> > +++ b/arch/arm/boards/zii-imx51-rdu1/board.c
+> > @@ -0,0 +1,38 @@
+> > +/*
+> > + * Copyright (C) 2015 Nikita Yushchenko, CogentEmbedded, Inc
+> > + * Copyright (C) 2015 Andrey Gusakov, CogentEmbedded, Inc
+> > + * Copyright (C) 2007 Sascha Hauer, Pengutronix
+> > + *
+> > + * This program is free software; you can redistribute it and/or
+> > + * modify it under the terms of the GNU General Public License as
+> > + * published by the Free Software Foundation; either version 2 of
+> > + * the License, or (at your option) any later version.
+> > + *
+> > + * This program is distributed in the hope that it will be useful,
+> > + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> > + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> > + * GNU General Public License for more details.
+> > + *
+> > + *
+> > + */
+> > +
+> > +#define pr_fmt(fmt) "zii-rdu1: " fmt
+> > +
+> > +#include <common.h>
+> > +#include <init.h>
+> > +#include <mach/bbu.h>
+> > +
+> > +static int zii_rdu1_init(void)
+> > +{
+> > > +   if (!of_machine_is_compatible("zii,imx51-rdu1"))
+> > > +           return 0;
+> > +
+> > > +   barebox_set_hostname("rdu1");
+> > +
+> > > +   imx51_bbu_internal_mmc_register_handler("mmc", "/dev/mmc0", 0);
+> > > +   imx51_bbu_internal_spi_i2c_register_handler("spi",
+> > > +                                               "/dev/dataflash0.barebox",
+> > +                                                 BBU_HANDLER_FLAG_DEFAULT);
+>
+> Did you test that this works? The Barebox partition has an offset and
+> according the RM the BootROM looks at a specific location for the image
+> header, so I think the Barebox image needs to be truncated for this to
+> work.
+>
 
---=-+FATZr79oMuUGs+gg/Oi
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+No, missed this one, sorry. I'll drop this code until we figure out a
+way to make it work with the least amount of hacks.
 
-Am Dienstag, den 19.06.2018, 14:34 +0300 schrieb Nikita Yushchenko:
-> > > > > > +	imx51_bbu_internal_spi_i2c_register_handler("spi",
-> > > > > > +						    "/dev/dataflash0.barebox",
-> > > +						    BBU_HANDLER_FLAG_DEFAULT);
-> > 
-> > Did you test that this works? The Barebox partition has an offset and
-> > according the RM the BootROM looks at a specific location for the image
-> > header, so I think the Barebox image needs to be truncated for this to
-> > work.
-> 
-> Yes, this works, together with this patch:
-> 
-> https://github.com/CogentEmbedded/barebox-zodiac/commit/9b523e459e198960b94594b7185baa0dd2649feb
-> 
-> I've copied this code from earlier version developed by Andrey Gusakov [CCed].
-> 
-> I did not try to change anything there, to ensure board stays bootable ;).
+> Regards,
+> Lucas
+>
+> > +     return 0;
+> > +}
+> > +coredevice_initcall(zii_rdu1_init);
+> > \ No newline at end of file
+>
+> Please add the newline.
 
-But this isn't a generic fix that can be applied upstream. Nothing in
-the i.MX51 boot specification says that the first 1024 bytes of flash
-shouldn't be written and in fact this is cutting the Barebox image
-signature from the image written to flash, which is generally
-undesirable.
+Sure.
 
-And it probably also doesn't work with the barebox partition having an
-offset on the flash, as is done with this patch.
-
-I've added a ugly workaround in the BSP patchstack, which _might_ be
-acceptable upstream. See attached patch.
-
-Regards,
-Lucas
-
---=-+FATZr79oMuUGs+gg/Oi
-Content-Disposition: attachment;
-	filename*0=0001-bbu-add-flag-to-skip-writing-the-padding-before-the-.pat;
-	filename*1=ch
-Content-Type: text/x-patch;
-	name="0001-bbu-add-flag-to-skip-writing-the-padding-before-the-.patch";
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
-
-RnJvbSA1MjMxYTdiYTI1MDYzNGNhMDlmZGJhMTYwYjcxZWI0NDkxZDlmZjhkIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBMdWNhcyBTdGFjaCA8bC5zdGFjaEBwZW5ndXRyb25peC5kZT4K
-RGF0ZTogTW9uLCA3IE1heSAyMDE4IDEyOjU0OjE1ICswMjAwClN1YmplY3Q6IFtQQVRDSF0gYmJ1
-OiBhZGQgZmxhZyB0byBza2lwIHdyaXRpbmcgdGhlIHBhZGRpbmcgYmVmb3JlIHRoZSBmbGFzaAog
-aGVhZGVyCgpUaGlzIGlzIHVnbHksIGJ1dCBuZWVkZWQgYXMgb24gdGhlIFpJSSBSRFUxIGJvYXJk
-IHRoZSBmbGFzaCBob2xkcyBzb21lCmltcG9ydGFudCBkYXRhIGluIHRoZSBmaXJzdCAxMDI0IGJ5
-dGVzLCBzbyB3ZSBuZWVkIHRvIGF2b2lkIHdyaXRpbmcKYW55dGhpbmcgaW50byB0aGlzLiBUaGlz
-IGlzIGltcGxlbWVudGVkIGJ5IGhhdmluZyB0aGUgYmFyZWJveCBwYXJ0aXRpb24Kc3RhcnQgYXQg
-dGhpcyBvZmZzZXQsIGJ1dCBCQlUgbmVlZHMgdG8gdHJ1bmNhdGUgdGhlIGltYWdlIGFjY29yZGlu
-Z2x5LgoKU2lnbmVkLW9mZi1ieTogTHVjYXMgU3RhY2ggPGwuc3RhY2hAcGVuZ3V0cm9uaXguZGU+
-Ci0tLQogYXJjaC9hcm0vbWFjaC1pbXgvaW14LWJidS1pbnRlcm5hbC5jIHwgMTEgKysrKysrKysr
-Ky0KIGluY2x1ZGUvYmJ1LmggICAgICAgICAgICAgICAgICAgICAgICB8ICAxICsKIDIgZmlsZXMg
-Y2hhbmdlZCwgMTEgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2Fy
-Y2gvYXJtL21hY2gtaW14L2lteC1iYnUtaW50ZXJuYWwuYyBiL2FyY2gvYXJtL21hY2gtaW14L2lt
-eC1iYnUtaW50ZXJuYWwuYwppbmRleCBjNzM3NWZmNTJhZWUuLjQ1NjEwZjBlZjlhYyAxMDA2NDQK
-LS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW14LWJidS1pbnRlcm5hbC5jCisrKyBiL2FyY2gvYXJt
-L21hY2gtaW14L2lteC1iYnUtaW50ZXJuYWwuYwpAQCAtMTYwLDE1ICsxNjAsMjQgQEAgc3RhdGlj
-IGludCBpbXhfYmJ1X2ludGVybmFsX3YxX3VwZGF0ZShzdHJ1Y3QgYmJ1X2hhbmRsZXIgKmhhbmRs
-ZXIsIHN0cnVjdCBiYnVfZGEKIHsKIAlzdHJ1Y3QgaW14X2ludGVybmFsX2JidV9oYW5kbGVyICpp
-bXhfaGFuZGxlciA9CiAJCWNvbnRhaW5lcl9vZihoYW5kbGVyLCBzdHJ1Y3QgaW14X2ludGVybmFs
-X2JidV9oYW5kbGVyLCBoYW5kbGVyKTsKKwljb25zdCB2b2lkICpkYXRhYnVmID0gZGF0YS0+aW1h
-Z2U7CisJaW50IGxlbiA9IGRhdGEtPmxlbjsKIAlpbnQgcmV0OwogCiAJcmV0ID0gaW14X2JidV9j
-aGVja19wcmVyZXEoZGF0YS0+ZGV2aWNlZmlsZSwgZGF0YSk7CiAJaWYgKHJldCkKIAkJcmV0dXJu
-IHJldDsKIAorCWlmIChoYW5kbGVyLT5mbGFncyAmIEJCVV9IQU5ETEVSX1NLSVBfSEVBREVSX09G
-RlNFVCkKKwl7CisJCWRhdGFidWYgKz0gaW14X2hhbmRsZXItPmZsYXNoX2hlYWRlcl9vZmZzZXQ7
-CisJCWxlbiAtPSBpbXhfaGFuZGxlci0+Zmxhc2hfaGVhZGVyX29mZnNldDsKKwl9CisKIAlwcmlu
-dGYoInVwZGF0aW5nIHRvICVzXG4iLCBkYXRhLT5kZXZpY2VmaWxlKTsKIAotCXJldCA9IGlteF9i
-YnVfd3JpdGVfZGV2aWNlKGlteF9oYW5kbGVyLCBkYXRhLT5kZXZpY2VmaWxlLCBkYXRhLCBkYXRh
-LT5pbWFnZSwgZGF0YS0+bGVuKTsKKwlyZXQgPSBpbXhfYmJ1X3dyaXRlX2RldmljZShpbXhfaGFu
-ZGxlciwgZGF0YS0+ZGV2aWNlZmlsZSwgZGF0YSwKKwkJCQkgICBkYXRhYnVmLCBsZW4pOwogCiAJ
-cmV0dXJuIHJldDsKIH0KZGlmZiAtLWdpdCBhL2luY2x1ZGUvYmJ1LmggYi9pbmNsdWRlL2JidS5o
-CmluZGV4IGRlZjU2OGU0OThkNC4uMTZmNDk4ZTU3MjRhIDEwMDY0NAotLS0gYS9pbmNsdWRlL2Ji
-dS5oCisrKyBiL2luY2x1ZGUvYmJ1LmgKQEAgLTI1LDYgKzI1LDcgQEAgc3RydWN0IGJidV9oYW5k
-bGVyIHsKIAlzdHJ1Y3QgbGlzdF9oZWFkIGxpc3Q7CiAjZGVmaW5lIEJCVV9IQU5ETEVSX0ZMQUdf
-REVGQVVMVAkoMSA8PCAwKQogI2RlZmluZSBCQlVfSEFORExFUl9DQU5fUkVGUkVTSAkJKDEgPDwg
-MSkKKyNkZWZpbmUgQkJVX0hBTkRMRVJfU0tJUF9IRUFERVJfT0ZGU0VUCSgxIDw8IDIpCiAJdW5z
-aWduZWQgbG9uZyBmbGFnczsKIAogCS8qIGRlZmF1bHQgZGV2aWNlIGZpbGUsIGNhbiBiZSBvdmVy
-d3JpdHRlbiBvbiB0aGUgY29tbWFuZCBsaW5lICovCi0tIAoyLjE3LjEKCg==
-
-
---=-+FATZr79oMuUGs+gg/Oi
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---=-+FATZr79oMuUGs+gg/Oi--
