@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x243.google.com ([2a00:1450:4864:20::243])
+Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fXLG1-0004sm-6H
- for barebox@lists.infradead.org; Mon, 25 Jun 2018 06:45:51 +0000
-Received: by mail-lj1-x243.google.com with SMTP id k20-v6so3529602ljk.9
- for <barebox@lists.infradead.org>; Sun, 24 Jun 2018 23:45:38 -0700 (PDT)
-Date: Mon, 25 Jun 2018 09:46:04 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20180625094604.29d353b8222da99c4e9a51d6@gmail.com>
-In-Reply-To: <20180417062255.l62b3tldnqmydpjl@pengutronix.de>
-References: <20180415112858.5163-1-antonynpavlov@gmail.com>
- <20180415112858.5163-2-antonynpavlov@gmail.com>
- <20180417062255.l62b3tldnqmydpjl@pengutronix.de>
-Mime-Version: 1.0
+ id 1fVijP-0001PY-T7
+ for barebox@lists.infradead.org; Wed, 20 Jun 2018 19:25:29 +0000
+Received: by mail-pl0-x244.google.com with SMTP id w17-v6so299840pll.9
+ for <barebox@lists.infradead.org>; Wed, 20 Jun 2018 12:25:17 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 20 Jun 2018 12:24:26 -0700
+Message-Id: <20180620192430.16689-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,129 +16,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/10] Add initial RISC-V architecture support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 0/4] ZII RDU1 support
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Tue, 17 Apr 2018 08:22:55 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+Everyone:
 
-> Hi Antony,
-> =
+This is a patchset containing the code to add initial support for ZII
+RDU1 board to Barebox.
 
-> On Sun, Apr 15, 2018 at 02:28:49PM +0300, Antony Pavlov wrote:
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > ---
-> > diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> > new file mode 100644
-> > index 0000000000..d65e87acd8
-> > --- /dev/null
-> > +++ b/arch/riscv/Kconfig
-> > @@ -0,0 +1,62 @@
-> > +config RISCV
-> > +	def_bool y
-> > +	select GENERIC_FIND_NEXT_BIT
-> > +	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
-> > +	select HAVE_CONFIGURABLE_TEXT_BASE
-> > +	select GPIOLIB
-> > +	select OFTREE
-> > +	select COMMON_CLK
-> > +	select COMMON_CLK_OF_PROVIDER
-> > +	select CLKDEV_LOOKUP
-> > +
-> > +config ARCH_TEXT_BASE
-> > +	hex
-> > +	default 0x0
-> > +
-> > +config GENERIC_LINKER_SCRIPT
-> > +	def_bool y
-> =
+Changes since [v1]:
 
-> Do we need this? The linker script should be universal enough to be used
-> by all boards.
+  - Removed usage of compatible property for PMIC initialization
 
-I have dropped it in v2 RISC-V patchseries.
+  - Less invasive (IMHO), way of dealing with dataflash BBU quirks is proposed
 
-> > diff --git a/arch/riscv/dts/skeleton.dtsi b/arch/riscv/dts/skeleton.dtsi
-> > new file mode 100644
-> > index 0000000000..38ead821bb
-> > --- /dev/null
-> > +++ b/arch/riscv/dts/skeleton.dtsi
-> > @@ -0,0 +1,13 @@
-> > +/*
-> > + * Skeleton device tree; the bare minimum needed to boot; just include=
- and
-> > + * add a compatible value.  The bootloader will typically populate the=
- memory
-> > + * node.
-> > + */
-> > +
-> > +/ {
-> > +	#address-cells =3D <2>;
-> > +	#size-cells =3D <1>;
-> > +	chosen { };
-> > +	aliases { };
-> > +	memory { device_type =3D "memory"; reg =3D <0 0 0>; };
-> > +};
-> =
+  - Missing newline in board.c
 
-> skeleton.dtsi should no longer be used. For example we should now have
-> memory@adr {}; instead of memory {};. Since "adr" is board/SoC specific
-> we can't put it in a generic file.
+[v1] http://lists.infradead.org/pipermail/barebox/2018-June/033764.html
+     http://lists.infradead.org/pipermail/barebox/2018-June/033765.html
 
-I have dropped skeleton.dtsi in the v2 RISC-V patchseries.
+Andrey Smirnov (4):
+  ARM: babbage: Make PMIC initialization shareable
+  bbu: Make bbu_find_handler_by_device() public
+  ARM: i.MX: bbu: Make imx_bbu_internal_v1_update() public
+  ARM: i.MX: Add support for ZII RDU1 board
 
-I have even submitted patches for MIPS, please review.
+ arch/arm/boards/Makefile                      |   3 +-
+ .../boards/freescale-mx51-babbage/Makefile    |   5 +-
+ .../arm/boards/freescale-mx51-babbage/board.c | 112 +---------------
+ .../arm/boards/freescale-mx51-babbage/power.c | 120 ++++++++++++++++++
+ arch/arm/boards/zii-imx51-rdu1/Makefile       |   2 +
+ arch/arm/boards/zii-imx51-rdu1/board.c        | 100 +++++++++++++++
+ .../flash-header-imx51-zii-rdu1.imxcfg        |  60 +++++++++
+ arch/arm/boards/zii-imx51-rdu1/lowlevel.c     |  46 +++++++
+ arch/arm/configs/imx_v7_defconfig             |   1 +
+ arch/arm/dts/Makefile                         |   1 +
+ arch/arm/dts/imx51-zii-rdu1.dts               |  46 +++++++
+ arch/arm/mach-imx/Kconfig                     |  18 ++-
+ arch/arm/mach-imx/imx-bbu-internal.c          |   2 +-
+ arch/arm/mach-imx/include/mach/bbu.h          |   8 ++
+ arch/arm/mach-imx/include/mach/imx5.h         |   2 +
+ common/bbu.c                                  |   2 +-
+ images/Makefile.imx                           |   5 +
+ include/bbu.h                                 |   2 +
+ 18 files changed, 417 insertions(+), 118 deletions(-)
+ create mode 100644 arch/arm/boards/freescale-mx51-babbage/power.c
+ create mode 100644 arch/arm/boards/zii-imx51-rdu1/Makefile
+ create mode 100644 arch/arm/boards/zii-imx51-rdu1/board.c
+ create mode 100644 arch/arm/boards/zii-imx51-rdu1/flash-header-imx51-zii-rdu1.imxcfg
+ create mode 100644 arch/arm/boards/zii-imx51-rdu1/lowlevel.c
+ create mode 100644 arch/arm/dts/imx51-zii-rdu1.dts
 
-> =
+-- 
+2.17.1
 
-> > diff --git a/arch/riscv/lib/ashldi3.c b/arch/riscv/lib/ashldi3.c
-> > new file mode 100644
-> > index 0000000000..cbdbcbb6a9
-> > --- /dev/null
-> > +++ b/arch/riscv/lib/ashldi3.c
-> > @@ -0,0 +1,28 @@
-> > +#include <module.h>
-> > +
-> > +#include "libgcc.h"
-> > +
-> > +long long __ashldi3(long long u, word_type b)
-> > +{
-> =
-
-> Can we have generic C variants for these files? The Kernel has these
-> symbols in lib/ and they can be selected by "select GENERIC_ASHLDI3"
-
-I know about this problem. I have even made a patch for linux kernel for MI=
-PS:
-
-  [PATCH v3 2/2] MIPS: use generic GCC library routines from lib/
-  https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1599191.html
-
-During this MIPS patch discussion it has become evident that Kconfig GENERI=
-C_
-prefix has to be changed to GENERIC_LIB_.
-
-This morning I found that the patch =
-
-
-  [PATCH] lib: Rename compiler intrinsic selects to GENERIC_LIB_*
-  https://patchwork.kernel.org/patch/10335017/
-
-has been merged by Linus almost two weeks ago.
-
-So I can prepare corresponding generic GCC functions barebox patchseries
-(it will be useful for MIPS). Next I shall submit RISC-V v2 patchseries.
-RISC-V will use generic GCC functions from lib/ too.
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
