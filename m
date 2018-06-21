@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x229.google.com ([2a00:1450:4010:c07::229])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fXUNg-00008g-Jr
- for barebox@lists.infradead.org; Mon, 25 Jun 2018 16:30:32 +0000
-Message-ID: <1529944207.9910.29.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 25 Jun 2018 18:30:07 +0200
-In-Reply-To: <CAHQ1cqEMipPPqTvVFPO4YYCB7ojNmh8Jq6Lcem8e7UMrKU83mQ@mail.gmail.com>
-References: <20180620192430.16689-1-andrew.smirnov@gmail.com>
- <20180620192430.16689-5-andrew.smirnov@gmail.com>
- <1529917380.9910.2.camel@pengutronix.de>
- <CAHQ1cqEMipPPqTvVFPO4YYCB7ojNmh8Jq6Lcem8e7UMrKU83mQ@mail.gmail.com>
-Mime-Version: 1.0
+ id 1fVxer-0007CN-St
+ for barebox@lists.infradead.org; Thu, 21 Jun 2018 11:21:49 +0000
+Received: by mail-lf0-x229.google.com with SMTP id d24-v6so4208168lfa.8
+ for <barebox@lists.infradead.org>; Thu, 21 Jun 2018 04:21:35 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 21 Jun 2018 14:21:18 +0300
+Message-Id: <20180621112120.10467-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,60 +16,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 4/4] ARM: i.MX: Add support for ZII RDU1 board
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: nikita.yoush@cogentembedded.com, barebox@lists.infradead.org, cphealy@gmail.com
+Subject: [PATCH v2 0/2] MIPS: dts: drop skeleton.dtsi
+To: barebox@lists.infradead.org
 
-QW0gTW9udGFnLCBkZW4gMjUuMDYuMjAxOCwgMDk6MTEgLTA3MDAgc2NocmllYiBBbmRyZXkgU21p
-cm5vdjoKWy4uLl0KPiA+ID4gKwo+ID4gPiArLyoqCj4gPiA+ICsgKiB6aWlfcmR1MV9iYnVfc3Bp
-X3VwZGF0ZSAtIFJEVTEgc3BlY2lmaWMgQkJVIGhhbmRsZXIKPiA+ID4gKyAqCj4gPiA+ID4gKyAq
-IEBoYW5kbGVyOsKgwqDCoMKgwqDCoMKgQkJVIGhhbmRsZXIgcG9pbnRlciBwYXNzZWQgZG93biBi
-eSBCQlUgZnJhbWV3b3JrCj4gPiA+ID4gKyAqIEBkYXRhOsKgwqBCQlUgZGF0YSBwb2ludGVyIHBh
-c3NlZCBkb3duIGJ5IEJCVSBmcmFtZXdvcmsKPiA+ID4gCj4gPiA+ICsgKgo+ID4gPiArICogUkRV
-MSBkZXNpZ24gY2hvc2UgdG8gdXNlIGZpcnN0IHBhZ2Ugb2YgdGhlIG9uYm9hcmQgZGF0YWZsYXNo
-IHRvCj4gPiA+ICsgKiBzdG9yZSB2ZW5kb3IgYm9hcmQtc3BlY2lmaWMgcGFyYW10ZXJzLCB3aGlj
-aCBpcyBwcm9ibGVtYXRpYyBiZWNhdXNlCj4gPiA+ICsgKiBpbXhfYmJ1X2ludGVybmFsX3YxX3Vw
-ZGF0ZSgpIHdpbGwgbm90IHNwYXJlIHRoYXQgcmVnaW9uIHdoZW4KPiA+ID4gKyAqIHBlZm9ybWlu
-ZyB0aGUgdXBkYXRlLgo+ID4gPiArICoKPiA+ID4gKyAqIFRoaXMgZnVuY3Rpb25zIHdvcmtzIGFz
-IGEgdGhpbiB3cmFwcGVyIGFyb3VuZAo+ID4gPiArICogaW14X2JidV9pbnRlcm5hbF92MV91cGRh
-dGUoKSBhbmQgc2F2ZXMgdGhlIGRhdGEgYmVmb3JlIGFuZCByZXN0b3Jlcwo+ID4gPiArICogaXQg
-YWZ0ZXIsIGtlZXBpbmcgYm9hcmQgc3BlY2lmaWMgZGF0YSBpbnRhY3QuCj4gPiA+ICsgKi8KPiA+
-IAo+ID4gSW4gZ2VuZXJhbCBJIGxpa2UgdGhlIGlkZWEgb2YgcmVwbGFjaW5nIHRoZSB1cGRhdGUg
-aGFuZGxlciBpbiB0aGUKPiA+IGJvYXJkLCBhcyBpdCBzaG93cyBjbGVhcmx5IHRoYXQgdGhpcyBp
-cyBzb21lIGJvYXJkIHNwZWNpZmljIHF1aXJrLgo+ID4gCj4gPiBJIGRvbid0IGZ1bGx5IGFncmVl
-IG9uIHRoZSBpbXBsZW1lbnRhdGlvbiBvZiB0aGUgaGFuZGxlciB0aG91Z2guCj4gPiBPdmVyd3Jp
-dGluZyBhbmQgcmVzdG9yaW5nIHRoZSBjb25maWcgYXJlYSBzdGlsbCBoYXMgdGhlIHJpc2sgb2YK
-PiA+IGRlc3Ryb3lpbmcgdGhpcyBkYXRhLCBsZWF2aW5nIHRoZSB1bml0IGluIGEgYnJpY2tlZCBz
-dGF0ZS4KPiA+IAo+IAo+IFRoZSBvbmx5IGluZm8gY29udGFpbmVkIGluIGNvbmZpZyBhcmVhIGlz
-IHVuaXQncyBNQUMgYWRkcmVzcyBhbmQgYW5kCj4gTENEIHBhbmVsIHR5cGUuIExvb3NpbmcgdGhp
-cyBpbmZvcm1hdGlvbiwgd2hpbGUgaW5jb252ZW5pZW50LCBpcyBub3QKPiBnb2luZyB0byBicmlj
-ayB0aGUgdW5pdC4gQWRkaXRpb25hbGx5Ogo+IAo+IC3CoMKgTENEIHR5cGUgaW5mb3JtYXRpb24g
-Y291bGQgYW5kIGlzIHRlbnRhdGl2ZWx5IHBsYW5lZCB0byBiZSBkZXJpdmVkCj4gZnJvbSBQL04g
-aW5mb3JtYXRpb24gYXZhaWxhYmxlIHZpYSBSQVZFIFNQIEVFUFJPTSwgc28gdGhhdCBsZWF2ZXMg
-dXMKPiB3aXRoIGp1c3QgTUFDIGFkZHJlc3MuCj4gCj4gLSBDb25maWcgaGVhZGVyIGluIFNQSSBO
-T1IgaXMgYWxzbyBkdXBsaWNhdGVkIGluIFNQSSBFRVBST00gY29ubmVjdGVkCj4gdG8gaS5NWDUx
-LCBzbyBpdCBjYW4gYmUgcmVzb3J0ZWQgZnJvbSB0aGVyZSBpZiBuZWVkIGJlLgo+IAo+IC0gUmVt
-b3ZpbmcgdGhpcyByaXNrIHdpbGwgZG8gbm90aGluZyB0byB0aGUgcmlzayBvZiB0cnVseSBicmlj
-a2luZyB0aGUKPiB1bml0IHZpYSBmYWlsZWQgYm9vdGxvYWRlciB1cGdyYWRlIHdoaWNoIGlzIHNl
-dmVyYWwgb3JkZXJzIG9mCj4gbWFnbml0dWRlIG1vcmUgbGlrZWx5IGR1ZSB0byBzaXplIGRpZmZl
-cmVuY2Ugb2YgYm9vdGxvYWRlciBpbWFnZSB2cwo+IGNvbmZpZyBhcmVhLgoKWWVhLCBJIHRob3Vn
-aHQgdGhlcmUgd2FzIHNvbWUgbW9yZSB2YWx1YWJsZSB0aGluZyBzdG9yZWQgaW4gdGhpcyBhcmVh
-LgoKPiA+IEFzIHRoZSBjb25maWcgYXJlYSBpcyBwYWdlIGFsaWduZWQsIHRoZXJlIGlzIG5vIG5l
-ZWQgdG8gdG91Y2ggaXQgYXQgYWxsCj4gPiAoSSB0aGluaykuIEFsbCB5b3UgbmVlZCB0byBkbyBp
-cyB0byBwb2ludCB0aGUgQkJVIHRhcmdldCBhdCB0aGUgYmFyZWJveAo+ID4gcGFydGl0aW9uIG9u
-IHRoZSBkYXRhZmxhc2ggYW5kIHRydW5jYXRlIHRoZSBiYXJlYm94IGltYWdlIGluIHRoZSBjdXN0
-b20KPiA+IGhhbmRsZXIgYnkgY2hhbmdpbmcgZGF0YS0+aW1hZ2UgYW5kIGRhdGEtPmxlbiBpbiB0
-aGUgY3VzdG9tIFJEVTEKPiA+IGhhbmRsZXIuCj4gPiAKPiAKPiBJJ2xsIGdpdmUgdGhpcyBhcHBy
-b2FjaCBhIHRyeSBzaW5jZSBpdCBzb3VuZHMgbGlrZSBpdCdzIGdvaW5nIHRvIGFsbG93Cj4gbWUg
-dG8gZHJvcCBhIGJpdCBvZiBleHRyYSBjb2RlLCBidXQgaWYgaXQgZG9lc24ndCBJIHRoaW5rIHRo
-ZSBvcmlnaW5hbAo+IGNvZGUgaXMgZ29vZCBlbm91Z2ggYW5kIHdlIHNob3VsZCBsZXQgdGhlIHBl
-cmZlY3QgYmUgdGhlIGVuZW15IG9mIHRoZQo+IGdvb2QuCgpBZ3JlZWQuIEkgd29uJ3Qgb2JqZWN0
-IHRvIHRoZSBjdXJyZW50IGFwcHJvYWNoIGlmIHRoZSBzaW1wbGVyIG9wdGlvbgp0dXJucyBvdXQg
-dG8gbm90IHdvcmsgZm9yIHNvbWUgcmVhc29uLgoKUmVnYXJkcywKTHVjYXMKCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
-CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Changes since v1 patchseries:
+
+  * add `device_type = "memory";` to the memory node;
+  * split patch.
+
+Antony Pavlov (2):
+  MIPS: dts: drop skeleton.dtsi
+  MIPS: dts: fix dtc unit_address_vs_reg warning
+
+ arch/mips/dts/dlink-dir-320.dts |  8 +++++---
+ arch/mips/dts/img-ci20.dts      |  2 +-
+ arch/mips/dts/jz4755.dtsi       |  5 +++--
+ arch/mips/dts/jz4780.dtsi       |  5 +++--
+ arch/mips/dts/loongson-ls1b.dts |  3 ++-
+ arch/mips/dts/ls1b.dtsi         |  5 +++--
+ arch/mips/dts/qemu-malta.dts    |  8 +++++---
+ arch/mips/dts/rzx50.dts         |  3 ++-
+ arch/mips/dts/skeleton.dtsi     | 13 -------------
+ 9 files changed, 24 insertions(+), 28 deletions(-)
+ delete mode 100644 arch/mips/dts/skeleton.dtsi
+
+-- 
+2.17.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
