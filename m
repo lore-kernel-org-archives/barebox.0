@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
+Received: from mail-pg0-x22e.google.com ([2607:f8b0:400e:c05::22e])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fXCac-0000PN-RZ
- for barebox@lists.infradead.org; Sun, 24 Jun 2018 21:30:32 +0000
-Received: by mail-pf0-x242.google.com with SMTP id b17-v6so5505695pfi.0
- for <barebox@lists.infradead.org>; Sun, 24 Jun 2018 14:30:20 -0700 (PDT)
+ id 1fXCab-0000PM-Pc
+ for barebox@lists.infradead.org; Sun, 24 Jun 2018 21:30:31 +0000
+Received: by mail-pg0-x22e.google.com with SMTP id c9-v6so5165525pgf.5
+ for <barebox@lists.infradead.org>; Sun, 24 Jun 2018 14:30:19 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 24 Jun 2018 14:29:59 -0700
-Message-Id: <20180624212959.27468-4-andrew.smirnov@gmail.com>
+Date: Sun, 24 Jun 2018 14:29:58 -0700
+Message-Id: <20180624212959.27468-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20180624212959.27468-1-andrew.smirnov@gmail.com>
 References: <20180624212959.27468-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,39 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] drivers: of: Make use of devpath_to_name()
+Subject: [PATCH 3/4] commands: mmc_extcsd: Make use of devpath_to_name()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/of/of_path.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ commands/mmc_extcsd.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
-index e53041b0a..f8bbf2cba 100644
---- a/drivers/of/of_path.c
-+++ b/drivers/of/of_path.c
-@@ -20,6 +20,7 @@
- #include <common.h>
- #include <malloc.h>
- #include <of.h>
+diff --git a/commands/mmc_extcsd.c b/commands/mmc_extcsd.c
+index 3a418ea5e..889a6c614 100644
+--- a/commands/mmc_extcsd.c
++++ b/commands/mmc_extcsd.c
+@@ -22,6 +22,7 @@
+ #include <stdio.h>
+ #include <mci.h>
+ #include <getopt.h>
 +#include <fs.h>
  
- #include <linux/mtd/mtd.h>
+ #define EXT_CSD_BLOCKSIZE	512
  
-@@ -142,10 +143,7 @@ struct device_node *of_find_node_by_devpath(struct device_node *root, const char
+@@ -2404,10 +2405,8 @@ static int do_mmc_extcsd(int argc, char *argv[])
+ 		return COMMAND_ERROR_USAGE;
  
- 	pr_debug("%s: looking for path %s\n", __func__, path);
+ 	devname = argv[optind];
+-	if (!strncmp(devname, "/dev/", 5))
+-		devname += 5;
  
--	if (!strncmp(path, "/dev/", 5))
--		path += 5;
--
--	cdev = cdev_by_name(path);
-+	cdev = cdev_by_name(devpath_to_name(path));
- 	if (!cdev) {
- 		pr_debug("%s: cdev %s not found\n", __func__, path);
- 		return NULL;
+-	mci = mci_get_device_by_name(devname);
++	mci = mci_get_device_by_name(devpath_to_name(devname));
+ 	if (mci == NULL) {
+ 		retval = -ENOENT;
+ 		goto error;
 -- 
 2.17.1
 
