@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
+Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fXDT1-000689-Qk
- for barebox@lists.infradead.org; Sun, 24 Jun 2018 22:26:45 +0000
-Received: by mail-pl0-x244.google.com with SMTP id o18-v6so5175354pll.12
- for <barebox@lists.infradead.org>; Sun, 24 Jun 2018 15:26:34 -0700 (PDT)
+ id 1fXDT4-00068A-1t
+ for barebox@lists.infradead.org; Sun, 24 Jun 2018 22:26:48 +0000
+Received: by mail-pl0-x242.google.com with SMTP id s24-v6so5869364plq.6
+ for <barebox@lists.infradead.org>; Sun, 24 Jun 2018 15:26:35 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 24 Jun 2018 15:26:18 -0700
-Message-Id: <20180624222623.30564-2-andrew.smirnov@gmail.com>
+Date: Sun, 24 Jun 2018 15:26:19 -0700
+Message-Id: <20180624222623.30564-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20180624222623.30564-1-andrew.smirnov@gmail.com>
 References: <20180624222623.30564-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,103 +23,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] ARM: dts: rdu2: Remove obsolete 'pic' node in uart4
+Subject: [PATCH 2/6] ARM: dts: rdu2: Add nodes for RAVE SP EEPROM
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-All of the code in this commit is:
-
- a) Obsolete and intended to work with a driver that has never been
-    submitted upstream anywhere and is no longer used
-
- b) Superceeded by the DT code in Linux DT tree
-
-Remove it all and rely on Linux DTS files to properly specify RAVE SP
-MFD with a watchdog child node.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/imx6qdl-zii-rdu2.dtsi | 67 ------------------------------
- 1 file changed, 67 deletions(-)
+ arch/arm/dts/imx6qdl-zii-rdu2.dtsi | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
 diff --git a/arch/arm/dts/imx6qdl-zii-rdu2.dtsi b/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
-index 7ab569b78..6d9c38d7e 100644
+index 6d9c38d7e..bdf76bc4e 100644
 --- a/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
 +++ b/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
-@@ -55,73 +55,6 @@
+@@ -52,6 +52,31 @@
+ 	aliases {
+ 		ethernet0 = &fec;
+ 		ethernet1 = &i210;
++		/*
++		 * Aliases to match Linux kernel naming in /dev/
++		 */
++		main-eeprom = &main_eeprom;
++		dds-eeprom = &dds_eeprom;
++	};
++};
++
++
++&uart4 {
++	rave-sp {
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		dds_eeprom: eeprom@a3 {
++			compatible = "zii,rave-sp-eeprom";
++			reg = <0xa3 0x4000>;
++		};
++
++		main_eeprom: eeprom@a4 {
++			compatible = "zii,rave-sp-eeprom";
++			reg = <0xa4 0x4000>;
++			#address-cells = <1>;
++			#size-cells = <1>;
++		};
  	};
  };
  
--&uart4 {
--	pic {
--		compatible = "zii,pic-rdu2";
--		current-speed = <1000000>;
--		status = "okay";
--
--		main_eeprom {
--			compatible = "zii,pic-main-eeprom";
--			#address-cells = <1>;
--			#size-cells = <1>;
--			status = "okay";
--
--			boot_source: boot-source@83 {
--				reg = <0x83 1>;
--			};
--			max_failed_boots: max-failed-boots@8E {
--				reg = <0x8E 2>;
--			};
--		};
--
--		dds_eeprom {
--			compatible = "zii,pic-dds-eeprom";
--			#address-cells = <1>;
--			#size-cells = <1>;
--			status = "okay";
--		};
--
--		watchdog {
--			compatible = "zii,pic-watchdog";
--			status = "okay";
--		};
--
--		hwmon {
--			compatible = "zii,pic-hwmon";
--			sensors = "RMB_3V3_PMIC",
--				  "RMB_3V3_MCU",
--				  "RMB_5V_MAIN",
--				  "RMB_12V_MAIN",
--				  "RMB_28V_FIL",
--				  "RMB_28V_HOTSWAP",
--				  "DEB_1V8",
--				  "DEB_3V3",
--				  "DEB_28V_DEB",
--				  "DEB_28V_RDU",
--				  "TEMPERATURE",
--				  "TEMPERATURE_2",
--				  "RMB_28V_CURRENT";
--			status = "okay";
--		};
--
--		backlight {
--			compatible = "zii,pic-backlight";
--			status = "okay";
--		};
--
--		leds {
--			compatible = "zii,pic-leds";
--			status = "okay";
--		};
--
--		pwrbutton {
--			compatible = "zii,pic-pwrbutton";
--			status = "okay";
--		};
--	};
--};
--
- &ecspi1 {
- 	nor_flash: flash@0 {
- 		#address-cells = <1>;
 -- 
 2.17.1
 
