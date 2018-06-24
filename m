@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fXXiG-0007aV-F6
- for barebox@lists.infradead.org; Mon, 25 Jun 2018 20:03:52 +0000
-Date: Mon, 25 Jun 2018 22:03:36 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180625200336.bwqckhqnows3aygt@pengutronix.de>
-References: <20180624212959.27468-1-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180624212959.27468-1-andrew.smirnov@gmail.com>
+ id 1fXDPQ-0004Lg-5o
+ for barebox@lists.infradead.org; Sun, 24 Jun 2018 22:23:01 +0000
+Received: by mail-pl0-x244.google.com with SMTP id s24-v6so5866879plq.6
+ for <barebox@lists.infradead.org>; Sun, 24 Jun 2018 15:22:49 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Sun, 24 Jun 2018 15:22:31 -0700
+Message-Id: <20180624222231.30264-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,64 +16,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] fs: devfs-core: Make use of devpath_to_name()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fixup! dts: update to v4.18-rc1
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Sun, Jun 24, 2018 at 02:29:56PM -0700, Andrey Smirnov wrote:
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  fs/devfs-core.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+---
 
-Applied, thanks
+Sascha,
 
-Sascha
+In case you haven't fixed this already, I am getting a build error on
+'next' for i.MX7 due to the rename that happened as a part of "dts:
+update to v4.18-rc1".
 
-> 
-> diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-> index 6b5e6da6a..f017e1c55 100644
-> --- a/fs/devfs-core.c
-> +++ b/fs/devfs-core.c
-> @@ -28,6 +28,7 @@
->  #include <linux/fs.h>
->  #include <linux/mtd/mtd.h>
->  #include <unistd.h>
-> +#include <fs.h>
->  
->  LIST_HEAD(cdev_list);
->  
-> @@ -155,10 +156,7 @@ struct cdev *cdev_open(const char *name, unsigned long flags)
->  	struct cdev *cdev;
->  	int ret;
->  
-> -	if (!strncmp(name, "/dev/", 5))
-> -		name += 5;
-> -
-> -	cdev = cdev_by_name(name);
-> +	cdev = cdev_by_name(devpath_to_name(name));
->  	if (!cdev)
->  		return NULL;
->  
-> -- 
-> 2.17.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Thanks,
+Andrey Smirnov
 
+ drivers/clk/imx/clk-imx7.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/clk/imx/clk-imx7.c b/drivers/clk/imx/clk-imx7.c
+index 1025c9d17..8e92a5a3b 100644
+--- a/drivers/clk/imx/clk-imx7.c
++++ b/drivers/clk/imx/clk-imx7.c
+@@ -744,9 +744,9 @@ static int imx7_ccm_probe(struct device_d *dev)
+ 	 * exist in hardware. According to the reference manual the ethernet clocks are controlled by
+ 	 * gates at 0x4700 and 0x4710
+ 	 */
+-	clks[IMX7D_ENET1_REF_ROOT_CLK] = imx_clk_gate4("enet1_ref_root_clk", "enet1_ref_post_div", base + 0x4700, 0);
++	clks[IMX7D_ENET1_IPG_ROOT_CLK] = imx_clk_gate4("enet1_ref_root_clk", "enet1_ref_post_div", base + 0x4700, 0);
+ 	clks[IMX7D_ENET1_TIME_ROOT_CLK] = imx_clk_gate_shared("enet1_time_root_clk", "enet1_time_post_div", "enet1_ref_root_clk");
+-	clks[IMX7D_ENET2_REF_ROOT_CLK] = imx_clk_gate4("enet2_ref_root_clk", "enet2_ref_post_div", base + 0x4710, 0);
++	clks[IMX7D_ENET2_IPG_ROOT_CLK] = imx_clk_gate4("enet2_ref_root_clk", "enet2_ref_post_div", base + 0x4710, 0);
+ 	clks[IMX7D_ENET2_TIME_ROOT_CLK] = imx_clk_gate_shared("enet2_time_root_clk", "enet2_time_post_div", "enet2_ref_root_clk");
+ 	clks[IMX7D_ENET_PHY_REF_ROOT_CLK] = imx_clk_gate4("enet_phy_ref_root_clk", "enet_phy_ref_post_div", base + 0x4520, 0);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
