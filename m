@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fXCaZ-0000PF-TA
- for barebox@lists.infradead.org; Sun, 24 Jun 2018 21:30:29 +0000
-Received: by mail-pg0-x242.google.com with SMTP id l65-v6so5157910pgl.8
- for <barebox@lists.infradead.org>; Sun, 24 Jun 2018 14:30:17 -0700 (PDT)
+ id 1fXCac-0000PN-RZ
+ for barebox@lists.infradead.org; Sun, 24 Jun 2018 21:30:32 +0000
+Received: by mail-pf0-x242.google.com with SMTP id b17-v6so5505695pfi.0
+ for <barebox@lists.infradead.org>; Sun, 24 Jun 2018 14:30:20 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 24 Jun 2018 14:29:56 -0700
-Message-Id: <20180624212959.27468-1-andrew.smirnov@gmail.com>
+Date: Sun, 24 Jun 2018 14:29:59 -0700
+Message-Id: <20180624212959.27468-4-andrew.smirnov@gmail.com>
+In-Reply-To: <20180624212959.27468-1-andrew.smirnov@gmail.com>
+References: <20180624212959.27468-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,39 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] fs: devfs-core: Make use of devpath_to_name()
+Subject: [PATCH 4/4] drivers: of: Make use of devpath_to_name()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- fs/devfs-core.c | 6 ++----
+ drivers/of/of_path.c | 6 ++----
  1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 6b5e6da6a..f017e1c55 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -28,6 +28,7 @@
- #include <linux/fs.h>
- #include <linux/mtd/mtd.h>
- #include <unistd.h>
+diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
+index e53041b0a..f8bbf2cba 100644
+--- a/drivers/of/of_path.c
++++ b/drivers/of/of_path.c
+@@ -20,6 +20,7 @@
+ #include <common.h>
+ #include <malloc.h>
+ #include <of.h>
 +#include <fs.h>
  
- LIST_HEAD(cdev_list);
+ #include <linux/mtd/mtd.h>
  
-@@ -155,10 +156,7 @@ struct cdev *cdev_open(const char *name, unsigned long flags)
- 	struct cdev *cdev;
- 	int ret;
+@@ -142,10 +143,7 @@ struct device_node *of_find_node_by_devpath(struct device_node *root, const char
  
--	if (!strncmp(name, "/dev/", 5))
--		name += 5;
+ 	pr_debug("%s: looking for path %s\n", __func__, path);
+ 
+-	if (!strncmp(path, "/dev/", 5))
+-		path += 5;
 -
--	cdev = cdev_by_name(name);
-+	cdev = cdev_by_name(devpath_to_name(name));
- 	if (!cdev)
+-	cdev = cdev_by_name(path);
++	cdev = cdev_by_name(devpath_to_name(path));
+ 	if (!cdev) {
+ 		pr_debug("%s: cdev %s not found\n", __func__, path);
  		return NULL;
- 
 -- 
 2.17.1
 
