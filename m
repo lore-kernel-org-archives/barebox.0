@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fXCaa-0000PJ-Jd
- for barebox@lists.infradead.org; Sun, 24 Jun 2018 21:30:30 +0000
-Received: by mail-pg0-x241.google.com with SMTP id z1-v6so5151275pgv.12
- for <barebox@lists.infradead.org>; Sun, 24 Jun 2018 14:30:18 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 24 Jun 2018 14:29:57 -0700
-Message-Id: <20180624212959.27468-2-andrew.smirnov@gmail.com>
-In-Reply-To: <20180624212959.27468-1-andrew.smirnov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fXXiG-0007aV-F6
+ for barebox@lists.infradead.org; Mon, 25 Jun 2018 20:03:52 +0000
+Date: Mon, 25 Jun 2018 22:03:36 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180625200336.bwqckhqnows3aygt@pengutronix.de>
 References: <20180624212959.27468-1-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180624212959.27468-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,39 +18,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] commands: mount: Make use of devpath_to_name()
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 1/4] fs: devfs-core: Make use of devpath_to_name()
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- commands/mount.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+On Sun, Jun 24, 2018 at 02:29:56PM -0700, Andrey Smirnov wrote:
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  fs/devfs-core.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/commands/mount.c b/commands/mount.c
-index 4cf1179b7..834b06386 100644
---- a/commands/mount.c
-+++ b/commands/mount.c
-@@ -76,10 +76,7 @@ static int do_mount(int argc, char *argv[])
- 		struct cdev *cdev;
- 		const char *path;
- 
--		if (!strncmp(devstr, "/dev/", 5))
--			devstr += 5;
--
--		device_detect_by_name(devstr);
-+		device_detect_by_name(devpath_to_name(devstr));
- 
- 		cdev = cdev_by_name(devstr);
- 		if (!cdev)
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+> index 6b5e6da6a..f017e1c55 100644
+> --- a/fs/devfs-core.c
+> +++ b/fs/devfs-core.c
+> @@ -28,6 +28,7 @@
+>  #include <linux/fs.h>
+>  #include <linux/mtd/mtd.h>
+>  #include <unistd.h>
+> +#include <fs.h>
+>  
+>  LIST_HEAD(cdev_list);
+>  
+> @@ -155,10 +156,7 @@ struct cdev *cdev_open(const char *name, unsigned long flags)
+>  	struct cdev *cdev;
+>  	int ret;
+>  
+> -	if (!strncmp(name, "/dev/", 5))
+> -		name += 5;
+> -
+> -	cdev = cdev_by_name(name);
+> +	cdev = cdev_by_name(devpath_to_name(name));
+>  	if (!cdev)
+>  		return NULL;
+>  
+> -- 
+> 2.17.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.17.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
