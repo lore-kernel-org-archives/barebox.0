@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-it0-x241.google.com ([2607:f8b0:4001:c0b::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fXNP1-0007rL-RT
- for barebox@lists.infradead.org; Mon, 25 Jun 2018 09:03:18 +0000
-Message-ID: <1529917380.9910.2.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 25 Jun 2018 11:03:00 +0200
-In-Reply-To: <20180620192430.16689-5-andrew.smirnov@gmail.com>
+ id 1fXU65-0007kW-L5
+ for barebox@lists.infradead.org; Mon, 25 Jun 2018 16:12:12 +0000
+Received: by mail-it0-x241.google.com with SMTP id u4-v6so13247485itg.0
+ for <barebox@lists.infradead.org>; Mon, 25 Jun 2018 09:11:58 -0700 (PDT)
+MIME-Version: 1.0
 References: <20180620192430.16689-1-andrew.smirnov@gmail.com>
  <20180620192430.16689-5-andrew.smirnov@gmail.com>
-Mime-Version: 1.0
+ <1529917380.9910.2.camel@pengutronix.de>
+In-Reply-To: <1529917380.9910.2.camel@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 25 Jun 2018 09:11:45 -0700
+Message-ID: <CAHQ1cqEMipPPqTvVFPO4YYCB7ojNmh8Jq6Lcem8e7UMrKU83mQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,157 +21,276 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2 4/4] ARM: i.MX: Add support for ZII RDU1 board
-To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org, Chris Healy <cphealy@gmail.com>
-Cc: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+To: l.stach@pengutronix.de
+Cc: nikita.yoush@cogentembedded.com, barebox@lists.infradead.org, cphealy@gmail.com
 
-SGkgQW5kcmV5LAoKQW0gTWl0dHdvY2gsIGRlbiAyMC4wNi4yMDE4LCAxMjoyNCAtMDcwMCBzY2hy
-aWViIEFuZHJleSBTbWlybm92Ogo+IFpJSSBSRFUxIGlzIGEgaS5NWDUxIGJhc2VkLCBCYWJiYWdl
-IGJvYXJkIGRlcml2YXRpdmUgc3VwcG9ydGVkIGJ5Cj4gdXBzdHJlYW0ga2VybmVsLiBUaGlzIGNv
-bW1pdCBhZGRzIHN1cHBvcnQgZm9yIGl0IHRvIEJhcmVib3guCj4gCj4gPiBTaWduZWQtb2ZmLWJ5
-OiBOaWtpdGEgWXVzaGNoZW5rbyA8bmlraXRhLnlvdXNoQGNvZ2VudGVtYmVkZGVkLmNvbT4KPiA+
-IFNpZ25lZC1vZmYtYnk6IEFuZHJleSBTbWlybm92IDxhbmRyZXcuc21pcm5vdkBnbWFpbC5jb20+
-Cj4gLS0tCj4gwqBhcmNoL2FybS9ib2FyZHMvTWFrZWZpbGXCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoHzCoMKgwqAxICsKPiDCoGFyY2gvYXJtL2JvYXJkcy96aWkt
-aW14NTEtcmR1MS9NYWtlZmlsZcKgwqDCoMKgwqDCoMKgfMKgwqDCoDIgKwo+IMKgYXJjaC9hcm0v
-Ym9hcmRzL3ppaS1pbXg1MS1yZHUxL2JvYXJkLmPCoMKgwqDCoMKgwqDCoMKgfCAxMDAgKysrKysr
-KysrKysrKysrKysrCj4gwqAuLi4vZmxhc2gtaGVhZGVyLWlteDUxLXppaS1yZHUxLmlteGNmZ8Kg
-wqDCoMKgwqDCoMKgwqB8wqDCoDYwICsrKysrKysrKysrCj4gwqBhcmNoL2FybS9ib2FyZHMvemlp
-LWlteDUxLXJkdTEvbG93bGV2ZWwuY8KgwqDCoMKgwqB8wqDCoDQ2ICsrKysrKysrCj4gwqBhcmNo
-L2FybS9jb25maWdzL2lteF92N19kZWZjb25maWfCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHzC
-oMKgwqAxICsKPiDCoGFyY2gvYXJtL2R0cy9NYWtlZmlsZcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfMKgwqDCoDEgKwo+IMKgYXJjaC9hcm0vZHRzL2lt
-eDUxLXppaS1yZHUxLmR0c8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHzCoMKgNDYgKysr
-KysrKysKPiDCoGFyY2gvYXJtL21hY2gtaW14L0tjb25maWfCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqB8wqDCoMKgNSArCj4gwqBpbWFnZXMvTWFrZWZpbGUuaW14wqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfMKgwqDC
-oDUgKwo+IMKgMTAgZmlsZXMgY2hhbmdlZCwgMjY3IGluc2VydGlvbnMoKykKPiDCoGNyZWF0ZSBt
-b2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvemlpLWlteDUxLXJkdTEvTWFrZWZpbGUKPiDCoGNy
-ZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvemlpLWlteDUxLXJkdTEvYm9hcmQuYwo+
-IMKgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy96aWktaW14NTEtcmR1MS9mbGFz
-aC1oZWFkZXItaW14NTEtemlpLXJkdTEuaW14Y2ZnCj4gwqBjcmVhdGUgbW9kZSAxMDA2NDQgYXJj
-aC9hcm0vYm9hcmRzL3ppaS1pbXg1MS1yZHUxL2xvd2xldmVsLmMKPiDCoGNyZWF0ZSBtb2RlIDEw
-MDY0NCBhcmNoL2FybS9kdHMvaW14NTEtemlpLXJkdTEuZHRzCj4gCj4gZGlmZiAtLWdpdCBhL2Fy
-Y2gvYXJtL2JvYXJkcy9NYWtlZmlsZSBiL2FyY2gvYXJtL2JvYXJkcy9NYWtlZmlsZQo+IGluZGV4
-IGYxZGM0YzY4NS4uZTVkMjE3ZjUyIDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL2JvYXJkcy9NYWtl
-ZmlsZQo+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9NYWtlZmlsZQo+ID4gQEAgLTE1MCw1ICsxNTAs
-NiBAQCBvYmotJChDT05GSUdfTUFDSF9WU0NPTV9CQUxUT1MpCQkJKz0gdnNjb20tYmFsdG9zLwo+
-ID4gwqBvYmotJChDT05GSUdfTUFDSF9RRU1VX1ZJUlQ2NCkJCQkrPSBxZW11LXZpcnQ2NC8KPiA+
-IMKgb2JqLSQoQ09ORklHX01BQ0hfV0FSUDcpCQkJKz0gZWxlbWVudDE0LXdhcnA3Lwo+ID4gwqBv
-YmotJChDT05GSUdfTUFDSF9WRjYxMF9UV1IpCQkJKz0gZnJlZXNjYWxlLXZmNjEwLXR3ci8KPiA+
-ICtvYmotJChDT05GSUdfTUFDSF9aSUlfUkRVMSkJCQkrPSB6aWktaW14NTEtcmR1MS8KPiA+IMKg
-b2JqLSQoQ09ORklHX01BQ0hfWklJX1JEVTIpCQkJKz0gemlpLWlteDZxLXJkdTIvCj4gPiDCoG9i
-ai0kKENPTkZJR19NQUNIX1pJSV9WRjYxMF9ERVYpCQkrPSB6aWktdmY2MTAtZGV2Lwo+IGRpZmYg
-LS1naXQgYS9hcmNoL2FybS9ib2FyZHMvemlpLWlteDUxLXJkdTEvTWFrZWZpbGUgYi9hcmNoL2Fy
-bS9ib2FyZHMvemlpLWlteDUxLXJkdTEvTWFrZWZpbGUKPiBuZXcgZmlsZSBtb2RlIDEwMDY0NAo+
-IGluZGV4IDAwMDAwMDAwMC4uMDFjN2EyNTllCj4gLS0tIC9kZXYvbnVsbAo+ICsrKyBiL2FyY2gv
-YXJtL2JvYXJkcy96aWktaW14NTEtcmR1MS9NYWtlZmlsZQo+IEBAIC0wLDAgKzEsMiBAQAo+ICtv
-YmoteSArPSBib2FyZC5vCj4gK2x3bC15ICs9IGxvd2xldmVsLm8KPiBkaWZmIC0tZ2l0IGEvYXJj
-aC9hcm0vYm9hcmRzL3ppaS1pbXg1MS1yZHUxL2JvYXJkLmMgYi9hcmNoL2FybS9ib2FyZHMvemlp
-LWlteDUxLXJkdTEvYm9hcmQuYwo+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4gaW5kZXggMDAwMDAw
-MDAwLi5jMDkyODVhYTQKPiAtLS0gL2Rldi9udWxsCj4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL3pp
-aS1pbXg1MS1yZHUxL2JvYXJkLmMKPiBAQCAtMCwwICsxLDEwMCBAQAo+ICsvKgo+ICsgKiBDb3B5
-cmlnaHQgKEMpIDIwMTUgTmlraXRhIFl1c2hjaGVua28sIENvZ2VudEVtYmVkZGVkLCBJbmMKPiAr
-ICogQ29weXJpZ2h0IChDKSAyMDE1IEFuZHJleSBHdXNha292LCBDb2dlbnRFbWJlZGRlZCwgSW5j
-Cj4gKyAqIENvcHlyaWdodCAoQykgMjAwNyBTYXNjaGEgSGF1ZXIsIFBlbmd1dHJvbml4Cj4gKyAq
-Cj4gKyAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0
-ZSBpdCBhbmQvb3IKPiArICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdl
-bmVyYWwgUHVibGljIExpY2Vuc2UgYXMKPiArICogcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3
-YXJlIEZvdW5kYXRpb247IGVpdGhlciB2ZXJzaW9uIDIgb2YKPiArICogdGhlIExpY2Vuc2UsIG9y
-IChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCj4gKyAqCj4gKyAqIFRoaXMgcHJv
-Z3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAo+
-ICsgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3
-YXJyYW50eSBvZgo+ICsgKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNV
-TEFSIFBVUlBPU0UuwqDCoFNlZSB0aGUKPiArICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2Ug
-Zm9yIG1vcmUgZGV0YWlscy4KPiArICoKPiArICoKPiArICovCj4gKwo+ICsjZGVmaW5lIHByX2Zt
-dChmbXQpICJ6aWktcmR1MTogIiBmbXQKCkkgZG9uJ3QgdGhpbmsgd2Ugd2FudCB0aGF0LiBBdCBs
-ZWFzdCB3ZSBkb24ndCBkbyBpdCBvbiBSRFUyLCBidXQgSQp0aGluayBDaHJpcyBoYXMgYW4gb3B0
-aW9uIGhlcmUuCgo+ICsjaW5jbHVkZSA8Y29tbW9uLmg+Cj4gKyNpbmNsdWRlIDxpbml0Lmg+Cj4g
-KyNpbmNsdWRlIDxtYWNoL2JidS5oPgo+ICsjaW5jbHVkZSA8bGliZmlsZS5oPgo+ICsjaW5jbHVk
-ZSA8bWFjaC9pbXg1Lmg+Cj4gKwo+ID4gKyNkZWZpbmUgWklJX1JEVTFfREFUQUZMQVNICQkiL2Rl
-di9kYXRhZmxhc2gwIgo+ID4gKyNkZWZpbmUgWklJX1JEVTFfREFUQUZMQVNIX0NPTkZJRwlaSUlf
-UkRVMV9EQVRBRkxBU0ggIi5jb25maWciCj4gKwo+ICsvKioKPiArICogemlpX3JkdTFfYmJ1X3Nw
-aV91cGRhdGUgLSBSRFUxIHNwZWNpZmljIEJCVSBoYW5kbGVyCj4gKyAqCj4gPiArICogQGhhbmRs
-ZXI6CUJCVSBoYW5kbGVyIHBvaW50ZXIgcGFzc2VkIGRvd24gYnkgQkJVIGZyYW1ld29yawo+ID4g
-KyAqIEBkYXRhOglCQlUgZGF0YSBwb2ludGVyIHBhc3NlZCBkb3duIGJ5IEJCVSBmcmFtZXdvcmsK
-PiArICoKPiArICogUkRVMSBkZXNpZ24gY2hvc2UgdG8gdXNlIGZpcnN0IHBhZ2Ugb2YgdGhlIG9u
-Ym9hcmQgZGF0YWZsYXNoIHRvCj4gKyAqIHN0b3JlIHZlbmRvciBib2FyZC1zcGVjaWZpYyBwYXJh
-bXRlcnMsIHdoaWNoIGlzIHByb2JsZW1hdGljIGJlY2F1c2UKPiArICogaW14X2JidV9pbnRlcm5h
-bF92MV91cGRhdGUoKSB3aWxsIG5vdCBzcGFyZSB0aGF0IHJlZ2lvbiB3aGVuCj4gKyAqIHBlZm9y
-bWluZyB0aGUgdXBkYXRlLgo+ICsgKgo+ICsgKiBUaGlzIGZ1bmN0aW9ucyB3b3JrcyBhcyBhIHRo
-aW4gd3JhcHBlciBhcm91bmQKPiArICogaW14X2JidV9pbnRlcm5hbF92MV91cGRhdGUoKSBhbmQg
-c2F2ZXMgdGhlIGRhdGEgYmVmb3JlIGFuZCByZXN0b3Jlcwo+ICsgKiBpdCBhZnRlciwga2VlcGlu
-ZyBib2FyZCBzcGVjaWZpYyBkYXRhIGludGFjdC4KPiArICovCgpJbiBnZW5lcmFsIEkgbGlrZSB0
-aGUgaWRlYSBvZiByZXBsYWNpbmcgdGhlIHVwZGF0ZSBoYW5kbGVyIGluIHRoZQpib2FyZCwgYXMg
-aXQgc2hvd3MgY2xlYXJseSB0aGF0IHRoaXMgaXMgc29tZSBib2FyZCBzcGVjaWZpYyBxdWlyay4K
-CkkgZG9uJ3QgZnVsbHkgYWdyZWUgb24gdGhlIGltcGxlbWVudGF0aW9uIG9mIHRoZSBoYW5kbGVy
-IHRob3VnaC4KT3ZlcndyaXRpbmcgYW5kIHJlc3RvcmluZyB0aGUgY29uZmlnIGFyZWEgc3RpbGwg
-aGFzIHRoZSByaXNrIG9mCmRlc3Ryb3lpbmcgdGhpcyBkYXRhLCBsZWF2aW5nIHRoZSB1bml0IGlu
-IGEgYnJpY2tlZCBzdGF0ZS4KCkFzIHRoZSBjb25maWcgYXJlYSBpcyBwYWdlIGFsaWduZWQsIHRo
-ZXJlIGlzIG5vIG5lZWQgdG8gdG91Y2ggaXQgYXQgYWxsCihJIHRoaW5rKS4gQWxsIHlvdSBuZWVk
-IHRvIGRvIGlzIHRvIHBvaW50IHRoZSBCQlUgdGFyZ2V0IGF0IHRoZSBiYXJlYm94CnBhcnRpdGlv
-biBvbiB0aGUgZGF0YWZsYXNoIGFuZCB0cnVuY2F0ZSB0aGUgYmFyZWJveCBpbWFnZSBpbiB0aGUg
-Y3VzdG9tCmhhbmRsZXIgYnkgY2hhbmdpbmcgZGF0YS0+aW1hZ2UgYW5kIGRhdGEtPmxlbiBpbiB0
-aGUgY3VzdG9tIFJEVTEKaGFuZGxlci4KCj4gK3N0YXRpYyBpbnQgemlpX3JkdTFfYmJ1X3NwaV91
-cGRhdGUoc3RydWN0IGJidV9oYW5kbGVyICpoYW5kbGVyLAo+ID4gKwkJCQnCoMKgwqBzdHJ1Y3Qg
-YmJ1X2RhdGEgKmRhdGEpCj4gK3sKPiA+ICsJdWludDhfdCAqY29uZmlnOwo+ID4gKwlzaXplX3Qg
-c2l6ZTsKPiA+ICsJaW50IHJldDsKPiArCj4gPiArCWNvbmZpZyA9IHJlYWRfZmlsZShaSUlfUkRV
-MV9EQVRBRkxBU0hfQ09ORklHLCAmc2l6ZSk7Cj4gPiArCWlmICghY29uZmlnKQo+ID4gKwkJcmV0
-dXJuIC1FSU87Cj4gKwo+ID4gKwlyZXQgPSBpbXhfYmJ1X2ludGVybmFsX3YxX3VwZGF0ZShoYW5k
-bGVyLCBkYXRhKTsKPiA+ICsJaWYgKHJldCA8IDApIHsKPiA+ICsJCXByX3dhcm4oIkZhaWxlZCB0
-byB1cGRhdGUgJyVzJ1xuIiwgaGFuZGxlci0+bmFtZSk7Cj4gPiArCQkvKgo+ID4gKwkJwqAqIEF0
-IHRoaXMgcG9pbnQgd2UgZG9uJ3Qga25vdyB3aGF0IHN0YXRlIHRoZSBjb25maWcKPiA+ICsJCcKg
-KiBwYXJ0aXRpb24gd2FzIGxlZnQgaW4sIHNvIHdlIGZhbGwgdGhyb3VnaCBhbmQKPiA+ICsJCcKg
-KiByZS13cml0ZSBpdCB3aXRoIGEga25vd24gZ29vZCBkYXRhCj4gPiArCQnCoCovCj4gPiArCX0K
-PiArCj4gPiArCXJldCA9IHdyaXRlX2ZpbGVfZmxhc2goWklJX1JEVTFfREFUQUZMQVNIX0NPTkZJ
-RywgY29uZmlnLCBzaXplKTsKPiA+ICsJaWYgKHJldCA8IDApCj4gPiArCQlyZXR1cm4gcmV0Owo+
-ICsKPiA+ICsJcmV0dXJuIDA7Cj4gK30KPiArCj4gK3N0YXRpYyBpbnQgemlpX3JkdTFfaW5pdCh2
-b2lkKQo+ICt7Cj4gPiArCXN0cnVjdCBiYnVfaGFuZGxlciAqaGFuZGxlcjsKPiArCj4gPiArCWlm
-ICghb2ZfbWFjaGluZV9pc19jb21wYXRpYmxlKCJ6aWksaW14NTEtcmR1MSIpKQo+ID4gKwkJcmV0
-dXJuIDA7Cj4gKwo+ID4gKwlpbXg1MV9iYWJiYWdlX3Bvd2VyX2luaXQoKTsKPiArCj4gPiArCWJh
-cmVib3hfc2V0X2hvc3RuYW1lKCJyZHUxIik7Cj4gKwo+ID4gKwlpbXg1MV9iYnVfaW50ZXJuYWxf
-bW1jX3JlZ2lzdGVyX2hhbmRsZXIoIm1tYyIsICIvZGV2L21tYzAiLCAwKTsKPiA+ICsJaW14NTFf
-YmJ1X2ludGVybmFsX3NwaV9pMmNfcmVnaXN0ZXJfaGFuZGxlcigic3BpIiwKPiA+ICsJCQkJCQnC
-oMKgwqDCoFpJSV9SRFUxX0RBVEFGTEFTSCwKPiA+ICsJCQkJCQnCoMKgwqDCoEJCVV9IQU5ETEVS
-X0ZMQUdfREVGQVVMVCk7Cj4gPiArCS8qCj4gPiArCcKgKiBPdmVybG9hZCBmcmVzaGx5IHJlZ2lz
-dGVyZWQgU1BJIHVwZGF0ZSBoYW5kbGVyIHRvIGRlYWwgd2l0aAo+ID4gKwnCoCogUkRVMSBxdWly
-ayAoc2VlIGFib3ZlIGZvciBkZXNjcmlwdGlvbikKPiA+ICsJwqAqLwo+ID4gKwloYW5kbGVyID0g
-YmJ1X2ZpbmRfaGFuZGxlcl9ieV9kZXZpY2UoWklJX1JEVTFfREFUQUZMQVNIKTsKPiA+ICsJaWYg
-KFdBUk5fT04oIWhhbmRsZXIpKQo+ID4gKwkJcmV0dXJuIC1FSU5WQUw7Cj4gKwo+ID4gKwloYW5k
-bGVyLT5oYW5kbGVyID0gemlpX3JkdTFfYmJ1X3NwaV91cGRhdGU7Cj4gKwo+ID4gKwlyZXR1cm4g
-MDsKPiArfQo+ICtjb3JlZGV2aWNlX2luaXRjYWxsKHppaV9yZHUxX2luaXQpOwoKWy4uLl0KCj4g
-ZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy96aWktaW14NTEtcmR1MS9sb3dsZXZlbC5jIGIv
-YXJjaC9hcm0vYm9hcmRzL3ppaS1pbXg1MS1yZHUxL2xvd2xldmVsLmMKPiBuZXcgZmlsZSBtb2Rl
-IDEwMDY0NAo+IGluZGV4IDAwMDAwMDAwMC4uYzI4Y2E4NjUzCj4gLS0tIC9kZXYvbnVsbAo+ICsr
-KyBiL2FyY2gvYXJtL2JvYXJkcy96aWktaW14NTEtcmR1MS9sb3dsZXZlbC5jCj4gQEAgLTAsMCAr
-MSw0NiBAQAo+ICsjaW5jbHVkZSA8ZGVidWdfbGwuaD4KPiArI2luY2x1ZGUgPG1hY2gvY2xvY2st
-aW14NTFfNTMuaD4KPiArI2luY2x1ZGUgPG1hY2gvaW9tdXgtbXg1MS5oPgo+ICsjaW5jbHVkZSA8
-Y29tbW9uLmg+Cj4gKyNpbmNsdWRlIDxtYWNoL2VzZGN0bC5oPgo+ICsjaW5jbHVkZSA8bWFjaC9n
-ZW5lcmljLmg+Cj4gKyNpbmNsdWRlIDxhc20vYmFyZWJveC1hcm0taGVhZC5oPgo+ICsjaW5jbHVk
-ZSA8YXNtL2JhcmVib3gtYXJtLmg+Cj4gKwo+ICtzdGF0aWMgaW5saW5lIHZvaWQgc2V0dXBfdWFy
-dCh2b2lkKQo+ICt7Cj4gPiArCXZvaWQgX19pb21lbSAqaW9tdXhiYXNlID0gSU9NRU0oTVg1MV9J
-T01VWENfQkFTRV9BRERSKTsKPiA+ICsJdm9pZCBfX2lvbWVtICpjY21iYXNlID0gSU9NRU0oTVg1
-MV9DQ01fQkFTRV9BRERSKTsKPiArCj4gPiArCS8qCj4gPiArCcKgKiBSZXN0b3JlIENDTSB2YWx1
-ZXMgdGhhdCBtaWdodCBiZSBjaGFuZ2VkIGJ5IHRoZSBNYXNrIFJPTQo+ID4gKwnCoCogY29kZS4K
-PiA+ICsJwqAqCj4gPiArCcKgKiBTb3VyY2U6IFJlYWxWaWV3IGRlYnVnIHNjcmlwdHMgcHJvdmlk
-ZWQgYnkgRnJlZXNjYWxlCj4gPiArCcKgKi8KPiA+ICsJd3JpdGVsKE1YNV9DQ01fQ0JDRFJfUkVT
-RVRfVkFMVUUswqDCoGNjbWJhc2UgKyBNWDVfQ0NNX0NCQ0RSKTsKPiA+ICsJd3JpdGVsKE1YNV9D
-Q01fQ1NDTVIxX1JFU0VUX1ZBTFVFLCBjY21iYXNlICsgTVg1X0NDTV9DU0NNUjEpOwo+ID4gKwl3
-cml0ZWwoTVg1X0NDTV9DU0NEUjFfUkVTRVRfVkFMVUUsIGNjbWJhc2UgKyBNWDVfQ0NNX0NTQ0RS
-MSk7Cj4gKwo+ID4gKwlpbXhfc2V0dXBfcGFkKGlvbXV4YmFzZSwgTVg1MV9QQURfVUFSVDFfVFhE
-X19VQVJUMV9UWEQpOwo+ICsKPiA+ICsJaW14NTFfdWFydF9zZXR1cF9sbCgpOwo+ICsKPiA+ICsJ
-cHV0Y19sbCgnPicpOwo+ICt9Cj4gKwo+ICtleHRlcm4gY2hhciBfX2R0Yl9pbXg1MV96aWlfcmR1
-MV9zdGFydFtdOwo+ICsKPiArRU5UUllfRlVOQ1RJT04oc3RhcnRfaW14NTFfemlpX3JkdTEsIHIw
-LCByMSwgcjIpCj4gK3sKPiA+ICsJdm9pZCAqZmR0Owo+ICsKPiA+ICsJaW14NV9jcHVfbG93bGV2
-ZWxfaW5pdCgpOwo+ICsKPiA+ICsJaWYgKElTX0VOQUJMRUQoQ09ORklHX0RFQlVHX0xMKSkKPiA+
-ICsJCXNldHVwX3VhcnQoKTsKPiArCj4gPiArCWZkdCA9IF9fZHRiX2lteDUxX3ppaV9yZHUxX3N0
-YXJ0ICsgZ2V0X3J1bnRpbWVfb2Zmc2V0KCk7Cj4gKwo+ID4gKwlpbXg1MV9iYXJlYm94X2VudHJ5
-KGZkdCk7Cj4gK30KPiBcIE5vIG5ld2xpbmUgYXQgZW5kIG9mIGZpbGUKCkFkZCB0aGUgbmV3bGlu
-ZSB0byBtYWtlIGdpdCBoYXBweSwgcGxlYXNlLiBUaGVyZSBhcmUgbW9yZSBwbGFjZXMgbGlrZQp0
-aGlzLgoKUmVnYXJkcywKTHVjYXMKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Mon, Jun 25, 2018 at 2:03 AM Lucas Stach <l.stach@pengutronix.de> wrote:
+>
+> Hi Andrey,
+>
+> Am Mittwoch, den 20.06.2018, 12:24 -0700 schrieb Andrey Smirnov:
+> > ZII RDU1 is a i.MX51 based, Babbage board derivative supported by
+> > upstream kernel. This commit adds support for it to Barebox.
+> >
+> > > Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+> > > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> > ---
+> >  arch/arm/boards/Makefile                      |   1 +
+> >  arch/arm/boards/zii-imx51-rdu1/Makefile       |   2 +
+> >  arch/arm/boards/zii-imx51-rdu1/board.c        | 100 ++++++++++++++++++
+> >  .../flash-header-imx51-zii-rdu1.imxcfg        |  60 +++++++++++
+> >  arch/arm/boards/zii-imx51-rdu1/lowlevel.c     |  46 ++++++++
+> >  arch/arm/configs/imx_v7_defconfig             |   1 +
+> >  arch/arm/dts/Makefile                         |   1 +
+> >  arch/arm/dts/imx51-zii-rdu1.dts               |  46 ++++++++
+> >  arch/arm/mach-imx/Kconfig                     |   5 +
+> >  images/Makefile.imx                           |   5 +
+> >  10 files changed, 267 insertions(+)
+> >  create mode 100644 arch/arm/boards/zii-imx51-rdu1/Makefile
+> >  create mode 100644 arch/arm/boards/zii-imx51-rdu1/board.c
+> >  create mode 100644 arch/arm/boards/zii-imx51-rdu1/flash-header-imx51-zii-rdu1.imxcfg
+> >  create mode 100644 arch/arm/boards/zii-imx51-rdu1/lowlevel.c
+> >  create mode 100644 arch/arm/dts/imx51-zii-rdu1.dts
+> >
+> > diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+> > index f1dc4c685..e5d217f52 100644
+> > --- a/arch/arm/boards/Makefile
+> > +++ b/arch/arm/boards/Makefile
+> > > @@ -150,5 +150,6 @@ obj-$(CONFIG_MACH_VSCOM_BALTOS)                 += vscom-baltos/
+> > >  obj-$(CONFIG_MACH_QEMU_VIRT64)                     += qemu-virt64/
+> > >  obj-$(CONFIG_MACH_WARP7)                   += element14-warp7/
+> > >  obj-$(CONFIG_MACH_VF610_TWR)                       += freescale-vf610-twr/
+> > > +obj-$(CONFIG_MACH_ZII_RDU1)                        += zii-imx51-rdu1/
+> > >  obj-$(CONFIG_MACH_ZII_RDU2)                        += zii-imx6q-rdu2/
+> > >  obj-$(CONFIG_MACH_ZII_VF610_DEV)           += zii-vf610-dev/
+> > diff --git a/arch/arm/boards/zii-imx51-rdu1/Makefile b/arch/arm/boards/zii-imx51-rdu1/Makefile
+> > new file mode 100644
+> > index 000000000..01c7a259e
+> > --- /dev/null
+> > +++ b/arch/arm/boards/zii-imx51-rdu1/Makefile
+> > @@ -0,0 +1,2 @@
+> > +obj-y += board.o
+> > +lwl-y += lowlevel.o
+> > diff --git a/arch/arm/boards/zii-imx51-rdu1/board.c b/arch/arm/boards/zii-imx51-rdu1/board.c
+> > new file mode 100644
+> > index 000000000..c09285aa4
+> > --- /dev/null
+> > +++ b/arch/arm/boards/zii-imx51-rdu1/board.c
+> > @@ -0,0 +1,100 @@
+> > +/*
+> > + * Copyright (C) 2015 Nikita Yushchenko, CogentEmbedded, Inc
+> > + * Copyright (C) 2015 Andrey Gusakov, CogentEmbedded, Inc
+> > + * Copyright (C) 2007 Sascha Hauer, Pengutronix
+> > + *
+> > + * This program is free software; you can redistribute it and/or
+> > + * modify it under the terms of the GNU General Public License as
+> > + * published by the Free Software Foundation; either version 2 of
+> > + * the License, or (at your option) any later version.
+> > + *
+> > + * This program is distributed in the hope that it will be useful,
+> > + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> > + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> > + * GNU General Public License for more details.
+> > + *
+> > + *
+> > + */
+> > +
+> > +#define pr_fmt(fmt) "zii-rdu1: " fmt
+>
+> I don't think we want that. At least we don't do it on RDU2, but I
+> think Chris has an option here.
+>
+
+Sure, I'll drop it.
+
+> > +#include <common.h>
+> > +#include <init.h>
+> > +#include <mach/bbu.h>
+> > +#include <libfile.h>
+> > +#include <mach/imx5.h>
+> > +
+> > > +#define ZII_RDU1_DATAFLASH         "/dev/dataflash0"
+> > > +#define ZII_RDU1_DATAFLASH_CONFIG  ZII_RDU1_DATAFLASH ".config"
+> > +
+> > +/**
+> > + * zii_rdu1_bbu_spi_update - RDU1 specific BBU handler
+> > + *
+> > > + * @handler:       BBU handler pointer passed down by BBU framework
+> > > + * @data:  BBU data pointer passed down by BBU framework
+> > + *
+> > + * RDU1 design chose to use first page of the onboard dataflash to
+> > + * store vendor board-specific paramters, which is problematic because
+> > + * imx_bbu_internal_v1_update() will not spare that region when
+> > + * peforming the update.
+> > + *
+> > + * This functions works as a thin wrapper around
+> > + * imx_bbu_internal_v1_update() and saves the data before and restores
+> > + * it after, keeping board specific data intact.
+> > + */
+>
+> In general I like the idea of replacing the update handler in the
+> board, as it shows clearly that this is some board specific quirk.
+>
+> I don't fully agree on the implementation of the handler though.
+> Overwriting and restoring the config area still has the risk of
+> destroying this data, leaving the unit in a bricked state.
+>
+
+The only info contained in config area is unit's MAC address and and
+LCD panel type. Loosing this information, while inconvenient, is not
+going to brick the unit. Additionally:
+
+-  LCD type information could and is tentatively planed to be derived
+from P/N information available via RAVE SP EEPROM, so that leaves us
+with just MAC address.
+
+- Config header in SPI NOR is also duplicated in SPI EEPROM connected
+to i.MX51, so it can be resorted from there if need be.
+
+- Removing this risk will do nothing to the risk of truly bricking the
+unit via failed bootloader upgrade which is several orders of
+magnitude more likely due to size difference of bootloader image vs
+config area.
+
+> As the config area is page aligned, there is no need to touch it at all
+> (I think). All you need to do is to point the BBU target at the barebox
+> partition on the dataflash and truncate the barebox image in the custom
+> handler by changing data->image and data->len in the custom RDU1
+> handler.
+>
+
+I'll give this approach a try since it sounds like it's going to allow
+me to drop a bit of extra code, but if it doesn't I think the original
+code is good enough and we should let the perfect be the enemy of the
+good.
+
+> > +static int zii_rdu1_bbu_spi_update(struct bbu_handler *handler,
+> > > +                              struct bbu_data *data)
+> > +{
+> > > +   uint8_t *config;
+> > > +   size_t size;
+> > > +   int ret;
+> > +
+> > > +   config = read_file(ZII_RDU1_DATAFLASH_CONFIG, &size);
+> > > +   if (!config)
+> > > +           return -EIO;
+> > +
+> > > +   ret = imx_bbu_internal_v1_update(handler, data);
+> > > +   if (ret < 0) {
+> > > +           pr_warn("Failed to update '%s'\n", handler->name);
+> > > +           /*
+> > > +            * At this point we don't know what state the config
+> > > +            * partition was left in, so we fall through and
+> > > +            * re-write it with a known good data
+> > > +            */
+> > > +   }
+> > +
+> > > +   ret = write_file_flash(ZII_RDU1_DATAFLASH_CONFIG, config, size);
+> > > +   if (ret < 0)
+> > > +           return ret;
+> > +
+> > > +   return 0;
+> > +}
+> > +
+> > +static int zii_rdu1_init(void)
+> > +{
+> > > +   struct bbu_handler *handler;
+> > +
+> > > +   if (!of_machine_is_compatible("zii,imx51-rdu1"))
+> > > +           return 0;
+> > +
+> > > +   imx51_babbage_power_init();
+> > +
+> > > +   barebox_set_hostname("rdu1");
+> > +
+> > > +   imx51_bbu_internal_mmc_register_handler("mmc", "/dev/mmc0", 0);
+> > > +   imx51_bbu_internal_spi_i2c_register_handler("spi",
+> > > +                                               ZII_RDU1_DATAFLASH,
+> > > +                                               BBU_HANDLER_FLAG_DEFAULT);
+> > > +   /*
+> > > +    * Overload freshly registered SPI update handler to deal with
+> > > +    * RDU1 quirk (see above for description)
+> > > +    */
+> > > +   handler = bbu_find_handler_by_device(ZII_RDU1_DATAFLASH);
+> > > +   if (WARN_ON(!handler))
+> > > +           return -EINVAL;
+> > +
+> > > +   handler->handler = zii_rdu1_bbu_spi_update;
+> > +
+> > > +   return 0;
+> > +}
+> > +coredevice_initcall(zii_rdu1_init);
+>
+> [...]
+>
+> > diff --git a/arch/arm/boards/zii-imx51-rdu1/lowlevel.c b/arch/arm/boards/zii-imx51-rdu1/lowlevel.c
+> > new file mode 100644
+> > index 000000000..c28ca8653
+> > --- /dev/null
+> > +++ b/arch/arm/boards/zii-imx51-rdu1/lowlevel.c
+> > @@ -0,0 +1,46 @@
+> > +#include <debug_ll.h>
+> > +#include <mach/clock-imx51_53.h>
+> > +#include <mach/iomux-mx51.h>
+> > +#include <common.h>
+> > +#include <mach/esdctl.h>
+> > +#include <mach/generic.h>
+> > +#include <asm/barebox-arm-head.h>
+> > +#include <asm/barebox-arm.h>
+> > +
+> > +static inline void setup_uart(void)
+> > +{
+> > > +   void __iomem *iomuxbase = IOMEM(MX51_IOMUXC_BASE_ADDR);
+> > > +   void __iomem *ccmbase = IOMEM(MX51_CCM_BASE_ADDR);
+> > +
+> > > +   /*
+> > > +    * Restore CCM values that might be changed by the Mask ROM
+> > > +    * code.
+> > > +    *
+> > > +    * Source: RealView debug scripts provided by Freescale
+> > > +    */
+> > > +   writel(MX5_CCM_CBCDR_RESET_VALUE,  ccmbase + MX5_CCM_CBCDR);
+> > > +   writel(MX5_CCM_CSCMR1_RESET_VALUE, ccmbase + MX5_CCM_CSCMR1);
+> > > +   writel(MX5_CCM_CSCDR1_RESET_VALUE, ccmbase + MX5_CCM_CSCDR1);
+> > +
+> > > +   imx_setup_pad(iomuxbase, MX51_PAD_UART1_TXD__UART1_TXD);
+> > +
+> > > +   imx51_uart_setup_ll();
+> > +
+> > > +   putc_ll('>');
+> > +}
+> > +
+> > +extern char __dtb_imx51_zii_rdu1_start[];
+> > +
+> > +ENTRY_FUNCTION(start_imx51_zii_rdu1, r0, r1, r2)
+> > +{
+> > > +   void *fdt;
+> > +
+> > > +   imx5_cpu_lowlevel_init();
+> > +
+> > > +   if (IS_ENABLED(CONFIG_DEBUG_LL))
+> > > +           setup_uart();
+> > +
+> > > +   fdt = __dtb_imx51_zii_rdu1_start + get_runtime_offset();
+> > +
+> > > +   imx51_barebox_entry(fdt);
+> > +}
+> > \ No newline at end of file
+>
+> Add the newline to make git happy, please. There are more places like
+> this.
+
+Sure, will change in v3.
+
+Thanks,
+Andrey Smirnov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
