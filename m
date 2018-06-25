@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-eopbgr30050.outbound.protection.outlook.com ([40.107.3.50]
- helo=EUR03-AM5-obe.outbound.protection.outlook.com)
+Received: from mail-lj1-x243.google.com ([2a00:1450:4864:20::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fWMMt-0002zQ-NQ
- for barebox@lists.infradead.org; Fri, 22 Jun 2018 13:44:53 +0000
-From: Mogens Lauridsen <mll@covidence.com>
-Message-ID: <5B2CFD40.3020108@covidence.com>
-Date: Fri, 22 Jun 2018 15:44:32 +0200
-MIME-Version: 1.0
+ id 1fXLG1-0004sm-6H
+ for barebox@lists.infradead.org; Mon, 25 Jun 2018 06:45:51 +0000
+Received: by mail-lj1-x243.google.com with SMTP id k20-v6so3529602ljk.9
+ for <barebox@lists.infradead.org>; Sun, 24 Jun 2018 23:45:38 -0700 (PDT)
+Date: Mon, 25 Jun 2018 09:46:04 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20180625094604.29d353b8222da99c4e9a51d6@gmail.com>
+In-Reply-To: <20180417062255.l62b3tldnqmydpjl@pengutronix.de>
+References: <20180415112858.5163-1-antonynpavlov@gmail.com>
+ <20180415112858.5163-2-antonynpavlov@gmail.com>
+ <20180417062255.l62b3tldnqmydpjl@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,152 +21,129 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: imx53 hang in barebox boot
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 01/10] Add initial RISC-V architecture support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi,
+On Tue, 17 Apr 2018 08:22:55 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-During production of our i.MX53 based board we sometimes find a board 
-which hang in boot/barebox. It happens in something like 5% of the 
-production.
+> Hi Antony,
+> =
 
-I have done some debugging, and it seems like it can be fixed by 
-removing "imx5_setup_pll_400((void __iomem *)MX53_PLL3_BASE_ADDR);" from 
-imx53.c.
+> On Sun, Apr 15, 2018 at 02:28:49PM +0300, Antony Pavlov wrote:
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > ---
+> > diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> > new file mode 100644
+> > index 0000000000..d65e87acd8
+> > --- /dev/null
+> > +++ b/arch/riscv/Kconfig
+> > @@ -0,0 +1,62 @@
+> > +config RISCV
+> > +	def_bool y
+> > +	select GENERIC_FIND_NEXT_BIT
+> > +	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
+> > +	select HAVE_CONFIGURABLE_TEXT_BASE
+> > +	select GPIOLIB
+> > +	select OFTREE
+> > +	select COMMON_CLK
+> > +	select COMMON_CLK_OF_PROVIDER
+> > +	select CLKDEV_LOOKUP
+> > +
+> > +config ARCH_TEXT_BASE
+> > +	hex
+> > +	default 0x0
+> > +
+> > +config GENERIC_LINKER_SCRIPT
+> > +	def_bool y
+> =
 
-In the function "imx53_init_lowlevel_early" PLL3 is first set to 400MHz, 
-then some peripheral is switched to PLL3 and finally PLL3 is set to 
-216MHz. Is 400MHz too high for the PLL/peripheral so it can't always lock?
+> Do we need this? The linker script should be universal enough to be used
+> by all boards.
 
-I would think that PLL3 should be set to 216MHz in the first place and 
-not change later. Or am I missing something?
+I have dropped it in v2 RISC-V patchseries.
 
-Kind regards
-Mogens Lauridsen
+> > diff --git a/arch/riscv/dts/skeleton.dtsi b/arch/riscv/dts/skeleton.dtsi
+> > new file mode 100644
+> > index 0000000000..38ead821bb
+> > --- /dev/null
+> > +++ b/arch/riscv/dts/skeleton.dtsi
+> > @@ -0,0 +1,13 @@
+> > +/*
+> > + * Skeleton device tree; the bare minimum needed to boot; just include=
+ and
+> > + * add a compatible value.  The bootloader will typically populate the=
+ memory
+> > + * node.
+> > + */
+> > +
+> > +/ {
+> > +	#address-cells =3D <2>;
+> > +	#size-cells =3D <1>;
+> > +	chosen { };
+> > +	aliases { };
+> > +	memory { device_type =3D "memory"; reg =3D <0 0 0>; };
+> > +};
+> =
+
+> skeleton.dtsi should no longer be used. For example we should now have
+> memory@adr {}; instead of memory {};. Since "adr" is board/SoC specific
+> we can't put it in a generic file.
+
+I have dropped skeleton.dtsi in the v2 RISC-V patchseries.
+
+I have even submitted patches for MIPS, please review.
+
+> =
+
+> > diff --git a/arch/riscv/lib/ashldi3.c b/arch/riscv/lib/ashldi3.c
+> > new file mode 100644
+> > index 0000000000..cbdbcbb6a9
+> > --- /dev/null
+> > +++ b/arch/riscv/lib/ashldi3.c
+> > @@ -0,0 +1,28 @@
+> > +#include <module.h>
+> > +
+> > +#include "libgcc.h"
+> > +
+> > +long long __ashldi3(long long u, word_type b)
+> > +{
+> =
+
+> Can we have generic C variants for these files? The Kernel has these
+> symbols in lib/ and they can be selected by "select GENERIC_ASHLDI3"
+
+I know about this problem. I have even made a patch for linux kernel for MI=
+PS:
+
+  [PATCH v3 2/2] MIPS: use generic GCC library routines from lib/
+  https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1599191.html
+
+During this MIPS patch discussion it has become evident that Kconfig GENERI=
+C_
+prefix has to be changed to GENERIC_LIB_.
+
+This morning I found that the patch =
 
 
-void imx53_init_lowlevel_early(unsigned int cpufreq_mhz)
-{
-     void __iomem *ccm = (void __iomem *)MX53_CCM_BASE_ADDR;
-     u32 r;
+  [PATCH] lib: Rename compiler intrinsic selects to GENERIC_LIB_*
+  https://patchwork.kernel.org/patch/10335017/
 
-     imx5_init_lowlevel();
+has been merged by Linus almost two weeks ago.
 
-     /*
-      * AIPS setup - Only setup MPROTx registers.
-      * The PACR default values are good.
-      * Set all MPROTx to be non-bufferable, trusted for R/W,
-      * not forced to user-mode.
-      */
-     writel(0x77777777, MX53_AIPS1_BASE_ADDR + 0);
-     writel(0x77777777, MX53_AIPS1_BASE_ADDR + 4);
-     writel(0x77777777, MX53_AIPS2_BASE_ADDR + 0);
-     writel(0x77777777, MX53_AIPS2_BASE_ADDR + 4);
+So I can prepare corresponding generic GCC functions barebox patchseries
+(it will be useful for MIPS). Next I shall submit RISC-V v2 patchseries.
+RISC-V will use generic GCC functions from lib/ too.
 
-     /* Gate of clocks to the peripherals first */
-     writel(0x3fffffff, ccm + MX5_CCM_CCGR0);
-     writel(0x00000000, ccm + MX5_CCM_CCGR1);
-     writel(0x00000000, ccm + MX5_CCM_CCGR2);
-     writel(0x00000000, ccm + MX5_CCM_CCGR3);
-     writel(0x00030000, ccm + MX5_CCM_CCGR4);
-     writel(0x00fff030, ccm + MX5_CCM_CCGR5);
-     writel(0x0f00030f, ccm + MX5_CCM_CCGR6);
-     writel(0x00000000, ccm + MX53_CCM_CCGR7);
+-- =
 
-     /* Switch ARM to step clock */
-     writel(0x4, ccm + MX5_CCM_CCSR);
-
-     if (cpufreq_mhz == 1000)
-         imx5_setup_pll_1000((void __iomem *)MX53_PLL1_BASE_ADDR);
-     else
-         imx5_setup_pll_800((void __iomem *)MX53_PLL1_BASE_ADDR);
-
-     imx5_setup_pll_400((void __iomem *)MX53_PLL3_BASE_ADDR); 
-<------------------- 400MHz
-
-         /* Switch peripheral to PLL3 */
-     writel(0x00015154, ccm + MX5_CCM_CBCMR);
-     writel(0x02888945 | (1<<16), ccm + MX5_CCM_CBCDR);
-
-     /* make sure change is effective */
-     while (readl(ccm + MX5_CCM_CDHIPR));
-
-     imx5_setup_pll_400((void __iomem *)MX53_PLL2_BASE_ADDR);
-
-     /* Switch peripheral to PLL2 */
-     r = 0x00808145 |
-         (2 << 10) |
-         (0 << 16) |
-         (1 << 19);
-
-     writel(r, ccm + MX5_CCM_CBCDR);
-
-     writel(0x00016154, ccm + MX5_CCM_CBCMR);
-
-     r = readl(ccm + MX5_CCM_CSCMR1);
-
-     /* change uart clk parent to pll2 */
-     r &= ~MX5_CCM_CSCMR1_UART_CLK_SEL_MASK;
-     r |= 1 << MX5_CCM_CSCMR1_UART_CLK_SEL_OFFSET;
-
-     /* USB phy clock from osc */
-     r &= ~(1 << MX5_CCM_CSCMR1_USB_PHY_CLK_SEL_OFFSET);
-
-     writel(r, ccm + MX5_CCM_CSCMR1);
-
-     /* make sure change is effective */
-     while (readl(ccm + MX5_CCM_CDHIPR));
-
-     imx5_setup_pll_216((void __iomem *)MX53_PLL3_BASE_ADDR); 
-<------------------- 216MHz
-     imx5_setup_pll_455((void __iomem *)MX53_PLL4_BASE_ADDR);
-
-     /* Set the platform clock dividers */
-     writel(0x00000124, MX53_ARM_BASE_ADDR + 0x14);
-
-     writel(0, ccm + MX5_CCM_CACRR);
-
-     /* Switch ARM back to PLL 1. */
-     writel(0, ccm + MX5_CCM_CCSR);
-
-     /* make uart div = 6*/
-     r = readl(ccm + MX5_CCM_CSCDR1);
-     r &= ~0x3f;
-     r |= 0x0a;
-
-     r &= ~MX5_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PRED_MASK;
-     r &= ~MX5_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PODF_MASK;
-     r |= 1 << MX5_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PRED_OFFSET;
-
-     r &= ~MX5_CCM_CSCDR1_ESDHC3_MX53_CLK_PRED_MASK;
-     r &= ~MX5_CCM_CSCDR1_ESDHC3_MX53_CLK_PODF_MASK;
-     r |= 1 << MX5_CCM_CSCDR1_ESDHC3_MX53_CLK_PODF_OFFSET;
-
-     r &= ~MX5_CCM_CSCDR1_USBOH3_CLK_PRED_MASK;
-     r &= ~MX5_CCM_CSCDR1_USBOH3_CLK_PODF_MASK;
-
-     r |= 3 << MX5_CCM_CSCDR1_USBOH3_CLK_PRED_OFFSET;
-     r |= 1 << MX5_CCM_CSCDR1_USBOH3_CLK_PODF_OFFSET;
-
-     writel(r, ccm + MX5_CCM_CSCDR1);
-
-     /* Restore the default values in the Gate registers */
-     writel(0xffffffff, ccm + MX5_CCM_CCGR0);
-     writel(0xffffffff, ccm + MX5_CCM_CCGR1);
-     writel(0xffffffff, ccm + MX5_CCM_CCGR2);
-     writel(0xffffffff, ccm + MX5_CCM_CCGR3);
-     writel(0xffffffff, ccm + MX5_CCM_CCGR4);
-     writel(0xffffffff, ccm + MX5_CCM_CCGR5);
-     writel(0xffffffff, ccm + MX5_CCM_CCGR6);
-     writel(0xffffffff, ccm + MX53_CCM_CCGR7);
-
-     writel(0, ccm + MX5_CCM_CCDR);
-}
-
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
