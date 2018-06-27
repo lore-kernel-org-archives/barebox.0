@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-it0-x244.google.com ([2607:f8b0:4001:c0b::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fY6OX-0003Pv-W6
- for barebox@lists.infradead.org; Wed, 27 Jun 2018 09:05:47 +0000
-Message-ID: <1530090334.22468.15.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 27 Jun 2018 11:05:34 +0200
-In-Reply-To: <20180627035842.17858-1-andrew.smirnov@gmail.com>
+ id 1fYDll-00076C-V7
+ for barebox@lists.infradead.org; Wed, 27 Jun 2018 16:58:23 +0000
+Received: by mail-it0-x244.google.com with SMTP id 128-v6so8573072itf.1
+ for <barebox@lists.infradead.org>; Wed, 27 Jun 2018 09:58:03 -0700 (PDT)
+MIME-Version: 1.0
 References: <20180627035842.17858-1-andrew.smirnov@gmail.com>
-Mime-Version: 1.0
+ <1530090334.22468.15.camel@pengutronix.de>
+In-Reply-To: <1530090334.22468.15.camel@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 27 Jun 2018 09:57:51 -0700
+Message-ID: <CAHQ1cqFQJiLezTDhmDfGmNqF4NkY5uQgs6ODaA5-vEjP1KN-wA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,58 +20,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/2] nvmem: Introduce nvmem_cell_get_and_read()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-QW0gRGllbnN0YWcsIGRlbiAyNi4wNi4yMDE4LCAyMDo1OCAtMDcwMCBzY2hyaWViIEFuZHJleSBT
-bWlybm92Ogo+IEludHJvZHVjZSBudm1lbV9jZWxsX2dldF9hbmRfcmVhZCgpIHRoYXQgY29tYmlu
-ZXMgZ2V0dGluZyBhIE5WTUVNIGNlbGwKPiBieSBuYW1lIGFuZCByZWFkaW5nIGl0cyBjb250ZW50
-cy4KPiAKPiA+IFNpZ25lZC1vZmYtYnk6IEFuZHJleSBTbWlybm92IDxhbmRyZXcuc21pcm5vdkBn
-bWFpbC5jb20+Cj4gLS0tCj4gwqBkcml2ZXJzL252bWVtL2NvcmUuY8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqB8IDIzICsrKysrKysrKysrKysrKysrKysrKysrCj4gwqBpbmNsdWRlL2xpbnV4L252bWVt
-LWNvbnN1bWVyLmggfCAxMCArKysrKysrKysrCj4gwqAyIGZpbGVzIGNoYW5nZWQsIDMzIGluc2Vy
-dGlvbnMoKykKPiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9udm1lbS9jb3JlLmMgYi9kcml2ZXJz
-L252bWVtL2NvcmUuYwo+IGluZGV4IDUzYjkzNGJiMy4uYzc4NWRlMTI1IDEwMDY0NAo+IC0tLSBh
-L2RyaXZlcnMvbnZtZW0vY29yZS5jCj4gKysrIGIvZHJpdmVycy9udm1lbS9jb3JlLmMKPiBAQCAt
-NzUwLDMgKzc1MCwyNiBAQCBpbnQgbnZtZW1fZGV2aWNlX3dyaXRlKHN0cnVjdCBudm1lbV9kZXZp
-Y2UgKm52bWVtLAo+ID4gwqAJcmV0dXJuIGJ5dGVzOwo+IMKgfQo+IMKgRVhQT1JUX1NZTUJPTF9H
-UEwobnZtZW1fZGV2aWNlX3dyaXRlKTsKPiArCj4gK3ZvaWQgKm52bWVtX2NlbGxfZ2V0X2FuZF9y
-ZWFkKHN0cnVjdCBkZXZpY2Vfbm9kZSAqbnAsIGNvbnN0IGNoYXIgKmNlbGxfbmFtZSwKPiA+ICsJ
-CQnCoMKgwqDCoMKgwqBzaXplX3QgYnl0ZXMpCj4gK3sKPiA+ICsJc3RydWN0IG52bWVtX2NlbGwg
-KmNlbGw7Cj4gPiArCXZvaWQgKnZhbHVlOwo+ID4gKwlzaXplX3QgbGVuOwo+ICsKPiA+ICsJY2Vs
-bCA9IG9mX252bWVtX2NlbGxfZ2V0KG5wLCBjZWxsX25hbWUpOwo+ID4gKwlpZiAoSVNfRVJSKGNl
-bGwpKQo+ID4gKwkJcmV0dXJuIGNlbGw7Cj4gKwo+ID4gKwl2YWx1ZSA9IG52bWVtX2NlbGxfcmVh
-ZChjZWxsLCAmbGVuKTsKPiA+ICsJaWYgKCFJU19FUlIodmFsdWUpICYmIGxlbiAhPSBieXRlcykg
-ewo+ID4gKwkJa2ZyZWUodmFsdWUpOwo+ID4gKwkJdmFsdWUgPSBFUlJfUFRSKC1FSU5WQUwpOwo+
-ID4gKwl9Cj4gKwo+ID4gKwludm1lbV9jZWxsX3B1dChjZWxsKTsKPiArCj4gPiArCXJldHVybiB2
-YWx1ZTsKPiArfQo+ICtFWFBPUlRfU1lNQk9MX0dQTChudm1lbV9jZWxsX2dldF9hbmRfcmVhZCk7
-Cj4gXCBObyBuZXdsaW5lIGF0IGVuZCBvZiBmaWxlCgpJJ20gc3VyZSB5b3UgYXJlIHRpcmVkIGJ5
-IG1lIG5pdHBpY2tpbmcgb24gdGhpcy4gOykKCkkgcmVhbGx5IGxpa2UgdGhpcyBoZWxwZXIsIGFz
-IGl0IG1ha2VzIHRoZSBjb25zdW1lciBjb2RlIGxvb2sgbXVjaApuaWNlciwgYXMgc2VlbiBpbiBw
-YXRjaCAyLgoKUmVnYXJkcywKTHVjYXMKCj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvbnZt
-ZW0tY29uc3VtZXIuaCBiL2luY2x1ZGUvbGludXgvbnZtZW0tY29uc3VtZXIuaAo+IGluZGV4IDYw
-NmNhZGI0OS4uMGVjMmYwNWI5IDEwMDY0NAo+IC0tLSBhL2luY2x1ZGUvbGludXgvbnZtZW0tY29u
-c3VtZXIuaAo+ICsrKyBiL2luY2x1ZGUvbGludXgvbnZtZW0tY29uc3VtZXIuaAo+IEBAIC0zMiw2
-ICszMiw5IEBAIHN0cnVjdCBudm1lbV9jZWxsX2luZm8gewo+IMKgc3RydWN0IG52bWVtX2NlbGwg
-Km52bWVtX2NlbGxfZ2V0KHN0cnVjdCBkZXZpY2VfZCAqZGV2LCBjb25zdCBjaGFyICpuYW1lKTsK
-PiDCoHZvaWQgbnZtZW1fY2VsbF9wdXQoc3RydWN0IG52bWVtX2NlbGwgKmNlbGwpOwo+IMKgdm9p
-ZCAqbnZtZW1fY2VsbF9yZWFkKHN0cnVjdCBudm1lbV9jZWxsICpjZWxsLCBzaXplX3QgKmxlbik7
-Cj4gK3ZvaWQgKm52bWVtX2NlbGxfZ2V0X2FuZF9yZWFkKHN0cnVjdCBkZXZpY2Vfbm9kZSAqbnAs
-IGNvbnN0IGNoYXIgKmNlbGxfbmFtZSwKPiA+ICsJCQnCoMKgwqDCoMKgwqBzaXplX3QgYnl0ZXMp
-Owo+ICsKPiDCoGludCBudm1lbV9jZWxsX3dyaXRlKHN0cnVjdCBudm1lbV9jZWxsICpjZWxsLCB2
-b2lkICpidWYsIHNpemVfdCBsZW4pOwo+IMKgCj4gwqAvKiBkaXJlY3QgbnZtZW0gZGV2aWNlIHJl
-YWQvd3JpdGUgaW50ZXJmYWNlICovCj4gQEAgLTU1LDYgKzU4LDEzIEBAIHN0YXRpYyBpbmxpbmUg
-Y2hhciAqbnZtZW1fY2VsbF9yZWFkKHN0cnVjdCBudm1lbV9jZWxsICpjZWxsLCBzaXplX3QgKmxl
-bikKPiA+IMKgCXJldHVybiBFUlJfUFRSKC1FTk9TWVMpOwo+IMKgfQo+IMKgCj4gK3N0YXRpYyBp
-bmxpbmUgdm9pZCAqbnZtZW1fY2VsbF9nZXRfYW5kX3JlYWQoc3RydWN0IGRldmljZV9ub2RlICpu
-cCwKPiA+ICsJCQkJCcKgwqDCoMKgY29uc3QgY2hhciAqY2VsbF9uYW1lLAo+ID4gKwkJCQkJwqDC
-oMKgwqBzaXplX3QgYnl0ZXMpCj4gK3sKPiA+ICsJcmV0dXJuIEVSUl9QVFIoLUVOT1NZUyk7Cj4g
-K30KPiArCj4gwqBzdGF0aWMgaW5saW5lIGludCBudm1lbV9jZWxsX3dyaXRlKHN0cnVjdCBudm1l
-bV9jZWxsICpjZWxsLAo+ID4gwqAJCQkJwqDCoMKgwqBjb25zdCBjaGFyICpidWYsIHNpemVfdCBs
-ZW4pCj4gwqB7CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
-L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Wed, Jun 27, 2018 at 2:05 AM Lucas Stach <l.stach@pengutronix.de> wrote:
+>
+> Am Dienstag, den 26.06.2018, 20:58 -0700 schrieb Andrey Smirnov:
+> > Introduce nvmem_cell_get_and_read() that combines getting a NVMEM cell
+> > by name and reading its contents.
+> >
+> > > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> > ---
+> >  drivers/nvmem/core.c           | 23 +++++++++++++++++++++++
+> >  include/linux/nvmem-consumer.h | 10 ++++++++++
+> >  2 files changed, 33 insertions(+)
+> >
+> > diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+> > index 53b934bb3..c785de125 100644
+> > --- a/drivers/nvmem/core.c
+> > +++ b/drivers/nvmem/core.c
+> > @@ -750,3 +750,26 @@ int nvmem_device_write(struct nvmem_device *nvmem,
+> > >     return bytes;
+> >  }
+> >  EXPORT_SYMBOL_GPL(nvmem_device_write);
+> > +
+> > +void *nvmem_cell_get_and_read(struct device_node *np, const char *cell_name,
+> > > +                         size_t bytes)
+> > +{
+> > > +   struct nvmem_cell *cell;
+> > > +   void *value;
+> > > +   size_t len;
+> > +
+> > > +   cell = of_nvmem_cell_get(np, cell_name);
+> > > +   if (IS_ERR(cell))
+> > > +           return cell;
+> > +
+> > > +   value = nvmem_cell_read(cell, &len);
+> > > +   if (!IS_ERR(value) && len != bytes) {
+> > > +           kfree(value);
+> > > +           value = ERR_PTR(-EINVAL);
+> > > +   }
+> > +
+> > > +   nvmem_cell_put(cell);
+> > +
+> > > +   return value;
+> > +}
+> > +EXPORT_SYMBOL_GPL(nvmem_cell_get_and_read);
+> > \ No newline at end of file
+>
+> I'm sure you are tired by me nitpicking on this. ;)
+
+Oh I totally left it there on purpose to know if you've read my patch or not ;-)
+
+In all seriousness, will fix in v2.
+
+Thanks,
+Andrey Smirnov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
