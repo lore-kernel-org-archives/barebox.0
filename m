@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x242.google.com ([2607:f8b0:400e:c05::242])
+Received: from mail-pf0-x229.google.com ([2607:f8b0:400e:c00::229])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fYOxQ-0005Yy-2q
- for barebox@lists.infradead.org; Thu, 28 Jun 2018 04:55:05 +0000
-Received: by mail-pg0-x242.google.com with SMTP id e11-v6so1919658pgq.0
- for <barebox@lists.infradead.org>; Wed, 27 Jun 2018 21:54:49 -0700 (PDT)
+ id 1fYOxR-0005Zn-HZ
+ for barebox@lists.infradead.org; Thu, 28 Jun 2018 04:55:08 +0000
+Received: by mail-pf0-x229.google.com with SMTP id v9-v6so883652pff.9
+ for <barebox@lists.infradead.org>; Wed, 27 Jun 2018 21:54:50 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 27 Jun 2018 21:54:27 -0700
-Message-Id: <20180628045436.16710-2-andrew.smirnov@gmail.com>
+Date: Wed, 27 Jun 2018 21:54:28 -0700
+Message-Id: <20180628045436.16710-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20180628045436.16710-1-andrew.smirnov@gmail.com>
 References: <20180628045436.16710-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,45 +23,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 01/10] mtd: mtd_dataflash: Don't print bogus command values
- for READs
+Subject: [PATCH v4 02/10] common: clock: Sample time before poller_call()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Call to dev_dbg in dataflash_read() is located to early, before
-command[] is initialize to correct values, so it end up printing
-values from previous invocation. Move it such that it prints current
-call's values.
+Change is_timeout() to sample current time before invoking poller
+infrascructure to avoid occasional false timeout conditions.
+
+Consider the following timeout loop (can be found in wait_on_timeout):
+
+        while (!(condition)) {
+	        if (is_timeout(...)) {
+	       	        return -ETIMEDOUT;
+                }
+        }
+	...
+
+in the original logic of is_timeout() it was possible to end up in the
+following situation:
+
+        1. Immediate check of of "condition" yeilds false (not enough
+           time for it to become true has passed yet)
+
+	2. is_timeout is called which, in turn, calls poller_call()
+
+	3. All registerd pollers take more than specified timeout time
+	   to execute.
+
+	4. Sometime during poller_call() "contition" becomes true
+
+	5. As a result of #3 is_timeout() returns "true"
+
+	6. Code bails out with -ETIMEDOUT early even though timeout
+	   condition didn't really occur.
+
+One concrete example of this problem was discovered on ZII RDU1
+board (poller_call() is long due to a serdev) when doing large data
+transfers over SPI to attached DataFlash chip.
+
+This commit changes is_timeout() to sample the value of time before
+calling poller_call(). This way first call to is_timeout() will almost
+always return false thus checking the condition at least twice before
+declaring a timeout.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mtd/devices/mtd_dataflash.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ common/clock.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/devices/mtd_dataflash.c b/drivers/mtd/devices/mtd_dataflash.c
-index 4b8eaec05..7980a91e1 100644
---- a/drivers/mtd/devices/mtd_dataflash.c
-+++ b/drivers/mtd/devices/mtd_dataflash.c
-@@ -246,9 +246,6 @@ static int dataflash_read(struct mtd_info *mtd, loff_t from, size_t len,
+diff --git a/common/clock.c b/common/clock.c
+index 7f5cff232..2b218fb6a 100644
+--- a/common/clock.c
++++ b/common/clock.c
+@@ -181,10 +181,12 @@ EXPORT_SYMBOL(is_timeout_non_interruptible);
  
- 	command = priv->command;
- 
--	dev_dbg(&priv->spi->dev, "READ: (%x) %x %x %x\n",
--		command[0], command[1], command[2], command[3]);
--
- 	spi_message_init(&msg);
- 
- 	memset(&x[0], 0, sizeof(struct spi_transfer) * 2);
-@@ -271,6 +268,9 @@ static int dataflash_read(struct mtd_info *mtd, loff_t from, size_t len,
- 	command[3] = (u8)(addr >> 0);
- 	/* plus 4 "don't care" bytes */
- 
-+	dev_dbg(&priv->spi->dev, "READ: (%x) %x %x %x\n",
-+		command[0], command[1], command[2], command[3]);
+ int is_timeout(uint64_t start_ns, uint64_t time_offset_ns)
+ {
++	int ret = is_timeout_non_interruptible(start_ns, time_offset_ns);
 +
- 	status = spi_sync(priv->spi, &msg);
+ 	if (time_offset_ns >= 100 * USECOND)
+ 		poller_call();
  
- 	if (status >= 0) {
+-	return is_timeout_non_interruptible(start_ns, time_offset_ns);
++	return ret;
+ }
+ EXPORT_SYMBOL(is_timeout);
+ 
 -- 
 2.17.1
 
