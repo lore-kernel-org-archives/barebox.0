@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf0-x232.google.com ([2607:f8b0:400e:c00::232])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fYRLm-0005Le-Ip
- for barebox@lists.infradead.org; Thu, 28 Jun 2018 07:28:20 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 28 Jun 2018 09:28:03 +0200
-Message-Id: <20180628072803.25428-1-s.hauer@pengutronix.de>
+ id 1fYOle-0000xe-P5
+ for barebox@lists.infradead.org; Thu, 28 Jun 2018 04:42:52 +0000
+Received: by mail-pf0-x232.google.com with SMTP id j17-v6so1999089pfn.5
+ for <barebox@lists.infradead.org>; Wed, 27 Jun 2018 21:42:40 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 27 Jun 2018 21:42:26 -0700
+Message-Id: <20180628044227.15049-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,70 +21,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX53: Make clock tree setup better readable
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v2 1/2] nvmem: Introduce nvmem_cell_get_and_read()
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Change write register accesses to read-modify-write accesses. This
-makes it clearer which bits are actually changed by the code.
+Introduce nvmem_cell_get_and_read() that combines getting a NVMEM cell
+by name and reading its contents.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/imx53.c | 27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/mach-imx/imx53.c b/arch/arm/mach-imx/imx53.c
-index 56f1bda75e..b22929f749 100644
---- a/arch/arm/mach-imx/imx53.c
-+++ b/arch/arm/mach-imx/imx53.c
-@@ -86,7 +86,7 @@ int imx53_devices_init(void)
- void imx53_init_lowlevel_early(unsigned int cpufreq_mhz)
- {
- 	void __iomem *ccm = (void __iomem *)MX53_CCM_BASE_ADDR;
--	u32 r;
-+	u32 r, cbcdr, cbcmr;
- 
- 	imx5_init_lowlevel();
- 
-@@ -122,8 +122,16 @@ void imx53_init_lowlevel_early(unsigned int cpufreq_mhz)
- 	imx5_setup_pll_400((void __iomem *)MX53_PLL3_BASE_ADDR);
- 
-         /* Switch peripheral to PLL3 */
--	writel(0x00015154, ccm + MX5_CCM_CBCMR);
--	writel(0x02888945 | (1<<16), ccm + MX5_CCM_CBCDR);
-+	cbcmr = readl(ccm + MX5_CCM_CBCMR);
-+	cbcmr &= ~(3 << 12);
-+	cbcmr |= (1 << 12);
-+	writel(cbcmr, ccm + MX5_CCM_CBCMR);
+Changes since [v1]:
+
+    - Added missing newline to core.c
+
+[v1] http://lists.infradead.org/pipermail/barebox/2018-June/033857.html
+
+ drivers/nvmem/core.c           | 23 +++++++++++++++++++++++
+ include/linux/nvmem-consumer.h | 10 ++++++++++
+ 2 files changed, 33 insertions(+)
+
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index 53b934bb3..c0f61f453 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -750,3 +750,26 @@ int nvmem_device_write(struct nvmem_device *nvmem,
+ 	return bytes;
+ }
+ EXPORT_SYMBOL_GPL(nvmem_device_write);
 +
-+	cbcdr = readl(ccm + MX5_CCM_CBCDR);
-+	cbcdr |= (1 << 25);
-+	cbcdr &= ~(7 << 16);
-+	cbcdr |= (1 << 16);
-+	writel(cbcdr, ccm + MX5_CCM_CBCDR);
++void *nvmem_cell_get_and_read(struct device_node *np, const char *cell_name,
++			      size_t bytes)
++{
++	struct nvmem_cell *cell;
++	void *value;
++	size_t len;
++
++	cell = of_nvmem_cell_get(np, cell_name);
++	if (IS_ERR(cell))
++		return cell;
++
++	value = nvmem_cell_read(cell, &len);
++	if (!IS_ERR(value) && len != bytes) {
++		kfree(value);
++		value = ERR_PTR(-EINVAL);
++	}
++
++	nvmem_cell_put(cell);
++
++	return value;
++}
++EXPORT_SYMBOL_GPL(nvmem_cell_get_and_read);
+diff --git a/include/linux/nvmem-consumer.h b/include/linux/nvmem-consumer.h
+index 606cadb49..0ec2f05b9 100644
+--- a/include/linux/nvmem-consumer.h
++++ b/include/linux/nvmem-consumer.h
+@@ -32,6 +32,9 @@ struct nvmem_cell_info {
+ struct nvmem_cell *nvmem_cell_get(struct device_d *dev, const char *name);
+ void nvmem_cell_put(struct nvmem_cell *cell);
+ void *nvmem_cell_read(struct nvmem_cell *cell, size_t *len);
++void *nvmem_cell_get_and_read(struct device_node *np, const char *cell_name,
++			      size_t bytes);
++
+ int nvmem_cell_write(struct nvmem_cell *cell, void *buf, size_t len);
  
- 	/* make sure change is effective */
- 	while (readl(ccm + MX5_CCM_CDHIPR));
-@@ -131,14 +139,13 @@ void imx53_init_lowlevel_early(unsigned int cpufreq_mhz)
- 	imx5_setup_pll_400((void __iomem *)MX53_PLL2_BASE_ADDR);
+ /* direct nvmem device read/write interface */
+@@ -55,6 +58,13 @@ static inline char *nvmem_cell_read(struct nvmem_cell *cell, size_t *len)
+ 	return ERR_PTR(-ENOSYS);
+ }
  
- 	/* Switch peripheral to PLL2 */
--	r = 0x00808145 |
--		(2 << 10) |
--		(0 << 16) |
--		(1 << 19);
--
--	writel(r, ccm + MX5_CCM_CBCDR);
-+	cbcdr &= ~(1 << 25);
-+	cbcdr &= ~(7 << 16);
-+	writel(cbcdr, ccm + MX5_CCM_CBCDR);
- 
--	writel(0x00016154, ccm + MX5_CCM_CBCMR);
-+	cbcmr &= ~(3 << 12);
-+	cbcmr |= (2 << 12);
-+	writel(cbcmr, ccm + MX5_CCM_CBCMR);
- 
- 	r = readl(ccm + MX5_CCM_CSCMR1);
- 
++static inline void *nvmem_cell_get_and_read(struct device_node *np,
++					    const char *cell_name,
++					    size_t bytes)
++{
++	return ERR_PTR(-ENOSYS);
++}
++
+ static inline int nvmem_cell_write(struct nvmem_cell *cell,
+ 				    const char *buf, size_t len)
+ {
 -- 
 2.17.1
 
