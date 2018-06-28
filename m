@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fYOxZ-0000qi-RW
- for barebox@lists.infradead.org; Thu, 28 Jun 2018 04:55:10 +0000
-Received: by mail-pf0-x243.google.com with SMTP id h20-v6so85751pfn.4
- for <barebox@lists.infradead.org>; Wed, 27 Jun 2018 21:54:59 -0700 (PDT)
+Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fYOxS-0005al-2v
+ for barebox@lists.infradead.org; Thu, 28 Jun 2018 04:55:35 +0000
+Received: by mail-pf0-x244.google.com with SMTP id q1-v6so2005281pff.13
+ for <barebox@lists.infradead.org>; Wed, 27 Jun 2018 21:54:51 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 27 Jun 2018 21:54:35 -0700
-Message-Id: <20180628045436.16710-10-andrew.smirnov@gmail.com>
+Date: Wed, 27 Jun 2018 21:54:29 -0700
+Message-Id: <20180628045436.16710-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20180628045436.16710-1-andrew.smirnov@gmail.com>
 References: <20180628045436.16710-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,135 +23,352 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 09/10] ARM: i.MX: bbu: Make struct imx_internal_bbu_handler
- public
+Subject: [PATCH v4 03/10] ARM: babbage: Make PMIC initialization shareable
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Make struct imx_internal_bbu_handler public, so it would be possible
-to access some of its parameters in board specific code.
+Some board designs copy i.MX51 Babbadge board's PMIC design and so
+require exactly the same initialization. Move correspoding code into a
+separate file so it can be shared.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/imx-bbu-internal.c | 30 +++++++++++-----------------
- arch/arm/mach-imx/include/mach/bbu.h | 13 ++++++++++++
- 2 files changed, 25 insertions(+), 18 deletions(-)
+ arch/arm/boards/Makefile                      |   2 +-
+ .../boards/freescale-mx51-babbage/Makefile    |   5 +-
+ .../arm/boards/freescale-mx51-babbage/board.c | 112 +---------------
+ .../arm/boards/freescale-mx51-babbage/power.c | 120 ++++++++++++++++++
+ arch/arm/mach-imx/Kconfig                     |  13 +-
+ arch/arm/mach-imx/include/mach/imx5.h         |   2 +
+ 6 files changed, 138 insertions(+), 116 deletions(-)
+ create mode 100644 arch/arm/boards/freescale-mx51-babbage/power.c
 
-diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-index 8c44d601d..1dde65a0c 100644
---- a/arch/arm/mach-imx/imx-bbu-internal.c
-+++ b/arch/arm/mach-imx/imx-bbu-internal.c
-@@ -38,13 +38,6 @@
- #define IMX_INTERNAL_FLAG_KEEP_DOSPART	(1 << 1)
- #define IMX_INTERNAL_FLAG_ERASE		(1 << 2)
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 711f9548f..60590dbdb 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -43,7 +43,7 @@ obj-$(CONFIG_MACH_EUKREA_CPUIMX51SD)		+= eukrea_cpuimx51/
+ obj-$(CONFIG_MACH_ELTEC_HIPERCAM)		+= eltec-hipercam/
+ obj-$(CONFIG_MACH_FREESCALE_MX25_3STACK)	+= freescale-mx25-3ds/
+ obj-$(CONFIG_MACH_FREESCALE_MX35_3STACK)	+= freescale-mx35-3ds/
+-obj-$(CONFIG_MACH_FREESCALE_MX51_PDK)		+= freescale-mx51-babbage/
++obj-y						+= freescale-mx51-babbage/
+ obj-$(CONFIG_MACH_FREESCALE_MX53_LOCO)		+= freescale-mx53-qsb/
+ obj-$(CONFIG_MACH_FREESCALE_MX53_SMD)		+= freescale-mx53-smd/
+ obj-$(CONFIG_MACH_FREESCALE_MX53_VMX53)		+= freescale-mx53-vmx53/
+diff --git a/arch/arm/boards/freescale-mx51-babbage/Makefile b/arch/arm/boards/freescale-mx51-babbage/Makefile
+index 01c7a259e..b6e085818 100644
+--- a/arch/arm/boards/freescale-mx51-babbage/Makefile
++++ b/arch/arm/boards/freescale-mx51-babbage/Makefile
+@@ -1,2 +1,3 @@
+-obj-y += board.o
+-lwl-y += lowlevel.o
++obj-$(CONFIG_MACH_FREESCALE_MX51_PDK_POWER) += power.o
++obj-$(CONFIG_MACH_FREESCALE_MX51_PDK) += board.o
++lwl-$(CONFIG_MACH_FREESCALE_MX51_PDK) += lowlevel.o
+diff --git a/arch/arm/boards/freescale-mx51-babbage/board.c b/arch/arm/boards/freescale-mx51-babbage/board.c
+index 915748528..06d9ce391 100644
+--- a/arch/arm/boards/freescale-mx51-babbage/board.c
++++ b/arch/arm/boards/freescale-mx51-babbage/board.c
+@@ -30,8 +30,6 @@
+ #include <mach/bbu.h>
+ #include <nand.h>
+ #include <notifier.h>
+-#include <spi/spi.h>
+-#include <mfd/mc13xxx.h>
+ #include <io.h>
+ #include <asm/mmu.h>
+ #include <mach/imx5.h>
+@@ -44,120 +42,14 @@
  
--struct imx_internal_bbu_handler {
--	struct bbu_handler handler;
--	unsigned long flash_header_offset;
--	size_t device_size;
--	unsigned long flags;
--};
+ #define MX51_CCM_CACRR 0x10
+ 
+-static void babbage_power_init(struct mc13xxx *mc13xxx)
+-{
+-	u32 val;
 -
- /*
-  * Actually write an image to the target device, eventually keeping a
-  * DOS partition table on the device
-@@ -168,8 +161,6 @@ static int imx_bbu_check_prereq(const char *devicefile, struct bbu_data *data)
-  */
- int imx_bbu_internal_v1_update(struct bbu_handler *handler, struct bbu_data *data)
+-	/* Write needed to Power Gate 2 register */
+-	mc13xxx_reg_read(mc13xxx, MC13892_REG_POWER_MISC, &val);
+-	val &= ~0x10000;
+-	mc13xxx_reg_write(mc13xxx, MC13892_REG_POWER_MISC, val);
+-
+-	/* Write needed to update Charger 0 */
+-	mc13xxx_reg_write(mc13xxx, MC13892_REG_CHARGE, 0x0023807F);
+-
+-	/* power up the system first */
+-	mc13xxx_reg_write(mc13xxx, MC13892_REG_POWER_MISC, 0x00200000);
+-
+-	if (imx_silicon_revision() < IMX_CHIP_REV_3_0) {
+-		/* Set core voltage to 1.1V */
+-		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_0, &val);
+-		val &= ~0x1f;
+-		val |= 0x14;
+-		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_0, val);
+-
+-		/* Setup VCC (SW2) to 1.25 */
+-		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_1, &val);
+-		val &= ~0x1f;
+-		val |= 0x1a;
+-		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_1, val);
+-
+-		/* Setup 1V2_DIG1 (SW3) to 1.25 */
+-		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_2, &val);
+-		val &= ~0x1f;
+-		val |= 0x1a;
+-		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_2, val);
+-	} else {
+-		/* Setup VCC (SW2) to 1.225 */
+-		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_1, &val);
+-		val &= ~0x1f;
+-		val |= 0x19;
+-		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_1, val);
+-
+-		/* Setup 1V2_DIG1 (SW3) to 1.2 */
+-		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_2, &val);
+-		val &= ~0x1f;
+-		val |= 0x18;
+-		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_2, val);
+-	}
+-
+-	if (mc13xxx_revision(mc13xxx) < MC13892_REVISION_2_0) {
+-		/* Set switchers in PWM mode for Atlas 2.0 and lower */
+-		/* Setup the switcher mode for SW1 & SW2*/
+-		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_4, &val);
+-		val &= ~0x3c0f;
+-		val |= 0x1405;
+-		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_4, val);
+-
+-		/* Setup the switcher mode for SW3 & SW4 */
+-		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_5, &val);
+-		val &= ~0xf0f;
+-		val |= 0x505;
+-		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_5, val);
+-	} else {
+-		/* Set switchers in Auto in NORMAL mode & STANDBY mode for Atlas 2.0a */
+-		/* Setup the switcher mode for SW1 & SW2*/
+-		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_4, &val);
+-		val &= ~0x3c0f;
+-		val |= 0x2008;
+-		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_4, val);
+-
+-		/* Setup the switcher mode for SW3 & SW4 */
+-		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_5, &val);
+-		val &= ~0xf0f;
+-		val |= 0x808;
+-		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_5, val);
+-	}
+-
+-	/* Set VDIG to 1.65V, VGEN3 to 1.8V, VCAM to 2.5V */
+-	mc13xxx_reg_read(mc13xxx, MC13892_REG_SETTING_0, &val);
+-	val &= ~0x34030;
+-	val |= 0x10020;
+-	mc13xxx_reg_write(mc13xxx, MC13892_REG_SETTING_0, val);
+-
+-	/* Set VVIDEO to 2.775V, VAUDIO to 3V, VSD to 3.15V */
+-	mc13xxx_reg_read(mc13xxx, MC13892_REG_SETTING_1, &val);
+-	val &= ~0x1FC;
+-	val |= 0x1F4;
+-	mc13xxx_reg_write(mc13xxx, MC13892_REG_SETTING_1, val);
+-
+-	/* Configure VGEN3 and VCAM regulators to use external PNP */
+-	val = 0x208;
+-	mc13xxx_reg_write(mc13xxx, MC13892_REG_MODE_1, val);
+-
+-	udelay(200);
+-
+-	/* Enable VGEN3, VCAM, VAUDIO, VVIDEO, VSD regulators */
+-	val = 0x49249;
+-	mc13xxx_reg_write(mc13xxx, MC13892_REG_MODE_1, val);
+-
+-	udelay(200);
+-
+-	pr_info("initialized PMIC\n");
+-
+-	console_flush();
+-	imx51_init_lowlevel(800);
+-	clock_notifier_call_chain();
+-}
+-
+ static int imx51_babbage_init(void)
  {
--	struct imx_internal_bbu_handler *imx_handler =
--		container_of(handler, struct imx_internal_bbu_handler, handler);
- 	int ret;
+ 	if (!of_machine_is_compatible("fsl,imx51-babbage"))
+ 		return 0;
  
- 	ret = imx_bbu_check_prereq(data->devicefile, data);
-@@ -178,7 +169,9 @@ int imx_bbu_internal_v1_update(struct bbu_handler *handler, struct bbu_data *dat
+-	barebox_set_hostname("babbage");
++	imx51_babbage_power_init();
  
- 	pr_info("updating to %s\n", data->devicefile);
+-	mc13xxx_register_init_callback(babbage_power_init);
++	barebox_set_hostname("babbage");
  
--	ret = imx_bbu_write_device(imx_handler, data->devicefile, data, data->image, data->len);
-+	ret = imx_bbu_write_device(to_imx_internal_bbu_hander(handler),
-+				   data->devicefile, data, data->image,
-+				   data->len);
+ 	armlinux_set_architecture(MACH_TYPE_MX51_BABBAGE);
  
- 	return ret;
- }
-@@ -365,11 +358,12 @@ out:
-  */
- static int imx_bbu_internal_v2_update(struct bbu_handler *handler, struct bbu_data *data)
- {
--	struct imx_internal_bbu_handler *imx_handler =
--		container_of(handler, struct imx_internal_bbu_handler, handler);
-+	struct imx_internal_bbu_handler *imx_handler;
- 	int ret;
- 	const uint32_t *barker;
- 
-+	imx_handler = to_imx_internal_bbu_hander(handler);
+diff --git a/arch/arm/boards/freescale-mx51-babbage/power.c b/arch/arm/boards/freescale-mx51-babbage/power.c
+new file mode 100644
+index 000000000..6edc672a5
+--- /dev/null
++++ b/arch/arm/boards/freescale-mx51-babbage/power.c
+@@ -0,0 +1,120 @@
++#define pr_fmt(fmt) "babbage-power: " fmt
 +
- 	ret = imx_bbu_check_prereq(data->devicefile, data);
- 	if (ret)
- 		return ret;
-@@ -393,14 +387,15 @@ static int imx_bbu_internal_v2_update(struct bbu_handler *handler, struct bbu_da
- static int imx_bbu_internal_v2_mmcboot_update(struct bbu_handler *handler,
- 					      struct bbu_data *data)
- {
--	struct imx_internal_bbu_handler *imx_handler =
--		container_of(handler, struct imx_internal_bbu_handler, handler);
-+	struct imx_internal_bbu_handler *imx_handler;
- 	int ret;
- 	const uint32_t *barker;
- 	char *bootpartvar;
- 	const char *bootpart;
- 	char *devicefile;
- 
-+	imx_handler = to_imx_internal_bbu_hander(handler);
++#include <common.h>
++#include <init.h>
++#include <notifier.h>
++#include <mach/revision.h>
++#include <mach/imx5.h>
++#include <mfd/mc13xxx.h>
 +
- 	barker = data->image + imx_handler->flash_header_offset;
- 
- 	if (*barker != IVT_BARKER) {
-@@ -445,16 +440,15 @@ free_bootpartvar:
- 
- static int imx_bbu_external_update(struct bbu_handler *handler, struct bbu_data *data)
- {
--	struct imx_internal_bbu_handler *imx_handler =
--		container_of(handler, struct imx_internal_bbu_handler, handler);
- 	int ret;
- 
- 	ret = imx_bbu_check_prereq(data->devicefile, data);
- 	if (ret)
- 		return ret;
- 
--	return imx_bbu_write_device(imx_handler, data->devicefile, data,
--				    data->image, data->len);
-+	return imx_bbu_write_device(to_imx_internal_bbu_hander(handler),
-+				    data->devicefile, data, data->image,
-+				    data->len);
- }
- 
- static struct imx_internal_bbu_handler *__init_handler(const char *name, char *devicefile,
-diff --git a/arch/arm/mach-imx/include/mach/bbu.h b/arch/arm/mach-imx/include/mach/bbu.h
-index 04be8cea5..5c3349d98 100644
---- a/arch/arm/mach-imx/include/mach/bbu.h
-+++ b/arch/arm/mach-imx/include/mach/bbu.h
-@@ -4,6 +4,19 @@
- #include <bbu.h>
- #include <errno.h>
- 
-+struct imx_internal_bbu_handler {
-+	struct bbu_handler handler;
-+	unsigned long flash_header_offset;
-+	size_t device_size;
-+	unsigned long flags;
-+};
-+
-+static inline struct imx_internal_bbu_handler *
-+to_imx_internal_bbu_hander(struct bbu_handler *handler)
++static void babbage_power_init(struct mc13xxx *mc13xxx)
 +{
-+	return container_of(handler, struct imx_internal_bbu_handler, handler);
++	u32 val;
++
++	/* Write needed to Power Gate 2 register */
++	mc13xxx_reg_read(mc13xxx, MC13892_REG_POWER_MISC, &val);
++	val &= ~0x10000;
++	mc13xxx_reg_write(mc13xxx, MC13892_REG_POWER_MISC, val);
++
++	/* Write needed to update Charger 0 */
++	mc13xxx_reg_write(mc13xxx, MC13892_REG_CHARGE, 0x0023807F);
++
++	/* power up the system first */
++	mc13xxx_reg_write(mc13xxx, MC13892_REG_POWER_MISC, 0x00200000);
++
++	if (imx_silicon_revision() < IMX_CHIP_REV_3_0) {
++		/* Set core voltage to 1.1V */
++		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_0, &val);
++		val &= ~0x1f;
++		val |= 0x14;
++		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_0, val);
++
++		/* Setup VCC (SW2) to 1.25 */
++		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_1, &val);
++		val &= ~0x1f;
++		val |= 0x1a;
++		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_1, val);
++
++		/* Setup 1V2_DIG1 (SW3) to 1.25 */
++		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_2, &val);
++		val &= ~0x1f;
++		val |= 0x1a;
++		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_2, val);
++	} else {
++		/* Setup VCC (SW2) to 1.225 */
++		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_1, &val);
++		val &= ~0x1f;
++		val |= 0x19;
++		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_1, val);
++
++		/* Setup 1V2_DIG1 (SW3) to 1.2 */
++		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_2, &val);
++		val &= ~0x1f;
++		val |= 0x18;
++		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_2, val);
++	}
++
++	if (mc13xxx_revision(mc13xxx) < MC13892_REVISION_2_0) {
++		/* Set switchers in PWM mode for Atlas 2.0 and lower */
++		/* Setup the switcher mode for SW1 & SW2*/
++		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_4, &val);
++		val &= ~0x3c0f;
++		val |= 0x1405;
++		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_4, val);
++
++		/* Setup the switcher mode for SW3 & SW4 */
++		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_5, &val);
++		val &= ~0xf0f;
++		val |= 0x505;
++		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_5, val);
++	} else {
++		/* Set switchers in Auto in NORMAL mode & STANDBY mode
++		 * for Atlas 2.0a */
++		/* Setup the switcher mode for SW1 & SW2*/
++		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_4, &val);
++		val &= ~0x3c0f;
++		val |= 0x2008;
++		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_4, val);
++
++		/* Setup the switcher mode for SW3 & SW4 */
++		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_5, &val);
++		val &= ~0xf0f;
++		val |= 0x808;
++		mc13xxx_reg_write(mc13xxx, MC13892_REG_SW_5, val);
++	}
++
++	/* Set VDIG to 1.65V, VGEN3 to 1.8V, VCAM to 2.5V */
++	mc13xxx_reg_read(mc13xxx, MC13892_REG_SETTING_0, &val);
++	val &= ~0x34030;
++	val |= 0x10020;
++	mc13xxx_reg_write(mc13xxx, MC13892_REG_SETTING_0, val);
++
++	/* Set VVIDEO to 2.775V, VAUDIO to 3V, VSD to 3.15V */
++	mc13xxx_reg_read(mc13xxx, MC13892_REG_SETTING_1, &val);
++	val &= ~0x1FC;
++	val |= 0x1F4;
++	mc13xxx_reg_write(mc13xxx, MC13892_REG_SETTING_1, val);
++
++	/* Configure VGEN3 and VCAM regulators to use external PNP */
++	val = 0x208;
++	mc13xxx_reg_write(mc13xxx, MC13892_REG_MODE_1, val);
++
++	udelay(200);
++
++	/* Enable VGEN3, VCAM, VAUDIO, VVIDEO, VSD regulators */
++	val = 0x49249;
++	mc13xxx_reg_write(mc13xxx, MC13892_REG_MODE_1, val);
++
++	udelay(200);
++
++	pr_info("initialized PMIC\n");
++
++	console_flush();
++	imx51_init_lowlevel(800);
++	clock_notifier_call_chain();
 +}
 +
- struct imx_dcd_entry;
- struct imx_dcd_v2_entry;
++void imx51_babbage_power_init(void)
++{
++	mc13xxx_register_init_callback(babbage_power_init);
++}
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index a743bbfda..f0b10eeef 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -85,6 +85,15 @@ config RESET_IMX_SRC
+ 	def_bool y
+ 	depends on ARCH_IMX6 || ARCH_IMX50 || ARCH_IMX51 || ARCH_IMX53
  
++#
++# PMIC configuration found on i.MX51 Babbadge board
++#
++config MACH_FREESCALE_MX51_PDK_POWER
++        bool
++	select SPI
++	select DRIVER_SPI_IMX
++	select MFD_MC13XXX
++
+ comment "Freescale i.MX System-on-Chip"
+ 
+ config ARCH_IMX1
+@@ -256,9 +265,7 @@ config MACH_EMBEDSKY_E9
+ config MACH_FREESCALE_MX51_PDK
+ 	bool "Freescale i.MX51 PDK"
+ 	select ARCH_IMX51
+-	select SPI
+-	select DRIVER_SPI_IMX
+-	select MFD_MC13XXX
++	select MACH_FREESCALE_MX51_PDK_POWER
+ 
+ config MACH_CCMX53
+ 	bool "Digi ConnectCore i.MX53"
+diff --git a/arch/arm/mach-imx/include/mach/imx5.h b/arch/arm/mach-imx/include/mach/imx5.h
+index 595714129..dd5cfe99c 100644
+--- a/arch/arm/mach-imx/include/mach/imx5.h
++++ b/arch/arm/mach-imx/include/mach/imx5.h
+@@ -18,4 +18,6 @@ void imx5_setup_pll(void __iomem *base, int freq, u32 op, u32 mfd, u32 mfn);
+ #define imx5_setup_pll_400(base)	imx5_setup_pll((base),  400, (( 8 << 4) + ((2 - 1) << 0)), (3 - 1), 1)
+ #define imx5_setup_pll_216(base)	imx5_setup_pll((base),  216, (( 6 << 4) + ((3 - 1) << 0)), (4 - 1), 3)
+ 
++void imx51_babbage_power_init(void);
++
+ #endif /* __MACH_MX53_H */
 -- 
 2.17.1
 
