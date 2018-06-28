@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fYOlf-0000xf-OM
- for barebox@lists.infradead.org; Thu, 28 Jun 2018 04:42:53 +0000
-Received: by mail-pg0-x241.google.com with SMTP id n2-v6so1900119pgq.6
- for <barebox@lists.infradead.org>; Wed, 27 Jun 2018 21:42:41 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 27 Jun 2018 21:42:27 -0700
-Message-Id: <20180628044227.15049-2-andrew.smirnov@gmail.com>
+ id 1fYTVS-0007kX-U7
+ for barebox@lists.infradead.org; Thu, 28 Jun 2018 09:46:29 +0000
+Message-ID: <1530179171.22468.48.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 28 Jun 2018 11:46:11 +0200
 In-Reply-To: <20180628044227.15049-1-andrew.smirnov@gmail.com>
 References: <20180628044227.15049-1-andrew.smirnov@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,141 +17,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/2] ARM: rdu2: Fetch MAC address info from RAVE SP EEPROM
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH v2 1/2] nvmem: Introduce nvmem_cell_get_and_read()
+To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
 
-RDU2 stores MAC addresses for its Ethernet interfaces in main RAVE SP
-EEPROM. Add code to properly integrate it.
-
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- arch/arm/boards/zii-imx6q-rdu2/board.c | 57 ++++++++++++++++++++++++++
- arch/arm/dts/imx6qdl-zii-rdu2.dtsi     | 15 +++++++
- 2 files changed, 72 insertions(+)
-
-diff --git a/arch/arm/boards/zii-imx6q-rdu2/board.c b/arch/arm/boards/zii-imx6q-rdu2/board.c
-index 265f97e2f..f6c908c9f 100644
---- a/arch/arm/boards/zii-imx6q-rdu2/board.c
-+++ b/arch/arm/boards/zii-imx6q-rdu2/board.c
-@@ -19,6 +19,8 @@
- #include <init.h>
- #include <mach/bbu.h>
- #include <mach/imx6.h>
-+#include <net.h>
-+#include <linux/nvmem-consumer.h>
- 
- #define RDU2_DAC1_RESET	IMX_GPIO_NR(1, 0)
- #define RDU2_DAC2_RESET	IMX_GPIO_NR(1, 2)
-@@ -151,3 +153,58 @@ static int rdu2_devices_init(void)
- 	return 0;
- }
- device_initcall(rdu2_devices_init);
-+
-+static int rdu2_eth_register_ethaddr(struct device_node *np)
-+{
-+	u8 mac[ETH_ALEN];
-+	u8 *data;
-+	int i;
-+
-+	data = nvmem_cell_get_and_read(np, "mac-address", ETH_ALEN);
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
-+	/*
-+	 * EEPROM stores MAC address in reverse (to what we expect it
-+	 * to be) byte order.
-+	 */
-+	for (i = 0; i < ETH_ALEN; i++)
-+		mac[i] = data[ETH_ALEN - i - 1];
-+
-+	free(data);
-+
-+	of_eth_register_ethaddr(np, mac);
-+
-+	return 0;
-+}
-+
-+static int rdu2_ethernet_init(void)
-+{
-+	const char *aliases[] = { "ethernet0", "ethernet1" };
-+	struct device_node *np, *root;
-+	int i, ret;
-+
-+	if (!of_machine_is_compatible("zii,imx6q-zii-rdu2") &&
-+	    !of_machine_is_compatible("zii,imx6qp-zii-rdu2"))
-+		return 0;
-+
-+	root = of_get_root_node();
-+
-+	for (i = 0; i < ARRAY_SIZE(aliases); i++) {
-+		const char *alias = aliases[i];
-+
-+		np = of_find_node_by_alias(root, alias);
-+		if (!np) {
-+			pr_warn("Failed to find %s\n", alias);
-+			continue;
-+		}
-+
-+		ret = rdu2_eth_register_ethaddr(np);
-+		if (ret) {
-+			pr_warn("Failed to register MAC for %s\n", alias);
-+			continue;
-+		}
-+	}
-+
-+	return 0;
-+}
-+late_initcall(rdu2_ethernet_init);
-diff --git a/arch/arm/dts/imx6qdl-zii-rdu2.dtsi b/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
-index bb5321e62..68ee78002 100644
---- a/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
-+++ b/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
-@@ -85,6 +85,14 @@
- 			boot_source: boot-source@83 {
- 				reg = <0x83 1>;
- 			};
-+
-+			mac_address_0: mac-address@180 {
-+				reg = <0x180 6>;
-+			};
-+
-+			mac_address_1: mac-address@190 {
-+				reg = <0x190 6>;
-+			};
- 		};
- 
- 		backlight {
-@@ -181,6 +189,11 @@
- 	};
- };
- 
-+&fec {
-+	nvmem-cells = <&mac_address_0>;
-+	nvmem-cell-names = "mac-address";
-+};
-+
- &i2c2 {
- 	temp-sense@48 {
- 		barebox,sensor-name = "Temp Sensor 1";
-@@ -196,6 +209,8 @@
- 
- 		i210: i210@0 {
- 			reg = <0 0 0 0 0>;
-+			nvmem-cells = <&mac_address_1>;
-+			nvmem-cell-names = "mac-address";
- 		};
- 	};
- };
--- 
-2.17.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gTWl0dHdvY2gsIGRlbiAyNy4wNi4yMDE4LCAyMTo0MiAtMDcwMCBzY2hyaWViIEFuZHJleSBT
+bWlybm92Ogo+IEludHJvZHVjZSBudm1lbV9jZWxsX2dldF9hbmRfcmVhZCgpIHRoYXQgY29tYmlu
+ZXMgZ2V0dGluZyBhIE5WTUVNIGNlbGwKPiBieSBuYW1lIGFuZCByZWFkaW5nIGl0cyBjb250ZW50
+cy4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBBbmRyZXkgU21pcm5vdiA8YW5kcmV3LnNtaXJub3ZAZ21h
+aWwuY29tPgoKRm9yIHRoZSBzZXJpZXM6ClJldmlld2VkLWJ5OiBMdWNhcyBTdGFjaCA8bC5zdGFj
+aEBwZW5ndXRyb25peC5kZT4KCj4gLS0tCj4gCj4gQ2hhbmdlcyBzaW5jZSBbdjFdOgo+IAo+IMKg
+wqDCoMKgLSBBZGRlZCBtaXNzaW5nIG5ld2xpbmUgdG8gY29yZS5jCj4gCj4gW3YxXSBodHRwOi8v
+bGlzdHMuaW5mcmFkZWFkLm9yZy9waXBlcm1haWwvYmFyZWJveC8yMDE4LUp1bmUvMDMzODU3Lmh0
+bWwKPiAKPiDCoGRyaXZlcnMvbnZtZW0vY29yZS5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHwgMjMg
+KysrKysrKysrKysrKysrKysrKysrKysKPiDCoGluY2x1ZGUvbGludXgvbnZtZW0tY29uc3VtZXIu
+aCB8IDEwICsrKysrKysrKysKPiDCoDIgZmlsZXMgY2hhbmdlZCwgMzMgaW5zZXJ0aW9ucygrKQo+
+IAo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL252bWVtL2NvcmUuYyBiL2RyaXZlcnMvbnZtZW0vY29y
+ZS5jCj4gaW5kZXggNTNiOTM0YmIzLi5jMGY2MWY0NTMgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9u
+dm1lbS9jb3JlLmMKPiArKysgYi9kcml2ZXJzL252bWVtL2NvcmUuYwo+IEBAIC03NTAsMyArNzUw
+LDI2IEBAIGludCBudm1lbV9kZXZpY2Vfd3JpdGUoc3RydWN0IG52bWVtX2RldmljZSAqbnZtZW0s
+Cj4gPiDCoAlyZXR1cm4gYnl0ZXM7Cj4gwqB9Cj4gwqBFWFBPUlRfU1lNQk9MX0dQTChudm1lbV9k
+ZXZpY2Vfd3JpdGUpOwo+ICsKPiArdm9pZCAqbnZtZW1fY2VsbF9nZXRfYW5kX3JlYWQoc3RydWN0
+IGRldmljZV9ub2RlICpucCwgY29uc3QgY2hhciAqY2VsbF9uYW1lLAo+ID4gKwkJCcKgwqDCoMKg
+wqDCoHNpemVfdCBieXRlcykKPiArewo+ID4gKwlzdHJ1Y3QgbnZtZW1fY2VsbCAqY2VsbDsKPiA+
+ICsJdm9pZCAqdmFsdWU7Cj4gPiArCXNpemVfdCBsZW47Cj4gKwo+ID4gKwljZWxsID0gb2ZfbnZt
+ZW1fY2VsbF9nZXQobnAsIGNlbGxfbmFtZSk7Cj4gPiArCWlmIChJU19FUlIoY2VsbCkpCj4gPiAr
+CQlyZXR1cm4gY2VsbDsKPiArCj4gPiArCXZhbHVlID0gbnZtZW1fY2VsbF9yZWFkKGNlbGwsICZs
+ZW4pOwo+ID4gKwlpZiAoIUlTX0VSUih2YWx1ZSkgJiYgbGVuICE9IGJ5dGVzKSB7Cj4gPiArCQlr
+ZnJlZSh2YWx1ZSk7Cj4gPiArCQl2YWx1ZSA9IEVSUl9QVFIoLUVJTlZBTCk7Cj4gPiArCX0KPiAr
+Cj4gPiArCW52bWVtX2NlbGxfcHV0KGNlbGwpOwo+ICsKPiA+ICsJcmV0dXJuIHZhbHVlOwo+ICt9
+Cj4gK0VYUE9SVF9TWU1CT0xfR1BMKG52bWVtX2NlbGxfZ2V0X2FuZF9yZWFkKTsKPiBkaWZmIC0t
+Z2l0IGEvaW5jbHVkZS9saW51eC9udm1lbS1jb25zdW1lci5oIGIvaW5jbHVkZS9saW51eC9udm1l
+bS1jb25zdW1lci5oCj4gaW5kZXggNjA2Y2FkYjQ5Li4wZWMyZjA1YjkgMTAwNjQ0Cj4gLS0tIGEv
+aW5jbHVkZS9saW51eC9udm1lbS1jb25zdW1lci5oCj4gKysrIGIvaW5jbHVkZS9saW51eC9udm1l
+bS1jb25zdW1lci5oCj4gQEAgLTMyLDYgKzMyLDkgQEAgc3RydWN0IG52bWVtX2NlbGxfaW5mbyB7
+Cj4gwqBzdHJ1Y3QgbnZtZW1fY2VsbCAqbnZtZW1fY2VsbF9nZXQoc3RydWN0IGRldmljZV9kICpk
+ZXYsIGNvbnN0IGNoYXIgKm5hbWUpOwo+IMKgdm9pZCBudm1lbV9jZWxsX3B1dChzdHJ1Y3QgbnZt
+ZW1fY2VsbCAqY2VsbCk7Cj4gwqB2b2lkICpudm1lbV9jZWxsX3JlYWQoc3RydWN0IG52bWVtX2Nl
+bGwgKmNlbGwsIHNpemVfdCAqbGVuKTsKPiArdm9pZCAqbnZtZW1fY2VsbF9nZXRfYW5kX3JlYWQo
+c3RydWN0IGRldmljZV9ub2RlICpucCwgY29uc3QgY2hhciAqY2VsbF9uYW1lLAo+ID4gKwkJCcKg
+wqDCoMKgwqDCoHNpemVfdCBieXRlcyk7Cj4gKwo+IMKgaW50IG52bWVtX2NlbGxfd3JpdGUoc3Ry
+dWN0IG52bWVtX2NlbGwgKmNlbGwsIHZvaWQgKmJ1Ziwgc2l6ZV90IGxlbik7Cj4gwqAKPiDCoC8q
+IGRpcmVjdCBudm1lbSBkZXZpY2UgcmVhZC93cml0ZSBpbnRlcmZhY2UgKi8KPiBAQCAtNTUsNiAr
+NTgsMTMgQEAgc3RhdGljIGlubGluZSBjaGFyICpudm1lbV9jZWxsX3JlYWQoc3RydWN0IG52bWVt
+X2NlbGwgKmNlbGwsIHNpemVfdCAqbGVuKQo+ID4gwqAJcmV0dXJuIEVSUl9QVFIoLUVOT1NZUyk7
+Cj4gwqB9Cj4gwqAKPiArc3RhdGljIGlubGluZSB2b2lkICpudm1lbV9jZWxsX2dldF9hbmRfcmVh
+ZChzdHJ1Y3QgZGV2aWNlX25vZGUgKm5wLAo+ID4gKwkJCQkJwqDCoMKgwqBjb25zdCBjaGFyICpj
+ZWxsX25hbWUsCj4gPiArCQkJCQnCoMKgwqDCoHNpemVfdCBieXRlcykKPiArewo+ID4gKwlyZXR1
+cm4gRVJSX1BUUigtRU5PU1lTKTsKPiArfQo+ICsKPiDCoHN0YXRpYyBpbmxpbmUgaW50IG52bWVt
+X2NlbGxfd3JpdGUoc3RydWN0IG52bWVtX2NlbGwgKmNlbGwsCj4gPiDCoAkJCQnCoMKgwqDCoGNv
+bnN0IGNoYXIgKmJ1Ziwgc2l6ZV90IGxlbikKPiDCoHsKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2JhcmVib3gK
