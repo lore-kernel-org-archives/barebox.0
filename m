@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fYRZy-00044u-4i
+ id 1fYRZy-00049K-4B
  for barebox@lists.infradead.org; Thu, 28 Jun 2018 07:44:05 +0000
-Received: by mail-lf0-x241.google.com with SMTP id u202-v6so3453907lff.9
- for <barebox@lists.infradead.org>; Thu, 28 Jun 2018 00:42:47 -0700 (PDT)
+Received: by mail-lf0-x241.google.com with SMTP id i15-v6so3465323lfc.2
+ for <barebox@lists.infradead.org>; Thu, 28 Jun 2018 00:42:52 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 28 Jun 2018 10:39:41 +0300
-Message-Id: <20180628073953.15384-1-antonynpavlov@gmail.com>
+Date: Thu, 28 Jun 2018 10:39:46 +0300
+Message-Id: <20180628073953.15384-6-antonynpavlov@gmail.com>
+In-Reply-To: <20180628073953.15384-1-antonynpavlov@gmail.com>
+References: <20180628073953.15384-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,176 +23,210 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 00/12] Add initial RISC-V architecture support
+Subject: [PATCH v2 05/12] RISC-V: add low-level debug macros for ns16550
 To: barebox@lists.infradead.org
 
-This patchseries adds initial RISC-V architecture support for barebox.
+This patch adds macros for ns16550 port initialization
+and single char output. The macros can be used in
+MIPS asm pbl code.
 
-See Documentation/boards/riscv.rst for instructions.
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/riscv/include/asm/debug_ll_ns16550.h | 186 ++++++++++++++++++++++
+ 1 file changed, 186 insertions(+)
 
-You can obtain this patchseries from github:
-
-    $ git clone -b 20180628.riscv https://github.com/frantony/barebox
-
-Changes since PATCH v1 (20170415)
-(http://lists.infradead.org/pipermail/barebox/2018-April/032647.html)
-
-    * drop skeleton.dtsi;
-    * drop SPI GPIO bindings for erizo_generic;
-    * improve erizo-nmon-image;
-    * generic linker script is dropped;
-    * use generic GCC library routines from lib.
-
-Changes since RFC v4 (20170927)
-(http://lists.infradead.org/pipermail/barebox/2017-September/031226.html)
-
-    * drop 64-bit support;
-    * sync with RISC-V linux;
-    * RISC-V in barebox now is little endian only;
-    * fix according to notes by Oleksij Rempel.
-
-Changes since RFC v3 (20161212)
-(http://lists.infradead.org/pipermail/barebox/2016-December/028716.html)
-
-    * drop SiFive support, add support for custom Erizo SoC;
-    * barebox runs on real hardware (e.g. DE0-Nano FPGA board,
-      see https://github.com/miet-riscv-workgroup/rv32-simple-soc for
-details);
-    * introduce NMON for RISC-V;
-    * add relocator to start.S.
-
-Changes since RFC v2 (20161113)
-(http://lists.infradead.org/pipermail/barebox/2016-November/028533.html):
-
-    * add RV32 support.
-
-Changes since RFC v1 (20161013)
-(http://lists.infradead.org/pipermail/barebox/2016-October/028309.html):
-
-    * drop spike pk support;
-    * add qemu-sifive board support;
-    * add Documentation/boards/riscv.rst;
-    * fix guard macro names.
-
-Antony Pavlov (12):
-  lib: Add shared copies of some GCC library routines
-  MIPS: Use generic GCC library routines from lib/
-  Add initial RISC-V architecture support
-  RISC-V: add Erizo SoC support
-  RISC-V: add low-level debug macros for ns16550
-  RISC-V: add nmon nano-monitor
-  RISC-V: erizo: add DEBUG_LL support
-  RISC-V: erizo: enable nmon
-  RISC-V: erizo: add nmon image creation
-  RISC-V: add erizo_generic_defconfig
-  scripts: add nmon-loader
-  Documentation: add RISC-V docs
-
- Documentation/boards/riscv.rst                |  91 +++++++
- arch/mips/Kconfig                             |   3 +
- arch/mips/lib/Makefile                        |   5 -
- arch/mips/lib/ashldi3.c                       |  28 ---
- arch/mips/lib/ashrdi3.c                       |  30 ---
- arch/mips/lib/libgcc.h                        |  29 ---
- arch/mips/lib/lshrdi3.c                       |  28 ---
- arch/riscv/Kconfig                            |  99 ++++++++
- arch/riscv/Makefile                           |  86 +++++++
- arch/riscv/boards/erizo-generic/.gitignore    |   1 +
- arch/riscv/boards/erizo-generic/Makefile      |   1 +
- arch/riscv/boards/erizo-generic/board.c       |  28 +++
- arch/riscv/boot/Makefile                      |   2 +
- arch/riscv/boot/main_entry.c                  |  40 +++
- arch/riscv/boot/start.S                       |  71 ++++++
- arch/riscv/configs/erizo_generic_defconfig    |  53 ++++
- arch/riscv/dts/.gitignore                     |   1 +
- arch/riscv/dts/Makefile                       |   9 +
- arch/riscv/dts/erizo.dtsi                     |  44 ++++
- arch/riscv/dts/erizo_generic.dts              |  12 +
- arch/riscv/include/asm/barebox.h              |   1 +
- arch/riscv/include/asm/bitops.h               |  35 +++
- arch/riscv/include/asm/bitsperlong.h          |  10 +
- arch/riscv/include/asm/byteorder.h            |   6 +
- arch/riscv/include/asm/common.h               |   6 +
- arch/riscv/include/asm/debug_ll_ns16550.h     | 186 ++++++++++++++
- arch/riscv/include/asm/elf.h                  |  11 +
- arch/riscv/include/asm/io.h                   |   8 +
- arch/riscv/include/asm/mmu.h                  |   6 +
- arch/riscv/include/asm/posix_types.h          |   1 +
- arch/riscv/include/asm/riscv_nmon.h           | 238 ++++++++++++++++++
- arch/riscv/include/asm/sections.h             |   1 +
- arch/riscv/include/asm/string.h               |   1 +
- arch/riscv/include/asm/swab.h                 |   6 +
- arch/riscv/include/asm/types.h                |  60 +++++
- arch/riscv/include/asm/unaligned.h            |  19 ++
- arch/riscv/lib/.gitignore                     |   1 +
- arch/riscv/lib/Makefile                       |   5 +
- arch/riscv/lib/asm-offsets.c                  |  12 +
- arch/riscv/lib/barebox.lds.S                  |  89 +++++++
- arch/riscv/lib/dtb.c                          |  41 +++
- arch/riscv/lib/riscv_timer.c                  |  67 +++++
- arch/riscv/mach-erizo/Kconfig                 |  11 +
- arch/riscv/mach-erizo/Makefile                |   3 +
- arch/riscv/mach-erizo/include/mach/debug_ll.h |  37 +++
- drivers/of/Kconfig                            |   2 +-
- include/lib/libgcc.h                          |  47 ++++
- lib/Kconfig                                   |   9 +
- lib/Makefile                                  |   7 +
- lib/ashldi3.c                                 |  44 ++++
- lib/ashrdi3.c                                 |  46 ++++
- lib/lshrdi3.c                                 |  45 ++++
- scripts/erizo-nmon-image                      |  10 +
- scripts/nmon-loader                           |  31 +++
- 54 files changed, 1642 insertions(+), 121 deletions(-)
- create mode 100644 Documentation/boards/riscv.rst
- delete mode 100644 arch/mips/lib/ashldi3.c
- delete mode 100644 arch/mips/lib/ashrdi3.c
- delete mode 100644 arch/mips/lib/libgcc.h
- delete mode 100644 arch/mips/lib/lshrdi3.c
- create mode 100644 arch/riscv/Kconfig
- create mode 100644 arch/riscv/Makefile
- create mode 100644 arch/riscv/boards/erizo-generic/.gitignore
- create mode 100644 arch/riscv/boards/erizo-generic/Makefile
- create mode 100644 arch/riscv/boards/erizo-generic/board.c
- create mode 100644 arch/riscv/boot/Makefile
- create mode 100644 arch/riscv/boot/main_entry.c
- create mode 100644 arch/riscv/boot/start.S
- create mode 100644 arch/riscv/configs/erizo_generic_defconfig
- create mode 100644 arch/riscv/dts/.gitignore
- create mode 100644 arch/riscv/dts/Makefile
- create mode 100644 arch/riscv/dts/erizo.dtsi
- create mode 100644 arch/riscv/dts/erizo_generic.dts
- create mode 100644 arch/riscv/include/asm/barebox.h
- create mode 100644 arch/riscv/include/asm/bitops.h
- create mode 100644 arch/riscv/include/asm/bitsperlong.h
- create mode 100644 arch/riscv/include/asm/byteorder.h
- create mode 100644 arch/riscv/include/asm/common.h
- create mode 100644 arch/riscv/include/asm/debug_ll_ns16550.h
- create mode 100644 arch/riscv/include/asm/elf.h
- create mode 100644 arch/riscv/include/asm/io.h
- create mode 100644 arch/riscv/include/asm/mmu.h
- create mode 100644 arch/riscv/include/asm/posix_types.h
- create mode 100644 arch/riscv/include/asm/riscv_nmon.h
- create mode 100644 arch/riscv/include/asm/sections.h
- create mode 100644 arch/riscv/include/asm/string.h
- create mode 100644 arch/riscv/include/asm/swab.h
- create mode 100644 arch/riscv/include/asm/types.h
- create mode 100644 arch/riscv/include/asm/unaligned.h
- create mode 100644 arch/riscv/lib/.gitignore
- create mode 100644 arch/riscv/lib/Makefile
- create mode 100644 arch/riscv/lib/asm-offsets.c
- create mode 100644 arch/riscv/lib/barebox.lds.S
- create mode 100644 arch/riscv/lib/dtb.c
- create mode 100644 arch/riscv/lib/riscv_timer.c
- create mode 100644 arch/riscv/mach-erizo/Kconfig
- create mode 100644 arch/riscv/mach-erizo/Makefile
- create mode 100644 arch/riscv/mach-erizo/include/mach/debug_ll.h
- create mode 100644 include/lib/libgcc.h
- create mode 100644 lib/ashldi3.c
- create mode 100644 lib/ashrdi3.c
- create mode 100644 lib/lshrdi3.c
- create mode 100755 scripts/erizo-nmon-image
- create mode 100755 scripts/nmon-loader
-
+diff --git a/arch/riscv/include/asm/debug_ll_ns16550.h b/arch/riscv/include/asm/debug_ll_ns16550.h
+new file mode 100644
+index 0000000000..6929453b1e
+--- /dev/null
++++ b/arch/riscv/include/asm/debug_ll_ns16550.h
+@@ -0,0 +1,186 @@
++/*
++ * Copyright (C) 2016, 2017 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++/** @file
++ *  This file contains declaration for early output support
++ */
++#ifndef __INCLUDE_RISCV_ASM_DEBUG_LL_NS16550_H__
++#define __INCLUDE_RISCV_ASM_DEBUG_LL_NS16550_H__
++
++#include <linux/kconfig.h>
++
++#ifdef CONFIG_DEBUG_LL
++
++#ifndef DEBUG_LL_UART_ADDR
++#error DEBUG_LL_UART_ADDR is undefined!
++#endif
++
++#ifndef DEBUG_LL_UART_SHIFT
++#error DEBUG_LL_UART_SHIFT is undefined!
++#endif
++
++#ifndef DEBUG_LL_UART_DIVISOR
++#error DEBUG_LL_UART_DIVISOR is undefined!
++#endif
++
++#endif /* CONFIG_DEBUG_LL */
++
++#define UART_THR	(0x0 << DEBUG_LL_UART_SHIFT)
++#define UART_RBR	(0x0 << DEBUG_LL_UART_SHIFT)
++#define UART_DLL	(0x0 << DEBUG_LL_UART_SHIFT)
++#define UART_DLM	(0x1 << DEBUG_LL_UART_SHIFT)
++#define UART_LCR	(0x3 << DEBUG_LL_UART_SHIFT)
++#define UART_LSR	(0x5 << DEBUG_LL_UART_SHIFT)
++
++#define UART_LCR_W	0x07	/* Set UART to 8,N,2 & DLAB = 0 */
++#define UART_LCR_DLAB	0x87	/* Set UART to 8,N,2 & DLAB = 1 */
++
++#define UART_LSR_DR	0x01    /* UART received data present */
++#define UART_LSR_THRE	0x20	/* Xmit holding register empty */
++
++#if defined(DEBUG_LL_UART_IOSIZE32)
++#define UART_REG_L	lw
++#define UART_REG_S	sw
++#elif defined(DEBUG_LL_UART_IOSIZE8)
++#define UART_REG_L	lbu
++#define UART_REG_S	sb
++#else
++#error "Please define DEBUG_LL_UART_IOSIZE{8,32}"
++#endif
++
++#ifndef __ASSEMBLY__
++/*
++ * C macros
++ */
++
++#include <asm/io.h>
++
++static inline void PUTC_LL(char ch)
++{
++#ifdef CONFIG_DEBUG_LL
++	while (!(__raw_readl((u8 *)DEBUG_LL_UART_ADDR + UART_LSR) & UART_LSR_THRE))
++		;
++	__raw_writel(ch, (u8 *)DEBUG_LL_UART_ADDR + UART_THR);
++#endif /* CONFIG_DEBUG_LL */
++}
++
++static inline void debug_ll_ns16550_init(void)
++{
++#ifdef CONFIG_DEBUG_LL
++	__raw_writel(UART_LCR_DLAB, (u8 *)DEBUG_LL_UART_ADDR + UART_LCR);
++	__raw_writel(DEBUG_LL_UART_DIVISOR & 0xff, (u8 *)DEBUG_LL_UART_ADDR + UART_DLL);
++	__raw_writel((DEBUG_LL_UART_DIVISOR >> 8) & 0xff, (u8 *)DEBUG_LL_UART_ADDR + UART_DLM);
++	__raw_writel(UART_LCR_W, (u8 *)DEBUG_LL_UART_ADDR + UART_LCR);
++#endif /* CONFIG_DEBUG_LL */
++}
++#else /* __ASSEMBLY__ */
++/*
++ * Macros for use in assembly language code
++ */
++
++.macro	debug_ll_ns16550_init
++#ifdef CONFIG_DEBUG_LL
++	li	t0, DEBUG_LL_UART_ADDR
++
++	li	t1, UART_LCR_DLAB		/* DLAB on */
++	UART_REG_S	t1, UART_LCR(t0)		/* Write it out */
++
++	li	t1, DEBUG_LL_UART_DIVISOR
++	UART_REG_S	t1, UART_DLL(t0)		/* write low order byte */
++	srl	t1, t1, 8
++	UART_REG_S	t1, UART_DLM(t0)		/* write high order byte */
++
++	li	t1, UART_LCR_W			/* DLAB off */
++	UART_REG_S	t1, UART_LCR(t0)		/* Write it out */
++#endif /* CONFIG_DEBUG_LL */
++.endm
++
++/*
++ * output a character in a0
++ */
++.macro	debug_ll_outc_a0
++#ifdef CONFIG_DEBUG_LL
++
++	li	t0, DEBUG_LL_UART_ADDR
++
++201:
++	UART_REG_L	t1, UART_LSR(t0)	/* get line status */
++	andi	t1, t1, UART_LSR_THRE	/* check for transmitter empty */
++	beqz	t1, 201b			/* try again */
++
++	UART_REG_S	a0, UART_THR(t0)	/* write the character */
++
++#endif /* CONFIG_DEBUG_LL */
++.endm
++
++/*
++ * output a character
++ */
++.macro	debug_ll_outc chr
++#ifdef CONFIG_DEBUG_LL
++	li	a0, \chr
++	debug_ll_outc_a0
++#endif /* CONFIG_DEBUG_LL */
++.endm
++
++/*
++ * output CR + NL
++ */
++.macro	debug_ll_ns16550_outnl
++#ifdef CONFIG_DEBUG_LL
++	debug_ll_outc '\r'
++	debug_ll_outc '\n'
++#endif /* CONFIG_DEBUG_LL */
++.endm
++
++/*
++ * check character in input buffer
++ * return value:
++ *  v0 = 0   no character in input buffer
++ *  v0 != 0  character in input buffer
++ */
++.macro	debug_ll_tstc
++#ifdef CONFIG_DEBUG_LL
++	li      t0, DEBUG_LL_UART_ADDR
++
++	/* get line status and check for data present */
++	UART_REG_L	s0, UART_LSR(t0)
++	andi	s0, s0, UART_LSR_DR
++
++#endif /* CONFIG_DEBUG_LL */
++.endm
++
++/*
++ * get character to v0
++ */
++.macro	debug_ll_getc
++#ifdef CONFIG_DEBUG_LL
++
++204:
++	debug_ll_tstc
++
++	/* try again */
++	beqz	s0, 204b
++
++	/* read a character */
++	UART_REG_L	s0, UART_RBR(t0)
++
++#endif /* CONFIG_DEBUG_LL */
++.endm
++#endif /* __ASSEMBLY__ */
++
++#endif /* __INCLUDE_RISCV_ASM_DEBUG_LL_NS16550_H__ */
 -- 
 2.18.0
 
