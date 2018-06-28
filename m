@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x232.google.com ([2607:f8b0:400e:c00::232])
+Received: from mail-pg0-x241.google.com ([2607:f8b0:400e:c05::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fYOle-0000xe-P5
- for barebox@lists.infradead.org; Thu, 28 Jun 2018 04:42:52 +0000
-Received: by mail-pf0-x232.google.com with SMTP id j17-v6so1999089pfn.5
- for <barebox@lists.infradead.org>; Wed, 27 Jun 2018 21:42:40 -0700 (PDT)
+ id 1fYOlf-0000xf-OM
+ for barebox@lists.infradead.org; Thu, 28 Jun 2018 04:42:53 +0000
+Received: by mail-pg0-x241.google.com with SMTP id n2-v6so1900119pgq.6
+ for <barebox@lists.infradead.org>; Wed, 27 Jun 2018 21:42:41 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 27 Jun 2018 21:42:26 -0700
-Message-Id: <20180628044227.15049-1-andrew.smirnov@gmail.com>
+Date: Wed, 27 Jun 2018 21:42:27 -0700
+Message-Id: <20180628044227.15049-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20180628044227.15049-1-andrew.smirnov@gmail.com>
+References: <20180628044227.15049-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,85 +23,131 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/2] nvmem: Introduce nvmem_cell_get_and_read()
+Subject: [PATCH v2 2/2] ARM: rdu2: Fetch MAC address info from RAVE SP EEPROM
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Introduce nvmem_cell_get_and_read() that combines getting a NVMEM cell
-by name and reading its contents.
+RDU2 stores MAC addresses for its Ethernet interfaces in main RAVE SP
+EEPROM. Add code to properly integrate it.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
+ arch/arm/boards/zii-imx6q-rdu2/board.c | 57 ++++++++++++++++++++++++++
+ arch/arm/dts/imx6qdl-zii-rdu2.dtsi     | 15 +++++++
+ 2 files changed, 72 insertions(+)
 
-Changes since [v1]:
-
-    - Added missing newline to core.c
-
-[v1] http://lists.infradead.org/pipermail/barebox/2018-June/033857.html
-
- drivers/nvmem/core.c           | 23 +++++++++++++++++++++++
- include/linux/nvmem-consumer.h | 10 ++++++++++
- 2 files changed, 33 insertions(+)
-
-diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index 53b934bb3..c0f61f453 100644
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -750,3 +750,26 @@ int nvmem_device_write(struct nvmem_device *nvmem,
- 	return bytes;
+diff --git a/arch/arm/boards/zii-imx6q-rdu2/board.c b/arch/arm/boards/zii-imx6q-rdu2/board.c
+index 265f97e2f..f6c908c9f 100644
+--- a/arch/arm/boards/zii-imx6q-rdu2/board.c
++++ b/arch/arm/boards/zii-imx6q-rdu2/board.c
+@@ -19,6 +19,8 @@
+ #include <init.h>
+ #include <mach/bbu.h>
+ #include <mach/imx6.h>
++#include <net.h>
++#include <linux/nvmem-consumer.h>
+ 
+ #define RDU2_DAC1_RESET	IMX_GPIO_NR(1, 0)
+ #define RDU2_DAC2_RESET	IMX_GPIO_NR(1, 2)
+@@ -151,3 +153,58 @@ static int rdu2_devices_init(void)
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(nvmem_device_write);
+ device_initcall(rdu2_devices_init);
 +
-+void *nvmem_cell_get_and_read(struct device_node *np, const char *cell_name,
-+			      size_t bytes)
++static int rdu2_eth_register_ethaddr(struct device_node *np)
 +{
-+	struct nvmem_cell *cell;
-+	void *value;
-+	size_t len;
++	u8 mac[ETH_ALEN];
++	u8 *data;
++	int i;
 +
-+	cell = of_nvmem_cell_get(np, cell_name);
-+	if (IS_ERR(cell))
-+		return cell;
++	data = nvmem_cell_get_and_read(np, "mac-address", ETH_ALEN);
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++	/*
++	 * EEPROM stores MAC address in reverse (to what we expect it
++	 * to be) byte order.
++	 */
++	for (i = 0; i < ETH_ALEN; i++)
++		mac[i] = data[ETH_ALEN - i - 1];
 +
-+	value = nvmem_cell_read(cell, &len);
-+	if (!IS_ERR(value) && len != bytes) {
-+		kfree(value);
-+		value = ERR_PTR(-EINVAL);
++	free(data);
++
++	of_eth_register_ethaddr(np, mac);
++
++	return 0;
++}
++
++static int rdu2_ethernet_init(void)
++{
++	const char *aliases[] = { "ethernet0", "ethernet1" };
++	struct device_node *np, *root;
++	int i, ret;
++
++	if (!of_machine_is_compatible("zii,imx6q-zii-rdu2") &&
++	    !of_machine_is_compatible("zii,imx6qp-zii-rdu2"))
++		return 0;
++
++	root = of_get_root_node();
++
++	for (i = 0; i < ARRAY_SIZE(aliases); i++) {
++		const char *alias = aliases[i];
++
++		np = of_find_node_by_alias(root, alias);
++		if (!np) {
++			pr_warn("Failed to find %s\n", alias);
++			continue;
++		}
++
++		ret = rdu2_eth_register_ethaddr(np);
++		if (ret) {
++			pr_warn("Failed to register MAC for %s\n", alias);
++			continue;
++		}
 +	}
 +
-+	nvmem_cell_put(cell);
-+
-+	return value;
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(nvmem_cell_get_and_read);
-diff --git a/include/linux/nvmem-consumer.h b/include/linux/nvmem-consumer.h
-index 606cadb49..0ec2f05b9 100644
---- a/include/linux/nvmem-consumer.h
-+++ b/include/linux/nvmem-consumer.h
-@@ -32,6 +32,9 @@ struct nvmem_cell_info {
- struct nvmem_cell *nvmem_cell_get(struct device_d *dev, const char *name);
- void nvmem_cell_put(struct nvmem_cell *cell);
- void *nvmem_cell_read(struct nvmem_cell *cell, size_t *len);
-+void *nvmem_cell_get_and_read(struct device_node *np, const char *cell_name,
-+			      size_t bytes);
++late_initcall(rdu2_ethernet_init);
+diff --git a/arch/arm/dts/imx6qdl-zii-rdu2.dtsi b/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
+index bb5321e62..68ee78002 100644
+--- a/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
++++ b/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
+@@ -85,6 +85,14 @@
+ 			boot_source: boot-source@83 {
+ 				reg = <0x83 1>;
+ 			};
 +
- int nvmem_cell_write(struct nvmem_cell *cell, void *buf, size_t len);
- 
- /* direct nvmem device read/write interface */
-@@ -55,6 +58,13 @@ static inline char *nvmem_cell_read(struct nvmem_cell *cell, size_t *len)
- 	return ERR_PTR(-ENOSYS);
- }
- 
-+static inline void *nvmem_cell_get_and_read(struct device_node *np,
-+					    const char *cell_name,
-+					    size_t bytes)
-+{
-+	return ERR_PTR(-ENOSYS);
-+}
++			mac_address_0: mac-address@180 {
++				reg = <0x180 6>;
++			};
 +
- static inline int nvmem_cell_write(struct nvmem_cell *cell,
- 				    const char *buf, size_t len)
- {
++			mac_address_1: mac-address@190 {
++				reg = <0x190 6>;
++			};
+ 		};
+ 
+ 		backlight {
+@@ -181,6 +189,11 @@
+ 	};
+ };
+ 
++&fec {
++	nvmem-cells = <&mac_address_0>;
++	nvmem-cell-names = "mac-address";
++};
++
+ &i2c2 {
+ 	temp-sense@48 {
+ 		barebox,sensor-name = "Temp Sensor 1";
+@@ -196,6 +209,8 @@
+ 
+ 		i210: i210@0 {
+ 			reg = <0 0 0 0 0>;
++			nvmem-cells = <&mac_address_1>;
++			nvmem-cell-names = "mac-address";
+ 		};
+ 	};
+ };
 -- 
 2.17.1
 
