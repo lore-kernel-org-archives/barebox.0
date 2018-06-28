@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x22d.google.com ([2607:f8b0:400e:c01::22d])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fYOxX-0006lp-9V
- for barebox@lists.infradead.org; Thu, 28 Jun 2018 04:55:08 +0000
-Received: by mail-pl0-x22d.google.com with SMTP id c41-v6so2138968plj.10
- for <barebox@lists.infradead.org>; Wed, 27 Jun 2018 21:54:57 -0700 (PDT)
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fYOxZ-0000qi-RW
+ for barebox@lists.infradead.org; Thu, 28 Jun 2018 04:55:10 +0000
+Received: by mail-pf0-x243.google.com with SMTP id h20-v6so85751pfn.4
+ for <barebox@lists.infradead.org>; Wed, 27 Jun 2018 21:54:59 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 27 Jun 2018 21:54:33 -0700
-Message-Id: <20180628045436.16710-8-andrew.smirnov@gmail.com>
+Date: Wed, 27 Jun 2018 21:54:35 -0700
+Message-Id: <20180628045436.16710-10-andrew.smirnov@gmail.com>
 In-Reply-To: <20180628045436.16710-1-andrew.smirnov@gmail.com>
 References: <20180628045436.16710-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,67 +23,134 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 07/10] filtype: Add code to detect i.MX image v1
+Subject: [PATCH v4 09/10] ARM: i.MX: bbu: Make struct imx_internal_bbu_handler
+ public
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Make struct imx_internal_bbu_handler public, so it would be possible
+to access some of its parameters in board specific code.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/filetype.c  | 8 ++++++++
- include/filetype.h | 1 +
- 2 files changed, 9 insertions(+)
+ arch/arm/mach-imx/imx-bbu-internal.c | 30 +++++++++++-----------------
+ arch/arm/mach-imx/include/mach/bbu.h | 13 ++++++++++++
+ 2 files changed, 25 insertions(+), 18 deletions(-)
 
-diff --git a/common/filetype.c b/common/filetype.c
-index c5f2384a6..cebf4d311 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -29,6 +29,9 @@
- #include <image-sparse.h>
- #include <elf.h>
+diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+index 8c44d601d..1dde65a0c 100644
+--- a/arch/arm/mach-imx/imx-bbu-internal.c
++++ b/arch/arm/mach-imx/imx-bbu-internal.c
+@@ -38,13 +38,6 @@
+ #define IMX_INTERNAL_FLAG_KEEP_DOSPART	(1 << 1)
+ #define IMX_INTERNAL_FLAG_ERASE		(1 << 2)
  
-+#include <../mach-imx/include/mach/imx-header.h>
+-struct imx_internal_bbu_handler {
+-	struct bbu_handler handler;
+-	unsigned long flash_header_offset;
+-	size_t device_size;
+-	unsigned long flags;
+-};
+-
+ /*
+  * Actually write an image to the target device, eventually keeping a
+  * DOS partition table on the device
+@@ -168,8 +161,6 @@ static int imx_bbu_check_prereq(const char *devicefile, struct bbu_data *data)
+  */
+ int imx_bbu_internal_v1_update(struct bbu_handler *handler, struct bbu_data *data)
+ {
+-	struct imx_internal_bbu_handler *imx_handler =
+-		container_of(handler, struct imx_internal_bbu_handler, handler);
+ 	int ret;
+ 
+ 	ret = imx_bbu_check_prereq(data->devicefile, data);
+@@ -178,7 +169,9 @@ int imx_bbu_internal_v1_update(struct bbu_handler *handler, struct bbu_data *dat
+ 
+ 	pr_info("updating to %s\n", data->devicefile);
+ 
+-	ret = imx_bbu_write_device(imx_handler, data->devicefile, data, data->image, data->len);
++	ret = imx_bbu_write_device(to_imx_internal_bbu_hander(handler),
++				   data->devicefile, data, data->image,
++				   data->len);
+ 
+ 	return ret;
+ }
+@@ -365,11 +358,12 @@ out:
+  */
+ static int imx_bbu_internal_v2_update(struct bbu_handler *handler, struct bbu_data *data)
+ {
+-	struct imx_internal_bbu_handler *imx_handler =
+-		container_of(handler, struct imx_internal_bbu_handler, handler);
++	struct imx_internal_bbu_handler *imx_handler;
+ 	int ret;
+ 	const uint32_t *barker;
+ 
++	imx_handler = to_imx_internal_bbu_hander(handler);
 +
+ 	ret = imx_bbu_check_prereq(data->devicefile, data);
+ 	if (ret)
+ 		return ret;
+@@ -393,14 +387,15 @@ static int imx_bbu_internal_v2_update(struct bbu_handler *handler, struct bbu_da
+ static int imx_bbu_internal_v2_mmcboot_update(struct bbu_handler *handler,
+ 					      struct bbu_data *data)
+ {
+-	struct imx_internal_bbu_handler *imx_handler =
+-		container_of(handler, struct imx_internal_bbu_handler, handler);
++	struct imx_internal_bbu_handler *imx_handler;
+ 	int ret;
+ 	const uint32_t *barker;
+ 	char *bootpartvar;
+ 	const char *bootpart;
+ 	char *devicefile;
+ 
++	imx_handler = to_imx_internal_bbu_hander(handler);
 +
- struct filetype_str {
- 	const char *name;	/* human readable filetype */
- 	const char *shortname;	/* short string without spaces for shell scripts */
-@@ -71,6 +74,7 @@ static const struct filetype_str filetype_str[] = {
- 	[filetype_android_sparse] = { "Android sparse image", "sparse" },
- 	[filetype_arm64_linux_image] = { "ARM aarch64 Linux image", "aarch64-linux" },
- 	[filetype_elf] = { "ELF", "elf" },
-+	[filetype_imx_image_v1] = { "i.MX image (v1)", "imx-image-v1" },
- };
+ 	barker = data->image + imx_handler->flash_header_offset;
  
- const char *file_type_to_string(enum filetype f)
-@@ -250,6 +254,7 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 	const u64 *buf64 = _buf;
- 	const u8 *buf8 = _buf;
- 	const u16 *buf16 = _buf;
-+	const struct imx_flash_header *imx_flash_header = _buf;
- 	enum filetype type;
+ 	if (*barker != IVT_BARKER) {
+@@ -445,16 +440,15 @@ free_bootpartvar:
  
- 	if (bufsize < 9)
-@@ -361,6 +366,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 	if (strncmp(buf8, ELFMAG, 4) == 0)
- 		return filetype_elf;
+ static int imx_bbu_external_update(struct bbu_handler *handler, struct bbu_data *data)
+ {
+-	struct imx_internal_bbu_handler *imx_handler =
+-		container_of(handler, struct imx_internal_bbu_handler, handler);
+ 	int ret;
  
-+	if (imx_flash_header->dcd_barker == DCD_BARKER)
-+		return filetype_imx_image_v1;
-+
- 	return filetype_unknown;
+ 	ret = imx_bbu_check_prereq(data->devicefile, data);
+ 	if (ret)
+ 		return ret;
+ 
+-	return imx_bbu_write_device(imx_handler, data->devicefile, data,
+-				    data->image, data->len);
++	return imx_bbu_write_device(to_imx_internal_bbu_hander(handler),
++				    data->devicefile, data, data->image,
++				    data->len);
  }
  
-diff --git a/include/filetype.h b/include/filetype.h
-index 237ed3fbe..e2df5fabf 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -43,6 +43,7 @@ enum filetype {
- 	filetype_android_sparse,
- 	filetype_arm64_linux_image,
- 	filetype_elf,
-+	filetype_imx_image_v1,
- 	filetype_max,
- };
+ static struct imx_internal_bbu_handler *__init_handler(const char *name, char *devicefile,
+diff --git a/arch/arm/mach-imx/include/mach/bbu.h b/arch/arm/mach-imx/include/mach/bbu.h
+index 04be8cea5..5c3349d98 100644
+--- a/arch/arm/mach-imx/include/mach/bbu.h
++++ b/arch/arm/mach-imx/include/mach/bbu.h
+@@ -4,6 +4,19 @@
+ #include <bbu.h>
+ #include <errno.h>
+ 
++struct imx_internal_bbu_handler {
++	struct bbu_handler handler;
++	unsigned long flash_header_offset;
++	size_t device_size;
++	unsigned long flags;
++};
++
++static inline struct imx_internal_bbu_handler *
++to_imx_internal_bbu_hander(struct bbu_handler *handler)
++{
++	return container_of(handler, struct imx_internal_bbu_handler, handler);
++}
++
+ struct imx_dcd_entry;
+ struct imx_dcd_v2_entry;
  
 -- 
 2.17.1
