@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fYsoL-00055W-FL
- for barebox@lists.infradead.org; Fri, 29 Jun 2018 12:47:39 +0000
-Date: Fri, 29 Jun 2018 14:47:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180629124725.2jcoyd6dip5ge2ob@pengutronix.de>
-References: <20180628162905.11053-1-p.zabel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180628162905.11053-1-p.zabel@pengutronix.de>
+ id 1fYRZy-00044u-4i
+ for barebox@lists.infradead.org; Thu, 28 Jun 2018 07:44:05 +0000
+Received: by mail-lf0-x241.google.com with SMTP id u202-v6so3453907lff.9
+ for <barebox@lists.infradead.org>; Thu, 28 Jun 2018 00:42:47 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 28 Jun 2018 10:39:41 +0300
+Message-Id: <20180628073953.15384-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,60 +16,184 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: imx6qp: fix NoC QoS passthrough for new cpu type
- functions.
-To: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 00/12] Add initial RISC-V architecture support
+To: barebox@lists.infradead.org
 
-On Thu, Jun 28, 2018 at 06:29:05PM +0200, Philipp Zabel wrote:
-> On i.MX6QP/DP cpu_mx6_is_mx6q/d do not return true anymore.
-> Use the new cpu_mx6_is_mx6qp/dp to reenable NoC regulator bypass.
-> 
-> Fixes: d4c05d29d484 ("ARM: i.MX6: Add cpu type for 'plus' variants")
-> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-> ---
->  arch/arm/mach-imx/imx6.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
+This patchseries adds initial RISC-V architecture support for barebox.
 
-Applied, thanks
+See Documentation/boards/riscv.rst for instructions.
 
+You can obtain this patchseries from github:
 
-Sascha
+    $ git clone -b 20180628.riscv https://github.com/frantony/barebox
 
-> diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-> index eaf9f2e4130e..3d95c9e3749c 100644
-> --- a/arch/arm/mach-imx/imx6.c
-> +++ b/arch/arm/mach-imx/imx6.c
-> @@ -140,8 +140,7 @@ static void imx6_setup_ipu_qos(void)
->  	 * On i.MX6 QP/DP the NoC regulator for the IPU ports needs to be in
->  	 * bypass mode for the above settings to take effect.
->  	 */
-> -	if ((cpu_mx6_is_mx6q() || cpu_mx6_is_mx6d()) &&
-> -	    imx_silicon_revision() >= IMX_CHIP_REV_2_0) {
-> +	if (cpu_mx6_is_mx6qp() || cpu_mx6_is_mx6dp()) {
->  		writel(0x2, fast2 + 0xb048c);
->  		writel(0x2, fast2 + 0xb050c);
->  	}
-> -- 
-> 2.17.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Changes since PATCH v1 (20170415)
+(http://lists.infradead.org/pipermail/barebox/2018-April/032647.html)
+
+    * drop skeleton.dtsi;
+    * drop SPI GPIO bindings for erizo_generic;
+    * improve erizo-nmon-image;
+    * generic linker script is dropped;
+    * use generic GCC library routines from lib.
+
+Changes since RFC v4 (20170927)
+(http://lists.infradead.org/pipermail/barebox/2017-September/031226.html)
+
+    * drop 64-bit support;
+    * sync with RISC-V linux;
+    * RISC-V in barebox now is little endian only;
+    * fix according to notes by Oleksij Rempel.
+
+Changes since RFC v3 (20161212)
+(http://lists.infradead.org/pipermail/barebox/2016-December/028716.html)
+
+    * drop SiFive support, add support for custom Erizo SoC;
+    * barebox runs on real hardware (e.g. DE0-Nano FPGA board,
+      see https://github.com/miet-riscv-workgroup/rv32-simple-soc for
+details);
+    * introduce NMON for RISC-V;
+    * add relocator to start.S.
+
+Changes since RFC v2 (20161113)
+(http://lists.infradead.org/pipermail/barebox/2016-November/028533.html):
+
+    * add RV32 support.
+
+Changes since RFC v1 (20161013)
+(http://lists.infradead.org/pipermail/barebox/2016-October/028309.html):
+
+    * drop spike pk support;
+    * add qemu-sifive board support;
+    * add Documentation/boards/riscv.rst;
+    * fix guard macro names.
+
+Antony Pavlov (12):
+  lib: Add shared copies of some GCC library routines
+  MIPS: Use generic GCC library routines from lib/
+  Add initial RISC-V architecture support
+  RISC-V: add Erizo SoC support
+  RISC-V: add low-level debug macros for ns16550
+  RISC-V: add nmon nano-monitor
+  RISC-V: erizo: add DEBUG_LL support
+  RISC-V: erizo: enable nmon
+  RISC-V: erizo: add nmon image creation
+  RISC-V: add erizo_generic_defconfig
+  scripts: add nmon-loader
+  Documentation: add RISC-V docs
+
+ Documentation/boards/riscv.rst                |  91 +++++++
+ arch/mips/Kconfig                             |   3 +
+ arch/mips/lib/Makefile                        |   5 -
+ arch/mips/lib/ashldi3.c                       |  28 ---
+ arch/mips/lib/ashrdi3.c                       |  30 ---
+ arch/mips/lib/libgcc.h                        |  29 ---
+ arch/mips/lib/lshrdi3.c                       |  28 ---
+ arch/riscv/Kconfig                            |  99 ++++++++
+ arch/riscv/Makefile                           |  86 +++++++
+ arch/riscv/boards/erizo-generic/.gitignore    |   1 +
+ arch/riscv/boards/erizo-generic/Makefile      |   1 +
+ arch/riscv/boards/erizo-generic/board.c       |  28 +++
+ arch/riscv/boot/Makefile                      |   2 +
+ arch/riscv/boot/main_entry.c                  |  40 +++
+ arch/riscv/boot/start.S                       |  71 ++++++
+ arch/riscv/configs/erizo_generic_defconfig    |  53 ++++
+ arch/riscv/dts/.gitignore                     |   1 +
+ arch/riscv/dts/Makefile                       |   9 +
+ arch/riscv/dts/erizo.dtsi                     |  44 ++++
+ arch/riscv/dts/erizo_generic.dts              |  12 +
+ arch/riscv/include/asm/barebox.h              |   1 +
+ arch/riscv/include/asm/bitops.h               |  35 +++
+ arch/riscv/include/asm/bitsperlong.h          |  10 +
+ arch/riscv/include/asm/byteorder.h            |   6 +
+ arch/riscv/include/asm/common.h               |   6 +
+ arch/riscv/include/asm/debug_ll_ns16550.h     | 186 ++++++++++++++
+ arch/riscv/include/asm/elf.h                  |  11 +
+ arch/riscv/include/asm/io.h                   |   8 +
+ arch/riscv/include/asm/mmu.h                  |   6 +
+ arch/riscv/include/asm/posix_types.h          |   1 +
+ arch/riscv/include/asm/riscv_nmon.h           | 238 ++++++++++++++++++
+ arch/riscv/include/asm/sections.h             |   1 +
+ arch/riscv/include/asm/string.h               |   1 +
+ arch/riscv/include/asm/swab.h                 |   6 +
+ arch/riscv/include/asm/types.h                |  60 +++++
+ arch/riscv/include/asm/unaligned.h            |  19 ++
+ arch/riscv/lib/.gitignore                     |   1 +
+ arch/riscv/lib/Makefile                       |   5 +
+ arch/riscv/lib/asm-offsets.c                  |  12 +
+ arch/riscv/lib/barebox.lds.S                  |  89 +++++++
+ arch/riscv/lib/dtb.c                          |  41 +++
+ arch/riscv/lib/riscv_timer.c                  |  67 +++++
+ arch/riscv/mach-erizo/Kconfig                 |  11 +
+ arch/riscv/mach-erizo/Makefile                |   3 +
+ arch/riscv/mach-erizo/include/mach/debug_ll.h |  37 +++
+ drivers/of/Kconfig                            |   2 +-
+ include/lib/libgcc.h                          |  47 ++++
+ lib/Kconfig                                   |   9 +
+ lib/Makefile                                  |   7 +
+ lib/ashldi3.c                                 |  44 ++++
+ lib/ashrdi3.c                                 |  46 ++++
+ lib/lshrdi3.c                                 |  45 ++++
+ scripts/erizo-nmon-image                      |  10 +
+ scripts/nmon-loader                           |  31 +++
+ 54 files changed, 1642 insertions(+), 121 deletions(-)
+ create mode 100644 Documentation/boards/riscv.rst
+ delete mode 100644 arch/mips/lib/ashldi3.c
+ delete mode 100644 arch/mips/lib/ashrdi3.c
+ delete mode 100644 arch/mips/lib/libgcc.h
+ delete mode 100644 arch/mips/lib/lshrdi3.c
+ create mode 100644 arch/riscv/Kconfig
+ create mode 100644 arch/riscv/Makefile
+ create mode 100644 arch/riscv/boards/erizo-generic/.gitignore
+ create mode 100644 arch/riscv/boards/erizo-generic/Makefile
+ create mode 100644 arch/riscv/boards/erizo-generic/board.c
+ create mode 100644 arch/riscv/boot/Makefile
+ create mode 100644 arch/riscv/boot/main_entry.c
+ create mode 100644 arch/riscv/boot/start.S
+ create mode 100644 arch/riscv/configs/erizo_generic_defconfig
+ create mode 100644 arch/riscv/dts/.gitignore
+ create mode 100644 arch/riscv/dts/Makefile
+ create mode 100644 arch/riscv/dts/erizo.dtsi
+ create mode 100644 arch/riscv/dts/erizo_generic.dts
+ create mode 100644 arch/riscv/include/asm/barebox.h
+ create mode 100644 arch/riscv/include/asm/bitops.h
+ create mode 100644 arch/riscv/include/asm/bitsperlong.h
+ create mode 100644 arch/riscv/include/asm/byteorder.h
+ create mode 100644 arch/riscv/include/asm/common.h
+ create mode 100644 arch/riscv/include/asm/debug_ll_ns16550.h
+ create mode 100644 arch/riscv/include/asm/elf.h
+ create mode 100644 arch/riscv/include/asm/io.h
+ create mode 100644 arch/riscv/include/asm/mmu.h
+ create mode 100644 arch/riscv/include/asm/posix_types.h
+ create mode 100644 arch/riscv/include/asm/riscv_nmon.h
+ create mode 100644 arch/riscv/include/asm/sections.h
+ create mode 100644 arch/riscv/include/asm/string.h
+ create mode 100644 arch/riscv/include/asm/swab.h
+ create mode 100644 arch/riscv/include/asm/types.h
+ create mode 100644 arch/riscv/include/asm/unaligned.h
+ create mode 100644 arch/riscv/lib/.gitignore
+ create mode 100644 arch/riscv/lib/Makefile
+ create mode 100644 arch/riscv/lib/asm-offsets.c
+ create mode 100644 arch/riscv/lib/barebox.lds.S
+ create mode 100644 arch/riscv/lib/dtb.c
+ create mode 100644 arch/riscv/lib/riscv_timer.c
+ create mode 100644 arch/riscv/mach-erizo/Kconfig
+ create mode 100644 arch/riscv/mach-erizo/Makefile
+ create mode 100644 arch/riscv/mach-erizo/include/mach/debug_ll.h
+ create mode 100644 include/lib/libgcc.h
+ create mode 100644 lib/ashldi3.c
+ create mode 100644 lib/ashrdi3.c
+ create mode 100644 lib/lshrdi3.c
+ create mode 100755 scripts/erizo-nmon-image
+ create mode 100755 scripts/nmon-loader
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.18.0
+
 
 _______________________________________________
 barebox mailing list
