@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fYRa3-000245-TJ
+ id 1fYRa3-00024L-UG
  for barebox@lists.infradead.org; Thu, 28 Jun 2018 07:43:04 +0000
-Received: by mail-lf0-x241.google.com with SMTP id g21-v6so3462294lfb.4
- for <barebox@lists.infradead.org>; Thu, 28 Jun 2018 00:42:55 -0700 (PDT)
+Received: by mail-lf0-x241.google.com with SMTP id q11-v6so3458800lfc.7
+ for <barebox@lists.infradead.org>; Thu, 28 Jun 2018 00:42:59 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 28 Jun 2018 10:39:48 +0300
-Message-Id: <20180628073953.15384-8-antonynpavlov@gmail.com>
+Date: Thu, 28 Jun 2018 10:39:51 +0300
+Message-Id: <20180628073953.15384-11-antonynpavlov@gmail.com>
 In-Reply-To: <20180628073953.15384-1-antonynpavlov@gmail.com>
 References: <20180628073953.15384-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,70 +23,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 07/12] RISC-V: erizo: add DEBUG_LL support
+Subject: [PATCH v2 10/12] RISC-V: add erizo_generic_defconfig
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/riscv/Kconfig                            |  1 +
- arch/riscv/mach-erizo/include/mach/debug_ll.h | 37 +++++++++++++++++++
- 2 files changed, 38 insertions(+)
+ arch/riscv/configs/erizo_generic_defconfig | 53 ++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index d0e934e939..f754aef05e 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -21,6 +21,7 @@ choice
- 
- config MACH_ERIZO
- 	bool "erizo family"
-+	select HAS_DEBUG_LL
- 
- endchoice
- 
-diff --git a/arch/riscv/mach-erizo/include/mach/debug_ll.h b/arch/riscv/mach-erizo/include/mach/debug_ll.h
+diff --git a/arch/riscv/configs/erizo_generic_defconfig b/arch/riscv/configs/erizo_generic_defconfig
 new file mode 100644
-index 0000000000..913b323d99
+index 0000000000..e62b6ec719
 --- /dev/null
-+++ b/arch/riscv/mach-erizo/include/mach/debug_ll.h
-@@ -0,0 +1,37 @@
-+/*
-+ * Copyright (C) 2017 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#ifndef __MACH_ERIZO_DEBUG_LL__
-+#define __MACH_ERIZO_DEBUG_LL__
-+
-+/** @file
-+ *  This File contains declaration for early output support
-+ */
-+
-+#include <linux/kconfig.h>
-+
-+#define DEBUG_LL_UART_ADDR	0x90000000
-+#define DEBUG_LL_UART_SHIFT	2
-+#define DEBUG_LL_UART_IOSIZE32
-+
-+#define DEBUG_LL_UART_CLK       (24000000 / 16)
-+#define DEBUG_LL_UART_BPS       CONFIG_BAUDRATE
-+#define DEBUG_LL_UART_DIVISOR   (DEBUG_LL_UART_CLK / DEBUG_LL_UART_BPS)
-+
-+#include <asm/debug_ll_ns16550.h>
-+
-+#endif /* __MACH_ERIZO_DEBUG_LL__ */
++++ b/arch/riscv/configs/erizo_generic_defconfig
+@@ -0,0 +1,53 @@
++CONFIG_BUILTIN_DTB=y
++CONFIG_BUILTIN_DTB_NAME="erizo_generic"
++# CONFIG_GLOBALVAR is not set
++CONFIG_TEXT_BASE=0x80000000
++CONFIG_MEMORY_LAYOUT_FIXED=y
++CONFIG_STACK_BASE=0x800e0000
++CONFIG_STACK_SIZE=0x20000
++CONFIG_MALLOC_BASE=0x80100000
++CONFIG_MALLOC_SIZE=0x100000
++CONFIG_MALLOC_TLSF=y
++CONFIG_PANIC_HANG=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++# CONFIG_ERRNO_MESSAGES is not set
++# CONFIG_TIMESTAMP is not set
++# CONFIG_BOOTM is not set
++# CONFIG_ENV_HANDLING is not set
++CONFIG_POLLER=y
++CONFIG_DEBUG_LL=y
++CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_IMD=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_LOADY=y
++CONFIG_CMD_CMP=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_SPI=y
++CONFIG_CMD_OF_DUMP=y
++CONFIG_CMD_TIME=y
++CONFIG_CMD_DHRYSTONE=y
++CONFIG_OFDEVICE=y
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_DRIVER_SPI_GPIO=y
++CONFIG_I2C=y
++CONFIG_I2C_GPIO=y
++CONFIG_MTD=y
++# CONFIG_MTD_OOB_DEVICE is not set
++CONFIG_MTD_M25P80=y
++CONFIG_CLOCKSOURCE_DUMMY_RATE=60000
++CONFIG_EEPROM_AT24=y
++CONFIG_GPIO_GENERIC_PLATFORM=y
++# CONFIG_PINCTRL is not set
++CONFIG_DIGEST_CRC32_GENERIC=y
 -- 
 2.18.0
 
