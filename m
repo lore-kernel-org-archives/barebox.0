@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x229.google.com ([2607:f8b0:400e:c00::229])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fYOxR-0005Zn-HZ
- for barebox@lists.infradead.org; Thu, 28 Jun 2018 04:55:08 +0000
-Received: by mail-pf0-x229.google.com with SMTP id v9-v6so883652pff.9
- for <barebox@lists.infradead.org>; Wed, 27 Jun 2018 21:54:50 -0700 (PDT)
+Received: from mail-pg0-x236.google.com ([2607:f8b0:400e:c05::236])
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fYOxW-0000qf-M3
+ for barebox@lists.infradead.org; Thu, 28 Jun 2018 04:55:07 +0000
+Received: by mail-pg0-x236.google.com with SMTP id c10-v6so1910458pgu.9
+ for <barebox@lists.infradead.org>; Wed, 27 Jun 2018 21:54:54 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 27 Jun 2018 21:54:28 -0700
-Message-Id: <20180628045436.16710-3-andrew.smirnov@gmail.com>
+Date: Wed, 27 Jun 2018 21:54:30 -0700
+Message-Id: <20180628045436.16710-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20180628045436.16710-1-andrew.smirnov@gmail.com>
 References: <20180628045436.16710-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,72 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 02/10] common: clock: Sample time before poller_call()
+Subject: [PATCH v4 04/10] bbu: Make bbu_find_handler_by_device() public
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Change is_timeout() to sample current time before invoking poller
-infrascructure to avoid occasional false timeout conditions.
-
-Consider the following timeout loop (can be found in wait_on_timeout):
-
-        while (!(condition)) {
-	        if (is_timeout(...)) {
-	       	        return -ETIMEDOUT;
-                }
-        }
-	...
-
-in the original logic of is_timeout() it was possible to end up in the
-following situation:
-
-        1. Immediate check of of "condition" yeilds false (not enough
-           time for it to become true has passed yet)
-
-	2. is_timeout is called which, in turn, calls poller_call()
-
-	3. All registerd pollers take more than specified timeout time
-	   to execute.
-
-	4. Sometime during poller_call() "contition" becomes true
-
-	5. As a result of #3 is_timeout() returns "true"
-
-	6. Code bails out with -ETIMEDOUT early even though timeout
-	   condition didn't really occur.
-
-One concrete example of this problem was discovered on ZII RDU1
-board (poller_call() is long due to a serdev) when doing large data
-transfers over SPI to attached DataFlash chip.
-
-This commit changes is_timeout() to sample the value of time before
-calling poller_call(). This way first call to is_timeout() will almost
-always return false thus checking the condition at least twice before
-declaring a timeout.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/clock.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ common/bbu.c  | 2 +-
+ include/bbu.h | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/common/clock.c b/common/clock.c
-index 7f5cff232..2b218fb6a 100644
---- a/common/clock.c
-+++ b/common/clock.c
-@@ -181,10 +181,12 @@ EXPORT_SYMBOL(is_timeout_non_interruptible);
- 
- int is_timeout(uint64_t start_ns, uint64_t time_offset_ns)
- {
-+	int ret = is_timeout_non_interruptible(start_ns, time_offset_ns);
-+
- 	if (time_offset_ns >= 100 * USECOND)
- 		poller_call();
- 
--	return is_timeout_non_interruptible(start_ns, time_offset_ns);
-+	return ret;
+diff --git a/common/bbu.c b/common/bbu.c
+index 11e44f4a7..d9b0c7ece 100644
+--- a/common/bbu.c
++++ b/common/bbu.c
+@@ -117,7 +117,7 @@ static struct bbu_handler *bbu_find_handler(const char *name)
+ 	return NULL;
  }
- EXPORT_SYMBOL(is_timeout);
  
+-static struct bbu_handler *bbu_find_handler_by_device(const char *devicepath)
++struct bbu_handler *bbu_find_handler_by_device(const char *devicepath)
+ {
+ 	struct bbu_handler *handler;
+ 
+diff --git a/include/bbu.h b/include/bbu.h
+index def568e49..b6e7410db 100644
+--- a/include/bbu.h
++++ b/include/bbu.h
+@@ -44,6 +44,8 @@ void bbu_handlers_list(void);
+ 
+ int bbu_handlers_iterate(int (*fn)(struct bbu_handler *, void *), void *);
+ 
++struct bbu_handler *bbu_find_handler_by_device(const char *devicepath);
++
+ #ifdef CONFIG_BAREBOX_UPDATE
+ 
+ int bbu_register_handler(struct bbu_handler *);
 -- 
 2.17.1
 
