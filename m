@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf0-x241.google.com ([2a00:1450:4010:c07::241])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fYRa3-00024L-UG
- for barebox@lists.infradead.org; Thu, 28 Jun 2018 07:43:04 +0000
-Received: by mail-lf0-x241.google.com with SMTP id q11-v6so3458800lfc.7
- for <barebox@lists.infradead.org>; Thu, 28 Jun 2018 00:42:59 -0700 (PDT)
+ id 1fYRa1-00023W-S7
+ for barebox@lists.infradead.org; Thu, 28 Jun 2018 07:43:02 +0000
+Received: by mail-lf0-x241.google.com with SMTP id g21-v6so3462094lfb.4
+ for <barebox@lists.infradead.org>; Thu, 28 Jun 2018 00:42:50 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 28 Jun 2018 10:39:51 +0300
-Message-Id: <20180628073953.15384-11-antonynpavlov@gmail.com>
+Date: Thu, 28 Jun 2018 10:39:43 +0300
+Message-Id: <20180628073953.15384-3-antonynpavlov@gmail.com>
 In-Reply-To: <20180628073953.15384-1-antonynpavlov@gmail.com>
 References: <20180628073953.15384-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,73 +23,199 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 10/12] RISC-V: add erizo_generic_defconfig
+Subject: [PATCH v2 02/12] MIPS: Use generic GCC library routines from lib/
 To: barebox@lists.infradead.org
+
+This is a port of Linux kernel commit
+
+| commit 740129b36faf049e6845819144542a0455e1e285
+| Author: Antony Pavlov <antonynpavlov@gmail.com>
+| Date:   Wed Apr 11 08:50:19 2018 +0100
+|
+|     MIPS: Use generic GCC library routines from lib/
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/riscv/configs/erizo_generic_defconfig | 53 ++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
+ arch/mips/Kconfig       |  3 +++
+ arch/mips/lib/Makefile  |  5 -----
+ arch/mips/lib/ashldi3.c | 28 ----------------------------
+ arch/mips/lib/ashrdi3.c | 30 ------------------------------
+ arch/mips/lib/libgcc.h  | 29 -----------------------------
+ arch/mips/lib/lshrdi3.c | 28 ----------------------------
+ 6 files changed, 3 insertions(+), 120 deletions(-)
 
-diff --git a/arch/riscv/configs/erizo_generic_defconfig b/arch/riscv/configs/erizo_generic_defconfig
-new file mode 100644
-index 0000000000..e62b6ec719
---- /dev/null
-+++ b/arch/riscv/configs/erizo_generic_defconfig
-@@ -0,0 +1,53 @@
-+CONFIG_BUILTIN_DTB=y
-+CONFIG_BUILTIN_DTB_NAME="erizo_generic"
-+# CONFIG_GLOBALVAR is not set
-+CONFIG_TEXT_BASE=0x80000000
-+CONFIG_MEMORY_LAYOUT_FIXED=y
-+CONFIG_STACK_BASE=0x800e0000
-+CONFIG_STACK_SIZE=0x20000
-+CONFIG_MALLOC_BASE=0x80100000
-+CONFIG_MALLOC_SIZE=0x100000
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_PANIC_HANG=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+# CONFIG_ERRNO_MESSAGES is not set
-+# CONFIG_TIMESTAMP is not set
-+# CONFIG_BOOTM is not set
-+# CONFIG_ENV_HANDLING is not set
-+CONFIG_POLLER=y
-+CONFIG_DEBUG_LL=y
-+CONFIG_LONGHELP=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_IMD=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_LOADY=y
-+CONFIG_CMD_CMP=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_SHA1SUM=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_MEMTEST=y
-+CONFIG_CMD_MM=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_I2C=y
-+CONFIG_CMD_SPI=y
-+CONFIG_CMD_OF_DUMP=y
-+CONFIG_CMD_TIME=y
-+CONFIG_CMD_DHRYSTONE=y
-+CONFIG_OFDEVICE=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_DRIVER_SPI_GPIO=y
-+CONFIG_I2C=y
-+CONFIG_I2C_GPIO=y
-+CONFIG_MTD=y
-+# CONFIG_MTD_OOB_DEVICE is not set
-+CONFIG_MTD_M25P80=y
-+CONFIG_CLOCKSOURCE_DUMMY_RATE=60000
-+CONFIG_EEPROM_AT24=y
-+CONFIG_GPIO_GENERIC_PLATFORM=y
-+# CONFIG_PINCTRL is not set
-+CONFIG_DIGEST_CRC32_GENERIC=y
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 359f67883c..5dd95b42a7 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -3,6 +3,9 @@
+ #
+ config MIPS
+ 	bool
++	select GENERIC_LIB_ASHLDI3
++	select GENERIC_LIB_ASHRDI3
++	select GENERIC_LIB_LSHRDI3
+ 	select HAS_KALLSYMS
+ 	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
+ 	select HAVE_CONFIGURABLE_TEXT_BASE
+diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
+index d25d0969fc..1a049c7914 100644
+--- a/arch/mips/lib/Makefile
++++ b/arch/mips/lib/Makefile
+@@ -1,8 +1,5 @@
+ extra-$(CONFIG_GENERIC_LINKER_SCRIPT) += barebox.lds
+ obj-$(CONFIG_CSRC_R4K_LIB) += csrc-r4k.o
+-obj-y += lshrdi3.o
+-obj-y += ashldi3.o
+-obj-y += ashrdi3.o
+ obj-y += cpu-probe.o
+ obj-y += traps.o
+ obj-y += genex.o
+@@ -17,5 +14,3 @@ obj-$(CONFIG_CPU_MIPS64) += c-r4k.o
+ 
+ obj-$(CONFIG_CMD_MIPS_CPUINFO) += cpuinfo.o
+ obj-$(CONFIG_CMD_BOOTM)	+= bootm.o
+-
+-pbl-y	+= ashldi3.o
+diff --git a/arch/mips/lib/ashldi3.c b/arch/mips/lib/ashldi3.c
+deleted file mode 100644
+index cbdbcbb6a9..0000000000
+--- a/arch/mips/lib/ashldi3.c
++++ /dev/null
+@@ -1,28 +0,0 @@
+-#include <module.h>
+-
+-#include "libgcc.h"
+-
+-long long __ashldi3(long long u, word_type b)
+-{
+-	DWunion uu, w;
+-	word_type bm;
+-
+-	if (b == 0)
+-		return u;
+-
+-	uu.ll = u;
+-	bm = 32 - b;
+-
+-	if (bm <= 0) {
+-		w.s.low = 0;
+-		w.s.high = (unsigned int) uu.s.low << -bm;
+-	} else {
+-		const unsigned int carries = (unsigned int) uu.s.low >> bm;
+-
+-		w.s.low = (unsigned int) uu.s.low << b;
+-		w.s.high = ((unsigned int) uu.s.high << b) | carries;
+-	}
+-
+-	return w.ll;
+-}
+-EXPORT_SYMBOL(__ashldi3);
+diff --git a/arch/mips/lib/ashrdi3.c b/arch/mips/lib/ashrdi3.c
+deleted file mode 100644
+index 928d6d97ce..0000000000
+--- a/arch/mips/lib/ashrdi3.c
++++ /dev/null
+@@ -1,30 +0,0 @@
+-#include <module.h>
+-
+-#include "libgcc.h"
+-
+-long long __ashrdi3(long long u, word_type b)
+-{
+-	DWunion uu, w;
+-	word_type bm;
+-
+-	if (b == 0)
+-		return u;
+-
+-	uu.ll = u;
+-	bm = 32 - b;
+-
+-	if (bm <= 0) {
+-		/* w.s.high = 1..1 or 0..0 */
+-		w.s.high =
+-		    uu.s.high >> 31;
+-		w.s.low = uu.s.high >> -bm;
+-	} else {
+-		const unsigned int carries = (unsigned int) uu.s.high << bm;
+-
+-		w.s.high = uu.s.high >> b;
+-		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
+-	}
+-
+-	return w.ll;
+-}
+-EXPORT_SYMBOL(__ashrdi3);
+diff --git a/arch/mips/lib/libgcc.h b/arch/mips/lib/libgcc.h
+deleted file mode 100644
+index 593e598022..0000000000
+--- a/arch/mips/lib/libgcc.h
++++ /dev/null
+@@ -1,29 +0,0 @@
+-#ifndef __ASM_LIBGCC_H
+-#define __ASM_LIBGCC_H
+-
+-#include <asm/byteorder.h>
+-
+-typedef int word_type __attribute__ ((mode (__word__)));
+-
+-#ifdef __BIG_ENDIAN
+-struct DWstruct {
+-	int high, low;
+-};
+-#elif defined(__LITTLE_ENDIAN)
+-struct DWstruct {
+-	int low, high;
+-};
+-#else
+-#error I feel sick.
+-#endif
+-
+-typedef union {
+-	struct DWstruct s;
+-	long long ll;
+-} DWunion;
+-
+-long long __lshrdi3(long long u, word_type b);
+-long long __ashldi3(long long u, word_type b);
+-long long __ashrdi3(long long u, word_type b);
+-
+-#endif /* __ASM_LIBGCC_H */
+diff --git a/arch/mips/lib/lshrdi3.c b/arch/mips/lib/lshrdi3.c
+deleted file mode 100644
+index 74a4846e97..0000000000
+--- a/arch/mips/lib/lshrdi3.c
++++ /dev/null
+@@ -1,28 +0,0 @@
+-#include <module.h>
+-
+-#include "libgcc.h"
+-
+-long long __lshrdi3(long long u, word_type b)
+-{
+-	DWunion uu, w;
+-	word_type bm;
+-
+-	if (b == 0)
+-		return u;
+-
+-	uu.ll = u;
+-	bm = 32 - b;
+-
+-	if (bm <= 0) {
+-		w.s.high = 0;
+-		w.s.low = (unsigned int) uu.s.high >> -bm;
+-	} else {
+-		const unsigned int carries = (unsigned int) uu.s.high << bm;
+-
+-		w.s.high = (unsigned int) uu.s.high >> b;
+-		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
+-	}
+-
+-	return w.ll;
+-}
+-EXPORT_SYMBOL(__lshrdi3);
 -- 
 2.18.0
 
