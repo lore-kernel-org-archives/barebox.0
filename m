@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x243.google.com ([2a00:1450:4010:c07::243])
+Received: from mail-pg0-x22c.google.com ([2607:f8b0:400e:c05::22c])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fYtH8-00087u-Ef
- for barebox@lists.infradead.org; Fri, 29 Jun 2018 13:17:23 +0000
-Received: by mail-lf0-x243.google.com with SMTP id y200-v6so1190115lfd.7
- for <barebox@lists.infradead.org>; Fri, 29 Jun 2018 06:17:11 -0700 (PDT)
-Date: Fri, 29 Jun 2018 16:17:40 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20180629161740.cd2b37ab454953e326bda19e@gmail.com>
-In-Reply-To: <20180629113255.idhib3zi3vma4nco@pengutronix.de>
-References: <20180628073953.15384-1-antonynpavlov@gmail.com>
- <20180628073953.15384-4-antonynpavlov@gmail.com>
- <20180629072908.4z66au6jdyyehmwf@pengutronix.de>
- <20180629132710.88b512ddb6c8331d3655afa3@gmail.com>
- <20180629113255.idhib3zi3vma4nco@pengutronix.de>
-Mime-Version: 1.0
+ id 1fYOxP-0005Y6-BQ
+ for barebox@lists.infradead.org; Thu, 28 Jun 2018 04:55:02 +0000
+Received: by mail-pg0-x22c.google.com with SMTP id z1-v6so1906187pgv.12
+ for <barebox@lists.infradead.org>; Wed, 27 Jun 2018 21:54:48 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 27 Jun 2018 21:54:26 -0700
+Message-Id: <20180628045436.16710-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,77 +16,99 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 03/12] Add initial RISC-V architecture support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v4 00/10] ZII RDU1 support
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Fri, 29 Jun 2018 13:32:55 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+Everyone:
 
-> On Fri, Jun 29, 2018 at 01:27:10PM +0300, Antony Pavlov wrote:
-> > On Fri, 29 Jun 2018 09:29:08 +0200
-> > > =
+This is a patchset containing the code to add initial support for ZII
+RDU1 board to Barebox.
 
-> > > Do you need these __bare_init* stuff? If not I would prefer to remove
-> > > it.
-> > =
+Changes since [v3]:
 
-> > =
+  - Updated copyright header in board.c
 
-> > Hmmm. You are right! I have not realized PBL for RISC-V yet so it's bet=
-ter
-> > to drop all these bare_inits.
-> =
+Changes since [v2]:
 
-> This isn't needed for PBL either. It is only for cases where the boot
-> ROM only loads the initial image portion.
-> =
+  - Even better way (incorporating feedback from Lucas) of dealing
+    with dataflash BBU quirks
 
-> > > =
+  - Patches 1 and 2 are technically unrelated, but they were fixes for
+    bugs I found while working on v3, so they are thrown in for
+    convenience
 
-> > > > +static int of_riscv_init(void)
-> > > > +{
-> > > > +	struct device_node *root;
-> > > > +
-> > > > +	root =3D of_get_root_node();
-> > > > +	if (root)
-> > > > +		return 0;
-> > > > +
-> > > > +	root =3D of_unflatten_dtb(__dtb_start);
-> > > > +	if (!IS_ERR(root)) {
-> > > > +		pr_debug("using internal DTB\n");
-> > > > +		of_set_root_node(root);
-> > > > +		if (IS_ENABLED(CONFIG_OFDEVICE))
-> > > > +			of_probe();
-> > > > +	}
-> > > =
+  - More missing newlines added (hopefully I got them all this time)
 
-> > > Can we just call of_unflatten_dtb()/of_set_root_node() from the board
-> > > code and use obj-dtb-y to include the dtb?
-> > > =
+Changes since [v1]:
 
-> > > That way a board can specify the dtb and not the config.
-> > =
+  - Removed usage of compatible property for PMIC initialization
 
-> > Good idea! MIPS code lacks this feature at the moment.
-> > =
+  - Less invasive (IMHO), way of dealing with dataflash BBU quirks is proposed
 
-> > Can I use of_arm_init() as a reference?
-> =
+  - Missing newline in board.c
 
-> Not sure what you mean. of_riscv_init() is nearly a copy of
-> of_arm_init() already.
+[v3] http://lists.infradead.org/pipermail/barebox/2018-June/033848.html
 
-Actually of_riscv_init() is a copy of of_mips_init().
+[v2] http://lists.infradead.org/pipermail/barebox/2018-June/033800.html
 
--- =
+[v1] http://lists.infradead.org/pipermail/barebox/2018-June/033764.html
+     http://lists.infradead.org/pipermail/barebox/2018-June/033765.html
 
-Best regards,
-=A0 Antony Pavlov
+
+Andrey Smirnov (10):
+  mtd: mtd_dataflash: Don't print bogus command values for READs
+  common: clock: Sample time before poller_call()
+  ARM: babbage: Make PMIC initialization shareable
+  bbu: Make bbu_find_handler_by_device() public
+  ARM: i.MX: bbu: Make imx_bbu_internal_v1_update() public
+  ARM: i.MX: Move i.MX header definitions to mach-imx
+  filtype: Add code to detect i.MX image v1
+  ARM: i.MX: bbu: Allow plain i.MX v1 images as a special case
+  ARM: i.MX: bbu: Make struct imx_internal_bbu_handler public
+  ARM: i.MX: Add support for ZII RDU1 board
+
+ arch/arm/boards/Makefile                      |   3 +-
+ .../boards/freescale-mx51-babbage/Makefile    |   5 +-
+ .../arm/boards/freescale-mx51-babbage/board.c | 112 +---------------
+ .../arm/boards/freescale-mx51-babbage/power.c | 120 ++++++++++++++++++
+ arch/arm/boards/zii-imx51-rdu1/Makefile       |   2 +
+ arch/arm/boards/zii-imx51-rdu1/board.c        |  93 ++++++++++++++
+ .../flash-header-imx51-zii-rdu1.imxcfg        |  60 +++++++++
+ arch/arm/boards/zii-imx51-rdu1/lowlevel.c     |  46 +++++++
+ arch/arm/configs/imx_v7_defconfig             |   1 +
+ arch/arm/dts/Makefile                         |   1 +
+ arch/arm/dts/imx51-zii-rdu1.dts               |  52 ++++++++
+ arch/arm/mach-imx/Kconfig                     |  18 ++-
+ arch/arm/mach-imx/imx-bbu-internal.c          |  44 ++++---
+ arch/arm/mach-imx/include/mach/bbu.h          |  21 +++
+ arch/arm/mach-imx/include/mach/imx-header.h   | 118 +++++++++++++++++
+ arch/arm/mach-imx/include/mach/imx5.h         |   2 +
+ common/bbu.c                                  |   2 +-
+ common/clock.c                                |   4 +-
+ common/filetype.c                             |   8 ++
+ drivers/mtd/devices/mtd_dataflash.c           |   6 +-
+ images/Makefile.imx                           |   5 +
+ include/bbu.h                                 |   2 +
+ include/filetype.h                            |   1 +
+ scripts/imx/imx.h                             | 114 +----------------
+ 24 files changed, 586 insertions(+), 254 deletions(-)
+ create mode 100644 arch/arm/boards/freescale-mx51-babbage/power.c
+ create mode 100644 arch/arm/boards/zii-imx51-rdu1/Makefile
+ create mode 100644 arch/arm/boards/zii-imx51-rdu1/board.c
+ create mode 100644 arch/arm/boards/zii-imx51-rdu1/flash-header-imx51-zii-rdu1.imxcfg
+ create mode 100644 arch/arm/boards/zii-imx51-rdu1/lowlevel.c
+ create mode 100644 arch/arm/dts/imx51-zii-rdu1.dts
+ create mode 100644 arch/arm/mach-imx/include/mach/imx-header.h
+
+-- 
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
