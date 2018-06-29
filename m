@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x241.google.com ([2a00:1450:4864:20::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fYr6u-0004HT-TR
- for barebox@lists.infradead.org; Fri, 29 Jun 2018 10:58:42 +0000
-Received: by mail-lj1-x241.google.com with SMTP id g3-v6so6975711ljk.12
- for <barebox@lists.infradead.org>; Fri, 29 Jun 2018 03:58:29 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 29 Jun 2018 13:58:23 +0300
-Message-Id: <20180629105823.16181-1-antonynpavlov@gmail.com>
+ id 1fYrzi-0002Ap-7g
+ for barebox@lists.infradead.org; Fri, 29 Jun 2018 11:55:20 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Fri, 29 Jun 2018 13:55:01 +0200
+Message-Id: <20180629115502.1313-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,42 +19,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MIPS: don't include generated header files into MIPS asm files
+Subject: [PATCH v1 1/2] arm: arria10: enable errata 794072 and 845369
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-This patch came out of discussions in the 'MIPS parallel build breakage' e-mail thread:
+This SoC is affected by this two any many other erratas.
+So enable at least supported cases.
 
-    http://lists.infradead.org/pipermail/barebox/2018-March/032251.html
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/mips/include/asm/pbl_macros.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm/mach-socfpga/arria10-init.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/mips/include/asm/pbl_macros.h b/arch/mips/include/asm/pbl_macros.h
-index 18115c8489..bb3182cda9 100644
---- a/arch/mips/include/asm/pbl_macros.h
-+++ b/arch/mips/include/asm/pbl_macros.h
-@@ -25,8 +25,6 @@
- #include <asm/mipsregs.h>
- #include <asm/asm.h>
- #include <asm-generic/memory_layout.h>
--#include <generated/compile.h>
--#include <generated/utsrelease.h>
- #include <asm/addrspace.h>
- #include <asm/cacheops.h>
+diff --git a/arch/arm/mach-socfpga/arria10-init.c b/arch/arm/mach-socfpga/arria10-init.c
+index 07256da1db..f016b84bb7 100644
+--- a/arch/arm/mach-socfpga/arria10-init.c
++++ b/arch/arm/mach-socfpga/arria10-init.c
+@@ -14,6 +14,7 @@
+ #include <mach/generic.h>
+ #include <asm/io.h>
+ #include <asm/cache-l2x0.h>
++#include <asm/errata.h>
+ #include <asm/system.h>
  
-@@ -174,7 +172,7 @@ copy_loop_exit:
- 	 nop
+ #define L310_AUX_CTRL_EARLY_BRESP		BIT(30)	/* R2P0+ */
+@@ -70,6 +71,9 @@ static void arria10_initialize_security_policies(void)
+ 	/* BootROM leaves the L2X0 in a weird state. Always disable L2X0 for now. */
+ 	l2c310_disable(l2x0_base);
  
- 	.org	0x10
--	.ascii	"barebox " UTS_RELEASE " " UTS_VERSION
-+	.ascii	"barebox"
- 	.byte	0
- 
- 	.align	4
++	enable_arm_errata_794072_war();
++	enable_arm_errata_845369_war();
++
+ 	/* Put OCRAM in non-secure */
+ 	writel(0x003f0000, ARRIA10_NOC_FW_OCRAM_OCRAM_SCR_REGION0);
+ 	writel(0x1, ARRIA10_NOC_FW_OCRAM_OCRAM_SCR_EN);
 -- 
-2.18.0
+2.17.1
 
 
 _______________________________________________
