@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fYTVS-0007kX-U7
- for barebox@lists.infradead.org; Thu, 28 Jun 2018 09:46:29 +0000
-Message-ID: <1530179171.22468.48.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu, 28 Jun 2018 11:46:11 +0200
-In-Reply-To: <20180628044227.15049-1-andrew.smirnov@gmail.com>
+ id 1fYlb4-00050o-O7
+ for barebox@lists.infradead.org; Fri, 29 Jun 2018 05:05:28 +0000
+Date: Fri, 29 Jun 2018 07:05:12 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180629050512.n6bopw7hyixsjgak@pengutronix.de>
 References: <20180628044227.15049-1-andrew.smirnov@gmail.com>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180628044227.15049-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,59 +18,112 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2 1/2] nvmem: Introduce nvmem_cell_get_and_read()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-QW0gTWl0dHdvY2gsIGRlbiAyNy4wNi4yMDE4LCAyMTo0MiAtMDcwMCBzY2hyaWViIEFuZHJleSBT
-bWlybm92Ogo+IEludHJvZHVjZSBudm1lbV9jZWxsX2dldF9hbmRfcmVhZCgpIHRoYXQgY29tYmlu
-ZXMgZ2V0dGluZyBhIE5WTUVNIGNlbGwKPiBieSBuYW1lIGFuZCByZWFkaW5nIGl0cyBjb250ZW50
-cy4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBBbmRyZXkgU21pcm5vdiA8YW5kcmV3LnNtaXJub3ZAZ21h
-aWwuY29tPgoKRm9yIHRoZSBzZXJpZXM6ClJldmlld2VkLWJ5OiBMdWNhcyBTdGFjaCA8bC5zdGFj
-aEBwZW5ndXRyb25peC5kZT4KCj4gLS0tCj4gCj4gQ2hhbmdlcyBzaW5jZSBbdjFdOgo+IAo+IMKg
-wqDCoMKgLSBBZGRlZCBtaXNzaW5nIG5ld2xpbmUgdG8gY29yZS5jCj4gCj4gW3YxXSBodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9waXBlcm1haWwvYmFyZWJveC8yMDE4LUp1bmUvMDMzODU3Lmh0
-bWwKPiAKPiDCoGRyaXZlcnMvbnZtZW0vY29yZS5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHwgMjMg
-KysrKysrKysrKysrKysrKysrKysrKysKPiDCoGluY2x1ZGUvbGludXgvbnZtZW0tY29uc3VtZXIu
-aCB8IDEwICsrKysrKysrKysKPiDCoDIgZmlsZXMgY2hhbmdlZCwgMzMgaW5zZXJ0aW9ucygrKQo+
-IAo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL252bWVtL2NvcmUuYyBiL2RyaXZlcnMvbnZtZW0vY29y
-ZS5jCj4gaW5kZXggNTNiOTM0YmIzLi5jMGY2MWY0NTMgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9u
-dm1lbS9jb3JlLmMKPiArKysgYi9kcml2ZXJzL252bWVtL2NvcmUuYwo+IEBAIC03NTAsMyArNzUw
-LDI2IEBAIGludCBudm1lbV9kZXZpY2Vfd3JpdGUoc3RydWN0IG52bWVtX2RldmljZSAqbnZtZW0s
-Cj4gPiDCoAlyZXR1cm4gYnl0ZXM7Cj4gwqB9Cj4gwqBFWFBPUlRfU1lNQk9MX0dQTChudm1lbV9k
-ZXZpY2Vfd3JpdGUpOwo+ICsKPiArdm9pZCAqbnZtZW1fY2VsbF9nZXRfYW5kX3JlYWQoc3RydWN0
-IGRldmljZV9ub2RlICpucCwgY29uc3QgY2hhciAqY2VsbF9uYW1lLAo+ID4gKwkJCcKgwqDCoMKg
-wqDCoHNpemVfdCBieXRlcykKPiArewo+ID4gKwlzdHJ1Y3QgbnZtZW1fY2VsbCAqY2VsbDsKPiA+
-ICsJdm9pZCAqdmFsdWU7Cj4gPiArCXNpemVfdCBsZW47Cj4gKwo+ID4gKwljZWxsID0gb2ZfbnZt
-ZW1fY2VsbF9nZXQobnAsIGNlbGxfbmFtZSk7Cj4gPiArCWlmIChJU19FUlIoY2VsbCkpCj4gPiAr
-CQlyZXR1cm4gY2VsbDsKPiArCj4gPiArCXZhbHVlID0gbnZtZW1fY2VsbF9yZWFkKGNlbGwsICZs
-ZW4pOwo+ID4gKwlpZiAoIUlTX0VSUih2YWx1ZSkgJiYgbGVuICE9IGJ5dGVzKSB7Cj4gPiArCQlr
-ZnJlZSh2YWx1ZSk7Cj4gPiArCQl2YWx1ZSA9IEVSUl9QVFIoLUVJTlZBTCk7Cj4gPiArCX0KPiAr
-Cj4gPiArCW52bWVtX2NlbGxfcHV0KGNlbGwpOwo+ICsKPiA+ICsJcmV0dXJuIHZhbHVlOwo+ICt9
-Cj4gK0VYUE9SVF9TWU1CT0xfR1BMKG52bWVtX2NlbGxfZ2V0X2FuZF9yZWFkKTsKPiBkaWZmIC0t
-Z2l0IGEvaW5jbHVkZS9saW51eC9udm1lbS1jb25zdW1lci5oIGIvaW5jbHVkZS9saW51eC9udm1l
-bS1jb25zdW1lci5oCj4gaW5kZXggNjA2Y2FkYjQ5Li4wZWMyZjA1YjkgMTAwNjQ0Cj4gLS0tIGEv
-aW5jbHVkZS9saW51eC9udm1lbS1jb25zdW1lci5oCj4gKysrIGIvaW5jbHVkZS9saW51eC9udm1l
-bS1jb25zdW1lci5oCj4gQEAgLTMyLDYgKzMyLDkgQEAgc3RydWN0IG52bWVtX2NlbGxfaW5mbyB7
-Cj4gwqBzdHJ1Y3QgbnZtZW1fY2VsbCAqbnZtZW1fY2VsbF9nZXQoc3RydWN0IGRldmljZV9kICpk
-ZXYsIGNvbnN0IGNoYXIgKm5hbWUpOwo+IMKgdm9pZCBudm1lbV9jZWxsX3B1dChzdHJ1Y3QgbnZt
-ZW1fY2VsbCAqY2VsbCk7Cj4gwqB2b2lkICpudm1lbV9jZWxsX3JlYWQoc3RydWN0IG52bWVtX2Nl
-bGwgKmNlbGwsIHNpemVfdCAqbGVuKTsKPiArdm9pZCAqbnZtZW1fY2VsbF9nZXRfYW5kX3JlYWQo
-c3RydWN0IGRldmljZV9ub2RlICpucCwgY29uc3QgY2hhciAqY2VsbF9uYW1lLAo+ID4gKwkJCcKg
-wqDCoMKgwqDCoHNpemVfdCBieXRlcyk7Cj4gKwo+IMKgaW50IG52bWVtX2NlbGxfd3JpdGUoc3Ry
-dWN0IG52bWVtX2NlbGwgKmNlbGwsIHZvaWQgKmJ1Ziwgc2l6ZV90IGxlbik7Cj4gwqAKPiDCoC8q
-IGRpcmVjdCBudm1lbSBkZXZpY2UgcmVhZC93cml0ZSBpbnRlcmZhY2UgKi8KPiBAQCAtNTUsNiAr
-NTgsMTMgQEAgc3RhdGljIGlubGluZSBjaGFyICpudm1lbV9jZWxsX3JlYWQoc3RydWN0IG52bWVt
-X2NlbGwgKmNlbGwsIHNpemVfdCAqbGVuKQo+ID4gwqAJcmV0dXJuIEVSUl9QVFIoLUVOT1NZUyk7
-Cj4gwqB9Cj4gwqAKPiArc3RhdGljIGlubGluZSB2b2lkICpudm1lbV9jZWxsX2dldF9hbmRfcmVh
-ZChzdHJ1Y3QgZGV2aWNlX25vZGUgKm5wLAo+ID4gKwkJCQkJwqDCoMKgwqBjb25zdCBjaGFyICpj
-ZWxsX25hbWUsCj4gPiArCQkJCQnCoMKgwqDCoHNpemVfdCBieXRlcykKPiArewo+ID4gKwlyZXR1
-cm4gRVJSX1BUUigtRU5PU1lTKTsKPiArfQo+ICsKPiDCoHN0YXRpYyBpbmxpbmUgaW50IG52bWVt
-X2NlbGxfd3JpdGUoc3RydWN0IG52bWVtX2NlbGwgKmNlbGwsCj4gPiDCoAkJCQnCoMKgwqDCoGNv
-bnN0IGNoYXIgKmJ1Ziwgc2l6ZV90IGxlbikKPiDCoHsKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+On Wed, Jun 27, 2018 at 09:42:26PM -0700, Andrey Smirnov wrote:
+> Introduce nvmem_cell_get_and_read() that combines getting a NVMEM cell
+> by name and reading its contents.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+> 
+> Changes since [v1]:
+> 
+>     - Added missing newline to core.c
+
+Applied, thanks
+
+Sascha
+
+> 
+> [v1] http://lists.infradead.org/pipermail/barebox/2018-June/033857.html
+> 
+>  drivers/nvmem/core.c           | 23 +++++++++++++++++++++++
+>  include/linux/nvmem-consumer.h | 10 ++++++++++
+>  2 files changed, 33 insertions(+)
+> 
+> diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+> index 53b934bb3..c0f61f453 100644
+> --- a/drivers/nvmem/core.c
+> +++ b/drivers/nvmem/core.c
+> @@ -750,3 +750,26 @@ int nvmem_device_write(struct nvmem_device *nvmem,
+>  	return bytes;
+>  }
+>  EXPORT_SYMBOL_GPL(nvmem_device_write);
+> +
+> +void *nvmem_cell_get_and_read(struct device_node *np, const char *cell_name,
+> +			      size_t bytes)
+> +{
+> +	struct nvmem_cell *cell;
+> +	void *value;
+> +	size_t len;
+> +
+> +	cell = of_nvmem_cell_get(np, cell_name);
+> +	if (IS_ERR(cell))
+> +		return cell;
+> +
+> +	value = nvmem_cell_read(cell, &len);
+> +	if (!IS_ERR(value) && len != bytes) {
+> +		kfree(value);
+> +		value = ERR_PTR(-EINVAL);
+> +	}
+> +
+> +	nvmem_cell_put(cell);
+> +
+> +	return value;
+> +}
+> +EXPORT_SYMBOL_GPL(nvmem_cell_get_and_read);
+> diff --git a/include/linux/nvmem-consumer.h b/include/linux/nvmem-consumer.h
+> index 606cadb49..0ec2f05b9 100644
+> --- a/include/linux/nvmem-consumer.h
+> +++ b/include/linux/nvmem-consumer.h
+> @@ -32,6 +32,9 @@ struct nvmem_cell_info {
+>  struct nvmem_cell *nvmem_cell_get(struct device_d *dev, const char *name);
+>  void nvmem_cell_put(struct nvmem_cell *cell);
+>  void *nvmem_cell_read(struct nvmem_cell *cell, size_t *len);
+> +void *nvmem_cell_get_and_read(struct device_node *np, const char *cell_name,
+> +			      size_t bytes);
+> +
+>  int nvmem_cell_write(struct nvmem_cell *cell, void *buf, size_t len);
+>  
+>  /* direct nvmem device read/write interface */
+> @@ -55,6 +58,13 @@ static inline char *nvmem_cell_read(struct nvmem_cell *cell, size_t *len)
+>  	return ERR_PTR(-ENOSYS);
+>  }
+>  
+> +static inline void *nvmem_cell_get_and_read(struct device_node *np,
+> +					    const char *cell_name,
+> +					    size_t bytes)
+> +{
+> +	return ERR_PTR(-ENOSYS);
+> +}
+> +
+>  static inline int nvmem_cell_write(struct nvmem_cell *cell,
+>  				    const char *buf, size_t len)
+>  {
+> -- 
+> 2.17.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
