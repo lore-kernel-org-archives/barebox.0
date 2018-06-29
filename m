@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fYRa1-0004QG-NV
- for barebox@lists.infradead.org; Thu, 28 Jun 2018 07:43:04 +0000
-Received: by mail-lf0-x244.google.com with SMTP id u202-v6so3454037lff.9
- for <barebox@lists.infradead.org>; Thu, 28 Jun 2018 00:42:51 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 28 Jun 2018 10:39:44 +0300
-Message-Id: <20180628073953.15384-4-antonynpavlov@gmail.com>
-In-Reply-To: <20180628073953.15384-1-antonynpavlov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fYnqM-00047h-H9
+ for barebox@lists.infradead.org; Fri, 29 Jun 2018 07:29:24 +0000
+Date: Fri, 29 Jun 2018 09:29:08 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180629072908.4z66au6jdyyehmwf@pengutronix.de>
 References: <20180628073953.15384-1-antonynpavlov@gmail.com>
+ <20180628073953.15384-4-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180628073953.15384-4-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,859 +19,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 03/12] Add initial RISC-V architecture support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 03/12] Add initial RISC-V architecture support
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/riscv/Kconfig                   | 62 +++++++++++++++++++
- arch/riscv/Makefile                  | 72 ++++++++++++++++++++++
- arch/riscv/boot/Makefile             |  2 +
- arch/riscv/boot/main_entry.c         | 40 +++++++++++++
- arch/riscv/boot/start.S              | 63 ++++++++++++++++++++
- arch/riscv/dts/.gitignore            |  1 +
- arch/riscv/dts/Makefile              |  9 +++
- arch/riscv/include/asm/barebox.h     |  1 +
- arch/riscv/include/asm/bitops.h      | 35 +++++++++++
- arch/riscv/include/asm/bitsperlong.h | 10 ++++
- arch/riscv/include/asm/byteorder.h   |  6 ++
- arch/riscv/include/asm/common.h      |  6 ++
- arch/riscv/include/asm/elf.h         | 11 ++++
- arch/riscv/include/asm/io.h          |  8 +++
- arch/riscv/include/asm/mmu.h         |  6 ++
- arch/riscv/include/asm/posix_types.h |  1 +
- arch/riscv/include/asm/sections.h    |  1 +
- arch/riscv/include/asm/string.h      |  1 +
- arch/riscv/include/asm/swab.h        |  6 ++
- arch/riscv/include/asm/types.h       | 60 +++++++++++++++++++
- arch/riscv/include/asm/unaligned.h   | 19 ++++++
- arch/riscv/lib/.gitignore            |  1 +
- arch/riscv/lib/Makefile              |  5 ++
- arch/riscv/lib/asm-offsets.c         | 12 ++++
- arch/riscv/lib/barebox.lds.S         | 89 ++++++++++++++++++++++++++++
- arch/riscv/lib/dtb.c                 | 41 +++++++++++++
- arch/riscv/lib/riscv_timer.c         | 67 +++++++++++++++++++++
- drivers/of/Kconfig                   |  2 +-
- 28 files changed, 636 insertions(+), 1 deletion(-)
+On Thu, Jun 28, 2018 at 10:39:44AM +0300, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+> +++ b/arch/riscv/lib/barebox.lds.S
+> @@ -0,0 +1,89 @@
+> +/*
+> + * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
+> + *
+> + * This file is part of barebox.
+> + * See file CREDITS for list of people who contributed to this project.
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2
+> + * as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + */
+> +
+> +#include <asm-generic/barebox.lds.h>
+> +
+> +OUTPUT_ARCH(riscv)
+> +ENTRY(_start)
+> +SECTIONS
+> +{
+> +	. = TEXT_BASE;
+> +
+> +	. = ALIGN(8);
+> +	.text      :
+> +	{
+> +		_stext = .;
+> +		_start = .;
+> +		KEEP(*(.text_entry*))
+> +		_text = .;
+> +		__bare_init_start = .;
+> +		*(.text_bare_init*)
+> +		__bare_init_end = .;
+> +		*(.text*)
+> +	}
+> +	BAREBOX_BARE_INIT_SIZE
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-new file mode 100644
-index 0000000000..8bbe52f232
---- /dev/null
-+++ b/arch/riscv/Kconfig
-@@ -0,0 +1,62 @@
-+config RISCV
-+	def_bool y
-+	select GENERIC_FIND_NEXT_BIT
-+	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
-+	select HAVE_CONFIGURABLE_TEXT_BASE
-+	select GPIOLIB
-+	select OFTREE
-+	select COMMON_CLK
-+	select COMMON_CLK_OF_PROVIDER
-+	select CLKDEV_LOOKUP
-+
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0x0
-+
-+menu "Machine selection"
-+
-+choice
-+	prompt "Base ISA"
-+	default ARCH_RV32I
-+
-+config ARCH_RV32I
-+	bool "RV32I"
-+	select CPU_SUPPORTS_32BIT_KERNEL
-+	select GENERIC_LIB_ASHLDI3
-+	select GENERIC_LIB_ASHRDI3
-+	select GENERIC_LIB_LSHRDI3
-+
-+endchoice
-+
-+config CPU_SUPPORTS_32BIT_KERNEL
-+	bool
-+
-+choice
-+	prompt "barebox code model"
-+	default 32BIT
-+
-+config 32BIT
-+	bool "32-bit barebox"
-+	depends on CPU_SUPPORTS_32BIT_KERNEL
-+	help
-+	  Select this option to build a 32-bit barebox.
-+
-+endchoice
-+
-+config BUILTIN_DTB
-+	bool "link a DTB into the barebox image"
-+	depends on OFTREE
-+
-+config BUILTIN_DTB_NAME
-+	string "DTB to build into the barebox image"
-+	depends on BUILTIN_DTB
-+
-+endmenu
-+
-+source common/Kconfig
-+source commands/Kconfig
-+source net/Kconfig
-+source drivers/Kconfig
-+source fs/Kconfig
-+source lib/Kconfig
-+source crypto/Kconfig
-diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-new file mode 100644
-index 0000000000..e9c407354c
---- /dev/null
-+++ b/arch/riscv/Makefile
-@@ -0,0 +1,72 @@
-+CPPFLAGS += -fno-strict-aliasing
-+
-+ifeq ($(CONFIG_ARCH_RV32I),y)
-+	cflags-y += -march=rv32im
-+endif
-+
-+cflags-y += -fno-pic -pipe
-+cflags-y += -Wall -Wmissing-prototypes -Wstrict-prototypes \
-+	-Wno-uninitialized -Wno-format -Wno-main -mcmodel=medany
-+
-+LDFLAGS += $(ldflags-y)
-+LDFLAGS_barebox += -nostdlib
-+
-+TEXT_BASE = $(CONFIG_TEXT_BASE)
-+CPPFLAGS += -DTEXT_BASE=$(CONFIG_TEXT_BASE)
-+
-+ifndef CONFIG_MODULES
-+# Add cleanup flags
-+CPPFLAGS += -fdata-sections -ffunction-sections
-+LDFLAGS_barebox += -static --gc-sections
-+endif
-+
-+KBUILD_BINARY := barebox.bin
-+
-+machdirs := $(patsubst %,arch/riscv/mach-%/,$(machine-y))
-+
-+ifneq ($(board-y),)
-+BOARD := arch/riscv/boards/$(board-y)/
-+else
-+BOARD :=
-+endif
-+
-+ifeq ($(KBUILD_SRC),)
-+CPPFLAGS += -I$(BOARD)/include
-+else
-+CPPFLAGS += -I$(srctree)/$(BOARD)/include
-+endif
-+
-+ifeq ($(KBUILD_SRC),)
-+CPPFLAGS += $(patsubst %,-I%include,$(machdirs))
-+else
-+CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
-+endif
-+
-+archprepare: maketools
-+
-+PHONY += maketools
-+
-+ifneq ($(machine-y),)
-+MACH  := arch/riscv/mach-$(machine-y)/
-+else
-+MACH  :=
-+endif
-+
-+ifneq ($(board-y),)
-+BOARD := arch/riscv/boards/$(board-y)/
-+else
-+BOARD :=
-+endif
-+
-+common-y += $(BOARD) $(MACH)
-+common-y += arch/riscv/lib/
-+common-y += arch/riscv/boot/
-+
-+common-$(CONFIG_OFTREE) += arch/riscv/dts/
-+
-+CPPFLAGS += $(cflags-y)
-+CFLAGS += $(cflags-y)
-+
-+lds-y	:= arch/riscv/lib/barebox.lds
-+
-+CLEAN_FILES += arch/riscv/lib/barebox.lds
-diff --git a/arch/riscv/boot/Makefile b/arch/riscv/boot/Makefile
-new file mode 100644
-index 0000000000..d6d28ce652
---- /dev/null
-+++ b/arch/riscv/boot/Makefile
-@@ -0,0 +1,2 @@
-+obj-y += start.o
-+obj-y += main_entry.o
-diff --git a/arch/riscv/boot/main_entry.c b/arch/riscv/boot/main_entry.c
-new file mode 100644
-index 0000000000..18db86da58
---- /dev/null
-+++ b/arch/riscv/boot/main_entry.c
-@@ -0,0 +1,40 @@
-+/*
-+ * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <memory.h>
-+#include <asm-generic/memory_layout.h>
-+#include <asm/sections.h>
-+
-+void main_entry(void);
-+
-+/**
-+ * Called plainly from assembler code
-+ *
-+ * @note The C environment isn't initialized yet
-+ */
-+void main_entry(void)
-+{
-+	/* clear the BSS first */
-+	memset(__bss_start, 0x00, __bss_stop - __bss_start);
-+
-+	mem_malloc_init((void *)MALLOC_BASE,
-+			(void *)(MALLOC_BASE + MALLOC_SIZE - 1));
-+
-+	start_barebox();
-+}
-diff --git a/arch/riscv/boot/start.S b/arch/riscv/boot/start.S
-new file mode 100644
-index 0000000000..be3aed1507
---- /dev/null
-+++ b/arch/riscv/boot/start.S
-@@ -0,0 +1,63 @@
-+/*
-+ * Startup Code for RISC-V CPU
-+ *
-+ * based on coreboot/src/arch/riscv/bootblock.S
-+ *
-+ * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <asm-generic/memory_layout.h>
-+
-+	.text
-+	.section ".text_entry"
-+	.align 2
-+
-+.globl _start
-+_start:
-+	li	sp, STACK_BASE + STACK_SIZE
-+
-+	/* copy barebox to link location */
-+
-+	la	a0, _start	/* a0 <- _start actual address */
-+	li	a1, CONFIG_TEXT_BASE	/* a1 <- _start link address */
-+
-+	beq	a0, a1, main_entry
-+
-+	la	a2, __bss_start
-+
-+#define LONGSIZE 4
-+
-+copy_loop:
-+	/* copy from source address [a0] */
-+	lw	t0, LONGSIZE * 0(a0)
-+	lw	t1, LONGSIZE * 1(a0)
-+	lw	t2, LONGSIZE * 2(a0)
-+	lw	t3, LONGSIZE * 3(a0)
-+	/* copy to target address [a1] */
-+	sw	t0, LONGSIZE * 0(a1)
-+	sw	t1, LONGSIZE * 1(a1)
-+	sw	t2, LONGSIZE * 2(a1)
-+	sw	t3, LONGSIZE * 3(a1)
-+	addi	a0, a0, LONGSIZE * 4
-+	addi	a1, a1, LONGSIZE * 4
-+	bgeu	a2, a0, copy_loop
-+
-+	/* Alas! At the moment I can't load main_entry __link__ address
-+	   into a0 with la. Use CONFIG_TEXT_BASE instead. This solution
-+	   leads to extra cycles for repeat sp initialization. */
-+
-+	li	a0, CONFIG_TEXT_BASE
-+	jalr	a0
-diff --git a/arch/riscv/dts/.gitignore b/arch/riscv/dts/.gitignore
-new file mode 100644
-index 0000000000..077903c50a
---- /dev/null
-+++ b/arch/riscv/dts/.gitignore
-@@ -0,0 +1 @@
-+*dtb*
-diff --git a/arch/riscv/dts/Makefile b/arch/riscv/dts/Makefile
-new file mode 100644
-index 0000000000..f8380b11c9
---- /dev/null
-+++ b/arch/riscv/dts/Makefile
-@@ -0,0 +1,9 @@
-+BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
-+obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
-+
-+# just to build a built-in.o. Otherwise compilation fails when no devicetree is
-+# created.
-+obj- += dummy.o
-+
-+always := $(dtb-y)
-+clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
-diff --git a/arch/riscv/include/asm/barebox.h b/arch/riscv/include/asm/barebox.h
-new file mode 100644
-index 0000000000..2997587d82
---- /dev/null
-+++ b/arch/riscv/include/asm/barebox.h
-@@ -0,0 +1 @@
-+/* dummy */
-diff --git a/arch/riscv/include/asm/bitops.h b/arch/riscv/include/asm/bitops.h
-new file mode 100644
-index 0000000000..e77ab83202
---- /dev/null
-+++ b/arch/riscv/include/asm/bitops.h
-@@ -0,0 +1,35 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ *
-+ */
-+
-+#ifndef _ASM_BITOPS_H_
-+#define _ASM_BITOPS_H_
-+
-+#include <asm-generic/bitops/__ffs.h>
-+#include <asm-generic/bitops/__fls.h>
-+#include <asm-generic/bitops/ffs.h>
-+#include <asm-generic/bitops/fls.h>
-+#include <asm-generic/bitops/ffz.h>
-+#include <asm-generic/bitops/hweight.h>
-+#include <asm-generic/bitops/fls64.h>
-+#include <asm-generic/bitops/find.h>
-+#include <asm-generic/bitops/ops.h>
-+
-+#define set_bit(x, y)			__set_bit(x, y)
-+#define clear_bit(x, y)			__clear_bit(x, y)
-+#define change_bit(x, y)		__change_bit(x, y)
-+#define test_and_set_bit(x, y)		__test_and_set_bit(x, y)
-+#define test_and_clear_bit(x, y)	__test_and_clear_bit(x, y)
-+#define test_and_change_bit(x, y)	__test_and_change_bit(x, y)
-+
-+#endif /* _ASM_BITOPS_H_ */
-diff --git a/arch/riscv/include/asm/bitsperlong.h b/arch/riscv/include/asm/bitsperlong.h
-new file mode 100644
-index 0000000000..4641e7e485
---- /dev/null
-+++ b/arch/riscv/include/asm/bitsperlong.h
-@@ -0,0 +1,10 @@
-+#ifndef __ASM_BITSPERLONG_H
-+#define __ASM_BITSPERLONG_H
-+
-+#ifdef __riscv64
-+#define BITS_PER_LONG 64
-+#else
-+#define BITS_PER_LONG 32
-+#endif
-+
-+#endif /* __ASM_BITSPERLONG_H */
-diff --git a/arch/riscv/include/asm/byteorder.h b/arch/riscv/include/asm/byteorder.h
-new file mode 100644
-index 0000000000..0be826927b
---- /dev/null
-+++ b/arch/riscv/include/asm/byteorder.h
-@@ -0,0 +1,6 @@
-+#ifndef _ASM_RISCV_BYTEORDER_H
-+#define _ASM_RISCV_BYTEORDER_H
-+
-+#include <linux/byteorder/little_endian.h>
-+
-+#endif /* _ASM_RISCV_BYTEORDER_H */
-diff --git a/arch/riscv/include/asm/common.h b/arch/riscv/include/asm/common.h
-new file mode 100644
-index 0000000000..bc8a17e30b
---- /dev/null
-+++ b/arch/riscv/include/asm/common.h
-@@ -0,0 +1,6 @@
-+#ifndef ASM_RISCV_COMMON_H
-+#define ASM_RISCV_COMMON_H
-+
-+/* nothing special yet */
-+
-+#endif /* ASM_RISCV_COMMON_H */
-diff --git a/arch/riscv/include/asm/elf.h b/arch/riscv/include/asm/elf.h
-new file mode 100644
-index 0000000000..7134fa0582
---- /dev/null
-+++ b/arch/riscv/include/asm/elf.h
-@@ -0,0 +1,11 @@
-+#ifndef __ASM_RISCV_ELF_H__
-+#define __ASM_RISCV_ELF_H__
-+
-+#if __SIZEOF_POINTER__ == 8
-+#define ELF_CLASS	ELFCLASS64
-+#define CONFIG_PHYS_ADDR_T_64BIT
-+#else
-+#define ELF_CLASS	ELFCLASS32
-+#endif
-+
-+#endif /* __ASM_RISCV_ELF_H__ */
-diff --git a/arch/riscv/include/asm/io.h b/arch/riscv/include/asm/io.h
-new file mode 100644
-index 0000000000..3cdea7fcac
---- /dev/null
-+++ b/arch/riscv/include/asm/io.h
-@@ -0,0 +1,8 @@
-+#ifndef __ASM_RISCV_IO_H
-+#define __ASM_RISCV_IO_H
-+
-+#define IO_SPACE_LIMIT 0
-+
-+#include <asm-generic/io.h>
-+
-+#endif /* __ASM_RISCV_IO_H */
-diff --git a/arch/riscv/include/asm/mmu.h b/arch/riscv/include/asm/mmu.h
-new file mode 100644
-index 0000000000..95af871420
---- /dev/null
-+++ b/arch/riscv/include/asm/mmu.h
-@@ -0,0 +1,6 @@
-+#ifndef __ASM_MMU_H
-+#define __ASM_MMU_H
-+
-+#define MAP_ARCH_DEFAULT MAP_UNCACHED
-+
-+#endif /* __ASM_MMU_H */
-diff --git a/arch/riscv/include/asm/posix_types.h b/arch/riscv/include/asm/posix_types.h
-new file mode 100644
-index 0000000000..22cae6230c
---- /dev/null
-+++ b/arch/riscv/include/asm/posix_types.h
-@@ -0,0 +1 @@
-+#include <asm-generic/posix_types.h>
-diff --git a/arch/riscv/include/asm/sections.h b/arch/riscv/include/asm/sections.h
-new file mode 100644
-index 0000000000..2b8c516038
---- /dev/null
-+++ b/arch/riscv/include/asm/sections.h
-@@ -0,0 +1 @@
-+#include <asm-generic/sections.h>
-diff --git a/arch/riscv/include/asm/string.h b/arch/riscv/include/asm/string.h
-new file mode 100644
-index 0000000000..2997587d82
---- /dev/null
-+++ b/arch/riscv/include/asm/string.h
-@@ -0,0 +1 @@
-+/* dummy */
-diff --git a/arch/riscv/include/asm/swab.h b/arch/riscv/include/asm/swab.h
-new file mode 100644
-index 0000000000..60a90120b6
---- /dev/null
-+++ b/arch/riscv/include/asm/swab.h
-@@ -0,0 +1,6 @@
-+#ifndef _ASM_SWAB_H
-+#define _ASM_SWAB_H
-+
-+/* nothing. use generic functions */
-+
-+#endif /* _ASM_SWAB_H */
-diff --git a/arch/riscv/include/asm/types.h b/arch/riscv/include/asm/types.h
-new file mode 100644
-index 0000000000..ba386ab4c5
---- /dev/null
-+++ b/arch/riscv/include/asm/types.h
-@@ -0,0 +1,60 @@
-+#ifndef __ASM_RISCV_TYPES_H
-+#define __ASM_RISCV_TYPES_H
-+
-+#ifdef __riscv64
-+/*
-+ * This is used in dlmalloc. On RISCV64 we need it to be 64 bit
-+ */
-+#define INTERNAL_SIZE_T unsigned long
-+
-+/*
-+ * This is a Kconfig variable in the Kernel, but we want to detect
-+ * this during compile time, so we set it here.
-+ */
-+#define CONFIG_PHYS_ADDR_T_64BIT
-+
-+#endif
-+
-+typedef unsigned short umode_t;
-+
-+/*
-+ * __xx is ok: it doesn't pollute the POSIX namespace. Use these in the
-+ * header files exported to user space
-+ */
-+
-+typedef __signed__ char __s8;
-+typedef unsigned char __u8;
-+
-+typedef __signed__ short __s16;
-+typedef unsigned short __u16;
-+
-+typedef __signed__ int __s32;
-+typedef unsigned int __u32;
-+
-+#if defined(__GNUC__) && !defined(__STRICT_ANSI__)
-+typedef __signed__ long long __s64;
-+typedef unsigned long long __u64;
-+#endif
-+
-+/*
-+ * These aren't exported outside the kernel to avoid name space clashes
-+ */
-+#ifdef __KERNEL__
-+
-+typedef signed char s8;
-+typedef unsigned char u8;
-+
-+typedef signed short s16;
-+typedef unsigned short u16;
-+
-+typedef signed int s32;
-+typedef unsigned int u32;
-+
-+typedef signed long long s64;
-+typedef unsigned long long u64;
-+
-+#include <asm/bitsperlong.h>
-+
-+#endif /* __KERNEL__ */
-+
-+#endif /* __ASM_RISCV_TYPES_H */
-diff --git a/arch/riscv/include/asm/unaligned.h b/arch/riscv/include/asm/unaligned.h
-new file mode 100644
-index 0000000000..aaebc06411
---- /dev/null
-+++ b/arch/riscv/include/asm/unaligned.h
-@@ -0,0 +1,19 @@
-+#ifndef _ASM_RISCV_UNALIGNED_H
-+#define _ASM_RISCV_UNALIGNED_H
-+
-+/*
-+ * FIXME: this file is copy-n-pasted from sandbox's unaligned.h
-+ */
-+
-+#include <linux/unaligned/access_ok.h>
-+#include <linux/unaligned/generic.h>
-+
-+#if __BYTE_ORDER == __LITTLE_ENDIAN
-+#define get_unaligned __get_unaligned_le
-+#define put_unaligned __put_unaligned_le
-+#else
-+#define get_unaligned __get_unaligned_be
-+#define put_unaligned __put_unaligned_be
-+#endif
-+
-+#endif /* _ASM_RISCV_UNALIGNED_H */
-diff --git a/arch/riscv/lib/.gitignore b/arch/riscv/lib/.gitignore
-new file mode 100644
-index 0000000000..d1165788c9
---- /dev/null
-+++ b/arch/riscv/lib/.gitignore
-@@ -0,0 +1 @@
-+barebox.lds
-diff --git a/arch/riscv/lib/Makefile b/arch/riscv/lib/Makefile
-new file mode 100644
-index 0000000000..8dcd1e2728
---- /dev/null
-+++ b/arch/riscv/lib/Makefile
-@@ -0,0 +1,5 @@
-+extra-y += barebox.lds
-+
-+obj-y += riscv_timer.o
-+
-+obj-$(CONFIG_BUILTIN_DTB) += dtb.o
-diff --git a/arch/riscv/lib/asm-offsets.c b/arch/riscv/lib/asm-offsets.c
-new file mode 100644
-index 0000000000..22f382b71e
---- /dev/null
-+++ b/arch/riscv/lib/asm-offsets.c
-@@ -0,0 +1,12 @@
-+/*
-+ * Generate definitions needed by assembly language modules.
-+ * This code generates raw asm output which is post-processed to extract
-+ * and format the required data.
-+ */
-+
-+#include <linux/kbuild.h>
-+
-+int main(void)
-+{
-+	return 0;
-+}
-diff --git a/arch/riscv/lib/barebox.lds.S b/arch/riscv/lib/barebox.lds.S
-new file mode 100644
-index 0000000000..9468fb8b5e
---- /dev/null
-+++ b/arch/riscv/lib/barebox.lds.S
-@@ -0,0 +1,89 @@
-+/*
-+ * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <asm-generic/barebox.lds.h>
-+
-+OUTPUT_ARCH(riscv)
-+ENTRY(_start)
-+SECTIONS
-+{
-+	. = TEXT_BASE;
-+
-+	. = ALIGN(8);
-+	.text      :
-+	{
-+		_stext = .;
-+		_start = .;
-+		KEEP(*(.text_entry*))
-+		_text = .;
-+		__bare_init_start = .;
-+		*(.text_bare_init*)
-+		__bare_init_end = .;
-+		*(.text*)
-+	}
-+	BAREBOX_BARE_INIT_SIZE
-+
-+	PRE_IMAGE
-+
-+	. = ALIGN(8);
-+	.rodata : { *(.rodata*) }
-+
-+	_etext = .;			/* End of text and rodata section */
-+	_sdata = .;
-+
-+	. = ALIGN(8);
-+	.data : { *(.data*) }
-+
-+	.barebox_imd : { BAREBOX_IMD }
-+
-+	. = ALIGN(8);
-+	.got : { *(.got*) }
-+
-+	. = .;
-+	__barebox_cmd_start = .;
-+	.barebox_cmd : { BAREBOX_CMDS }
-+	__barebox_cmd_end = .;
-+
-+	__barebox_magicvar_start = .;
-+	.barebox_magicvar : { BAREBOX_MAGICVARS }
-+	__barebox_magicvar_end = .;
-+
-+	__barebox_initcalls_start = .;
-+	.barebox_initcalls : { INITCALLS }
-+	__barebox_initcalls_end = .;
-+
-+	__barebox_exitcalls_start = .;
-+	.barebox_exitcalls : { EXITCALLS }
-+	__barebox_exitcalls_end = .;
-+
-+	__usymtab_start = .;
-+	__usymtab : { BAREBOX_SYMS }
-+	__usymtab_end = .;
-+
-+	.rela.dyn : { *(.rela*) }
-+
-+	.oftables : { BAREBOX_CLK_TABLE() }
-+
-+	.dtb : { BAREBOX_DTB() }
-+
-+	_edata = .;
-+	. = ALIGN(8);
-+	__bss_start = .;
-+	.bss : { *(.bss*) *(.sbss*) }
-+	__bss_stop = .;
-+	_end = .;
-+}
-diff --git a/arch/riscv/lib/dtb.c b/arch/riscv/lib/dtb.c
-new file mode 100644
-index 0000000000..09f519dcc2
---- /dev/null
-+++ b/arch/riscv/lib/dtb.c
-@@ -0,0 +1,41 @@
-+/*
-+ * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+#include <common.h>
-+#include <init.h>
-+#include <of.h>
-+
-+extern char __dtb_start[];
-+
-+static int of_riscv_init(void)
-+{
-+	struct device_node *root;
-+
-+	root = of_get_root_node();
-+	if (root)
-+		return 0;
-+
-+	root = of_unflatten_dtb(__dtb_start);
-+	if (!IS_ERR(root)) {
-+		pr_debug("using internal DTB\n");
-+		of_set_root_node(root);
-+		if (IS_ENABLED(CONFIG_OFDEVICE))
-+			of_probe();
-+	}
-+
-+	return 0;
-+}
-+core_initcall(of_riscv_init);
-diff --git a/arch/riscv/lib/riscv_timer.c b/arch/riscv/lib/riscv_timer.c
-new file mode 100644
-index 0000000000..0bae8e9a89
---- /dev/null
-+++ b/arch/riscv/lib/riscv_timer.c
-@@ -0,0 +1,67 @@
-+/*
-+ * Copyright (C) 2017 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+/**
-+ * @file
-+ * @brief Clocksource based on RISCV cycle CSR timer
-+ */
-+
-+#include <init.h>
-+#include <of.h>
-+#include <linux/clk.h>
-+#include <clock.h>
-+
-+static uint64_t rdcycle_read(void)
-+{
-+	register unsigned long __v;
-+
-+	__asm__ __volatile__ ("rdcycle %0" : "=r" (__v));
-+
-+	return __v;
-+}
-+
-+static struct clocksource rdcycle_cs = {
-+	.read	= rdcycle_read,
-+	.mask	= CLOCKSOURCE_MASK(32),
-+};
-+
-+static int rdcycle_cs_init(void)
-+{
-+	unsigned int cycle_frequency;
-+
-+	/* default rate: 100 MHz */
-+	cycle_frequency = 100000000;
-+
-+	if (IS_ENABLED(CONFIG_OFTREE)) {
-+		struct device_node *np;
-+		struct clk *clk;
-+
-+		np = of_get_cpu_node(0, NULL);
-+		if (np) {
-+			clk = of_clk_get(np, 0);
-+			if (!IS_ERR(clk)) {
-+				cycle_frequency = clk_get_rate(clk);
-+			}
-+		}
-+	}
-+
-+	clocks_calc_mult_shift(&rdcycle_cs.mult, &rdcycle_cs.shift,
-+		cycle_frequency, NSEC_PER_SEC, 10);
-+
-+	return init_clock(&rdcycle_cs);
-+}
-+postcore_initcall(rdcycle_cs_init);
-diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-index a1fac0e613..24cf4465a8 100644
---- a/drivers/of/Kconfig
-+++ b/drivers/of/Kconfig
-@@ -4,7 +4,7 @@ config OFTREE
- 
- config OFTREE_MEM_GENERIC
- 	depends on OFTREE
--	depends on PPC || ARM || EFI_BOOTUP || OPENRISC || SANDBOX
-+	depends on PPC || ARM || EFI_BOOTUP || OPENRISC || SANDBOX || RISCV
- 	def_bool y
- 
- config DTC
+Do you need these __bare_init* stuff? If not I would prefer to remove
+it.
+
+> +
+> +	PRE_IMAGE
+
+Same here.
+
+> +static int of_riscv_init(void)
+> +{
+> +	struct device_node *root;
+> +
+> +	root = of_get_root_node();
+> +	if (root)
+> +		return 0;
+> +
+> +	root = of_unflatten_dtb(__dtb_start);
+> +	if (!IS_ERR(root)) {
+> +		pr_debug("using internal DTB\n");
+> +		of_set_root_node(root);
+> +		if (IS_ENABLED(CONFIG_OFDEVICE))
+> +			of_probe();
+> +	}
+
+Can we just call of_unflatten_dtb()/of_set_root_node() from the board
+code and use obj-dtb-y to include the dtb?
+
+That way a board can specify the dtb and not the config.
+
+Sascha
+
 -- 
-2.18.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
