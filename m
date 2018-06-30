@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x231.google.com ([2607:f8b0:400e:c00::231])
+Received: from mail-pl0-x230.google.com ([2607:f8b0:400e:c01::230])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fZ6sy-0003gL-Mx
- for barebox@lists.infradead.org; Sat, 30 Jun 2018 03:49:25 +0000
-Received: by mail-pf0-x231.google.com with SMTP id v9-v6so3915811pff.9
- for <barebox@lists.infradead.org>; Fri, 29 Jun 2018 20:49:10 -0700 (PDT)
+ id 1fZ6t0-0003gN-RH
+ for barebox@lists.infradead.org; Sat, 30 Jun 2018 03:49:27 +0000
+Received: by mail-pl0-x230.google.com with SMTP id 30-v6so5334449pld.13
+ for <barebox@lists.infradead.org>; Fri, 29 Jun 2018 20:49:12 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 29 Jun 2018 20:48:52 -0700
-Message-Id: <20180630034900.3324-4-andrew.smirnov@gmail.com>
+Date: Fri, 29 Jun 2018 20:48:54 -0700
+Message-Id: <20180630034900.3324-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20180630034900.3324-1-andrew.smirnov@gmail.com>
 References: <20180630034900.3324-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,44 +23,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/11] ARM: i.MX8MQ: Configure cntfrq only in EL3
+Subject: [PATCH 05/11] ARM: i.MX: xload-esdhc: Move image base to
+ MX8MQ_ATF_BL33_BASE_ADDR
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-We only can (and should only need to) configure cntfrq when running in
-EL3 and executing this code in any other exception level will result
-in exception.
+BL31 ATF implementation provided by NXP will jump to
+MX8MQ_ATF_BL33_BASE_ADDR after completing its initialization. Move
+image base used by imx8_esdhc_start_image() in order to support that.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/imx8mq.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ arch/arm/mach-imx/xload-esdhc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/imx8mq.c b/arch/arm/mach-imx/imx8mq.c
-index f3246e437..dbcf4fa59 100644
---- a/arch/arm/mach-imx/imx8mq.c
-+++ b/arch/arm/mach-imx/imx8mq.c
-@@ -62,12 +62,14 @@ static void imx8mq_silicon_revision(void)
+diff --git a/arch/arm/mach-imx/xload-esdhc.c b/arch/arm/mach-imx/xload-esdhc.c
+index 08ba9b08d..98ebdfcf7 100644
+--- a/arch/arm/mach-imx/xload-esdhc.c
++++ b/arch/arm/mach-imx/xload-esdhc.c
+@@ -14,6 +14,7 @@
+ #include <common.h>
+ #include <io.h>
+ #include <mci.h>
++#include <mach/atf.h>
+ #include <mach/imx6-regs.h>
+ #include <mach/imx8mq-regs.h>
+ #include <mach/xload.h>
+@@ -323,5 +324,5 @@ int imx8_esdhc_start_image(int instance)
  
- static int imx8mq_init_syscnt_frequency(void)
- {
--	void __iomem *syscnt = IOMEM(MX8MQ_SYSCNT_CTRL_BASE_ADDR);
--	/*
--	 * Update with accurate clock frequency
--	 */
--	set_cntfrq(syscnt_get_cntfrq(syscnt));
--	syscnt_enable(syscnt);
-+	if (current_el() == 3) {
-+		void __iomem *syscnt = IOMEM(MX8MQ_SYSCNT_CTRL_BASE_ADDR);
-+		/*
-+		 * Update with accurate clock frequency
-+		 */
-+		set_cntfrq(syscnt_get_cntfrq(syscnt));
-+		syscnt_enable(syscnt);
-+	}
+ 	esdhc.is_mx6 = 1;
  
- 	return 0;
+-	return esdhc_start_image(&esdhc, MX8MQ_DDR_CSD1_BASE_ADDR, SZ_32K);
++	return esdhc_start_image(&esdhc, MX8MQ_ATF_BL33_BASE_ADDR, SZ_32K);
  }
+\ No newline at end of file
 -- 
 2.17.1
 
