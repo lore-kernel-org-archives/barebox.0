@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x230.google.com ([2607:f8b0:400e:c01::230])
+Received: from mail-pg0-x230.google.com ([2607:f8b0:400e:c05::230])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fZ6t0-0003gN-RH
- for barebox@lists.infradead.org; Sat, 30 Jun 2018 03:49:27 +0000
-Received: by mail-pl0-x230.google.com with SMTP id 30-v6so5334449pld.13
- for <barebox@lists.infradead.org>; Fri, 29 Jun 2018 20:49:12 -0700 (PDT)
+ id 1fZ6t4-0003gR-LO
+ for barebox@lists.infradead.org; Sat, 30 Jun 2018 03:49:33 +0000
+Received: by mail-pg0-x230.google.com with SMTP id i7-v6so4780112pgp.2
+ for <barebox@lists.infradead.org>; Fri, 29 Jun 2018 20:49:15 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 29 Jun 2018 20:48:54 -0700
-Message-Id: <20180630034900.3324-6-andrew.smirnov@gmail.com>
+Date: Fri, 29 Jun 2018 20:48:57 -0700
+Message-Id: <20180630034900.3324-9-andrew.smirnov@gmail.com>
 In-Reply-To: <20180630034900.3324-1-andrew.smirnov@gmail.com>
 References: <20180630034900.3324-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,40 +23,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/11] ARM: i.MX: xload-esdhc: Move image base to
- MX8MQ_ATF_BL33_BASE_ADDR
+Subject: [PATCH 08/11] ARM: nxp-imx8mq-evk: Add code to load ATF BL31 blob
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-BL31 ATF implementation provided by NXP will jump to
-MX8MQ_ATF_BL33_BASE_ADDR after completing its initialization. Move
-image base used by imx8_esdhc_start_image() in order to support that.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/xload-esdhc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/boards/nxp-imx8mq-evk/lowlevel.c | 3 +++
+ arch/arm/mach-imx/Kconfig                 | 2 ++
+ firmware/Kconfig                          | 2 +-
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/xload-esdhc.c b/arch/arm/mach-imx/xload-esdhc.c
-index 08ba9b08d..98ebdfcf7 100644
---- a/arch/arm/mach-imx/xload-esdhc.c
-+++ b/arch/arm/mach-imx/xload-esdhc.c
-@@ -14,6 +14,7 @@
- #include <common.h>
- #include <io.h>
- #include <mci.h>
+diff --git a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
+index 1ed918ee0..c2dc6460a 100644
+--- a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
++++ b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
+@@ -23,6 +23,7 @@
+ #include <asm/cache.h>
+ #include <asm/sections.h>
+ #include <asm/mmu.h>
 +#include <mach/atf.h>
- #include <mach/imx6-regs.h>
- #include <mach/imx8mq-regs.h>
- #include <mach/xload.h>
-@@ -323,5 +324,5 @@ int imx8_esdhc_start_image(int instance)
  
- 	esdhc.is_mx6 = 1;
+ #include "ddr.h"
  
--	return esdhc_start_image(&esdhc, MX8MQ_DDR_CSD1_BASE_ADDR, SZ_32K);
-+	return esdhc_start_image(&esdhc, MX8MQ_ATF_BL33_BASE_ADDR, SZ_32K);
+@@ -75,6 +76,8 @@ ENTRY_FUNCTION(start_nxp_imx8mq_evk, r0, r1, r2)
+ 	if (get_pc() < MX8MQ_DDR_CSD1_BASE_ADDR)
+ 		nxp_imx8mq_evk_sram_setup();
+ 
++	imx8mq_atf_load_bl31(imx_imx8m_bl31_bin);
++
+ 	barebox_arm_entry(MX8MQ_DDR_CSD1_BASE_ADDR,
+ 			  SZ_2G + SZ_1G, __dtb_imx8mq_evk_start);
  }
-\ No newline at end of file
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index a743bbfda..0086a7803 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -449,6 +449,8 @@ config MACH_NXP_IMX8MQ_EVK
+ 	bool "NXP i.MX8MQ EVK Board"
+ 	select ARCH_IMX8MQ
+ 	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
++	select FIRMWARE_IMX8MQ_ATF
++	select ARM_SMCCC
+ 
+ endif
+ 
+diff --git a/firmware/Kconfig b/firmware/Kconfig
+index 3c5f0c30e..a6f79e8a9 100644
+--- a/firmware/Kconfig
++++ b/firmware/Kconfig
+@@ -7,7 +7,7 @@ config EXTRA_FIRMWARE_DIR
+ config FIRMWARE_IMX_LPDDR4_PMU_TRAIN
+        	bool
+ 
+-config CONFIG_FIRMWARE_IMX8MQ_ATF
++config FIRMWARE_IMX8MQ_ATF
+         bool
+ 
+ endmenu
 -- 
 2.17.1
 
