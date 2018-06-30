@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+Received: from mail-pg0-x229.google.com ([2607:f8b0:400e:c05::229])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fZ6t4-0003gS-SF
- for barebox@lists.infradead.org; Sat, 30 Jun 2018 03:49:35 +0000
-Received: by mail-pf0-x243.google.com with SMTP id g3-v6so5052012pfi.1
- for <barebox@lists.infradead.org>; Fri, 29 Jun 2018 20:49:16 -0700 (PDT)
+ id 1fZ6t7-0003gh-43
+ for barebox@lists.infradead.org; Sat, 30 Jun 2018 03:49:37 +0000
+Received: by mail-pg0-x229.google.com with SMTP id c9-v6so4779097pgf.5
+ for <barebox@lists.infradead.org>; Fri, 29 Jun 2018 20:49:18 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 29 Jun 2018 20:48:58 -0700
-Message-Id: <20180630034900.3324-10-andrew.smirnov@gmail.com>
+Date: Fri, 29 Jun 2018 20:49:00 -0700
+Message-Id: <20180630034900.3324-12-andrew.smirnov@gmail.com>
 In-Reply-To: <20180630034900.3324-1-andrew.smirnov@gmail.com>
 References: <20180630034900.3324-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,55 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/11] ARM: i.MX8MQ: Query and display ATF fimware hash if
- availible
+Subject: [PATCH 11/11] firmware: Fix copy-paste comment mistake
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/imx8mq.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ firmware/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-imx/imx8mq.c b/arch/arm/mach-imx/imx8mq.c
-index dbcf4fa59..152f07bc1 100644
---- a/arch/arm/mach-imx/imx8mq.c
-+++ b/arch/arm/mach-imx/imx8mq.c
-@@ -20,11 +20,16 @@
- #include <mach/revision.h>
- #include <mach/imx8mq-regs.h>
+diff --git a/firmware/Makefile b/firmware/Makefile
+index 62124933d..7f4dc4932 100644
+--- a/firmware/Makefile
++++ b/firmware/Makefile
+@@ -57,6 +57,6 @@ endif
+ targets := $(patsubst $(obj)/%,%, \
+                                 $(shell find $(obj) -name \*.gen.S 2>/dev/null))
  
-+#include <linux/arm-smccc.h>
-+
- #define IMX8MQ_ROM_VERSION_A0	0x800
- #define IMX8MQ_ROM_VERSION_B0	0x83C
- 
- #define MX8MQ_ANATOP_DIGPROG	0x6c
- 
-+#define FSL_SIP_BUILDINFO			0xC2000003
-+#define FSL_SIP_BUILDINFO_GET_COMMITHASH	0x00
-+
- static void imx8mq_silicon_revision(void)
- {
- 	void __iomem *anatop = IOMEM(MX8MQ_ANATOP_BASE_ADDR);
-@@ -81,7 +86,17 @@ core_initcall(imx8mq_init_syscnt_frequency);
- 
- int imx8mq_init(void)
- {
-+	struct arm_smccc_res res;
-+
- 	imx8mq_silicon_revision();
- 
-+	if (IS_ENABLED(CONFIG_ARM_SMCCC) &&
-+	    IS_ENABLED(CONFIG_FIRMWARE_IMX8MQ_ATF)) {
-+		arm_smccc_smc(FSL_SIP_BUILDINFO,
-+			      FSL_SIP_BUILDINFO_GET_COMMITHASH,
-+			      0, 0, 0, 0, 0, 0, &res);
-+		pr_info("i.MX ARM Trusted Firmware: %s\n", (char *)&res.a0);
-+	}
-+
- 	return 0;
- }
+-# just to build a built-in.o. Otherwise compilation fails when no devicetree is
+-# created.
++# just to build a built-in.o. Otherwise compilation fails when no
++# firmware is built.
+ obj- += dummy.o
 -- 
 2.17.1
 
