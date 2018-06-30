@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg0-x230.google.com ([2607:f8b0:400e:c05::230])
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fZ6t4-0003gR-LO
- for barebox@lists.infradead.org; Sat, 30 Jun 2018 03:49:33 +0000
-Received: by mail-pg0-x230.google.com with SMTP id i7-v6so4780112pgp.2
- for <barebox@lists.infradead.org>; Fri, 29 Jun 2018 20:49:15 -0700 (PDT)
+ id 1fZ6t4-0003gS-SF
+ for barebox@lists.infradead.org; Sat, 30 Jun 2018 03:49:35 +0000
+Received: by mail-pf0-x243.google.com with SMTP id g3-v6so5052012pfi.1
+ for <barebox@lists.infradead.org>; Fri, 29 Jun 2018 20:49:16 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 29 Jun 2018 20:48:57 -0700
-Message-Id: <20180630034900.3324-9-andrew.smirnov@gmail.com>
+Date: Fri, 29 Jun 2018 20:48:58 -0700
+Message-Id: <20180630034900.3324-10-andrew.smirnov@gmail.com>
 In-Reply-To: <20180630034900.3324-1-andrew.smirnov@gmail.com>
 References: <20180630034900.3324-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,64 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/11] ARM: nxp-imx8mq-evk: Add code to load ATF BL31 blob
+Subject: [PATCH 09/11] ARM: i.MX8MQ: Query and display ATF fimware hash if
+ availible
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/nxp-imx8mq-evk/lowlevel.c | 3 +++
- arch/arm/mach-imx/Kconfig                 | 2 ++
- firmware/Kconfig                          | 2 +-
- 3 files changed, 6 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/imx8mq.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-index 1ed918ee0..c2dc6460a 100644
---- a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-+++ b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-@@ -23,6 +23,7 @@
- #include <asm/cache.h>
- #include <asm/sections.h>
- #include <asm/mmu.h>
-+#include <mach/atf.h>
+diff --git a/arch/arm/mach-imx/imx8mq.c b/arch/arm/mach-imx/imx8mq.c
+index dbcf4fa59..152f07bc1 100644
+--- a/arch/arm/mach-imx/imx8mq.c
++++ b/arch/arm/mach-imx/imx8mq.c
+@@ -20,11 +20,16 @@
+ #include <mach/revision.h>
+ #include <mach/imx8mq-regs.h>
  
- #include "ddr.h"
- 
-@@ -75,6 +76,8 @@ ENTRY_FUNCTION(start_nxp_imx8mq_evk, r0, r1, r2)
- 	if (get_pc() < MX8MQ_DDR_CSD1_BASE_ADDR)
- 		nxp_imx8mq_evk_sram_setup();
- 
-+	imx8mq_atf_load_bl31(imx_imx8m_bl31_bin);
++#include <linux/arm-smccc.h>
 +
- 	barebox_arm_entry(MX8MQ_DDR_CSD1_BASE_ADDR,
- 			  SZ_2G + SZ_1G, __dtb_imx8mq_evk_start);
+ #define IMX8MQ_ROM_VERSION_A0	0x800
+ #define IMX8MQ_ROM_VERSION_B0	0x83C
+ 
+ #define MX8MQ_ANATOP_DIGPROG	0x6c
+ 
++#define FSL_SIP_BUILDINFO			0xC2000003
++#define FSL_SIP_BUILDINFO_GET_COMMITHASH	0x00
++
+ static void imx8mq_silicon_revision(void)
+ {
+ 	void __iomem *anatop = IOMEM(MX8MQ_ANATOP_BASE_ADDR);
+@@ -81,7 +86,17 @@ core_initcall(imx8mq_init_syscnt_frequency);
+ 
+ int imx8mq_init(void)
+ {
++	struct arm_smccc_res res;
++
+ 	imx8mq_silicon_revision();
+ 
++	if (IS_ENABLED(CONFIG_ARM_SMCCC) &&
++	    IS_ENABLED(CONFIG_FIRMWARE_IMX8MQ_ATF)) {
++		arm_smccc_smc(FSL_SIP_BUILDINFO,
++			      FSL_SIP_BUILDINFO_GET_COMMITHASH,
++			      0, 0, 0, 0, 0, 0, &res);
++		pr_info("i.MX ARM Trusted Firmware: %s\n", (char *)&res.a0);
++	}
++
+ 	return 0;
  }
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index a743bbfda..0086a7803 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -449,6 +449,8 @@ config MACH_NXP_IMX8MQ_EVK
- 	bool "NXP i.MX8MQ EVK Board"
- 	select ARCH_IMX8MQ
- 	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
-+	select FIRMWARE_IMX8MQ_ATF
-+	select ARM_SMCCC
- 
- endif
- 
-diff --git a/firmware/Kconfig b/firmware/Kconfig
-index 3c5f0c30e..a6f79e8a9 100644
---- a/firmware/Kconfig
-+++ b/firmware/Kconfig
-@@ -7,7 +7,7 @@ config EXTRA_FIRMWARE_DIR
- config FIRMWARE_IMX_LPDDR4_PMU_TRAIN
-        	bool
- 
--config CONFIG_FIRMWARE_IMX8MQ_ATF
-+config FIRMWARE_IMX8MQ_ATF
-         bool
- 
- endmenu
 -- 
 2.17.1
 
