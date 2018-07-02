@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x243.google.com ([2607:f8b0:4001:c0b::243])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1faPbr-0007BG-FR
- for barebox@lists.infradead.org; Tue, 03 Jul 2018 18:01:05 +0000
-Received: by mail-it0-x243.google.com with SMTP id p185-v6so4404338itp.4
- for <barebox@lists.infradead.org>; Tue, 03 Jul 2018 11:00:53 -0700 (PDT)
-MIME-Version: 1.0
+ id 1fZsCg-00089L-RU
+ for barebox@lists.infradead.org; Mon, 02 Jul 2018 06:20:57 +0000
+Date: Mon, 2 Jul 2018 08:20:38 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180702062038.23se52uzy2ttrubm@pengutronix.de>
 References: <20180630034900.3324-1-andrew.smirnov@gmail.com>
- <20180630034900.3324-11-andrew.smirnov@gmail.com>
- <20180702054837.qukui3js3uhtsqfl@pengutronix.de>
-In-Reply-To: <20180702054837.qukui3js3uhtsqfl@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 3 Jul 2018 11:00:40 -0700
-Message-ID: <CAHQ1cqF3dtONQskz-d+h5ZSVBX2G+aSCk1=TF=dGoQzEp=qO9g@mail.gmail.com>
+ <20180630034900.3324-7-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180630034900.3324-7-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,85 +23,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 10/11] ARM: nxp-imx8mq-evk: Add bootflow comments
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 06/11] ARM: i.MX: xload-esdhc: Allow patching first word
+ of the image
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Sun, Jul 1, 2018 at 10:48 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Fri, Jun 29, 2018 at 08:48:59PM -0700, Andrey Smirnov wrote:
-> > Add some notes on how the boot-flow goes while I still remember it.
-> >
-> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > ---
-> >  arch/arm/boards/nxp-imx8mq-evk/lowlevel.c | 42 +++++++++++++++++++++--
-> >  1 file changed, 40 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-> > index c2dc6460a..7dd778c21 100644
-> > --- a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-> > +++ b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-> > @@ -66,6 +66,26 @@ static void nxp_imx8mq_evk_sram_setup(void)
-> >       BUG_ON(ret);
-> >  }
-> >
-> > +/*
-> > + * Power-on execution flow of start_nxp_imx8mq_evk() might not be
-> > + * obvious for a very frist read, so here's, hopefully helpful,
-> > + * summary:
-> > + *
-> > + * 1. MaskROM uploads PBL into OCRAM and that's where this function is
-> > + *    executed for the first time
-> > + *
-> > + * 2. DDR is initialized and full i.MX image is loaded to the
-> > + *    beginning of RAM
-> > + *
-> > + * 3. start_nxp_imx8mq_evk, now in RAM, is executed again
-> > + *
-> > + * 4. BL31 blob is uploaded to OCRAM and the control is transfer to it
-> > + *
-> > + * 5. BL31 exits EL3 into EL2 at address MX8MQ_ATF_BL33_BASE_ADDR,
-> > + *    executing start_nxp_imx8mq_evk() the third time
-> > + *
-> > + * 6. Standard barebox boot flow continues
-> > + */
-> >  ENTRY_FUNCTION(start_nxp_imx8mq_evk, r0, r1, r2)
-> >  {
-> >       arm_cpu_lowlevel_init();
-> > @@ -73,11 +93,29 @@ ENTRY_FUNCTION(start_nxp_imx8mq_evk, r0, r1, r2)
-> >       if (IS_ENABLED(CONFIG_DEBUG_LL))
-> >               setup_uart();
-> >
-> > -     if (get_pc() < MX8MQ_DDR_CSD1_BASE_ADDR)
-> > +     if (get_pc() < MX8MQ_DDR_CSD1_BASE_ADDR) {
-> > +             /*
-> > +              * We assume that we were just loaded by MaskROM into
-> > +              * SRAM if we are not running from DDR. We also assume
-> > +              * that means DDR needs to be initialized for the
-> > +              * first time.
-> > +              */
-> >               nxp_imx8mq_evk_sram_setup();
-> > -
-> > +     }
-> > +
-> > +     /*
-> > +      * Straight from the power-on we are at EL3, so the following
-> > +      * code _will_ load and jump to ATF.
-> > +      *
-> > +      * However when this function is re-executed upon exit from
-> > +      * ATF's initialization routine, it is EL2 and it is
-> > +      * short-circuited to a no-op.
-> > +      */
-> >       imx8mq_atf_load_bl31(imx_imx8m_bl31_bin);
->
-> Maybe the flow would be more clear if we add a if (current_el() == 3)
-> around the imx8mq_atf_load_bl31()
->
+On Fri, Jun 29, 2018 at 08:48:55PM -0700, Andrey Smirnov wrote:
+> Depending on how SD card/eMMC was programmed first byte of the image
+> ther may or may not have appropriate branch instruction. Extend
+> esdhc_start_image() to allow passing a custom callback that would
+> patch the first instruction in memory to correctly redirect the CPU to
+> the resto of the code.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  arch/arm/mach-imx/xload-esdhc.c | 18 +++++++++++++++---
+>  1 file changed, 15 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/arm/mach-imx/xload-esdhc.c b/arch/arm/mach-imx/xload-esdhc.c
+> index 98ebdfcf7..c017a8b10 100644
+> --- a/arch/arm/mach-imx/xload-esdhc.c
+> +++ b/arch/arm/mach-imx/xload-esdhc.c
+> @@ -219,7 +219,8 @@ static int esdhc_read_blocks(struct esdhc *esdhc, void *dst, size_t len)
+>  }
+>  
+>  static int
+> -esdhc_start_image(struct esdhc *esdhc, ptrdiff_t address, u32 offset)
+> +esdhc_start_image(struct esdhc *esdhc, ptrdiff_t address, u32 offset,
+> +		  u32 (*opcode_b)(u32))
+>  {
+>  	void *buf = (void *)address;
+>  	u32 *ivt = buf + offset + SZ_1K;
+> @@ -254,6 +255,9 @@ esdhc_start_image(struct esdhc *esdhc, ptrdiff_t address, u32 offset)
+>  
+>  	bb = buf + ofs;
+>  
+> +	if (opcode_b)
+> +		*(u32 *)buf = opcode_b(ofs);
+> +
 
-Yeah, I think so too. I'll make the change in v2.
+If I understand correctly this is to make sure that the bl31 binary
+which jumps to MX8MQ_ATF_BL33_BASE_ADDR jumps over the imx header
+to the barebox image, right?
 
-Thanks,
-Andrey Smirnov
+Maybe we should memmove the barebox image to MX8MQ_ATF_BL33_BASE_ADDR
+instead of inserting handweaved assembly into the binary.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
