@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fZq3t-0003d1-3t
- for barebox@lists.infradead.org; Mon, 02 Jul 2018 04:03:39 +0000
-Date: Mon, 2 Jul 2018 06:03:21 +0200
+ id 1fZq7U-0005hs-EJ
+ for barebox@lists.infradead.org; Mon, 02 Jul 2018 04:07:22 +0000
+Date: Mon, 2 Jul 2018 06:07:08 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180702040321.ifo265blmqfchmfw@pengutronix.de>
-References: <20180629105823.16181-1-antonynpavlov@gmail.com>
+Message-ID: <20180702040708.dl2zbhpyddynsvdy@pengutronix.de>
+References: <20180629115502.1313-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180629105823.16181-1-antonynpavlov@gmail.com>
+In-Reply-To: <20180629115502.1313-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,53 +22,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: don't include generated header files into MIPS asm
- files
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH v1 1/2] arm: arria10: enable errata 794072 and 845369
+To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jun 29, 2018 at 01:58:23PM +0300, Antony Pavlov wrote:
-> This patch came out of discussions in the 'MIPS parallel build breakage' e-mail thread:
+On Fri, Jun 29, 2018 at 01:55:01PM +0200, Oleksij Rempel wrote:
+> This SoC is affected by this two any many other erratas.
+> So enable at least supported cases.
 > 
->     http://lists.infradead.org/pipermail/barebox/2018-March/032251.html
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  arch/mips/include/asm/pbl_macros.h | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 
-\o/ Applied, thanks
-
-I'll add MIPS back to my autobuilder then.
+Rephrased the commit message and applied, thanks
 
 Sascha
 
+> ---
+>  arch/arm/mach-socfpga/arria10-init.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> diff --git a/arch/mips/include/asm/pbl_macros.h b/arch/mips/include/asm/pbl_macros.h
-> index 18115c8489..bb3182cda9 100644
-> --- a/arch/mips/include/asm/pbl_macros.h
-> +++ b/arch/mips/include/asm/pbl_macros.h
-> @@ -25,8 +25,6 @@
->  #include <asm/mipsregs.h>
->  #include <asm/asm.h>
->  #include <asm-generic/memory_layout.h>
-> -#include <generated/compile.h>
-> -#include <generated/utsrelease.h>
->  #include <asm/addrspace.h>
->  #include <asm/cacheops.h>
+> diff --git a/arch/arm/mach-socfpga/arria10-init.c b/arch/arm/mach-socfpga/arria10-init.c
+> index 07256da1db..f016b84bb7 100644
+> --- a/arch/arm/mach-socfpga/arria10-init.c
+> +++ b/arch/arm/mach-socfpga/arria10-init.c
+> @@ -14,6 +14,7 @@
+>  #include <mach/generic.h>
+>  #include <asm/io.h>
+>  #include <asm/cache-l2x0.h>
+> +#include <asm/errata.h>
+>  #include <asm/system.h>
 >  
-> @@ -174,7 +172,7 @@ copy_loop_exit:
->  	 nop
+>  #define L310_AUX_CTRL_EARLY_BRESP		BIT(30)	/* R2P0+ */
+> @@ -70,6 +71,9 @@ static void arria10_initialize_security_policies(void)
+>  	/* BootROM leaves the L2X0 in a weird state. Always disable L2X0 for now. */
+>  	l2c310_disable(l2x0_base);
 >  
->  	.org	0x10
-> -	.ascii	"barebox " UTS_RELEASE " " UTS_VERSION
-> +	.ascii	"barebox"
->  	.byte	0
->  
->  	.align	4
+> +	enable_arm_errata_794072_war();
+> +	enable_arm_errata_845369_war();
+> +
+>  	/* Put OCRAM in non-secure */
+>  	writel(0x003f0000, ARRIA10_NOC_FW_OCRAM_OCRAM_SCR_REGION0);
+>  	writel(0x1, ARRIA10_NOC_FW_OCRAM_OCRAM_SCR_EN);
 > -- 
-> 2.18.0
+> 2.17.1
 > 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
