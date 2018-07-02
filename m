@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-vk0-x244.google.com ([2607:f8b0:400c:c05::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fZqgf-0005iC-Vo
- for barebox@lists.infradead.org; Mon, 02 Jul 2018 04:43:43 +0000
-Date: Mon, 2 Jul 2018 06:43:30 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180702044330.z3mkbyfjgvlcoreh@pengutronix.de>
-References: <20180630034558.2318-1-andrew.smirnov@gmail.com>
+ id 1fZvZy-0000yQ-Rm
+ for barebox@lists.infradead.org; Mon, 02 Jul 2018 09:57:08 +0000
+Received: by mail-vk0-x244.google.com with SMTP id v16-v6so5724019vkd.6
+ for <barebox@lists.infradead.org>; Mon, 02 Jul 2018 02:56:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180630034558.2318-1-andrew.smirnov@gmail.com>
+In-Reply-To: <20180629081011.5q56my7hqbm6apq5@pengutronix.de>
+References: <20180627140711.16764-1-mlauridsen171@gmail.com>
+ <20180628083021.j6gqwiopqk34vqtl@pengutronix.de>
+ <CACA-NJsTCfTBCqyJw0gn3WU_3Uu0kDMNQxLMZZkAiVLh6uMxcA@mail.gmail.com>
+ <20180629081011.5q56my7hqbm6apq5@pengutronix.de>
+From: Mogens Lauridsen <mlauridsen171@gmail.com>
+Date: Mon, 2 Jul 2018 11:56:54 +0200
+Message-ID: <CACA-NJuE7pHOtPFMec+CcYoZxKhtermrqyq-wZco6-WzKFDJnA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,81 +26,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! ARM: i.MX: Add support for ZII RDU1 board
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH] ARM: i.MX53: Set pll3 directly to 216MHz.
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jun 29, 2018 at 08:45:58PM -0700, Andrey Smirnov wrote:
-> ---
-> 
-> Sascha:
-> 
-> I tested "ARM: i.MX: Add support for ZII RDU1 board" patch as it is in
-> "next" and it works as expected. Here's a couple of cosmetic fixes I'd
-> suggest (feel free to ignore):
-> 
->     - Drop all ZII_RDU1_DATAFLASH_* constants since now they are
->       superfluous. Previous version of the patch used that string
->       multiple time so it made more sense to have it as a named
->       constant back then.
-> 
->     - Avoid line wrap for IMX_BBU_FLAG_PARTITION_STARTS_AT_HEADER. 80
->       character per line rule is still true on my 13" laptop when
->       splitting screen in two and editing two files in parallel (what
->       I end up doing 90% of the time)
-> 
-> Thanks,
-> Andrey Smirnov
+On Fri, Jun 29, 2018 at 10:10 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Thu, Jun 28, 2018 at 03:56:55PM +0200, Mogens Lauridsen wrote:
+>> On Thu, Jun 28, 2018 at 10:30 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>> > On Wed, Jun 27, 2018 at 04:07:11PM +0200, Mogens Lauridsen wrote:
+>> >> PLL3 was first set to 400MHz and then some peripheral was switched
+>> >> to PLL3. Finally PLL3 was set to 216MHz. This could make some
+>> >> i.MX538 hang in a dead loop in the boot process.
+>> >
+>> > Let's see what the code currently does:
+>> >
+>> > By reset default the clock path to the DDR is:
+>> >
+>> > PLL2 (192MHz) -> periph_clk -> main_bus_clk -> axi_a_podf -> axi_a (/1 = 192MHz) -> ddr_clk_root
+>> >
+>> > PLL2 is running at 192MHz. The code now tries to switch PLL2 from 192MHz
+>> > to 400MHz. This requires that the RAM is driven by some other clock
+>> > during
+>> > the PLL reconfiguration. The code switches the clock path to:
+>> >
+>> > PLL3 (400MHz) -> periph_clk -> main_bus_clk -> axi_a_podf -> axi_a (/2 = 200MHz) -> ddr_clk_root
+>> >
+>> > Then PLL2 is reconfigured to 400MHz and the DDR clock path is switched
+>> > back to the original path, this time with the PLL runnning at 400MHz, so
+>> > RAM is then running at the desired speed.
+>> >
+>> > The code configures PLL3 to 400MHz probably to keep the DDR frequency
+>> > nearly constant during the transition.
+>> >
+>> > I have no idea why your change helps you. When I understand correctly
+>> > then you are running nearly at half the frequency during the transition
+>> > (400/216).
+>> >
+>> > I'm afraid to merge such change as long as we do not fully understand
+>> > what we are doing and why it helps.
+>> I see your point.
+>> I don't know exactly why it helps. But to me it looks suspicious to
+>> set a clock to 400MHz
+>> which in the end only is suppose to run at 216 MHz. I fear that there are small
+>> differences in the individual iMX538 and in some of them the pll might
+>> not always be able
+>> to get a lock at the high frequency.
+>
+> You should be able to test this. In this case the code should hang in
+> the loop waiting for the PLL lock. Is that the case?
+Before changing the pll setup code I did some testing (toggle LEDs on gpio)
+to find where the cpu was hanging. I have verified this again, and it is stuck
+in the second "while (readl(ccm + MX5_CCM_CDHIPR));" in
+"imx53_init_lowlevel_early".
 
-Applied, thanks
+>> The problem seem to have some
+>> relationship with the temperature of the chip. (Higher temperature also seem
+>> to solve the problem).
+>> >
+>> > BTW the current code is the same as on U-Boot which is derived from the
+>> > original Freescale code, so this is not exactly new or barebox specific.
+>> Yes, I did see that the code has been in barebox since 2011. I am also
+>> puzzled why we see this, and nobody else has seen/reported it. We
+>> are using the i.MX538 which is in a pop package with the DDR mounted
+>> on the top of the i.MX. This chip might not be widely used.
+>> >
+>> > Do you have anything special in your dcd table that influences the
+>> > clocks in an unexpected way?
+>> Not as far as I know. Could you give me a hint of what I should look for?
+>
+> Writes to the CCM register space (0x53fd4xxx) in the imxcfg file for
+> your board.
+Our imxcfg file doesn't contain any write 0x53fd4xxx.
 
-Sascha
+Best regards
+Mogens
 
-> 
->  arch/arm/boards/zii-imx51-rdu1/board.c | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/arm/boards/zii-imx51-rdu1/board.c b/arch/arm/boards/zii-imx51-rdu1/board.c
-> index edae99539..ac5232e17 100644
-> --- a/arch/arm/boards/zii-imx51-rdu1/board.c
-> +++ b/arch/arm/boards/zii-imx51-rdu1/board.c
-> @@ -21,9 +21,6 @@
->  #include <libfile.h>
->  #include <mach/imx5.h>
->  
-> -#define ZII_RDU1_DATAFLASH		"/dev/dataflash0"
-> -#define ZII_RDU1_DATAFLASH_BAREBOX	ZII_RDU1_DATAFLASH ".barebox"
-> -
->  static int zii_rdu1_init(void)
->  {
->  	if (!of_machine_is_compatible("zii,imx51-rdu1"))
-> @@ -35,8 +32,9 @@ static int zii_rdu1_init(void)
->  
->  	imx51_bbu_internal_mmc_register_handler("mmc", "/dev/mmc0", 0);
->  	imx51_bbu_internal_spi_i2c_register_handler("spi",
-> -		ZII_RDU1_DATAFLASH_BAREBOX,
-> -		BBU_HANDLER_FLAG_DEFAULT | IMX_BBU_FLAG_PARTITION_STARTS_AT_HEADER);
-> +		"/dev/dataflash0.barebox",
-> +		BBU_HANDLER_FLAG_DEFAULT |
-> +		IMX_BBU_FLAG_PARTITION_STARTS_AT_HEADER);
->  
->  	return 0;
->  }
-> -- 
-> 2.17.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>
+> Sascha
+>
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
