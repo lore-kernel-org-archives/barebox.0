@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fZqeP-0004Rh-O3
+ id 1fZqeP-0004Ri-O0
  for barebox@lists.infradead.org; Mon, 02 Jul 2018 04:41:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  2 Jul 2018 06:41:05 +0200
-Message-Id: <20180702044108.11466-2-s.hauer@pengutronix.de>
+Date: Mon,  2 Jul 2018 06:41:08 +0200
+Message-Id: <20180702044108.11466-5-s.hauer@pengutronix.de>
 In-Reply-To: <20180702044108.11466-1-s.hauer@pengutronix.de>
 References: <20180702044108.11466-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,35 +21,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] bbu: reserve upper 16 bits for handler specific flags
+Subject: [PATCH 4/4] ARM: i.MX: bbu: support partitions starting at i.MX header
 To: Barebox List <barebox@lists.infradead.org>
 
-Let the handler store 16 bit of handler specific flags in
-the generic handler struct. The setup functions of some
-bbu handlers let the user specify a flags field. With this
-change they can now pass generic and handler specific flags
-in a single variable without having to use a second parameter.
+The i.MX header is at an offset in the boot device, usually 0x400 bytes.
+This patch adds a flag to support the case that the partition the image
+is written to starts at that offset rather than 0x0.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/bbu.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/mach-imx/imx-bbu-internal.c | 7 +++++--
+ arch/arm/mach-imx/include/mach/bbu.h | 8 ++++++++
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/include/bbu.h b/include/bbu.h
-index def568e498..d1ab9f5638 100644
---- a/include/bbu.h
-+++ b/include/bbu.h
-@@ -25,6 +25,10 @@ struct bbu_handler {
- 	struct list_head list;
- #define BBU_HANDLER_FLAG_DEFAULT	(1 << 0)
- #define BBU_HANDLER_CAN_REFRESH		(1 << 1)
-+	/*
-+	 * The lower 16bit are generic flags, the upper 16bit are reserved
-+	 * for handler specific flags.
-+	 */
- 	unsigned long flags;
+diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+index 7a512b1de4..55e344cff2 100644
+--- a/arch/arm/mach-imx/imx-bbu-internal.c
++++ b/arch/arm/mach-imx/imx-bbu-internal.c
+@@ -57,12 +57,15 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
+ 	if (fd < 0)
+ 		return fd;
  
- 	/* default device file, can be overwritten on the command line */
+-	if (imx_handler->handler.flags & IMX_BBU_FLAG_KEEP_HEAD) {
++	if (imx_handler->handler.flags & (IMX_BBU_FLAG_KEEP_HEAD |
++	    IMX_BBU_FLAG_PARTITION_STARTS_AT_HEADER)) {
+ 		image_len -= imx_handler->flash_header_offset;
+-		offset += imx_handler->flash_header_offset;
+ 		buf += imx_handler->flash_header_offset;
+ 	}
+ 
++	if (imx_handler->handler.flags & IMX_BBU_FLAG_KEEP_HEAD)
++		offset += imx_handler->flash_header_offset;
++
+ 	if (imx_handler->handler.flags & IMX_INTERNAL_FLAG_ERASE) {
+ 		pr_debug("%s: unprotecting %s from 0x%08x to 0x%08x\n", __func__,
+ 				devicefile, offset, image_len);
+diff --git a/arch/arm/mach-imx/include/mach/bbu.h b/arch/arm/mach-imx/include/mach/bbu.h
+index f19aacce06..7df9d668bb 100644
+--- a/arch/arm/mach-imx/include/mach/bbu.h
++++ b/arch/arm/mach-imx/include/mach/bbu.h
+@@ -16,6 +16,14 @@ struct imx_dcd_v2_entry;
+  */
+ #define IMX_BBU_FLAG_KEEP_HEAD	BIT(16)
+ 
++/*
++ * Set this flag when the partition the update image is written to
++ * actually starts at the offset where the i.MX flash header is expected
++ * (usually 0x400). This means for the update code that it has to skip
++ * the first 0x400 bytes of the image.
++ */
++#define IMX_BBU_FLAG_PARTITION_STARTS_AT_HEADER	(1 << 17)
++
+ /*
+  * The upper 16 bit of the flags passes to the below functions are reserved
+  * for i.MX specific flags
 -- 
 2.17.1
 
