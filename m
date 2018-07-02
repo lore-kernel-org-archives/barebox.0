@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi0-x241.google.com ([2607:f8b0:4003:c06::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fgRmf-0004lG-UQ
- for barebox@lists.infradead.org; Fri, 20 Jul 2018 09:33:11 +0000
-Received: by mail-oi0-x241.google.com with SMTP id y207-v6so20204458oie.13
- for <barebox@lists.infradead.org>; Fri, 20 Jul 2018 02:32:57 -0700 (PDT)
+ id 1fZq3t-0003d1-3t
+ for barebox@lists.infradead.org; Mon, 02 Jul 2018 04:03:39 +0000
+Date: Mon, 2 Jul 2018 06:03:21 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180702040321.ifo265blmqfchmfw@pengutronix.de>
+References: <20180629105823.16181-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-References: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
- <20180720091145.kz2ksyeeumeqf73p@pengutronix.de>
-In-Reply-To: <20180720091145.kz2ksyeeumeqf73p@pengutronix.de>
-From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
-Date: Fri, 20 Jul 2018 11:32:45 +0200
-Message-ID: <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20180629105823.16181-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,47 +18,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: MFGTools support in barebox
-To: u.kleine-koenig@pengutronix.de
+Subject: Re: [PATCH] MIPS: don't include generated header files into MIPS asm
+ files
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-SGksCgogICBJIGhhdmUgYm90aCAgQW5kcm9pZCBGYXN0Ym9vdCBzdXBwb3J0IGFuZCBGYXN0Ym9v
-dCBzcGFyc2UgaW1hZ2UKc3VwcG9ydCBlbmFibGVkIGluIGJhcmVib3ggY29uZmlnKGlzIGJ5IGRl
-ZmF1bHQpIGJ1dCBJIHNlZSBub3QgZGV2aWNlCm5vZGUgY3JlYXRlZCB3aGVuIGNvbm5lY3Rpbmcg
-VVNCIGRldmljZSAgbm9yIGRvIEkgc2VlIGFueSBmYXN0Ym9vdApjb21tYW5kcyBpbiBiYXJlYm94
-IHNoZWxsLgogICBNeSBxdWVzdGlvbiBpczogaG93IGRvIEkgdXNlIGZhc3Rib290PyBXaGF0IGlz
-IHRoZSBjb21wbGV0ZQpjb25maWd1cmF0aW9uIG5lZWRlZCB0byBlbmFibGUgZmFzdGJvb3QgaW4g
-YmFyZWJveD8KCkJlc3QgcmVnYXJkcywKICAgICAgICAgTWloYWl0YSBJdmFzY3UKCgpPbiBGcmks
-IEp1bCAyMCwgMjAxOCBhdCAxMToxMSBBTSBVd2UgS2xlaW5lLUvDtm5pZwo8dS5rbGVpbmUta29l
-bmlnQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPgo+IE9uIFdlZCwgSnVsIDE4LCAyMDE4IGF0IDA5
-OjM5OjIzQU0gKzAyMDAsIE1paGFpdGEgSXZhc2N1IHdyb3RlOgo+ID4gSGVsbG8sCj4gPgo+ID4g
-ICAgICBJIHdvdWxkIGxpa2UgdG8gZmxhc2ggYSBiYXJlYm94IGltYWdlIG9uIE5BTkQgZm9yIGEg
-UGh5dGVjIGlteDZ1bAo+ID4gZXZrIGJvYXJkIHVzaW5nIE1GR1Rvb2xzLgo+ID4gICAgICBJIGhh
-dmUgYWRkZWQgc3VwcG9ydCBmb3IgVVRQIHByb3RvY29sIGluIGtlcm5lbCBpbWFnZSBzbyBjb21t
-YW5kcwo+ID4gY291bGQgYmUgInB1c2hlZCIgdXNpbmcgTUZHdG9vbHMgYXBwIGZyb20gV2luZG93
-cy4KPiA+ICAgICAgQnV0IG9idmlvdXNseSBJIGNhbm5vdCBwdXNoIGJhcmVib3hfdXBkYXRlIGNv
-bW1hbmQgdG8gTGludXguCj4gPiAgICAgIFNvIEkgdGhpbmsgSSBoYXZlIHR3byBvcHRpb25zOgo+
-ID4KPiA+IDEpIHBvcnRpbmcgYmFyZWJveF91cGRhdGUgY29tbWFuZCB0byBMaW51eCB3aGljaCBJ
-IGRvIG5vdCBmaW5kIGl0IHNvCj4gPiBlYXN5LiBJIGFtIGFscmVhZHkgd29ya2luZyBvbiBpdAo+
-ID4gMikgYWRkaW5nIFVUUCBzdXBwb3J0IGluIGJhcmVib3ggc28gSSBjb3VsZCBqdXN0IGxvYWQg
-dGhlIGJhcmVib3gKPiA+IGltYWdlIGluIFJBTSB1c2luZyBNRkd0b29scywgdGhlcmUgYSB1dHAg
-ZGV2aWNlIG5vZGUgd291bGQgYmUgY3JlYXRlZAo+ID4gYW5kIHRoZW4gSSBjb3VsZCBwdXNoIGJh
-cmVib3ggc3BlY2lmaWMgY29tbWFuZHMgZGlyZWN0bHkgZnJvbQo+ID4gTUZHdG9vbHMuCj4gPiAg
-ICAgICBJIGhhdmUgYWRkZWQgVVRQIHN1cHBvcnQgaW4gbGludXggVVNCIGdhZGdldCBjb2RlIGJ1
-dCBJIHNlZQo+ID4gYmFyZWJveCBVU0IgZ2FkZ2V0IGNvZGUgaXMgcXVpdGUgZGlmZmVyZW50IGFu
-ZCBub3QgYWxsIGZ1bmN0aW9uYWxpdHkKPiA+IGFyZSBpbiBwbGFjZSBzbyBJIGFsc28gc3RydWdn
-bGUgYSBiaXQgb2YgcG9yaW50IGdVVFAgcGF0Y2hlcyBmcm9tCj4gPiBMaW51eCB0byBiYXJlYm94
-Lgo+ID4gICAgICBEb2VzIGFueWJvZHkgaGF2ZSBhbnkgZXhwZXJpZW5jZSB3aXRoIHRoaXMgdG9w
-aWMgb3IgY291ZCBhZHZpc2UKPiA+IG1lIG9uIGhvdyB0byBwcm9jZWU/Cj4KPiBXaHkgYXJlIHlv
-dSBzdGlja2VkIHRvIE1GR1Rvb2xzPyBiYXJlYm94IGNhbiBkbyBmYXN0Ym9vdCB3aGljaCBzaG91
-bGQKPiB3b3JrIGZyb20gV2luZG93cyBqdXN0IGZpbmUuCj4KPiBCZXN0IHJlZ2FyZHMKPiBVd2UK
-Pgo+IC0tCj4gUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgVXdl
-IEtsZWluZS1Lw7ZuaWcgICAgICAgICAgICB8Cj4gSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMg
-ICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
-aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Fri, Jun 29, 2018 at 01:58:23PM +0300, Antony Pavlov wrote:
+> This patch came out of discussions in the 'MIPS parallel build breakage' e-mail thread:
+> 
+>     http://lists.infradead.org/pipermail/barebox/2018-March/032251.html
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/mips/include/asm/pbl_macros.h | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+
+\o/ Applied, thanks
+
+I'll add MIPS back to my autobuilder then.
+
+Sascha
+
+> 
+> diff --git a/arch/mips/include/asm/pbl_macros.h b/arch/mips/include/asm/pbl_macros.h
+> index 18115c8489..bb3182cda9 100644
+> --- a/arch/mips/include/asm/pbl_macros.h
+> +++ b/arch/mips/include/asm/pbl_macros.h
+> @@ -25,8 +25,6 @@
+>  #include <asm/mipsregs.h>
+>  #include <asm/asm.h>
+>  #include <asm-generic/memory_layout.h>
+> -#include <generated/compile.h>
+> -#include <generated/utsrelease.h>
+>  #include <asm/addrspace.h>
+>  #include <asm/cacheops.h>
+>  
+> @@ -174,7 +172,7 @@ copy_loop_exit:
+>  	 nop
+>  
+>  	.org	0x10
+> -	.ascii	"barebox " UTS_RELEASE " " UTS_VERSION
+> +	.ascii	"barebox"
+>  	.byte	0
+>  
+>  	.align	4
+> -- 
+> 2.18.0
+> 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
