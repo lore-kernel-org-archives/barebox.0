@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-it0-x244.google.com ([2607:f8b0:4001:c0b::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fZuNX-0005PR-TA
- for barebox@lists.infradead.org; Mon, 02 Jul 2018 08:40:13 +0000
-Message-ID: <1530520798.22468.80.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 02 Jul 2018 10:39:58 +0200
-In-Reply-To: <20180630034737.2820-1-andrew.smirnov@gmail.com>
+ id 1faPHf-0004Kd-0x
+ for barebox@lists.infradead.org; Tue, 03 Jul 2018 17:40:12 +0000
+Received: by mail-it0-x244.google.com with SMTP id p4-v6so4278686itf.2
+ for <barebox@lists.infradead.org>; Tue, 03 Jul 2018 10:40:00 -0700 (PDT)
+MIME-Version: 1.0
 References: <20180630034737.2820-1-andrew.smirnov@gmail.com>
-Mime-Version: 1.0
+ <1530520798.22468.80.camel@pengutronix.de>
+In-Reply-To: <1530520798.22468.80.camel@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 3 Jul 2018 10:39:48 -0700
+Message-ID: <CAHQ1cqHMn3vHVOn8XEwLSRqZXYHFC7HtmWL+Kx441ipuWhDV_A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,38 +20,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/3] ARM: dts: rdu1: Add nodes for RAVE SP EEPROM
-To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-SGkgQW5kcmV5LAoKQW0gRnJlaXRhZywgZGVuIDI5LjA2LjIwMTgsIDIwOjQ3IC0wNzAwIHNjaHJp
-ZWIgQW5kcmV5IFNtaXJub3Y6Cj4gU2lnbmVkLW9mZi1ieTogQW5kcmV5IFNtaXJub3YgPGFuZHJl
-dy5zbWlybm92QGdtYWlsLmNvbT4KPiAtLS0KPiDCoGFyY2gvYXJtL2R0cy9pbXg1MS16aWktcmR1
-MS5kdHMgfCAyOCArKysrKysrKysrKysrKysrKysrKysrKysrKysrCj4gwqAxIGZpbGUgY2hhbmdl
-ZCwgMjggaW5zZXJ0aW9ucygrKQo+IAo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvaW14NTEt
-emlpLXJkdTEuZHRzIGIvYXJjaC9hcm0vZHRzL2lteDUxLQo+IHppaS1yZHUxLmR0cwo+IGluZGV4
-IDc5ODRlNWIzMi4uYjBlMWQwMjc2IDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL2R0cy9pbXg1MS16
-aWktcmR1MS5kdHMKPiArKysgYi9hcmNoL2FybS9kdHMvaW14NTEtemlpLXJkdTEuZHRzCj4gQEAg
-LTI0LDYgKzI0LDEzIEBACj4gwqAJCQlkZXZpY2UtcGF0aCA9ICZzcGlub3IsICJwYXJ0bmFtZTpi
-YXJlYm94LQo+IGVudmlyb25tZW50IjsKPiDCoAkJfTsKPiDCoAl9Owo+ICsJYWxpYXNlcyB7Cj4g
-KwkJLyoKPiArCQnCoCogQWxpYXNlcyB0byBtYXRjaCBMaW51eCBrZXJuZWwgbmFtaW5nIGluIC9k
-ZXYvCj4gKwkJwqAqLwo+ICsJCW1haW4tZWVwcm9tID0gJm1haW5fZWVwcm9tOwo+ICsJCWRkcy1l
-ZXByb20gPSAmZGRzX2VlcHJvbTsKPiArCX07CgpJbiBMaW51eCB3ZSBhcmUgdXNpbmcgdGhlICJ6
-aWksZWVwcm9tLW5hbWUiIHByb3BlcnR5IGZvciB0aGlzIHB1cnBvc2UuCkNhbiB3ZSB1c2UgdGhl
-IHNhbWUgaW4gaW4gQmFyZWJveCwgcGxlYXNlPyBJIHdvdWxkIGxpa2UgdG8ga2VlcCB0aGUKZGlm
-ZmVyZW5jZXMgaW4gdGhlIHR3byBEVHMgdG8gYSBtaW5pbXVtLgoKUmVnYXJkcywKTHVjYXMKCj4g
-wqB9Owo+IMKgCj4gwqAmZWNzcGkxIHsKPiBAQCAtNTAsMyArNTcsMjQgQEAKPiDCoAkJfTsKPiDC
-oAl9Owo+IMKgfTsKPiArCj4gKyZ1YXJ0MyB7Cj4gKwlyYXZlLXNwIHsKPiArCQkjYWRkcmVzcy1j
-ZWxscyA9IDwxPjsKPiArCQkjc2l6ZS1jZWxscyA9IDwxPjsKPiArCj4gKwkJZGRzX2VlcHJvbTog
-ZWVwcm9tQGEzIHsKPiArCQkJY29tcGF0aWJsZSA9ICJ6aWkscmF2ZS1zcC1lZXByb20iOwo+ICsJ
-CQlyZWcgPSA8MHhhMyAweDQwMDA+Owo+ICsJCQkjYWRkcmVzcy1jZWxscyA9IDwxPjsKPiArCQkJ
-I3NpemUtY2VsbHMgPSA8MT47Cj4gKwkJfTsKPiArCj4gKwkJbWFpbl9lZXByb206IGVlcHJvbUBh
-NCB7Cj4gKwkJCWNvbXBhdGlibGUgPSAiemlpLHJhdmUtc3AtZWVwcm9tIjsKPiArCQkJcmVnID0g
-PDB4YTQgMHg0MDAwPjsKPiArCQkJI2FkZHJlc3MtY2VsbHMgPSA8MT47Cj4gKwkJCSNzaXplLWNl
-bGxzID0gPDE+Owo+ICsJCX07Cj4gKwl9Owo+ICt9OwoKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
-cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
-Zm8vYmFyZWJveAo=
+On Mon, Jul 2, 2018 at 1:39 AM Lucas Stach <l.stach@pengutronix.de> wrote:
+>
+> Hi Andrey,
+>
+> Am Freitag, den 29.06.2018, 20:47 -0700 schrieb Andrey Smirnov:
+> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> > ---
+> >  arch/arm/dts/imx51-zii-rdu1.dts | 28 ++++++++++++++++++++++++++++
+> >  1 file changed, 28 insertions(+)
+> >
+> > diff --git a/arch/arm/dts/imx51-zii-rdu1.dts b/arch/arm/dts/imx51-
+> > zii-rdu1.dts
+> > index 7984e5b32..b0e1d0276 100644
+> > --- a/arch/arm/dts/imx51-zii-rdu1.dts
+> > +++ b/arch/arm/dts/imx51-zii-rdu1.dts
+> > @@ -24,6 +24,13 @@
+> >                       device-path = &spinor, "partname:barebox-
+> > environment";
+> >               };
+> >       };
+> > +     aliases {
+> > +             /*
+> > +              * Aliases to match Linux kernel naming in /dev/
+> > +              */
+> > +             main-eeprom = &main_eeprom;
+> > +             dds-eeprom = &dds_eeprom;
+> > +     };
+>
+> In Linux we are using the "zii,eeprom-name" property for this purpose.
+> Can we use the same in in Barebox, please? I would like to keep the
+> differences in the two DTs to a minimum.
+>
+
+That's a good point, I haven't thought about doing that. I'll submit a
+follow up series to fix that.
+
+Thanks,
+Andrey Smirnov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
