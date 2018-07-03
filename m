@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vk0-x244.google.com ([2607:f8b0:400c:c05::244])
+Received: from mail-oi0-x229.google.com ([2607:f8b0:4003:c06::229])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fZvZy-0000yQ-Rm
- for barebox@lists.infradead.org; Mon, 02 Jul 2018 09:57:08 +0000
-Received: by mail-vk0-x244.google.com with SMTP id v16-v6so5724019vkd.6
- for <barebox@lists.infradead.org>; Mon, 02 Jul 2018 02:56:55 -0700 (PDT)
+ id 1faCXo-00012n-RY
+ for barebox@lists.infradead.org; Tue, 03 Jul 2018 04:04:02 +0000
+Received: by mail-oi0-x229.google.com with SMTP id c6-v6so1117284oiy.0
+ for <barebox@lists.infradead.org>; Mon, 02 Jul 2018 21:03:49 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20180629081011.5q56my7hqbm6apq5@pengutronix.de>
-References: <20180627140711.16764-1-mlauridsen171@gmail.com>
- <20180628083021.j6gqwiopqk34vqtl@pengutronix.de>
- <CACA-NJsTCfTBCqyJw0gn3WU_3Uu0kDMNQxLMZZkAiVLh6uMxcA@mail.gmail.com>
- <20180629081011.5q56my7hqbm6apq5@pengutronix.de>
-From: Mogens Lauridsen <mlauridsen171@gmail.com>
-Date: Mon, 2 Jul 2018 11:56:54 +0200
-Message-ID: <CACA-NJuE7pHOtPFMec+CcYoZxKhtermrqyq-wZco6-WzKFDJnA@mail.gmail.com>
+In-Reply-To: <CAHQ1cqE1+KSMhvacm2q7U-pAmQf8xHuKGphkMxQSx5Sjt71Vgg@mail.gmail.com>
+References: <CAD+NunZeq6S72tt2BKH-PYKTVPjVMyWG4f78uAdxfn0jazV3wA@mail.gmail.com>
+ <CAHQ1cqGJ=-TJJGA=eJRgkFnZOUdxm0Ys-Wwrfqy99Oq1aWVT9Q@mail.gmail.com>
+ <CACqcpZB4M5nmLYBnU-ctA4iynDNFwYmzJs_=32NZOgKJFNwqLA@mail.gmail.com>
+ <CAHQ1cqE1+KSMhvacm2q7U-pAmQf8xHuKGphkMxQSx5Sjt71Vgg@mail.gmail.com>
+From: ranquet guillaume <ranquet.guillaume@gmail.com>
+Date: Tue, 3 Jul 2018 06:03:48 +0200
+Message-ID: <CAD+NunYgQUupn2r3HjA=+WN6bPMTj5zaRtmmtY9kSYfGkhSrug@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,96 +22,131 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX53: Set pll3 directly to 216MHz.
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: Troubles running qemu64 target
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Barebox List <barebox@lists.infradead.org>, =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <poggi.raph@gmail.com>
 
-On Fri, Jun 29, 2018 at 10:10 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Thu, Jun 28, 2018 at 03:56:55PM +0200, Mogens Lauridsen wrote:
->> On Thu, Jun 28, 2018 at 10:30 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> > On Wed, Jun 27, 2018 at 04:07:11PM +0200, Mogens Lauridsen wrote:
->> >> PLL3 was first set to 400MHz and then some peripheral was switched
->> >> to PLL3. Finally PLL3 was set to 216MHz. This could make some
->> >> i.MX538 hang in a dead loop in the boot process.
->> >
->> > Let's see what the code currently does:
->> >
->> > By reset default the clock path to the DDR is:
->> >
->> > PLL2 (192MHz) -> periph_clk -> main_bus_clk -> axi_a_podf -> axi_a (/1 = 192MHz) -> ddr_clk_root
->> >
->> > PLL2 is running at 192MHz. The code now tries to switch PLL2 from 192MHz
->> > to 400MHz. This requires that the RAM is driven by some other clock
->> > during
->> > the PLL reconfiguration. The code switches the clock path to:
->> >
->> > PLL3 (400MHz) -> periph_clk -> main_bus_clk -> axi_a_podf -> axi_a (/2 = 200MHz) -> ddr_clk_root
->> >
->> > Then PLL2 is reconfigured to 400MHz and the DDR clock path is switched
->> > back to the original path, this time with the PLL runnning at 400MHz, so
->> > RAM is then running at the desired speed.
->> >
->> > The code configures PLL3 to 400MHz probably to keep the DDR frequency
->> > nearly constant during the transition.
->> >
->> > I have no idea why your change helps you. When I understand correctly
->> > then you are running nearly at half the frequency during the transition
->> > (400/216).
->> >
->> > I'm afraid to merge such change as long as we do not fully understand
->> > what we are doing and why it helps.
->> I see your point.
->> I don't know exactly why it helps. But to me it looks suspicious to
->> set a clock to 400MHz
->> which in the end only is suppose to run at 216 MHz. I fear that there are small
->> differences in the individual iMX538 and in some of them the pll might
->> not always be able
->> to get a lock at the high frequency.
->
-> You should be able to test this. In this case the code should hang in
-> the loop waiting for the PLL lock. Is that the case?
-Before changing the pll setup code I did some testing (toggle LEDs on gpio)
-to find where the cpu was hanging. I have verified this again, and it is stuck
-in the second "while (readl(ccm + MX5_CCM_CDHIPR));" in
-"imx53_init_lowlevel_early".
-
->> The problem seem to have some
->> relationship with the temperature of the chip. (Higher temperature also seem
->> to solve the problem).
->> >
->> > BTW the current code is the same as on U-Boot which is derived from the
->> > original Freescale code, so this is not exactly new or barebox specific.
->> Yes, I did see that the code has been in barebox since 2011. I am also
->> puzzled why we see this, and nobody else has seen/reported it. We
->> are using the i.MX538 which is in a pop package with the DDR mounted
->> on the top of the i.MX. This chip might not be widely used.
->> >
->> > Do you have anything special in your dcd table that influences the
->> > clocks in an unexpected way?
->> Not as far as I know. Could you give me a hint of what I should look for?
->
-> Writes to the CCM register space (0x53fd4xxx) in the imxcfg file for
-> your board.
-Our imxcfg file doesn't contain any write 0x53fd4xxx.
-
-Best regards
-Mogens
-
->
-> Sascha
->
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Pj4gPiBzZXQgJHNwPTB4QkZGRkZGRjAKCkluZGVlZCwgSSdtIHNvIHVzZWQgdG8gZGVidWcgY29y
+ZWR1bXBzIHdpdGggZ2RiLCBJIGRpZG4ndCBldmVuIHRoaW5rCmFib3V0IHRoYXQgOikKCml0IGdl
+dHMgbWUgYSBsaXR0bGUgYml0IGZ1cnRoZXIsIGJ1dCBleGVjdXRpb24gaXMgZW5kaW5nIHVwIGlu
+IGhhbmcoKQpwcmV0dHkgcXVpY2tseS4KSSBuZWVkIHRvIGZpbmQgYSBiaXQgb2YgdGltZSB0byBp
+bnZlc3RpZ2F0ZSBmdXJ0aGVyLgoKSSBtYWRlIGEgZGlydHkgd29ya2Fyb3VuZCwgY2FsbGluZyBz
+ZXR1cF9zdGFjaygpIGp1c3QgYmVmb3JlIGJhcmVib3hfYXJtX2VudHJ5KCkKanVzdCB0byBnZXQg
+bWUgZ29pbmcuCgpUaHgsCkd1aWxsYXVtZS4KCk9uIEZyaSwgSnVuIDI5LCAyMDE4IGF0IDc6NTkg
+UE0sIEFuZHJleSBTbWlybm92CjxhbmRyZXcuc21pcm5vdkBnbWFpbC5jb20+IHdyb3RlOgo+IE9u
+IEZyaSwgSnVuIDI5LCAyMDE4IGF0IDI6MDEgQU0gUmFwaGHDq2wgUG9nZ2kgPHBvZ2dpLnJhcGhA
+Z21haWwuY29tPiB3cm90ZToKPj4KPj4gSGkgR3VpbGxhdW1lICYgQW5kcmV3LAo+Pgo+Pgo+PiBM
+ZSB2ZW4uIDI5IGp1aW4gMjAxOCDDoCAwMTo0NiwgQW5kcmV5IFNtaXJub3YKPj4gPGFuZHJldy5z
+bWlybm92QGdtYWlsLmNvbT4gYSDDqWNyaXQgOgo+PiA+Cj4+ID4gR3VpbGxhdW1lOgo+PiA+Cj4+
+ID4gSSBoYXZlbid0IHVzZWQgUUVNVSBBUk02NCB2ZXJzaW9uIG9mIHRoZSBjb2RlLCBidXQgSSBo
+YXZlIHNwZW50IHNvbWUKPj4gPiB0aW1lIG9uIGkuTVg4TSB3aGljaCBpcyBBUk02NCBhcyB3ZWxs
+LiBTZWUgbXkgY29tbWVudHMgYmVsb3cuCj4+ID4KPj4gPiBPbiBUaHUsIEp1biAyOCwgMjAxOCBh
+dCA2OjQ2IEFNIHJhbnF1ZXQgZ3VpbGxhdW1lCj4+ID4gPHJhbnF1ZXQuZ3VpbGxhdW1lQGdtYWls
+LmNvbT4gd3JvdGU6Cj4+ID4gPgo+PiA+ID4gSGVsbG8uCj4+ID4gPgo+PiA+ID4gSSdtIHByZXR0
+eSBuZXcgdG8gYmFyZWJveCBhbmQgSSdtIGhhdmluZyBzb21lIHRyb3VibGVzIHJ1bm5pbmcgdGhl
+Cj4+ID4gPiBxZW11NjQgdGFyZ2V0Lgo+PiA+ID4gdG8gdG9wIGl0IG9mZiwgSSdtIGFsc28gbmV3
+IHRvIHRoZSBBUk0gd29ybGQuLi4gYW5kIHRoaXMgaXMgbXkgZmlyc3QKPj4gPiA+IGF0dGVtcHQg
+YXQgbG9va2luZyBhdCBhIGJvb3Rsb2FkZXIuLi4KPj4gPiA+Cj4+ID4gPiBJJ20gaGF2aW5nIHRy
+b3VibGUgcG9ydGluZyBzb21lIGhhcmR3YXJlIHRvIGJhcmVib3guLi4gYW5kIHdoaWxlIEknbQo+
+PiA+ID4gd2FpdGluZyBmb3IgYSBKVEFHIHByb2JlLCBJIHRob3VnaCBJIGNvdWxkIGhhdmUgc29t
+ZSBmdW4gd2l0aCBxZW11NjQKPj4gPiA+IDopCj4+ID4gPgo+PiA+ID4gVGhlIGJvb3Qgc3RvcHMg
+cHJldHR5IGVhcmx5IGluIHRoZSBmbG93LiB3YXkgYmVmb3JlIGFueXRoaW5nIGNhbiBiZQo+PiA+
+ID4gcHJpbnRlZCBvbiB0aGUgc2VyaWFsLiBJIGhhdmUgYXR0YWNoZWQgZ2RiIHRvIHRoZSBxZW11
+LXN5c3RlbS4KPj4gPiA+IFRoZSAicWVtdS1zeXN0ZW0iIHNlZW1zIHRvIGJlIHN0dWNrIHdoZW4g
+dHJ5aW5nIHRvIGV4ZWN1dGUgYW4gc3RwIHdpdGgKPj4gPiA+IHRoZSBzdGFjayBwb2ludGVyIGFz
+IHRoZSBkZXN0aW5hdGlvbi4KPj4gPiA+Cj4+ID4gPiBJJ20gaGF2aW5nIHRoZSBmZWVsaW5nIHRo
+YXQgSSBoYXZlIGEgY29uZmlndXJhdGlvbiBpc3N1ZSBiZWNhdXNlIHNwID0gMHgwCj4+ID4gPgo+
+PiA+ID4geDI3ICAgICAgICAgICAgMHgwICAgICAgMAo+PiA+ID4geDI4ICAgICAgICAgICAgMHgw
+ICAgICAgMAo+PiA+ID4geDI5ICAgICAgICAgICAgMHgwICAgICAgMAo+PiA+ID4geDMwICAgICAg
+ICAgICAgMHgwICAgICAgMAo+PiA+ID4gc3AgICAgICAgICAgICAgMHgwICAgICAgMHgwCj4+ID4g
+PiBwYyAgICAgICAgICAgICAweDQwMDAwMDAwICAgICAgIDB4NDAwMDAwMDAgPHN0YXJ0Pgo+PiA+
+ID4gY3BzciAgICAgICAgICAgMHg0MDAwMDNjNSAgICAgICAxMDczNzQyNzg5Cj4+ID4gPiBmcHNy
+ICAgICAgICAgICAweDAgICAgICAwCj4+ID4gPiBmcGNyICAgICAgICAgICAweDAgICAgICAwCj4+
+ID4gPiAoZ2RiKSBkaXNhc3NlbWJsZQo+PiA+ID4gRHVtcCBvZiBhc3NlbWJsZXIgY29kZSBmb3Ig
+ZnVuY3Rpb24gc3RhcnQ6Cj4+ID4gPiA9PiAweDAwMDAwMDAwNDAwMDAwMDAgPCswPjogICAgIGIg
+ICAgICAgMHg0MDAwMDA0OCA8c3RhcnQrNzI+Cj4+ID4gPiAgICAweDAwMDAwMDAwNDAwMDAwMDQg
+PCs0PjogICAgIG5vcAo+PiA+ID4gICAgMHgwMDAwMDAwMDQwMDAwMDA4IDwrOD46ICAgICBub3AK
+Pj4gPiA+ICAgIDB4MDAwMDAwMDA0MDAwMDAwYyA8KzEyPjogICAgbm9wCj4+ID4gPiAuLi4KPj4g
+PiA+ICAgMHgwMDAwMDAwMDQwMDAwMDQ4IDwrNzI+OiAgICBiICAgICAgIDB4NDAwMTM0NDQgPGJh
+cmVib3hfYXJtX3Jlc2V0X3ZlY3Rvcj4KPj4gPiA+Cj4+ID4gPgo+PiA+ID4gdGhlbiB3ZSBhcmUg
+YnJhbmNoaW5nIHRvIDxiYXJlYm94X2FybV9yZXNldF92ZWN0b3I+Cj4+ID4gPiBEdW1wIG9mIGFz
+c2VtYmxlciBjb2RlIGZvciBmdW5jdGlvbiBiYXJlYm94X2FybV9yZXNldF92ZWN0b3I6Cj4+ID4g
+PiA9PiAweDAwMDAwMDAwNDAwMTM0NDQgPCswPjogICAgIHN0cCAgICAgeDI5LCB4MzAsIFtzcCwg
+Iy0xNl0hCj4+ID4gPiAgICAweDAwMDAwMDAwNDAwMTM0NDggPCs0PjogICAgIG1vdiAgICAgeDI5
+LCBzcAo+PiA+Cj4+ID4gVGhlIGFib3ZlIGxvb2tzIGxpa2UgYmFyZWJveF9hcm1fcmVzZXRfdmVj
+dG9yJ3MgcHJlYW1ibGUgdG8gbWUsIHdoaWNoCj4+ID4gaXQgd291bGQgaGF2ZSBzaW5jZToKPj4g
+Pgo+PiA+IGEpIEl0IGlzIG5vdCBkZWNsYXJlZCBhcyBfX25ha2VkCj4+ID4KPj4gPiBiKSBBRkFJ
+SywgX19uYWtlZCBpcyBub3Qgc3VwcG9ydGVkIG9uIEFBcmNoNjQgdmVyc2lvbiBvZiBHQ0MsIHNv
+IGV2ZW4KPj4gPiBpZiBpdCB3YXMgaXQgd291bGRuJ3QgaGVscAo+PiA+Cj4+ID4gPiAgICAweDAw
+MDAwMDAwNDAwMTM0NGMgPCs4PjogICAgIGJsICAgICAgMHg0MDAwMDA1MCA8YXJtX2NwdV9sb3ds
+ZXZlbF9pbml0Pgo+PiA+ID4KPj4gPiA+IHdpdGggc3Agc3RpbGwgZXF1YWxzIHRvIDB4MC4KPj4g
+PiA+Cj4+ID4gPiBzdGVwcGluZyBmcm9tIHRoZXJlIHNlZW1zIHRvIGdldCBtZSAic3R1Y2siLi4u
+Cj4+ID4gPiB3aGVuIGludGVycnVwdGluZyBnZGIgKEN0cmwtQykgYW5kIGR1bXBpbmcgdGhlIHJl
+Z2lzdGVycywgSSdtIGdldHRpbmcKPj4gPiA+IHRoZSBmZWVsaW5nIEknbSBvdXQgb2YgYmFyZWJv
+eCBjb2RlIHdpdGggcGMgZXF1YWxzIDB4MjAwCj4+ID4gPgo+PiA+ID4geDI5ICAgICAgICAgICAg
+MHgwICAgICAgMAo+PiA+ID4geDMwICAgICAgICAgICAgMHgwICAgICAgMAo+PiA+ID4gc3AgICAg
+ICAgICAgICAgMHgwICAgICAgMHgwCj4+ID4gPiBwYyAgICAgICAgICAgICAweDIwMCAgICAweDIw
+MAo+PiA+ID4gY3BzciAgICAgICAgICAgMHgzYzUgICAgOTY1Cj4+ID4gPiBmcHNyICAgICAgICAg
+ICAweDAgICAgICAwCj4+ID4gPgo+PiA+ID4KPj4gPiA+IEl0J3MgcHJvYmFibHkgc29tZSBraW5k
+IG9mIGNvbmZpZ3VyYXRpb24gaXNzdWUuLi4/IHRob3VnaCBJIHNlZSBubwo+PiA+ID4gY29kZSB0
+byBzZXQgc3AgYmVmb3JlIHRoYXQgc3RwIGluc3RydWN0aW9uLgo+PiA+Cj4+ID4gSU1ITyB0aGlz
+IGRvZXNuJ3QgbG9vayBsaWtlIGEgY29uZmlndXJhdGlvbiBpc3N1ZSBhbmQgSSBhZ3JlZSB0aGVy
+ZSdzCj4+ID4gbm8gY29kZSB0byBzZXQgU1AgdXAuCj4+ID4KPj4gPiA+IEkgdHJpZWQgdG95aW5n
+IHdpdGggdGhlIG1lbW9yeSBtYXAsIHNldHRpbmcgc3RhY2sgYW5kIHRleHQgYmFzZQo+PiA+ID4g
+YWRkcmVzc2VzLCBidXQgaXQgZG9lc24ndCBzZWVtIHRvIGZpeCBteSBpc3N1ZS4KPj4gPiA+IE9y
+IG1heWJlIGl0J3Mgb2theSB0byBkZWNyZW1lbnQgc3Agd2hpbGUgaXQncyBlcXVhbCB0byAweDA/
+Cj4+ID4KPj4gPiBBRkFJSywgaXQgd291bGQgYmUgT0sgaWYgdW5kZXJseWluZyBlbXVsYXRlZCBo
+YXJkd2FyZSBoYWQgYW55IGtpbmQgb2YKPj4gPiBtZW1vcnkgbWFwcGVkIGF0IHRoZSBlbmQgb2Yg
+YWRkcmVzcyBzcGFjZSAoc3Agd291bGQgd3JhcCBpbiB0aGF0Cj4+ID4gY2FzZSksIGJ1dCBhcyBm
+YXIgYXMgSSBjYW4gdGVsbCBRRU1VIEFSTTY0IHZpcnQgcGxhdGZvcm0gZG9lc24ndCwKPj4gPiB3
+aGljaCBJIHRoaW5rIGlzIHRoZSByZWFzb24geW91IGFyZSBzZWVpbmcgdGhlIHJlc3VsdCB5b3Ug
+YXJlIHNlZWluZy4KPj4gPgo+PiA+ID4gQW55IGlkZWFzPyBjb21tZW50cz8KPj4gPgo+PiA+IEkg
+YW0gbm90IHN1cmUgYWJvdXQgdGhlIHByb3BlciB3YXkgdG8gcmVzb2x2ZSB0aGlzLCBJJ2QgYmUg
+Y3VyaW91cyB0bwo+PiA+IGhlYXIgZnJvbSBSYXBoYWVsIChvcmlnaW5hbCBhdXRob3IsIENDJ2Qg
+aW4gdGhpcyByZXBseSkgYW5kIGhvdyB0aGlzCj4+ID4gd29ya2VkIGZvciBoaW0gZmlyc3QuIEhv
+d2V2ZXIgeW91IGNhbiB2ZXJ5IHF1aWNrbHkgdmVyaWZ5L2Rpc3Byb3ZlCj4+ID4geW91ciBiYWQg
+U1AgdmFsdWUgdGhlb3J5IGJ5IGRvaW5nOgo+PiA+Cj4+ID4gc2V0ICRzcD0weEJGRkZGRkYwCj4+
+ID4KPj4gPiBiZWZvcmUgbGV0dGluZyB0aGUgcHJvY2Vzc29yIGhpdCB0aG9zZSBTUCBpbnN0cnVj
+dGlvbnMgd2hlbiB5b3Ugc3RlcAo+PiA+IHRocm91Z2ggaXQgYW5kIHNlZSBpZiBiYXJlYm94IHJ1
+bnMgZmluZSBhZnRlciB0aGF0Lgo+PiA+Cj4+ID4gVGhhbmtzLAo+PiA+IEFuZHJleSBTbWlybm92
+Cj4+ID4KPj4gPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+Xwo+PiA+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4+ID4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
+b3JnCj4+ID4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
+Ym94Cj4+Cj4+Cj4+Cj4+IFRoYW5rIHlvdSBmb3IgYWRkaW5nIGluIENDLgo+Pgo+PiBJIGhhdmUg
+bG9va2VkIGF0IGJpdCBhdCB0aGlzIGlzc3VlLCBpbmRlZWQgdGhlIGZhY3QgdGhhdCAiCj4+IGJh
+cmVib3hfYXJtX3Jlc2V0X3ZlY3RvciIgaXMgbm90IG5ha2VkLCBpcyBub3QgZ29vZC4KPj4KPj4g
+SSBkaWQgbm90IGNhdGNoIHRoaXMgaXNzdWUgYnkgdGhlIHRpbWUgSSBoYXZlIGdldCBteSB3b3Jr
+IG1lcmdlZCwKPj4gYmVjYXVzZSBpdCB3YXMgbm90IGNyYXNoaW5nIChkb24ndCBrbm93IHdoeS4u
+LikuCj4+Cj4+IEkgaGF2ZSB0ZXN0IHdpdGggdGhlIG1hc3RlciBicmFuY2ggYW5kIGJhcmVib3gg
+Y3Jhc2hzIGJ1dCBJIGNhbiBoYXZlCj4+IHNvbWUgc2VyaWFsIG91dHB1dDoKPj4KPj4gICAgYmFy
+ZWJveCAyMDE4LjA2LjAtMDAxNDUtZ2ZlMDQwZTAtZGlydHkgIzEgRnJpIEp1biAyOSAwOTowNjo1
+NCBEU1QgMjAxOAo+Pgo+PiAgICBCb2FyZDogQVJNIFFFTVUgdmlydDY0Cj4+ICAgIERBQlQgKGN1
+cnJlbnQgRUwpIGV4Y2VwdGlvbiAoRVNSIDB4OTQwMDAwNGIpIGF0IDB4MDAwMDAwMDAwMDAwMDAw
+MAo+PiAgICBlbHI6IDAwMDAwMDAwNDEwMGNhZDggbHIgOiAwMDAwMDAwMDQxMDBjYWM0Cj4+ICAg
+IHgwIDogMDAwMDAwMDAwMDAwMDBmMCB4MSA6IDAwMDAwMDAwMDAwMDAwMDEKPj4gICAgeDIgOiAw
+MDAwMDAwMGJmZmVmZDJjIHgzIDogMDAwMDAwMDBmZmZmZmZmZgo+PiAgICB4NCA6IDAwMDAwMDAw
+MDAwMDAwMDggeDUgOiAwMDAwMDAwMDAwMDAwMDAwCj4+ICAgIHg2IDogMDAwMDAwMDA0MGMwNjcx
+MCB4NyA6IDAwMDAwMDAwMDAwMDAwMDAKPj4KPj4gQW55d2F5LCB0aGUgcWVtdSB2aXJ0IGJvYXJk
+IGlzIGJyb2tlbi4KPj4KPj4gSSB3aWxsIHRyeSB0byB3b3JrIGEgYml0IG9uIHRoaXMgaW4gdGhl
+IHdlZWsgZW5kLgo+Pgo+PiBBbmRyZXcsIGhvdyBkbyB5b3Ugc2V0IHVwIHRoZSBzdGFjayBvbiB0
+aGUgaW14OCBib2FyZCA/Cj4+Cj4KPiBJZGVhbGx5IHN0YXJ0X254cF9pbXg4bXFfZXZrIGlzIGRl
+Y2xhcmVkIGFzIF9fbmFrZWQgd2hpY2gsIGlmIGl0IHdhcwo+IHdvcmtpbmcsIHdvdWxkJ3ZlIHJl
+bW92ZWQgaXRzIGZ1bmN0aW9uIHByb2xvZ3VlL2VwaWxvZ3VlIGFuZCB3ZSBjb3VsZAo+IGVpdGhl
+ciBzZXQgdXAgdGhlIHN0YWNrIGF0IHRoYXQgcG9pbnQgb3IsIGlmIGxvb2tpbmcgYXQgZGlzYXNz
+ZW1ibHkKPiBzaG93ZWQgbm8gc3RhY2sgdXNhZ2UsIHdlIGNvdWxkIHdhaXQgdW50aWwgdGhhdCB3
+b3VsZCBiZSBkb25lIGFzIGFwYXJ0Cj4gb2YgYmFyZWJveF9hcm1fZW50cnkoKS4KPgo+IEhvd2V2
+ZXIsIGdpdmVuIGhvdyBfX25ha2VkIHdhc24ndCB3b3JraW5nIG9uIEFBcmNoNjQgZm9yIG1lIGFu
+ZCBJCj4gZGlkbid0IHdhbnQgdG8gbWFqb3JseSBjaGFuZ2Ugd2hhdCBFTlRSWV9GVU5DVElPTigp
+IGRvZXMsIEkganVzdAo+IHNldHRsZWQgdG8gZXhwbG9pdCB0aGUgZmFjdCB0aGF0IGkuTVg4TSB1
+c2VzIE1hc2tST00gZmlybXdhcmUgdGhhdAo+IGltcGxlbWVudHMgaW5pdGlhbCBib290c3RyYXBw
+aW5nIChmZXRjaGluZyB0aGUgaW1hZ2UgZnJvbSB0aGUgbWVkaXVtLAo+IGV4ZWN1dGluZyBEQ0Qs
+IGV0Yy4pIHdoaWNoIHNldHMgdXAgc29tZSBpbml0aWFsIHN0YWNrIGZvciBpdHMgaW50ZXJuYWwK
+PiBuZWVkcyBhbmQgY2FuIGJlIHVzZWQgdW50aWwgd2UgcmVhY2ggYmFyZWJveF9hcm1fZW50cnko
+KSB3aGVyZSBTUAo+IHdvdWxkIGJlIHByb3Blcmx5IHNldCB1cC4KPgo+IFRoYW5rcywKPiBBbmRy
+ZXkgU21pcm5vdgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
