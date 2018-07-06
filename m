@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fbNlT-0001BC-Rl
- for barebox@lists.infradead.org; Fri, 06 Jul 2018 10:15:01 +0000
+ id 1fbNlw-0002a3-Qc
+ for barebox@lists.infradead.org; Fri, 06 Jul 2018 10:15:31 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  6 Jul 2018 12:14:46 +0200
-Message-Id: <20180706101446.5570-1-s.hauer@pengutronix.de>
+Date: Fri,  6 Jul 2018 12:15:16 +0200
+Message-Id: <20180706101516.7342-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,39 +19,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] clk: imx: remove unused clk_gate2_inverted
+Subject: [PATCH] mtd: gpmi-nand: Make sure clock is disabled during rate change
 To: Barebox List <barebox@lists.infradead.org>
+
+On i.MX6 GPMI Nand controller the clock must be disabled during
+a rate change. Otherwise glitches on the clock line may occur
+which result in errors like:
+
+MXS NAND: Error sending command
+MXS NAND: DMA read error
+
+There were previous attempts to fix this. One is in:
+
+54961378f0 imx6: clk: Gate off ENFC clock before setting clock rate
+
+This patch added a clk_disable() right before the rate change. Since
+a clk_disable() on a disabled clk is a no-op, the patch added a
+clk_enable() to the i.MX6 clk driver in the hope that the clk is
+enabled in the nand driver probe and the clk_disable() really takes
+place.
+
+This patch doesn't work. First of all it enabled the enfc_podf clk
+which was not the one that was actually disabled in the nand driver,
+resulting in the nand drivers call to clk_disable() still being a
+no-op. Then this patch also only works only on the classic i.MX6 which
+was the only one supported at that time, but not on the i.MX6UL, i.MX6SX
+and i.MX6SL which have a separate clk driver.
+
+Instead of adding more quirks to the other i.MX6 clk drivers, fix this
+in the GPMI driver. We no longer call clk_disable() on a disabled clk,
+but instead do a clk_enable() first which makes sure the hardware state
+is synchronized to the usage count and the following clk_disable()
+is really effective. At the same time we can (and actually must) remove
+the quirk in the i.MX6 clk driver.
+
+Also add clk_disable()/clk_enable() around another rate change in the
+GPMI driver.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clk/imx/clk-gate2.c | 17 -----------------
- 1 file changed, 17 deletions(-)
+ drivers/clk/imx/clk-imx6.c  | 1 -
+ drivers/mtd/nand/nand_mxs.c | 5 ++++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-gate2.c b/drivers/clk/imx/clk-gate2.c
-index e7dcd87a7e..f2e704cdb2 100644
---- a/drivers/clk/imx/clk-gate2.c
-+++ b/drivers/clk/imx/clk-gate2.c
-@@ -129,20 +129,3 @@ struct clk *clk_gate2(const char *name, const char *parent, void __iomem *reg,
+diff --git a/drivers/clk/imx/clk-imx6.c b/drivers/clk/imx/clk-imx6.c
+index 8c3bb46a48..35b995dae2 100644
+--- a/drivers/clk/imx/clk-imx6.c
++++ b/drivers/clk/imx/clk-imx6.c
+@@ -527,7 +527,6 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 	clk_enable(clks[IMX6QDL_CLK_MMDC_CH0_AXI_PODF]);
+ 	clk_enable(clks[IMX6QDL_CLK_PLL6_ENET]);
+ 	clk_enable(clks[IMX6QDL_CLK_SATA_REF_100M]);
+-	clk_enable(clks[IMX6QDL_CLK_ENFC_PODF]);
  
- 	return g;
- }
--
--struct clk *clk_gate2_inverted(const char *name, const char *parent,
--		void __iomem *reg, u8 shift)
--{
--	struct clk *clk;
--	struct clk_gate2 *g;
--
--	clk = clk_gate2(name, parent, reg, shift, 0x3, 0);
--	if (IS_ERR(clk))
--		return clk;
--
--	g = to_clk_gate2(clk);
--
--	g->flags = CLK_GATE_INVERTED;
--
--	return clk;
--}
+ 	clk_set_parent(clks[IMX6QDL_CLK_LVDS1_SEL], clks[IMX6QDL_CLK_SATA_REF_100M]);
+ 
+diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+index 337748af48..0e0f5e68b2 100644
+--- a/drivers/mtd/nand/nand_mxs.c
++++ b/drivers/mtd/nand/nand_mxs.c
+@@ -2051,7 +2051,9 @@ static int mxs_nand_enable_edo_mode(struct mxs_nand_info *info)
+ 	nand->select_chip(mtd, -1);
+ 
+ 	/* [3] set the main IO clock, 100MHz for mode 5, 80MHz for mode 4. */
++	clk_disable(info->clk);
+ 	clk_set_rate(info->clk, (mode == 5) ? 100000000 : 80000000);
++	clk_enable(info->clk);
+ 
+ 	dev_dbg(info->dev, "using asynchronous EDO mode %d\n", mode);
+ 
+@@ -2147,6 +2149,8 @@ static int mxs_nand_probe(struct device_d *dev)
+ 	if (IS_ERR(nand_info->clk))
+ 		return PTR_ERR(nand_info->clk);
+ 
++	clk_enable(nand_info->clk);
++
+ 	if (mxs_nand_is_imx6(nand_info)) {
+ 		clk_disable(nand_info->clk);
+ 		clk_set_rate(nand_info->clk, 22000000);
+@@ -2154,7 +2158,6 @@ static int mxs_nand_probe(struct device_d *dev)
+ 		nand_info->dma_channel_base = 0;
+ 	} else {
+ 		nand_info->dma_channel_base = MXS_DMA_CHANNEL_AHB_APBH_GPMI0;
+-		clk_enable(nand_info->clk);
+ 	}
+ 
+ 	err = mxs_nand_alloc_buffers(nand_info);
 -- 
 2.18.0
 
