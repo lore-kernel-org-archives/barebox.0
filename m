@@ -1,11 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fcStB-0003iw-IV
- for barebox@lists.infradead.org; Mon, 09 Jul 2018 09:55:26 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  9 Jul 2018 11:55:13 +0200
-Message-Id: <20180709095513.26524-1-s.hauer@pengutronix.de>
+ id 1fcpHs-0004nu-LV
+ for barebox@lists.infradead.org; Tue, 10 Jul 2018 09:50:26 +0000
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Date: Tue, 10 Jul 2018 11:50:01 +0200
+Message-Id: <20180710095003.1256-1-u.oelmann@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,46 +15,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] cmdlinepart: Allow empty string
+Subject: [PATCH 1/3] Documentation: state: harmonize capitalization in headings
 To: Barebox List <barebox@lists.infradead.org>
 
-Currently when cmdlinepart_do_parse() is called with an empty
-partitions string then an unnamed partition with size 0 is created.
-This is wrong of course and instead no partition should be
-created.
-
-With this barebox no longer crashes while booting when all partitions
-are deleted on the commandline using "nand0.partitions="
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- lib/cmdlinepart.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/lib/cmdlinepart.c b/lib/cmdlinepart.c
-index d7d444115f..5b9f33ca1b 100644
---- a/lib/cmdlinepart.c
-+++ b/lib/cmdlinepart.c
-@@ -101,6 +101,9 @@ int cmdlinepart_do_parse(const char *devname, const char *parts, loff_t devsize,
- 	loff_t offset = 0;
- 	int ret;
- 
-+	if (!parts || *parts == '\0')
-+		return 0;
-+
- 	while (1) {
- 		loff_t size = 0;
- 
--- 
-2.18.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4K
+LS0tCiBEb2N1bWVudGF0aW9uL3VzZXIvc3RhdGUucnN0IHwgMTQgKysrKysrKy0tLS0tLS0KIDEg
+ZmlsZSBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKyksIDcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0
+IGEvRG9jdW1lbnRhdGlvbi91c2VyL3N0YXRlLnJzdCBiL0RvY3VtZW50YXRpb24vdXNlci9zdGF0
+ZS5yc3QKaW5kZXggZDE3ZjM5YmVmYmU0Li45N2U0NWQ0M2I3Y2IgMTAwNjQ0Ci0tLSBhL0RvY3Vt
+ZW50YXRpb24vdXNlci9zdGF0ZS5yc3QKKysrIGIvRG9jdW1lbnRhdGlvbi91c2VyL3N0YXRlLnJz
+dApAQCAtNTIsNyArNTIsNyBAQCByZXF1aXJlZCB0byBkZWZpbmUgdGhlIGxvY2F0aW9uIHdoZXJl
+IHRvIHN0b3JlIHRoZSAqc3RhdGUqIHZhcmlhYmxlIHNldC4KIAogLi4gX3N0YXRlX2ZyYW1ld29y
+ayxiYWNrZW5kX3R5cGVzOgogCi1CYWNrZW5kLVR5cGVzIChlLmcuICpzdGF0ZSogc3RvcmFnZSBm
+b3JtYXQpCitCYWNrZW5kLVR5cGVzIChlLmcuICpzdGF0ZSogU3RvcmFnZSBGb3JtYXQpCiAtLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAKIFRoZSAqc3RhdGUqIHZh
+cmlhYmxlIHNldCBpdHNlbGYgY2FuIGJlIHN0b3JlZCBpbiBkaWZmZXJlbnQgd2F5cy4gQ3VycmVu
+dGx5IHR3bwpAQCAtNjYsNyArNjYsNyBAQCBCb3RoIHNlcmlhbGl6ZSB0aGUgKnN0YXRlKiB2YXJp
+YWJsZSBzZXQgZGlmZmVyZW50bHkuCiAKIC4uIF9zdGF0ZV9mcmFtZXdvcmsscmF3OgogCi1UaGUg
+YGByYXdgYCAqc3RhdGUqIHN0b3JhZ2UgZm9ybWF0CitUaGUgYGByYXdgYCAqc3RhdGUqIFN0b3Jh
+Z2UgRm9ybWF0CiAjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjCiAKIGBgcmF3YGAg
+bWVhbnMgdGhlICpzdGF0ZSogdmFyaWFibGUgc2V0IGlzIGEgc2ltcGxlIGJpbmFyeSBkYXRhIGJs
+b2Igb25seS4gSW4KQEAgLTExNyw3ICsxMTcsNyBAQCBlbWJlZGRlZCAqc3RhdGUqIHZhcmlhYmxl
+IHNldC4gUmVmZXIgdG8KIAogLi4gX3N0YXRlX2ZyYW1ld29yayxkdGI6CiAKLVRoZSBgYGR0YmBg
+ICpzdGF0ZSogc3RvcmFnZSBmb3JtYXQKK1RoZSBgYGR0YmBgICpzdGF0ZSogU3RvcmFnZSBGb3Jt
+YXQKICMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMKIAogLi4gbm90ZTo6IFRoZSBg
+YGR0YmBgIGJhY2tlbmQgdHlwZSBpc24ndCB3ZWxsIHRlc3RlZC4gVXNlIHRoZSBgYHJhd2BgIGJh
+Y2tlbmQKQEAgLTEzMCw3ICsxMzAsNyBAQCBVbmxpa2UgdGhlIGBgcmF3YGAgKnN0YXRlKiBiYWNr
+ZW5kIHRoZSBgYGR0YmBgICpzdGF0ZSogYmFja2VuZCBjYW4gZGVzY3JpYmUgaXRzZQogCiAuLiBf
+c3RhdGVfZnJhbWV3b3JrLGJhY2tlbmRfc3RvcmFnZV90eXBlOgogCi1CYWNrZW5kIFN0b3JhZ2Ug
+VHlwZXMgKGUuZy4gbWVkaWEgc3RvcmFnZSBsYXlvdXQpCitCYWNrZW5kIFN0b3JhZ2UgVHlwZXMg
+KGUuZy4gTWVkaWEgU3RvcmFnZSBMYXlvdXQpCiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAKIFRoZSBzZXJpYWxpemVkIGRhdGEgKGBgcmF3YGAgb3Ig
+YGBkdGJgYCkgY2FuIGJlIHN0b3JlZCB0byBkaWZmZXJlbnQgYmFja2VuZApAQCAtMzIxLDcgKzMy
+MSw3IEBAIHRoZSBlcmFzZWJsb2NrIGFnYWluLiBUaGlzIHNpZ25pZmljYW50bHkgcmVkdWNlcyB0
+aGUgbmVlZCBmb3IgYSBibG9jayBlcmFzZXMuCiAuLiBpbXBvcnRhbnQ6OiBPbmUgY29weSBvZiB0
+aGUgKnN0YXRlKiB2YXJpYWJsZSBzZXQgaXMgbGltaXRlZCB0byB0aGUgcGFnZSBzaXplCiAgICBv
+ZiB0aGUgdXNlZCBiYWNrZW5kIChlLmcuIE5BTkQgdHlwZSBmbGFzaCBtZW1vcnkpCiAKLVJlZHVu
+ZGFudCAqc3RhdGUqIHZhcmlhYmxlIHNldCBjb3BpZXMKK1JlZHVuZGFudCAqc3RhdGUqIFZhcmlh
+YmxlIFNldCBDb3BpZXMKIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIAog
+VG8gYXZvaWQgZGF0YSBsb3NzIHdoZW4gY2hhbmdpbmcgdGhlICpzdGF0ZSogdmFyaWFibGUgc2V0
+LCBtb3JlIHRoYW4gb25lCkBAIC00MzEsNyArNDMxLDcgQEAgdmFyaWFibGUgc2V0IGhhcyBhIHNp
+emUgb2YgMTcgYnl0ZXMgKDE2IGJ5dGVzIGhlYWRlciBwbHVzIG9uZSBieXRlIHZhcmlhYmxlcyku
+CiAuLiBub3RlOjogRm9yIGEgbW9yZSBkZXRhaWxlZCBkZXNjcmlwdGlvbiBvZiB0aGUgdXNlZCAq
+c3RhdGUqIHZhcmlhYmxlIHNldAogICAgcHJvcGVydGllcyBoZXJlLCByZWZlciB0byA6cmVmOmBi
+YXJlYm94LHN0YXRlYC4KIAotTk9SIGZsYXNoIG1lbW9yaWVzCitOT1IgRmxhc2ggTWVtb3JpZXMK
+ICMjIyMjIyMjIyMjIyMjIyMjIwogCiBUaGlzIHR5cGUgb2YgbWVtb3J5IGNhbiBiZSB3cml0dGVu
+IG9uIGEgc2luZ2xlIGJ5dGUvd29yZCBiYXNpcyAoZGVwZW5kaW5nIG9uIGl0cyBidXMKQEAgLTQ4
+Miw3ICs0ODIsNyBAQCBjb250ZW50LCBpdHMgYmFja2VuZC10eXBlIGFuZCAqc3RhdGUqIHZhcmlh
+YmxlIHNldCBsYXlvdXQuCiAJCX07CiAJfTsKIAotTkFORCBmbGFzaCBtZW1vcmllcworTkFORCBG
+bGFzaCBNZW1vcmllcwogIyMjIyMjIyMjIyMjIyMjIyMjIwogCiBUaGlzIHR5cGUgb2YgbWVtb3J5
+IGNhbiBiZSB3cml0dGVuIG9uIGEgKnBhZ2UqIGJhc2UgKHR5cGljYWxseSA1MTIgYnl0ZXMsCi0t
+IAoyLjE4LjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
+L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
