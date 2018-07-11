@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fdrQI-0008Pl-D4
- for barebox@lists.infradead.org; Fri, 13 Jul 2018 06:19:24 +0000
-Date: Fri, 13 Jul 2018 08:19:10 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180713061910.fj2xh5hsujsmrlvi@pengutronix.de>
-References: <20180710095003.1256-1-u.oelmann@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180710095003.1256-1-u.oelmann@pengutronix.de>
+ id 1fdGU6-0004k4-4A
+ for barebox@lists.infradead.org; Wed, 11 Jul 2018 14:52:57 +0000
+Message-ID: <1531320757.3163.57.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 11 Jul 2018 16:52:37 +0200
+In-Reply-To: <20180611064652.ed4hf6zeubxx7foo@pengutronix.de>
+References: <20180608110747.23789-1-l.stach@pengutronix.de>
+ <20180611064652.ed4hf6zeubxx7foo@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,144 +18,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] Documentation: state: harmonize capitalization in
- headings
-To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] scripts: imx-image: fix build with OpenSSL 1.1.x
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Tue, Jul 10, 2018 at 11:50:01AM +0200, Ulrich =D6lmann wrote:
-> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
-> ---
->  Documentation/user/state.rst | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-
-Applied, thanks
-
-Sascha
-
-> =
-
-> diff --git a/Documentation/user/state.rst b/Documentation/user/state.rst
-> index d17f39befbe4..97e45d43b7cb 100644
-> --- a/Documentation/user/state.rst
-> +++ b/Documentation/user/state.rst
-> @@ -52,7 +52,7 @@ required to define the location where to store the *sta=
-te* variable set.
->  =
-
->  .. _state_framework,backend_types:
->  =
-
-> -Backend-Types (e.g. *state* storage format)
-> +Backend-Types (e.g. *state* Storage Format)
->  -------------------------------------------
->  =
-
->  The *state* variable set itself can be stored in different ways. Current=
-ly two
-> @@ -66,7 +66,7 @@ Both serialize the *state* variable set differently.
->  =
-
->  .. _state_framework,raw:
->  =
-
-> -The ``raw`` *state* storage format
-> +The ``raw`` *state* Storage Format
->  ##################################
->  =
-
->  ``raw`` means the *state* variable set is a simple binary data blob only=
-. In
-> @@ -117,7 +117,7 @@ embedded *state* variable set. Refer to
->  =
-
->  .. _state_framework,dtb:
->  =
-
-> -The ``dtb`` *state* storage format
-> +The ``dtb`` *state* Storage Format
->  ##################################
->  =
-
->  .. note:: The ``dtb`` backend type isn't well tested. Use the ``raw`` ba=
-ckend
-> @@ -130,7 +130,7 @@ Unlike the ``raw`` *state* backend the ``dtb`` *state=
-* backend can describe itse
->  =
-
->  .. _state_framework,backend_storage_type:
->  =
-
-> -Backend Storage Types (e.g. media storage layout)
-> +Backend Storage Types (e.g. Media Storage Layout)
->  -------------------------------------------------
->  =
-
->  The serialized data (``raw`` or ``dtb``) can be stored to different back=
-end
-> @@ -321,7 +321,7 @@ the eraseblock again. This significantly reduces the =
-need for a block erases.
->  .. important:: One copy of the *state* variable set is limited to the pa=
-ge size
->     of the used backend (e.g. NAND type flash memory)
->  =
-
-> -Redundant *state* variable set copies
-> +Redundant *state* Variable Set Copies
->  -------------------------------------
->  =
-
->  To avoid data loss when changing the *state* variable set, more than one
-> @@ -431,7 +431,7 @@ variable set has a size of 17 bytes (16 bytes header =
-plus one byte variables).
->  .. note:: For a more detailed description of the used *state* variable s=
-et
->     properties here, refer to :ref:`barebox,state`.
->  =
-
-> -NOR flash memories
-> +NOR Flash Memories
->  ##################
->  =
-
->  This type of memory can be written on a single byte/word basis (dependin=
-g on its bus
-> @@ -482,7 +482,7 @@ content, its backend-type and *state* variable set la=
-yout.
->  		};
->  	};
->  =
-
-> -NAND flash memories
-> +NAND Flash Memories
->  ###################
->  =
-
->  This type of memory can be written on a *page* base (typically 512 bytes,
-> -- =
-
-> 2.18.0
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gTW9udGFnLCBkZW4gMTEuMDYuMjAxOCwgMDg6NDYgKzAyMDAgc2NocmllYiBTYXNjaGEgSGF1
+ZXI6Cj4gT24gRnJpLCBKdW4gMDgsIDIwMTggYXQgMDE6MDc6NDdQTSArMDIwMCwgTHVjYXMgU3Rh
+Y2ggd3JvdGU6Cj4gPiBPcGVuU1NMIDEuMS54IG1hZGUgc29tZSBvZiB0aGUgdHlwZXMgb3BhcXVl
+LCBzbyBwZWVraW5nIGluc2lkZQo+ID4gZGlyZWN0bHkKPiA+IGRvZXNuJ3Qgd29yayBhbnltb3Jl
+LiBVc2UgdGhlIGNvcnJlY3QgYWNjZXNzb3JzIGluc3RlYWQuCj4gPiAKPiA+IEkndmUgZHJvcHBl
+ZCB0aGUgYWxnb3JpdGhtIGNoZWNrLCBhcyBFVlBfUEtFWV9nZXQwX1JTQSgpIGFscmVhZHkKPiA+
+IHZlcmlmaWVzCj4gPiB0aGF0IHRoZSBwdWJrZXkgaXMgUlNBIGFuZCByZXR1cm5zIE5VTEwgaWYg
+aXQgaXNuJ3QuCj4gPiAKPiA+IFNpZ25lZC1vZmYtYnk6IEx1Y2FzIFN0YWNoIDxsLnN0YWNoQHBl
+bmd1dHJvbml4LmRlPgo+ID4gLS0tCj4gPiBUaGlzIGlzIGNvbXBpbGUgdGVzdGVkIG9ubHksIHNv
+IEkgd291bGQgYXBwcmVjaWF0ZSBzb21lIHRlc3RpbmcKPiA+IGFuZC9vcgo+ID4gYSBjbG9zZSBs
+b29rIGF0IHRoaXMgY2hhbmdlLgo+ID4gLS0tCj4gPiDCoHNjcmlwdHMvaW14L2lteC1pbWFnZS5j
+IHwgNDAgKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLQo+ID4gLS0tCj4gPiDC
+oDEgZmlsZSBjaGFuZ2VkLCAyMCBpbnNlcnRpb25zKCspLCAyMCBkZWxldGlvbnMoLSkKPiAKPiBB
+cHBsaWVkLCB0aGFua3MKCkl0IHNlZW1zIHRoaXMgaGFzIGJlZW4gbG9zdCBpbiB0aGUgLW5leHQg
+Y3JhY2tzLgoKUmVnYXJkcywKTHVjYXMKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
+ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
+b3gK
