@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.20])
+Received: from mail-vk0-x243.google.com ([2607:f8b0:400c:c05::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ffhCK-0004Ve-Oh
- for barebox@lists.infradead.org; Wed, 18 Jul 2018 07:48:34 +0000
-References: <CAEp+FuCcgXKDJ2N1taeJXbz=9-xXsNPPb3Ry7XFTvs94AhGX=w@mail.gmail.com>
-From: Oleksij Rempel <linux@rempel-privat.de>
-Message-ID: <df7f7dd3-57a8-b8ff-7bf1-58a4ba59f70d@rempel-privat.de>
-Date: Wed, 18 Jul 2018 09:48:16 +0200
-MIME-Version: 1.0
-In-Reply-To: <CAEp+FuCcgXKDJ2N1taeJXbz=9-xXsNPPb3Ry7XFTvs94AhGX=w@mail.gmail.com>
+ id 1fdNbi-0001xh-JY
+ for barebox@lists.infradead.org; Wed, 11 Jul 2018 22:29:11 +0000
+Received: by mail-vk0-x243.google.com with SMTP id t4-v6so15209177vke.9
+ for <barebox@lists.infradead.org>; Wed, 11 Jul 2018 15:29:00 -0700 (PDT)
+From: Fabio Estevam <festevam@gmail.com>
+Date: Wed, 11 Jul 2018 19:29:38 -0300
+Message-Id: <1531348178-4168-1-git-send-email-festevam@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,78 +16,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============6471956029500455109=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox community/forum
-To: Mihaita Ivascu <mihaita_ivascu@trimble.com>, barebox@lists.infradead.org
+Subject: [PATCH] mx5: Implement Spectre v2 workaround for Cortex-A8
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============6471956029500455109==
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="WYLOst9WwLqliqUxlIsh9A1SmD3gqAU0i"
+Since 4.18-rc1 kernel the following warning is seen on i.MX51 and
+i.MX53:
+    
+CPU0: Spectre v2: firmware did not set auxiliary control register IBE bit, system vulnerable
+    
+Implement the suggested workaround by setting the IBE bit in the
+auxiliary control register.
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---WYLOst9WwLqliqUxlIsh9A1SmD3gqAU0i
-Content-Type: multipart/mixed; boundary="Zeh1IelbAzL1bVjuJvVSn1oP5NW5pMd5K";
- protected-headers="v1"
-From: Oleksij Rempel <linux@rempel-privat.de>
-To: Mihaita Ivascu <mihaita_ivascu@trimble.com>, barebox@lists.infradead.org
-Message-ID: <df7f7dd3-57a8-b8ff-7bf1-58a4ba59f70d@rempel-privat.de>
-Subject: Re: barebox community/forum
-References: <CAEp+FuCcgXKDJ2N1taeJXbz=9-xXsNPPb3Ry7XFTvs94AhGX=w@mail.gmail.com>
-In-Reply-To: <CAEp+FuCcgXKDJ2N1taeJXbz=9-xXsNPPb3Ry7XFTvs94AhGX=w@mail.gmail.com>
+Based on commit 7b37a9c732bf ("ARM: Introduce ability to enable ACR::IBE
+on Cortex-A8 for CVE-2017-5715") from U-Boot.
+    
+With this patch applied the kernel now reports:
+    
+CPU0: Spectre v2: using BPIALL workaround
 
---Zeh1IelbAzL1bVjuJvVSn1oP5NW5pMd5K
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
+Tested on a imx51 babbage.
 
-Hi Mihaita,
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+---
+ arch/arm/include/asm/errata.h | 9 +++++++++
+ arch/arm/mach-imx/cpu_init.c  | 3 ++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-Am 18.07.2018 um 09:24 schrieb Mihaita Ivascu:
-> Hello,
->=20
->      I would like to know where is the best place for me to post my
-> technical questions related to barebox or which is the best way to
-> proceed?
->      I could not find any forum or barebox community. Thanks.
+diff --git a/arch/arm/include/asm/errata.h b/arch/arm/include/asm/errata.h
+index 98137b5..c0e0f5a 100644
+--- a/arch/arm/include/asm/errata.h
++++ b/arch/arm/include/asm/errata.h
+@@ -86,3 +86,12 @@ static inline void enable_arm_errata_845369_war(void)
+ 		"mcr	p15, 0, r0, c15, c0, 1\n"
+ 	);
+ }
++
++static inline void enable_arm_errata_cortexa8_cve_2017_5715(void)
++{
++	__asm__ __volatile__ (
++		"mrc	p15, 0, r0, c1, c0, 1\n"
++		"orr	r0, r0, #1 << 6\n"
++		"mcr	p15, 0, r0, c1, c0, 1\n"
++	);
++}
+diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
+index 5b93d12..e1d88c7 100644
+--- a/arch/arm/mach-imx/cpu_init.c
++++ b/arch/arm/mach-imx/cpu_init.c
+@@ -22,6 +22,7 @@ void imx5_cpu_lowlevel_init(void)
+ 	arm_cpu_lowlevel_init();
+ 
+ 	enable_arm_errata_709718_war();
++	enable_arm_errata_cortexa8_cve_2017_5715();
+ }
+ 
+ void imx6_cpu_lowlevel_init(void)
+@@ -51,4 +52,4 @@ void vf610_cpu_lowlevel_init(void)
+ {
+ 	arm_cpu_lowlevel_init();
+ }
+-#endif
+\ No newline at end of file
++#endif
+-- 
+2.7.4
 
-You are already on the right place.
-
---=20
-Regards,
-Oleksij
-
-
---Zeh1IelbAzL1bVjuJvVSn1oP5NW5pMd5K--
-
---WYLOst9WwLqliqUxlIsh9A1SmD3gqAU0i
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEAREIAB0WIQRXepfNdOKCSzfa+2sfAia5GSZtaQUCW07wwAAKCRAfAia5GSZt
-aemhAP9pKkarTR5M3KdO0l2HhyMeVSCt3UkbcDmzo0AsUJstUAD/Yvpq2irhPfZJ
-bbdGcPeieZJN8yYRsgFQ3GXQNz6e8Vc=
-=iaqb
------END PGP SIGNATURE-----
-
---WYLOst9WwLqliqUxlIsh9A1SmD3gqAU0i--
-
-
---===============6471956029500455109==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============6471956029500455109==--
