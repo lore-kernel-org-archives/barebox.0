@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fdXuk-0002YC-9r
- for barebox@lists.infradead.org; Thu, 12 Jul 2018 09:29:31 +0000
+ id 1fdY4L-000066-A0
+ for barebox@lists.infradead.org; Thu, 12 Jul 2018 09:39:26 +0000
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu, 12 Jul 2018 11:29:11 +0200
-Message-Id: <20180712092911.8475-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+Date: Thu, 12 Jul 2018 11:39:11 +0200
+Message-Id: <20180712093911.4086-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20180712092911.8475-1-u.kleine-koenig@pengutronix.de>
+References: <20180712092911.8475-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,69 +16,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net/e1000: allow to overwrite flash size from device tree
+Subject: [PATCH] fixup! net/e1000: allow to overwrite flash size from device
+ tree
 To: barebox@lists.infradead.org
 
-V2hlbiBiYXJlYm94IHByb2JlcyB0aGUgZTEwMDAgZHJpdmVyIGFuZCB0aGUgZmxhc2ggb24gdGhl
-IGkyMTAgZGV2aWNlIGlzCnVucHJvZ3JhbW1lZCwgdGhlIGRyaXZlciBhc3N1bWVzIHRoZSBmbGFz
-aCBoYXMgYSBzaXplIG9mIG9ubHkgNCBraUIuClRoaXMgaXMgYW5ub3lpbmcgYmVjYXVzZSB0byBw
-cm9ncmFtIHRoZSBmbGFzaCBhbiBpbWFnZSBtdXN0IGJlIHdyaXR0ZW4KdGhhdCBpcyBiaWdnZXIg
-dGhhbiA0IGtpQi4gU28geW91IGZpcnN0IGhhdmUgdG8gZmxhc2ggdGhlIGZpcnN0IHNlY3Rvcgp0
-byBtYWtlIGJhcmVib3ggZGV0ZWN0IHRoZSByaWdodCBzaXplIG9uIHRoZSBuZXh0IGJvb3QuIFRo
-ZW4gcmVzZXQgdGhlCmJvYXJkIHRvIGJlIGFibGUgdG8gd3JpdGUgdGhlIHJlbWFpbmluZyBkYXRh
-LgoKVG8gd29yayBhcm91bmQgdGhhdCBsaW1pdGF0aW9uLCB0cnkgdG8gcmVhZCB0aGUgYWN0dWFs
-IHNpemUgZnJvbSB0aGUKZGV2aWNlIHRyZWUuIChOb3RlIGhvd2V2ZXIgdGhhdCBiYXJlYm94JyBw
-Y2kgY29kZSBjdXJyZW50bHkgZG9lc24ndCB1c2UKdGhlIGRldmljZSB0cmVlIGFuZCBzbyBjdXJy
-ZW50bHkgdGhpcyB0cnkgYWx3YXlzIGZhaWxzIHdpdGhvdXQgZnVydGhlcgpwYXRjaGluZy4pCgpT
-aWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJv
-bml4LmRlPgotLS0KIGRyaXZlcnMvbmV0L2UxMDAwL2VlcHJvbS5jIHwgNTcgKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKy0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA0MyBpbnNlcnRpb25z
-KCspLCAxNCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9lMTAwMC9lZXBy
-b20uYyBiL2RyaXZlcnMvbmV0L2UxMDAwL2VlcHJvbS5jCmluZGV4IDNmMzlkYjcxNjRkYi4uOTdj
-YjA5YTcxOGY5IDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC9lMTAwMC9lZXByb20uYworKysgYi9k
-cml2ZXJzL25ldC9lMTAwMC9lZXByb20uYwpAQCAtMyw2ICszLDggQEAKICNpbmNsdWRlIDxtYWxs
-b2MuaD4KICNpbmNsdWRlIDxsaW51eC9tYXRoNjQuaD4KICNpbmNsdWRlIDxsaW51eC9zaXplcy5o
-PgorI2luY2x1ZGUgPG9mX2RldmljZS5oPgorI2luY2x1ZGUgPGxpbnV4L3BjaS5oPgogI2luY2x1
-ZGUgPGxpbnV4L210ZC9zcGktbm9yLmg+CiAKICNpbmNsdWRlICJlMTAwMC5oIgpAQCAtNDA2LDYg
-KzQwOCw0NiBAQCBzdGF0aWMgdm9pZCBlMTAwMF9lZXByb21fdXNlc19taWNyb3dpcmUoc3RydWN0
-IGUxMDAwX2VlcHJvbV9pbmZvICplZXByb20sCiB9CiAKIAorc2l6ZV90IGUxMDAwX2lnYl9nZXRf
-Zmxhc2hfc2l6ZShzdHJ1Y3QgZTEwMDBfaHcgKmh3KQoreworCXN0cnVjdCBkZXZpY2Vfbm9kZSAq
-bm9kZSA9CisJCWh3LT5wZGV2LT5kZXYuZGV2aWNlX25vZGU7CisJdTMyIGZsYXNoX3NpemU7CisJ
-dWludDMyX3QgZmxhOworCWludCByZXQgPSAwOworCisJLyoKKwkgKiBUaGVyZSBhcmUgdHdvIHBv
-dGVudGlhbCBwbGFjZXMgd2hlcmUgdGhlIHNpemUgb2YgdGhlIGZsYXNoIGNhbiBiZQorCSAqIHNw
-ZWNpZmllZC4gSW4gdGhlIGRldmljZSB0cmVlLCBhbmQgaW4gdGhlIGZsYXNoIGl0c2VsZi4gIFVz
-ZSB0aGUKKwkgKiBmaXJzdCB0aGF0IGxvb2tzIHZhbGlkLgorCSAqLworCisJcmV0ID0gb2ZfcHJv
-cGVydHlfcmVhZF91MzIobm9kZSwgImZsYXNoLXNpemUiLCAmZmxhc2hfc2l6ZSk7CisJaWYgKHJl
-dCA9PSAwKSB7CisJCWRldl9pbmZvKGh3LT5kZXYsCisJCQkgIkRldGVybWluZWQgZmxhc2ggc2l6
-ZSBmcm9tIGRldmljZSB0cmVlICgldSlcbiIsCisJCQkgZmxhc2hfc2l6ZSk7CisJCXJldHVybiBm
-bGFzaF9zaXplOworCX0KKworCWZsYSA9IGUxMDAwX3JlYWRfcmVnKGh3LCBFMTAwMF9GTEEpOwor
-CWZsYSAmPSBFMTAwMF9GTEFfRkxfU0laRV9NQVNLOworCWZsYSA+Pj0gRTEwMDBfRkxBX0ZMX1NJ
-WkVfU0hJRlQ7CisKKwlpZiAoZmxhKSB7CisJCWZsYXNoX3NpemUgPSBTWl82NEsgPDwgZmxhOwor
-CQlkZXZfaW5mbyhody0+ZGV2LAorCQkJICJEZXRlcm1pbmVkIGZsYXNoIHNpemUgZnJvbSBFMTAw
-MF9GTEEuRkxfU0laRSAoJXUpXG4iLAorCQkJIGZsYXNoX3NpemUpOworCQlyZXR1cm4gZmxhc2hf
-c2l6ZTsKKwl9CisKKwlkZXZfaW5mbyhody0+ZGV2LAorCQkgIlVucHJvZ3JhbW1lZCBGbGFzaCBk
-ZXRlY3RlZCBhbmQgbm8gZmxhc2gtc2l6ZSBmb3VuZCBpbiBkZXZpY2UgdHJlZSwgbGltaXRpbmcg
-YWNjZXNzIHRvIGZpcnN0IDQga2lCXG4iKTsKKworCXJldHVybiA0MDk2OworfQorCiAvKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqCiAgKiBTZXRzIHVwIGVlcHJvbSB2YXJpYWJsZXMgaW4gdGhlIGh3IHN0
-cnVjdC4gIE11c3QgYmUgY2FsbGVkIGFmdGVyIG1hY190eXBlCiAgKiBpcyBjb25maWd1cmVkLiAg
-QWRkaXRpb25hbGx5LCBpZiB0aGlzIGlzIElDSDgsIHRoZSBmbGFzaCBjb250cm9sbGVyIEdiRQpA
-QCAtNDgwLDIwICs1MjIsNyBAQCBpbnQzMl90IGUxMDAwX2luaXRfZWVwcm9tX3BhcmFtcyhzdHJ1
-Y3QgZTEwMDBfaHcgKmh3KQogCiAJY2FzZSBlMTAwMF9pZ2I6CiAJCWlmIChlZWNkICYgRTEwMDBf
-RUVDRF9JMjEwX0ZMQVNIX0RFVEVDVEVEKSB7Ci0JCQl1aW50MzJfdCBmbGE7Ci0KLQkJCWZsYSAg
-PSBlMTAwMF9yZWFkX3JlZyhodywgRTEwMDBfRkxBKTsKLQkJCWZsYSAmPSBFMTAwMF9GTEFfRkxf
-U0laRV9NQVNLOwotCQkJZmxhID4+PSBFMTAwMF9GTEFfRkxfU0laRV9TSElGVDsKLQotCQkJaWYg
-KGZsYSkgewotCQkJCWVlcHJvbS0+d29yZF9zaXplID0gKFNaXzY0SyA8PCBmbGEpIC8gMjsKLQkJ
-CX0gZWxzZSB7Ci0JCQkJZWVwcm9tLT53b3JkX3NpemUgPSAyMDQ4OwotCQkJCWRldl9pbmZvKGh3
-LT5kZXYsICJVbnByb2dyYW1tZWQgRmxhc2ggZGV0ZWN0ZWQsICIKLQkJCQkJICJsaW1pdGluZyBh
-Y2Nlc3MgdG8gZmlyc3QgNEtCXG4iKTsKLQkJCX0KLQorCQkJZWVwcm9tLT53b3JkX3NpemUgPSBl
-MTAwMF9pZ2JfZ2V0X2ZsYXNoX3NpemUoaHcpIC8gMjsKIAkJCWVlcHJvbS0+YWNxdWlyZSA9IGUx
-MDAwX2FjcXVpcmVfZWVwcm9tX2ZsYXNoOwogCQkJZWVwcm9tLT5yZWxlYXNlID0gZTEwMDBfcmVs
-ZWFzZV9lZXByb21fZmxhc2g7CiAJCX0KLS0gCjIuMTguMAoKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
-bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2JhcmVib3gK
+---
+ drivers/net/e1000/eeprom.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
+index 97cb09a718f9..dda022e05437 100644
+--- a/drivers/net/e1000/eeprom.c
++++ b/drivers/net/e1000/eeprom.c
+@@ -407,7 +407,6 @@ static void e1000_eeprom_uses_microwire(struct e1000_eeprom_info *eeprom,
+ 	eeprom->read = e1000_read_eeprom_microwire;
+ }
+ 
+-
+ size_t e1000_igb_get_flash_size(struct e1000_hw *hw)
+ {
+ 	struct device_node *node =
+-- 
+2.18.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
