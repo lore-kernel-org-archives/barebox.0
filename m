@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vk0-x243.google.com ([2607:f8b0:400c:c05::243])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fdNbi-0001xh-JY
- for barebox@lists.infradead.org; Wed, 11 Jul 2018 22:29:11 +0000
-Received: by mail-vk0-x243.google.com with SMTP id t4-v6so15209177vke.9
- for <barebox@lists.infradead.org>; Wed, 11 Jul 2018 15:29:00 -0700 (PDT)
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 11 Jul 2018 19:29:38 -0300
-Message-Id: <1531348178-4168-1-git-send-email-festevam@gmail.com>
+ id 1fdXIS-00014X-Cm
+ for barebox@lists.infradead.org; Thu, 12 Jul 2018 08:49:57 +0000
+Message-ID: <1531385383.3163.65.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 12 Jul 2018 10:49:43 +0200
+In-Reply-To: <1531348178-4168-1-git-send-email-festevam@gmail.com>
+References: <1531348178-4168-1-git-send-email-festevam@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,79 +17,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mx5: Implement Spectre v2 workaround for Cortex-A8
-To: s.hauer@pengutronix.de
+Subject: Re: [PATCH] mx5: Implement Spectre v2 workaround for Cortex-A8
+To: Fabio Estevam <festevam@gmail.com>, s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org
 
-Since 4.18-rc1 kernel the following warning is seen on i.MX51 and
-i.MX53:
-    
-CPU0: Spectre v2: firmware did not set auxiliary control register IBE bit, system vulnerable
-    
-Implement the suggested workaround by setting the IBE bit in the
-auxiliary control register.
-
-Based on commit 7b37a9c732bf ("ARM: Introduce ability to enable ACR::IBE
-on Cortex-A8 for CVE-2017-5715") from U-Boot.
-    
-With this patch applied the kernel now reports:
-    
-CPU0: Spectre v2: using BPIALL workaround
-
-Tested on a imx51 babbage.
-
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
----
- arch/arm/include/asm/errata.h | 9 +++++++++
- arch/arm/mach-imx/cpu_init.c  | 3 ++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm/include/asm/errata.h b/arch/arm/include/asm/errata.h
-index 98137b5..c0e0f5a 100644
---- a/arch/arm/include/asm/errata.h
-+++ b/arch/arm/include/asm/errata.h
-@@ -86,3 +86,12 @@ static inline void enable_arm_errata_845369_war(void)
- 		"mcr	p15, 0, r0, c15, c0, 1\n"
- 	);
- }
-+
-+static inline void enable_arm_errata_cortexa8_cve_2017_5715(void)
-+{
-+	__asm__ __volatile__ (
-+		"mrc	p15, 0, r0, c1, c0, 1\n"
-+		"orr	r0, r0, #1 << 6\n"
-+		"mcr	p15, 0, r0, c1, c0, 1\n"
-+	);
-+}
-diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
-index 5b93d12..e1d88c7 100644
---- a/arch/arm/mach-imx/cpu_init.c
-+++ b/arch/arm/mach-imx/cpu_init.c
-@@ -22,6 +22,7 @@ void imx5_cpu_lowlevel_init(void)
- 	arm_cpu_lowlevel_init();
- 
- 	enable_arm_errata_709718_war();
-+	enable_arm_errata_cortexa8_cve_2017_5715();
- }
- 
- void imx6_cpu_lowlevel_init(void)
-@@ -51,4 +52,4 @@ void vf610_cpu_lowlevel_init(void)
- {
- 	arm_cpu_lowlevel_init();
- }
--#endif
-\ No newline at end of file
-+#endif
--- 
-2.7.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgRmFiaW8KCkFtIE1pdHR3b2NoLCBkZW4gMTEuMDcuMjAxOCwgMTk6MjkgLTAzMDAgc2Nocmll
+YiBGYWJpbyBFc3RldmFtOgo+IFNpbmNlIDQuMTgtcmMxIGtlcm5lbCB0aGUgZm9sbG93aW5nIHdh
+cm5pbmcgaXMgc2VlbiBvbiBpLk1YNTEgYW5kCj4gaS5NWDUzOgo+IMKgwqDCoMKgCj4gQ1BVMDog
+U3BlY3RyZSB2MjogZmlybXdhcmUgZGlkIG5vdCBzZXQgYXV4aWxpYXJ5IGNvbnRyb2wgcmVnaXN0
+ZXIgSUJFIGJpdCwgc3lzdGVtIHZ1bG5lcmFibGUKPiDCoMKgwqDCoAo+IEltcGxlbWVudCB0aGUg
+c3VnZ2VzdGVkIHdvcmthcm91bmQgYnkgc2V0dGluZyB0aGUgSUJFIGJpdCBpbiB0aGUKPiBhdXhp
+bGlhcnkgY29udHJvbCByZWdpc3Rlci4KPiAKPiBCYXNlZCBvbiBjb21taXQgN2IzN2E5YzczMmJm
+ICgiQVJNOiBJbnRyb2R1Y2UgYWJpbGl0eSB0byBlbmFibGUgQUNSOjpJQkUKPiBvbiBDb3J0ZXgt
+QTggZm9yIENWRS0yMDE3LTU3MTUiKSBmcm9tIFUtQm9vdC4KPiDCoMKgwqDCoAo+IFdpdGggdGhp
+cyBwYXRjaCBhcHBsaWVkIHRoZSBrZXJuZWwgbm93IHJlcG9ydHM6Cj4gwqDCoMKgwqAKPiBDUFUw
+OiBTcGVjdHJlIHYyOiB1c2luZyBCUElBTEwgd29ya2Fyb3VuZAo+IAo+IFRlc3RlZCBvbiBhIGlt
+eDUxIGJhYmJhZ2UuCj4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBGYWJpbyBFc3RldmFtIDxmZXN0ZXZh
+bUBnbWFpbC5jb20+Cj4gLS0tCj4gwqBhcmNoL2FybS9pbmNsdWRlL2FzbS9lcnJhdGEuaCB8IDkg
+KysrKysrKysrCj4gwqBhcmNoL2FybS9tYWNoLWlteC9jcHVfaW5pdC5jwqDCoHwgMyArKy0KPiDC
+oDIgZmlsZXMgY2hhbmdlZCwgMTEgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQo+IAo+IGRp
+ZmYgLS1naXQgYS9hcmNoL2FybS9pbmNsdWRlL2FzbS9lcnJhdGEuaCBiL2FyY2gvYXJtL2luY2x1
+ZGUvYXNtL2VycmF0YS5oCj4gaW5kZXggOTgxMzdiNS4uYzBlMGY1YSAxMDA2NDQKPiAtLS0gYS9h
+cmNoL2FybS9pbmNsdWRlL2FzbS9lcnJhdGEuaAo+ICsrKyBiL2FyY2gvYXJtL2luY2x1ZGUvYXNt
+L2VycmF0YS5oCj4gQEAgLTg2LDMgKzg2LDEyIEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBlbmFibGVf
+YXJtX2VycmF0YV84NDUzNjlfd2FyKHZvaWQpCj4gPiA+IMKgCQkibWNyCXAxNSwgMCwgcjAsIGMx
+NSwgYzAsIDFcbiIKPiA+IMKgCSk7Cj4gwqB9Cj4gKwo+ICtzdGF0aWMgaW5saW5lIHZvaWQgZW5h
+YmxlX2FybV9lcnJhdGFfY29ydGV4YThfY3ZlXzIwMTdfNTcxNSh2b2lkKQoKUGF0Y2ggbG9va3Mg
+bW9zdGx5IGdvb2QsIGJ1dCBJIGRvbid0IGxpa2UgdGhlIG5hbWluZyBoZXJlLiBDVkUgMjAxNy0K
+NTcxNSBkb2Vzbid0IGhhdmUgYSBkaXJlY3QgY29ycmVsYXRpb24gd2l0aCB0aGUgQ29ydGV4IEE4
+LiBNYXliZSBqdXN0Cm5hbWUgdGhpcyBfY29ydGV4YThfZW5hYmxlX2liZT8gQSBjb21tZW50IHRo
+YXQgdGhpcyBhbGxvd3MgdGhlIGtlcm5lbAp0byBmbHVzaCB0aGUgQlRCIHByb3Blcmx5IG1pZ2h0
+IGFsc28gaGVscC4KClJlZ2FyZHMsCkx1Y2FzCgoKPiArewo+ID4gKwlfX2FzbV9fIF9fdm9sYXRp
+bGVfXyAoCj4gPiA+ICsJCSJtcmMJcDE1LCAwLCByMCwgYzEsIGMwLCAxXG4iCj4gPiA+ICsJCSJv
+cnIJcjAsIHIwLCAjMSA8PCA2XG4iCj4gPiA+ICsJCSJtY3IJcDE1LCAwLCByMCwgYzEsIGMwLCAx
+XG4iCj4gPiArCSk7Cj4gK30KPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvY3B1X2lu
+aXQuYyBiL2FyY2gvYXJtL21hY2gtaW14L2NwdV9pbml0LmMKPiBpbmRleCA1YjkzZDEyLi5lMWQ4
+OGM3IDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL21hY2gtaW14L2NwdV9pbml0LmMKPiArKysgYi9h
+cmNoL2FybS9tYWNoLWlteC9jcHVfaW5pdC5jCj4gQEAgLTIyLDYgKzIyLDcgQEAgdm9pZCBpbXg1
+X2NwdV9sb3dsZXZlbF9pbml0KHZvaWQpCj4gPiDCoAlhcm1fY3B1X2xvd2xldmVsX2luaXQoKTsK
+PiDCoAo+ID4gwqAJZW5hYmxlX2FybV9lcnJhdGFfNzA5NzE4X3dhcigpOwo+ID4gKwllbmFibGVf
+YXJtX2VycmF0YV9jb3J0ZXhhOF9jdmVfMjAxN181NzE1KCk7Cj4gwqB9Cj4gwqAKPiDCoHZvaWQg
+aW14Nl9jcHVfbG93bGV2ZWxfaW5pdCh2b2lkKQo+IEBAIC01MSw0ICs1Miw0IEBAIHZvaWQgdmY2
+MTBfY3B1X2xvd2xldmVsX2luaXQodm9pZCkKPiDCoHsKPiA+IMKgCWFybV9jcHVfbG93bGV2ZWxf
+aW5pdCgpOwo+IMKgfQo+IC0jZW5kaWYKPiBcIE5vIG5ld2xpbmUgYXQgZW5kIG9mIGZpbGUKPiAr
+I2VuZGlmCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
+YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
+c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
