@@ -1,21 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-vk0-x242.google.com ([2607:f8b0:400c:c05::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fds4s-0000R9-RN
- for barebox@lists.infradead.org; Fri, 13 Jul 2018 07:01:20 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <sha@pengutronix.de>) id 1fds4h-0007gG-4y
- for barebox@lists.infradead.org; Fri, 13 Jul 2018 09:01:07 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <sha@pengutronix.de>) id 1fds4g-0008Nh-Sc
- for barebox@lists.infradead.org; Fri, 13 Jul 2018 09:01:06 +0200
-Date: Fri, 13 Jul 2018 09:01:06 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180713070106.35cactlmzunkquzl@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
+ id 1fdfdg-0002HG-9S
+ for barebox@lists.infradead.org; Thu, 12 Jul 2018 17:44:25 +0000
+Received: by mail-vk0-x242.google.com with SMTP id d74-v6so16797492vke.10
+ for <barebox@lists.infradead.org>; Thu, 12 Jul 2018 10:44:13 -0700 (PDT)
+From: Fabio Estevam <festevam@gmail.com>
+Date: Thu, 12 Jul 2018 14:45:03 -0300
+Message-Id: <1531417503-11837-1-git-send-email-festevam@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,26 +16,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: On vacation
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v2] mx5: Implement Spectre v2 workaround for Cortex-A8
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org
 
-Hi All,
+Since 4.18-rc1 kernel the following warning is seen on i.MX51 and
+i.MX53:
+    
+CPU0: Spectre v2: firmware did not set auxiliary control register IBE bit, system vulnerable
+    
+Implement the suggested workaround by setting the IBE bit in the
+auxiliary control register, which allows the kernel to flush the
+BTB properly.
 
-I am on vacation for the next three weeks (until 5th August). In the
-meantime Lucas will have an eye on the mailing list. The next release
-will probably be delayed until I am back.
+Based on commit 7b37a9c732bf ("ARM: Introduce ability to enable ACR::IBE
+on Cortex-A8 for CVE-2017-5715") from U-Boot.
+    
+With this patch applied the kernel now reports:
+    
+CPU0: Spectre v2: using BPIALL workaround
 
-Sascha
+Tested on a imx51 babbage.
 
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+---
+Changes since v1:
+- Rename the function name (Lucas)
+- Improve the commit log (Lucas)
+
+ arch/arm/include/asm/errata.h | 9 +++++++++
+ arch/arm/mach-imx/cpu_init.c  | 3 ++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/include/asm/errata.h b/arch/arm/include/asm/errata.h
+index 98137b5..c0e0f5a 100644
+--- a/arch/arm/include/asm/errata.h
++++ b/arch/arm/include/asm/errata.h
+@@ -86,3 +86,12 @@ static inline void enable_arm_errata_845369_war(void)
+ 		"mcr	p15, 0, r0, c15, c0, 1\n"
+ 	);
+ }
++
++static inline void enable_arm_errata_cortexa8_enable_ibe(void)
++{
++	__asm__ __volatile__ (
++		"mrc	p15, 0, r0, c1, c0, 1\n"
++		"orr	r0, r0, #1 << 6\n"
++		"mcr	p15, 0, r0, c1, c0, 1\n"
++	);
++}
+diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
+index 5b93d12..e1d88c7 100644
+--- a/arch/arm/mach-imx/cpu_init.c
++++ b/arch/arm/mach-imx/cpu_init.c
+@@ -22,6 +22,7 @@ void imx5_cpu_lowlevel_init(void)
+ 	arm_cpu_lowlevel_init();
+ 
+ 	enable_arm_errata_709718_war();
++	enable_arm_errata_cortexa8_enable_ibe();
+ }
+ 
+ void imx6_cpu_lowlevel_init(void)
+@@ -51,4 +52,4 @@ void vf610_cpu_lowlevel_init(void)
+ {
+ 	arm_cpu_lowlevel_init();
+ }
+-#endif
+\ No newline at end of file
++#endif
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.4
+
 
 _______________________________________________
 barebox mailing list
