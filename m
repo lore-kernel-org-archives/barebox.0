@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vk0-x242.google.com ([2607:f8b0:400c:c05::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fdfdg-0002HG-9S
- for barebox@lists.infradead.org; Thu, 12 Jul 2018 17:44:25 +0000
-Received: by mail-vk0-x242.google.com with SMTP id d74-v6so16797492vke.10
- for <barebox@lists.infradead.org>; Thu, 12 Jul 2018 10:44:13 -0700 (PDT)
-From: Fabio Estevam <festevam@gmail.com>
-Date: Thu, 12 Jul 2018 14:45:03 -0300
-Message-Id: <1531417503-11837-1-git-send-email-festevam@gmail.com>
+ id 1fdvJr-0008Gq-Ai
+ for barebox@lists.infradead.org; Fri, 13 Jul 2018 10:29:01 +0000
+Message-ID: <1531477724.3163.79.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Fri, 13 Jul 2018 12:28:44 +0200
+In-Reply-To: <1531417503-11837-1-git-send-email-festevam@gmail.com>
+References: <1531417503-11837-1-git-send-email-festevam@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,84 +17,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] mx5: Implement Spectre v2 workaround for Cortex-A8
-To: s.hauer@pengutronix.de
+Subject: Re: [PATCH v2] mx5: Implement Spectre v2 workaround for Cortex-A8
+To: Fabio Estevam <festevam@gmail.com>, s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org
 
-Since 4.18-rc1 kernel the following warning is seen on i.MX51 and
-i.MX53:
-    
-CPU0: Spectre v2: firmware did not set auxiliary control register IBE bit, system vulnerable
-    
-Implement the suggested workaround by setting the IBE bit in the
-auxiliary control register, which allows the kernel to flush the
-BTB properly.
-
-Based on commit 7b37a9c732bf ("ARM: Introduce ability to enable ACR::IBE
-on Cortex-A8 for CVE-2017-5715") from U-Boot.
-    
-With this patch applied the kernel now reports:
-    
-CPU0: Spectre v2: using BPIALL workaround
-
-Tested on a imx51 babbage.
-
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
----
-Changes since v1:
-- Rename the function name (Lucas)
-- Improve the commit log (Lucas)
-
- arch/arm/include/asm/errata.h | 9 +++++++++
- arch/arm/mach-imx/cpu_init.c  | 3 ++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm/include/asm/errata.h b/arch/arm/include/asm/errata.h
-index 98137b5..c0e0f5a 100644
---- a/arch/arm/include/asm/errata.h
-+++ b/arch/arm/include/asm/errata.h
-@@ -86,3 +86,12 @@ static inline void enable_arm_errata_845369_war(void)
- 		"mcr	p15, 0, r0, c15, c0, 1\n"
- 	);
- }
-+
-+static inline void enable_arm_errata_cortexa8_enable_ibe(void)
-+{
-+	__asm__ __volatile__ (
-+		"mrc	p15, 0, r0, c1, c0, 1\n"
-+		"orr	r0, r0, #1 << 6\n"
-+		"mcr	p15, 0, r0, c1, c0, 1\n"
-+	);
-+}
-diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
-index 5b93d12..e1d88c7 100644
---- a/arch/arm/mach-imx/cpu_init.c
-+++ b/arch/arm/mach-imx/cpu_init.c
-@@ -22,6 +22,7 @@ void imx5_cpu_lowlevel_init(void)
- 	arm_cpu_lowlevel_init();
- 
- 	enable_arm_errata_709718_war();
-+	enable_arm_errata_cortexa8_enable_ibe();
- }
- 
- void imx6_cpu_lowlevel_init(void)
-@@ -51,4 +52,4 @@ void vf610_cpu_lowlevel_init(void)
- {
- 	arm_cpu_lowlevel_init();
- }
--#endif
-\ No newline at end of file
-+#endif
--- 
-2.7.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gRG9ubmVyc3RhZywgZGVuIDEyLjA3LjIwMTgsIDE0OjQ1IC0wMzAwIHNjaHJpZWIgRmFiaW8g
+RXN0ZXZhbToKPiBTaW5jZSA0LjE4LXJjMSBrZXJuZWwgdGhlIGZvbGxvd2luZyB3YXJuaW5nIGlz
+IHNlZW4gb24gaS5NWDUxIGFuZAo+IGkuTVg1MzoKPiDCoMKgwqDCoAo+IENQVTA6IFNwZWN0cmUg
+djI6IGZpcm13YXJlIGRpZCBub3Qgc2V0IGF1eGlsaWFyeSBjb250cm9sIHJlZ2lzdGVyIElCRSBi
+aXQsIHN5c3RlbSB2dWxuZXJhYmxlCj4gwqDCoMKgwqAKPiBJbXBsZW1lbnQgdGhlIHN1Z2dlc3Rl
+ZCB3b3JrYXJvdW5kIGJ5IHNldHRpbmcgdGhlIElCRSBiaXQgaW4gdGhlCj4gYXV4aWxpYXJ5IGNv
+bnRyb2wgcmVnaXN0ZXIsIHdoaWNoIGFsbG93cyB0aGUga2VybmVsIHRvIGZsdXNoIHRoZQo+IEJU
+QiBwcm9wZXJseS4KPiAKPiBCYXNlZCBvbiBjb21taXQgN2IzN2E5YzczMmJmICgiQVJNOiBJbnRy
+b2R1Y2UgYWJpbGl0eSB0byBlbmFibGUgQUNSOjpJQkUKPiBvbiBDb3J0ZXgtQTggZm9yIENWRS0y
+MDE3LTU3MTUiKSBmcm9tIFUtQm9vdC4KPiDCoMKgwqDCoAo+IFdpdGggdGhpcyBwYXRjaCBhcHBs
+aWVkIHRoZSBrZXJuZWwgbm93IHJlcG9ydHM6Cj4gwqDCoMKgwqAKPiBDUFUwOiBTcGVjdHJlIHYy
+OiB1c2luZyBCUElBTEwgd29ya2Fyb3VuZAo+IAo+IFRlc3RlZCBvbiBhIGlteDUxIGJhYmJhZ2Uu
+Cj4gCj4gU2lnbmVkLW9mZi1ieTogRmFiaW8gRXN0ZXZhbSA8ZmVzdGV2YW1AZ21haWwuY29tPgoK
+UmV2aWV3ZWQtYnk6IEx1Y2FzIFN0YWNoIDxsLnN0YWNoQHBlbmd1dHJvbml4LmRlPgoKPiAtLS0K
+PiBDaGFuZ2VzIHNpbmNlIHYxOgo+IC0gUmVuYW1lIHRoZSBmdW5jdGlvbiBuYW1lIChMdWNhcykK
+PiAtIEltcHJvdmUgdGhlIGNvbW1pdCBsb2cgKEx1Y2FzKQo+IAo+IMKgYXJjaC9hcm0vaW5jbHVk
+ZS9hc20vZXJyYXRhLmggfCA5ICsrKysrKysrKwo+IMKgYXJjaC9hcm0vbWFjaC1pbXgvY3B1X2lu
+aXQuY8KgwqB8IDMgKystCj4gwqAyIGZpbGVzIGNoYW5nZWQsIDExIGluc2VydGlvbnMoKyksIDEg
+ZGVsZXRpb24oLSkKPiAKPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vaW5jbHVkZS9hc20vZXJyYXRh
+LmggYi9hcmNoL2FybS9pbmNsdWRlL2FzbS9lcnJhdGEuaAo+IGluZGV4IDk4MTM3YjUuLmMwZTBm
+NWEgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9hcm0vaW5jbHVkZS9hc20vZXJyYXRhLmgKPiArKysgYi9h
+cmNoL2FybS9pbmNsdWRlL2FzbS9lcnJhdGEuaAo+IEBAIC04NiwzICs4NiwxMiBAQCBzdGF0aWMg
+aW5saW5lIHZvaWQgZW5hYmxlX2FybV9lcnJhdGFfODQ1MzY5X3dhcih2b2lkKQo+ID4gPiDCoAkJ
+Im1jcglwMTUsIDAsIHIwLCBjMTUsIGMwLCAxXG4iCj4gPiDCoAkpOwo+IMKgfQo+ICsKPiArc3Rh
+dGljIGlubGluZSB2b2lkIGVuYWJsZV9hcm1fZXJyYXRhX2NvcnRleGE4X2VuYWJsZV9pYmUodm9p
+ZCkKPiArewo+ID4gKwlfX2FzbV9fIF9fdm9sYXRpbGVfXyAoCj4gPiA+ICsJCSJtcmMJcDE1LCAw
+LCByMCwgYzEsIGMwLCAxXG4iCj4gPiA+ICsJCSJvcnIJcjAsIHIwLCAjMSA8PCA2XG4iCj4gPiA+
+ICsJCSJtY3IJcDE1LCAwLCByMCwgYzEsIGMwLCAxXG4iCj4gPiArCSk7Cj4gK30KPiBkaWZmIC0t
+Z2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvY3B1X2luaXQuYyBiL2FyY2gvYXJtL21hY2gtaW14L2Nw
+dV9pbml0LmMKPiBpbmRleCA1YjkzZDEyLi5lMWQ4OGM3IDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJt
+L21hY2gtaW14L2NwdV9pbml0LmMKPiArKysgYi9hcmNoL2FybS9tYWNoLWlteC9jcHVfaW5pdC5j
+Cj4gQEAgLTIyLDYgKzIyLDcgQEAgdm9pZCBpbXg1X2NwdV9sb3dsZXZlbF9pbml0KHZvaWQpCj4g
+PiDCoAlhcm1fY3B1X2xvd2xldmVsX2luaXQoKTsKPiDCoAo+ID4gwqAJZW5hYmxlX2FybV9lcnJh
+dGFfNzA5NzE4X3dhcigpOwo+ID4gKwllbmFibGVfYXJtX2VycmF0YV9jb3J0ZXhhOF9lbmFibGVf
+aWJlKCk7Cj4gwqB9Cj4gwqAKPiDCoHZvaWQgaW14Nl9jcHVfbG93bGV2ZWxfaW5pdCh2b2lkKQo+
+IEBAIC01MSw0ICs1Miw0IEBAIHZvaWQgdmY2MTBfY3B1X2xvd2xldmVsX2luaXQodm9pZCkKPiDC
+oHsKPiA+IMKgCWFybV9jcHVfbG93bGV2ZWxfaW5pdCgpOwo+IMKgfQo+IC0jZW5kaWYKPiBcIE5v
+IG5ld2xpbmUgYXQgZW5kIG9mIGZpbGUKPiArI2VuZGlmCgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
+c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9iYXJlYm94Cg==
