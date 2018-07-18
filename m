@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.gnudd.com ([77.43.112.34])
+Received: from mail-it0-x22b.google.com ([2607:f8b0:4001:c0b::22b])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ffn3J-0000Bh-OO
- for barebox@lists.infradead.org; Wed, 18 Jul 2018 14:03:39 +0000
-Date: Wed, 18 Jul 2018 16:03:21 +0200
-From: Alessandro Rubini <rubini-list@gnudd.com>
-Message-ID: <20180718140321.GA28539@mail.gnudd.com>
+ id 1ffrXy-0006a9-A9
+ for barebox@lists.infradead.org; Wed, 18 Jul 2018 18:51:35 +0000
+Received: by mail-it0-x22b.google.com with SMTP id g141-v6so3423383ita.4
+ for <barebox@lists.infradead.org>; Wed, 18 Jul 2018 11:51:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAPPP46SniSuaZPfHGgb3YyvwDsW2jz6UwXLaNP5XL1PbF8_eWg@mail.gmail.com>
+In-Reply-To: <20180718140321.GA28539@mail.gnudd.com>
 References: <CAPPP46SniSuaZPfHGgb3YyvwDsW2jz6UwXLaNP5XL1PbF8_eWg@mail.gmail.com>
+ <20180718140321.GA28539@mail.gnudd.com>
+From: Giuseppe Levi <giuseppe.levi@gmail.com>
+Date: Wed, 18 Jul 2018 20:50:42 +0200
+Message-ID: <CAPPP46RVU698Uo_Ej2O8N7HETKRGG6aZDkpFA69Ox+tR3DdcGw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,20 +25,41 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: qemu and barebox
-To: giuseppe.levi@gmail.com
+To: Alessandro Rubini <rubini-list@gnudd.com>
 Cc: barebox@lists.infradead.org
 
-Hello.
+Ok tried with  CROSS_COMPILE=arm-linux-gnueabi- this should be 32bit arm
+then: qemu-system-arm -m 256M -machine virt -display none  -serial
+stdio -kernel barebox
 
-> emulate a spacial boot configuration of the CERN White Rabbit switch
-> (http://white-rabbit.web.cern.ch/).
+hangs..... any idea ? Should I use a different machine ?
 
-The White Rabbit switch is AT91SAM9G45 (I have one on my desk).
-Unless your own WR switch is a new design running on cortex-a57, you
-shoul cross-compile for arm32 and use a corresponding qemu
-configuration.
+It would be very complex to create a White Rabbit virtual machine ?
+(HW description is open)
 
-/alessandro
+
+
+2018-07-18 16:03 GMT+02:00 Alessandro Rubini <rubini-list@gnudd.com>:
+> Hello.
+>
+>> emulate a spacial boot configuration of the CERN White Rabbit switch
+>> (http://white-rabbit.web.cern.ch/).
+>
+> The White Rabbit switch is AT91SAM9G45 (I have one on my desk).
+> Unless your own WR switch is a new design running on cortex-a57, you
+> shoul cross-compile for arm32 and use a corresponding qemu
+> configuration.
+>
+> /alessandro
+
+
+
+-- 
+Dr. Giuseppe Levi
+Physics Dpt and INFN
+viale Berti Pichat 6/2
+40127 BOLOGNA
+Mobile: +39 393 0086704
 
 _______________________________________________
 barebox mailing list
