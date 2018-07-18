@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.jumo.net ([193.24.15.13])
+Received: from mail-oi0-x22e.google.com ([2607:f8b0:4003:c06::22e])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ffKYP-0001Do-J6
- for barebox@lists.infradead.org; Tue, 17 Jul 2018 07:37:51 +0000
-Received: from dentln03.jumo.net ([10.10.0.23]:1069)
- by mail.jumo.net with esmtp (Exim 4.82_1-5b7a7c0-XX)
- (envelope-from <eugen.wiens@jumo.net>) id 1ffKY7-0001cK-2X
- for barebox@lists.infradead.org; Tue, 17 Jul 2018 09:37:31 +0200
+ id 1ffh3p-0000HN-Mw
+ for barebox@lists.infradead.org; Wed, 18 Jul 2018 07:39:47 +0000
+Received: by mail-oi0-x22e.google.com with SMTP id i12-v6so7019647oik.2
+ for <barebox@lists.infradead.org>; Wed, 18 Jul 2018 00:39:35 -0700 (PDT)
 MIME-Version: 1.0
-From: Eugen Wiens <eugen.wiens@jumo.net>
-Date: Tue, 17 Jul 2018 09:37:09 +0200
-Message-Id: <20180717073709.15855-1-eugen.wiens@jumo.net>
+From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
+Date: Wed, 18 Jul 2018 09:39:23 +0200
+Message-ID: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,45 +17,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] imx_thermal: Fixed missing dependency for the IMX_THERMAL
- config
+Subject: MFGTools support in barebox
 To: barebox@lists.infradead.org
-Cc: Eugen Wiens <eugen.wiens@jumo.net>
 
-VGhlIHRlbXBlcmF0dXJlIHNlbnNvciBkcml2ZXIgZm9yIEZyZWVzY2FsZSBpLk1YIFNvQ3MgdXNl
-IGludGVybmFseSB0aGUgT0NPVFAgY2hhcmFjdGVyIGRldmljZS4gSWYgdGhlIGNvbmZpZyBJTVhf
-VEhFUk1BTCBpcyBzZWxlY3RlZCB0aGUgT0NPVFAgY29uZmlnIHdhcyBub3Qgc2VsZWN0ZWQgYW5k
-IGNvbWVzIHVwIHdpdGggYW4gZXJyb3IgZHVyaW5nIGJvb3RpbmcuDQoNClNpZ25lZC1vZmYtYnk6
-IEV1Z2VuIFdpZW5zIDxldWdlbi53aWVuc0BqdW1vLm5ldD4NCi0tLQ0KIGRyaXZlcnMvYWlvZGV2
-L0tjb25maWcgfCAyICsrDQogMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKQ0KDQpkaWZm
-IC0tZ2l0IGEvZHJpdmVycy9haW9kZXYvS2NvbmZpZyBiL2RyaXZlcnMvYWlvZGV2L0tjb25maWcN
-CmluZGV4IDhiYWQ5NDY5Mi4uN2ZjYzhjNTA5IDEwMDY0NA0KLS0tIGEvZHJpdmVycy9haW9kZXYv
-S2NvbmZpZw0KKysrIGIvZHJpdmVycy9haW9kZXYvS2NvbmZpZw0KQEAgLTEwLDYgKzEwLDggQEAg
-Y29uZmlnIElNWF9USEVSTUFMDQogICAgICAgIHRyaXN0YXRlICJUZW1wZXJhdHVyZSBzZW5zb3Ig
-ZHJpdmVyIGZvciBGcmVlc2NhbGUgaS5NWCBTb0NzIg0KICAgICAgICBkZXBlbmRzIG9uIEFSQ0hf
-SU1YNg0KICAgICAgICBzZWxlY3QgTUZEX1NZU0NPTg0KKyAgICAgICBzZWxlY3QgTlZNRU0NCisg
-ICAgICAgc2VsZWN0IElNWF9PQ09UUA0KICAgICAgICBoZWxwDQogICAgICAgICAgU3VwcG9ydCBm
-b3IgVGVtcGVyYXR1cmUgTW9uaXRvciAoVEVNUE1PTikgZm91bmQgb24gRnJlZXNjYWxlDQogICAg
-ICAgICAgaS5NWCBTb0NzLg0KLS0gDQoyLjE4LjANCg0KRGllc2UgRS1NYWlsIGthbm4gdmVydHJh
-dWxpY2hlIHVuZC9vZGVyIHJlY2h0bGljaCBnZXNjaMO8dHp0ZSBJbmZvcm1hdGlvbmVuIGJlaW5o
-YWx0ZW4gdW5kIGlzdCBhdXNzY2hsaWXDn2xpY2ggZsO8ciBkaWUgaW0gVmVydGVpbGVyIGdlbmFu
-bnRlbiBQZXJzb25lbiBiZXN0aW1tdC4gRGFzIHVuZXJsYXVidGUgS29waWVyZW4gc293aWUgZGll
-IHVuYmVmdWd0ZSBXZWl0ZXJnYWJlIGRpZXNlciBNYWlsIHNpbmQgbmljaHQgZ2VzdGF0dGV0LiBC
-aXR0ZSBiZW5hY2hyaWNodGlnZW4gU2llIHVucyBnZWdlYmVuZW5mYWxscyB0ZWxlZm9uaXNjaCBv
-ZGVyIG1pdCBBbnR3b3J0LU1haWwsIGZhbGxzIFNpZSBuaWNodCBkZXIgcmljaHRpZ2UgQWRyZXNz
-YXQgZGllc2VyIEUtTWFpbCBzaW5kLiBCaXR0ZSBsw7ZzY2hlbiBTaWUgZGllc2UgTmFjaHJpY2h0
-IHVuZCBhbGxlIEFuaMOkbmdlIGRhenUgdW52ZXJ6w7xnbGljaC4gRmFsbHMgbmljaHQgYXVzZHLD
-vGNrbGljaCB2ZXJtZXJrdCwgaXN0IGRpZXNlIEUtTWFpbCBrZWluZSByZWNodGxpY2ggYmluZGVu
-ZGUgVmVyZWluYmFydW5nLiANCg0KS29tbWFuZGl0Z2VzZWxsc2NoYWZ0OiBKVU1PIEdtYkggJiBD
-by4gS0csIFNpdHo6IDM2MDM5IEZ1bGRhLCBBbXRzZ2VyaWNodCBGdWxkYSBIUkEgMzAyLCBQZXJz
-w7ZubGljaCBoYWZ0ZW5kZSBHZXNlbGxzY2hhZnRlcmluOiBNLiBLLiBKVUNISEVJTSBHbWJILCBT
-aXR6OiAzNjAzOSBGdWxkYSwgQW10c2dlcmljaHQgRnVsZGEgSFJCIDE3LCBHZXNjaMOkZnRzZsO8
-aHJlcjogRGlwbC4tSW5nLiBCZXJuaGFyZCBKdWNoaGVpbSwgRGlwbC4tS2ZtLiBNaWNoYWVsIEp1
-Y2hoZWltIA0KVXN0Li1JZC4tTnIuOiBERSAxMTI0MTEyMzQgCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
-bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2JhcmVib3gK
+Hello,
+
+     I would like to flash a barebox image on NAND for a Phytec imx6ul
+evk board using MFGTools.
+     I have added support for UTP protocol in kernel image so commands
+could be "pushed" using MFGtools app from Windows.
+     But obviously I cannot push barebox_update command to Linux.
+     So I think I have two options:
+
+1) porting barebox_update command to Linux which I do not find it so
+easy. I am already working on it
+2) adding UTP support in barebox so I could just load the barebox
+image in RAM using MFGtools, there a utp device node would be created
+and then I could push barebox specific commands directly from
+MFGtools.
+      I have added UTP support in linux USB gadget code but I see
+barebox USB gadget code is quite different and not all functionality
+are in place so I also struggle a bit of porint gUTP patches from
+Linux to barebox.
+     Does anybody have any experience with this topic or coud advise
+me on how to procee?
+
+Thanks,
+        Mihaita
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
