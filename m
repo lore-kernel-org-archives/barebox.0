@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-oi0-x243.google.com ([2607:f8b0:4003:c06::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ffnsl-0005hI-J0
- for barebox@lists.infradead.org; Wed, 18 Jul 2018 14:56:49 +0000
-Message-ID: <1531925793.3511.128.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Wed, 18 Jul 2018 16:56:33 +0200
-In-Reply-To: <35db1bb9-cb13-26b3-09b7-30f583585155@pengutronix.de>
+ id 1ffo71-0005op-Ri
+ for barebox@lists.infradead.org; Wed, 18 Jul 2018 15:11:33 +0000
+Received: by mail-oi0-x243.google.com with SMTP id k12-v6so9429694oiw.8
+ for <barebox@lists.infradead.org>; Wed, 18 Jul 2018 08:11:21 -0700 (PDT)
+MIME-Version: 1.0
 References: <CAEp+FuAeZykr4wa-BK-zdTKUPH=kikkeZWLHHpycQ9uRJFkPug@mail.gmail.com>
  <16d74981-28c9-d637-c7de-f1902529ab30@rempel-privat.de>
  <35db1bb9-cb13-26b3-09b7-30f583585155@pengutronix.de>
-Mime-Version: 1.0
+ <1531925793.3511.128.camel@pengutronix.de>
+In-Reply-To: <1531925793.3511.128.camel@pengutronix.de>
+From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
+Date: Wed, 18 Jul 2018 17:11:09 +0200
+Message-ID: <CAEp+FuAsDL9msTeiC=2+bbKHkrEObdKKdctN_G3RdVX8uP=ZsQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +22,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: MFGtools support in barebox
-To: Bastian Stender <bst@pengutronix.de>, Oleksij Rempel <linux@rempel-privat.de>, Mihaita Ivascu <mihaita_ivascu@trimble.com>, barebox@lists.infradead.org
+To: jlu@pengutronix.de
+Cc: barebox@lists.infradead.org, bst@pengutronix.de, linux@rempel-privat.de
 
-On Wed, 2018-07-18 at 15:53 +0200, Bastian Stender wrote:
-> Hi,
-> 
-> On 07/18/2018 03:01 PM, Oleksij Rempel wrote:
-> > you email is in the list. (well, different version of it are already
-> > in the list). Please wait if some one can respond here.
-> > 
-> > I'm not an expert, but probably what you need is
-> > https://github.com/rauc
-> 
-> Have a look here:
-> 
-> http://rauc.readthedocs.io/en/latest/advanced.html#updating-the-bootloader
-> 
-> Updating barebox on NAND is not yet implemented. It would certainly be a
-> nice feature to have. Have a look in section 7.6.2 if you want to do that.
-
-Speaking with my rauc maintainer hat on...
-
-Writing barebox to NAND on an i.MX6 can't be done by generic methods,
-so for rauc we would want to call something like barebox-update which
-then handles the details. In any case, rauc is not intended for initial
-installation in the factory, but for updating in the field.
-
-Instead of MFGtools, we usually load barebox via imx-usb-loader. That
-is configured to start the fastboot gadget, which we then use to write
-barebox (via barebox_update) and the rootfs.
-
-Regards,
-Jan
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgogICAgVGhhbmtzIGZvciBhbnN3ZXIuCiAgICAgSSB0aGluayBJIG5lZWQgaXQgdG8gZG8g
+aXQgZnJvbSBXaW5kb3dzIGFzIHdlIGhhdmUgc29tZSBib2FyZHMKdGhhdCBuZWVkIHRvIGJlIHVw
+ZGF0ZWQgaW4gdGhlIGZhY3RvcnkgYnkgcGVvcGxlIHRoYXQgZG8gbm90IG5lY2Vzc2FyeQpoYXZl
+IExpbnV4IHNraWxscyBvciBMaW51eCB3b3Jrc3RhdGlvbi4KICAgICBUaGF0IGlzIHdoeSB3ZSB0
+aG91Z2h0IHdlIGNvdWxkIHVzZSBNRkd0b29scyBhcHAuCiAgICAgTXkgcHJvYmxlbSBpcyB0aGF0
+IHRoZSBib2FyZCB3ZSBoYXZlIGhhdmUgb25seSBOQU5EIGFuZCBVU0IgYXMKYm9vdCBvcHRpb25z
+LiBBbmQgSSBuZWVkIHRvIGZsYXNoIHRoZSBOQU5EIHRoZSBmaXJzdCB0aW1lLgogICAgICBJIGhh
+dmUgYWxyZWFkeSBsb29rZWQgYXQgaW14LXVzYi1sb2FkZXIgc29sdXRpb24gYnV0IGl0IHJlcXVp
+cmVkCmEgTGludXggT1Mgd2hpY2ggaXMgbm90IHBvc3NpYmxlIGluIG15IGNhc2UKICAgICBJIGhh
+dmUgYWxyZWFkeSB1c2VkIGJhcmVib3hfdXBkYXRlIHN1Y2Nlc3NmdWxseSBidXQgb25seSBhZnRl
+ciBJCmhhZCBhIHdvcmtpbmcgYmFyZWJveCBhbHJlYWR5LgogICAgIEkgd2FzIHN1Y2Nlc3NmdWwg
+aW50byBsb2FkaW5nIGJhcmVib3ggaW1hZ2UgZnJvbSBNRkd0b29scyBpbnRvClJBTSBhbmQgdGhl
+cmUgZXhlY3V0ZSBiYXJlYm94X3VwZGF0ZSB0byBmbGFzaCBvbiB0aGUgTkFORCBpdHNlbGYuCiAg
+ICAgQnV0IHRoZSBiYXJlYm94IHdvbid0IGxvYWQgYWZ0ZXJ3YXJkcyB0aGUga2VybmVsIGltYWdl
+IHdpdGgKbWZndG9vbHMgc3VwcG9ydC4KCiAgICBTbyBJIGhhdmUgdHdvIG9wdGlvbnMgSSB0aGlu
+azoKCiAgICBpKSBwb3J0aW5nIGJhcmVib3hfdXBkYXRlIHRvIExpbnV4LiBJcyB0aGVyZSBhIHdh
+eSB0byBmbGFzaCB0aGUKYmFyZWJveCBvbiBOQU5EIGZyb20gTGludXggaXRzZWxmKGFmdGVyIHRo
+ZSBib2FyZCBoYXMgYm9vdGVkCnN1Y2Nlc3NmdWxseSkgPwogICBpaSkgYWRkaW5nIHN1cHBvcnQg
+Zm9yIE1GR3Rvb2xzIGluIGJhcmVib3guIEkgZG8gbm90IGhhdmUgdG9vbSB1Y2gKa25vd2xlZGdl
+IGFib3V0IGl0LiBJIGtub3cgSSBzaG91bGQgYWRkIFVUUCBwcm90b2NvbCBzdXBwb3J0IGluIHVz
+YgpnYWRnZXQgY29kZSBpbiBiYXJlYm94IGJ1dCB3YXMgbm90IHN1Y2Nlc3NmdWwgc28gZmFyLgoK
+ICAgICAgICBIb3cgZG8geW91IGd1eXMgc2VlIGEgc29sdXRpb24gdG8gdGhpcyBzY2VuYXJpbz8K
+ClRoYW5rcywKICAgICAgIE1paGFpdGEKT24gV2VkLCBKdWwgMTgsIDIwMTggYXQgNDo1NiBQTSBK
+YW4gTMO8YmJlIDxqbHVAcGVuZ3V0cm9uaXguZGU+IHdyb3RlOgo+Cj4gT24gV2VkLCAyMDE4LTA3
+LTE4IGF0IDE1OjUzICswMjAwLCBCYXN0aWFuIFN0ZW5kZXIgd3JvdGU6Cj4gPiBIaSwKPiA+Cj4g
+PiBPbiAwNy8xOC8yMDE4IDAzOjAxIFBNLCBPbGVrc2lqIFJlbXBlbCB3cm90ZToKPiA+ID4geW91
+IGVtYWlsIGlzIGluIHRoZSBsaXN0LiAod2VsbCwgZGlmZmVyZW50IHZlcnNpb24gb2YgaXQgYXJl
+IGFscmVhZHkKPiA+ID4gaW4gdGhlIGxpc3QpLiBQbGVhc2Ugd2FpdCBpZiBzb21lIG9uZSBjYW4g
+cmVzcG9uZCBoZXJlLgo+ID4gPgo+ID4gPiBJJ20gbm90IGFuIGV4cGVydCwgYnV0IHByb2JhYmx5
+IHdoYXQgeW91IG5lZWQgaXMKPiA+ID4gaHR0cHM6Ly9naXRodWIuY29tL3JhdWMKPiA+Cj4gPiBI
+YXZlIGEgbG9vayBoZXJlOgo+ID4KPiA+IGh0dHA6Ly9yYXVjLnJlYWR0aGVkb2NzLmlvL2VuL2xh
+dGVzdC9hZHZhbmNlZC5odG1sI3VwZGF0aW5nLXRoZS1ib290bG9hZGVyCj4gPgo+ID4gVXBkYXRp
+bmcgYmFyZWJveCBvbiBOQU5EIGlzIG5vdCB5ZXQgaW1wbGVtZW50ZWQuIEl0IHdvdWxkIGNlcnRh
+aW5seSBiZSBhCj4gPiBuaWNlIGZlYXR1cmUgdG8gaGF2ZS4gSGF2ZSBhIGxvb2sgaW4gc2VjdGlv
+biA3LjYuMiBpZiB5b3Ugd2FudCB0byBkbyB0aGF0Lgo+Cj4gU3BlYWtpbmcgd2l0aCBteSByYXVj
+IG1haW50YWluZXIgaGF0IG9uLi4uCj4KPiBXcml0aW5nIGJhcmVib3ggdG8gTkFORCBvbiBhbiBp
+Lk1YNiBjYW4ndCBiZSBkb25lIGJ5IGdlbmVyaWMgbWV0aG9kcywKPiBzbyBmb3IgcmF1YyB3ZSB3
+b3VsZCB3YW50IHRvIGNhbGwgc29tZXRoaW5nIGxpa2UgYmFyZWJveC11cGRhdGUgd2hpY2gKPiB0
+aGVuIGhhbmRsZXMgdGhlIGRldGFpbHMuIEluIGFueSBjYXNlLCByYXVjIGlzIG5vdCBpbnRlbmRl
+ZCBmb3IgaW5pdGlhbAo+IGluc3RhbGxhdGlvbiBpbiB0aGUgZmFjdG9yeSwgYnV0IGZvciB1cGRh
+dGluZyBpbiB0aGUgZmllbGQuCj4KPiBJbnN0ZWFkIG9mIE1GR3Rvb2xzLCB3ZSB1c3VhbGx5IGxv
+YWQgYmFyZWJveCB2aWEgaW14LXVzYi1sb2FkZXIuIFRoYXQKPiBpcyBjb25maWd1cmVkIHRvIHN0
+YXJ0IHRoZSBmYXN0Ym9vdCBnYWRnZXQsIHdoaWNoIHdlIHRoZW4gdXNlIHRvIHdyaXRlCj4gYmFy
+ZWJveCAodmlhIGJhcmVib3hfdXBkYXRlKSBhbmQgdGhlIHJvb3Rmcy4KPgo+IFJlZ2FyZHMsCj4g
+SmFuCj4gLS0KPiBQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgfAo+IEluZHVzdHJpYWwgTGludXggU29sdXRpb25z
+ICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8Cj4gUGVpbmVy
+IFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIw
+NjkxNy0wICAgIHwKPiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAg
+fCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
+cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
+Zm8vYmFyZWJveAo=
