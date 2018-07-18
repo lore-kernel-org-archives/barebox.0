@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mout.gmx.net ([212.227.17.20])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fdECY-0008Bq-Kp
- for barebox@lists.infradead.org; Wed, 11 Jul 2018 12:26:56 +0000
-Message-ID: <1531311982.3163.50.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 11 Jul 2018 14:26:22 +0200
-In-Reply-To: <20180710141212.5787-1-s.hauer@pengutronix.de>
-References: <20180710141212.5787-1-s.hauer@pengutronix.de>
-Mime-Version: 1.0
+ id 1ffhCK-0004Ve-Oh
+ for barebox@lists.infradead.org; Wed, 18 Jul 2018 07:48:34 +0000
+References: <CAEp+FuCcgXKDJ2N1taeJXbz=9-xXsNPPb3Ry7XFTvs94AhGX=w@mail.gmail.com>
+From: Oleksij Rempel <linux@rempel-privat.de>
+Message-ID: <df7f7dd3-57a8-b8ff-7bf1-58a4ba59f70d@rempel-privat.de>
+Date: Wed, 18 Jul 2018 09:48:16 +0200
+MIME-Version: 1.0
+In-Reply-To: <CAEp+FuCcgXKDJ2N1taeJXbz=9-xXsNPPb3Ry7XFTvs94AhGX=w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,34 +17,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============6471956029500455109=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: MMU: fix arch_remap_range() across section boundaries
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Ulrich Oelmann <uol@pengutronix.de>
+Subject: Re: barebox community/forum
+To: Mihaita Ivascu <mihaita_ivascu@trimble.com>, barebox@lists.infradead.org
 
-QW0gRGllbnN0YWcsIGRlbiAxMC4wNy4yMDE4LCAxNjoxMiArMDIwMCBzY2hyaWViIFNhc2NoYSBI
-YXVlcjoKPiBGaXhlczogZTNlNTRjNjQ0MSBBUk06IG1tdTogSW1wbGVtZW50IG9uLWRlbWFuZCBQ
-VEUgYWxsb2NhdGlvbgo+IAo+IFBHRF9GTEFHU19XQ19WNyBsYWNrcyB0aGUgUE1EX1RZUEVfU0VD
-VCBhbmQgUE1EX1NFQ1RfQlVGRkVSQUJMRSBmbGFncy4KPiBXaXRob3V0IHRoZW0gYSBkbWFfYWxs
-b2Nfd3JpdGVjb21iaW5lKCkgY3JlYXRlcyBhbiBpbnZhbGlkIHNlY3Rpb24gd2hlbgo+IGl0IGNy
-b3NzZXMgYSBzZWN0aW9uIGJvdW5kYXJ5Lgo+IAo+IFNpZ25lZC1vZmYtYnk6IFNhc2NoYSBIYXVl
-ciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KClJldmlld2VkLWJ5OiBMdWNhcyBTdGFjaCA8bC5z
-dGFjaEBwZW5ndXRyb25peC5kZT4KCkNhcmUgdG8gcHVzaCB0byBtYXN0ZXI/Cgo+IC0tLQo+IMKg
-YXJjaC9hcm0vY3B1L21tdS5jIHwgMiArLQo+IMKgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9u
-KCspLCAxIGRlbGV0aW9uKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2NwdS9tbXUuYyBi
-L2FyY2gvYXJtL2NwdS9tbXUuYwo+IGluZGV4IDdlMmU1YmY3ZTAuLmFlMTg5ZWNkZWIgMTAwNjQ0
-Cj4gLS0tIGEvYXJjaC9hcm0vY3B1L21tdS5jCj4gKysrIGIvYXJjaC9hcm0vY3B1L21tdS5jCj4g
-QEAgLTYxLDcgKzYxLDcgQEAgc3RhdGljIGlubGluZSB2b2lkIHRsYl9pbnZhbGlkYXRlKHZvaWQp
-Cj4gwqAjZGVmaW5lIFBURV9GTEFHU19VTkNBQ0hFRF9WNyAoMCkKPiDCoCNkZWZpbmUgUFRFX0ZM
-QUdTX0NBQ0hFRF9WNCAoUFRFX1NNQUxMX0FQX1VOT19TUlcgfCBQVEVfQlVGRkVSQUJMRSB8IFBU
-RV9DQUNIRUFCTEUpCj4gwqAjZGVmaW5lIFBURV9GTEFHU19VTkNBQ0hFRF9WNCBQVEVfU01BTExf
-QVBfVU5PX1NSVwo+IC0jZGVmaW5lIFBHRF9GTEFHU19XQ19WNyBQTURfU0VDVF9URVgoMSkKPiAr
-I2RlZmluZSBQR0RfRkxBR1NfV0NfVjcgKFBNRF9TRUNUX1RFWCgxKSB8IFBNRF9UWVBFX1NFQ1Qg
-fCBQTURfU0VDVF9CVUZGRVJBQkxFKQo+IMKgCj4gwqAvKgo+IMKgICogUFRFIGZsYWdzIHRvIHNl
-dCBjYWNoZWQgYW5kIHVuY2FjaGVkIGFyZWFzLgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
-bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
-YmFyZWJveAo=
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============6471956029500455109==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="WYLOst9WwLqliqUxlIsh9A1SmD3gqAU0i"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--WYLOst9WwLqliqUxlIsh9A1SmD3gqAU0i
+Content-Type: multipart/mixed; boundary="Zeh1IelbAzL1bVjuJvVSn1oP5NW5pMd5K";
+ protected-headers="v1"
+From: Oleksij Rempel <linux@rempel-privat.de>
+To: Mihaita Ivascu <mihaita_ivascu@trimble.com>, barebox@lists.infradead.org
+Message-ID: <df7f7dd3-57a8-b8ff-7bf1-58a4ba59f70d@rempel-privat.de>
+Subject: Re: barebox community/forum
+References: <CAEp+FuCcgXKDJ2N1taeJXbz=9-xXsNPPb3Ry7XFTvs94AhGX=w@mail.gmail.com>
+In-Reply-To: <CAEp+FuCcgXKDJ2N1taeJXbz=9-xXsNPPb3Ry7XFTvs94AhGX=w@mail.gmail.com>
+
+--Zeh1IelbAzL1bVjuJvVSn1oP5NW5pMd5K
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+
+Hi Mihaita,
+
+Am 18.07.2018 um 09:24 schrieb Mihaita Ivascu:
+> Hello,
+>=20
+>      I would like to know where is the best place for me to post my
+> technical questions related to barebox or which is the best way to
+> proceed?
+>      I could not find any forum or barebox community. Thanks.
+
+You are already on the right place.
+
+--=20
+Regards,
+Oleksij
+
+
+--Zeh1IelbAzL1bVjuJvVSn1oP5NW5pMd5K--
+
+--WYLOst9WwLqliqUxlIsh9A1SmD3gqAU0i
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEAREIAB0WIQRXepfNdOKCSzfa+2sfAia5GSZtaQUCW07wwAAKCRAfAia5GSZt
+aemhAP9pKkarTR5M3KdO0l2HhyMeVSCt3UkbcDmzo0AsUJstUAD/Yvpq2irhPfZJ
+bbdGcPeieZJN8yYRsgFQ3GXQNz6e8Vc=
+=iaqb
+-----END PGP SIGNATURE-----
+
+--WYLOst9WwLqliqUxlIsh9A1SmD3gqAU0i--
+
+
+--===============6471956029500455109==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============6471956029500455109==--
