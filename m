@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x22f.google.com ([2607:f8b0:4001:c0b::22f])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ffm7J-0007bR-CV
- for barebox@lists.infradead.org; Wed, 18 Jul 2018 13:03:44 +0000
-Received: by mail-it0-x22f.google.com with SMTP id w16-v6so4028366ita.0
- for <barebox@lists.infradead.org>; Wed, 18 Jul 2018 06:03:31 -0700 (PDT)
+ id 1ffml5-0007zL-2i
+ for barebox@lists.infradead.org; Wed, 18 Jul 2018 13:44:49 +0000
+Date: Wed, 18 Jul 2018 15:44:32 +0200
+From: Roland Hieber <r.hieber@pengutronix.de>
+Message-ID: <20180718134432.2zs5s2nvmqjphqqz@pengutronix.de>
+References: <CAPPP46SniSuaZPfHGgb3YyvwDsW2jz6UwXLaNP5XL1PbF8_eWg@mail.gmail.com>
 MIME-Version: 1.0
-From: Giuseppe Levi <giuseppe.levi@gmail.com>
-Date: Wed, 18 Jul 2018 15:02:48 +0200
-Message-ID: <CAPPP46SniSuaZPfHGgb3YyvwDsW2jz6UwXLaNP5XL1PbF8_eWg@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <CAPPP46SniSuaZPfHGgb3YyvwDsW2jz6UwXLaNP5XL1PbF8_eWg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,41 +22,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: qemu and barebox
-To: barebox@lists.infradead.org
+Subject: Re: qemu and barebox
+To: Giuseppe Levi <giuseppe.levi@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi all,
-i'm trying to run barebox using qemu because I need to develop and
-emulate a spacial boot configuration of the CERN White Rabbit switch
-(http://white-rabbit.web.cern.ch/).
-I used  the ARCH=arm
-and CROSS_COMPILE=aarch64-linux-gnu-
+Hi Giuseppe,
 
-Selected the qemu virt board in menuconfig.
+this was discussed recently; see
+https://www.mail-archive.com/barebox@lists.infradead.org/msg27074.html
 
-Compilation seems ok but when trying
-qemu-system-aarch64 -m 2048M -cpu cortex-a57 -machine virt -display
-none -serial stdio -kernel barebox
+tldr: there are issues with QEMU and ARM64, and no solution yet.
 
-The system does not give me any output eve if is running using 100% of
-one core on my 4 core machine.
+ - Roland
 
-The final goal would be to setup barebox to boot from network and then
-arrange a bootp server un another virtual machine.
-
-What I'm doing wrong ? is the CPU type cortex-a57 correct even if in
-menuconfig the type is market as Atemel-AT91 ?
-
-
-
-Thenks, Giuseppe Levi
+On Wed, Jul 18, 2018 at 03:02:48PM +0200, Giuseppe Levi wrote:
+> Hi all,
+> i'm trying to run barebox using qemu because I need to develop and
+> emulate a spacial boot configuration of the CERN White Rabbit switch
+> (http://white-rabbit.web.cern.ch/).
+> I used  the ARCH=arm
+> and CROSS_COMPILE=aarch64-linux-gnu-
+> 
+> Selected the qemu virt board in menuconfig.
+> 
+> Compilation seems ok but when trying
+> qemu-system-aarch64 -m 2048M -cpu cortex-a57 -machine virt -display
+> none -serial stdio -kernel barebox
+> 
+> The system does not give me any output eve if is running using 100% of
+> one core on my 4 core machine.
+> 
+> The final goal would be to setup barebox to boot from network and then
+> arrange a bootp server un another virtual machine.
+> 
+> What I'm doing wrong ? is the CPU type cortex-a57 correct even if in
+> menuconfig the type is market as Atemel-AT91 ?
+> 
+> 
+> 
+> Thenks, Giuseppe Levi
 
 -- 
-Dr. Giuseppe Levi
-Physics Dpt and INFN
-viale Berti Pichat 6/2
-40127 BOLOGNA
-Mobile: +39 393 0086704
+Roland Hieber                     | r.hieber@pengutronix.de     |
+Pengutronix e.K.                  | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
