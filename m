@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi0-x22e.google.com ([2607:f8b0:4003:c06::22e])
+Received: from mail-oi0-x231.google.com ([2607:f8b0:4003:c06::231])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ffh3p-0000HN-Mw
- for barebox@lists.infradead.org; Wed, 18 Jul 2018 07:39:47 +0000
-Received: by mail-oi0-x22e.google.com with SMTP id i12-v6so7019647oik.2
- for <barebox@lists.infradead.org>; Wed, 18 Jul 2018 00:39:35 -0700 (PDT)
+ id 1ffi1T-0000aI-RZ
+ for barebox@lists.infradead.org; Wed, 18 Jul 2018 08:41:25 +0000
+Received: by mail-oi0-x231.google.com with SMTP id k12-v6so7281729oiw.8
+ for <barebox@lists.infradead.org>; Wed, 18 Jul 2018 01:41:12 -0700 (PDT)
 MIME-Version: 1.0
+References: <CAEp+FuCcgXKDJ2N1taeJXbz=9-xXsNPPb3Ry7XFTvs94AhGX=w@mail.gmail.com>
+ <df7f7dd3-57a8-b8ff-7bf1-58a4ba59f70d@rempel-privat.de>
+In-Reply-To: <df7f7dd3-57a8-b8ff-7bf1-58a4ba59f70d@rempel-privat.de>
 From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
-Date: Wed, 18 Jul 2018 09:39:23 +0200
-Message-ID: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
+Date: Wed, 18 Jul 2018 10:41:01 +0200
+Message-ID: <CAEp+FuCw4shQC-1Kft65pXFYjNL1W6edsTC09ZbF7vp-yLfAMg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,33 +24,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: MFGTools support in barebox
-To: barebox@lists.infradead.org
+Subject: Re: barebox community/forum
+To: linux@rempel-privat.de
+Cc: barebox@lists.infradead.org
 
-Hello,
+Hi Oleksij,
 
-     I would like to flash a barebox image on NAND for a Phytec imx6ul
-evk board using MFGTools.
-     I have added support for UTP protocol in kernel image so commands
-could be "pushed" using MFGtools app from Windows.
-     But obviously I cannot push barebox_update command to Linux.
-     So I think I have two options:
+    Ok, thanks. I have already sent a message to barebox@lists.infradead.org
 
-1) porting barebox_update command to Linux which I do not find it so
-easy. I am already working on it
-2) adding UTP support in barebox so I could just load the barebox
-image in RAM using MFGtools, there a utp device node would be created
-and then I could push barebox specific commands directly from
-MFGtools.
-      I have added UTP support in linux USB gadget code but I see
-barebox USB gadget code is quite different and not all functionality
-are in place so I also struggle a bit of porint gUTP patches from
-Linux to barebox.
-     Does anybody have any experience with this topic or coud advise
-me on how to procee?
-
-Thanks,
-        Mihaita
+Best regards,
+         Mihaita
+On Wed, Jul 18, 2018 at 9:48 AM Oleksij Rempel <linux@rempel-privat.de> wrote:
+>
+> Hi Mihaita,
+>
+> Am 18.07.2018 um 09:24 schrieb Mihaita Ivascu:
+> > Hello,
+> >
+> >      I would like to know where is the best place for me to post my
+> > technical questions related to barebox or which is the best way to
+> > proceed?
+> >      I could not find any forum or barebox community. Thanks.
+>
+> You are already on the right place.
+>
+> --
+> Regards,
+> Oleksij
+>
 
 _______________________________________________
 barebox mailing list
