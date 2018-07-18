@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.gnudd.com ([77.43.112.34])
+Received: from mail-oi0-x22a.google.com ([2607:f8b0:4003:c06::22a])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fftF3-0005wu-5e
- for barebox@lists.infradead.org; Wed, 18 Jul 2018 20:40:11 +0000
-Date: Wed, 18 Jul 2018 22:39:24 +0200
-From: Alessandro Rubini <rubini-list@gnudd.com>
-Message-ID: <20180718203924.GA22208@mail.gnudd.com>
+ id 1fflDo-0000bm-OV
+ for barebox@lists.infradead.org; Wed, 18 Jul 2018 12:06:22 +0000
+Received: by mail-oi0-x22a.google.com with SMTP id d189-v6so8278227oib.6
+ for <barebox@lists.infradead.org>; Wed, 18 Jul 2018 05:06:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqH0YLC7C70gB2retS0TYusWhTavnV=+X4O-NjXDpV08-w@mail.gmail.com>
-References: <CAHQ1cqH0YLC7C70gB2retS0TYusWhTavnV=+X4O-NjXDpV08-w@mail.gmail.com>
- <CAPPP46SniSuaZPfHGgb3YyvwDsW2jz6UwXLaNP5XL1PbF8_eWg@mail.gmail.com>
- <20180718140321.GA28539@mail.gnudd.com>
- <CAPPP46RVU698Uo_Ej2O8N7HETKRGG6aZDkpFA69Ox+tR3DdcGw@mail.gmail.com>
+From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
+Date: Wed, 18 Jul 2018 14:05:58 +0200
+Message-ID: <CAEp+FuAeZykr4wa-BK-zdTKUPH=kikkeZWLHHpycQ9uRJFkPug@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,26 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: qemu and barebox
-To: andrew.smirnov@gmail.com
-Cc: barebox@lists.infradead.org, giuseppe.levi@gmail.com
+Subject: MFGtools support in barebox
+To: barebox@lists.infradead.org
 
-> Not sure if I'd say it would be "complex", but time consuming for
-> sure.
+Hi ,
 
-Yes.
 
-> but AFAIK, while ARM9 CPU emulation is availible, there's no AT91 SoC
-> specific IP blocks emulation that it supports.
 
-I think the fastest way to work out this setup is building barebox for
-versatile and using "qemu -M versatilepb".  The WR kernel includes
-drivers for the special ethernet device, but the WR port of barebox
-has no serious hardware dependencies (it's just uart, flash and i2c
-eeprom).  So IMHO there's no need for AT91 SOC emulation to test
-different boot procedures.
+ I would like to flash a barebox image on NAND for a Phytec imx6ul
+evk board using MFGTools.
+     I have added support for UTP protocol in kernel image so commands
+could be "pushed" using MFGtools app from Windows.
+     But obviously I cannot push barebox_update command to Linux.
+     So I think I have two options:
 
-/alessandro
+1) porting barebox_update command to Linux which I do not find it so
+easy. I am already working on it
+2) adding UTP support in barebox so I could just load the barebox
+image in RAM using MFGtools, there a utp device node would be created
+and then I could push barebox specific commands directly from
+MFGtools.
+      I have added UTP support in linux USB gadget code but I see
+barebox USB gadget code is quite different and not all functionality
+are in place so I also struggle a bit of porint gUTP patches from
+Linux to barebox.
+     Does anybody have any experience with this topic or coud advise
+me on how to proceed?
+
+Thanks,
+      Mihaita
 
 _______________________________________________
 barebox mailing list
