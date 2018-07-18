@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi0-x243.google.com ([2607:f8b0:4003:c06::243])
+Received: from mout.gmx.net ([212.227.17.20])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ffo71-0005op-Ri
- for barebox@lists.infradead.org; Wed, 18 Jul 2018 15:11:33 +0000
-Received: by mail-oi0-x243.google.com with SMTP id k12-v6so9429694oiw.8
- for <barebox@lists.infradead.org>; Wed, 18 Jul 2018 08:11:21 -0700 (PDT)
-MIME-Version: 1.0
+ id 1ffpQk-0003iu-GG
+ for barebox@lists.infradead.org; Wed, 18 Jul 2018 16:36:02 +0000
 References: <CAEp+FuAeZykr4wa-BK-zdTKUPH=kikkeZWLHHpycQ9uRJFkPug@mail.gmail.com>
  <16d74981-28c9-d637-c7de-f1902529ab30@rempel-privat.de>
  <35db1bb9-cb13-26b3-09b7-30f583585155@pengutronix.de>
  <1531925793.3511.128.camel@pengutronix.de>
-In-Reply-To: <1531925793.3511.128.camel@pengutronix.de>
-From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
-Date: Wed, 18 Jul 2018 17:11:09 +0200
-Message-ID: <CAEp+FuAsDL9msTeiC=2+bbKHkrEObdKKdctN_G3RdVX8uP=ZsQ@mail.gmail.com>
+ <CAEp+FuAsDL9msTeiC=2+bbKHkrEObdKKdctN_G3RdVX8uP=ZsQ@mail.gmail.com>
+From: Oleksij Rempel <linux@rempel-privat.de>
+Message-ID: <c1c3be93-c29e-7e65-c09b-86edbd0adb1e@rempel-privat.de>
+Date: Wed, 18 Jul 2018 18:35:42 +0200
+MIME-Version: 1.0
+In-Reply-To: <CAEp+FuAsDL9msTeiC=2+bbKHkrEObdKKdctN_G3RdVX8uP=ZsQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,64 +21,105 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============3298195990158389839=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: MFGtools support in barebox
-To: jlu@pengutronix.de
-Cc: barebox@lists.infradead.org, bst@pengutronix.de, linux@rempel-privat.de
+To: Mihaita Ivascu <mihaita_ivascu@trimble.com>, jlu@pengutronix.de
+Cc: barebox@lists.infradead.org, bst@pengutronix.de
 
-SGksCgogICAgVGhhbmtzIGZvciBhbnN3ZXIuCiAgICAgSSB0aGluayBJIG5lZWQgaXQgdG8gZG8g
-aXQgZnJvbSBXaW5kb3dzIGFzIHdlIGhhdmUgc29tZSBib2FyZHMKdGhhdCBuZWVkIHRvIGJlIHVw
-ZGF0ZWQgaW4gdGhlIGZhY3RvcnkgYnkgcGVvcGxlIHRoYXQgZG8gbm90IG5lY2Vzc2FyeQpoYXZl
-IExpbnV4IHNraWxscyBvciBMaW51eCB3b3Jrc3RhdGlvbi4KICAgICBUaGF0IGlzIHdoeSB3ZSB0
-aG91Z2h0IHdlIGNvdWxkIHVzZSBNRkd0b29scyBhcHAuCiAgICAgTXkgcHJvYmxlbSBpcyB0aGF0
-IHRoZSBib2FyZCB3ZSBoYXZlIGhhdmUgb25seSBOQU5EIGFuZCBVU0IgYXMKYm9vdCBvcHRpb25z
-LiBBbmQgSSBuZWVkIHRvIGZsYXNoIHRoZSBOQU5EIHRoZSBmaXJzdCB0aW1lLgogICAgICBJIGhh
-dmUgYWxyZWFkeSBsb29rZWQgYXQgaW14LXVzYi1sb2FkZXIgc29sdXRpb24gYnV0IGl0IHJlcXVp
-cmVkCmEgTGludXggT1Mgd2hpY2ggaXMgbm90IHBvc3NpYmxlIGluIG15IGNhc2UKICAgICBJIGhh
-dmUgYWxyZWFkeSB1c2VkIGJhcmVib3hfdXBkYXRlIHN1Y2Nlc3NmdWxseSBidXQgb25seSBhZnRl
-ciBJCmhhZCBhIHdvcmtpbmcgYmFyZWJveCBhbHJlYWR5LgogICAgIEkgd2FzIHN1Y2Nlc3NmdWwg
-aW50byBsb2FkaW5nIGJhcmVib3ggaW1hZ2UgZnJvbSBNRkd0b29scyBpbnRvClJBTSBhbmQgdGhl
-cmUgZXhlY3V0ZSBiYXJlYm94X3VwZGF0ZSB0byBmbGFzaCBvbiB0aGUgTkFORCBpdHNlbGYuCiAg
-ICAgQnV0IHRoZSBiYXJlYm94IHdvbid0IGxvYWQgYWZ0ZXJ3YXJkcyB0aGUga2VybmVsIGltYWdl
-IHdpdGgKbWZndG9vbHMgc3VwcG9ydC4KCiAgICBTbyBJIGhhdmUgdHdvIG9wdGlvbnMgSSB0aGlu
-azoKCiAgICBpKSBwb3J0aW5nIGJhcmVib3hfdXBkYXRlIHRvIExpbnV4LiBJcyB0aGVyZSBhIHdh
-eSB0byBmbGFzaCB0aGUKYmFyZWJveCBvbiBOQU5EIGZyb20gTGludXggaXRzZWxmKGFmdGVyIHRo
-ZSBib2FyZCBoYXMgYm9vdGVkCnN1Y2Nlc3NmdWxseSkgPwogICBpaSkgYWRkaW5nIHN1cHBvcnQg
-Zm9yIE1GR3Rvb2xzIGluIGJhcmVib3guIEkgZG8gbm90IGhhdmUgdG9vbSB1Y2gKa25vd2xlZGdl
-IGFib3V0IGl0LiBJIGtub3cgSSBzaG91bGQgYWRkIFVUUCBwcm90b2NvbCBzdXBwb3J0IGluIHVz
-YgpnYWRnZXQgY29kZSBpbiBiYXJlYm94IGJ1dCB3YXMgbm90IHN1Y2Nlc3NmdWwgc28gZmFyLgoK
-ICAgICAgICBIb3cgZG8geW91IGd1eXMgc2VlIGEgc29sdXRpb24gdG8gdGhpcyBzY2VuYXJpbz8K
-ClRoYW5rcywKICAgICAgIE1paGFpdGEKT24gV2VkLCBKdWwgMTgsIDIwMTggYXQgNDo1NiBQTSBK
-YW4gTMO8YmJlIDxqbHVAcGVuZ3V0cm9uaXguZGU+IHdyb3RlOgo+Cj4gT24gV2VkLCAyMDE4LTA3
-LTE4IGF0IDE1OjUzICswMjAwLCBCYXN0aWFuIFN0ZW5kZXIgd3JvdGU6Cj4gPiBIaSwKPiA+Cj4g
-PiBPbiAwNy8xOC8yMDE4IDAzOjAxIFBNLCBPbGVrc2lqIFJlbXBlbCB3cm90ZToKPiA+ID4geW91
-IGVtYWlsIGlzIGluIHRoZSBsaXN0LiAod2VsbCwgZGlmZmVyZW50IHZlcnNpb24gb2YgaXQgYXJl
-IGFscmVhZHkKPiA+ID4gaW4gdGhlIGxpc3QpLiBQbGVhc2Ugd2FpdCBpZiBzb21lIG9uZSBjYW4g
-cmVzcG9uZCBoZXJlLgo+ID4gPgo+ID4gPiBJJ20gbm90IGFuIGV4cGVydCwgYnV0IHByb2JhYmx5
-IHdoYXQgeW91IG5lZWQgaXMKPiA+ID4gaHR0cHM6Ly9naXRodWIuY29tL3JhdWMKPiA+Cj4gPiBI
-YXZlIGEgbG9vayBoZXJlOgo+ID4KPiA+IGh0dHA6Ly9yYXVjLnJlYWR0aGVkb2NzLmlvL2VuL2xh
-dGVzdC9hZHZhbmNlZC5odG1sI3VwZGF0aW5nLXRoZS1ib290bG9hZGVyCj4gPgo+ID4gVXBkYXRp
-bmcgYmFyZWJveCBvbiBOQU5EIGlzIG5vdCB5ZXQgaW1wbGVtZW50ZWQuIEl0IHdvdWxkIGNlcnRh
-aW5seSBiZSBhCj4gPiBuaWNlIGZlYXR1cmUgdG8gaGF2ZS4gSGF2ZSBhIGxvb2sgaW4gc2VjdGlv
-biA3LjYuMiBpZiB5b3Ugd2FudCB0byBkbyB0aGF0Lgo+Cj4gU3BlYWtpbmcgd2l0aCBteSByYXVj
-IG1haW50YWluZXIgaGF0IG9uLi4uCj4KPiBXcml0aW5nIGJhcmVib3ggdG8gTkFORCBvbiBhbiBp
-Lk1YNiBjYW4ndCBiZSBkb25lIGJ5IGdlbmVyaWMgbWV0aG9kcywKPiBzbyBmb3IgcmF1YyB3ZSB3
-b3VsZCB3YW50IHRvIGNhbGwgc29tZXRoaW5nIGxpa2UgYmFyZWJveC11cGRhdGUgd2hpY2gKPiB0
-aGVuIGhhbmRsZXMgdGhlIGRldGFpbHMuIEluIGFueSBjYXNlLCByYXVjIGlzIG5vdCBpbnRlbmRl
-ZCBmb3IgaW5pdGlhbAo+IGluc3RhbGxhdGlvbiBpbiB0aGUgZmFjdG9yeSwgYnV0IGZvciB1cGRh
-dGluZyBpbiB0aGUgZmllbGQuCj4KPiBJbnN0ZWFkIG9mIE1GR3Rvb2xzLCB3ZSB1c3VhbGx5IGxv
-YWQgYmFyZWJveCB2aWEgaW14LXVzYi1sb2FkZXIuIFRoYXQKPiBpcyBjb25maWd1cmVkIHRvIHN0
-YXJ0IHRoZSBmYXN0Ym9vdCBnYWRnZXQsIHdoaWNoIHdlIHRoZW4gdXNlIHRvIHdyaXRlCj4gYmFy
-ZWJveCAodmlhIGJhcmVib3hfdXBkYXRlKSBhbmQgdGhlIHJvb3Rmcy4KPgo+IFJlZ2FyZHMsCj4g
-SmFuCj4gLS0KPiBQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgfAo+IEluZHVzdHJpYWwgTGludXggU29sdXRpb25z
-ICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8Cj4gUGVpbmVy
-IFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIw
-NjkxNy0wICAgIHwKPiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAg
-fCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
-cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
-Zm8vYmFyZWJveAo=
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============3298195990158389839==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="WqfbpOukypNnbk7OxFdXmlDVbLHelRfeI"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--WqfbpOukypNnbk7OxFdXmlDVbLHelRfeI
+Content-Type: multipart/mixed; boundary="sxg6D3d4ZvlPjl1dcIvLnr4V6x6zPTuEI";
+ protected-headers="v1"
+From: Oleksij Rempel <linux@rempel-privat.de>
+To: Mihaita Ivascu <mihaita_ivascu@trimble.com>, jlu@pengutronix.de
+Cc: bst@pengutronix.de, barebox@lists.infradead.org
+Message-ID: <c1c3be93-c29e-7e65-c09b-86edbd0adb1e@rempel-privat.de>
+Subject: Re: MFGtools support in barebox
+References: <CAEp+FuAeZykr4wa-BK-zdTKUPH=kikkeZWLHHpycQ9uRJFkPug@mail.gmail.com>
+ <16d74981-28c9-d637-c7de-f1902529ab30@rempel-privat.de>
+ <35db1bb9-cb13-26b3-09b7-30f583585155@pengutronix.de>
+ <1531925793.3511.128.camel@pengutronix.de>
+ <CAEp+FuAsDL9msTeiC=2+bbKHkrEObdKKdctN_G3RdVX8uP=ZsQ@mail.gmail.com>
+In-Reply-To: <CAEp+FuAsDL9msTeiC=2+bbKHkrEObdKKdctN_G3RdVX8uP=ZsQ@mail.gmail.com>
+
+--sxg6D3d4ZvlPjl1dcIvLnr4V6x6zPTuEI
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+
+Am 18.07.2018 um 17:11 schrieb Mihaita Ivascu:
+> Hi,
+>=20
+>     Thanks for answer.
+>      I think I need it to do it from Windows as we have some boards
+> that need to be updated in the factory by people that do not necessary
+> have Linux skills or Linux workstation.
+>      That is why we thought we could use MFGtools app.
+>      My problem is that the board we have have only NAND and USB as
+> boot options. And I need to flash the NAND the first time.
+>       I have already looked at imx-usb-loader solution but it required
+> a Linux OS which is not possible in my case
+>      I have already used barebox_update successfully but only after I
+> had a working barebox already.
+>      I was successful into loading barebox image from MFGtools into
+> RAM and there execute barebox_update to flash on the NAND itself.
+>      But the barebox won't load afterwards the kernel image with
+> mfgtools support.
+>=20
+>     So I have two options I think:
+>=20
+>     i) porting barebox_update to Linux. Is there a way to flash the
+> barebox on NAND from Linux itself(after the board has booted
+> successfully) ?
+>    ii) adding support for MFGtools in barebox. I do not have toom uch
+> knowledge about it. I know I should add UTP protocol support in usb
+> gadget code in barebox but was not successful so far.
+>=20
+>         How do you guys see a solution to this scenario?
+
+If you can load barebox in to RAM with MFGtools, you can use fastboot
+tool flash all needed parts. fastboot is available for windows and
+supported by barebox.
+--=20
+Regards,
+Oleksij
+
+
+--sxg6D3d4ZvlPjl1dcIvLnr4V6x6zPTuEI--
+
+--WqfbpOukypNnbk7OxFdXmlDVbLHelRfeI
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEAREIAB0WIQRXepfNdOKCSzfa+2sfAia5GSZtaQUCW09sXgAKCRAfAia5GSZt
+aQDwAP9Ly1jtmaDw0jTnRVdyNTNlhOclC0kat7NzPDdwHs2f5wD/bvwy9bHXJtD8
+th8U+FuKjXmpeHFHQhbwfWJzYUxsVl4=
+=N9h9
+-----END PGP SIGNATURE-----
+
+--WqfbpOukypNnbk7OxFdXmlDVbLHelRfeI--
+
+
+--===============3298195990158389839==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============3298195990158389839==--
