@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi0-x22d.google.com ([2607:f8b0:4003:c06::22d])
+Received: from mail-qt0-x241.google.com ([2607:f8b0:400d:c0d::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fg6Cy-0004Ao-MJ
- for barebox@lists.infradead.org; Thu, 19 Jul 2018 10:30:54 +0000
-Received: by mail-oi0-x22d.google.com with SMTP id n84-v6so14563608oib.9
- for <barebox@lists.infradead.org>; Thu, 19 Jul 2018 03:30:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAEp+FuDgNdw3Grc8-YAovRFHZSoHGwWeaY-O8TxpcXo3Qve0TQ@mail.gmail.com>
-In-Reply-To: <CAEp+FuDgNdw3Grc8-YAovRFHZSoHGwWeaY-O8TxpcXo3Qve0TQ@mail.gmail.com>
-From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
-Date: Thu, 19 Jul 2018 12:30:29 +0200
-Message-ID: <CAEp+FuCBnCw6PY-YcM+Ykh1bSsi-FggyZqsmHhY7rHrY+jtYXQ@mail.gmail.com>
+ id 1fg8U0-0006QH-F4
+ for barebox@lists.infradead.org; Thu, 19 Jul 2018 12:56:37 +0000
+Received: by mail-qt0-x241.google.com with SMTP id c15-v6so7045187qtp.0
+ for <barebox@lists.infradead.org>; Thu, 19 Jul 2018 05:56:24 -0700 (PDT)
+From: Fabio Estevam <festevam@gmail.com>
+Date: Thu, 19 Jul 2018 09:57:25 -0300
+Message-Id: <1532005045-11756-1-git-send-email-festevam@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,60 +16,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Cannot set GPIOs in barebox
-To: barebox@lists.infradead.org
+Subject: [PATCH] Documentation: imx8mq-evk: Fix typo
+To: s.hauer@pengutronix.de
+Cc: andrew.smirnov@gmail.com, barebox@lists.infradead.org
 
-Hello,
+Correct form is "obtain them".
 
-    This topic could be ignored. GPIO set/get value functions from
-barebox are working fine BUT gpioinfo function has some bug it reports
-unchanged status for gpios value.
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+---
+ Documentation/boards/imx/nxp-imx8mq-evk.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Best regards,
-         Mihaita Ivascu
+diff --git a/Documentation/boards/imx/nxp-imx8mq-evk.rst b/Documentation/boards/imx/nxp-imx8mq-evk.rst
+index 9dfa911..f0cdc34 100644
+--- a/Documentation/boards/imx/nxp-imx8mq-evk.rst
++++ b/Documentation/boards/imx/nxp-imx8mq-evk.rst
+@@ -14,7 +14,7 @@ Downloading DDR PHY Firmware
+ As a part of DDR intialization routine NXP i.MX8MQ EVK requires and
+ uses several binary firmware blobs that are distributed under a
+ separate EULA and cannot be included in Barebox. In order to obtain
+-the do the following::
++them do the following::
+ 
+  wget https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/firmware-imx-7.2.bin
+  chmod +x firmware-imx-7.2.bin
+@@ -113,4 +113,4 @@ Serial boot SW802 setting needed for i.MX8 DDR Tool is as follows::
+   | O | | <--- off = low level
+   |     |
+   | 1 2 |
+-  +-----+
+\ No newline at end of file
++  +-----+
+-- 
+2.7.4
 
-On Thu, Jul 19, 2018 at 11:05 AM Mihaita Ivascu
-<mihaita_ivascu@trimble.com> wrote:
->
-> Hello,
->
->     I would like to set gpio direction and values from barebox. I use:
->
-> gpio_direction_output(133, 1);
->         mdelay(2);
->         gpio_set_value(133, 1);
->         mdelay(2);
->         gpio_direction_output(137, 1);
->         mdelay(2);
->         gpio_set_value(137, 1);
->
-> from my board.c or using commands in the barebox shell. Setting
-> direction is working but setting value it not performed.
->
-> GPIOs 128-159, chip 20ac000.gpio:
->              dir val requested  label
->   GPIO  128:  in  lo        false
->   GPIO  129:  in  lo        false
->   GPIO  130:  in  lo        false
->   GPIO  131:  in  lo        false
->   GPIO  132:  in  lo        false
->   GPIO  133: out  lo         true  gpio
->   GPIO  134:  in  lo        false
->   GPIO  135:  in  lo        false
->   GPIO  136:  in  lo        false
->   GPIO  137: out  lo         true  gpio
->   GPIO  138:  in  lo        false
->
->
->     What could be the issue? And what could be the workaround? I would
-> really need to set some GPIOs high from the barebox.
->
-> Thanks,
->       Mihaita
 
 _______________________________________________
 barebox mailing list
