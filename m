@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x243.google.com ([2607:f8b0:4001:c06::243])
+Received: from vsmx009.vodafonemail.xion.oxcs.net ([153.92.174.87])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fgBV4-0005XD-MR
- for barebox@lists.infradead.org; Thu, 19 Jul 2018 16:09:56 +0000
-Received: by mail-io0-x243.google.com with SMTP id l25-v6so7507022ioh.12
- for <barebox@lists.infradead.org>; Thu, 19 Jul 2018 09:09:44 -0700 (PDT)
-MIME-Version: 1.0
+ id 1fgBe5-0002ZS-S0
+ for barebox@lists.infradead.org; Thu, 19 Jul 2018 16:19:15 +0000
+Date: Thu, 19 Jul 2018 18:18:56 +0200 (CEST)
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Message-ID: <1885769188.8348.1532017136290@mail.vodafone.de>
+In-Reply-To: <CAHQ1cqF=u7bpxRhySU+g4JNx9acMeetCxq6=fegM7RPyP9q_wA@mail.gmail.com>
 References: <461871869.117927.1531898866247@mail.vodafone.de>
  <CAHQ1cqFHRFYzKnjhD4-2+=-5dC8AGQNYKyuPZbwp8yWUauXAfw@mail.gmail.com>
  <493874249.8067.1532015556353@mail.vodafone.de>
-In-Reply-To: <493874249.8067.1532015556353@mail.vodafone.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 19 Jul 2018 09:09:32 -0700
-Message-ID: <CAHQ1cqF=u7bpxRhySU+g4JNx9acMeetCxq6=fegM7RPyP9q_wA@mail.gmail.com>
+ <CAHQ1cqF=u7bpxRhySU+g4JNx9acMeetCxq6=fegM7RPyP9q_wA@mail.gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,116 +25,123 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: imx7d enable second core
-To: giorgio.nicole@arcor.de
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Jul 19, 2018 at 8:52 AM Giorgio Dal Molin
-<giorgio.nicole@arcor.de> wrote:
->
-> Hi Andrey,
->
-> > On July 18, 2018 at 6:54 PM Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
+Hi Andrey,
+
+> On July 19, 2018 at 6:09 PM Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
+> 
+> 
+> On Thu, Jul 19, 2018 at 8:52 AM Giorgio Dal Molin
+> <giorgio.nicole@arcor.de> wrote:
 > >
+> > Hi Andrey,
 > >
-> > On Wed, Jul 18, 2018 at 12:28 AM Giorgio Dal Molin
-> > <giorgio.nicole@arcor.de> wrote:
+> > > On July 18, 2018 at 6:54 PM Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
 > > >
-> > > Hi all,
 > > >
-> > > I'm currently working with the imx7d sabre board from NXP.
+> > > On Wed, Jul 18, 2018 at 12:28 AM Giorgio Dal Molin
+> > > <giorgio.nicole@arcor.de> wrote:
+> > > >
+> > > > Hi all,
+> > > >
+> > > > I'm currently working with the imx7d sabre board from NXP.
+> > > >
+> > > > I have now a running barebox bootloader and a booting kernel.
+> > > >
+> > > > My problem is now that, apparently, only one core is active:
+> > > >
+> > > > ...
+> > > > commandline: console=ttymxc0,115200n8 ip=11.0.0.4::11.0.0.2:255.0.0.0::eth0: root=/dev/mmcblk0p2 rootdelay=1
+> > > > Starting kernel in secure mode
 > > >
-> > > I have now a running barebox bootloader and a booting kernel.
+> > > AFAIK, this means that you are booting in secure mode and secure
+> > > monitor code, which also implements PSCI needed for SMP to work, will
+> > > _not_ be installed by Barebox. One way to fix this would be to set:
 > > >
-> > > My problem is now that, apparently, only one core is active:
+> > >  global.bootm.secure_state=nonsecure
 > > >
-> > > ...
-> > > commandline: console=ttymxc0,115200n8 ip=11.0.0.4::11.0.0.2:255.0.0.0::eth0: root=/dev/mmcblk0p2 rootdelay=1
-> > > Starting kernel in secure mode
+> > > before booting Linux. Doing that I get:
+> > >
+> > > # lscpu -e
+> > > CPU SOCKET CORE ONLINE MAXMHZ   MINMHZ
+> > > 0   0      0    yes    996.0000 792.0000
+> > > 1   0      1    yes    996.0000 792.0000
+> > > #
+> > >
+> > > on my SabreSD board.
+> > >
 > >
-> > AFAIK, this means that you are booting in secure mode and secure
-> > monitor code, which also implements PSCI needed for SMP to work, will
-> > _not_ be installed by Barebox. One way to fix this would be to set:
+> > I think I've found some inconsistencies in the SECURE / NONSECURE implementation
+> > in barebox.
 > >
-> >  global.bootm.secure_state=nonsecure
+> > In arch/arm/include/asm/secure.h there is the definition:
 > >
-> > before booting Linux. Doing that I get:
+> > ...
+> > enum arm_security_state {
+> >         ARM_STATE_SECURE,
+> >         ARM_STATE_NONSECURE,
+> >         ARM_STATE_HYP,
+> >  };
 > >
-> > # lscpu -e
-> > CPU SOCKET CORE ONLINE MAXMHZ   MINMHZ
-> > 0   0      0    yes    996.0000 792.0000
-> > 1   0      1    yes    996.0000 792.0000
-> > #
+> > where ARM_STATE_SECURE == 0 and ARM_STATE_NONSECURE == 1;
 > >
-> > on my SabreSD board.
+> > In arch/arm/cpu/psci.c we have:
 > >
->
-> I think I've found some inconsistencies in the SECURE / NONSECURE implementation
-> in barebox.
->
-> In arch/arm/include/asm/secure.h there is the definition:
->
-> ...
-> enum arm_security_state {
->         ARM_STATE_SECURE,
->         ARM_STATE_NONSECURE,
->         ARM_STATE_HYP,
->  };
->
-> where ARM_STATE_SECURE == 0 and ARM_STATE_NONSECURE == 1;
->
-> In arch/arm/cpu/psci.c we have:
->
-> ...
-> static int of_psci_fixup(struct device_node *root, void *unused)
-> {
->         struct device_node *psci;
->         int ret;
->
->         if (bootm_arm_security_state() < ARM_STATE_NONSECURE)
->                 return 0;
->
->         psci = of_create_node(root, "/psci");
->         if (!psci)
->  ...
->
-> This is a bit surprising and conterintuitive: I think the logic should
-> be so that if the current mode is not secure then we want to go out, otherwise
-> we want to generate the /psci {} dt block for the kernel. If this is true then
-> we have an error here.
+> > ...
+> > static int of_psci_fixup(struct device_node *root, void *unused)
+> > {
+> >         struct device_node *psci;
+> >         int ret;
+> >
+> >         if (bootm_arm_security_state() < ARM_STATE_NONSECURE)
+> >                 return 0;
+> >
+> >         psci = of_create_node(root, "/psci");
+> >         if (!psci)
+> >  ...
+> >
+> > This is a bit surprising and conterintuitive: I think the logic should
+> > be so that if the current mode is not secure then we want to go out, otherwise
+> > we want to generate the /psci {} dt block for the kernel. If this is true then
+> > we have an error here.
+> 
+> In ARM_STATE_SECURE the code will not install a security monitor
+> implementing PSCI, so it's presence is not signaled via DT to the
+> kernel in that mode.
+> 
+> >
+> > One more use of the state is in the start_linux() function, in arch/arm/lib32/armlinux.c:
+> >
+> > ...
+> > void start_linux(void *adr, int swap, unsigned long initrd_address,
+> >                  unsigned long initrd_size, void *oftree,
+> >                  enum arm_security_state state)
+> > {
+> >         void (*kernel)(int zero, int arch, void *params) = adr;
+> >         void *params = NULL;
+> >         int architecture;
+> >         int ret;
+> >
+> >         if (IS_ENABLED(CONFIG_ARM_SECURE_MONITOR) && state > ARM_STATE_NONSECURE) {
+> >                 ret = armv7_secure_monitor_install();
+> >                 if (ret)
+> >                         pr_err("Failed to install secure monitor\n");
+> >         }
+> > ...
+> >
+> 
+> Where do you see the code above? Here's what's in master:
+> 
+> https://git.pengutronix.de/cgit/barebox/tree/arch/arm/lib32/armlinux.c#n270
+> 
+> and it looks different form what you are quoting.
+> 
 
-In ARM_STATE_SECURE the code will not install a security monitor
-implementing PSCI, so it's presence is not signaled via DT to the
-kernel in that mode.
+you are right, I accidentally copied my 'fixed' version.
 
->
-> One more use of the state is in the start_linux() function, in arch/arm/lib32/armlinux.c:
->
-> ...
-> void start_linux(void *adr, int swap, unsigned long initrd_address,
->                  unsigned long initrd_size, void *oftree,
->                  enum arm_security_state state)
-> {
->         void (*kernel)(int zero, int arch, void *params) = adr;
->         void *params = NULL;
->         int architecture;
->         int ret;
->
->         if (IS_ENABLED(CONFIG_ARM_SECURE_MONITOR) && state > ARM_STATE_NONSECURE) {
->                 ret = armv7_secure_monitor_install();
->                 if (ret)
->                         pr_err("Failed to install secure monitor\n");
->         }
-> ...
->
-
-Where do you see the code above? Here's what's in master:
-
-https://git.pengutronix.de/cgit/barebox/tree/arch/arm/lib32/armlinux.c#n270
-
-and it looks different form what you are quoting.
-
-Thanks,
-Andrey Smirnov
+giorgio
 
 _______________________________________________
 barebox mailing list
