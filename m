@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-oi0-x241.google.com ([2607:f8b0:4003:c06::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fgRSA-0005qc-FA
- for barebox@lists.infradead.org; Fri, 20 Jul 2018 09:12:00 +0000
-Date: Fri, 20 Jul 2018 11:11:45 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20180720091145.kz2ksyeeumeqf73p@pengutronix.de>
-References: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
+ id 1fgRmf-0004lG-UQ
+ for barebox@lists.infradead.org; Fri, 20 Jul 2018 09:33:11 +0000
+Received: by mail-oi0-x241.google.com with SMTP id y207-v6so20204458oie.13
+ for <barebox@lists.infradead.org>; Fri, 20 Jul 2018 02:32:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
+References: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
+ <20180720091145.kz2ksyeeumeqf73p@pengutronix.de>
+In-Reply-To: <20180720091145.kz2ksyeeumeqf73p@pengutronix.de>
+From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
+Date: Fri, 20 Jul 2018 11:32:45 +0200
+Message-ID: <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,51 +20,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: MFGTools support in barebox
-To: Mihaita Ivascu <mihaita_ivascu@trimble.com>
+To: u.kleine-koenig@pengutronix.de
 Cc: barebox@lists.infradead.org
 
-On Wed, Jul 18, 2018 at 09:39:23AM +0200, Mihaita Ivascu wrote:
-> Hello,
-> =
-
->      I would like to flash a barebox image on NAND for a Phytec imx6ul
-> evk board using MFGTools.
->      I have added support for UTP protocol in kernel image so commands
-> could be "pushed" using MFGtools app from Windows.
->      But obviously I cannot push barebox_update command to Linux.
->      So I think I have two options:
-> =
-
-> 1) porting barebox_update command to Linux which I do not find it so
-> easy. I am already working on it
-> 2) adding UTP support in barebox so I could just load the barebox
-> image in RAM using MFGtools, there a utp device node would be created
-> and then I could push barebox specific commands directly from
-> MFGtools.
->       I have added UTP support in linux USB gadget code but I see
-> barebox USB gadget code is quite different and not all functionality
-> are in place so I also struggle a bit of porint gUTP patches from
-> Linux to barebox.
->      Does anybody have any experience with this topic or coud advise
-> me on how to procee?
-
-Why are you sticked to MFGTools? barebox can do fastboot which should
-work from Windows just fine.
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgogICBJIGhhdmUgYm90aCAgQW5kcm9pZCBGYXN0Ym9vdCBzdXBwb3J0IGFuZCBGYXN0Ym9v
+dCBzcGFyc2UgaW1hZ2UKc3VwcG9ydCBlbmFibGVkIGluIGJhcmVib3ggY29uZmlnKGlzIGJ5IGRl
+ZmF1bHQpIGJ1dCBJIHNlZSBub3QgZGV2aWNlCm5vZGUgY3JlYXRlZCB3aGVuIGNvbm5lY3Rpbmcg
+VVNCIGRldmljZSAgbm9yIGRvIEkgc2VlIGFueSBmYXN0Ym9vdApjb21tYW5kcyBpbiBiYXJlYm94
+IHNoZWxsLgogICBNeSBxdWVzdGlvbiBpczogaG93IGRvIEkgdXNlIGZhc3Rib290PyBXaGF0IGlz
+IHRoZSBjb21wbGV0ZQpjb25maWd1cmF0aW9uIG5lZWRlZCB0byBlbmFibGUgZmFzdGJvb3QgaW4g
+YmFyZWJveD8KCkJlc3QgcmVnYXJkcywKICAgICAgICAgTWloYWl0YSBJdmFzY3UKCgpPbiBGcmks
+IEp1bCAyMCwgMjAxOCBhdCAxMToxMSBBTSBVd2UgS2xlaW5lLUvDtm5pZwo8dS5rbGVpbmUta29l
+bmlnQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPgo+IE9uIFdlZCwgSnVsIDE4LCAyMDE4IGF0IDA5
+OjM5OjIzQU0gKzAyMDAsIE1paGFpdGEgSXZhc2N1IHdyb3RlOgo+ID4gSGVsbG8sCj4gPgo+ID4g
+ICAgICBJIHdvdWxkIGxpa2UgdG8gZmxhc2ggYSBiYXJlYm94IGltYWdlIG9uIE5BTkQgZm9yIGEg
+UGh5dGVjIGlteDZ1bAo+ID4gZXZrIGJvYXJkIHVzaW5nIE1GR1Rvb2xzLgo+ID4gICAgICBJIGhh
+dmUgYWRkZWQgc3VwcG9ydCBmb3IgVVRQIHByb3RvY29sIGluIGtlcm5lbCBpbWFnZSBzbyBjb21t
+YW5kcwo+ID4gY291bGQgYmUgInB1c2hlZCIgdXNpbmcgTUZHdG9vbHMgYXBwIGZyb20gV2luZG93
+cy4KPiA+ICAgICAgQnV0IG9idmlvdXNseSBJIGNhbm5vdCBwdXNoIGJhcmVib3hfdXBkYXRlIGNv
+bW1hbmQgdG8gTGludXguCj4gPiAgICAgIFNvIEkgdGhpbmsgSSBoYXZlIHR3byBvcHRpb25zOgo+
+ID4KPiA+IDEpIHBvcnRpbmcgYmFyZWJveF91cGRhdGUgY29tbWFuZCB0byBMaW51eCB3aGljaCBJ
+IGRvIG5vdCBmaW5kIGl0IHNvCj4gPiBlYXN5LiBJIGFtIGFscmVhZHkgd29ya2luZyBvbiBpdAo+
+ID4gMikgYWRkaW5nIFVUUCBzdXBwb3J0IGluIGJhcmVib3ggc28gSSBjb3VsZCBqdXN0IGxvYWQg
+dGhlIGJhcmVib3gKPiA+IGltYWdlIGluIFJBTSB1c2luZyBNRkd0b29scywgdGhlcmUgYSB1dHAg
+ZGV2aWNlIG5vZGUgd291bGQgYmUgY3JlYXRlZAo+ID4gYW5kIHRoZW4gSSBjb3VsZCBwdXNoIGJh
+cmVib3ggc3BlY2lmaWMgY29tbWFuZHMgZGlyZWN0bHkgZnJvbQo+ID4gTUZHdG9vbHMuCj4gPiAg
+ICAgICBJIGhhdmUgYWRkZWQgVVRQIHN1cHBvcnQgaW4gbGludXggVVNCIGdhZGdldCBjb2RlIGJ1
+dCBJIHNlZQo+ID4gYmFyZWJveCBVU0IgZ2FkZ2V0IGNvZGUgaXMgcXVpdGUgZGlmZmVyZW50IGFu
+ZCBub3QgYWxsIGZ1bmN0aW9uYWxpdHkKPiA+IGFyZSBpbiBwbGFjZSBzbyBJIGFsc28gc3RydWdn
+bGUgYSBiaXQgb2YgcG9yaW50IGdVVFAgcGF0Y2hlcyBmcm9tCj4gPiBMaW51eCB0byBiYXJlYm94
+Lgo+ID4gICAgICBEb2VzIGFueWJvZHkgaGF2ZSBhbnkgZXhwZXJpZW5jZSB3aXRoIHRoaXMgdG9w
+aWMgb3IgY291ZCBhZHZpc2UKPiA+IG1lIG9uIGhvdyB0byBwcm9jZWU/Cj4KPiBXaHkgYXJlIHlv
+dSBzdGlja2VkIHRvIE1GR1Rvb2xzPyBiYXJlYm94IGNhbiBkbyBmYXN0Ym9vdCB3aGljaCBzaG91
+bGQKPiB3b3JrIGZyb20gV2luZG93cyBqdXN0IGZpbmUuCj4KPiBCZXN0IHJlZ2FyZHMKPiBVd2UK
+Pgo+IC0tCj4gUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgVXdl
+IEtsZWluZS1Lw7ZuaWcgICAgICAgICAgICB8Cj4gSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMg
+ICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
+aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
