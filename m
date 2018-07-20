@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.15.19])
+Received: from mail-oi0-x243.google.com ([2607:f8b0:4003:c06::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fgSAe-00068m-SJ
- for barebox@lists.infradead.org; Fri, 20 Jul 2018 09:57:59 +0000
+ id 1fgZvh-0008Cn-36
+ for barebox@lists.infradead.org; Fri, 20 Jul 2018 18:15:03 +0000
+Received: by mail-oi0-x243.google.com with SMTP id n21-v6so7410073oig.3
+ for <barebox@lists.infradead.org>; Fri, 20 Jul 2018 11:14:50 -0700 (PDT)
+MIME-Version: 1.0
 References: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
  <20180720091145.kz2ksyeeumeqf73p@pengutronix.de>
  <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
-From: Oleksij Rempel <linux@rempel-privat.de>
-Message-ID: <278d07f4-decf-fabc-62cb-7661b1c73a54@rempel-privat.de>
-Date: Fri, 20 Jul 2018 11:57:34 +0200
-MIME-Version: 1.0
-In-Reply-To: <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
+ <278d07f4-decf-fabc-62cb-7661b1c73a54@rempel-privat.de>
+In-Reply-To: <278d07f4-decf-fabc-62cb-7661b1c73a54@rempel-privat.de>
+From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
+Date: Fri, 20 Jul 2018 20:14:38 +0200
+Message-ID: <CAEp+FuBaOxzoc0aiXpPwm24RQw9hDB-5HiWmTCqMAPf+RYpjjg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,142 +22,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2280282059215604023=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: MFGTools support in barebox
-To: Mihaita Ivascu <mihaita_ivascu@trimble.com>, u.kleine-koenig@pengutronix.de
-Cc: barebox@lists.infradead.org
+To: linux@rempel-privat.de
+Cc: barebox@lists.infradead.org, u.kleine-koenig@pengutronix.de
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============2280282059215604023==
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="bA7JWgrMXB5rVSfI7CUobNjrZo63NzOgn"
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---bA7JWgrMXB5rVSfI7CUobNjrZo63NzOgn
-Content-Type: multipart/mixed; boundary="I19k0YC3iPSB3D0bhFYMKqyiCMcuMqFHV";
- protected-headers="v1"
-From: Oleksij Rempel <linux@rempel-privat.de>
-To: Mihaita Ivascu <mihaita_ivascu@trimble.com>,
- u.kleine-koenig@pengutronix.de
-Cc: barebox@lists.infradead.org
-Message-ID: <278d07f4-decf-fabc-62cb-7661b1c73a54@rempel-privat.de>
-Subject: Re: MFGTools support in barebox
-References: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
- <20180720091145.kz2ksyeeumeqf73p@pengutronix.de>
- <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
-In-Reply-To: <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
-
---I19k0YC3iPSB3D0bhFYMKqyiCMcuMqFHV
-Content-Type: text/plain; charset=utf-8
-Content-Language: ru
-Content-Transfer-Encoding: quoted-printable
-
-Am 20.07.2018 um 11:32 schrieb Mihaita Ivascu:
-> Hi,
->=20
->    I have both  Android Fastboot support and Fastboot sparse image
-> support enabled in barebox config(is by default) but I see not device
-> node created when connecting USB device  nor do I see any fastboot
-> commands in barebox shell.
->    My question is: how do I use fastboot? What is the complete
-> configuration needed to enable fastboot in barebox?
-
-Googling "barebox fastboot"
-First result which i get is this page:
-https://www.barebox.org/doc/latest/user/usb.html#android-fastboot-support=
-
-
-> Best regards,
->          Mihaita Ivascu
->=20
->=20
-> On Fri, Jul 20, 2018 at 11:11 AM Uwe Kleine-K=C3=B6nig
-> <u.kleine-koenig@pengutronix.de> wrote:
->>
->> On Wed, Jul 18, 2018 at 09:39:23AM +0200, Mihaita Ivascu wrote:
->>> Hello,
->>>
->>>      I would like to flash a barebox image on NAND for a Phytec imx6u=
-l
->>> evk board using MFGTools.
->>>      I have added support for UTP protocol in kernel image so command=
-s
->>> could be "pushed" using MFGtools app from Windows.
->>>      But obviously I cannot push barebox_update command to Linux.
->>>      So I think I have two options:
->>>
->>> 1) porting barebox_update command to Linux which I do not find it so
->>> easy. I am already working on it
->>> 2) adding UTP support in barebox so I could just load the barebox
->>> image in RAM using MFGtools, there a utp device node would be created=
-
->>> and then I could push barebox specific commands directly from
->>> MFGtools.
->>>       I have added UTP support in linux USB gadget code but I see
->>> barebox USB gadget code is quite different and not all functionality
->>> are in place so I also struggle a bit of porint gUTP patches from
->>> Linux to barebox.
->>>      Does anybody have any experience with this topic or coud advise
->>> me on how to procee?
->>
->> Why are you sticked to MFGTools? barebox can do fastboot which should
->> work from Windows just fine.
->>
->> Best regards
->> Uwe
->>
->> --
->> Pengutronix e.K.                           | Uwe Kleine-K=C3=B6nig    =
-        |
->> Industrial Linux Solutions                 | http://www.pengutronix.de=
-/  |
->=20
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
->=20
-
-
---=20
-Regards,
-Oleksij
-
-
---I19k0YC3iPSB3D0bhFYMKqyiCMcuMqFHV--
-
---bA7JWgrMXB5rVSfI7CUobNjrZo63NzOgn
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEpENFL0P3hvQ7p0DDdQOiSHVI77QFAltRsg8ACgkQdQOiSHVI
-77TBvAf/W0+FvYeWNAXu8nK72SqQQ2DqF1bTEPAK7Fm+Xmq4iwJ/ny7GJ0dgjEfH
-VXW7ikVZ4aQxNi0vvojJAljbunDlp+jD1tr+kLGLjVaTMQvK6/qHLVEnYuBgVkCb
-U/cJh7P8Xo4ezKDNjNFTPMFGCilibpGFPKUf1GiK4fSgAGMBFUR+w4FYt3CLF0IG
-jyhXZjBg3MhsJiAzWP5mayy0/7fGIeZUG7Let9UyZz5lH4/JgEsfV1MfnKWxqTvH
-Jf0RmDgD+/sL/y5gjRV2hI/ok/f9AJH6e/2fdf5h1OVuKpTcypcI6pAL28/ZcY8N
-kmq3Qtg+91cl5+Em+NEOD9sC+qm0+Q==
-=Pf52
------END PGP SIGNATURE-----
-
---bA7JWgrMXB5rVSfI7CUobNjrZo63NzOgn--
-
-
---===============2280282059215604023==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
-
---===============2280282059215604023==--
+VGhhbmtzIGZvciB0aGUgaW5mby4gaSBnb3QgdGhhdCBhbHJlYWR5LiBTb21lIGNvbmZpZ3MgdGhh
+dCBzaG91bGQgYmUKZW5hYmxlZCBhcmUgbm90IHRvIGJlIGZvdW5kIGluIG15IGJhcmVib3ggeWV0
+LgogSSB3aWxsIHdvcmsgb24gaXQgYW5kIGlmIEkgYW0gbm90IHN1Y2Nlc3NmdWwgbWF5YmUgSSB3
+aWxsIHJldHVybiB3aXRoCmEgcXVlc3Rpb24uCgpCZXN0IHJlZ2FyZHMsCiAgICAgICAgIE1paGFp
+dGEKT24gRnJpLCBKdWwgMjAsIDIwMTggYXQgMTE6NTcgQU0gT2xla3NpaiBSZW1wZWwgPGxpbnV4
+QHJlbXBlbC1wcml2YXQuZGU+IHdyb3RlOgo+Cj4gQW0gMjAuMDcuMjAxOCB1bSAxMTozMiBzY2hy
+aWViIE1paGFpdGEgSXZhc2N1Ogo+ID4gSGksCj4gPgo+ID4gICAgSSBoYXZlIGJvdGggIEFuZHJv
+aWQgRmFzdGJvb3Qgc3VwcG9ydCBhbmQgRmFzdGJvb3Qgc3BhcnNlIGltYWdlCj4gPiBzdXBwb3J0
+IGVuYWJsZWQgaW4gYmFyZWJveCBjb25maWcoaXMgYnkgZGVmYXVsdCkgYnV0IEkgc2VlIG5vdCBk
+ZXZpY2UKPiA+IG5vZGUgY3JlYXRlZCB3aGVuIGNvbm5lY3RpbmcgVVNCIGRldmljZSAgbm9yIGRv
+IEkgc2VlIGFueSBmYXN0Ym9vdAo+ID4gY29tbWFuZHMgaW4gYmFyZWJveCBzaGVsbC4KPiA+ICAg
+IE15IHF1ZXN0aW9uIGlzOiBob3cgZG8gSSB1c2UgZmFzdGJvb3Q/IFdoYXQgaXMgdGhlIGNvbXBs
+ZXRlCj4gPiBjb25maWd1cmF0aW9uIG5lZWRlZCB0byBlbmFibGUgZmFzdGJvb3QgaW4gYmFyZWJv
+eD8KPgo+IEdvb2dsaW5nICJiYXJlYm94IGZhc3Rib290Igo+IEZpcnN0IHJlc3VsdCB3aGljaCBp
+IGdldCBpcyB0aGlzIHBhZ2U6Cj4gaHR0cHM6Ly93d3cuYmFyZWJveC5vcmcvZG9jL2xhdGVzdC91
+c2VyL3VzYi5odG1sI2FuZHJvaWQtZmFzdGJvb3Qtc3VwcG9ydAo+Cj4gPiBCZXN0IHJlZ2FyZHMs
+Cj4gPiAgICAgICAgICBNaWhhaXRhIEl2YXNjdQo+ID4KPiA+Cj4gPiBPbiBGcmksIEp1bCAyMCwg
+MjAxOCBhdCAxMToxMSBBTSBVd2UgS2xlaW5lLUvDtm5pZwo+ID4gPHUua2xlaW5lLWtvZW5pZ0Bw
+ZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4gPj4KPiA+PiBPbiBXZWQsIEp1bCAxOCwgMjAxOCBhdCAw
+OTozOToyM0FNICswMjAwLCBNaWhhaXRhIEl2YXNjdSB3cm90ZToKPiA+Pj4gSGVsbG8sCj4gPj4+
+Cj4gPj4+ICAgICAgSSB3b3VsZCBsaWtlIHRvIGZsYXNoIGEgYmFyZWJveCBpbWFnZSBvbiBOQU5E
+IGZvciBhIFBoeXRlYyBpbXg2dWwKPiA+Pj4gZXZrIGJvYXJkIHVzaW5nIE1GR1Rvb2xzLgo+ID4+
+PiAgICAgIEkgaGF2ZSBhZGRlZCBzdXBwb3J0IGZvciBVVFAgcHJvdG9jb2wgaW4ga2VybmVsIGlt
+YWdlIHNvIGNvbW1hbmRzCj4gPj4+IGNvdWxkIGJlICJwdXNoZWQiIHVzaW5nIE1GR3Rvb2xzIGFw
+cCBmcm9tIFdpbmRvd3MuCj4gPj4+ICAgICAgQnV0IG9idmlvdXNseSBJIGNhbm5vdCBwdXNoIGJh
+cmVib3hfdXBkYXRlIGNvbW1hbmQgdG8gTGludXguCj4gPj4+ICAgICAgU28gSSB0aGluayBJIGhh
+dmUgdHdvIG9wdGlvbnM6Cj4gPj4+Cj4gPj4+IDEpIHBvcnRpbmcgYmFyZWJveF91cGRhdGUgY29t
+bWFuZCB0byBMaW51eCB3aGljaCBJIGRvIG5vdCBmaW5kIGl0IHNvCj4gPj4+IGVhc3kuIEkgYW0g
+YWxyZWFkeSB3b3JraW5nIG9uIGl0Cj4gPj4+IDIpIGFkZGluZyBVVFAgc3VwcG9ydCBpbiBiYXJl
+Ym94IHNvIEkgY291bGQganVzdCBsb2FkIHRoZSBiYXJlYm94Cj4gPj4+IGltYWdlIGluIFJBTSB1
+c2luZyBNRkd0b29scywgdGhlcmUgYSB1dHAgZGV2aWNlIG5vZGUgd291bGQgYmUgY3JlYXRlZAo+
+ID4+PiBhbmQgdGhlbiBJIGNvdWxkIHB1c2ggYmFyZWJveCBzcGVjaWZpYyBjb21tYW5kcyBkaXJl
+Y3RseSBmcm9tCj4gPj4+IE1GR3Rvb2xzLgo+ID4+PiAgICAgICBJIGhhdmUgYWRkZWQgVVRQIHN1
+cHBvcnQgaW4gbGludXggVVNCIGdhZGdldCBjb2RlIGJ1dCBJIHNlZQo+ID4+PiBiYXJlYm94IFVT
+QiBnYWRnZXQgY29kZSBpcyBxdWl0ZSBkaWZmZXJlbnQgYW5kIG5vdCBhbGwgZnVuY3Rpb25hbGl0
+eQo+ID4+PiBhcmUgaW4gcGxhY2Ugc28gSSBhbHNvIHN0cnVnZ2xlIGEgYml0IG9mIHBvcmludCBn
+VVRQIHBhdGNoZXMgZnJvbQo+ID4+PiBMaW51eCB0byBiYXJlYm94Lgo+ID4+PiAgICAgIERvZXMg
+YW55Ym9keSBoYXZlIGFueSBleHBlcmllbmNlIHdpdGggdGhpcyB0b3BpYyBvciBjb3VkIGFkdmlz
+ZQo+ID4+PiBtZSBvbiBob3cgdG8gcHJvY2VlPwo+ID4+Cj4gPj4gV2h5IGFyZSB5b3Ugc3RpY2tl
+ZCB0byBNRkdUb29scz8gYmFyZWJveCBjYW4gZG8gZmFzdGJvb3Qgd2hpY2ggc2hvdWxkCj4gPj4g
+d29yayBmcm9tIFdpbmRvd3MganVzdCBmaW5lLgo+ID4+Cj4gPj4gQmVzdCByZWdhcmRzCj4gPj4g
+VXdlCj4gPj4KPiA+PiAtLQo+ID4+IFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAg
+ICAgICAgICB8IFV3ZSBLbGVpbmUtS8O2bmlnICAgICAgICAgICAgfAo+ID4+IEluZHVzdHJpYWwg
+TGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXgu
+ZGUvICB8Cj4gPgo+ID4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KPiA+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gPiBiYXJlYm94QGxpc3RzLmluZnJhZGVh
+ZC5vcmcKPiA+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
+ZWJveAo+ID4KPgo+Cj4gLS0KPiBSZWdhcmRzLAo+IE9sZWtzaWoKPgoKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
+ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
+YW4vbGlzdGluZm8vYmFyZWJveAo=
