@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
+Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fgJqS-0002pP-BD
- for barebox@lists.infradead.org; Fri, 20 Jul 2018 01:04:35 +0000
-Received: by mail-pg1-x542.google.com with SMTP id v13-v6so5277401pgr.10
- for <barebox@lists.infradead.org>; Thu, 19 Jul 2018 18:04:24 -0700 (PDT)
+ id 1fgJqa-0002q7-4g
+ for barebox@lists.infradead.org; Fri, 20 Jul 2018 01:04:45 +0000
+Received: by mail-pl0-x241.google.com with SMTP id e11-v6so4391661plb.3
+ for <barebox@lists.infradead.org>; Thu, 19 Jul 2018 18:04:29 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 19 Jul 2018 18:03:51 -0700
-Message-Id: <20180720010357.22822-7-andrew.smirnov@gmail.com>
+Date: Thu, 19 Jul 2018 18:03:55 -0700
+Message-Id: <20180720010357.22822-11-andrew.smirnov@gmail.com>
 In-Reply-To: <20180720010357.22822-1-andrew.smirnov@gmail.com>
 References: <20180720010357.22822-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,266 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 06/12] ARM: i.MX: Move i.MX header definitions to mach-imx
+Subject: [PATCH v2 10/12] ARM: i.MX8MQ: Query and display ATF fimware hash if
+ availible
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Move i.MX header definitions from scripts to mach-imx in order to make
-it availible to both script and bootloader code.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/imx-header.h | 118 ++++++++++++++++++++
- scripts/imx/imx.h                           | 114 +------------------
- 2 files changed, 119 insertions(+), 113 deletions(-)
- create mode 100644 arch/arm/mach-imx/include/mach/imx-header.h
+ arch/arm/mach-imx/imx8mq.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/arm/mach-imx/include/mach/imx-header.h b/arch/arm/mach-imx/include/mach/imx-header.h
-new file mode 100644
-index 000000000..4fedba7ad
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/imx-header.h
-@@ -0,0 +1,118 @@
-+#ifndef __IMX_HEADER_H__
-+#define __IMX_HEADER_H__
-+
-+#define HEADER_LEN 0x1000	/* length of the blank area + IVT + DCD */
-+
-+/*
-+ * ============================================================================
-+ * i.MX flash header v1 handling. Found on i.MX35 and i.MX51
-+ * ============================================================================
-+ */
-+#define DCD_BARKER       0xb17219e9
-+
-+struct imx_flash_header {
-+	uint32_t app_code_jump_vector;
-+	uint32_t app_code_barker;
-+	uint32_t app_code_csf;
-+	uint32_t dcd_ptr_ptr;
-+	uint32_t super_root_key;
-+	uint32_t dcd;
-+	uint32_t app_dest;
-+	uint32_t dcd_barker;
-+	uint32_t dcd_block_len;
-+} __attribute__((packed));
-+
-+struct imx_boot_data {
-+	uint32_t start;
-+	uint32_t size;
-+	uint32_t plugin;
-+} __attribute__((packed));
-+
-+struct imx_dcd_rec_v1 {
-+	uint32_t type;
-+	uint32_t addr;
-+	uint32_t val;
-+} __attribute__((packed));
-+
-+#define TAG_IVT_HEADER	0xd1
-+#define IVT_VERSION	0x40
-+#define TAG_DCD_HEADER	0xd2
-+#define DCD_VERSION	0x40
-+#define TAG_UNLOCK	0xb2
-+#define TAG_NOP		0xc0
-+#define TAG_WRITE	0xcc
-+#define TAG_CHECK	0xcf
-+#define PARAMETER_FLAG_MASK	(1 << 3)
-+#define PARAMETER_FLAG_SET	(1 << 4)
-+
-+struct imx_ivt_header {
-+	uint8_t tag;
-+	uint16_t length;
-+	uint8_t version;
-+} __attribute__((packed));
-+
-+struct imx_flash_header_v2 {
-+	struct imx_ivt_header header;
-+
-+	uint32_t entry;
-+	uint32_t reserved1;
-+	uint32_t dcd_ptr;
-+	uint32_t boot_data_ptr;
-+	uint32_t self;
-+	uint32_t csf;
-+	uint32_t reserved2;
-+
-+	struct imx_boot_data boot_data;
-+	struct imx_ivt_header dcd_header;
-+} __attribute__((packed));
-+
-+struct config_data {
-+	uint32_t image_load_addr;
-+	uint32_t image_dcd_offset;
-+	uint32_t image_size;
-+	uint32_t load_size;
-+	char *outfile;
-+	char *srkfile;
-+	int header_version;
-+	off_t header_gap;
-+	uint32_t first_opcode;
-+	int cpu_type;
-+	int (*check)(const struct config_data *data, uint32_t cmd,
-+		     uint32_t addr, uint32_t mask);
-+	int (*write_mem)(const struct config_data *data, uint32_t addr,
-+			 uint32_t val, int width, int set_bits, int clear_bits);
-+	int (*nop)(const struct config_data *data);
-+	int csf_space;
-+	char *csf;
-+};
-+
-+#define MAX_RECORDS_DCD_V2 1024
-+struct imx_dcd_v2_write_rec {
-+	uint32_t addr;
-+	uint32_t val;
-+} __attribute__((packed));
-+
-+struct imx_dcd_v2_write {
-+	uint8_t tag;
-+	uint16_t length;
-+	uint8_t param;
-+	struct imx_dcd_v2_write_rec data[MAX_RECORDS_DCD_V2];
-+} __attribute__((packed));
-+
-+struct imx_dcd_v2_check {
-+	uint8_t tag;
-+	uint16_t length;
-+	uint8_t param;
-+	uint32_t addr;
-+	uint32_t mask;
-+	uint32_t count;
-+} __attribute__((packed));
-+
-+enum imx_dcd_v2_check_cond {
-+	until_all_bits_clear = 0, /* until ((*address & mask) == 0) { ...} */
-+	until_any_bit_clear = 1, /* until ((*address & mask) != mask) { ...} */
-+	until_all_bits_set = 2, /* until ((*address & mask) == mask) { ...} */
-+	until_any_bit_set = 3, /* until ((*address & mask) != 0) { ...} */
-+} __attribute__((packed));
-+
-+#endif
-diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
-index 92a3fd316..20fb1e876 100644
---- a/scripts/imx/imx.h
-+++ b/scripts/imx/imx.h
-@@ -1,116 +1,4 @@
+diff --git a/arch/arm/mach-imx/imx8mq.c b/arch/arm/mach-imx/imx8mq.c
+index dbcf4fa59..152f07bc1 100644
+--- a/arch/arm/mach-imx/imx8mq.c
++++ b/arch/arm/mach-imx/imx8mq.c
+@@ -20,11 +20,16 @@
+ #include <mach/revision.h>
+ #include <mach/imx8mq-regs.h>
  
--#define HEADER_LEN 0x1000	/* length of the blank area + IVT + DCD */
--
--/*
-- * ============================================================================
-- * i.MX flash header v1 handling. Found on i.MX35 and i.MX51
-- * ============================================================================
-- */
--#define DCD_BARKER       0xb17219e9
--
--struct imx_flash_header {
--	uint32_t app_code_jump_vector;
--	uint32_t app_code_barker;
--	uint32_t app_code_csf;
--	uint32_t dcd_ptr_ptr;
--	uint32_t super_root_key;
--	uint32_t dcd;
--	uint32_t app_dest;
--	uint32_t dcd_barker;
--	uint32_t dcd_block_len;
--} __attribute__((packed));
--
--struct imx_boot_data {
--	uint32_t start;
--	uint32_t size;
--	uint32_t plugin;
--} __attribute__((packed));
--
--struct imx_dcd_rec_v1 {
--	uint32_t type;
--	uint32_t addr;
--	uint32_t val;
--} __attribute__((packed));
--
--#define TAG_IVT_HEADER	0xd1
--#define IVT_VERSION	0x40
--#define TAG_DCD_HEADER	0xd2
--#define DCD_VERSION	0x40
--#define TAG_UNLOCK	0xb2
--#define TAG_NOP		0xc0
--#define TAG_WRITE	0xcc
--#define TAG_CHECK	0xcf
--#define PARAMETER_FLAG_MASK	(1 << 3)
--#define PARAMETER_FLAG_SET	(1 << 4)
--
--struct imx_ivt_header {
--	uint8_t tag;
--	uint16_t length;
--	uint8_t version;
--} __attribute__((packed));
--
--struct imx_flash_header_v2 {
--	struct imx_ivt_header header;
--
--	uint32_t entry;
--	uint32_t reserved1;
--	uint32_t dcd_ptr;
--	uint32_t boot_data_ptr;
--	uint32_t self;
--	uint32_t csf;
--	uint32_t reserved2;
--
--	struct imx_boot_data boot_data;
--	struct imx_ivt_header dcd_header;
--} __attribute__((packed));
--
--struct config_data {
--	uint32_t image_load_addr;
--	uint32_t image_dcd_offset;
--	uint32_t image_size;
--	uint32_t load_size;
--	char *outfile;
--	char *srkfile;
--	int header_version;
--	off_t header_gap;
--	uint32_t first_opcode;
--	int cpu_type;
--	int (*check)(const struct config_data *data, uint32_t cmd,
--		     uint32_t addr, uint32_t mask);
--	int (*write_mem)(const struct config_data *data, uint32_t addr,
--			 uint32_t val, int width, int set_bits, int clear_bits);
--	int (*nop)(const struct config_data *data);
--	int csf_space;
--	char *csf;
--};
--
--#define MAX_RECORDS_DCD_V2 1024
--struct imx_dcd_v2_write_rec {
--	uint32_t addr;
--	uint32_t val;
--} __attribute__((packed));
--
--struct imx_dcd_v2_write {
--	uint8_t tag;
--	uint16_t length;
--	uint8_t param;
--	struct imx_dcd_v2_write_rec data[MAX_RECORDS_DCD_V2];
--} __attribute__((packed));
--
--struct imx_dcd_v2_check {
--	uint8_t tag;
--	uint16_t length;
--	uint8_t param;
--	uint32_t addr;
--	uint32_t mask;
--	uint32_t count;
--} __attribute__((packed));
--
--enum imx_dcd_v2_check_cond {
--	until_all_bits_clear = 0, /* until ((*address & mask) == 0) { ...} */
--	until_any_bit_clear = 1, /* until ((*address & mask) != mask) { ...} */
--	until_all_bits_set = 2, /* until ((*address & mask) == mask) { ...} */
--	until_any_bit_set = 3, /* until ((*address & mask) != 0) { ...} */
--} __attribute__((packed));
-+#include <mach/imx-header.h>
++#include <linux/arm-smccc.h>
++
+ #define IMX8MQ_ROM_VERSION_A0	0x800
+ #define IMX8MQ_ROM_VERSION_B0	0x83C
  
- int parse_config(struct config_data *data, const char *filename);
+ #define MX8MQ_ANATOP_DIGPROG	0x6c
+ 
++#define FSL_SIP_BUILDINFO			0xC2000003
++#define FSL_SIP_BUILDINFO_GET_COMMITHASH	0x00
++
+ static void imx8mq_silicon_revision(void)
+ {
+ 	void __iomem *anatop = IOMEM(MX8MQ_ANATOP_BASE_ADDR);
+@@ -81,7 +86,17 @@ core_initcall(imx8mq_init_syscnt_frequency);
+ 
+ int imx8mq_init(void)
+ {
++	struct arm_smccc_res res;
++
+ 	imx8mq_silicon_revision();
+ 
++	if (IS_ENABLED(CONFIG_ARM_SMCCC) &&
++	    IS_ENABLED(CONFIG_FIRMWARE_IMX8MQ_ATF)) {
++		arm_smccc_smc(FSL_SIP_BUILDINFO,
++			      FSL_SIP_BUILDINFO_GET_COMMITHASH,
++			      0, 0, 0, 0, 0, 0, &res);
++		pr_info("i.MX ARM Trusted Firmware: %s\n", (char *)&res.a0);
++	}
++
+ 	return 0;
+ }
 -- 
 2.17.1
 
