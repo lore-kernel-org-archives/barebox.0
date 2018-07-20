@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x244.google.com ([2607:f8b0:4001:c06::244])
+Received: from mout.gmx.net ([212.227.15.19])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fgOf8-0000MR-5l
- for barebox@lists.infradead.org; Fri, 20 Jul 2018 06:13:11 +0000
-Received: by mail-io0-x244.google.com with SMTP id l7-v6so9075251ioj.1
- for <barebox@lists.infradead.org>; Thu, 19 Jul 2018 23:12:59 -0700 (PDT)
+ id 1fgSAe-00068m-SJ
+ for barebox@lists.infradead.org; Fri, 20 Jul 2018 09:57:59 +0000
+References: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
+ <20180720091145.kz2ksyeeumeqf73p@pengutronix.de>
+ <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
+From: Oleksij Rempel <linux@rempel-privat.de>
+Message-ID: <278d07f4-decf-fabc-62cb-7661b1c73a54@rempel-privat.de>
+Date: Fri, 20 Jul 2018 11:57:34 +0200
 MIME-Version: 1.0
-References: <316743f1814b446db9947e95ff843168@prosoftsystems.ru>
-In-Reply-To: <316743f1814b446db9947e95ff843168@prosoftsystems.ru>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 19 Jul 2018 23:12:47 -0700
-Message-ID: <CAHQ1cqHMR7QUBtN0fjeOGhxytRapcBnWT+T5USbfKFePck8r=g@mail.gmail.com>
+In-Reply-To: <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +19,142 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============2280282059215604023=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Problem booting Linux v4.8.15 from NAND on using Barebox
-To: i.sapozhnikov@prosoftsystems.ru
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: MFGTools support in barebox
+To: Mihaita Ivascu <mihaita_ivascu@trimble.com>, u.kleine-koenig@pengutronix.de
+Cc: barebox@lists.infradead.org
 
-T24gVGh1LCBKdWwgMTksIDIwMTggYXQgMTA6NDcgUE0g0KHQsNC/0L7QttC90LjQutC+0LIg0JjQ
-s9C+0YDRjCDQktCw0LvQtdGA0YzQtdCy0LjRhwo8aS5zYXBvemhuaWtvdkBwcm9zb2Z0c3lzdGVt
-cy5ydT4gd3JvdGU6Cj4KPiBIZWxsby4gSSB1c2UgYmFyZWJveCB2MjAxNy4wNy4wIGFuZCBJIGdl
-dHRpbmcgdHJvdWJsZSB3aXRoIGxvYWRpbmcgTGludXgga2VybmVsIHY0LjguMTUgYWZ0ZXIgZmxh
-c2hpbmcgdG8gTkFORCBhbmQgcmVib290aW5nIHN5c3RlbS4gSSBjaGVja2VkIExpbnV4IGltYWdl
-IGxvY2F0ZWQgaW4gTkFORCB0aHJvdWdoIG1kNXN1bSBwcm9ncmFtIGluIGJhcmVib3ggYW5kIExp
-bnV4IC4gSW4gYmFyZWJveCBtZDVzdW0gcmV0dXJuIHZhbHVlIGRpZmZlciBmcm9tIHZhbHVlIGlu
-IExpbnV4LiBJIHJlYWQgbGludXggaW1hZ2UgZnJvbSDQndCQ0J3QlCBvZiBCYXJlYm94IGFuZCBM
-aW51eCwgdGhlbiBjb21wYXJlZCB0aGVpciBieSB4eGQgcHJvZ3JhbS4gSW4gY29weSBmcm9tIGJh
-cmVib3ggSSBnb3QgYml0LWZsaXAgZXJyb3JzLiBJdCBlcnJvciBpcyBub3QgbWFuaWZlc3RlZCBl
-dmVyeSB0aW1lIGFmdGVyIGZsYXNoaW5nIGFuZCByZWJvb3Rpbmcgc3lzdGVtLiBVc3VhbGx5IEkg
-bmVlZGVkIGFib3V0IDE1MCByZWJvb3RzLiBBZnRlcndhcmRzIEkgYmVnYW4gdG8gdXNlIGJhcmVi
-b3ggdjIwMTguMDcuMCBhbmQgYWZ0ZXIgNTAwMCByZWJvb3Rpbmcgc3lzdGVtLCBJIG5vdCBnZXR0
-aW5nIGVycm9yLiBDYW4geW91IHRlbGwgbWUgd2hhdCB0aGUgZXJyb3Igd2FzIGZpeGVkIGluIG5l
-dyBidWlsZD8gQW5kIGNhbiB5b3Ugc2VuZCBtZSBjb21taXQgaWQgZnJvbSBnaXQgd2hlcmUgZml4
-ZWQgZXJyb3I/Cj4KCklnb3I6CgpJTUhPLCB0aGlzIHJlYWxseSBzb3VuZHMgbGlrZSBhIHF1ZXN0
-aW9uIHRvICJnaXQgYmlzZWN0IiByYXRoZXIgdGhhbgp0byB0aGUgbGlzdC4gSSBob3BlIHlvdSBh
-cmUgbHVja3kgZW5vdWdoIHRoYXQgc29tZW9uZSB3b3VsZCBrbm93IHRoZQphbnN3ZXIgb2ZmIHRo
-ZSB0b3Agb2YgdGhlaXIgaGVhZCwgYnV0IEknZCBzdGlsbCBzdWdnZXN0IHlvdSBzdGFydApiaXNl
-Y3RpbmcuIEZoaXMgd2F5IHlvdSdsbCBnZXQgeW91ciBhbnN3ZXIgZXZlbiBpZiB5b3VyIHF1ZXN0
-aW9uIHdpbGwKbmV2ZXIgYmUgYW5zd2VyZWQgb24gdGhlIGxpc3QuCgpUaGFua3MsCkFuZHJleSBT
-bWlybm92CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
-YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
-c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============2280282059215604023==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="bA7JWgrMXB5rVSfI7CUobNjrZo63NzOgn"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--bA7JWgrMXB5rVSfI7CUobNjrZo63NzOgn
+Content-Type: multipart/mixed; boundary="I19k0YC3iPSB3D0bhFYMKqyiCMcuMqFHV";
+ protected-headers="v1"
+From: Oleksij Rempel <linux@rempel-privat.de>
+To: Mihaita Ivascu <mihaita_ivascu@trimble.com>,
+ u.kleine-koenig@pengutronix.de
+Cc: barebox@lists.infradead.org
+Message-ID: <278d07f4-decf-fabc-62cb-7661b1c73a54@rempel-privat.de>
+Subject: Re: MFGTools support in barebox
+References: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
+ <20180720091145.kz2ksyeeumeqf73p@pengutronix.de>
+ <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
+In-Reply-To: <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
+
+--I19k0YC3iPSB3D0bhFYMKqyiCMcuMqFHV
+Content-Type: text/plain; charset=utf-8
+Content-Language: ru
+Content-Transfer-Encoding: quoted-printable
+
+Am 20.07.2018 um 11:32 schrieb Mihaita Ivascu:
+> Hi,
+>=20
+>    I have both  Android Fastboot support and Fastboot sparse image
+> support enabled in barebox config(is by default) but I see not device
+> node created when connecting USB device  nor do I see any fastboot
+> commands in barebox shell.
+>    My question is: how do I use fastboot? What is the complete
+> configuration needed to enable fastboot in barebox?
+
+Googling "barebox fastboot"
+First result which i get is this page:
+https://www.barebox.org/doc/latest/user/usb.html#android-fastboot-support=
+
+
+> Best regards,
+>          Mihaita Ivascu
+>=20
+>=20
+> On Fri, Jul 20, 2018 at 11:11 AM Uwe Kleine-K=C3=B6nig
+> <u.kleine-koenig@pengutronix.de> wrote:
+>>
+>> On Wed, Jul 18, 2018 at 09:39:23AM +0200, Mihaita Ivascu wrote:
+>>> Hello,
+>>>
+>>>      I would like to flash a barebox image on NAND for a Phytec imx6u=
+l
+>>> evk board using MFGTools.
+>>>      I have added support for UTP protocol in kernel image so command=
+s
+>>> could be "pushed" using MFGtools app from Windows.
+>>>      But obviously I cannot push barebox_update command to Linux.
+>>>      So I think I have two options:
+>>>
+>>> 1) porting barebox_update command to Linux which I do not find it so
+>>> easy. I am already working on it
+>>> 2) adding UTP support in barebox so I could just load the barebox
+>>> image in RAM using MFGtools, there a utp device node would be created=
+
+>>> and then I could push barebox specific commands directly from
+>>> MFGtools.
+>>>       I have added UTP support in linux USB gadget code but I see
+>>> barebox USB gadget code is quite different and not all functionality
+>>> are in place so I also struggle a bit of porint gUTP patches from
+>>> Linux to barebox.
+>>>      Does anybody have any experience with this topic or coud advise
+>>> me on how to procee?
+>>
+>> Why are you sticked to MFGTools? barebox can do fastboot which should
+>> work from Windows just fine.
+>>
+>> Best regards
+>> Uwe
+>>
+>> --
+>> Pengutronix e.K.                           | Uwe Kleine-K=C3=B6nig    =
+        |
+>> Industrial Linux Solutions                 | http://www.pengutronix.de=
+/  |
+>=20
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+>=20
+
+
+--=20
+Regards,
+Oleksij
+
+
+--I19k0YC3iPSB3D0bhFYMKqyiCMcuMqFHV--
+
+--bA7JWgrMXB5rVSfI7CUobNjrZo63NzOgn
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEpENFL0P3hvQ7p0DDdQOiSHVI77QFAltRsg8ACgkQdQOiSHVI
+77TBvAf/W0+FvYeWNAXu8nK72SqQQ2DqF1bTEPAK7Fm+Xmq4iwJ/ny7GJ0dgjEfH
+VXW7ikVZ4aQxNi0vvojJAljbunDlp+jD1tr+kLGLjVaTMQvK6/qHLVEnYuBgVkCb
+U/cJh7P8Xo4ezKDNjNFTPMFGCilibpGFPKUf1GiK4fSgAGMBFUR+w4FYt3CLF0IG
+jyhXZjBg3MhsJiAzWP5mayy0/7fGIeZUG7Let9UyZz5lH4/JgEsfV1MfnKWxqTvH
+Jf0RmDgD+/sL/y5gjRV2hI/ok/f9AJH6e/2fdf5h1OVuKpTcypcI6pAL28/ZcY8N
+kmq3Qtg+91cl5+Em+NEOD9sC+qm0+Q==
+=Pf52
+-----END PGP SIGNATURE-----
+
+--bA7JWgrMXB5rVSfI7CUobNjrZo63NzOgn--
+
+
+--===============2280282059215604023==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============2280282059215604023==--
