@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fiJy5-00053B-SO
- for barebox@lists.infradead.org; Wed, 25 Jul 2018 13:36:50 +0000
+ id 1fiJy5-00053N-JW
+ for barebox@lists.infradead.org; Wed, 25 Jul 2018 13:36:43 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Wed, 25 Jul 2018 15:36:05 +0200
-Message-Id: <20180725133618.1510-1-r.hieber@pengutronix.de>
-MIME-Version: 1.0
+Date: Wed, 25 Jul 2018 15:36:15 +0200
+Message-Id: <20180725133618.1510-11-r.hieber@pengutronix.de>
+In-Reply-To: <20180725133618.1510-1-r.hieber@pengutronix.de>
+References: <20180725133618.1510-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,48 +16,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/13] MXS/MX28 low-level improvements
+Subject: [PATCH 10/13] ARM: MXS: make VDDx brownout setup more understandable
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-V2hpbGUgcG9ydGluZyBiYXJlYm94IG9udG8gYSBuZXcgb2xkIE1YMjggYm9hcmQsIEkgaGFkIHRv
-IGV4dGVuZCB0aGUKbG93LWxldmVsIGNvZGUgdG8gc2V0IHVwIFNEUkFNIGFuZCBQTUlDLiBNb3N0
-IG9mIHRob3NlIGNoYW5nZXMgYXJlCnByb2JhYmx5IGFsc28gYXBwbGljYWJsZSB0byBNWDIzIGJv
-YXJkcyBzaW5jZSB0aGUgY29kZSBwYXRocyBhcmUgdGhlCnNhbWUsIGFuZCBhcmUgb25seSB3cmFw
-cGVkIGluIG14MjhfKi9teDIzXyotc3BlY2lmaWMgd3JhcHBlciBmdW5jdGlvbnMuCgooQWxzbywg
-aWYgYW55b25lIHdhbnRzIHRvIHBvcnQgdGhlc2UgY2hhbmdlcyBiYWNrIHRvIFUtQm9vdCwgZmVl
-bCBmcmVlCnRvIGRvIHNvLCBpdCdzIHRoZSBzYW1lIGNvZGUg4pi6KQoKUm9sYW5kIEhpZWJlciAo
-MTIpOgogIGltYWdlczogTVhTOiBhbGxvdyBnZW5lcmF0aW9uIG9mIHVuZW5jcnlwdGVkIGJvb3Rz
-dHJlYW1zCiAgQVJNOiBNWFM6IGkuTVgyODogYWxsb3cgc2V0dXAgb2YgbG93LXZvbHRhZ2UgU0RS
-QU0KICBBUk06IE1YUzogYWxsb3cgY29uZmlndXJhdGlvbiBvZiBFTUkgY2xvY2sgZGl2aWRlcnMK
-ICBBUk06IE1YUzogaS5NWDI4OiBhZGQgYXV0b2RldGVjdGlvbiBvZiBtZW1vcnkgYmFua3MKICBB
-Uk06IE1YUzogcmVmYWN0b3IgbXgyKl9wb3dlcl9pbml0IHNvdXJjZSBjb25maWd1cmF0aW9uCiAg
-QVJNOiBNWFM6IGFsbG93IHN0YXJ0aW5nIGZyb20gYmF0dGVyeSBpbnB1dCB3aXRob3V0IDRQMiBz
-b3VyY2UgZW5hYmxlZAogIEFSTTogTVhTOiBtYWtlIHBvd2VyIGxldmVscyBjb25maWd1cmFibGUg
-aW4gbXgyKl9wb3dlcl9pbml0CiAgQVJNOiBNWFM6IGZpeCBWRER4IGJyb3dub3V0IHNldHVwIGxv
-Z2ljCiAgQVJNOiBNWFM6IG1ha2UgVkREeCBicm93bm91dCBzZXR1cCBtb3JlIHVuZGVyc3RhbmRh
-YmxlCiAgQVJNOiBNWFM6IG14c19wb3dlcl9zdGF0dXM6IHVzZSBsZXNzIG1hZ2ljIHZhbHVlcwog
-IEFSTTogTVhTOiBteHNfcG93ZXJfc3RhdHVzOiBhbGlnbiBvdXRwdXQKICBEb2N1bWVudGF0aW9u
-OiBNWFM6IGdlbmVyYWwgdXBkYXRlIGFuZCBpbXByb3ZlbWVudHMKClNhc2NoYSBIYXVlciAoMSk6
-CiAgc2NyaXB0czogbXhzaW1hZ2U6IEFsbG93IHVuZW5jcnlwdGVkIGltYWdlcwoKIERvY3VtZW50
-YXRpb24vYm9hcmRzL214cy5yc3QgICAgICAgICAgICAgICAgICB8ICA5NyArKysrKystLS0tLQog
-YXJjaC9hcm0vYm9hcmRzL2R1Y2tiaWxsL2xvd2xldmVsLmMgICAgICAgICAgIHwgICA3ICstCiBh
-cmNoL2FybS9ib2FyZHMvZnJlZXNjYWxlLW14MjgtZXZrL2xvd2xldmVsLmMgfCAgIDggKy0KIGFy
-Y2gvYXJtL2JvYXJkcy9pbXgyMzMtb2xpbnV4aW5vL2xvd2xldmVsLmMgICB8ICAgMiArLQogYXJj
-aC9hcm0vYm9hcmRzL2thcm8tdHgyOC9sb3dsZXZlbC5jICAgICAgICAgIHwgICA4ICstCiBhcmNo
-L2FybS9tYWNoLW14cy9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgfCAgIDIgKy0KIGFyY2gv
-YXJtL21hY2gtbXhzL2luY2x1ZGUvbWFjaC9pbml0LmggICAgICAgICB8ICA0OSArKysrKy0KIGFy
-Y2gvYXJtL21hY2gtbXhzL21lbS1pbXgyOC5jICAgICAgICAgICAgICAgICB8ICAzOSArKysrKwog
-YXJjaC9hcm0vbWFjaC1teHMvbWVtLWluaXQuYyAgICAgICAgICAgICAgICAgIHwgIDIzICsrLQog
-YXJjaC9hcm0vbWFjaC1teHMvcG93ZXItaW5pdC5jICAgICAgICAgICAgICAgIHwgMTYyICsrKysr
-KysrKysrLS0tLS0tLQogaW1hZ2VzL01ha2VmaWxlLm14cyAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIHwgICA4ICsKIHNjcmlwdHMvbXhzaW1hZ2UuYyAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICB8ICA1MyArKystLS0KIDEyIGZpbGVzIGNoYW5nZWQsIDMwMSBpbnNlcnRpb25zKCspLCAxNTcg
-ZGVsZXRpb25zKC0pCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1teHMvbWVtLWlt
-eDI4LmMKCi0tIAoyLjE4LjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Rename bo_int to prev_bo_enirq to make its purpose clearer, and throw in
+a few comments for easier understanding.
+
+Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
+---
+ arch/arm/mach-mxs/power-init.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/mach-mxs/power-init.c b/arch/arm/mach-mxs/power-init.c
+index db597ef65c..060bd9115b 100644
+--- a/arch/arm/mach-mxs/power-init.c
++++ b/arch/arm/mach-mxs/power-init.c
+@@ -1066,7 +1066,7 @@ static void mxs_power_set_vddx(const struct mxs_vddx_cfg *cfg,
+ {
+ 	struct mxs_power_regs *power_regs =
+ 		(struct mxs_power_regs *)IMX_POWER_BASE;
+-	uint32_t cur_target, diff, bo_int = 0;
++	uint32_t cur_target, diff, prev_bo_enirq = 0;
+ 	uint32_t powered_by_linreg = 0;
+ 	int adjust_up, tmp;
+ 
+@@ -1082,8 +1082,10 @@ static void mxs_power_set_vddx(const struct mxs_vddx_cfg *cfg,
+ 		powered_by_linreg = cfg->powered_by_linreg();
+ 
+ 	if (adjust_up && cfg->bo_irq) {
++		/* temporarily disable brownout to prevent it from taking
++		   effect prematurely during the adjustment */
+ 		if (powered_by_linreg) {
+-			bo_int = readl(&power_regs->hw_power_ctrl);
++			prev_bo_enirq = readl(&power_regs->hw_power_ctrl) & cfg->bo_enirq;
+ 			writel(cfg->bo_enirq, &power_regs->hw_power_ctrl_clr);
+ 		}
+ 		setbits_le32(cfg->reg, cfg->bo_offset_mask);
+@@ -1124,8 +1126,10 @@ static void mxs_power_set_vddx(const struct mxs_vddx_cfg *cfg,
+ 
+ 	if (cfg->bo_irq) {
+ 		if (adjust_up && powered_by_linreg) {
++			/* clear brownout IRQ flag in case it fired */
+ 			writel(cfg->bo_irq, &power_regs->hw_power_ctrl_clr);
+-			if (bo_int & cfg->bo_enirq)
++			if (prev_bo_enirq)
++				/* re-enable brownout IRQ after adjustment has finished */
+ 				writel(cfg->bo_enirq, &power_regs->hw_power_ctrl_set);
+ 		}
+ 
+-- 
+2.18.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
