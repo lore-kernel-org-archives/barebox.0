@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fiGY8-0007wx-90
- for barebox@lists.infradead.org; Wed, 25 Jul 2018 09:57:41 +0000
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 25 Jul 2018 11:57:28 +0200
-Message-Id: <20180725095728.16369-1-l.stach@pengutronix.de>
+ id 1fiKcW-0001fL-TN
+ for barebox@lists.infradead.org; Wed, 25 Jul 2018 14:18:36 +0000
+From: Roland Hieber <r.hieber@pengutronix.de>
+Date: Wed, 25 Jul 2018 16:18:10 +0200
+Message-Id: <20180725141811.25588-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,45 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mci: imx-esdhc: send required clock pulses to card on init
+Subject: [PATCH 1/2] Documentation: don't highlight literal blocks as shell
+ script
 To: barebox@lists.infradead.org
+Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-MMC cards need at least 74 clock pulses before any bus communication
-can occur. The i.MX SDHC controller auto-gates the clock when inactive,
-so if the SD enumeration is skipped for slots where we know that only a
-MMC card can be present (which is possible since
-b5289b742a89 "mmc: allow skipping SD card initialization") those
-inititialization clock pulses won't be sent out, resulting in command
-timeouts when trying to enumerate the card.
+There are multiple cases in the documentation where literal blocks are
+used for literal, preformatted text. Although it is possible to use
+`.. code-block: none` in these cases instead of literal `::` blocks,
+follow the principle of least surprise and don't apply any syntax
+highlighting at all for literal blocks.
 
-Luckily the eSDHC controller has a hardware feature to send out 80
-clock pulses. This has been validated to be available by checking the
-reference manual back to i.MX25.
-
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- drivers/mci/imx-esdhc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ Documentation/conf.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index c4daa9d12136..db96a813971a 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -455,10 +455,13 @@ static void set_sysctl(struct mci_host *mci, u32 clock)
- 	wait_on_timeout(10 * MSECOND,
- 			esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_SDSTB);
+diff --git a/Documentation/conf.py b/Documentation/conf.py
+index dbd4a80caa..ec6ec0470b 100644
+--- a/Documentation/conf.py
++++ b/Documentation/conf.py
+@@ -259,4 +259,4 @@ texinfo_documents = [
+ # If true, do not generate a @detailmenu in the "Top" node's menu.
+ #texinfo_no_detailmenu = False
  
--	clk = SYSCTL_PEREN | SYSCTL_CKEN;
-+	clk = SYSCTL_PEREN | SYSCTL_CKEN | SYSCTL_INITA;
- 
- 	esdhc_setbits32(regs + SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET,
- 			clk);
-+
-+	wait_on_timeout(1 * MSECOND,
-+			!(esdhc_read32(regs + SDHCI_CLOCK_CONTROL) & SYSCTL_INITA));
- }
- 
- static void esdhc_set_ios(struct mci_host *mci, struct mci_ios *ios)
+-highlight_language = 'sh'
++highlight_language = 'none'
 -- 
 2.18.0
 
