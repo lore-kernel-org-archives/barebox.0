@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fiJy5-00053G-SS
+ id 1fiJy5-00053L-S6
  for barebox@lists.infradead.org; Wed, 25 Jul 2018 13:36:51 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Wed, 25 Jul 2018 15:36:12 +0200
-Message-Id: <20180725133618.1510-8-r.hieber@pengutronix.de>
+Date: Wed, 25 Jul 2018 15:36:17 +0200
+Message-Id: <20180725133618.1510-13-r.hieber@pengutronix.de>
 In-Reply-To: <20180725133618.1510-1-r.hieber@pengutronix.de>
 References: <20180725133618.1510-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,87 +21,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/13] ARM: MXS: allow starting from battery input without 4P2
- source enabled
+Subject: [PATCH 12/13] ARM: MXS: mxs_power_status: align output
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-Some boards don't need the 4.2V power source at all, so allow them to
-keep it disabled for efficiency reasons.
+Exemplary previous behaviour:
 
-For backwards compatibility, don't disable the 4P2 power source on the
-existing boards which are supplied from battery input.
+  vddio:  3100mV (BO -200mV), Linreg enabled, Linreg offset: -1, FET enabled
+  vdda:   1800mV (BO -175mV), Linreg disabled, Linreg offset: -1, FET enabled
+  vddd:   1200mV (BO -175mV), Linreg enabled, Linreg offset: -1, FET disabled
+  vddmem: 1500mV (BO -25mV), Linreg disabled
 
-The POWER_USE_5V code path however always enables it up as it is needed
-to supply the DC-DC converter.
+After this patch this looks much cleaner:
+
+  vddio:  3100mV (BO -200mV), Linreg  enabled, Linreg offset: -1, FET  enabled
+  vdda:   1800mV (BO -175mV), Linreg disabled, Linreg offset: -1, FET  enabled
+  vddd:   1200mV (BO -175mV), Linreg  enabled, Linreg offset: -1, FET disabled
+  vddmem: 1500mV (BO - 25mV), Linreg disabled
 
 Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- arch/arm/boards/freescale-mx28-evk/lowlevel.c | 2 +-
- arch/arm/boards/karo-tx28/lowlevel.c          | 2 +-
- arch/arm/mach-mxs/include/mach/init.h         | 2 ++
- arch/arm/mach-mxs/power-init.c                | 3 ++-
- 4 files changed, 6 insertions(+), 3 deletions(-)
+ arch/arm/mach-mxs/power-init.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/boards/freescale-mx28-evk/lowlevel.c b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
-index 64e3752bce..e5ae36a715 100644
---- a/arch/arm/boards/freescale-mx28-evk/lowlevel.c
-+++ b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
-@@ -43,7 +43,7 @@ static noinline void freescale_mx28evk_init(void)
- 
- 	pr_debug("initializing power...\n");
- 
--	mx28_power_init(POWER_USE_BATTERY_INPUT);
-+	mx28_power_init(POWER_USE_BATTERY_INPUT | POWER_ENABLE_4P2);
- 
- 	pr_debug("initializing SDRAM...\n");
- 
-diff --git a/arch/arm/boards/karo-tx28/lowlevel.c b/arch/arm/boards/karo-tx28/lowlevel.c
-index 6ee4235b79..9e22f002da 100644
---- a/arch/arm/boards/karo-tx28/lowlevel.c
-+++ b/arch/arm/boards/karo-tx28/lowlevel.c
-@@ -43,7 +43,7 @@ static noinline void karo_tx28_init(void)
- 
- 	pr_debug("initializing power...\n");
- 
--	mx28_power_init(POWER_USE_BATTERY_INPUT);
-+	mx28_power_init(POWER_USE_BATTERY_INPUT | POWER_ENABLE_4P2);
- 
- 	pr_debug("initializing SDRAM...\n");
- 
-diff --git a/arch/arm/mach-mxs/include/mach/init.h b/arch/arm/mach-mxs/include/mach/init.h
-index 5ca7a72042..f2e19408d3 100644
---- a/arch/arm/mach-mxs/include/mach/init.h
-+++ b/arch/arm/mach-mxs/include/mach/init.h
-@@ -18,12 +18,14 @@ void mxs_early_delay(int delay);
-  * - POWER_USE_BATTERY: use battery input when the system is supplied by a battery
-  * - POWER_USE_BATTERY_INPUT: use battery input when the system is supplied by
-  *   a DC source (instead of a real battery) on the battery input
-+ * - POWER_ENABLE_4P2: power up the 4P2 regulator (implied for POWER_USE_5V)
-  */
- enum mxs_power_config {
- 	POWER_USE_5V			= 0b00000000,
- 	POWER_USE_BATTERY		= 0b00000001,
- 	POWER_USE_BATTERY_INPUT		= 0b00000010,
- 	__POWER_USE_MASK		= 0b00000011,
-+	POWER_ENABLE_4P2		= 0b00000100,
- };
- 
- void mx23_power_init(const int config);
 diff --git a/arch/arm/mach-mxs/power-init.c b/arch/arm/mach-mxs/power-init.c
-index a07ff9d676..2984c0c5ff 100644
+index 3ec17dad19..796d3ae259 100644
 --- a/arch/arm/mach-mxs/power-init.c
 +++ b/arch/arm/mach-mxs/power-init.c
-@@ -717,7 +717,8 @@ static void mxs_enable_battery_input(void)
- 		POWER_5VCTRL_CHARGE_4P2_ILIMIT_MASK,
- 		0x8 << POWER_5VCTRL_CHARGE_4P2_ILIMIT_OFFSET);
+@@ -39,28 +39,28 @@ static void mxs_power_status(void)
  
--	mxs_power_enable_4p2();
-+	if (power_config & POWER_ENABLE_4P2)
-+		mxs_power_enable_4p2();
+ #define __REG_BITS(value, fieldname)  (((value) & fieldname##_MASK) >> fieldname##_OFFSET)
+ 
+-	printf("vddio:  %dmV (BO -%dmV), Linreg enabled, Linreg offset: %d, FET %sabled\n",
++	printf("vddio:  %4dmV (BO -%3dmV), Linreg  enabled, Linreg offset: %1d, FET %sabled\n",
+ 			__REG_BITS(vddio, POWER_VDDIOCTRL_TRG) * 50 + 2800,
+ 			__REG_BITS(vddio, POWER_VDDIOCTRL_BO_OFFSET) * 50,
+ 			linregofs[__REG_BITS(vddio, POWER_VDDIOCTRL_LINREG_OFFSET)],
+-			(vddio & POWER_VDDIOCTRL_DISABLE_FET) ? "dis" : "en");
+-	printf("vdda:   %dmV (BO -%dmV), Linreg %sabled, Linreg offset: %d, FET %sabled\n",
++			(vddio & POWER_VDDIOCTRL_DISABLE_FET) ? "dis" : " en");
++	printf("vdda:   %4dmV (BO -%3dmV), Linreg %sabled, Linreg offset: %1d, FET %sabled\n",
+ 			__REG_BITS(vdda, POWER_VDDACTRL_TRG) * 25 + 1500,
+ 			__REG_BITS(vdda, POWER_VDDACTRL_BO_OFFSET) * 25,
+-			(vdda & POWER_VDDACTRL_ENABLE_LINREG) ? "en" : "dis",
++			(vdda & POWER_VDDACTRL_ENABLE_LINREG) ? " en" : "dis",
+ 			linregofs[__REG_BITS(vdda, POWER_VDDACTRL_LINREG_OFFSET)],
+-			(vdda & POWER_VDDACTRL_DISABLE_FET) ? "dis" : "en");
+-	printf("vddd:   %dmV (BO -%dmV), Linreg %sabled, Linreg offset: %d, FET %sabled\n",
++			(vdda & POWER_VDDACTRL_DISABLE_FET) ? "dis" : " en");
++	printf("vddd:   %4dmV (BO -%3dmV), Linreg %sabled, Linreg offset: %1d, FET %sabled\n",
+ 			__REG_BITS(vddd, POWER_VDDDCTRL_TRG) * 25 + 800,
+ 			__REG_BITS(vddd, POWER_VDDDCTRL_BO_OFFSET) * 25,
+-			(vddd & POWER_VDDDCTRL_ENABLE_LINREG) ? "en" : "dis",
++			(vddd & POWER_VDDDCTRL_ENABLE_LINREG) ? " en" : "dis",
+ 			linregofs[__REG_BITS(vddd, POWER_VDDDCTRL_LINREG_OFFSET)],
+-			(vddd & POWER_VDDDCTRL_DISABLE_FET) ? "dis" : "en");
+-	printf("vddmem: %dmV (BO -%dmV), Linreg %sabled\n",
++			(vddd & POWER_VDDDCTRL_DISABLE_FET) ? "dis" : " en");
++	printf("vddmem: %4dmV (BO -%3dmV), Linreg %sabled\n",
+ 			__REG_BITS(vddmem, POWER_VDDMEMCTRL_TRG) * 25 + 1100,
+ 			/* Note: this area is reserved on i.MX23, yielding 0: */
+ 			__REG_BITS(vddmem, MX28_POWER_VDDMEMCTRL_BO_OFFSET) * 25,
+-			(vddmem & POWER_VDDMEMCTRL_ENABLE_LINREG) ? "en" : "dis");
++			(vddmem & POWER_VDDMEMCTRL_ENABLE_LINREG) ? " en" : "dis");
  }
  
- /**
+ /*
 -- 
 2.18.0
 
