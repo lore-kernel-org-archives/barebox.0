@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi0-x243.google.com ([2607:f8b0:4003:c06::243])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fgZvh-0008Cn-36
- for barebox@lists.infradead.org; Fri, 20 Jul 2018 18:15:03 +0000
-Received: by mail-oi0-x243.google.com with SMTP id n21-v6so7410073oig.3
- for <barebox@lists.infradead.org>; Fri, 20 Jul 2018 11:14:50 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
- <20180720091145.kz2ksyeeumeqf73p@pengutronix.de>
- <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
- <278d07f4-decf-fabc-62cb-7661b1c73a54@rempel-privat.de>
-In-Reply-To: <278d07f4-decf-fabc-62cb-7661b1c73a54@rempel-privat.de>
-From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
-Date: Fri, 20 Jul 2018 20:14:38 +0200
-Message-ID: <CAEp+FuBaOxzoc0aiXpPwm24RQw9hDB-5HiWmTCqMAPf+RYpjjg@mail.gmail.com>
+ id 1fiGY8-0007wx-90
+ for barebox@lists.infradead.org; Wed, 25 Jul 2018 09:57:41 +0000
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 25 Jul 2018 11:57:28 +0200
+Message-Id: <20180725095728.16369-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,62 +14,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: MFGTools support in barebox
-To: linux@rempel-privat.de
-Cc: barebox@lists.infradead.org, u.kleine-koenig@pengutronix.de
+Subject: [PATCH] mci: imx-esdhc: send required clock pulses to card on init
+To: barebox@lists.infradead.org
 
-VGhhbmtzIGZvciB0aGUgaW5mby4gaSBnb3QgdGhhdCBhbHJlYWR5LiBTb21lIGNvbmZpZ3MgdGhh
-dCBzaG91bGQgYmUKZW5hYmxlZCBhcmUgbm90IHRvIGJlIGZvdW5kIGluIG15IGJhcmVib3ggeWV0
-LgogSSB3aWxsIHdvcmsgb24gaXQgYW5kIGlmIEkgYW0gbm90IHN1Y2Nlc3NmdWwgbWF5YmUgSSB3
-aWxsIHJldHVybiB3aXRoCmEgcXVlc3Rpb24uCgpCZXN0IHJlZ2FyZHMsCiAgICAgICAgIE1paGFp
-dGEKT24gRnJpLCBKdWwgMjAsIDIwMTggYXQgMTE6NTcgQU0gT2xla3NpaiBSZW1wZWwgPGxpbnV4
-QHJlbXBlbC1wcml2YXQuZGU+IHdyb3RlOgo+Cj4gQW0gMjAuMDcuMjAxOCB1bSAxMTozMiBzY2hy
-aWViIE1paGFpdGEgSXZhc2N1Ogo+ID4gSGksCj4gPgo+ID4gICAgSSBoYXZlIGJvdGggIEFuZHJv
-aWQgRmFzdGJvb3Qgc3VwcG9ydCBhbmQgRmFzdGJvb3Qgc3BhcnNlIGltYWdlCj4gPiBzdXBwb3J0
-IGVuYWJsZWQgaW4gYmFyZWJveCBjb25maWcoaXMgYnkgZGVmYXVsdCkgYnV0IEkgc2VlIG5vdCBk
-ZXZpY2UKPiA+IG5vZGUgY3JlYXRlZCB3aGVuIGNvbm5lY3RpbmcgVVNCIGRldmljZSAgbm9yIGRv
-IEkgc2VlIGFueSBmYXN0Ym9vdAo+ID4gY29tbWFuZHMgaW4gYmFyZWJveCBzaGVsbC4KPiA+ICAg
-IE15IHF1ZXN0aW9uIGlzOiBob3cgZG8gSSB1c2UgZmFzdGJvb3Q/IFdoYXQgaXMgdGhlIGNvbXBs
-ZXRlCj4gPiBjb25maWd1cmF0aW9uIG5lZWRlZCB0byBlbmFibGUgZmFzdGJvb3QgaW4gYmFyZWJv
-eD8KPgo+IEdvb2dsaW5nICJiYXJlYm94IGZhc3Rib290Igo+IEZpcnN0IHJlc3VsdCB3aGljaCBp
-IGdldCBpcyB0aGlzIHBhZ2U6Cj4gaHR0cHM6Ly93d3cuYmFyZWJveC5vcmcvZG9jL2xhdGVzdC91
-c2VyL3VzYi5odG1sI2FuZHJvaWQtZmFzdGJvb3Qtc3VwcG9ydAo+Cj4gPiBCZXN0IHJlZ2FyZHMs
-Cj4gPiAgICAgICAgICBNaWhhaXRhIEl2YXNjdQo+ID4KPiA+Cj4gPiBPbiBGcmksIEp1bCAyMCwg
-MjAxOCBhdCAxMToxMSBBTSBVd2UgS2xlaW5lLUvDtm5pZwo+ID4gPHUua2xlaW5lLWtvZW5pZ0Bw
-ZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4gPj4KPiA+PiBPbiBXZWQsIEp1bCAxOCwgMjAxOCBhdCAw
-OTozOToyM0FNICswMjAwLCBNaWhhaXRhIEl2YXNjdSB3cm90ZToKPiA+Pj4gSGVsbG8sCj4gPj4+
-Cj4gPj4+ICAgICAgSSB3b3VsZCBsaWtlIHRvIGZsYXNoIGEgYmFyZWJveCBpbWFnZSBvbiBOQU5E
-IGZvciBhIFBoeXRlYyBpbXg2dWwKPiA+Pj4gZXZrIGJvYXJkIHVzaW5nIE1GR1Rvb2xzLgo+ID4+
-PiAgICAgIEkgaGF2ZSBhZGRlZCBzdXBwb3J0IGZvciBVVFAgcHJvdG9jb2wgaW4ga2VybmVsIGlt
-YWdlIHNvIGNvbW1hbmRzCj4gPj4+IGNvdWxkIGJlICJwdXNoZWQiIHVzaW5nIE1GR3Rvb2xzIGFw
-cCBmcm9tIFdpbmRvd3MuCj4gPj4+ICAgICAgQnV0IG9idmlvdXNseSBJIGNhbm5vdCBwdXNoIGJh
-cmVib3hfdXBkYXRlIGNvbW1hbmQgdG8gTGludXguCj4gPj4+ICAgICAgU28gSSB0aGluayBJIGhh
-dmUgdHdvIG9wdGlvbnM6Cj4gPj4+Cj4gPj4+IDEpIHBvcnRpbmcgYmFyZWJveF91cGRhdGUgY29t
-bWFuZCB0byBMaW51eCB3aGljaCBJIGRvIG5vdCBmaW5kIGl0IHNvCj4gPj4+IGVhc3kuIEkgYW0g
-YWxyZWFkeSB3b3JraW5nIG9uIGl0Cj4gPj4+IDIpIGFkZGluZyBVVFAgc3VwcG9ydCBpbiBiYXJl
-Ym94IHNvIEkgY291bGQganVzdCBsb2FkIHRoZSBiYXJlYm94Cj4gPj4+IGltYWdlIGluIFJBTSB1
-c2luZyBNRkd0b29scywgdGhlcmUgYSB1dHAgZGV2aWNlIG5vZGUgd291bGQgYmUgY3JlYXRlZAo+
-ID4+PiBhbmQgdGhlbiBJIGNvdWxkIHB1c2ggYmFyZWJveCBzcGVjaWZpYyBjb21tYW5kcyBkaXJl
-Y3RseSBmcm9tCj4gPj4+IE1GR3Rvb2xzLgo+ID4+PiAgICAgICBJIGhhdmUgYWRkZWQgVVRQIHN1
-cHBvcnQgaW4gbGludXggVVNCIGdhZGdldCBjb2RlIGJ1dCBJIHNlZQo+ID4+PiBiYXJlYm94IFVT
-QiBnYWRnZXQgY29kZSBpcyBxdWl0ZSBkaWZmZXJlbnQgYW5kIG5vdCBhbGwgZnVuY3Rpb25hbGl0
-eQo+ID4+PiBhcmUgaW4gcGxhY2Ugc28gSSBhbHNvIHN0cnVnZ2xlIGEgYml0IG9mIHBvcmludCBn
-VVRQIHBhdGNoZXMgZnJvbQo+ID4+PiBMaW51eCB0byBiYXJlYm94Lgo+ID4+PiAgICAgIERvZXMg
-YW55Ym9keSBoYXZlIGFueSBleHBlcmllbmNlIHdpdGggdGhpcyB0b3BpYyBvciBjb3VkIGFkdmlz
-ZQo+ID4+PiBtZSBvbiBob3cgdG8gcHJvY2VlPwo+ID4+Cj4gPj4gV2h5IGFyZSB5b3Ugc3RpY2tl
-ZCB0byBNRkdUb29scz8gYmFyZWJveCBjYW4gZG8gZmFzdGJvb3Qgd2hpY2ggc2hvdWxkCj4gPj4g
-d29yayBmcm9tIFdpbmRvd3MganVzdCBmaW5lLgo+ID4+Cj4gPj4gQmVzdCByZWdhcmRzCj4gPj4g
-VXdlCj4gPj4KPiA+PiAtLQo+ID4+IFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAg
-ICAgICAgICB8IFV3ZSBLbGVpbmUtS8O2bmlnICAgICAgICAgICAgfAo+ID4+IEluZHVzdHJpYWwg
-TGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXgu
-ZGUvICB8Cj4gPgo+ID4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KPiA+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gPiBiYXJlYm94QGxpc3RzLmluZnJhZGVh
-ZC5vcmcKPiA+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo+ID4KPgo+Cj4gLS0KPiBSZWdhcmRzLAo+IE9sZWtzaWoKPgoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vYmFyZWJveAo=
+MMC cards need at least 74 clock pulses before any bus communication
+can occur. The i.MX SDHC controller auto-gates the clock when inactive,
+so if the SD enumeration is skipped for slots where we know that only a
+MMC card can be present (which is possible since
+b5289b742a89 "mmc: allow skipping SD card initialization") those
+inititialization clock pulses won't be sent out, resulting in command
+timeouts when trying to enumerate the card.
+
+Luckily the eSDHC controller has a hardware feature to send out 80
+clock pulses. This has been validated to be available by checking the
+reference manual back to i.MX25.
+
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ drivers/mci/imx-esdhc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index c4daa9d12136..db96a813971a 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -455,10 +455,13 @@ static void set_sysctl(struct mci_host *mci, u32 clock)
+ 	wait_on_timeout(10 * MSECOND,
+ 			esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_SDSTB);
+ 
+-	clk = SYSCTL_PEREN | SYSCTL_CKEN;
++	clk = SYSCTL_PEREN | SYSCTL_CKEN | SYSCTL_INITA;
+ 
+ 	esdhc_setbits32(regs + SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET,
+ 			clk);
++
++	wait_on_timeout(1 * MSECOND,
++			!(esdhc_read32(regs + SDHCI_CLOCK_CONTROL) & SYSCTL_INITA));
+ }
+ 
+ static void esdhc_set_ios(struct mci_host *mci, struct mci_ios *ios)
+-- 
+2.18.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
