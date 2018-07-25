@@ -1,23 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fk6nA-0003xh-9G
- for barebox@lists.infradead.org; Mon, 30 Jul 2018 11:56:49 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <rhi@pengutronix.de>) id 1fk6my-0002BL-S9
- for barebox@lists.infradead.org; Mon, 30 Jul 2018 13:56:36 +0200
-Received: from rhi by ptx.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <rhi@pengutronix.de>) id 1fk6my-0008MB-JD
- for barebox@lists.infradead.org; Mon, 30 Jul 2018 13:56:36 +0200
-Date: Mon, 30 Jul 2018 13:56:36 +0200
+ id 1fiJy5-00053B-SO
+ for barebox@lists.infradead.org; Wed, 25 Jul 2018 13:36:50 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Message-ID: <20180730115636.c43qv3dxzclo4eqv@pengutronix.de>
-References: <20180727134555.11676-1-r.hieber@pengutronix.de>
+Date: Wed, 25 Jul 2018 15:36:05 +0200
+Message-Id: <20180725133618.1510-1-r.hieber@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180727134555.11676-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,58 +15,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX: HAB: fix missing include
+Subject: [PATCH 00/13] MXS/MX28 low-level improvements
 To: barebox@lists.infradead.org
+Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-Resent this patch with a better message in the other patch queue (see
-[0]), so this one can be dropped.
-
-[0]: https://www.mail-archive.com/barebox@lists.infradead.org/msg27250.html
-
- - Roland
-
-On Fri, Jul 27, 2018 at 03:45:55PM +0200, Roland Hieber wrote:
-> The code below uses EPERM, which is defined in errno.h.
-> 
-> Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
-> ---
->  include/hab.h | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/include/hab.h b/include/hab.h
-> index fb7149ef53..78c2b865ba 100644
-> --- a/include/hab.h
-> +++ b/include/hab.h
-> @@ -18,6 +18,8 @@
->  #ifndef __HABV4_H
->  #define __HABV4_H
->  
-> +#include <errno.h>
-> +
->  #ifdef CONFIG_HABV4
->  int imx28_hab_get_status(void);
->  int imx6_hab_get_status(void);
-> -- 
-> 2.18.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+V2hpbGUgcG9ydGluZyBiYXJlYm94IG9udG8gYSBuZXcgb2xkIE1YMjggYm9hcmQsIEkgaGFkIHRv
+IGV4dGVuZCB0aGUKbG93LWxldmVsIGNvZGUgdG8gc2V0IHVwIFNEUkFNIGFuZCBQTUlDLiBNb3N0
+IG9mIHRob3NlIGNoYW5nZXMgYXJlCnByb2JhYmx5IGFsc28gYXBwbGljYWJsZSB0byBNWDIzIGJv
+YXJkcyBzaW5jZSB0aGUgY29kZSBwYXRocyBhcmUgdGhlCnNhbWUsIGFuZCBhcmUgb25seSB3cmFw
+cGVkIGluIG14MjhfKi9teDIzXyotc3BlY2lmaWMgd3JhcHBlciBmdW5jdGlvbnMuCgooQWxzbywg
+aWYgYW55b25lIHdhbnRzIHRvIHBvcnQgdGhlc2UgY2hhbmdlcyBiYWNrIHRvIFUtQm9vdCwgZmVl
+bCBmcmVlCnRvIGRvIHNvLCBpdCdzIHRoZSBzYW1lIGNvZGUg4pi6KQoKUm9sYW5kIEhpZWJlciAo
+MTIpOgogIGltYWdlczogTVhTOiBhbGxvdyBnZW5lcmF0aW9uIG9mIHVuZW5jcnlwdGVkIGJvb3Rz
+dHJlYW1zCiAgQVJNOiBNWFM6IGkuTVgyODogYWxsb3cgc2V0dXAgb2YgbG93LXZvbHRhZ2UgU0RS
+QU0KICBBUk06IE1YUzogYWxsb3cgY29uZmlndXJhdGlvbiBvZiBFTUkgY2xvY2sgZGl2aWRlcnMK
+ICBBUk06IE1YUzogaS5NWDI4OiBhZGQgYXV0b2RldGVjdGlvbiBvZiBtZW1vcnkgYmFua3MKICBB
+Uk06IE1YUzogcmVmYWN0b3IgbXgyKl9wb3dlcl9pbml0IHNvdXJjZSBjb25maWd1cmF0aW9uCiAg
+QVJNOiBNWFM6IGFsbG93IHN0YXJ0aW5nIGZyb20gYmF0dGVyeSBpbnB1dCB3aXRob3V0IDRQMiBz
+b3VyY2UgZW5hYmxlZAogIEFSTTogTVhTOiBtYWtlIHBvd2VyIGxldmVscyBjb25maWd1cmFibGUg
+aW4gbXgyKl9wb3dlcl9pbml0CiAgQVJNOiBNWFM6IGZpeCBWRER4IGJyb3dub3V0IHNldHVwIGxv
+Z2ljCiAgQVJNOiBNWFM6IG1ha2UgVkREeCBicm93bm91dCBzZXR1cCBtb3JlIHVuZGVyc3RhbmRh
+YmxlCiAgQVJNOiBNWFM6IG14c19wb3dlcl9zdGF0dXM6IHVzZSBsZXNzIG1hZ2ljIHZhbHVlcwog
+IEFSTTogTVhTOiBteHNfcG93ZXJfc3RhdHVzOiBhbGlnbiBvdXRwdXQKICBEb2N1bWVudGF0aW9u
+OiBNWFM6IGdlbmVyYWwgdXBkYXRlIGFuZCBpbXByb3ZlbWVudHMKClNhc2NoYSBIYXVlciAoMSk6
+CiAgc2NyaXB0czogbXhzaW1hZ2U6IEFsbG93IHVuZW5jcnlwdGVkIGltYWdlcwoKIERvY3VtZW50
+YXRpb24vYm9hcmRzL214cy5yc3QgICAgICAgICAgICAgICAgICB8ICA5NyArKysrKystLS0tLQog
+YXJjaC9hcm0vYm9hcmRzL2R1Y2tiaWxsL2xvd2xldmVsLmMgICAgICAgICAgIHwgICA3ICstCiBh
+cmNoL2FybS9ib2FyZHMvZnJlZXNjYWxlLW14MjgtZXZrL2xvd2xldmVsLmMgfCAgIDggKy0KIGFy
+Y2gvYXJtL2JvYXJkcy9pbXgyMzMtb2xpbnV4aW5vL2xvd2xldmVsLmMgICB8ICAgMiArLQogYXJj
+aC9hcm0vYm9hcmRzL2thcm8tdHgyOC9sb3dsZXZlbC5jICAgICAgICAgIHwgICA4ICstCiBhcmNo
+L2FybS9tYWNoLW14cy9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgfCAgIDIgKy0KIGFyY2gv
+YXJtL21hY2gtbXhzL2luY2x1ZGUvbWFjaC9pbml0LmggICAgICAgICB8ICA0OSArKysrKy0KIGFy
+Y2gvYXJtL21hY2gtbXhzL21lbS1pbXgyOC5jICAgICAgICAgICAgICAgICB8ICAzOSArKysrKwog
+YXJjaC9hcm0vbWFjaC1teHMvbWVtLWluaXQuYyAgICAgICAgICAgICAgICAgIHwgIDIzICsrLQog
+YXJjaC9hcm0vbWFjaC1teHMvcG93ZXItaW5pdC5jICAgICAgICAgICAgICAgIHwgMTYyICsrKysr
+KysrKysrLS0tLS0tLQogaW1hZ2VzL01ha2VmaWxlLm14cyAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIHwgICA4ICsKIHNjcmlwdHMvbXhzaW1hZ2UuYyAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICB8ICA1MyArKystLS0KIDEyIGZpbGVzIGNoYW5nZWQsIDMwMSBpbnNlcnRpb25zKCspLCAxNTcg
+ZGVsZXRpb25zKC0pCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1teHMvbWVtLWlt
+eDI4LmMKCi0tIAoyLjE4LjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
+cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
