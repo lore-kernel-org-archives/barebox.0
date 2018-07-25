@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fiJy5-00053I-Jb
+ id 1fiJy5-00053D-Pk
  for barebox@lists.infradead.org; Wed, 25 Jul 2018 13:36:45 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Wed, 25 Jul 2018 15:36:13 +0200
-Message-Id: <20180725133618.1510-9-r.hieber@pengutronix.de>
+Date: Wed, 25 Jul 2018 15:36:08 +0200
+Message-Id: <20180725133618.1510-4-r.hieber@pengutronix.de>
 In-Reply-To: <20180725133618.1510-1-r.hieber@pengutronix.de>
 References: <20180725133618.1510-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,219 +21,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/13] ARM: MXS: make power levels configurable in
- mx2*_power_init
+Subject: [PATCH 03/13] ARM: MXS: i.MX28: allow setup of low-voltage SDRAM
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-Depending on the application, board code might want to configure
-different power levels and brownout thresholds. They can do so now with
-an additional struct mxs_power_ctrls* parameter to mx2*_power_init.
-
-Note that VDDMEM was not set up explicitely in mx28_power_init, but can
-now be configured. However, mx28_power_default->vddmem is NULL, so the
-old behaviour is still the case when using those default values.
+The PINCTRL_*_DDR_MODE_* defines are now needed in global scope, so move
+them to the respective include header.
 
 Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- arch/arm/boards/duckbill/lowlevel.c           |  2 +-
- arch/arm/boards/freescale-mx28-evk/lowlevel.c |  3 +-
- arch/arm/boards/imx233-olinuxino/lowlevel.c   |  2 +-
- arch/arm/boards/karo-tx28/lowlevel.c          |  3 +-
- arch/arm/mach-mxs/include/mach/init.h         | 22 +++++++-
- arch/arm/mach-mxs/power-init.c                | 55 ++++++++++++++++---
- 6 files changed, 72 insertions(+), 15 deletions(-)
+ arch/arm/boards/duckbill/lowlevel.c           | 3 ++-
+ arch/arm/boards/freescale-mx28-evk/lowlevel.c | 3 ++-
+ arch/arm/boards/karo-tx28/lowlevel.c          | 3 ++-
+ arch/arm/mach-mxs/include/mach/init.h         | 7 ++++++-
+ arch/arm/mach-mxs/mem-init.c                  | 9 +++------
+ 5 files changed, 15 insertions(+), 10 deletions(-)
 
 diff --git a/arch/arm/boards/duckbill/lowlevel.c b/arch/arm/boards/duckbill/lowlevel.c
-index ebda3aa047..cc9335dbaf 100644
+index 2922e40f2a..3adda68d77 100644
 --- a/arch/arm/boards/duckbill/lowlevel.c
 +++ b/arch/arm/boards/duckbill/lowlevel.c
-@@ -51,7 +51,7 @@ static noinline void duckbill_init(void)
- 
- 	pr_debug("initializing power...\n");
- 
--	mx28_power_init(POWER_USE_5V);
-+	mx28_power_init(POWER_USE_5V, &mx28_power_default);
+@@ -55,7 +55,8 @@ static noinline void duckbill_init(void)
  
  	pr_debug("initializing SDRAM...\n");
  
+-	mx28_mem_init(mx28_dram_vals_default);
++	mx28_mem_init(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
++			mx28_dram_vals_default);
+ 
+ 	pr_debug("DONE\n");
+ }
 diff --git a/arch/arm/boards/freescale-mx28-evk/lowlevel.c b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
-index e5ae36a715..ae36671028 100644
+index 4d45a03ba2..9df60210e6 100644
 --- a/arch/arm/boards/freescale-mx28-evk/lowlevel.c
 +++ b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
-@@ -43,7 +43,8 @@ static noinline void freescale_mx28evk_init(void)
- 
- 	pr_debug("initializing power...\n");
- 
--	mx28_power_init(POWER_USE_BATTERY_INPUT | POWER_ENABLE_4P2);
-+	mx28_power_init(POWER_USE_BATTERY_INPUT | POWER_ENABLE_4P2,
-+			&mx28_power_default);
+@@ -47,7 +47,8 @@ static noinline void freescale_mx28evk_init(void)
  
  	pr_debug("initializing SDRAM...\n");
  
-diff --git a/arch/arm/boards/imx233-olinuxino/lowlevel.c b/arch/arm/boards/imx233-olinuxino/lowlevel.c
-index 7a3cea006e..baed338185 100644
---- a/arch/arm/boards/imx233-olinuxino/lowlevel.c
-+++ b/arch/arm/boards/imx233-olinuxino/lowlevel.c
-@@ -154,7 +154,7 @@ static noinline void imx23_olinuxino_init(void)
+-	mx28_mem_init(mx28_dram_vals_default);
++	mx28_mem_init(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
++			mx28_dram_vals_default);
  
- 	pr_debug("initializing power...\n");
- 
--	mx23_power_init(POWER_USE_5V);
-+	mx23_power_init(POWER_USE_5V, &mx23_power_default);
- 
- 	pr_debug("initializing SDRAM...\n");
- 
+ 	pr_debug("DONE\n");
+ }
 diff --git a/arch/arm/boards/karo-tx28/lowlevel.c b/arch/arm/boards/karo-tx28/lowlevel.c
-index 9e22f002da..cfc9248dea 100644
+index d072637de7..99f8a562cc 100644
 --- a/arch/arm/boards/karo-tx28/lowlevel.c
 +++ b/arch/arm/boards/karo-tx28/lowlevel.c
-@@ -43,7 +43,8 @@ static noinline void karo_tx28_init(void)
- 
- 	pr_debug("initializing power...\n");
- 
--	mx28_power_init(POWER_USE_BATTERY_INPUT | POWER_ENABLE_4P2);
-+	mx28_power_init(POWER_USE_BATTERY_INPUT | POWER_ENABLE_4P2,
-+			&mx28_power_default);
+@@ -47,7 +47,8 @@ static noinline void karo_tx28_init(void)
  
  	pr_debug("initializing SDRAM...\n");
  
+-	mx28_mem_init(mx28_dram_vals_default);
++	mx28_mem_init(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
++			mx28_dram_vals_default);
+ 
+ 	pr_debug("DONE\n");
+ }
 diff --git a/arch/arm/mach-mxs/include/mach/init.h b/arch/arm/mach-mxs/include/mach/init.h
-index f2e19408d3..66f7f31e35 100644
+index 6526d303a1..7021981d41 100644
 --- a/arch/arm/mach-mxs/include/mach/init.h
 +++ b/arch/arm/mach-mxs/include/mach/init.h
-@@ -28,8 +28,26 @@ enum mxs_power_config {
- 	POWER_ENABLE_4P2		= 0b00000100,
- };
- 
--void mx23_power_init(const int config);
--void mx28_power_init(const int config);
-+struct mxs_power_ctrl {
-+	uint32_t target;	/*< target voltage */
-+	uint32_t brownout;	/*< brownout threshhold */
-+};
-+struct mxs_power_ctrls {
-+	struct mxs_power_ctrl * vdda;	/*< if non-null, set values for VDDA */
-+	struct mxs_power_ctrl * vddd;	/*< if non-null, set values for VDDD */
-+	struct mxs_power_ctrl * vddio;	/*< if non-null, set values for VDDIO */
-+	struct mxs_power_ctrl * vddmem;	/*< if non-null, set values for VDDMEM */
-+};
-+
-+extern struct mxs_power_ctrl mxs_vddio_default;
-+extern struct mxs_power_ctrl mxs_vddd_default;
-+extern struct mxs_power_ctrl mxs_vdda_default;
-+extern struct mxs_power_ctrl mx23_vddmem_default;
-+extern struct mxs_power_ctrls mx23_power_default;
-+extern struct mxs_power_ctrls mx28_power_default;
-+
-+void mx23_power_init(const int config, struct mxs_power_ctrls *ctrls);
-+void mx28_power_init(const int config, struct mxs_power_ctrls *ctrls);
- void mxs_power_wait_pswitch(void);
- 
+@@ -21,8 +21,13 @@ void mxs_power_wait_pswitch(void);
  extern const uint32_t mx28_dram_vals_default[190];
-diff --git a/arch/arm/mach-mxs/power-init.c b/arch/arm/mach-mxs/power-init.c
-index 2984c0c5ff..d4b88a4b2c 100644
---- a/arch/arm/mach-mxs/power-init.c
-+++ b/arch/arm/mach-mxs/power-init.c
-@@ -1165,6 +1165,17 @@ static void mx23_ungate_power(void)
- 	writel(MX23_POWER_CTRL_CLKGATE, &power_regs->hw_power_ctrl_clr);
+ extern uint32_t mx23_dram_vals[];
+ 
++#define PINCTRL_EMI_DS_CTRL_DDR_MODE_LPDDR1	(0b00 << 16)
++#define PINCTRL_EMI_DS_CTRL_DDR_MODE_LVDDR2	(0b10 << 16)
++#define PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2	(0b11 << 16)
++
+ void mx23_mem_init(void);
+-void mx28_mem_init(const uint32_t dram_vals[190]);
++void mx28_mem_init(const int emi_ds_ctrl_ddr_mode,
++		const uint32_t dram_vals[190]);
+ void mxs_mem_setup_cpu_and_hbus(void);
+ void mxs_mem_setup_vdda(void);
+ void mxs_mem_init_clock(unsigned char divider);
+diff --git a/arch/arm/mach-mxs/mem-init.c b/arch/arm/mach-mxs/mem-init.c
+index ac8bfee18e..7bc6be00b4 100644
+--- a/arch/arm/mach-mxs/mem-init.c
++++ b/arch/arm/mach-mxs/mem-init.c
+@@ -318,18 +318,15 @@ void mx23_mem_init(void)
+ 	mxs_mem_setup_cpu_and_hbus();
  }
  
-+struct mxs_power_ctrl mxs_vddd_default    = { .target = 1500, .brownout = 1325 };
-+struct mxs_power_ctrl mxs_vdda_default    = { .target = 1800, .brownout = 1650 };
-+struct mxs_power_ctrl mxs_vddio_default   = { .target = 3300, .brownout = 3150 };
-+struct mxs_power_ctrl mx23_vddmem_default = { .target = 2500, .brownout = 1700 };
-+struct mxs_power_ctrls mx23_power_default = {
-+	.vdda	= &mxs_vdda_default,
-+	.vddd	= &mxs_vddd_default,
-+	.vddio	= &mxs_vddio_default,
-+	.vddmem	= &mx23_vddmem_default,
-+};
-+
- /**
-  * mx23_power_init() - The power block init main function
-  *
-@@ -1172,8 +1183,9 @@ static void mx23_ungate_power(void)
-  * proper sequence to start the power block.
-  *
-  * @config: see enum mxs_power_config for possible options
-+ * @ctrls: a mxs_power_ctrls struct, or use &mx23_power_default for default values
-  */
--void mx23_power_init(const int config)
-+void mx23_power_init(const int config, struct mxs_power_ctrls *ctrls)
+-#define PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2	(0x3 << 16)
+-
+-void mx28_mem_init(const uint32_t dram_vals[190])
++void mx28_mem_init(const int emi_ds_ctrl_ddr_mode, const uint32_t dram_vals[190])
  {
- 	struct mxs_power_regs *power_regs =
- 		(struct mxs_power_regs *)IMX_POWER_BASE;
-@@ -1210,10 +1222,18 @@ void mx23_power_init(const int config)
+ 	mxs_early_delay(11000);
  
- 	mxs_enable_output_rail_protection();
+ 	/* Fractional divider for ref_emi is 21 ; 480 * 18 / 21 = 411MHz */
+ 	mxs_mem_init_clock(21);
  
--	mxs_power_set_vddx(&mx23_vddio_cfg, 3300, 3150);
--	mxs_power_set_vddx(&mxs_vddd_cfg, 1500, 1325);
--	mxs_power_set_vddx(&mxs_vddmem_cfg, 2500, 1700);
--	mxs_power_set_vddx(&mxs_vdda_cfg, 1800, 1650);
-+	if (ctrls->vddio)
-+		mxs_power_set_vddx(&mx23_vddio_cfg, ctrls->vddio->target,
-+				ctrls->vddio->brownout);
-+	if (ctrls->vddd)
-+		mxs_power_set_vddx(&mxs_vddd_cfg, ctrls->vddd->target,
-+				ctrls->vddd->brownout);
-+	if (ctrls->vddmem)
-+		mxs_power_set_vddx(&mxs_vddmem_cfg, ctrls->vddmem->target,
-+				ctrls->vddmem->brownout);
-+	if (ctrls->vdda)
-+		mxs_power_set_vddx(&mxs_vdda_cfg, ctrls->vdda->target,
-+				ctrls->vdda->brownout);
+-	/* Set DDR2 mode */
+-	writel(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
+-			IMX_IOMUXC_BASE + 0x1b80);
++	/* Set DDR mode */
++	writel(emi_ds_ctrl_ddr_mode, IMX_IOMUXC_BASE + 0x1b80);
  
- 	writel(POWER_CTRL_VDDD_BO_IRQ | POWER_CTRL_VDDA_BO_IRQ |
- 		POWER_CTRL_VDDIO_BO_IRQ | POWER_CTRL_VDD5V_DROOP_IRQ |
-@@ -1225,6 +1245,13 @@ void mx23_power_init(const int config)
- 	mxs_early_delay(1000);
- }
- 
-+struct mxs_power_ctrls mx28_power_default = {
-+	.vdda	= &mxs_vdda_default,
-+	.vddd	= &mxs_vddd_default,
-+	.vddio	= &mxs_vddio_default,
-+	.vddmem	= NULL,
-+};
-+
- /**
-  * mx28_power_init() - The power block init main function
-  *
-@@ -1232,8 +1259,9 @@ void mx23_power_init(const int config)
-  * proper sequence to start the power block.
-  *
-  * @config: see enum mxs_power_config for possible options
-+ * @ctrls: a mxs_power_ctrls struct, or use &mx28_power_default for default values
-  */
--void mx28_power_init(const int config)
-+void mx28_power_init(const int config, struct mxs_power_ctrls *ctrls)
- {
- 	struct mxs_power_regs *power_regs =
- 		(struct mxs_power_regs *)IMX_POWER_BASE;
-@@ -1265,9 +1293,18 @@ void mx28_power_init(const int config)
- 
- 	mxs_enable_output_rail_protection();
- 
--	mxs_power_set_vddx(&mx28_vddio_cfg, 3300, 3150);
--	mxs_power_set_vddx(&mxs_vddd_cfg, 1500, 1325);
--	mxs_power_set_vddx(&mxs_vdda_cfg, 1800, 1650);
-+	if (ctrls->vddio)
-+		mxs_power_set_vddx(&mx28_vddio_cfg, ctrls->vddio->target,
-+				ctrls->vddio->brownout);
-+	if (ctrls->vddd)
-+		mxs_power_set_vddx(&mxs_vddd_cfg, ctrls->vddd->target,
-+				ctrls->vddd->brownout);
-+	if (ctrls->vddmem)
-+		mxs_power_set_vddx(&mxs_vddmem_cfg, ctrls->vddmem->target,
-+				ctrls->vddmem->brownout);
-+	if (ctrls->vdda)
-+		mxs_power_set_vddx(&mxs_vdda_cfg, ctrls->vdda->target,
-+				ctrls->vdda->brownout);
- 
- 	writel(POWER_CTRL_VDDD_BO_IRQ | POWER_CTRL_VDDA_BO_IRQ |
- 		POWER_CTRL_VDDIO_BO_IRQ | POWER_CTRL_VDD5V_DROOP_IRQ |
+ 	/*
+ 	 * Configure the DRAM registers
 -- 
 2.18.0
 
