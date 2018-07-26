@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from linux8.hoststud.com ([94.130.9.145])
+Received: from mail.mybns.be ([84.199.65.193])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fifUn-0007OL-Ec
- for barebox@lists.infradead.org; Thu, 26 Jul 2018 12:35:55 +0000
-Received: from [106.51.36.173] (port=50284 helo=[192.168.1.42])
- by linux8.hoststud.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
- (Exim 4.91) (envelope-from <siva.v@easyarm.com>) id 1fifTr-003T8y-U9
- for barebox@lists.infradead.org; Thu, 26 Jul 2018 18:04:56 +0530
-From: siva <siva.v@easyarm.com>
-Message-ID: <ba511f55-67dd-908c-467e-51fbedea9ea7@easyarm.com>
-Date: Thu, 26 Jul 2018 18:04:53 +0530
+ id 1fighB-00023A-6n
+ for barebox@lists.infradead.org; Thu, 26 Jul 2018 13:52:46 +0000
+From: Dimitri Van Dyck | IndigoCare <Dimitri.VanDyck@indigocare.com>
+Date: Thu, 26 Jul 2018 13:52:32 +0000
+Message-ID: <A49D50D39772A245B44D2DDFA61E3E8702088F1D@DCB14.DCBAD.local>
+Content-Language: nl-NL
 MIME-Version: 1.0
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,21 +16,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: optee in barebox
-To: barebox@lists.infradead.org
+Subject: kernel ubi boot
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Dear Team,
+Hi,
 
-Is there any OP-TEE support for barebox.
+Is it possible to boot zImage from ubi, and not from raw flash?
+If so, from what version is this supported?
 
-Thanks and Regards,
+barebox@Voipac VMX53:/ boot
+booting nand-dtb-ubi
 
-Siva.
+Loading OS UBI image '/dev/ubi0.kernel'
+using internal devicetree
+no image handler found for image type UBI image
 
+Thanks,
+Dimitri 
 
 _______________________________________________
 barebox mailing list
