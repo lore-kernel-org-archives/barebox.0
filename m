@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fk68f-0002ba-2i
- for barebox@lists.infradead.org; Mon, 30 Jul 2018 11:14:59 +0000
+ id 1fj34O-0000ZF-7b
+ for barebox@lists.infradead.org; Fri, 27 Jul 2018 13:46:13 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Mon, 30 Jul 2018 13:14:37 +0200
-Message-Id: <20180730111437.23453-4-r.hieber@pengutronix.de>
-In-Reply-To: <20180730111437.23453-1-r.hieber@pengutronix.de>
-References: <20180730111437.23453-1-r.hieber@pengutronix.de>
+Date: Fri, 27 Jul 2018 15:45:55 +0200
+Message-Id: <20180727134555.11676-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,27 +19,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] linux/types.h: fix missing include for BITS_TO_LONGS()
+Subject: [PATCH] ARM: i.MX: HAB: fix missing include
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
+The code below uses EPERM, which is defined in errno.h.
+
 Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- include/linux/types.h | 1 +
- 1 file changed, 1 insertion(+)
+ include/hab.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/types.h b/include/linux/types.h
-index f64ec4a814..44d8238d53 100644
---- a/include/linux/types.h
-+++ b/include/linux/types.h
-@@ -2,6 +2,7 @@
- #define _LINUX_TYPES_H
+diff --git a/include/hab.h b/include/hab.h
+index fb7149ef53..78c2b865ba 100644
+--- a/include/hab.h
++++ b/include/hab.h
+@@ -18,6 +18,8 @@
+ #ifndef __HABV4_H
+ #define __HABV4_H
  
- #include <linux/posix_types.h>
-+#include <linux/bitops.h>
- #include <asm/types.h>
- 
- #define DECLARE_BITMAP(name,bits) \
++#include <errno.h>
++
+ #ifdef CONFIG_HABV4
+ int imx28_hab_get_status(void);
+ int imx6_hab_get_status(void);
 -- 
 2.18.0
 
