@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fizSv-0005BY-1o
- for barebox@lists.infradead.org; Fri, 27 Jul 2018 09:55:18 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri, 27 Jul 2018 11:54:56 +0200
-Message-Id: <20180727095456.30516-1-s.trumtrar@pengutronix.de>
+ id 1fizZw-0008Ra-GN
+ for barebox@lists.infradead.org; Fri, 27 Jul 2018 10:02:33 +0000
+Received: by mail-pl0-x241.google.com with SMTP id s17-v6so2119079plp.7
+ for <barebox@lists.infradead.org>; Fri, 27 Jul 2018 03:02:22 -0700 (PDT)
+From: marc@cpdesign.com.au
+Date: Fri, 27 Jul 2018 20:02:08 +1000
+Message-Id: <20180727100208.20922-1-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,33 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] reset: socfpga: add missing driver name
+Subject: [PATCH] arm: dts: am335x-bone-common.dtsi: add eeprom device to DT
 To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-The driver_d is missing the name property. When the reset driver is used in a
-non-of setup, this will result in an error during device_registration where
-the dev->name is matched to the driver->name.
+From: Marc Reilly <marc@cpdesign.com.au>
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+This adds a device node to provide support for the onboard eeprom of
+beaglebone products. The eeprom contents can be used to determine the
+type of beaglebone running. For example this can be used to
+differentiate between the original Beaglebone Black and the wireless
+version.
+
+Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
 ---
- drivers/reset/reset-socfpga.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/dts/am335x-bone-common.dtsi | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/reset/reset-socfpga.c b/drivers/reset/reset-socfpga.c
-index dd081ee84f72..b6faa0217ef2 100644
---- a/drivers/reset/reset-socfpga.c
-+++ b/drivers/reset/reset-socfpga.c
-@@ -113,6 +113,7 @@ static const struct of_device_id socfpga_reset_dt_ids[] = {
+diff --git a/arch/arm/dts/am335x-bone-common.dtsi b/arch/arm/dts/am335x-bone-common.dtsi
+index e03ae2a8d..a5db15197 100644
+--- a/arch/arm/dts/am335x-bone-common.dtsi
++++ b/arch/arm/dts/am335x-bone-common.dtsi
+@@ -217,6 +217,16 @@
+ 		reg = <0x24>;
+ 	};
+ 
++	baseboard_eeprom: baseboard_eeprom@50 {
++		compatible = "atmel,24c256";
++		reg = <0x50>;
++
++		#address-cells = <1>;
++		#size-cells = <1>;
++		baseboard_data: baseboard_data@0 {
++			reg = <0 0x100>;
++		};
++	};
  };
  
- static struct driver_d socfpga_reset_driver = {
-+	.name = "socfpga_reset",
- 	.probe	= socfpga_reset_probe,
- 	.of_compatible	= DRV_OF_COMPAT(socfpga_reset_dt_ids),
- };
+ /include/ "tps65217.dtsi"
 -- 
-2.11.0
+2.16.4
 
 
 _______________________________________________
