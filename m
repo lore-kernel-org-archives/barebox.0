@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fk68f-0002bZ-1d
+ id 1fk68f-0002ba-2i
  for barebox@lists.infradead.org; Mon, 30 Jul 2018 11:14:59 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Mon, 30 Jul 2018 13:14:36 +0200
-Message-Id: <20180730111437.23453-3-r.hieber@pengutronix.de>
+Date: Mon, 30 Jul 2018 13:14:37 +0200
+Message-Id: <20180730111437.23453-4-r.hieber@pengutronix.de>
 In-Reply-To: <20180730111437.23453-1-r.hieber@pengutronix.de>
 References: <20180730111437.23453-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,29 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] gpio: fix missing includes for bool and struct list_head
+Subject: [PATCH 4/4] linux/types.h: fix missing include for BITS_TO_LONGS()
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
 Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- include/gpio.h | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/types.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/gpio.h b/include/gpio.h
-index f5262aac42..e42fa23383 100644
---- a/include/gpio.h
-+++ b/include/gpio.h
-@@ -1,6 +1,9 @@
- #ifndef __GPIO_H
- #define __GPIO_H
+diff --git a/include/linux/types.h b/include/linux/types.h
+index f64ec4a814..44d8238d53 100644
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@ -2,6 +2,7 @@
+ #define _LINUX_TYPES_H
  
-+#include <linux/types.h>
-+#include <linux/list.h>
-+
- #ifdef CONFIG_GENERIC_GPIO
- void gpio_set_value(unsigned gpio, int value);
- int gpio_get_value(unsigned gpio);
+ #include <linux/posix_types.h>
++#include <linux/bitops.h>
+ #include <asm/types.h>
+ 
+ #define DECLARE_BITMAP(name,bits) \
 -- 
 2.18.0
 
