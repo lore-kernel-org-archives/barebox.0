@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fk68f-0002bY-1K
- for barebox@lists.infradead.org; Mon, 30 Jul 2018 11:14:58 +0000
+ id 1fk68f-0002bZ-1d
+ for barebox@lists.infradead.org; Mon, 30 Jul 2018 11:14:59 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Mon, 30 Jul 2018 13:14:35 +0200
-Message-Id: <20180730111437.23453-2-r.hieber@pengutronix.de>
+Date: Mon, 30 Jul 2018 13:14:36 +0200
+Message-Id: <20180730111437.23453-3-r.hieber@pengutronix.de>
 In-Reply-To: <20180730111437.23453-1-r.hieber@pengutronix.de>
 References: <20180730111437.23453-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,27 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] ARM: i.MX: OCOTP: fix missing include for uint32_t etc.
+Subject: [PATCH 3/4] gpio: fix missing includes for bool and struct list_head
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
 Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- arch/arm/mach-imx/include/mach/ocotp.h | 1 +
- 1 file changed, 1 insertion(+)
+ include/gpio.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/mach-imx/include/mach/ocotp.h b/arch/arm/mach-imx/include/mach/ocotp.h
-index 76a6da53de..e758238cb9 100644
---- a/arch/arm/mach-imx/include/mach/ocotp.h
-+++ b/arch/arm/mach-imx/include/mach/ocotp.h
-@@ -2,6 +2,7 @@
- #define __MACH_IMX_OCOTP_H
+diff --git a/include/gpio.h b/include/gpio.h
+index f5262aac42..e42fa23383 100644
+--- a/include/gpio.h
++++ b/include/gpio.h
+@@ -1,6 +1,9 @@
+ #ifndef __GPIO_H
+ #define __GPIO_H
  
- #include <linux/bitfield.h>
 +#include <linux/types.h>
- 
- #define OCOTP_SHADOW_OFFSET		0x400
- #define OCOTP_SHADOW_SPACING		0x10
++#include <linux/list.h>
++
+ #ifdef CONFIG_GENERIC_GPIO
+ void gpio_set_value(unsigned gpio, int value);
+ int gpio_get_value(unsigned gpio);
 -- 
 2.18.0
 
