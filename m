@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx009.vodafonemail.xion.oxcs.net ([153.92.174.39])
+Received: from doppler.thel33t.co.uk ([185.153.207.61])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fkShe-0003NI-LJ
- for barebox@lists.infradead.org; Tue, 31 Jul 2018 11:20:36 +0000
-Received: from vsmx002.vodafonemail.xion.oxcs.net (unknown [192.168.75.192])
- by mta-6-out.mta.xion.oxcs.net (Postfix) with ESMTP id 2CE4BD9B364
- for <barebox@lists.infradead.org>; Tue, 31 Jul 2018 11:20:15 +0000 (UTC)
-Received: from null (app-43.app.xion.oxcs.net [10.10.1.43])
- by mta-6-out.mta.xion.oxcs.net (Postfix) with ESMTPA id 1A988199C71
- for <barebox@lists.infradead.org>; Tue, 31 Jul 2018 11:20:12 +0000 (UTC)
-Date: Tue, 31 Jul 2018 13:20:12 +0200 (CEST)
-From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
-Message-ID: <479189478.116665.1533036012752@mail.vodafone.de>
+ id 1fkUaY-0007Hf-Fo
+ for barebox@lists.infradead.org; Tue, 31 Jul 2018 13:21:24 +0000
+Received: from doppler.thel33t.co.uk (localhost [127.0.0.1])
+ by doppler.thel33t.co.uk (Postfix) with ESMTP id 80FCF20DB2
+ for <barebox@lists.infradead.org>; Tue, 31 Jul 2018 14:21:04 +0100 (BST)
 MIME-Version: 1.0
+Date: Tue, 31 Jul 2018 14:21:04 +0100
+From: Leigh Brown <leigh@solinno.co.uk>
+Message-ID: <844001fa78a52f48a3cb1e9189831456@solinno.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,39 +18,134 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: root= kernel cmdline parameter
-To: barebox@lists.infradead.org
+Subject: Help requested with Barebox on Globalscale Mirabox
+To: Barebox <barebox@lists.infradead.org>
 
-Hi all,
+Hello,
 
-I'm trying to find out the best method to define the root=
-parameter when booting the linux kernel from barebox.
+I'm trying to get Barebox working on my Globalscale Mirabox, and I'm 
+struggling.
 
-My system boots from an sd card partitioned with a GPT.
-The sd card has two independent set of partitions with
-the following labels:
+I have performed the following:
 
-1)   boot_1 + rootfs_1
-2)   boot_2 + rootfs_2
+1. git clone git://git.pengutronix.de/barebox
+2. cd into barebox and copy extracted binary.0 into 
+arch/arm/boards/globalscale-mirabox/
+3. Edit arch/arm/boards/globalscale-mirabox/kwbimage.cfg and change 
+BOOT_FROM from nand to uart
+3. make ARCH=arm mvebu_defconfig
+4. make ARCH=arm menuconfig -> then disable all boards except Mirabox
 
-for redondance in case one set gets damaged while updating.
+Finally, I used kwboot to boot the image as shown below:
 
-'boot_1' is formatted with ext4 and contains the kernel + dtb images
-for the userland in 'rootfs_1'; and the same for 'boot_2' and 'rootfs_2'.
+$ scripts/kwboot -t -b images/barebox-globalscale-mirabox.img -B 115200 
+/dev/ttyUSB0
+Sending boot message. Please reboot the target...
+BootROM 1.08
+Pattern detected on UART0 (Boot)
 
-Currently I hardcode the 'root' parameter to '/dev/mmcblk0p3' or
-'/dev/mmcblk0p4' corresponding to the kernel in 'boot_1' or
-'boot_2' and it actually works but is there a better way to do
-this ?
+Got expected NAKs
+Sending boot image...
+   0 % 
+[S.....................................................................]
+   2 % 
+[......................................................................]
+   4 % 
+[......................................................................]
+   7 % 
+[......................................................................]
+   9 % 
+[......................................................................]
+  11 % [..................................DDR3 Training Sequence - Ver 
+2.1.6
+DDR3 Training Sequence - Number of DIMMs detected: 1
+DDR3 Training Sequence - Ended Successfully
+....................................]
+  14 % 
+[......................................................................]
+  16 % 
+[......................................................................]
+  19 % 
+[......................................................................]
+  21 % 
+[......................................................................]
+  23 % 
+[......................................................................]
+  26 % 
+[......................................................................]
+  28 % 
+[......................................................................]
+  31 % 
+[......................................................................]
+  33 % 
+[......................................................................]
+  35 % 
+[......................................................................]
+  38 % 
+[......................................................................]
+  40 % 
+[......................................................................]
+  43 % 
+[......................................................................]
+  45 % 
+[......................................................................]
+  47 % 
+[......................................................................]
+  50 % 
+[......................................................................]
+  52 % 
+[......................................................................]
+  54 % 
+[......................................................................]
+  57 % 
+[......................................................................]
+  59 % 
+[......................................................................]
+  62 % 
+[......................................................................]
+  64 % 
+[......................................................................]
+  66 % 
+[......................................................................]
+  69 % 
+[......................................................................]
+  71 % 
+[......................................................................]
+  74 % 
+[......................................................................]
+  76 % 
+[......................................................................]
+  78 % 
+[......................................................................]
+  81 % 
+[......................................................................]
+  83 % 
+[......................................................................]
+  86 % 
+[......................................................................]
+  88 % 
+[......................................................................]
+  90 % 
+[......................................................................]
+  93 % 
+[......................................................................]
+  95 % 
+[......................................................................]
+  98 % [............................................................]
+[Type Ctrl-\ + c to quit]
+
 
-Using the global var. 'bootm.appendroot' does not work because the
-userland image is not in the same partition as the kernel.
+..and that's it.
 
-giorgio
+Have I missed any steps?  Any help would be greatly appreciated.
+
+Regards,
+
+Leigh.
 
 _______________________________________________
 barebox mailing list
