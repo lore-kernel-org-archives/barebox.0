@@ -1,20 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fkS9E-00084d-Cs
- for barebox@lists.infradead.org; Tue, 31 Jul 2018 10:45:05 +0000
-Received: from unicorn.hi.pengutronix.de
- ([2001:67c:670:100:a61f:72ff:fe69:16d] helo=unicorn)
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <str@pengutronix.de>) id 1fkS91-0001CF-CM
- for barebox@lists.infradead.org; Tue, 31 Jul 2018 12:44:47 +0200
-Received: from str by unicorn with local (Exim 4.89)
- (envelope-from <str@pengutronix.de>) id 1fkS98-0000ed-SC
- for barebox@lists.infradead.org; Tue, 31 Jul 2018 12:44:54 +0200
+ id 1fkS9E-00084V-Bi
+ for barebox@lists.infradead.org; Tue, 31 Jul 2018 10:45:04 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue, 31 Jul 2018 12:44:31 +0200
-Message-Id: <20180731104442.2451-9-s.trumtrar@pengutronix.de>
+Date: Tue, 31 Jul 2018 12:44:27 +0200
+Message-Id: <20180731104442.2451-5-s.trumtrar@pengutronix.de>
 In-Reply-To: <20180731104442.2451-1-s.trumtrar@pengutronix.de>
 References: <20180731104442.2451-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -30,26 +21,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/19] ARM: socfpga: add SMP_TWD_ADDR for Arria10
+Subject: [PATCH 04/19] bootm: allow booting SoCFPGA prebootloader image
 To: Barebox List <barebox@lists.infradead.org>
+Cc: Enrico Jorns <ejo@pengutronix.de>
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+From: Enrico Jorns <ejo@pengutronix.de>
+
+A prebootloader image might also contain a fully working barebox and
+allows to be booted second stage. Thus we add a handler here to give it
+a try.
+
+Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
 ---
- arch/arm/mach-socfpga/include/mach/arria10-regs.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/lib32/bootm.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm/mach-socfpga/include/mach/arria10-regs.h b/arch/arm/mach-socfpga/include/mach/arria10-regs.h
-index 931876f43a17..4464f0623187 100644
---- a/arch/arm/mach-socfpga/include/mach/arria10-regs.h
-+++ b/arch/arm/mach-socfpga/include/mach/arria10-regs.h
-@@ -45,6 +45,7 @@
- #define ARRIA10_DMASECURE_ADDR				(0xffda1000)
- #define ARRIA10_OCRAM_ADDR				(0xffe00000)
- #define ARRIA10_MPUSCU_ADDR				(0xffffc000)
-+#define ARRIA10_SMP_TWD_ADDR				(0xffffc600)
- #define ARRIA10_MPUL2_ADDR				(0xfffff000)
+diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
+index c8bf72f0e0c7..ec1875e38d8f 100644
+--- a/arch/arm/lib32/bootm.c
++++ b/arch/arm/lib32/bootm.c
+@@ -414,6 +414,12 @@ static struct image_handler barebox_handler = {
+ 	.filetype = filetype_arm_barebox,
+ };
  
- /* L2 cache controller */
++static struct image_handler socfpga_xload_handler = {
++	.name = "SoCFPGA prebootloader image",
++	.bootm = do_bootm_linux,
++	.filetype = filetype_socfpga_xload,
++};
++
+ #include <aimage.h>
+ 
+ static int aimage_load_resource(int fd, struct resource *r, void* buf, int ps)
+@@ -603,6 +609,7 @@ static struct binfmt_hook binfmt_barebox_hook = {
+ static int armlinux_register_image_handler(void)
+ {
+ 	register_image_handler(&barebox_handler);
++	register_image_handler(&socfpga_xload_handler);
+ 	register_image_handler(&uimage_handler);
+ 	register_image_handler(&rawimage_handler);
+ 	register_image_handler(&zimage_handler);
 -- 
 2.11.0
 
