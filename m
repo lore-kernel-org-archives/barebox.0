@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fkRYw-0007gv-NP
- for barebox@lists.infradead.org; Tue, 31 Jul 2018 10:07:32 +0000
-Date: Tue, 31 Jul 2018 12:07:16 +0200
-From: Roland Hieber <r.hieber@pengutronix.de>
-Message-ID: <20180731100716.7ripjx5lbop6gvsn@pengutronix.de>
-References: <20180725133618.1510-1-r.hieber@pengutronix.de>
- <20180725133618.1510-6-r.hieber@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180725133618.1510-6-r.hieber@pengutronix.de>
+ id 1fkS9E-00084C-Bc
+ for barebox@lists.infradead.org; Tue, 31 Jul 2018 10:45:03 +0000
+Received: from unicorn.hi.pengutronix.de
+ ([2001:67c:670:100:a61f:72ff:fe69:16d] helo=unicorn)
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <str@pengutronix.de>) id 1fkS90-0001C2-O2
+ for barebox@lists.infradead.org; Tue, 31 Jul 2018 12:44:46 +0200
+Received: from str by unicorn with local (Exim 4.89)
+ (envelope-from <str@pengutronix.de>) id 1fkS98-0000eG-Es
+ for barebox@lists.infradead.org; Tue, 31 Jul 2018 12:44:54 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Tue, 31 Jul 2018 12:44:23 +0200
+Message-Id: <20180731104442.2451-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,76 +23,92 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 05/13] ARM: MXS: i.MX28: add autodetection of memory banks
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 00/19] ARM: SoCFPGA: Arria10: Early FPGA config
+To: Barebox List <barebox@lists.infradead.org>
 
-U2FzY2hhLAoKd2hpbGUgbG9va2luZyBmb3Igc29tZXRoaW5nIGRpZmZlcmVudCwgSSBub3RpY2Vk
-IHRoZSBmb2xsb3dpbmcgcGF0Y2hlcwppbiBvbmUgb2YgeW91ciBwZXJzb25hbCBicmFuY2hlczoK
-CmIyZjZlZWIgU2FzY2hhIEhhdWVyICAg4pePIEFSTTogaS5NWDI4OiBBZGQgbWVtb3J5IHNpemUg
-ZGV0ZWN0aW9uCmViNjA3YWUgU2FzY2hhIEhhdWVyICAg4pePIEFSTTogaS5NWDIzOiBBZGQgbWVt
-b3J5IHNpemUgZGV0ZWN0aW9uCgpUaGV5IGxvb2sgbXVjaCBjbGVhbmVyIHRoYW4gbXkgcGF0Y2gs
-IHNvIGlmIHlvdSBjb25zZW50LCBJJ2xsIGluY2x1ZGUKdGhlbSBpbiB0aGUgdjIgc2VyaWVzIGlu
-c3RlYWQgb2YgdGhpcyBvbmUuCgogLSBSb2xhbmQKCk9uIFdlZCwgSnVsIDI1LCAyMDE4IGF0IDAz
-OjM2OjEwUE0gKzAyMDAsIFJvbGFuZCBIaWViZXIgd3JvdGU6Cj4gSWYgdGhlIHByZWJvb3Rsb2Fk
-ZXIgaGFzIHNldCB1cCB0aGUgRU1JIGNvbnRyb2xsZXIgY29ycmVjdGx5LCB3ZSBjYW4KPiBhdXRv
-ZGV0ZWN0IHRoZSBzaXplIG9mIGF2YWlsYWJsZSBSQU0gYnkgbG9va2luZyBhdCB0aGUgcmVzcGVj
-dGl2ZQo+IGNvbmZpZ3VyYXRpb24gcmVnaXN0ZXJzLgo+IAo+IFNpZ25lZC1vZmYtYnk6IFJvbGFu
-ZCBIaWViZXIgPHIuaGllYmVyQHBlbmd1dHJvbml4LmRlPgo+IC0tLQo+ICBhcmNoL2FybS9tYWNo
-LW14cy9NYWtlZmlsZSAgICB8ICAyICstCj4gIGFyY2gvYXJtL21hY2gtbXhzL21lbS1pbXgyOC5j
-IHwgMzkgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKPiAgMiBmaWxlcyBjaGFu
-Z2VkLCA0MCBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCj4gIGNyZWF0ZSBtb2RlIDEwMDY0
-NCBhcmNoL2FybS9tYWNoLW14cy9tZW0taW14MjguYwo+IAo+IGRpZmYgLS1naXQgYS9hcmNoL2Fy
-bS9tYWNoLW14cy9NYWtlZmlsZSBiL2FyY2gvYXJtL21hY2gtbXhzL01ha2VmaWxlCj4gaW5kZXgg
-ZTM4NDMzNjhjMi4uMDc2MWY5MDlhMSAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9tYWNoLW14cy9N
-YWtlZmlsZQo+ICsrKyBiL2FyY2gvYXJtL21hY2gtbXhzL01ha2VmaWxlCj4gQEAgLTEsNyArMSw3
-IEBACj4gIG9iai15ICs9IGlteC5vIGlvbXV4LWlteC5vIHBvd2VyLm8KPiAgcGJsLXkgKz0gaW9t
-dXgtaW14Lm8KPiAgb2JqLSQoQ09ORklHX0FSQ0hfSU1YMjMpICs9IGNsb2Nrc291cmNlLWlteDIz
-Lm8gdXNiLWlteDIzLm8gc29jLWlteDIzLm8KPiAtb2JqLSQoQ09ORklHX0FSQ0hfSU1YMjgpICs9
-IGNsb2Nrc291cmNlLWlteDI4Lm8gdXNiLWlteDI4Lm8gc29jLWlteDI4Lm8KPiArb2JqLSQoQ09O
-RklHX0FSQ0hfSU1YMjgpICs9IGNsb2Nrc291cmNlLWlteDI4Lm8gdXNiLWlteDI4Lm8gc29jLWlt
-eDI4Lm8gbWVtLWlteDI4Lm8KPiAgb2JqLSQoQ09ORklHX01YU19PQ09UUCkgKz0gb2NvdHAubwo+
-ICBvYmotJChDT05GSUdfTVhTX0NNRF9CQ0IpICs9IGJjYi5vCj4gIHBibC15ICs9IHBvd2VyLWlu
-aXQubyBtZW0taW5pdC5vIGxyYWRjLWluaXQubwo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNo
-LW14cy9tZW0taW14MjguYyBiL2FyY2gvYXJtL21hY2gtbXhzL21lbS1pbXgyOC5jCj4gbmV3IGZp
-bGUgbW9kZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAwMDAwLi5lODI3ZTA5MDZmCj4gLS0tIC9kZXYv
-bnVsbAo+ICsrKyBiL2FyY2gvYXJtL21hY2gtbXhzL21lbS1pbXgyOC5jCj4gQEAgLTAsMCArMSwz
-OSBAQAo+ICsvKgo+ICsgKiBDb3B5cmlnaHQgKEMpIDIwMTggUGVuZ3V0cm9uaXgsIFJvbGFuZCBI
-aWViZXIgPHIuaGllYmVyQHBlbmd1dHJvbml4LmRlPgo+ICsgKgo+ICsgKiBUaGlzIHByb2dyYW0g
-aXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29yCj4gKyAqIG1v
-ZGlmeSBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNl
-Cj4gKyAqIHZlcnNpb24gMiwgYXMgcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5k
-YXRpb24uCj4gKyAqCj4gKyAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9w
-ZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAo+ICsgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7
-IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgo+ICsgKiBNRVJDSEFOVEFCSUxJ
-VFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCj4gKyAqIEdO
-VSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBtb3JlIGRldGFpbHMuCj4gKyAqLwo+ICsKPiAr
-I2luY2x1ZGUgPGluaXQuaD4KPiArI2luY2x1ZGUgPGFzbS9tZW1vcnkuaD4KPiArI2luY2x1ZGUg
-PG1hY2gvaW14MjgtcmVncy5oPgo+ICsjaW5jbHVkZSA8cHJpbnRrLmg+Cj4gKwo+ICtzdGF0aWMg
-aW50IG14MjhfYWRkX21lbSh2b2lkKQo+ICt7Cj4gKwlpZiAoIW9mX21hY2hpbmVfaXNfY29tcGF0
-aWJsZSgiZnNsLGlteDI4IikpCj4gKwkJcmV0dXJuIDA7Cj4gKwo+ICsJaW50ICogc2RyYW1jID0g
-KGludCAqKUlNWF9TRFJBTUNfQkFTRTsKPiArCj4gKwl1aW50OF90IGNvbHVtbnMgPSAxMiAtICgo
-c2RyYW1jWzI5XSA+PiAxNikgJiAwYjExMSk7Cj4gKwl1aW50OF90IHJvd3MgICAgPSAxNSAtICgo
-c2RyYW1jWzI5XSA+PiAgOCkgJiAwYjExMSk7Cj4gKwl1aW50OF90IGJhbmtzICAgPSAgICAgICgo
-c2RyYW1jWzMxXSA+PiAxNikgJiAwYjEpICA/ICA4ICA6ICA0Owo+ICsJdWludDhfdCB3aWR0aCAg
-ID0gc2l6ZW9mICh1bnNpZ25lZCBzaG9ydCk7Cj4gKwo+ICsJdWludDMyX3Qgc2l6ZSA9ICgxIDw8
-IGNvbHVtbnMpICogKDEgPDwgcm93cykgKiBiYW5rcyAqIHdpZHRoOwo+ICsJcHJfaW5mbygiaS5N
-WDI4OiBkZXRlY3RlZCAlZCBjb2xzLCAlZCByb3dzLCAlZCBiYW5rcyA9ICVkIE1pQiBvZiBSQU1c
-biIsCj4gKwkJCWNvbHVtbnMsIHJvd3MsIGJhbmtzLCBzaXplIC8gMTAyNCAvIDEwMjQpOwo+ICsK
-PiArCWFybV9hZGRfbWVtX2RldmljZSgicmFtMCIsIElNWF9NRU1PUllfQkFTRSwgc2l6ZSk7Cj4g
-Kwo+ICsJcmV0dXJuIDA7Cj4gK30KPiArbWVtX2luaXRjYWxsKG14MjhfYWRkX21lbSk7Cj4gLS0g
-Cj4gMi4xOC4wCj4gCj4gCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
-eAo+IAoKLS0gClJvbGFuZCBIaWViZXIgICAgICAgICAgICAgICAgICAgICB8IHIuaGllYmVyQHBl
-bmd1dHJvbml4LmRlICAgICB8ClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICB8IGh0
-dHBzOi8vd3d3LnBlbmd1dHJvbml4LmRlLyB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVz
-aGVpbSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctNTA4NiB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
-aW0sIEhSQSAyNjg2ICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
-dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi!
+
+This series allows configuring the FPGA of an Arria10 SoCFPGA early
+in the bootprocess from barebox. Early means: before the SDRAM is used.
+
+The patches where developed for and tested on the Achilles board.
+
+While at it, some cleanup patches are included, too.
+
+
+Steffen
+
+
+
+Enrico Jorns (1):
+  bootm: allow booting SoCFPGA prebootloader image
+
+Steffen Trumtrar (18):
+  mci: dw_mmc: remove device_d pointer
+  mci: dw_mmc: convert to BIT() macro
+  mci: dw: move defines to headerfile
+  reset: socfpga: add missing driver name
+  ARM: socfpga: arria10: move debug_ll to common code
+  ARM: socfpga: arria10: add ocram base address
+  ARM: socfpga: add SMP_TWD_ADDR for Arria10
+  ARM: socfpga: arria10-init: split pinsetup
+  ARM: socfpga: arria10: set default TEXTBASE
+  ARM: socfpga: arria10: fix SDMMC phase shift
+  ARM: socfpga: achilles: update handoff files
+  ARM: dts: socfpga: Fix achilles dtc warnings
+  scripts: socfpga_mkimage: add size feature for PBL barebox
+  ARM: socfpga: arria10-reset-manager: don't reset bootsource
+  ARM: socfpga: Arria10: support programming FPGA in PBL
+  ARM: socfpga: achilles: convert to PBL barebox
+  ARM: arria10: update defconfig
+  ARM: socfpga: achilles: move environment to raw partition
+
+ arch/arm/Kconfig                                   |   4 -
+ arch/arm/boards/reflex-achilles/Makefile           |   4 +-
+ arch/arm/boards/reflex-achilles/board.c            |  19 +
+ arch/arm/boards/reflex-achilles/lowlevel.c         |  87 +++-
+ .../boards/reflex-achilles/pinmux-config-arria10.c |   2 +-
+ .../boards/reflex-achilles/pll-config-arria10.c    |  16 +-
+ arch/arm/configs/socfpga-arria10_defconfig         |   7 +-
+ arch/arm/dts/socfpga_arria10_achilles.dts          |  20 +-
+ arch/arm/lib32/bootm.c                             |   7 +
+ arch/arm/mach-socfpga/Kconfig                      |   9 +-
+ arch/arm/mach-socfpga/Makefile                     |  12 +-
+ arch/arm/mach-socfpga/arria10-bootsource.c         |  16 +-
+ arch/arm/mach-socfpga/arria10-generic.c            |   2 +-
+ arch/arm/mach-socfpga/arria10-init.c               |  47 ++-
+ arch/arm/mach-socfpga/arria10-reset-manager.c      |  33 +-
+ arch/arm/mach-socfpga/arria10-sdram.c              |   2 +
+ arch/arm/mach-socfpga/arria10-xload-emmc.c         | 222 ++++++++++
+ arch/arm/mach-socfpga/arria10-xload.c              | 457 +++++++++++++++++++++
+ arch/arm/mach-socfpga/include/mach/arria10-fpga.h  |  86 ++++
+ arch/arm/mach-socfpga/include/mach/arria10-regs.h  |   2 +
+ .../include/mach/arria10-system-manager.h          |   6 +
+ arch/arm/mach-socfpga/include/mach/arria10-xload.h |  13 +
+ arch/arm/mach-socfpga/include/mach/debug_ll.h      |   2 -
+ arch/arm/mach-socfpga/include/mach/generic.h       |  41 ++
+ drivers/mci/dw_mmc.c                               | 152 +------
+ drivers/mci/dw_mmc.h                               | 140 +++++++
+ drivers/reset/reset-socfpga.c                      |   1 +
+ images/Makefile.socfpga                            |  17 +-
+ scripts/socfpga_mkimage.c                          |  25 +-
+ 29 files changed, 1240 insertions(+), 211 deletions(-)
+ create mode 100644 arch/arm/boards/reflex-achilles/board.c
+ create mode 100644 arch/arm/mach-socfpga/arria10-xload-emmc.c
+ create mode 100644 arch/arm/mach-socfpga/arria10-xload.c
+ create mode 100644 arch/arm/mach-socfpga/include/mach/arria10-fpga.h
+ create mode 100644 arch/arm/mach-socfpga/include/mach/arria10-xload.h
+ create mode 100644 drivers/mci/dw_mmc.h
+
+-- 
+2.11.0
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
