@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fiy73-0002ms-6a
- for barebox@lists.infradead.org; Fri, 27 Jul 2018 08:28:39 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <rhi@pengutronix.de>) id 1fiy6p-0003cv-JS
- for barebox@lists.infradead.org; Fri, 27 Jul 2018 10:28:23 +0200
-Received: from rhi by ptx.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <rhi@pengutronix.de>) id 1fiy6p-00019r-BV
- for barebox@lists.infradead.org; Fri, 27 Jul 2018 10:28:23 +0200
-Date: Fri, 27 Jul 2018 10:28:23 +0200
+ id 1fkRYw-0007gv-NP
+ for barebox@lists.infradead.org; Tue, 31 Jul 2018 10:07:32 +0000
+Date: Tue, 31 Jul 2018 12:07:16 +0200
 From: Roland Hieber <r.hieber@pengutronix.de>
-Message-ID: <20180727082823.c2p5e3xr3guv2jas@pengutronix.de>
+Message-ID: <20180731100716.7ripjx5lbop6gvsn@pengutronix.de>
 References: <20180725133618.1510-1-r.hieber@pengutronix.de>
  <20180725133618.1510-6-r.hieber@pengutronix.de>
 MIME-Version: 1.0
@@ -27,105 +19,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 05/13] ARM: MXS: i.MX28: add autodetection of memory banks
-To: barebox@lists.infradead.org
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Wed, Jul 25, 2018 at 03:36:10PM +0200, Roland Hieber wrote:
-> If the prebootloader has set up the EMI controller correctly, we can
-> autodetect the size of available RAM by looking at the respective
-> configuration registers.
-> 
-> Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
-> ---
->  arch/arm/mach-mxs/Makefile    |  2 +-
->  arch/arm/mach-mxs/mem-imx28.c | 39 +++++++++++++++++++++++++++++++++++
->  2 files changed, 40 insertions(+), 1 deletion(-)
->  create mode 100644 arch/arm/mach-mxs/mem-imx28.c
-> 
-> diff --git a/arch/arm/mach-mxs/Makefile b/arch/arm/mach-mxs/Makefile
-> index e3843368c2..0761f909a1 100644
-> --- a/arch/arm/mach-mxs/Makefile
-> +++ b/arch/arm/mach-mxs/Makefile
-> @@ -1,7 +1,7 @@
->  obj-y += imx.o iomux-imx.o power.o
->  pbl-y += iomux-imx.o
->  obj-$(CONFIG_ARCH_IMX23) += clocksource-imx23.o usb-imx23.o soc-imx23.o
-> -obj-$(CONFIG_ARCH_IMX28) += clocksource-imx28.o usb-imx28.o soc-imx28.o
-> +obj-$(CONFIG_ARCH_IMX28) += clocksource-imx28.o usb-imx28.o soc-imx28.o mem-imx28.o
->  obj-$(CONFIG_MXS_OCOTP) += ocotp.o
->  obj-$(CONFIG_MXS_CMD_BCB) += bcb.o
->  pbl-y += power-init.o mem-init.o lradc-init.o
-> diff --git a/arch/arm/mach-mxs/mem-imx28.c b/arch/arm/mach-mxs/mem-imx28.c
-> new file mode 100644
-> index 0000000000..e827e0906f
-> --- /dev/null
-> +++ b/arch/arm/mach-mxs/mem-imx28.c
-> @@ -0,0 +1,39 @@
-> +/*
-> + * Copyright (C) 2018 Pengutronix, Roland Hieber <r.hieber@pengutronix.de>
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License
-> + * version 2, as published by the Free Software Foundation.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + */
-> +
-> +#include <init.h>
-> +#include <asm/memory.h>
-> +#include <mach/imx28-regs.h>
-> +#include <printk.h>
-
-Mhm, there are some includes missing. Will fix in v2.
-
- - Roland
-
-> +
-> +static int mx28_add_mem(void)
-> +{
-> +	if (!of_machine_is_compatible("fsl,imx28"))
-> +		return 0;
-> +
-> +	int * sdramc = (int *)IMX_SDRAMC_BASE;
-> +
-> +	uint8_t columns = 12 - ((sdramc[29] >> 16) & 0b111);
-> +	uint8_t rows    = 15 - ((sdramc[29] >>  8) & 0b111);
-> +	uint8_t banks   =      ((sdramc[31] >> 16) & 0b1)  ?  8  :  4;
-> +	uint8_t width   = sizeof (unsigned short);
-> +
-> +	uint32_t size = (1 << columns) * (1 << rows) * banks * width;
-> +	pr_info("i.MX28: detected %d cols, %d rows, %d banks = %d MiB of RAM\n",
-> +			columns, rows, banks, size / 1024 / 1024);
-> +
-> +	arm_add_mem_device("ram0", IMX_MEMORY_BASE, size);
-> +
-> +	return 0;
-> +}
-> +mem_initcall(mx28_add_mem);
-> -- 
-> 2.18.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2FzY2hhLAoKd2hpbGUgbG9va2luZyBmb3Igc29tZXRoaW5nIGRpZmZlcmVudCwgSSBub3RpY2Vk
+IHRoZSBmb2xsb3dpbmcgcGF0Y2hlcwppbiBvbmUgb2YgeW91ciBwZXJzb25hbCBicmFuY2hlczoK
+CmIyZjZlZWIgU2FzY2hhIEhhdWVyICAg4pePIEFSTTogaS5NWDI4OiBBZGQgbWVtb3J5IHNpemUg
+ZGV0ZWN0aW9uCmViNjA3YWUgU2FzY2hhIEhhdWVyICAg4pePIEFSTTogaS5NWDIzOiBBZGQgbWVt
+b3J5IHNpemUgZGV0ZWN0aW9uCgpUaGV5IGxvb2sgbXVjaCBjbGVhbmVyIHRoYW4gbXkgcGF0Y2gs
+IHNvIGlmIHlvdSBjb25zZW50LCBJJ2xsIGluY2x1ZGUKdGhlbSBpbiB0aGUgdjIgc2VyaWVzIGlu
+c3RlYWQgb2YgdGhpcyBvbmUuCgogLSBSb2xhbmQKCk9uIFdlZCwgSnVsIDI1LCAyMDE4IGF0IDAz
+OjM2OjEwUE0gKzAyMDAsIFJvbGFuZCBIaWViZXIgd3JvdGU6Cj4gSWYgdGhlIHByZWJvb3Rsb2Fk
+ZXIgaGFzIHNldCB1cCB0aGUgRU1JIGNvbnRyb2xsZXIgY29ycmVjdGx5LCB3ZSBjYW4KPiBhdXRv
+ZGV0ZWN0IHRoZSBzaXplIG9mIGF2YWlsYWJsZSBSQU0gYnkgbG9va2luZyBhdCB0aGUgcmVzcGVj
+dGl2ZQo+IGNvbmZpZ3VyYXRpb24gcmVnaXN0ZXJzLgo+IAo+IFNpZ25lZC1vZmYtYnk6IFJvbGFu
+ZCBIaWViZXIgPHIuaGllYmVyQHBlbmd1dHJvbml4LmRlPgo+IC0tLQo+ICBhcmNoL2FybS9tYWNo
+LW14cy9NYWtlZmlsZSAgICB8ICAyICstCj4gIGFyY2gvYXJtL21hY2gtbXhzL21lbS1pbXgyOC5j
+IHwgMzkgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKPiAgMiBmaWxlcyBjaGFu
+Z2VkLCA0MCBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCj4gIGNyZWF0ZSBtb2RlIDEwMDY0
+NCBhcmNoL2FybS9tYWNoLW14cy9tZW0taW14MjguYwo+IAo+IGRpZmYgLS1naXQgYS9hcmNoL2Fy
+bS9tYWNoLW14cy9NYWtlZmlsZSBiL2FyY2gvYXJtL21hY2gtbXhzL01ha2VmaWxlCj4gaW5kZXgg
+ZTM4NDMzNjhjMi4uMDc2MWY5MDlhMSAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9tYWNoLW14cy9N
+YWtlZmlsZQo+ICsrKyBiL2FyY2gvYXJtL21hY2gtbXhzL01ha2VmaWxlCj4gQEAgLTEsNyArMSw3
+IEBACj4gIG9iai15ICs9IGlteC5vIGlvbXV4LWlteC5vIHBvd2VyLm8KPiAgcGJsLXkgKz0gaW9t
+dXgtaW14Lm8KPiAgb2JqLSQoQ09ORklHX0FSQ0hfSU1YMjMpICs9IGNsb2Nrc291cmNlLWlteDIz
+Lm8gdXNiLWlteDIzLm8gc29jLWlteDIzLm8KPiAtb2JqLSQoQ09ORklHX0FSQ0hfSU1YMjgpICs9
+IGNsb2Nrc291cmNlLWlteDI4Lm8gdXNiLWlteDI4Lm8gc29jLWlteDI4Lm8KPiArb2JqLSQoQ09O
+RklHX0FSQ0hfSU1YMjgpICs9IGNsb2Nrc291cmNlLWlteDI4Lm8gdXNiLWlteDI4Lm8gc29jLWlt
+eDI4Lm8gbWVtLWlteDI4Lm8KPiAgb2JqLSQoQ09ORklHX01YU19PQ09UUCkgKz0gb2NvdHAubwo+
+ICBvYmotJChDT05GSUdfTVhTX0NNRF9CQ0IpICs9IGJjYi5vCj4gIHBibC15ICs9IHBvd2VyLWlu
+aXQubyBtZW0taW5pdC5vIGxyYWRjLWluaXQubwo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNo
+LW14cy9tZW0taW14MjguYyBiL2FyY2gvYXJtL21hY2gtbXhzL21lbS1pbXgyOC5jCj4gbmV3IGZp
+bGUgbW9kZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAwMDAwLi5lODI3ZTA5MDZmCj4gLS0tIC9kZXYv
+bnVsbAo+ICsrKyBiL2FyY2gvYXJtL21hY2gtbXhzL21lbS1pbXgyOC5jCj4gQEAgLTAsMCArMSwz
+OSBAQAo+ICsvKgo+ICsgKiBDb3B5cmlnaHQgKEMpIDIwMTggUGVuZ3V0cm9uaXgsIFJvbGFuZCBI
+aWViZXIgPHIuaGllYmVyQHBlbmd1dHJvbml4LmRlPgo+ICsgKgo+ICsgKiBUaGlzIHByb2dyYW0g
+aXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29yCj4gKyAqIG1v
+ZGlmeSBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNl
+Cj4gKyAqIHZlcnNpb24gMiwgYXMgcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5k
+YXRpb24uCj4gKyAqCj4gKyAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9w
+ZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAo+ICsgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7
+IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgo+ICsgKiBNRVJDSEFOVEFCSUxJ
+VFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCj4gKyAqIEdO
+VSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBtb3JlIGRldGFpbHMuCj4gKyAqLwo+ICsKPiAr
+I2luY2x1ZGUgPGluaXQuaD4KPiArI2luY2x1ZGUgPGFzbS9tZW1vcnkuaD4KPiArI2luY2x1ZGUg
+PG1hY2gvaW14MjgtcmVncy5oPgo+ICsjaW5jbHVkZSA8cHJpbnRrLmg+Cj4gKwo+ICtzdGF0aWMg
+aW50IG14MjhfYWRkX21lbSh2b2lkKQo+ICt7Cj4gKwlpZiAoIW9mX21hY2hpbmVfaXNfY29tcGF0
+aWJsZSgiZnNsLGlteDI4IikpCj4gKwkJcmV0dXJuIDA7Cj4gKwo+ICsJaW50ICogc2RyYW1jID0g
+KGludCAqKUlNWF9TRFJBTUNfQkFTRTsKPiArCj4gKwl1aW50OF90IGNvbHVtbnMgPSAxMiAtICgo
+c2RyYW1jWzI5XSA+PiAxNikgJiAwYjExMSk7Cj4gKwl1aW50OF90IHJvd3MgICAgPSAxNSAtICgo
+c2RyYW1jWzI5XSA+PiAgOCkgJiAwYjExMSk7Cj4gKwl1aW50OF90IGJhbmtzICAgPSAgICAgICgo
+c2RyYW1jWzMxXSA+PiAxNikgJiAwYjEpICA/ICA4ICA6ICA0Owo+ICsJdWludDhfdCB3aWR0aCAg
+ID0gc2l6ZW9mICh1bnNpZ25lZCBzaG9ydCk7Cj4gKwo+ICsJdWludDMyX3Qgc2l6ZSA9ICgxIDw8
+IGNvbHVtbnMpICogKDEgPDwgcm93cykgKiBiYW5rcyAqIHdpZHRoOwo+ICsJcHJfaW5mbygiaS5N
+WDI4OiBkZXRlY3RlZCAlZCBjb2xzLCAlZCByb3dzLCAlZCBiYW5rcyA9ICVkIE1pQiBvZiBSQU1c
+biIsCj4gKwkJCWNvbHVtbnMsIHJvd3MsIGJhbmtzLCBzaXplIC8gMTAyNCAvIDEwMjQpOwo+ICsK
+PiArCWFybV9hZGRfbWVtX2RldmljZSgicmFtMCIsIElNWF9NRU1PUllfQkFTRSwgc2l6ZSk7Cj4g
+Kwo+ICsJcmV0dXJuIDA7Cj4gK30KPiArbWVtX2luaXRjYWxsKG14MjhfYWRkX21lbSk7Cj4gLS0g
+Cj4gMi4xOC4wCj4gCj4gCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
+Lm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
+eAo+IAoKLS0gClJvbGFuZCBIaWViZXIgICAgICAgICAgICAgICAgICAgICB8IHIuaGllYmVyQHBl
+bmd1dHJvbml4LmRlICAgICB8ClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICB8IGh0
+dHBzOi8vd3d3LnBlbmd1dHJvbml4LmRlLyB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVz
+aGVpbSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctNTA4NiB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
+aW0sIEhSQSAyNjg2ICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
+dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
