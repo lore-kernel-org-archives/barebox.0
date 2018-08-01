@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fkmeY-0007vY-R0
+ id 1fkmeY-0007vT-R2
  for barebox@lists.infradead.org; Wed, 01 Aug 2018 08:38:44 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1fkmeN-0008Bs-8u
+ (envelope-from <l.stach@pengutronix.de>) id 1fkmeN-0008Bs-6a
  for barebox@lists.infradead.org; Wed, 01 Aug 2018 10:38:31 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed,  1 Aug 2018 10:38:31 +0200
-Message-Id: <20180801083831.12983-4-l.stach@pengutronix.de>
+Date: Wed,  1 Aug 2018 10:38:29 +0200
+Message-Id: <20180801083831.12983-2-l.stach@pengutronix.de>
 In-Reply-To: <20180801083831.12983-1-l.stach@pengutronix.de>
 References: <20180801083831.12983-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -26,63 +26,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] ARM: imx6: gw54xx: add fixup for PCIe switch
+Subject: [PATCH 1/3] PCI: link PCI devices with potentially existing OF nodes
 To: barebox@lists.infradead.org
 
-After the PCIe switch has been scanned its GPIOs need to be
-configured as output-high to release the devices behind the
-switch from their reset state and make them discoverable to
-the bus scan.
+The document "PCI Bus Binding to: IEEE Std 1275-1994 Standard for Boot
+(Initialization Configuration) Firmware" describes how the PCI topology
+can be described in the DT, in order to augment the PCI devices with
+additional information via DT properties.
+
+This patch links OF nodes to the corresponding PCI devices if they
+exist, allowing PCI device drivers to query DT information like any
+platform device.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/boards/gateworks-ventana/board.c | 29 +++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ drivers/pci/pci.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/arch/arm/boards/gateworks-ventana/board.c b/arch/arm/boards/gateworks-ventana/board.c
-index 3ff142ee4298..6f9e0343bed5 100644
---- a/arch/arm/boards/gateworks-ventana/board.c
-+++ b/arch/arm/boards/gateworks-ventana/board.c
-@@ -17,6 +17,7 @@
- #include <i2c/i2c.h>
- #include <init.h>
- #include <linux/marvell_phy.h>
-+#include <linux/pci.h>
- #include <linux/phy.h>
- #include <mach/bbu.h>
- #include <mach/imx6.h>
-@@ -111,3 +112,31 @@ static int gw54xx_coredevices_init(void)
- 	return 0;
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index b2570eb15181..bd8b7278ef19 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -331,6 +331,31 @@ static void postscan_setup_bridge(struct pci_dev *dev)
+ 	}
  }
- coredevice_initcall(gw54xx_coredevices_init);
-+
-+/*
-+ * fixup for PLX PEX8909 bridge to configure GPIO1-7 as output High
-+ * as they are used for slots1-7 PERST#
-+ */
-+static void ventana_pciesw_early_fixup(struct pci_dev *dev)
+ 
++static struct device_node *
++pci_of_match_device(struct device_d *parent, unsigned int devfn)
 +{
-+	u32 dw;
++	struct device_node *np;
++	u32 reg;
 +
-+	if (!of_machine_is_compatible("gw,ventana"))
-+		return;
++	if (!IS_ENABLED(CONFIG_OFTREE) || !parent->device_node)
++		return NULL;
 +
-+	if (dev->devfn != 0)
-+		return;
++	for_each_child_of_node(parent->device_node, np) {
++		if (!of_property_read_u32_array(np, "reg", &reg, 1)) {
++			/*
++			 * Only match device/function pair of the device
++			 * address, other properties are defined by the
++			 * PCI/OF node topology.
++			 */
++			reg = (reg >> 8) & 0xffff;
++			if (reg == devfn)
++				return np;
++		}
++	}
 +
-+	pci_read_config_dword(dev, 0x62c, &dw);
-+	dw |= 0xaaa8; // GPIO1-7 outputs
-+	pci_write_config_dword(dev, 0x62c, dw);
-+
-+	pci_read_config_dword(dev, 0x644, &dw);
-+	dw |= 0xfe;   // GPIO1-7 output high
-+	pci_write_config_dword(dev, 0x644, dw);
-+
-+	mdelay(100);
++	return NULL;
 +}
-+DECLARE_PCI_FIXUP_EARLY(0x10b5, 0x8609, ventana_pciesw_early_fixup);
-+DECLARE_PCI_FIXUP_EARLY(0x10b5, 0x8606, ventana_pciesw_early_fixup);
-+DECLARE_PCI_FIXUP_EARLY(0x10b5, 0x8604, ventana_pciesw_early_fixup);
++
+ unsigned int pci_scan_bus(struct pci_bus *bus)
+ {
+ 	struct pci_dev *dev;
+@@ -368,6 +393,11 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
+ 		dev->vendor = l & 0xffff;
+ 		dev->device = (l >> 16) & 0xffff;
+ 		dev->dev.parent = bus->parent;
++		dev->dev.device_node = pci_of_match_device(bus->parent, devfn);
++		if (dev->dev.device_node)
++			pr_debug("found DT node %s for device %04x:%04x\n",
++				 dev->dev.device_node->full_name,
++				 dev->vendor, dev->device);
+ 
+ 		/* non-destructively determine if device can be a master: */
+ 		pci_read_config_byte(dev, PCI_COMMAND, &cmd);
 -- 
 2.18.0
 
