@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.20])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1flVbJ-0003tI-80
- for barebox@lists.infradead.org; Fri, 03 Aug 2018 08:38:23 +0000
-References: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
- <20180720091145.kz2ksyeeumeqf73p@pengutronix.de>
- <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
- <278d07f4-decf-fabc-62cb-7661b1c73a54@rempel-privat.de>
- <CAEp+FuBaOxzoc0aiXpPwm24RQw9hDB-5HiWmTCqMAPf+RYpjjg@mail.gmail.com>
- <CAEp+FuCv-C4Px35VvOW+4ONTq9RU_MELG4kzDdRggvexiXBGtA@mail.gmail.com>
-From: Oleksij Rempel <linux@rempel-privat.de>
-Message-ID: <6d5fafcb-af99-ec0f-469b-63e4e4f97c51@rempel-privat.de>
-Date: Fri, 3 Aug 2018 10:37:59 +0200
-MIME-Version: 1.0
-In-Reply-To: <CAEp+FuCv-C4Px35VvOW+4ONTq9RU_MELG4kzDdRggvexiXBGtA@mail.gmail.com>
+ id 1fkmeY-0007vS-R4
+ for barebox@lists.infradead.org; Wed, 01 Aug 2018 08:38:44 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1fkmeN-0008Bs-5x
+ for barebox@lists.infradead.org; Wed, 01 Aug 2018 10:38:31 +0200
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed,  1 Aug 2018 10:38:28 +0200
+Message-Id: <20180801083831.12983-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,111 +19,144 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============7165532353506822310=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: MFGTools support in barebox
-To: Mihaita Ivascu <mihaita_ivascu@trimble.com>
-Cc: barebox@lists.infradead.org, u.kleine-koenig@pengutronix.de
+Subject: [PATCH] ARM: mmu: fix cache flushing when replacing a section with a
+ PTE
+To: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============7165532353506822310==
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="V8tG2Z2rY8IOO2fAx465SdiMGObzgJVVK"
+When replacing a section with a PTE, we must make sure that the newly
+initialized PTE entries are flushed from the cache before changing the
+entry in the TTB. Otherwise a L1 TLB miss causes the hardware pagetable
+walker to walk into a PTE with undefined content, causing exactly that
+behaviour.
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---V8tG2Z2rY8IOO2fAx465SdiMGObzgJVVK
-Content-Type: multipart/mixed; boundary="G2hzNlry9nsO8BQFqGvUb4NTMiE0hJ1wO";
- protected-headers="v1"
-From: Oleksij Rempel <linux@rempel-privat.de>
-To: Mihaita Ivascu <mihaita_ivascu@trimble.com>
-Cc: barebox@lists.infradead.org, u.kleine-koenig@pengutronix.de
-Message-ID: <6d5fafcb-af99-ec0f-469b-63e4e4f97c51@rempel-privat.de>
-Subject: Re: MFGTools support in barebox
-References: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
- <20180720091145.kz2ksyeeumeqf73p@pengutronix.de>
- <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
- <278d07f4-decf-fabc-62cb-7661b1c73a54@rempel-privat.de>
- <CAEp+FuBaOxzoc0aiXpPwm24RQw9hDB-5HiWmTCqMAPf+RYpjjg@mail.gmail.com>
- <CAEp+FuCv-C4Px35VvOW+4ONTq9RU_MELG4kzDdRggvexiXBGtA@mail.gmail.com>
-In-Reply-To: <CAEp+FuCv-C4Px35VvOW+4ONTq9RU_MELG4kzDdRggvexiXBGtA@mail.gmail.com>
+Move all the necessary cache flushing to arm_create_pte(), to avoid any
+caller getting this wrong in the future.
 
---G2hzNlry9nsO8BQFqGvUb4NTMiE0hJ1wO
-Content-Type: text/plain; charset=utf-8
-Content-Language: ru
-Content-Transfer-Encoding: quoted-printable
+Fixes: e3e54c644180 (ARM: mmu: Implement on-demand PTE allocation)
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/cpu/mmu.c | 77 +++++++++++++++++++---------------------------
+ 1 file changed, 32 insertions(+), 45 deletions(-)
 
-Hi
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index ae189ecdeb16..712c3930fb71 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -85,34 +85,6 @@ static void arm_mmu_not_initialized_error(void)
+ 	panic("MMU not initialized\n");
+ }
+ 
+-/*
+- * Create a second level translation table for the given virtual address.
+- * We initially create a flat uncached mapping on it.
+- * Not yet exported, but may be later if someone finds use for it.
+- */
+-static u32 *arm_create_pte(unsigned long virt, uint32_t flags)
+-{
+-	u32 *table;
+-	int i;
+-
+-	virt = ALIGN_DOWN(virt, PGDIR_SIZE);
+-
+-	table = xmemalign(PTRS_PER_PTE * sizeof(u32),
+-			  PTRS_PER_PTE * sizeof(u32));
+-
+-	if (!ttb)
+-		arm_mmu_not_initialized_error();
+-
+-	ttb[pgd_index(virt)] = (unsigned long)table | PMD_TYPE_TABLE;
+-
+-	for (i = 0; i < PTRS_PER_PTE; i++) {
+-		table[i] = virt | PTE_TYPE_SMALL | flags;
+-		virt += PAGE_SIZE;
+-	}
+-
+-	return table;
+-}
+-
+ static bool pgd_type_table(u32 pgd)
+ {
+ 	return (pgd & PMD_TYPE_MASK) == PMD_TYPE_TABLE;
+@@ -152,6 +124,38 @@ static void dma_inv_range(unsigned long start, unsigned long end)
+ 	__dma_inv_range(start, end);
+ }
+ 
++/*
++ * Create a second level translation table for the given virtual address.
++ * We initially create a flat uncached mapping on it.
++ * Not yet exported, but may be later if someone finds use for it.
++ */
++static u32 *arm_create_pte(unsigned long virt, uint32_t flags)
++{
++	u32 *table;
++	int i, ttb_idx;
++
++	virt = ALIGN_DOWN(virt, PGDIR_SIZE);
++
++	table = xmemalign(PTRS_PER_PTE * sizeof(u32),
++			  PTRS_PER_PTE * sizeof(u32));
++
++	if (!ttb)
++		arm_mmu_not_initialized_error();
++
++	ttb_idx = pgd_index(virt);
++
++	for (i = 0; i < PTRS_PER_PTE; i++) {
++		table[i] = virt | PTE_TYPE_SMALL | flags;
++		virt += PAGE_SIZE;
++	}
++	dma_flush_range(table, PTRS_PER_PTE * sizeof(u32));
++
++	ttb[ttb_idx] = (unsigned long)table | PMD_TYPE_TABLE;
++	dma_flush_range(ttb, sizeof(u32));
++
++	return table;
++}
++
+ int arch_remap_range(void *start, size_t size, unsigned flags)
+ {
+ 	u32 addr = (u32)start;
+@@ -227,12 +231,6 @@ int arch_remap_range(void *start, size_t size, unsigned flags)
+ 				table = arm_create_pte(addr, pte_flags_cached);
+ 				pte = find_pte(addr);
+ 				BUG_ON(!pte);
+-				/*
+-				 * We just split this section and
+-				 * modified it's Level 1 descriptor,
+-				 * so it needs to be flushed.
+-				 */
+-				dma_flush_range(pgd, sizeof(*pgd));
+ 			}
+ 
+ 			for (i = 0; i < num_ptes; i++) {
+@@ -240,17 +238,6 @@ int arch_remap_range(void *start, size_t size, unsigned flags)
+ 				pte[i] |= pte_flags | PTE_TYPE_SMALL;
+ 			}
+ 
+-			if (table) {
+-				/*
+-				 * If we just created a new page
+-				 * table, the whole table would have
+-				 * to be flushed, not just PTEs that
+-				 * we touched when re-mapping.
+-				 */
+-				pte = table;
+-				num_ptes = PTRS_PER_PTE;
+-			}
+-
+ 			dma_flush_range(pte, num_ptes * sizeof(u32));
+ 		}
+ 
+-- 
+2.18.0
 
-Am 03.08.2018 um 10:21 schrieb Mihaita Ivascu:
-> Hello,
->=20
->      On the topic of enabling fastboot in barebox 2018.04, I have
-> enabled USB gadget support:
->   USB_GADGET_DRIVER_ARC=3Dy
->   USB_GADGET_AUTOSTART=3Dy
->   USB_GADGET=3Dy
->   USB_GADGET_FASTBOOT=3Dy
->   USB_GADGET_FASTBOOT_SPARSE=3Dy
->=20
->      I am using board and BSP from Phytec for imx6ul evk. I have
-> reviews usb code and first option USB_GADGET_DRIVER_ARC should enable
-> UDC functionality.
->     However when tring to start fastboot according to
-> https://www.barebox.org/doc/latest/user/usb.html#android-fastboot-suppo=
-rt
->     I get message about UDC not found, so udc driver probe method does
-> not find any udc device.
->=20
-> barebox@Phytec phyCORE-i.MX6 Ultra Lite SOM:/ usbgadget -A
-> /kernel(kernel)c,/initrd(initrd)c,/devicetree(devicetree)c
-> couldn't find an available UDC
-> usbgadget: No such device
->=20
->     Does anybody has experience with this topic, what am I missing in
-> the configuration steps or where could find complete steps on enabling
-> fastboot in barebox?
-
-You are missing actual USB Controler which should be configured to work
-in gadget/otg mode.
-
---=20
-Regards,
-Oleksij
-
-
---G2hzNlry9nsO8BQFqGvUb4NTMiE0hJ1wO--
-
---V8tG2Z2rY8IOO2fAx465SdiMGObzgJVVK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEpENFL0P3hvQ7p0DDdQOiSHVI77QFAltkFGoACgkQdQOiSHVI
-77Sywwf/VQUzNrPeKKFBuawuxS4Arr6vmk2Ft9KIdyXdE6JBOdVPh67N6K0nkuBp
-gUbkgneTKq5VG3EVSe8cBAqC4yIatXT9c2jDzjpnaMv9iyGFH/QCDJwYpj6OB2rf
-IA8630pFLhb727j0ZiHqmxBIVCOKE2L1kGy4Aqp5bY+rb9p3gIxHFktGRjsMGTTr
-2Yg2hlxmakwSbLpDflt2KiA3iTLL49VXku0qr4D+Y5KR2MGDgURrQvoWKxp9MtIX
-iQZ2t1akrlMo6nXOI/2IVT722ecH7imWCZrc8KOhdMJPjXy7PjQSvB/y+JyxhZ1G
-t1vXyHPOgBD9GaT0eZdv/cjwMRh0Pg==
-=zY+M
------END PGP SIGNATURE-----
-
---V8tG2Z2rY8IOO2fAx465SdiMGObzgJVVK--
-
-
---===============7165532353506822310==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============7165532353506822310==--
