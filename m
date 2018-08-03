@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi0-x243.google.com ([2607:f8b0:4003:c06::243])
+Received: from mout.gmx.net ([212.227.17.20])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1flVLI-0006xj-J3
- for barebox@lists.infradead.org; Fri, 03 Aug 2018 08:21:50 +0000
-Received: by mail-oi0-x243.google.com with SMTP id w126-v6so8404884oie.7
- for <barebox@lists.infradead.org>; Fri, 03 Aug 2018 01:21:37 -0700 (PDT)
-MIME-Version: 1.0
+ id 1flVbJ-0003tI-80
+ for barebox@lists.infradead.org; Fri, 03 Aug 2018 08:38:23 +0000
 References: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
  <20180720091145.kz2ksyeeumeqf73p@pengutronix.de>
  <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
  <278d07f4-decf-fabc-62cb-7661b1c73a54@rempel-privat.de>
  <CAEp+FuBaOxzoc0aiXpPwm24RQw9hDB-5HiWmTCqMAPf+RYpjjg@mail.gmail.com>
-In-Reply-To: <CAEp+FuBaOxzoc0aiXpPwm24RQw9hDB-5HiWmTCqMAPf+RYpjjg@mail.gmail.com>
-From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
-Date: Fri, 3 Aug 2018 10:21:25 +0200
-Message-ID: <CAEp+FuCv-C4Px35VvOW+4ONTq9RU_MELG4kzDdRggvexiXBGtA@mail.gmail.com>
+ <CAEp+FuCv-C4Px35VvOW+4ONTq9RU_MELG4kzDdRggvexiXBGtA@mail.gmail.com>
+From: Oleksij Rempel <linux@rempel-privat.de>
+Message-ID: <6d5fafcb-af99-ec0f-469b-63e4e4f97c51@rempel-privat.de>
+Date: Fri, 3 Aug 2018 10:37:59 +0200
+MIME-Version: 1.0
+In-Reply-To: <CAEp+FuCv-C4Px35VvOW+4ONTq9RU_MELG4kzDdRggvexiXBGtA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,83 +22,111 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============7165532353506822310=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: MFGTools support in barebox
-To: linux@rempel-privat.de
+To: Mihaita Ivascu <mihaita_ivascu@trimble.com>
 Cc: barebox@lists.infradead.org, u.kleine-koenig@pengutronix.de
 
-SGVsbG8sCgogICAgIE9uIHRoZSB0b3BpYyBvZiBlbmFibGluZyBmYXN0Ym9vdCBpbiBiYXJlYm94
-IDIwMTguMDQsIEkgaGF2ZQplbmFibGVkIFVTQiBnYWRnZXQgc3VwcG9ydDoKICBVU0JfR0FER0VU
-X0RSSVZFUl9BUkM9eQogIFVTQl9HQURHRVRfQVVUT1NUQVJUPXkKICBVU0JfR0FER0VUPXkKICBV
-U0JfR0FER0VUX0ZBU1RCT09UPXkKICBVU0JfR0FER0VUX0ZBU1RCT09UX1NQQVJTRT15CgogICAg
-IEkgYW0gdXNpbmcgYm9hcmQgYW5kIEJTUCBmcm9tIFBoeXRlYyBmb3IgaW14NnVsIGV2ay4gSSBo
-YXZlCnJldmlld3MgdXNiIGNvZGUgYW5kIGZpcnN0IG9wdGlvbiBVU0JfR0FER0VUX0RSSVZFUl9B
-UkMgc2hvdWxkIGVuYWJsZQpVREMgZnVuY3Rpb25hbGl0eS4KICAgIEhvd2V2ZXIgd2hlbiB0cmlu
-ZyB0byBzdGFydCBmYXN0Ym9vdCBhY2NvcmRpbmcgdG8KaHR0cHM6Ly93d3cuYmFyZWJveC5vcmcv
-ZG9jL2xhdGVzdC91c2VyL3VzYi5odG1sI2FuZHJvaWQtZmFzdGJvb3Qtc3VwcG9ydAogICAgSSBn
-ZXQgbWVzc2FnZSBhYm91dCBVREMgbm90IGZvdW5kLCBzbyB1ZGMgZHJpdmVyIHByb2JlIG1ldGhv
-ZCBkb2VzCm5vdCBmaW5kIGFueSB1ZGMgZGV2aWNlLgoKYmFyZWJveEBQaHl0ZWMgcGh5Q09SRS1p
-Lk1YNiBVbHRyYSBMaXRlIFNPTTovIHVzYmdhZGdldCAtQQova2VybmVsKGtlcm5lbCljLC9pbml0
-cmQoaW5pdHJkKWMsL2RldmljZXRyZWUoZGV2aWNldHJlZSljCmNvdWxkbid0IGZpbmQgYW4gYXZh
-aWxhYmxlIFVEQwp1c2JnYWRnZXQ6IE5vIHN1Y2ggZGV2aWNlCgogICAgRG9lcyBhbnlib2R5IGhh
-cyBleHBlcmllbmNlIHdpdGggdGhpcyB0b3BpYywgd2hhdCBhbSBJIG1pc3NpbmcgaW4KdGhlIGNv
-bmZpZ3VyYXRpb24gc3RlcHMgb3Igd2hlcmUgY291bGQgZmluZCBjb21wbGV0ZSBzdGVwcyBvbiBl
-bmFibGluZwpmYXN0Ym9vdCBpbiBiYXJlYm94PwoKVGhhbmtzLAogICAgICBNaWhhaXRhCgpPbiBG
-cmksIEp1bCAyMCwgMjAxOCBhdCA4OjE0IFBNIE1paGFpdGEgSXZhc2N1CjxtaWhhaXRhX2l2YXNj
-dUB0cmltYmxlLmNvbT4gd3JvdGU6Cj4KPiBUaGFua3MgZm9yIHRoZSBpbmZvLiBpIGdvdCB0aGF0
-IGFscmVhZHkuIFNvbWUgY29uZmlncyB0aGF0IHNob3VsZCBiZQo+IGVuYWJsZWQgYXJlIG5vdCB0
-byBiZSBmb3VuZCBpbiBteSBiYXJlYm94IHlldC4KPiAgSSB3aWxsIHdvcmsgb24gaXQgYW5kIGlm
-IEkgYW0gbm90IHN1Y2Nlc3NmdWwgbWF5YmUgSSB3aWxsIHJldHVybiB3aXRoCj4gYSBxdWVzdGlv
-bi4KPgo+IEJlc3QgcmVnYXJkcywKPiAgICAgICAgICBNaWhhaXRhCj4gT24gRnJpLCBKdWwgMjAs
-IDIwMTggYXQgMTE6NTcgQU0gT2xla3NpaiBSZW1wZWwgPGxpbnV4QHJlbXBlbC1wcml2YXQuZGU+
-IHdyb3RlOgo+ID4KPiA+IEFtIDIwLjA3LjIwMTggdW0gMTE6MzIgc2NocmllYiBNaWhhaXRhIEl2
-YXNjdToKPiA+ID4gSGksCj4gPiA+Cj4gPiA+ICAgIEkgaGF2ZSBib3RoICBBbmRyb2lkIEZhc3Ri
-b290IHN1cHBvcnQgYW5kIEZhc3Rib290IHNwYXJzZSBpbWFnZQo+ID4gPiBzdXBwb3J0IGVuYWJs
-ZWQgaW4gYmFyZWJveCBjb25maWcoaXMgYnkgZGVmYXVsdCkgYnV0IEkgc2VlIG5vdCBkZXZpY2UK
-PiA+ID4gbm9kZSBjcmVhdGVkIHdoZW4gY29ubmVjdGluZyBVU0IgZGV2aWNlICBub3IgZG8gSSBz
-ZWUgYW55IGZhc3Rib290Cj4gPiA+IGNvbW1hbmRzIGluIGJhcmVib3ggc2hlbGwuCj4gPiA+ICAg
-IE15IHF1ZXN0aW9uIGlzOiBob3cgZG8gSSB1c2UgZmFzdGJvb3Q/IFdoYXQgaXMgdGhlIGNvbXBs
-ZXRlCj4gPiA+IGNvbmZpZ3VyYXRpb24gbmVlZGVkIHRvIGVuYWJsZSBmYXN0Ym9vdCBpbiBiYXJl
-Ym94Pwo+ID4KPiA+IEdvb2dsaW5nICJiYXJlYm94IGZhc3Rib290Igo+ID4gRmlyc3QgcmVzdWx0
-IHdoaWNoIGkgZ2V0IGlzIHRoaXMgcGFnZToKPiA+IGh0dHBzOi8vd3d3LmJhcmVib3gub3JnL2Rv
-Yy9sYXRlc3QvdXNlci91c2IuaHRtbCNhbmRyb2lkLWZhc3Rib290LXN1cHBvcnQKPiA+Cj4gPiA+
-IEJlc3QgcmVnYXJkcywKPiA+ID4gICAgICAgICAgTWloYWl0YSBJdmFzY3UKPiA+ID4KPiA+ID4K
-PiA+ID4gT24gRnJpLCBKdWwgMjAsIDIwMTggYXQgMTE6MTEgQU0gVXdlIEtsZWluZS1Lw7ZuaWcK
-PiA+ID4gPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4gPiA+Pgo+ID4g
-Pj4gT24gV2VkLCBKdWwgMTgsIDIwMTggYXQgMDk6Mzk6MjNBTSArMDIwMCwgTWloYWl0YSBJdmFz
-Y3Ugd3JvdGU6Cj4gPiA+Pj4gSGVsbG8sCj4gPiA+Pj4KPiA+ID4+PiAgICAgIEkgd291bGQgbGlr
-ZSB0byBmbGFzaCBhIGJhcmVib3ggaW1hZ2Ugb24gTkFORCBmb3IgYSBQaHl0ZWMgaW14NnVsCj4g
-PiA+Pj4gZXZrIGJvYXJkIHVzaW5nIE1GR1Rvb2xzLgo+ID4gPj4+ICAgICAgSSBoYXZlIGFkZGVk
-IHN1cHBvcnQgZm9yIFVUUCBwcm90b2NvbCBpbiBrZXJuZWwgaW1hZ2Ugc28gY29tbWFuZHMKPiA+
-ID4+PiBjb3VsZCBiZSAicHVzaGVkIiB1c2luZyBNRkd0b29scyBhcHAgZnJvbSBXaW5kb3dzLgo+
-ID4gPj4+ICAgICAgQnV0IG9idmlvdXNseSBJIGNhbm5vdCBwdXNoIGJhcmVib3hfdXBkYXRlIGNv
-bW1hbmQgdG8gTGludXguCj4gPiA+Pj4gICAgICBTbyBJIHRoaW5rIEkgaGF2ZSB0d28gb3B0aW9u
-czoKPiA+ID4+Pgo+ID4gPj4+IDEpIHBvcnRpbmcgYmFyZWJveF91cGRhdGUgY29tbWFuZCB0byBM
-aW51eCB3aGljaCBJIGRvIG5vdCBmaW5kIGl0IHNvCj4gPiA+Pj4gZWFzeS4gSSBhbSBhbHJlYWR5
-IHdvcmtpbmcgb24gaXQKPiA+ID4+PiAyKSBhZGRpbmcgVVRQIHN1cHBvcnQgaW4gYmFyZWJveCBz
-byBJIGNvdWxkIGp1c3QgbG9hZCB0aGUgYmFyZWJveAo+ID4gPj4+IGltYWdlIGluIFJBTSB1c2lu
-ZyBNRkd0b29scywgdGhlcmUgYSB1dHAgZGV2aWNlIG5vZGUgd291bGQgYmUgY3JlYXRlZAo+ID4g
-Pj4+IGFuZCB0aGVuIEkgY291bGQgcHVzaCBiYXJlYm94IHNwZWNpZmljIGNvbW1hbmRzIGRpcmVj
-dGx5IGZyb20KPiA+ID4+PiBNRkd0b29scy4KPiA+ID4+PiAgICAgICBJIGhhdmUgYWRkZWQgVVRQ
-IHN1cHBvcnQgaW4gbGludXggVVNCIGdhZGdldCBjb2RlIGJ1dCBJIHNlZQo+ID4gPj4+IGJhcmVi
-b3ggVVNCIGdhZGdldCBjb2RlIGlzIHF1aXRlIGRpZmZlcmVudCBhbmQgbm90IGFsbCBmdW5jdGlv
-bmFsaXR5Cj4gPiA+Pj4gYXJlIGluIHBsYWNlIHNvIEkgYWxzbyBzdHJ1Z2dsZSBhIGJpdCBvZiBw
-b3JpbnQgZ1VUUCBwYXRjaGVzIGZyb20KPiA+ID4+PiBMaW51eCB0byBiYXJlYm94Lgo+ID4gPj4+
-ICAgICAgRG9lcyBhbnlib2R5IGhhdmUgYW55IGV4cGVyaWVuY2Ugd2l0aCB0aGlzIHRvcGljIG9y
-IGNvdWQgYWR2aXNlCj4gPiA+Pj4gbWUgb24gaG93IHRvIHByb2NlZT8KPiA+ID4+Cj4gPiA+PiBX
-aHkgYXJlIHlvdSBzdGlja2VkIHRvIE1GR1Rvb2xzPyBiYXJlYm94IGNhbiBkbyBmYXN0Ym9vdCB3
-aGljaCBzaG91bGQKPiA+ID4+IHdvcmsgZnJvbSBXaW5kb3dzIGp1c3QgZmluZS4KPiA+ID4+Cj4g
-PiA+PiBCZXN0IHJlZ2FyZHMKPiA+ID4+IFV3ZQo+ID4gPj4KPiA+ID4+IC0tCj4gPiA+PiBQZW5n
-dXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCBVd2UgS2xlaW5lLUvDtm5p
-ZyAgICAgICAgICAgIHwKPiA+ID4+IEluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAg
-ICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8Cj4gPiA+Cj4gPiA+IF9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gPiA+IGJhcmVib3gg
-bWFpbGluZyBsaXN0Cj4gPiA+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+ID4gPiBodHRw
-Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKPiA+ID4KPiA+
-Cj4gPgo+ID4gLS0KPiA+IFJlZ2FyZHMsCj4gPiBPbGVrc2lqCj4gPgoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vYmFyZWJveAo=
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============7165532353506822310==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="V8tG2Z2rY8IOO2fAx465SdiMGObzgJVVK"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--V8tG2Z2rY8IOO2fAx465SdiMGObzgJVVK
+Content-Type: multipart/mixed; boundary="G2hzNlry9nsO8BQFqGvUb4NTMiE0hJ1wO";
+ protected-headers="v1"
+From: Oleksij Rempel <linux@rempel-privat.de>
+To: Mihaita Ivascu <mihaita_ivascu@trimble.com>
+Cc: barebox@lists.infradead.org, u.kleine-koenig@pengutronix.de
+Message-ID: <6d5fafcb-af99-ec0f-469b-63e4e4f97c51@rempel-privat.de>
+Subject: Re: MFGTools support in barebox
+References: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
+ <20180720091145.kz2ksyeeumeqf73p@pengutronix.de>
+ <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
+ <278d07f4-decf-fabc-62cb-7661b1c73a54@rempel-privat.de>
+ <CAEp+FuBaOxzoc0aiXpPwm24RQw9hDB-5HiWmTCqMAPf+RYpjjg@mail.gmail.com>
+ <CAEp+FuCv-C4Px35VvOW+4ONTq9RU_MELG4kzDdRggvexiXBGtA@mail.gmail.com>
+In-Reply-To: <CAEp+FuCv-C4Px35VvOW+4ONTq9RU_MELG4kzDdRggvexiXBGtA@mail.gmail.com>
+
+--G2hzNlry9nsO8BQFqGvUb4NTMiE0hJ1wO
+Content-Type: text/plain; charset=utf-8
+Content-Language: ru
+Content-Transfer-Encoding: quoted-printable
+
+Hi
+
+Am 03.08.2018 um 10:21 schrieb Mihaita Ivascu:
+> Hello,
+>=20
+>      On the topic of enabling fastboot in barebox 2018.04, I have
+> enabled USB gadget support:
+>   USB_GADGET_DRIVER_ARC=3Dy
+>   USB_GADGET_AUTOSTART=3Dy
+>   USB_GADGET=3Dy
+>   USB_GADGET_FASTBOOT=3Dy
+>   USB_GADGET_FASTBOOT_SPARSE=3Dy
+>=20
+>      I am using board and BSP from Phytec for imx6ul evk. I have
+> reviews usb code and first option USB_GADGET_DRIVER_ARC should enable
+> UDC functionality.
+>     However when tring to start fastboot according to
+> https://www.barebox.org/doc/latest/user/usb.html#android-fastboot-suppo=
+rt
+>     I get message about UDC not found, so udc driver probe method does
+> not find any udc device.
+>=20
+> barebox@Phytec phyCORE-i.MX6 Ultra Lite SOM:/ usbgadget -A
+> /kernel(kernel)c,/initrd(initrd)c,/devicetree(devicetree)c
+> couldn't find an available UDC
+> usbgadget: No such device
+>=20
+>     Does anybody has experience with this topic, what am I missing in
+> the configuration steps or where could find complete steps on enabling
+> fastboot in barebox?
+
+You are missing actual USB Controler which should be configured to work
+in gadget/otg mode.
+
+--=20
+Regards,
+Oleksij
+
+
+--G2hzNlry9nsO8BQFqGvUb4NTMiE0hJ1wO--
+
+--V8tG2Z2rY8IOO2fAx465SdiMGObzgJVVK
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEpENFL0P3hvQ7p0DDdQOiSHVI77QFAltkFGoACgkQdQOiSHVI
+77Sywwf/VQUzNrPeKKFBuawuxS4Arr6vmk2Ft9KIdyXdE6JBOdVPh67N6K0nkuBp
+gUbkgneTKq5VG3EVSe8cBAqC4yIatXT9c2jDzjpnaMv9iyGFH/QCDJwYpj6OB2rf
+IA8630pFLhb727j0ZiHqmxBIVCOKE2L1kGy4Aqp5bY+rb9p3gIxHFktGRjsMGTTr
+2Yg2hlxmakwSbLpDflt2KiA3iTLL49VXku0qr4D+Y5KR2MGDgURrQvoWKxp9MtIX
+iQZ2t1akrlMo6nXOI/2IVT722ecH7imWCZrc8KOhdMJPjXy7PjQSvB/y+JyxhZ1G
+t1vXyHPOgBD9GaT0eZdv/cjwMRh0Pg==
+=zY+M
+-----END PGP SIGNATURE-----
+
+--V8tG2Z2rY8IOO2fAx465SdiMGObzgJVVK--
+
+
+--===============7165532353506822310==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============7165532353506822310==--
