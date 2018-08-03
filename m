@@ -1,17 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from wiems06001.ceu.heidelberg.com ([193.99.214.199]
- helo=mail3.heidelberg.com)
+Received: from mail-oi0-x243.google.com ([2607:f8b0:4003:c06::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1flYuw-0005EC-GU
- for barebox@lists.infradead.org; Fri, 03 Aug 2018 12:10:52 +0000
-From: "Toews, Dietrich" <Dietrich.Toews@heidelberg.com>
-Date: Fri, 3 Aug 2018 12:10:34 +0000
-Message-ID: <F272D9410BD38E429D604B94748C61547AB08F97@WIEMS02101.ceu.corp.heidelberg.com>
-References: <F272D9410BD38E429D604B94748C61547AB08E80@WIEMS02101.ceu.corp.heidelberg.com>
- <a3bd0a48-665c-f654-0434-ca73cec7ca98@rempel-privat.de>
-In-Reply-To: <a3bd0a48-665c-f654-0434-ca73cec7ca98@rempel-privat.de>
-Content-Language: de-DE
+ id 1fld5i-000062-1K
+ for barebox@lists.infradead.org; Fri, 03 Aug 2018 16:38:15 +0000
+Received: by mail-oi0-x243.google.com with SMTP id 8-v6so10952825oip.0
+ for <barebox@lists.infradead.org>; Fri, 03 Aug 2018 09:38:02 -0700 (PDT)
 MIME-Version: 1.0
+References: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
+ <20180720091145.kz2ksyeeumeqf73p@pengutronix.de>
+ <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
+ <278d07f4-decf-fabc-62cb-7661b1c73a54@rempel-privat.de>
+ <CAEp+FuBaOxzoc0aiXpPwm24RQw9hDB-5HiWmTCqMAPf+RYpjjg@mail.gmail.com>
+ <CAEp+FuCv-C4Px35VvOW+4ONTq9RU_MELG4kzDdRggvexiXBGtA@mail.gmail.com>
+ <6d5fafcb-af99-ec0f-469b-63e4e4f97c51@rempel-privat.de>
+In-Reply-To: <6d5fafcb-af99-ec0f-469b-63e4e4f97c51@rempel-privat.de>
+From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
+Date: Fri, 3 Aug 2018 18:37:47 +0200
+Message-ID: <CAEp+FuCoqbg+_G+rNSvjnJBiYS3Au8Wg7hWfUHnTpa53yKSnLw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,118 +29,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: PATCH added tftp port to fsoptions
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: MFGTools support in barebox
+To: linux@rempel-privat.de
+Cc: barebox@lists.infradead.org, u.kleine-koenig@pengutronix.de
 
 Hi,
 
-that can be a way, but then it is not possible to connect to different servers, when they have different ports.
-e.g. one server for large files, one (intelligent) server for script-files
+    I have usb controller configured for OTG both in .config and
+device tree sources. But still usbgadget complains about not finding
+UDC
 
-Why different ports? - For testing it is very nice to have all the servers on one machine.
-
-Dietrich
-
------Original Message-----
-Hi,
-
-Am 03.08.2018 um 13:07 schrieb Toews, Dietrich:
-> Hi all,
+Thanks,
+       Mihaita
+On Fri, Aug 3, 2018 at 10:38 AM Oleksij Rempel <linux@rempel-privat.de> wrote:
 >
-> we are using barebox for a while now, but we need different tftp-server with different ports.
-> Here a proposition for a patch, if someone else needs it also.
+> Hi
 >
-> Usage: tftp -o port=1234 ....
-
-Good point. I assume, barebox way, would be to make it:
-global.net.tftp_port
-nv.net.tftp_port
-nv.dev.<devname>.tftp_port
-
-> Sincirely
-> Dietrich
+> Am 03.08.2018 um 10:21 schrieb Mihaita Ivascu:
+> > Hello,
+> >
+> >      On the topic of enabling fastboot in barebox 2018.04, I have
+> > enabled USB gadget support:
+> >   USB_GADGET_DRIVER_ARC=y
+> >   USB_GADGET_AUTOSTART=y
+> >   USB_GADGET=y
+> >   USB_GADGET_FASTBOOT=y
+> >   USB_GADGET_FASTBOOT_SPARSE=y
+> >
+> >      I am using board and BSP from Phytec for imx6ul evk. I have
+> > reviews usb code and first option USB_GADGET_DRIVER_ARC should enable
+> > UDC functionality.
+> >     However when tring to start fastboot according to
+> > https://www.barebox.org/doc/latest/user/usb.html#android-fastboot-support
+> >     I get message about UDC not found, so udc driver probe method does
+> > not find any udc device.
+> >
+> > barebox@Phytec phyCORE-i.MX6 Ultra Lite SOM:/ usbgadget -A
+> > /kernel(kernel)c,/initrd(initrd)c,/devicetree(devicetree)c
+> > couldn't find an available UDC
+> > usbgadget: No such device
+> >
+> >     Does anybody has experience with this topic, what am I missing in
+> > the configuration steps or where could find complete steps on enabling
+> > fastboot in barebox?
 >
->
-> From 062a4c8148c2d31c7ce1d405632051b297b64ce0 Mon Sep 17 00:00:00 2001
-> From: Dietrich Toews <dietrich.toews@heidelberg.com>
-> Date: Fri, 3 Aug 2018 12:55:53 +0200
-> Subject: [PATCH] Added tftp port to fsoptions
->
-> ---
->  fs/tftp.c | 20 ++++++++++++++++++--
->  1 file changed, 18 insertions(+), 2 deletions(-)
->
-> diff --git a/fs/tftp.c b/fs/tftp.c
-> index 847921a..13efa20 100644
-> --- a/fs/tftp.c
-> +++ b/fs/tftp.c
-> @@ -87,6 +87,7 @@ struct file_priv {
->
->  struct tftp_priv {
->         IPaddr_t server;
-> +       uint16_t port;
->  };
->
->  static int tftp_create(struct device_d *dev, const char *pathname,
-> mode_t mode) @@ -423,7 +424,7 @@ static struct file_priv *tftp_do_open(struct device_d *dev,
->                 goto out;
->         }
->
-> -       priv->tftp_con = net_udp_new(tpriv->server, TFTP_PORT, tftp_handler,
-> +       priv->tftp_con = net_udp_new(tpriv->server, tpriv->port,
-> + tftp_handler,
->                         priv);
->         if (IS_ERR(priv->tftp_con)) {
->                 ret = PTR_ERR(priv->tftp_con); @@ -651,7 +652,22 @@
-> static int tftp_probe(struct device_d *dev)
->         dev->priv = priv;
->
->         priv->server = resolv(fsdev->backingstore);
-> -
-> +       priv->port   = TFTP_PORT;
-> +       if( fsdev->options ) {
-> +               // ToDo: if needed check other options.
-> +               //       Assumption here: the only option used is 'port=nxxxx'
-> +               if( strncmp( fsdev->options, "port=", 5 ) == 0 ) {
-> +                       uint16_t p = 0;
-> +                       for( uint8_t i=5; i<10; i++ ) {
-> +                               // portnumber can only contain ascii chars 0..9
-> +                               if( (fsdev->options[i] >= 48) && (fsdev->options[i] < 58) )
-> +                                       p = (p * 10) + (fsdev->options[i] - 48);
-> +                               else
-> +                                       break;  // break on first char that is not a number
-> +                       }
-> +                       if( p > 0 ) priv->port = p;
-> +               }
-> +       }
->         return 0;
->  }
+> You are missing actual USB Controler which should be configured to work
+> in gadget/otg mode.
 >
 > --
-> 1.9.1
->
->
-> ________________________________
->
-> Confidentiality note:
-> The information in this email and any attachment may contain confidential and proprietary information of Heidelberger Druckmaschinen AG and/or its affiliates and may be privileged or otherwise protected from disclosure. If you are not the intended recipient, you are hereby notified that any review, reliance or distribution by others or forwarding without express permission is strictly prohibited and may cause liability. In case you have received this message due to an error in transmission, we kindly ask you to notify the sender immediately and to delete this email and any attachment from your system.
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> Regards,
+> Oleksij
 >
 
-
---
-Regards,
-Oleksij
-
-
-________________________________
-
-Confidentiality note:
-The information in this email and any attachment may contain confidential and proprietary information of Heidelberger Druckmaschinen AG and/or its affiliates and may be privileged or otherwise protected from disclosure. If you are not the intended recipient, you are hereby notified that any review, reliance or distribution by others or forwarding without express permission is strictly prohibited and may cause liability. In case you have received this message due to an error in transmission, we kindly ask you to notify the sender immediately and to delete this email and any attachment from your system.
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
