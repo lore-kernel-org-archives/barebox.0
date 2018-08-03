@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-oi0-x231.google.com ([2607:f8b0:4003:c06::231])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fkn0j-0003K1-0e
- for barebox@lists.infradead.org; Wed, 01 Aug 2018 09:01:38 +0000
-Received: from kresse.hi.pengutronix.de ([2001:67c:670:100:1d::2a])
- by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1fkn0X-0002cz-9D
- for barebox@lists.infradead.org; Wed, 01 Aug 2018 11:01:25 +0200
-Message-ID: <1533114085.20186.1.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 01 Aug 2018 11:01:25 +0200
-In-Reply-To: <20180801083831.12983-1-l.stach@pengutronix.de>
-References: <20180801083831.12983-1-l.stach@pengutronix.de>
-Mime-Version: 1.0
+ id 1flVMg-00078r-52
+ for barebox@lists.infradead.org; Fri, 03 Aug 2018 08:23:15 +0000
+Received: by mail-oi0-x231.google.com with SMTP id k12-v6so8379012oiw.8
+ for <barebox@lists.infradead.org>; Fri, 03 Aug 2018 01:23:03 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAEp+FuDgNdw3Grc8-YAovRFHZSoHGwWeaY-O8TxpcXo3Qve0TQ@mail.gmail.com>
+ <CAEp+FuCBnCw6PY-YcM+Ykh1bSsi-FggyZqsmHhY7rHrY+jtYXQ@mail.gmail.com>
+ <CAAP7ucL+qH9Ys2z+viSRXmJDJFSEExH+yq_r+YpQxOQ6RujA1g@mail.gmail.com>
+ <CAHQ1cqFqu2czXzxhBWQHH7woQEQ39G1hjaU_Vvg3KGnhRhnnaw@mail.gmail.com>
+In-Reply-To: <CAHQ1cqFqu2czXzxhBWQHH7woQEQ39G1hjaU_Vvg3KGnhRhnnaw@mail.gmail.com>
+From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
+Date: Fri, 3 Aug 2018 10:22:52 +0200
+Message-ID: <CAEp+FuAgKYoZMXyu6UvWq8tGk=4untyXvXc_PYH4N6NFSw5_qw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,86 +22,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: mmu: fix cache flushing when replacing a section
- with a PTE
-To: barebox@lists.infradead.org
+Subject: Re: Cannot set GPIOs in barebox
+To: andrew.smirnov@gmail.com
+Cc: barebox@lists.infradead.org, aleksander@aleksander.es
 
-UGxlYXNlIGlnbm9yZSB0aGlzIHBhdGNoLCBpdCdzIGFscmVhZHkgcGFydCBvZiBtYXN0ZXIgYW5k
-IGhhcyBiZWVuCnJlc2VudCBkdWUgdG8gUEVCS0FDLgoKQW0gTWl0dHdvY2gsIGRlbiAwMS4wOC4y
-MDE4LCAxMDozOCArMDIwMCBzY2hyaWViIEx1Y2FzIFN0YWNoOgo+IFdoZW4gcmVwbGFjaW5nIGEg
-c2VjdGlvbiB3aXRoIGEgUFRFLCB3ZSBtdXN0IG1ha2Ugc3VyZSB0aGF0IHRoZSBuZXdseQo+IGlu
-aXRpYWxpemVkIFBURSBlbnRyaWVzIGFyZSBmbHVzaGVkIGZyb20gdGhlIGNhY2hlIGJlZm9yZSBj
-aGFuZ2luZyB0aGUKPiBlbnRyeSBpbiB0aGUgVFRCLiBPdGhlcndpc2UgYSBMMSBUTEIgbWlzcyBj
-YXVzZXMgdGhlIGhhcmR3YXJlIHBhZ2V0YWJsZQo+IHdhbGtlciB0byB3YWxrIGludG8gYSBQVEUg
-d2l0aCB1bmRlZmluZWQgY29udGVudCwgY2F1c2luZyBleGFjdGx5IHRoYXQKPiBiZWhhdmlvdXIu
-Cj4gCj4gTW92ZSBhbGwgdGhlIG5lY2Vzc2FyeSBjYWNoZSBmbHVzaGluZyB0byBhcm1fY3JlYXRl
-X3B0ZSgpLCB0byBhdm9pZCBhbnkKPiBjYWxsZXIgZ2V0dGluZyB0aGlzIHdyb25nIGluIHRoZSBm
-dXR1cmUuCj4gCj4gRml4ZXM6IGUzZTU0YzY0NDE4MCAoQVJNOiBtbXU6IEltcGxlbWVudCBvbi1k
-ZW1hbmQgUFRFIGFsbG9jYXRpb24pCj4gPiBTaWduZWQtb2ZmLWJ5OiBMdWNhcyBTdGFjaCA8bC5z
-dGFjaEBwZW5ndXRyb25peC5kZT4KPiAtLS0KPiDCoGFyY2gvYXJtL2NwdS9tbXUuYyB8IDc3ICsr
-KysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiDCoDEgZmlsZSBj
-aGFuZ2VkLCAzMiBpbnNlcnRpb25zKCspLCA0NSBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0
-IGEvYXJjaC9hcm0vY3B1L21tdS5jIGIvYXJjaC9hcm0vY3B1L21tdS5jCj4gaW5kZXggYWUxODll
-Y2RlYjE2Li43MTJjMzkzMGZiNzEgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9hcm0vY3B1L21tdS5jCj4g
-KysrIGIvYXJjaC9hcm0vY3B1L21tdS5jCj4gQEAgLTg1LDM0ICs4NSw2IEBAIHN0YXRpYyB2b2lk
-IGFybV9tbXVfbm90X2luaXRpYWxpemVkX2Vycm9yKHZvaWQpCj4gPiDCoAlwYW5pYygiTU1VIG5v
-dCBpbml0aWFsaXplZFxuIik7Cj4gwqB9Cj4gwqAKPiAtLyoKPiAtICogQ3JlYXRlIGEgc2Vjb25k
-IGxldmVsIHRyYW5zbGF0aW9uIHRhYmxlIGZvciB0aGUgZ2l2ZW4gdmlydHVhbCBhZGRyZXNzLgo+
-IC0gKiBXZSBpbml0aWFsbHkgY3JlYXRlIGEgZmxhdCB1bmNhY2hlZCBtYXBwaW5nIG9uIGl0Lgo+
-IC0gKiBOb3QgeWV0IGV4cG9ydGVkLCBidXQgbWF5IGJlIGxhdGVyIGlmIHNvbWVvbmUgZmluZHMg
-dXNlIGZvciBpdC4KPiAtICovCj4gLXN0YXRpYyB1MzIgKmFybV9jcmVhdGVfcHRlKHVuc2lnbmVk
-IGxvbmcgdmlydCwgdWludDMyX3QgZmxhZ3MpCj4gLXsKPiA+IC0JdTMyICp0YWJsZTsKPiA+IC0J
-aW50IGk7Cj4gLQo+ID4gLQl2aXJ0ID0gQUxJR05fRE9XTih2aXJ0LCBQR0RJUl9TSVpFKTsKPiAt
-Cj4gPiAtCXRhYmxlID0geG1lbWFsaWduKFBUUlNfUEVSX1BURSAqIHNpemVvZih1MzIpLAo+ID4g
-LQkJCcKgwqBQVFJTX1BFUl9QVEUgKiBzaXplb2YodTMyKSk7Cj4gLQo+ID4gLQlpZiAoIXR0YikK
-PiA+IC0JCWFybV9tbXVfbm90X2luaXRpYWxpemVkX2Vycm9yKCk7Cj4gLQo+ID4gLQl0dGJbcGdk
-X2luZGV4KHZpcnQpXSA9ICh1bnNpZ25lZCBsb25nKXRhYmxlIHwgUE1EX1RZUEVfVEFCTEU7Cj4g
-LQo+ID4gLQlmb3IgKGkgPSAwOyBpIDwgUFRSU19QRVJfUFRFOyBpKyspIHsKPiA+IC0JCXRhYmxl
-W2ldID0gdmlydCB8IFBURV9UWVBFX1NNQUxMIHwgZmxhZ3M7Cj4gPiAtCQl2aXJ0ICs9IFBBR0Vf
-U0laRTsKPiA+IC0JfQo+IC0KPiA+IC0JcmV0dXJuIHRhYmxlOwo+IC19Cj4gLQo+IMKgc3RhdGlj
-IGJvb2wgcGdkX3R5cGVfdGFibGUodTMyIHBnZCkKPiDCoHsKPiA+IMKgCXJldHVybiAocGdkICYg
-UE1EX1RZUEVfTUFTSykgPT0gUE1EX1RZUEVfVEFCTEU7Cj4gQEAgLTE1Miw2ICsxMjQsMzggQEAg
-c3RhdGljIHZvaWQgZG1hX2ludl9yYW5nZSh1bnNpZ25lZCBsb25nIHN0YXJ0LCB1bnNpZ25lZCBs
-b25nIGVuZCkKPiA+IMKgCV9fZG1hX2ludl9yYW5nZShzdGFydCwgZW5kKTsKPiDCoH0KPiDCoAo+
-ICsvKgo+ICsgKiBDcmVhdGUgYSBzZWNvbmQgbGV2ZWwgdHJhbnNsYXRpb24gdGFibGUgZm9yIHRo
-ZSBnaXZlbiB2aXJ0dWFsIGFkZHJlc3MuCj4gKyAqIFdlIGluaXRpYWxseSBjcmVhdGUgYSBmbGF0
-IHVuY2FjaGVkIG1hcHBpbmcgb24gaXQuCj4gKyAqIE5vdCB5ZXQgZXhwb3J0ZWQsIGJ1dCBtYXkg
-YmUgbGF0ZXIgaWYgc29tZW9uZSBmaW5kcyB1c2UgZm9yIGl0Lgo+ICsgKi8KPiArc3RhdGljIHUz
-MiAqYXJtX2NyZWF0ZV9wdGUodW5zaWduZWQgbG9uZyB2aXJ0LCB1aW50MzJfdCBmbGFncykKPiAr
-ewo+ID4gKwl1MzIgKnRhYmxlOwo+ID4gKwlpbnQgaSwgdHRiX2lkeDsKPiArCj4gPiArCXZpcnQg
-PSBBTElHTl9ET1dOKHZpcnQsIFBHRElSX1NJWkUpOwo+ICsKPiA+ICsJdGFibGUgPSB4bWVtYWxp
-Z24oUFRSU19QRVJfUFRFICogc2l6ZW9mKHUzMiksCj4gPiArCQkJwqDCoFBUUlNfUEVSX1BURSAq
-IHNpemVvZih1MzIpKTsKPiArCj4gPiArCWlmICghdHRiKQo+ID4gKwkJYXJtX21tdV9ub3RfaW5p
-dGlhbGl6ZWRfZXJyb3IoKTsKPiArCj4gPiArCXR0Yl9pZHggPSBwZ2RfaW5kZXgodmlydCk7Cj4g
-Kwo+ID4gKwlmb3IgKGkgPSAwOyBpIDwgUFRSU19QRVJfUFRFOyBpKyspIHsKPiA+ICsJCXRhYmxl
-W2ldID0gdmlydCB8IFBURV9UWVBFX1NNQUxMIHwgZmxhZ3M7Cj4gPiArCQl2aXJ0ICs9IFBBR0Vf
-U0laRTsKPiA+ICsJfQo+ID4gKwlkbWFfZmx1c2hfcmFuZ2UodGFibGUsIFBUUlNfUEVSX1BURSAq
-IHNpemVvZih1MzIpKTsKPiArCj4gPiArCXR0Ylt0dGJfaWR4XSA9ICh1bnNpZ25lZCBsb25nKXRh
-YmxlIHwgUE1EX1RZUEVfVEFCTEU7Cj4gPiArCWRtYV9mbHVzaF9yYW5nZSh0dGIsIHNpemVvZih1
-MzIpKTsKPiArCj4gPiArCXJldHVybiB0YWJsZTsKPiArfQo+ICsKPiDCoGludCBhcmNoX3JlbWFw
-X3JhbmdlKHZvaWQgKnN0YXJ0LCBzaXplX3Qgc2l6ZSwgdW5zaWduZWQgZmxhZ3MpCj4gwqB7Cj4g
-PiDCoAl1MzIgYWRkciA9ICh1MzIpc3RhcnQ7Cj4gQEAgLTIyNywxMiArMjMxLDYgQEAgaW50IGFy
-Y2hfcmVtYXBfcmFuZ2Uodm9pZCAqc3RhcnQsIHNpemVfdCBzaXplLCB1bnNpZ25lZCBmbGFncykK
-PiA+IMKgCQkJCXRhYmxlID0gYXJtX2NyZWF0ZV9wdGUoYWRkciwgcHRlX2ZsYWdzX2NhY2hlZCk7
-Cj4gPiDCoAkJCQlwdGUgPSBmaW5kX3B0ZShhZGRyKTsKPiA+IMKgCQkJCUJVR19PTighcHRlKTsK
-PiA+IC0JCQkJLyoKPiA+IC0JCQkJwqAqIFdlIGp1c3Qgc3BsaXQgdGhpcyBzZWN0aW9uIGFuZAo+
-ID4gLQkJCQnCoCogbW9kaWZpZWQgaXQncyBMZXZlbCAxIGRlc2NyaXB0b3IsCj4gPiAtCQkJCcKg
-KiBzbyBpdCBuZWVkcyB0byBiZSBmbHVzaGVkLgo+ID4gLQkJCQnCoCovCj4gPiAtCQkJCWRtYV9m
-bHVzaF9yYW5nZShwZ2QsIHNpemVvZigqcGdkKSk7Cj4gPiDCoAkJCX0KPiDCoAo+ID4gwqAJCQlm
-b3IgKGkgPSAwOyBpIDwgbnVtX3B0ZXM7IGkrKykgewo+IEBAIC0yNDAsMTcgKzIzOCw2IEBAIGlu
-dCBhcmNoX3JlbWFwX3JhbmdlKHZvaWQgKnN0YXJ0LCBzaXplX3Qgc2l6ZSwgdW5zaWduZWQgZmxh
-Z3MpCj4gPiDCoAkJCQlwdGVbaV0gfD0gcHRlX2ZsYWdzIHwgUFRFX1RZUEVfU01BTEw7Cj4gPiDC
-oAkJCX0KPiDCoAo+ID4gLQkJCWlmICh0YWJsZSkgewo+ID4gLQkJCQkvKgo+ID4gLQkJCQnCoCog
-SWYgd2UganVzdCBjcmVhdGVkIGEgbmV3IHBhZ2UKPiA+IC0JCQkJwqAqIHRhYmxlLCB0aGUgd2hv
-bGUgdGFibGUgd291bGQgaGF2ZQo+ID4gLQkJCQnCoCogdG8gYmUgZmx1c2hlZCwgbm90IGp1c3Qg
-UFRFcyB0aGF0Cj4gPiAtCQkJCcKgKiB3ZSB0b3VjaGVkIHdoZW4gcmUtbWFwcGluZy4KPiA+IC0J
-CQkJwqAqLwo+ID4gLQkJCQlwdGUgPSB0YWJsZTsKPiA+IC0JCQkJbnVtX3B0ZXMgPSBQVFJTX1BF
-Ul9QVEU7Cj4gPiAtCQkJfQo+IC0KPiA+IMKgCQkJZG1hX2ZsdXNoX3JhbmdlKHB0ZSwgbnVtX3B0
-ZXMgKiBzaXplb2YodTMyKSk7Cj4gPiDCoAkJfQo+IMKgCgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
-c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9iYXJlYm94Cg==
+Ok, thanks for the clarification.
+On Mon, Jul 30, 2018 at 10:40 PM Andrey Smirnov
+<andrew.smirnov@gmail.com> wrote:
+>
+> On Mon, Jul 30, 2018 at 12:28 PM Aleksander Morgado
+> <aleksander@aleksander.es> wrote:
+> >
+> > Hey,
+> >
+> > >
+> > >     This topic could be ignored. GPIO set/get value functions from
+> > > barebox are working fine BUT gpioinfo function has some bug it reports
+> > > unchanged status for gpios value.
+> > >
+> >
+> > Not that I got into much detail, but when I saw that same issue (I
+> > have some WIP patches to manage GPIOs via RATP) I just assumed that we
+> > can reliably gpio_get_value() on input GPIOs, and gpio_set_value() on
+> > output GPIOs. Trying to "read" the output GPIO value with
+> > gpio_get_value() may not be reliable or even supported at all. Is that
+> > assumption correct?
+>
+> AFAIK/IMHO this would really depend on the hardware platform. On
+> i.MX(also depending on IOMUX IP used as well) appropriate IOMUX
+> configuration is necessary in order to be able to "sense" the actual
+> logical level of a GPIO configured as . If I recall things correctly,
+> i.MX51/6/8, would require a SION bit set and i.MX7/VF610 would require
+> input buffer to be enabled, otherwise output GPIOs would always report
+> the same value via gpio_get_value().
+>
+> Thanks,
+> Andrey Smirnov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
