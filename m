@@ -1,15 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mout.gmx.net ([212.227.15.19])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fmkMh-0006p0-GW
- for barebox@lists.infradead.org; Mon, 06 Aug 2018 18:36:25 +0000
-Date: Mon, 6 Aug 2018 20:36:10 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20180806183610.rro2xem64rljdsvy@pengutronix.de>
-References: <844001fa78a52f48a3cb1e9189831456@solinno.co.uk>
+ id 1fmb5n-0005ho-V2
+ for barebox@lists.infradead.org; Mon, 06 Aug 2018 08:42:22 +0000
+References: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
+ <20180720091145.kz2ksyeeumeqf73p@pengutronix.de>
+ <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
+ <278d07f4-decf-fabc-62cb-7661b1c73a54@rempel-privat.de>
+ <CAEp+FuBaOxzoc0aiXpPwm24RQw9hDB-5HiWmTCqMAPf+RYpjjg@mail.gmail.com>
+ <CAEp+FuCv-C4Px35VvOW+4ONTq9RU_MELG4kzDdRggvexiXBGtA@mail.gmail.com>
+ <6d5fafcb-af99-ec0f-469b-63e4e4f97c51@rempel-privat.de>
+ <CAEp+FuCoqbg+_G+rNSvjnJBiYS3Au8Wg7hWfUHnTpa53yKSnLw@mail.gmail.com>
+ <9553d3dc-c59d-845d-337a-67becaf8cd67@rempel-privat.de>
+ <CAEp+FuBAV20+TJOkGTZkbr=yOOLjR2DFN9sM+ZO+E6CgKkYeFw@mail.gmail.com>
+From: Oleksij Rempel <linux@rempel-privat.de>
+Message-ID: <9eeafe3d-8d62-7e17-1e47-fbadf3eafb67@rempel-privat.de>
+Date: Mon, 6 Aug 2018 10:42:01 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <844001fa78a52f48a3cb1e9189831456@solinno.co.uk>
+In-Reply-To: <CAEp+FuBAV20+TJOkGTZkbr=yOOLjR2DFN9sM+ZO+E6CgKkYeFw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,66 +26,113 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="===============0027187960071800348=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Help requested with Barebox on Globalscale Mirabox
-To: Leigh Brown <leigh@solinno.co.uk>
-Cc: Barebox <barebox@lists.infradead.org>
+Subject: Re: MFGTools support in barebox
+To: Mihaita Ivascu <mihaita_ivascu@trimble.com>
+Cc: barebox@lists.infradead.org, u.kleine-koenig@pengutronix.de
 
-Hello Leigh,
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============0027187960071800348==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="gI5qfYfRDsdXPnpXb5yOaIMfCAbwxOZA5"
 
-On Tue, Jul 31, 2018 at 02:21:04PM +0100, Leigh Brown wrote:
-> Have I missed any steps?  Any help would be greatly appreciated.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--gI5qfYfRDsdXPnpXb5yOaIMfCAbwxOZA5
+Content-Type: multipart/mixed; boundary="0peIZuDUABgaTIWmTouwxCOd4ImqEmNyU";
+ protected-headers="v1"
+From: Oleksij Rempel <linux@rempel-privat.de>
+To: Mihaita Ivascu <mihaita_ivascu@trimble.com>
+Cc: barebox@lists.infradead.org, u.kleine-koenig@pengutronix.de
+Message-ID: <9eeafe3d-8d62-7e17-1e47-fbadf3eafb67@rempel-privat.de>
+Subject: Re: MFGTools support in barebox
+References: <CAEp+FuA3HtmHQm5GsZ6DAJAYbOKJDUdVHBV4pevrHoswQ4Ktcw@mail.gmail.com>
+ <20180720091145.kz2ksyeeumeqf73p@pengutronix.de>
+ <CAEp+FuD5CrxiMmEQ1yV2_ugFayrs5ih-etpJfb=jw8771xdDTw@mail.gmail.com>
+ <278d07f4-decf-fabc-62cb-7661b1c73a54@rempel-privat.de>
+ <CAEp+FuBaOxzoc0aiXpPwm24RQw9hDB-5HiWmTCqMAPf+RYpjjg@mail.gmail.com>
+ <CAEp+FuCv-C4Px35VvOW+4ONTq9RU_MELG4kzDdRggvexiXBGtA@mail.gmail.com>
+ <6d5fafcb-af99-ec0f-469b-63e4e4f97c51@rempel-privat.de>
+ <CAEp+FuCoqbg+_G+rNSvjnJBiYS3Au8Wg7hWfUHnTpa53yKSnLw@mail.gmail.com>
+ <9553d3dc-c59d-845d-337a-67becaf8cd67@rempel-privat.de>
+ <CAEp+FuBAV20+TJOkGTZkbr=yOOLjR2DFN9sM+ZO+E6CgKkYeFw@mail.gmail.com>
+In-Reply-To: <CAEp+FuBAV20+TJOkGTZkbr=yOOLjR2DFN9sM+ZO+E6CgKkYeFw@mail.gmail.com>
 
-Looks good.
+--0peIZuDUABgaTIWmTouwxCOd4ImqEmNyU
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
 
-Which revision are you on (i.e. git rev-parse @ in your barebox copy)?
-What is currently running on the device?
+Hi
 
-Do you get an U when applying this patch?:
+Am 06.08.2018 um 10:15 schrieb Mihaita Ivascu:
+> Hello,
 
-diff --git a/arch/arm/boards/globalscale-mirabox/lowlevel.c b/arch/arm/boar=
-ds/globalscale-mirabox/lowlevel.c
-index 69786c88fb22..6abf96592496 100644
---- a/arch/arm/boards/globalscale-mirabox/lowlevel.c
-+++ b/arch/arm/boards/globalscale-mirabox/lowlevel.c
-@@ -31,5 +31,6 @@ ENTRY_FUNCTION(start_globalscale_mirabox, r0, r1, r2)
- 	fdt =3D __dtb_armada_370_mirabox_bb_start +
- 		get_runtime_offset();
- =
+> =C2=A0 =C2=A0 Yes, thanks. Setting otg mode manually in barebox helped.=
 
-+	writel(0x55, 0xd0012000);
- 	armada_370_xp_barebox_entry(fdt);
- }
+> =C2=A0 =C2=A0 =C2=A0I have on device side:
+> /barebox@Phytec phyCORE-i.MX6 Ultra Lite SOM:/ usbgadget -A /fit(fit)c
+> udc0: registering UDC driver [g_multi]
+> multi_bind: creating Fastboot function
+> g_multi usbgadget: Multifunction Composite Gadget
+> g_multi usbgadget: userspace failed to provide iSerialNumber
+> g_multi usbgadget: g_multi ready/
 
-I just tried 7ba0f2d29959256025ece9ae961a6c3421445a7f on my ReadyNAS 104
-which has an armada370, too.
+Beside,
 
-I hangs when using second-stage booting from the Vendor U-Boot after:
+you would be able to avoid this step by reading this part of documentatio=
+n:
+https://www.barebox.org/doc/latest/user/usb.html#usb-gadget-autostart-opt=
+ions
 
-	barebox 2018.07.0-00139-g7ba0f2d29959-dirty #50 Mon Aug 6 20:27:11 CEST 20=
-18
+> =C2=A0 =C2=A0 And on windows side I could see the phytec board in Devic=
+e manager
+> but is not detected properly and is not detected by the fastboot app.
+> Please see attachment.
+> =C2=A0 =C2=A0 Do I need to configure anything else on Windows side so f=
+astboot
+> would detect correctly my board?
+
+Probably you shout find out what kind of error is reported by windows
+system manager. Probably windows just detach/disabled this device. I'm
+not windows expert and can't answer any windows related question.
+
+=2E..
+
+--=20
+Regards,
+Oleksij
 
 
-	Board: Marvell Armada 370/XP
-	SoC: Marvell 6710 rev 1
-	mdio_bus: miibus0: probed
-	eth1: got preset MAC address: 28:c6:8e:36:df:57
+--0peIZuDUABgaTIWmTouwxCOd4ImqEmNyU--
 
-When enabling DEBUG_INITCALLS I got a prompt, hmm. Didn't debug that
-further.
+--gI5qfYfRDsdXPnpXb5yOaIMfCAbwxOZA5
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
-Best regards
-Uwe
+-----BEGIN PGP SIGNATURE-----
 
--- =
+iHUEAREIAB0WIQRXepfNdOKCSzfa+2sfAia5GSZtaQUCW2gJ2QAKCRAfAia5GSZt
+aRmmAP9bBKuDyJUsNPufYt07MHbu3rgDUdMQpid/HIcEJBRhOwD9EnnAcPmHb8Jt
+CKI0rTb9bD6HLsTi2zuQsUXpd/6Rx6A=
+=Vs13
+-----END PGP SIGNATURE-----
 
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+--gI5qfYfRDsdXPnpXb5yOaIMfCAbwxOZA5--
+
+
+--===============0027187960071800348==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============0027187960071800348==--
