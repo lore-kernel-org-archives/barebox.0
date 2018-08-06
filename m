@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fnIvA-0008E3-Ib
- for barebox@lists.infradead.org; Wed, 08 Aug 2018 07:30:18 +0000
-Date: Wed, 8 Aug 2018 09:30:04 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180808073004.xoqrpv35z62rgade@pengutronix.de>
-References: <20180806191418.15921-1-u.kleine-koenig@pengutronix.de>
+ id 1fmlRI-0005ej-6b
+ for barebox@lists.infradead.org; Mon, 06 Aug 2018 19:45:13 +0000
+Date: Mon, 6 Aug 2018 21:44:58 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20180806194458.bdgb3uen4zclomlz@pengutronix.de>
+References: <479189478.116665.1533036012752@mail.vodafone.de>
+ <20180806181528.c5f7rsa2sclth3ww@pengutronix.de>
+ <34f2c034-7f30-de15-93de-54f9a86e93a0@arcor.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180806191418.15921-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <34f2c034-7f30-de15-93de-54f9a86e93a0@arcor.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,90 +20,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] of_node: clearify help text and do stricter commandline
- parsing
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: root= kernel cmdline parameter
+To: Giorgio Dal Molin <giorgio.nicole@arcor.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Aug 06, 2018 at 09:14:18PM +0200, Uwe Kleine-K=F6nig wrote:
-> To create an oftree node /path/node I tried after reading the help text
-> of of_node:
+Hello,
+
+On Mon, Aug 06, 2018 at 09:30:30PM +0200, Giorgio Dal Molin wrote:
+> On 08/06/2018 08:15 PM, Uwe Kleine-K=F6nig wrote:
+> > On Tue, Jul 31, 2018 at 01:20:12PM +0200, Giorgio Dal Molin wrote:
+> >> Hi all,
+> >>
+> >> I'm trying to find out the best method to define the root=3D
+> >> parameter when booting the linux kernel from barebox.
+> >>
+> >> My system boots from an sd card partitioned with a GPT.
+> >> The sd card has two independent set of partitions with
+> >> the following labels:
+> >>
+> >> 1)   boot_1 + rootfs_1
+> >> 2)   boot_2 + rootfs_2
+> >>
+> >> for redondance in case one set gets damaged while updating.
+> >>
+> >> 'boot_1' is formatted with ext4 and contains the kernel + dtb images
+> >> for the userland in 'rootfs_1'; and the same for 'boot_2' and 'rootfs_=
+2'.
+> >>
+> >> Currently I hardcode the 'root' parameter to '/dev/mmcblk0p3' or
+> >> '/dev/mmcblk0p4' corresponding to the kernel in 'boot_1' or
+> >> 'boot_2' and it actually works but is there a better way to do
+> >> this ?
+> >>
+> >> Using the global var. 'bootm.appendroot' does not work because the
+> >> userland image is not in the same partition as the kernel.
+> > =
+
+> > What is the blocker to put kernel and dtb in rootfs_X?
 > =
 
-> 	of_node -c /path node
-> =
+> I would like to keep kernel and userland separate to be flexible about
+> how to pack the userland. The kernel supports more filesystems as the
+> bootloader so I prefer to keep kernel+dtb in a small ext? partition and
+> the rest in a separate part.
 
-> similar to the syntax of of_property. This didnt result in any output
-> but still failed to do what I meant.
-> =
+Is this a theoretical flexibility? i.e. do you use something for
+rootfs_X that isn't supported in barebox? If no: You're making your life
+unnecessary hard. If yes: why not teach barebox about it?
 
-> So clearify the help text to not suggest there are two parameters and
-> return an usage error if still two (or more) names are passed.
-> =
-
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  commands/of_node.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
-
-Applied, thanks
-
-Sascha
-
-> =
-
-> diff --git a/commands/of_node.c b/commands/of_node.c
-> index 29cc371dd289..28c4357c5d97 100644
-> --- a/commands/of_node.c
-> +++ b/commands/of_node.c
-> @@ -107,11 +107,10 @@ static int do_of_node(int argc, char *argv[])
->  		}
->  	}
->  =
-
-> -	if (optind =3D=3D argc)
-> +	if (optind + 1 !=3D argc)
->  		return COMMAND_ERROR_USAGE;
->  =
-
-> -	if (optind < argc)
-> -		path =3D argv[optind];
-> +	path =3D argv[optind];
->  =
-
->  	if (!path)
->  		return COMMAND_ERROR_USAGE;
-> @@ -147,7 +146,7 @@ BAREBOX_CMD_HELP_END
->  BAREBOX_CMD_START(of_node)
->  	.cmd		=3D do_of_node,
->  	BAREBOX_CMD_DESC("create/delete nodes in the device tree")
-> -	BAREBOX_CMD_OPTS("[-cd] [-f] NODE NAME")
-> +	BAREBOX_CMD_OPTS("[-cd] [-f] NODEPATH")
->  	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
->  	BAREBOX_CMD_COMPLETE(devicetree_complete)
->  	BAREBOX_CMD_HELP(cmd_of_node_help)
-> -- =
-
-> 2.18.0
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Best regards
+Uwe
 
 -- =
 
-Pengutronix e.K.                           |                             |
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
