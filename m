@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fmk2h-0007n9-CR
- for barebox@lists.infradead.org; Mon, 06 Aug 2018 18:15:44 +0000
-Date: Mon, 6 Aug 2018 20:15:28 +0200
+ id 1fmkMh-0006p0-GW
+ for barebox@lists.infradead.org; Mon, 06 Aug 2018 18:36:25 +0000
+Date: Mon, 6 Aug 2018 20:36:10 +0200
 From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20180806181528.c5f7rsa2sclth3ww@pengutronix.de>
-References: <479189478.116665.1533036012752@mail.vodafone.de>
+Message-ID: <20180806183610.rro2xem64rljdsvy@pengutronix.de>
+References: <844001fa78a52f48a3cb1e9189831456@solinno.co.uk>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <479189478.116665.1533036012752@mail.vodafone.de>
+In-Reply-To: <844001fa78a52f48a3cb1e9189831456@solinno.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +22,52 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: root= kernel cmdline parameter
-To: Giorgio Dal Molin <giorgio.nicole@arcor.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: Help requested with Barebox on Globalscale Mirabox
+To: Leigh Brown <leigh@solinno.co.uk>
+Cc: Barebox <barebox@lists.infradead.org>
 
-On Tue, Jul 31, 2018 at 01:20:12PM +0200, Giorgio Dal Molin wrote:
-> Hi all,
-> =
+Hello Leigh,
 
-> I'm trying to find out the best method to define the root=3D
-> parameter when booting the linux kernel from barebox.
-> =
+On Tue, Jul 31, 2018 at 02:21:04PM +0100, Leigh Brown wrote:
+> Have I missed any steps?  Any help would be greatly appreciated.
 
-> My system boots from an sd card partitioned with a GPT.
-> The sd card has two independent set of partitions with
-> the following labels:
-> =
+Looks good.
 
-> 1)   boot_1 + rootfs_1
-> 2)   boot_2 + rootfs_2
-> =
+Which revision are you on (i.e. git rev-parse @ in your barebox copy)?
+What is currently running on the device?
 
-> for redondance in case one set gets damaged while updating.
-> =
+Do you get an U when applying this patch?:
 
-> 'boot_1' is formatted with ext4 and contains the kernel + dtb images
-> for the userland in 'rootfs_1'; and the same for 'boot_2' and 'rootfs_2'.
-> =
+diff --git a/arch/arm/boards/globalscale-mirabox/lowlevel.c b/arch/arm/boar=
+ds/globalscale-mirabox/lowlevel.c
+index 69786c88fb22..6abf96592496 100644
+--- a/arch/arm/boards/globalscale-mirabox/lowlevel.c
++++ b/arch/arm/boards/globalscale-mirabox/lowlevel.c
+@@ -31,5 +31,6 @@ ENTRY_FUNCTION(start_globalscale_mirabox, r0, r1, r2)
+ 	fdt =3D __dtb_armada_370_mirabox_bb_start +
+ 		get_runtime_offset();
+ =
 
-> Currently I hardcode the 'root' parameter to '/dev/mmcblk0p3' or
-> '/dev/mmcblk0p4' corresponding to the kernel in 'boot_1' or
-> 'boot_2' and it actually works but is there a better way to do
-> this ?
-> =
++	writel(0x55, 0xd0012000);
+ 	armada_370_xp_barebox_entry(fdt);
+ }
 
-> Using the global var. 'bootm.appendroot' does not work because the
-> userland image is not in the same partition as the kernel.
+I just tried 7ba0f2d29959256025ece9ae961a6c3421445a7f on my ReadyNAS 104
+which has an armada370, too.
 
-What is the blocker to put kernel and dtb in rootfs_X?
+I hangs when using second-stage booting from the Vendor U-Boot after:
+
+	barebox 2018.07.0-00139-g7ba0f2d29959-dirty #50 Mon Aug 6 20:27:11 CEST 20=
+18
+
+
+	Board: Marvell Armada 370/XP
+	SoC: Marvell 6710 rev 1
+	mdio_bus: miibus0: probed
+	eth1: got preset MAC address: 28:c6:8e:36:df:57
+
+When enabling DEBUG_INITCALLS I got a prompt, hmm. Didn't debug that
+further.
 
 Best regards
 Uwe
