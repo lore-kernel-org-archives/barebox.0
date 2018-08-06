@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx01.eckelmann.de ([217.19.183.92])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fn3Sf-0007rF-6F
- for barebox@lists.infradead.org; Tue, 07 Aug 2018 14:59:51 +0000
-From: "Schenk, Gavin" <G.Schenk@eckelmann.de>
-Date: Tue, 7 Aug 2018 14:59:42 +0000
-Message-ID: <f298d0f75f080bc09b029427b6831c29e586a367.camel@eckelmann.de>
-References: <20180807141707.25909-1-u.kleine-koenig@pengutronix.de>
- <20180807142344.26219-1-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20180807142344.26219-1-u.kleine-koenig@pengutronix.de>
-Content-Language: de-DE
-Content-ID: <E1B51FE591EA2C45BDCE309907D9DE37@eckelmann.de>
+ id 1fmkQh-0000II-Lv
+ for barebox@lists.infradead.org; Mon, 06 Aug 2018 18:40:33 +0000
+Date: Mon, 6 Aug 2018 20:40:19 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20180806184019.od66awd55aqxazio@pengutronix.de>
+References: <F272D9410BD38E429D604B94748C61547AB08E80@WIEMS02101.ceu.corp.heidelberg.com>
+ <a3bd0a48-665c-f654-0434-ca73cec7ca98@rempel-privat.de>
+ <F272D9410BD38E429D604B94748C61547AB08F97@WIEMS02101.ceu.corp.heidelberg.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <F272D9410BD38E429D604B94748C61547AB08F97@WIEMS02101.ceu.corp.heidelberg.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,30 +20,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] usb: gadget: allow to actually enable sparse fastboot
- support
-To: "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: PATCH added tftp port to fsoptions
+To: "Toews, Dietrich" <Dietrich.Toews@heidelberg.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-SGksDQoNCk9uIFR1ZSwgMjAxOC0wOC0wNyBhdCAxNjoyMyArMDIwMCwgVXdlIEtsZWluZS1Lw7Zu
-aWcgd3JvdGU6DQo+IFdoZW4gc3BhcnNlIHN1cHBvcnQgd2FzIChpbnRlbmRlZCB0byBiZSkgbWFk
-ZSBvcHRpb25hbCBpdCB3YXMNCj4gZWZmZWN0aXZlbHkgdW5jb25kaXRpb25hbGx5IGRpc2FibGVk
-IGJlY2F1c2UNCj4gDQo+IAlJU19FTkFCTEVEKFVTQl9HQURHRVRfRkFTVEJPT1RfU1BBUlNFKQ0K
-PiANCj4gYWx3YXlzIGV2YWx1YXRlcyB0byAwLiBUbyBhY3R1YWxseSBtYWtlIHVzZSBvZiB0aGUg
-aW50cm9kdWNlZCBrY29uZmlnDQo+IHN5bWJvbCB0aGUgQ09ORklHXyBwcmVmaXggbXVzdCBub3Qg
-YmUgc2tpcHBlZC4NCj4gDQo+IEZpeGVzOiBmNGI1ZDNlZWI2MDcgKCJ1c2I6IGdhZGdldDogZmFz
-dGJvb3Q6IE1ha2Ugc3BhcnNlIHN1cHBvcnQgb3B0aW9uYWwiKQ0KPiBTaWduZWQtb2ZmLWJ5OiBV
-d2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPg0KPiAtLS0N
-Cj4gDQpUZXN0ZWQtYnk6IEdhdmluIFNjaGVuayA8Zy5zY2hlbmtAZWNrZWxtYW5uLmRlPg0KDQpG
-aW5hbGx5LCBhbmQgd2l0aCB0aGlzIHBhdGNoLCBmYXN0Ym9vdCB3b3JrcyBpbiBzcGFyc2UgbW9k
-ZSBvbiBhIGkuTVgyNSBiYXNlZCBtYWNoaW5lIHdpdGggMTI4TUIgUkFNLg0KTXkgVGVzdDoNCiAq
-IGNwIC9kZXYvemVybyAvZGV2L21tYzAuMA0KICogdXNiZ2FkZ2V0IC1BIC9kZXYvbW1jMC4wKHN5
-c3RlbTApDQogKiBzdWRvIGZhc3Rib290IGZsYXNoIHN5c3RlbTAgcGxhdGZvcm0tZWFnLWNpNDAw
-MC9pbWFnZXMvcm9vdC5leHQyIChvbiBob3N0KQ0KICogYm9vdCAvbW50L21tYzAuMA0KICogXG8v
-DQoNClRoYW5rcyENCg0KUmVnYXJkcw0KR2F2aW4gU2NoZW5rDQpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
-QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9iYXJlYm94Cg==
+On Fri, Aug 03, 2018 at 12:10:34PM +0000, Toews, Dietrich wrote:
+> Hi,
+> =
+
+> that can be a way, but then it is not possible to connect to different se=
+rvers, when they have different ports.
+> e.g. one server for large files, one (intelligent) server for script-files
+> =
+
+> Why different ports? - For testing it is very nice to have all the server=
+s on one machine.
+> =
+
+> Dietrich
+> =
+
+> -----Original Message-----
+> Hi,
+> =
+
+> Am 03.08.2018 um 13:07 schrieb Toews, Dietrich:
+> > Hi all,
+> >
+> > we are using barebox for a while now, but we need different tftp-server=
+ with different ports.
+> > Here a proposition for a patch, if someone else needs it also.
+> >
+> > Usage: tftp -o port=3D1234 ....
+> =
+
+> Good point. I assume, barebox way, would be to make it:
+> global.net.tftp_port
+> nv.net.tftp_port
+> nv.dev.<devname>.tftp_port
+
+I'd say
+
+	nv.net.server.tftp_port=3D1234
+
+and only use that for the default mount to /mnt/tftp and otherwise keep
+it as a mount option.
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
