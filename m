@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fmkQh-0000II-Lv
- for barebox@lists.infradead.org; Mon, 06 Aug 2018 18:40:33 +0000
-Date: Mon, 6 Aug 2018 20:40:19 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20180806184019.od66awd55aqxazio@pengutronix.de>
-References: <F272D9410BD38E429D604B94748C61547AB08E80@WIEMS02101.ceu.corp.heidelberg.com>
- <a3bd0a48-665c-f654-0434-ca73cec7ca98@rempel-privat.de>
- <F272D9410BD38E429D604B94748C61547AB08F97@WIEMS02101.ceu.corp.heidelberg.com>
+ id 1fmkxb-00035W-JI
+ for barebox@lists.infradead.org; Mon, 06 Aug 2018 19:14:34 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Mon,  6 Aug 2018 21:14:18 +0200
+Message-Id: <20180806191418.15921-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <F272D9410BD38E429D604B94748C61547AB08F97@WIEMS02101.ceu.corp.heidelberg.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,65 +15,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: PATCH added tftp port to fsoptions
-To: "Toews, Dietrich" <Dietrich.Toews@heidelberg.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] of_node: clearify help text and do stricter commandline
+ parsing
+To: barebox@lists.infradead.org
 
-On Fri, Aug 03, 2018 at 12:10:34PM +0000, Toews, Dietrich wrote:
-> Hi,
-> =
-
-> that can be a way, but then it is not possible to connect to different se=
-rvers, when they have different ports.
-> e.g. one server for large files, one (intelligent) server for script-files
-> =
-
-> Why different ports? - For testing it is very nice to have all the server=
-s on one machine.
-> =
-
-> Dietrich
-> =
-
-> -----Original Message-----
-> Hi,
-> =
-
-> Am 03.08.2018 um 13:07 schrieb Toews, Dietrich:
-> > Hi all,
-> >
-> > we are using barebox for a while now, but we need different tftp-server=
- with different ports.
-> > Here a proposition for a patch, if someone else needs it also.
-> >
-> > Usage: tftp -o port=3D1234 ....
-> =
-
-> Good point. I assume, barebox way, would be to make it:
-> global.net.tftp_port
-> nv.net.tftp_port
-> nv.dev.<devname>.tftp_port
-
-I'd say
-
-	nv.net.server.tftp_port=3D1234
-
-and only use that for the default mount to /mnt/tftp and otherwise keep
-it as a mount option.
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VG8gY3JlYXRlIGFuIG9mdHJlZSBub2RlIC9wYXRoL25vZGUgSSB0cmllZCBhZnRlciByZWFkaW5n
+IHRoZSBoZWxwIHRleHQKb2Ygb2Zfbm9kZToKCglvZl9ub2RlIC1jIC9wYXRoIG5vZGUKCnNpbWls
+YXIgdG8gdGhlIHN5bnRheCBvZiBvZl9wcm9wZXJ0eS4gVGhpcyBkaWRudCByZXN1bHQgaW4gYW55
+IG91dHB1dApidXQgc3RpbGwgZmFpbGVkIHRvIGRvIHdoYXQgSSBtZWFudC4KClNvIGNsZWFyaWZ5
+IHRoZSBoZWxwIHRleHQgdG8gbm90IHN1Z2dlc3QgdGhlcmUgYXJlIHR3byBwYXJhbWV0ZXJzIGFu
+ZApyZXR1cm4gYW4gdXNhZ2UgZXJyb3IgaWYgc3RpbGwgdHdvIChvciBtb3JlKSBuYW1lcyBhcmUg
+cGFzc2VkLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5p
+Z0BwZW5ndXRyb25peC5kZT4KLS0tCiBjb21tYW5kcy9vZl9ub2RlLmMgfCA3ICsrKy0tLS0KIDEg
+ZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0
+IGEvY29tbWFuZHMvb2Zfbm9kZS5jIGIvY29tbWFuZHMvb2Zfbm9kZS5jCmluZGV4IDI5Y2MzNzFk
+ZDI4OS4uMjhjNDM1N2M1ZDk3IDEwMDY0NAotLS0gYS9jb21tYW5kcy9vZl9ub2RlLmMKKysrIGIv
+Y29tbWFuZHMvb2Zfbm9kZS5jCkBAIC0xMDcsMTEgKzEwNywxMCBAQCBzdGF0aWMgaW50IGRvX29m
+X25vZGUoaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKIAkJfQogCX0KIAotCWlmIChvcHRpbmQgPT0g
+YXJnYykKKwlpZiAob3B0aW5kICsgMSAhPSBhcmdjKQogCQlyZXR1cm4gQ09NTUFORF9FUlJPUl9V
+U0FHRTsKIAotCWlmIChvcHRpbmQgPCBhcmdjKQotCQlwYXRoID0gYXJndltvcHRpbmRdOworCXBh
+dGggPSBhcmd2W29wdGluZF07CiAKIAlpZiAoIXBhdGgpCiAJCXJldHVybiBDT01NQU5EX0VSUk9S
+X1VTQUdFOwpAQCAtMTQ3LDcgKzE0Niw3IEBAIEJBUkVCT1hfQ01EX0hFTFBfRU5ECiBCQVJFQk9Y
+X0NNRF9TVEFSVChvZl9ub2RlKQogCS5jbWQJCT0gZG9fb2Zfbm9kZSwKIAlCQVJFQk9YX0NNRF9E
+RVNDKCJjcmVhdGUvZGVsZXRlIG5vZGVzIGluIHRoZSBkZXZpY2UgdHJlZSIpCi0JQkFSRUJPWF9D
+TURfT1BUUygiWy1jZF0gWy1mXSBOT0RFIE5BTUUiKQorCUJBUkVCT1hfQ01EX09QVFMoIlstY2Rd
+IFstZl0gTk9ERVBBVEgiKQogCUJBUkVCT1hfQ01EX0dST1VQKENNRF9HUlBfTUlTQykKIAlCQVJF
+Qk9YX0NNRF9DT01QTEVURShkZXZpY2V0cmVlX2NvbXBsZXRlKQogCUJBUkVCT1hfQ01EX0hFTFAo
+Y21kX29mX25vZGVfaGVscCkKLS0gCjIuMTguMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
+aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2JhcmVib3gK
