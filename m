@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vsmx011.vodafonemail.xion.oxcs.net ([153.92.174.89])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fnfdv-0004RK-Kv
- for barebox@lists.infradead.org; Thu, 09 Aug 2018 07:46:01 +0000
-Date: Thu, 9 Aug 2018 09:45:35 +0200 (CEST)
-From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
-Message-ID: <1151130077.2195.1533800735792@mail.vodafone.de>
-In-Reply-To: <20180808075253.pmj2hivb6xzm24kn@pengutronix.de>
-References: <479189478.116665.1533036012752@mail.vodafone.de>
- <20180808075253.pmj2hivb6xzm24kn@pengutronix.de>
+ id 1fn2ty-0001yN-2h
+ for barebox@lists.infradead.org; Tue, 07 Aug 2018 14:23:59 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Tue,  7 Aug 2018 16:23:44 +0200
+Message-Id: <20180807142344.26219-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20180807141707.25909-1-u.kleine-koenig@pengutronix.de>
+References: <20180807141707.25909-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,72 +17,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: root= kernel cmdline parameter
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, u.kleine-koenig@pengutronix.de
+Subject: [PATCH v2] usb: gadget: allow to actually enable sparse fastboot
+ support
+To: barebox@lists.infradead.org
 
-Hi,
-
-> On August 8, 2018 at 9:52 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> 
-> On Tue, Jul 31, 2018 at 01:20:12PM +0200, Giorgio Dal Molin wrote:
-> > Hi all,
-> > 
-> > I'm trying to find out the best method to define the root=
-> > parameter when booting the linux kernel from barebox.
-> > 
-> > My system boots from an sd card partitioned with a GPT.
-> > The sd card has two independent set of partitions with
-> > the following labels:
-> > 
-> > 1)   boot_1 + rootfs_1
-> > 2)   boot_2 + rootfs_2
-> > 
-> > for redondance in case one set gets damaged while updating.
-> > 
-> > 'boot_1' is formatted with ext4 and contains the kernel + dtb images
-> > for the userland in 'rootfs_1'; and the same for 'boot_2' and 'rootfs_2'.
-> > 
-> > Currently I hardcode the 'root' parameter to '/dev/mmcblk0p3' or
-> > '/dev/mmcblk0p4' corresponding to the kernel in 'boot_1' or
-> > 'boot_2' and it actually works but is there a better way to do
-> > this ?
-> 
-> You could use bootloader spec. That would at least allow you to store a
-> suitable root= parameter in the config files in the boot_1 and boot_2
-> partitions.
-> 
-> Not sure if that's what you are looking for though.
-> 
-> Sascha
-> 
-
-as I already wrote to Uwe Kleine-Koenig I wanted to keep the kernel
-image and the dtb in a separate partition because these are the files
-the bootloader *must* be able to read to boot the system. Having the
-userland in a separate partition lets me choose an image format for it
-independently from what barebox supports; as an example I could pack
-my userland in a btrfs image. Moreover I can be more selective when
-updating the firmware: I can update only the kernel+dtb or only the
-userland image.
-
-What I would like to have is an automatic way to set the root= kernel
-command line parameter similar to what barebox does with the 'bootm.appendroot'
-but a bit more flexible.
-Looking at the kernel function name_to_dev_t() in the source init/do_mounts.c,
-it accepts also the format 'PARTUUID=00112233-4455-6677-8899-AABBCCDDEEFF':
-my idea was to somehow tell barebox 'use the partition with label "rootfs_1"
-for the "root" parameter' and barebox should be able to match my label with
-the partition UUID and automatically generate the root= value.
-
-giorgio
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+V2hlbiBzcGFyc2Ugc3VwcG9ydCB3YXMgKGludGVuZGVkIHRvIGJlKSBtYWRlIG9wdGlvbmFsIGl0
+IHdhcwplZmZlY3RpdmVseSB1bmNvbmRpdGlvbmFsbHkgZGlzYWJsZWQgYmVjYXVzZQoKCUlTX0VO
+QUJMRUQoVVNCX0dBREdFVF9GQVNUQk9PVF9TUEFSU0UpCgphbHdheXMgZXZhbHVhdGVzIHRvIDAu
+IFRvIGFjdHVhbGx5IG1ha2UgdXNlIG9mIHRoZSBpbnRyb2R1Y2VkIGtjb25maWcKc3ltYm9sIHRo
+ZSBDT05GSUdfIHByZWZpeCBtdXN0IG5vdCBiZSBza2lwcGVkLgoKRml4ZXM6IGY0YjVkM2VlYjYw
+NyAoInVzYjogZ2FkZ2V0OiBmYXN0Ym9vdDogTWFrZSBzcGFyc2Ugc3VwcG9ydCBvcHRpb25hbCIp
+ClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0
+cm9uaXguZGU+Ci0tLQpIdWgsIEkgZmFpbGVkIHRvIGNvbW1pdCB0aGUgdGhpcmQgSVNfRU5BQkxF
+RCBodW5rIGluIChpbXBsaWNpdCkgdjEuCgogZHJpdmVycy91c2IvZ2FkZ2V0L2ZfZmFzdGJvb3Qu
+YyB8IDYgKysrLS0tCiAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9u
+cygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvdXNiL2dhZGdldC9mX2Zhc3Rib290LmMgYi9kcml2
+ZXJzL3VzYi9nYWRnZXQvZl9mYXN0Ym9vdC5jCmluZGV4IDdjY2YyMjc3MTQ5My4uNDBhNzg5ODdl
+NDZjIDEwMDY0NAotLS0gYS9kcml2ZXJzL3VzYi9nYWRnZXQvZl9mYXN0Ym9vdC5jCisrKyBiL2Ry
+aXZlcnMvdXNiL2dhZGdldC9mX2Zhc3Rib290LmMKQEAgLTMzNyw3ICszMzcsNyBAQCBzdGF0aWMg
+aW50IGZhc3Rib290X2JpbmQoc3RydWN0IHVzYl9jb25maWd1cmF0aW9uICpjLCBzdHJ1Y3QgdXNi
+X2Z1bmN0aW9uICpmKQogCWZiX3NldHZhcih2YXIsICIwLjQiKTsKIAl2YXIgPSBmYl9hZGR2YXIo
+Zl9mYiwgImJvb3Rsb2FkZXItdmVyc2lvbiIpOwogCWZiX3NldHZhcih2YXIsIHJlbGVhc2Vfc3Ry
+aW5nKTsKLQlpZiAoSVNfRU5BQkxFRChVU0JfR0FER0VUX0ZBU1RCT09UX1NQQVJTRSkpIHsKKwlp
+ZiAoSVNfRU5BQkxFRChDT05GSUdfVVNCX0dBREdFVF9GQVNUQk9PVF9TUEFSU0UpKSB7CiAJCXZh
+ciA9IGZiX2FkZHZhcihmX2ZiLCAibWF4LWRvd25sb2FkLXNpemUiKTsKIAkJZmJfc2V0dmFyKHZh
+ciwgIiV1IiwgZmFzdGJvb3RfbWF4X2Rvd25sb2FkX3NpemUpOwogCX0KQEAgLTk0Nyw3ICs5NDcs
+NyBAQCBzdGF0aWMgdm9pZCBjYl9mbGFzaChzdHJ1Y3QgZl9mYXN0Ym9vdCAqZl9mYiwgY29uc3Qg
+Y2hhciAqY21kKQogCWZpbGVuYW1lID0gZmVudHJ5LT5maWxlbmFtZTsKIAogCWlmIChmaWxldHlw
+ZSA9PSBmaWxldHlwZV9hbmRyb2lkX3NwYXJzZSkgewotCQlpZiAoIUlTX0VOQUJMRUQoVVNCX0dB
+REdFVF9GQVNUQk9PVF9TUEFSU0UpKSB7CisJCWlmICghSVNfRU5BQkxFRChDT05GSUdfVVNCX0dB
+REdFVF9GQVNUQk9PVF9TUEFSU0UpKSB7CiAJCQlmYXN0Ym9vdF90eF9wcmludChmX2ZiLCAiRkFJ
+THNwYXJzZSBpbWFnZSBub3Qgc3VwcG9ydGVkIik7CiAJCQlyZXQgPSAtRU9QTk9UU1VQUDsKIAkJ
+CWdvdG8gb3V0OwpAQCAtMTIzMyw3ICsxMjMzLDcgQEAgZG9uZToKIAogc3RhdGljIGludCBmYXN0
+Ym9vdF9nbG9iYWx2YXJzX2luaXQodm9pZCkKIHsKLQlpZiAoSVNfRU5BQkxFRChVU0JfR0FER0VU
+X0ZBU1RCT09UX1NQQVJTRSkpCisJaWYgKElTX0VOQUJMRUQoQ09ORklHX1VTQl9HQURHRVRfRkFT
+VEJPT1RfU1BBUlNFKSkKIAkJZ2xvYmFsdmFyX2FkZF9zaW1wbGVfaW50KCJ1c2JnYWRnZXQuZmFz
+dGJvb3RfbWF4X2Rvd25sb2FkX3NpemUiLAogCQkJCSAmZmFzdGJvb3RfbWF4X2Rvd25sb2FkX3Np
+emUsICIldSIpOwogCi0tIAoyLjE4LjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
+ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
+Ym94Cg==
