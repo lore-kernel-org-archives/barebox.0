@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fn2rd-0001aK-6i
- for barebox@lists.infradead.org; Tue, 07 Aug 2018 14:21:38 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue,  7 Aug 2018 16:21:16 +0200
-Message-Id: <20180807142116.26093-1-u.kleine-koenig@pengutronix.de>
+ id 1fn9Jq-0000ap-91
+ for barebox@lists.infradead.org; Tue, 07 Aug 2018 21:15:07 +0000
+Date: Tue, 7 Aug 2018 23:14:49 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20180807211449.GA15748@ravnborg.org>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,30 +16,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: phytec-som-am335x: make autoenable actually usable
+Subject: [PATCH v1 0/2] Add Davicom phy + reset-gpios
 To: barebox@lists.infradead.org
-Cc: Daniel Schultz <d.schultz@phytec.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>
 
-SVNfRU5BQkxFRCBoYXMgdG8gYmUgcGFzc2VkIHRoZSBmdWxsIHN5bWJvbCBuYW1lIGluY2x1ZGlu
-ZyB0aGUgQ09ORklHXwpwcmVmaXguIE90aGVyd2lzZSBJU19FTkFCTEVEIGV2YWx1YXRlcyB0byAw
-LgoKRml4ZXM6IDI4NzdlMDhmOWUxYSAoIkFSTTogcGh5dGVjLXNvbS1hbTMzNXg6IEFkZCBhdXRv
-ZW5hYmxlIikKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5p
-Z0BwZW5ndXRyb25peC5kZT4KLS0KQ2M6IERhbmllbCBTY2h1bHR6IDxkLnNjaHVsdHpAcGh5dGVj
-LmRlPgotLS0KIGFyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9ib2FyZC5jIHwgMiAr
-LQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0t
-Z2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2JvYXJkLmMgYi9hcmNoL2Fy
-bS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvYm9hcmQuYwppbmRleCAwZTliZjVmZGVmODguLjhj
-MjRmMmIzMzI0OSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4
-L2JvYXJkLmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2JvYXJkLmMK
-QEAgLTEzNSw3ICsxMzUsNyBAQCBzdGF0aWMgaW50IHBoeXNvbV9kZXZpY2VzX2luaXQodm9pZCkK
-IAkJCX0KIAl9CiAKLQlpZiAoSVNfRU5BQkxFRChQSFlURUNfU09NX0FNMzM1WF9PRl9BVVRPRU5B
-QkxFKSkgeworCWlmIChJU19FTkFCTEVEKENPTkZJR19QSFlURUNfU09NX0FNMzM1WF9PRl9BVVRP
-RU5BQkxFKSkgewogCQkvKiBFbmFibGUgTkFORCAqLwogCQlvZl9hdXRvZW5hYmxlX2RldmljZV9i
-eV9wYXRoKCIvb2NwL2dwbWNANTAwMDAwMDAiKTsKIAkJLyogRW5hYmxlIGVNTUMgKi8KLS0gCjIu
-MTguMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJh
-cmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
-dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+The following two patches was necessary to get networking
+operational on my proprietary target.
+The target is at91sam9263 based with a Davicom PHY.
+
+The Davicom PHY is a straight copy form the Linux
+kernel with the interrupt routine removed and
+minor adjustments to the rest.
+
+The davicom PHY would not work until it had seen a reset
+cycle - which I think may be an artifact of the board design.
+
+To fix the reset issue I have implemented support for the
+reset-gpios binding (see phy-bindings.txt).
+A minimal implmentation was done, just enough to get
+my target running.
+
+I could have implmented something in macb -
+but I considered the above the more generic solution.
+
+	Sam
+
+Sam Ravnborg (4):
+      phylib: add Davicom support
+      phylib: add support for reset-gpios
+
+
+ drivers/net/phy/Kconfig    |    5 +
+ drivers/net/phy/Makefile   |    1 
+ drivers/net/phy/davicom.c  |  140 +++++++++++++++++++++++++++++++++++++++++++++
+ drivers/net/phy/mdio_bus.c |   58 +++++++++++++++++-
+ include/linux/phy.h        |    5 +
+ 5 files changed, 206 insertions(+), 3 deletions(-)
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
