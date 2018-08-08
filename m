@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fo1cm-00081q-5v
- for barebox@lists.infradead.org; Fri, 10 Aug 2018 07:14:18 +0000
-Date: Fri, 10 Aug 2018 09:14:01 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20180810071401.i2wqpnwpegdidhzh@pengutronix.de>
-References: <20180809083313.13034-1-u.kleine-koenig@pengutronix.de>
- <20180809083313.13034-2-u.kleine-koenig@pengutronix.de>
- <20180810062247.jlgodzci7xvbtqip@pengutronix.de>
+ id 1fnIy4-0000xg-QX
+ for barebox@lists.infradead.org; Wed, 08 Aug 2018 07:33:18 +0000
+Date: Wed, 8 Aug 2018 09:33:05 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180808073305.gs2ne6ffwyl76vmf@pengutronix.de>
+References: <20180807142116.26093-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180810062247.jlgodzci7xvbtqip@pengutronix.de>
+In-Reply-To: <20180807142116.26093-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,70 +18,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] libfile: open_and_lseek: enlarge small files enough
- to make lseek possible
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: phytec-som-am335x: make autoenable actually usable
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org, Daniel Schultz <d.schultz@phytec.de>
 
-On Fri, Aug 10, 2018 at 08:22:47AM +0200, Sascha Hauer wrote:
-> On Thu, Aug 09, 2018 at 10:33:12AM +0200, Uwe Kleine-K=F6nig wrote:
-> > This makes the following do the expected thing:
-> > =
-
-> > 	barebox@barebox sandbox:/ ls -l lala
-> > 	-rwxrwxrwx              4 lala
-> > 	barebox@barebox sandbox:/ mw -d lala 72 0
-> > =
-
-> > Without this patch mw dies with
-> > =
-
-> > 	lseek: Invalid argument
-> > =
-
-> > memset, memcpy and probably others benefit in the same way.
-> > =
-
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > ---
-> >  lib/libfile.c | 18 ++++++++++++++++++
-> >  1 file changed, 18 insertions(+)
-> > =
-
-> > diff --git a/lib/libfile.c b/lib/libfile.c
-> > index 83c6399a5b39..01c59cdb80fe 100644
-> > --- a/lib/libfile.c
-> > +++ b/lib/libfile.c
-> > @@ -510,6 +510,24 @@ int open_and_lseek(const char *filename, int mode,=
- loff_t pos)
-> >  	if (!pos)
-> >  		return fd;
-> >  =
-
-> > +	if (mode & (O_WRONLY | O_RDWR)) {
-> > +		struct stat s;
-> > +
-> > +		ret =3D fstat(fd, &s);
-> > +		if (ret) {
-> > +			perror("ftruncate");
+On Tue, Aug 07, 2018 at 04:21:16PM +0200, Uwe Kleine-K=F6nig wrote:
+> IS_ENABLED has to be passed the full symbol name including the CONFIG_
+> prefix. Otherwise IS_ENABLED evaluates to 0.
 > =
 
-> I assume this "ftruncate" did not happen on purpose, right? Replaced
-> with "fstat" and applied.
+> Fixes: 2877e08f9e1a ("ARM: phytec-som-am335x: Add autoenable")
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> --
+> Cc: Daniel Schultz <d.schultz@phytec.de>
+> ---
+>  arch/arm/boards/phytec-som-am335x/board.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Right, thanks
+Applied, thanks
 
-Best regards
-Uwe
+Sascha
+
+> =
+
+> diff --git a/arch/arm/boards/phytec-som-am335x/board.c b/arch/arm/boards/=
+phytec-som-am335x/board.c
+> index 0e9bf5fdef88..8c24f2b33249 100644
+> --- a/arch/arm/boards/phytec-som-am335x/board.c
+> +++ b/arch/arm/boards/phytec-som-am335x/board.c
+> @@ -135,7 +135,7 @@ static int physom_devices_init(void)
+>  			}
+>  	}
+>  =
+
+> -	if (IS_ENABLED(PHYTEC_SOM_AM335X_OF_AUTOENABLE)) {
+> +	if (IS_ENABLED(CONFIG_PHYTEC_SOM_AM335X_OF_AUTOENABLE)) {
+>  		/* Enable NAND */
+>  		of_autoenable_device_by_path("/ocp/gpmc@50000000");
+>  		/* Enable eMMC */
+> -- =
+
+> 2.18.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 -- =
 
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
