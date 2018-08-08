@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fn2ty-0001yN-2h
- for barebox@lists.infradead.org; Tue, 07 Aug 2018 14:23:59 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue,  7 Aug 2018 16:23:44 +0200
-Message-Id: <20180807142344.26219-1-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20180807141707.25909-1-u.kleine-koenig@pengutronix.de>
-References: <20180807141707.25909-1-u.kleine-koenig@pengutronix.de>
+ id 1fnIvq-0000c1-8o
+ for barebox@lists.infradead.org; Wed, 08 Aug 2018 07:30:59 +0000
+Date: Wed, 8 Aug 2018 09:30:46 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180808073046.tm67zlqnp3ymk5yg@pengutronix.de>
+References: <20180807141109.25575-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180807141109.25575-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,47 +18,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] usb: gadget: allow to actually enable sparse fastboot
- support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] mci: s3c: fix providing info callback
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-V2hlbiBzcGFyc2Ugc3VwcG9ydCB3YXMgKGludGVuZGVkIHRvIGJlKSBtYWRlIG9wdGlvbmFsIGl0
-IHdhcwplZmZlY3RpdmVseSB1bmNvbmRpdGlvbmFsbHkgZGlzYWJsZWQgYmVjYXVzZQoKCUlTX0VO
-QUJMRUQoVVNCX0dBREdFVF9GQVNUQk9PVF9TUEFSU0UpCgphbHdheXMgZXZhbHVhdGVzIHRvIDAu
-IFRvIGFjdHVhbGx5IG1ha2UgdXNlIG9mIHRoZSBpbnRyb2R1Y2VkIGtjb25maWcKc3ltYm9sIHRo
-ZSBDT05GSUdfIHByZWZpeCBtdXN0IG5vdCBiZSBza2lwcGVkLgoKRml4ZXM6IGY0YjVkM2VlYjYw
-NyAoInVzYjogZ2FkZ2V0OiBmYXN0Ym9vdDogTWFrZSBzcGFyc2Ugc3VwcG9ydCBvcHRpb25hbCIp
-ClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0
-cm9uaXguZGU+Ci0tLQpIdWgsIEkgZmFpbGVkIHRvIGNvbW1pdCB0aGUgdGhpcmQgSVNfRU5BQkxF
-RCBodW5rIGluIChpbXBsaWNpdCkgdjEuCgogZHJpdmVycy91c2IvZ2FkZ2V0L2ZfZmFzdGJvb3Qu
-YyB8IDYgKysrLS0tCiAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9u
-cygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvdXNiL2dhZGdldC9mX2Zhc3Rib290LmMgYi9kcml2
-ZXJzL3VzYi9nYWRnZXQvZl9mYXN0Ym9vdC5jCmluZGV4IDdjY2YyMjc3MTQ5My4uNDBhNzg5ODdl
-NDZjIDEwMDY0NAotLS0gYS9kcml2ZXJzL3VzYi9nYWRnZXQvZl9mYXN0Ym9vdC5jCisrKyBiL2Ry
-aXZlcnMvdXNiL2dhZGdldC9mX2Zhc3Rib290LmMKQEAgLTMzNyw3ICszMzcsNyBAQCBzdGF0aWMg
-aW50IGZhc3Rib290X2JpbmQoc3RydWN0IHVzYl9jb25maWd1cmF0aW9uICpjLCBzdHJ1Y3QgdXNi
-X2Z1bmN0aW9uICpmKQogCWZiX3NldHZhcih2YXIsICIwLjQiKTsKIAl2YXIgPSBmYl9hZGR2YXIo
-Zl9mYiwgImJvb3Rsb2FkZXItdmVyc2lvbiIpOwogCWZiX3NldHZhcih2YXIsIHJlbGVhc2Vfc3Ry
-aW5nKTsKLQlpZiAoSVNfRU5BQkxFRChVU0JfR0FER0VUX0ZBU1RCT09UX1NQQVJTRSkpIHsKKwlp
-ZiAoSVNfRU5BQkxFRChDT05GSUdfVVNCX0dBREdFVF9GQVNUQk9PVF9TUEFSU0UpKSB7CiAJCXZh
-ciA9IGZiX2FkZHZhcihmX2ZiLCAibWF4LWRvd25sb2FkLXNpemUiKTsKIAkJZmJfc2V0dmFyKHZh
-ciwgIiV1IiwgZmFzdGJvb3RfbWF4X2Rvd25sb2FkX3NpemUpOwogCX0KQEAgLTk0Nyw3ICs5NDcs
-NyBAQCBzdGF0aWMgdm9pZCBjYl9mbGFzaChzdHJ1Y3QgZl9mYXN0Ym9vdCAqZl9mYiwgY29uc3Qg
-Y2hhciAqY21kKQogCWZpbGVuYW1lID0gZmVudHJ5LT5maWxlbmFtZTsKIAogCWlmIChmaWxldHlw
-ZSA9PSBmaWxldHlwZV9hbmRyb2lkX3NwYXJzZSkgewotCQlpZiAoIUlTX0VOQUJMRUQoVVNCX0dB
-REdFVF9GQVNUQk9PVF9TUEFSU0UpKSB7CisJCWlmICghSVNfRU5BQkxFRChDT05GSUdfVVNCX0dB
-REdFVF9GQVNUQk9PVF9TUEFSU0UpKSB7CiAJCQlmYXN0Ym9vdF90eF9wcmludChmX2ZiLCAiRkFJ
-THNwYXJzZSBpbWFnZSBub3Qgc3VwcG9ydGVkIik7CiAJCQlyZXQgPSAtRU9QTk9UU1VQUDsKIAkJ
-CWdvdG8gb3V0OwpAQCAtMTIzMyw3ICsxMjMzLDcgQEAgZG9uZToKIAogc3RhdGljIGludCBmYXN0
-Ym9vdF9nbG9iYWx2YXJzX2luaXQodm9pZCkKIHsKLQlpZiAoSVNfRU5BQkxFRChVU0JfR0FER0VU
-X0ZBU1RCT09UX1NQQVJTRSkpCisJaWYgKElTX0VOQUJMRUQoQ09ORklHX1VTQl9HQURHRVRfRkFT
-VEJPT1RfU1BBUlNFKSkKIAkJZ2xvYmFsdmFyX2FkZF9zaW1wbGVfaW50KCJ1c2JnYWRnZXQuZmFz
-dGJvb3RfbWF4X2Rvd25sb2FkX3NpemUiLAogCQkJCSAmZmFzdGJvb3RfbWF4X2Rvd25sb2FkX3Np
-emUsICIldSIpOwogCi0tIAoyLjE4LjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
-ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
-Ym94Cg==
+On Tue, Aug 07, 2018 at 04:11:09PM +0200, Uwe Kleine-K=F6nig wrote:
+> There is no symbol iCONFIG_MCI_INFO, CONFIG_MCI_INFO makes sense here
+> and matches what was added in the same commit to other drivers.
+> =
+
+> Fixes: 73b0d228e5b0 ("driver: Attach info callback to device, not to driv=
+er")
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  drivers/mci/s3c.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Applied, thanks
+
+Sascha
+
+> =
+
+> diff --git a/drivers/mci/s3c.c b/drivers/mci/s3c.c
+> index 86a83b63fa87..489609712cb1 100644
+> --- a/drivers/mci/s3c.c
+> +++ b/drivers/mci/s3c.c
+> @@ -755,7 +755,7 @@ static int s3c_mci_probe(struct device_d *hw_dev)
+>  	s3c_host->host.f_min =3D pd->f_min =3D=3D 0 ? s3c_get_pclk() / 256 : pd=
+->f_min;
+>  	s3c_host->host.f_max =3D pd->f_max =3D=3D 0 ? s3c_get_pclk() / 2 : pd->=
+f_max;
+>  =
+
+> -	if (IS_ENABLED(iCONFIG_MCI_INFO))
+> +	if (IS_ENABLED(CONFIG_MCI_INFO))
+>  		hw_dev->info =3D s3c_info;
+>  =
+
+>  	/*
+> -- =
+
+> 2.18.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
