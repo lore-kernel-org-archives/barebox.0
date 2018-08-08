@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fnItR-0007TI-JQ
- for barebox@lists.infradead.org; Wed, 08 Aug 2018 07:28:31 +0000
-Date: Wed, 8 Aug 2018 09:28:17 +0200
+ id 1fnIxI-0000oO-5E
+ for barebox@lists.infradead.org; Wed, 08 Aug 2018 07:32:29 +0000
+Date: Wed, 8 Aug 2018 09:32:16 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180808072817.qmxea4km7vbytvp3@pengutronix.de>
-References: <20180801083831.12983-1-l.stach@pengutronix.de>
- <20180801083831.12983-2-l.stach@pengutronix.de>
+Message-ID: <20180808073216.ecu3tbbhbnnz4tl2@pengutronix.de>
+References: <20180807141707.25909-1-u.kleine-koenig@pengutronix.de>
+ <20180807142344.26219-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180801083831.12983-2-l.stach@pengutronix.de>
+In-Reply-To: <20180807142344.26219-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,94 +19,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] PCI: link PCI devices with potentially existing OF
- nodes
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH v2] usb: gadget: allow to actually enable sparse fastboot
+ support
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Aug 01, 2018 at 10:38:29AM +0200, Lucas Stach wrote:
-> The document "PCI Bus Binding to: IEEE Std 1275-1994 Standard for Boot
-> (Initialization Configuration) Firmware" describes how the PCI topology
-> can be described in the DT, in order to augment the PCI devices with
-> additional information via DT properties.
-> 
-> This patch links OF nodes to the corresponding PCI devices if they
-> exist, allowing PCI device drivers to query DT information like any
-> platform device.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+On Tue, Aug 07, 2018 at 04:23:44PM +0200, Uwe Kleine-K=F6nig wrote:
+> When sparse support was (intended to be) made optional it was
+> effectively unconditionally disabled because
+> =
+
+> 	IS_ENABLED(USB_GADGET_FASTBOOT_SPARSE)
+> =
+
+> always evaluates to 0. To actually make use of the introduced kconfig
+> symbol the CONFIG_ prefix must not be skipped.
+> =
+
+> Fixes: f4b5d3eeb607 ("usb: gadget: fastboot: Make sparse support optional=
+")
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 > ---
->  drivers/pci/pci.c | 30 ++++++++++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
+> Huh, I failed to commit the third IS_ENABLED hunk in (implicit) v1.
+> =
+
+>  drivers/usb/gadget/f_fastboot.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 
 Applied, thanks
 
 Sascha
 
-> 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index b2570eb15181..bd8b7278ef19 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -331,6 +331,31 @@ static void postscan_setup_bridge(struct pci_dev *dev)
+> =
+
+> diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastb=
+oot.c
+> index 7ccf22771493..40a78987e46c 100644
+> --- a/drivers/usb/gadget/f_fastboot.c
+> +++ b/drivers/usb/gadget/f_fastboot.c
+> @@ -337,7 +337,7 @@ static int fastboot_bind(struct usb_configuration *c,=
+ struct usb_function *f)
+>  	fb_setvar(var, "0.4");
+>  	var =3D fb_addvar(f_fb, "bootloader-version");
+>  	fb_setvar(var, release_string);
+> -	if (IS_ENABLED(USB_GADGET_FASTBOOT_SPARSE)) {
+> +	if (IS_ENABLED(CONFIG_USB_GADGET_FASTBOOT_SPARSE)) {
+>  		var =3D fb_addvar(f_fb, "max-download-size");
+>  		fb_setvar(var, "%u", fastboot_max_download_size);
 >  	}
->  }
->  
-> +static struct device_node *
-> +pci_of_match_device(struct device_d *parent, unsigned int devfn)
-> +{
-> +	struct device_node *np;
-> +	u32 reg;
-> +
-> +	if (!IS_ENABLED(CONFIG_OFTREE) || !parent->device_node)
-> +		return NULL;
-> +
-> +	for_each_child_of_node(parent->device_node, np) {
-> +		if (!of_property_read_u32_array(np, "reg", &reg, 1)) {
-> +			/*
-> +			 * Only match device/function pair of the device
-> +			 * address, other properties are defined by the
-> +			 * PCI/OF node topology.
-> +			 */
-> +			reg = (reg >> 8) & 0xffff;
-> +			if (reg == devfn)
-> +				return np;
-> +		}
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
->  unsigned int pci_scan_bus(struct pci_bus *bus)
+> @@ -947,7 +947,7 @@ static void cb_flash(struct f_fastboot *f_fb, const c=
+har *cmd)
+>  	filename =3D fentry->filename;
+>  =
+
+>  	if (filetype =3D=3D filetype_android_sparse) {
+> -		if (!IS_ENABLED(USB_GADGET_FASTBOOT_SPARSE)) {
+> +		if (!IS_ENABLED(CONFIG_USB_GADGET_FASTBOOT_SPARSE)) {
+>  			fastboot_tx_print(f_fb, "FAILsparse image not supported");
+>  			ret =3D -EOPNOTSUPP;
+>  			goto out;
+> @@ -1233,7 +1233,7 @@ done:
+>  =
+
+>  static int fastboot_globalvars_init(void)
 >  {
->  	struct pci_dev *dev;
-> @@ -368,6 +393,11 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
->  		dev->vendor = l & 0xffff;
->  		dev->device = (l >> 16) & 0xffff;
->  		dev->dev.parent = bus->parent;
-> +		dev->dev.device_node = pci_of_match_device(bus->parent, devfn);
-> +		if (dev->dev.device_node)
-> +			pr_debug("found DT node %s for device %04x:%04x\n",
-> +				 dev->dev.device_node->full_name,
-> +				 dev->vendor, dev->device);
->  
->  		/* non-destructively determine if device can be a master: */
->  		pci_read_config_byte(dev, PCI_COMMAND, &cmd);
-> -- 
+> -	if (IS_ENABLED(USB_GADGET_FASTBOOT_SPARSE))
+> +	if (IS_ENABLED(CONFIG_USB_GADGET_FASTBOOT_SPARSE))
+>  		globalvar_add_simple_int("usbgadget.fastboot_max_download_size",
+>  				 &fastboot_max_download_size, "%u");
+>  =
+
+> -- =
+
 > 2.18.0
-> 
-> 
+> =
+
+> =
+
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
--- 
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
