@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fnIpi-0005LF-5v
- for barebox@lists.infradead.org; Wed, 08 Aug 2018 07:24:39 +0000
-Date: Wed, 8 Aug 2018 09:24:26 +0200
+ id 1fnItR-0007TI-JQ
+ for barebox@lists.infradead.org; Wed, 08 Aug 2018 07:28:31 +0000
+Date: Wed, 8 Aug 2018 09:28:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180808072426.5ztmtrsi4jovaowo@pengutronix.de>
-References: <20180731104442.2451-1-s.trumtrar@pengutronix.de>
+Message-ID: <20180808072817.qmxea4km7vbytvp3@pengutronix.de>
+References: <20180801083831.12983-1-l.stach@pengutronix.de>
+ <20180801083831.12983-2-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180731104442.2451-1-s.trumtrar@pengutronix.de>
+In-Reply-To: <20180801083831.12983-2-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,92 +23,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/19] ARM: SoCFPGA: Arria10: Early FPGA config
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/3] PCI: link PCI devices with potentially existing OF
+ nodes
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Tue, Jul 31, 2018 at 12:44:23PM +0200, Steffen Trumtrar wrote:
-> Hi!
+On Wed, Aug 01, 2018 at 10:38:29AM +0200, Lucas Stach wrote:
+> The document "PCI Bus Binding to: IEEE Std 1275-1994 Standard for Boot
+> (Initialization Configuration) Firmware" describes how the PCI topology
+> can be described in the DT, in order to augment the PCI devices with
+> additional information via DT properties.
 > 
-> This series allows configuring the FPGA of an Arria10 SoCFPGA early
-> in the bootprocess from barebox. Early means: before the SDRAM is used.
+> This patch links OF nodes to the corresponding PCI devices if they
+> exist, allowing PCI device drivers to query DT information like any
+> platform device.
 > 
-> The patches where developed for and tested on the Achilles board.
-> 
-> While at it, some cleanup patches are included, too.
-> 
-> 
-> Steffen
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  drivers/pci/pci.c | 30 ++++++++++++++++++++++++++++++
+>  1 file changed, 30 insertions(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> 
-> 
-> Enrico Jorns (1):
->   bootm: allow booting SoCFPGA prebootloader image
-> 
-> Steffen Trumtrar (18):
->   mci: dw_mmc: remove device_d pointer
->   mci: dw_mmc: convert to BIT() macro
->   mci: dw: move defines to headerfile
->   reset: socfpga: add missing driver name
->   ARM: socfpga: arria10: move debug_ll to common code
->   ARM: socfpga: arria10: add ocram base address
->   ARM: socfpga: add SMP_TWD_ADDR for Arria10
->   ARM: socfpga: arria10-init: split pinsetup
->   ARM: socfpga: arria10: set default TEXTBASE
->   ARM: socfpga: arria10: fix SDMMC phase shift
->   ARM: socfpga: achilles: update handoff files
->   ARM: dts: socfpga: Fix achilles dtc warnings
->   scripts: socfpga_mkimage: add size feature for PBL barebox
->   ARM: socfpga: arria10-reset-manager: don't reset bootsource
->   ARM: socfpga: Arria10: support programming FPGA in PBL
->   ARM: socfpga: achilles: convert to PBL barebox
->   ARM: arria10: update defconfig
->   ARM: socfpga: achilles: move environment to raw partition
-> 
->  arch/arm/Kconfig                                   |   4 -
->  arch/arm/boards/reflex-achilles/Makefile           |   4 +-
->  arch/arm/boards/reflex-achilles/board.c            |  19 +
->  arch/arm/boards/reflex-achilles/lowlevel.c         |  87 +++-
->  .../boards/reflex-achilles/pinmux-config-arria10.c |   2 +-
->  .../boards/reflex-achilles/pll-config-arria10.c    |  16 +-
->  arch/arm/configs/socfpga-arria10_defconfig         |   7 +-
->  arch/arm/dts/socfpga_arria10_achilles.dts          |  20 +-
->  arch/arm/lib32/bootm.c                             |   7 +
->  arch/arm/mach-socfpga/Kconfig                      |   9 +-
->  arch/arm/mach-socfpga/Makefile                     |  12 +-
->  arch/arm/mach-socfpga/arria10-bootsource.c         |  16 +-
->  arch/arm/mach-socfpga/arria10-generic.c            |   2 +-
->  arch/arm/mach-socfpga/arria10-init.c               |  47 ++-
->  arch/arm/mach-socfpga/arria10-reset-manager.c      |  33 +-
->  arch/arm/mach-socfpga/arria10-sdram.c              |   2 +
->  arch/arm/mach-socfpga/arria10-xload-emmc.c         | 222 ++++++++++
->  arch/arm/mach-socfpga/arria10-xload.c              | 457 +++++++++++++++++++++
->  arch/arm/mach-socfpga/include/mach/arria10-fpga.h  |  86 ++++
->  arch/arm/mach-socfpga/include/mach/arria10-regs.h  |   2 +
->  .../include/mach/arria10-system-manager.h          |   6 +
->  arch/arm/mach-socfpga/include/mach/arria10-xload.h |  13 +
->  arch/arm/mach-socfpga/include/mach/debug_ll.h      |   2 -
->  arch/arm/mach-socfpga/include/mach/generic.h       |  41 ++
->  drivers/mci/dw_mmc.c                               | 152 +------
->  drivers/mci/dw_mmc.h                               | 140 +++++++
->  drivers/reset/reset-socfpga.c                      |   1 +
->  images/Makefile.socfpga                            |  17 +-
->  scripts/socfpga_mkimage.c                          |  25 +-
->  29 files changed, 1240 insertions(+), 211 deletions(-)
->  create mode 100644 arch/arm/boards/reflex-achilles/board.c
->  create mode 100644 arch/arm/mach-socfpga/arria10-xload-emmc.c
->  create mode 100644 arch/arm/mach-socfpga/arria10-xload.c
->  create mode 100644 arch/arm/mach-socfpga/include/mach/arria10-fpga.h
->  create mode 100644 arch/arm/mach-socfpga/include/mach/arria10-xload.h
->  create mode 100644 drivers/mci/dw_mmc.h
-> 
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index b2570eb15181..bd8b7278ef19 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -331,6 +331,31 @@ static void postscan_setup_bridge(struct pci_dev *dev)
+>  	}
+>  }
+>  
+> +static struct device_node *
+> +pci_of_match_device(struct device_d *parent, unsigned int devfn)
+> +{
+> +	struct device_node *np;
+> +	u32 reg;
+> +
+> +	if (!IS_ENABLED(CONFIG_OFTREE) || !parent->device_node)
+> +		return NULL;
+> +
+> +	for_each_child_of_node(parent->device_node, np) {
+> +		if (!of_property_read_u32_array(np, "reg", &reg, 1)) {
+> +			/*
+> +			 * Only match device/function pair of the device
+> +			 * address, other properties are defined by the
+> +			 * PCI/OF node topology.
+> +			 */
+> +			reg = (reg >> 8) & 0xffff;
+> +			if (reg == devfn)
+> +				return np;
+> +		}
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+>  unsigned int pci_scan_bus(struct pci_bus *bus)
+>  {
+>  	struct pci_dev *dev;
+> @@ -368,6 +393,11 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
+>  		dev->vendor = l & 0xffff;
+>  		dev->device = (l >> 16) & 0xffff;
+>  		dev->dev.parent = bus->parent;
+> +		dev->dev.device_node = pci_of_match_device(bus->parent, devfn);
+> +		if (dev->dev.device_node)
+> +			pr_debug("found DT node %s for device %04x:%04x\n",
+> +				 dev->dev.device_node->full_name,
+> +				 dev->vendor, dev->device);
+>  
+>  		/* non-destructively determine if device can be a master: */
+>  		pci_read_config_byte(dev, PCI_COMMAND, &cmd);
 > -- 
-> 2.11.0
+> 2.18.0
+> 
 > 
 > _______________________________________________
 > barebox mailing list
