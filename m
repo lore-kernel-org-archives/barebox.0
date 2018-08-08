@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fnOlM-0004mn-Jq
- for barebox@lists.infradead.org; Wed, 08 Aug 2018 13:44:36 +0000
-Date: Wed, 8 Aug 2018 15:44:20 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180808134420.5gzsbndqjaquunkq@pengutronix.de>
-References: <ba511f55-67dd-908c-467e-51fbedea9ea7@easyarm.com>
+ id 1fnREv-0007Id-2n
+ for barebox@lists.infradead.org; Wed, 08 Aug 2018 16:23:19 +0000
+Received: by mail-lj1-x231.google.com with SMTP id y17-v6so2181893ljy.8
+ for <barebox@lists.infradead.org>; Wed, 08 Aug 2018 09:23:02 -0700 (PDT)
+Date: Wed, 8 Aug 2018 19:22:51 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20180808162250.avlghvty7eh4ndhi@localhost.localdomain>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <ba511f55-67dd-908c-467e-51fbedea9ea7@easyarm.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: optee in barebox
-To: siva <siva.v@easyarm.com>
-Cc: barebox@lists.infradead.org
+Subject: scripts/dtc/fdtget: No such file or directory
+To: barebox@lists.infradead.org, pvizeli@syshack.ch
 
-Hi Siva,
+Hi, 
 
-On Thu, Jul 26, 2018 at 06:04:53PM +0530, siva wrote:
-> Hi Dear Team,
-> 
-> Is there any OP-TEE support for barebox.
+After "8a8982541 scripts/dtc: Update to upstream version 1.4.6" 
+scripts/dtc/Makefile lacks rule for scripts/dtc/fdtget, which causes 
+scripts/gen-dtb-s to complain:
 
-There is a patch for some initial support, that hasn't made it into
-mainline yet:
+	$ make
+	...
+	scripts/gen-dtb-s: line 24: scripts/dtc/fdtget: No such file or directory
+	scripts/gen-dtb-s: line 27: scripts/dtc/fdtget: No such file or directory
+	scripts/gen-dtb-s: line 34: scripts/dtc/fdtget: No such file or directory
+	scripts/gen-dtb-s: line 37: scripts/dtc/fdtget: No such file or directory
+	scripts/gen-dtb-s: line 24: scripts/dtc/fdtget: No such file or directory
+	scripts/gen-dtb-s: line 27: scripts/dtc/fdtget: No such file or directory
+	scripts/gen-dtb-s: line 34: scripts/dtc/fdtget: No such file or directory
+	scripts/gen-dtb-s: line 37: scripts/dtc/fdtget: No such file or directory
 
-https://www.spinics.net/lists/u-boot-v2/msg30313.html
+Yet a build finishes ok.
 
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Regards,
+Peter
 
 _______________________________________________
 barebox mailing list
