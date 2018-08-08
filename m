@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fnISM-0004yn-FW
- for barebox@lists.infradead.org; Wed, 08 Aug 2018 07:00:32 +0000
-Date: Wed, 8 Aug 2018 09:00:18 +0200
+ id 1fnIUy-0005CI-O9
+ for barebox@lists.infradead.org; Wed, 08 Aug 2018 07:03:14 +0000
+Date: Wed, 8 Aug 2018 09:03:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180808070018.y3hpzk5yoavpvxlv@pengutronix.de>
-References: <20180725141811.25588-1-r.hieber@pengutronix.de>
- <20180725141811.25588-2-r.hieber@pengutronix.de>
+Message-ID: <20180808070301.33o6pkq7hqieiiua@pengutronix.de>
+References: <20180727095456.30516-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180725141811.25588-2-r.hieber@pengutronix.de>
+In-Reply-To: <20180727095456.30516-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,31 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] Documentation: fix code block and literal block
- highlighting
-To: Roland Hieber <r.hieber@pengutronix.de>
+Subject: Re: [PATCH] reset: socfpga: add missing driver name
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jul 25, 2018 at 04:18:11PM +0200, Roland Hieber wrote:
-> Use shell script highlighting where it is resonable, use console
-> highlighting for transcripts, and fix some of the few cases where the
-> syntax was broken, resulting in text not being rendered at all.
+On Fri, Jul 27, 2018 at 11:54:56AM +0200, Steffen Trumtrar wrote:
+> The driver_d is missing the name property. When the reset driver is used in a
+> non-of setup, this will result in an error during device_registration where
+> the dev->name is matched to the driver->name.
 > 
-> Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > ---
->  Documentation/boards/imx.rst                  | 16 +++++++++----
->  .../boards/imx/Garz-Fricke-Vincell.rst        |  4 +++-
->  .../boards/imx/Phytec-phyCORE-i.MX31.rst      |  8 +++++--
->  Documentation/boards/imx/Wandboard.rst        |  5 +++-
+>  drivers/reset/reset-socfpga.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-This patch does not apply. In my tree the filenames are all different,
-for example this one is Documentation/boards/imx/wandboard.rst (with a
-lowercase 'w') in my tree.
-
-However, applied 1/2.
+Applied, thanks
 
 Sascha
 
+> 
+> diff --git a/drivers/reset/reset-socfpga.c b/drivers/reset/reset-socfpga.c
+> index dd081ee84f72..b6faa0217ef2 100644
+> --- a/drivers/reset/reset-socfpga.c
+> +++ b/drivers/reset/reset-socfpga.c
+> @@ -113,6 +113,7 @@ static const struct of_device_id socfpga_reset_dt_ids[] = {
+>  };
+>  
+>  static struct driver_d socfpga_reset_driver = {
+> +	.name = "socfpga_reset",
+>  	.probe	= socfpga_reset_probe,
+>  	.of_compatible	= DRV_OF_COMPAT(socfpga_reset_dt_ids),
+>  };
+> -- 
+> 2.11.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
