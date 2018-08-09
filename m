@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fnhby-00069O-4y
- for barebox@lists.infradead.org; Thu, 09 Aug 2018 09:52:07 +0000
-Received: from ravnborg.org (unknown [158.248.196.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by asavdk4.altibox.net (Postfix) with ESMTPS id E897880328
- for <barebox@lists.infradead.org>; Thu,  9 Aug 2018 11:51:47 +0200 (CEST)
-Date: Thu, 9 Aug 2018 11:51:46 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20180809095146.GA26594@ravnborg.org>
+ id 1fnin2-0003sj-9e
+ for barebox@lists.infradead.org; Thu, 09 Aug 2018 11:07:38 +0000
+References: <20180809095146.GA26594@ravnborg.org>
+From: Ulrich =?utf-8?Q?=C3=96lmann?= <u.oelmann@pengutronix.de>
+In-reply-to: <20180809095146.GA26594@ravnborg.org>
+Date: Thu, 09 Aug 2018 13:07:22 +0200
+Message-ID: <6rzhxvhk7p.fsf@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,52 +17,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: NFS boot - could not open /.tftp_tmp_path
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: NFS boot - could not open /.tftp_tmp_path
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi all.
-
-I try to boot my target using NFS - but something does not work.
-I have a server (192.168.86.201) where I have exported
-an nfs mount like this:
-$ sudo exportfs
-/nfsboot/arm9   <world>
-$ cat /etc/exports.d/nfsboot.exports
-/nfsboot/arm9        *(insecure,no_subtree_check,no_root_squash,rw,nohide)
-
-On my barebox target I can then mount the nfs like this:
-barebox: mkdir /mnt
-barebox: /mnt/nfs
-barebox: mount -t nfs 192.168.86.201:/nfsboot/arm9
-
-barebox: mount
-none on / type ramfs
-none on /dev type devfs
-192.168.86.201:/nfsboot/arm9 on /mnt/nfs type nfs
-
-barebox: ls /mnt/nfs <= shows the file I have on the server
-
-Then when I try to boot from nfs I get the following output:
-
-barebox: boot nfs://192.168.86.201/nfsboot/arm9/
-eth0: DHCP client bound to address 192.168.86.20
-T T T T T T T T T T T T T T could not open /.tftp_tmp_path/zImage-at91sam9263ek
-
-When I grep the barebox source I can only find 'tftp_tmp_path' in some
-tftp code.
-
-It looks like it somehow revert back to tftp despite I have specified nfs.
-I hope there is something trivial I do wrong.
-
-Any hints?
-
-	Sam
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FtLAoKU2FtIFJhdm5ib3JnIDxzYW1AcmF2bmJvcmcub3JnPiB3cml0ZXM6Cj4gSSB0cnkg
+dG8gYm9vdCBteSB0YXJnZXQgdXNpbmcgTkZTIC0gYnV0IHNvbWV0aGluZyBkb2VzIG5vdCB3b3Jr
+Lgo+IEkgaGF2ZSBhIHNlcnZlciAoMTkyLjE2OC44Ni4yMDEpIHdoZXJlIEkgaGF2ZSBleHBvcnRl
+ZAo+IGFuIG5mcyBtb3VudCBsaWtlIHRoaXM6Cj4gJCBzdWRvIGV4cG9ydGZzCj4gL25mc2Jvb3Qv
+YXJtOSAgIDx3b3JsZD4KPiAkIGNhdCAvZXRjL2V4cG9ydHMuZC9uZnNib290LmV4cG9ydHMKPiAv
+bmZzYm9vdC9hcm05ICAgICAgICAqKGluc2VjdXJlLG5vX3N1YnRyZWVfY2hlY2ssbm9fcm9vdF9z
+cXVhc2gscncsbm9oaWRlKQo+Cj4gT24gbXkgYmFyZWJveCB0YXJnZXQgSSBjYW4gdGhlbiBtb3Vu
+dCB0aGUgbmZzIGxpa2UgdGhpczoKPiBiYXJlYm94OiBta2RpciAvbW50Cj4gYmFyZWJveDogL21u
+dC9uZnMKPiBiYXJlYm94OiBtb3VudCAtdCBuZnMgMTkyLjE2OC44Ni4yMDE6L25mc2Jvb3QvYXJt
+OQo+Cj4gYmFyZWJveDogbW91bnQKPiBub25lIG9uIC8gdHlwZSByYW1mcwo+IG5vbmUgb24gL2Rl
+diB0eXBlIGRldmZzCj4gMTkyLjE2OC44Ni4yMDE6L25mc2Jvb3QvYXJtOSBvbiAvbW50L25mcyB0
+eXBlIG5mcwo+Cj4gYmFyZWJveDogbHMgL21udC9uZnMgPD0gc2hvd3MgdGhlIGZpbGUgSSBoYXZl
+IG9uIHRoZSBzZXJ2ZXIKPgo+IFRoZW4gd2hlbiBJIHRyeSB0byBib290IGZyb20gbmZzIEkgZ2V0
+IHRoZSBmb2xsb3dpbmcgb3V0cHV0Ogo+Cj4gYmFyZWJveDogYm9vdCBuZnM6Ly8xOTIuMTY4Ljg2
+LjIwMS9uZnNib290L2FybTkvCgp5b3UgYWxyZWFkeSBoYXZlIHRoZSBzbGFzaCBzZXBhcmF0aW5n
+IHRoZSBob3N0IHBhcnQgb2YgdGhlIFVSTCBhbmQgdGhlCnBhdGggcGFydCwgYnV0IHlvdSBtaXNz
+ZWQgdGhlIHNsYXNoIHRoYXQgaXMgbmVlZGVkIGF0IHRoZSBiZWdpbm5pbmcgb2YKdGhlIGFic29s
+dXRlIHBhdGg6CgogIGJvb3QgbmZzOi8vMTkyLjE2OC44Ni4yMDEvL25mc2Jvb3QvYXJtOS8KCih3
+aXRoIGEgdHdvIHNsYXNoZXMpIHNob3VsZCBob3BlZnVsbHkgZG8gdGhlIHRyaWNrLgoKQmVzdCBy
+ZWdhcmRzClVscmljaAoKCj4gZXRoMDogREhDUCBjbGllbnQgYm91bmQgdG8gYWRkcmVzcyAxOTIu
+MTY4Ljg2LjIwCj4gVCBUIFQgVCBUIFQgVCBUIFQgVCBUIFQgVCBUIGNvdWxkIG5vdCBvcGVuIC8u
+dGZ0cF90bXBfcGF0aC96SW1hZ2UtYXQ5MXNhbTkyNjNlawo+Cj4gV2hlbiBJIGdyZXAgdGhlIGJh
+cmVib3ggc291cmNlIEkgY2FuIG9ubHkgZmluZCAndGZ0cF90bXBfcGF0aCcgaW4gc29tZQo+IHRm
+dHAgY29kZS4KPgo+IEl0IGxvb2tzIGxpa2UgaXQgc29tZWhvdyByZXZlcnQgYmFjayB0byB0ZnRw
+IGRlc3BpdGUgSSBoYXZlIHNwZWNpZmllZCBuZnMuCj4gSSBob3BlIHRoZXJlIGlzIHNvbWV0aGlu
+ZyB0cml2aWFsIEkgZG8gd3JvbmcuCj4KPiBBbnkgaGludHM/Cj4KPiAJU2FtCj4KPiBfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+IGJhcmVib3ggbWFpbGlu
+ZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94CgoKLS0KUGVuZ3V0cm9uaXggZS5LLiAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIHwgVWxyaWNoIMOWbG1hbm4gICAgICAgICAgICAgICB8
+CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cu
+cGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2Vy
+bWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
+aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
