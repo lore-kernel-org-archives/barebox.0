@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fnfy0-0003m5-Ss
- for barebox@lists.infradead.org; Thu, 09 Aug 2018 08:06:46 +0000
-Date: Thu, 9 Aug 2018 10:06:33 +0200
+ id 1fnqlo-0001jI-AZ
+ for barebox@lists.infradead.org; Thu, 09 Aug 2018 19:38:54 +0000
+Date: Thu, 9 Aug 2018 21:38:39 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180809080633.haq7vabn3xvbo7cb@pengutronix.de>
-References: <20180809065420.6475-1-s.hauer@pengutronix.de>
- <201808090914.47846.jbe@pengutronix.de>
- <20180809072024.exh4oxrzyvy7onsw@pengutronix.de>
- <201808091003.06483.jbe@pengutronix.de>
+Message-ID: <20180809193839.lqtaurzxn62emuhg@pengutronix.de>
+References: <20180730111437.23453-1-r.hieber@pengutronix.de>
+ <20180730111437.23453-4-r.hieber@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <201808091003.06483.jbe@pengutronix.de>
+In-Reply-To: <20180730111437.23453-4-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,27 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts/dtc: Reenable fdtget
-To: Juergen Borleis <jbe@pengutronix.de>
+Subject: Re: [PATCH 4/4] linux/types.h: fix missing include for BITS_TO_LONGS()
+To: Roland Hieber <r.hieber@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Aug 09, 2018 at 10:03:06AM +0200, Juergen Borleis wrote:
-> On Thursday 09 August 2018 09:20:24 Sascha Hauer wrote:
-> > [...]
-> > >
-> > > You should add "fdtget" to the "clean-files" variable as well.
-> >
-> > Nope, it's not necessary to add that explicitly.
+On Mon, Jul 30, 2018 at 01:14:37PM +0200, Roland Hieber wrote:
+> Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
+> ---
+>  include/linux/types.h | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> Hmm, then somewhere else?
-> 
-> $ make
-> [...]
-> $ git status
-> scripts/dtc/fdtget
-> $ make clean
+> diff --git a/include/linux/types.h b/include/linux/types.h
+> index f64ec4a814..44d8238d53 100644
+> --- a/include/linux/types.h
+> +++ b/include/linux/types.h
+> @@ -2,6 +2,7 @@
+>  #define _LINUX_TYPES_H
+>  
+>  #include <linux/posix_types.h>
+> +#include <linux/bitops.h>
+>  #include <asm/types.h>
 
-Host tools are cleaned with 'make distclean'
+This breaks compilation on ppc. Here linux/bitops.h includes files which
+use types (__be32 and friends) which are declared later in
+include/linux/types.h.
+
+Why specifically is this patch needed?
 
 Sascha
 
