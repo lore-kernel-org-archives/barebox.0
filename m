@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vsmx011.vodafonemail.xion.oxcs.net ([153.92.174.89])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fnIxI-0000oO-5E
- for barebox@lists.infradead.org; Wed, 08 Aug 2018 07:32:29 +0000
-Date: Wed, 8 Aug 2018 09:32:16 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180808073216.ecu3tbbhbnnz4tl2@pengutronix.de>
-References: <20180807141707.25909-1-u.kleine-koenig@pengutronix.de>
- <20180807142344.26219-1-u.kleine-koenig@pengutronix.de>
+ id 1fnfdv-0004RK-Kv
+ for barebox@lists.infradead.org; Thu, 09 Aug 2018 07:46:01 +0000
+Date: Thu, 9 Aug 2018 09:45:35 +0200 (CEST)
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Message-ID: <1151130077.2195.1533800735792@mail.vodafone.de>
+In-Reply-To: <20180808075253.pmj2hivb6xzm24kn@pengutronix.de>
+References: <479189478.116665.1533036012752@mail.vodafone.de>
+ <20180808075253.pmj2hivb6xzm24kn@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180807142344.26219-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,98 +18,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] usb: gadget: allow to actually enable sparse fastboot
- support
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: root= kernel cmdline parameter
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, u.kleine-koenig@pengutronix.de
 
-On Tue, Aug 07, 2018 at 04:23:44PM +0200, Uwe Kleine-K=F6nig wrote:
-> When sparse support was (intended to be) made optional it was
-> effectively unconditionally disabled because
-> =
+Hi,
 
-> 	IS_ENABLED(USB_GADGET_FASTBOOT_SPARSE)
-> =
+> On August 8, 2018 at 9:52 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> 
+> On Tue, Jul 31, 2018 at 01:20:12PM +0200, Giorgio Dal Molin wrote:
+> > Hi all,
+> > 
+> > I'm trying to find out the best method to define the root=
+> > parameter when booting the linux kernel from barebox.
+> > 
+> > My system boots from an sd card partitioned with a GPT.
+> > The sd card has two independent set of partitions with
+> > the following labels:
+> > 
+> > 1)   boot_1 + rootfs_1
+> > 2)   boot_2 + rootfs_2
+> > 
+> > for redondance in case one set gets damaged while updating.
+> > 
+> > 'boot_1' is formatted with ext4 and contains the kernel + dtb images
+> > for the userland in 'rootfs_1'; and the same for 'boot_2' and 'rootfs_2'.
+> > 
+> > Currently I hardcode the 'root' parameter to '/dev/mmcblk0p3' or
+> > '/dev/mmcblk0p4' corresponding to the kernel in 'boot_1' or
+> > 'boot_2' and it actually works but is there a better way to do
+> > this ?
+> 
+> You could use bootloader spec. That would at least allow you to store a
+> suitable root= parameter in the config files in the boot_1 and boot_2
+> partitions.
+> 
+> Not sure if that's what you are looking for though.
+> 
+> Sascha
+> 
 
-> always evaluates to 0. To actually make use of the introduced kconfig
-> symbol the CONFIG_ prefix must not be skipped.
-> =
+as I already wrote to Uwe Kleine-Koenig I wanted to keep the kernel
+image and the dtb in a separate partition because these are the files
+the bootloader *must* be able to read to boot the system. Having the
+userland in a separate partition lets me choose an image format for it
+independently from what barebox supports; as an example I could pack
+my userland in a btrfs image. Moreover I can be more selective when
+updating the firmware: I can update only the kernel+dtb or only the
+userland image.
 
-> Fixes: f4b5d3eeb607 ("usb: gadget: fastboot: Make sparse support optional=
-")
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
-> Huh, I failed to commit the third IS_ENABLED hunk in (implicit) v1.
-> =
+What I would like to have is an automatic way to set the root= kernel
+command line parameter similar to what barebox does with the 'bootm.appendroot'
+but a bit more flexible.
+Looking at the kernel function name_to_dev_t() in the source init/do_mounts.c,
+it accepts also the format 'PARTUUID=00112233-4455-6677-8899-AABBCCDDEEFF':
+my idea was to somehow tell barebox 'use the partition with label "rootfs_1"
+for the "root" parameter' and barebox should be able to match my label with
+the partition UUID and automatically generate the root= value.
 
->  drivers/usb/gadget/f_fastboot.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-
-Applied, thanks
-
-Sascha
-
-> =
-
-> diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastb=
-oot.c
-> index 7ccf22771493..40a78987e46c 100644
-> --- a/drivers/usb/gadget/f_fastboot.c
-> +++ b/drivers/usb/gadget/f_fastboot.c
-> @@ -337,7 +337,7 @@ static int fastboot_bind(struct usb_configuration *c,=
- struct usb_function *f)
->  	fb_setvar(var, "0.4");
->  	var =3D fb_addvar(f_fb, "bootloader-version");
->  	fb_setvar(var, release_string);
-> -	if (IS_ENABLED(USB_GADGET_FASTBOOT_SPARSE)) {
-> +	if (IS_ENABLED(CONFIG_USB_GADGET_FASTBOOT_SPARSE)) {
->  		var =3D fb_addvar(f_fb, "max-download-size");
->  		fb_setvar(var, "%u", fastboot_max_download_size);
->  	}
-> @@ -947,7 +947,7 @@ static void cb_flash(struct f_fastboot *f_fb, const c=
-har *cmd)
->  	filename =3D fentry->filename;
->  =
-
->  	if (filetype =3D=3D filetype_android_sparse) {
-> -		if (!IS_ENABLED(USB_GADGET_FASTBOOT_SPARSE)) {
-> +		if (!IS_ENABLED(CONFIG_USB_GADGET_FASTBOOT_SPARSE)) {
->  			fastboot_tx_print(f_fb, "FAILsparse image not supported");
->  			ret =3D -EOPNOTSUPP;
->  			goto out;
-> @@ -1233,7 +1233,7 @@ done:
->  =
-
->  static int fastboot_globalvars_init(void)
->  {
-> -	if (IS_ENABLED(USB_GADGET_FASTBOOT_SPARSE))
-> +	if (IS_ENABLED(CONFIG_USB_GADGET_FASTBOOT_SPARSE))
->  		globalvar_add_simple_int("usbgadget.fastboot_max_download_size",
->  				 &fastboot_max_download_size, "%u");
->  =
-
-> -- =
-
-> 2.18.0
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+giorgio
 
 _______________________________________________
 barebox mailing list
