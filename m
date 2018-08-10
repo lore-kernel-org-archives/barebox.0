@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from doppler.thel33t.co.uk ([185.153.207.61])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fnmeZ-0003kb-RQ
- for barebox@lists.infradead.org; Thu, 09 Aug 2018 15:15:12 +0000
-MIME-Version: 1.0
-Date: Thu, 09 Aug 2018 16:14:48 +0100
-From: Leigh Brown <leigh@solinno.co.uk>
-In-Reply-To: <20180806183610.rro2xem64rljdsvy@pengutronix.de>
-References: <844001fa78a52f48a3cb1e9189831456@solinno.co.uk>
- <20180806183610.rro2xem64rljdsvy@pengutronix.de>
-Message-ID: <998b78c5d1dec5b03b7c9dadc42f32ae@solinno.co.uk>
+ id 1fo4sP-0000aG-Qn
+ for barebox@lists.infradead.org; Fri, 10 Aug 2018 10:42:39 +0000
+From: Bastian Stender <bst@pengutronix.de>
+Date: Fri, 10 Aug 2018 12:42:19 +0200
+Message-Id: <20180810104220.4391-1-bst@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,88 +14,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Help requested with Barebox on Globalscale Mirabox
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: Barebox <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] ARM: imx: add fusemap entries for i.MX6SDL silicon
+ revision >=1.4
+To: barebox@lists.infradead.org
+Cc: Bastian Stender <bst@pengutronix.de>
 
-SGkgVXdlLAoKT24gMjAxOC0wOC0wNiAxOTozNiwgVXdlIEtsZWluZS1Lw7ZuaWcgd3JvdGU6Cj4g
-SGVsbG8gTGVpZ2gsCj4gCj4gT24gVHVlLCBKdWwgMzEsIDIwMTggYXQgMDI6MjE6MDRQTSArMDEw
-MCwgTGVpZ2ggQnJvd24gd3JvdGU6Cj4+IEhhdmUgSSBtaXNzZWQgYW55IHN0ZXBzPyAgQW55IGhl
-bHAgd291bGQgYmUgZ3JlYXRseSBhcHByZWNpYXRlZC4KPiAKPiBMb29rcyBnb29kLgo+IAo+IFdo
-aWNoIHJldmlzaW9uIGFyZSB5b3Ugb24gKGkuZS4gZ2l0IHJldi1wYXJzZSBAIGluIHlvdXIgYmFy
-ZWJveCBjb3B5KT8KPiBXaGF0IGlzIGN1cnJlbnRseSBydW5uaW5nIG9uIHRoZSBkZXZpY2U/CgpJ
-IHdhcyBydW5uaW5nIGFnYWluc3QgdGhlIHNhbWUgcmV2aXNpb24gYXMgeW91IHRyaWVkICg0NDVh
-N2YpLiAgSSdtIG5vdwpydW5uaW5nIGFnYWluc3QgdGhlIGxhdGVzdCByZXZpc2lvbiAoMzMwN2U4
-KSB3aXRoIHRoZSBzYW1lIGlzc3VlLgoKPiBEbyB5b3UgZ2V0IGFuIFUgd2hlbiBhcHBseWluZyB0
-aGlzIHBhdGNoPzoKW3NuaXAgcGF0Y2hdCgpJIGRpZC4gIFRoYW5rcyB2ZXJ5IG11Y2ggZm9yIHRo
-YXQgaGludCwgaXQgaGVscGVkIG1lIGRlYnVnIHRoZSBpc3N1ZS4gSSAKYW0KYm9vdGluZyBmcm9t
-IHRoZSBVQVJUIGFzIGZvbGxvd3M6CgpzY3JpcHRzL2t3Ym9vdCAtdCAtYiBpbWFnZXMvYmFyZWJv
-eC1nbG9iYWxzY2FsZS1taXJhYm94LmltZyAtQiAxMTUyMDAgCi9kZXYvdHR5VVNCMAoKSSBiZWxp
-ZXZlIHRoZSBpc3N1ZSBpcyB0aGF0IGluIGFyY2gvYXJtL21hY2gtbXZlYnUvY29tbW9uLmMgdGhl
-IGZ1bmN0aW9uCmFybWFkYV8zNzBfeHBfYmFyZWJveF9lbnRyeSgpIGNhbGxzIG12ZWJ1X3JlbWFw
-X3JlZ2lzdGVycygpIGJlZm9yZSB0aGUgCnN0YWNrIGlzCnNldCB1cCAoaXQgbG9va3MgbGlrZSB0
-aGUgU1AgcG9pbnRzIHNvbWV3aGVyZSBpbiB0aGUgU1JBTSByYW5nZSkuICBBcwptdmVidV9yZW1h
-cF9yZWdpc3RlcnMoKSBhcyBjb21waWxlZCBieSBteSB2ZXJzaW9uIG9mIGdjYyB1c2VzIHRoZSBz
-dGFjaywgCml0IGZhaWxzCnRvIHJldHVybi4KCk1ha2luZyBtdmVidV9yZW1hcF9yZWdpc3RlcnMo
-KSBpbmxpbmUgZml4ZXMgdGhlIGlzc3VlLCBhcyBwZXIgdGhlIApmb2xsb3dpbmcKcGF0Y2g6Cgpk
-aWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1tdmVidS9jb21tb24uYyBiL2FyY2gvYXJtL21hY2gt
-bXZlYnUvY29tbW9uLmMKaW5kZXggODNhZWI0MWFlLi41ODhjZWY1MTUgMTAwNjQ0Ci0tLSBhL2Fy
-Y2gvYXJtL21hY2gtbXZlYnUvY29tbW9uLmMKKysrIGIvYXJjaC9hcm0vbWFjaC1tdmVidS9jb21t
-b24uYwpAQCAtMTgzLDExICsxODMsMTUgQEAgbWVtX2luaXRjYWxsKG12ZWJ1X21lbWluaXQpOwog
-ICAqIFRoZXJlIG5vIHdheSB0byBkZXRlcm1pbmUgaW50ZXJuYWwgcmVnaXN0ZXJzIGJhc2UgYWRk
-cmVzcwogICAqIHNhZmVseSBsYXRlciBvbiwgYXMgdGhlIHJlbWFwIHJlZ2lzdGVyIGl0c2VsZiBp
-cyB3aXRoaW4gdGhlCiAgICogaW50ZXJuYWwgcmVnaXN0ZXJzLgorICoKKyAqIEFzIHRoaXMgZnVu
-Y3Rpb24gbWF5IGJlIGNhbGxlZCBiZWZvcmUgd2UgaGF2ZSBhIHdvcmtpbmcgc3RhY2ssCisgKiBt
-YWtlIGl0IGlubGluZSB0byBhdm9pZCB0aGUgcG9zc2liaWxpdHkgb2YgdXNpbmcgdGhlIHN0YWNr
-LgorICoKICAgKi8KICAjZGVmaW5lIE1WRUJVX0JSSURHRV9SRUdfQkFTRQkJMHgyMDAwMAogICNk
-ZWZpbmUgREVWSUNFX0lOVEVSTkFMX0JBU0VfQUREUgkoTVZFQlVfQlJJREdFX1JFR19CQVNFICsg
-MHg4MCkKCi1zdGF0aWMgdm9pZCBtdmVidV9yZW1hcF9yZWdpc3RlcnModm9pZCkKK3N0YXRpYyBp
-bmxpbmUgdm9pZCBtdmVidV9yZW1hcF9yZWdpc3RlcnModm9pZCkKICB7CiAgCXZvaWQgX19pb21l
-bSAqYmFzZSA9IG12ZWJ1X2dldF9pbml0aWFsX2ludF9yZWdfYmFzZSgpOwoKCj4gSSBqdXN0IHRy
-aWVkIDdiYTBmMmQyOTk1OTI1NjAyNWVjZTlhZTk2MWE2YzM0MjE0NDVhN2Ygb24gbXkgUmVhZHlO
-QVMgCj4gMTA0Cj4gd2hpY2ggaGFzIGFuIGFybWFkYTM3MCwgdG9vLgo+IAo+IEkgaGFuZ3Mgd2hl
-biB1c2luZyBzZWNvbmQtc3RhZ2UgYm9vdGluZyBmcm9tIHRoZSBWZW5kb3IgVS1Cb290IGFmdGVy
-Ogo+IAo+IAliYXJlYm94IDIwMTguMDcuMC0wMDEzOS1nN2JhMGYyZDI5OTU5LWRpcnR5ICM1MCBN
-b24gQXVnIDYgMjA6Mjc6MTEgCj4gQ0VTVCAyMDE4Cj4gCj4gCj4gCUJvYXJkOiBNYXJ2ZWxsIEFy
-bWFkYSAzNzAvWFAKPiAJU29DOiBNYXJ2ZWxsIDY3MTAgcmV2IDEKPiAJbWRpb19idXM6IG1paWJ1
-czA6IHByb2JlZAo+IAlldGgxOiBnb3QgcHJlc2V0IE1BQyBhZGRyZXNzOiAyODpjNjo4ZTozNjpk
-Zjo1Nwo+IAo+IFdoZW4gZW5hYmxpbmcgREVCVUdfSU5JVENBTExTIEkgZ290IGEgcHJvbXB0LCBo
-bW0uIERpZG4ndCBkZWJ1ZyB0aGF0Cj4gZnVydGhlci4KPiAKPiBCZXN0IHJlZ2FyZHMKPiBVd2UK
-Ck9uY2UgSSBnb3QgcGFzdCB0aGF0IGlzc3VlIEkgYWxzbyBoYWQgYW4gaXNzdWUgaW4gCmJhcmVi
-b3hfbXVsdGlfcGJsX3N0YXJ0LiAgSQp0aGluayB0aGUgZm9sbG93aW5nIHBhdGNoIGlzIHRoZSBy
-aWdodCBzb2x1dGlvbiwgYnV0IEknbSBub3QgMTAwJSBzdXJlLiAgCkl0CmNlcnRhaW5seSBtYWtl
-cyBpdCB3b3JrIGZvciBtZS4KCmRpZmYgLS1naXQgYS9hcmNoL2FybS9jcHUvdW5jb21wcmVzcy5j
-IGIvYXJjaC9hcm0vY3B1L3VuY29tcHJlc3MuYwppbmRleCBiMDcwODdlNGMuLjVlZTgwZGE5ZCAx
-MDA2NDQKLS0tIGEvYXJjaC9hcm0vY3B1L3VuY29tcHJlc3MuYworKysgYi9hcmNoL2FybS9jcHUv
-dW5jb21wcmVzcy5jCkBAIC01MCw3ICs2Niw3IEBAIHZvaWQgX19ub3JldHVybiBiYXJlYm94X211
-bHRpX3BibF9zdGFydCh1bnNpZ25lZCBsb25nIAptZW1iYXNlLAogIAl2b2lkICpwZ19zdGFydDsK
-ICAJdW5zaWduZWQgbG9uZyBwYyA9IGdldF9wYygpOwoKLQlpbWFnZV9lbmQgPSAodm9pZCAqKSZp
-bWFnZV9lbmRfbWFya2VyICsgZ2xvYmFsX3ZhcmlhYmxlX29mZnNldCgpOworCWltYWdlX2VuZCA9
-ICh2b2lkICopJmltYWdlX2VuZF9tYXJrZXI7CgogIAlpZiAoSVNfRU5BQkxFRChDT05GSUdfUEJM
-X1JFTE9DQVRBQkxFKSkgewogIAkJLyoKQEAgLTYzLDYgKzc5LDggQEAgdm9pZCBfX25vcmV0dXJu
-IGJhcmVib3hfbXVsdGlfcGJsX3N0YXJ0KHVuc2lnbmVkIGxvbmcgCm1lbWJhc2UsCiAgCQllbHNl
-CiAgCQkJcmVsb2NhdGVfdG9fYWRyKG1lbWJhc2UpOwogIAl9CisJZWxzZQorCQlpbWFnZV9lbmQg
-Kz0gZ2xvYmFsX3ZhcmlhYmxlX29mZnNldCgpOwoKICAJLyoKICAJICogaW1hZ2VfZW5kIGlzIHRo
-ZSBpbWFnZV9lbmRfbWFya2VyIGRlZmluZWQgYWJvdmUuIEl0IGlzIHRoZSBsYXN0IApsb2NhdGlv
-bgoKQW55d2F5LCB3aXRoIHRoZSBmb2xsb3dpbmcgdHdvIGZpeGVzIEkgbm93IGhhdmUgaXQgYm9v
-dGluZyBvbiBteSAKTWlyYWJveDoKCmJhcmVib3ggMjAxOC4wNy4wLTAwMTQzLWdmOWZjODI1NGIt
-ZGlydHkgIzUzIFRodSBBdWcgOSAxNjoxMTowMSBCU1QgMjAxOAoKCkJvYXJkOiBNYXJ2ZWxsIEFy
-bWFkYSAzNzAvWFAKU29DOiBNYXJ2ZWxsIDY3MTAgcmV2IDEKbWRpb19idXM6IG1paWJ1czA6IHBy
-b2JlZApwY2k6IHBjaV9zY2FuX2J1cyBmb3IgYnVzIDAKcGNpOiAgbGFzdF9pbyA9IDB4ZmZlMDAw
-MDAsIGxhc3RfbWVtID0gMHhlMDAwMDAwMCwgbGFzdF9tZW1fcHJlZiA9IAoweDAwMDAwMDAwCnBj
-aTogcGNpX3NjYW5fYnVzIHJldHVybmluZyB3aXRoIG1heD0wMQpwY2k6IHBjaV9zY2FuX2J1cyBm
-b3IgYnVzIDEKcGNpOiAgbGFzdF9pbyA9IDB4ZmZlMTAwMDAsIGxhc3RfbWVtID0gMHhlMjAwMDAw
-MCwgbGFzdF9tZW1fcHJlZiA9IAoweDAwMDAwMDAwCnBjaTogcGNpX3NjYW5fYnVzIHJldHVybmlu
-ZyB3aXRoIG1heD0wMgptYWxsb2Mgc3BhY2U6IDB4MGZlZmU2MDAgLT4gMHgxZmRmY2JmZiAoc2l6
-ZSAyNTUgTWlCKQplbnZpcm9ubWVudCBsb2FkIC9kZXYvZW52MDogTm8gc3VjaCBmaWxlIG9yIGRp
-cmVjdG9yeQpNYXliZSB5b3UgaGF2ZSB0byBjcmVhdGUgdGhlIHBhcnRpdGlvbi4KcnVubmluZyAv
-ZW52L2Jpbi9pbml0Li4uCi9lbnYvYmluL2luaXQgbm90IGZvdW5kCmJhcmVib3g6LwoKVGhhbmtz
-IGFnYWluIGZvciB5b3VyIGhlbHAuICBJJ2xsIG5vdyBmaWd1cmUgb3V0IGhvdyB0byBnZXQgTkFO
-RCBzdXBwb3J0IAp3b3JraW5nLgoKUmVnYXJkcywKCkxlaWdoLgoKX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
-eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
-bGlzdGluZm8vYmFyZWJveAo=
+Signed-off-by: Bastian Stender <bst@pengutronix.de>
+---
+ arch/arm/mach-imx/include/mach/ocotp-fusemap.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/arm/mach-imx/include/mach/ocotp-fusemap.h b/arch/arm/mach-imx/include/mach/ocotp-fusemap.h
+index 44b58ca6e8..aec50dbf8a 100644
+--- a/arch/arm/mach-imx/include/mach/ocotp-fusemap.h
++++ b/arch/arm/mach-imx/include/mach/ocotp-fusemap.h
+@@ -23,7 +23,11 @@
+ #define OCOTP_BOOT_CFG2			(OCOTP_WORD(0x450) | OCOTP_BIT(8) | OCOTP_WIDTH(8))
+ #define OCOTP_BOOT_CFG3			(OCOTP_WORD(0x450) | OCOTP_BIT(16) | OCOTP_WIDTH(8))
+ #define OCOTP_BOOT_CFG4			(OCOTP_WORD(0x450) | OCOTP_BIT(24) | OCOTP_WIDTH(8))
++/* available on i.MX6SDL silicon revision >=1.4, "reserved" elsewhere */
++#define OCOTP_SDP_DISABLE		(OCOTP_WORD(0x460) | OCOTP_BIT(0) | OCOTP_WIDTH(1))
+ #define OCOTP_SEC_CONFIG_1		(OCOTP_WORD(0x460) | OCOTP_BIT(1) | OCOTP_WIDTH(1))
++/* available on i.MX6SDL silicon revision >=1.4, "reserved" elsewhere */
++#define OCOTP_SDP_READ_DISABLE		(OCOTP_WORD(0x460) | OCOTP_BIT(2) | OCOTP_WIDTH(1))
+ #define OCOTP_DIR_BT_DIS		(OCOTP_WORD(0x460) | OCOTP_BIT(3) | OCOTP_WIDTH(1))
+ #define OCOTP_BT_FUSE_SEL		(OCOTP_WORD(0x460) | OCOTP_BIT(4) | OCOTP_WIDTH(1))
+ #define OCOTP_SJC_DISABLE		(OCOTP_WORD(0x460) | OCOTP_BIT(20) | OCOTP_WIDTH(1))
+@@ -31,6 +35,8 @@
+ #define OCOTP_JTAG_SMODE		(OCOTP_WORD(0x460) | OCOTP_BIT(22) | OCOTP_WIDTH(2))
+ #define OCOTP_KTE			(OCOTP_WORD(0x460) | OCOTP_BIT(26) | OCOTP_WIDTH(1))
+ #define OCOTP_JTAG_HEO			(OCOTP_WORD(0x460) | OCOTP_BIT(27) | OCOTP_WIDTH(1))
++/* available on i.MX6SDL silicon revision >=1.4, "reserved" elsewhere */
++#define OCOTP_FORCE_INTERNAL_BOOT	(OCOTP_WORD(0x460) | OCOTP_BIT(31) | OCOTP_WIDTH(1))
+ #define OCOTP_NAND_READ_CMD_CODE1	(OCOTP_WORD(0x470) | OCOTP_BIT(0) | OCOTP_WIDTH(8))
+ #define OCOTP_NAND_READ_CMD_CODE2	(OCOTP_WORD(0x470) | OCOTP_BIT(8) | OCOTP_WIDTH(8))
+ #define OCOTP_TEMP_SENSE		(OCOTP_WORD(0x4e0) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
+-- 
+2.18.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
