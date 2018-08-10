@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fs8SB-0002z6-Bg
- for barebox@lists.infradead.org; Tue, 21 Aug 2018 15:20:20 +0000
-Received: by mail-pf1-x42f.google.com with SMTP id j8-v6so8655397pff.6
- for <barebox@lists.infradead.org>; Tue, 21 Aug 2018 08:20:08 -0700 (PDT)
-From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Tue, 21 Aug 2018 17:19:57 +0200
-Message-Id: <20180821152001.5747-1-aleksander@aleksander.es>
+ id 1fo0p9-0005Ni-8t
+ for barebox@lists.infradead.org; Fri, 10 Aug 2018 06:23:00 +0000
+Date: Fri, 10 Aug 2018 08:22:47 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180810062247.jlgodzci7xvbtqip@pengutronix.de>
+References: <20180809083313.13034-1-u.kleine-koenig@pengutronix.de>
+ <20180809083313.13034-2-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180809083313.13034-2-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,21 +19,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RATP i2c and GPIO support
-To: barebox@lists.infradead.org, s.hauer@pengutronix.de
+Subject: Re: [PATCH 2/3] libfile: open_and_lseek: enlarge small files enough
+ to make lseek possible
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This patch series implements support for i2c and GPIO operations via RATP.
+On Thu, Aug 09, 2018 at 10:33:12AM +0200, Uwe Kleine-K=F6nig wrote:
+> This makes the following do the expected thing:
+> =
 
-  [PATCH 1/4] ratp: implement i2c read/write support
-  [PATCH 2/4] bbremote: implement i2c read/write support
-  [PATCH 3/4] ratp: implement support for GPIO commands
-  [PATCH 4/4] bbremote: implement support for GPIO operations
+> 	barebox@barebox sandbox:/ ls -l lala
+> 	-rwxrwxrwx              4 lala
+> 	barebox@barebox sandbox:/ mw -d lala 72 0
+> =
 
+> Without this patch mw dies with
+> =
+
+> 	lseek: Invalid argument
+> =
+
+> memset, memcpy and probably others benefit in the same way.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  lib/libfile.c | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+> =
+
+> diff --git a/lib/libfile.c b/lib/libfile.c
+> index 83c6399a5b39..01c59cdb80fe 100644
+> --- a/lib/libfile.c
+> +++ b/lib/libfile.c
+> @@ -510,6 +510,24 @@ int open_and_lseek(const char *filename, int mode, l=
+off_t pos)
+>  	if (!pos)
+>  		return fd;
+>  =
+
+> +	if (mode & (O_WRONLY | O_RDWR)) {
+> +		struct stat s;
+> +
+> +		ret =3D fstat(fd, &s);
+> +		if (ret) {
+> +			perror("ftruncate");
+
+I assume this "ftruncate" did not happen on purpose, right? Replaced
+with "fstat" and applied.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
