@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1foANj-0007mB-1Q
- for barebox@lists.infradead.org; Fri, 10 Aug 2018 16:35:28 +0000
+ id 1foANi-0007le-7T
+ for barebox@lists.infradead.org; Fri, 10 Aug 2018 16:35:26 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Fri, 10 Aug 2018 18:34:56 +0200
-Message-Id: <20180810163500.12042-11-r.hieber@pengutronix.de>
+Date: Fri, 10 Aug 2018 18:34:49 +0200
+Message-Id: <20180810163500.12042-4-r.hieber@pengutronix.de>
 In-Reply-To: <20180810163500.12042-1-r.hieber@pengutronix.de>
 References: <20180810163500.12042-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,45 +21,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 10/14] ARM: MXS: fix VDDx brownout setup logic
+Subject: [PATCH v2 03/14] ARM: MXS: i.MX28: allow setup of low-voltage SDRAM
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-The cfg->bo_irq and cfg->bo_enirq (i.e. VDDx_BO_IRQ and ENIRQ_VDDx_BO)
-flags are part of POWER_CTRL, so setting those flag in cfg->reg (i.e.
-POWER_VDDxCTRL) makes no sense. Fortunately, those bits are reserved in
-ENIRQ_VDDx_BO, so writing them did no harm, but also doesn't work as
-intended.
+The PINCTRL_*_DDR_MODE_* defines are now needed in global scope, so move
+them to the respective include header.
 
 Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- arch/arm/mach-mxs/power-init.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/boards/duckbill/lowlevel.c           | 3 ++-
+ arch/arm/boards/freescale-mx28-evk/lowlevel.c | 3 ++-
+ arch/arm/boards/karo-tx28/lowlevel.c          | 3 ++-
+ arch/arm/mach-mxs/include/mach/init.h         | 7 ++++++-
+ arch/arm/mach-mxs/mem-init.c                  | 9 +++------
+ 5 files changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/mach-mxs/power-init.c b/arch/arm/mach-mxs/power-init.c
-index d4b88a4b2c..db597ef65c 100644
---- a/arch/arm/mach-mxs/power-init.c
-+++ b/arch/arm/mach-mxs/power-init.c
-@@ -1083,8 +1083,8 @@ static void mxs_power_set_vddx(const struct mxs_vddx_cfg *cfg,
+diff --git a/arch/arm/boards/duckbill/lowlevel.c b/arch/arm/boards/duckbill/lowlevel.c
+index 2922e40f2a..3adda68d77 100644
+--- a/arch/arm/boards/duckbill/lowlevel.c
++++ b/arch/arm/boards/duckbill/lowlevel.c
+@@ -55,7 +55,8 @@ static noinline void duckbill_init(void)
  
- 	if (adjust_up && cfg->bo_irq) {
- 		if (powered_by_linreg) {
--			bo_int = readl(cfg->reg);
--			clrbits_le32(cfg->reg, cfg->bo_enirq);
-+			bo_int = readl(&power_regs->hw_power_ctrl);
-+			writel(cfg->bo_enirq, &power_regs->hw_power_ctrl_clr);
- 		}
- 		setbits_le32(cfg->reg, cfg->bo_offset_mask);
- 	}
-@@ -1126,7 +1126,7 @@ static void mxs_power_set_vddx(const struct mxs_vddx_cfg *cfg,
- 		if (adjust_up && powered_by_linreg) {
- 			writel(cfg->bo_irq, &power_regs->hw_power_ctrl_clr);
- 			if (bo_int & cfg->bo_enirq)
--				setbits_le32(cfg->reg, cfg->bo_enirq);
-+				writel(cfg->bo_enirq, &power_regs->hw_power_ctrl_set);
- 		}
+ 	pr_debug("initializing SDRAM...\n");
  
- 		clrsetbits_le32(cfg->reg, cfg->bo_offset_mask,
+-	mx28_mem_init(mx28_dram_vals_default);
++	mx28_mem_init(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
++			mx28_dram_vals_default);
+ 
+ 	pr_debug("DONE\n");
+ }
+diff --git a/arch/arm/boards/freescale-mx28-evk/lowlevel.c b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+index 4d45a03ba2..9df60210e6 100644
+--- a/arch/arm/boards/freescale-mx28-evk/lowlevel.c
++++ b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+@@ -47,7 +47,8 @@ static noinline void freescale_mx28evk_init(void)
+ 
+ 	pr_debug("initializing SDRAM...\n");
+ 
+-	mx28_mem_init(mx28_dram_vals_default);
++	mx28_mem_init(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
++			mx28_dram_vals_default);
+ 
+ 	pr_debug("DONE\n");
+ }
+diff --git a/arch/arm/boards/karo-tx28/lowlevel.c b/arch/arm/boards/karo-tx28/lowlevel.c
+index d072637de7..99f8a562cc 100644
+--- a/arch/arm/boards/karo-tx28/lowlevel.c
++++ b/arch/arm/boards/karo-tx28/lowlevel.c
+@@ -47,7 +47,8 @@ static noinline void karo_tx28_init(void)
+ 
+ 	pr_debug("initializing SDRAM...\n");
+ 
+-	mx28_mem_init(mx28_dram_vals_default);
++	mx28_mem_init(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
++			mx28_dram_vals_default);
+ 
+ 	pr_debug("DONE\n");
+ }
+diff --git a/arch/arm/mach-mxs/include/mach/init.h b/arch/arm/mach-mxs/include/mach/init.h
+index 6526d303a1..7021981d41 100644
+--- a/arch/arm/mach-mxs/include/mach/init.h
++++ b/arch/arm/mach-mxs/include/mach/init.h
+@@ -21,8 +21,13 @@ void mxs_power_wait_pswitch(void);
+ extern const uint32_t mx28_dram_vals_default[190];
+ extern uint32_t mx23_dram_vals[];
+ 
++#define PINCTRL_EMI_DS_CTRL_DDR_MODE_LPDDR1	(0b00 << 16)
++#define PINCTRL_EMI_DS_CTRL_DDR_MODE_LVDDR2	(0b10 << 16)
++#define PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2	(0b11 << 16)
++
+ void mx23_mem_init(void);
+-void mx28_mem_init(const uint32_t dram_vals[190]);
++void mx28_mem_init(const int emi_ds_ctrl_ddr_mode,
++		const uint32_t dram_vals[190]);
+ void mxs_mem_setup_cpu_and_hbus(void);
+ void mxs_mem_setup_vdda(void);
+ void mxs_mem_init_clock(unsigned char divider);
+diff --git a/arch/arm/mach-mxs/mem-init.c b/arch/arm/mach-mxs/mem-init.c
+index ac8bfee18e..7bc6be00b4 100644
+--- a/arch/arm/mach-mxs/mem-init.c
++++ b/arch/arm/mach-mxs/mem-init.c
+@@ -318,18 +318,15 @@ void mx23_mem_init(void)
+ 	mxs_mem_setup_cpu_and_hbus();
+ }
+ 
+-#define PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2	(0x3 << 16)
+-
+-void mx28_mem_init(const uint32_t dram_vals[190])
++void mx28_mem_init(const int emi_ds_ctrl_ddr_mode, const uint32_t dram_vals[190])
+ {
+ 	mxs_early_delay(11000);
+ 
+ 	/* Fractional divider for ref_emi is 21 ; 480 * 18 / 21 = 411MHz */
+ 	mxs_mem_init_clock(21);
+ 
+-	/* Set DDR2 mode */
+-	writel(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
+-			IMX_IOMUXC_BASE + 0x1b80);
++	/* Set DDR mode */
++	writel(emi_ds_ctrl_ddr_mode, IMX_IOMUXC_BASE + 0x1b80);
+ 
+ 	/*
+ 	 * Configure the DRAM registers
 -- 
 2.18.0
 
