@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1foCiV-0002KY-Gs
- for barebox@lists.infradead.org; Fri, 10 Aug 2018 19:04:57 +0000
-Received: by mail-pf1-x42d.google.com with SMTP id j8-v6so4944167pff.6
- for <barebox@lists.infradead.org>; Fri, 10 Aug 2018 12:04:45 -0700 (PDT)
+ id 1foCia-0002M2-FO
+ for barebox@lists.infradead.org; Fri, 10 Aug 2018 19:05:03 +0000
+Received: by mail-pg1-x543.google.com with SMTP id f14-v6so4801019pgv.13
+ for <barebox@lists.infradead.org>; Fri, 10 Aug 2018 12:04:49 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 10 Aug 2018 12:04:25 -0700
-Message-Id: <20180810190429.10823-3-andrew.smirnov@gmail.com>
+Date: Fri, 10 Aug 2018 12:04:29 -0700
+Message-Id: <20180810190429.10823-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20180810190429.10823-1-andrew.smirnov@gmail.com>
 References: <20180810190429.10823-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,28 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] ARM: i.MX: boot: Fix accidental comma
+Subject: [PATCH 6/6] ARM: i.MX8MQ: Save boot location during initialization
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/boot.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-imx/imx8mq.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index ab25f75b2..45170ab10 100644
---- a/arch/arm/mach-imx/boot.c
-+++ b/arch/arm/mach-imx/boot.c
-@@ -512,7 +512,7 @@ void imx7_get_boot_source(enum bootsource *src, int *instance)
- 		*src = BOOTSOURCE_NAND;
- 		break;
- 	case 6:
--		*src = BOOTSOURCE_SPI_NOR,
-+		*src = BOOTSOURCE_SPI_NOR;
- 		*instance = imx7_boot_instance_spi_nor(sbmr1);
- 		break;
- 	case 4:
+diff --git a/arch/arm/mach-imx/imx8mq.c b/arch/arm/mach-imx/imx8mq.c
+index 1d0bbcfdb..4d00da5f0 100644
+--- a/arch/arm/mach-imx/imx8mq.c
++++ b/arch/arm/mach-imx/imx8mq.c
+@@ -54,6 +54,8 @@ int imx8mq_init(void)
+ 	struct arm_smccc_res res;
+ 	const char *cputypestr;
+ 
++	imx8_boot_save_loc();
++
+ 	switch (type) {
+ 	case IMX8M_CPUTYPE_IMX8MQ:
+ 		cputypestr = "i.MX8MQ";
 -- 
 2.17.1
 
