@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x243.google.com ([2607:f8b0:4001:c0b::243])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fpDeX-0006vI-Uz
- for barebox@lists.infradead.org; Mon, 13 Aug 2018 14:17:07 +0000
-Received: by mail-it0-x243.google.com with SMTP id 72-v6so13303305itw.3
- for <barebox@lists.infradead.org>; Mon, 13 Aug 2018 07:16:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20180810185201.7677-1-andrew.smirnov@gmail.com>
- <20180813064144.7ocirutuvzltrrmn@pengutronix.de>
-In-Reply-To: <20180813064144.7ocirutuvzltrrmn@pengutronix.de>
+ id 1foCV3-0006Qc-M3
+ for barebox@lists.infradead.org; Fri, 10 Aug 2018 18:51:03 +0000
+Received: by mail-pf1-x444.google.com with SMTP id b11-v6so4932865pfo.3
+ for <barebox@lists.infradead.org>; Fri, 10 Aug 2018 11:50:51 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 13 Aug 2018 07:16:38 -0700
-Message-ID: <CAHQ1cqGxbA5jpdSDznAFBeUpcdESnkxMabY9XQKMkXDGc+F5=g@mail.gmail.com>
+Date: Fri, 10 Aug 2018 11:50:33 -0700
+Message-Id: <20180810185033.7019-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,34 +16,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: lib64: Properly handle unaligned addresses in string
- functions
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: i.MX: freescale-mx6sx-sabresdb: Make ar8031_phy_fixup
+ static
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Sun, Aug 12, 2018 at 11:41 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Fri, Aug 10, 2018 at 11:52:01AM -0700, Andrey Smirnov wrote:
-> > Together FEC driver and parts of IP stack might end up trying to
-> > memcpy() small chunks of memory from uncached (that is Device memory)
-> > addresses that are not properly aligned, leading to data abort.
-> >
-> > To prevent such cases, add code to guard unaligned accesses and
-> > redirect them to byte-wise implementations which do not have the above
-> > problem.
->
-> Please no. IMO this problem only shows that the FEC driver shouldn't use
-> dma_alloc_coherent() to allocate its receive buffers, but instead should
-> use dma_alloc + dma_sync_*.
+Declare ar8031_phy_fixup as static since it is not being exported to
+any other users.
+---
+ arch/arm/boards/freescale-mx6sx-sabresdb/board.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-OK, will work on that approach in v2.
+diff --git a/arch/arm/boards/freescale-mx6sx-sabresdb/board.c b/arch/arm/boards/freescale-mx6sx-sabresdb/board.c
+index 028b1dddb..0fd9af80c 100644
+--- a/arch/arm/boards/freescale-mx6sx-sabresdb/board.c
++++ b/arch/arm/boards/freescale-mx6sx-sabresdb/board.c
+@@ -161,7 +161,7 @@ err_out:
+ }
+ fs_initcall(imx6sx_sdb_setup_pmic_voltages);
+ 
+-int ar8031_phy_fixup(struct phy_device *phydev)
++static int ar8031_phy_fixup(struct phy_device *phydev)
+ {
+ 	/*
+ 	 * Enable 1.8V(SEL_1P5_1P8_POS_REG) on
+-- 
+2.17.1
 
-Thanks,
-Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
