@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fntMc-00033Y-CR
- for barebox@lists.infradead.org; Thu, 09 Aug 2018 22:25:06 +0000
-From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Fri, 10 Aug 2018 00:22:59 +0200
-Message-Id: <20180809222258.32221-1-r.hieber@pengutronix.de>
-In-Reply-To: <20180725141811.25588-2-r.hieber@pengutronix.de>
+ id 1fo178-0004eH-UG
+ for barebox@lists.infradead.org; Fri, 10 Aug 2018 06:41:38 +0000
+Date: Fri, 10 Aug 2018 08:41:23 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180810064123.3gg574wkn3cuxsi7@pengutronix.de>
 References: <20180725141811.25588-2-r.hieber@pengutronix.de>
+ <20180809222258.32221-1-r.hieber@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180809222258.32221-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,904 +19,921 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/2] Documentation: fix code block and literal block
+Subject: Re: [PATCH v2 2/2] Documentation: fix code block and literal block
  highlighting
-To: barebox@lists.infradead.org
-Cc: Roland Hieber <r.hieber@pengutronix.de>
+To: Roland Hieber <r.hieber@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Use shell script highlighting where it is resonable, use console
-highlighting for transcripts, and fix some of the few cases where the
-syntax was broken, resulting in text not being rendered at all.
+On Fri, Aug 10, 2018 at 12:22:59AM +0200, Roland Hieber wrote:
+> Use shell script highlighting where it is resonable, use console
+> highlighting for transcripts, and fix some of the few cases where the
+> syntax was broken, resulting in text not being rendered at all.
+> 
+> Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
+> ---
+> v1 -> v2:
+>  - patch should now apply to next
+>  - drop first patch, which was already applied
 
-Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
----
-v1 -> v2:
- - patch should now apply to next
- - drop first patch, which was already applied
+Applied, thanks
 
----
- Documentation/boards/imx.rst                  |  8 +++++--
- Documentation/boards/imx/amazon-kindle-3.rst  |  6 +++--
- .../boards/imx/garz-fricke-vincell.rst        |  4 +++-
- .../boards/imx/phytec-phycore-i.mx31.rst      |  8 +++++--
- Documentation/boards/mips/dlink-dir-320.rst   |  4 +++-
- Documentation/boards/mips/qemu-malta.rst      | 16 +++++++++----
- Documentation/boards/mvebu.rst                |  4 +++-
- .../boards/mxs/Chumby-Falconwing.rst          |  8 +++++--
- .../boards/mxs/Freescale-i.MX23-evk.rst       |  8 +++++--
- Documentation/boards/mxs/KaRo-TX28.rst        |  8 +++++--
- Documentation/boards/mxs/Olimex-olinuxino.rst |  8 +++++--
- Documentation/boards/omap.rst                 |  4 +++-
- Documentation/boards/openrisc.rst             |  8 +++++--
- Documentation/boards/s3c/Digi-a9m2440.rst     |  8 +++++--
- Documentation/boards/sandbox.rst              |  6 ++++-
- Documentation/boards/socfpga.rst              | 24 ++++++++++++++-----
- Documentation/boards/x86.rst                  |  3 ++-
- Documentation/filesystems/fat.rst             |  4 +++-
- Documentation/filesystems/nfs.rst             |  8 +++++--
- Documentation/filesystems/pstore.rst          |  2 +-
- Documentation/filesystems/ramfs.rst           |  4 +++-
- Documentation/filesystems/smhfs.rst           |  4 +++-
- Documentation/filesystems/squashfs.rst        |  4 +++-
- Documentation/filesystems/tftp.rst            |  4 +++-
- Documentation/user/automount.rst              | 12 +++++++---
- Documentation/user/barebox.rst                |  4 +---
- Documentation/user/defaultenv-2.rst           |  4 +++-
- Documentation/user/driver-model.rst           | 20 ++++++++++++----
- Documentation/user/hush.rst                   | 24 ++++++++++++++-----
- Documentation/user/memory-areas.rst           |  8 +++++--
- Documentation/user/system-setup.rst           | 12 +++++++---
- Documentation/user/updating.rst               |  8 +++++--
- Documentation/user/variables.rst              | 14 +++++++----
- 33 files changed, 200 insertions(+), 71 deletions(-)
+Sascha
 
-diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
-index db889ee702..56fd3ab41c 100644
---- a/Documentation/boards/imx.rst
-+++ b/Documentation/boards/imx.rst
-@@ -32,7 +32,9 @@ Normally it's not necessary to call this tool manually, it is executed
- automatically at the end of the build process.
- 
- The images generated by the build process can be directly written to an
--SD card::
-+SD card:
-+
-+.. code-block:: sh
- 
-   # with Multi Image support:
-   cat images/barebox-freescale-imx51-babbage.img > /dev/sdd
-@@ -152,7 +154,9 @@ contains a USB upload tool. As it depends on the libusb development headers,
- it is not built by default. Enable it explicitly in ``make menuconfig``
- and install the libusb development package. On Debian, this can be done
- with ``apt-get install libusb-dev``. After compilation, the tool can be used
--with only the image name as argument::
-+with only the image name as argument:
-+
-+.. code-block:: sh
- 
-   scripts/imx/imx-usb-loader images/barebox-freescale-imx51-babbage.img
- 
-diff --git a/Documentation/boards/imx/amazon-kindle-3.rst b/Documentation/boards/imx/amazon-kindle-3.rst
-index dffb7efb2d..6b5d9fe535 100644
---- a/Documentation/boards/imx/amazon-kindle-3.rst
-+++ b/Documentation/boards/imx/amazon-kindle-3.rst
-@@ -15,7 +15,7 @@ To upload and run a new bootloader the device can be put into USB-downloader
- mode by the SOC microcode when Vol+ is pressed during startup. A new USB
- device "SE Blank RINGO" should appear, barebox may be uploaded using
- 
--::
-+.. code-block:: console
- 
-         $ scripts/imx/imx-usb-loader barebox.imximg
- 
-@@ -26,7 +26,9 @@ imx-usb-loader)
- Barebox may be used as drop-in replacement for the shipped bootloader.
- When installing the barebox imximg on the eMMC take care not to overwrite
- the partition table and vendor supplied serial numbers stored on the eMMC.
--e.g. just write the imx-header and the application section::
-+e.g. just write the imx-header and the application section:
-+
-+.. code-block:: sh
- 
-         memcpy -b -s barebox.imximg -d /dev/disk0.imx_header 1024 0 1024
-         memcpy -b -s barebox.imximg -d /dev/disk0.self 4096 0 195584
-diff --git a/Documentation/boards/imx/garz-fricke-vincell.rst b/Documentation/boards/imx/garz-fricke-vincell.rst
-index 09d87d67c3..4127c8bc8c 100644
---- a/Documentation/boards/imx/garz-fricke-vincell.rst
-+++ b/Documentation/boards/imx/garz-fricke-vincell.rst
-@@ -38,6 +38,8 @@ If the network setup is working properly, barebox can be loaded into memory::
-   load -v -r -b 0x80100000 barebox-guf-vincell-lt.img
-   exec
- 
--Once in barebox, the bootloader can now be persisted to NAND::
-+Once in barebox, the bootloader can now be persisted to NAND:
-+
-+.. code-block:: sh
- 
-   barebox_update -t nand /mnt/tftp/barebox-guf-vincell-lt.img``
-diff --git a/Documentation/boards/imx/phytec-phycore-i.mx31.rst b/Documentation/boards/imx/phytec-phycore-i.mx31.rst
-index d9a981b998..0feb22257a 100644
---- a/Documentation/boards/imx/phytec-phycore-i.mx31.rst
-+++ b/Documentation/boards/imx/phytec-phycore-i.mx31.rst
-@@ -26,11 +26,15 @@ Supported baseboards are:
- How to get barebox for Phytec's phyCORE-i.MX31
- ----------------------------------------------
- 
--Using the default configuration::
-+Using the default configuration:
-+
-+.. code-block:: sh
- 
-   make ARCH=arm pcm037_defconfig
- 
--Build the binary image::
-+Build the binary image:
-+
-+.. code-block:: sh
- 
-   make ARCH=arm CROSS_COMPILE=armv5compiler
- 
-diff --git a/Documentation/boards/mips/dlink-dir-320.rst b/Documentation/boards/mips/dlink-dir-320.rst
-index 74d11ffe59..7595381f55 100644
---- a/Documentation/boards/mips/dlink-dir-320.rst
-+++ b/Documentation/boards/mips/dlink-dir-320.rst
-@@ -26,7 +26,9 @@ Put your barebox.bin to tftp-server directory
- Connect your DIR-320 to your tftp-server network via
- one of four <LAN> sockets.
- 
--Next, setup network on DIR-320 and run barebox.bin, e.g.::
-+Next, setup network on DIR-320 and run barebox.bin, e.g.:
-+
-+.. code-block:: console
- 
-   CFE> ifconfig eth0 -addr=192.168.0.99
-   CFE> boot -tftp -addr=a0800000 -raw 192.168.0.1:barebox.bin
-diff --git a/Documentation/boards/mips/qemu-malta.rst b/Documentation/boards/mips/qemu-malta.rst
-index 0c4d639194..2bb81350a1 100644
---- a/Documentation/boards/mips/qemu-malta.rst
-+++ b/Documentation/boards/mips/qemu-malta.rst
-@@ -4,7 +4,9 @@ QEMU Malta
- Big-endian mode
- ---------------
- 
--QEMU run string::
-+QEMU run string:
-+
-+.. code-block:: sh
- 
-   qemu-system-mips -nodefaults -M malta -m 256 \
-       -nographic -serial stdio -monitor null \
-@@ -18,13 +20,17 @@ Running little-endian Malta is a bit tricky.
- In little-endian mode the 32bit words in the boot flash image are swapped,
- a neat trick which allows bi-endian firmware.
- 
--You have to swap words of ``zbarebox.bin`` image, e.g.::
-+You have to swap words of ``zbarebox.bin`` image, e.g.:
-+
-+.. code-block:: sh
- 
-   echo arch/mips/pbl/zbarebox.bin \
-       | cpio --create \
-       | cpio --extract --swap --unconditional
- 
--QEMU run string::
-+QEMU run string:
-+
-+.. code-block:: sh
- 
-   qemu-system-mipsel -nodefaults -M malta -m 256 \
-       -nographic -serial stdio -monitor null \
-@@ -39,7 +45,9 @@ You can use GXemul to run little-endian barebox (use gxemul-malta_defconfig).
- 
- N.B. There is no need to swap words in ``zbarebox.bin`` for little-endian GXemul!
- 
--GXemul run string::
-+GXemul run string:
-+
-+.. code-block:: sh
- 
-   gxemul -Q -e malta -M 256 0xbfc00000:barebox-flash-image
- 
-diff --git a/Documentation/boards/mvebu.rst b/Documentation/boards/mvebu.rst
-index e27aa28306..9c99c815de 100644
---- a/Documentation/boards/mvebu.rst
-+++ b/Documentation/boards/mvebu.rst
-@@ -14,7 +14,9 @@ RAM initialisation
- ------------------
- 
- Traditionally the RAM initialisation happens with a binary blob that have to be
--extracted from the vendor U-Boot::
-+extracted from the vendor U-Boot:
-+
-+.. code-block:: sh
- 
-   scripts/kwbimage -x -i /dev/mtdblock0 -o .
- 
-diff --git a/Documentation/boards/mxs/Chumby-Falconwing.rst b/Documentation/boards/mxs/Chumby-Falconwing.rst
-index 172d6840cf..690ccadf8c 100644
---- a/Documentation/boards/mxs/Chumby-Falconwing.rst
-+++ b/Documentation/boards/mxs/Chumby-Falconwing.rst
-@@ -20,11 +20,15 @@ Memory layout when barebox is running:
- How to get the bootloader binary image
- --------------------------------------
- 
--Using the default configuration::
-+Using the default configuration:
-+
-+.. code-block:: sh
- 
-   make ARCH=arm chumbyone_defconfig
- 
--Build the bootloader binary image::
-+Build the bootloader binary image:
-+
-+.. code-block:: sh
- 
-   make ARCH=arm CROSS_COMPILE=armv5compiler
- 
-diff --git a/Documentation/boards/mxs/Freescale-i.MX23-evk.rst b/Documentation/boards/mxs/Freescale-i.MX23-evk.rst
-index cb73ec1279..077ab73bda 100644
---- a/Documentation/boards/mxs/Freescale-i.MX23-evk.rst
-+++ b/Documentation/boards/mxs/Freescale-i.MX23-evk.rst
-@@ -19,11 +19,15 @@ Memory layout when barebox is running:
- How to get the bootloader binary image
- --------------------------------------
- 
--Using the default configuration::
-+Using the default configuration:
-+
-+.. code-block:: sh
- 
-   make ARCH=arm freescale-mx23-evk_defconfig
- 
--Build the bootloader binary image::
-+Build the bootloader binary image:
-+
-+.. code-block:: sh
- 
-   make ARCH=arm CROSS_COMPILE=armv5compiler
- 
-diff --git a/Documentation/boards/mxs/KaRo-TX28.rst b/Documentation/boards/mxs/KaRo-TX28.rst
-index 6cad5eb243..54b1ce71eb 100644
---- a/Documentation/boards/mxs/KaRo-TX28.rst
-+++ b/Documentation/boards/mxs/KaRo-TX28.rst
-@@ -24,11 +24,15 @@ Supported baseboards are:
- How to get barebox for 'KARO's Starterkit 5'
- --------------------------------------------
- 
--Using the default configuration::
-+Using the default configuration:
-+
-+.. code-block:: sh
- 
-   make ARCH=arm tx28stk5_defconfig
- 
--Build the binary image::
-+Build the binary image:
-+
-+.. code-block:: sh
- 
-   make ARCH=arm CROSS_COMPILE=armv5compiler
- 
-diff --git a/Documentation/boards/mxs/Olimex-olinuxino.rst b/Documentation/boards/mxs/Olimex-olinuxino.rst
-index a06eb3309f..2080653887 100644
---- a/Documentation/boards/mxs/Olimex-olinuxino.rst
-+++ b/Documentation/boards/mxs/Olimex-olinuxino.rst
-@@ -9,11 +9,15 @@ This CPU module is based on a Freescale i.MX23 CPU.
- How to get the bootloader binary image
- --------------------------------------
- 
--Using the default configuration::
-+Using the default configuration:
-+
-+.. code-block:: sh
- 
-   make ARCH=arm imx233-olinuxino_defconfig
- 
--Build the binary image::
-+Build the binary image:
-+
-+.. code-block:: sh
- 
-   make ARCH=arm CROSS_COMPILE=armv5compiler
- 
-diff --git a/Documentation/boards/omap.rst b/Documentation/boards/omap.rst
-index c2697510c5..717a38fe01 100644
---- a/Documentation/boards/omap.rst
-+++ b/Documentation/boards/omap.rst
-@@ -15,7 +15,9 @@ The PandaBoard boots from SD card. The OMAP Boot ROM code loads a file named
- scripts on the net which describe how to prepare such a card (it needs
- special partitioning). The same procedure can be used for barebox. With such a
- card (assumed to be at /dev/sdc), the following can be used to build and install
--barebox::
-+barebox:
-+
-+.. code-block:: console
- 
-   # mount -t fat /dev/sdc1 /mnt
-   # make panda_xload_defconfig
-diff --git a/Documentation/boards/openrisc.rst b/Documentation/boards/openrisc.rst
-index fe6c48c958..f9d67f9650 100644
---- a/Documentation/boards/openrisc.rst
-+++ b/Documentation/boards/openrisc.rst
-@@ -4,7 +4,9 @@ OpenRISC
- or1ksim
- -------
- 
--Compile or1ksim emulator::
-+Compile or1ksim emulator:
-+
-+.. code-block:: console
- 
-  $ cd ~/
-  $ git clone https://github.com/openrisc/or1ksim
-@@ -48,6 +50,8 @@ Create minimal or1ksim.cfg file:
-    tap_dev = "tap0"
-  end
- 
--Run or1ksim::
-+Run or1ksim:
-+
-+.. code-block:: console
- 
-  $ ~/or1ksim/sim -f or1ksim.cfg barebox
-diff --git a/Documentation/boards/s3c/Digi-a9m2440.rst b/Documentation/boards/s3c/Digi-a9m2440.rst
-index d01a001172..32d58b9a04 100644
---- a/Documentation/boards/s3c/Digi-a9m2440.rst
-+++ b/Documentation/boards/s3c/Digi-a9m2440.rst
-@@ -78,11 +78,15 @@ This CPU card is based on a Samsung S3C2440 CPU. The card is shipped with:
- How to get the binary image
- ---------------------------
- 
--Configure with the default configuration::
-+Configure with the default configuration:
-+
-+.. code-block:: sh
- 
-   make ARCH=arm a9m2440_defconfig
- 
--Build the binary image::
-+Build the binary image:
-+
-+.. code-block:: sh
- 
-   make ARCH=arm CROSS_COMPILE=armv4compiler
- 
-diff --git a/Documentation/boards/sandbox.rst b/Documentation/boards/sandbox.rst
-index 558f111697..85a54e6b04 100644
---- a/Documentation/boards/sandbox.rst
-+++ b/Documentation/boards/sandbox.rst
-@@ -7,7 +7,9 @@ hardware related features.
- Building barebox for simulation
- -------------------------------
- 
--The barebox sandbox can be built with the host compiler::
-+The barebox sandbox can be built with the host compiler:
-+
-+.. code-block:: sh
- 
-   ARCH=sandbox make sandbox_defconfig
-   ARCH=sandbox make
-@@ -17,6 +19,8 @@ Running the sandbox
- 
- Once you compile barebox for the sandbox, you can run it with::
- 
-+.. code-block:: console
-+
-   $ barebox [<OPTIONS>]
- 
- Available sandbox invocation options include:
-diff --git a/Documentation/boards/socfpga.rst b/Documentation/boards/socfpga.rst
-index cd0fffa1ee..d73237491d 100644
---- a/Documentation/boards/socfpga.rst
-+++ b/Documentation/boards/socfpga.rst
-@@ -41,7 +41,9 @@ second partition of the SD card, which must be of type FAT32. On this partition
- barebox searches for a file called barebox.bin.
- 
- To boot barebox on a Terasic SoCkit, the procedure is as follows (sdb1 is the A2 and
--sdb2 the FAT32 partition)::
-+sdb2 the FAT32 partition):
-+
-+.. code-block:: sh
- 
-   mount -t fat /dev/sdb2 /mnt
-   make socfpga-xload_defconfig
-@@ -50,7 +52,9 @@ sdb2 the FAT32 partition)::
-   make
- 
- barebox has now generated multiple files in the images directory. So for the SoCkit
--proceed with::
-+proceed with:
-+
-+.. code-block:: sh
- 
-   cat images/barebox-socfpga-sockit-xload.img > /dev/sdb1
-   cp images/barebox-socfpga-sockit.img /mnt/barebox.bin
-@@ -64,12 +68,16 @@ QSPI
- The Boot ROM loads the preloader starting from address 0x0 on the QSPI flash.
- barebox then searches for a barebox image at the 256K offset and loads it.
- 
--The default bootsource is SD card, so to change that to QSPI, you have to::
-+The default bootsource is SD card, so to change that to QSPI, you have to:
-+
-+.. code-block:: sh
- 
-   make socfpga-xload_defconfig
-   make menuconfig
- 
--And then select the options `MTD` and `SPI_CADENCE_QUADSPI`. Now::
-+And then select the options `MTD` and `SPI_CADENCE_QUADSPI`. Now:
-+
-+.. code-block:: sh
- 
-   make
-   cat images/barebox-socfpga-<board>-xload.img > /dev/mtd0
-@@ -116,7 +124,9 @@ To update the handoff files, the following procedure is necessary:
-    preloader settings directory
- 7. Click ``Ok`` than ``Generate``
- 
--Now run the command::
-+Now run the command:
-+
-+.. code-block:: sh
- 
-   scripts/socfpga_import_preloader <SPL_GENERATED_DIR> <ISW_HANDOFF> <BOARD_DIRECTORY>
- 
-@@ -141,7 +151,9 @@ tree:
- * system.h
- * tclrpt.h
- 
--To add these files, run::
-+To add these files, run:
-+
-+.. code-block:: sh
- 
-   scripts/socfpga_get_sequencer <UBOOT-SRC> scripts/socfpga_sequencer_defines_defaults
- 
-diff --git a/Documentation/boards/x86.rst b/Documentation/boards/x86.rst
-index d0528a3280..4514a766a2 100644
---- a/Documentation/boards/x86.rst
-+++ b/Documentation/boards/x86.rst
-@@ -50,7 +50,8 @@ sectors must be kept free after the MBR prior the first partition. Do this
- simple calulation:
- 
- .. code-block:: none
--  sectors = (\<size of barebox image\> + 511) / 512
-+
-+  sectors = (size of barebox image + 511) / 512
- 
- To be able to store the runtime configuration, further free sectors are
- required. Its up to you and your requirements, how large this persistant
-diff --git a/Documentation/filesystems/fat.rst b/Documentation/filesystems/fat.rst
-index e39e34a0e9..138e69711f 100644
---- a/Documentation/filesystems/fat.rst
-+++ b/Documentation/filesystems/fat.rst
-@@ -5,7 +5,9 @@ FAT filesystem
- 
- barebox supports FAT filesystems in both read and write modes with optional
- support for long filenames. A FAT filesystem can be mounted using the
--:ref:`command_mount` command::
-+:ref:`command_mount` command:
-+
-+.. code-block:: console
- 
-   barebox:/ mkdir /mnt
-   barebox:/ mount /dev/disk0.0 fat /mnt
-diff --git a/Documentation/filesystems/nfs.rst b/Documentation/filesystems/nfs.rst
-index ab51241549..3e40ae9767 100644
---- a/Documentation/filesystems/nfs.rst
-+++ b/Documentation/filesystems/nfs.rst
-@@ -7,7 +7,9 @@ NFS Support
- 
- barebox has readonly support for NFSv3 in UDP mode.
- 
--Example::
-+Example:
-+
-+.. code-block:: console
- 
-    barebox:/ mount -t nfs 192.168.23.4:/home/user/nfsroot /mnt/nfs
- 
-@@ -15,7 +17,9 @@ The barebox NFS driver adds a ``linux.bootargs`` device parameter to the NFS dev
- This parameter holds a Linux kernel commandline snippet containing a suitable root=
- option for booting from exactly that NFS share.
- 
--Example::
-+Example:
-+
-+.. code-block:: console
- 
-   barebox:/ devinfo nfs0
-   ...
-diff --git a/Documentation/filesystems/pstore.rst b/Documentation/filesystems/pstore.rst
-index 8eee374bdd..22e89b3f1f 100644
---- a/Documentation/filesystems/pstore.rst
-+++ b/Documentation/filesystems/pstore.rst
-@@ -20,7 +20,7 @@ at boot:
- 	none on /pstore type pstore
- 
- pstore may add additional warnings during boot due to wrong ECCs (no data
--written)::
-+written):
- 
- .. code-block:: none
- 
-diff --git a/Documentation/filesystems/ramfs.rst b/Documentation/filesystems/ramfs.rst
-index d27f88561f..e61505a5f9 100644
---- a/Documentation/filesystems/ramfs.rst
-+++ b/Documentation/filesystems/ramfs.rst
-@@ -7,6 +7,8 @@ ramfs is a simple malloc-based filesystem. An instance of ramfs is
- mounted during startup on /. The filesystem type passed to ``mount``
- is ``ramfs``.
- 
--Example::
-+Example:
-+
-+.. code-block:: console
- 
-   barebox:/ mount none ramfs /somedir
-diff --git a/Documentation/filesystems/smhfs.rst b/Documentation/filesystems/smhfs.rst
-index 9e9993cb28..8f8a0ec6b7 100644
---- a/Documentation/filesystems/smhfs.rst
-+++ b/Documentation/filesystems/smhfs.rst
-@@ -18,7 +18,9 @@ not have support for listing directories. This means a
- :ref:`command_ls` to a SMHFS-mounted path will show an empty
- directory. Nevertheless, the files are there.
- 
--Example::
-+Example:
-+
-+.. code-block:: console
- 
-   barebox:/ mount -t smhfs /dev/null /mnt/smhfs
- 
-diff --git a/Documentation/filesystems/squashfs.rst b/Documentation/filesystems/squashfs.rst
-index 88c97ebbe8..a042f7b96b 100644
---- a/Documentation/filesystems/squashfs.rst
-+++ b/Documentation/filesystems/squashfs.rst
-@@ -6,7 +6,9 @@ SquashFS filesystem
- SquashFS is a highly compressed read-only filesystem for Linux.
- It uses zlib, lzo or xz compression to compress both files, inodes
- and directories. A SquashFS filesystem can be mounted using the
--:ref:`command_mount` command::
-+:ref:`command_mount` command:
-+
-+.. code-block:: console
- 
-   barebox:/ mkdir /mnt
-   barebox:/ mount -t squashfs /dev/spiflash.FileSystem /mnt
-diff --git a/Documentation/filesystems/tftp.rst b/Documentation/filesystems/tftp.rst
-index eeb3fcb688..a292765e25 100644
---- a/Documentation/filesystems/tftp.rst
-+++ b/Documentation/filesystems/tftp.rst
-@@ -12,7 +12,9 @@ TFTP is not designed as a filesystem. It does not have support for listing
- directories. This means a :ref:`ls <command_ls>` to a TFTP-mounted path will
- show an empty directory. Nevertheless, the files are there.
- 
--Example::
-+Example:
-+
-+.. code-block:: console
- 
-   barebox:/ mount -t tftp 192.168.23.4 /mnt/tftp
- 
-diff --git a/Documentation/user/automount.rst b/Documentation/user/automount.rst
-index 7de8261354..1fdeffc663 100644
---- a/Documentation/user/automount.rst
-+++ b/Documentation/user/automount.rst
-@@ -10,7 +10,9 @@ filesystems. The filesystems (and the devices they are on) are only probed
- when necessary, so barebox does not lose time probing unused devices.
- 
- Typical usage is for accessing the TFTP server. To set up an automount for a
--TFTP server, the following is required::
-+TFTP server, the following is required:
-+
-+.. code-block:: sh
- 
-   mkdir -p /mnt/tftp
-   automount /mnt/tftp 'ifup -a && mount -t tftp $global.net.server /mnt/tftp'
-@@ -21,12 +23,16 @@ It will bring up the network device using :ref:`command_ifup` and mount a TFTP f
- using :ref:`command_mount`.
- 
- Usually the above automount command is executed from an init script in ``/env/init/automount``.
--With the above, files on the TFTP server can be accessed without configuration::
-+With the above, files on the TFTP server can be accessed without configuration:
-+
-+.. code-block:: sh
- 
-   cp /mnt/tftp/linuximage /image
- 
- This automatically detects a USB mass storage device and mounts the first
--partition to ``/mnt/fat``::
-+partition to ``/mnt/fat``:
-+
-+.. code-block:: sh
- 
-   mkdir -p /mnt/fat
-   automount -d /mnt/fat 'usb && [ -e /dev/disk0.0 ] && mount /dev/disk0.0 /mnt/fat'
-diff --git a/Documentation/user/barebox.rst b/Documentation/user/barebox.rst
-index 82a33a3219..026ed1b9c0 100644
---- a/Documentation/user/barebox.rst
-+++ b/Documentation/user/barebox.rst
-@@ -181,9 +181,7 @@ simply with:
- The resulting binary varies depending on the board barebox is compiled for.
- Without :ref:`multi_image` support the ``barebox-flash-image`` link will point
- to the binary for flashing/uploading to the board. With :ref:`multi_image` support
--the compilation process will finish with a list of images built under ``images/``:
--
--.. code-block:: sh
-+the compilation process will finish with a list of images built under ``images/``::
- 
-   images built:
-   barebox-freescale-imx51-babbage.img
-diff --git a/Documentation/user/defaultenv-2.rst b/Documentation/user/defaultenv-2.rst
-index 7502d3de10..a79ae83d56 100644
---- a/Documentation/user/defaultenv-2.rst
-+++ b/Documentation/user/defaultenv-2.rst
-@@ -44,7 +44,9 @@ and their respective included directories in ``defaultenv/Makefile``:
- 
- This script is executed by the barebox startup code after initialization.
- In defaultenv-2, this script will define and set a number of global
--variables, followed by sourcing all of the scripts in ``/env/init/`` with::
-+variables, followed by sourcing all of the scripts in ``/env/init/`` with:
-+
-+.. code-block:: sh
- 
-   for i in /env/init/*; do
-           . $i
-diff --git a/Documentation/user/driver-model.rst b/Documentation/user/driver-model.rst
-index ce7083589c..a0fd3e99b5 100644
---- a/Documentation/user/driver-model.rst
-+++ b/Documentation/user/driver-model.rst
-@@ -32,7 +32,9 @@ Some devices like USB or MMC may take a longer time to probe. Probing USB
- devices should not delay booting when USB may not even be used. This case is
- handled with device detection. The user visible interface to device detection
- is the :ref:`command_detect` command. ``detect -l`` shows a list of detectable
--devices::
-+devices:
-+
-+.. code-block:: console
- 
-   barebox:/ detect -l
-   70004000.esdhc
-@@ -46,7 +48,9 @@ devices::
-   mmc1
-   miibus0
- 
--A particular device can be detected with ``detect <devname>``::
-+A particular device can be detected with ``detect <devname>``:
-+
-+.. code-block:: console
- 
-   barebox:/ detect 73f80200.usb
-   Found SMSC USB331x ULPI transceiver (0x0424:0x0006).
-@@ -67,7 +71,9 @@ Device parameters
- Devices can have parameters which can be used to configure devices or to provide
- additional information for a device. The parameters can be listed with the
- :ref:`command_devinfo` command. A ``devinfo <devicename>`` will print the parameters
--of a device::
-+of a device:
-+
-+.. code-block:: console
- 
-   barebox:/ devinfo eth0
-   Parameters:
-@@ -77,12 +83,16 @@ of a device::
-     netmask: 255.255.0.0
-     ethaddr: 00:1c:49:01:03:4b
- 
--The parameters can be used as shell variables::
-+The parameters can be used as shell variables:
-+
-+.. code-block:: sh
- 
-   eth0.ipaddr=192.168.23.15
-   echo "my current ip is: $eth0.ipaddr"
- 
--device variables may have a type, so assigning wrong values may fail::
-+device variables may have a type, so assigning wrong values may fail:
-+
-+.. code-block:: console
- 
-   barebox:/ eth0.ipaddr="This is not an IP"
-   set parameter: Invalid argument
-diff --git a/Documentation/user/hush.rst b/Documentation/user/hush.rst
-index 00d4e2983e..a4d8688142 100644
---- a/Documentation/user/hush.rst
-+++ b/Documentation/user/hush.rst
-@@ -13,13 +13,17 @@ more flexible and also more robust than a complicated shell script.
- Hush features
- -------------
- 
--variables::
-+variables:
-+
-+.. code-block:: sh
- 
- 	a="Hello user"
- 	echo $a
- 	Hello user
- 
--conditional execution ``if`` / ``elif`` / ``else`` / ``fi``::
-+conditional execution ``if`` / ``elif`` / ``else`` / ``fi``:
-+
-+.. code-block:: sh
- 
- 	if [ ${foo} = ${bar} ]; then
- 		echo "foo equals bar"
-@@ -27,19 +31,25 @@ conditional execution ``if`` / ``elif`` / ``else`` / ``fi``::
- 		echo "foo and bar differ"
- 	fi
- 
--``for`` loops::
-+``for`` loops:
-+
-+.. code-block:: sh
- 
- 	for i in a b c; do
- 		echo $i
- 	done
- 
--``while`` loops::
-+``while`` loops:
-+
-+.. code-block:: sh
- 
- 	while true; do
- 		echo "endless loop"
- 	done
- 
--wildcard globbing::
-+wildcard globbing:
-+
-+.. code-block:: sh
- 
- 	ls d*
- 	echo ???
-@@ -53,7 +63,9 @@ stored.
- 
- **NOTE:** hush feels like a normal Unix shell, but it cannot calculate by
- itself, i.e. $(($A/2)) won't work. Calculation can however be done
--with :ref:`command_let`::
-+with :ref:`command_let`:
-+
-+.. code-block:: sh
- 
-   A=10
-   let B=$A/2
-diff --git a/Documentation/user/memory-areas.rst b/Documentation/user/memory-areas.rst
-index 9654a99167..d673f6e1b1 100644
---- a/Documentation/user/memory-areas.rst
-+++ b/Documentation/user/memory-areas.rst
-@@ -17,11 +17,15 @@ gigabyte.
- Examples
- --------
- 
--Display a hexdump from 0x80000000 to 0x80001000 (inclusive)::
-+Display a hexdump from 0x80000000 to 0x80001000 (inclusive):
-+
-+.. code-block:: sh
- 
-   md 0x80000000-0x80001000
- 
--Display 1 kilobyte of memory starting at 0x80000000::
-+Display 1 kilobyte of memory starting at 0x80000000:
-+
-+.. code-block:: sh
- 
-   md 0x80000000+1k
- 
-diff --git a/Documentation/user/system-setup.rst b/Documentation/user/system-setup.rst
-index f0598bc2b5..5651569dc2 100644
---- a/Documentation/user/system-setup.rst
-+++ b/Documentation/user/system-setup.rst
-@@ -16,7 +16,9 @@ for root privileges.
- Using the "screen" program
- ^^^^^^^^^^^^^^^^^^^^^^^^^^
- 
--The terminal manager ``screen`` can also be used as a simple terminal emulator::
-+The terminal manager ``screen`` can also be used as a simple terminal emulator:
-+
-+.. code-block:: sh
- 
-   screen /dev/ttyUSB0 115200
- 
-@@ -31,7 +33,9 @@ from source:
- 
- https://git.pengutronix.de/cgit/tools/microcom
- 
--Usage is simple::
-+Usage is simple:
-+
-+.. code-block:: sh
- 
-   microcom -p /dev/ttyUSB0
- 
-@@ -46,7 +50,9 @@ Configuration of dnsmasq for DHCP and TFTP
- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- 
- The ``dnsmasq`` program can be configured as a DHCP and TFTP server in addition
--to its original DNS functionality::
-+to its original DNS functionality:
-+
-+.. code-block:: sh
- 
-   sudo ip addr add 192.168.23.1/24 dev <interface>
-   sudo ip link set <interface> up
-diff --git a/Documentation/user/updating.rst b/Documentation/user/updating.rst
-index 7aac0a99d6..0555909aa1 100644
---- a/Documentation/user/updating.rst
-+++ b/Documentation/user/updating.rst
-@@ -11,12 +11,16 @@ A board can register an update handler to the update command. The handler can
- do additional checks before trying an update, e.g. it's possible
- to check whether the new image actually is a barebox image.
- 
--Updating barebox can be as easy as::
-+Updating barebox can be as easy as:
-+
-+.. code-block:: sh
- 
-   barebox_update /path/to/new/barebox.img
- 
- Multiple handlers can be registered to the update mechanism. Usually the device
--barebox has been started from is registered as default (marked with a ``*``)::
-+barebox has been started from is registered as default (marked with a ``*``):
-+
-+.. code-block:: console
- 
-   barebox:/ barebox_update -l
-   registered update handlers:
-diff --git a/Documentation/user/variables.rst b/Documentation/user/variables.rst
-index e0a79416c6..ddfd485740 100644
---- a/Documentation/user/variables.rst
-+++ b/Documentation/user/variables.rst
-@@ -12,12 +12,16 @@ The ``global`` device
- The ``global`` device is a special purpose device. It only exists as a
- storage for global variables. Some global variables are created internally
- in barebox (see :ref:`magicvars`). Additional variables can be created with
--the :ref:`command_global` command::
-+the :ref:`command_global` command:
-+
-+.. code-block:: sh
- 
-   global myvar
- 
- This creates the ``global.myvar`` variable which now can be used like any
--other variable. You can also directly assign a value during creation::
-+other variable. You can also directly assign a value during creation:
-+
-+.. code-block:: sh
- 
-   global myvar1=foobar
- 
-@@ -48,7 +52,7 @@ actual values.
- 
- examples:
- 
--.. code-block:: sh
-+.. code-block:: console
- 
-   barebox@Phytec phyCARD-i.MX27:/ devinfo nv
-   barebox@Phytec phyCARD-i.MX27:/ nv model=myboard
-@@ -94,7 +98,9 @@ Some variables have special meanings and influence the behaviour
- of barebox. Most but not all of them are consolidated in the :ref:`global_device`.
- Since it's hard to remember which variables these are and if the current
- barebox has support for them the :ref:`command_magicvar` command can print a list
--of all variables with special meaning along with a short description::
-+of all variables with special meaning along with a short description:
-+
-+.. code-block:: console
- 
-   barebox:/ magicvar
-   OPTARG                           optarg for hush builtin getopt
+> 
+> ---
+>  Documentation/boards/imx.rst                  |  8 +++++--
+>  Documentation/boards/imx/amazon-kindle-3.rst  |  6 +++--
+>  .../boards/imx/garz-fricke-vincell.rst        |  4 +++-
+>  .../boards/imx/phytec-phycore-i.mx31.rst      |  8 +++++--
+>  Documentation/boards/mips/dlink-dir-320.rst   |  4 +++-
+>  Documentation/boards/mips/qemu-malta.rst      | 16 +++++++++----
+>  Documentation/boards/mvebu.rst                |  4 +++-
+>  .../boards/mxs/Chumby-Falconwing.rst          |  8 +++++--
+>  .../boards/mxs/Freescale-i.MX23-evk.rst       |  8 +++++--
+>  Documentation/boards/mxs/KaRo-TX28.rst        |  8 +++++--
+>  Documentation/boards/mxs/Olimex-olinuxino.rst |  8 +++++--
+>  Documentation/boards/omap.rst                 |  4 +++-
+>  Documentation/boards/openrisc.rst             |  8 +++++--
+>  Documentation/boards/s3c/Digi-a9m2440.rst     |  8 +++++--
+>  Documentation/boards/sandbox.rst              |  6 ++++-
+>  Documentation/boards/socfpga.rst              | 24 ++++++++++++++-----
+>  Documentation/boards/x86.rst                  |  3 ++-
+>  Documentation/filesystems/fat.rst             |  4 +++-
+>  Documentation/filesystems/nfs.rst             |  8 +++++--
+>  Documentation/filesystems/pstore.rst          |  2 +-
+>  Documentation/filesystems/ramfs.rst           |  4 +++-
+>  Documentation/filesystems/smhfs.rst           |  4 +++-
+>  Documentation/filesystems/squashfs.rst        |  4 +++-
+>  Documentation/filesystems/tftp.rst            |  4 +++-
+>  Documentation/user/automount.rst              | 12 +++++++---
+>  Documentation/user/barebox.rst                |  4 +---
+>  Documentation/user/defaultenv-2.rst           |  4 +++-
+>  Documentation/user/driver-model.rst           | 20 ++++++++++++----
+>  Documentation/user/hush.rst                   | 24 ++++++++++++++-----
+>  Documentation/user/memory-areas.rst           |  8 +++++--
+>  Documentation/user/system-setup.rst           | 12 +++++++---
+>  Documentation/user/updating.rst               |  8 +++++--
+>  Documentation/user/variables.rst              | 14 +++++++----
+>  33 files changed, 200 insertions(+), 71 deletions(-)
+> 
+> diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
+> index db889ee702..56fd3ab41c 100644
+> --- a/Documentation/boards/imx.rst
+> +++ b/Documentation/boards/imx.rst
+> @@ -32,7 +32,9 @@ Normally it's not necessary to call this tool manually, it is executed
+>  automatically at the end of the build process.
+>  
+>  The images generated by the build process can be directly written to an
+> -SD card::
+> +SD card:
+> +
+> +.. code-block:: sh
+>  
+>    # with Multi Image support:
+>    cat images/barebox-freescale-imx51-babbage.img > /dev/sdd
+> @@ -152,7 +154,9 @@ contains a USB upload tool. As it depends on the libusb development headers,
+>  it is not built by default. Enable it explicitly in ``make menuconfig``
+>  and install the libusb development package. On Debian, this can be done
+>  with ``apt-get install libusb-dev``. After compilation, the tool can be used
+> -with only the image name as argument::
+> +with only the image name as argument:
+> +
+> +.. code-block:: sh
+>  
+>    scripts/imx/imx-usb-loader images/barebox-freescale-imx51-babbage.img
+>  
+> diff --git a/Documentation/boards/imx/amazon-kindle-3.rst b/Documentation/boards/imx/amazon-kindle-3.rst
+> index dffb7efb2d..6b5d9fe535 100644
+> --- a/Documentation/boards/imx/amazon-kindle-3.rst
+> +++ b/Documentation/boards/imx/amazon-kindle-3.rst
+> @@ -15,7 +15,7 @@ To upload and run a new bootloader the device can be put into USB-downloader
+>  mode by the SOC microcode when Vol+ is pressed during startup. A new USB
+>  device "SE Blank RINGO" should appear, barebox may be uploaded using
+>  
+> -::
+> +.. code-block:: console
+>  
+>          $ scripts/imx/imx-usb-loader barebox.imximg
+>  
+> @@ -26,7 +26,9 @@ imx-usb-loader)
+>  Barebox may be used as drop-in replacement for the shipped bootloader.
+>  When installing the barebox imximg on the eMMC take care not to overwrite
+>  the partition table and vendor supplied serial numbers stored on the eMMC.
+> -e.g. just write the imx-header and the application section::
+> +e.g. just write the imx-header and the application section:
+> +
+> +.. code-block:: sh
+>  
+>          memcpy -b -s barebox.imximg -d /dev/disk0.imx_header 1024 0 1024
+>          memcpy -b -s barebox.imximg -d /dev/disk0.self 4096 0 195584
+> diff --git a/Documentation/boards/imx/garz-fricke-vincell.rst b/Documentation/boards/imx/garz-fricke-vincell.rst
+> index 09d87d67c3..4127c8bc8c 100644
+> --- a/Documentation/boards/imx/garz-fricke-vincell.rst
+> +++ b/Documentation/boards/imx/garz-fricke-vincell.rst
+> @@ -38,6 +38,8 @@ If the network setup is working properly, barebox can be loaded into memory::
+>    load -v -r -b 0x80100000 barebox-guf-vincell-lt.img
+>    exec
+>  
+> -Once in barebox, the bootloader can now be persisted to NAND::
+> +Once in barebox, the bootloader can now be persisted to NAND:
+> +
+> +.. code-block:: sh
+>  
+>    barebox_update -t nand /mnt/tftp/barebox-guf-vincell-lt.img``
+> diff --git a/Documentation/boards/imx/phytec-phycore-i.mx31.rst b/Documentation/boards/imx/phytec-phycore-i.mx31.rst
+> index d9a981b998..0feb22257a 100644
+> --- a/Documentation/boards/imx/phytec-phycore-i.mx31.rst
+> +++ b/Documentation/boards/imx/phytec-phycore-i.mx31.rst
+> @@ -26,11 +26,15 @@ Supported baseboards are:
+>  How to get barebox for Phytec's phyCORE-i.MX31
+>  ----------------------------------------------
+>  
+> -Using the default configuration::
+> +Using the default configuration:
+> +
+> +.. code-block:: sh
+>  
+>    make ARCH=arm pcm037_defconfig
+>  
+> -Build the binary image::
+> +Build the binary image:
+> +
+> +.. code-block:: sh
+>  
+>    make ARCH=arm CROSS_COMPILE=armv5compiler
+>  
+> diff --git a/Documentation/boards/mips/dlink-dir-320.rst b/Documentation/boards/mips/dlink-dir-320.rst
+> index 74d11ffe59..7595381f55 100644
+> --- a/Documentation/boards/mips/dlink-dir-320.rst
+> +++ b/Documentation/boards/mips/dlink-dir-320.rst
+> @@ -26,7 +26,9 @@ Put your barebox.bin to tftp-server directory
+>  Connect your DIR-320 to your tftp-server network via
+>  one of four <LAN> sockets.
+>  
+> -Next, setup network on DIR-320 and run barebox.bin, e.g.::
+> +Next, setup network on DIR-320 and run barebox.bin, e.g.:
+> +
+> +.. code-block:: console
+>  
+>    CFE> ifconfig eth0 -addr=192.168.0.99
+>    CFE> boot -tftp -addr=a0800000 -raw 192.168.0.1:barebox.bin
+> diff --git a/Documentation/boards/mips/qemu-malta.rst b/Documentation/boards/mips/qemu-malta.rst
+> index 0c4d639194..2bb81350a1 100644
+> --- a/Documentation/boards/mips/qemu-malta.rst
+> +++ b/Documentation/boards/mips/qemu-malta.rst
+> @@ -4,7 +4,9 @@ QEMU Malta
+>  Big-endian mode
+>  ---------------
+>  
+> -QEMU run string::
+> +QEMU run string:
+> +
+> +.. code-block:: sh
+>  
+>    qemu-system-mips -nodefaults -M malta -m 256 \
+>        -nographic -serial stdio -monitor null \
+> @@ -18,13 +20,17 @@ Running little-endian Malta is a bit tricky.
+>  In little-endian mode the 32bit words in the boot flash image are swapped,
+>  a neat trick which allows bi-endian firmware.
+>  
+> -You have to swap words of ``zbarebox.bin`` image, e.g.::
+> +You have to swap words of ``zbarebox.bin`` image, e.g.:
+> +
+> +.. code-block:: sh
+>  
+>    echo arch/mips/pbl/zbarebox.bin \
+>        | cpio --create \
+>        | cpio --extract --swap --unconditional
+>  
+> -QEMU run string::
+> +QEMU run string:
+> +
+> +.. code-block:: sh
+>  
+>    qemu-system-mipsel -nodefaults -M malta -m 256 \
+>        -nographic -serial stdio -monitor null \
+> @@ -39,7 +45,9 @@ You can use GXemul to run little-endian barebox (use gxemul-malta_defconfig).
+>  
+>  N.B. There is no need to swap words in ``zbarebox.bin`` for little-endian GXemul!
+>  
+> -GXemul run string::
+> +GXemul run string:
+> +
+> +.. code-block:: sh
+>  
+>    gxemul -Q -e malta -M 256 0xbfc00000:barebox-flash-image
+>  
+> diff --git a/Documentation/boards/mvebu.rst b/Documentation/boards/mvebu.rst
+> index e27aa28306..9c99c815de 100644
+> --- a/Documentation/boards/mvebu.rst
+> +++ b/Documentation/boards/mvebu.rst
+> @@ -14,7 +14,9 @@ RAM initialisation
+>  ------------------
+>  
+>  Traditionally the RAM initialisation happens with a binary blob that have to be
+> -extracted from the vendor U-Boot::
+> +extracted from the vendor U-Boot:
+> +
+> +.. code-block:: sh
+>  
+>    scripts/kwbimage -x -i /dev/mtdblock0 -o .
+>  
+> diff --git a/Documentation/boards/mxs/Chumby-Falconwing.rst b/Documentation/boards/mxs/Chumby-Falconwing.rst
+> index 172d6840cf..690ccadf8c 100644
+> --- a/Documentation/boards/mxs/Chumby-Falconwing.rst
+> +++ b/Documentation/boards/mxs/Chumby-Falconwing.rst
+> @@ -20,11 +20,15 @@ Memory layout when barebox is running:
+>  How to get the bootloader binary image
+>  --------------------------------------
+>  
+> -Using the default configuration::
+> +Using the default configuration:
+> +
+> +.. code-block:: sh
+>  
+>    make ARCH=arm chumbyone_defconfig
+>  
+> -Build the bootloader binary image::
+> +Build the bootloader binary image:
+> +
+> +.. code-block:: sh
+>  
+>    make ARCH=arm CROSS_COMPILE=armv5compiler
+>  
+> diff --git a/Documentation/boards/mxs/Freescale-i.MX23-evk.rst b/Documentation/boards/mxs/Freescale-i.MX23-evk.rst
+> index cb73ec1279..077ab73bda 100644
+> --- a/Documentation/boards/mxs/Freescale-i.MX23-evk.rst
+> +++ b/Documentation/boards/mxs/Freescale-i.MX23-evk.rst
+> @@ -19,11 +19,15 @@ Memory layout when barebox is running:
+>  How to get the bootloader binary image
+>  --------------------------------------
+>  
+> -Using the default configuration::
+> +Using the default configuration:
+> +
+> +.. code-block:: sh
+>  
+>    make ARCH=arm freescale-mx23-evk_defconfig
+>  
+> -Build the bootloader binary image::
+> +Build the bootloader binary image:
+> +
+> +.. code-block:: sh
+>  
+>    make ARCH=arm CROSS_COMPILE=armv5compiler
+>  
+> diff --git a/Documentation/boards/mxs/KaRo-TX28.rst b/Documentation/boards/mxs/KaRo-TX28.rst
+> index 6cad5eb243..54b1ce71eb 100644
+> --- a/Documentation/boards/mxs/KaRo-TX28.rst
+> +++ b/Documentation/boards/mxs/KaRo-TX28.rst
+> @@ -24,11 +24,15 @@ Supported baseboards are:
+>  How to get barebox for 'KARO's Starterkit 5'
+>  --------------------------------------------
+>  
+> -Using the default configuration::
+> +Using the default configuration:
+> +
+> +.. code-block:: sh
+>  
+>    make ARCH=arm tx28stk5_defconfig
+>  
+> -Build the binary image::
+> +Build the binary image:
+> +
+> +.. code-block:: sh
+>  
+>    make ARCH=arm CROSS_COMPILE=armv5compiler
+>  
+> diff --git a/Documentation/boards/mxs/Olimex-olinuxino.rst b/Documentation/boards/mxs/Olimex-olinuxino.rst
+> index a06eb3309f..2080653887 100644
+> --- a/Documentation/boards/mxs/Olimex-olinuxino.rst
+> +++ b/Documentation/boards/mxs/Olimex-olinuxino.rst
+> @@ -9,11 +9,15 @@ This CPU module is based on a Freescale i.MX23 CPU.
+>  How to get the bootloader binary image
+>  --------------------------------------
+>  
+> -Using the default configuration::
+> +Using the default configuration:
+> +
+> +.. code-block:: sh
+>  
+>    make ARCH=arm imx233-olinuxino_defconfig
+>  
+> -Build the binary image::
+> +Build the binary image:
+> +
+> +.. code-block:: sh
+>  
+>    make ARCH=arm CROSS_COMPILE=armv5compiler
+>  
+> diff --git a/Documentation/boards/omap.rst b/Documentation/boards/omap.rst
+> index c2697510c5..717a38fe01 100644
+> --- a/Documentation/boards/omap.rst
+> +++ b/Documentation/boards/omap.rst
+> @@ -15,7 +15,9 @@ The PandaBoard boots from SD card. The OMAP Boot ROM code loads a file named
+>  scripts on the net which describe how to prepare such a card (it needs
+>  special partitioning). The same procedure can be used for barebox. With such a
+>  card (assumed to be at /dev/sdc), the following can be used to build and install
+> -barebox::
+> +barebox:
+> +
+> +.. code-block:: console
+>  
+>    # mount -t fat /dev/sdc1 /mnt
+>    # make panda_xload_defconfig
+> diff --git a/Documentation/boards/openrisc.rst b/Documentation/boards/openrisc.rst
+> index fe6c48c958..f9d67f9650 100644
+> --- a/Documentation/boards/openrisc.rst
+> +++ b/Documentation/boards/openrisc.rst
+> @@ -4,7 +4,9 @@ OpenRISC
+>  or1ksim
+>  -------
+>  
+> -Compile or1ksim emulator::
+> +Compile or1ksim emulator:
+> +
+> +.. code-block:: console
+>  
+>   $ cd ~/
+>   $ git clone https://github.com/openrisc/or1ksim
+> @@ -48,6 +50,8 @@ Create minimal or1ksim.cfg file:
+>     tap_dev = "tap0"
+>   end
+>  
+> -Run or1ksim::
+> +Run or1ksim:
+> +
+> +.. code-block:: console
+>  
+>   $ ~/or1ksim/sim -f or1ksim.cfg barebox
+> diff --git a/Documentation/boards/s3c/Digi-a9m2440.rst b/Documentation/boards/s3c/Digi-a9m2440.rst
+> index d01a001172..32d58b9a04 100644
+> --- a/Documentation/boards/s3c/Digi-a9m2440.rst
+> +++ b/Documentation/boards/s3c/Digi-a9m2440.rst
+> @@ -78,11 +78,15 @@ This CPU card is based on a Samsung S3C2440 CPU. The card is shipped with:
+>  How to get the binary image
+>  ---------------------------
+>  
+> -Configure with the default configuration::
+> +Configure with the default configuration:
+> +
+> +.. code-block:: sh
+>  
+>    make ARCH=arm a9m2440_defconfig
+>  
+> -Build the binary image::
+> +Build the binary image:
+> +
+> +.. code-block:: sh
+>  
+>    make ARCH=arm CROSS_COMPILE=armv4compiler
+>  
+> diff --git a/Documentation/boards/sandbox.rst b/Documentation/boards/sandbox.rst
+> index 558f111697..85a54e6b04 100644
+> --- a/Documentation/boards/sandbox.rst
+> +++ b/Documentation/boards/sandbox.rst
+> @@ -7,7 +7,9 @@ hardware related features.
+>  Building barebox for simulation
+>  -------------------------------
+>  
+> -The barebox sandbox can be built with the host compiler::
+> +The barebox sandbox can be built with the host compiler:
+> +
+> +.. code-block:: sh
+>  
+>    ARCH=sandbox make sandbox_defconfig
+>    ARCH=sandbox make
+> @@ -17,6 +19,8 @@ Running the sandbox
+>  
+>  Once you compile barebox for the sandbox, you can run it with::
+>  
+> +.. code-block:: console
+> +
+>    $ barebox [<OPTIONS>]
+>  
+>  Available sandbox invocation options include:
+> diff --git a/Documentation/boards/socfpga.rst b/Documentation/boards/socfpga.rst
+> index cd0fffa1ee..d73237491d 100644
+> --- a/Documentation/boards/socfpga.rst
+> +++ b/Documentation/boards/socfpga.rst
+> @@ -41,7 +41,9 @@ second partition of the SD card, which must be of type FAT32. On this partition
+>  barebox searches for a file called barebox.bin.
+>  
+>  To boot barebox on a Terasic SoCkit, the procedure is as follows (sdb1 is the A2 and
+> -sdb2 the FAT32 partition)::
+> +sdb2 the FAT32 partition):
+> +
+> +.. code-block:: sh
+>  
+>    mount -t fat /dev/sdb2 /mnt
+>    make socfpga-xload_defconfig
+> @@ -50,7 +52,9 @@ sdb2 the FAT32 partition)::
+>    make
+>  
+>  barebox has now generated multiple files in the images directory. So for the SoCkit
+> -proceed with::
+> +proceed with:
+> +
+> +.. code-block:: sh
+>  
+>    cat images/barebox-socfpga-sockit-xload.img > /dev/sdb1
+>    cp images/barebox-socfpga-sockit.img /mnt/barebox.bin
+> @@ -64,12 +68,16 @@ QSPI
+>  The Boot ROM loads the preloader starting from address 0x0 on the QSPI flash.
+>  barebox then searches for a barebox image at the 256K offset and loads it.
+>  
+> -The default bootsource is SD card, so to change that to QSPI, you have to::
+> +The default bootsource is SD card, so to change that to QSPI, you have to:
+> +
+> +.. code-block:: sh
+>  
+>    make socfpga-xload_defconfig
+>    make menuconfig
+>  
+> -And then select the options `MTD` and `SPI_CADENCE_QUADSPI`. Now::
+> +And then select the options `MTD` and `SPI_CADENCE_QUADSPI`. Now:
+> +
+> +.. code-block:: sh
+>  
+>    make
+>    cat images/barebox-socfpga-<board>-xload.img > /dev/mtd0
+> @@ -116,7 +124,9 @@ To update the handoff files, the following procedure is necessary:
+>     preloader settings directory
+>  7. Click ``Ok`` than ``Generate``
+>  
+> -Now run the command::
+> +Now run the command:
+> +
+> +.. code-block:: sh
+>  
+>    scripts/socfpga_import_preloader <SPL_GENERATED_DIR> <ISW_HANDOFF> <BOARD_DIRECTORY>
+>  
+> @@ -141,7 +151,9 @@ tree:
+>  * system.h
+>  * tclrpt.h
+>  
+> -To add these files, run::
+> +To add these files, run:
+> +
+> +.. code-block:: sh
+>  
+>    scripts/socfpga_get_sequencer <UBOOT-SRC> scripts/socfpga_sequencer_defines_defaults
+>  
+> diff --git a/Documentation/boards/x86.rst b/Documentation/boards/x86.rst
+> index d0528a3280..4514a766a2 100644
+> --- a/Documentation/boards/x86.rst
+> +++ b/Documentation/boards/x86.rst
+> @@ -50,7 +50,8 @@ sectors must be kept free after the MBR prior the first partition. Do this
+>  simple calulation:
+>  
+>  .. code-block:: none
+> -  sectors = (\<size of barebox image\> + 511) / 512
+> +
+> +  sectors = (size of barebox image + 511) / 512
+>  
+>  To be able to store the runtime configuration, further free sectors are
+>  required. Its up to you and your requirements, how large this persistant
+> diff --git a/Documentation/filesystems/fat.rst b/Documentation/filesystems/fat.rst
+> index e39e34a0e9..138e69711f 100644
+> --- a/Documentation/filesystems/fat.rst
+> +++ b/Documentation/filesystems/fat.rst
+> @@ -5,7 +5,9 @@ FAT filesystem
+>  
+>  barebox supports FAT filesystems in both read and write modes with optional
+>  support for long filenames. A FAT filesystem can be mounted using the
+> -:ref:`command_mount` command::
+> +:ref:`command_mount` command:
+> +
+> +.. code-block:: console
+>  
+>    barebox:/ mkdir /mnt
+>    barebox:/ mount /dev/disk0.0 fat /mnt
+> diff --git a/Documentation/filesystems/nfs.rst b/Documentation/filesystems/nfs.rst
+> index ab51241549..3e40ae9767 100644
+> --- a/Documentation/filesystems/nfs.rst
+> +++ b/Documentation/filesystems/nfs.rst
+> @@ -7,7 +7,9 @@ NFS Support
+>  
+>  barebox has readonly support for NFSv3 in UDP mode.
+>  
+> -Example::
+> +Example:
+> +
+> +.. code-block:: console
+>  
+>     barebox:/ mount -t nfs 192.168.23.4:/home/user/nfsroot /mnt/nfs
+>  
+> @@ -15,7 +17,9 @@ The barebox NFS driver adds a ``linux.bootargs`` device parameter to the NFS dev
+>  This parameter holds a Linux kernel commandline snippet containing a suitable root=
+>  option for booting from exactly that NFS share.
+>  
+> -Example::
+> +Example:
+> +
+> +.. code-block:: console
+>  
+>    barebox:/ devinfo nfs0
+>    ...
+> diff --git a/Documentation/filesystems/pstore.rst b/Documentation/filesystems/pstore.rst
+> index 8eee374bdd..22e89b3f1f 100644
+> --- a/Documentation/filesystems/pstore.rst
+> +++ b/Documentation/filesystems/pstore.rst
+> @@ -20,7 +20,7 @@ at boot:
+>  	none on /pstore type pstore
+>  
+>  pstore may add additional warnings during boot due to wrong ECCs (no data
+> -written)::
+> +written):
+>  
+>  .. code-block:: none
+>  
+> diff --git a/Documentation/filesystems/ramfs.rst b/Documentation/filesystems/ramfs.rst
+> index d27f88561f..e61505a5f9 100644
+> --- a/Documentation/filesystems/ramfs.rst
+> +++ b/Documentation/filesystems/ramfs.rst
+> @@ -7,6 +7,8 @@ ramfs is a simple malloc-based filesystem. An instance of ramfs is
+>  mounted during startup on /. The filesystem type passed to ``mount``
+>  is ``ramfs``.
+>  
+> -Example::
+> +Example:
+> +
+> +.. code-block:: console
+>  
+>    barebox:/ mount none ramfs /somedir
+> diff --git a/Documentation/filesystems/smhfs.rst b/Documentation/filesystems/smhfs.rst
+> index 9e9993cb28..8f8a0ec6b7 100644
+> --- a/Documentation/filesystems/smhfs.rst
+> +++ b/Documentation/filesystems/smhfs.rst
+> @@ -18,7 +18,9 @@ not have support for listing directories. This means a
+>  :ref:`command_ls` to a SMHFS-mounted path will show an empty
+>  directory. Nevertheless, the files are there.
+>  
+> -Example::
+> +Example:
+> +
+> +.. code-block:: console
+>  
+>    barebox:/ mount -t smhfs /dev/null /mnt/smhfs
+>  
+> diff --git a/Documentation/filesystems/squashfs.rst b/Documentation/filesystems/squashfs.rst
+> index 88c97ebbe8..a042f7b96b 100644
+> --- a/Documentation/filesystems/squashfs.rst
+> +++ b/Documentation/filesystems/squashfs.rst
+> @@ -6,7 +6,9 @@ SquashFS filesystem
+>  SquashFS is a highly compressed read-only filesystem for Linux.
+>  It uses zlib, lzo or xz compression to compress both files, inodes
+>  and directories. A SquashFS filesystem can be mounted using the
+> -:ref:`command_mount` command::
+> +:ref:`command_mount` command:
+> +
+> +.. code-block:: console
+>  
+>    barebox:/ mkdir /mnt
+>    barebox:/ mount -t squashfs /dev/spiflash.FileSystem /mnt
+> diff --git a/Documentation/filesystems/tftp.rst b/Documentation/filesystems/tftp.rst
+> index eeb3fcb688..a292765e25 100644
+> --- a/Documentation/filesystems/tftp.rst
+> +++ b/Documentation/filesystems/tftp.rst
+> @@ -12,7 +12,9 @@ TFTP is not designed as a filesystem. It does not have support for listing
+>  directories. This means a :ref:`ls <command_ls>` to a TFTP-mounted path will
+>  show an empty directory. Nevertheless, the files are there.
+>  
+> -Example::
+> +Example:
+> +
+> +.. code-block:: console
+>  
+>    barebox:/ mount -t tftp 192.168.23.4 /mnt/tftp
+>  
+> diff --git a/Documentation/user/automount.rst b/Documentation/user/automount.rst
+> index 7de8261354..1fdeffc663 100644
+> --- a/Documentation/user/automount.rst
+> +++ b/Documentation/user/automount.rst
+> @@ -10,7 +10,9 @@ filesystems. The filesystems (and the devices they are on) are only probed
+>  when necessary, so barebox does not lose time probing unused devices.
+>  
+>  Typical usage is for accessing the TFTP server. To set up an automount for a
+> -TFTP server, the following is required::
+> +TFTP server, the following is required:
+> +
+> +.. code-block:: sh
+>  
+>    mkdir -p /mnt/tftp
+>    automount /mnt/tftp 'ifup -a && mount -t tftp $global.net.server /mnt/tftp'
+> @@ -21,12 +23,16 @@ It will bring up the network device using :ref:`command_ifup` and mount a TFTP f
+>  using :ref:`command_mount`.
+>  
+>  Usually the above automount command is executed from an init script in ``/env/init/automount``.
+> -With the above, files on the TFTP server can be accessed without configuration::
+> +With the above, files on the TFTP server can be accessed without configuration:
+> +
+> +.. code-block:: sh
+>  
+>    cp /mnt/tftp/linuximage /image
+>  
+>  This automatically detects a USB mass storage device and mounts the first
+> -partition to ``/mnt/fat``::
+> +partition to ``/mnt/fat``:
+> +
+> +.. code-block:: sh
+>  
+>    mkdir -p /mnt/fat
+>    automount -d /mnt/fat 'usb && [ -e /dev/disk0.0 ] && mount /dev/disk0.0 /mnt/fat'
+> diff --git a/Documentation/user/barebox.rst b/Documentation/user/barebox.rst
+> index 82a33a3219..026ed1b9c0 100644
+> --- a/Documentation/user/barebox.rst
+> +++ b/Documentation/user/barebox.rst
+> @@ -181,9 +181,7 @@ simply with:
+>  The resulting binary varies depending on the board barebox is compiled for.
+>  Without :ref:`multi_image` support the ``barebox-flash-image`` link will point
+>  to the binary for flashing/uploading to the board. With :ref:`multi_image` support
+> -the compilation process will finish with a list of images built under ``images/``:
+> -
+> -.. code-block:: sh
+> +the compilation process will finish with a list of images built under ``images/``::
+>  
+>    images built:
+>    barebox-freescale-imx51-babbage.img
+> diff --git a/Documentation/user/defaultenv-2.rst b/Documentation/user/defaultenv-2.rst
+> index 7502d3de10..a79ae83d56 100644
+> --- a/Documentation/user/defaultenv-2.rst
+> +++ b/Documentation/user/defaultenv-2.rst
+> @@ -44,7 +44,9 @@ and their respective included directories in ``defaultenv/Makefile``:
+>  
+>  This script is executed by the barebox startup code after initialization.
+>  In defaultenv-2, this script will define and set a number of global
+> -variables, followed by sourcing all of the scripts in ``/env/init/`` with::
+> +variables, followed by sourcing all of the scripts in ``/env/init/`` with:
+> +
+> +.. code-block:: sh
+>  
+>    for i in /env/init/*; do
+>            . $i
+> diff --git a/Documentation/user/driver-model.rst b/Documentation/user/driver-model.rst
+> index ce7083589c..a0fd3e99b5 100644
+> --- a/Documentation/user/driver-model.rst
+> +++ b/Documentation/user/driver-model.rst
+> @@ -32,7 +32,9 @@ Some devices like USB or MMC may take a longer time to probe. Probing USB
+>  devices should not delay booting when USB may not even be used. This case is
+>  handled with device detection. The user visible interface to device detection
+>  is the :ref:`command_detect` command. ``detect -l`` shows a list of detectable
+> -devices::
+> +devices:
+> +
+> +.. code-block:: console
+>  
+>    barebox:/ detect -l
+>    70004000.esdhc
+> @@ -46,7 +48,9 @@ devices::
+>    mmc1
+>    miibus0
+>  
+> -A particular device can be detected with ``detect <devname>``::
+> +A particular device can be detected with ``detect <devname>``:
+> +
+> +.. code-block:: console
+>  
+>    barebox:/ detect 73f80200.usb
+>    Found SMSC USB331x ULPI transceiver (0x0424:0x0006).
+> @@ -67,7 +71,9 @@ Device parameters
+>  Devices can have parameters which can be used to configure devices or to provide
+>  additional information for a device. The parameters can be listed with the
+>  :ref:`command_devinfo` command. A ``devinfo <devicename>`` will print the parameters
+> -of a device::
+> +of a device:
+> +
+> +.. code-block:: console
+>  
+>    barebox:/ devinfo eth0
+>    Parameters:
+> @@ -77,12 +83,16 @@ of a device::
+>      netmask: 255.255.0.0
+>      ethaddr: 00:1c:49:01:03:4b
+>  
+> -The parameters can be used as shell variables::
+> +The parameters can be used as shell variables:
+> +
+> +.. code-block:: sh
+>  
+>    eth0.ipaddr=192.168.23.15
+>    echo "my current ip is: $eth0.ipaddr"
+>  
+> -device variables may have a type, so assigning wrong values may fail::
+> +device variables may have a type, so assigning wrong values may fail:
+> +
+> +.. code-block:: console
+>  
+>    barebox:/ eth0.ipaddr="This is not an IP"
+>    set parameter: Invalid argument
+> diff --git a/Documentation/user/hush.rst b/Documentation/user/hush.rst
+> index 00d4e2983e..a4d8688142 100644
+> --- a/Documentation/user/hush.rst
+> +++ b/Documentation/user/hush.rst
+> @@ -13,13 +13,17 @@ more flexible and also more robust than a complicated shell script.
+>  Hush features
+>  -------------
+>  
+> -variables::
+> +variables:
+> +
+> +.. code-block:: sh
+>  
+>  	a="Hello user"
+>  	echo $a
+>  	Hello user
+>  
+> -conditional execution ``if`` / ``elif`` / ``else`` / ``fi``::
+> +conditional execution ``if`` / ``elif`` / ``else`` / ``fi``:
+> +
+> +.. code-block:: sh
+>  
+>  	if [ ${foo} = ${bar} ]; then
+>  		echo "foo equals bar"
+> @@ -27,19 +31,25 @@ conditional execution ``if`` / ``elif`` / ``else`` / ``fi``::
+>  		echo "foo and bar differ"
+>  	fi
+>  
+> -``for`` loops::
+> +``for`` loops:
+> +
+> +.. code-block:: sh
+>  
+>  	for i in a b c; do
+>  		echo $i
+>  	done
+>  
+> -``while`` loops::
+> +``while`` loops:
+> +
+> +.. code-block:: sh
+>  
+>  	while true; do
+>  		echo "endless loop"
+>  	done
+>  
+> -wildcard globbing::
+> +wildcard globbing:
+> +
+> +.. code-block:: sh
+>  
+>  	ls d*
+>  	echo ???
+> @@ -53,7 +63,9 @@ stored.
+>  
+>  **NOTE:** hush feels like a normal Unix shell, but it cannot calculate by
+>  itself, i.e. $(($A/2)) won't work. Calculation can however be done
+> -with :ref:`command_let`::
+> +with :ref:`command_let`:
+> +
+> +.. code-block:: sh
+>  
+>    A=10
+>    let B=$A/2
+> diff --git a/Documentation/user/memory-areas.rst b/Documentation/user/memory-areas.rst
+> index 9654a99167..d673f6e1b1 100644
+> --- a/Documentation/user/memory-areas.rst
+> +++ b/Documentation/user/memory-areas.rst
+> @@ -17,11 +17,15 @@ gigabyte.
+>  Examples
+>  --------
+>  
+> -Display a hexdump from 0x80000000 to 0x80001000 (inclusive)::
+> +Display a hexdump from 0x80000000 to 0x80001000 (inclusive):
+> +
+> +.. code-block:: sh
+>  
+>    md 0x80000000-0x80001000
+>  
+> -Display 1 kilobyte of memory starting at 0x80000000::
+> +Display 1 kilobyte of memory starting at 0x80000000:
+> +
+> +.. code-block:: sh
+>  
+>    md 0x80000000+1k
+>  
+> diff --git a/Documentation/user/system-setup.rst b/Documentation/user/system-setup.rst
+> index f0598bc2b5..5651569dc2 100644
+> --- a/Documentation/user/system-setup.rst
+> +++ b/Documentation/user/system-setup.rst
+> @@ -16,7 +16,9 @@ for root privileges.
+>  Using the "screen" program
+>  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  
+> -The terminal manager ``screen`` can also be used as a simple terminal emulator::
+> +The terminal manager ``screen`` can also be used as a simple terminal emulator:
+> +
+> +.. code-block:: sh
+>  
+>    screen /dev/ttyUSB0 115200
+>  
+> @@ -31,7 +33,9 @@ from source:
+>  
+>  https://git.pengutronix.de/cgit/tools/microcom
+>  
+> -Usage is simple::
+> +Usage is simple:
+> +
+> +.. code-block:: sh
+>  
+>    microcom -p /dev/ttyUSB0
+>  
+> @@ -46,7 +50,9 @@ Configuration of dnsmasq for DHCP and TFTP
+>  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  
+>  The ``dnsmasq`` program can be configured as a DHCP and TFTP server in addition
+> -to its original DNS functionality::
+> +to its original DNS functionality:
+> +
+> +.. code-block:: sh
+>  
+>    sudo ip addr add 192.168.23.1/24 dev <interface>
+>    sudo ip link set <interface> up
+> diff --git a/Documentation/user/updating.rst b/Documentation/user/updating.rst
+> index 7aac0a99d6..0555909aa1 100644
+> --- a/Documentation/user/updating.rst
+> +++ b/Documentation/user/updating.rst
+> @@ -11,12 +11,16 @@ A board can register an update handler to the update command. The handler can
+>  do additional checks before trying an update, e.g. it's possible
+>  to check whether the new image actually is a barebox image.
+>  
+> -Updating barebox can be as easy as::
+> +Updating barebox can be as easy as:
+> +
+> +.. code-block:: sh
+>  
+>    barebox_update /path/to/new/barebox.img
+>  
+>  Multiple handlers can be registered to the update mechanism. Usually the device
+> -barebox has been started from is registered as default (marked with a ``*``)::
+> +barebox has been started from is registered as default (marked with a ``*``):
+> +
+> +.. code-block:: console
+>  
+>    barebox:/ barebox_update -l
+>    registered update handlers:
+> diff --git a/Documentation/user/variables.rst b/Documentation/user/variables.rst
+> index e0a79416c6..ddfd485740 100644
+> --- a/Documentation/user/variables.rst
+> +++ b/Documentation/user/variables.rst
+> @@ -12,12 +12,16 @@ The ``global`` device
+>  The ``global`` device is a special purpose device. It only exists as a
+>  storage for global variables. Some global variables are created internally
+>  in barebox (see :ref:`magicvars`). Additional variables can be created with
+> -the :ref:`command_global` command::
+> +the :ref:`command_global` command:
+> +
+> +.. code-block:: sh
+>  
+>    global myvar
+>  
+>  This creates the ``global.myvar`` variable which now can be used like any
+> -other variable. You can also directly assign a value during creation::
+> +other variable. You can also directly assign a value during creation:
+> +
+> +.. code-block:: sh
+>  
+>    global myvar1=foobar
+>  
+> @@ -48,7 +52,7 @@ actual values.
+>  
+>  examples:
+>  
+> -.. code-block:: sh
+> +.. code-block:: console
+>  
+>    barebox@Phytec phyCARD-i.MX27:/ devinfo nv
+>    barebox@Phytec phyCARD-i.MX27:/ nv model=myboard
+> @@ -94,7 +98,9 @@ Some variables have special meanings and influence the behaviour
+>  of barebox. Most but not all of them are consolidated in the :ref:`global_device`.
+>  Since it's hard to remember which variables these are and if the current
+>  barebox has support for them the :ref:`command_magicvar` command can print a list
+> -of all variables with special meaning along with a short description::
+> +of all variables with special meaning along with a short description:
+> +
+> +.. code-block:: console
+>  
+>    barebox:/ magicvar
+>    OPTARG                           optarg for hush builtin getopt
+> -- 
+> 2.18.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.18.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
