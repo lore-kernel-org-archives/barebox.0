@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fo5ph-0006dU-7b
- for barebox@lists.infradead.org; Fri, 10 Aug 2018 11:43:54 +0000
-From: Bastian Stender <bst@pengutronix.de>
-Date: Fri, 10 Aug 2018 13:43:37 +0200
-Message-Id: <20180810114337.4616-1-bst@pengutronix.de>
+ id 1foCXB-0006yM-Df
+ for barebox@lists.infradead.org; Fri, 10 Aug 2018 18:53:14 +0000
+Received: by mail-pf1-x443.google.com with SMTP id k21-v6so4919830pff.11
+ for <barebox@lists.infradead.org>; Fri, 10 Aug 2018 11:53:03 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Fri, 10 Aug 2018 11:52:55 -0700
+Message-Id: <20180810185255.8387-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,40 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] HAB: fuse recommended OCOTP_DIR_BT_DIS
+Subject: [PATCH] i.MX: i2c: Fix build error in debug output code
 To: barebox@lists.infradead.org
-Cc: Bastian Stender <bst@pengutronix.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-This is now recommended for all systems. Especially for the HAB usecase
-disallowing alternative boot selection after WDOG reset is essential.
+Looks like that particular chunk of the code have not been built in a
+while and bitrotted. Change function parameters appropriately to avoid
+breaking the build.
 
-Signed-off-by: Bastian Stender <bst@pengutronix.de>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
-Changes since v1:
-  - removed accidentally added empty line
----
- drivers/hab/hab.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/i2c/busses/i2c-imx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hab/hab.c b/drivers/hab/hab.c
-index 0d71f5bf26..03bb65e0fa 100644
---- a/drivers/hab/hab.c
-+++ b/drivers/hab/hab.c
-@@ -161,6 +161,12 @@ static int imx_hab_permanent_write_enable_ocotp(int enable)
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index 4ff4f5c2a..67937da73 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -200,13 +200,13 @@ static void i2c_fsl_dump_reg(struct i2c_adapter *adapter)
+ 	reg_cr = fsl_i2c_read_reg(i2c_fsl, FSL_I2C_I2CR);
+ 	reg_sr = fsl_i2c_read_reg(i2c_fsl, FSL_I2C_I2SR);
  
- static int imx_hab_lockdown_device_ocotp(void)
- {
-+	int ret;
-+
-+	ret = imx_ocotp_write_field(OCOTP_DIR_BT_DIS, 1);
-+	if (ret < 0)
-+		return ret;
-+
- 	return imx_ocotp_write_field(OCOTP_SEC_CONFIG_1, 1);
- }
+-	dev_dbg(adapter->dev, "CONTROL:\t"
++	dev_dbg(&adapter->dev, "CONTROL:\t"
+ 		"IEN =%d, IIEN=%d, MSTA=%d, MTX =%d, TXAK=%d, RSTA=%d\n",
+ 		(reg_cr & I2CR_IEN  ? 1 : 0), (reg_cr & I2CR_IIEN ? 1 : 0),
+ 		(reg_cr & I2CR_MSTA ? 1 : 0), (reg_cr & I2CR_MTX  ? 1 : 0),
+ 		(reg_cr & I2CR_TXAK ? 1 : 0), (reg_cr & I2CR_RSTA ? 1 : 0));
  
+-	dev_dbg(adapter->dev, "STATUS:\t"
++	dev_dbg(&adapter->dev, "STATUS:\t"
+ 		"ICF =%d, IAAS=%d, IB  =%d, IAL =%d, SRW =%d, IIF =%d, RXAK=%d\n",
+ 		(reg_sr & I2SR_ICF  ? 1 : 0), (reg_sr & I2SR_IAAS ? 1 : 0),
+ 		(reg_sr & I2SR_IBB  ? 1 : 0), (reg_sr & I2SR_IAL  ? 1 : 0),
 -- 
-2.18.0
+2.17.1
 
 
 _______________________________________________
