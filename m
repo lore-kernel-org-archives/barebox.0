@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1foANi-0007lK-7b
- for barebox@lists.infradead.org; Fri, 10 Aug 2018 16:35:24 +0000
+ id 1foANi-0007mM-0u
+ for barebox@lists.infradead.org; Fri, 10 Aug 2018 16:35:19 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Fri, 10 Aug 2018 18:34:46 +0200
-Message-Id: <20180810163500.12042-1-r.hieber@pengutronix.de>
-MIME-Version: 1.0
+Date: Fri, 10 Aug 2018 18:34:54 +0200
+Message-Id: <20180810163500.12042-9-r.hieber@pengutronix.de>
+In-Reply-To: <20180810163500.12042-1-r.hieber@pengutronix.de>
+References: <20180810163500.12042-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,66 +16,97 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 00/14] MXS low-level improvements
+Subject: [PATCH v2 08/14] ARM: MXS: allow starting from battery input without
+ 4P2 source enabled
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-V2hpbGUgcG9ydGluZyBiYXJlYm94IG9udG8gYSBuZXcgb2xkIE1YMjggYm9hcmQsIEkgaGFkIHRv
-IGV4dGVuZCB0aGUKbG93LWxldmVsIGNvZGUgdG8gc2V0IHVwIFNEUkFNIGFuZCBQTUlDLiBNb3N0
-IG9mIHRob3NlIGNoYW5nZXMgYXJlCnByb2JhYmx5IGFsc28gYXBwbGljYWJsZSB0byBNWDIzIGJv
-YXJkcyBzaW5jZSB0aGUgY29kZSBwYXRocyBhcmUgdGhlCnNhbWUsIGFuZCBhcmUgb25seSB3cmFw
-cGVkIGluIG14MjhfKi9teDIzXyotc3BlY2lmaWMgd3JhcHBlciBmdW5jdGlvbnMuCgooQWxzbywg
-aWYgYW55b25lIHdhbnRzIHRvIHBvcnQgdGhlc2UgY2hhbmdlcyBiYWNrIHRvIFUtQm9vdCwgZmVl
-bCBmcmVlCnRvIGRvIHNvLCBpdCdzIHRoZSBzYW1lIGNvZGUg4pi6KQoKQ2hhbmdlcyBpbiB2MSAt
-PiB2MjoKICAtIGluY2x1ZGUgY2xlYW5lciBtZW1vcnkgc2l6ZSBkZXRlY3Rpb24gYnkgU2FzY2hh
-LCBhbHNvIGZvciBpLk1YMjMKICAtIGNhbGwgbXhzX21lbV9pbml0X2Nsb2NrKCkgZXhwbGljaXRl
-bHkgZnJvbSBib2FyZCBjb2RlIGluc3RlYWQgb2YKICAgIHBhc3NpbmcgdGhlIGNsb2NrIGRpdmlk
-ZXJzIHRocm91Z2ggbXgqX21lbV9pbml0KCkKICAtIGFkZCBwYXJhbWV0ZXIgZG9jdW1lbnRhdGlv
-biBmb3IgbXhzX21lbV9pbml0X2Nsb2NrKCkKICAtIERvY3VtZW50YXRpb246IGJhY2stcGVkYWwg
-b24gdGhlIHN0YXRtZW50IHRoYXQgYWxsIGJvYXJkcyBhcmUgcG9ydGVkCiAgICB0byBiYXJlYm94
-IGJvb3RsZXRzLCB0aGVyZSBhcmUgc3RpbGwgc29tZSBpLk1YMjMgYm9hcmRzIHRoYXQgbmVlZAog
-ICAgRnJlZXNjYWxlIGJvb3RsZXQgY29kZQoKUm9sYW5kIEhpZWJlciAoMTEpOgogIGltYWdlczog
-TVhTOiBhbGxvdyBnZW5lcmF0aW9uIG9mIHVuZW5jcnlwdGVkIGJvb3RzdHJlYW1zCiAgQVJNOiBN
-WFM6IGkuTVgyODogYWxsb3cgc2V0dXAgb2YgbG93LXZvbHRhZ2UgU0RSQU0KICBBUk06IE1YUzog
-YWxsb3cgY29uZmlndXJhdGlvbiBvZiBFTUkgY2xvY2sgcHJlc2NhbGVyCiAgQVJNOiBNWFM6IHJl
-ZmFjdG9yIG14MipfcG93ZXJfaW5pdCBzb3VyY2UgY29uZmlndXJhdGlvbgogIEFSTTogTVhTOiBh
-bGxvdyBzdGFydGluZyBmcm9tIGJhdHRlcnkgaW5wdXQgd2l0aG91dCA0UDIgc291cmNlIGVuYWJs
-ZWQKICBBUk06IE1YUzogbWFrZSBwb3dlciBsZXZlbHMgY29uZmlndXJhYmxlIGluIG14MipfcG93
-ZXJfaW5pdAogIEFSTTogTVhTOiBmaXggVkREeCBicm93bm91dCBzZXR1cCBsb2dpYwogIEFSTTog
-TVhTOiBtYWtlIFZERHggYnJvd25vdXQgc2V0dXAgbW9yZSB1bmRlcnN0YW5kYWJsZQogIEFSTTog
-TVhTOiBteHNfcG93ZXJfc3RhdHVzOiB1c2UgbGVzcyBtYWdpYyB2YWx1ZXMKICBBUk06IE1YUzog
-bXhzX3Bvd2VyX3N0YXR1czogYWxpZ24gb3V0cHV0CiAgRG9jdW1lbnRhdGlvbjogTVhTOiBnZW5l
-cmFsIHVwZGF0ZSBhbmQgaW1wcm92ZW1lbnRzCgpTYXNjaGEgSGF1ZXIgKDMpOgogIHNjcmlwdHM6
-IG14c2ltYWdlOiBBbGxvdyB1bmVuY3J5cHRlZCBpbWFnZXMKICBBUk06IGkuTVgyODogQWRkIG1l
-bW9yeSBzaXplIGRldGVjdGlvbgogIEFSTTogaS5NWDIzOiBBZGQgbWVtb3J5IHNpemUgZGV0ZWN0
-aW9uCgogRG9jdW1lbnRhdGlvbi9ib2FyZHMvbXhzLnJzdCAgICAgICAgICAgICAgICAgIHwgIDk3
-ICsrKysrKy0tLS0tCiAuLi4vYXJtL2JvYXJkcy9jaHVtYnlfZmFsY29ud2luZy9mYWxjb253aW5n
-LmMgfCAgIDggLQogLi4uL2JvYXJkcy9jcnlzdGFsZm9udHotY2ZhMTAwMzYvY2ZhMTAwMzYuYyAg
-IHwgIDI0IC0tLQogYXJjaC9hcm0vYm9hcmRzL2R1Y2tiaWxsL2xvd2xldmVsLmMgICAgICAgICAg
-IHwgICA3ICstCiBhcmNoL2FybS9ib2FyZHMvZnJlZXNjYWxlLW14MjMtZXZrL214MjMtZXZrLmMg
-fCAgIDggLQogYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDI4LWV2ay9sb3dsZXZlbC5jIHwg
-ICA4ICstCiBhcmNoL2FybS9ib2FyZHMvZnJlZXNjYWxlLW14MjgtZXZrL214MjgtZXZrLmMgfCAg
-IDggLQogLi4uL2JvYXJkcy9pbXgyMzMtb2xpbnV4aW5vL2lteDIzLW9saW51eGluby5jIHwgICA4
-IC0KIGFyY2gvYXJtL2JvYXJkcy9pbXgyMzMtb2xpbnV4aW5vL2xvd2xldmVsLmMgICB8ICAgNCAr
-LQogYXJjaC9hcm0vYm9hcmRzL2thcm8tdHgyOC9sb3dsZXZlbC5jICAgICAgICAgIHwgICA4ICst
-CiBhcmNoL2FybS9ib2FyZHMva2Fyby10eDI4L3R4MjguYyAgICAgICAgICAgICAgfCAgIDggLQog
-YXJjaC9hcm0vbWFjaC1teHMvaW5jbHVkZS9tYWNoL2lteDIzLmggICAgICAgIHwgIDI5ICsrKysK
-IGFyY2gvYXJtL21hY2gtbXhzL2luY2x1ZGUvbWFjaC9pbXgyOC5oICAgICAgICB8ICAzMCArKysr
-CiBhcmNoL2FybS9tYWNoLW14cy9pbmNsdWRlL21hY2gvaW5pdC5oICAgICAgICAgfCAgNDkgKysr
-KystCiBhcmNoL2FybS9tYWNoLW14cy9tZW0taW5pdC5jICAgICAgICAgICAgICAgICAgfCAgMjgg
-KystCiBhcmNoL2FybS9tYWNoLW14cy9wb3dlci1pbml0LmMgICAgICAgICAgICAgICAgfCAxNjIg
-KysrKysrKysrKystLS0tLS0tCiBhcmNoL2FybS9tYWNoLW14cy9zb2MtaW14MjMuYyAgICAgICAg
-ICAgICAgICAgfCAgIDQgKwogYXJjaC9hcm0vbWFjaC1teHMvc29jLWlteDI4LmMgICAgICAgICAg
-ICAgICAgIHwgICA0ICsKIGltYWdlcy9NYWtlZmlsZS5teHMgICAgICAgICAgICAgICAgICAgICAg
-ICAgICB8ICAgOCArCiBzY3JpcHRzL214c2ltYWdlLmMgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgfCAgNTMgKysrLS0tCiAyMCBmaWxlcyBjaGFuZ2VkLCAzMzIgaW5zZXJ0aW9ucygrKSwgMjIz
-IGRlbGV0aW9ucygtKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtbXhzL2luY2x1
-ZGUvbWFjaC9pbXgyMy5oCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1teHMvaW5j
-bHVkZS9tYWNoL2lteDI4LmgKCi0tIAoyLjE4LjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3Rz
-LmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9iYXJlYm94Cg==
+Some boards don't need the 4.2V power source at all, so allow them to
+keep it disabled for efficiency reasons.
+
+For backwards compatibility, don't disable the 4P2 power source on the
+existing boards which are supplied from battery input.
+
+The POWER_USE_5V code path however always enables it up as it is needed
+to supply the DC-DC converter.
+
+Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
+---
+ arch/arm/boards/freescale-mx28-evk/lowlevel.c | 2 +-
+ arch/arm/boards/karo-tx28/lowlevel.c          | 2 +-
+ arch/arm/mach-mxs/include/mach/init.h         | 2 ++
+ arch/arm/mach-mxs/power-init.c                | 3 ++-
+ 4 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/boards/freescale-mx28-evk/lowlevel.c b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+index b6a8793c9e..fdaef959a3 100644
+--- a/arch/arm/boards/freescale-mx28-evk/lowlevel.c
++++ b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+@@ -43,7 +43,7 @@ static noinline void freescale_mx28evk_init(void)
+ 
+ 	pr_debug("initializing power...\n");
+ 
+-	mx28_power_init(POWER_USE_BATTERY_INPUT);
++	mx28_power_init(POWER_USE_BATTERY_INPUT | POWER_ENABLE_4P2);
+ 
+ 	pr_debug("initializing SDRAM...\n");
+ 
+diff --git a/arch/arm/boards/karo-tx28/lowlevel.c b/arch/arm/boards/karo-tx28/lowlevel.c
+index 5a6a3e3519..a9b65167cd 100644
+--- a/arch/arm/boards/karo-tx28/lowlevel.c
++++ b/arch/arm/boards/karo-tx28/lowlevel.c
+@@ -43,7 +43,7 @@ static noinline void karo_tx28_init(void)
+ 
+ 	pr_debug("initializing power...\n");
+ 
+-	mx28_power_init(POWER_USE_BATTERY_INPUT);
++	mx28_power_init(POWER_USE_BATTERY_INPUT | POWER_ENABLE_4P2);
+ 
+ 	pr_debug("initializing SDRAM...\n");
+ 
+diff --git a/arch/arm/mach-mxs/include/mach/init.h b/arch/arm/mach-mxs/include/mach/init.h
+index 46cf514a86..b62fea9657 100644
+--- a/arch/arm/mach-mxs/include/mach/init.h
++++ b/arch/arm/mach-mxs/include/mach/init.h
+@@ -18,12 +18,14 @@ void mxs_early_delay(int delay);
+  * - POWER_USE_BATTERY: use battery input when the system is supplied by a battery
+  * - POWER_USE_BATTERY_INPUT: use battery input when the system is supplied by
+  *   a DC source (instead of a real battery) on the battery input
++ * - POWER_ENABLE_4P2: power up the 4P2 regulator (implied for POWER_USE_5V)
+  */
+ enum mxs_power_config {
+ 	POWER_USE_5V			= 0b00000000,
+ 	POWER_USE_BATTERY		= 0b00000001,
+ 	POWER_USE_BATTERY_INPUT		= 0b00000010,
+ 	__POWER_USE_MASK		= 0b00000011,
++	POWER_ENABLE_4P2		= 0b00000100,
+ };
+ 
+ void mx23_power_init(const int config);
+diff --git a/arch/arm/mach-mxs/power-init.c b/arch/arm/mach-mxs/power-init.c
+index a07ff9d676..2984c0c5ff 100644
+--- a/arch/arm/mach-mxs/power-init.c
++++ b/arch/arm/mach-mxs/power-init.c
+@@ -717,7 +717,8 @@ static void mxs_enable_battery_input(void)
+ 		POWER_5VCTRL_CHARGE_4P2_ILIMIT_MASK,
+ 		0x8 << POWER_5VCTRL_CHARGE_4P2_ILIMIT_OFFSET);
+ 
+-	mxs_power_enable_4p2();
++	if (power_config & POWER_ENABLE_4P2)
++		mxs_power_enable_4p2();
+ }
+ 
+ /**
+-- 
+2.18.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
