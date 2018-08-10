@@ -1,21 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fp8PX-0003VG-70
- for barebox@lists.infradead.org; Mon, 13 Aug 2018 08:41:13 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <sha@pengutronix.de>) id 1fp8PL-0005Pz-9W
- for barebox@lists.infradead.org; Mon, 13 Aug 2018 10:40:59 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <sha@pengutronix.de>) id 1fp8PL-0000R5-0K
- for barebox@lists.infradead.org; Mon, 13 Aug 2018 10:40:59 +0200
-Date: Mon, 13 Aug 2018 10:40:58 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180813084058.it547ecrp5typswc@pengutronix.de>
+ id 1foANi-0007lK-7b
+ for barebox@lists.infradead.org; Fri, 10 Aug 2018 16:35:24 +0000
+From: Roland Hieber <r.hieber@pengutronix.de>
+Date: Fri, 10 Aug 2018 18:34:46 +0200
+Message-Id: <20180810163500.12042-1-r.hieber@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,202 +15,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: v2018.08.0
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v2 00/14] MXS low-level improvements
+To: barebox@lists.infradead.org
+Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-Hi All,
-
-barebox-2018.08.0 is out. With this release we no longer support
-freeing the internal device tree (oftree -f), which has often led to use of
-freed memory. Another change worth noting is that the MIPS port now
-supports booting ELF Linux images. Other than that we have the usual
-flow of patches, but see below.
-
-Sascha
-
-----------------------------------------------------------------
-Alexander Kurz (1):
-      i.MX: iomuxv3: restore NO_PAD_CTRL semantic
-
-Andrey Smirnov (60):
-      ARM: i.MX: bbu: Alias identical functions
-      ARM: i.MX: bbu: Replace magic number with a constant
-      ARM: i.MX: bbu: Share MMC code between i.MX51 and 53
-      ARM: i.MX: bbu: Use pr_* functions for output
-      ARM: i.MX: bbu: Add support for MMC on VFxxx
-      ARM: i.MX: zii-vf610-spu3: Add support for BBU on eMMC
-      VFxxx: Remove stale code from DCD files
-      VFxxx: Add common header for DDR IOMUX DCD configuration
-      VFxxx: Add common DDR PHY DCD header
-      VFxxx: Add common header for DDR clock setting DCD
-      VFxxx: Add common DCD header for common DDR configuration
-      VFxxx: Reconcile shared DDR DCD configuration with U-Boot
-      VFxxx: Reconcile shared DDR DCD with memory datasheet
-      VFxxx: zii-vf610-dev: Drop most custom DDRMC DCD code
-      VFxxx: Initialize IOMUXC_DUMMY_DDRBYTE1/2 in default DDR DCD
-      VFxxx: Reconcile shared DDR IOMUX DCD with schematic
-      VFxxx: DCD: Remove CR151 initialization
-      VFxxx: DCD: Drop initialization of CR139 - CR148
-      VFxxx: DCD: Remove CR97, CR98 and CR99
-      VFxxx: DCD: Remove read leveling and gate training delays
-      Port <linux/iopoll.h> from U-Boot
-      clock: Use udelay() to implement mdelay()
-      ARM: i.MX8: Add DDRC PHY support code
-      ARM: Specify HAVE_PBL_IMAGE for CPU_64
-      scripts: imx-image: Use a loop to create multiple header copies
-      scripts: imx-image: Share the code to write barebox header
-      ARM: Introduce imx_v8_defconfig
-      ARM: psci: Remove unused code in psci_entry()
-      ARM: psci: Make use of set_ttbr() in armv7_secure_monitor_install()
-      ARM: mmu: psci: Make use of get_ttbr()
-      console: Fix console_get_first_active()
-      ARM: i.MX: babbage: Make use of imx_setup_pad()
-      ARM: i.MX: rdu2: Make use of imx_setup_pad()
-      nvmem: Port RAVE SP EEPROM driver from Linux kernel
-      video: Port RAVE SP backlight driver from Linux kernel
-      fs: devfs-core: Make use of devpath_to_name()
-      commands: mount: Make use of devpath_to_name()
-      commands: mmc_extcsd: Make use of devpath_to_name()
-      drivers: of: Make use of devpath_to_name()
-      ARM: dts: rdu2: Remove obsolete 'pic' node in uart4
-      ARM: dts: rdu2: Add nodes for RAVE SP EEPROM
-      watchdog: rave-sp-wdt: Remove bogus leftover code
-      watchdog: rave-sp-wdt: Explicitly access EEPROM for bootsource
-      ARM: dts: rdu2: Specify "boot-source" NVMEM cell
-      ARM: dts: rdu2: Add node for backlight device
-      nvmem: Introduce nvmem_cell_get_and_read()
-      ARM: rdu2: Fetch MAC address info from RAVE SP EEPROM
-      mtd: mtd_dataflash: Don't print bogus command values for READs
-      common: clock: Sample time before poller_call()
-      ARM: babbage: Make PMIC initialization shareable
-      ARM: i.MX: Add support for ZII RDU1 board
-      ARM: dts: rdu1: Add nodes for RAVE SP EEPROM
-      ARM: dts: rdu1: Specify "boot-source" NVMEM cell
-      ARM: dts: rdu1: Add node for backlight device
-      nvmem: rave-sp-eeprom: Remove VLA usage
-      nvmem: rave-sp-eeprom: Add support for "zii,eeprom-name"
-      ARM: dts: rdu1: Make use of "zii,eeprom-name"
-      ARM: dts: rdu2: Make use of "zii,eeprom-name"
-      ARM: Mark SP as being clobbered in arm_setup_stack()
-      serial: lpuart: Avoid division by zero when requested baudrate is
-
-Antony Pavlov (6):
-      filetype: add ELF type
-      MIPS: dts: drop skeleton.dtsi
-      MIPS: dts: fix dtc unit_address_vs_reg warning
-      lib: Add shared copies of some GCC library routines
-      MIPS: Use generic GCC library routines from lib/
-      MIPS: don't include generated header files into MIPS asm files
-
-Christoph Fritz (2):
-      ARM: dts: advantech-rom-7421: add hog pinctrl node
-      mmc_extcsd command: Add cmd option to set bkops-enable
-
-Heinrich Toews (1):
-      nand-bb: mtd_del_bb: fix missing pointer reset
-
-Lucas Stach (3):
-      video: backlight: add slew time parameter
-      scripts: imx-image: fix build with OpenSSL 1.1.x
-      ARM: mmu: fix cache flushing when replacing a section with a PTE
-
-Nikita Yushchenko (1):
-      usb: imx: implement support for limiting host to full speed
-
-Oleksij Rempel (8):
-      ARM: i.MX6SX SDB: drop deprecated DT overwrites
-      MIPS: ath79: provide driver for Atheros ART partition
-      MIPS: dts: tl_wdr4300: add Atheros ART partition
-      MIPS: dts: dpt-module: add Atheros ART partition
-      add basic ELF parser
-      MIPS: bootm: add ELF handler
-      arm: arria10: enable errata 794072 and 845369
-      net: designware: make sure DMA is disabled on kernel start.
-
-Peter Mamonov (1):
-      fs: fix memory access via /dev/mem for MIPS64
-
-Roland Hieber (10):
-      doc: boards: imx: order table of contents alphabetically
-      doc: boards: Amazon Kindle 4/5: apply some more formatting
-      doc: boards: Amazon Kindle 3: apply more formatting
-      doc: boards: element14 WaRP7: fix header level and nested list
-      doc: boards: Garz+Fricke Vincell: fix header level, capitalization an=
-d punctuation
-      doc: boards: Ka-Ro TX6: use official spelling of Ka-Ro
-      doc: boards: Phytec phyCORE-i.MX31: fix formatting, style
-      doc: boards: Synertronixx SCB9328: use official uppercase spelling
-      doc: boards: Wandboard: fix formatting and punctuation
-      TODO: remove unused file
-
-Sascha Hauer (49):
-      ARM: bootm: Add option boot using ATAGs
-      commands: oftree: kill oftree -f
-      Documentation: explain new way to boot using ATAGs
-      ARM: bootm: drop usage of data->oftree
-      ppc: bootm: rename variables
-      ppc: bootm: remove unnecessary parameter
-      ppc: bootm: Drop usage of data->oftree
-      bootm: Drop data->oftree
-      bootm: Split bootm_load_devicetree into two functions
-      ARM: i.MX: ocotp: Provide missing .format_mac for i.MX8MQ
-      pbl: Provide C macro to test if we are compiling the pbl
-      scripts: imx-image: Add i.MX8MQ support
-      ARM: i.MX8: Add i.MX8mq EVK support
-      ARM: dts: use stdout-path property
-      console: Update description for global.linux.bootargs.console
-      ARM: dts: remove @0 from environment nodes
-      ARM: dts: imx6q-var-custom: remove some accidently pasted text
-      dtc: Disable some warnings
-      console: add missing newline conversion for putc_ll
-      console: remove duplicate newline conversion
-      console_simple: Remove duplicated newline conversion
-      console_simple: Fix newline conversion
-      console_simple: add newline conversion for putc_ll case
-      dts: update to v4.18-rc1
-      ARM: i.MX53: Make clock tree setup better readable
-      bbu: reserve upper 16 bits for handler specific flags
-      ARM: i.MX: bbu: remove handler specific flags variable
-      ARM: i.MX: bbu: reimplement IMX_INTERNAL_FLAG_KEEP_DOSPART flag
-      ARM: i.MX: bbu: support partitions starting at i.MX header
-      clk: imx: remove unused clk_gate2_inverted
-      mtd: gpmi-nand: Make sure clock is disabled during rate change
-      Merge branch 'for-next/arm'
-      Merge branch 'for-next/bootm'
-      Merge branch 'for-next/console'
-      Merge branch 'for-next/doc'
-      Merge branch 'for-next/dts'
-      Merge branch 'for-next/dts-warnings'
-      Merge branch 'for-next/imx'
-      Merge branch 'for-next/imx8mq'
-      Merge branch 'for-next/kill-oftree-f'
-      Merge branch 'for-next/mips'
-      Merge branch 'for-next/misc'
-      Merge branch 'for-next/riscv'
-      Merge branch 'for-next/vfxxx'
-      cmdlinepart: Allow empty string
-      ARM: MMU: fix arch_remap_range() across section boundaries
-      ARM: i.MX: fix compilation with BBU disabled
-      scripts/dtc: Reenable fdtget
-      Release v2018.08.0
-
-Uwe Kleine-K=F6nig (4):
-      mvebu: create bbu handler for kwb images and use it on cubox
-      scripts: gitignore +=3D omap3-usb-loader
-      usb: gadget: allow to actually enable sparse fastboot support
-      ARM: phytec-som-am335x: make autoenable actually usable
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+V2hpbGUgcG9ydGluZyBiYXJlYm94IG9udG8gYSBuZXcgb2xkIE1YMjggYm9hcmQsIEkgaGFkIHRv
+IGV4dGVuZCB0aGUKbG93LWxldmVsIGNvZGUgdG8gc2V0IHVwIFNEUkFNIGFuZCBQTUlDLiBNb3N0
+IG9mIHRob3NlIGNoYW5nZXMgYXJlCnByb2JhYmx5IGFsc28gYXBwbGljYWJsZSB0byBNWDIzIGJv
+YXJkcyBzaW5jZSB0aGUgY29kZSBwYXRocyBhcmUgdGhlCnNhbWUsIGFuZCBhcmUgb25seSB3cmFw
+cGVkIGluIG14MjhfKi9teDIzXyotc3BlY2lmaWMgd3JhcHBlciBmdW5jdGlvbnMuCgooQWxzbywg
+aWYgYW55b25lIHdhbnRzIHRvIHBvcnQgdGhlc2UgY2hhbmdlcyBiYWNrIHRvIFUtQm9vdCwgZmVl
+bCBmcmVlCnRvIGRvIHNvLCBpdCdzIHRoZSBzYW1lIGNvZGUg4pi6KQoKQ2hhbmdlcyBpbiB2MSAt
+PiB2MjoKICAtIGluY2x1ZGUgY2xlYW5lciBtZW1vcnkgc2l6ZSBkZXRlY3Rpb24gYnkgU2FzY2hh
+LCBhbHNvIGZvciBpLk1YMjMKICAtIGNhbGwgbXhzX21lbV9pbml0X2Nsb2NrKCkgZXhwbGljaXRl
+bHkgZnJvbSBib2FyZCBjb2RlIGluc3RlYWQgb2YKICAgIHBhc3NpbmcgdGhlIGNsb2NrIGRpdmlk
+ZXJzIHRocm91Z2ggbXgqX21lbV9pbml0KCkKICAtIGFkZCBwYXJhbWV0ZXIgZG9jdW1lbnRhdGlv
+biBmb3IgbXhzX21lbV9pbml0X2Nsb2NrKCkKICAtIERvY3VtZW50YXRpb246IGJhY2stcGVkYWwg
+b24gdGhlIHN0YXRtZW50IHRoYXQgYWxsIGJvYXJkcyBhcmUgcG9ydGVkCiAgICB0byBiYXJlYm94
+IGJvb3RsZXRzLCB0aGVyZSBhcmUgc3RpbGwgc29tZSBpLk1YMjMgYm9hcmRzIHRoYXQgbmVlZAog
+ICAgRnJlZXNjYWxlIGJvb3RsZXQgY29kZQoKUm9sYW5kIEhpZWJlciAoMTEpOgogIGltYWdlczog
+TVhTOiBhbGxvdyBnZW5lcmF0aW9uIG9mIHVuZW5jcnlwdGVkIGJvb3RzdHJlYW1zCiAgQVJNOiBN
+WFM6IGkuTVgyODogYWxsb3cgc2V0dXAgb2YgbG93LXZvbHRhZ2UgU0RSQU0KICBBUk06IE1YUzog
+YWxsb3cgY29uZmlndXJhdGlvbiBvZiBFTUkgY2xvY2sgcHJlc2NhbGVyCiAgQVJNOiBNWFM6IHJl
+ZmFjdG9yIG14MipfcG93ZXJfaW5pdCBzb3VyY2UgY29uZmlndXJhdGlvbgogIEFSTTogTVhTOiBh
+bGxvdyBzdGFydGluZyBmcm9tIGJhdHRlcnkgaW5wdXQgd2l0aG91dCA0UDIgc291cmNlIGVuYWJs
+ZWQKICBBUk06IE1YUzogbWFrZSBwb3dlciBsZXZlbHMgY29uZmlndXJhYmxlIGluIG14MipfcG93
+ZXJfaW5pdAogIEFSTTogTVhTOiBmaXggVkREeCBicm93bm91dCBzZXR1cCBsb2dpYwogIEFSTTog
+TVhTOiBtYWtlIFZERHggYnJvd25vdXQgc2V0dXAgbW9yZSB1bmRlcnN0YW5kYWJsZQogIEFSTTog
+TVhTOiBteHNfcG93ZXJfc3RhdHVzOiB1c2UgbGVzcyBtYWdpYyB2YWx1ZXMKICBBUk06IE1YUzog
+bXhzX3Bvd2VyX3N0YXR1czogYWxpZ24gb3V0cHV0CiAgRG9jdW1lbnRhdGlvbjogTVhTOiBnZW5l
+cmFsIHVwZGF0ZSBhbmQgaW1wcm92ZW1lbnRzCgpTYXNjaGEgSGF1ZXIgKDMpOgogIHNjcmlwdHM6
+IG14c2ltYWdlOiBBbGxvdyB1bmVuY3J5cHRlZCBpbWFnZXMKICBBUk06IGkuTVgyODogQWRkIG1l
+bW9yeSBzaXplIGRldGVjdGlvbgogIEFSTTogaS5NWDIzOiBBZGQgbWVtb3J5IHNpemUgZGV0ZWN0
+aW9uCgogRG9jdW1lbnRhdGlvbi9ib2FyZHMvbXhzLnJzdCAgICAgICAgICAgICAgICAgIHwgIDk3
+ICsrKysrKy0tLS0tCiAuLi4vYXJtL2JvYXJkcy9jaHVtYnlfZmFsY29ud2luZy9mYWxjb253aW5n
+LmMgfCAgIDggLQogLi4uL2JvYXJkcy9jcnlzdGFsZm9udHotY2ZhMTAwMzYvY2ZhMTAwMzYuYyAg
+IHwgIDI0IC0tLQogYXJjaC9hcm0vYm9hcmRzL2R1Y2tiaWxsL2xvd2xldmVsLmMgICAgICAgICAg
+IHwgICA3ICstCiBhcmNoL2FybS9ib2FyZHMvZnJlZXNjYWxlLW14MjMtZXZrL214MjMtZXZrLmMg
+fCAgIDggLQogYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDI4LWV2ay9sb3dsZXZlbC5jIHwg
+ICA4ICstCiBhcmNoL2FybS9ib2FyZHMvZnJlZXNjYWxlLW14MjgtZXZrL214MjgtZXZrLmMgfCAg
+IDggLQogLi4uL2JvYXJkcy9pbXgyMzMtb2xpbnV4aW5vL2lteDIzLW9saW51eGluby5jIHwgICA4
+IC0KIGFyY2gvYXJtL2JvYXJkcy9pbXgyMzMtb2xpbnV4aW5vL2xvd2xldmVsLmMgICB8ICAgNCAr
+LQogYXJjaC9hcm0vYm9hcmRzL2thcm8tdHgyOC9sb3dsZXZlbC5jICAgICAgICAgIHwgICA4ICst
+CiBhcmNoL2FybS9ib2FyZHMva2Fyby10eDI4L3R4MjguYyAgICAgICAgICAgICAgfCAgIDggLQog
+YXJjaC9hcm0vbWFjaC1teHMvaW5jbHVkZS9tYWNoL2lteDIzLmggICAgICAgIHwgIDI5ICsrKysK
+IGFyY2gvYXJtL21hY2gtbXhzL2luY2x1ZGUvbWFjaC9pbXgyOC5oICAgICAgICB8ICAzMCArKysr
+CiBhcmNoL2FybS9tYWNoLW14cy9pbmNsdWRlL21hY2gvaW5pdC5oICAgICAgICAgfCAgNDkgKysr
+KystCiBhcmNoL2FybS9tYWNoLW14cy9tZW0taW5pdC5jICAgICAgICAgICAgICAgICAgfCAgMjgg
+KystCiBhcmNoL2FybS9tYWNoLW14cy9wb3dlci1pbml0LmMgICAgICAgICAgICAgICAgfCAxNjIg
+KysrKysrKysrKystLS0tLS0tCiBhcmNoL2FybS9tYWNoLW14cy9zb2MtaW14MjMuYyAgICAgICAg
+ICAgICAgICAgfCAgIDQgKwogYXJjaC9hcm0vbWFjaC1teHMvc29jLWlteDI4LmMgICAgICAgICAg
+ICAgICAgIHwgICA0ICsKIGltYWdlcy9NYWtlZmlsZS5teHMgICAgICAgICAgICAgICAgICAgICAg
+ICAgICB8ICAgOCArCiBzY3JpcHRzL214c2ltYWdlLmMgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgfCAgNTMgKysrLS0tCiAyMCBmaWxlcyBjaGFuZ2VkLCAzMzIgaW5zZXJ0aW9ucygrKSwgMjIz
+IGRlbGV0aW9ucygtKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtbXhzL2luY2x1
+ZGUvbWFjaC9pbXgyMy5oCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1teHMvaW5j
+bHVkZS9tYWNoL2lteDI4LmgKCi0tIAoyLjE4LjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3Rz
+LmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9iYXJlYm94Cg==
