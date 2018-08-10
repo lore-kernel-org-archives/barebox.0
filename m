@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pl0-x243.google.com ([2607:f8b0:400e:c01::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fp6Z9-0008J4-Ox
- for barebox@lists.infradead.org; Mon, 13 Aug 2018 06:43:01 +0000
-Date: Mon, 13 Aug 2018 08:42:48 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180813064248.s3hlndis6uawur2o@pengutronix.de>
-References: <20180810185331.8693-1-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180810185331.8693-1-andrew.smirnov@gmail.com>
+ id 1foCYc-0007EX-6d
+ for barebox@lists.infradead.org; Fri, 10 Aug 2018 18:54:43 +0000
+Received: by mail-pl0-x243.google.com with SMTP id d5-v6so4410037pll.4
+ for <barebox@lists.infradead.org>; Fri, 10 Aug 2018 11:54:30 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Fri, 10 Aug 2018 11:54:21 -0700
+Message-Id: <20180810185421.8912-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,56 +16,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] i.MX: Select DRIVER_SPI_IMX_2_3 for i.MX8MQ
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] pinctrl: i.MX: Add code to parse "input-enable"
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Fri, Aug 10, 2018 at 11:53:31AM -0700, Andrey Smirnov wrote:
-> Select DRIVER_SPI_IMX_2_3 for i.MX8MQ since that is the variant that's
-> being used
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  drivers/spi/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Add code to parse "input-enable" and intepret it as SION bit. This is
+needed for I2C configuration on i.MX8MQ EVK board.
 
-Applied, thanks
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/pinctrl/imx-iomux-v3.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Sascha
-
-> 
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index 84945744e..fed628c58 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -38,7 +38,7 @@ config DRIVER_SPI_IMX_0_7
->  
->  config DRIVER_SPI_IMX_2_3
->  	bool
-> -	depends on ARCH_IMX50 || ARCH_IMX51 || ARCH_IMX53 || ARCH_IMX6 || ARCH_IMX7
-> +	depends on ARCH_IMX50 || ARCH_IMX51 || ARCH_IMX53 || ARCH_IMX6 || ARCH_IMX7 || ARCH_IMX8MQ
->  	default y
->  
->  config DRIVER_SPI_MXS
-> -- 
-> 2.17.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/pinctrl/imx-iomux-v3.c b/drivers/pinctrl/imx-iomux-v3.c
+index 38451875e..d176199c5 100644
+--- a/drivers/pinctrl/imx-iomux-v3.c
++++ b/drivers/pinctrl/imx-iomux-v3.c
+@@ -117,6 +117,9 @@ static int imx_iomux_v3_set_state(struct pinctrl_device *pdev, struct device_nod
+ 		if (of_get_property(np, "input-schmitt-enable", NULL))
+ 			share_conf_val |= SHARE_CONF_PAD_CTL_HYS;
+ 
++		if (of_get_property(np, "input-enable", NULL))
++			share_conf_val |= IMX_PAD_SION;
++
+ 		if (of_get_property(np, "bias-pull-up", NULL))
+ 			share_conf_val |= SHARE_CONF_PAD_CTL_PUE;
+ 	} else {
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
