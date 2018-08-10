@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1foANi-0007mS-W2
+ id 1foANj-0007lZ-1P
  for barebox@lists.infradead.org; Fri, 10 Aug 2018 16:35:30 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Fri, 10 Aug 2018 18:35:00 +0200
-Message-Id: <20180810163500.12042-15-r.hieber@pengutronix.de>
+Date: Fri, 10 Aug 2018 18:34:50 +0200
+Message-Id: <20180810163500.12042-5-r.hieber@pengutronix.de>
 In-Reply-To: <20180810163500.12042-1-r.hieber@pengutronix.de>
 References: <20180810163500.12042-1-r.hieber@pengutronix.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,149 +16,161 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 14/14] Documentation: MXS: general update and improvements
+Subject: [PATCH v2 04/14] ARM: MXS: allow configuration of EMI clock prescaler
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-R28gbW9yZSBpbnRvIGRldGFpbCBhYm91dCB0aGUgcmVsYXRpb25zaGlwIG9mIHRoZSBwcmVwYXJl
-IHN0YWdlIGFuZCB0aGUKYm9vdGxvYWRlciBpbWFnZSwgYW5kIGFib3V0IHRoZSBnZW5lcmF0ZWQg
-aW1hZ2VzLiBBbHNvIGRvbid0IHVzZQpteHMtdXNiLWxvYWRlciBhbnltb3JlIHNpbmNlIGl0IGhh
-cyBiZWVuIHJlbW92ZWQuCgpGaXhlczogM2NhNTc2Y2M0YTQyMzZhMjU1NmFiMTcgInNjcmlwdHM6
-IGlteC9teHMgcmVtb3ZlIG14cy11c2ItbG9hZGVyIgpTaWduZWQtb2ZmLWJ5OiBSb2xhbmQgSGll
-YmVyIDxyLmhpZWJlckBwZW5ndXRyb25peC5kZT4KLS0tCiBEb2N1bWVudGF0aW9uL2JvYXJkcy9t
-eHMucnN0IHwgOTcgKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUg
-Y2hhbmdlZCwgNTMgaW5zZXJ0aW9ucygrKSwgNDQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEv
-RG9jdW1lbnRhdGlvbi9ib2FyZHMvbXhzLnJzdCBiL0RvY3VtZW50YXRpb24vYm9hcmRzL214cy5y
-c3QKaW5kZXggZmViMDI0MjI3YS4uNTNkZTRjMTA5NiAxMDA2NDQKLS0tIGEvRG9jdW1lbnRhdGlv
-bi9ib2FyZHMvbXhzLnJzdAorKysgYi9Eb2N1bWVudGF0aW9uL2JvYXJkcy9teHMucnN0CkBAIC0z
-LDcxICszLDgzIEBAIEZyZWVzY2FsZSBNWFMKIAogRnJlZXNjYWxlIGkuTVhzIG9yIE1YUyBhcmUg
-YSBTb0MgZmFtaWx5IHdoaWNoIGNvbnNpc3RzIG9mIHRoZSBpLk1YMjMKIGFuZCB0aGUgaS5NWDI4
-LiBUaGVzZSBhcmUgcXVpdGUgZGlmZmVyZW50IGZyb20gdGhlIHJlZ3VsYXIgaS5NWCBTb0NzCi1h
-bmQgdGh1cyBhcmUgcmVwcmVzZW50ZWQgYnkgdGhlaXIgb3duIGFyY2hpdGVjdHVyZSBpbiBib3Ro
-IHRoZSBLZXJuZWwKLWFuZCBiYXJlYm94LgorYW5kIHRodXMgYXJlIHJlcHJlc2VudGVkIGJ5IHRo
-ZWlyIG93biBhcmNoaXRlY3R1cmUgaW4gYm90aCB0aGUga2VybmVsCithbmQgaW4gYmFyZWJveC4K
-IAogQm9vdGxldHMKIC0tLS0tLS0tCiAKLVRyYWRpdGlvbmFsbHkgVGhlc2UgU29DcyBuZWVkIHRo
-ZSBGcmVlc2NhbGUgYm9vdGxldHMgc291cmNlIGFuZCB0aGUKLWVsZjJzYjIgYmluYXJ5IHRvIGJ1
-aWxkIGEgYm9vdGFibGUgaW1hZ2Ugb3V0IG9mIHRoZSBiYXJlYm94IGJpbmFyeS4KLVNpbmNlIHRo
-ZSBib290bGV0cyBhcmUgYm9hcmQgc3BlY2lmaWMgYW5kIHRoZSBzb3VyY2UgY29kZSBpcyBvbmx5
-Ci1oYXJkbHkgY3VzdG9taXNhYmxlIGVhY2ggdmVuZG9yIHVzdWFsbHkgaGFzIGhpcyBvd24gc2xp
-Z2h0bHkgZGlmZmVyZW50CitUcmFkaXRpb25hbGx5IHRoZXNlIFNvQ3MgbmVlZCB0aGUgRnJlZXNj
-YWxlIGJvb3RsZXRzIHNvdXJjZSBhbmQgdGhlCisqZWxmMnNiMiogYmluYXJ5IHRvIHNldCB1cCB0
-aGUgUE1JQyBhbmQgU0RSQU0sIGFuZCB0byBidWlsZCBhIGJvb3RhYmxlCitpbWFnZSBvdXQgb2Yg
-dGhlIGJhcmVib3ggYmluYXJ5LgorU2luY2UgdGhlIGJvb3RsZXRzIGFyZSBib2FyZC1zcGVjaWZp
-YyBhbmQgdGhlIHNvdXJjZSBjb2RlIGlzIG9ubHkKK2hhcmRseSBjdXN0b21pc2FibGUsIGVhY2gg
-dmVuZG9yIHVzdWFsbHkgaGFzIHRoZWlyIG93biBzbGlnaHRseSBkaWZmZXJlbnQKIHZlcnNpb24g
-b2YgdGhlIGJvb3RsZXRzLiBCb290aW5nIHdpdGggdGhlIEZyZWVzY2FsZSBib290bGV0cyBpcyBu
-b3QKLWRlc2NyaWJlZCBoZXJlLCByZWZlciB0byB0aGUgYm9vdGxldCBzb3VyY2Vjb2RlIG9yIHlv
-dXIgdmVuZG9ycworZGVzY3JpYmVkIGhlcmUsIHJlZmVyIHRvIHRoZSBib290bGV0IHNvdXJjZSBj
-b2RlIG9yIHlvdXIgdmVuZG9yJ3MKIGRvY3VtZW50YXRpb24gaW5zdGVhZC4KIAotVS1Cb290IGFu
-ZCBiYXJlYm94IGhhdmUgYSBwb3J0IG9mIHRoZSBib290bGV0cyBpbnRlZ3JhdGVkIGludG8gdGhl
-aXIKLXNvdXJjZS4gVGhlIGJhcmVib3ggYm9vdGxldCBjb2RlIGlzIGRlcml2ZWQgZnJvbSB0aGUg
-VS1Cb290IGJvb3RsZXQKLWNvZGUgd3JpdHRlbiBieSBNYXJlayBWYXN1dC4KK0JhcmVib3ggaGFz
-IGEgcG9ydCBvZiB0aGUgYm9vdGxldHMgaW50ZWdyYXRlZCBpbnRvIGl0cyBzb3VyY2UsIHdoaWNo
-IGlzCitkZXJpdmVkIGZyb20gdGhlIFUtQm9vdCBib290bGV0IGNvZGUgd3JpdHRlbiBieSBNYXJl
-ayBWYXN1dC4KIAotQ3VycmVudGx5IG9ubHkgdGhlIEthcm8gVFgyOCBpcyBzdXBwb3J0ZWQgYnkg
-dGhlIGJhcmVib3ggYm9vdGxldHMsCi1idXQgd2UgcmVjb21tZW5kIHRoYXQgdGhpcyBhcHByb2Fj
-aCBzaG91bGQgYmUgZm9sbG93ZWQgZm9yIG5ldyBib2FyZHMKLWFuZCBleGlzdGluZyBib2FyZHMg
-c2hvdWxkIGJlIHBvcnRlZCBvdmVyLgorTW9zdCBNWFMgYm9hcmRzIGluIHRoZSBiYXJlYm94IHRy
-ZWUgaGF2ZSBiZWVuIHBvcnRlZCB0byB1c2UgYmFyZWJveCBib290bGV0cyBhbmQKK2ltYWdlIGdl
-bmVyYXRpb24sIGFuZCB3ZSByZWNvbW1lbmQgdGhpcyBhcHByb2FjaCBmb3IgbmV3IGJvYXJkcyB0
-b28uCiAKIEJvb3RpbmcgRnJlZXNjYWxlIGkuTVhzCiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQog
-CiBUaGUgRnJlZXNjYWxlIE1YUyBTb0NzIGhhdmUgYSBtdWx0aSBzdGFnZWQgYm9vdCBwcm9jZXNz
-IHdoaWNoIG5lZWRzCiBkaWZmZXJlbnQgaW1hZ2VzIGNvbXBvc2VkIG91dCBvZiBkaWZmZXJlbnQg
-YmluYXJpZXMuIFRoZSBST00gZXhlY3V0ZXMKLWEgc28gY2FsbGVkIGJvb3RzdHJlYW0gd2hpY2gg
-Y29udGFpbnMgbXVsdGlwbGUgZXhlY3V0YWJsZXMuIFRoZSBmaXJzdAotb25lIGlzIGV4ZWN1dGVk
-IGluIFNSQU0gYW5kIHRoZSBwdXJwb3NlIG9mIHRoaXMgYmluYXJ5IGlzIHRvIHNldHVwCi10aGUg
-aW50ZXJuYWwgUE1JQyBhbmQgdGhlIFNEUkFNLiBUaGUgc2Vjb25kIGltYWdlIGlzIHVzdWFsbHkg
-dGhlCi1ib290bG9hZGVyIGl0c2VsZi4gSW4gY2FzZSBvZiBiYXJlYm94IHRoZSBib290c3RyZWFt
-IGlzIGNvbXBvc2VkCi1vdXQgb2YgdGhlIHNlbGYgZXh0cmFjdGluZyBiYXJlYm94IGltYWdlIChw
-Ymx4KSBhbmQgdGhlIHByZXBhcmUKLXN0YWdlIGZvciBzZXR0aW5nIHVwIHRoZSBTRFJBTS4KK2Eg
-c28gY2FsbGVkICpib290c3RyZWFtKiB3aGljaCBjYW4gY29udGFpbiBtdWx0aXBsZSBleGVjdXRh
-Ymxlcy4KKworVGhlIGZpcnN0IGV4ZWN1dGFibGUgKHRoZSBwcmVwYXJlIHN0YWdlKSBpcyBvbmx5
-IGEgc21hbGwgYmluYXJ5IGV4ZWN1dGVkIGluCitTUkFNLCB3aGljaCBoYXMgYSBsaW1pdGVkIHNp
-emUgb2YgMTI4IEtCLiBJdHMgcHVycG9zZSBpcyB0byBzZXR1cCB0aGUgaW50ZXJuYWwKK1BNSUMg
-YW5kIHRoZSBTRFJBTSwgYW5kIHRoZW4ganVtcCBiYWNrIHRvIHRoZSBNWFMgUk9NIGNvZGUsIHdo
-aWNoIHRoZW4gbWFwcyB0aGUKK3NlY29uZCBleGVjdXRhYmxlICh0aGUgZnVsbCBib290bG9hZGVy
-KSBpbnRvIFNEUkFNIGFuZCBleGVjdXRlcyBpdC4KK0luIGNhc2Ugb2YgYmFyZWJveCwgdGhlIGJv
-b3RzdHJlYW0gKGBgKi1ib290c3RyZWFtLmltZ2BgKSBpcyBjb21wb3NlZCBvZiB0aGUKK3NlbGYg
-ZXh0cmFjdGluZyBiYXJlYm94IGltYWdlIChgYCoucGJseGBgKSBhbmQgdGhlIHByZXBhcmUgc3Rh
-Z2UKKyhgYHByZXBfKi5wYmxiYGApLiBUaGUgZmlsZSBuYW1lIG9mIHRob3NlIGltYWdlcyByZWZs
-ZWN0cyB0aGUgbmFtZSBvZiB0aGUKK3Jlc3BlY3RpdmUgZW50cnkgcG9pbnRzLgogCiBUaGUgYm9v
-dHN0cmVhbSBpbWFnZSBpdHNlbGYgaXMgdXNlZnVsIGZvciBVU0IgYm9vdCwgYnV0IGZvciBib290
-aW5nIGZyb20KIFNEIGNhcmRzIG9yIE5BTkQgYSBCQ0IgaGVhZGVyIGhhcyB0byBiZSBwcmVwZW5k
-ZWQgdG8gdGhlIGltYWdlLiBJbiBjYXNlCi1vZiBTRCBib290IHRoZSBpbWFnZSBoYXMgdGhlIC5t
-eHNzZCBmaWxlIGV4dGVuc2lvbiBpbiBiYXJlYm94Lgorb2YgU0QgYm9vdCB0aGUgaW1hZ2UgaXMg
-bmFtZWQgYGAqLXNkLmltZ2BgLgorCitCb290c3RyZWFtIGltYWdlcyBjYW4gYmUgdW5lbmNyeXB0
-ZWQgb3IgZW5jcnlwdGVkLiBEZXBlbmRpbmcgb24gdGhlIE9DT1RQIGZ1c2VzCitvZiB5b3VyIGNo
-aXAsIHlvdSBtaWdodCBuZWVkIHRoZSBvbmUgb3IgdGhlIG90aGVyIHRvIGJvb3QgdGhlIGJvYXJk
-LgogCi1TaW5jZSB0aGUgYm9vdHN0cmVhbSBpbWFnZXMgYXJlIGVuY3J5cHRlZCB0aGV5IGFyZSBu
-b3Qgc3VpdGFibGUgZm9yCi0ybmQgc3RhZ2UgZXhlY3V0aW9uLiBGb3IgdGhpcyBwdXJwb3NlIHRo
-ZSAybmQgc3RhZ2UgaW1hZ2VzIGFyZSBnZW5lcmF0ZWQuCitTaW5jZSBzb21lIG9mIHRoZSBib290
-c3RyZWFtIGltYWdlcyBhcmUgZW5jcnlwdGVkLCB0aGV5IGFyZSBub3Qgc3VpdGFibGUgZm9yCisy
-bmQgc3RhZ2UgZXhlY3V0aW9uLiBGb3IgdGhpcyBwdXJwb3NlIGEgMm5kIHN0YWdlIGltYWdlIHdp
-dGggdGhlIG5hbWUKK2BgKi0ybmQuaW1nYGAgaXMgZ2VuZXJhdGVkLgogCiBCb290aW5nIGZyb20g
-VVNCCiAtLS0tLS0tLS0tLS0tLS0tCiAKLWJhcmVib3ggaGFzIHRoZSBteHMtdXNiLWxvYWRlciB0
-b29sIChkZXJpdmVkIGZyb20gdGhlIHNibG9hZGVyIHRvb2wgZnJvbQotdGhlIHJvY2tib3ggcHJv
-amVjdCkuIElmIHRoZSBib2FyZCBpcyBjb25uZWN0ZWQgdG8gdGhlIFBDIGFuZCBzdGFydGVkIGlu
-Ci1VU0IgQm9vdCBtb2RlIGl0IHNob3VsZCBzaG93IHVwIGluIGxzdXNiOjoKK0lmIGVuYWJsZWQg
-aW4gKm1lbnVjb25maWcqIOKGkiAqU3lzdGVtIFR5cGUqLCBiYXJlYm94IGJ1aWxkcyB0aGUgKmlt
-eC11c2ItbG9hZGVyKgordG9vbCAoZGVyaXZlZCBmcm9tIHRoZSAqc2Jsb2FkZXIqIHRvb2wgZnJv
-bSB0aGUgcm9ja2JveCBwcm9qZWN0KSwgd2hpY2ggY2FuCitsb2FkIGltYWdlcyBvbnRvIE1YUyBT
-b0NzIG92ZXIgVVNCLiAoUmVmZXIgdG8gdGhlIGRvY3VtZW50YXRpb24gb2YgeW91ciBib2FyZAor
-aG93IHRvIGdldCBpdCBpbnRvIFVTQiBib290IG1vZGUuKQorCitJZiB0aGUgYm9hcmQgaXMgY29u
-bmVjdGVkIHRvIHRoZSBQQyBhbmQgc3RhcnRlZCBpbiBVU0IgYm9vdCBtb2RlLCBpdCBzaG91bGQK
-K3Nob3cgdXAgaW4gbHN1c2I6OgogCiAgIEJ1cyAwMDEgRGV2aWNlIDA5ODogSUQgMTVhMjowMDRm
-IEZyZWVzY2FsZSBTZW1pY29uZHVjdG9yLCBJbmMuIGkuTVgyOCBTeXN0ZW1PbkNoaXAgaW4gUmVj
-b3ZlcnlNb2RlCiAKLVRoZSBib290c3RyZWFtIGltYWdlcyBjYW4gYmUgZGlyZWN0bHkgYm9vdGVk
-IHdpdGg6OgorVGhlIGJvb3RzdHJlYW0gaW1hZ2VzIGNhbiB0aGVuIGRpcmVjdGx5IGJlIGJvb3Rl
-ZCB3aXRoOjoKIAotICAuL3NjcmlwdHMvbXhzLXVzYi1sb2FkZXIgMCBpbWFnZXMvYmFyZWJveC1r
-YXJvLXR4MjgtYm9vdHN0cmVhbS5pbWcKKyAgLi9zY3JpcHRzL2lteC11c2ItbG9hZGVyIGltYWdl
-cy9iYXJlYm94LWthcm8tdHgyOC1ib290c3RyZWFtLmltZwogCi1Zb3UgbWlnaHQgcmVxdWlyZSBh
-cHByb3ByaWF0ZSB1ZGV2IHJ1bGVzIG9yIHN1ZG8gdG8gZ2FpbiB0aGUgcmlnaHRzIHRvCitZb3Ug
-bWlnaHQgcmVxdWlyZSBhcHByb3ByaWF0ZSB1ZGV2IHJ1bGVzIG9yICpzdWRvKiB0byBnYWluIHRo
-ZSByaWdodHMgdG8KIGFjY2VzcyB0aGUgVVNCIGRldmljZS4KIAogQm9vdGluZyBmcm9tIFNEIGNh
-cmRzCiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0KIAotVGhlIFNEIGltYWdlcyBhcmUgc3VpdGFibGUg
-Zm9yIGJvb3RpbmcgZnJvbSBTRCBjYXJkcy4gU0QgY2FyZHMgbmVlZCBhIHNwZWNpYWwKLXBhcnRp
-dGlvbmluZyB3aGljaCBjYW4gYmUgY3JlYXRlZCB3aXRoIHRoZSBmb2xsb3dpbmcgZmRpc2sgc2Vx
-dWVuY2UgKHVzaW5nCi0vZGV2L3NkZyBhcyBleGFtcGxlKTo6CitUaGUgU0QgaW1hZ2VzIGFyZSBz
-dWl0YWJsZSBmb3IgYm9vdGluZyBmcm9tIFNEIGNhcmRzLiBUaGUgTVhTIFNvQ3MgcmVxdWlyZSBh
-CitzcGVjaWFsIHBhcnRpdGlvbiBvZiB0eXBlIDB4NTMgKE9uVHJhY2sgRE02IEF1eCkgd2hpY2gg
-Y29udGFpbnMgdGhlIEJDQiBoZWFkZXIuCitUaGUgcGFydGl0aW9uaW5nIGNhbiBiZSBjcmVhdGVk
-IHdpdGggdGhlIGZvbGxvd2luZyBmZGlzayBzZXF1ZW5jZSAodXNpbmcKKyovZGV2L3NkZyogYXMg
-YW4gZXhhbXBsZSBmb3IgdGhlIFNEIGNhcmQpOjoKIAotICBmZGlzayAvZGV2L3NkZworICAkIGZk
-aXNrIC9kZXYvc2RnCiAKICAgV2VsY29tZSB0byBmZGlzayAodXRpbC1saW51eCAyLjI1LjEpLgog
-ICBDaGFuZ2VzIHdpbGwgcmVtYWluIGluIG1lbW9yeSBvbmx5LCB1bnRpbCB5b3UgZGVjaWRlIHRv
-IHdyaXRlIHRoZW0uCkBAIC05MywyNCArMTA1LDIxIEBAIHBhcnRpdGlvbmluZyB3aGljaCBjYW4g
-YmUgY3JlYXRlZCB3aXRoIHRoZSBmb2xsb3dpbmcgZmRpc2sgc2VxdWVuY2UgKHVzaW5nCiAgIEhl
-eCBjb2RlICh0eXBlIEwgdG8gbGlzdCBhbGwgY29kZXMpOiA1MwogICBDaGFuZ2VkIHR5cGUgb2Yg
-cGFydGl0aW9uICdMaW51eCcgdG8gJ09uVHJhY2sgRE02IEF1eDMnLgogCi0gIENvbW1hbmQgKG0g
-Zm9yIGhlbHApOgotCiAgIENvbW1hbmQgKG0gZm9yIGhlbHApOiB3CiAKLUFmdGVyIHdyaXRpbmcg
-dGhlIG5ldyBwYXJ0aXRpb24gdGFibGUgdGhlIGltYWdlIGNhbiBiZSB3cml0dGVuIGRpcmVjdGx5
-IHRvCi10aGUgcGFydGl0aW9uOjoKK0FmdGVyIHdyaXRpbmcgdGhlIG5ldyBwYXJ0aXRpb24gdGFi
-bGUsIHRoZSBpbWFnZSBjYW4gYmUgd3JpdHRlbiBkaXJlY3RseSB0bwordGhlIGZpcnN0IHBhcnRp
-dGlvbjo6CiAKICAgY2F0IGltYWdlcy9iYXJlYm94LWthcm8tdHgyOC1zZC5pbWcgPiAvZGV2L3Nk
-ZzEKIAotKiogTk9URSAqKgorLi4gbm90ZTo6CiAKLVRoZSBNWFMgU29DcyByZXF1aXJlIGEgc3Bl
-Y2lhbCBwYXJ0aXRpb24gb2YgdHlwZSAweDUzIChPblRyYWNrIERNNiBBdXgpCi13aGljaCBjb250
-YWlucyB0aGUgQkNCIGhlYWRlci4gRm9yIHNvbWUgdW5rbm93biByZWFzb24gdGhlIEJDQiBoZWFk
-ZXIgaXMKLWluc2lkZSBhIHBhcnRpdGlvbiwgYnV0IGNvbnRhaW5zIHRoZSBzZWN0b3IgbnVtYmVy
-IG9mIHRoZSByYXcgZGV2aWNlIGZyb20KLXdoaWNoIHRoZSByZXN0IG9mIHRoZSBpbWFnZSBpcyBy
-ZWFkLiBXaXRoIHN0YW5kYXJkIHNldHRpbmdzIGJvb3RpbmcgZnJvbQotU0QgY2FyZCBvbmx5IHdv
-cmtzIGlmIHRoZSBwYXJ0aXRpb24gY29udGFpbmluZyB0aGUgYm9vdGxvYWRlciBzdGFydHMgYXQK
-LXNlY3RvciAyMDQ4ICh0aGUgc3RhbmRhcmQgZm9yIGZkaXNrKS4gU2VlIHRoZSAtcCBwYXJhbWV0
-ZXIgdG8gdGhlIG14c2Jvb3QKLXRvb2wgd2hpY2ggY2hhbmdlcyB0aGlzIHNlY3RvciBudW1iZXIg
-aW4gdGhlIGltYWdlLgorICBGb3Igc29tZSB1bmtub3duIHJlYXNvbiB0aGUgQkNCIGhlYWRlciBp
-cworICBpbnNpZGUgYSBwYXJ0aXRpb24sIGJ1dCBjb250YWlucyB0aGUgc2VjdG9yIG51bWJlciBv
-ZiB0aGUgcmF3IGRldmljZSBmcm9tCisgIHdoaWNoIHRoZSByZXN0IG9mIHRoZSBpbWFnZSBpcyBy
-ZWFkLiBXaXRoIHN0YW5kYXJkIHNldHRpbmdzLCBib290aW5nIGZyb20KKyAgU0QgY2FyZCBvbmx5
-IHdvcmtzIGlmIHRoZSBwYXJ0aXRpb24gY29udGFpbmluZyB0aGUgYm9vdGxvYWRlciBzdGFydHMg
-YXQKKyAgc2VjdG9yIDIwNDggKHRoZSBzdGFuZGFyZCBmb3IgZmRpc2spLiBTZWUgdGhlICotcCog
-cGFyYW1ldGVyIHRvIHRoZQorICBgYHNjcmlwdHMvbXhzYm9vdGBgIHRvb2wgdG8gY2hhbmdlIHRo
-aXMgc2VjdG9yIG51bWJlciBpbiB0aGUgaW1hZ2UuCiAKIEJvb3Rpbmcgc2Vjb25kIHN0YWdlCiAt
-LS0tLS0tLS0tLS0tLS0tLS0tLQotLSAKMi4xOC4wCgoKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
-cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
-Zm8vYmFyZWJveAo=
+Allow to set not only the fractional divider, but also the prescaler for
+the EMI clock in mxs_mem_init_clock(), and rename the parameters
+accordingly to reflect the change. Port the existing board code to set
+up the EMI clock explicitely with the old values. Also fix the
+off-by-a-half error in the comments, which did not take the prescaler of
+2 into account, on which the fractional divider is applied (according to
+the i.MX23/i.MX28 Reference Manuals)
+
+Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
+---
+ arch/arm/boards/duckbill/lowlevel.c           |  2 ++
+ arch/arm/boards/freescale-mx28-evk/lowlevel.c |  2 ++
+ arch/arm/boards/imx233-olinuxino/lowlevel.c   |  2 ++
+ arch/arm/boards/karo-tx28/lowlevel.c          |  2 ++
+ arch/arm/mach-mxs/include/mach/init.h         |  2 +-
+ arch/arm/mach-mxs/mem-init.c                  | 19 +++++++++----------
+ 6 files changed, 18 insertions(+), 11 deletions(-)
+
+diff --git a/arch/arm/boards/duckbill/lowlevel.c b/arch/arm/boards/duckbill/lowlevel.c
+index 3adda68d77..cb60667323 100644
+--- a/arch/arm/boards/duckbill/lowlevel.c
++++ b/arch/arm/boards/duckbill/lowlevel.c
+@@ -55,6 +55,8 @@ static noinline void duckbill_init(void)
+ 
+ 	pr_debug("initializing SDRAM...\n");
+ 
++	/* EMI_CLK of 480 / 2 * (18/21) = 205.7 MHz */
++	mxs_mem_init_clock(2, 21);
+ 	mx28_mem_init(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
+ 			mx28_dram_vals_default);
+ 
+diff --git a/arch/arm/boards/freescale-mx28-evk/lowlevel.c b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+index 9df60210e6..2c8d27e801 100644
+--- a/arch/arm/boards/freescale-mx28-evk/lowlevel.c
++++ b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+@@ -47,6 +47,8 @@ static noinline void freescale_mx28evk_init(void)
+ 
+ 	pr_debug("initializing SDRAM...\n");
+ 
++	/* EMI_CLK of 480 / 2 * (18/21) = 205.7 MHz */
++	mxs_mem_init_clock(2, 21);
+ 	mx28_mem_init(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
+ 			mx28_dram_vals_default);
+ 
+diff --git a/arch/arm/boards/imx233-olinuxino/lowlevel.c b/arch/arm/boards/imx233-olinuxino/lowlevel.c
+index 63a65230b0..bfb50be717 100644
+--- a/arch/arm/boards/imx233-olinuxino/lowlevel.c
++++ b/arch/arm/boards/imx233-olinuxino/lowlevel.c
+@@ -159,6 +159,8 @@ static noinline void imx23_olinuxino_init(void)
+ 	pr_debug("initializing SDRAM...\n");
+ 
+ 	imx23_olinuxino_adjust_memory_params(mx23_dram_vals);
++	/* EMI_CLK of 480 / 2 * (18/33) = 130.90 MHz */
++	mxs_mem_init_clock(2, 33);
+ 	mx23_mem_init();
+ 
+ 	pr_debug("DONE\n");
+diff --git a/arch/arm/boards/karo-tx28/lowlevel.c b/arch/arm/boards/karo-tx28/lowlevel.c
+index 99f8a562cc..abc223d3b4 100644
+--- a/arch/arm/boards/karo-tx28/lowlevel.c
++++ b/arch/arm/boards/karo-tx28/lowlevel.c
+@@ -47,6 +47,8 @@ static noinline void karo_tx28_init(void)
+ 
+ 	pr_debug("initializing SDRAM...\n");
+ 
++	/* EMI_CLK of 480 / 2 * (18/21) = 205.7 MHz */
++	mxs_mem_init_clock(2, 21);
+ 	mx28_mem_init(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
+ 			mx28_dram_vals_default);
+ 
+diff --git a/arch/arm/mach-mxs/include/mach/init.h b/arch/arm/mach-mxs/include/mach/init.h
+index 7021981d41..66dfd635de 100644
+--- a/arch/arm/mach-mxs/include/mach/init.h
++++ b/arch/arm/mach-mxs/include/mach/init.h
+@@ -30,7 +30,7 @@ void mx28_mem_init(const int emi_ds_ctrl_ddr_mode,
+ 		const uint32_t dram_vals[190]);
+ void mxs_mem_setup_cpu_and_hbus(void);
+ void mxs_mem_setup_vdda(void);
+-void mxs_mem_init_clock(unsigned char divider);
++void mxs_mem_init_clock(const uint8_t clk_emi_div, const uint8_t clk_emi_frac);
+ 
+ void mxs_lradc_init(void);
+ void mxs_lradc_enable_batt_measurement(void);
+diff --git a/arch/arm/mach-mxs/mem-init.c b/arch/arm/mach-mxs/mem-init.c
+index 7bc6be00b4..568db81302 100644
+--- a/arch/arm/mach-mxs/mem-init.c
++++ b/arch/arm/mach-mxs/mem-init.c
+@@ -192,7 +192,12 @@ static void mx23_initialize_dram_values(void)
+ 	writel((1 << 24), IMX_SDRAMC_BASE + (4 * 8));
+ }
+ 
+-void mxs_mem_init_clock(unsigned char divider)
++/**
++ * Set up the EMI clock.
++ * @clk_emi_div: integer divider (prescaler), the DIV_EMI field in HW_CLKCTRL_EMI
++ * @clk_emi_frac: fractional divider, the EMIFRAC field in HW_CLKCTRL_FRAC0
++ */
++void mxs_mem_init_clock(const uint8_t clk_emi_div, const uint8_t clk_emi_frac)
+ {
+ 	struct mxs_clkctrl_regs *clkctrl_regs =
+ 		(struct mxs_clkctrl_regs *)IMX_CCM_BASE;
+@@ -202,7 +207,7 @@ void mxs_mem_init_clock(unsigned char divider)
+ 		&clkctrl_regs->hw_clkctrl_frac0_set[CLKCTRL_FRAC0_EMI]);
+ 
+ 	/* Set fractional divider for ref_emi */
+-	writeb(CLKCTRL_FRAC_CLKGATE | (divider & CLKCTRL_FRAC_FRAC_MASK),
++	writeb(CLKCTRL_FRAC_CLKGATE | (clk_emi_frac & CLKCTRL_FRAC_FRAC_MASK),
+ 		&clkctrl_regs->hw_clkctrl_frac0[CLKCTRL_FRAC0_EMI]);
+ 
+ 	/* Ungate EMI clock */
+@@ -211,8 +216,8 @@ void mxs_mem_init_clock(unsigned char divider)
+ 
+ 	mxs_early_delay(11000);
+ 
+-	/* Set EMI clock divider for EMI clock to 411 / 2 = 205MHz */
+-	writel((2 << CLKCTRL_EMI_DIV_EMI_OFFSET) |
++	/* Set EMI clock prescaler */
++	writel(((clk_emi_div & CLKCTRL_EMI_DIV_EMI_MASK) << CLKCTRL_EMI_DIV_EMI_OFFSET) |
+ 		(1 << CLKCTRL_EMI_DIV_XTAL_OFFSET),
+ 		&clkctrl_regs->hw_clkctrl_emi);
+ 
+@@ -273,9 +278,6 @@ void mx23_mem_init(void)
+ {
+ 	mxs_early_delay(11000);
+ 
+-	/* Fractional divider for ref_emi is 33 ; 480 * 18 / 33 = 266MHz */
+-	mxs_mem_init_clock(33);
+-
+ 	/*
+ 	 * Reset/ungate the EMI block. This is essential, otherwise the system
+ 	 * suffers from memory instability. This thing is mx23 specific and is
+@@ -322,9 +324,6 @@ void mx28_mem_init(const int emi_ds_ctrl_ddr_mode, const uint32_t dram_vals[190]
+ {
+ 	mxs_early_delay(11000);
+ 
+-	/* Fractional divider for ref_emi is 21 ; 480 * 18 / 21 = 411MHz */
+-	mxs_mem_init_clock(21);
+-
+ 	/* Set DDR mode */
+ 	writel(emi_ds_ctrl_ddr_mode, IMX_IOMUXC_BASE + 0x1b80);
+ 
+-- 
+2.18.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
