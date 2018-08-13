@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fpCWl-0000Jw-FN
- for barebox@lists.infradead.org; Mon, 13 Aug 2018 13:04:58 +0000
+ id 1fpCWl-0000K3-Fe
+ for barebox@lists.infradead.org; Mon, 13 Aug 2018 13:04:59 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Mon, 13 Aug 2018 15:02:48 +0200
-Message-Id: <20180813130300.32497-3-r.hieber@pengutronix.de>
+Date: Mon, 13 Aug 2018 15:02:54 +0200
+Message-Id: <20180813130300.32497-9-r.hieber@pengutronix.de>
 In-Reply-To: <20180813130300.32497-1-r.hieber@pengutronix.de>
 References: <20180813130300.32497-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,39 +21,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 02/14] images: MXS: allow generation of unencrypted
- bootstreams
+Subject: [PATCH v3 08/14] ARM: MXS: allow starting from battery input without
+ 4P2 source enabled
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-mxsimage can now build unencrypted images with -u, so make use of it in
-the Makefile. To keep the existing rules simple, name the generated
-images *.mxsbsu instead of *.mxsbs.
+Some boards don't need the 4.2V power source at all, so allow them to
+keep it disabled for efficiency reasons.
+
+For backwards compatibility, don't disable the 4P2 power source on the
+existing boards which are supplied from battery input.
+
+The POWER_USE_5V code path however always enables it up as it is needed
+to supply the DC-DC converter.
 
 Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- images/Makefile.mxs | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm/boards/freescale-mx28-evk/lowlevel.c | 2 +-
+ arch/arm/boards/karo-tx28/lowlevel.c          | 2 +-
+ arch/arm/mach-mxs/include/mach/init.h         | 2 ++
+ arch/arm/mach-mxs/power-init.c                | 3 ++-
+ 4 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/images/Makefile.mxs b/images/Makefile.mxs
-index 93d43b3529..aab883202a 100644
---- a/images/Makefile.mxs
-+++ b/images/Makefile.mxs
-@@ -10,6 +10,14 @@ quiet_cmd_mxs_bootstream = MXS-BOOTSTREAM $@
- $(obj)/%.mxsbs: $(obj)/%.pblx $(obj)/prep_%.pblb FORCE
- 	$(call if_changed,mxs_bootstream)
+diff --git a/arch/arm/boards/freescale-mx28-evk/lowlevel.c b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+index b6a8793c9e..fdaef959a3 100644
+--- a/arch/arm/boards/freescale-mx28-evk/lowlevel.c
++++ b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+@@ -43,7 +43,7 @@ static noinline void freescale_mx28evk_init(void)
  
-+# %.mxsbsu - convert into unencrypted MXS BootStream image
-+# ----------------------------------------------------------------
-+quiet_cmd_mxs_bootstream_u = MXS-BOOTSTREAM-U $@
-+      cmd_mxs_bootstream_u = $(objtree)/scripts/mxsimage -u -c $(CFG_$(@F)) -b $< -o $@ -p $(word 2,$^)
-+
-+$(obj)/%.mxsbsu: $(obj)/%.pblx $(obj)/prep_%.pblb FORCE
-+	$(call if_changed,mxs_bootstream_u)
-+
- # %.mxssd - convert into MXS SD card image
- # ----------------------------------------------------------------
- quiet_cmd_mxs_sd = MXS-SD $@
+ 	pr_debug("initializing power...\n");
+ 
+-	mx28_power_init(POWER_USE_BATTERY_INPUT);
++	mx28_power_init(POWER_USE_BATTERY_INPUT | POWER_ENABLE_4P2);
+ 
+ 	pr_debug("initializing SDRAM...\n");
+ 
+diff --git a/arch/arm/boards/karo-tx28/lowlevel.c b/arch/arm/boards/karo-tx28/lowlevel.c
+index 5a6a3e3519..a9b65167cd 100644
+--- a/arch/arm/boards/karo-tx28/lowlevel.c
++++ b/arch/arm/boards/karo-tx28/lowlevel.c
+@@ -43,7 +43,7 @@ static noinline void karo_tx28_init(void)
+ 
+ 	pr_debug("initializing power...\n");
+ 
+-	mx28_power_init(POWER_USE_BATTERY_INPUT);
++	mx28_power_init(POWER_USE_BATTERY_INPUT | POWER_ENABLE_4P2);
+ 
+ 	pr_debug("initializing SDRAM...\n");
+ 
+diff --git a/arch/arm/mach-mxs/include/mach/init.h b/arch/arm/mach-mxs/include/mach/init.h
+index 878cf4ad62..aa3c68facb 100644
+--- a/arch/arm/mach-mxs/include/mach/init.h
++++ b/arch/arm/mach-mxs/include/mach/init.h
+@@ -18,11 +18,13 @@ void mxs_early_delay(int delay);
+  * - POWER_USE_BATTERY: use battery input when the system is supplied by a battery
+  * - POWER_USE_BATTERY_INPUT: use battery input when the system is supplied by
+  *   a DC source (instead of a real battery) on the battery input
++ * - POWER_ENABLE_4P2: power up the 4P2 regulator (implied for POWER_USE_5V)
+  */
+ enum mxs_power_config {
+ 	POWER_USE_5V			= 0b00000000,
+ 	POWER_USE_BATTERY		= 0b00000001,
+ 	POWER_USE_BATTERY_INPUT		= 0b00000010,
++	POWER_ENABLE_4P2		= 0b00000100,
+ };
+ extern int power_config;
+ static inline enum mxs_power_config mxs_power_config_get_use(void) {
+diff --git a/arch/arm/mach-mxs/power-init.c b/arch/arm/mach-mxs/power-init.c
+index 14f9b7cca7..60fa0cb022 100644
+--- a/arch/arm/mach-mxs/power-init.c
++++ b/arch/arm/mach-mxs/power-init.c
+@@ -717,7 +717,8 @@ static void mxs_enable_battery_input(void)
+ 		POWER_5VCTRL_CHARGE_4P2_ILIMIT_MASK,
+ 		0x8 << POWER_5VCTRL_CHARGE_4P2_ILIMIT_OFFSET);
+ 
+-	mxs_power_enable_4p2();
++	if (power_config & POWER_ENABLE_4P2)
++		mxs_power_enable_4p2();
+ }
+ 
+ /**
 -- 
 2.18.0
 
