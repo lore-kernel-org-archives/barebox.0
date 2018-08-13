@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fpCWl-0000Ju-Fv
- for barebox@lists.infradead.org; Mon, 13 Aug 2018 13:04:58 +0000
+ id 1fpCWl-0000Jz-9h
+ for barebox@lists.infradead.org; Mon, 13 Aug 2018 13:04:57 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Mon, 13 Aug 2018 15:02:46 +0200
-Message-Id: <20180813130300.32497-1-r.hieber@pengutronix.de>
-MIME-Version: 1.0
+Date: Mon, 13 Aug 2018 15:02:49 +0200
+Message-Id: <20180813130300.32497-4-r.hieber@pengutronix.de>
+In-Reply-To: <20180813130300.32497-1-r.hieber@pengutronix.de>
+References: <20180813130300.32497-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,118 +16,119 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 00/14] MXS low-level improvements
+Subject: [PATCH v3 03/14] ARM: MXS: i.MX28: allow setup of low-voltage SDRAM
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-V2hpbGUgcG9ydGluZyBiYXJlYm94IG9udG8gYSBuZXcgb2xkIE1YMjggYm9hcmQsIEkgaGFkIHRv
-IGV4dGVuZCB0aGUKbG93LWxldmVsIGNvZGUgdG8gc2V0IHVwIFNEUkFNIGFuZCBQTUlDLiBNb3N0
-IG9mIHRob3NlIGNoYW5nZXMgYXJlCnByb2JhYmx5IGFsc28gYXBwbGljYWJsZSB0byBNWDIzIGJv
-YXJkcyBzaW5jZSB0aGUgY29kZSBwYXRocyBhcmUgdGhlCnNhbWUsIGFuZCBhcmUgb25seSB3cmFw
-cGVkIGluIG14MjhfKi9teDIzXyotc3BlY2lmaWMgd3JhcHBlciBmdW5jdGlvbnMuCgooQWxzbywg
-aWYgYW55b25lIHdhbnRzIHRvIHBvcnQgdGhlc2UgY2hhbmdlcyBiYWNrIHRvIFUtQm9vdCwgZmVl
-bCBmcmVlCnRvIGRvIHNvLCBpdCdzIHRoZSBzYW1lIGNvZGUg4pi6KQoKQ2hhbmdlcyBpbiB2MiAt
-PiB2MzogKHNlZSBkaWZmIGJlbG93KQogIC0gMDcvMTQgIkFSTTogTVhTOiByZWZhY3RvciBteDIq
-X3Bvd2VyX2luaXQgc291cmNlIGNvbmZpZ3VyYXRpb24iOgogICAgcmVmYWN0b3IgcG93ZXJfY29u
-ZmlnICYgX19QT1dFUl9VU0VfTUFTSyBzdGF0bWVudHMgaW50byBuZXcKICAgIGlubGluZSBmdW5j
-dGlvbiBteHNfcG93ZXJfY29uZmlnX2dldF91c2UoKSwgYXMgcHJvcG9zZWQgYnkgQW5kcmV5CiAg
-ICBTbWlybm92CgpDaGFuZ2VzIGluIHYxIC0+IHYyOgogIC0gaW5jbHVkZSBjbGVhbmVyIG1lbW9y
-eSBzaXplIGRldGVjdGlvbiBieSBTYXNjaGEsIGFsc28gZm9yIGkuTVgyMwogIC0gY2FsbCBteHNf
-bWVtX2luaXRfY2xvY2soKSBleHBsaWNpdGVseSBmcm9tIGJvYXJkIGNvZGUgaW5zdGVhZCBvZgog
-ICAgcGFzc2luZyB0aGUgY2xvY2sgZGl2aWRlcnMgdGhyb3VnaCBteCpfbWVtX2luaXQoKQogIC0g
-YWRkIHBhcmFtZXRlciBkb2N1bWVudGF0aW9uIGZvciBteHNfbWVtX2luaXRfY2xvY2soKQogIC0g
-RG9jdW1lbnRhdGlvbjogYmFjay1wZWRhbCBvbiB0aGUgc3RhdG1lbnQgdGhhdCBhbGwgYm9hcmRz
-IGFyZSBwb3J0ZWQKICAgIHRvIGJhcmVib3ggYm9vdGxldHMsIHRoZXJlIGFyZSBzdGlsbCBzb21l
-IGkuTVgyMyBib2FyZHMgdGhhdCBuZWVkCiAgICBGcmVlc2NhbGUgYm9vdGxldCBjb2RlCgpSb2xh
-bmQgSGllYmVyICgxMSk6CiAgaW1hZ2VzOiBNWFM6IGFsbG93IGdlbmVyYXRpb24gb2YgdW5lbmNy
-eXB0ZWQgYm9vdHN0cmVhbXMKICBBUk06IE1YUzogaS5NWDI4OiBhbGxvdyBzZXR1cCBvZiBsb3ct
-dm9sdGFnZSBTRFJBTQogIEFSTTogTVhTOiBhbGxvdyBjb25maWd1cmF0aW9uIG9mIEVNSSBjbG9j
-ayBwcmVzY2FsZXIKICBBUk06IE1YUzogcmVmYWN0b3IgbXgyKl9wb3dlcl9pbml0IHNvdXJjZSBj
-b25maWd1cmF0aW9uCiAgQVJNOiBNWFM6IGFsbG93IHN0YXJ0aW5nIGZyb20gYmF0dGVyeSBpbnB1
-dCB3aXRob3V0IDRQMiBzb3VyY2UgZW5hYmxlZAogIEFSTTogTVhTOiBtYWtlIHBvd2VyIGxldmVs
-cyBjb25maWd1cmFibGUgaW4gbXgyKl9wb3dlcl9pbml0CiAgQVJNOiBNWFM6IGZpeCBWRER4IGJy
-b3dub3V0IHNldHVwIGxvZ2ljCiAgQVJNOiBNWFM6IG1ha2UgVkREeCBicm93bm91dCBzZXR1cCBt
-b3JlIHVuZGVyc3RhbmRhYmxlCiAgQVJNOiBNWFM6IG14c19wb3dlcl9zdGF0dXM6IHVzZSBsZXNz
-IG1hZ2ljIHZhbHVlcwogIEFSTTogTVhTOiBteHNfcG93ZXJfc3RhdHVzOiBhbGlnbiBvdXRwdXQK
-ICBEb2N1bWVudGF0aW9uOiBNWFM6IGdlbmVyYWwgdXBkYXRlIGFuZCBpbXByb3ZlbWVudHMKClNh
-c2NoYSBIYXVlciAoMyk6CiAgc2NyaXB0czogbXhzaW1hZ2U6IEFsbG93IHVuZW5jcnlwdGVkIGlt
-YWdlcwogIEFSTTogaS5NWDI4OiBBZGQgbWVtb3J5IHNpemUgZGV0ZWN0aW9uCiAgQVJNOiBpLk1Y
-MjM6IEFkZCBtZW1vcnkgc2l6ZSBkZXRlY3Rpb24KCiBEb2N1bWVudGF0aW9uL2JvYXJkcy9teHMu
-cnN0ICAgICAgICAgICAgICAgICAgfCAgOTcgKysrKysrLS0tLS0KIC4uLi9hcm0vYm9hcmRzL2No
-dW1ieV9mYWxjb253aW5nL2ZhbGNvbndpbmcuYyB8ICAgOCAtCiAuLi4vYm9hcmRzL2NyeXN0YWxm
-b250ei1jZmExMDAzNi9jZmExMDAzNi5jICAgfCAgMjQgLS0tCiBhcmNoL2FybS9ib2FyZHMvZHVj
-a2JpbGwvbG93bGV2ZWwuYyAgICAgICAgICAgfCAgIDcgKy0KIGFyY2gvYXJtL2JvYXJkcy9mcmVl
-c2NhbGUtbXgyMy1ldmsvbXgyMy1ldmsuYyB8ICAgOCAtCiBhcmNoL2FybS9ib2FyZHMvZnJlZXNj
-YWxlLW14MjgtZXZrL2xvd2xldmVsLmMgfCAgIDggKy0KIGFyY2gvYXJtL2JvYXJkcy9mcmVlc2Nh
-bGUtbXgyOC1ldmsvbXgyOC1ldmsuYyB8ICAgOCAtCiAuLi4vYm9hcmRzL2lteDIzMy1vbGludXhp
-bm8vaW14MjMtb2xpbnV4aW5vLmMgfCAgIDggLQogYXJjaC9hcm0vYm9hcmRzL2lteDIzMy1vbGlu
-dXhpbm8vbG93bGV2ZWwuYyAgIHwgICA0ICstCiBhcmNoL2FybS9ib2FyZHMva2Fyby10eDI4L2xv
-d2xldmVsLmMgICAgICAgICAgfCAgIDggKy0KIGFyY2gvYXJtL2JvYXJkcy9rYXJvLXR4MjgvdHgy
-OC5jICAgICAgICAgICAgICB8ICAgOCAtCiBhcmNoL2FybS9tYWNoLW14cy9pbmNsdWRlL21hY2gv
-aW14MjMuaCAgICAgICAgfCAgMjkgKysrKwogYXJjaC9hcm0vbWFjaC1teHMvaW5jbHVkZS9tYWNo
-L2lteDI4LmggICAgICAgIHwgIDMwICsrKysKIGFyY2gvYXJtL21hY2gtbXhzL2luY2x1ZGUvbWFj
-aC9pbml0LmggICAgICAgICB8ICA1MyArKysrKy0KIGFyY2gvYXJtL21hY2gtbXhzL21lbS1pbml0
-LmMgICAgICAgICAgICAgICAgICB8ICAyOCArKy0KIGFyY2gvYXJtL21hY2gtbXhzL3Bvd2VyLWlu
-aXQuYyAgICAgICAgICAgICAgICB8IDE2MiArKysrKysrKysrKy0tLS0tLS0KIGFyY2gvYXJtL21h
-Y2gtbXhzL3NvYy1pbXgyMy5jICAgICAgICAgICAgICAgICB8ICAgNCArCiBhcmNoL2FybS9tYWNo
-LW14cy9zb2MtaW14MjguYyAgICAgICAgICAgICAgICAgfCAgIDQgKwogaW1hZ2VzL01ha2VmaWxl
-Lm14cyAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICA4ICsKIHNjcmlwdHMvbXhzaW1hZ2Uu
-YyAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA1MyArKystLS0KIDIwIGZpbGVzIGNoYW5n
-ZWQsIDMzNiBpbnNlcnRpb25zKCspLCAyMjMgZGVsZXRpb25zKC0pCiBjcmVhdGUgbW9kZSAxMDA2
-NDQgYXJjaC9hcm0vbWFjaC1teHMvaW5jbHVkZS9tYWNoL2lteDIzLmgKIGNyZWF0ZSBtb2RlIDEw
-MDY0NCBhcmNoL2FybS9tYWNoLW14cy9pbmNsdWRlL21hY2gvaW14MjguaAoKLS0KRGlmZiB2MiAt
-PiB2MzoKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW14cy9pbmNsdWRlL21hY2gvaW5pdC5o
-IGIvYXJjaC9hcm0vbWFjaC1teHMvaW5jbHVkZS9tYWNoL2luaXQuaAppbmRleCAyODFlNDU4ZDk3
-Li41M2MxZTA1NjM0IDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW14cy9pbmNsdWRlL21hY2gv
-aW5pdC5oCisrKyBiL2FyY2gvYXJtL21hY2gtbXhzL2luY2x1ZGUvbWFjaC9pbml0LmgKQEAgLTI0
-LDkgKzI0LDEzIEBAIGVudW0gbXhzX3Bvd2VyX2NvbmZpZyB7CiAJUE9XRVJfVVNFXzVWCQkJPSAw
-YjAwMDAwMDAwLAogCVBPV0VSX1VTRV9CQVRURVJZCQk9IDBiMDAwMDAwMDEsCiAJUE9XRVJfVVNF
-X0JBVFRFUllfSU5QVVQJCT0gMGIwMDAwMDAxMCwKLQlfX1BPV0VSX1VTRV9NQVNLCQk9IDBiMDAw
-MDAwMTEsCiAJUE9XRVJfRU5BQkxFXzRQMgkJPSAwYjAwMDAwMTAwLAogfTsKK2V4dGVybiBpbnQg
-cG93ZXJfY29uZmlnOworc3RhdGljIGlubGluZSBlbnVtIG14c19wb3dlcl9jb25maWcgbXhzX3Bv
-d2VyX2NvbmZpZ19nZXRfdXNlKHZvaWQpIHsKKwlyZXR1cm4gKHBvd2VyX2NvbmZpZyAmIDBiMDAw
-MDAwMTEpOworfQorCiAKIHN0cnVjdCBteHNfcG93ZXJfY3RybCB7CiAJdWludDMyX3QgdGFyZ2V0
-OwkvKjwgdGFyZ2V0IHZvbHRhZ2UgKi8KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtbXhzL3Bv
-d2VyLWluaXQuYyBiL2FyY2gvYXJtL21hY2gtbXhzL3Bvd2VyLWluaXQuYwppbmRleCA3OTZkM2Fl
-MjU5Li5jYTdjMzQ5ZDdmIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW14cy9wb3dlci1pbml0
-LmMKKysrIGIvYXJjaC9hcm0vbWFjaC1teHMvcG93ZXItaW5pdC5jCkBAIC0yNCw3ICsyNCw3IEBA
-CiAjaW5jbHVkZSA8bWFjaC9yZWdzLXJ0Yy5oPgogI2luY2x1ZGUgPG1hY2gvcmVncy1scmFkYy5o
-PgogCi1zdGF0aWMgaW50IHBvd2VyX2NvbmZpZzsKK2ludCBwb3dlcl9jb25maWc7CiAKIHN0YXRp
-YyB2b2lkIG14c19wb3dlcl9zdGF0dXModm9pZCkKIHsKQEAgLTUwMyw4ICs1MDMsOCBAQCBzdGF0
-aWMgdm9pZCBteHNfcG93ZXJfZW5hYmxlXzRwMih2b2lkKQogCQlQT1dFUl81VkNUUkxfSEVBRFJP
-T01fQURKX01BU0ssCiAJCTB4NCA8PCBQT1dFUl81VkNUUkxfSEVBRFJPT01fQURKX09GRlNFVCk7
-CiAKLQlpZiAoKHBvd2VyX2NvbmZpZyAmIF9fUE9XRVJfVVNFX01BU0spID09IFBPV0VSX1VTRV9C
-QVRURVJZIHx8Ci0JICAgIChwb3dlcl9jb25maWcgJiBfX1BPV0VSX1VTRV9NQVNLKSA9PSBQT1dF
-Ul9VU0VfQkFUVEVSWV9JTlBVVCkKKwlpZiAobXhzX3Bvd2VyX2NvbmZpZ19nZXRfdXNlKCkgPT0g
-UE9XRVJfVVNFX0JBVFRFUlkgfHwKKwkgICAgbXhzX3Bvd2VyX2NvbmZpZ19nZXRfdXNlKCkgPT0g
-UE9XRVJfVVNFX0JBVFRFUllfSU5QVVQpCiAJCWRyb3BvdXRfY3RybCA9IFBPV0VSX0RDREM0UDJf
-RFJPUE9VVF9DVFJMX1NSQ19TRUw7CiAJZWxzZQogCQlkcm9wb3V0X2N0cmwgPSBQT1dFUl9EQ0RD
-NFAyX0RST1BPVVRfQ1RSTF9TUkNfNFAyOwpAQCAtMTIxMCwxMSArMTIxMCwxMSBAQCB2b2lkIG14
-MjNfcG93ZXJfaW5pdChjb25zdCBpbnQgY29uZmlnLCBzdHJ1Y3QgbXhzX3Bvd2VyX2N0cmxzICpj
-dHJscykKIAogCW14c19zcmNfcG93ZXJfaW5pdCgpOwogCi0JaWYgKChwb3dlcl9jb25maWcgJiBf
-X1BPV0VSX1VTRV9NQVNLKSA9PSBQT1dFUl9VU0VfQkFUVEVSWSkKKwlpZiAobXhzX3Bvd2VyX2Nv
-bmZpZ19nZXRfdXNlKCkgPT0gUE9XRVJfVVNFX0JBVFRFUlkpCiAJCW14c19wb3dlcl9jb25maWd1
-cmVfcG93ZXJfc291cmNlKCk7Ci0JZWxzZSBpZiAoKHBvd2VyX2NvbmZpZyAmIF9fUE9XRVJfVVNF
-X01BU0spID09IFBPV0VSX1VTRV9CQVRURVJZX0lOUFVUKQorCWVsc2UgaWYgKG14c19wb3dlcl9j
-b25maWdfZ2V0X3VzZSgpID09IFBPV0VSX1VTRV9CQVRURVJZX0lOUFVUKQogCQlteHNfZW5hYmxl
-X2JhdHRlcnlfaW5wdXQoKTsKLQllbHNlIGlmICgocG93ZXJfY29uZmlnICYgX19QT1dFUl9VU0Vf
-TUFTSykgPT0gUE9XRVJfVVNFXzVWKQorCWVsc2UgaWYgKG14c19wb3dlcl9jb25maWdfZ2V0X3Vz
-ZSgpID09IFBPV0VSX1VTRV81VikKIAkJbXhzX2Jvb3RfdmFsaWRfNXYoKTsKIAogCW14c19wb3dl
-cl9jbG9jazJwbGwoKTsKQEAgLTEyODUsMTEgKzEyODUsMTEgQEAgdm9pZCBteDI4X3Bvd2VyX2lu
-aXQoY29uc3QgaW50IGNvbmZpZywgc3RydWN0IG14c19wb3dlcl9jdHJscyAqY3RybHMpCiAKIAlt
-eHNfc3JjX3Bvd2VyX2luaXQoKTsKIAotCWlmICgocG93ZXJfY29uZmlnICYgX19QT1dFUl9VU0Vf
-TUFTSykgPT0gUE9XRVJfVVNFX0JBVFRFUlkpCisJaWYgKG14c19wb3dlcl9jb25maWdfZ2V0X3Vz
-ZSgpID09IFBPV0VSX1VTRV9CQVRURVJZKQogCQlteHNfcG93ZXJfY29uZmlndXJlX3Bvd2VyX3Nv
-dXJjZSgpOwotCWVsc2UgaWYgKChwb3dlcl9jb25maWcgJiBfX1BPV0VSX1VTRV9NQVNLKSA9PSBQ
-T1dFUl9VU0VfQkFUVEVSWV9JTlBVVCkKKwllbHNlIGlmIChteHNfcG93ZXJfY29uZmlnX2dldF91
-c2UoKSA9PSBQT1dFUl9VU0VfQkFUVEVSWV9JTlBVVCkKIAkJbXhzX2VuYWJsZV9iYXR0ZXJ5X2lu
-cHV0KCk7Ci0JZWxzZSBpZiAoKHBvd2VyX2NvbmZpZyAmIF9fUE9XRVJfVVNFX01BU0spID09IFBP
-V0VSX1VTRV81VikKKwllbHNlIGlmIChteHNfcG93ZXJfY29uZmlnX2dldF91c2UoKSA9PSBQT1dF
-Ul9VU0VfNVYpCiAJCW14c19ib290X3ZhbGlkXzV2KCk7CiAKIAlteHNfcG93ZXJfY2xvY2sycGxs
-KCk7Ci0tIAoyLjE4LjAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+The PINCTRL_*_DDR_MODE_* defines are now needed in global scope, so move
+them to the respective include header.
+
+Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
+---
+ arch/arm/boards/duckbill/lowlevel.c           | 3 ++-
+ arch/arm/boards/freescale-mx28-evk/lowlevel.c | 3 ++-
+ arch/arm/boards/karo-tx28/lowlevel.c          | 3 ++-
+ arch/arm/mach-mxs/include/mach/init.h         | 7 ++++++-
+ arch/arm/mach-mxs/mem-init.c                  | 9 +++------
+ 5 files changed, 15 insertions(+), 10 deletions(-)
+
+diff --git a/arch/arm/boards/duckbill/lowlevel.c b/arch/arm/boards/duckbill/lowlevel.c
+index 2922e40f2a..3adda68d77 100644
+--- a/arch/arm/boards/duckbill/lowlevel.c
++++ b/arch/arm/boards/duckbill/lowlevel.c
+@@ -55,7 +55,8 @@ static noinline void duckbill_init(void)
+ 
+ 	pr_debug("initializing SDRAM...\n");
+ 
+-	mx28_mem_init(mx28_dram_vals_default);
++	mx28_mem_init(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
++			mx28_dram_vals_default);
+ 
+ 	pr_debug("DONE\n");
+ }
+diff --git a/arch/arm/boards/freescale-mx28-evk/lowlevel.c b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+index 4d45a03ba2..9df60210e6 100644
+--- a/arch/arm/boards/freescale-mx28-evk/lowlevel.c
++++ b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+@@ -47,7 +47,8 @@ static noinline void freescale_mx28evk_init(void)
+ 
+ 	pr_debug("initializing SDRAM...\n");
+ 
+-	mx28_mem_init(mx28_dram_vals_default);
++	mx28_mem_init(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
++			mx28_dram_vals_default);
+ 
+ 	pr_debug("DONE\n");
+ }
+diff --git a/arch/arm/boards/karo-tx28/lowlevel.c b/arch/arm/boards/karo-tx28/lowlevel.c
+index d072637de7..99f8a562cc 100644
+--- a/arch/arm/boards/karo-tx28/lowlevel.c
++++ b/arch/arm/boards/karo-tx28/lowlevel.c
+@@ -47,7 +47,8 @@ static noinline void karo_tx28_init(void)
+ 
+ 	pr_debug("initializing SDRAM...\n");
+ 
+-	mx28_mem_init(mx28_dram_vals_default);
++	mx28_mem_init(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
++			mx28_dram_vals_default);
+ 
+ 	pr_debug("DONE\n");
+ }
+diff --git a/arch/arm/mach-mxs/include/mach/init.h b/arch/arm/mach-mxs/include/mach/init.h
+index 6526d303a1..7021981d41 100644
+--- a/arch/arm/mach-mxs/include/mach/init.h
++++ b/arch/arm/mach-mxs/include/mach/init.h
+@@ -21,8 +21,13 @@ void mxs_power_wait_pswitch(void);
+ extern const uint32_t mx28_dram_vals_default[190];
+ extern uint32_t mx23_dram_vals[];
+ 
++#define PINCTRL_EMI_DS_CTRL_DDR_MODE_LPDDR1	(0b00 << 16)
++#define PINCTRL_EMI_DS_CTRL_DDR_MODE_LVDDR2	(0b10 << 16)
++#define PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2	(0b11 << 16)
++
+ void mx23_mem_init(void);
+-void mx28_mem_init(const uint32_t dram_vals[190]);
++void mx28_mem_init(const int emi_ds_ctrl_ddr_mode,
++		const uint32_t dram_vals[190]);
+ void mxs_mem_setup_cpu_and_hbus(void);
+ void mxs_mem_setup_vdda(void);
+ void mxs_mem_init_clock(unsigned char divider);
+diff --git a/arch/arm/mach-mxs/mem-init.c b/arch/arm/mach-mxs/mem-init.c
+index ac8bfee18e..7bc6be00b4 100644
+--- a/arch/arm/mach-mxs/mem-init.c
++++ b/arch/arm/mach-mxs/mem-init.c
+@@ -318,18 +318,15 @@ void mx23_mem_init(void)
+ 	mxs_mem_setup_cpu_and_hbus();
+ }
+ 
+-#define PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2	(0x3 << 16)
+-
+-void mx28_mem_init(const uint32_t dram_vals[190])
++void mx28_mem_init(const int emi_ds_ctrl_ddr_mode, const uint32_t dram_vals[190])
+ {
+ 	mxs_early_delay(11000);
+ 
+ 	/* Fractional divider for ref_emi is 21 ; 480 * 18 / 21 = 411MHz */
+ 	mxs_mem_init_clock(21);
+ 
+-	/* Set DDR2 mode */
+-	writel(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
+-			IMX_IOMUXC_BASE + 0x1b80);
++	/* Set DDR mode */
++	writel(emi_ds_ctrl_ddr_mode, IMX_IOMUXC_BASE + 0x1b80);
+ 
+ 	/*
+ 	 * Configure the DRAM registers
+-- 
+2.18.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
