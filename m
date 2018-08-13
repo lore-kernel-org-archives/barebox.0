@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fpCWo-0000K5-F0
- for barebox@lists.infradead.org; Mon, 13 Aug 2018 13:05:05 +0000
+ id 1fpCWo-0000K6-Ez
+ for barebox@lists.infradead.org; Mon, 13 Aug 2018 13:05:06 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Mon, 13 Aug 2018 15:02:57 +0200
-Message-Id: <20180813130300.32497-12-r.hieber@pengutronix.de>
+Date: Mon, 13 Aug 2018 15:02:56 +0200
+Message-Id: <20180813130300.32497-11-r.hieber@pengutronix.de>
 In-Reply-To: <20180813130300.32497-1-r.hieber@pengutronix.de>
 References: <20180813130300.32497-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,56 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 11/14] ARM: MXS: make VDDx brownout setup more
- understandable
+Subject: [PATCH v3 10/14] ARM: MXS: fix VDDx brownout setup logic
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-Rename bo_int to prev_bo_enirq to make its purpose clearer, and throw in
-a few comments for easier understanding.
+The cfg->bo_irq and cfg->bo_enirq (i.e. VDDx_BO_IRQ and ENIRQ_VDDx_BO)
+flags are part of POWER_CTRL, so setting those flag in cfg->reg (i.e.
+POWER_VDDxCTRL) makes no sense. Fortunately, those bits are reserved in
+ENIRQ_VDDx_BO, so writing them did no harm, but also doesn't work as
+intended.
 
 Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- arch/arm/mach-mxs/power-init.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/arm/mach-mxs/power-init.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm/mach-mxs/power-init.c b/arch/arm/mach-mxs/power-init.c
-index 6796a4491d..9ab36463e2 100644
+index 490ea4ba2d..6796a4491d 100644
 --- a/arch/arm/mach-mxs/power-init.c
 +++ b/arch/arm/mach-mxs/power-init.c
-@@ -1066,7 +1066,7 @@ static void mxs_power_set_vddx(const struct mxs_vddx_cfg *cfg,
- {
- 	struct mxs_power_regs *power_regs =
- 		(struct mxs_power_regs *)IMX_POWER_BASE;
--	uint32_t cur_target, diff, bo_int = 0;
-+	uint32_t cur_target, diff, prev_bo_enirq = 0;
- 	uint32_t powered_by_linreg = 0;
- 	int adjust_up, tmp;
- 
-@@ -1082,8 +1082,10 @@ static void mxs_power_set_vddx(const struct mxs_vddx_cfg *cfg,
- 		powered_by_linreg = cfg->powered_by_linreg();
+@@ -1083,8 +1083,8 @@ static void mxs_power_set_vddx(const struct mxs_vddx_cfg *cfg,
  
  	if (adjust_up && cfg->bo_irq) {
-+		/* temporarily disable brownout to prevent it from taking
-+		   effect prematurely during the adjustment */
  		if (powered_by_linreg) {
--			bo_int = readl(&power_regs->hw_power_ctrl);
-+			prev_bo_enirq = readl(&power_regs->hw_power_ctrl) & cfg->bo_enirq;
- 			writel(cfg->bo_enirq, &power_regs->hw_power_ctrl_clr);
+-			bo_int = readl(cfg->reg);
+-			clrbits_le32(cfg->reg, cfg->bo_enirq);
++			bo_int = readl(&power_regs->hw_power_ctrl);
++			writel(cfg->bo_enirq, &power_regs->hw_power_ctrl_clr);
  		}
  		setbits_le32(cfg->reg, cfg->bo_offset_mask);
-@@ -1124,8 +1126,10 @@ static void mxs_power_set_vddx(const struct mxs_vddx_cfg *cfg,
- 
- 	if (cfg->bo_irq) {
+ 	}
+@@ -1126,7 +1126,7 @@ static void mxs_power_set_vddx(const struct mxs_vddx_cfg *cfg,
  		if (adjust_up && powered_by_linreg) {
-+			/* clear brownout IRQ flag in case it fired */
  			writel(cfg->bo_irq, &power_regs->hw_power_ctrl_clr);
--			if (bo_int & cfg->bo_enirq)
-+			if (prev_bo_enirq)
-+				/* re-enable brownout IRQ after adjustment has finished */
- 				writel(cfg->bo_enirq, &power_regs->hw_power_ctrl_set);
+ 			if (bo_int & cfg->bo_enirq)
+-				setbits_le32(cfg->reg, cfg->bo_enirq);
++				writel(cfg->bo_enirq, &power_regs->hw_power_ctrl_set);
  		}
  
+ 		clrsetbits_le32(cfg->reg, cfg->bo_offset_mask,
 -- 
 2.18.0
 
