@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fpCWl-0000Jx-AE
- for barebox@lists.infradead.org; Mon, 13 Aug 2018 13:05:01 +0000
+ id 1fpCWl-0000K1-Cp
+ for barebox@lists.infradead.org; Mon, 13 Aug 2018 13:05:02 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Mon, 13 Aug 2018 15:02:47 +0200
-Message-Id: <20180813130300.32497-2-r.hieber@pengutronix.de>
+Date: Mon, 13 Aug 2018 15:02:52 +0200
+Message-Id: <20180813130300.32497-7-r.hieber@pengutronix.de>
 In-Reply-To: <20180813130300.32497-1-r.hieber@pengutronix.de>
 References: <20180813130300.32497-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,167 +21,141 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 01/14] scripts: mxsimage: Allow unencrypted images
+Subject: [PATCH v3 06/14] ARM: i.MX23: Add memory size detection
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Normally MXS SoCs only allow to boot images which have been
-encrypted with a zero key. If the ENABLE_UNENCTRYPTED_BOOT fuse
-is blown then the SoC also allows to boot unencrypted images.
-Add an option to the mxsimage tool to generate such images.
+No need for the boards to manually add memory, we can do this
+automatically by reading back the memory size from the SDRAM
+controller.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
+ .../arm/boards/chumby_falconwing/falconwing.c |  8 -----
+ arch/arm/boards/freescale-mx23-evk/mx23-evk.c |  8 -----
+ .../boards/imx233-olinuxino/imx23-olinuxino.c |  8 -----
+ arch/arm/mach-mxs/include/mach/imx23.h        | 29 +++++++++++++++++++
+ arch/arm/mach-mxs/soc-imx23.c                 |  4 +++
+ 5 files changed, 33 insertions(+), 24 deletions(-)
+ create mode 100644 arch/arm/mach-mxs/include/mach/imx23.h
 
-Notes:
-    submitted by Sascha in https://www.mail-archive.com/barebox@lists.infradead.org/msg26936.html,
-    but not applied yet.
-    Typo in subject fixed by me.
-
- scripts/mxsimage.c | 53 +++++++++++++++++++++++++++++-----------------
- 1 file changed, 33 insertions(+), 20 deletions(-)
-
-diff --git a/scripts/mxsimage.c b/scripts/mxsimage.c
-index 5c2c3079de..8a63d76939 100644
---- a/scripts/mxsimage.c
-+++ b/scripts/mxsimage.c
-@@ -337,6 +337,7 @@ struct sb_image_ctx {
- 	/* Image configuration */
- 	unsigned int			verbose_boot:1;
- 	unsigned int			silent_dump:1;
-+	unsigned int			encrypted:1;
- 	const char			*input_filename;
- 	const char			*output_filename;
- 	const char			*cfg_filename;
-@@ -484,6 +485,12 @@ static int sb_aes_crypt(struct sb_image_ctx *ictx, uint8_t *in_data,
- 	int ret, outlen;
- 	uint8_t *outbuf;
+diff --git a/arch/arm/boards/chumby_falconwing/falconwing.c b/arch/arm/boards/chumby_falconwing/falconwing.c
+index c866043e8b..5554b78d6d 100644
+--- a/arch/arm/boards/chumby_falconwing/falconwing.c
++++ b/arch/arm/boards/chumby_falconwing/falconwing.c
+@@ -258,14 +258,6 @@ static const uint32_t pad_setup[] = {
+ 	GPMI_RDY3_GPIO | GPIO_IN | PULLUP(1),
+ };
  
-+	if (!ictx->encrypted) {
-+		if (out_data && in_data != out_data)
-+			memcpy(out_data, in_data, in_len);
-+		return 0;
-+	}
-+
- 	outbuf = malloc(in_len);
- 	if (!outbuf)
- 		return -ENOMEM;
-@@ -645,7 +652,8 @@ static int sb_encrypt_image(struct sb_image_ctx *ictx)
- 	 * Key dictionary.
- 	 */
- 	sb_aes_reinit(ictx, 1);
--	sb_encrypt_key_dictionary_key(ictx);
-+	if (ictx->encrypted)
-+		sb_encrypt_key_dictionary_key(ictx);
+-static int falconwing_mem_init(void)
+-{
+-	arm_add_mem_device("ram0", IMX_MEMORY_BASE, 64 * 1024 * 1024);
+-
+-	return 0;
+-}
+-mem_initcall(falconwing_mem_init);
+-
+ #define GPIO_USB_HUB_RESET	29
+ #define GPIO_USB_HUB_POWER	26
  
- 	/*
- 	 * Section tags.
-@@ -1609,10 +1617,10 @@ static int sb_prefill_image_header(struct sb_image_ctx *ictx)
- 	hdr->timestamp_us = sb_get_timestamp() * 1000000;
+diff --git a/arch/arm/boards/freescale-mx23-evk/mx23-evk.c b/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
+index dd8048851b..a3587db063 100644
+--- a/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
++++ b/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
+@@ -53,14 +53,6 @@ static struct fsl_usb2_platform_data usb_pdata = {
+ };
+ #endif
  
- 	/* FIXME -- add proper config option */
--	hdr->flags = ictx->verbose_boot ? SB_IMAGE_FLAG_VERBOSE : 0,
-+	hdr->flags = ictx->verbose_boot ? SB_IMAGE_FLAG_VERBOSE : 0;
+-static int mx23_evk_mem_init(void)
+-{
+-	arm_add_mem_device("ram0", IMX_MEMORY_BASE, 32 * 1024 * 1024);
+-
+-	return 0;
+-}
+-mem_initcall(mx23_evk_mem_init);
+-
+ /**
+  * Try to register an environment storage on the attached MCI card
+  * @return 0 on success
+diff --git a/arch/arm/boards/imx233-olinuxino/imx23-olinuxino.c b/arch/arm/boards/imx233-olinuxino/imx23-olinuxino.c
+index b87a6764f3..c06779ddf6 100644
+--- a/arch/arm/boards/imx233-olinuxino/imx23-olinuxino.c
++++ b/arch/arm/boards/imx233-olinuxino/imx23-olinuxino.c
+@@ -40,14 +40,6 @@ static struct mxs_mci_platform_data mci_pdata = {
+ 	.f_min = 400000,
+ };
  
- 	/* FIXME -- We support only default key */
--	hdr->key_count = 1;
-+	hdr->key_count = ictx->encrypted ? 1 : 0;
- 
- 	return 0;
- }
-@@ -2450,7 +2458,7 @@ static int sb_build_image(struct sb_image_ctx *ictx)
- 	/* Calculate image size. */
- 	uint32_t size = sizeof(*sb_header) +
- 		ictx->sect_count * sizeof(struct sb_sections_header) +
--		sizeof(*sb_dict_key) + sizeof(ictx->digest);
-+		sizeof(*sb_dict_key) * sb_header->key_count + sizeof(ictx->digest);
- 
- 	sctx = ictx->sect_head;
- 	while (sctx) {
-@@ -2473,8 +2481,10 @@ static int sb_build_image(struct sb_image_ctx *ictx)
- 		sctx = sctx->sect;
- 	};
- 
--	memcpy(iptr, sb_dict_key, sizeof(*sb_dict_key));
--	iptr += sizeof(*sb_dict_key);
-+	if (ictx->encrypted) {
-+		memcpy(iptr, sb_dict_key, sizeof(*sb_dict_key));
-+		iptr += sizeof(*sb_dict_key);
-+	}
- 
- 	sctx = ictx->sect_head;
- 	while (sctx) {
-@@ -2516,27 +2526,20 @@ static int sb_build_image(struct sb_image_ctx *ictx)
- 	return 0;
- }
- 
--static int mxsimage_generate(const char *configfile, const char *imagefile)
-+static int mxsimage_generate(struct sb_image_ctx *ctx)
+-static int imx23_olinuxino_mem_init(void)
+-{
+-	arm_add_mem_device("ram0", IMX_MEMORY_BASE, 64 * 1024 * 1024);
+-
+-	return 0;
+-}
+-mem_initcall(imx23_olinuxino_mem_init);
+-
+ static void olinuxino_init_usb(void)
  {
- 	int ret;
--	struct sb_image_ctx ctx;
--
--	memset(&ctx, 0, sizeof(ctx));
- 
--	ctx.cfg_filename = configfile;
--	ctx.output_filename = imagefile;
--	ctx.verbose_boot = 1;
--
--	ret = sb_build_tree_from_cfg(&ctx);
-+	ret = sb_build_tree_from_cfg(ctx);
- 	if (ret)
- 		goto fail;
- 
--	ret = sb_encrypt_image(&ctx);
-+	ret = sb_encrypt_image(ctx);
- 	if (!ret)
--		ret = sb_build_image(&ctx);
-+		ret = sb_build_image(ctx);
- 
- fail:
--	sb_free_image(&ctx);
-+	sb_free_image(ctx);
- 
- 	return ret;
- }
-@@ -2546,8 +2549,12 @@ int main(int argc, char *argv[])
- 	int ret;
- 	int opt;
- 	char *configfile = NULL, *outfile = NULL, *verify = NULL;
-+	struct sb_image_ctx ctx = {
-+		.encrypted = 1,
-+		.verbose_boot = 1,
-+	};
- 
--	while ((opt = getopt(argc, argv, "p:b:c:o:v:")) != -1) {
-+	while ((opt = getopt(argc, argv, "p:b:c:o:v:u")) != -1) {
- 		switch (opt) {
- 		case 'p':
- 			prepfile = optarg;
-@@ -2564,6 +2571,9 @@ int main(int argc, char *argv[])
- 		case 'v':
- 			verify = optarg;
- 			break;
-+		case 'u':
-+			ctx.encrypted = 0;
-+			break;
- 		default:
- 			exit(1);
- 		}
-@@ -2587,7 +2597,10 @@ int main(int argc, char *argv[])
- 		exit(1);
- 	}
- 
--	ret = mxsimage_generate(configfile, outfile);
-+	ctx.cfg_filename = configfile;
-+	ctx.output_filename = outfile;
+ 	imx23_usb_phy_enable();
+diff --git a/arch/arm/mach-mxs/include/mach/imx23.h b/arch/arm/mach-mxs/include/mach/imx23.h
+new file mode 100644
+index 0000000000..56e76d5f50
+--- /dev/null
++++ b/arch/arm/mach-mxs/include/mach/imx23.h
+@@ -0,0 +1,29 @@
++#ifndef __MACH_IMX23_H
++#define __MACH_IMX23_H
 +
-+	ret = mxsimage_generate(&ctx);
- 	if (ret)
- 		exit(1);
++#include <linux/bitfield.h>
++#include <io.h>
++
++#define DRAM_CTL14_CS0_EN	BIT(0)
++#define DRAM_CTL14_CS1_EN	BIT(1)
++#define DRAM_CTL11_COLUMNS_DIFF	GENMASK(10, 8)
++#define DRAM_CTL10_ROWS_DIFF	GENMASK(18, 16)
++
++#define DRAM_CTL(n)	(IMX_SDRAMC_BASE + 4 * (n))
++
++static inline u32 imx23_get_memsize(void)
++{
++	u32 ctl10 = readl(DRAM_CTL(10));
++	u32 ctl11 = readl(DRAM_CTL(11));
++	u32 ctl14 = readl(DRAM_CTL(14));
++	int rows, columns, banks = 4, cs0, cs1;
++
++	columns = 12 - FIELD_GET(DRAM_CTL11_COLUMNS_DIFF, ctl11);
++	rows = 13 - FIELD_GET(DRAM_CTL10_ROWS_DIFF, ctl10);
++	cs0 = FIELD_GET(DRAM_CTL14_CS0_EN, ctl14);
++	cs1 = FIELD_GET(DRAM_CTL14_CS1_EN, ctl14);
++
++	return (1 << columns) * (1 << rows) * banks * (cs0 + cs1);
++}
++
++#endif /* __MACH_IMX23_H */
+\ No newline at end of file
+diff --git a/arch/arm/mach-mxs/soc-imx23.c b/arch/arm/mach-mxs/soc-imx23.c
+index d471c8eb5c..f25fff18c3 100644
+--- a/arch/arm/mach-mxs/soc-imx23.c
++++ b/arch/arm/mach-mxs/soc-imx23.c
+@@ -19,6 +19,8 @@
+ #include <restart.h>
+ #include <mach/imx23-regs.h>
+ #include <io.h>
++#include <asm/memory.h>
++#include <mach/imx23.h>
+ 
+ #define HW_CLKCTRL_RESET 0x120
+ # define HW_CLKCTRL_RESET_CHIP (1 << 1)
+@@ -37,6 +39,8 @@ static void __noreturn imx23_restart_soc(struct restart_handler *rst)
+ 
+ static int imx23_devices_init(void)
+ {
++	arm_add_mem_device("ram0", IMX_MEMORY_BASE, imx23_get_memsize());
++
+ 	if (of_get_root_node())
+ 		return 0;
  
 -- 
 2.18.0
