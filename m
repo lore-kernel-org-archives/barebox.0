@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wr1-x444.google.com ([2a00:1450:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fpTEh-0000Px-Up
- for barebox@lists.infradead.org; Tue, 14 Aug 2018 06:55:25 +0000
-Date: Tue, 14 Aug 2018 08:55:12 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180814065512.vkyoalzuyffg4plh@pengutronix.de>
-References: <20180813130300.32497-1-r.hieber@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180813130300.32497-1-r.hieber@pengutronix.de>
+ id 1fpDTW-0003eV-5C
+ for barebox@lists.infradead.org; Mon, 13 Aug 2018 14:05:39 +0000
+Received: by mail-wr1-x444.google.com with SMTP id b15-v6so14366026wrv.10
+ for <barebox@lists.infradead.org>; Mon, 13 Aug 2018 07:05:26 -0700 (PDT)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Mon, 13 Aug 2018 17:05:09 +0300
+Message-Id: <20180813140509.23839-1-pmamonov@gmail.com>
+In-Reply-To: <20180809065420.6475-1-s.hauer@pengutronix.de>
+References: <20180809065420.6475-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,55 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 00/14] MXS low-level improvements
-To: Roland Hieber <r.hieber@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] scripts/dtc: add fdtget to .gitignore
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-T24gTW9uLCBBdWcgMTMsIDIwMTggYXQgMDM6MDI6NDZQTSArMDIwMCwgUm9sYW5kIEhpZWJlciB3
-cm90ZToKPiBXaGlsZSBwb3J0aW5nIGJhcmVib3ggb250byBhIG5ldyBvbGQgTVgyOCBib2FyZCwg
-SSBoYWQgdG8gZXh0ZW5kIHRoZQo+IGxvdy1sZXZlbCBjb2RlIHRvIHNldCB1cCBTRFJBTSBhbmQg
-UE1JQy4gTW9zdCBvZiB0aG9zZSBjaGFuZ2VzIGFyZQo+IHByb2JhYmx5IGFsc28gYXBwbGljYWJs
-ZSB0byBNWDIzIGJvYXJkcyBzaW5jZSB0aGUgY29kZSBwYXRocyBhcmUgdGhlCj4gc2FtZSwgYW5k
-IGFyZSBvbmx5IHdyYXBwZWQgaW4gbXgyOF8qL214MjNfKi1zcGVjaWZpYyB3cmFwcGVyIGZ1bmN0
-aW9ucy4KPiAKPiAoQWxzbywgaWYgYW55b25lIHdhbnRzIHRvIHBvcnQgdGhlc2UgY2hhbmdlcyBi
-YWNrIHRvIFUtQm9vdCwgZmVlbCBmcmVlCj4gdG8gZG8gc28sIGl0J3MgdGhlIHNhbWUgY29kZSDi
-mLopCj4gCj4gQ2hhbmdlcyBpbiB2MiAtPiB2MzogKHNlZSBkaWZmIGJlbG93KQo+ICAgLSAwNy8x
-NCAiQVJNOiBNWFM6IHJlZmFjdG9yIG14MipfcG93ZXJfaW5pdCBzb3VyY2UgY29uZmlndXJhdGlv
-biI6Cj4gICAgIHJlZmFjdG9yIHBvd2VyX2NvbmZpZyAmIF9fUE9XRVJfVVNFX01BU0sgc3RhdG1l
-bnRzIGludG8gbmV3Cj4gICAgIGlubGluZSBmdW5jdGlvbiBteHNfcG93ZXJfY29uZmlnX2dldF91
-c2UoKSwgYXMgcHJvcG9zZWQgYnkgQW5kcmV5Cj4gICAgIFNtaXJub3YKPiAKPiBDaGFuZ2VzIGlu
-IHYxIC0+IHYyOgo+ICAgLSBpbmNsdWRlIGNsZWFuZXIgbWVtb3J5IHNpemUgZGV0ZWN0aW9uIGJ5
-IFNhc2NoYSwgYWxzbyBmb3IgaS5NWDIzCj4gICAtIGNhbGwgbXhzX21lbV9pbml0X2Nsb2NrKCkg
-ZXhwbGljaXRlbHkgZnJvbSBib2FyZCBjb2RlIGluc3RlYWQgb2YKPiAgICAgcGFzc2luZyB0aGUg
-Y2xvY2sgZGl2aWRlcnMgdGhyb3VnaCBteCpfbWVtX2luaXQoKQo+ICAgLSBhZGQgcGFyYW1ldGVy
-IGRvY3VtZW50YXRpb24gZm9yIG14c19tZW1faW5pdF9jbG9jaygpCj4gICAtIERvY3VtZW50YXRp
-b246IGJhY2stcGVkYWwgb24gdGhlIHN0YXRtZW50IHRoYXQgYWxsIGJvYXJkcyBhcmUgcG9ydGVk
-Cj4gICAgIHRvIGJhcmVib3ggYm9vdGxldHMsIHRoZXJlIGFyZSBzdGlsbCBzb21lIGkuTVgyMyBi
-b2FyZHMgdGhhdCBuZWVkCj4gICAgIEZyZWVzY2FsZSBib290bGV0IGNvZGUKPiAKPiBSb2xhbmQg
-SGllYmVyICgxMSk6Cj4gICBpbWFnZXM6IE1YUzogYWxsb3cgZ2VuZXJhdGlvbiBvZiB1bmVuY3J5
-cHRlZCBib290c3RyZWFtcwo+ICAgQVJNOiBNWFM6IGkuTVgyODogYWxsb3cgc2V0dXAgb2YgbG93
-LXZvbHRhZ2UgU0RSQU0KPiAgIEFSTTogTVhTOiBhbGxvdyBjb25maWd1cmF0aW9uIG9mIEVNSSBj
-bG9jayBwcmVzY2FsZXIKPiAgIEFSTTogTVhTOiByZWZhY3RvciBteDIqX3Bvd2VyX2luaXQgc291
-cmNlIGNvbmZpZ3VyYXRpb24KPiAgIEFSTTogTVhTOiBhbGxvdyBzdGFydGluZyBmcm9tIGJhdHRl
-cnkgaW5wdXQgd2l0aG91dCA0UDIgc291cmNlIGVuYWJsZWQKPiAgIEFSTTogTVhTOiBtYWtlIHBv
-d2VyIGxldmVscyBjb25maWd1cmFibGUgaW4gbXgyKl9wb3dlcl9pbml0Cj4gICBBUk06IE1YUzog
-Zml4IFZERHggYnJvd25vdXQgc2V0dXAgbG9naWMKPiAgIEFSTTogTVhTOiBtYWtlIFZERHggYnJv
-d25vdXQgc2V0dXAgbW9yZSB1bmRlcnN0YW5kYWJsZQo+ICAgQVJNOiBNWFM6IG14c19wb3dlcl9z
-dGF0dXM6IHVzZSBsZXNzIG1hZ2ljIHZhbHVlcwo+ICAgQVJNOiBNWFM6IG14c19wb3dlcl9zdGF0
-dXM6IGFsaWduIG91dHB1dAo+ICAgRG9jdW1lbnRhdGlvbjogTVhTOiBnZW5lcmFsIHVwZGF0ZSBh
-bmQgaW1wcm92ZW1lbnRzCj4gCj4gU2FzY2hhIEhhdWVyICgzKToKPiAgIHNjcmlwdHM6IG14c2lt
-YWdlOiBBbGxvdyB1bmVuY3J5cHRlZCBpbWFnZXMKPiAgIEFSTTogaS5NWDI4OiBBZGQgbWVtb3J5
-IHNpemUgZGV0ZWN0aW9uCj4gICBBUk06IGkuTVgyMzogQWRkIG1lbW9yeSBzaXplIGRldGVjdGlv
-bgoKQXBwbGllZCwgdGhhbmtzCgpTYXNjaGEKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3Ry
-aWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJv
-bml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQ
-aG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEg
-MjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
-c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+---
+ scripts/dtc/.gitignore | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/scripts/dtc/.gitignore b/scripts/dtc/.gitignore
+index cdabdc95a..80f6b50fd 100644
+--- a/scripts/dtc/.gitignore
++++ b/scripts/dtc/.gitignore
+@@ -2,3 +2,4 @@ dtc
+ dtc-lexer.lex.c
+ dtc-parser.tab.c
+ dtc-parser.tab.h
++fdtget
+-- 
+2.17.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
