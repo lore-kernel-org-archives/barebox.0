@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fpCWo-0000K6-Ez
- for barebox@lists.infradead.org; Mon, 13 Aug 2018 13:05:06 +0000
+ id 1fpCWo-0000K7-Gd
+ for barebox@lists.infradead.org; Mon, 13 Aug 2018 13:05:07 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Mon, 13 Aug 2018 15:02:56 +0200
-Message-Id: <20180813130300.32497-11-r.hieber@pengutronix.de>
+Date: Mon, 13 Aug 2018 15:02:58 +0200
+Message-Id: <20180813130300.32497-13-r.hieber@pengutronix.de>
 In-Reply-To: <20180813130300.32497-1-r.hieber@pengutronix.de>
 References: <20180813130300.32497-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,45 +21,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 10/14] ARM: MXS: fix VDDx brownout setup logic
+Subject: [PATCH v3 12/14] ARM: MXS: mxs_power_status: use less magic values
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-The cfg->bo_irq and cfg->bo_enirq (i.e. VDDx_BO_IRQ and ENIRQ_VDDx_BO)
-flags are part of POWER_CTRL, so setting those flag in cfg->reg (i.e.
-POWER_VDDxCTRL) makes no sense. Fortunately, those bits are reserved in
-ENIRQ_VDDx_BO, so writing them did no harm, but also doesn't work as
-intended.
+... and in that process fix the erroneous usage of VDDA values when
+printing the stats for POWER_VDDDCTRL_DISABLE_FET and all of the
+*LINREG_OFFSET bitfields.
 
 Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- arch/arm/mach-mxs/power-init.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/mach-mxs/power-init.c | 37 ++++++++++++++++++----------------
+ 1 file changed, 20 insertions(+), 17 deletions(-)
 
 diff --git a/arch/arm/mach-mxs/power-init.c b/arch/arm/mach-mxs/power-init.c
-index 490ea4ba2d..6796a4491d 100644
+index 9ab36463e2..b3b0db666f 100644
 --- a/arch/arm/mach-mxs/power-init.c
 +++ b/arch/arm/mach-mxs/power-init.c
-@@ -1083,8 +1083,8 @@ static void mxs_power_set_vddx(const struct mxs_vddx_cfg *cfg,
+@@ -37,27 +37,30 @@ static void mxs_power_status(void)
+ 	uint32_t vddd = readl(&power_regs->hw_power_vdddctrl);
+ 	uint32_t vddmem = readl(&power_regs->hw_power_vddmemctrl);
  
- 	if (adjust_up && cfg->bo_irq) {
- 		if (powered_by_linreg) {
--			bo_int = readl(cfg->reg);
--			clrbits_le32(cfg->reg, cfg->bo_enirq);
-+			bo_int = readl(&power_regs->hw_power_ctrl);
-+			writel(cfg->bo_enirq, &power_regs->hw_power_ctrl_clr);
- 		}
- 		setbits_le32(cfg->reg, cfg->bo_offset_mask);
- 	}
-@@ -1126,7 +1126,7 @@ static void mxs_power_set_vddx(const struct mxs_vddx_cfg *cfg,
- 		if (adjust_up && powered_by_linreg) {
- 			writel(cfg->bo_irq, &power_regs->hw_power_ctrl_clr);
- 			if (bo_int & cfg->bo_enirq)
--				setbits_le32(cfg->reg, cfg->bo_enirq);
-+				writel(cfg->bo_enirq, &power_regs->hw_power_ctrl_set);
- 		}
++#define __REG_BITS(value, fieldname)  (((value) & fieldname##_MASK) >> fieldname##_OFFSET)
++
+ 	printf("vddio:  %dmV (BO -%dmV), Linreg enabled, Linreg offset: %d, FET %sabled\n",
+-			(vddio & 0x1f) * 50 + 2800,
+-			((vddio >> 8) & 0x7) * 50,
+-			linregofs[((vdda >> 12) & 0x3)],
+-			(vddio & (1 << 16)) ? "dis" : "en");
++			__REG_BITS(vddio, POWER_VDDIOCTRL_TRG) * 50 + 2800,
++			__REG_BITS(vddio, POWER_VDDIOCTRL_BO_OFFSET) * 50,
++			linregofs[__REG_BITS(vddio, POWER_VDDIOCTRL_LINREG_OFFSET)],
++			(vddio & POWER_VDDIOCTRL_DISABLE_FET) ? "dis" : "en");
+ 	printf("vdda:   %dmV (BO -%dmV), Linreg %sabled, Linreg offset: %d, FET %sabled\n",
+-			(vdda & 0x1f) * 25 + 1500,
+-			((vdda >> 8) & 0x7) * 25,
+-			(vdda & (1 << 17)) ? "en" : "dis",
+-			linregofs[((vdda >> 12) & 0x3)],
+-			(vdda & (1 << 16)) ? "dis" : "en");
++			__REG_BITS(vdda, POWER_VDDACTRL_TRG) * 25 + 1500,
++			__REG_BITS(vdda, POWER_VDDACTRL_BO_OFFSET) * 25,
++			(vdda & POWER_VDDACTRL_ENABLE_LINREG) ? "en" : "dis",
++			linregofs[__REG_BITS(vdda, POWER_VDDACTRL_LINREG_OFFSET)],
++			(vdda & POWER_VDDACTRL_DISABLE_FET) ? "dis" : "en");
+ 	printf("vddd:   %dmV (BO -%dmV), Linreg %sabled, Linreg offset: %d, FET %sabled\n",
+-			(vddd & 0x1f) * 25 + 800,
+-			((vddd >> 8) & 0x7) * 25,
+-			(vddd & (1 << 21)) ? "en" : "dis",
+-			linregofs[((vdda >> 16) & 0x3)],
+-			(vdda & (1 << 20)) ? "dis" : "en");
++			__REG_BITS(vddd, POWER_VDDDCTRL_TRG) * 25 + 800,
++			__REG_BITS(vddd, POWER_VDDDCTRL_BO_OFFSET) * 25,
++			(vddd & POWER_VDDDCTRL_ENABLE_LINREG) ? "en" : "dis",
++			linregofs[__REG_BITS(vddd, POWER_VDDDCTRL_LINREG_OFFSET)],
++			(vddd & POWER_VDDDCTRL_DISABLE_FET) ? "dis" : "en");
+ 	printf("vddmem: %dmV (BO -%dmV), Linreg %sabled\n",
+-			(vddmem & 0x1f) * 25 + 1100,
+-			((vddmem >> 5) & 0x7) * 25,
+-			(vddmem & (1 << 8)) ? "en" : "dis");
++			__REG_BITS(vddmem, POWER_VDDMEMCTRL_TRG) * 25 + 1100,
++			/* Note: this area is reserved on i.MX23, yielding 0: */
++			__REG_BITS(vddmem, MX28_POWER_VDDMEMCTRL_BO_OFFSET) * 25,
++			(vddmem & POWER_VDDMEMCTRL_ENABLE_LINREG) ? "en" : "dis");
+ }
  
- 		clrsetbits_le32(cfg->reg, cfg->bo_offset_mask,
+ /*
 -- 
 2.18.0
 
