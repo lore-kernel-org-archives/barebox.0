@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fpCWl-0000K3-Fe
- for barebox@lists.infradead.org; Mon, 13 Aug 2018 13:04:59 +0000
+ id 1fpCWl-0000Jy-Fw
+ for barebox@lists.infradead.org; Mon, 13 Aug 2018 13:05:00 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Mon, 13 Aug 2018 15:02:54 +0200
-Message-Id: <20180813130300.32497-9-r.hieber@pengutronix.de>
+Date: Mon, 13 Aug 2018 15:02:50 +0200
+Message-Id: <20180813130300.32497-5-r.hieber@pengutronix.de>
 In-Reply-To: <20180813130300.32497-1-r.hieber@pengutronix.de>
 References: <20180813130300.32497-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,86 +21,151 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 08/14] ARM: MXS: allow starting from battery input without
- 4P2 source enabled
+Subject: [PATCH v3 04/14] ARM: MXS: allow configuration of EMI clock prescaler
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-Some boards don't need the 4.2V power source at all, so allow them to
-keep it disabled for efficiency reasons.
-
-For backwards compatibility, don't disable the 4P2 power source on the
-existing boards which are supplied from battery input.
-
-The POWER_USE_5V code path however always enables it up as it is needed
-to supply the DC-DC converter.
+Allow to set not only the fractional divider, but also the prescaler for
+the EMI clock in mxs_mem_init_clock(), and rename the parameters
+accordingly to reflect the change. Port the existing board code to set
+up the EMI clock explicitely with the old values. Also fix the
+off-by-a-half error in the comments, which did not take the prescaler of
+2 into account, on which the fractional divider is applied (according to
+the i.MX23/i.MX28 Reference Manuals)
 
 Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- arch/arm/boards/freescale-mx28-evk/lowlevel.c | 2 +-
- arch/arm/boards/karo-tx28/lowlevel.c          | 2 +-
- arch/arm/mach-mxs/include/mach/init.h         | 2 ++
- arch/arm/mach-mxs/power-init.c                | 3 ++-
- 4 files changed, 6 insertions(+), 3 deletions(-)
+ arch/arm/boards/duckbill/lowlevel.c           |  2 ++
+ arch/arm/boards/freescale-mx28-evk/lowlevel.c |  2 ++
+ arch/arm/boards/imx233-olinuxino/lowlevel.c   |  2 ++
+ arch/arm/boards/karo-tx28/lowlevel.c          |  2 ++
+ arch/arm/mach-mxs/include/mach/init.h         |  2 +-
+ arch/arm/mach-mxs/mem-init.c                  | 19 +++++++++----------
+ 6 files changed, 18 insertions(+), 11 deletions(-)
 
+diff --git a/arch/arm/boards/duckbill/lowlevel.c b/arch/arm/boards/duckbill/lowlevel.c
+index 3adda68d77..cb60667323 100644
+--- a/arch/arm/boards/duckbill/lowlevel.c
++++ b/arch/arm/boards/duckbill/lowlevel.c
+@@ -55,6 +55,8 @@ static noinline void duckbill_init(void)
+ 
+ 	pr_debug("initializing SDRAM...\n");
+ 
++	/* EMI_CLK of 480 / 2 * (18/21) = 205.7 MHz */
++	mxs_mem_init_clock(2, 21);
+ 	mx28_mem_init(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
+ 			mx28_dram_vals_default);
+ 
 diff --git a/arch/arm/boards/freescale-mx28-evk/lowlevel.c b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
-index b6a8793c9e..fdaef959a3 100644
+index 9df60210e6..2c8d27e801 100644
 --- a/arch/arm/boards/freescale-mx28-evk/lowlevel.c
 +++ b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
-@@ -43,7 +43,7 @@ static noinline void freescale_mx28evk_init(void)
- 
- 	pr_debug("initializing power...\n");
- 
--	mx28_power_init(POWER_USE_BATTERY_INPUT);
-+	mx28_power_init(POWER_USE_BATTERY_INPUT | POWER_ENABLE_4P2);
+@@ -47,6 +47,8 @@ static noinline void freescale_mx28evk_init(void)
  
  	pr_debug("initializing SDRAM...\n");
  
++	/* EMI_CLK of 480 / 2 * (18/21) = 205.7 MHz */
++	mxs_mem_init_clock(2, 21);
+ 	mx28_mem_init(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
+ 			mx28_dram_vals_default);
+ 
+diff --git a/arch/arm/boards/imx233-olinuxino/lowlevel.c b/arch/arm/boards/imx233-olinuxino/lowlevel.c
+index 63a65230b0..bfb50be717 100644
+--- a/arch/arm/boards/imx233-olinuxino/lowlevel.c
++++ b/arch/arm/boards/imx233-olinuxino/lowlevel.c
+@@ -159,6 +159,8 @@ static noinline void imx23_olinuxino_init(void)
+ 	pr_debug("initializing SDRAM...\n");
+ 
+ 	imx23_olinuxino_adjust_memory_params(mx23_dram_vals);
++	/* EMI_CLK of 480 / 2 * (18/33) = 130.90 MHz */
++	mxs_mem_init_clock(2, 33);
+ 	mx23_mem_init();
+ 
+ 	pr_debug("DONE\n");
 diff --git a/arch/arm/boards/karo-tx28/lowlevel.c b/arch/arm/boards/karo-tx28/lowlevel.c
-index 5a6a3e3519..a9b65167cd 100644
+index 99f8a562cc..abc223d3b4 100644
 --- a/arch/arm/boards/karo-tx28/lowlevel.c
 +++ b/arch/arm/boards/karo-tx28/lowlevel.c
-@@ -43,7 +43,7 @@ static noinline void karo_tx28_init(void)
- 
- 	pr_debug("initializing power...\n");
- 
--	mx28_power_init(POWER_USE_BATTERY_INPUT);
-+	mx28_power_init(POWER_USE_BATTERY_INPUT | POWER_ENABLE_4P2);
+@@ -47,6 +47,8 @@ static noinline void karo_tx28_init(void)
  
  	pr_debug("initializing SDRAM...\n");
  
++	/* EMI_CLK of 480 / 2 * (18/21) = 205.7 MHz */
++	mxs_mem_init_clock(2, 21);
+ 	mx28_mem_init(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
+ 			mx28_dram_vals_default);
+ 
 diff --git a/arch/arm/mach-mxs/include/mach/init.h b/arch/arm/mach-mxs/include/mach/init.h
-index 878cf4ad62..aa3c68facb 100644
+index 7021981d41..66dfd635de 100644
 --- a/arch/arm/mach-mxs/include/mach/init.h
 +++ b/arch/arm/mach-mxs/include/mach/init.h
-@@ -18,11 +18,13 @@ void mxs_early_delay(int delay);
-  * - POWER_USE_BATTERY: use battery input when the system is supplied by a battery
-  * - POWER_USE_BATTERY_INPUT: use battery input when the system is supplied by
-  *   a DC source (instead of a real battery) on the battery input
-+ * - POWER_ENABLE_4P2: power up the 4P2 regulator (implied for POWER_USE_5V)
-  */
- enum mxs_power_config {
- 	POWER_USE_5V			= 0b00000000,
- 	POWER_USE_BATTERY		= 0b00000001,
- 	POWER_USE_BATTERY_INPUT		= 0b00000010,
-+	POWER_ENABLE_4P2		= 0b00000100,
- };
- extern int power_config;
- static inline enum mxs_power_config mxs_power_config_get_use(void) {
-diff --git a/arch/arm/mach-mxs/power-init.c b/arch/arm/mach-mxs/power-init.c
-index 14f9b7cca7..60fa0cb022 100644
---- a/arch/arm/mach-mxs/power-init.c
-+++ b/arch/arm/mach-mxs/power-init.c
-@@ -717,7 +717,8 @@ static void mxs_enable_battery_input(void)
- 		POWER_5VCTRL_CHARGE_4P2_ILIMIT_MASK,
- 		0x8 << POWER_5VCTRL_CHARGE_4P2_ILIMIT_OFFSET);
+@@ -30,7 +30,7 @@ void mx28_mem_init(const int emi_ds_ctrl_ddr_mode,
+ 		const uint32_t dram_vals[190]);
+ void mxs_mem_setup_cpu_and_hbus(void);
+ void mxs_mem_setup_vdda(void);
+-void mxs_mem_init_clock(unsigned char divider);
++void mxs_mem_init_clock(const uint8_t clk_emi_div, const uint8_t clk_emi_frac);
  
--	mxs_power_enable_4p2();
-+	if (power_config & POWER_ENABLE_4P2)
-+		mxs_power_enable_4p2();
+ void mxs_lradc_init(void);
+ void mxs_lradc_enable_batt_measurement(void);
+diff --git a/arch/arm/mach-mxs/mem-init.c b/arch/arm/mach-mxs/mem-init.c
+index 7bc6be00b4..568db81302 100644
+--- a/arch/arm/mach-mxs/mem-init.c
++++ b/arch/arm/mach-mxs/mem-init.c
+@@ -192,7 +192,12 @@ static void mx23_initialize_dram_values(void)
+ 	writel((1 << 24), IMX_SDRAMC_BASE + (4 * 8));
  }
  
- /**
+-void mxs_mem_init_clock(unsigned char divider)
++/**
++ * Set up the EMI clock.
++ * @clk_emi_div: integer divider (prescaler), the DIV_EMI field in HW_CLKCTRL_EMI
++ * @clk_emi_frac: fractional divider, the EMIFRAC field in HW_CLKCTRL_FRAC0
++ */
++void mxs_mem_init_clock(const uint8_t clk_emi_div, const uint8_t clk_emi_frac)
+ {
+ 	struct mxs_clkctrl_regs *clkctrl_regs =
+ 		(struct mxs_clkctrl_regs *)IMX_CCM_BASE;
+@@ -202,7 +207,7 @@ void mxs_mem_init_clock(unsigned char divider)
+ 		&clkctrl_regs->hw_clkctrl_frac0_set[CLKCTRL_FRAC0_EMI]);
+ 
+ 	/* Set fractional divider for ref_emi */
+-	writeb(CLKCTRL_FRAC_CLKGATE | (divider & CLKCTRL_FRAC_FRAC_MASK),
++	writeb(CLKCTRL_FRAC_CLKGATE | (clk_emi_frac & CLKCTRL_FRAC_FRAC_MASK),
+ 		&clkctrl_regs->hw_clkctrl_frac0[CLKCTRL_FRAC0_EMI]);
+ 
+ 	/* Ungate EMI clock */
+@@ -211,8 +216,8 @@ void mxs_mem_init_clock(unsigned char divider)
+ 
+ 	mxs_early_delay(11000);
+ 
+-	/* Set EMI clock divider for EMI clock to 411 / 2 = 205MHz */
+-	writel((2 << CLKCTRL_EMI_DIV_EMI_OFFSET) |
++	/* Set EMI clock prescaler */
++	writel(((clk_emi_div & CLKCTRL_EMI_DIV_EMI_MASK) << CLKCTRL_EMI_DIV_EMI_OFFSET) |
+ 		(1 << CLKCTRL_EMI_DIV_XTAL_OFFSET),
+ 		&clkctrl_regs->hw_clkctrl_emi);
+ 
+@@ -273,9 +278,6 @@ void mx23_mem_init(void)
+ {
+ 	mxs_early_delay(11000);
+ 
+-	/* Fractional divider for ref_emi is 33 ; 480 * 18 / 33 = 266MHz */
+-	mxs_mem_init_clock(33);
+-
+ 	/*
+ 	 * Reset/ungate the EMI block. This is essential, otherwise the system
+ 	 * suffers from memory instability. This thing is mx23 specific and is
+@@ -322,9 +324,6 @@ void mx28_mem_init(const int emi_ds_ctrl_ddr_mode, const uint32_t dram_vals[190]
+ {
+ 	mxs_early_delay(11000);
+ 
+-	/* Fractional divider for ref_emi is 21 ; 480 * 18 / 21 = 411MHz */
+-	mxs_mem_init_clock(21);
+-
+ 	/* Set DDR mode */
+ 	writel(emi_ds_ctrl_ddr_mode, IMX_IOMUXC_BASE + 0x1b80);
+ 
 -- 
 2.18.0
 
