@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fpCWl-0000K0-G0
- for barebox@lists.infradead.org; Mon, 13 Aug 2018 13:05:03 +0000
+ id 1fpCWl-0000K2-Hc
+ for barebox@lists.infradead.org; Mon, 13 Aug 2018 13:05:04 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Mon, 13 Aug 2018 15:02:53 +0200
-Message-Id: <20180813130300.32497-8-r.hieber@pengutronix.de>
+Date: Mon, 13 Aug 2018 15:02:51 +0200
+Message-Id: <20180813130300.32497-6-r.hieber@pengutronix.de>
 In-Reply-To: <20180813130300.32497-1-r.hieber@pengutronix.de>
 References: <20180813130300.32497-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,224 +21,163 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 07/14] ARM: MXS: refactor mx2*_power_init source
- configuration
+Subject: [PATCH v3 05/14] ARM: i.MX28: Add memory size detection
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-Having three ints as parameter suggests that we can use up to 2^3
-power configurations for the system, but when we look at the code, the
-power setup is packaged in if {...} else if {...} else if {...} blocks,
-so setting more than one parameter to 1 is useless here.
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Refactor the parameters into an enum to get rid of that suggestion.
+We can detect the SDRAM automatically, no need to let the boards
+do it manually.
+This also fixes device tree based i.MX28 boards like the duckbill.
+These boards once had a /memory node in the device tree, but now
+that this was changed to /memory@40000000 barebox didn't find it
+anymore.
 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Tested-by: Roland Hieber <r.hieber@pengutronix.de>
 Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- arch/arm/boards/duckbill/lowlevel.c           |  2 +-
- arch/arm/boards/freescale-mx28-evk/lowlevel.c |  2 +-
- arch/arm/boards/imx233-olinuxino/lowlevel.c   |  2 +-
- arch/arm/boards/karo-tx28/lowlevel.c          |  2 +-
- arch/arm/mach-mxs/include/mach/init.h         | 24 +++++++--
- arch/arm/mach-mxs/power-init.c                | 49 +++++++------------
- 6 files changed, 41 insertions(+), 40 deletions(-)
+ .../boards/crystalfontz-cfa10036/cfa10036.c   | 24 ---------------
+ arch/arm/boards/freescale-mx28-evk/mx28-evk.c |  8 -----
+ arch/arm/boards/karo-tx28/tx28.c              |  8 -----
+ arch/arm/mach-mxs/include/mach/imx28.h        | 30 +++++++++++++++++++
+ arch/arm/mach-mxs/soc-imx28.c                 |  4 +++
+ 5 files changed, 34 insertions(+), 40 deletions(-)
+ create mode 100644 arch/arm/mach-mxs/include/mach/imx28.h
 
-diff --git a/arch/arm/boards/duckbill/lowlevel.c b/arch/arm/boards/duckbill/lowlevel.c
-index cb60667323..3f8e4ad271 100644
---- a/arch/arm/boards/duckbill/lowlevel.c
-+++ b/arch/arm/boards/duckbill/lowlevel.c
-@@ -51,7 +51,7 @@ static noinline void duckbill_init(void)
+diff --git a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+index 947db7cff6..dcf560432d 100644
+--- a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
++++ b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+@@ -89,30 +89,6 @@ static struct i2c_gpio_platform_data i2c_gpio_pdata = {
+ 	.udelay			= 5,		/* ~100 kHz */
+ };
  
- 	pr_debug("initializing power...\n");
+-void v5_mmu_cache_flush(void);
+-long cfa10036_get_ram_size(void)
+-{
+-	volatile u32 *base = (void *)IMX_MEMORY_BASE;
+-	volatile u32 *ofs = base + SZ_128M / sizeof(u32);
+-
+-	*base = *ofs = 0xdeadbeef;
+-	*ofs = 0xbaadcafe;
+-
+-	v5_mmu_cache_flush();
+-	if (*base == 0xbaadcafe)
+-		return SZ_128M;
+-	else
+-		return SZ_256M;
+-}
+-
+-static int cfa10036_mem_init(void)
+-{
+-	arm_add_mem_device("ram0", IMX_MEMORY_BASE, cfa10036_get_ram_size());
+-
+-	return 0;
+-}
+-mem_initcall(cfa10036_mem_init);
+-
+ static int cfa10036_devices_init(void)
+ {
+ 	int i;
+diff --git a/arch/arm/boards/freescale-mx28-evk/mx28-evk.c b/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
+index 9e5d612bda..06a2c21a47 100644
+--- a/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
++++ b/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
+@@ -232,14 +232,6 @@ static struct imx_fb_platformdata mx28_evk_fb_pdata = {
+ 	.enable = mx28_evk_fb_enable,
+ };
  
--	mx28_power_init(0, 0, 1);
-+	mx28_power_init(POWER_USE_5V);
+-static int mx28_evk_mem_init(void)
+-{
+-	arm_add_mem_device("ram0", IMX_MEMORY_BASE, 128 * 1024 * 1024);
+-
+-	return 0;
+-}
+-mem_initcall(mx28_evk_mem_init);
+-
+ static const struct spi_board_info mx28evk_spi_board_info[] = {
+ 	{
+ 		.name = "m25p80",
+diff --git a/arch/arm/boards/karo-tx28/tx28.c b/arch/arm/boards/karo-tx28/tx28.c
+index 26dbc00790..47cac21307 100644
+--- a/arch/arm/boards/karo-tx28/tx28.c
++++ b/arch/arm/boards/karo-tx28/tx28.c
+@@ -73,14 +73,6 @@ static const uint32_t tx28_pad_setup[] = {
  
- 	pr_debug("initializing SDRAM...\n");
+ extern void base_board_init(void);
  
-diff --git a/arch/arm/boards/freescale-mx28-evk/lowlevel.c b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
-index 2c8d27e801..b6a8793c9e 100644
---- a/arch/arm/boards/freescale-mx28-evk/lowlevel.c
-+++ b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
-@@ -43,7 +43,7 @@ static noinline void freescale_mx28evk_init(void)
- 
- 	pr_debug("initializing power...\n");
- 
--	mx28_power_init(0, 1, 0);
-+	mx28_power_init(POWER_USE_BATTERY_INPUT);
- 
- 	pr_debug("initializing SDRAM...\n");
- 
-diff --git a/arch/arm/boards/imx233-olinuxino/lowlevel.c b/arch/arm/boards/imx233-olinuxino/lowlevel.c
-index bfb50be717..c6cf26b61d 100644
---- a/arch/arm/boards/imx233-olinuxino/lowlevel.c
-+++ b/arch/arm/boards/imx233-olinuxino/lowlevel.c
-@@ -154,7 +154,7 @@ static noinline void imx23_olinuxino_init(void)
- 
- 	pr_debug("initializing power...\n");
- 
--	mx23_power_init(0, 0, 1);
-+	mx23_power_init(POWER_USE_5V);
- 
- 	pr_debug("initializing SDRAM...\n");
- 
-diff --git a/arch/arm/boards/karo-tx28/lowlevel.c b/arch/arm/boards/karo-tx28/lowlevel.c
-index abc223d3b4..5a6a3e3519 100644
---- a/arch/arm/boards/karo-tx28/lowlevel.c
-+++ b/arch/arm/boards/karo-tx28/lowlevel.c
-@@ -43,7 +43,7 @@ static noinline void karo_tx28_init(void)
- 
- 	pr_debug("initializing power...\n");
- 
--	mx28_power_init(0, 1, 0);
-+	mx28_power_init(POWER_USE_BATTERY_INPUT);
- 
- 	pr_debug("initializing SDRAM...\n");
- 
-diff --git a/arch/arm/mach-mxs/include/mach/init.h b/arch/arm/mach-mxs/include/mach/init.h
-index 66dfd635de..878cf4ad62 100644
---- a/arch/arm/mach-mxs/include/mach/init.h
-+++ b/arch/arm/mach-mxs/include/mach/init.h
-@@ -12,10 +12,26 @@
- 
- void mxs_early_delay(int delay);
- 
--void mx23_power_init(int __has_battery, int __use_battery_input,
--		int __use_5v_input);
--void mx28_power_init(int __has_battery, int __use_battery_input,
--		int __use_5v_input);
-+/**
-+ * Power configuration of the system:
-+ * - POWER_USE_5V: use 5V input as power supply
-+ * - POWER_USE_BATTERY: use battery input when the system is supplied by a battery
-+ * - POWER_USE_BATTERY_INPUT: use battery input when the system is supplied by
-+ *   a DC source (instead of a real battery) on the battery input
-+ */
-+enum mxs_power_config {
-+	POWER_USE_5V			= 0b00000000,
-+	POWER_USE_BATTERY		= 0b00000001,
-+	POWER_USE_BATTERY_INPUT		= 0b00000010,
-+};
-+extern int power_config;
-+static inline enum mxs_power_config mxs_power_config_get_use(void) {
-+	return (power_config & 0b00000011);
+-static int tx28_mem_init(void)
+-{
+-	arm_add_mem_device("ram0", IMX_MEMORY_BASE, 128 * 1024 * 1024);
+-
+-	return 0;
+-}
+-mem_initcall(tx28_mem_init);
+-
+ static int tx28_devices_init(void)
+ {
+ 	int i;
+diff --git a/arch/arm/mach-mxs/include/mach/imx28.h b/arch/arm/mach-mxs/include/mach/imx28.h
+new file mode 100644
+index 0000000000..5816625c89
+--- /dev/null
++++ b/arch/arm/mach-mxs/include/mach/imx28.h
+@@ -0,0 +1,30 @@
++#ifndef __MACH_IMX28_H
++#define __MACH_IMX28_H
++
++#include <linux/bitfield.h>
++#include <io.h>
++
++#define DRAM_CTL29_CS0_EN	BIT(24)
++#define DRAM_CTL29_CS1_EN	BIT(25)
++#define DRAM_CTL29_COLUMNS_DIFF	GENMASK(18, 16)
++#define DRAM_CTL29_ROWS_DIFF	GENMASK(10, 8)
++#define DRAM_CTL31_EIGHT_BANKS	BIT(16)
++
++#define DRAM_CTL(n)	(IMX_SDRAMC_BASE + 4 * (n))
++
++static inline u32 imx28_get_memsize(void)
++{
++	u32 ctl29 = readl(DRAM_CTL(29));
++	u32 ctl31 = readl(DRAM_CTL(31));
++	int rows, columns, banks, cs0, cs1;
++
++	columns = 12 - FIELD_GET(DRAM_CTL29_COLUMNS_DIFF, ctl29);
++	rows = 15 - FIELD_GET(DRAM_CTL29_ROWS_DIFF, ctl29);
++	banks = FIELD_GET(DRAM_CTL31_EIGHT_BANKS, ctl31) ? 8 : 4;
++	cs0 = FIELD_GET(DRAM_CTL29_CS0_EN, ctl29);
++	cs1 = FIELD_GET(DRAM_CTL29_CS1_EN, ctl29);
++
++	return (1 << columns) * (1 << rows) * banks * (cs0 + cs1);
 +}
 +
++#endif /* __MACH_IMX28_H */
+\ No newline at end of file
+diff --git a/arch/arm/mach-mxs/soc-imx28.c b/arch/arm/mach-mxs/soc-imx28.c
+index dc6020aa36..49f870b5bf 100644
+--- a/arch/arm/mach-mxs/soc-imx28.c
++++ b/arch/arm/mach-mxs/soc-imx28.c
+@@ -19,6 +19,8 @@
+ #include <restart.h>
+ #include <mach/imx28-regs.h>
+ #include <io.h>
++#include <asm/memory.h>
++#include <mach/imx28.h>
+ 
+ #define HW_CLKCTRL_RESET 0x1e0
+ # define HW_CLKCTRL_RESET_CHIP (1 << 1)
+@@ -51,6 +53,8 @@ static int imx28_init(void)
+ 
+ 	restart_handler_register_fn(imx28_restart_soc);
+ 
++	arm_add_mem_device("ram0", IMX_MEMORY_BASE, imx28_get_memsize());
 +
-+void mx23_power_init(const int config);
-+void mx28_power_init(const int config);
- void mxs_power_wait_pswitch(void);
- 
- extern const uint32_t mx28_dram_vals_default[190];
-diff --git a/arch/arm/mach-mxs/power-init.c b/arch/arm/mach-mxs/power-init.c
-index 595b51c5ba..14f9b7cca7 100644
---- a/arch/arm/mach-mxs/power-init.c
-+++ b/arch/arm/mach-mxs/power-init.c
-@@ -24,21 +24,7 @@
- #include <mach/regs-rtc.h>
- #include <mach/regs-lradc.h>
- 
--/*
-- * has_battery - true when this board has a battery.
-- */
--static int has_battery;
--
--/*
-- * use_battery_input - true when this board is supplied from the
-- * battery input, but has a DC source instead of a real battery
-- */
--static int use_battery_input;
--
--/*
-- * use_5v_input - true when this board can use the 5V input
-- */
--static int use_5v_input;
-+int power_config;
- 
- static void mxs_power_status(void)
- {
-@@ -514,7 +500,8 @@ static void mxs_power_enable_4p2(void)
- 		POWER_5VCTRL_HEADROOM_ADJ_MASK,
- 		0x4 << POWER_5VCTRL_HEADROOM_ADJ_OFFSET);
- 
--	if (has_battery || use_battery_input)
-+	if (mxs_power_config_get_use() == POWER_USE_BATTERY ||
-+	    mxs_power_config_get_use() == POWER_USE_BATTERY_INPUT)
- 		dropout_ctrl = POWER_DCDC4P2_DROPOUT_CTRL_SRC_SEL;
- 	else
- 		dropout_ctrl = POWER_DCDC4P2_DROPOUT_CTRL_SRC_4P2;
-@@ -1182,16 +1169,15 @@ static void mx23_ungate_power(void)
-  *
-  * This function calls all the power block initialization functions in
-  * proper sequence to start the power block.
-+ *
-+ * @config: see enum mxs_power_config for possible options
-  */
--void mx23_power_init(int __has_battery, int __use_battery_input,
--		int __use_5v_input)
-+void mx23_power_init(const int config)
- {
- 	struct mxs_power_regs *power_regs =
- 		(struct mxs_power_regs *)IMX_POWER_BASE;
- 
--	has_battery = __has_battery;
--	use_battery_input = __use_battery_input;
--	use_5v_input = __use_5v_input;
-+	power_config = config;
- 
- 	mx23_ungate_power();
- 
-@@ -1204,11 +1190,11 @@ void mx23_power_init(int __has_battery, int __use_battery_input,
- 
- 	mxs_src_power_init();
- 
--	if (has_battery)
-+	if (mxs_power_config_get_use() == POWER_USE_BATTERY)
- 		mxs_power_configure_power_source();
--	else if (use_battery_input)
-+	else if (mxs_power_config_get_use() == POWER_USE_BATTERY_INPUT)
- 		mxs_enable_battery_input();
--	else if (use_5v_input)
-+	else if (mxs_power_config_get_use() == POWER_USE_5V)
- 		mxs_boot_valid_5v();
- 
- 	mxs_power_clock2pll();
-@@ -1243,16 +1229,15 @@ void mx23_power_init(int __has_battery, int __use_battery_input,
-  *
-  * This function calls all the power block initialization functions in
-  * proper sequence to start the power block.
-+ *
-+ * @config: see enum mxs_power_config for possible options
-  */
--void mx28_power_init(int __has_battery, int __use_battery_input,
--		int __use_5v_input)
-+void mx28_power_init(const int config)
- {
- 	struct mxs_power_regs *power_regs =
- 		(struct mxs_power_regs *)IMX_POWER_BASE;
- 
--	has_battery = __has_battery;
--	use_battery_input = __use_battery_input;
--	use_5v_input = __use_5v_input;
-+	power_config = config;
- 
- 	mxs_power_status();
- 	mxs_power_clock2xtal();
-@@ -1264,11 +1249,11 @@ void mx28_power_init(int __has_battery, int __use_battery_input,
- 
- 	mxs_src_power_init();
- 
--	if (has_battery)
-+	if (mxs_power_config_get_use() == POWER_USE_BATTERY)
- 		mxs_power_configure_power_source();
--	else if (use_battery_input)
-+	else if (mxs_power_config_get_use() == POWER_USE_BATTERY_INPUT)
- 		mxs_enable_battery_input();
--	else if (use_5v_input)
-+	else if (mxs_power_config_get_use() == POWER_USE_5V)
- 		mxs_boot_valid_5v();
- 
- 	mxs_power_clock2pll();
+ 	return 0;
+ }
+ postcore_initcall(imx28_init);
 -- 
 2.18.0
 
