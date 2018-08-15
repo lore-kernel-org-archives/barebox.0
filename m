@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x230.google.com ([2607:f8b0:400e:c01::230])
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fs8Qi-0001jl-TQ
- for barebox@lists.infradead.org; Tue, 21 Aug 2018 15:18:50 +0000
-Received: by mail-pl0-x230.google.com with SMTP id w14-v6so8957823plp.6
- for <barebox@lists.infradead.org>; Tue, 21 Aug 2018 08:18:38 -0700 (PDT)
-From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Tue, 21 Aug 2018 17:18:24 +0200
-Message-Id: <20180821151826.5011-1-aleksander@aleksander.es>
+ id 1fptup-00025o-1p
+ for barebox@lists.infradead.org; Wed, 15 Aug 2018 11:24:41 +0000
+Received: by mail-pf1-x432.google.com with SMTP id a26-v6so403381pfo.4
+ for <barebox@lists.infradead.org>; Wed, 15 Aug 2018 04:24:28 -0700 (PDT)
+From: marc@cpdesign.com.au
+Date: Wed, 15 Aug 2018 21:24:06 +1000
+Message-Id: <20180815112409.25725-1-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,15 +21,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: i2c master send/receive mode
-To: barebox@lists.infradead.org, s.hauer@pengutronix.de
+Subject: ARM: dts: udpates for am335x-bone-common
+To: barebox@lists.infradead.org
 
-The i2c master send support was already implemented in the i2c_write command, but it was not properly documented. The first patch in the series addresses that.
+A short while ago I submitted a patch to add support for the baseboard
+eeprom on beaglebones. It was suggested to just update the dts(i)
+to use the kernel versions in dts/src/arm, so here is my attempt at
+that. I'm a little bit worried that these changes might break
+something.. (works for me :) 
 
-In the second patch, the i2c master receive mode is implemented in the i2c_read command.
+The main build issue was the the PBL build uses some variants of .dtsi which
+removes some nodes which the kernel dts/dtsi rely on.
 
- [PATCH 1/2] i2c_write: document master send mode
- [PATCH 2/2] i2c_read: implement support for master receive mode
+Cheers,
+Marc
+
 
 
 _______________________________________________
