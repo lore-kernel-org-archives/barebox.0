@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x22d.google.com ([2607:f8b0:400e:c01::22d])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fs8Qn-0001jo-S5
- for barebox@lists.infradead.org; Tue, 21 Aug 2018 15:18:55 +0000
-Received: by mail-pl0-x22d.google.com with SMTP id c6-v6so4108823pls.4
- for <barebox@lists.infradead.org>; Tue, 21 Aug 2018 08:18:43 -0700 (PDT)
-From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Tue, 21 Aug 2018 17:18:26 +0200
-Message-Id: <20180821151826.5011-3-aleksander@aleksander.es>
-In-Reply-To: <20180821151826.5011-1-aleksander@aleksander.es>
-References: <20180821151826.5011-1-aleksander@aleksander.es>
+ id 1frlXl-0002Qn-4Q
+ for barebox@lists.infradead.org; Mon, 20 Aug 2018 14:52:35 +0000
+Date: Mon, 20 Aug 2018 16:52:15 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20180820145215.GA22058@ravnborg.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,74 +16,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] i2c_read: implement support for master receive mode
-To: barebox@lists.infradead.org, s.hauer@pengutronix.de
-Cc: Aleksander Morgado <aleksander@aleksander.es>
+Subject: [PATCH v3 0/3] Add Davicom phy + reset-gpios
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Sam Ravnborg <sam@ravnborg.org>
 
-If no start register is explicitly given, receive data in master
-receive mode.
+Changes in v3:
+- Consider the v3 a new implmentation - almost nothing was
+  left from v2. Thus also invalidate any former review - sorry.
+- Dropped the need for the mdio {} node, as this node is
+  only used when there is dedicated HW support for the mdio.
+- Added so PHY child nodes to ethernet nodes are registered,
+  and as part of registration the PHY nodes are reset if
+  the reset-gpios property is present.
+- Further dropped that the parsed info is stored in the bus,
+  as we only do reset once, thus there is no need to
+  save the info from the DT
+- Futher dropped helper function to reset. They was not needed
+- Named the gpio with the name of the PHY node
+  in the DT. This makes it unique and easier to recognize.
 
-Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
----
- commands/i2c.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+Changes in v2:
+- Added patch to enable Davicom PHY on at91sam9263ek - evaluation kit
+- Fix so we do reset before comunicating with the PHY
+- Rename to mdio_reset()
+- Reference correct binding file in commit log (mdio.txt)
+- Tested on at91sam9263ek
+  The at91sam9263ek kit do not require the reset like my
+  proprietary board, so no DT changes required
 
-diff --git a/commands/i2c.c b/commands/i2c.c
-index 57dc092c2..2f7f820d4 100644
---- a/commands/i2c.c
-+++ b/commands/i2c.c
-@@ -208,7 +208,7 @@ static int do_i2c_read(int argc, char *argv[])
- 		}
- 	}
- 
--	if ((addr < 0) || (reg < 0) || (count < 1) || (addr > 0x7F))
-+	if ((addr < 0) || (count < 1) || (addr > 0x7F))
- 		return COMMAND_ERROR_USAGE;
- 
- 	adapter = i2c_get_adapter(bus);
-@@ -221,12 +221,21 @@ static int do_i2c_read(int argc, char *argv[])
- 	client.addr = addr;
- 
- 	buf = xmalloc(count);
--	ret = i2c_read_reg(&client, reg | wide, buf, count);
-+	if (reg >= 0)
-+		ret = i2c_read_reg(&client, reg | wide, buf, count);
-+	else
-+		ret = i2c_master_recv(&client, buf, count);
- 	if (ret == count) {
- 		int i;
--		if (verbose)
--			printf("read %i bytes starting at reg 0x%04x from i2cdev 0x%02x on bus %i\n",
--				count, reg, addr, adapter->nr);
-+		if (verbose) {
-+			if (reg >= 0)
-+				printf("read %i bytes starting at reg 0x%04x from i2cdev 0x%02x on bus %i\n",
-+				       count, reg, addr, adapter->nr);
-+			else
-+				printf("received %i bytes in master receive mode from i2cdev 0x%02x on bus %i\n",
-+				       count, addr, adapter->nr);
-+		}
-+
- 		for (i = 0; i < count; i++)
- 			printf("0x%02x ", *(buf + i));
- 		printf("\n");
-@@ -241,7 +250,7 @@ BAREBOX_CMD_HELP_START(i2c_read)
- BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT("-b BUS\t", "i2c bus number (default 0)")
- BAREBOX_CMD_HELP_OPT("-a ADDR\t", "i2c device address")
--BAREBOX_CMD_HELP_OPT("-r START", "start register")
-+BAREBOX_CMD_HELP_OPT("-r START", "start register (optional, master receive mode if none given)")
- BAREBOX_CMD_HELP_OPT("-w\t",       "use word (16 bit) wide access")
- BAREBOX_CMD_HELP_OPT("-c COUNT", "byte count")
- BAREBOX_CMD_HELP_OPT("-v\t",       "verbose")
--- 
-2.18.0
+Intro:
+The following patches was necessary to get networking
+operational on my proprietary target.
+The target is at91sam9263 based with a Davicom PHY.
 
+The Davicom PHY is a straight copy form the Linux
+kernel with the interrupt routine removed and
+minor adjustments to the rest.
+
+The davicom PHY would not work until it had seen a reset
+cycle - which I think may be an artifact of the board design.
+
+To fix the reset issue I have implemented support for the
+reset-gpios binding (see net/phy.txt bindings).
+A minimal implmentation was done, just enough to get
+my target running.
+
+I could have implemented something in macb -
+but I preferred the more generic solution.
+
+Also included are a patch that for the at91sam9263ek
+evaluation board. The patch adds several extra tools
+that are usefull for testing, and enable the Davicom PHY.
+
+        Sam
+
+Sam Ravnborg (3):
+      phylib: add Davicom PHY support
+      phylib: add support for reset-gpios
+      at91sam9263ek: add PHY, miitool etc. to config
+
+
+ arch/arm/configs/at91sam9263ek_defconfig |   12 ++
+ drivers/net/phy/Kconfig                  |    5 +
+ drivers/net/phy/Makefile                 |    1 
+ drivers/net/phy/davicom.c                |  140 +++++++++++++++++++++++++++++++
+ drivers/net/phy/mdio_bus.c               |   82 ++++++++++++++++++
+ 5 files changed, 239 insertions(+), 1 deletion(-)
 
 _______________________________________________
 barebox mailing list
