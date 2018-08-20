@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x243.google.com ([2a00:1450:4864:20::243])
+Received: from mail-lf1-x143.google.com ([2a00:1450:4864:20::143])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1frlbk-0004dP-MC
- for barebox@lists.infradead.org; Mon, 20 Aug 2018 14:56:42 +0000
-Received: by mail-lj1-x243.google.com with SMTP id s12-v6so11835514ljj.0
- for <barebox@lists.infradead.org>; Mon, 20 Aug 2018 07:56:29 -0700 (PDT)
+ id 1frlbr-0004do-Gl
+ for barebox@lists.infradead.org; Mon, 20 Aug 2018 14:56:50 +0000
+Received: by mail-lf1-x143.google.com with SMTP id j8-v6so11146302lfb.4
+ for <barebox@lists.infradead.org>; Mon, 20 Aug 2018 07:56:37 -0700 (PDT)
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Mon, 20 Aug 2018 16:56:10 +0200
-Message-Id: <20180820145612.17576-1-sam@ravnborg.org>
+Date: Mon, 20 Aug 2018 16:56:12 +0200
+Message-Id: <20180820145612.17576-3-sam@ravnborg.org>
 In-Reply-To: <20180820145215.GA22058@ravnborg.org>
 References: <20180820145215.GA22058@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -23,194 +23,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 1/3] phylib: add Davicom PHY support
+Subject: [PATCH v3 3/3] at91sam9263ek: add PHY, miitool etc. to config
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Based on driver from Linux kernel 4.18.0-rc4
+Added Davicom phy to the config now it is supported.
+Add miitool to show the phy info.
+Also add a bunch of extra commands that can be useful
+when handling the evaluation board.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- drivers/net/phy/Kconfig   |   5 ++
- drivers/net/phy/Makefile  |   1 +
- drivers/net/phy/davicom.c | 140 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 146 insertions(+)
- create mode 100644 drivers/net/phy/davicom.c
+ arch/arm/configs/at91sam9263ek_defconfig | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index cda752b65..79fb917ee 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -18,6 +18,11 @@ config AT803X_PHY
- 	---help---
- 	  Currently supports the AT8030, AT8031 and AT8035 PHYs.
- 
-+config DAVICOM_PHY
-+	bool "Driver for Davicom PHYs"
-+	---help---
-+	  Currently supports dm9161e and dm9131
-+
- config LXT_PHY
- 	bool "Driver for the Intel LXT PHYs"
- 	---help---
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index 30b20f8ee..4424054d9 100644
---- a/drivers/net/phy/Makefile
-+++ b/drivers/net/phy/Makefile
-@@ -1,6 +1,7 @@
- obj-y += phy.o mdio_bus.o
- obj-$(CONFIG_AR8327N_PHY)	+= ar8327.o
- obj-$(CONFIG_AT803X_PHY)	+= at803x.o
-+obj-$(CONFIG_DAVICOM_PHY)	+= davicom.o
- obj-$(CONFIG_LXT_PHY)		+= lxt.o
- obj-$(CONFIG_MARVELL_PHY)	+= marvell.o
- obj-$(CONFIG_MICREL_PHY)	+= micrel.o
-diff --git a/drivers/net/phy/davicom.c b/drivers/net/phy/davicom.c
-new file mode 100644
-index 000000000..8a784b1e5
---- /dev/null
-+++ b/drivers/net/phy/davicom.c
-@@ -0,0 +1,140 @@
-+/*
-+ * drivers/net/phy/davicom.c
-+ *
-+ * Driver for Davicom PHYs
-+ *
-+ * Author: Andy Fleming
-+ *
-+ * Copyright (c) 2004 Freescale Semiconductor, Inc.
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <linux/mii.h>
-+#include <linux/ethtool.h>
-+#include <linux/phy.h>
-+
-+#define MII_DM9161_SCR		0x10
-+#define MII_DM9161_SCR_INIT	0x0610
-+#define MII_DM9161_SCR_RMII	0x0100
-+
-+/* DM9161 Interrupt Register */
-+#define MII_DM9161_INTR	0x15
-+#define MII_DM9161_INTR_PEND		0x8000
-+#define MII_DM9161_INTR_DPLX_MASK	0x0800
-+#define MII_DM9161_INTR_SPD_MASK	0x0400
-+#define MII_DM9161_INTR_LINK_MASK	0x0200
-+#define MII_DM9161_INTR_MASK		0x0100
-+#define MII_DM9161_INTR_DPLX_CHANGE	0x0010
-+#define MII_DM9161_INTR_SPD_CHANGE	0x0008
-+#define MII_DM9161_INTR_LINK_CHANGE	0x0004
-+#define MII_DM9161_INTR_INIT 		0x0000
-+#define MII_DM9161_INTR_STOP	\
-+(MII_DM9161_INTR_DPLX_MASK | MII_DM9161_INTR_SPD_MASK \
-+ | MII_DM9161_INTR_LINK_MASK | MII_DM9161_INTR_MASK)
-+
-+/* DM9161 10BT Configuration/Status */
-+#define MII_DM9161_10BTCSR	0x12
-+#define MII_DM9161_10BTCSR_INIT	0x7800
-+
-+MODULE_DESCRIPTION("Davicom PHY driver");
-+MODULE_AUTHOR("Andy Fleming");
-+MODULE_LICENSE("GPL");
-+
-+
-+static int dm9161_config_aneg(struct phy_device *phydev)
-+{
-+	int err;
-+
-+	/* Isolate the PHY */
-+	err = phy_write(phydev, MII_BMCR, BMCR_ISOLATE);
-+
-+	if (err < 0)
-+		return err;
-+
-+	/* Configure the new settings */
-+	err = genphy_config_aneg(phydev);
-+
-+	if (err < 0)
-+		return err;
-+
-+	return 0;
-+}
-+
-+static int dm9161_config_init(struct phy_device *phydev)
-+{
-+	int err, temp;
-+
-+	/* Isolate the PHY */
-+	err = phy_write(phydev, MII_BMCR, BMCR_ISOLATE);
-+
-+	if (err < 0)
-+		return err;
-+
-+	switch (phydev->interface) {
-+	case PHY_INTERFACE_MODE_MII:
-+		temp = MII_DM9161_SCR_INIT;
-+		break;
-+	case PHY_INTERFACE_MODE_RMII:
-+		temp =  MII_DM9161_SCR_INIT | MII_DM9161_SCR_RMII;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	/* Do not bypass the scrambler/descrambler */
-+	err = phy_write(phydev, MII_DM9161_SCR, temp);
-+	if (err < 0)
-+		return err;
-+
-+	/* Clear 10BTCSR to default */
-+	err = phy_write(phydev, MII_DM9161_10BTCSR, MII_DM9161_10BTCSR_INIT);
-+
-+	if (err < 0)
-+		return err;
-+
-+	/* Reconnect the PHY, and enable Autonegotiation */
-+	return phy_write(phydev, MII_BMCR, BMCR_ANENABLE);
-+}
-+
-+static struct phy_driver dm91xx_driver[] = {
-+{
-+	.phy_id		= 0x0181b880,
-+	.drv.name	= "Davicom DM9161E",
-+	.phy_id_mask	= 0x0ffffff0,
-+	.features	= PHY_BASIC_FEATURES,
-+	.config_init	= dm9161_config_init,
-+	.config_aneg	= dm9161_config_aneg,
-+}, {
-+	.phy_id		= 0x0181b8b0,
-+	.drv.name	= "Davicom DM9161B/C",
-+	.phy_id_mask	= 0x0ffffff0,
-+	.features	= PHY_BASIC_FEATURES,
-+	.config_init	= dm9161_config_init,
-+	.config_aneg	= dm9161_config_aneg,
-+}, {
-+	.phy_id		= 0x0181b8a0,
-+	.drv.name	= "Davicom DM9161A",
-+	.phy_id_mask	= 0x0ffffff0,
-+	.features	= PHY_BASIC_FEATURES,
-+	.config_init	= dm9161_config_init,
-+	.config_aneg	= dm9161_config_aneg,
-+}, {
-+	.phy_id		= 0x00181b80,
-+	.drv.name	= "Davicom DM9131",
-+	.phy_id_mask	= 0x0ffffff0,
-+	.features	= PHY_BASIC_FEATURES,
-+} };
-+
-+static int dm9161_init(void)
-+{
-+	return phy_drivers_register(dm91xx_driver,
-+		ARRAY_SIZE(dm91xx_driver));
-+}
-+fs_initcall(dm9161_init);
+diff --git a/arch/arm/configs/at91sam9263ek_defconfig b/arch/arm/configs/at91sam9263ek_defconfig
+index e8ad841fa..45c6f79de 100644
+--- a/arch/arm/configs/at91sam9263ek_defconfig
++++ b/arch/arm/configs/at91sam9263ek_defconfig
+@@ -18,7 +18,7 @@ CONFIG_BOOTM_OFTREE=y
+ CONFIG_BOOTM_OFTREE_UIMAGE=y
+ CONFIG_CONSOLE_ACTIVATE_ALL=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
+-# CONFIG_CMD_ARM_CPUINFO is not set
++CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
+ CONFIG_CMD_IOMEM=y
+ CONFIG_CMD_MEMINFO=y
+@@ -33,22 +33,32 @@ CONFIG_CMD_PRINTENV=y
+ CONFIG_CMD_SAVEENV=y
+ CONFIG_CMD_SLEEP=y
+ CONFIG_CMD_DHCP=y
++CONFIG_CMD_HOST=y
++CONFIG_NET_CMD_IFUP=y
++CONFIG_CMD_MIITOOL=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_TFTP=y
+ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_SPLASH=y
++CONFIG_CMD_FBTEST=y
+ CONFIG_CMD_READLINE=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_CLK=y
++CONFIG_CMD_DETECT=y
+ CONFIG_CMD_FLASH=y
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_LED=y
+ CONFIG_CMD_LED_TRIGGER=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OF_DISPLAY_TIMINGS=y
++CONFIG_CMD_OF_FIXUP_STATUS=y
+ CONFIG_CMD_OFTREE=y
+ CONFIG_NET=y
+ CONFIG_NET_NFS=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_DRIVER_NET_MACB=y
++CONFIG_DAVICOM_PHY=y
+ # CONFIG_SPI is not set
+ CONFIG_MTD=y
+ # CONFIG_MTD_OOB_DEVICE is not set
 -- 
 2.12.0
 
