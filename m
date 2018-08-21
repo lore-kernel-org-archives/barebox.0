@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+Received: from mail-pl0-x241.google.com ([2607:f8b0:400e:c01::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fs07n-00006T-Q3
- for barebox@lists.infradead.org; Tue, 21 Aug 2018 06:26:49 +0000
-Received: by mail-pf1-x442.google.com with SMTP id l9-v6so7978347pff.9
- for <barebox@lists.infradead.org>; Mon, 20 Aug 2018 23:26:33 -0700 (PDT)
+ id 1fs07p-0000Aj-4V
+ for barebox@lists.infradead.org; Tue, 21 Aug 2018 06:26:50 +0000
+Received: by mail-pl0-x241.google.com with SMTP id c6-v6so3449337pls.4
+ for <barebox@lists.infradead.org>; Mon, 20 Aug 2018 23:26:40 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 20 Aug 2018 23:25:50 -0700
-Message-Id: <20180821062603.17393-10-andrew.smirnov@gmail.com>
+Subject: [PATCH 16/22] ARM: i.MX: bbu: Add support for MMC on i.MX8MQ
+Date: Mon, 20 Aug 2018 23:25:57 -0700
+Message-Id: <20180821062603.17393-17-andrew.smirnov@gmail.com>
 In-Reply-To: <20180821062603.17393-1-andrew.smirnov@gmail.com>
 References: <20180821062603.17393-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,115 +24,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/22] ARM: i.MX: bbu: Detect which platforms need v2 i.MX
- header
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Detect which platforms need header v2 based on current CPU type and
-replace all of the code explicitly specifying that.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/imx-bbu-internal.c | 29 ++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
+ arch/arm/mach-imx/imx-bbu-internal.c | 8 ++++++++
+ arch/arm/mach-imx/include/mach/bbu.h | 9 +++++++++
+ 2 files changed, 17 insertions(+)
 
 diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-index cff4f6802..3ef49a859 100644
+index dcabb8625..d83eb972c 100644
 --- a/arch/arm/mach-imx/imx-bbu-internal.c
 +++ b/arch/arm/mach-imx/imx-bbu-internal.c
-@@ -29,6 +29,7 @@
- #include <ioctl.h>
- #include <environment.h>
- #include <mach/bbu.h>
-+#include <mach/generic.h>
+@@ -561,6 +561,14 @@ int vf610_bbu_internal_mmc_register_handler(const char *name,
+ 					    unsigned long flags)
+ 	__alias(imx6_bbu_internal_mmc_register_handler);
  
- #define FLASH_HEADER_OFFSET_MMC		0x400
++/*
++ * Register an i.MX8MQ internal boot update handler for MMC/SD
++ */
++int imx8mq_bbu_internal_mmc_register_handler(const char *name,
++					     const char *devicefile,
++					     unsigned long flags)
++	__alias(imx6_bbu_internal_mmc_register_handler);
++
+ /*
+  * Register a handler that writes to the non-active boot partition of an mmc
+  * medium and on success activates the written-to partition. So the machine can
+diff --git a/arch/arm/mach-imx/include/mach/bbu.h b/arch/arm/mach-imx/include/mach/bbu.h
+index d543d0e92..b30403328 100644
+--- a/arch/arm/mach-imx/include/mach/bbu.h
++++ b/arch/arm/mach-imx/include/mach/bbu.h
+@@ -62,6 +62,9 @@ int vf610_bbu_internal_mmc_register_handler(const char *name, const char *device
+ int vf610_bbu_internal_spi_i2c_register_handler(const char *name, const char *devicefile,
+ 						unsigned long flags);
  
-@@ -332,6 +333,18 @@ out:
- 	return ret;
++int imx8mq_bbu_internal_mmc_register_handler(const char *name, const char *devicefile,
++					     unsigned long flags);
++
+ int imx_bbu_external_nor_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags);
+ 
+@@ -122,6 +125,12 @@ static inline int vf610_bbu_internal_mmc_register_handler(const char *name, cons
+ 	return -ENOSYS;
  }
  
-+static enum filetype imx_bbu_expected_filetype(void)
++static inline int imx8mq_bbu_internal_mmc_register_handler(const char *name, const char *devicefile,
++							   unsigned long flags);
 +{
-+	if (cpu_is_mx8mq() ||
-+	    cpu_is_mx7()   ||
-+	    cpu_is_mx6()   ||
-+	    cpu_is_vf610() ||
-+	    cpu_is_mx53())
-+		return filetype_imx_image_v2;
-+
-+	return filetype_unknown;
++	return -ENOSYS;
 +}
 +
- static int imx_bbu_update(struct bbu_handler *handler, struct bbu_data *data)
+ static inline int imx_bbu_external_nor_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags)
  {
- 	struct imx_internal_bbu_handler *imx_handler =
-@@ -406,7 +419,7 @@ static struct imx_internal_bbu_handler *__init_handler(const char *name,
- 	handler->flags = flags;
- 	handler->handler = imx_bbu_update;
- 
--	imx_handler->expected_type = filetype_unknown;
-+	imx_handler->expected_type = imx_bbu_expected_filetype();
- 	imx_handler->write_device = __imx_bbu_write_device;
- 
- 	return imx_handler;
-@@ -425,8 +438,7 @@ static int __register_handler(struct imx_internal_bbu_handler *imx_handler)
- 
- static int
- imx_bbu_internal_mmc_register_handler(const char *name, const char *devicefile,
--				      unsigned long flags,
--				      enum filetype expected_type)
-+				      unsigned long flags)
- {
- 	struct imx_internal_bbu_handler *imx_handler;
- 
-@@ -434,8 +446,6 @@ imx_bbu_internal_mmc_register_handler(const char *name, const char *devicefile,
- 				     IMX_BBU_FLAG_KEEP_HEAD);
- 	imx_handler->flash_header_offset = FLASH_HEADER_OFFSET_MMC;
- 
--	imx_handler->expected_type = expected_type;
--
- 	return __register_handler(imx_handler);
- }
- 
-@@ -459,8 +469,7 @@ int imx51_bbu_internal_mmc_register_handler(const char *name,
- 					    unsigned long flags)
- {
- 
--	return imx_bbu_internal_mmc_register_handler(name, devicefile, flags,
--						     filetype_unknown);
-+	return imx_bbu_internal_mmc_register_handler(name, devicefile, flags);
- }
- 
- /*
-@@ -470,8 +479,7 @@ int imx53_bbu_internal_mmc_register_handler(const char *name,
- 					    const char *devicefile,
- 					    unsigned long flags)
- {
--	return imx_bbu_internal_mmc_register_handler(name, devicefile, flags,
--						     filetype_imx_image_v2);
-+	return imx_bbu_internal_mmc_register_handler(name, devicefile, flags);
- }
- 
- /*
-@@ -489,8 +497,6 @@ int imx53_bbu_internal_spi_i2c_register_handler(const char *name,
- 				     IMX_INTERNAL_FLAG_ERASE);
- 	imx_handler->flash_header_offset = FLASH_HEADER_OFFSET_MMC;
- 
--	imx_handler->expected_type = filetype_imx_image_v2;
--
- 	return __register_handler(imx_handler);
- }
- 
-@@ -505,7 +511,6 @@ int imx53_bbu_internal_nand_register_handler(const char *name,
- 	imx_handler = __init_handler(name, "/dev/nand0", flags);
- 	imx_handler->flash_header_offset = FLASH_HEADER_OFFSET_MMC;
- 
--	imx_handler->expected_type = filetype_imx_image_v2;
- 	imx_handler->device_size = partition_size;
- 	imx_handler->write_device = imx_bbu_internal_v2_write_nand_dbbt;
- 
 -- 
 2.17.1
 
