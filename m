@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fs07x-0000Ep-HQ
- for barebox@lists.infradead.org; Tue, 21 Aug 2018 06:27:00 +0000
-Received: by mail-pf1-x444.google.com with SMTP id x17-v6so7993422pfh.5
- for <barebox@lists.infradead.org>; Mon, 20 Aug 2018 23:26:43 -0700 (PDT)
+ id 1fs07y-0000GD-QN
+ for barebox@lists.infradead.org; Tue, 21 Aug 2018 06:27:01 +0000
+Received: by mail-pg1-x542.google.com with SMTP id h17-v6so1741152pgv.3
+ for <barebox@lists.infradead.org>; Mon, 20 Aug 2018 23:26:44 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Subject: [PATCH 19/22] bbu: Remove logical negation in
- barebox_update_handler_exists()
-Date: Mon, 20 Aug 2018 23:26:00 -0700
-Message-Id: <20180821062603.17393-20-andrew.smirnov@gmail.com>
+Subject: [PATCH 20/22] block: Do not ignore error in blk->ops->write()
+Date: Mon, 20 Aug 2018 23:26:01 -0700
+Message-Id: <20180821062603.17393-21-andrew.smirnov@gmail.com>
 In-Reply-To: <20180821062603.17393-1-andrew.smirnov@gmail.com>
 References: <20180821062603.17393-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -28,28 +27,72 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Returning !bbu_find_handler() from barebox_update_handler_exists()
-would return the opposite result from what the name of that funciton
-implies. Drop the "!" to make it behave as expected.
+Getting a error from blk->ops->write() is not a very unlikely
+event (happens quite often during new board bringup), so we need to
+catch and propagate them to upper layers so they can be at least
+reported properly. Change the code of all of the callers to bail out
+as soon as blk->ops->write() fails.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/bbu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/block.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/common/bbu.c b/common/bbu.c
-index 11e44f4a7..69ccac68a 100644
---- a/common/bbu.c
-+++ b/common/bbu.c
-@@ -151,7 +151,7 @@ bool barebox_update_handler_exists(struct bbu_data *data)
- 	if (!data->handler_name)
- 		return false;
+diff --git a/common/block.c b/common/block.c
+index 219b943af..8d0de42d9 100644
+--- a/common/block.c
++++ b/common/block.c
+@@ -44,13 +44,17 @@ struct chunk {
+ static int writebuffer_flush(struct block_device *blk)
+ {
+ 	struct chunk *chunk;
++	int ret;
  
--	return !bbu_find_handler(data->handler_name);
-+	return bbu_find_handler(data->handler_name);
- }
+ 	if (!IS_ENABLED(CONFIG_BLOCK_WRITE))
+ 		return 0;
  
- static int bbu_check_of_compat(struct bbu_data *data)
+ 	list_for_each_entry(chunk, &blk->buffered_blocks, list) {
+ 		if (chunk->dirty) {
+-			blk->ops->write(blk, chunk->data, chunk->block_start, blk->rdbufsize);
++			ret = blk->ops->write(blk, chunk->data, chunk->block_start, blk->rdbufsize);
++			if (ret < 0)
++				return ret;
++
+ 			chunk->dirty = 0;
+ 		}
+ 	}
+@@ -107,6 +111,7 @@ static void *block_get_cached(struct block_device *blk, int block)
+ static struct chunk *get_chunk(struct block_device *blk)
+ {
+ 	struct chunk *chunk;
++	int ret;
+ 
+ 	if (list_empty(&blk->idle_blocks)) {
+ 		/* use last entry which is the most unused */
+@@ -114,8 +119,11 @@ static struct chunk *get_chunk(struct block_device *blk)
+ 		if (chunk->dirty) {
+ 			size_t num_blocks = min(blk->rdbufsize,
+ 					blk->num_blocks - chunk->block_start);
+-			blk->ops->write(blk, chunk->data, chunk->block_start,
+-					num_blocks);
++			ret = blk->ops->write(blk, chunk->data, chunk->block_start,
++					      num_blocks);
++			if (ret < 0)
++				return ERR_PTR(ret);
++
+ 			chunk->dirty = 0;
+ 		}
+ 
+@@ -140,6 +148,9 @@ static int block_cache(struct block_device *blk, int block)
+ 	int ret;
+ 
+ 	chunk = get_chunk(blk);
++	if (IS_ERR(chunk))
++		return PTR_ERR(chunk);
++
+ 	chunk->block_start = block & ~blk->blkmask;
+ 
+ 	debug("%s: %d to %d\n", __func__, chunk->block_start,
 -- 
 2.17.1
 
