@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fs07y-0000GD-QN
- for barebox@lists.infradead.org; Tue, 21 Aug 2018 06:27:01 +0000
-Received: by mail-pg1-x542.google.com with SMTP id h17-v6so1741152pgv.3
- for <barebox@lists.infradead.org>; Mon, 20 Aug 2018 23:26:44 -0700 (PDT)
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fs082-0000Z5-Kk
+ for barebox@lists.infradead.org; Tue, 21 Aug 2018 06:27:00 +0000
+Received: by mail-pg1-x542.google.com with SMTP id a11-v6so7973317pgw.6
+ for <barebox@lists.infradead.org>; Mon, 20 Aug 2018 23:26:48 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Subject: [PATCH 20/22] block: Do not ignore error in blk->ops->write()
-Date: Mon, 20 Aug 2018 23:26:01 -0700
-Message-Id: <20180821062603.17393-21-andrew.smirnov@gmail.com>
+Subject: [PATCH 22/22] bbu: command: Make sure specified update handler exists
+Date: Mon, 20 Aug 2018 23:26:03 -0700
+Message-Id: <20180821062603.17393-23-andrew.smirnov@gmail.com>
 In-Reply-To: <20180821062603.17393-1-andrew.smirnov@gmail.com>
 References: <20180821062603.17393-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -27,72 +27,54 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Getting a error from blk->ops->write() is not a very unlikely
-event (happens quite often during new board bringup), so we need to
-catch and propagate them to upper layers so they can be at least
-reported properly. Change the code of all of the callers to bail out
-as soon as blk->ops->write() fails.
+Add code to verify that update handler specified with either -t or of
+-d exists before commencing the update procedure.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/block.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ commands/barebox-update.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/common/block.c b/common/block.c
-index 219b943af..8d0de42d9 100644
---- a/common/block.c
-+++ b/common/block.c
-@@ -44,13 +44,17 @@ struct chunk {
- static int writebuffer_flush(struct block_device *blk)
- {
- 	struct chunk *chunk;
-+	int ret;
+diff --git a/commands/barebox-update.c b/commands/barebox-update.c
+index 84798ab0d..f76aa19a5 100644
+--- a/commands/barebox-update.c
++++ b/commands/barebox-update.c
+@@ -24,6 +24,12 @@
+ #include <bbu.h>
+ #include <fs.h>
  
- 	if (!IS_ENABLED(CONFIG_BLOCK_WRITE))
- 		return 0;
- 
- 	list_for_each_entry(chunk, &blk->buffered_blocks, list) {
- 		if (chunk->dirty) {
--			blk->ops->write(blk, chunk->data, chunk->block_start, blk->rdbufsize);
-+			ret = blk->ops->write(blk, chunk->data, chunk->block_start, blk->rdbufsize);
-+			if (ret < 0)
-+				return ret;
++static void print_handlers_list(void)
++{
++	printf("registered update handlers:\n");
++	bbu_handlers_list();
++}
 +
- 			chunk->dirty = 0;
+ static int do_barebox_update(int argc, char *argv[])
+ {
+ 	int opt, ret, repair = 0;
+@@ -46,8 +52,7 @@ static int do_barebox_update(int argc, char *argv[])
+ 			data.flags |= BBU_FLAG_YES;
+ 			break;
+ 		case 'l':
+-			printf("registered update handlers:\n");
+-			bbu_handlers_list();
++			print_handlers_list();
+ 			return 0;
+ 		case 'r':
+ 			repair = 1;
+@@ -57,6 +62,12 @@ static int do_barebox_update(int argc, char *argv[])
  		}
  	}
-@@ -107,6 +111,7 @@ static void *block_get_cached(struct block_device *blk, int block)
- static struct chunk *get_chunk(struct block_device *blk)
- {
- 	struct chunk *chunk;
-+	int ret;
  
- 	if (list_empty(&blk->idle_blocks)) {
- 		/* use last entry which is the most unused */
-@@ -114,8 +119,11 @@ static struct chunk *get_chunk(struct block_device *blk)
- 		if (chunk->dirty) {
- 			size_t num_blocks = min(blk->rdbufsize,
- 					blk->num_blocks - chunk->block_start);
--			blk->ops->write(blk, chunk->data, chunk->block_start,
--					num_blocks);
-+			ret = blk->ops->write(blk, chunk->data, chunk->block_start,
-+					      num_blocks);
-+			if (ret < 0)
-+				return ERR_PTR(ret);
++	if (!barebox_update_handler_exists(&data)) {
++		printf("handler '%s' does not exist\n", data.handler_name);
++		print_handlers_list();
++		return COMMAND_ERROR;
++	}
 +
- 			chunk->dirty = 0;
- 		}
+ 	if (argc - optind > 0) {
+ 		data.imagefile = argv[optind];
  
-@@ -140,6 +148,9 @@ static int block_cache(struct block_device *blk, int block)
- 	int ret;
- 
- 	chunk = get_chunk(blk);
-+	if (IS_ERR(chunk))
-+		return PTR_ERR(chunk);
-+
- 	chunk->block_start = block & ~blk->blkmask;
- 
- 	debug("%s: %d to %d\n", __func__, chunk->block_start,
 -- 
 2.17.1
 
