@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pl0-x230.google.com ([2607:f8b0:400e:c01::230])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fpTFF-0000Z0-Tz
- for barebox@lists.infradead.org; Tue, 14 Aug 2018 06:55:59 +0000
-Date: Tue, 14 Aug 2018 08:55:45 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180814065545.vyksayuuieshaky2@pengutronix.de>
-References: <20180809065420.6475-1-s.hauer@pengutronix.de>
- <20180813140509.23839-1-pmamonov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180813140509.23839-1-pmamonov@gmail.com>
+ id 1fs8Qi-0001jl-TQ
+ for barebox@lists.infradead.org; Tue, 21 Aug 2018 15:18:50 +0000
+Received: by mail-pl0-x230.google.com with SMTP id w14-v6so8957823plp.6
+ for <barebox@lists.infradead.org>; Tue, 21 Aug 2018 08:18:38 -0700 (PDT)
+From: Aleksander Morgado <aleksander@aleksander.es>
+Date: Tue, 21 Aug 2018 17:18:24 +0200
+Message-Id: <20180821151826.5011-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +16,21 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts/dtc: add fdtget to .gitignore
-To: Peter Mamonov <pmamonov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: i2c master send/receive mode
+To: barebox@lists.infradead.org, s.hauer@pengutronix.de
 
-On Mon, Aug 13, 2018 at 05:05:09PM +0300, Peter Mamonov wrote:
-> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> ---
->  scripts/dtc/.gitignore | 1 +
->  1 file changed, 1 insertion(+)
+The i2c master send support was already implemented in the i2c_write command, but it was not properly documented. The first patch in the series addresses that.
 
-Applied, thanks
+In the second patch, the i2c master receive mode is implemented in the i2c_read command.
 
-Sascha
+ [PATCH 1/2] i2c_write: document master send mode
+ [PATCH 2/2] i2c_read: implement support for master receive mode
 
-> 
-> diff --git a/scripts/dtc/.gitignore b/scripts/dtc/.gitignore
-> index cdabdc95a..80f6b50fd 100644
-> --- a/scripts/dtc/.gitignore
-> +++ b/scripts/dtc/.gitignore
-> @@ -2,3 +2,4 @@ dtc
->  dtc-lexer.lex.c
->  dtc-parser.tab.c
->  dtc-parser.tab.h
-> +fdtget
-> -- 
-> 2.17.0
-> 
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
