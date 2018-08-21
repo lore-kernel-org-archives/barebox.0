@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fs082-0000Z5-Kk
- for barebox@lists.infradead.org; Tue, 21 Aug 2018 06:27:00 +0000
-Received: by mail-pg1-x542.google.com with SMTP id a11-v6so7973317pgw.6
- for <barebox@lists.infradead.org>; Mon, 20 Aug 2018 23:26:48 -0700 (PDT)
+Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fs07z-0000II-R6
+ for barebox@lists.infradead.org; Tue, 21 Aug 2018 06:27:01 +0000
+Received: by mail-pg1-x541.google.com with SMTP id a11-v6so7973298pgw.6
+ for <barebox@lists.infradead.org>; Mon, 20 Aug 2018 23:26:45 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Subject: [PATCH 22/22] bbu: command: Make sure specified update handler exists
-Date: Mon, 20 Aug 2018 23:26:03 -0700
-Message-Id: <20180821062603.17393-23-andrew.smirnov@gmail.com>
+Subject: [PATCH 21/22] bbu: Report update failures explicitly
+Date: Mon, 20 Aug 2018 23:26:02 -0700
+Message-Id: <20180821062603.17393-22-andrew.smirnov@gmail.com>
 In-Reply-To: <20180821062603.17393-1-andrew.smirnov@gmail.com>
 References: <20180821062603.17393-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -27,54 +27,39 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add code to verify that update handler specified with either -t or of
--d exists before commencing the update procedure.
+Change the code of barebox_update() to explicitly log that update
+failed instead of failing silently (unless update was interrupted) and
+relying on user checking the return code.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- commands/barebox-update.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ common/bbu.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/commands/barebox-update.c b/commands/barebox-update.c
-index 84798ab0d..f76aa19a5 100644
---- a/commands/barebox-update.c
-+++ b/commands/barebox-update.c
-@@ -24,6 +24,12 @@
- #include <bbu.h>
- #include <fs.h>
+diff --git a/common/bbu.c b/common/bbu.c
+index 69ccac68a..690f2a566 100644
+--- a/common/bbu.c
++++ b/common/bbu.c
+@@ -260,13 +260,13 @@ int barebox_update(struct bbu_data *data)
+ 		return ret;
  
-+static void print_handlers_list(void)
-+{
-+	printf("registered update handlers:\n");
-+	bbu_handlers_list();
-+}
-+
- static int do_barebox_update(int argc, char *argv[])
- {
- 	int opt, ret, repair = 0;
-@@ -46,8 +52,7 @@ static int do_barebox_update(int argc, char *argv[])
- 			data.flags |= BBU_FLAG_YES;
- 			break;
- 		case 'l':
--			printf("registered update handlers:\n");
--			bbu_handlers_list();
-+			print_handlers_list();
- 			return 0;
- 		case 'r':
- 			repair = 1;
-@@ -57,6 +62,12 @@ static int do_barebox_update(int argc, char *argv[])
- 		}
- 	}
- 
-+	if (!barebox_update_handler_exists(&data)) {
-+		printf("handler '%s' does not exist\n", data.handler_name);
-+		print_handlers_list();
-+		return COMMAND_ERROR;
+ 	ret = handler->handler(handler, data);
+-	if (ret == -EINTR)
+-		printf("update aborted\n");
+-
+-	if (!ret)
+-		printf("update succeeded\n");
++	if (ret) {
++		printf("update %s\n", (ret == -EINTR) ? "aborted" : "failed");
++		return ret;
 +	}
-+
- 	if (argc - optind > 0) {
- 		data.imagefile = argv[optind];
  
+-	return ret;
++	printf("update succeeded\n");
++	return 0;
+ }
+ 
+ /*
 -- 
 2.17.1
 
