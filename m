@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fs07v-0000BD-KF
+ id 1fs07w-0000D3-GE
  for barebox@lists.infradead.org; Tue, 21 Aug 2018 06:26:57 +0000
-Received: by mail-pf1-x42d.google.com with SMTP id h69-v6so45978pfd.4
- for <barebox@lists.infradead.org>; Mon, 20 Aug 2018 23:26:41 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id f1-v6so7961820pgq.12
+ for <barebox@lists.infradead.org>; Mon, 20 Aug 2018 23:26:42 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Subject: [PATCH 17/22] ARM: nxp-imx8mq-evk: Add eMMC BBU configuration
-Date: Mon, 20 Aug 2018 23:25:58 -0700
-Message-Id: <20180821062603.17393-18-andrew.smirnov@gmail.com>
+Subject: [PATCH 18/22] ARM: i.MX: bbu: Adjust error code check for pwrite()
+Date: Mon, 20 Aug 2018 23:25:59 -0700
+Message-Id: <20180821062603.17393-19-andrew.smirnov@gmail.com>
 In-Reply-To: <20180821062603.17393-1-andrew.smirnov@gmail.com>
 References: <20180821062603.17393-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -27,36 +27,57 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add BBU configuration to allow programming Barebox to eMMC. Normally
-factory U-Boot is shipped in mmc0.boot0, so us using user partition
-for Barebox should allow those two to coexist.
+Pwrite() will return the amount bytes written or negative error code
+on success, so we need to do two things with it:
+
+    1. Check it against "image_len" to make sure we actually wrote all
+       of the data
+
+    2. Set it to zero in case of success, since that is what code in
+       barebox_update() expects to happen
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/nxp-imx8mq-evk/board.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/mach-imx/imx-bbu-internal.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/nxp-imx8mq-evk/board.c b/arch/arm/boards/nxp-imx8mq-evk/board.c
-index d93e21da1..868c25ebb 100644
---- a/arch/arm/boards/nxp-imx8mq-evk/board.c
-+++ b/arch/arm/boards/nxp-imx8mq-evk/board.c
-@@ -21,6 +21,7 @@
- #include <init.h>
- #include <asm/memory.h>
- #include <linux/sizes.h>
-+#include <mach/bbu.h>
- 
- static int imx8mq_evk_mem_init(void)
+diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+index d83eb972c..70af5ef84 100644
+--- a/arch/arm/mach-imx/imx-bbu-internal.c
++++ b/arch/arm/mach-imx/imx-bbu-internal.c
+@@ -86,6 +86,7 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
+ 		const void *buf, int image_len)
  {
-@@ -39,6 +40,8 @@ static int nxp_imx8mq_evk_init(void)
+ 	int fd, ret, offset = 0;
++	bool partial_write;
  
- 	barebox_set_hostname("imx8mq-evk");
+ 	fd = open(devicefile, O_RDWR | O_CREAT);
+ 	if (fd < 0)
+@@ -117,8 +118,14 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
+ 	}
  
-+	imx8mq_bbu_internal_mmc_register_handler("eMMC", "/dev/mmc0", 0);
+ 	ret = pwrite(fd, buf, image_len, offset);
+-	if (ret < 0)
++	partial_write = ret > 0 && ret != image_len;
++	if (ret < 0 || partial_write) {
++		ret = partial_write ? -EIO : ret;
 +
- 	return 0;
++		pr_err("writing to %s failed with %s\n", devicefile,
++		       strerror(-ret));
+ 		goto err_close;
++	}
+ 
+ 	imx_bbu_protect(fd, imx_handler, devicefile, offset,
+ 			image_len, 1);
+@@ -126,7 +133,7 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
+ err_close:
+ 	close(fd);
+ 
+-	return ret;
++	return ret < 0 ? ret : 0;
  }
- device_initcall(nxp_imx8mq_evk_init);
+ 
+ static int __imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
 -- 
 2.17.1
 
