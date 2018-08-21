@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ft2FE-0006qg-8H
- for barebox@lists.infradead.org; Fri, 24 Aug 2018 02:55:12 +0000
-Received: by mail-pg1-x544.google.com with SMTP id z4-v6so3613206pgv.2
- for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 19:54:30 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 23 Aug 2018 19:54:21 -0700
-Message-Id: <20180824025421.19968-1-andrew.smirnov@gmail.com>
+ id 1fsCeD-0006JC-5B
+ for barebox@lists.infradead.org; Tue, 21 Aug 2018 19:49:05 +0000
+Date: Tue, 21 Aug 2018 21:46:44 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20180821194644.GA14835@ravnborg.org>
+References: <20180820145215.GA22058@ravnborg.org>
+ <20180820145612.17576-2-sam@ravnborg.org>
+ <20180821075019.cl2r4w7zbyxilb26@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180821075019.cl2r4w7zbyxilb26@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,55 +20,102 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: mmu64: Don't flush freshly invalidated region
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH v3 2/3] phylib: add support for reset-gpios
+To: Sascha Hauer <s.hauer@pengutronix.de>, Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Current code for dma_sync_single_for_device(), when called with dir
-set to DMA_FROM_DEVICE, will first invalidate given region of memory
-as a first step and then clean+invalidate it as a second. While the
-second step should be harmless it seems to be an unnecessary no-op
-that could probably be avoided.
+Hi Sasha.
 
-Analogous code in Linux kernel (4.18) in arch/arm64/mm/cache.S:
+To Andrey - please read comment on mdio support in macb driver.
 
-ENTRY(__dma_map_area)
-	cmp	w2, #DMA_FROM_DEVICE
-	b.eq	__dma_inv_area
-	b	__dma_clean_area
-ENDPIPROC(__dma_map_area)
+> > +	/* register PHY's as child node to the ethernet node */
+> > +	if (bus->parent->device_node)
+> > +		of_mdiobus_register(bus, bus->parent->device_node);
+> 
+> I am not so convinced of this change. Here you assume that bus->parent
+> is the ethernet node, but this doesn't necessarily have to be the case
+> as some mdio controllers are standalone and not part of an ethernet
+> device (see "virtual,mdio-gpio" to get examples).
+> 
+> So instead of introducing this change I would prefer if you let the code
+> below trigger:
+> 
+> > +
+> > +	/* register PHY's as child node to mdio node */
+> >  	if (bus->dev.device_node)
+> >  		of_mdiobus_register(bus, bus->dev.device_node);
+> 
+> This means you have to set bus->dev.device_node in your ethernet driver
+> like some drivers already do:
+> 
+> drivers/net/macb.c:666:                 macb->miibus.dev.device_node = mdiobus;
 
-is written to only perform either invalidate or clean, depending on
-the direction, so change dma_sync_single_for_device() to behave in the
-same vein and perfom _either_ invlidate or flush of the given region.
+I have analyzed on the current situation.
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- arch/arm/cpu/mmu_64.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+In barebox we have two drivers that set miibus.dev.device_node,
+both in the case where they have found a child named "mdio".
+-> fec-imx.c and macb.c
+When reading dts/Bindings/net/fsl-fec.txt then this binding specify
+an optional mdio child, so fec-imx.c is fine.
+But macb.txt or the general bindigns do not mention
+a mdio child.
+And the Linux macb_main.c do not support a "mdio" node either.
+So my best guess is that the "mdio" support in macb was accidently
+ported over from fec-imx when adding DT support.
 
-diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index b6287aec8..69d1b2071 100644
---- a/arch/arm/cpu/mmu_64.c
-+++ b/arch/arm/cpu/mmu_64.c
-@@ -297,7 +297,8 @@ void dma_sync_single_for_device(dma_addr_t address, size_t size,
- {
- 	if (dir == DMA_FROM_DEVICE)
- 		v8_inv_dcache_range(address, address + size - 1);
--	v8_flush_dcache_range(address, address + size - 1);
-+	else
-+		v8_flush_dcache_range(address, address + size - 1);
- }
- 
- dma_addr_t dma_map_single(struct device_d *dev, void *ptr, size_t size,
--- 
-2.17.1
+If we only consider the DT cases we will call mdio_register()
+in the following cases:
 
+1) Typical from an ethernet driver:
+bus->dev.device_node is NULL
+bus->parent->device_node is the ethernet node
+
+2) fec-imx case:
+bus->dev.device_node is the "mdio" node, that agin hold the PHY nodes
+bus->parent->device_node is the ethernet node
+
+3) mdio drivers:
+bus->dev.device_node is the "mdio" node
+bus->parent->device_node is equal to bus->dev.device_node
+
+
+Considering the above I will do the following:
+a) Remove "mdio" support from macb.c
+b) Modify my patch to something like this:
+
+	if (bus->dev.device_node)
+		of_mdiobus_register(bus, bus->dev.device_node);
+	else if (bus->parent->device_node)
+		of_mdiobus_register(bus, bus->parent->device_node);
+
+With the above I have covered point 1 to 3 above in a simple way.
+And this looks a simple and straghtforward way to do it.
+
+I also looked at how the kernel does thing.
+In of_mdiobus_register it has:
+
+	for_each_child() {
+		if (of_node_is_phy(child))
+			of_mdiobus_register_phy()
+		else
+			of_mdiobus_register_device()
+	}
+
+I so far failed to follow where the code will iterate over
+the PHY nodes inside the mdio node (that trigger the
+of_mdiobus_register_device() call).
+So therefore I am reluctant to try to implment this,
+and the suggested solution is also more in the line
+with a simpler and straightforward approach preferred in barebox.
+
+I no-one else objects and I do not get any better ideas I will
+implement and test this tomorrow.
+
+	Sam
 
 _______________________________________________
 barebox mailing list
