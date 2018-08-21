@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fs10R-0007MQ-AG
- for barebox@lists.infradead.org; Tue, 21 Aug 2018 07:23:13 +0000
-Date: Tue, 21 Aug 2018 09:22:57 +0200
+ id 1fs1JY-0006t8-RT
+ for barebox@lists.infradead.org; Tue, 21 Aug 2018 07:42:58 +0000
+Date: Tue, 21 Aug 2018 09:42:45 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180821072257.xiwsu6awhvph3hhh@pengutronix.de>
-References: <20180820015736.6680-1-marc@cpdesign.com.au>
+Message-ID: <20180821074245.u5lytub5qgqz2znr@pengutronix.de>
+References: <20180810104220.4391-1-bst@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180820015736.6680-1-marc@cpdesign.com.au>
+In-Reply-To: <20180810104220.4391-1-bst@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,350 +22,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] ARM: dts: am335x: introduce new "stripped"
- common.dtsi for PBL use
-To: marc@cpdesign.com.au
+Subject: Re: [PATCH 1/2] ARM: imx: add fusemap entries for i.MX6SDL silicon
+ revision >=1.4
+To: Bastian Stender <bst@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Aug 20, 2018 at 11:57:34AM +1000, marc@cpdesign.com.au wrote:
-> From: Marc Reilly <marc@cpdesign.com.au>
-> 
-> This moves am335x-bone-common.dts to include a "stripped" version of the
-> bone-common .dtsi (which is initially copied from the present one.)
-> This is in preparation for updating the bone-common .dtsi to use the
-> kernel version, which introduces some nodes which rely on clocks etc
-> which are removed from the "stripped" .dtsi files.
-> 
-> Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
+On Fri, Aug 10, 2018 at 12:42:19PM +0200, Bastian Stender wrote:
+> Signed-off-by: Bastian Stender <bst@pengutronix.de>
 > ---
+>  arch/arm/mach-imx/include/mach/ocotp-fusemap.h | 6 ++++++
+>  1 file changed, 6 insertions(+)
 
-Applied, thanks
+Applied (this patch and 2/2 from v2 sent separately), thanks.
 
 Sascha
 
->  arch/arm/dts/am335x-bone-common-strip.dtsi | 297 +++++++++++++++++++++++++++++
->  arch/arm/dts/am335x-bone-common.dts        |   2 +-
->  2 files changed, 298 insertions(+), 1 deletion(-)
->  create mode 100644 arch/arm/dts/am335x-bone-common-strip.dtsi
 > 
-> diff --git a/arch/arm/dts/am335x-bone-common-strip.dtsi b/arch/arm/dts/am335x-bone-common-strip.dtsi
-> new file mode 100644
-> index 000000000..e03ae2a8d
-> --- /dev/null
-> +++ b/arch/arm/dts/am335x-bone-common-strip.dtsi
-> @@ -0,0 +1,297 @@
-> +/*
-> + * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2 as
-> + * published by the Free Software Foundation.
-> + */
-> +
-> +/ {
-> +	chosen {
-> +		stdout-path = &uart0;
-> +	};
-> +
-> +	cpus {
-> +		cpu@0 {
-> +			cpu0-supply = <&dcdc2_reg>;
-> +		};
-> +	};
-> +
-> +	leds {
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&user_leds_s0>;
-> +
-> +		compatible = "gpio-leds";
-> +
-> +		led@2 {
-> +			label = "beaglebone:green:heartbeat";
-> +			gpios = <&gpio1 21 GPIO_ACTIVE_HIGH>;
-> +			linux,default-trigger = "heartbeat";
-> +			default-state = "off";
-> +		};
-> +
-> +		led@3 {
-> +			label = "beaglebone:green:mmc0";
-> +			gpios = <&gpio1 22 GPIO_ACTIVE_HIGH>;
-> +			linux,default-trigger = "mmc0";
-> +			default-state = "off";
-> +		};
-> +
-> +		led@4 {
-> +			label = "beaglebone:green:usr2";
-> +			gpios = <&gpio1 23 GPIO_ACTIVE_HIGH>;
-> +			linux,default-trigger = "cpu0";
-> +			default-state = "off";
-> +		};
-> +
-> +		led@5 {
-> +			label = "beaglebone:green:usr3";
-> +			gpios = <&gpio1 24 GPIO_ACTIVE_HIGH>;
-> +			linux,default-trigger = "mmc1";
-> +			default-state = "off";
-> +		};
-> +	};
-> +
-> +	vmmcsd_fixed: fixedregulator@0 {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "vmmcsd_fixed";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +	};
-> +};
-> +
-> +&am33xx_pinmux {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&clkout2_pin>;
-> +
-> +	user_leds_s0: user_leds_s0 {
-> +		pinctrl-single,pins = <
-> +			0x54 (PIN_OUTPUT_PULLDOWN | MUX_MODE7)	/* gpmc_a5.gpio1_21 */
-> +			0x58 (PIN_OUTPUT_PULLUP | MUX_MODE7)	/* gpmc_a6.gpio1_22 */
-> +			0x5c (PIN_OUTPUT_PULLDOWN | MUX_MODE7)	/* gpmc_a7.gpio1_23 */
-> +			0x60 (PIN_OUTPUT_PULLUP | MUX_MODE7)	/* gpmc_a8.gpio1_24 */
-> +		>;
-> +	};
-> +
-> +	i2c0_pins: pinmux_i2c0_pins {
-> +		pinctrl-single,pins = <
-> +			0x188 (PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c0_sda.i2c0_sda */
-> +			0x18c (PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c0_scl.i2c0_scl */
-> +		>;
-> +	};
-> +
-> +	uart0_pins: pinmux_uart0_pins {
-> +		pinctrl-single,pins = <
-> +			0x170 (PIN_INPUT_PULLUP | MUX_MODE0)	/* uart0_rxd.uart0_rxd */
-> +			0x174 (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* uart0_txd.uart0_txd */
-> +		>;
-> +	};
-> +
-> +	clkout2_pin: pinmux_clkout2_pin {
-> +		pinctrl-single,pins = <
-> +			0x1b4 (PIN_OUTPUT_PULLDOWN | MUX_MODE3)	/* xdma_event_intr1.clkout2 */
-> +		>;
-> +	};
-> +
-> +	cpsw_default: cpsw_default {
-> +		pinctrl-single,pins = <
-> +			/* Slave 1 */
-> +			0x110 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxerr.mii1_rxerr */
-> +			0x114 (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* mii1_txen.mii1_txen */
-> +			0x118 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxdv.mii1_rxdv */
-> +			0x11c (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* mii1_txd3.mii1_txd3 */
-> +			0x120 (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* mii1_txd2.mii1_txd2 */
-> +			0x124 (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* mii1_txd1.mii1_txd1 */
-> +			0x128 (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* mii1_txd0.mii1_txd0 */
-> +			0x12c (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_txclk.mii1_txclk */
-> +			0x130 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxclk.mii1_rxclk */
-> +			0x134 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxd3.mii1_rxd3 */
-> +			0x138 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxd2.mii1_rxd2 */
-> +			0x13c (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxd1.mii1_rxd1 */
-> +			0x140 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxd0.mii1_rxd0 */
-> +		>;
-> +	};
-> +
-> +	cpsw_sleep: cpsw_sleep {
-> +		pinctrl-single,pins = <
-> +			/* Slave 1 reset value */
-> +			0x110 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-> +			0x114 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-> +			0x118 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-> +			0x11c (PIN_INPUT_PULLDOWN | MUX_MODE7)
-> +			0x120 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-> +			0x124 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-> +			0x128 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-> +			0x12c (PIN_INPUT_PULLDOWN | MUX_MODE7)
-> +			0x130 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-> +			0x134 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-> +			0x138 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-> +			0x13c (PIN_INPUT_PULLDOWN | MUX_MODE7)
-> +			0x140 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-> +		>;
-> +	};
-> +
-> +	davinci_mdio_default: davinci_mdio_default {
-> +		pinctrl-single,pins = <
-> +			/* MDIO */
-> +			0x148 (PIN_INPUT_PULLUP | SLEWCTRL_FAST | MUX_MODE0)	/* mdio_data.mdio_data */
-> +			0x14c (PIN_OUTPUT_PULLUP | MUX_MODE0)			/* mdio_clk.mdio_clk */
-> +		>;
-> +	};
-> +
-> +	davinci_mdio_sleep: davinci_mdio_sleep {
-> +		pinctrl-single,pins = <
-> +			/* MDIO reset value */
-> +			0x148 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-> +			0x14c (PIN_INPUT_PULLDOWN | MUX_MODE7)
-> +		>;
-> +	};
-> +
-> +	mmc1_pins: pinmux_mmc1_pins {
-> +		pinctrl-single,pins = <
-> +			0x160 (PIN_INPUT | MUX_MODE7) /* GPIO0_6 */
-> +		>;
-> +	};
-> +
-> +	emmc_pins: pinmux_emmc_pins {
-> +		pinctrl-single,pins = <
-> +			0x80 (PIN_INPUT_PULLUP | MUX_MODE2) /* gpmc_csn1.mmc1_clk */
-> +			0x84 (PIN_INPUT_PULLUP | MUX_MODE2) /* gpmc_csn2.mmc1_cmd */
-> +			0x00 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad0.mmc1_dat0 */
-> +			0x04 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad1.mmc1_dat1 */
-> +			0x08 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad2.mmc1_dat2 */
-> +			0x0c (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad3.mmc1_dat3 */
-> +			0x10 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad4.mmc1_dat4 */
-> +			0x14 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad5.mmc1_dat5 */
-> +			0x18 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad6.mmc1_dat6 */
-> +			0x1c (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad7.mmc1_dat7 */
-> +		>;
-> +	};
-> +};
-> +
-> +&uart0 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&uart0_pins>;
-> +
-> +	status = "okay";
-> +};
-> +
-> +&usb {
-> +	status = "okay";
-> +};
-> +
-> +&usb_ctrl_mod {
-> +	status = "okay";
-> +};
-> +
-> +&usb0_phy {
-> +	status = "okay";
-> +};
-> +
-> +&usb1_phy {
-> +	status = "okay";
-> +};
-> +
-> +&usb0 {
-> +	status = "okay";
-> +	dr_mode = "peripheral";
-> +};
-> +
-> +&usb1 {
-> +	status = "okay";
-> +	dr_mode = "host";
-> +};
-> +
-> +&cppi41dma  {
-> +	status = "okay";
-> +};
-> +
-> +&i2c0 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&i2c0_pins>;
-> +
-> +	status = "okay";
-> +	clock-frequency = <400000>;
-> +
-> +	tps: tps@24 {
-> +		reg = <0x24>;
-> +	};
-> +
-> +};
-> +
-> +/include/ "tps65217.dtsi"
-> +
-> +&tps {
-> +	regulators {
-> +		dcdc1_reg: regulator@0 {
-> +			regulator-always-on;
-> +		};
-> +
-> +		dcdc2_reg: regulator@1 {
-> +			/* VDD_MPU voltage limits 0.95V - 1.26V with +/-4% tolerance */
-> +			regulator-name = "vdd_mpu";
-> +			regulator-min-microvolt = <925000>;
-> +			regulator-max-microvolt = <1325000>;
-> +			regulator-boot-on;
-> +			regulator-always-on;
-> +		};
-> +
-> +		dcdc3_reg: regulator@2 {
-> +			/* VDD_CORE voltage limits 0.95V - 1.1V with +/-4% tolerance */
-> +			regulator-name = "vdd_core";
-> +			regulator-min-microvolt = <925000>;
-> +			regulator-max-microvolt = <1150000>;
-> +			regulator-boot-on;
-> +			regulator-always-on;
-> +		};
-> +
-> +		ldo1_reg: regulator@3 {
-> +			regulator-always-on;
-> +		};
-> +
-> +		ldo2_reg: regulator@4 {
-> +			regulator-always-on;
-> +		};
-> +
-> +		ldo3_reg: regulator@5 {
-> +			regulator-always-on;
-> +		};
-> +
-> +		ldo4_reg: regulator@6 {
-> +			regulator-always-on;
-> +		};
-> +	};
-> +};
-> +
-> +&cpsw_emac0 {
-> +	phy_id = <&davinci_mdio>, <0>;
-> +	phy-mode = "mii";
-> +};
-> +
-> +&cpsw_emac1 {
-> +	phy_id = <&davinci_mdio>, <1>;
-> +	phy-mode = "mii";
-> +};
-> +
-> +&mac {
-> +	pinctrl-names = "default", "sleep";
-> +	pinctrl-0 = <&cpsw_default>;
-> +	pinctrl-1 = <&cpsw_sleep>;
-> +	status = "okay";
-> +};
-> +
-> +&davinci_mdio {
-> +	pinctrl-names = "default", "sleep";
-> +	pinctrl-0 = <&davinci_mdio_default>;
-> +	pinctrl-1 = <&davinci_mdio_sleep>;
-> +	status = "okay";
-> +};
-> +
-> +&mmc1 {
-> +	status = "okay";
-> +	bus-width = <0x4>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&mmc1_pins>;
-> +	cd-gpios = <&gpio0 6 GPIO_ACTIVE_HIGH>;
-> +	cd-inverted;
-> +};
-> diff --git a/arch/arm/dts/am335x-bone-common.dts b/arch/arm/dts/am335x-bone-common.dts
-> index 0488cbe1f..26896b4c7 100644
-> --- a/arch/arm/dts/am335x-bone-common.dts
-> +++ b/arch/arm/dts/am335x-bone-common.dts
-> @@ -10,7 +10,7 @@
->  #include "am33xx.dtsi"
->  #include "am33xx-strip.dtsi"
->  #include "am33xx-clocks-strip.dtsi"
-> -#include "am335x-bone-common.dtsi"
-> +#include "am335x-bone-common-strip.dtsi"
->  
->  / {
->  	model = "TI AM335x BeagleBone";
+> diff --git a/arch/arm/mach-imx/include/mach/ocotp-fusemap.h b/arch/arm/mach-imx/include/mach/ocotp-fusemap.h
+> index 44b58ca6e8..aec50dbf8a 100644
+> --- a/arch/arm/mach-imx/include/mach/ocotp-fusemap.h
+> +++ b/arch/arm/mach-imx/include/mach/ocotp-fusemap.h
+> @@ -23,7 +23,11 @@
+>  #define OCOTP_BOOT_CFG2			(OCOTP_WORD(0x450) | OCOTP_BIT(8) | OCOTP_WIDTH(8))
+>  #define OCOTP_BOOT_CFG3			(OCOTP_WORD(0x450) | OCOTP_BIT(16) | OCOTP_WIDTH(8))
+>  #define OCOTP_BOOT_CFG4			(OCOTP_WORD(0x450) | OCOTP_BIT(24) | OCOTP_WIDTH(8))
+> +/* available on i.MX6SDL silicon revision >=1.4, "reserved" elsewhere */
+> +#define OCOTP_SDP_DISABLE		(OCOTP_WORD(0x460) | OCOTP_BIT(0) | OCOTP_WIDTH(1))
+>  #define OCOTP_SEC_CONFIG_1		(OCOTP_WORD(0x460) | OCOTP_BIT(1) | OCOTP_WIDTH(1))
+> +/* available on i.MX6SDL silicon revision >=1.4, "reserved" elsewhere */
+> +#define OCOTP_SDP_READ_DISABLE		(OCOTP_WORD(0x460) | OCOTP_BIT(2) | OCOTP_WIDTH(1))
+>  #define OCOTP_DIR_BT_DIS		(OCOTP_WORD(0x460) | OCOTP_BIT(3) | OCOTP_WIDTH(1))
+>  #define OCOTP_BT_FUSE_SEL		(OCOTP_WORD(0x460) | OCOTP_BIT(4) | OCOTP_WIDTH(1))
+>  #define OCOTP_SJC_DISABLE		(OCOTP_WORD(0x460) | OCOTP_BIT(20) | OCOTP_WIDTH(1))
+> @@ -31,6 +35,8 @@
+>  #define OCOTP_JTAG_SMODE		(OCOTP_WORD(0x460) | OCOTP_BIT(22) | OCOTP_WIDTH(2))
+>  #define OCOTP_KTE			(OCOTP_WORD(0x460) | OCOTP_BIT(26) | OCOTP_WIDTH(1))
+>  #define OCOTP_JTAG_HEO			(OCOTP_WORD(0x460) | OCOTP_BIT(27) | OCOTP_WIDTH(1))
+> +/* available on i.MX6SDL silicon revision >=1.4, "reserved" elsewhere */
+> +#define OCOTP_FORCE_INTERNAL_BOOT	(OCOTP_WORD(0x460) | OCOTP_BIT(31) | OCOTP_WIDTH(1))
+>  #define OCOTP_NAND_READ_CMD_CODE1	(OCOTP_WORD(0x470) | OCOTP_BIT(0) | OCOTP_WIDTH(8))
+>  #define OCOTP_NAND_READ_CMD_CODE2	(OCOTP_WORD(0x470) | OCOTP_BIT(8) | OCOTP_WIDTH(8))
+>  #define OCOTP_TEMP_SENSE		(OCOTP_WORD(0x4e0) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
 > -- 
-> 2.16.4
+> 2.18.0
 > 
 > 
 > _______________________________________________
