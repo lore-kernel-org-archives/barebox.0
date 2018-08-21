@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fqYFD-0003jX-Qh
- for barebox@lists.infradead.org; Fri, 17 Aug 2018 06:28:25 +0000
-Date: Fri, 17 Aug 2018 08:28:09 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180817062809.ulqnrzll7kuucvt6@pengutronix.de>
-References: <20180815112409.25725-1-marc@cpdesign.com.au>
- <20180815112409.25725-4-marc@cpdesign.com.au>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180815112409.25725-4-marc@cpdesign.com.au>
+ id 1fs09f-0002Tt-G9
+ for barebox@lists.infradead.org; Tue, 21 Aug 2018 06:28:40 +0000
+Received: by mail-pg1-x542.google.com with SMTP id z25-v6so3279495pgu.7
+ for <barebox@lists.infradead.org>; Mon, 20 Aug 2018 23:28:29 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: [PATCH] net: Do not route traffic to interfaces that are not up
+Date: Mon, 20 Aug 2018 23:28:19 -0700
+Message-Id: <20180821062819.18087-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,45 +17,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] ARM: dts: change am335x-bone-common.dtsi to include
- kernel variant directly
-To: marc@cpdesign.com.au
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hi Marc,
+In the case when:
 
-On Wed, Aug 15, 2018 at 09:24:09PM +1000, marc@cpdesign.com.au wrote:
-> From: Marc Reilly <marc@cpdesign.com.au>
-> 
-> Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
-> ---
->  dts/src/arm/am335x-bone-common.dtsi | 414 +-----------------------------------
->  1 file changed, 1 insertion(+), 413 deletions(-)
-> 
-> diff --git a/dts/src/arm/am335x-bone-common.dtsi b/dts/src/arm/am335x-bone-common.dtsi
-> index f9e8667f5..8711802f5 100644
-> --- a/dts/src/arm/am335x-bone-common.dtsi
-> +++ b/dts/src/arm/am335x-bone-common.dtsi
-> @@ -6,416 +6,4 @@
->   * published by the Free Software Foundation.
->   */
->  
-> -/ {
+  - Board has multiple network interfaces
 
-Something is gone wrong here. You removed the contents of the upstream
-dts file, not the one in arch/arm/dts/
+  - Two ore more of those interfaces are statically configured to be
+    on the same network
 
-Sascha
+  - Only one of those interfaces is up and it is preceeded (as far as
+    for_each_netdev is concerned) by interface in the same network
+    that isn't
 
+net_route() will choose "non-up" device as a route for traffic
+resulting in no network connectivity. Change the routing logic to also
+consider if interface is "up", so that only such interfaces would be
+considered for sending network traffic out.
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ net/net.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/net.c b/net/net.c
+index d21855415..63f42fa5c 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -149,7 +149,7 @@ struct eth_device *net_route(IPaddr_t dest)
+ 	struct eth_device *edev;
+ 
+ 	for_each_netdev(edev) {
+-		if (!edev->ipaddr)
++		if (!edev->ipaddr || !edev->ifup)
+ 			continue;
+ 
+ 		if ((dest & edev->netmask) == (edev->ipaddr & edev->netmask)) {
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
