@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fsNwM-0001tf-5Z
- for barebox@lists.infradead.org; Wed, 22 Aug 2018 07:52:31 +0000
-Date: Wed, 22 Aug 2018 09:52:16 +0200
+ id 1fs1Qv-0001en-Sf
+ for barebox@lists.infradead.org; Tue, 21 Aug 2018 07:50:35 +0000
+Date: Tue, 21 Aug 2018 09:50:19 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180822075216.pufg72jwyxhfvxiw@pengutronix.de>
-References: <20180821152001.5747-1-aleksander@aleksander.es>
- <20180821152001.5747-4-aleksander@aleksander.es>
+Message-ID: <20180821075019.cl2r4w7zbyxilb26@pengutronix.de>
+References: <20180820145215.GA22058@ravnborg.org>
+ <20180820145612.17576-2-sam@ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180821152001.5747-4-aleksander@aleksander.es>
+In-Reply-To: <20180820145612.17576-2-sam@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,38 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] ratp: implement support for GPIO commands
-To: Aleksander Morgado <aleksander@aleksander.es>
-Cc: barebox@lists.infradead.org
-
-On Tue, Aug 21, 2018 at 05:20:00PM +0200, Aleksander Morgado wrote:
-> Introduce three new RATP commands that allow getting and setting GPIO
-> values as well as configuring the direction of the GPIO pins.
->
-
-Same here as with the i2c bus/address thing. Being to able to use names for
-the GPIOs would be a good thing.
+Subject: Re: [PATCH v3 2/3] phylib: add support for reset-gpios
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: Barebox List <barebox@lists.infradead.org>
 
 
-> +#include <common.h>
-> +#include <ratp_bb.h>
-> +#include <malloc.h>
-> +#include <environment.h>
-> +#include <gpio.h>
-> +#include <errno.h>
+Hi Sam,
+
+Looks good generally, but there's one point
+
+On Mon, Aug 20, 2018 at 04:56:11PM +0200, Sam Ravnborg wrote:
+>  /**
+>   * of_mdiobus_register - Register mii_bus and create PHYs from the device tree
+>   * @mdio: pointer to mii_bus structure
+> @@ -111,6 +186,8 @@ static int of_mdiobus_register(struct mii_bus *mdio, struct device_node *np)
+>  			continue;
+>  		}
+>  
+> +		of_reset_phy(mdio, child);
 > +
-> +struct ratp_bb_gpio_get_value_request {
-> +	struct ratp_bb header;
-> +	uint32_t       gpio;
-> +} __attribute__((packed));
+>  		of_mdiobus_register_phy(mdio, child, addr);
+>  	}
+>  
+> @@ -154,6 +231,11 @@ int mdiobus_register(struct mii_bus *bus)
+>  
+>  	pr_info("%s: probed\n", dev_name(&bus->dev));
+>  
+> +	/* register PHY's as child node to the ethernet node */
+> +	if (bus->parent->device_node)
+> +		of_mdiobus_register(bus, bus->parent->device_node);
 
-Nitpick: I prefer not to align the variable names in struct definitions.
-If the next element with a longer type is added then you can only give
-up the alignment or patch unrelated lines (which is bad because 'git
-blame' gives no useful output for the changed lines)
+I am not so convinced of this change. Here you assume that bus->parent
+is the ethernet node, but this doesn't necessarily have to be the case
+as some mdio controllers are standalone and not part of an ethernet
+device (see "virtual,mdio-gpio" to get examples).
+
+So instead of introducing this change I would prefer if you let the code
+below trigger:
+
+> +
+> +	/* register PHY's as child node to mdio node */
+>  	if (bus->dev.device_node)
+>  		of_mdiobus_register(bus, bus->dev.device_node);
+
+This means you have to set bus->dev.device_node in your ethernet driver
+like some drivers already do:
+
+drivers/net/macb.c:666:                 macb->miibus.dev.device_node = mdiobus;
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
