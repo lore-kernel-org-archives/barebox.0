@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl0-x242.google.com ([2607:f8b0:400e:c01::242])
+Received: from mail-pl0-x244.google.com ([2607:f8b0:400e:c01::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fs07p-00007r-Rf
- for barebox@lists.infradead.org; Tue, 21 Aug 2018 06:26:55 +0000
-Received: by mail-pl0-x242.google.com with SMTP id x6-v6so8294977plv.10
- for <barebox@lists.infradead.org>; Mon, 20 Aug 2018 23:26:36 -0700 (PDT)
+ id 1fs07s-0000A9-Ea
+ for barebox@lists.infradead.org; Tue, 21 Aug 2018 06:26:56 +0000
+Received: by mail-pl0-x244.google.com with SMTP id j8-v6so8277029pll.12
+ for <barebox@lists.infradead.org>; Mon, 20 Aug 2018 23:26:40 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Subject: [PATCH 12/22] ARM: i.MX: bbu: Move protect code into a separate
- routine
-Date: Mon, 20 Aug 2018 23:25:53 -0700
-Message-Id: <20180821062603.17393-13-andrew.smirnov@gmail.com>
+Subject: [PATCH 15/22] ARM: i.MX: zii-vf610-dev-rev-b/c: Add support for BBU
+ on SPI-NOR
+Date: Mon, 20 Aug 2018 23:25:56 -0700
+Message-Id: <20180821062603.17393-16-andrew.smirnov@gmail.com>
 In-Reply-To: <20180821062603.17393-1-andrew.smirnov@gmail.com>
 References: <20180821062603.17393-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -28,104 +28,61 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Both code sections responsible for enabling/disabling underlying
-device write protection are almost identical to each other. To avoid
-code duplication move them into a separate routine and adjust the rest
-of the code accordignly.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/imx-bbu-internal.c | 62 +++++++++++++++++++---------
- 1 file changed, 42 insertions(+), 20 deletions(-)
+ arch/arm/boards/zii-vf610-dev/board.c | 19 +++++++++++++++++++
+ arch/arm/dts/vf610-zii-dev-rev-b.dts  | 11 +++++++++++
+ 2 files changed, 30 insertions(+)
 
-diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-index 318efd88e..eb1c459b2 100644
---- a/arch/arm/mach-imx/imx-bbu-internal.c
-+++ b/arch/arm/mach-imx/imx-bbu-internal.c
-@@ -44,6 +44,41 @@ struct imx_internal_bbu_handler {
- 	enum filetype expected_type;
- };
+diff --git a/arch/arm/boards/zii-vf610-dev/board.c b/arch/arm/boards/zii-vf610-dev/board.c
+index d88b26164..818044ce6 100644
+--- a/arch/arm/boards/zii-vf610-dev/board.c
++++ b/arch/arm/boards/zii-vf610-dev/board.c
+@@ -149,6 +149,25 @@ static int zii_vf610_dev_set_hostname(void)
+ }
+ late_initcall(zii_vf610_dev_set_hostname);
  
-+static bool
-+imx_bbu_erase_required(struct imx_internal_bbu_handler *imx_handler)
++static int zii_vf610_dev_register_bbu(void)
 +{
-+	return imx_handler->handler.flags & IMX_INTERNAL_FLAG_ERASE;
-+}
-+
-+static int imx_bbu_protect(int fd, struct imx_internal_bbu_handler *imx_handler,
-+			   const char *devicefile, int offset, int image_len,
-+			   int prot)
-+{
-+	const char *prefix = prot ? "" : "un";
 +	int ret;
-+
-+	if (!imx_bbu_erase_required(imx_handler))
++	if (!of_machine_is_compatible("zii,vf610dev-c") &&
++	    !of_machine_is_compatible("zii,vf610dev-b"))
 +		return 0;
 +
-+	pr_debug("%s: %sprotecting %s from 0x%08x to 0x%08x\n", __func__,
-+		 prefix, devicefile, offset, image_len);
-+
-+	ret = protect(fd, image_len, offset, prot);
++	ret = vf610_bbu_internal_spi_i2c_register_handler("SPI",
++							  "/dev/m25p0.bootloader",
++							  0);
 +	if (ret) {
-+		/*
-+		 * If protect() is not implemented for this device,
-+		 * just report success
-+		 */
-+		if (ret == -ENOSYS)
-+			return 0;
-+
-+		pr_err("%sprotecting %s failed with %s\n", prefix, devicefile,
-+		       strerror(-ret));
++		pr_err("Failed to register SPI BBU handler");
++		return ret;
 +	}
 +
-+	return ret;
++	return 0;
 +}
++late_initcall(zii_vf610_dev_register_bbu);
 +
- /*
-  * Actually write an image to the target device, eventually keeping a
-  * DOS partition table on the device
-@@ -67,16 +102,12 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
- 	if (imx_handler->handler.flags & IMX_BBU_FLAG_KEEP_HEAD)
- 		offset += imx_handler->flash_header_offset;
+ static int zii_vf610_spu3_register_bbu(void)
+ {
+ 	int ret;
+diff --git a/arch/arm/dts/vf610-zii-dev-rev-b.dts b/arch/arm/dts/vf610-zii-dev-rev-b.dts
+index 1eb01f44a..ac0807c49 100644
+--- a/arch/arm/dts/vf610-zii-dev-rev-b.dts
++++ b/arch/arm/dts/vf610-zii-dev-rev-b.dts
+@@ -45,3 +45,14 @@
+ #include <arm/vf610-zii-dev-rev-b.dts>
  
--	if (imx_handler->handler.flags & IMX_INTERNAL_FLAG_ERASE) {
--		pr_debug("%s: unprotecting %s from 0x%08x to 0x%08x\n", __func__,
--				devicefile, offset, image_len);
--		ret = protect(fd, image_len, offset, 0);
--		if (ret && ret != -ENOSYS) {
--			pr_err("unprotecting %s failed with %s\n", devicefile,
--					strerror(-ret));
--			goto err_close;
--		}
-+	ret = imx_bbu_protect(fd, imx_handler, devicefile, offset,
-+			      image_len, 0);
-+	if (ret)
-+		goto err_close;
- 
-+	if (imx_bbu_erase_required(imx_handler)) {
- 		pr_debug("%s: erasing %s from 0x%08x to 0x%08x\n", __func__,
- 				devicefile, offset, image_len);
- 		ret = erase(fd, image_len, offset);
-@@ -91,17 +122,8 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
- 	if (ret < 0)
- 		goto err_close;
- 
--	if (imx_handler->handler.flags & IMX_INTERNAL_FLAG_ERASE) {
--		pr_debug("%s: protecting %s from 0x%08x to 0x%08x\n", __func__,
--				devicefile, offset, image_len);
--		ret = protect(fd, image_len, offset, 1);
--		if (ret && ret != -ENOSYS) {
--			pr_err("protecting %s failed with %s\n", devicefile,
--					strerror(-ret));
--		}
--	}
--
--	ret = 0;
-+	imx_bbu_protect(fd, imx_handler, devicefile, offset,
-+			image_len, 1);
- 
- err_close:
- 	close(fd);
+ #include "vf610-zii-dev.dtsi"
++
++/ {
++	spi0 {
++		m25p128@0 {
++			partition@0 {
++				label = "bootloader";
++				reg = <0x0 0x100000>;
++			};
++		};
++	};
++};
 -- 
 2.17.1
 
