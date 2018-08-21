@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fs09f-0002Tt-G9
- for barebox@lists.infradead.org; Tue, 21 Aug 2018 06:28:40 +0000
-Received: by mail-pg1-x542.google.com with SMTP id z25-v6so3279495pgu.7
- for <barebox@lists.infradead.org>; Mon, 20 Aug 2018 23:28:29 -0700 (PDT)
+ id 1fs0AE-0002jw-FM
+ for barebox@lists.infradead.org; Tue, 21 Aug 2018 06:29:15 +0000
+Received: by mail-pf1-x441.google.com with SMTP id l9-v6so7981243pff.9
+ for <barebox@lists.infradead.org>; Mon, 20 Aug 2018 23:29:04 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Subject: [PATCH] net: Do not route traffic to interfaces that are not up
-Date: Mon, 20 Aug 2018 23:28:19 -0700
-Message-Id: <20180821062819.18087-1-andrew.smirnov@gmail.com>
+Subject: [PATCH 1/2] clk: clk-sccg-pll: Remove leftover debug output
+Date: Mon, 20 Aug 2018 23:28:52 -0700
+Message-Id: <20180821062853.18301-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,40 +25,27 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-In the case when:
-
-  - Board has multiple network interfaces
-
-  - Two ore more of those interfaces are statically configured to be
-    on the same network
-
-  - Only one of those interfaces is up and it is preceeded (as far as
-    for_each_netdev is concerned) by interface in the same network
-    that isn't
-
-net_route() will choose "non-up" device as a route for traffic
-resulting in no network connectivity. Change the routing logic to also
-consider if interface is "up", so that only such interfaces would be
-considered for sending network traffic out.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- net/net.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/imx/clk-sccg-pll.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/net.c b/net/net.c
-index d21855415..63f42fa5c 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -149,7 +149,7 @@ struct eth_device *net_route(IPaddr_t dest)
- 	struct eth_device *edev;
+diff --git a/drivers/clk/imx/clk-sccg-pll.c b/drivers/clk/imx/clk-sccg-pll.c
+index 951234367..bbfd95a11 100644
+--- a/drivers/clk/imx/clk-sccg-pll.c
++++ b/drivers/clk/imx/clk-sccg-pll.c
+@@ -121,11 +121,9 @@ static void clk_pll1_unprepare(struct clk *clk)
+ {
+ 	struct clk_sccg_pll *pll = to_clk_sccg_pll(clk);
+ 	u32 val;
+-printf("%s %p\n", __func__, pll);
+ 	val = readl(pll->base);
+ 	val |= (1 << PLL_PD);
+ 	writel(val, pll->base);
+-printf("fuschi\n");
+ }
  
- 	for_each_netdev(edev) {
--		if (!edev->ipaddr)
-+		if (!edev->ipaddr || !edev->ifup)
- 			continue;
- 
- 		if ((dest & edev->netmask) == (edev->ipaddr & edev->netmask)) {
+ static unsigned long clk_pll2_recalc_rate(struct clk *clk,
 -- 
 2.17.1
 
