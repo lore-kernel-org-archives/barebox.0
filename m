@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fsMxK-0008RE-QH
- for barebox@lists.infradead.org; Wed, 22 Aug 2018 06:49:28 +0000
-Date: Wed, 22 Aug 2018 08:49:09 +0200
+ id 1fsN0N-0001eI-9L
+ for barebox@lists.infradead.org; Wed, 22 Aug 2018 06:52:36 +0000
+Date: Wed, 22 Aug 2018 08:52:23 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180822064909.7njvrsza274uewpd@pengutronix.de>
+Message-ID: <20180822065223.zsyp77axhvvh6qcn@pengutronix.de>
 References: <20180821062603.17393-1-andrew.smirnov@gmail.com>
  <20180821062603.17393-5-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -68,8 +68,37 @@ On Mon, Aug 20, 2018 at 11:25:45PM -0700, Andrey Smirnov wrote:
 > +	case filetype_arm_barebox:
 > +		/*
 > +		 * Specifying expected_type as unknow will disable the
+> +		 * inner image type check
+> +		 */
+> +		if (expected_type == filetype_unknown)
+> +			break;
+> +
+> +		blob = data->image + imx_handler->flash_header_offset;
+> +		len  = data->len   - imx_handler->flash_header_offset;
+> +		type = file_detect_type(blob, len);
+> +
+> +		if (type != expected_type) {
+> +			pr_err("Expected image type: %s, "
+> +			       "detected image type: %s\n",
+> +			       file_type_to_string(expected_type),
+> +			       file_type_to_string(type));
+> +			return -EINVAL;
+> +		}
+> +		break;
+> +	default:
+>  		if (!bbu_force(data, "Not an ARM barebox image"))
+>  			return -EINVAL;
+>  	}
+> @@ -137,7 +165,8 @@ static int imx_bbu_internal_v1_update(struct bbu_handler *handler, struct bbu_da
+>  		container_of(handler, struct imx_internal_bbu_handler, handler);
+>  	int ret;
+>  
+> -	ret = imx_bbu_check_prereq(data->devicefile, data);
+> +	ret = imx_bbu_check_prereq(imx_handler, data->devicefile, data,
+> +				   filetype_unknown);
 
-s/unknow/unknown/
+Why filetype_unknown here? in the v2 version we have
+filetype_imx_image_v2. I would expect filetype_imx_image_v1 here.
 
 Sascha
 
