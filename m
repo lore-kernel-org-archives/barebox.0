@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fsN0N-0001eI-9L
- for barebox@lists.infradead.org; Wed, 22 Aug 2018 06:52:36 +0000
-Date: Wed, 22 Aug 2018 08:52:23 +0200
+ id 1fsN0s-0001lt-Vf
+ for barebox@lists.infradead.org; Wed, 22 Aug 2018 06:53:08 +0000
+Date: Wed, 22 Aug 2018 08:52:55 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180822065223.zsyp77axhvvh6qcn@pengutronix.de>
+Message-ID: <20180822065255.riekevrgugrwwp42@pengutronix.de>
 References: <20180821062603.17393-1-andrew.smirnov@gmail.com>
- <20180821062603.17393-5-andrew.smirnov@gmail.com>
+ <20180821062603.17393-7-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180821062603.17393-5-andrew.smirnov@gmail.com>
+In-Reply-To: <20180821062603.17393-7-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,84 +23,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/22] ARM: i.MX: bbu: Move inner-image type check
+Subject: Re: [PATCH 06/22] ARM: i.MX: bbu: Consolidate vairous update helpers
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Aug 20, 2018 at 11:25:45PM -0700, Andrey Smirnov wrote:
-> Since imx_bbu_check_prereq() already uses file_detect_type() and we've
-> extended it to understand i.MX boot image file type, we can simplify a
-> bunch of repetitive code as follows:
-> 
->     1. Convert all checks from IVT_BARKER to filetype_imx_image_v2
->        check
-> 
->     2. Move all of the checking to be a part of imx_bbu_check_prereq()
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  arch/arm/mach-imx/imx-bbu-internal.c | 64 +++++++++++++++++-----------
->  1 file changed, 39 insertions(+), 25 deletions(-)
-> 
-> diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-> index 67ae2961c..ea57b2772 100644
-> --- a/arch/arm/mach-imx/imx-bbu-internal.c
-> +++ b/arch/arm/mach-imx/imx-bbu-internal.c
-> @@ -106,11 +106,39 @@ err_close:
->  	return ret;
->  }
->  
-> -static int imx_bbu_check_prereq(const char *devicefile, struct bbu_data *data)
-> +static int imx_bbu_check_prereq(struct imx_internal_bbu_handler *imx_handler,
-> +				const char *devicefile, struct bbu_data *data,
-> +				enum filetype expected_type)
->  {
->  	int ret;
-> -
-> -	if (file_detect_type(data->image, data->len) != filetype_arm_barebox) {
-> +	const void *blob;
-> +	size_t len;
-> +	enum filetype type;
-> +
-> +	type = file_detect_type(data->image, data->len);
-> +
-> +	switch (type) {
-> +	case filetype_arm_barebox:
-> +		/*
-> +		 * Specifying expected_type as unknow will disable the
-> +		 * inner image type check
-> +		 */
-> +		if (expected_type == filetype_unknown)
-> +			break;
-> +
-> +		blob = data->image + imx_handler->flash_header_offset;
-> +		len  = data->len   - imx_handler->flash_header_offset;
-> +		type = file_detect_type(blob, len);
-> +
-> +		if (type != expected_type) {
-> +			pr_err("Expected image type: %s, "
-> +			       "detected image type: %s\n",
-> +			       file_type_to_string(expected_type),
-> +			       file_type_to_string(type));
-> +			return -EINVAL;
-> +		}
-> +		break;
-> +	default:
->  		if (!bbu_force(data, "Not an ARM barebox image"))
->  			return -EINVAL;
->  	}
-> @@ -137,7 +165,8 @@ static int imx_bbu_internal_v1_update(struct bbu_handler *handler, struct bbu_da
->  		container_of(handler, struct imx_internal_bbu_handler, handler);
->  	int ret;
->  
-> -	ret = imx_bbu_check_prereq(data->devicefile, data);
-> +	ret = imx_bbu_check_prereq(imx_handler, data->devicefile, data,
-> +				   filetype_unknown);
-
-Why filetype_unknown here? in the v2 version we have
-filetype_imx_image_v2. I would expect filetype_imx_image_v1 here.
+In The subject: s/vairous/various/
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
