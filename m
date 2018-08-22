@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from mail-lj1-x242.google.com ([2a00:1450:4864:20::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fsXzE-0003px-3s
- for barebox@lists.infradead.org; Wed, 22 Aug 2018 18:36:09 +0000
-Date: Wed, 22 Aug 2018 20:35:55 +0200
+ id 1fsY0L-00044k-0c
+ for barebox@lists.infradead.org; Wed, 22 Aug 2018 18:37:18 +0000
+Received: by mail-lj1-x242.google.com with SMTP id q127-v6so2173082ljq.11
+ for <barebox@lists.infradead.org>; Wed, 22 Aug 2018 11:37:06 -0700 (PDT)
 From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20180822183555.GA24084@ravnborg.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Wed, 22 Aug 2018 20:36:49 +0200
+Message-Id: <20180822183651.32071-1-sam@ravnborg.org>
+In-Reply-To: <20180822183555.GA24084@ravnborg.org>
+References: <20180822183555.GA24084@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,83 +18,202 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 0/3] Add Davicom phy + reset-gpios
+Subject: [PATCH v4 1/3] phylib: add Davicom PHY support
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Changes in v4:
-- Either register a mdio node or phy child nodes
-- Check for valid phy node before registering the phy node
-  This is like the kernel does it
-- Also recognize compatible="ethernet-phy-id*" as PHY's
-  again like the kernel, but with a simpler implementation,
-  as we do not try to read the actual phy_id
+Based on driver from Linux kernel 4.18.0-rc4
 
-Changes in v3:
-- Consider the v3 a new implmentation - almost nothing was
-  left from v2. Thus also invalidate any former review - sorry.
-- Dropped the need for the mdio {} node, as this node is
-  only used when there is dedicated HW support for the mdio.
-- Added so PHY child nodes to ethernet nodes are registered,
-  and as part of registration the PHY nodes are reset if
-  the reset-gpios property is present.
-- Further dropped that the parsed info is stored in the bus,
-  as we only do reset once, thus there is no need to
-  save the info from the DT
-- Futher dropped helper function to reset. They was not needed
-- Named the gpio with the name of the PHY node
-  in the DT. This makes it unique and easier to recognize.
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+---
+ drivers/net/phy/Kconfig   |   5 ++
+ drivers/net/phy/Makefile  |   1 +
+ drivers/net/phy/davicom.c | 140 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 146 insertions(+)
+ create mode 100644 drivers/net/phy/davicom.c
 
-Changes in v2:
-- Added patch to enable Davicom PHY on at91sam9263ek - evaluation kit
-- Fix so we do reset before comunicating with the PHY
-- Rename to mdio_reset()
-- Reference correct binding file in commit log (mdio.txt)
-- Tested on at91sam9263ek
-  The at91sam9263ek kit do not require the reset like my
-  proprietary board, so no DT changes required
+diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+index cda752b65..79fb917ee 100644
+--- a/drivers/net/phy/Kconfig
++++ b/drivers/net/phy/Kconfig
+@@ -18,6 +18,11 @@ config AT803X_PHY
+ 	---help---
+ 	  Currently supports the AT8030, AT8031 and AT8035 PHYs.
+ 
++config DAVICOM_PHY
++	bool "Driver for Davicom PHYs"
++	---help---
++	  Currently supports dm9161e and dm9131
++
+ config LXT_PHY
+ 	bool "Driver for the Intel LXT PHYs"
+ 	---help---
+diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+index 30b20f8ee..4424054d9 100644
+--- a/drivers/net/phy/Makefile
++++ b/drivers/net/phy/Makefile
+@@ -1,6 +1,7 @@
+ obj-y += phy.o mdio_bus.o
+ obj-$(CONFIG_AR8327N_PHY)	+= ar8327.o
+ obj-$(CONFIG_AT803X_PHY)	+= at803x.o
++obj-$(CONFIG_DAVICOM_PHY)	+= davicom.o
+ obj-$(CONFIG_LXT_PHY)		+= lxt.o
+ obj-$(CONFIG_MARVELL_PHY)	+= marvell.o
+ obj-$(CONFIG_MICREL_PHY)	+= micrel.o
+diff --git a/drivers/net/phy/davicom.c b/drivers/net/phy/davicom.c
+new file mode 100644
+index 000000000..8a784b1e5
+--- /dev/null
++++ b/drivers/net/phy/davicom.c
+@@ -0,0 +1,140 @@
++/*
++ * drivers/net/phy/davicom.c
++ *
++ * Driver for Davicom PHYs
++ *
++ * Author: Andy Fleming
++ *
++ * Copyright (c) 2004 Freescale Semiconductor, Inc.
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ *
++ */
++
++#include <common.h>
++#include <init.h>
++#include <linux/mii.h>
++#include <linux/ethtool.h>
++#include <linux/phy.h>
++
++#define MII_DM9161_SCR		0x10
++#define MII_DM9161_SCR_INIT	0x0610
++#define MII_DM9161_SCR_RMII	0x0100
++
++/* DM9161 Interrupt Register */
++#define MII_DM9161_INTR	0x15
++#define MII_DM9161_INTR_PEND		0x8000
++#define MII_DM9161_INTR_DPLX_MASK	0x0800
++#define MII_DM9161_INTR_SPD_MASK	0x0400
++#define MII_DM9161_INTR_LINK_MASK	0x0200
++#define MII_DM9161_INTR_MASK		0x0100
++#define MII_DM9161_INTR_DPLX_CHANGE	0x0010
++#define MII_DM9161_INTR_SPD_CHANGE	0x0008
++#define MII_DM9161_INTR_LINK_CHANGE	0x0004
++#define MII_DM9161_INTR_INIT 		0x0000
++#define MII_DM9161_INTR_STOP	\
++(MII_DM9161_INTR_DPLX_MASK | MII_DM9161_INTR_SPD_MASK \
++ | MII_DM9161_INTR_LINK_MASK | MII_DM9161_INTR_MASK)
++
++/* DM9161 10BT Configuration/Status */
++#define MII_DM9161_10BTCSR	0x12
++#define MII_DM9161_10BTCSR_INIT	0x7800
++
++MODULE_DESCRIPTION("Davicom PHY driver");
++MODULE_AUTHOR("Andy Fleming");
++MODULE_LICENSE("GPL");
++
++
++static int dm9161_config_aneg(struct phy_device *phydev)
++{
++	int err;
++
++	/* Isolate the PHY */
++	err = phy_write(phydev, MII_BMCR, BMCR_ISOLATE);
++
++	if (err < 0)
++		return err;
++
++	/* Configure the new settings */
++	err = genphy_config_aneg(phydev);
++
++	if (err < 0)
++		return err;
++
++	return 0;
++}
++
++static int dm9161_config_init(struct phy_device *phydev)
++{
++	int err, temp;
++
++	/* Isolate the PHY */
++	err = phy_write(phydev, MII_BMCR, BMCR_ISOLATE);
++
++	if (err < 0)
++		return err;
++
++	switch (phydev->interface) {
++	case PHY_INTERFACE_MODE_MII:
++		temp = MII_DM9161_SCR_INIT;
++		break;
++	case PHY_INTERFACE_MODE_RMII:
++		temp =  MII_DM9161_SCR_INIT | MII_DM9161_SCR_RMII;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	/* Do not bypass the scrambler/descrambler */
++	err = phy_write(phydev, MII_DM9161_SCR, temp);
++	if (err < 0)
++		return err;
++
++	/* Clear 10BTCSR to default */
++	err = phy_write(phydev, MII_DM9161_10BTCSR, MII_DM9161_10BTCSR_INIT);
++
++	if (err < 0)
++		return err;
++
++	/* Reconnect the PHY, and enable Autonegotiation */
++	return phy_write(phydev, MII_BMCR, BMCR_ANENABLE);
++}
++
++static struct phy_driver dm91xx_driver[] = {
++{
++	.phy_id		= 0x0181b880,
++	.drv.name	= "Davicom DM9161E",
++	.phy_id_mask	= 0x0ffffff0,
++	.features	= PHY_BASIC_FEATURES,
++	.config_init	= dm9161_config_init,
++	.config_aneg	= dm9161_config_aneg,
++}, {
++	.phy_id		= 0x0181b8b0,
++	.drv.name	= "Davicom DM9161B/C",
++	.phy_id_mask	= 0x0ffffff0,
++	.features	= PHY_BASIC_FEATURES,
++	.config_init	= dm9161_config_init,
++	.config_aneg	= dm9161_config_aneg,
++}, {
++	.phy_id		= 0x0181b8a0,
++	.drv.name	= "Davicom DM9161A",
++	.phy_id_mask	= 0x0ffffff0,
++	.features	= PHY_BASIC_FEATURES,
++	.config_init	= dm9161_config_init,
++	.config_aneg	= dm9161_config_aneg,
++}, {
++	.phy_id		= 0x00181b80,
++	.drv.name	= "Davicom DM9131",
++	.phy_id_mask	= 0x0ffffff0,
++	.features	= PHY_BASIC_FEATURES,
++} };
++
++static int dm9161_init(void)
++{
++	return phy_drivers_register(dm91xx_driver,
++		ARRAY_SIZE(dm91xx_driver));
++}
++fs_initcall(dm9161_init);
+-- 
+2.12.0
 
-Intro:
-The following patches was necessary to get networking
-operational on my proprietary target.
-The target is at91sam9263 based with a Davicom PHY.
-
-The Davicom PHY is a straight copy form the Linux
-kernel with the interrupt routine removed and
-minor adjustments to the rest.
-
-The davicom PHY would not work until it had seen a reset
-cycle - which I think may be an artifact of the board design.
-
-To fix the reset issue I have implemented support for the
-reset-gpios binding (see net/phy.txt bindings).
-A minimal implmentation was done, just enough to get
-my target running.
-
-I could have implemented something in macb -
-but I preferred the more generic solution.
-
-Also included are a patch that for the at91sam9263ek
-evaluation board. The patch adds several extra tools
-that are usefull for testing, and enable the Davicom PHY.
-
-        Sam
-
-Sam Ravnborg (3):
-      phylib: add Davicom PHY support
-      phylib: add support for reset-gpios
-      at91sam9263ek: add PHY, miitool etc. to config
-
- arch/arm/configs/at91sam9263ek_defconfig |  12 ++-
- drivers/net/phy/Kconfig                  |   5 ++
- drivers/net/phy/Makefile                 |   1 +
- drivers/net/phy/davicom.c                | 140 +++++++++++++++++++++++++++++++
- drivers/net/phy/mdio_bus.c               |  97 ++++++++++++++++++++-
- 5 files changed, 253 insertions(+), 2 deletions(-)
 
 _______________________________________________
 barebox mailing list
