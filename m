@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x244.google.com ([2607:f8b0:4001:c0b::244])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fswjU-0005at-2y
- for barebox@lists.infradead.org; Thu, 23 Aug 2018 21:01:33 +0000
-Received: by mail-it0-x244.google.com with SMTP id h20-v6so9409996itf.2
- for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 14:01:21 -0700 (PDT)
+ id 1fsXzE-0003px-3s
+ for barebox@lists.infradead.org; Wed, 22 Aug 2018 18:36:09 +0000
+Date: Wed, 22 Aug 2018 20:35:55 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20180822183555.GA24084@ravnborg.org>
 MIME-Version: 1.0
-References: <20180821062603.17393-1-andrew.smirnov@gmail.com>
- <20180821062603.17393-3-andrew.smirnov@gmail.com>
- <20180821100728.imn64ysjyqfrf4zv@pengutronix.de>
- <CAHQ1cqH9dRLujgDyqii39guxgDrC=OPhFtqRV_+jwQ1RZTSN9w@mail.gmail.com>
- <20180823093345.xjojlxjeafrczzg4@pengutronix.de>
-In-Reply-To: <20180823093345.xjojlxjeafrczzg4@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 23 Aug 2018 14:01:09 -0700
-Message-ID: <CAHQ1cqEKRdOscnbTZeDRy+VAMDnv6RsARx_Gm_HJnWb5vKJbZg@mail.gmail.com>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,69 +20,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 02/22] filetype: Add code to detect i.MX image v1
-To: Roland Hieber <r.hieber@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v4 0/3] Add Davicom phy + reset-gpios
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Sam Ravnborg <sam@ravnborg.org>
 
-On Thu, Aug 23, 2018 at 2:33 AM Roland Hieber <r.hieber@pengutronix.de> wrote:
->
-> On Tue, Aug 21, 2018 at 01:23:28PM -0700, Andrey Smirnov wrote:
-> > On Tue, Aug 21, 2018 at 3:07 AM Roland Hieber <r.hieber@pengutronix.de> wrote:
-> > >
-> > > Hello Andrey,
-> > >
-> > > On Mon, Aug 20, 2018 at 11:25:43PM -0700, Andrey Smirnov wrote:
-> > > > Modify file_detect_type() and add code needed to be able to detect
-> > > > i.MX boot images with v1 header.
-> > > >
-> > > > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > > > ---
-> > > >  common/filetype.c  | 7 +++++++
-> > > >  include/filetype.h | 1 +
-> > > >  2 files changed, 8 insertions(+)
-> > > >
-> > > > diff --git a/common/filetype.c b/common/filetype.c
-> > > > index c5f2384a6..f68a83bec 100644
-> > > > --- a/common/filetype.c
-> > > > +++ b/common/filetype.c
-> > > > @@ -29,6 +29,8 @@
-> > > >  #include <image-sparse.h>
-> > > >  #include <elf.h>
-> > > >
-> > > > +#include <../mach-imx/include/mach/imx-header.h>
-> > >
-> > > This fails at least on ARCH=sandbox:
-> > >
-> > >   common/filetype.c:32:10: fatal error: ../mach-imx/include/mach/imx-header.h: No such file or directory
-> > >    #include <../mach-imx/include/mach/imx-header.h>
-> > >             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > > I guess it could be solved with an #ifdef ARCH_IMX.
-> > >
-> >
-> > Good catch! I'll make sure to test against ARCH=sandbox when preparing
-> > v2 of the set.
->
-> An include path of the form <../mach-imx/> strikes me as a rather odd
-> thing to have in code that should be machine-independent. Maybe it is
-> better to isolate the respective symbols from imx-header.h into a
-> generic header file that can live in the same path as e.g. <elf.h>. This
-> way we could also be able to detect IMX images on ARCH=sandbox :)
->
+Changes in v4:
+- Either register a mdio node or phy child nodes
+- Check for valid phy node before registering the phy node
+  This is like the kernel does it
+- Also recognize compatible="ethernet-phy-id*" as PHY's
+  again like the kernel, but with a simpler implementation,
+  as we do not try to read the actual phy_id
 
-I don't think that file is really machine independent. There's already
-code to detect "filetype_mxs_bootstream", "filetype_socfpga_xload",
-"filetype_kwbimage_v0", etc. which are as machine dependent as it
-could be. It just those codepaths use magic numbers directly and don't
-bother with any includes.
+Changes in v3:
+- Consider the v3 a new implmentation - almost nothing was
+  left from v2. Thus also invalidate any former review - sorry.
+- Dropped the need for the mdio {} node, as this node is
+  only used when there is dedicated HW support for the mdio.
+- Added so PHY child nodes to ethernet nodes are registered,
+  and as part of registration the PHY nodes are reset if
+  the reset-gpios property is present.
+- Further dropped that the parsed info is stored in the bus,
+  as we only do reset once, thus there is no need to
+  save the info from the DT
+- Futher dropped helper function to reset. They was not needed
+- Named the gpio with the name of the PHY node
+  in the DT. This makes it unique and easier to recognize.
 
-As for being able to detect IMX images on ARCH=sandbox, I was planning
-on trying to resolve compilation issue (be it with adding a -I or
-creating a shared header) without resorting to #ifdef ARCH_IMX a bunch
-of code first and only doing that if I can find no other way of fixing
-it.
+Changes in v2:
+- Added patch to enable Davicom PHY on at91sam9263ek - evaluation kit
+- Fix so we do reset before comunicating with the PHY
+- Rename to mdio_reset()
+- Reference correct binding file in commit log (mdio.txt)
+- Tested on at91sam9263ek
+  The at91sam9263ek kit do not require the reset like my
+  proprietary board, so no DT changes required
 
-Thanks,
-Andrey Smirnov
+Intro:
+The following patches was necessary to get networking
+operational on my proprietary target.
+The target is at91sam9263 based with a Davicom PHY.
+
+The Davicom PHY is a straight copy form the Linux
+kernel with the interrupt routine removed and
+minor adjustments to the rest.
+
+The davicom PHY would not work until it had seen a reset
+cycle - which I think may be an artifact of the board design.
+
+To fix the reset issue I have implemented support for the
+reset-gpios binding (see net/phy.txt bindings).
+A minimal implmentation was done, just enough to get
+my target running.
+
+I could have implemented something in macb -
+but I preferred the more generic solution.
+
+Also included are a patch that for the at91sam9263ek
+evaluation board. The patch adds several extra tools
+that are usefull for testing, and enable the Davicom PHY.
+
+        Sam
+
+Sam Ravnborg (3):
+      phylib: add Davicom PHY support
+      phylib: add support for reset-gpios
+      at91sam9263ek: add PHY, miitool etc. to config
+
+ arch/arm/configs/at91sam9263ek_defconfig |  12 ++-
+ drivers/net/phy/Kconfig                  |   5 ++
+ drivers/net/phy/Makefile                 |   1 +
+ drivers/net/phy/davicom.c                | 140 +++++++++++++++++++++++++++++++
+ drivers/net/phy/mdio_bus.c               |  97 ++++++++++++++++++++-
+ 5 files changed, 253 insertions(+), 2 deletions(-)
 
 _______________________________________________
 barebox mailing list
