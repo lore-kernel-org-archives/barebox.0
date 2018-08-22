@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x242.google.com ([2a00:1450:4864:20::242])
+Received: from mail-lf1-x143.google.com ([2a00:1450:4864:20::143])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fsY0L-00044k-0c
- for barebox@lists.infradead.org; Wed, 22 Aug 2018 18:37:18 +0000
-Received: by mail-lj1-x242.google.com with SMTP id q127-v6so2173082ljq.11
- for <barebox@lists.infradead.org>; Wed, 22 Aug 2018 11:37:06 -0700 (PDT)
+ id 1fsY0O-00044w-QU
+ for barebox@lists.infradead.org; Wed, 22 Aug 2018 18:37:23 +0000
+Received: by mail-lf1-x143.google.com with SMTP id i7-v6so2131920lfh.5
+ for <barebox@lists.infradead.org>; Wed, 22 Aug 2018 11:37:10 -0700 (PDT)
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Wed, 22 Aug 2018 20:36:49 +0200
-Message-Id: <20180822183651.32071-1-sam@ravnborg.org>
+Date: Wed, 22 Aug 2018 20:36:50 +0200
+Message-Id: <20180822183651.32071-2-sam@ravnborg.org>
 In-Reply-To: <20180822183555.GA24084@ravnborg.org>
 References: <20180822183555.GA24084@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -23,194 +23,190 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 1/3] phylib: add Davicom PHY support
+Subject: [PATCH v4 2/3] phylib: add support for reset-gpios
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Based on driver from Linux kernel 4.18.0-rc4
+Add minimal support for reset-gpios in the PHY node.
+
+Example DT that uses this:
+
+	macb0: ethernet@fffbc000 {
+		phy-mode = "rmii";
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		ethphy0: ethernet-phy@1 {
+			reg = <3>;
+			reset-gpios = <&pioE 17 GPIO_ACTIVE_LOW>;
+			reset-assert-us = <1000>;
+			reset-deassert-us = <2000>;
+		};
+	};
+
+The reset is required to get the Davicom PHY operational on
+my proprietary board, and is assumed relevant for other boards too.
+
+The PHY is reset when we read the info from DT,
+before the phy_id is retreived.
+
+The bindings are documented in dts/Bindings/net/phy.txt.
+
+A side-effect of this patch is that we may see
+phy devices created from the DT due to the extra call to:
+
+    of_mdiobus_register()
+
+with the ethernet node as argument.
+
+The logic to determine if a child node is a PHY node
+is a simpler version compared to the one used in the kernel.
+The kernel have a whitelist of compatible strings
+that is not included in the barebox version.
+They can be added later if needed.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- drivers/net/phy/Kconfig   |   5 ++
- drivers/net/phy/Makefile  |   1 +
- drivers/net/phy/davicom.c | 140 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 146 insertions(+)
- create mode 100644 drivers/net/phy/davicom.c
+ drivers/net/phy/mdio_bus.c | 96 +++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 95 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index cda752b65..79fb917ee 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -18,6 +18,11 @@ config AT803X_PHY
- 	---help---
- 	  Currently supports the AT8030, AT8031 and AT8035 PHYs.
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index d209716a1..636bdd1db 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -17,14 +17,19 @@
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
-+config DAVICOM_PHY
-+	bool "Driver for Davicom PHYs"
-+	---help---
-+	  Currently supports dm9161e and dm9131
+ #include <common.h>
++#include <of_gpio.h>
+ #include <driver.h>
+ #include <init.h>
++#include <gpio.h>
+ #include <clock.h>
+ #include <net.h>
+ #include <errno.h>
+ #include <linux/phy.h>
+ #include <linux/err.h>
+ 
++#define DEFAULT_GPIO_RESET_ASSERT       1000      /* us */
++#define DEFAULT_GPIO_RESET_DEASSERT     1000      /* us */
 +
- config LXT_PHY
- 	bool "Driver for the Intel LXT PHYs"
- 	---help---
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index 30b20f8ee..4424054d9 100644
---- a/drivers/net/phy/Makefile
-+++ b/drivers/net/phy/Makefile
-@@ -1,6 +1,7 @@
- obj-y += phy.o mdio_bus.o
- obj-$(CONFIG_AR8327N_PHY)	+= ar8327.o
- obj-$(CONFIG_AT803X_PHY)	+= at803x.o
-+obj-$(CONFIG_DAVICOM_PHY)	+= davicom.o
- obj-$(CONFIG_LXT_PHY)		+= lxt.o
- obj-$(CONFIG_MARVELL_PHY)	+= marvell.o
- obj-$(CONFIG_MICREL_PHY)	+= micrel.o
-diff --git a/drivers/net/phy/davicom.c b/drivers/net/phy/davicom.c
-new file mode 100644
-index 000000000..8a784b1e5
---- /dev/null
-+++ b/drivers/net/phy/davicom.c
-@@ -0,0 +1,140 @@
+ LIST_HEAD(mii_bus_list);
+ 
+ int mdiobus_detect(struct device_d *dev)
+@@ -82,6 +87,82 @@ static int of_mdiobus_register_phy(struct mii_bus *mdio, struct device_node *chi
+ 	return 0;
+ }
+ 
 +/*
-+ * drivers/net/phy/davicom.c
++ * Node is considered a PHY node if:
++ * o Compatible string of "ethernet-phy-idX.X"
++ * o Compatible string of "ethernet-phy-ieee802.3-c45"
++ * o Compatible string of "ethernet-phy-ieee802.3-c22"
++ * o No compatibility string
 + *
-+ * Driver for Davicom PHYs
-+ *
-+ * Author: Andy Fleming
-+ *
-+ * Copyright (c) 2004 Freescale Semiconductor, Inc.
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ *
++ * A device which is not a phy is expected to have a compatible string
++ * indicating what sort of device it is.
 + */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <linux/mii.h>
-+#include <linux/ethtool.h>
-+#include <linux/phy.h>
-+
-+#define MII_DM9161_SCR		0x10
-+#define MII_DM9161_SCR_INIT	0x0610
-+#define MII_DM9161_SCR_RMII	0x0100
-+
-+/* DM9161 Interrupt Register */
-+#define MII_DM9161_INTR	0x15
-+#define MII_DM9161_INTR_PEND		0x8000
-+#define MII_DM9161_INTR_DPLX_MASK	0x0800
-+#define MII_DM9161_INTR_SPD_MASK	0x0400
-+#define MII_DM9161_INTR_LINK_MASK	0x0200
-+#define MII_DM9161_INTR_MASK		0x0100
-+#define MII_DM9161_INTR_DPLX_CHANGE	0x0010
-+#define MII_DM9161_INTR_SPD_CHANGE	0x0008
-+#define MII_DM9161_INTR_LINK_CHANGE	0x0004
-+#define MII_DM9161_INTR_INIT 		0x0000
-+#define MII_DM9161_INTR_STOP	\
-+(MII_DM9161_INTR_DPLX_MASK | MII_DM9161_INTR_SPD_MASK \
-+ | MII_DM9161_INTR_LINK_MASK | MII_DM9161_INTR_MASK)
-+
-+/* DM9161 10BT Configuration/Status */
-+#define MII_DM9161_10BTCSR	0x12
-+#define MII_DM9161_10BTCSR_INIT	0x7800
-+
-+MODULE_DESCRIPTION("Davicom PHY driver");
-+MODULE_AUTHOR("Andy Fleming");
-+MODULE_LICENSE("GPL");
-+
-+
-+static int dm9161_config_aneg(struct phy_device *phydev)
++static bool of_mdiobus_child_is_phy(struct device_node *np)
 +{
-+	int err;
++	struct property *prop;
++	const char *cp;
 +
-+	/* Isolate the PHY */
-+	err = phy_write(phydev, MII_BMCR, BMCR_ISOLATE);
++	of_property_for_each_string(np, "compatible", prop, cp) {
++                if (!strncmp(cp, "ethernet-phy-id", strlen("ethernet-phy-id")))
++			return true;
++        }
 +
-+	if (err < 0)
-+		return err;
++	if (of_device_is_compatible(np, "ethernet-phy-ieee802.3-c45"))
++		return true;
 +
-+	/* Configure the new settings */
-+	err = genphy_config_aneg(phydev);
++	if (of_device_is_compatible(np, "ethernet-phy-ieee802.3-c22"))
++		return true;
 +
-+	if (err < 0)
-+		return err;
++	if (!of_find_property(np, "compatible", NULL))
++		return true;
 +
-+	return 0;
++	return false;
 +}
 +
-+static int dm9161_config_init(struct phy_device *phydev)
++/*
++ * Reset the PHY, based on DT info
++ *
++ * If np is a phy node, and the phy node contains a reset-gpios property
++ * then reset the phy.
++ */
++static void of_mdiobus_reset_phy(struct mii_bus *bus, struct device_node *np)
 +{
-+	int err, temp;
++	enum of_gpio_flags of_flags;
++	u32 reset_deassert_delay;
++	u32 reset_assert_delay;
++	unsigned long flags;
++	int gpio;
++	int ret;
 +
-+	/* Isolate the PHY */
-+	err = phy_write(phydev, MII_BMCR, BMCR_ISOLATE);
++	gpio = of_get_named_gpio_flags(np, "reset-gpios", 0, &of_flags);
++	if (!gpio_is_valid(gpio))
++		return;
 +
-+	if (err < 0)
-+		return err;
++	flags = GPIOF_OUT_INIT_INACTIVE;
++	if (of_flags & OF_GPIO_ACTIVE_LOW)
++		flags |= GPIOF_ACTIVE_LOW;
 +
-+	switch (phydev->interface) {
-+	case PHY_INTERFACE_MODE_MII:
-+		temp = MII_DM9161_SCR_INIT;
-+		break;
-+	case PHY_INTERFACE_MODE_RMII:
-+		temp =  MII_DM9161_SCR_INIT | MII_DM9161_SCR_RMII;
-+		break;
-+	default:
-+		return -EINVAL;
++	ret = gpio_request_one(gpio, flags, np->name);
++	if (ret) {
++		dev_err(&bus->dev, "failed to request reset gpio for: %s\n",
++			np->name);
++		return;
 +	}
 +
-+	/* Do not bypass the scrambler/descrambler */
-+	err = phy_write(phydev, MII_DM9161_SCR, temp);
-+	if (err < 0)
-+		return err;
++	reset_assert_delay = DEFAULT_GPIO_RESET_ASSERT;
++	of_property_read_u32(np, "reset-assert-us", &reset_assert_delay);
 +
-+	/* Clear 10BTCSR to default */
-+	err = phy_write(phydev, MII_DM9161_10BTCSR, MII_DM9161_10BTCSR_INIT);
++	reset_deassert_delay = DEFAULT_GPIO_RESET_DEASSERT;
++	of_property_read_u32(np, "reset-deassert-us", &reset_deassert_delay);
 +
-+	if (err < 0)
-+		return err;
-+
-+	/* Reconnect the PHY, and enable Autonegotiation */
-+	return phy_write(phydev, MII_BMCR, BMCR_ANENABLE);
++	/* reset the PHY */
++	dev_dbg(&bus->dev, "reset PHY with GPIO: %d\n", gpio);
++	gpio_set_active(gpio, 1);
++	udelay(reset_assert_delay);
++	gpio_set_active(gpio, 0);
++	udelay(reset_deassert_delay);
 +}
 +
-+static struct phy_driver dm91xx_driver[] = {
-+{
-+	.phy_id		= 0x0181b880,
-+	.drv.name	= "Davicom DM9161E",
-+	.phy_id_mask	= 0x0ffffff0,
-+	.features	= PHY_BASIC_FEATURES,
-+	.config_init	= dm9161_config_init,
-+	.config_aneg	= dm9161_config_aneg,
-+}, {
-+	.phy_id		= 0x0181b8b0,
-+	.drv.name	= "Davicom DM9161B/C",
-+	.phy_id_mask	= 0x0ffffff0,
-+	.features	= PHY_BASIC_FEATURES,
-+	.config_init	= dm9161_config_init,
-+	.config_aneg	= dm9161_config_aneg,
-+}, {
-+	.phy_id		= 0x0181b8a0,
-+	.drv.name	= "Davicom DM9161A",
-+	.phy_id_mask	= 0x0ffffff0,
-+	.features	= PHY_BASIC_FEATURES,
-+	.config_init	= dm9161_config_init,
-+	.config_aneg	= dm9161_config_aneg,
-+}, {
-+	.phy_id		= 0x00181b80,
-+	.drv.name	= "Davicom DM9131",
-+	.phy_id_mask	= 0x0ffffff0,
-+	.features	= PHY_BASIC_FEATURES,
-+} };
+ /**
+  * of_mdiobus_register - Register mii_bus and create PHYs from the device tree
+  * @mdio: pointer to mii_bus structure
+@@ -111,6 +192,10 @@ static int of_mdiobus_register(struct mii_bus *mdio, struct device_node *np)
+ 			continue;
+ 		}
+ 
++		if (!of_mdiobus_child_is_phy(child))
++			continue;
 +
-+static int dm9161_init(void)
-+{
-+	return phy_drivers_register(dm91xx_driver,
-+		ARRAY_SIZE(dm91xx_driver));
-+}
-+fs_initcall(dm9161_init);
++		of_mdiobus_reset_phy(mdio, child);
+ 		of_mdiobus_register_phy(mdio, child, addr);
+ 	}
+ 
+@@ -154,8 +239,17 @@ int mdiobus_register(struct mii_bus *bus)
+ 
+ 	pr_info("%s: probed\n", dev_name(&bus->dev));
+ 
+-	if (bus->dev.device_node)
++	if (bus->dev.device_node) {
++		/* Register PHY's as child node to mdio node */
+ 		of_mdiobus_register(bus, bus->dev.device_node);
++	}
++	else if (bus->parent->device_node) {
++		/*
++		 * Register PHY's as child node to the ethernet node,
++		 * if there was no mdio node
++		 */
++		of_mdiobus_register(bus, bus->parent->device_node);
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.12.0
 
