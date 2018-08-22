@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fsNQ8-0003MR-IW
- for barebox@lists.infradead.org; Wed, 22 Aug 2018 07:19:15 +0000
-Date: Wed, 22 Aug 2018 09:19:00 +0200
+ id 1fsNQr-0003TN-LJ
+ for barebox@lists.infradead.org; Wed, 22 Aug 2018 07:19:59 +0000
+Date: Wed, 22 Aug 2018 09:19:45 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180822071900.vjcaetctvyyuetbr@pengutronix.de>
-References: <20180821062717.17744-1-andrew.smirnov@gmail.com>
+Message-ID: <20180822071945.iqyd6wuljhw5gt2t@pengutronix.de>
+References: <20180821062736.17884-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180821062717.17744-1-andrew.smirnov@gmail.com>
+In-Reply-To: <20180821062736.17884-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,61 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: cache-l2x0: Make use of IS_ALIGNED and ALIGN_DOWN
+Subject: Re: [PATCH] include/common: Make use of ALIGN and ALIGN_DOWN
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Aug 20, 2018 at 11:27:17PM -0700, Andrey Smirnov wrote:
+On Mon, Aug 20, 2018 at 11:27:36PM -0700, Andrey Smirnov wrote:
 > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  arch/arm/cpu/cache-l2x0.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+>  include/common.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/cpu/cache-l2x0.c b/arch/arm/cpu/cache-l2x0.c
-> index 8e0fff66d..e975ecffc 100644
-> --- a/arch/arm/cpu/cache-l2x0.c
-> +++ b/arch/arm/cpu/cache-l2x0.c
-> @@ -60,14 +60,14 @@ static inline void l2x0_inv_all(void)
+> diff --git a/include/common.h b/include/common.h
+> index f93bd7f5d..abbe73fd3 100644
+> --- a/include/common.h
+> +++ b/include/common.h
+> @@ -109,8 +109,8 @@ void shutdown_barebox(void);
 >  
->  static void l2x0_inv_range(unsigned long start, unsigned long end)
->  {
-> -	if (start & (CACHE_LINE_SIZE - 1)) {
-> -		start &= ~(CACHE_LINE_SIZE - 1);
-> +	if (!IS_ALIGNED(start, CACHE_LINE_SIZE)) {
-> +		start = ALIGN_DOWN(start, CACHE_LINE_SIZE);
->  		l2x0_flush_line(start);
->  		start += CACHE_LINE_SIZE;
->  	}
+>  #define PAGE_SIZE	4096
+>  #define PAGE_SHIFT	12
+> -#define PAGE_ALIGN(s) (((s) + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1))
+> -#define PAGE_ALIGN_DOWN(x) ((x) & ~(PAGE_SIZE - 1))
+> +#define PAGE_ALIGN(s)	ALIGN(s, PAGE_SIZE)
+> +#define PAGE_ALIGN_DOWN(x) ALIGN_DOWN(x, PAGE_SIZE)
 >  
-> -	if (end & (CACHE_LINE_SIZE - 1)) {
-> -		end &= ~(CACHE_LINE_SIZE - 1);
-> +	if (!IS_ALIGNED(end, CACHE_LINE_SIZE)) {
-> +		end = ALIGN_DOWN(end, CACHE_LINE_SIZE);
->  		l2x0_flush_line(end);
->  	}
->  
-> @@ -87,7 +87,7 @@ static void l2x0_clean_range(unsigned long start, unsigned long end)
->  {
->  	void __iomem *base = l2x0_base;
->  
-> -	start &= ~(CACHE_LINE_SIZE - 1);
-> +	start = ALIGN_DOWN(start, CACHE_LINE_SIZE);
->  	while (start < end) {
->  		unsigned long blk_end = start + min(end - start, 4096UL);
->  
-> @@ -102,7 +102,7 @@ static void l2x0_clean_range(unsigned long start, unsigned long end)
->  
->  static void l2x0_flush_range(unsigned long start, unsigned long end)
->  {
-> -	start &= ~(CACHE_LINE_SIZE - 1);
-> +	start = ALIGN_DOWN(start, CACHE_LINE_SIZE);
->  	while (start < end) {
->  		unsigned long blk_end = start + min(end - start, 4096UL);
+>  int memory_display(const void *addr, loff_t offs, unsigned nbytes, int size, int swab);
 >  
 > -- 
 > 2.17.1
