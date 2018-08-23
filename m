@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail1.bemta25.messagelabs.com ([195.245.230.129])
+Received: from mail-it0-x244.google.com ([2607:f8b0:4001:c0b::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuXtG-00020M-Hc
- for barebox@lists.infradead.org; Tue, 28 Aug 2018 06:54:18 +0000
-From: <Oleg.Karfich@wago.com>
-Date: Tue, 28 Aug 2018 06:53:56 +0000
-Message-ID: <beeaa560-e1cf-e785-5378-9500fb4f6292@wago.com>
-References: <1535378254-2593-1-git-send-email-oleg.karfich@wago.com>
- <54f919ba308c6df58ba98eeb7859ecb878fef4d2.camel@allegion.com>
-In-Reply-To: <54f919ba308c6df58ba98eeb7859ecb878fef4d2.camel@allegion.com>
-Content-Language: en-US
-Content-ID: <8AA26DF51F76BA40945C555C1B4E97D6@WAGO.com>
+ id 1fse5t-0004JB-MF
+ for barebox@lists.infradead.org; Thu, 23 Aug 2018 01:07:27 +0000
+Received: by mail-it0-x244.google.com with SMTP id p81-v6so5507947itp.1
+ for <barebox@lists.infradead.org>; Wed, 22 Aug 2018 18:07:14 -0700 (PDT)
 MIME-Version: 1.0
+References: <20180821062853.18301-1-andrew.smirnov@gmail.com>
+ <20180821062853.18301-2-andrew.smirnov@gmail.com>
+ <20180822073142.7qdg427bwklqdt5r@pengutronix.de>
+In-Reply-To: <20180822073142.7qdg427bwklqdt5r@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 22 Aug 2018 18:07:01 -0700
+Message-ID: <CAHQ1cqGW=wZjsJuBGEiHv9pubLyMYXFJ67vCDaWXuy+0TDSt0w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,73 +25,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: of_property: do not free data in general
-To: Florian.Baeuerle@allegion.com, barebox@lists.infradead.org
+Subject: Re: [PATCH 2/2] clk: clk-sccg-pll: Drop prepare/unprepare for
+ SCCG_PLL2
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On 27.08.2018 16:57, Baeuerle, Florian wrote:
-> Hello Oleg,
+On Wed, Aug 22, 2018 at 12:31 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>
+> On Mon, Aug 20, 2018 at 11:28:53PM -0700, Andrey Smirnov wrote:
+> > A number of PLL pairs (e.g. "sys1_pll1" and "sys1_pll2") share the
+> > same configuration register, so touching PD bit, as is done for
+> > SCCG_PLL2 in its prepare/unprepare methods will result in shut down of
+> > both PLLs. This is very undesireable, since attempting to re-parent a
+> > clock to "sys1_pll2" might result in complete system shutdown due to
+> > "sys1_pll1" being shut-down as a part of re-parenting process.
+>
+> I can imagine that there are problems with the way it is currently
+> handled, but the scenario you describe shouldn't happen. "sys1_pll1"
+> will never be shut down because it doesn't have a disable hook:
+>
+> static const struct clk_ops clk_sccg_pll1_ops = {
+>         .is_enabled     = clk_pll1_is_prepared,
+>         .recalc_rate    = clk_pll1_recalc_rate,
+>         .round_rate     = clk_pll1_round_rate,
+>         .set_rate       = clk_pll1_set_rate,
+> };
+>
+> static const struct clk_ops clk_sccg_pll2_ops = {
+>         .enable         = clk_pll1_prepare,
+>         .disable        = clk_pll1_unprepare,
+>         .recalc_rate    = clk_pll2_recalc_rate,
+>         .round_rate     = clk_pll2_round_rate,
+>         .set_rate       = clk_pll2_set_rate,
+> };
+>
+> Have I missed something?
+>
 
-Hi Florian,
+Yes, but that's probably due to my explanation being too vague, so let
+me try again. Both clocks "sys1_pll1" and "sys1_pll2" are
+controlled/configured via separate bit fields in the _same_ register.
+That register also has a single "powerdown"/"PD" bit that is shared
+between both PLLs and affects them both. The way code is currently
+implemented calling clk_disable() on "sys1_pll2" will clear PD bit and
+as a result "sys1_pll1" will be shut down as well. This is not that
+far-fetched of a scenario because a number of derived clocks that go
+out to individual peripherals are specified with
+CLK_OPS_PARENT_ENABLE, so trivial clock re-parenting like this one:
+https://github.com/ndreys/barebox/commit/802d1d5be1f1f3df996ba26b115dd3a55bc10c67
+will result in hung system.
 
-> 
-> You are right, it works only if the property does not already exist.
-> In that case we'd probably also need a free() in the else-branch,
-> where of_new_property is called (otherwise we have a leak), because
-> that actually copies what is contained in data.
+Hopefully this does a better job of explaining what I was trying to fix.
 
-You are right, too. Sorry missed this path. V2 is comming soon...
+Thanks,
+Andrey Smirnov
 
-> 
-> Sorry for that regression.
-
-No problem :-)
-
-> Best Regards
-> Florian
-
-Regards
-Oleg
-
-> 
-> Am Montag, den 27.08.2018, 13:57 +0000 schrieb Oleg.Karfich@wago.com:
->> With commit 748d1b8 the function do_of_property_set_now is introduced. With this
->> commit an unwanted free(data) is added wich leads to that an free on the value
->> is done that is previously set to the property. As a consequence the command
->> of_dump reads freed data an printis the value as hex. Fix this by moving
->> free(data) to the right place like before the above commit.
->>
->> Signed-off-by: Oleg Karfich <oleg.karfich@wago.com>
->> ---
->>  commands/of_property.c | 7 ++++---
->>  1 file changed, 4 insertions(+), 3 deletions(-)
->>
->> diff --git a/commands/of_property.c b/commands/of_property.c
->> index 8ce12e5..ea32e51 100644
->> --- a/commands/of_property.c
->> +++ b/commands/of_property.c
->> @@ -275,10 +275,12 @@ static int do_of_property_set_now(struct device_node *root, const char *path,
->>  		pp->value_const = NULL;
->>  
->>  		/* limit property data to the actual size */
->> -		if (len)
->> +		if (len) {
->>  			pp->value = xrealloc(data, len);
->> -		else
->> +		} else {
->>  			pp->value = NULL;
->> +			free(data);
->> +		}
->>  
->>  		pp->length = len;
->>  	} else {
->> @@ -374,7 +376,6 @@ static int do_of_property(int argc, char *argv[])
->>  				free(data);
->>  		} else {
->>  			ret = do_of_property_set_now(NULL, path, propname, data, len);
->> -			free(data);
->>  		}
->>  
->>  		return ret;
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
