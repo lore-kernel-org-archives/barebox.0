@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x241.google.com ([2607:f8b0:4001:c0b::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fsjQo-00008R-3h
- for barebox@lists.infradead.org; Thu, 23 Aug 2018 06:49:23 +0000
-Received: by mail-it0-x241.google.com with SMTP id j81-v6so6211650ite.0
- for <barebox@lists.infradead.org>; Wed, 22 Aug 2018 23:49:11 -0700 (PDT)
-MIME-Version: 1.0
+ id 1fsm07-0003pE-1k
+ for barebox@lists.infradead.org; Thu, 23 Aug 2018 09:34:00 +0000
+Date: Thu, 23 Aug 2018 11:33:45 +0200
+From: Roland Hieber <r.hieber@pengutronix.de>
+Message-ID: <20180823093345.xjojlxjeafrczzg4@pengutronix.de>
 References: <20180821062603.17393-1-andrew.smirnov@gmail.com>
- <20180821062603.17393-20-andrew.smirnov@gmail.com>
- <20180822070940.2bgr6uraeoeewy7h@pengutronix.de>
- <CAHQ1cqHr=a5CJrZ_ZhDUGxNu3Z48SVN4d30isVV4XVLZC1vy_g@mail.gmail.com>
- <20180823064245.hkxboqum2qxilifg@pengutronix.de>
-In-Reply-To: <20180823064245.hkxboqum2qxilifg@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 22 Aug 2018 23:48:59 -0700
-Message-ID: <CAHQ1cqGucef1=-3_dnhYoc=fNGc4r13qxmvB5x_t9Kp46ZisoA@mail.gmail.com>
+ <20180821062603.17393-3-andrew.smirnov@gmail.com>
+ <20180821100728.imn64ysjyqfrf4zv@pengutronix.de>
+ <CAHQ1cqH9dRLujgDyqii39guxgDrC=OPhFtqRV_+jwQ1RZTSN9w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAHQ1cqH9dRLujgDyqii39guxgDrC=OPhFtqRV_+jwQ1RZTSN9w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,89 +25,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 19/22] bbu: Remove logical negation in
- barebox_update_handler_exists()
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 02/22] filetype: Add code to detect i.MX image v1
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Aug 22, 2018 at 11:42 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Wed, Aug 22, 2018 at 05:01:41PM -0700, Andrey Smirnov wrote:
-> > On Wed, Aug 22, 2018 at 12:09 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Tue, Aug 21, 2018 at 01:23:28PM -0700, Andrey Smirnov wrote:
+> On Tue, Aug 21, 2018 at 3:07 AM Roland Hieber <r.hieber@pengutronix.de> wrote:
+> >
+> > Hello Andrey,
+> >
+> > On Mon, Aug 20, 2018 at 11:25:43PM -0700, Andrey Smirnov wrote:
+> > > Modify file_detect_type() and add code needed to be able to detect
+> > > i.MX boot images with v1 header.
 > > >
-> > > On Mon, Aug 20, 2018 at 11:26:00PM -0700, Andrey Smirnov wrote:
-> > > > Returning !bbu_find_handler() from barebox_update_handler_exists()
-> > > > would return the opposite result from what the name of that funciton
-> > > > implies. Drop the "!" to make it behave as expected.
-> > > >
-> > > > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > > > ---
-> > > >  common/bbu.c | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/common/bbu.c b/common/bbu.c
-> > > > index 11e44f4a7..69ccac68a 100644
-> > > > --- a/common/bbu.c
-> > > > +++ b/common/bbu.c
-> > > > @@ -151,7 +151,7 @@ bool barebox_update_handler_exists(struct bbu_data *data)
-> > > >       if (!data->handler_name)
-> > > >               return false;
-> > > >
-> > > > -     return !bbu_find_handler(data->handler_name);
-> > > > +     return bbu_find_handler(data->handler_name);
+> > > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> > > ---
+> > >  common/filetype.c  | 7 +++++++
+> > >  include/filetype.h | 1 +
+> > >  2 files changed, 8 insertions(+)
 > > >
-> > > As bbu_find_handler() returns a pointer maybe better '!!' or
-> > > bbu_find_handler() != NULL?
+> > > diff --git a/common/filetype.c b/common/filetype.c
+> > > index c5f2384a6..f68a83bec 100644
+> > > --- a/common/filetype.c
+> > > +++ b/common/filetype.c
+> > > @@ -29,6 +29,8 @@
+> > >  #include <image-sparse.h>
+> > >  #include <elf.h>
 > > >
+> > > +#include <../mach-imx/include/mach/imx-header.h>
 > >
-> > That shouldn't be necessary since barebox_update_handler_exists()
-> > returns bool(real type name is _Bool) which explicitly specifies that
-> > a cast of any scalar value to it would be normalized to 1 or 0 (as per
-> > C99 standard from whence it came). Otherwise you'd be able to end up
-> > in a situation where bool1 && bool2 && (bool1 != bool2) evaluates to
-> > true.
+> > This fails at least on ARCH=sandbox:
 > >
-> > To give you more concrete example, here's what the last portion of
-> > that function compiles to on AArch64:
+> >   common/filetype.c:32:10: fatal error: ../mach-imx/include/mach/imx-header.h: No such file or directory
+> >    #include <../mach-imx/include/mach/imx-header.h>
+> >             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > I guess it could be solved with an #ifdef ARCH_IMX.
 > >
-> >     2924: 97ffff5e     bl 269c <bbu_find_handler>
-> >     2928: f100001f   cmp x0, #0x0
-> >     292c: 1a9f07e0  cset w0, ne  // ne = any
-> >     2930: f9400bf3   ldr x19, [sp, #16]
-> >     2934: a8c27bfd  ldp x29, x30, [sp], #32
-> >     2938: d65f03c0  ret
-> >     293c: 52800020 mov w0, #0x1                    // #1
-> >     2940: 17fffffc      b 2930 <barebox_update_handler_exists+0x30>
-> >     2944: 52800000 mov w0, #0x0                    // #0
-> >     2948: 17fffffa      b 2930 <barebox_update_handler_exists+0x30>
-> >
-> > and on AArch32 (Thumb):
-> >
-> >     18e0: f7ff ff48 bl 1774 <bbu_find_handler>
-> >     18e4: 3000     adds r0, #0
-> >     18e6: bf18      it ne
-> >     18e8: 2001     movne r0, #1
-> >     18ea: bd10     pop {r4, pc}
-> >     18ec: 2001     movs r0, #1
-> >     18ee: e7fc      b.n 18ea <barebox_update_handler_exists+0x1a>
-> >
-> > as you can see both cases already have code to explicitly convert the
-> > result of the function to 0/1.
-> >
-> > I am more than happy to add ether !! or != NULL if you still think
-> > that'd be better, it just I don't think it will have any practical
-> > effect.
->
-> For sure it doesn't have a practical effect, it's merely a sign to show
-> "I know I'm casting a pointer to bool". Probably I'm just used to add
-> an explicit cast there and it's just a matter of taste.
->
+> 
+> Good catch! I'll make sure to test against ARCH=sandbox when preparing
+> v2 of the set.
 
-Since I have two people in favor of adding a != NULL there, I'll just
-add it in v2 since I don't have a very strong opinion on the subject.
+An include path of the form <../mach-imx/> strikes me as a rather odd
+thing to have in code that should be machine-independent. Maybe it is
+better to isolate the respective symbols from imx-header.h into a
+generic header file that can live in the same path as e.g. <elf.h>. This
+way we could also be able to detect IMX images on ARCH=sandbox :)
 
-Thanks,
-Andrey Smirnov
+ - Roland
+
+
+-- 
+Roland Hieber                     | r.hieber@pengutronix.de     |
+Pengutronix e.K.                  | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
