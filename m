@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-eopbgr700114.outbound.protection.outlook.com
+ ([40.107.70.114] helo=NAM04-SN1-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fvdCZ-0007Bw-Mo
- for barebox@lists.infradead.org; Fri, 31 Aug 2018 06:46:41 +0000
-Date: Fri, 31 Aug 2018 08:46:27 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180831064627.66m226va5l4yfypa@pengutronix.de>
-References: <20180831051826.13587-1-andrew.smirnov@gmail.com>
+ id 1fsmON-0005bF-16
+ for barebox@lists.infradead.org; Thu, 23 Aug 2018 09:59:04 +0000
+From: =?UTF-8?q?Florian=20B=C3=A4uerle?= <florian.baeuerle@allegion.com>
+Date: Thu, 23 Aug 2018 11:58:20 +0200
+Message-Id: <20180823095820.32590-1-florian.baeuerle@allegion.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180831051826.13587-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,88 +16,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/5] driver: Adopt DMA mask concept from Linux
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: phytec-phycard-imx27: Add debug UART support
+To: barebox@lists.infradead.org
 
-On Thu, Aug 30, 2018 at 10:18:22PM -0700, Andrey Smirnov wrote:
-> In order to be able to detect cases where DMA isn't capable of
-> reaching every memory address, port the concept of DMA mask,
-> dma_set_mask() function and add appropriate check to
-> dma_mapping_error().
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
-
-Applied, thanks
-
-Sascha
-
->  include/dma.h    | 12 +++++++++++-
->  include/driver.h |  2 ++
->  2 files changed, 13 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/dma.h b/include/dma.h
-> index 5fdcb1733..7f9578263 100644
-> --- a/include/dma.h
-> +++ b/include/dma.h
-> @@ -35,11 +35,21 @@ dma_addr_t dma_map_single(struct device_d *dev, void *ptr, size_t size,
->  void dma_unmap_single(struct device_d *dev, dma_addr_t addr, size_t size,
->  		      enum dma_data_direction dir);
->  
-> +#define DMA_BIT_MASK(n)	(((n) == 64) ? ~0ULL : ((1ULL<<(n))-1))
-> +
-> +#define DMA_MASK_NONE	0x0ULL
-> +
-> +static inline void dma_set_mask(struct device_d *dev, u64 dma_mask)
-> +{
-> +	dev->dma_mask = dma_mask;
-> +}
-> +
->  #define DMA_ERROR_CODE  (~(dma_addr_t)0)
->  
->  static inline int dma_mapping_error(struct device_d *dev, dma_addr_t dma_addr)
->  {
-> -	return dma_addr == DMA_ERROR_CODE;
-> +	return dma_addr == DMA_ERROR_CODE ||
-> +		(dev->dma_mask && dma_addr > dev->dma_mask);
->  }
->  
->  /* streaming DMA - implement the below calls to support HAS_DMA */
-> diff --git a/include/driver.h b/include/driver.h
-> index 91653b794..1b61f2066 100644
-> --- a/include/driver.h
-> +++ b/include/driver.h
-> @@ -82,6 +82,8 @@ struct device_d {
->  
->  	const struct of_device_id *of_id_entry;
->  
-> +	u64 dma_mask;
-> +
->  	void    (*info) (struct device_d *);
->  	/*
->  	 * For devices which take longer to probe this is called
-> -- 
-> 2.17.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogRmxvcmlhbiBCw6R1ZXJsZSA8Zmxvcmlhbi5iYWV1ZXJsZUBhbGxlZ2lv
+bi5jb20+Ci0tLQogYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljYXJkLWlteDI3L2xvd2xldmVs
+LmMgfCAxNSArKysrKysrKysrKysrKysKIGFyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9k
+ZWJ1Z19sbC5oICAgICAgIHwgMTMgKysrKysrKysrKysrKwogaW5jbHVkZS9zZXJpYWwvaW14LXVh
+cnQuaCAgICAgICAgICAgICAgICAgICAgICAgfCAgNSArKysrKwogMyBmaWxlcyBjaGFuZ2VkLCAz
+MyBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHlj
+YXJkLWlteDI3L2xvd2xldmVsLmMgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNhcmQtaW14
+MjcvbG93bGV2ZWwuYwppbmRleCBlMTEzMmUwLi44MjQ0MzM3IDEwMDY0NAotLS0gYS9hcmNoL2Fy
+bS9ib2FyZHMvcGh5dGVjLXBoeWNhcmQtaW14MjcvbG93bGV2ZWwuYworKysgYi9hcmNoL2FybS9i
+b2FyZHMvcGh5dGVjLXBoeWNhcmQtaW14MjcvbG93bGV2ZWwuYwpAQCAtMTQsNiArMTQsOCBAQAog
+I2luY2x1ZGUgPG1hY2gvaW14LXBsbC5oPgogI2luY2x1ZGUgPG1hY2gvZXNkY3RsLmg+CiAjaW5j
+bHVkZSA8bWFjaC9pbXgtbmFuZC5oPgorI2luY2x1ZGUgPG1hY2gvZGVidWdfbGwuaD4KKyNpbmNs
+dWRlIDxzZXJpYWwvaW14LXVhcnQuaD4KIAogI2RlZmluZSBFU0RDVEwwX1ZBTCAoRVNEQ1RMMF9T
+REUgfCBFU0RDVEwwX1JPVzEzIHwgRVNEQ1RMMF9DT0wxMCkKIApAQCAtNTgsNiArNjAsMTggQEAg
+c3RhdGljIHZvaWQgc2RyYW1faW5pdCh2b2lkKQogCQkJTVgyN19FU0RDVExfQkFTRV9BRERSICsg
+SU1YX0VTRENUTDApOwogfQogCitzdGF0aWMgdm9pZCBzZXR1cF91YXJ0KHZvaWQpCit7CisJLyog
+U2V0IFBFWzEyLTE1XSB1c2UsIGRpcmVjdGlvbiwgZnVuY3Rpb24gYW5kIHB1bGwtdXAgKi8KKwl3
+cml0ZWwoMHhmZmZjMGYyNywgTVgyN19HUElPNV9CQVNFX0FERFIgKyAweDIwKTsKKwl3cml0ZWwo
+MHgwMDAwNTAwMCwgTVgyN19HUElPNV9CQVNFX0FERFIpOworCXdyaXRlbCgweDAwMDAwMDAwLCBN
+WDI3X0dQSU81X0JBU0VfQUREUiArIDB4MzgpOworCXdyaXRlbCgweGZmZmYwZmZmLCBNWDI3X0dQ
+SU81X0JBU0VfQUREUiArIDB4NDApOworCisJaW14MjdfdW5nYXRlX2FsbF9wZXJpcGhlcmFscygp
+OworCWlteDI3X3VhcnRfc2V0dXBfbGwoKTsKK30KKwogdm9pZCBfX2JhcmVfaW5pdCBfX25ha2Vk
+IHBoeXRlY19waHljYXJkX2lteDI3X2NvbW1vbl9pbml0KHZvaWQgKmZkdCkKIHsKIAl1bnNpZ25l
+ZCBsb25nIHI7CkBAIC05Nyw2ICsxMTEsNyBAQCB2b2lkIF9fYmFyZV9pbml0IF9fbmFrZWQgcGh5
+dGVjX3BoeWNhcmRfaW14MjdfY29tbW9uX2luaXQodm9pZCAqZmR0KQogCQlNWDI3X0NTQ1JfTVNI
+Q19TRUwsIE1YMjdfQ0NNX0JBU0VfQUREUiArIE1YMjdfQ1NDUik7CiAKIAlzZHJhbV9pbml0KCk7
+CisJc2V0dXBfdWFydCgpOwogCiAJaW14MjdfYmFyZWJveF9ib290X25hbmRfZXh0ZXJuYWwoZmR0
+KTsKIH0KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9kZWJ1Z19s
+bC5oIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2RlYnVnX2xsLmgKaW5kZXggMTU1
+MGUwNS4uNmM5YjIxZCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNo
+L2RlYnVnX2xsLmgKKysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2RlYnVnX2xs
+LmgKQEAgLTU2LDYgKzU2LDEyIEBACiAjZXJyb3IgInVua25vd24gaS5NWCBkZWJ1ZyB1YXJ0IHNv
+YyB0eXBlIgogI2VuZGlmCiAKK3N0YXRpYyBpbmxpbmUgdm9pZCBpbXgyN191YXJ0X3NldHVwX2xs
+KHZvaWQpICB7CisJdm9pZCAqYmFzZSA9IElPTUVNKElNWF9VQVJUX0JBU0UoSU1YX0RFQlVHX1NP
+QywKKwkJCQlDT05GSUdfREVCVUdfSU1YX1VBUlRfUE9SVCkpOworCWlteDI3X3VhcnRfc2V0dXAo
+YmFzZSk7Cit9CisKIHN0YXRpYyBpbmxpbmUgdm9pZCBpbXg1MF91YXJ0X3NldHVwX2xsKHZvaWQp
+CiB7CiAJdm9pZCAqYmFzZSA9IElPTUVNKElNWF9VQVJUX0JBU0UoSU1YX0RFQlVHX1NPQywgQ09O
+RklHX0RFQlVHX0lNWF9VQVJUX1BPUlQpKTsKQEAgLTEyMSw2ICsxMjcsNyBAQCBzdGF0aWMgaW5s
+aW5lIHZvaWQgUFVUQ19MTChpbnQgYykKIAogI2Vsc2UKIAorc3RhdGljIGlubGluZSB2b2lkIGlt
+eDI3X3VhcnRfc2V0dXBfbGwodm9pZCkge30KIHN0YXRpYyBpbmxpbmUgdm9pZCBpbXg1MF91YXJ0
+X3NldHVwX2xsKHZvaWQpIHt9CiBzdGF0aWMgaW5saW5lIHZvaWQgaW14NTFfdWFydF9zZXR1cF9s
+bCh2b2lkKSB7fQogc3RhdGljIGlubGluZSB2b2lkIGlteDUzX3VhcnRfc2V0dXBfbGwodm9pZCkg
+e30KQEAgLTEzOCw2ICsxNDUsMTIgQEAgc3RhdGljIGlubGluZSB2b2lkIGlteF91bmdhdGVfYWxs
+X3BlcmlwaGVyYWxzKHZvaWQgX19pb21lbSAqY2NtYmFzZSkKIAkJd3JpdGVsKDB4ZmZmZmZmZmYs
+IGNjbWJhc2UgKyBpKTsKIH0KIAorc3RhdGljIGlubGluZSB2b2lkIGlteDI3X3VuZ2F0ZV9hbGxf
+cGVyaXBoZXJhbHModm9pZCkKK3sKKwl3cml0ZWwoMHhmZmZmZmJmZiwgSU9NRU0oTVgyN19DQ01f
+QkFTRV9BRERSKSArIDB4MjApOworCXdyaXRlbCgweGZmZmZmZmZjLCBJT01FTShNWDI3X0NDTV9C
+QVNFX0FERFIpICsgMHgyNCk7Cit9CisKIHN0YXRpYyBpbmxpbmUgdm9pZCBpbXg2X3VuZ2F0ZV9h
+bGxfcGVyaXBoZXJhbHModm9pZCkKIHsKIAlpbXhfdW5nYXRlX2FsbF9wZXJpcGhlcmFscyhJT01F
+TShNWDZfQ0NNX0JBU0VfQUREUikpOwpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9zZXJpYWwvaW14LXVh
+cnQuaCBiL2luY2x1ZGUvc2VyaWFsL2lteC11YXJ0LmgKaW5kZXggYzIzNjA2NS4uMGMwMzNjMiAx
+MDA2NDQKLS0tIGEvaW5jbHVkZS9zZXJpYWwvaW14LXVhcnQuaAorKysgYi9pbmNsdWRlL3Nlcmlh
+bC9pbXgtdWFydC5oCkBAIC0xNTUsNiArMTU1LDExIEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBpbXhf
+dWFydF9zZXRfZHRlKHZvaWQgX19pb21lbSAqdWFydGJhc2UpCiAJd3JpdGVsKHVmY3IsIHVhcnRi
+YXNlICsgVUZDUik7CiB9CiAKK3N0YXRpYyBpbmxpbmUgdm9pZCBpbXgyN191YXJ0X3NldHVwKHZv
+aWQgX19pb21lbSAqdWFydGJhc2UpCit7CisJaW14X3VhcnRfc2V0dXAodWFydGJhc2UsIDY2NTAw
+MDAwKTsKK30KKwogc3RhdGljIGlubGluZSB2b2lkIGlteDUwX3VhcnRfc2V0dXAodm9pZCBfX2lv
+bWVtICp1YXJ0YmFzZSkKIHsKIAlpbXhfdWFydF9zZXR1cCh1YXJ0YmFzZSwgNjY2NjY2NjYpOwot
+LSAKMS44LjMuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
+Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
