@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it0-x243.google.com ([2607:f8b0:4001:c0b::243])
+Received: from mail-it0-x244.google.com ([2607:f8b0:4001:c0b::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fsdIz-0005j6-IG
- for barebox@lists.infradead.org; Thu, 23 Aug 2018 00:16:54 +0000
-Received: by mail-it0-x243.google.com with SMTP id s7-v6so5247720itb.4
- for <barebox@lists.infradead.org>; Wed, 22 Aug 2018 17:16:42 -0700 (PDT)
+ id 1fsd9m-0002hI-BS
+ for barebox@lists.infradead.org; Thu, 23 Aug 2018 00:07:23 +0000
+Received: by mail-it0-x244.google.com with SMTP id p81-v6so5362826itp.1
+ for <barebox@lists.infradead.org>; Wed, 22 Aug 2018 17:07:09 -0700 (PDT)
 MIME-Version: 1.0
 References: <20180821062603.17393-1-andrew.smirnov@gmail.com>
- <20180821062603.17393-19-andrew.smirnov@gmail.com>
- <20180822070108.balrgkhkrurrmxo2@pengutronix.de>
-In-Reply-To: <20180822070108.balrgkhkrurrmxo2@pengutronix.de>
+ <20180821062603.17393-5-andrew.smirnov@gmail.com>
+ <20180822065223.zsyp77axhvvh6qcn@pengutronix.de>
+In-Reply-To: <20180822065223.zsyp77axhvvh6qcn@pengutronix.de>
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 22 Aug 2018 17:16:30 -0700
-Message-ID: <CAHQ1cqHpfOcOWCjWcRkLyZJOF2o=HBAort22ZJV+QMULy4x-+g@mail.gmail.com>
+Date: Wed, 22 Aug 2018 17:06:55 -0700
+Message-ID: <CAHQ1cqGC0xWiv2Abf8e=r=8aCxOJpu7N+o0sWkU3Sh+B249KXw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,57 +25,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 18/22] ARM: i.MX: bbu: Adjust error code check for pwrite()
+Subject: Re: [PATCH 04/22] ARM: i.MX: bbu: Move inner-image type check
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Aug 22, 2018 at 12:01 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Tue, Aug 21, 2018 at 11:52 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
 >
-> On Mon, Aug 20, 2018 at 11:25:59PM -0700, Andrey Smirnov wrote:
-> > Pwrite() will return the amount bytes written or negative error code
-> > on success, so we need to do two things with it:
+> On Mon, Aug 20, 2018 at 11:25:45PM -0700, Andrey Smirnov wrote:
+> > Since imx_bbu_check_prereq() already uses file_detect_type() and we've
+> > extended it to understand i.MX boot image file type, we can simplify a
+> > bunch of repetitive code as follows:
 > >
-> >     1. Check it against "image_len" to make sure we actually wrote all
-> >        of the data
+> >     1. Convert all checks from IVT_BARKER to filetype_imx_image_v2
+> >        check
 > >
-> >     2. Set it to zero in case of success, since that is what code in
-> >        barebox_update() expects to happen
+> >     2. Move all of the checking to be a part of imx_bbu_check_prereq()
 > >
 > > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > > ---
-> >  arch/arm/mach-imx/imx-bbu-internal.c | 11 +++++++++--
-> >  1 file changed, 9 insertions(+), 2 deletions(-)
+> >  arch/arm/mach-imx/imx-bbu-internal.c | 64 +++++++++++++++++-----------
+> >  1 file changed, 39 insertions(+), 25 deletions(-)
 > >
 > > diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-> > index d83eb972c..70af5ef84 100644
+> > index 67ae2961c..ea57b2772 100644
 > > --- a/arch/arm/mach-imx/imx-bbu-internal.c
 > > +++ b/arch/arm/mach-imx/imx-bbu-internal.c
-> > @@ -86,6 +86,7 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
-> >               const void *buf, int image_len)
+> > @@ -106,11 +106,39 @@ err_close:
+> >       return ret;
+> >  }
+> >
+> > -static int imx_bbu_check_prereq(const char *devicefile, struct bbu_data *data)
+> > +static int imx_bbu_check_prereq(struct imx_internal_bbu_handler *imx_handler,
+> > +                             const char *devicefile, struct bbu_data *data,
+> > +                             enum filetype expected_type)
 > >  {
-> >       int fd, ret, offset = 0;
-> > +     bool partial_write;
-> >
-> >       fd = open(devicefile, O_RDWR | O_CREAT);
-> >       if (fd < 0)
-> > @@ -117,8 +118,14 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
-> >       }
-> >
-> >       ret = pwrite(fd, buf, image_len, offset);
-> > -     if (ret < 0)
-> > +     partial_write = ret > 0 && ret != image_len;
-> > +     if (ret < 0 || partial_write) {
-> > +             ret = partial_write ? -EIO : ret;
+> >       int ret;
+> > -
+> > -     if (file_detect_type(data->image, data->len) != filetype_arm_barebox) {
+> > +     const void *blob;
+> > +     size_t len;
+> > +     enum filetype type;
 > > +
-> > +             pr_err("writing to %s failed with %s\n", devicefile,
-> > +                    strerror(-ret));
-> >               goto err_close;
+> > +     type = file_detect_type(data->image, data->len);
+> > +
+> > +     switch (type) {
+> > +     case filetype_arm_barebox:
+> > +             /*
+> > +              * Specifying expected_type as unknow will disable the
+> > +              * inner image type check
+> > +              */
+> > +             if (expected_type == filetype_unknown)
+> > +                     break;
+> > +
+> > +             blob = data->image + imx_handler->flash_header_offset;
+> > +             len  = data->len   - imx_handler->flash_header_offset;
+> > +             type = file_detect_type(blob, len);
+> > +
+> > +             if (type != expected_type) {
+> > +                     pr_err("Expected image type: %s, "
+> > +                            "detected image type: %s\n",
+> > +                            file_type_to_string(expected_type),
+> > +                            file_type_to_string(type));
+> > +                     return -EINVAL;
+> > +             }
+> > +             break;
+> > +     default:
+> >               if (!bbu_force(data, "Not an ARM barebox image"))
+> >                       return -EINVAL;
+> >       }
+> > @@ -137,7 +165,8 @@ static int imx_bbu_internal_v1_update(struct bbu_handler *handler, struct bbu_da
+> >               container_of(handler, struct imx_internal_bbu_handler, handler);
+> >       int ret;
+> >
+> > -     ret = imx_bbu_check_prereq(data->devicefile, data);
+> > +     ret = imx_bbu_check_prereq(imx_handler, data->devicefile, data,
+> > +                                filetype_unknown);
 >
-> Do we need a pwrite_full analog to write_full?
+> Why filetype_unknown here? in the v2 version we have
+> filetype_imx_image_v2. I would expect filetype_imx_image_v1 here.
 >
 
-Sure, why not? Should allow me to drop that partial_write variable.
-Will do in v2.
+Purely because original code didn't do any type checking of "inner"
+image, so I specified filetype_unknown and and added special handling
+for it to preserve the status quo. It sounds like you think that it
+would be better to change the original behavior such that there _is_
+an "inner" image type check for v1 one header. That would be my
+preference as well, since that'll allow me to get rid of special
+filetype_unknown case, so that's what I'll do in v2.
 
 Thanks,
 Andrey Smirnov
