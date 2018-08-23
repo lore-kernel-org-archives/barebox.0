@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fshSw-00011Z-MS
- for barebox@lists.infradead.org; Thu, 23 Aug 2018 04:43:28 +0000
-Date: Thu, 23 Aug 2018 06:43:09 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20180823044309.GA2151@ravnborg.org>
+ id 1fsjKd-0006L7-7N
+ for barebox@lists.infradead.org; Thu, 23 Aug 2018 06:43:00 +0000
+Date: Thu, 23 Aug 2018 08:42:45 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180823064245.hkxboqum2qxilifg@pengutronix.de>
 References: <20180821062603.17393-1-andrew.smirnov@gmail.com>
  <20180821062603.17393-20-andrew.smirnov@gmail.com>
  <20180822070940.2bgr6uraeoeewy7h@pengutronix.de>
@@ -30,8 +30,26 @@ Subject: Re: [PATCH 19/22] bbu: Remove logical negation in
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi Andrey.
-
+On Wed, Aug 22, 2018 at 05:01:41PM -0700, Andrey Smirnov wrote:
+> On Wed, Aug 22, 2018 at 12:09 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> >
+> > On Mon, Aug 20, 2018 at 11:26:00PM -0700, Andrey Smirnov wrote:
+> > > Returning !bbu_find_handler() from barebox_update_handler_exists()
+> > > would return the opposite result from what the name of that funciton
+> > > implies. Drop the "!" to make it behave as expected.
+> > >
+> > > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> > > ---
+> > >  common/bbu.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/common/bbu.c b/common/bbu.c
+> > > index 11e44f4a7..69ccac68a 100644
+> > > --- a/common/bbu.c
+> > > +++ b/common/bbu.c
+> > > @@ -151,7 +151,7 @@ bool barebox_update_handler_exists(struct bbu_data *data)
+> > >       if (!data->handler_name)
+> > >               return false;
 > > >
 > > > -     return !bbu_find_handler(data->handler_name);
 > > > +     return bbu_find_handler(data->handler_name);
@@ -40,13 +58,56 @@ Hi Andrey.
 > > bbu_find_handler() != NULL?
 > >
 > 
-> That shouldn't be necessary
+> That shouldn't be necessary since barebox_update_handler_exists()
+> returns bool(real type name is _Bool) which explicitly specifies that
+> a cast of any scalar value to it would be normalized to 1 or 0 (as per
+> C99 standard from whence it came). Otherwise you'd be able to end up
+> in a situation where bool1 && bool2 && (bool1 != bool2) evaluates to
+> true.
+> 
+> To give you more concrete example, here's what the last portion of
+> that function compiles to on AArch64:
+> 
+>     2924: 97ffff5e     bl 269c <bbu_find_handler>
+>     2928: f100001f   cmp x0, #0x0
+>     292c: 1a9f07e0  cset w0, ne  // ne = any
+>     2930: f9400bf3   ldr x19, [sp, #16]
+>     2934: a8c27bfd  ldp x29, x30, [sp], #32
+>     2938: d65f03c0  ret
+>     293c: 52800020 mov w0, #0x1                    // #1
+>     2940: 17fffffc      b 2930 <barebox_update_handler_exists+0x30>
+>     2944: 52800000 mov w0, #0x0                    // #0
+>     2948: 17fffffa      b 2930 <barebox_update_handler_exists+0x30>
+> 
+> and on AArch32 (Thumb):
+> 
+>     18e0: f7ff ff48 bl 1774 <bbu_find_handler>
+>     18e4: 3000     adds r0, #0
+>     18e6: bf18      it ne
+>     18e8: 2001     movne r0, #1
+>     18ea: bd10     pop {r4, pc}
+>     18ec: 2001     movs r0, #1
+>     18ee: e7fc      b.n 18ea <barebox_update_handler_exists+0x1a>
+> 
+> as you can see both cases already have code to explicitly convert the
+> result of the function to 0/1.
+> 
+> I am more than happy to add ether !! or != NULL if you still think
+> that'd be better, it just I don't think it will have any practical
+> effect.
 
-At least to me the xxx != NULL would express the intent in a more clear way.
-But then if this becomes a common pattern then I will also learn that.
-But you got my preference.
+For sure it doesn't have a practical effect, it's merely a sign to show
+"I know I'm casting a pointer to bool". Probably I'm just used to add
+an explicit cast there and it's just a matter of taste.
 
-	Sam
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
