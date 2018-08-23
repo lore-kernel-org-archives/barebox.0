@@ -1,21 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuCuZ-0003AQ-Lo
- for barebox@lists.infradead.org; Mon, 27 Aug 2018 08:30:14 +0000
-Date: Mon, 27 Aug 2018 10:29:59 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180827082959.dbpkqm7kvofembrh@pengutronix.de>
-References: <20180824151739.8883-1-m.grzeschik@pengutronix.de>
- <20180824170407.geeahhgkqntovpi5@pengutronix.de>
- <20180824195556.jihqkka6bj5tbqpq@pengutronix.de>
- <CAOMZO5AMUiaPyaGcfNz2NtApwgthYGSYSH0Xx94F83q1qESKxQ@mail.gmail.com>
- <20180827074741.rnmenb6mvjzv2qto@pengutronix.de>
- <20180827075224.zmouhtgevz4masrd@pengutronix.de>
- <20180827081322.bgtjhamviu5p7byd@pengutronix.de>
+ id 1fswdf-0003SW-8M
+ for barebox@lists.infradead.org; Thu, 23 Aug 2018 20:55:33 +0000
+Received: by mail-ed1-x531.google.com with SMTP id h4-v6so4480555edi.6
+ for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 13:55:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180827081322.bgtjhamviu5p7byd@pengutronix.de>
+In-Reply-To: <20180822074635.wfst65srfuqne7l6@pengutronix.de>
+References: <20180821152001.5747-1-aleksander@aleksander.es>
+ <20180821152001.5747-2-aleksander@aleksander.es>
+ <20180822074635.wfst65srfuqne7l6@pengutronix.de>
+From: Aleksander Morgado <aleksander@aleksander.es>
+Date: Thu, 23 Aug 2018 22:54:58 +0200
+Message-ID: <CAAP7ucKR_tmawkX=DTO2bnzhT+L2A-AhChCXddgMEd5FCKpOYA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,55 +25,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] imx{5,6}: reset otg port after usb-serial boot
-To: Michael Grzeschik <mgr@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/4] ratp: implement i2c read/write support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, Aug 27, 2018 at 10:13:22AM +0200, Michael Grzeschik wrote:
-> On Mon, Aug 27, 2018 at 09:52:24AM +0200, Sascha Hauer wrote:
-> > On Mon, Aug 27, 2018 at 09:47:41AM +0200, Michael Grzeschik wrote:
-> > > On Fri, Aug 24, 2018 at 05:18:02PM -0300, Fabio Estevam wrote:
-> > > > Hi Michael,
-> > > > 
-> > > > On Fri, Aug 24, 2018 at 4:55 PM, Michael Grzeschik <mgr@pengutronix.de> wrote:
-> > > > 
-> > > > > I get that it is not safe to toggle bits if the clock is not
-> > > > > there. We could check for the bootsource. Is it possible to
-> > > > > ensure that we are started by imx-usb-loader?
-> > > > 
-> > > > It is possible to determine if we have started via USB download mode.
-> > > > 
-> > > > Check the is_boot_from_usb() implementation in U-Boot for a reference.
-> > > 
-> > > Right, So it seems to be safe to reach for the phys registers on mx6.
-> > > 
-> > > On mx5 and similar we have a nop phy and the only way to
-> > > communicate with it is through usbmisc, which is also in the
-> > > register space that leads to a hang if one clock is missing.
-> > > 
-> > > I will search for another solutions on those SoCs.
-> > 
-> > It's not necessary to ask for the bootsource. You just have to enable
-> > the clocks necessary to access the USB registers. Or the other way
-> > round: When the clocks are not enabled already, you could assume we have
-> > not booted from USB.
-> 
-> Right, I think enabling the clocks is a little bit more safe
-> as we otherwise would need to ensure that nobody slips in
-> a DCD that already ungates all clocks.
+>> +struct ratp_bb_i2c_read_request {
+>> +     struct ratp_bb header;
+>> +     uint16_t buffer_offset;
+>> +     uint8_t  bus;
+>> +     uint8_t  addr;
+>
+> I wonder how we see the RATP support. If it's for adhoc debugging then
+> bus/addr is fine. The caller should have no expectations that the bus
+> number is constant though. Likewise for the address which might change
+> across different board revisions.
+>
+> Should we have support for resolving names, which could be provided by
+> aliases in dt?
+>
+> We could still add name resolving support later as a separate call, I
+> just thought that now is the time to think how we proceed.
+>
 
-What could happen is that somebody *dis*abled the USB clocks in DCD. In
-that case though the USB on the host will already be confused and we
-already have lost - no need to do anything in that case.
-
-Sascha
-
+I truly have no opinion here, but if name resolving is added at some
+point I can either update this operation or even add a new one.
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Aleksander
+https://aleksander.es
 
 _______________________________________________
 barebox mailing list
