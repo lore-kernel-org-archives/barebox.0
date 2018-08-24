@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-io0-x243.google.com ([2607:f8b0:4001:c06::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuImD-0002kK-TX
- for barebox@lists.infradead.org; Mon, 27 Aug 2018 14:45:59 +0000
-Date: Mon, 27 Aug 2018 16:45:45 +0200
-From: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-Message-ID: <20180827144545.h7pld2edwwmnaoqw@pengutronix.de>
-References: <20180823095820.32590-1-florian.baeuerle@allegion.com>
- <5de1c331378034ec7bdbbe58c7e8b1f65debd568.camel@allegion.com>
- <20180827121004.hfeb3bahhyvkoiw4@pengutronix.de>
- <96de0308ea2468972690c0f1709ab6029d8e22c7.camel@allegion.com>
+ id 1ft1MV-0005Zb-Pp
+ for barebox@lists.infradead.org; Fri, 24 Aug 2018 01:58:09 +0000
+Received: by mail-io0-x243.google.com with SMTP id q5-v6so2708713iop.3
+ for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 18:57:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <96de0308ea2468972690c0f1709ab6029d8e22c7.camel@allegion.com>
+References: <20180823095820.32590-1-florian.baeuerle@allegion.com>
+In-Reply-To: <20180823095820.32590-1-florian.baeuerle@allegion.com>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Thu, 23 Aug 2018 18:57:44 -0700
+Message-ID: <CAHQ1cqFGjdRYJSiMtxfvhT-5dc14PszYGvhuikWOVVviMsHu0Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,101 +19,88 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ARM: phytec-phycard-imx27: Add debug UART support
-To: "Baeuerle, Florian" <Florian.Baeuerle@allegion.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+To: florian.baeuerle@allegion.com
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Aug 27, 2018 at 12:37:18PM +0000, Baeuerle, Florian wrote:
-> Am Montag, den 27.08.2018, 14:10 +0200 schrieb Sascha Hauer:
-> > On Thu, Aug 23, 2018 at 12:20:32PM +0000, Baeuerle, Florian wrote:
-> > > Some background on that patch:
-> > > 
-> > > I've tried to get barebox master compiled with OSELAS 2018 running on a
-> > > phycard-imx27. I had a few problems with that:
-> > > 
-> > > It turned out, that I can boot the resulting image as a seconds stage (from an
-> > > older version of barebox), after commenting out pca100_usb_init(). I suppose
-> > > that is not a real problem, but probably related to some clock setup that
-> > > barebox master does somewhere during early boot (which I suppose, is skipped
-> > > when booting it as 2nd stage).
-> > > 
-> > > However, when flashing the resulting image to NAND, there seems to be a bigger
-> > > issue somewhere during early boot. This problem does not exist when compiling
-> > > barebox master with OSELAS 2016.
-> > 
-> > I gave it a test and can confirm that the board boots when compiled with
-> > OSELAS 2016 and no longer boots with OSELAS 2018.
-> 
-> Thanks for confirming this!
-> > 
-> > It's strange and I'm out of ideas for now. In
-> > imx27_barebox_boot_nand_external() we have a place that copies the
-> > initial image poprtion into SDRAM. It seems the SDRAM is never written
-> > to - at least according to the information my BDI2000 gives me.
-> 
-> What could you observe with your debugger?
-> I sadly do not have any hardware debugger available, so I was stuck with writing
-> characters on the UART which IIRC was completely unsuccessful in
-> imx27_barebox_boot_nand_external().
-
-I can see that we execute this copy loop:
-
-     518:	e592c000 	ldr	ip, [r2]
-     51c:	e2822004 	add	r2, r2, #4
-     520:	e580c000 	str	ip, [r0]
-     524:	e1520001 	cmp	r2, r1
-     528:	e2820332 	add	r0, r2, #-939524096	; 0xc8000000
-     52c:	1afffff9 	bne	518 <imx27_barebox_boot_nand_external+0x18>
-
-When stopping at 524 we have this register content:
-
-         User     FIQ     Superv   Abort     IRQ      Undef
-GPR00: a0000000 a0000000 a0000000 a0000000 a0000000 a0000000
-GPR01: d8000800 d8000800 d8000800 d8000800 d8000800 d8000800
-GPR02: d8000004 d8000004 d8000004 d8000004 d8000004 d8000004
-GPR03: d80012a0 d80012a0 d80012a0 d80012a0 d80012a0 d80012a0
-GPR04: d80012a0 d80012a0 d80012a0 d80012a0 d80012a0 d80012a0
-GPR05: 28c04080 28c04080 28c04080 28c04080 28c04080 28c04080
-GPR06: 22604914 22604914 22604914 22604914 22604914 22604914
-GPR07: 062008cc 062008cc 062008cc 062008cc 062008cc 062008cc
-GPR08: 04808005 20000061 04808005 04808005 04808005 04808005
-GPR09: 2b3107cd 08930146 2b3107cd 2b3107cd 2b3107cd 2b3107cd
-GPR10: 80140001 61081110 80140001 80140001 80140001 80140001
-GPR11: 2310000d 00026000 2310000d 2310000d 2310000d 2310000d
-GPR12: ea000012 a8080e28 ea000012 ea000012 ea000012 ea000012
-GPR13: 294108a0 950200c0 ffffffec 45525940 80110208 82c00a08
-GPR14: 89830033 19022184 d800005c 32010501 00140011 000d0812
-PC   : d8000524
-CPSR : 200000d3
-SPSR :          00000010 00000010 00000010 00000010 00000010
-
-So r0 correctly contains the destination address (0xa0000000), the ip
-register (GPR12) contains the value read from 0xd8000000 (0xea000012),
-but reading the memory at 0xa0000000 still contains the value that
-was there before the first loop iteration, as if the memory was never
-written to:
-
-md 0xa0000000:
-a0000000 : 0a884784 8340111c 00001004 02101308  .G....@.........
-a0000010 : 50201a48 20a042c4 12d01504 10081000  H. P.B. ........
-...
-
-With OSELAS 2016 the copy loop looks a little different, but works as
-expected.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVGh1LCBBdWcgMjMsIDIwMTggYXQgMjo1OSBBTSBGbG9yaWFuIELDpHVlcmxlCjxmbG9yaWFu
+LmJhZXVlcmxlQGFsbGVnaW9uLmNvbT4gd3JvdGU6Cj4KPiBTaWduZWQtb2ZmLWJ5OiBGbG9yaWFu
+IELDpHVlcmxlIDxmbG9yaWFuLmJhZXVlcmxlQGFsbGVnaW9uLmNvbT4KPiAtLS0KPiAgYXJjaC9h
+cm0vYm9hcmRzL3BoeXRlYy1waHljYXJkLWlteDI3L2xvd2xldmVsLmMgfCAxNSArKysrKysrKysr
+KysrKysKPiAgYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2RlYnVnX2xsLmggICAgICAg
+fCAxMyArKysrKysrKysrKysrCj4gIGluY2x1ZGUvc2VyaWFsL2lteC11YXJ0LmggICAgICAgICAg
+ICAgICAgICAgICAgIHwgIDUgKysrKysKPiAgMyBmaWxlcyBjaGFuZ2VkLCAzMyBpbnNlcnRpb25z
+KCspCj4KPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljYXJkLWlteDI3
+L2xvd2xldmVsLmMgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNhcmQtaW14MjcvbG93bGV2
+ZWwuYwo+IGluZGV4IGUxMTMyZTAuLjgyNDQzMzcgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9hcm0vYm9h
+cmRzL3BoeXRlYy1waHljYXJkLWlteDI3L2xvd2xldmVsLmMKPiArKysgYi9hcmNoL2FybS9ib2Fy
+ZHMvcGh5dGVjLXBoeWNhcmQtaW14MjcvbG93bGV2ZWwuYwo+IEBAIC0xNCw2ICsxNCw4IEBACj4g
+ICNpbmNsdWRlIDxtYWNoL2lteC1wbGwuaD4KPiAgI2luY2x1ZGUgPG1hY2gvZXNkY3RsLmg+Cj4g
+ICNpbmNsdWRlIDxtYWNoL2lteC1uYW5kLmg+Cj4gKyNpbmNsdWRlIDxtYWNoL2RlYnVnX2xsLmg+
+Cj4gKyNpbmNsdWRlIDxzZXJpYWwvaW14LXVhcnQuaD4KPgo+ICAjZGVmaW5lIEVTRENUTDBfVkFM
+IChFU0RDVEwwX1NERSB8IEVTRENUTDBfUk9XMTMgfCBFU0RDVEwwX0NPTDEwKQo+Cj4gQEAgLTU4
+LDYgKzYwLDE4IEBAIHN0YXRpYyB2b2lkIHNkcmFtX2luaXQodm9pZCkKPiAgICAgICAgICAgICAg
+ICAgICAgICAgICBNWDI3X0VTRENUTF9CQVNFX0FERFIgKyBJTVhfRVNEQ1RMMCk7Cj4gIH0KPgo+
+ICtzdGF0aWMgdm9pZCBzZXR1cF91YXJ0KHZvaWQpCj4gK3sKPiArICAgICAgIC8qIFNldCBQRVsx
+Mi0xNV0gdXNlLCBkaXJlY3Rpb24sIGZ1bmN0aW9uIGFuZCBwdWxsLXVwICovCj4gKyAgICAgICB3
+cml0ZWwoMHhmZmZjMGYyNywgTVgyN19HUElPNV9CQVNFX0FERFIgKyAweDIwKTsKPiArICAgICAg
+IHdyaXRlbCgweDAwMDA1MDAwLCBNWDI3X0dQSU81X0JBU0VfQUREUik7Cj4gKyAgICAgICB3cml0
+ZWwoMHgwMDAwMDAwMCwgTVgyN19HUElPNV9CQVNFX0FERFIgKyAweDM4KTsKPiArICAgICAgIHdy
+aXRlbCgweGZmZmYwZmZmLCBNWDI3X0dQSU81X0JBU0VfQUREUiArIDB4NDApOwo+ICsKCkNhbiBj
+b25zdGFudHMgZnJvbSBpb211eC1pbXgyNy5oIGJlIHVzZWQgaGVyZT8KCj4gKyAgICAgICBpbXgy
+N191bmdhdGVfYWxsX3BlcmlwaGVyYWxzKCk7Cj4gKyAgICAgICBpbXgyN191YXJ0X3NldHVwX2xs
+KCk7Cj4gK30KPiArCj4gIHZvaWQgX19iYXJlX2luaXQgX19uYWtlZCBwaHl0ZWNfcGh5Y2FyZF9p
+bXgyN19jb21tb25faW5pdCh2b2lkICpmZHQpCj4gIHsKPiAgICAgICAgIHVuc2lnbmVkIGxvbmcg
+cjsKPiBAQCAtOTcsNiArMTExLDcgQEAgdm9pZCBfX2JhcmVfaW5pdCBfX25ha2VkIHBoeXRlY19w
+aHljYXJkX2lteDI3X2NvbW1vbl9pbml0KHZvaWQgKmZkdCkKPiAgICAgICAgICAgICAgICAgTVgy
+N19DU0NSX01TSENfU0VMLCBNWDI3X0NDTV9CQVNFX0FERFIgKyBNWDI3X0NTQ1IpOwo+Cj4gICAg
+ICAgICBzZHJhbV9pbml0KCk7Cj4gKyAgICAgICBzZXR1cF91YXJ0KCk7CgpNYWpvcml0eSBvZiB0
+aGUgYm9hcmRzIGdhdGVzIHRoaXMgdG8gaGFwcGVuIG9uIGlmCklTX0VOQUJMRUQoQ09ORklHX0RF
+QlVHX0xMKSBpcyB0cnVlLCBzbyBpdCBtaWdodCBtYWtlIHNlbnNlIHRvIGRvIHRoZQpzYW1lLgoK
+Pgo+ICAgICAgICAgaW14MjdfYmFyZWJveF9ib290X25hbmRfZXh0ZXJuYWwoZmR0KTsKPiAgfQo+
+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvZGVidWdfbGwuaCBi
+L2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oCj4gaW5kZXggMTU1MGUw
+NS4uNmM5YjIxZCAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gv
+ZGVidWdfbGwuaAo+ICsrKyBiL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9kZWJ1Z19s
+bC5oCj4gQEAgLTU2LDYgKzU2LDEyIEBACj4gICNlcnJvciAidW5rbm93biBpLk1YIGRlYnVnIHVh
+cnQgc29jIHR5cGUiCj4gICNlbmRpZgo+Cj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBpbXgyN191YXJ0
+X3NldHVwX2xsKHZvaWQpICB7Cj4gKyAgICAgICB2b2lkICpiYXNlID0gSU9NRU0oSU1YX1VBUlRf
+QkFTRShJTVhfREVCVUdfU09DLAo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgQ09O
+RklHX0RFQlVHX0lNWF9VQVJUX1BPUlQpKTsKPiArICAgICAgIGlteDI3X3VhcnRfc2V0dXAoYmFz
+ZSk7Cj4gK30KPiArCj4gIHN0YXRpYyBpbmxpbmUgdm9pZCBpbXg1MF91YXJ0X3NldHVwX2xsKHZv
+aWQpCj4gIHsKPiAgICAgICAgIHZvaWQgKmJhc2UgPSBJT01FTShJTVhfVUFSVF9CQVNFKElNWF9E
+RUJVR19TT0MsIENPTkZJR19ERUJVR19JTVhfVUFSVF9QT1JUKSk7Cj4gQEAgLTEyMSw2ICsxMjcs
+NyBAQCBzdGF0aWMgaW5saW5lIHZvaWQgUFVUQ19MTChpbnQgYykKPgo+ICAjZWxzZQo+Cj4gK3N0
+YXRpYyBpbmxpbmUgdm9pZCBpbXgyN191YXJ0X3NldHVwX2xsKHZvaWQpIHt9Cj4gIHN0YXRpYyBp
+bmxpbmUgdm9pZCBpbXg1MF91YXJ0X3NldHVwX2xsKHZvaWQpIHt9Cj4gIHN0YXRpYyBpbmxpbmUg
+dm9pZCBpbXg1MV91YXJ0X3NldHVwX2xsKHZvaWQpIHt9Cj4gIHN0YXRpYyBpbmxpbmUgdm9pZCBp
+bXg1M191YXJ0X3NldHVwX2xsKHZvaWQpIHt9Cj4gQEAgLTEzOCw2ICsxNDUsMTIgQEAgc3RhdGlj
+IGlubGluZSB2b2lkIGlteF91bmdhdGVfYWxsX3BlcmlwaGVyYWxzKHZvaWQgX19pb21lbSAqY2Nt
+YmFzZSkKPiAgICAgICAgICAgICAgICAgd3JpdGVsKDB4ZmZmZmZmZmYsIGNjbWJhc2UgKyBpKTsK
+PiAgfQo+Cj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBpbXgyN191bmdhdGVfYWxsX3BlcmlwaGVyYWxz
+KHZvaWQpCj4gK3sKPiArICAgICAgIHdyaXRlbCgweGZmZmZmYmZmLCBJT01FTShNWDI3X0NDTV9C
+QVNFX0FERFIpICsgMHgyMCk7Cj4gKyAgICAgICB3cml0ZWwoMHhmZmZmZmZmYywgSU9NRU0oTVgy
+N19DQ01fQkFTRV9BRERSKSArIDB4MjQpOwo+ICt9CgpJIHRoaW5rIHlvdSBjYW4gdXNlICBNWDI3
+X1BDQ1IwIGFuZCAgTVgyN19QQ0NSMSBoZXJlIGluc3RlYWQgb2YgbWFnaWMgbnVtYmVycy4KCj4g
+Kwo+ICBzdGF0aWMgaW5saW5lIHZvaWQgaW14Nl91bmdhdGVfYWxsX3BlcmlwaGVyYWxzKHZvaWQp
+Cj4gIHsKPiAgICAgICAgIGlteF91bmdhdGVfYWxsX3BlcmlwaGVyYWxzKElPTUVNKE1YNl9DQ01f
+QkFTRV9BRERSKSk7Cj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvc2VyaWFsL2lteC11YXJ0LmggYi9p
+bmNsdWRlL3NlcmlhbC9pbXgtdWFydC5oCj4gaW5kZXggYzIzNjA2NS4uMGMwMzNjMiAxMDA2NDQK
+PiAtLS0gYS9pbmNsdWRlL3NlcmlhbC9pbXgtdWFydC5oCj4gKysrIGIvaW5jbHVkZS9zZXJpYWwv
+aW14LXVhcnQuaAo+IEBAIC0xNTUsNiArMTU1LDExIEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBpbXhf
+dWFydF9zZXRfZHRlKHZvaWQgX19pb21lbSAqdWFydGJhc2UpCj4gICAgICAgICB3cml0ZWwodWZj
+ciwgdWFydGJhc2UgKyBVRkNSKTsKPiAgfQo+Cj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBpbXgyN191
+YXJ0X3NldHVwKHZvaWQgX19pb21lbSAqdWFydGJhc2UpCj4gK3sKPiArICAgICAgIGlteF91YXJ0
+X3NldHVwKHVhcnRiYXNlLCA2NjUwMDAwMCk7Cj4gK30KPiArCj4gIHN0YXRpYyBpbmxpbmUgdm9p
+ZCBpbXg1MF91YXJ0X3NldHVwKHZvaWQgX19pb21lbSAqdWFydGJhc2UpCj4gIHsKPiAgICAgICAg
+IGlteF91YXJ0X3NldHVwKHVhcnRiYXNlLCA2NjY2NjY2Nik7Cj4gLS0KPiAxLjguMy4xCj4KPgo+
+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFyZWJv
+eCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8vbGlz
+dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
