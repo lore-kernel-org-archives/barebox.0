@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ft2E8-0005Nv-H1
+ id 1ft2EB-0005Vv-2Z
  for barebox@lists.infradead.org; Fri, 24 Aug 2018 02:53:42 +0000
-Received: by mail-pg1-x544.google.com with SMTP id z25-v6so3598224pgu.7
- for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 19:53:21 -0700 (PDT)
+Received: by mail-pl1-x644.google.com with SMTP id a4-v6so444075plm.13
+ for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 19:53:30 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 23 Aug 2018 19:52:32 -0700
-Message-Id: <20180824025243.19479-14-andrew.smirnov@gmail.com>
+Date: Thu, 23 Aug 2018 19:52:42 -0700
+Message-Id: <20180824025243.19479-24-andrew.smirnov@gmail.com>
 In-Reply-To: <20180824025243.19479-1-andrew.smirnov@gmail.com>
 References: <20180824025243.19479-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,109 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 13/24] ARM: i.MX: bbu: Move protect code into a separate
- routine
+Subject: [PATCH v2 23/24] bbu: Report update failures explicitly
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Both code sections responsible for enabling/disabling underlying
-device write protection are almost identical to each other. To avoid
-code duplication move them into a separate routine and adjust the rest
-of the code accordignly.
+Change the code of barebox_update() to explicitly log that update
+failed instead of failing silently (unless update was interrupted) and
+relying on user checking the return code.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/imx-bbu-internal.c | 62 +++++++++++++++++++---------
- 1 file changed, 42 insertions(+), 20 deletions(-)
+ common/bbu.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-index fef3797a1..12d48401d 100644
---- a/arch/arm/mach-imx/imx-bbu-internal.c
-+++ b/arch/arm/mach-imx/imx-bbu-internal.c
-@@ -44,6 +44,41 @@ struct imx_internal_bbu_handler {
- 	enum filetype expected_type;
- };
+diff --git a/common/bbu.c b/common/bbu.c
+index 9e206227a..3974bf672 100644
+--- a/common/bbu.c
++++ b/common/bbu.c
+@@ -260,13 +260,13 @@ int barebox_update(struct bbu_data *data)
+ 		return ret;
  
-+static bool
-+imx_bbu_erase_required(struct imx_internal_bbu_handler *imx_handler)
-+{
-+	return imx_handler->handler.flags & IMX_INTERNAL_FLAG_ERASE;
-+}
-+
-+static int imx_bbu_protect(int fd, struct imx_internal_bbu_handler *imx_handler,
-+			   const char *devicefile, int offset, int image_len,
-+			   int prot)
-+{
-+	const char *prefix = prot ? "" : "un";
-+	int ret;
-+
-+	if (!imx_bbu_erase_required(imx_handler))
-+		return 0;
-+
-+	pr_debug("%s: %sprotecting %s from 0x%08x to 0x%08x\n", __func__,
-+		 prefix, devicefile, offset, image_len);
-+
-+	ret = protect(fd, image_len, offset, prot);
-+	if (ret) {
-+		/*
-+		 * If protect() is not implemented for this device,
-+		 * just report success
-+		 */
-+		if (ret == -ENOSYS)
-+			return 0;
-+
-+		pr_err("%sprotecting %s failed with %s\n", prefix, devicefile,
-+		       strerror(-ret));
-+	}
-+
-+	return ret;
-+}
-+
- /*
-  * Actually write an image to the target device, eventually keeping a
-  * DOS partition table on the device
-@@ -67,16 +102,12 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
- 	if (imx_handler->handler.flags & IMX_BBU_FLAG_KEEP_HEAD)
- 		offset += imx_handler->flash_header_offset;
- 
--	if (imx_handler->handler.flags & IMX_INTERNAL_FLAG_ERASE) {
--		pr_debug("%s: unprotecting %s from 0x%08x to 0x%08x\n", __func__,
--				devicefile, offset, image_len);
--		ret = protect(fd, image_len, offset, 0);
--		if (ret && ret != -ENOSYS) {
--			pr_err("unprotecting %s failed with %s\n", devicefile,
--					strerror(-ret));
--			goto err_close;
--		}
-+	ret = imx_bbu_protect(fd, imx_handler, devicefile, offset,
-+			      image_len, 0);
-+	if (ret)
-+		goto err_close;
- 
-+	if (imx_bbu_erase_required(imx_handler)) {
- 		pr_debug("%s: erasing %s from 0x%08x to 0x%08x\n", __func__,
- 				devicefile, offset, image_len);
- 		ret = erase(fd, image_len, offset);
-@@ -91,17 +122,8 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
- 	if (ret < 0)
- 		goto err_close;
- 
--	if (imx_handler->handler.flags & IMX_INTERNAL_FLAG_ERASE) {
--		pr_debug("%s: protecting %s from 0x%08x to 0x%08x\n", __func__,
--				devicefile, offset, image_len);
--		ret = protect(fd, image_len, offset, 1);
--		if (ret && ret != -ENOSYS) {
--			pr_err("protecting %s failed with %s\n", devicefile,
--					strerror(-ret));
--		}
--	}
+ 	ret = handler->handler(handler, data);
+-	if (ret == -EINTR)
+-		printf("update aborted\n");
 -
--	ret = 0;
-+	imx_bbu_protect(fd, imx_handler, devicefile, offset,
-+			image_len, 1);
+-	if (!ret)
+-		printf("update succeeded\n");
++	if (ret) {
++		printf("update %s\n", (ret == -EINTR) ? "aborted" : "failed");
++		return ret;
++	}
  
- err_close:
- 	close(fd);
+-	return ret;
++	printf("update succeeded\n");
++	return 0;
+ }
+ 
+ /*
 -- 
 2.17.1
 
