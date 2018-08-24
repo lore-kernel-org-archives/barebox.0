@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ft2E5-0005PS-90
- for barebox@lists.infradead.org; Fri, 24 Aug 2018 02:53:32 +0000
-Received: by mail-pg1-x541.google.com with SMTP id z25-v6so3598293pgu.7
- for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 19:53:23 -0700 (PDT)
+ id 1ft2E5-0005Ni-8r
+ for barebox@lists.infradead.org; Fri, 24 Aug 2018 02:53:36 +0000
+Received: by mail-pg1-x541.google.com with SMTP id s15-v6so3596645pgv.8
+ for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 19:53:18 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 23 Aug 2018 19:52:35 -0700
-Message-Id: <20180824025243.19479-17-andrew.smirnov@gmail.com>
+Date: Thu, 23 Aug 2018 19:52:28 -0700
+Message-Id: <20180824025243.19479-10-andrew.smirnov@gmail.com>
 In-Reply-To: <20180824025243.19479-1-andrew.smirnov@gmail.com>
 References: <20180824025243.19479-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,66 +23,261 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 16/24] ARM: i.MX: zii-vf610-dev-rev-b/c: Add support for
- BBU on SPI-NOR
+Subject: [PATCH v2 09/24] ARM: i.MX: bbu: Constify all 'devicefile' arguments
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Constify all 'devicefile' arguments since they are treated as so by
+all of the users in BBU code.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/zii-vf610-dev/board.c | 19 +++++++++++++++++++
- arch/arm/dts/vf610-zii-dev-rev-b.dts  | 11 +++++++++++
- 2 files changed, 30 insertions(+)
+ arch/arm/mach-imx/imx-bbu-internal.c | 40 +++++++++++++++++-----------
+ arch/arm/mach-imx/include/mach/bbu.h | 40 ++++++++++++++--------------
+ 2 files changed, 44 insertions(+), 36 deletions(-)
 
-diff --git a/arch/arm/boards/zii-vf610-dev/board.c b/arch/arm/boards/zii-vf610-dev/board.c
-index d88b26164..818044ce6 100644
---- a/arch/arm/boards/zii-vf610-dev/board.c
-+++ b/arch/arm/boards/zii-vf610-dev/board.c
-@@ -149,6 +149,25 @@ static int zii_vf610_dev_set_hostname(void)
+diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+index add353914..be17189f1 100644
+--- a/arch/arm/mach-imx/imx-bbu-internal.c
++++ b/arch/arm/mach-imx/imx-bbu-internal.c
+@@ -396,8 +396,9 @@ free_bootpartvar:
+ 	return ret;
  }
- late_initcall(zii_vf610_dev_set_hostname);
  
-+static int zii_vf610_dev_register_bbu(void)
-+{
-+	int ret;
-+	if (!of_machine_is_compatible("zii,vf610dev-c") &&
-+	    !of_machine_is_compatible("zii,vf610dev-b"))
-+		return 0;
-+
-+	ret = vf610_bbu_internal_spi_i2c_register_handler("SPI",
-+							  "/dev/m25p0.bootloader",
-+							  0);
-+	if (ret) {
-+		pr_err("Failed to register SPI BBU handler");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+late_initcall(zii_vf610_dev_register_bbu);
-+
- static int zii_vf610_spu3_register_bbu(void)
+-static struct imx_internal_bbu_handler *__init_handler(const char *name, char *devicefile,
+-		unsigned long flags)
++static struct imx_internal_bbu_handler *__init_handler(const char *name,
++						       const char *devicefile,
++						       unsigned long flags)
  {
- 	int ret;
-diff --git a/arch/arm/dts/vf610-zii-dev-rev-b.dts b/arch/arm/dts/vf610-zii-dev-rev-b.dts
-index 1eb01f44a..ac0807c49 100644
---- a/arch/arm/dts/vf610-zii-dev-rev-b.dts
-+++ b/arch/arm/dts/vf610-zii-dev-rev-b.dts
-@@ -45,3 +45,14 @@
- #include <arm/vf610-zii-dev-rev-b.dts>
+ 	struct imx_internal_bbu_handler *imx_handler;
+ 	struct bbu_handler *handler;
+@@ -427,7 +428,7 @@ static int __register_handler(struct imx_internal_bbu_handler *imx_handler)
+ }
  
- #include "vf610-zii-dev.dtsi"
-+
-+/ {
-+	spi0 {
-+		m25p128@0 {
-+			partition@0 {
-+				label = "bootloader";
-+				reg = <0x0 0x100000>;
-+			};
-+		};
-+	};
-+};
+ static int
+-imx_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
++imx_bbu_internal_mmc_register_handler(const char *name, const char *devicefile,
+ 				      unsigned long flags,
+ 				      enum filetype expected_type)
+ {
+@@ -443,7 +444,7 @@ imx_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
+ }
+ 
+ int imx51_bbu_internal_spi_i2c_register_handler(const char *name,
+-		char *devicefile, unsigned long flags)
++		const char *devicefile, unsigned long flags)
+ {
+ 	struct imx_internal_bbu_handler *imx_handler;
+ 
+@@ -457,8 +458,9 @@ int imx51_bbu_internal_spi_i2c_register_handler(const char *name,
+ /*
+  * Register an i.MX51 internal boot update handler for MMC/SD
+  */
+-int imx51_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
+-		unsigned long flags)
++int imx51_bbu_internal_mmc_register_handler(const char *name,
++					    const char *devicefile,
++					    unsigned long flags)
+ {
+ 
+ 	return imx_bbu_internal_mmc_register_handler(name, devicefile, flags,
+@@ -468,8 +470,9 @@ int imx51_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
+ /*
+  * Register an i.MX53 internal boot update handler for MMC/SD
+  */
+-int imx53_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
+-		unsigned long flags)
++int imx53_bbu_internal_mmc_register_handler(const char *name,
++					    const char *devicefile,
++					    unsigned long flags)
+ {
+ 	return imx_bbu_internal_mmc_register_handler(name, devicefile, flags,
+ 						     filetype_imx_image_v2);
+@@ -480,8 +483,9 @@ int imx53_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
+  * EEPROMs / flashes. Nearly the same as MMC/SD, but we do not need to
+  * keep a partition table. We have to erase the device beforehand though.
+  */
+-int imx53_bbu_internal_spi_i2c_register_handler(const char *name, char *devicefile,
+-		unsigned long flags)
++int imx53_bbu_internal_spi_i2c_register_handler(const char *name,
++						const char *devicefile,
++						unsigned long flags)
+ {
+ 	struct imx_internal_bbu_handler *imx_handler;
+ 
+@@ -515,14 +519,16 @@ int imx53_bbu_internal_nand_register_handler(const char *name,
+ /*
+  * Register an i.MX6 internal boot update handler for MMC/SD
+  */
+-int imx6_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
++int imx6_bbu_internal_mmc_register_handler(const char *name,
++					   const char *devicefile,
+ 					   unsigned long flags)
+ 	__alias(imx53_bbu_internal_mmc_register_handler);
+ 
+ /*
+  * Register an VF610 internal boot update handler for MMC/SD
+  */
+-int vf610_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
++int vf610_bbu_internal_mmc_register_handler(const char *name,
++					    const char *devicefile,
+ 					    unsigned long flags)
+ 	__alias(imx6_bbu_internal_mmc_register_handler);
+ 
+@@ -535,7 +541,8 @@ int vf610_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
+  * Note that no further partitioning of the boot partition is supported up to
+  * now.
+  */
+-int imx6_bbu_internal_mmcboot_register_handler(const char *name, char *devicefile,
++int imx6_bbu_internal_mmcboot_register_handler(const char *name,
++					       const char *devicefile,
+ 					       unsigned long flags)
+ {
+ 	struct imx_internal_bbu_handler *imx_handler;
+@@ -554,12 +561,13 @@ int imx6_bbu_internal_mmcboot_register_handler(const char *name, char *devicefil
+  * keep a partition table. We have to erase the device beforehand though.
+  */
+ int imx6_bbu_internal_spi_i2c_register_handler(const char *name,
+-					       char *devicefile,
++					       const char *devicefile,
+ 					       unsigned long flags)
+ 	__alias(imx53_bbu_internal_spi_i2c_register_handler);
+ 
+-int imx_bbu_external_nor_register_handler(const char *name, char *devicefile,
+-		unsigned long flags)
++int imx_bbu_external_nor_register_handler(const char *name,
++					  const char *devicefile,
++					  unsigned long flags)
+ {
+ 	struct imx_internal_bbu_handler *imx_handler;
+ 
+diff --git a/arch/arm/mach-imx/include/mach/bbu.h b/arch/arm/mach-imx/include/mach/bbu.h
+index b9b2c5bcb..b16766c75 100644
+--- a/arch/arm/mach-imx/include/mach/bbu.h
++++ b/arch/arm/mach-imx/include/mach/bbu.h
+@@ -32,57 +32,57 @@ struct imx_dcd_v2_entry;
+ 
+ #ifdef CONFIG_BAREBOX_UPDATE
+ 
+-int imx51_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
++int imx51_bbu_internal_mmc_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags);
+ 
+ int imx51_bbu_internal_spi_i2c_register_handler(const char *name,
+-		char *devicefile, unsigned long flags);
++		const char *devicefile, unsigned long flags);
+ 
+-int imx53_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
++int imx53_bbu_internal_mmc_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags);
+ 
+-int imx53_bbu_internal_spi_i2c_register_handler(const char *name, char *devicefile,
++int imx53_bbu_internal_spi_i2c_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags);
+ 
+ int imx53_bbu_internal_nand_register_handler(const char *name,
+ 		unsigned long flags, int partition_size);
+ 
+-int imx6_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
++int imx6_bbu_internal_mmc_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags);
+ 
+-int imx6_bbu_internal_mmcboot_register_handler(const char *name, char *devicefile,
++int imx6_bbu_internal_mmcboot_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags);
+ 
+-int imx6_bbu_internal_spi_i2c_register_handler(const char *name, char *devicefile,
++int imx6_bbu_internal_spi_i2c_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags);
+ 
+-int vf610_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
++int vf610_bbu_internal_mmc_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags);
+ 
+-int imx_bbu_external_nor_register_handler(const char *name, char *devicefile,
++int imx_bbu_external_nor_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags);
+ 
+ #else
+ 
+-static inline int imx51_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
++static inline int imx51_bbu_internal_mmc_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags)
+ {
+ 	return -ENOSYS;
+ }
+ 
+ static inline int imx51_bbu_internal_spi_i2c_register_handler(const char *name,
+-		char *devicefile, unsigned long flags)
++		const char *devicefile, unsigned long flags)
+ {
+ 	return -ENOSYS;
+ }
+ 
+-static inline int imx53_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
++static inline int imx53_bbu_internal_mmc_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags)
+ {
+ 	return -ENOSYS;
+ }
+ 
+-static inline int imx53_bbu_internal_spi_i2c_register_handler(const char *name, char *devicefile,
++static inline int imx53_bbu_internal_spi_i2c_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags)
+ {
+ 	return -ENOSYS;
+@@ -94,32 +94,32 @@ static inline int imx53_bbu_internal_nand_register_handler(const char *name,
+ 	return -ENOSYS;
+ }
+ 
+-static inline int imx6_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
++static inline int imx6_bbu_internal_mmc_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags)
+ {
+ 	return -ENOSYS;
+ }
+ 
+ static inline int imx6_bbu_internal_mmcboot_register_handler(const char *name,
+-							     char *devicefile,
++							     const char *devicefile,
+ 							     unsigned long flags)
+ {
+ 	return -ENOSYS;
+ }
+ 
+-static inline int imx6_bbu_internal_spi_i2c_register_handler(const char *name, char *devicefile,
++static inline int imx6_bbu_internal_spi_i2c_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags)
+ {
+ 	return -ENOSYS;
+ }
+ 
+-static inline int vf610_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
++static inline int vf610_bbu_internal_mmc_register_handler(const char *name, const char *devicefile,
+ 					    unsigned long flags)
+ {
+ 	return -ENOSYS;
+ }
+ 
+-static inline int imx_bbu_external_nor_register_handler(const char *name, char *devicefile,
++static inline int imx_bbu_external_nor_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags)
+ {
+ 	return -ENOSYS;
+@@ -127,10 +127,10 @@ static inline int imx_bbu_external_nor_register_handler(const char *name, char *
+ #endif
+ 
+ #if defined(CONFIG_BAREBOX_UPDATE_IMX_EXTERNAL_NAND)
+-int imx_bbu_external_nand_register_handler(const char *name, char *devicefile,
++int imx_bbu_external_nand_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags);
+ #else
+-static inline int imx_bbu_external_nand_register_handler(const char *name, char *devicefile,
++static inline int imx_bbu_external_nand_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags)
+ {
+ 	return -ENOSYS;
 -- 
 2.17.1
 
