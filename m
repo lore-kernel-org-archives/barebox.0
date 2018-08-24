@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-co1nam03on0703.outbound.protection.outlook.com
- ([2a01:111:f400:fe48::703]
- helo=NAM03-CO1-obe.outbound.protection.outlook.com)
+Received: from [85.220.165.71] (helo=metis.ext.pengutronix.de)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fsobW-0006XO-1l
- for barebox@lists.infradead.org; Thu, 23 Aug 2018 12:20:47 +0000
-From: "Baeuerle, Florian" <Florian.Baeuerle@allegion.com>
-Date: Thu, 23 Aug 2018 12:20:32 +0000
-Message-ID: <5de1c331378034ec7bdbbe58c7e8b1f65debd568.camel@allegion.com>
+ id 1ft6Om-0001yr-PS
+ for barebox@lists.infradead.org; Fri, 24 Aug 2018 07:23:28 +0000
+Date: Fri, 24 Aug 2018 09:16:56 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180824071656.iwpyy5txv24gsrzq@pengutronix.de>
 References: <20180823095820.32590-1-florian.baeuerle@allegion.com>
-In-Reply-To: <20180823095820.32590-1-florian.baeuerle@allegion.com>
-Content-Language: en-US
-Content-ID: <81933D45B8A8F04690B064135FC5AFFF@prod.exchangelabs.com>
+ <5de1c331378034ec7bdbbe58c7e8b1f65debd568.camel@allegion.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <5de1c331378034ec7bdbbe58c7e8b1f65debd568.camel@allegion.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,101 +19,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ARM: phytec-phycard-imx27: Add debug UART support
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+To: "Baeuerle, Florian" <Florian.Baeuerle@allegion.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-U29tZSBiYWNrZ3JvdW5kIG9uIHRoYXQgcGF0Y2g6DQoNCkkndmUgdHJpZWQgdG8gZ2V0IGJhcmVi
-b3ggbWFzdGVyIGNvbXBpbGVkIHdpdGggT1NFTEFTIDIwMTggcnVubmluZyBvbiBhDQpwaHljYXJk
-LWlteDI3LiBJIGhhZCBhIGZldyBwcm9ibGVtcyB3aXRoIHRoYXQ6DQoNCkl0IHR1cm5lZCBvdXQs
-IHRoYXQgSSBjYW4gYm9vdCB0aGUgcmVzdWx0aW5nIGltYWdlIGFzIGEgc2Vjb25kcyBzdGFnZSAo
-ZnJvbSBhbg0Kb2xkZXIgdmVyc2lvbiBvZiBiYXJlYm94KSwgYWZ0ZXIgY29tbWVudGluZyBvdXQg
-cGNhMTAwX3VzYl9pbml0KCkuIEkgc3VwcG9zZQ0KdGhhdCBpcyBub3QgYSByZWFsIHByb2JsZW0s
-IGJ1dCBwcm9iYWJseSByZWxhdGVkIHRvIHNvbWUgY2xvY2sgc2V0dXAgdGhhdA0KYmFyZWJveCBt
-YXN0ZXIgZG9lcyBzb21ld2hlcmUgZHVyaW5nIGVhcmx5IGJvb3QgKHdoaWNoIEkgc3VwcG9zZSwg
-aXMgc2tpcHBlZA0Kd2hlbiBib290aW5nIGl0IGFzIDJuZCBzdGFnZSkuDQoNCkhvd2V2ZXIsIHdo
-ZW4gZmxhc2hpbmcgdGhlIHJlc3VsdGluZyBpbWFnZSB0byBOQU5ELCB0aGVyZSBzZWVtcyB0byBi
-ZSBhIGJpZ2dlcg0KaXNzdWUgc29tZXdoZXJlIGR1cmluZyBlYXJseSBib290LiBUaGlzIHByb2Js
-ZW0gZG9lcyBub3QgZXhpc3Qgd2hlbiBjb21waWxpbmcNCmJhcmVib3ggbWFzdGVyIHdpdGggT1NF
-TEFTIDIwMTYuDQoNClRoZSByZXN1bHQgaXMgdGhhdCBJIGRvIG5vdCBzZWUgYW55dGhpbmcgb24g
-dGhlIGNvbnNvbGUuIFRoZSBpbXgyNyBhbHNvIGRvZXMgbm90DQpzZWVtIHRvIGVudGVyIGJvb3Rz
-dHJhcCBtb2RlIHRob3VnaC4NCg0KRnVydGhlciBJIGZvdW5kIG91dCB0aGF0IHdpdGggQ09OU09M
-RV9QQkwsIGJhcmVib3ggYWxzbyBoYXMgaXNzdWVzIHNvbWV3aGVyZQ0KZHVyaW5nIGVhcmx5IGJv
-b3QuIEl0IGJyZWFrcyBlaXRoZXIgYWZ0ZXIgY2FsbGluZyBwYmxfc2V0X3B1dGMoKSwgb3IgZXZl
-bg0Kd2l0aG91dCBjYWxsaW5nIHBibF9zZXRfcHV0YygpLCB3aGVuIEkgaW5jcmVhc2UgdGhlIGNv
-bXBpbGUgYW5kIGRlZmF1bHQNCmxvZ2xldmVsLg0KDQpTbyBJIHRlc3RlZCB0aGUgcGF0Y2ggd2l0
-aCB0aGUgT1NFTEFTIDIwMTYtVG9vbGNoYWluLCB3aXRob3V0IENPTlNPTEVfUEJMIGFuZCBpdA0K
-d29ya2VkLiBObyBzdWNjZXNzIHNvIGZhciB3aXRoIHRoZSBPU0VMQVMgMjAxOC1Ub29sY2hhaW4g
-KHRvIGJlIGNsZWFyOiB0aGUgcGF0Y2gNCmRvZXMgbm90IGJyZWFrIGJhcmVib3ggaW4gdGhhdCBj
-YXNlLCBiYXJlYm94IGlzIGJyb2tlbiB3aXRob3V0IHRoZSBwYXRjaCBhcyB3ZWxsKS4NCg0KQW0g
-RG9ubmVyc3RhZywgZGVuIDIzLjA4LjIwMTgsIDExOjU4ICswMjAwIHNjaHJpZWIgRmxvcmlhbiBC
-w6R1ZXJsZToNCj4gU2lnbmVkLW9mZi1ieTogRmxvcmlhbiBCw6R1ZXJsZSA8Zmxvcmlhbi5iYWV1
-ZXJsZUBhbGxlZ2lvbi5jb20+DQo+IC0tLQ0KPiAgYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHlj
-YXJkLWlteDI3L2xvd2xldmVsLmMgfCAxNSArKysrKysrKysrKysrKysNCj4gIGFyY2gvYXJtL21h
-Y2gtaW14L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oICAgICAgIHwgMTMgKysrKysrKysrKysrKw0K
-PiAgaW5jbHVkZS9zZXJpYWwvaW14LXVhcnQuaCAgICAgICAgICAgICAgICAgICAgICAgfCAgNSAr
-KysrKw0KPiAgMyBmaWxlcyBjaGFuZ2VkLCAzMyBpbnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0t
-Z2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljYXJkLWlteDI3L2xvd2xldmVsLmMgYi9h
-cmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNhcmQtaW14MjcvbG93bGV2ZWwuYw0KPiBpbmRleCBl
-MTEzMmUwLi44MjQ0MzM3IDEwMDY0NA0KPiAtLS0gYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBo
-eWNhcmQtaW14MjcvbG93bGV2ZWwuYw0KPiArKysgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBo
-eWNhcmQtaW14MjcvbG93bGV2ZWwuYw0KPiBAQCAtMTQsNiArMTQsOCBAQA0KPiAgI2luY2x1ZGUg
-PG1hY2gvaW14LXBsbC5oPg0KPiAgI2luY2x1ZGUgPG1hY2gvZXNkY3RsLmg+DQo+ICAjaW5jbHVk
-ZSA8bWFjaC9pbXgtbmFuZC5oPg0KPiArI2luY2x1ZGUgPG1hY2gvZGVidWdfbGwuaD4NCj4gKyNp
-bmNsdWRlIDxzZXJpYWwvaW14LXVhcnQuaD4NCj4gIA0KPiAgI2RlZmluZSBFU0RDVEwwX1ZBTCAo
-RVNEQ1RMMF9TREUgfCBFU0RDVEwwX1JPVzEzIHwgRVNEQ1RMMF9DT0wxMCkNCj4gIA0KPiBAQCAt
-NTgsNiArNjAsMTggQEAgc3RhdGljIHZvaWQgc2RyYW1faW5pdCh2b2lkKQ0KPiAgCQkJTVgyN19F
-U0RDVExfQkFTRV9BRERSICsgSU1YX0VTRENUTDApOw0KPiAgfQ0KPiAgDQo+ICtzdGF0aWMgdm9p
-ZCBzZXR1cF91YXJ0KHZvaWQpDQo+ICt7DQo+ICsJLyogU2V0IFBFWzEyLTE1XSB1c2UsIGRpcmVj
-dGlvbiwgZnVuY3Rpb24gYW5kIHB1bGwtdXAgKi8NCj4gKwl3cml0ZWwoMHhmZmZjMGYyNywgTVgy
-N19HUElPNV9CQVNFX0FERFIgKyAweDIwKTsNCj4gKwl3cml0ZWwoMHgwMDAwNTAwMCwgTVgyN19H
-UElPNV9CQVNFX0FERFIpOw0KPiArCXdyaXRlbCgweDAwMDAwMDAwLCBNWDI3X0dQSU81X0JBU0Vf
-QUREUiArIDB4MzgpOw0KPiArCXdyaXRlbCgweGZmZmYwZmZmLCBNWDI3X0dQSU81X0JBU0VfQURE
-UiArIDB4NDApOw0KPiArDQo+ICsJaW14MjdfdW5nYXRlX2FsbF9wZXJpcGhlcmFscygpOw0KPiAr
-CWlteDI3X3VhcnRfc2V0dXBfbGwoKTsNCj4gK30NCj4gKw0KPiAgdm9pZCBfX2JhcmVfaW5pdCBf
-X25ha2VkIHBoeXRlY19waHljYXJkX2lteDI3X2NvbW1vbl9pbml0KHZvaWQgKmZkdCkNCj4gIHsN
-Cj4gIAl1bnNpZ25lZCBsb25nIHI7DQo+IEBAIC05Nyw2ICsxMTEsNyBAQCB2b2lkIF9fYmFyZV9p
-bml0IF9fbmFrZWQgcGh5dGVjX3BoeWNhcmRfaW14MjdfY29tbW9uX2luaXQodm9pZCAqZmR0KQ0K
-PiAgCQlNWDI3X0NTQ1JfTVNIQ19TRUwsIE1YMjdfQ0NNX0JBU0VfQUREUiArIE1YMjdfQ1NDUik7
-DQo+ICANCj4gIAlzZHJhbV9pbml0KCk7DQo+ICsJc2V0dXBfdWFydCgpOw0KPiAgDQo+ICAJaW14
-MjdfYmFyZWJveF9ib290X25hbmRfZXh0ZXJuYWwoZmR0KTsNCj4gIH0NCj4gZGlmZiAtLWdpdCBh
-L2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oIGIvYXJjaC9hcm0vbWFj
-aC1pbXgvaW5jbHVkZS9tYWNoL2RlYnVnX2xsLmgNCj4gaW5kZXggMTU1MGUwNS4uNmM5YjIxZCAx
-MDA2NDQNCj4gLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2RlYnVnX2xsLmgN
-Cj4gKysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2RlYnVnX2xsLmgNCj4gQEAg
-LTU2LDYgKzU2LDEyIEBADQo+ICAjZXJyb3IgInVua25vd24gaS5NWCBkZWJ1ZyB1YXJ0IHNvYyB0
-eXBlIg0KPiAgI2VuZGlmDQo+ICANCj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBpbXgyN191YXJ0X3Nl
-dHVwX2xsKHZvaWQpICB7DQo+ICsJdm9pZCAqYmFzZSA9IElPTUVNKElNWF9VQVJUX0JBU0UoSU1Y
-X0RFQlVHX1NPQywNCj4gKwkJCQlDT05GSUdfREVCVUdfSU1YX1VBUlRfUE9SVCkpOw0KPiArCWlt
-eDI3X3VhcnRfc2V0dXAoYmFzZSk7DQo+ICt9DQo+ICsNCj4gIHN0YXRpYyBpbmxpbmUgdm9pZCBp
-bXg1MF91YXJ0X3NldHVwX2xsKHZvaWQpDQo+ICB7DQo+ICAJdm9pZCAqYmFzZSA9IElPTUVNKElN
-WF9VQVJUX0JBU0UoSU1YX0RFQlVHX1NPQywgQ09ORklHX0RFQlVHX0lNWF9VQVJUX1BPUlQpKTsN
-Cj4gQEAgLTEyMSw2ICsxMjcsNyBAQCBzdGF0aWMgaW5saW5lIHZvaWQgUFVUQ19MTChpbnQgYykN
-Cj4gIA0KPiAgI2Vsc2UNCj4gIA0KPiArc3RhdGljIGlubGluZSB2b2lkIGlteDI3X3VhcnRfc2V0
-dXBfbGwodm9pZCkge30NCj4gIHN0YXRpYyBpbmxpbmUgdm9pZCBpbXg1MF91YXJ0X3NldHVwX2xs
-KHZvaWQpIHt9DQo+ICBzdGF0aWMgaW5saW5lIHZvaWQgaW14NTFfdWFydF9zZXR1cF9sbCh2b2lk
-KSB7fQ0KPiAgc3RhdGljIGlubGluZSB2b2lkIGlteDUzX3VhcnRfc2V0dXBfbGwodm9pZCkge30N
-Cj4gQEAgLTEzOCw2ICsxNDUsMTIgQEAgc3RhdGljIGlubGluZSB2b2lkIGlteF91bmdhdGVfYWxs
-X3BlcmlwaGVyYWxzKHZvaWQgX19pb21lbSAqY2NtYmFzZSkNCj4gIAkJd3JpdGVsKDB4ZmZmZmZm
-ZmYsIGNjbWJhc2UgKyBpKTsNCj4gIH0NCj4gIA0KPiArc3RhdGljIGlubGluZSB2b2lkIGlteDI3
-X3VuZ2F0ZV9hbGxfcGVyaXBoZXJhbHModm9pZCkNCj4gK3sNCj4gKwl3cml0ZWwoMHhmZmZmZmJm
-ZiwgSU9NRU0oTVgyN19DQ01fQkFTRV9BRERSKSArIDB4MjApOw0KPiArCXdyaXRlbCgweGZmZmZm
-ZmZjLCBJT01FTShNWDI3X0NDTV9CQVNFX0FERFIpICsgMHgyNCk7DQo+ICt9DQo+ICsNCj4gIHN0
-YXRpYyBpbmxpbmUgdm9pZCBpbXg2X3VuZ2F0ZV9hbGxfcGVyaXBoZXJhbHModm9pZCkNCj4gIHsN
-Cj4gIAlpbXhfdW5nYXRlX2FsbF9wZXJpcGhlcmFscyhJT01FTShNWDZfQ0NNX0JBU0VfQUREUikp
-Ow0KPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9zZXJpYWwvaW14LXVhcnQuaCBiL2luY2x1ZGUvc2Vy
-aWFsL2lteC11YXJ0LmgNCj4gaW5kZXggYzIzNjA2NS4uMGMwMzNjMiAxMDA2NDQNCj4gLS0tIGEv
-aW5jbHVkZS9zZXJpYWwvaW14LXVhcnQuaA0KPiArKysgYi9pbmNsdWRlL3NlcmlhbC9pbXgtdWFy
-dC5oDQo+IEBAIC0xNTUsNiArMTU1LDExIEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBpbXhfdWFydF9z
-ZXRfZHRlKHZvaWQgX19pb21lbSAqdWFydGJhc2UpDQo+ICAJd3JpdGVsKHVmY3IsIHVhcnRiYXNl
-ICsgVUZDUik7DQo+ICB9DQo+ICANCj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBpbXgyN191YXJ0X3Nl
-dHVwKHZvaWQgX19pb21lbSAqdWFydGJhc2UpDQo+ICt7DQo+ICsJaW14X3VhcnRfc2V0dXAodWFy
-dGJhc2UsIDY2NTAwMDAwKTsNCj4gK30NCj4gKw0KPiAgc3RhdGljIGlubGluZSB2b2lkIGlteDUw
-X3VhcnRfc2V0dXAodm9pZCBfX2lvbWVtICp1YXJ0YmFzZSkNCj4gIHsNCj4gIAlpbXhfdWFydF9z
-ZXR1cCh1YXJ0YmFzZSwgNjY2NjY2NjYpOw0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
-YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo=
+On Thu, Aug 23, 2018 at 12:20:32PM +0000, Baeuerle, Florian wrote:
+> Some background on that patch:
+> 
+> I've tried to get barebox master compiled with OSELAS 2018 running on a
+> phycard-imx27. I had a few problems with that:
+> 
+> It turned out, that I can boot the resulting image as a seconds stage (from an
+> older version of barebox), after commenting out pca100_usb_init(). I suppose
+> that is not a real problem, but probably related to some clock setup that
+> barebox master does somewhere during early boot (which I suppose, is skipped
+> when booting it as 2nd stage).
+> 
+> However, when flashing the resulting image to NAND, there seems to be a bigger
+> issue somewhere during early boot. This problem does not exist when compiling
+> barebox master with OSELAS 2016.
+> 
+> The result is that I do not see anything on the console. The imx27 also does not
+> seem to enter bootstrap mode though.
+> 
+> Further I found out that with CONSOLE_PBL, barebox also has issues somewhere
+> during early boot. It breaks either after calling pbl_set_putc(), or even
+> without calling pbl_set_putc(), when I increase the compile and default
+> loglevel.
+
+You probably can't use CONSOLE_PBL on the pca100. The i.MX27 NAND boot
+requires the initial image portion to fit into 2KiB. These 2KiB are
+already almost full with the required code, no place to add console
+support there. You could probably through in some putc_ll() into the
+initial code (after you've configured the UART with your patch).
+
+The 2KiB constraint makes the boot process rather tricky. I have a
+PCA100 at work, I'll give it a try and reproduce the issue next week
+when I'm back in the office.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
