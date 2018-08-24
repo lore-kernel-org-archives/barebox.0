@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuDX3-0006ML-Pe
- for barebox@lists.infradead.org; Mon, 27 Aug 2018 09:10:58 +0000
-Date: Mon, 27 Aug 2018 11:09:45 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180827090945.xxae7l6k2s2rug7v@pengutronix.de>
-References: <20180821152001.5747-1-aleksander@aleksander.es>
- <20180821152001.5747-2-aleksander@aleksander.es>
- <20180822074635.wfst65srfuqne7l6@pengutronix.de>
- <CAAP7ucKR_tmawkX=DTO2bnzhT+L2A-AhChCXddgMEd5FCKpOYA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAAP7ucKR_tmawkX=DTO2bnzhT+L2A-AhChCXddgMEd5FCKpOYA@mail.gmail.com>
+ id 1ft2Pj-0006GN-6v
+ for barebox@lists.infradead.org; Fri, 24 Aug 2018 03:05:32 +0000
+Received: by mail-pg1-x542.google.com with SMTP id z25-v6so3610840pgu.7
+ for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 20:05:20 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Thu, 23 Aug 2018 20:05:08 -0700
+Message-Id: <20180824030511.23021-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,47 +16,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] ratp: implement i2c read/write support
-To: Aleksander Morgado <aleksander@aleksander.es>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/3] i.MX8 malloc pool position and 32-bit only DMA
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Thu, Aug 23, 2018 at 10:54:58PM +0200, Aleksander Morgado wrote:
-> >> +struct ratp_bb_i2c_read_request {
-> >> +     struct ratp_bb header;
-> >> +     uint16_t buffer_offset;
-> >> +     uint8_t  bus;
-> >> +     uint8_t  addr;
-> >
-> > I wonder how we see the RATP support. If it's for adhoc debugging then
-> > bus/addr is fine. The caller should have no expectations that the bus
-> > number is constant though. Likewise for the address which might change
-> > across different board revisions.
-> >
-> > Should we have support for resolving names, which could be provided by
-> > aliases in dt?
-> >
-> > We could still add name resolving support later as a separate call, I
-> > just thought that now is the time to think how we proceed.
-> >
-> 
-> I truly have no opinion here, but if name resolving is added at some
-> point I can either update this operation or even add a new one.
+Everyone:
 
-Ok, as said, we can add the name resolving functionality later. So, as
-long as you don't see such numbering issues with the things you want to
-do with RATP then I am fine with adding this when it's needed.
+This series is a result of debugging FEC and uSDHC failures on
+i.MX8MQ. Patches 1 and 2 are pretty straightforward and shouldn't be
+controversial. Patch 3, OTOH, may or may not be a good way to solve
+this problem, but it's a good way to start a discussion on the subject
+which is my main goal here.
 
-Sascha
+Feedback is welcome!
+
+Thanks,
+Andrey Smirnov
+
+Andrey Smirnov (3):
+  mci: imx-esdhc: Bail out if DMA address is larger than 32-bits
+  net: fec: Bail out if DMA address is larger than 32-bits
+  ARM: start: Place malloc pool within 32-bit address space
+
+ arch/arm/cpu/Kconfig    |  3 +++
+ arch/arm/cpu/start.c    | 23 +++++++++++++++++++++++
+ drivers/mci/Kconfig     |  1 +
+ drivers/mci/imx-esdhc.c |  3 +++
+ drivers/net/Kconfig     |  1 +
+ drivers/net/fec_imx.c   | 10 +++++++++-
+ 6 files changed, 40 insertions(+), 1 deletion(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
