@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fsY0S-000451-PR
- for barebox@lists.infradead.org; Wed, 22 Aug 2018 18:37:26 +0000
-Received: by mail-lj1-x244.google.com with SMTP id p10-v6so2201046ljg.2
- for <barebox@lists.infradead.org>; Wed, 22 Aug 2018 11:37:14 -0700 (PDT)
-From: Sam Ravnborg <sam@ravnborg.org>
-Date: Wed, 22 Aug 2018 20:36:51 +0200
-Message-Id: <20180822183651.32071-3-sam@ravnborg.org>
-In-Reply-To: <20180822183555.GA24084@ravnborg.org>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1ft78b-0003cU-Aw
+ for barebox@lists.infradead.org; Fri, 24 Aug 2018 08:08:11 +0000
+Date: Fri, 24 Aug 2018 10:03:29 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180824080329.uxnvaaxiw6ayzqat@pengutronix.de>
 References: <20180822183555.GA24084@ravnborg.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180822183555.GA24084@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,74 +18,101 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 3/3] at91sam9263ek: add PHY, miitool etc. to config
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Sam Ravnborg <sam@ravnborg.org>
+Subject: Re: [PATCH v4 0/3] Add Davicom phy + reset-gpios
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Added Davicom phy to the config now it is supported.
-Add miitool to show the phy info.
-Also add a bunch of extra commands that can be useful
-when handling the evaluation board.
+On Wed, Aug 22, 2018 at 08:35:55PM +0200, Sam Ravnborg wrote:
+> Changes in v4:
+> - Either register a mdio node or phy child nodes
+> - Check for valid phy node before registering the phy node
+>   This is like the kernel does it
+> - Also recognize compatible="ethernet-phy-id*" as PHY's
+>   again like the kernel, but with a simpler implementation,
+>   as we do not try to read the actual phy_id
 
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
----
- arch/arm/configs/at91sam9263ek_defconfig | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/arch/arm/configs/at91sam9263ek_defconfig b/arch/arm/configs/at91sam9263ek_defconfig
-index e8ad841fa..45c6f79de 100644
---- a/arch/arm/configs/at91sam9263ek_defconfig
-+++ b/arch/arm/configs/at91sam9263ek_defconfig
-@@ -18,7 +18,7 @@ CONFIG_BOOTM_OFTREE=y
- CONFIG_BOOTM_OFTREE_UIMAGE=y
- CONFIG_CONSOLE_ACTIVATE_ALL=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
--# CONFIG_CMD_ARM_CPUINFO is not set
-+CONFIG_CMD_DMESG=y
- CONFIG_LONGHELP=y
- CONFIG_CMD_IOMEM=y
- CONFIG_CMD_MEMINFO=y
-@@ -33,22 +33,32 @@ CONFIG_CMD_PRINTENV=y
- CONFIG_CMD_SAVEENV=y
- CONFIG_CMD_SLEEP=y
- CONFIG_CMD_DHCP=y
-+CONFIG_CMD_HOST=y
-+CONFIG_NET_CMD_IFUP=y
-+CONFIG_CMD_MIITOOL=y
- CONFIG_CMD_PING=y
- CONFIG_CMD_TFTP=y
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SPLASH=y
-+CONFIG_CMD_FBTEST=y
- CONFIG_CMD_READLINE=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_CLK=y
-+CONFIG_CMD_DETECT=y
- CONFIG_CMD_FLASH=y
- CONFIG_CMD_GPIO=y
- CONFIG_CMD_LED=y
- CONFIG_CMD_LED_TRIGGER=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OF_DISPLAY_TIMINGS=y
-+CONFIG_CMD_OF_FIXUP_STATUS=y
- CONFIG_CMD_OFTREE=y
- CONFIG_NET=y
- CONFIG_NET_NFS=y
- CONFIG_OF_BAREBOX_DRIVERS=y
- CONFIG_DRIVER_NET_MACB=y
-+CONFIG_DAVICOM_PHY=y
- # CONFIG_SPI is not set
- CONFIG_MTD=y
- # CONFIG_MTD_OOB_DEVICE is not set
+Sascha
+
+> 
+> Changes in v3:
+> - Consider the v3 a new implmentation - almost nothing was
+>   left from v2. Thus also invalidate any former review - sorry.
+> - Dropped the need for the mdio {} node, as this node is
+>   only used when there is dedicated HW support for the mdio.
+> - Added so PHY child nodes to ethernet nodes are registered,
+>   and as part of registration the PHY nodes are reset if
+>   the reset-gpios property is present.
+> - Further dropped that the parsed info is stored in the bus,
+>   as we only do reset once, thus there is no need to
+>   save the info from the DT
+> - Futher dropped helper function to reset. They was not needed
+> - Named the gpio with the name of the PHY node
+>   in the DT. This makes it unique and easier to recognize.
+> 
+> Changes in v2:
+> - Added patch to enable Davicom PHY on at91sam9263ek - evaluation kit
+> - Fix so we do reset before comunicating with the PHY
+> - Rename to mdio_reset()
+> - Reference correct binding file in commit log (mdio.txt)
+> - Tested on at91sam9263ek
+>   The at91sam9263ek kit do not require the reset like my
+>   proprietary board, so no DT changes required
+> 
+> Intro:
+> The following patches was necessary to get networking
+> operational on my proprietary target.
+> The target is at91sam9263 based with a Davicom PHY.
+> 
+> The Davicom PHY is a straight copy form the Linux
+> kernel with the interrupt routine removed and
+> minor adjustments to the rest.
+> 
+> The davicom PHY would not work until it had seen a reset
+> cycle - which I think may be an artifact of the board design.
+> 
+> To fix the reset issue I have implemented support for the
+> reset-gpios binding (see net/phy.txt bindings).
+> A minimal implmentation was done, just enough to get
+> my target running.
+> 
+> I could have implemented something in macb -
+> but I preferred the more generic solution.
+> 
+> Also included are a patch that for the at91sam9263ek
+> evaluation board. The patch adds several extra tools
+> that are usefull for testing, and enable the Davicom PHY.
+> 
+>         Sam
+> 
+> Sam Ravnborg (3):
+>       phylib: add Davicom PHY support
+>       phylib: add support for reset-gpios
+>       at91sam9263ek: add PHY, miitool etc. to config
+> 
+>  arch/arm/configs/at91sam9263ek_defconfig |  12 ++-
+>  drivers/net/phy/Kconfig                  |   5 ++
+>  drivers/net/phy/Makefile                 |   1 +
+>  drivers/net/phy/davicom.c                | 140 +++++++++++++++++++++++++++++++
+>  drivers/net/phy/mdio_bus.c               |  97 ++++++++++++++++++++-
+>  5 files changed, 253 insertions(+), 2 deletions(-)
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.12.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
