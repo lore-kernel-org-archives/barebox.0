@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ft2E5-0005Nl-Ug
- for barebox@lists.infradead.org; Fri, 24 Aug 2018 02:53:38 +0000
-Received: by mail-pf1-x444.google.com with SMTP id p12-v6so3812630pfh.2
- for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 19:53:20 -0700 (PDT)
+ id 1ft2E5-0005RF-Ui
+ for barebox@lists.infradead.org; Fri, 24 Aug 2018 02:53:41 +0000
+Received: by mail-pf1-x444.google.com with SMTP id j26-v6so3803767pfi.10
+ for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 19:53:26 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 23 Aug 2018 19:52:31 -0700
-Message-Id: <20180824025243.19479-13-andrew.smirnov@gmail.com>
+Date: Thu, 23 Aug 2018 19:52:38 -0700
+Message-Id: <20180824025243.19479-20-andrew.smirnov@gmail.com>
 In-Reply-To: <20180824025243.19479-1-andrew.smirnov@gmail.com>
 References: <20180824025243.19479-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,64 +23,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 12/24] ARM: i.MX: bbu: Alias
- imx5*_bbu_internal_spi_i2c_register_handler()
+Subject: [PATCH v2 19/24] libfile: Introduce pwrite_full()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Alias imx5*_bbu_internal_spi_i2c_register_handler() to a common function.
+Analogous to what we have with write()/write_full(), introduce a
+lightweight wrapper around pwrite() that guarantees the either all
+data is going to be written or a negative error code would be
+returned.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/imx-bbu-internal.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ include/libfile.h |  1 +
+ lib/libfile.c     | 24 ++++++++++++++++++++++++
+ 2 files changed, 25 insertions(+)
 
-diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-index d45fe1b68..fef3797a1 100644
---- a/arch/arm/mach-imx/imx-bbu-internal.c
-+++ b/arch/arm/mach-imx/imx-bbu-internal.c
-@@ -453,8 +453,10 @@ imx_bbu_internal_mmc_register_handler(const char *name, const char *devicefile,
- 	return __register_handler(imx_handler);
- }
+diff --git a/include/libfile.h b/include/libfile.h
+index 2c5eef71f..f1d695187 100644
+--- a/include/libfile.h
++++ b/include/libfile.h
+@@ -1,6 +1,7 @@
+ #ifndef __LIBFILE_H
+ #define __LIBFILE_H
  
--int imx51_bbu_internal_spi_i2c_register_handler(const char *name,
--		const char *devicefile, unsigned long flags)
-+static int
-+imx_bbu_internal_spi_i2c_register_handler(const char *name,
-+					  const char *devicefile,
-+					  unsigned long flags)
- {
- 	struct imx_internal_bbu_handler *imx_handler;
++int pwrite_full(int fd, const void *buf, size_t size, loff_t offset);
+ int write_full(int fd, const void *buf, size_t size);
+ int read_full(int fd, void *buf, size_t size);
  
-@@ -465,6 +467,11 @@ int imx51_bbu_internal_spi_i2c_register_handler(const char *name,
- 	return __register_handler(imx_handler);
- }
+diff --git a/lib/libfile.c b/lib/libfile.c
+index 0052e789f..39c85b2fc 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -23,6 +23,30 @@
+ #include <stdlib.h>
+ #include <linux/stat.h>
  
-+int imx51_bbu_internal_spi_i2c_register_handler(const char *name,
-+						const char *devicefile,
-+						unsigned long flags)
-+	__alias(imx_bbu_internal_spi_i2c_register_handler);
++/*
++ * pwrite_full - write to filedescriptor at offset
++ *
++ * Like pwrite, but guarantees to write the full buffer out, else it
++ * returns with an error.
++ */
++int pwrite_full(int fd, const void *buf, size_t size, loff_t offset)
++{
++	size_t insize = size;
++	int now;
++
++	while (size) {
++		now = pwrite(fd, buf, size, offset);
++		if (now <= 0)
++			return now;
++		size -= now;
++		buf += now;
++		offset += now;
++	}
++
++	return insize;
++}
++EXPORT_SYMBOL(pwrite_full);
 +
  /*
-  * Register an i.MX51 internal boot update handler for MMC/SD
-  */
-@@ -489,15 +496,7 @@ int imx53_bbu_internal_mmc_register_handler(const char *name,
- int imx53_bbu_internal_spi_i2c_register_handler(const char *name,
- 						const char *devicefile,
- 						unsigned long flags)
--{
--	struct imx_internal_bbu_handler *imx_handler;
--
--	imx_handler = __init_handler(name, devicefile, flags |
--				     IMX_INTERNAL_FLAG_ERASE);
--	imx_handler->flash_header_offset = FLASH_HEADER_OFFSET_MMC;
--
--	return __register_handler(imx_handler);
--}
-+	__alias(imx_bbu_internal_spi_i2c_register_handler);
- 
- /*
-  * Register an i.MX53 internal boot update handler for NAND
+  * write_full - write to filedescriptor
+  *
 -- 
 2.17.1
 
