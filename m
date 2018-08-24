@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ft2Iz-00028N-Bd
- for barebox@lists.infradead.org; Fri, 24 Aug 2018 02:58:34 +0000
-Received: by mail-pf1-x444.google.com with SMTP id i26-v6so3801761pfo.12
- for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 19:58:23 -0700 (PDT)
+ id 1ft2J0-00028W-1S
+ for barebox@lists.infradead.org; Fri, 24 Aug 2018 02:58:35 +0000
+Received: by mail-pg1-x544.google.com with SMTP id k8-v6so3611072pgq.5
+ for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 19:58:24 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 23 Aug 2018 19:58:09 -0700
-Message-Id: <20180824025814.20886-1-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
+Date: Thu, 23 Aug 2018 19:58:10 -0700
+Message-Id: <20180824025814.20886-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20180824025814.20886-1-andrew.smirnov@gmail.com>
+References: <20180824025814.20886-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,33 +18,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5] include/linux/log2.h warning fix 
+Subject: [PATCH 1/5] log2: make order_base_2() behave correctly on const input
+ value zero
 To: barebox@lists.infradead.org
 Cc: andrew.smirnov@gmail.com
 
-RXZlcnlvbmU6CgpUaGlzIHNlcmllcyBpcyByZXN1bHQgb2YgZml4aW5nIGNvbXBpbGVyIHdhcm5p
-bmdzIHNpbWlsYXIgdG8gdGhlIG9uZQpiZWxvdzoKCkluIGZpbGUgaW5jbHVkZWQgZnJvbSBkcml2
-ZXJzL2Nsay9jbGstZGl2aWRlci5jOjIyOgppbmNsdWRlL2xpbnV4L2xvZzIuaDoyMjoxOiB3YXJu
-aW5nOiBpZ25vcmluZyBhdHRyaWJ1dGUg4oCYbm9yZXR1cm7igJkgYmVjYXVzZSBpdCBjb25mbGlj
-dHMgd2l0aCBhdHRyaWJ1dGUg4oCYY29uc3TigJkgWy1XYXR0cmlidXRlc10KIGludCBfX19faWxv
-ZzJfTmFOKHZvaWQpOwoKdGhhdCBJJ3ZlIGJlZW4gb2JzZXJ2aW5nIGxhdGVseS4gVGVjaG5pY2Fs
-bHkgb25seSB0aGUgcGF0Y2ggYnkgTGludXMKaXMgcmVhbGx5IG5lZWRlZCwgYnV0IGdpdmVuIHRo
-YXQgdGhvc2UgcGF0Y2hlcyBjb3VsZCBiZSBhcHBsaWVkIGFzLWlzCnByZXR0eSBlYXNpbHkgSSAi
-YmFja3BvcnRlZCIgYWxsIG9mIHRoZSByZWNlbnQga2VybmVsIGNoYW5nZXMgdG8KbG9nMi5oCgpG
-ZWVkYmFjayBpcyB3ZWxjb21lIQoKVGhhbmtzLApBbmRyZXkgU21pcm5vdgoKQW5kcmV5IFNtaXJu
-b3YgKDEpOgogIGxvZzI6IFVzZSBmbHNfbG9uZygpIGluIF9fcm91bmR1cF9wb3dfb2ZfdHdvKCkK
-CkFyZCBCaWVzaGV1dmVsICgxKToKICBsb2cyOiBtYWtlIG9yZGVyX2Jhc2VfMigpIGJlaGF2ZSBj
-b3JyZWN0bHkgb24gY29uc3QgaW5wdXQgdmFsdWUgemVybwoKTGludXMgVG9ydmFsZHMgKDEpOgog
-IGdpdmUgdXAgb24gZ2NjIGlsb2cyKCkgY29uc3RhbnQgb3B0aW1pemF0aW9ucwoKTWFydGluIFdp
-bGNrICgxKToKICBzY3NpOiBpbG9nMjogY3JlYXRlIHRydWx5IGNvbnN0YW50IHZlcnNpb24gZm9y
-IHNwYXJzZQoKUmFuZHkgRHVubGFwICgxKToKICBsaW51eC9sb2cyLmg6IGZpeCBrZXJuZWwtZG9j
-IG5vdGF0aW9uCgogaW5jbHVkZS9saW51eC9sb2cyLmggfCA4OSArKysrKysrKysrKysrKysrKysr
-KysrKysrKystLS0tLS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDU0IGluc2VydGlvbnMo
-KyksIDM1IGRlbGV0aW9ucygtKQoKLS0gCjIuMTcuMQoKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+
+The function order_base_2() is defined (according to the comment block)
+as returning zero on input zero, but subsequently passes the input into
+roundup_pow_of_two(), which is explicitly undefined for input zero.
+
+This has gone unnoticed until now, but optimization passes in GCC 7 may
+produce constant folded function instances where a constant value of
+zero is passed into order_base_2(), resulting in link errors against the
+deliberately undefined '____ilog2_NaN'.
+
+So update order_base_2() to adhere to its own documented interface.
+
+[ See
+
+     http://marc.info/?l=linux-kernel&m=147672952517795&w=2
+
+  and follow-up discussion for more background. The gcc "optimization
+  pass" is really just broken, but now the GCC trunk problem seems to
+  have escaped out of just specially built daily images, so we need to
+  work around it in mainline.    - Linus ]
+
+Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+[andrew.smirnov@gmail.com: Applied kernel patch to Barebox as-is]
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ include/linux/log2.h | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/log2.h b/include/linux/log2.h
+index 36519e3aa..da4f60f94 100644
+--- a/include/linux/log2.h
++++ b/include/linux/log2.h
+@@ -203,6 +203,17 @@ unsigned long __rounddown_pow_of_two(unsigned long n)
+  *  ... and so on.
+  */
+ 
+-#define order_base_2(n) ilog2(roundup_pow_of_two(n))
++static inline __attribute_const__
++int __order_base_2(unsigned long n)
++{
++	return n > 1 ? ilog2(n - 1) + 1 : 0;
++}
+ 
++#define order_base_2(n)				\
++(						\
++	__builtin_constant_p(n) ? (		\
++		((n) == 0 || (n) == 1) ? 0 :	\
++		ilog2((n) - 1) + 1) :		\
++	__order_base_2(n)			\
++)
+ #endif /* _LINUX_LOG2_H */
+-- 
+2.17.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
