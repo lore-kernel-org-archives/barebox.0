@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ft2EF-0005Uo-W7
- for barebox@lists.infradead.org; Fri, 24 Aug 2018 02:53:47 +0000
-Received: by mail-pl1-x642.google.com with SMTP id g23-v6so443763plq.9
- for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 19:53:29 -0700 (PDT)
+ id 1ft2E5-0005Nk-Uj
+ for barebox@lists.infradead.org; Fri, 24 Aug 2018 02:53:38 +0000
+Received: by mail-pf1-x444.google.com with SMTP id h79-v6so2930378pfk.8
+ for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 19:53:19 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 23 Aug 2018 19:52:41 -0700
-Message-Id: <20180824025243.19479-23-andrew.smirnov@gmail.com>
+Date: Thu, 23 Aug 2018 19:52:30 -0700
+Message-Id: <20180824025243.19479-12-andrew.smirnov@gmail.com>
 In-Reply-To: <20180824025243.19479-1-andrew.smirnov@gmail.com>
 References: <20180824025243.19479-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,76 +23,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 22/24] block: Do not ignore error in blk->ops->write()
+Subject: [PATCH v2 11/24] ARM: i.MX: bbu: Alias
+ imx5*_bbu_internal_mmc_register_handler()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Getting a error from blk->ops->write() is not a very unlikely
-event (happens quite often during new board bringup), so we need to
-catch and propagate them to upper layers so they can be at least
-reported properly. Change the code of all of the callers to bail out
-as soon as blk->ops->write() fails.
+Alias imx5*_bbu_internal_mmc_register_handler() to
+imx_bbu_internal_mmc_register_handler()
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/block.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ arch/arm/mach-imx/imx-bbu-internal.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/common/block.c b/common/block.c
-index 219b943af..8d0de42d9 100644
---- a/common/block.c
-+++ b/common/block.c
-@@ -44,13 +44,17 @@ struct chunk {
- static int writebuffer_flush(struct block_device *blk)
- {
- 	struct chunk *chunk;
-+	int ret;
+diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+index c47a1726a..d45fe1b68 100644
+--- a/arch/arm/mach-imx/imx-bbu-internal.c
++++ b/arch/arm/mach-imx/imx-bbu-internal.c
+@@ -471,9 +471,7 @@ int imx51_bbu_internal_spi_i2c_register_handler(const char *name,
+ int imx51_bbu_internal_mmc_register_handler(const char *name,
+ 					    const char *devicefile,
+ 					    unsigned long flags)
+-{
+-	return imx_bbu_internal_mmc_register_handler(name, devicefile, flags);
+-}
++	__alias(imx_bbu_internal_mmc_register_handler);
  
- 	if (!IS_ENABLED(CONFIG_BLOCK_WRITE))
- 		return 0;
+ /*
+  * Register an i.MX53 internal boot update handler for MMC/SD
+@@ -481,9 +479,7 @@ int imx51_bbu_internal_mmc_register_handler(const char *name,
+ int imx53_bbu_internal_mmc_register_handler(const char *name,
+ 					    const char *devicefile,
+ 					    unsigned long flags)
+-{
+-	return imx_bbu_internal_mmc_register_handler(name, devicefile, flags);
+-}
++	__alias(imx_bbu_internal_mmc_register_handler);
  
- 	list_for_each_entry(chunk, &blk->buffered_blocks, list) {
- 		if (chunk->dirty) {
--			blk->ops->write(blk, chunk->data, chunk->block_start, blk->rdbufsize);
-+			ret = blk->ops->write(blk, chunk->data, chunk->block_start, blk->rdbufsize);
-+			if (ret < 0)
-+				return ret;
-+
- 			chunk->dirty = 0;
- 		}
- 	}
-@@ -107,6 +111,7 @@ static void *block_get_cached(struct block_device *blk, int block)
- static struct chunk *get_chunk(struct block_device *blk)
- {
- 	struct chunk *chunk;
-+	int ret;
- 
- 	if (list_empty(&blk->idle_blocks)) {
- 		/* use last entry which is the most unused */
-@@ -114,8 +119,11 @@ static struct chunk *get_chunk(struct block_device *blk)
- 		if (chunk->dirty) {
- 			size_t num_blocks = min(blk->rdbufsize,
- 					blk->num_blocks - chunk->block_start);
--			blk->ops->write(blk, chunk->data, chunk->block_start,
--					num_blocks);
-+			ret = blk->ops->write(blk, chunk->data, chunk->block_start,
-+					      num_blocks);
-+			if (ret < 0)
-+				return ERR_PTR(ret);
-+
- 			chunk->dirty = 0;
- 		}
- 
-@@ -140,6 +148,9 @@ static int block_cache(struct block_device *blk, int block)
- 	int ret;
- 
- 	chunk = get_chunk(blk);
-+	if (IS_ERR(chunk))
-+		return PTR_ERR(chunk);
-+
- 	chunk->block_start = block & ~blk->blkmask;
- 
- 	debug("%s: %d to %d\n", __func__, chunk->block_start,
+ /*
+  * Register an i.MX6 internal boot update handler for i2c/spi
 -- 
 2.17.1
 
