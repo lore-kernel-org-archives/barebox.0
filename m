@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ft2Dy-0005NO-C8
+ id 1ft2Dx-0005Nh-HU
  for barebox@lists.infradead.org; Fri, 24 Aug 2018 02:53:24 +0000
-Received: by mail-pl1-x62e.google.com with SMTP id e11-v6so442981plb.3
- for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 19:53:11 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id h8-v6so3606026pgs.4
+ for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 19:53:16 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 23 Aug 2018 19:52:22 -0700
-Message-Id: <20180824025243.19479-4-andrew.smirnov@gmail.com>
+Date: Thu, 23 Aug 2018 19:52:27 -0700
+Message-Id: <20180824025243.19479-9-andrew.smirnov@gmail.com>
 In-Reply-To: <20180824025243.19479-1-andrew.smirnov@gmail.com>
 References: <20180824025243.19479-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,69 +23,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 03/24] filetype: Add code to detect i.MX image v1
+Subject: [PATCH v2 08/24] ARM: i.MX: bbu: Simplify
+ imx53_bbu_internal_nand_register_handler()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Modify file_detect_type() and add code needed to be able to detect
-i.MX boot images with v1 header.
+Second parameter of __init_handler() will initialize
+handler.devicefile for us, so there's no need to to it explicitly
+after.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/filetype.c  | 7 +++++++
- include/filetype.h | 1 +
- 2 files changed, 8 insertions(+)
+ arch/arm/mach-imx/imx-bbu-internal.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/common/filetype.c b/common/filetype.c
-index c5f2384a6..8f2be2773 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -29,6 +29,8 @@
- #include <image-sparse.h>
- #include <elf.h>
+diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+index 1041a0673..add353914 100644
+--- a/arch/arm/mach-imx/imx-bbu-internal.c
++++ b/arch/arm/mach-imx/imx-bbu-internal.c
+@@ -502,11 +502,10 @@ int imx53_bbu_internal_nand_register_handler(const char *name,
+ {
+ 	struct imx_internal_bbu_handler *imx_handler;
  
-+#include <arm/mach-imx/include/mach/imx-header.h>
-+
- struct filetype_str {
- 	const char *name;	/* human readable filetype */
- 	const char *shortname;	/* short string without spaces for shell scripts */
-@@ -71,6 +73,7 @@ static const struct filetype_str filetype_str[] = {
- 	[filetype_android_sparse] = { "Android sparse image", "sparse" },
- 	[filetype_arm64_linux_image] = { "ARM aarch64 Linux image", "aarch64-linux" },
- 	[filetype_elf] = { "ELF", "elf" },
-+	[filetype_imx_image_v1] = { "i.MX image (v1)", "imx-image-v1" },
- };
+-	imx_handler = __init_handler(name, NULL, flags);
++	imx_handler = __init_handler(name, "/dev/nand0", flags);
+ 	imx_handler->flash_header_offset = FLASH_HEADER_OFFSET_MMC;
  
- const char *file_type_to_string(enum filetype f)
-@@ -250,6 +253,7 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 	const u64 *buf64 = _buf;
- 	const u8 *buf8 = _buf;
- 	const u16 *buf16 = _buf;
-+	const struct imx_flash_header *imx_flash_header = _buf;
- 	enum filetype type;
- 
- 	if (bufsize < 9)
-@@ -361,6 +365,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 	if (strncmp(buf8, ELFMAG, 4) == 0)
- 		return filetype_elf;
- 
-+	if (imx_flash_header->dcd_barker == DCD_BARKER)
-+		return filetype_imx_image_v1;
-+
- 	return filetype_unknown;
- }
- 
-diff --git a/include/filetype.h b/include/filetype.h
-index 237ed3fbe..e2df5fabf 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -43,6 +43,7 @@ enum filetype {
- 	filetype_android_sparse,
- 	filetype_arm64_linux_image,
- 	filetype_elf,
-+	filetype_imx_image_v1,
- 	filetype_max,
- };
+ 	imx_handler->expected_type = filetype_imx_image_v2;
+-	imx_handler->handler.devicefile = "/dev/nand0";
+ 	imx_handler->device_size = partition_size;
+ 	imx_handler->write_device = imx_bbu_internal_v2_write_nand_dbbt;
  
 -- 
 2.17.1
