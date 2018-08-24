@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ft2E5-0005Nk-Uj
- for barebox@lists.infradead.org; Fri, 24 Aug 2018 02:53:38 +0000
-Received: by mail-pf1-x444.google.com with SMTP id h79-v6so2930378pfk.8
- for <barebox@lists.infradead.org>; Thu, 23 Aug 2018 19:53:19 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 23 Aug 2018 19:52:30 -0700
-Message-Id: <20180824025243.19479-12-andrew.smirnov@gmail.com>
-In-Reply-To: <20180824025243.19479-1-andrew.smirnov@gmail.com>
+ id 1ft7Cj-0002ra-M8
+ for barebox@lists.infradead.org; Fri, 24 Aug 2018 08:15:11 +0000
+Date: Fri, 24 Aug 2018 10:09:36 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180824080936.d6a7ts2xjdhysvgl@pengutronix.de>
 References: <20180824025243.19479-1-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180824025243.19479-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,53 +18,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 11/24] ARM: i.MX: bbu: Alias
- imx5*_bbu_internal_mmc_register_handler()
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH v2 00/24] i.MX BBU improvements and bugfixes
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Alias imx5*_bbu_internal_mmc_register_handler() to
-imx_bbu_internal_mmc_register_handler()
+On Thu, Aug 23, 2018 at 07:52:19PM -0700, Andrey Smirnov wrote:
+> Everyone:
+> 
+> This series is the result simplification, bugfixing and adding
+> features to some of the code in BBU subsytem:
+> 
+>   - Patches 1 - 13 are a number of code simplifications intended to
+>     minimize amount of duplicated code as well as generic improvements
+>     (IMHO)
+> 
+>   - Patches 14 - 18 are i.MX8MQ and VF610 related changes
+> 
+>   - Patches 19 - 24 are a result of discovering that a number of error
+>     cases were silently ignored and not reported as update
+>     failures. Patch 22 is technically not related to BBU at all, but
+>     since I discovered the problem while working on this series, I
+>     kept it as a part of this series
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- arch/arm/mach-imx/imx-bbu-internal.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+Applied, thanks
 
-diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-index c47a1726a..d45fe1b68 100644
---- a/arch/arm/mach-imx/imx-bbu-internal.c
-+++ b/arch/arm/mach-imx/imx-bbu-internal.c
-@@ -471,9 +471,7 @@ int imx51_bbu_internal_spi_i2c_register_handler(const char *name,
- int imx51_bbu_internal_mmc_register_handler(const char *name,
- 					    const char *devicefile,
- 					    unsigned long flags)
--{
--	return imx_bbu_internal_mmc_register_handler(name, devicefile, flags);
--}
-+	__alias(imx_bbu_internal_mmc_register_handler);
- 
- /*
-  * Register an i.MX53 internal boot update handler for MMC/SD
-@@ -481,9 +479,7 @@ int imx51_bbu_internal_mmc_register_handler(const char *name,
- int imx53_bbu_internal_mmc_register_handler(const char *name,
- 					    const char *devicefile,
- 					    unsigned long flags)
--{
--	return imx_bbu_internal_mmc_register_handler(name, devicefile, flags);
--}
-+	__alias(imx_bbu_internal_mmc_register_handler);
- 
- /*
-  * Register an i.MX6 internal boot update handler for i2c/spi
+Sascha
+
 -- 
-2.17.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
