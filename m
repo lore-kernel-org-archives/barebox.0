@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ftfie-0006BZ-Du
- for barebox@lists.infradead.org; Sat, 25 Aug 2018 21:03:41 +0000
-Received: by mail-pl1-x644.google.com with SMTP id d9-v6so2477566plr.2
- for <barebox@lists.infradead.org>; Sat, 25 Aug 2018 14:03:30 -0700 (PDT)
+ id 1ftfih-0006C4-DC
+ for barebox@lists.infradead.org; Sat, 25 Aug 2018 21:03:45 +0000
+Received: by mail-pf1-x441.google.com with SMTP id d4-v6so6028826pfn.0
+ for <barebox@lists.infradead.org>; Sat, 25 Aug 2018 14:03:33 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 25 Aug 2018 14:03:09 -0700
-Message-Id: <20180825210315.4661-1-andrew.smirnov@gmail.com>
+Date: Sat, 25 Aug 2018 14:03:12 -0700
+Message-Id: <20180825210315.4661-4-andrew.smirnov@gmail.com>
+In-Reply-To: <20180825210315.4661-1-andrew.smirnov@gmail.com>
+References: <20180825210315.4661-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,37 +23,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/6] i.MX51 RDU1 and Babbage USB fixes
+Subject: [PATCH 3/6] ARM: freescale-mx51-babbage: Swtich to using Linux clock
+ tree
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Everyone:
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/dts/imx51-babbage.dts | 4 ++++
+ arch/arm/mach-imx/Kconfig      | 1 +
+ 2 files changed, 5 insertions(+)
 
-These patches are a number of fixes I came up with while looking into
-USB related problems on Babbage board.
-
-Feedback is welcome!
-
-Thanks,
-Andrey Smirnov
-
-Andrey Smirnov (6):
-  clk: i.MX: Port Linux clock tree for i.MX51 and i.MX53
-  ARM: imx51-zii-rdu1: Swtich to using Linux clock tree
-  ARM: freescale-mx51-babbage: Swtich to using Linux clock tree
-  ARM: freescale-mx51-babbage: Add USBH1 PHY reset sequence
-  dts: imx51-babbage: Add USBH1 iomux configuration
-  ARM: imx51-zii-rdu1: Add USBH1,2 iomux configuration
-
- .../arm/boards/freescale-mx51-babbage/board.c |  35 ++
- arch/arm/dts/imx51-babbage.dts                |  24 +
- arch/arm/dts/imx51-zii-rdu1.dts               |  46 ++
- arch/arm/mach-imx/Kconfig                     |   2 +
- drivers/clk/imx/Makefile                      |   2 +-
- drivers/clk/imx/clk-imx51-imx53.c             | 549 ++++++++++++++++++
- 6 files changed, 657 insertions(+), 1 deletion(-)
- create mode 100644 drivers/clk/imx/clk-imx51-imx53.c
-
+diff --git a/arch/arm/dts/imx51-babbage.dts b/arch/arm/dts/imx51-babbage.dts
+index 514719561..b5c81a77c 100644
+--- a/arch/arm/dts/imx51-babbage.dts
++++ b/arch/arm/dts/imx51-babbage.dts
+@@ -23,6 +23,10 @@
+ 	};
+ };
+ 
++&clks {
++	compatible = "barebox,imx51-ccm";
++};
++
+ &esdhc1 {
+ 	#address-cells = <1>;
+ 	#size-cells = <1>;
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index dca5ee0bf..f4aa6f662 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -251,6 +251,7 @@ config MACH_EMBEDSKY_E9
+ config MACH_FREESCALE_MX51_PDK
+ 	bool "Freescale i.MX51 PDK"
+ 	select ARCH_IMX51
++	select COMMON_CLK_OF_PROVIDER
+ 	select MACH_FREESCALE_MX51_PDK_POWER
+ 
+ config MACH_CCMX53
 -- 
 2.17.1
 
