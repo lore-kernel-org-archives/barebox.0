@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ftfik-0006C7-86
- for barebox@lists.infradead.org; Sat, 25 Aug 2018 21:03:47 +0000
-Received: by mail-pg1-x541.google.com with SMTP id r1-v6so5737213pgp.11
- for <barebox@lists.infradead.org>; Sat, 25 Aug 2018 14:03:35 -0700 (PDT)
+ id 1ftfig-0006Bs-AE
+ for barebox@lists.infradead.org; Sat, 25 Aug 2018 21:03:43 +0000
+Received: by mail-pf1-x442.google.com with SMTP id s13-v6so5863636pfi.7
+ for <barebox@lists.infradead.org>; Sat, 25 Aug 2018 14:03:32 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 25 Aug 2018 14:03:15 -0700
-Message-Id: <20180825210315.4661-7-andrew.smirnov@gmail.com>
+Date: Sat, 25 Aug 2018 14:03:11 -0700
+Message-Id: <20180825210315.4661-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20180825210315.4661-1-andrew.smirnov@gmail.com>
 References: <20180825210315.4661-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,68 +23,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] ARM: imx51-zii-rdu1: Add USBH1,2 iomux configuration
+Subject: [PATCH 2/6] ARM: imx51-zii-rdu1: Swtich to using Linux clock tree
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add iomux configuration for USBH1,2 to match what U-Boot (as well as
-Babbage board) would configure those pads to.
+In order to provide missing USB clocks.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/imx51-zii-rdu1.dts | 42 +++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ arch/arm/dts/imx51-zii-rdu1.dts | 4 ++++
+ arch/arm/mach-imx/Kconfig       | 1 +
+ 2 files changed, 5 insertions(+)
 
 diff --git a/arch/arm/dts/imx51-zii-rdu1.dts b/arch/arm/dts/imx51-zii-rdu1.dts
-index 9021b04a1..245343dae 100644
+index 7e0e337ae..9021b04a1 100644
 --- a/arch/arm/dts/imx51-zii-rdu1.dts
 +++ b/arch/arm/dts/imx51-zii-rdu1.dts
-@@ -105,3 +105,45 @@
- 		};
+@@ -31,6 +31,10 @@
  	};
  };
-+
-+&iomuxc {
-+	pinctrl_usbh1: usbh1grp {
-+
-+		/*
-+		 * Overwrite upstream USBH1,2 iomux settings to match
-+		 * the setting U-Boot would set these to. Remove this
-+		 * once this is fixed upstream.
-+		 */
-+		fsl,pins = <
-+			MX51_PAD_USBH1_STP__USBH1_STP		0x1e5
-+			MX51_PAD_USBH1_CLK__USBH1_CLK		0x1e5
-+			MX51_PAD_USBH1_DIR__USBH1_DIR		0x1e5
-+			MX51_PAD_USBH1_NXT__USBH1_NXT		0x1e5
-+			MX51_PAD_USBH1_DATA0__USBH1_DATA0	0x1e5
-+			MX51_PAD_USBH1_DATA1__USBH1_DATA1	0x1e5
-+			MX51_PAD_USBH1_DATA2__USBH1_DATA2	0x1e5
-+			MX51_PAD_USBH1_DATA3__USBH1_DATA3	0x1e5
-+			MX51_PAD_USBH1_DATA4__USBH1_DATA4	0x1e5
-+			MX51_PAD_USBH1_DATA5__USBH1_DATA5	0x1e5
-+			MX51_PAD_USBH1_DATA6__USBH1_DATA6	0x1e5
-+			MX51_PAD_USBH1_DATA7__USBH1_DATA7	0x1e5
-+		>;
-+	};
-+
-+	pinctrl_usbh2: usbh2grp {
-+		fsl,pins = <
-+			MX51_PAD_EIM_A26__USBH2_STP		0x1e5
-+			MX51_PAD_EIM_A24__USBH2_CLK		0x1e5
-+			MX51_PAD_EIM_A25__USBH2_DIR		0x1e5
-+			MX51_PAD_EIM_A27__USBH2_NXT		0x1e5
-+			MX51_PAD_EIM_D16__USBH2_DATA0		0x1e5
-+			MX51_PAD_EIM_D17__USBH2_DATA1		0x1e5
-+			MX51_PAD_EIM_D18__USBH2_DATA2		0x1e5
-+			MX51_PAD_EIM_D19__USBH2_DATA3		0x1e5
-+			MX51_PAD_EIM_D20__USBH2_DATA4		0x1e5
-+			MX51_PAD_EIM_D21__USBH2_DATA5		0x1e5
-+			MX51_PAD_EIM_D22__USBH2_DATA6		0x1e5
-+			MX51_PAD_EIM_D23__USBH2_DATA7		0x1e5
-+		>;
-+	};
+ 
++&clks {
++	compatible = "barebox,imx51-ccm";
 +};
++
+ &ecspi1 {
+ 	spinor: flash@1 {
+ 		partition@0 {
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 4fa00bfdb..dca5ee0bf 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -412,6 +412,7 @@ config MACH_VF610_TWR
+ config MACH_ZII_RDU1
+ 	bool "ZII i.MX51 RDU1"
+ 	select ARCH_IMX51
++	select COMMON_CLK_OF_PROVIDER
+ 	select MACH_FREESCALE_MX51_PDK_POWER
+ 
+ config MACH_ZII_RDU2
 -- 
 2.17.1
 
