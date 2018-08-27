@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [85.220.165.71] (helo=metis.ext.pengutronix.de)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ft6Om-0001yr-PS
- for barebox@lists.infradead.org; Fri, 24 Aug 2018 07:23:28 +0000
-Date: Fri, 24 Aug 2018 09:16:56 +0200
+ id 1fuGLZ-0006pu-Vg
+ for barebox@lists.infradead.org; Mon, 27 Aug 2018 12:10:24 +0000
+Date: Mon, 27 Aug 2018 14:10:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180824071656.iwpyy5txv24gsrzq@pengutronix.de>
+Message-ID: <20180827121004.hfeb3bahhyvkoiw4@pengutronix.de>
 References: <20180823095820.32590-1-florian.baeuerle@allegion.com>
  <5de1c331378034ec7bdbbe58c7e8b1f65debd568.camel@allegion.com>
 MIME-Version: 1.0
@@ -42,24 +42,18 @@ On Thu, Aug 23, 2018 at 12:20:32PM +0000, Baeuerle, Florian wrote:
 > However, when flashing the resulting image to NAND, there seems to be a bigger
 > issue somewhere during early boot. This problem does not exist when compiling
 > barebox master with OSELAS 2016.
-> 
-> The result is that I do not see anything on the console. The imx27 also does not
-> seem to enter bootstrap mode though.
-> 
-> Further I found out that with CONSOLE_PBL, barebox also has issues somewhere
-> during early boot. It breaks either after calling pbl_set_putc(), or even
-> without calling pbl_set_putc(), when I increase the compile and default
-> loglevel.
 
-You probably can't use CONSOLE_PBL on the pca100. The i.MX27 NAND boot
-requires the initial image portion to fit into 2KiB. These 2KiB are
-already almost full with the required code, no place to add console
-support there. You could probably through in some putc_ll() into the
-initial code (after you've configured the UART with your patch).
+I gave it a test and can confirm that the board boots when compiled with
+OSELAS 2016 and no longer boots with OSELAS 2018.
 
-The 2KiB constraint makes the boot process rather tricky. I have a
-PCA100 at work, I'll give it a try and reproduce the issue next week
-when I'm back in the office.
+It's strange and I'm out of ideas for now. In
+imx27_barebox_boot_nand_external() we have a place that copies the
+initial image poprtion into SDRAM. It seems the SDRAM is never written
+to - at least according to the information my BDI2000 gives me.
+
+I assume it must be something to do with the SDRAM setup, but the code
+and also the resulting assembly really looks harmless, though a little
+different between both toolchains.
 
 Sascha
 
