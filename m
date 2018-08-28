@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail1.bemta25.messagelabs.com ([195.245.230.132])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuuPk-0000R6-DG
- for barebox@lists.infradead.org; Wed, 29 Aug 2018 06:57:18 +0000
-Date: Wed, 29 Aug 2018 08:57:04 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180829065704.crdwpkrd5q3icotm@pengutronix.de>
-References: <1535441570-35661-1-git-send-email-t.remmet@phytec.de>
+ id 1fugZE-00080a-2H
+ for barebox@lists.infradead.org; Tue, 28 Aug 2018 16:10:37 +0000
+From: <Oleg.Karfich@wago.com>
+Date: Tue, 28 Aug 2018 16:09:46 +0000
+Message-ID: <1535472578-22131-1-git-send-email-oleg.karfich@wago.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1535441570-35661-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,52 +20,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: mach-omap: bbu_emmc: Fix return value
-To: Teresa Remmet <t.remmet@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] commands: of_property: copy value instead of resizing
+To: barebox@lists.infradead.org
+Cc: Oleg.Karfich@wago.com, Florian.Baeuerle@allegion.com
 
-On Tue, Aug 28, 2018 at 09:32:50AM +0200, Teresa Remmet wrote:
-> Update handler returned the written bytes of the partition table on success
-> instead of 0. Return 0 or error code now.
-> 
-> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
-> ---
->  arch/arm/mach-omap/am33xx_bbu_emmc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Commit 748d1b8 adds the fixup feature to the above command. With this commit an
+unwanted free(data) on the freshly set property value is done if someone tries
+to set the value of an already present property (not the case for a new
+property). Furthermore in fixup mode the pointer fixup->data is freed when the
+fixup function is called more than once. This leads to a hanging system after
+calling of_dump -F many times.
+Fix this issues by copying the data to a new allocated memory area like a new
+property is created.
 
-Applied, thanks
+Signed-off-by: Oleg Karfich <oleg.karfich@wago.com>
+---
 
-Sascha
+Changes in v2:
 
-> 
-> diff --git a/arch/arm/mach-omap/am33xx_bbu_emmc.c b/arch/arm/mach-omap/am33xx_bbu_emmc.c
-> index d3adb3744c95..1fd7222ddcea 100644
-> --- a/arch/arm/mach-omap/am33xx_bbu_emmc.c
-> +++ b/arch/arm/mach-omap/am33xx_bbu_emmc.c
-> @@ -73,7 +73,7 @@ error_save_part_table:
->  
->  error:
->  	close(fd);
-> -	return ret;
-> +	return (ret > 0) ? 0 : ret;
->  }
->  
->  int am33xx_bbu_emmc_mlo_register_handler(const char *name, char *devicefile)
-> -- 
-> 2.7.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+        - slightly different solution like in [1]
+        - consider memory leak when a new property is created. Noted in [2]
+        - also consider hanging system when oftree -F is used
 
+[1] http://lists.infradead.org/pipermail/barebox/2018-August/034444.html
+[2] http://lists.infradead.org/pipermail/barebox/2018-August/034446.html
+
+---
+ commands/of_property.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/commands/of_property.c b/commands/of_property.c
+index d0b923f..31e9b71 100644
+--- a/commands/of_property.c
++++ b/commands/of_property.c
+@@ -270,9 +270,8 @@ static int do_of_property_set_now(struct device_node *root, const char *path,
+ 		free(pp->value);
+ 		pp->value_const = NULL;
+ 
+-		/* limit property data to the actual size */
+ 		if (len)
+-			pp->value = xrealloc(data, len);
++			pp->value = xmemdup(data, len);
+ 		else
+ 			pp->value = NULL;
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.4
 
 _______________________________________________
 barebox mailing list
