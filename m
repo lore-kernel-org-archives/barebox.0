@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzSU-00053J-Vc
- for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:20:31 +0000
+ id 1fuzSU-000588-Vo
+ for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:20:29 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 516D2A00346
- for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:51 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 4D2AEA005D9
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:52 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:19:16 +0200
-Message-Id: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
-MIME-Version: 1.0
+Date: Wed, 29 Aug 2018 14:19:20 +0200
+Message-Id: <1535545212-18871-5-git-send-email-t.remmet@phytec.de>
+In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
+References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,87 +19,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/56] Update Barebox UBI
+Subject: [PATCH 04/56] UBI: Modify wrong comment in ubi_leb_map function.
 To: barebox@lists.infradead.org
 
-SGVsbG8sIAoKQSBuZXcgdXBkYXRlIG9mIHRoZSBCYXJlYm94IFVCSSBzdGFjayB0byB0aGUgS2Vy
-bmVsIHY0LjE5LXJjMS4KQWxsIHBhdGNoZXMgYXJlIGNoZXJyeS1waWNrcyBmcm9tIHRoZSBrZXJu
-ZWwgdHJlZS4KClN0dW1ibGVkIG92ZXIgc29tZSBjb25mbGljdHMgbW9zdGx5IGR1ZSB0byBub24g
-ZXhzaXN0aW5nIHRocmVhZHMgaW4gYmFyZWJveC4KUnVuIHNvbWUgdGVzdHMgYW5kIGRpZCBub3Qg
-ZmFjZSBhbnkgcmVncmVzc2lvbnMgc28gZmFyLgoKUmVnYXJkcywKVGVyZXNhCgpBbmRyZXcgRi4g
-RGF2aXMgKDEpOgogIFVCSTogRml4IHR5cG9zCgpCZW4gRG9va3MgKDEpOgogIHViaTogcHJfZXJy
-KCkgc3RyaW5ncyBzaG91bGQgZW5kIHdpdGggbmV3bGluZXMKCkJvcmlzIEJyZXppbGxvbiAoMTgp
-OgogIFVCSTogZmFzdG1hcDogdXNlIHViaV9maW5kX3ZvbHVtZSgpIGluc3RlYWQgb2Ygb3BlbiBj
-b2RpbmcgaXQKICBVQkk6IGZpeCBhZGRfZmFzdG1hcCgpIHRvIHVzZSB0aGUgdmlkX2hkciBwYXNz
-ZWQgaW4gYXJndW1lbnQKICBVQkk6IGZhc3RtYXA6IGF2b2lkIG11bHRpcGxlIGJlMzJfdG9fY3B1
-KCkgd2hlbiB1bm5lY2Nlc2FyeQogIFVCSTogZmFzdG1hcDogc2NydWIgUEVCIHdoZW4gYml0Zmxp
-cHMgYXJlIGRldGVjdGVkIGluIGEgZnJlZSBQRUIgRUMKICAgIGhlYWRlcgogIFVCSTogZmFjdG9y
-aXplIGNvZGUgdXNlZCB0byBtYW5pcHVsYXRlIHZvbHVtZXMgYXQgYXR0YWNoIHRpbWUKICBVQkk6
-IGZhY3Rvcml6ZSBkZXN0cm95X2F2KCkgYW5kIHViaV9yZW1vdmVfYXYoKSBjb2RlCiAgVUJJOiBm
-YXN0bWFwOiB1c2UgdWJpX3JiX2Zvcl9lYWNoX2VudHJ5KCkgaW4gdW5tYXBfcGViKCkKICBVQkk6
-IGZhc3RtYXA6IHVzZSB1YmlfaW9fe3JlYWQsIHdyaXRlfV9kYXRhKCkgaW5zdGVhZCBvZiB1Ymlf
-aW9fe3JlYWQsCiAgICB3cml0ZX0oKQogIFVCSTogcHJvdmlkZSBoZWxwZXJzIHRvIGFsbG9jYXRl
-IGFuZCBmcmVlIGFlYiBlbGVtZW50cwogIFVCSTogbW92ZSB0aGUgZ2xvYmFsIGVjaCBhbmQgdmlk
-aCB2YXJpYWJsZXMgaW50byBzdHJ1Y3QKICAgIHViaV9hdHRhY2hfaW5mbwogIFVCSTogc2ltcGxp
-ZnkgcmVjb3Zlcl9wZWIoKSBjb2RlCiAgVUJJOiBzaW1wbGlmeSBMRUIgd3JpdGUgYW5kIGF0b21p
-YyBMRUIgY2hhbmdlIGNvZGUKICBVQkk6IGFkZCBhbiBoZWxwZXIgdG8gY2hlY2sgbG51bSB2YWxp
-ZGl0eQogIFVCSTogcHJvdmlkZSBhbiBoZWxwZXIgdG8gY2hlY2sgd2hldGhlciBhIExFQiBpcyBt
-YXBwZWQgb3Igbm90CiAgVUJJOiBwcm92aWRlIGFuIGhlbHBlciB0byBxdWVyeSBMRUIgaW5mb3Jt
-YXRpb24KICBVQkk6IGhpZGUgRUJBIGludGVybmFscwogIFVCSTogaW50cm9kdWNlIHRoZSBWSUQg
-YnVmZmVyIGNvbmNlcHQKICB1Ymk6IGZhc3RtYXA6IEZpeCBhZGRfdm9sKCkgcmV0dXJuIHZhbHVl
-IHRlc3QgaW4gdWJpX2F0dGFjaF9mYXN0bWFwKCkKCkNvbGluIElhbiBLaW5nICgzKToKICB1Ymk6
-IGZpeCBzd2FwcGVkIGFyZ3VtZW50cyB0byBjYWxsIHRvIHViaV9hbGxvY19hZWIKICB1Ymk6IGZh
-c3RtYXA6IGZpeCBzcGVsbGluZyBtaXN0YWtlOiAiaW52YWxpZGlhdGUiIC0+ICJpbnZhbGlkYXRl
-IgogIHViaTogZmFzdG1hcDogQ2xlYW4gdXAgdGhlIGluaXRpYWxpemF0aW9uIG9mIHBvaW50ZXIg
-cAoKRGFuIENhcnBlbnRlciAoMSk6CiAgVUJJOiBDbGVhbiB1cCByZXR1cm4gaW4gdWJpX3JlbW92
-ZV92b2x1bWUoKQoKR2VlcnQgVXl0dGVyaG9ldmVuICgxKToKICBVQkk6IEZpeCBjcmFzaCBpbiB0
-cnlfcmVjb3Zlcl9wZWIoKQoKSGVpa28gU2Nob2NoZXIgKDEpOgogIFVCSTogU2V0IGZyZWVfY291
-bnQgdG8gemVybyBiZWZvcmUgd2Fsa2luZyB0aHJvdWdoIGVyYXNlIGxpc3QKCklvc2lmIEhhcnV0
-eXVub3YgKDEpOgogIHViaTogRml4IHJhY2UgY29uZGl0aW9uIGJldHdlZW4gdWJpIGRldmljZSBj
-cmVhdGlvbiBhbmQgdWRldgoKTGlvbmVsIERlYmlldmUgKDEpOgogIG10ZDogdWJpOiBVcGRhdGUg
-dWJpLW1lZGlhLmggdG8gZHVhbCBsaWNlbnNlCgpSYWJpbiBWaW5jZW50ICgxKToKICB1Ymk6IGZh
-c3RtYXA6IEZpeCBzbGFiIGNvcnJ1cHRpb24KClJpY2hhcmQgV2VpbmJlcmdlciAoMjApOgogIFVC
-STogRmFzdG1hcDogRml4IG1lbW9yeSBsZWFrIHdoaWxlIGF0dGFjaGluZwogIFVCSTogUmVtb3Zl
-IGFsbG9jX2FpKCkgc2xhYiBuYW1lIGZyb20gcGFyYW1ldGVyIGxpc3QKICBVQkk6IERvbid0IHJl
-YWQgYmFjayBhbGwgZGF0YSBpbiB1YmlfZWJhX2NvcHlfbGViKCkKICBVQkk6IEZpeCBzdGF0aWMg
-dm9sdW1lIGNoZWNrcyB3aGVuIEZhc3RtYXAgaXMgdXNlZAogIHViaTogTWFrZSByZWNvdmVyX3Bl
-YiBwb3dlciBjdXQgYXdhcmUKICB1Ymk6IEZpeCBlYXJseSBsb2dnaW5nCiAgdWJpOiBNYWtlIHZv
-bHVtZSByZXNpemUgcG93ZXIgY3V0IGF3YXJlCiAgdWJpOiBGaXggc2Nhbl9mYXN0KCkgY29tbWVu
-dAogIHViaTogSW50cm9kdWNlIHZvbF9pZ25vcmVkKCkKICB1Ymk6IEZpeCB3aGl0ZXNwYWNlIGlz
-c3VlIGluIGNvdW50X2Zhc3RtYXBfcGVicygpCiAgdWJpOiBSZXdvcmsgRmFzdG1hcCBhdHRhY2gg
-YmFzZSBjb2RlCiAgdWJpOiBDaGVjayB3aGV0aGVyIHRoZSBGYXN0bWFwIGFuY2hvciBtYXRjaGVz
-IHRoZSBzdXBlciBibG9jawogIHViaTogQmUgbW9yZSBwYXJhbm9pZCB3aGlsZSBzZWFjaGluZyBm
-b3IgdGhlIG1vc3QgcmVjZW50IEZhc3RtYXAKICB1Ymk6IERlYWwgd2l0aCBpbnRlcnJ1cHRlZCBl
-cmFzdXJlcyBpbiBXTAogIHViaTogRml4IHJhY2VzIGFyb3VuZCB1YmlfcmVmaWxsX3Bvb2xzKCkK
-ICB1Ymk6IEZpeCBGYXN0bWFwJ3MgdXBkYXRlX3ZvbCgpCiAgdWJpOiBmYXN0bWFwOiBDb3JyZWN0
-bHkgaGFuZGxlIGludGVycnVwdGVkIGVyYXN1cmVzIGluIEVCQQogIHViaTogZmFzdG1hcDogQ2hl
-Y2sgZWFjaCBtYXBwaW5nIG9ubHkgb25jZQogIHViaTogZmFzdG1hcDogRGV0ZWN0IEVCQSBtaXNt
-YXRjaGVzIG9uLXRoZS1mbHkKICB1Ymk6IEluaXRpYWxpemUgRmFzdG1hcCBjaGVja21hcHBpbmcg
-Y29ycmVjdGx5CgpTYXNjaGEgSGF1ZXIgKDMpOgogIHViaTogZmFzdG1hcDogRXJhc2Ugb3V0ZGF0
-ZWQgYW5jaG9yIFBFQnMgZHVyaW5nIGF0dGFjaAogIHViaTogRmFzdG1hcDogRml4IHR5cG8KICB1
-Ymk6IEZpeCBjb3B5L3Bhc3RlIGVycm9yIGluIGZ1bmN0aW9uIGRvY3VtZW50YXRpb24KClNlYmFz
-dGlhbiBTaWV3aW9yICgxKToKICB1YmkvdXBkOiBBbHdheXMgZmx1c2ggYWZ0ZXIgcHJlcGFyZWQg
-Zm9yIGFuIHVwZGF0ZQoKVXdlIEtsZWluZS1Lw7ZuaWcgKDEpOgogIFVCSTogRml4IHR3byB0eXBv
-cyBpbiBjb21tZW50cwoKV2VpIFlvbmdqdW4gKDEpOgogIG10ZDogdWJpOiB3bDogRml4IGVycm9y
-IHJldHVybiBjb2RlIGluIHViaV93bF9pbml0KCkKCnowMDE4OTUxMiAoMSk6CiAgVUJJOiBNb2Rp
-Znkgd3JvbmcgY29tbWVudCBpbiB1YmlfbGViX21hcCBmdW5jdGlvbi4KCiBkcml2ZXJzL210ZC91
-YmkvS2NvbmZpZyAgICAgIHwgICAyICstCiBkcml2ZXJzL210ZC91YmkvYXR0YWNoLmMgICAgIHwg
-NDczICsrKysrKysrKysrKysrKysrLS0tLS0tLS0tCiBkcml2ZXJzL210ZC91YmkvYnVpbGQuYyAg
-ICAgIHwgIDE3ICstCiBkcml2ZXJzL210ZC91YmkvZWJhLmMgICAgICAgIHwgNzg1ICsrKysrKysr
-KysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0KIGRyaXZlcnMvbXRkL3ViaS9mYXN0
-bWFwLXdsLmMgfCAgIDYgKy0KIGRyaXZlcnMvbXRkL3ViaS9mYXN0bWFwLmMgICAgfCAzMDAgKysr
-KysrKysrKy0tLS0tLS0KIGRyaXZlcnMvbXRkL3ViaS9pby5jICAgICAgICAgfCAgNDEgKystCiBk
-cml2ZXJzL210ZC91Ymkva2FwaS5jICAgICAgIHwgIDE4ICstCiBkcml2ZXJzL210ZC91YmkvdWJp
-LW1lZGlhLmggIHwgIDIyICstCiBkcml2ZXJzL210ZC91YmkvdWJpLmggICAgICAgIHwgMTk0ICsr
-KysrKysrKy0tCiBkcml2ZXJzL210ZC91YmkvdXBkLmMgICAgICAgIHwgICA4ICstCiBkcml2ZXJz
-L210ZC91Ymkvdm10LmMgICAgICAgIHwgIDY1ICsrLS0KIGRyaXZlcnMvbXRkL3ViaS92dGJsLmMg
-ICAgICAgfCAgMzIgKy0KIGRyaXZlcnMvbXRkL3ViaS93bC5jICAgICAgICAgfCAxNjEgKysrKysr
-Ky0tCiBkcml2ZXJzL210ZC91Ymkvd2wuaCAgICAgICAgIHwgICAyICstCiAxNSBmaWxlcyBjaGFu
-Z2VkLCAxNDE5IGluc2VydGlvbnMoKyksIDcwNyBkZWxldGlvbnMoLSkKCi0tIAoyLjcuNAoKCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
-bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+From: z00189512 <abc.zhangliang@huawei.com>
+
+Signed-off-by: z00189512 <abc.zhangliang@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ drivers/mtd/ubi/kapi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/mtd/ubi/kapi.c b/drivers/mtd/ubi/kapi.c
+index 60128a5c26fe..9ec9962a5966 100644
+--- a/drivers/mtd/ubi/kapi.c
++++ b/drivers/mtd/ubi/kapi.c
+@@ -586,7 +586,7 @@ int ubi_leb_map(struct ubi_volume_desc *desc, int lnum)
+ 	struct ubi_volume *vol = desc->vol;
+ 	struct ubi_device *ubi = vol->ubi;
+ 
+-	dbg_gen("unmap LEB %d:%d", vol->vol_id, lnum);
++	dbg_gen("map LEB %d:%d", vol->vol_id, lnum);
+ 
+ 	if (desc->mode == UBI_READONLY || vol->vol_type == UBI_STATIC_VOLUME)
+ 		return -EROFS;
+-- 
+2.7.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
