@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzSw-0005UV-3v
- for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:21:05 +0000
+ id 1fuzSy-0005Ux-Bw
+ for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:21:06 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 088AAA00E01
+ by root.phytec.de (Postfix) with ESMTP id C8740A00E26
  for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:21:02 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:19:59 +0200
-Message-Id: <1535545212-18871-44-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:20:02 +0200
+Message-Id: <1535545212-18871-47-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,197 +20,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 43/56] ubi: fastmap: Fix slab corruption
+Subject: [PATCH 46/56] UBI: Fix two typos in comments
 To: barebox@lists.infradead.org
 
-From: Rabin Vincent <rabinv@axis.com>
-
-Booting with UBI fastmap and SLUB debugging enabled results in the
-following splats.  The problem is that ubi_scan_fastmap() moves the
-fastmap blocks from the scan_ai (allocated in scan_fast()) to the ai
-allocated in ubi_attach().  This results in two problems:
-
- - When the scan_ai is freed, aebs which were allocated from its slab
-   cache are still in use.
-
- - When the other ai is being destroyed in destroy_ai(), the
-   arguments to kmem_cache_free() call are incorrect since aebs on its
-   ->fastmap list were allocated with a slab cache from a differnt ai.
-
-Fix this by making a copy of the aebs in ubi_scan_fastmap() instead of
-moving them.
-
- =============================================================================
- BUG ubi_aeb_slab_cache (Not tainted): Objects remaining in ubi_aeb_slab_cache on __kmem_cache_shutdown()
- -----------------------------------------------------------------------------
-
- INFO: Slab 0xbfd2da3c objects=17 used=1 fp=0xb33d7748 flags=0x40000080
- CPU: 1 PID: 118 Comm: ubiattach Tainted: G    B           4.9.15 #3
- [<80111910>] (unwind_backtrace) from [<8010d498>] (show_stack+0x18/0x1c)
- [<8010d498>] (show_stack) from [<804a3274>] (dump_stack+0xb4/0xe0)
- [<804a3274>] (dump_stack) from [<8026c47c>] (slab_err+0x78/0x88)
- [<8026c47c>] (slab_err) from [<802735bc>] (__kmem_cache_shutdown+0x180/0x3e0)
- [<802735bc>] (__kmem_cache_shutdown) from [<8024e13c>] (shutdown_cache+0x1c/0x60)
- [<8024e13c>] (shutdown_cache) from [<8024ed64>] (kmem_cache_destroy+0x19c/0x20c)
- [<8024ed64>] (kmem_cache_destroy) from [<8057cc14>] (destroy_ai+0x1dc/0x1e8)
- [<8057cc14>] (destroy_ai) from [<8057f04c>] (ubi_attach+0x3f4/0x450)
- [<8057f04c>] (ubi_attach) from [<8056fe70>] (ubi_attach_mtd_dev+0x60c/0xff8)
- [<8056fe70>] (ubi_attach_mtd_dev) from [<80571d78>] (ctrl_cdev_ioctl+0x110/0x2b8)
- [<80571d78>] (ctrl_cdev_ioctl) from [<8029c77c>] (do_vfs_ioctl+0xac/0xa00)
- [<8029c77c>] (do_vfs_ioctl) from [<8029d10c>] (SyS_ioctl+0x3c/0x64)
- [<8029d10c>] (SyS_ioctl) from [<80108860>] (ret_fast_syscall+0x0/0x1c)
- INFO: Object 0xb33d7e88 @offset=3720
- INFO: Allocated in scan_peb+0x608/0x81c age=72 cpu=1 pid=118
- 	kmem_cache_alloc+0x3b0/0x43c
- 	scan_peb+0x608/0x81c
- 	ubi_attach+0x124/0x450
- 	ubi_attach_mtd_dev+0x60c/0xff8
- 	ctrl_cdev_ioctl+0x110/0x2b8
- 	do_vfs_ioctl+0xac/0xa00
- 	SyS_ioctl+0x3c/0x64
- 	ret_fast_syscall+0x0/0x1c
- kmem_cache_destroy ubi_aeb_slab_cache: Slab cache still has objects
- CPU: 1 PID: 118 Comm: ubiattach Tainted: G    B           4.9.15 #3
- [<80111910>] (unwind_backtrace) from [<8010d498>] (show_stack+0x18/0x1c)
- [<8010d498>] (show_stack) from [<804a3274>] (dump_stack+0xb4/0xe0)
- [<804a3274>] (dump_stack) from [<8024ed80>] (kmem_cache_destroy+0x1b8/0x20c)
- [<8024ed80>] (kmem_cache_destroy) from [<8057cc14>] (destroy_ai+0x1dc/0x1e8)
- [<8057cc14>] (destroy_ai) from [<8057f04c>] (ubi_attach+0x3f4/0x450)
- [<8057f04c>] (ubi_attach) from [<8056fe70>] (ubi_attach_mtd_dev+0x60c/0xff8)
- [<8056fe70>] (ubi_attach_mtd_dev) from [<80571d78>] (ctrl_cdev_ioctl+0x110/0x2b8)
- [<80571d78>] (ctrl_cdev_ioctl) from [<8029c77c>] (do_vfs_ioctl+0xac/0xa00)
- [<8029c77c>] (do_vfs_ioctl) from [<8029d10c>] (SyS_ioctl+0x3c/0x64)
- [<8029d10c>] (SyS_ioctl) from [<80108860>] (ret_fast_syscall+0x0/0x1c)
- cache_from_obj: Wrong slab cache. ubi_aeb_slab_cache but object is from ubi_aeb_slab_cache
- ------------[ cut here ]------------
- WARNING: CPU: 1 PID: 118 at mm/slab.h:354 kmem_cache_free+0x39c/0x450
- Modules linked in:
- CPU: 1 PID: 118 Comm: ubiattach Tainted: G    B           4.9.15 #3
- [<80111910>] (unwind_backtrace) from [<8010d498>] (show_stack+0x18/0x1c)
- [<8010d498>] (show_stack) from [<804a3274>] (dump_stack+0xb4/0xe0)
- [<804a3274>] (dump_stack) from [<80120e40>] (__warn+0xf4/0x10c)
- [<80120e40>] (__warn) from [<80120f20>] (warn_slowpath_null+0x28/0x30)
- [<80120f20>] (warn_slowpath_null) from [<80271fe0>] (kmem_cache_free+0x39c/0x450)
- [<80271fe0>] (kmem_cache_free) from [<8057cb88>] (destroy_ai+0x150/0x1e8)
- [<8057cb88>] (destroy_ai) from [<8057ef1c>] (ubi_attach+0x2c4/0x450)
- [<8057ef1c>] (ubi_attach) from [<8056fe70>] (ubi_attach_mtd_dev+0x60c/0xff8)
- [<8056fe70>] (ubi_attach_mtd_dev) from [<80571d78>] (ctrl_cdev_ioctl+0x110/0x2b8)
- [<80571d78>] (ctrl_cdev_ioctl) from [<8029c77c>] (do_vfs_ioctl+0xac/0xa00)
- [<8029c77c>] (do_vfs_ioctl) from [<8029d10c>] (SyS_ioctl+0x3c/0x64)
- [<8029d10c>] (SyS_ioctl) from [<80108860>] (ret_fast_syscall+0x0/0x1c)
- ---[ end trace 2bd8396277fd0a0b ]---
- =============================================================================
- BUG ubi_aeb_slab_cache (Tainted: G    B   W      ): page slab pointer corrupt.
- -----------------------------------------------------------------------------
-
- INFO: Allocated in scan_peb+0x608/0x81c age=104 cpu=1 pid=118
- 	kmem_cache_alloc+0x3b0/0x43c
- 	scan_peb+0x608/0x81c
- 	ubi_attach+0x124/0x450
- 	ubi_attach_mtd_dev+0x60c/0xff8
- 	ctrl_cdev_ioctl+0x110/0x2b8
- 	do_vfs_ioctl+0xac/0xa00
- 	SyS_ioctl+0x3c/0x64
- 	ret_fast_syscall+0x0/0x1c
- INFO: Slab 0xbfd2da3c objects=17 used=1 fp=0xb33d7748 flags=0x40000081
- INFO: Object 0xb33d7e88 @offset=3720 fp=0xb33d7da0
-
- Redzone b33d7e80: cc cc cc cc cc cc cc cc                          ........
- Object b33d7e88: 02 00 00 00 01 00 00 00 00 f0 ff 7f ff ff ff ff  ................
- Object b33d7e98: 00 00 00 00 00 00 00 00 bd 16 00 00 00 00 00 00  ................
- Object b33d7ea8: 00 01 00 00 00 02 00 00 00 00 00 00 00 00 00 00  ................
- Redzone b33d7eb8: cc cc cc cc                                      ....
- Padding b33d7f60: 5a 5a 5a 5a 5a 5a 5a 5a                          ZZZZZZZZ
- CPU: 1 PID: 118 Comm: ubiattach Tainted: G    B   W       4.9.15 #3
- [<80111910>] (unwind_backtrace) from [<8010d498>] (show_stack+0x18/0x1c)
- [<8010d498>] (show_stack) from [<804a3274>] (dump_stack+0xb4/0xe0)
- [<804a3274>] (dump_stack) from [<80271770>] (free_debug_processing+0x320/0x3c4)
- [<80271770>] (free_debug_processing) from [<80271ad0>] (__slab_free+0x2bc/0x430)
- [<80271ad0>] (__slab_free) from [<80272024>] (kmem_cache_free+0x3e0/0x450)
- [<80272024>] (kmem_cache_free) from [<8057cb88>] (destroy_ai+0x150/0x1e8)
- [<8057cb88>] (destroy_ai) from [<8057ef1c>] (ubi_attach+0x2c4/0x450)
- [<8057ef1c>] (ubi_attach) from [<8056fe70>] (ubi_attach_mtd_dev+0x60c/0xff8)
- [<8056fe70>] (ubi_attach_mtd_dev) from [<80571d78>] (ctrl_cdev_ioctl+0x110/0x2b8)
- [<80571d78>] (ctrl_cdev_ioctl) from [<8029c77c>] (do_vfs_ioctl+0xac/0xa00)
- [<8029c77c>] (do_vfs_ioctl) from [<8029d10c>] (SyS_ioctl+0x3c/0x64)
- [<8029d10c>] (SyS_ioctl) from [<80108860>] (ret_fast_syscall+0x0/0x1c)
- FIX ubi_aeb_slab_cache: Object at 0xb33d7e88 not freed
-
-Signed-off-by: Rabin Vincent <rabinv@axis.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
----
- drivers/mtd/ubi/fastmap.c | 33 +++++++++++++++++++++++++++++----
- 1 file changed, 29 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
-index 52f24a6be74f..2debf42a06b4 100644
---- a/drivers/mtd/ubi/fastmap.c
-+++ b/drivers/mtd/ubi/fastmap.c
-@@ -764,6 +764,24 @@ static int find_fm_anchor(struct ubi_attach_info *ai)
- 	return ret;
- }
- 
-+static struct ubi_ainf_peb *clone_aeb(struct ubi_attach_info *ai,
-+				      struct ubi_ainf_peb *old)
-+{
-+	struct ubi_ainf_peb *new;
-+
-+	new = ubi_alloc_aeb(ai, old->pnum, old->ec);
-+	if (!new)
-+		return NULL;
-+
-+	new->vol_id = old->vol_id;
-+	new->sqnum = old->sqnum;
-+	new->lnum = old->lnum;
-+	new->scrub = old->scrub;
-+	new->copy_flag = old->copy_flag;
-+
-+	return new;
-+}
-+
- /**
-  * ubi_scan_fastmap - scan the fastmap.
-  * @ubi: UBI device object
-@@ -783,7 +801,7 @@ int ubi_scan_fastmap(struct ubi_device *ubi, struct ubi_attach_info *ai,
- 	struct ubi_vid_hdr *vh;
- 	struct ubi_ec_hdr *ech;
- 	struct ubi_fastmap_layout *fm;
--	struct ubi_ainf_peb *tmp_aeb, *aeb;
-+	struct ubi_ainf_peb *aeb;
- 	int i, used_blocks, pnum, fm_anchor, ret = 0;
- 	size_t fm_size;
- 	__be32 crc, tmp_crc;
-@@ -793,9 +811,16 @@ int ubi_scan_fastmap(struct ubi_device *ubi, struct ubi_attach_info *ai,
- 	if (fm_anchor < 0)
- 		return UBI_NO_FASTMAP;
- 
--	/* Move all (possible) fastmap blocks into our new attach structure. */
--	list_for_each_entry_safe(aeb, tmp_aeb, &scan_ai->fastmap, u.list)
--		list_move_tail(&aeb->u.list, &ai->fastmap);
-+	/* Copy all (possible) fastmap blocks into our new attach structure. */
-+	list_for_each_entry(aeb, &scan_ai->fastmap, u.list) {
-+		struct ubi_ainf_peb *new;
-+
-+		new = clone_aeb(ai, aeb);
-+		if (!new)
-+			return -ENOMEM;
-+
-+		list_add(&new->u.list, &ai->fastmap);
-+	}
- 
- 	memset(ubi->fm_buf, 0, ubi->fm_size);
- 
--- 
-2.7.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4K
+ClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0
+cm9uaXguZGU+ClNpZ25lZC1vZmYtYnk6IFJpY2hhcmQgV2VpbmJlcmdlciA8cmljaGFyZEBub2Qu
+YXQ+ClNpZ25lZC1vZmYtYnk6IFRlcmVzYSBSZW1tZXQgPHQucmVtbWV0QHBoeXRlYy5kZT4KLS0t
+CiBkcml2ZXJzL210ZC91YmkvdWJpLW1lZGlhLmggfCA0ICsrLS0KIDEgZmlsZSBjaGFuZ2VkLCAy
+IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQv
+dWJpL3ViaS1tZWRpYS5oIGIvZHJpdmVycy9tdGQvdWJpL3ViaS1tZWRpYS5oCmluZGV4IDI3YzQ5
+YmVhZmUxNy4uNDM1ODQ4NDM1NDJmIDEwMDY0NAotLS0gYS9kcml2ZXJzL210ZC91YmkvdWJpLW1l
+ZGlhLmgKKysrIGIvZHJpdmVycy9tdGQvdWJpL3ViaS1tZWRpYS5oCkBAIC0yMjUsNyArMjI1LDcg
+QEAgc3RydWN0IHViaV9lY19oZHIgewogICogY29weS4gVUJJIGFsc28gY2FsY3VsYXRlcyBkYXRh
+IENSQyB3aGVuIHRoZSBkYXRhIGlzIG1vdmVkIGFuZCBzdG9yZXMgaXQgYXQKICAqIHRoZSBAZGF0
+YV9jcmMgZmllbGQgb2YgdGhlIGNvcHkgKFAxKS4gU28gd2hlbiBVQkkgbmVlZHMgdG8gcGljayBv
+bmUgcGh5c2ljYWwKICAqIGVyYXNlYmxvY2sgb2YgdHdvIChQIG9yIFAxKSwgdGhlIEBjb3B5X2Zs
+YWcgb2YgdGhlIG5ld2VyIG9uZSAoUDEpIGlzCi0gKiBleGFtaW5lZC4gSWYgaXQgaXMgY2xlYXJl
+ZCwgdGhlIHNpdHVhdGlvbiogaXMgc2ltcGxlIGFuZCB0aGUgbmV3ZXIgb25lIGlzCisgKiBleGFt
+aW5lZC4gSWYgaXQgaXMgY2xlYXJlZCwgdGhlIHNpdHVhdGlvbiBpcyBzaW1wbGUgYW5kIHRoZSBu
+ZXdlciBvbmUgaXMKICAqIHBpY2tlZC4gSWYgaXQgaXMgc2V0LCB0aGUgZGF0YSBDUkMgb2YgdGhl
+IGNvcHkgKFAxKSBpcyBleGFtaW5lZC4gSWYgdGhlIENSQwogICogY2hlY2tzdW0gaXMgY29ycmVj
+dCwgdGhpcyBwaHlzaWNhbCBlcmFzZWJsb2NrIGlzIHNlbGVjdGVkIChQMSkuIE90aGVyd2lzZQog
+ICogdGhlIG9sZGVyIG9uZSAoUCkgaXMgc2VsZWN0ZWQuCkBAIC0zODUsNyArMzg1LDcgQEAgc3Ry
+dWN0IHViaV92dGJsX3JlY29yZCB7CiAjZGVmaW5lIFVCSV9GTV9QT09MX01BR0lDCTB4NjdBRjRE
+MDgKICNkZWZpbmUgVUJJX0ZNX0VCQV9NQUdJQwkweGYwYzA0MGE4CiAKLS8qIEEgZmFzdG1hcCBz
+dXBiZXIgYmxvY2sgY2FuIGJlIGxvY2F0ZWQgYmV0d2VlbiBQRUIgMCBhbmQKKy8qIEEgZmFzdG1h
+cCBzdXBlciBibG9jayBjYW4gYmUgbG9jYXRlZCBiZXR3ZWVuIFBFQiAwIGFuZAogICogVUJJX0ZN
+X01BWF9TVEFSVCAqLwogI2RlZmluZSBVQklfRk1fTUFYX1NUQVJUCTY0CiAKLS0gCjIuNy40CgoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
