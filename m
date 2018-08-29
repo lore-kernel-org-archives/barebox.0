@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzSq-0005UW-4y
- for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:20:53 +0000
+ id 1fuzSr-0005Uu-VM
+ for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:20:55 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 0CF46A00CDD
- for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:59 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 58BD9A00D51
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:21:00 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:19:47 +0200
-Message-Id: <1535545212-18871-32-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:19:52 +0200
+Message-Id: <1535545212-18871-37-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,82 +24,114 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 31/56] UBI: provide an helper to check whether a LEB is mapped
- or not
+Subject: [PATCH 36/56] ubi: Fix races around ubi_refill_pools()
 To: barebox@lists.infradead.org
 
-From: Boris Brezillon <boris.brezillon@free-electrons.com>
+From: Richard Weinberger <richard@nod.at>
 
-This is part of the process of hiding UBI EBA's internal to other part of
-the UBI implementation, so that we can add new information to the EBA
-table without having to patch different places in the UBI code.
+When writing a new Fastmap the first thing that happens
+is refilling the pools in memory.
+At this stage it is possible that new PEBs from the new pools
+get already claimed and written with data.
+If this happens before the new Fastmap data structure hits the
+flash and we face power cut the freshly written PEB will not
+scanned and unnoticed.
 
-Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+Solve the issue by locking the pools until Fastmap is written.
+
+Cc: <stable@vger.kernel.org>
+Fixes: dbb7d2a88d ("UBI: Add fastmap core")
 Signed-off-by: Richard Weinberger <richard@nod.at>
+[Fix conflicts]
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/eba.c  | 12 ++++++++++++
- drivers/mtd/ubi/kapi.c |  4 ++--
- drivers/mtd/ubi/ubi.h  |  1 +
- 3 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/mtd/ubi/fastmap-wl.c |  4 ++--
+ drivers/mtd/ubi/wl.c         | 15 +++++++++------
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mtd/ubi/eba.c b/drivers/mtd/ubi/eba.c
-index fd8368286825..704f67dfb6a1 100644
---- a/drivers/mtd/ubi/eba.c
-+++ b/drivers/mtd/ubi/eba.c
-@@ -280,6 +280,18 @@ static void leb_write_unlock(struct ubi_device *ubi, int vol_id, int lnum)
+diff --git a/drivers/mtd/ubi/fastmap-wl.c b/drivers/mtd/ubi/fastmap-wl.c
+index 1885b155ddf9..07982aab169a 100644
+--- a/drivers/mtd/ubi/fastmap-wl.c
++++ b/drivers/mtd/ubi/fastmap-wl.c
+@@ -230,7 +230,7 @@ int ubi_ensure_anchor_pebs(struct ubi_device *ubi)
+ 
+ 	wrk->anchor = 1;
+ 	wrk->func = &wear_leveling_worker;
+-	schedule_ubi_work(ubi, wrk);
++	__schedule_ubi_work(ubi, wrk);
+ 	return 0;
+ }
+ 
+@@ -268,7 +268,7 @@ int ubi_wl_put_fm_peb(struct ubi_device *ubi, struct ubi_wl_entry *fm_e,
+ 	}
+ 
+ 	vol_id = lnum ? UBI_FM_DATA_VOLUME_ID : UBI_FM_SB_VOLUME_ID;
+-	return schedule_erase(ubi, e, vol_id, lnum, torture);
++	return schedule_erase(ubi, e, vol_id, lnum, torture, true);
  }
  
  /**
-+ * ubi_eba_is_mapped - check if a LEB is mapped.
-+ * @vol: volume description object
-+ * @lnum: logical eraseblock number
-+ *
-+ * This function returns true if the LEB is mapped, false otherwise.
-+ */
-+bool ubi_eba_is_mapped(struct ubi_volume *vol, int lnum)
-+{
-+	return vol->eba_tbl[lnum] >= 0;
-+}
-+
-+/**
-  * ubi_eba_unmap_leb - un-map logical eraseblock.
-  * @ubi: UBI device description object
-  * @vol: volume description object
-diff --git a/drivers/mtd/ubi/kapi.c b/drivers/mtd/ubi/kapi.c
-index a7be941908fc..e1cab763ebd2 100644
---- a/drivers/mtd/ubi/kapi.c
-+++ b/drivers/mtd/ubi/kapi.c
-@@ -597,7 +597,7 @@ int ubi_leb_map(struct ubi_volume_desc *desc, int lnum)
- 	if (vol->upd_marker)
- 		return -EBADF;
+diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
+index 764e8dddc2b5..54c119d20b07 100644
+--- a/drivers/mtd/ubi/wl.c
++++ b/drivers/mtd/ubi/wl.c
+@@ -554,7 +554,7 @@ static int erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk,
+  * failure.
+  */
+ static int schedule_erase(struct ubi_device *ubi, struct ubi_wl_entry *e,
+-			  int vol_id, int lnum, int torture)
++			  int vol_id, int lnum, int torture, bool nested)
+ {
+ 	struct ubi_work *wl_wrk;
  
--	if (vol->eba_tbl[lnum] >= 0)
-+	if (ubi_eba_is_mapped(vol, lnum))
- 		return -EBADMSG;
+@@ -573,7 +573,10 @@ static int schedule_erase(struct ubi_device *ubi, struct ubi_wl_entry *e,
+ 	wl_wrk->lnum = lnum;
+ 	wl_wrk->torture = torture;
  
- 	return ubi_eba_write_leb(ubi, vol, lnum, NULL, 0, 0);
-@@ -632,7 +632,7 @@ int ubi_is_mapped(struct ubi_volume_desc *desc, int lnum)
- 	if (vol->upd_marker)
- 		return -EBADF;
- 
--	return vol->eba_tbl[lnum] >= 0;
-+	return ubi_eba_is_mapped(vol, lnum);
- }
- EXPORT_SYMBOL_GPL(ubi_is_mapped);
- 
-diff --git a/drivers/mtd/ubi/ubi.h b/drivers/mtd/ubi/ubi.h
-index 4ef692fc7275..5d39b0d55b01 100644
---- a/drivers/mtd/ubi/ubi.h
-+++ b/drivers/mtd/ubi/ubi.h
-@@ -784,6 +784,7 @@ static inline bool ubi_leb_valid(struct ubi_volume *vol, int lnum)
+-	schedule_ubi_work(ubi, wl_wrk);
++	if (nested)
++		__schedule_ubi_work(ubi, wl_wrk);
++	else
++		schedule_ubi_work(ubi, wl_wrk);
+ 	return 0;
  }
  
- /* eba.c */
-+bool ubi_eba_is_mapped(struct ubi_volume *vol, int lnum);
- int ubi_eba_unmap_leb(struct ubi_device *ubi, struct ubi_volume *vol,
- 		      int lnum);
- int ubi_eba_read_leb(struct ubi_device *ubi, struct ubi_volume *vol, int lnum,
+@@ -1047,7 +1050,7 @@ static int __erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk)
+ 		int err1;
+ 
+ 		/* Re-schedule the LEB for erasure */
+-		err1 = schedule_erase(ubi, e, vol_id, lnum, 0);
++		err1 = schedule_erase(ubi, e, vol_id, lnum, 0, false);
+ 		if (err1) {
+ 			wl_entry_destroy(ubi, e);
+ 			err = err1;
+@@ -1204,7 +1207,7 @@ retry:
+ 		}
+ 	}
+ 
+-	err = schedule_erase(ubi, e, vol_id, lnum, torture);
++	err = schedule_erase(ubi, e, vol_id, lnum, torture, false);
+ 	if (err)
+ 		wl_tree_add(e, &ubi->used);
+ 
+@@ -1428,7 +1431,7 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
+ 		e->pnum = aeb->pnum;
+ 		e->ec = aeb->ec;
+ 		ubi->lookuptbl[e->pnum] = e;
+-		if (schedule_erase(ubi, e, aeb->vol_id, aeb->lnum, 0)) {
++		if (schedule_erase(ubi, e, aeb->vol_id, aeb->lnum, 0, false)) {
+ 			wl_entry_destroy(ubi, e);
+ 			goto out_free;
+ 		}
+@@ -1501,7 +1504,7 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
+ 			e->ec = aeb->ec;
+ 			ubi_assert(!ubi->lookuptbl[e->pnum]);
+ 			ubi->lookuptbl[e->pnum] = e;
+-			if (schedule_erase(ubi, e, aeb->vol_id, aeb->lnum, 0)) {
++			if (schedule_erase(ubi, e, aeb->vol_id, aeb->lnum, 0, false)) {
+ 				wl_entry_destroy(ubi, e);
+ 				goto out_free;
+ 			}
 -- 
 2.7.4
 
