@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-dm3nam03on0108.outbound.protection.outlook.com
- ([104.47.41.108] helo=NAM03-DM3-obe.outbound.protection.outlook.com)
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fvg19-0008GD-1f
- for barebox@lists.infradead.org; Fri, 31 Aug 2018 09:47:05 +0000
-From: "Baeuerle, Florian" <Florian.Baeuerle@allegion.com>
-Date: Fri, 31 Aug 2018 09:46:50 +0000
-Message-ID: <94166a222e1d97e56a93eea02e419ea8adf86502.camel@allegion.com>
-References: <20180823095820.32590-1-florian.baeuerle@allegion.com>
- <CAHQ1cqFGjdRYJSiMtxfvhT-5dc14PszYGvhuikWOVVviMsHu0Q@mail.gmail.com>
-In-Reply-To: <CAHQ1cqFGjdRYJSiMtxfvhT-5dc14PszYGvhuikWOVVviMsHu0Q@mail.gmail.com>
-Content-Language: en-US
-Content-ID: <C9A1CE7B9976054EBC8F51004C8EBC5E@prod.exchangelabs.com>
-MIME-Version: 1.0
+ id 1fuunx-0001Qb-Mp
+ for barebox@lists.infradead.org; Wed, 29 Aug 2018 07:22:19 +0000
+Received: by mail-pf1-x443.google.com with SMTP id i26-v6so1859310pfo.12
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 00:22:07 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 29 Aug 2018 00:21:52 -0700
+Message-Id: <20180829072153.13428-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,103 +16,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: phytec-phycard-imx27: Add debug UART support
-To: "andrew.smirnov@gmail.com" <andrew.smirnov@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] bbu: Look for default handler in
+ barebox_update_handler_exists()
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-QW0gRG9ubmVyc3RhZywgZGVuIDIzLjA4LjIwMTgsIDE4OjU3IC0wNzAwIHNjaHJpZWIgQW5kcmV5
-IFNtaXJub3Y6DQo+IE9uIFRodSwgQXVnIDIzLCAyMDE4IGF0IDI6NTkgQU0gRmxvcmlhbiBCw6R1
-ZXJsZQ0KPiA8Zmxvcmlhbi5iYWV1ZXJsZUBhbGxlZ2lvbi5jb20+IHdyb3RlOg0KPiA+IA0KPiA+
-IFNpZ25lZC1vZmYtYnk6IEZsb3JpYW4gQsOkdWVybGUgPGZsb3JpYW4uYmFldWVybGVAYWxsZWdp
-b24uY29tPg0KPiA+IC0tLQ0KPiA+ICBhcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNhcmQtaW14
-MjcvbG93bGV2ZWwuYyB8IDE1ICsrKysrKysrKysrKysrKw0KPiA+ICBhcmNoL2FybS9tYWNoLWlt
-eC9pbmNsdWRlL21hY2gvZGVidWdfbGwuaCAgICAgICB8IDEzICsrKysrKysrKysrKysNCj4gPiAg
-aW5jbHVkZS9zZXJpYWwvaW14LXVhcnQuaCAgICAgICAgICAgICAgICAgICAgICAgfCAgNSArKysr
-Kw0KPiA+ICAzIGZpbGVzIGNoYW5nZWQsIDMzIGluc2VydGlvbnMoKykNCj4gPiANCj4gPiBkaWZm
-IC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljYXJkLWlteDI3L2xvd2xldmVsLmMg
-Yi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNhcmQtaW14MjcvbG93bGV2ZWwuYw0KPiA+IGlu
-ZGV4IGUxMTMyZTAuLjgyNDQzMzcgMTAwNjQ0DQo+ID4gLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3Bo
-eXRlYy1waHljYXJkLWlteDI3L2xvd2xldmVsLmMNCj4gPiArKysgYi9hcmNoL2FybS9ib2FyZHMv
-cGh5dGVjLXBoeWNhcmQtaW14MjcvbG93bGV2ZWwuYw0KPiA+IEBAIC0xNCw2ICsxNCw4IEBADQo+
-ID4gICNpbmNsdWRlIDxtYWNoL2lteC1wbGwuaD4NCj4gPiAgI2luY2x1ZGUgPG1hY2gvZXNkY3Rs
-Lmg+DQo+ID4gICNpbmNsdWRlIDxtYWNoL2lteC1uYW5kLmg+DQo+ID4gKyNpbmNsdWRlIDxtYWNo
-L2RlYnVnX2xsLmg+DQo+ID4gKyNpbmNsdWRlIDxzZXJpYWwvaW14LXVhcnQuaD4NCj4gPiANCj4g
-PiAgI2RlZmluZSBFU0RDVEwwX1ZBTCAoRVNEQ1RMMF9TREUgfCBFU0RDVEwwX1JPVzEzIHwgRVNE
-Q1RMMF9DT0wxMCkNCj4gPiANCj4gPiBAQCAtNTgsNiArNjAsMTggQEAgc3RhdGljIHZvaWQgc2Ry
-YW1faW5pdCh2b2lkKQ0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgIE1YMjdfRVNEQ1RMX0JB
-U0VfQUREUiArIElNWF9FU0RDVEwwKTsNCj4gPiAgfQ0KPiA+IA0KPiA+ICtzdGF0aWMgdm9pZCBz
-ZXR1cF91YXJ0KHZvaWQpDQo+ID4gK3sNCj4gPiArICAgICAgIC8qIFNldCBQRVsxMi0xNV0gdXNl
-LCBkaXJlY3Rpb24sIGZ1bmN0aW9uIGFuZCBwdWxsLXVwICovDQo+ID4gKyAgICAgICB3cml0ZWwo
-MHhmZmZjMGYyNywgTVgyN19HUElPNV9CQVNFX0FERFIgKyAweDIwKTsNCj4gPiArICAgICAgIHdy
-aXRlbCgweDAwMDA1MDAwLCBNWDI3X0dQSU81X0JBU0VfQUREUik7DQo+ID4gKyAgICAgICB3cml0
-ZWwoMHgwMDAwMDAwMCwgTVgyN19HUElPNV9CQVNFX0FERFIgKyAweDM4KTsNCj4gPiArICAgICAg
-IHdyaXRlbCgweGZmZmYwZmZmLCBNWDI3X0dQSU81X0JBU0VfQUREUiArIDB4NDApOw0KPiA+ICsN
-Cj4gDQo+IENhbiBjb25zdGFudHMgZnJvbSBpb211eC1pbXgyNy5oIGJlIHVzZWQgaGVyZT8NCg0K
-SW4gdGhlb3J5IHllcywgaXQgY291bGQgYmUgZG9uZSB3aXRoIGlteF9ncGlvX21vZGUoKS4gSSB0
-aGluayBpdCdzIGJldHRlciB0bw0KbGVhdmUgaXQgYXMgaXMsIG90aGVyd2lzZSwgd2UnZCBuZWVk
-IGEpIHRoZSBwaW5jdHJsIGRyaXZlciBpbg0KdGhlIHBibCAocHJvYmFibHkNCnRvbyBsYXJnZSkg
-b3IgYikgZG8gdGhlIHNhbWUgYXMgaW14X2dwaW9fbW9kZSBhbmQgZXh0cmFjdCB0aGUgT1JlZCB2
-YWx1ZXMgZnJvbSBhDQpuZXdseSBkZWZpbmVkIGNvbnN0YW50IGFuZCBiYXNpY2FsbHkNCnJlaW1w
-bGVtZW50IGlteF9ncGlvX21vZGUuDQoNClRoZSByZWdpc3RlciBvZmZzZXRzIGFyZSBhbHNvIG9u
-bHkgZGVmaW5lZCBpbiBkcml2ZXJzL3BpbmN0cmwvaW14LWlvbXV4LXYxLmMNCg0KPiANCj4gPiAr
-ICAgICAgIGlteDI3X3VuZ2F0ZV9hbGxfcGVyaXBoZXJhbHMoKTsNCj4gPiArICAgICAgIGlteDI3
-X3VhcnRfc2V0dXBfbGwoKTsNCj4gPiArfQ0KPiA+ICsNCj4gPiAgdm9pZCBfX2JhcmVfaW5pdCBf
-X25ha2VkIHBoeXRlY19waHljYXJkX2lteDI3X2NvbW1vbl9pbml0KHZvaWQgKmZkdCkNCj4gPiAg
-ew0KPiA+ICAgICAgICAgdW5zaWduZWQgbG9uZyByOw0KPiA+IEBAIC05Nyw2ICsxMTEsNyBAQCB2
-b2lkIF9fYmFyZV9pbml0IF9fbmFrZWQgcGh5dGVjX3BoeWNhcmRfaW14MjdfY29tbW9uX2luaXQo
-dm9pZCAqZmR0KQ0KPiA+ICAgICAgICAgICAgICAgICBNWDI3X0NTQ1JfTVNIQ19TRUwsIE1YMjdf
-Q0NNX0JBU0VfQUREUiArIE1YMjdfQ1NDUik7DQo+ID4gDQo+ID4gICAgICAgICBzZHJhbV9pbml0
-KCk7DQo+ID4gKyAgICAgICBzZXR1cF91YXJ0KCk7DQo+IA0KPiBNYWpvcml0eSBvZiB0aGUgYm9h
-cmRzIGdhdGVzIHRoaXMgdG8gaGFwcGVuIG9uIGlmDQo+IElTX0VOQUJMRUQoQ09ORklHX0RFQlVH
-X0xMKSBpcyB0cnVlLCBzbyBpdCBtaWdodCBtYWtlIHNlbnNlIHRvIGRvIHRoZQ0KPiBzYW1lLg0K
-DQp5b3UncmUgcmlnaHQuDQoNCj4gDQo+ID4gDQo+ID4gICAgICAgICBpbXgyN19iYXJlYm94X2Jv
-b3RfbmFuZF9leHRlcm5hbChmZHQpOw0KPiA+ICB9DQo+ID4gZGlmZiAtLWdpdCBhL2FyY2gvYXJt
-L21hY2gtaW14L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5j
-bHVkZS9tYWNoL2RlYnVnX2xsLmgNCj4gPiBpbmRleCAxNTUwZTA1Li42YzliMjFkIDEwMDY0NA0K
-PiA+IC0tLSBhL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oDQo+ID4g
-KysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2RlYnVnX2xsLmgNCj4gPiBAQCAt
-NTYsNiArNTYsMTIgQEANCj4gPiAgI2Vycm9yICJ1bmtub3duIGkuTVggZGVidWcgdWFydCBzb2Mg
-dHlwZSINCj4gPiAgI2VuZGlmDQo+ID4gDQo+ID4gK3N0YXRpYyBpbmxpbmUgdm9pZCBpbXgyN191
-YXJ0X3NldHVwX2xsKHZvaWQpICB7DQo+ID4gKyAgICAgICB2b2lkICpiYXNlID0gSU9NRU0oSU1Y
-X1VBUlRfQkFTRShJTVhfREVCVUdfU09DLA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgQ09ORklHX0RFQlVHX0lNWF9VQVJUX1BPUlQpKTsNCj4gPiArICAgICAgIGlteDI3X3Vh
-cnRfc2V0dXAoYmFzZSk7DQo+ID4gK30NCj4gPiArDQo+ID4gIHN0YXRpYyBpbmxpbmUgdm9pZCBp
-bXg1MF91YXJ0X3NldHVwX2xsKHZvaWQpDQo+ID4gIHsNCj4gPiAgICAgICAgIHZvaWQgKmJhc2Ug
-PSBJT01FTShJTVhfVUFSVF9CQVNFKElNWF9ERUJVR19TT0MsIENPTkZJR19ERUJVR19JTVhfVUFS
-VF9QT1JUKSk7DQo+ID4gQEAgLTEyMSw2ICsxMjcsNyBAQCBzdGF0aWMgaW5saW5lIHZvaWQgUFVU
-Q19MTChpbnQgYykNCj4gPiANCj4gPiAgI2Vsc2UNCj4gPiANCj4gPiArc3RhdGljIGlubGluZSB2
-b2lkIGlteDI3X3VhcnRfc2V0dXBfbGwodm9pZCkge30NCj4gPiAgc3RhdGljIGlubGluZSB2b2lk
-IGlteDUwX3VhcnRfc2V0dXBfbGwodm9pZCkge30NCj4gPiAgc3RhdGljIGlubGluZSB2b2lkIGlt
-eDUxX3VhcnRfc2V0dXBfbGwodm9pZCkge30NCj4gPiAgc3RhdGljIGlubGluZSB2b2lkIGlteDUz
-X3VhcnRfc2V0dXBfbGwodm9pZCkge30NCj4gPiBAQCAtMTM4LDYgKzE0NSwxMiBAQCBzdGF0aWMg
-aW5saW5lIHZvaWQgaW14X3VuZ2F0ZV9hbGxfcGVyaXBoZXJhbHModm9pZCBfX2lvbWVtICpjY21i
-YXNlKQ0KPiA+ICAgICAgICAgICAgICAgICB3cml0ZWwoMHhmZmZmZmZmZiwgY2NtYmFzZSArIGkp
-Ow0KPiA+ICB9DQo+ID4gDQo+ID4gK3N0YXRpYyBpbmxpbmUgdm9pZCBpbXgyN191bmdhdGVfYWxs
-X3BlcmlwaGVyYWxzKHZvaWQpDQo+ID4gK3sNCj4gPiArICAgICAgIHdyaXRlbCgweGZmZmZmYmZm
-LCBJT01FTShNWDI3X0NDTV9CQVNFX0FERFIpICsgMHgyMCk7DQo+ID4gKyAgICAgICB3cml0ZWwo
-MHhmZmZmZmZmYywgSU9NRU0oTVgyN19DQ01fQkFTRV9BRERSKSArIDB4MjQpOw0KPiA+ICt9DQo+
-IA0KPiBJIHRoaW5rIHlvdSBjYW4gdXNlICBNWDI3X1BDQ1IwIGFuZCAgTVgyN19QQ0NSMSBoZXJl
-IGluc3RlYWQgb2YgbWFnaWMgbnVtYmVycy4NCg0KeWVwLCB0aGFua3MuDQoNCj4gDQo+ID4gKw0K
-PiA+ICBzdGF0aWMgaW5saW5lIHZvaWQgaW14Nl91bmdhdGVfYWxsX3BlcmlwaGVyYWxzKHZvaWQp
-DQo+ID4gIHsNCj4gPiAgICAgICAgIGlteF91bmdhdGVfYWxsX3BlcmlwaGVyYWxzKElPTUVNKE1Y
-Nl9DQ01fQkFTRV9BRERSKSk7DQo+ID4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvc2VyaWFsL2lteC11
-YXJ0LmggYi9pbmNsdWRlL3NlcmlhbC9pbXgtdWFydC5oDQo+ID4gaW5kZXggYzIzNjA2NS4uMGMw
-MzNjMiAxMDA2NDQNCj4gPiAtLS0gYS9pbmNsdWRlL3NlcmlhbC9pbXgtdWFydC5oDQo+ID4gKysr
-IGIvaW5jbHVkZS9zZXJpYWwvaW14LXVhcnQuaA0KPiA+IEBAIC0xNTUsNiArMTU1LDExIEBAIHN0
-YXRpYyBpbmxpbmUgdm9pZCBpbXhfdWFydF9zZXRfZHRlKHZvaWQgX19pb21lbSAqdWFydGJhc2Up
-DQo+ID4gICAgICAgICB3cml0ZWwodWZjciwgdWFydGJhc2UgKyBVRkNSKTsNCj4gPiAgfQ0KPiA+
-IA0KPiA+ICtzdGF0aWMgaW5saW5lIHZvaWQgaW14MjdfdWFydF9zZXR1cCh2b2lkIF9faW9tZW0g
-KnVhcnRiYXNlKQ0KPiA+ICt7DQo+ID4gKyAgICAgICBpbXhfdWFydF9zZXR1cCh1YXJ0YmFzZSwg
-NjY1MDAwMDApOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICBzdGF0aWMgaW5saW5lIHZvaWQgaW14NTBf
-dWFydF9zZXR1cCh2b2lkIF9faW9tZW0gKnVhcnRiYXNlKQ0KPiA+ICB7DQo+ID4gICAgICAgICBp
-bXhfdWFydF9zZXR1cCh1YXJ0YmFzZSwgNjY2NjY2NjYpOw0KPiA+IC0tDQo+ID4gMS44LjMuMQ0K
-PiA+IA0KPiA+IA0KPiA+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fDQo+ID4gYmFyZWJveCBtYWlsaW5nIGxpc3QNCj4gPiBiYXJlYm94QGxpc3RzLmluZnJh
-ZGVhZC5vcmcNCj4gPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Convert barebox_update_handler_exists() to treat struct bbu_data with
+both "handler_name" and "devicefile" set to NULL as a specifier for
+default update handler in order to support such use-case for
+"barebox_update" and fix a recent regression.
+
+This change shouldn't affect another user of
+barebox_update_handler_exists(), cb_flash() in
+drivers/usb/gadget/f_fastboot.c, since that function explicitly
+specifies "devicefile".
+
+Fixes 0ac96ab6e ("bbu: command: Make sure specified update handler exists")
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ common/bbu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/common/bbu.c b/common/bbu.c
+index 3974bf672..ffe5e15a2 100644
+--- a/common/bbu.c
++++ b/common/bbu.c
+@@ -148,7 +148,7 @@ bool barebox_update_handler_exists(struct bbu_data *data)
+ 	if (handler)
+ 		return true;
+ 
+-	if (!data->handler_name)
++	if (!data->handler_name && data->devicefile)
+ 		return false;
+ 
+ 	return bbu_find_handler(data->handler_name) != NULL;
+-- 
+2.17.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
