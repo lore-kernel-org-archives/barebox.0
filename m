@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzSh-0005UW-Pt
+ id 1fuzSh-0005Uw-Pb
  for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:20:47 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 4C1A4A00A63
- for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:53 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 88C4AA00BB4
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:54 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:19:24 +0200
-Message-Id: <1535545212-18871-9-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:19:29 +0200
+Message-Id: <1535545212-18871-14-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,54 +19,101 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/56] ubi: Make recover_peb power cut aware
+Subject: [PATCH 13/56] ubi: Introduce vol_ignored()
 To: barebox@lists.infradead.org
 
-RnJvbTogUmljaGFyZCBXZWluYmVyZ2VyIDxyaWNoYXJkQG5vZC5hdD4KCnJlY292ZXJfcGViKCkg
-d2FzIG5ldmVyIHBvd2VyIGN1dCBhd2FyZSwKaWYgYSBwb3dlciBjdXQgaGFwcGVuZWQgcmlnaHQg
-YWZ0ZXIgd3JpdGluZyB0aGUgVklEIGhlYWRlcgp1cG9uIG5leHQgYXR0YWNoIFVCSSB3b3VsZCBi
-bGluZGx5IHVzZSB0aGUgbmV3IHBhcnRpYWwgd3JpdHRlbgpQRUIgYW5kIGFsbCBkYXRhIGZyb20g
-dGhlIG9sZCBQRUIgaXMgbG9zdC4KCkluIG9yZGVyIHRvIG1ha2UgcmVjb3Zlcl9wZWIoKSBwb3dl
-ciBjdXQgYXdhcmUsIHdyaXRlIHRoZSBuZXcKVklEIHdpdGggYSBwcm9wZXIgY3JjIGFuZCBjb3B5
-X2ZsYWcgc2V0IHN1Y2ggdGhhdCB0aGUgVUJJIGF0dGFjaApwcm9jZXNzIHdpbGwgZGV0ZWN0IHdo
-ZXRoZXIgdGhlIG5ldyBQRUIgaXMgY29tcGxldGVseSB3cml0dGVuCm9yIG5vdC4KV2UgY2Fubm90
-IGRpcmVjdGx5IHVzZSB1YmlfZWJhX2F0b21pY19sZWJfY2hhbmdlKCkgc2luY2Ugd2UnZApoYXZl
-IHRvIHVubG9jayB0aGUgTEVCIHdoaWNoIGlzIGZhY2luZyBhIHdyaXRlIGVycm9yLgoKQ2M6IHN0
-YWJsZUB2Z2VyLmtlcm5lbC5vcmcKUmVwb3J0ZWQtYnk6IErDtnJnIFBmw6RobGVyIDxwZmFlaGxl
-ckBpc3NlLmRlPgpSZXZpZXdlZC1ieTogSsO2cmcgUGbDpGhsZXIgPHBmYWVobGVyQGlzc2UuZGU+
-ClNpZ25lZC1vZmYtYnk6IFJpY2hhcmQgV2VpbmJlcmdlciA8cmljaGFyZEBub2QuYXQ+CltGaXhl
-ZCBtaW5vciBjb25mbGljdF0KU2lnbmVkLW9mZi1ieTogVGVyZXNhIFJlbW1ldCA8dC5yZW1tZXRA
-cGh5dGVjLmRlPgotLS0KIGRyaXZlcnMvbXRkL3ViaS9lYmEuYyB8IDE3ICsrKysrKysrKysrKy0t
-LS0tCiAxIGZpbGUgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKSwgNSBkZWxldGlvbnMoLSkKCmRp
-ZmYgLS1naXQgYS9kcml2ZXJzL210ZC91YmkvZWJhLmMgYi9kcml2ZXJzL210ZC91YmkvZWJhLmMK
-aW5kZXggNmUwOWNmYjBhMTE5Li45ZGVjYzBlMWVjY2UgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbXRk
-L3ViaS9lYmEuYworKysgYi9kcml2ZXJzL210ZC91YmkvZWJhLmMKQEAgLTQ4Niw2ICs0ODYsNyBA
-QCBzdGF0aWMgaW50IHJlY292ZXJfcGViKHN0cnVjdCB1YmlfZGV2aWNlICp1YmksIGludCBwbnVt
-LCBpbnQgdm9sX2lkLCBpbnQgbG51bSwKIAlpbnQgZXJyLCBpZHggPSB2b2xfaWQyaWR4KHViaSwg
-dm9sX2lkKSwgbmV3X3BudW0sIGRhdGFfc2l6ZSwgdHJpZXMgPSAwOwogCXN0cnVjdCB1Ymlfdm9s
-dW1lICp2b2wgPSB1YmktPnZvbHVtZXNbaWR4XTsKIAlzdHJ1Y3QgdWJpX3ZpZF9oZHIgKnZpZF9o
-ZHI7CisJdWludDMyX3QgY3JjOwogCiAJdmlkX2hkciA9IHViaV96YWxsb2NfdmlkX2hkcih1Ymks
-IEdGUF9OT0ZTKTsKIAlpZiAoIXZpZF9oZHIpCkBAIC01MDgsMTIgKzUwOSw4IEBAIHJldHJ5Ogog
-CQlnb3RvIG91dF9wdXQ7CiAJfQogCi0JdmlkX2hkci0+c3FudW0gPSBjcHVfdG9fYmU2NCh1Ymlf
-bmV4dF9zcW51bSh1YmkpKTsKLQllcnIgPSB1YmlfaW9fd3JpdGVfdmlkX2hkcih1YmksIG5ld19w
-bnVtLCB2aWRfaGRyKTsKLQlpZiAoZXJyKQotCQlnb3RvIHdyaXRlX2Vycm9yOworCXViaV9hc3Nl
-cnQodmlkX2hkci0+dm9sX3R5cGUgPT0gVUJJX1ZJRF9EWU5BTUlDKTsKIAotCWRhdGFfc2l6ZSA9
-IG9mZnNldCArIGxlbjsKIAltZW1zZXQodWJpLT5wZWJfYnVmICsgb2Zmc2V0LCAweEZGLCBsZW4p
-OwogCiAJLyogUmVhZCBldmVyeXRoaW5nIGJlZm9yZSB0aGUgYXJlYSB3aGVyZSB0aGUgd3JpdGUg
-ZmFpbHVyZSBoYXBwZW5lZCAqLwpAQCAtNTI1LDYgKzUyMiwxNiBAQCByZXRyeToKIAogCW1lbWNw
-eSh1YmktPnBlYl9idWYgKyBvZmZzZXQsIGJ1ZiwgbGVuKTsKIAorCWRhdGFfc2l6ZSA9IG9mZnNl
-dCArIGxlbjsKKwljcmMgPSBjcmMzMihVQklfQ1JDMzJfSU5JVCwgdWJpLT5wZWJfYnVmLCBkYXRh
-X3NpemUpOworCXZpZF9oZHItPnNxbnVtID0gY3B1X3RvX2JlNjQodWJpX25leHRfc3FudW0odWJp
-KSk7CisJdmlkX2hkci0+Y29weV9mbGFnID0gMTsKKwl2aWRfaGRyLT5kYXRhX3NpemUgPSBjcHVf
-dG9fYmUzMihkYXRhX3NpemUpOworCXZpZF9oZHItPmRhdGFfY3JjID0gY3B1X3RvX2JlMzIoY3Jj
-KTsKKwllcnIgPSB1YmlfaW9fd3JpdGVfdmlkX2hkcih1YmksIG5ld19wbnVtLCB2aWRfaGRyKTsK
-KwlpZiAoZXJyKQorCQlnb3RvIHdyaXRlX2Vycm9yOworCiAJZXJyID0gdWJpX2lvX3dyaXRlX2Rh
-dGEodWJpLCB1YmktPnBlYl9idWYsIG5ld19wbnVtLCAwLCBkYXRhX3NpemUpOwogCWlmIChlcnIp
-CiAJCWdvdG8gd3JpdGVfZXJyb3I7Ci0tIAoyLjcuNAoKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+From: Richard Weinberger <richard@nod.at>
+
+This makes the logic more easy to follow.
+
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ drivers/mtd/ubi/attach.c | 24 ++++++++++++++++++------
+ drivers/mtd/ubi/ubi.h    | 15 +++++++++++++++
+ 2 files changed, 33 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/mtd/ubi/attach.c b/drivers/mtd/ubi/attach.c
+index b6f03ed59f26..9cf9b2ae98e3 100644
+--- a/drivers/mtd/ubi/attach.c
++++ b/drivers/mtd/ubi/attach.c
+@@ -792,6 +792,20 @@ out_unlock:
+ 	return err;
+ }
+ 
++static bool vol_ignored(int vol_id)
++{
++	switch (vol_id) {
++		case UBI_LAYOUT_VOLUME_ID:
++		return true;
++	}
++
++#ifdef CONFIG_MTD_UBI_FASTMAP
++	return ubi_is_fm_vol(vol_id);
++#else
++	return false;
++#endif
++}
++
+ /**
+  * scan_peb - scan and process UBI headers of a PEB.
+  * @ubi: UBI device description object
+@@ -984,17 +998,15 @@ static int scan_peb(struct ubi_device *ubi, struct ubi_attach_info *ai,
+ 		*vid = vol_id;
+ 	if (sqnum)
+ 		*sqnum = be64_to_cpu(vidh->sqnum);
+-	if (vol_id > UBI_MAX_VOLUMES && vol_id != UBI_LAYOUT_VOLUME_ID) {
++	if (vol_id > UBI_MAX_VOLUMES && !vol_ignored(vol_id)) {
+ 		int lnum = be32_to_cpu(vidh->lnum);
+ 
+ 		/* Unsupported internal volume */
+ 		switch (vidh->compat) {
+ 		case UBI_COMPAT_DELETE:
+-			if (vol_id != UBI_FM_SB_VOLUME_ID
+-			    && vol_id != UBI_FM_DATA_VOLUME_ID) {
+-				ubi_msg(ubi, "\"delete\" compatible internal volume %d:%d found, will remove it",
+-					vol_id, lnum);
+-			}
++			ubi_msg(ubi, "\"delete\" compatible internal volume %d:%d found, will remove it",
++				vol_id, lnum);
++
+ 			err = add_to_list(ai, pnum, vol_id, lnum,
+ 					  ec, 1, &ai->erase);
+ 			if (err)
+diff --git a/drivers/mtd/ubi/ubi.h b/drivers/mtd/ubi/ubi.h
+index 368b829fa17f..5899ad7c92b8 100644
+--- a/drivers/mtd/ubi/ubi.h
++++ b/drivers/mtd/ubi/ubi.h
+@@ -1018,4 +1018,19 @@ static inline int idx2vol_id(const struct ubi_device *ubi, int idx)
+ 		return idx;
+ }
+ 
++/**
++ * ubi_is_fm_vol - check whether a volume ID is a Fastmap volume.
++ * @vol_id: volume ID
++ */
++static inline bool ubi_is_fm_vol(int vol_id)
++{
++	switch (vol_id) {
++		case UBI_FM_SB_VOLUME_ID:
++		case UBI_FM_DATA_VOLUME_ID:
++		return true;
++	}
++
++	return false;
++}
++
+ #endif /* !__UBI_UBI_H__ */
+-- 
+2.7.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
