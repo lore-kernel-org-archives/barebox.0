@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fvcmR-0004mC-Kf
- for barebox@lists.infradead.org; Fri, 31 Aug 2018 06:19:41 +0000
-Date: Fri, 31 Aug 2018 08:19:27 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180831061927.n7d5q3tbjlvfivdn@pengutronix.de>
-References: <20180829100652.13529-1-s.trumtrar@pengutronix.de>
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fuzSU-00053J-Vc
+ for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:20:31 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 516D2A00346
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:51 +0200 (CEST)
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:19:16 +0200
+Message-Id: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180829100652.13529-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,58 +18,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] drivers: net: designware: select reset controller
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 00/56] Update Barebox UBI
+To: barebox@lists.infradead.org
 
-On Wed, Aug 29, 2018 at 12:06:52PM +0200, Steffen Trumtrar wrote:
-> The socfpga-specific designware driver uses reset_control_get().
-> Select the socfpga-reset driver to actually use this function instead of
-> a stub.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
->  drivers/net/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
-
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-> index b633a3ac4d7b..1aa096f005e3 100644
-> --- a/drivers/net/Kconfig
-> +++ b/drivers/net/Kconfig
-> @@ -83,6 +83,7 @@ config DRIVER_NET_DESIGNWARE_SOCFPGA
->  	bool "Designware Universal MAC ethernet driver for SoCFPGA platforms"
->  	depends on ARCH_SOCFPGA
->  	select MFD_SYSCON
-> +	select RESET_CONTROLLER
->  	help
->  	  This option enables support for the Synopsys
->  	  Designware Core Univesal MAC 10M/100M/1G ethernet IP on SoCFPGA.
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sIAoKQSBuZXcgdXBkYXRlIG9mIHRoZSBCYXJlYm94IFVCSSBzdGFjayB0byB0aGUgS2Vy
+bmVsIHY0LjE5LXJjMS4KQWxsIHBhdGNoZXMgYXJlIGNoZXJyeS1waWNrcyBmcm9tIHRoZSBrZXJu
+ZWwgdHJlZS4KClN0dW1ibGVkIG92ZXIgc29tZSBjb25mbGljdHMgbW9zdGx5IGR1ZSB0byBub24g
+ZXhzaXN0aW5nIHRocmVhZHMgaW4gYmFyZWJveC4KUnVuIHNvbWUgdGVzdHMgYW5kIGRpZCBub3Qg
+ZmFjZSBhbnkgcmVncmVzc2lvbnMgc28gZmFyLgoKUmVnYXJkcywKVGVyZXNhCgpBbmRyZXcgRi4g
+RGF2aXMgKDEpOgogIFVCSTogRml4IHR5cG9zCgpCZW4gRG9va3MgKDEpOgogIHViaTogcHJfZXJy
+KCkgc3RyaW5ncyBzaG91bGQgZW5kIHdpdGggbmV3bGluZXMKCkJvcmlzIEJyZXppbGxvbiAoMTgp
+OgogIFVCSTogZmFzdG1hcDogdXNlIHViaV9maW5kX3ZvbHVtZSgpIGluc3RlYWQgb2Ygb3BlbiBj
+b2RpbmcgaXQKICBVQkk6IGZpeCBhZGRfZmFzdG1hcCgpIHRvIHVzZSB0aGUgdmlkX2hkciBwYXNz
+ZWQgaW4gYXJndW1lbnQKICBVQkk6IGZhc3RtYXA6IGF2b2lkIG11bHRpcGxlIGJlMzJfdG9fY3B1
+KCkgd2hlbiB1bm5lY2Nlc2FyeQogIFVCSTogZmFzdG1hcDogc2NydWIgUEVCIHdoZW4gYml0Zmxp
+cHMgYXJlIGRldGVjdGVkIGluIGEgZnJlZSBQRUIgRUMKICAgIGhlYWRlcgogIFVCSTogZmFjdG9y
+aXplIGNvZGUgdXNlZCB0byBtYW5pcHVsYXRlIHZvbHVtZXMgYXQgYXR0YWNoIHRpbWUKICBVQkk6
+IGZhY3Rvcml6ZSBkZXN0cm95X2F2KCkgYW5kIHViaV9yZW1vdmVfYXYoKSBjb2RlCiAgVUJJOiBm
+YXN0bWFwOiB1c2UgdWJpX3JiX2Zvcl9lYWNoX2VudHJ5KCkgaW4gdW5tYXBfcGViKCkKICBVQkk6
+IGZhc3RtYXA6IHVzZSB1YmlfaW9fe3JlYWQsIHdyaXRlfV9kYXRhKCkgaW5zdGVhZCBvZiB1Ymlf
+aW9fe3JlYWQsCiAgICB3cml0ZX0oKQogIFVCSTogcHJvdmlkZSBoZWxwZXJzIHRvIGFsbG9jYXRl
+IGFuZCBmcmVlIGFlYiBlbGVtZW50cwogIFVCSTogbW92ZSB0aGUgZ2xvYmFsIGVjaCBhbmQgdmlk
+aCB2YXJpYWJsZXMgaW50byBzdHJ1Y3QKICAgIHViaV9hdHRhY2hfaW5mbwogIFVCSTogc2ltcGxp
+ZnkgcmVjb3Zlcl9wZWIoKSBjb2RlCiAgVUJJOiBzaW1wbGlmeSBMRUIgd3JpdGUgYW5kIGF0b21p
+YyBMRUIgY2hhbmdlIGNvZGUKICBVQkk6IGFkZCBhbiBoZWxwZXIgdG8gY2hlY2sgbG51bSB2YWxp
+ZGl0eQogIFVCSTogcHJvdmlkZSBhbiBoZWxwZXIgdG8gY2hlY2sgd2hldGhlciBhIExFQiBpcyBt
+YXBwZWQgb3Igbm90CiAgVUJJOiBwcm92aWRlIGFuIGhlbHBlciB0byBxdWVyeSBMRUIgaW5mb3Jt
+YXRpb24KICBVQkk6IGhpZGUgRUJBIGludGVybmFscwogIFVCSTogaW50cm9kdWNlIHRoZSBWSUQg
+YnVmZmVyIGNvbmNlcHQKICB1Ymk6IGZhc3RtYXA6IEZpeCBhZGRfdm9sKCkgcmV0dXJuIHZhbHVl
+IHRlc3QgaW4gdWJpX2F0dGFjaF9mYXN0bWFwKCkKCkNvbGluIElhbiBLaW5nICgzKToKICB1Ymk6
+IGZpeCBzd2FwcGVkIGFyZ3VtZW50cyB0byBjYWxsIHRvIHViaV9hbGxvY19hZWIKICB1Ymk6IGZh
+c3RtYXA6IGZpeCBzcGVsbGluZyBtaXN0YWtlOiAiaW52YWxpZGlhdGUiIC0+ICJpbnZhbGlkYXRl
+IgogIHViaTogZmFzdG1hcDogQ2xlYW4gdXAgdGhlIGluaXRpYWxpemF0aW9uIG9mIHBvaW50ZXIg
+cAoKRGFuIENhcnBlbnRlciAoMSk6CiAgVUJJOiBDbGVhbiB1cCByZXR1cm4gaW4gdWJpX3JlbW92
+ZV92b2x1bWUoKQoKR2VlcnQgVXl0dGVyaG9ldmVuICgxKToKICBVQkk6IEZpeCBjcmFzaCBpbiB0
+cnlfcmVjb3Zlcl9wZWIoKQoKSGVpa28gU2Nob2NoZXIgKDEpOgogIFVCSTogU2V0IGZyZWVfY291
+bnQgdG8gemVybyBiZWZvcmUgd2Fsa2luZyB0aHJvdWdoIGVyYXNlIGxpc3QKCklvc2lmIEhhcnV0
+eXVub3YgKDEpOgogIHViaTogRml4IHJhY2UgY29uZGl0aW9uIGJldHdlZW4gdWJpIGRldmljZSBj
+cmVhdGlvbiBhbmQgdWRldgoKTGlvbmVsIERlYmlldmUgKDEpOgogIG10ZDogdWJpOiBVcGRhdGUg
+dWJpLW1lZGlhLmggdG8gZHVhbCBsaWNlbnNlCgpSYWJpbiBWaW5jZW50ICgxKToKICB1Ymk6IGZh
+c3RtYXA6IEZpeCBzbGFiIGNvcnJ1cHRpb24KClJpY2hhcmQgV2VpbmJlcmdlciAoMjApOgogIFVC
+STogRmFzdG1hcDogRml4IG1lbW9yeSBsZWFrIHdoaWxlIGF0dGFjaGluZwogIFVCSTogUmVtb3Zl
+IGFsbG9jX2FpKCkgc2xhYiBuYW1lIGZyb20gcGFyYW1ldGVyIGxpc3QKICBVQkk6IERvbid0IHJl
+YWQgYmFjayBhbGwgZGF0YSBpbiB1YmlfZWJhX2NvcHlfbGViKCkKICBVQkk6IEZpeCBzdGF0aWMg
+dm9sdW1lIGNoZWNrcyB3aGVuIEZhc3RtYXAgaXMgdXNlZAogIHViaTogTWFrZSByZWNvdmVyX3Bl
+YiBwb3dlciBjdXQgYXdhcmUKICB1Ymk6IEZpeCBlYXJseSBsb2dnaW5nCiAgdWJpOiBNYWtlIHZv
+bHVtZSByZXNpemUgcG93ZXIgY3V0IGF3YXJlCiAgdWJpOiBGaXggc2Nhbl9mYXN0KCkgY29tbWVu
+dAogIHViaTogSW50cm9kdWNlIHZvbF9pZ25vcmVkKCkKICB1Ymk6IEZpeCB3aGl0ZXNwYWNlIGlz
+c3VlIGluIGNvdW50X2Zhc3RtYXBfcGVicygpCiAgdWJpOiBSZXdvcmsgRmFzdG1hcCBhdHRhY2gg
+YmFzZSBjb2RlCiAgdWJpOiBDaGVjayB3aGV0aGVyIHRoZSBGYXN0bWFwIGFuY2hvciBtYXRjaGVz
+IHRoZSBzdXBlciBibG9jawogIHViaTogQmUgbW9yZSBwYXJhbm9pZCB3aGlsZSBzZWFjaGluZyBm
+b3IgdGhlIG1vc3QgcmVjZW50IEZhc3RtYXAKICB1Ymk6IERlYWwgd2l0aCBpbnRlcnJ1cHRlZCBl
+cmFzdXJlcyBpbiBXTAogIHViaTogRml4IHJhY2VzIGFyb3VuZCB1YmlfcmVmaWxsX3Bvb2xzKCkK
+ICB1Ymk6IEZpeCBGYXN0bWFwJ3MgdXBkYXRlX3ZvbCgpCiAgdWJpOiBmYXN0bWFwOiBDb3JyZWN0
+bHkgaGFuZGxlIGludGVycnVwdGVkIGVyYXN1cmVzIGluIEVCQQogIHViaTogZmFzdG1hcDogQ2hl
+Y2sgZWFjaCBtYXBwaW5nIG9ubHkgb25jZQogIHViaTogZmFzdG1hcDogRGV0ZWN0IEVCQSBtaXNt
+YXRjaGVzIG9uLXRoZS1mbHkKICB1Ymk6IEluaXRpYWxpemUgRmFzdG1hcCBjaGVja21hcHBpbmcg
+Y29ycmVjdGx5CgpTYXNjaGEgSGF1ZXIgKDMpOgogIHViaTogZmFzdG1hcDogRXJhc2Ugb3V0ZGF0
+ZWQgYW5jaG9yIFBFQnMgZHVyaW5nIGF0dGFjaAogIHViaTogRmFzdG1hcDogRml4IHR5cG8KICB1
+Ymk6IEZpeCBjb3B5L3Bhc3RlIGVycm9yIGluIGZ1bmN0aW9uIGRvY3VtZW50YXRpb24KClNlYmFz
+dGlhbiBTaWV3aW9yICgxKToKICB1YmkvdXBkOiBBbHdheXMgZmx1c2ggYWZ0ZXIgcHJlcGFyZWQg
+Zm9yIGFuIHVwZGF0ZQoKVXdlIEtsZWluZS1Lw7ZuaWcgKDEpOgogIFVCSTogRml4IHR3byB0eXBv
+cyBpbiBjb21tZW50cwoKV2VpIFlvbmdqdW4gKDEpOgogIG10ZDogdWJpOiB3bDogRml4IGVycm9y
+IHJldHVybiBjb2RlIGluIHViaV93bF9pbml0KCkKCnowMDE4OTUxMiAoMSk6CiAgVUJJOiBNb2Rp
+Znkgd3JvbmcgY29tbWVudCBpbiB1YmlfbGViX21hcCBmdW5jdGlvbi4KCiBkcml2ZXJzL210ZC91
+YmkvS2NvbmZpZyAgICAgIHwgICAyICstCiBkcml2ZXJzL210ZC91YmkvYXR0YWNoLmMgICAgIHwg
+NDczICsrKysrKysrKysrKysrKysrLS0tLS0tLS0tCiBkcml2ZXJzL210ZC91YmkvYnVpbGQuYyAg
+ICAgIHwgIDE3ICstCiBkcml2ZXJzL210ZC91YmkvZWJhLmMgICAgICAgIHwgNzg1ICsrKysrKysr
+KysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0KIGRyaXZlcnMvbXRkL3ViaS9mYXN0
+bWFwLXdsLmMgfCAgIDYgKy0KIGRyaXZlcnMvbXRkL3ViaS9mYXN0bWFwLmMgICAgfCAzMDAgKysr
+KysrKysrKy0tLS0tLS0KIGRyaXZlcnMvbXRkL3ViaS9pby5jICAgICAgICAgfCAgNDEgKystCiBk
+cml2ZXJzL210ZC91Ymkva2FwaS5jICAgICAgIHwgIDE4ICstCiBkcml2ZXJzL210ZC91YmkvdWJp
+LW1lZGlhLmggIHwgIDIyICstCiBkcml2ZXJzL210ZC91YmkvdWJpLmggICAgICAgIHwgMTk0ICsr
+KysrKysrKy0tCiBkcml2ZXJzL210ZC91YmkvdXBkLmMgICAgICAgIHwgICA4ICstCiBkcml2ZXJz
+L210ZC91Ymkvdm10LmMgICAgICAgIHwgIDY1ICsrLS0KIGRyaXZlcnMvbXRkL3ViaS92dGJsLmMg
+ICAgICAgfCAgMzIgKy0KIGRyaXZlcnMvbXRkL3ViaS93bC5jICAgICAgICAgfCAxNjEgKysrKysr
+Ky0tCiBkcml2ZXJzL210ZC91Ymkvd2wuaCAgICAgICAgIHwgICAyICstCiAxNSBmaWxlcyBjaGFu
+Z2VkLCAxNDE5IGluc2VydGlvbnMoKyksIDcwNyBkZWxldGlvbnMoLSkKCi0tIAoyLjcuNAoKCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
+bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
