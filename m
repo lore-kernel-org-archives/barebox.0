@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzT2-0005cy-2l
+ id 1fuzT1-0005d3-5V
  for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:21:09 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id CD46EA00E5F
+ by root.phytec.de (Postfix) with ESMTP id 12B93A00E56
  for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:21:04 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:20:10 +0200
-Message-Id: <1535545212-18871-55-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:20:07 +0200
+Message-Id: <1535545212-18871-52-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,57 +24,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 54/56] ubi: fastmap: Detect EBA mismatches on-the-fly
+Subject: [PATCH 51/56] mtd: ubi: wl: Fix error return code in ubi_wl_init()
 To: barebox@lists.infradead.org
 
-From: Richard Weinberger <richard@nod.at>
+From: Wei Yongjun <weiyongjun1@huawei.com>
 
-Now we have the machinery to detect EBA mismatches on-the-fly
-by comparing the in-memory volume ID and LEB number with the found
-VID header.
-This helps to detect malfunction of Fastmap.
+Fix to return error code -ENOMEM from the kmem_cache_alloc() error
+handling case instead of 0, as done elsewhere in this function.
 
+Fixes: f78e5623f45b ("ubi: fastmap: Erase outdated anchor PEBs during
+attach")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 Signed-off-by: Richard Weinberger <richard@nod.at>
+[Fixed conflicts]
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/eba.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/mtd/ubi/wl.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/ubi/eba.c b/drivers/mtd/ubi/eba.c
-index d29df1d1550b..3aae3029e5b6 100644
---- a/drivers/mtd/ubi/eba.c
-+++ b/drivers/mtd/ubi/eba.c
-@@ -479,6 +479,7 @@ static int check_mapping(struct ubi_device *ubi, struct ubi_volume *vol, int lnu
- {
- 	int err;
- 	struct ubi_vid_io_buf *vidb;
-+	struct ubi_vid_hdr *vid_hdr;
+diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
+index 8d45b318f5c1..fa1b8137024a 100644
+--- a/drivers/mtd/ubi/wl.c
++++ b/drivers/mtd/ubi/wl.c
+@@ -1473,8 +1473,10 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
  
- 	if (!ubi->fast_attach)
- 		return 0;
-@@ -516,6 +517,22 @@ static int check_mapping(struct ubi_device *ubi, struct ubi_volume *vol, int lnu
- 			*pnum, err);
- 
- 		goto out_free;
-+	} else {
-+		int found_vol_id, found_lnum;
-+
-+		ubi_assert(err == 0 || err == UBI_IO_BITFLIPS);
-+
-+		vid_hdr = ubi_get_vid_hdr(vidb);
-+		found_vol_id = be32_to_cpu(vid_hdr->vol_id);
-+		found_lnum = be32_to_cpu(vid_hdr->lnum);
-+
-+		if (found_lnum != lnum || found_vol_id != vol->vol_id) {
-+			ubi_err(ubi, "EBA mismatch! PEB %i is LEB %i:%i instead of LEB %i:%i",
-+				*pnum, found_vol_id, found_lnum, vol->vol_id, lnum);
-+			ubi_ro_mode(ubi);
-+			err = -EINVAL;
-+			goto out_free;
+ 	list_for_each_entry(aeb, &ai->free, u.list) {
+ 		e = kmalloc(sizeof(*e), GFP_KERNEL);
+-		if (!e)
++		if (!e) {
++			err = -ENOMEM;
+ 			goto out_free;
 +		}
- 	}
  
- 	set_bit(lnum, vol->checkmap);
+ 		e->pnum = aeb->pnum;
+ 		e->ec = aeb->ec;
+@@ -1491,8 +1493,10 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
+ 	ubi_rb_for_each_entry(rb1, av, &ai->volumes, rb) {
+ 		ubi_rb_for_each_entry(rb2, aeb, &av->root, u.rb) {
+ 			e = kmalloc(sizeof(*e), GFP_KERNEL);
+-			if (!e)
++			if (!e) {
++				err = -ENOMEM;
+ 				goto out_free;
++			}
+ 
+ 			e->pnum = aeb->pnum;
+ 			e->ec = aeb->ec;
 -- 
 2.7.4
 
