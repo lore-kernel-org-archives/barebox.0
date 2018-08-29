@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzT3-0005fL-Un
- for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:21:12 +0000
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+ by casper.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fuzT2-0004xR-AX
+ for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:21:02 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 0E876A00E64
- for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:21:05 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 4259EA00D05
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:59 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:20:11 +0200
-Message-Id: <1535545212-18871-56-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:19:48 +0200
+Message-Id: <1535545212-18871-33-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,45 +19,118 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 55/56] mtd: ubi: Update ubi-media.h to dual license
+Subject: [PATCH 32/56] UBI: provide an helper to query LEB information
 To: barebox@lists.infradead.org
 
-RnJvbTogTGlvbmVsIERlYmlldmUgPGxpb25lbC5kZWJpZXZlQHN0LmNvbT4KClVwZGF0ZSBsaWNl
-bnNlIHRlbXBsYXRlIHVzaW5nIFNQRFguIE1vdmUgdGhlIGdsb2JhbCBsYXlvdXQKb2YgVUJJIGhl
-YWRlcnMgdG8gZHVhbCBsaWNlbnNlIGhlbHBpbmcgVUJJIHRvIGJlIHRoZSBzdGFuZGFyZApzb2x1
-dGlvbiBmb3IgcmF3IE5BTkQgbWFuYWdlbWVudC4KClNpZ25lZC1vZmYtYnk6IExpb25lbCBEZWJp
-ZXZlIDxsaW9uZWwuZGViaWV2ZUBzdC5jb20+CkFja2VkLWJ5OiBUaG9tYXMgR2xlaXhuZXIgPHRn
-bHhAbGludXRyb25peC5kZT4KQWNrZWQtYnk6IEFydGVtIEJpdHl1dHNraXkgPGRlZGVraW5kMUBn
-bWFpbC5jb20+CkFja2VkLWJ5OiBQYXVsIEUuIE1jS2VubmV5IDxwYXVsbWNrQGxpbnV4LnZuZXQu
-aWJtLmNvbT4KU2lnbmVkLW9mZi1ieTogUmljaGFyZCBXZWluYmVyZ2VyIDxyaWNoYXJkQG5vZC5h
-dD4KW0ZpeGVkIGNvbmZsaWN0XQpTaWduZWQtb2ZmLWJ5OiBUZXJlc2EgUmVtbWV0IDx0LnJlbW1l
-dEBwaHl0ZWMuZGU+Ci0tLQogZHJpdmVycy9tdGQvdWJpL3ViaS1tZWRpYS5oIHwgMTggKysrLS0t
-LS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAxNSBkZWxldGlv
-bnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL210ZC91YmkvdWJpLW1lZGlhLmggYi9kcml2ZXJz
-L210ZC91YmkvdWJpLW1lZGlhLmgKaW5kZXggNDM1ODQ4NDM1NDJmLi4xOTVmZjhjYTgyMTEgMTAw
-NjQ0Ci0tLSBhL2RyaXZlcnMvbXRkL3ViaS91YmktbWVkaWEuaAorKysgYi9kcml2ZXJzL210ZC91
-YmkvdWJpLW1lZGlhLmgKQEAgLTEsMjQgKzEsMTIgQEAKKy8qIFNQRFgtTGljZW5zZS1JZGVudGlm
-aWVyOiAoR1BMLTIuMCsgT1IgQlNELTMtQ2xhdXNlKSAqLwogLyoKLSAqIENvcHlyaWdodCAoYykg
-SW50ZXJuYXRpb25hbCBCdXNpbmVzcyBNYWNoaW5lcyBDb3JwLiwgMjAwNgotICoKLSAqIFRoaXMg
-cHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3Ig
-bW9kaWZ5Ci0gKiBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBM
-aWNlbnNlIGFzIHB1Ymxpc2hlZCBieQotICogdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsg
-ZWl0aGVyIHZlcnNpb24gMiBvZiB0aGUgTGljZW5zZSwgb3IKLSAqIChhdCB5b3VyIG9wdGlvbikg
-YW55IGxhdGVyIHZlcnNpb24uCi0gKgotICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGlu
-IHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCi0gKiBidXQgV0lUSE9VVCBBTlkgV0FS
-UkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgotICogTUVSQ0hBTlRB
-QklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiBTZWUKLSAqIHRoZSBH
-TlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgotICoKKyAqIENvcHly
-aWdodCAoQykgSW50ZXJuYXRpb25hbCBCdXNpbmVzcyBNYWNoaW5lcyBDb3JwLiwgMjAwNgogICog
-QXV0aG9yczogQXJ0ZW0gQml0eXV0c2tpeSAo0JHQuNGC0Y7RhtC60LjQuSDQkNGA0YLRkdC8KQog
-ICogICAgICAgICAgVGhvbWFzIEdsZWl4bmVyCiAgKiAgICAgICAgICBGcmFuayBIYXZlcmthbXAK
-ICAqICAgICAgICAgIE9saXZlciBMb2htYW5uCiAgKiAgICAgICAgICBBbmRyZWFzIEFybmV6Ci0g
-Ki8KLQotLyoKKyAqCiAgKiBUaGlzIGZpbGUgZGVmaW5lcyB0aGUgbGF5b3V0IG9mIFVCSSBoZWFk
-ZXJzIGFuZCBhbGwgdGhlIG90aGVyIFVCSSBvbi1mbGFzaAogICogZGF0YSBzdHJ1Y3R1cmVzLgog
-ICovCi0tIAoyLjcuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+From: Boris Brezillon <boris.brezillon@free-electrons.com>
+
+This is part of our attempt to hide EBA internals from other part of the
+implementation in order to easily adapt it to the MLC needs.
+
+Here we are creating an ubi_eba_leb_desc struct to hide the way we keep
+track of the LEB to PEB mapping.
+
+Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ drivers/mtd/ubi/eba.c     | 17 +++++++++++++++++
+ drivers/mtd/ubi/fastmap.c |  8 ++++++--
+ drivers/mtd/ubi/ubi.h     | 17 +++++++++++++++++
+ 3 files changed, 40 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/mtd/ubi/eba.c b/drivers/mtd/ubi/eba.c
+index 704f67dfb6a1..11b85f4a6b03 100644
+--- a/drivers/mtd/ubi/eba.c
++++ b/drivers/mtd/ubi/eba.c
+@@ -76,6 +76,23 @@ static int ubi_get_compat(const struct ubi_device *ubi, int vol_id)
+ }
+ 
+ /**
++ * ubi_eba_get_ldesc - get information about a LEB
++ * @vol: volume description object
++ * @lnum: logical eraseblock number
++ * @ldesc: the LEB descriptor to fill
++ *
++ * Used to query information about a specific LEB.
++ * It is currently only returning the physical position of the LEB, but will be
++ * extended to provide more information.
++ */
++void ubi_eba_get_ldesc(struct ubi_volume *vol, int lnum,
++		       struct ubi_eba_leb_desc *ldesc)
++{
++	ldesc->lnum = lnum;
++	ldesc->pnum = vol->eba_tbl[lnum];
++}
++
++/**
+  * ltree_lookup - look up the lock tree.
+  * @ubi: UBI device description object
+  * @vol_id: volume ID
+diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
+index d77592bb19ce..b319ae672cf2 100644
+--- a/drivers/mtd/ubi/fastmap.c
++++ b/drivers/mtd/ubi/fastmap.c
+@@ -1173,8 +1173,12 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
+ 		fm_pos += sizeof(*feba) + (sizeof(__be32) * vol->reserved_pebs);
+ 		ubi_assert(fm_pos <= ubi->fm_size);
+ 
+-		for (j = 0; j < vol->reserved_pebs; j++)
+-			feba->pnum[j] = cpu_to_be32(vol->eba_tbl[j]);
++		for (j = 0; j < vol->reserved_pebs; j++) {
++			struct ubi_eba_leb_desc ldesc;
++
++			ubi_eba_get_ldesc(vol, j, &ldesc);
++			feba->pnum[j] = cpu_to_be32(ldesc.pnum);
++		}
+ 
+ 		feba->reserved_pebs = cpu_to_be32(j);
+ 		feba->magic = cpu_to_be32(UBI_FM_EBA_MAGIC);
+diff --git a/drivers/mtd/ubi/ubi.h b/drivers/mtd/ubi/ubi.h
+index 5d39b0d55b01..0d2c5e8f2244 100644
+--- a/drivers/mtd/ubi/ubi.h
++++ b/drivers/mtd/ubi/ubi.h
+@@ -239,6 +239,21 @@ struct ubi_fm_pool {
+ };
+ 
+ /**
++ * struct ubi_eba_leb_desc - EBA logical eraseblock descriptor
++ * @lnum: the logical eraseblock number
++ * @pnum: the physical eraseblock where the LEB can be found
++ *
++ * This structure is here to hide EBA's internal from other part of the
++ * UBI implementation.
++ *
++ * One can query the position of a LEB by calling ubi_eba_get_ldesc().
++ */
++struct ubi_eba_leb_desc {
++	int lnum;
++	int pnum;
++};
++
++/**
+  * struct ubi_volume - UBI volume description data structure.
+  * @dev: device object to make use of the the Linux device model
+  * @cdev: character device object to create character device
+@@ -784,6 +799,8 @@ static inline bool ubi_leb_valid(struct ubi_volume *vol, int lnum)
+ }
+ 
+ /* eba.c */
++void ubi_eba_get_ldesc(struct ubi_volume *vol, int lnum,
++		       struct ubi_eba_leb_desc *ldesc);
+ bool ubi_eba_is_mapped(struct ubi_volume *vol, int lnum);
+ int ubi_eba_unmap_leb(struct ubi_device *ubi, struct ubi_volume *vol,
+ 		      int lnum);
+-- 
+2.7.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
