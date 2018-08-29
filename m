@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzSu-0005fL-Qx
- for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:21:01 +0000
+ id 1fuzSu-0005dk-Qj
+ for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:21:02 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id CBCF2A00CD8
+ by root.phytec.de (Postfix) with ESMTP id 4684FA00CCF
  for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:58 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:19:46 +0200
-Message-Id: <1535545212-18871-31-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:19:44 +0200
+Message-Id: <1535545212-18871-29-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,97 +24,187 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 30/56] UBI: add an helper to check lnum validity
+Subject: [PATCH 28/56] UBI: simplify recover_peb() code
 To: barebox@lists.infradead.org
 
 From: Boris Brezillon <boris.brezillon@free-electrons.com>
 
-ubi_leb_valid() is here to replace the
-lnum < 0 || lnum >= vol->reserved_pebs checks.
+recover_peb() is using a convoluted retry/exit path. Add try_recover_peb()
+to simplify the retry logic and make sure we have a single exit path
+instead of manually releasing the resource in each error path.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 Signed-off-by: Richard Weinberger <richard@nod.at>
-[Fixed conflicts due missing cdev]
+[Fix conflicts]
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/kapi.c | 12 ++++++------
- drivers/mtd/ubi/ubi.h  |  5 +++++
- 2 files changed, 11 insertions(+), 6 deletions(-)
+ drivers/mtd/ubi/eba.c | 114 ++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 74 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/mtd/ubi/kapi.c b/drivers/mtd/ubi/kapi.c
-index 9ec9962a5966..a7be941908fc 100644
---- a/drivers/mtd/ubi/kapi.c
-+++ b/drivers/mtd/ubi/kapi.c
-@@ -413,7 +413,7 @@ int ubi_leb_write(struct ubi_volume_desc *desc, int lnum, const void *buf,
- 	if (desc->mode == UBI_READONLY || vol->vol_type == UBI_STATIC_VOLUME)
- 		return -EROFS;
+diff --git a/drivers/mtd/ubi/eba.c b/drivers/mtd/ubi/eba.c
+index 9decc0e1ecce..bc2dc2ef4371 100644
+--- a/drivers/mtd/ubi/eba.c
++++ b/drivers/mtd/ubi/eba.c
+@@ -465,38 +465,37 @@ out_unlock:
+ }
  
--	if (lnum < 0 || lnum >= vol->reserved_pebs || offset < 0 || len < 0 ||
-+	if (!ubi_leb_valid(vol, lnum) || offset < 0 || len < 0 ||
- 	    offset + len > vol->usable_leb_size ||
- 	    offset & (ubi->min_io_size - 1) || len & (ubi->min_io_size - 1))
- 		return -EINVAL;
-@@ -458,7 +458,7 @@ int ubi_leb_change(struct ubi_volume_desc *desc, int lnum, const void *buf,
- 	if (desc->mode == UBI_READONLY || vol->vol_type == UBI_STATIC_VOLUME)
- 		return -EROFS;
+ /**
+- * recover_peb - recover from write failure.
+- * @ubi: UBI device description object
++ * try_recover_peb - try to recover from write failure.
++ * @vol: volume description object
+  * @pnum: the physical eraseblock to recover
+- * @vol_id: volume ID
+  * @lnum: logical eraseblock number
+  * @buf: data which was not written because of the write failure
+  * @offset: offset of the failed write
+  * @len: how many bytes should have been written
++ * @vid: VID header
++ * @retry: whether the caller should retry in case of failure
+  *
+  * This function is called in case of a write failure and moves all good data
+  * from the potentially bad physical eraseblock to a good physical eraseblock.
+  * This function also writes the data which was not written due to the failure.
+- * Returns new physical eraseblock number in case of success, and a negative
+- * error code in case of failure.
++ * Returns 0 in case of success, and a negative error code in case of failure.
++ * In case of failure, the %retry parameter is set to false if this is a fatal
++ * error (retrying won't help), and true otherwise.
+  */
+-static int recover_peb(struct ubi_device *ubi, int pnum, int vol_id, int lnum,
+-		       const void *buf, int offset, int len)
++static int try_recover_peb(struct ubi_volume *vol, int pnum, int lnum,
++			   const void *buf, int offset, int len,
++			   struct ubi_vid_hdr *vid_hdr, bool *retry)
+ {
+-	int err, idx = vol_id2idx(ubi, vol_id), new_pnum, data_size, tries = 0;
+-	struct ubi_volume *vol = ubi->volumes[idx];
+-	struct ubi_vid_hdr *vid_hdr;
++	struct ubi_device *ubi = vol->ubi;
++	int new_pnum, err, vol_id = vol->vol_id, data_size;
+ 	uint32_t crc;
  
--	if (lnum < 0 || lnum >= vol->reserved_pebs || len < 0 ||
-+	if (!ubi_leb_valid(vol, lnum) || len < 0 ||
- 	    len > vol->usable_leb_size || len & (ubi->min_io_size - 1))
- 		return -EINVAL;
+-	vid_hdr = ubi_zalloc_vid_hdr(ubi, GFP_NOFS);
+-	if (!vid_hdr)
+-		return -ENOMEM;
++	*retry = false;
  
-@@ -495,7 +495,7 @@ int ubi_leb_erase(struct ubi_volume_desc *desc, int lnum)
- 	if (desc->mode == UBI_READONLY || vol->vol_type == UBI_STATIC_VOLUME)
- 		return -EROFS;
+-retry:
+ 	new_pnum = ubi_wl_get_peb(ubi);
+ 	if (new_pnum < 0) {
+-		ubi_free_vid_hdr(ubi, vid_hdr);
+-		return new_pnum;
++		err = new_pnum;
++		goto out_put;
+ 	}
  
--	if (lnum < 0 || lnum >= vol->reserved_pebs)
-+	if (!ubi_leb_valid(vol, lnum))
- 		return -EINVAL;
+ 	ubi_msg(ubi, "recover PEB %d, move data to PEB %d",
+@@ -520,6 +519,8 @@ retry:
+ 			goto out_unlock;
+ 	}
  
- 	if (vol->upd_marker)
-@@ -555,7 +555,7 @@ int ubi_leb_unmap(struct ubi_volume_desc *desc, int lnum)
- 	if (desc->mode == UBI_READONLY || vol->vol_type == UBI_STATIC_VOLUME)
- 		return -EROFS;
- 
--	if (lnum < 0 || lnum >= vol->reserved_pebs)
-+	if (!ubi_leb_valid(vol, lnum))
- 		return -EINVAL;
- 
- 	if (vol->upd_marker)
-@@ -591,7 +591,7 @@ int ubi_leb_map(struct ubi_volume_desc *desc, int lnum)
- 	if (desc->mode == UBI_READONLY || vol->vol_type == UBI_STATIC_VOLUME)
- 		return -EROFS;
- 
--	if (lnum < 0 || lnum >= vol->reserved_pebs)
-+	if (!ubi_leb_valid(vol, lnum))
- 		return -EINVAL;
- 
- 	if (vol->upd_marker)
-@@ -626,7 +626,7 @@ int ubi_is_mapped(struct ubi_volume_desc *desc, int lnum)
- 
- 	dbg_gen("test LEB %d:%d", vol->vol_id, lnum);
- 
--	if (lnum < 0 || lnum >= vol->reserved_pebs)
-+	if (!ubi_leb_valid(vol, lnum))
- 		return -EINVAL;
- 
- 	if (vol->upd_marker)
-diff --git a/drivers/mtd/ubi/ubi.h b/drivers/mtd/ubi/ubi.h
-index d8e895ae47d7..4ef692fc7275 100644
---- a/drivers/mtd/ubi/ubi.h
-+++ b/drivers/mtd/ubi/ubi.h
-@@ -778,6 +778,11 @@ int ubi_check_volume(struct ubi_device *ubi, int vol_id);
- void ubi_update_reserved(struct ubi_device *ubi);
- void ubi_calculate_reserved(struct ubi_device *ubi);
- 
-+static inline bool ubi_leb_valid(struct ubi_volume *vol, int lnum)
-+{
-+	return lnum >= 0 && lnum < vol->reserved_pebs;
-+}
++	*retry = true;
 +
- /* eba.c */
- int ubi_eba_unmap_leb(struct ubi_device *ubi, struct ubi_volume *vol,
- 		      int lnum);
+ 	memcpy(ubi->peb_buf + offset, buf, len);
+ 
+ 	data_size = offset + len;
+@@ -530,39 +531,72 @@ retry:
+ 	vid_hdr->data_crc = cpu_to_be32(crc);
+ 	err = ubi_io_write_vid_hdr(ubi, new_pnum, vid_hdr);
+ 	if (err)
+-		goto write_error;
++		goto out_unlock;
+ 
+ 	err = ubi_io_write_data(ubi, ubi->peb_buf, new_pnum, 0, data_size);
+-	if (err)
+-		goto write_error;
+ 
+-	ubi_free_vid_hdr(ubi, vid_hdr);
++out_unlock:
++	if (!err)
++		vol->eba_tbl[lnum] = new_pnum;
+ 
+-	vol->eba_tbl[lnum] = new_pnum;
+-	ubi_wl_put_peb(ubi, vol_id, lnum, pnum, 1);
++out_put:
+ 
+-	ubi_msg(ubi, "data was successfully recovered");
+-	return 0;
++	if (!err) {
++		ubi_wl_put_peb(ubi, vol_id, lnum, pnum, 1);
++		ubi_msg(ubi, "data was successfully recovered");
++	} else if (new_pnum >= 0) {
++		/*
++		 * Bad luck? This physical eraseblock is bad too? Crud. Let's
++		 * try to get another one.
++		 */
++		ubi_wl_put_peb(ubi, vol_id, lnum, new_pnum, 1);
++		ubi_warn(ubi, "failed to write to PEB %d", new_pnum);
++	}
+ 
+-out_unlock:
+-out_put:
+-	ubi_wl_put_peb(ubi, vol_id, lnum, new_pnum, 1);
+-	ubi_free_vid_hdr(ubi, vid_hdr);
+ 	return err;
++}
+ 
+-write_error:
+-	/*
+-	 * Bad luck? This physical eraseblock is bad too? Crud. Let's try to
+-	 * get another one.
+-	 */
+-	ubi_warn(ubi, "failed to write to PEB %d", new_pnum);
+-	ubi_wl_put_peb(ubi, vol_id, lnum, new_pnum, 1);
+-	if (++tries > UBI_IO_RETRIES) {
+-		ubi_free_vid_hdr(ubi, vid_hdr);
+-		return err;
++/**
++ * recover_peb - recover from write failure.
++ * @ubi: UBI device description object
++ * @pnum: the physical eraseblock to recover
++ * @vol_id: volume ID
++ * @lnum: logical eraseblock number
++ * @buf: data which was not written because of the write failure
++ * @offset: offset of the failed write
++ * @len: how many bytes should have been written
++ *
++ * This function is called in case of a write failure and moves all good data
++ * from the potentially bad physical eraseblock to a good physical eraseblock.
++ * This function also writes the data which was not written due to the failure.
++ * Returns 0 in case of success, and a negative error code in case of failure.
++ * This function tries %UBI_IO_RETRIES before giving up.
++ */
++static int recover_peb(struct ubi_device *ubi, int pnum, int vol_id, int lnum,
++		       const void *buf, int offset, int len)
++{
++	int err, idx = vol_id2idx(ubi, vol_id), tries;
++	struct ubi_volume *vol = ubi->volumes[idx];
++	struct ubi_vid_hdr *vid_hdr;
++
++	vid_hdr = ubi_zalloc_vid_hdr(ubi, GFP_NOFS);
++	if (!vid_hdr)
++		return -ENOMEM;
++
++	for (tries = 0; tries <= UBI_IO_RETRIES; tries++) {
++		bool retry;
++
++		err = try_recover_peb(vol, pnum, lnum, buf, offset, len,
++				      vid_hdr, &retry);
++		if (!err || !retry)
++			break;
++
++		ubi_msg(ubi, "try again");
+ 	}
+-	ubi_msg(ubi, "try again");
+-	goto retry;
++
++	ubi_free_vid_hdr(ubi, vid_hdr);
++
++	return err;
+ }
+ 
+ /**
 -- 
 2.7.4
 
