@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuum2-0000Dn-Me
- for barebox@lists.infradead.org; Wed, 29 Aug 2018 07:20:20 +0000
-Date: Wed, 29 Aug 2018 09:20:06 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180829072006.vtdkfq6fzlihxlo7@pengutronix.de>
-References: <1535472578-22131-1-git-send-email-oleg.karfich@wago.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1535472578-22131-1-git-send-email-oleg.karfich@wago.com>
+ id 1fuu3F-0000Qg-Dq
+ for barebox@lists.infradead.org; Wed, 29 Aug 2018 06:34:02 +0000
+Received: by mail-pl1-x642.google.com with SMTP id a4-v6so1843667plm.13
+ for <barebox@lists.infradead.org>; Tue, 28 Aug 2018 23:33:51 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 28 Aug 2018 23:33:32 -0700
+Message-Id: <20180829063333.31026-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,74 +16,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] commands: of_property: copy value instead of resizing
-To: Oleg.Karfich@wago.com
-Cc: barebox@lists.infradead.org, Florian.Baeuerle@allegion.com
+Subject: [PATCH 1/2] USB: host: hub: Make sure to remove dangling pointers
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Tue, Aug 28, 2018 at 04:09:46PM +0000, Oleg.Karfich@wago.com wrote:
-> Commit 748d1b8 adds the fixup feature to the above command. With this commit an
-> unwanted free(data) on the freshly set property value is done if someone tries
-> to set the value of an already present property (not the case for a new
-> property). Furthermore in fixup mode the pointer fixup->data is freed when the
-> fixup function is called more than once. This leads to a hanging system after
-> calling of_dump -F many times.
-> Fix this issues by copying the data to a new allocated memory area like a new
-> property is created.
-> 
-> Signed-off-by: Oleg Karfich <oleg.karfich@wago.com>
-> ---
-> 
-> Changes in v2:
-> 
->         - slightly different solution like in [1]
->         - consider memory leak when a new property is created. Noted in [2]
->         - also consider hanging system when oftree -F is used
-> 
-> [1] http://lists.infradead.org/pipermail/barebox/2018-August/034444.html
-> [2] http://lists.infradead.org/pipermail/barebox/2018-August/034446.html
-> 
-> ---
->  commands/of_property.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+When the call to usb_new_device() in usb_hub_port_connect_change()
+fails and corresponding USB device is freed with usb_free_device(), we
+need to make sure that the pointer to it stored in dev->children[port]
+is removed as well, lest we risk usage-after-free.
 
-Applied, thanks
+This issue was observed when working with a device for which
+usb_set_address() would fail and trying to do "usb" right afterwards.
 
-Sascha
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/usb/core/hub.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> 
-> diff --git a/commands/of_property.c b/commands/of_property.c
-> index d0b923f..31e9b71 100644
-> --- a/commands/of_property.c
-> +++ b/commands/of_property.c
-> @@ -270,9 +270,8 @@ static int do_of_property_set_now(struct device_node *root, const char *path,
->  		free(pp->value);
->  		pp->value_const = NULL;
->  
-> -		/* limit property data to the actual size */
->  		if (len)
-> -			pp->value = xrealloc(data, len);
-> +			pp->value = xmemdup(data, len);
->  		else
->  			pp->value = NULL;
->  
-> -- 
-> 2.7.4
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index f44aea55a..70f633ed8 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -233,6 +233,7 @@ static void usb_hub_port_connect_change(struct usb_device *dev, int port)
+ 		dev_dbg(&dev->dev, "hub: disabling port %d\n", port + 1);
+ 		usb_clear_port_feature(dev, port + 1, USB_PORT_FEAT_ENABLE);
+ 		usb_free_device(usb);
++		dev->children[port] = NULL;
+ 		return;
+ 	}
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
