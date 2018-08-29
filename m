@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzSr-0005Uu-VM
- for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:20:55 +0000
+ id 1fuzSs-0005Ux-Bn
+ for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:20:56 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 58BD9A00D51
+ by root.phytec.de (Postfix) with ESMTP id 8E55CA00D58
  for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:21:00 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:19:52 +0200
-Message-Id: <1535545212-18871-37-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:19:53 +0200
+Message-Id: <1535545212-18871-38-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,114 +24,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 36/56] ubi: Fix races around ubi_refill_pools()
+Subject: [PATCH 37/56] ubi: Fix Fastmap's update_vol()
 To: barebox@lists.infradead.org
 
 From: Richard Weinberger <richard@nod.at>
 
-When writing a new Fastmap the first thing that happens
-is refilling the pools in memory.
-At this stage it is possible that new PEBs from the new pools
-get already claimed and written with data.
-If this happens before the new Fastmap data structure hits the
-flash and we face power cut the freshly written PEB will not
-scanned and unnoticed.
-
-Solve the issue by locking the pools until Fastmap is written.
+Usually Fastmap is free to consider every PEB in one of the pools
+as newer than the existing PEB. Since PEBs in a pool are by definition
+newer than everything else.
+But update_vol() missed the case that a pool can contain more than
+one candidate.
 
 Cc: <stable@vger.kernel.org>
 Fixes: dbb7d2a88d ("UBI: Add fastmap core")
 Signed-off-by: Richard Weinberger <richard@nod.at>
-[Fix conflicts]
+Reviewed-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+[Fix conflict]
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/fastmap-wl.c |  4 ++--
- drivers/mtd/ubi/wl.c         | 15 +++++++++------
- 2 files changed, 11 insertions(+), 8 deletions(-)
+ drivers/mtd/ubi/fastmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/ubi/fastmap-wl.c b/drivers/mtd/ubi/fastmap-wl.c
-index 1885b155ddf9..07982aab169a 100644
---- a/drivers/mtd/ubi/fastmap-wl.c
-+++ b/drivers/mtd/ubi/fastmap-wl.c
-@@ -230,7 +230,7 @@ int ubi_ensure_anchor_pebs(struct ubi_device *ubi)
+diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
+index a0b5fe784a6f..bd7abf55b768 100644
+--- a/drivers/mtd/ubi/fastmap.c
++++ b/drivers/mtd/ubi/fastmap.c
+@@ -239,7 +239,7 @@ static int update_vol(struct ubi_device *ubi, struct ubi_attach_info *ai,
+ 			aeb->pnum = new_aeb->pnum;
+ 			aeb->copy_flag = new_vh->copy_flag;
+ 			aeb->scrub = new_aeb->scrub;
+-			
++			aeb->sqnum = new_aeb->sqnum;
+ 			ubi_free_aeb(ai, new_aeb);
  
- 	wrk->anchor = 1;
- 	wrk->func = &wear_leveling_worker;
--	schedule_ubi_work(ubi, wrk);
-+	__schedule_ubi_work(ubi, wrk);
- 	return 0;
- }
- 
-@@ -268,7 +268,7 @@ int ubi_wl_put_fm_peb(struct ubi_device *ubi, struct ubi_wl_entry *fm_e,
- 	}
- 
- 	vol_id = lnum ? UBI_FM_DATA_VOLUME_ID : UBI_FM_SB_VOLUME_ID;
--	return schedule_erase(ubi, e, vol_id, lnum, torture);
-+	return schedule_erase(ubi, e, vol_id, lnum, torture, true);
- }
- 
- /**
-diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
-index 764e8dddc2b5..54c119d20b07 100644
---- a/drivers/mtd/ubi/wl.c
-+++ b/drivers/mtd/ubi/wl.c
-@@ -554,7 +554,7 @@ static int erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk,
-  * failure.
-  */
- static int schedule_erase(struct ubi_device *ubi, struct ubi_wl_entry *e,
--			  int vol_id, int lnum, int torture)
-+			  int vol_id, int lnum, int torture, bool nested)
- {
- 	struct ubi_work *wl_wrk;
- 
-@@ -573,7 +573,10 @@ static int schedule_erase(struct ubi_device *ubi, struct ubi_wl_entry *e,
- 	wl_wrk->lnum = lnum;
- 	wl_wrk->torture = torture;
- 
--	schedule_ubi_work(ubi, wl_wrk);
-+	if (nested)
-+		__schedule_ubi_work(ubi, wl_wrk);
-+	else
-+		schedule_ubi_work(ubi, wl_wrk);
- 	return 0;
- }
- 
-@@ -1047,7 +1050,7 @@ static int __erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk)
- 		int err1;
- 
- 		/* Re-schedule the LEB for erasure */
--		err1 = schedule_erase(ubi, e, vol_id, lnum, 0);
-+		err1 = schedule_erase(ubi, e, vol_id, lnum, 0, false);
- 		if (err1) {
- 			wl_entry_destroy(ubi, e);
- 			err = err1;
-@@ -1204,7 +1207,7 @@ retry:
- 		}
- 	}
- 
--	err = schedule_erase(ubi, e, vol_id, lnum, torture);
-+	err = schedule_erase(ubi, e, vol_id, lnum, torture, false);
- 	if (err)
- 		wl_tree_add(e, &ubi->used);
- 
-@@ -1428,7 +1431,7 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
- 		e->pnum = aeb->pnum;
- 		e->ec = aeb->ec;
- 		ubi->lookuptbl[e->pnum] = e;
--		if (schedule_erase(ubi, e, aeb->vol_id, aeb->lnum, 0)) {
-+		if (schedule_erase(ubi, e, aeb->vol_id, aeb->lnum, 0, false)) {
- 			wl_entry_destroy(ubi, e);
- 			goto out_free;
- 		}
-@@ -1501,7 +1504,7 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
- 			e->ec = aeb->ec;
- 			ubi_assert(!ubi->lookuptbl[e->pnum]);
- 			ubi->lookuptbl[e->pnum] = e;
--			if (schedule_erase(ubi, e, aeb->vol_id, aeb->lnum, 0)) {
-+			if (schedule_erase(ubi, e, aeb->vol_id, aeb->lnum, 0, false)) {
- 				wl_entry_destroy(ubi, e);
- 				goto out_free;
- 			}
+ 		/* new_aeb is older */
 -- 
 2.7.4
 
