@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzSu-0005dk-Qj
- for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:21:02 +0000
+ id 1fuzSv-0005UU-6Z
+ for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:21:03 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 4684FA00CCF
- for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:58 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 89E8AA00DF0
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:21:01 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:19:44 +0200
-Message-Id: <1535545212-18871-29-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:19:57 +0200
+Message-Id: <1535545212-18871-42-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,187 +24,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 28/56] UBI: simplify recover_peb() code
+Subject: [PATCH 41/56] UBI: Fix typos
 To: barebox@lists.infradead.org
 
-From: Boris Brezillon <boris.brezillon@free-electrons.com>
+From: "Andrew F. Davis" <afd@ti.com>
 
-recover_peb() is using a convoluted retry/exit path. Add try_recover_peb()
-to simplify the retry logic and make sure we have a single exit path
-instead of manually releasing the resource in each error path.
-
-Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-[Fix conflicts]
+Signed-off-by: Andrew F. Davis <afd@ti.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/eba.c | 114 ++++++++++++++++++++++++++++++++------------------
- 1 file changed, 74 insertions(+), 40 deletions(-)
+ drivers/mtd/ubi/Kconfig | 2 +-
+ drivers/mtd/ubi/io.c    | 2 +-
+ drivers/mtd/ubi/ubi.h   | 3 +--
+ 3 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/ubi/eba.c b/drivers/mtd/ubi/eba.c
-index 9decc0e1ecce..bc2dc2ef4371 100644
---- a/drivers/mtd/ubi/eba.c
-+++ b/drivers/mtd/ubi/eba.c
-@@ -465,38 +465,37 @@ out_unlock:
- }
- 
- /**
-- * recover_peb - recover from write failure.
-- * @ubi: UBI device description object
-+ * try_recover_peb - try to recover from write failure.
-+ * @vol: volume description object
-  * @pnum: the physical eraseblock to recover
-- * @vol_id: volume ID
-  * @lnum: logical eraseblock number
-  * @buf: data which was not written because of the write failure
-  * @offset: offset of the failed write
-  * @len: how many bytes should have been written
-+ * @vid: VID header
-+ * @retry: whether the caller should retry in case of failure
+diff --git a/drivers/mtd/ubi/Kconfig b/drivers/mtd/ubi/Kconfig
+index 4c497931f192..9a344082b7bb 100644
+--- a/drivers/mtd/ubi/Kconfig
++++ b/drivers/mtd/ubi/Kconfig
+@@ -2,7 +2,7 @@ menuconfig MTD_UBI
+ 	tristate "Enable UBI - Unsorted block images"
+ 	select CRC32
+ 	help
+-	  UBI is a software layer above MTD layer which admits of LVM-like
++	  UBI is a software layer above MTD layer which admits use of LVM-like
+ 	  logical volumes on top of MTD devices, hides some complexities of
+ 	  flash chips like wear and bad blocks and provides some other useful
+ 	  capabilities. Please, consult the MTD web site for more details
+diff --git a/drivers/mtd/ubi/io.c b/drivers/mtd/ubi/io.c
+index 4c2731c4172a..d0ea23b124f2 100644
+--- a/drivers/mtd/ubi/io.c
++++ b/drivers/mtd/ubi/io.c
+@@ -41,7 +41,7 @@
+  * About minimal I/O units. In general, UBI assumes flash device model where
+  * there is only one minimal I/O unit size. E.g., in case of NOR flash it is 1,
+  * in case of NAND flash it is a NAND page, etc. This is reported by MTD in the
+- * @ubi->mtd->writesize field. But as an exception, UBI admits of using another
++ * @ubi->mtd->writesize field. But as an exception, UBI admits use of another
+  * (smaller) minimal I/O unit size for EC and VID headers to make it possible
+  * to do different optimizations.
   *
-  * This function is called in case of a write failure and moves all good data
-  * from the potentially bad physical eraseblock to a good physical eraseblock.
-  * This function also writes the data which was not written due to the failure.
-- * Returns new physical eraseblock number in case of success, and a negative
-- * error code in case of failure.
-+ * Returns 0 in case of success, and a negative error code in case of failure.
-+ * In case of failure, the %retry parameter is set to false if this is a fatal
-+ * error (retrying won't help), and true otherwise.
-  */
--static int recover_peb(struct ubi_device *ubi, int pnum, int vol_id, int lnum,
--		       const void *buf, int offset, int len)
-+static int try_recover_peb(struct ubi_volume *vol, int pnum, int lnum,
-+			   const void *buf, int offset, int len,
-+			   struct ubi_vid_hdr *vid_hdr, bool *retry)
- {
--	int err, idx = vol_id2idx(ubi, vol_id), new_pnum, data_size, tries = 0;
--	struct ubi_volume *vol = ubi->volumes[idx];
--	struct ubi_vid_hdr *vid_hdr;
-+	struct ubi_device *ubi = vol->ubi;
-+	int new_pnum, err, vol_id = vol->vol_id, data_size;
- 	uint32_t crc;
- 
--	vid_hdr = ubi_zalloc_vid_hdr(ubi, GFP_NOFS);
--	if (!vid_hdr)
--		return -ENOMEM;
-+	*retry = false;
- 
--retry:
- 	new_pnum = ubi_wl_get_peb(ubi);
- 	if (new_pnum < 0) {
--		ubi_free_vid_hdr(ubi, vid_hdr);
--		return new_pnum;
-+		err = new_pnum;
-+		goto out_put;
- 	}
- 
- 	ubi_msg(ubi, "recover PEB %d, move data to PEB %d",
-@@ -520,6 +519,8 @@ retry:
- 			goto out_unlock;
- 	}
- 
-+	*retry = true;
-+
- 	memcpy(ubi->peb_buf + offset, buf, len);
- 
- 	data_size = offset + len;
-@@ -530,39 +531,72 @@ retry:
- 	vid_hdr->data_crc = cpu_to_be32(crc);
- 	err = ubi_io_write_vid_hdr(ubi, new_pnum, vid_hdr);
- 	if (err)
--		goto write_error;
-+		goto out_unlock;
- 
- 	err = ubi_io_write_data(ubi, ubi->peb_buf, new_pnum, 0, data_size);
--	if (err)
--		goto write_error;
- 
--	ubi_free_vid_hdr(ubi, vid_hdr);
-+out_unlock:
-+	if (!err)
-+		vol->eba_tbl[lnum] = new_pnum;
- 
--	vol->eba_tbl[lnum] = new_pnum;
--	ubi_wl_put_peb(ubi, vol_id, lnum, pnum, 1);
-+out_put:
- 
--	ubi_msg(ubi, "data was successfully recovered");
--	return 0;
-+	if (!err) {
-+		ubi_wl_put_peb(ubi, vol_id, lnum, pnum, 1);
-+		ubi_msg(ubi, "data was successfully recovered");
-+	} else if (new_pnum >= 0) {
-+		/*
-+		 * Bad luck? This physical eraseblock is bad too? Crud. Let's
-+		 * try to get another one.
-+		 */
-+		ubi_wl_put_peb(ubi, vol_id, lnum, new_pnum, 1);
-+		ubi_warn(ubi, "failed to write to PEB %d", new_pnum);
-+	}
- 
--out_unlock:
--out_put:
--	ubi_wl_put_peb(ubi, vol_id, lnum, new_pnum, 1);
--	ubi_free_vid_hdr(ubi, vid_hdr);
- 	return err;
-+}
- 
--write_error:
--	/*
--	 * Bad luck? This physical eraseblock is bad too? Crud. Let's try to
--	 * get another one.
--	 */
--	ubi_warn(ubi, "failed to write to PEB %d", new_pnum);
--	ubi_wl_put_peb(ubi, vol_id, lnum, new_pnum, 1);
--	if (++tries > UBI_IO_RETRIES) {
--		ubi_free_vid_hdr(ubi, vid_hdr);
--		return err;
-+/**
-+ * recover_peb - recover from write failure.
-+ * @ubi: UBI device description object
-+ * @pnum: the physical eraseblock to recover
-+ * @vol_id: volume ID
-+ * @lnum: logical eraseblock number
-+ * @buf: data which was not written because of the write failure
-+ * @offset: offset of the failed write
-+ * @len: how many bytes should have been written
-+ *
-+ * This function is called in case of a write failure and moves all good data
-+ * from the potentially bad physical eraseblock to a good physical eraseblock.
-+ * This function also writes the data which was not written due to the failure.
-+ * Returns 0 in case of success, and a negative error code in case of failure.
-+ * This function tries %UBI_IO_RETRIES before giving up.
-+ */
-+static int recover_peb(struct ubi_device *ubi, int pnum, int vol_id, int lnum,
-+		       const void *buf, int offset, int len)
-+{
-+	int err, idx = vol_id2idx(ubi, vol_id), tries;
-+	struct ubi_volume *vol = ubi->volumes[idx];
-+	struct ubi_vid_hdr *vid_hdr;
-+
-+	vid_hdr = ubi_zalloc_vid_hdr(ubi, GFP_NOFS);
-+	if (!vid_hdr)
-+		return -ENOMEM;
-+
-+	for (tries = 0; tries <= UBI_IO_RETRIES; tries++) {
-+		bool retry;
-+
-+		err = try_recover_peb(vol, pnum, lnum, buf, offset, len,
-+				      vid_hdr, &retry);
-+		if (!err || !retry)
-+			break;
-+
-+		ubi_msg(ubi, "try again");
- 	}
--	ubi_msg(ubi, "try again");
--	goto retry;
-+
-+	ubi_free_vid_hdr(ubi, vid_hdr);
-+
-+	return err;
- }
- 
- /**
+diff --git a/drivers/mtd/ubi/ubi.h b/drivers/mtd/ubi/ubi.h
+index 4f1ba745ccc9..a5096934e2de 100644
+--- a/drivers/mtd/ubi/ubi.h
++++ b/drivers/mtd/ubi/ubi.h
+@@ -493,8 +493,7 @@ struct ubi_debug_info {
+  * @vid_hdr_aloffset: starting offset of the VID header aligned to
+  *                    @hdrs_min_io_size
+  * @vid_hdr_shift: contains @vid_hdr_offset - @vid_hdr_aloffset
+- * @bad_allowed: whether the MTD device admits of bad physical eraseblocks or
+- *               not
++ * @bad_allowed: whether the MTD device admits bad physical eraseblocks or not
+  * @nor_flash: non-zero if working on top of NOR flash
+  * @max_write_size: maximum amount of bytes the underlying flash can write at a
+  *                  time (MTD write buffer size)
 -- 
 2.7.4
 
