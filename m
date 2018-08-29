@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzSt-0005UT-FA
- for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:20:56 +0000
+ id 1fuzSu-0005d3-Pp
+ for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:20:58 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 1F481A00DDA
- for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:21:01 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 4ABBFA00CA7
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:57 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:19:55 +0200
-Message-Id: <1535545212-18871-40-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:19:40 +0200
+Message-Id: <1535545212-18871-25-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,33 +19,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 39/56] UBI: Fix crash in try_recover_peb()
+Subject: [PATCH 24/56] UBI: fastmap: use ubi_rb_for_each_entry() in unmap_peb()
 To: barebox@lists.infradead.org
 
-RnJvbTogR2VlcnQgVXl0dGVyaG9ldmVuIDxnZWVydEBsaW51eC1tNjhrLm9yZz4KCiAgICBkcml2
-ZXJzL210ZC91YmkvZWJhLmM6IEluIGZ1bmN0aW9uIOKAmHRyeV9yZWNvdmVyX3BlYuKAmToKICAg
-IGRyaXZlcnMvbXRkL3ViaS9lYmEuYzo3NDQ6IHdhcm5pbmc6IOKAmHZpZF9oZHLigJkgaXMgdXNl
-ZCB1bmluaXRpYWxpemVkIGluIHRoaXMgZnVuY3Rpb24KClRoZSBwb2ludGVyIHZpZF9oZHIgaXMg
-aW5kZWVkIG5vdCBpbml0aWFsaXplZCwgbGVhZGluZyB0byBhIGNyYXNoIHdoZW4KaXQgaXMgZGVy
-ZWZlcmVuY2VkLgoKRml4IHRoaXMgYnkgb2J0YWluaW5nIHRoZSBwb2ludGVyIGZyb20gdGhlIFZJ
-RCBidWZmZXIsIGxpa2UgaXMgZG9uZQpldmVyeXdoZXJlIGVsc2UuCgpGaXhlczogMzI5MWI1MmY5
-ZmYwYWNjOCAoIlVCSTogaW50cm9kdWNlIHRoZSBWSUQgYnVmZmVyIGNvbmNlcHQiKQpTaWduZWQt
-b2ZmLWJ5OiBHZWVydCBVeXR0ZXJob2V2ZW4gPGdlZXJ0QGxpbnV4LW02OGsub3JnPgpSZXZpZXdl
-ZC1ieTogQm9yaXMgQnJlemlsbG9uIDxib3Jpcy5icmV6aWxsb25AZnJlZS1lbGVjdHJvbnMuY29t
-PgpTaWduZWQtb2ZmLWJ5OiBSaWNoYXJkIFdlaW5iZXJnZXIgPHJpY2hhcmRAbm9kLmF0PgpTaWdu
-ZWQtb2ZmLWJ5OiBUZXJlc2EgUmVtbWV0IDx0LnJlbW1ldEBwaHl0ZWMuZGU+Ci0tLQogZHJpdmVy
-cy9tdGQvdWJpL2ViYS5jIHwgMSArCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykKCmRp
-ZmYgLS1naXQgYS9kcml2ZXJzL210ZC91YmkvZWJhLmMgYi9kcml2ZXJzL210ZC91YmkvZWJhLmMK
-aW5kZXggN2MwZmRlZmEyNTc2Li5kNWI0N2NjMjA1MTkgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbXRk
-L3ViaS9lYmEuYworKysgYi9kcml2ZXJzL210ZC91YmkvZWJhLmMKQEAgLTY1Miw2ICs2NTIsNyBA
-QCBzdGF0aWMgaW50IHRyeV9yZWNvdmVyX3BlYihzdHJ1Y3QgdWJpX3ZvbHVtZSAqdm9sLCBpbnQg
-cG51bSwgaW50IGxudW0sCiAJCWdvdG8gb3V0X3B1dDsKIAl9CiAKKwl2aWRfaGRyID0gdWJpX2dl
-dF92aWRfaGRyKHZpZGIpOwogCXViaV9hc3NlcnQodmlkX2hkci0+dm9sX3R5cGUgPT0gVUJJX1ZJ
-RF9EWU5BTUlDKTsKIAogCW1lbXNldCh1YmktPnBlYl9idWYgKyBvZmZzZXQsIDB4RkYsIGxlbik7
-Ci0tIAoyLjcuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
-Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+From: Boris Brezillon <boris.brezillon@free-electrons.com>
+
+Use the ubi_rb_for_each_entry() macro instead of open-coding it.
+
+Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ drivers/mtd/ubi/fastmap.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
+index b0979af62f18..683ac0d9c4ab 100644
+--- a/drivers/mtd/ubi/fastmap.c
++++ b/drivers/mtd/ubi/fastmap.c
+@@ -318,12 +318,8 @@ static void unmap_peb(struct ubi_attach_info *ai, int pnum)
+ 	struct rb_node *node, *node2;
+ 	struct ubi_ainf_peb *aeb;
+ 
+-	for (node = rb_first(&ai->volumes); node; node = rb_next(node)) {
+-		av = rb_entry(node, struct ubi_ainf_volume, rb);
+-
+-		for (node2 = rb_first(&av->root); node2;
+-		     node2 = rb_next(node2)) {
+-			aeb = rb_entry(node2, struct ubi_ainf_peb, u.rb);
++	ubi_rb_for_each_entry(node, av, &ai->volumes, rb) {
++		ubi_rb_for_each_entry(node2, aeb, &av->root, u.rb) {
+ 			if (aeb->pnum == pnum) {
+ 				rb_erase(&aeb->u.rb, &av->root);
+ 				av->leb_count--;
+-- 
+2.7.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
