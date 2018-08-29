@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzSU-000588-Vo
+ id 1fuzSU-00054L-Vi
  for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:20:29 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 4D2AEA005D9
- for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:52 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id CAA00A005AF
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:51 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:19:20 +0200
-Message-Id: <1535545212-18871-5-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:19:18 +0200
+Message-Id: <1535545212-18871-3-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,31 +24,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/56] UBI: Modify wrong comment in ubi_leb_map function.
+Subject: [PATCH 02/56] UBI: Remove alloc_ai() slab name from parameter list
 To: barebox@lists.infradead.org
 
-From: z00189512 <abc.zhangliang@huawei.com>
+From: Richard Weinberger <richard@nod.at>
 
-Signed-off-by: z00189512 <abc.zhangliang@huawei.com>
+There is always exactly one ubi_attach_info object allocated,
+therefore we don't have to care about the name.
+
 Signed-off-by: Richard Weinberger <richard@nod.at>
+[Fixed conflict]
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/kapi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/ubi/attach.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mtd/ubi/kapi.c b/drivers/mtd/ubi/kapi.c
-index 60128a5c26fe..9ec9962a5966 100644
---- a/drivers/mtd/ubi/kapi.c
-+++ b/drivers/mtd/ubi/kapi.c
-@@ -586,7 +586,7 @@ int ubi_leb_map(struct ubi_volume_desc *desc, int lnum)
- 	struct ubi_volume *vol = desc->vol;
- 	struct ubi_device *ubi = vol->ubi;
+diff --git a/drivers/mtd/ubi/attach.c b/drivers/mtd/ubi/attach.c
+index daf0010d06da..e9c34c0cc81e 100644
+--- a/drivers/mtd/ubi/attach.c
++++ b/drivers/mtd/ubi/attach.c
+@@ -1285,7 +1285,7 @@ out_ech:
+ 	return err;
+ }
  
--	dbg_gen("unmap LEB %d:%d", vol->vol_id, lnum);
-+	dbg_gen("map LEB %d:%d", vol->vol_id, lnum);
+-static struct ubi_attach_info *alloc_ai(const char *slab_name)
++static struct ubi_attach_info *alloc_ai(void)
+ {
+ 	struct ubi_attach_info *ai;
  
- 	if (desc->mode == UBI_READONLY || vol->vol_type == UBI_STATIC_VOLUME)
- 		return -EROFS;
+@@ -1351,7 +1351,7 @@ static int scan_fast(struct ubi_device *ubi, struct ubi_attach_info **ai)
+ 		return UBI_NO_FASTMAP;
+ 
+ 	destroy_ai(*ai);
+-	*ai = alloc_ai("ubi_aeb_slab_cache");
++	*ai = alloc_ai();
+ 	if (!*ai)
+ 		return -ENOMEM;
+ 
+@@ -1380,7 +1380,7 @@ int ubi_attach(struct ubi_device *ubi, int force_scan)
+ 	int err;
+ 	struct ubi_attach_info *ai;
+ 
+-	ai = alloc_ai("ubi_aeb_slab_cache");
++	ai = alloc_ai();
+ 	if (!ai)
+ 		return -ENOMEM;
+ 
+@@ -1398,7 +1398,7 @@ int ubi_attach(struct ubi_device *ubi, int force_scan)
+ 		if (err > 0 || mtd_is_eccerr(err)) {
+ 			if (err != UBI_NO_FASTMAP) {
+ 				destroy_ai(ai);
+-				ai = alloc_ai("ubi_aeb_slab_cache2");
++				ai = alloc_ai();
+ 				if (!ai)
+ 					return -ENOMEM;
+ 
+@@ -1437,7 +1437,7 @@ int ubi_attach(struct ubi_device *ubi, int force_scan)
+ 	if (ubi->fm && ubi_dbg_chk_gen(ubi)) {
+ 		struct ubi_attach_info *scan_ai;
+ 
+-		scan_ai = alloc_ai("ubi_ckh_aeb_slab_cache");
++		scan_ai = alloc_ai();
+ 		if (!scan_ai) {
+ 			err = -ENOMEM;
+ 			goto out_wl;
 -- 
 2.7.4
 
