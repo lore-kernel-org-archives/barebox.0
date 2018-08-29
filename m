@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail1.bemta25.messagelabs.com ([195.245.230.2])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fvboV-0000zr-O3
- for barebox@lists.infradead.org; Fri, 31 Aug 2018 05:17:45 +0000
-Received: by mail-pg1-x543.google.com with SMTP id 2-v6so4391539pgo.4
- for <barebox@lists.infradead.org>; Thu, 30 Aug 2018 22:17:33 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 30 Aug 2018 22:17:25 -0700
-Message-Id: <20180831051725.12351-1-andrew.smirnov@gmail.com>
+ id 1fuwT5-0004vU-Fx
+ for barebox@lists.infradead.org; Wed, 29 Aug 2018 09:08:53 +0000
+From: <Oleg.Karfich@wago.com>
+Date: Wed, 29 Aug 2018 09:08:27 +0000
+Message-ID: <1535533700-23464-1-git-send-email-oleg.karfich@wago.com>
+Content-Language: en-US
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,195 +16,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] mfd: rave-sp: Emulate CMD_GET_STATUS on device that don't
- support it
+Subject: [PATCH] gpio: pca953x: add oftree support
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Oleg.Karfich@wago.com
 
-CMD_GET_STATUS is not supported by some devices implementing
-RDU2-compatible ICD as well as "legacy" devices. To account for that
-fact, add code that obtains the same information (app/bootloader FW
-version) using several different commands.
-
-This is a backport of Linux kernel patch [1]
-
-[1] https://lore.kernel.org/lkml/20180707024108.32373-5-andrew.smirnov@gmail.com/T/#md1b7130a992235d57cabadc8e59fc74ee3b21d9e
-
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Signed-off-by: Oleg Karfich <oleg.karfich@wago.com>
 ---
- drivers/mfd/rave-sp.c | 100 ++++++++++++++++++++++++++++--------------
- 1 file changed, 66 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/mfd/rave-sp.c b/drivers/mfd/rave-sp.c
-index 96f69cc09..469ce4cc0 100644
---- a/drivers/mfd/rave-sp.c
-+++ b/drivers/mfd/rave-sp.c
-@@ -112,13 +112,46 @@ struct rave_sp_checksum {
- 	void (*subroutine)(const u8 *, size_t, u8 *);
- };
- 
-+struct rave_sp_version {
-+	u8     hardware;
-+	__le16 major;
-+	u8     minor;
-+	u8     letter[2];
-+} __packed;
-+
-+struct rave_sp_status {
-+	struct rave_sp_version bootloader_version;
-+	struct rave_sp_version firmware_version;
-+	u16 rdu_eeprom_flag;
-+	u16 dds_eeprom_flag;
-+	u8  pic_flag;
-+	u8  orientation;
-+	u32 etc;
-+	s16 temp[2];
-+	u8  backlight_current[3];
-+	u8  dip_switch;
-+	u8  host_interrupt;
-+	u16 voltage_28;
-+	u8  i2c_device_status;
-+	u8  power_status;
-+	u8  general_status;
-+#define RAVE_SP_STATUS_GS_FIRMWARE_MODE	BIT(1)
-+
-+	u8  deprecated1;
-+	u8  power_led_status;
-+	u8  deprecated2;
-+	u8  periph_power_shutoff;
-+} __packed;
-+
- /**
-  * struct rave_sp_variant_cmds - Variant specific command routines
-  *
-  * @translate:	Generic to variant specific command mapping routine
-+ * @get_status: Variant specific implementation of CMD_GET_STATUS
-  */
- struct rave_sp_variant_cmds {
- 	int (*translate)(enum rave_sp_command);
-+	int (*get_status)(struct rave_sp *sp, struct rave_sp_status *);
- };
- 
- /**
-@@ -161,37 +194,6 @@ struct rave_sp {
- 	const char *part_number_bootloader;
- };
- 
--struct rave_sp_version {
--	u8     hardware;
--	__le16 major;
--	u8     minor;
--	u8     letter[2];
--} __packed;
--
--struct rave_sp_status {
--	struct rave_sp_version bootloader_version;
--	struct rave_sp_version firmware_version;
--	u16 rdu_eeprom_flag;
--	u16 dds_eeprom_flag;
--	u8  pic_flag;
--	u8  orientation;
--	u32 etc;
--	s16 temp[2];
--	u8  backlight_current[3];
--	u8  dip_switch;
--	u8  host_interrupt;
--	u16 voltage_28;
--	u8  i2c_device_status;
--	u8  power_status;
--	u8  general_status;
--#define RAVE_SP_STATUS_GS_FIRMWARE_MODE	BIT(1)
--
--	u8  deprecated1;
--	u8  power_led_status;
--	u8  deprecated2;
--	u8  periph_power_shutoff;
--} __packed;
--
- static bool rave_sp_id_is_event(u8 code)
- {
- 	return (code & 0xF0) == RAVE_SP_EVNT_BASE;
-@@ -617,18 +619,45 @@ static const char *devm_rave_sp_version(struct device_d *dev,
- 			version->letter[1]);
+Hi,
+
+this Patch adds oftree support to the pca953x driver. I ported the
+of_device_id table from the kernel and reduced it to the currently supported
+devices in barebox (sufficient for us).
+Documentation is already there [1].
+
+[1] dts/Bindings/gpio/gpio-pca953x.txt
+
+---
+ drivers/gpio/gpio-pca953x.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index 3c95230..53e8c76 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -468,9 +468,44 @@ static int pca953x_probe(struct device_d *dev)
+ 	return 0;
  }
  
--static int rave_sp_get_status(struct rave_sp *sp)
++/* convenience to stop overlong match-table lines */
++#define OF_953X(__nrgpio, __int) (void *)(__nrgpio | PCA953X_TYPE | __int)
++#define OF_957X(__nrgpio, __int) (void *)(__nrgpio | PCA957X_TYPE | __int)
 +
-+static int rave_sp_rdu1_get_status(struct rave_sp *sp,
-+				   struct rave_sp_status *status)
- {
--	struct device_d *dev = sp->serdev->dev;
- 	u8 cmd[] = {
- 		[0] = RAVE_SP_CMD_STATUS,
- 		[1] = 0
- 	};
++static const struct of_device_id pca953x_dt_ids[] = {
++	{ .compatible = "nxp,pca9505", .data = OF_953X(40, PCA_INT), },
++	{ .compatible = "nxp,pca9534", .data = OF_953X( 8, PCA_INT), },
++	{ .compatible = "nxp,pca9535", .data = OF_953X(16, PCA_INT), },
++	{ .compatible = "nxp,pca9536", .data = OF_953X( 4, 0), },
++	{ .compatible = "nxp,pca9537", .data = OF_953X( 4, PCA_INT), },
++	{ .compatible = "nxp,pca9538", .data = OF_953X( 8, PCA_INT), },
++	{ .compatible = "nxp,pca9539", .data = OF_953X(16, PCA_INT), },
++	{ .compatible = "nxp,pca9554", .data = OF_953X( 8, PCA_INT), },
++	{ .compatible = "nxp,pca9555", .data = OF_953X(16, PCA_INT), },
++	{ .compatible = "nxp,pca9556", .data = OF_953X( 8, 0), },
++	{ .compatible = "nxp,pca9557", .data = OF_953X( 8, 0), },
++	{ .compatible = "nxp,pca9574", .data = OF_957X( 8, PCA_INT), },
++	{ .compatible = "nxp,pca9575", .data = OF_957X(16, PCA_INT), },
++	{ .compatible = "nxp,pca9698", .data = OF_953X(40, 0), },
 +
-+	return rave_sp_exec(sp, cmd, sizeof(cmd), status, sizeof(*status));
-+}
++	{ .compatible = "maxim,max7310", .data = OF_953X( 8, 0), },
++	{ .compatible = "maxim,max7312", .data = OF_953X(16, PCA_INT), },
++	{ .compatible = "maxim,max7313", .data = OF_953X(16, PCA_INT), },
++	{ .compatible = "maxim,max7315", .data = OF_953X( 8, PCA_INT), },
 +
-+static int rave_sp_emulated_get_status(struct rave_sp *sp,
-+				       struct rave_sp_status *status)
-+{
-+	u8 cmd[] = {
-+		[0] = RAVE_SP_CMD_GET_FIRMWARE_VERSION,
-+		[1] = 0,
-+	};
-+	int ret;
++	{ .compatible = "ti,pca6107", .data = OF_953X( 8, PCA_INT), },
++	{ .compatible = "ti,tca6408", .data = OF_953X( 8, PCA_INT), },
++	{ .compatible = "ti,tca6416", .data = OF_953X(16, PCA_INT), },
++	{ .compatible = "ti,tca6424", .data = OF_953X(24, PCA_INT), },
 +
-+	ret = rave_sp_exec(sp, cmd, sizeof(cmd), &status->firmware_version,
-+			   sizeof(status->firmware_version));
-+	if (ret)
-+		return ret;
++	{ .compatible = "exar,xra1202", .data = OF_953X( 8, 0), },
++	{ }
++};
 +
-+	cmd[0] = RAVE_SP_CMD_GET_BOOTLOADER_VERSION;
-+	return rave_sp_exec(sp, cmd, sizeof(cmd), &status->bootloader_version,
-+			    sizeof(status->bootloader_version));
-+}
-+
-+static int rave_sp_get_status(struct rave_sp *sp)
-+{
-+	struct device_d *dev = sp->serdev->dev;
- 	struct rave_sp_status status;
- 	const char *mode;
- 	int ret;
- 
--	ret = rave_sp_exec(sp, cmd, sizeof(cmd), &status, sizeof(status));
-+	ret = sp->variant->cmd.get_status(sp, &status);
- 	if (ret)
- 		return ret;
- 
-@@ -660,6 +689,7 @@ static const struct rave_sp_variant rave_sp_legacy = {
- 	.checksum = &rave_sp_checksum_ccitt,
- 	.cmd = {
- 		.translate = rave_sp_default_cmd_translate,
-+		.get_status = rave_sp_emulated_get_status,
- 	},
- };
- 
-@@ -667,6 +697,7 @@ static const struct rave_sp_variant rave_sp_rdu1 = {
- 	.checksum = &rave_sp_checksum_8b2c,
- 	.cmd = {
- 		.translate = rave_sp_rdu1_cmd_translate,
-+		.get_status = rave_sp_rdu1_get_status,
- 	},
- };
- 
-@@ -674,6 +705,7 @@ static const struct rave_sp_variant rave_sp_rdu2 = {
- 	.checksum = &rave_sp_checksum_ccitt,
- 	.cmd = {
- 		.translate = rave_sp_rdu2_cmd_translate,
-+		.get_status = rave_sp_emulated_get_status,
- 	},
+ static struct driver_d pca953x_driver = {
+ 	.name	= "pca953x",
+ 	.probe		= pca953x_probe,
++	.of_compatible	= DRV_OF_COMPAT(pca953x_dt_ids),
+ 	.id_table	= pca953x_id,
  };
  
 -- 
-2.17.1
-
+2.7.4
 
 _______________________________________________
 barebox mailing list
