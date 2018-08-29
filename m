@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzSu-0005d1-R8
- for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:21:03 +0000
+ id 1fuzSu-0005dH-Qk
+ for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:21:04 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id C12A3A00C77
- for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:56 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id BCE96A00CC8
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:57 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:19:38 +0200
-Message-Id: <1535545212-18871-23-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:19:42 +0200
+Message-Id: <1535545212-18871-27-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,278 +24,322 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 22/56] UBI: factorize code used to manipulate volumes at
- attach time
+Subject: [PATCH 26/56] UBI: provide helpers to allocate and free aeb elements
 To: barebox@lists.infradead.org
 
 From: Boris Brezillon <boris.brezillon@free-electrons.com>
 
-Volume creation/search code is duplicated in a few places (fastmap and
-non fastmap code). Create some helpers to factorize the code.
+This not only hides the aeb allocation internals (which is always good in
+case we ever want to change the allocation system), but also helps us
+factorize the initialization of some common fields (ec and pnum).
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 Signed-off-by: Richard Weinberger <richard@nod.at>
+[Fixed kzalloc/free conflicts]
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/attach.c  | 151 +++++++++++++++++++++++++++++++++-------------
- drivers/mtd/ubi/fastmap.c |  27 +--------
- drivers/mtd/ubi/ubi.h     |   1 +
- 3 files changed, 112 insertions(+), 67 deletions(-)
+ drivers/mtd/ubi/attach.c  | 69 ++++++++++++++++++++++++++++++++++-------------
+ drivers/mtd/ubi/fastmap.c | 29 +++++++++-----------
+ drivers/mtd/ubi/ubi.h     |  3 +++
+ drivers/mtd/ubi/vtbl.c    |  3 ++-
+ 4 files changed, 69 insertions(+), 35 deletions(-)
 
 diff --git a/drivers/mtd/ubi/attach.c b/drivers/mtd/ubi/attach.c
-index 4d3a936ae861..d450f6c0d65b 100644
+index f42c33a10fef..2b1271218804 100644
 --- a/drivers/mtd/ubi/attach.c
 +++ b/drivers/mtd/ubi/attach.c
-@@ -89,6 +89,92 @@ static int self_check_ai(struct ubi_device *ubi, struct ubi_attach_info *ai);
- static struct ubi_ec_hdr *ech;
- static struct ubi_vid_hdr *vidh;
+@@ -176,6 +176,47 @@ static struct ubi_ainf_volume *ubi_find_or_add_av(struct ubi_attach_info *ai,
+ }
  
-+#define AV_FIND		BIT(0)
-+#define AV_ADD		BIT(1)
-+#define AV_FIND_OR_ADD	(AV_FIND | AV_ADD)
-+
-+/**
-+ * find_or_add_av - internal function to find a volume, add a volume or do
-+ *		    both (find and add if missing).
+ /**
++ * ubi_alloc_aeb - allocate an aeb element
 + * @ai: attaching information
-+ * @vol_id: the requested volume ID
-+ * @flags: a combination of the %AV_FIND and %AV_ADD flags describing the
-+ *	   expected operation. If only %AV_ADD is set, -EEXIST is returned
-+ *	   if the volume already exists. If only %AV_FIND is set, NULL is
-+ *	   returned if the volume does not exist. And if both flags are
-+ *	   set, the helper first tries to find an existing volume, and if
-+ *	   it does not exist it creates a new one.
-+ * @created: in value used to inform the caller whether it"s a newly created
-+ *	     volume or not.
++ * @pnum: physical eraseblock number
++ * @ec: erase counter of the physical eraseblock
 + *
-+ * This function returns a pointer to a volume description or an ERR_PTR if
-+ * the operation failed. It can also return NULL if only %AV_FIND is set and
-+ * the volume does not exist.
++ * Allocate an aeb object and initialize the pnum and ec information.
++ * vol_id and lnum are set to UBI_UNKNOWN, and the other fields are
++ * initialized to zero.
++ * Note that the element is not added in any list or RB tree.
 + */
-+static struct ubi_ainf_volume *find_or_add_av(struct ubi_attach_info *ai,
-+					      int vol_id, unsigned int flags,
-+					      bool *created)
++struct ubi_ainf_peb *ubi_alloc_aeb(struct ubi_attach_info *ai, int pnum,
++				   int ec)
 +{
-+	struct ubi_ainf_volume *av;
-+	struct rb_node **p = &ai->volumes.rb_node, *parent = NULL;
++	struct ubi_ainf_peb *aeb;
 +
-+	/* Walk the volume RB-tree to look if this volume is already present */
-+	while (*p) {
-+		parent = *p;
-+		av = rb_entry(parent, struct ubi_ainf_volume, rb);
-+
-+		if (vol_id == av->vol_id) {
-+			*created = false;
-+
-+			if (!(flags & AV_FIND))
-+				return ERR_PTR(-EEXIST);
-+
-+			return av;
-+		}
-+
-+		if (vol_id > av->vol_id)
-+			p = &(*p)->rb_left;
-+		else
-+			p = &(*p)->rb_right;
-+	}
-+
-+	if (!(flags & AV_ADD))
++	aeb = kzalloc(sizeof(*aeb), GFP_KERNEL);
++	if (!aeb)
 +		return NULL;
 +
-+	/* The volume is absent - add it */
-+	av = kzalloc(sizeof(*av), GFP_KERNEL);
-+	if (!av)
-+		return ERR_PTR(-ENOMEM);
++	aeb->pnum = pnum;
++	aeb->ec = ec;
++	aeb->vol_id = UBI_UNKNOWN;
++	aeb->lnum = UBI_UNKNOWN;
 +
-+	av->vol_id = vol_id;
-+
-+	if (vol_id > ai->highest_vol_id)
-+		ai->highest_vol_id = vol_id;
-+
-+	rb_link_node(&av->rb, parent, p);
-+	rb_insert_color(&av->rb, &ai->volumes);
-+	ai->vols_found += 1;
-+	*created = true;
-+	dbg_bld("added volume %d", vol_id);
-+	return av;
++	return aeb;
 +}
 +
 +/**
-+ * ubi_find_or_add_av - search for a volume in the attaching information and
-+ *			add one if it does not exist.
++ * ubi_free_aeb - free an aeb element
 + * @ai: attaching information
-+ * @vol_id: the requested volume ID
-+ * @created: whether the volume has been created or not
++ * @aeb: the element to free
 + *
-+ * This function returns a pointer to the new volume description or an
-+ * ERR_PTR if the operation failed.
++ * Free an aeb object. The caller must have removed the element from any list
++ * or RB tree.
 + */
-+static struct ubi_ainf_volume *ubi_find_or_add_av(struct ubi_attach_info *ai,
-+						  int vol_id, bool *created)
++void ubi_free_aeb(struct ubi_attach_info *ai, struct ubi_ainf_peb *aeb)
 +{
-+	return find_or_add_av(ai, vol_id, AV_FIND_OR_ADD, created);
++	kfree(aeb);
 +}
 +
- /**
++/**
   * add_to_list - add physical eraseblock to a list.
   * @ai: attaching information
-@@ -288,44 +374,20 @@ static struct ubi_ainf_volume *add_volume(struct ubi_attach_info *ai,
- 					  const struct ubi_vid_hdr *vid_hdr)
+  * @pnum: physical eraseblock number to add
+@@ -211,14 +252,12 @@ static int add_to_list(struct ubi_attach_info *ai, int pnum, int vol_id,
+ 	} else
+ 		BUG();
+ 
+-	aeb = kzalloc(sizeof(*aeb), GFP_KERNEL);
++	aeb = ubi_alloc_aeb(ai, pnum, ec);
+ 	if (!aeb)
+ 		return -ENOMEM;
+ 
+-	aeb->pnum = pnum;
+ 	aeb->vol_id = vol_id;
+ 	aeb->lnum = lnum;
+-	aeb->ec = ec;
+ 	if (to_head)
+ 		list_add(&aeb->u.list, list);
+ 	else
+@@ -243,13 +282,11 @@ static int add_corrupted(struct ubi_attach_info *ai, int pnum, int ec)
+ 
+ 	dbg_bld("add to corrupted: PEB %d, EC %d", pnum, ec);
+ 
+-	aeb = kzalloc(sizeof(aeb), GFP_KERNEL);
++	aeb = ubi_alloc_aeb(ai, pnum, ec);
+ 	if (!aeb)
+ 		return -ENOMEM;
+ 
+ 	ai->corr_peb_count += 1;
+-	aeb->pnum = pnum;
+-	aeb->ec = ec;
+ 	list_add(&aeb->u.list, &ai->corr);
+ 	return 0;
+ }
+@@ -272,14 +309,12 @@ static int add_fastmap(struct ubi_attach_info *ai, int pnum,
  {
- 	struct ubi_ainf_volume *av;
--	struct rb_node **p = &ai->volumes.rb_node, *parent = NULL;
-+	bool created;
+ 	struct ubi_ainf_peb *aeb;
  
- 	ubi_assert(vol_id == be32_to_cpu(vid_hdr->vol_id));
+-	aeb = kmalloc(sizeof(*aeb), GFP_KERNEL);
++	aeb = ubi_alloc_aeb(ai, pnum, ec);
+ 	if (!aeb)
+ 		return -ENOMEM;
  
--	/* Walk the volume RB-tree to look if this volume is already present */
--	while (*p) {
--		parent = *p;
--		av = rb_entry(parent, struct ubi_ainf_volume, rb);
--
--		if (vol_id == av->vol_id)
--			return av;
-+	av = ubi_find_or_add_av(ai, vol_id, &created);
-+	if (IS_ERR(av) || !created)
-+		return av;
+-	aeb->pnum = pnum;
+ 	aeb->vol_id = be32_to_cpu(vid_hdr->vol_id);
+ 	aeb->sqnum = be64_to_cpu(vid_hdr->sqnum);
+-	aeb->ec = ec;
+ 	list_add(&aeb->u.list, &ai->fastmap);
  
--		if (vol_id > av->vol_id)
--			p = &(*p)->rb_left;
--		else
--			p = &(*p)->rb_right;
--	}
--
--	/* The volume is absent - add it */
--	av = kmalloc(sizeof(struct ubi_ainf_volume), GFP_KERNEL);
--	if (!av)
--		return ERR_PTR(-ENOMEM);
--
--	av->highest_lnum = av->leb_count = 0;
--	av->vol_id = vol_id;
--	av->root = RB_ROOT;
- 	av->used_ebs = be32_to_cpu(vid_hdr->used_ebs);
- 	av->data_pad = be32_to_cpu(vid_hdr->data_pad);
- 	av->compat = vid_hdr->compat;
- 	av->vol_type = vid_hdr->vol_type == UBI_VID_DYNAMIC ? UBI_DYNAMIC_VOLUME
- 							    : UBI_STATIC_VOLUME;
--	if (vol_id > ai->highest_vol_id)
--		ai->highest_vol_id = vol_id;
+ 	dbg_bld("add to fastmap list: PEB %d, vol_id %d, sqnum: %llu", pnum,
+@@ -658,12 +693,10 @@ int ubi_add_to_av(struct ubi_device *ubi, struct ubi_attach_info *ai, int pnum,
+ 	if (err)
+ 		return err;
  
--	rb_link_node(&av->rb, parent, p);
--	rb_insert_color(&av->rb, &ai->volumes);
--	ai->vols_found += 1;
--	dbg_bld("added volume %d", vol_id);
- 	return av;
- }
+-	aeb = kzalloc(sizeof(*aeb), GFP_KERNEL);
++	aeb = ubi_alloc_aeb(ai, pnum, ec);
+ 	if (!aeb)
+ 		return -ENOMEM;
  
-@@ -620,6 +682,21 @@ int ubi_add_to_av(struct ubi_device *ubi, struct ubi_attach_info *ai, int pnum,
- }
+-	aeb->ec = ec;
+-	aeb->pnum = pnum;
+ 	aeb->vol_id = vol_id;
+ 	aeb->lnum = lnum;
+ 	aeb->scrub = bitflips;
+@@ -1267,7 +1300,7 @@ static void destroy_av(struct ubi_attach_info *ai, struct ubi_ainf_volume *av,
+ 			if (list)
+ 				list_add_tail(&aeb->u.list, list);
+ 			else
+-				kfree(aeb);
++				ubi_free_aeb(ai, aeb);
+ 		}
+ 	}
+ 	kfree(av);
+@@ -1285,23 +1318,23 @@ static void destroy_ai(struct ubi_attach_info *ai)
  
- /**
-+ * ubi_add_av - add volume to the attaching information.
-+ * @ai: attaching information
-+ * @vol_id: the requested volume ID
-+ *
-+ * This function returns a pointer to the new volume description or an
-+ * ERR_PTR if the operation failed.
-+ */
-+struct ubi_ainf_volume *ubi_add_av(struct ubi_attach_info *ai, int vol_id)
-+{
-+	bool created;
-+
-+	return find_or_add_av(ai, vol_id, AV_ADD, &created);
-+}
-+
-+/**
-  * ubi_find_av - find volume in the attaching information.
-  * @ai: attaching information
-  * @vol_id: the requested volume ID
-@@ -630,22 +707,10 @@ int ubi_add_to_av(struct ubi_device *ubi, struct ubi_attach_info *ai, int pnum,
- struct ubi_ainf_volume *ubi_find_av(const struct ubi_attach_info *ai,
- 				    int vol_id)
- {
--	struct ubi_ainf_volume *av;
--	struct rb_node *p = ai->volumes.rb_node;
--
--	while (p) {
--		av = rb_entry(p, struct ubi_ainf_volume, rb);
--
--		if (vol_id == av->vol_id)
--			return av;
--
--		if (vol_id > av->vol_id)
--			p = p->rb_left;
--		else
--			p = p->rb_right;
--	}
-+	bool created;
+ 	list_for_each_entry_safe(aeb, aeb_tmp, &ai->alien, u.list) {
+ 		list_del(&aeb->u.list);
+-		kfree(aeb);
++		ubi_free_aeb(ai, aeb);
+ 	}
+ 	list_for_each_entry_safe(aeb, aeb_tmp, &ai->erase, u.list) {
+ 		list_del(&aeb->u.list);
+-		kfree(aeb);
++		ubi_free_aeb(ai, aeb);
+ 	}
+ 	list_for_each_entry_safe(aeb, aeb_tmp, &ai->corr, u.list) {
+ 		list_del(&aeb->u.list);
+-		kfree(aeb);
++		ubi_free_aeb(ai, aeb);
+ 	}
+ 	list_for_each_entry_safe(aeb, aeb_tmp, &ai->free, u.list) {
+ 		list_del(&aeb->u.list);
+-		kfree(aeb);
++		ubi_free_aeb(ai, aeb);
+ 	}
+ 	list_for_each_entry_safe(aeb, aeb_tmp, &ai->fastmap, u.list) {
+ 		list_del(&aeb->u.list);
+-		kfree(aeb);
++		ubi_free_aeb(ai, aeb);
+ 	}
  
--	return NULL;
-+	return find_or_add_av((struct ubi_attach_info *)ai, vol_id, AV_FIND,
-+			      &created);
- }
- 
- /**
+ 	/* Destroy the volume RB-tree */
 diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
-index c10ef0650760..b0979af62f18 100644
+index 2bf626f8075e..d77592bb19ce 100644
 --- a/drivers/mtd/ubi/fastmap.c
 +++ b/drivers/mtd/ubi/fastmap.c
-@@ -120,40 +120,19 @@ static struct ubi_ainf_volume *add_vol(struct ubi_attach_info *ai, int vol_id,
- 				       int last_eb_bytes)
+@@ -79,12 +79,10 @@ static int add_aeb(struct ubi_attach_info *ai, struct list_head *list,
  {
+ 	struct ubi_ainf_peb *aeb;
+ 
+-	aeb = kzalloc(sizeof(*aeb), GFP_KERNEL);
++	aeb = ubi_alloc_aeb(ai, pnum, ec);
+ 	if (!aeb)
+ 		return -ENOMEM;
+ 
+-	aeb->pnum = pnum;
+-	aeb->ec = ec;
+ 	aeb->lnum = -1;
+ 	aeb->scrub = scrub;
+ 	aeb->copy_flag = aeb->sqnum = 0;
+@@ -210,7 +208,8 @@ static int update_vol(struct ubi_device *ubi, struct ubi_attach_info *ai,
+ 		 */
+ 		if (aeb->pnum == new_aeb->pnum) {
+ 			ubi_assert(aeb->lnum == new_aeb->lnum);
+-			kfree(new_aeb);
++
++			ubi_free_aeb(ai, new_aeb);
+ 
+ 			return 0;
+ 		}
+@@ -221,12 +220,10 @@ static int update_vol(struct ubi_device *ubi, struct ubi_attach_info *ai,
+ 
+ 		/* new_aeb is newer */
+ 		if (cmp_res & 1) {
+-			victim = kzalloc(sizeof(*victim), GFP_KERNEL);
++			victim = ubi_alloc_aeb(ai, aeb->ec, aeb->pnum);
+ 			if (!victim)
+ 				return -ENOMEM;
+ 
+-			victim->ec = aeb->ec;
+-			victim->pnum = aeb->pnum;
+ 			list_add_tail(&victim->u.list, &ai->erase);
+ 
+ 			if (av->highest_lnum == be32_to_cpu(new_vh->lnum))
+@@ -240,7 +237,8 @@ static int update_vol(struct ubi_device *ubi, struct ubi_attach_info *ai,
+ 			aeb->pnum = new_aeb->pnum;
+ 			aeb->copy_flag = new_vh->copy_flag;
+ 			aeb->scrub = new_aeb->scrub;
+-			kfree(new_aeb);
++			
++			ubi_free_aeb(ai, new_aeb);
+ 
+ 		/* new_aeb is older */
+ 		} else {
+@@ -286,7 +284,7 @@ static int process_pool_aeb(struct ubi_device *ubi, struct ubi_attach_info *ai,
  	struct ubi_ainf_volume *av;
--	struct rb_node **p = &ai->volumes.rb_node, *parent = NULL;
  
--	while (*p) {
--		parent = *p;
--		av = rb_entry(parent, struct ubi_ainf_volume, rb);
--
--		if (vol_id > av->vol_id)
--			p = &(*p)->rb_left;
--		else if (vol_id < av->vol_id)
--			p = &(*p)->rb_right;
--		else
--			return ERR_PTR(-EINVAL);
--	}
-+	av = ubi_add_av(ai, vol_id);
-+	if (IS_ERR(av))
-+		return av;
+ 	if (vol_id == UBI_FM_SB_VOLUME_ID || vol_id == UBI_FM_DATA_VOLUME_ID) {
+-		kfree(new_aeb);
++		ubi_free_aeb(ai, new_aeb);
  
--	av = kmalloc(sizeof(struct ubi_ainf_volume), GFP_KERNEL);
--	if (!av)
--		goto out;
--
--	av->highest_lnum = av->leb_count = av->used_ebs = 0;
--	av->vol_id = vol_id;
- 	av->data_pad = data_pad;
- 	av->last_data_size = last_eb_bytes;
- 	av->compat = 0;
- 	av->vol_type = vol_type;
--	av->root = RB_ROOT;
- 	if (av->vol_type == UBI_STATIC_VOLUME)
- 		av->used_ebs = used_ebs;
+ 		return 0;
+ 	}
+@@ -295,7 +293,7 @@ static int process_pool_aeb(struct ubi_device *ubi, struct ubi_attach_info *ai,
+ 	av = ubi_find_av(ai, vol_id);
+ 	if (!av) {
+ 		ubi_err(ubi, "orphaned volume in fastmap pool!");
+-		kfree(new_aeb);
++		ubi_free_aeb(ai, new_aeb);
+ 		return UBI_BAD_FASTMAP;
+ 	}
  
- 	dbg_bld("found volume (ID %i)", vol_id);
--
--	rb_link_node(&av->rb, parent, p);
--	rb_insert_color(&av->rb, &ai->volumes);
--
--out:
- 	return av;
- }
+@@ -323,7 +321,8 @@ static void unmap_peb(struct ubi_attach_info *ai, int pnum)
+ 			if (aeb->pnum == pnum) {
+ 				rb_erase(&aeb->u.rb, &av->root);
+ 				av->leb_count--;
+-				kfree(aeb);
++
++				ubi_free_aeb(ai, aeb);
+ 				return;
+ 			}
+ 		}
+@@ -418,14 +417,12 @@ static int scan_pool(struct ubi_device *ubi, struct ubi_attach_info *ai,
+ 			if (err == UBI_IO_BITFLIPS)
+ 				scrub = 1;
  
+-			new_aeb = kzalloc(sizeof(*new_aeb), GFP_KERNEL);
++			new_aeb = ubi_alloc_aeb(ai, pnum, be64_to_cpu(ech->ec));
+ 			if (!new_aeb) {
+ 				ret = -ENOMEM;
+ 				goto out;
+ 			}
+ 
+-			new_aeb->ec = be64_to_cpu(ech->ec);
+-			new_aeb->pnum = pnum;
+ 			new_aeb->lnum = be32_to_cpu(vh->lnum);
+ 			new_aeb->sqnum = be64_to_cpu(vh->sqnum);
+ 			new_aeb->copy_flag = vh->copy_flag;
+@@ -732,11 +729,11 @@ fail_bad:
+ fail:
+ 	list_for_each_entry_safe(tmp_aeb, _tmp_aeb, &used, u.list) {
+ 		list_del(&tmp_aeb->u.list);
+-		free(tmp_aeb);
++		ubi_free_aeb(ai, tmp_aeb);
+ 	}
+ 	list_for_each_entry_safe(tmp_aeb, _tmp_aeb, &lfree, u.list) {
+ 		list_del(&tmp_aeb->u.list);
+-		free(tmp_aeb);
++		ubi_free_aeb(ai, tmp_aeb);
+ 	}
+ 
+ 	return ret;
 diff --git a/drivers/mtd/ubi/ubi.h b/drivers/mtd/ubi/ubi.h
-index c2f54a4b0b3f..eb81298beff3 100644
+index eb81298beff3..9539d5676306 100644
 --- a/drivers/mtd/ubi/ubi.h
 +++ b/drivers/mtd/ubi/ubi.h
-@@ -729,6 +729,7 @@ extern struct blocking_notifier_head ubi_notifiers;
+@@ -727,6 +727,9 @@ extern struct class *ubi_class;
+ extern struct blocking_notifier_head ubi_notifiers;
+ 
  /* attach.c */
++struct ubi_ainf_peb *ubi_alloc_aeb(struct ubi_attach_info *ai, int pnum,
++				   int ec);
++void ubi_free_aeb(struct ubi_attach_info *ai, struct ubi_ainf_peb *aeb);
  int ubi_add_to_av(struct ubi_device *ubi, struct ubi_attach_info *ai, int pnum,
  		  int ec, const struct ubi_vid_hdr *vid_hdr, int bitflips);
-+struct ubi_ainf_volume *ubi_add_av(struct ubi_attach_info *ai, int vol_id);
- struct ubi_ainf_volume *ubi_find_av(const struct ubi_attach_info *ai,
- 				    int vol_id);
- void ubi_remove_av(struct ubi_attach_info *ai, struct ubi_ainf_volume *av);
+ struct ubi_ainf_volume *ubi_add_av(struct ubi_attach_info *ai, int vol_id);
+diff --git a/drivers/mtd/ubi/vtbl.c b/drivers/mtd/ubi/vtbl.c
+index b5eb4545efa1..ea30edef87bf 100644
+--- a/drivers/mtd/ubi/vtbl.c
++++ b/drivers/mtd/ubi/vtbl.c
+@@ -329,7 +329,7 @@ retry:
+ 	 * of this LEB as it will be deleted and freed in 'ubi_add_to_av()'.
+ 	 */
+ 	err = ubi_add_to_av(ubi, ai, new_aeb->pnum, new_aeb->ec, vid_hdr, 0);
+-	kfree(new_aeb);
++	ubi_free_aeb(ai, new_aeb);
+ 	ubi_free_vid_hdr(ubi, vid_hdr);
+ 	return err;
+ 
+@@ -343,6 +343,7 @@ write_error:
+ 		goto retry;
+ 	}
+ 	kfree(new_aeb);
++	ubi_free_aeb(ai, new_aeb);
+ out_free:
+ 	ubi_free_vid_hdr(ubi, vid_hdr);
+ 	return err;
 -- 
 2.7.4
 
