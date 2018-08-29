@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzSu-0005d3-Pp
+ id 1fuzSt-0005Um-Eu
  for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:20:58 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 4ABBFA00CA7
- for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:57 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 5C23EA00DE8
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:21:01 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:19:40 +0200
-Message-Id: <1535545212-18871-25-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:19:56 +0200
+Message-Id: <1535545212-18871-41-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,39 +24,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 24/56] UBI: fastmap: use ubi_rb_for_each_entry() in unmap_peb()
+Subject: [PATCH 40/56] ubi: fastmap: Fix add_vol() return value test in
+ ubi_attach_fastmap()
 To: barebox@lists.infradead.org
 
 From: Boris Brezillon <boris.brezillon@free-electrons.com>
 
-Use the ubi_rb_for_each_entry() macro instead of open-coding it.
+Commit e96a8a3bb671 ("UBI: Fastmap: Do not add vol if it already
+exists") introduced a bug by changing the possible error codes returned
+by add_vol():
+- this function no longer returns NULL in case of allocation failure
+  but return ERR_PTR(-ENOMEM)
+- when a duplicate entry in the volume RB tree is found it returns
+  ERR_PTR(-EEXIST) instead of ERR_PTR(-EINVAL)
 
+Fix the tests done on add_vol() return val to match this new behavior.
+
+Fixes: e96a8a3bb671 ("UBI: Fastmap: Do not add vol if it already exists")
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+Acked-by: Sheng Yong <shengyong1@huawei.com>
 Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/fastmap.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/mtd/ubi/fastmap.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
-index b0979af62f18..683ac0d9c4ab 100644
+index cf5abef8c2a7..52f24a6be74f 100644
 --- a/drivers/mtd/ubi/fastmap.c
 +++ b/drivers/mtd/ubi/fastmap.c
-@@ -318,12 +318,8 @@ static void unmap_peb(struct ubi_attach_info *ai, int pnum)
- 	struct rb_node *node, *node2;
- 	struct ubi_ainf_peb *aeb;
+@@ -643,11 +643,11 @@ static int ubi_attach_fastmap(struct ubi_device *ubi,
+ 			     fmvhdr->vol_type,
+ 			     be32_to_cpu(fmvhdr->last_eb_bytes));
  
--	for (node = rb_first(&ai->volumes); node; node = rb_next(node)) {
--		av = rb_entry(node, struct ubi_ainf_volume, rb);
--
--		for (node2 = rb_first(&av->root); node2;
--		     node2 = rb_next(node2)) {
--			aeb = rb_entry(node2, struct ubi_ainf_peb, u.rb);
-+	ubi_rb_for_each_entry(node, av, &ai->volumes, rb) {
-+		ubi_rb_for_each_entry(node2, aeb, &av->root, u.rb) {
- 			if (aeb->pnum == pnum) {
- 				rb_erase(&aeb->u.rb, &av->root);
- 				av->leb_count--;
+-		if (!av)
+-			goto fail_bad;
+-		if (PTR_ERR(av) == -EINVAL) {
+-			ubi_err(ubi, "volume (ID %i) already exists",
+-				fmvhdr->vol_id);
++		if (IS_ERR(av)) {
++			if (PTR_ERR(av) == -EEXIST)
++				ubi_err(ubi, "volume (ID %i) already exists",
++					fmvhdr->vol_id);
++
+ 			goto fail_bad;
+ 		}
+ 
 -- 
 2.7.4
 
