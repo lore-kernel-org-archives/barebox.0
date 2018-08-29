@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzSu-0005be-R7
+ id 1fuzSu-0005cy-Qh
  for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:20:59 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id BDD13A00C1F
- for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:55 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 4EE3AA00C52
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:56 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:19:34 +0200
-Message-Id: <1535545212-18871-19-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:19:36 +0200
+Message-Id: <1535545212-18871-21-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,63 +24,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/56] UBI: fastmap: use ubi_find_volume() instead of open
- coding it
+Subject: [PATCH 20/56] UBI: fastmap: avoid multiple be32_to_cpu() when
+ unneccesary
 To: barebox@lists.infradead.org
 
 From: Boris Brezillon <boris.brezillon@free-electrons.com>
 
-process_pool_aeb() re-implements the logic found in ubi_find_volume().
-Call ubi_find_volume() to avoid this duplication.
+process_pool_aeb() does several times the be32_to_cpu(new_vh->vol_id)
+operation. Create a temporary variable and do it once.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 Signed-off-by: Richard Weinberger <richard@nod.at>
+[Fix conflict]
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/fastmap.c | 23 +++--------------------
- 1 file changed, 3 insertions(+), 20 deletions(-)
+ drivers/mtd/ubi/fastmap.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
-index d60f89fdb369..37bb93bc2a69 100644
+index 37bb93bc2a69..6ef94189b612 100644
 --- a/drivers/mtd/ubi/fastmap.c
 +++ b/drivers/mtd/ubi/fastmap.c
-@@ -303,9 +303,7 @@ static int process_pool_aeb(struct ubi_device *ubi, struct ubi_attach_info *ai,
+@@ -303,24 +303,24 @@ static int process_pool_aeb(struct ubi_device *ubi, struct ubi_attach_info *ai,
  			    struct ubi_vid_hdr *new_vh,
  			    struct ubi_ainf_peb *new_aeb)
  {
--	struct ubi_ainf_volume *av, *tmp_av = NULL;
--	struct rb_node **p = &ai->volumes.rb_node, *parent = NULL;
--	int found = 0;
-+	struct ubi_ainf_volume *av;
++	int vol_id = be32_to_cpu(new_vh->vol_id);
+ 	struct ubi_ainf_volume *av;
  
- 	if (be32_to_cpu(new_vh->vol_id) == UBI_FM_SB_VOLUME_ID ||
- 		be32_to_cpu(new_vh->vol_id) == UBI_FM_DATA_VOLUME_ID) {
-@@ -315,23 +313,8 @@ static int process_pool_aeb(struct ubi_device *ubi, struct ubi_attach_info *ai,
+-	if (be32_to_cpu(new_vh->vol_id) == UBI_FM_SB_VOLUME_ID ||
+-		be32_to_cpu(new_vh->vol_id) == UBI_FM_DATA_VOLUME_ID) {
++	if (vol_id == UBI_FM_SB_VOLUME_ID || vol_id == UBI_FM_DATA_VOLUME_ID) {
+ 		kfree(new_aeb);
+ 
+ 		return 0;
  	}
  
  	/* Find the volume this SEB belongs to */
--	while (*p) {
--		parent = *p;
--		tmp_av = rb_entry(parent, struct ubi_ainf_volume, rb);
--
--		if (be32_to_cpu(new_vh->vol_id) > tmp_av->vol_id)
--			p = &(*p)->rb_left;
--		else if (be32_to_cpu(new_vh->vol_id) < tmp_av->vol_id)
--			p = &(*p)->rb_right;
--		else {
--			found = 1;
--			break;
--		}
--	}
--
--	if (found)
--		av = tmp_av;
--	else {
-+	av = ubi_find_av(ai, be32_to_cpu(new_vh->vol_id));
-+	if (!av) {
+-	av = ubi_find_av(ai, be32_to_cpu(new_vh->vol_id));
++	av = ubi_find_av(ai, vol_id);
+ 	if (!av) {
  		ubi_err(ubi, "orphaned volume in fastmap pool!");
  		kfree(new_aeb);
  		return UBI_BAD_FASTMAP;
+ 	}
+ 
+-	ubi_assert(be32_to_cpu(new_vh->vol_id) == av->vol_id);
++	ubi_assert(vol_id == av->vol_id);
+ 
+ 	return update_vol(ubi, ai, av, new_vh, new_aeb);
+ }
 -- 
 2.7.4
 
