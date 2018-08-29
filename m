@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzSy-0005Ux-Bw
+ id 1fuzSx-0005Uw-OO
  for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:21:06 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id C8740A00E26
+ by root.phytec.de (Postfix) with ESMTP id 50697A00E02
  for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:21:02 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:20:02 +0200
-Message-Id: <1535545212-18871-47-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:20:00 +0200
+Message-Id: <1535545212-18871-45-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,38 +19,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 46/56] UBI: Fix two typos in comments
+Subject: [PATCH 44/56] ubi: pr_err() strings should end with newlines
 To: barebox@lists.infradead.org
 
-RnJvbTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4K
-ClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0
-cm9uaXguZGU+ClNpZ25lZC1vZmYtYnk6IFJpY2hhcmQgV2VpbmJlcmdlciA8cmljaGFyZEBub2Qu
-YXQ+ClNpZ25lZC1vZmYtYnk6IFRlcmVzYSBSZW1tZXQgPHQucmVtbWV0QHBoeXRlYy5kZT4KLS0t
-CiBkcml2ZXJzL210ZC91YmkvdWJpLW1lZGlhLmggfCA0ICsrLS0KIDEgZmlsZSBjaGFuZ2VkLCAy
-IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQv
-dWJpL3ViaS1tZWRpYS5oIGIvZHJpdmVycy9tdGQvdWJpL3ViaS1tZWRpYS5oCmluZGV4IDI3YzQ5
-YmVhZmUxNy4uNDM1ODQ4NDM1NDJmIDEwMDY0NAotLS0gYS9kcml2ZXJzL210ZC91YmkvdWJpLW1l
-ZGlhLmgKKysrIGIvZHJpdmVycy9tdGQvdWJpL3ViaS1tZWRpYS5oCkBAIC0yMjUsNyArMjI1LDcg
-QEAgc3RydWN0IHViaV9lY19oZHIgewogICogY29weS4gVUJJIGFsc28gY2FsY3VsYXRlcyBkYXRh
-IENSQyB3aGVuIHRoZSBkYXRhIGlzIG1vdmVkIGFuZCBzdG9yZXMgaXQgYXQKICAqIHRoZSBAZGF0
-YV9jcmMgZmllbGQgb2YgdGhlIGNvcHkgKFAxKS4gU28gd2hlbiBVQkkgbmVlZHMgdG8gcGljayBv
-bmUgcGh5c2ljYWwKICAqIGVyYXNlYmxvY2sgb2YgdHdvIChQIG9yIFAxKSwgdGhlIEBjb3B5X2Zs
-YWcgb2YgdGhlIG5ld2VyIG9uZSAoUDEpIGlzCi0gKiBleGFtaW5lZC4gSWYgaXQgaXMgY2xlYXJl
-ZCwgdGhlIHNpdHVhdGlvbiogaXMgc2ltcGxlIGFuZCB0aGUgbmV3ZXIgb25lIGlzCisgKiBleGFt
-aW5lZC4gSWYgaXQgaXMgY2xlYXJlZCwgdGhlIHNpdHVhdGlvbiBpcyBzaW1wbGUgYW5kIHRoZSBu
-ZXdlciBvbmUgaXMKICAqIHBpY2tlZC4gSWYgaXQgaXMgc2V0LCB0aGUgZGF0YSBDUkMgb2YgdGhl
-IGNvcHkgKFAxKSBpcyBleGFtaW5lZC4gSWYgdGhlIENSQwogICogY2hlY2tzdW0gaXMgY29ycmVj
-dCwgdGhpcyBwaHlzaWNhbCBlcmFzZWJsb2NrIGlzIHNlbGVjdGVkIChQMSkuIE90aGVyd2lzZQog
-ICogdGhlIG9sZGVyIG9uZSAoUCkgaXMgc2VsZWN0ZWQuCkBAIC0zODUsNyArMzg1LDcgQEAgc3Ry
-dWN0IHViaV92dGJsX3JlY29yZCB7CiAjZGVmaW5lIFVCSV9GTV9QT09MX01BR0lDCTB4NjdBRjRE
-MDgKICNkZWZpbmUgVUJJX0ZNX0VCQV9NQUdJQwkweGYwYzA0MGE4CiAKLS8qIEEgZmFzdG1hcCBz
-dXBiZXIgYmxvY2sgY2FuIGJlIGxvY2F0ZWQgYmV0d2VlbiBQRUIgMCBhbmQKKy8qIEEgZmFzdG1h
-cCBzdXBlciBibG9jayBjYW4gYmUgbG9jYXRlZCBiZXR3ZWVuIFBFQiAwIGFuZAogICogVUJJX0ZN
-X01BWF9TVEFSVCAqLwogI2RlZmluZSBVQklfRk1fTUFYX1NUQVJUCTY0CiAKLS0gCjIuNy40CgoK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
-YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+From: Ben Dooks <ben.dooks@codethink.co.uk>
+
+In ubi_attach_mtd_dev() the pr_err() calls should have their
+messgaes terminated with a new-line to avoid other messages
+being concatenated onto the end.
+
+Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+[Fix conflics]
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ drivers/mtd/ubi/build.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
+index 13f39b39c8fb..5917fe67918e 100644
+--- a/drivers/mtd/ubi/build.c
++++ b/drivers/mtd/ubi/build.c
+@@ -522,7 +522,7 @@ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
+ 	for (i = 0; i < UBI_MAX_DEVICES; i++) {
+ 		ubi = ubi_devices[i];
+ 		if (ubi && mtd == ubi->mtd) {
+-			pr_err("ubi: mtd%d is already attached to ubi%d",
++			pr_err("ubi: mtd%d is already attached to ubi%d\n",
+ 				mtd->index, i);
+ 			return -EEXIST;
+ 		}
+@@ -537,7 +537,7 @@ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
+ 	 * no sense to attach emulated MTD devices, so we prohibit this.
+ 	 */
+ 	if (mtd->type == MTD_UBIVOLUME) {
+-		pr_err("ubi: refuse attaching mtd%d - it is already emulated on top of UBI",
++		pr_err("ubi: refuse attaching mtd%d - it is already emulated on top of UBI\n",
+ 			mtd->index);
+ 		return -EINVAL;
+ 	}
+@@ -548,7 +548,7 @@ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
+ 			if (!ubi_devices[ubi_num])
+ 				break;
+ 		if (ubi_num == UBI_MAX_DEVICES) {
+-			pr_err("ubi: only %d UBI devices may be created",
++			pr_err("ubi: only %d UBI devices may be created\n",
+ 				UBI_MAX_DEVICES);
+ 			return -ENFILE;
+ 		}
+@@ -558,7 +558,7 @@ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
+ 
+ 		/* Make sure ubi_num is not busy */
+ 		if (ubi_devices[ubi_num]) {
+-			pr_err("ubi: ubi%i already exists", ubi_num);
++			pr_err("ubi: ubi%i already exists\n", ubi_num);
+ 			return -EEXIST;
+ 		}
+ 	}
+-- 
+2.7.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
