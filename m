@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzT1-0005Um-8o
- for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:21:09 +0000
+ id 1fuzT3-0005fL-Un
+ for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:21:12 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id BE817A00E49
- for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:21:03 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 0E876A00E64
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:21:05 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:20:06 +0200
-Message-Id: <1535545212-18871-51-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:20:11 +0200
+Message-Id: <1535545212-18871-56-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +20,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 50/56] ubi: Fix copy/paste error in function documentation
+Subject: [PATCH 55/56] mtd: ubi: Update ubi-media.h to dual license
 To: barebox@lists.infradead.org
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
-
-The function documentation of leb_write_trylock is copied from
-leb_write_lock. Replace the function name with the correct one.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
----
- drivers/mtd/ubi/eba.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/mtd/ubi/eba.c b/drivers/mtd/ubi/eba.c
-index d5b47cc20519..69a6242e054a 100644
---- a/drivers/mtd/ubi/eba.c
-+++ b/drivers/mtd/ubi/eba.c
-@@ -368,7 +368,7 @@ static int leb_write_lock(struct ubi_device *ubi, int vol_id, int lnum)
- }
- 
- /**
-- * leb_write_lock - lock logical eraseblock for writing.
-+ * leb_write_trylock - try to lock logical eraseblock for writing.
-  * @ubi: UBI device description object
-  * @vol_id: volume ID
-  * @lnum: logical eraseblock number
--- 
-2.7.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogTGlvbmVsIERlYmlldmUgPGxpb25lbC5kZWJpZXZlQHN0LmNvbT4KClVwZGF0ZSBsaWNl
+bnNlIHRlbXBsYXRlIHVzaW5nIFNQRFguIE1vdmUgdGhlIGdsb2JhbCBsYXlvdXQKb2YgVUJJIGhl
+YWRlcnMgdG8gZHVhbCBsaWNlbnNlIGhlbHBpbmcgVUJJIHRvIGJlIHRoZSBzdGFuZGFyZApzb2x1
+dGlvbiBmb3IgcmF3IE5BTkQgbWFuYWdlbWVudC4KClNpZ25lZC1vZmYtYnk6IExpb25lbCBEZWJp
+ZXZlIDxsaW9uZWwuZGViaWV2ZUBzdC5jb20+CkFja2VkLWJ5OiBUaG9tYXMgR2xlaXhuZXIgPHRn
+bHhAbGludXRyb25peC5kZT4KQWNrZWQtYnk6IEFydGVtIEJpdHl1dHNraXkgPGRlZGVraW5kMUBn
+bWFpbC5jb20+CkFja2VkLWJ5OiBQYXVsIEUuIE1jS2VubmV5IDxwYXVsbWNrQGxpbnV4LnZuZXQu
+aWJtLmNvbT4KU2lnbmVkLW9mZi1ieTogUmljaGFyZCBXZWluYmVyZ2VyIDxyaWNoYXJkQG5vZC5h
+dD4KW0ZpeGVkIGNvbmZsaWN0XQpTaWduZWQtb2ZmLWJ5OiBUZXJlc2EgUmVtbWV0IDx0LnJlbW1l
+dEBwaHl0ZWMuZGU+Ci0tLQogZHJpdmVycy9tdGQvdWJpL3ViaS1tZWRpYS5oIHwgMTggKysrLS0t
+LS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAxNSBkZWxldGlv
+bnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL210ZC91YmkvdWJpLW1lZGlhLmggYi9kcml2ZXJz
+L210ZC91YmkvdWJpLW1lZGlhLmgKaW5kZXggNDM1ODQ4NDM1NDJmLi4xOTVmZjhjYTgyMTEgMTAw
+NjQ0Ci0tLSBhL2RyaXZlcnMvbXRkL3ViaS91YmktbWVkaWEuaAorKysgYi9kcml2ZXJzL210ZC91
+YmkvdWJpLW1lZGlhLmgKQEAgLTEsMjQgKzEsMTIgQEAKKy8qIFNQRFgtTGljZW5zZS1JZGVudGlm
+aWVyOiAoR1BMLTIuMCsgT1IgQlNELTMtQ2xhdXNlKSAqLwogLyoKLSAqIENvcHlyaWdodCAoYykg
+SW50ZXJuYXRpb25hbCBCdXNpbmVzcyBNYWNoaW5lcyBDb3JwLiwgMjAwNgotICoKLSAqIFRoaXMg
+cHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3Ig
+bW9kaWZ5Ci0gKiBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBM
+aWNlbnNlIGFzIHB1Ymxpc2hlZCBieQotICogdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsg
+ZWl0aGVyIHZlcnNpb24gMiBvZiB0aGUgTGljZW5zZSwgb3IKLSAqIChhdCB5b3VyIG9wdGlvbikg
+YW55IGxhdGVyIHZlcnNpb24uCi0gKgotICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGlu
+IHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCi0gKiBidXQgV0lUSE9VVCBBTlkgV0FS
+UkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgotICogTUVSQ0hBTlRB
+QklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiBTZWUKLSAqIHRoZSBH
+TlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgotICoKKyAqIENvcHly
+aWdodCAoQykgSW50ZXJuYXRpb25hbCBCdXNpbmVzcyBNYWNoaW5lcyBDb3JwLiwgMjAwNgogICog
+QXV0aG9yczogQXJ0ZW0gQml0eXV0c2tpeSAo0JHQuNGC0Y7RhtC60LjQuSDQkNGA0YLRkdC8KQog
+ICogICAgICAgICAgVGhvbWFzIEdsZWl4bmVyCiAgKiAgICAgICAgICBGcmFuayBIYXZlcmthbXAK
+ICAqICAgICAgICAgIE9saXZlciBMb2htYW5uCiAgKiAgICAgICAgICBBbmRyZWFzIEFybmV6Ci0g
+Ki8KLQotLyoKKyAqCiAgKiBUaGlzIGZpbGUgZGVmaW5lcyB0aGUgbGF5b3V0IG9mIFVCSSBoZWFk
+ZXJzIGFuZCBhbGwgdGhlIG90aGVyIFVCSSBvbi1mbGFzaAogICogZGF0YSBzdHJ1Y3R1cmVzLgog
+ICovCi0tIAoyLjcuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
+dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
