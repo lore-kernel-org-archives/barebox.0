@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fvctv-00088T-LD
- for barebox@lists.infradead.org; Fri, 31 Aug 2018 06:27:25 +0000
-Date: Fri, 31 Aug 2018 08:27:12 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180831062711.zajvdeuaqbsxnra3@pengutronix.de>
-References: <20180829132632.28601-1-m.grzeschik@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180829132632.28601-1-m.grzeschik@pengutronix.de>
+ id 1fv0N8-0005Eq-1U
+ for barebox@lists.infradead.org; Wed, 29 Aug 2018 13:18:59 +0000
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Wed, 29 Aug 2018 15:18:34 +0200
+Message-Id: <20180829131834.12563-1-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,165 +14,169 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: mach-imx: remove unused header
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] ARM: i.MX: Reset OTG controller during startup
+To: barebox@lists.infradead.org
 
-On Wed, Aug 29, 2018 at 03:26:32PM +0200, Michael Grzeschik wrote:
-> The defines are also in mach/clocks-imx6.h prefixed
-> with MXC instead of MX6.
-> 
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> ---
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Applied, thanks
+When booting from USB it's sometimes observed that the USB stack on
+the remote host gets confused. This happens when we adjust the PLLs
+the USB controller is hanging on. The ROM just leaves the USB controller
+enabled when it passes control to the bootloader, so in case the usb
+clks are enabled make sure we reset the otg  before doing any critical
+clock operations.
 
-Sascha
+This is currently done for i.MX50, i.MX51, i.MX53 and i.MX6, but a
+similar thing can happen on other i.MXes aswell.
 
->  .../flash-header-nitrogen6dl-1g.imxcfg        |  1 -
->  .../flash-header-nitrogen6dl-2g.imxcfg        |  1 -
->  .../flash-header-nitrogen6q-1g.imxcfg         |  1 -
->  .../flash-header-nitrogen6q-2g.imxcfg         |  1 -
->  .../flash-header-nitrogen6qp-max.imxcfg       |  1 -
->  .../flash-header-ventana-quad-1gx64.imxcfg    |  1 -
->  .../karo-tx6x/flash-header-tx6dl-1g.imxcfg    |  1 -
->  .../arm/mach-imx/include/mach/imx6-ccm-regs.h | 24 -------------------
->  8 files changed, 31 deletions(-)
->  delete mode 100644 arch/arm/mach-imx/include/mach/imx6-ccm-regs.h
-> 
-> diff --git a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6dl-1g.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6dl-1g.imxcfg
-> index 0773f4d276..47b572db46 100644
-> --- a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6dl-1g.imxcfg
-> +++ b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6dl-1g.imxcfg
-> @@ -4,7 +4,6 @@ dcdofs 0x400
->  
->  #include <mach/imx6-ddr-regs.h>
->  #include <mach/imx6dl-ddr-regs.h>
-> -#include <mach/imx6-ccm-regs.h>
->  
->  #include "ram-base.imxcfg"
->  #include "800mhz_4x128mx16.imxcfg"
-> diff --git a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6dl-2g.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6dl-2g.imxcfg
-> index 6622c517fa..cf3716dbaa 100644
-> --- a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6dl-2g.imxcfg
-> +++ b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6dl-2g.imxcfg
-> @@ -4,7 +4,6 @@ dcdofs 0x400
->  
->  #include <mach/imx6-ddr-regs.h>
->  #include <mach/imx6dl-ddr-regs.h>
-> -#include <mach/imx6-ccm-regs.h>
->  
->  #include "ram-base.imxcfg"
->  #include "800mhz_4x256mx16.imxcfg"
-> diff --git a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6q-1g.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6q-1g.imxcfg
-> index bd4134f8a9..8ed987daa8 100644
-> --- a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6q-1g.imxcfg
-> +++ b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6q-1g.imxcfg
-> @@ -4,7 +4,6 @@ dcdofs 0x400
->  
->  #include <mach/imx6-ddr-regs.h>
->  #include <mach/imx6q-ddr-regs.h>
-> -#include <mach/imx6-ccm-regs.h>
->  
->  #include "ram-base.imxcfg"
->  #include "1066mhz_4x128mx16.imxcfg"
-> diff --git a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6q-2g.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6q-2g.imxcfg
-> index 89aa21c300..e6d97d11c1 100644
-> --- a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6q-2g.imxcfg
-> +++ b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6q-2g.imxcfg
-> @@ -4,7 +4,6 @@ dcdofs 0x400
->  
->  #include <mach/imx6-ddr-regs.h>
->  #include <mach/imx6q-ddr-regs.h>
-> -#include <mach/imx6-ccm-regs.h>
->  
->  #include "ram-base.imxcfg"
->  #include "1066mhz_4x256mx16.imxcfg"
-> diff --git a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6qp-max.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6qp-max.imxcfg
-> index 66f0e1a860..50bbfc5bdd 100644
-> --- a/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6qp-max.imxcfg
-> +++ b/arch/arm/boards/boundarydevices-nitrogen6/flash-header-nitrogen6qp-max.imxcfg
-> @@ -4,7 +4,6 @@ dcdofs 0x400
->  
->  #include <mach/imx6-ddr-regs.h>
->  #include <mach/imx6q-ddr-regs.h>
-> -#include <mach/imx6-ccm-regs.h>
->  
->  #include "ram-base.imxcfg"
->  #include "1066mhz_4x512mx16-qp.imxcfg"
-> diff --git a/arch/arm/boards/gateworks-ventana/flash-header-ventana-quad-1gx64.imxcfg b/arch/arm/boards/gateworks-ventana/flash-header-ventana-quad-1gx64.imxcfg
-> index f4506f1da5..b9a6fc12ff 100644
-> --- a/arch/arm/boards/gateworks-ventana/flash-header-ventana-quad-1gx64.imxcfg
-> +++ b/arch/arm/boards/gateworks-ventana/flash-header-ventana-quad-1gx64.imxcfg
-> @@ -4,7 +4,6 @@ dcdofs 0x400
->  
->  #include <mach/imx6-ddr-regs.h>
->  #include <mach/imx6q-ddr-regs.h>
-> -#include <mach/imx6-ccm-regs.h>
->  
->  #include "ram-base.imxcfg"
->  #include "quad_128x64.imxcfg"
-> diff --git a/arch/arm/boards/karo-tx6x/flash-header-tx6dl-1g.imxcfg b/arch/arm/boards/karo-tx6x/flash-header-tx6dl-1g.imxcfg
-> index 2a1c42aeed..b7a914fba5 100644
-> --- a/arch/arm/boards/karo-tx6x/flash-header-tx6dl-1g.imxcfg
-> +++ b/arch/arm/boards/karo-tx6x/flash-header-tx6dl-1g.imxcfg
-> @@ -4,7 +4,6 @@ dcdofs 0x400
->  
->  #include <mach/imx6-ddr-regs.h>
->  #include <mach/imx6dl-ddr-regs.h>
-> -#include <mach/imx6-ccm-regs.h>
->  
->  #include "ram-base.imxcfg"
->  #include "1600mhz_4x128mx16.imxcfg"
-> diff --git a/arch/arm/mach-imx/include/mach/imx6-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx6-ccm-regs.h
-> deleted file mode 100644
-> index 099d5621de..0000000000
-> --- a/arch/arm/mach-imx/include/mach/imx6-ccm-regs.h
-> +++ /dev/null
-> @@ -1,24 +0,0 @@
-> -/*
-> - * Copyright (C) Freescale Semiconductor, Inc.
-> - *
-> - * This program is free software; you can redistribute it and/or
-> - * modify it under the terms of the GNU General Public License as
-> - * published by the Free Software Foundation; either version 2 of
-> - * the License, or (at your option) any later version.
-> - *
-> - * This program is distributed in the hope that it will be useful,
-> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> - * GNU General Public License for more details.
-> - */
-> -
-> -#define MX6_CCM_CCOSR		0x020c4060
-> -#define MX6_CCM_CCGR0		0x020C4068
-> -#define MX6_CCM_CCGR1		0x020C406c
-> -#define MX6_CCM_CCGR2		0x020C4070
-> -#define MX6_CCM_CCGR3		0x020C4074
-> -#define MX6_CCM_CCGR4		0x020C4078
-> -#define MX6_CCM_CCGR5		0x020C407c
-> -#define MX6_CCM_CCGR6		0x020C4080
-> -
-> -#define MX6_PMU_MISC2		0x020C8170
-> -- 
-> 2.18.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+---
+v1 -> v2: - resetting the otg instead of disable
+	  - checking for ccm gates before toggling otg bits
+          - added case for imx50
 
+ arch/arm/mach-imx/imx50.c            |  4 ++++
+ arch/arm/mach-imx/imx51.c            |  4 ++++
+ arch/arm/mach-imx/imx53.c            |  4 ++++
+ arch/arm/mach-imx/imx6.c             |  5 +++++
+ arch/arm/mach-imx/include/mach/usb.h | 23 +++++++++++++++++++++++
+ 5 files changed, 40 insertions(+)
+
+diff --git a/arch/arm/mach-imx/imx50.c b/arch/arm/mach-imx/imx50.c
+index f7cbc9d4ba..4fd5481670 100644
+--- a/arch/arm/mach-imx/imx50.c
++++ b/arch/arm/mach-imx/imx50.c
+@@ -22,6 +22,7 @@
+ #include <mach/clock-imx51_53.h>
+ #include <mach/generic.h>
+ #include <mach/reset-reason.h>
++#include <mach/usb.h>
+ 
+ #define SI_REV 0x48
+ 
+@@ -90,6 +91,9 @@ void imx50_init_lowlevel_early(unsigned int cpufreq_mhz)
+ 	void __iomem *ccm = IOMEM(MX50_CCM_BASE_ADDR);
+ 	u32 r;
+ 
++	if ((readl(ccm + MX5_CCM_CCGR2) & MX5_CCM_CCGRx_CG13_MASK))
++		imx_reset_otg_controller(IOMEM(MX50_OTG_BASE_ADDR));
++
+ 	imx5_init_lowlevel();
+ 
+ 	/*
+diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
+index ec8cdd868b..7404254bee 100644
+--- a/arch/arm/mach-imx/imx51.c
++++ b/arch/arm/mach-imx/imx51.c
+@@ -22,6 +22,7 @@
+ #include <mach/clock-imx51_53.h>
+ #include <mach/generic.h>
+ #include <mach/reset-reason.h>
++#include <mach/usb.h>
+ 
+ #define IIM_SREV 0x24
+ 
+@@ -140,6 +141,9 @@ void imx51_init_lowlevel(unsigned int cpufreq_mhz)
+ 	u32 r;
+ 	int rev = imx51_silicon_revision();
+ 
++	if ((readl(ccm + MX5_CCM_CCGR2) & MX5_CCM_CCGRx_CG13_MASK))
++		imx_reset_otg_controller(IOMEM(MX51_OTG_BASE_ADDR));
++
+ 	imx5_init_lowlevel();
+ 
+ 	/* disable write combine for TO 2 and lower revs */
+diff --git a/arch/arm/mach-imx/imx53.c b/arch/arm/mach-imx/imx53.c
+index b22929f749..f8e34a39da 100644
+--- a/arch/arm/mach-imx/imx53.c
++++ b/arch/arm/mach-imx/imx53.c
+@@ -22,6 +22,7 @@
+ #include <mach/clock-imx51_53.h>
+ #include <mach/generic.h>
+ #include <mach/reset-reason.h>
++#include <mach/usb.h>
+ 
+ #define SI_REV 0x48
+ 
+@@ -88,6 +89,9 @@ void imx53_init_lowlevel_early(unsigned int cpufreq_mhz)
+ 	void __iomem *ccm = (void __iomem *)MX53_CCM_BASE_ADDR;
+ 	u32 r, cbcdr, cbcmr;
+ 
++	if ((readl(ccm + MX5_CCM_CCGR2) & MX5_CCM_CCGRx_CG13_MASK))
++		imx_reset_otg_controller(IOMEM(MX53_OTG_BASE_ADDR));
++
+ 	imx5_init_lowlevel();
+ 
+ 	/*
+diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+index 3d95c9e374..cc368c5820 100644
+--- a/arch/arm/mach-imx/imx6.c
++++ b/arch/arm/mach-imx/imx6.c
+@@ -24,11 +24,13 @@
+ #include <mach/imx6-anadig.h>
+ #include <mach/imx6-regs.h>
+ #include <mach/generic.h>
++#include <mach/usb.h>
+ #include <asm/mmu.h>
+ #include <asm/cache-l2x0.h>
+ 
+ #include <poweroff.h>
+ #include <mach/imx6-regs.h>
++#include <mach/clock-imx6.h>
+ #include <io.h>
+ 
+ #define CLPCR				0x54
+@@ -52,6 +54,9 @@ static void imx6_init_lowlevel(void)
+ 	uint32_t periph_sel_2;
+ 	uint32_t reg;
+ 
++	if ((readl(MXC_CCM_CCGR6) & 0x3))
++		imx_reset_otg_controller(IOMEM(MX6_OTG_BASE_ADDR));
++
+ 	/*
+ 	 * Set all MPROTx to be non-bufferable, trusted for R/W,
+ 	 * not forced to user-mode.
+diff --git a/arch/arm/mach-imx/include/mach/usb.h b/arch/arm/mach-imx/include/mach/usb.h
+index 85528d77e6..ab827e9fab 100644
+--- a/arch/arm/mach-imx/include/mach/usb.h
++++ b/arch/arm/mach-imx/include/mach/usb.h
+@@ -14,4 +14,27 @@
+ int imx6_usb_phy2_disable_oc(void);
+ int imx6_usb_phy2_enable(void);
+ 
++#define USBCMD	0x140
++#define USB_CMD_RESET	0x00000002
++
++/*
++ * imx_disable_otg_controller - disable the USB OTG controller
++ * @base: The base address of the controller
++ *
++ * When booting from USB the ROM just leaves the controller enabled. This can
++ * have bad side effects when for example we change PLL frequencies. In this
++ * case it is seen that the hub the board is connected to gets confused and USB
++ * is no longer working properly on the remote host. This function disables the
++ * OTG controller. It should be called before the clocks the controller hangs on
++ * is fiddled with.
++ */
++static inline void imx_reset_otg_controller(void __iomem *base)
++{
++	u32 r;
++
++	r = readl(base + USBCMD);
++	r |= USB_CMD_RESET;
++	writel(r, base + USBCMD);
++}
++
+ #endif /* __MACH_USB_H_*/
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.18.0
+
 
 _______________________________________________
 barebox mailing list
