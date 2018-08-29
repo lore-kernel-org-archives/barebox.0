@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzSh-0005Um-Pq
+ id 1fuzSh-0005UU-PZ
  for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:20:44 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id C266FA00B07
- for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:53 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 91280A006EC
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:52 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:19:26 +0200
-Message-Id: <1535545212-18871-11-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:19:21 +0200
+Message-Id: <1535545212-18871-6-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,63 +24,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/56] ubi: Fix early logging
+Subject: [PATCH 05/56] UBI: Clean up return in ubi_remove_volume()
 To: barebox@lists.infradead.org
 
-From: Richard Weinberger <richard@nod.at>
+From: Dan Carpenter <dan.carpenter@oracle.com>
 
-We cannot use ubi_* logging functions before the UBI
-object is initialized.
+My static checker says that "err" can be uninitialized if
+"vol->reserved_pebs" is <= 0.  I don't think that can happen but
+returning a literal is cleaner anyway.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 3260870331 ("UBI: Extend UBI layer debug/messaging capabilities")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 Signed-off-by: Richard Weinberger <richard@nod.at>
-[Fixed minor conflict]
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/build.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mtd/ubi/vmt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
-index d5c3719482cf..ae6181e9d162 100644
---- a/drivers/mtd/ubi/build.c
-+++ b/drivers/mtd/ubi/build.c
-@@ -522,7 +522,7 @@ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
- 	for (i = 0; i < UBI_MAX_DEVICES; i++) {
- 		ubi = ubi_devices[i];
- 		if (ubi && mtd == ubi->mtd) {
--			ubi_debug("mtd%d is already attached to ubi%d",
-+			pr_err("ubi: mtd%d is already attached to ubi%d",
- 				mtd->index, i);
- 			return -EEXIST;
- 		}
-@@ -537,7 +537,7 @@ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
- 	 * no sense to attach emulated MTD devices, so we prohibit this.
- 	 */
- 	if (mtd->type == MTD_UBIVOLUME) {
--		ubi_err(ubi, "refuse attaching mtd%d - it is already emulated on top of UBI",
-+		pr_err("ubi: refuse attaching mtd%d - it is already emulated on top of UBI",
- 			mtd->index);
- 		return -EINVAL;
- 	}
-@@ -548,7 +548,7 @@ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
- 			if (!ubi_devices[ubi_num])
- 				break;
- 		if (ubi_num == UBI_MAX_DEVICES) {
--			ubi_err(ubi, "only %d UBI devices may be created",
-+			pr_err("ubi: only %d UBI devices may be created",
- 				UBI_MAX_DEVICES);
- 			return -ENFILE;
- 		}
-@@ -558,7 +558,7 @@ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
+diff --git a/drivers/mtd/ubi/vmt.c b/drivers/mtd/ubi/vmt.c
+index ed043646b8d8..aed51c2fe3b2 100644
+--- a/drivers/mtd/ubi/vmt.c
++++ b/drivers/mtd/ubi/vmt.c
+@@ -264,7 +264,7 @@ int ubi_remove_volume(struct ubi_volume_desc *desc, int no_vtbl)
+ 	if (!no_vtbl)
+ 		self_check_volumes(ubi);
  
- 		/* Make sure ubi_num is not busy */
- 		if (ubi_devices[ubi_num]) {
--			ubi_err(ubi, "already exists");
-+			pr_err("ubi: ubi%i already exists", ubi_num);
- 			return -EEXIST;
- 		}
- 	}
+-	return err;
++	return 0;
+ 
+ out_err:
+ 	ubi_err(ubi, "cannot remove volume %d, error %d", vol_id, err);
 -- 
 2.7.4
 
