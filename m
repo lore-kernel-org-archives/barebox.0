@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzSk-0005Ut-7j
+ id 1fuzSh-0005UV-QC
  for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:20:48 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 849E9A00BD0
- for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:55 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 1313BA009D5
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:53 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:19:33 +0200
-Message-Id: <1535545212-18871-18-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:19:23 +0200
+Message-Id: <1535545212-18871-8-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,128 +24,157 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/56] ubi: Be more paranoid while seaching for the most
- recent Fastmap
+Subject: [PATCH 07/56] UBI: Fix static volume checks when Fastmap is used
 To: barebox@lists.infradead.org
 
 From: Richard Weinberger <richard@nod.at>
 
-Since PEB erasure is asynchornous it can happen that there is
-more than one Fastmap on the MTD. This is fine because the attach logic
-will pick the Fastmap data structure with the highest sequence number.
+Ezequiel reported that he's facing UBI going into read-only
+mode after power cut. It turned out that this behavior happens
+only when updating a static volume is interrupted and Fastmap is
+used.
 
-On a not so well configured MTD stack spurious ECC errors are common.
-Causes can be different, bad hardware, wrong operating modes, etc...
-If the most current Fastmap renders bad due to ECC errors UBI might
-pick an older Fastmap to attach from.
-While this can only happen on an anyway broken setup it will show
-completely different sympthoms and makes finding the root cause much
-more difficult.
-So, be debug friendly and fall back to scanning mode of we're facing
-an ECC error while scanning for Fastmap.
+A possible trace can look like:
+ubi0 warning: ubi_io_read_vid_hdr [ubi]: no VID header found at PEB 2323, only 0xFF bytes
+ubi0 warning: ubi_eba_read_leb [ubi]: switch to read-only mode
+CPU: 0 PID: 833 Comm: ubiupdatevol Not tainted 4.6.0-rc2-ARCH #4
+Hardware name: SAMSUNG ELECTRONICS CO., LTD. 300E4C/300E5C/300E7C/NP300E5C-AD8AR, BIOS P04RAP 10/15/2012
+0000000000000286 00000000eba949bd ffff8800c45a7b38 ffffffff8140d841
+ffff8801964be000 ffff88018eaa4800 ffff8800c45a7bb8 ffffffffa003abf6
+ffffffff850e2ac0 8000000000000163 ffff8801850e2ac0 ffff8801850e2ac0
+Call Trace:
+[<ffffffff8140d841>] dump_stack+0x63/0x82
+[<ffffffffa003abf6>] ubi_eba_read_leb+0x486/0x4a0 [ubi]
+[<ffffffffa00453b3>] ubi_check_volume+0x83/0xf0 [ubi]
+[<ffffffffa0039d97>] ubi_open_volume+0x177/0x350 [ubi]
+[<ffffffffa00375d8>] vol_cdev_open+0x58/0xb0 [ubi]
+[<ffffffff8124b08e>] chrdev_open+0xae/0x1d0
+[<ffffffff81243bcf>] do_dentry_open+0x1ff/0x300
+[<ffffffff8124afe0>] ? cdev_put+0x30/0x30
+[<ffffffff81244d36>] vfs_open+0x56/0x60
+[<ffffffff812545f4>] path_openat+0x4f4/0x1190
+[<ffffffff81256621>] do_filp_open+0x91/0x100
+[<ffffffff81263547>] ? __alloc_fd+0xc7/0x190
+[<ffffffff812450df>] do_sys_open+0x13f/0x210
+[<ffffffff812451ce>] SyS_open+0x1e/0x20
+[<ffffffff81a99e32>] entry_SYSCALL_64_fastpath+0x1a/0xa4
+
+UBI checks static volumes for data consistency and reads the
+whole volume upon first open. If the volume is found erroneous
+users of UBI cannot read from it, but another volume update is
+possible to fix it. The check is performed by running
+ubi_eba_read_leb() on every allocated LEB of the volume.
+For static volumes ubi_eba_read_leb() computes the checksum of all
+data stored in a LEB. To verify the computed checksum it has to read
+the LEB's volume header which stores the original checksum.
+If the volume header is not found UBI treats this as fatal internal
+error and switches to RO mode. If the UBI device was attached via a
+full scan the assumption is correct, the volume header has to be
+present as it had to be there while scanning to get known as mapped.
+If the attach operation happened via Fastmap the assumption is no
+longer correct. When attaching via Fastmap UBI learns the mapping
+table from Fastmap's snapshot of the system state and not via a full
+scan. It can happen that a LEB got unmapped after a Fastmap was
+written to the flash. Then UBI can learn the LEB still as mapped and
+accessing it returns only 0xFF bytes. As UBI is not a FTL it is
+allowed to have mappings to empty PEBs, it assumes that the layer
+above takes care of LEB accounting and referencing.
+UBIFS does so using the LEB property tree (LPT).
+For static volumes UBI blindly assumes that all LEBs are present and
+therefore special actions have to be taken.
+
+The described situation can happen when updating a static volume is
+interrupted, either by a user or a power cut.
+The volume update code first unmaps all LEBs of a volume and then
+writes LEB by LEB. If the sequence of operations is interrupted UBI
+detects this either by the absence of LEBs, no volume header present
+at scan time, or corrupted payload, detected via checksum.
+In the Fastmap case the former method won't trigger as no scan
+happened and UBI automatically thinks all LEBs are present.
+Only by reading data from a LEB it detects that the volume header is
+missing and incorrectly treats this as fatal error.
+To deal with the situation ubi_eba_read_leb() from now on checks
+whether we attached via Fastmap and handles the absence of a
+volume header like a data corruption error.
+This way interrupted static volume updates will correctly get detected
+also when Fastmap is used.
 
 Cc: <stable@vger.kernel.org>
+Reported-by: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Tested-by: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 Signed-off-by: Richard Weinberger <richard@nod.at>
+[Fixed conflict]
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/attach.c | 28 ++++++++++++++++++++++++----
- drivers/mtd/ubi/ubi.h    |  3 +++
- 2 files changed, 27 insertions(+), 4 deletions(-)
+ drivers/mtd/ubi/eba.c     | 21 +++++++++++++++++++--
+ drivers/mtd/ubi/fastmap.c |  1 +
+ drivers/mtd/ubi/ubi.h     |  2 ++
+ 3 files changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/ubi/attach.c b/drivers/mtd/ubi/attach.c
-index 4869c6778b3d..a5d48932ed33 100644
---- a/drivers/mtd/ubi/attach.c
-+++ b/drivers/mtd/ubi/attach.c
-@@ -845,13 +845,15 @@ static bool vol_ignored(int vol_id)
-  * @ubi: UBI device description object
-  * @ai: attaching information
-  * @pnum: the physical eraseblock number
-+ * @fast: true if we're scanning for a Fastmap
-  *
-  * This function reads UBI headers of PEB @pnum, checks them, and adds
-  * information about this PEB to the corresponding list or RB-tree in the
-  * "attaching info" structure. Returns zero if the physical eraseblock was
-  * successfully handled and a negative error code in case of failure.
-  */
--static int scan_peb(struct ubi_device *ubi, struct ubi_attach_info *ai, int pnum)
-+static int scan_peb(struct ubi_device *ubi, struct ubi_attach_info *ai,
-+		    int pnum, bool fast)
- {
- 	long long ec;
- 	int err, bitflips = 0, vol_id = -1, ec_err = 0;
-@@ -969,6 +971,20 @@ static int scan_peb(struct ubi_device *ubi, struct ubi_attach_info *ai, int pnum
- 			 */
- 			ai->maybe_bad_peb_count += 1;
- 	case UBI_IO_BAD_HDR:
-+			/*
-+			 * If we're facing a bad VID header we have to drop *all*
-+			 * Fastmap data structures we find. The most recent Fastmap
-+			 * could be bad and therefore there is a chance that we attach
-+			 * from an old one. On a fine MTD stack a PEB must not render
-+			 * bad all of a sudden, but the reality is different.
-+			 * So, let's be paranoid and help finding the root cause by
-+			 * falling back to scanning mode instead of attaching with a
-+			 * bad EBA table and cause data corruption which is hard to
-+			 * analyze.
-+			 */
-+			if (fast)
-+				ai->force_full_scan = 1;
-+
- 		if (ec_err)
- 			/*
- 			 * Both headers are corrupted. There is a possibility
-@@ -1279,7 +1295,7 @@ static int scan_all(struct ubi_device *ubi, struct ubi_attach_info *ai,
+diff --git a/drivers/mtd/ubi/eba.c b/drivers/mtd/ubi/eba.c
+index c242c460e849..6e09cfb0a119 100644
+--- a/drivers/mtd/ubi/eba.c
++++ b/drivers/mtd/ubi/eba.c
+@@ -392,8 +392,25 @@ retry:
+ 						 pnum, vol_id, lnum);
+ 					err = -EBADMSG;
+ 				} else {
+-					err = -EINVAL;
+-					ubi_ro_mode(ubi);
++					/*
++					 * Ending up here in the non-Fastmap case
++					 * is a clear bug as the VID header had to
++					 * be present at scan time to have it referenced.
++					 * With fastmap the story is more complicated.
++					 * Fastmap has the mapping info without the need
++					 * of a full scan. So the LEB could have been
++					 * unmapped, Fastmap cannot know this and keeps
++					 * the LEB referenced.
++					 * This is valid and works as the layer above UBI
++					 * has to do bookkeeping about used/referenced
++					 * LEBs in any case.
++					 */
++					if (ubi->fast_attach) {
++						err = -EBADMSG;
++					} else {
++						err = -EINVAL;
++						ubi_ro_mode(ubi);
++					}
+ 				}
+ 			}
+ 			goto out_free;
+diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
+index 2e0fdb7583e4..5bbbd7c6ae2a 100644
+--- a/drivers/mtd/ubi/fastmap.c
++++ b/drivers/mtd/ubi/fastmap.c
+@@ -991,6 +991,7 @@ int ubi_scan_fastmap(struct ubi_device *ubi, struct ubi_attach_info *ai,
+ 	ubi_msg(ubi, "fastmap WL pool size: %d",
+ 		ubi->fm_wl_pool.max_size);
+ 	ubi->fm_disabled = 0;
++	ubi->fast_attach = 1;
  
- 	for (pnum = start; pnum < ubi->peb_count; pnum++) {
- 		dbg_gen("process PEB %d", pnum);
--		err = scan_peb(ubi, ai, pnum);
-+		err = scan_peb(ubi, ai, pnum, false);
- 		if (err < 0)
- 			goto out_vidh;
- 	}
-@@ -1384,7 +1400,7 @@ static int scan_fast(struct ubi_device *ubi, struct ubi_attach_info **ai)
- 
- 	for (pnum = 0; pnum < UBI_FM_MAX_START; pnum++) {
- 		dbg_gen("process PEB %d", pnum);
--		err = scan_peb(ubi, scan_ai, pnum);
-+		err = scan_peb(ubi, scan_ai, pnum, true);
- 		if (err < 0)
- 			goto out_vidh;
- 	}
-@@ -1392,7 +1408,11 @@ static int scan_fast(struct ubi_device *ubi, struct ubi_attach_info **ai)
- 	ubi_free_vid_hdr(ubi, vidh);
+ 	ubi_free_vid_hdr(ubi, vh);
  	kfree(ech);
- 
--	err = ubi_scan_fastmap(ubi, *ai, scan_ai);
-+	if (scan_ai->force_full_scan)
-+		err = UBI_NO_FASTMAP;
-+	else
-+		err = ubi_scan_fastmap(ubi, *ai, scan_ai);
-+
- 	if (err) {
- 		/*
- 		 * Didn't attach via fastmap, do a full scan but reuse what
 diff --git a/drivers/mtd/ubi/ubi.h b/drivers/mtd/ubi/ubi.h
-index 2bd2d9e1ed88..c2f54a4b0b3f 100644
+index 1f0ad386b45e..368b829fa17f 100644
 --- a/drivers/mtd/ubi/ubi.h
 +++ b/drivers/mtd/ubi/ubi.h
-@@ -651,6 +651,8 @@ struct ubi_ainf_volume {
-  * @vols_found: number of volumes found
-  * @highest_vol_id: highest volume ID
-  * @is_empty: flag indicating whether the MTD device is empty or not
-+ * @force_full_scan: flag indicating whether we need to do a full scan and drop
-+		     all existing Fastmap data structures
-  * @min_ec: lowest erase counter value
-  * @max_ec: highest erase counter value
-  * @max_sqnum: highest sequence number value
-@@ -678,6 +680,7 @@ struct ubi_attach_info {
- 	int vols_found;
- 	int highest_vol_id;
- 	int is_empty;
-+	int force_full_scan;
- 	int min_ec;
- 	int max_ec;
- 	unsigned long long max_sqnum;
+@@ -416,6 +416,7 @@ struct ubi_debug_info {
+  * @fm_size: fastmap size in bytes
+  * @fm_sem: allows ubi_update_fastmap() to block EBA table changes
+  * @fm_work: fastmap work queue
++ * @fast_attach: non-zero if UBI was attached by fastmap
+  *
+  * @used: RB-tree of used physical eraseblocks
+  * @erroneous: RB-tree of erroneous used physical eraseblocks
+@@ -515,6 +516,7 @@ struct ubi_device {
+ 	struct ubi_fm_pool fm_wl_pool;
+ 	void *fm_buf;
+ 	size_t fm_size;
++	int fast_attach;
+ 
+ 	/* Wear-leveling sub-system's stuff */
+ 	struct rb_root used;
 -- 
 2.7.4
 
