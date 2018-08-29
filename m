@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-yb0-x233.google.com ([2607:f8b0:4002:c09::233])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuvOZ-0006uR-Pz
- for barebox@lists.infradead.org; Wed, 29 Aug 2018 08:00:09 +0000
-Date: Wed, 29 Aug 2018 09:59:56 +0200
-From: Sascha Hauer <sha@pengutronix.de>
-Message-ID: <20180829075956.dhvqllkjn7sb2krr@pengutronix.de>
-References: <20180827151428.3032-1-mkl@pengutronix.de>
- <20180827151428.3032-6-mkl@pengutronix.de>
- <20180829071538.xlxwaqvgfdpupppr@pengutronix.de>
- <00108338-e1f4-f25a-79fa-070342c2cb3e@pengutronix.de>
+ id 1fv17Z-0000QF-6H
+ for barebox@lists.infradead.org; Wed, 29 Aug 2018 14:06:58 +0000
+Received: by mail-yb0-x233.google.com with SMTP id y8-v6so612279ybn.12
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 07:06:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <00108338-e1f4-f25a-79fa-070342c2cb3e@pengutronix.de>
+From: Bogdan Harjoc <harjoc@gmail.com>
+Date: Wed, 29 Aug 2018 17:06:34 +0300
+Message-ID: <CAF4+tmpOXPrW55zBodV7Hv7ixFRzT_0w2Kk7YU2WWQ-g0cJdJQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,66 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/5] scripts imx-image: add support for newer versions of
- "cst"
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: dwc2 USB host initialization issue
+To: barebox@lists.infradead.org, u-boot@lists.denx.de
 
-On Wed, Aug 29, 2018 at 09:29:25AM +0200, Marc Kleine-Budde wrote:
-> On 08/29/2018 09:15 AM, Sascha Hauer wrote:
-> > On Mon, Aug 27, 2018 at 05:14:28PM +0200, Marc Kleine-Budde wrote:
-> >> Older versions of "cst" want to read the CSF frm STDIN, while newer versions
-> >> want to read the CSF from a file. Sadly, the "-i" option doesn't understand
-> >> "-i -" to read from STDIN, so we give it "/dev/stdin" instead.
-> >>
-> >> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> >> ---
-> >>  scripts/imx/imx-image.c | 16 +++++++++++++++-
-> >>  1 file changed, 15 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-> >> index 452a544bc3eb..17d504586967 100644
-> >> --- a/scripts/imx/imx-image.c
-> >> +++ b/scripts/imx/imx-image.c
-> >> @@ -558,7 +558,21 @@ static int hab_sign(struct config_data *data)
-> >>  		}
-> >>  	}
-> >>  
-> >> -	ret = asprintf(&command, "%s -o %s", cst, csffile);
-> >> +	/*
-> >> +	 * Older versions of "cst" want to read the CSF frm STDIN,
-> >> +	 * while newer versions want to read the CSF from a
-> >> +	 * file. Sadly, the "-i" option doesn't understand "-i -" to
-> >> +	 * read from STDIN, so we give it "/dev/stdin" instead.
-> >> +	 */
-> >> +	ret = asprintf(&command,
-> >> +		       "if %s | grep 'Input CSF text filename'; then"
-> >> +		       "	%s -o %s -i /dev/stdin;"
-> >> +		       "else"
-> >> +		       "	%s -o %s;"
-> >> +		       "fi",
-> >> +		       cst,
-> >> +		       cst, csffile,
-> >> +		       cst, csffile);
-> > 
-> > Could you separate the cst calling convention detection from the actual
-> > call, so effectively do the if/else in C rather than shell? That would
-> > give us a place to add a debug printf and say which way we actually call
-> > the cst tool and it will be slightly less magical when something goes
-> > wrong.
-> 
-> Makes sense. Do the "cst | grep" in one shell and evaluate the return
-> value, do the if else in C and then do the proper shell call?
+I am trying to initialize a dwc2 usb otg host using the u-boot dwc2
+driver in u-boot and barebox and am trying to get past the port
+power-up step. The controller is activated successfully once the Linux
+kernel boots up and the mass storage devices are accessible, but in
+u-boot and barebox it seems to not receive the
 
-Yes.
+USB_PORT_STAT_C_CONNECTION
+nor the
+USB_PORT_STAT_C_ENABLE
 
-Sascha
+port change status. In the bootloader, usb_get_port_status returns
+0x510 (i.e. HIGH_SPEED | POWER | RESET), while under linux the status
+after powering up the port is 0x101 (i.e. POWER | CONNECTION) and the
+linux usb core then properly brings up the port.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I looked at the submitted usb requests, and didn't see any relevant
+difference (bootloader vs linux). All I could see from the debug
+output is that PwrOn2PwrGood time and HubContrCurrent are both zero in
+barebox and nonzero in linux.
+
+Could the cause be the fact that in the bootloader the port comes up
+with HIGH_SPEED status ? Can I disable this flag during hub
+initialization ? Or is there another probable cause for this ?
+
+Regards,
+Bogdan
 
 _______________________________________________
 barebox mailing list
