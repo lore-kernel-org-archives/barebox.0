@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzSv-0005UW-Jj
- for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:21:04 +0000
+ id 1fuzSw-0005UV-3v
+ for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:21:05 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id C6DAFA00DF4
- for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:21:01 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 088AAA00E01
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:21:02 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:19:58 +0200
-Message-Id: <1535545212-18871-43-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:19:59 +0200
+Message-Id: <1535545212-18871-44-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,68 +24,187 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 42/56] ubi/upd: Always flush after prepared for an update
+Subject: [PATCH 43/56] ubi: fastmap: Fix slab corruption
 To: barebox@lists.infradead.org
 
-From: Sebastian Siewior <bigeasy@linutronix.de>
+From: Rabin Vincent <rabinv@axis.com>
 
-In commit 6afaf8a484cb ("UBI: flush wl before clearing update marker") I
-managed to trigger and fix a similar bug. Now here is another version of
-which I assumed it wouldn't matter back then but it turns out UBI has a
-check for it and will error out like this:
+Booting with UBI fastmap and SLUB debugging enabled results in the
+following splats.  The problem is that ubi_scan_fastmap() moves the
+fastmap blocks from the scan_ai (allocated in scan_fast()) to the ai
+allocated in ubi_attach().  This results in two problems:
 
-|ubi0 warning: validate_vid_hdr: inconsistent used_ebs
-|ubi0 error: validate_vid_hdr: inconsistent VID header at PEB 592
+ - When the scan_ai is freed, aebs which were allocated from its slab
+   cache are still in use.
 
-All you need to trigger this is? "ubiupdatevol /dev/ubi0_0 file" + a
-powercut in the middle of the operation.
-ubi_start_update() sets the update-marker and puts all EBs on the erase
-list. After that userland can proceed to write new data while the old EB
-aren't erased completely. A powercut at this point is usually not that
-much of a tragedy. UBI won't give read access to the static volume
-because it has the update marker. It will most likely set the corrupted
-flag because it misses some EBs.
-So we are all good. Unless the size of the image that has been written
-differs from the old image in the magnitude of at least one EB. In that
-case UBI will find two different values for `used_ebs' and refuse to
-attach the image with the error message mentioned above.
+ - When the other ai is being destroyed in destroy_ai(), the
+   arguments to kmem_cache_free() call are incorrect since aebs on its
+   ->fastmap list were allocated with a slab cache from a differnt ai.
 
-So in order not to get in the situation, the patch will ensure that we
-wait until everything is removed before it tries to write any data.
-The alternative would be to detect such a case and remove all EBs at the
-attached time after we processed the volume-table and see the
-update-marker set. The patch looks bigger and I doubt it is worth it
-since usually the write() will wait from time to time for a new EB since
-usually there not that many spare EB that can be used.
+Fix this by making a copy of the aebs in ubi_scan_fastmap() instead of
+moving them.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+ =============================================================================
+ BUG ubi_aeb_slab_cache (Not tainted): Objects remaining in ubi_aeb_slab_cache on __kmem_cache_shutdown()
+ -----------------------------------------------------------------------------
+
+ INFO: Slab 0xbfd2da3c objects=17 used=1 fp=0xb33d7748 flags=0x40000080
+ CPU: 1 PID: 118 Comm: ubiattach Tainted: G    B           4.9.15 #3
+ [<80111910>] (unwind_backtrace) from [<8010d498>] (show_stack+0x18/0x1c)
+ [<8010d498>] (show_stack) from [<804a3274>] (dump_stack+0xb4/0xe0)
+ [<804a3274>] (dump_stack) from [<8026c47c>] (slab_err+0x78/0x88)
+ [<8026c47c>] (slab_err) from [<802735bc>] (__kmem_cache_shutdown+0x180/0x3e0)
+ [<802735bc>] (__kmem_cache_shutdown) from [<8024e13c>] (shutdown_cache+0x1c/0x60)
+ [<8024e13c>] (shutdown_cache) from [<8024ed64>] (kmem_cache_destroy+0x19c/0x20c)
+ [<8024ed64>] (kmem_cache_destroy) from [<8057cc14>] (destroy_ai+0x1dc/0x1e8)
+ [<8057cc14>] (destroy_ai) from [<8057f04c>] (ubi_attach+0x3f4/0x450)
+ [<8057f04c>] (ubi_attach) from [<8056fe70>] (ubi_attach_mtd_dev+0x60c/0xff8)
+ [<8056fe70>] (ubi_attach_mtd_dev) from [<80571d78>] (ctrl_cdev_ioctl+0x110/0x2b8)
+ [<80571d78>] (ctrl_cdev_ioctl) from [<8029c77c>] (do_vfs_ioctl+0xac/0xa00)
+ [<8029c77c>] (do_vfs_ioctl) from [<8029d10c>] (SyS_ioctl+0x3c/0x64)
+ [<8029d10c>] (SyS_ioctl) from [<80108860>] (ret_fast_syscall+0x0/0x1c)
+ INFO: Object 0xb33d7e88 @offset=3720
+ INFO: Allocated in scan_peb+0x608/0x81c age=72 cpu=1 pid=118
+ 	kmem_cache_alloc+0x3b0/0x43c
+ 	scan_peb+0x608/0x81c
+ 	ubi_attach+0x124/0x450
+ 	ubi_attach_mtd_dev+0x60c/0xff8
+ 	ctrl_cdev_ioctl+0x110/0x2b8
+ 	do_vfs_ioctl+0xac/0xa00
+ 	SyS_ioctl+0x3c/0x64
+ 	ret_fast_syscall+0x0/0x1c
+ kmem_cache_destroy ubi_aeb_slab_cache: Slab cache still has objects
+ CPU: 1 PID: 118 Comm: ubiattach Tainted: G    B           4.9.15 #3
+ [<80111910>] (unwind_backtrace) from [<8010d498>] (show_stack+0x18/0x1c)
+ [<8010d498>] (show_stack) from [<804a3274>] (dump_stack+0xb4/0xe0)
+ [<804a3274>] (dump_stack) from [<8024ed80>] (kmem_cache_destroy+0x1b8/0x20c)
+ [<8024ed80>] (kmem_cache_destroy) from [<8057cc14>] (destroy_ai+0x1dc/0x1e8)
+ [<8057cc14>] (destroy_ai) from [<8057f04c>] (ubi_attach+0x3f4/0x450)
+ [<8057f04c>] (ubi_attach) from [<8056fe70>] (ubi_attach_mtd_dev+0x60c/0xff8)
+ [<8056fe70>] (ubi_attach_mtd_dev) from [<80571d78>] (ctrl_cdev_ioctl+0x110/0x2b8)
+ [<80571d78>] (ctrl_cdev_ioctl) from [<8029c77c>] (do_vfs_ioctl+0xac/0xa00)
+ [<8029c77c>] (do_vfs_ioctl) from [<8029d10c>] (SyS_ioctl+0x3c/0x64)
+ [<8029d10c>] (SyS_ioctl) from [<80108860>] (ret_fast_syscall+0x0/0x1c)
+ cache_from_obj: Wrong slab cache. ubi_aeb_slab_cache but object is from ubi_aeb_slab_cache
+ ------------[ cut here ]------------
+ WARNING: CPU: 1 PID: 118 at mm/slab.h:354 kmem_cache_free+0x39c/0x450
+ Modules linked in:
+ CPU: 1 PID: 118 Comm: ubiattach Tainted: G    B           4.9.15 #3
+ [<80111910>] (unwind_backtrace) from [<8010d498>] (show_stack+0x18/0x1c)
+ [<8010d498>] (show_stack) from [<804a3274>] (dump_stack+0xb4/0xe0)
+ [<804a3274>] (dump_stack) from [<80120e40>] (__warn+0xf4/0x10c)
+ [<80120e40>] (__warn) from [<80120f20>] (warn_slowpath_null+0x28/0x30)
+ [<80120f20>] (warn_slowpath_null) from [<80271fe0>] (kmem_cache_free+0x39c/0x450)
+ [<80271fe0>] (kmem_cache_free) from [<8057cb88>] (destroy_ai+0x150/0x1e8)
+ [<8057cb88>] (destroy_ai) from [<8057ef1c>] (ubi_attach+0x2c4/0x450)
+ [<8057ef1c>] (ubi_attach) from [<8056fe70>] (ubi_attach_mtd_dev+0x60c/0xff8)
+ [<8056fe70>] (ubi_attach_mtd_dev) from [<80571d78>] (ctrl_cdev_ioctl+0x110/0x2b8)
+ [<80571d78>] (ctrl_cdev_ioctl) from [<8029c77c>] (do_vfs_ioctl+0xac/0xa00)
+ [<8029c77c>] (do_vfs_ioctl) from [<8029d10c>] (SyS_ioctl+0x3c/0x64)
+ [<8029d10c>] (SyS_ioctl) from [<80108860>] (ret_fast_syscall+0x0/0x1c)
+ ---[ end trace 2bd8396277fd0a0b ]---
+ =============================================================================
+ BUG ubi_aeb_slab_cache (Tainted: G    B   W      ): page slab pointer corrupt.
+ -----------------------------------------------------------------------------
+
+ INFO: Allocated in scan_peb+0x608/0x81c age=104 cpu=1 pid=118
+ 	kmem_cache_alloc+0x3b0/0x43c
+ 	scan_peb+0x608/0x81c
+ 	ubi_attach+0x124/0x450
+ 	ubi_attach_mtd_dev+0x60c/0xff8
+ 	ctrl_cdev_ioctl+0x110/0x2b8
+ 	do_vfs_ioctl+0xac/0xa00
+ 	SyS_ioctl+0x3c/0x64
+ 	ret_fast_syscall+0x0/0x1c
+ INFO: Slab 0xbfd2da3c objects=17 used=1 fp=0xb33d7748 flags=0x40000081
+ INFO: Object 0xb33d7e88 @offset=3720 fp=0xb33d7da0
+
+ Redzone b33d7e80: cc cc cc cc cc cc cc cc                          ........
+ Object b33d7e88: 02 00 00 00 01 00 00 00 00 f0 ff 7f ff ff ff ff  ................
+ Object b33d7e98: 00 00 00 00 00 00 00 00 bd 16 00 00 00 00 00 00  ................
+ Object b33d7ea8: 00 01 00 00 00 02 00 00 00 00 00 00 00 00 00 00  ................
+ Redzone b33d7eb8: cc cc cc cc                                      ....
+ Padding b33d7f60: 5a 5a 5a 5a 5a 5a 5a 5a                          ZZZZZZZZ
+ CPU: 1 PID: 118 Comm: ubiattach Tainted: G    B   W       4.9.15 #3
+ [<80111910>] (unwind_backtrace) from [<8010d498>] (show_stack+0x18/0x1c)
+ [<8010d498>] (show_stack) from [<804a3274>] (dump_stack+0xb4/0xe0)
+ [<804a3274>] (dump_stack) from [<80271770>] (free_debug_processing+0x320/0x3c4)
+ [<80271770>] (free_debug_processing) from [<80271ad0>] (__slab_free+0x2bc/0x430)
+ [<80271ad0>] (__slab_free) from [<80272024>] (kmem_cache_free+0x3e0/0x450)
+ [<80272024>] (kmem_cache_free) from [<8057cb88>] (destroy_ai+0x150/0x1e8)
+ [<8057cb88>] (destroy_ai) from [<8057ef1c>] (ubi_attach+0x2c4/0x450)
+ [<8057ef1c>] (ubi_attach) from [<8056fe70>] (ubi_attach_mtd_dev+0x60c/0xff8)
+ [<8056fe70>] (ubi_attach_mtd_dev) from [<80571d78>] (ctrl_cdev_ioctl+0x110/0x2b8)
+ [<80571d78>] (ctrl_cdev_ioctl) from [<8029c77c>] (do_vfs_ioctl+0xac/0xa00)
+ [<8029c77c>] (do_vfs_ioctl) from [<8029d10c>] (SyS_ioctl+0x3c/0x64)
+ [<8029d10c>] (SyS_ioctl) from [<80108860>] (ret_fast_syscall+0x0/0x1c)
+ FIX ubi_aeb_slab_cache: Object at 0xb33d7e88 not freed
+
+Signed-off-by: Rabin Vincent <rabinv@axis.com>
 Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/upd.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mtd/ubi/fastmap.c | 33 +++++++++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/ubi/upd.c b/drivers/mtd/ubi/upd.c
-index e3deb3e931c0..609c789ae4c3 100644
---- a/drivers/mtd/ubi/upd.c
-+++ b/drivers/mtd/ubi/upd.c
-@@ -139,11 +139,11 @@ int ubi_start_update(struct ubi_device *ubi, struct ubi_volume *vol,
- 			return err;
- 	}
+diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
+index 52f24a6be74f..2debf42a06b4 100644
+--- a/drivers/mtd/ubi/fastmap.c
++++ b/drivers/mtd/ubi/fastmap.c
+@@ -764,6 +764,24 @@ static int find_fm_anchor(struct ubi_attach_info *ai)
+ 	return ret;
+ }
  
--	if (bytes == 0) {
--		err = ubi_wl_flush(ubi, UBI_ALL, UBI_ALL);
--		if (err)
--			return err;
-+	err = ubi_wl_flush(ubi, UBI_ALL, UBI_ALL);
-+	if (err)
-+		return err;
++static struct ubi_ainf_peb *clone_aeb(struct ubi_attach_info *ai,
++				      struct ubi_ainf_peb *old)
++{
++	struct ubi_ainf_peb *new;
++
++	new = ubi_alloc_aeb(ai, old->pnum, old->ec);
++	if (!new)
++		return NULL;
++
++	new->vol_id = old->vol_id;
++	new->sqnum = old->sqnum;
++	new->lnum = old->lnum;
++	new->scrub = old->scrub;
++	new->copy_flag = old->copy_flag;
++
++	return new;
++}
++
+ /**
+  * ubi_scan_fastmap - scan the fastmap.
+  * @ubi: UBI device object
+@@ -783,7 +801,7 @@ int ubi_scan_fastmap(struct ubi_device *ubi, struct ubi_attach_info *ai,
+ 	struct ubi_vid_hdr *vh;
+ 	struct ubi_ec_hdr *ech;
+ 	struct ubi_fastmap_layout *fm;
+-	struct ubi_ainf_peb *tmp_aeb, *aeb;
++	struct ubi_ainf_peb *aeb;
+ 	int i, used_blocks, pnum, fm_anchor, ret = 0;
+ 	size_t fm_size;
+ 	__be32 crc, tmp_crc;
+@@ -793,9 +811,16 @@ int ubi_scan_fastmap(struct ubi_device *ubi, struct ubi_attach_info *ai,
+ 	if (fm_anchor < 0)
+ 		return UBI_NO_FASTMAP;
  
-+	if (bytes == 0) {
- 		err = clear_update_marker(ubi, vol, 0);
- 		if (err)
- 			return err;
+-	/* Move all (possible) fastmap blocks into our new attach structure. */
+-	list_for_each_entry_safe(aeb, tmp_aeb, &scan_ai->fastmap, u.list)
+-		list_move_tail(&aeb->u.list, &ai->fastmap);
++	/* Copy all (possible) fastmap blocks into our new attach structure. */
++	list_for_each_entry(aeb, &scan_ai->fastmap, u.list) {
++		struct ubi_ainf_peb *new;
++
++		new = clone_aeb(ai, aeb);
++		if (!new)
++			return -ENOMEM;
++
++		list_add(&new->u.list, &ai->fastmap);
++	}
+ 
+ 	memset(ubi->fm_buf, 0, ubi->fm_size);
+ 
 -- 
 2.7.4
 
