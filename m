@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fuzSh-0005UU-PZ
+ id 1fuzSh-0005UT-Pr
  for barebox@lists.infradead.org; Wed, 29 Aug 2018 12:20:44 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 91280A006EC
+ by root.phytec.de (Postfix) with ESMTP id C6795A0086D
  for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 14:20:52 +0200 (CEST)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 29 Aug 2018 14:19:21 +0200
-Message-Id: <1535545212-18871-6-git-send-email-t.remmet@phytec.de>
+Date: Wed, 29 Aug 2018 14:19:22 +0200
+Message-Id: <1535545212-18871-7-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 References: <1535545212-18871-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,35 +24,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/56] UBI: Clean up return in ubi_remove_volume()
+Subject: [PATCH 06/56] UBI: Set free_count to zero before walking through
+ erase list
 To: barebox@lists.infradead.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
+From: Heiko Schocher <hs@denx.de>
 
-My static checker says that "err" can be uninitialized if
-"vol->reserved_pebs" is <= 0.  I don't think that can happen but
-returning a literal is cleaner anyway.
+Set free_count to zero before walking through ai->erase list
+in wl_init().
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Found in U-Boot as U-Boot has no workqueue/threads, it immediately
+calls erase_worker(), which increase for each erased block
+free_count. Without this patch, free_count gets after
+this initialized to zero in wl_init(), so the free_count
+variable always has the maybe wrong value 0 in U-Boot.
+
+Signed-off-by: Heiko Schocher <hs@denx.de>
+Reviewed-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/mtd/ubi/vmt.c | 2 +-
+ drivers/mtd/ubi/wl.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/ubi/vmt.c b/drivers/mtd/ubi/vmt.c
-index ed043646b8d8..aed51c2fe3b2 100644
---- a/drivers/mtd/ubi/vmt.c
-+++ b/drivers/mtd/ubi/vmt.c
-@@ -264,7 +264,7 @@ int ubi_remove_volume(struct ubi_volume_desc *desc, int no_vtbl)
- 	if (!no_vtbl)
- 		self_check_volumes(ubi);
+diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
+index a368bf910806..eb1f24c74807 100644
+--- a/drivers/mtd/ubi/wl.c
++++ b/drivers/mtd/ubi/wl.c
+@@ -1399,6 +1399,7 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
+ 		INIT_LIST_HEAD(&ubi->pq[i]);
+ 	ubi->pq_head = 0;
  
--	return err;
-+	return 0;
++	ubi->free_count = 0;
+ 	list_for_each_entry_safe(aeb, tmp, &ai->erase, u.list) {
+ 		e = kmalloc(sizeof(*e), GFP_KERNEL);
+ 		if (!e)
+@@ -1415,7 +1416,6 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
+ 		found_pebs++;
+ 	}
  
- out_err:
- 	ubi_err(ubi, "cannot remove volume %d, error %d", vol_id, err);
+-	ubi->free_count = 0;
+ 	list_for_each_entry(aeb, &ai->free, u.list) {
+ 		e = kmalloc(sizeof(*e), GFP_KERNEL);
+ 		if (!e)
 -- 
 2.7.4
 
