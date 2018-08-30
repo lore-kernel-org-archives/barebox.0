@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fvKSd-0000GF-IB
- for barebox@lists.infradead.org; Thu, 30 Aug 2018 10:46:01 +0000
+ id 1fvKSQ-0000Er-L7
+ for barebox@lists.infradead.org; Thu, 30 Aug 2018 10:45:48 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 30 Aug 2018 12:45:24 +0200
-Message-Id: <20180830104527.4057-3-s.hauer@pengutronix.de>
+Date: Thu, 30 Aug 2018 12:45:26 +0200
+Message-Id: <20180830104527.4057-5-s.hauer@pengutronix.de>
 In-Reply-To: <20180830104527.4057-1-s.hauer@pengutronix.de>
 References: <20180830104527.4057-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,88 +21,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] fs: tftp: fix memory hole
+Subject: [PATCH 4/5] fs: tftp: hide files which are actually not present on
+ the server
 To: Barebox List <barebox@lists.infradead.org>
 
-dpath() returns a pointer to an allocated string, so we have to free it.
-Put the pointer into our file private data and free it on close time.
+In tftp_lookup we claimed that every desired file is there. This leads
+to problems when a user only tests if a file is present and makes
+decisions upon this information. Rather than claiming that all files
+are present do a tftp_do_open() on the files and see if it is really
+there.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/tftp.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ fs/tftp.c | 33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
 
 diff --git a/fs/tftp.c b/fs/tftp.c
-index 025edbfb86..bcb95bc1db 100644
+index 0baf0c2890..9274e931a2 100644
 --- a/fs/tftp.c
 +++ b/fs/tftp.c
-@@ -79,7 +79,7 @@ struct file_priv {
- 	uint16_t last_block;
- 	int state;
- 	int err;
--	const char *filename;
-+	char *filename;
- 	int filesize;
- 	uint64_t resend_timeout;
- 	uint64_t progress_timeout;
-@@ -139,7 +139,7 @@ static int tftp_send(struct file_priv *priv)
- 				"%d%c"
- 				"blksize%c"
- 				"1432",
--				priv->filename, 0,
-+				priv->filename + 1, 0,
- 				0,
- 				0,
- 				TIMEOUT, 0,
-@@ -374,16 +374,15 @@ static void tftp_handler(void *ctx, char *packet, unsigned len)
+@@ -391,14 +391,6 @@ static struct file_priv *tftp_do_open(struct device_d *dev,
+ 	case O_WRONLY:
+ 		priv->push = 1;
+ 		priv->state = STATE_WRQ;
+-		if (!(accmode & O_TRUNC)) {
+-			/*
+-			 * TFTP always truncates the existing file, so this
+-			 * flag is mandatory when opening a file for writing.
+-			 */
+-			ret = -ENOSYS;
+-			goto out;
+-		}
+ 		break;
+ 	case O_RDWR:
+ 		ret = -ENOSYS;
+@@ -646,10 +638,34 @@ static struct inode *tftp_get_inode(struct super_block *sb, const struct inode *
+ 	return inode;
  }
  
- static struct file_priv *tftp_do_open(struct device_d *dev,
--		int accmode, const char *filename)
-+		int accmode, struct dentry *dentry)
++static int tftp_create(struct inode *dir, struct dentry *dentry, umode_t mode)
++{
++	struct inode *inode;
++
++	inode = tftp_get_inode(dir->i_sb, dir, mode);
++	if (!inode)
++		return -EPERM;
++
++	inode->i_size = 0;
++
++	d_instantiate(dentry, inode);
++
++	return 0;
++}
++
+ static struct dentry *tftp_lookup(struct inode *dir, struct dentry *dentry,
+ 			    unsigned int flags)
  {
-+	struct fs_device_d *fsdev = dev_to_fs_device(dev);
- 	struct file_priv *priv;
- 	struct tftp_priv *tpriv = dev->priv;
- 	int ret;
++	struct super_block *sb = dir->i_sb;
++	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
+ 	struct inode *inode;
++	struct file_priv *priv;
++
++	priv = tftp_do_open(&fsdev->dev, O_RDONLY, dentry);
++	if (IS_ERR(priv))
++		return NULL;
++
++	tftp_do_close(priv);
  
- 	priv = xzalloc(sizeof(*priv));
- 
--	filename++;
--
- 	switch (accmode & O_ACCMODE) {
- 	case O_RDONLY:
- 		priv->push = 0;
-@@ -408,7 +407,7 @@ static struct file_priv *tftp_do_open(struct device_d *dev,
- 
- 	priv->block = 1;
- 	priv->err = -EINVAL;
--	priv->filename = filename;
-+	priv->filename = dpath(dentry, fsdev->vfsmount.mnt_root);
- 	priv->blocksize = TFTP_BLOCK_SIZE;
- 	priv->block_requested = -1;
- 
-@@ -461,11 +460,8 @@ out:
- static int tftp_open(struct device_d *dev, FILE *file, const char *filename)
+ 	inode = tftp_get_inode(dir->i_sb, dir, S_IFREG | S_IRWXUGO);
+ 	if (!inode)
+@@ -663,6 +679,7 @@ static struct dentry *tftp_lookup(struct inode *dir, struct dentry *dentry,
+ static const struct inode_operations tftp_dir_inode_operations =
  {
- 	struct file_priv *priv;
--	struct fs_device_d *fsdev = dev_to_fs_device(dev);
--
--	filename = dpath(file->dentry, fsdev->vfsmount.mnt_root);
+ 	.lookup = tftp_lookup,
++	.create = tftp_create,
+ };
  
--	priv = tftp_do_open(dev, file->flags, filename);
-+	priv = tftp_do_open(dev, file->flags, file->dentry);
- 	if (IS_ERR(priv))
- 		return PTR_ERR(priv);
- 
-@@ -507,6 +503,7 @@ static int tftp_do_close(struct file_priv *priv)
- 
- 	net_unregister(priv->tftp_con);
- 	kfifo_free(priv->fifo);
-+	free(priv->filename);
- 	free(priv->buf);
- 	free(priv);
- 
+ static const struct super_operations tftp_ops;
 -- 
 2.18.0
 
