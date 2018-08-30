@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fvd4k-0003Ej-6j
- for barebox@lists.infradead.org; Fri, 31 Aug 2018 06:38:36 +0000
-Date: Fri, 31 Aug 2018 08:38:22 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180831063822.6kkhl7ed6duy4qsn@pengutronix.de>
-References: <20180830050117.12620-1-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180830050117.12620-1-andrew.smirnov@gmail.com>
+ id 1fvVZK-00084L-Ac
+ for barebox@lists.infradead.org; Thu, 30 Aug 2018 22:37:40 +0000
+Received: by mail-wr1-x442.google.com with SMTP id u12-v6so9437047wrr.4
+ for <barebox@lists.infradead.org>; Thu, 30 Aug 2018 15:37:27 -0700 (PDT)
+From: Aleksander Morgado <aleksander@aleksander.es>
+Date: Fri, 31 Aug 2018 00:37:20 +0200
+Message-Id: <20180830223720.25801-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,223 +16,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] scripts: imx: Add support for signed HDMI firmware
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ratp: fix sending data that won't fit in a single RATP packet
+To: barebox@lists.infradead.org, s.hauer@pengutronix.de
+Cc: Aleksander Morgado <aleksander@aleksander.es>
 
-On Wed, Aug 29, 2018 at 10:01:16PM -0700, Andrey Smirnov wrote:
-> Boot header on i.MX8MQ SoC allows embedding signed HDMI firmware
-> images that are used by mask ROM code during the very early stages of
-> boot. Since providing that firmware appear to be necessary to enable
-> SoC's HDMI/DP functionality extend imx-image tool to support this
-> feature. To do that add code implementing "signed_hdmi_firmware"
-> keyword, which allows users to specify a path to a binary blob
-> containing all of the necessary headers and footers as well firmware
-> data and code sections (this is how such images are provieded by NXP)
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
+We need to advance the input buffer used to create messages when the
+data doesn't fit in a single RATP packet.
 
-Applied, thanks
+Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
+---
+ include/ratp.h | 2 +-
+ lib/ratp.c     | 6 ++++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-Sascha
+diff --git a/include/ratp.h b/include/ratp.h
+index 6f4cf8a6f..d2a819235 100644
+--- a/include/ratp.h
++++ b/include/ratp.h
+@@ -11,7 +11,7 @@ int ratp_establish(struct ratp *ratp, bool active, int timeout_ms);
+ void ratp_close(struct ratp *ratp);
+ int ratp_recv(struct ratp *ratp, void **data, size_t *len);
+ int ratp_send(struct ratp *ratp, const void *data, size_t len);
+-int ratp_send_complete(struct ratp *ratp, const void *data, size_t len,
++int ratp_send_complete(struct ratp *ratp, const uint8_t *data, size_t len,
+ 		   void (*complete)(void *ctx, int status), void *complete_ctx);
+ int ratp_poll(struct ratp *ratp);
+ bool ratp_closed(struct ratp *ratp);
+diff --git a/lib/ratp.c b/lib/ratp.c
+index 4c5c748b4..7801cae51 100644
+--- a/lib/ratp.c
++++ b/lib/ratp.c
+@@ -1734,11 +1734,12 @@ void ratp_close(struct ratp *ratp)
+  *
+  * Return: 0 if successful, a negative error code otherwise.
+  */
+-int ratp_send_complete(struct ratp *ratp, const void *data, size_t len,
++int ratp_send_complete(struct ratp *ratp, const uint8_t *data, size_t len,
+ 		   void (*complete)(void *ctx, int status), void *complete_ctx)
+ {
+ 	struct ratp_internal *ri = ratp->internal;
+ 	struct ratp_message *msg;
++	int sent = 0;
 
-> 
-> Changes since [v1]:
-> 
->     - None
-> 
-> [v1] http://lists.infradead.org/pipermail/barebox/2018-August/034406.html
-> 
->  arch/arm/mach-imx/include/mach/imx-header.h |  9 +++++
->  scripts/imx/imx-image.c                     | 36 ++++++++++++++++---
->  scripts/imx/imx.c                           | 38 +++++++++++++++++++++
->  3 files changed, 78 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/arm/mach-imx/include/mach/imx-header.h b/arch/arm/mach-imx/include/mach/imx-header.h
-> index c9b2a5881..d9c093321 100644
-> --- a/arch/arm/mach-imx/include/mach/imx-header.h
-> +++ b/arch/arm/mach-imx/include/mach/imx-header.h
-> @@ -47,6 +47,14 @@ struct imx_dcd_rec_v1 {
->  #define PARAMETER_FLAG_MASK	(1 << 3)
->  #define PARAMETER_FLAG_SET	(1 << 4)
->  
-> +#define PLUGIN_HDMI_IMAGE	0x0002
-> +
-> +/*
-> + * As per Table 6-22 "eMMC/SD BOOT layout", in Normal Boot layout HDMI
-> + * firmware image starts at LBA# 64 and ends at LBA# 271
-> + */
-> +#define PLUGIN_HDMI_SIZE	((271 - 64 + 1) * 512)
-> +
->  struct imx_ivt_header {
->  	uint8_t tag;
->  	uint16_t length;
-> @@ -94,6 +102,7 @@ struct config_data {
->  	int (*nop)(const struct config_data *data);
->  	int csf_space;
->  	char *csf;
-> +	char *signed_hdmi_firmware_file;
->  };
->  
->  #define MAX_RECORDS_DCD_V2 1024
-> diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-> index 452a544bc..558dacfbb 100644
-> --- a/scripts/imx/imx-image.c
-> +++ b/scripts/imx/imx-image.c
-> @@ -695,7 +695,7 @@ int main(int argc, char *argv[])
->  	int sign_image = 0;
->  	int i, header_copies;
->  	int add_barebox_header;
-> -	uint32_t barebox_image_size;
-> +	uint32_t barebox_image_size = 0;
->  	struct config_data data = {
->  		.image_dcd_offset = 0xffffffff,
->  		.write_mem = write_mem,
-> @@ -704,6 +704,8 @@ int main(int argc, char *argv[])
->  	};
->  	uint32_t *bb_header;
->  	size_t sizeof_bb_header;
-> +	size_t header_len = HEADER_LEN;
-> +	size_t signed_hdmi_firmware_size = 0;
->  
->  	prgname = argv[0];
->  
-> @@ -770,7 +772,7 @@ int main(int argc, char *argv[])
->  	 * - i.MX6 SPI NOR boot corrupts the last few bytes of an image loaded
->  	 *   in ver funy ways when the image size is not 4 byte aligned
->  	 */
-> -	data.load_size = roundup(data.image_size + HEADER_LEN, 0x1000);
-> +	data.load_size = roundup(data.image_size + header_len, 0x1000);
->  
->  	ret = parse_config(&data, configfile);
->  	if (ret)
-> @@ -804,7 +806,7 @@ int main(int argc, char *argv[])
->  		exit(0);
->  	}
->  
-> -	buf = calloc(1, HEADER_LEN);
-> +	buf = calloc(1, header_len);
->  	if (!buf)
->  		exit(1);
->  
-> @@ -825,7 +827,31 @@ int main(int argc, char *argv[])
->  			exit(1);
->  		}
->  
-> -		barebox_image_size = add_header_v2(&data, buf);
-> +		if (data.signed_hdmi_firmware_file) {
-> +			free(buf);
-> +			buf = read_file(data.signed_hdmi_firmware_file,
-> +					&signed_hdmi_firmware_size);
-> +			if (!buf) {
-> +				perror("read_file");
-> +				exit(1);
-> +			}
-> +
-> +			signed_hdmi_firmware_size =
-> +				roundup(signed_hdmi_firmware_size,
-> +					PLUGIN_HDMI_SIZE);
-> +
-> +			header_len += signed_hdmi_firmware_size;
-> +			barebox_image_size += signed_hdmi_firmware_size;
-> +
-> +			buf = realloc(buf, header_len);
-> +			if (!buf) {
-> +				perror("realloc");
-> +				exit(1);
-> +			}
-> +		}
-> +
-> +		barebox_image_size += add_header_v2(&data, buf +
-> +						    signed_hdmi_firmware_size);
->  		break;
->  	default:
->  		fprintf(stderr, "Congratulations! You're welcome to implement header version %d\n",
-> @@ -870,7 +896,7 @@ int main(int argc, char *argv[])
->  		}
->  
->  		ret = xwrite(outfd, buf + sizeof_bb_header,
-> -			     HEADER_LEN - sizeof_bb_header);
-> +			     header_len - sizeof_bb_header);
->  		if (ret < 0) {
->  			perror("write");
->  			exit(1);
-> diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-> index d3786b6e1..7d2a5c5b8 100644
-> --- a/scripts/imx/imx.c
-> +++ b/scripts/imx/imx.c
-> @@ -368,6 +368,41 @@ static int do_super_root_key(struct config_data *data, int argc, char *argv[])
->  	return 0;
->  }
->  
-> +static int
-> +do_signed_hdmi_firmware(struct config_data *data, int argc, char *argv[])
-> +{
-> +	const char *file;
-> +	int len;
-> +
-> +
-> +	if (argc != 2) {
-> +		fprintf(stderr, "usage: signed_hdmi_firmware <file>\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (data->cpu_type != IMX_CPU_IMX8MQ) {
-> +		fprintf(stderr,
-> +			"Warning: The signed_hdmi_firmware command is "
-> +			"only supported i.MX8MQ SoCs\n");
-> +		return 0;
-> +	}
-> +
-> +	file = argv[1];
-> +
-> +	if (*file == '"')
-> +		file++;
-> +
-> +	data->signed_hdmi_firmware_file = strdup(file);
-> +	if (!data->signed_hdmi_firmware_file)
-> +		return -ENOMEM;
-> +
-> +	len = strlen(data->signed_hdmi_firmware_file);
-> +	if (data->signed_hdmi_firmware_file[len - 1] == '"')
-> +		data->signed_hdmi_firmware_file[len - 1] = 0;
-> +
-> +	return 0;
-> +}
-> +
->  struct command cmds[] = {
->  	{
->  		.name = "wm",
-> @@ -402,6 +437,9 @@ struct command cmds[] = {
->  	}, {
->  		.name = "super_root_key",
->  		.parse = do_super_root_key,
-> +	}, {
-> +		.name = "signed_hdmi_firmware",
-> +		.parse = do_signed_hdmi_firmware,
->  	},
->  };
->  
-> -- 
-> 2.17.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+ 	if (!ri || ri->state != RATP_STATE_ESTABLISHED)
+ 		return -ENETDOWN;
+@@ -1754,11 +1755,12 @@ int ratp_send_complete(struct ratp *ratp, const void *data, size_t len,
+ 		msg = xzalloc(sizeof(*msg));
+ 		msg->buf = xzalloc(sizeof(struct ratp_header) + now + 2);
+ 		msg->len = now;
+-		memcpy(msg->buf + sizeof(struct ratp_header), data, now);
++		memcpy(msg->buf + sizeof(struct ratp_header), data + sent, now);
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+ 		list_add_tail(&msg->list, &ri->sendmsg);
+
+ 		len -= now;
++		sent += now;
+ 	}
+
+ 	msg->eor = 1;
+--
+2.18.0
 
 _______________________________________________
 barebox mailing list
