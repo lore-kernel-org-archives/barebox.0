@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x243.google.com ([2a00:1450:400c:c09::243])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fvF0a-00074q-MT
- for barebox@lists.infradead.org; Thu, 30 Aug 2018 04:56:42 +0000
-Received: by mail-wm0-x243.google.com with SMTP id y2-v6so550533wma.1
- for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 21:56:29 -0700 (PDT)
+ id 1fvErm-0003b7-Vr
+ for barebox@lists.infradead.org; Thu, 30 Aug 2018 04:47:36 +0000
+Date: Thu, 30 Aug 2018 06:45:15 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20180830044515.GA18792@ravnborg.org>
+References: <20180829221727.15273-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
-References: <20180824032301.30467-1-andrew.smirnov@gmail.com>
- <20180824032301.30467-2-andrew.smirnov@gmail.com>
- <20180827072108.my36w3twftmuidlh@pengutronix.de>
-In-Reply-To: <20180827072108.my36w3twftmuidlh@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 29 Aug 2018 21:56:16 -0700
-Message-ID: <CAHQ1cqGLy3D7PVkd-hFuc99yjOsMyHa2KaBcQ0ypv0ZqzFAZiw@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20180829221727.15273-1-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,88 +22,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] ARM: i.MX: xload: Add support for signed HDMI firmware
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v3] lxc: add new package
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, Aug 27, 2018 at 12:21 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Thu, Aug 23, 2018 at 08:23:01PM -0700, Andrey Smirnov wrote:
-> > When booting images that have HDMI firmware embedded we need to skip
-> > the first v2 header we encounter and get all of the necessary data
-> > from the next one. Add code implementing that.
-> >
-> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > ---
-> >  arch/arm/mach-imx/xload-esdhc.c | 43 +++++++++++++++++++++++++--------
-> >  1 file changed, 33 insertions(+), 10 deletions(-)
-> >
-> > diff --git a/arch/arm/mach-imx/xload-esdhc.c b/arch/arm/mach-imx/xload-esdhc.c
-> > index 55d6c6929..cab024cfe 100644
-> > --- a/arch/arm/mach-imx/xload-esdhc.c
-> > +++ b/arch/arm/mach-imx/xload-esdhc.c
-> > @@ -224,24 +224,47 @@ esdhc_start_image(struct esdhc *esdhc, ptrdiff_t address, ptrdiff_t entry, u32 o
-> >  {
-> >
-> >       void *buf = (void *)address;
-> > -     struct imx_flash_header_v2 *hdr = buf + offset + SZ_1K;
-> > +     struct imx_flash_header_v2 *hdr;
-> >       int ret, len;
-> >       void __noreturn (*bb)(void);
-> >       unsigned int ofs;
-> > +     int i, header_count = 1;
-> >
-> >       len = imx_image_size();
-> >       len = ALIGN(len, SECTOR_SIZE);
-> >
-> > -     ret = esdhc_read_blocks(esdhc, buf, offset + SZ_1K + SECTOR_SIZE);
-> > -     if (ret)
-> > -             return ret;
-> > +     for (i = 0; i < header_count; i++) {
-> > +             ret = esdhc_read_blocks(esdhc, buf,
-> > +                                     offset + SZ_1K + SECTOR_SIZE);
-> > +             if (ret)
-> > +                     return ret;
-> >
-> > -     if (!is_imx_flash_header_v2(hdr)) {
-> > -             pr_debug("IVT header not found on SD card. "
-> > -                      "Found tag: 0x%02x length: 0x%04x version: %02x\n",
-> > -                      hdr->header.tag, hdr->header.length,
-> > -                      hdr->header.version);
-> > -             return -EINVAL;
-> > +             hdr = buf + offset + SZ_1K;
-> > +
-> > +             if (!is_imx_flash_header_v2(hdr)) {
-> > +                     pr_debug("IVT header not found on SD card. "
-> > +                              "Found tag: 0x%02x length: 0x%04x "
-> > +                              "version: %02x\n",
-> > +                              hdr->header.tag, hdr->header.length,
-> > +                              hdr->header.version);
-> > +                     return -EINVAL;
-> > +             }
-> > +
-> > +             if (IS_ENABLED(CONFIG_ARCH_IMX8MQ) &&
-> > +                 hdr->boot_data.plugin & PLUGIN_HDMI_IMAGE) {
-> > +                     /*
-> > +                      * In images that include signed HDMI
-> > +                      * firmware, first v2 header would be
-> > +                      * dedicated to that and would not contain any
-> > +                      * useful for us information. In order for us
-> > +                      * to pull the rest of the bootloader image
-> > +                      * in, we need to re-read header from SD/MMC,
-> > +                      * this time skipping anything HDMI firmware
-> > +                      * related.
-> > +                      */
-> > +                     offset += PLUGIN_HDMI_SIZE;
-> > +                     header_count++;
->
-> Wouldn't it be better to get to the second image by reading the size to
-> skip from the first image rather than adding a fixed offset?
+Hi Michael.
+On Thu, Aug 30, 2018 at 12:17:27AM +0200, Michael Grzeschik wrote:
+> This patch adds support for the lxc container system. We install the
+> userspace lib and application.
+> 
+> To make sure all necessary kernel options are enabled use:
+> $ CONFIG=/path/to/kernelconfig lxc-checkconfig
+> 
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-Sure, will change in v2.
+-WRONGMAILLIST?
 
-Thanks,
-Andrey Smirnov
+	Sam
 
 _______________________________________________
 barebox mailing list
