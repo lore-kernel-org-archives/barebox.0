@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fvd0R-0001Ls-TN
- for barebox@lists.infradead.org; Fri, 31 Aug 2018 06:34:09 +0000
-Date: Fri, 31 Aug 2018 08:33:55 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180831063355.yc2ahroax5sjc7uz@pengutronix.de>
-References: <20180829131834.12563-1-m.grzeschik@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180829131834.12563-1-m.grzeschik@pengutronix.de>
+ id 1fvF4x-0000G3-S6
+ for barebox@lists.infradead.org; Thu, 30 Aug 2018 05:01:13 +0000
+Received: by mail-pl1-x643.google.com with SMTP id u11-v6so3313787plq.5
+ for <barebox@lists.infradead.org>; Wed, 29 Aug 2018 22:01:01 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 29 Aug 2018 22:00:45 -0700
+Message-Id: <20180830050045.12100-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,77 +16,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] ARM: i.MX: Reset OTG controller during startup
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: vf610dev: Change "Zodiac" to "ZII"
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Wed, Aug 29, 2018 at 03:18:34PM +0200, Michael Grzeschik wrote:
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> 
-> When booting from USB it's sometimes observed that the USB stack on
-> the remote host gets confused. This happens when we adjust the PLLs
-> the USB controller is hanging on. The ROM just leaves the USB controller
-> enabled when it passes control to the bootloader, so in case the usb
-> clks are enabled make sure we reset the otg  before doing any critical
-> clock operations.
-> 
-> This is currently done for i.MX50, i.MX51, i.MX53 and i.MX6, but a
-> similar thing can happen on other i.MXes aswell.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> ---
-> diff --git a/arch/arm/mach-imx/include/mach/usb.h b/arch/arm/mach-imx/include/mach/usb.h
-> index 85528d77e6..ab827e9fab 100644
-> --- a/arch/arm/mach-imx/include/mach/usb.h
-> +++ b/arch/arm/mach-imx/include/mach/usb.h
-> @@ -14,4 +14,27 @@
->  int imx6_usb_phy2_disable_oc(void);
->  int imx6_usb_phy2_enable(void);
->  
-> +#define USBCMD	0x140
-> +#define USB_CMD_RESET	0x00000002
-> +
-> +/*
-> + * imx_disable_otg_controller - disable the USB OTG controller
-> + * @base: The base address of the controller
+Change "Zodiac" to "ZII" in menu entry corresponding to Vybrid Dev
+Board in order to be consistent with all other boards by ZII.
 
-It's imx_reset_otg_controller now. Fixed up while applying.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/mach-imx/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
-> + *
-> + * When booting from USB the ROM just leaves the controller enabled. This can
-> + * have bad side effects when for example we change PLL frequencies. In this
-> + * case it is seen that the hub the board is connected to gets confused and USB
-> + * is no longer working properly on the remote host. This function disables the
-> + * OTG controller. It should be called before the clocks the controller hangs on
-> + * is fiddled with.
-> + */
-> +static inline void imx_reset_otg_controller(void __iomem *base)
-> +{
-> +	u32 r;
-> +
-> +	r = readl(base + USBCMD);
-> +	r |= USB_CMD_RESET;
-> +	writel(r, base + USBCMD);
-> +}
-> +
->  #endif /* __MACH_USB_H_*/
-> -- 
-> 2.18.0
-> 
-> 
-
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 4fa00bfdb..74c8caf5c 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -426,7 +426,7 @@ config MACH_ZII_RDU3
+ 	select ARM_SMCCC
+ 
+ config MACH_ZII_VF610_DEV
+-	bool "Zodiac VF610 Dev Family"
++	bool "ZII VF610 Dev Family"
+ 	select ARCH_VF610
+ 	select CLKDEV_LOOKUP
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
