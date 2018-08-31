@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fvbpU-0001BJ-4o
- for barebox@lists.infradead.org; Fri, 31 Aug 2018 05:18:45 +0000
-Received: by mail-pl1-x644.google.com with SMTP id b12-v6so4892305plr.8
- for <barebox@lists.infradead.org>; Thu, 30 Aug 2018 22:18:33 -0700 (PDT)
+ id 1fvbpV-0001BO-Ak
+ for barebox@lists.infradead.org; Fri, 31 Aug 2018 05:18:46 +0000
+Received: by mail-pl1-x641.google.com with SMTP id 38-v6so1459725pld.0
+ for <barebox@lists.infradead.org>; Thu, 30 Aug 2018 22:18:35 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 30 Aug 2018 22:18:22 -0700
-Message-Id: <20180831051826.13587-1-andrew.smirnov@gmail.com>
+Date: Thu, 30 Aug 2018 22:18:23 -0700
+Message-Id: <20180831051826.13587-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20180831051826.13587-1-andrew.smirnov@gmail.com>
+References: <20180831051826.13587-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,61 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] driver: Adopt DMA mask concept from Linux
+Subject: [PATCH 2/5] net: fec_imx: Specify that DMA is 32-bit only
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-In order to be able to detect cases where DMA isn't capable of
-reaching every memory address, port the concept of DMA mask,
-dma_set_mask() function and add appropriate check to
-dma_mapping_error().
+FEC can only do a DMA transfer to 32-bit address space, so mark it as
+such.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- include/dma.h    | 12 +++++++++++-
- include/driver.h |  2 ++
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ drivers/net/fec_imx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/dma.h b/include/dma.h
-index 5fdcb1733..7f9578263 100644
---- a/include/dma.h
-+++ b/include/dma.h
-@@ -35,11 +35,21 @@ dma_addr_t dma_map_single(struct device_d *dev, void *ptr, size_t size,
- void dma_unmap_single(struct device_d *dev, dma_addr_t addr, size_t size,
- 		      enum dma_data_direction dir);
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 087483801..f459516df 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -769,6 +769,8 @@ static int fec_probe(struct device_d *dev)
+ 	edev->set_ethaddr = fec_set_hwaddr;
+ 	edev->parent = dev;
  
-+#define DMA_BIT_MASK(n)	(((n) == 64) ? ~0ULL : ((1ULL<<(n))-1))
++	dma_set_mask(dev, DMA_BIT_MASK(32));
 +
-+#define DMA_MASK_NONE	0x0ULL
-+
-+static inline void dma_set_mask(struct device_d *dev, u64 dma_mask)
-+{
-+	dev->dma_mask = dma_mask;
-+}
-+
- #define DMA_ERROR_CODE  (~(dma_addr_t)0)
- 
- static inline int dma_mapping_error(struct device_d *dev, dma_addr_t dma_addr)
- {
--	return dma_addr == DMA_ERROR_CODE;
-+	return dma_addr == DMA_ERROR_CODE ||
-+		(dev->dma_mask && dma_addr > dev->dma_mask);
- }
- 
- /* streaming DMA - implement the below calls to support HAS_DMA */
-diff --git a/include/driver.h b/include/driver.h
-index 91653b794..1b61f2066 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -82,6 +82,8 @@ struct device_d {
- 
- 	const struct of_device_id *of_id_entry;
- 
-+	u64 dma_mask;
-+
- 	void    (*info) (struct device_d *);
- 	/*
- 	 * For devices which take longer to probe this is called
+ 	ret = fec_clk_get(fec);
+ 	if (ret < 0)
+ 		goto err_free;
 -- 
 2.17.1
 
