@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fvLJG-0004nW-Jz
- for barebox@lists.infradead.org; Thu, 30 Aug 2018 11:40:24 +0000
-Date: Thu, 30 Aug 2018 13:40:08 +0200
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20180830114008.xhpsinblhtvkip5a@pengutronix.de>
-References: <20180830104527.4057-1-s.hauer@pengutronix.de>
- <20180830104527.4057-5-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180830104527.4057-5-s.hauer@pengutronix.de>
+ id 1fvboV-0000zr-O3
+ for barebox@lists.infradead.org; Fri, 31 Aug 2018 05:17:45 +0000
+Received: by mail-pg1-x543.google.com with SMTP id 2-v6so4391539pgo.4
+ for <barebox@lists.infradead.org>; Thu, 30 Aug 2018 22:17:33 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Thu, 30 Aug 2018 22:17:25 -0700
+Message-Id: <20180831051725.12351-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,100 +16,195 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] fs: tftp: hide files which are actually not present
- on the server
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 5/5] mfd: rave-sp: Emulate CMD_GET_STATUS on device that don't
+ support it
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Thu, Aug 30, 2018 at 12:45:26PM +0200, Sascha Hauer wrote:
-> In tftp_lookup we claimed that every desired file is there. This leads
-> to problems when a user only tests if a file is present and makes
-> decisions upon this information. Rather than claiming that all files
-> are present do a tftp_do_open() on the files and see if it is really
-> there.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  fs/tftp.c | 33 +++++++++++++++++++++++++--------
->  1 file changed, 25 insertions(+), 8 deletions(-)
-> 
-> diff --git a/fs/tftp.c b/fs/tftp.c
-> index 0baf0c2890..9274e931a2 100644
-> --- a/fs/tftp.c
-> +++ b/fs/tftp.c
-> @@ -391,14 +391,6 @@ static struct file_priv *tftp_do_open(struct device_d *dev,
->  	case O_WRONLY:
->  		priv->push = 1;
->  		priv->state = STATE_WRQ;
-> -		if (!(accmode & O_TRUNC)) {
-> -			/*
-> -			 * TFTP always truncates the existing file, so this
-> -			 * flag is mandatory when opening a file for writing.
-> -			 */
-> -			ret = -ENOSYS;
-> -			goto out;
-> -		}
->  		break;
->  	case O_RDWR:
->  		ret = -ENOSYS;
-> @@ -646,10 +638,34 @@ static struct inode *tftp_get_inode(struct super_block *sb, const struct inode *
->  	return inode;
->  }
->  
-> +static int tftp_create(struct inode *dir, struct dentry *dentry, umode_t mode)
-> +{
-> +	struct inode *inode;
-> +
-> +	inode = tftp_get_inode(dir->i_sb, dir, mode);
-> +	if (!inode)
-> +		return -EPERM;
-> +
-> +	inode->i_size = 0;
-> +
-> +	d_instantiate(dentry, inode);
-> +
-> +	return 0;
-> +}
-> +
->  static struct dentry *tftp_lookup(struct inode *dir, struct dentry *dentry,
->  			    unsigned int flags)
->  {
-> +	struct super_block *sb = dir->i_sb;
-> +	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
->  	struct inode *inode;
-> +	struct file_priv *priv;
-> +
-> +	priv = tftp_do_open(&fsdev->dev, O_RDONLY, dentry);
-> +	if (IS_ERR(priv))
-> +		return NULL;
-> +
-> +	tftp_do_close(priv);
->  
->  	inode = tftp_get_inode(dir->i_sb, dir, S_IFREG | S_IRWXUGO);
->  	if (!inode)
-> @@ -663,6 +679,7 @@ static struct dentry *tftp_lookup(struct inode *dir, struct dentry *dentry,
->  static const struct inode_operations tftp_dir_inode_operations =
->  {
->  	.lookup = tftp_lookup,
-> +	.create = tftp_create,
->  };
->  
->  static const struct super_operations tftp_ops;
+CMD_GET_STATUS is not supported by some devices implementing
+RDU2-compatible ICD as well as "legacy" devices. To account for that
+fact, add code that obtains the same information (app/bootloader FW
+version) using several different commands.
 
-Tested-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+This is a backport of Linux kernel patch [1]
 
-Thx,
-Steffen
+[1] https://lore.kernel.org/lkml/20180707024108.32373-5-andrew.smirnov@gmail.com/T/#md1b7130a992235d57cabadc8e59fc74ee3b21d9e
 
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/mfd/rave-sp.c | 100 ++++++++++++++++++++++++++++--------------
+ 1 file changed, 66 insertions(+), 34 deletions(-)
+
+diff --git a/drivers/mfd/rave-sp.c b/drivers/mfd/rave-sp.c
+index 96f69cc09..469ce4cc0 100644
+--- a/drivers/mfd/rave-sp.c
++++ b/drivers/mfd/rave-sp.c
+@@ -112,13 +112,46 @@ struct rave_sp_checksum {
+ 	void (*subroutine)(const u8 *, size_t, u8 *);
+ };
+ 
++struct rave_sp_version {
++	u8     hardware;
++	__le16 major;
++	u8     minor;
++	u8     letter[2];
++} __packed;
++
++struct rave_sp_status {
++	struct rave_sp_version bootloader_version;
++	struct rave_sp_version firmware_version;
++	u16 rdu_eeprom_flag;
++	u16 dds_eeprom_flag;
++	u8  pic_flag;
++	u8  orientation;
++	u32 etc;
++	s16 temp[2];
++	u8  backlight_current[3];
++	u8  dip_switch;
++	u8  host_interrupt;
++	u16 voltage_28;
++	u8  i2c_device_status;
++	u8  power_status;
++	u8  general_status;
++#define RAVE_SP_STATUS_GS_FIRMWARE_MODE	BIT(1)
++
++	u8  deprecated1;
++	u8  power_led_status;
++	u8  deprecated2;
++	u8  periph_power_shutoff;
++} __packed;
++
+ /**
+  * struct rave_sp_variant_cmds - Variant specific command routines
+  *
+  * @translate:	Generic to variant specific command mapping routine
++ * @get_status: Variant specific implementation of CMD_GET_STATUS
+  */
+ struct rave_sp_variant_cmds {
+ 	int (*translate)(enum rave_sp_command);
++	int (*get_status)(struct rave_sp *sp, struct rave_sp_status *);
+ };
+ 
+ /**
+@@ -161,37 +194,6 @@ struct rave_sp {
+ 	const char *part_number_bootloader;
+ };
+ 
+-struct rave_sp_version {
+-	u8     hardware;
+-	__le16 major;
+-	u8     minor;
+-	u8     letter[2];
+-} __packed;
+-
+-struct rave_sp_status {
+-	struct rave_sp_version bootloader_version;
+-	struct rave_sp_version firmware_version;
+-	u16 rdu_eeprom_flag;
+-	u16 dds_eeprom_flag;
+-	u8  pic_flag;
+-	u8  orientation;
+-	u32 etc;
+-	s16 temp[2];
+-	u8  backlight_current[3];
+-	u8  dip_switch;
+-	u8  host_interrupt;
+-	u16 voltage_28;
+-	u8  i2c_device_status;
+-	u8  power_status;
+-	u8  general_status;
+-#define RAVE_SP_STATUS_GS_FIRMWARE_MODE	BIT(1)
+-
+-	u8  deprecated1;
+-	u8  power_led_status;
+-	u8  deprecated2;
+-	u8  periph_power_shutoff;
+-} __packed;
+-
+ static bool rave_sp_id_is_event(u8 code)
+ {
+ 	return (code & 0xF0) == RAVE_SP_EVNT_BASE;
+@@ -617,18 +619,45 @@ static const char *devm_rave_sp_version(struct device_d *dev,
+ 			version->letter[1]);
+ }
+ 
+-static int rave_sp_get_status(struct rave_sp *sp)
++
++static int rave_sp_rdu1_get_status(struct rave_sp *sp,
++				   struct rave_sp_status *status)
+ {
+-	struct device_d *dev = sp->serdev->dev;
+ 	u8 cmd[] = {
+ 		[0] = RAVE_SP_CMD_STATUS,
+ 		[1] = 0
+ 	};
++
++	return rave_sp_exec(sp, cmd, sizeof(cmd), status, sizeof(*status));
++}
++
++static int rave_sp_emulated_get_status(struct rave_sp *sp,
++				       struct rave_sp_status *status)
++{
++	u8 cmd[] = {
++		[0] = RAVE_SP_CMD_GET_FIRMWARE_VERSION,
++		[1] = 0,
++	};
++	int ret;
++
++	ret = rave_sp_exec(sp, cmd, sizeof(cmd), &status->firmware_version,
++			   sizeof(status->firmware_version));
++	if (ret)
++		return ret;
++
++	cmd[0] = RAVE_SP_CMD_GET_BOOTLOADER_VERSION;
++	return rave_sp_exec(sp, cmd, sizeof(cmd), &status->bootloader_version,
++			    sizeof(status->bootloader_version));
++}
++
++static int rave_sp_get_status(struct rave_sp *sp)
++{
++	struct device_d *dev = sp->serdev->dev;
+ 	struct rave_sp_status status;
+ 	const char *mode;
+ 	int ret;
+ 
+-	ret = rave_sp_exec(sp, cmd, sizeof(cmd), &status, sizeof(status));
++	ret = sp->variant->cmd.get_status(sp, &status);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -660,6 +689,7 @@ static const struct rave_sp_variant rave_sp_legacy = {
+ 	.checksum = &rave_sp_checksum_ccitt,
+ 	.cmd = {
+ 		.translate = rave_sp_default_cmd_translate,
++		.get_status = rave_sp_emulated_get_status,
+ 	},
+ };
+ 
+@@ -667,6 +697,7 @@ static const struct rave_sp_variant rave_sp_rdu1 = {
+ 	.checksum = &rave_sp_checksum_8b2c,
+ 	.cmd = {
+ 		.translate = rave_sp_rdu1_cmd_translate,
++		.get_status = rave_sp_rdu1_get_status,
+ 	},
+ };
+ 
+@@ -674,6 +705,7 @@ static const struct rave_sp_variant rave_sp_rdu2 = {
+ 	.checksum = &rave_sp_checksum_ccitt,
+ 	.cmd = {
+ 		.translate = rave_sp_rdu2_cmd_translate,
++		.get_status = rave_sp_emulated_get_status,
+ 	},
+ };
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
