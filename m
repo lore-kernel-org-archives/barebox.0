@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vsmx009.vodafonemail.xion.oxcs.net ([153.92.174.87])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fnetu-000145-IT
- for barebox@lists.infradead.org; Thu, 09 Aug 2018 06:58:28 +0000
-Date: Thu, 9 Aug 2018 08:58:12 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180809065812.lunfhbb64ui27lcb@pengutronix.de>
-References: <20180808162250.avlghvty7eh4ndhi@localhost.localdomain>
+ id 1fvjiX-00069X-SS
+ for barebox@lists.infradead.org; Fri, 31 Aug 2018 13:44:17 +0000
+Date: Fri, 31 Aug 2018 15:43:40 +0200 (CEST)
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Message-ID: <807890598.17790.1535723020376@mail.vodafone.de>
+In-Reply-To: <1151130077.2195.1533800735792@mail.vodafone.de>
+References: <479189478.116665.1533036012752@mail.vodafone.de>
+ <20180808075253.pmj2hivb6xzm24kn@pengutronix.de>
+ <1151130077.2195.1533800735792@mail.vodafone.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180808162250.avlghvty7eh4ndhi@localhost.localdomain>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +23,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: scripts/dtc/fdtget: No such file or directory
-To: Peter Mamonov <pmamonov@gmail.com>
-Cc: barebox@lists.infradead.org, pvizeli@syshack.ch
+Subject: Re: root= kernel cmdline parameter
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, u.kleine-koenig@pengutronix.de
 
-Hi Peter,
+Hi,
 
-On Wed, Aug 08, 2018 at 07:22:51PM +0300, Peter Mamonov wrote:
-> Hi, 
+> On August 9, 2018 at 9:45 AM Giorgio Dal Molin <giorgio.nicole@arcor.de> wrote:
 > 
-> After "8a8982541 scripts/dtc: Update to upstream version 1.4.6" 
-> scripts/dtc/Makefile lacks rule for scripts/dtc/fdtget, which causes 
-> scripts/gen-dtb-s to complain:
 > 
-> 	$ make
-> 	...
-> 	scripts/gen-dtb-s: line 24: scripts/dtc/fdtget: No such file or directory
-> 	scripts/gen-dtb-s: line 27: scripts/dtc/fdtget: No such file or directory
-> 	scripts/gen-dtb-s: line 34: scripts/dtc/fdtget: No such file or directory
-> 	scripts/gen-dtb-s: line 37: scripts/dtc/fdtget: No such file or directory
-> 	scripts/gen-dtb-s: line 24: scripts/dtc/fdtget: No such file or directory
-> 	scripts/gen-dtb-s: line 27: scripts/dtc/fdtget: No such file or directory
-> 	scripts/gen-dtb-s: line 34: scripts/dtc/fdtget: No such file or directory
-> 	scripts/gen-dtb-s: line 37: scripts/dtc/fdtget: No such file or directory
+> Hi,
 > 
-> Yet a build finishes ok.
+> > On August 8, 2018 at 9:52 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > 
+> > 
+> > On Tue, Jul 31, 2018 at 01:20:12PM +0200, Giorgio Dal Molin wrote:
+> > > Hi all,
+> > > 
+> > > I'm trying to find out the best method to define the root=
+> > > parameter when booting the linux kernel from barebox.
+> > > 
+> > > My system boots from an sd card partitioned with a GPT.
+> > > The sd card has two independent set of partitions with
+> > > the following labels:
+> > > 
+> > > 1)   boot_1 + rootfs_1
+> > > 2)   boot_2 + rootfs_2
+> > > 
+> > > for redondance in case one set gets damaged while updating.
+> > > 
+> > > 'boot_1' is formatted with ext4 and contains the kernel + dtb images
+> > > for the userland in 'rootfs_1'; and the same for 'boot_2' and 'rootfs_2'.
+> > > 
+> > > Currently I hardcode the 'root' parameter to '/dev/mmcblk0p3' or
+> > > '/dev/mmcblk0p4' corresponding to the kernel in 'boot_1' or
+> > > 'boot_2' and it actually works but is there a better way to do
+> > > this ?
+> > 
+> > You could use bootloader spec. That would at least allow you to store a
+> > suitable root= parameter in the config files in the boot_1 and boot_2
+> > partitions.
+> > 
+> > Not sure if that's what you are looking for though.
+> > 
+> > Sascha
+> > 
+> 
+> as I already wrote to Uwe Kleine-Koenig I wanted to keep the kernel
+> image and the dtb in a separate partition because these are the files
+> the bootloader *must* be able to read to boot the system. Having the
+> userland in a separate partition lets me choose an image format for it
+> independently from what barebox supports; as an example I could pack
+> my userland in a btrfs image. Moreover I can be more selective when
+> updating the firmware: I can update only the kernel+dtb or only the
+> userland image.
+> 
+> What I would like to have is an automatic way to set the root= kernel
+> command line parameter similar to what barebox does with the 'bootm.appendroot'
+> but a bit more flexible.
+> Looking at the kernel function name_to_dev_t() in the source init/do_mounts.c,
+> it accepts also the format 'PARTUUID=00112233-4455-6677-8899-AABBCCDDEEFF':
+> my idea was to somehow tell barebox 'use the partition with label "rootfs_1"
+> for the "root" parameter' and barebox should be able to match my label with
+> the partition UUID and automatically generate the root= value.
+> 
+> giorgio
 
-In 8a8982541 building of fdget is dropped. I didn't notice because I
-have fdtget still in my build dir from previous builds. I just sent a
-patch for this, you're on Cc:.
+grepping a bit through the barebox sources I've found that what I need is
+actually already implemented!
 
-The build was still successful because only the output of fdtget was
-used in a pipe. Apparently the error handling leaves room for
-improvements.
+I know that at least one of 'rootfs_1' and 'rootfs_2' must contain a valid
+userland image (a squashfs image); now, in my 'init' I try to 'mount -t squashfs'
+rootfs_1: if it works I found that barebox defines a global variable '$squashfs0.linux.bootargs'
+with exactly the content I need (root=PARTUUID=...). I just have to use this var.
+to define my global linux.bootarg:
 
-Sascha
+global linux.bootargs.root=$squashfs0.linux.bootargs
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+giorgio
 
 _______________________________________________
 barebox mailing list
