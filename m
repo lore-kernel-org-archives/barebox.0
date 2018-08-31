@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fvd8Q-0004qV-9q
- for barebox@lists.infradead.org; Fri, 31 Aug 2018 06:42:24 +0000
-Date: Fri, 31 Aug 2018 08:42:10 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180831064210.tg2s35a25kyvlcp3@pengutronix.de>
-References: <20180830223720.25801-1-aleksander@aleksander.es>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180830223720.25801-1-aleksander@aleksander.es>
+ id 1fvbn4-0000TO-B2
+ for barebox@lists.infradead.org; Fri, 31 Aug 2018 05:16:16 +0000
+Received: by mail-pf1-x444.google.com with SMTP id s13-v6so4947894pfi.7
+ for <barebox@lists.infradead.org>; Thu, 30 Aug 2018 22:16:03 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Thu, 30 Aug 2018 22:15:45 -0700
+Message-Id: <20180831051551.10662-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,84 +16,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ratp: fix sending data that won't fit in a single RATP
- packet
-To: Aleksander Morgado <aleksander@aleksander.es>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/5] RAVE SP driver fixes
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Fri, Aug 31, 2018 at 12:37:20AM +0200, Aleksander Morgado wrote:
-> We need to advance the input buffer used to create messages when the
-> data doesn't fit in a single RATP packet.
-> 
-> Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
-> ---
+Everyone:
 
-Applied, thanks
+This series is a backport of a similar series I submitted to upstream
+Linux a while ago:
 
-Sascha
+https://lore.kernel.org/lkml/20180707024108.32373-5-andrew.smirnov@gmail.com/T/#m02a75392c729828f822e2cd52f86e541b1649a27
 
->  include/ratp.h | 2 +-
->  lib/ratp.c     | 6 ++++--
->  2 files changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/ratp.h b/include/ratp.h
-> index 6f4cf8a6f..d2a819235 100644
-> --- a/include/ratp.h
-> +++ b/include/ratp.h
-> @@ -11,7 +11,7 @@ int ratp_establish(struct ratp *ratp, bool active, int timeout_ms);
->  void ratp_close(struct ratp *ratp);
->  int ratp_recv(struct ratp *ratp, void **data, size_t *len);
->  int ratp_send(struct ratp *ratp, const void *data, size_t len);
-> -int ratp_send_complete(struct ratp *ratp, const void *data, size_t len,
-> +int ratp_send_complete(struct ratp *ratp, const uint8_t *data, size_t len,
->  		   void (*complete)(void *ctx, int status), void *complete_ctx);
->  int ratp_poll(struct ratp *ratp);
->  bool ratp_closed(struct ratp *ratp);
-> diff --git a/lib/ratp.c b/lib/ratp.c
-> index 4c5c748b4..7801cae51 100644
-> --- a/lib/ratp.c
-> +++ b/lib/ratp.c
-> @@ -1734,11 +1734,12 @@ void ratp_close(struct ratp *ratp)
->   *
->   * Return: 0 if successful, a negative error code otherwise.
->   */
-> -int ratp_send_complete(struct ratp *ratp, const void *data, size_t len,
-> +int ratp_send_complete(struct ratp *ratp, const uint8_t *data, size_t len,
->  		   void (*complete)(void *ctx, int status), void *complete_ctx)
->  {
->  	struct ratp_internal *ri = ratp->internal;
->  	struct ratp_message *msg;
-> +	int sent = 0;
-> 
->  	if (!ri || ri->state != RATP_STATE_ESTABLISHED)
->  		return -ENETDOWN;
-> @@ -1754,11 +1755,12 @@ int ratp_send_complete(struct ratp *ratp, const void *data, size_t len,
->  		msg = xzalloc(sizeof(*msg));
->  		msg->buf = xzalloc(sizeof(struct ratp_header) + now + 2);
->  		msg->len = now;
-> -		memcpy(msg->buf + sizeof(struct ratp_header), data, now);
-> +		memcpy(msg->buf + sizeof(struct ratp_header), data + sent, now);
-> 
->  		list_add_tail(&msg->list, &ri->sendmsg);
-> 
->  		len -= now;
-> +		sent += now;
->  	}
-> 
->  	msg->eor = 1;
-> --
-> 2.18.0
-> 
+The only omission is the patch related to configuring flow control and
+parity of the underlying serdev. It doesn't seem to be necessary for
+Barebox (it does fix a problem in Linux) and requires a bunch of new
+plumbing to be implemented, so I dropped it for now.
+
+Feedback is welcome!
+
+Thanks,
+Andrey Smirnov
+
+Andrey Smirnov (5):
+  mfd: rave-sp: Remove unused defines
+  mfd: rave-sp: Fix incorrectly specified checksum type
+  mfd: rave-sp: Add mapping for legacy EEPROM command
+  mfd: rave-sp: Add legacy watchdog ping command translation
+  mfd: rave-sp: Emulate CMD_GET_STATUS on device that don't support it
+
+ drivers/mfd/rave-sp.c       | 116 ++++++++++++++++++++++--------------
+ include/linux/mfd/rave-sp.h |   1 +
+ 2 files changed, 72 insertions(+), 45 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
