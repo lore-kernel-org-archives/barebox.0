@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fvVZK-00084L-Ac
- for barebox@lists.infradead.org; Thu, 30 Aug 2018 22:37:40 +0000
-Received: by mail-wr1-x442.google.com with SMTP id u12-v6so9437047wrr.4
- for <barebox@lists.infradead.org>; Thu, 30 Aug 2018 15:37:27 -0700 (PDT)
-From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Fri, 31 Aug 2018 00:37:20 +0200
-Message-Id: <20180830223720.25801-1-aleksander@aleksander.es>
+ id 1fvd8Q-0004qV-9q
+ for barebox@lists.infradead.org; Fri, 31 Aug 2018 06:42:24 +0000
+Date: Fri, 31 Aug 2018 08:42:10 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180831064210.tg2s35a25kyvlcp3@pengutronix.de>
+References: <20180830223720.25801-1-aleksander@aleksander.es>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180830223720.25801-1-aleksander@aleksander.es>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,71 +18,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ratp: fix sending data that won't fit in a single RATP packet
-To: barebox@lists.infradead.org, s.hauer@pengutronix.de
-Cc: Aleksander Morgado <aleksander@aleksander.es>
+Subject: Re: [PATCH] ratp: fix sending data that won't fit in a single RATP
+ packet
+To: Aleksander Morgado <aleksander@aleksander.es>
+Cc: barebox@lists.infradead.org
 
-We need to advance the input buffer used to create messages when the
-data doesn't fit in a single RATP packet.
+On Fri, Aug 31, 2018 at 12:37:20AM +0200, Aleksander Morgado wrote:
+> We need to advance the input buffer used to create messages when the
+> data doesn't fit in a single RATP packet.
+> 
+> Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
+> ---
 
-Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
----
- include/ratp.h | 2 +-
- lib/ratp.c     | 6 ++++--
- 2 files changed, 5 insertions(+), 3 deletions(-)
+Applied, thanks
 
-diff --git a/include/ratp.h b/include/ratp.h
-index 6f4cf8a6f..d2a819235 100644
---- a/include/ratp.h
-+++ b/include/ratp.h
-@@ -11,7 +11,7 @@ int ratp_establish(struct ratp *ratp, bool active, int timeout_ms);
- void ratp_close(struct ratp *ratp);
- int ratp_recv(struct ratp *ratp, void **data, size_t *len);
- int ratp_send(struct ratp *ratp, const void *data, size_t len);
--int ratp_send_complete(struct ratp *ratp, const void *data, size_t len,
-+int ratp_send_complete(struct ratp *ratp, const uint8_t *data, size_t len,
- 		   void (*complete)(void *ctx, int status), void *complete_ctx);
- int ratp_poll(struct ratp *ratp);
- bool ratp_closed(struct ratp *ratp);
-diff --git a/lib/ratp.c b/lib/ratp.c
-index 4c5c748b4..7801cae51 100644
---- a/lib/ratp.c
-+++ b/lib/ratp.c
-@@ -1734,11 +1734,12 @@ void ratp_close(struct ratp *ratp)
-  *
-  * Return: 0 if successful, a negative error code otherwise.
-  */
--int ratp_send_complete(struct ratp *ratp, const void *data, size_t len,
-+int ratp_send_complete(struct ratp *ratp, const uint8_t *data, size_t len,
- 		   void (*complete)(void *ctx, int status), void *complete_ctx)
- {
- 	struct ratp_internal *ri = ratp->internal;
- 	struct ratp_message *msg;
-+	int sent = 0;
+Sascha
 
- 	if (!ri || ri->state != RATP_STATE_ESTABLISHED)
- 		return -ENETDOWN;
-@@ -1754,11 +1755,12 @@ int ratp_send_complete(struct ratp *ratp, const void *data, size_t len,
- 		msg = xzalloc(sizeof(*msg));
- 		msg->buf = xzalloc(sizeof(struct ratp_header) + now + 2);
- 		msg->len = now;
--		memcpy(msg->buf + sizeof(struct ratp_header), data, now);
-+		memcpy(msg->buf + sizeof(struct ratp_header), data + sent, now);
+>  include/ratp.h | 2 +-
+>  lib/ratp.c     | 6 ++++--
+>  2 files changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/ratp.h b/include/ratp.h
+> index 6f4cf8a6f..d2a819235 100644
+> --- a/include/ratp.h
+> +++ b/include/ratp.h
+> @@ -11,7 +11,7 @@ int ratp_establish(struct ratp *ratp, bool active, int timeout_ms);
+>  void ratp_close(struct ratp *ratp);
+>  int ratp_recv(struct ratp *ratp, void **data, size_t *len);
+>  int ratp_send(struct ratp *ratp, const void *data, size_t len);
+> -int ratp_send_complete(struct ratp *ratp, const void *data, size_t len,
+> +int ratp_send_complete(struct ratp *ratp, const uint8_t *data, size_t len,
+>  		   void (*complete)(void *ctx, int status), void *complete_ctx);
+>  int ratp_poll(struct ratp *ratp);
+>  bool ratp_closed(struct ratp *ratp);
+> diff --git a/lib/ratp.c b/lib/ratp.c
+> index 4c5c748b4..7801cae51 100644
+> --- a/lib/ratp.c
+> +++ b/lib/ratp.c
+> @@ -1734,11 +1734,12 @@ void ratp_close(struct ratp *ratp)
+>   *
+>   * Return: 0 if successful, a negative error code otherwise.
+>   */
+> -int ratp_send_complete(struct ratp *ratp, const void *data, size_t len,
+> +int ratp_send_complete(struct ratp *ratp, const uint8_t *data, size_t len,
+>  		   void (*complete)(void *ctx, int status), void *complete_ctx)
+>  {
+>  	struct ratp_internal *ri = ratp->internal;
+>  	struct ratp_message *msg;
+> +	int sent = 0;
+> 
+>  	if (!ri || ri->state != RATP_STATE_ESTABLISHED)
+>  		return -ENETDOWN;
+> @@ -1754,11 +1755,12 @@ int ratp_send_complete(struct ratp *ratp, const void *data, size_t len,
+>  		msg = xzalloc(sizeof(*msg));
+>  		msg->buf = xzalloc(sizeof(struct ratp_header) + now + 2);
+>  		msg->len = now;
+> -		memcpy(msg->buf + sizeof(struct ratp_header), data, now);
+> +		memcpy(msg->buf + sizeof(struct ratp_header), data + sent, now);
+> 
+>  		list_add_tail(&msg->list, &ri->sendmsg);
+> 
+>  		len -= now;
+> +		sent += now;
+>  	}
+> 
+>  	msg->eor = 1;
+> --
+> 2.18.0
+> 
 
- 		list_add_tail(&msg->list, &ri->sendmsg);
-
- 		len -= now;
-+		sent += now;
- 	}
-
- 	msg->eor = 1;
---
-2.18.0
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
