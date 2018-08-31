@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fvbn4-0000Ta-B6
- for barebox@lists.infradead.org; Fri, 31 Aug 2018 05:16:16 +0000
-Received: by mail-pf1-x444.google.com with SMTP id k21-v6so4935029pff.11
- for <barebox@lists.infradead.org>; Thu, 30 Aug 2018 22:16:05 -0700 (PDT)
+ id 1fvbn4-0000TX-Pl
+ for barebox@lists.infradead.org; Fri, 31 Aug 2018 05:16:17 +0000
+Received: by mail-pg1-x543.google.com with SMTP id g20-v6so4914829pgv.6
+ for <barebox@lists.infradead.org>; Thu, 30 Aug 2018 22:16:04 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 30 Aug 2018 22:15:47 -0700
-Message-Id: <20180831051551.10662-3-andrew.smirnov@gmail.com>
+Date: Thu, 30 Aug 2018 22:15:46 -0700
+Message-Id: <20180831051551.10662-2-andrew.smirnov@gmail.com>
 In-Reply-To: <20180831051551.10662-1-andrew.smirnov@gmail.com>
 References: <20180831051551.10662-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,35 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] mfd: rave-sp: Fix incorrectly specified checksum type
+Subject: [PATCH 1/5] mfd: rave-sp: Remove unused defines
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-RAVE SP firmware covered by "legacy" variant uses 16-bit CCITT
-checksum algorithm. Change the code to correctly reflect that.
+Remove unusded defines that are a leftover from earlier iterations of
+the driver.
 
 This is a backport of Linux kernel patch [1]
 
-[1] https://lore.kernel.org/lkml/20180707024108.32373-5-andrew.smirnov@gmail.com/T/#m6251b0a4869dd303c21910fc99f2ce127cf8aae0
+[1] https://lore.kernel.org/lkml/20180707024108.32373-5-andrew.smirnov@gmail.com/T/#m02a75392c729828f822e2cd52f86e541b1649a27
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mfd/rave-sp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/rave-sp.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
 diff --git a/drivers/mfd/rave-sp.c b/drivers/mfd/rave-sp.c
-index 47b1e68ba..a711633a0 100644
+index d55e913ff..47b1e68ba 100644
 --- a/drivers/mfd/rave-sp.c
 +++ b/drivers/mfd/rave-sp.c
-@@ -653,7 +653,7 @@ static const struct rave_sp_checksum rave_sp_checksum_ccitt = {
- };
+@@ -57,16 +57,6 @@
+ #define RAVE_SP_TX_BUFFER_SIZE				\
+ 	(RAVE_SP_STX_ETX_SIZE + 2 * RAVE_SP_RX_BUFFER_SIZE)
  
- static const struct rave_sp_variant rave_sp_legacy = {
--	.checksum = &rave_sp_checksum_8b2c,
-+	.checksum = &rave_sp_checksum_ccitt,
- 	.cmd = {
- 		.translate = rave_sp_default_cmd_translate,
- 	},
+-#define RAVE_SP_BOOT_SOURCE_GET		0
+-#define RAVE_SP_BOOT_SOURCE_SET		1
+-
+-#define RAVE_SP_RDU2_BOARD_TYPE_RMB	0
+-#define RAVE_SP_RDU2_BOARD_TYPE_DEB	1
+-
+-#define RAVE_SP_BOOT_SOURCE_SD		0
+-#define RAVE_SP_BOOT_SOURCE_EMMC	1
+-#define RAVE_SP_BOOT_SOURCE_NOR		2
+-
+ /**
+  * enum rave_sp_deframer_state - Possible state for de-framer
+  *
 -- 
 2.17.1
 
