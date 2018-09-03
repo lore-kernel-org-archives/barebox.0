@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.megiteam.pl ([31.186.83.105])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fwnMx-0004rJ-Vg
- for barebox@lists.infradead.org; Mon, 03 Sep 2018 11:50:13 +0000
+ id 1fwnTZ-0008B1-71
+ for barebox@lists.infradead.org; Mon, 03 Sep 2018 11:57:07 +0000
 From: Marcin Niestroj <m.niestroj@grinn-global.com>
-Date: Mon,  3 Sep 2018 13:24:03 +0200
-Message-Id: <20180903112408.2086-14-m.niestroj@grinn-global.com>
+Date: Mon,  3 Sep 2018 13:24:06 +0200
+Message-Id: <20180903112408.2086-17-m.niestroj@grinn-global.com>
 In-Reply-To: <20180903112408.2086-1-m.niestroj@grinn-global.com>
 References: <20180903112408.2086-1-m.niestroj@grinn-global.com>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,51 +16,116 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/18] crypto: caam - constify key data
+Subject: [PATCH 16/18] crypto: caam - sync desc.h with Linux
 To: barebox@lists.infradead.org
 Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
 
-UGljayBjb21taXQgNjY3NGE0ZmRjNmMyZTY5MGIyOGI3ZjU5MGNkMjA4NzFhZWVlNTVhZCBmcm9t
-IExpbnV4CnVwc3RyZWFtLgoKICAgIGNyeXB0bzogY2FhbSAtIGNvbnN0aWZ5IGtleSBkYXRhCgog
-ICAgS2V5IGRhdGEgaXMgbm90IG1vZGlmaWVkLCBpdCBpcyBjb3BpZWQgaW4gdGhlIHNoYXJlZCBk
-ZXNjcmlwdG9yLgoKICAgIFNpZ25lZC1vZmYtYnk6IEhvcmlhIEdlYW50xIMgPGhvcmlhLmdlYW50
-YUBueHAuY29tPgogICAgU2lnbmVkLW9mZi1ieTogSGVyYmVydCBYdSA8aGVyYmVydEBnb25kb3Iu
-YXBhbmEub3JnLmF1PgoKU2lnbmVkLW9mZi1ieTogTWFyY2luIE5pZXN0cm9qIDxtLm5pZXN0cm9q
-QGdyaW5uLWdsb2JhbC5jb20+Ci0tLQogZHJpdmVycy9jcnlwdG8vY2FhbS9kZXNjX2NvbnN0ci5o
-IHwgOCArKysrLS0tLQogMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlv
-bnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL2NyeXB0by9jYWFtL2Rlc2NfY29uc3RyLmggYi9k
-cml2ZXJzL2NyeXB0by9jYWFtL2Rlc2NfY29uc3RyLmgKaW5kZXggM2UyZWU3ODViLi4wZDU3Nzhi
-YTAgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvY3J5cHRvL2NhYW0vZGVzY19jb25zdHIuaAorKysgYi9k
-cml2ZXJzL2NyeXB0by9jYWFtL2Rlc2NfY29uc3RyLmgKQEAgLTk4LDcgKzk4LDcgQEAgc3RhdGlj
-IGlubGluZSB2b2lkIGluaXRfam9iX2Rlc2Nfc2hhcmVkKHUzMiAqIGNvbnN0IGRlc2MsIGRtYV9h
-ZGRyX3QgcHRyLAogCWFwcGVuZF9wdHIoZGVzYywgcHRyKTsKIH0KIAotc3RhdGljIGlubGluZSB2
-b2lkIGFwcGVuZF9kYXRhKHUzMiAqIGNvbnN0IGRlc2MsIHZvaWQgKmRhdGEsIGludCBsZW4pCitz
-dGF0aWMgaW5saW5lIHZvaWQgYXBwZW5kX2RhdGEodTMyICogY29uc3QgZGVzYywgY29uc3Qgdm9p
-ZCAqZGF0YSwgaW50IGxlbikKIHsKIAl1MzIgKm9mZnNldCA9IGRlc2NfZW5kKGRlc2MpOwogCkBA
-IC0xNjEsNyArMTYxLDcgQEAgc3RhdGljIGlubGluZSB2b2lkIGFwcGVuZF9jbWRfcHRyX2V4dGxl
-bih1MzIgKiBjb25zdCBkZXNjLCBkbWFfYWRkcl90IHB0ciwKIAlhcHBlbmRfY21kKGRlc2MsIGxl
-bik7CiB9CiAKLXN0YXRpYyBpbmxpbmUgdm9pZCBhcHBlbmRfY21kX2RhdGEodTMyICogY29uc3Qg
-ZGVzYywgdm9pZCAqZGF0YSwgaW50IGxlbiwKK3N0YXRpYyBpbmxpbmUgdm9pZCBhcHBlbmRfY21k
-X2RhdGEodTMyICogY29uc3QgZGVzYywgY29uc3Qgdm9pZCAqZGF0YSwgaW50IGxlbiwKIAkJCQkg
-ICB1MzIgY29tbWFuZCkKIHsKIAlhcHBlbmRfY21kKGRlc2MsIGNvbW1hbmQgfCBJTU1FRElBVEUg
-fCBsZW4pOwpAQCAtMjYwLDcgKzI2MCw3IEBAIEFQUEVORF9TRVFfUFRSX0lOVExFTihpbiwgSU4p
-CiBBUFBFTkRfU0VRX1BUUl9JTlRMRU4ob3V0LCBPVVQpCiAKICNkZWZpbmUgQVBQRU5EX0NNRF9Q
-VFJfVE9fSU1NKGNtZCwgb3ApIFwKLXN0YXRpYyBpbmxpbmUgdm9pZCBhcHBlbmRfIyNjbWQjI19h
-c19pbW0odTMyICogY29uc3QgZGVzYywgdm9pZCAqZGF0YSwgXAorc3RhdGljIGlubGluZSB2b2lk
-IGFwcGVuZF8jI2NtZCMjX2FzX2ltbSh1MzIgKiBjb25zdCBkZXNjLCBjb25zdCB2b2lkICpkYXRh
-LCBcCiAJCQkJCSB1bnNpZ25lZCBpbnQgbGVuLCB1MzIgb3B0aW9ucykgXAogeyBcCiAJUFJJTlRf
-UE9TOyBcCkBAIC0zMDEsNyArMzAxLDcgQEAgQVBQRU5EX0NNRF9QVFJfTEVOKHNlcV9vdXRfcHRy
-LCBTRVFfT1VUX1BUUiwgdTMyKQogICogZnJvbSBsZW5ndGggb2YgaW1tZWRpYXRlIGRhdGEgcHJv
-dmlkZWQsIGUuZy4sIHNwbGl0IGtleXMKICAqLwogI2RlZmluZSBBUFBFTkRfQ01EX1BUUl9UT19J
-TU0yKGNtZCwgb3ApIFwKLXN0YXRpYyBpbmxpbmUgdm9pZCBhcHBlbmRfIyNjbWQjI19hc19pbW0o
-dTMyICogY29uc3QgZGVzYywgdm9pZCAqZGF0YSwgXAorc3RhdGljIGlubGluZSB2b2lkIGFwcGVu
-ZF8jI2NtZCMjX2FzX2ltbSh1MzIgKiBjb25zdCBkZXNjLCBjb25zdCB2b2lkICpkYXRhLCBcCiAJ
-CQkJCSB1bnNpZ25lZCBpbnQgZGF0YV9sZW4sIFwKIAkJCQkJIHVuc2lnbmVkIGludCBsZW4sIHUz
-MiBvcHRpb25zKSBcCiB7IFwKLS0gCjIuMTguMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+Get rid of all differences between our and Linux content of desc.h, so
+we prevent running into issues when porting new features in future.
+
+Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
+---
+ drivers/crypto/caam/desc.h | 32 +++++++++-----------------------
+ 1 file changed, 9 insertions(+), 23 deletions(-)
+
+diff --git a/drivers/crypto/caam/desc.h b/drivers/crypto/caam/desc.h
+index 2b5f49967..ee873c07f 100644
+--- a/drivers/crypto/caam/desc.h
++++ b/drivers/crypto/caam/desc.h
+@@ -20,18 +20,7 @@
+ #define SEC4_SG_BPID_MASK	0x000000ff
+ #define SEC4_SG_BPID_SHIFT	16
+ #define SEC4_SG_LEN_MASK	0x3fffffff	/* Excludes EXT and FINAL */
+-#define SEC4_SG_OFFS_MASK	0x00001fff
+-
+-struct sec4_sg_entry {
+-#ifdef CONFIG_64BIT
+-	u64 ptr;
+-#else
+-	u32 reserved;
+-	u32 ptr;
+-#endif
+-	u32 len;
+-	u32 bpid_offset;
+-};
++#define SEC4_SG_OFFSET_MASK	0x00001fff
+ 
+ /* Max size of any CAAM descriptor in 32-bit words, inclusive of header */
+ #define MAX_CAAM_DESCSIZE	64
+@@ -95,8 +84,8 @@ struct sec4_sg_entry {
+ #define HDR_ZRO			0x00008000
+ 
+ /* Start Index or SharedDesc Length */
+-#define HDR_START_IDX_MASK	0x3f
+ #define HDR_START_IDX_SHIFT	16
++#define HDR_START_IDX_MASK	(0x3f << HDR_START_IDX_SHIFT)
+ 
+ /* If shared descriptor header, 6-bit length */
+ #define HDR_DESCLEN_SHR_MASK	0x3f
+@@ -126,10 +115,10 @@ struct sec4_sg_entry {
+ #define HDR_PROP_DNR		0x00000800
+ 
+ /* JobDesc/SharedDesc share property */
+-#define HDR_SD_SHARE_MASK	0x03
+ #define HDR_SD_SHARE_SHIFT	8
+-#define HDR_JD_SHARE_MASK	0x07
++#define HDR_SD_SHARE_MASK	(0x03 << HDR_SD_SHARE_SHIFT)
+ #define HDR_JD_SHARE_SHIFT	8
++#define HDR_JD_SHARE_MASK	(0x07 << HDR_JD_SHARE_SHIFT)
+ 
+ #define HDR_SHARE_NEVER		(0x00 << HDR_SD_SHARE_SHIFT)
+ #define HDR_SHARE_WAIT		(0x01 << HDR_SD_SHARE_SHIFT)
+@@ -240,7 +229,7 @@ struct sec4_sg_entry {
+ #define LDST_SRCDST_WORD_DECO_MATH2	(0x0a << LDST_SRCDST_SHIFT)
+ #define LDST_SRCDST_WORD_DECO_AAD_SZ	(0x0b << LDST_SRCDST_SHIFT)
+ #define LDST_SRCDST_WORD_DECO_MATH3	(0x0b << LDST_SRCDST_SHIFT)
+-#define LDST_SRCDST_WORD_CLASS1_ICV_SZ	(0x0c << LDST_SRCDST_SHIFT)
++#define LDST_SRCDST_WORD_CLASS1_IV_SZ	(0x0c << LDST_SRCDST_SHIFT)
+ #define LDST_SRCDST_WORD_ALTDS_CLASS1	(0x0f << LDST_SRCDST_SHIFT)
+ #define LDST_SRCDST_WORD_PKHA_A_SZ	(0x10 << LDST_SRCDST_SHIFT)
+ #define LDST_SRCDST_WORD_PKHA_B_SZ	(0x11 << LDST_SRCDST_SHIFT)
+@@ -405,10 +394,7 @@ struct sec4_sg_entry {
+ #define FIFOST_TYPE_PKHA_N	 (0x08 << FIFOST_TYPE_SHIFT)
+ #define FIFOST_TYPE_PKHA_A	 (0x0c << FIFOST_TYPE_SHIFT)
+ #define FIFOST_TYPE_PKHA_B	 (0x0d << FIFOST_TYPE_SHIFT)
+-#define FIFOST_TYPE_AF_SBOX_CCM_JKEK	(0x10 << FIFOST_TYPE_SHIFT)
+-#define FIFOST_TYPE_AF_SBOX_CCM_TKEK	(0x11 << FIFOST_TYPE_SHIFT)
+-#define FIFOST_TYPE_KEY_CCM_JKEK	(0x14 << FIFOST_TYPE_SHIFT)
+-#define FIFOST_TYPE_KEY_CCM_TKEK	(0x15 << FIFOST_TYPE_SHIFT)
++#define FIFOST_TYPE_AF_SBOX_JKEK (0x20 << FIFOST_TYPE_SHIFT)
+ #define FIFOST_TYPE_AF_SBOX_TKEK (0x21 << FIFOST_TYPE_SHIFT)
+ #define FIFOST_TYPE_PKHA_E_JKEK	 (0x22 << FIFOST_TYPE_SHIFT)
+ #define FIFOST_TYPE_PKHA_E_TKEK	 (0x23 << FIFOST_TYPE_SHIFT)
+@@ -1130,8 +1116,8 @@ struct sec4_sg_entry {
+ /* For non-protocol/alg-only op commands */
+ #define OP_ALG_TYPE_SHIFT	24
+ #define OP_ALG_TYPE_MASK	(0x7 << OP_ALG_TYPE_SHIFT)
+-#define OP_ALG_TYPE_CLASS1	2
+-#define OP_ALG_TYPE_CLASS2	4
++#define OP_ALG_TYPE_CLASS1	(2 << OP_ALG_TYPE_SHIFT)
++#define OP_ALG_TYPE_CLASS2	(4 << OP_ALG_TYPE_SHIFT)
+ 
+ #define OP_ALG_ALGSEL_SHIFT	16
+ #define OP_ALG_ALGSEL_MASK	(0xff << OP_ALG_ALGSEL_SHIFT)
+@@ -1272,7 +1258,7 @@ struct sec4_sg_entry {
+ #define OP_ALG_PKMODE_MOD_PRIMALITY	0x00f
+ 
+ /* PKHA mode copy-memory functions */
+-#define OP_ALG_PKMODE_SRC_REG_SHIFT	13
++#define OP_ALG_PKMODE_SRC_REG_SHIFT	17
+ #define OP_ALG_PKMODE_SRC_REG_MASK	(7 << OP_ALG_PKMODE_SRC_REG_SHIFT)
+ #define OP_ALG_PKMODE_DST_REG_SHIFT	10
+ #define OP_ALG_PKMODE_DST_REG_MASK	(7 << OP_ALG_PKMODE_DST_REG_SHIFT)
+-- 
+2.18.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
