@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.megiteam.pl ([31.186.83.105])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fwncm-0004Hg-Ol
- for barebox@lists.infradead.org; Mon, 03 Sep 2018 12:06:34 +0000
+ id 1fwnd2-0004Oz-Qk
+ for barebox@lists.infradead.org; Mon, 03 Sep 2018 12:06:50 +0000
 From: Marcin Niestroj <m.niestroj@grinn-global.com>
-Date: Mon,  3 Sep 2018 13:44:46 +0200
-Message-Id: <20180903114452.4611-22-m.niestroj@grinn-global.com>
+Date: Mon,  3 Sep 2018 13:44:37 +0200
+Message-Id: <20180903114452.4611-13-m.niestroj@grinn-global.com>
 In-Reply-To: <20180903114452.4611-1-m.niestroj@grinn-global.com>
 References: <20180903112408.2086-1-m.niestroj@grinn-global.com>
  <20180903114452.4611-1-m.niestroj@grinn-global.com>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,35 +17,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/18] crypto: caam - fix incorrect define
+Subject: [PATCH 03/18] crypto: caam - fix writing to JQCR_MS when using
+ service interface
 To: barebox@lists.infradead.org
 Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
 
-UGljayBjb21taXQgY2MyZjhhYjUzMzRhNzM2ZmEwZTc3NWNmY2NmMDZjMWUyNjg2NjdmMCBmcm9t
-IExpbnV4CnVwc3RyZWFtLgoKICAgIGNyeXB0bzogY2FhbSAtIGZpeCBpbmNvcnJlY3QgZGVmaW5l
-CgogICAgRml4ZXM6IDNlYmZhOTJmNDlhNiAoImNyeXB0bzogY2FhbSAtIEFkZCBuZXcgbWFjcm9z
-IGZvciBidWlsZGluZyBleHRlbmRlZCBTRUMgZGVzY3JpcHRvcnMgKD4gNjQgd29yZHMpIikKICAg
-IFNpZ25lZC1vZmYtYnk6IFJhZHUgQWxleGUgPHJhZHUuYWxleGVAbnhwLmNvbT4KICAgIFNpZ25l
-ZC1vZmYtYnk6IEhvcmlhIEdlYW50xIMgPGhvcmlhLmdlYW50YUBueHAuY29tPgogICAgU2lnbmVk
-LW9mZi1ieTogSGVyYmVydCBYdSA8aGVyYmVydEBnb25kb3IuYXBhbmEub3JnLmF1PgoKU2lnbmVk
-LW9mZi1ieTogTWFyY2luIE5pZXN0cm9qIDxtLm5pZXN0cm9qQGdyaW5uLWdsb2JhbC5jb20+Ci0t
-LQogZHJpdmVycy9jcnlwdG8vY2FhbS9kZXNjLmggfCAyICstCiAxIGZpbGUgY2hhbmdlZCwgMSBp
-bnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL2NyeXB0by9j
-YWFtL2Rlc2MuaCBiL2RyaXZlcnMvY3J5cHRvL2NhYW0vZGVzYy5oCmluZGV4IGU5NjRhNWE5My4u
-MmI1ZjQ5OTY3IDEwMDY0NAotLS0gYS9kcml2ZXJzL2NyeXB0by9jYWFtL2Rlc2MuaAorKysgYi9k
-cml2ZXJzL2NyeXB0by9jYWFtL2Rlc2MuaApAQCAtMTQ2OCw3ICsxNDY4LDcgQEAgc3RydWN0IHNl
-YzRfc2dfZW50cnkgewogI2RlZmluZSBNQVRIX1NSQzFfUkVHMgkJKDB4MDIgPDwgTUFUSF9TUkMx
-X1NISUZUKQogI2RlZmluZSBNQVRIX1NSQzFfUkVHMwkJKDB4MDMgPDwgTUFUSF9TUkMxX1NISUZU
-KQogI2RlZmluZSBNQVRIX1NSQzFfSU1NCQkoMHgwNCA8PCBNQVRIX1NSQzFfU0hJRlQpCi0jZGVm
-aW5lIE1BVEhfU1JDMV9EUE9WUkQJKDB4MDcgPDwgTUFUSF9TUkMwX1NISUZUKQorI2RlZmluZSBN
-QVRIX1NSQzFfRFBPVlJECSgweDA3IDw8IE1BVEhfU1JDMV9TSElGVCkKICNkZWZpbmUgTUFUSF9T
-UkMxX0lORklGTwkoMHgwYSA8PCBNQVRIX1NSQzFfU0hJRlQpCiAjZGVmaW5lIE1BVEhfU1JDMV9P
-VVRGSUZPCSgweDBiIDw8IE1BVEhfU1JDMV9TSElGVCkKICNkZWZpbmUgTUFUSF9TUkMxX09ORQkJ
-KDB4MGMgPDwgTUFUSF9TUkMxX1NISUZUKQotLSAKMi4xOC4wCgoKX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
-eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
-bGlzdGluZm8vYmFyZWJveAo=
+Pick commit 9f587fa29f7e8ed6b8885cff51a51ace3ad85152 from Linux
+upstream.
+
+    crypto: caam - fix writing to JQCR_MS when using service interface
+
+    Most significant part of JQCR (Job Queue Control Register) contains
+    bits that control endianness: ILE - Immediate Little Endian,
+    DWS - Double Word Swap.
+    The bits are automatically set by the Job Queue Controller HW.
+
+    Unfortunately these bits are cleared in SW when submitting descriptors
+    via the register-based service interface.
+    >From LS1021A:
+    JQCR_MS = 08080100 - before writing: ILE | DWS | SRC (JR0)
+    JQCR_MS = 30000100 - after writing: WHL | FOUR | SRC (JR0)
+
+    This would cause problems on little endian caam for descriptors
+    containing immediata data or double-word pointers.
+    Currently there is no problem since the only descriptors ran through
+    this interface are the ones that (un)instantiate RNG.
+
+    Signed-off-by: Horia Geant? <horia.geanta@freescale.com>
+    Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+
+Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
+---
+ drivers/crypto/caam/ctrl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/crypto/caam/ctrl.c b/drivers/crypto/caam/ctrl.c
+index eafff8ef0..8ce9a859e 100644
+--- a/drivers/crypto/caam/ctrl.c
++++ b/drivers/crypto/caam/ctrl.c
+@@ -117,7 +117,7 @@ static inline int run_descriptor_deco0(struct device_d *ctrldev, u32 *desc,
+ 		flags |= DECO_JQCR_FOUR;
+ 
+ 	/* Instruct the DECO to execute it */
+-	writel(flags, &deco->jr_ctl_hi);
++	setbits32(&deco->jr_ctl_hi, flags);
+ 
+ 	start = get_time_ns();
+ 	while ((deco_dbg_reg = readl(&deco->desc_dbg)) &
+-- 
+2.18.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
