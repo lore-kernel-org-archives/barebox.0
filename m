@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.megiteam.pl ([31.186.83.105])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fwnJP-0003X7-Rz
- for barebox@lists.infradead.org; Mon, 03 Sep 2018 11:46:34 +0000
+ id 1fwnJP-0003WG-SE
+ for barebox@lists.infradead.org; Mon, 03 Sep 2018 11:46:36 +0000
 From: Marcin Niestroj <m.niestroj@grinn-global.com>
-Date: Mon,  3 Sep 2018 13:44:34 +0200
-Message-Id: <20180903114452.4611-10-m.niestroj@grinn-global.com>
+Date: Mon,  3 Sep 2018 13:44:33 +0200
+Message-Id: <20180903114452.4611-9-m.niestroj@grinn-global.com>
 In-Reply-To: <20180903114452.4611-1-m.niestroj@grinn-global.com>
 References: <20180903112408.2086-1-m.niestroj@grinn-global.com>
  <20180903114452.4611-1-m.niestroj@grinn-global.com>
@@ -18,56 +18,88 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/18] crypto: caam: Pull CAAM support improvements from Linux
+Subject: [PATCH 18/18] crypto: caam - allow retrieving 'era' from register
 To: barebox@lists.infradead.org
 Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
 
-Hi,
-
-This is a set of patches, which improve CAAM support. They sync CAAM
-support with Linux v4.19-rc1. Applying them allows to use CAAM on
-ARM IMX devices. Some of these patches had to be adapted to match
-Barebox.
-
-Marcin Niestroj (18):
-  crypto: caam - fix RNG init descriptor ret. code checking
-  crypto: caam - fix warning in APPEND_MATH_IMM_u64
-  crypto: caam - fix writing to JQCR_MS when using service interface
-  crypto: caam - handle core endianness != caam endianness
-  crypto: caam - add support for iMX6UL
-  crypto: caam - fix sparse warnings
-  crypto: caam - trivial code clean-up
-  crypto: caam - remove unreachable code in report_ccb_status()
-  crypto: caam - constify pointer to descriptor buffer
-  crypto: caam - avoid double inclusion in desc_constr.h
-  crypto: caam - clean-up in caam_init_rng()
-  crypto: caam - fix incorrect define
-  crypto: caam - constify key data
-  crypto: caam - fix endless loop when DECO acquire fails
-  crypto: caam - do not use mem and emi_slow clock for imx7x
-  crypto: caam - sync desc.h with Linux
-  crypto: caam - staticize caam_get_era()
-  crypto: caam - allow retrieving 'era' from register
-
- drivers/crypto/caam/caamrng.c     |   9 +-
- drivers/crypto/caam/ctrl.c        | 240 +++++++++++++++++++-----------
- drivers/crypto/caam/ctrl.h        |   1 -
- drivers/crypto/caam/desc.h        |  35 ++---
- drivers/crypto/caam/desc_constr.h | 118 +++++++++------
- drivers/crypto/caam/error.c       |   5 +-
- drivers/crypto/caam/jr.c          |  64 +++-----
- drivers/crypto/caam/regs.h        | 123 ++++++++++++++-
- 8 files changed, 374 insertions(+), 221 deletions(-)
-
--- 
-2.18.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+UGljayBjb21taXQgNjU0ZjJiOTM3YjM4OTI5NTU4MWJjYjRhYTI2MDExYTYzZGI3YmM4ZiBmcm9t
+IExpbnV4CnVwc3RyZWFtLgoKICAgIGNyeXB0bzogY2FhbSAtIGFsbG93IHJldHJpZXZpbmcgJ2Vy
+YScgZnJvbSByZWdpc3RlcgoKICAgIFRoZSAnZXJhJyBpbmZvcm1hdGlvbiBjYW4gYmUgcmV0cmll
+dmVkIGZyb20gQ0FBTSByZWdpc3RlcnMsIHNvCiAgICBpbnRyb2R1Y2UgYSBjYWFtX2dldF9lcmFf
+ZnJvbV9odygpIGZ1bmN0aW9uIHRoYXQgZ2V0cyBpdCB2aWEgcmVnaXN0ZXIKICAgIHJlYWRzIGlu
+IGNhc2UgdGhlICdmc2wsc2VjLWVyYScgcHJvcGVydHkgaXMgbm90IHBhc3NlZCBpbiB0aGUgZGV2
+aWNlCiAgICB0cmVlLgoKICAgIFRoaXMgZnVuY3Rpb24gaXMgYmFzZWQgb24gdGhlIFUtQm9vdCBp
+bXBsZW1lbnRhdGlvbiBmcm9tCiAgICBkcml2ZXJzL2NyeXB0by9mc2wvc2VjLmMKCiAgICBTaWdu
+ZWQtb2ZmLWJ5OiBGYWJpbyBFc3RldmFtIDxmYWJpby5lc3RldmFtQG54cC5jb20+CiAgICBSZXZp
+ZXdlZC1ieTogSG9yaWEgR2VhbnTEgyA8aG9yaWEuZ2VhbnRhQG54cC5jb20+CiAgICBUZXN0ZWQt
+Ynk6IEJyZW5vIExpbWEgPGJyZW5vLmxpbWFAbnhwLmNvbT4KICAgIFNpZ25lZC1vZmYtYnk6IEhl
+cmJlcnQgWHUgPGhlcmJlcnRAZ29uZG9yLmFwYW5hLm9yZy5hdT4KClNpZ25lZC1vZmYtYnk6IE1h
+cmNpbiBOaWVzdHJvaiA8bS5uaWVzdHJvakBncmlubi1nbG9iYWwuY29tPgotLS0KIGRyaXZlcnMv
+Y3J5cHRvL2NhYW0vY3RybC5jIHwgNTYgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KystLS0KIGRyaXZlcnMvY3J5cHRvL2NhYW0vcmVncy5oIHwgIDYgKysrKwogMiBmaWxlcyBjaGFu
+Z2VkLCA1OCBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZl
+cnMvY3J5cHRvL2NhYW0vY3RybC5jIGIvZHJpdmVycy9jcnlwdG8vY2FhbS9jdHJsLmMKaW5kZXgg
+M2IyNGM1ZWEyLi45ZTYyYmQ2ZmQgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvY3J5cHRvL2NhYW0vY3Ry
+bC5jCisrKyBiL2RyaXZlcnMvY3J5cHRvL2NhYW0vY3RybC5jCkBAIC0yODIsMTEgKzI4Miw1NiBA
+QCBzdGFydF9ybmc6CiAJY2xyc2V0Yml0c18zMigmcjR0c3QtPnJ0bWN0bCwgUlRNQ1RMX1BSR00s
+IFJUTUNUTF9TQU1QX01PREVfUkFXX0VTX1NDKTsKIH0KIAorc3RhdGljIGludCBjYWFtX2dldF9l
+cmFfZnJvbV9odyhzdHJ1Y3QgY2FhbV9jdHJsIF9faW9tZW0gKmN0cmwpCit7CisJc3RhdGljIGNv
+bnN0IHN0cnVjdCB7CisJCXUxNiBpcF9pZDsKKwkJdTggbWFqX3JldjsKKwkJdTggZXJhOworCX0g
+aWRbXSA9IHsKKwkJezB4MEExMCwgMSwgMX0sCisJCXsweDBBMTAsIDIsIDJ9LAorCQl7MHgwQTEy
+LCAxLCAzfSwKKwkJezB4MEExNCwgMSwgM30sCisJCXsweDBBMTQsIDIsIDR9LAorCQl7MHgwQTE2
+LCAxLCA0fSwKKwkJezB4MEExMCwgMywgNH0sCisJCXsweDBBMTEsIDEsIDR9LAorCQl7MHgwQTE4
+LCAxLCA0fSwKKwkJezB4MEExMSwgMiwgNX0sCisJCXsweDBBMTIsIDIsIDV9LAorCQl7MHgwQTEz
+LCAxLCA1fSwKKwkJezB4MEExQywgMSwgNX0KKwl9OworCXUzMiBjY2J2aWQsIGlkX21zOworCXU4
+IG1hal9yZXYsIGVyYTsKKwl1MTYgaXBfaWQ7CisJaW50IGk7CisKKwljY2J2aWQgPSByZF9yZWcz
+MigmY3RybC0+cGVyZm1vbi5jY2JfaWQpOworCWVyYSA9IChjY2J2aWQgJiBDQ0JWSURfRVJBX01B
+U0spID4+IENDQlZJRF9FUkFfU0hJRlQ7CisJaWYgKGVyYSkJLyogVGhpcyBpcyAnMCcgcHJpb3Ig
+dG8gQ0FBTSBFUkEtNiAqLworCQlyZXR1cm4gZXJhOworCisJaWRfbXMgPSByZF9yZWczMigmY3Ry
+bC0+cGVyZm1vbi5jYWFtX2lkX21zKTsKKwlpcF9pZCA9IChpZF9tcyAmIFNFQ1ZJRF9NU19JUElE
+X01BU0spID4+IFNFQ1ZJRF9NU19JUElEX1NISUZUOworCW1hal9yZXYgPSAoaWRfbXMgJiBTRUNW
+SURfTVNfTUFKX1JFVl9NQVNLKSA+PiBTRUNWSURfTVNfTUFKX1JFVl9TSElGVDsKKworCWZvciAo
+aSA9IDA7IGkgPCBBUlJBWV9TSVpFKGlkKTsgaSsrKQorCQlpZiAoaWRbaV0uaXBfaWQgPT0gaXBf
+aWQgJiYgaWRbaV0ubWFqX3JldiA9PSBtYWpfcmV2KQorCQkJcmV0dXJuIGlkW2ldLmVyYTsKKwor
+CXJldHVybiAtRU5PVFNVUFA7Cit9CisKIC8qKgogICogY2FhbV9nZXRfZXJhKCkgLSBSZXR1cm4g
+dGhlIEVSQSBvZiB0aGUgU0VDIG9uIFNvQywgYmFzZWQKLSAqIG9uICJzZWMtZXJhIiBwcm9wZXJ5
+IGluIHRoZSBEVFMuIFRoaXMgcHJvcGVydHkgaXMgdXBkYXRlZCBieSB1LWJvb3QuCisgKiBvbiAi
+c2VjLWVyYSIgb3B0aW9uYWwgcHJvcGVydHkgaW4gdGhlIERUUy4gVGhpcyBwcm9wZXJ0eSBpcyB1
+cGRhdGVkCisgKiBieSB1LWJvb3QuCisgKiBJbiBjYXNlIHRoaXMgcHJvcGVydHkgaXMgbm90IHBh
+c3NlZCBhbiBhdHRlbXB0IHRvIHJldHJpZXZlIHRoZSBDQUFNCisgKiBlcmEgdmlhIHJlZ2lzdGVy
+IHJlYWRzIHdpbGwgYmUgbWFkZS4KICAqKi8KLXN0YXRpYyBpbnQgY2FhbV9nZXRfZXJhKHZvaWQp
+CitzdGF0aWMgaW50IGNhYW1fZ2V0X2VyYShzdHJ1Y3QgY2FhbV9jdHJsIF9faW9tZW0gKmN0cmwp
+CiB7CiAJc3RydWN0IGRldmljZV9ub2RlICpjYWFtX25vZGU7CiAJaW50IHJldDsKQEAgLTI5NSw3
+ICszNDAsMTAgQEAgc3RhdGljIGludCBjYWFtX2dldF9lcmEodm9pZCkKIAljYWFtX25vZGUgPSBv
+Zl9maW5kX2NvbXBhdGlibGVfbm9kZShOVUxMLCBOVUxMLCAiZnNsLHNlYy12NC4wIik7CiAJcmV0
+ID0gb2ZfcHJvcGVydHlfcmVhZF91MzIoY2FhbV9ub2RlLCAiZnNsLHNlYy1lcmEiLCAmcHJvcCk7
+CiAKLQlyZXR1cm4gSVNfRVJSX1ZBTFVFKHJldCkgPyAtRU5PVFNVUFAgOiBwcm9wOworCWlmICgh
+cmV0KQorCQlyZXR1cm4gcHJvcDsKKwllbHNlCisJCXJldHVybiBjYWFtX2dldF9lcmFfZnJvbV9o
+dyhjdHJsKTsKIH0KIAogLyogUHJvYmUgcm91dGluZSBmb3IgQ0FBTSB0b3AgKGNvbnRyb2xsZXIp
+IGxldmVsICovCkBAIC01OTMsNyArNjQxLDcgQEAgc3RhdGljIGludCBjYWFtX3Byb2JlKHN0cnVj
+dCBkZXZpY2VfZCAqZGV2KQogCiAJLyogUmVwb3J0ICJhbGl2ZSIgZm9yIGRldmVsb3BlciB0byBz
+ZWUgKi8KIAlkZXZfZGJnKGRldiwgImRldmljZSBJRCA9IDB4JTAxNmxseCAoRXJhICVkKVxuIiwg
+Y2FhbV9pZCwKLQkJIGNhYW1fZ2V0X2VyYSgpKTsKKwkJIGNhYW1fZ2V0X2VyYShjdHJsKSk7CiAJ
+ZGV2X2RiZyhkZXYsICJqb2IgcmluZ3MgPSAlZCwgcWkgPSAlZFxuIiwKIAkJIGN0cmxwcml2LT50
+b3RhbF9qb2JycywgY3RybHByaXYtPnFpX3ByZXNlbnQpOwogCmRpZmYgLS1naXQgYS9kcml2ZXJz
+L2NyeXB0by9jYWFtL3JlZ3MuaCBiL2RyaXZlcnMvY3J5cHRvL2NhYW0vcmVncy5oCmluZGV4IGQ1
+MGU5YWQ2OS4uNmM5ZDZkNzVhIDEwMDY0NAotLS0gYS9kcml2ZXJzL2NyeXB0by9jYWFtL3JlZ3Mu
+aAorKysgYi9kcml2ZXJzL2NyeXB0by9jYWFtL3JlZ3MuaApAQCAtMzA3LDExICszMDcsMTcgQEAg
+c3RydWN0IGNhYW1fcGVyZm1vbiB7CiAKIAkvKiBDb21wb25lbnQgSW5zdGFudGlhdGlvbiBQYXJh
+bWV0ZXJzCQkJZmUwLWZmZiAqLwogCXUzMiBydGljX2lkOwkJLyogUlZJRCAtIFJUSUMgVmVyc2lv
+biBJRAkqLworI2RlZmluZSBDQ0JWSURfRVJBX01BU0sJCTB4ZmYwMDAwMDAKKyNkZWZpbmUgQ0NC
+VklEX0VSQV9TSElGVAkyNAogCXUzMiBjY2JfaWQ7CQkvKiBDQ0JWSUQgLSBDQ0IgVmVyc2lvbiBJ
+RAkqLwogCXUzMiBjaGFfaWRfbXM7CQkvKiBDSEFWSUQgLSBDSEEgVmVyc2lvbiBJRCBNb3N0IFNp
+Z25pZmljYW50Ki8KIAl1MzIgY2hhX2lkX2xzOwkJLyogQ0hBVklEIC0gQ0hBIFZlcnNpb24gSUQg
+TGVhc3QgU2lnbmlmaWNhbnQqLwogCXUzMiBjaGFfbnVtX21zOwkJLyogQ0hBTlVNIC0gQ0hBIE51
+bWJlciBNb3N0IFNpZ25pZmljYW50CSovCiAJdTMyIGNoYV9udW1fbHM7CQkvKiBDSEFOVU0gLSBD
+SEEgTnVtYmVyIExlYXN0IFNpZ25pZmljYW50Ki8KKyNkZWZpbmUgU0VDVklEX01TX0lQSURfTUFT
+SwkweGZmZmYwMDAwCisjZGVmaW5lIFNFQ1ZJRF9NU19JUElEX1NISUZUCTE2CisjZGVmaW5lIFNF
+Q1ZJRF9NU19NQUpfUkVWX01BU0sJMHgwMDAwZmYwMAorI2RlZmluZSBTRUNWSURfTVNfTUFKX1JF
+Vl9TSElGVAk4CiAJdTMyIGNhYW1faWRfbXM7CQkvKiBDQUFNVklEIC0gQ0FBTSBWZXJzaW9uIElE
+IE1TCSovCiAJdTMyIGNhYW1faWRfbHM7CQkvKiBDQUFNVklEIC0gQ0FBTSBWZXJzaW9uIElEIExT
+CSovCiB9OwotLSAKMi4xOC4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
+b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
