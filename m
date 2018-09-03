@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.megiteam.pl ([31.186.83.105])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fwnd2-0004Oz-Qk
- for barebox@lists.infradead.org; Mon, 03 Sep 2018 12:06:50 +0000
+ id 1fwnfO-0005QW-S2
+ for barebox@lists.infradead.org; Mon, 03 Sep 2018 12:09:16 +0000
 From: Marcin Niestroj <m.niestroj@grinn-global.com>
-Date: Mon,  3 Sep 2018 13:44:37 +0200
-Message-Id: <20180903114452.4611-13-m.niestroj@grinn-global.com>
+Date: Mon,  3 Sep 2018 13:44:45 +0200
+Message-Id: <20180903114452.4611-21-m.niestroj@grinn-global.com>
 In-Reply-To: <20180903114452.4611-1-m.niestroj@grinn-global.com>
 References: <20180903112408.2086-1-m.niestroj@grinn-global.com>
  <20180903114452.4611-1-m.niestroj@grinn-global.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,63 +18,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/18] crypto: caam - fix writing to JQCR_MS when using
- service interface
+Subject: [PATCH 11/18] crypto: caam - clean-up in caam_init_rng()
 To: barebox@lists.infradead.org
 Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
 
-Pick commit 9f587fa29f7e8ed6b8885cff51a51ace3ad85152 from Linux
-upstream.
-
-    crypto: caam - fix writing to JQCR_MS when using service interface
-
-    Most significant part of JQCR (Job Queue Control Register) contains
-    bits that control endianness: ILE - Immediate Little Endian,
-    DWS - Double Word Swap.
-    The bits are automatically set by the Job Queue Controller HW.
-
-    Unfortunately these bits are cleared in SW when submitting descriptors
-    via the register-based service interface.
-    >From LS1021A:
-    JQCR_MS = 08080100 - before writing: ILE | DWS | SRC (JR0)
-    JQCR_MS = 30000100 - after writing: WHL | FOUR | SRC (JR0)
-
-    This would cause problems on little endian caam for descriptors
-    containing immediata data or double-word pointers.
-    Currently there is no problem since the only descriptors ran through
-    this interface are the ones that (un)instantiate RNG.
-
-    Signed-off-by: Horia Geant? <horia.geanta@freescale.com>
-    Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-
-Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
----
- drivers/crypto/caam/ctrl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/crypto/caam/ctrl.c b/drivers/crypto/caam/ctrl.c
-index eafff8ef0..8ce9a859e 100644
---- a/drivers/crypto/caam/ctrl.c
-+++ b/drivers/crypto/caam/ctrl.c
-@@ -117,7 +117,7 @@ static inline int run_descriptor_deco0(struct device_d *ctrldev, u32 *desc,
- 		flags |= DECO_JQCR_FOUR;
- 
- 	/* Instruct the DECO to execute it */
--	writel(flags, &deco->jr_ctl_hi);
-+	setbits32(&deco->jr_ctl_hi, flags);
- 
- 	start = get_time_ns();
- 	while ((deco_dbg_reg = readl(&deco->desc_dbg)) &
--- 
-2.18.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+UGljayBjb21taXQgZjM2NmFmNDYyYWVmMWRjYWVhYjBmNjhiMDMxZTVjNGM0ZWI4NjBlMSBmcm9t
+IExpbnV4CnVwc3RyZWFtLgoKICAgIGNyeXB0bzogY2FhbSAtIGNsZWFuLXVwIGluIGNhYW1faW5p
+dF9ybmcoKQoKICAgIENsZWFuIHVwIHRoZSBjb2RlLCBhcyBpbmRpY2F0ZWQgYnkgQ29jY2luZWxs
+ZS4KCiAgICBDYzogSnVsaWEgTGF3YWxsIDxqdWxpYS5sYXdhbGxAbGlwNi5mcj4KICAgIFNpZ25l
+ZC1vZmYtYnk6IEhvcmlhIEdlYW50xIMgPGhvcmlhLmdlYW50YUBueHAuY29tPgogICAgU2lnbmVk
+LW9mZi1ieTogSGVyYmVydCBYdSA8aGVyYmVydEBnb25kb3IuYXBhbmEub3JnLmF1PgoKU2lnbmVk
+LW9mZi1ieTogTWFyY2luIE5pZXN0cm9qIDxtLm5pZXN0cm9qQGdyaW5uLWdsb2JhbC5jb20+Ci0t
+LQogZHJpdmVycy9jcnlwdG8vY2FhbS9jYWFtcm5nLmMgfCA2ICstLS0tLQogMSBmaWxlIGNoYW5n
+ZWQsIDEgaW5zZXJ0aW9uKCspLCA1IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMv
+Y3J5cHRvL2NhYW0vY2FhbXJuZy5jIGIvZHJpdmVycy9jcnlwdG8vY2FhbS9jYWFtcm5nLmMKaW5k
+ZXggYjYyZTNlYjc3Li4zOWE5MDU2OGQgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvY3J5cHRvL2NhYW0v
+Y2FhbXJuZy5jCisrKyBiL2RyaXZlcnMvY3J5cHRvL2NhYW0vY2FhbXJuZy5jCkBAIC0yNDIsMTEg
+KzI0Miw3IEBAIHN0YXRpYyBpbnQgY2FhbV9pbml0X3JuZyhzdHJ1Y3QgY2FhbV9ybmdfY3R4ICpj
+dHgsIHN0cnVjdCBkZXZpY2VfZCAqanJkZXYpCiAJaWYgKGVycikKIAkJcmV0dXJuIGVycjsKIAot
+CWVyciA9IGNhYW1faW5pdF9idWYoY3R4LCAxKTsKLQlpZiAoZXJyKQotCQlyZXR1cm4gZXJyOwot
+Ci0JcmV0dXJuIDA7CisJcmV0dXJuIGNhYW1faW5pdF9idWYoY3R4LCAxKTsKIH0KIAogaW50IGNh
+YW1fcm5nX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2LCBzdHJ1Y3QgZGV2aWNlX2QgKmpyZGV2
+KQotLSAKMi4xOC4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
+dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
