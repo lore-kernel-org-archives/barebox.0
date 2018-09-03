@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.megiteam.pl ([31.186.83.105])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fwnJB-0003PS-4C
- for barebox@lists.infradead.org; Mon, 03 Sep 2018 11:46:24 +0000
+ id 1fwnJP-0003X7-Rz
+ for barebox@lists.infradead.org; Mon, 03 Sep 2018 11:46:34 +0000
 From: Marcin Niestroj <m.niestroj@grinn-global.com>
-Date: Mon,  3 Sep 2018 13:44:30 +0200
-Message-Id: <20180903114452.4611-6-m.niestroj@grinn-global.com>
+Date: Mon,  3 Sep 2018 13:44:34 +0200
+Message-Id: <20180903114452.4611-10-m.niestroj@grinn-global.com>
 In-Reply-To: <20180903114452.4611-1-m.niestroj@grinn-global.com>
 References: <20180903112408.2086-1-m.niestroj@grinn-global.com>
  <20180903114452.4611-1-m.niestroj@grinn-global.com>
@@ -18,67 +18,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/18] crypto: caam - do not use mem and emi_slow clock for
- imx7x
+Subject: [PATCH 00/18] crypto: caam: Pull CAAM support improvements from Linux
 To: barebox@lists.infradead.org
 Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
 
-UGljayBjb21taXQgNjk5ZTQ5MWJhYzg0YTIwNjljN2FiZWFjZjJmNDM2N2VjYjE5ZmE5YyBmcm9t
-IExpbnV4CnVwc3RyZWFtLgoKICAgIGNyeXB0bzogY2FhbSAtIGRvIG5vdCB1c2UgbWVtIGFuZCBl
-bWlfc2xvdyBjbG9jayBmb3IgaW14N3gKCiAgICBJLk1YN3ggb25seSB1c2UgdHdvIGNsb2NrcyBm
-b3IgdGhlIENBQU0gbW9kdWxlLCBzbyBtYWtlIHN1cmUgd2UgZG8gbm90IHRyeSB0bwogICAgdXNl
-IHRoZSBtZW0gYW5kIHRoZSBlbWlfc2xvdyBjbG9jayB3aGVuIHJ1bm5pbmcgaW4gdGhhdCBpbXg3
-ZCBhbmQgaW14N3MgbWFjaGluZQogICAgdHlwZS4KCiAgICBDYzogIkhvcmlhIEdlYW50xIMiIDxo
-b3JpYS5nZWFudGFAbnhwLmNvbT4KICAgIENjOiBBeW1lbiBTZ2hhaWVyIDxheW1lbi5zZ2hhaWVy
-QG54cC5jb20+CiAgICBDYzogRmFiaW8gRXN0ZXZhbSA8ZmFiaW8uZXN0ZXZhbUBueHAuY29tPgog
-ICAgQ2M6IFBlbmcgRmFuIDxwZW5nLmZhbkBueHAuY29tPgogICAgQ2M6ICJEYXZpZCBTLiBNaWxs
-ZXIiIDxkYXZlbUBkYXZlbWxvZnQubmV0PgogICAgQ2M6IEx1a2FzIEF1ZXIgPGx1a2FzLmF1ZXJA
-YWlzZWMuZnJhdW5ob2Zlci5kZT4KICAgIFNpZ25lZC1vZmYtYnk6IFJ1aSBNaWd1ZWwgU2lsdmEg
-PHJ1aS5zaWx2YUBsaW5hcm8ub3JnPgogICAgU2lnbmVkLW9mZi1ieTogSGVyYmVydCBYdSA8aGVy
-YmVydEBnb25kb3IuYXBhbmEub3JnLmF1PgoKU2lnbmVkLW9mZi1ieTogTWFyY2luIE5pZXN0cm9q
-IDxtLm5pZXN0cm9qQGdyaW5uLWdsb2JhbC5jb20+Ci0tLQogZHJpdmVycy9jcnlwdG8vY2FhbS9j
-dHJsLmMgfCAzMyArKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFu
-Z2VkLCAyMSBpbnNlcnRpb25zKCspLCAxMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2
-ZXJzL2NyeXB0by9jYWFtL2N0cmwuYyBiL2RyaXZlcnMvY3J5cHRvL2NhYW0vY3RybC5jCmluZGV4
-IDY4MTIwMDU5NC4uMjRjOThkZjVhIDEwMDY0NAotLS0gYS9kcml2ZXJzL2NyeXB0by9jYWFtL2N0
-cmwuYworKysgYi9kcml2ZXJzL2NyeXB0by9jYWFtL2N0cmwuYwpAQCAtMjI1LDcgKzIyNSw4IEBA
-IHN0YXRpYyB2b2lkIGNhYW1fcmVtb3ZlKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQogCiAJLyogc2h1
-dCBjbG9ja3Mgb2ZmIGJlZm9yZSBmaW5hbGl6aW5nIHNodXRkb3duICovCiAJY2xrX2Rpc2FibGUo
-Y3RybHByaXYtPmNhYW1faXBnKTsKLQljbGtfZGlzYWJsZShjdHJscHJpdi0+Y2FhbV9tZW0pOwor
-CWlmIChjdHJscHJpdi0+Y2FhbV9tZW0pCisJCWNsa19kaXNhYmxlKGN0cmxwcml2LT5jYWFtX21l
-bSk7CiAJY2xrX2Rpc2FibGUoY3RybHByaXYtPmNhYW1fYWNsayk7CiAJaWYgKGN0cmxwcml2LT5j
-YWFtX2VtaV9zbG93KQogCQljbGtfZGlzYWJsZShjdHJscHJpdi0+Y2FhbV9lbWlfc2xvdyk7CkBA
-IC0zMjQsMTEgKzMyNSwxNSBAQCBzdGF0aWMgaW50IGNhYW1fcHJvYmUoc3RydWN0IGRldmljZV9k
-ICpkZXYpCiAJCXJldHVybiAtRU5PREVWOwogCX0KIAotCWN0cmxwcml2LT5jYWFtX21lbSA9IGNs
-a19nZXQoZGV2LCAibWVtIik7Ci0JaWYgKElTX0VSUihjdHJscHJpdi0+Y2FhbV9tZW0pKSB7Ci0J
-CXJldCA9IFBUUl9FUlIoY3RybHByaXYtPmNhYW1fbWVtKTsKLQkJZGV2X2VycihkZXYsICJjYW4n
-dCBpZGVudGlmeSBDQUFNIHNlY3VyZSBtZW0gY2xrOiAlZFxuIiwgcmV0KTsKLQkJcmV0dXJuIC1F
-Tk9ERVY7CisJaWYgKCFvZl9tYWNoaW5lX2lzX2NvbXBhdGlibGUoImZzbCxpbXg3ZCIpICYmCisJ
-ICAgICFvZl9tYWNoaW5lX2lzX2NvbXBhdGlibGUoImZzbCxpbXg3cyIpKSB7CisJCWN0cmxwcml2
-LT5jYWFtX21lbSA9IGNsa19nZXQoZGV2LCAibWVtIik7CisJCWlmIChJU19FUlIoY3RybHByaXYt
-PmNhYW1fbWVtKSkgeworCQkJcmV0ID0gUFRSX0VSUihjdHJscHJpdi0+Y2FhbV9tZW0pOworCQkJ
-ZGV2X2VycihkZXYsCisJCQkJImNhbid0IGlkZW50aWZ5IENBQU0gbWVtIGNsazogJWRcbiIsIHJl
-dCk7CisJCQlyZXR1cm4gLUVOT0RFVjsKKwkJfQogCX0KIAogCWN0cmxwcml2LT5jYWFtX2FjbGsg
-PSBjbGtfZ2V0KGRldiwgImFjbGsiKTsKQEAgLTMzOSw3ICszNDQsOSBAQCBzdGF0aWMgaW50IGNh
-YW1fcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYpCiAJCXJldHVybiAtRU5PREVWOwogCX0KIAot
-CWlmICghb2ZfbWFjaGluZV9pc19jb21wYXRpYmxlKCJmc2wsaW14NnVsIikpIHsKKwlpZiAoIW9m
-X21hY2hpbmVfaXNfY29tcGF0aWJsZSgiZnNsLGlteDZ1bCIpICYmCisJICAgICFvZl9tYWNoaW5l
-X2lzX2NvbXBhdGlibGUoImZzbCxpbXg3ZCIpICYmCisJICAgICFvZl9tYWNoaW5lX2lzX2NvbXBh
-dGlibGUoImZzbCxpbXg3cyIpKSB7CiAJCWN0cmxwcml2LT5jYWFtX2VtaV9zbG93ID0gY2xrX2dl
-dChkZXYsICJlbWlfc2xvdyIpOwogCQlpZiAoSVNfRVJSKGN0cmxwcml2LT5jYWFtX2VtaV9zbG93
-KSkgewogCQkJcmV0ID0gUFRSX0VSUihjdHJscHJpdi0+Y2FhbV9lbWlfc2xvdyk7CkBAIC0zNTUs
-MTEgKzM2MiwxMyBAQCBzdGF0aWMgaW50IGNhYW1fcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYp
-CiAJCXJldHVybiAtRU5PREVWOwogCX0KIAotCXJldCA9IGNsa19lbmFibGUoY3RybHByaXYtPmNh
-YW1fbWVtKTsKLQlpZiAocmV0IDwgMCkgewotCQlkZXZfZXJyKGRldiwgImNhbid0IGVuYWJsZSBD
-QUFNIHNlY3VyZSBtZW0gY2xvY2s6ICVkXG4iLAotCQkJcmV0KTsKLQkJcmV0dXJuIC1FTk9ERVY7
-CisJaWYgKGN0cmxwcml2LT5jYWFtX21lbSkgeworCQlyZXQgPSBjbGtfZW5hYmxlKGN0cmxwcml2
-LT5jYWFtX21lbSk7CisJCWlmIChyZXQgPCAwKSB7CisJCQlkZXZfZXJyKGRldiwgImNhbid0IGVu
-YWJsZSBDQUFNIHNlY3VyZSBtZW0gY2xvY2s6ICVkXG4iLAorCQkJCXJldCk7CisJCQlyZXR1cm4g
-LUVOT0RFVjsKKwkJfQogCX0KIAogCXJldCA9IGNsa19lbmFibGUoY3RybHByaXYtPmNhYW1fYWNs
-ayk7Ci0tIAoyLjE4LjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
-aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi,
+
+This is a set of patches, which improve CAAM support. They sync CAAM
+support with Linux v4.19-rc1. Applying them allows to use CAAM on
+ARM IMX devices. Some of these patches had to be adapted to match
+Barebox.
+
+Marcin Niestroj (18):
+  crypto: caam - fix RNG init descriptor ret. code checking
+  crypto: caam - fix warning in APPEND_MATH_IMM_u64
+  crypto: caam - fix writing to JQCR_MS when using service interface
+  crypto: caam - handle core endianness != caam endianness
+  crypto: caam - add support for iMX6UL
+  crypto: caam - fix sparse warnings
+  crypto: caam - trivial code clean-up
+  crypto: caam - remove unreachable code in report_ccb_status()
+  crypto: caam - constify pointer to descriptor buffer
+  crypto: caam - avoid double inclusion in desc_constr.h
+  crypto: caam - clean-up in caam_init_rng()
+  crypto: caam - fix incorrect define
+  crypto: caam - constify key data
+  crypto: caam - fix endless loop when DECO acquire fails
+  crypto: caam - do not use mem and emi_slow clock for imx7x
+  crypto: caam - sync desc.h with Linux
+  crypto: caam - staticize caam_get_era()
+  crypto: caam - allow retrieving 'era' from register
+
+ drivers/crypto/caam/caamrng.c     |   9 +-
+ drivers/crypto/caam/ctrl.c        | 240 +++++++++++++++++++-----------
+ drivers/crypto/caam/ctrl.h        |   1 -
+ drivers/crypto/caam/desc.h        |  35 ++---
+ drivers/crypto/caam/desc_constr.h | 118 +++++++++------
+ drivers/crypto/caam/error.c       |   5 +-
+ drivers/crypto/caam/jr.c          |  64 +++-----
+ drivers/crypto/caam/regs.h        | 123 ++++++++++++++-
+ 8 files changed, 374 insertions(+), 221 deletions(-)
+
+-- 
+2.18.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
