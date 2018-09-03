@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+Received: from smtp.megiteam.pl ([31.186.83.105])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g01P5-0002Dr-48
- for barebox@lists.infradead.org; Wed, 12 Sep 2018 09:25:45 +0000
-Received: by mail-ed1-x534.google.com with SMTP id j62-v6so1186337edd.7
- for <barebox@lists.infradead.org>; Wed, 12 Sep 2018 02:25:31 -0700 (PDT)
+ id 1fwmy7-0001sU-3P
+ for barebox@lists.infradead.org; Mon, 03 Sep 2018 11:24:32 +0000
+From: Marcin Niestroj <m.niestroj@grinn-global.com>
+Date: Mon,  3 Sep 2018 13:23:50 +0200
+Message-Id: <20180903112408.2086-1-m.niestroj@grinn-global.com>
 MIME-Version: 1.0
-In-Reply-To: <CAHQ1cqF3RA-EQ_NTtQtZgi+oJwGoCrTzG88O_=y3A5kYz4ueUQ@mail.gmail.com>
-References: <20180821152001.5747-1-aleksander@aleksander.es>
- <20180821152001.5747-2-aleksander@aleksander.es>
- <CAHQ1cqF3RA-EQ_NTtQtZgi+oJwGoCrTzG88O_=y3A5kYz4ueUQ@mail.gmail.com>
-From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Wed, 12 Sep 2018 11:25:09 +0200
-Message-ID: <CAAP7ucL34qTVQn+E=7GBiQ2kxEHyWFJsNeF4BVo=zP+x9HMh_A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,67 +19,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] ratp: implement i2c read/write support
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 00/18] crypto: caam: Pull CAAM support improvements from Linux
+To: barebox@lists.infradead.org
+Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
 
-Hey Andrey,
+Hi,
 
-Thanks for the review :) see some comments below.
+This is a set of patches, which improve CAAM support. They sync CAAM
+support with Linux v4.19-rc1. Applying them allows to use CAAM on
+ARM IMX devices. Some of these patches had to be adapted to match
+Barebox.
 
->> +       /* Don't read anything on error or if 0 bytes were requested */
->> +       if (size > 0) {
->> +               adapter = i2c_get_adapter(i2c_read_req->bus);
->> +               if (!adapter) {
->> +                       printf("ratp i2c read ignored: i2c bus %u not found\n", i2c_read_req->bus);
->> +                       ret = -ENODEV;
->> +                       goto out;
->> +               }
->> +
->> +               client.adapter = adapter;
->> +               client.addr = i2c_read_req->addr;
->> +
->> +               if (i2c_read_req->flags & I2C_FLAG_MASTER_MODE) {
->> +                       ret = i2c_master_recv(&client, i2c_read_rsp->buffer, size);
->> +               } else {
->> +                       ret = i2c_read_reg(&client, reg | wide, i2c_read_rsp->buffer, size);
->> +               }
->> +               if (ret != size) {
->> +                       printf("ratp i2c read ignored: not all bytes read (%u < %u)\n", ret, size);
->> +                       ret = -EIO;
->> +                       goto out;
->> +               }
->> +               ret = 0;
->> +       }
->> +
->> +out:
->> +       if (ret != 0) {
->> +               i2c_read_rsp->data_size = 0;
->> +               i2c_read_rsp->errno = cpu_to_be32(ret);
->> +               i2c_read_rsp_len = sizeof(*i2c_read_rsp);
->> +       } else {
->> +               i2c_read_rsp->data_size = cpu_to_be16(size);
->> +               i2c_read_rsp->errno = 0;
->> +       }
->> +
->
-> It looks like you can move:
->
-> i2c_read_rsp->data_size = cpu_to_be16(size);
-> i2c_read_rsp->errno = cpu_to_be32(ret);
->
-> outside of if since it should work as intended for both cases (size is
-> 0 if ret != 0).
->
+Marcin Niestroj (18):
+  crypto: caam - fix RNG init descriptor ret. code checking
+  crypto: caam - fix warning in APPEND_MATH_IMM_u64
+  crypto: caam - fix writing to JQCR_MS when using service interface
+  crypto: caam - handle core endianness != caam endianness
+  crypto: caam - add support for iMX6UL
+  crypto: caam - fix sparse warnings
+  crypto: caam - trivial code clean-up
+  crypto: caam - remove unreachable code in report_ccb_status()
+  crypto: caam - constify pointer to descriptor buffer
+  crypto: caam - avoid double inclusion in desc_constr.h
+  crypto: caam - clean-up in caam_init_rng()
+  crypto: caam - fix incorrect define
+  crypto: caam - constify key data
+  crypto: caam - fix endless loop when DECO acquire fails
+  crypto: caam - do not use mem and emi_slow clock for imx7x
+  crypto: caam - sync desc.h with Linux
+  crypto: caam - staticize caam_get_era()
+  crypto: caam - allow retrieving 'era' from register
 
-Don't think I can do that. In the if (size > 0) {} just a bit above,
-size is not modified but ret may become an error. We do want to make
-sure 0 is returned as size when there is an error, so cannot move it
-outside the if() as you suggest here.
+ drivers/crypto/caam/caamrng.c     |   9 +-
+ drivers/crypto/caam/ctrl.c        | 240 +++++++++++++++++++-----------
+ drivers/crypto/caam/ctrl.h        |   1 -
+ drivers/crypto/caam/desc.h        |  35 ++---
+ drivers/crypto/caam/desc_constr.h | 118 +++++++++------
+ drivers/crypto/caam/error.c       |   5 +-
+ drivers/crypto/caam/jr.c          |  64 +++-----
+ drivers/crypto/caam/regs.h        | 123 ++++++++++++++-
+ 8 files changed, 374 insertions(+), 221 deletions(-)
 
 -- 
-Aleksander
-https://aleksander.es
+2.18.0
+
 
 _______________________________________________
 barebox mailing list
