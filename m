@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.megiteam.pl ([31.186.83.105])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fwnjs-0007U3-9Z
- for barebox@lists.infradead.org; Mon, 03 Sep 2018 12:13:53 +0000
+ id 1fwnk6-0007Zp-Ut
+ for barebox@lists.infradead.org; Mon, 03 Sep 2018 12:14:08 +0000
 From: Marcin Niestroj <m.niestroj@grinn-global.com>
-Date: Mon,  3 Sep 2018 13:44:35 +0200
-Message-Id: <20180903114452.4611-11-m.niestroj@grinn-global.com>
+Date: Mon,  3 Sep 2018 13:44:39 +0200
+Message-Id: <20180903114452.4611-15-m.niestroj@grinn-global.com>
 In-Reply-To: <20180903114452.4611-1-m.niestroj@grinn-global.com>
 References: <20180903112408.2086-1-m.niestroj@grinn-global.com>
  <20180903114452.4611-1-m.niestroj@grinn-global.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,61 +18,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/18] crypto: caam - fix RNG init descriptor ret. code
- checking
+Subject: [PATCH 05/18] crypto: caam - add support for iMX6UL
 To: barebox@lists.infradead.org
 Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
 
-Pick commit 62743a4145bb9c3fe090a48e10ddc0ebae85bfbf from Linux
-upstream.
-
-    crypto: caam - fix RNG init descriptor ret. code checking
-
-    When successful, the descriptor that performs RNG initialization
-    is allowed to return a status code of 7000_0000h, since last command
-    in the descriptor is a JUMP HALT.
-
-    Signed-off-by: Horia Geant? <horia.geanta@freescale.com>
-    Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-
-Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
----
- drivers/crypto/caam/ctrl.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/crypto/caam/ctrl.c b/drivers/crypto/caam/ctrl.c
-index 4deed8a19..eafff8ef0 100644
---- a/drivers/crypto/caam/ctrl.c
-+++ b/drivers/crypto/caam/ctrl.c
-@@ -170,7 +170,7 @@ static int instantiate_rng(struct device_d *ctrldev, int state_handle_mask,
- {
- 	struct caam_drv_private *ctrlpriv = ctrldev->priv;
- 	struct caam_ctrl __iomem *ctrl;
--	u32 *desc, status, rdsta_val;
-+	u32 *desc, status = 0, rdsta_val;
- 	int ret = 0, sh_idx;
- 
- 	ctrl = (struct caam_ctrl __iomem *)ctrlpriv->ctrl;
-@@ -200,7 +200,8 @@ static int instantiate_rng(struct device_d *ctrldev, int state_handle_mask,
- 		 * CAAM eras), then try again.
- 		 */
- 		rdsta_val = readl(&ctrl->r4tst[0].rdsta) & RDSTA_IFMASK;
--		if (status || !(rdsta_val & (1 << sh_idx)))
-+		if ((status && status != JRSTA_SSRC_JUMP_HALT_CC) ||
-+		    !(rdsta_val & (1 << sh_idx)))
- 			ret = -EAGAIN;
- 		if (ret)
- 			break;
--- 
-2.18.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+UGljayBjb21taXQgNGU1MTg4MTZhOTM4MTg3YjNiZmUxYjYyZmEyOTFkNGUzOGRjYTA2ZSBmcm9t
+IExpbnV4CnVwc3RyZWFtLgoKICAgIGNyeXB0bzogY2FhbSAtIGFkZCBzdXBwb3J0IGZvciBpTVg2
+VUwKCiAgICBpLk1YNlVMIGRvZXMgb25seSByZXF1aXJlIHRocmVlIGNsb2NrcyB0byBlbmFibGUg
+Q0FBTSBtb2R1bGUuCgogICAgU2lnbmVkLW9mZi1ieTogTWFyY3VzIEZvbGtlc3NvbiA8bWFyY3Vz
+LmZvbGtlc3NvbkBnbWFpbC5jb20+CiAgICBBY2tlZC1ieTogUm9iIEhlcnJpbmcgPHJvYmhAa2Vy
+bmVsLm9yZz4KICAgIFJldmlld2VkLWJ5OiBIb3JpYSBHZWFudMSDIDxob3JpYS5nZWFudGFAbnhw
+LmNvbT4KICAgIFNpZ25lZC1vZmYtYnk6IEhlcmJlcnQgWHUgPGhlcmJlcnRAZ29uZG9yLmFwYW5h
+Lm9yZy5hdT4KClNpZ25lZC1vZmYtYnk6IE1hcmNpbiBOaWVzdHJvaiA8bS5uaWVzdHJvakBncmlu
+bi1nbG9iYWwuY29tPgotLS0KIGRyaXZlcnMvY3J5cHRvL2NhYW0vY3RybC5jIHwgMjkgKysrKysr
+KysrKysrKysrKystLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAxNyBpbnNlcnRpb25zKCsp
+LCAxMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL2NyeXB0by9jYWFtL2N0cmwu
+YyBiL2RyaXZlcnMvY3J5cHRvL2NhYW0vY3RybC5jCmluZGV4IDBiYWRkZjczMy4uNTUxOTNmNmVm
+IDEwMDY0NAotLS0gYS9kcml2ZXJzL2NyeXB0by9jYWFtL2N0cmwuYworKysgYi9kcml2ZXJzL2Ny
+eXB0by9jYWFtL2N0cmwuYwpAQCAtMjI0LDcgKzIyNCw4IEBAIHN0YXRpYyB2b2lkIGNhYW1fcmVt
+b3ZlKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQogCWNsa19kaXNhYmxlKGN0cmxwcml2LT5jYWFtX2lw
+Zyk7CiAJY2xrX2Rpc2FibGUoY3RybHByaXYtPmNhYW1fbWVtKTsKIAljbGtfZGlzYWJsZShjdHJs
+cHJpdi0+Y2FhbV9hY2xrKTsKLQljbGtfZGlzYWJsZShjdHJscHJpdi0+Y2FhbV9lbWlfc2xvdyk7
+CisJaWYgKGN0cmxwcml2LT5jYWFtX2VtaV9zbG93KQorCQljbGtfZGlzYWJsZShjdHJscHJpdi0+
+Y2FhbV9lbWlfc2xvdyk7CiB9CiAKIC8qCkBAIC0zNDEsMTIgKzM0MiwxNCBAQCBzdGF0aWMgaW50
+IGNhYW1fcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYpCiAJCXJldHVybiAtRU5PREVWOwogCX0K
+IAotCWN0cmxwcml2LT5jYWFtX2VtaV9zbG93ID0gY2xrX2dldChkZXYsICJlbWlfc2xvdyIpOwot
+CWlmIChJU19FUlIoY3RybHByaXYtPmNhYW1fZW1pX3Nsb3cpKSB7Ci0JCXJldCA9IFBUUl9FUlIo
+Y3RybHByaXYtPmNhYW1fZW1pX3Nsb3cpOwotCQlkZXZfZXJyKGRldiwKLQkJCSJjYW4ndCBpZGVu
+dGlmeSBDQUFNIGVtaSBzbG93IGNsazogJWRcbiIsIHJldCk7Ci0JCXJldHVybiAtRU5PREVWOwor
+CWlmICghb2ZfbWFjaGluZV9pc19jb21wYXRpYmxlKCJmc2wsaW14NnVsIikpIHsKKwkJY3RybHBy
+aXYtPmNhYW1fZW1pX3Nsb3cgPSBjbGtfZ2V0KGRldiwgImVtaV9zbG93Iik7CisJCWlmIChJU19F
+UlIoY3RybHByaXYtPmNhYW1fZW1pX3Nsb3cpKSB7CisJCQlyZXQgPSBQVFJfRVJSKGN0cmxwcml2
+LT5jYWFtX2VtaV9zbG93KTsKKwkJCWRldl9lcnIoZGV2LAorCQkJCSJjYW4ndCBpZGVudGlmeSBD
+QUFNIGVtaSBzbG93IGNsazogJWRcbiIsIHJldCk7CisJCQlyZXR1cm4gLUVOT0RFVjsKKwkJfQog
+CX0KIAogCXJldCA9IGNsa19lbmFibGUoY3RybHByaXYtPmNhYW1faXBnKTsKQEAgLTM2OCwxMSAr
+MzcxLDEzIEBAIHN0YXRpYyBpbnQgY2FhbV9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKIAkJ
+cmV0dXJuIC1FTk9ERVY7CiAJfQogCi0JcmV0ID0gY2xrX2VuYWJsZShjdHJscHJpdi0+Y2FhbV9l
+bWlfc2xvdyk7Ci0JaWYgKHJldCA8IDApIHsKLQkJZGV2X2VycihkZXYsICJjYW4ndCBlbmFibGUg
+Q0FBTSBlbWkgc2xvdyBjbG9jazogJWRcbiIsCi0JCQlyZXQpOwotCQlyZXR1cm4gLUVOT0RFVjsK
+KwlpZiAoY3RybHByaXYtPmNhYW1fZW1pX3Nsb3cpIHsKKwkJcmV0ID0gY2xrX2VuYWJsZShjdHJs
+cHJpdi0+Y2FhbV9lbWlfc2xvdyk7CisJCWlmIChyZXQgPCAwKSB7CisJCQlkZXZfZXJyKGRldiwg
+ImNhbid0IGVuYWJsZSBDQUFNIGVtaSBzbG93IGNsb2NrOiAlZFxuIiwKKwkJCQlyZXQpOworCQkJ
+cmV0dXJuIC1FTk9ERVY7CisJCX0KIAl9CiAKIAkvKiBHZXQgY29uZmlndXJhdGlvbiBwcm9wZXJ0
+aWVzIGZyb20gZGV2aWNlIHRyZWUgKi8KLS0gCjIuMTguMAoKCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
+bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
+c3RpbmZvL2JhcmVib3gK
