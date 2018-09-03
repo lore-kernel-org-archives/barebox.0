@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.megiteam.pl ([31.186.83.105])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fwnJB-0003T2-4Q
- for barebox@lists.infradead.org; Mon, 03 Sep 2018 11:46:20 +0000
+ id 1fwnJB-0003QL-4O
+ for barebox@lists.infradead.org; Mon, 03 Sep 2018 11:46:24 +0000
 From: Marcin Niestroj <m.niestroj@grinn-global.com>
-Date: Mon,  3 Sep 2018 13:44:32 +0200
-Message-Id: <20180903114452.4611-8-m.niestroj@grinn-global.com>
+Date: Mon,  3 Sep 2018 13:44:31 +0200
+Message-Id: <20180903114452.4611-7-m.niestroj@grinn-global.com>
 In-Reply-To: <20180903114452.4611-1-m.niestroj@grinn-global.com>
 References: <20180903112408.2086-1-m.niestroj@grinn-global.com>
  <20180903114452.4611-1-m.niestroj@grinn-global.com>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,42 +17,116 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/18] crypto: caam - staticize caam_get_era()
+Subject: [PATCH 16/18] crypto: caam - sync desc.h with Linux
 To: barebox@lists.infradead.org
 Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
 
-UGljayBjb21taXQgYjAwMzljMDBmYmJiYzNjYjljNGIyNTg1MmQ4MWEyYjRjMTkzMzcxZCBmcm9t
-IExpbnV4CnVwc3RyZWFtLgoKICAgIGNyeXB0bzogY2FhbSAtIHN0YXRpY2l6ZSBjYWFtX2dldF9l
-cmEoKQoKICAgIGNhYW1fZ2V0X2VyYSgpIGlzIG9ubHkgdXNlZCBsb2NhbGx5LCBzbyBkbyBub3Qg
-ZXhwb3J0IHRoaXMgZnVuY3Rpb24KICAgIGFuZCBtYWtlIGl0IHN0YXRpYyBpbnN0ZWFkLgoKICAg
-IFNpZ25lZC1vZmYtYnk6IEZhYmlvIEVzdGV2YW0gPGZhYmlvLmVzdGV2YW1AbnhwLmNvbT4KICAg
-IFJldmlld2VkLWJ5OiBIb3JpYSBHZWFudMSDIDxob3JpYS5nZWFudGFAbnhwLmNvbT4KICAgIFNp
-Z25lZC1vZmYtYnk6IEhlcmJlcnQgWHUgPGhlcmJlcnRAZ29uZG9yLmFwYW5hLm9yZy5hdT4KClNp
-Z25lZC1vZmYtYnk6IE1hcmNpbiBOaWVzdHJvaiA8bS5uaWVzdHJvakBncmlubi1nbG9iYWwuY29t
-PgotLS0KIGRyaXZlcnMvY3J5cHRvL2NhYW0vY3RybC5jIHwgMyArLS0KIGRyaXZlcnMvY3J5cHRv
-L2NhYW0vY3RybC5oIHwgMSAtCiAyIGZpbGVzIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAzIGRl
-bGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvY3J5cHRvL2NhYW0vY3RybC5jIGIvZHJp
-dmVycy9jcnlwdG8vY2FhbS9jdHJsLmMKaW5kZXggMjRjOThkZjVhLi4zYjI0YzVlYTIgMTAwNjQ0
-Ci0tLSBhL2RyaXZlcnMvY3J5cHRvL2NhYW0vY3RybC5jCisrKyBiL2RyaXZlcnMvY3J5cHRvL2Nh
-YW0vY3RybC5jCkBAIC0yODYsNyArMjg2LDcgQEAgc3RhcnRfcm5nOgogICogY2FhbV9nZXRfZXJh
-KCkgLSBSZXR1cm4gdGhlIEVSQSBvZiB0aGUgU0VDIG9uIFNvQywgYmFzZWQKICAqIG9uICJzZWMt
-ZXJhIiBwcm9wZXJ5IGluIHRoZSBEVFMuIFRoaXMgcHJvcGVydHkgaXMgdXBkYXRlZCBieSB1LWJv
-b3QuCiAgKiovCi1pbnQgY2FhbV9nZXRfZXJhKHZvaWQpCitzdGF0aWMgaW50IGNhYW1fZ2V0X2Vy
-YSh2b2lkKQogewogCXN0cnVjdCBkZXZpY2Vfbm9kZSAqY2FhbV9ub2RlOwogCWludCByZXQ7CkBA
-IC0yOTcsNyArMjk3LDYgQEAgaW50IGNhYW1fZ2V0X2VyYSh2b2lkKQogCiAJcmV0dXJuIElTX0VS
-Ul9WQUxVRShyZXQpID8gLUVOT1RTVVBQIDogcHJvcDsKIH0KLUVYUE9SVF9TWU1CT0woY2FhbV9n
-ZXRfZXJhKTsKIAogLyogUHJvYmUgcm91dGluZSBmb3IgQ0FBTSB0b3AgKGNvbnRyb2xsZXIpIGxl
-dmVsICovCiBzdGF0aWMgaW50IGNhYW1fcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYpCmRpZmYg
-LS1naXQgYS9kcml2ZXJzL2NyeXB0by9jYWFtL2N0cmwuaCBiL2RyaXZlcnMvY3J5cHRvL2NhYW0v
-Y3RybC5oCmluZGV4IGNhYzU0MDJhNC4uMjJiNmFkNWE3IDEwMDY0NAotLS0gYS9kcml2ZXJzL2Ny
-eXB0by9jYWFtL2N0cmwuaAorKysgYi9kcml2ZXJzL2NyeXB0by9jYWFtL2N0cmwuaApAQCAtOCw2
-ICs4LDUgQEAKICNkZWZpbmUgQ1RSTF9ICiAKIC8qIFByb3RvdHlwZXMgZm9yIGJhY2tlbmQtbGV2
-ZWwgc2VydmljZXMgZXhwb3NlZCB0byBBUElzICovCi1pbnQgY2FhbV9nZXRfZXJhKHZvaWQpOwog
-CiAjZW5kaWYgLyogQ1RSTF9IICovCi0tIAoyLjE4LjAKCgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
-c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9iYXJlYm94Cg==
+Get rid of all differences between our and Linux content of desc.h, so
+we prevent running into issues when porting new features in future.
+
+Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
+---
+ drivers/crypto/caam/desc.h | 32 +++++++++-----------------------
+ 1 file changed, 9 insertions(+), 23 deletions(-)
+
+diff --git a/drivers/crypto/caam/desc.h b/drivers/crypto/caam/desc.h
+index 2b5f49967..ee873c07f 100644
+--- a/drivers/crypto/caam/desc.h
++++ b/drivers/crypto/caam/desc.h
+@@ -20,18 +20,7 @@
+ #define SEC4_SG_BPID_MASK	0x000000ff
+ #define SEC4_SG_BPID_SHIFT	16
+ #define SEC4_SG_LEN_MASK	0x3fffffff	/* Excludes EXT and FINAL */
+-#define SEC4_SG_OFFS_MASK	0x00001fff
+-
+-struct sec4_sg_entry {
+-#ifdef CONFIG_64BIT
+-	u64 ptr;
+-#else
+-	u32 reserved;
+-	u32 ptr;
+-#endif
+-	u32 len;
+-	u32 bpid_offset;
+-};
++#define SEC4_SG_OFFSET_MASK	0x00001fff
+ 
+ /* Max size of any CAAM descriptor in 32-bit words, inclusive of header */
+ #define MAX_CAAM_DESCSIZE	64
+@@ -95,8 +84,8 @@ struct sec4_sg_entry {
+ #define HDR_ZRO			0x00008000
+ 
+ /* Start Index or SharedDesc Length */
+-#define HDR_START_IDX_MASK	0x3f
+ #define HDR_START_IDX_SHIFT	16
++#define HDR_START_IDX_MASK	(0x3f << HDR_START_IDX_SHIFT)
+ 
+ /* If shared descriptor header, 6-bit length */
+ #define HDR_DESCLEN_SHR_MASK	0x3f
+@@ -126,10 +115,10 @@ struct sec4_sg_entry {
+ #define HDR_PROP_DNR		0x00000800
+ 
+ /* JobDesc/SharedDesc share property */
+-#define HDR_SD_SHARE_MASK	0x03
+ #define HDR_SD_SHARE_SHIFT	8
+-#define HDR_JD_SHARE_MASK	0x07
++#define HDR_SD_SHARE_MASK	(0x03 << HDR_SD_SHARE_SHIFT)
+ #define HDR_JD_SHARE_SHIFT	8
++#define HDR_JD_SHARE_MASK	(0x07 << HDR_JD_SHARE_SHIFT)
+ 
+ #define HDR_SHARE_NEVER		(0x00 << HDR_SD_SHARE_SHIFT)
+ #define HDR_SHARE_WAIT		(0x01 << HDR_SD_SHARE_SHIFT)
+@@ -240,7 +229,7 @@ struct sec4_sg_entry {
+ #define LDST_SRCDST_WORD_DECO_MATH2	(0x0a << LDST_SRCDST_SHIFT)
+ #define LDST_SRCDST_WORD_DECO_AAD_SZ	(0x0b << LDST_SRCDST_SHIFT)
+ #define LDST_SRCDST_WORD_DECO_MATH3	(0x0b << LDST_SRCDST_SHIFT)
+-#define LDST_SRCDST_WORD_CLASS1_ICV_SZ	(0x0c << LDST_SRCDST_SHIFT)
++#define LDST_SRCDST_WORD_CLASS1_IV_SZ	(0x0c << LDST_SRCDST_SHIFT)
+ #define LDST_SRCDST_WORD_ALTDS_CLASS1	(0x0f << LDST_SRCDST_SHIFT)
+ #define LDST_SRCDST_WORD_PKHA_A_SZ	(0x10 << LDST_SRCDST_SHIFT)
+ #define LDST_SRCDST_WORD_PKHA_B_SZ	(0x11 << LDST_SRCDST_SHIFT)
+@@ -405,10 +394,7 @@ struct sec4_sg_entry {
+ #define FIFOST_TYPE_PKHA_N	 (0x08 << FIFOST_TYPE_SHIFT)
+ #define FIFOST_TYPE_PKHA_A	 (0x0c << FIFOST_TYPE_SHIFT)
+ #define FIFOST_TYPE_PKHA_B	 (0x0d << FIFOST_TYPE_SHIFT)
+-#define FIFOST_TYPE_AF_SBOX_CCM_JKEK	(0x10 << FIFOST_TYPE_SHIFT)
+-#define FIFOST_TYPE_AF_SBOX_CCM_TKEK	(0x11 << FIFOST_TYPE_SHIFT)
+-#define FIFOST_TYPE_KEY_CCM_JKEK	(0x14 << FIFOST_TYPE_SHIFT)
+-#define FIFOST_TYPE_KEY_CCM_TKEK	(0x15 << FIFOST_TYPE_SHIFT)
++#define FIFOST_TYPE_AF_SBOX_JKEK (0x20 << FIFOST_TYPE_SHIFT)
+ #define FIFOST_TYPE_AF_SBOX_TKEK (0x21 << FIFOST_TYPE_SHIFT)
+ #define FIFOST_TYPE_PKHA_E_JKEK	 (0x22 << FIFOST_TYPE_SHIFT)
+ #define FIFOST_TYPE_PKHA_E_TKEK	 (0x23 << FIFOST_TYPE_SHIFT)
+@@ -1130,8 +1116,8 @@ struct sec4_sg_entry {
+ /* For non-protocol/alg-only op commands */
+ #define OP_ALG_TYPE_SHIFT	24
+ #define OP_ALG_TYPE_MASK	(0x7 << OP_ALG_TYPE_SHIFT)
+-#define OP_ALG_TYPE_CLASS1	2
+-#define OP_ALG_TYPE_CLASS2	4
++#define OP_ALG_TYPE_CLASS1	(2 << OP_ALG_TYPE_SHIFT)
++#define OP_ALG_TYPE_CLASS2	(4 << OP_ALG_TYPE_SHIFT)
+ 
+ #define OP_ALG_ALGSEL_SHIFT	16
+ #define OP_ALG_ALGSEL_MASK	(0xff << OP_ALG_ALGSEL_SHIFT)
+@@ -1272,7 +1258,7 @@ struct sec4_sg_entry {
+ #define OP_ALG_PKMODE_MOD_PRIMALITY	0x00f
+ 
+ /* PKHA mode copy-memory functions */
+-#define OP_ALG_PKMODE_SRC_REG_SHIFT	13
++#define OP_ALG_PKMODE_SRC_REG_SHIFT	17
+ #define OP_ALG_PKMODE_SRC_REG_MASK	(7 << OP_ALG_PKMODE_SRC_REG_SHIFT)
+ #define OP_ALG_PKMODE_DST_REG_SHIFT	10
+ #define OP_ALG_PKMODE_DST_REG_MASK	(7 << OP_ALG_PKMODE_DST_REG_SHIFT)
+-- 
+2.18.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
