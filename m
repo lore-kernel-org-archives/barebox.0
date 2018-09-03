@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fx6LQ-0001RE-Pd
- for barebox@lists.infradead.org; Tue, 04 Sep 2018 08:05:54 +0000
-Date: Tue, 4 Sep 2018 10:05:40 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180904080540.jhrm2ifjyreshced@pengutronix.de>
-References: <20180903112408.2086-1-m.niestroj@grinn-global.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180903112408.2086-1-m.niestroj@grinn-global.com>
+ id 1fwoxv-0002pC-PH
+ for barebox@lists.infradead.org; Mon, 03 Sep 2018 13:32:29 +0000
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Mon,  3 Sep 2018 15:32:12 +0200
+Message-Id: <20180903133212.17771-1-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,80 +14,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/18] crypto: caam: Pull CAAM support improvements from
- Linux
-To: Marcin Niestroj <m.niestroj@grinn-global.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] scripts imx-image: add support for newer versions of "cst"
+To: barebox@lists.infradead.org
+Cc: sha@pengutronix.de
 
-Hi Marcin,
+Older versions of "cst" want to read the CSF from STDIN, while newer versions
+want to read the CSF from a file. Sadly, the "-i" option doesn't understand
+"-i -" to read from STDIN, so we give it "/dev/stdin" instead.
 
-On Mon, Sep 03, 2018 at 01:23:50PM +0200, Marcin Niestroj wrote:
-> Hi,
-> 
-> This is a set of patches, which improve CAAM support. They sync CAAM
-> support with Linux v4.19-rc1. Applying them allows to use CAAM on
-> ARM IMX devices. Some of these patches had to be adapted to match
-> Barebox.
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ scripts/imx/imx-image.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-Not sure what you mean with "Applying them allows to use CAAM on
-ARM IMX devices". i.MX is the only architecture we ever tested the CAAM
-on, so it's supposed to work there without your patches.
-
-Anyway, the patches look good and syncing to Linux is good, so applied.
-
-Sascha
-
-
-> 
-> Marcin Niestroj (18):
->   crypto: caam - fix RNG init descriptor ret. code checking
->   crypto: caam - fix warning in APPEND_MATH_IMM_u64
->   crypto: caam - fix writing to JQCR_MS when using service interface
->   crypto: caam - handle core endianness != caam endianness
->   crypto: caam - add support for iMX6UL
->   crypto: caam - fix sparse warnings
->   crypto: caam - trivial code clean-up
->   crypto: caam - remove unreachable code in report_ccb_status()
->   crypto: caam - constify pointer to descriptor buffer
->   crypto: caam - avoid double inclusion in desc_constr.h
->   crypto: caam - clean-up in caam_init_rng()
->   crypto: caam - fix incorrect define
->   crypto: caam - constify key data
->   crypto: caam - fix endless loop when DECO acquire fails
->   crypto: caam - do not use mem and emi_slow clock for imx7x
->   crypto: caam - sync desc.h with Linux
->   crypto: caam - staticize caam_get_era()
->   crypto: caam - allow retrieving 'era' from register
-> 
->  drivers/crypto/caam/caamrng.c     |   9 +-
->  drivers/crypto/caam/ctrl.c        | 240 +++++++++++++++++++-----------
->  drivers/crypto/caam/ctrl.h        |   1 -
->  drivers/crypto/caam/desc.h        |  35 ++---
->  drivers/crypto/caam/desc_constr.h | 118 +++++++++------
->  drivers/crypto/caam/error.c       |   5 +-
->  drivers/crypto/caam/jr.c          |  64 +++-----
->  drivers/crypto/caam/regs.h        | 123 ++++++++++++++-
->  8 files changed, 374 insertions(+), 221 deletions(-)
-> 
-> -- 
-> 2.18.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index b241e8c4b68e..ffde8149650f 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -546,7 +546,28 @@ static int hab_sign(struct config_data *data)
+ 		}
+ 	}
+ 
+-	ret = asprintf(&command, "%s -o %s", cst, csffile);
++	/*
++	 * Older versions of "cst" want to read the CSF from STDIN,
++	 * while newer versions want to read the CSF from a
++	 * file. Sadly, the "-i" option doesn't understand "-i -" to
++	 * read from STDIN, so we give it "/dev/stdin" instead.
++	 */
++	ret = asprintf(&command,
++		       "%s | grep 'Input CSF text filename'",
++		       cst);
++	if (ret < 0)
++		return -ENOMEM;
++
++	ret = system(command);
++	free(command);
++	if (ret == -1)
++		return -EINVAL;
++	else if (ret == 0)
++		ret = asprintf(&command, "%s -o %s -i /dev/stdin",
++			       cst, csffile);
++	else
++		ret = asprintf(&command, "%s -o %s;",
++			       cst, csffile);
+ 	if (ret < 0)
+ 		return -ENOMEM;
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.18.0
+
 
 _______________________________________________
 barebox mailing list
