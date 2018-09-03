@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail1.bemta25.messagelabs.com ([195.245.230.132])
+Received: from smtp.megiteam.pl ([31.186.83.105])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fx5MC-00014T-4t
- for barebox@lists.infradead.org; Tue, 04 Sep 2018 07:02:38 +0000
-From: <Oleg.Karfich@wago.com>
-Date: Tue, 4 Sep 2018 07:02:16 +0000
-Message-ID: <bd81894f-fe0d-a9b3-d5dd-fd4d1ecb61a3@wago.com>
-References: <1535706079-10439-1-git-send-email-oleg.karfich@wago.com>
- <1535706079-10439-4-git-send-email-oleg.karfich@wago.com>
- <20180904061232.agbtqsxaqemjd6b2@pengutronix.de>
-In-Reply-To: <20180904061232.agbtqsxaqemjd6b2@pengutronix.de>
-Content-Language: en-US
-Content-ID: <EE71CD73AC3A714995FD76C619177A0C@WAGO.com>
-MIME-Version: 1.0
+ id 1fwmy7-0001tL-3O
+ for barebox@lists.infradead.org; Mon, 03 Sep 2018 11:24:32 +0000
+From: Marcin Niestroj <m.niestroj@grinn-global.com>
+Date: Mon,  3 Sep 2018 13:23:51 +0200
+Message-Id: <20180903112408.2086-2-m.niestroj@grinn-global.com>
+In-Reply-To: <20180903112408.2086-1-m.niestroj@grinn-global.com>
+References: <20180903112408.2086-1-m.niestroj@grinn-global.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,58 +16,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] net: dhcp: add global variable for retries
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 01/18] crypto: caam - fix RNG init descriptor ret. code
+ checking
+To: barebox@lists.infradead.org
+Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
 
-On 04.09.2018 08:12, Sascha Hauer wrote:
-> Hi Oleg,
+Pick commit 62743a4145bb9c3fe090a48e10ddc0ebae85bfbf from Linux
+upstream.
 
-Hi Sascha,
+    crypto: caam - fix RNG init descriptor ret. code checking
 
-> 
-> On Fri, Aug 31, 2018 at 09:01:32AM +0000, Oleg.Karfich@wago.com wrote:
->> Signed-off-by: Oleg Karfich <oleg.karfich@wago.com>
->> ---
->>  net/dhcp.c | 2 ++
->>  1 file changed, 2 insertions(+)
->>
->> diff --git a/net/dhcp.c b/net/dhcp.c
->> index 6394397..92e0501 100644
->> --- a/net/dhcp.c
->> +++ b/net/dhcp.c
->> @@ -448,6 +448,7 @@ static char *global_dhcp_bootfile;
->>  static char *global_dhcp_oftree_file;
->>  static char *global_dhcp_rootpath;
->>  static char *global_dhcp_tftp_server_name;
->> +static char *global_dhcp_retries;
->>  static char *global_dhcp_option224;
->>  
->>  static void set_res(char **var, const char *res)
->> @@ -629,6 +630,7 @@ static int dhcp_global_init(void)
->>  	globalvar_add_simple_string("dhcp.user_class", &global_dhcp_user_class);
->>  	globalvar_add_simple_string("dhcp.oftree_file", &global_dhcp_oftree_file);
->>  	globalvar_add_simple_string("dhcp.tftp_server_name", &global_dhcp_tftp_server_name);
->> +	globalvar_add_simple_string("dhcp.retries", &global_dhcp_retries);
-> 
-> This adds a global variable, but it is not used, so this still has no
-> effect. Turn this into globalvar_add_simple_int(). The int * you pass
-> should then be used instead of DHCP_DEFAULT_RETRY to initialize
-> dhcp_param.retries in dhcp_request().
+    When successful, the descriptor that performs RNG initialization
+    is allowed to return a status code of 7000_0000h, since last command
+    in the descriptor is a JUMP HALT.
+
+    Signed-off-by: Horia Geant? <horia.geanta@freescale.com>
+    Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+
+Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
+---
+ drivers/crypto/caam/ctrl.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/crypto/caam/ctrl.c b/drivers/crypto/caam/ctrl.c
+index 4deed8a19..eafff8ef0 100644
+--- a/drivers/crypto/caam/ctrl.c
++++ b/drivers/crypto/caam/ctrl.c
+@@ -170,7 +170,7 @@ static int instantiate_rng(struct device_d *ctrldev, int state_handle_mask,
+ {
+ 	struct caam_drv_private *ctrlpriv = ctrldev->priv;
+ 	struct caam_ctrl __iomem *ctrl;
+-	u32 *desc, status, rdsta_val;
++	u32 *desc, status = 0, rdsta_val;
+ 	int ret = 0, sh_idx;
+ 
+ 	ctrl = (struct caam_ctrl __iomem *)ctrlpriv->ctrl;
+@@ -200,7 +200,8 @@ static int instantiate_rng(struct device_d *ctrldev, int state_handle_mask,
+ 		 * CAAM eras), then try again.
+ 		 */
+ 		rdsta_val = readl(&ctrl->r4tst[0].rdsta) & RDSTA_IFMASK;
+-		if (status || !(rdsta_val & (1 << sh_idx)))
++		if ((status && status != JRSTA_SSRC_JUMP_HALT_CC) ||
++		    !(rdsta_val & (1 << sh_idx)))
+ 			ret = -EAGAIN;
+ 		if (ret)
+ 			break;
+-- 
+2.18.0
 
 
-Oh...there went something totaly wrong. Sorry for that...V2 is coming
-
-> 
-> Sascha
-> 
-
-Regard
-Oleg
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
