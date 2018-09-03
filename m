@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.megiteam.pl ([31.186.83.105])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fwnjd-0007TI-Dw
- for barebox@lists.infradead.org; Mon, 03 Sep 2018 12:13:39 +0000
+ id 1fwnjs-0007U3-9Z
+ for barebox@lists.infradead.org; Mon, 03 Sep 2018 12:13:53 +0000
 From: Marcin Niestroj <m.niestroj@grinn-global.com>
-Date: Mon,  3 Sep 2018 13:44:42 +0200
-Message-Id: <20180903114452.4611-18-m.niestroj@grinn-global.com>
+Date: Mon,  3 Sep 2018 13:44:35 +0200
+Message-Id: <20180903114452.4611-11-m.niestroj@grinn-global.com>
 In-Reply-To: <20180903114452.4611-1-m.niestroj@grinn-global.com>
 References: <20180903112408.2086-1-m.niestroj@grinn-global.com>
  <20180903114452.4611-1-m.niestroj@grinn-global.com>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,36 +17,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/18] crypto: caam - remove unreachable code in
- report_ccb_status()
+Subject: [PATCH 01/18] crypto: caam - fix RNG init descriptor ret. code
+ checking
 To: barebox@lists.infradead.org
 Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
 
-UGljayBjb21taXQgOTMwNWRmZjdhYjhiNWUxYWVmMmM0YzVjNzMzY2U3ZTFkYzM0NTQzMyBmcm9t
-IExpbnV4CnVwc3RyZWFtLgoKICAgIGNyeXB0bzogY2FhbSAtIHJlbW92ZSB1bnJlYWNoYWJsZSBj
-b2RlIGluIHJlcG9ydF9jY2Jfc3RhdHVzKCkKCiAgICBFUlJJRCBpcyBhIDQtYml0IGZpZWxkLgog
-ICAgU2luY2UgZXJyX2lkIHZhbHVlcyBhcmUgaW4gWzAuLjE1XSBhbmQgZXJyX2lkX2xpc3QgYXJy
-YXkgc2l6ZSBpcyAxNiwKICAgIHRoZSBjb25kaXRpb24gImVycl9pZCA8IEFSUkFZX1NJWkUoZXJy
-X2lkX2xpc3QpIiBpcyBhbHdheXMgdHJ1ZS4KCiAgICBTaWduZWQtb2ZmLWJ5OiBIb3JpYSBHZWFu
-dMSDIDxob3JpYS5nZWFudGFAbnhwLmNvbT4KICAgIFNpZ25lZC1vZmYtYnk6IEhlcmJlcnQgWHUg
-PGhlcmJlcnRAZ29uZG9yLmFwYW5hLm9yZy5hdT4KClNpZ25lZC1vZmYtYnk6IE1hcmNpbiBOaWVz
-dHJvaiA8bS5uaWVzdHJvakBncmlubi1nbG9iYWwuY29tPgotLS0KIGRyaXZlcnMvY3J5cHRvL2Nh
-YW0vZXJyb3IuYyB8IDUgKystLS0KIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDMg
-ZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9jcnlwdG8vY2FhbS9lcnJvci5jIGIv
-ZHJpdmVycy9jcnlwdG8vY2FhbS9lcnJvci5jCmluZGV4IDljODc1Mzc1ZC4uNzY2ODc1YjU4IDEw
-MDY0NAotLS0gYS9kcml2ZXJzL2NyeXB0by9jYWFtL2Vycm9yLmMKKysrIGIvZHJpdmVycy9jcnlw
-dG8vY2FhbS9lcnJvci5jCkBAIC0xNTAsMTAgKzE1MCw5IEBAIHN0YXRpYyB2b2lkIHJlcG9ydF9j
-Y2Jfc3RhdHVzKHN0cnVjdCBkZXZpY2VfZCAqanJkZXYsIGNvbnN0IHUzMiBzdGF0dXMsCiAJICAg
-IHN0cmxlbihybmdfZXJyX2lkX2xpc3RbZXJyX2lkXSkpIHsKIAkJLyogUk5HLW9ubHkgZXJyb3Ig
-Ki8KIAkJZXJyX3N0ciA9IHJuZ19lcnJfaWRfbGlzdFtlcnJfaWRdOwotCX0gZWxzZSBpZiAoZXJy
-X2lkIDwgQVJSQVlfU0laRShlcnJfaWRfbGlzdCkpCisJfSBlbHNlIHsKIAkJZXJyX3N0ciA9IGVy
-cl9pZF9saXN0W2Vycl9pZF07Ci0JZWxzZQotCQlzbnByaW50ZihlcnJfZXJyX2NvZGUsIHNpemVv
-ZihlcnJfZXJyX2NvZGUpLCAiJTAyeCIsIGVycl9pZCk7CisJfQogCiAJLyoKIAkgKiBDQ0IgSUNW
-IGNoZWNrIGZhaWx1cmVzIGFyZSBwYXJ0IG9mIG5vcm1hbCBvcGVyYXRpb24gbGlmZTsKLS0gCjIu
-MTguMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJh
-cmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
-dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Pick commit 62743a4145bb9c3fe090a48e10ddc0ebae85bfbf from Linux
+upstream.
+
+    crypto: caam - fix RNG init descriptor ret. code checking
+
+    When successful, the descriptor that performs RNG initialization
+    is allowed to return a status code of 7000_0000h, since last command
+    in the descriptor is a JUMP HALT.
+
+    Signed-off-by: Horia Geant? <horia.geanta@freescale.com>
+    Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+
+Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
+---
+ drivers/crypto/caam/ctrl.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/crypto/caam/ctrl.c b/drivers/crypto/caam/ctrl.c
+index 4deed8a19..eafff8ef0 100644
+--- a/drivers/crypto/caam/ctrl.c
++++ b/drivers/crypto/caam/ctrl.c
+@@ -170,7 +170,7 @@ static int instantiate_rng(struct device_d *ctrldev, int state_handle_mask,
+ {
+ 	struct caam_drv_private *ctrlpriv = ctrldev->priv;
+ 	struct caam_ctrl __iomem *ctrl;
+-	u32 *desc, status, rdsta_val;
++	u32 *desc, status = 0, rdsta_val;
+ 	int ret = 0, sh_idx;
+ 
+ 	ctrl = (struct caam_ctrl __iomem *)ctrlpriv->ctrl;
+@@ -200,7 +200,8 @@ static int instantiate_rng(struct device_d *ctrldev, int state_handle_mask,
+ 		 * CAAM eras), then try again.
+ 		 */
+ 		rdsta_val = readl(&ctrl->r4tst[0].rdsta) & RDSTA_IFMASK;
+-		if (status || !(rdsta_val & (1 << sh_idx)))
++		if ((status && status != JRSTA_SSRC_JUMP_HALT_CC) ||
++		    !(rdsta_val & (1 << sh_idx)))
+ 			ret = -EAGAIN;
+ 		if (ret)
+ 			break;
+-- 
+2.18.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
