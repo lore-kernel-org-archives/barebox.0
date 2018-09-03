@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fwuaz-0001O6-CY
+ id 1fwuaz-0001OA-CZ
  for barebox@lists.infradead.org; Mon, 03 Sep 2018 19:33:13 +0000
 From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Mon,  3 Sep 2018 21:32:52 +0200
-Message-Id: <20180903193255.27031-2-r.hieber@pengutronix.de>
+Date: Mon,  3 Sep 2018 21:32:55 +0200
+Message-Id: <20180903193255.27031-5-r.hieber@pengutronix.de>
 In-Reply-To: <20180903193255.27031-1-r.hieber@pengutronix.de>
 References: <20180903193255.27031-1-r.hieber@pengutronix.de>
 MIME-Version: 1.0
@@ -21,42 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] scripts: imx-usb-loader: rename imx_device() to
- imx_device_by_usb_id()
+Subject: [PATCH 4/4] scripts: imx-usb-loader: make i.MX6SoloX better to type
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-Make its purpose more clear when we introduce other similar functions
-in one of the next commits.
+Now that users can select the device type on the command line, having a
+name without whitespace makes input for that device type easier.
 
 Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- scripts/imx/imx-usb-loader.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ scripts/imx/imx-usb-loader.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-index 541c59e36e..a88bca0e83 100644
+index 53e1c7ebb5..4336bc8d53 100644
 --- a/scripts/imx/imx-usb-loader.c
 +++ b/scripts/imx/imx-usb-loader.c
-@@ -214,7 +214,8 @@ struct mxs_command {
- 	uint32_t dw_size;	/* Download size */
- } __attribute__((packed));
- 
--static const struct mach_id *imx_device(unsigned short vid, unsigned short pid)
-+static const struct mach_id *imx_device_by_usb_id(unsigned short vid,
-+		unsigned short pid)
- {
- 	int i;
- 
-@@ -306,7 +307,7 @@ static libusb_device *find_imx_dev(libusb_device **devs, const struct mach_id **
- 			return NULL;
- 		}
- 
--		p = imx_device(desc.idVendor, desc.idProduct);
-+		p = imx_device_by_usb_id(desc.idVendor, desc.idProduct);
- 		if (!p)
- 			continue;
- 
+@@ -160,7 +160,7 @@ static const struct mach_id imx_ids[] = {
+ 	}, {
+ 		.vid = 0x15a2,
+ 		.pid = 0x0071,
+-		.name = "i.MX6 SoloX",
++		.name = "i.MX6SoloX",
+ 		.header_type = HDR_MX53,
+ 		.mode = MODE_HID,
+ 		.max_transfer = 1024,
 -- 
 2.18.0
 
