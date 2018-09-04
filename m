@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fx56v-00020r-H1
- for barebox@lists.infradead.org; Tue, 04 Sep 2018 06:46:51 +0000
-Date: Tue, 4 Sep 2018 08:46:37 +0200
+ id 1fx4Zz-0006Af-4v
+ for barebox@lists.infradead.org; Tue, 04 Sep 2018 06:12:49 +0000
+Date: Tue, 4 Sep 2018 08:12:32 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180904064637.jahd4gv2pitztoww@pengutronix.de>
-References: <20180902212123.16405-1-r.hieber@pengutronix.de>
- <20180902212123.16405-2-r.hieber@pengutronix.de>
- <20180903044657.GA8720@ravnborg.org>
- <20180903135055.zcumxk3m347kyklw@pengutronix.de>
- <20180903201434.GA981@ravnborg.org>
+Message-ID: <20180904061232.agbtqsxaqemjd6b2@pengutronix.de>
+References: <1535706079-10439-1-git-send-email-oleg.karfich@wago.com>
+ <1535706079-10439-4-git-send-email-oleg.karfich@wago.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180903201434.GA981@ravnborg.org>
+In-Reply-To: <1535706079-10439-4-git-send-email-oleg.karfich@wago.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,65 +23,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] pinctrl: imx-iomux-v3: fix compiler warning
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: barebox@lists.infradead.org, Roland Hieber <r.hieber@pengutronix.de>
+Subject: Re: [PATCH 3/3] net: dhcp: add global variable for retries
+To: Oleg.Karfich@wago.com
+Cc: barebox@lists.infradead.org
 
-On Mon, Sep 03, 2018 at 10:14:34PM +0200, Sam Ravnborg wrote:
-> Hi Roland.
+Hi Oleg,
+
+On Fri, Aug 31, 2018 at 09:01:32AM +0000, Oleg.Karfich@wago.com wrote:
+> Signed-off-by: Oleg Karfich <oleg.karfich@wago.com>
+> ---
+>  net/dhcp.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> > > 
-> > > In this code snip we only see that share_conf_val is used (line 149),
-> > > it is not assigned.
-> > > So we do not really see the context of your message in the code snip.
-> > > 
-> > > 	Sam
-> > 
-> > Thank you for your feedback. I took the opportunity and had a closer
-> > look at the code. Here is the full context of the file from before the
-> > patch:
-> > 
-> >    83 static int imx_iomux_v3_set_state(struct pinctrl_device *pdev, struct device_node *np)
-> >    84 {
->      ...
-> >    90         u32 share_conf_val;
-> >    91 
->      ...
-> >    94         if (share_conf) {
->      ...
-> >   110                 share_conf_val =
-> >   111                         FIELD_PREP(SHARE_CONF_PAD_CTL_DSE, drive_strength) |
-> >   112                         FIELD_PREP(SHARE_CONF_PAD_CTL_SRE, slew_rate);
->     ...
-> >   142         for (i = 0; i < npins; i++) {
->     ...
-> >   148                 u32 conf_val = share_conf ?
-> >   149                         share_conf_val : be32_to_cpu(*list++);
-> 
-> The comment was only that despite your effort the changelog
-> did not provide enough context.
-> Above I have provided enough context to your otherwise nice explanation.
-> 
-> > So if you feel that the (old) compiler is wrong here about the warning,
-> > and the code itself is correct enough, feel free to leave out that patch
-> > from the queue.
-> The patch is IMO fine, but the changelog could be better.
+> diff --git a/net/dhcp.c b/net/dhcp.c
+> index 6394397..92e0501 100644
+> --- a/net/dhcp.c
+> +++ b/net/dhcp.c
+> @@ -448,6 +448,7 @@ static char *global_dhcp_bootfile;
+>  static char *global_dhcp_oftree_file;
+>  static char *global_dhcp_rootpath;
+>  static char *global_dhcp_tftp_server_name;
+> +static char *global_dhcp_retries;
+>  static char *global_dhcp_option224;
+>  
+>  static void set_res(char **var, const char *res)
+> @@ -629,6 +630,7 @@ static int dhcp_global_init(void)
+>  	globalvar_add_simple_string("dhcp.user_class", &global_dhcp_user_class);
+>  	globalvar_add_simple_string("dhcp.oftree_file", &global_dhcp_oftree_file);
+>  	globalvar_add_simple_string("dhcp.tftp_server_name", &global_dhcp_tftp_server_name);
+> +	globalvar_add_simple_string("dhcp.retries", &global_dhcp_retries);
 
-Changed that to:
-
-we have the pattern:
-
-	if (share_conf)
-		share_conf_val = ...;
-	...
-
-	if (share_conf)
-		use(share_conf_val);
-
-GCC 5.4.0 doesn't recognize this so explicitly initialize
-share_conf_val.
-
-And applied this series.
+This adds a global variable, but it is not used, so this still has no
+effect. Turn this into globalvar_add_simple_int(). The int * you pass
+should then be used instead of DHCP_DEFAULT_RETRY to initialize
+dhcp_param.retries in dhcp_request().
 
 Sascha
 
