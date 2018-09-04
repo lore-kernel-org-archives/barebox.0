@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail1.bemta26.messagelabs.com ([85.158.142.117])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fx6af-0000mb-8A
- for barebox@lists.infradead.org; Tue, 04 Sep 2018 08:21:39 +0000
-Date: Tue, 4 Sep 2018 10:21:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180904082125.ev4ousbdnf2ilszr@pengutronix.de>
-References: <20180903193255.27031-1-r.hieber@pengutronix.de>
+ id 1fx5RH-00035F-34
+ for barebox@lists.infradead.org; Tue, 04 Sep 2018 07:07:53 +0000
+From: <Oleg.Karfich@wago.com>
+Date: Tue, 4 Sep 2018 07:07:37 +0000
+Message-ID: <1536044850-23483-1-git-send-email-oleg.karfich@wago.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180903193255.27031-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,49 +20,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/4] make imx-usb-loader usable for unknown device IDs
-To: Roland Hieber <r.hieber@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] net: dhcp: add global variable for retries
+To: barebox@lists.infradead.org
+Cc: Oleg.Karfich@wago.com
 
-On Mon, Sep 03, 2018 at 09:32:51PM +0200, Roland Hieber wrote:
-> Some newer i.MX processors allow changing the USB Vendor/Product ID by
-> blowing fuses. This short series allws imx-usb-loader to deal with such
-> hardware that is indeed an i.MX device and supports the USB bootloader
-> protocol, but doesn't identify as an i.MX device via its USB ID. 
-> 
-> Patches 1 and 2 do some small preparation, Patch 3 is the real work, and
-> Patch 4 polishes it nicely.
-> 
-> Roland Hieber (4):
->   scripts: imx-usb-loader: rename imx_device() to imx_device_by_usb_id()
->   scripts: imx-usb-loader: fail early if the USB device path does not
->     match
->   scripts: imx-usb-loader: allow use of unknown USB IDs
->   scripts: imx-usb-loader: make i.MX6SoloX better to type
-> 
->  scripts/imx/imx-usb-loader.c | 76 +++++++++++++++++++++++++++++-------
->  1 file changed, 62 insertions(+), 14 deletions(-)
+Signed-off-by: Oleg Karfich <oleg.karfich@wago.com>
+---
 
-Applied, thanks
+Changes in v2:
 
-Sascha
+	- use globalvar_add_simple_int
+	- set default value to global variable
+	- and use the global variable in dhcp requests :-)
 
-> 
-> -- 
-> 2.18.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+---
+ net/dhcp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/net/dhcp.c b/net/dhcp.c
+index 92e0501..984d32a 100644
+--- a/net/dhcp.c
++++ b/net/dhcp.c
+@@ -448,7 +448,7 @@ static char *global_dhcp_bootfile;
+ static char *global_dhcp_oftree_file;
+ static char *global_dhcp_rootpath;
+ static char *global_dhcp_tftp_server_name;
+-static char *global_dhcp_retries;
++static int global_dhcp_retries = DHCP_DEFAULT_RETRY;
+ static char *global_dhcp_option224;
+ 
+ static void set_res(char **var, const char *res)
+@@ -485,7 +485,7 @@ int dhcp_request(struct eth_device *edev, const struct dhcp_req_param *param,
+ 	if (!dhcp_param.option224)
+ 		dhcp_param.option224 = global_dhcp_option224;
+ 	if (!dhcp_param.retries)
+-		dhcp_param.retries = DHCP_DEFAULT_RETRY;
++		dhcp_param.retries = global_dhcp_retries;
+ 
+ 	dhcp_con = net_udp_eth_new(edev, IP_BROADCAST, PORT_BOOTPS, dhcp_handler, NULL);
+ 	if (IS_ERR(dhcp_con)) {
+@@ -630,7 +630,7 @@ static int dhcp_global_init(void)
+ 	globalvar_add_simple_string("dhcp.user_class", &global_dhcp_user_class);
+ 	globalvar_add_simple_string("dhcp.oftree_file", &global_dhcp_oftree_file);
+ 	globalvar_add_simple_string("dhcp.tftp_server_name", &global_dhcp_tftp_server_name);
+-	globalvar_add_simple_string("dhcp.retries", &global_dhcp_retries);
++	globalvar_add_simple_int("dhcp.retries", &global_dhcp_retries, "%u");
+ 	globalvar_add_simple_string("dhcp.option224", &global_dhcp_option224);
+ 
+ 	return 0;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.4
 
 _______________________________________________
 barebox mailing list
