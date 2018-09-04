@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.megiteam.pl ([31.186.83.105])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fwmy7-0001sU-3P
- for barebox@lists.infradead.org; Mon, 03 Sep 2018 11:24:32 +0000
-From: Marcin Niestroj <m.niestroj@grinn-global.com>
-Date: Mon,  3 Sep 2018 13:23:50 +0200
-Message-Id: <20180903112408.2086-1-m.niestroj@grinn-global.com>
+ id 1fx4w4-00060w-U8
+ for barebox@lists.infradead.org; Tue, 04 Sep 2018 06:35:38 +0000
+Date: Tue, 4 Sep 2018 08:35:24 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180904063524.3yuvgpwvjetkx3p2@pengutronix.de>
+References: <20180829072153.13428-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180829072153.13428-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +22,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/18] crypto: caam: Pull CAAM support improvements from Linux
-To: barebox@lists.infradead.org
-Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
+Subject: Re: [PATCH 1/2] bbu: Look for default handler in
+ barebox_update_handler_exists()
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
+On Wed, Aug 29, 2018 at 12:21:52AM -0700, Andrey Smirnov wrote:
+> Convert barebox_update_handler_exists() to treat struct bbu_data with
+> both "handler_name" and "devicefile" set to NULL as a specifier for
+> default update handler in order to support such use-case for
+> "barebox_update" and fix a recent regression.
+> 
+> This change shouldn't affect another user of
+> barebox_update_handler_exists(), cb_flash() in
+> drivers/usb/gadget/f_fastboot.c, since that function explicitly
+> specifies "devicefile".
+> 
+> Fixes 0ac96ab6e ("bbu: command: Make sure specified update handler exists")
 
-This is a set of patches, which improve CAAM support. They sync CAAM
-support with Linux v4.19-rc1. Applying them allows to use CAAM on
-ARM IMX devices. Some of these patches had to be adapted to match
-Barebox.
+I dropped 0ac96ab6e for now, so you are free to implement a proper
+solution on top of current next branch.
 
-Marcin Niestroj (18):
-  crypto: caam - fix RNG init descriptor ret. code checking
-  crypto: caam - fix warning in APPEND_MATH_IMM_u64
-  crypto: caam - fix writing to JQCR_MS when using service interface
-  crypto: caam - handle core endianness != caam endianness
-  crypto: caam - add support for iMX6UL
-  crypto: caam - fix sparse warnings
-  crypto: caam - trivial code clean-up
-  crypto: caam - remove unreachable code in report_ccb_status()
-  crypto: caam - constify pointer to descriptor buffer
-  crypto: caam - avoid double inclusion in desc_constr.h
-  crypto: caam - clean-up in caam_init_rng()
-  crypto: caam - fix incorrect define
-  crypto: caam - constify key data
-  crypto: caam - fix endless loop when DECO acquire fails
-  crypto: caam - do not use mem and emi_slow clock for imx7x
-  crypto: caam - sync desc.h with Linux
-  crypto: caam - staticize caam_get_era()
-  crypto: caam - allow retrieving 'era' from register
-
- drivers/crypto/caam/caamrng.c     |   9 +-
- drivers/crypto/caam/ctrl.c        | 240 +++++++++++++++++++-----------
- drivers/crypto/caam/ctrl.h        |   1 -
- drivers/crypto/caam/desc.h        |  35 ++---
- drivers/crypto/caam/desc_constr.h | 118 +++++++++------
- drivers/crypto/caam/error.c       |   5 +-
- drivers/crypto/caam/jr.c          |  64 +++-----
- drivers/crypto/caam/regs.h        | 123 ++++++++++++++-
- 8 files changed, 374 insertions(+), 221 deletions(-)
+Sascha
 
 -- 
-2.18.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
