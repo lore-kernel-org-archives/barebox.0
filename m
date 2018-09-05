@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail1.bemta25.messagelabs.com ([195.245.230.131])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fxRBQ-0001qj-O0
- for barebox@lists.infradead.org; Wed, 05 Sep 2018 06:20:58 +0000
-From: <Oleg.Karfich@wago.com>
-Date: Wed, 5 Sep 2018 06:20:39 +0000
-Message-ID: <1536128432-21031-3-git-send-email-oleg.karfich@wago.com>
-References: <1536128432-21031-1-git-send-email-oleg.karfich@wago.com>
-In-Reply-To: <1536128432-21031-1-git-send-email-oleg.karfich@wago.com>
-Content-Language: en-US
-MIME-Version: 1.0
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1fxVlM-0007bl-Uh
+ for barebox@lists.infradead.org; Wed, 05 Sep 2018 11:14:22 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 00E82A00302
+ for <barebox@lists.infradead.org>; Wed,  5 Sep 2018 13:14:42 +0200 (CEST)
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Wed, 5 Sep 2018 13:13:55 +0200
+Message-Id: <1536146035-20364-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,48 +17,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] led: use max led value in case of led trigger
+Subject: [PATCH] arm: boards: phytec-som-am335x: Rename kernel image
 To: barebox@lists.infradead.org
-Cc: Oleg.Karfich@wago.com
 
-The led_poller function blink_func uses for flashing and blinking only the
-values 1/0 for setting the leds. In case of an e.g. gpio led this is true. But
-in case of pwm driven leds, where someone could dimm the leds, the value of 1
-dimms the led. Use the max value for blinking and flashing of a led when enabling.
+Use zImage instead of linuximage for kernel.
 
-Signed-off-by: Oleg Karfich <oleg.karfich@wago.com>
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/led/core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc | 2 +-
+ arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/led/core.c b/drivers/led/core.c
-index 6f66de0..a388e6b 100644
---- a/drivers/led/core.c
-+++ b/drivers/led/core.c
-@@ -127,7 +127,7 @@ static void led_blink_func(struct poller_struct *poller)
- 	struct led *led;
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
+index b1792a6ff060..47dc9516e6a0 100644
+--- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
+@@ -1,5 +1,5 @@
+ #!/bin/sh
  
- 	list_for_each_entry(led, &leds, list) {
--		bool on;
-+		int on;
+-global.bootm.image=/mnt/mmc1.0/linuximage
++global.bootm.image=/mnt/mmc1.0/zImage
+ global.bootm.oftree=/mnt/mmc1.0/oftree
+ global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
+diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
+index 77a076df58c0..b025a578d027 100644
+--- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
++++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
+@@ -1,5 +1,5 @@
+ #!/bin/sh
  
- 		if (!led->blink && !led->flash)
- 			continue;
-@@ -137,6 +137,8 @@ static void led_blink_func(struct poller_struct *poller)
- 		}
- 
- 		on = !(led->blink_next_state % 2);
-+		if (on)
-+			on = led->max_value;
- 
- 		led->blink_next_event = get_time_ns() +
- 			(led->blink_states[led->blink_next_state] * MSECOND);
+-global.bootm.image=/mnt/mmc0.0/linuximage
++global.bootm.image=/mnt/mmc0.0/zImage
+ global.bootm.oftree=/mnt/mmc0.0/oftree
+ global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
 -- 
 2.7.4
+
 
 _______________________________________________
 barebox mailing list
