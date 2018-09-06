@@ -1,15 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-by2nam03on0112.outbound.protection.outlook.com
- ([104.47.42.112] helo=NAM03-BY2-obe.outbound.protection.outlook.com)
+Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fzHCZ-0005QG-Uw
- for barebox@lists.infradead.org; Mon, 10 Sep 2018 08:05:47 +0000
-From: =?UTF-8?q?Florian=20B=C3=A4uerle?= <florian.baeuerle@allegion.com>
-Date: Mon, 10 Sep 2018 10:05:12 +0200
-Message-Id: <20180910080512.29593-1-florian.baeuerle@allegion.com>
-In-Reply-To: <94166a222e1d97e56a93eea02e419ea8adf86502.camel@allegion.com>
-References: <94166a222e1d97e56a93eea02e419ea8adf86502.camel@allegion.com>
+ id 1fy00Z-0006sK-6F
+ for barebox@lists.infradead.org; Thu, 06 Sep 2018 19:32:04 +0000
+Received: by mail-wr1-x442.google.com with SMTP id w11-v6so12602993wrc.5
+ for <barebox@lists.infradead.org>; Thu, 06 Sep 2018 12:31:51 -0700 (PDT)
+Received: from [10.0.0.6] (194-166-158-155.hdsl.highway.telekom.at.
+ [194.166.158.155]) by smtp.googlemail.com with ESMTPSA id
+ v21-v6sm3697135wrd.4.2018.09.06.12.31.49
+ for <barebox@lists.infradead.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 06 Sep 2018 12:31:49 -0700 (PDT)
+From: Martin Ortbauer <mortbauer@gmail.com>
+Message-ID: <a8ae5b24-1bdb-637e-a346-3f803b26504f@gmail.com>
+Date: Thu, 6 Sep 2018 21:31:48 +0200
 MIME-Version: 1.0
+Content-Language: de-AT
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,72 +24,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] ARM: phytec-phycard-imx27: Add debug UART support
+Subject: Re: Re: [PATCH 09/10] ARM: rpi: add raspberry pi 3 support
 To: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogRmxvcmlhbiBCw6R1ZXJsZSA8Zmxvcmlhbi5iYWV1ZXJsZUBhbGxlZ2lv
-bi5jb20+Ci0tLQogYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljYXJkLWlteDI3L2xvd2xldmVs
-LmMgfCAxNiArKysrKysrKysrKysrKysrCiBhcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gv
-ZGVidWdfbGwuaCAgICAgICB8IDEzICsrKysrKysrKysrKysKIGluY2x1ZGUvc2VyaWFsL2lteC11
-YXJ0LmggICAgICAgICAgICAgICAgICAgICAgIHwgIDUgKysrKysKIDMgZmlsZXMgY2hhbmdlZCwg
-MzQgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5
-Y2FyZC1pbXgyNy9sb3dsZXZlbC5jIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljYXJkLWlt
-eDI3L2xvd2xldmVsLmMKaW5kZXggZTExMzJlMC4uYTFmMTJlOCAxMDA2NDQKLS0tIGEvYXJjaC9h
-cm0vYm9hcmRzL3BoeXRlYy1waHljYXJkLWlteDI3L2xvd2xldmVsLmMKKysrIGIvYXJjaC9hcm0v
-Ym9hcmRzL3BoeXRlYy1waHljYXJkLWlteDI3L2xvd2xldmVsLmMKQEAgLTE0LDYgKzE0LDggQEAK
-ICNpbmNsdWRlIDxtYWNoL2lteC1wbGwuaD4KICNpbmNsdWRlIDxtYWNoL2VzZGN0bC5oPgogI2lu
-Y2x1ZGUgPG1hY2gvaW14LW5hbmQuaD4KKyNpbmNsdWRlIDxtYWNoL2RlYnVnX2xsLmg+CisjaW5j
-bHVkZSA8c2VyaWFsL2lteC11YXJ0Lmg+CiAKICNkZWZpbmUgRVNEQ1RMMF9WQUwgKEVTRENUTDBf
-U0RFIHwgRVNEQ1RMMF9ST1cxMyB8IEVTRENUTDBfQ09MMTApCiAKQEAgLTU4LDYgKzYwLDE4IEBA
-IHN0YXRpYyB2b2lkIHNkcmFtX2luaXQodm9pZCkKIAkJCU1YMjdfRVNEQ1RMX0JBU0VfQUREUiAr
-IElNWF9FU0RDVEwwKTsKIH0KIAorc3RhdGljIHZvaWQgc2V0dXBfdWFydCh2b2lkKQoreworCS8q
-IFNldCBQRVsxMi0xNV0gdXNlLCBkaXJlY3Rpb24sIGZ1bmN0aW9uIGFuZCBwdWxsLXVwICovCisJ
-d3JpdGVsKDB4ZmZmYzBmMjcsIE1YMjdfR1BJTzVfQkFTRV9BRERSICsgMHgyMCk7CisJd3JpdGVs
-KDB4MDAwMDUwMDAsIE1YMjdfR1BJTzVfQkFTRV9BRERSKTsKKwl3cml0ZWwoMHgwMDAwMDAwMCwg
-TVgyN19HUElPNV9CQVNFX0FERFIgKyAweDM4KTsKKwl3cml0ZWwoMHhmZmZmMGZmZiwgTVgyN19H
-UElPNV9CQVNFX0FERFIgKyAweDQwKTsKKworCWlteDI3X3VuZ2F0ZV9hbGxfcGVyaXBoZXJhbHMo
-KTsKKwlpbXgyN191YXJ0X3NldHVwX2xsKCk7Cit9CisKIHZvaWQgX19iYXJlX2luaXQgX19uYWtl
-ZCBwaHl0ZWNfcGh5Y2FyZF9pbXgyN19jb21tb25faW5pdCh2b2lkICpmZHQpCiB7CiAJdW5zaWdu
-ZWQgbG9uZyByOwpAQCAtOTcsNiArMTExLDggQEAgdm9pZCBfX2JhcmVfaW5pdCBfX25ha2VkIHBo
-eXRlY19waHljYXJkX2lteDI3X2NvbW1vbl9pbml0KHZvaWQgKmZkdCkKIAkJTVgyN19DU0NSX01T
-SENfU0VMLCBNWDI3X0NDTV9CQVNFX0FERFIgKyBNWDI3X0NTQ1IpOwogCiAJc2RyYW1faW5pdCgp
-OworCWlmIChJU19FTkFCTEVEKENPTkZJR19ERUJVR19MTCkpCisJCXNldHVwX3VhcnQoKTsKIAog
-CWlteDI3X2JhcmVib3hfYm9vdF9uYW5kX2V4dGVybmFsKGZkdCk7CiB9CmRpZmYgLS1naXQgYS9h
-cmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvZGVidWdfbGwuaCBiL2FyY2gvYXJtL21hY2gt
-aW14L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oCmluZGV4IDE1NTBlMDUuLmUwNDVhMWYgMTAwNjQ0
-Ci0tLSBhL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oCisrKyBiL2Fy
-Y2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oCkBAIC01Niw2ICs1NiwxMiBA
-QAogI2Vycm9yICJ1bmtub3duIGkuTVggZGVidWcgdWFydCBzb2MgdHlwZSIKICNlbmRpZgogCitz
-dGF0aWMgaW5saW5lIHZvaWQgaW14MjdfdWFydF9zZXR1cF9sbCh2b2lkKSAgeworCXZvaWQgKmJh
-c2UgPSBJT01FTShJTVhfVUFSVF9CQVNFKElNWF9ERUJVR19TT0MsCisJCQkJQ09ORklHX0RFQlVH
-X0lNWF9VQVJUX1BPUlQpKTsKKwlpbXgyN191YXJ0X3NldHVwKGJhc2UpOworfQorCiBzdGF0aWMg
-aW5saW5lIHZvaWQgaW14NTBfdWFydF9zZXR1cF9sbCh2b2lkKQogewogCXZvaWQgKmJhc2UgPSBJ
-T01FTShJTVhfVUFSVF9CQVNFKElNWF9ERUJVR19TT0MsIENPTkZJR19ERUJVR19JTVhfVUFSVF9Q
-T1JUKSk7CkBAIC0xMjEsNiArMTI3LDcgQEAgc3RhdGljIGlubGluZSB2b2lkIFBVVENfTEwoaW50
-IGMpCiAKICNlbHNlCiAKK3N0YXRpYyBpbmxpbmUgdm9pZCBpbXgyN191YXJ0X3NldHVwX2xsKHZv
-aWQpIHt9CiBzdGF0aWMgaW5saW5lIHZvaWQgaW14NTBfdWFydF9zZXR1cF9sbCh2b2lkKSB7fQog
-c3RhdGljIGlubGluZSB2b2lkIGlteDUxX3VhcnRfc2V0dXBfbGwodm9pZCkge30KIHN0YXRpYyBp
-bmxpbmUgdm9pZCBpbXg1M191YXJ0X3NldHVwX2xsKHZvaWQpIHt9CkBAIC0xMzgsNiArMTQ1LDEy
-IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBpbXhfdW5nYXRlX2FsbF9wZXJpcGhlcmFscyh2b2lkIF9f
-aW9tZW0gKmNjbWJhc2UpCiAJCXdyaXRlbCgweGZmZmZmZmZmLCBjY21iYXNlICsgaSk7CiB9CiAK
-K3N0YXRpYyBpbmxpbmUgdm9pZCBpbXgyN191bmdhdGVfYWxsX3BlcmlwaGVyYWxzKHZvaWQpCit7
-CisJd3JpdGVsKDB4ZmZmZmZiZmYsIElPTUVNKE1YMjdfQ0NNX0JBU0VfQUREUikgKyBNWDI3X1BD
-Q1IwKTsKKwl3cml0ZWwoMHhmZmZmZmZmYywgSU9NRU0oTVgyN19DQ01fQkFTRV9BRERSKSArIE1Y
-MjdfUENDUjEpOworfQorCiBzdGF0aWMgaW5saW5lIHZvaWQgaW14Nl91bmdhdGVfYWxsX3Blcmlw
-aGVyYWxzKHZvaWQpCiB7CiAJaW14X3VuZ2F0ZV9hbGxfcGVyaXBoZXJhbHMoSU9NRU0oTVg2X0ND
-TV9CQVNFX0FERFIpKTsKZGlmZiAtLWdpdCBhL2luY2x1ZGUvc2VyaWFsL2lteC11YXJ0LmggYi9p
-bmNsdWRlL3NlcmlhbC9pbXgtdWFydC5oCmluZGV4IGMyMzYwNjUuLjBjMDMzYzIgMTAwNjQ0Ci0t
-LSBhL2luY2x1ZGUvc2VyaWFsL2lteC11YXJ0LmgKKysrIGIvaW5jbHVkZS9zZXJpYWwvaW14LXVh
-cnQuaApAQCAtMTU1LDYgKzE1NSwxMSBAQCBzdGF0aWMgaW5saW5lIHZvaWQgaW14X3VhcnRfc2V0
-X2R0ZSh2b2lkIF9faW9tZW0gKnVhcnRiYXNlKQogCXdyaXRlbCh1ZmNyLCB1YXJ0YmFzZSArIFVG
-Q1IpOwogfQogCitzdGF0aWMgaW5saW5lIHZvaWQgaW14MjdfdWFydF9zZXR1cCh2b2lkIF9faW9t
-ZW0gKnVhcnRiYXNlKQoreworCWlteF91YXJ0X3NldHVwKHVhcnRiYXNlLCA2NjUwMDAwMCk7Cit9
-CisKIHN0YXRpYyBpbmxpbmUgdm9pZCBpbXg1MF91YXJ0X3NldHVwKHZvaWQgX19pb21lbSAqdWFy
-dGJhc2UpCiB7CiAJaW14X3VhcnRfc2V0dXAodWFydGJhc2UsIDY2NjY2NjY2KTsKLS0gCjEuOC4z
-LjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
-Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Dear Lucas
+
+I'm a bit confused about the barebox support for the rapsberrypi 3 series.
+
+I found the patch [1] and also the documentation [2] suggests support 
+for raspberrry 3, however it only creates an image for the pi1 and pi2.
+
+I also checked out the git logs and couldn't find any source of the 
+patch, do you know about the state, and why it didn't find its way?
+
+Many Thanks
+
+Martin Ortbauer
+
+
+[1] http://lists.infradead.org/pipermail/barebox/2018-January/032019.html
+[2] https://www.barebox.org/doc/latest/boards/bcm2835.html
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
