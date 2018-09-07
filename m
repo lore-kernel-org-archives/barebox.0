@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fyA9a-0000eR-3P
- for barebox@lists.infradead.org; Fri, 07 Sep 2018 06:22:03 +0000
-Date: Fri, 7 Sep 2018 08:21:48 +0200
+ id 1fyACU-00018H-LJ
+ for barebox@lists.infradead.org; Fri, 07 Sep 2018 06:25:04 +0000
+Date: Fri, 7 Sep 2018 08:24:50 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180907062148.3by4l4dv44ud5arh@pengutronix.de>
-References: <1536128432-21031-1-git-send-email-oleg.karfich@wago.com>
+Message-ID: <20180907062450.uapgo4whtx3zmwj2@pengutronix.de>
+References: <1536146035-20364-1-git-send-email-t.remmet@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1536128432-21031-1-git-send-email-oleg.karfich@wago.com>
+In-Reply-To: <1536146035-20364-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +22,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] add support for pca955x i2c led drivers
-To: Oleg.Karfich@wago.com
+Subject: Re: [PATCH] arm: boards: phytec-som-am335x: Rename kernel image
+To: Teresa Remmet <t.remmet@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 05, 2018 at 06:20:38AM +0000, Oleg.Karfich@wago.com wrote:
-> Hi,
+On Wed, Sep 05, 2018 at 01:13:55PM +0200, Teresa Remmet wrote:
+> Use zImage instead of linuximage for kernel.
 > 
-> this series adds support for the pca955x i2c-bus led drivers. The driver is
-> ported from the linux kernel and is reduced for locking and gpio support (could
-> not be tested by us, so we leave it out). Documentation is already there [1].
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+> ---
+>  arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc | 2 +-
+>  arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc  | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 > 
-> We tested this driver on our board with the led driver in [2].
-> 
-> [1] dts/Bindings/leds/leds-pca955x.txt
-> [2] https://www.nxp.com/docs/en/data-sheet/PCA9552.pdf
-> 
-> Oleg Karfich (2):
->   led: add pca955x led support
->   led: use max led value in case of led trigger
+> diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
+> index b1792a6ff060..47dc9516e6a0 100644
+> --- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
+> +++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/emmc
+> @@ -1,5 +1,5 @@
+>  #!/bin/sh
+>  
+> -global.bootm.image=/mnt/mmc1.0/linuximage
+> +global.bootm.image=/mnt/mmc1.0/zImage
 
-Applied, thanks
+As usual when I see these changes: Have a look into bootspec. It makes
+such adjustments unnecessary since the rootfs itself can provide a
+kernel.
+
+Anyway, applied, thanks
 
 Sascha
 
-> 
->  drivers/led/Kconfig       |   9 +
->  drivers/led/Makefile      |   1 +
->  drivers/led/core.c        |   4 +-
->  drivers/led/led-pca955x.c | 421 ++++++++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 434 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/led/led-pca955x.c
-> 
+>  global.bootm.oftree=/mnt/mmc1.0/oftree
+>  global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
+> diff --git a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
+> index 77a076df58c0..b025a578d027 100644
+> --- a/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
+> +++ b/arch/arm/boards/phytec-som-am335x/defaultenv-physom-am335x/boot/mmc
+> @@ -1,5 +1,5 @@
+>  #!/bin/sh
+>  
+> -global.bootm.image=/mnt/mmc0.0/linuximage
+> +global.bootm.image=/mnt/mmc0.0/zImage
+>  global.bootm.oftree=/mnt/mmc0.0/oftree
+>  global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
 > -- 
 > 2.7.4
+> 
 > 
 > _______________________________________________
 > barebox mailing list
