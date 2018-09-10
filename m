@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-by2nam03on0112.outbound.protection.outlook.com
+ ([104.47.42.112] helo=NAM03-BY2-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fyCJ2-0007OW-UH
- for barebox@lists.infradead.org; Fri, 07 Sep 2018 08:39:58 +0000
-Date: Fri, 7 Sep 2018 10:39:45 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180907083945.brzrswndrzdlx33w@pengutronix.de>
-References: <20180903105715.24263-1-m.niestroj@grinn-global.com>
- <20180903105715.24263-6-m.niestroj@grinn-global.com>
- <20180904075403.2qwmdst2x7rauusx@pengutronix.de>
- <8736upfvq1.fsf@grinn-global.com>
+ id 1fzHCZ-0005QG-Uw
+ for barebox@lists.infradead.org; Mon, 10 Sep 2018 08:05:47 +0000
+From: =?UTF-8?q?Florian=20B=C3=A4uerle?= <florian.baeuerle@allegion.com>
+Date: Mon, 10 Sep 2018 10:05:12 +0200
+Message-Id: <20180910080512.29593-1-florian.baeuerle@allegion.com>
+In-Reply-To: <94166a222e1d97e56a93eea02e419ea8adf86502.camel@allegion.com>
+References: <94166a222e1d97e56a93eea02e419ea8adf86502.camel@allegion.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <8736upfvq1.fsf@grinn-global.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,101 +18,72 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/5] scripts: imx: Do not include autoconf.h
-To: Marcin =?iso-8859-15?Q?Niestr=F3j?= <m.niestroj@grinn-global.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] ARM: phytec-phycard-imx27: Add debug UART support
+To: barebox@lists.infradead.org
 
-On Tue, Sep 04, 2018 at 11:38:46AM +0200, Marcin Niestr=F3j wrote:
-> Hi Sasha,
-> =
-
-> Sascha Hauer <s.hauer@pengutronix.de> writes:
-> =
-
-> > On Mon, Sep 03, 2018 at 12:57:15PM +0200, Marcin Niestroj wrote:
-> >> All required defines are passed with command line -D options, so there
-> >> is no need to include full autoconf.h header. Additionally there were
-> >> compile time warnings printed when passed variables (CONFIG_HABV*) had
-> >> embedded environment variables, because macros in autoconf.h were
-> >> redefining these passed as command line arguments (-include is
-> >> processed later than -D option).
-> >> =
-
-> >> Remove including autoconf.h header, so CONFIG_HABV* macros are only
-> >> defined with command line arguments, properly expanding embedded
-> >> variables.
-> >> =
-
-> >> Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
-> >> ---
-> >> Changes rfc -> v1: new patch
-> >> =
-
-> >>  scripts/Makefile.lib | 1 -
-> >>  1 file changed, 1 deletion(-)
-> >> =
-
-> >> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-> >> index 3b1308605..c254b5b79 100644
-> >> --- a/scripts/Makefile.lib
-> >> +++ b/scripts/Makefile.lib
-> >> @@ -433,7 +433,6 @@ cmd_imximage_S_dcd=3D						\
-> >>  =
-
-> >>  imxcfg_cpp_flags  =3D -Wp,-MD,$(depfile) -nostdinc -x assembler-with-=
-cpp \
-> >>        -I $(srctree)/include -I $(srctree)/arch/arm/mach-imx/include \
-> >> -      -include include/generated/autoconf.h \
-> >>        -DCONFIG_HABV3_SRK_PEM=3D\"$(CONFIG_HABV3_SRK_PEM)\" \
-> >>        -DCONFIG_HABV3_CSF_CRT_DER=3D\"$(CONFIG_HABV3_CSF_CRT_DER)\" \
-> >>        -DCONFIG_HABV3_IMG_CRT_DER=3D\"$(CONFIG_HABV3_IMG_CRT_DER)\" \
-> >
-> > the inclusion of autoconf.h is there so that we can use the CONFIG_*
-> > macros. See for example rch/arm/boards/tqma53/flash-header.imxcfg:36
-> >
-> > #ifdef CONFIG_MACH_TQMA53_1GB_RAM
-> =
-
-> Okay, so we cannot drop autoconf.h inclusion. That also means that we
-> need some other way to expand embedded variables in CONFIG_HAB* Kconfig
-> options. The problem is that autoconf.h overwrites (redefines) all
-> macros specified at command line.
-> =
-
-> >
-> > What we can do instead is replace the -include with "-I
-> > $(objtree)/include" so that we can do a "#include
-> > <generated/autoconf.h>" in arch/arm/boards/tqma53/flash-header.imxcfg.
-> > Would that be fine aswell?
-> =
-
-> This will also result in autoconf.h redefining macros specified at
-> command line, but only for that board (because of explicit "include
-> <generated/autoconf.h>"). Problem will surface once again when someone
-> will start using HAB for that board.
-> =
-
-> Maybe we should expand all macros from autoconf.h? For example process
-> autoconf.h *somehow* and produce autoconf-expanded.h, which we could use
-> with "-include" option. This is just an idea, I do not know how to
-> implement that. Any other ideas?
-
-FYI I just posted another idea.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogRmxvcmlhbiBCw6R1ZXJsZSA8Zmxvcmlhbi5iYWV1ZXJsZUBhbGxlZ2lv
+bi5jb20+Ci0tLQogYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljYXJkLWlteDI3L2xvd2xldmVs
+LmMgfCAxNiArKysrKysrKysrKysrKysrCiBhcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gv
+ZGVidWdfbGwuaCAgICAgICB8IDEzICsrKysrKysrKysrKysKIGluY2x1ZGUvc2VyaWFsL2lteC11
+YXJ0LmggICAgICAgICAgICAgICAgICAgICAgIHwgIDUgKysrKysKIDMgZmlsZXMgY2hhbmdlZCwg
+MzQgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5
+Y2FyZC1pbXgyNy9sb3dsZXZlbC5jIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljYXJkLWlt
+eDI3L2xvd2xldmVsLmMKaW5kZXggZTExMzJlMC4uYTFmMTJlOCAxMDA2NDQKLS0tIGEvYXJjaC9h
+cm0vYm9hcmRzL3BoeXRlYy1waHljYXJkLWlteDI3L2xvd2xldmVsLmMKKysrIGIvYXJjaC9hcm0v
+Ym9hcmRzL3BoeXRlYy1waHljYXJkLWlteDI3L2xvd2xldmVsLmMKQEAgLTE0LDYgKzE0LDggQEAK
+ICNpbmNsdWRlIDxtYWNoL2lteC1wbGwuaD4KICNpbmNsdWRlIDxtYWNoL2VzZGN0bC5oPgogI2lu
+Y2x1ZGUgPG1hY2gvaW14LW5hbmQuaD4KKyNpbmNsdWRlIDxtYWNoL2RlYnVnX2xsLmg+CisjaW5j
+bHVkZSA8c2VyaWFsL2lteC11YXJ0Lmg+CiAKICNkZWZpbmUgRVNEQ1RMMF9WQUwgKEVTRENUTDBf
+U0RFIHwgRVNEQ1RMMF9ST1cxMyB8IEVTRENUTDBfQ09MMTApCiAKQEAgLTU4LDYgKzYwLDE4IEBA
+IHN0YXRpYyB2b2lkIHNkcmFtX2luaXQodm9pZCkKIAkJCU1YMjdfRVNEQ1RMX0JBU0VfQUREUiAr
+IElNWF9FU0RDVEwwKTsKIH0KIAorc3RhdGljIHZvaWQgc2V0dXBfdWFydCh2b2lkKQoreworCS8q
+IFNldCBQRVsxMi0xNV0gdXNlLCBkaXJlY3Rpb24sIGZ1bmN0aW9uIGFuZCBwdWxsLXVwICovCisJ
+d3JpdGVsKDB4ZmZmYzBmMjcsIE1YMjdfR1BJTzVfQkFTRV9BRERSICsgMHgyMCk7CisJd3JpdGVs
+KDB4MDAwMDUwMDAsIE1YMjdfR1BJTzVfQkFTRV9BRERSKTsKKwl3cml0ZWwoMHgwMDAwMDAwMCwg
+TVgyN19HUElPNV9CQVNFX0FERFIgKyAweDM4KTsKKwl3cml0ZWwoMHhmZmZmMGZmZiwgTVgyN19H
+UElPNV9CQVNFX0FERFIgKyAweDQwKTsKKworCWlteDI3X3VuZ2F0ZV9hbGxfcGVyaXBoZXJhbHMo
+KTsKKwlpbXgyN191YXJ0X3NldHVwX2xsKCk7Cit9CisKIHZvaWQgX19iYXJlX2luaXQgX19uYWtl
+ZCBwaHl0ZWNfcGh5Y2FyZF9pbXgyN19jb21tb25faW5pdCh2b2lkICpmZHQpCiB7CiAJdW5zaWdu
+ZWQgbG9uZyByOwpAQCAtOTcsNiArMTExLDggQEAgdm9pZCBfX2JhcmVfaW5pdCBfX25ha2VkIHBo
+eXRlY19waHljYXJkX2lteDI3X2NvbW1vbl9pbml0KHZvaWQgKmZkdCkKIAkJTVgyN19DU0NSX01T
+SENfU0VMLCBNWDI3X0NDTV9CQVNFX0FERFIgKyBNWDI3X0NTQ1IpOwogCiAJc2RyYW1faW5pdCgp
+OworCWlmIChJU19FTkFCTEVEKENPTkZJR19ERUJVR19MTCkpCisJCXNldHVwX3VhcnQoKTsKIAog
+CWlteDI3X2JhcmVib3hfYm9vdF9uYW5kX2V4dGVybmFsKGZkdCk7CiB9CmRpZmYgLS1naXQgYS9h
+cmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvZGVidWdfbGwuaCBiL2FyY2gvYXJtL21hY2gt
+aW14L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oCmluZGV4IDE1NTBlMDUuLmUwNDVhMWYgMTAwNjQ0
+Ci0tLSBhL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oCisrKyBiL2Fy
+Y2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oCkBAIC01Niw2ICs1NiwxMiBA
+QAogI2Vycm9yICJ1bmtub3duIGkuTVggZGVidWcgdWFydCBzb2MgdHlwZSIKICNlbmRpZgogCitz
+dGF0aWMgaW5saW5lIHZvaWQgaW14MjdfdWFydF9zZXR1cF9sbCh2b2lkKSAgeworCXZvaWQgKmJh
+c2UgPSBJT01FTShJTVhfVUFSVF9CQVNFKElNWF9ERUJVR19TT0MsCisJCQkJQ09ORklHX0RFQlVH
+X0lNWF9VQVJUX1BPUlQpKTsKKwlpbXgyN191YXJ0X3NldHVwKGJhc2UpOworfQorCiBzdGF0aWMg
+aW5saW5lIHZvaWQgaW14NTBfdWFydF9zZXR1cF9sbCh2b2lkKQogewogCXZvaWQgKmJhc2UgPSBJ
+T01FTShJTVhfVUFSVF9CQVNFKElNWF9ERUJVR19TT0MsIENPTkZJR19ERUJVR19JTVhfVUFSVF9Q
+T1JUKSk7CkBAIC0xMjEsNiArMTI3LDcgQEAgc3RhdGljIGlubGluZSB2b2lkIFBVVENfTEwoaW50
+IGMpCiAKICNlbHNlCiAKK3N0YXRpYyBpbmxpbmUgdm9pZCBpbXgyN191YXJ0X3NldHVwX2xsKHZv
+aWQpIHt9CiBzdGF0aWMgaW5saW5lIHZvaWQgaW14NTBfdWFydF9zZXR1cF9sbCh2b2lkKSB7fQog
+c3RhdGljIGlubGluZSB2b2lkIGlteDUxX3VhcnRfc2V0dXBfbGwodm9pZCkge30KIHN0YXRpYyBp
+bmxpbmUgdm9pZCBpbXg1M191YXJ0X3NldHVwX2xsKHZvaWQpIHt9CkBAIC0xMzgsNiArMTQ1LDEy
+IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBpbXhfdW5nYXRlX2FsbF9wZXJpcGhlcmFscyh2b2lkIF9f
+aW9tZW0gKmNjbWJhc2UpCiAJCXdyaXRlbCgweGZmZmZmZmZmLCBjY21iYXNlICsgaSk7CiB9CiAK
+K3N0YXRpYyBpbmxpbmUgdm9pZCBpbXgyN191bmdhdGVfYWxsX3BlcmlwaGVyYWxzKHZvaWQpCit7
+CisJd3JpdGVsKDB4ZmZmZmZiZmYsIElPTUVNKE1YMjdfQ0NNX0JBU0VfQUREUikgKyBNWDI3X1BD
+Q1IwKTsKKwl3cml0ZWwoMHhmZmZmZmZmYywgSU9NRU0oTVgyN19DQ01fQkFTRV9BRERSKSArIE1Y
+MjdfUENDUjEpOworfQorCiBzdGF0aWMgaW5saW5lIHZvaWQgaW14Nl91bmdhdGVfYWxsX3Blcmlw
+aGVyYWxzKHZvaWQpCiB7CiAJaW14X3VuZ2F0ZV9hbGxfcGVyaXBoZXJhbHMoSU9NRU0oTVg2X0ND
+TV9CQVNFX0FERFIpKTsKZGlmZiAtLWdpdCBhL2luY2x1ZGUvc2VyaWFsL2lteC11YXJ0LmggYi9p
+bmNsdWRlL3NlcmlhbC9pbXgtdWFydC5oCmluZGV4IGMyMzYwNjUuLjBjMDMzYzIgMTAwNjQ0Ci0t
+LSBhL2luY2x1ZGUvc2VyaWFsL2lteC11YXJ0LmgKKysrIGIvaW5jbHVkZS9zZXJpYWwvaW14LXVh
+cnQuaApAQCAtMTU1LDYgKzE1NSwxMSBAQCBzdGF0aWMgaW5saW5lIHZvaWQgaW14X3VhcnRfc2V0
+X2R0ZSh2b2lkIF9faW9tZW0gKnVhcnRiYXNlKQogCXdyaXRlbCh1ZmNyLCB1YXJ0YmFzZSArIFVG
+Q1IpOwogfQogCitzdGF0aWMgaW5saW5lIHZvaWQgaW14MjdfdWFydF9zZXR1cCh2b2lkIF9faW9t
+ZW0gKnVhcnRiYXNlKQoreworCWlteF91YXJ0X3NldHVwKHVhcnRiYXNlLCA2NjUwMDAwMCk7Cit9
+CisKIHN0YXRpYyBpbmxpbmUgdm9pZCBpbXg1MF91YXJ0X3NldHVwKHZvaWQgX19pb21lbSAqdWFy
+dGJhc2UpCiB7CiAJaW14X3VhcnRfc2V0dXAodWFydGJhc2UsIDY2NjY2NjY2KTsKLS0gCjEuOC4z
+LjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
+Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
