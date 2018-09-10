@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from wiems06002.ceu.heidelberg.com ([193.99.214.201])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fzInD-0002hL-W6
- for barebox@lists.infradead.org; Mon, 10 Sep 2018 09:47:54 +0000
-Message-ID: <1536572846.3362.47.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 10 Sep 2018 11:47:26 +0200
-In-Reply-To: <20180910082332.lq5knkzdjbhbdkys@pengutronix.de>
-References: <a8ae5b24-1bdb-637e-a346-3f803b26504f@gmail.com>
- <20180910082332.lq5knkzdjbhbdkys@pengutronix.de>
-Mime-Version: 1.0
+ id 1fzJ83-0005z4-S5
+ for barebox@lists.infradead.org; Mon, 10 Sep 2018 10:09:18 +0000
+From: "Toews, Dietrich" <Dietrich.Toews@heidelberg.com>
+Date: Mon, 10 Sep 2018 10:08:52 +0000
+Message-ID: <F272D9410BD38E429D604B94748C61547AB0D488@WIEMS02101.ceu.corp.heidelberg.com>
+Content-Language: de-DE
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +20,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Re: [PATCH 09/10] ARM: rpi: add raspberry pi 3 support
-To: Roland Hieber <r.hieber@pengutronix.de>, Martin Ortbauer <mortbauer@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: unable to upload new file to tftp server
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Am Montag, den 10.09.2018, 10:23 +0200 schrieb Roland Hieber:
-> On Thu, Sep 06, 2018 at 09:31:48PM +0200, Martin Ortbauer wrote:
-> > Dear Lucas
-> > 
-> > I'm a bit confused about the barebox support for the rapsberrypi 3 series.
-> > 
-> > I found the patch [1] and also the documentation [2] suggests support for
-> > raspberrry 3, however it only creates an image for the pi1 and pi2.
-> > 
-> > I also checked out the git logs and couldn't find any source of the patch,
-> > do you know about the state, and why it didn't find its way?
-> 
-> Indeed, the patch series was never applied. The last state of discussion
-> was that Sascha mentioned that one of the patches broke some defconfigs
-> [1], to which Lucas apparently sent a fixup [2]. After that, I cannot
-> find any further discussion.
-> 
-> Sascha, Lucas, what is the state here? Should the series be resent?
+Hi,
 
-There are some small issues with this series that I need to fix. As the
-RPi3 support was/is an idle task for me it always gets pushed down the
-priority list. I'll try to get off my arse and fix the remaining issues
-this week.
+when I try to upload a new file from barebox to an tftp server I always get the error: "Function not implemented".
 
-Regards,
-Lucas
+When the file is existing on the server, there is no problem.
 
+Prerequisites:
+- mounted directory to an tftp-server
+- test: cp local.file /mnt/tftp-dir/remote.file
+
+Progress:
+- first step of cp is to get the "stat" of the file - the answer of the tftp-server is ENOENT.
+- then cp tries to open the file, but it does only add O_TRUNC when the file exists
+- tftp_do_open returns ENOSYS when O_TRUNC is not set
+
+So you can't upload a non-existing file, but in most cases one needs exactly that.
+
+Dietrich
+
+________________________________
+
+Confidentiality note:
+The information in this email and any attachment may contain confidential and proprietary information of Heidelberger Druckmaschinen AG and/or its affiliates and may be privileged or otherwise protected from disclosure. If you are not the intended recipient, you are hereby notified that any review, reliance or distribution by others or forwarding without express permission is strictly prohibited and may cause liability. In case you have received this message due to an error in transmission, we kindly ask you to notify the sender immediately and to delete this email and any attachment from your system.
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
