@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fy00Z-0006sK-6F
- for barebox@lists.infradead.org; Thu, 06 Sep 2018 19:32:04 +0000
-Received: by mail-wr1-x442.google.com with SMTP id w11-v6so12602993wrc.5
- for <barebox@lists.infradead.org>; Thu, 06 Sep 2018 12:31:51 -0700 (PDT)
-Received: from [10.0.0.6] (194-166-158-155.hdsl.highway.telekom.at.
- [194.166.158.155]) by smtp.googlemail.com with ESMTPSA id
- v21-v6sm3697135wrd.4.2018.09.06.12.31.49
- for <barebox@lists.infradead.org>
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 06 Sep 2018 12:31:49 -0700 (PDT)
-From: Martin Ortbauer <mortbauer@gmail.com>
-Message-ID: <a8ae5b24-1bdb-637e-a346-3f803b26504f@gmail.com>
-Date: Thu, 6 Sep 2018 21:31:48 +0200
+ id 1fzHU2-00032M-AP
+ for barebox@lists.infradead.org; Mon, 10 Sep 2018 08:23:48 +0000
+Date: Mon, 10 Sep 2018 10:23:32 +0200
+From: Roland Hieber <r.hieber@pengutronix.de>
+Message-ID: <20180910082332.lq5knkzdjbhbdkys@pengutronix.de>
+References: <a8ae5b24-1bdb-637e-a346-3f803b26504f@gmail.com>
 MIME-Version: 1.0
-Content-Language: de-AT
+Content-Disposition: inline
+In-Reply-To: <a8ae5b24-1bdb-637e-a346-3f803b26504f@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,30 +18,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Re: [PATCH 09/10] ARM: rpi: add raspberry pi 3 support
-To: barebox@lists.infradead.org
+To: Martin Ortbauer <mortbauer@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, Lucas Stach <lst@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Dear Lucas
+On Thu, Sep 06, 2018 at 09:31:48PM +0200, Martin Ortbauer wrote:
+> Dear Lucas
+> 
+> I'm a bit confused about the barebox support for the rapsberrypi 3 series.
 
-I'm a bit confused about the barebox support for the rapsberrypi 3 series.
+> 
+> I found the patch [1] and also the documentation [2] suggests support for
+> raspberrry 3, however it only creates an image for the pi1 and pi2.
+> 
+> I also checked out the git logs and couldn't find any source of the patch,
+> do you know about the state, and why it didn't find its way?
 
-I found the patch [1] and also the documentation [2] suggests support 
-for raspberrry 3, however it only creates an image for the pi1 and pi2.
+Indeed, the patch series was never applied. The last state of discussion
+was that Sascha mentioned that one of the patches broke some defconfigs
+[1], to which Lucas apparently sent a fixup [2]. After that, I cannot
+find any further discussion.
 
-I also checked out the git logs and couldn't find any source of the 
-patch, do you know about the state, and why it didn't find its way?
+Sascha, Lucas, what is the state here? Should the series be resent?
 
-Many Thanks
+[1]: http://lists.infradead.org/pipermail/barebox/2018-February/032110.html
+[2]: http://lists.infradead.org/pipermail/barebox/2018-February/032111.html
 
-Martin Ortbauer
+ - Roland
 
-
-[1] http://lists.infradead.org/pipermail/barebox/2018-January/032019.html
-[2] https://www.barebox.org/doc/latest/boards/bcm2835.html
+-- 
+Roland Hieber                     | r.hieber@pengutronix.de     |
+Pengutronix e.K.                  | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
