@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+Received: from vsmx011.vodafonemail.xion.oxcs.net ([153.92.174.89])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g05TT-0004gQ-DT
- for barebox@lists.infradead.org; Wed, 12 Sep 2018 13:46:33 +0000
-Received: by mail-wr1-x42d.google.com with SMTP id v17-v6so2112966wrr.9
- for <barebox@lists.infradead.org>; Wed, 12 Sep 2018 06:46:21 -0700 (PDT)
-From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Wed, 12 Sep 2018 15:45:50 +0200
-Message-Id: <20180912134550.3970-8-aleksander@aleksander.es>
-In-Reply-To: <20180912134550.3970-1-aleksander@aleksander.es>
-References: <20180912134550.3970-1-aleksander@aleksander.es>
+ id 1fzpMc-0003wJ-HK
+ for barebox@lists.infradead.org; Tue, 11 Sep 2018 20:34:24 +0000
+Received: from vsmx003.vodafonemail.xion.oxcs.net (unknown [192.168.75.197])
+ by mta-5-out.mta.xion.oxcs.net (Postfix) with ESMTP id DEC913E07CA
+ for <barebox@lists.infradead.org>; Tue, 11 Sep 2018 20:34:01 +0000 (UTC)
+Received: from [192.168.178.23] (unknown [37.9.189.115])
+ by mta-7-out.mta.xion.oxcs.net (Postfix) with ESMTPA id 9E3633009E2
+ for <barebox@lists.infradead.org>; Tue, 11 Sep 2018 20:33:59 +0000 (UTC)
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Message-ID: <25ad4979-9e11-45a4-7e17-efa903435574@arcor.de>
+Date: Tue, 11 Sep 2018 22:33:52 +0200
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,140 +21,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============1387142639929400769=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 7/7] ratp: fix incorrect whitespaces in method calls
-To: barebox@lists.infradead.org
-Cc: andrew.smirnov@gmail.com, Aleksander Morgado <aleksander@aleksander.es>
+Subject: problems writing an fs image to a disk partition
+To: Barebox List <barebox@lists.infradead.org>
 
-This is a simple coding style fix to avoid the whitespace before the
-open-parenthesis in method calls.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============1387142639929400769==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="IfBOingLdjJ6ZHW5VW4FDnqQRKJdBq0gk"
 
-Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
----
- common/ratp/getenv.c | 12 ++++++------
- common/ratp/md.c     |  8 ++++----
- common/ratp/mw.c     |  6 +++---
- common/ratp/reset.c  |  4 ++--
- 4 files changed, 15 insertions(+), 15 deletions(-)
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--IfBOingLdjJ6ZHW5VW4FDnqQRKJdBq0gk
+Content-Type: multipart/mixed; boundary="afLYrB5VphzR7wxgQzt4zKcODWyM4V4A0";
+ protected-headers="v1"
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+To: Barebox List <barebox@lists.infradead.org>
+Message-ID: <25ad4979-9e11-45a4-7e17-efa903435574@arcor.de>
+Subject: problems writing an fs image to a disk partition
 
-diff --git a/common/ratp/getenv.c b/common/ratp/getenv.c
-index b40963488..fdb4b0b28 100644
---- a/common/ratp/getenv.c
-+++ b/common/ratp/getenv.c
-@@ -27,20 +27,20 @@
- static int ratp_cmd_getenv(const struct ratp_bb *req, int req_len,
- 			   struct ratp_bb **rsp, int *rsp_len)
- {
--	int dlen = req_len - sizeof (struct ratp_bb);
-+	int dlen = req_len - sizeof(struct ratp_bb);
- 	char *varname;
- 	const char *value;
- 
--	varname = xstrndup ((const char *)req->data, dlen);
--	value = getenv (varname);
--	free (varname);
-+	varname = xstrndup((const char *)req->data, dlen);
-+	value = getenv(varname);
-+	free(varname);
- 
--	dlen = strlen (value);
-+	dlen = strlen(value);
- 
- 	*rsp_len = sizeof(struct ratp_bb) + dlen;
- 	*rsp = xzalloc(*rsp_len);
- 	(*rsp)->type = cpu_to_be16(BB_RATP_TYPE_GETENV_RETURN);
--	memcpy ((*rsp)->data, value, dlen);
-+	memcpy((*rsp)->data, value, dlen);
- 	return 0;
- }
- 
-diff --git a/common/ratp/md.c b/common/ratp/md.c
-index 2e5a956cb..9ce7e99df 100644
---- a/common/ratp/md.c
-+++ b/common/ratp/md.c
-@@ -124,7 +124,7 @@ static int ratp_cmd_md(const struct ratp_bb *req, int req_len,
- 	/* At least message header should be valid */
- 	if (req_len < sizeof(*md_req)) {
- 		pr_err("ignored: size mismatch (%d < %zu)\n",
--		       req_len, sizeof (*md_req));
-+		       req_len, sizeof(*md_req));
- 		ret = -EINVAL;
- 		goto out;
- 	}
-@@ -162,8 +162,8 @@ static int ratp_cmd_md(const struct ratp_bb *req, int req_len,
- 		goto out;
- 	}
- 
--	addr = be16_to_cpu (md_req->addr);
--	size = be16_to_cpu (md_req->size);
-+	addr = be16_to_cpu(md_req->addr);
-+	size = be16_to_cpu(md_req->size);
- 	path = xstrndup((const char *)&buffer[path_offset], path_size);
- 
- out:
-@@ -193,7 +193,7 @@ out:
- 	*rsp = (struct ratp_bb *)md_rsp;
- 	*rsp_len = md_rsp_len;
- 
--	free (path);
-+	free(path);
- 	return ret;
- }
- 
-diff --git a/common/ratp/mw.c b/common/ratp/mw.c
-index 0579da3c1..55e79bbaf 100644
---- a/common/ratp/mw.c
-+++ b/common/ratp/mw.c
-@@ -80,7 +80,7 @@ static int ratp_cmd_mw(const struct ratp_bb *req, int req_len,
- 	/* At least message header should be valid */
- 	if (req_len < sizeof(*mw_req)) {
- 		pr_err("ignored: size mismatch (%d < %zu)\n",
--		       req_len, sizeof (*mw_req));
-+		       req_len, sizeof(*mw_req));
- 		ret = -EINVAL;
- 		goto out;
- 	}
-@@ -131,7 +131,7 @@ static int ratp_cmd_mw(const struct ratp_bb *req, int req_len,
- 		goto out;
- 	}
- 
--	addr = be16_to_cpu (mw_req->addr);
-+	addr = be16_to_cpu(mw_req->addr);
- 	path = xstrndup((const char *)&buffer[path_offset], path_size);
- 
- 	fd = open_and_lseek(path, O_RWSIZE_1 | O_WRONLY, addr);
-@@ -164,7 +164,7 @@ out:
- 	*rsp = (struct ratp_bb *)mw_rsp;
- 	*rsp_len = sizeof(*mw_rsp);
- 
--	free (path);
-+	free(path);
- 	return ret;
- }
- 
-diff --git a/common/ratp/reset.c b/common/ratp/reset.c
-index 5439f344f..d0229d5d6 100644
---- a/common/ratp/reset.c
-+++ b/common/ratp/reset.c
-@@ -36,8 +36,8 @@ static int ratp_cmd_reset(const struct ratp_bb *req, int req_len,
- {
- 	struct ratp_bb_reset *reset_req = (struct ratp_bb_reset *)req;
- 
--	if (req_len < sizeof (*reset_req)) {
--		pr_err("ignored: size mismatch (%d < %zu)\n", req_len, sizeof (*reset_req));
-+	if (req_len < sizeof(*reset_req)) {
-+		pr_err("ignored: size mismatch (%d < %zu)\n", req_len, sizeof(*reset_req));
- 		return 2;
- 	}
- 
--- 
-2.19.0
+--afLYrB5VphzR7wxgQzt4zKcODWyM4V4A0
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
+Hi,
+
+today I've tried barebox v2018.09.0 on an EFI system.
+It basically runs but I have problems when writing an fs image file
+to a disk partition:
+
+ > cp rootfs.img /dev/disk1.userland
+
+barebox v2018.09.0 returns a 'no space left on device' error.
+
+First of all I must ask if this is still the proper way to
+write a content to a disk partition.
+
+In case this should still work as expected here is a pseudo
+backtrace of how the error happens on my system:
+
+commands/cp.c:do_cp() ret =3D copy_file(argv[i], argv[argc - 1], verbose)=
+;
+lib/libfile.c:copy_file() dstfd =3D open(dst, mode);
+fs/fs.c:open() error =3D fsdrv->truncate(&fsdev->dev, f, 0);
+fs/devfs.c: devfs_truncate()
+
+in the call to devfs_truncate() I see cdev->ops->truncate =3D=3D NULL
+and f->fsdev->dev.num_resources =3D=3D 0 and this makes the function
+return -ENOSPC.
+
+Hope the report helps identify a problem.
+
+giorgio
+
+
+--afLYrB5VphzR7wxgQzt4zKcODWyM4V4A0--
+
+--IfBOingLdjJ6ZHW5VW4FDnqQRKJdBq0gk
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Comment: Using GnuPG with Thunderbird - https://www.enigmail.net/
+
+iQIzBAEBCAAdFiEE9QinPTH0TNNuN3rvP2UgThicmOcFAluYJrYACgkQP2UgThic
+mOcelA//WDaCqZLUjGyeCr0fJauOzVau+g2lFEw/gy91JoVoRRUOBQvnQJeIIE+R
+MUV3IsAbW21YMoZA7YfGAHfLK/3cbQBQFTXdTccZVdCDkxq02UcAIdlHavc6tzMs
+FUCuXn4UDNmzy69a1QofcgqOyFXtDeB3pfyFeSPUwvt5tjDCI/9uDYeRiEp3eb9/
+5aRfIT1HZPjb8jOPNGcHOv5ZMpweF/sjXlezOYg2d5PJEqWJnLBwNIv2hIXgmUbj
+eVLZ4KpERlyGNPC3oN/IsUTzH6ao4CvpOT4zsKuC3GMtrCyHIr4Izsze0WH8/hhE
+0g/5Krl8sJF0tG5cU3m9fKZGRvlQ/kveBDSt7FKrtbev+PCg1QigI5XMkBEMrHdx
+9eM8+xqZScmGdzNL05Iz3byBVF++8xoRR5XCE9+d7kpICbZmCozMK2Ox06U54q+A
+l7/R7xmYqZuDLdb2bRsG+zyfpdsJxKTDi3eIyrZ39HSRYPpyt4zeQ/g0HHfIzgL2
+2SWTw3xDECLwwWVmtfAfS93f2uybCHRGtvr4mzTxn/9uLH2AkEpPfzt7JQRk1UIM
+vpYC+Sw6x5InP3Ter4uXeR57ZMgu2fE7aO+Ei7X4fQ5ve+Jlc93snSskYxJiwNSN
+Ax/DDYAyHLj4NeLRZxSsFMpEcpf3p+cdO1Pu9Wz6B+g/iXJlb6A=
+=vj9q
+-----END PGP SIGNATURE-----
+
+--IfBOingLdjJ6ZHW5VW4FDnqQRKJdBq0gk--
+
+
+--===============1387142639929400769==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============1387142639929400769==--
