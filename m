@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vsmx009.vodafonemail.xion.oxcs.net ([153.92.174.87])
+Received: from mx009.vodafonemail.xion.oxcs.net ([153.92.174.39])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fzzch-0005CY-5j
- for barebox@lists.infradead.org; Wed, 12 Sep 2018 07:31:43 +0000
-Date: Wed, 12 Sep 2018 09:31:18 +0200 (CEST)
+ id 1g06ip-0002Qf-CN
+ for barebox@lists.infradead.org; Wed, 12 Sep 2018 15:06:29 +0000
+Date: Wed, 12 Sep 2018 17:06:07 +0200 (CEST)
 From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
-Message-ID: <499073494.136105.1536737479111@mail.vodafone.de>
+Message-ID: <239331798.146117.1536764767235@mail.vodafone.de>
 In-Reply-To: <20180912071257.GC7949@pengutronix.de>
 References: <25ad4979-9e11-45a4-7e17-efa903435574@arcor.de>
  <20180912071257.GC7949@pengutronix.de>
@@ -72,15 +72,13 @@ Cc: Barebox List <barebox@lists.infradead.org>
 > 
 > Sascha
 > 
+
 Hi,
 
-I've seen the two patches, thank you.
+I've applied the two patches and I can confirm that they fix the problem
+for me.
 
-I've seen the dentry 'big patch' and I knew it was the problem
-but it was too complex for me to understand exactly where the proper
-fix should go.
-
-I'll try them out today,
+Thanks again.
 
 giorgio
 
