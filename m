@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
+Received: from mail-lj1-x241.google.com ([2a00:1450:4864:20::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g0CFx-00021l-Rb
- for barebox@lists.infradead.org; Wed, 12 Sep 2018 21:01:05 +0000
-Received: by mail-lf1-x141.google.com with SMTP id l26-v6so2921461lfc.8
- for <barebox@lists.infradead.org>; Wed, 12 Sep 2018 14:00:47 -0700 (PDT)
+ id 1g0CYZ-0008CV-Jc
+ for barebox@lists.infradead.org; Wed, 12 Sep 2018 21:20:17 +0000
+Received: by mail-lj1-x241.google.com with SMTP id p10-v6so2873304ljg.2
+ for <barebox@lists.infradead.org>; Wed, 12 Sep 2018 14:20:04 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 13 Sep 2018 00:00:05 +0300
-Message-Id: <20180912210006.28087-2-antonynpavlov@gmail.com>
-In-Reply-To: <20180912210006.28087-1-antonynpavlov@gmail.com>
-References: <20180912210006.28087-1-antonynpavlov@gmail.com>
+Date: Thu, 13 Sep 2018 00:19:51 +0300
+Message-Id: <20180912211951.30092-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,56 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH for master 1/2] MIPS: fix PCI quirk infrastructure build
+Subject: [PATCH] checkpatch: don't check TODO file presence
 To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
 
-The commit fc2c618c2038 ("pci: add quirk infrastructure")
-adds necessary ld-script changes only for ARM architecture.
-As a result, qemu-malta build fails:
-
-     LD      barebox
-    drivers/built-in.o: In function `pci_fixup_device':
-    (.text.pci_fixup_device+0x30): undefined reference to `__end_pci_fixups_enable'
-    (.text.pci_fixup_device+0x38): undefined reference to `__end_pci_fixups_enable'
-    (.text.pci_fixup_device+0x34): undefined reference to `__start_pci_fixups_enable'
-    (.text.pci_fixup_device+0x3c): undefined reference to `__start_pci_fixups_enable'
-    (.text.pci_fixup_device+0x70): undefined reference to `__end_pci_fixups_header'
-    (.text.pci_fixup_device+0x78): undefined reference to `__end_pci_fixups_header'
-    (.text.pci_fixup_device+0x74): undefined reference to `__start_pci_fixups_header'
-    (.text.pci_fixup_device+0x80): undefined reference to `__start_pci_fixups_header'
-    (.text.pci_fixup_device+0x2c): undefined reference to `__end_pci_fixups_early'
-    (.text.pci_fixup_device+0x88): undefined reference to `__end_pci_fixups_early'
-    (.text.pci_fixup_device+0x84): undefined reference to `__start_pci_fixups_early'
-    (.text.pci_fixup_device+0x90): undefined reference to `__start_pci_fixups_early'
-    make: *** [Makefile:767: barebox] Error 1
+The commit b3baf2d86149 ("TODO: remove unused file") drops
+the TODO file. Alas scripts/checkpatch.pl checks TODO file
+presence in top_of_kernel_tree(). Without TODO checkpatch.pl
+exits with 'Must be run from the top-level dir. of a kernel tree'.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/lib/barebox.lds.S | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ scripts/checkpatch.pl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
-index 660d4be85e..c4026bb7f1 100644
---- a/arch/mips/lib/barebox.lds.S
-+++ b/arch/mips/lib/barebox.lds.S
-@@ -75,6 +75,17 @@ SECTIONS
- 	__usymtab : { BAREBOX_SYMS }
- 	__usymtab_end = .;
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 48ad4938d9..9a6f6e2298 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -330,7 +330,7 @@ sub top_of_kernel_tree {
+ 	my @tree_check = (
+ 		"arch", "commands", "common", "COPYING", "defaultenv",
+ 		"Documentation", "drivers", "fs", "include", "lib",
+-		"MAKEALL", "Makefile", "net", "README", "scripts", "TODO"
++		"MAKEALL", "Makefile", "net", "README", "scripts"
+ 	);
  
-+#ifdef CONFIG_PCI
-+	__start_pci_fixups_early = .;
-+	.pci_fixup_early : { KEEP(*(.pci_fixup_early)) }
-+	__end_pci_fixups_early = .;
-+	__start_pci_fixups_header = .;
-+	.pci_fixup_header : { KEEP(*(.pci_fixup_header)) }
-+	__end_pci_fixups_header = .;
-+	__start_pci_fixups_enable = .;
-+	.pci_fixup_enable : { KEEP(*(.pci_fixup_enable)) }
-+	__end_pci_fixups_enable = .;
-+#endif
- 	.oftables : { BAREBOX_CLK_TABLE() }
- 
- 	.dtb : { BAREBOX_DTB() }
+ 	foreach my $check (@tree_check) {
 -- 
 2.18.0
 
