@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vsmx009.vodafonemail.xion.oxcs.net ([153.92.174.87])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1fzzKo-0005vj-9D
- for barebox@lists.infradead.org; Wed, 12 Sep 2018 07:13:11 +0000
-Date: Wed, 12 Sep 2018 09:12:57 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180912071257.GC7949@pengutronix.de>
+ id 1fzzch-0005CY-5j
+ for barebox@lists.infradead.org; Wed, 12 Sep 2018 07:31:43 +0000
+Date: Wed, 12 Sep 2018 09:31:18 +0200 (CEST)
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Message-ID: <499073494.136105.1536737479111@mail.vodafone.de>
+In-Reply-To: <20180912071257.GC7949@pengutronix.de>
 References: <25ad4979-9e11-45a4-7e17-efa903435574@arcor.de>
+ <20180912071257.GC7949@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <25ad4979-9e11-45a4-7e17-efa903435574@arcor.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,56 +23,66 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: problems writing an fs image to a disk partition
-To: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi Giorgio,
 
-On Tue, Sep 11, 2018 at 10:33:52PM +0200, Giorgio Dal Molin wrote:
-> Hi,
+> On September 12, 2018 at 9:12 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
 > 
-> today I've tried barebox v2018.09.0 on an EFI system.
-> It basically runs but I have problems when writing an fs image file
-> to a disk partition:
 > 
->  > cp rootfs.img /dev/disk1.userland
+> Hi Giorgio,
 > 
-> barebox v2018.09.0 returns a 'no space left on device' error.
+> On Tue, Sep 11, 2018 at 10:33:52PM +0200, Giorgio Dal Molin wrote:
+> > Hi,
+> > 
+> > today I've tried barebox v2018.09.0 on an EFI system.
+> > It basically runs but I have problems when writing an fs image file
+> > to a disk partition:
+> > 
+> >  > cp rootfs.img /dev/disk1.userland
+> > 
+> > barebox v2018.09.0 returns a 'no space left on device' error.
+> > 
+> > First of all I must ask if this is still the proper way to
+> > write a content to a disk partition.
 > 
-> First of all I must ask if this is still the proper way to
-> write a content to a disk partition.
+> Yes, it is. You found a bug.
+> 
+> > 
+> > In case this should still work as expected here is a pseudo
+> > backtrace of how the error happens on my system:
+> > 
+> > commands/cp.c:do_cp() ret = copy_file(argv[i], argv[argc - 1], verbose);
+> > lib/libfile.c:copy_file() dstfd = open(dst, mode);
+> > fs/fs.c:open() error = fsdrv->truncate(&fsdev->dev, f, 0);
+> > fs/devfs.c: devfs_truncate()
+> > 
+> > in the call to devfs_truncate() I see cdev->ops->truncate == NULL
+> > and f->fsdev->dev.num_resources == 0 and this makes the function
+> > return -ENOSPC.
+> > 
+> > Hope the report helps identify a problem.
+> 
+> Yes, indeed, thanks. The problem was that with the switch to dentry
+> cache implementation the files in /dev/ no longer appear as character
+> devices but as regular files. the copy_file function then does a
+> truncate on the files which fails. I just sent out a patch addressing
+> this issue, please test. I would also recommend to take the second patch
+> although this fixes another issue.
+> 
+> Sascha
+> 
+Hi,
 
-Yes, it is. You found a bug.
+I've seen the two patches, thank you.
 
-> 
-> In case this should still work as expected here is a pseudo
-> backtrace of how the error happens on my system:
-> 
-> commands/cp.c:do_cp() ret = copy_file(argv[i], argv[argc - 1], verbose);
-> lib/libfile.c:copy_file() dstfd = open(dst, mode);
-> fs/fs.c:open() error = fsdrv->truncate(&fsdev->dev, f, 0);
-> fs/devfs.c: devfs_truncate()
-> 
-> in the call to devfs_truncate() I see cdev->ops->truncate == NULL
-> and f->fsdev->dev.num_resources == 0 and this makes the function
-> return -ENOSPC.
-> 
-> Hope the report helps identify a problem.
+I've seen the dentry 'big patch' and I knew it was the problem
+but it was too complex for me to understand exactly where the proper
+fix should go.
 
-Yes, indeed, thanks. The problem was that with the switch to dentry
-cache implementation the files in /dev/ no longer appear as character
-devices but as regular files. the copy_file function then does a
-truncate on the files which fails. I just sent out a patch addressing
-this issue, please test. I would also recommend to take the second patch
-although this fixes another issue.
+I'll try them out today,
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+giorgio
 
 _______________________________________________
 barebox mailing list
