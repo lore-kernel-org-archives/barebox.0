@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x443.google.com ([2a00:1450:4864:20::443])
+Received: from mail-wm0-x22f.google.com ([2a00:1450:400c:c09::22f])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g05TO-0004gI-MD
+ id 1g05TO-0004gG-Pk
  for barebox@lists.infradead.org; Wed, 12 Sep 2018 13:46:30 +0000
-Received: by mail-wr1-x443.google.com with SMTP id v17-v6so2112704wrr.9
- for <barebox@lists.infradead.org>; Wed, 12 Sep 2018 06:46:16 -0700 (PDT)
+Received: by mail-wm0-x22f.google.com with SMTP id b19-v6so2477229wme.3
+ for <barebox@lists.infradead.org>; Wed, 12 Sep 2018 06:46:15 -0700 (PDT)
 From: Aleksander Morgado <aleksander@aleksander.es>
-Date: Wed, 12 Sep 2018 15:45:46 +0200
-Message-Id: <20180912134550.3970-4-aleksander@aleksander.es>
+Date: Wed, 12 Sep 2018 15:45:45 +0200
+Message-Id: <20180912134550.3970-3-aleksander@aleksander.es>
 In-Reply-To: <20180912134550.3970-1-aleksander@aleksander.es>
 References: <20180912134550.3970-1-aleksander@aleksander.es>
 MIME-Version: 1.0
@@ -23,218 +23,250 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/7] ratp: implement support for GPIO commands
+Subject: [PATCH v2 2/7] bbremote: implement i2c read/write support
 To: barebox@lists.infradead.org
 Cc: andrew.smirnov@gmail.com, Aleksander Morgado <aleksander@aleksander.es>
 
-Introduce three new RATP commands that allow getting and setting GPIO
-values as well as configuring the direction of the GPIO pins.
+Extend the bbremote script with operations to perform binary i2c
+read/write operations.
+
+E.g.:
+
+    barebox:/ i2c_read -b 0 -a 0x68 -r 0x06A0 -c 4 -w
+    0x8f 0x30 0x00 0x00
+
+    barebox:/ i2c_write -b 0 -a 0x68 -r 0x06A0 -w 0x87 0x30 0x00 0x00
+
+    barebox:/ i2c_read -b 0 -a 0x68 -r 0x06A0 -c 4 -w
+    0x87 0x30 0x00 0x00
+
+    barebox:/ i2c_write -b 0 -a 0x68 -r 0x06A0 -w 0x8f 0x30 0x00 0x00
+
+    barebox:/ i2c_read -b 0 -a 0x68 -r 0x06A0 -c 4 -w
+    0x8f 0x30 0x00 0x00
+
+    ===================================================================
+
+    $ ./scripts/bbremote --port /dev/ttyUSB2 i2c-read 0x00 0x68 0x06A0 0x01 4
+    8f300000
+
+    $ ./scripts/bbremote --port /dev/ttyUSB2 i2c-write 0x00 0x68 0x06A0 0x01 "87300000"
+    4 bytes written
+
+    $ ./scripts/bbremote --port /dev/ttyUSB2 i2c-read 0x00 0x68 0x06A0 0x01 4
+    87300000
+
+    $ ./scripts/bbremote --port /dev/ttyUSB2 i2c-write 0x00 0x68 0x06A0 0x01 "8f300000"
+    4 bytes written
+
+    $ ./scripts/bbremote --port /dev/ttyUSB2 i2c-read 0x00 0x68 0x06A0 0x01 4
+    8f300000
 
 Signed-off-by: Aleksander Morgado <aleksander@aleksander.es>
 ---
- common/ratp/Kconfig  |  10 ++-
- common/ratp/Makefile |   1 +
- common/ratp/gpio.c   | 144 +++++++++++++++++++++++++++++++++++++++++++
- include/ratp_bb.h    |   6 ++
- 4 files changed, 160 insertions(+), 1 deletion(-)
- create mode 100644 common/ratp/gpio.c
+ scripts/remote/controller.py | 24 ++++++++++
+ scripts/remote/main.py       | 37 ++++++++++++++++
+ scripts/remote/messages.py   | 86 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 147 insertions(+)
 
-diff --git a/common/ratp/Kconfig b/common/ratp/Kconfig
-index 4b28d5f9f..ddbbd955c 100644
---- a/common/ratp/Kconfig
-+++ b/common/ratp/Kconfig
-@@ -18,4 +18,12 @@ config RATP_CMD_I2C
- 	depends on I2C
- 	prompt "RATP i2c support"
- 	help
--	  This option adds support for i2c read/write commands via RATP.
-\ No newline at end of file
-+	  This option adds support for i2c read/write commands via RATP.
-+
-+config RATP_CMD_GPIO
-+	bool
-+	depends on RATP
-+	depends on GENERIC_GPIO
-+	prompt "RATP GPIO support"
-+	help
-+	  This option adds support for GPIO get/set/direction commands via RATP.
-\ No newline at end of file
-diff --git a/common/ratp/Makefile b/common/ratp/Makefile
-index b83c48327..71288bcb8 100644
---- a/common/ratp/Makefile
-+++ b/common/ratp/Makefile
-@@ -5,3 +5,4 @@ obj-y += md.o
- obj-y += mw.o
- obj-y += reset.o
- obj-$(CONFIG_RATP_CMD_I2C) += i2c.o
-+obj-$(CONFIG_RATP_CMD_GPIO) += gpio.o
-diff --git a/common/ratp/gpio.c b/common/ratp/gpio.c
-new file mode 100644
-index 000000000..d2c527a40
---- /dev/null
-+++ b/common/ratp/gpio.c
-@@ -0,0 +1,144 @@
-+/*
-+ * Copyright (c) 2018 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ * Copyright (c) 2018 Zodiac Inflight Innovations
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#define pr_fmt(fmt) "barebox-ratp: gpio: " fmt
-+
-+#include <common.h>
-+#include <ratp_bb.h>
-+#include <malloc.h>
-+#include <environment.h>
-+#include <gpio.h>
-+#include <errno.h>
-+
-+struct ratp_bb_gpio_get_value_request {
-+	struct ratp_bb header;
-+	uint32_t       gpio;
-+} __packed;
-+
-+struct ratp_bb_gpio_get_value_response {
-+	struct ratp_bb header;
-+	uint8_t        value;
-+} __packed;
-+
-+static int ratp_cmd_gpio_get_value(const struct ratp_bb *req, int req_len,
-+				   struct ratp_bb **rsp, int *rsp_len)
-+{
-+	struct ratp_bb_gpio_get_value_request *gpio_req = (struct ratp_bb_gpio_get_value_request *)req;
-+	struct ratp_bb_gpio_get_value_response *gpio_rsp;
-+	int gpio_rsp_len;
-+
-+	if (req_len < sizeof(*gpio_req)) {
-+		pr_err("get value request ignored: size mismatch (%d < %zu)\n", req_len, sizeof(*gpio_req));
-+		return 2;
-+	}
-+
-+	gpio_rsp_len = sizeof(struct ratp_bb_gpio_get_value_response);
-+	gpio_rsp = xzalloc(gpio_rsp_len);
-+	gpio_rsp->header.type = cpu_to_be16(BB_RATP_TYPE_GPIO_GET_VALUE_RETURN);
-+	gpio_rsp->value = !!gpio_get_value(be32_to_cpu(gpio_req->gpio));
-+
-+	*rsp_len = gpio_rsp_len;
-+	*rsp = (struct ratp_bb *)gpio_rsp;
-+	return 0;
-+}
-+
-+BAREBOX_RATP_CMD_START(GPIO_GET_VALUE)
-+	.request_id = BB_RATP_TYPE_GPIO_GET_VALUE,
-+	.response_id = BB_RATP_TYPE_GPIO_GET_VALUE_RETURN,
-+	.cmd = ratp_cmd_gpio_get_value
-+BAREBOX_RATP_CMD_END
-+
-+
-+struct ratp_bb_gpio_set_value_request {
-+	struct ratp_bb header;
-+	uint32_t       gpio;
-+	uint8_t        value;
-+} __packed;
-+
-+static int ratp_cmd_gpio_set_value(const struct ratp_bb *req, int req_len,
-+				   struct ratp_bb **rsp, int *rsp_len)
-+{
-+	struct ratp_bb_gpio_set_value_request *gpio_req = (struct ratp_bb_gpio_set_value_request *)req;
-+
-+	if (req_len < sizeof(*gpio_req)) {
-+		pr_err("set value request ignored: size mismatch (%d < %zu)\n", req_len, sizeof(*gpio_req));
-+		return 2;
-+	}
-+
-+	gpio_set_value(be32_to_cpu(gpio_req->gpio), gpio_req->value);
-+
-+	*rsp_len = sizeof(struct ratp_bb);
-+	*rsp = xzalloc(*rsp_len);
-+	(*rsp)->type = cpu_to_be16(BB_RATP_TYPE_GPIO_SET_VALUE_RETURN);
-+	return 0;
-+}
-+
-+BAREBOX_RATP_CMD_START(GPIO_SET_VALUE)
-+	.request_id = BB_RATP_TYPE_GPIO_SET_VALUE,
-+	.response_id = BB_RATP_TYPE_GPIO_SET_VALUE_RETURN,
-+	.cmd = ratp_cmd_gpio_set_value
-+BAREBOX_RATP_CMD_END
-+
-+
-+struct ratp_bb_gpio_set_direction_request {
-+	struct ratp_bb header;
-+	uint32_t       gpio;
-+	uint8_t        direction; /* 0: input, 1: output */
-+	uint8_t        value;     /* applicable only if direction output */
-+} __packed;
-+
-+struct ratp_bb_gpio_set_direction_response {
-+	struct ratp_bb header;
-+	uint32_t       errno;
-+} __packed;
-+
-+static int ratp_cmd_gpio_set_direction(const struct ratp_bb *req, int req_len,
-+				       struct ratp_bb **rsp, int *rsp_len)
-+{
-+	struct ratp_bb_gpio_set_direction_request *gpio_req = (struct ratp_bb_gpio_set_direction_request *)req;
-+	struct ratp_bb_gpio_set_direction_response *gpio_rsp;
-+	int gpio_rsp_len;
-+	uint32_t gpio;
-+	int ret;
-+
-+	if (req_len < sizeof(*gpio_req)) {
-+		pr_err("set direction request ignored: size mismatch (%d < %zu)\n", req_len, sizeof(*gpio_req));
-+		return 2;
-+	}
-+
-+	gpio = be32_to_cpu(gpio_req->gpio);
-+	if (gpio_req->direction)
-+		ret = gpio_direction_output(gpio, gpio_req->value);
-+	else
-+		ret = gpio_direction_input(gpio);
-+
-+	gpio_rsp_len = sizeof(struct ratp_bb_gpio_set_direction_response);
-+	gpio_rsp = xzalloc(gpio_rsp_len);
-+	gpio_rsp->header.type = cpu_to_be16(BB_RATP_TYPE_GPIO_SET_DIRECTION_RETURN);
-+	gpio_rsp->errno = (ret == 0 ? 0 : EIO);
-+
-+	*rsp_len = gpio_rsp_len;
-+	*rsp = (struct ratp_bb *)gpio_rsp;
-+	return 0;
-+}
-+
-+BAREBOX_RATP_CMD_START(GPIO_SET_DIRECTION)
-+	.request_id = BB_RATP_TYPE_GPIO_SET_DIRECTION,
-+	.response_id = BB_RATP_TYPE_GPIO_SET_DIRECTION_RETURN,
-+	.cmd = ratp_cmd_gpio_set_direction
-+BAREBOX_RATP_CMD_END
-diff --git a/include/ratp_bb.h b/include/ratp_bb.h
-index 32b8040b6..b6699979b 100644
---- a/include/ratp_bb.h
-+++ b/include/ratp_bb.h
-@@ -21,6 +21,12 @@
- #define BB_RATP_TYPE_I2C_READ_RETURN	16
- #define BB_RATP_TYPE_I2C_WRITE		17
- #define BB_RATP_TYPE_I2C_WRITE_RETURN	18
-+#define BB_RATP_TYPE_GPIO_GET_VALUE		19
-+#define BB_RATP_TYPE_GPIO_GET_VALUE_RETURN	20
-+#define BB_RATP_TYPE_GPIO_SET_VALUE		21
-+#define BB_RATP_TYPE_GPIO_SET_VALUE_RETURN	22
-+#define BB_RATP_TYPE_GPIO_SET_DIRECTION		23
-+#define BB_RATP_TYPE_GPIO_SET_DIRECTION_RETURN	24
+diff --git a/scripts/remote/controller.py b/scripts/remote/controller.py
+index 1a8390904..10037b890 100644
+--- a/scripts/remote/controller.py
++++ b/scripts/remote/controller.py
+@@ -61,6 +61,18 @@ def unpack(data):
+     elif p_type == BBType.reset:
+         logging.debug("received: reset")
+         return BBPacketReset(raw=data)
++    elif p_type == BBType.i2c_read:
++        logging.debug("received: i2c_read")
++        return BBPacketI2cRead(raw=data)
++    elif p_type == BBType.i2c_read_return:
++        logging.debug("received: i2c_read_return")
++        return BBPacketI2cReadReturn(raw=data)
++    elif p_type == BBType.i2c_write:
++        logging.debug("received: i2c_write")
++        return BBPacketI2cWrite(raw=data)
++    elif p_type == BBType.i2c_write_return:
++        logging.debug("received: i2c_write_return")
++        return BBPacketI2cWriteReturn(raw=data)
+     else:
+         logging.debug("received: UNKNOWN")
+         return BBPacket(raw=data)
+@@ -139,6 +151,18 @@ class Controller(Thread):
+         logging.info("Mw return: %r", r)
+         return (r.exit_code,r.written)
  
- struct ratp_bb {
- 	uint16_t type;
++    def i2c_read(self, bus, addr, reg, flags, size):
++        self._send(BBPacketI2cRead(bus=bus, addr=addr, reg=reg, flags=flags, size=size))
++        r = self._expect(BBPacketI2cReadReturn)
++        logging.info("i2c read return: %r", r)
++        return (r.exit_code,r.data)
++
++    def i2c_write(self, bus, addr, reg, flags, data):
++        self._send(BBPacketI2cWrite(bus=bus, addr=addr, reg=reg, flags=flags, data=data))
++        r = self._expect(BBPacketI2cWriteReturn)
++        logging.info("i2c write return: %r", r)
++        return (r.exit_code,r.written)
++
+     def reset(self, force):
+         self._send(BBPacketReset(force=force))
+ 
+diff --git a/scripts/remote/main.py b/scripts/remote/main.py
+index 38d280bfe..0f7783927 100644
+--- a/scripts/remote/main.py
++++ b/scripts/remote/main.py
+@@ -98,6 +98,27 @@ def handle_mw(args):
+     return res
+ 
+ 
++def handle_i2c_read(args):
++    ctrl = get_controller(args)
++    (res,data) = ctrl.i2c_read(args.bus, args.address, args.reg, args.flags, args.size)
++    if res == 0:
++        print(binascii.hexlify(data))
++    ctrl.close()
++    return res
++
++
++def handle_i2c_write(args):
++    ctrl = get_controller(args)
++    data=args.data
++    if ((len(data) % 2) != 0):
++        data="0"+data
++    (res,written) = ctrl.i2c_write(args.bus, args.address, args.reg, args.flags, binascii.unhexlify(data))
++    if res == 0:
++        print("%i bytes written" % written)
++    ctrl.close()
++    return res
++
++
+ def handle_reset(args):
+     ctrl = get_controller(args)
+     ctrl.reset(args.force)
+@@ -188,6 +209,22 @@ parser_mw.add_argument('address', type=auto_int, help="address")
+ parser_mw.add_argument('data', help="data")
+ parser_mw.set_defaults(func=handle_mw)
+ 
++parser_i2c_read = subparsers.add_parser('i2c-read', help="run i2c read command")
++parser_i2c_read.add_argument('bus', type=auto_int, help="bus")
++parser_i2c_read.add_argument('address', type=auto_int, help="address")
++parser_i2c_read.add_argument('reg', type=auto_int, help="reg")
++parser_i2c_read.add_argument('flags', type=auto_int, help="flags")
++parser_i2c_read.add_argument('size', type=auto_int, help="size")
++parser_i2c_read.set_defaults(func=handle_i2c_read)
++
++parser_i2c_write = subparsers.add_parser('i2c-write', help="run i2c write command")
++parser_i2c_write.add_argument('bus', type=auto_int, help="bus")
++parser_i2c_write.add_argument('address', type=auto_int, help="address")
++parser_i2c_write.add_argument('reg', type=auto_int, help="reg")
++parser_i2c_write.add_argument('flags', type=auto_int, help="flags")
++parser_i2c_write.add_argument('data', help="data")
++parser_i2c_write.set_defaults(func=handle_i2c_write)
++
+ parser_reset = subparsers.add_parser('reset', help="run reset command")
+ parser_reset_force = parser_reset.add_mutually_exclusive_group(required=False)
+ parser_reset_force.add_argument('--force', dest='force', action='store_true')
+diff --git a/scripts/remote/messages.py b/scripts/remote/messages.py
+index 729f2e617..bc40cbcc3 100644
+--- a/scripts/remote/messages.py
++++ b/scripts/remote/messages.py
+@@ -22,6 +22,10 @@ class BBType(object):
+     mw = 12
+     mw_return = 13
+     reset = 14
++    i2c_read = 15
++    i2c_read_return = 16
++    i2c_write = 17
++    i2c_write_return = 18
+ 
+ 
+ class BBPacket(object):
+@@ -257,3 +261,85 @@ class BBPacketReset(BBPacket):
+ 
+     def _pack_payload(self):
+         return struct.pack("?", self.force)
++
++
++class BBPacketI2cRead(BBPacket):
++    def __init__(self, raw=None, bus=None, addr=None, reg=None, flags=None, size=None):
++        self.bus = bus
++        self.addr = addr
++        self.reg = reg
++        self.flags = flags
++        self.size = size
++        super(BBPacketI2cRead, self).__init__(BBType.i2c_read, raw=raw)
++
++    def __repr__(self):
++        return "BBPacketI2cRead(bus=0x%x,addr=0x%x,reg=0x%x,flags=0x%x,size=%u)" % (self.bus, self.addr, self.reg, self.flags, self.size)
++
++    def _unpack_payload(self, payload):
++        buffer_offset, self.bus, self.addr, self.reg, self.flags, self.size = struct.unpack("!HBBHBH", payload[:9])
++
++    def _pack_payload(self):
++        # header size is always 4 bytes (HH) and we have 9 bytes of fixed data (HBBHBH), so buffer offset is 13
++        return struct.pack("!HBBHBH", 13, self.bus, self.addr, self.reg, self.flags, self.size)
++
++
++class BBPacketI2cReadReturn(BBPacket):
++    def __init__(self, raw=None, exit_code=None, data=None):
++        self.exit_code = exit_code
++        self.data = data
++        super(BBPacketI2cReadReturn, self).__init__(BBType.i2c_read_return, raw=raw)
++
++    def __repr__(self):
++        return "BBPacketI2cReadReturn(exit_code=%i, data=%s)" % (self.exit_code, binascii.hexlify(self.data))
++
++    def _unpack_payload(self, payload):
++        buffer_offset, self.exit_code, data_size, data_offset = struct.unpack("!HLHH", payload[:10])
++        # header size is always 4 bytes (HH), so adjust the absolute data offset without the header size
++        absolute_data_offset = buffer_offset + data_offset - 4
++        self.data = payload[absolute_data_offset:absolute_data_offset + data_size]
++
++    def _pack_payload(self):
++        # header size is always 4 bytes (HH) and we have 10 bytes of fixed data (HLHH), so buffer offset is 14
++        return struct.pack("!HLHH%ds" % len(self.data), 14, self.exit_code, len(self.data), 0, self.data)
++        return self.text
++
++
++class BBPacketI2cWrite(BBPacket):
++    def __init__(self, raw=None, bus=None, addr=None, reg=None, flags=None, data=None):
++        self.bus = bus
++        self.addr = addr
++        self.reg = reg
++        self.flags = flags
++        self.data = data
++        super(BBPacketI2cWrite, self).__init__(BBType.i2c_write, raw=raw)
++
++    def __repr__(self):
++        return "BBPacketI2cWrite(bus=0x%x,addr=0x%x,reg=0x%x,flags=0x%x,data=%r)" % (self.bus, self.addr, self.reg, self.flags, self.data)
++
++    def _unpack_payload(self, payload):
++        buffer_offset, self.bus, self.addr, self.reg, self.flags, data_size, data_offset = struct.unpack("!HBBHBHH", payload[:11])
++        # header size is always 4 bytes (HH), so adjust the absolute data offset without the header size
++        absolute_data_offset = buffer_offset + data_offset - 4
++        self.data = payload[absolute_data_offset:absolute_data_offset+data_size]
++
++    def _pack_payload(self):
++        # header size is always 4 bytes (HH) and we have 11 bytes of fixed data (HBBHBHH), so buffer offset is 15
++        data_size = len(self.data)
++        return struct.pack("!HBBHBHH%ds" % data_size, 15, self.bus, self.addr, self.reg, self.flags, data_size, 0, self.data)
++
++
++class BBPacketI2cWriteReturn(BBPacket):
++    def __init__(self, raw=None, exit_code=None, written=None):
++        self.exit_code = exit_code
++        self.written = written
++        super(BBPacketI2cWriteReturn, self).__init__(BBType.i2c_write_return, raw=raw)
++
++    def __repr__(self):
++        return "BBPacketI2cWriteReturn(exit_code=%i, written=%i)" % (self.exit_code, self.written)
++
++    def _unpack_payload(self, payload):
++        buffer_offset, self.exit_code, self.written = struct.unpack("!HLH", payload[:8])
++
++    def _pack_payload(self):
++        # header size is always 4 bytes (HH) and we have 8 bytes of fixed data (HLH), so buffer offset is 14
++        return struct.pack("!HLH", 12, self.exit_code, self.written)
 -- 
 2.19.0
 
