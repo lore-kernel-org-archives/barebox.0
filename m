@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x242.google.com ([2a00:1450:4864:20::242])
+Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g0CFx-00021q-Pt
+ id 1g0CFx-00021l-Rb
  for barebox@lists.infradead.org; Wed, 12 Sep 2018 21:01:05 +0000
-Received: by mail-lj1-x242.google.com with SMTP id p10-v6so2834320ljg.2
- for <barebox@lists.infradead.org>; Wed, 12 Sep 2018 14:00:48 -0700 (PDT)
+Received: by mail-lf1-x141.google.com with SMTP id l26-v6so2921461lfc.8
+ for <barebox@lists.infradead.org>; Wed, 12 Sep 2018 14:00:47 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 13 Sep 2018 00:00:06 +0300
-Message-Id: <20180912210006.28087-3-antonynpavlov@gmail.com>
+Date: Thu, 13 Sep 2018 00:00:05 +0300
+Message-Id: <20180912210006.28087-2-antonynpavlov@gmail.com>
 In-Reply-To: <20180912210006.28087-1-antonynpavlov@gmail.com>
 References: <20180912210006.28087-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,30 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH for master 2/2] pci_of_match_device: don't crash on MIPS Malta
+Subject: [PATCH for master 1/2] MIPS: fix PCI quirk infrastructure build
 To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
 
-In arch/mips/mach-malta/pci.c PCI controller is instantiated
-without dt and struct pci_controller parent field is NULL.
+The commit fc2c618c2038 ("pci: add quirk infrastructure")
+adds necessary ld-script changes only for ARM architecture.
+As a result, qemu-malta build fails:
+
+     LD      barebox
+    drivers/built-in.o: In function `pci_fixup_device':
+    (.text.pci_fixup_device+0x30): undefined reference to `__end_pci_fixups_enable'
+    (.text.pci_fixup_device+0x38): undefined reference to `__end_pci_fixups_enable'
+    (.text.pci_fixup_device+0x34): undefined reference to `__start_pci_fixups_enable'
+    (.text.pci_fixup_device+0x3c): undefined reference to `__start_pci_fixups_enable'
+    (.text.pci_fixup_device+0x70): undefined reference to `__end_pci_fixups_header'
+    (.text.pci_fixup_device+0x78): undefined reference to `__end_pci_fixups_header'
+    (.text.pci_fixup_device+0x74): undefined reference to `__start_pci_fixups_header'
+    (.text.pci_fixup_device+0x80): undefined reference to `__start_pci_fixups_header'
+    (.text.pci_fixup_device+0x2c): undefined reference to `__end_pci_fixups_early'
+    (.text.pci_fixup_device+0x88): undefined reference to `__end_pci_fixups_early'
+    (.text.pci_fixup_device+0x84): undefined reference to `__start_pci_fixups_early'
+    (.text.pci_fixup_device+0x90): undefined reference to `__start_pci_fixups_early'
+    make: *** [Makefile:767: barebox] Error 1
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/pci/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/lib/barebox.lds.S | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index d206c53848..7abc7a3439 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -339,7 +339,7 @@ pci_of_match_device(struct device_d *parent, unsigned int devfn)
- 	struct device_node *np;
- 	u32 reg;
+diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
+index 660d4be85e..c4026bb7f1 100644
+--- a/arch/mips/lib/barebox.lds.S
++++ b/arch/mips/lib/barebox.lds.S
+@@ -75,6 +75,17 @@ SECTIONS
+ 	__usymtab : { BAREBOX_SYMS }
+ 	__usymtab_end = .;
  
--	if (!IS_ENABLED(CONFIG_OFTREE) || !parent->device_node)
-+	if (!IS_ENABLED(CONFIG_OFTREE) || !parent || !parent->device_node)
- 		return NULL;
++#ifdef CONFIG_PCI
++	__start_pci_fixups_early = .;
++	.pci_fixup_early : { KEEP(*(.pci_fixup_early)) }
++	__end_pci_fixups_early = .;
++	__start_pci_fixups_header = .;
++	.pci_fixup_header : { KEEP(*(.pci_fixup_header)) }
++	__end_pci_fixups_header = .;
++	__start_pci_fixups_enable = .;
++	.pci_fixup_enable : { KEEP(*(.pci_fixup_enable)) }
++	__end_pci_fixups_enable = .;
++#endif
+ 	.oftables : { BAREBOX_CLK_TABLE() }
  
- 	for_each_child_of_node(parent->device_node, np) {
+ 	.dtb : { BAREBOX_DTB() }
 -- 
 2.18.0
 
