@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x241.google.com ([2a00:1450:4864:20::241])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g0CYZ-0008CV-Jc
- for barebox@lists.infradead.org; Wed, 12 Sep 2018 21:20:17 +0000
-Received: by mail-lj1-x241.google.com with SMTP id p10-v6so2873304ljg.2
- for <barebox@lists.infradead.org>; Wed, 12 Sep 2018 14:20:04 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 13 Sep 2018 00:19:51 +0300
-Message-Id: <20180912211951.30092-1-antonynpavlov@gmail.com>
+Received: from tf.think-future.de ([193.7.177.246] helo=think-future.de)
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1g0PeV-0006dz-Ot
+ for barebox@lists.infradead.org; Thu, 13 Sep 2018 11:19:17 +0000
+From: perachet7@gmail.com
+Date: Thu, 13 Sep 2018 13:18:54 +0200
+Message-Id: <1597963.4YffofffW7@think-future.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,39 +15,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
+Reply-To: perachet7@gmail.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] checkpatch: don't check TODO file presence
-To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Subject: rk3188 (radxa rock pro) boot failure w/ barebox 2018-04 and later
+To: barebox@lists.infradead.org
 
-The commit b3baf2d86149 ("TODO: remove unused file") drops
-the TODO file. Alas scripts/checkpatch.pl checks TODO file
-presence in top_of_kernel_tree(). Without TODO checkpatch.pl
-exits with 'Must be run from the top-level dir. of a kernel tree'.
+Hey list,
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- scripts/checkpatch.pl | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Between 2018-04 and 2018-05 tar release, barebox stops booting on rk3188 
+(radxa rock pro).
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 48ad4938d9..9a6f6e2298 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -330,7 +330,7 @@ sub top_of_kernel_tree {
- 	my @tree_check = (
- 		"arch", "commands", "common", "COPYING", "defaultenv",
- 		"Documentation", "drivers", "fs", "include", "lib",
--		"MAKEALL", "Makefile", "net", "README", "scripts", "TODO"
-+		"MAKEALL", "Makefile", "net", "README", "scripts"
- 	);
+A git bisect reveals (see end of mail for commit detail): 
+	first bad commit: [2a94e821ba2e64890ac47b9ba177c7b6585b23be] ARM: For 
+relocatable image force TEXT_BASE 0x0.
+
+As was suggested on #barebox, I tried setting TEXT_BASE=0x10 at this commit 
+but it's a no fix. 
+
+It is however booting even later releases if the trailing "if !RELOCATABLE" is 
+removed. I have yet to have a deeper look at the code modified by 
+HAVE_CONFIGURABLE_TEXT_BASE and RELOCATABLE.
+
+Furthermore, it seems the commit itself is only triggering a boot failure. The 
+proper code causing it is probably hiding someplace else.
+
+Any direction, ideas or hints given is appreciated.
+
+Thanks.
+
+cheers
+
+S.
+
+
+
+Following said commit:
+
+git show 2a94e821ba2e64890ac47b9ba177c7b6585b23be
+commit 2a94e821ba2e64890ac47b9ba177c7b6585b23be
+Author: Sascha Hauer <s.hauer@pengutronix.de>
+Date:   Fri Mar 9 09:12:08 2018 +0100
+
+    ARM: For relocatable image force TEXT_BASE 0x0
+    
+    Nothing else should be used for the relocatable image case, so
+    force TEXT_BASE to 0x0 and do not show it in the menu.
+    
+    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index e7edc2ad4..563475205 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -2,7 +2,7 @@ config ARM
+        bool
+        select HAS_KALLSYMS
+        select HAS_CACHE
+-       select HAVE_CONFIGURABLE_TEXT_BASE
++       select HAVE_CONFIGURABLE_TEXT_BASE if !RELOCATABLE
+        select HAVE_IMAGE_COMPRESSION
+        default y
  
- 	foreach my $check (@tree_check) {
--- 
-2.18.0
+@@ -19,6 +19,10 @@ config ARM_USE_COMPRESSED_DTB
+        select UNCOMPRESS
+        select LZO_DECOMPRESS
+ 
++config TEXT_BASE
++       hex
++       default 0x0
++
+ menu "System Type"
+ 
+ config BUILTIN_DTB
+
 
 
 _______________________________________________
