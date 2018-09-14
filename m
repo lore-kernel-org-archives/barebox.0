@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tf.think-future.de ([193.7.177.246] helo=think-future.de)
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g0vqu-0006QZ-5b
- for barebox@lists.infradead.org; Fri, 14 Sep 2018 21:42:14 +0000
-From: perachet7@gmail.com
-Date: Fri, 14 Sep 2018 23:41:45 +0200
-Message-Id: <5675177.9FAqIcoTBl@think-future.de>
-In-Reply-To: <8463281536949204@think-future.de>
+Received: from forward100o.mail.yandex.net ([2a02:6b8:0:1a2d::600])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1g0shf-0002Kt-SA
+ for barebox@lists.infradead.org; Fri, 14 Sep 2018 18:20:30 +0000
+From: =?utf-8?B?0J/QsNC90L7QsiDQkNC90LTRgNC10Lk=?= <rockford@yandex.ru>
+In-Reply-To: <20180913123746.GA18653@ravnborg.org>
 References: <1597963.4YffofffW7@think-future.de>
- <20180913123746.GA18653@ravnborg.org> <8463281536949204@think-future.de>
+ <20180913123746.GA18653@ravnborg.org>
 MIME-Version: 1.0
+Date: Fri, 14 Sep 2018 21:20:04 +0300
+Message-Id: <8463281536949204@iva4-f774db2b5297.qloud-c.yandex.net>
+Content-Type: multipart/mixed;
+ boundary="----==--bound.846329.iva4-f774db2b5297.qloud-c.yandex.net"
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,93 +20,116 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: perachet7@gmail.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: rk3188 (radxa rock pro) boot failure w/ barebox 2018-04 and later
-To: =?utf-8?B?0J/QsNC90L7QsiDQkNC90LTRgNC10Lk=?= <rockford@yandex.ru>
-Cc: barebox@lists.infradead.org
+To: Sam Ravnborg <sam@ravnborg.org>, "perachet7@gmail.com" <perachet7@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-SGVsbG8sCgpUaGFuayB5b3UgZm9yIHRoZSBwYXRjaC4gVmVyaWZpZWQgYW5kIGFja25vd2xlZGdl
-ZCwgcmszMTg4IHcvIGJiIDIwMTguMDkuMCBpcyAKYm9vdGluZyB3aGVuIGNvbXBpbGVkIHVzaW5n
-IHRoZSAKCiAgYXJtLWxpbnV4LWdudWVhYmloZi1nY2MgKFVidW50dS9MaW5hcm8gNy4zLjAtMTZ1
-YnVudHUzKSA3LjMuMAoKdG9vbGNoYWluLiBJbnRlcmVzdGluZ2x5LCBpdCBib290ZWQgdXNpbmcg
-dGhlIE9TRUxBUyB0b29sY2hhaW47IHdoYXQga2luZCBvZiAKZGFyayBtYWdpYyBkb2VzIGdldCB0
-aHJvd24gYXQgdGhlIGNvZGUgd2hlbiB1c2luZyBPU0VMQVM/CgpyazMxODggYm9vdCB1cCAobm90
-aWNlIHRoZSAtZGlydHkgdGFpbCB0byB0aGUgdmVyc2lvbiBzdHJpbmcgYmVjYXVzZSAgCnZhcmlh
-YmxlX29mZnNldC5kaWZmIGdvdCBwYXRjaGVkIGluKToKCkREUiBWZXJzaW9uIDEuMDQgMjAxNDAy
-MTcKSW4KRERSMwozMDBNSHoKQnVzIFdpZHRoPTMyIENvbD0xMCBCYW5rPTggUm93PTE1IENTPTIg
-RGllIEJ1cy1XaWR0aD0xNiBTaXplPTIwNDhNQgpNZW1vcnkgT0sKT1VUCgoKYmFyZWJveCAyMDE4
-LjA5LjAtZGlydHkgIzQwIEZyaSBTZXAgMTQgMjM6MjY6NTggQ0VTVCAyMDE4CgoKQm9hcmQ6IFJh
-ZHhhIFJvY2sKY2xrX3JlZ2lzdGVyIGNsayB4aW4yNG0gaXMgYWxyZWFkeSByZWdpc3RlcmVkLCBz
-a2lwcGluZyEKYXJjLWVtYWMgMTAyMDQwMDAuZXRoZXJuZXQ6IEFSQyBFTUFDIGRldGVjdGVkIHdp
-dGggaWQ6IDB4N2ZkMDIKbWRpb19idXM6IG1paWJ1czA6IHByb2JlZApkd19tbWMgMTAyMTQwMDAu
-ZHdtbWM6IHJlZ2lzdGVyZWQgYXMgMTAyMTQwMDAuZHdtbWMKbXNoYzE6IGRldGVjdGVkIFNEIGNh
-cmQgdmVyc2lvbiAxLjAKbXNoYzE6IHJlZ2lzdGVyZWQgbXNoYzEKbmV0Y29uc29sZTogcmVnaXN0
-ZXJlZCBhcyBuZXRjb25zb2xlLTEKaTJjLWdwaW8gaTJjLWdwaW8wOiB1c2luZyBwaW5zIDU4IChT
-REEpIGFuZCA1OSAoU0NMKQptYWxsb2Mgc3BhY2U6IDB4OWZlZmQ2NjAgLT4gMHhkZmRmYWNiZiAo
-c2l6ZSAxMDIzIE1pQikKZ3Bpby1sZWRzLjY6IHByb2JlIHBlcm1hbmVudGx5IGRlZmVycmVkCmVu
-dmZzOiBubyBlbnZmcyAobWFnaWMgbWlzbWF0Y2gpIC0gZW52ZnMgbmV2ZXIgd3JpdHRlbj8KcnVu
-bmluZyAvZW52L2Jpbi9pbml0Li4uCgpIaXQgYW55IGtleSB0byBzdG9wIGF1dG9ib290OiAgICAw
-CmJvb3RpbmcgJ21zaGMxJwptb3VudDogTm8gc3VjaCBmaWxlIG9yIGRpcmVjdG9yeQpleHQ0IGV4
-dDQwOiBFWFQyIHJldiAxLCBpbm9kZV9zaXplIDEyOCwgZGVzY3JpcHRvciBzaXplIDMyCm1vdW50
-ZWQgL2Rldi9tc2hjMS4wIG9uIC9tbnQvbXNoYzEuMApzZXR0aW5nIHJvb3Qgbm9kZSBmYWlsZWQ6
-IERldmljZSBvciByZXNvdXJjZSBidXN5Cm9mdHJlZTogRGV2aWNlIG9yIHJlc291cmNlIGJ1c3kK
-CkxvYWRpbmcgQVJNIExpbnV4IHpJbWFnZSAnL21udC9tc2hjMS4wL3pJbWFnZScKY29tbWFuZGxp
-bmU6ICBjb25zb2xlPXR0eVMyLDExNTIwMCAgcm9vdD0vZGV2L21tY2JsazBwMiByb290d2FpdAph
-cmNoX251bWJlcjogMzA2NgoKVGhpcyBpcyB3aGVyZSB0aGUga2VybmVsIHdvbid0IHN0YXJ0LgoK
-SXQgbG9va3MgbGlrZSB0aGVyZSBhcmUgYSBjb3VwbGUgb2YgaXNzdWVzIGhlcmU6CgoxKSBlbnZm
-czogbm8gZW52ZnMgKG1hZ2ljIG1pc21hdGNoKSAtIGVudmZzIG5ldmVyIHdyaXR0ZW4/CgoyKSBt
-b3VudDogTm8gc3VjaCBmaWxlIG9yIGRpcmVjdG9yeQoKMykgc2V0dGluZyByb290IG5vZGUgZmFp
-bGVkOiBEZXZpY2Ugb3IgcmVzb3VyY2UgYnVzeQoKNCkga2VybmVsIGRvZXMgbm90IGJvb3Q6IGFy
-Y2hfbnVtYmVyOiAzMDY2CgpBbnkgaWRlYXMgb24gdGhvc2Ugb25lcz8KClRoYW5rcyBhZ2FpbiBh
-bmQKCmNoZWVycwoKUy4KCk9uIEZyZWl0YWcsIDE0LiBTZXB0ZW1iZXIgMjAxOCAyMDoyMDowNCBD
-RVNUIHlvdSB3cm90ZToKPiBIaSEKPiAKPiBBdHRhY2hlZCBwYXRjaCBmaXhlZCB0aGUgcHJvYmxl
-bS4KPiAKPiBpbiBhcmNoL2FybS9jcHUvdW5jb21wcmVzcy5jIGdsb2JhbF92YXJpYWJsZV9vZmZz
-ZXQoKSB3YXMgY2FsbGVkIGJlZm9yZQo+IHJlbG9jYXRpb24uCj4gCj4gQW5kIHdlIGhhdmUgVEVY
-VF9CQVNFID0gMCAoc2luY2UgQ09ORklHXypfUkVMT0NBVEFCTEUgaXMgc2V0IGFuZCBpdCBpcyBu
-b3QKPiBjb25maWd1cmFibGUpCj4gCj4gQXJjaCBtZW1vcnkgc3RhcnRzIGF0IDB4NjAwMDAwMDAg
-YW5kIGltYWdlIGxpbmtlZCBhdCAweDAsIHNvCj4gZ2xvYmFsX3ZhcmlhYmxlX29mZnNldCgpIHJl
-dHVybnMgMHg2MDAwMDAwMAo+IAo+IFdlJ3JlIHJ1bm5pbmcgYXJvdW5kIDB4NjAwMDAwMDAgYW5k
-IGF0Cj4gICAgICAgIGltYWdlX2VuZCA9ICh2b2lkICopJmltYWdlX2VuZF9tYXJrZXIgKyBnbG9i
-YWxfdmFyaWFibGVfb2Zmc2V0KCk7Cj4gJmltYWdlX2VuZF9tYXJrZXIgaXMgMHg2MDAwWFhYWFgK
-PiBpbWFnZV9lbmQgZ29lcyBhdCAweDYwMDAwMDAwIG1vcmUgdGhhbiBpdCBpcyBhY3R1YWxseQo+
-IAo+IEFmdGVyIHJlbG9jYXRpb24gZ2xvYmFsX3ZhcmlhYmxlX29mZnNldCgpIGJlY29tZXMgemVy
-by4KPiAKPiBTbyBpZiB3ZSBtb3ZlCj4gICAgICAgIGltYWdlX2VuZCA9ICh2b2lkICopJmltYWdl
-X2VuZF9tYXJrZXIgKyBnbG9iYWxfdmFyaWFibGVfb2Zmc2V0KCk7Cj4gYWZ0ZXIgcmVsb2NhdGlv
-biBpdCB3aWxsIHBvaW50IHRvIHJpZ2h0IGxvY2F0aW9uLgo+IAo+IEkgYW0gbm90IHN1cmUgaXQg
-aXMgdHJ1ZSBmb3IgYWxsIGFyY2hpdGVjdHVyZXMsIGJ1dCBpbiBjdXJyZW50IHN0YXRlIGl0IGlz
-Cj4gd3Jvbmcgd2hlbiBtZW1vcnkgaXMgbm90IHN0YXJ0cyBhdCAwLgo+IDEzLjA5LjIwMTgsIDE1
-OjM4LCAiU2FtIFJhdm5ib3JnIiA8c2FtQHJhdm5ib3JnLm9yZz46Cj4gPiBIaSBTLgo+ID4gCj4g
-PiBPbiBUaHUsIFNlcCAxMywgMjAxOCBhdCAwMToxODo1NFBNICswMjAwLCBwZXJhY2hldDdAZ21h
-aWwuY29tIHdyb3RlOgo+ID4+ICBIZXkgbGlzdCwKPiA+PiAKPiA+PiAgQmV0d2VlbiAyMDE4LTA0
-IGFuZCAyMDE4LTA1IHRhciByZWxlYXNlLCBiYXJlYm94IHN0b3BzIGJvb3Rpbmcgb24gcmszMTg4
-Cj4gPj4gIChyYWR4YSByb2NrIHBybykuCj4gPj4gCj4gPj4gIEEgZ2l0IGJpc2VjdCByZXZlYWxz
-IChzZWUgZW5kIG9mIG1haWwgZm9yIGNvbW1pdCBkZXRhaWwpOgo+ID4+ICAgICAgICAgIGZpcnN0
-IGJhZCBjb21taXQ6IFsyYTk0ZTgyMWJhMmU2NDg5MGFjNDdiOWJhMTc3YzdiNjU4NWIyM2JlXQo+
-ID4+IEFSTTogRm9yIHJlbG9jYXRhYmxlIGltYWdlIGZvcmNlIFRFWFRfQkFTRSAweDAuCj4gPj4g
-Cj4gPj4gIEFzIHdhcyBzdWdnZXN0ZWQgb24gI2JhcmVib3gsIEkgdHJpZWQgc2V0dGluZyBURVhU
-X0JBU0U9MHgxMCBhdCB0aGlzCj4gPj4gY29tbWl0IGJ1dCBpdCdzIGEgbm8gZml4Lgo+ID4+IAo+
-ID4+ICBJdCBpcyBob3dldmVyIGJvb3RpbmcgZXZlbiBsYXRlciByZWxlYXNlcyBpZiB0aGUgdHJh
-aWxpbmcgImlmCj4gPj4gIVJFTE9DQVRBQkxFIiBpcyByZW1vdmVkLiBJIGhhdmUgeWV0IHRvIGhh
-dmUgYSBkZWVwZXIgbG9vayBhdCB0aGUgY29kZQo+ID4+IG1vZGlmaWVkIGJ5IEhBVkVfQ09ORklH
-VVJBQkxFX1RFWFRfQkFTRSBhbmQgUkVMT0NBVEFCTEUuCj4gPj4gCj4gPj4gIEZ1cnRoZXJtb3Jl
-LCBpdCBzZWVtcyB0aGUgY29tbWl0IGl0c2VsZiBpcyBvbmx5IHRyaWdnZXJpbmcgYSBib290Cj4g
-Pj4gZmFpbHVyZS4gVGhlIHByb3BlciBjb2RlIGNhdXNpbmcgaXQgaXMgcHJvYmFibHkgaGlkaW5n
-IHNvbWVwbGFjZSBlbHNlLgo+ID4+IAo+ID4+ICBBbnkgZGlyZWN0aW9uLCBpZGVhcyBvciBoaW50
-cyBnaXZlbiBpcyBhcHByZWNpYXRlZC4KPiA+IAo+ID4gSSB3YXMgaGl0IGJ5IGEgZG8tbm90LWJv
-b3QgaXNzdWUgYXMgd2VsbCBhZnRlciB1cGdyYWRpbmcgdG8gMjAxOC4wNS4KPiA+IEluIG15IGNh
-c2UgdGhpcyB3YXMgZHVlIHRvIGEgZml4IHRvIGdldF9ydW50aW1lX29mZnNldCgpCj4gPiBJdCB0
-dXJuZWQgb3V0IHRoYXQgSSBoYWQgc3VidHJhY2VkIHRoZSB2YWx1ZSwgbm90IGFkZGVkLgo+ID4g
-TG9va3MgbGlrZSBhbiBhcnRpZmljdCBmcm9tIHNvbWUgY29kZSBJIGNvcGllZCBzb21lIHRpbWUg
-YWdvLgo+ID4gCj4gPiBNYXliZSB0aGlzIGhpbnQgY2FuIGhlbHAgeW91LCBhbmQgbWF5YmUgdGhp
-cyBpcyB0b3RhbGx5IHVucmVsYXRlZC4KPiA+IAo+ID4gR29vZCBsdWNrIGNoYXNpbmcgaXQgZG93
-bi4KPiA+IAo+ID4gICAgICAgICBTYW0KPiA+IAo+ID4gX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KPiA+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gPiBiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiA+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vYmFyZWJveAo+IAo+IC0tIAo+INCQ0L3QtNGA0LXQuQoKCgoKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
-ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+
+------==--bound.846329.iva4-f774db2b5297.qloud-c.yandex.net
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+
+Hi!
+
+Attached patch fixed the problem.
+
+in arch/arm/cpu/uncompress.c global_variable_offset() was called before relocation.
+
+And we have TEXT_BASE = 0 (since CONFIG_*_RELOCATABLE is set and it is not configurable)
+
+Arch memory starts at 0x60000000 and image linked at 0x0, so global_variable_offset() returns 0x60000000
+
+We're running around 0x60000000 and at
+       image_end = (void *)&image_end_marker + global_variable_offset();
+&image_end_marker is 0x6000XXXXX
+image_end goes at 0x60000000 more than it is actually
+
+After relocation global_variable_offset() becomes zero.
+
+So if we move 
+       image_end = (void *)&image_end_marker + global_variable_offset();
+after relocation it will point to right location.
+
+I am not sure it is true for all architectures, but in current state it is wrong when memory is not starts at 0.
+
+13.09.2018, 15:38, "Sam Ravnborg" <sam@ravnborg.org>:
+> Hi S.
+>
+> On Thu, Sep 13, 2018 at 01:18:54PM +0200, perachet7@gmail.com wrote:
+>>  Hey list,
+>>
+>>  Between 2018-04 and 2018-05 tar release, barebox stops booting on rk3188
+>>  (radxa rock pro).
+>>
+>>  A git bisect reveals (see end of mail for commit detail):
+>>          first bad commit: [2a94e821ba2e64890ac47b9ba177c7b6585b23be] ARM: For
+>>  relocatable image force TEXT_BASE 0x0.
+>>
+>>  As was suggested on #barebox, I tried setting TEXT_BASE=0x10 at this commit
+>>  but it's a no fix.
+>>
+>>  It is however booting even later releases if the trailing "if !RELOCATABLE" is
+>>  removed. I have yet to have a deeper look at the code modified by
+>>  HAVE_CONFIGURABLE_TEXT_BASE and RELOCATABLE.
+>>
+>>  Furthermore, it seems the commit itself is only triggering a boot failure. The
+>>  proper code causing it is probably hiding someplace else.
+>>
+>>  Any direction, ideas or hints given is appreciated.
+>
+> I was hit by a do-not-boot issue as well after upgrading to 2018.05.
+> In my case this was due to a fix to get_runtime_offset()
+> It turned out that I had subtraced the value, not added.
+> Looks like an artifict from some code I copied some time ago.
+>
+> Maybe this hint can help you, and maybe this is totally unrelated.
+>
+> Good luck chasing it down.
+>
+>         Sam
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- 
+Андрей
+------==--bound.846329.iva4-f774db2b5297.qloud-c.yandex.net
+Content-Disposition: attachment;
+	filename="variable_offset.diff"
+Content-Transfer-Encoding: base64
+Content-Type: text/x-diff;
+	name="variable_offset.diff"
+
+ZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2NwdS91bmNvbXByZXNzLmMgYi9hcmNoL2FybS9jcHUvdW5j
+b21wcmVzcy5jCmluZGV4IGIwNzA4N2U0Yy4uNzA4YzA0YzFmIDEwMDY0NAotLS0gYS9hcmNoL2Fy
+bS9jcHUvdW5jb21wcmVzcy5jCisrKyBiL2FyY2gvYXJtL2NwdS91bmNvbXByZXNzLmMKQEAgLTUw
+LDggKzUwLDYgQEAgdm9pZCBfX25vcmV0dXJuIGJhcmVib3hfbXVsdGlfcGJsX3N0YXJ0KHVuc2ln
+bmVkIGxvbmcgbWVtYmFzZSwKICAgICAgICB2b2lkICpwZ19zdGFydDsKICAgICAgICB1bnNpZ25l
+ZCBsb25nIHBjID0gZ2V0X3BjKCk7CiAKLSAgICAgICBpbWFnZV9lbmQgPSAodm9pZCAqKSZpbWFn
+ZV9lbmRfbWFya2VyICsgZ2xvYmFsX3ZhcmlhYmxlX29mZnNldCgpOwotCiAgICAgICAgaWYgKElT
+X0VOQUJMRUQoQ09ORklHX1BCTF9SRUxPQ0FUQUJMRSkpIHsKICAgICAgICAgICAgICAgIC8qCiAg
+ICAgICAgICAgICAgICAgKiBJZiB3ZSBydW4gZnJvbSBpbnNpZGUgdGhlIG1lbW9yeSBqdXN0IHJl
+bG9jYXRlIHRoZSBiaW5hcnkKQEAgLTY0LDYgKzYyLDggQEAgdm9pZCBfX25vcmV0dXJuIGJhcmVi
+b3hfbXVsdGlfcGJsX3N0YXJ0KHVuc2lnbmVkIGxvbmcgbWVtYmFzZSwKICAgICAgICAgICAgICAg
+ICAgICAgICAgcmVsb2NhdGVfdG9fYWRyKG1lbWJhc2UpOwogICAgICAgIH0KIAorICAgICAgIGlt
+YWdlX2VuZCA9ICh2b2lkICopJmltYWdlX2VuZF9tYXJrZXIgKyBnbG9iYWxfdmFyaWFibGVfb2Zm
+c2V0KCk7CisKICAgICAgICAvKgogICAgICAgICAqIGltYWdlX2VuZCBpcyB0aGUgaW1hZ2VfZW5k
+X21hcmtlciBkZWZpbmVkIGFib3ZlLiBJdCBpcyB0aGUgbGFzdCBsb2NhdGlvbgogICAgICAgICAq
+IGluIHRoZSBleGVjdXRhYmxlLiBSaWdodCBhZnRlciB0aGUgZXhlY3V0YWJsZSB0aGUgYnVpbGQg
+cHJvY2VzcyBhZGRzCgoK
+------==--bound.846329.iva4-f774db2b5297.qloud-c.yandex.net
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+------==--bound.846329.iva4-f774db2b5297.qloud-c.yandex.net--
