@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g1rkd-0002cE-Oz
- for barebox@lists.infradead.org; Mon, 17 Sep 2018 11:31:37 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 17 Sep 2018 13:31:23 +0200
-Message-Id: <20180917113123.3268-1-s.hauer@pengutronix.de>
+ id 1g1qp4-00076J-90
+ for barebox@lists.infradead.org; Mon, 17 Sep 2018 10:32:15 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Mon, 17 Sep 2018 12:31:51 +0200
+Message-Id: <20180917103151.9369-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,55 +19,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: mdio: Do not warn about invalid PHY address
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH] ARM: i.MX28: Add APBH clk support
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-of_mdiobus_register is now called with nodes from ethernet devices.
-Their child nodes are not necessarily phy nodes. For am335x devices
-we get several warnings now:
+After this commit iMX28 filed to use DMA and NAND:
+|commit 6eb2ba6f1b206bb7d688036a28c98eb4a89be781
+|Author: Andrey Smirnov <andrew.smirnov@gmail.com>
+|Date:   Sat Mar 31 18:13:57 2018 -0700
+|
+|dma: apbh: Enable clock as a part of probing
+|
+|Enable clock as a part of probing in order to avoid problems on SoCs
+|that do not have this block ungated out of reset (e.g. i.MX7).
+|
+|Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+|Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-miibus0: /ocp/ethernet@4a100000/mdio@4a101000 PHY address 1242566656 is too large
-miibus0: /ocp/ethernet@4a100000/slave@4a100200 has invalid PHY address
-miibus0: /ocp/ethernet@4a100000/slave@4a100300 has invalid PHY address
-miibus0: /ocp/ethernet@4a100000/cpsw-phy-sel@44e10650 PHY address 1155597904 is too large
+The reason was missing clock base for APBH.
 
-None of the nodes is a phy node, so silence the warnings and turn them
-into dev_dbg.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/net/phy/mdio_bus.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/clk/mxs/clk-imx28.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index 02e47f6a14..7d53bcc3da 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -179,9 +179,12 @@ static int of_mdiobus_register(struct mii_bus *mdio, struct device_node *np)
- 
- 	/* Loop over the child nodes and register a phy_device for each one */
- 	for_each_available_child_of_node(np, child) {
-+		if (!of_mdiobus_child_is_phy(child))
-+			continue;
-+
- 		ret = of_property_read_u32(child, "reg", &addr);
- 		if (ret) {
--			dev_err(&mdio->dev, "%s has invalid PHY address\n",
-+			dev_dbg(&mdio->dev, "%s has invalid PHY address\n",
- 				child->full_name);
- 			continue;
- 		}
-@@ -192,9 +195,6 @@ static int of_mdiobus_register(struct mii_bus *mdio, struct device_node *np)
- 			continue;
- 		}
- 
--		if (!of_mdiobus_child_is_phy(child))
--			continue;
--
- 		of_mdiobus_reset_phy(mdio, child);
- 		of_mdiobus_register_phy(mdio, child, addr);
- 	}
+diff --git a/drivers/clk/mxs/clk-imx28.c b/drivers/clk/mxs/clk-imx28.c
+index ffe03c8668..dd17a74d79 100644
+--- a/drivers/clk/mxs/clk-imx28.c
++++ b/drivers/clk/mxs/clk-imx28.c
+@@ -152,6 +152,7 @@ int __init mx28_clocks_init(void __iomem *regs)
+ 	clkdev_add_physbase(clks[fec], IMX_FEC0_BASE, NULL);
+ 	clkdev_add_physbase(clks[xbus], IMX_DBGUART_BASE, NULL);
+ 	clkdev_add_physbase(clks[hbus], IMX_OCOTP_BASE, NULL);
++	clkdev_add_physbase(clks[hbus], MXS_APBH_BASE, NULL);
+ 	clkdev_add_physbase(clks[uart], IMX_UART0_BASE, NULL);
+ 	clkdev_add_physbase(clks[uart], IMX_UART1_BASE, NULL);
+ 	clkdev_add_physbase(clks[uart], IMX_UART2_BASE, NULL);
 -- 
 2.19.0
 
