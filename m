@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tf.think-future.de ([193.7.177.246] helo=think-future.de)
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g1vUi-0004Ce-HJ
- for barebox@lists.infradead.org; Mon, 17 Sep 2018 15:31:26 +0000
-From: perachet7@gmail.com
-Date: Mon, 17 Sep 2018 17:30:56 +0200
-Message-Id: <2037065.bgjZ3rdPRg@think-future.de>
-In-Reply-To: <20180917072942.12445-1-s.hauer@think-future.de>
+Received: from forward106p.mail.yandex.net ([2a02:6b8:0:1472:2741:0:8b7:109])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat
+ Linux)) id 1g1yAB-0007xW-3F
+ for barebox@lists.infradead.org; Mon, 17 Sep 2018 18:22:26 +0000
+From: =?utf-8?B?0J/QsNC90L7QsiDQkNC90LTRgNC10Lk=?= <rockford@yandex.ru>
+In-Reply-To: <2037065.bgjZ3rdPRg@think-future.de>
 References: <20180917072942.12445-1-s.hauer@think-future.de>
+ <2037065.bgjZ3rdPRg@think-future.de>
 MIME-Version: 1.0
+Date: Mon, 17 Sep 2018 21:21:59 +0300
+Message-Id: <2781421537208519@sas1-c61088e44244.qloud-c.yandex.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,221 +18,146 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: perachet7@gmail.com
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ARM: Multi PBL: Fix image calculation for certain
  toolchains
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: "perachet7@gmail.com" <perachet7@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hello Sascha,
-
-Thank you for this patch. Happy to test it here on rk3188 (radxa rock pro).
-
-Using bb v2018.09.0. Applied your patches below. CONFIG_PBL_RELOCATABLE is 
-fixed in menuconfig. Common config:
-
-grep RELOCAT .config
-CONFIG_PBL_RELOCATABLE=y
-CONFIG_RELOCATABLE=y
-
-Built using this script:
-
-export ARCH=arm
-#export CROSS_COMPILE=/usr/bin/arm-linux-gnueabihf-
-export CROSS_COMPILE=/opt/OSELAS.Toolchain-2018.02.0/arm-v7m-eabi/gcc-7.3.1-
-newlib-2.5.0-binutils-2.30/bin/arm-v7m-eabi-
-
-rm .config
-make clean
-make ARCH=arm rk3188_defconfig && make -j 10
-
-/rk-makebootable FlashData barebox-flash-image rrboot.bin
-sudo dd if=rrboot.bin of=/dev/sdc bs=$((0x200)) seek=$((0x40))
-
-
-Using Debian/Ubuntu cross compiler:
-###########################
-
-CROSS_COMPILE=/usr/bin/arm-linux-gnueabihf-
-
-DDR Version 1.04 20140217
-In
-DDR3
-300MHz
-Bus Width=32 Col=10 Bank=8 Row=15 CS=2 Die Bus-Width=16 Size=2048MB
-Memory OK
-OUT
-
-
-barebox 2018.09.0-dirty #43 Mon Sep 17 15:19:59 CEST 2018
-
-
-Board: Radxa Rock
-clk_register clk xin24m is already registered, skipping!
-arc-emac 10204000.ethernet: ARC EMAC detected with id: 0x7fd02
-mdio_bus: miibus0: probed
-dw_mmc 10214000.dwmmc: registered as 10214000.dwmmc
-mshc1: detected SD card version 1.0
-mshc1: registered mshc1
-netconsole: registered as netconsole-1
-i2c-gpio i2c-gpio0: using pins 58 (SDA) and 59 (SCL)
-malloc space: 0x9fefd660 -> 0xdfdfacbf (size 1023 MiB)
-gpio-leds.6: probe permanently deferred
-envfs: no envfs (magic mismatch) - envfs never written?
-running /env/bin/init...
-
-Hit any key to stop autoboot:    0
-booting 'mshc1'
-mount: No such file or directory
-ext4 ext40: EXT2 rev 1, inode_size 128, descriptor size 32
-mounted /dev/mshc1.0 on /mnt/mshc1.0
-setting root node failed: Device or resource busy
-oftree: Device or resource busy
-
-Loading ARM Linux zImage '/mnt/mshc1.0/zImage'
-commandline:  console=ttyS2,115200  root=/dev/mmcblk0p2 rootwait
-arch_number: 3066
-
-
-=> bb boot success.
-=> kernel boot failure.
-
-
-Using OSELAS:
-##########
-
-export CROSS_COMPILE=/opt/OSELAS.Toolchain-2018.02.0/arm-v7m-eabi/gcc-7.3.1-
-newlib-2.5.0-binutils-2.30/bin/arm-v7m-eabi-
-
-DDR Version 1.04 20140217
-In
-DDR3
-300MHz
-Bus Width=32 Col=10 Bank=8 Row=15 CS=2 Die Bus-Width=16 Size=2048MB
-Memory OK
-OUT
-
-
-barebox 2018.09.0-dirty #44 Mon Sep 17 15:22:34 CEST 2018
-
-
-Board: Radxa Rock
-clk_register clk xin24m is already registered, skipping!
-arc-emac 10204000.ethernet: ARC EMAC detected with id: 0x7fd02
-mdio_bus: miibus0: probed
-dw_mmc 10214000.dwmmc: registered as 10214000.dwmmc
-mshc1: detected SD card version 1.0
-mshc1: registered mshc1
-netconsole: registered as netconsole-1
-i2c-gpio i2c-gpio0: using pins 58 (SDA) and 59 (SCL)
-malloc space: 0x9fefd660 -> 0xdfdfacbf (size 1023 MiB)
-gpio-leds.6: probe permanently deferred
-envfs: no envfs (magic mismatch) - envfs never written?
-running /env/bin/init...
-
-Hit any key to stop autoboot:    1
-booting 'mshc1'
-mount: No such file or directory
-ext4 ext40: EXT2 rev 1, inode_size 128, descriptor size 32
-mounted /dev/mshc1.0 on /mnt/mshc1.0
-setting root node failed: Device or resource busy
-oftree: Device or resource busy
-
-Loading ARM Linux zImage '/mnt/mshc1.0/zImage'
-commandline:  console=ttyS2,115200  root=/dev/mmcblk0p2 rootwait
-arch_number: 3066
-
-
-=> bb boot success.
-=> kernel boot failure.
-
-
-
-There still are a couple of (possibly unrelated) issues, independent of the 
-compiler used:
-
-1) envfs: no envfs (magic mismatch) - envfs never written?
-
-2) mount: No such file or directory
-
-3) setting root node failed: Device or resource busy
-
-4) oftree: Device or resource busy
-
-5) arch_number: 3066 [note: boot failure]
-
-
-
-cheers
-
-On Montag, 17. September 2018 09:29:42 CEST you wrote:
-> The current way to calculate the compressed image position works
-> with the OSELAS toolchains, but not with the Debian/Ubuntu toolchains.
-> For these toolchains &image_end_marker already returns the correct
-> address, adding global_variable_offset() to it is wrong.
->
-> The solution seems to be to put the image_end_marker into a different
-> object file so that the compiler cannot play any tricks to resolve
-> the address internally in the object file.
->
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
-> arch/arm/cpu/sections.c         | 2 ++
-> arch/arm/cpu/uncompress.c       | 5 +----
-> arch/arm/include/asm/sections.h | 2 ++
-> arch/arm/lib/pbl.lds.S          | 2 +-
-> 4 files changed, 6 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/arm/cpu/sections.c b/arch/arm/cpu/sections.c
-> index 5874da2b82..ab08ebf42e 100644
-> --- a/arch/arm/cpu/sections.c
-> +++ b/arch/arm/cpu/sections.c
-> @@ -1,4 +1,5 @@
-> #include <asm/sections.h>
-> +#include <linux/types.h>
->
-> char __rel_dyn_start[0] __attribute__((section(".__rel_dyn_start")));
-> char __rel_dyn_end[0] __attribute__((section(".__rel_dyn_end")));
-> @@ -9,3 +10,4 @@ char __bss_start[0]
-> __attribute__((section(".__bss_start"))); char __bss_stop[0]
-> __attribute__((section(".__bss_stop")));
-> char __image_start[0] __attribute__((section(".__image_start")));
-> char __image_end[0] __attribute__((section(".__image_end")));
-> +uint32_t __image_end_marker[1]
-> __attribute__((section(".__image_end_marker"))) = { 0xdeadbeef }; diff
-> --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c index
-> b07087e4cf..43b49b4212 100644
-> --- a/arch/arm/cpu/uncompress.c
-> +++ b/arch/arm/cpu/uncompress.c
-> @@ -36,9 +36,6 @@
-> unsigned long free_mem_ptr;
-> unsigned long free_mem_end_ptr;
->
-> -static int __attribute__((__section__(".image_end")))
-> -       image_end_marker = 0xdeadbeef;
-> -
-> void __noreturn barebox_multi_pbl_start(unsigned long membase,
-> unsigned long memsize, void *boarddata)
-> {
-> @@ -50,7 +47,7 @@ void __noreturn barebox_multi_pbl_start(unsigned long
-> membase, void *pg_start;
-> unsigned long pc = get_pc();
->
-> -       image_end = (void *)&image_end_marker + global_variable_offset();
-> +       image_end = (void *)__image_end_marker + global_variable_offset();
->
-> if (IS_ENABLED(CONFIG_PBL_RELOCATABLE)) {
-> /*
-
-
-
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkhCgpUaGFua3MsIHdpdGggdGhpcyBwYXRjaCBiYXJlYm94IGJvb3RzIG9uIHJrMzE4OC4KSSd2
+ZSB0ZXN0ZWQgd2l0aCB0d28gY2FyZHMsIG9uIG9uZSBlbnZpcm9ubWVudCBjYW4gYmUgc2F2ZWQs
+IG9uIG90aGVyIHRoaXMgaXMgbm90IGFsd2F5cyB3b3JrLgoKQW5kIG5ld2VyIGtlcm5lbHMgKGFi
+b3ZlIGNpcmNhIDQuMTApIHdpbGwgbm90IGJvb3Qgd2l0aCBiYXJlYm94IGJlY2F1c2Ugb2YgY2xr
+IGRyaXZlciBjaGFuZ2UgaW4gTGludXgga2VybmVsLgpMb29rcyBsaWtlIEl0IHdhbnRzIERSQU0g
+Y2xvY2sgY2hhbmdlIHJvdXRpbmUgdGhhdCBpcyBwcmVzZW50IGluIGN1cnJlbnQgdS1ib290LCBi
+dXQgbm90IGluIGJhcmVib3guCgptb3VudCBmYWlsdXJlIGNhbiBiZSBmaXhlZCBieSB0aGlzIHBh
+dGNoOgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3JhZHhhLXJvY2svZW52L2Jvb3QvbXNo
+YzEgYi9hcmNoL2FybS9ib2FyZHMvcmFkeGEtcm9jay9lbnYvYm9vdC9tc2hjMQppbmRleCA3Mzkz
+YzRlNjMuLmRmMWJlYjExYSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3JhZHhhLXJvY2sv
+ZW52L2Jvb3QvbXNoYzEKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3JhZHhhLXJvY2svZW52L2Jvb3Qv
+bXNoYzEKQEAgLTEsNiArMSw2IEBACiAjIS9iaW4vc2gKIAotbW91bnQgL2Rldi9tc2hjMS4wCitt
+b3VudCAvZGV2L21zaGMxLjAgL21udC9tc2hjMS4wCiAKIGdsb2JhbC5ib290bS5ib290X2F0YWc9
+dHJ1ZQogb2Z0cmVlIC1sIC9tbnQvbXNoYzEuMC9yazMxODgtcmFkeGFyb2NrLmR0YgoKT3IganVz
+dCBieSByZW1vdmFsIG9mICJtb3VudC4uLiIgY29tbWFuZC4KCkVhcmxpZXIgbW91bnQgY29tbWFu
+ZCBhY2NlcHRlZCBvbmx5IGRldmljZSBwYXJhbWV0ZXIsIG5vdyBpdCBuZWVkIG1vdW50cG9pbnQg
+dG9vLgoKMTcuMDkuMjAxOCwgMTg6MzEsICJwZXJhY2hldDdAZ21haWwuY29tIiA8cGVyYWNoZXQ3
+QGdtYWlsLmNvbT46Cj4gSGVsbG8gU2FzY2hhLAo+Cj4gVGhhbmsgeW91IGZvciB0aGlzIHBhdGNo
+LiBIYXBweSB0byB0ZXN0IGl0IGhlcmUgb24gcmszMTg4IChyYWR4YSByb2NrIHBybykuCj4KPiBV
+c2luZyBiYiB2MjAxOC4wOS4wLiBBcHBsaWVkIHlvdXIgcGF0Y2hlcyBiZWxvdy4gQ09ORklHX1BC
+TF9SRUxPQ0FUQUJMRSBpcwo+IGZpeGVkIGluIG1lbnVjb25maWcuIENvbW1vbiBjb25maWc6Cj4K
+PiBncmVwIFJFTE9DQVQgLmNvbmZpZwo+IENPTkZJR19QQkxfUkVMT0NBVEFCTEU9eQo+IENPTkZJ
+R19SRUxPQ0FUQUJMRT15Cj4KPiBCdWlsdCB1c2luZyB0aGlzIHNjcmlwdDoKPgo+IGV4cG9ydCBB
+UkNIPWFybQo+ICNleHBvcnQgQ1JPU1NfQ09NUElMRT0vdXNyL2Jpbi9hcm0tbGludXgtZ251ZWFi
+aWhmLQo+IGV4cG9ydCBDUk9TU19DT01QSUxFPS9vcHQvT1NFTEFTLlRvb2xjaGFpbi0yMDE4LjAy
+LjAvYXJtLXY3bS1lYWJpL2djYy03LjMuMS0KPiBuZXdsaWItMi41LjAtYmludXRpbHMtMi4zMC9i
+aW4vYXJtLXY3bS1lYWJpLQo+Cj4gcm0gLmNvbmZpZwo+IG1ha2UgY2xlYW4KPiBtYWtlIEFSQ0g9
+YXJtIHJrMzE4OF9kZWZjb25maWcgJiYgbWFrZSAtaiAxMAo+Cj4gL3JrLW1ha2Vib290YWJsZSBG
+bGFzaERhdGEgYmFyZWJveC1mbGFzaC1pbWFnZSBycmJvb3QuYmluCj4gc3VkbyBkZCBpZj1ycmJv
+b3QuYmluIG9mPS9kZXYvc2RjIGJzPSQoKDB4MjAwKSkgc2Vlaz0kKCgweDQwKSkKPgo+IFVzaW5n
+IERlYmlhbi9VYnVudHUgY3Jvc3MgY29tcGlsZXI6Cj4gIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
+IyMjCj4KPiBDUk9TU19DT01QSUxFPS91c3IvYmluL2FybS1saW51eC1nbnVlYWJpaGYtCj4KPiBE
+RFIgVmVyc2lvbiAxLjA0IDIwMTQwMjE3Cj4gSW4KPiBERFIzCj4gMzAwTUh6Cj4gQnVzIFdpZHRo
+PTMyIENvbD0xMCBCYW5rPTggUm93PTE1IENTPTIgRGllIEJ1cy1XaWR0aD0xNiBTaXplPTIwNDhN
+Qgo+IE1lbW9yeSBPSwo+IE9VVAo+Cj4gYmFyZWJveCAyMDE4LjA5LjAtZGlydHkgIzQzIE1vbiBT
+ZXAgMTcgMTU6MTk6NTkgQ0VTVCAyMDE4Cj4KPiBCb2FyZDogUmFkeGEgUm9jawo+IGNsa19yZWdp
+c3RlciBjbGsgeGluMjRtIGlzIGFscmVhZHkgcmVnaXN0ZXJlZCwgc2tpcHBpbmchCj4gYXJjLWVt
+YWMgMTAyMDQwMDAuZXRoZXJuZXQ6IEFSQyBFTUFDIGRldGVjdGVkIHdpdGggaWQ6IDB4N2ZkMDIK
+PiBtZGlvX2J1czogbWlpYnVzMDogcHJvYmVkCj4gZHdfbW1jIDEwMjE0MDAwLmR3bW1jOiByZWdp
+c3RlcmVkIGFzIDEwMjE0MDAwLmR3bW1jCj4gbXNoYzE6IGRldGVjdGVkIFNEIGNhcmQgdmVyc2lv
+biAxLjAKPiBtc2hjMTogcmVnaXN0ZXJlZCBtc2hjMQo+IG5ldGNvbnNvbGU6IHJlZ2lzdGVyZWQg
+YXMgbmV0Y29uc29sZS0xCj4gaTJjLWdwaW8gaTJjLWdwaW8wOiB1c2luZyBwaW5zIDU4IChTREEp
+IGFuZCA1OSAoU0NMKQo+IG1hbGxvYyBzcGFjZTogMHg5ZmVmZDY2MCAtPiAweGRmZGZhY2JmIChz
+aXplIDEwMjMgTWlCKQo+IGdwaW8tbGVkcy42OiBwcm9iZSBwZXJtYW5lbnRseSBkZWZlcnJlZAo+
+IGVudmZzOiBubyBlbnZmcyAobWFnaWMgbWlzbWF0Y2gpIC0gZW52ZnMgbmV2ZXIgd3JpdHRlbj8K
+PiBydW5uaW5nIC9lbnYvYmluL2luaXQuLi4KPgo+IEhpdCBhbnkga2V5IHRvIHN0b3AgYXV0b2Jv
+b3Q6IDAKPiBib290aW5nICdtc2hjMScKPiBtb3VudDogTm8gc3VjaCBmaWxlIG9yIGRpcmVjdG9y
+eQo+IGV4dDQgZXh0NDA6IEVYVDIgcmV2IDEsIGlub2RlX3NpemUgMTI4LCBkZXNjcmlwdG9yIHNp
+emUgMzIKPiBtb3VudGVkIC9kZXYvbXNoYzEuMCBvbiAvbW50L21zaGMxLjAKPiBzZXR0aW5nIHJv
+b3Qgbm9kZSBmYWlsZWQ6IERldmljZSBvciByZXNvdXJjZSBidXN5Cj4gb2Z0cmVlOiBEZXZpY2Ug
+b3IgcmVzb3VyY2UgYnVzeQo+Cj4gTG9hZGluZyBBUk0gTGludXggekltYWdlICcvbW50L21zaGMx
+LjAvekltYWdlJwo+IGNvbW1hbmRsaW5lOiBjb25zb2xlPXR0eVMyLDExNTIwMCByb290PS9kZXYv
+bW1jYmxrMHAyIHJvb3R3YWl0Cj4gYXJjaF9udW1iZXI6IDMwNjYKPgo+ID0+IGJiIGJvb3Qgc3Vj
+Y2Vzcy4KPiA9PiBrZXJuZWwgYm9vdCBmYWlsdXJlLgo+Cj4gVXNpbmcgT1NFTEFTOgo+ICMjIyMj
+IyMjIyMKPgo+IGV4cG9ydCBDUk9TU19DT01QSUxFPS9vcHQvT1NFTEFTLlRvb2xjaGFpbi0yMDE4
+LjAyLjAvYXJtLXY3bS1lYWJpL2djYy03LjMuMS0KPiBuZXdsaWItMi41LjAtYmludXRpbHMtMi4z
+MC9iaW4vYXJtLXY3bS1lYWJpLQo+Cj4gRERSIFZlcnNpb24gMS4wNCAyMDE0MDIxNwo+IEluCj4g
+RERSMwo+IDMwME1Iego+IEJ1cyBXaWR0aD0zMiBDb2w9MTAgQmFuaz04IFJvdz0xNSBDUz0yIERp
+ZSBCdXMtV2lkdGg9MTYgU2l6ZT0yMDQ4TUIKPiBNZW1vcnkgT0sKPiBPVVQKPgo+IGJhcmVib3gg
+MjAxOC4wOS4wLWRpcnR5ICM0NCBNb24gU2VwIDE3IDE1OjIyOjM0IENFU1QgMjAxOAo+Cj4gQm9h
+cmQ6IFJhZHhhIFJvY2sKPiBjbGtfcmVnaXN0ZXIgY2xrIHhpbjI0bSBpcyBhbHJlYWR5IHJlZ2lz
+dGVyZWQsIHNraXBwaW5nIQo+IGFyYy1lbWFjIDEwMjA0MDAwLmV0aGVybmV0OiBBUkMgRU1BQyBk
+ZXRlY3RlZCB3aXRoIGlkOiAweDdmZDAyCj4gbWRpb19idXM6IG1paWJ1czA6IHByb2JlZAo+IGR3
+X21tYyAxMDIxNDAwMC5kd21tYzogcmVnaXN0ZXJlZCBhcyAxMDIxNDAwMC5kd21tYwo+IG1zaGMx
+OiBkZXRlY3RlZCBTRCBjYXJkIHZlcnNpb24gMS4wCj4gbXNoYzE6IHJlZ2lzdGVyZWQgbXNoYzEK
+PiBuZXRjb25zb2xlOiByZWdpc3RlcmVkIGFzIG5ldGNvbnNvbGUtMQo+IGkyYy1ncGlvIGkyYy1n
+cGlvMDogdXNpbmcgcGlucyA1OCAoU0RBKSBhbmQgNTkgKFNDTCkKPiBtYWxsb2Mgc3BhY2U6IDB4
+OWZlZmQ2NjAgLT4gMHhkZmRmYWNiZiAoc2l6ZSAxMDIzIE1pQikKPiBncGlvLWxlZHMuNjogcHJv
+YmUgcGVybWFuZW50bHkgZGVmZXJyZWQKPiBlbnZmczogbm8gZW52ZnMgKG1hZ2ljIG1pc21hdGNo
+KSAtIGVudmZzIG5ldmVyIHdyaXR0ZW4/Cj4gcnVubmluZyAvZW52L2Jpbi9pbml0Li4uCj4KPiBI
+aXQgYW55IGtleSB0byBzdG9wIGF1dG9ib290OiAxCj4gYm9vdGluZyAnbXNoYzEnCj4gbW91bnQ6
+IE5vIHN1Y2ggZmlsZSBvciBkaXJlY3RvcnkKPiBleHQ0IGV4dDQwOiBFWFQyIHJldiAxLCBpbm9k
+ZV9zaXplIDEyOCwgZGVzY3JpcHRvciBzaXplIDMyCj4gbW91bnRlZCAvZGV2L21zaGMxLjAgb24g
+L21udC9tc2hjMS4wCj4gc2V0dGluZyByb290IG5vZGUgZmFpbGVkOiBEZXZpY2Ugb3IgcmVzb3Vy
+Y2UgYnVzeQo+IG9mdHJlZTogRGV2aWNlIG9yIHJlc291cmNlIGJ1c3kKPgo+IExvYWRpbmcgQVJN
+IExpbnV4IHpJbWFnZSAnL21udC9tc2hjMS4wL3pJbWFnZScKPiBjb21tYW5kbGluZTogY29uc29s
+ZT10dHlTMiwxMTUyMDAgcm9vdD0vZGV2L21tY2JsazBwMiByb290d2FpdAo+IGFyY2hfbnVtYmVy
+OiAzMDY2Cj4KPiA9PiBiYiBib290IHN1Y2Nlc3MuCj4gPT4ga2VybmVsIGJvb3QgZmFpbHVyZS4K
+Pgo+IFRoZXJlIHN0aWxsIGFyZSBhIGNvdXBsZSBvZiAocG9zc2libHkgdW5yZWxhdGVkKSBpc3N1
+ZXMsIGluZGVwZW5kZW50IG9mIHRoZQo+IGNvbXBpbGVyIHVzZWQ6Cj4KPiAxKSBlbnZmczogbm8g
+ZW52ZnMgKG1hZ2ljIG1pc21hdGNoKSAtIGVudmZzIG5ldmVyIHdyaXR0ZW4/Cj4KPiAyKSBtb3Vu
+dDogTm8gc3VjaCBmaWxlIG9yIGRpcmVjdG9yeQo+Cj4gMykgc2V0dGluZyByb290IG5vZGUgZmFp
+bGVkOiBEZXZpY2Ugb3IgcmVzb3VyY2UgYnVzeQo+Cj4gNCkgb2Z0cmVlOiBEZXZpY2Ugb3IgcmVz
+b3VyY2UgYnVzeQo+Cj4gNSkgYXJjaF9udW1iZXI6IDMwNjYgW25vdGU6IGJvb3QgZmFpbHVyZV0K
+Pgo+IGNoZWVycwo+Cj4gT24gTW9udGFnLCAxNy4gU2VwdGVtYmVyIDIwMTggMDk6Mjk6NDIgQ0VT
+VCB5b3Ugd3JvdGU6Cj4+IMKgVGhlIGN1cnJlbnQgd2F5IHRvIGNhbGN1bGF0ZSB0aGUgY29tcHJl
+c3NlZCBpbWFnZSBwb3NpdGlvbiB3b3Jrcwo+PiDCoHdpdGggdGhlIE9TRUxBUyB0b29sY2hhaW5z
+LCBidXQgbm90IHdpdGggdGhlIERlYmlhbi9VYnVudHUgdG9vbGNoYWlucy4KPj4gwqBGb3IgdGhl
+c2UgdG9vbGNoYWlucyAmaW1hZ2VfZW5kX21hcmtlciBhbHJlYWR5IHJldHVybnMgdGhlIGNvcnJl
+Y3QKPj4gwqBhZGRyZXNzLCBhZGRpbmcgZ2xvYmFsX3ZhcmlhYmxlX29mZnNldCgpIHRvIGl0IGlz
+IHdyb25nLgo+Pgo+PiDCoFRoZSBzb2x1dGlvbiBzZWVtcyB0byBiZSB0byBwdXQgdGhlIGltYWdl
+X2VuZF9tYXJrZXIgaW50byBhIGRpZmZlcmVudAo+PiDCoG9iamVjdCBmaWxlIHNvIHRoYXQgdGhl
+IGNvbXBpbGVyIGNhbm5vdCBwbGF5IGFueSB0cmlja3MgdG8gcmVzb2x2ZQo+PiDCoHRoZSBhZGRy
+ZXNzIGludGVybmFsbHkgaW4gdGhlIG9iamVjdCBmaWxlLgo+Pgo+PiDCoFNpZ25lZC1vZmYtYnk6
+IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KPj4gwqAtLS0KPj4gwqBhcmNo
+L2FybS9jcHUvc2VjdGlvbnMuYyB8IDIgKysKPj4gwqBhcmNoL2FybS9jcHUvdW5jb21wcmVzcy5j
+IHwgNSArLS0tLQo+PiDCoGFyY2gvYXJtL2luY2x1ZGUvYXNtL3NlY3Rpb25zLmggfCAyICsrCj4+
+IMKgYXJjaC9hcm0vbGliL3BibC5sZHMuUyB8IDIgKy0KPj4gwqA0IGZpbGVzIGNoYW5nZWQsIDYg
+aW5zZXJ0aW9ucygrKSwgNSBkZWxldGlvbnMoLSkKPj4KPj4gwqBkaWZmIC0tZ2l0IGEvYXJjaC9h
+cm0vY3B1L3NlY3Rpb25zLmMgYi9hcmNoL2FybS9jcHUvc2VjdGlvbnMuYwo+PiDCoGluZGV4IDU4
+NzRkYTJiODIuLmFiMDhlYmY0MmUgMTAwNjQ0Cj4+IMKgLS0tIGEvYXJjaC9hcm0vY3B1L3NlY3Rp
+b25zLmMKPj4gwqArKysgYi9hcmNoL2FybS9jcHUvc2VjdGlvbnMuYwo+PiDCoEBAIC0xLDQgKzEs
+NSBAQAo+PiDCoCNpbmNsdWRlIDxhc20vc2VjdGlvbnMuaD4KPj4gwqArI2luY2x1ZGUgPGxpbnV4
+L3R5cGVzLmg+Cj4+Cj4+IMKgY2hhciBfX3JlbF9keW5fc3RhcnRbMF0gX19hdHRyaWJ1dGVfXygo
+c2VjdGlvbigiLl9fcmVsX2R5bl9zdGFydCIpKSk7Cj4+IMKgY2hhciBfX3JlbF9keW5fZW5kWzBd
+IF9fYXR0cmlidXRlX18oKHNlY3Rpb24oIi5fX3JlbF9keW5fZW5kIikpKTsKPj4gwqBAQCAtOSwz
+ICsxMCw0IEBAIGNoYXIgX19ic3Nfc3RhcnRbMF0KPj4gwqBfX2F0dHJpYnV0ZV9fKChzZWN0aW9u
+KCIuX19ic3Nfc3RhcnQiKSkpOyBjaGFyIF9fYnNzX3N0b3BbMF0KPj4gwqBfX2F0dHJpYnV0ZV9f
+KChzZWN0aW9uKCIuX19ic3Nfc3RvcCIpKSk7Cj4+IMKgY2hhciBfX2ltYWdlX3N0YXJ0WzBdIF9f
+YXR0cmlidXRlX18oKHNlY3Rpb24oIi5fX2ltYWdlX3N0YXJ0IikpKTsKPj4gwqBjaGFyIF9faW1h
+Z2VfZW5kWzBdIF9fYXR0cmlidXRlX18oKHNlY3Rpb24oIi5fX2ltYWdlX2VuZCIpKSk7Cj4+IMKg
+K3VpbnQzMl90IF9faW1hZ2VfZW5kX21hcmtlclsxXQo+PiDCoF9fYXR0cmlidXRlX18oKHNlY3Rp
+b24oIi5fX2ltYWdlX2VuZF9tYXJrZXIiKSkpID0geyAweGRlYWRiZWVmIH07IGRpZmYKPj4gwqAt
+LWdpdCBhL2FyY2gvYXJtL2NwdS91bmNvbXByZXNzLmMgYi9hcmNoL2FybS9jcHUvdW5jb21wcmVz
+cy5jIGluZGV4Cj4+IMKgYjA3MDg3ZTRjZi4uNDNiNDliNDIxMiAxMDA2NDQKPj4gwqAtLS0gYS9h
+cmNoL2FybS9jcHUvdW5jb21wcmVzcy5jCj4+IMKgKysrIGIvYXJjaC9hcm0vY3B1L3VuY29tcHJl
+c3MuYwo+PiDCoEBAIC0zNiw5ICszNiw2IEBACj4+IMKgdW5zaWduZWQgbG9uZyBmcmVlX21lbV9w
+dHI7Cj4+IMKgdW5zaWduZWQgbG9uZyBmcmVlX21lbV9lbmRfcHRyOwo+Pgo+PiDCoC1zdGF0aWMg
+aW50IF9fYXR0cmlidXRlX18oKF9fc2VjdGlvbl9fKCIuaW1hZ2VfZW5kIikpKQo+PiDCoC0gaW1h
+Z2VfZW5kX21hcmtlciA9IDB4ZGVhZGJlZWY7Cj4+IMKgLQo+PiDCoHZvaWQgX19ub3JldHVybiBi
+YXJlYm94X211bHRpX3BibF9zdGFydCh1bnNpZ25lZCBsb25nIG1lbWJhc2UsCj4+IMKgdW5zaWdu
+ZWQgbG9uZyBtZW1zaXplLCB2b2lkICpib2FyZGRhdGEpCj4+IMKgewo+PiDCoEBAIC01MCw3ICs0
+Nyw3IEBAIHZvaWQgX19ub3JldHVybiBiYXJlYm94X211bHRpX3BibF9zdGFydCh1bnNpZ25lZCBs
+b25nCj4+IMKgbWVtYmFzZSwgdm9pZCAqcGdfc3RhcnQ7Cj4+IMKgdW5zaWduZWQgbG9uZyBwYyA9
+IGdldF9wYygpOwo+Pgo+PiDCoC0gaW1hZ2VfZW5kID0gKHZvaWQgKikmaW1hZ2VfZW5kX21hcmtl
+ciArIGdsb2JhbF92YXJpYWJsZV9vZmZzZXQoKTsKPj4gwqArIGltYWdlX2VuZCA9ICh2b2lkICop
+X19pbWFnZV9lbmRfbWFya2VyICsgZ2xvYmFsX3ZhcmlhYmxlX29mZnNldCgpOwo+Pgo+PiDCoGlm
+IChJU19FTkFCTEVEKENPTkZJR19QQkxfUkVMT0NBVEFCTEUpKSB7Cj4+IMKgLyoKPgo+IF9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFyZWJveCBtYWls
+aW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8vbGlzdHMuaW5m
+cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCi0tIAog0JDQvdC00YDQtdC5CgoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
