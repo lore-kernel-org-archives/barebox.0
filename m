@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout02.posteo.de ([185.67.36.66])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g1wjF-00048Y-J3
- for barebox@lists.infradead.org; Mon, 17 Sep 2018 16:50:31 +0000
-Received: from submission (posteo.de [89.146.220.130]) 
- by mout02.posteo.de (Postfix) with ESMTPS id E404021121
- for <barebox@lists.infradead.org>; Mon, 17 Sep 2018 18:50:02 +0200 (CEST)
-References: <df6edf8c-d15a-5e7b-58ad-6fc32ad56590@posteo.de>
- <20180917101143.GE4097@pengutronix.de>
-From: Dennis Menschel <menschel-d@posteo.de>
-Message-ID: <d21fc7f2-6075-b4a7-ca8f-239ddfbc4d9c@posteo.de>
-Date: Mon, 17 Sep 2018 18:50:00 +0200
+ id 1g1nym-0007eP-5g
+ for barebox@lists.infradead.org; Mon, 17 Sep 2018 07:29:57 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 17 Sep 2018 09:29:42 +0200
+Message-Id: <20180917072942.12445-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20180917101143.GE4097@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,96 +15,107 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2988053562314222824=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Booting AM335x MLO from network no longer works
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: Multi PBL: Fix image calculation for certain toolchains
+To: Barebox List <barebox@lists.infradead.org>
+Cc: perachet7@gmail.com
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============2988053562314222824==
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="QxxWacXDjDOJsmJFm48yL1tJweol3GE3f"
+The current way to calculate the compressed image position works
+with the OSELAS toolchains, but not with the Debian/Ubuntu toolchains.
+For these toolchains &image_end_marker already returns the correct
+address, adding global_variable_offset() to it is wrong.
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---QxxWacXDjDOJsmJFm48yL1tJweol3GE3f
-Content-Type: multipart/mixed; boundary="MrirQew7qTtWhNYEKdaWQI2WlraPRFmvj";
- protected-headers="v1"
-From: Dennis Menschel <menschel-d@posteo.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <d21fc7f2-6075-b4a7-ca8f-239ddfbc4d9c@posteo.de>
-Subject: Re: Booting AM335x MLO from network no longer works
-References: <df6edf8c-d15a-5e7b-58ad-6fc32ad56590@posteo.de>
- <20180917101143.GE4097@pengutronix.de>
-In-Reply-To: <20180917101143.GE4097@pengutronix.de>
+The solution seems to be to put the image_end_marker into a different
+object file so that the compiler cannot play any tricks to resolve
+the address internally in the object file.
 
---MrirQew7qTtWhNYEKdaWQI2WlraPRFmvj
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/cpu/sections.c         | 2 ++
+ arch/arm/cpu/uncompress.c       | 5 +----
+ arch/arm/include/asm/sections.h | 2 ++
+ arch/arm/lib/pbl.lds.S          | 2 +-
+ 4 files changed, 6 insertions(+), 5 deletions(-)
 
-Hi Sascha,
+diff --git a/arch/arm/cpu/sections.c b/arch/arm/cpu/sections.c
+index 5874da2b82..ab08ebf42e 100644
+--- a/arch/arm/cpu/sections.c
++++ b/arch/arm/cpu/sections.c
+@@ -1,4 +1,5 @@
+ #include <asm/sections.h>
++#include <linux/types.h>
+ 
+ char __rel_dyn_start[0] __attribute__((section(".__rel_dyn_start")));
+ char __rel_dyn_end[0] __attribute__((section(".__rel_dyn_end")));
+@@ -9,3 +10,4 @@ char __bss_start[0] __attribute__((section(".__bss_start")));
+ char __bss_stop[0] __attribute__((section(".__bss_stop")));
+ char __image_start[0] __attribute__((section(".__image_start")));
+ char __image_end[0] __attribute__((section(".__image_end")));
++uint32_t __image_end_marker[1] __attribute__((section(".__image_end_marker"))) = { 0xdeadbeef };
+diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
+index b07087e4cf..43b49b4212 100644
+--- a/arch/arm/cpu/uncompress.c
++++ b/arch/arm/cpu/uncompress.c
+@@ -36,9 +36,6 @@
+ unsigned long free_mem_ptr;
+ unsigned long free_mem_end_ptr;
+ 
+-static int __attribute__((__section__(".image_end")))
+-	image_end_marker = 0xdeadbeef;
+-
+ void __noreturn barebox_multi_pbl_start(unsigned long membase,
+ 		unsigned long memsize, void *boarddata)
+ {
+@@ -50,7 +47,7 @@ void __noreturn barebox_multi_pbl_start(unsigned long membase,
+ 	void *pg_start;
+ 	unsigned long pc = get_pc();
+ 
+-	image_end = (void *)&image_end_marker + global_variable_offset();
++	image_end = (void *)__image_end_marker + global_variable_offset();
+ 
+ 	if (IS_ENABLED(CONFIG_PBL_RELOCATABLE)) {
+ 		/*
+diff --git a/arch/arm/include/asm/sections.h b/arch/arm/include/asm/sections.h
+index 6933c7032d..b4659256cc 100644
+--- a/arch/arm/include/asm/sections.h
++++ b/arch/arm/include/asm/sections.h
+@@ -3,6 +3,7 @@
+ 
+ #ifndef __ASSEMBLY__
+ #include <asm-generic/sections.h>
++#include <linux/types.h>
+ 
+ extern char __rel_dyn_start[];
+ extern char __rel_dyn_end[];
+@@ -10,6 +11,7 @@ extern char __dynsym_start[];
+ extern char __dynsym_end[];
+ extern char __exceptions_start[];
+ extern char __exceptions_stop[];
++extern uint32_t __image_end_marker[];
+ 
+ #endif
+ 
+diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
+index 9df1800543..ddc65bbf45 100644
+--- a/arch/arm/lib/pbl.lds.S
++++ b/arch/arm/lib/pbl.lds.S
+@@ -92,7 +92,7 @@ SECTIONS
+ 	__piggydata_end = .;
+ 
+ 	. = ALIGN(4);
+-	.image_end : { *(.image_end) }
++	.image_end : { *(.__image_end_marker) }
+ 	__image_end = .;
+ 
+ 	_barebox_image_size = __image_end - BASE;
+-- 
+2.19.0
 
-Am 17.09.2018 um 12:11 schrieb Sascha Hauer:
-> [...]
->=20
-> I just sent a fix. I can't test it since our DHCP server does not
-> provide a bootfile, but I'm confident that this is the right fix. Could=
-
-> you give it a try?
->=20
-> Thanks
->  Sascha
->=20
-
-Thanks for the quick reply.
-
-I've tested the patch today with the aforementioned AM335x board and I
-am pleased to announce that it has solved the problem.
-
-Best regards,
-Dennis
-
-
---MrirQew7qTtWhNYEKdaWQI2WlraPRFmvj--
-
---QxxWacXDjDOJsmJFm48yL1tJweol3GE3f
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEKwQPicxrN8xaviY2uiJe+Ii1ddAFAluf2zgACgkQuiJe+Ii1
-ddCduQ/+MRiLSeXZXvBUGzEqbmoWDvRoMO7nQTNfLCnD1QEZ7rpStZzv17qydwo/
-txcBhshRXE978Vt8wpVZa+hKYQy876aEbtju0P++/wbMaYU+QbO1MeA2plqJ1+iV
-7eWI8aa8mH7aQrqwgaqTlxvGmjXScws3xdbiQd0P4HQ6CdNXhsIL0bWw/BjjIR3k
-iLdaekWomWzfFsUELNCfW6+XZznQHITsc65XHdhtUHRPcMl3NOIyK1bKP+14K0or
-L09yKdOsi3Tx76xNjFfXzmMrR9HQ58A7xz4yDLY9wfGCFjgQo8xd/qzFWopjmlYe
-jEH4/7kP7WU2zln+ex8+5nh6MRxBfCL+rhxkD91t+qHGhkuqzJKwbiooE50PlEFv
-Z3pLJCi9liT2XO2yUJSUsu3t5z49Zao5T6s8ANSFBQOY8Tr2rh1Hz31vZPhPfXLH
-aKoIGNtOMKFBQE5IV04WLeT8X1dhcy3hl7sWegsI6u2qk9ao2vU0I2pFdbHqFF3r
-6FuCzFayfrPp1IrKg2F2N3/NoivtKIxsMKIizx1jUHYYEKh2HDY8SDAZefpOEvtW
-kVyfhoBwOh0FQsO/Ea8NAe2bbsZTd8psX+juFANPDdPxiZ+rqag5+4YOgS6X8JdU
-PhUESX8LtGX25jSbBdcTp1rHOs0w/kA7lhw66esu8hdMDZaCw3U=
-=r6ZI
------END PGP SIGNATURE-----
-
---QxxWacXDjDOJsmJFm48yL1tJweol3GE3f--
-
-
---===============2988053562314222824==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============2988053562314222824==--
