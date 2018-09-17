@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tf.think-future.de ([193.7.177.246] helo=think-future.de)
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g1vmm-0003bx-JJ
- for barebox@lists.infradead.org; Mon, 17 Sep 2018 15:50:10 +0000
-From: perachet7@gmail.com
-Date: Mon, 17 Sep 2018 17:49:45 +0200
-Message-Id: <2187255.QEutPsQ0vX@think-future.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1g1wVt-0005xC-NK
+ for barebox@lists.infradead.org; Mon, 17 Sep 2018 16:36:43 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1g1wVf-0004Oi-Iv
+ for barebox@lists.infradead.org; Mon, 17 Sep 2018 18:36:27 +0200
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 17 Sep 2018 18:36:26 +0200
+Message-Id: <20180917163627.14746-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,79 +20,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: perachet7@gmail.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RK3188 radxa-rock saveenv cmd not working
+Subject: [PATCH 1/2] ARM: rdu2: config PMIC SW1AB and SW1C rails to 1.375
 To: barebox@lists.infradead.org
 
-Hi,
+This is the default out-of-reset voltage, but if only the i.MX6 SoC
+got reset, the PMIC might still be stuck at the lower volatge for the
+slow operating point.
 
-At boot time the following message appears:
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/boards/zii-imx6q-rdu2/board.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-[...]
-envfs: no envfs (magic mismatch) - envfs never written?
-[...]
-
-When trying to save the (pristine or modified) bb environment using 'saveenv' 
-on latest bb and RK31889 radxa-rock, this happens:
-
-barebox@Radxa Rock:/ saveenv
-saving environment
-ERROR: dw_mmc 10214000.dwmmc: dwmci_write_data_pio: FIFO overflow timeout
-ERROR: dw_mmc 10214000.dwmmc: dwmci_write_data_pio: FIFO flush timeout
-
-
-Result: It is impossible to write the saveenv, pristine or not.
-
-
-
-Boot log:
-[...]
-DDR Version 1.04 20140217
-In
-DDR3
-300MHz
-Bus Width=32 Col=10 Bank=8 Row=15 CS=2 Die Bus-Width=16 Size=2048MB
-Memory OK
-OUT
-
-
-barebox 2018.09.0-dirty #44 Mon Sep 17 15:22:34 CEST 2018
-
-
-Board: Radxa Rock
-clk_register clk xin24m is already registered, skipping!
-arc-emac 10204000.ethernet: ARC EMAC detected with id: 0x7fd02
-mdio_bus: miibus0: probed
-dw_mmc 10214000.dwmmc: registered as 10214000.dwmmc
-mshc1: detected SD card version 1.0
-mshc1: registered mshc1
-netconsole: registered as netconsole-1
-i2c-gpio i2c-gpio0: using pins 58 (SDA) and 59 (SCL)
-malloc space: 0x9fefd660 -> 0xdfdfacbf (size 1023 MiB)
-gpio-leds.6: probe permanently deferred
-envfs: no envfs (magic mismatch) - envfs never written?
-running /env/bin/init...
-
-Hit any key to stop autoboot:    0
-booting 'mshc1'
-mount: No such file or directory
-ext4 ext40: EXT2 rev 1, inode_size 128, descriptor size 32
-mounted /dev/mshc1.0 on /mnt/mshc1.0
-
-Loading ARM Linux zImage '/mnt/mshc1.0/zImage'
-[...]
-
-cheers
-
-S.
-
+diff --git a/arch/arm/boards/zii-imx6q-rdu2/board.c b/arch/arm/boards/zii-imx6q-rdu2/board.c
+index f6c908c9f16d..bce221bf8d20 100644
+--- a/arch/arm/boards/zii-imx6q-rdu2/board.c
++++ b/arch/arm/boards/zii-imx6q-rdu2/board.c
+@@ -137,10 +137,27 @@ late_initcall(rdu2_enable_front_panel_usb);
+ 
+ static int rdu2_devices_init(void)
+ {
++	struct i2c_client client;
++
+ 	if (!of_machine_is_compatible("zii,imx6q-zii-rdu2") &&
+ 	    !of_machine_is_compatible("zii,imx6qp-zii-rdu2"))
+ 		return 0;
+ 
++	client.adapter = i2c_get_adapter(1);
++	if (client.adapter) {
++		u8 reg;
++
++		/*
++		 * Reset PMIC SW1AB and SW1C rails to 1.375V. If an event
++		 * caused only the i.MX6 SoC reset, the PMIC might still be
++		 * stuck on the low voltage for the slow operating point.
++		 */
++		client.addr = 0x08; /* PMIC i2c address */
++		reg = 0x2b; /* 1.375V, valid for both rails */
++		i2c_write_reg(&client, 0x20, &reg, 1);
++		i2c_write_reg(&client, 0x2e, &reg, 1);
++	}
++
+ 	barebox_set_hostname("rdu2");
+ 
+ 	imx6_bbu_internal_spi_i2c_register_handler("SPI", "/dev/m25p0.barebox",
 -- 
-
-
+2.19.0
 
 
 _______________________________________________
