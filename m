@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g5qEE-0006ov-Sv
- for barebox@lists.infradead.org; Fri, 28 Sep 2018 10:42:36 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri, 28 Sep 2018 12:42:03 +0200
-Message-Id: <20180928104206.17764-3-s.trumtrar@pengutronix.de>
-In-Reply-To: <20180928104206.17764-1-s.trumtrar@pengutronix.de>
-References: <20180928104206.17764-1-s.trumtrar@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1g1u1j-0002TL-C2
+ for barebox@lists.infradead.org; Mon, 17 Sep 2018 13:57:25 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 17 Sep 2018 15:57:10 +0200
+Message-Id: <20180917135710.6088-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,39 +19,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] ARM: socfpga: achilles: move partitions to free disk space
+Subject: [PATCH] usb: gadget: fastboot: detect device if not present
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Enrico Jorns <ejo@pengutronix.de>
 
-From: Enrico Jorns <ejo@pengutronix.de>
+When a device file is not present when the fastboot gadget is created
+then try to detect it before we fail. It may be that we want to write
+to a device that we haven't used before.
 
-Prior to this, environment and state was placed inside the redundant
-barbeox copies.
-
-Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/socfpga_arria10_achilles.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/f_fastboot.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm/dts/socfpga_arria10_achilles.dts b/arch/arm/dts/socfpga_arria10_achilles.dts
-index 5c08be82d67f..abf2a7d9f15b 100644
---- a/arch/arm/dts/socfpga_arria10_achilles.dts
-+++ b/arch/arm/dts/socfpga_arria10_achilles.dts
-@@ -207,12 +207,12 @@
- 		#address-cells = <1>;
- 		environment_mmc: partition@178000 {
- 			label = "environment";
--			reg = <0x178000 0x8000>;
-+			reg = <0x300000 0x8000>;
- 		};
+diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
+index 40a78987e4..74fb524c1c 100644
+--- a/drivers/usb/gadget/f_fastboot.c
++++ b/drivers/usb/gadget/f_fastboot.c
+@@ -246,6 +246,11 @@ static int fastboot_add_partition_variables(struct f_fastboot *f_fb,
+ 	struct fb_variable *var;
  
- 		state_mmc: partition@180000 {
- 			label = "state";
--			reg = <0x180000 0xC00>;
-+			reg = <0x400000 0x8000>;
- 		};
- 	};
- };
+ 	ret = stat(fentry->filename, &s);
++	if (ret) {
++		device_detect_by_name(devpath_to_name(fentry->filename));
++		ret = stat(fentry->filename, &s);
++	}
++
+ 	if (ret) {
+ 		if (fentry->flags & FILE_LIST_FLAG_CREATE) {
+ 			ret = 0;
 -- 
 2.19.0
 
