@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g2OPC-0002B8-Qe
- for barebox@lists.infradead.org; Tue, 18 Sep 2018 22:23:42 +0000
-Received: by mail-pf1-x441.google.com with SMTP id k19-v6so1687165pfi.1
- for <barebox@lists.infradead.org>; Tue, 18 Sep 2018 15:23:28 -0700 (PDT)
+ id 1g2OPI-0002BQ-K8
+ for barebox@lists.infradead.org; Tue, 18 Sep 2018 22:23:51 +0000
+Received: by mail-pg1-x542.google.com with SMTP id q19-v6so845248pgn.10
+ for <barebox@lists.infradead.org>; Tue, 18 Sep 2018 15:23:34 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 18 Sep 2018 15:22:55 -0700
-Message-Id: <20180918222305.6834-2-andrew.smirnov@gmail.com>
+Date: Tue, 18 Sep 2018 15:22:59 -0700
+Message-Id: <20180918222305.6834-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20180918222305.6834-1-andrew.smirnov@gmail.com>
 References: <20180918222305.6834-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,92 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/11] ARM: i.MX: bbu: Add support for v1 header to MMC boot
- handler
+Subject: [PATCH 05/11] ARM: i.MX: bbu: Detect MMC before reading current boot
+ partition
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Convert imx_bbu_internal_v2_mmcboot_update() to use imx_bbu_update()
-for actual update in order to be able to support v1 as well as v2
-headers. While at it rename the function to
-imx_bbu_internal_mmcboot_update() to reflect that change.
+In order to be able to read "mmcN.boot" we need to detect that device
+first. Not doing so would result in failure if "barebox_update" is
+executed before "detect mmc0".
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/imx-bbu-internal.c | 32 +++++++++++++++-------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ arch/arm/mach-imx/imx-bbu-internal.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-index 504e359bc..a283b7c5c 100644
+index 14bc569b7..796d9454c 100644
 --- a/arch/arm/mach-imx/imx-bbu-internal.c
 +++ b/arch/arm/mach-imx/imx-bbu-internal.c
-@@ -401,11 +401,10 @@ static int imx_bbu_update(struct bbu_handler *handler, struct bbu_data *data)
- 	return imx_handler->write_device(imx_handler, data);
- }
+@@ -411,6 +411,12 @@ static int imx_bbu_internal_mmcboot_update(struct bbu_handler *handler,
+ 	char *devicefile;
+ 	const char *devname = devpath_to_name(data->devicefile);
  
--static int imx_bbu_internal_v2_mmcboot_update(struct bbu_handler *handler,
--					      struct bbu_data *data)
-+static int imx_bbu_internal_mmcboot_update(struct bbu_handler *handler,
-+					   struct bbu_data *data)
- {
--	struct imx_internal_bbu_handler *imx_handler =
--		container_of(handler, struct imx_internal_bbu_handler, handler);
-+	struct bbu_data _data = *data;
- 	int ret;
- 	char *bootpartvar;
- 	const char *bootpart;
-@@ -427,16 +426,14 @@ static int imx_bbu_internal_v2_mmcboot_update(struct bbu_handler *handler,
++	ret = device_detect_by_name(devname);
++	if (ret) {
++		pr_err("Couldn't detect device '%s'\n", devname);
++		return ret;
++	}
++
+ 	ret = asprintf(&bootpartvar, "%s.boot", devname);
  	if (ret < 0)
- 		goto free_bootpartvar;
- 
--	ret = imx_bbu_check_prereq(imx_handler, devicefile, data,
--				   filetype_imx_image_v2);
-+	_data.devicefile = devicefile;
-+
-+	ret = imx_bbu_update(handler, &_data);
- 	if (ret)
- 		goto free_devicefile;
- 
--	ret = imx_bbu_write_device(imx_handler, devicefile, data, data->image, data->len);
--
--	if (!ret)
--		/* on success switch boot source */
--		ret = setenv(bootpartvar, bootpart);
-+	/* on success switch boot source */
-+	ret = setenv(bootpartvar, bootpart);
- 
- free_devicefile:
- 	free(devicefile);
-@@ -586,20 +583,25 @@ int imx8mq_bbu_internal_mmc_register_handler(const char *name,
-  * Note that no further partitioning of the boot partition is supported up to
-  * now.
-  */
--int imx6_bbu_internal_mmcboot_register_handler(const char *name,
--					       const char *devicefile,
--					       unsigned long flags)
-+static int imx_bbu_internal_mmcboot_register_handler(const char *name,
-+						     const char *devicefile,
-+						     unsigned long flags)
- {
- 	struct imx_internal_bbu_handler *imx_handler;
- 
- 	imx_handler = __init_handler(name, devicefile, flags);
- 	imx_handler->flash_header_offset = imx_bbu_flash_header_offset_mmc();
- 
--	imx_handler->handler.handler = imx_bbu_internal_v2_mmcboot_update;
-+	imx_handler->handler.handler = imx_bbu_internal_mmcboot_update;
- 
- 	return __register_handler(imx_handler);
- }
- 
-+int imx6_bbu_internal_mmcboot_register_handler(const char *name,
-+					       const char *devicefile,
-+					       unsigned long flags)
-+	__alias(imx_bbu_internal_mmcboot_register_handler);
-+
- /*
-  * Register an i.MX53 internal boot update handler for i2c/spi
-  * EEPROMs / flashes. Nearly the same as MMC/SD, but we do not need to
+ 		return ret;
 -- 
 2.17.1
 
