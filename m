@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g2OPE-0002BA-2D
+ id 1g2OPC-0002B8-Qe
  for barebox@lists.infradead.org; Tue, 18 Sep 2018 22:23:42 +0000
-Received: by mail-pl1-x641.google.com with SMTP id b12-v6so1641729plr.8
- for <barebox@lists.infradead.org>; Tue, 18 Sep 2018 15:23:29 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id k19-v6so1687165pfi.1
+ for <barebox@lists.infradead.org>; Tue, 18 Sep 2018 15:23:28 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 18 Sep 2018 15:22:56 -0700
-Message-Id: <20180918222305.6834-3-andrew.smirnov@gmail.com>
+Date: Tue, 18 Sep 2018 15:22:55 -0700
+Message-Id: <20180918222305.6834-2-andrew.smirnov@gmail.com>
 In-Reply-To: <20180918222305.6834-1-andrew.smirnov@gmail.com>
 References: <20180918222305.6834-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,60 +23,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/11] ARM: i.MX51: bbu: Add a handler for MMC boot partitions
+Subject: [PATCH 01/11] ARM: i.MX: bbu: Add support for v1 header to MMC boot
+ handler
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Convert imx_bbu_internal_v2_mmcboot_update() to use imx_bbu_update()
+for actual update in order to be able to support v1 as well as v2
+headers. While at it rename the function to
+imx_bbu_internal_mmcboot_update() to reflect that change.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/imx-bbu-internal.c |  5 +++++
- arch/arm/mach-imx/include/mach/bbu.h | 10 ++++++++++
- 2 files changed, 15 insertions(+)
+ arch/arm/mach-imx/imx-bbu-internal.c | 32 +++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
 diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-index a283b7c5c..697e59f12 100644
+index 504e359bc..a283b7c5c 100644
 --- a/arch/arm/mach-imx/imx-bbu-internal.c
 +++ b/arch/arm/mach-imx/imx-bbu-internal.c
-@@ -602,6 +602,11 @@ int imx6_bbu_internal_mmcboot_register_handler(const char *name,
- 					       unsigned long flags)
- 	__alias(imx_bbu_internal_mmcboot_register_handler);
+@@ -401,11 +401,10 @@ static int imx_bbu_update(struct bbu_handler *handler, struct bbu_data *data)
+ 	return imx_handler->write_device(imx_handler, data);
+ }
  
-+int imx51_bbu_internal_mmcboot_register_handler(const char *name,
-+						const char *devicefile,
-+						unsigned long flags)
+-static int imx_bbu_internal_v2_mmcboot_update(struct bbu_handler *handler,
+-					      struct bbu_data *data)
++static int imx_bbu_internal_mmcboot_update(struct bbu_handler *handler,
++					   struct bbu_data *data)
+ {
+-	struct imx_internal_bbu_handler *imx_handler =
+-		container_of(handler, struct imx_internal_bbu_handler, handler);
++	struct bbu_data _data = *data;
+ 	int ret;
+ 	char *bootpartvar;
+ 	const char *bootpart;
+@@ -427,16 +426,14 @@ static int imx_bbu_internal_v2_mmcboot_update(struct bbu_handler *handler,
+ 	if (ret < 0)
+ 		goto free_bootpartvar;
+ 
+-	ret = imx_bbu_check_prereq(imx_handler, devicefile, data,
+-				   filetype_imx_image_v2);
++	_data.devicefile = devicefile;
++
++	ret = imx_bbu_update(handler, &_data);
+ 	if (ret)
+ 		goto free_devicefile;
+ 
+-	ret = imx_bbu_write_device(imx_handler, devicefile, data, data->image, data->len);
+-
+-	if (!ret)
+-		/* on success switch boot source */
+-		ret = setenv(bootpartvar, bootpart);
++	/* on success switch boot source */
++	ret = setenv(bootpartvar, bootpart);
+ 
+ free_devicefile:
+ 	free(devicefile);
+@@ -586,20 +583,25 @@ int imx8mq_bbu_internal_mmc_register_handler(const char *name,
+  * Note that no further partitioning of the boot partition is supported up to
+  * now.
+  */
+-int imx6_bbu_internal_mmcboot_register_handler(const char *name,
+-					       const char *devicefile,
+-					       unsigned long flags)
++static int imx_bbu_internal_mmcboot_register_handler(const char *name,
++						     const char *devicefile,
++						     unsigned long flags)
+ {
+ 	struct imx_internal_bbu_handler *imx_handler;
+ 
+ 	imx_handler = __init_handler(name, devicefile, flags);
+ 	imx_handler->flash_header_offset = imx_bbu_flash_header_offset_mmc();
+ 
+-	imx_handler->handler.handler = imx_bbu_internal_v2_mmcboot_update;
++	imx_handler->handler.handler = imx_bbu_internal_mmcboot_update;
+ 
+ 	return __register_handler(imx_handler);
+ }
+ 
++int imx6_bbu_internal_mmcboot_register_handler(const char *name,
++					       const char *devicefile,
++					       unsigned long flags)
 +	__alias(imx_bbu_internal_mmcboot_register_handler);
 +
  /*
   * Register an i.MX53 internal boot update handler for i2c/spi
   * EEPROMs / flashes. Nearly the same as MMC/SD, but we do not need to
-diff --git a/arch/arm/mach-imx/include/mach/bbu.h b/arch/arm/mach-imx/include/mach/bbu.h
-index b64c8d118..f0b6233f6 100644
---- a/arch/arm/mach-imx/include/mach/bbu.h
-+++ b/arch/arm/mach-imx/include/mach/bbu.h
-@@ -53,6 +53,9 @@ int imx6_bbu_internal_mmc_register_handler(const char *name, const char *devicef
- int imx6_bbu_internal_mmcboot_register_handler(const char *name, const char *devicefile,
- 		unsigned long flags);
- 
-+int imx51_bbu_internal_mmcboot_register_handler(const char *name, const char *devicefile,
-+		unsigned long flags);
-+
- int imx6_bbu_internal_spi_i2c_register_handler(const char *name, const char *devicefile,
- 		unsigned long flags);
- 
-@@ -113,6 +116,13 @@ static inline int imx6_bbu_internal_mmcboot_register_handler(const char *name,
- 	return -ENOSYS;
- }
- 
-+static inline int imx51_bbu_internal_mmcboot_register_handler(const char *name,
-+							      const char *devicefile,
-+							      unsigned long flags)
-+{
-+	return -ENOSYS;
-+}
-+
- static inline int imx6_bbu_internal_spi_i2c_register_handler(const char *name, const char *devicefile,
- 		unsigned long flags)
- {
 -- 
 2.17.1
 
