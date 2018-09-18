@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g28Sw-0000B1-K3
- for barebox@lists.infradead.org; Tue, 18 Sep 2018 05:22:35 +0000
-Received: by mail-pf1-x441.google.com with SMTP id d4-v6so427674pfn.0
- for <barebox@lists.infradead.org>; Mon, 17 Sep 2018 22:22:15 -0700 (PDT)
+ id 1g28Sz-0000BG-Qh
+ for barebox@lists.infradead.org; Tue, 18 Sep 2018 05:22:49 +0000
+Received: by mail-pf1-x444.google.com with SMTP id j26-v6so407487pfi.10
+ for <barebox@lists.infradead.org>; Mon, 17 Sep 2018 22:22:19 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 17 Sep 2018 22:21:16 -0700
-Message-Id: <20180918052122.12248-2-andrew.smirnov@gmail.com>
+Date: Mon, 17 Sep 2018 22:21:19 -0700
+Message-Id: <20180918052122.12248-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20180918052122.12248-1-andrew.smirnov@gmail.com>
 References: <20180918052122.12248-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,87 +23,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] net: fec_imx: Drop extra indentation level by exiting
- early
+Subject: [PATCH 4/7] net: fec_imx: Drop struct fec_frame
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Drop extra indentation level by exiting early which also allows us to
-check for bd_status & FEC_RBD_EMPTY instead of !(bd_status &
-FEC_RBD_EMPTY).
+Drop struct fec_frame since it doesn't have any real users in the
+code. It is only referenced in fec_recv() and is used by that function
+as a generic pointer.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/fec_imx.c | 53 ++++++++++++++++++++++---------------------
- 1 file changed, 27 insertions(+), 26 deletions(-)
+ drivers/net/fec_imx.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 94a159e2b..904eba30a 100644
+index 36218f3c9..ff5a64174 100644
 --- a/drivers/net/fec_imx.c
 +++ b/drivers/net/fec_imx.c
-@@ -568,35 +568,36 @@ static int fec_recv(struct eth_device *dev)
- 	 */
- 	bd_status = readw(&rbd->status);
+@@ -33,12 +33,6 @@
  
--	if (!(bd_status & FEC_RBD_EMPTY)) {
--		if ((bd_status & FEC_RBD_LAST) && !(bd_status & FEC_RBD_ERR) &&
--			((readw(&rbd->data_length) - 4) > 14)) {
--
--			if (fec_is_imx28(fec))
+ #include "fec_imx.h"
+ 
+-struct fec_frame {
+-	uint8_t data[1500];	/* actual data */
+-	int length;		/* actual length */
+-	int used;		/* buffer in use or not */
+-	uint8_t head[16];	/* MAC header(6 + 6 + 2) + 2(aligned) */
+-};
+ 
+ /*
+  * MII-interface related functions
+@@ -530,7 +524,6 @@ static int fec_recv(struct eth_device *dev)
+ 	struct buffer_descriptor __iomem *rbd = &fec->rbd_base[fec->rbd_index];
+ 	uint32_t ievent;
+ 	int frame_length, len = 0;
+-	struct fec_frame *frame;
+ 	uint16_t bd_status;
+ 
+ 	/*
+@@ -578,17 +571,16 @@ static int fec_recv(struct eth_device *dev)
+ 		const uint16_t data_length = readw(&rbd->data_length);
+ 
+ 		if (data_length - 4 > 14) {
++			void *frame = phys_to_virt(readl(&rbd->data_pointer));
+ 			if (fec_is_imx28(fec))
 -				imx28_fix_endianess_rd(
 -					phys_to_virt(readl(&rbd->data_pointer)),
--					(readw(&rbd->data_length) + 3) >> 2);
--
--			/*
--			 * Get buffer address and size
--			 */
--			frame = phys_to_virt(readl(&rbd->data_pointer));
--			frame_length = readw(&rbd->data_length) - 4;
--			net_receive(dev, frame->data, frame_length);
--			len = frame_length;
--		} else {
--			if (bd_status & FEC_RBD_ERR) {
--				dev_warn(&dev->dev, "error frame: 0x%p 0x%08x\n", rbd, bd_status);
--			}
--		}
-+	if (bd_status & FEC_RBD_EMPTY)
-+		return 0;
-+
-+	if ((bd_status & FEC_RBD_LAST) && !(bd_status & FEC_RBD_ERR) &&
-+	    ((readw(&rbd->data_length) - 4) > 14)) {
-+
-+		if (fec_is_imx28(fec))
-+			imx28_fix_endianess_rd(
-+				phys_to_virt(readl(&rbd->data_pointer)),
-+				(readw(&rbd->data_length) + 3) >> 2);
-+
- 		/*
--		 * free the current buffer, restart the engine
--		 * and move forward to the next buffer
-+		 * Get buffer address and size
- 		 */
--		fec_rbd_clean(fec->rbd_index == (FEC_RBD_NUM - 1) ? 1 : 0, rbd);
--		fec_rx_task_enable(fec);
--		fec->rbd_index = (fec->rbd_index + 1) % FEC_RBD_NUM;
-+		frame = phys_to_virt(readl(&rbd->data_pointer));
-+		frame_length = readw(&rbd->data_length) - 4;
-+		net_receive(dev, frame->data, frame_length);
-+		len = frame_length;
-+	} else {
-+		if (bd_status & FEC_RBD_ERR) {
-+			dev_warn(&dev->dev, "error frame: 0x%p 0x%08x\n", rbd, bd_status);
-+		}
- 	}
-+	/*
-+	 * free the current buffer, restart the engine
-+	 * and move forward to the next buffer
-+	 */
-+	fec_rbd_clean(fec->rbd_index == (FEC_RBD_NUM - 1) ? 1 : 0, rbd);
-+	fec_rx_task_enable(fec);
-+	fec->rbd_index = (fec->rbd_index + 1) % FEC_RBD_NUM;
+-					(data_length + 3) >> 2);
++				imx28_fix_endianess_rd(frame,
++						       (data_length + 3) >> 2);
  
- 	return len;
- }
+ 			/*
+ 			 * Get buffer address and size
+ 			 */
+-			frame = phys_to_virt(readl(&rbd->data_pointer));
+ 			frame_length = data_length - 4;
+-			net_receive(dev, frame->data, frame_length);
++			net_receive(dev, frame, frame_length);
+ 			len = frame_length;
+ 		}
+ 	}
 -- 
 2.17.1
 
