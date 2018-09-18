@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g2OPJ-0002BS-OI
- for barebox@lists.infradead.org; Tue, 18 Sep 2018 22:24:03 +0000
-Received: by mail-pg1-x541.google.com with SMTP id i190-v6so1706404pgc.6
- for <barebox@lists.infradead.org>; Tue, 18 Sep 2018 15:23:35 -0700 (PDT)
+ id 1g2OPP-0002Cx-F9
+ for barebox@lists.infradead.org; Tue, 18 Sep 2018 22:24:04 +0000
+Received: by mail-pf1-x444.google.com with SMTP id x17-v6so1677099pfh.5
+ for <barebox@lists.infradead.org>; Tue, 18 Sep 2018 15:23:41 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 18 Sep 2018 15:23:00 -0700
-Message-Id: <20180918222305.6834-7-andrew.smirnov@gmail.com>
+Date: Tue, 18 Sep 2018 15:23:04 -0700
+Message-Id: <20180918222305.6834-11-andrew.smirnov@gmail.com>
 In-Reply-To: <20180918222305.6834-1-andrew.smirnov@gmail.com>
 References: <20180918222305.6834-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,61 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/11] ARM: VFxxx: bbu: Add a handler for MMC boot partitions
+Subject: [PATCH 10/11] ARM: rdu1: Change BBU names to match RDU2
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Change BBU names to match RDU2 and the rest of ZII boards.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/imx-bbu-internal.c |  5 +++++
- arch/arm/mach-imx/include/mach/bbu.h | 11 +++++++++++
- 2 files changed, 16 insertions(+)
+ arch/arm/boards/zii-imx51-rdu1/board.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-index 796d9454c..799b97361 100644
---- a/arch/arm/mach-imx/imx-bbu-internal.c
-+++ b/arch/arm/mach-imx/imx-bbu-internal.c
-@@ -619,6 +619,11 @@ int imx51_bbu_internal_mmcboot_register_handler(const char *name,
- 						unsigned long flags)
- 	__alias(imx_bbu_internal_mmcboot_register_handler);
+diff --git a/arch/arm/boards/zii-imx51-rdu1/board.c b/arch/arm/boards/zii-imx51-rdu1/board.c
+index ac5232e17..a8c11cc46 100644
+--- a/arch/arm/boards/zii-imx51-rdu1/board.c
++++ b/arch/arm/boards/zii-imx51-rdu1/board.c
+@@ -30,8 +30,8 @@ static int zii_rdu1_init(void)
  
-+int vf610_bbu_internal_mmcboot_register_handler(const char *name,
-+						const char *devicefile,
-+						unsigned long flags)
-+	__alias(imx_bbu_internal_mmcboot_register_handler);
-+
- /*
-  * Register an i.MX53 internal boot update handler for i2c/spi
-  * EEPROMs / flashes. Nearly the same as MMC/SD, but we do not need to
-diff --git a/arch/arm/mach-imx/include/mach/bbu.h b/arch/arm/mach-imx/include/mach/bbu.h
-index f0b6233f6..bc1fc4ba6 100644
---- a/arch/arm/mach-imx/include/mach/bbu.h
-+++ b/arch/arm/mach-imx/include/mach/bbu.h
-@@ -56,6 +56,9 @@ int imx6_bbu_internal_mmcboot_register_handler(const char *name, const char *dev
- int imx51_bbu_internal_mmcboot_register_handler(const char *name, const char *devicefile,
- 		unsigned long flags);
+ 	barebox_set_hostname("rdu1");
  
-+int vf610_bbu_internal_mmcboot_register_handler(const char *name, const char *devicefile,
-+						unsigned long flags);
-+
- int imx6_bbu_internal_spi_i2c_register_handler(const char *name, const char *devicefile,
- 		unsigned long flags);
- 
-@@ -123,6 +126,14 @@ static inline int imx51_bbu_internal_mmcboot_register_handler(const char *name,
- 	return -ENOSYS;
- }
- 
-+
-+static inline int vf610_bbu_internal_mmcboot_register_handler(const char *name,
-+							      const char *devicefile,
-+							      unsigned long flags)
-+{
-+	return -ENOSYS;
-+}
-+
- static inline int imx6_bbu_internal_spi_i2c_register_handler(const char *name, const char *devicefile,
- 		unsigned long flags)
- {
+-	imx51_bbu_internal_mmc_register_handler("mmc", "/dev/mmc0", 0);
+-	imx51_bbu_internal_spi_i2c_register_handler("spi",
++	imx51_bbu_internal_mmc_register_handler("eMMC", "/dev/mmc0", 0);
++	imx51_bbu_internal_spi_i2c_register_handler("SPI",
+ 		"/dev/dataflash0.barebox",
+ 		BBU_HANDLER_FLAG_DEFAULT |
+ 		IMX_BBU_FLAG_PARTITION_STARTS_AT_HEADER);
 -- 
 2.17.1
 
