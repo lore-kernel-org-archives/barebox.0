@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g28BP-0001eo-2v
- for barebox@lists.infradead.org; Tue, 18 Sep 2018 05:04:20 +0000
-Received: by mail-pf1-x442.google.com with SMTP id j26-v6so386135pfi.10
- for <barebox@lists.infradead.org>; Mon, 17 Sep 2018 22:04:08 -0700 (PDT)
+ id 1g28Sr-0000Av-Ut
+ for barebox@lists.infradead.org; Tue, 18 Sep 2018 05:22:23 +0000
+Received: by mail-pl1-x642.google.com with SMTP id t19-v6so382071ply.13
+ for <barebox@lists.infradead.org>; Mon, 17 Sep 2018 22:22:11 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 17 Sep 2018 22:03:43 -0700
-Message-Id: <20180918050343.19637-2-andrew.smirnov@gmail.com>
-In-Reply-To: <20180918050343.19637-1-andrew.smirnov@gmail.com>
-References: <20180918050343.19637-1-andrew.smirnov@gmail.com>
+Date: Mon, 17 Sep 2018 22:21:17 -0700
+Message-Id: <20180918052122.12248-3-andrew.smirnov@gmail.com>
+In-Reply-To: <20180918052122.12248-1-andrew.smirnov@gmail.com>
+References: <20180918052122.12248-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,45 +23,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] memtest: Make use of resource_size()
+Subject: [PATCH 2/7] net: fec_imx: Don't check bd_status & FEC_RBD_ERR twice
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Re-shuffle comparisons in order to avoid having to check for
+FEC_RBD_ERR in bd_status more than once.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- commands/memtest.c | 3 +--
- common/memtest.c   | 4 ++--
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/fec_imx.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/commands/memtest.c b/commands/memtest.c
-index 403ab91f6..dc8f7db27 100644
---- a/commands/memtest.c
-+++ b/commands/memtest.c
-@@ -36,8 +36,7 @@ static int do_test_one_area(struct mem_test_resource *r, int bus_only,
- 	printf("Testing memory space: %pa -> %pa:\n",
- 	       &r->r->start,  &r->r->end);
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 904eba30a..25e2425d6 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -571,9 +571,11 @@ static int fec_recv(struct eth_device *dev)
+ 	if (bd_status & FEC_RBD_EMPTY)
+ 		return 0;
  
--	remap_range((void *)r->r->start, r->r->end -
--			r->r->start + 1, cache_flag);
-+	remap_range((void *)r->r->start, resource_size(r->r), cache_flag);
- 
- 	ret = mem_test_bus_integrity(r->r->start, r->r->end);
- 	if (ret < 0)
-diff --git a/common/memtest.c b/common/memtest.c
-index 5c96d46e9..44ddedd3d 100644
---- a/common/memtest.c
-+++ b/common/memtest.c
-@@ -131,8 +131,8 @@ void mem_test_release_regions(struct list_head *list)
- 		/*
- 		 * Ensure to leave with a cached on non used sdram regions.
- 		 */
--		remap_range((void *)r->r->start, r->r->end -
--				r->r->start + 1, MAP_DEFAULT);
-+		remap_range((void *)r->r->start, resource_size(r->r),
-+			    MAP_DEFAULT);
- 
- 		release_sdram_region(r->r);
- 		free(r);
+-	if ((bd_status & FEC_RBD_LAST) && !(bd_status & FEC_RBD_ERR) &&
+-	    ((readw(&rbd->data_length) - 4) > 14)) {
+-
++	if (bd_status & FEC_RBD_ERR) {
++		dev_warn(&dev->dev, "error frame: 0x%p 0x%08x\n",
++			 rbd, bd_status);
++	} else if ((bd_status & FEC_RBD_LAST) &&
++		   ((readw(&rbd->data_length) - 4) > 14)) {
+ 		if (fec_is_imx28(fec))
+ 			imx28_fix_endianess_rd(
+ 				phys_to_virt(readl(&rbd->data_pointer)),
+@@ -586,10 +588,6 @@ static int fec_recv(struct eth_device *dev)
+ 		frame_length = readw(&rbd->data_length) - 4;
+ 		net_receive(dev, frame->data, frame_length);
+ 		len = frame_length;
+-	} else {
+-		if (bd_status & FEC_RBD_ERR) {
+-			dev_warn(&dev->dev, "error frame: 0x%p 0x%08x\n", rbd, bd_status);
+-		}
+ 	}
+ 	/*
+ 	 * free the current buffer, restart the engine
 -- 
 2.17.1
 
