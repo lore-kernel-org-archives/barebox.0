@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g28m8-0000Jv-AU
- for barebox@lists.infradead.org; Tue, 18 Sep 2018 05:42:17 +0000
-Received: by mail-pg1-x541.google.com with SMTP id b129-v6so423909pga.13
- for <barebox@lists.infradead.org>; Mon, 17 Sep 2018 22:42:06 -0700 (PDT)
+ id 1g28mC-0000K2-GJ
+ for barebox@lists.infradead.org; Tue, 18 Sep 2018 05:42:29 +0000
+Received: by mail-pg1-x544.google.com with SMTP id x26-v6so427553pge.12
+ for <barebox@lists.infradead.org>; Mon, 17 Sep 2018 22:42:10 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 17 Sep 2018 22:41:41 -0700
-Message-Id: <20180918054148.8878-2-andrew.smirnov@gmail.com>
+Date: Mon, 17 Sep 2018 22:41:44 -0700
+Message-Id: <20180918054148.8878-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20180918054148.8878-1-andrew.smirnov@gmail.com>
 References: <20180918054148.8878-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,49 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/8] clk: i.MX8MQ: Bump refcounters of various important clocks
+Subject: [PATCH 4/8] ARM: i.MX8MQ: Configure FEC1 clocks
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Bump refcounters of various important clocks in order to make sure
-their parents are not disabled during clock re-configuration added by
-commits that follow.
+Select proper parents as well as rates for FEC1 related clocks.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/clk/imx/clk-imx8mq.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/arm/dts/imx8mq.dtsi | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx8mq.c b/drivers/clk/imx/clk-imx8mq.c
-index 92d49d44e..782bbc256 100644
---- a/drivers/clk/imx/clk-imx8mq.c
-+++ b/drivers/clk/imx/clk-imx8mq.c
-@@ -185,6 +185,15 @@ static const char *imx8mq_clko2_sels[] = {"osc_25m", "sys2_pll_200m", "sys1_pll_
+diff --git a/arch/arm/dts/imx8mq.dtsi b/arch/arm/dts/imx8mq.dtsi
+index 8bdf4efb7..763005217 100644
+--- a/arch/arm/dts/imx8mq.dtsi
++++ b/arch/arm/dts/imx8mq.dtsi
+@@ -639,16 +639,28 @@
+ 	assigned-clocks = <&clk IMX8MQ_CLK_USDHC1_SRC>,
+ 			  <&clk IMX8MQ_CLK_USDHC1_DIV>,
+ 			  <&clk IMX8MQ_CLK_USDHC2_SRC>,
+-			  <&clk IMX8MQ_CLK_USDHC2_DIV>;
++			  <&clk IMX8MQ_CLK_USDHC2_DIV>,
++			  <&clk IMX8MQ_CLK_ENET_AXI_SRC>,
++			  <&clk IMX8MQ_CLK_ENET_TIMER_SRC>,
++			  <&clk IMX8MQ_CLK_ENET_REF_SRC>,
++			  <&clk IMX8MQ_CLK_ENET_TIMER_DIV>;
  
- static struct clk_onecell_data clk_data;
+ 	assigned-clock-parents =  <&clk IMX8MQ_SYS1_PLL_400M>,
+ 				  <0>,
+ 				  <&clk IMX8MQ_SYS1_PLL_400M>,
++				  <0>,
++				  <&clk IMX8MQ_SYS1_PLL_266M>,
++				  <&clk IMX8MQ_SYS2_PLL_100M>,
++				  <&clk IMX8MQ_SYS2_PLL_125M>,
+ 				  <0>;
  
-+static int const clks_init_on[] = {
-+       IMX8MQ_CLK_DRAM_CORE, IMX8MQ_CLK_AHB_CG,
-+       IMX8MQ_CLK_NOC_DIV, IMX8MQ_CLK_NOC_APB_DIV,
-+       IMX8MQ_CLK_NAND_USDHC_BUS_SRC,
-+       IMX8MQ_CLK_MAIN_AXI_SRC, IMX8MQ_CLK_A53_CG,
-+       IMX8MQ_CLK_AUDIO_AHB_DIV, IMX8MQ_CLK_TMU_ROOT,
-+       IMX8MQ_CLK_DRAM_APB_SRC,
-+};
-+
- static void __init imx8mq_clocks_init(struct device_node *ccm_node)
- {
- 	struct device_node *np;
-@@ -572,6 +581,9 @@ static void __init imx8mq_clocks_init(struct device_node *ccm_node)
- 			pr_err("i.MX8mq clk %u register failed with %ld\n",
- 			       i, PTR_ERR(clks[i]));
+ 	assigned-clock-rates = <400000000>,
+ 			       <200000000>,
+ 			       <400000000>,
+-			       <200000000>;
++			       <200000000>,
++			       <266000000>,
++			       <0>,
++			       <125000000>,
++			       <25000000>;
+ };
  
-+	for (i = 0; i < ARRAY_SIZE(clks_init_on); i++)
-+		clk_enable(clks[clks_init_on[i]]);
-+
- 	clk_data.clks = clks;
- 	clk_data.clk_num = ARRAY_SIZE(clks);
- 	of_clk_add_provider(np, of_clk_src_onecell_get, &clk_data);
 -- 
 2.17.1
 
