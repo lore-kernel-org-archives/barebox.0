@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g2eg9-00033Z-D6
- for barebox@lists.infradead.org; Wed, 19 Sep 2018 15:46:14 +0000
-Received: by mail-pf1-x444.google.com with SMTP id d4-v6so2914845pfn.0
- for <barebox@lists.infradead.org>; Wed, 19 Sep 2018 08:46:02 -0700 (PDT)
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1g2egF-0003YE-R1
+ for barebox@lists.infradead.org; Wed, 19 Sep 2018 15:46:20 +0000
+Received: by mail-pf1-x443.google.com with SMTP id k21-v6so2889121pff.11
+ for <barebox@lists.infradead.org>; Wed, 19 Sep 2018 08:46:05 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 19 Sep 2018 08:45:34 -0700
-Message-Id: <20180919154541.29861-2-andrew.smirnov@gmail.com>
+Date: Wed, 19 Sep 2018 08:45:35 -0700
+Message-Id: <20180919154541.29861-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20180919154541.29861-1-andrew.smirnov@gmail.com>
 References: <20180919154541.29861-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,50 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/8] clk: i.MX8MQ: Bump refcounters of various important
- clocks
+Subject: [PATCH v2 2/8] ARM: i.MX8MQ: Add missing node for ECSPI1
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Bump refcounters of various important clocks in order to make sure
-their parents are not disabled during clock re-configuration added by
-commits that follow.
+Add node for ECSPI1 that is missing from imx8mq.dtsi
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/clk/imx/clk-imx8mq.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/arm/dts/imx8mq.dtsi | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/clk/imx/clk-imx8mq.c b/drivers/clk/imx/clk-imx8mq.c
-index 92d49d44e..782bbc256 100644
---- a/drivers/clk/imx/clk-imx8mq.c
-+++ b/drivers/clk/imx/clk-imx8mq.c
-@@ -185,6 +185,15 @@ static const char *imx8mq_clko2_sels[] = {"osc_25m", "sys2_pll_200m", "sys1_pll_
+diff --git a/arch/arm/dts/imx8mq.dtsi b/arch/arm/dts/imx8mq.dtsi
+index c67438a48..6f860c3d6 100644
+--- a/arch/arm/dts/imx8mq.dtsi
++++ b/arch/arm/dts/imx8mq.dtsi
+@@ -288,6 +288,16 @@
+ 			#size-cells = <1>;
+ 			ranges = <0x30800000 0x30800000 0x400000>;
  
- static struct clk_onecell_data clk_data;
- 
-+static int const clks_init_on[] = {
-+       IMX8MQ_CLK_DRAM_CORE, IMX8MQ_CLK_AHB_CG,
-+       IMX8MQ_CLK_NOC_DIV, IMX8MQ_CLK_NOC_APB_DIV,
-+       IMX8MQ_CLK_NAND_USDHC_BUS_SRC,
-+       IMX8MQ_CLK_MAIN_AXI_SRC, IMX8MQ_CLK_A53_CG,
-+       IMX8MQ_CLK_AUDIO_AHB_DIV, IMX8MQ_CLK_TMU_ROOT,
-+       IMX8MQ_CLK_DRAM_APB_SRC,
-+};
++			ecspi1: ecspi@30820000 {
++				compatible = "fsl,imx6ul-ecspi", "fsl,imx51-ecspi";
++				reg = <0x30820000 0x10000>;
++				interrupts = <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>;
++				clocks = <&clk IMX8MQ_CLK_ECSPI1_ROOT>,
++				<&clk IMX8MQ_CLK_ECSPI1_ROOT>;
++				clock-names = "ipg", "per";
++				status = "disabled";
++			};
 +
- static void __init imx8mq_clocks_init(struct device_node *ccm_node)
- {
- 	struct device_node *np;
-@@ -572,6 +581,9 @@ static void __init imx8mq_clocks_init(struct device_node *ccm_node)
- 			pr_err("i.MX8mq clk %u register failed with %ld\n",
- 			       i, PTR_ERR(clks[i]));
- 
-+	for (i = 0; i < ARRAY_SIZE(clks_init_on); i++)
-+		clk_enable(clks[clks_init_on[i]]);
-+
- 	clk_data.clks = clks;
- 	clk_data.clk_num = ARRAY_SIZE(clks);
- 	of_clk_add_provider(np, of_clk_src_onecell_get, &clk_data);
+ 			uart1: serial@30860000 {
+ 				compatible = "fsl,imx8mq-uart",
+ 				             "fsl,imx6q-uart";
 -- 
 2.17.1
 
