@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x344.google.com ([2a00:1450:4864:20::344])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g38HF-0005pV-43
- for barebox@lists.infradead.org; Thu, 20 Sep 2018 23:22:30 +0000
-Received: by mail-wm1-x344.google.com with SMTP id y139-v6so1156584wmc.2
- for <barebox@lists.infradead.org>; Thu, 20 Sep 2018 16:22:18 -0700 (PDT)
-MIME-Version: 1.0
-References: <20180919154541.29861-1-andrew.smirnov@gmail.com>
- <20180919154541.29861-8-andrew.smirnov@gmail.com>
-In-Reply-To: <20180919154541.29861-8-andrew.smirnov@gmail.com>
+ id 1g2kuu-0007xB-8x
+ for barebox@lists.infradead.org; Wed, 19 Sep 2018 22:25:53 +0000
+Received: by mail-pf1-x444.google.com with SMTP id d4-v6so3367186pfn.0
+ for <barebox@lists.infradead.org>; Wed, 19 Sep 2018 15:25:41 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 20 Sep 2018 16:22:05 -0700
-Message-ID: <CAHQ1cqFkAcB2df5-HipCRNye2R9X3_2ure8=3DKtPF51DgmvXg@mail.gmail.com>
+Date: Wed, 19 Sep 2018 15:25:22 -0700
+Message-Id: <20180919222524.26025-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,217 +16,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 7/8] ARM: i.MX: esdctl: Add memory size detection for
- i.MX8MQ
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/3] clk: i.MX8MQ: Add missing IMX8MQ_CLK_TMU_ROOT clock
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Wed, Sep 19, 2018 at 8:46 AM Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
->
-> Add memory size detection for i.MX8MQ. Only basic LPDDR4
-> configurations are supported for now. Support for other types of
-> memory can be added later once we have any boards that use it.
->
+Add missing IMX8MQ_CLK_TMU_ROOT clock needed for CPU thermal sensor.
 
-Working on similar code for i.MX7 it now seems to me that i.MX8MQ uses
-a close relative (if not the same) IP block for DDR controller. I
-think the code in this patch can be re-written more elegantly and in a
-way that'd would allow quite a bit of code sharing. I'll update it and
-post v3 shortly.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/clk/imx/clk-imx8mq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Thanks,
-Andrey Smirnov
+diff --git a/drivers/clk/imx/clk-imx8mq.c b/drivers/clk/imx/clk-imx8mq.c
+index 782bbc256..0431f61f0 100644
+--- a/drivers/clk/imx/clk-imx8mq.c
++++ b/drivers/clk/imx/clk-imx8mq.c
+@@ -572,6 +572,7 @@ static void __init imx8mq_clocks_init(struct device_node *ccm_node)
+ 	clks[IMX8MQ_CLK_WDOG1_ROOT] = imx_clk_gate4("wdog1_root_clk", "wdog_div", base + 0x4530, 0);
+ 	clks[IMX8MQ_CLK_WDOG2_ROOT] = imx_clk_gate4("wdog2_root_clk", "wdog_div", base + 0x4540, 0);
+ 	clks[IMX8MQ_CLK_WDOG3_ROOT] = imx_clk_gate4("wdog3_root_clk", "wdog_div", base + 0x4550, 0);
++	clks[IMX8MQ_CLK_TMU_ROOT] = imx_clk_gate4("tmu_root_clk", "ipg_root", base + 0x4620, 0);
+ 
+ 	clks[IMX8MQ_GPT_3M_CLK] = imx_clk_fixed_factor("gpt_3m", "osc_25m", 1, 8);
+ 	clks[IMX8MQ_CLK_DRAM_ALT_ROOT] = imx_clk_fixed_factor("dram_alt_root", "dram_alt_div", 1, 4);
+-- 
+2.17.1
 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  arch/arm/dts/imx8mq-ddrc.dtsi           | 17 +++++
->  arch/arm/mach-imx/esdctl.c              | 98 +++++++++++++++++++++++++
->  arch/arm/mach-imx/include/mach/esdctl.h |  1 +
->  3 files changed, 116 insertions(+)
->  create mode 100644 arch/arm/dts/imx8mq-ddrc.dtsi
->
-> diff --git a/arch/arm/dts/imx8mq-ddrc.dtsi b/arch/arm/dts/imx8mq-ddrc.dtsi
-> new file mode 100644
-> index 000000000..26d3da857
-> --- /dev/null
-> +++ b/arch/arm/dts/imx8mq-ddrc.dtsi
-> @@ -0,0 +1,17 @@
-> +/*
-> + * Include file to switch board DTS form using hardcoded memory node
-> + * to dynamic memory size detection based on DDR controller settings
-> + */
-> +
-> +/ {
-> +
-> +       /delete-node/ memory@40000000;
-> +
-> +       peripherals@0 {
-> +               ddrc@3d400000 {
-> +                       compatible = "fsl,imx8mq-ddrc";
-> +                       reg = <0x3d400000 0x400000>;
-> +               };
-> +       };
-> +};
-> +
-> diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
-> index 875e942de..af90c87bb 100644
-> --- a/arch/arm/mach-imx/esdctl.c
-> +++ b/arch/arm/mach-imx/esdctl.c
-> @@ -23,6 +23,7 @@
->  #include <init.h>
->  #include <of.h>
->  #include <linux/err.h>
-> +#include <linux/bitfield.h>
->  #include <asm/barebox-arm.h>
->  #include <asm/memory.h>
->  #include <mach/esdctl.h>
-> @@ -38,6 +39,7 @@
->  #include <mach/imx53-regs.h>
->  #include <mach/imx6-regs.h>
->  #include <mach/vf610-ddrmc.h>
-> +#include <mach/imx8mq-regs.h>
->
->  struct imx_esdctl_data {
->         unsigned long base0;
-> @@ -319,6 +321,76 @@ static void vf610_ddrmc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
->                            vf610_ddrmc_sdram_size(mmdcbase));
->  }
->
-> +#define DDRC_ADDRMAP(n)                                (0x200 + 4 * (n))
-> +#define DDRC_ADDRMAP6_LPDDR4_6GB_12GB_24GB     GENMASK(30, 29)
-> +#define DDRC_ADDRMAP0_CS_BIT0                  GENMASK(4, 0)
-> +
-> +#define DDRC_MSTR                              0x0000
-> +#define DDRC_MSTR_LPDDR4                       BIT(5)
-> +#define DDRC_MSTR_DATA_BUS_WIDTH               GENMASK(13, 12)
-> +#define DDRC_MSTR_ACTIVE_RANKS                 GENMASK(27, 24)
-> +
-> +static resource_size_t imx8mq_ddrc_sdram_size(void __iomem *ddrc)
-> +{
-> +       const u32 addrmap6 = readl(ddrc + DDRC_ADDRMAP(6));
-> +       const u32 addrmap0 = readl(ddrc + DDRC_ADDRMAP(0));
-> +       const u32 mstr = readl(ddrc + DDRC_MSTR);
-> +       resource_size_t size = 0;
-> +       unsigned long dbw, cs0, r;
-> +
-> +       BUG_ON(!(mstr & DDRC_MSTR_LPDDR4));
-> +
-> +       switch (FIELD_GET(DDRC_ADDRMAP6_LPDDR4_6GB_12GB_24GB, addrmap6)) {
-> +       case 0b00:
-> +               cs0 = FIELD_GET(DDRC_ADDRMAP0_CS_BIT0, addrmap0) + 6;
-> +
-> +               switch (FIELD_GET(DDRC_MSTR_DATA_BUS_WIDTH, mstr)) {
-> +               case 0b00:      /* Full DQ bus  */
-> +                       dbw = 1;
-> +                       break;
-> +               case 0b01:      /* Half DQ bus  */
-> +                       dbw = 0;
-> +                       break;
-> +               case 0b10:      /* Quarter DQ bus  */
-> +               case 0b11:      /* Reserved */
-> +                       BUG();
-> +               }
-> +
-> +               switch (FIELD_GET(DDRC_MSTR_ACTIVE_RANKS, mstr)) {
-> +               case 0b0001:
-> +                       r = 0;
-> +                       break;
-> +               case 0b0011:
-> +                       r = 1;
-> +                       break;
-> +               case 0b1111:
-> +                       r = 2;
-> +                       break;
-> +               default:
-> +                       BUG();
-> +               }
-> +
-> +               size = 1UL << (cs0 + 1 + dbw + r);
-> +               break;
-> +       case 0b01:
-> +               size = SZ_1G + SZ_512M;
-> +               break;
-> +       case 0b10:
-> +               size = SZ_2G + SZ_1G;
-> +               break;
-> +       default:
-> +               BUG();
-> +       }
-> +
-> +       return size;
-> +}
-> +
-> +static void imx8mq_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
-> +{
-> +       arm_add_mem_device("ram0", data->base0,
-> +                          imx8mq_ddrc_sdram_size(mmdcbase));
-> +}
-> +
->  static int imx_esdctl_probe(struct device_d *dev)
->  {
->         struct resource *iores;
-> @@ -405,6 +477,11 @@ static __maybe_unused struct imx_esdctl_data vf610_data = {
->         .add_mem = vf610_ddrmc_add_mem,
->  };
->
-> +static __maybe_unused struct imx_esdctl_data imx8mq_data = {
-> +       .base0 = MX8MQ_DDR_CSD1_BASE_ADDR,
-> +       .add_mem = imx8mq_ddrc_add_mem,
-> +};
-> +
->  static struct platform_device_id imx_esdctl_ids[] = {
->  #ifdef CONFIG_ARCH_IMX1
->         {
-> @@ -469,6 +546,9 @@ static __maybe_unused struct of_device_id imx_esdctl_dt_ids[] = {
->         }, {
->                 .compatible = "fsl,vf610-ddrmc",
->                 .data = &vf610_data
-> +       }, {
-> +               .compatible = "fsl,imx8mq-ddrc",
-> +               .data = &imx8mq_data
->         }, {
->                 /* sentinel */
->         }
-> @@ -643,3 +723,21 @@ void __noreturn vf610_barebox_entry(void *boarddata)
->                           vf610_ddrmc_sdram_size(IOMEM(VF610_DDR_BASE_ADDR)),
->                           boarddata);
->  }
-> +
-> +void __noreturn imx8mq_barebox_entry(void *boarddata)
-> +{
-> +       resource_size_t size;
-> +
-> +       size = imx8mq_ddrc_sdram_size(IOMEM(MX8MQ_DDRC_CTL_BASE_ADDR));
-> +       /*
-> +        * We artificially limit detected memory size to force malloc
-> +        * pool placement to be within 4GiB address space, so as to
-> +        * make it accessible to 32-bit limited DMA.
-> +        *
-> +        * This limitation affects only early boot code and malloc
-> +        * pool placement. The rest of the system should be able to
-> +        * detect and utilize full amount of memory.
-> +        */
-> +       size = min_t(resource_size_t, SZ_4G - MX8MQ_DDR_CSD1_BASE_ADDR, size);
-> +       barebox_arm_entry(MX8MQ_DDR_CSD1_BASE_ADDR, size, boarddata);
-> +}
-> diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/include/mach/esdctl.h
-> index 117e2bbad..ff109aa10 100644
-> --- a/arch/arm/mach-imx/include/mach/esdctl.h
-> +++ b/arch/arm/mach-imx/include/mach/esdctl.h
-> @@ -139,6 +139,7 @@ void __noreturn imx53_barebox_entry(void *boarddata);
->  void __noreturn imx6q_barebox_entry(void *boarddata);
->  void __noreturn imx6ul_barebox_entry(void *boarddata);
->  void __noreturn vf610_barebox_entry(void *boarddata);
-> +void __noreturn imx8mq_barebox_entry(void *boarddata);
->  void imx_esdctl_disable(void);
->  #endif
->
-> --
-> 2.17.1
->
 
 _______________________________________________
 barebox mailing list
