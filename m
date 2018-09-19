@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g2fO4-0008JJ-JV
+ id 1g2fO5-0008JU-Im
  for barebox@lists.infradead.org; Wed, 19 Sep 2018 16:31:47 +0000
-Received: by mail-pl1-x644.google.com with SMTP id u11-v6so2928062plq.5
- for <barebox@lists.infradead.org>; Wed, 19 Sep 2018 09:31:26 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id s13-v6so2957896pfi.7
+ for <barebox@lists.infradead.org>; Wed, 19 Sep 2018 09:31:27 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 19 Sep 2018 09:31:14 -0700
-Message-Id: <20180919163115.7354-1-andrew.smirnov@gmail.com>
+Date: Wed, 19 Sep 2018 09:31:15 -0700
+Message-Id: <20180919163115.7354-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20180919163115.7354-1-andrew.smirnov@gmail.com>
+References: <20180919163115.7354-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,167 +23,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: i.MX: Add ZII SCU2 Mezz Board
+Subject: [PATCH 2/2] ARM: i.MX: Add ZII SCU3 ESB board
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add ZII SCU2 Mezz Board. Which is a i.MX51 based board that is similar
-enough to RDU1 that they both can be handled by a single
-image (type can be detected at runtime).
+Add ZII SCU3 ESB board, which is i.MX51 based and similar enought to
+RDU1 that it can be handled by the same image (different DT).
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/zii-imx51-rdu1/board.c    |  9 ++-
- arch/arm/boards/zii-imx51-rdu1/lowlevel.c | 71 ++++++++++++++++++++++-
- arch/arm/dts/Makefile                     |  4 +-
- arch/arm/dts/imx51-zii-scu2-mezz.dts      | 11 ++++
- 4 files changed, 90 insertions(+), 5 deletions(-)
- create mode 100644 arch/arm/dts/imx51-zii-scu2-mezz.dts
+ arch/arm/boards/zii-imx51-rdu1/board.c    |  3 ++-
+ arch/arm/boards/zii-imx51-rdu1/lowlevel.c |  4 ++++
+ arch/arm/dts/Makefile                     |  3 ++-
+ arch/arm/dts/imx51-zii-scu3-esb.dts       | 12 ++++++++++++
+ 4 files changed, 20 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/dts/imx51-zii-scu3-esb.dts
 
 diff --git a/arch/arm/boards/zii-imx51-rdu1/board.c b/arch/arm/boards/zii-imx51-rdu1/board.c
-index 601c9a236..5c05134c2 100644
+index 5c05134c2..46368cccc 100644
 --- a/arch/arm/boards/zii-imx51-rdu1/board.c
 +++ b/arch/arm/boards/zii-imx51-rdu1/board.c
-@@ -23,12 +23,17 @@
+@@ -26,7 +26,8 @@ static int zii_rdu1_init(void)
+ 	const char *hostname;
  
- static int zii_rdu1_init(void)
- {
--	if (!of_machine_is_compatible("zii,imx51-rdu1"))
-+	const char *hostname;
-+
-+	if (!of_machine_is_compatible("zii,imx51-rdu1") &&
-+	    !of_machine_is_compatible("zii,imx51-scu2-mezz"))
+ 	if (!of_machine_is_compatible("zii,imx51-rdu1") &&
+-	    !of_machine_is_compatible("zii,imx51-scu2-mezz"))
++	    !of_machine_is_compatible("zii,imx51-scu2-mezz") &&
++	    !of_machine_is_compatible("zii,imx51-scu3-esb"))
  		return 0;
  
-+	hostname = of_get_machine_compatible() + strlen("imx51-");
-+
- 	imx51_babbage_power_init();
- 
--	barebox_set_hostname("rdu1");
-+	barebox_set_hostname(hostname);
- 
- 	imx51_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0", 0);
- 	imx51_bbu_internal_spi_i2c_register_handler("SPI",
+ 	hostname = of_get_machine_compatible() + strlen("imx51-");
 diff --git a/arch/arm/boards/zii-imx51-rdu1/lowlevel.c b/arch/arm/boards/zii-imx51-rdu1/lowlevel.c
-index cca331a9c..d82597e0b 100644
+index d82597e0b..849c5624c 100644
 --- a/arch/arm/boards/zii-imx51-rdu1/lowlevel.c
 +++ b/arch/arm/boards/zii-imx51-rdu1/lowlevel.c
-@@ -29,18 +29,85 @@ static inline void setup_uart(void)
- 	putc_ll('>');
- }
+@@ -70,6 +70,7 @@ static unsigned int get_system_type(void)
  
-+enum zii_platform_imx51_type {
-+	ZII_PLATFORM_IMX51_RDU_REV_B = 0b0000,
-+	ZII_PLATFORM_IMX51_SCU2_ESB  = 0b0001,
-+	ZII_PLATFORM_IMX51_SCU_MEZZ  = 0b0010,
-+	ZII_PLATFORM_IMX51_NIU_REV   = 0b0011,
-+	ZII_PLATFORM_IMX51_SCU2_MEZZ = 0b0100,
-+	ZII_PLATFORM_IMX51_SCU3_ESB  = 0b0101,
-+	ZII_PLATFORM_IMX51_RDU_REV_C = 0b1101,
-+};
-+
-+static unsigned int get_system_type(void)
-+{
-+#define GPIO_DR		0x000
-+#define GPIO_GDIR	0x004
-+#define SYSTEM_TYPE	GENMASK(6, 3)
-+
-+	u32 gdir, dr;
-+	void __iomem *gpio4 = IOMEM(MX51_GPIO4_BASE_ADDR);
-+	void __iomem *iomuxbase = IOMEM(MX51_IOMUXC_BASE_ADDR);
-+
-+	/*
-+	 * System type is encoded as a 4-bit number specified by the
-+	 * following pins (pulled up or down with resistors on the
-+	 * board).
-+	*/
-+	imx_setup_pad(iomuxbase, MX51_PAD_NANDF_D2__GPIO4_6);
-+	imx_setup_pad(iomuxbase, MX51_PAD_NANDF_D3__GPIO4_5);
-+	imx_setup_pad(iomuxbase, MX51_PAD_NANDF_D4__GPIO4_4);
-+	imx_setup_pad(iomuxbase, MX51_PAD_NANDF_D5__GPIO4_3);
-+
-+	gdir = readl(gpio4 + GPIO_GDIR);
-+	gdir &= ~SYSTEM_TYPE;
-+	writel(gdir, gpio4 + GPIO_GDIR);
-+
-+	dr = readl(gpio4 + GPIO_DR);
-+
-+	return FIELD_GET(SYSTEM_TYPE, dr);
-+}
-+
  extern char __dtb_imx51_zii_rdu1_start[];
-+extern char __dtb_imx51_zii_scu2_mezz_start[];
+ extern char __dtb_imx51_zii_scu2_mezz_start[];
++extern char __dtb_imx51_zii_scu3_esb_start[];
  
  ENTRY_FUNCTION(start_imx51_zii_rdu1, r0, r1, r2)
  {
- 	void *fdt;
-+	const unsigned int system_type = get_system_type();
- 
- 	imx5_cpu_lowlevel_init();
- 
- 	if (IS_ENABLED(CONFIG_DEBUG_LL))
- 		setup_uart();
- 
--	fdt = __dtb_imx51_zii_rdu1_start + get_runtime_offset();
-+	switch (system_type) {
-+	default:
-+		/*
-+		 * see similar code in
-+		 * arch/arm/boards/zii-vf610-dev/lowlevel.c for
-+		 * reasoning for placing barrier() below.
-+		 */
-+		barrier();
-+
-+		if (IS_ENABLED(CONFIG_DEBUG_LL)) {
-+			relocate_to_current_adr();
-+			setup_c();
-+			puts_ll("\n*********************************\n");
-+			puts_ll("* Unknown system type: ");
-+			puthex_ll(system_type);
-+			puts_ll("\n* Assuming RDU1\n");
-+			puts_ll("*********************************\n");
-+		}
-+		/* FALLTHROUGH */
-+	case ZII_PLATFORM_IMX51_RDU_REV_B:
-+	case ZII_PLATFORM_IMX51_RDU_REV_C:
-+		fdt = __dtb_imx51_zii_rdu1_start;
+@@ -107,6 +108,9 @@ ENTRY_FUNCTION(start_imx51_zii_rdu1, r0, r1, r2)
+ 	case ZII_PLATFORM_IMX51_SCU2_MEZZ:
+ 		fdt = __dtb_imx51_zii_scu2_mezz_start;
+ 		break;
++	case ZII_PLATFORM_IMX51_SCU3_ESB:
++		fdt = __dtb_imx51_zii_scu3_esb_start;
 +		break;
-+	case ZII_PLATFORM_IMX51_SCU2_MEZZ:
-+		fdt = __dtb_imx51_zii_scu2_mezz_start;
-+		break;
-+	}
+ 	}
  
--	imx51_barebox_entry(fdt);
-+	imx51_barebox_entry(fdt + get_runtime_offset());
- }
+ 	imx51_barebox_entry(fdt + get_runtime_offset());
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 7ec10bf20..82ff1b666 100644
+index 82ff1b666..315183666 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -103,7 +103,9 @@ pbl-dtb-$(CONFIG_MACH_VEXPRESS) += vexpress-v2p-ca15.dtb.o
- pbl-dtb-$(CONFIG_MACH_VSCOM_BALTOS) += am335x-baltos-minimal.dtb.o
- pbl-dtb-$(CONFIG_MACH_WARP7) += imx7s-warp.dtb.o
+@@ -105,7 +105,8 @@ pbl-dtb-$(CONFIG_MACH_WARP7) += imx7s-warp.dtb.o
  pbl-dtb-$(CONFIG_MACH_VF610_TWR) += vf610-twr.dtb.o
--pbl-dtb-$(CONFIG_MACH_ZII_RDU1) += imx51-zii-rdu1.dtb.o
-+pbl-dtb-$(CONFIG_MACH_ZII_RDU1) +=	\
-+	imx51-zii-rdu1.dtb.o		\
-+	imx51-zii-scu2-mezz.dtb.o
+ pbl-dtb-$(CONFIG_MACH_ZII_RDU1) +=	\
+ 	imx51-zii-rdu1.dtb.o		\
+-	imx51-zii-scu2-mezz.dtb.o
++	imx51-zii-scu2-mezz.dtb.o	\
++	imx51-zii-scu3-esb.dtb.o
  pbl-dtb-$(CONFIG_MACH_ZII_RDU2) += imx6q-zii-rdu2.dtb.o imx6qp-zii-rdu2.dtb.o
  pbl-dtb-$(CONFIG_MACH_ZII_VF610_DEV) += \
  	vf610-zii-dev-rev-b.dtb.o 	\
-diff --git a/arch/arm/dts/imx51-zii-scu2-mezz.dts b/arch/arm/dts/imx51-zii-scu2-mezz.dts
+diff --git a/arch/arm/dts/imx51-zii-scu3-esb.dts b/arch/arm/dts/imx51-zii-scu3-esb.dts
 new file mode 100644
-index 000000000..68a374bb2
+index 000000000..c83bf1731
 --- /dev/null
-+++ b/arch/arm/dts/imx51-zii-scu2-mezz.dts
-@@ -0,0 +1,11 @@
++++ b/arch/arm/dts/imx51-zii-scu3-esb.dts
+@@ -0,0 +1,12 @@
 +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
 +
 +/*
 + * Copyright (C) 2018 Zodiac Inflight Innovations
 + */
 +
-+#include <arm/imx51-zii-scu2-mezz.dts>
++
++#include <arm/imx51-zii-scu3-esb.dts>
 +
 +&iim {
 +	barebox,provide-mac-address = <&fec 1 9>;
