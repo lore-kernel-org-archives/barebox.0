@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x343.google.com ([2a00:1450:4864:20::343])
+Received: from mail-pg1-f173.google.com ([209.85.215.173])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g2dvW-0003BL-JH
- for barebox@lists.infradead.org; Wed, 19 Sep 2018 14:58:26 +0000
-Received: by mail-wm1-x343.google.com with SMTP id b19-v6so6634693wme.3
- for <barebox@lists.infradead.org>; Wed, 19 Sep 2018 07:57:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20180918054148.8878-1-andrew.smirnov@gmail.com>
- <20180918054148.8878-7-andrew.smirnov@gmail.com>
- <20180919074844.GN4097@pengutronix.de>
-In-Reply-To: <20180919074844.GN4097@pengutronix.de>
+ id 1g2eiw-0004A9-6A
+ for barebox@lists.infradead.org; Wed, 19 Sep 2018 15:49:12 +0000
+Received: by mail-pg1-f173.google.com with SMTP id r1-v6so2935369pgp.11
+ for <barebox@lists.infradead.org>; Wed, 19 Sep 2018 08:48:55 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 19 Sep 2018 07:57:38 -0700
-Message-ID: <CAHQ1cqFK4P-1wSWU5CZhE7TMjBXa8CQ4DkUr4n2YuVJRoahWZA@mail.gmail.com>
+Date: Wed, 19 Sep 2018 08:48:46 -0700
+Message-Id: <20180919154847.1543-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,49 +16,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/8] ARM: nxp-imx8mq-evk: Add FEC's PHY configuration code
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] ARM: i.MX: boot: Make use of FIELD_GET() in
+ imx51_get_boot_source()
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Wed, Sep 19, 2018 at 12:48 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Mon, Sep 17, 2018 at 10:41:46PM -0700, Andrey Smirnov wrote:
-> > Add appropriate DT node and a fixup routine needed for i.MX8MQ EVK
-> > board.
-> >
-> > diff --git a/arch/arm/dts/imx8mq-evk.dts b/arch/arm/dts/imx8mq-evk.dts
-> > index 3ac13baa1..bdc340a8b 100644
-> > --- a/arch/arm/dts/imx8mq-evk.dts
-> > +++ b/arch/arm/dts/imx8mq-evk.dts
-> > @@ -43,7 +43,18 @@
-> >                   <&pinctrl_fec1_data_tx>, <&pinctrl_fec1_data_rx>,
-> >                   <&pinctrl_fec1_phy_reset>;
-> >       phy-mode = "rgmii-id";
-> > +     phy-handle = <&fec_phy>;
-> > +     phy-reset-gpios = <&gpio1 9 GPIO_ACTIVE_LOW>;
-> >       status = "okay";
-> > +
-> > +     mdio {
-> > +             #address-cells = <1>;
-> > +             #size-cells = <0>;
-> > +
-> > +             fec_phy: ethernet-phy@1 {
-> > +                     reg = <1>;
-> > +             };
-> > +     };
->
-> What's the reason for adding a phy node here? It shouldn't be needed.
->
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/mach-imx/boot.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-Yeah, I think I added it mistakenly thinking it was needed and never
-re-check the correctness of that assumption. Will remove in v2.
+diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+index f1fc40479..830ea08f3 100644
+--- a/arch/arm/mach-imx/boot.c
++++ b/arch/arm/mach-imx/boot.c
+@@ -167,10 +167,10 @@ void imx27_boot_save_loc(void)
+ 	imx_boot_save_loc(imx27_get_boot_source);
+ }
+ 
+-#define IMX51_SRC_SBMR			0x4
+-#define IMX51_SBMR_BT_MEM_TYPE_SHIFT	7
+-#define IMX51_SBMR_BT_MEM_CTL_SHIFT	0
+-#define IMX51_SBMR_BMOD_SHIFT		14
++#define IMX51_SRC_SBMR		0x4
++#define IMX51_SBMR_BT_MEM_TYPE	GENMASK(8, 7)
++#define IMX51_SBMR_BT_MEM_CTL	GENMASK(1, 0)
++#define IMX51_SBMR_BMOD		GENMASK(15, 14)
+ 
+ void imx51_get_boot_source(enum bootsource *src, int *instance)
+ {
+@@ -180,12 +180,12 @@ void imx51_get_boot_source(enum bootsource *src, int *instance)
+ 
+ 	reg = readl(src_base + IMX51_SRC_SBMR);
+ 
+-	switch ((reg >> IMX51_SBMR_BMOD_SHIFT) & 0x3) {
++	switch (FIELD_GET(IMX51_SBMR_BMOD, reg)) {
+ 	case 0:
+ 	case 2:
+ 		/* internal boot */
+-		ctrl = (reg >> IMX51_SBMR_BT_MEM_CTL_SHIFT) & 0x3;
+-		type = (reg >> IMX51_SBMR_BT_MEM_TYPE_SHIFT) & 0x3;
++		ctrl = FIELD_GET(IMX51_SBMR_BT_MEM_CTL, reg);
++		type = FIELD_GET(IMX51_SBMR_BT_MEM_TYPE, reg);
+ 
+ 		*src = locations[ctrl][type];
+ 		break;
+-- 
+2.17.1
 
-Thanks,
-Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
