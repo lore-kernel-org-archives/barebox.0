@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-f173.google.com ([209.85.215.173])
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g2eiw-0004A9-6A
+ id 1g2eix-0004AD-8I
  for barebox@lists.infradead.org; Wed, 19 Sep 2018 15:49:12 +0000
-Received: by mail-pg1-f173.google.com with SMTP id r1-v6so2935369pgp.11
- for <barebox@lists.infradead.org>; Wed, 19 Sep 2018 08:48:55 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id x17-v6so2904313pfh.5
+ for <barebox@lists.infradead.org>; Wed, 19 Sep 2018 08:48:56 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 19 Sep 2018 08:48:46 -0700
-Message-Id: <20180919154847.1543-1-andrew.smirnov@gmail.com>
+Date: Wed, 19 Sep 2018 08:48:47 -0700
+Message-Id: <20180919154847.1543-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20180919154847.1543-1-andrew.smirnov@gmail.com>
+References: <20180919154847.1543-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,51 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: i.MX: boot: Make use of FIELD_GET() in
- imx51_get_boot_source()
+Subject: [PATCH 2/2] ARM: i.MX: boot: Detect boot instance on i.MX51
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/boot.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/arm/mach-imx/boot.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index f1fc40479..830ea08f3 100644
+index 830ea08f3..0c51767c4 100644
 --- a/arch/arm/mach-imx/boot.c
 +++ b/arch/arm/mach-imx/boot.c
-@@ -167,10 +167,10 @@ void imx27_boot_save_loc(void)
- 	imx_boot_save_loc(imx27_get_boot_source);
- }
- 
--#define IMX51_SRC_SBMR			0x4
--#define IMX51_SBMR_BT_MEM_TYPE_SHIFT	7
--#define IMX51_SBMR_BT_MEM_CTL_SHIFT	0
--#define IMX51_SBMR_BMOD_SHIFT		14
-+#define IMX51_SRC_SBMR		0x4
-+#define IMX51_SBMR_BT_MEM_TYPE	GENMASK(8, 7)
-+#define IMX51_SBMR_BT_MEM_CTL	GENMASK(1, 0)
-+#define IMX51_SBMR_BMOD		GENMASK(15, 14)
+@@ -170,6 +170,7 @@ void imx27_boot_save_loc(void)
+ #define IMX51_SRC_SBMR		0x4
+ #define IMX51_SBMR_BT_MEM_TYPE	GENMASK(8, 7)
+ #define IMX51_SBMR_BT_MEM_CTL	GENMASK(1, 0)
++#define IMX51_SBMR_BT_SRC	GENMASK(20, 19)
+ #define IMX51_SBMR_BMOD		GENMASK(15, 14)
  
  void imx51_get_boot_source(enum bootsource *src, int *instance)
- {
-@@ -180,12 +180,12 @@ void imx51_get_boot_source(enum bootsource *src, int *instance)
- 
- 	reg = readl(src_base + IMX51_SRC_SBMR);
- 
--	switch ((reg >> IMX51_SBMR_BMOD_SHIFT) & 0x3) {
-+	switch (FIELD_GET(IMX51_SBMR_BMOD, reg)) {
- 	case 0:
- 	case 2:
- 		/* internal boot */
--		ctrl = (reg >> IMX51_SBMR_BT_MEM_CTL_SHIFT) & 0x3;
--		type = (reg >> IMX51_SBMR_BT_MEM_TYPE_SHIFT) & 0x3;
-+		ctrl = FIELD_GET(IMX51_SBMR_BT_MEM_CTL, reg);
-+		type = FIELD_GET(IMX51_SBMR_BT_MEM_TYPE, reg);
+@@ -188,6 +189,7 @@ void imx51_get_boot_source(enum bootsource *src, int *instance)
+ 		type = FIELD_GET(IMX51_SBMR_BT_MEM_TYPE, reg);
  
  		*src = locations[ctrl][type];
++		*instance = FIELD_GET(IMX51_SBMR_BT_SRC, reg);
  		break;
+ 	case 1:
+ 		/* reserved */
 -- 
 2.17.1
 
