@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g3JSb-0004sV-B3
+ id 1g3JSb-0004su-B4
  for barebox@lists.infradead.org; Fri, 21 Sep 2018 11:18:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 21 Sep 2018 13:18:16 +0200
-Message-Id: <20180921111820.29742-5-s.hauer@pengutronix.de>
+Date: Fri, 21 Sep 2018 13:18:18 +0200
+Message-Id: <20180921111820.29742-7-s.hauer@pengutronix.de>
 In-Reply-To: <20180921111820.29742-1-s.hauer@pengutronix.de>
 References: <20180921111820.29742-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,117 +21,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/8] mtd: mtdraw: pass mtdraw around
+Subject: [PATCH 6/8] mtd: mtdraw: fail when writing fails
 To: Barebox List <barebox@lists.infradead.org>
 
-Pass mtdraw around internally instead of mtd. mtd can be accessed
-easily from mtdraw, so we can also drop to_mtd().
+When writing a block fails then fail the whole write process. There's
+no point in returning the written bytes so far as this would only
+indicate the caller to write the remaining bytes again which would
+then fail.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/mtdraw.c | 34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ drivers/mtd/mtdraw.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
-index bfae795bd7..089dc54eb4 100644
+index 6518ae34d5..fb45c2bbc9 100644
 --- a/drivers/mtd/mtdraw.c
 +++ b/drivers/mtd/mtdraw.c
-@@ -77,14 +77,10 @@ static struct mtdraw *to_mtdraw(struct cdev *cdev)
- 	return cdev->priv;
+@@ -158,12 +158,11 @@ static loff_t mtdraw_raw_to_mtd_offset(struct mtdraw *mtdraw, loff_t offset)
+ 	return (loff_t)mtdraw_offset_to_block(mtdraw, offset) * mtd->writesize;
  }
  
--static struct mtd_info *to_mtd(struct cdev *cdev)
-+static unsigned int mtdraw_offset_to_block(struct mtdraw *mtdraw, loff_t offset)
+-static ssize_t mtdraw_blkwrite(struct mtdraw *mtdraw, const void *buf,
++static int mtdraw_blkwrite(struct mtdraw *mtdraw, const void *buf,
+ 			       ulong offset)
  {
--	struct mtdraw *mtdraw = to_mtdraw(cdev);
--	return mtdraw->mtd;
--}
-+	struct mtd_info *mtd = mtdraw->mtd;
+ 	struct mtd_info *mtd = mtdraw->mtd;
+ 	struct mtd_oob_ops ops;
+-	int ret;
  
--static unsigned int mtdraw_offset_to_block(struct mtd_info *mtd, loff_t offset)
--{
- 	u64 ofs64 = offset;
- 
- 	do_div(ofs64, mtd->writesize + mtd->oobsize);
-@@ -128,12 +124,13 @@ err:
- static ssize_t mtdraw_read(struct cdev *cdev, void *buf, size_t count,
- 			    loff_t offset, ulong flags)
- {
--	struct mtd_info *mtd = to_mtd(cdev);
-+	struct mtdraw *mtdraw = to_mtdraw(cdev);
-+	struct mtd_info *mtd = mtdraw->mtd;
- 	ssize_t retlen = 0, ret = 1, toread;
- 	ulong numblock;
- 	int skip;
- 
--	numblock = mtdraw_offset_to_block(mtd, offset);
-+	numblock = mtdraw_offset_to_block(mtdraw, offset);
- 	skip = offset - numblock * (mtd->writesize + mtd->oobsize);
- 
- 	while (ret > 0 && count > 0) {
-@@ -154,9 +151,11 @@ static ssize_t mtdraw_read(struct cdev *cdev, void *buf, size_t count,
+ 	if (mtd_buf_all_ff(buf, mtdraw->rps))
+ 		return 0;
+@@ -174,10 +173,7 @@ static ssize_t mtdraw_blkwrite(struct mtdraw *mtdraw, const void *buf,
+ 	ops.len = mtd->writesize;
+ 	ops.oobbuf = (void *)buf + mtd->writesize;
+ 	ops.ooblen = mtd->oobsize;
+-	ret = mtd_write_oob(mtd, offset, &ops);
+-	if (!ret)
+-		ret = ops.retlen + ops.oobretlen;
+-	return ret;
++	return mtd_write_oob(mtd, offset, &ops);
  }
  
- #ifdef CONFIG_MTD_WRITE
--static loff_t mtdraw_raw_to_mtd_offset(struct mtd_info *mtd, loff_t offset)
-+static loff_t mtdraw_raw_to_mtd_offset(struct mtdraw *mtdraw, loff_t offset)
- {
--	return (loff_t)mtdraw_offset_to_block(mtd, offset) * mtd->writesize;
-+	struct mtd_info *mtd = mtdraw->mtd;
-+
-+	return (loff_t)mtdraw_offset_to_block(mtdraw, offset) * mtd->writesize;
- }
- 
- static ssize_t mtdraw_blkwrite(struct mtd_info *mtd, const void *buf,
-@@ -190,13 +189,13 @@ static ssize_t mtdraw_write(struct cdev *cdev, const void *buf, size_t count,
- 			    loff_t offset, ulong flags)
- {
- 	struct mtdraw *mtdraw = to_mtdraw(cdev);
--	struct mtd_info *mtd = to_mtd(cdev);
-+	struct mtd_info *mtd = mtdraw->mtd;
- 	int bsz = mtd->writesize + mtd->oobsize;
- 	ulong numblock;
- 	size_t retlen = 0, tofill;
- 	int ret = 0;
- 
--	numblock = mtdraw_offset_to_block(mtd, offset);
-+	numblock = mtdraw_offset_to_block(mtdraw, offset);
- 
- 	if (mtdraw->write_fill &&
- 	    mtdraw->write_ofs + mtdraw->write_fill != offset)
-@@ -213,13 +212,13 @@ static ssize_t mtdraw_write(struct cdev *cdev, const void *buf, size_t count,
- 	}
- 
- 	if (mtdraw->write_fill == bsz) {
--		numblock = mtdraw_offset_to_block(mtd, mtdraw->write_ofs);
-+		numblock = mtdraw_offset_to_block(mtdraw, mtdraw->write_ofs);
- 		ret = mtdraw_blkwrite(mtd, mtdraw->writebuf,
+ static void mtdraw_fillbuf(struct mtdraw *mtdraw, const void *src, int nbbytes)
+@@ -215,6 +211,8 @@ static ssize_t mtdraw_write(struct cdev *cdev, const void *buf, size_t count,
+ 		numblock = mtdraw_offset_to_block(mtdraw, mtdraw->write_ofs);
+ 		ret = mtdraw_blkwrite(mtdraw, mtdraw->writebuf,
  				      mtd->writesize * numblock);
++		if (ret)
++			return ret;
  		mtdraw->write_fill = 0;
  	}
  
--	numblock = mtdraw_offset_to_block(mtd, offset);
-+	numblock = mtdraw_offset_to_block(mtdraw, offset);
- 	while (ret >= 0 && count >= bsz) {
- 		ret = mtdraw_blkwrite(mtd, buf + retlen,
+@@ -222,20 +220,19 @@ static ssize_t mtdraw_write(struct cdev *cdev, const void *buf, size_t count,
+ 	while (ret >= 0 && count >= mtdraw->rps) {
+ 		ret = mtdraw_blkwrite(mtdraw, buf + retlen,
  				   mtd->writesize * numblock++);
-@@ -242,12 +241,13 @@ static ssize_t mtdraw_write(struct cdev *cdev, const void *buf, size_t count,
++		if (ret)
++			return ret;
+ 		count -= ret;
+ 		retlen += ret;
+ 		offset += ret;
+ 	}
  
- static int mtdraw_erase(struct cdev *cdev, loff_t count, loff_t offset)
- {
--	struct mtd_info *mtd = to_mtd(cdev);
-+	struct mtdraw *mtdraw = to_mtdraw(cdev);
-+	struct mtd_info *mtd = mtdraw->mtd;
- 	struct erase_info erase;
- 	int ret;
+-	if (ret >= 0 && count) {
++	if (count) {
+ 		mtdraw->write_ofs = offset - mtdraw->write_fill;
+ 		mtdraw_fillbuf(mtdraw, buf + retlen, count);
+ 		retlen += count;
+ 	}
  
--	offset = mtdraw_raw_to_mtd_offset(mtd, offset);
--	count = mtdraw_raw_to_mtd_offset(mtd, count);
-+	offset = mtdraw_raw_to_mtd_offset(mtdraw, offset);
-+	count = mtdraw_raw_to_mtd_offset(mtdraw, count);
+-	if (ret < 0)
+-		return ret;
+-
+ 	return retlen;
+ }
  
- 	memset(&erase, 0, sizeof(erase));
- 	erase.mtd = mtd;
 -- 
 2.19.0
 
