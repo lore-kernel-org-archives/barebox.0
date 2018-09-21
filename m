@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g3EVS-0006Ks-0a
- for barebox@lists.infradead.org; Fri, 21 Sep 2018 06:01:56 +0000
-Received: by mail-pl1-x641.google.com with SMTP id b97-v6so5465325plb.0
- for <barebox@lists.infradead.org>; Thu, 20 Sep 2018 23:01:23 -0700 (PDT)
+ id 1g3EVW-0006N4-RZ
+ for barebox@lists.infradead.org; Fri, 21 Sep 2018 06:02:07 +0000
+Received: by mail-pl1-x62e.google.com with SMTP id g2-v6so5448801plo.2
+ for <barebox@lists.infradead.org>; Thu, 20 Sep 2018 23:01:28 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 20 Sep 2018 23:00:56 -0700
-Message-Id: <20180921060102.16341-3-andrew.smirnov@gmail.com>
+Date: Thu, 20 Sep 2018 23:00:59 -0700
+Message-Id: <20180921060102.16341-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20180921060102.16341-1-andrew.smirnov@gmail.com>
 References: <20180921060102.16341-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,38 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 2/8] ARM: i.MX8MQ: Add missing node for ECSPI1
+Subject: [PATCH v3 5/8] ARM: nxp-imx8mq-evk: Add missing compatibility check
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add node for ECSPI1 that is missing from imx8mq.dtsi
+Add missing compatibility check to imx8mq_evk_mem_init() to prevent it
+from being executed for other i.MX8MQ boards.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/imx8mq.dtsi | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/arm/boards/nxp-imx8mq-evk/board.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/dts/imx8mq.dtsi b/arch/arm/dts/imx8mq.dtsi
-index c67438a48..6f860c3d6 100644
---- a/arch/arm/dts/imx8mq.dtsi
-+++ b/arch/arm/dts/imx8mq.dtsi
-@@ -288,6 +288,16 @@
- 			#size-cells = <1>;
- 			ranges = <0x30800000 0x30800000 0x400000>;
+diff --git a/arch/arm/boards/nxp-imx8mq-evk/board.c b/arch/arm/boards/nxp-imx8mq-evk/board.c
+index 868c25ebb..3645e5e71 100644
+--- a/arch/arm/boards/nxp-imx8mq-evk/board.c
++++ b/arch/arm/boards/nxp-imx8mq-evk/board.c
+@@ -25,6 +25,9 @@
  
-+			ecspi1: ecspi@30820000 {
-+				compatible = "fsl,imx6ul-ecspi", "fsl,imx51-ecspi";
-+				reg = <0x30820000 0x10000>;
-+				interrupts = <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&clk IMX8MQ_CLK_ECSPI1_ROOT>,
-+				<&clk IMX8MQ_CLK_ECSPI1_ROOT>;
-+				clock-names = "ipg", "per";
-+				status = "disabled";
-+			};
+ static int imx8mq_evk_mem_init(void)
+ {
++	if (!of_machine_is_compatible("fsl,imx8mq-evk"))
++		return 0;
 +
- 			uart1: serial@30860000 {
- 				compatible = "fsl,imx8mq-uart",
- 				             "fsl,imx6q-uart";
+ 	arm_add_mem_device("ram0", 0x40000000, SZ_2G);
+ 
+ 	request_sdram_region("ATF", 0x40000000, SZ_128K);
 -- 
 2.17.1
 
