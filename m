@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g3EZf-0000pN-4F
- for barebox@lists.infradead.org; Fri, 21 Sep 2018 06:05:56 +0000
-Received: by mail-pl1-x643.google.com with SMTP id f6-v6so5459790plo.1
- for <barebox@lists.infradead.org>; Thu, 20 Sep 2018 23:05:44 -0700 (PDT)
+ id 1g3EZh-0000pR-O9
+ for barebox@lists.infradead.org; Fri, 21 Sep 2018 06:05:59 +0000
+Received: by mail-pf1-x444.google.com with SMTP id i26-v6so5468951pfo.12
+ for <barebox@lists.infradead.org>; Thu, 20 Sep 2018 23:05:47 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 20 Sep 2018 23:05:30 -0700
-Message-Id: <20180921060532.21485-1-andrew.smirnov@gmail.com>
+Date: Thu, 20 Sep 2018 23:05:32 -0700
+Message-Id: <20180921060532.21485-3-andrew.smirnov@gmail.com>
+In-Reply-To: <20180921060532.21485-1-andrew.smirnov@gmail.com>
+References: <20180921060532.21485-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +23,132 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/3] clk: i.MX8MQ: Add missing IMX8MQ_CLK_TMU_ROOT clock
+Subject: [PATCH v2 3/3] ARM: i.MX8MQ: Add node for CPU thermal sensor
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
-
-Add missing IMX8MQ_CLK_TMU_ROOT clock needed for CPU thermal sensor.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
 
 Changes since [v1]:
 
-    - None
+    - Added #cooling-cells property &A53_0 to avoid getting a warning from DTC
 
-[v1] http://lists.infradead.org/pipermail/barebox/2018-September/034788.html
+[v1] http://lists.infradead.org/pipermail/barebox/2018-September/034790.html
 
- drivers/clk/imx/clk-imx8mq.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/dts/imx8mq.dtsi | 85 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 85 insertions(+)
 
-diff --git a/drivers/clk/imx/clk-imx8mq.c b/drivers/clk/imx/clk-imx8mq.c
-index 782bbc256..0431f61f0 100644
---- a/drivers/clk/imx/clk-imx8mq.c
-+++ b/drivers/clk/imx/clk-imx8mq.c
-@@ -572,6 +572,7 @@ static void __init imx8mq_clocks_init(struct device_node *ccm_node)
- 	clks[IMX8MQ_CLK_WDOG1_ROOT] = imx_clk_gate4("wdog1_root_clk", "wdog_div", base + 0x4530, 0);
- 	clks[IMX8MQ_CLK_WDOG2_ROOT] = imx_clk_gate4("wdog2_root_clk", "wdog_div", base + 0x4540, 0);
- 	clks[IMX8MQ_CLK_WDOG3_ROOT] = imx_clk_gate4("wdog3_root_clk", "wdog_div", base + 0x4550, 0);
-+	clks[IMX8MQ_CLK_TMU_ROOT] = imx_clk_gate4("tmu_root_clk", "ipg_root", base + 0x4620, 0);
+diff --git a/arch/arm/dts/imx8mq.dtsi b/arch/arm/dts/imx8mq.dtsi
+index 763005217..f89bee200 100644
+--- a/arch/arm/dts/imx8mq.dtsi
++++ b/arch/arm/dts/imx8mq.dtsi
+@@ -7,6 +7,7 @@
+ #include <dt-bindings/clock/imx8mq-clock.h>
+ #include <dt-bindings/gpio/gpio.h>
+ #include <dt-bindings/interrupt-controller/arm-gic.h>
++#include <dt-bindings/thermal/thermal.h>
+ #include "imx8mq-pinfunc.h"
  
- 	clks[IMX8MQ_GPT_3M_CLK] = imx_clk_fixed_factor("gpt_3m", "osc_25m", 1, 8);
- 	clks[IMX8MQ_CLK_DRAM_ALT_ROOT] = imx_clk_fixed_factor("dram_alt_root", "dram_alt_div", 1, 4);
+ /* first 128 KiB of memory are owned by ATF */
+@@ -96,6 +97,7 @@
+ 			reg = <0x0>;
+ 			enable-method = "psci";
+ 			next-level-cache = <&A53_L2>;
++			#cooling-cells = <2>;
+ 		};
+ 
+ 		A53_1: cpu@1 {
+@@ -214,6 +216,89 @@
+ 				#interrupt-cells = <2>;
+ 			};
+ 
++			tmu: tmu@30260000 {
++				compatible = "fsl,imx8mq-tmu";
++				reg = <0x30260000 0x10000>;
++				interrupt = <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>;
++				little-endian;
++				fsl,tmu-range = <0xb0000 0xa0026 0x80048 0x70061>;
++				fsl,tmu-calibration = <0x00000000 0x00000023
++						       0x00000001 0x00000029
++						       0x00000002 0x0000002f
++						       0x00000003 0x00000035
++						       0x00000004 0x0000003d
++						       0x00000005 0x00000043
++						       0x00000006 0x0000004b
++						       0x00000007 0x00000051
++						       0x00000008 0x00000057
++						       0x00000009 0x0000005f
++						       0x0000000a 0x00000067
++						       0x0000000b 0x0000006f
++
++						       0x00010000 0x0000001b
++						       0x00010001 0x00000023
++						       0x00010002 0x0000002b
++						       0x00010003 0x00000033
++						       0x00010004 0x0000003b
++						       0x00010005 0x00000043
++						       0x00010006 0x0000004b
++						       0x00010007 0x00000055
++						       0x00010008 0x0000005d
++						       0x00010009 0x00000067
++						       0x0001000a 0x00000070
++
++						       0x00020000 0x00000017
++						       0x00020001 0x00000023
++						       0x00020002 0x0000002d
++						       0x00020003 0x00000037
++						       0x00020004 0x00000041
++						       0x00020005 0x0000004b
++						       0x00020006 0x00000057
++						       0x00020007 0x00000063
++						       0x00020008 0x0000006f
++
++						       0x00030000 0x00000015
++						       0x00030001 0x00000021
++						       0x00030002 0x0000002d
++						       0x00030003 0x00000039
++						       0x00030004 0x00000045
++						       0x00030005 0x00000053
++						       0x00030006 0x0000005f
++						       0x00030007 0x00000071>;
++				#thermal-sensor-cells =  <0>;
++			};
++
++			thermal-zones {
++				/* cpu thermal */
++				cpu-thermal {
++					polling-delay-passive = <250>;
++					polling-delay = <2000>;
++					thermal-sensors = <&tmu>;
++
++					trips {
++						cpu_alert0: trip0 {
++							temperature = <85000>;
++							hysteresis = <2000>;
++							type = "passive";
++						};
++
++						cpu_crit0: trip1 {
++							temperature = <95000>;
++							hysteresis = <2000>;
++							type = "critical";
++						};
++					};
++
++					cooling-maps {
++						map0 {
++							trip = <&cpu_alert0>;
++							cooling-device =
++							<&A53_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
++						};
++					};
++				};
++			};
++
+ 			iomuxc: iomuxc@30330000 {
+ 				compatible = "fsl,imx8mq-iomuxc";
+ 				reg = <0x30330000 0x10000>;
 -- 
 2.17.1
 
