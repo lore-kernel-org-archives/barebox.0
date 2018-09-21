@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g3EVY-0006OK-5A
- for barebox@lists.infradead.org; Fri, 21 Sep 2018 06:02:09 +0000
-Received: by mail-pl1-x642.google.com with SMTP id t20-v6so2009488ply.13
- for <barebox@lists.infradead.org>; Thu, 20 Sep 2018 23:01:29 -0700 (PDT)
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1g3EZf-0000pN-4F
+ for barebox@lists.infradead.org; Fri, 21 Sep 2018 06:05:56 +0000
+Received: by mail-pl1-x643.google.com with SMTP id f6-v6so5459790plo.1
+ for <barebox@lists.infradead.org>; Thu, 20 Sep 2018 23:05:44 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 20 Sep 2018 23:01:00 -0700
-Message-Id: <20180921060102.16341-7-andrew.smirnov@gmail.com>
-In-Reply-To: <20180921060102.16341-1-andrew.smirnov@gmail.com>
-References: <20180921060102.16341-1-andrew.smirnov@gmail.com>
+Date: Thu, 20 Sep 2018 23:05:30 -0700
+Message-Id: <20180921060532.21485-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,74 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 6/8] ARM: nxp-imx8mq-evk: Add FEC's PHY configuration code
+Subject: [PATCH v2 1/3] clk: i.MX8MQ: Add missing IMX8MQ_CLK_TMU_ROOT clock
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add appropriate DT and PHY fixup code needed for i.MX8MQ EVK board.
+Add missing IMX8MQ_CLK_TMU_ROOT clock needed for CPU thermal sensor.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/nxp-imx8mq-evk/board.c | 24 ++++++++++++++++++++++++
- arch/arm/dts/imx8mq-evk.dts            |  1 +
- 2 files changed, 25 insertions(+)
 
-diff --git a/arch/arm/boards/nxp-imx8mq-evk/board.c b/arch/arm/boards/nxp-imx8mq-evk/board.c
-index 3645e5e71..aae6970d8 100644
---- a/arch/arm/boards/nxp-imx8mq-evk/board.c
-+++ b/arch/arm/boards/nxp-imx8mq-evk/board.c
-@@ -21,8 +21,30 @@
- #include <init.h>
- #include <asm/memory.h>
- #include <linux/sizes.h>
-+#include <linux/phy.h>
- #include <mach/bbu.h>
+Changes since [v1]:
+
+    - None
+
+[v1] http://lists.infradead.org/pipermail/barebox/2018-September/034788.html
+
+ drivers/clk/imx/clk-imx8mq.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/clk/imx/clk-imx8mq.c b/drivers/clk/imx/clk-imx8mq.c
+index 782bbc256..0431f61f0 100644
+--- a/drivers/clk/imx/clk-imx8mq.c
++++ b/drivers/clk/imx/clk-imx8mq.c
+@@ -572,6 +572,7 @@ static void __init imx8mq_clocks_init(struct device_node *ccm_node)
+ 	clks[IMX8MQ_CLK_WDOG1_ROOT] = imx_clk_gate4("wdog1_root_clk", "wdog_div", base + 0x4530, 0);
+ 	clks[IMX8MQ_CLK_WDOG2_ROOT] = imx_clk_gate4("wdog2_root_clk", "wdog_div", base + 0x4540, 0);
+ 	clks[IMX8MQ_CLK_WDOG3_ROOT] = imx_clk_gate4("wdog3_root_clk", "wdog_div", base + 0x4550, 0);
++	clks[IMX8MQ_CLK_TMU_ROOT] = imx_clk_gate4("tmu_root_clk", "ipg_root", base + 0x4620, 0);
  
-+#include <envfs.h>
-+
-+#define PHY_ID_AR8031	0x004dd074
-+#define AR_PHY_ID_MASK	0xffffffff
-+
-+static int ar8031_phy_fixup(struct phy_device *phydev)
-+{
-+	/*
-+	 * Enable 1.8V(SEL_1P5_1P8_POS_REG) on
-+	 * Phy control debug reg 0
-+	 */
-+	phy_write(phydev, 0x1d, 0x1f);
-+	phy_write(phydev, 0x1e, 0x8);
-+
-+	/* rgmii tx clock delay enable */
-+	phy_write(phydev, 0x1d, 0x05);
-+	phy_write(phydev, 0x1e, 0x100);
-+
-+	return 0;
-+}
-+
- static int imx8mq_evk_mem_init(void)
- {
- 	if (!of_machine_is_compatible("fsl,imx8mq-evk"))
-@@ -45,6 +67,8 @@ static int nxp_imx8mq_evk_init(void)
- 
- 	imx8mq_bbu_internal_mmc_register_handler("eMMC", "/dev/mmc0", 0);
- 
-+	phy_register_fixup_for_uid(PHY_ID_AR8031, AR_PHY_ID_MASK,
-+				   ar8031_phy_fixup);
- 	return 0;
- }
- device_initcall(nxp_imx8mq_evk_init);
-diff --git a/arch/arm/dts/imx8mq-evk.dts b/arch/arm/dts/imx8mq-evk.dts
-index 3ac13baa1..d6d5d843c 100644
---- a/arch/arm/dts/imx8mq-evk.dts
-+++ b/arch/arm/dts/imx8mq-evk.dts
-@@ -43,6 +43,7 @@
- 	            <&pinctrl_fec1_data_tx>, <&pinctrl_fec1_data_rx>,
- 	            <&pinctrl_fec1_phy_reset>;
- 	phy-mode = "rgmii-id";
-+	phy-reset-gpios = <&gpio1 9 GPIO_ACTIVE_LOW>;
- 	status = "okay";
- };
- 
+ 	clks[IMX8MQ_GPT_3M_CLK] = imx_clk_fixed_factor("gpt_3m", "osc_25m", 1, 8);
+ 	clks[IMX8MQ_CLK_DRAM_ALT_ROOT] = imx_clk_fixed_factor("dram_alt_root", "dram_alt_div", 1, 4);
 -- 
 2.17.1
 
