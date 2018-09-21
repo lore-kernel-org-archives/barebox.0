@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g3JSC-0004sc-L7
- for barebox@lists.infradead.org; Fri, 21 Sep 2018 11:18:35 +0000
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1g3JSH-0004qp-5y
+ for barebox@lists.infradead.org; Fri, 21 Sep 2018 11:18:38 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 21 Sep 2018 13:18:13 +0200
-Message-Id: <20180921111820.29742-2-s.hauer@pengutronix.de>
+Date: Fri, 21 Sep 2018 13:18:14 +0200
+Message-Id: <20180921111820.29742-3-s.hauer@pengutronix.de>
 In-Reply-To: <20180921111820.29742-1-s.hauer@pengutronix.de>
 References: <20180921111820.29742-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,53 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/8] mtd: mtdraw: Simplify error path
+Subject: [PATCH 2/8] mtd: mtdraw: use dev_* for printing
 To: Barebox List <barebox@lists.infradead.org>
 
-We do not need a printf when writing fails, it's the callers job
-to report this. Remove printf and simplify the error path a bit.
+We have a struct device_d *, so use dev_* for printing instead of
+printf.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/mtdraw.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ drivers/mtd/mtdraw.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
-index 4f7c3b836c..d0dde0dee2 100644
+index d0dde0dee2..3ad9de80a2 100644
 --- a/drivers/mtd/mtdraw.c
 +++ b/drivers/mtd/mtdraw.c
-@@ -146,11 +146,11 @@ static ssize_t mtdraw_read(struct cdev *cdev, void *buf, size_t count,
- 		count -= ret;
- 		retlen += ret;
- 	}
-+
- 	if (ret < 0)
--		printf("err %zd\n", ret);
--	else
--		ret = retlen;
--	return ret;
-+		return ret;
-+
-+	return retlen;
- }
+@@ -252,7 +252,8 @@ static int mtdraw_erase(struct cdev *cdev, loff_t count, loff_t offset)
+ 	erase.len = mtd->erasesize;
  
- #ifdef CONFIG_MTD_WRITE
-@@ -231,12 +231,10 @@ static ssize_t mtdraw_write(struct cdev *cdev, const void *buf, size_t count,
- 		retlen += count;
- 	}
+ 	while (count > 0) {
+-		debug("erase 0x%08llx len: 0x%08llx\n", erase.addr, erase.len);
++		dev_dbg(&mtd->class_dev, "erase 0x%08llx len: 0x%08llx\n",
++			erase.addr, erase.len);
  
--	if (ret < 0) {
--		printf("err %d\n", ret);
-+	if (ret < 0)
- 		return ret;
--	} else {
--		return retlen;
--	}
-+
-+	return retlen;
- }
+ 		if (!mtd->allow_erasebad)
+ 			ret = mtd_block_isbad(mtd, erase.addr);
+@@ -260,7 +261,8 @@ static int mtdraw_erase(struct cdev *cdev, loff_t count, loff_t offset)
+ 			ret = 0;
  
- static int mtdraw_erase(struct cdev *cdev, loff_t count, loff_t offset)
+ 		if (ret > 0) {
+-			printf("Skipping bad block at 0x%08llx\n", erase.addr);
++			dev_info(&mtd->class_dev, "Skipping bad block at 0x%08llx\n",
++				 erase.addr);
+ 		} else {
+ 			ret = mtd_erase(mtd, &erase);
+ 			if (ret)
 -- 
 2.19.0
 
