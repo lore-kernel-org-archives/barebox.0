@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g3KZU-0005eu-U8
- for barebox@lists.infradead.org; Fri, 21 Sep 2018 12:30:09 +0000
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1g3KZU-00078w-Eq
+ for barebox@lists.infradead.org; Fri, 21 Sep 2018 12:30:14 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 21 Sep 2018 14:29:54 +0200
-Message-Id: <20180921122955.9513-1-s.hauer@pengutronix.de>
+Date: Fri, 21 Sep 2018 14:29:55 +0200
+Message-Id: <20180921122955.9513-2-s.hauer@pengutronix.de>
+In-Reply-To: <20180921122955.9513-1-s.hauer@pengutronix.de>
+References: <20180921122955.9513-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,69 +21,110 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] environment: Allow default env path to be NULL
+Subject: [PATCH 2/2] environment: Do not use environment when overlapping with
+ other partitions
 To: Barebox List <barebox@lists.infradead.org>
 
-Several places assume that the default environment path cannot be NULL.
-Allow NULL here without crashing.
+Environment partitions are usually specified with their hardcoded offset
+and size, either in the device tree or the board file. These partitions
+potentially overlap with other partitions read from the partition table.
+Overlapping partitions for sure have bad effects. Be more friendly to our
+users and warn them when such a situation occurs and stop using that
+partition for storing the environment.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/loadenv.c   | 4 ++++
- common/environment.c | 9 +++++++--
- 2 files changed, 11 insertions(+), 2 deletions(-)
+ common/startup.c | 48 +++++++++++++++++++++++++++++++++++++++++++++++-
+ include/common.h | 10 ++++++++++
+ 2 files changed, 57 insertions(+), 1 deletion(-)
 
-diff --git a/commands/loadenv.c b/commands/loadenv.c
-index 6469affadb..bf01072c42 100644
---- a/commands/loadenv.c
-+++ b/commands/loadenv.c
-@@ -61,6 +61,10 @@ static int do_loadenv(int argc, char *argv[])
- 
- 	if (argc - optind < 1) {
- 		filename = default_environment_path_get();
-+		if (!filename) {
-+			printf("Default environment path not set\n");
-+			return 1;
-+		}
- 	} else {
- 		/*
- 		 * /dev/defaultenv use to contain the defaultenvironment.
-diff --git a/common/environment.c b/common/environment.c
-index 0edf34b661..56a030eda0 100644
---- a/common/environment.c
-+++ b/common/environment.c
-@@ -256,9 +256,12 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
- 	struct action_data data = {};
- 	void *buf = NULL, *wbuf;
- 	struct envfs_entry *env;
-+	const char *defenv_path = default_environment_path_get();
- 
- 	if (!filename)
--		filename = default_environment_path_get();
-+		filename = defenv_path;
-+	if (!filename)
-+		return -ENOENT;
- 
- 	if (!dirname)
- 		dirname = "/env";
-@@ -365,7 +368,7 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
- 	ret = 0;
- 
- #ifdef CONFIG_NVVAR
--	if (!strcmp(filename, default_environment_path_get()))
-+	if (defenv_path && !strcmp(filename, defenv_path))
- 	    nv_var_set_clean();
+diff --git a/common/startup.c b/common/startup.c
+index 8553849cb3..f6bb1f1947 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -73,16 +73,62 @@ fs_initcall(mount_root);
  #endif
- out:
-@@ -558,6 +561,8 @@ int envfs_load(const char *filename, const char *dir, unsigned flags)
  
- 	if (!filename)
- 		filename = default_environment_path_get();
-+	if (!filename)
-+		return -ENOENT;
+ #ifdef CONFIG_ENV_HANDLING
++static int check_overlap(const char *path)
++{
++	struct cdev *cenv, *cdisk, *cpart;
++
++	if (strncmp(path, "/dev/", 5))
++		return 0;
++
++	path = devpath_to_name(path);
++	cenv = cdev_by_name(path);
++	if (!cenv)
++		return -EINVAL;
++
++	cdisk = cenv->master;
++
++	if (!cdisk)
++		return 0;
++
++	list_for_each_entry(cpart, &cdisk->partitions, partition_entry) {
++		if (cpart == cenv) {
++			pr_info("Found self\n");
++			continue;
++		}
++
++		if (lregion_overlap(cpart->offset, cpart->size,
++				    cenv->offset, cenv->size))
++			goto conflict;
++	}
++
++	return 0;
++
++conflict:
++	pr_err("Environment partition (0x%08llx-0x%08llx) "
++		"overlaps with partition %s (0x%08llx-0x%08llx), not using it\n",
++		cenv->offset, cenv->offset + cenv->offset + cenv->size - 1,
++		cpart->name,
++		cpart->offset, cpart->offset + cpart->offset + cpart->size - 1);
++
++	return -EINVAL;
++}
++
+ static int load_environment(void)
+ {
+ 	const char *default_environment_path;
++	int ret;
  
- 	if (!dir)
- 		dir = "/env";
+ 	default_environment_path = default_environment_path_get();
+ 
+ 	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT))
+ 		defaultenv_load("/env", 0);
+ 
+-	envfs_load(default_environment_path, "/env", 0);
++	ret = check_overlap(default_environment_path);
++	if (ret)
++		default_environment_path_set(NULL);
++	else
++		envfs_load(default_environment_path, "/env", 0);
++
+ 	nvvar_load();
+ 
+ 	return 0;
+diff --git a/include/common.h b/include/common.h
+index abbe73fd36..f52c7e430c 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -157,4 +157,14 @@ static inline bool region_overlap(unsigned long starta, unsigned long lena,
+ 	return 1;
+ }
+ 
++static inline bool lregion_overlap(loff_t starta, loff_t lena,
++				   loff_t startb, loff_t lenb)
++{
++	if (starta + lena <= startb)
++		return 0;
++	if (startb + lenb <= starta)
++		return 0;
++	return 1;
++}
++
+ #endif	/* __COMMON_H_ */
 -- 
 2.19.0
 
