@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g4Kic-0007IW-Le
- for barebox@lists.infradead.org; Mon, 24 Sep 2018 06:51:44 +0000
-Date: Mon, 24 Sep 2018 08:51:29 +0200
+ id 1g4Kk3-0007Uj-Fa
+ for barebox@lists.infradead.org; Mon, 24 Sep 2018 06:53:13 +0000
+Date: Mon, 24 Sep 2018 08:52:59 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180924065129.GZ4097@pengutronix.de>
+Message-ID: <20180924065259.GA4097@pengutronix.de>
 References: <20180921111820.29742-1-s.hauer@pengutronix.de>
- <20180921111820.29742-3-s.hauer@pengutronix.de>
- <20180921143319.GA14258@ravnborg.org>
+ <20180921111820.29742-6-s.hauer@pengutronix.de>
+ <20180921144240.GB14258@ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20180921143319.GA14258@ravnborg.org>
+In-Reply-To: <20180921144240.GB14258@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,53 +24,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/8] mtd: mtdraw: use dev_* for printing
+Subject: Re: [PATCH 5/8] mtd: mtdraw: add raw page size to private data
 To: Sam Ravnborg <sam@ravnborg.org>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Fri, Sep 21, 2018 at 04:33:19PM +0200, Sam Ravnborg wrote:
+On Fri, Sep 21, 2018 at 04:42:40PM +0200, Sam Ravnborg wrote:
 > Hi Sascha.
 > 
-> My OCD triggered here...
-> 
-> On Fri, Sep 21, 2018 at 01:18:14PM +0200, Sascha Hauer wrote:
-> > We have a struct device_d *, so use dev_* for printing instead of
-> > printf.
+> On Fri, Sep 21, 2018 at 01:18:17PM +0200, Sascha Hauer wrote:
+> > The raw page size is used many times in the driver, so add a variable
+> > to the private data instead of calculating it each time again.
 > > 
 > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > > ---
-> >  drivers/mtd/mtdraw.c | 6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)
+> >  drivers/mtd/mtdraw.c | 40 ++++++++++++++++++++--------------------
+> >  1 file changed, 20 insertions(+), 20 deletions(-)
 > > 
 > > diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
-> > index d0dde0dee2..3ad9de80a2 100644
+> > index 089dc54eb4..6518ae34d5 100644
 > > --- a/drivers/mtd/mtdraw.c
 > > +++ b/drivers/mtd/mtdraw.c
-> > @@ -252,7 +252,8 @@ static int mtdraw_erase(struct cdev *cdev, loff_t count, loff_t offset)
-> >  	erase.len = mtd->erasesize;
-> >  
-> >  	while (count > 0) {
-> > -		debug("erase 0x%08llx len: 0x%08llx\n", erase.addr, erase.len);
-> > +		dev_dbg(&mtd->class_dev, "erase 0x%08llx len: 0x%08llx\n",
-> > +			erase.addr, erase.len);
-> "erase" with lower case "e"
+> > @@ -48,6 +48,7 @@
+> >   * @write_fill: number of bytes in writebuf
+> >   * @write_ofs: offset in character device (mtdraw) where last write(s) stored
+> >   * bytes because of unaligned writes (ie. remain of writesize+oobsize write)
+> > + * @rps: raw page size (data + oob)
+> From the code I would say that a (writesize + oobsize) was more correct.
+> Like we use in the line above too.
 > 
+> > @@ -131,12 +132,11 @@ static ssize_t mtdraw_read(struct cdev *cdev, void *buf, size_t count,
+> >  	int skip;
 > >  
-> >  		if (!mtd->allow_erasebad)
-> >  			ret = mtd_block_isbad(mtd, erase.addr);
-> > @@ -260,7 +261,8 @@ static int mtdraw_erase(struct cdev *cdev, loff_t count, loff_t offset)
-> >  			ret = 0;
-> >  
-> >  		if (ret > 0) {
-> > -			printf("Skipping bad block at 0x%08llx\n", erase.addr);
-> > +			dev_info(&mtd->class_dev, "Skipping bad block at 0x%08llx\n",
-> > +				 erase.addr);
-> Skipping with upper case "S".
+> >  	numblock = mtdraw_offset_to_block(mtdraw, offset);
+> > -	skip = offset - numblock * (mtd->writesize + mtd->oobsize);
+> > +	skip = offset - numblock * (mtdraw->rps);
 > 
-> Feel free to ignore.
+> Here the () can be dropped.
 
-Yeah, it's inconsistent. It was inconsistent before and I can't decide
-which one I like better, so I keep it as is for now ;)
+Ok, fixed. Thanks
 
 Sascha
 
