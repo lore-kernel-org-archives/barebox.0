@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp.megiteam.pl ([31.186.83.105])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g54gv-0003J2-9v
- for barebox@lists.infradead.org; Wed, 26 Sep 2018 07:57:02 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 26 Sep 2018 09:56:25 +0200
-Message-Id: <20180926075625.444-1-s.hauer@pengutronix.de>
+ id 1g4tMH-0005rq-CA
+ for barebox@lists.infradead.org; Tue, 25 Sep 2018 19:51:00 +0000
+From: Marcin Niestroj <m.niestroj@grinn-global.com>
+Date: Tue, 25 Sep 2018 21:50:16 +0200
+Message-Id: <20180925195016.3683-1-m.niestroj@grinn-global.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,61 +19,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fs: ramfs: Free data when file is unlinked
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] fs: improve ramfs_truncate speed
+To: barebox@lists.infradead.org
+Cc: Maciej Zagrabski <m.zagrabski@grinn-global.com>, Marcin Niestroj <m.niestroj@grinn-global.com>
 
-Since the switch to dentry cache implementation the memory is no
-longer freed when a file in ramfs is deleted. Fix this.
+During sequential writes into single file, fs layer is consequently
+calling ramfs_truncate() function. When file size grows
+ramfs_truncate() takes more and more time to complete, due to
+interations through all already written data chunks. As an example
+loading ~450M image using usb fastboot protocol took over 500s to
+complete.
 
-Fixes: b283b72639 ("fs: ramfs: Switch to dentry cache implementation")
+Use ramfs_find_chunk() function to search for last chunk of data in
+ramfs_truncate() implementation, which saves a lot of loop
+iterations. As a result loading ~450M image using usb fastboot
+protocol takes around 25s now.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Tested-by: Maciej Zagrabski <m.zagrabski@grinn-global.com>
+Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
 ---
- fs/ramfs.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ fs/ramfs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/fs/ramfs.c b/fs/ramfs.c
-index 7548bdac9f..09dafe02ae 100644
+index 7548bdac9..6f4aa0675 100644
 --- a/fs/ramfs.c
 +++ b/fs/ramfs.c
-@@ -176,6 +176,28 @@ static int ramfs_symlink(struct inode *dir, struct dentry *dentry,
- 	return 0;
- }
+@@ -362,6 +362,9 @@ static int ramfs_truncate(struct device_d *dev, FILE *f, ulong size)
+ 			if (!node->data)
+ 				return -ENOMEM;
+ 			data = node->data;
++		} else {
++			data = ramfs_find_chunk(node, oldchunks - 1);
++			newchunks -= (oldchunks - 1);
+ 		}
  
-+static int ramfs_unlink(struct inode *dir, struct dentry *dentry)
-+{
-+	struct inode *inode = d_inode(dentry);
-+
-+	if (inode) {
-+		struct ramfs_inode *node = to_ramfs_inode(inode);
-+		struct ramfs_chunk *chunk = node->data;
-+
-+		node->data = NULL;
-+
-+		while (chunk) {
-+			struct ramfs_chunk *tmp = chunk;
-+
-+			chunk = chunk->next;
-+
-+			ramfs_put_chunk(tmp);
-+		}
-+	}
-+
-+	return simple_unlink(dir, dentry);
-+}
-+
- static const char *ramfs_get_link(struct dentry *dentry, struct inode *inode)
- {
- 	return inode->i_link;
-@@ -192,7 +214,7 @@ static const struct inode_operations ramfs_dir_inode_operations =
- 	.symlink = ramfs_symlink,
- 	.mkdir = ramfs_mkdir,
- 	.rmdir = simple_rmdir,
--	.unlink = simple_unlink,
-+	.unlink = ramfs_unlink,
- 	.create = ramfs_create,
- };
- 
+ 		newchunks--;
 -- 
 2.19.0
 
