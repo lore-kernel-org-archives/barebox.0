@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g5QNU-0002zE-GX
- for barebox@lists.infradead.org; Thu, 27 Sep 2018 07:06:31 +0000
-Date: Thu, 27 Sep 2018 09:05:51 +0200
+ id 1g54uS-0005Ao-FJ
+ for barebox@lists.infradead.org; Wed, 26 Sep 2018 08:11:04 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180927070551.GV4097@pengutronix.de>
-References: <20180926013418.26920-1-andrew.smirnov@gmail.com>
- <20180926013418.26920-4-andrew.smirnov@gmail.com>
+Date: Wed, 26 Sep 2018 10:10:29 +0200
+Message-Id: <20180926081029.28103-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180926013418.26920-4-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,62 +19,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/6] i.MX7D: DCD: Create shared DDR configuration header
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fs: ramfs: make chunk counting in truncate() better readable
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
 
-On Tue, Sep 25, 2018 at 06:34:15PM -0700, Andrey Smirnov wrote:
-> Create a shared DDR configuration header based on configuration used
-> by i.MX7D SabreSD board.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  .../flash-header-mx7-sabresd.imxcfg           | 79 +------------------
->  .../flash-header/imx7d-ddr-default.imxcfg     | 78 ++++++++++++++++++
->  2 files changed, 79 insertions(+), 78 deletions(-)
->  create mode 100644 arch/arm/mach-imx/include/mach/flash-header/imx7d-ddr-default.imxcfg
-> 
-> diff --git a/arch/arm/mach-imx/include/mach/flash-header/imx7d-ddr-default.imxcfg b/arch/arm/mach-imx/include/mach/flash-header/imx7d-ddr-default.imxcfg
-> new file mode 100644
-> index 000000000..e98f055ee
-> --- /dev/null
-> +++ b/arch/arm/mach-imx/include/mach/flash-header/imx7d-ddr-default.imxcfg
-> @@ -0,0 +1,78 @@
-> +/*
-> + * Copyright (C) 2016 NXP Semiconductors
-> + *
-> + * SPDX-License-Identifier:	GPL-2.0
-> + *
-> + * Refer docs/README.imxmage for more details about how-to configure
-> + * and create imximage boot image
-> + *
-> + * The syntax is taken as close as possible with the kwbimage
-> + *
-> + * Taken from upstream U-Boot git://git.denx.de/u-boot.git, commit
-> + * 1a8150d4b16fbafa6f1d207ddb85eda7dc399e2d
-> + */
-> +
-> +#include <mach/imx7-ddr-regs.h>
-> +
-> +wm 32 0x30340004 0x4F400005
-> +
-> +wm 32 0x30391000 0x00000002
-> +
-> +wm 32 MX7_DDRC_MSTR 0x01040001
+In ramfs_truncate() "newchunks" denotes the number of chunks we
+want to have after the call. We decrease that number while iterating
+over the existing chunks and decrease it further with every newly
+allocated chunk until "newchunks" is zero.
+This is a bit hard to read. Instead we drop the decreasing while
+iterating over existing chunks and increase "oldchunks" while allocating
+until it reaches "newchunks".
 
-How default is this default header? It looks like it only works for the
-exact DDR type and size like used on the i.MX7D SabreSD board. Many boards
-are more or less copied from the eval boards, so having a common DDR
-setup header is a good thing, but calling this "default" sounds a bit
-strong. How about replacing "default" with "sabresd"?
+This is mainly done to make the next patch easier.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ fs/ramfs.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
+diff --git a/fs/ramfs.c b/fs/ramfs.c
+index 09dafe02ae..8ba8d77de9 100644
+--- a/fs/ramfs.c
++++ b/fs/ramfs.c
+@@ -384,19 +384,18 @@ static int ramfs_truncate(struct device_d *dev, FILE *f, ulong size)
+ 			if (!node->data)
+ 				return -ENOMEM;
+ 			data = node->data;
++			newchunks = 1;
+ 		}
+ 
+-		newchunks--;
+-		while (data->next) {
+-			newchunks--;
++		while (data->next)
+ 			data = data->next;
+-		}
+ 
+-		while (newchunks--) {
++		while (newchunks > oldchunks) {
+ 			data->next = ramfs_get_chunk();
+ 			if (!data->next)
+ 				return -ENOMEM;
+ 			data = data->next;
++			oldchunks++;
+ 		}
+ 	}
+ 	node->size = size;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.0
+
 
 _______________________________________________
 barebox mailing list
