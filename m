@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp.megiteam.pl ([31.186.83.105])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g54uS-0005Ao-FJ
- for barebox@lists.infradead.org; Wed, 26 Sep 2018 08:11:04 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 26 Sep 2018 10:10:29 +0200
-Message-Id: <20180926081029.28103-1-s.hauer@pengutronix.de>
+ id 1g57iD-00062d-1Y
+ for barebox@lists.infradead.org; Wed, 26 Sep 2018 11:10:43 +0000
+References: <20180926081029.28103-1-s.hauer@pengutronix.de>
+From: Marcin =?utf-8?Q?Niestr=C3=B3j?= <m.niestroj@grinn-global.com>
+In-reply-to: <20180926081029.28103-1-s.hauer@pengutronix.de>
+Date: Wed, 26 Sep 2018 13:09:55 +0200
+Message-ID: <87r2hg3470.fsf@grinn-global.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,62 +17,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fs: ramfs: make chunk counting in truncate() better readable
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
+Subject: Re: [PATCH] fs: ramfs: make chunk counting in truncate() better
+ readable
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-In ramfs_truncate() "newchunks" denotes the number of chunks we
-want to have after the call. We decrease that number while iterating
-over the existing chunks and decrease it further with every newly
-allocated chunk until "newchunks" is zero.
-This is a bit hard to read. Instead we drop the decreasing while
-iterating over existing chunks and increase "oldchunks" while allocating
-until it reaches "newchunks".
-
-This is mainly done to make the next patch easier.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- fs/ramfs.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/fs/ramfs.c b/fs/ramfs.c
-index 09dafe02ae..8ba8d77de9 100644
---- a/fs/ramfs.c
-+++ b/fs/ramfs.c
-@@ -384,19 +384,18 @@ static int ramfs_truncate(struct device_d *dev, FILE *f, ulong size)
- 			if (!node->data)
- 				return -ENOMEM;
- 			data = node->data;
-+			newchunks = 1;
- 		}
- 
--		newchunks--;
--		while (data->next) {
--			newchunks--;
-+		while (data->next)
- 			data = data->next;
--		}
- 
--		while (newchunks--) {
-+		while (newchunks > oldchunks) {
- 			data->next = ramfs_get_chunk();
- 			if (!data->next)
- 				return -ENOMEM;
- 			data = data->next;
-+			oldchunks++;
- 		}
- 	}
- 	node->size = size;
--- 
-2.19.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+ClNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4gd3JpdGVzOgoKPiBJbiByYW1m
+c190cnVuY2F0ZSgpICJuZXdjaHVua3MiIGRlbm90ZXMgdGhlIG51bWJlciBvZiBjaHVua3Mgd2UK
+PiB3YW50IHRvIGhhdmUgYWZ0ZXIgdGhlIGNhbGwuIFdlIGRlY3JlYXNlIHRoYXQgbnVtYmVyIHdo
+aWxlIGl0ZXJhdGluZwo+IG92ZXIgdGhlIGV4aXN0aW5nIGNodW5rcyBhbmQgZGVjcmVhc2UgaXQg
+ZnVydGhlciB3aXRoIGV2ZXJ5IG5ld2x5Cj4gYWxsb2NhdGVkIGNodW5rIHVudGlsICJuZXdjaHVu
+a3MiIGlzIHplcm8uCj4gVGhpcyBpcyBhIGJpdCBoYXJkIHRvIHJlYWQuIEluc3RlYWQgd2UgZHJv
+cCB0aGUgZGVjcmVhc2luZyB3aGlsZQo+IGl0ZXJhdGluZyBvdmVyIGV4aXN0aW5nIGNodW5rcyBh
+bmQgaW5jcmVhc2UgIm9sZGNodW5rcyIgd2hpbGUgYWxsb2NhdGluZwo+IHVudGlsIGl0IHJlYWNo
+ZXMgIm5ld2NodW5rcyIuCj4KPiBUaGlzIGlzIG1haW5seSBkb25lIHRvIG1ha2UgdGhlIG5leHQg
+cGF0Y2ggZWFzaWVyLgo+Cj4gU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBl
+bmd1dHJvbml4LmRlPgo+IC0tLQo+ICBmcy9yYW1mcy5jIHwgOSArKysrLS0tLS0KPiAgMSBmaWxl
+IGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgNSBkZWxldGlvbnMoLSkKPgo+IGRpZmYgLS1naXQg
+YS9mcy9yYW1mcy5jIGIvZnMvcmFtZnMuYwo+IGluZGV4IDA5ZGFmZTAyYWUuLjhiYThkNzdkZTkg
+MTAwNjQ0Cj4gLS0tIGEvZnMvcmFtZnMuYwo+ICsrKyBiL2ZzL3JhbWZzLmMKPiBAQCAtMzg0LDE5
+ICszODQsMTggQEAgc3RhdGljIGludCByYW1mc190cnVuY2F0ZShzdHJ1Y3QgZGV2aWNlX2QgKmRl
+diwgRklMRSAqZiwgdWxvbmcgc2l6ZSkKPiAgCQkJaWYgKCFub2RlLT5kYXRhKQo+ICAJCQkJcmV0
+dXJuIC1FTk9NRU07Cj4gIAkJCWRhdGEgPSBub2RlLT5kYXRhOwo+ICsJCQluZXdjaHVua3MgPSAx
+Owo+ICAJCX0KPiAgCj4gLQkJbmV3Y2h1bmtzLS07Cj4gLQkJd2hpbGUgKGRhdGEtPm5leHQpIHsK
+PiAtCQkJbmV3Y2h1bmtzLS07Cj4gKwkJd2hpbGUgKGRhdGEtPm5leHQpCj4gIAkJCWRhdGEgPSBk
+YXRhLT5uZXh0Owo+IC0JCX0KPiAgCj4gLQkJd2hpbGUgKG5ld2NodW5rcy0tKSB7Cj4gKwkJd2hp
+bGUgKG5ld2NodW5rcyA+IG9sZGNodW5rcykgewo+ICAJCQlkYXRhLT5uZXh0ID0gcmFtZnNfZ2V0
+X2NodW5rKCk7Cj4gIAkJCWlmICghZGF0YS0+bmV4dCkKPiAgCQkJCXJldHVybiAtRU5PTUVNOwo+
+ICAJCQlkYXRhID0gZGF0YS0+bmV4dDsKPiArCQkJb2xkY2h1bmtzKys7Cj4gIAkJfQo+ICAJfQo+
+ICAJbm9kZS0+c2l6ZSA9IHNpemU7CgpSZXZpZXdlZC1ieTogTWFyY2luIE5pZXN0cm9qIDxtLm5p
+ZXN0cm9qQGdyaW5uLWdsb2JhbC5jb20+CgotLSAKTWFyY2luIE5pZXN0csOzagoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
+c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
