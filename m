@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g53li-0004RW-Bv
- for barebox@lists.infradead.org; Wed, 26 Sep 2018 06:57:58 +0000
-Date: Wed, 26 Sep 2018 08:57:22 +0200
+ id 1g54gv-0003J2-9v
+ for barebox@lists.infradead.org; Wed, 26 Sep 2018 07:57:02 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20180926065722.GQ4097@pengutronix.de>
-References: <20180925105845.GA15416@lenoch>
+Date: Wed, 26 Sep 2018 09:56:25 +0200
+Message-Id: <20180926075625.444-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180925105845.GA15416@lenoch>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,63 +19,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] state: backend_bucket_circular: fix for non power of 2
- writesize
-To: Ladislav Michl <ladis@linux-mips.org>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fs: ramfs: Free data when file is unlinked
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Sep 25, 2018 at 12:58:45PM +0200, Ladislav Michl wrote:
-> backend_bucket_circular currently assumes writesize is power of 2,
-> which makes it fail on dataflash devices, where this assumption
-> is false.
-> 
-> Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
-> ---
->  common/state/backend_bucket_circular.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+Since the switch to dentry cache implementation the memory is no
+longer freed when a file in ramfs is deleted. Fix this.
 
-Applied, thanks
+Fixes: b283b72639 ("fs: ramfs: Switch to dentry cache implementation")
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ fs/ramfs.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-> 
-> diff --git a/common/state/backend_bucket_circular.c b/common/state/backend_bucket_circular.c
-> index 933493e22..0529421a2 100644
-> --- a/common/state/backend_bucket_circular.c
-> +++ b/common/state/backend_bucket_circular.c
-> @@ -248,7 +248,7 @@ static int state_backend_bucket_circular_read(struct state_backend_storage_bucke
->  		circ->write_area = 0;
->  		dev_info(circ->dev, "Detected old on-storage format\n");
->  	} else if (circ->last_written_length > circ->write_area
-> -		   || !IS_ALIGNED(circ->last_written_length, circ->writesize)) {
-> +		   || (circ->last_written_length % circ->writesize != 0)) {
->  		circ->write_area = 0;
->  		dev_err(circ->dev, "Error, invalid number of bytes written last time %d\n",
->  			circ->last_written_length);
-> @@ -295,7 +295,7 @@ static int state_backend_bucket_circular_write(struct state_backend_storage_buck
->  	    get_bucket_circular(bucket);
->  	off_t offset;
->  	struct state_backend_storage_bucket_circular_meta *meta;
-> -	uint32_t written_length = ALIGN(len + sizeof(*meta), circ->writesize);
-> +	uint32_t written_length = roundup(len + sizeof(*meta), circ->writesize);
->  	int ret;
->  	void *write_buf;
->  
-> -- 
-> 2.19.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/fs/ramfs.c b/fs/ramfs.c
+index 7548bdac9f..09dafe02ae 100644
+--- a/fs/ramfs.c
++++ b/fs/ramfs.c
+@@ -176,6 +176,28 @@ static int ramfs_symlink(struct inode *dir, struct dentry *dentry,
+ 	return 0;
+ }
+ 
++static int ramfs_unlink(struct inode *dir, struct dentry *dentry)
++{
++	struct inode *inode = d_inode(dentry);
++
++	if (inode) {
++		struct ramfs_inode *node = to_ramfs_inode(inode);
++		struct ramfs_chunk *chunk = node->data;
++
++		node->data = NULL;
++
++		while (chunk) {
++			struct ramfs_chunk *tmp = chunk;
++
++			chunk = chunk->next;
++
++			ramfs_put_chunk(tmp);
++		}
++	}
++
++	return simple_unlink(dir, dentry);
++}
++
+ static const char *ramfs_get_link(struct dentry *dentry, struct inode *inode)
+ {
+ 	return inode->i_link;
+@@ -192,7 +214,7 @@ static const struct inode_operations ramfs_dir_inode_operations =
+ 	.symlink = ramfs_symlink,
+ 	.mkdir = ramfs_mkdir,
+ 	.rmdir = simple_rmdir,
+-	.unlink = simple_unlink,
++	.unlink = ramfs_unlink,
+ 	.create = ramfs_create,
+ };
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.0
+
 
 _______________________________________________
 barebox mailing list
