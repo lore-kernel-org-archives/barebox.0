@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.megiteam.pl ([31.186.83.105])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g57uH-0003JV-Ip
- for barebox@lists.infradead.org; Wed, 26 Sep 2018 11:23:03 +0000
+ id 1g5QgD-0001GE-1v
+ for barebox@lists.infradead.org; Thu, 27 Sep 2018 07:25:48 +0000
+Date: Thu, 27 Sep 2018 09:25:16 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20180927072516.GW4097@pengutronix.de>
 References: <20180926081029.28103-1-s.hauer@pengutronix.de>
- <87r2hg3470.fsf@grinn-global.com>
-From: Marcin =?utf-8?Q?Niestr=C3=B3j?= <m.niestroj@grinn-global.com>
-In-reply-to: <87r2hg3470.fsf@grinn-global.com>
-Date: Wed, 26 Sep 2018 13:22:28 +0200
-Message-ID: <87pnx033m3.fsf@grinn-global.com>
+ <87r2hg3470.fsf@grinn-global.com> <87pnx033m3.fsf@grinn-global.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <87pnx033m3.fsf@grinn-global.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,46 +19,97 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] fs: ramfs: make chunk counting in truncate() better
  readable
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Marcin =?iso-8859-15?Q?Niestr=F3j?= <m.niestroj@grinn-global.com>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-CkkgdGhpbmsgSSB3YXMgYSBsaXR0bGUgYml0IHRvbyBlYXJseSB3aXRoIHJldmlldyA6KSBCZWxv
-dyBJIGhhdmUgc29tZQpjb21tZW50cy4KCk1hcmNpbiBOaWVzdHLDs2ogPG0ubmllc3Ryb2pAZ3Jp
-bm4tZ2xvYmFsLmNvbT4gd3JpdGVzOgoKPiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9u
-aXguZGU+IHdyaXRlczoKPgo+PiBJbiByYW1mc190cnVuY2F0ZSgpICJuZXdjaHVua3MiIGRlbm90
-ZXMgdGhlIG51bWJlciBvZiBjaHVua3Mgd2UKPj4gd2FudCB0byBoYXZlIGFmdGVyIHRoZSBjYWxs
-LiBXZSBkZWNyZWFzZSB0aGF0IG51bWJlciB3aGlsZSBpdGVyYXRpbmcKPj4gb3ZlciB0aGUgZXhp
-c3RpbmcgY2h1bmtzIGFuZCBkZWNyZWFzZSBpdCBmdXJ0aGVyIHdpdGggZXZlcnkgbmV3bHkKPj4g
-YWxsb2NhdGVkIGNodW5rIHVudGlsICJuZXdjaHVua3MiIGlzIHplcm8uCj4+IFRoaXMgaXMgYSBi
-aXQgaGFyZCB0byByZWFkLiBJbnN0ZWFkIHdlIGRyb3AgdGhlIGRlY3JlYXNpbmcgd2hpbGUKPj4g
-aXRlcmF0aW5nIG92ZXIgZXhpc3RpbmcgY2h1bmtzIGFuZCBpbmNyZWFzZSAib2xkY2h1bmtzIiB3
-aGlsZSBhbGxvY2F0aW5nCj4+IHVudGlsIGl0IHJlYWNoZXMgIm5ld2NodW5rcyIuCj4+Cj4+IFRo
-aXMgaXMgbWFpbmx5IGRvbmUgdG8gbWFrZSB0aGUgbmV4dCBwYXRjaCBlYXNpZXIuCj4+Cj4+IFNp
-Z25lZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KPj4gLS0t
-Cj4+ICBmcy9yYW1mcy5jIHwgOSArKysrLS0tLS0KPj4gIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2Vy
-dGlvbnMoKyksIDUgZGVsZXRpb25zKC0pCj4+Cj4+IGRpZmYgLS1naXQgYS9mcy9yYW1mcy5jIGIv
-ZnMvcmFtZnMuYwo+PiBpbmRleCAwOWRhZmUwMmFlLi44YmE4ZDc3ZGU5IDEwMDY0NAo+PiAtLS0g
-YS9mcy9yYW1mcy5jCj4+ICsrKyBiL2ZzL3JhbWZzLmMKPj4gQEAgLTM4NCwxOSArMzg0LDE4IEBA
-IHN0YXRpYyBpbnQgcmFtZnNfdHJ1bmNhdGUoc3RydWN0IGRldmljZV9kICpkZXYsIEZJTEUgKmYs
-IHVsb25nIHNpemUpCj4+ICAJCQlpZiAoIW5vZGUtPmRhdGEpCj4+ICAJCQkJcmV0dXJuIC1FTk9N
-RU07Cj4+ICAJCQlkYXRhID0gbm9kZS0+ZGF0YTsKPj4gKwkJCW5ld2NodW5rcyA9IDE7CgpXaGF0
-IGlzIHRoZSByZWFzb24gb2YgdGhpcyBpbnN0cnVjdGlvbj8gV2hhdCBpZiAnc2l6ZScgPT0gMTYz
-ODQgYW5kIHdlCmRvIGl0IG9uIGZyZXNobHkgb3BlbmVkIGZpbGUgKHdpdGggdHJ1bmNhdGUoZmQs
-IDE2Mzg0KT8gJ25ld2NodW5rJwpzaG91bGQgYmUgMiBpbiB0aGF0IGNhc2UsIG9yIG5vdD8KClJl
-Z2FyZHMsCk1hcmNpbgoKPj4gIAkJfQo+PiAgCj4+IC0JCW5ld2NodW5rcy0tOwo+PiAtCQl3aGls
-ZSAoZGF0YS0+bmV4dCkgewo+PiAtCQkJbmV3Y2h1bmtzLS07Cj4+ICsJCXdoaWxlIChkYXRhLT5u
-ZXh0KQo+PiAgCQkJZGF0YSA9IGRhdGEtPm5leHQ7Cj4+IC0JCX0KPj4gIAo+PiAtCQl3aGlsZSAo
-bmV3Y2h1bmtzLS0pIHsKPj4gKwkJd2hpbGUgKG5ld2NodW5rcyA+IG9sZGNodW5rcykgewo+PiAg
-CQkJZGF0YS0+bmV4dCA9IHJhbWZzX2dldF9jaHVuaygpOwo+PiAgCQkJaWYgKCFkYXRhLT5uZXh0
-KQo+PiAgCQkJCXJldHVybiAtRU5PTUVNOwo+PiAgCQkJZGF0YSA9IGRhdGEtPm5leHQ7Cj4+ICsJ
-CQlvbGRjaHVua3MrKzsKPj4gIAkJfQo+PiAgCX0KPj4gIAlub2RlLT5zaXplID0gc2l6ZTsKPgo+
-IFJldmlld2VkLWJ5OiBNYXJjaW4gTmllc3Ryb2ogPG0ubmllc3Ryb2pAZ3Jpbm4tZ2xvYmFsLmNv
-bT4KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Wed, Sep 26, 2018 at 01:22:28PM +0200, Marcin Niestr=F3j wrote:
+> =
+
+> I think I was a little bit too early with review :) Below I have some
+> comments.
+> =
+
+> Marcin Niestr=F3j <m.niestroj@grinn-global.com> writes:
+> =
+
+> > Sascha Hauer <s.hauer@pengutronix.de> writes:
+> >
+> >> In ramfs_truncate() "newchunks" denotes the number of chunks we
+> >> want to have after the call. We decrease that number while iterating
+> >> over the existing chunks and decrease it further with every newly
+> >> allocated chunk until "newchunks" is zero.
+> >> This is a bit hard to read. Instead we drop the decreasing while
+> >> iterating over existing chunks and increase "oldchunks" while allocati=
+ng
+> >> until it reaches "newchunks".
+> >>
+> >> This is mainly done to make the next patch easier.
+> >>
+> >> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> >> ---
+> >>  fs/ramfs.c | 9 ++++-----
+> >>  1 file changed, 4 insertions(+), 5 deletions(-)
+> >>
+> >> diff --git a/fs/ramfs.c b/fs/ramfs.c
+> >> index 09dafe02ae..8ba8d77de9 100644
+> >> --- a/fs/ramfs.c
+> >> +++ b/fs/ramfs.c
+> >> @@ -384,19 +384,18 @@ static int ramfs_truncate(struct device_d *dev, =
+FILE *f, ulong size)
+> >>  			if (!node->data)
+> >>  				return -ENOMEM;
+> >>  			data =3D node->data;
+> >> +			newchunks =3D 1;
+> =
+
+> What is the reason of this instruction? What if 'size' =3D=3D 16384 and we
+> do it on freshly opened file (with truncate(fd, 16384)? 'newchunk'
+> should be 2 in that case, or not?
+
+Yes, you're right. It should be "oldchunks =3D 1" instead. Then we have:
+
+>		if (!data) {
+>			node->data =3D ramfs_get_chunk();
+>			if (!node->data)
+>				return -ENOMEM;
+>			data =3D node->data;
+>			oldchunks =3D 1;
+>		}
+
+!data we have no chunks allocated. We allocate one and set oldchunks to one=
+. When we
+do:
+
+>		while (newchunks > oldchunks) {
+>			data->next =3D ramfs_get_chunk();
+>			if (!data->next)
+>				return -ENOMEM;
+>			data =3D data->next;
+>			oldchunks++;
+>		}
+
+In your example above we execute this loop once, allocate the second chunk,=
+ oldchunks
+will become two which is the same as newchunks and then we go out.
+
+I hope this is correct now ;)
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
