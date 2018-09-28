@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g5qEH-0004zj-WB
+ id 1g5qEH-0004zm-Vp
  for barebox@lists.infradead.org; Fri, 28 Sep 2018 10:42:39 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri, 28 Sep 2018 12:42:02 +0200
-Message-Id: <20180928104206.17764-2-s.trumtrar@pengutronix.de>
+Date: Fri, 28 Sep 2018 12:42:05 +0200
+Message-Id: <20180928104206.17764-5-s.trumtrar@pengutronix.de>
 In-Reply-To: <20180928104206.17764-1-s.trumtrar@pengutronix.de>
 References: <20180928104206.17764-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
@@ -21,50 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] barebox: move mmc partitions to partitions subnode
+Subject: [PATCH 5/6] ARM: socfpga: achilles: let bootchooser boot from system0
+ initially
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Enrico Jorns <ejo@pengutronix.de>
 
 From: Enrico Jorns <ejo@pengutronix.de>
 
-Linux kernel implicitly adds this, thus we have to add them explicitly
-to stay compatible
-
 Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
 ---
- arch/arm/dts/socfpga_arria10_achilles.dts | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ arch/arm/dts/socfpga_arria10_achilles.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/dts/socfpga_arria10_achilles.dts b/arch/arm/dts/socfpga_arria10_achilles.dts
-index fc75afc79516..5c08be82d67f 100644
+index abf2a7d9f15b..908e929d9edf 100644
 --- a/arch/arm/dts/socfpga_arria10_achilles.dts
 +++ b/arch/arm/dts/socfpga_arria10_achilles.dts
-@@ -201,14 +201,19 @@
- 	bus-width = <1>;
- 	status = "okay";
- 
--	environment_mmc: partition@178000 {
--		label = "environment";
--		reg = <0x178000 0x8000>;
--	};
-+	partitions {
-+		compatible = "fixed-partitions";
-+		#size-cells = <1>;
-+		#address-cells = <1>;
-+		environment_mmc: partition@178000 {
-+			label = "environment";
-+			reg = <0x178000 0x8000>;
-+		};
- 
--	state_mmc: partition@180000 {
--		label = "state";
--		reg = <0x180000 0xC00>;
-+		state_mmc: partition@180000 {
-+			label = "state";
-+			reg = <0x180000 0xC00>;
-+		};
- 	};
- };
+@@ -66,7 +66,7 @@
+ 				priority {
+ 					reg = <0x4 0x4>;
+ 					type = "uint32";
+-					default = <20>;
++					default = <21>;
+ 				};
+ 			};
  
 -- 
 2.19.0
