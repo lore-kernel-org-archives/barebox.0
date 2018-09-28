@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g5qEI-0004zl-0L
+ id 1g5qEI-0004zk-0j
  for barebox@lists.infradead.org; Fri, 28 Sep 2018 10:42:39 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri, 28 Sep 2018 12:42:01 +0200
-Message-Id: <20180928104206.17764-1-s.trumtrar@pengutronix.de>
+Date: Fri, 28 Sep 2018 12:42:04 +0200
+Message-Id: <20180928104206.17764-4-s.trumtrar@pengutronix.de>
+In-Reply-To: <20180928104206.17764-1-s.trumtrar@pengutronix.de>
+References: <20180928104206.17764-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,132 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] dts: achilles: add state for bootchooser
+Subject: [PATCH 4/6] ARM: socfpga: achilles: bitstream will not exceed 32M
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Enrico Jorns <ejo@pengutronix.de>
 
 From: Enrico Jorns <ejo@pengutronix.de>
 
+Thus we decrease offsets to save space
+
 Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
 ---
- arch/arm/dts/socfpga_arria10_achilles.dts | 90 +++++++++++++++++++++++
- 1 file changed, 90 insertions(+)
+ arch/arm/boards/reflex-achilles/lowlevel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/dts/socfpga_arria10_achilles.dts b/arch/arm/dts/socfpga_arria10_achilles.dts
-index c03982ef5672..fc75afc79516 100644
---- a/arch/arm/dts/socfpga_arria10_achilles.dts
-+++ b/arch/arm/dts/socfpga_arria10_achilles.dts
-@@ -23,6 +23,7 @@
+diff --git a/arch/arm/boards/reflex-achilles/lowlevel.c b/arch/arm/boards/reflex-achilles/lowlevel.c
+index 2265aa882b1f..9cedc74e079f 100644
+--- a/arch/arm/boards/reflex-achilles/lowlevel.c
++++ b/arch/arm/boards/reflex-achilles/lowlevel.c
+@@ -25,7 +25,7 @@
+ #define BAREBOX3_OFFSET    BAREBOX2_OFFSET + SZ_512K
+ #define BAREBOX4_OFFSET    BAREBOX3_OFFSET + SZ_512K
+ #define BITSTREAM1_OFFSET  0x0
+-#define BITSTREAM2_OFFSET  BITSTREAM1_OFFSET + SZ_64M
++#define BITSTREAM2_OFFSET  BITSTREAM1_OFFSET + SZ_32M
  
- 	aliases {
- 		serial0 = &uart0;
-+		state = &state;
- 	};
+ extern char __dtb_socfpga_arria10_achilles_start[];
  
- 	chosen {
-@@ -40,6 +41,90 @@
- 		reg = <0x0 0xc0000000>;
- 	};
- 
-+	state: state {
-+		magic = <0x4d433230>;
-+		compatible = "barebox,state";
-+		backend-type = "raw";
-+		backend = <&state_mmc>;
-+		backend-stridesize = <1024>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		bootstate {
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			system0 {
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+
-+				remaining_attempts {
-+					reg = <0x0 0x4>;
-+					type = "uint32";
-+					default = <3>;
-+				};
-+				priority {
-+					reg = <0x4 0x4>;
-+					type = "uint32";
-+					default = <20>;
-+				};
-+			};
-+
-+			system1 {
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+
-+				remaining_attempts {
-+					reg = <0x10 0x4>;
-+					type = "uint32";
-+					default = <3>;
-+				};
-+				priority {
-+					reg = <0x14 0x4>;
-+					type = "uint32";
-+					default = <20>;
-+				};
-+			};
-+			factory {
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+
-+				remaining_attempts {
-+					reg = <0x20 0x4>;
-+					type = "uint32";
-+					default = <3>;
-+				};
-+				priority {
-+					reg = <0x24 0x4>;
-+					type = "uint32";
-+					default = <10>;
-+				};
-+			};
-+			last_chosen {
-+				reg = <0x2C 0x4>;
-+				type = "uint32";
-+			};
-+		};
-+	};
-+
-+	bootstate: bootstate {
-+		compatible = "barebox,bootstate";
-+		backend-type = "state"; // or "nv", or "efivar"
-+		backend = <&state>;
-+
-+		system0 {
-+			default_attempts = <3>;
-+		};
-+
-+		system1 {
-+			default_attempts = <3>;
-+		};
-+
-+		factory {
-+			default_attempts = <3>;
-+		};
-+	};
-+
- 	soc {
- 		clkmgr@ffd04000 {
- 			clocks {
-@@ -120,6 +205,11 @@
- 		label = "environment";
- 		reg = <0x178000 0x8000>;
- 	};
-+
-+	state_mmc: partition@180000 {
-+		label = "state";
-+		reg = <0x180000 0xC00>;
-+	};
- };
- 
- &uart0 {
 -- 
 2.19.0
 
