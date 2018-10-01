@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g7Eb6-0007ux-4x
- for barebox@lists.infradead.org; Tue, 02 Oct 2018 06:55:57 +0000
-Date: Tue, 2 Oct 2018 08:55:43 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181002065543.zfhoi3wfhfmlgcet@pengutronix.de>
-References: <20181001091907.4475-1-u.kleine-koenig@pengutronix.de>
+ id 1g6teg-000538-RA
+ for barebox@lists.infradead.org; Mon, 01 Oct 2018 08:34:16 +0000
+Date: Mon, 1 Oct 2018 10:34:00 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20181001083400.nwaosiref5bloxjw@pengutronix.de>
+References: <20181001081716.26017-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181001091907.4475-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20181001081716.26017-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,65 +18,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] e1000/flash: Increased erase timeout
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org, Michael Schuhmacher <m.schuhmacher@eckelmann.de>
+Subject: Re: [PATCH] usb: gadget: fastboot: fix downoading files of
+ wMaxPacketSize bytes
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>, G.Schenk@eckelmann.de
 
-On Mon, Oct 01, 2018 at 11:19:07AM +0200, Uwe Kleine-K=F6nig wrote:
-> From: Michael Schuhmacher <m.schuhmacher@eckelmann.de>
+Hello Sascha,
+
+On Mon, Oct 01, 2018 at 10:17:16AM +0200, Sascha Hauer wrote:
+> File transfers with sizes of exact multiples of wMaxPacketSize up to
+> EP_BUFFER_SIZE do not work. For a typical scenario that would be files
+> of 512, 1024 ... 3584 bytes.
 > =
 
-> Serial flash Adesto AT25DF321A specifies the maximal chip erase time as
-> 40 seconds. Extend timeout accordingly.
+> This happens because we unconditionally put EP_BUFFER_SIZE into the
+> initial request length. For non wMaxPacketSize aligned legths this
+> works well because the transfer is completed with a short packet.
+> For wMaxPacketSize aligned lengths there is no short packet though,
+> so the transfer never completes. Instead we have to put the file
+> size into the initial request length.
 > =
 
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  drivers/net/e1000/eeprom.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Applied, thanks
-
-Sascha
-
+> Some controllers like the DWC3 do not work when the request length is
+> not aligned to wMaxPacketSize, so we align up to wMaxPacketSize like
+> done in U-Boot.
 > =
 
-> diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
-> index dda022e05437..ffd323106fbb 100644
-> --- a/drivers/net/e1000/eeprom.c
-> +++ b/drivers/net/e1000/eeprom.c
-> @@ -883,7 +883,7 @@ static int e1000_flash_mode_erase_chunk(struct e1000_=
-hw *hw, loff_t offset,
->  	ret =3D e1000_poll_reg(hw, E1000_FLSWCTL,
->  			     E1000_FLSWCTL_DONE | E1000_FLSWCTL_FLBUSY,
->  			     E1000_FLSWCTL_DONE,
-> -			     10 * SECOND);
-> +			     40 * SECOND);
->  	if (ret < 0) {
->  		dev_err(hw->dev,
->  			"Timeout waiting for FLSWCTL.DONE to be set (erase)\n");
-> -- =
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-> 2.19.0
-> =
+I tried transfering files of sizes between 1 and 4100 bytes and with
+this patch this actually works fine.
 
-> =
+Tested-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Thanks
+Uwe
 
 -- =
 
-Pengutronix e.K.                           |                             |
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
