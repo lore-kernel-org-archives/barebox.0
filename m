@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.megiteam.pl ([31.186.83.105])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g7fYN-0002Vk-BS
- for barebox@lists.infradead.org; Wed, 03 Oct 2018 11:42:57 +0000
-From: Marcin Niestroj <m.niestroj@grinn-global.com>
-Date: Wed,  3 Oct 2018 13:42:16 +0200
-Message-Id: <20181003114216.22102-1-m.niestroj@grinn-global.com>
+ id 1g7LHe-0005z1-Tn
+ for barebox@lists.infradead.org; Tue, 02 Oct 2018 14:05:00 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue,  2 Oct 2018 16:03:49 +0200
+Message-Id: <20181002140403.3735-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,50 +19,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fs: fix NULL pointer dereference in ramfs_truncate
-To: barebox@lists.infradead.org
-Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
+Subject: [PATCH 00/14] UBIFS update
+To: Barebox List <barebox@lists.infradead.org>
 
-This patch fixes lately introduced speed improvement of ramfs_truncate
-function. Number of chunks were passed to ramfs_find_chunk function,
-which returned NULL as result. Chunks are indexed from 0, hence we
-need to pass (number_of_chunks - 1) to get pointer to the last chunk.
+This series updates the UBIFS codebase to Linux-4.19-rc6. Several
+preparatory patches first update some fs code and Linux wrappers to
+better integrate the new UBIFS code.
 
-Fixes: d49dd1d840d7 ("fs: improve ramfs_truncate speed")
-Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
----
-Hi,
+Before the new UBIFS code is added I removed much of the stuff from
+UBIFS that is not needed for our readonly implementation, like lpt,
+garbage collector and ltab. This hopefully reduces the code one has
+to look at when UBIFS is updated again.
 
-Just few words to clarify where this bug come from.
+Also I ran a "unifdef -D__BAREBOX__ -m fs/ubifs/*" over the code since
+the ifdeffery turns the UBIFS code into unreadable garbage. If one is
+interested in the differences between the barebox and Linux codebase
+it is easy enough to copy the files from Linux-4.19-rc6 over to barebox
+and see the diff. while updating the code I turned annotated every
+removed function with:
 
-We are fixing now patch [1], which was rebased on top of patch [2].
-Simple file transfer using fastboot protocol worked fine in such
-configuration. However it turned out that [2] had bug (`newchunks = 1`
-instead of `oldchunks = 1`). After [2] was fixed it turned out that
-[1] has also bug, which results in NULL pointer dereference during
-file upload with fastboot protocol.
+/*
+ * removed in barebox
+void some_ubifs_function(void)
+ */
 
-Patch tested on `next` branch.
+When copying an updated version over it a git diff usually gives the
+right hint that the function should be removed in barebox.
 
-[1] http://lists.infradead.org/pipermail/barebox/2018-September/034859.html
-[2] http://lists.infradead.org/pipermail/barebox/2018-September/034855.html
+Sascha
 
- fs/ramfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sascha Hauer (14):
+  Add linux/slab.h
+  Add kmemdup
+  Add more mutex no-ops
+  fs: let dir_emit_dots return int
+  fs: Add fscrypt no-op headers
+  fs: Add SB_* flags
+  fs: implement file_inode
+  fs: implement iget_locked and iget_failed
+  fs: implement clear_nlink and set_nlink
+  fs: ubifs: remove not needed code
+  compiler: Update to v4.19-rc6
+  vsprintf: implement %pV
+  ubifs: Update to v4.18-rc6
+  fs: ubifs: optionally allow to mount UBIFS images with encrypted files
 
-diff --git a/fs/ramfs.c b/fs/ramfs.c
-index bad126c65..84ecfa0dd 100644
---- a/fs/ramfs.c
-+++ b/fs/ramfs.c
-@@ -380,7 +380,7 @@ static int ramfs_truncate(struct device_d *dev, FILE *f, ulong size)
- 
- 	if (newchunks > oldchunks) {
- 		if (data) {
--			data = ramfs_find_chunk(node, oldchunks);
-+			data = ramfs_find_chunk(node, oldchunks - 1);
- 		} else {
- 			node->data = ramfs_get_chunk();
- 			if (!node->data)
+ fs/fs.c                         |   41 +
+ fs/ubifs/Makefile               |    8 +-
+ fs/ubifs/budget.c               |  729 --------
+ fs/ubifs/debug.c                | 2812 +++----------------------------
+ fs/ubifs/debug.h                |  110 +-
+ fs/ubifs/dir.c                  |  298 +++-
+ fs/ubifs/gc.c                   |  976 -----------
+ fs/ubifs/io.c                   |  853 +---------
+ fs/ubifs/key.h                  |   53 +-
+ fs/ubifs/log.c                  |  678 +-------
+ fs/ubifs/lprops.c               | 1313 ---------------
+ fs/ubifs/lpt.c                  | 2282 -------------------------
+ fs/ubifs/lpt_commit.c           | 2073 ++---------------------
+ fs/ubifs/master.c               |   69 +-
+ fs/ubifs/misc.c                 |   69 +
+ fs/ubifs/misc.h                 |   78 +-
+ fs/ubifs/orphan.c               |  946 -----------
+ fs/ubifs/recovery.c             |  523 +-----
+ fs/ubifs/replay.c               |  198 +--
+ fs/ubifs/sb.c                   |  530 +-----
+ fs/ubifs/scan.c                 |   19 +-
+ fs/ubifs/super.c                | 1642 ++----------------
+ fs/ubifs/tnc.c                  | 1460 ++++------------
+ fs/ubifs/tnc_misc.c             |   70 +-
+ fs/ubifs/ubifs-media.h          |   54 +-
+ fs/ubifs/ubifs.c                |   44 +-
+ fs/ubifs/ubifs.h                |  334 ++--
+ include/linux/barebox-wrapper.h |   13 +-
+ include/linux/compiler-clang.h  |   42 +-
+ include/linux/compiler-gcc.h    |  211 +--
+ include/linux/compiler-intel.h  |   14 +-
+ include/linux/compiler.h        |  440 ++---
+ include/linux/compiler_types.h  |  285 ++++
+ include/linux/fs.h              |   31 +-
+ include/linux/fscrypt.h         |  173 ++
+ include/linux/fscrypt_notsupp.h |  205 +++
+ include/linux/mutex.h           |    3 +
+ include/linux/slab.h            |  104 ++
+ include/linux/string.h          |    7 +
+ include/linux/types.h           |    3 +
+ include/printk.h                |    5 +
+ include/string.h                |    1 -
+ lib/vsprintf.c                  |   15 +
+ 43 files changed, 2886 insertions(+), 16928 deletions(-)
+ delete mode 100644 fs/ubifs/budget.c
+ delete mode 100644 fs/ubifs/gc.c
+ delete mode 100644 fs/ubifs/lprops.c
+ delete mode 100644 fs/ubifs/lpt.c
+ create mode 100644 fs/ubifs/misc.c
+ delete mode 100644 fs/ubifs/orphan.c
+ create mode 100644 include/linux/compiler_types.h
+ create mode 100644 include/linux/fscrypt.h
+ create mode 100644 include/linux/fscrypt_notsupp.h
+ create mode 100644 include/linux/slab.h
+
 -- 
 2.19.0
 
