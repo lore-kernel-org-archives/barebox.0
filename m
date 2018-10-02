@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g7LHe-0005zA-VC
+ id 1g7LHe-0005z5-Uh
  for barebox@lists.infradead.org; Tue, 02 Oct 2018 14:04:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  2 Oct 2018 16:04:01 +0200
-Message-Id: <20181002140403.3735-13-s.hauer@pengutronix.de>
+Date: Tue,  2 Oct 2018 16:03:51 +0200
+Message-Id: <20181002140403.3735-3-s.hauer@pengutronix.de>
 In-Reply-To: <20181002140403.3735-1-s.hauer@pengutronix.de>
 References: <20181002140403.3735-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,65 +21,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/14] vsprintf: implement %pV
+Subject: [PATCH 02/14] Add kmemdup
 To: Barebox List <barebox@lists.infradead.org>
 
-%pV allows to pass in a struct va_format as a pointer. UBIFS uses this
-for its logging functions, but it may be useful in other places aswell.
+We have kmemdup as a UBIFS specific variant, put it into the correct
+header files. Instead of reimplementing it just use memdup we already
+have.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/printk.h |  5 +++++
- lib/vsprintf.c   | 15 +++++++++++++++
- 2 files changed, 20 insertions(+)
+ fs/ubifs/ubifs.c       | 17 -----------------
+ fs/ubifs/ubifs.h       |  2 --
+ include/linux/string.h |  7 +++++++
+ include/string.h       |  1 -
+ 4 files changed, 7 insertions(+), 20 deletions(-)
 
-diff --git a/include/printk.h b/include/printk.h
-index b4ae0b3217..4384fb85ea 100644
---- a/include/printk.h
-+++ b/include/printk.h
-@@ -120,4 +120,9 @@ extern void log_clean(unsigned int limit);
+diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
+index f9b4f4babc..97cbe4991f 100644
+--- a/fs/ubifs/ubifs.c
++++ b/fs/ubifs/ubifs.c
+@@ -86,23 +86,6 @@ struct ubifs_compressor *ubifs_compressors[UBIFS_COMPR_TYPES_CNT];
+ #ifdef __BAREBOX__
+ /* from mm/util.c */
  
- void log_print(unsigned flags);
+-/**
+- * kmemdup - duplicate region of memory
+- *
+- * @src: memory region to duplicate
+- * @len: memory region length
+- * @gfp: GFP mask to use
+- */
+-void *kmemdup(const void *src, size_t len, gfp_t gfp)
+-{
+-	void *p;
+-
+-	p = kmalloc(len, gfp);
+-	if (p)
+-		memcpy(p, src, len);
+-	return p;
+-}
+-
+ struct crypto_comp {
+ 	int compressor;
+ };
+diff --git a/fs/ubifs/ubifs.h b/fs/ubifs/ubifs.h
+index 19af05ade3..d4df668ca6 100644
+--- a/fs/ubifs/ubifs.h
++++ b/fs/ubifs/ubifs.h
+@@ -71,8 +71,6 @@ struct page {
+ 	struct inode *inode;
+ };
  
-+struct va_format {
-+	const char *fmt;
-+	va_list *va;
-+};
-+
+-void *kmemdup(const void *src, size_t len, gfp_t gfp);
+-
+ /* uapi/linux/limits.h */
+ #define XATTR_LIST_MAX 65536	/* size of extended attribute namelist (64k) */
+ 
+diff --git a/include/linux/string.h b/include/linux/string.h
+index ed4eeb5519..3418b4fbe4 100644
+--- a/include/linux/string.h
++++ b/include/linux/string.h
+@@ -115,4 +115,11 @@ void *memchr_inv(const void *start, int c, size_t bytes);
+ }
  #endif
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index fa9fb75800..6fe0283e84 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -302,6 +302,11 @@ char *address_val(char *buf, char *end, const void *addr,
-  *             [0][1][2][3]-[4][5]-[6][7]-[8][9]-[10][11][12][13][14][15]
-  *           little endian output byte order is:
-  *             [3][2][1][0]-[5][4]-[7][6]-[8][9]-[10][11][12][13][14][15]
-+ * - 'V' For a struct va_format which contains a format string * and va_list *,
-+ *       call vsnprintf(->format, *->va_list).
-+ *       Implements a "recursive vsnprintf".
-+ *       Do not use this feature without some mechanism to verify the
-+ *       correctness of the format string and va_list arguments.
-  * - 'a[pd]' For address types [p] phys_addr_t, [d] dma_addr_t and derivatives
-  *           (default assumed to be phys_addr_t, passed by reference)
-  *
-@@ -318,6 +323,16 @@ static char *pointer(const char *fmt, char *buf, char *end, void *ptr, int field
- 		if (IS_ENABLED(CONFIG_PRINTF_UUID))
- 			return uuid_string(buf, end, ptr, field_width, precision, flags, fmt);
- 		break;
-+	case 'V':
-+		{
-+			va_list va;
+ 
++void *memdup(const void *, size_t);
 +
-+			va_copy(va, *((struct va_format *)ptr)->va);
-+			buf += vsnprintf(buf, end > buf ? end - buf : 0,
-+					 ((struct va_format *)ptr)->fmt, va);
-+			va_end(va);
-+			return buf;
-+		}
- 	case 'a':
- 		return address_val(buf, end, ptr, field_width, precision, flags, fmt);
- 	case 'I':
++static inline void *kmemdup(const void *src, size_t len, gfp_t gfp)
++{
++	return memdup(src, len);
++}
++
+ #endif /* _LINUX_STRING_H_ */
+diff --git a/include/string.h b/include/string.h
+index 6ceb33224e..8c63f22491 100644
+--- a/include/string.h
++++ b/include/string.h
+@@ -3,7 +3,6 @@
+ 
+ #include <linux/string.h>
+ 
+-void *memdup(const void *, size_t);
+ int strtobool(const char *str, int *val);
+ 
+ void *__default_memset(void *, int, __kernel_size_t);
 -- 
 2.19.0
 
