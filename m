@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g7LHe-0005z1-Tn
- for barebox@lists.infradead.org; Tue, 02 Oct 2018 14:05:00 +0000
+ id 1g7LHe-0005zB-Ti
+ for barebox@lists.infradead.org; Tue, 02 Oct 2018 14:04:55 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  2 Oct 2018 16:03:49 +0200
-Message-Id: <20181002140403.3735-1-s.hauer@pengutronix.de>
+Date: Tue,  2 Oct 2018 16:03:57 +0200
+Message-Id: <20181002140403.3735-9-s.hauer@pengutronix.de>
+In-Reply-To: <20181002140403.3735-1-s.hauer@pengutronix.de>
+References: <20181002140403.3735-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,106 +21,112 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/14] UBIFS update
+Subject: [PATCH 08/14] fs: implement iget_locked and iget_failed
 To: Barebox List <barebox@lists.infradead.org>
 
-This series updates the UBIFS codebase to Linux-4.19-rc6. Several
-preparatory patches first update some fs code and Linux wrappers to
-better integrate the new UBIFS code.
+Implement in fs core rather than using a private version in UBIFS.
 
-Before the new UBIFS code is added I removed much of the stuff from
-UBIFS that is not needed for our readonly implementation, like lpt,
-garbage collector and ltab. This hopefully reduces the code one has
-to look at when UBIFS is updated again.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ fs/fs.c            | 24 ++++++++++++++++++++++++
+ fs/ubifs/super.c   | 29 -----------------------------
+ include/linux/fs.h |  2 ++
+ 3 files changed, 26 insertions(+), 29 deletions(-)
 
-Also I ran a "unifdef -D__BAREBOX__ -m fs/ubifs/*" over the code since
-the ifdeffery turns the UBIFS code into unreadable garbage. If one is
-interested in the differences between the barebox and Linux codebase
-it is easy enough to copy the files from Linux-4.19-rc6 over to barebox
-and see the diff. while updating the code I turned annotated every
-removed function with:
-
-/*
- * removed in barebox
-void some_ubifs_function(void)
- */
-
-When copying an updated version over it a git diff usually gives the
-right hint that the function should be removed in barebox.
-
-Sascha
-
-Sascha Hauer (14):
-  Add linux/slab.h
-  Add kmemdup
-  Add more mutex no-ops
-  fs: let dir_emit_dots return int
-  fs: Add fscrypt no-op headers
-  fs: Add SB_* flags
-  fs: implement file_inode
-  fs: implement iget_locked and iget_failed
-  fs: implement clear_nlink and set_nlink
-  fs: ubifs: remove not needed code
-  compiler: Update to v4.19-rc6
-  vsprintf: implement %pV
-  ubifs: Update to v4.18-rc6
-  fs: ubifs: optionally allow to mount UBIFS images with encrypted files
-
- fs/fs.c                         |   41 +
- fs/ubifs/Makefile               |    8 +-
- fs/ubifs/budget.c               |  729 --------
- fs/ubifs/debug.c                | 2812 +++----------------------------
- fs/ubifs/debug.h                |  110 +-
- fs/ubifs/dir.c                  |  298 +++-
- fs/ubifs/gc.c                   |  976 -----------
- fs/ubifs/io.c                   |  853 +---------
- fs/ubifs/key.h                  |   53 +-
- fs/ubifs/log.c                  |  678 +-------
- fs/ubifs/lprops.c               | 1313 ---------------
- fs/ubifs/lpt.c                  | 2282 -------------------------
- fs/ubifs/lpt_commit.c           | 2073 ++---------------------
- fs/ubifs/master.c               |   69 +-
- fs/ubifs/misc.c                 |   69 +
- fs/ubifs/misc.h                 |   78 +-
- fs/ubifs/orphan.c               |  946 -----------
- fs/ubifs/recovery.c             |  523 +-----
- fs/ubifs/replay.c               |  198 +--
- fs/ubifs/sb.c                   |  530 +-----
- fs/ubifs/scan.c                 |   19 +-
- fs/ubifs/super.c                | 1642 ++----------------
- fs/ubifs/tnc.c                  | 1460 ++++------------
- fs/ubifs/tnc_misc.c             |   70 +-
- fs/ubifs/ubifs-media.h          |   54 +-
- fs/ubifs/ubifs.c                |   44 +-
- fs/ubifs/ubifs.h                |  334 ++--
- include/linux/barebox-wrapper.h |   13 +-
- include/linux/compiler-clang.h  |   42 +-
- include/linux/compiler-gcc.h    |  211 +--
- include/linux/compiler-intel.h  |   14 +-
- include/linux/compiler.h        |  440 ++---
- include/linux/compiler_types.h  |  285 ++++
- include/linux/fs.h              |   31 +-
- include/linux/fscrypt.h         |  173 ++
- include/linux/fscrypt_notsupp.h |  205 +++
- include/linux/mutex.h           |    3 +
- include/linux/slab.h            |  104 ++
- include/linux/string.h          |    7 +
- include/linux/types.h           |    3 +
- include/printk.h                |    5 +
- include/string.h                |    1 -
- lib/vsprintf.c                  |   15 +
- 43 files changed, 2886 insertions(+), 16928 deletions(-)
- delete mode 100644 fs/ubifs/budget.c
- delete mode 100644 fs/ubifs/gc.c
- delete mode 100644 fs/ubifs/lprops.c
- delete mode 100644 fs/ubifs/lpt.c
- create mode 100644 fs/ubifs/misc.c
- delete mode 100644 fs/ubifs/orphan.c
- create mode 100644 include/linux/compiler_types.h
- create mode 100644 include/linux/fscrypt.h
- create mode 100644 include/linux/fscrypt_notsupp.h
- create mode 100644 include/linux/slab.h
-
+diff --git a/fs/fs.c b/fs/fs.c
+index 5bfc6f8b78..12851b7ae3 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -1051,6 +1051,30 @@ struct inode *new_inode(struct super_block *sb)
+ 	return inode;
+ }
+ 
++struct inode *iget_locked(struct super_block *sb, unsigned long ino)
++{
++	struct inode *inode;
++
++	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
++		if (inode->i_ino == ino)
++			return iget(inode);
++	}
++
++	inode = new_inode(sb);
++	if (!inode)
++		return NULL;
++
++	inode->i_state = I_NEW;
++	inode->i_ino = ino;
++
++	return inode;
++}
++
++void iget_failed(struct inode *inode)
++{
++	iput(inode);
++}
++
+ void iput(struct inode *inode)
+ {
+ 	if (!inode->i_count)
+diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
+index bfc0a4714a..8bd1803bce 100644
+--- a/fs/ubifs/super.c
++++ b/fs/ubifs/super.c
+@@ -55,26 +55,6 @@ int set_anon_super(struct super_block *s, void *data)
+ 	return 0;
+ }
+ 
+-struct inode *iget_locked(struct super_block *sb, unsigned long ino)
+-{
+-	struct inode *inode;
+-
+-	inode = (struct inode *)kzalloc(
+-			sizeof(struct ubifs_inode), 0);
+-	if (inode) {
+-		inode->i_ino = ino;
+-		inode->i_sb = sb;
+-		list_add(&inode->i_sb_list, &sb->s_inodes);
+-		inode->i_state = I_SYNC | I_NEW;
+-	}
+-
+-	return inode;
+-}
+-
+-void iget_failed(struct inode *inode)
+-{
+-}
+-
+ int ubifs_iput(struct inode *inode)
+ {
+ 	list_del_init(&inode->i_sb_list);
+@@ -2574,15 +2554,6 @@ int ubifs_get_super(struct device_d *dev, struct ubi_volume_desc *ubi, int silen
+ 	}
+ 	sb->s_dev = c->vi.cdev;
+ 
+-	if (c->rw_incompat) {
+-		ubifs_err(c, "the file-system is not R/W-compatible");
+-		ubifs_msg(c, "on-flash format version is w%d/r%d, but software only supports up to version w%d/r%d",
+-			  c->fmt_version, c->ro_compat_version,
+-			  UBIFS_FORMAT_VERSION, UBIFS_RO_COMPAT_VERSION);
+-		err = -EROFS;
+-		goto out;
+-	}
+-
+ 	return 0;
+ out:
+ 	kfree(c);
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index a29fd8fe4a..d38dc12872 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -482,5 +482,7 @@ int simple_rmdir(struct inode *dir, struct dentry *dentry);
+ struct dentry *simple_lookup(struct inode *, struct dentry *, unsigned int flags);
+ int dcache_readdir(struct file *, struct dir_context *);
+ const char *simple_get_link(struct dentry *dentry, struct inode *inode);
++struct inode *iget_locked(struct super_block *, unsigned long);
++void iget_failed(struct inode *inode);
+ 
+ #endif /* _LINUX_FS_H */
 -- 
 2.19.0
 
