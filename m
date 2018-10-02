@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gA9WS-0001Nw-PG
- for barebox@lists.infradead.org; Wed, 10 Oct 2018 08:07:14 +0000
-Message-ID: <1539158817.19112.52.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Wed, 10 Oct 2018 10:06:57 +0200
-In-Reply-To: <20181010071443.msez5a7yriayx2va@pengutronix.de>
-References: <CABAHDLdOVQwoeNKvWmOTADF5-Q1Az6hQXqDUrK60-wC+3P0Tzg@mail.gmail.com>
- <20181010071443.msez5a7yriayx2va@pengutronix.de>
-Mime-Version: 1.0
+ id 1g7Gav-00067z-OC
+ for barebox@lists.infradead.org; Tue, 02 Oct 2018 09:04:54 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Tue,  2 Oct 2018 11:03:38 +0200
+Message-Id: <20181002090338.11788-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20180119132825.26662-2-u.kleine-koenig@pengutronix.de>
+References: <20180119132825.26662-2-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,107 +17,164 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: jlu@pengutronix.de
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: bootchooser: constant decrement of remaining_attempts
-To: Sascha Hauer <s.hauer@pengutronix.de>, Patrick Huesmann <patrick.huesmann@gmail.com>
-Cc: barebox@lists.infradead.org, Enrico Joerns <ejo@pengutronix.de>
+Subject: [PATCH v2] mci: implement command to switch a mmc device to enhanced
+ mode
+To: barebox@lists.infradead.org
 
-On Wed, 2018-10-10 at 09:14 +0200, Sascha Hauer wrote:
-> Hi Patrick,
-> 
-> +Cc Jan and Enrico
-> 
-> On Tue, Oct 09, 2018 at 06:37:25PM +0200, Patrick Huesmann wrote:
-> > Hi,
-> > 
-> > I'm building a RAUC- & bootchooser-based firmware update solution.
-> > The scenario is symmetric rootfs slots, manual update, userspace
-> > (RAUC) marks as good.
-> > It seems to work well, however I noticed that it's always decrementing
-> > and resetting the remaining_attempts of the booted system, not only
-> > when there's an update, but also during regular boot-ups.
-> > 
-> > I thought that the RAUC/bootchooser combo was mainly about providing a
-> > safeguard against accidentally "bricking" the system with corrupt or
-> > incomplete firmware updates.
-> > However, the logic of decrementing and later resetting the
-> > remaining_attempts is apparently not limited to the period between
-> > performing the update and the validation (mark as good) of that
-> > update, but also running all the other times the system is booted.
-> > 
-> > This can have some undesirable side effects:
-> > 
-> > 1) When the boot process is interrupted for any reason (power issues,
-> > brown-out resets, users unplugging the gadget while it boots, etc.)
-> > more than three times in a row (assuming a remaining_attempts reset
-> > value of 3), then bootchooser will happily switch to the fall-back
-> > target, even though there's nothing wrong with the actual target at
-> > all.
-> 
-> I think what you want here is the global.bootchooser.reset_attempts=power-on
-> option. With this option bootchooser will reset the remaining attempts
-> to the default value with each power on reset, meaning that the primary
-> target will only become invalid when the watchdog bites you three times
-> in a row, but not when the device is turned off in between.
-
-If you want to ensure that the old system is not booted anymore, you
-should set its priority to zero.
-
-Leaving the old image enabled is useful in cases where you want to
-protect against problems that occur some time after the update.
-
-> > I guess this can be worked around by syncing the fall-back target to
-> > the last updated one, after the last update has been verified as good.
-> > However this brings additional cost & complexity, and feels more like
-> > a hack than a proper solution.
-> > 
-> > 2) In every complete boot cycle, there are two writes to the
-> > barebox-state partition (bootchooser decrementing the
-> > remaining_attempts, then userspace resetting the remaining_attempts
-> > when it marks the target as good). For systems that boot up & power
-> > down a lot, this will generate lots of unnecessary flash writes over
-> > time. Probably it won't be enough to actually wear out the flash, but
-> > still it doesn't "feel" quite right. (I jumped through hoops to have a
-> > proper read-only root and would like to limit the overall number of
-> > flash writes when possible).
-> > 
-> > I'm thinking of an option that limits the remaining_attempts logic to
-> > the phase when barebox attempts to boot a newly flashed update, until
-> > that update is marked as good later in userspace. There could be an
-> > extra (optional) variable in the barebox-state, that allows the
-> > userspace to deliberately enable/disable the remaining_attempts logic
-> > in barebox.
-> 
-> I don't think such an option is available at the moment. Maybe we could
-> declare remaining_attempts=INT_MAX as infinite attempts. Whenever that
-> value is found the remaining_attempts counter wouldn't be decreased.
-> 
-> After an update userspace could then set the remaining_attempts counter
-> of the new system to three and the new system would set it to INT_MAX
-> when successfully booted.
-
-INT_MAX would need to be relative to the actual type defined in the
-state variable (u32 vs. u8). An alternative would be to have a global
-flag to en-/disable counting.
-
-Currently there is one way to avoid writes to flash in the successful
-case: Use a watchdog and call bootchooser -s, which will cause it to
-skip decrementing if it boots the same target as previously. It seems
-that's not documented, though. :/
-
-Regards,
-Jan
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIGNvbW1hbmQgc3RydWN0dXJlIGFsbG93cyBhZGRpbmcgbW9yZSBzdWJjb21tYW5kcyBhbmQg
+aXMgZGVzaWduZWQgdG8KbWF0Y2ggdGhlIExpbnV4IHByb2dyYW0gbW1jIGZyb20gdGhlIG1tYy11
+dGlscy4gU28gbGF0ZXIgbW9yZSBjb21tYW5kcwpjYW4gZWFzaWx5IGJlIGFkZGVkIGlmIG5lZWQg
+YmUuCgpDb21wYXJlZCB0byBtbWMtdXRpbHMnCgoJbW1jIGVuaF9hcmVhIHNldCA8LXl8LW58LWM+
+IDxzdGFydCBLaUI+IDxsZW5ndGggS2lCPiA8ZGV2aWNlPgoKdGhlIGNvbW1hbmQgdGhhdCBpcyBp
+bXBsZW1lbnRlZCBoZXJlICgKCgltbWMgZW5oX2FyZWEgc2V0bWF4IFstY10gPGRldmljZT4KCikg
+aXMgZWFzaWVyIHRvIHVzZSAoYmVjYXVzZSB5b3UgZG9uJ3QgaGF2ZSB0byBjaGVjayB0aGUgbWF4
+aW1hbCBhbGxvd2VkCnNpemUgYnkgcmVhZGluZyBzb21lIHJlZ2lzdGVycyBhbmQgY2FsY3VsYXRl
+IHRoZSBhdmFpbGFibGUgc2l6ZSBmcm9tCnRoZW0gKHdoaWNoIHRoZW4gbXVzdCBiZSBjYWxjdWxh
+dGVkIGJhY2sgdG8gcmVnaXN0ZXIgdmFsdWVzIGJ5IHRoZSBtbWMKY29tbWFuZCkpIGJ1dCBsZXNz
+IGZsZXhpYmxlIGFzIGl0IGRvZXNuJ3QgYWxsb3cgYWxsIHRoZSBjcmF6eQpwb3NzaWJpbGl0aWVz
+IHNwZWNpZmllZCBpbiB0aGUgZU1NQyBzdGFuZGFyZCBidXQganVzdCBjcmVhdGVzIGFuCmVuaGFu
+Y2VkIGFyZWEgd2l0aCBtYXhpbWFsIHNpemUuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvD
+tm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KSGVsbG8sCgp0aGlzIGlz
+IHYyIG9mIHRoaXMgcGF0Y2guIEkgcmVmYWN0b3JlZCBzb21lIHN0dWZmIChidXQgZGlkbid0IG1v
+dmUgaXQKb3V0IHRvIGRyaXZlcnMvbWNpIGFzIHN1Z2dlc3RlZCwgSSdkIGRlbGF5IHRoYXQgdW50
+aWwgbmVlZCBhcmlzZXMpLApjaGFuZ2VkIHRoZSBvcHRpb25zIHRvIGJlIGVhc2llciBhbmQgYWRk
+ZWQgc29tZSBkb2N1bWVudGF0aW9uLgoKU3ViY29tbWFuZCBwYXJzaW5nIGlzIG5vdyBhbHNvIHNp
+bXBsZXIgYW5kIGRvZXNuJ3QgcGljayB1cCBhYmJyZXZpYXRlZApjb21tYW5kcy4KClNvbWUgcmV2
+aWV3IGNvbW1lbnRzIChlLmcuICJ2ZXJib3NlIGVycm9yIHJlcG9ydGluZyIpIGlzbid0IGFkZHJl
+c3NlZAp5ZXQgYXMgSSdtIG5vdCBzdXJlIEkgdW5kZXJzdGFuZCBpdCBjb3JyZWN0bHkgKHNlZSB0
+aGUgb3RoZXIgbWFpbCBpbgp0aGlzIHRocmVhZCkuCgpJJ20gc2VuZGluZyBvdXQgYWxyZWFkeSBu
+b3cgYXMgdGhlIGxhc3Qgcm91bmQgd2FzIHNlbnQgb3V0IHF1aXRlIHNvbWUKdGltZSB0byBzd2Fw
+IHRoaXMgdG9waWMgaW4gYWdhaW4gKGluIGNhc2UgaXQgd2FzIGFscmVhZHkgcmVtb3ZlZCBmcm9t
+CnlvdXIgbWFpbGJveCkuCgpCZXN0IHJlZ2FyZHMKVXdlCgogY29tbWFuZHMvS2NvbmZpZyAgfCAg
+MTEgKysrCiBjb21tYW5kcy9NYWtlZmlsZSB8ICAgMSArCiBjb21tYW5kcy9tbWMuYyAgICB8IDIw
+OSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCiBpbmNsdWRl
+L21jaS5oICAgICB8ICAgNyArKwogNCBmaWxlcyBjaGFuZ2VkLCAyMjggaW5zZXJ0aW9ucygrKQog
+Y3JlYXRlIG1vZGUgMTAwNjQ0IGNvbW1hbmRzL21tYy5jCgpkaWZmIC0tZ2l0IGEvY29tbWFuZHMv
+S2NvbmZpZyBiL2NvbW1hbmRzL0tjb25maWcKaW5kZXggNjc1YmQxY2E3NmEwLi4yMjFkNjVhMzU4
+ZTAgMTAwNjQ0Ci0tLSBhL2NvbW1hbmRzL0tjb25maWcKKysrIGIvY29tbWFuZHMvS2NvbmZpZwpA
+QCAtMjM4LDYgKzIzOCwxNyBAQCBjb25maWcgQ01EX1ZFUlNJT04KIAogCSAgYmFyZWJveCAyMDE0
+LjA1LjAtMDAxNDItZ2IyODkzNzMgIzE3NyBNb24gTWF5IDEyIDIwOjM1OjU1IENFU1QgMjAxNAog
+Citjb25maWcgQ01EX01NQworCXRyaXN0YXRlCisJcHJvbXB0ICJtbWMgY29tbWFuZCBhbGxvd2lu
+ZyB0byBzZXQgZW5oYW5jZWQgYXJlYSIKKwlkZXBlbmRzIG9uIE1DSQorCWhlbHAKKwkgIENvbmZp
+Z3VyZSBtbWMgY2FyZHMgc2ltaWxhciB0byB0aGUgdXNlcnNwYWNlIG1tYyB1dGlsaXR5LiBDb21w
+YXJlZCB0bworCSAgbW1jX2V4dGNzZCBpdCB3b3JrcyBvbiBhIGhpZ2hlciBhYnN0cmFjdGlvbiBs
+ZXZlbC4KKworCSAgQ3VycmVudGx5IG9ubHkgdGhlIGVuaF9hcmVhIHN1YmNvbW1hbmQgaXMgaW1w
+bGVtZW50ZWQgdG8gY29uZmlndXJlCisJICB0aGUgIkVuaGFuY2VkIEFyZWEiIG9mIGFuIG1tYyBk
+ZXZpY2UuCisKIGNvbmZpZyBDTURfTU1DX0VYVENTRAogCXRyaXN0YXRlCiAJcHJvbXB0ICJyZWFk
+L3dyaXRlIGVNTUMgZXh0LiBDU0QgcmVnaXN0ZXIiCmRpZmYgLS1naXQgYS9jb21tYW5kcy9NYWtl
+ZmlsZSBiL2NvbW1hbmRzL01ha2VmaWxlCmluZGV4IGViNDc5NjM4OWU2Yi4uMjdhNjIyNDBiMDM5
+IDEwMDY0NAotLS0gYS9jb21tYW5kcy9NYWtlZmlsZQorKysgYi9jb21tYW5kcy9NYWtlZmlsZQpA
+QCAtMTE5LDYgKzExOSw3IEBAIG9iai0kKENPTkZJR19DTURfREhDUCkJCSs9IGRoY3Aubwogb2Jq
+LSQoQ09ORklHX0NNRF9CT09UQ0hPT1NFUikJKz0gYm9vdGNob29zZXIubwogb2JqLSQoQ09ORklH
+X0NNRF9ESFJZU1RPTkUpCSs9IGRocnlzdG9uZS5vCiBvYmotJChDT05GSUdfQ01EX1NQRF9ERUNP
+REUpCSs9IHNwZF9kZWNvZGUubworb2JqLSQoQ09ORklHX0NNRF9NTUMpCQkrPSBtbWMubwogb2Jq
+LSQoQ09ORklHX0NNRF9NTUNfRVhUQ1NEKQkrPSBtbWNfZXh0Y3NkLm8KIG9iai0kKENPTkZJR19D
+TURfTkFORF9CSVRGTElQKQkrPSBuYW5kLWJpdGZsaXAubwogb2JqLSQoQ09ORklHX0NNRF9TRUVE
+KQkJKz0gc2VlZC5vCmRpZmYgLS1naXQgYS9jb21tYW5kcy9tbWMuYyBiL2NvbW1hbmRzL21tYy5j
+Cm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAwMDAwMC4uZWExYzZkNmU0ZjUzCi0t
+LSAvZGV2L251bGwKKysrIGIvY29tbWFuZHMvbW1jLmMKQEAgLTAsMCArMSwyMDkgQEAKKyNpbmNs
+dWRlIDxjb21tYW5kLmg+CisjaW5jbHVkZSA8bWNpLmg+CisjaW5jbHVkZSA8c3RkaW8uaD4KKyNp
+bmNsdWRlIDxzdHJpbmcuaD4KKworc3RhdGljIGludCBtbWNfZW5oX2FyZWFfc2V0bWF4KHN0cnVj
+dCBtY2kgKm1jaSwgdTggKmV4dF9jc2QpCit7CisJaW50IHJldDsKKworCXJldCA9IG1jaV9zd2l0
+Y2gobWNpLCBFWFRfQ1NEX0VSQVNFX0dST1VQX0RFRiwgMSk7CisJaWYgKHJldCkgeworCQlwcmlu
+dGYoIkZhaWx1cmUgdG8gd3JpdGUgdG8gRVhUX0NTRF9FUkFTRV9HUk9VUF9ERUZcbiIpOworCQly
+ZXR1cm4gcmV0OworCX0KKworCXJldCA9IG1jaV9zd2l0Y2gobWNpLCBFWFRfQ1NEX0VOSF9TVEFS
+VF9BRERSLCAwKTsKKwlpZiAocmV0KSB7CisJCXByaW50ZigiRmFpbHVyZSB0byB3cml0ZSB0byBF
+WFRfQ1NEX0VOSF9TVEFSVF9BRERSWzBdXG4iKTsKKwkJcmV0dXJuIHJldDsKKwl9CisKKwlyZXQg
+PSBtY2lfc3dpdGNoKG1jaSwgRVhUX0NTRF9FTkhfU1RBUlRfQUREUiArIDEsIDApOworCWlmIChy
+ZXQpIHsKKwkJcHJpbnRmKCJGYWlsdXJlIHRvIHdyaXRlIHRvIEVYVF9DU0RfRU5IX1NUQVJUX0FE
+RFJbMV1cbiIpOworCQlyZXR1cm4gcmV0OworCX0KKworCXJldCA9IG1jaV9zd2l0Y2gobWNpLCBF
+WFRfQ1NEX0VOSF9TVEFSVF9BRERSICsgMiwgMCk7CisJaWYgKHJldCkgeworCQlwcmludGYoIkZh
+aWx1cmUgdG8gd3JpdGUgdG8gRVhUX0NTRF9FTkhfU1RBUlRfQUREUlsyXVxuIik7CisJCXJldHVy
+biByZXQ7CisJfQorCisJcmV0ID0gbWNpX3N3aXRjaChtY2ksIEVYVF9DU0RfRU5IX1NUQVJUX0FE
+RFIgKyAzLCAwKTsKKwlpZiAocmV0KSB7CisJCXByaW50ZigiRmFpbHVyZSB0byB3cml0ZSB0byBF
+WFRfQ1NEX0VOSF9TVEFSVF9BRERSWzNdXG4iKTsKKwkJcmV0dXJuIHJldDsKKwl9CisKKwlyZXQg
+PSBtY2lfc3dpdGNoKG1jaSwgRVhUX0NTRF9FTkhfU0laRV9NVUxULCBleHRfY3NkW0VYVF9DU0Rf
+TUFYX0VOSF9TSVpFX01VTFRdKTsKKwlpZiAocmV0KSB7CisJCXByaW50ZigiRmFpbHVyZSB0byB3
+cml0ZSB0byBFWFRfQ1NEX0VOSF9TSVpFX01VTFRbMF1cbiIpOworCQlyZXR1cm4gcmV0OworCX0K
+KworCXJldCA9IG1jaV9zd2l0Y2gobWNpLCBFWFRfQ1NEX0VOSF9TSVpFX01VTFQgKyAxLCBleHRf
+Y3NkW0VYVF9DU0RfTUFYX0VOSF9TSVpFX01VTFQgKyAxXSk7CisJaWYgKHJldCkgeworCQlwcmlu
+dGYoIkZhaWx1cmUgdG8gd3JpdGUgdG8gRVhUX0NTRF9FTkhfU0laRV9NVUxUWzFdXG4iKTsKKwkJ
+cmV0dXJuIHJldDsKKwl9CisKKwlyZXQgPSBtY2lfc3dpdGNoKG1jaSwgRVhUX0NTRF9FTkhfU0la
+RV9NVUxUICsgMiwgZXh0X2NzZFtFWFRfQ1NEX01BWF9FTkhfU0laRV9NVUxUICsgMl0pOworCWlm
+IChyZXQpIHsKKwkJcHJpbnRmKCJGYWlsdXJlIHRvIHdyaXRlIHRvIEVYVF9DU0RfRU5IX1NJWkVf
+TVVMVFsyXVxuIik7CisJCXJldHVybiByZXQ7CisJfQorCisJcmV0ID0gbWNpX3N3aXRjaChtY2ks
+IEVYVF9DU0RfUEFSVElUSU9OU19BVFRSSUJVVEUsIGV4dF9jc2RbRVhUX0NTRF9QQVJUSVRJT05T
+X0FUVFJJQlVURV0gfCBFWFRfQ1NEX0VOSF9VU1JfTUFTSyk7CisJaWYgKHJldCkKKwkJcHJpbnRm
+KCJGYWlsdXJlIHRvIHdyaXRlIHRvIEVYVF9DU0RfUEFSVElUSU9OU19BVFRSSUJVVEVcbiIpOwor
+CisJcmV0dXJuIHJldDsKK30KKworc3RhdGljIGludCBtbWNfcGFydGl0aW9uaW5nX2NvbXBsZXRl
+KHN0cnVjdCBtY2kgKm1jaSkKK3sKKwlpbnQgcmV0OworCisJcmV0ID0gbWNpX3N3aXRjaChtY2ks
+IEVYVF9DU0RfUEFSVElUSU9OX1NFVFRJTkdfQ09NUExFVEVELCAxKTsKKwlpZiAocmV0KQorCQlw
+cmludGYoIkZhaWx1cmUgdG8gd3JpdGUgdG8gRVhUX0NTRF9QQVJUSVRJT05fU0VUVElOR19DT01Q
+TEVURURcbiIpOworCisJcmV0dXJuIHJldDsKK30KKworc3RhdGljIHU4ICptY2lfZ2V0X2V4dF9j
+c2Qoc3RydWN0IG1jaSAqbWNpKQoreworCXU4ICpleHRfY3NkOworCWludCByZXQ7CisKKwlleHRf
+Y3NkID0geG1hbGxvYyg1MTIpOworCisJcmV0ID0gbWNpX3NlbmRfZXh0X2NzZChtY2ksIGV4dF9j
+c2QpOworCWlmIChyZXQpIHsKKwkJcHJpbnRmKCJGYWlsdXJlIHRvIHJlYWQgRVhUX0NTRCByZWdp
+c3RlclxuIik7CisJCXJldHVybiBFUlJfUFRSKC1FSU8pOworCX0KKworCXJldHVybiBleHRfY3Nk
+OworfQorCisvKiBlbmhfYXJlYSBzZXRtYXggWy1jXSAvZGV2L21tY1ggKi8KK3N0YXRpYyBpbnQg
+ZG9fbW1jX2VuaF9hcmVhKGludCBhcmdjLCBjaGFyICphcmd2W10pCit7CisJY2hhciAqZGV2bmFt
+ZTsKKwlzdHJ1Y3QgbWNpICptY2k7CisJdTggKmV4dF9jc2Q7CisJaW50IHNldF9jb21wbGV0ZWQg
+PSAwOworCWludCByZXQ7CisKKwlpZiAoYXJnYyA8IDIgfHwgc3RyY21wKGFyZ3ZbMV0sICJzZXRt
+YXgiKSAhPSAwKQorCQlnb3RvIHVzYWdlOworCisJaWYgKGFyZ2MgPT0gMykgeworCQkvKiBlbmhf
+YXJlYSBzZXRtYXggL2Rldi9tbWNYICovCisJCWRldm5hbWUgPSBhcmd2WzJdOworCQlzZXRfY29t
+cGxldGVkID0gZmFsc2U7CisJfSBlbHNlIGlmIChhcmdjID09IDQgfHwgc3RyY21wKGFyZ3ZbMl0s
+ICItYyIpID09IDApIHsKKwkJLyogZW5oX2FyZWEgc2V0bWF4IC1jIC9kZXYvbW1jWCAqLworCQlk
+ZXZuYW1lID0gYXJndlszXTsKKwkJc2V0X2NvbXBsZXRlZCA9IHRydWU7CisJfSBlbHNlIHsKK3Vz
+YWdlOgorCQlwcmludGYoIlVzYWdlOiBtbWMgZW5oX2FyZWEgc2V0bWF4IFstY10gL2Rldi9tbWNY
+XG4iKTsKKwkJcmV0dXJuIENPTU1BTkRfRVJST1JfVVNBR0U7CisJfQorCisJaWYgKCFzdHJuY21w
+KGRldm5hbWUsICIvZGV2LyIsIDUpKQorCQlkZXZuYW1lICs9IDU7CisKKwltY2kgPSBtY2lfZ2V0
+X2RldmljZV9ieV9uYW1lKGRldm5hbWUpOworCWlmICghbWNpKSB7CisJCXByaW50ZigiRmFpbHVy
+ZSB0byBvcGVuICVzIGFzIG1jaSBkZXZpY2VcbiIsIGRldm5hbWUpOworCQlyZXR1cm4gQ09NTUFO
+RF9FUlJPUjsKKwl9CisKKwlleHRfY3NkID0gbWNpX2dldF9leHRfY3NkKG1jaSk7CisJaWYgKElT
+X0VSUihleHRfY3NkKSkKKwkJcmV0dXJuIENPTU1BTkRfRVJST1I7CisKKwlpZiAoIShleHRfY3Nk
+W0VYVF9DU0RfUEFSVElUSU9OSU5HX1NVUFBPUlRdICYgRVhUX0NTRF9FTkhfQVRUUklCVVRFX0VO
+X01BU0spKSB7CisJCXByaW50ZigiRGV2aWNlIGRvZXNuJ3Qgc3VwcG9ydCBlbmhhbmNlZCBhcmVh
+XG4iKTsKKwkJZ290byBlcnJvcjsKKwl9CisKKwlpZiAoZXh0X2NzZFtFWFRfQ1NEX1BBUlRJVElP
+Tl9TRVRUSU5HX0NPTVBMRVRFRF0pIHsKKwkJcHJpbnRmKCJQYXJ0aXRpb25pbmcgYWxyZWFkeSBm
+aW5hbGl6ZWRcbiIpOworCQlnb3RvIGVycm9yOworCX0KKworCXJldCA9IG1tY19lbmhfYXJlYV9z
+ZXRtYXgobWNpLCBleHRfY3NkKTsKKwlpZiAocmV0KQorCQlnb3RvIGVycm9yOworCisJZnJlZShl
+eHRfY3NkKTsKKworCWlmIChzZXRfY29tcGxldGVkKSB7CisJCXJldCA9IG1tY19wYXJ0aXRpb25p
+bmdfY29tcGxldGUobWNpKTsKKwkJaWYgKHJldCkKKwkJCXJldHVybiBDT01NQU5EX0VSUk9SOwor
+CQlwcmludGYoIk5vdyBwb3dlciBjeWNsZSB0aGUgZGV2aWNlIHRvIGxldCBpdCByZWNvbmZpZ3Vy
+ZSBpdHNlbGYuXG4iKTsKKwl9CisKKwlyZXR1cm4gQ09NTUFORF9TVUNDRVNTOworCitlcnJvcjoK
+KwlmcmVlKGV4dF9jc2QpOworCXJldHVybiBDT01NQU5EX0VSUk9SOworfQorCitzdGF0aWMgc3Ry
+dWN0IHsKKwljb25zdCBjaGFyICpjbWQ7CisJaW50ICgqZnVuYykoaW50IGFyZ2MsIGNoYXIgKmFy
+Z3ZbXSk7Cit9IG1tY19zdWJjbWRzW10gPSB7CisJeworCQkuY21kID0gImVuaF9hcmVhIiwKKwkJ
+LmZ1bmMgPSBkb19tbWNfZW5oX2FyZWEsCisJfQorfTsKKworc3RhdGljIGludCBkb19tbWMoaW50
+IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKK3sKKwlzaXplX3QgaTsKKwlpbnQgKCpmdW5jKShpbnQgYXJn
+YywgY2hhciAqYXJndltdKSA9IE5VTEw7CisKKwlpZiAoYXJnYyA8IDIpIHsKKwkJcHJpbnRmKCJt
+bWM6IHJlcXVpcmVkIHN1YmNvbW1hbmQgbWlzc2luZ1xuIik7CisJCXJldHVybiAxOworCX0KKwor
+CWZvciAoaSA9IDA7IGkgPCBBUlJBWV9TSVpFKG1tY19zdWJjbWRzKTsgKytpKSB7CisJCWlmIChz
+dHJjbXAobW1jX3N1YmNtZHNbaV0uY21kLCBhcmd2WzFdKSA9PSAwKSB7CisJCQlmdW5jID0gbW1j
+X3N1YmNtZHNbaV0uZnVuYzsKKwkJCWJyZWFrOworCQl9CisJfQorCisJaWYgKGZ1bmMpIHsKKwkJ
+cmV0dXJuIGZ1bmMoYXJnYyAtIDEsIGFyZ3YgKyAxKTsKKwl9IGVsc2UgeworCQlwcmludGYoIm1t
+Yzogc3ViY29tbWFuZCBcIiVzXCIgbm90IGZvdW5kXG4iLCBhcmd2WzFdKTsKKwkJcmV0dXJuIENP
+TU1BTkRfRVJST1JfVVNBR0U7CisJfQorfQorCitCQVJFQk9YX0NNRF9IRUxQX1NUQVJUKG1tYykK
+K0JBUkVCT1hfQ01EX0hFTFBfVEVYVCgiTW9kaWZpZXMgbW1jIHByb3BlcnRpZXMuIikKK0JBUkVC
+T1hfQ01EX0hFTFBfVEVYVCgiIikKK0JBUkVCT1hfQ01EX0hFTFBfVEVYVCgiVGhlIHN1YmNvbW1h
+bmQgZW5oX2FyZWEgY3JlYXRlcyBhbiBlbmhhbmNlZCBhcmVhIG9mIikKK0JBUkVCT1hfQ01EX0hF
+TFBfVEVYVCgibWF4aW1hbCBzaXplLiIpCitCQVJFQk9YX0NNRF9IRUxQX1RFWFQoIk5vdGUsIHdp
+dGggLWMgdGhpcyBpcyBhbiBpcnJldmVyc2libGUgYWN0aW9uLiIpCitCQVJFQk9YX0NNRF9IRUxQ
+X09QVCgiLWMiLCAiY29tcGxldGUgcGFydGl0aW9uaW5nIikKK0JBUkVCT1hfQ01EX0hFTFBfRU5E
+CisKK0JBUkVCT1hfQ01EX1NUQVJUKG1tYykKKwkuY21kID0gZG9fbW1jLAorCUJBUkVCT1hfQ01E
+X09QVFMoImVuaF9hcmVhIHNldG1heCBbLWNdIC9kZXYvbW1jWCIpCisJQkFSRUJPWF9DTURfSEVM
+UChjbWRfbW1jX2hlbHApCitCQVJFQk9YX0NNRF9FTkQKZGlmZiAtLWdpdCBhL2luY2x1ZGUvbWNp
+LmggYi9pbmNsdWRlL21jaS5oCmluZGV4IDA3MjAwOGVmOWRhNy4uZjcwMTg0ZjNiNGFiIDEwMDY0
+NAotLS0gYS9pbmNsdWRlL21jaS5oCisrKyBiL2luY2x1ZGUvbWNpLmgKQEAgLTMwNCw2ICszMDQs
+MTMgQEAKICNkZWZpbmUgRVhUX0NTRF9DQVJEX1RZUEVfU0RSXzFfMlYJKDE8PDUpCS8qIENhcmQg
+Y2FuIHJ1biBhdCAyMDBNSHogKi8KIAkJCQkJCS8qIFNEUiBtb2RlIEAxLjJWIEkvTyAqLwogCisv
+KiByZWdpc3RlciBQQVJUSVRJT05TX0FUVFJJQlVURSBbMTU2XSAqLworI2RlZmluZSBFWFRfQ1NE
+X0VOSF9VU1JfTUFTSwkJKDEgPDwgMCkKKworLyogcmVnaXN0ZXIgUEFSVElUSU9OSU5HX1NVUFBP
+UlQgWzE2MF0gKi8KKyNkZWZpbmUgRVhUX0NTRF9FTkhfQVRUUklCVVRFX0VOX01BU0sJKDEgPDwg
+MCkKKworLyogcmVnaXN0ZXIgQlVTX1dJRFRIIFsxODNdLCBmaWVsZCBCdXMgTW9kZSBTZWxlY3Rp
+b24gWzQ6MF0gKi8KICNkZWZpbmUgRVhUX0NTRF9CVVNfV0lEVEhfMQkwCS8qIENhcmQgaXMgaW4g
+MSBiaXQgbW9kZSAqLwogI2RlZmluZSBFWFRfQ1NEX0JVU19XSURUSF80CTEJLyogQ2FyZCBpcyBp
+biA0IGJpdCBtb2RlICovCiAjZGVmaW5lIEVYVF9DU0RfQlVTX1dJRFRIXzgJMgkvKiBDYXJkIGlz
+IGluIDggYml0IG1vZGUgKi8KLS0gCjIuMTkuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
+aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2JhcmVib3gK
