@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp.megiteam.pl ([31.186.83.105])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g9RdH-0007hs-T2
- for barebox@lists.infradead.org; Mon, 08 Oct 2018 09:15:36 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  8 Oct 2018 11:15:07 +0200
-Message-Id: <20181008091507.2844-1-s.hauer@pengutronix.de>
+ id 1g7fYN-0002Vk-BS
+ for barebox@lists.infradead.org; Wed, 03 Oct 2018 11:42:57 +0000
+From: Marcin Niestroj <m.niestroj@grinn-global.com>
+Date: Wed,  3 Oct 2018 13:42:16 +0200
+Message-Id: <20181003114216.22102-1-m.niestroj@grinn-global.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,38 +19,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: do not attach already attached UBI
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] fs: fix NULL pointer dereference in ramfs_truncate
+To: barebox@lists.infradead.org
+Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
 
-in mtd_detect we do not check if the mtd is already attached to UBI. If
-it is we get the error:
+This patch fixes lately introduced speed improvement of ramfs_truncate
+function. Number of chunks were passed to ramfs_find_chunk function,
+which returned NULL as result. Chunks are indexed from 0, hence we
+need to pass (number_of_chunks - 1) to get pointer to the last chunk.
 
-ERROR: ubi: mtd0 is already attached to ubi0
-
-Check before trying to attach it to avoid this message.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Fixes: d49dd1d840d7 ("fs: improve ramfs_truncate speed")
+Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
 ---
- drivers/mtd/core.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Hi,
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index ae7818a189..15fe9ce798 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -589,11 +589,8 @@ static int mtd_detect(struct device_d *dev)
- 			continue;
+Just few words to clarify where this bug come from.
+
+We are fixing now patch [1], which was rebased on top of patch [2].
+Simple file transfer using fastboot protocol worked fine in such
+configuration. However it turned out that [2] had bug (`newchunks = 1`
+instead of `oldchunks = 1`). After [2] was fixed it turned out that
+[1] has also bug, which results in NULL pointer dereference during
+file upload with fastboot protocol.
+
+Patch tested on `next` branch.
+
+[1] http://lists.infradead.org/pipermail/barebox/2018-September/034859.html
+[2] http://lists.infradead.org/pipermail/barebox/2018-September/034855.html
+
+ fs/ramfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/ramfs.c b/fs/ramfs.c
+index bad126c65..84ecfa0dd 100644
+--- a/fs/ramfs.c
++++ b/fs/ramfs.c
+@@ -380,7 +380,7 @@ static int ramfs_truncate(struct device_d *dev, FILE *f, ulong size)
  
- 		filetype = file_detect_type(buf, bufsize);
--		if (filetype == filetype_ubi) {
-+		if (filetype == filetype_ubi && ubi_num_get_by_mtd(mtd) < 0)
- 			ret = ubi_attach_mtd_dev(mtd, UBI_DEV_NUM_AUTO, 0, 20);
--			if (ret == -EEXIST)
--				ret = 0;
--		}
- 
- 		break;
- 	}
+ 	if (newchunks > oldchunks) {
+ 		if (data) {
+-			data = ramfs_find_chunk(node, oldchunks);
++			data = ramfs_find_chunk(node, oldchunks - 1);
+ 		} else {
+ 			node->data = ramfs_get_chunk();
+ 			if (!node->data)
 -- 
 2.19.0
 
