@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wr1-x443.google.com ([2a00:1450:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g8AON-0005U9-In
- for barebox@lists.infradead.org; Thu, 04 Oct 2018 20:38:42 +0000
-Received: by mail-wr1-x443.google.com with SMTP id y16so11326434wrw.3
- for <barebox@lists.infradead.org>; Thu, 04 Oct 2018 13:38:28 -0700 (PDT)
+ id 1g8Axs-00031s-9e
+ for barebox@lists.infradead.org; Thu, 04 Oct 2018 21:15:21 +0000
+Received: by mail-wr1-x443.google.com with SMTP id x12-v6so11402933wru.8
+ for <barebox@lists.infradead.org>; Thu, 04 Oct 2018 14:15:10 -0700 (PDT)
 MIME-Version: 1.0
-References: <20180927041129.29584-1-andrew.smirnov@gmail.com>
- <20180927041129.29584-3-andrew.smirnov@gmail.com>
- <20180927114255.GY4097@pengutronix.de>
-In-Reply-To: <20180927114255.GY4097@pengutronix.de>
+References: <20181004070400.12338-1-Denis.Osterland@diehl.com>
+In-Reply-To: <20181004070400.12338-1-Denis.Osterland@diehl.com>
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 4 Oct 2018 13:38:15 -0700
-Message-ID: <CAHQ1cqHiati+mx6_bkks2sKK7z+Jutj51HdJj8czGeUDY3prBg@mail.gmail.com>
+Date: Thu, 4 Oct 2018 14:14:57 -0700
+Message-ID: <CAHQ1cqGSwPu-vdVcRZxDj+D9YiXS3NR+079ka9v5wO9sgMa+_Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,61 +23,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] bbu: command: Make sure specified update handler
- exists
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] hab: Print events on info command.
+To: denis.osterland@diehl.com
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Sep 27, 2018 at 4:42 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Thu, Oct 4, 2018 at 12:05 AM Denis OSTERLAND
+<denis.osterland@diehl.com> wrote:
 >
-> Hi Andrey,
+> From: Denis Osterland <Denis.Osterland@diehl.com>
 >
-> On Wed, Sep 26, 2018 at 09:11:28PM -0700, Andrey Smirnov wrote:
-> > @@ -57,6 +62,30 @@ static int do_barebox_update(int argc, char *argv[])
-> >               }
-> >       }
-> >
-> > +     if (data.handler_name && data.devicefile) {
-> > +             printf("Both TARGET and DEVICE are provided. "
-> > +                    "Ignoring the latter\n");
-> > +
-> > +             data.devicefile = NULL;
-> > +     }
-> > +
-> > +     if (data.handler_name &&
-> > +         !bbu_find_handler_by_name(data.handler_name)) {
-> > +             printf("handler '%s' does not exist\n",
-> > +                    data.handler_name);
-> > +             goto error;
-> > +     } else if (data.devicefile &&
-> > +                !bbu_find_handler_by_device(data.devicefile)) {
-> > +             printf("handler for '%s' does not exist\n",
-> > +                    data.devicefile);
-> > +             goto error;
-> > +     } if (!data.handler_name &&
-> > +           !data.devicefile &&
-> > +           !bbu_find_handler_by_name(NULL)) {
-> > +             printf("default handler does not exist\n");
-> > +             goto error;
-> > +     }
+> This patch calls *_hab_get_status function as part of hab info command.
+> This function works only if MMU is disabled.
 >
-> There should be a linebreak before the last if().
+> Signed-off-by: Denis Osterland <Denis.Osterland@diehl.com>
+> ---
+>  commands/hab.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 >
-> Maybe it should be rewritten as:
+> diff --git a/commands/hab.c b/commands/hab.c
+> index 0d7ee8e76..9027b7cb5 100644
+> --- a/commands/hab.c
+> +++ b/commands/hab.c
+> @@ -72,6 +72,18 @@ static int do_hab(int argc, char *argv[])
+>                 else
+>                         printf("devel mode\n");
 >
->         if (data.handler_name)
->                 handler = bbu_find_handler_by_name();
->         else if (data.devicefile)
->                 handler = bbu_find_handler_by_device();
->         else
->                 handler = bbu_find_handler_by_name();
->
-> barebox_update() currently repeats these steps, so I think it would be a
-> next logical step to pass this handler to barebox_update() instead of
-> searching it there again.
->
+> +#ifdef CONFIG_MMU
+> +               printf("Disable MMU to access HAB API!\n");
+> +#else
 
-Yeah, makes sense. Will change in v2.
+Minor suggestion: using IS_ENABLED() might be better since it'll make
+the code visible to the compiler regardless of CONFIG_MMU, which might
+help better to prevent accidental bitrot (not very likely in this
+particular instance, but still).
+
+> +# if defined(CONFIG_ARCH_IMX6)
+> +               imx6_hab_get_status();
+> +# elif defined(CONFIG_ARCH_IMX28)
+> +               imx28_hab_get_status();
+> +# elif defined(CONFIG_ARCH_IMX25)
+> +               imx25_hab_get_status();
+> +# endif
+
+Should this check be done at runtime with cpu_is_*()? I'd imagine that
+it would be possible to create a multi-board image that supports both
+i.MX25 and and i.MX6.
 
 Thanks,
 Andrey Smirnov
