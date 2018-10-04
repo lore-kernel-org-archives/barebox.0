@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g8ANQ-00073Z-8p
- for barebox@lists.infradead.org; Thu, 04 Oct 2018 20:37:41 +0000
-Received: by mail-wr1-x442.google.com with SMTP id g15-v6so8698265wru.9
- for <barebox@lists.infradead.org>; Thu, 04 Oct 2018 13:37:27 -0700 (PDT)
+Received: from mail-wr1-x443.google.com ([2a00:1450:4864:20::443])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1g8AON-0005U9-In
+ for barebox@lists.infradead.org; Thu, 04 Oct 2018 20:38:42 +0000
+Received: by mail-wr1-x443.google.com with SMTP id y16so11326434wrw.3
+ for <barebox@lists.infradead.org>; Thu, 04 Oct 2018 13:38:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <20180926013418.26920-1-andrew.smirnov@gmail.com>
- <20180926013418.26920-4-andrew.smirnov@gmail.com>
- <20180927070551.GV4097@pengutronix.de>
-In-Reply-To: <20180927070551.GV4097@pengutronix.de>
+References: <20180927041129.29584-1-andrew.smirnov@gmail.com>
+ <20180927041129.29584-3-andrew.smirnov@gmail.com>
+ <20180927114255.GY4097@pengutronix.de>
+In-Reply-To: <20180927114255.GY4097@pengutronix.de>
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 4 Oct 2018 13:37:14 -0700
-Message-ID: <CAHQ1cqEEVfM_A=w8XebXPkaV+Z9AoLGymfCfBV8bXE4dPg1F-w@mail.gmail.com>
+Date: Thu, 4 Oct 2018 13:38:15 -0700
+Message-ID: <CAHQ1cqHiati+mx6_bkks2sKK7z+Jutj51HdJj8czGeUDY3prBg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,58 +25,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/6] i.MX7D: DCD: Create shared DDR configuration header
+Subject: Re: [PATCH 2/3] bbu: command: Make sure specified update handler
+ exists
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Sep 27, 2018 at 12:05 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Thu, Sep 27, 2018 at 4:42 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
 >
-> On Tue, Sep 25, 2018 at 06:34:15PM -0700, Andrey Smirnov wrote:
-> > Create a shared DDR configuration header based on configuration used
-> > by i.MX7D SabreSD board.
-> >
-> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > ---
-> >  .../flash-header-mx7-sabresd.imxcfg           | 79 +------------------
-> >  .../flash-header/imx7d-ddr-default.imxcfg     | 78 ++++++++++++++++++
-> >  2 files changed, 79 insertions(+), 78 deletions(-)
-> >  create mode 100644 arch/arm/mach-imx/include/mach/flash-header/imx7d-ddr-default.imxcfg
-> >
-> > diff --git a/arch/arm/mach-imx/include/mach/flash-header/imx7d-ddr-default.imxcfg b/arch/arm/mach-imx/include/mach/flash-header/imx7d-ddr-default.imxcfg
-> > new file mode 100644
-> > index 000000000..e98f055ee
-> > --- /dev/null
-> > +++ b/arch/arm/mach-imx/include/mach/flash-header/imx7d-ddr-default.imxcfg
-> > @@ -0,0 +1,78 @@
-> > +/*
-> > + * Copyright (C) 2016 NXP Semiconductors
-> > + *
-> > + * SPDX-License-Identifier:  GPL-2.0
-> > + *
-> > + * Refer docs/README.imxmage for more details about how-to configure
-> > + * and create imximage boot image
-> > + *
-> > + * The syntax is taken as close as possible with the kwbimage
-> > + *
-> > + * Taken from upstream U-Boot git://git.denx.de/u-boot.git, commit
-> > + * 1a8150d4b16fbafa6f1d207ddb85eda7dc399e2d
-> > + */
-> > +
-> > +#include <mach/imx7-ddr-regs.h>
-> > +
-> > +wm 32 0x30340004 0x4F400005
-> > +
-> > +wm 32 0x30391000 0x00000002
-> > +
-> > +wm 32 MX7_DDRC_MSTR 0x01040001
+> Hi Andrey,
 >
-> How default is this default header? It looks like it only works for the
-> exact DDR type and size like used on the i.MX7D SabreSD board. Many boards
-> are more or less copied from the eval boards, so having a common DDR
-> setup header is a good thing, but calling this "default" sounds a bit
-> strong. How about replacing "default" with "sabresd"?
+> On Wed, Sep 26, 2018 at 09:11:28PM -0700, Andrey Smirnov wrote:
+> > @@ -57,6 +62,30 @@ static int do_barebox_update(int argc, char *argv[])
+> >               }
+> >       }
+> >
+> > +     if (data.handler_name && data.devicefile) {
+> > +             printf("Both TARGET and DEVICE are provided. "
+> > +                    "Ignoring the latter\n");
+> > +
+> > +             data.devicefile = NULL;
+> > +     }
+> > +
+> > +     if (data.handler_name &&
+> > +         !bbu_find_handler_by_name(data.handler_name)) {
+> > +             printf("handler '%s' does not exist\n",
+> > +                    data.handler_name);
+> > +             goto error;
+> > +     } else if (data.devicefile &&
+> > +                !bbu_find_handler_by_device(data.devicefile)) {
+> > +             printf("handler for '%s' does not exist\n",
+> > +                    data.devicefile);
+> > +             goto error;
+> > +     } if (!data.handler_name &&
+> > +           !data.devicefile &&
+> > +           !bbu_find_handler_by_name(NULL)) {
+> > +             printf("default handler does not exist\n");
+> > +             goto error;
+> > +     }
+>
+> There should be a linebreak before the last if().
+>
+> Maybe it should be rewritten as:
+>
+>         if (data.handler_name)
+>                 handler = bbu_find_handler_by_name();
+>         else if (data.devicefile)
+>                 handler = bbu_find_handler_by_device();
+>         else
+>                 handler = bbu_find_handler_by_name();
+>
+> barebox_update() currently repeats these steps, so I think it would be a
+> next logical step to pass this handler to barebox_update() instead of
+> searching it there again.
+>
 
-Sounds good. Will do in v2.
+Yeah, makes sense. Will change in v2.
 
 Thanks,
 Andrey Smirnov
