@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x443.google.com ([2a00:1450:4864:20::443])
+Received: from enterprise01.smtp.diehl.com ([193.201.238.219])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g8Axs-00031s-9e
- for barebox@lists.infradead.org; Thu, 04 Oct 2018 21:15:21 +0000
-Received: by mail-wr1-x443.google.com with SMTP id x12-v6so11402933wru.8
- for <barebox@lists.infradead.org>; Thu, 04 Oct 2018 14:15:10 -0700 (PDT)
-MIME-Version: 1.0
+ id 1g8K47-0003ix-DP
+ for barebox@lists.infradead.org; Fri, 05 Oct 2018 06:58:25 +0000
+From: Denis OSTERLAND <denis.osterland@diehl.com>
+Date: Fri, 5 Oct 2018 06:58:04 +0000
+Message-ID: <20181005065537.21844-1-Denis.Osterland@diehl.com>
 References: <20181004070400.12338-1-Denis.Osterland@diehl.com>
 In-Reply-To: <20181004070400.12338-1-Denis.Osterland@diehl.com>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 4 Oct 2018 14:14:57 -0700
-Message-ID: <CAHQ1cqGSwPu-vdVcRZxDj+D9YiXS3NR+079ka9v5wO9sgMa+_Q@mail.gmail.com>
+Content-Language: en-US
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,58 +18,110 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] hab: Print events on info command.
-To: denis.osterland@diehl.com
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v2] hab: Print events on info command.
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Cc: Denis OSTERLAND <denis.osterland@diehl.com>
 
-On Thu, Oct 4, 2018 at 12:05 AM Denis OSTERLAND
-<denis.osterland@diehl.com> wrote:
->
-> From: Denis Osterland <Denis.Osterland@diehl.com>
->
-> This patch calls *_hab_get_status function as part of hab info command.
-> This function works only if MMU is disabled.
->
-> Signed-off-by: Denis Osterland <Denis.Osterland@diehl.com>
-> ---
->  commands/hab.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
->
-> diff --git a/commands/hab.c b/commands/hab.c
-> index 0d7ee8e76..9027b7cb5 100644
-> --- a/commands/hab.c
-> +++ b/commands/hab.c
-> @@ -72,6 +72,18 @@ static int do_hab(int argc, char *argv[])
->                 else
->                         printf("devel mode\n");
->
-> +#ifdef CONFIG_MMU
-> +               printf("Disable MMU to access HAB API!\n");
-> +#else
+From: Denis Osterland <Denis.Osterland@diehl.com>
 
-Minor suggestion: using IS_ENABLED() might be better since it'll make
-the code visible to the compiler regardless of CONFIG_MMU, which might
-help better to prevent accidental bitrot (not very likely in this
-particular instance, but still).
+This patch adds hab_get_status convenience function
+and uses it in hab info command.
+It returns -EIO if MMU is disabled and -ENXIO if no HAB device
+is available.
 
-> +# if defined(CONFIG_ARCH_IMX6)
-> +               imx6_hab_get_status();
-> +# elif defined(CONFIG_ARCH_IMX28)
-> +               imx28_hab_get_status();
-> +# elif defined(CONFIG_ARCH_IMX25)
-> +               imx25_hab_get_status();
-> +# endif
+Signed-off-by: Denis Osterland <Denis.Osterland@diehl.com>
+---
+v1 -> v2: use runtime if, as suggested by Andrey Smirnov,
+          add hab_get_status to have hab implementation
+          selection at a central place
 
-Should this check be done at runtime with cpu_is_*()? I'd imagine that
-it would be possible to create a multi-board image that supports both
-i.MX25 and and i.MX6.
+ commands/hab.c |  3 +++
+ include/hab.h  | 15 +++++++++++++++
+ 2 files changed, 18 insertions(+)
 
-Thanks,
-Andrey Smirnov
+diff --git a/commands/hab.c b/commands/hab.c
+index 0d7ee8e76..af51e73fc 100644
+--- a/commands/hab.c
++++ b/commands/hab.c
+@@ -72,6 +72,9 @@ static int do_hab(int argc, char *argv[])
+ 		else
+ 			printf("devel mode\n");
+ =
+
++		if (hab_get_status() =3D=3D -EIO)
++			printf("Disable MMU to access HAB API!\n");
++
+ 		return 0;
+ 	}
+ =
+
+diff --git a/include/hab.h b/include/hab.h
+index 78c2b865b..7c2ffab5e 100644
+--- a/include/hab.h
++++ b/include/hab.h
+@@ -19,6 +19,7 @@
+ #define __HABV4_H
+ =
+
+ #include <errno.h>
++#include <mach/generic.h>
+ =
+
+ #ifdef CONFIG_HABV4
+ int imx28_hab_get_status(void);
+@@ -43,6 +44,20 @@ static inline int imx25_hab_get_status(void)
+ }
+ #endif
+ =
+
++static inline int hab_get_status(void)
++{
++	if (IS_ENABLED(CONFIG_MMU))
++		return -EIO;
++	else if (cpu_is_mx6())
++		return imx6_hab_get_status();
++	else if (cpu_is_mx28())
++		return imx28_hab_get_status();
++	else if (cpu_is_mx25())
++		return imx25_hab_get_status();
++	else
++		return -ENXIO;
++}
++
+ #define SRK_HASH_SIZE	32
+ =
+
+ /* Force writing of key, even when a key is already written */
+-- =
+
+2.19.0
+
+
+
+Diehl Connectivity Solutions GmbH
+Gesch=E4ftsf=FChrung: Horst Leonberger
+Sitz der Gesellschaft: N=FCrnberg - Registergericht: Amtsgericht
+N=FCrnberg: HRB 32315
+___________________________________________________________________________=
+________________________
+
+Der Inhalt der vorstehenden E-Mail ist nicht rechtlich bindend. Diese E-Mai=
+l enthaelt vertrauliche und/oder rechtlich geschuetzte Informationen.
+Informieren Sie uns bitte, wenn Sie diese E-Mail faelschlicherweise erhalte=
+n haben. Bitte loeschen Sie in diesem Fall die Nachricht.
+Jede unerlaubte Form der Reproduktion, Bekanntgabe, Aenderung, Verteilung u=
+nd/oder Publikation dieser E-Mail ist strengstens untersagt.
+The contents of the above mentioned e-mail is not legally binding. This e-m=
+ail contains confidential and/or legally protected information. Please info=
+rm us if you have received this e-mail by
+mistake and delete it in such a case. Each unauthorized reproduction, discl=
+osure, alteration, distribution and/or publication of this e-mail is strict=
+ly prohibited. =
+
 
 _______________________________________________
 barebox mailing list
