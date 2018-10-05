@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g9Q6L-0000W1-Ba
- for barebox@lists.infradead.org; Mon, 08 Oct 2018 07:37:15 +0000
-Date: Mon, 8 Oct 2018 09:36:59 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181008073659.q3qlbjqacb4yay7k@pengutronix.de>
-References: <20181002140403.3735-1-s.hauer@pengutronix.de>
- <20181003205029.GA20734@ravnborg.org>
+ id 1g8PFq-0000Om-Kg
+ for barebox@lists.infradead.org; Fri, 05 Oct 2018 12:31:00 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1g8PFb-00060A-GP
+ for barebox@lists.infradead.org; Fri, 05 Oct 2018 14:30:35 +0200
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Fri,  5 Oct 2018 14:30:35 +0200
+Message-Id: <20181005123035.11105-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181003205029.GA20734@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,37 +24,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/14] UBIFS update
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] arm: crypto: fix SHA256 shipped assembler code
+To: barebox@lists.infradead.org
 
-Hi Sam,
+Binutils 2.29 changed behavior of the adr instruction to always
+add the thumb mode switch offset, which breaks usages where the
+user is interested in the address of an internal symbol, instead
+of a jump address. Binutils 3.31 fixed this by only adding the
+offset when interworking is required.
 
-On Wed, Oct 03, 2018 at 10:50:29PM +0200, Sam Ravnborg wrote:
-> Hi Sasha.
-> 
-> On Tue, Oct 02, 2018 at 04:03:49PM +0200, Sascha Hauer wrote:
-> > This series updates the UBIFS codebase to Linux-4.19-rc6.
-> 
-> Excpet that we are now in sync with upstream kernel, what else
-> does this set of patches provide?
-> Better performance, bugs fixed, or?
-> 
-> Just asking out of curiosity as there is known (by me) problems
-> with the current barebox ubifs code.
+As there are toolchains out there with broken binutils, it's better
+to fix the code to work around the issue by not using the named
+label.
 
-I am also not aware of any problems in the current UBIFS code. The
-motivation for updating it is that I want to add authentication support:
-http://lists.infradead.org/pipermail/linux-mtd/2018-September/083902.html
-This will be easier on a current codebase.
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Tested-by: Robert Schwebel <r.schwebel@pengutronix.de>
+---
+ arch/arm/crypto/sha256-core.S_shipped | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
+diff --git a/arch/arm/crypto/sha256-core.S_shipped b/arch/arm/crypto/sha256-core.S_shipped
+index 15e0f4ad1e68..4f9cf833b94b 100644
+--- a/arch/arm/crypto/sha256-core.S_shipped
++++ b/arch/arm/crypto/sha256-core.S_shipped
+@@ -92,7 +92,7 @@ sha256_block_data_order:
+ #if __ARM_ARCH__<7
+ 	sub	r3,pc,#8		@ sha256_block_data_order
+ #else
+-	adr	r3,sha256_block_data_order
++	adr	r3,.
+ #endif
+ #if __ARM_MAX_ARCH__>=7 && !defined(__KERNEL__)
+ 	ldr	r12,.LOPENSSL_armcap
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.0
+
 
 _______________________________________________
 barebox mailing list
