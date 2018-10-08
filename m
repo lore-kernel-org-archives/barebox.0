@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g9P9G-0006gz-OJ
+ id 1g9P9H-0006nQ-Id
  for barebox@lists.infradead.org; Mon, 08 Oct 2018 06:38:09 +0000
-Received: by mail-pf1-x444.google.com with SMTP id p24-v6so7860491pff.10
- for <barebox@lists.infradead.org>; Sun, 07 Oct 2018 23:36:00 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id l17-v6so3502398pff.2
+ for <barebox@lists.infradead.org>; Sun, 07 Oct 2018 23:36:11 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun,  7 Oct 2018 23:35:32 -0700
-Message-Id: <20181008063542.18709-7-andrew.smirnov@gmail.com>
+Date: Sun,  7 Oct 2018 23:35:40 -0700
+Message-Id: <20181008063542.18709-15-andrew.smirnov@gmail.com>
 In-Reply-To: <20181008063542.18709-1-andrew.smirnov@gmail.com>
 References: <20181008063542.18709-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,810 +23,1176 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/16] drivers: Introduce dev_set_name()
+Subject: [PATCH 14/16] net: phy: Add basic driver for MV88E6XXX switches from
+ Marvell
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-In order to allow device names that are longer than MAX_DRIVER_NAME,
-port Linux kernel function of the same name, and convert all of the
-code to use it.
+Port a very abridged version of MV88E6XXX DSA driver from Linux
+kernel. Currently only internal MDIO bus connected to switch PHYs is
+exposed.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- arch/arm/mach-imx/iim.c                       |  2 +-
- .../arm/mach-imx/include/mach/devices-imx51.h |  2 +-
- .../arm/mach-imx/include/mach/devices-imx53.h |  2 +-
- arch/arm/mach-mxs/include/mach/devices.h      |  2 +-
- arch/arm/mach-mxs/ocotp.c                     |  2 +-
- arch/sandbox/board/console.c                  |  2 +-
- common/console.c                              |  4 +-
- common/state/state.c                          |  2 +-
- drivers/aiodev/core.c                         |  2 +-
- drivers/amba/bus.c                            |  2 +-
- drivers/ata/disk_ata_drive.c                  |  4 +-
- drivers/base/bus.c                            |  2 +-
- drivers/base/driver.c                         | 38 +++++++++++++++++--
- drivers/base/resource.c                       |  2 +-
- drivers/efi/efi-device.c                      |  2 +-
- drivers/firmware/socfpga.c                    |  2 +-
- drivers/i2c/i2c.c                             |  4 +-
- drivers/mci/mci-core.c                        |  4 +-
- drivers/mfd/rave-sp.c                         |  2 +-
- drivers/mtd/core.c                            |  2 +-
- drivers/mtd/spi-nor/cadence-quadspi.c         |  2 +-
- drivers/mtd/ubi/build.c                       |  2 +-
- drivers/mtd/ubi/vmt.c                         |  4 +-
- drivers/net/cpsw.c                            |  2 +-
- drivers/net/e1000/eeprom.c                    |  2 +-
- drivers/net/orion-gbe.c                       |  2 +-
- drivers/net/phy/mdio_bus.c                    |  2 +-
- drivers/net/phy/phy.c                         |  8 ++--
- drivers/nvmem/core.c                          |  2 +-
- drivers/nvmem/ocotp.c                         |  2 +-
- drivers/of/platform.c                         | 12 +++---
- drivers/pci/bus.c                             |  3 +-
- drivers/phy/phy-core.c                        |  2 +-
- drivers/pwm/core.c                            |  2 +-
- drivers/rtc/class.c                           |  2 +-
- drivers/spi/spi.c                             |  2 +-
- drivers/usb/core/usb.c                        |  5 ++-
- drivers/usb/gadget/udc-core.c                 |  4 +-
- drivers/usb/musb/musb_dsps.c                  |  2 +-
- drivers/video/backlight.c                     |  2 +-
- drivers/video/fb.c                            |  2 +-
- drivers/w1/w1.c                               |  4 +-
- drivers/watchdog/wd_core.c                    |  2 +-
- fs/fs.c                                       |  2 +-
- include/driver.h                              |  5 ++-
- net/eth.c                                     |  2 +-
- 46 files changed, 99 insertions(+), 66 deletions(-)
 
-diff --git a/arch/arm/mach-imx/iim.c b/arch/arm/mach-imx/iim.c
-index d4794cbac..207e1879c 100644
---- a/arch/arm/mach-imx/iim.c
-+++ b/arch/arm/mach-imx/iim.c
-@@ -474,7 +474,7 @@ static int imx_iim_probe(struct device_d *dev)
+net: phy: mv88e6xxx: Expose internal MDIO bus
+---
+ drivers/net/phy/Kconfig             |   6 +
+ drivers/net/phy/Makefile            |   1 +
+ drivers/net/phy/mv88e6xxx/Makefile  |   5 +
+ drivers/net/phy/mv88e6xxx/chip.c    | 724 ++++++++++++++++++++++++++++
+ drivers/net/phy/mv88e6xxx/chip.h    |  61 +++
+ drivers/net/phy/mv88e6xxx/global2.c | 124 +++++
+ drivers/net/phy/mv88e6xxx/global2.h |  41 ++
+ drivers/net/phy/mv88e6xxx/port.c    |  20 +
+ drivers/net/phy/mv88e6xxx/port.h    |  89 ++++
+ 9 files changed, 1071 insertions(+)
+ create mode 100644 drivers/net/phy/mv88e6xxx/Makefile
+ create mode 100644 drivers/net/phy/mv88e6xxx/chip.c
+ create mode 100644 drivers/net/phy/mv88e6xxx/chip.h
+ create mode 100644 drivers/net/phy/mv88e6xxx/global2.c
+ create mode 100644 drivers/net/phy/mv88e6xxx/global2.h
+ create mode 100644 drivers/net/phy/mv88e6xxx/port.c
+ create mode 100644 drivers/net/phy/mv88e6xxx/port.h
+
+diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+index 79fb917ee..3b1a6ea7e 100644
+--- a/drivers/net/phy/Kconfig
++++ b/drivers/net/phy/Kconfig
+@@ -48,6 +48,12 @@ config SMSC_PHY
+ 	---help---
+ 	  Currently supports the LAN83C185, LAN8187 and LAN8700 PHYs
  
- 	imx_iim = iim;
- 
--	strcpy(iim->dev.name, "iim");
-+	dev_set_name(&iim->dev, "iim");
- 	iim->dev.parent = dev;
- 	iim->dev.id = DEVICE_ID_SINGLE;
- 	ret = register_device(&iim->dev);
-diff --git a/arch/arm/mach-imx/include/mach/devices-imx51.h b/arch/arm/mach-imx/include/mach/devices-imx51.h
-index cccd8f461..66fe643f8 100644
---- a/arch/arm/mach-imx/include/mach/devices-imx51.h
-+++ b/arch/arm/mach-imx/include/mach/devices-imx51.h
-@@ -81,7 +81,7 @@ static inline struct device_d *imx51_add_nand(struct imx_nand_platform_data *pda
- 	dev->resource = xzalloc(sizeof(struct resource) * ARRAY_SIZE(res));
- 	memcpy(dev->resource, res, sizeof(struct resource) * ARRAY_SIZE(res));
- 	dev->num_resources = ARRAY_SIZE(res);
--	strcpy(dev->name, "imx_nand");
-+	dev_set_name(dev, "imx_nand");
- 	dev->id = DEVICE_ID_DYNAMIC;
- 	dev->platform_data = pdata;
- 
-diff --git a/arch/arm/mach-imx/include/mach/devices-imx53.h b/arch/arm/mach-imx/include/mach/devices-imx53.h
-index 10caae8c9..27200a26d 100644
---- a/arch/arm/mach-imx/include/mach/devices-imx53.h
-+++ b/arch/arm/mach-imx/include/mach/devices-imx53.h
-@@ -95,7 +95,7 @@ static inline struct device_d *imx53_add_nand(struct imx_nand_platform_data *pda
- 	dev->resource = xzalloc(sizeof(struct resource) * ARRAY_SIZE(res));
- 	memcpy(dev->resource, res, sizeof(struct resource) * ARRAY_SIZE(res));
- 	dev->num_resources = ARRAY_SIZE(res);
--	strcpy(dev->name, "imx_nand");
-+	dev_set_name(dev, "imx_nand");
- 	dev->id = DEVICE_ID_DYNAMIC;
- 	dev->platform_data = pdata;
- 
-diff --git a/arch/arm/mach-mxs/include/mach/devices.h b/arch/arm/mach-mxs/include/mach/devices.h
-index 5680d61c9..b212aa783 100644
---- a/arch/arm/mach-mxs/include/mach/devices.h
-+++ b/arch/arm/mach-mxs/include/mach/devices.h
-@@ -26,7 +26,7 @@ static inline struct device_d *mxs_add_nand(unsigned long gpmi_base, unsigned lo
- 	dev->resource = xzalloc(sizeof(struct resource) * ARRAY_SIZE(res));
- 	memcpy(dev->resource, res, sizeof(struct resource) * ARRAY_SIZE(res));
- 	dev->num_resources = ARRAY_SIZE(res);
--	strcpy(dev->name, "mxs_nand");
-+	dev_set_name(dev, "mxs_nand");
- 	dev->id = DEVICE_ID_DYNAMIC;
- 
- 	platform_device_register(dev);
-diff --git a/arch/arm/mach-mxs/ocotp.c b/arch/arm/mach-mxs/ocotp.c
-index b41fde991..01db73116 100644
---- a/arch/arm/mach-mxs/ocotp.c
-+++ b/arch/arm/mach-mxs/ocotp.c
-@@ -197,7 +197,7 @@ static int mxs_ocotp_probe(struct device_d *dev)
- 	priv->cdev.size = cpu_is_mx23() ? 128 : 160;
- 	priv->cdev.name = DRIVERNAME;
- 
--	strcpy(priv->dev.name, "ocotp");
-+	dev_set_name(&priv->dev, "ocotp");
- 	priv->dev.parent = dev;
- 	err = register_device(&priv->dev);
- 	if (err)
-diff --git a/arch/sandbox/board/console.c b/arch/sandbox/board/console.c
-index cf1781d15..006bbd1a6 100644
---- a/arch/sandbox/board/console.c
-+++ b/arch/sandbox/board/console.c
-@@ -32,7 +32,7 @@ int barebox_register_console(int stdinfd, int stdoutfd)
- 	data = (struct linux_console_data *)(dev + 1);
- 
- 	dev->platform_data = data;
--	strcpy(dev->name, "console");
-+	dev_set_name(dev, "console");
- 	dev->id = DEVICE_ID_DYNAMIC;
- 
- 	data->stdoutfd = stdoutfd;
-diff --git a/common/console.c b/common/console.c
-index 40c26b66d..47ccf2e54 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -314,10 +314,10 @@ int console_register(struct console_device *newcdev)
- 
- 	if (newcdev->devname) {
- 		dev->id = newcdev->devid;
--		strcpy(dev->name, newcdev->devname);
-+		dev_set_name(dev, newcdev->devname);
- 	} else {
- 		dev->id = DEVICE_ID_DYNAMIC;
--		strcpy(dev->name, "cs");
-+		dev_set_name(dev, "cs");
- 	}
- 
- 	if (newcdev->dev)
-diff --git a/common/state/state.c b/common/state/state.c
-index 25d950211..55804a521 100644
---- a/common/state/state.c
-+++ b/common/state/state.c
-@@ -179,7 +179,7 @@ static struct state *state_new(const char *name)
- 	int ret;
- 
- 	state = xzalloc(sizeof(*state));
--	safe_strncpy(state->dev.name, name, MAX_DRIVER_NAME);
-+	dev_set_name(&state->dev, name);
- 	state->name = state->dev.name;
- 	state->dev.id = DEVICE_ID_SINGLE;
- 	INIT_LIST_HEAD(&state->variables);
-diff --git a/drivers/aiodev/core.c b/drivers/aiodev/core.c
-index 79f935d71..cb53cfb7d 100644
---- a/drivers/aiodev/core.c
-+++ b/drivers/aiodev/core.c
-@@ -115,7 +115,7 @@ int aiodevice_register(struct aiodevice *aiodev)
- 		aiodev->dev.id = DEVICE_ID_DYNAMIC;
- 	}
- 
--	strcpy(aiodev->dev.name, aiodev->name);
-+	dev_set_name(&aiodev->dev, aiodev->name);
- 
- 	aiodev->dev.parent = aiodev->hwdev;
- 
-diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
-index ae5df13c9..a8cd16835 100644
---- a/drivers/amba/bus.c
-+++ b/drivers/amba/bus.c
-@@ -200,7 +200,7 @@ struct amba_device *amba_device_alloc(const char *name, int id, resource_size_t
- 
- 	dev = xzalloc(sizeof(*dev));
- 
--	strcpy(dev->dev.name, name);
-+	dev_set_name(&dev->dev, name);
- 	dev->dev.id = id;
- 	dev->res.start = base;
- 	dev->res.end = base + size - 1;
-diff --git a/drivers/ata/disk_ata_drive.c b/drivers/ata/disk_ata_drive.c
-index 5ebddbdec..11f7151e5 100644
---- a/drivers/ata/disk_ata_drive.c
-+++ b/drivers/ata/disk_ata_drive.c
-@@ -325,10 +325,10 @@ int ata_port_register(struct ata_port *port)
- 	int ret;
- 
- 	if (port->devname) {
--		strcpy(port->class_dev.name, port->devname);
-+		dev_set_name(&port->class_dev, port->devname);
- 		port->class_dev.id = DEVICE_ID_SINGLE;
- 	} else {
--		strcpy(port->class_dev.name, "ata");
-+		dev_set_name(&port->class_dev, "ata");
- 		port->class_dev.id = DEVICE_ID_DYNAMIC;
- 	}
- 
-diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-index b889a4866..1038d20a1 100644
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -32,7 +32,7 @@ int bus_register(struct bus_type *bus)
- 		return -EEXIST;
- 
- 	bus->dev = xzalloc(sizeof(*bus->dev));
--	strcpy(bus->dev->name, bus->name);
-+	dev_set_name(bus->dev, bus->name);
- 	bus->dev->id = DEVICE_ID_SINGLE;
- 
- 	ret = register_device(bus->dev);
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index c43a4bde2..fb73be066 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -468,16 +468,48 @@ EXPORT_SYMBOL(dummy_probe);
- 
- const char *dev_id(const struct device_d *dev)
- {
--	static char buf[MAX_DRIVER_NAME + 16];
-+	static char *buf;
-+	int err;
++config NET_DSA_MV88E6XXX
++	tristate "Marvell 88E6xxx Ethernet switch fabric support"
++	help
++	  This driver adds support for most of the Marvell 88E6xxx models of
++	  Ethernet switch chips, except 88E6060.
 +
-+	if (buf)
-+		free(buf);
+ comment "MII bus device drivers"
  
- 	if (dev->id != DEVICE_ID_SINGLE)
--		snprintf(buf, sizeof(buf), FORMAT_DRIVER_NAME_ID, dev->name, dev->id);
-+		err = asprintf(&buf, FORMAT_DRIVER_NAME_ID,
-+			       dev->name, dev->id);
- 	else
--		snprintf(buf, sizeof(buf), "%s", dev->name);
-+		err = asprintf(&buf, "%s", dev->name);
+ config MDIO_MVEBU
+diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+index 4424054d9..e4d9ec65a 100644
+--- a/drivers/net/phy/Makefile
++++ b/drivers/net/phy/Makefile
+@@ -7,6 +7,7 @@ obj-$(CONFIG_MARVELL_PHY)	+= marvell.o
+ obj-$(CONFIG_MICREL_PHY)	+= micrel.o
+ obj-$(CONFIG_NATIONAL_PHY)	+= national.o
+ obj-$(CONFIG_SMSC_PHY)		+= smsc.o
++obj-$(CONFIG_NET_DSA_MV88E6XXX)	+= mv88e6xxx/
+ 
+ obj-$(CONFIG_MDIO_MVEBU)	+= mdio-mvebu.o
+ obj-$(CONFIG_MDIO_BITBANG)	+= mdio-bitbang.o
+diff --git a/drivers/net/phy/mv88e6xxx/Makefile b/drivers/net/phy/mv88e6xxx/Makefile
+new file mode 100644
+index 000000000..8c8ba78cd
+--- /dev/null
++++ b/drivers/net/phy/mv88e6xxx/Makefile
+@@ -0,0 +1,5 @@
++obj-y += mv88e6xxx.o
 +
-+	BUG_ON(err < 0);
- 
- 	return buf;
- }
- 
-+int dev_set_name(struct device_d *dev, const char *fmt, ...)
++mv88e6xxx-objs := chip.o
++mv88e6xxx-objs += global2.o
++mv88e6xxx-objs += port.o
+\ No newline at end of file
+diff --git a/drivers/net/phy/mv88e6xxx/chip.c b/drivers/net/phy/mv88e6xxx/chip.c
+new file mode 100644
+index 000000000..cde60f43c
+--- /dev/null
++++ b/drivers/net/phy/mv88e6xxx/chip.c
+@@ -0,0 +1,724 @@
++#include <common.h>
++#include <init.h>
++#include <linux/mii.h>
++#include <linux/ethtool.h>
++#include <linux/phy.h>
++#include <linux/bitfield.h>
++
++#include <gpio.h>
++#include <of_device.h>
++#include <of_gpio.h>
++
++#include "chip.h"
++#include "global2.h"
++#include "port.h"
++
++/* #define MV88E6XXX_SWITCH_GLOBAL_REGS_3		0x1d */
++
++/* List of supported models */
++enum mv88e6xxx_model {
++	MV88E6085,
++	MV88E6095,
++	MV88E6097,
++	MV88E6123,
++	MV88E6131,
++	MV88E6141,
++	MV88E6161,
++	MV88E6165,
++	MV88E6171,
++	MV88E6172,
++	MV88E6175,
++	MV88E6176,
++	MV88E6185,
++	MV88E6190,
++	MV88E6190X,
++	MV88E6191,
++	MV88E6240,
++	MV88E6290,
++	MV88E6320,
++	MV88E6321,
++	MV88E6341,
++	MV88E6350,
++	MV88E6351,
++	MV88E6352,
++	MV88E6390,
++	MV88E6390X,
++};
++
++static const struct mv88e6xxx_ops mv88e6085_ops = {
++	/* MV88E6XXX_FAMILY_6097 */
++	/* FIXME: Was not ported due to lack of HW */
++	.phy_read = NULL,
++	.phy_write = NULL,
++};
++
++static const struct mv88e6xxx_ops mv88e6095_ops = {
++	/* MV88E6XXX_FAMILY_6095 */
++	/* FIXME: Was not ported due to lack of HW */
++	.phy_read = NULL,
++	.phy_write = NULL,
++};
++
++static const struct mv88e6xxx_ops mv88e6097_ops = {
++	/* MV88E6XXX_FAMILY_6097 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6123_ops = {
++	/* MV88E6XXX_FAMILY_6165 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6131_ops = {
++	/* MV88E6XXX_FAMILY_6185 */
++	/* FIXME: Was not ported due to lack of HW */
++	.phy_read = NULL,
++	.phy_write = NULL,
++};
++
++static const struct mv88e6xxx_ops mv88e6141_ops = {
++	/* MV88E6XXX_FAMILY_6341 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6161_ops = {
++	/* MV88E6XXX_FAMILY_6165 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6165_ops = {
++	/* MV88E6XXX_FAMILY_6165 */
++	/* FIXME: Was not ported due to lack of HW */
++	.phy_read = NULL,
++	.phy_write = NULL,
++};
++
++static const struct mv88e6xxx_ops mv88e6171_ops = {
++	/* MV88E6XXX_FAMILY_6351 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6172_ops = {
++	/* MV88E6XXX_FAMILY_6352 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6175_ops = {
++	/* MV88E6XXX_FAMILY_6351 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6176_ops = {
++	/* MV88E6XXX_FAMILY_6352 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6185_ops = {
++	/* MV88E6XXX_FAMILY_6185 */
++	/* FIXME: Was not ported due to lack of HW */
++	.phy_read = NULL,
++	.phy_write = NULL,
++};
++
++static const struct mv88e6xxx_ops mv88e6190_ops = {
++	/* MV88E6XXX_FAMILY_6390 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6190x_ops = {
++	/* MV88E6XXX_FAMILY_6390 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6191_ops = {
++	/* MV88E6XXX_FAMILY_6390 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6240_ops = {
++	/* MV88E6XXX_FAMILY_6352 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6290_ops = {
++	/* MV88E6XXX_FAMILY_6390 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6320_ops = {
++	/* MV88E6XXX_FAMILY_6320 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6321_ops = {
++	/* MV88E6XXX_FAMILY_6320 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6341_ops = {
++	/* MV88E6XXX_FAMILY_6341 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6350_ops = {
++	/* MV88E6XXX_FAMILY_6351 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6351_ops = {
++	/* MV88E6XXX_FAMILY_6351 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6352_ops = {
++	/* MV88E6XXX_FAMILY_6352 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6390_ops = {
++	/* MV88E6XXX_FAMILY_6390 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_ops mv88e6390x_ops = {
++	/* MV88E6XXX_FAMILY_6390 */
++	.phy_read = mv88e6xxx_g2_smi_phy_read,
++	.phy_write = mv88e6xxx_g2_smi_phy_write,
++};
++
++static const struct mv88e6xxx_info mv88e6xxx_table[] = {
++	[MV88E6085] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6085,
++		.family = MV88E6XXX_FAMILY_6097,
++		.name = "Marvell 88E6085",
++		.num_ports = 10,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6085_ops,
++	},
++
++	[MV88E6095] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6095,
++		.family = MV88E6XXX_FAMILY_6095,
++		.name = "Marvell 88E6095/88E6095F",
++		.num_ports = 11,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6095_ops,
++	},
++
++	[MV88E6097] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6097,
++		.family = MV88E6XXX_FAMILY_6097,
++		.name = "Marvell 88E6097/88E6097F",
++		.num_ports = 11,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6097_ops,
++	},
++
++	[MV88E6123] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6123,
++		.family = MV88E6XXX_FAMILY_6165,
++		.name = "Marvell 88E6123",
++		.num_ports = 3,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6123_ops,
++	},
++
++	[MV88E6131] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6131,
++		.family = MV88E6XXX_FAMILY_6185,
++		.name = "Marvell 88E6131",
++		.num_ports = 8,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6131_ops,
++	},
++
++	[MV88E6141] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6141,
++		.family = MV88E6XXX_FAMILY_6341,
++		.name = "Marvell 88E6341",
++		.num_ports = 6,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6141_ops,
++	},
++
++	[MV88E6161] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6161,
++		.family = MV88E6XXX_FAMILY_6165,
++		.name = "Marvell 88E6161",
++		.num_ports = 6,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6161_ops,
++	},
++
++	[MV88E6165] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6165,
++		.family = MV88E6XXX_FAMILY_6165,
++		.name = "Marvell 88E6165",
++		.num_ports = 6,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6165_ops,
++	},
++
++	[MV88E6171] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6171,
++		.family = MV88E6XXX_FAMILY_6351,
++		.name = "Marvell 88E6171",
++		.num_ports = 7,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6171_ops,
++	},
++
++	[MV88E6172] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6172,
++		.family = MV88E6XXX_FAMILY_6352,
++		.name = "Marvell 88E6172",
++		.num_ports = 7,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6172_ops,
++	},
++
++	[MV88E6175] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6175,
++		.family = MV88E6XXX_FAMILY_6351,
++		.name = "Marvell 88E6175",
++		.num_ports = 7,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6175_ops,
++	},
++
++	[MV88E6176] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6176,
++		.family = MV88E6XXX_FAMILY_6352,
++		.name = "Marvell 88E6176",
++		.num_ports = 7,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6176_ops,
++	},
++
++	[MV88E6185] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6185,
++		.family = MV88E6XXX_FAMILY_6185,
++		.name = "Marvell 88E6185",
++		.num_ports = 10,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6185_ops,
++	},
++
++	[MV88E6190] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6190,
++		.family = MV88E6XXX_FAMILY_6390,
++		.name = "Marvell 88E6190",
++		.num_ports = 11,	/* 10 + Z80 */
++		.port_base_addr = 0x0,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6190_ops,
++	},
++
++	[MV88E6190X] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6190X,
++		.family = MV88E6XXX_FAMILY_6390,
++		.name = "Marvell 88E6190X",
++		.num_ports = 11,	/* 10 + Z80 */
++		.port_base_addr = 0x0,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6190x_ops,
++	},
++
++	[MV88E6191] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6191,
++		.family = MV88E6XXX_FAMILY_6390,
++		.name = "Marvell 88E6191",
++		.num_ports = 11,	/* 10 + Z80 */
++		.port_base_addr = 0x0,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6191_ops,
++	},
++
++	[MV88E6240] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6240,
++		.family = MV88E6XXX_FAMILY_6352,
++		.name = "Marvell 88E6240",
++		.num_ports = 7,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6240_ops,
++	},
++
++	[MV88E6290] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6290,
++		.family = MV88E6XXX_FAMILY_6390,
++		.name = "Marvell 88E6290",
++		.num_ports = 11,	/* 10 + Z80 */
++		.port_base_addr = 0x0,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6290_ops,
++	},
++
++	[MV88E6320] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6320,
++		.family = MV88E6XXX_FAMILY_6320,
++		.name = "Marvell 88E6320",
++		.num_ports = 7,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6320_ops,
++	},
++
++	[MV88E6321] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6321,
++		.family = MV88E6XXX_FAMILY_6320,
++		.name = "Marvell 88E6321",
++		.num_ports = 7,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6321_ops,
++	},
++
++	[MV88E6341] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6341,
++		.family = MV88E6XXX_FAMILY_6341,
++		.name = "Marvell 88E6341",
++		.num_ports = 6,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6341_ops,
++	},
++
++	[MV88E6350] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6350,
++		.family = MV88E6XXX_FAMILY_6351,
++		.name = "Marvell 88E6350",
++		.num_ports = 7,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6350_ops,
++	},
++
++	[MV88E6351] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6351,
++		.family = MV88E6XXX_FAMILY_6351,
++		.name = "Marvell 88E6351",
++		.num_ports = 7,
++		.port_base_addr = 0x10,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6351_ops,
++	},
++
++	[MV88E6352] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6352,
++		.family = MV88E6XXX_FAMILY_6352,
++		.name = "Marvell 88E6352",
++		.num_ports = 7,
++		.port_base_addr = 0x10,
++		.ops = &mv88e6352_ops,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6352_ops,
++	},
++
++	[MV88E6390] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6390,
++		.family = MV88E6XXX_FAMILY_6390,
++		.name = "Marvell 88E6390",
++		.num_ports = 11,	/* 10 + Z80 */
++		.port_base_addr = 0x0,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6390_ops,
++	},
++
++	[MV88E6390X] = {
++		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6390X,
++		.family = MV88E6XXX_FAMILY_6390,
++		.name = "Marvell 88E6390X",
++		.num_ports = 11,	/* 10 + Z80 */
++		.port_base_addr = 0x0,
++		.global2_addr = 0x1c,
++		.ops = &mv88e6390x_ops,
++	},
++};
++
++int mv88e6xxx_write(struct mv88e6xxx_chip *chip, int addr, int reg, u16 val)
 +{
-+	va_list vargs;
++	int ret;
++	ret = mdiobus_write(chip->parent_miibus, addr, reg, val);
++	if (ret < 0)
++		return ret;
++
++	dev_dbg(chip->dev, "<- addr: 0x%.2x reg: 0x%.2x val: 0x%.4x\n",
++		addr, reg, val);
++
++	return 0;
++}
++
++int mv88e6xxx_read(struct mv88e6xxx_chip *chip, int addr, int reg, u16 *val)
++{
++	int ret;
++
++	ret = mdiobus_read(chip->parent_miibus, addr, reg);
++	if (ret < 0)
++		return ret;
++
++	*val = ret & 0xffff;
++
++	dev_dbg(chip->dev, "-> addr: 0x%.2x reg: 0x%.2x val: 0x%.4x\n",
++		addr, reg, *val);
++
++	return 0;
++}
++
++int mv88e6xxx_wait(struct mv88e6xxx_chip *chip, int addr, int reg, u16 mask)
++{
++	int i;
++
++	for (i = 0; i < 16; i++) {
++		u16 val;
++		int err;
++
++		err = mv88e6xxx_read(chip, addr, reg, &val);
++		if (err)
++			return err;
++
++		if (!(val & mask))
++			return 0;
++
++		udelay(2000);
++	}
++
++	dev_err(chip->dev, "Timeout while waiting for switch\n");
++	return -ETIMEDOUT;
++}
++
++static int mv88e6xxx_mdio_read(struct mii_bus *bus, int phy, int reg)
++{
++	struct mv88e6xxx_chip *chip = bus->priv;
++	u16 val;
 +	int err;
-+	/*
-+	 * Save old pointer in case we are overriding already set name
-+	 */
-+	char *oldname = dev->name;
 +
-+	va_start(vargs, fmt);
-+	err = vasprintf(&dev->name, fmt, vargs);
-+	va_end(vargs);
++	if (!chip->info->ops->phy_read)
++		return -EOPNOTSUPP;
 +
-+	/*
-+	 * Free old pointer, we do this after vasprintf call in case
-+	 * old device name was in on of vargs
-+	 */
-+	free(oldname);
++	err = chip->info->ops->phy_read(chip, bus, phy, reg, &val);
 +
-+	WARN_ON(err < 0);
++	if (reg == MII_PHYSID2) {
++		/* Some internal PHYS don't have a model number.  Use
++		 * the mv88e6390 family model number instead.
++		 */
++		if (!(val & 0x3f0))
++			val |= MV88E6XXX_PORT_SWITCH_ID_PROD_6390 >> 4;
++	}
++
++	return err ?: val;
++}
++
++static int mv88e6xxx_mdio_write(struct mii_bus *bus, int phy, int reg, u16 val)
++{
++	struct mv88e6xxx_chip *chip = bus->priv;
++	int err;
++
++	if (!chip->info->ops->phy_write)
++		return -EOPNOTSUPP;
++
++	err = chip->info->ops->phy_write(chip, bus, phy, reg, val);
 +
 +	return err;
 +}
-+EXPORT_SYMBOL_GPL(dev_set_name);
 +
- static void devices_shutdown(void)
- {
- 	struct device_d *dev;
-diff --git a/drivers/base/resource.c b/drivers/base/resource.c
-index 6c2d7fed4..cb7105bf8 100644
---- a/drivers/base/resource.c
-+++ b/drivers/base/resource.c
-@@ -27,7 +27,7 @@ struct device_d *device_alloc(const char *devname, int id)
- 	struct device_d *dev;
- 
- 	dev = xzalloc(sizeof(*dev));
--	strcpy(dev->name, devname);
-+	dev_set_name(dev, devname);
- 	dev->id = id;
- 
- 	return dev;
-diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
-index 3a27323a0..b7dea7c82 100644
---- a/drivers/efi/efi-device.c
-+++ b/drivers/efi/efi-device.c
-@@ -185,7 +185,7 @@ static struct efi_device *efi_add_device(efi_handle_t *handle, efi_guid_t **guid
- 	efidev->dev.info = efi_devinfo;
- 	efidev->devpath = devpath;
- 
--	sprintf(efidev->dev.name, "handle-%p", handle);
-+	dev_set_name(&efidev->dev, "handle-%p", handle);
- 
- 	efidev->parent_handle = efi_find_parent(efidev->handle);
- 
-diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
-index c1eae98ac..6d11da32a 100644
---- a/drivers/firmware/socfpga.c
-+++ b/drivers/firmware/socfpga.c
-@@ -438,7 +438,7 @@ static int fpgamgr_probe(struct device_d *dev)
- 	dev_dbg(dev, "Registering FPGA firmware programmer\n");
- 
- 	mgr->dev.id = DEVICE_ID_SINGLE;
--	strcpy(mgr->dev.name, "fpga");
-+	dev_set_name(&mgr->dev, "fpga");
- 	mgr->dev.parent = dev;
- 	ret = register_device(&mgr->dev);
- 	if (ret)
-diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
-index 608f8289b..25e0fe7ad 100644
---- a/drivers/i2c/i2c.c
-+++ b/drivers/i2c/i2c.c
-@@ -389,7 +389,7 @@ static struct i2c_client *i2c_new_device(struct i2c_adapter *adapter,
- 	int status;
- 
- 	client = xzalloc(sizeof *client);
--	strcpy(client->dev.name, chip->type);
-+	dev_set_name(&client->dev, chip->type);
- 	client->dev.type_data = client;
- 	client->dev.platform_data = chip->platform_data;
- 	client->dev.id = DEVICE_ID_DYNAMIC;
-@@ -588,7 +588,7 @@ int i2c_add_numbered_adapter(struct i2c_adapter *adapter)
- 	}
- 
- 	adapter->dev.id = adapter->nr;
--	strcpy(adapter->dev.name, "i2c");
-+	dev_set_name(&adapter->dev, "i2c");
- 
- 	ret = register_device(&adapter->dev);
- 	if (ret)
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index c6b4e02cb..c8d1d5e16 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -1802,10 +1802,10 @@ int mci_register(struct mci_host *host)
- 	mci->host = host;
- 
- 	if (host->devname) {
--		strcpy(mci->dev.name, host->devname);
-+		dev_set_name(&mci->dev, host->devname);
- 		mci->dev.id = DEVICE_ID_SINGLE;
- 	} else {
--		strcpy(mci->dev.name, "mci");
-+		dev_set_name(&mci->dev, "mci");
- 		mci->dev.id = DEVICE_ID_DYNAMIC;
- 	}
- 
-diff --git a/drivers/mfd/rave-sp.c b/drivers/mfd/rave-sp.c
-index c61443218..40fce077c 100644
---- a/drivers/mfd/rave-sp.c
-+++ b/drivers/mfd/rave-sp.c
-@@ -789,7 +789,7 @@ static int rave_sp_add_params(struct rave_sp *sp)
- 	int ret;
- 
- 	dev->parent = sp->serdev->dev;
--	strcpy(dev->name, "sp");
-+	dev_set_name(dev, "sp");
- 	dev->id = DEVICE_ID_SINGLE;
- 
- 	ret = register_device(dev);
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index ae7818a18..9ceceff16 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -610,7 +610,7 @@ int add_mtd_device(struct mtd_info *mtd, const char *devname, int device_id)
- 
- 	if (!devname)
- 		devname = "mtd";
--	strcpy(mtd->class_dev.name, devname);
-+	dev_set_name(&mtd->class_dev, devname);
- 	mtd->class_dev.id = device_id;
- 	if (mtd->parent)
- 		mtd->class_dev.parent = mtd->parent;
-diff --git a/drivers/mtd/spi-nor/cadence-quadspi.c b/drivers/mtd/spi-nor/cadence-quadspi.c
-index 626966818..ed5377bd4 100644
---- a/drivers/mtd/spi-nor/cadence-quadspi.c
-+++ b/drivers/mtd/spi-nor/cadence-quadspi.c
-@@ -1051,7 +1051,7 @@ static int cqspi_setup_flash(struct device_d *dev,
- 	if (np) {
- 		nor->dev = xzalloc(sizeof(*nor->dev));
- 
--		strcpy(nor->dev->name, np->name);
-+		dev_set_name(nor->dev, np->name);
- 
- 		nor->dev->device_node = np;
- 		nor->dev->id = DEVICE_ID_SINGLE;
-diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
-index 536077ebf..493c778c3 100644
---- a/drivers/mtd/ubi/build.c
-+++ b/drivers/mtd/ubi/build.c
-@@ -157,7 +157,7 @@ static int uif_init(struct ubi_device *ubi, int *ref)
- 	*ref = 0;
- 	sprintf(ubi->ubi_name, UBI_NAME_STR "%d", ubi->ubi_num);
- 
--	sprintf(ubi->dev.name, "%s.ubi", ubi->mtd->cdev.name);
-+	dev_set_name(&ubi->dev, "%s.ubi", ubi->mtd->cdev.name);
- 	ubi->dev.id = DEVICE_ID_SINGLE;
- 	ubi->dev.parent = &ubi->mtd->class_dev;
- 
-diff --git a/drivers/mtd/ubi/vmt.c b/drivers/mtd/ubi/vmt.c
-index 617704821..99da79171 100644
---- a/drivers/mtd/ubi/vmt.c
-+++ b/drivers/mtd/ubi/vmt.c
-@@ -145,7 +145,7 @@ int ubi_create_volume(struct ubi_device *ubi, struct ubi_mkvol_req *req)
- 			vol->last_eb_bytes = vol->usable_leb_size;
- 	}
- 
--	sprintf(vol->dev.name, "%s.%s", dev_name(&ubi->dev), vol->name);
-+	dev_set_name(&vol->dev, "%s.%s", dev_name(&ubi->dev), vol->name);
- 	vol->dev.id = DEVICE_ID_SINGLE;
- 	vol->dev.parent = &ubi->dev;
- 	err = register_device(&vol->dev);
-@@ -443,7 +443,7 @@ int ubi_add_volume(struct ubi_device *ubi, struct ubi_volume *vol)
- 
- 	dbg_gen("add volume");
- 
--	sprintf(vol->dev.name, "%s.%s", dev_name(&ubi->dev), vol->name);
-+	dev_set_name(&vol->dev, "%s.%s", dev_name(&ubi->dev), vol->name);
- 	vol->dev.id = DEVICE_ID_SINGLE;
- 	vol->dev.parent = &ubi->dev;
- 	err = register_device(&vol->dev);
-diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
-index 3d3939cfa..c6fc21dc5 100644
---- a/drivers/net/cpsw.c
-+++ b/drivers/net/cpsw.c
-@@ -916,7 +916,7 @@ static int cpsw_slave_setup(struct cpsw_slave *slave, int slave_num,
- 	if (ret)
- 		goto err_out;
- 
--	sprintf(dev->name, "cpsw-slave");
-+	dev_set_name(dev, "cpsw-slave");
- 	dev->id = slave->slave_num;
- 	dev->parent = priv->dev;
- 	ret = register_device(dev);
-diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
-index dda022e05..180b32ede 100644
---- a/drivers/net/e1000/eeprom.c
-+++ b/drivers/net/e1000/eeprom.c
-@@ -1529,7 +1529,7 @@ int e1000_register_invm(struct e1000_hw *hw)
- 	if (ret < 0)
- 		return ret;
- 
--	strcpy(hw->invm.dev.name, "invm");
-+	dev_set_name(&hw->invm.dev, "invm");
- 	hw->invm.dev.id = hw->dev->id;
- 	hw->invm.dev.parent = hw->dev;
- 	ret = register_device(&hw->invm.dev);
-diff --git a/drivers/net/orion-gbe.c b/drivers/net/orion-gbe.c
-index e6bd75768..431ec5c31 100644
---- a/drivers/net/orion-gbe.c
-+++ b/drivers/net/orion-gbe.c
-@@ -462,7 +462,7 @@ static int port_probe(struct device_d *parent, struct port_priv *port)
- 		reg |= RGMII_ENABLE;
- 	writel(reg, port->regs + PORT_SC1);
- 
--	snprintf(dev->name, MAX_DRIVER_NAME, "%08x.ethernet-port", (u32)gbe->regs);
-+	dev_set_name(dev, "%08x.ethernet-port", (u32)gbe->regs);
- 	dev->id = port->portno;
- 	dev->parent = parent;
- 	dev->device_node = port->np;
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index 7d53bcc3d..177d54863 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -222,7 +222,7 @@ int mdiobus_register(struct mii_bus *bus)
- 
- 	bus->dev.priv = bus;
- 	bus->dev.id = DEVICE_ID_DYNAMIC;
--	strcpy(bus->dev.name, "miibus");
-+	dev_set_name(&bus->dev, "miibus");
- 	bus->dev.parent = bus->parent;
- 	bus->dev.detect = mdiobus_detect;
- 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 42dcad906..19d458e07 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -176,12 +176,12 @@ struct phy_device *phy_device_create(struct mii_bus *bus, int addr, int phy_id)
- 	phydev->dev.bus = &mdio_bus_type;
- 
- 	if (bus) {
--		sprintf(phydev->dev.name, "mdio%d-phy%02x",
--				   phydev->bus->dev.id,
--				   phydev->addr);
-+		dev_set_name(&phydev->dev, "mdio%d-phy%02x",
-+			     phydev->bus->dev.id,
-+			     phydev->addr);
- 		phydev->dev.id = DEVICE_ID_SINGLE;
- 	} else {
--		sprintf(phydev->dev.name, "fixed-phy");
-+		dev_set_name(&phydev->dev, "fixed-phy");
- 		phydev->dev.id = DEVICE_ID_DYNAMIC;
- 	}
- 
-diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index c0f61f453..63c0f997b 100644
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -199,7 +199,7 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
- 	nvmem->read_only = of_property_read_bool(np, "read-only") |
- 			   config->read_only;
- 
--	safe_strncpy(nvmem->dev.name, config->name, MAX_DRIVER_NAME);
-+	dev_set_name(&nvmem->dev, config->name);
- 	nvmem->dev.id = DEVICE_ID_DYNAMIC;
- 
- 	dev_dbg(&nvmem->dev, "Registering nvmem device %s\n", config->name);
-diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index c2d2982ee..0d07da280 100644
---- a/drivers/nvmem/ocotp.c
-+++ b/drivers/nvmem/ocotp.c
-@@ -531,7 +531,7 @@ static int imx_ocotp_probe(struct device_d *dev)
- 	if (IS_ERR(priv->clk))
- 		return PTR_ERR(priv->clk);
- 
--	strcpy(priv->dev.name, "ocotp");
-+	dev_set_name(&priv->dev, "ocotp");
- 	priv->dev.parent = dev;
- 	register_device(&priv->dev);
- 
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index c9157cdd7..4fd3ce2b7 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -68,12 +68,12 @@ static void of_device_make_bus_id(struct device_d *dev)
- 	reg = of_get_property(np, "dcr-reg", NULL);
- 	if (reg) {
- #ifdef CONFIG_PPC_DCR_NATIVE
--		snprintf(dev->name, MAX_DRIVER_NAME, "d%x.%s", *reg, name);
-+		dev_set_name(dev, "d%x.%s", *reg, name);
- #else /* CONFIG_PPC_DCR_NATIVE */
- 		u64 addr = of_translate_dcr_address(np, *reg, NULL);
- 		if (addr != OF_BAD_ADDR) {
--			snprintf(dev->name, MAX_DRIVER_NAME, "D%llx.%s",
--				(unsigned long long)addr, name);
-+			dev_set_name(dev, "D%llx.%s",
-+				     (unsigned long long)addr, name);
- 			free(name);
- 			return;
- 		}
-@@ -96,8 +96,8 @@ static void of_device_make_bus_id(struct device_d *dev)
- 				addr = OF_BAD_ADDR;
- 		}
- 		if (addr != OF_BAD_ADDR) {
--			snprintf(dev->name, MAX_DRIVER_NAME, "%llx.%s",
--				(unsigned long long)addr, name);
-+			dev_set_name(dev, "%llx.%s",
-+				     (unsigned long long)addr, name);
- 			free(name);
- 			return;
- 		}
-@@ -106,7 +106,7 @@ static void of_device_make_bus_id(struct device_d *dev)
- 	/*
- 	 * No BusID, use the node name and add a globally incremented counter
- 	 */
--	snprintf(dev->name, MAX_DRIVER_NAME, "%s.%d", name, bus_no_reg_magic++);
-+	dev_set_name(dev, "%s.%d", name, bus_no_reg_magic++);
- 	free(name);
- }
- 
-diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
-index 201675b48..ac1562330 100644
---- a/drivers/pci/bus.c
-+++ b/drivers/pci/bus.c
-@@ -87,8 +87,7 @@ int pci_register_device(struct pci_dev *pdev)
- 	struct device_d *dev = &pdev->dev;
- 	int ret;
- 
--	snprintf(dev->name, MAX_DRIVER_NAME, "pci-%04x:%04x.",
--	         pdev->vendor, pdev->device);
-+	dev_set_name(dev, "pci-%04x:%04x.", pdev->vendor, pdev->device);
- 	dev->bus = &pci_bus;
- 	dev->id = DEVICE_ID_DYNAMIC;
- 
-diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
-index 1b6a9f7b1..9d6288fc0 100644
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -46,7 +46,7 @@ struct phy *phy_create(struct device_d *dev, struct device_node *node,
- 
- 	id = phy_ida++;
- 
--	snprintf(phy->dev.name, MAX_DRIVER_NAME, "phy");
-+	dev_set_name(&phy->dev, "phy");
- 	phy->dev.id = id;
- 	phy->dev.parent = dev;
- 	phy->dev.device_node = node ?: dev->device_node;
-diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
-index 80fade061..c8016999f 100644
---- a/drivers/pwm/core.c
-+++ b/drivers/pwm/core.c
-@@ -89,7 +89,7 @@ int pwmchip_add(struct pwm_chip *chip, struct device_d *dev)
- 	pwm->chip = chip;
- 	pwm->hwdev = dev;
- 
--	strcpy(pwm->dev.name, chip->devname);
-+	dev_set_name(&pwm->dev, chip->devname);
- 	pwm->dev.id = DEVICE_ID_SINGLE;
- 	pwm->dev.parent = dev;
- 
-diff --git a/drivers/rtc/class.c b/drivers/rtc/class.c
-index 8b047a638..5b58271c0 100644
---- a/drivers/rtc/class.c
-+++ b/drivers/rtc/class.c
-@@ -67,7 +67,7 @@ int rtc_register(struct rtc_device *rtcdev)
- 		return -EINVAL;
- 
- 	dev->id = DEVICE_ID_DYNAMIC;
--	strcpy(dev->name, "rtc");
-+	dev_set_name(dev, "rtc");
- 	if (rtcdev->dev)
- 		dev->parent = rtcdev->dev;
- 	platform_device_register(dev);
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 5650098a0..25bb98879 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -76,7 +76,7 @@ struct spi_device *spi_new_device(struct spi_master *master,
- 	proxy->bits_per_word = chip->bits_per_word ? chip->bits_per_word : 8;
- 	proxy->dev.platform_data = chip->platform_data;
- 	proxy->dev.bus = &spi_bus;
--	strcpy(proxy->dev.name, chip->name);
-+	dev_set_name(&proxy->dev, chip->name);
- 	/* allocate a free id for this chip */
- 	proxy->dev.id = DEVICE_ID_DYNAMIC;
- 	proxy->dev.type_data = proxy;
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index 70ded6ded..0ee8808a6 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -431,9 +431,10 @@ int usb_new_device(struct usb_device *dev)
- 			   dev->serial, sizeof(dev->serial));
- 
- 	if (parent) {
--		sprintf(dev->dev.name, "%s-%d", parent->dev.name, dev->portnr - 1);
-+		dev_set_name(&dev->dev, "%s-%d", parent->dev.name,
-+			     dev->portnr - 1);
- 	} else {
--		sprintf(dev->dev.name, "usb%d", dev->host->busnum);
-+		dev_set_name(&dev->dev, "usb%d", dev->host->busnum);
- 	}
- 
- 	dev->dev.id = DEVICE_ID_SINGLE;
-diff --git a/drivers/usb/gadget/udc-core.c b/drivers/usb/gadget/udc-core.c
-index ed99b53df..e35745609 100644
---- a/drivers/usb/gadget/udc-core.c
-+++ b/drivers/usb/gadget/udc-core.c
-@@ -179,7 +179,7 @@ int usb_add_gadget_udc_release(struct device_d *parent, struct usb_gadget *gadge
- 	if (!udc)
- 		goto err1;
- 
--	strcpy(gadget->dev.name, "usbgadget");
-+	dev_set_name(&gadget->dev, "usbgadget");
- 	gadget->dev.id = DEVICE_ID_SINGLE;
- 	gadget->dev.parent = parent;
- 
-@@ -198,7 +198,7 @@ int usb_add_gadget_udc_release(struct device_d *parent, struct usb_gadget *gadge
- 	dev_add_param_string(&gadget->dev, "productname", NULL, NULL,
- 			&gadget->productname, NULL);
- 
--	strcpy(udc->dev.name, "udc");
-+	dev_set_name(&udc->dev, "udc");
- 	udc->dev.id = DEVICE_ID_DYNAMIC;
- 
- 	udc->gadget = gadget;
-diff --git a/drivers/usb/musb/musb_dsps.c b/drivers/usb/musb/musb_dsps.c
-index 431b97ea9..5fe3bcb7c 100644
---- a/drivers/usb/musb/musb_dsps.c
-+++ b/drivers/usb/musb/musb_dsps.c
-@@ -333,7 +333,7 @@ static int dsps_register_otg_device(struct dsps_glue *glue)
- {
- 	int ret;
- 
--	strcpy(glue->otg_dev.name, "otg");
-+	dev_set_name(&glue->otg_dev, "otg");
- 	glue->otg_dev.id = DEVICE_ID_DYNAMIC,
- 	glue->otg_dev.parent = glue->dev;
- 
-diff --git a/drivers/video/backlight.c b/drivers/video/backlight.c
-index 30d52fcb6..3913d1c4c 100644
---- a/drivers/video/backlight.c
-+++ b/drivers/video/backlight.c
-@@ -71,7 +71,7 @@ int backlight_register(struct backlight_device *bl)
- {
- 	int ret;
- 
--	sprintf(bl->dev.name, "backlight");
-+	dev_set_name(&bl->dev, "backlight");
- 	bl->dev.id = DEVICE_ID_DYNAMIC;
- 
- 	ret = register_device(&bl->dev);
-diff --git a/drivers/video/fb.c b/drivers/video/fb.c
-index c9d184d50..72f33a6db 100644
---- a/drivers/video/fb.c
-+++ b/drivers/video/fb.c
-@@ -309,7 +309,7 @@ int register_framebuffer(struct fb_info *info)
- 	dev->id = id;
- 	dev->info = fb_info;
- 
--	sprintf(dev->name, "fb");
-+	dev_set_name(dev, "fb");
- 
- 	ret = register_device(&info->dev);
- 	if (ret)
-diff --git a/drivers/w1/w1.c b/drivers/w1/w1.c
-index ff573860e..694ffa853 100644
---- a/drivers/w1/w1.c
-+++ b/drivers/w1/w1.c
-@@ -423,7 +423,7 @@ static int w1_device_register(struct w1_bus *bus, struct w1_device *dev)
- 	char str[18];
- 	int ret;
- 
--	sprintf(dev->dev.name, "w1-%x-", dev->fid);
-+	dev_set_name(&dev->dev, "w1-%x-", dev->fid);
- 	dev->dev.id = DEVICE_ID_DYNAMIC;
- 	dev->dev.bus = &w1_bustype;
- 	dev->bus = bus;
-@@ -619,7 +619,7 @@ int w1_bus_register(struct w1_bus *bus)
- 
- 	list_add_tail(&bus->list, &w1_buses);
- 
--	strcpy(bus->dev.name, "w1_bus");
-+	dev_set_name(&bus->dev, "w1_bus");
- 	bus->dev.id = DEVICE_ID_DYNAMIC;
- 	bus->dev.parent = bus->parent;
- 
-diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
-index 56e8626cb..e6e5ddecd 100644
---- a/drivers/watchdog/wd_core.c
-+++ b/drivers/watchdog/wd_core.c
-@@ -104,7 +104,7 @@ static int watchdog_register_dev(struct watchdog *wd, const char *name, int id)
- {
- 	wd->dev.parent = wd->hwdev;
- 	wd->dev.id = id;
--	strncpy(wd->dev.name, name, MAX_DRIVER_NAME);
-+	dev_set_name(&wd->dev, name);
- 
- 	return register_device(&wd->dev);
- }
-diff --git a/fs/fs.c b/fs/fs.c
-index 2a4d78c9d..fdb58f6a3 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -2716,7 +2716,7 @@ int mount(const char *device, const char *fsname, const char *pathname,
- 
- 	fsdev = xzalloc(sizeof(struct fs_device_d));
- 	fsdev->backingstore = xstrdup(device);
--	safe_strncpy(fsdev->dev.name, fsname, MAX_DRIVER_NAME);
-+	dev_set_name(&fsdev->dev, fsname);
- 	fsdev->dev.id = get_free_deviceid(fsdev->dev.name);
- 	fsdev->dev.bus = &fs_bus;
- 	fsdev->options = xstrdup(fsoptions);
-diff --git a/include/driver.h b/include/driver.h
-index 1b61f2066..7b83c0a77 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -23,7 +23,6 @@
- #include <linux/ioport.h>
- #include <of.h>
- 
--#define MAX_DRIVER_NAME		32
- #define FORMAT_DRIVER_NAME_ID	"%s%d"
- 
- #include <param.h>
-@@ -41,7 +40,7 @@ struct device_d {
- 	/*! This member (and 'type' described below) is used to match with a
- 	 * driver. This is a descriptive name and could be MPC5XXX_ether or
- 	 * imx_serial. */
--	char name[MAX_DRIVER_NAME];
-+	char *name;
- 	/*! The id is used to uniquely identify a device in the system. The id
- 	 * will show up under /dev/ as the device's name. Usually this is
- 	 * something like eth0 or nor0. */
-@@ -177,6 +176,8 @@ static inline const char *dev_name(const struct device_d *dev)
- 	return dev_id(dev);
- }
- 
-+int dev_set_name(struct device_d *dev, const char *fmt, ...);
++static const struct mv88e6xxx_info *
++mv88e6xxx_lookup_info(unsigned int prod_num)
++{
++	int i;
 +
- /*
-  * get resource 'num' for a device
-  */
-diff --git a/net/eth.c b/net/eth.c
-index 9dc441195..36260478d 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -363,7 +363,7 @@ int eth_register(struct eth_device *edev)
- 		return -1;
- 	}
- 
--	strcpy(edev->dev.name, "eth");
-+	dev_set_name(&edev->dev, "eth");
- 
- 	if (edev->parent)
- 		edev->dev.parent = edev->parent;
++	for (i = 0; i < ARRAY_SIZE(mv88e6xxx_table); ++i)
++		if (mv88e6xxx_table[i].prod_num == prod_num)
++			return &mv88e6xxx_table[i];
++
++	return NULL;
++}
++
++static int mv88e6xxx_detect(struct mv88e6xxx_chip *chip)
++{
++	const struct mv88e6xxx_info *info;
++	unsigned int prod_num, rev;
++	u16 id;
++	int err;
++
++	err = mv88e6xxx_port_read(chip, 0, MV88E6XXX_PORT_SWITCH_ID, &id);
++	if (err)
++		return err;
++
++	prod_num = id & MV88E6XXX_PORT_SWITCH_ID_PROD_MASK;
++	rev = id & MV88E6XXX_PORT_SWITCH_ID_REV_MASK;
++
++	info = mv88e6xxx_lookup_info(prod_num);
++	if (!info)
++		return -ENODEV;
++
++	/* Update the compatible info with the probed one */
++	chip->info = info;
++
++	dev_info(chip->dev, "switch 0x%x detected: %s, revision %u\n",
++		 chip->info->prod_num, chip->info->name, rev);
++
++	return 0;
++}
++
++/*
++ * Linux driver has this delay at 20ms, but it doesn't seem to be
++ * enough in Barebox and trying to access switch registers immediately
++ * after this function will return all F's on some platforms
++ * tested. Increasing this to 50ms seem to resolve the issue.
++ */
++static void mv88e6xxx_hardware_reset_delay(void)
++{
++	udelay(50000);
++}
++
++static void mv88e6xxx_hardware_reset(struct mv88e6xxx_chip *chip)
++{
++	/* If there is a GPIO connected to the reset pin, toggle it */
++	if (gpio_is_valid(chip->reset)) {
++		gpio_set_active(chip->reset, 1);
++		mv88e6xxx_hardware_reset_delay();
++		gpio_set_active(chip->reset, 0);
++		mv88e6xxx_hardware_reset_delay();
++	}
++}
++
++static int mv88e6xxx_switch_reset(struct mv88e6xxx_chip *chip)
++{
++	mv88e6xxx_hardware_reset(chip);
++	return 0;
++}
++
++static int mv88e6xxx_probe(struct device_d *dev)
++{
++	struct device_node *np = dev->device_node;
++	struct device_node *mdio_node;
++	struct mv88e6xxx_chip *chip;
++	enum of_gpio_flags of_flags;
++	int err;
++	u32 reg;
++
++	err = of_property_read_u32(np, "reg", &reg);
++	if (err) {
++		dev_err(dev, "Couldn't determine switch MIDO address\n");
++		return err;
++	}
++
++	if (reg) {
++		dev_err(dev, "Only single-chip address mode is supported\n");
++		return -ENOTSUPP;
++	}
++
++	chip = xzalloc(sizeof(struct mv88e6xxx_chip));
++	chip->dev = dev;
++	chip->info = of_device_get_match_data(dev);
++
++	chip->parent_miibus = of_mdio_find_bus(np->parent);
++	if (!chip->parent_miibus)
++		return -EPROBE_DEFER;
++
++	chip->reset = of_get_named_gpio_flags(np, "reset-gpios", 0, &of_flags);
++	if (gpio_is_valid(chip->reset)) {
++		unsigned long flags = GPIOF_OUT_INIT_INACTIVE;
++		char *name;
++
++		if (of_flags & OF_GPIO_ACTIVE_LOW)
++			flags |= GPIOF_ACTIVE_LOW;
++
++		name = basprintf("%s reset", dev_name(dev));
++		err = gpio_request_one(chip->reset, flags, name);
++		if (err < 0)
++			return err;
++		/*
++		 * We assume that reset line was previously held low
++		 * and give the switch time to initialize before
++		 * trying to read its registers
++		 */
++		mv88e6xxx_hardware_reset_delay();
++	}
++
++	err = mv88e6xxx_detect(chip);
++	if (err)
++		return err;
++
++	err = mv88e6xxx_switch_reset(chip);
++	if (err)
++		return err;
++	/*
++	 * In single-chip address mode addresses 0x10 - 0x1f are
++	 * reserved to access various switch registers and do not
++	 * correspond to any PHYs, so we mask them to pervent from
++	 * being exposed as phy devices
++	 */
++	chip->parent_miibus->phy_mask |= GENMASK(0x1f, 0x10);
++	/*
++	 * Address 0x0f on internal bus is dedicated to SERDES
++	 * registers and won't be very useful against standard PHY
++	 * driver
++	 */
++	chip->miibus.phy_mask |= GENMASK(0x1f, 0x0f);
++
++	chip->miibus.read = mv88e6xxx_mdio_read;
++	chip->miibus.write = mv88e6xxx_mdio_write;
++
++	chip->miibus.priv = chip;
++	chip->miibus.parent = dev;
++
++	mdio_node = of_get_child_by_name(np, "mdio");
++	if (mdio_node)
++		chip->miibus.dev.device_node = mdio_node;
++
++	return mdiobus_register(&chip->miibus);
++}
++
++static const struct of_device_id mv88e6xxx_of_match[] = {
++	{
++		.compatible = "marvell,mv88e6085",
++		.data = &mv88e6xxx_table[MV88E6085],
++	},
++	{
++		.compatible = "marvell,mv88e6190",
++		.data = &mv88e6xxx_table[MV88E6190],
++	},
++	{},
++};
++
++static struct driver_d mv88e6xxx_driver = {
++	.name	       = "mv88e6085",
++	.probe         = mv88e6xxx_probe,
++	.of_compatible = mv88e6xxx_of_match,
++};
++device_platform_driver(mv88e6xxx_driver);
+diff --git a/drivers/net/phy/mv88e6xxx/chip.h b/drivers/net/phy/mv88e6xxx/chip.h
+new file mode 100644
+index 000000000..4df18a241
+--- /dev/null
++++ b/drivers/net/phy/mv88e6xxx/chip.h
+@@ -0,0 +1,61 @@
++#ifndef _MV88E6XXX_CHIP_H
++#define _MV88E6XXX_CHIP_H
++
++#include <common.h>
++#include <init.h>
++#include <linux/mii.h>
++#include <linux/phy.h>
++
++/* sub-devices MDIO addresses */
++#define MV88E6XXX_SWITCH_GLOBAL_REGS_1		0x1b
++#define MV88E6XXX_SWITCH_GLOBAL_REGS_2		0x1c
++
++enum mv88e6xxx_family {
++	MV88E6XXX_FAMILY_NONE,
++	MV88E6XXX_FAMILY_6065,	/* 6031 6035 6061 6065 */
++	MV88E6XXX_FAMILY_6095,	/* 6092 6095 */
++	MV88E6XXX_FAMILY_6097,	/* 6046 6085 6096 6097 */
++	MV88E6XXX_FAMILY_6165,	/* 6123 6161 6165 */
++	MV88E6XXX_FAMILY_6185,	/* 6108 6121 6122 6131 6152 6155 6182 6185 */
++	MV88E6XXX_FAMILY_6320,	/* 6320 6321 */
++	MV88E6XXX_FAMILY_6341,	/* 6141 6341 */
++	MV88E6XXX_FAMILY_6351,	/* 6171 6175 6350 6351 */
++	MV88E6XXX_FAMILY_6352,	/* 6172 6176 6240 6352 */
++	MV88E6XXX_FAMILY_6390,  /* 6190 6190X 6191 6290 6390 6390X */
++};
++
++struct mv88e6xxx_ops;
++
++struct mv88e6xxx_info {
++	enum mv88e6xxx_family family;
++	u16 prod_num;
++	const char *name;
++	unsigned int num_ports;
++	unsigned int port_base_addr;
++	unsigned int global2_addr;	
++
++	const struct mv88e6xxx_ops *ops;
++};
++
++struct mv88e6xxx_chip {
++	const struct mv88e6xxx_info *info;
++	struct mii_bus *parent_miibus;
++	struct mii_bus miibus;
++	struct device_d *dev;
++	int reset;
++};
++
++struct mv88e6xxx_ops {
++	int (*phy_read)(struct mv88e6xxx_chip *chip,
++			struct mii_bus *bus,
++			int addr, int reg, u16 *val);
++	int (*phy_write)(struct mv88e6xxx_chip *chip,
++			 struct mii_bus *bus,
++			 int addr, int reg, u16 val);
++};
++
++int mv88e6xxx_write(struct mv88e6xxx_chip *chip, int addr, int reg, u16 val);
++int mv88e6xxx_read(struct mv88e6xxx_chip *chip, int addr, int reg, u16 *val);
++int mv88e6xxx_wait(struct mv88e6xxx_chip *chip, int addr, int reg, u16 mask);
++
++#endif /* _MV88E6XXX_CHIP_H */
+\ No newline at end of file
+diff --git a/drivers/net/phy/mv88e6xxx/global2.c b/drivers/net/phy/mv88e6xxx/global2.c
+new file mode 100644
+index 000000000..fc78049aa
+--- /dev/null
++++ b/drivers/net/phy/mv88e6xxx/global2.c
+@@ -0,0 +1,124 @@
++#include <linux/ethtool.h>
++#include <linux/bitfield.h>
++
++#include "global2.h"
++
++int mv88e6xxx_g2_read(struct mv88e6xxx_chip *chip, int reg, u16 *val)
++{
++	return mv88e6xxx_read(chip, chip->info->global2_addr, reg, val);
++}
++
++int mv88e6xxx_g2_write(struct mv88e6xxx_chip *chip, int reg, u16 val)
++{
++	return mv88e6xxx_write(chip, chip->info->global2_addr, reg, val);
++}
++
++int mv88e6xxx_g2_wait(struct mv88e6xxx_chip *chip, int reg, u16 mask)
++{
++	return mv88e6xxx_wait(chip, chip->info->global2_addr, reg, mask);
++}
++
++static int mv88e6xxx_g2_smi_phy_wait(struct mv88e6xxx_chip *chip)
++{
++	return mv88e6xxx_g2_wait(chip, MV88E6XXX_G2_SMI_PHY_CMD,
++				 MV88E6XXX_G2_SMI_PHY_CMD_BUSY);
++}
++
++static int mv88e6xxx_g2_smi_phy_cmd(struct mv88e6xxx_chip *chip, u16 cmd)
++{
++	int err;
++
++	err = mv88e6xxx_g2_write(chip, MV88E6XXX_G2_SMI_PHY_CMD,
++				 MV88E6XXX_G2_SMI_PHY_CMD_BUSY | cmd);
++	if (err)
++		return err;
++
++	return mv88e6xxx_g2_smi_phy_wait(chip);
++}
++
++static int mv88e6xxx_g2_smi_phy_access(struct mv88e6xxx_chip *chip,
++				       bool external, bool c45, u16 op, int dev,
++				       int reg)
++{
++	u16 cmd = op;
++
++	if (external)
++		cmd |= MV88E6390_G2_SMI_PHY_CMD_FUNC_EXTERNAL;
++	else
++		cmd |= MV88E6390_G2_SMI_PHY_CMD_FUNC_INTERNAL; /* empty mask */
++
++	if (c45)
++		cmd |= MV88E6XXX_G2_SMI_PHY_CMD_MODE_45; /* empty mask */
++	else
++		cmd |= MV88E6XXX_G2_SMI_PHY_CMD_MODE_22;
++
++	dev <<= __bf_shf(MV88E6XXX_G2_SMI_PHY_CMD_DEV_ADDR_MASK);
++	cmd |= dev & MV88E6XXX_G2_SMI_PHY_CMD_DEV_ADDR_MASK;
++	cmd |= reg & MV88E6XXX_G2_SMI_PHY_CMD_REG_ADDR_MASK;
++
++	return mv88e6xxx_g2_smi_phy_cmd(chip, cmd);
++}
++
++static int mv88e6xxx_g2_smi_phy_access_c22(struct mv88e6xxx_chip *chip,
++					   bool external, u16 op, int dev,
++					   int reg)
++{
++	return mv88e6xxx_g2_smi_phy_access(chip, external, false, op, dev, reg);
++}
++
++/* IEEE 802.3 Clause 22 Read Data Register */
++static int mv88e6xxx_g2_smi_phy_read_data_c22(struct mv88e6xxx_chip *chip,
++					      bool external, int dev, int reg,
++					      u16 *data)
++{
++	u16 op = MV88E6XXX_G2_SMI_PHY_CMD_OP_22_READ_DATA;
++	int err;
++
++	err = mv88e6xxx_g2_smi_phy_wait(chip);
++	if (err)
++		return err;
++
++	err = mv88e6xxx_g2_smi_phy_access_c22(chip, external, op, dev, reg);
++	if (err)
++		return err;
++
++	return mv88e6xxx_g2_read(chip, MV88E6XXX_G2_SMI_PHY_DATA, data);
++}
++
++/* IEEE 802.3 Clause 22 Write Data Register */
++static int mv88e6xxx_g2_smi_phy_write_data_c22(struct mv88e6xxx_chip *chip,
++					       bool external, int dev, int reg,
++					       u16 data)
++{
++	u16 op = MV88E6XXX_G2_SMI_PHY_CMD_OP_22_WRITE_DATA;
++	int err;
++
++	err = mv88e6xxx_g2_smi_phy_wait(chip);
++	if (err)
++		return err;
++
++	err = mv88e6xxx_g2_write(chip, MV88E6XXX_G2_SMI_PHY_DATA, data);
++	if (err)
++		return err;
++
++	return mv88e6xxx_g2_smi_phy_access_c22(chip, external, op, dev, reg);
++}
++
++
++int mv88e6xxx_g2_smi_phy_read(struct mv88e6xxx_chip *chip, struct mii_bus *bus,
++			      int addr, int reg, u16 *val)
++{
++	bool external = false;
++
++	return mv88e6xxx_g2_smi_phy_read_data_c22(chip, external, addr, reg,
++						  val);
++}
++ 
++int mv88e6xxx_g2_smi_phy_write(struct mv88e6xxx_chip *chip, struct mii_bus *bus,
++			       int addr, int reg, u16 val)
++{
++	bool external = false;
++
++	return mv88e6xxx_g2_smi_phy_write_data_c22(chip, external, addr, reg,
++						   val);	
++}
+diff --git a/drivers/net/phy/mv88e6xxx/global2.h b/drivers/net/phy/mv88e6xxx/global2.h
+new file mode 100644
+index 000000000..28bbd8c43
+--- /dev/null
++++ b/drivers/net/phy/mv88e6xxx/global2.h
+@@ -0,0 +1,41 @@
++#ifndef _MV88E6XXX_GLOBAL2_H
++#define _MV88E6XXX_GLOBAL2_H
++
++#include "chip.h"
++
++/* Offset 0x18: SMI PHY Command Register */
++#define MV88E6XXX_G2_SMI_PHY_CMD			0x18
++#define MV88E6XXX_G2_SMI_PHY_CMD_BUSY			0x8000
++#define MV88E6390_G2_SMI_PHY_CMD_FUNC_MASK		0x6000
++#define MV88E6390_G2_SMI_PHY_CMD_FUNC_INTERNAL		0x0000
++#define MV88E6390_G2_SMI_PHY_CMD_FUNC_EXTERNAL		0x2000
++#define MV88E6390_G2_SMI_PHY_CMD_FUNC_SETUP		0x4000
++#define MV88E6XXX_G2_SMI_PHY_CMD_MODE_MASK		0x1000
++#define MV88E6XXX_G2_SMI_PHY_CMD_MODE_45		0x0000
++#define MV88E6XXX_G2_SMI_PHY_CMD_MODE_22		0x1000
++#define MV88E6XXX_G2_SMI_PHY_CMD_OP_MASK		0x0c00
++#define MV88E6XXX_G2_SMI_PHY_CMD_OP_22_WRITE_DATA	0x0400
++#define MV88E6XXX_G2_SMI_PHY_CMD_OP_22_READ_DATA	0x0800
++#define MV88E6XXX_G2_SMI_PHY_CMD_OP_45_WRITE_ADDR	0x0000
++#define MV88E6XXX_G2_SMI_PHY_CMD_OP_45_WRITE_DATA	0x0400
++#define MV88E6XXX_G2_SMI_PHY_CMD_OP_45_READ_DATA_INC	0x0800
++#define MV88E6XXX_G2_SMI_PHY_CMD_OP_45_READ_DATA	0x0c00
++#define MV88E6XXX_G2_SMI_PHY_CMD_DEV_ADDR_MASK		0x03e0
++#define MV88E6XXX_G2_SMI_PHY_CMD_REG_ADDR_MASK		0x001f
++#define MV88E6XXX_G2_SMI_PHY_CMD_SETUP_PTR_MASK		0x03ff
++
++/* Offset 0x19: SMI PHY Data Register */
++#define MV88E6XXX_G2_SMI_PHY_DATA	0x19
++
++int mv88e6xxx_g2_read(struct mv88e6xxx_chip *chip, int reg, u16 *val);
++int mv88e6xxx_g2_write(struct mv88e6xxx_chip *chip, int reg, u16 val);
++int mv88e6xxx_g2_wait(struct mv88e6xxx_chip *chip, int reg, u16 mask);
++
++int mv88e6xxx_g2_smi_phy_read(struct mv88e6xxx_chip *chip,
++			      struct mii_bus *bus,
++			      int addr, int reg, u16 *val);
++int mv88e6xxx_g2_smi_phy_write(struct mv88e6xxx_chip *chip,
++			       struct mii_bus *bus,
++			       int addr, int reg, u16 val);
++
++#endif /* _MV88E6XXX_GLOBAL2_H */
+\ No newline at end of file
+diff --git a/drivers/net/phy/mv88e6xxx/port.c b/drivers/net/phy/mv88e6xxx/port.c
+new file mode 100644
+index 000000000..59afdbd97
+--- /dev/null
++++ b/drivers/net/phy/mv88e6xxx/port.c
+@@ -0,0 +1,20 @@
++#include <common.h>
++#include <init.h>
++
++#include "port.h"
++
++int mv88e6xxx_port_read(struct mv88e6xxx_chip *chip, int port, int reg,
++			u16 *val)
++{
++	int addr = chip->info->port_base_addr + port;
++
++	return mv88e6xxx_read(chip, addr, reg, val);
++}
++
++int mv88e6xxx_port_write(struct mv88e6xxx_chip *chip, int port, int reg,
++			 u16 val)
++{
++	int addr = chip->info->port_base_addr + port;
++
++	return mv88e6xxx_write(chip, addr, reg, val);
++}
+diff --git a/drivers/net/phy/mv88e6xxx/port.h b/drivers/net/phy/mv88e6xxx/port.h
+new file mode 100644
+index 000000000..84c76c42c
+--- /dev/null
++++ b/drivers/net/phy/mv88e6xxx/port.h
+@@ -0,0 +1,89 @@
++#ifndef _MV88E6XXX_PORT_H
++#define _MV88E6XXX_PORT_H
++
++#include "chip.h"
++
++/* Offset 0x00: Port Status Register */
++#define MV88E6XXX_PORT_STS			0x00
++#define MV88E6XXX_PORT_STS_PAUSE_EN		0x8000
++#define MV88E6XXX_PORT_STS_MY_PAUSE		0x4000
++#define MV88E6XXX_PORT_STS_HD_FLOW		0x2000
++#define MV88E6XXX_PORT_STS_PHY_DETECT		0x1000
++#define MV88E6XXX_PORT_STS_LINK			0x0800
++#define MV88E6XXX_PORT_STS_DUPLEX		0x0400
++#define MV88E6XXX_PORT_STS_SPEED_MASK		0x0300
++#define MV88E6XXX_PORT_STS_SPEED_10		0x0000
++#define MV88E6XXX_PORT_STS_SPEED_100		0x0100
++#define MV88E6XXX_PORT_STS_SPEED_1000		0x0200
++#define MV88E6352_PORT_STS_EEE			0x0040
++#define MV88E6165_PORT_STS_AM_DIS		0x0040
++#define MV88E6185_PORT_STS_MGMII		0x0040
++#define MV88E6XXX_PORT_STS_TX_PAUSED		0x0020
++#define MV88E6XXX_PORT_STS_FLOW_CTL		0x0010
++#define MV88E6XXX_PORT_STS_CMODE_MASK		0x000f
++#define MV88E6XXX_PORT_STS_CMODE_100BASE_X	0x0008
++#define MV88E6XXX_PORT_STS_CMODE_1000BASE_X	0x0009
++#define MV88E6XXX_PORT_STS_CMODE_SGMII		0x000a
++#define MV88E6XXX_PORT_STS_CMODE_2500BASEX	0x000b
++#define MV88E6XXX_PORT_STS_CMODE_XAUI		0x000c
++#define MV88E6XXX_PORT_STS_CMODE_RXAUI		0x000d
++
++/* Offset 0x01: MAC (or PCS or Physical) Control Register */
++#define MV88E6XXX_PORT_MAC_CTL				0x01
++#define MV88E6XXX_PORT_MAC_CTL_RGMII_DELAY_RXCLK	0x8000
++#define MV88E6XXX_PORT_MAC_CTL_RGMII_DELAY_TXCLK	0x4000
++#define MV88E6390_PORT_MAC_CTL_FORCE_SPEED		0x2000
++#define MV88E6390_PORT_MAC_CTL_ALTSPEED			0x1000
++#define MV88E6352_PORT_MAC_CTL_200BASE			0x1000
++#define MV88E6XXX_PORT_MAC_CTL_FC			0x0080
++#define MV88E6XXX_PORT_MAC_CTL_FORCE_FC			0x0040
++#define MV88E6XXX_PORT_MAC_CTL_LINK_UP			0x0020
++#define MV88E6XXX_PORT_MAC_CTL_FORCE_LINK		0x0010
++#define MV88E6XXX_PORT_MAC_CTL_DUPLEX_FULL		0x0008
++#define MV88E6XXX_PORT_MAC_CTL_FORCE_DUPLEX		0x0004
++#define MV88E6XXX_PORT_MAC_CTL_SPEED_MASK		0x0003
++#define MV88E6XXX_PORT_MAC_CTL_SPEED_10			0x0000
++#define MV88E6XXX_PORT_MAC_CTL_SPEED_100		0x0001
++#define MV88E6065_PORT_MAC_CTL_SPEED_200		0x0002
++#define MV88E6XXX_PORT_MAC_CTL_SPEED_1000		0x0002
++#define MV88E6390_PORT_MAC_CTL_SPEED_10000		0x0003
++#define MV88E6XXX_PORT_MAC_CTL_SPEED_UNFORCED		0x0003
++
++/* Offset 0x03: Switch Identifier Register */
++#define MV88E6XXX_PORT_SWITCH_ID		0x03
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_MASK	0xfff0
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6085	0x04a0
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6095	0x0950
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6097	0x0990
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6190X	0x0a00
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6390X	0x0a10
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6131	0x1060
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6320	0x1150
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6123	0x1210
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6161	0x1610
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6165	0x1650
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6171	0x1710
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6172	0x1720
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6175	0x1750
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6176	0x1760
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6190	0x1900
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6191	0x1910
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6185	0x1a70
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6240	0x2400
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6290	0x2900
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6321	0x3100
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6141	0x3400
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6341	0x3410
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6352	0x3520
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6350	0x3710
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6351	0x3750
++#define MV88E6XXX_PORT_SWITCH_ID_PROD_6390	0x3900
++#define MV88E6XXX_PORT_SWITCH_ID_REV_MASK	0x000f
++
++int mv88e6xxx_port_read(struct mv88e6xxx_chip *chip, int port, int reg,
++			u16 *val);
++int mv88e6xxx_port_write(struct mv88e6xxx_chip *chip, int port, int reg,
++			 u16 val);
++
++
++#endif /* _MV88E6XXX_PORT_H */
+\ No newline at end of file
 -- 
 2.17.1
 
