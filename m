@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g9QvC-00038v-1Z
- for barebox@lists.infradead.org; Mon, 08 Oct 2018 08:29:47 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Mon,  8 Oct 2018 10:29:21 +0200
-Message-Id: <20181008082921.26922-2-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20181008082921.26922-1-u.kleine-koenig@pengutronix.de>
-References: <20181008074936.7ilxnbq7sc5mphbu@pengutronix.de>
- <20181008082921.26922-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1g9P97-0006dr-4e
+ for barebox@lists.infradead.org; Mon, 08 Oct 2018 06:36:46 +0000
+Received: by mail-pf1-x443.google.com with SMTP id f26-v6so7720929pfn.9
+ for <barebox@lists.infradead.org>; Sun, 07 Oct 2018 23:35:50 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Sun,  7 Oct 2018 23:35:26 -0700
+Message-Id: <20181008063542.18709-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,144 +16,168 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 2/2] mci: implement command to switch a mmc device to
- enhanced mode
+Subject: [PATCH 00/16] 
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-VGhlIGNvbW1hbmQgc3RydWN0dXJlIGFsbG93cyBhZGRpbmcgbW9yZSBzdWJjb21tYW5kcyBhbmQg
-aXMgZGVzaWduZWQgdG8KbWF0Y2ggdGhlIExpbnV4IHByb2dyYW0gbW1jIGZyb20gdGhlIG1tYy11
-dGlscy4gU28gbGF0ZXIgbW9yZSBjb21tYW5kcwpjYW4gZWFzaWx5IGJlIGFkZGVkIGlmIG5lZWQg
-YmUuCgpDb21wYXJlZCB0byBtbWMtdXRpbHMnCgoJbW1jIGVuaF9hcmVhIHNldCA8LXl8LW58LWM+
-IDxzdGFydCBLaUI+IDxsZW5ndGggS2lCPiA8ZGV2aWNlPgoKdGhlIGNvbW1hbmQgdGhhdCBpcyBp
-bXBsZW1lbnRlZCBoZXJlICgKCgltbWMgZW5oX2FyZWEgc2V0bWF4IFstY10gPGRldmljZT4KCikg
-aXMgZWFzaWVyIHRvIHVzZSAoYmVjYXVzZSB5b3UgZG9uJ3QgaGF2ZSB0byBjaGVjayB0aGUgbWF4
-aW1hbCBhbGxvd2VkCnNpemUgYnkgcmVhZGluZyBzb21lIHJlZ2lzdGVycyBhbmQgY2FsY3VsYXRl
-IHRoZSBhdmFpbGFibGUgc2l6ZSBmcm9tCnRoZW0gKHdoaWNoIHRoZW4gbXVzdCBiZSBjYWxjdWxh
-dGVkIGJhY2sgdG8gcmVnaXN0ZXIgdmFsdWVzIGJ5IHRoZSBtbWMKY29tbWFuZCkpIGJ1dCBsZXNz
-IGZsZXhpYmxlIGFzIGl0IGRvZXNuJ3QgYWxsb3cgYWxsIHRoZSBjcmF6eQpwb3NzaWJpbGl0aWVz
-IHNwZWNpZmllZCBpbiB0aGUgZU1NQyBzdGFuZGFyZCBidXQganVzdCBjcmVhdGVzIGFuCmVuaGFu
-Y2VkIGFyZWEgd2l0aCBtYXhpbWFsIHNpemUuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvD
-tm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGNvbW1hbmRzL0tjb25m
-aWcgIHwgIDExICsrKwogY29tbWFuZHMvTWFrZWZpbGUgfCAgIDEgKwogY29tbWFuZHMvbW1jLmMg
-ICAgfCAxOTUgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwog
-aW5jbHVkZS9tY2kuaCAgICAgfCAgIDcgKysKIDQgZmlsZXMgY2hhbmdlZCwgMjE0IGluc2VydGlv
-bnMoKykKIGNyZWF0ZSBtb2RlIDEwMDY0NCBjb21tYW5kcy9tbWMuYwoKZGlmZiAtLWdpdCBhL2Nv
-bW1hbmRzL0tjb25maWcgYi9jb21tYW5kcy9LY29uZmlnCmluZGV4IDY3NWJkMWNhNzZhMC4uMjIx
-ZDY1YTM1OGUwIDEwMDY0NAotLS0gYS9jb21tYW5kcy9LY29uZmlnCisrKyBiL2NvbW1hbmRzL0tj
-b25maWcKQEAgLTIzOCw2ICsyMzgsMTcgQEAgY29uZmlnIENNRF9WRVJTSU9OCiAKIAkgIGJhcmVi
-b3ggMjAxNC4wNS4wLTAwMTQyLWdiMjg5MzczICMxNzcgTW9uIE1heSAxMiAyMDozNTo1NSBDRVNU
-IDIwMTQKIAorY29uZmlnIENNRF9NTUMKKwl0cmlzdGF0ZQorCXByb21wdCAibW1jIGNvbW1hbmQg
-YWxsb3dpbmcgdG8gc2V0IGVuaGFuY2VkIGFyZWEiCisJZGVwZW5kcyBvbiBNQ0kKKwloZWxwCisJ
-ICBDb25maWd1cmUgbW1jIGNhcmRzIHNpbWlsYXIgdG8gdGhlIHVzZXJzcGFjZSBtbWMgdXRpbGl0
-eS4gQ29tcGFyZWQgdG8KKwkgIG1tY19leHRjc2QgaXQgd29ya3Mgb24gYSBoaWdoZXIgYWJzdHJh
-Y3Rpb24gbGV2ZWwuCisKKwkgIEN1cnJlbnRseSBvbmx5IHRoZSBlbmhfYXJlYSBzdWJjb21tYW5k
-IGlzIGltcGxlbWVudGVkIHRvIGNvbmZpZ3VyZQorCSAgdGhlICJFbmhhbmNlZCBBcmVhIiBvZiBh
-biBtbWMgZGV2aWNlLgorCiBjb25maWcgQ01EX01NQ19FWFRDU0QKIAl0cmlzdGF0ZQogCXByb21w
-dCAicmVhZC93cml0ZSBlTU1DIGV4dC4gQ1NEIHJlZ2lzdGVyIgpkaWZmIC0tZ2l0IGEvY29tbWFu
-ZHMvTWFrZWZpbGUgYi9jb21tYW5kcy9NYWtlZmlsZQppbmRleCBlYjQ3OTYzODllNmIuLjI3YTYy
-MjQwYjAzOSAxMDA2NDQKLS0tIGEvY29tbWFuZHMvTWFrZWZpbGUKKysrIGIvY29tbWFuZHMvTWFr
-ZWZpbGUKQEAgLTExOSw2ICsxMTksNyBAQCBvYmotJChDT05GSUdfQ01EX0RIQ1ApCQkrPSBkaGNw
-Lm8KIG9iai0kKENPTkZJR19DTURfQk9PVENIT09TRVIpCSs9IGJvb3RjaG9vc2VyLm8KIG9iai0k
-KENPTkZJR19DTURfREhSWVNUT05FKQkrPSBkaHJ5c3RvbmUubwogb2JqLSQoQ09ORklHX0NNRF9T
-UERfREVDT0RFKQkrPSBzcGRfZGVjb2RlLm8KK29iai0kKENPTkZJR19DTURfTU1DKQkJKz0gbW1j
-Lm8KIG9iai0kKENPTkZJR19DTURfTU1DX0VYVENTRCkJKz0gbW1jX2V4dGNzZC5vCiBvYmotJChD
-T05GSUdfQ01EX05BTkRfQklURkxJUCkJKz0gbmFuZC1iaXRmbGlwLm8KIG9iai0kKENPTkZJR19D
-TURfU0VFRCkJCSs9IHNlZWQubwpkaWZmIC0tZ2l0IGEvY29tbWFuZHMvbW1jLmMgYi9jb21tYW5k
-cy9tbWMuYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwMDAuLmIzYWYyZDlj
-NzY5YwotLS0gL2Rldi9udWxsCisrKyBiL2NvbW1hbmRzL21tYy5jCkBAIC0wLDAgKzEsMTk1IEBA
-CisjaW5jbHVkZSA8Y29tbWFuZC5oPgorI2luY2x1ZGUgPG1jaS5oPgorI2luY2x1ZGUgPHN0ZGlv
-Lmg+CisjaW5jbHVkZSA8c3RyaW5nLmg+CisKK3N0YXRpYyBpbnQgbW1jX2VuaF9hcmVhX3NldG1h
-eChzdHJ1Y3QgbWNpICptY2ksIHU4ICpleHRfY3NkKQoreworCXVuc2lnbmVkIGk7CisJc3RydWN0
-IHsKKwkJdW5zaWduZWQgaW5kZXg7CisJCXVuc2lnbmVkIHZhbHVlOworCX0gcmVndmFsW10gPSB7
-CisJCXsKKwkJCS5pbmRleCA9IEVYVF9DU0RfRVJBU0VfR1JPVVBfREVGLAorCQkJLnZhbHVlID0g
-MSwKKwkJfSwgeworCQkJLmluZGV4ID0gRVhUX0NTRF9FTkhfU1RBUlRfQUREUiwKKwkJCS52YWx1
-ZSA9IDAsCisJCX0sIHsKKwkJCS5pbmRleCA9IEVYVF9DU0RfRU5IX1NUQVJUX0FERFIgKyAxLAor
-CQkJLnZhbHVlID0gMCwKKwkJfSwgeworCQkJLmluZGV4ID0gRVhUX0NTRF9FTkhfU1RBUlRfQURE
-UiArIDIsCisJCQkudmFsdWUgPSAwLAorCQl9LCB7CisJCQkuaW5kZXggPSBFWFRfQ1NEX0VOSF9T
-VEFSVF9BRERSICsgMywKKwkJCS52YWx1ZSA9IDAsCisJCX0sIHsKKwkJCS5pbmRleCA9IEVYVF9D
-U0RfRU5IX1NJWkVfTVVMVCwKKwkJCS52YWx1ZSA9IGV4dF9jc2RbRVhUX0NTRF9NQVhfRU5IX1NJ
-WkVfTVVMVF0sCisJCX0sIHsKKwkJCS5pbmRleCA9IEVYVF9DU0RfRU5IX1NJWkVfTVVMVCArIDEs
-CisJCQkudmFsdWUgPSBleHRfY3NkW0VYVF9DU0RfTUFYX0VOSF9TSVpFX01VTFQgKyAxXSwKKwkJ
-fSwgeworCQkJLmluZGV4ID0gRVhUX0NTRF9FTkhfU0laRV9NVUxUICsgMiwKKwkJCS52YWx1ZSA9
-IGV4dF9jc2RbRVhUX0NTRF9NQVhfRU5IX1NJWkVfTVVMVCArIDJdLAorCQl9LCB7CisJCQkuaW5k
-ZXggPSBFWFRfQ1NEX1BBUlRJVElPTlNfQVRUUklCVVRFLAorCQkJLnZhbHVlID0gZXh0X2NzZFtF
-WFRfQ1NEX1BBUlRJVElPTlNfQVRUUklCVVRFXSB8IEVYVF9DU0RfRU5IX1VTUl9NQVNLLAorCQl9
-CisJfTsKKworCWZvciAoaSA9IDA7IGkgPCBBUlJBWV9TSVpFKHJlZ3ZhbCk7ICsraSkgeworCQlp
-bnQgcmV0ID0gbWNpX3N3aXRjaChtY2ksIHJlZ3ZhbFtpXS5pbmRleCwgcmVndmFsW2ldLnZhbHVl
-KTsKKwkJaWYgKHJldCkgeworCQkJcHJpbnRmKCJGYWlsdXJlIHRvIHdyaXRlIHRvIHJlZ2lzdGVy
-ICV1IiwgcmVndmFsW2ldLmluZGV4KTsKKwkJCXJldHVybiByZXQ7CisJCX0KKwl9CisKKwlyZXR1
-cm4gMDsKK30KKworc3RhdGljIGludCBtbWNfcGFydGl0aW9uaW5nX2NvbXBsZXRlKHN0cnVjdCBt
-Y2kgKm1jaSkKK3sKKwlpbnQgcmV0OworCisJcmV0ID0gbWNpX3N3aXRjaChtY2ksIEVYVF9DU0Rf
-UEFSVElUSU9OX1NFVFRJTkdfQ09NUExFVEVELCAxKTsKKwlpZiAocmV0KQorCQlwcmludGYoIkZh
-aWx1cmUgdG8gd3JpdGUgdG8gRVhUX0NTRF9QQVJUSVRJT05fU0VUVElOR19DT01QTEVURURcbiIp
-OworCisJcmV0dXJuIHJldDsKK30KKworc3RhdGljIHU4ICptY2lfZ2V0X2V4dF9jc2Qoc3RydWN0
-IG1jaSAqbWNpKQoreworCXU4ICpleHRfY3NkOworCWludCByZXQ7CisKKwlleHRfY3NkID0geG1h
-bGxvYyg1MTIpOworCisJcmV0ID0gbWNpX3NlbmRfZXh0X2NzZChtY2ksIGV4dF9jc2QpOworCWlm
-IChyZXQpIHsKKwkJcHJpbnRmKCJGYWlsdXJlIHRvIHJlYWQgRVhUX0NTRCByZWdpc3RlclxuIik7
-CisJCXJldHVybiBFUlJfUFRSKC1FSU8pOworCX0KKworCXJldHVybiBleHRfY3NkOworfQorCisv
-KiBlbmhfYXJlYSBzZXRtYXggWy1jXSAvZGV2L21tY1ggKi8KK3N0YXRpYyBpbnQgZG9fbW1jX2Vu
-aF9hcmVhKGludCBhcmdjLCBjaGFyICphcmd2W10pCit7CisJY2hhciAqZGV2cGF0aDsKKwlzdHJ1
-Y3QgbWNpICptY2k7CisJdTggKmV4dF9jc2Q7CisJaW50IHNldF9jb21wbGV0ZWQgPSAwOworCWlu
-dCByZXQ7CisKKwlpZiAoYXJnYyA8IDIgfHwgc3RyY21wKGFyZ3ZbMV0sICJzZXRtYXgiKSAhPSAw
-KQorCQlnb3RvIHVzYWdlOworCisJaWYgKGFyZ2MgPT0gMykgeworCQkvKiBlbmhfYXJlYSBzZXRt
-YXggL2Rldi9tbWNYICovCisJCWRldnBhdGggPSBhcmd2WzJdOworCQlzZXRfY29tcGxldGVkID0g
-ZmFsc2U7CisJfSBlbHNlIGlmIChhcmdjID09IDQgfHwgc3RyY21wKGFyZ3ZbMl0sICItYyIpID09
-IDApIHsKKwkJLyogZW5oX2FyZWEgc2V0bWF4IC1jIC9kZXYvbW1jWCAqLworCQlkZXZwYXRoID0g
-YXJndlszXTsKKwkJc2V0X2NvbXBsZXRlZCA9IHRydWU7CisJfSBlbHNlIHsKK3VzYWdlOgorCQlw
-cmludGYoIlVzYWdlOiBtbWMgZW5oX2FyZWEgc2V0bWF4IFstY10gL2Rldi9tbWNYXG4iKTsKKwkJ
-cmV0dXJuIENPTU1BTkRfRVJST1JfVVNBR0U7CisJfQorCisJbWNpID0gbWNpX2dldF9kZXZpY2Vf
-YnlfZGV2cGF0aChkZXZwYXRoKTsKKwlpZiAoIW1jaSkgeworCQlwcmludGYoIkZhaWx1cmUgdG8g
-b3BlbiAlcyBhcyBtY2kgZGV2aWNlXG4iLCBkZXZwYXRoKTsKKwkJcmV0dXJuIENPTU1BTkRfRVJS
-T1I7CisJfQorCisJZXh0X2NzZCA9IG1jaV9nZXRfZXh0X2NzZChtY2kpOworCWlmIChJU19FUlIo
-ZXh0X2NzZCkpCisJCXJldHVybiBDT01NQU5EX0VSUk9SOworCisJaWYgKCEoZXh0X2NzZFtFWFRf
-Q1NEX1BBUlRJVElPTklOR19TVVBQT1JUXSAmIEVYVF9DU0RfRU5IX0FUVFJJQlVURV9FTl9NQVNL
-KSkgeworCQlwcmludGYoIkRldmljZSBkb2Vzbid0IHN1cHBvcnQgZW5oYW5jZWQgYXJlYVxuIik7
-CisJCWdvdG8gZXJyb3I7CisJfQorCisJaWYgKGV4dF9jc2RbRVhUX0NTRF9QQVJUSVRJT05fU0VU
-VElOR19DT01QTEVURURdKSB7CisJCXByaW50ZigiUGFydGl0aW9uaW5nIGFscmVhZHkgZmluYWxp
-emVkXG4iKTsKKwkJZ290byBlcnJvcjsKKwl9CisKKwlyZXQgPSBtbWNfZW5oX2FyZWFfc2V0bWF4
-KG1jaSwgZXh0X2NzZCk7CisJaWYgKHJldCkKKwkJZ290byBlcnJvcjsKKworCWZyZWUoZXh0X2Nz
-ZCk7CisKKwlpZiAoc2V0X2NvbXBsZXRlZCkgeworCQlyZXQgPSBtbWNfcGFydGl0aW9uaW5nX2Nv
-bXBsZXRlKG1jaSk7CisJCWlmIChyZXQpCisJCQlyZXR1cm4gQ09NTUFORF9FUlJPUjsKKwkJcHJp
-bnRmKCJOb3cgcG93ZXIgY3ljbGUgdGhlIGRldmljZSB0byBsZXQgaXQgcmVjb25maWd1cmUgaXRz
-ZWxmLlxuIik7CisJfQorCisJcmV0dXJuIENPTU1BTkRfU1VDQ0VTUzsKKworZXJyb3I6CisJZnJl
-ZShleHRfY3NkKTsKKwlyZXR1cm4gQ09NTUFORF9FUlJPUjsKK30KKworc3RhdGljIHN0cnVjdCB7
-CisJY29uc3QgY2hhciAqY21kOworCWludCAoKmZ1bmMpKGludCBhcmdjLCBjaGFyICphcmd2W10p
-OworfSBtbWNfc3ViY21kc1tdID0geworCXsKKwkJLmNtZCA9ICJlbmhfYXJlYSIsCisJCS5mdW5j
-ID0gZG9fbW1jX2VuaF9hcmVhLAorCX0KK307CisKK3N0YXRpYyBpbnQgZG9fbW1jKGludCBhcmdj
-LCBjaGFyICphcmd2W10pCit7CisJc2l6ZV90IGk7CisJaW50ICgqZnVuYykoaW50IGFyZ2MsIGNo
-YXIgKmFyZ3ZbXSkgPSBOVUxMOworCisJaWYgKGFyZ2MgPCAyKSB7CisJCXByaW50ZigibW1jOiBy
-ZXF1aXJlZCBzdWJjb21tYW5kIG1pc3NpbmdcbiIpOworCQlyZXR1cm4gMTsKKwl9CisKKwlmb3Ig
-KGkgPSAwOyBpIDwgQVJSQVlfU0laRShtbWNfc3ViY21kcyk7ICsraSkgeworCQlpZiAoc3RyY21w
-KG1tY19zdWJjbWRzW2ldLmNtZCwgYXJndlsxXSkgPT0gMCkgeworCQkJZnVuYyA9IG1tY19zdWJj
-bWRzW2ldLmZ1bmM7CisJCQlicmVhazsKKwkJfQorCX0KKworCWlmIChmdW5jKSB7CisJCXJldHVy
-biBmdW5jKGFyZ2MgLSAxLCBhcmd2ICsgMSk7CisJfSBlbHNlIHsKKwkJcHJpbnRmKCJtbWM6IHN1
-YmNvbW1hbmQgXCIlc1wiIG5vdCBmb3VuZFxuIiwgYXJndlsxXSk7CisJCXJldHVybiBDT01NQU5E
-X0VSUk9SX1VTQUdFOworCX0KK30KKworQkFSRUJPWF9DTURfSEVMUF9TVEFSVChtbWMpCitCQVJF
-Qk9YX0NNRF9IRUxQX1RFWFQoIk1vZGlmaWVzIG1tYyBwcm9wZXJ0aWVzLiIpCitCQVJFQk9YX0NN
-RF9IRUxQX1RFWFQoIiIpCitCQVJFQk9YX0NNRF9IRUxQX1RFWFQoIlRoZSBzdWJjb21tYW5kIGVu
-aF9hcmVhIGNyZWF0ZXMgYW4gZW5oYW5jZWQgYXJlYSBvZiIpCitCQVJFQk9YX0NNRF9IRUxQX1RF
-WFQoIm1heGltYWwgc2l6ZS4iKQorQkFSRUJPWF9DTURfSEVMUF9URVhUKCJOb3RlLCB3aXRoIC1j
-IHRoaXMgaXMgYW4gaXJyZXZlcnNpYmxlIGFjdGlvbi4iKQorQkFSRUJPWF9DTURfSEVMUF9PUFQo
-Ii1jIiwgImNvbXBsZXRlIHBhcnRpdGlvbmluZyIpCitCQVJFQk9YX0NNRF9IRUxQX0VORAorCitC
-QVJFQk9YX0NNRF9TVEFSVChtbWMpCisJLmNtZCA9IGRvX21tYywKKwlCQVJFQk9YX0NNRF9PUFRT
-KCJlbmhfYXJlYSBzZXRtYXggWy1jXSAvZGV2L21tY1giKQorCUJBUkVCT1hfQ01EX0hFTFAoY21k
-X21tY19oZWxwKQorQkFSRUJPWF9DTURfRU5ECmRpZmYgLS1naXQgYS9pbmNsdWRlL21jaS5oIGIv
-aW5jbHVkZS9tY2kuaAppbmRleCA1ZDBjMmY4Zjk2MzguLmMxNjQ1ZmEwN2Q4NSAxMDA2NDQKLS0t
-IGEvaW5jbHVkZS9tY2kuaAorKysgYi9pbmNsdWRlL21jaS5oCkBAIC0zMDUsNiArMzA1LDEzIEBA
-CiAjZGVmaW5lIEVYVF9DU0RfQ0FSRF9UWVBFX1NEUl8xXzJWCSgxPDw1KQkvKiBDYXJkIGNhbiBy
-dW4gYXQgMjAwTUh6ICovCiAJCQkJCQkvKiBTRFIgbW9kZSBAMS4yViBJL08gKi8KIAorLyogcmVn
-aXN0ZXIgUEFSVElUSU9OU19BVFRSSUJVVEUgWzE1Nl0gKi8KKyNkZWZpbmUgRVhUX0NTRF9FTkhf
-VVNSX01BU0sJCSgxIDw8IDApCisKKy8qIHJlZ2lzdGVyIFBBUlRJVElPTklOR19TVVBQT1JUIFsx
-NjBdICovCisjZGVmaW5lIEVYVF9DU0RfRU5IX0FUVFJJQlVURV9FTl9NQVNLCSgxIDw8IDApCisK
-Ky8qIHJlZ2lzdGVyIEJVU19XSURUSCBbMTgzXSwgZmllbGQgQnVzIE1vZGUgU2VsZWN0aW9uIFs0
-OjBdICovCiAjZGVmaW5lIEVYVF9DU0RfQlVTX1dJRFRIXzEJMAkvKiBDYXJkIGlzIGluIDEgYml0
-IG1vZGUgKi8KICNkZWZpbmUgRVhUX0NTRF9CVVNfV0lEVEhfNAkxCS8qIENhcmQgaXMgaW4gNCBi
-aXQgbW9kZSAqLwogI2RlZmluZSBFWFRfQ1NEX0JVU19XSURUSF84CTIJLyogQ2FyZCBpcyBpbiA4
-IGJpdCBtb2RlICovCi0tIAoyLjE5LjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
-ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
-Ym94Cg==
+Everyone:
+
+Patches in this series are a result of my work on porting Linux code
+for MV88E6xxx switches to Barebox.
+
+     - Patch 1 is loosely related header fix
+
+     - Patch 2 adds clocksource support for ARM global time, needed on
+       VF610 in order to get an accurate clocksource. MV88E6xxx EEPROM
+       supporte code turned out to be dependent on that.
+
+     - Pathes 3 and 4 are clocksource related fixes
+
+     - Patches 5, 6, 7, 8 update the device naming scheme used by
+       Barebox driver code. Old scheme couldn't handle devices created
+       for DT nodes with identical names. This was the case on ZII
+       VF610 Development Board Rev. C which had two switch devices.
+
+    - Patch 9 is documentation/small code fix for generic MDIO bus
+      code
+
+    - Patches 10, 11 bring needed preprocessor constants from Linux kernel
+
+    - Patch 12 prevents PHYs masked by MDIO bus's phy_maks from being
+      probed
+
+    - Patch 13 allows custom platform deviecs to be attached to an MDIO bus
+
+    - Patch 14 exposes internal MDIO bus on MV88E6xxx devices
+
+    - Patch 15 support for EEPROM devices attached to MV88E6xxx devices
+
+    - Patch 16 exposes ports that don't have a PHY attached as
+      "virtual" PHY devices (RPU2 needs this code to properly
+      configure port connected to FEC)
+
+NOTE: This is quite a mix and I am more than happy to split this
+series in several if current patch grouping is problematic.
+
+Tested on the following H/W:
+
+     - ZII i.MX6Q RDU2, MV88E6352 switch
+     - ZII i.MX51 RDU1, MV88E6161 switch
+     - ZII i.MX7D RPU2, MV88E6352 switch
+     - ZII VF610 CFU1, MV88E6352 switch
+     - ZII VF610 SPU3, MV88E6390X switch
+     - ZII VF610 Development Board Rev. C, MV88E6390X switch x 2
+
+Feedback is welcome!
+
+Thanks,
+Andrey Smirnov
+
+Andrey Smirnov (16):
+  ARM: Do not expose ARMv8 functions on ARMv7
+  clocksource: Add ARM global timer support
+  i.MX: Move GPT driver to drivers/clocksource
+  clocksource: Introduce ARCH_HAS_IMX_GPT
+  of: Demote "Bad cell count for" to debug
+  drivers: Introduce dev_set_name()
+  linux: string: Port kbasename()
+  of: Port latest of_device_make_bus_id() implementation
+  mdio_bus: Fix documentation for mdio_bus_match()
+  include: linux: phy: Add missing PHY_INTERFACE_* constants
+  include: linux: ethtool: Add missing *_UNKNOWN constants
+  net: phy: Check phy_mask in get_phy_device()
+  mdio_bus: Allow for non PHY-devices on MDIO buses
+  net: phy: Add basic driver for MV88E6XXX switches from Marvell
+  net: phy: mv88e6xxx: Port EEPROM support code
+  net: phy: mv88e6xxx: Add support for MAC ports
+
+ arch/arm/include/asm/system.h                 |   2 +-
+ arch/arm/mach-imx/Kconfig                     |  11 +
+ arch/arm/mach-imx/Makefile                    |   1 -
+ arch/arm/mach-imx/iim.c                       |   2 +-
+ .../arm/mach-imx/include/mach/devices-imx51.h |   2 +-
+ .../arm/mach-imx/include/mach/devices-imx53.h |   2 +-
+ arch/arm/mach-mxs/include/mach/devices.h      |   2 +-
+ arch/arm/mach-mxs/ocotp.c                     |   2 +-
+ arch/sandbox/board/console.c                  |   2 +-
+ common/console.c                              |   4 +-
+ common/state/state.c                          |   2 +-
+ drivers/aiodev/core.c                         |   2 +-
+ drivers/amba/bus.c                            |   2 +-
+ drivers/ata/disk_ata_drive.c                  |   4 +-
+ drivers/base/bus.c                            |   2 +-
+ drivers/base/driver.c                         |  38 +-
+ drivers/base/resource.c                       |   2 +-
+ drivers/clocksource/Kconfig                   |  11 +
+ drivers/clocksource/Makefile                  |   2 +
+ drivers/clocksource/arm_global_timer.c        | 113 +++
+ .../clocksource/timer-imx-gpt.c               |   0
+ drivers/efi/efi-device.c                      |   2 +-
+ drivers/firmware/socfpga.c                    |   2 +-
+ drivers/i2c/i2c.c                             |   4 +-
+ drivers/mci/mci-core.c                        |   4 +-
+ drivers/mfd/rave-sp.c                         |   2 +-
+ drivers/mtd/core.c                            |   2 +-
+ drivers/mtd/spi-nor/cadence-quadspi.c         |   2 +-
+ drivers/mtd/ubi/build.c                       |   2 +-
+ drivers/mtd/ubi/vmt.c                         |   4 +-
+ drivers/net/cpsw.c                            |   2 +-
+ drivers/net/e1000/eeprom.c                    |   2 +-
+ drivers/net/orion-gbe.c                       |   2 +-
+ drivers/net/phy/Kconfig                       |   6 +
+ drivers/net/phy/Makefile                      |   1 +
+ drivers/net/phy/mdio_bus.c                    |  24 +-
+ drivers/net/phy/mv88e6xxx/Makefile            |   5 +
+ drivers/net/phy/mv88e6xxx/chip.c              | 945 ++++++++++++++++++
+ drivers/net/phy/mv88e6xxx/chip.h              | 143 +++
+ drivers/net/phy/mv88e6xxx/global2.c           | 389 +++++++
+ drivers/net/phy/mv88e6xxx/global2.h           |  70 ++
+ drivers/net/phy/mv88e6xxx/port.c              | 666 ++++++++++++
+ drivers/net/phy/mv88e6xxx/port.h              | 127 +++
+ drivers/net/phy/phy.c                         |  15 +-
+ drivers/nvmem/core.c                          |   2 +-
+ drivers/nvmem/ocotp.c                         |   2 +-
+ drivers/of/address.c                          |   4 +-
+ drivers/of/platform.c                         |  80 +-
+ drivers/pci/bus.c                             |   3 +-
+ drivers/phy/phy-core.c                        |   2 +-
+ drivers/pwm/core.c                            |   2 +-
+ drivers/rtc/class.c                           |   2 +-
+ drivers/spi/spi.c                             |   2 +-
+ drivers/usb/core/usb.c                        |   5 +-
+ drivers/usb/gadget/udc-core.c                 |   4 +-
+ drivers/usb/musb/musb_dsps.c                  |   2 +-
+ drivers/video/backlight.c                     |   2 +-
+ drivers/video/fb.c                            |   2 +-
+ drivers/w1/w1.c                               |   4 +-
+ drivers/watchdog/wd_core.c                    |   2 +-
+ fs/fs.c                                       |   2 +-
+ include/driver.h                              |   5 +-
+ include/linux/ethtool.h                       |   3 +
+ include/linux/phy.h                           |   9 +
+ include/linux/string.h                        |  12 +
+ net/eth.c                                     |   2 +-
+ 66 files changed, 2653 insertions(+), 129 deletions(-)
+ create mode 100644 drivers/clocksource/arm_global_timer.c
+ rename arch/arm/mach-imx/clocksource.c => drivers/clocksource/timer-imx-gpt.c (100%)
+ create mode 100644 drivers/net/phy/mv88e6xxx/Makefile
+ create mode 100644 drivers/net/phy/mv88e6xxx/chip.c
+ create mode 100644 drivers/net/phy/mv88e6xxx/chip.h
+ create mode 100644 drivers/net/phy/mv88e6xxx/global2.c
+ create mode 100644 drivers/net/phy/mv88e6xxx/global2.h
+ create mode 100644 drivers/net/phy/mv88e6xxx/port.c
+ create mode 100644 drivers/net/phy/mv88e6xxx/port.h
+
+-- 
+2.17.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
