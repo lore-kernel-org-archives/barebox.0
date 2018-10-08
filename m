@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g9P9J-0006Nb-TL
- for barebox@lists.infradead.org; Mon, 08 Oct 2018 06:36:15 +0000
-Received: by mail-pg1-x543.google.com with SMTP id v133-v6so7376893pgb.2
- for <barebox@lists.infradead.org>; Sun, 07 Oct 2018 23:36:03 -0700 (PDT)
+Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1g9P9V-0002Na-5m
+ for barebox@lists.infradead.org; Mon, 08 Oct 2018 06:36:26 +0000
+Received: by mail-pg1-x544.google.com with SMTP id t70-v6so7339525pgd.12
+ for <barebox@lists.infradead.org>; Sun, 07 Oct 2018 23:36:13 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun,  7 Oct 2018 23:35:34 -0700
-Message-Id: <20181008063542.18709-9-andrew.smirnov@gmail.com>
+Date: Sun,  7 Oct 2018 23:35:41 -0700
+Message-Id: <20181008063542.18709-16-andrew.smirnov@gmail.com>
 In-Reply-To: <20181008063542.18709-1-andrew.smirnov@gmail.com>
 References: <20181008063542.18709-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,125 +23,581 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/16] of: Port latest of_device_make_bus_id() implementation
+Subject: [PATCH 15/16] net: phy: mv88e6xxx: Port EEPROM support code
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Code implementing of_device_make_bus_id() in Barebox uses rather old
-implementation from Linux kernel and has a very significan limitation
-in that it will produce identical names for different DT nodes that
-happen to have the same node name as well as "reg" property.
-
-One such example, that tirggered this change, is "switch@0" nodes that
-can be found in dts/src/arm/vf610-zii-dev-rev-c.dts
-
-This commit replaces original code with the current Linux kernel
-implementation that traverses DT hierarchy from leaf node to its root
-concatenating node names in the process.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/of/platform.c | 80 ++++++++++++-------------------------------
- 1 file changed, 22 insertions(+), 58 deletions(-)
+ drivers/net/phy/mv88e6xxx/chip.c    |  85 ++++++++-
+ drivers/net/phy/mv88e6xxx/chip.h    |  10 ++
+ drivers/net/phy/mv88e6xxx/global2.c | 265 ++++++++++++++++++++++++++++
+ drivers/net/phy/mv88e6xxx/global2.h |  29 +++
+ 4 files changed, 388 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index 4fd3ce2b7..17052f419 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -43,71 +43,35 @@ EXPORT_SYMBOL(of_find_device_by_node);
-  * of_device_make_bus_id - Use the device node data to assign a unique name
-  * @dev: pointer to device structure that is linked to a device tree node
-  *
-- * This routine will first try using either the dcr-reg or the reg property
-- * value to derive a unique name.  As a last resort it will use the node
-- * name followed by a unique number.
-+ * This routine will first try using the translated bus address to
-+ * derive a unique name. If it cannot, then it will prepend names from
-+ * parent nodes until a unique name can be derived.
-  */
- static void of_device_make_bus_id(struct device_d *dev)
- {
--	static int bus_no_reg_magic;
--	struct device_node *np = dev->device_node;
--	const __be32 *reg, *addrp;
-+	struct device_node *node = dev->device_node;
-+	const __be32 *reg;
- 	u64 addr;
--	char *name, *at;
--
--	name = xstrdup(np->name);
--	at = strchr(name, '@');
--	if (at)
--		*at = '\0';
--
--#ifdef CONFIG_PPC_DCR
--	/*
--	 * If it's a DCR based device, use 'd' for native DCRs
--	 * and 'D' for MMIO DCRs.
--	 */
--	reg = of_get_property(np, "dcr-reg", NULL);
--	if (reg) {
--#ifdef CONFIG_PPC_DCR_NATIVE
--		dev_set_name(dev, "d%x.%s", *reg, name);
--#else /* CONFIG_PPC_DCR_NATIVE */
--		u64 addr = of_translate_dcr_address(np, *reg, NULL);
--		if (addr != OF_BAD_ADDR) {
--			dev_set_name(dev, "D%llx.%s",
--				     (unsigned long long)addr, name);
--			free(name);
--			return;
--		}
--#endif /* !CONFIG_PPC_DCR_NATIVE */
--	}
--#endif /* CONFIG_PPC_DCR */
--
--	/*
--	 * For MMIO, get the physical address
--	 */
--	reg = of_get_property(np, "reg", NULL);
--	if (reg) {
--		if (of_can_translate_address(np)) {
--			addr = of_translate_address(np, reg);
--		} else {
--			addrp = of_get_address(np, 0, NULL, NULL);
--			if (addrp)
--				addr = of_read_number(addrp, 1);
--			else
--				addr = OF_BAD_ADDR;
--		}
--		if (addr != OF_BAD_ADDR) {
--			dev_set_name(dev, "%llx.%s",
--				     (unsigned long long)addr, name);
--			free(name);
-+
-+	/* Construct the name, using parent nodes if necessary to ensure uniqueness */
-+	while (node->parent) {
-+		/*
-+		 * If the address can be translated, then that is as much
-+		 * uniqueness as we need. Make it the first component and return
-+		 */
-+		reg = of_get_property(node, "reg", NULL);
-+		if (reg && (addr = of_translate_address(node, reg)) != OF_BAD_ADDR) {
-+			dev_set_name(dev, dev->name ? "%llx.%s:%s" : "%llx.%s",
-+				     (unsigned long long)addr, node->name,
-+				     dev->name);
- 			return;
- 		}
--	}
+diff --git a/drivers/net/phy/mv88e6xxx/chip.c b/drivers/net/phy/mv88e6xxx/chip.c
+index cde60f43c..162acf1cc 100644
+--- a/drivers/net/phy/mv88e6xxx/chip.c
++++ b/drivers/net/phy/mv88e6xxx/chip.c
+@@ -4,6 +4,7 @@
+ #include <linux/ethtool.h>
+ #include <linux/phy.h>
+ #include <linux/bitfield.h>
++#include <linux/nvmem-provider.h>
  
--	/*
--	 * No BusID, use the node name and add a globally incremented counter
--	 */
--	dev_set_name(dev, "%s.%d", name, bus_no_reg_magic++);
--	free(name);
-+		/* format arguments only used if dev_name() resolves to NULL */
-+		dev_set_name(dev, dev->name ? "%s:%s" : "%s",
-+			     kbasename(node->full_name), dev->name);
-+		node = node->parent;
-+	}
+ #include <gpio.h>
+ #include <of_device.h>
+@@ -80,6 +81,8 @@ static const struct mv88e6xxx_ops mv88e6131_ops = {
+ 
+ static const struct mv88e6xxx_ops mv88e6141_ops = {
+ 	/* MV88E6XXX_FAMILY_6341 */
++	.get_eeprom = mv88e6xxx_g2_get_eeprom8,
++	.set_eeprom = mv88e6xxx_g2_set_eeprom8,
+ 	.phy_read = mv88e6xxx_g2_smi_phy_read,
+ 	.phy_write = mv88e6xxx_g2_smi_phy_write,
+ };
+@@ -105,6 +108,8 @@ static const struct mv88e6xxx_ops mv88e6171_ops = {
+ 
+ static const struct mv88e6xxx_ops mv88e6172_ops = {
+ 	/* MV88E6XXX_FAMILY_6352 */
++	.get_eeprom = mv88e6xxx_g2_get_eeprom16,
++	.set_eeprom = mv88e6xxx_g2_set_eeprom16,
+ 	.phy_read = mv88e6xxx_g2_smi_phy_read,
+ 	.phy_write = mv88e6xxx_g2_smi_phy_write,
+ };
+@@ -117,6 +122,8 @@ static const struct mv88e6xxx_ops mv88e6175_ops = {
+ 
+ static const struct mv88e6xxx_ops mv88e6176_ops = {
+ 	/* MV88E6XXX_FAMILY_6352 */
++	.get_eeprom = mv88e6xxx_g2_get_eeprom16,
++	.set_eeprom = mv88e6xxx_g2_set_eeprom16,
+ 	.phy_read = mv88e6xxx_g2_smi_phy_read,
+ 	.phy_write = mv88e6xxx_g2_smi_phy_write,
+ };
+@@ -130,48 +137,64 @@ static const struct mv88e6xxx_ops mv88e6185_ops = {
+ 
+ static const struct mv88e6xxx_ops mv88e6190_ops = {
+ 	/* MV88E6XXX_FAMILY_6390 */
++	.get_eeprom = mv88e6xxx_g2_get_eeprom8,
++	.set_eeprom = mv88e6xxx_g2_set_eeprom8,
+ 	.phy_read = mv88e6xxx_g2_smi_phy_read,
+ 	.phy_write = mv88e6xxx_g2_smi_phy_write,
+ };
+ 
+ static const struct mv88e6xxx_ops mv88e6190x_ops = {
+ 	/* MV88E6XXX_FAMILY_6390 */
++	.get_eeprom = mv88e6xxx_g2_get_eeprom8,
++	.set_eeprom = mv88e6xxx_g2_set_eeprom8,
+ 	.phy_read = mv88e6xxx_g2_smi_phy_read,
+ 	.phy_write = mv88e6xxx_g2_smi_phy_write,
+ };
+ 
+ static const struct mv88e6xxx_ops mv88e6191_ops = {
+ 	/* MV88E6XXX_FAMILY_6390 */
++	.get_eeprom = mv88e6xxx_g2_get_eeprom8,
++	.set_eeprom = mv88e6xxx_g2_set_eeprom8,
+ 	.phy_read = mv88e6xxx_g2_smi_phy_read,
+ 	.phy_write = mv88e6xxx_g2_smi_phy_write,
+ };
+ 
+ static const struct mv88e6xxx_ops mv88e6240_ops = {
+ 	/* MV88E6XXX_FAMILY_6352 */
++	.get_eeprom = mv88e6xxx_g2_get_eeprom16,
++	.set_eeprom = mv88e6xxx_g2_set_eeprom16,
+ 	.phy_read = mv88e6xxx_g2_smi_phy_read,
+ 	.phy_write = mv88e6xxx_g2_smi_phy_write,
+ };
+ 
+ static const struct mv88e6xxx_ops mv88e6290_ops = {
+ 	/* MV88E6XXX_FAMILY_6390 */
++	.get_eeprom = mv88e6xxx_g2_get_eeprom8,
++	.set_eeprom = mv88e6xxx_g2_set_eeprom8,
+ 	.phy_read = mv88e6xxx_g2_smi_phy_read,
+ 	.phy_write = mv88e6xxx_g2_smi_phy_write,
+ };
+ 
+ static const struct mv88e6xxx_ops mv88e6320_ops = {
+ 	/* MV88E6XXX_FAMILY_6320 */
++	.get_eeprom = mv88e6xxx_g2_get_eeprom16,
++	.set_eeprom = mv88e6xxx_g2_set_eeprom16,
+ 	.phy_read = mv88e6xxx_g2_smi_phy_read,
+ 	.phy_write = mv88e6xxx_g2_smi_phy_write,
+ };
+ 
+ static const struct mv88e6xxx_ops mv88e6321_ops = {
+ 	/* MV88E6XXX_FAMILY_6320 */
++	.get_eeprom = mv88e6xxx_g2_get_eeprom16,
++	.set_eeprom = mv88e6xxx_g2_set_eeprom16,
+ 	.phy_read = mv88e6xxx_g2_smi_phy_read,
+ 	.phy_write = mv88e6xxx_g2_smi_phy_write,
+ };
+ 
+ static const struct mv88e6xxx_ops mv88e6341_ops = {
+ 	/* MV88E6XXX_FAMILY_6341 */
++	.get_eeprom = mv88e6xxx_g2_get_eeprom8,
++	.set_eeprom = mv88e6xxx_g2_set_eeprom8,
+ 	.phy_read = mv88e6xxx_g2_smi_phy_read,
+ 	.phy_write = mv88e6xxx_g2_smi_phy_write,
+ };
+@@ -192,16 +215,22 @@ static const struct mv88e6xxx_ops mv88e6352_ops = {
+ 	/* MV88E6XXX_FAMILY_6352 */
+ 	.phy_read = mv88e6xxx_g2_smi_phy_read,
+ 	.phy_write = mv88e6xxx_g2_smi_phy_write,
++	.get_eeprom = mv88e6xxx_g2_get_eeprom16,
++	.set_eeprom = mv88e6xxx_g2_set_eeprom16,
+ };
+ 
+ static const struct mv88e6xxx_ops mv88e6390_ops = {
+ 	/* MV88E6XXX_FAMILY_6390 */
++	.get_eeprom = mv88e6xxx_g2_get_eeprom8,
++	.set_eeprom = mv88e6xxx_g2_set_eeprom8,
+ 	.phy_read = mv88e6xxx_g2_smi_phy_read,
+ 	.phy_write = mv88e6xxx_g2_smi_phy_write,
+ };
+ 
+ static const struct mv88e6xxx_ops mv88e6390x_ops = {
+ 	/* MV88E6XXX_FAMILY_6390 */
++	.get_eeprom = mv88e6xxx_g2_get_eeprom8,
++	.set_eeprom = mv88e6xxx_g2_set_eeprom8,
+ 	.phy_read = mv88e6xxx_g2_smi_phy_read,
+ 	.phy_write = mv88e6xxx_g2_smi_phy_write,
+ };
+@@ -622,6 +651,41 @@ static int mv88e6xxx_switch_reset(struct mv88e6xxx_chip *chip)
+ 	return 0;
  }
  
- /**
++static int mv88e6xxx_eeprom_read(struct device_d *dev, const int offset,
++				 void *val, int bytes)
++{
++	struct mv88e6xxx_chip *chip = dev->parent->priv;
++	struct ethtool_eeprom eeprom = {
++		.offset = offset,
++		.len = bytes,
++	};
++
++	if (!chip->info->ops->get_eeprom)
++		return -ENOTSUPP;
++
++	return chip->info->ops->get_eeprom(chip, &eeprom, val);
++}
++
++static int mv88e6xxx_eeprom_write(struct device_d *dev, const int offset,
++				  const void *val, int bytes)
++{
++	struct mv88e6xxx_chip *chip = dev->parent->priv;
++	struct ethtool_eeprom eeprom = {
++		.offset = offset,
++		.len = bytes,
++	};
++
++	if (!chip->info->ops->set_eeprom)
++		return -ENOTSUPP;
++
++	return chip->info->ops->set_eeprom(chip, &eeprom, (void *)val);
++}
++
++static const struct nvmem_bus mv88e6xxx_eeprom_nvmem_bus = {
++	.write = mv88e6xxx_eeprom_write,
++	.read  = mv88e6xxx_eeprom_read,
++};
++
+ static int mv88e6xxx_probe(struct device_d *dev)
+ {
+ 	struct device_node *np = dev->device_node;
+@@ -629,7 +693,7 @@ static int mv88e6xxx_probe(struct device_d *dev)
+ 	struct mv88e6xxx_chip *chip;
+ 	enum of_gpio_flags of_flags;
+ 	int err;
+-	u32 reg;
++	u32 reg, eeprom_len = 0;
+ 
+ 	err = of_property_read_u32(np, "reg", &reg);
+ 	if (err) {
+@@ -644,8 +708,11 @@ static int mv88e6xxx_probe(struct device_d *dev)
+ 
+ 	chip = xzalloc(sizeof(struct mv88e6xxx_chip));
+ 	chip->dev = dev;
++	dev->priv = chip;
+ 	chip->info = of_device_get_match_data(dev);
+ 
++	of_property_read_u32(np, "eeprom-length", &eeprom_len);
++
+ 	chip->parent_miibus = of_mdio_find_bus(np->parent);
+ 	if (!chip->parent_miibus)
+ 		return -EPROBE_DEFER;
+@@ -677,6 +744,22 @@ static int mv88e6xxx_probe(struct device_d *dev)
+ 	err = mv88e6xxx_switch_reset(chip);
+ 	if (err)
+ 		return err;
++
++	if (eeprom_len) {
++		struct nvmem_config config = {
++			.name = basprintf("%s-eeprom", dev_name(dev)),
++			.dev = dev,
++			.word_size = 1,
++			.stride = 1,
++			.size = eeprom_len,
++			.read_only = false,
++			.bus = &mv88e6xxx_eeprom_nvmem_bus,
++		};
++
++		if (IS_ERR(nvmem_register(&config)))
++			dev_err(dev, "Failed to register EEPROM\n");
++	}
++
+ 	/*
+ 	 * In single-chip address mode addresses 0x10 - 0x1f are
+ 	 * reserved to access various switch registers and do not
+diff --git a/drivers/net/phy/mv88e6xxx/chip.h b/drivers/net/phy/mv88e6xxx/chip.h
+index 4df18a241..021df2664 100644
+--- a/drivers/net/phy/mv88e6xxx/chip.h
++++ b/drivers/net/phy/mv88e6xxx/chip.h
+@@ -45,6 +45,11 @@ struct mv88e6xxx_chip {
+ 	int reset;
+ };
+ 
++struct ethtool_eeprom {
++	__u32	offset;
++	__u32	len;
++};
++
+ struct mv88e6xxx_ops {
+ 	int (*phy_read)(struct mv88e6xxx_chip *chip,
+ 			struct mii_bus *bus,
+@@ -52,6 +57,11 @@ struct mv88e6xxx_ops {
+ 	int (*phy_write)(struct mv88e6xxx_chip *chip,
+ 			 struct mii_bus *bus,
+ 			 int addr, int reg, u16 val);
++
++	int (*get_eeprom)(struct mv88e6xxx_chip *chip,
++			  struct ethtool_eeprom *eeprom, u8 *data);
++	int (*set_eeprom)(struct mv88e6xxx_chip *chip,
++			  struct ethtool_eeprom *eeprom, u8 *data);
+ };
+ 
+ int mv88e6xxx_write(struct mv88e6xxx_chip *chip, int addr, int reg, u16 val);
+diff --git a/drivers/net/phy/mv88e6xxx/global2.c b/drivers/net/phy/mv88e6xxx/global2.c
+index fc78049aa..0e8f2c5ee 100644
+--- a/drivers/net/phy/mv88e6xxx/global2.c
++++ b/drivers/net/phy/mv88e6xxx/global2.c
+@@ -18,6 +18,271 @@ int mv88e6xxx_g2_wait(struct mv88e6xxx_chip *chip, int reg, u16 mask)
+ 	return mv88e6xxx_wait(chip, chip->info->global2_addr, reg, mask);
+ }
+ 
++/* Offset 0x14: EEPROM Command
++ * Offset 0x15: EEPROM Data (for 16-bit data access)
++ * Offset 0x15: EEPROM Addr (for 8-bit data access)
++ */
++
++static int mv88e6xxx_g2_eeprom_wait(struct mv88e6xxx_chip *chip)
++{
++	return mv88e6xxx_g2_wait(chip, MV88E6XXX_G2_EEPROM_CMD,
++				 MV88E6XXX_G2_EEPROM_CMD_BUSY |
++				 MV88E6XXX_G2_EEPROM_CMD_RUNNING);
++}
++
++static int mv88e6xxx_g2_eeprom_cmd(struct mv88e6xxx_chip *chip, u16 cmd)
++{
++	int err;
++
++	err = mv88e6xxx_g2_write(chip, MV88E6XXX_G2_EEPROM_CMD,
++				 MV88E6XXX_G2_EEPROM_CMD_BUSY | cmd);
++	if (err)
++		return err;
++
++	return mv88e6xxx_g2_eeprom_wait(chip);
++}
++
++static int mv88e6xxx_g2_eeprom_read8(struct mv88e6xxx_chip *chip,
++				     u16 addr, u8 *data)
++{
++	u16 cmd = MV88E6XXX_G2_EEPROM_CMD_OP_READ;
++	int err;
++
++	err = mv88e6xxx_g2_eeprom_wait(chip);
++	if (err)
++		return err;
++
++	err = mv88e6xxx_g2_write(chip, MV88E6390_G2_EEPROM_ADDR, addr);
++	if (err)
++		return err;
++
++	err = mv88e6xxx_g2_eeprom_cmd(chip, cmd);
++	if (err)
++		return err;
++
++	err = mv88e6xxx_g2_read(chip, MV88E6XXX_G2_EEPROM_CMD, &cmd);
++	if (err)
++		return err;
++
++	*data = cmd & 0xff;
++
++	return 0;
++}
++
++static int mv88e6xxx_g2_eeprom_write8(struct mv88e6xxx_chip *chip,
++				      u16 addr, u8 data)
++{
++	u16 cmd = MV88E6XXX_G2_EEPROM_CMD_OP_WRITE |
++		MV88E6XXX_G2_EEPROM_CMD_WRITE_EN;
++	int err;
++
++	err = mv88e6xxx_g2_eeprom_wait(chip);
++	if (err)
++		return err;
++
++	err = mv88e6xxx_g2_write(chip, MV88E6390_G2_EEPROM_ADDR, addr);
++	if (err)
++		return err;
++
++	return mv88e6xxx_g2_eeprom_cmd(chip, cmd | data);
++}
++
++static int mv88e6xxx_g2_eeprom_read16(struct mv88e6xxx_chip *chip,
++				      u8 addr, u16 *data)
++{
++	u16 cmd = MV88E6XXX_G2_EEPROM_CMD_OP_READ | addr;
++	int err;
++
++	err = mv88e6xxx_g2_eeprom_wait(chip);
++	if (err)
++		return err;
++
++	err = mv88e6xxx_g2_eeprom_cmd(chip, cmd);
++	if (err)
++		return err;
++
++	return mv88e6xxx_g2_read(chip, MV88E6352_G2_EEPROM_DATA, data);
++}
++
++static int mv88e6xxx_g2_eeprom_write16(struct mv88e6xxx_chip *chip,
++				       u8 addr, u16 data)
++{
++	u16 cmd = MV88E6XXX_G2_EEPROM_CMD_OP_WRITE | addr;
++	int err;
++
++	err = mv88e6xxx_g2_eeprom_wait(chip);
++	if (err)
++		return err;
++
++	err = mv88e6xxx_g2_write(chip, MV88E6352_G2_EEPROM_DATA, data);
++	if (err)
++		return err;
++
++	return mv88e6xxx_g2_eeprom_cmd(chip, cmd);
++}
++
++int mv88e6xxx_g2_get_eeprom8(struct mv88e6xxx_chip *chip,
++			     struct ethtool_eeprom *eeprom, u8 *data)
++{
++	unsigned int offset = eeprom->offset;
++	unsigned int len = eeprom->len;
++	int err;
++
++	eeprom->len = 0;
++
++	while (len) {
++		err = mv88e6xxx_g2_eeprom_read8(chip, offset, data);
++		if (err)
++			return err;
++
++		eeprom->len++;
++		offset++;
++		data++;
++		len--;
++	}
++
++	return 0;
++}
++
++int mv88e6xxx_g2_set_eeprom8(struct mv88e6xxx_chip *chip,
++			     struct ethtool_eeprom *eeprom, u8 *data)
++{
++	unsigned int offset = eeprom->offset;
++	unsigned int len = eeprom->len;
++	int err;
++
++	eeprom->len = 0;
++
++	while (len) {
++		err = mv88e6xxx_g2_eeprom_write8(chip, offset, *data);
++		if (err)
++			return err;
++
++		eeprom->len++;
++		offset++;
++		data++;
++		len--;
++	}
++
++	return 0;
++}
++
++int mv88e6xxx_g2_get_eeprom16(struct mv88e6xxx_chip *chip,
++			      struct ethtool_eeprom *eeprom, u8 *data)
++{
++	unsigned int offset = eeprom->offset;
++	unsigned int len = eeprom->len;
++	u16 val;
++	int err;
++
++	eeprom->len = 0;
++
++	if (offset & 1) {
++		err = mv88e6xxx_g2_eeprom_read16(chip, offset >> 1, &val);
++		if (err)
++			return err;
++
++		*data++ = (val >> 8) & 0xff;
++
++		offset++;
++		len--;
++		eeprom->len++;
++	}
++
++	while (len >= 2) {
++		err = mv88e6xxx_g2_eeprom_read16(chip, offset >> 1, &val);
++		if (err)
++			return err;
++
++		*data++ = val & 0xff;
++		*data++ = (val >> 8) & 0xff;
++
++		offset += 2;
++		len -= 2;
++		eeprom->len += 2;
++	}
++
++	if (len) {
++		err = mv88e6xxx_g2_eeprom_read16(chip, offset >> 1, &val);
++		if (err)
++			return err;
++
++		*data++ = val & 0xff;
++
++		offset++;
++		len--;
++		eeprom->len++;
++	}
++
++	return 0;
++}
++
++int mv88e6xxx_g2_set_eeprom16(struct mv88e6xxx_chip *chip,
++			      struct ethtool_eeprom *eeprom, u8 *data)
++{
++	unsigned int offset = eeprom->offset;
++	unsigned int len = eeprom->len;
++	u16 val;
++	int err;
++
++	/* Ensure the RO WriteEn bit is set */
++	err = mv88e6xxx_g2_read(chip, MV88E6XXX_G2_EEPROM_CMD, &val);
++	if (err)
++		return err;
++
++	if (!(val & MV88E6XXX_G2_EEPROM_CMD_WRITE_EN))
++		return -EROFS;
++
++	eeprom->len = 0;
++
++	if (offset & 1) {
++		err = mv88e6xxx_g2_eeprom_read16(chip, offset >> 1, &val);
++		if (err)
++			return err;
++
++		val = (*data++ << 8) | (val & 0xff);
++
++		err = mv88e6xxx_g2_eeprom_write16(chip, offset >> 1, val);
++		if (err)
++			return err;
++
++		offset++;
++		len--;
++		eeprom->len++;
++	}
++
++	while (len >= 2) {
++		val = *data++;
++		val |= *data++ << 8;
++
++		err = mv88e6xxx_g2_eeprom_write16(chip, offset >> 1, val);
++		if (err)
++			return err;
++
++		offset += 2;
++		len -= 2;
++		eeprom->len += 2;
++	}
++
++	if (len) {
++		err = mv88e6xxx_g2_eeprom_read16(chip, offset >> 1, &val);
++		if (err)
++			return err;
++
++		val = (val & 0xff00) | *data++;
++
++		err = mv88e6xxx_g2_eeprom_write16(chip, offset >> 1, val);
++		if (err)
++			return err;
++
++		offset++;
++		len--;
++		eeprom->len++;
++	}
++
++	return 0;
++}
++
+ static int mv88e6xxx_g2_smi_phy_wait(struct mv88e6xxx_chip *chip)
+ {
+ 	return mv88e6xxx_g2_wait(chip, MV88E6XXX_G2_SMI_PHY_CMD,
+diff --git a/drivers/net/phy/mv88e6xxx/global2.h b/drivers/net/phy/mv88e6xxx/global2.h
+index 28bbd8c43..7c70d4bde 100644
+--- a/drivers/net/phy/mv88e6xxx/global2.h
++++ b/drivers/net/phy/mv88e6xxx/global2.h
+@@ -27,6 +27,26 @@
+ /* Offset 0x19: SMI PHY Data Register */
+ #define MV88E6XXX_G2_SMI_PHY_DATA	0x19
+ 
++/* Offset 0x14: EEPROM Command */
++#define MV88E6XXX_G2_EEPROM_CMD			0x14
++#define MV88E6XXX_G2_EEPROM_CMD_BUSY		0x8000
++#define MV88E6XXX_G2_EEPROM_CMD_OP_MASK		0x7000
++#define MV88E6XXX_G2_EEPROM_CMD_OP_WRITE	0x3000
++#define MV88E6XXX_G2_EEPROM_CMD_OP_READ		0x4000
++#define MV88E6XXX_G2_EEPROM_CMD_OP_LOAD		0x6000
++#define MV88E6XXX_G2_EEPROM_CMD_RUNNING		0x0800
++#define MV88E6XXX_G2_EEPROM_CMD_WRITE_EN	0x0400
++#define MV88E6352_G2_EEPROM_CMD_ADDR_MASK	0x00ff
++#define MV88E6390_G2_EEPROM_CMD_DATA_MASK	0x00ff
++
++/* Offset 0x15: EEPROM Data */
++#define MV88E6352_G2_EEPROM_DATA	0x15
++#define MV88E6352_G2_EEPROM_DATA_MASK	0xffff
++
++/* Offset 0x15: EEPROM Addr */
++#define MV88E6390_G2_EEPROM_ADDR	0x15
++#define MV88E6390_G2_EEPROM_ADDR_MASK	0xffff
++
+ int mv88e6xxx_g2_read(struct mv88e6xxx_chip *chip, int reg, u16 *val);
+ int mv88e6xxx_g2_write(struct mv88e6xxx_chip *chip, int reg, u16 val);
+ int mv88e6xxx_g2_wait(struct mv88e6xxx_chip *chip, int reg, u16 mask);
+@@ -38,4 +58,13 @@ int mv88e6xxx_g2_smi_phy_write(struct mv88e6xxx_chip *chip,
+ 			       struct mii_bus *bus,
+ 			       int addr, int reg, u16 val);
+ 
++int mv88e6xxx_g2_get_eeprom8(struct mv88e6xxx_chip *chip,
++			     struct ethtool_eeprom *eeprom, u8 *data);
++int mv88e6xxx_g2_set_eeprom8(struct mv88e6xxx_chip *chip,
++			     struct ethtool_eeprom *eeprom, u8 *data);
++int mv88e6xxx_g2_get_eeprom16(struct mv88e6xxx_chip *chip,
++			      struct ethtool_eeprom *eeprom, u8 *data);
++int mv88e6xxx_g2_set_eeprom16(struct mv88e6xxx_chip *chip,
++			      struct ethtool_eeprom *eeprom, u8 *data);
++
+ #endif /* _MV88E6XXX_GLOBAL2_H */
+\ No newline at end of file
 -- 
 2.17.1
 
