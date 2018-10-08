@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g9P98-0006eM-SE
- for barebox@lists.infradead.org; Mon, 08 Oct 2018 06:36:43 +0000
-Received: by mail-pl1-x641.google.com with SMTP id s4-v6so9591003plp.0
- for <barebox@lists.infradead.org>; Sun, 07 Oct 2018 23:35:52 -0700 (PDT)
+ id 1g9P9C-0006fX-2q
+ for barebox@lists.infradead.org; Mon, 08 Oct 2018 06:36:59 +0000
+Received: by mail-pl1-x644.google.com with SMTP id y15-v6so9579977plr.12
+ for <barebox@lists.infradead.org>; Sun, 07 Oct 2018 23:35:55 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun,  7 Oct 2018 23:35:27 -0700
-Message-Id: <20181008063542.18709-2-andrew.smirnov@gmail.com>
+Date: Sun,  7 Oct 2018 23:35:29 -0700
+Message-Id: <20181008063542.18709-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20181008063542.18709-1-andrew.smirnov@gmail.com>
 References: <20181008063542.18709-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,32 +23,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/16] ARM: Do not expose ARMv8 functions on ARMv7
+Subject: [PATCH 03/16] i.MX: Move GPT driver to drivers/clocksource
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Assembly implementing current_el(), read_mpidr(), set_cntfrq(),
-get_cntfrq() and get_cntpct() is ARMv8 specific, so change #if guard
-protecting it to reflect that fact.
+Move GPT driver to drivers/clocksource and rename it to
+timer-imx-gpt.c to match Linux kernel as well as to keep all
+clocksource drivers in a common location.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/include/asm/system.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-imx/Makefile                                    | 1 -
+ drivers/clocksource/Kconfig                                   | 4 ++++
+ drivers/clocksource/Makefile                                  | 1 +
+ .../clocksource.c => drivers/clocksource/timer-imx-gpt.c      | 0
+ 4 files changed, 5 insertions(+), 1 deletion(-)
+ rename arch/arm/mach-imx/clocksource.c => drivers/clocksource/timer-imx-gpt.c (100%)
 
-diff --git a/arch/arm/include/asm/system.h b/arch/arm/include/asm/system.h
-index 5cf828ea3..2f13e2b98 100644
---- a/arch/arm/include/asm/system.h
-+++ b/arch/arm/include/asm/system.h
-@@ -61,7 +61,7 @@
- #define CR_TE   (1 << 30)	/* Thumb exception enable		*/
- 
- #ifndef __ASSEMBLY__
--#if __LINUX_ARM_ARCH__ >= 7
-+#if __LINUX_ARM_ARCH__ > 7
- static inline unsigned int current_el(void)
- {
- 	unsigned int el;
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index 5a01dd57e..97c54406e 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -1,4 +1,3 @@
+-obj-y += clocksource.o
+ obj-$(CONFIG_ARCH_IMX1)  += imx1.o
+ obj-$(CONFIG_ARCH_IMX25) += imx25.o
+ obj-$(CONFIG_ARCH_IMX21) += imx21.o
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index 2be5a76b3..bb9d57f91 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -74,3 +74,7 @@ config CLOCKSOURCE_ARMV8_TIMER
+ config CLOCKSOURCE_ARM_GLOBAL_TIMER
+         def_bool y
+ 	depends on ARM
++
++config CLOCKSOURCE_IMX_GPT
++	def_bool y
++	depends on ARCH_IMX
+diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
+index 51f6cb2f4..ce4d74137 100644
+--- a/drivers/clocksource/Makefile
++++ b/drivers/clocksource/Makefile
+@@ -13,3 +13,4 @@ obj-$(CONFIG_CLOCKSOURCE_ROCKCHIP)+= rk_timer.o
+ obj-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) += timer-atmel-pit.o
+ obj-$(CONFIG_CLOCKSOURCE_ARMV8_TIMER) += armv8-timer.o
+ obj-$(CONFIG_CLOCKSOURCE_ARM_GLOBAL_TIMER) += arm_global_timer.o
++obj-$(CONFIG_CLOCKSOURCE_IMX_GPT) += timer-imx-gpt.o
+diff --git a/arch/arm/mach-imx/clocksource.c b/drivers/clocksource/timer-imx-gpt.c
+similarity index 100%
+rename from arch/arm/mach-imx/clocksource.c
+rename to drivers/clocksource/timer-imx-gpt.c
 -- 
 2.17.1
 
