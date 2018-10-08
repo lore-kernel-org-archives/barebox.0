@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
+Received: from mail-wm1-x341.google.com ([2a00:1450:4864:20::341])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g9XbJ-00086f-6V
- for barebox@lists.infradead.org; Mon, 08 Oct 2018 15:37:42 +0000
-Received: by mail-wr1-x442.google.com with SMTP id y16so21341348wrw.3
- for <barebox@lists.infradead.org>; Mon, 08 Oct 2018 08:37:30 -0700 (PDT)
+ id 1g9Xex-0002To-6v
+ for barebox@lists.infradead.org; Mon, 08 Oct 2018 15:41:28 +0000
+Received: by mail-wm1-x341.google.com with SMTP id 189-v6so8607210wmw.2
+ for <barebox@lists.infradead.org>; Mon, 08 Oct 2018 08:41:15 -0700 (PDT)
 MIME-Version: 1.0
 References: <20181008063542.18709-1-andrew.smirnov@gmail.com>
- <20181008063542.18709-3-andrew.smirnov@gmail.com>
- <20181008081702.2gu6aywkiw4sqlk7@pengutronix.de>
-In-Reply-To: <20181008081702.2gu6aywkiw4sqlk7@pengutronix.de>
+ <20181008063542.18709-14-andrew.smirnov@gmail.com>
+ <20181008084451.clh4bf5btxoyq6di@pengutronix.de>
+In-Reply-To: <20181008084451.clh4bf5btxoyq6di@pengutronix.de>
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 8 Oct 2018 08:37:17 -0700
-Message-ID: <CAHQ1cqE4M0SGSXY9=MV4edoMgWD88jSj7s9f4ATZYGQXHrtBPw@mail.gmail.com>
+Date: Mon, 8 Oct 2018 08:41:02 -0700
+Message-ID: <CAHQ1cqENo0Kx7fozpvk5o1xY0OnEGyiVfxfi57=0x1dUD5y+fQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,43 +25,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 02/16] clocksource: Add ARM global timer support
+Subject: Re: [PATCH 13/16] mdio_bus: Allow for non PHY-devices on MDIO buses
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Oct 8, 2018 at 1:17 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Mon, Oct 8, 2018 at 1:44 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
 >
-> On Sun, Oct 07, 2018 at 11:35:28PM -0700, Andrey Smirnov wrote:
-> > Port corresponding Linux kernel driver. Currently VFxxx SoC is the
-> > intended consumer because it doesn't include common i.MX GPT block
-> > used as clocksource by other i.MX SoCs.
+> On Sun, Oct 07, 2018 at 11:35:39PM -0700, Andrey Smirnov wrote:
+> > Instead of just creating a simple PHY device for every child of MDIO
+> > bus node, add code to check if any of them have "compatible" property
+> > set as well as code to create a proper platform device for such cases.
+> >
+> > This change is useful for when MDIO bus and some of Ethernet ports are
+> > connected to a switch or some other MDIO device that doesn't behave
+> > like a generic PHY and can't be probed via its PHY ID.
 > >
 > > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > > ---
-> >  drivers/clocksource/Kconfig            |   4 +
-> >  drivers/clocksource/Makefile           |   1 +
-> >  drivers/clocksource/arm_global_timer.c | 113 +++++++++++++++++++++++++
-> >  3 files changed, 118 insertions(+)
-> >  create mode 100644 drivers/clocksource/arm_global_timer.c
+> >  drivers/net/phy/mdio_bus.c | 11 +++++++++++
+> >  1 file changed, 11 insertions(+)
 > >
-> > diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-> > index 3d63f7ff1..2be5a76b3 100644
-> > --- a/drivers/clocksource/Kconfig
-> > +++ b/drivers/clocksource/Kconfig
-> > @@ -70,3 +70,7 @@ config CLOCKSOURCE_ARMV8_TIMER
-> >       bool
-> >       default y
-> >       depends on ARM && CPU_64v8
+> > diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+> > index d7d6d8940..589ed57d2 100644
+> > --- a/drivers/net/phy/mdio_bus.c
+> > +++ b/drivers/net/phy/mdio_bus.c
+> > @@ -26,6 +26,7 @@
+> >  #include <errno.h>
+> >  #include <linux/phy.h>
+> >  #include <linux/err.h>
+> > +#include <of_device.h>
+> >
+> >  #define DEFAULT_GPIO_RESET_ASSERT       1000      /* us */
+> >  #define DEFAULT_GPIO_RESET_DEASSERT     1000      /* us */
+> > @@ -179,6 +180,16 @@ static int of_mdiobus_register(struct mii_bus *mdio, struct device_node *np)
+> >
+> >       /* Loop over the child nodes and register a phy_device for each one */
+> >       for_each_available_child_of_node(np, child) {
+> > +             if (of_get_property(child, "compatible", NULL)) {
+> > +                     if (!of_platform_device_create(child, &mdio->dev)) {
+> > +                             dev_err(&mdio->dev,
+> > +                                     "Failed to create device for %s\n",
+> > +                                     child->full_name);
+> > +                     }
 > > +
-> > +config CLOCKSOURCE_ARM_GLOBAL_TIMER
-> > +        def_bool y
-> > +     depends on ARM
+> > +                     continue;
+> > +             }
 >
-> Can you add a 'select' of this option to the VFxxx Kconfig instead?
-> Having this on all Arm systems is not so nice.
+> PHYs can have a compatible property aswell which is checked for here:
+>
+> > +
+> >               if (!of_mdiobus_child_is_phy(child))
+> >                       continue;
+>
+> So I believe you have to create a platform device only if it is not a
+> PHY device.
 >
 
-Sure, no problem, will do in v2.
+Yeah, good point, missed this in my logic. Will fix in v2.
 
 Thanks,
 Andrey Smirnov
