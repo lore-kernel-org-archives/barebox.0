@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g9P9O-0006Nx-Te
- for barebox@lists.infradead.org; Mon, 08 Oct 2018 06:36:20 +0000
-Received: by mail-pf1-x444.google.com with SMTP id k19-v6so7886428pfi.1
- for <barebox@lists.infradead.org>; Sun, 07 Oct 2018 23:36:08 -0700 (PDT)
+ id 1g9P9N-0006Ns-Sl
+ for barebox@lists.infradead.org; Mon, 08 Oct 2018 06:36:19 +0000
+Received: by mail-pf1-x433.google.com with SMTP id s5-v6so7868334pfj.7
+ for <barebox@lists.infradead.org>; Sun, 07 Oct 2018 23:36:07 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun,  7 Oct 2018 23:35:38 -0700
-Message-Id: <20181008063542.18709-13-andrew.smirnov@gmail.com>
+Date: Sun,  7 Oct 2018 23:35:37 -0700
+Message-Id: <20181008063542.18709-12-andrew.smirnov@gmail.com>
 In-Reply-To: <20181008063542.18709-1-andrew.smirnov@gmail.com>
 References: <20181008063542.18709-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,46 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/16] net: phy: Check phy_mask in get_phy_device()
+Subject: [PATCH 11/16] include: linux: ethtool: Add missing *_UNKNOWN constants
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Do not try to probe PHY devices if they are masked via phy_mask of the
-corresponding bus. This way we won't try adding devices that are
-unlikely to be proper PHYs by default. With this change it is still
-remain to be possible to add such a device to the bus explicitly
-either using "miitool" or calling phy_device_create() explicilty.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/phy/phy.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/linux/ethtool.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 19d458e07..b985b7567 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -234,6 +234,10 @@ struct phy_device *get_phy_device(struct mii_bus *bus, int addr)
- 	u32 phy_id = 0;
- 	int r;
+diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
+index 4d83fe019..324e40cde 100644
+--- a/include/linux/ethtool.h
++++ b/include/linux/ethtool.h
+@@ -72,9 +72,12 @@
+ #define SPEED_2500		2500
+ #define SPEED_10000		10000
  
-+	/* skip masked out PHY addresses */
-+	if (bus->phy_mask & BIT(addr))
-+		return ERR_PTR(-ENODEV);
++#define SPEED_UNKNOWN		-1
 +
- 	r = get_phy_id(bus, addr, &phy_id);
- 	if (r)
- 		return ERR_PTR(r);
-@@ -440,9 +444,6 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
- 	}
+ /* Duplex, half or full. */
+ #define DUPLEX_HALF		0x00
+ #define DUPLEX_FULL		0x01
++#define DUPLEX_UNKNOWN		0xff
  
- 	for (i = 0; i < PHY_MAX_ADDR && !edev->phydev; i++) {
--		/* skip masked out PHY addresses */
--		if (bus->phy_mask & (1 << i))
--			continue;
- 
- 		phy = mdiobus_scan(bus, i);
- 		if (IS_ERR(phy))
+ /* Which connector port. */
+ #define PORT_TP			0x00
 -- 
 2.17.1
 
