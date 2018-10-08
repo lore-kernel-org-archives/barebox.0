@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g9Qj7-0001fP-87
- for barebox@lists.infradead.org; Mon, 08 Oct 2018 08:17:19 +0000
-Date: Mon, 8 Oct 2018 10:17:02 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181008081702.2gu6aywkiw4sqlk7@pengutronix.de>
+ id 1g9P9Q-0006Nz-Mr
+ for barebox@lists.infradead.org; Mon, 08 Oct 2018 06:36:22 +0000
+Received: by mail-pl1-x642.google.com with SMTP id q17-v6so9588494plr.8
+ for <barebox@lists.infradead.org>; Sun, 07 Oct 2018 23:36:10 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Sun,  7 Oct 2018 23:35:39 -0700
+Message-Id: <20181008063542.18709-14-andrew.smirnov@gmail.com>
+In-Reply-To: <20181008063542.18709-1-andrew.smirnov@gmail.com>
 References: <20181008063542.18709-1-andrew.smirnov@gmail.com>
- <20181008063542.18709-3-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181008063542.18709-3-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +18,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 02/16] clocksource: Add ARM global timer support
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 13/16] mdio_bus: Allow for non PHY-devices on MDIO buses
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Sun, Oct 07, 2018 at 11:35:28PM -0700, Andrey Smirnov wrote:
-> Port corresponding Linux kernel driver. Currently VFxxx SoC is the
-> intended consumer because it doesn't include common i.MX GPT block
-> used as clocksource by other i.MX SoCs.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  drivers/clocksource/Kconfig            |   4 +
->  drivers/clocksource/Makefile           |   1 +
->  drivers/clocksource/arm_global_timer.c | 113 +++++++++++++++++++++++++
->  3 files changed, 118 insertions(+)
->  create mode 100644 drivers/clocksource/arm_global_timer.c
-> 
-> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-> index 3d63f7ff1..2be5a76b3 100644
-> --- a/drivers/clocksource/Kconfig
-> +++ b/drivers/clocksource/Kconfig
-> @@ -70,3 +70,7 @@ config CLOCKSOURCE_ARMV8_TIMER
->  	bool
->  	default y
->  	depends on ARM && CPU_64v8
-> +
-> +config CLOCKSOURCE_ARM_GLOBAL_TIMER
-> +        def_bool y
-> +	depends on ARM
+Instead of just creating a simple PHY device for every child of MDIO
+bus node, add code to check if any of them have "compatible" property
+set as well as code to create a proper platform device for such cases.
 
-Can you add a 'select' of this option to the VFxxx Kconfig instead?
-Having this on all Arm systems is not so nice.
+This change is useful for when MDIO bus and some of Ethernet ports are
+connected to a switch or some other MDIO device that doesn't behave
+like a generic PHY and can't be probed via its PHY ID.
 
-Sascha
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/net/phy/mdio_bus.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index d7d6d8940..589ed57d2 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -26,6 +26,7 @@
+ #include <errno.h>
+ #include <linux/phy.h>
+ #include <linux/err.h>
++#include <of_device.h>
+ 
+ #define DEFAULT_GPIO_RESET_ASSERT       1000      /* us */
+ #define DEFAULT_GPIO_RESET_DEASSERT     1000      /* us */
+@@ -179,6 +180,16 @@ static int of_mdiobus_register(struct mii_bus *mdio, struct device_node *np)
+ 
+ 	/* Loop over the child nodes and register a phy_device for each one */
+ 	for_each_available_child_of_node(np, child) {
++		if (of_get_property(child, "compatible", NULL)) {
++			if (!of_platform_device_create(child, &mdio->dev)) {
++				dev_err(&mdio->dev,
++					"Failed to create device for %s\n",
++					child->full_name);
++			}
++
++			continue;
++		}
++
+ 		if (!of_mdiobus_child_is_phy(child))
+ 			continue;
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
