@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x341.google.com ([2a00:1450:4864:20::341])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g9Xex-0002To-6v
- for barebox@lists.infradead.org; Mon, 08 Oct 2018 15:41:28 +0000
-Received: by mail-wm1-x341.google.com with SMTP id 189-v6so8607210wmw.2
- for <barebox@lists.infradead.org>; Mon, 08 Oct 2018 08:41:15 -0700 (PDT)
+ id 1g9Zb9-0005Qy-V0
+ for barebox@lists.infradead.org; Mon, 08 Oct 2018 17:45:41 +0000
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Date: Mon,  8 Oct 2018 19:45:23 +0200
+Message-Id: <20181008174523.25757-1-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
-References: <20181008063542.18709-1-andrew.smirnov@gmail.com>
- <20181008063542.18709-14-andrew.smirnov@gmail.com>
- <20181008084451.clh4bf5btxoyq6di@pengutronix.de>
-In-Reply-To: <20181008084451.clh4bf5btxoyq6di@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 8 Oct 2018 08:41:02 -0700
-Message-ID: <CAHQ1cqENo0Kx7fozpvk5o1xY0OnEGyiVfxfi57=0x1dUD5y+fQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,72 +15,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 13/16] mdio_bus: Allow for non PHY-devices on MDIO buses
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] state: backend_bucket_circular: fix memory leak
+To: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Oct 8, 2018 at 1:44 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Sun, Oct 07, 2018 at 11:35:39PM -0700, Andrey Smirnov wrote:
-> > Instead of just creating a simple PHY device for every child of MDIO
-> > bus node, add code to check if any of them have "compatible" property
-> > set as well as code to create a proper platform device for such cases.
-> >
-> > This change is useful for when MDIO bus and some of Ethernet ports are
-> > connected to a switch or some other MDIO device that doesn't behave
-> > like a generic PHY and can't be probed via its PHY ID.
-> >
-> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > ---
-> >  drivers/net/phy/mdio_bus.c | 11 +++++++++++
-> >  1 file changed, 11 insertions(+)
-> >
-> > diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-> > index d7d6d8940..589ed57d2 100644
-> > --- a/drivers/net/phy/mdio_bus.c
-> > +++ b/drivers/net/phy/mdio_bus.c
-> > @@ -26,6 +26,7 @@
-> >  #include <errno.h>
-> >  #include <linux/phy.h>
-> >  #include <linux/err.h>
-> > +#include <of_device.h>
-> >
-> >  #define DEFAULT_GPIO_RESET_ASSERT       1000      /* us */
-> >  #define DEFAULT_GPIO_RESET_DEASSERT     1000      /* us */
-> > @@ -179,6 +180,16 @@ static int of_mdiobus_register(struct mii_bus *mdio, struct device_node *np)
-> >
-> >       /* Loop over the child nodes and register a phy_device for each one */
-> >       for_each_available_child_of_node(np, child) {
-> > +             if (of_get_property(child, "compatible", NULL)) {
-> > +                     if (!of_platform_device_create(child, &mdio->dev)) {
-> > +                             dev_err(&mdio->dev,
-> > +                                     "Failed to create device for %s\n",
-> > +                                     child->full_name);
-> > +                     }
-> > +
-> > +                     continue;
-> > +             }
->
-> PHYs can have a compatible property aswell which is checked for here:
->
-> > +
-> >               if (!of_mdiobus_child_is_phy(child))
-> >                       continue;
->
-> So I believe you have to create a platform device only if it is not a
-> PHY device.
->
-
-Yeah, good point, missed this in my logic. Will fix in v2.
-
-Thanks,
-Andrey Smirnov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4K
+LS0tCiBjb21tb24vc3RhdGUvYmFja2VuZF9idWNrZXRfY2lyY3VsYXIuYyB8IDExICsrKysrKyst
+LS0tCiAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQoKZGlm
+ZiAtLWdpdCBhL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX2J1Y2tldF9jaXJjdWxhci5jIGIvY29tbW9u
+L3N0YXRlL2JhY2tlbmRfYnVja2V0X2NpcmN1bGFyLmMKaW5kZXggMDUyOTQyMWEyYzJmLi4yNzdi
+OTRkNzk3MzcgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX2J1Y2tldF9jaXJjdWxh
+ci5jCisrKyBiL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX2J1Y2tldF9jaXJjdWxhci5jCkBAIC00ODAs
+NyArNDgwLDggQEAgaW50IHN0YXRlX2JhY2tlbmRfYnVja2V0X2NpcmN1bGFyX2NyZWF0ZShzdHJ1
+Y3QgZGV2aWNlX2QgKmRldiwgY29uc3QgY2hhciAqcGF0aCwKIAljaXJjLT5mZCA9IG9wZW4ocGF0
+aCwgT19SRFdSKTsKIAlpZiAoY2lyYy0+ZmQgPCAwKSB7CiAJCXByX2VycigiRmFpbGVkIHRvIG9w
+ZW4gY2lyY3VsYXIgYnVja2V0ICclcydcbiIsIHBhdGgpOwotCQlyZXR1cm4gLWVycm5vOworCQly
+ZXQgPSAtZXJybm87CisJCWdvdG8gb3V0X2ZyZWU7CiAJfQogI2VuZGlmCiAKQEAgLTQ4OSw3ICs0
+OTAsNyBAQCBpbnQgc3RhdGVfYmFja2VuZF9idWNrZXRfY2lyY3VsYXJfY3JlYXRlKHN0cnVjdCBk
+ZXZpY2VfZCAqZGV2LCBjb25zdCBjaGFyICpwYXRoLAogCQlkZXZfaW5mbyhkZXYsICJOb3QgdXNp
+bmcgZXJhc2VibG9jayAldSwgaXQgaXMgbWFya2VkIGFzIGJhZCAoJWQpXG4iLAogCQkJIGNpcmMt
+PmVyYXNlYmxvY2ssIHJldCk7CiAJCXJldCA9IC1FSU87Ci0JCWdvdG8gb3V0X2ZyZWU7CisJCWdv
+dG8gb3V0X2Nsb3NlOwogCX0KIAogCWNpcmMtPmJ1Y2tldC5yZWFkID0gc3RhdGVfYmFja2VuZF9i
+dWNrZXRfY2lyY3VsYXJfcmVhZDsKQEAgLTQ5OSwxMyArNTAwLDE1IEBAIGludCBzdGF0ZV9iYWNr
+ZW5kX2J1Y2tldF9jaXJjdWxhcl9jcmVhdGUoc3RydWN0IGRldmljZV9kICpkZXYsIGNvbnN0IGNo
+YXIgKnBhdGgsCiAKIAlyZXQgPSBzdGF0ZV9iYWNrZW5kX2J1Y2tldF9jaXJjdWxhcl9pbml0KCpi
+dWNrZXQpOwogCWlmIChyZXQpCi0JCWdvdG8gb3V0X2ZyZWU7CisJCWdvdG8gb3V0X2Nsb3NlOwog
+CiAJcmV0dXJuIDA7CiAKLW91dF9mcmVlOgorb3V0X2Nsb3NlOgogI2lmbmRlZiBfX0JBUkVCT1hf
+XwogCWNsb3NlKGNpcmMtPmZkKTsKK291dF9mcmVlOgorCWZyZWUoY2lyYy0+bXRkKTsKICNlbmRp
+ZgogCWZyZWUoY2lyYyk7CiAKLS0gCjIuMTkuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
+aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2JhcmVib3gK
