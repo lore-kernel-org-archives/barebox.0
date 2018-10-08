@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g9QIW-0005OC-6g
- for barebox@lists.infradead.org; Mon, 08 Oct 2018 07:49:50 +0000
-Date: Mon, 8 Oct 2018 09:49:36 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181008074936.7ilxnbq7sc5mphbu@pengutronix.de>
-References: <20180119132825.26662-1-u.kleine-koenig@pengutronix.de>
- <20180119132825.26662-2-u.kleine-koenig@pengutronix.de>
- <20180122081234.jxgbiblpvgaoeou4@pengutronix.de>
- <20181002083310.p7cepdfsqljutsok@pengutronix.de>
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1g9QvC-00038u-20
+ for barebox@lists.infradead.org; Mon, 08 Oct 2018 08:29:47 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Mon,  8 Oct 2018 10:29:20 +0200
+Message-Id: <20181008082921.26922-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20181008074936.7ilxnbq7sc5mphbu@pengutronix.de>
+References: <20181008074936.7ilxnbq7sc5mphbu@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181002083310.p7cepdfsqljutsok@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,139 +17,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/2] mci: implement command to switch a mmc device to
- enhanced mode
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v3 1/2] =?UTF-8?q?mci:=20provide=20wrapper=20for=20mci=5Fg?=
+ =?UTF-8?q?et=5Fdevice=5Fby=5Fname=20=E2=88=98=20devpath=5Fto=5Fname?=
+To: barebox@lists.infradead.org
 
-Hi Uwe,
-
-On Tue, Oct 02, 2018 at 10:33:10AM +0200, Uwe Kleine-K=F6nig wrote:
-> Hello,
-> =
-
-> On Mon, Jan 22, 2018 at 09:12:34AM +0100, Sascha Hauer wrote:
-> > On Fri, Jan 19, 2018 at 02:28:25PM +0100, Uwe Kleine-K=F6nig wrote:
-> > > new file mode 100644
-> > > index 000000000000..2f5c7ad69a37
-> > > --- /dev/null
-> > > +++ b/commands/mmc.c
-> > > @@ -0,0 +1,171 @@
-> > > +#include <command.h>
-> > > +#include <mci.h>
-> > > +#include <stdio.h>
-> > > +#include <string.h>
-> > > +
-> > > +/* enh_area setmax <-y|-n|-c> /dev/mmcX */
-> > > +static int do_mmc_enh_area(int argc, char *argv[])
-> > > +{
-> > > +	char *devname;
-> > > +	struct mci *mci;
-> > > +	u8 *ext_csd;
-> > > +	int set_completed =3D 0;
-> > > +	int ret;
-> > > +
-> > > +	if (argc !=3D 4 || strcmp(argv[1], "setmax") ||
-> > > +	    argv[2][0] !=3D '-' ||
-> > > +	    (argv[2][1] !=3D 'y' && argv[2][1] !=3D 'n' && argv[2][1] !=3D =
-'c')) {
-> > > +		printf("Usage: mmc enh_area setmax <-y|-n|-c> /dev/mmcX\n");
-> > > +		return 1;
-> > > +	}
-> > =
-
-> > I assume 'y' means 'yes', 'n' means 'no', but what does 'c' mean? It
-> > doesn't seem to be implemented and none of these options is documented.
-> =
-
-> I'll rework to
-> =
-
-> 	enh_area setmax [-c] /dev/mmcX
-> =
-
-> and add some documentation.
-> =
-
-> > > +	if (argv[2][1] =3D=3D 'y')
-> > > +		set_completed =3D 1;
-> > > +
-> > > +	devname =3D argv[3];
-> > > +	if (!strncmp(devname, "/dev/", 5))
-> > > +		devname +=3D 5;
-> > > +
-> > > +	mci =3D mci_get_device_by_name(devname);
-> > > +	if (!mci) {
-> > > +		printf("Failure to open %s as mci device\n", devname);
-> > > +		return -ENOENT;
-> > > +	}
-> > =
-
-> > This part is probably needed by all other future subcommands aswell.
-> > Should it be an extra function?
-> =
-
-> Something like:
-> =
-
-> struct mci *mci_get_device_by_devname(const char *devname)
-> {
-> 	if (!strncmp(devname, "/dev/", 5))
-> 		devname +=3D 5;
-
-devpath_to_name() instead.
-
-> =
-
-> 	return mci_get_device_by_name(devname);
-> }
-> =
-
-> ?
-> =
-
-> > > +	if (!(ext_csd[EXT_CSD_PARTITIONING_SUPPORT] & EXT_CSD_ENH_ATTRIBUTE=
-_EN_MASK)) {
-> > > +		printf("Device doesn't support enhanced area\n");
-> > > +		ret =3D -EIO;
-> > > +		goto error;
-> > > +	}
-> > > +
-> > > +	if (ext_csd[EXT_CSD_PARTITION_SETTING_COMPLETED]) {
-> > > +		printf("Partitioning already finalized\n");
-> > > +		ret =3D -EIO;
-> > > +		goto error;
-> > > +	}
-> > > +
-> > > +	ret =3D mci_switch(mci, EXT_CSD_ERASE_GROUP_DEF, 1);
-> > > +	if (ret) {
-> > > +		printf("Failure to write to EXT_CSD_ERASE_GROUP_DEF\n");
-> > > +		goto error;
-> > =
-
-> > This command is *very* verbose in the error path. Would it be enough to
-> > just write the register number of the failed access instead of the name?
-> =
-
-> It prints a single line if an error happens. I'd not say this is too
-> verbose. Do you care about the output or the binary size?
-
-The latter.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QWxzbyBjb252ZXJ0IHRoZSBvbmx5IHVzZXIgb2YgbWNpX2dldF9kZXZpY2VfYnlfbmFtZSB0byB0
+aGlzIG5ldwp3cmFwcGVyLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xl
+aW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBjb21tYW5kcy9tbWNfZXh0Y3NkLmMgfCA2
+ICsrKy0tLQogaW5jbHVkZS9tY2kuaCAgICAgICAgIHwgNiArKysrKysKIDIgZmlsZXMgY2hhbmdl
+ZCwgOSBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2NvbW1hbmRz
+L21tY19leHRjc2QuYyBiL2NvbW1hbmRzL21tY19leHRjc2QuYwppbmRleCA4ODlhNmM2MTRhNDcu
+LjU1ZGVjZDYxODU1MyAxMDA2NDQKLS0tIGEvY29tbWFuZHMvbW1jX2V4dGNzZC5jCisrKyBiL2Nv
+bW1hbmRzL21tY19leHRjc2QuYwpAQCAtMjM2Niw3ICsyMzY2LDcgQEAgc3RhdGljIGludCBkb19t
+bWNfZXh0Y3NkKGludCBhcmdjLCBjaGFyICphcmd2W10pCiAJdTgJCQkqZHN0OwogCWludAkJCXJl
+dHZhbCA9IDA7CiAJaW50CQkJb3B0OwotCWNoYXIJCQkqZGV2bmFtZTsKKwljaGFyCQkJKmRldnBh
+dGg7CiAJaW50CQkJaW5kZXggPSAwOwogCWludAkJCXZhbHVlID0gMDsKIAlpbnQJCQl3cml0ZV9v
+cGVyYXRpb24gPSAwOwpAQCAtMjQwNCw5ICsyNDA0LDkgQEAgc3RhdGljIGludCBkb19tbWNfZXh0
+Y3NkKGludCBhcmdjLCBjaGFyICphcmd2W10pCiAJaWYgKG9wdGluZCA9PSBhcmdjKQogCQlyZXR1
+cm4gQ09NTUFORF9FUlJPUl9VU0FHRTsKIAotCWRldm5hbWUgPSBhcmd2W29wdGluZF07CisJZGV2
+cGF0aCA9IGFyZ3Zbb3B0aW5kXTsKIAotCW1jaSA9IG1jaV9nZXRfZGV2aWNlX2J5X25hbWUoZGV2
+cGF0aF90b19uYW1lKGRldm5hbWUpKTsKKwltY2kgPSBtY2lfZ2V0X2RldmljZV9ieV9kZXZwYXRo
+KGRldnBhdGgpOwogCWlmIChtY2kgPT0gTlVMTCkgewogCQlyZXR2YWwgPSAtRU5PRU5UOwogCQln
+b3RvIGVycm9yOwpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9tY2kuaCBiL2luY2x1ZGUvbWNpLmgKaW5k
+ZXggMDcyMDA4ZWY5ZGE3Li41ZDBjMmY4Zjk2MzggMTAwNjQ0Ci0tLSBhL2luY2x1ZGUvbWNpLmgK
+KysrIGIvaW5jbHVkZS9tY2kuaApAQCAtMjgsNiArMjgsNyBAQAogCiAjaW5jbHVkZSA8bGludXgv
+bGlzdC5oPgogI2luY2x1ZGUgPGJsb2NrLmg+CisjaW5jbHVkZSA8ZnMuaD4KICNpbmNsdWRlIDxy
+ZWd1bGF0b3IuaD4KIAogLyogVGhlc2UgY29kZXMgc2hvdWxkIGJlIHNvcnRlZCBudW1lcmljYWxs
+eSBpbiBvcmRlciBvZiBuZXduZXNzLiAgSWYgdGhlIGxhc3QKQEAgLTQ5MCw0ICs0OTEsOSBAQCBz
+dGF0aWMgaW5saW5lIGludCBtbWNfaG9zdF9pc19zcGkoc3RydWN0IG1jaV9ob3N0ICpob3N0KQog
+CiBzdHJ1Y3QgbWNpICptY2lfZ2V0X2RldmljZV9ieV9uYW1lKGNvbnN0IGNoYXIgKm5hbWUpOwog
+CitzdGF0aWMgaW5saW5lIHN0cnVjdCBtY2kgKm1jaV9nZXRfZGV2aWNlX2J5X2RldnBhdGgoY29u
+c3QgY2hhciAqZGV2cGF0aCkKK3sKKwlyZXR1cm4gbWNpX2dldF9kZXZpY2VfYnlfbmFtZShkZXZw
+YXRoX3RvX25hbWUoZGV2cGF0aCkpOworfQorCiAjZW5kaWYgLyogX01DSV9IXyAqLwotLSAKMi4x
+OS4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
+ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
+cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
