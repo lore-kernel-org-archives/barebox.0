@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g9vxr-0002i1-06
- for barebox@lists.infradead.org; Tue, 09 Oct 2018 17:38:38 +0000
-Received: by mail-pl1-x643.google.com with SMTP id y15-v6so1161348plr.12
- for <barebox@lists.infradead.org>; Tue, 09 Oct 2018 10:38:24 -0700 (PDT)
+ id 1g9vxt-0002i8-TT
+ for barebox@lists.infradead.org; Tue, 09 Oct 2018 17:38:44 +0000
+Received: by mail-pf1-x443.google.com with SMTP id c25-v6so1204680pfe.6
+ for <barebox@lists.infradead.org>; Tue, 09 Oct 2018 10:38:27 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue,  9 Oct 2018 10:37:50 -0700
-Message-Id: <20181009173805.26181-3-andrew.smirnov@gmail.com>
+Date: Tue,  9 Oct 2018 10:37:52 -0700
+Message-Id: <20181009173805.26181-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20181009173805.26181-1-andrew.smirnov@gmail.com>
 References: <20181009173805.26181-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,162 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 02/17] clocksource: Add ARM global timer support
+Subject: [PATCH v2 04/17] i.MX: Move GPT driver to drivers/clocksource
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port corresponding Linux kernel driver. Currently VFxxx SoC is the
-intended consumer because it doesn't include common i.MX GPT block
-used as clocksource by other i.MX SoCs.
+Move GPT driver to drivers/clocksource and rename it to
+timer-imx-gpt.c to match Linux kernel as well as to keep all
+clocksource drivers in a common location.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/clocksource/Kconfig            |   4 +
- drivers/clocksource/Makefile           |   1 +
- drivers/clocksource/arm_global_timer.c | 113 +++++++++++++++++++++++++
- 3 files changed, 118 insertions(+)
- create mode 100644 drivers/clocksource/arm_global_timer.c
+ arch/arm/mach-imx/Makefile                                     | 1 -
+ drivers/clocksource/Kconfig                                    | 3 +++
+ drivers/clocksource/Makefile                                   | 1 +
+ .../clocksource.c => drivers/clocksource/timer-imx-gpt.c       | 0
+ 4 files changed, 4 insertions(+), 1 deletion(-)
+ rename arch/arm/mach-imx/clocksource.c => drivers/clocksource/timer-imx-gpt.c (100%)
 
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index 5a01dd57e..97c54406e 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -1,4 +1,3 @@
+-obj-y += clocksource.o
+ obj-$(CONFIG_ARCH_IMX1)  += imx1.o
+ obj-$(CONFIG_ARCH_IMX25) += imx25.o
+ obj-$(CONFIG_ARCH_IMX21) += imx21.o
 diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 3d63f7ff1..6a6c9362a 100644
+index 6a6c9362a..c65066ccf 100644
 --- a/drivers/clocksource/Kconfig
 +++ b/drivers/clocksource/Kconfig
-@@ -70,3 +70,7 @@ config CLOCKSOURCE_ARMV8_TIMER
- 	bool
- 	default y
- 	depends on ARM && CPU_64v8
-+
-+config CLOCKSOURCE_ARM_GLOBAL_TIMER
-+        bool
-+	depends on ARM && CPU_V7
+@@ -74,3 +74,6 @@ config CLOCKSOURCE_ARMV8_TIMER
+ config CLOCKSOURCE_ARM_GLOBAL_TIMER
+         bool
+ 	depends on ARM && CPU_V7
++config CLOCKSOURCE_IMX_GPT
++	def_bool y
++	depends on ARCH_IMX
 diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
-index ea33fff50..51f6cb2f4 100644
+index 51f6cb2f4..ce4d74137 100644
 --- a/drivers/clocksource/Makefile
 +++ b/drivers/clocksource/Makefile
-@@ -12,3 +12,4 @@ obj-$(CONFIG_CLOCKSOURCE_UEMD)    += uemd.o
- obj-$(CONFIG_CLOCKSOURCE_ROCKCHIP)+= rk_timer.o
+@@ -13,3 +13,4 @@ obj-$(CONFIG_CLOCKSOURCE_ROCKCHIP)+= rk_timer.o
  obj-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) += timer-atmel-pit.o
  obj-$(CONFIG_CLOCKSOURCE_ARMV8_TIMER) += armv8-timer.o
-+obj-$(CONFIG_CLOCKSOURCE_ARM_GLOBAL_TIMER) += arm_global_timer.o
-diff --git a/drivers/clocksource/arm_global_timer.c b/drivers/clocksource/arm_global_timer.c
-new file mode 100644
-index 000000000..44e3a3c76
---- /dev/null
-+++ b/drivers/clocksource/arm_global_timer.c
-@@ -0,0 +1,113 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * Clocksource driver for generic Cortex A9 timer block
-+ *
-+ * Copyright (C) 2018 Zodiac Inflight Innovations
-+ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-+ *
-+ * based on corresponding driver from Linux kernel with the following
-+ * copyright:
-+ *
-+ * drivers/clocksource/arm_global_timer.c
-+ *
-+ * Copyright (C) 2013 STMicroelectronics (R&D) Limited.
-+ * Author: Stuart Menefy <stuart.menefy@st.com>
-+ * Author: Srinivas Kandagatla <srinivas.kandagatla@st.com>
-+ */
-+#include <common.h>
-+#include <init.h>
-+#include <clock.h>
-+#include <linux/clk.h>
-+#include <io.h>
-+#include <asm/system.h>
-+
-+#define GT_COUNTER0	0x00
-+#define GT_COUNTER1	0x04
-+
-+#define GT_CONTROL	0x08
-+#define GT_CONTROL_TIMER_ENABLE		BIT(0)  /* this bit is NOT banked */
-+
-+static void __iomem *gt_base;
-+
-+/*
-+ * To get the value from the Global Timer Counter register proceed as follows:
-+ * 1. Read the upper 32-bit timer counter register
-+ * 2. Read the lower 32-bit timer counter register
-+ * 3. Read the upper 32-bit timer counter register again. If the value is
-+ *  different to the 32-bit upper value read previously, go back to step 2.
-+ *  Otherwise the 64-bit timer counter value is correct.
-+ */
-+static uint64_t arm_global_clocksource_read(void)
-+{
-+	uint64_t counter;
-+	uint32_t lower;
-+	uint32_t upper, old_upper;
-+
-+	upper = readl(gt_base + GT_COUNTER1);
-+	do {
-+		old_upper = upper;
-+		lower = readl(gt_base + GT_COUNTER0);
-+		upper = readl(gt_base + GT_COUNTER1);
-+	} while (upper != old_upper);
-+
-+	counter = upper;
-+	counter <<= 32;
-+	counter |= lower;
-+	return counter;
-+}
-+
-+static struct clocksource cs = {
-+	.read	= arm_global_clocksource_read,
-+	.mask	= CLOCKSOURCE_MASK(64),
-+	.shift	= 0,
-+};
-+
-+static int arm_global_timer_probe(struct device_d *dev)
-+{
-+	struct resource *iores;
-+	struct clk *clk;
-+	int ret;
-+
-+	iores = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(iores))
-+		return PTR_ERR(iores);
-+
-+	clk = clk_get(dev, NULL);
-+	if (IS_ERR(clk)) {
-+		ret = PTR_ERR(clk);
-+		dev_err(dev, "clock not found: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = clk_enable(clk);
-+	if (ret) {
-+		dev_err(dev, "clock failed to enable: %d\n", ret);
-+		return ret;
-+	}
-+
-+	gt_base = IOMEM(iores->start);
-+
-+	cs.mult = clocksource_hz2mult(clk_get_rate(clk), cs.shift);
-+
-+	writel(0, gt_base + GT_CONTROL);
-+	writel(0, gt_base + GT_COUNTER0);
-+	writel(0, gt_base + GT_COUNTER1);
-+	/* enables timer on all the cores */
-+	writel(GT_CONTROL_TIMER_ENABLE, gt_base + GT_CONTROL);
-+
-+	return init_clock(&cs);
-+}
-+
-+static struct of_device_id arm_global_timer_dt_ids[] = {
-+	{ .compatible = "arm,cortex-a9-global-timer", },
-+	{ }
-+};
-+
-+static struct driver_d arm_global_timer_driver = {
-+	.name = "arm-global-timer",
-+	.probe = arm_global_timer_probe,
-+	.of_compatible = DRV_OF_COMPAT(arm_global_timer_dt_ids),
-+};
-+postcore_platform_driver(arm_global_timer_driver);
-+
+ obj-$(CONFIG_CLOCKSOURCE_ARM_GLOBAL_TIMER) += arm_global_timer.o
++obj-$(CONFIG_CLOCKSOURCE_IMX_GPT) += timer-imx-gpt.o
+diff --git a/arch/arm/mach-imx/clocksource.c b/drivers/clocksource/timer-imx-gpt.c
+similarity index 100%
+rename from arch/arm/mach-imx/clocksource.c
+rename to drivers/clocksource/timer-imx-gpt.c
 -- 
 2.17.1
 
