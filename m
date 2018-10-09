@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g9v13-0004dD-Lv
- for barebox@lists.infradead.org; Tue, 09 Oct 2018 16:37:51 +0000
-Received: by mail-pl1-x62f.google.com with SMTP id y15-v6so1083941plr.12
- for <barebox@lists.infradead.org>; Tue, 09 Oct 2018 09:37:37 -0700 (PDT)
+ id 1g9u94-0006sc-ER
+ for barebox@lists.infradead.org; Tue, 09 Oct 2018 15:42:41 +0000
+Date: Tue, 9 Oct 2018 17:41:48 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20181009154148.GC18654@ravnborg.org>
+References: <20181008063542.18709-1-andrew.smirnov@gmail.com>
+ <20181008063542.18709-7-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-From: Patrick Huesmann <patrick.huesmann@gmail.com>
-Date: Tue, 9 Oct 2018 18:37:25 +0200
-Message-ID: <CABAHDLdOVQwoeNKvWmOTADF5-Q1Az6hQXqDUrK60-wC+3P0Tzg@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20181008063542.18709-7-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,62 +23,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: bootchooser: constant decrement of remaining_attempts
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 06/16] drivers: Introduce dev_set_name()
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
+Hi Andrey.
 
-I'm building a RAUC- & bootchooser-based firmware update solution.
-The scenario is symmetric rootfs slots, manual update, userspace
-(RAUC) marks as good.
-It seems to work well, however I noticed that it's always decrementing
-and resetting the remaining_attempts of the booted system, not only
-when there's an update, but also during regular boot-ups.
+Looked through the patch, everythign looked OK.
+One nit.
 
-I thought that the RAUC/bootchooser combo was mainly about providing a
-safeguard against accidentally "bricking" the system with corrupt or
-incomplete firmware updates.
-However, the logic of decrementing and later resetting the
-remaining_attempts is apparently not limited to the period between
-performing the update and the validation (mark as good) of that
-update, but also running all the other times the system is booted.
+	Sam
 
-This can have some undesirable side effects:
+> diff --git a/include/driver.h b/include/driver.h
+> index 1b61f2066..7b83c0a77 100644
+> --- a/include/driver.h
+> +++ b/include/driver.h
+> @@ -23,7 +23,6 @@
+>  #include <linux/ioport.h>
+>  #include <of.h>
+>  
+> -#define MAX_DRIVER_NAME		32
+>  #define FORMAT_DRIVER_NAME_ID	"%s%d"
+>  
+>  #include <param.h>
+> @@ -41,7 +40,7 @@ struct device_d {
+>  	/*! This member (and 'type' described below) is used to match with a
+>  	 * driver. This is a descriptive name and could be MPC5XXX_ether or
+>  	 * imx_serial. */
+Add here: The name is set using dev_set_name() or somthing like that.
+To let the reader/user know how to set the name in the correct way.
 
-1) When the boot process is interrupted for any reason (power issues,
-brown-out resets, users unplugging the gadget while it boots, etc.)
-more than three times in a row (assuming a remaining_attempts reset
-value of 3), then bootchooser will happily switch to the fall-back
-target, even though there's nothing wrong with the actual target at
-all.
-I guess this can be worked around by syncing the fall-back target to
-the last updated one, after the last update has been verified as good.
-However this brings additional cost & complexity, and feels more like
-a hack than a proper solution.
+> -	char name[MAX_DRIVER_NAME];
+> +	char *name;
+>  	/*! The id is used to uniquely identify a device in the system. The id
+>  	 * will show up under /dev/ as the device's name. Usually this is
+>  	 * something like eth0 or nor0. */
+> @@ -177,6 +176,8 @@ static inline const char *dev_name(const struct device_d *dev)
+>  	return dev_id(dev);
+>  }
+>  
+> +int dev_set_name(struct device_d *dev, const char *fmt, ...);
+> +
+It would be nice with a small comment that tell this is used to set
+device_d.name - and that it shuld not be assigned direct.
 
-2) In every complete boot cycle, there are two writes to the
-barebox-state partition (bootchooser decrementing the
-remaining_attempts, then userspace resetting the remaining_attempts
-when it marks the target as good). For systems that boot up & power
-down a lot, this will generate lots of unnecessary flash writes over
-time. Probably it won't be enough to actually wear out the flash, but
-still it doesn't "feel" quite right. (I jumped through hoops to have a
-proper read-only root and would like to limit the overall number of
-flash writes when possible).
-
-I'm thinking of an option that limits the remaining_attempts logic to
-the phase when barebox attempts to boot a newly flashed update, until
-that update is marked as good later in userspace. There could be an
-extra (optional) variable in the barebox-state, that allows the
-userspace to deliberately enable/disable the remaining_attempts logic
-in barebox.
-
-Is such a option already available? Or if it's not, would patches
-introducing that option be accepted upstream?
-Or am I thinking totally wrong here and this goes completely against
-the whole bootchooser design?
-
-Best regards, Patrick
 
 _______________________________________________
 barebox mailing list
