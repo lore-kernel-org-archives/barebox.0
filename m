@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wr1-x441.google.com ([2a00:1450:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g9vWw-00019L-MB
- for barebox@lists.infradead.org; Tue, 09 Oct 2018 17:10:48 +0000
-Received: by mail-wr1-x441.google.com with SMTP id d2-v6so2655351wro.7
- for <barebox@lists.infradead.org>; Tue, 09 Oct 2018 10:10:35 -0700 (PDT)
+ id 1g9vqD-0000Dc-6F
+ for barebox@lists.infradead.org; Tue, 09 Oct 2018 17:30:43 +0000
+Received: by mail-wr1-x441.google.com with SMTP id l6-v6so2311275wrt.1
+ for <barebox@lists.infradead.org>; Tue, 09 Oct 2018 10:30:31 -0700 (PDT)
 MIME-Version: 1.0
 References: <20181008063542.18709-1-andrew.smirnov@gmail.com>
- <20181008063542.18709-7-andrew.smirnov@gmail.com>
- <20181009154148.GC18654@ravnborg.org>
-In-Reply-To: <20181009154148.GC18654@ravnborg.org>
+In-Reply-To: <20181008063542.18709-1-andrew.smirnov@gmail.com>
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 9 Oct 2018 10:10:22 -0700
-Message-ID: <CAHQ1cqGzdfMDEZQebL-kC3dWgFbX3vO3xTN3yf19CrwJxRCDJQ@mail.gmail.com>
+Date: Tue, 9 Oct 2018 10:30:17 -0700
+Message-ID: <CAHQ1cqFoLOKw+uGF2CF9sO_NMJXCX=5kGFO7FCfcE41n4V9jvw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,63 +23,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 06/16] drivers: Introduce dev_set_name()
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 00/16]
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Oct 9, 2018 at 8:41 AM Sam Ravnborg <sam@ravnborg.org> wrote:
+On Sun, Oct 7, 2018 at 11:35 PM Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
 >
-> Hi Andrey.
+> Everyone:
 >
-> Looked through the patch, everythign looked OK.
-> One nit.
+> Patches in this series are a result of my work on porting Linux code
+> for MV88E6xxx switches to Barebox.
 >
->         Sam
+>      - Patch 1 is loosely related header fix
 >
-> > diff --git a/include/driver.h b/include/driver.h
-> > index 1b61f2066..7b83c0a77 100644
-> > --- a/include/driver.h
-> > +++ b/include/driver.h
-> > @@ -23,7 +23,6 @@
-> >  #include <linux/ioport.h>
-> >  #include <of.h>
-> >
-> > -#define MAX_DRIVER_NAME              32
-> >  #define FORMAT_DRIVER_NAME_ID        "%s%d"
-> >
-> >  #include <param.h>
-> > @@ -41,7 +40,7 @@ struct device_d {
-> >       /*! This member (and 'type' described below) is used to match with a
-> >        * driver. This is a descriptive name and could be MPC5XXX_ether or
-> >        * imx_serial. */
-> Add here: The name is set using dev_set_name() or somthing like that.
-> To let the reader/user know how to set the name in the correct way.
+>      - Patch 2 adds clocksource support for ARM global time, needed on
+>        VF610 in order to get an accurate clocksource. MV88E6xxx EEPROM
+>        supporte code turned out to be dependent on that.
+>
+>      - Pathes 3 and 4 are clocksource related fixes
+>
+>      - Patches 5, 6, 7, 8 update the device naming scheme used by
+>        Barebox driver code. Old scheme couldn't handle devices created
+>        for DT nodes with identical names. This was the case on ZII
+>        VF610 Development Board Rev. C which had two switch devices.
+>
+>     - Patch 9 is documentation/small code fix for generic MDIO bus
+>       code
+>
+>     - Patches 10, 11 bring needed preprocessor constants from Linux kernel
+>
+>     - Patch 12 prevents PHYs masked by MDIO bus's phy_maks from being
+>       probed
+>
+>     - Patch 13 allows custom platform deviecs to be attached to an MDIO bus
+>
+>     - Patch 14 exposes internal MDIO bus on MV88E6xxx devices
+>
+>     - Patch 15 support for EEPROM devices attached to MV88E6xxx devices
+>
+>     - Patch 16 exposes ports that don't have a PHY attached as
+>       "virtual" PHY devices (RPU2 needs this code to properly
+>       configure port connected to FEC)
+>
+> NOTE: This is quite a mix and I am more than happy to split this
+> series in several if current patch grouping is problematic.
+>
+> Tested on the following H/W:
+>
+>      - ZII i.MX6Q RDU2, MV88E6352 switch
+>      - ZII i.MX51 RDU1, MV88E6161 switch
+>      - ZII i.MX7D RPU2, MV88E6352 switch
+>      - ZII VF610 CFU1, MV88E6352 switch
+>      - ZII VF610 SPU3, MV88E6390X switch
+>      - ZII VF610 Development Board Rev. C, MV88E6390X switch x 2
+>
+> Feedback is welcome!
+>
+> Thanks,
+> Andrey Smirnov
 >
 
-I'll add a mention of it in the documentation, but strictly speaking
-dev_set_name() is not mandatory to use. Driver can choose to assign
-constant strings to that field and it wouldn't be unreasonable.
-
-> > -     char name[MAX_DRIVER_NAME];
-> > +     char *name;
-> >       /*! The id is used to uniquely identify a device in the system. The id
-> >        * will show up under /dev/ as the device's name. Usually this is
-> >        * something like eth0 or nor0. */
-> > @@ -177,6 +176,8 @@ static inline const char *dev_name(const struct device_d *dev)
-> >       return dev_id(dev);
-> >  }
-> >
-> > +int dev_set_name(struct device_d *dev, const char *fmt, ...);
-> > +
-> It would be nice with a small comment that tell this is used to set
-> device_d.name - and that it shuld not be assigned direct.
->
-
-Same here, device_d.name can be assigned directly. However
-dev_set_name() does assume that device_d.name is free()-able, so I'll
-mention that in the comment.
-
-Will update both in v2.
+This is really embarrassing that I forgot to have an actual subject
+line for this series. Will fix in v2.
 
 Thanks,
 Andrey Smirnov
