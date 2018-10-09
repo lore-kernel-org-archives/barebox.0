@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1g9vy1-0002jC-2k
- for barebox@lists.infradead.org; Tue, 09 Oct 2018 17:39:00 +0000
-Received: by mail-pf1-x441.google.com with SMTP id r64-v6so1191331pfb.13
- for <barebox@lists.infradead.org>; Tue, 09 Oct 2018 10:38:34 -0700 (PDT)
+ id 1g9vy5-0002l9-M9
+ for barebox@lists.infradead.org; Tue, 09 Oct 2018 17:39:03 +0000
+Received: by mail-pg1-x52c.google.com with SMTP id 23-v6so1153634pgc.8
+ for <barebox@lists.infradead.org>; Tue, 09 Oct 2018 10:38:39 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue,  9 Oct 2018 10:37:57 -0700
-Message-Id: <20181009173805.26181-10-andrew.smirnov@gmail.com>
+Date: Tue,  9 Oct 2018 10:38:00 -0700
+Message-Id: <20181009173805.26181-13-andrew.smirnov@gmail.com>
 In-Reply-To: <20181009173805.26181-1-andrew.smirnov@gmail.com>
 References: <20181009173805.26181-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,126 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 09/17] of: Port latest of_device_make_bus_id()
- implementation
+Subject: [PATCH v2 12/17] include: linux: ethtool: Add missing *_UNKNOWN
+ constants
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Code implementing of_device_make_bus_id() in Barebox uses rather old
-implementation from Linux kernel and has a very significan limitation
-in that it will produce identical names for different DT nodes that
-happen to have the same node name as well as "reg" property.
-
-One such example, that tirggered this change, is "switch@0" nodes that
-can be found in dts/src/arm/vf610-zii-dev-rev-c.dts
-
-This commit replaces original code with the current Linux kernel
-implementation that traverses DT hierarchy from leaf node to its root
-concatenating node names in the process.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/of/platform.c | 80 ++++++++++++-------------------------------
- 1 file changed, 22 insertions(+), 58 deletions(-)
+ include/linux/ethtool.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index 4fd3ce2b7..17052f419 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -43,71 +43,35 @@ EXPORT_SYMBOL(of_find_device_by_node);
-  * of_device_make_bus_id - Use the device node data to assign a unique name
-  * @dev: pointer to device structure that is linked to a device tree node
-  *
-- * This routine will first try using either the dcr-reg or the reg property
-- * value to derive a unique name.  As a last resort it will use the node
-- * name followed by a unique number.
-+ * This routine will first try using the translated bus address to
-+ * derive a unique name. If it cannot, then it will prepend names from
-+ * parent nodes until a unique name can be derived.
-  */
- static void of_device_make_bus_id(struct device_d *dev)
- {
--	static int bus_no_reg_magic;
--	struct device_node *np = dev->device_node;
--	const __be32 *reg, *addrp;
-+	struct device_node *node = dev->device_node;
-+	const __be32 *reg;
- 	u64 addr;
--	char *name, *at;
--
--	name = xstrdup(np->name);
--	at = strchr(name, '@');
--	if (at)
--		*at = '\0';
--
--#ifdef CONFIG_PPC_DCR
--	/*
--	 * If it's a DCR based device, use 'd' for native DCRs
--	 * and 'D' for MMIO DCRs.
--	 */
--	reg = of_get_property(np, "dcr-reg", NULL);
--	if (reg) {
--#ifdef CONFIG_PPC_DCR_NATIVE
--		dev_set_name(dev, "d%x.%s", *reg, name);
--#else /* CONFIG_PPC_DCR_NATIVE */
--		u64 addr = of_translate_dcr_address(np, *reg, NULL);
--		if (addr != OF_BAD_ADDR) {
--			dev_set_name(dev, "D%llx.%s",
--				     (unsigned long long)addr, name);
--			free(name);
--			return;
--		}
--#endif /* !CONFIG_PPC_DCR_NATIVE */
--	}
--#endif /* CONFIG_PPC_DCR */
--
--	/*
--	 * For MMIO, get the physical address
--	 */
--	reg = of_get_property(np, "reg", NULL);
--	if (reg) {
--		if (of_can_translate_address(np)) {
--			addr = of_translate_address(np, reg);
--		} else {
--			addrp = of_get_address(np, 0, NULL, NULL);
--			if (addrp)
--				addr = of_read_number(addrp, 1);
--			else
--				addr = OF_BAD_ADDR;
--		}
--		if (addr != OF_BAD_ADDR) {
--			dev_set_name(dev, "%llx.%s",
--				     (unsigned long long)addr, name);
--			free(name);
+diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
+index 4d83fe019..324e40cde 100644
+--- a/include/linux/ethtool.h
++++ b/include/linux/ethtool.h
+@@ -72,9 +72,12 @@
+ #define SPEED_2500		2500
+ #define SPEED_10000		10000
+ 
++#define SPEED_UNKNOWN		-1
 +
-+	/* Construct the name, using parent nodes if necessary to ensure uniqueness */
-+	while (node->parent) {
-+		/*
-+		 * If the address can be translated, then that is as much
-+		 * uniqueness as we need. Make it the first component and return
-+		 */
-+		reg = of_get_property(node, "reg", NULL);
-+		if (reg && (addr = of_translate_address(node, reg)) != OF_BAD_ADDR) {
-+			dev_set_name(dev, dev->name ? "%llx.%s:%s" : "%llx.%s",
-+				     (unsigned long long)addr, node->name,
-+				     dev->name);
- 			return;
- 		}
--	}
+ /* Duplex, half or full. */
+ #define DUPLEX_HALF		0x00
+ #define DUPLEX_FULL		0x01
++#define DUPLEX_UNKNOWN		0xff
  
--	/*
--	 * No BusID, use the node name and add a globally incremented counter
--	 */
--	dev_set_name(dev, "%s.%d", name, bus_no_reg_magic++);
--	free(name);
-+		/* format arguments only used if dev_name() resolves to NULL */
-+		dev_set_name(dev, dev->name ? "%s:%s" : "%s",
-+			     kbasename(node->full_name), dev->name);
-+		node = node->parent;
-+	}
- }
- 
- /**
+ /* Which connector port. */
+ #define PORT_TP			0x00
 -- 
 2.17.1
 
