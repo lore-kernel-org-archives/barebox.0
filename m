@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gA7F1-0000g8-Nl
- for barebox@lists.infradead.org; Wed, 10 Oct 2018 05:41:05 +0000
-Date: Wed, 10 Oct 2018 07:40:52 +0200
+ id 1gA7FQ-0000lP-B0
+ for barebox@lists.infradead.org; Wed, 10 Oct 2018 05:41:30 +0000
+Date: Wed, 10 Oct 2018 07:41:16 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181010054051.ew7alumaqjbtkht7@pengutronix.de>
-References: <20181008174523.25757-1-u.oelmann@pengutronix.de>
+Message-ID: <20181010054116.fg5omyjnlp4jxnjb@pengutronix.de>
+References: <20181008180206.5119-1-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181008174523.25757-1-u.oelmann@pengutronix.de>
+In-Reply-To: <20181008180206.5119-1-u.oelmann@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,15 +22,15 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] state: backend_bucket_circular: fix memory leak
+Subject: Re: [PATCH] common: state: fix typo
 To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Oct 08, 2018 at 07:45:23PM +0200, Ulrich =D6lmann wrote:
+On Mon, Oct 08, 2018 at 08:02:06PM +0200, Ulrich =D6lmann wrote:
 > Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
 > ---
->  common/state/backend_bucket_circular.c | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
+>  common/state/state.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
@@ -38,57 +38,22 @@ Sascha
 
 > =
 
-> diff --git a/common/state/backend_bucket_circular.c b/common/state/backen=
-d_bucket_circular.c
-> index 0529421a2c2f..277b94d79737 100644
-> --- a/common/state/backend_bucket_circular.c
-> +++ b/common/state/backend_bucket_circular.c
-> @@ -480,7 +480,8 @@ int state_backend_bucket_circular_create(struct devic=
-e_d *dev, const char *path,
->  	circ->fd =3D open(path, O_RDWR);
->  	if (circ->fd < 0) {
->  		pr_err("Failed to open circular bucket '%s'\n", path);
-> -		return -errno;
-> +		ret =3D -errno;
-> +		goto out_free;
->  	}
->  #endif
+> diff --git a/common/state/state.c b/common/state/state.c
+> index 25d9502111c2..1273c494c138 100644
+> --- a/common/state/state.c
+> +++ b/common/state/state.c
+> @@ -83,7 +83,7 @@ out:
+>  }
 >  =
 
-> @@ -489,7 +490,7 @@ int state_backend_bucket_circular_create(struct devic=
-e_d *dev, const char *path,
->  		dev_info(dev, "Not using eraseblock %u, it is marked as bad (%d)\n",
->  			 circ->eraseblock, ret);
->  		ret =3D -EIO;
-> -		goto out_free;
-> +		goto out_close;
->  	}
->  =
-
->  	circ->bucket.read =3D state_backend_bucket_circular_read;
-> @@ -499,13 +500,15 @@ int state_backend_bucket_circular_create(struct dev=
-ice_d *dev, const char *path,
->  =
-
->  	ret =3D state_backend_bucket_circular_init(*bucket);
->  	if (ret)
-> -		goto out_free;
-> +		goto out_close;
->  =
-
->  	return 0;
->  =
-
-> -out_free:
-> +out_close:
->  #ifndef __BAREBOX__
->  	close(circ->fd);
-> +out_free:
-> +	free(circ->mtd);
->  #endif
->  	free(circ);
->  =
-
+>  /**
+> - * state_load - Loads a state from the backend
+> + * state_do_load - Loads a state from the backend
+>   * @param state The state that should be updated to contain the loaded d=
+ata
+>   * @return 0 on success, -errno on failure. If no state is loaded the pr=
+evious
+>   * values remain in the state.
 > -- =
 
 > 2.19.0
