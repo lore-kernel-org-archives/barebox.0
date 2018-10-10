@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gA9HS-0003Jq-5M
- for barebox@lists.infradead.org; Wed, 10 Oct 2018 07:52:34 +0000
-Date: Wed, 10 Oct 2018 09:51:29 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181010075129.u67xfq247pmn7sfb@pengutronix.de>
-References: <20181004070400.12338-1-Denis.Osterland@diehl.com>
- <20181005065537.21844-1-Denis.Osterland@diehl.com>
+ id 1gACrZ-0003Jf-Aa
+ for barebox@lists.infradead.org; Wed, 10 Oct 2018 11:41:21 +0000
+Received: by mail-pg1-x52a.google.com with SMTP id a5-v6so2380561pgv.13
+ for <barebox@lists.infradead.org>; Wed, 10 Oct 2018 04:41:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181005065537.21844-1-Denis.Osterland@diehl.com>
+References: <CABAHDLdOVQwoeNKvWmOTADF5-Q1Az6hQXqDUrK60-wC+3P0Tzg@mail.gmail.com>
+ <20181010071443.msez5a7yriayx2va@pengutronix.de>
+ <1539158817.19112.52.camel@pengutronix.de>
+In-Reply-To: <1539158817.19112.52.camel@pengutronix.de>
+From: Patrick Huesmann <patrick.huesmann@gmail.com>
+Date: Wed, 10 Oct 2018 13:40:50 +0200
+Message-ID: <CABAHDLdj2Ub8v8nAJ0u9S9mmH6WjUW7YM4=Vk7WkY9juq5ZcGA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,92 +21,114 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] hab: Print events on info command.
-To: Denis OSTERLAND <denis.osterland@diehl.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: bootchooser: constant decrement of remaining_attempts
+To: barebox@lists.infradead.org
+Cc: ejo@pengutronix.de
 
-Hi Denis,
-
-On Fri, Oct 05, 2018 at 06:58:04AM +0000, Denis OSTERLAND wrote:
-> From: Denis Osterland <Denis.Osterland@diehl.com>
-> 
-> This patch adds hab_get_status convenience function
-> and uses it in hab info command.
-> It returns -EIO if MMU is disabled and -ENXIO if no HAB device
-> is available.
-> 
-> Signed-off-by: Denis Osterland <Denis.Osterland@diehl.com>
-> ---
-> v1 -> v2: use runtime if, as suggested by Andrey Smirnov,
->           add hab_get_status to have hab implementation
->           selection at a central place
-> 
->  commands/hab.c |  3 +++
->  include/hab.h  | 15 +++++++++++++++
->  2 files changed, 18 insertions(+)
-> 
-> diff --git a/commands/hab.c b/commands/hab.c
-> index 0d7ee8e76..af51e73fc 100644
-> --- a/commands/hab.c
-> +++ b/commands/hab.c
-> @@ -72,6 +72,9 @@ static int do_hab(int argc, char *argv[])
->  		else
->  			printf("devel mode\n");
->  
-> +		if (hab_get_status() == -EIO)
-> +			printf("Disable MMU to access HAB API!\n");
-> +
->  		return 0;
->  	}
->  
-> diff --git a/include/hab.h b/include/hab.h
-> index 78c2b865b..7c2ffab5e 100644
-> --- a/include/hab.h
-> +++ b/include/hab.h
-> @@ -19,6 +19,7 @@
->  #define __HABV4_H
->  
->  #include <errno.h>
-> +#include <mach/generic.h>
->  
->  #ifdef CONFIG_HABV4
->  int imx28_hab_get_status(void);
-> @@ -43,6 +44,20 @@ static inline int imx25_hab_get_status(void)
->  }
->  #endif
->  
-> +static inline int hab_get_status(void)
-> +{
-> +	if (IS_ENABLED(CONFIG_MMU))
-> +		return -EIO;
-
-This restriction makes this patch rather unhandy to use. Internally we
-use imx*_hab_get_status() indeed with MMU enabled and it works fine, but
-we call it before mmu_init is called. In this state the MMU is enabled
-already, but the zero page is not yet set to faulting. So I think the
-problem is not the MMU as such, but instead the faulting zero page.
-
-It would be great if we could overcome this issue. One way to do this
-would be to add a function pair mmu_zero_page_map() and
-mmu_zero_page_set_faulting() to be called in hab_get_status().
-
-I don't know if you are willing to add that, but I don't want to
-motivate people to disable the MMU, so the patch is not acceptable as
-is.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgpBbSBNaS4sIDEwLiBPa3QuIDIwMTggdW0gMTA6MDYgVWhyIHNjaHJpZWIgSmFuIEzDvGJi
+ZSA8amx1QHBlbmd1dHJvbml4LmRlPjoKPgo+IElOVF9NQVggd291bGQgbmVlZCB0byBiZSByZWxh
+dGl2ZSB0byB0aGUgYWN0dWFsIHR5cGUgZGVmaW5lZCBpbiB0aGUKPiBzdGF0ZSB2YXJpYWJsZSAo
+dTMyIHZzLiB1OCkuIEFuIGFsdGVybmF0aXZlIHdvdWxkIGJlIHRvIGhhdmUgYSBnbG9iYWwKPiBm
+bGFnIHRvIGVuLS9kaXNhYmxlIGNvdW50aW5nLgo+Cj4gQ3VycmVudGx5IHRoZXJlIGlzIG9uZSB3
+YXkgdG8gYXZvaWQgd3JpdGVzIHRvIGZsYXNoIGluIHRoZSBzdWNjZXNzZnVsCj4gY2FzZTogVXNl
+IGEgd2F0Y2hkb2cgYW5kIGNhbGwgYm9vdGNob29zZXIgLXMsIHdoaWNoIHdpbGwgY2F1c2UgaXQg
+dG8KPiBza2lwIGRlY3JlbWVudGluZyBpZiBpdCBib290cyB0aGUgc2FtZSB0YXJnZXQgYXMgcHJl
+dmlvdXNseS4gSXQgc2VlbXMKPiB0aGF0J3Mgbm90IGRvY3VtZW50ZWQsIHRob3VnaC4gOi8KCiJi
+b290Y2hvb3NlciAtcyIgc2VlbXMgdG8gZG8gdGhlIHRyaWNrLCBzbyBJIHdpbGwganVzdCB1c2Ug
+dGhhdC4KUHJldHR5IG5pY2UsIGFzIEkgZG9uJ3QgaGF2ZSB0byBjaGFuZ2UgdmFuaWxsYSBiYXJl
+Ym94LCBidXQgY2FuCmFjY29tcGxpc2ggdGhlIGRlc2lyZWQgYmVoYXZpb3Igd2l0aCBhIGN1c3Rv
+bSBib290c3RhdGUgdmFyaWFibGUKKCJkaXNhYmxlX2NvdW50aW5nIikgYW5kIDMgbGluZXMgb2Yg
+YmFyZWJveCBzY3JpcHRpbmcuCgojIS9iaW4vc2gKaWYgWyAiJHtzdGF0ZS5ib290c3RhdGUuZGlz
+YWJsZV9jb3VudGluZ30iID0gIjEiIF07IHRoZW4KICBib290Y2hvb3NlciAtcwpmaQpib290IGJv
+b3RjaG9vc2VyCgpOb3cgSSBqdXN0IGhhdmUgdG8gcGF0Y2ggUkFVQyB0byByZXNldCBib290c3Rh
+dGUuZGlzYWJsZV9jb3VudGluZwphZnRlciBmbGFzaCB1cGdyYWRlIGFuZCBzZXQgaXQgYWdhaW4g
+YWZ0ZXIgdmVyaWZpY2F0aW9uLCB3aGljaCB3aWxsIGJlCnN0cmFpZ2h0IGZvcndhcmQuCgpUaGFu
+a3MhCkFtIE1pLiwgMTAuIE9rdC4gMjAxOCB1bSAxMDowNiBVaHIgc2NocmllYiBKYW4gTMO8YmJl
+IDxqbHVAcGVuZ3V0cm9uaXguZGU+Ogo+Cj4gT24gV2VkLCAyMDE4LTEwLTEwIGF0IDA5OjE0ICsw
+MjAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4gPiBIaSBQYXRyaWNrLAo+ID4KPiA+ICtDYyBKYW4g
+YW5kIEVucmljbwo+ID4KPiA+IE9uIFR1ZSwgT2N0IDA5LCAyMDE4IGF0IDA2OjM3OjI1UE0gKzAy
+MDAsIFBhdHJpY2sgSHVlc21hbm4gd3JvdGU6Cj4gPiA+IEhpLAo+ID4gPgo+ID4gPiBJJ20gYnVp
+bGRpbmcgYSBSQVVDLSAmIGJvb3RjaG9vc2VyLWJhc2VkIGZpcm13YXJlIHVwZGF0ZSBzb2x1dGlv
+bi4KPiA+ID4gVGhlIHNjZW5hcmlvIGlzIHN5bW1ldHJpYyByb290ZnMgc2xvdHMsIG1hbnVhbCB1
+cGRhdGUsIHVzZXJzcGFjZQo+ID4gPiAoUkFVQykgbWFya3MgYXMgZ29vZC4KPiA+ID4gSXQgc2Vl
+bXMgdG8gd29yayB3ZWxsLCBob3dldmVyIEkgbm90aWNlZCB0aGF0IGl0J3MgYWx3YXlzIGRlY3Jl
+bWVudGluZwo+ID4gPiBhbmQgcmVzZXR0aW5nIHRoZSByZW1haW5pbmdfYXR0ZW1wdHMgb2YgdGhl
+IGJvb3RlZCBzeXN0ZW0sIG5vdCBvbmx5Cj4gPiA+IHdoZW4gdGhlcmUncyBhbiB1cGRhdGUsIGJ1
+dCBhbHNvIGR1cmluZyByZWd1bGFyIGJvb3QtdXBzLgo+ID4gPgo+ID4gPiBJIHRob3VnaHQgdGhh
+dCB0aGUgUkFVQy9ib290Y2hvb3NlciBjb21ibyB3YXMgbWFpbmx5IGFib3V0IHByb3ZpZGluZyBh
+Cj4gPiA+IHNhZmVndWFyZCBhZ2FpbnN0IGFjY2lkZW50YWxseSAiYnJpY2tpbmciIHRoZSBzeXN0
+ZW0gd2l0aCBjb3JydXB0IG9yCj4gPiA+IGluY29tcGxldGUgZmlybXdhcmUgdXBkYXRlcy4KPiA+
+ID4gSG93ZXZlciwgdGhlIGxvZ2ljIG9mIGRlY3JlbWVudGluZyBhbmQgbGF0ZXIgcmVzZXR0aW5n
+IHRoZQo+ID4gPiByZW1haW5pbmdfYXR0ZW1wdHMgaXMgYXBwYXJlbnRseSBub3QgbGltaXRlZCB0
+byB0aGUgcGVyaW9kIGJldHdlZW4KPiA+ID4gcGVyZm9ybWluZyB0aGUgdXBkYXRlIGFuZCB0aGUg
+dmFsaWRhdGlvbiAobWFyayBhcyBnb29kKSBvZiB0aGF0Cj4gPiA+IHVwZGF0ZSwgYnV0IGFsc28g
+cnVubmluZyBhbGwgdGhlIG90aGVyIHRpbWVzIHRoZSBzeXN0ZW0gaXMgYm9vdGVkLgo+ID4gPgo+
+ID4gPiBUaGlzIGNhbiBoYXZlIHNvbWUgdW5kZXNpcmFibGUgc2lkZSBlZmZlY3RzOgo+ID4gPgo+
+ID4gPiAxKSBXaGVuIHRoZSBib290IHByb2Nlc3MgaXMgaW50ZXJydXB0ZWQgZm9yIGFueSByZWFz
+b24gKHBvd2VyIGlzc3VlcywKPiA+ID4gYnJvd24tb3V0IHJlc2V0cywgdXNlcnMgdW5wbHVnZ2lu
+ZyB0aGUgZ2FkZ2V0IHdoaWxlIGl0IGJvb3RzLCBldGMuKQo+ID4gPiBtb3JlIHRoYW4gdGhyZWUg
+dGltZXMgaW4gYSByb3cgKGFzc3VtaW5nIGEgcmVtYWluaW5nX2F0dGVtcHRzIHJlc2V0Cj4gPiA+
+IHZhbHVlIG9mIDMpLCB0aGVuIGJvb3RjaG9vc2VyIHdpbGwgaGFwcGlseSBzd2l0Y2ggdG8gdGhl
+IGZhbGwtYmFjawo+ID4gPiB0YXJnZXQsIGV2ZW4gdGhvdWdoIHRoZXJlJ3Mgbm90aGluZyB3cm9u
+ZyB3aXRoIHRoZSBhY3R1YWwgdGFyZ2V0IGF0Cj4gPiA+IGFsbC4KPiA+Cj4gPiBJIHRoaW5rIHdo
+YXQgeW91IHdhbnQgaGVyZSBpcyB0aGUgZ2xvYmFsLmJvb3RjaG9vc2VyLnJlc2V0X2F0dGVtcHRz
+PXBvd2VyLW9uCj4gPiBvcHRpb24uIFdpdGggdGhpcyBvcHRpb24gYm9vdGNob29zZXIgd2lsbCBy
+ZXNldCB0aGUgcmVtYWluaW5nIGF0dGVtcHRzCj4gPiB0byB0aGUgZGVmYXVsdCB2YWx1ZSB3aXRo
+IGVhY2ggcG93ZXIgb24gcmVzZXQsIG1lYW5pbmcgdGhhdCB0aGUgcHJpbWFyeQo+ID4gdGFyZ2V0
+IHdpbGwgb25seSBiZWNvbWUgaW52YWxpZCB3aGVuIHRoZSB3YXRjaGRvZyBiaXRlcyB5b3UgdGhy
+ZWUgdGltZXMKPiA+IGluIGEgcm93LCBidXQgbm90IHdoZW4gdGhlIGRldmljZSBpcyB0dXJuZWQg
+b2ZmIGluIGJldHdlZW4uCj4KPiBJZiB5b3Ugd2FudCB0byBlbnN1cmUgdGhhdCB0aGUgb2xkIHN5
+c3RlbSBpcyBub3QgYm9vdGVkIGFueW1vcmUsIHlvdQo+IHNob3VsZCBzZXQgaXRzIHByaW9yaXR5
+IHRvIHplcm8uCj4KPiBMZWF2aW5nIHRoZSBvbGQgaW1hZ2UgZW5hYmxlZCBpcyB1c2VmdWwgaW4g
+Y2FzZXMgd2hlcmUgeW91IHdhbnQgdG8KPiBwcm90ZWN0IGFnYWluc3QgcHJvYmxlbXMgdGhhdCBv
+Y2N1ciBzb21lIHRpbWUgYWZ0ZXIgdGhlIHVwZGF0ZS4KPgo+ID4gPiBJIGd1ZXNzIHRoaXMgY2Fu
+IGJlIHdvcmtlZCBhcm91bmQgYnkgc3luY2luZyB0aGUgZmFsbC1iYWNrIHRhcmdldCB0bwo+ID4g
+PiB0aGUgbGFzdCB1cGRhdGVkIG9uZSwgYWZ0ZXIgdGhlIGxhc3QgdXBkYXRlIGhhcyBiZWVuIHZl
+cmlmaWVkIGFzIGdvb2QuCj4gPiA+IEhvd2V2ZXIgdGhpcyBicmluZ3MgYWRkaXRpb25hbCBjb3N0
+ICYgY29tcGxleGl0eSwgYW5kIGZlZWxzIG1vcmUgbGlrZQo+ID4gPiBhIGhhY2sgdGhhbiBhIHBy
+b3BlciBzb2x1dGlvbi4KPiA+ID4KPiA+ID4gMikgSW4gZXZlcnkgY29tcGxldGUgYm9vdCBjeWNs
+ZSwgdGhlcmUgYXJlIHR3byB3cml0ZXMgdG8gdGhlCj4gPiA+IGJhcmVib3gtc3RhdGUgcGFydGl0
+aW9uIChib290Y2hvb3NlciBkZWNyZW1lbnRpbmcgdGhlCj4gPiA+IHJlbWFpbmluZ19hdHRlbXB0
+cywgdGhlbiB1c2Vyc3BhY2UgcmVzZXR0aW5nIHRoZSByZW1haW5pbmdfYXR0ZW1wdHMKPiA+ID4g
+d2hlbiBpdCBtYXJrcyB0aGUgdGFyZ2V0IGFzIGdvb2QpLiBGb3Igc3lzdGVtcyB0aGF0IGJvb3Qg
+dXAgJiBwb3dlcgo+ID4gPiBkb3duIGEgbG90LCB0aGlzIHdpbGwgZ2VuZXJhdGUgbG90cyBvZiB1
+bm5lY2Vzc2FyeSBmbGFzaCB3cml0ZXMgb3Zlcgo+ID4gPiB0aW1lLiBQcm9iYWJseSBpdCB3b24n
+dCBiZSBlbm91Z2ggdG8gYWN0dWFsbHkgd2VhciBvdXQgdGhlIGZsYXNoLCBidXQKPiA+ID4gc3Rp
+bGwgaXQgZG9lc24ndCAiZmVlbCIgcXVpdGUgcmlnaHQuIChJIGp1bXBlZCB0aHJvdWdoIGhvb3Bz
+IHRvIGhhdmUgYQo+ID4gPiBwcm9wZXIgcmVhZC1vbmx5IHJvb3QgYW5kIHdvdWxkIGxpa2UgdG8g
+bGltaXQgdGhlIG92ZXJhbGwgbnVtYmVyIG9mCj4gPiA+IGZsYXNoIHdyaXRlcyB3aGVuIHBvc3Np
+YmxlKS4KPiA+ID4KPiA+ID4gSSdtIHRoaW5raW5nIG9mIGFuIG9wdGlvbiB0aGF0IGxpbWl0cyB0
+aGUgcmVtYWluaW5nX2F0dGVtcHRzIGxvZ2ljIHRvCj4gPiA+IHRoZSBwaGFzZSB3aGVuIGJhcmVi
+b3ggYXR0ZW1wdHMgdG8gYm9vdCBhIG5ld2x5IGZsYXNoZWQgdXBkYXRlLCB1bnRpbAo+ID4gPiB0
+aGF0IHVwZGF0ZSBpcyBtYXJrZWQgYXMgZ29vZCBsYXRlciBpbiB1c2Vyc3BhY2UuIFRoZXJlIGNv
+dWxkIGJlIGFuCj4gPiA+IGV4dHJhIChvcHRpb25hbCkgdmFyaWFibGUgaW4gdGhlIGJhcmVib3gt
+c3RhdGUsIHRoYXQgYWxsb3dzIHRoZQo+ID4gPiB1c2Vyc3BhY2UgdG8gZGVsaWJlcmF0ZWx5IGVu
+YWJsZS9kaXNhYmxlIHRoZSByZW1haW5pbmdfYXR0ZW1wdHMgbG9naWMKPiA+ID4gaW4gYmFyZWJv
+eC4KPiA+Cj4gPiBJIGRvbid0IHRoaW5rIHN1Y2ggYW4gb3B0aW9uIGlzIGF2YWlsYWJsZSBhdCB0
+aGUgbW9tZW50LiBNYXliZSB3ZSBjb3VsZAo+ID4gZGVjbGFyZSByZW1haW5pbmdfYXR0ZW1wdHM9
+SU5UX01BWCBhcyBpbmZpbml0ZSBhdHRlbXB0cy4gV2hlbmV2ZXIgdGhhdAo+ID4gdmFsdWUgaXMg
+Zm91bmQgdGhlIHJlbWFpbmluZ19hdHRlbXB0cyBjb3VudGVyIHdvdWxkbid0IGJlIGRlY3JlYXNl
+ZC4KPiA+Cj4gPiBBZnRlciBhbiB1cGRhdGUgdXNlcnNwYWNlIGNvdWxkIHRoZW4gc2V0IHRoZSBy
+ZW1haW5pbmdfYXR0ZW1wdHMgY291bnRlcgo+ID4gb2YgdGhlIG5ldyBzeXN0ZW0gdG8gdGhyZWUg
+YW5kIHRoZSBuZXcgc3lzdGVtIHdvdWxkIHNldCBpdCB0byBJTlRfTUFYCj4gPiB3aGVuIHN1Y2Nl
+c3NmdWxseSBib290ZWQuCj4KPiBJTlRfTUFYIHdvdWxkIG5lZWQgdG8gYmUgcmVsYXRpdmUgdG8g
+dGhlIGFjdHVhbCB0eXBlIGRlZmluZWQgaW4gdGhlCj4gc3RhdGUgdmFyaWFibGUgKHUzMiB2cy4g
+dTgpLiBBbiBhbHRlcm5hdGl2ZSB3b3VsZCBiZSB0byBoYXZlIGEgZ2xvYmFsCj4gZmxhZyB0byBl
+bi0vZGlzYWJsZSBjb3VudGluZy4KPgo+IEN1cnJlbnRseSB0aGVyZSBpcyBvbmUgd2F5IHRvIGF2
+b2lkIHdyaXRlcyB0byBmbGFzaCBpbiB0aGUgc3VjY2Vzc2Z1bAo+IGNhc2U6IFVzZSBhIHdhdGNo
+ZG9nIGFuZCBjYWxsIGJvb3RjaG9vc2VyIC1zLCB3aGljaCB3aWxsIGNhdXNlIGl0IHRvCj4gc2tp
+cCBkZWNyZW1lbnRpbmcgaWYgaXQgYm9vdHMgdGhlIHNhbWUgdGFyZ2V0IGFzIHByZXZpb3VzbHku
+IEl0IHNlZW1zCj4gdGhhdCdzIG5vdCBkb2N1bWVudGVkLCB0aG91Z2guIDovCj4KPiBSZWdhcmRz
+LAo+IEphbgo+IC0tCj4gUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAg
+IHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKPiBJbmR1c3RyaWFsIExpbnV4IFNvbHV0
+aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAo+IFBl
+aW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEy
+MS0yMDY5MTctMCAgICB8Cj4gQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAg
+ICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
+bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
+c3RpbmZvL2JhcmVib3gK
