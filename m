@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gA8Eg-0006iM-Kx
- for barebox@lists.infradead.org; Wed, 10 Oct 2018 06:44:48 +0000
-Date: Wed, 10 Oct 2018 08:44:29 +0200
+ id 1gA8hq-0002Ra-Te
+ for barebox@lists.infradead.org; Wed, 10 Oct 2018 07:14:56 +0000
+Date: Wed, 10 Oct 2018 09:14:43 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181010064429.dbslv4umft4fetdk@pengutronix.de>
-References: <20181008074936.7ilxnbq7sc5mphbu@pengutronix.de>
- <20181008082921.26922-1-u.kleine-koenig@pengutronix.de>
- <20181008082921.26922-2-u.kleine-koenig@pengutronix.de>
+Message-ID: <20181010071443.msez5a7yriayx2va@pengutronix.de>
+References: <CABAHDLdOVQwoeNKvWmOTADF5-Q1Az6hQXqDUrK60-wC+3P0Tzg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181008082921.26922-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <CABAHDLdOVQwoeNKvWmOTADF5-Q1Az6hQXqDUrK60-wC+3P0Tzg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,95 +18,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 2/2] mci: implement command to switch a mmc device to
- enhanced mode
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: bootchooser: constant decrement of remaining_attempts
+To: Patrick Huesmann <patrick.huesmann@gmail.com>
+Cc: barebox@lists.infradead.org, Enrico Joerns <ejo@pengutronix.de>
 
-On Mon, Oct 08, 2018 at 10:29:21AM +0200, Uwe Kleine-K=F6nig wrote:
-> The command structure allows adding more subcommands and is designed to
-> match the Linux program mmc from the mmc-utils. So later more commands
-> can easily be added if need be.
-> =
+Hi Patrick,
 
-> Compared to mmc-utils'
-> =
++Cc Jan and Enrico
 
-> 	mmc enh_area set <-y|-n|-c> <start KiB> <length KiB> <device>
-> =
+On Tue, Oct 09, 2018 at 06:37:25PM +0200, Patrick Huesmann wrote:
+> Hi,
+> 
+> I'm building a RAUC- & bootchooser-based firmware update solution.
+> The scenario is symmetric rootfs slots, manual update, userspace
+> (RAUC) marks as good.
+> It seems to work well, however I noticed that it's always decrementing
+> and resetting the remaining_attempts of the booted system, not only
+> when there's an update, but also during regular boot-ups.
+> 
+> I thought that the RAUC/bootchooser combo was mainly about providing a
+> safeguard against accidentally "bricking" the system with corrupt or
+> incomplete firmware updates.
+> However, the logic of decrementing and later resetting the
+> remaining_attempts is apparently not limited to the period between
+> performing the update and the validation (mark as good) of that
+> update, but also running all the other times the system is booted.
+> 
+> This can have some undesirable side effects:
+> 
+> 1) When the boot process is interrupted for any reason (power issues,
+> brown-out resets, users unplugging the gadget while it boots, etc.)
+> more than three times in a row (assuming a remaining_attempts reset
+> value of 3), then bootchooser will happily switch to the fall-back
+> target, even though there's nothing wrong with the actual target at
+> all.
 
-> the command that is implemented here (
-> =
+I think what you want here is the global.bootchooser.reset_attempts=power-on
+option. With this option bootchooser will reset the remaining attempts
+to the default value with each power on reset, meaning that the primary
+target will only become invalid when the watchdog bites you three times
+in a row, but not when the device is turned off in between.
 
-> 	mmc enh_area setmax [-c] <device>
-> =
+> I guess this can be worked around by syncing the fall-back target to
+> the last updated one, after the last update has been verified as good.
+> However this brings additional cost & complexity, and feels more like
+> a hack than a proper solution.
+> 
+> 2) In every complete boot cycle, there are two writes to the
+> barebox-state partition (bootchooser decrementing the
+> remaining_attempts, then userspace resetting the remaining_attempts
+> when it marks the target as good). For systems that boot up & power
+> down a lot, this will generate lots of unnecessary flash writes over
+> time. Probably it won't be enough to actually wear out the flash, but
+> still it doesn't "feel" quite right. (I jumped through hoops to have a
+> proper read-only root and would like to limit the overall number of
+> flash writes when possible).
+> 
+> I'm thinking of an option that limits the remaining_attempts logic to
+> the phase when barebox attempts to boot a newly flashed update, until
+> that update is marked as good later in userspace. There could be an
+> extra (optional) variable in the barebox-state, that allows the
+> userspace to deliberately enable/disable the remaining_attempts logic
+> in barebox.
 
-> ) is easier to use (because you don't have to check the maximal allowed
-> size by reading some registers and calculate the available size from
-> them (which then must be calculated back to register values by the mmc
-> command)) but less flexible as it doesn't allow all the crazy
-> possibilities specified in the eMMC standard but just creates an
-> enhanced area with maximal size.
-> =
+I don't think such an option is available at the moment. Maybe we could
+declare remaining_attempts=INT_MAX as infinite attempts. Whenever that
+value is found the remaining_attempts counter wouldn't be decreased.
 
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> +static u8 *mci_get_ext_csd(struct mci *mci)
-> +{
-> +	u8 *ext_csd;
-> +	int ret;
-> +
-> +	ext_csd =3D xmalloc(512);
-> +
-> +	ret =3D mci_send_ext_csd(mci, ext_csd);
-> +	if (ret) {
-> +		printf("Failure to read EXT_CSD register\n");
-> +		return ERR_PTR(-EIO);
+After an update userspace could then set the remaining_attempts counter
+of the new system to three and the new system would set it to INT_MAX
+when successfully booted.
 
-Please free malloced memory.
-
-> +	}
-> +
-> +	return ext_csd;
-> +}
-> +
-> +/* enh_area setmax [-c] /dev/mmcX */
-> +static int do_mmc_enh_area(int argc, char *argv[])
-> +{
-> +	char *devpath;
-> +	struct mci *mci;
-> +	u8 *ext_csd;
-> +	int set_completed =3D 0;
-> +	int ret;
-> +
-> +	if (argc < 2 || strcmp(argv[1], "setmax") !=3D 0)
-> +		goto usage;
-> +
-> +	if (argc =3D=3D 3) {
-> +		/* enh_area setmax /dev/mmcX */
-> +		devpath =3D argv[2];
-> +		set_completed =3D false;
-> +	} else if (argc =3D=3D 4 || strcmp(argv[2], "-c") =3D=3D 0) {
-> +		/* enh_area setmax -c /dev/mmcX */
-> +		devpath =3D argv[3];
-> +		set_completed =3D true;
-> +	} else {
-
-This option parsing already is quite hard to read and will be harder if
-it is extended in the future. Can't we use getopt() here?
-
-Usage:
-enh_area [options] <mmcdev>
- -m	Use maximum available space
- -c	complete partitioning
+What do you think?
 
 Sascha
 
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
