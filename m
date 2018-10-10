@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x441.google.com ([2a00:1450:4864:20::441])
+Received: from enterprise02.smtp.diehl.com ([193.201.238.220])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gBtdb-0007Zh-OG
- for barebox@lists.infradead.org; Mon, 15 Oct 2018 03:33:49 +0000
-Received: by mail-wr1-x441.google.com with SMTP id q5-v6so19488080wrw.12
- for <barebox@lists.infradead.org>; Sun, 14 Oct 2018 20:33:37 -0700 (PDT)
+ id 1gAAoW-0000tZ-5q
+ for barebox@lists.infradead.org; Wed, 10 Oct 2018 09:29:58 +0000
+From: Denis OSTERLAND <denis.osterland@diehl.com>
+Date: Wed, 10 Oct 2018 09:29:40 +0000
+Message-ID: <1539163779.7726.9.camel@diehl.com>
+References: <20181004070400.12338-1-Denis.Osterland@diehl.com>
+ <20181005065537.21844-1-Denis.Osterland@diehl.com>
+ <20181010075129.u67xfq247pmn7sfb@pengutronix.de>
+In-Reply-To: <20181010075129.u67xfq247pmn7sfb@pengutronix.de>
+Content-Language: en-US
+Content-ID: <7368153FE7126D4D9FA6CD71E192A458@diehl.internal>
 MIME-Version: 1.0
-References: <20181015022125.24020-1-andrew.smirnov@gmail.com>
-In-Reply-To: <20181015022125.24020-1-andrew.smirnov@gmail.com>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 14 Oct 2018 20:33:24 -0700
-Message-ID: <CAHQ1cqH33n2ZHt2F4RvrobO8vFNo=DWrLnZ6uy8Zt8n6ZF4YUA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,36 +21,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 00/22] MV88E6xxx switch family support
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2] hab: Print events on info command.
+To: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Sun, Oct 14, 2018 at 7:21 PM Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
->
-> Everyone:
->
-> Patches in this series are a result of my work on porting Linux code
-> for MV88E6xxx switches to Barebox.
->
-> Tested on the following H/W:
->
->      - ZII i.MX6Q RDU2, MV88E6352 switch
->      - ZII i.MX51 RDU1, MV88E6161 switch
->      - ZII i.MX7D RPU2, MV88E6352 switch
->      - ZII VF610 CFU1, MV88E6352 switch
->      - ZII VF610 SPU3, MV88E6390X switch
-
-Slight correction, the line above should read:
-
-    -  ZII VF610 SPU3, MV88E6390 switch
-
-Thanks,
-Andrey Smirnov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzaGEsDQoNCkFtIE1pdHR3b2NoLCBkZW4gMTAuMTAuMjAxOCwgMDk6NTEgKzAyMDAgc2No
+cmllYiBTYXNjaGEgSGF1ZXI6DQo+ID4gwqANCj4gPiArc3RhdGljIGlubGluZSBpbnQgaGFiX2dl
+dF9zdGF0dXModm9pZCkNCj4gPiArew0KPiA+ICsJaWYgKElTX0VOQUJMRUQoQ09ORklHX01NVSkp
+DQo+ID4gKwkJcmV0dXJuIC1FSU87DQo+IFRoaXMgcmVzdHJpY3Rpb24gbWFrZXMgdGhpcyBwYXRj
+aCByYXRoZXIgdW5oYW5keSB0byB1c2UuIEludGVybmFsbHkgd2UNCj4gdXNlIGlteCpfaGFiX2dl
+dF9zdGF0dXMoKSBpbmRlZWQgd2l0aCBNTVUgZW5hYmxlZCBhbmQgaXQgd29ya3MgZmluZSwgYnV0
+DQo+IHdlIGNhbGwgaXQgYmVmb3JlIG1tdV9pbml0IGlzIGNhbGxlZC4gSW4gdGhpcyBzdGF0ZSB0
+aGUgTU1VIGlzIGVuYWJsZWQNCj4gYWxyZWFkeSwgYnV0IHRoZSB6ZXJvIHBhZ2UgaXMgbm90IHll
+dCBzZXQgdG8gZmF1bHRpbmcuIFNvIEkgdGhpbmsgdGhlDQo+IHByb2JsZW0gaXMgbm90IHRoZSBN
+TVUgYXMgc3VjaCwgYnV0IGluc3RlYWQgdGhlIGZhdWx0aW5nIHplcm8gcGFnZS4NCmluZGVlZA0K
+PiANCj4gSXQgd291bGQgYmUgZ3JlYXQgaWYgd2UgY291bGQgb3ZlcmNvbWUgdGhpcyBpc3N1ZS4g
+T25lIHdheSB0byBkbyB0aGlzDQo+IHdvdWxkIGJlIHRvIGFkZCBhIGZ1bmN0aW9uIHBhaXIgbW11
+X3plcm9fcGFnZV9tYXAoKSBhbmQNCj4gbW11X3plcm9fcGFnZV9zZXRfZmF1bHRpbmcoKSB0byBi
+ZSBjYWxsZWQgaW4gaGFiX2dldF9zdGF0dXMoKS4NCkkgd2lsbCBoYXZlIGEgbG9vaywgd2hlbiB0
+aGVyZSBpcyBhIGxpdHRsZSBzbGFjayBpbiBzcHJpbnRzLg0KPiANCj4gSSBkb24ndCBrbm93IGlm
+IHlvdSBhcmUgd2lsbGluZyB0byBhZGQgdGhhdCwgYnV0IEkgZG9uJ3Qgd2FudCB0bw0KPiBtb3Rp
+dmF0ZSBwZW9wbGUgdG8gZGlzYWJsZSB0aGUgTU1VLCBzbyB0aGUgcGF0Y2ggaXMgbm90IGFjY2Vw
+dGFibGUgYXMNCj4gaXMuDQpJIGdvdCB5b3VyIHBvaW50DQo+IA0KPiBTYXNjaGENCj4gDQoNClJl
+Z2FyZHMgRGVuaXMNCg0KRGllaGwgQ29ubmVjdGl2aXR5IFNvbHV0aW9ucyBHbWJIDQpHZXNjaMOk
+ZnRzZsO8aHJ1bmc6IEhvcnN0IExlb25iZXJnZXINClNpdHogZGVyIEdlc2VsbHNjaGFmdDogTsO8
+cm5iZXJnIC0gUmVnaXN0ZXJnZXJpY2h0OiBBbXRzZ2VyaWNodA0KTsO8cm5iZXJnOiBIUkIgMzIz
+MTUNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0KDQpEZXIgSW5o
+YWx0IGRlciB2b3JzdGVoZW5kZW4gRS1NYWlsIGlzdCBuaWNodCByZWNodGxpY2ggYmluZGVuZC4g
+RGllc2UgRS1NYWlsIGVudGhhZWx0IHZlcnRyYXVsaWNoZSB1bmQvb2RlciByZWNodGxpY2ggZ2Vz
+Y2h1ZXR6dGUgSW5mb3JtYXRpb25lbi4NCkluZm9ybWllcmVuIFNpZSB1bnMgYml0dGUsIHdlbm4g
+U2llIGRpZXNlIEUtTWFpbCBmYWVsc2NobGljaGVyd2Vpc2UgZXJoYWx0ZW4gaGFiZW4uIEJpdHRl
+IGxvZXNjaGVuIFNpZSBpbiBkaWVzZW0gRmFsbCBkaWUgTmFjaHJpY2h0Lg0KSmVkZSB1bmVybGF1
+YnRlIEZvcm0gZGVyIFJlcHJvZHVrdGlvbiwgQmVrYW5udGdhYmUsIEFlbmRlcnVuZywgVmVydGVp
+bHVuZyB1bmQvb2RlciBQdWJsaWthdGlvbiBkaWVzZXIgRS1NYWlsIGlzdCBzdHJlbmdzdGVucyB1
+bnRlcnNhZ3QuDQpUaGUgY29udGVudHMgb2YgdGhlIGFib3ZlIG1lbnRpb25lZCBlLW1haWwgaXMg
+bm90IGxlZ2FsbHkgYmluZGluZy4gVGhpcyBlLW1haWwgY29udGFpbnMgY29uZmlkZW50aWFsIGFu
+ZC9vciBsZWdhbGx5IHByb3RlY3RlZCBpbmZvcm1hdGlvbi4gUGxlYXNlIGluZm9ybSB1cyBpZiB5
+b3UgaGF2ZSByZWNlaXZlZCB0aGlzIGUtbWFpbCBieQ0KbWlzdGFrZSBhbmQgZGVsZXRlIGl0IGlu
+IHN1Y2ggYSBjYXNlLiBFYWNoIHVuYXV0aG9yaXplZCByZXByb2R1Y3Rpb24sIGRpc2Nsb3N1cmUs
+IGFsdGVyYXRpb24sIGRpc3RyaWJ1dGlvbiBhbmQvb3IgcHVibGljYXRpb24gb2YgdGhpcyBlLW1h
+aWwgaXMgc3RyaWN0bHkgcHJvaGliaXRlZC4gDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
+ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
+YXJlYm94Cg==
