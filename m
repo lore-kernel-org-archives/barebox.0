@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gArZQ-0007H8-Gr
- for barebox@lists.infradead.org; Fri, 12 Oct 2018 07:09:14 +0000
-Date: Fri, 12 Oct 2018 09:09:00 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181012070900.brvwrlaatz4x2j7y@pengutronix.de>
-References: <20181011140811.GA5421@lenoch>
+ id 1gADWw-0000Ze-UV
+ for barebox@lists.infradead.org; Wed, 10 Oct 2018 12:25:23 +0000
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Date: Wed, 10 Oct 2018 14:23:40 +0200
+Message-Id: <20181010122340.28241-1-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181011140811.GA5421@lenoch>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,56 +15,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] blspec: do not depend on BLOCK
-To: Ladislav Michl <ladis@linux-mips.org>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] state: backend_bucket_circular: remove unused variables
+To: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Oct 11, 2018 at 04:08:11PM +0200, Ladislav Michl wrote:
-> blspec can be read also from jffs2 or ubifs, so remove BLOCK dependency
-> 
-> Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
-> ---
->  common/Kconfig | 1 -
->  1 file changed, 1 deletion(-)
-
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 4909c8232..eddd99ea3 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -653,7 +653,6 @@ config BOOTM_FORCE_SIGNED_IMAGES
->  	  since they are the only supported image type that support signing.
->  
->  config BLSPEC
-> -	depends on BLOCK
->  	depends on FLEXIBLE_BOOTARGS
->  	depends on !SHELL_NONE
->  	select BOOT
-> -- 
-> 2.19.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBoYXMgYmVlbiBmb3Jnb3R0ZW4gaW4gY29tbWl0IDlkNmQ5MTkzMWFmYiAoInN0YXRlOiBS
+ZW1vdmUgLUVVQ0xFQU4gY2hlY2sKZnJvbSB1c2Vyc3BhY2UgdG9vbCIpLgoKU2lnbmVkLW9mZi1i
+eTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4KLS0tCiBjb21tb24v
+c3RhdGUvYmFja2VuZF9idWNrZXRfY2lyY3VsYXIuYyB8IDIgLS0KIDEgZmlsZSBjaGFuZ2VkLCAy
+IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX2J1Y2tldF9j
+aXJjdWxhci5jIGIvY29tbW9uL3N0YXRlL2JhY2tlbmRfYnVja2V0X2NpcmN1bGFyLmMKaW5kZXgg
+Mjc3Yjk0ZDc5NzM3Li40YjcxZDg3NTFkYTYgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9zdGF0ZS9iYWNr
+ZW5kX2J1Y2tldF9jaXJjdWxhci5jCisrKyBiL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX2J1Y2tldF9j
+aXJjdWxhci5jCkBAIC0xNTUsOCArMTU1LDYgQEAgc3RhdGljIGludCBzdGF0ZV9tdGRfcGViX3Jl
+YWQoc3RydWN0IHN0YXRlX2JhY2tlbmRfc3RvcmFnZV9idWNrZXRfY2lyY3VsYXIgKmNpcmMKIHsK
+IAlpbnQgcmV0OwogCW9mZl90IG9mZnNldCA9IHN1Ym9mZnNldDsKLQlzdHJ1Y3QgbXRkX2VjY19z
+dGF0cyBzdGF0MSwgc3RhdDI7Ci0JYm9vbCBub3N0YXRzID0gZmFsc2U7CiAKIAlvZmZzZXQgKz0g
+KG9mZl90KWNpcmMtPmVyYXNlYmxvY2sgKiBjaXJjLT5tdGQtPmVyYXNlc2l6ZTsKIAotLSAKMi4x
+OS4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
+ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
+cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
