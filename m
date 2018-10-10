@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gA8hq-0002Ra-Te
- for barebox@lists.infradead.org; Wed, 10 Oct 2018 07:14:56 +0000
-Date: Wed, 10 Oct 2018 09:14:43 +0200
+ id 1gA9HS-0003Jq-5M
+ for barebox@lists.infradead.org; Wed, 10 Oct 2018 07:52:34 +0000
+Date: Wed, 10 Oct 2018 09:51:29 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181010071443.msez5a7yriayx2va@pengutronix.de>
-References: <CABAHDLdOVQwoeNKvWmOTADF5-Q1Az6hQXqDUrK60-wC+3P0Tzg@mail.gmail.com>
+Message-ID: <20181010075129.u67xfq247pmn7sfb@pengutronix.de>
+References: <20181004070400.12338-1-Denis.Osterland@diehl.com>
+ <20181005065537.21844-1-Denis.Osterland@diehl.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CABAHDLdOVQwoeNKvWmOTADF5-Q1Az6hQXqDUrK60-wC+3P0Tzg@mail.gmail.com>
+In-Reply-To: <20181005065537.21844-1-Denis.Osterland@diehl.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,78 +23,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: bootchooser: constant decrement of remaining_attempts
-To: Patrick Huesmann <patrick.huesmann@gmail.com>
-Cc: barebox@lists.infradead.org, Enrico Joerns <ejo@pengutronix.de>
+Subject: Re: [PATCH v2] hab: Print events on info command.
+To: Denis OSTERLAND <denis.osterland@diehl.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Patrick,
+Hi Denis,
 
-+Cc Jan and Enrico
-
-On Tue, Oct 09, 2018 at 06:37:25PM +0200, Patrick Huesmann wrote:
-> Hi,
+On Fri, Oct 05, 2018 at 06:58:04AM +0000, Denis OSTERLAND wrote:
+> From: Denis Osterland <Denis.Osterland@diehl.com>
 > 
-> I'm building a RAUC- & bootchooser-based firmware update solution.
-> The scenario is symmetric rootfs slots, manual update, userspace
-> (RAUC) marks as good.
-> It seems to work well, however I noticed that it's always decrementing
-> and resetting the remaining_attempts of the booted system, not only
-> when there's an update, but also during regular boot-ups.
+> This patch adds hab_get_status convenience function
+> and uses it in hab info command.
+> It returns -EIO if MMU is disabled and -ENXIO if no HAB device
+> is available.
 > 
-> I thought that the RAUC/bootchooser combo was mainly about providing a
-> safeguard against accidentally "bricking" the system with corrupt or
-> incomplete firmware updates.
-> However, the logic of decrementing and later resetting the
-> remaining_attempts is apparently not limited to the period between
-> performing the update and the validation (mark as good) of that
-> update, but also running all the other times the system is booted.
+> Signed-off-by: Denis Osterland <Denis.Osterland@diehl.com>
+> ---
+> v1 -> v2: use runtime if, as suggested by Andrey Smirnov,
+>           add hab_get_status to have hab implementation
+>           selection at a central place
 > 
-> This can have some undesirable side effects:
+>  commands/hab.c |  3 +++
+>  include/hab.h  | 15 +++++++++++++++
+>  2 files changed, 18 insertions(+)
 > 
-> 1) When the boot process is interrupted for any reason (power issues,
-> brown-out resets, users unplugging the gadget while it boots, etc.)
-> more than three times in a row (assuming a remaining_attempts reset
-> value of 3), then bootchooser will happily switch to the fall-back
-> target, even though there's nothing wrong with the actual target at
-> all.
+> diff --git a/commands/hab.c b/commands/hab.c
+> index 0d7ee8e76..af51e73fc 100644
+> --- a/commands/hab.c
+> +++ b/commands/hab.c
+> @@ -72,6 +72,9 @@ static int do_hab(int argc, char *argv[])
+>  		else
+>  			printf("devel mode\n");
+>  
+> +		if (hab_get_status() == -EIO)
+> +			printf("Disable MMU to access HAB API!\n");
+> +
+>  		return 0;
+>  	}
+>  
+> diff --git a/include/hab.h b/include/hab.h
+> index 78c2b865b..7c2ffab5e 100644
+> --- a/include/hab.h
+> +++ b/include/hab.h
+> @@ -19,6 +19,7 @@
+>  #define __HABV4_H
+>  
+>  #include <errno.h>
+> +#include <mach/generic.h>
+>  
+>  #ifdef CONFIG_HABV4
+>  int imx28_hab_get_status(void);
+> @@ -43,6 +44,20 @@ static inline int imx25_hab_get_status(void)
+>  }
+>  #endif
+>  
+> +static inline int hab_get_status(void)
+> +{
+> +	if (IS_ENABLED(CONFIG_MMU))
+> +		return -EIO;
 
-I think what you want here is the global.bootchooser.reset_attempts=power-on
-option. With this option bootchooser will reset the remaining attempts
-to the default value with each power on reset, meaning that the primary
-target will only become invalid when the watchdog bites you three times
-in a row, but not when the device is turned off in between.
+This restriction makes this patch rather unhandy to use. Internally we
+use imx*_hab_get_status() indeed with MMU enabled and it works fine, but
+we call it before mmu_init is called. In this state the MMU is enabled
+already, but the zero page is not yet set to faulting. So I think the
+problem is not the MMU as such, but instead the faulting zero page.
 
-> I guess this can be worked around by syncing the fall-back target to
-> the last updated one, after the last update has been verified as good.
-> However this brings additional cost & complexity, and feels more like
-> a hack than a proper solution.
-> 
-> 2) In every complete boot cycle, there are two writes to the
-> barebox-state partition (bootchooser decrementing the
-> remaining_attempts, then userspace resetting the remaining_attempts
-> when it marks the target as good). For systems that boot up & power
-> down a lot, this will generate lots of unnecessary flash writes over
-> time. Probably it won't be enough to actually wear out the flash, but
-> still it doesn't "feel" quite right. (I jumped through hoops to have a
-> proper read-only root and would like to limit the overall number of
-> flash writes when possible).
-> 
-> I'm thinking of an option that limits the remaining_attempts logic to
-> the phase when barebox attempts to boot a newly flashed update, until
-> that update is marked as good later in userspace. There could be an
-> extra (optional) variable in the barebox-state, that allows the
-> userspace to deliberately enable/disable the remaining_attempts logic
-> in barebox.
+It would be great if we could overcome this issue. One way to do this
+would be to add a function pair mmu_zero_page_map() and
+mmu_zero_page_set_faulting() to be called in hab_get_status().
 
-I don't think such an option is available at the moment. Maybe we could
-declare remaining_attempts=INT_MAX as infinite attempts. Whenever that
-value is found the remaining_attempts counter wouldn't be decreased.
-
-After an update userspace could then set the remaining_attempts counter
-of the new system to three and the new system would set it to INT_MAX
-when successfully booted.
-
-What do you think?
+I don't know if you are willing to add that, but I don't want to
+motivate people to disable the MMU, so the patch is not acceptable as
+is.
 
 Sascha
 
