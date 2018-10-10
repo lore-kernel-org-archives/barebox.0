@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gA7FQ-0000lP-B0
- for barebox@lists.infradead.org; Wed, 10 Oct 2018 05:41:30 +0000
-Date: Wed, 10 Oct 2018 07:41:16 +0200
+ id 1gA8Eg-0006iM-Kx
+ for barebox@lists.infradead.org; Wed, 10 Oct 2018 06:44:48 +0000
+Date: Wed, 10 Oct 2018 08:44:29 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181010054116.fg5omyjnlp4jxnjb@pengutronix.de>
-References: <20181008180206.5119-1-u.oelmann@pengutronix.de>
+Message-ID: <20181010064429.dbslv4umft4fetdk@pengutronix.de>
+References: <20181008074936.7ilxnbq7sc5mphbu@pengutronix.de>
+ <20181008082921.26922-1-u.kleine-koenig@pengutronix.de>
+ <20181008082921.26922-2-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181008180206.5119-1-u.oelmann@pengutronix.de>
+In-Reply-To: <20181008082921.26922-2-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,49 +24,88 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] common: state: fix typo
-To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v3 2/2] mci: implement command to switch a mmc device to
+ enhanced mode
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, Oct 08, 2018 at 08:02:06PM +0200, Ulrich =D6lmann wrote:
-> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
-> ---
->  common/state/state.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On Mon, Oct 08, 2018 at 10:29:21AM +0200, Uwe Kleine-K=F6nig wrote:
+> The command structure allows adding more subcommands and is designed to
+> match the Linux program mmc from the mmc-utils. So later more commands
+> can easily be added if need be.
+> =
 
-Applied, thanks
+> Compared to mmc-utils'
+> =
+
+> 	mmc enh_area set <-y|-n|-c> <start KiB> <length KiB> <device>
+> =
+
+> the command that is implemented here (
+> =
+
+> 	mmc enh_area setmax [-c] <device>
+> =
+
+> ) is easier to use (because you don't have to check the maximal allowed
+> size by reading some registers and calculate the available size from
+> them (which then must be calculated back to register values by the mmc
+> command)) but less flexible as it doesn't allow all the crazy
+> possibilities specified in the eMMC standard but just creates an
+> enhanced area with maximal size.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> +static u8 *mci_get_ext_csd(struct mci *mci)
+> +{
+> +	u8 *ext_csd;
+> +	int ret;
+> +
+> +	ext_csd =3D xmalloc(512);
+> +
+> +	ret =3D mci_send_ext_csd(mci, ext_csd);
+> +	if (ret) {
+> +		printf("Failure to read EXT_CSD register\n");
+> +		return ERR_PTR(-EIO);
+
+Please free malloced memory.
+
+> +	}
+> +
+> +	return ext_csd;
+> +}
+> +
+> +/* enh_area setmax [-c] /dev/mmcX */
+> +static int do_mmc_enh_area(int argc, char *argv[])
+> +{
+> +	char *devpath;
+> +	struct mci *mci;
+> +	u8 *ext_csd;
+> +	int set_completed =3D 0;
+> +	int ret;
+> +
+> +	if (argc < 2 || strcmp(argv[1], "setmax") !=3D 0)
+> +		goto usage;
+> +
+> +	if (argc =3D=3D 3) {
+> +		/* enh_area setmax /dev/mmcX */
+> +		devpath =3D argv[2];
+> +		set_completed =3D false;
+> +	} else if (argc =3D=3D 4 || strcmp(argv[2], "-c") =3D=3D 0) {
+> +		/* enh_area setmax -c /dev/mmcX */
+> +		devpath =3D argv[3];
+> +		set_completed =3D true;
+> +	} else {
+
+This option parsing already is quite hard to read and will be harder if
+it is extended in the future. Can't we use getopt() here?
+
+Usage:
+enh_area [options] <mmcdev>
+ -m	Use maximum available space
+ -c	complete partitioning
 
 Sascha
-
-> =
-
-> diff --git a/common/state/state.c b/common/state/state.c
-> index 25d9502111c2..1273c494c138 100644
-> --- a/common/state/state.c
-> +++ b/common/state/state.c
-> @@ -83,7 +83,7 @@ out:
->  }
->  =
-
->  /**
-> - * state_load - Loads a state from the backend
-> + * state_do_load - Loads a state from the backend
->   * @param state The state that should be updated to contain the loaded d=
-ata
->   * @return 0 on success, -errno on failure. If no state is loaded the pr=
-evious
->   * values remain in the state.
-> -- =
-
-> 2.19.0
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 
 -- =
 
