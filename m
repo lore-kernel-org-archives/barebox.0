@@ -1,12 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gArU5-0005dm-I1
- for barebox@lists.infradead.org; Fri, 12 Oct 2018 07:03:43 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 12 Oct 2018 09:03:27 +0200
-Message-Id: <20181012070327.12143-1-s.hauer@pengutronix.de>
+Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gAbdd-00028H-D0
+ for barebox@lists.infradead.org; Thu, 11 Oct 2018 14:09:08 +0000
+Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
+ (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
+ id S23994601AbeJKOIMFfKOA (ORCPT
+ <rfc822;barebox@lists.infradead.org>);
+ Thu, 11 Oct 2018 16:08:12 +0200
+Date: Thu, 11 Oct 2018 16:08:11 +0200
+From: Ladislav Michl <ladis@linux-mips.org>
+Message-ID: <20181011140811.GA5421@lenoch>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,43 +25,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] environment: bypass overlap check for mtd devices
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Ladislav Michl <ladis@linux-mips.org>
+Subject: [PATCH] blspec: do not depend on BLOCK
+To: barebox@lists.infradead.org
 
-For mtd devices the overlap check does not work as expected for two
-reasons. First is that cdev->offset is 0 for mtd partitions, instead
-cdev->mtd->master_offset has to be used. That could be fixed easily.
-Second on NAND devices the environment is on the bb devices and not
-on the raw nand devices which means we would need something to get
-the mtd device from the bb device before doing the check.
+blspec can be read also from jffs2 or ubifs, so remove BLOCK dependency
 
-Both issues are fixable, but the check was mainly done to catch cases
-when an environment partition is created in the free space before the
-first MBR/GPT partition on SD/MMC devices, so leave out the mtd case
-for now.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
 ---
- common/startup.c | 3 +++
- 1 file changed, 3 insertions(+)
+ common/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/common/startup.c b/common/startup.c
-index 5793ea28ac..28edee4fce 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -91,6 +91,9 @@ static int check_overlap(const char *path)
- 	if (!cenv)
- 		return -EINVAL;
+diff --git a/common/Kconfig b/common/Kconfig
+index 4909c8232..eddd99ea3 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -653,7 +653,6 @@ config BOOTM_FORCE_SIGNED_IMAGES
+ 	  since they are the only supported image type that support signing.
  
-+	if (cenv->mtd)
-+		return 0;
-+
- 	cdisk = cenv->master;
- 
- 	if (!cdisk)
+ config BLSPEC
+-	depends on BLOCK
+ 	depends on FLEXIBLE_BOOTARGS
+ 	depends on !SHELL_NONE
+ 	select BOOT
 -- 
-2.19.0
+2.19.1
 
 
 _______________________________________________
