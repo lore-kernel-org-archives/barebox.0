@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x341.google.com ([2a00:1450:4864:20::341])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gAGUi-00015f-En
- for barebox@lists.infradead.org; Wed, 10 Oct 2018 15:33:54 +0000
-Received: by mail-wm1-x341.google.com with SMTP id r63-v6so5974301wma.4
- for <barebox@lists.infradead.org>; Wed, 10 Oct 2018 08:33:41 -0700 (PDT)
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gAWmL-0000MF-VX
+ for barebox@lists.infradead.org; Thu, 11 Oct 2018 08:57:12 +0000
+Date: Thu, 11 Oct 2018 10:56:56 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20181011085656.vbjx3cnh5v2s5k5m@pengutronix.de>
 References: <20181009173805.26181-1-andrew.smirnov@gmail.com>
  <20181009173805.26181-8-andrew.smirnov@gmail.com>
- <1539164516.3515.37.camel@pengutronix.de>
-In-Reply-To: <1539164516.3515.37.camel@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 10 Oct 2018 08:33:28 -0700
-Message-ID: <CAHQ1cqHxy-Zn3iBzgy-Q6Ca2akr3Ccb5w_if2ZOEZRKFPP30pQ@mail.gmail.com>
+ <CAHQ1cqFVW-xeRvUbNV0H_iEboNw8coj6zRzWhp_TCeiwiqxXhg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAHQ1cqFVW-xeRvUbNV0H_iEboNw8coj6zRzWhp_TCeiwiqxXhg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,32 +25,55 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2 07/17] drivers: Introduce dev_set_name()
-To: Lucas Stach <l.stach@pengutronix.de>
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Oct 10, 2018 at 2:41 AM Lucas Stach <l.stach@pengutronix.de> wrote:
->
-> Hi Andrey,
->
-> Am Dienstag, den 09.10.2018, 10:37 -0700 schrieb Andrey Smirnov:
-> > In order to allow device names that are longer than MAX_DRIVER_NAME,
-> > port Linux kernel function of the same name, and convert all of the
-> > code to use it.
->
-> This patch doesn't apply cleanly on barebox master or next due to the
-> thing being patched in rave-sp.c not being present in upstream. You
-> probably generated this patchset with some local changes applied.
->
-> The fix is easy by dropping the rave-sp.c chunk of the patch. Maybe
-> Sascha can just fix this up while applying.
->
+On Tue, Oct 09, 2018 at 07:57:27PM -0700, Andrey Smirnov wrote:
+> On Tue, Oct 9, 2018 at 10:38 AM Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
+> > diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+> > index c43a4bde2..c25498bf4 100644
+> > --- a/drivers/base/driver.c
+> > +++ b/drivers/base/driver.c
+> > @@ -468,16 +468,57 @@ EXPORT_SYMBOL(dummy_probe);
+> >
+> >  const char *dev_id(const struct device_d *dev)
+> >  {
+> > -       static char buf[MAX_DRIVER_NAME + 16];
+> > +       static char *buf;
+> > +       int err;
+> > +
+> > +       if (buf)
+> > +               free(buf);
+> 
+> Ugh, I just realized that original implementation of this function
+> didn't work right for constructs like
+> 
+> https://git.pengutronix.de/cgit/barebox/tree/drivers/mci/mci-core.c#n1826
+> 
+> because the result of calling dev_name() for one of the arguments
+> would get clobbered by the call to dev_name() inside of dev_info().
+> Switching to heap allocated memory only makes things worse.
+> 
+> Sascha, one solution for this that I can see is to just return
+> dev->name for the case of dev->id == DEVICE_ID_SINGLE and add a
+> "_name" field to struct device_d that can be lazily filled with device
+> name + ID string for dev->id != DEVICE_ID_SINGLE and returned as
+> result.
 
-Oh, didn't realized that, my bad. I'll have to do a v3 to fix the
-dev_id() issue anyway, so I'll make sure to fix this other problem as
-well.
+Not sure if "name" and "_name" are good names, but generally I think we
+can do it that way.
+Could you split this patch up into two and in the first one just add a
+dev_set_name function which sprintf() into the string array and converts
+the users and only in the second patch do the conversion to an allocated
+dev->name?
 
-Thanks,
-Andrey Smirnov
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
