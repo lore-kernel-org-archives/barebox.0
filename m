@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wr1-x443.google.com ([2a00:1450:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gAWNR-0002xT-5j
- for barebox@lists.infradead.org; Thu, 11 Oct 2018 08:31:26 +0000
-Date: Thu, 11 Oct 2018 10:31:13 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181011083113.kxcgiljgdkr7mhvb@pengutronix.de>
+ id 1gBQpN-0007WA-7w
+ for barebox@lists.infradead.org; Sat, 13 Oct 2018 20:48:02 +0000
+Received: by mail-wr1-x443.google.com with SMTP id a13-v6so16944201wrt.5
+ for <barebox@lists.infradead.org>; Sat, 13 Oct 2018 13:47:50 -0700 (PDT)
+MIME-Version: 1.0
 References: <20181009173805.26181-1-andrew.smirnov@gmail.com>
  <20181009173805.26181-9-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181009173805.26181-9-andrew.smirnov@gmail.com>
+ <20181011083113.kxcgiljgdkr7mhvb@pengutronix.de>
+In-Reply-To: <20181011083113.kxcgiljgdkr7mhvb@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Sat, 13 Oct 2018 13:47:37 -0700
+Message-ID: <CAHQ1cqF4OLoeSsw=YOZQni0LiWQycUHwG1Rw1tJo6Ze7iomK=Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,44 +26,52 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2 08/17] linux: string: Port kbasename()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Oct 09, 2018 at 10:37:56AM -0700, Andrey Smirnov wrote:
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  include/linux/string.h | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/include/linux/string.h b/include/linux/string.h
-> index 3418b4fbe..c9823dab8 100644
-> --- a/include/linux/string.h
-> +++ b/include/linux/string.h
-> @@ -111,6 +111,18 @@ extern char *strim(char *);
->  
->  void *memchr_inv(const void *start, int c, size_t bytes);
->  
-> +/**
-> + * kbasename - return the last part of a pathname.
-> + *
-> + * @path: path to extract the filename from.
-> + */
-> +static inline const char *kbasename(const char *path)
-> +{
-> +	const char *tail = strrchr(path, '/');
-> +	return tail ? tail + 1 : path;
-> +}
+On Thu, Oct 11, 2018 at 1:31 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>
+> On Tue, Oct 09, 2018 at 10:37:56AM -0700, Andrey Smirnov wrote:
+> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> > ---
+> >  include/linux/string.h | 12 ++++++++++++
+> >  1 file changed, 12 insertions(+)
+> >
+> > diff --git a/include/linux/string.h b/include/linux/string.h
+> > index 3418b4fbe..c9823dab8 100644
+> > --- a/include/linux/string.h
+> > +++ b/include/linux/string.h
+> > @@ -111,6 +111,18 @@ extern char *strim(char *);
+> >
+> >  void *memchr_inv(const void *start, int c, size_t bytes);
+> >
+> > +/**
+> > + * kbasename - return the last part of a pathname.
+> > + *
+> > + * @path: path to extract the filename from.
+> > + */
+> > +static inline const char *kbasename(const char *path)
+> > +{
+> > +     const char *tail = strrchr(path, '/');
+> > +     return tail ? tail + 1 : path;
+> > +}
+>
+> We already have basename() and posix_basename().
 
-We already have basename() and posix_basename(). How does this one
-differ or could this be an alias for one of them?
+Sorry, forgot to check if something like that existed.
 
-Sascha
+> How does this one differ or could this be an alias for one of them?
+>
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+AFAICT, kbasename() implements the same algorithm as basename() we
+already have, except it relies on strrchr() to do all of the work
+instead of explicitly coding reverse string traversal. Aliasing would
+be difficult since kbasename() operates on and returns "const char *"
+and basename doesn't, but I'll change the patch to convert basename()
+to use kbasename() internally in v3.
+
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
