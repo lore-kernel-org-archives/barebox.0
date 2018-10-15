@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gBsWJ-0006vl-Rr
- for barebox@lists.infradead.org; Mon, 15 Oct 2018 02:22:33 +0000
-Received: by mail-pl1-x643.google.com with SMTP id w14-v6so8497641plp.6
- for <barebox@lists.infradead.org>; Sun, 14 Oct 2018 19:22:01 -0700 (PDT)
+ id 1gBsWJ-0006xa-Sk
+ for barebox@lists.infradead.org; Mon, 15 Oct 2018 02:22:39 +0000
+Received: by mail-pl1-x643.google.com with SMTP id y11-v6so8501809plt.3
+ for <barebox@lists.infradead.org>; Sun, 14 Oct 2018 19:22:04 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 14 Oct 2018 19:21:15 -0700
-Message-Id: <20181015022125.24020-13-andrew.smirnov@gmail.com>
+Date: Sun, 14 Oct 2018 19:21:17 -0700
+Message-Id: <20181015022125.24020-15-andrew.smirnov@gmail.com>
 In-Reply-To: <20181015022125.24020-1-andrew.smirnov@gmail.com>
 References: <20181015022125.24020-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,98 +23,126 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 12/22] drivers: base: Convert device_d name to be
- dynamically allocated
+Subject: [PATCH v3 14/22] of: Port latest of_device_make_bus_id()
+ implementation
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Convert device_d name to be dynamically allocated in order to lift
-MAX_DRIVER_NAME length limit needed for commits that follow.
+Code implementing of_device_make_bus_id() in Barebox uses rather old
+implementation from Linux kernel and has a very significan limitation
+in that it will produce identical names for different DT nodes that
+happen to have the same node name as well as "reg" property.
+
+One such example, that tirggered this change, is "switch@0" nodes that
+can be found in dts/src/arm/vf610-zii-dev-rev-c.dts
+
+This commit replaces original code with the current Linux kernel
+implementation that traverses DT hierarchy from leaf node to its root
+concatenating node names in the process.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/base/driver.c | 23 +++++++++++++++++------
- include/driver.h      |  5 ++---
- 2 files changed, 19 insertions(+), 9 deletions(-)
+ drivers/of/platform.c | 80 ++++++++++++-------------------------------
+ 1 file changed, 22 insertions(+), 58 deletions(-)
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index b7720f31a..1941a972c 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -184,11 +184,9 @@ int register_device(struct device_d *new_device)
- 	}
- 
- 	if (new_device->id != DEVICE_ID_SINGLE)
--		snprintf(new_device->unique_name,
--			 sizeof(new_device->unique_name),
--			 FORMAT_DRIVER_NAME_ID,
--			 new_device->name,
--			 new_device->id);
-+		new_device->unique_name = basprintf(FORMAT_DRIVER_NAME_ID,
-+						    new_device->name,
-+						    new_device->id);
- 
- 	debug ("register_device: %s\n", dev_name(new_device));
- 
-@@ -478,16 +476,29 @@ EXPORT_SYMBOL(dummy_probe);
-  * @dev: device
-  * @fmt: format string for the device's name
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index 4fd3ce2b7..17052f419 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -43,71 +43,35 @@ EXPORT_SYMBOL(of_find_device_by_node);
+  * of_device_make_bus_id - Use the device node data to assign a unique name
+  * @dev: pointer to device structure that is linked to a device tree node
   *
-+ * NOTE: This function expects dev->name to be free()-able, so extra
-+ * precautions needs to be taken when mixing its usage with manual
-+ * assignement of device_d.name.
+- * This routine will first try using either the dcr-reg or the reg property
+- * value to derive a unique name.  As a last resort it will use the node
+- * name followed by a unique number.
++ * This routine will first try using the translated bus address to
++ * derive a unique name. If it cannot, then it will prepend names from
++ * parent nodes until a unique name can be derived.
   */
- int dev_set_name(struct device_d *dev, const char *fmt, ...)
+ static void of_device_make_bus_id(struct device_d *dev)
  {
- 	va_list vargs;
- 	int err;
-+	/*
-+	 * Save old pointer in case we are overriding already set name
-+	 */
-+	char *oldname = dev->name;
- 
- 	va_start(vargs, fmt);
--	err = vsnprintf(dev->name, sizeof(dev->name), fmt, vargs);
-+	err = vasprintf(&dev->name, fmt, vargs);
- 	va_end(vargs);
- 
-+	/*
-+	 * Free old pointer, we do this after vasprintf call in case
-+	 * old device name was in one of vargs
-+	 */
-+	free(oldname);
+-	static int bus_no_reg_magic;
+-	struct device_node *np = dev->device_node;
+-	const __be32 *reg, *addrp;
++	struct device_node *node = dev->device_node;
++	const __be32 *reg;
+ 	u64 addr;
+-	char *name, *at;
+-
+-	name = xstrdup(np->name);
+-	at = strchr(name, '@');
+-	if (at)
+-		*at = '\0';
+-
+-#ifdef CONFIG_PPC_DCR
+-	/*
+-	 * If it's a DCR based device, use 'd' for native DCRs
+-	 * and 'D' for MMIO DCRs.
+-	 */
+-	reg = of_get_property(np, "dcr-reg", NULL);
+-	if (reg) {
+-#ifdef CONFIG_PPC_DCR_NATIVE
+-		dev_set_name(dev, "d%x.%s", *reg, name);
+-#else /* CONFIG_PPC_DCR_NATIVE */
+-		u64 addr = of_translate_dcr_address(np, *reg, NULL);
+-		if (addr != OF_BAD_ADDR) {
+-			dev_set_name(dev, "D%llx.%s",
+-				     (unsigned long long)addr, name);
+-			free(name);
+-			return;
+-		}
+-#endif /* !CONFIG_PPC_DCR_NATIVE */
+-	}
+-#endif /* CONFIG_PPC_DCR */
+-
+-	/*
+-	 * For MMIO, get the physical address
+-	 */
+-	reg = of_get_property(np, "reg", NULL);
+-	if (reg) {
+-		if (of_can_translate_address(np)) {
+-			addr = of_translate_address(np, reg);
+-		} else {
+-			addrp = of_get_address(np, 0, NULL, NULL);
+-			if (addrp)
+-				addr = of_read_number(addrp, 1);
+-			else
+-				addr = OF_BAD_ADDR;
+-		}
+-		if (addr != OF_BAD_ADDR) {
+-			dev_set_name(dev, "%llx.%s",
+-				     (unsigned long long)addr, name);
+-			free(name);
 +
- 	WARN_ON(err < 0);
++	/* Construct the name, using parent nodes if necessary to ensure uniqueness */
++	while (node->parent) {
++		/*
++		 * If the address can be translated, then that is as much
++		 * uniqueness as we need. Make it the first component and return
++		 */
++		reg = of_get_property(node, "reg", NULL);
++		if (reg && (addr = of_translate_address(node, reg)) != OF_BAD_ADDR) {
++			dev_set_name(dev, dev->name ? "%llx.%s:%s" : "%llx.%s",
++				     (unsigned long long)addr, node->name,
++				     dev->name);
+ 			return;
+ 		}
+-	}
  
- 	return err;
-diff --git a/include/driver.h b/include/driver.h
-index 94fddc735..db844aed3 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -23,7 +23,6 @@
- #include <linux/ioport.h>
- #include <of.h>
+-	/*
+-	 * No BusID, use the node name and add a globally incremented counter
+-	 */
+-	dev_set_name(dev, "%s.%d", name, bus_no_reg_magic++);
+-	free(name);
++		/* format arguments only used if dev_name() resolves to NULL */
++		dev_set_name(dev, dev->name ? "%s:%s" : "%s",
++			     kbasename(node->full_name), dev->name);
++		node = node->parent;
++	}
+ }
  
--#define MAX_DRIVER_NAME		32
- #define FORMAT_DRIVER_NAME_ID	"%s%d"
- 
- #include <param.h>
-@@ -44,13 +43,13 @@ struct device_d {
- 	 * should not be modified directly and dev_set_name() should
- 	 * be used instead.
- 	 */
--	char name[MAX_DRIVER_NAME];
-+	char *name;
- 
- 	/*! This member is used to store device's unique name as
- 	 *  obtained by calling dev_id(). Internal field, do not
- 	 *  access it directly.
- 	  */
--	char unique_name[MAX_DRIVER_NAME + 16];
-+	char *unique_name;
- 	/*! The id is used to uniquely identify a device in the system. The id
- 	 * will show up under /dev/ as the device's name. Usually this is
- 	 * something like eth0 or nor0. */
+ /**
 -- 
 2.17.1
 
