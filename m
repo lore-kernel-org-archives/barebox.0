@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gC6ER-0003TS-E9
+ id 1gC6ES-0003TI-Rk
  for barebox@lists.infradead.org; Mon, 15 Oct 2018 17:00:42 +0000
-Received: by mail-pl1-x643.google.com with SMTP id y15-v6so9592293plr.12
- for <barebox@lists.infradead.org>; Mon, 15 Oct 2018 10:00:33 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id y11-v6so9596646plt.3
+ for <barebox@lists.infradead.org>; Mon, 15 Oct 2018 10:00:30 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 15 Oct 2018 10:00:20 -0700
-Message-Id: <20181015170021.22617-4-andrew.smirnov@gmail.com>
+Date: Mon, 15 Oct 2018 10:00:18 -0700
+Message-Id: <20181015170021.22617-2-andrew.smirnov@gmail.com>
 In-Reply-To: <20181015170021.22617-1-andrew.smirnov@gmail.com>
 References: <20181015170021.22617-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,67 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] tlsf_malloc: Set errno to ENOMEM on failure
+Subject: [PATCH 2/5] dummy_malloc: Make use of PTR_ALIGN
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Set errno to ENOMEM on failure so that correct error message can be
-displayed by users who rely on errno.
+Drop explicit type cast and alignement code in favor of PTR_ALIGN
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/tlsf_malloc.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ common/dummy_malloc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/common/tlsf_malloc.c b/common/tlsf_malloc.c
-index aa3ab2397..c8900fc6b 100644
---- a/common/tlsf_malloc.c
-+++ b/common/tlsf_malloc.c
-@@ -28,6 +28,7 @@ extern tlsf_pool tlsf_mem_pool;
- 
- void *malloc(size_t bytes)
- {
-+	void *mem;
- 	/*
- 	 * tlsf_malloc returns NULL for zero bytes, we instead want
- 	 * to have a valid pointer.
-@@ -35,7 +36,11 @@ void *malloc(size_t bytes)
- 	if (!bytes)
- 		bytes = 1;
- 
--	return tlsf_malloc(tlsf_mem_pool, bytes);
-+	mem = tlsf_malloc(tlsf_mem_pool, bytes);
-+	if (!mem)
-+		errno = ENOMEM;
-+
-+	return mem;
- }
- EXPORT_SYMBOL(malloc);
- 
-@@ -47,13 +52,21 @@ EXPORT_SYMBOL(free);
- 
- void *realloc(void *oldmem, size_t bytes)
- {
--	return tlsf_realloc(tlsf_mem_pool, oldmem, bytes);
-+	void *mem = tlsf_realloc(tlsf_mem_pool, oldmem, bytes);
-+	if (!mem)
-+		errno = ENOMEM;
-+
-+	return mem;
- }
- EXPORT_SYMBOL(realloc);
+diff --git a/common/dummy_malloc.c b/common/dummy_malloc.c
+index fa4f5d126..ab6712018 100644
+--- a/common/dummy_malloc.c
++++ b/common/dummy_malloc.c
+@@ -30,11 +30,9 @@ void malloc_stats(void)
  
  void *memalign(size_t alignment, size_t bytes)
  {
--	return tlsf_memalign(tlsf_mem_pool, alignment, bytes);
-+	void *mem = tlsf_memalign(tlsf_mem_pool, alignment, bytes);
-+	if (!mem)
-+		errno = ENOMEM;
-+
-+	return mem;
- }
- EXPORT_SYMBOL(memalign);
+-	unsigned long mem = (unsigned long)sbrk(bytes + alignment);
++	void *mem = sbrk(bytes + alignment);
  
+-	mem = (mem + alignment) & ~(alignment - 1);
+-
+-	return (void *)mem;
++	return PTR_ALIGN(mem, alignment);
+ }
+ 
+ void *malloc(size_t size)
 -- 
 2.17.1
 
