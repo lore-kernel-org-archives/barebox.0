@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gBsWQ-0006zW-4B
- for barebox@lists.infradead.org; Mon, 15 Oct 2018 02:22:46 +0000
-Received: by mail-pg1-x541.google.com with SMTP id g2-v6so8389316pgu.11
- for <barebox@lists.infradead.org>; Sun, 14 Oct 2018 19:22:07 -0700 (PDT)
+ id 1gBsWR-00071s-BI
+ for barebox@lists.infradead.org; Mon, 15 Oct 2018 02:22:50 +0000
+Received: by mail-pf1-x443.google.com with SMTP id f78-v6so3107498pfe.1
+ for <barebox@lists.infradead.org>; Sun, 14 Oct 2018 19:22:12 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 14 Oct 2018 19:21:19 -0700
-Message-Id: <20181015022125.24020-17-andrew.smirnov@gmail.com>
+Date: Sun, 14 Oct 2018 19:21:22 -0700
+Message-Id: <20181015022125.24020-20-andrew.smirnov@gmail.com>
 In-Reply-To: <20181015022125.24020-1-andrew.smirnov@gmail.com>
 References: <20181015022125.24020-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,37 +23,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 16/22] include: linux: phy: Add missing PHY_INTERFACE_*
- constants
+Subject: [PATCH v3 19/22] mdio_bus: Allow for non PHY-devices on MDIO buses
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Instead of just creating a simple PHY device for every child of MDIO
+bus node, add code to check if any of them have "compatible" property
+set, as well as code to create a proper platform device for such
+cases.
+
+This change is useful for when MDIO bus and some of Ethernet ports are
+connected to a switch or some other MDIO device that doesn't behave
+like a generic PHY and can't be probed via its PHY ID.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- include/linux/phy.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/phy/mdio_bus.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index ac750f5c3..5b2c63ff6 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -54,7 +54,16 @@ typedef enum {
- 	PHY_INTERFACE_MODE_RGMII_TXID,
- 	PHY_INTERFACE_MODE_RTBI,
- 	PHY_INTERFACE_MODE_SMII,
-+	PHY_INTERFACE_MODE_XGMII,
- 	PHY_INTERFACE_MODE_QSGMII,
-+	PHY_INTERFACE_MODE_TRGMII,
-+	PHY_INTERFACE_MODE_1000BASEX,
-+	PHY_INTERFACE_MODE_2500BASEX,
-+	PHY_INTERFACE_MODE_RXAUI,
-+	PHY_INTERFACE_MODE_XAUI,
-+	/* 10GBASE-KR, XFI, SFI - single lane 10G Serdes */
-+	PHY_INTERFACE_MODE_10GKR,
-+	PHY_INTERFACE_MODE_MAX,
- } phy_interface_t;
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index d7d6d8940..cda05afae 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -26,6 +26,7 @@
+ #include <errno.h>
+ #include <linux/phy.h>
+ #include <linux/err.h>
++#include <of_device.h>
  
- #define PHY_INIT_TIMEOUT	100000
+ #define DEFAULT_GPIO_RESET_ASSERT       1000      /* us */
+ #define DEFAULT_GPIO_RESET_DEASSERT     1000      /* us */
+@@ -179,8 +180,19 @@ static int of_mdiobus_register(struct mii_bus *mdio, struct device_node *np)
+ 
+ 	/* Loop over the child nodes and register a phy_device for each one */
+ 	for_each_available_child_of_node(np, child) {
+-		if (!of_mdiobus_child_is_phy(child))
++		if (!of_mdiobus_child_is_phy(child)) {
++			if (of_get_property(child, "compatible", NULL)) {
++				if (!of_platform_device_create(child,
++							       &mdio->dev)) {
++					dev_err(&mdio->dev,
++						"Failed to create device "
++						"for %s\n",
++						child->full_name);
++				}
++			}
++
+ 			continue;
++		}
+ 
+ 		ret = of_property_read_u32(child, "reg", &addr);
+ 		if (ret) {
 -- 
 2.17.1
 
