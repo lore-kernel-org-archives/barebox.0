@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
+Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gBsWO-0006yk-Ku
- for barebox@lists.infradead.org; Mon, 15 Oct 2018 02:22:42 +0000
-Received: by mail-pl1-x642.google.com with SMTP id q19-v6so5425520pll.5
- for <barebox@lists.infradead.org>; Sun, 14 Oct 2018 19:22:06 -0700 (PDT)
+ id 1gBsWQ-0006zW-4B
+ for barebox@lists.infradead.org; Mon, 15 Oct 2018 02:22:46 +0000
+Received: by mail-pg1-x541.google.com with SMTP id g2-v6so8389316pgu.11
+ for <barebox@lists.infradead.org>; Sun, 14 Oct 2018 19:22:07 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 14 Oct 2018 19:21:18 -0700
-Message-Id: <20181015022125.24020-16-andrew.smirnov@gmail.com>
+Date: Sun, 14 Oct 2018 19:21:19 -0700
+Message-Id: <20181015022125.24020-17-andrew.smirnov@gmail.com>
 In-Reply-To: <20181015022125.24020-1-andrew.smirnov@gmail.com>
 References: <20181015022125.24020-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,47 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 15/22] mdio_bus: Fix documentation for mdio_bus_match()
+Subject: [PATCH v3 16/22] include: linux: phy: Add missing PHY_INTERFACE_*
+ constants
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Fix documentation for mdio_bus_match(). While at it, re-arrange the
-code to be easier to follow. Seeing != used as a result of a matching
-function is extremely confusing.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/phy/mdio_bus.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ include/linux/phy.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index 177d54863..d7d6d8940 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -335,16 +335,19 @@ EXPORT_SYMBOL(of_mdio_find_bus);
-  * @dev: target PHY device
-  * @drv: given PHY driver
-  *
-- * Description: Given a PHY device, and a PHY driver, return 1 if
-- *   the driver supports the device.  Otherwise, return 0.
-+ * Description: Given a PHY device, and a PHY driver, return 0 if
-+ *   the driver supports the device.  Otherwise, return 1.
-  */
- static int mdio_bus_match(struct device_d *dev, struct driver_d *drv)
- {
- 	struct phy_device *phydev = to_phy_device(dev);
- 	struct phy_driver *phydrv = to_phy_driver(drv);
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index ac750f5c3..5b2c63ff6 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -54,7 +54,16 @@ typedef enum {
+ 	PHY_INTERFACE_MODE_RGMII_TXID,
+ 	PHY_INTERFACE_MODE_RTBI,
+ 	PHY_INTERFACE_MODE_SMII,
++	PHY_INTERFACE_MODE_XGMII,
+ 	PHY_INTERFACE_MODE_QSGMII,
++	PHY_INTERFACE_MODE_TRGMII,
++	PHY_INTERFACE_MODE_1000BASEX,
++	PHY_INTERFACE_MODE_2500BASEX,
++	PHY_INTERFACE_MODE_RXAUI,
++	PHY_INTERFACE_MODE_XAUI,
++	/* 10GBASE-KR, XFI, SFI - single lane 10G Serdes */
++	PHY_INTERFACE_MODE_10GKR,
++	PHY_INTERFACE_MODE_MAX,
+ } phy_interface_t;
  
--	return ((phydrv->phy_id & phydrv->phy_id_mask) !=
--		(phydev->phy_id & phydrv->phy_id_mask));
-+	if ((phydrv->phy_id & phydrv->phy_id_mask) ==
-+	    (phydev->phy_id & phydrv->phy_id_mask))
-+		return 0;
-+
-+	return 1;
- }
- 
- static ssize_t phydev_read(struct cdev *cdev, void *_buf, size_t count, loff_t offset, ulong flags)
+ #define PHY_INIT_TIMEOUT	100000
 -- 
 2.17.1
 
