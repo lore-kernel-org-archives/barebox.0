@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gBsWD-0006vQ-7c
- for barebox@lists.infradead.org; Mon, 15 Oct 2018 02:22:27 +0000
-Received: by mail-pf1-x443.google.com with SMTP id j23-v6so8866693pfi.4
- for <barebox@lists.infradead.org>; Sun, 14 Oct 2018 19:22:00 -0700 (PDT)
+ id 1gBsWJ-0006vl-Rr
+ for barebox@lists.infradead.org; Mon, 15 Oct 2018 02:22:33 +0000
+Received: by mail-pl1-x643.google.com with SMTP id w14-v6so8497641plp.6
+ for <barebox@lists.infradead.org>; Sun, 14 Oct 2018 19:22:01 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 14 Oct 2018 19:21:14 -0700
-Message-Id: <20181015022125.24020-12-andrew.smirnov@gmail.com>
+Date: Sun, 14 Oct 2018 19:21:15 -0700
+Message-Id: <20181015022125.24020-13-andrew.smirnov@gmail.com>
 In-Reply-To: <20181015022125.24020-1-andrew.smirnov@gmail.com>
 References: <20181015022125.24020-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,94 +23,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 11/22] base: Don't use shared buffer for results of dev_id()
+Subject: [PATCH v3 12/22] drivers: base: Convert device_d name to be
+ dynamically allocated
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Using shared memory buffer to return results of dev_id() leads to
-incorrect results when used as follows:
-
-    dev_info(..., "... %s ...\n", ..., dev_name(foo), ...);
-
-since result returned for dev_name(foo) will be overwritten by
-dev_name() call that will happen as a part of dev_* logging functions.
-
-To prevent that allocate a dedicated field "unique_name" in struct
-device_d and use it to store unique name returned by
-dev_id()/dev_name().
+Convert device_d name to be dynamically allocated in order to lift
+MAX_DRIVER_NAME length limit needed for commits that follow.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/base/driver.c | 19 +++++++------------
- include/driver.h      | 11 ++++++++++-
- 2 files changed, 17 insertions(+), 13 deletions(-)
+ drivers/base/driver.c | 23 +++++++++++++++++------
+ include/driver.h      |  5 ++---
+ 2 files changed, 19 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index c9e6e6ddd..b7720f31a 100644
+index b7720f31a..1941a972c 100644
 --- a/drivers/base/driver.c
 +++ b/drivers/base/driver.c
-@@ -183,6 +183,13 @@ int register_device(struct device_d *new_device)
- 		}
+@@ -184,11 +184,9 @@ int register_device(struct device_d *new_device)
  	}
  
-+	if (new_device->id != DEVICE_ID_SINGLE)
-+		snprintf(new_device->unique_name,
-+			 sizeof(new_device->unique_name),
-+			 FORMAT_DRIVER_NAME_ID,
-+			 new_device->name,
-+			 new_device->id);
-+
+ 	if (new_device->id != DEVICE_ID_SINGLE)
+-		snprintf(new_device->unique_name,
+-			 sizeof(new_device->unique_name),
+-			 FORMAT_DRIVER_NAME_ID,
+-			 new_device->name,
+-			 new_device->id);
++		new_device->unique_name = basprintf(FORMAT_DRIVER_NAME_ID,
++						    new_device->name,
++						    new_device->id);
+ 
  	debug ("register_device: %s\n", dev_name(new_device));
  
- 	list_add_tail(&new_device->list, &device_list);
-@@ -466,18 +473,6 @@ int dummy_probe(struct device_d *dev)
- }
- EXPORT_SYMBOL(dummy_probe);
- 
--const char *dev_id(const struct device_d *dev)
--{
--	static char buf[MAX_DRIVER_NAME + 16];
--
--	if (dev->id != DEVICE_ID_SINGLE)
--		snprintf(buf, sizeof(buf), FORMAT_DRIVER_NAME_ID, dev->name, dev->id);
--	else
--		snprintf(buf, sizeof(buf), "%s", dev->name);
--
--	return buf;
--}
--
- /**
-  * dev_set_name - set a device name
+@@ -478,16 +476,29 @@ EXPORT_SYMBOL(dummy_probe);
   * @dev: device
+  * @fmt: format string for the device's name
+  *
++ * NOTE: This function expects dev->name to be free()-able, so extra
++ * precautions needs to be taken when mixing its usage with manual
++ * assignement of device_d.name.
+  */
+ int dev_set_name(struct device_d *dev, const char *fmt, ...)
+ {
+ 	va_list vargs;
+ 	int err;
++	/*
++	 * Save old pointer in case we are overriding already set name
++	 */
++	char *oldname = dev->name;
+ 
+ 	va_start(vargs, fmt);
+-	err = vsnprintf(dev->name, sizeof(dev->name), fmt, vargs);
++	err = vasprintf(&dev->name, fmt, vargs);
+ 	va_end(vargs);
+ 
++	/*
++	 * Free old pointer, we do this after vasprintf call in case
++	 * old device name was in one of vargs
++	 */
++	free(oldname);
++
+ 	WARN_ON(err < 0);
+ 
+ 	return err;
 diff --git a/include/driver.h b/include/driver.h
-index c12ca9c2f..94fddc735 100644
+index 94fddc735..db844aed3 100644
 --- a/include/driver.h
 +++ b/include/driver.h
-@@ -45,6 +45,12 @@ struct device_d {
+@@ -23,7 +23,6 @@
+ #include <linux/ioport.h>
+ #include <of.h>
+ 
+-#define MAX_DRIVER_NAME		32
+ #define FORMAT_DRIVER_NAME_ID	"%s%d"
+ 
+ #include <param.h>
+@@ -44,13 +43,13 @@ struct device_d {
+ 	 * should not be modified directly and dev_set_name() should
  	 * be used instead.
  	 */
- 	char name[MAX_DRIVER_NAME];
-+
-+	/*! This member is used to store device's unique name as
-+	 *  obtained by calling dev_id(). Internal field, do not
-+	 *  access it directly.
-+	  */
-+	char unique_name[MAX_DRIVER_NAME + 16];
+-	char name[MAX_DRIVER_NAME];
++	char *name;
+ 
+ 	/*! This member is used to store device's unique name as
+ 	 *  obtained by calling dev_id(). Internal field, do not
+ 	 *  access it directly.
+ 	  */
+-	char unique_name[MAX_DRIVER_NAME + 16];
++	char *unique_name;
  	/*! The id is used to uniquely identify a device in the system. The id
  	 * will show up under /dev/ as the device's name. Usually this is
  	 * something like eth0 or nor0. */
-@@ -173,7 +179,10 @@ int get_free_deviceid(const char *name_template);
- 
- char *deviceid_from_spec_str(const char *str, char **endp);
- 
--extern const char *dev_id(const struct device_d *dev);
-+static inline const char *dev_id(const struct device_d *dev)
-+{
-+	return (dev->id != DEVICE_ID_SINGLE) ? dev->unique_name : dev->name;
-+}
- 
- static inline const char *dev_name(const struct device_d *dev)
- {
 -- 
 2.17.1
 
