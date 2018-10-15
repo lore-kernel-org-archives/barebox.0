@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from enterprise02.smtp.diehl.com ([193.201.238.220])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gBySC-0001Uk-Oe
- for barebox@lists.infradead.org; Mon, 15 Oct 2018 08:42:29 +0000
-From: Denis OSTERLAND <denis.osterland@diehl.com>
-Date: Mon, 15 Oct 2018 08:41:45 +0000
-Message-ID: <1539592904.5886.15.camel@diehl.com>
+ id 1gByWK-0003Ph-Gd
+ for barebox@lists.infradead.org; Mon, 15 Oct 2018 08:46:38 +0000
 References: <20181004070400.12338-1-Denis.Osterland@diehl.com>
  <20181005065537.21844-1-Denis.Osterland@diehl.com>
  <20181010075129.u67xfq247pmn7sfb@pengutronix.de>
  <f20161e0-4c3b-9cd1-539b-dfd444085e24@pengutronix.de>
-In-Reply-To: <f20161e0-4c3b-9cd1-539b-dfd444085e24@pengutronix.de>
-Content-Language: en-US
-Content-ID: <B60D2745DD130E49B5B4D5A8CEBFEB9E@diehl.internal>
+ <1539592904.5886.15.camel@diehl.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Message-ID: <84bd5f0d-9fcd-f454-183c-2166e5707a87@pengutronix.de>
+Date: Mon, 15 Oct 2018 10:46:16 +0200
 MIME-Version: 1.0
+In-Reply-To: <1539592904.5886.15.camel@diehl.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +21,110 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0499512989114626628=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2] hab: Print events on info command.
-To: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "mkl@pengutronix.de" <mkl@pengutronix.de>
+To: Denis OSTERLAND <denis.osterland@diehl.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-SGksDQoNCkFtIEZyZWl0YWcsIGRlbiAxMi4xMC4yMDE4LCAwODoyMyArMDIwMCBzY2hyaWViIE1h
-cmMgS2xlaW5lLUJ1ZGRlOg0KPiANCj4gVGhlIGZhdWx0aW5nIHplcm8gcGFnZSBwcm9ibGVtIGRv
-ZXNuJ3Qgb2NjdXIgb24gbXgyNSBhbmQgbXgyOCBhcyB0aGUgSEFCDQo+IFJPTSBkb2Vzbid0IGxp
-dmUgYXQgMHgwOg0KPiANCj4gI2RlZmluZSBIQUJWNF9SVlRfSU1YMjggMHhmZmZmOGFmOA0KPiAN
-Cj4gaW50IGlteDI1X2hhYl9nZXRfc3RhdHVzKHZvaWQpDQo+IHsNCj4gwqDCoMKgwqDCoMKgwqDC
-oHJldHVybiBpbXhfaGFidjNfZ2V0X3N0YXR1cyhyZWFkbChJT01FTSgweDc4MDAxOGQ0KSkpOw0K
-PiB9DQo+wqANCj4gTWFyYw0KPiANCg0KVGhhbmtzIGZvciB0aGUgaW5mby4NClRoaXMgYmVjb21l
-cyBhIHByb2JsZW0gd2hlbiBNTVUgaXMgZW5hYmxlZCBhZ2Fpbi4NCkkgdGhpbmsgdGhpcyB3aWxs
-IHJlcXVpcmUgZXhwbGljaXQgbWFwcGluZy4NCkkgYW0gbm90IHN1cmUgaWYgaXQgaXMgcG9zc2li
-bGUgdG8gYWNjZXNzIHRoZSBBQkkgdGhyb3VnaCBtYXBwZWQgYWRkcmVzc2VzLg0KSXMgaXQgcG9z
-c2libGUgdG8gZm9yY2UgbWFwcGluZyBhdCBleGFjdCB0aGlzIGFkZHJlc3Nlcz8NCg0KUmVnYXJk
-cyBEZW5pcw0KDQoNCkRpZWhsIENvbm5lY3Rpdml0eSBTb2x1dGlvbnMgR21iSA0KR2VzY2jDpGZ0
-c2bDvGhydW5nOiBIb3JzdCBMZW9uYmVyZ2VyDQpTaXR6IGRlciBHZXNlbGxzY2hhZnQ6IE7DvHJu
-YmVyZyAtIFJlZ2lzdGVyZ2VyaWNodDogQW10c2dlcmljaHQNCk7DvHJuYmVyZzogSFJCIDMyMzE1
-DQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCg0KRGVyIEluaGFs
-dCBkZXIgdm9yc3RlaGVuZGVuIEUtTWFpbCBpc3QgbmljaHQgcmVjaHRsaWNoIGJpbmRlbmQuIERp
-ZXNlIEUtTWFpbCBlbnRoYWVsdCB2ZXJ0cmF1bGljaGUgdW5kL29kZXIgcmVjaHRsaWNoIGdlc2No
-dWV0enRlIEluZm9ybWF0aW9uZW4uDQpJbmZvcm1pZXJlbiBTaWUgdW5zIGJpdHRlLCB3ZW5uIFNp
-ZSBkaWVzZSBFLU1haWwgZmFlbHNjaGxpY2hlcndlaXNlIGVyaGFsdGVuIGhhYmVuLiBCaXR0ZSBs
-b2VzY2hlbiBTaWUgaW4gZGllc2VtIEZhbGwgZGllIE5hY2hyaWNodC4NCkplZGUgdW5lcmxhdWJ0
-ZSBGb3JtIGRlciBSZXByb2R1a3Rpb24sIEJla2FubnRnYWJlLCBBZW5kZXJ1bmcsIFZlcnRlaWx1
-bmcgdW5kL29kZXIgUHVibGlrYXRpb24gZGllc2VyIEUtTWFpbCBpc3Qgc3RyZW5nc3RlbnMgdW50
-ZXJzYWd0Lg0KVGhlIGNvbnRlbnRzIG9mIHRoZSBhYm92ZSBtZW50aW9uZWQgZS1tYWlsIGlzIG5v
-dCBsZWdhbGx5IGJpbmRpbmcuIFRoaXMgZS1tYWlsIGNvbnRhaW5zIGNvbmZpZGVudGlhbCBhbmQv
-b3IgbGVnYWxseSBwcm90ZWN0ZWQgaW5mb3JtYXRpb24uIFBsZWFzZSBpbmZvcm0gdXMgaWYgeW91
-IGhhdmUgcmVjZWl2ZWQgdGhpcyBlLW1haWwgYnkNCm1pc3Rha2UgYW5kIGRlbGV0ZSBpdCBpbiBz
-dWNoIGEgY2FzZS4gRWFjaCB1bmF1dGhvcml6ZWQgcmVwcm9kdWN0aW9uLCBkaXNjbG9zdXJlLCBh
-bHRlcmF0aW9uLCBkaXN0cmlidXRpb24gYW5kL29yIHB1YmxpY2F0aW9uIG9mIHRoaXMgZS1tYWls
-IGlzIHN0cmljdGx5IHByb2hpYml0ZWQuIA0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
-YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo=
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============0499512989114626628==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="8HOlMaOX71kfAsE0zDMURqjkcQWLXq64g"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--8HOlMaOX71kfAsE0zDMURqjkcQWLXq64g
+Content-Type: multipart/mixed; boundary="OyzpU5RaxyzU1WC8P2CGRf7FFOh6bTXzr";
+ protected-headers="v1"
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Denis OSTERLAND <denis.osterland@diehl.com>,
+ "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Message-ID: <84bd5f0d-9fcd-f454-183c-2166e5707a87@pengutronix.de>
+Subject: Re: [PATCH v2] hab: Print events on info command.
+References: <20181004070400.12338-1-Denis.Osterland@diehl.com>
+ <20181005065537.21844-1-Denis.Osterland@diehl.com>
+ <20181010075129.u67xfq247pmn7sfb@pengutronix.de>
+ <f20161e0-4c3b-9cd1-539b-dfd444085e24@pengutronix.de>
+ <1539592904.5886.15.camel@diehl.com>
+In-Reply-To: <1539592904.5886.15.camel@diehl.com>
+
+--OyzpU5RaxyzU1WC8P2CGRf7FFOh6bTXzr
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+
+On 10/15/2018 10:41 AM, Denis OSTERLAND wrote:
+>> The faulting zero page problem doesn't occur on mx25 and mx28 as the H=
+AB
+>> ROM doesn't live at 0x0:
+>>
+>> #define HABV4_RVT_IMX28 0xffff8af8
+>>
+>> int imx25_hab_get_status(void)
+>> {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return imx_habv3_get_s=
+tatus(readl(IOMEM(0x780018d4)));
+>> }
+>> =C2=A0
+>> Marc
+>>
+>=20
+> Thanks for the info.
+> This becomes a problem when MMU is enabled again.
+
+I think we have a 1-to-1 mapping by default, modulo the zero page.
+
+> I think this will require explicit mapping.
+> I am not sure if it is possible to access the ABI through mapped addres=
+ses.
+
+Probably not, I assume the code is not position independent.
+
+> Is it possible to force mapping at exact this addresses?
+
+Marc
+
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+
+
+--OyzpU5RaxyzU1WC8P2CGRf7FFOh6bTXzr--
+
+--8HOlMaOX71kfAsE0zDMURqjkcQWLXq64g
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEENrCndlB/VnAEWuH5k9IU1zQoZfEFAlvEU9gACgkQk9IU1zQo
+ZfFKtQgApydp+71x1ICO7LmFO/FIns7rk6WnqbzNALOOk/KKhbw0LkwlcmQVpYIa
+558WNbkSPV2tj+bI1k/nnCS3CUX2ka0TmT28usKZ1BDlm9fK7ldtbv6gh4XF9ogj
+IRSfMbixwLK0Uk+GE2OMtFU0+uGG102Sc2V+1xsbSA1kYpMGVTIWZ1lUrV4nCrJk
+ih8HxZJqfVAg6oCQHu02G5nJ2EutPlQcYTvFqbBy5z0+Kaj1GGQppF3l75L2k0gY
+1FPyk1C9gmgMH6jzzeBpYDYVa6+I7MkPY+Knhh2W4Hj3cQxSd+uQNJ8oInvNSySm
+NdLC2GsBQwKHrsuHYcu3cVncmpCKKQ==
+=Ti8g
+-----END PGP SIGNATURE-----
+
+--8HOlMaOX71kfAsE0zDMURqjkcQWLXq64g--
+
+
+--===============0499512989114626628==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============0499512989114626628==--
