@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gBsWG-0006wc-Qj
- for barebox@lists.infradead.org; Mon, 15 Oct 2018 02:22:25 +0000
-Received: by mail-pl1-x641.google.com with SMTP id 30-v6so8489898plb.10
- for <barebox@lists.infradead.org>; Sun, 14 Oct 2018 19:22:03 -0700 (PDT)
+ id 1gBsWD-0006vQ-7c
+ for barebox@lists.infradead.org; Mon, 15 Oct 2018 02:22:27 +0000
+Received: by mail-pf1-x443.google.com with SMTP id j23-v6so8866693pfi.4
+ for <barebox@lists.infradead.org>; Sun, 14 Oct 2018 19:22:00 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 14 Oct 2018 19:21:16 -0700
-Message-Id: <20181015022125.24020-14-andrew.smirnov@gmail.com>
+Date: Sun, 14 Oct 2018 19:21:14 -0700
+Message-Id: <20181015022125.24020-12-andrew.smirnov@gmail.com>
 In-Reply-To: <20181015022125.24020-1-andrew.smirnov@gmail.com>
 References: <20181015022125.24020-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,72 +23,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 13/22] linux: string: Port kbasename()
+Subject: [PATCH v3 11/22] base: Don't use shared buffer for results of dev_id()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port kbasename() from Linux and use it to implement basename() we
-already have.
+Using shared memory buffer to return results of dev_id() leads to
+incorrect results when used as follows:
+
+    dev_info(..., "... %s ...\n", ..., dev_name(foo), ...);
+
+since result returned for dev_name(foo) will be overwritten by
+dev_name() call that will happen as a part of dev_* logging functions.
+
+To prevent that allocate a dedicated field "unique_name" in struct
+device_d and use it to store unique name returned by
+dev_id()/dev_name().
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- include/linux/string.h | 12 ++++++++++++
- lib/libgen.c           | 16 ++--------------
- 2 files changed, 14 insertions(+), 14 deletions(-)
+ drivers/base/driver.c | 19 +++++++------------
+ include/driver.h      | 11 ++++++++++-
+ 2 files changed, 17 insertions(+), 13 deletions(-)
 
-diff --git a/include/linux/string.h b/include/linux/string.h
-index 3418b4fbe..c9823dab8 100644
---- a/include/linux/string.h
-+++ b/include/linux/string.h
-@@ -111,6 +111,18 @@ extern char *strim(char *);
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index c9e6e6ddd..b7720f31a 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -183,6 +183,13 @@ int register_device(struct device_d *new_device)
+ 		}
+ 	}
  
- void *memchr_inv(const void *start, int c, size_t bytes);
++	if (new_device->id != DEVICE_ID_SINGLE)
++		snprintf(new_device->unique_name,
++			 sizeof(new_device->unique_name),
++			 FORMAT_DRIVER_NAME_ID,
++			 new_device->name,
++			 new_device->id);
++
+ 	debug ("register_device: %s\n", dev_name(new_device));
  
-+/**
-+ * kbasename - return the last part of a pathname.
-+ *
-+ * @path: path to extract the filename from.
-+ */
-+static inline const char *kbasename(const char *path)
+ 	list_add_tail(&new_device->list, &device_list);
+@@ -466,18 +473,6 @@ int dummy_probe(struct device_d *dev)
+ }
+ EXPORT_SYMBOL(dummy_probe);
+ 
+-const char *dev_id(const struct device_d *dev)
+-{
+-	static char buf[MAX_DRIVER_NAME + 16];
+-
+-	if (dev->id != DEVICE_ID_SINGLE)
+-		snprintf(buf, sizeof(buf), FORMAT_DRIVER_NAME_ID, dev->name, dev->id);
+-	else
+-		snprintf(buf, sizeof(buf), "%s", dev->name);
+-
+-	return buf;
+-}
+-
+ /**
+  * dev_set_name - set a device name
+  * @dev: device
+diff --git a/include/driver.h b/include/driver.h
+index c12ca9c2f..94fddc735 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -45,6 +45,12 @@ struct device_d {
+ 	 * be used instead.
+ 	 */
+ 	char name[MAX_DRIVER_NAME];
++
++	/*! This member is used to store device's unique name as
++	 *  obtained by calling dev_id(). Internal field, do not
++	 *  access it directly.
++	  */
++	char unique_name[MAX_DRIVER_NAME + 16];
+ 	/*! The id is used to uniquely identify a device in the system. The id
+ 	 * will show up under /dev/ as the device's name. Usually this is
+ 	 * something like eth0 or nor0. */
+@@ -173,7 +179,10 @@ int get_free_deviceid(const char *name_template);
+ 
+ char *deviceid_from_spec_str(const char *str, char **endp);
+ 
+-extern const char *dev_id(const struct device_d *dev);
++static inline const char *dev_id(const struct device_d *dev)
 +{
-+	const char *tail = strrchr(path, '/');
-+	return tail ? tail + 1 : path;
++	return (dev->id != DEVICE_ID_SINGLE) ? dev->unique_name : dev->name;
 +}
-+
-+
- #ifdef __cplusplus
- }
- #endif
-diff --git a/lib/libgen.c b/lib/libgen.c
-index 08ef3528a..61a8670fb 100644
---- a/lib/libgen.c
-+++ b/lib/libgen.c
-@@ -17,23 +17,11 @@
  
- #include <common.h>
- #include <libgen.h>
-+#include <linux/string.h>
- 
- char *basename (char *path)
+ static inline const char *dev_name(const struct device_d *dev)
  {
--	char *fname;
--
--	if(!strchr(path, '/'))
--		return path;
--
--	fname = path + strlen(path) - 1;
--	while (fname >= path) {
--		if (*fname == '/') {
--			fname++;
--			break;
--		}
--		fname--;
--	}
--	return fname;
-+	return (char *)kbasename(path);
- }
- EXPORT_SYMBOL(basename);
- 
 -- 
 2.17.1
 
