@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from enterprise02.smtp.diehl.com ([193.201.238.220])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gAqrF-0006jM-2z
- for barebox@lists.infradead.org; Fri, 12 Oct 2018 06:23:34 +0000
+ id 1gBySC-0001Uk-Oe
+ for barebox@lists.infradead.org; Mon, 15 Oct 2018 08:42:29 +0000
+From: Denis OSTERLAND <denis.osterland@diehl.com>
+Date: Mon, 15 Oct 2018 08:41:45 +0000
+Message-ID: <1539592904.5886.15.camel@diehl.com>
 References: <20181004070400.12338-1-Denis.Osterland@diehl.com>
  <20181005065537.21844-1-Denis.Osterland@diehl.com>
  <20181010075129.u67xfq247pmn7sfb@pengutronix.de>
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Message-ID: <f20161e0-4c3b-9cd1-539b-dfd444085e24@pengutronix.de>
-Date: Fri, 12 Oct 2018 08:23:15 +0200
+ <f20161e0-4c3b-9cd1-539b-dfd444085e24@pengutronix.de>
+In-Reply-To: <f20161e0-4c3b-9cd1-539b-dfd444085e24@pengutronix.de>
+Content-Language: en-US
+Content-ID: <B60D2745DD130E49B5B4D5A8CEBFEB9E@diehl.internal>
 MIME-Version: 1.0
-In-Reply-To: <20181010075129.u67xfq247pmn7sfb@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,111 +22,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1893294284617580739=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2] hab: Print events on info command.
-To: Sascha Hauer <s.hauer@pengutronix.de>, Denis OSTERLAND <denis.osterland@diehl.com>
+To: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "mkl@pengutronix.de" <mkl@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============1893294284617580739==
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="gY0b3c7cBmNUZwH9NHAX4iuEEFBDMduZ0"
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---gY0b3c7cBmNUZwH9NHAX4iuEEFBDMduZ0
-Content-Type: multipart/mixed; boundary="hrbA83yv3HdP2fZqN2R076QWpE1cQ5uF7";
- protected-headers="v1"
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Denis OSTERLAND <denis.osterland@diehl.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Message-ID: <f20161e0-4c3b-9cd1-539b-dfd444085e24@pengutronix.de>
-Subject: Re: [PATCH v2] hab: Print events on info command.
-References: <20181004070400.12338-1-Denis.Osterland@diehl.com>
- <20181005065537.21844-1-Denis.Osterland@diehl.com>
- <20181010075129.u67xfq247pmn7sfb@pengutronix.de>
-In-Reply-To: <20181010075129.u67xfq247pmn7sfb@pengutronix.de>
-
---hrbA83yv3HdP2fZqN2R076QWpE1cQ5uF7
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-
-On 10/10/2018 09:51 AM, Sascha Hauer wrote:
->> +static inline int hab_get_status(void)
->> +{
->> +	if (IS_ENABLED(CONFIG_MMU))
->> +		return -EIO;
->=20
-> This restriction makes this patch rather unhandy to use. Internally we
-> use imx*_hab_get_status() indeed with MMU enabled and it works fine, bu=
-t
-> we call it before mmu_init is called. In this state the MMU is enabled
-> already, but the zero page is not yet set to faulting. So I think the
-> problem is not the MMU as such, but instead the faulting zero page.
-
-BTW:
-
-The faulting zero page problem doesn't occur on mx25 and mx28 as the HAB
-ROM doesn't live at 0x0:
-
-#define HABV4_RVT_IMX28 0xffff8af8
-
-int imx25_hab_get_status(void)
-{
-        return imx_habv3_get_status(readl(IOMEM(0x780018d4)));
-}
-
-> It would be great if we could overcome this issue. One way to do this
-> would be to add a function pair mmu_zero_page_map() and
-> mmu_zero_page_set_faulting() to be called in hab_get_status().
->=20
-> I don't know if you are willing to add that, but I don't want to
-> motivate people to disable the MMU, so the patch is not acceptable as
-> is.
-Marc
-
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
-
-
---hrbA83yv3HdP2fZqN2R076QWpE1cQ5uF7--
-
---gY0b3c7cBmNUZwH9NHAX4iuEEFBDMduZ0
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEENrCndlB/VnAEWuH5k9IU1zQoZfEFAlvAPdMACgkQk9IU1zQo
-ZfEigAf9GgBu0fDxIeafZ93skRuMngh8RMQv/RXkD9Y1VrIiZs+AeYr6HWSVOFfS
-InDg+MoDYdsHwcbpeCv43V7nQIyoK3v7aEsTTFwBbc1kFwooMhY/FPPg/Ap1dWSV
-oxTvVC4KY5ccHAzJPXk6zkg6wCvCjypMtcDy6fAAVNL/5SpsAjLE07AbFBPVX0c3
-erxC4pO+GyQ6LfDEmgZN/BQqBjdgR+M/EXC1Ppqb5hyWxOXvcQyQC4yIFAZJqHan
-FtVVVP/2aU0ZubhvY7xe0rLH5KJp6fX4/0pFyrQCR8dQn1u+dpY55MdKWnfMuugA
-4JQkTa62DzOWjpJ837UPLWAnE2qExQ==
-=rY+U
------END PGP SIGNATURE-----
-
---gY0b3c7cBmNUZwH9NHAX4iuEEFBDMduZ0--
-
-
---===============1893294284617580739==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1893294284617580739==--
+SGksDQoNCkFtIEZyZWl0YWcsIGRlbiAxMi4xMC4yMDE4LCAwODoyMyArMDIwMCBzY2hyaWViIE1h
+cmMgS2xlaW5lLUJ1ZGRlOg0KPiANCj4gVGhlIGZhdWx0aW5nIHplcm8gcGFnZSBwcm9ibGVtIGRv
+ZXNuJ3Qgb2NjdXIgb24gbXgyNSBhbmQgbXgyOCBhcyB0aGUgSEFCDQo+IFJPTSBkb2Vzbid0IGxp
+dmUgYXQgMHgwOg0KPiANCj4gI2RlZmluZSBIQUJWNF9SVlRfSU1YMjggMHhmZmZmOGFmOA0KPiAN
+Cj4gaW50IGlteDI1X2hhYl9nZXRfc3RhdHVzKHZvaWQpDQo+IHsNCj4gwqDCoMKgwqDCoMKgwqDC
+oHJldHVybiBpbXhfaGFidjNfZ2V0X3N0YXR1cyhyZWFkbChJT01FTSgweDc4MDAxOGQ0KSkpOw0K
+PiB9DQo+wqANCj4gTWFyYw0KPiANCg0KVGhhbmtzIGZvciB0aGUgaW5mby4NClRoaXMgYmVjb21l
+cyBhIHByb2JsZW0gd2hlbiBNTVUgaXMgZW5hYmxlZCBhZ2Fpbi4NCkkgdGhpbmsgdGhpcyB3aWxs
+IHJlcXVpcmUgZXhwbGljaXQgbWFwcGluZy4NCkkgYW0gbm90IHN1cmUgaWYgaXQgaXMgcG9zc2li
+bGUgdG8gYWNjZXNzIHRoZSBBQkkgdGhyb3VnaCBtYXBwZWQgYWRkcmVzc2VzLg0KSXMgaXQgcG9z
+c2libGUgdG8gZm9yY2UgbWFwcGluZyBhdCBleGFjdCB0aGlzIGFkZHJlc3Nlcz8NCg0KUmVnYXJk
+cyBEZW5pcw0KDQoNCkRpZWhsIENvbm5lY3Rpdml0eSBTb2x1dGlvbnMgR21iSA0KR2VzY2jDpGZ0
+c2bDvGhydW5nOiBIb3JzdCBMZW9uYmVyZ2VyDQpTaXR6IGRlciBHZXNlbGxzY2hhZnQ6IE7DvHJu
+YmVyZyAtIFJlZ2lzdGVyZ2VyaWNodDogQW10c2dlcmljaHQNCk7DvHJuYmVyZzogSFJCIDMyMzE1
+DQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCg0KRGVyIEluaGFs
+dCBkZXIgdm9yc3RlaGVuZGVuIEUtTWFpbCBpc3QgbmljaHQgcmVjaHRsaWNoIGJpbmRlbmQuIERp
+ZXNlIEUtTWFpbCBlbnRoYWVsdCB2ZXJ0cmF1bGljaGUgdW5kL29kZXIgcmVjaHRsaWNoIGdlc2No
+dWV0enRlIEluZm9ybWF0aW9uZW4uDQpJbmZvcm1pZXJlbiBTaWUgdW5zIGJpdHRlLCB3ZW5uIFNp
+ZSBkaWVzZSBFLU1haWwgZmFlbHNjaGxpY2hlcndlaXNlIGVyaGFsdGVuIGhhYmVuLiBCaXR0ZSBs
+b2VzY2hlbiBTaWUgaW4gZGllc2VtIEZhbGwgZGllIE5hY2hyaWNodC4NCkplZGUgdW5lcmxhdWJ0
+ZSBGb3JtIGRlciBSZXByb2R1a3Rpb24sIEJla2FubnRnYWJlLCBBZW5kZXJ1bmcsIFZlcnRlaWx1
+bmcgdW5kL29kZXIgUHVibGlrYXRpb24gZGllc2VyIEUtTWFpbCBpc3Qgc3RyZW5nc3RlbnMgdW50
+ZXJzYWd0Lg0KVGhlIGNvbnRlbnRzIG9mIHRoZSBhYm92ZSBtZW50aW9uZWQgZS1tYWlsIGlzIG5v
+dCBsZWdhbGx5IGJpbmRpbmcuIFRoaXMgZS1tYWlsIGNvbnRhaW5zIGNvbmZpZGVudGlhbCBhbmQv
+b3IgbGVnYWxseSBwcm90ZWN0ZWQgaW5mb3JtYXRpb24uIFBsZWFzZSBpbmZvcm0gdXMgaWYgeW91
+IGhhdmUgcmVjZWl2ZWQgdGhpcyBlLW1haWwgYnkNCm1pc3Rha2UgYW5kIGRlbGV0ZSBpdCBpbiBz
+dWNoIGEgY2FzZS4gRWFjaCB1bmF1dGhvcml6ZWQgcmVwcm9kdWN0aW9uLCBkaXNjbG9zdXJlLCBh
+bHRlcmF0aW9uLCBkaXN0cmlidXRpb24gYW5kL29yIHB1YmxpY2F0aW9uIG9mIHRoaXMgZS1tYWls
+IGlzIHN0cmljdGx5IHByb2hpYml0ZWQuIA0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
+YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
+ZWJveAo=
