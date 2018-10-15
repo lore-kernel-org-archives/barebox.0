@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x144.google.com ([2a00:1450:4864:20::144])
+Received: from mail-wr1-x444.google.com ([2a00:1450:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gBz97-0002ow-HE
- for barebox@lists.infradead.org; Mon, 15 Oct 2018 09:26:54 +0000
-Received: by mail-lf1-x144.google.com with SMTP id a82-v6so13564191lfa.4
- for <barebox@lists.infradead.org>; Mon, 15 Oct 2018 02:26:30 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 15 Oct 2018 12:26:11 +0300
-Message-Id: <20181015092611.7223-1-antonynpavlov@gmail.com>
+ id 1gC4B2-0007TU-Cf
+ for barebox@lists.infradead.org; Mon, 15 Oct 2018 14:49:01 +0000
+Received: by mail-wr1-x444.google.com with SMTP id 61-v6so21677532wrb.6
+ for <barebox@lists.infradead.org>; Mon, 15 Oct 2018 07:48:50 -0700 (PDT)
 MIME-Version: 1.0
+References: <20181015092611.7223-1-antonynpavlov@gmail.com>
+In-Reply-To: <20181015092611.7223-1-antonynpavlov@gmail.com>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 15 Oct 2018 07:48:37 -0700
+Message-ID: <CAHQ1cqHWfr=Kxqr81ekhMdF_j43eCUNECj+QKSXz_iO3YUKLOQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,63 +23,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: make routing work after dhcp command
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH] net: make routing work after dhcp command
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-At the moment only ifup stuff turns netif up.
-After the commit f0624a701513 ('net: Do not route traffic
-to interfaces that are not up') the dhcp command
-keeps netif->ifup == false and network subsystem
-can't route packets.
+On Mon, Oct 15, 2018 at 2:26 AM Antony Pavlov <antonynpavlov@gmail.com> wrote:
+>
+> At the moment only ifup stuff turns netif up.
+> After the commit f0624a701513 ('net: Do not route traffic
+> to interfaces that are not up') the dhcp command
+> keeps netif->ifup == false and network subsystem
+> can't route packets.
+>
 
-How to repropduce the problem on qemu-malta_defconfig:
+I am not really trying to make any objections to this patch, however I
+can't seem to find any documented mention that just calling "dhcp" is
+sufficient to bring network up in barebox.
+Documentation/user/networking.rst explicitly tells one to use "ifup"
+for both static and dynamic IP configurations. That being said just
+calling "dhcp" used to work, so this is definitely a regression and it
+might make sense to apply this fix.
 
-    qemu-system-mips -nodefaults -M malta -m 256 \
-                     -nographic -serial stdio -monitor null \
-                     -bios barebox-flash-image \
-                     -net user -net nic,model=rtl8139
-
-    ...
-
-    barebox:/ dhcp
-    eth0: 100Mbps full duplex link detected
-    eth0: DHCP client bound to address 10.0.2.15
-    barebox:/ ping 10.0.2.2
-    ping failed: No route to host
-
-However if ifup command is used for network interface
-configuration then there is no network problem, e.g.
-
-    barebox:/ ifup eth0
-    eth0: 100Mbps full duplex link detected
-    eth0: DHCP client bound to address 10.0.2.15
-    barebox:/ ping 10.0.2.2
-    host 10.0.2.2 is alive
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-CC: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- net/dhcp.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/dhcp.c b/net/dhcp.c
-index 984d32a93e..427d80a5a8 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -615,6 +615,9 @@ int dhcp(struct eth_device *edev, const struct dhcp_req_param *param)
- 
- 	dhcp_result_free(res);
- 
-+	if (!ret)
-+		edev->ifup = true;
-+
- 	return ret;
- }
- 
--- 
-2.19.1
-
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
