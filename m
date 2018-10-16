@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gCUpQ-0004ZZ-G2
+ id 1gCUpQ-0004aQ-G5
  for barebox@lists.infradead.org; Tue, 16 Oct 2018 19:16:36 +0000
-Received: by mail-pg1-x543.google.com with SMTP id g12-v6so11310089pgs.1
- for <barebox@lists.infradead.org>; Tue, 16 Oct 2018 12:16:20 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id d8-v6so82765pgv.10
+ for <barebox@lists.infradead.org>; Tue, 16 Oct 2018 12:16:21 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 16 Oct 2018 12:15:38 -0700
-Message-Id: <20181016191552.16690-9-andrew.smirnov@gmail.com>
+Date: Tue, 16 Oct 2018 12:15:39 -0700
+Message-Id: <20181016191552.16690-10-andrew.smirnov@gmail.com>
 In-Reply-To: <20181016191552.16690-1-andrew.smirnov@gmail.com>
 References: <20181016191552.16690-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,28 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 08/22] aiodev: imx_thermal: Give aiodev a more descriptive
- name
+Subject: [PATCH v4 09/22] aiodev: qoriq_thermal: Give aiodev a more
+ descriptive name
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/aiodev/imx_thermal.c | 1 +
+ drivers/aiodev/qoriq_thermal.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/aiodev/imx_thermal.c b/drivers/aiodev/imx_thermal.c
-index c020a1091..9e5070835 100644
---- a/drivers/aiodev/imx_thermal.c
-+++ b/drivers/aiodev/imx_thermal.c
-@@ -177,6 +177,7 @@ static int imx_thermal_probe(struct device_d *dev)
+diff --git a/drivers/aiodev/qoriq_thermal.c b/drivers/aiodev/qoriq_thermal.c
+index d29da02a6..7556fef02 100644
+--- a/drivers/aiodev/qoriq_thermal.c
++++ b/drivers/aiodev/qoriq_thermal.c
+@@ -232,6 +232,7 @@ static int qoriq_tmu_probe(struct device_d *dev)
  
- 	imx_thermal->aiodev.num_channels = 1;
- 	imx_thermal->aiodev.hwdev = dev;
-+	imx_thermal->aiodev.name = "thermal-sensor";
- 	imx_thermal->aiodev.channels =
- 		xmalloc(imx_thermal->aiodev.num_channels *
- 			sizeof(imx_thermal->aiodev.channels[0]));
+ 	data->aiodev.num_channels = 1;
+ 	data->aiodev.hwdev = dev;
++	data->aiodev.name = "thermal-sensor";
+ 	data->aiodev.channels = xmalloc(data->aiodev.num_channels *
+ 					sizeof(data->aiodev.channels[0]));
+ 	data->aiodev.channels[0] = &data->aiochan;
 -- 
 2.17.1
 
