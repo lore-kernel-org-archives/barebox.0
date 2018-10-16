@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gCJE7-00053S-QE
- for barebox@lists.infradead.org; Tue, 16 Oct 2018 06:53:14 +0000
-Date: Tue, 16 Oct 2018 08:52:58 +0200
+ id 1gCJHe-0006aR-KK
+ for barebox@lists.infradead.org; Tue, 16 Oct 2018 06:56:52 +0000
+Date: Tue, 16 Oct 2018 08:56:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181016065258.xwnuhzcc7v2ldtnb@pengutronix.de>
-References: <20181015092611.7223-1-antonynpavlov@gmail.com>
- <CAHQ1cqHWfr=Kxqr81ekhMdF_j43eCUNECj+QKSXz_iO3YUKLOQ@mail.gmail.com>
+Message-ID: <20181016065638.t5mwfenlcb4iz5tp@pengutronix.de>
+References: <1034587066.7904413.1539615604832.JavaMail.zimbra@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAHQ1cqHWfr=Kxqr81ekhMdF_j43eCUNECj+QKSXz_iO3YUKLOQ@mail.gmail.com>
+In-Reply-To: <1034587066.7904413.1539615604832.JavaMail.zimbra@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,39 +18,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: make routing work after dhcp command
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH] phy: call adjust_link in attach if using fixed-link
+To: =?iso-8859-15?Q?Cl=E9ment?= Leger <cleger@kalray.eu>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Oct 15, 2018 at 07:48:37AM -0700, Andrey Smirnov wrote:
-> On Mon, Oct 15, 2018 at 2:26 AM Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> >
-> > At the moment only ifup stuff turns netif up.
-> > After the commit f0624a701513 ('net: Do not route traffic
-> > to interfaces that are not up') the dhcp command
-> > keeps netif->ifup == false and network subsystem
-> > can't route packets.
-> >
-> 
-> I am not really trying to make any objections to this patch, however I
-> can't seem to find any documented mention that just calling "dhcp" is
-> sufficient to bring network up in barebox.
-> Documentation/user/networking.rst explicitly tells one to use "ifup"
-> for both static and dynamic IP configurations. That being said just
-> calling "dhcp" used to work, so this is definitely a regression and it
-> might make sense to apply this fix.
+On Mon, Oct 15, 2018 at 05:00:04PM +0200, Cl=E9ment Leger wrote:
+> Normally, phy_update_status is in charge of reporting a change in link
+> status when phy is updated. When using fixed-link, speed and duplex are
+> initialized directly after registering the phy and there is no driver.
+> Hence when phy_update_status is called, the check for new values fails
+> and returns directly. Since update_link call is mandatory for some
+> network devices to work, call it directly when using fixed link in
+> phy_device_attach to force update of link.
+> =
 
-Yes, it used to work and it should continue to work, so applied this
-one.
+> Signed-off-by: Clement Leger <clement.leger@kalray.eu>
+> ---
+>  drivers/net/phy/phy.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+
+Indeed, sounds logical. Applied, thanks
 
 Sascha
 
+> =
 
--- 
+> diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+> index 42dcad906..63f249fcf 100644
+> --- a/drivers/net/phy/phy.c
+> +++ b/drivers/net/phy/phy.c
+> @@ -398,6 +398,10 @@ static int phy_device_attach(struct phy_device *phy,=
+ struct eth_device *edev,
+>  =
+
+>  	phy->adjust_link =3D adjust_link;
+>  =
+
+> +	/* If the phy is a fixed-link, then call adjust_link directly */
+> +	if (!phy->bus && adjust_link)
+> +		adjust_link(edev);
+> +
+>  	return 0;
+>  }
+>  =
+
+> -- =
+
+> 2.15.0.276.g89ea799
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> =
+
+
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
