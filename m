@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gCUpd-0004eg-3Y
- for barebox@lists.infradead.org; Tue, 16 Oct 2018 19:17:08 +0000
-Received: by mail-pl1-x641.google.com with SMTP id u6-v6so8734829plz.4
- for <barebox@lists.infradead.org>; Tue, 16 Oct 2018 12:16:30 -0700 (PDT)
+ id 1gCUpb-0004eE-7Y
+ for barebox@lists.infradead.org; Tue, 16 Oct 2018 19:17:07 +0000
+Received: by mail-pl1-x644.google.com with SMTP id y15-v6so11464463plr.12
+ for <barebox@lists.infradead.org>; Tue, 16 Oct 2018 12:16:29 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 16 Oct 2018 12:15:45 -0700
-Message-Id: <20181016191552.16690-16-andrew.smirnov@gmail.com>
+Date: Tue, 16 Oct 2018 12:15:44 -0700
+Message-Id: <20181016191552.16690-15-andrew.smirnov@gmail.com>
 In-Reply-To: <20181016191552.16690-1-andrew.smirnov@gmail.com>
 References: <20181016191552.16690-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,47 +23,126 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 15/22] mdio_bus: Fix documentation for mdio_bus_match()
+Subject: [PATCH v4 14/22] of: Port latest of_device_make_bus_id()
+ implementation
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Fix documentation for mdio_bus_match(). While at it, re-arrange the
-code to be easier to follow. Seeing != used as a result of a matching
-function is extremely confusing.
+Code implementing of_device_make_bus_id() in Barebox uses rather old
+implementation from Linux kernel and has a very significan limitation
+in that it will produce identical names for different DT nodes that
+happen to have the same node name as well as "reg" property.
+
+One such example, that tirggered this change, is "switch@0" nodes that
+can be found in dts/src/arm/vf610-zii-dev-rev-c.dts
+
+This commit replaces original code with the current Linux kernel
+implementation that traverses DT hierarchy from leaf node to its root
+concatenating node names in the process.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/phy/mdio_bus.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/of/platform.c | 80 ++++++++++++-------------------------------
+ 1 file changed, 22 insertions(+), 58 deletions(-)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index 177d54863..d7d6d8940 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -335,16 +335,19 @@ EXPORT_SYMBOL(of_mdio_find_bus);
-  * @dev: target PHY device
-  * @drv: given PHY driver
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index 4fd3ce2b7..17052f419 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -43,71 +43,35 @@ EXPORT_SYMBOL(of_find_device_by_node);
+  * of_device_make_bus_id - Use the device node data to assign a unique name
+  * @dev: pointer to device structure that is linked to a device tree node
   *
-- * Description: Given a PHY device, and a PHY driver, return 1 if
-- *   the driver supports the device.  Otherwise, return 0.
-+ * Description: Given a PHY device, and a PHY driver, return 0 if
-+ *   the driver supports the device.  Otherwise, return 1.
+- * This routine will first try using either the dcr-reg or the reg property
+- * value to derive a unique name.  As a last resort it will use the node
+- * name followed by a unique number.
++ * This routine will first try using the translated bus address to
++ * derive a unique name. If it cannot, then it will prepend names from
++ * parent nodes until a unique name can be derived.
   */
- static int mdio_bus_match(struct device_d *dev, struct driver_d *drv)
+ static void of_device_make_bus_id(struct device_d *dev)
  {
- 	struct phy_device *phydev = to_phy_device(dev);
- 	struct phy_driver *phydrv = to_phy_driver(drv);
- 
--	return ((phydrv->phy_id & phydrv->phy_id_mask) !=
--		(phydev->phy_id & phydrv->phy_id_mask));
-+	if ((phydrv->phy_id & phydrv->phy_id_mask) ==
-+	    (phydev->phy_id & phydrv->phy_id_mask))
-+		return 0;
+-	static int bus_no_reg_magic;
+-	struct device_node *np = dev->device_node;
+-	const __be32 *reg, *addrp;
++	struct device_node *node = dev->device_node;
++	const __be32 *reg;
+ 	u64 addr;
+-	char *name, *at;
+-
+-	name = xstrdup(np->name);
+-	at = strchr(name, '@');
+-	if (at)
+-		*at = '\0';
+-
+-#ifdef CONFIG_PPC_DCR
+-	/*
+-	 * If it's a DCR based device, use 'd' for native DCRs
+-	 * and 'D' for MMIO DCRs.
+-	 */
+-	reg = of_get_property(np, "dcr-reg", NULL);
+-	if (reg) {
+-#ifdef CONFIG_PPC_DCR_NATIVE
+-		dev_set_name(dev, "d%x.%s", *reg, name);
+-#else /* CONFIG_PPC_DCR_NATIVE */
+-		u64 addr = of_translate_dcr_address(np, *reg, NULL);
+-		if (addr != OF_BAD_ADDR) {
+-			dev_set_name(dev, "D%llx.%s",
+-				     (unsigned long long)addr, name);
+-			free(name);
+-			return;
+-		}
+-#endif /* !CONFIG_PPC_DCR_NATIVE */
+-	}
+-#endif /* CONFIG_PPC_DCR */
+-
+-	/*
+-	 * For MMIO, get the physical address
+-	 */
+-	reg = of_get_property(np, "reg", NULL);
+-	if (reg) {
+-		if (of_can_translate_address(np)) {
+-			addr = of_translate_address(np, reg);
+-		} else {
+-			addrp = of_get_address(np, 0, NULL, NULL);
+-			if (addrp)
+-				addr = of_read_number(addrp, 1);
+-			else
+-				addr = OF_BAD_ADDR;
+-		}
+-		if (addr != OF_BAD_ADDR) {
+-			dev_set_name(dev, "%llx.%s",
+-				     (unsigned long long)addr, name);
+-			free(name);
 +
-+	return 1;
++	/* Construct the name, using parent nodes if necessary to ensure uniqueness */
++	while (node->parent) {
++		/*
++		 * If the address can be translated, then that is as much
++		 * uniqueness as we need. Make it the first component and return
++		 */
++		reg = of_get_property(node, "reg", NULL);
++		if (reg && (addr = of_translate_address(node, reg)) != OF_BAD_ADDR) {
++			dev_set_name(dev, dev->name ? "%llx.%s:%s" : "%llx.%s",
++				     (unsigned long long)addr, node->name,
++				     dev->name);
+ 			return;
+ 		}
+-	}
+ 
+-	/*
+-	 * No BusID, use the node name and add a globally incremented counter
+-	 */
+-	dev_set_name(dev, "%s.%d", name, bus_no_reg_magic++);
+-	free(name);
++		/* format arguments only used if dev_name() resolves to NULL */
++		dev_set_name(dev, dev->name ? "%s:%s" : "%s",
++			     kbasename(node->full_name), dev->name);
++		node = node->parent;
++	}
  }
  
- static ssize_t phydev_read(struct cdev *cdev, void *_buf, size_t count, loff_t offset, ulong flags)
+ /**
 -- 
 2.17.1
 
