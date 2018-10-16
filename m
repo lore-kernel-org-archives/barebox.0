@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gCUpX-0004gv-Pj
- for barebox@lists.infradead.org; Tue, 16 Oct 2018 19:16:53 +0000
-Received: by mail-pg1-x542.google.com with SMTP id r9-v6so11308099pgv.6
- for <barebox@lists.infradead.org>; Tue, 16 Oct 2018 12:16:35 -0700 (PDT)
+ id 1gCUpa-0004d6-97
+ for barebox@lists.infradead.org; Tue, 16 Oct 2018 19:16:58 +0000
+Received: by mail-pf1-x441.google.com with SMTP id l81-v6so11931598pfg.3
+ for <barebox@lists.infradead.org>; Tue, 16 Oct 2018 12:16:27 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 16 Oct 2018 12:15:48 -0700
-Message-Id: <20181016191552.16690-19-andrew.smirnov@gmail.com>
+Date: Tue, 16 Oct 2018 12:15:43 -0700
+Message-Id: <20181016191552.16690-14-andrew.smirnov@gmail.com>
 In-Reply-To: <20181016191552.16690-1-andrew.smirnov@gmail.com>
 References: <20181016191552.16690-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,46 +23,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 18/22] net: phy: Check phy_mask in get_phy_device()
+Subject: [PATCH v4 13/22] linux: string: Port kbasename()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Do not try to probe PHY devices if they are masked in phy_mask. This
-way we won't try adding devices that are unlikely to be proper PHYs by
-default. With this change it still remains possible to add such a
-device explicitly either using "miitool" or calling
-phy_device_create() explicilty.
+Port kbasename() from Linux and use it to implement basename() we
+already have.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/phy/phy.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/linux/string.h | 12 ++++++++++++
+ lib/libgen.c           | 16 ++--------------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 19d458e07..b985b7567 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -234,6 +234,10 @@ struct phy_device *get_phy_device(struct mii_bus *bus, int addr)
- 	u32 phy_id = 0;
- 	int r;
+diff --git a/include/linux/string.h b/include/linux/string.h
+index 3418b4fbe..c9823dab8 100644
+--- a/include/linux/string.h
++++ b/include/linux/string.h
+@@ -111,6 +111,18 @@ extern char *strim(char *);
  
-+	/* skip masked out PHY addresses */
-+	if (bus->phy_mask & BIT(addr))
-+		return ERR_PTR(-ENODEV);
+ void *memchr_inv(const void *start, int c, size_t bytes);
+ 
++/**
++ * kbasename - return the last part of a pathname.
++ *
++ * @path: path to extract the filename from.
++ */
++static inline const char *kbasename(const char *path)
++{
++	const char *tail = strrchr(path, '/');
++	return tail ? tail + 1 : path;
++}
 +
- 	r = get_phy_id(bus, addr, &phy_id);
- 	if (r)
- 		return ERR_PTR(r);
-@@ -440,9 +444,6 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
- 	}
++
+ #ifdef __cplusplus
+ }
+ #endif
+diff --git a/lib/libgen.c b/lib/libgen.c
+index 08ef3528a..61a8670fb 100644
+--- a/lib/libgen.c
++++ b/lib/libgen.c
+@@ -17,23 +17,11 @@
  
- 	for (i = 0; i < PHY_MAX_ADDR && !edev->phydev; i++) {
--		/* skip masked out PHY addresses */
--		if (bus->phy_mask & (1 << i))
--			continue;
+ #include <common.h>
+ #include <libgen.h>
++#include <linux/string.h>
  
- 		phy = mdiobus_scan(bus, i);
- 		if (IS_ERR(phy))
+ char *basename (char *path)
+ {
+-	char *fname;
+-
+-	if(!strchr(path, '/'))
+-		return path;
+-
+-	fname = path + strlen(path) - 1;
+-	while (fname >= path) {
+-		if (*fname == '/') {
+-			fname++;
+-			break;
+-		}
+-		fname--;
+-	}
+-	return fname;
++	return (char *)kbasename(path);
+ }
+ EXPORT_SYMBOL(basename);
+ 
 -- 
 2.17.1
 
