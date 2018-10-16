@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gCUpb-0004eE-7Y
- for barebox@lists.infradead.org; Tue, 16 Oct 2018 19:17:07 +0000
-Received: by mail-pl1-x644.google.com with SMTP id y15-v6so11464463plr.12
- for <barebox@lists.infradead.org>; Tue, 16 Oct 2018 12:16:29 -0700 (PDT)
+ id 1gCUpe-0004fL-Rl
+ for barebox@lists.infradead.org; Tue, 16 Oct 2018 19:17:08 +0000
+Received: by mail-pf1-x444.google.com with SMTP id f26-v6so11919596pfn.9
+ for <barebox@lists.infradead.org>; Tue, 16 Oct 2018 12:16:32 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 16 Oct 2018 12:15:44 -0700
-Message-Id: <20181016191552.16690-15-andrew.smirnov@gmail.com>
+Date: Tue, 16 Oct 2018 12:15:46 -0700
+Message-Id: <20181016191552.16690-17-andrew.smirnov@gmail.com>
 In-Reply-To: <20181016191552.16690-1-andrew.smirnov@gmail.com>
 References: <20181016191552.16690-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,126 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 14/22] of: Port latest of_device_make_bus_id()
- implementation
+Subject: [PATCH v4 16/22] include: linux: phy: Add missing PHY_INTERFACE_*
+ constants
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Code implementing of_device_make_bus_id() in Barebox uses rather old
-implementation from Linux kernel and has a very significan limitation
-in that it will produce identical names for different DT nodes that
-happen to have the same node name as well as "reg" property.
-
-One such example, that tirggered this change, is "switch@0" nodes that
-can be found in dts/src/arm/vf610-zii-dev-rev-c.dts
-
-This commit replaces original code with the current Linux kernel
-implementation that traverses DT hierarchy from leaf node to its root
-concatenating node names in the process.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/of/platform.c | 80 ++++++++++++-------------------------------
- 1 file changed, 22 insertions(+), 58 deletions(-)
+ include/linux/phy.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index 4fd3ce2b7..17052f419 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -43,71 +43,35 @@ EXPORT_SYMBOL(of_find_device_by_node);
-  * of_device_make_bus_id - Use the device node data to assign a unique name
-  * @dev: pointer to device structure that is linked to a device tree node
-  *
-- * This routine will first try using either the dcr-reg or the reg property
-- * value to derive a unique name.  As a last resort it will use the node
-- * name followed by a unique number.
-+ * This routine will first try using the translated bus address to
-+ * derive a unique name. If it cannot, then it will prepend names from
-+ * parent nodes until a unique name can be derived.
-  */
- static void of_device_make_bus_id(struct device_d *dev)
- {
--	static int bus_no_reg_magic;
--	struct device_node *np = dev->device_node;
--	const __be32 *reg, *addrp;
-+	struct device_node *node = dev->device_node;
-+	const __be32 *reg;
- 	u64 addr;
--	char *name, *at;
--
--	name = xstrdup(np->name);
--	at = strchr(name, '@');
--	if (at)
--		*at = '\0';
--
--#ifdef CONFIG_PPC_DCR
--	/*
--	 * If it's a DCR based device, use 'd' for native DCRs
--	 * and 'D' for MMIO DCRs.
--	 */
--	reg = of_get_property(np, "dcr-reg", NULL);
--	if (reg) {
--#ifdef CONFIG_PPC_DCR_NATIVE
--		dev_set_name(dev, "d%x.%s", *reg, name);
--#else /* CONFIG_PPC_DCR_NATIVE */
--		u64 addr = of_translate_dcr_address(np, *reg, NULL);
--		if (addr != OF_BAD_ADDR) {
--			dev_set_name(dev, "D%llx.%s",
--				     (unsigned long long)addr, name);
--			free(name);
--			return;
--		}
--#endif /* !CONFIG_PPC_DCR_NATIVE */
--	}
--#endif /* CONFIG_PPC_DCR */
--
--	/*
--	 * For MMIO, get the physical address
--	 */
--	reg = of_get_property(np, "reg", NULL);
--	if (reg) {
--		if (of_can_translate_address(np)) {
--			addr = of_translate_address(np, reg);
--		} else {
--			addrp = of_get_address(np, 0, NULL, NULL);
--			if (addrp)
--				addr = of_read_number(addrp, 1);
--			else
--				addr = OF_BAD_ADDR;
--		}
--		if (addr != OF_BAD_ADDR) {
--			dev_set_name(dev, "%llx.%s",
--				     (unsigned long long)addr, name);
--			free(name);
-+
-+	/* Construct the name, using parent nodes if necessary to ensure uniqueness */
-+	while (node->parent) {
-+		/*
-+		 * If the address can be translated, then that is as much
-+		 * uniqueness as we need. Make it the first component and return
-+		 */
-+		reg = of_get_property(node, "reg", NULL);
-+		if (reg && (addr = of_translate_address(node, reg)) != OF_BAD_ADDR) {
-+			dev_set_name(dev, dev->name ? "%llx.%s:%s" : "%llx.%s",
-+				     (unsigned long long)addr, node->name,
-+				     dev->name);
- 			return;
- 		}
--	}
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index ac750f5c3..5b2c63ff6 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -54,7 +54,16 @@ typedef enum {
+ 	PHY_INTERFACE_MODE_RGMII_TXID,
+ 	PHY_INTERFACE_MODE_RTBI,
+ 	PHY_INTERFACE_MODE_SMII,
++	PHY_INTERFACE_MODE_XGMII,
+ 	PHY_INTERFACE_MODE_QSGMII,
++	PHY_INTERFACE_MODE_TRGMII,
++	PHY_INTERFACE_MODE_1000BASEX,
++	PHY_INTERFACE_MODE_2500BASEX,
++	PHY_INTERFACE_MODE_RXAUI,
++	PHY_INTERFACE_MODE_XAUI,
++	/* 10GBASE-KR, XFI, SFI - single lane 10G Serdes */
++	PHY_INTERFACE_MODE_10GKR,
++	PHY_INTERFACE_MODE_MAX,
+ } phy_interface_t;
  
--	/*
--	 * No BusID, use the node name and add a globally incremented counter
--	 */
--	dev_set_name(dev, "%s.%d", name, bus_no_reg_magic++);
--	free(name);
-+		/* format arguments only used if dev_name() resolves to NULL */
-+		dev_set_name(dev, dev->name ? "%s:%s" : "%s",
-+			     kbasename(node->full_name), dev->name);
-+		node = node->parent;
-+	}
- }
- 
- /**
+ #define PHY_INIT_TIMEOUT	100000
 -- 
 2.17.1
 
