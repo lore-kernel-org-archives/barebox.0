@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gClED-0007jV-Ra
- for barebox@lists.infradead.org; Wed, 17 Oct 2018 12:47:22 +0000
-Message-ID: <1539780418.3688.25.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 17 Oct 2018 14:46:58 +0200
-In-Reply-To: <6727441.X3Im0JptJc@ada>
-References: <1539777724792.91226@mixed-mode.de>
- <20181017122700.yl5xavieafvjrhav@pengutronix.de> <6727441.X3Im0JptJc@ada>
-Mime-Version: 1.0
+ id 1gCmVS-0001TD-QX
+ for barebox@lists.infradead.org; Wed, 17 Oct 2018 14:09:08 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Wed, 17 Oct 2018 16:08:49 +0200
+Message-Id: <20181017140849.10433-1-o.rempel@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,29 +15,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Issues compiling barebox on raspberry pi
-To: Alexander Dahl <ada@thorsis.com>, barebox@lists.infradead.org
-Cc: Roland Hieber <r.hieber@pengutronix.de>, Kai Che <Kai.Che@mixed-mode.de>
+Subject: [PATCH v1] Makefile: move -Wmissing-prototypes from mips to main
+ Makefile
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-SGksCgpBbSBNaXR0d29jaCwgZGVuIDE3LjEwLjIwMTgsIDE0OjQ1ICswMjAwIHNjaHJpZWIgQWxl
-eGFuZGVyIERhaGw6Cj4gSGVsbG8sCj4gCj4gQW0gTWl0dHdvY2gsIDE3LiBPa3RvYmVyIDIwMTgs
-IDE0OjI3OjAwIENFU1Qgc2NocmllYiByLmhpZWJlckBwZW5ndXRyb25peC5kZToKPiA+IFVuZm9y
-dHVuYXRlbHkgdGhlIGRvY3VtZW50YXRpb24gd2FzIHVwZGF0ZWQgYmVmb3JlIHRoZSByZXNwZWN0
-aXZlIHBhdGNoCj4gPiBzZXJpZXMgd2FzIG1lcmdlZC4gSWYgeW91IHB1bGwgdGhlIGJyYW5jaCB2
-MjAxOC4wNC4wL3RvcGljL3JwaSBmcm9tCj4gPiBnaXQ6Ly9naXQucGVuZ3V0cm9uaXguZGUvcmhp
-L2JhcmVib3gsIHlvdSBzaG91bGQgZ2V0IGEKPiA+IGJhcmVib3gtcmFzcGJlcnJ5LXBpLTMuaW1n
-LiAoSSB0aGluayB0aGF0IGJyYW5jaCBzaG91bGQgYWxzbyBiZSBhYmxlIHRvCj4gPiBiZSByZWJh
-c2VkIG9udG8gdGhlIGN1cnJlbnQgbWFzdGVyLCBidXQgSSBoYXZlIG5vdCB0ZXN0ZWQgdGhhdC4p
-Cj4gCj4gRldJVywgdGhlIHNlcmllcyBpcyBiYXNlZCBvbiBiYXJlYm94IHYyMDE4LjA0LjAuIEkg
-dHJpZWQgcmViYXNpbmcgKGFscmVhZHkgYcKgCj4gZmV3IHdlZWtzIGFnbyksIGJ1dCBpdCBkb2Vz
-IG5vdCBldmVuIHJlYmFzZSBjbGVhbmx5IG9uIHRvcCBvZiB2MjAxOC4wNS4wLgoKSSd2ZSBhbHJl
-YWR5IHJlYmFzZWQgdGhpcyBzZXJpZXMgb24gdG9wIG9mIHRoZSBjdXJyZW50IHJlbGVhc2UuIEp1
-c3QKd2FpdGluZyBmb3Igc29tZSB0ZXN0IHJlc3VsdHMgYmVmb3JlIHNlbmRpbmcgb3V0IHRvIHRo
-ZSBsaXN0IGFnYWluLgoKUmVnYXJkcywKTHVjYXMKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+Currently we get -Wmissing-prototypes warning only on arch/mips.
+With this patch we should be able to see this warning on all supported
+architectures.
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ Makefile           | 2 +-
+ arch/mips/Makefile | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 70d501ba5e..fa2020a07d 100644
+--- a/Makefile
++++ b/Makefile
+@@ -306,7 +306,7 @@ LINUXINCLUDE    := -Iinclude -I$(srctree)/dts/include \
+ CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(LINUXINCLUDE) -fno-builtin -ffreestanding
+ 
+ CFLAGS          := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+-                   -Werror-implicit-function-declaration \
++                   -Werror-implicit-function-declaration -Wmissing-prototypes \
+                    -fno-strict-aliasing -fno-common -Os -pipe
+ AFLAGS          := -D__ASSEMBLY__
+ 
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 3342e0eafd..6338dc174d 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -12,7 +12,7 @@ endif
+ CPPFLAGS += -D__MIPS__ -fno-strict-aliasing -fno-merge-constants
+ 
+ cflags-y += -G 0 -mno-abicalls -fno-pic -pipe
+-cflags-y += -Wall -Wmissing-prototypes -Wstrict-prototypes \
++cflags-y += -Wall -Wstrict-prototypes \
+ 	-Wno-uninitialized -Wno-format -Wno-main
+ 
+ ifdef CONFIG_32BIT
+-- 
+2.19.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
