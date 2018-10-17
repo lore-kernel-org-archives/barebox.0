@@ -1,15 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.thorsis.com ([92.198.35.195])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gCkuu-00071U-Vp
- for barebox@lists.infradead.org; Wed, 17 Oct 2018 12:27:15 +0000
-Date: Wed, 17 Oct 2018 14:27:00 +0200
-From: "r.hieber@pengutronix.de" <r.hieber@pengutronix.de>
-Message-ID: <20181017122700.yl5xavieafvjrhav@pengutronix.de>
+ id 1gClMT-0002qM-Dd
+ for barebox@lists.infradead.org; Wed, 17 Oct 2018 12:55:49 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by mail.thorsis.com (Postfix) with ESMTP id DBD48169A9
+ for <barebox@lists.infradead.org>; Wed, 17 Oct 2018 14:45:09 +0200 (CEST)
+Received: from mail.thorsis.com ([127.0.0.1])
+ by localhost (mail.thorsis.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 0gqTEhO3mqbu for <barebox@lists.infradead.org>;
+ Wed, 17 Oct 2018 14:45:09 +0200 (CEST)
+From: Alexander Dahl <ada@thorsis.com>
+Date: Wed, 17 Oct 2018 14:45:04 +0200
+Message-ID: <6727441.X3Im0JptJc@ada>
+In-Reply-To: <20181017122700.yl5xavieafvjrhav@pengutronix.de>
 References: <1539777724792.91226@mixed-mode.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1539777724792.91226@mixed-mode.de>
+ <20181017122700.yl5xavieafvjrhav@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,74 +24,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Issues compiling barebox on raspberry pi
-To: Kai Che <Kai.Che@mixed-mode.de>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
+Cc: Roland Hieber <r.hieber@pengutronix.de>, Kai Che <Kai.Che@mixed-mode.de>
 
-SGVsbG8sCgpwbGVhc2UgZGlyZWN0IHF1ZXN0aW9ucyB0byB0aGUgYmFyZWJveCBtYWlsaW5nIGxp
-c3QgKENDZWQpLCB0aGVyZSBhcmUKbW9yZSBwZW9wbGUgdGhlcmUgd2hvIGNhbiBhbnN3ZXIgeW91
-IDotKQoKT24gV2VkLCBPY3QgMTcsIDIwMTggYXQgMTI6MDI6MDNQTSArMDAwMCwgS2FpIENoZSB3
-cm90ZToKPiAKPiBEZWFyIE1yLiBSb2xhbmQgSGllYmVyLAo+IAo+IEknbSBhbiBlbGVjdHJpY2Fs
-IGVuZ2luZWVyaW5nIHN0dWRlbnQgY3VycmVudGx5IHdyaXRpbmcgbXkgbWFzdGVyIHRoZXNpcyBh
-bmQgbXkgdG9waWMgaXMgYWJvdXQgZW5hYmxpbmcgc2VjdXJlIGJvb3QgZm9yIHRoZSBiYXJlYm94
-IGJvb3Rsb2FkZXIgd2l0aCBhIFRQTSAyLjAuCj4gCj4gVW5mb3J0dW5ldGx5LCBJIGFtIHJlYWxs
-eSBzdHJ1Z2dsaW5nIHdpdGggYm9vdGluZyBiYXJlYm94IG9uIHJhc3BiZXJyeSBwaSAyIGFuZCAz
-Lgo+IAo+IEkgZm9sbG93ZWQgdGhlIGRvY3VtZW50YXRpb24gb246IGh0dHBzOi8vd3d3LmJhcmVi
-b3gub3JnL2RvYy9sYXRlc3QvYm9hcmRzL2JjbTI4MzUuaHRtbCNyYXNwYmVycnktcGkgYW5kIGRp
-ZCB0aGUgZm9sbG93aW5nIHN0ZXBzOgo+IAo+IDEuIGdpdCBjbG9uZSBodHRwczovL2dpdC5wZW5n
-dXRyb25peC5kZS9naXQvYmFyZWJveCAoSSB0cmllZCB3aXRoIG1hc3RlciwgbmV4dCBhbmQgc3Rh
-YmxlL3YyMDE4LjA5IGJyYW5jaGVzKQoKVW5mb3J0dW5hdGVseSB0aGUgZG9jdW1lbnRhdGlvbiB3
-YXMgdXBkYXRlZCBiZWZvcmUgdGhlIHJlc3BlY3RpdmUgcGF0Y2gKc2VyaWVzIHdhcyBtZXJnZWQu
-IElmIHlvdSBwdWxsIHRoZSBicmFuY2ggdjIwMTguMDQuMC90b3BpYy9ycGkgZnJvbQpnaXQ6Ly9n
-aXQucGVuZ3V0cm9uaXguZGUvcmhpL2JhcmVib3gsIHlvdSBzaG91bGQgZ2V0IGEKYmFyZWJveC1y
-YXNwYmVycnktcGktMy5pbWcuIChJIHRoaW5rIHRoYXQgYnJhbmNoIHNob3VsZCBhbHNvIGJlIGFi
-bGUgdG8KYmUgcmViYXNlZCBvbnRvIHRoZSBjdXJyZW50IG1hc3RlciwgYnV0IEkgaGF2ZSBub3Qg
-dGVzdGVkIHRoYXQuKQoKVGhlIHJlc3Qgb2YgeW91ciBzdGVwcyBiZWxvdyBsb29rIGZpbmUgdG8g
-bWUuCgogLSBSb2xhbmQKCj4gCj4gMi4gZXhwb3J0IEFSQ0g9YXJtIGFuZCBleHBvcnQgQ1JPU1Nf
-Q09NUElMRT0vdXNyL2Jpbi9hcm0tbGludXgtZ251ZWFiaWhmLQo+IAo+IDMuIG1ha2UgcnBpX2Rl
-ZmNvbmZpZwo+IAo+IDQuIG1ha2UgPT4gZ2VuZXJhdGVzIHRoZSBpbWFnZXMgYmFyZWJveC1yYXNw
-YmVycnktcGktMS5pbWcgYW5kIGJhcmVib3gtcmFzcGJlcnJ5LXBpLTIuaW1nIGJ1dCBubyBiYXJl
-Ym94LXJhc3BiZXJyeS1waS0zLmltZyEKPiAKPiA1LiBjb3B5IGJhcmVib3gtcmFzcGJlcnJ5LXBp
-LTIuaW1nIHRvIFNEIGNhcmQgYW5kIHJlbmFtZSB0byBiYXJlYm94LmltZwo+IAo+IDYuIGNyZWF0
-ZSBjb25maWcudHh0IHdpdGgga2VybmVsPWJhcmVib3guaW1nIGVuYWJsZV91YXJ0PTEgZHRvdmVy
-bGF5PXBpMy1taW5pdWFydC1idAo+IAo+IDcuIHR1cm4gb24gcmFzcGJlcnJ5IHBpIChjb25uZWN0
-ZWQgd2l0aCBIRE1JIGFuZCBVQVJUKSBidXQgaXQgZ2V0cyBzdHVjayBhdCB0aGUgcmFpbmJvd3Nj
-cmVlbiB3aXRoIG5vIFVBUlQgb3V0cHV0Lgo+IAo+ID0+IEJ1dCBib290aW5nIHdpdGggdGhlIGRl
-ZmF1bHQgaW1hZ2UgZnJvbSBOT09CUyBpcyB3b3JraW5nIHBlcmZlY3RseS4KPiAKPiBNeSBQQyBp
-cyBzZXQgdXAgd2l0aCBnY2MgdmVyc2lvbiA3LjMuMCAoVWJ1bnR1L0xpbmFybyA3LjMuMC0yN3Vi
-dW50dTF+MTguMDQpIGFuZCBJIHRyaWVkIHdpdGggUmFzcGJlcnJ5IFBpIDIgTW9kZWwgQiwgUmFz
-cGJlcnJ5IFBpIFplcm8gVyBhbmQgUmFzcGJlcnJ5IFBpIDMgTW9kZWwgQi4KPiAKPiBEbyB5b3Ug
-aGF2ZSBhbnkgaWRlYSB3aHkgaXQgaXMgbm90IHdvcmtpbmc/IEFtIEkgdXNpbmcgYSB3cm9uZyBj
-b21waWxlciB2ZXJzaW9uPwo+IAo+IENvdWxkIHlvdSBtYXliZSBwcm92aWRlIG1lIHdpdGggYSB3
-b3JraW5nIGJhcmVib3gtcmFzcGJlcnJ5LXBpLTIuaW1nIGFuZCBiYXJlYm94LXJhc3BiZXJyeS1w
-aS0zLmltZyBmb3IgdGVzdGluZz8KPiAKPiBUaGFuayB5b3UgdmVyeSBtdWNoLgo+IAo+IEJlc3Qg
-UmVnYXJkcwo+IAo+IEthaSBDaGUKPiAKPiAKPiAKPiBNaXhlZCBNb2RlIEdtYkggTG9jaGhhbWVy
-IFNjaGxhZyAxNyBELTgyMTY2IEdyw6RmZWxmaW5nL03DvG5jaGVuIFRlbC4gICAgICs0OSAvIDg5
-IC8gODkgODYgOC0yMDAgRmF4ICAgICAgKzQ5IC8gODkgLyA4OSA4NiA4LTIyMiBodHRwOi8vd3d3
-Lm1peGVkLW1vZGUuZGUgTWl4ZWQgTW9kZSAtIElociBQYXJ0bmVyIGbDvHIgRW1iZWRkZWQgJiBT
-b2Z0d2FyZSBFbmdpbmVlcmluZyEgLS0tLS0tLSBFaW4gVW50ZXJuZWhtZW4gZGVyIFBJWEVMIEdy
-b3VwIE1peGVkIE1vZGUgR21iSCBTaXR6IGRlciBHZXNlbGxzY2hhZnQ6IEdyw6RmZWxmaW5nIEFt
-dHNnZXJpY2h0OiBNw7xuY2hlbiBIUkIgMTMwNzc4IEdlc2Now6RmdHNmw7xocmVyOiBIZWxtdXQg
-U8O8w59tdXRoLCBQYXVsIFByaXZsZXIgLS0tLS0tLSBEaWVzZSBFLU1haWwgZW50aMOkbHQgdmVy
-dHJhdWxpY2hlIHVuZC9vZGVyIHJlY2h0bGljaCBnZXNjaMO8dHp0ZSBJbmZvcm1hdGlvbmVuLiAg
-V2VubiBTaWUgbmljaHQgZGVyIHJpY2h0aWdlIEFkcmVzc2F0IHNpbmQgb2RlciBkaWVzZSBFLU1h
-aWwgaXJydMO8bWxpY2ggZXJoYWx0ZW4gaGFiZW4sIGluZm9ybWllcmVuIFNpZSBiaXR0ZSBzb2Zv
-cnQgZGVuIEFic2VuZGVyIHVuZCB2ZXJuaWNodGVuIFNpZSBkaWVzZSBNYWlsLiAgRGFzIHVuZXJs
-YXVidGUgS29waWVyZW4gc293aWUgZGllIHVuYmVmdWd0ZSBXZWl0ZXJnYWJlIGRpZXNlciBNYWls
-IHNpbmQgbmljaHQgZ2VzdGF0dGV0LiAgw5xiZXIgZGFzIEludGVybmV0IHZlcnNhbmR0ZSBFbWFp
-bHMga8O2bm5lbiBsZWljaHQgdW50ZXIgZnJlbWRlbiBOYW1lbiBlcnN0ZWxsdCBvZGVyIG1hbmlw
-dWxpZXJ0IHdlcmRlbi4gIEF1cyBkaWVzZW0gR3J1bmRlIGJpdHRlbiB3aXIgdW0gVmVyc3TDpG5k
-bmlzLCBkYXNzIHdpciB6dSBJaHJlbSB1bmQgdW5zZXJlbSBTY2h1dHogZGllIHJlY2h0bGljaGUg
-VmVyYmluZGxpY2hrZWl0IGRlciB2b3JzdGVoZW5kZW4gRXJrbMOkcnVuZ2VuIHVuZCDDhHXDn2Vy
-dW5nZW4gYXVzc2NobGllw59lbi4KCi0tIApSb2xhbmQgSGllYmVyICAgICAgICAgICAgICAgICAg
-ICAgfCByLmhpZWJlckBwZW5ndXRyb25peC5kZSAgICAgfApQZW5ndXRyb25peCBlLksuICAgICAg
-ICAgICAgICAgICAgfCBodHRwczovL3d3dy5wZW5ndXRyb25peC5kZS8gfApQZWluZXIgU3RyLiA2
-LTgsIDMxMTM3IEhpbGRlc2hlaW0gfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTUwODYgfApBbXRz
-Z2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1
-NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
-ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
-cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Hello,
+
+Am Mittwoch, 17. Oktober 2018, 14:27:00 CEST schrieb r.hieber@pengutronix.de:
+> Unfortunately the documentation was updated before the respective patch
+> series was merged. If you pull the branch v2018.04.0/topic/rpi from
+> git://git.pengutronix.de/rhi/barebox, you should get a
+> barebox-raspberry-pi-3.img. (I think that branch should also be able to
+> be rebased onto the current master, but I have not tested that.)
+
+FWIW, the series is based on barebox v2018.04.0. I tried rebasing (already a 
+few weeks ago), but it does not even rebase cleanly on top of v2018.05.0.
+
+Greets
+Alex
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
