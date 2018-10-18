@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gD2GZ-0003LP-AM
- for barebox@lists.infradead.org; Thu, 18 Oct 2018 06:58:50 +0000
+ id 1gD2GZ-0003LS-A7
+ for barebox@lists.infradead.org; Thu, 18 Oct 2018 06:58:53 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 18 Oct 2018 08:58:09 +0200
-Message-Id: <20181018065827.19973-3-s.hauer@pengutronix.de>
+Date: Thu, 18 Oct 2018 08:58:16 +0200
+Message-Id: <20181018065827.19973-10-s.hauer@pengutronix.de>
 In-Reply-To: <20181018065827.19973-1-s.hauer@pengutronix.de>
 References: <20181018065827.19973-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,36 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/20] mtd: nand: mxs: make locally used functions static
+Subject: [PATCH 09/20] ARM: boards: GuF Vincell: Make locally used function
+ static
 To: Barebox List <barebox@lists.infradead.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/nand_mxs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boards/guf-vincell/lowlevel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
-index 0e0f5e68b2..28a07d4cba 100644
---- a/drivers/mtd/nand/nand_mxs.c
-+++ b/drivers/mtd/nand/nand_mxs.c
-@@ -1259,7 +1259,7 @@ static int mxs_nand_scan_bbt(struct mtd_info *mtd)
- /*
-  * Allocate DMA buffers
-  */
--int mxs_nand_alloc_buffers(struct mxs_nand_info *nand_info)
-+static int mxs_nand_alloc_buffers(struct mxs_nand_info *nand_info)
+diff --git a/arch/arm/boards/guf-vincell/lowlevel.c b/arch/arm/boards/guf-vincell/lowlevel.c
+index de706b68b2..0d2216f265 100644
+--- a/arch/arm/boards/guf-vincell/lowlevel.c
++++ b/arch/arm/boards/guf-vincell/lowlevel.c
+@@ -113,7 +113,7 @@ static void configure_dram_iomux(void)
+ 	writel(PAD_CTL_HYS, iomux + IOMUXC_SW_PAD_CTL_GRP_DDRHYS);
+ }
+ 
+-void disable_watchdog(void)
++static void disable_watchdog(void)
  {
- 	uint8_t *buf;
- 	const int size = NAND_MAX_PAGESIZE + NAND_MAX_OOBSIZE;
-@@ -1293,7 +1293,7 @@ int mxs_nand_alloc_buffers(struct mxs_nand_info *nand_info)
- /*
-  * Initializes the NFC hardware.
-  */
--int mxs_nand_hw_init(struct mxs_nand_info *info)
-+static int mxs_nand_hw_init(struct mxs_nand_info *info)
- {
- 	void __iomem *gpmi_regs = info->io_base;
- 	void __iomem *bch_regs = info->bch_base;
+ 	/*
+ 	 * configure WDOG to generate external reset on trigger
 -- 
 2.19.0
 
