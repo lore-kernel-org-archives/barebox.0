@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mx01.eckelmann.de ([217.19.183.92])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gD2fA-0006eh-AU
- for barebox@lists.infradead.org; Thu, 18 Oct 2018 07:24:10 +0000
-Date: Thu, 18 Oct 2018 09:23:56 +0200
-From: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-Message-ID: <20181018072356.cnkzl62v4yebvifg@pengutronix.de>
+ id 1gD4Hv-0007OP-1b
+ for barebox@lists.infradead.org; Thu, 18 Oct 2018 09:08:18 +0000
+From: "Schenk, Gavin" <G.Schenk@eckelmann.de>
+Date: Thu, 18 Oct 2018 09:07:59 +0000
+Message-ID: <38931226c1f09227e1fa23b3908a8738ca855cf8.camel@eckelmann.de>
 References: <20181017084707.11878-1-s.hauer@pengutronix.de>
  <5017d68f9bbcab2c4e3af5c20d29d3452fe6410f.camel@eckelmann.de>
+ <20181018072356.cnkzl62v4yebvifg@pengutronix.de>
+In-Reply-To: <20181018072356.cnkzl62v4yebvifg@pengutronix.de>
+Content-Language: de-DE
+Content-ID: <9719ED004871EC42AF0A95C0E009DAFE@eckelmann.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <5017d68f9bbcab2c4e3af5c20d29d3452fe6410f.camel@eckelmann.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,75 +21,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] of: fix reproducible node name for legacy vs. new
  partition binding
-To: "Schenk, Gavin" <G.Schenk@eckelmann.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, =?iso-8859-15?Q?G=F6tzinger=2C?= Jonathan <J.Goetzinger@eckelmann.de>
+To: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, =?utf-8?B?R8O2dHppbmdlciwgSm9uYXRoYW4=?= <J.Goetzinger@eckelmann.de>
 
-Hi Gavin,
+Hi Sascha,
 
-On Wed, Oct 17, 2018 at 11:07:45AM +0000, Schenk, Gavin wrote:
-> Hi,
-> =
+> > 1. [x] of_partition_binding=new in barebox and barebox-state in Linux is working.
+> > 2. [ ] set of_partition_binding=legacy in barebox and barebox-state in Linux fails.
+> > 3. [x] apply the patch and rebuild and install barebox
+> > 4. [x] set of_partition_binding=legacy and barebox-state in Linux is working again \o/.
+> > 
+> > Is this test sufficient?
+> > If not what are other usefull testcases?
+> 
+> Thanks for testing.
 
-> On Wed, 2018-10-17 at 10:47 +0200, Sascha Hauer wrote:
-> > the of_reproducible_name mechanism is used to find a partition node
-> > from the barebox devicetree in the Linux devicetree. Unfortunately
-> > we have two different partition bindings. In the legacy one the partiti=
-on
-> > nodes are directly under the hardware devicenode whereas in the new
-> > binding the partitions are under an additional partitions subnode.
-> > This means we get two different (not so) reproducible names when
-> > the barebox devicetree uses the legacy binding and the Linux devicetree
-> > uses the new binding (or the other way round). To get the same
-> > name then for these cases we drop the partitions subnode from the
-> > reproducible name.
-> > =
+You are welcome, thanks you for this important patch!
 
-> > This makes the partition fixup in barebox-state work when the barebox
-> > devicetree uses another binding than the Linux devicetree.
-> > =
+> 
+> Another test would be if you use the legacy binding in your barebox
+> devicetree and then set of_partition_binding=new. Without this patch it
+> should fail in Linux and with it it should work. That's the less
+> important case though.
+> 
 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > Tested-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
-> Tested-by: Gavin Schenk <g.schenk@eckelmann.de>
-> =
+Understood. Unfortunately I do not have time to test this immediately.
 
-> What I did to test it:
-> =
+Because state-framework is essential for RAUC and must not break in field, we plan to integrate tests of state-framework 
+into our jenkins/labgrid. We will try to consider your testcase there.
 
-> 1. [x] of_partition_binding=3Dnew in barebox and barebox-state in Linux i=
-s working.
-> 2. [ ] set of_partition_binding=3Dlegacy in barebox and barebox-state in =
-Linux fails.
-> 3. [x] apply the patch and rebuild and install barebox
-> 4. [x] set of_partition_binding=3Dlegacy and barebox-state in Linux is wo=
-rking again \o/.
-> =
+@Jonathan: If you are back in office please remind me to talk about including this state-framework tests. Feel free to
+update the task (or simply implement it :) )
 
-> Is this test sufficient?
-> If not what are other usefull testcases?
-
-Thanks for testing.
-
-Another test would be if you use the legacy binding in your barebox
-devicetree and then set of_partition_binding=3Dnew. Without this patch it
-should fail in Linux and with it it should work. That's the less
-important case though.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+Regards
+Gavin
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
