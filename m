@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gD2GZ-0003LO-AI
+ id 1gD2GZ-0003LV-AN
  for barebox@lists.infradead.org; Thu, 18 Oct 2018 06:58:45 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 18 Oct 2018 08:58:07 +0200
-Message-Id: <20181018065827.19973-1-s.hauer@pengutronix.de>
+Date: Thu, 18 Oct 2018 08:58:22 +0200
+Message-Id: <20181018065827.19973-16-s.hauer@pengutronix.de>
+In-Reply-To: <20181018065827.19973-1-s.hauer@pengutronix.de>
+References: <20181018065827.19973-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,60 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/20] Fixes for -Wmissing-prototypes warnings
+Subject: [PATCH 15/20] drivers: clk: imx5: Make locally used functions static
 To: Barebox List <barebox@lists.infradead.org>
 
-This fixes several warnings that occur with -Wmissing-prototypes enabled.
-There are many warnings left to fix, so feel free to continue the work ;)
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/clk/imx/clk-imx5.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Sascha
-
-Sascha Hauer (20):
-  ARM: Fix missing prototype warning
-  mtd: nand: mxs: make locally used functions static
-  video: imx-ipu-v3: Make locally used function static
-  ARM: mmu: rename dma_alloc
-  dma: Add missing re-inclusion protector
-  ARM: mmu: include dma.h
-  fs: Make locally used functions static
-  ARM: cache: include mmu.h
-  ARM: boards: GuF Vincell: Make locally used function static
-  ARM: boards: karo-tx6x: Make locally used function static
-  ARM: boards: kindle mx50: Make locally used function static
-  ARM: boards: kontron-samx6i: Add include file to provide prototype
-  ARM: boards: phytec-som-imx6: Make locally used function static
-  ARM: legacy Linux support: Make locally used functions static
-  drivers: clk: imx5: Make locally used functions static
-  usb: ulpi: Make locally used functions static
-  ARM: unwind: Provide prototypes for exported functions
-  ARM: unwind: Make locally used function static
-  ARM: i.MX: Add missing include
-  nvmem: i.MX ocotp: Make locally used functions static
-
- arch/arm/boards/guf-vincell/lowlevel.c    |  2 +-
- arch/arm/boards/karo-tx6x/board.c         |  2 +-
- arch/arm/boards/kindle-mx50/board.c       |  2 +-
- arch/arm/boards/kontron-samx6i/board.c    |  2 +-
- arch/arm/boards/kontron-samx6i/lowlevel.c |  2 +-
- arch/arm/boards/kontron-samx6i/mem.c      |  2 ++
- arch/arm/boards/kontron-samx6i/mem.h      |  6 ++++
- arch/arm/boards/phytec-som-imx6/board.c   |  2 +-
- arch/arm/cpu/cache.c                      |  2 ++
- arch/arm/cpu/mmu.c                        |  7 +++--
- arch/arm/include/asm/barebox-arm.h        |  2 ++
- arch/arm/lib32/armlinux.c                 |  6 ++--
- arch/arm/lib32/unwind.c                   |  7 ++++-
- arch/arm/mach-imx/cpu_init.c              |  1 +
- drivers/clk/imx/clk-imx5.c                |  6 ++--
- drivers/mtd/nand/nand_mxs.c               |  4 +--
- drivers/nvmem/ocotp.c                     |  4 +--
- drivers/usb/otg/ulpi.c                    |  4 +--
- drivers/video/imx-ipu-v3/ipufb.c          |  2 +-
- fs/fs.c                                   | 36 +++++++++++------------
- include/dma-dir.h                         |  5 ++++
- 21 files changed, 65 insertions(+), 41 deletions(-)
- create mode 100644 arch/arm/boards/kontron-samx6i/mem.h
-
+diff --git a/drivers/clk/imx/clk-imx5.c b/drivers/clk/imx/clk-imx5.c
+index edebd25a38..ae94e07f23 100644
+--- a/drivers/clk/imx/clk-imx5.c
++++ b/drivers/clk/imx/clk-imx5.c
+@@ -279,7 +279,7 @@ static void mx5_clocks_ipu_init(void __iomem *regs)
+ 	clks[IMX5_CLK_IPU_SEL]		= imx_clk_mux("ipu_sel", regs + CCM_CBCMR, 6, 2, ipu_sel, ARRAY_SIZE(ipu_sel));
+ }
+ 
+-int __init mx50_clocks_init(struct device_d *dev, void __iomem *regs)
++static int __init mx50_clocks_init(struct device_d *dev, void __iomem *regs)
+ {
+ 	clks[IMX5_CLK_PLL1_SW] = imx_clk_pllv2("pll1_sw", "osc",
+ 					       (void *)MX50_PLL1_BASE_ADDR);
+@@ -366,7 +366,7 @@ static void mx51_clocks_ipu_init(void __iomem *regs)
+ 	clkdev_add_physbase(clks[IMX5_CLK_IPU_DI1_SEL], MX51_IPU_BASE_ADDR, "di1");
+ }
+ 
+-int __init mx51_clocks_init(struct device_d *dev, void __iomem *regs)
++static int __init mx51_clocks_init(struct device_d *dev, void __iomem *regs)
+ {
+ 	clks[IMX5_CLK_PLL1_SW] = imx_clk_pllv2("pll1_sw", "osc", (void *)MX51_PLL1_BASE_ADDR);
+ 	clks[IMX5_CLK_PLL2_SW] = imx_clk_pllv2("pll2_sw", "osc", (void *)MX51_PLL2_BASE_ADDR);
+@@ -454,7 +454,7 @@ static void mx53_clocks_ipu_init(void __iomem *regs)
+ 	clkdev_add_physbase(clks[IMX5_CLK_IPU_DI1_SEL], MX53_IPU_BASE_ADDR, "di1");
+ }
+ 
+-int __init mx53_clocks_init(struct device_d *dev, void __iomem *regs)
++static int __init mx53_clocks_init(struct device_d *dev, void __iomem *regs)
+ {
+ 	clks[IMX5_CLK_PLL1_SW] = imx_clk_pllv2("pll1_sw", "osc", (void *)MX53_PLL1_BASE_ADDR);
+ 	clks[IMX5_CLK_PLL2_SW] = imx_clk_pllv2("pll2_sw", "osc", (void *)MX53_PLL2_BASE_ADDR);
 -- 
 2.19.0
 
