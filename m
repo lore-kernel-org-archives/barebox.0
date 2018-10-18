@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gD2GZ-0003LW-AG
+ id 1gD2GZ-0003LQ-AP
  for barebox@lists.infradead.org; Thu, 18 Oct 2018 06:58:47 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 18 Oct 2018 08:58:21 +0200
-Message-Id: <20181018065827.19973-15-s.hauer@pengutronix.de>
+Date: Thu, 18 Oct 2018 08:58:13 +0200
+Message-Id: <20181018065827.19973-7-s.hauer@pengutronix.de>
 In-Reply-To: <20181018065827.19973-1-s.hauer@pengutronix.de>
 References: <20181018065827.19973-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,46 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/20] ARM: legacy Linux support: Make locally used functions
- static
+Subject: [PATCH 06/20] ARM: mmu: include dma.h
 To: Barebox List <barebox@lists.infradead.org>
+
+dma.h provides the prototypes for the different dma_alloc_* functions,
+so we should include it to make sure the prototypes are consistent.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib32/armlinux.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/cpu/mmu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/lib32/armlinux.c b/arch/arm/lib32/armlinux.c
-index 2520fe210c..c970f029c5 100644
---- a/arch/arm/lib32/armlinux.c
-+++ b/arch/arm/lib32/armlinux.c
-@@ -57,7 +57,7 @@ void armlinux_set_architecture(int architecture)
- 	armlinux_architecture = architecture;
- }
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index 3f00acdb29..fc48376f66 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -19,6 +19,7 @@
  
--int armlinux_get_architecture(void)
-+static int armlinux_get_architecture(void)
- {
- 	getenv_uint("armlinux_architecture", &armlinux_architecture);
- 
-@@ -70,7 +70,7 @@ void armlinux_set_revision(unsigned int rev)
- 	armlinux_system_rev = rev;
- }
- 
--unsigned int armlinux_get_revision(void)
-+static unsigned int armlinux_get_revision(void)
- {
- 	getenv_uint("armlinux_system_rev", &armlinux_system_rev);
- 
-@@ -83,7 +83,7 @@ void armlinux_set_serial(u64 serial)
- 	armlinux_system_serial = serial;
- }
- 
--u64 armlinux_get_serial(void)
-+static u64 armlinux_get_serial(void)
- {
- 	getenv_ull("armlinux_system_serial", &armlinux_system_serial);
- 
+ #include <common.h>
+ #include <dma-dir.h>
++#include <dma.h>
+ #include <init.h>
+ #include <mmu.h>
+ #include <errno.h>
 -- 
 2.19.0
 
