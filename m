@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gD2GZ-0003M8-AS
- for barebox@lists.infradead.org; Thu, 18 Oct 2018 06:58:48 +0000
+ id 1gD2GZ-0003LP-AM
+ for barebox@lists.infradead.org; Thu, 18 Oct 2018 06:58:50 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 18 Oct 2018 08:58:18 +0200
-Message-Id: <20181018065827.19973-12-s.hauer@pengutronix.de>
+Date: Thu, 18 Oct 2018 08:58:09 +0200
+Message-Id: <20181018065827.19973-3-s.hauer@pengutronix.de>
 In-Reply-To: <20181018065827.19973-1-s.hauer@pengutronix.de>
 References: <20181018065827.19973-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,28 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/20] ARM: boards: kindle mx50: Make locally used function
- static
+Subject: [PATCH 02/20] mtd: nand: mxs: make locally used functions static
 To: Barebox List <barebox@lists.infradead.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/kindle-mx50/board.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/nand_mxs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/kindle-mx50/board.c b/arch/arm/boards/kindle-mx50/board.c
-index 089dd8ebb7..fb1d4c9375 100644
---- a/arch/arm/boards/kindle-mx50/board.c
-+++ b/arch/arm/boards/kindle-mx50/board.c
-@@ -80,7 +80,7 @@ BAREBOX_MAGICVAR_NAMED(global_atags_revision16, global.board.revision16,
- /* The Kindle Kernel expects two custom ATAGs, ATAG_REVISION16 describing
-  * the board and ATAG_SERIAL16 to identify the individual device.
+diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+index 0e0f5e68b2..28a07d4cba 100644
+--- a/drivers/mtd/nand/nand_mxs.c
++++ b/drivers/mtd/nand/nand_mxs.c
+@@ -1259,7 +1259,7 @@ static int mxs_nand_scan_bbt(struct mtd_info *mtd)
+ /*
+  * Allocate DMA buffers
   */
--struct tag *kindle_mx50_append_atags(struct tag *params)
-+static struct tag *kindle_mx50_append_atags(struct tag *params)
+-int mxs_nand_alloc_buffers(struct mxs_nand_info *nand_info)
++static int mxs_nand_alloc_buffers(struct mxs_nand_info *nand_info)
  {
- 	params = setup_16char_tag(params, ATAG_SERIAL16,
- 				get_env_16char_tag("global.board.serial16"));
+ 	uint8_t *buf;
+ 	const int size = NAND_MAX_PAGESIZE + NAND_MAX_OOBSIZE;
+@@ -1293,7 +1293,7 @@ int mxs_nand_alloc_buffers(struct mxs_nand_info *nand_info)
+ /*
+  * Initializes the NFC hardware.
+  */
+-int mxs_nand_hw_init(struct mxs_nand_info *info)
++static int mxs_nand_hw_init(struct mxs_nand_info *info)
+ {
+ 	void __iomem *gpmi_regs = info->io_base;
+ 	void __iomem *bch_regs = info->bch_base;
 -- 
 2.19.0
 
