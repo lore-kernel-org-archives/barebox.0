@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gD2GZ-0003M7-AH
+ id 1gD2GZ-0003M5-AV
  for barebox@lists.infradead.org; Thu, 18 Oct 2018 06:58:48 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 18 Oct 2018 08:58:17 +0200
-Message-Id: <20181018065827.19973-11-s.hauer@pengutronix.de>
+Date: Thu, 18 Oct 2018 08:58:10 +0200
+Message-Id: <20181018065827.19973-4-s.hauer@pengutronix.de>
 In-Reply-To: <20181018065827.19973-1-s.hauer@pengutronix.de>
 References: <20181018065827.19973-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,28 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/20] ARM: boards: karo-tx6x: Make locally used function
- static
+Subject: [PATCH 03/20] video: imx-ipu-v3: Make locally used function static
 To: Barebox List <barebox@lists.infradead.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/karo-tx6x/board.c | 2 +-
+ drivers/video/imx-ipu-v3/ipufb.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/karo-tx6x/board.c b/arch/arm/boards/karo-tx6x/board.c
-index 31c1c3a9ff..54b1e248f4 100644
---- a/arch/arm/boards/karo-tx6x/board.c
-+++ b/arch/arm/boards/karo-tx6x/board.c
-@@ -54,7 +54,7 @@ static struct {
- 	{ 0x33, rn5t567_pmic_setup, "rn5t567" },
- };
+diff --git a/drivers/video/imx-ipu-v3/ipufb.c b/drivers/video/imx-ipu-v3/ipufb.c
+index 9597eda0d0..683f298e76 100644
+--- a/drivers/video/imx-ipu-v3/ipufb.c
++++ b/drivers/video/imx-ipu-v3/ipufb.c
+@@ -101,7 +101,7 @@ static int ipu_crtc_adjust_videomode(struct ipufb_info *fbi, struct fb_videomode
+ 	return 0;
+ }
  
--int setup_pmic_voltages(void)
-+static int setup_pmic_voltages(void)
+-int ipu_crtc_mode_set(struct ipufb_info *fbi,
++static int ipu_crtc_mode_set(struct ipufb_info *fbi,
+ 			       struct fb_videomode *mode,
+ 			       int x, int y)
  {
- 	struct i2c_adapter *adapter;
- 	struct i2c_client client;
 -- 
 2.19.0
 
