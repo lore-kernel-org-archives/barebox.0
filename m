@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gDTNF-0001t3-Q6
- for barebox@lists.infradead.org; Fri, 19 Oct 2018 11:55:27 +0000
-Date: Fri, 19 Oct 2018 13:55:13 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181019115513.jtfuwxkokqasm6or@pengutronix.de>
-References: <20181018114708.19506-1-m.felsch@pengutronix.de>
+ id 1gDMd8-0003w2-Gy
+ for barebox@lists.infradead.org; Fri, 19 Oct 2018 04:43:23 +0000
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Date: Fri, 19 Oct 2018 06:43:03 +0200
+Message-Id: <20181019044303.537-1-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181018114708.19506-1-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,52 +19,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] rtc: ds1307: Add ds3231 to driver's ID list
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] state: fix indentation
+To: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Oct 18, 2018 at 01:47:08PM +0200, Marco Felsch wrote:
-> In contrast to the ds1337 the ds3231 has a built-in temperature
-> compensated crystal oscillator. The register map seems the same as the
-> one from the ds1337, so using it's driver_data is okay.
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
->  drivers/rtc/rtc-ds1307.c | 1 +
->  1 file changed, 1 insertion(+)
+---
+ common/state/state.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-> index 73d88ba6f2..fed3afb7bf 100644
-> --- a/drivers/rtc/rtc-ds1307.c
-> +++ b/drivers/rtc/rtc-ds1307.c
-> @@ -112,6 +112,7 @@ static struct platform_device_id ds1307_id[] = {
->  	{ "ds1308", ds_1338 }, /* Difference 1308 to 1338 irrelevant */
->  	{ "ds1338", ds_1338 },
->  	{ "ds1341", ds_1341 },
-> +	{ "ds3231", ds_1337 },
->  	{ "pt7c4338", ds_1307 },
->  	{ }
->  };
-> -- 
-> 2.19.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/common/state/state.c b/common/state/state.c
+index bef20210d6e9..54c57232e626 100644
+--- a/common/state/state.c
++++ b/common/state/state.c
+@@ -311,7 +311,7 @@ static int state_convert_node_variable(struct state *state,
+ 		if ((conv == STATE_CONVERT_TO_NODE)
+ 		    || (conv == STATE_CONVERT_FIXUP)) {
+ 			ret = of_property_write_string(new_node, "type",
+-					      vtype->type_name);
++						       vtype->type_name);
+ 			if (ret)
+ 				goto out;
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.0
+
 
 _______________________________________________
 barebox mailing list
