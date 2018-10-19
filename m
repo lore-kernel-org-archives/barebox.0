@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gFoFz-0007oo-66
- for barebox@lists.infradead.org; Thu, 25 Oct 2018 22:37:37 +0000
-Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
- (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
- id S23992786AbeJYWhUMKWhP (ORCPT
- <rfc822;barebox@lists.infradead.org>);
- Fri, 26 Oct 2018 00:37:20 +0200
-Date: Fri, 26 Oct 2018 00:37:19 +0200
-From: Ladislav Michl <ladis@linux-mips.org>
-Message-ID: <20181025223718.GA24844@lenoch>
+Received: from smtp.megiteam.pl ([31.186.83.105])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gDVWW-0001tb-CH
+ for barebox@lists.infradead.org; Fri, 19 Oct 2018 14:13:11 +0000
+From: Marcin Niestroj <m.niestroj@grinn-global.com>
+Date: Fri, 19 Oct 2018 16:12:42 +0200
+Message-Id: <20181019141242.8687-1-m.niestroj@grinn-global.com>
 MIME-Version: 1.0
-Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,348 +19,557 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usbgadget: autostart: add DFU support
+Subject: [PATCH v2] ARM: i.MX: Add liteboard support
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Marcin Niestroj <m.niestroj@grinn-global.com>
 
-Use global variable dfu_function to autostart DFU. As similar code
-is used to start multifunction gadget using command, move common
-code to common/usbgadget.c and consolidate it.
+liteboard is a development board which uses liteSOM as its
+base. liteSOM can't exist on its own, but is used as part
+of other boards - it only contains processor and memory.
 
-Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
+Hardware specification:
+ * liteSOM:
+   - i.MX6UL
+   - 256M or 512M DDR3 RAM
+   - eMMC (uSDHC2)
+ * Ethernet PHY
+ * USB host (usb_otg1)
+ * MicroSD slot (uSDHC1)
+
+Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
 ---
- This is a draft, comments welcome. Getting 
- Cannot set parameter otg.mode: No such device
- but that's same as before this patch. Documentation is probably
- also worth updating...
+Hi,
 
- commands/Kconfig                              |  1 -
- commands/usbgadget.c                          | 66 +++-----------
- common/Kconfig                                |  7 ++
- common/Makefile                               |  1 +
- .../gadget/autostart.c => common/usbgadget.c  | 85 ++++++++++++++-----
- drivers/usb/gadget/Kconfig                    |  8 +-
- drivers/usb/gadget/Makefile                   |  1 -
- 7 files changed, 89 insertions(+), 80 deletions(-)
- rename drivers/usb/gadget/autostart.c => common/usbgadget.c (51%)
+It has been a while before posting first patch [1]. Finally I have
+found more time to finish that work.
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 675bd1ca7..1de4b9d60 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -1910,7 +1910,6 @@ config CMD_USB
- config CMD_USBGADGET
- 	bool
- 	depends on USB_GADGET
--	select FILE_LIST
- 	prompt "usbgadget"
- 
- config CMD_WD
-diff --git a/commands/usbgadget.c b/commands/usbgadget.c
-index a1744cbe1..416b2acfc 100644
---- a/commands/usbgadget.c
-+++ b/commands/usbgadget.c
-@@ -30,14 +30,18 @@
- #include <usb/dfu.h>
- #include <usb/gadget-multi.h>
- 
-+int usbgadget_register(bool dfu_set, const char *dfu_opts,
-+		       bool fastboot_set, const char *fastboot_opts,
-+		       bool create_serial, bool is_acm, bool export_bbu);
+[1] https://www.spinics.net/lists/u-boot-v2/msg33201.html
+
+Changes v1 -> v2:
+ * rebased on current master
+ * use for loop over boot_sources[] (previously named envs[])
+   (suggested by Andrey)
+ * do not configure RX UART in lowlevel.c
+   (suggested by Andrey)
+ * use putchar() instead of putc_ll(), so we depend on
+   CONFIG_PBL_CONSOLE instead of CONFIG_DEBUG_LL
+   (suggested by Andrey)
+ * only setup UART in case of CONFIG_PBL_CONSOLE=y
+   (suggested by Andrey)
+ * move relocate_to_current_adr(), setup_c(), barrier()
+   inside setup_uart() (suggested by Andrey)
+ * do not disable watchdog powerdown counters (I couldn't
+   find good reason to disable them)
+ * put partition definitions in dts file inside 'partitions'
+   node
+
+ arch/arm/boards/Makefile                      |   1 +
+ arch/arm/boards/grinn-liteboard/Makefile      |   2 +
+ arch/arm/boards/grinn-liteboard/board.c       | 110 ++++++++++++++++++
+ .../flash-header-liteboard-256mb.imxcfg       |   6 +
+ .../flash-header-liteboard-512mb.imxcfg       |   6 +
+ .../grinn-liteboard/flash-header-liteboard.h  |  68 +++++++++++
+ arch/arm/boards/grinn-liteboard/lowlevel.c    |  82 +++++++++++++
+ arch/arm/configs/imx_v7_defconfig             |   1 +
+ arch/arm/dts/Makefile                         |   1 +
+ arch/arm/dts/imx6ul-liteboard.dts             |  96 +++++++++++++++
+ arch/arm/mach-imx/Kconfig                     |   4 +
+ images/Makefile.imx                           |  10 ++
+ 12 files changed, 387 insertions(+)
+ create mode 100644 arch/arm/boards/grinn-liteboard/Makefile
+ create mode 100644 arch/arm/boards/grinn-liteboard/board.c
+ create mode 100644 arch/arm/boards/grinn-liteboard/flash-header-liteboard-256mb.imxcfg
+ create mode 100644 arch/arm/boards/grinn-liteboard/flash-header-liteboard-512mb.imxcfg
+ create mode 100644 arch/arm/boards/grinn-liteboard/flash-header-liteboard.h
+ create mode 100644 arch/arm/boards/grinn-liteboard/lowlevel.c
+ create mode 100644 arch/arm/dts/imx6ul-liteboard.dts
+
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index c737cf341..601691543 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -52,6 +52,7 @@ obj-$(CONFIG_MACH_GE863)			+= telit-evk-pro3/
+ obj-$(CONFIG_MACH_GK802)			+= gk802/
+ obj-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG)		+= globalscale-guruplug/
+ obj-$(CONFIG_MACH_GLOBALSCALE_MIRABOX)		+= globalscale-mirabox/
++obj-$(CONFIG_MACH_GRINN_LITEBOARD)		+= grinn-liteboard/
+ obj-$(CONFIG_MACH_GUF_CUPID)			+= guf-cupid/
+ obj-$(CONFIG_MACH_GUF_SANTARO)			+= guf-santaro/
+ obj-$(CONFIG_MACH_GUF_VINCELL)			+= guf-vincell/
+diff --git a/arch/arm/boards/grinn-liteboard/Makefile b/arch/arm/boards/grinn-liteboard/Makefile
+new file mode 100644
+index 000000000..01c7a259e
+--- /dev/null
++++ b/arch/arm/boards/grinn-liteboard/Makefile
+@@ -0,0 +1,2 @@
++obj-y += board.o
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/grinn-liteboard/board.c b/arch/arm/boards/grinn-liteboard/board.c
+new file mode 100644
+index 000000000..695b24384
+--- /dev/null
++++ b/arch/arm/boards/grinn-liteboard/board.c
+@@ -0,0 +1,110 @@
++/*
++ * Copyright (C) 2018 Grinn
++ *
++ * Author: Marcin Niestroj <m.niestroj@grinn-global.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; version 2.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License for more details.
++ */
 +
- static int do_usbgadget(int argc, char *argv[])
- {
--	int opt, ret;
--	int acm = 1, create_serial = 0, fastboot_set = 0, fastboot_export_bbu = 0;
-+	int opt;
-+	bool acm = true, create_serial = false, dfu_set = false;
-+	bool fastboot_set = false, fastboot_export_bbu = false;
- 	const char *fastboot_opts = NULL, *dfu_opts = NULL;
--	struct f_multi_opts *opts;
- 
--	while ((opt = getopt(argc, argv, "asdA::D:b")) > 0) {
-+	while ((opt = getopt(argc, argv, "asdA::D::b")) > 0) {
- 		switch (opt) {
- 		case 'a':
- 			acm = 1;
-@@ -49,6 +53,7 @@ static int do_usbgadget(int argc, char *argv[])
- 			break;
- 		case 'D':
- 			dfu_opts = optarg;
-+			dfu_set = 1;
- 			break;
- 		case 'A':
- 			fastboot_opts = optarg;
-@@ -65,54 +70,8 @@ static int do_usbgadget(int argc, char *argv[])
- 		}
- 	}
- 
--	if (fastboot_set && !fastboot_opts)
--		fastboot_opts = getenv("global.usbgadget.fastboot_function");
--
--	if (!dfu_opts && !fastboot_opts && !create_serial)
--		return COMMAND_ERROR_USAGE;
--
--	/*
--	 * Creating a gadget with both DFU and Fastboot doesn't work.
--	 * Both client tools seem to assume that the device only has
--	 * a single configuration
--	 */
--	if (fastboot_opts && dfu_opts) {
--		printf("Only one of Fastboot and DFU allowed\n");
--		return -EINVAL;
--	}
--
--	opts = xzalloc(sizeof(*opts));
--	opts->release = usb_multi_opts_release;
--
--	if (fastboot_opts) {
--		opts->fastboot_opts.files = file_list_parse(fastboot_opts);
--		if (IS_ERR(opts->fastboot_opts.files))
--			goto err_parse;
--		opts->fastboot_opts.export_bbu = fastboot_export_bbu;
--	}
--
--	if (dfu_opts) {
--		opts->dfu_opts.files = file_list_parse(dfu_opts);
--		if (IS_ERR(opts->dfu_opts.files))
--			goto err_parse;
--	}
--
--	if (create_serial) {
--		opts->create_acm = acm;
--	}
--
--	ret = usb_multi_register(opts);
--	if (ret)
--		usb_multi_opts_release(opts);
--
--	return ret;
--
--err_parse:
--	printf("Cannot parse file list \"%s\": %s\n", fastboot_opts, strerrorp(opts->fastboot_opts.files));
--
--	free(opts);
--
--	return 1;
-+	return usbgadget_register(dfu_set, dfu_opts, fastboot_set, fastboot_opts,
-+				  create_serial, acm, fastboot_export_bbu);
- }
- 
- BAREBOX_CMD_HELP_START(usbgadget)
-@@ -124,7 +83,8 @@ BAREBOX_CMD_HELP_OPT ("-s\t", "Create Generic Serial function")
- BAREBOX_CMD_HELP_OPT ("-A <desc>", "Create Android Fastboot function. If 'desc' is not provided, "
- 				   "try to use 'global.usbgadget.fastboot_function' variable.")
- BAREBOX_CMD_HELP_OPT ("-b\t", "include registered barebox update handlers (fastboot specific)")
--BAREBOX_CMD_HELP_OPT ("-D <desc>", "Create DFU function")
-+BAREBOX_CMD_HELP_OPT ("-D <desc>", "Create DFU function. If 'desc' is not provided, "
-+				   "try to use 'global.usbgadget.dfu_function' variable.")
- BAREBOX_CMD_HELP_OPT ("-d\t", "Disable the currently running gadget")
- BAREBOX_CMD_HELP_END
- 
-diff --git a/common/Kconfig b/common/Kconfig
-index eddd99ea3..2ad92158c 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -115,6 +115,13 @@ config UBIFORMAT
- 	depends on MTD_UBI
- 	default y
- 
-+config USBGADGET_START
-+	bool
-+	depends on CMD_USBGADGET || USB_GADGET_AUTOSTART
-+	select ENVIRONMENT_VARIABLES
-+	select FILE_LIST
-+	default y
++#define pr_fmt(fmt) "liteboard: " fmt
 +
- config BOOT
- 	bool
- 
-diff --git a/common/Makefile b/common/Makefile
-index 13920cc5a..2b0f4cc98 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -64,6 +64,7 @@ obj-$(CONFIG_UBIFORMAT)		+= ubiformat.o
- obj-$(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB) += imx-bbu-nand-fcb.o
- obj-$(CONFIG_BOOT)		+= boot.o
- obj-$(CONFIG_SERIAL_DEV_BUS)	+= serdev.o
-+obj-$(CONFIG_USBGADGET_START)	+= usbgadget.o
- 
- ifdef CONFIG_PASSWORD
- 
-diff --git a/drivers/usb/gadget/autostart.c b/common/usbgadget.c
-similarity index 51%
-rename from drivers/usb/gadget/autostart.c
-rename to common/usbgadget.c
-index f640a9667..7d72ad489 100644
---- a/drivers/usb/gadget/autostart.c
-+++ b/common/usbgadget.c
-@@ -11,7 +11,7 @@
-  * GNU General Public License for more details.
-  *
-  */
--#define pr_fmt(fmt) "usbgadget autostart: " fmt
-+#define pr_fmt(fmt) "usbgadget: " fmt
- 
- #include <common.h>
- #include <command.h>
-@@ -29,35 +29,65 @@
- 
- static int autostart;
- static int acm;
-+static char *dfu_function;
- static char *fastboot_function;
- static int fastboot_bbu;
- 
--static int usbgadget_autostart(void)
-+static struct file_list *parse(const char *files)
++#include <bootsource.h>
++#include <common.h>
++#include <envfs.h>
++#include <init.h>
++#include <mach/bbu.h>
++#include <mach/imx6.h>
++#include <malloc.h>
++#include <mfd/imx6q-iomuxc-gpr.h>
++#include <of.h>
++
++static void bbu_register_handler_sd(bool is_boot_source)
 +{
-+	struct file_list *list = file_list_parse(files);
-+	if (IS_ERR(list)) {
-+		pr_err("Parsing file list \"%s\" failed: %s\n", files,
-+		       strerrorp(list));
-+		return NULL;
-+	}
-+	return list;
++	imx6_bbu_internal_mmc_register_handler("sd", "/dev/mmc0.barebox",
++				is_boot_source ? BBU_HANDLER_FLAG_DEFAULT : 0);
 +}
 +
-+int usbgadget_register(bool dfu_set, const char *dfu_opts,
-+		       bool fastboot_set, const char *fastboot_opts,
-+		       bool create_serial, bool is_acm, bool export_bbu)
- {
--	struct f_multi_opts *opts;
- 	int ret;
-+	struct f_multi_opts *opts;
- 
--	if (!autostart)
--		return 0;
-+	if (dfu_set && !dfu_opts && dfu_function && *dfu_function)
-+		dfu_opts = dfu_function;
-+
-+	if (fastboot_set && !fastboot_opts &&
-+	    fastboot_function && *fastboot_function)
-+		fastboot_opts = fastboot_function;
-+
-+	if (!dfu_opts && !fastboot_opts && !create_serial)
-+		return COMMAND_ERROR_USAGE;
-+
-+	/*
-+	 * Creating a gadget with both DFU and Fastboot doesn't work.
-+	 * Both client tools seem to assume that the device only has
-+	 * a single configuration
-+	 */
-+	if (fastboot_opts && dfu_opts) {
-+		pr_err("Only one of Fastboot and DFU allowed\n");
-+		return -EINVAL;
-+	}
- 
- 	opts = xzalloc(sizeof(*opts));
- 	opts->release = usb_multi_opts_release;
- 
--	if (fastboot_function) {
--		opts->fastboot_opts.files = file_list_parse(fastboot_function);
--		if (IS_ERR(opts->fastboot_opts.files)) {
--			pr_err("Parsing file list \"%s\" failed: %s\n", fastboot_function,
--			       strerrorp(opts->fastboot_opts.files));
--			opts->fastboot_opts.files = NULL;
--		}
--
--		opts->fastboot_opts.export_bbu = fastboot_bbu;
-+	if (fastboot_opts) {
-+		opts->fastboot_opts.files = parse(fastboot_opts);
-+		opts->fastboot_opts.export_bbu = export_bbu;
- 	}
- 
--	opts->create_acm = acm;
-+	if (dfu_opts)
-+		opts->dfu_opts.files = parse(dfu_opts);
-+
-+	opts->create_acm = is_acm;
- 
--	if (!opts->fastboot_opts.files && !opts->create_acm) {
-+	if (!opts->dfu_opts.files && !opts->fastboot_opts.files &&
-+	    !opts->create_acm) {
- 		pr_warn("No functions to register\n");
-+		free(opts);
- 		return 0;
- 	}
- 
-@@ -69,16 +99,28 @@ static int usbgadget_autostart(void)
- 
- 	return ret;
- }
-+
-+static int usbgadget_autostart(void)
++static void bbu_register_handler_emmc(bool is_boot_source)
 +{
-+	if (!IS_ENABLED(CONFIG_USB_GADGET_AUTOSTART) || !autostart)
++	int emmc_boot_flag = 0, emmc_flag = 0;
++	const char *bootpart;
++	struct device_d *dev;
++	int ret;
++
++	if (!is_boot_source)
++		goto bbu_register;
++
++	dev = get_device_by_name("mmc1");
++	if (!dev) {
++		pr_warn("Failed to get eMMC device\n");
++		goto bbu_register;
++	}
++
++	ret = device_detect(dev);
++	if (ret) {
++		pr_warn("Failed to probe eMMC\n");
++		goto bbu_register;
++	}
++
++	bootpart = dev_get_param(dev, "boot");
++	if (!bootpart) {
++		pr_warn("Failed to get eMMC boot configuration\n");
++		goto bbu_register;
++	}
++
++	if (!strncmp(bootpart, "boot", 4))
++		emmc_boot_flag |= BBU_HANDLER_FLAG_DEFAULT;
++	else
++		emmc_flag |= BBU_HANDLER_FLAG_DEFAULT;
++
++bbu_register:
++	imx6_bbu_internal_mmc_register_handler("emmc", "/dev/mmc1.barebox",
++					emmc_flag);
++	imx6_bbu_internal_mmcboot_register_handler("emmc-boot", "mmc1",
++					emmc_boot_flag);
++}
++
++static const struct {
++	const char *name;
++	const char *env;
++	void (*bbu_register_handler)(bool);
++} boot_sources[] = {
++	{"SD",   "/chosen/environment-sd",   bbu_register_handler_sd},
++	{"eMMC", "/chosen/environment-emmc", bbu_register_handler_emmc},
++};
++
++static int liteboard_devices_init(void)
++{
++	int boot_source_idx = 0;
++	int ret;
++	int i;
++
++	if (!of_machine_is_compatible("grinn,imx6ul-liteboard"))
 +		return 0;
 +
-+	return usbgadget_register(true, NULL, true, NULL, acm, acm,
-+				  fastboot_bbu);
++	barebox_set_hostname("liteboard");
++
++	if (bootsource_get() == BOOTSOURCE_MMC)
++		boot_source_idx = bootsource_get_instance();
++
++	ret = of_device_enable_path(boot_sources[boot_source_idx].env);
++	if (ret < 0)
++		pr_warn("Failed to enable environment partition '%s' (%d)\n",
++			boot_sources[boot_source_idx].env, ret);
++
++	pr_notice("Using environment in %s\n",
++		boot_sources[boot_source_idx].name);
++
++	for (i = 0; i < ARRAY_SIZE(boot_sources); i++)
++		boot_sources[i].bbu_register_handler(boot_source_idx == i);
++
++	return 0;
 +}
- postenvironment_initcall(usbgadget_autostart);
- 
- static int usbgadget_globalvars_init(void)
- {
--
--	globalvar_add_simple_bool("usbgadget.autostart", &autostart);
--	globalvar_add_simple_bool("usbgadget.acm", &acm);
-+	if (IS_ENABLED(CONFIG_USB_GADGET_AUTOSTART)) {
-+		globalvar_add_simple_bool("usbgadget.autostart", &autostart);
-+		globalvar_add_simple_bool("usbgadget.acm", &acm);
-+		globalvar_add_simple_bool("usbgadget.fastboot_bbu",
-+					  &fastboot_bbu);
++device_initcall(liteboard_devices_init);
+diff --git a/arch/arm/boards/grinn-liteboard/flash-header-liteboard-256mb.imxcfg b/arch/arm/boards/grinn-liteboard/flash-header-liteboard-256mb.imxcfg
+new file mode 100644
+index 000000000..1b980c784
+--- /dev/null
++++ b/arch/arm/boards/grinn-liteboard/flash-header-liteboard-256mb.imxcfg
+@@ -0,0 +1,6 @@
++
++#define SETUP_MDASP_MDCTL		\
++	wm 32 0x021B0040 0x00000047;	\
++	wm 32 0x021B0000 0x83180000
++
++#include "flash-header-liteboard.h"
+diff --git a/arch/arm/boards/grinn-liteboard/flash-header-liteboard-512mb.imxcfg b/arch/arm/boards/grinn-liteboard/flash-header-liteboard-512mb.imxcfg
+new file mode 100644
+index 000000000..c93a2cc0f
+--- /dev/null
++++ b/arch/arm/boards/grinn-liteboard/flash-header-liteboard-512mb.imxcfg
+@@ -0,0 +1,6 @@
++
++#define SETUP_MDASP_MDCTL		\
++	wm 32 0x021B0040 0x0000004F;	\
++	wm 32 0x021B0000 0x84180000
++
++#include "flash-header-liteboard.h"
+diff --git a/arch/arm/boards/grinn-liteboard/flash-header-liteboard.h b/arch/arm/boards/grinn-liteboard/flash-header-liteboard.h
+new file mode 100644
+index 000000000..60a39f524
+--- /dev/null
++++ b/arch/arm/boards/grinn-liteboard/flash-header-liteboard.h
+@@ -0,0 +1,68 @@
++
++loadaddr 0x80000000
++soc imx6
++dcdofs 0x400
++
++wm 32 0x020c4068 0xffffffff
++wm 32 0x020c406c 0xffffffff
++wm 32 0x020c4070 0xffffffff
++wm 32 0x020c4074 0xffffffff
++wm 32 0x020c4078 0xffffffff
++wm 32 0x020c407c 0xffffffff
++wm 32 0x020c4080 0xffffffff
++
++wm 32 0x020E04B4 0x000C0000
++wm 32 0x020E04AC 0x00000000
++wm 32 0x020E027C 0x00000030
++wm 32 0x020E0250 0x00000030
++wm 32 0x020E024C 0x00000030
++wm 32 0x020E0490 0x00000030
++wm 32 0x020E0288 0x00000030
++wm 32 0x020E0270 0x00000000
++wm 32 0x020E0260 0x00000030
++wm 32 0x020E0264 0x00000030
++wm 32 0x020E04A0 0x00000030
++wm 32 0x020E0494 0x00020000
++wm 32 0x020E0280 0x00000030
++wm 32 0x020E0284 0x00000030
++wm 32 0x020E04B0 0x00020000
++wm 32 0x020E0498 0x00000030
++wm 32 0x020E04A4 0x00000030
++wm 32 0x020E0244 0x00000030
++wm 32 0x020E0248 0x00000030
++wm 32 0x021B001C 0x00008000
++wm 32 0x021B0800 0xA1390003
++wm 32 0x021B080C 0x00000000
++wm 32 0x021B083C 0x41480148
++wm 32 0x021B0848 0x40403E42
++wm 32 0x021B0850 0x40405852
++wm 32 0x021B081C 0x33333333
++wm 32 0x021B0820 0x33333333
++wm 32 0x021B082C 0xf3333333
++wm 32 0x021B0830 0xf3333333
++wm 32 0x021B08C0 0x00922012
++wm 32 0x021B0858 0x00000F00
++wm 32 0x021B08b8 0x00000800
++wm 32 0x021B0004 0x0002002D
++wm 32 0x021B0008 0x1B333030
++wm 32 0x021B000C 0x676B52F3
++wm 32 0x021B0010 0xB66D0B63
++wm 32 0x021B0014 0x01FF00DB
++wm 32 0x021B0018 0x00211740
++wm 32 0x021B001C 0x00008000
++wm 32 0x021B002C 0x000026D2
++wm 32 0x021B0030 0x006B1023
++
++SETUP_MDASP_MDCTL
++
++wm 32 0x021b0890 0x00400A38
++wm 32 0x021B001C 0x02008032
++wm 32 0x021B001C 0x00008033
++wm 32 0x021B001C 0x00048031
++wm 32 0x021B001C 0x15208030
++wm 32 0x021B001C 0x04008040
++wm 32 0x021B0020 0x00007800
++wm 32 0x021B0818 0x00000227
++wm 32 0x021B0004 0x0002556D
++wm 32 0x021B0404 0x00011006
++wm 32 0x021B001C 0x00000000
+diff --git a/arch/arm/boards/grinn-liteboard/lowlevel.c b/arch/arm/boards/grinn-liteboard/lowlevel.c
+new file mode 100644
+index 000000000..331ccc228
+--- /dev/null
++++ b/arch/arm/boards/grinn-liteboard/lowlevel.c
+@@ -0,0 +1,82 @@
++/*
++ * Copyright (C) 2018 Grinn
++ *
++ * Author: Marcin Niestroj <m.niestroj@grinn-global.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; version 2.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License for more details.
++ */
++
++#include <debug_ll.h>
++#include <common.h>
++#include <linux/sizes.h>
++#include <io.h>
++#include <image-metadata.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <asm/sections.h>
++#include <asm/cache.h>
++#include <asm/mmu.h>
++#include <mach/esdctl.h>
++#include <mach/imx6.h>
++
++static inline void setup_uart(void)
++{
++	void __iomem *iomuxbase = IOMEM(MX6_IOMUXC_BASE_ADDR);
++	void __iomem *uart = IOMEM(MX6_UART1_BASE_ADDR);
++
++	relocate_to_current_adr();
++	setup_c();
++	barrier();
++
++	imx6_ungate_all_peripherals();
++
++	writel(0x0, iomuxbase + 0x84);
++	writel(0x1b0b1, iomuxbase + 0x0310);
++
++	imx6_uart_setup(uart);
++
++	pbl_set_putc(imx_uart_putc, uart);
++
++	putchar('>');
++}
++
++BAREBOX_IMD_TAG_STRING(liteboard_memsize_SZ_256M, IMD_TYPE_PARAMETER,
++		"memsize=256", 0);
++BAREBOX_IMD_TAG_STRING(liteboard_memsize_SZ_512M, IMD_TYPE_PARAMETER,
++		"memsize=512", 0);
++
++extern char __dtb_imx6ul_liteboard_start[];
++
++static void __noreturn start_imx6_liteboard(void)
++{
++	imx6ul_cpu_lowlevel_init();
++
++	arm_setup_stack(0x00910000 - 8);
++
++	arm_early_mmu_cache_invalidate();
++
++	if (IS_ENABLED(CONFIG_PBL_CONSOLE))
++		setup_uart();
++
++	imx6ul_barebox_entry(__dtb_imx6ul_liteboard_start +
++			get_runtime_offset());
++}
++
++#define LITEBOARD_ENTRY(name, memory_size)				\
++	ENTRY_FUNCTION(name, r0, r1, r2)				\
++	{								\
++		IMD_USED(liteboard_memsize_##memory_size);		\
++									\
++		start_imx6_liteboard();					\
 +	}
-+	globalvar_add_simple_string("usbgadget.dfu_function", &dfu_function);
- 	globalvar_add_simple_string("usbgadget.fastboot_function",
- 				    &fastboot_function);
--	globalvar_add_simple_bool("usbgadget.fastboot_bbu", &fastboot_bbu);
++
++
++LITEBOARD_ENTRY(start_imx6ul_liteboard_256mb, SZ_256M);
++LITEBOARD_ENTRY(start_imx6ul_liteboard_512mb, SZ_512M);
+diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
+index 0fc3c9c50..bf84dfa9f 100644
+--- a/arch/arm/configs/imx_v7_defconfig
++++ b/arch/arm/configs/imx_v7_defconfig
+@@ -41,6 +41,7 @@ CONFIG_MACH_ZII_VF610_DEV=y
+ CONFIG_MACH_PHYTEC_PHYCORE_IMX7=y
+ CONFIG_MACH_FREESCALE_MX7_SABRESD=y
+ CONFIG_MACH_NXP_IMX6ULL_EVK=y
++CONFIG_MACH_GRINN_LITEBOARD=y
+ CONFIG_IMX_IIM=y
+ CONFIG_IMX_IIM_FUSE_BLOW=y
+ CONFIG_THUMB2_BAREBOX=y
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 1caeca35b..b3b562917 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -27,6 +27,7 @@ pbl-dtb-$(CONFIG_MACH_FREESCALE_MX7_SABRESD) += imx7d-sdb.dtb.o
+ pbl-dtb-$(CONFIG_MACH_GK802) += imx6q-gk802.dtb.o
+ pbl-dtb-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG) += kirkwood-guruplug-server-plus-bb.dtb.o
+ pbl-dtb-$(CONFIG_MACH_GLOBALSCALE_MIRABOX) += armada-370-mirabox-bb.dtb.o
++pbl-dtb-$(CONFIG_MACH_GRINN_LITEBOARD) += imx6ul-liteboard.dtb.o
+ pbl-dtb-$(CONFIG_MACH_GUF_SANTARO) += imx6q-guf-santaro.dtb.o
+ pbl-dtb-$(CONFIG_MACH_GUF_VINCELL) += imx53-guf-vincell.dtb.o imx53-guf-vincell-lt.dtb.o
+ pbl-dtb-$(CONFIG_MACH_GW_VENTANA) += imx6q-gw54xx.dtb.o
+diff --git a/arch/arm/dts/imx6ul-liteboard.dts b/arch/arm/dts/imx6ul-liteboard.dts
+new file mode 100644
+index 000000000..03a4bfc78
+--- /dev/null
++++ b/arch/arm/dts/imx6ul-liteboard.dts
+@@ -0,0 +1,96 @@
++/*
++ * Copyright 2018 Grinn
++ *
++ * Author: Marcin Niestroj <m.niestroj@grinn-global.com>
++ *
++ * This file is dual-licensed: you can use it either under the terms
++ * of the GPL or the X11 license, at your option. Note that this dual
++ * licensing only applies to this file, and not this project as a
++ * whole.
++ *
++ *  a) This file is free software; you can redistribute it and/or
++ *     modify it under the terms of the GNU General Public License
++ *     version 2 as published by the Free Software Foundation.
++ *
++ *     This file is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ * Or, alternatively,
++ *
++ *  b) Permission is hereby granted, free of charge, to any person
++ *     obtaining a copy of this software and associated documentation
++ *     files (the "Software"), to deal in the Software without
++ *     restriction, including without limitation the rights to use,
++ *     copy, modify, merge, publish, distribute, sublicense, and/or
++ *     sell copies of the Software, and to permit persons to whom the
++ *     Software is furnished to do so, subject to the following
++ *     conditions:
++ *
++ *     The above copyright notice and this permission notice shall be
++ *     included in all copies or substantial portions of the Software.
++ *
++ *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
++ *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
++ *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
++ *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ *     OTHER DEALINGS IN THE SOFTWARE.
++ */
++
++#include <arm/imx6ul-liteboard.dts>
++
++/ {
++	chosen {
++		environment-sd {
++			compatible = "barebox,environment";
++			device-path = &environment_sd;
++			status = "disabled";
++		};
++
++		environment-emmc {
++			compatible = "barebox,environment";
++			device-path = &environment_emmc;
++			status = "disabled";
++		};
++	};
++};
++
++&usdhc1 {
++	partitions {
++		compatible = "fixed-partitions";
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		partition@0 {
++			label = "barebox";
++			reg = <0x0 0xe0000>;
++		};
++
++		environment_sd: partition@e0000 {
++			label = "barebox-environment";
++			reg = <0xe0000 0x20000>;
++		};
++	};
++};
++
++&usdhc2 {
++	partitions {
++		compatible = "fixed-partitions";
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		partition@0 {
++			label = "barebox";
++			reg = <0x0 0xe0000>;
++		};
++
++		environment_emmc: partition@e0000 {
++			label = "barebox-environment";
++			reg = <0xe0000 0x20000>;
++		};
++	};
++};
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 63a92bd5b..4eabd938f 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -454,6 +454,10 @@ config MACH_NXP_IMX8MQ_EVK
+ 	select FIRMWARE_IMX8MQ_ATF
+ 	select ARM_SMCCC
  
- 	return 0;
- }
-@@ -90,6 +132,9 @@ BAREBOX_MAGICVAR_NAMED(global_usbgadget_autostart,
- BAREBOX_MAGICVAR_NAMED(global_usbgadget_acm,
- 		       global.usbgadget.acm,
- 		       "usbgadget: Create CDC ACM function");
-+BAREBOX_MAGICVAR_NAMED(global_usbgadget_dfu_function,
-+		       global.usbgadget.dfu_function,
-+		       "usbgadget: Create DFU function");
- BAREBOX_MAGICVAR_NAMED(global_usbgadget_fastboot_function,
- 		       global.usbgadget.fastboot_function,
- 		       "usbgadget: Create Android Fastboot function");
-diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
-index b0408e3bb..ca1bfc1b4 100644
---- a/drivers/usb/gadget/Kconfig
-+++ b/drivers/usb/gadget/Kconfig
-@@ -33,13 +33,11 @@ config USB_GADGET_DRIVER_PXA27X
- config USB_GADGET_AUTOSTART
- 	bool
- 	default y
--	select ENVIRONMENT_VARIABLES
--	select FILE_LIST
- 	prompt "Automatically start usbgadget on boot"
- 	help
--	  Enabling this option allows to automatically start a fastboot
--	  gadget during boot. This behaviour is controlled with the
--	  global.usbgadget.fastboot_function variable.
-+	  Enabling this option allows to automatically start a dfu or
-+	  fastboot gadget during boot. This behaviour is controlled with
-+	  the global.usbgadget.{dfu,fastboot}_function variable.
++config MACH_GRINN_LITEBOARD
++	bool "Grinn liteboard"
++	select ARCH_IMX6UL
++
+ endif
  
- comment "USB Gadget drivers"
+ # ----------------------------------------------------------
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 341ce8506..9b5cd577d 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -486,6 +486,16 @@ CFG_start_imx6dl_samx6i.pblx.imximg = $(board)/kontron-samx6i/flash-header-samx6
+ FILE_barebox-imx6dl-samx6i.img = start_imx6dl_samx6i.pblx.imximg
+ image-$(CONFIG_MACH_KONTRON_SAMX6I) += barebox-imx6dl-samx6i.img
  
-diff --git a/drivers/usb/gadget/Makefile b/drivers/usb/gadget/Makefile
-index e74cf0266..9ef594575 100644
---- a/drivers/usb/gadget/Makefile
-+++ b/drivers/usb/gadget/Makefile
-@@ -1,6 +1,5 @@
- 
- obj-$(CONFIG_USB_GADGET) += composite.o config.o usbstring.o epautoconf.o udc-core.o functions.o config.o multi.o
--obj-$(CONFIG_USB_GADGET_AUTOSTART) += autostart.o
- obj-$(CONFIG_USB_GADGET_SERIAL) += u_serial.o serial.o f_serial.o f_acm.o
- obj-$(CONFIG_USB_GADGET_DFU) += dfu.o
- obj-$(CONFIG_USB_GADGET_FASTBOOT) += f_fastboot.o
++pblx-$(CONFIG_MACH_GRINN_LITEBOARD) += start_imx6ul_liteboard_256mb
++CFG_start_imx6ul_liteboard_256mb.pblx.imximg = $(board)/grinn-liteboard/flash-header-liteboard-256mb.imxcfg
++FILE_barebox-grinn-liteboard-256mb.img = start_imx6ul_liteboard_256mb.pblx.imximg
++image-$(CONFIG_MACH_GRINN_LITEBOARD) += barebox-grinn-liteboard-256mb.img
++
++pblx-$(CONFIG_MACH_GRINN_LITEBOARD) += start_imx6ul_liteboard_512mb
++CFG_start_imx6ul_liteboard_512mb.pblx.imximg = $(board)/grinn-liteboard/flash-header-liteboard-512mb.imxcfg
++FILE_barebox-grinn-liteboard-512mb.img = start_imx6ul_liteboard_512mb.pblx.imximg
++image-$(CONFIG_MACH_GRINN_LITEBOARD) += barebox-grinn-liteboard-512mb.img
++
+ pblx-$(CONFIG_MACH_GW_VENTANA) += start_imx6q_gw54xx_1gx64
+ CFG_start_imx6q_gw54xx_1gx64.pblx.imximg = $(board)/gateworks-ventana/flash-header-ventana-quad-1gx64.imxcfg
+ FILE_barebox-gateworks-imx6q-ventana-1gx64.img = start_imx6q_gw54xx_1gx64.pblx.imximg
 -- 
-2.19.1
+2.19.0
 
 
 _______________________________________________
