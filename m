@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+Received: from smtp.megiteam.pl ([31.186.83.105])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gGDS9-0000f8-7O
- for barebox@lists.infradead.org; Sat, 27 Oct 2018 01:31:50 +0000
-Received: by mail-pg1-x534.google.com with SMTP id z17-v6so1300686pgv.3
- for <barebox@lists.infradead.org>; Fri, 26 Oct 2018 18:31:38 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 26 Oct 2018 18:31:20 -0700
-Message-Id: <20181027013127.22163-1-andrew.smirnov@gmail.com>
+ id 1gEwXX-0004FB-Pc
+ for barebox@lists.infradead.org; Tue, 23 Oct 2018 13:16:09 +0000
+From: Marcin Niestroj <m.niestroj@grinn-global.com>
+Date: Tue, 23 Oct 2018 15:15:31 +0200
+Message-Id: <20181023131531.22804-1-m.niestroj@grinn-global.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,47 +15,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/6] Switch EEPROM aliases to ZII boards
+Subject: [PATCH] net: dhcp: fix option 54
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
 
-Everyone:
+Option 54 (Server Identifier) is something different than
+SIADDR (Server IP address). Currently they are used
+interchangeably. This causes DHCPNAK with DHCP servers that
+have configured different values for each field.
 
-With Marvell driver patches in 'next' a number of ZII boards now
-expose a switch EEPROM device in devfs. By default those NVMEM devices
-are given rather unwieldy long names, so this series introduces
-appropriate aliases to shorten those to either "switch-eeprom" or
-"switchN-eeprom" for cases of just one or multiple EEPROMs
-correspondingly.
+Create new 'dhcp_serverip' field in 'struct dhcp_result', so we treat
+option 54 separately. This fixes DHCP requests for servers that send
+two different values for SIADDR and option 54 in DHCPOFFER.
 
-Feedback is wellcome!
+Fixes: 528298b702a0 ("net: dhcp: rework")
+Fixes: e18cc5b7e9ce ("DHCP: fix option 54 passing")
+Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
+---
+ include/dhcp.h | 1 +
+ net/dhcp.c     | 6 +++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-Thanks,
-Andrey Smirnov
-
-Andrey Smirnov (6):
-  ARM: rdu2: Add switch EEPROM alias
-  ARM: rdu1: Add switch EEPROM alias
-  ARM: vf610-zii-dev-rev-c: Add switch EEPROM alias
-  ARM: vf610-zii-cfu1: Add switch EEPROM alias
-  ARM: vf610-zii-ssmb-spu3: Add switch EEPROM alias
-  ARM: imx7d-zii-rpu2: Add switch EEPROM alias
-
- arch/arm/dts/imx51-zii-rdu1.dts      | 13 +++++++++++++
- arch/arm/dts/imx6qdl-zii-rdu2.dtsi   |  6 ++++++
- arch/arm/dts/imx7d-zii-rpu2.dts      |  9 +++++++++
- arch/arm/dts/vf610-zii-cfu1.dts      | 11 +++++++++++
- arch/arm/dts/vf610-zii-dev-rev-c.dts | 12 ++++++++++++
- arch/arm/dts/vf610-zii-ssmb-spu3.dts | 11 +++++++++++
- 6 files changed, 62 insertions(+)
-
+diff --git a/include/dhcp.h b/include/dhcp.h
+index ce5ed61c6..0dced8e9f 100644
+--- a/include/dhcp.h
++++ b/include/dhcp.h
+@@ -28,6 +28,7 @@ struct dhcp_result {
+ 	IPaddr_t gateway;
+ 	IPaddr_t nameserver;
+ 	IPaddr_t serverip;
++	IPaddr_t dhcp_serverip;
+ 	char *hostname;
+ 	char *domainname;
+ 	char *rootpath;
+diff --git a/net/dhcp.c b/net/dhcp.c
+index 427d80a5a..79aa75d87 100644
+--- a/net/dhcp.c
++++ b/net/dhcp.c
+@@ -300,7 +300,7 @@ static void dhcp_options_handle(unsigned char option, void *popt,
+ 			net_copy_uint32(&dhcp_result->leasetime, popt);
+ 			break;
+ 		case 54:
+-			dhcp_result->serverip = net_read_ip(popt);
++			dhcp_result->dhcp_serverip = net_read_ip(popt);
+ 			break;
+ 		case 66:
+ 			dhcp_result->tftp_server_name = xstrndup(popt, optlen);
+@@ -378,8 +378,8 @@ static void dhcp_send_request_packet(struct bootp *bp_offer)
+ 	/*
+ 	 * Copy options from OFFER packet if present
+ 	 */
+-	extlen = dhcp_extended(bp->bp_vend, DHCP_REQUEST, dhcp_result->serverip,
+-				dhcp_result->ip);
++	extlen = dhcp_extended(bp->bp_vend, DHCP_REQUEST,
++			dhcp_result->dhcp_serverip, dhcp_result->ip);
+ 
+ 	debug("Transmitting DHCPREQUEST packet\n");
+ 	net_udp_send(dhcp_con, sizeof(*bp) + extlen);
 -- 
-2.17.1
+2.19.0
 
 
 _______________________________________________
