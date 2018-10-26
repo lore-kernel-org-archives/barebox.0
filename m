@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gFyfx-0005eR-Cz
- for barebox@lists.infradead.org; Fri, 26 Oct 2018 09:45:08 +0000
-Date: Fri, 26 Oct 2018 11:44:52 +0200
+ id 1gFyl0-0000AF-8w
+ for barebox@lists.infradead.org; Fri, 26 Oct 2018 09:51:55 +0000
+Date: Fri, 26 Oct 2018 11:50:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181026094452.lunv5opg26u56b6j@pengutronix.de>
-References: <20181023131531.22804-1-m.niestroj@grinn-global.com>
+Message-ID: <20181026095006.seqw52kddynsm3we@pengutronix.de>
+References: <20181024204147.GA15377@lenoch>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181023131531.22804-1-m.niestroj@grinn-global.com>
+In-Reply-To: <20181024204147.GA15377@lenoch>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: dhcp: fix option 54
-To: Marcin Niestroj <m.niestroj@grinn-global.com>
+Subject: Re: [PATCH] usb: gadget: set maxpacket_limit
+To: Ladislav Michl <ladis@linux-mips.org>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 23, 2018 at 03:15:31PM +0200, Marcin Niestroj wrote:
-> Option 54 (Server Identifier) is something different than
-> SIADDR (Server IP address). Currently they are used
-> interchangeably. This causes DHCPNAK with DHCP servers that
-> have configured different values for each field.
+On Wed, Oct 24, 2018 at 10:41:47PM +0200, Ladislav Michl wrote:
+> Gadget update to 3.15 imported Linux patch e117e742d310 ("usb:
+> gadget: add "maxpacket_limit" field to struct usb_ep"):
 > 
-> Create new 'dhcp_serverip' field in 'struct dhcp_result', so we treat
-> option 54 separately. This fixes DHCP requests for servers that send
-> two different values for SIADDR and option 54 in DHCPOFFER.
+>   This patch adds "maxpacket_limit" to struct usb_ep. This field contains
+>   maximum value of maxpacket supported by driver, and is set in driver probe.
+>   This value should be used by autoconfig() function, because value of field
+>   "maxpacket" is set to value from endpoint descriptor when endpoint becomes
+>   enabled. So when autoconfig() function will be called again for this endpoint,
+>   "maxpacket" value will contain wMaxPacketSize from descriptior instead of
+>   maximum packet size for this endpoint.
 > 
-> Fixes: 528298b702a0 ("net: dhcp: rework")
-> Fixes: e18cc5b7e9ce ("DHCP: fix option 54 passing")
-> Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
+>   For this reason this patch adds new field "maxpacket_limit" which contains
+>   value of maximum packet size (which defines maximum endpoint capabilities).
+>   This value is used in ep_matches() function used by autoconfig().
+> 
+>   Value of "maxpacket_limit" should be set in UDC driver probe function, using
+>   usb_ep_set_maxpacket_limit() function, defined in gadget.h. This function
+>   set choosen value to both "maxpacket_limit" and "maxpacket" fields.
+> 
+> However said update didn't bring in all driver changes. Do it now.
+> 
+> Fixes: 2776d53d7ac8 ("USB: gadget: Update to 3.15")
+> Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
 > ---
->  include/dhcp.h | 1 +
->  net/dhcp.c     | 6 +++---
->  2 files changed, 4 insertions(+), 3 deletions(-)
+>  Please note, that this patch was created to fix
+>    simear4:/ usbgadget -a
+>    multi_bind: creating ACM function
+>    g_multi usbgadget: acm/23b68c88: can't bind, err -19
+>    g_multi udc0: failed to start g_multi: -19
+>    usbgadget: No such device
+>  on at91_udc (autoconfig() was failing).
+>  Thus fsl_udc and pxa27x_udc changes are untested.
 
-Tested here, still works for me. Other than that I must say I do not
-fully overview the impact of this patch, so I just hope for the best ;)
-
-Applied, thanks
+Tested on fsl_udc and applied, thanks
 
 Sascha
 
