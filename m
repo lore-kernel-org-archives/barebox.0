@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gFyV6-0000mP-QR
- for barebox@lists.infradead.org; Fri, 26 Oct 2018 09:34:05 +0000
+ id 1gFyV6-0000mn-QT
+ for barebox@lists.infradead.org; Fri, 26 Oct 2018 09:34:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 26 Oct 2018 11:33:38 +0200
-Message-Id: <20181026093338.22751-9-s.hauer@pengutronix.de>
+Date: Fri, 26 Oct 2018 11:33:32 +0200
+Message-Id: <20181026093338.22751-3-s.hauer@pengutronix.de>
 In-Reply-To: <20181026093338.22751-1-s.hauer@pengutronix.de>
 References: <20181026093338.22751-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,154 +21,202 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] usb: gadget: fsl_udc: pass controller instance to
- unregister
+Subject: [PATCH 2/8] usb: host: ehci: rename ehci_priv to ehci_host
 To: Barebox List <barebox@lists.infradead.org>
 
-ci_udc_unregister() used to unregister "the controller". Since we
-may register multiple chipidea devices we called ci_udc_unregister()
-for each of them. This led to messages like:
-
-ERROR: imx-usb 53f80000.usb: gadget not registered.
-
-Fix this by returning the registered controller. This allows us to call
-ci_udc_unregister() only when we actually registered one before.
+As we are going to export the structure as a cookie to others
+rename it to ehci_host.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/gadget/fsl_udc.c   | 30 ++++++++++++++++++++----------
- drivers/usb/imx/chipidea-imx.c | 13 ++++++++++---
- include/usb/fsl_usb2.h         |  6 ++++--
- 3 files changed, 34 insertions(+), 15 deletions(-)
+ drivers/usb/host/ehci-hcd.c | 42 ++++++++++++++++++-------------------
+ 1 file changed, 21 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/usb/gadget/fsl_udc.c b/drivers/usb/gadget/fsl_udc.c
-index 7782d4bdd9..061ee5185f 100644
---- a/drivers/usb/gadget/fsl_udc.c
-+++ b/drivers/usb/gadget/fsl_udc.c
-@@ -528,7 +528,6 @@ static void dump_msg(const char *label, const u8 * buf, unsigned int length)
- #define get_pipe_by_ep(EP)	(ep_index(EP) * 2 + ep_is_in(EP))
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 9bbdda365c..c20d4392d2 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -34,7 +34,7 @@
  
- static struct usb_dr_device __iomem *dr_regs;
--static struct fsl_udc *udc_controller = NULL;
+ #include "ehci.h"
  
- static const struct usb_endpoint_descriptor
- fsl_ep0_desc = {
-@@ -2226,8 +2225,9 @@ static int __init struct_ep_setup(struct fsl_udc *udc, unsigned char index,
- 	return 0;
- }
- 
--int ci_udc_register(struct device_d *dev, void __iomem *regs)
-+struct fsl_udc *ci_udc_register(struct device_d *dev, void __iomem *regs)
- {
-+	struct fsl_udc *udc_controller;
- 	int ret, i;
- 	u32 dccparams;
- 
-@@ -2293,31 +2293,41 @@ int ci_udc_register(struct device_d *dev, void __iomem *regs)
- 	if (ret)
- 		goto err_out;
- 
--	return 0;
-+	return udc_controller;
- err_out:
--	return ret;
-+	free(udc_controller);
-+
-+	return ERR_PTR(ret);
- }
- 
--void ci_udc_unregister(void)
-+void ci_udc_unregister(struct fsl_udc *udc)
- {
--	if (udc_controller)
--		usb_del_gadget_udc(&udc_controller->gadget);
--
-+	usb_del_gadget_udc(&udc->gadget);
-+	free(udc);
- }
- 
- static int fsl_udc_probe(struct device_d *dev)
- {
-+	struct fsl_udc *udc;
- 	void __iomem *regs = dev_request_mem_region(dev, 0);
- 
- 	if (IS_ERR(regs))
- 		return PTR_ERR(regs);
- 
--	return ci_udc_register(dev, regs);
-+	udc = ci_udc_register(dev, regs);
-+	if (IS_ERR(udc))
-+		return PTR_ERR(udc);
-+
-+	dev->priv = udc;
-+
-+	return 0;
- }
- 
- static void fsl_udc_remove(struct device_d *dev)
- {
--	ci_udc_unregister();
-+	struct fsl_udc *udc = dev->priv;
-+
-+	ci_udc_unregister(udc);
- }
- 
- static struct driver_d fsl_udc_driver = {
-diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
-index 7bf2ef76c5..8792217706 100644
---- a/drivers/usb/imx/chipidea-imx.c
-+++ b/drivers/usb/imx/chipidea-imx.c
-@@ -47,6 +47,7 @@ struct imx_chipidea {
- 	struct usb_phy *usbphy;
- 	struct clk *clk;
- 	struct ehci_host *ehci;
-+	struct fsl_udc *udc;
+-struct ehci_priv {
++struct ehci_host {
+ 	int rootdev;
+ 	struct device_d *dev;
+ 	struct ehci_hccr *hccr;
+@@ -63,7 +63,7 @@ struct int_queue {
+ 	struct qTD *tds;
  };
  
- static int imx_chipidea_port_init(void *drvdata)
-@@ -216,8 +217,14 @@ static int ci_register_role(struct imx_chipidea *ci)
+-#define to_ehci(ptr) container_of(ptr, struct ehci_priv, host)
++#define to_ehci(ptr) container_of(ptr, struct ehci_host, host)
  
- 	if (ci->mode == IMX_USB_MODE_DEVICE) {
- 		if (IS_ENABLED(CONFIG_USB_GADGET_DRIVER_ARC)) {
-+			struct fsl_udc *udc;
- 			ci->role_registered = IMX_USB_MODE_DEVICE;
--			return ci_udc_register(ci->dev, ci->base);
-+
-+			udc = ci_udc_register(ci->dev, ci->base);
-+			if (IS_ERR(udc))
-+				return PTR_ERR(udc);
-+
-+			ci->udc = udc;
- 		} else {
- 			dev_err(ci->dev, "USB device support not available\n");
- 			return -ENODEV;
-@@ -369,8 +376,8 @@ static void imx_chipidea_remove(struct device_d *dev)
- 	if (ci->ehci)
- 		ehci_unregister(ci->ehci);
- 
--	if (IS_ENABLED(CONFIG_USB_GADGET_DRIVER_ARC))
--		ci_udc_unregister();
-+	if (IS_ENABLED(CONFIG_USB_GADGET_DRIVER_ARC) && ci->udc)
-+		ci_udc_unregister(ci->udc);
+ #define NUM_QH	2
+ #define NUM_TD	3
+@@ -155,7 +155,7 @@ static int handshake(uint32_t *ptr, uint32_t mask, uint32_t done, int usec)
+ 	}
  }
  
- static __maybe_unused struct of_device_id imx_chipidea_dt_ids[] = {
-diff --git a/include/usb/fsl_usb2.h b/include/usb/fsl_usb2.h
-index 881a5d4fdf..39757f71ad 100644
---- a/include/usb/fsl_usb2.h
-+++ b/include/usb/fsl_usb2.h
-@@ -23,7 +23,9 @@ struct fsl_usb2_platform_data {
- 	unsigned int			port_enables;
- };
+-static int ehci_reset(struct ehci_priv *ehci)
++static int ehci_reset(struct ehci_host *ehci)
+ {
+ 	uint32_t cmd;
+ 	uint32_t tmp;
+@@ -218,7 +218,7 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 		   int length, struct devrequest *req, int timeout_ms)
+ {
+ 	struct usb_host *host = dev->host;
+-	struct ehci_priv *ehci = to_ehci(host);
++	struct ehci_host *ehci = to_ehci(host);
+ 	struct QH *qh;
+ 	struct qTD *td;
+ 	volatile struct qTD *vtd;
+@@ -460,7 +460,7 @@ fail:
+  * boards.
+  * See http://lists.infradead.org/pipermail/linux-arm-kernel/2011-January/037341.html
+  */
+-static void ehci_powerup_fixup(struct ehci_priv *ehci)
++static void ehci_powerup_fixup(struct ehci_host *ehci)
+ {
+ 	void *viewport = (void *)ehci->hcor + 0x30;
  
--int ci_udc_register(struct device_d *dev, void __iomem *regs);
--void ci_udc_unregister(void);
-+struct fsl_udc;
-+
-+struct fsl_udc *ci_udc_register(struct device_d *dev, void __iomem *regs);
-+void ci_udc_unregister(struct fsl_udc *);
+@@ -471,12 +471,12 @@ static void ehci_powerup_fixup(struct ehci_priv *ehci)
+ 			viewport);
+ }
+ #else
+-static inline void ehci_powerup_fixup(struct ehci_priv *ehci)
++static inline void ehci_powerup_fixup(struct ehci_host *ehci)
+ {
+ }
+ #endif
  
- #endif /* __USB_FSL_USB2_H */
+-static void pass_to_companion(struct ehci_priv *ehci, int port)
++static void pass_to_companion(struct ehci_host *ehci, int port)
+ {
+ 	uint32_t *status_reg = (uint32_t *)&ehci->hcor->or_portsc[port - 1];
+ 	uint32_t reg = ehci_readl(status_reg);
+@@ -493,7 +493,7 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 		 int length, struct devrequest *req)
+ {
+ 	struct usb_host *host = dev->host;
+-	struct ehci_priv *ehci = to_ehci(host);
++	struct ehci_host *ehci = to_ehci(host);
+ 	uint8_t tmpbuf[4];
+ 	u16 typeReq;
+ 	void *srcptr = NULL;
+@@ -772,7 +772,7 @@ unknown:
+ }
+ 
+ /* force HC to halt state from unknown (EHCI spec section 2.3) */
+-static int ehci_halt(struct ehci_priv *ehci)
++static int ehci_halt(struct ehci_host *ehci)
+ {
+ 	u32	temp = ehci_readl(&ehci->hcor->or_usbsts);
+ 
+@@ -792,7 +792,7 @@ static int ehci_halt(struct ehci_priv *ehci)
+ 
+ static int ehci_init(struct usb_host *host)
+ {
+-	struct ehci_priv *ehci = to_ehci(host);
++	struct ehci_host *ehci = to_ehci(host);
+ 	uint32_t reg;
+ 	uint32_t cmd;
+ 	int ret = 0;
+@@ -902,7 +902,7 @@ submit_bulk_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 		int length, int timeout)
+ {
+ 	struct usb_host *host = dev->host;
+-	struct ehci_priv *ehci = to_ehci(host);
++	struct ehci_host *ehci = to_ehci(host);
+ 
+ 	if (usb_pipetype(pipe) != PIPE_BULK) {
+ 		dev_dbg(ehci->dev, "non-bulk pipe (type=%lu)", usb_pipetype(pipe));
+@@ -916,7 +916,7 @@ submit_control_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 		   int length, struct devrequest *setup, int timeout)
+ {
+ 	struct usb_host *host = dev->host;
+-	struct ehci_priv *ehci = to_ehci(host);
++	struct ehci_host *ehci = to_ehci(host);
+ 
+ 	if (usb_pipetype(pipe) != PIPE_CONTROL) {
+ 		dev_dbg(ehci->dev, "non-control pipe (type=%lu)", usb_pipetype(pipe));
+@@ -932,7 +932,7 @@ submit_control_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
+ }
+ 
+ static int
+-disable_periodic(struct ehci_priv *ehci)
++disable_periodic(struct ehci_host *ehci)
+ {
+ 	uint32_t cmd;
+ 	struct ehci_hcor *hcor = ehci->hcor;
+@@ -954,7 +954,7 @@ disable_periodic(struct ehci_priv *ehci)
+ #define NEXT_QH(qh) (struct QH *)((unsigned long)hc32_to_cpu((qh)->qh_link) & ~0x1f)
+ 
+ static int
+-enable_periodic(struct ehci_priv *ehci)
++enable_periodic(struct ehci_host *ehci)
+ {
+ 	uint32_t cmd;
+ 	struct ehci_hcor *hcor = ehci->hcor;
+@@ -1018,7 +1018,7 @@ static struct int_queue *ehci_create_int_queue(struct usb_device *dev,
+ 			void *buffer, int interval)
+ {
+ 	struct usb_host *host = dev->host;
+-	struct ehci_priv *ehci = to_ehci(host);
++	struct ehci_host *ehci = to_ehci(host);
+ 	struct int_queue *result = NULL;
+ 	uint32_t i;
+ 	struct QH *list = ehci->periodic_queue;
+@@ -1187,7 +1187,7 @@ static int ehci_destroy_int_queue(struct usb_device *dev,
+ {
+ 	int result = -EINVAL;
+ 	struct usb_host *host = dev->host;
+-	struct ehci_priv *ehci = to_ehci(host);
++	struct ehci_host *ehci = to_ehci(host);
+ 	struct QH *cur = ehci->periodic_queue;
+ 
+ 	if (disable_periodic(ehci) < 0) {
+@@ -1230,7 +1230,7 @@ submit_int_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 	       int length, int interval)
+ {
+ 	struct usb_host *host = dev->host;
+-	struct ehci_priv *ehci = to_ehci(host);
++	struct ehci_host *ehci = to_ehci(host);
+ 	struct int_queue *queue;
+ 	uint64_t start;
+ 	void *backbuffer;
+@@ -1275,7 +1275,7 @@ submit_int_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 
+ static int ehci_detect(struct device_d *dev)
+ {
+-	struct ehci_priv *ehci = dev->priv;
++	struct ehci_host *ehci = dev->priv;
+ 
+ 	return usb_host_detect(&ehci->host);
+ }
+@@ -1283,10 +1283,10 @@ static int ehci_detect(struct device_d *dev)
+ int ehci_register(struct device_d *dev, struct ehci_data *data)
+ {
+ 	struct usb_host *host;
+-	struct ehci_priv *ehci;
++	struct ehci_host *ehci;
+ 	uint32_t reg;
+ 
+-	ehci = xzalloc(sizeof(struct ehci_priv));
++	ehci = xzalloc(sizeof(struct ehci_host));
+ 	host = &ehci->host;
+ 	dev->priv = ehci;
+ 	ehci->flags = data->flags;
+@@ -1369,7 +1369,7 @@ static int ehci_probe(struct device_d *dev)
+ 
+ static void ehci_remove(struct device_d *dev)
+ {
+-	struct ehci_priv *ehci = dev->priv;
++	struct ehci_host *ehci = dev->priv;
+ 	ehci_halt(ehci);
+ }
+ 
 -- 
 2.19.0
 
