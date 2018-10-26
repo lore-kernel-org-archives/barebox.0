@@ -1,22 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout02.posteo.de ([185.67.36.66])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gGm50-0003qK-Ub
- for barebox@lists.infradead.org; Sun, 28 Oct 2018 14:30:16 +0000
-Received: from submission (posteo.de [89.146.220.130]) 
- by mout02.posteo.de (Postfix) with ESMTPS id 159F92400FD
- for <barebox@lists.infradead.org>; Sun, 28 Oct 2018 15:29:59 +0100 (CET)
-Date: Sun, 28 Oct 2018 15:29:55 +0100
-From: Patrick Boettcher <patrick.boettcher@posteo.de>
-Message-ID: <20181028152955.74ecb97a@yaise-pc1>
-In-Reply-To: <1540564611.2245.3.camel@pengutronix.de>
-References: <20181026120558.1ef80a86@yaise-pc1>
- <20181026102342.lhx6hpcnobqe2g4k@pengutronix.de>
- <20181026123807.3f980f28@yaise-pc1>
- <20181026112438.i4gq2p4q7v4ca6es@pengutronix.de>
- <20181026162525.1c7685bd@yaise-pc1>
- <1540564611.2245.3.camel@pengutronix.de>
+Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gG48w-0007e5-Rl
+ for barebox@lists.infradead.org; Fri, 26 Oct 2018 15:35:24 +0000
+Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
+ (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
+ id S23993030AbeJZPfJePcVz (ORCPT
+ <rfc822;barebox@lists.infradead.org>);
+ Fri, 26 Oct 2018 17:35:09 +0200
+Date: Fri, 26 Oct 2018 17:35:08 +0200
+From: Ladislav Michl <ladis@linux-mips.org>
+Message-ID: <20181026153508.GA16049@lenoch>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,50 +21,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: IMX6UL: Booting kernel with initramfs blocks
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org, Mikael Pann <Mikael.pann@stimio.fr>
+Subject: [PATCH 1/2] Documentation: USB gadget: document
+ usbgadget.fastboot_bbu variable
+To: barebox@lists.infradead.org
 
-T24gRnJpLCAyNiBPY3QgMjAxOCAxNjozNjo1MSArMDIwMApMdWNhcyBTdGFjaCA8bC5zdGFjaEBw
-ZW5ndXRyb25peC5kZT4gd3JvdGU6Cgo+IEFtIEZyZWl0YWcsIGRlbiAyNi4xMC4yMDE4LCAxNjoy
-NSArMDIwMCBzY2hyaWViIFBhdHJpY2sgQm9ldHRjaGVyOgo+ID4gT24gRnJpLCAyNiBPY3QgMjAx
-OCAxMzoyNDozOCArMDIwMCAgCj4gPiA+IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25p
-eC5kZT4gd3JvdGU6ICAKPiA+ID4gPiDCoCBTdGFydGluZyBrZXJuZWwgYXQgMHg4ODhlMTAwMCwg
-b2Z0cmVlIGF0IDB4OGE1NDIwMDAuLi4gIAo+ID4gPiAKPiA+ID4gRnJvbSB3aGF0IEkgY2FuIHNl
-ZSB0aGVzZSBhZGRyZXNzZXMgbG9vayBmaW5lLiBZb3UgaGF2ZSBhbiBpbWFnZQo+ID4gPiB0aGF0
-J3MgMjhNaUIgaW4gc2l6ZSwgd2UgcHV0IGl0IHRvIHJvdWdobHkgNXggc2l6ZSBpbnRvIG1lbW9y
-eQo+ID4gPiBhbmQgdGhlIGRldmljZXRyZWUgYmVoaW5kIGl0LiBUaGUga2VybmVsIHNob3VsZCB0
-aGVuIHVucGFjawo+ID4gPiBpdHNlbGYgdG8gdGhlIHN0YXJ0IG9mIFNEUkFNLiBMb29rcyBnb29k
-IGFuZCBJdCBzZWVtcyBiYXJlYm94Cj4gPiA+IGFjdHVhbGx5IGp1bXBzIHRvIHRoZSBLZXJuZWwu
-Cj4gPiA+IAo+ID4gPiBOZXh0IHRoaW5nIHRvIHRyeSB3b3VsZCBiZSBlbmFibGluZyBDT05GSUdf
-REVCVUdfTEwsCj4gPiA+IENPTkZJR19ERUJVR19VTkNPTVBSRVNTIGFuZCBDT05GSUdfRUFSTFlf
-UFJJTlRLIGluIHRoZSBLZXJuZWwuCj4gPiA+IFBhc3MgImVhcmx5cHJpbnRrIiBhcyBrZXJuZWwg
-b3B0aW9uIGFuZCBsZXQncyBzZWUgd2hhdCBoYXBwZW5zCj4gPiA+IHRoZW4uICAKPiA+IAo+ID4g
-KGVhcmx5cHJpbnRrIHlldCB0byBiZSB0cmllZCkKPiA+IAo+ID4gV2UgbWFkZSBhIHN0ZXAgZm9y
-d2FyZDogUmVkdWNpbmcgdGhlIHNpemUgb2YgdGhlIGltYWdlIChmcm9tIDI4Cj4gPiBkb3duIHRv
-IDE3IE1pQikgbWFrZXMgaXQgYm9vdCBjb3JyZWN0bHkuCj4gPiAKPiA+IE5vdCBzdXJlIHdoZXJl
-IHRoZSBsaW1pdGF0aW9uIGNhbiBjb21lIGZyb20sIGlmIHlvdSBoYXZlIGFuIGlkZWEuCj4gPiAK
-PiA+IFRoYW5rcyBhZ2FpbiBmb3IgdGhlIGhlbHAgc28gZmFyLCBJIHdpbGwgcG9zdCBhIGZvbGxv
-dy11cCBpZiB0aGUKPiA+IHJvb3QtY2F1c2UgaXMgZGlzY292ZXJlZC4gIAo+IAo+IE15IGd1ZXNz
-IGlzIHRoYXQgdGhlIGtlcm5lbCBpcyBqdXN0IG5vdCBhYmxlIHRvIGZpbmQgdGhlIHN0YXJ0IG9m
-IFJBTQo+IGZvciByZWxvY2F0aW9uIGluIHRoYXQgY2FzZS4gV2l0aCBzdWNoIGEgZmF0IGltYWdl
-IGFuZCBvdXIgcGVzc2ltaXN0aWMKPiBwbGFjZW1lbnQgYXQgNSB0aW1lcyB0aGF0IHNpemUsIHRo
-ZSBrZXJuZWwgZW5kcyB1cCBpbiBhIHJlZ2lvbiBhYm92ZQo+IHRoZSBmaXJzdCAxMjhNQiBvZiBt
-ZW1vcnkuCj4gVGhlIGtlcm5lbCBuZWVkcyB0byBiZSBwbGFjZWQgaW4gdGhlIGxvdyAxMjhNQiwg
-YXMgdGhpcyBpcyB0aGUgYWRkcmVzcwo+IHJhbmdlIHRoYXQgZ2V0cyBtYXNrZWQgb2ZmIGZyb20g
-dGhlIGxvY2F0aW9uIGluIG9yZGVyIHRvIGZpbmQgdGhlCj4gc3RhcnQgb2YgUkFNLgoKVGhhdCdz
-IGV4YWN0bHkgdGhlIHByb2JsZW0uIEkgc2VudCBhIHBhdGNoIHdoaWNoIG1ha2VzIGJvb3RtIGJh
-aWwgb3V0CmlmIHRoZSBpbWFnZSBpcyBsb2NhdGVkIG91dHNpZGUgdGhlIGZpcnN0IDEyOE1CIG9m
-IFJBTS4gUGxlYXNlIHRlbGwgbWUKd2hldGhlciB0aGlzIGlzIGEgZ29vZCB3YXkgdG8gZG8gdGhp
-bmdzIHdpdGhpbiBiYXJlYm94LgoKQXQgbGVhc3QgYXMgYSBmaXJzdCBzdGVwLgoKQW5vdGhlciBp
-ZGVhIEkgd291bGQgaGF2ZSBpcywgd2h5IG5vdCBwdXR0aW5nIHRoZSBrZXJuZWwgaW1hZ2UgYWx3
-YXlzCmF0IHRoZSBlbmQgb2YgdGhlIDEyOE1CIGxpbWl0IChvciBhdCB0aGUgZW5kIG9mIHRoZSBh
-dmFpbGFibGUgbWVtb3J5IGlmCml0IGlzIGxvd2VyIHRoYW4gMTI4TUIpPyBJcyB0aGlzIHdoZXJl
-IGJhcmVib3ggaGFzIGl0cyBzdGFjay9oZWFwCmFscmVhZHk/CgotLQpQYXRyaWNrLgoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
-IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
+---
+ Documentation/user/usb.rst | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
+index 8396f3897..b89d46bb6 100644
+--- a/Documentation/user/usb.rst
++++ b/Documentation/user/usb.rst
+@@ -266,3 +266,5 @@ USB Gadget autostart Options
+   See :ref:`command_usbgadget` -a. (Default 0).
+ ``global.usbgadget.fastboot_function``
+   Function description for fastboot. See :ref:`command_usbgadget` -A [desc].
++``global.usbgadget.fastboot_bbu``
++  Export barebox update handlers. See :ref:`command_usbgadget` -b. (Default 0).
+-- 
+2.19.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
