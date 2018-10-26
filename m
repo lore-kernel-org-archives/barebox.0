@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gFynk-0001xH-3m
- for barebox@lists.infradead.org; Fri, 26 Oct 2018 09:53:10 +0000
-Date: Fri, 26 Oct 2018 11:52:56 +0200
+ id 1gFyyy-0006v3-NO
+ for barebox@lists.infradead.org; Fri, 26 Oct 2018 10:04:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181026095256.jtfuch4q3l22ea3q@pengutronix.de>
-References: <20181024233754.GA17799@lenoch>
+Date: Fri, 26 Oct 2018 12:04:32 +0200
+Message-Id: <20181026100432.27621-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181024233754.GA17799@lenoch>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,57 +19,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] mtd: atmel_nand: replace printk with dev_info
-To: Ladislav Michl <ladis@linux-mips.org>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] USB: gadget: prevent unnecessary warning message
+To: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Oct 25, 2018 at 01:37:54AM +0200, Ladislav Michl wrote:
-> Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
-> ---
->  drivers/mtd/nand/atmel_nand.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
+The USB gadget autostart code issues a warning when no otg device
+exists:
 
-Applied, thanks
+Cannot set parameter otg.mode: No such device
 
-Sascha
+This is unnecessary since there may be no otg device at all, but only a
+gadget device. Drop that warning by checking if there is a otg device
+first.
 
-> diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
-> index 0b9071c9b..4bc944d24 100644
-> --- a/drivers/mtd/nand/atmel_nand.c
-> +++ b/drivers/mtd/nand/atmel_nand.c
-> @@ -1429,14 +1429,14 @@ static int __init atmel_nand_probe(struct device_d *dev)
->  		}
->  
->  		if (gpio_get_value(host->board->det_pin)) {
-> -			printk("No SmartMedia card inserted.\n");
-> +			dev_info(dev, "No SmartMedia card inserted.\n");
->  			res = -ENXIO;
->  			goto err_no_card;
->  		}
->  	}
->  
->  	if (host->board->on_flash_bbt) {
-> -		printk(KERN_INFO "atmel_nand: Use On Flash BBT\n");
-> +		dev_info(dev, "Use On Flash BBT\n");
->  		nand_chip->bbt_options |= NAND_BBT_USE_FLASH;
->  	}
->  
-> -- 
-> 2.19.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/usb/gadget/autostart.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/usb/gadget/autostart.c b/drivers/usb/gadget/autostart.c
+index f640a9667d..272b0ea8fa 100644
+--- a/drivers/usb/gadget/autostart.c
++++ b/drivers/usb/gadget/autostart.c
+@@ -35,6 +35,7 @@ static int fastboot_bbu;
+ static int usbgadget_autostart(void)
+ {
+ 	struct f_multi_opts *opts;
++	struct device_d *dev;
+ 	int ret;
+ 
+ 	if (!autostart)
+@@ -61,7 +62,9 @@ static int usbgadget_autostart(void)
+ 		return 0;
+ 	}
+ 
+-	setenv("otg.mode", "peripheral");
++	dev = get_device_by_name("otg");
++	if (dev)
++		dev_set_param(dev, "mode", "peripheral");
+ 
+ 	ret = usb_multi_register(opts);
+ 	if (ret)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.0
+
 
 _______________________________________________
 barebox mailing list
