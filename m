@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gFyV6-0000mp-QU
- for barebox@lists.infradead.org; Fri, 26 Oct 2018 09:33:54 +0000
+ id 1gFyV6-0000mM-Qa
+ for barebox@lists.infradead.org; Fri, 26 Oct 2018 09:33:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 26 Oct 2018 11:33:31 +0200
-Message-Id: <20181026093338.22751-2-s.hauer@pengutronix.de>
+Date: Fri, 26 Oct 2018 11:33:34 +0200
+Message-Id: <20181026093338.22751-5-s.hauer@pengutronix.de>
 In-Reply-To: <20181026093338.22751-1-s.hauer@pengutronix.de>
 References: <20181026093338.22751-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,112 +21,178 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/8] usb: gadget: fsl_udc: Drop using global variable
+Subject: [PATCH 4/8] usb: host: ehci: add ehci_unregister()
 To: Barebox List <barebox@lists.infradead.org>
 
-No need to use the global udc_controller variable when we are provided
-an usb_gadget.
+ehci_register() allocates data and registers a ehci host. Add
+ehci_unregister() to properly halt the controller and to free the memory
+again.. To do so, change ehci_register() to return the ehci host rather
+than an error code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/gadget/fsl_udc.c | 39 ++++++++++++++++++++----------------
- 1 file changed, 22 insertions(+), 17 deletions(-)
+ drivers/usb/host/ehci-atmel.c  | 10 +++++++++-
+ drivers/usb/host/ehci-hcd.c    | 23 +++++++++++++++++++----
+ drivers/usb/imx/chipidea-imx.c | 11 ++++++++---
+ include/usb/ehci.h             | 14 +++++++++++---
+ 4 files changed, 47 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/usb/gadget/fsl_udc.c b/drivers/usb/gadget/fsl_udc.c
-index 9b59669773..7782d4bdd9 100644
---- a/drivers/usb/gadget/fsl_udc.c
-+++ b/drivers/usb/gadget/fsl_udc.c
-@@ -450,6 +450,11 @@ struct fsl_udc {
- 	u8 device_address;	/* Device USB address */
- };
+diff --git a/drivers/usb/host/ehci-atmel.c b/drivers/usb/host/ehci-atmel.c
+index 1132879c9b..bfa235d954 100644
+--- a/drivers/usb/host/ehci-atmel.c
++++ b/drivers/usb/host/ehci-atmel.c
+@@ -30,6 +30,7 @@
+ #include "ehci.h"
  
-+static inline struct fsl_udc *to_fsl_udc(struct usb_gadget *gadget)
-+{
-+	return container_of(gadget, struct fsl_udc, gadget);
+ struct atmel_ehci_priv {
++	struct ehci_host *ehci;
+ 	struct device_d *dev;
+ 	struct clk *iclk;
+ 	struct clk *uclk;
+@@ -66,6 +67,7 @@ static int atmel_ehci_probe(struct device_d *dev)
+ 	struct ehci_data data;
+ 	struct atmel_ehci_priv *atehci;
+ 	const char *uclk_name;
++	struct ehci_host *ehci;
+ 
+ 	uclk_name = (dev->device_node) ? "usb_clk" : "uhpck";
+ 
+@@ -99,7 +101,13 @@ static int atmel_ehci_probe(struct device_d *dev)
+ 		return PTR_ERR(iores);
+ 	data.hccr = IOMEM(iores->start);
+ 
+-	return ehci_register(dev, &data);
++	ehci = ehci_register(dev, &data);
++	if (IS_ERR(ehci))
++		return PTR_ERR(ehci);
++
++	atehci->ehci = ehci;
++
++	return 0;
+ }
+ 
+ static void atmel_ehci_remove(struct device_d *dev)
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index c20d4392d2..59268bf5ec 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -1280,7 +1280,7 @@ static int ehci_detect(struct device_d *dev)
+ 	return usb_host_detect(&ehci->host);
+ }
+ 
+-int ehci_register(struct device_d *dev, struct ehci_data *data)
++struct ehci_host *ehci_register(struct device_d *dev, struct ehci_data *data)
+ {
+ 	struct usb_host *host;
+ 	struct ehci_host *ehci;
+@@ -1328,7 +1328,16 @@ int ehci_register(struct device_d *dev, struct ehci_data *data)
+ 	reg = HC_VERSION(ehci_readl(&ehci->hccr->cr_capbase));
+ 	dev_info(dev, "USB EHCI %x.%02x\n", reg >> 8, reg & 0xff);
+ 
+-	return 0;
++	return ehci;
 +}
 +
- /*-------------------------------------------------------------------------*/
- 
- #ifdef DEBUG
-@@ -1943,12 +1948,9 @@ static void dtd_complete_irq(struct fsl_udc *udc)
-  */
- static void fsl_udc_gadget_poll(struct usb_gadget *gadget)
- {
--	struct fsl_udc *udc = udc_controller;
-+	struct fsl_udc *udc = to_fsl_udc(gadget);
- 	u32 irq_src;
- 
--	if (!udc)
--		return;
--
- 	/* Disable ISR for OTG host mode */
- 	if (udc->stopped)
- 		return;
-@@ -1981,7 +1983,7 @@ static void fsl_udc_gadget_poll(struct usb_gadget *gadget)
- 
- 	/* Sleep Enable (Suspend) */
- 	if (irq_src & USB_STS_SUSPEND)
--		udc->driver->disconnect(&udc_controller->gadget);
-+		udc->driver->disconnect(gadget);
- 
- 	if (irq_src & (USB_STS_ERR | USB_STS_SYS_ERR))
- 		printf("Error IRQ %x\n", irq_src);
-@@ -1993,6 +1995,8 @@ static void fsl_udc_gadget_poll(struct usb_gadget *gadget)
- *----------------------------------------------------------------*/
- static int fsl_udc_start(struct usb_gadget *gadget, struct usb_gadget_driver *driver)
- {
-+	struct fsl_udc *udc = to_fsl_udc(gadget);
++void ehci_unregister(struct ehci_host *ehci)
++{
++	ehci_halt(ehci);
 +
- 	/*
- 	 * We currently have PHY no driver which could call vbus_connect,
- 	 * so when the USB gadget core calls usb_gadget_connect() the
-@@ -2002,13 +2006,13 @@ static int fsl_udc_start(struct usb_gadget *gadget, struct usb_gadget_driver *dr
- 	usb_gadget_vbus_connect(gadget);
- 
- 	/* hook up the driver */
--	udc_controller->driver = driver;
-+	udc->driver = driver;
- 
- 	/* Enable DR IRQ reg and Set usbcmd reg  Run bit */
--	dr_controller_run(udc_controller);
--	udc_controller->usb_state = USB_STATE_ATTACHED;
--	udc_controller->ep0_state = WAIT_FOR_SETUP;
--	udc_controller->ep0_dir = 0;
-+	dr_controller_run(udc);
-+	udc->usb_state = USB_STATE_ATTACHED;
-+	udc->ep0_state = WAIT_FOR_SETUP;
-+	udc->ep0_dir = 0;
- 
- 	return 0;
++	usb_unregister_host(&ehci->host);
++
++	free(ehci);
  }
-@@ -2016,20 +2020,21 @@ static int fsl_udc_start(struct usb_gadget *gadget, struct usb_gadget_driver *dr
- /* Disconnect from gadget driver */
- static int fsl_udc_stop(struct usb_gadget *gadget, struct usb_gadget_driver *driver)
+ 
+ static int ehci_probe(struct device_d *dev)
+@@ -1337,6 +1346,7 @@ static int ehci_probe(struct device_d *dev)
+ 	struct ehci_data data = {};
+ 	struct ehci_platform_data *pdata = dev->platform_data;
+ 	struct device_node *dn = dev->device_node;
++	struct ehci_host *ehci;
+ 
+ 	if (pdata)
+ 		data.flags = pdata->flags;
+@@ -1364,13 +1374,18 @@ static int ehci_probe(struct device_d *dev)
+ 	else
+ 		data.hcor = NULL;
+ 
+-	return ehci_register(dev, &data);
++	ehci = ehci_register(dev, &data);
++	if (IS_ERR(ehci))
++		return PTR_ERR(ehci);
++
++	return 0;
+ }
+ 
+ static void ehci_remove(struct device_d *dev)
  {
-+	struct fsl_udc *udc = to_fsl_udc(gadget);
- 	struct fsl_ep *loop_ep;
+ 	struct ehci_host *ehci = dev->priv;
+-	ehci_halt(ehci);
++
++	ehci_unregister(ehci);
+ }
  
- 	/* stop DR, disable intr */
--	dr_controller_stop(udc_controller);
-+	dr_controller_stop(udc);
+ static __maybe_unused struct of_device_id ehci_platform_dt_ids[] = {
+diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
+index 3e3e6a365f..a8914e25b6 100644
+--- a/drivers/usb/imx/chipidea-imx.c
++++ b/drivers/usb/imx/chipidea-imx.c
+@@ -46,6 +46,7 @@ struct imx_chipidea {
+ 	struct phy *phy;
+ 	struct usb_phy *usbphy;
+ 	struct clk *clk;
++	struct ehci_host *ehci;
+ };
  
- 	/* in fact, no needed */
--	udc_controller->usb_state = USB_STATE_ATTACHED;
--	udc_controller->ep0_state = WAIT_FOR_SETUP;
--	udc_controller->ep0_dir = 0;
-+	udc->usb_state = USB_STATE_ATTACHED;
-+	udc->ep0_state = WAIT_FOR_SETUP;
-+	udc->ep0_dir = 0;
+ static int imx_chipidea_port_init(void *drvdata)
+@@ -184,14 +185,18 @@ static int ci_register_role(struct imx_chipidea *ci)
  
- 	/* stand operation */
--	udc_controller->gadget.speed = USB_SPEED_UNKNOWN;
--	nuke(&udc_controller->eps[0], -ESHUTDOWN);
--	list_for_each_entry(loop_ep, &udc_controller->gadget.ep_list,
-+	udc->gadget.speed = USB_SPEED_UNKNOWN;
-+	nuke(&udc->eps[0], -ESHUTDOWN);
-+	list_for_each_entry(loop_ep, &udc->gadget.ep_list,
- 			ep.ep_list)
- 		nuke(loop_ep, -ESHUTDOWN);
+ 	if (ci->mode == IMX_USB_MODE_HOST) {
+ 		if (IS_ENABLED(CONFIG_USB_EHCI)) {
++			struct ehci_host *ehci;
++
+ 			ci->role_registered = IMX_USB_MODE_HOST;
+ 			ret = regulator_enable(ci->vbus);
+ 			if (ret)
+ 				return ret;
+ 
+-			ret = ehci_register(ci->dev, &ci->data);
+-			if (!ret)
+-				return 0;
++			ehci = ehci_register(ci->dev, &ci->data);
++			if (IS_ERR(ehci))
++				return PTR_ERR(ehci);
++
++			ci->ehci = ehci;
+ 
+ 			regulator_disable(ci->vbus);
+ 		} else {
+diff --git a/include/usb/ehci.h b/include/usb/ehci.h
+index 1008e92f02..5bce3ab110 100644
+--- a/include/usb/ehci.h
++++ b/include/usb/ehci.h
+@@ -19,12 +19,20 @@ struct ehci_data {
+ 	void *drvdata;
+ };
+ 
++struct ehci_host;
++
+ #ifdef CONFIG_USB_EHCI
+-int ehci_register(struct device_d *dev, struct ehci_data *data);
++struct ehci_host *ehci_register(struct device_d *dev, struct ehci_data *data);
++void ehci_unregister(struct ehci_host *);
+ #else
+-static inline int ehci_register(struct device_d *dev, struct ehci_data *data)
++static inline struct ehci_host *ehci_register(struct device_d *dev,
++					      struct ehci_data *data)
++{
++	return ERR_PTR(-ENOSYS);
++}
++
++static inline void ehci_unregister(struct ehci_host *)
+ {
+-	return -ENOSYS;
+ }
+ #endif
  
 -- 
 2.19.0
