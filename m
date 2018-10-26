@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mout02.posteo.de ([185.67.36.66])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gFzHW-0005OR-Ix
- for barebox@lists.infradead.org; Fri, 26 Oct 2018 10:23:56 +0000
-Date: Fri, 26 Oct 2018 12:23:42 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181026102342.lhx6hpcnobqe2g4k@pengutronix.de>
+ id 1gFzVX-0002Ks-Oe
+ for barebox@lists.infradead.org; Fri, 26 Oct 2018 10:38:25 +0000
+Received: from submission (posteo.de [89.146.220.130]) 
+ by mout02.posteo.de (Postfix) with ESMTPS id 64C802400FC
+ for <barebox@lists.infradead.org>; Fri, 26 Oct 2018 12:38:09 +0200 (CEST)
+Date: Fri, 26 Oct 2018 12:38:07 +0200
+From: Patrick Boettcher <patrick.boettcher@posteo.de>
+Message-ID: <20181026123807.3f980f28@yaise-pc1>
+In-Reply-To: <20181026102342.lhx6hpcnobqe2g4k@pengutronix.de>
 References: <20181026120558.1ef80a86@yaise-pc1>
+ <20181026102342.lhx6hpcnobqe2g4k@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181026120558.1ef80a86@yaise-pc1>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,48 +26,55 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: IMX6UL: Booting kernel with initramfs blocks
-To: Patrick Boettcher <patrick.boettcher@posteo.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org, Mikael Pann <Mikael.pann@stimio.fr>
 
-Hi Patrick,
+Hi,
 
-On Fri, Oct 26, 2018 at 12:05:58PM +0200, Patrick Boettcher wrote:
-> Hi,
-> 
-> we are using a Phytec IMX6UL-module and would like to use a
-> kernel+initramfs as a rescue/recovery system (when bootchooser bails
-> out).
-> 
-> We are building the initramfs-zIamge with Yocto using a
-> customized Phytec-distribution (not many changes). 
-> 
-> What we added to get an initramfs'd kernel is 
-> 
->    INITRAMFS_IMAGE = "<image-name>"
->    INITRAMFS_IMAGE_BUNDLE = "1"
-> 
-> to local.conf.
-> 
-> bitbaking the thing gives us the zImage-initramfs-file.
-> 
-> Then we created two static volumes within the UBI-partition on the
-> NAND one for the image, one for the dtb.
-> 
-> When trying to boot the image with bootm -o .. .. it takes some time
-> (to load I guess) and then blocks.
+Thanks for your super fast answer.
 
-Could you copy the image out from UBI to /somefile first to get UBI out
-of the equation first?
+On Fri, 26 Oct 2018 12:23:42 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > When trying to boot the image with bootm -o .. .. it takes some time
+> > (to load I guess) and then blocks.  
+> 
+> Could you copy the image out from UBI to /somefile first to get UBI
+> out of the equation first?
 
-Doing bootm -v -v might reveal some more information then.
+I copied 
 
-Sascha
+  cp /dev/nand0.root.ubi.kernel-recovery test 
+  md5sum test
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+The md5sum is identical with the one from my deploy dir.
+
+Comparing the start of the zImage-initramfs file "manually" (some
+bytes) with the zImage-image reveals that it is identical.
+
+I'm using v2017.04.0-phy3 of phytec's fork of barebox, btw.
+ 
+> Doing bootm -v -v might reveal some more information then.
+
+
+  Loading ARM Linux zImage '/dev/nand0.root.ubi.kernel-recovery'
+  OS image not yet relocated
+  Passing control to ARM zImage handler
+  no OS load address, defaulting to 0x888e1000
+  no initrd load address, defaulting to 0x8a542000
+  Loading devicetree from '/dev/nand0.root.ubi.oftree-recovery'
+  Failed to fixup node in of_state_fixup+0x1/0x1ac: No such device
+  commandline: consoleblank=0 console=ttymxc0,115200n8 rootwait ro fsck.repair=yes 
+  {
+    <device-tree dumped, looks good to me >
+  };
+ 
+  Starting kernel at 0x888e1000, oftree at 0x8a542000...
+  nv variables modified, saving them
+  <... blocks here ...>
+
+
+--
+Patrick.
 
 _______________________________________________
 barebox mailing list
