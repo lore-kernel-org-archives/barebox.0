@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gGDSZ-0000o9-Uh
- for barebox@lists.infradead.org; Sat, 27 Oct 2018 01:32:24 +0000
-Received: by mail-pf1-x444.google.com with SMTP id f26-v6so1336511pfn.9
- for <barebox@lists.infradead.org>; Fri, 26 Oct 2018 18:32:09 -0700 (PDT)
+ id 1gGDSb-0000ms-9U
+ for barebox@lists.infradead.org; Sat, 27 Oct 2018 01:32:37 +0000
+Received: by mail-pg1-x543.google.com with SMTP id o14-v6so1293589pgv.7
+ for <barebox@lists.infradead.org>; Fri, 26 Oct 2018 18:32:06 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 26 Oct 2018 18:31:49 -0700
-Message-Id: <20181027013157.23135-4-andrew.smirnov@gmail.com>
+Date: Fri, 26 Oct 2018 18:31:47 -0700
+Message-Id: <20181027013157.23135-2-andrew.smirnov@gmail.com>
 In-Reply-To: <20181027013157.23135-1-andrew.smirnov@gmail.com>
 References: <20181027013157.23135-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,33 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/11] linux/ctype.h: Port _tolower()
+Subject: [PATCH 01/11] gpio: VF610: Propagate error code of gpiochip_add() up
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Propagate error code of gpiochip_add() up the call chain. This won't
+do any meaningful cleanup, but at least it will make problems
+noticable.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- include/linux/ctype.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpio/gpio-vf610.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/linux/ctype.h b/include/linux/ctype.h
-index 74fb73577..633c3862d 100644
---- a/include/linux/ctype.h
-+++ b/include/linux/ctype.h
-@@ -53,4 +53,13 @@ static inline unsigned char __toupper(unsigned char c)
- #define tolower(c) __tolower(c)
- #define toupper(c) __toupper(c)
+diff --git a/drivers/gpio/gpio-vf610.c b/drivers/gpio/gpio-vf610.c
+index 2aff62be5..9ac838f3b 100644
+--- a/drivers/gpio/gpio-vf610.c
++++ b/drivers/gpio/gpio-vf610.c
+@@ -142,9 +142,8 @@ static int vf610_gpio_probe(struct device_d *dev)
  
-+/*
-+ * Fast implementation of tolower() for internal usage. Do not use in your
-+ * code.
-+ */
-+static inline char _tolower(const char c)
-+{
-+	return c | 0x20;
-+}
-+
- #endif
+ 	port->chip.base *= VF610_GPIO_PER_PORT;
+ 	port->chip.dev = dev;
+-	gpiochip_add(&port->chip);
+ 
+-	return 0;
++	return gpiochip_add(&port->chip);
+ 
+ free_port:
+ 	free(port);
 -- 
 2.17.1
 
