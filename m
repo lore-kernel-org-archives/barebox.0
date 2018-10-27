@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gGDTA-00018M-Ac
- for barebox@lists.infradead.org; Sat, 27 Oct 2018 01:33:53 +0000
-Received: by mail-pl1-x644.google.com with SMTP id p5-v6so1245434plq.8
- for <barebox@lists.infradead.org>; Fri, 26 Oct 2018 18:32:42 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 26 Oct 2018 18:32:25 -0700
-Message-Id: <20181027013230.24387-2-andrew.smirnov@gmail.com>
-In-Reply-To: <20181027013230.24387-1-andrew.smirnov@gmail.com>
+ id 1gGJLp-0003db-A9
+ for barebox@lists.infradead.org; Sat, 27 Oct 2018 07:49:43 +0000
+Date: Sat, 27 Oct 2018 09:47:18 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20181027074718.GA28052@ravnborg.org>
 References: <20181027013230.24387-1-andrew.smirnov@gmail.com>
+ <20181027013230.24387-2-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20181027013230.24387-2-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,65 +19,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] drivers: base: Simplify generic_memmap_ro()
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 1/6] drivers: base: Simplify generic_memmap_ro()
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Simplify generic_memmap_ro() by re-implementing it using
-generic_memmap_rw().
+Hi Andrey.
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- drivers/base/driver.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+On Fri, Oct 26, 2018 at 06:32:25PM -0700, Andrey Smirnov wrote:
+> Simplify generic_memmap_ro() by re-implementing it using
+> generic_memmap_rw().
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  drivers/base/driver.c | 16 +++++-----------
+>  1 file changed, 5 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+> index 1941a972c..c74fee99f 100644
+> --- a/drivers/base/driver.c
+> +++ b/drivers/base/driver.c
+> @@ -440,29 +440,23 @@ void __iomem *dev_request_mem_region(struct device_d *dev, int num)
+>  }
+>  EXPORT_SYMBOL(dev_request_mem_region);
+>  
+> -int generic_memmap_ro(struct cdev *cdev, void **map, int flags)
+> +int generic_memmap_rw(struct cdev *cdev, void **map, int flags)
+>  {
+>  	if (!cdev->dev)
+>  		return -EINVAL;
+>  
+> -	if (flags & PROT_WRITE)
+> -		return -EACCES;
+>  	*map = dev_get_mem_region(cdev->dev, 0);
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 1941a972c..c74fee99f 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -440,29 +440,23 @@ void __iomem *dev_request_mem_region(struct device_d *dev, int num)
- }
- EXPORT_SYMBOL(dev_request_mem_region);
- 
--int generic_memmap_ro(struct cdev *cdev, void **map, int flags)
-+int generic_memmap_rw(struct cdev *cdev, void **map, int flags)
- {
- 	if (!cdev->dev)
- 		return -EINVAL;
- 
--	if (flags & PROT_WRITE)
--		return -EACCES;
- 	*map = dev_get_mem_region(cdev->dev, 0);
- 	if (IS_ERR(*map))
- 		return PTR_ERR(*map);
- 	return 0;
- }
- 
--int generic_memmap_rw(struct cdev *cdev, void **map, int flags)
-+int generic_memmap_ro(struct cdev *cdev, void **map, int flags)
- {
--	if (!cdev->dev)
--		return -EINVAL;
--
--	*map = dev_get_mem_region(cdev->dev, 0);
--	if (IS_ERR(*map))
--		return PTR_ERR(*map);
-+	if (flags & PROT_WRITE)
-+		return -EACCES;
- 
--	return 0;
-+	return generic_memmap_rw(cdev, map, flags);
- }
- 
- int dummy_probe(struct device_d *dev)
--- 
-2.17.1
 
+>  	if (IS_ERR(*map))
+>  		return PTR_ERR(*map);
+>  	return 0;
+
+Use PTR_ERR_OR_ZERO()?
+The same result, just a bit shorter.
+
+	Sam
 
 _______________________________________________
 barebox mailing list
