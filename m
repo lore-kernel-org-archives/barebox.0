@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gGDSI-0000fd-1g
- for barebox@lists.infradead.org; Sat, 27 Oct 2018 01:32:05 +0000
-Received: by mail-pf1-x443.google.com with SMTP id v6-v6so1032841pfm.12
- for <barebox@lists.infradead.org>; Fri, 26 Oct 2018 18:31:47 -0700 (PDT)
+ id 1gGDSG-0000fO-Jc
+ for barebox@lists.infradead.org; Sat, 27 Oct 2018 01:32:07 +0000
+Received: by mail-pg1-x542.google.com with SMTP id n10-v6so1281703pgv.10
+ for <barebox@lists.infradead.org>; Fri, 26 Oct 2018 18:31:46 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 26 Oct 2018 18:31:26 -0700
-Message-Id: <20181027013127.22163-7-andrew.smirnov@gmail.com>
+Date: Fri, 26 Oct 2018 18:31:25 -0700
+Message-Id: <20181027013127.22163-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20181027013127.22163-1-andrew.smirnov@gmail.com>
 References: <20181027013127.22163-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,24 +23,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/6] ARM: vf610-zii-ssmb-spu3: Add switch EEPROM alias
+Subject: [PATCH 4/6] ARM: vf610-zii-cfu1: Add switch EEPROM alias
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/vf610-zii-ssmb-spu3.dts | 11 +++++++++++
+ arch/arm/dts/vf610-zii-cfu1.dts | 11 +++++++++++
  1 file changed, 11 insertions(+)
 
-diff --git a/arch/arm/dts/vf610-zii-ssmb-spu3.dts b/arch/arm/dts/vf610-zii-ssmb-spu3.dts
-index e030109ce..5b2460caf 100644
---- a/arch/arm/dts/vf610-zii-ssmb-spu3.dts
-+++ b/arch/arm/dts/vf610-zii-ssmb-spu3.dts
-@@ -3,3 +3,14 @@
- #include <arm/vf610-zii-ssmb-spu3.dts>
+diff --git a/arch/arm/dts/vf610-zii-cfu1.dts b/arch/arm/dts/vf610-zii-cfu1.dts
+index 80d3f54f7..149333596 100644
+--- a/arch/arm/dts/vf610-zii-cfu1.dts
++++ b/arch/arm/dts/vf610-zii-cfu1.dts
+@@ -8,3 +8,14 @@
  
  #include "vf610-zii-dev.dtsi"
-+
+ 
 +/ {
 +	aliases {
 +		/*
@@ -51,6 +50,7 @@ index e030109ce..5b2460caf 100644
 +		switch-eeprom = &switch0;
 +	};
 +};
++
 -- 
 2.17.1
 
