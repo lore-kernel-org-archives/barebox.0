@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gGDSb-0000ms-9U
- for barebox@lists.infradead.org; Sat, 27 Oct 2018 01:32:37 +0000
-Received: by mail-pg1-x543.google.com with SMTP id o14-v6so1293589pgv.7
- for <barebox@lists.infradead.org>; Fri, 26 Oct 2018 18:32:06 -0700 (PDT)
+ id 1gGDSf-0000sj-7H
+ for barebox@lists.infradead.org; Sat, 27 Oct 2018 01:32:39 +0000
+Received: by mail-pg1-x542.google.com with SMTP id i4-v6so1286650pgq.9
+ for <barebox@lists.infradead.org>; Fri, 26 Oct 2018 18:32:16 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 26 Oct 2018 18:31:47 -0700
-Message-Id: <20181027013157.23135-2-andrew.smirnov@gmail.com>
+Date: Fri, 26 Oct 2018 18:31:54 -0700
+Message-Id: <20181027013157.23135-9-andrew.smirnov@gmail.com>
 In-Reply-To: <20181027013157.23135-1-andrew.smirnov@gmail.com>
 References: <20181027013157.23135-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,34 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/11] gpio: VF610: Propagate error code of gpiochip_add() up
+Subject: [PATCH 08/11] commands: gpio: Allow GPIOs to be specified by label
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Propagate error code of gpiochip_add() up the call chain. This won't
-do any meaningful cleanup, but at least it will make problems
-noticable.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/gpio/gpio-vf610.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ commands/gpio.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpio-vf610.c b/drivers/gpio/gpio-vf610.c
-index 2aff62be5..9ac838f3b 100644
---- a/drivers/gpio/gpio-vf610.c
-+++ b/drivers/gpio/gpio-vf610.c
-@@ -142,9 +142,8 @@ static int vf610_gpio_probe(struct device_d *dev)
+diff --git a/commands/gpio.c b/commands/gpio.c
+index 3a2b8624f..951ad2c28 100644
+--- a/commands/gpio.c
++++ b/commands/gpio.c
+@@ -20,14 +20,17 @@ static int get_gpio_and_value(int argc, char *argv[],
+ 			      int *gpio, int *value)
+ {
+ 	const int count = value ? 3 : 2;
+-	int ret;
++	int ret = 0;
  
- 	port->chip.base *= VF610_GPIO_PER_PORT;
- 	port->chip.dev = dev;
--	gpiochip_add(&port->chip);
+ 	if (argc < count)
+ 		return COMMAND_ERROR_USAGE;
  
--	return 0;
-+	return gpiochip_add(&port->chip);
+-	ret = kstrtoint(argv[1], 0, gpio);
+-	if (ret < 0)
+-		return ret;
++	*gpio = gpio_find_by_label(argv[1]);
++	if (*gpio < 0) {
++		ret = kstrtoint(argv[1], 0, gpio);
++		if (ret < 0)
++			return ret;
++	}
  
- free_port:
- 	free(port);
+ 	if (value)
+ 		ret = kstrtoint(argv[2], 0, value);
 -- 
 2.17.1
 
