@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gGDSh-0000rc-68
- for barebox@lists.infradead.org; Sat, 27 Oct 2018 01:32:55 +0000
-Received: by mail-pl1-x643.google.com with SMTP id t6-v6so1244033plo.9
- for <barebox@lists.infradead.org>; Fri, 26 Oct 2018 18:32:15 -0700 (PDT)
+ id 1gGDSh-0000q9-9L
+ for barebox@lists.infradead.org; Sat, 27 Oct 2018 01:32:57 +0000
+Received: by mail-pl1-x643.google.com with SMTP id d23-v6so1237544pls.11
+ for <barebox@lists.infradead.org>; Fri, 26 Oct 2018 18:32:12 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 26 Oct 2018 18:31:53 -0700
-Message-Id: <20181027013157.23135-8-andrew.smirnov@gmail.com>
+Date: Fri, 26 Oct 2018 18:31:51 -0700
+Message-Id: <20181027013157.23135-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20181027013157.23135-1-andrew.smirnov@gmail.com>
 References: <20181027013157.23135-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,71 +23,101 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/11] gpiolib: Introduce gpio_find_by_label()
+Subject: [PATCH 05/11] commands: gpio: Move argument parsing into a shared
+ function
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Introduce gpio_find_by_label() in order to allow manipulating GPIOs by
-the labels assigned to them via DT or board/driver code.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/gpio/gpiolib.c | 17 +++++++++++++++++
- include/gpio.h         |  6 ++++++
- 2 files changed, 23 insertions(+)
+ commands/gpio.c | 48 +++++++++++++++++++++++++++++-------------------
+ 1 file changed, 29 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index b83a27de7..afece61d9 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -91,6 +91,23 @@ done:
- 	return ret;
- }
+diff --git a/commands/gpio.c b/commands/gpio.c
+index 08ecc152d..5a28493d1 100644
+--- a/commands/gpio.c
++++ b/commands/gpio.c
+@@ -16,14 +16,29 @@
+ #include <errno.h>
+ #include <gpio.h>
  
-+int gpio_find_by_label(const char *label)
-+{
-+	int i;
+-static int do_gpio_get_value(int argc, char *argv[])
++static int get_gpio_and_value(int argc, char *argv[],
++			      int *gpio, int *value)
+ {
+-	int gpio, value;
++	const int count = value ? 3 : 2;
+ 
+-	if (argc < 2)
++	if (argc < count)
+ 		return COMMAND_ERROR_USAGE;
+ 
+-	gpio = simple_strtoul(argv[1], NULL, 0);
++	*gpio = simple_strtoul(argv[1], NULL, 0);
 +
-+	for (i = 0; i < ARCH_NR_GPIOS; i++) {
-+		struct gpio_info *info = &gpio_desc[i];
++	if (value)
++		*value = simple_strtoul(argv[2], NULL, 0);
 +
-+		if (!info->requested || !info->chip || !info->label)
-+			continue;
-+
-+		if (!strcmp(info->label, label))
-+			return i;
-+	}
-+
-+	return -ENOENT;
++	return 0;
 +}
 +
- void gpio_free(unsigned gpio)
- {
- 	struct gpio_info *gi = gpio_to_desc(gpio);
-diff --git a/include/gpio.h b/include/gpio.h
-index e42fa2338..38d6ba2df 100644
---- a/include/gpio.h
-+++ b/include/gpio.h
-@@ -92,6 +92,11 @@ static inline int gpio_request(unsigned gpio, const char *label)
- 	return 0;
- }
- 
-+static inline int gpio_find_by_label(const char *label)
++static int do_gpio_get_value(int argc, char *argv[])
 +{
-+	return -ENOSYS;
-+}
++	int gpio, value, ret;
 +
- static inline void gpio_free(unsigned gpio)
++	ret = get_gpio_and_value(argc, argv, &gpio, NULL);
++	if (ret)
++		return ret;
+ 
+ 	value = gpio_get_value(gpio);
+ 	if (value < 0)
+@@ -41,13 +56,11 @@ BAREBOX_CMD_END
+ 
+ static int do_gpio_set_value(int argc, char *argv[])
  {
- }
-@@ -114,6 +119,7 @@ static inline void gpio_free_array(const struct gpio *array, size_t num)
- }
- #else
- int gpio_request(unsigned gpio, const char *label);
-+int gpio_find_by_label(const char *label);
- void gpio_free(unsigned gpio);
- int gpio_request_one(unsigned gpio, unsigned long flags, const char *label);
- int gpio_request_array(const struct gpio *array, size_t num);
+-	int gpio, value;
+-
+-	if (argc < 3)
+-		return COMMAND_ERROR_USAGE;
++	int gpio, value, ret;
+ 
+-	gpio = simple_strtoul(argv[1], NULL, 0);
+-	value = simple_strtoul(argv[2], NULL, 0);
++	ret = get_gpio_and_value(argc, argv, &gpio, &value);
++	if (ret)
++		return ret;
+ 
+ 	gpio_set_value(gpio, value);
+ 
+@@ -65,10 +78,9 @@ static int do_gpio_direction_input(int argc, char *argv[])
+ {
+ 	int gpio, ret;
+ 
+-	if (argc < 2)
+-		return COMMAND_ERROR_USAGE;
+-
+-	gpio = simple_strtoul(argv[1], NULL, 0);
++	ret = get_gpio_and_value(argc, argv, &gpio, NULL);
++	if (ret)
++		return ret;
+ 
+ 	ret = gpio_direction_input(gpio);
+ 	if (ret)
+@@ -88,11 +100,9 @@ static int do_gpio_direction_output(int argc, char *argv[])
+ {
+ 	int gpio, value, ret;
+ 
+-	if (argc < 3)
+-		return COMMAND_ERROR_USAGE;
+-
+-	gpio = simple_strtoul(argv[1], NULL, 0);
+-	value = simple_strtoul(argv[2], NULL, 0);
++	ret = get_gpio_and_value(argc, argv, &gpio, &value);
++	if (ret)
++		return ret;
+ 
+ 	ret = gpio_direction_output(gpio, value);
+ 	if (ret)
 -- 
 2.17.1
 
