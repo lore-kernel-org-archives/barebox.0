@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gGDSf-0000tT-8t
- for barebox@lists.infradead.org; Sat, 27 Oct 2018 01:32:49 +0000
-Received: by mail-pg1-x542.google.com with SMTP id z17-v6so1301185pgv.3
- for <barebox@lists.infradead.org>; Fri, 26 Oct 2018 18:32:18 -0700 (PDT)
+ id 1gGDSh-0000rc-68
+ for barebox@lists.infradead.org; Sat, 27 Oct 2018 01:32:55 +0000
+Received: by mail-pl1-x643.google.com with SMTP id t6-v6so1244033plo.9
+ for <barebox@lists.infradead.org>; Fri, 26 Oct 2018 18:32:15 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 26 Oct 2018 18:31:55 -0700
-Message-Id: <20181027013157.23135-10-andrew.smirnov@gmail.com>
+Date: Fri, 26 Oct 2018 18:31:53 -0700
+Message-Id: <20181027013157.23135-8-andrew.smirnov@gmail.com>
 In-Reply-To: <20181027013157.23135-1-andrew.smirnov@gmail.com>
 References: <20181027013157.23135-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,35 +23,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/11] VF610: zii-vf610-dev: Drop switch reset GPIO
- configuration
+Subject: [PATCH 07/11] gpiolib: Introduce gpio_find_by_label()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-This GPIO is controlled by MV88E6xxx driver, so there's no need to
-explicitly configure this GPIO.
+Introduce gpio_find_by_label() in order to allow manipulating GPIOs by
+the labels assigned to them via DT or board/driver code.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/zii-vf610-dev/board.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/gpio/gpiolib.c | 17 +++++++++++++++++
+ include/gpio.h         |  6 ++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/arch/arm/boards/zii-vf610-dev/board.c b/arch/arm/boards/zii-vf610-dev/board.c
-index 275d0a432..a8fa1ef61 100644
---- a/arch/arm/boards/zii-vf610-dev/board.c
-+++ b/arch/arm/boards/zii-vf610-dev/board.c
-@@ -63,11 +63,6 @@ late_initcall(zii_vf610_cfu1_expose_signals);
- static int zii_vf610_cfu1_spu3_expose_signals(void)
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index b83a27de7..afece61d9 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -91,6 +91,23 @@ done:
+ 	return ret;
+ }
+ 
++int gpio_find_by_label(const char *label)
++{
++	int i;
++
++	for (i = 0; i < ARCH_NR_GPIOS; i++) {
++		struct gpio_info *info = &gpio_desc[i];
++
++		if (!info->requested || !info->chip || !info->label)
++			continue;
++
++		if (!strcmp(info->label, label))
++			return i;
++	}
++
++	return -ENOENT;
++}
++
+ void gpio_free(unsigned gpio)
  {
- 	static const struct gpio signals[] = {
--		{
--			.gpio  = 107,
--			.flags  = GPIOF_OUT_INIT_HIGH,
--			.label = "soc_sw_rstn",
--		},
- 		{
- 			.gpio  = 98,
- 			.flags = GPIOF_IN,
+ 	struct gpio_info *gi = gpio_to_desc(gpio);
+diff --git a/include/gpio.h b/include/gpio.h
+index e42fa2338..38d6ba2df 100644
+--- a/include/gpio.h
++++ b/include/gpio.h
+@@ -92,6 +92,11 @@ static inline int gpio_request(unsigned gpio, const char *label)
+ 	return 0;
+ }
+ 
++static inline int gpio_find_by_label(const char *label)
++{
++	return -ENOSYS;
++}
++
+ static inline void gpio_free(unsigned gpio)
+ {
+ }
+@@ -114,6 +119,7 @@ static inline void gpio_free_array(const struct gpio *array, size_t num)
+ }
+ #else
+ int gpio_request(unsigned gpio, const char *label);
++int gpio_find_by_label(const char *label);
+ void gpio_free(unsigned gpio);
+ int gpio_request_one(unsigned gpio, unsigned long flags, const char *label);
+ int gpio_request_array(const struct gpio *array, size_t num);
 -- 
 2.17.1
 
