@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gGDSh-0000q9-9L
- for barebox@lists.infradead.org; Sat, 27 Oct 2018 01:32:57 +0000
-Received: by mail-pl1-x643.google.com with SMTP id d23-v6so1237544pls.11
- for <barebox@lists.infradead.org>; Fri, 26 Oct 2018 18:32:12 -0700 (PDT)
+ id 1gGDSi-0000qp-M2
+ for barebox@lists.infradead.org; Sat, 27 Oct 2018 01:33:03 +0000
+Received: by mail-pl1-x644.google.com with SMTP id o19-v6so1233954pll.12
+ for <barebox@lists.infradead.org>; Fri, 26 Oct 2018 18:32:13 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 26 Oct 2018 18:31:51 -0700
-Message-Id: <20181027013157.23135-6-andrew.smirnov@gmail.com>
+Date: Fri, 26 Oct 2018 18:31:52 -0700
+Message-Id: <20181027013157.23135-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20181027013157.23135-1-andrew.smirnov@gmail.com>
 References: <20181027013157.23135-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,101 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/11] commands: gpio: Move argument parsing into a shared
- function
+Subject: [PATCH 06/11] commands: gpio: Use kstrtoint() instead of
+ simple_strtoul()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Use kstrtoint() instead of simple_strtoul() in order to properly
+handle invalid arguments. Current code using simple_strtoul() results
+in following:
+
+barebox@ZII RDU2 Board:/ gpio_get_value foo
+barebox@ZII RDU2 Board:/ echo $?
+0
+
+whereas with this patch we get:
+
+barebox@ZII RDU2 Board:/ gpio_get_value foo
+gpio_get_value: Invalid argument
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- commands/gpio.c | 48 +++++++++++++++++++++++++++++-------------------
- 1 file changed, 29 insertions(+), 19 deletions(-)
+ commands/gpio.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/commands/gpio.c b/commands/gpio.c
-index 08ecc152d..5a28493d1 100644
+index 5a28493d1..3a2b8624f 100644
 --- a/commands/gpio.c
 +++ b/commands/gpio.c
-@@ -16,14 +16,29 @@
- #include <errno.h>
- #include <gpio.h>
- 
--static int do_gpio_get_value(int argc, char *argv[])
-+static int get_gpio_and_value(int argc, char *argv[],
-+			      int *gpio, int *value)
+@@ -20,16 +20,19 @@ static int get_gpio_and_value(int argc, char *argv[],
+ 			      int *gpio, int *value)
  {
--	int gpio, value;
-+	const int count = value ? 3 : 2;
+ 	const int count = value ? 3 : 2;
++	int ret;
  
--	if (argc < 2)
-+	if (argc < count)
+ 	if (argc < count)
  		return COMMAND_ERROR_USAGE;
  
--	gpio = simple_strtoul(argv[1], NULL, 0);
-+	*gpio = simple_strtoul(argv[1], NULL, 0);
-+
-+	if (value)
-+		*value = simple_strtoul(argv[2], NULL, 0);
-+
-+	return 0;
-+}
-+
-+static int do_gpio_get_value(int argc, char *argv[])
-+{
-+	int gpio, value, ret;
-+
-+	ret = get_gpio_and_value(argc, argv, &gpio, NULL);
-+	if (ret)
+-	*gpio = simple_strtoul(argv[1], NULL, 0);
++	ret = kstrtoint(argv[1], 0, gpio);
++	if (ret < 0)
 +		return ret;
  
- 	value = gpio_get_value(gpio);
- 	if (value < 0)
-@@ -41,13 +56,11 @@ BAREBOX_CMD_END
+ 	if (value)
+-		*value = simple_strtoul(argv[2], NULL, 0);
++		ret = kstrtoint(argv[2], 0, value);
  
- static int do_gpio_set_value(int argc, char *argv[])
- {
--	int gpio, value;
--
--	if (argc < 3)
--		return COMMAND_ERROR_USAGE;
-+	int gpio, value, ret;
+-	return 0;
++	return ret;
+ }
  
--	gpio = simple_strtoul(argv[1], NULL, 0);
--	value = simple_strtoul(argv[2], NULL, 0);
-+	ret = get_gpio_and_value(argc, argv, &gpio, &value);
-+	if (ret)
-+		return ret;
- 
- 	gpio_set_value(gpio, value);
- 
-@@ -65,10 +78,9 @@ static int do_gpio_direction_input(int argc, char *argv[])
- {
- 	int gpio, ret;
- 
--	if (argc < 2)
--		return COMMAND_ERROR_USAGE;
--
--	gpio = simple_strtoul(argv[1], NULL, 0);
-+	ret = get_gpio_and_value(argc, argv, &gpio, NULL);
-+	if (ret)
-+		return ret;
- 
- 	ret = gpio_direction_input(gpio);
- 	if (ret)
-@@ -88,11 +100,9 @@ static int do_gpio_direction_output(int argc, char *argv[])
- {
- 	int gpio, value, ret;
- 
--	if (argc < 3)
--		return COMMAND_ERROR_USAGE;
--
--	gpio = simple_strtoul(argv[1], NULL, 0);
--	value = simple_strtoul(argv[2], NULL, 0);
-+	ret = get_gpio_and_value(argc, argv, &gpio, &value);
-+	if (ret)
-+		return ret;
- 
- 	ret = gpio_direction_output(gpio, value);
- 	if (ret)
+ static int do_gpio_get_value(int argc, char *argv[])
 -- 
 2.17.1
 
