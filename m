@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gGDTG-0001B8-Ij
- for barebox@lists.infradead.org; Sat, 27 Oct 2018 01:34:17 +0000
-Received: by mail-pg1-x543.google.com with SMTP id g12-v6so1306625pgs.1
- for <barebox@lists.infradead.org>; Fri, 26 Oct 2018 18:32:48 -0700 (PDT)
+ id 1gGDTA-00018M-Ac
+ for barebox@lists.infradead.org; Sat, 27 Oct 2018 01:33:53 +0000
+Received: by mail-pl1-x644.google.com with SMTP id p5-v6so1245434plq.8
+ for <barebox@lists.infradead.org>; Fri, 26 Oct 2018 18:32:42 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 26 Oct 2018 18:32:30 -0700
-Message-Id: <20181027013230.24387-7-andrew.smirnov@gmail.com>
+Date: Fri, 26 Oct 2018 18:32:25 -0700
+Message-Id: <20181027013230.24387-2-andrew.smirnov@gmail.com>
 In-Reply-To: <20181027013230.24387-1-andrew.smirnov@gmail.com>
 References: <20181027013230.24387-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,70 +23,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] drivers: base: Share code for getting and then requesting
- a region
+Subject: [PATCH 1/6] drivers: base: Simplify generic_memmap_ro()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Simplify generic_memmap_ro() by re-implementing it using
+generic_memmap_rw().
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/base/driver.c | 29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
+ drivers/base/driver.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 476f844be..687e36e1b 100644
+index 1941a972c..c74fee99f 100644
 --- a/drivers/base/driver.c
 +++ b/drivers/base/driver.c
-@@ -355,6 +355,19 @@ dev_get_resource_by_name_or_id(struct device_d *dev, unsigned long type,
- 	return ERR_PTR(-ENOENT);
+@@ -440,29 +440,23 @@ void __iomem *dev_request_mem_region(struct device_d *dev, int num)
+ }
+ EXPORT_SYMBOL(dev_request_mem_region);
+ 
+-int generic_memmap_ro(struct cdev *cdev, void **map, int flags)
++int generic_memmap_rw(struct cdev *cdev, void **map, int flags)
+ {
+ 	if (!cdev->dev)
+ 		return -EINVAL;
+ 
+-	if (flags & PROT_WRITE)
+-		return -EACCES;
+ 	*map = dev_get_mem_region(cdev->dev, 0);
+ 	if (IS_ERR(*map))
+ 		return PTR_ERR(*map);
+ 	return 0;
  }
  
-+static struct resource *
-+dev_request_resource_by_name_or_id(struct device_d *dev, unsigned long type,
-+				   const char *name, int num)
-+{
-+	struct resource *res;
-+
-+	res = dev_get_resource_by_name_or_id(dev, type, name, num);
-+	if (IS_ERR(res))
-+		return ERR_CAST(res);
-+
-+	return request_iomem_region(dev_name(dev), res->start, res->end);
-+}
-+
- struct resource *dev_get_resource(struct device_d *dev, unsigned long type,
- 				  int num)
+-int generic_memmap_rw(struct cdev *cdev, void **map, int flags)
++int generic_memmap_ro(struct cdev *cdev, void **map, int flags)
  {
-@@ -384,11 +397,8 @@ void __iomem *dev_request_mem_region_by_name(struct device_d *dev, const char *n
- {
- 	struct resource *res;
- 
--	res = dev_get_resource_by_name(dev, IORESOURCE_MEM, name);
--	if (IS_ERR(res))
--		return ERR_CAST(res);
+-	if (!cdev->dev)
+-		return -EINVAL;
 -
--	res = request_iomem_region(dev_name(dev), res->start, res->end);
-+	res = dev_request_resource_by_name_or_id(dev, IORESOURCE_MEM,
-+						 name, -1);
- 	if (IS_ERR(res))
- 		return ERR_CAST(res);
+-	*map = dev_get_mem_region(cdev->dev, 0);
+-	if (IS_ERR(*map))
+-		return PTR_ERR(*map);
++	if (flags & PROT_WRITE)
++		return -EACCES;
  
-@@ -398,13 +408,8 @@ EXPORT_SYMBOL(dev_request_mem_region_by_name);
- 
- struct resource *dev_request_mem_resource(struct device_d *dev, int num)
- {
--	struct resource *res;
--
--	res = dev_get_resource(dev, IORESOURCE_MEM, num);
--	if (IS_ERR(res))
--		return ERR_CAST(res);
--
--	return request_iomem_region(dev_name(dev), res->start, res->end);
-+	return dev_request_resource_by_name_or_id(dev, IORESOURCE_MEM,
-+						  NULL, num);
+-	return 0;
++	return generic_memmap_rw(cdev, map, flags);
  }
  
- static void __iomem *__dev_request_mem_region(struct device_d *dev, int num,
+ int dummy_probe(struct device_d *dev)
 -- 
 2.17.1
 
