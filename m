@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gGsXn-0004G5-5H
- for barebox@lists.infradead.org; Sun, 28 Oct 2018 21:24:24 +0000
+ id 1gGsYN-0004fv-H9
+ for barebox@lists.infradead.org; Sun, 28 Oct 2018 21:25:00 +0000
 Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
  (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
- id S23990392AbeJ1VYWt6cp0 (ORCPT
+ id S23990392AbeJ1VYrwzOGe (ORCPT
  <rfc822;barebox@lists.infradead.org>);
- Sun, 28 Oct 2018 22:24:22 +0100
-Date: Sun, 28 Oct 2018 22:24:21 +0100
+ Sun, 28 Oct 2018 22:24:47 +0100
+Date: Sun, 28 Oct 2018 22:24:44 +0100
 From: Ladislav Michl <ladis@linux-mips.org>
-Message-ID: <20181028212421.GI14788@lenoch>
+Message-ID: <20181028212444.GJ14788@lenoch>
 References: <20181028211947.GA14788@lenoch>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -27,117 +27,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/16] mtd: nand_bbt: kill NAND_BBT_SCANALLPAGES
+Subject: [PATCH 09/16] mtd: nand_bbt: handle error case for
+ nand_create_badblock_pattern()
 To: barebox@lists.infradead.org
 
-Linux commit 5961ad2cb4dd adapted for Barebox:
-
-  Now that the last user of NAND_BBT_SCANALLPAGES has been removed, let's
-  kill this peculiar BBT feature flag.
+Linux commit abb9cf78e80a adapted for Barebox.
 
 Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
 ---
- drivers/mtd/nand/nand_bbt.c       | 37 +++----------------------------
- drivers/mtd/nand/nand_omap_gpmc.c |  1 -
- include/linux/mtd/bbm.h           |  2 --
- 3 files changed, 3 insertions(+), 37 deletions(-)
+ drivers/mtd/nand/nand_bbt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mtd/nand/nand_bbt.c b/drivers/mtd/nand/nand_bbt.c
-index 19888589f..e296fe204 100644
+index e296fe204..360cfcd7e 100644
 --- a/drivers/mtd/nand/nand_bbt.c
 +++ b/drivers/mtd/nand/nand_bbt.c
-@@ -404,25 +404,6 @@ static void read_abs_bbts(struct mtd_info *mtd, uint8_t *buf,
- 	}
- }
- 
--/* Scan a given block full */
--static int scan_block_full(struct mtd_info *mtd, struct nand_bbt_descr *bd,
--			   loff_t offs, uint8_t *buf, size_t readlen,
--			   int scanlen, int numpages)
--{
--	int ret, j;
--
--	ret = scan_read_oob(mtd, buf, offs, readlen);
--	/* Ignore ECC errors when checking for BBM */
--	if (ret && !mtd_is_bitflip_or_eccerr(ret))
--		return ret;
--
--	for (j = 0; j < numpages; j++, buf += scanlen) {
--		if (check_pattern(buf, scanlen, mtd->writesize, bd))
--			return 1;
--	}
--	return 0;
--}
--
- /* Scan a given block partially */
- static int scan_block_fast(struct mtd_info *mtd, struct nand_bbt_descr *bd,
- 			   loff_t offs, uint8_t *buf, int numpages)
-@@ -469,24 +450,17 @@ static int create_bbt(struct mtd_info *mtd, uint8_t *buf,
- 	struct nand_bbt_descr *bd, int chip)
+@@ -1272,6 +1272,7 @@ static int nand_create_badblock_pattern(struct nand_chip *this)
+ int nand_default_bbt(struct mtd_info *mtd)
  {
  	struct nand_chip *this = mtd->priv;
--	int i, numblocks, numpages, scanlen;
-+	int i, numblocks, numpages;
- 	int startblock;
- 	loff_t from;
--	size_t readlen;
++	int ret;
  
- 	pr_info("Scanning device for bad blocks\n");
+ 	/* Is a flash based bad block table requested? */
+ 	if (this->bbt_options & NAND_BBT_USE_FLASH) {
+@@ -1290,8 +1291,11 @@ int nand_default_bbt(struct mtd_info *mtd)
+ 		this->bbt_md = NULL;
+ 	}
  
--	if (bd->options & NAND_BBT_SCANALLPAGES)
--		numpages = 1 << (this->bbt_erase_shift - this->page_shift);
--	else if (bd->options & NAND_BBT_SCAN2NDPAGE)
-+	if (bd->options & NAND_BBT_SCAN2NDPAGE)
- 		numpages = 2;
- 	else
- 		numpages = 1;
+-	if (!this->badblock_pattern)
+-		nand_create_badblock_pattern(this);
++	if (!this->badblock_pattern) {
++		ret = nand_create_badblock_pattern(this);
++		if (ret)
++			return ret;
++	}
  
--	/* We need only read few bytes from the OOB area */
--	scanlen = 0;
--	readlen = bd->len;
--
- 	if (chip == -1) {
- 		numblocks = mtd->size >> this->bbt_erase_shift;
- 		startblock = 0;
-@@ -511,12 +485,7 @@ static int create_bbt(struct mtd_info *mtd, uint8_t *buf,
- 
- 		BUG_ON(bd->options & NAND_BBT_NO_OOB);
- 
--		if (bd->options & NAND_BBT_SCANALLPAGES)
--			ret = scan_block_full(mtd, bd, from, buf, readlen,
--					      scanlen, numpages);
--		else
--			ret = scan_block_fast(mtd, bd, from, buf, numpages);
--
-+		ret = scan_block_fast(mtd, bd, from, buf, numpages);
- 		if (ret < 0)
- 			return ret;
- 
-diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
-index c4de38096..91c2a7a9b 100644
---- a/drivers/mtd/nand/nand_omap_gpmc.c
-+++ b/drivers/mtd/nand/nand_omap_gpmc.c
-@@ -125,7 +125,6 @@ static struct nand_ecclayout omap_oobinfo;
-  */
- static uint8_t scan_ff_pattern[] = { 0xff };
- static struct nand_bbt_descr bb_descrip_flashbased = {
--	.options = NAND_BBT_SCANALLPAGES,
- 	.offs = 0,
- 	.len = 1,
- 	.pattern = scan_ff_pattern,
-diff --git a/include/linux/mtd/bbm.h b/include/linux/mtd/bbm.h
-index 95fc482ce..36bb6a503 100644
---- a/include/linux/mtd/bbm.h
-+++ b/include/linux/mtd/bbm.h
-@@ -91,8 +91,6 @@ struct nand_bbt_descr {
-  * with NAND_BBT_CREATE.
-  */
- #define NAND_BBT_CREATE_EMPTY	0x00000400
--/* Search good / bad pattern through all pages of a block */
--#define NAND_BBT_SCANALLPAGES	0x00000800
- /* Write bbt if neccecary */
- #define NAND_BBT_WRITE		0x00002000
- /* Read and write back block contents when writing bbt */
+ 	return nand_scan_bbt(mtd, this->badblock_pattern);
+ }
 -- 
 2.19.1
 
