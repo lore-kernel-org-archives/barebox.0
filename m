@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gGsWQ-0002IP-Jv
- for barebox@lists.infradead.org; Sun, 28 Oct 2018 21:23:00 +0000
+ id 1gGsX1-0004G5-OW
+ for barebox@lists.infradead.org; Sun, 28 Oct 2018 21:23:37 +0000
 Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
  (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
- id S23991063AbeJ1VW6TiaDF (ORCPT
+ id S23991063AbeJ1VXXxR-W- (ORCPT
  <rfc822;barebox@lists.infradead.org>);
- Sun, 28 Oct 2018 22:22:58 +0100
-Date: Sun, 28 Oct 2018 22:22:57 +0100
+ Sun, 28 Oct 2018 22:23:23 +0100
+Date: Sun, 28 Oct 2018 22:23:22 +0100
 From: Ladislav Michl <ladis@linux-mips.org>
-Message-ID: <20181028212257.GF14788@lenoch>
+Message-ID: <20181028212322.GG14788@lenoch>
 References: <20181028211947.GA14788@lenoch>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -27,64 +27,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/16] mtd: nand: Request strength instead of bytes for soft
- BCH
+Subject: [PATCH 06/16] mtd: atmel_nand: Add per board ECC setup
 To: barebox@lists.infradead.org
-
-Linux commits e0377cdebaf3 and 438320dd34a4 combined and adapted
-for Barebox:
-
-  Previously, we requested that drivers pass ecc.size and ecc.bytes when
-  using NAND_ECC_SOFT_BCH. However, a driver is likely to only know the ECC
-  strength required for its NAND, so each driver would need to perform a
-  strength-to-bytes calculation.
-
-  Avoid duplicating this calculation in each driver by asking drivers to
-  pass ecc.size and ecc.strength so that the strength-to-bytes calculation
-  need only be implemented once.
 
 Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
 ---
- drivers/mtd/nand/nand_base.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ arch/arm/mach-at91/include/mach/board.h | 2 ++
+ drivers/mtd/nand/atmel_nand.c           | 3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index d4b7167f5..24fa0e3a7 100644
---- a/drivers/mtd/nand/nand_base.c
-+++ b/drivers/mtd/nand/nand_base.c
-@@ -3677,15 +3677,18 @@ int nand_scan_tail(struct mtd_info *mtd)
- 		chip->ecc.read_oob = nand_read_oob_std;
- 		chip->ecc.write_oob = nand_write_oob_std;
- 		/*
--		 * Board driver should supply ecc.size and ecc.bytes values to
--		 * select how many bits are correctable; see nand_bch_init()
--		 * for details. Otherwise, default to 4 bits for large page
--		 * devices.
-+		 * Board driver should supply ecc.size and ecc.strength values
-+		 * to select how many bits are correctable. Otherwise, default
-+		 * to 4 bits for large page devices.
- 		 */
- 		if (!chip->ecc.size && (mtd->oobsize >= 64)) {
- 			chip->ecc.size = 512;
--			chip->ecc.bytes = 7;
-+			chip->ecc.strength = 4;
- 		}
-+
-+		/* See nand_bch_init() for details. */
-+		chip->ecc.bytes = DIV_ROUND_UP(
-+				chip->ecc.strength * fls(8 * chip->ecc.size), 8);
- 		chip->ecc.priv = nand_bch_init(mtd,
- 					       chip->ecc.size,
- 					       chip->ecc.bytes,
-@@ -3694,8 +3697,6 @@ int nand_scan_tail(struct mtd_info *mtd)
- 			pr_warn("BCH ECC initialization failed!\n");
- 			BUG();
- 		}
--		chip->ecc.strength =
--			chip->ecc.bytes * 8 / fls(8 * chip->ecc.size);
- 		break;
- #endif
- #ifdef CONFIG_NAND_ECC_NONE
+diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
+index 5d76e00ae..b7adb173a 100644
+--- a/arch/arm/mach-at91/include/mach/board.h
++++ b/arch/arm/mach-at91/include/mach/board.h
+@@ -64,6 +64,8 @@ struct atmel_nand_data {
+ 	u8		cle;		/* address line number connected to CLE */
+ 	u8		bus_width_16;	/* buswidth is 16 bit */
+ 	u8		ecc_mode;	/* NAND_ECC_* */
++	u8		ecc_strength;	/* number of bits to correct per ECC step */
++	u8		ecc_size_shift;	/* data bytes covered by a single ECC step.*/
+ 	u8		on_flash_bbt;	/* Use flash based bbt */
+ 	u8		has_pmecc;	/* Use PMECC */
+ 	u8		bus_on_d0;
+diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
+index 797cdc2ba..50c541122 100644
+--- a/drivers/mtd/nand/atmel_nand.c
++++ b/drivers/mtd/nand/atmel_nand.c
+@@ -1298,6 +1298,7 @@ static int atmel_hw_nand_init_params(struct device_d *dev,
+ 	nand_chip->ecc.hwctl = atmel_nand_hwctl;
+ 	nand_chip->ecc.read_page = atmel_nand_read_page;
+ 	nand_chip->ecc.bytes = 4;
++	nand_chip->ecc.strength = 1;
+ 
+ 	return 0;
+ }
+@@ -1388,6 +1389,8 @@ static int __init atmel_nand_probe(struct device_d *dev)
+ 	}
+ 
+ 	nand_chip->ecc.mode = pdata->ecc_mode;
++	nand_chip->ecc.strength = pdata->ecc_strength ? : 1;
++	nand_chip->ecc.size = 1 << pdata->ecc_size_shift ? : 512;
+ 
+ 	if (IS_ENABLED(CONFIG_NAND_ECC_HW) &&
+ 	    pdata->ecc_mode == NAND_ECC_HW) {
 -- 
 2.19.1
 
