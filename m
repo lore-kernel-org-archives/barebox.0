@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gGsa0-0006M5-57
- for barebox@lists.infradead.org; Sun, 28 Oct 2018 21:26:51 +0000
+ id 1gGsaV-0006M5-GV
+ for barebox@lists.infradead.org; Sun, 28 Oct 2018 21:27:13 +0000
 Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
  (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
- id S23990392AbeJ1V0jxNJGf (ORCPT
+ id S23991063AbeJ1V1KW2sef (ORCPT
  <rfc822;barebox@lists.infradead.org>);
- Sun, 28 Oct 2018 22:26:39 +0100
-Date: Sun, 28 Oct 2018 22:26:38 +0100
+ Sun, 28 Oct 2018 22:27:10 +0100
+Date: Sun, 28 Oct 2018 22:27:02 +0100
 From: Ladislav Michl <ladis@linux-mips.org>
-Message-ID: <20181028212638.GO14788@lenoch>
+Message-ID: <20181028212702.GP14788@lenoch>
 References: <20181028211947.GA14788@lenoch>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -27,193 +27,139 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/16] mtd: nand: Kill the chip->scan_bbt() hook
+Subject: [PATCH 15/16] mtd: nand: Kill cellinfo
 To: barebox@lists.infradead.org
 
-Linux commit e80eba758151 adapted for Barebox:
-
-  None of the existing drivers are overloading the ->scan_bbt()
-  method, let's get rid of it and replace calls to ->scan_bbt()
-  by nand_create_bbt() ones.
+The only information used from cellinfo field is whenever flash is SLC
+or MLC, therefore eliminate it completely. This patch is based on Linux
+commit 7db906b79f69.
 
 Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
 ---
- drivers/mtd/nand/nand_base.c    |  6 +-----
- drivers/mtd/nand/nand_bbt.c     |  9 +++++----
- drivers/mtd/nand/nand_imx_bbm.c |  2 +-
- drivers/mtd/nand/nand_mxs.c     | 27 +++++++++------------------
- include/linux/mtd/nand.h        |  5 +----
- 5 files changed, 17 insertions(+), 32 deletions(-)
+ drivers/mtd/nand/nand_base.c | 29 ++++++++++++++++++++---------
+ include/linux/mtd/nand.h     |  3 +--
+ 2 files changed, 21 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index 8faf5c587..e20831a2c 100644
+index e20831a2c..9b2d3f1cf 100644
 --- a/drivers/mtd/nand/nand_base.c
 +++ b/drivers/mtd/nand/nand_base.c
-@@ -2935,10 +2935,6 @@ static void nand_set_defaults(struct nand_chip *chip, int busw)
- #endif
- 	if (!chip->read_buf)
- 		chip->read_buf = busw ? nand_read_buf16 : nand_read_buf;
--#ifdef CONFIG_NAND_BBT
--	if (!chip->scan_bbt)
--		chip->scan_bbt = nand_default_bbt;
--#endif
- 	if (!chip->controller) {
- 		chip->controller = &chip->hwcontrol;
- 	}
-@@ -3804,7 +3800,7 @@ int nand_scan_tail(struct mtd_info *mtd)
- 		return 0;
- 
- 	/* Build bad block table */
--	return chip->scan_bbt(mtd);
-+	return nand_create_bbt(mtd);
+@@ -3098,6 +3098,16 @@ static int nand_id_len(u8 *id_data, int arrlen)
+ 	return arrlen;
  }
- EXPORT_SYMBOL(nand_scan_tail);
  
-diff --git a/drivers/mtd/nand/nand_bbt.c b/drivers/mtd/nand/nand_bbt.c
-index af992e795..b4f3b7e95 100644
---- a/drivers/mtd/nand/nand_bbt.c
-+++ b/drivers/mtd/nand/nand_bbt.c
-@@ -77,6 +77,8 @@
- #define BBT_ENTRY_MASK		0x03
- #define BBT_ENTRY_SHIFT		2
- 
-+static int nand_update_bbt(struct mtd_info *mtd, loff_t offs);
++/* Extract the bits of per cell from the 3rd byte of the extended ID */
++static int nand_get_bits_per_cell(u8 cellinfo)
++{
++	int bits;
 +
- static inline uint8_t bbt_get_entry(struct nand_chip *chip, int block)
- {
- 	uint8_t entry = chip->bbt[block >> BBT_ENTRY_SHIFT];
-@@ -1217,7 +1219,7 @@ err:
-  *
-  * The function updates the bad block table(s).
-  */
--int nand_update_bbt(struct mtd_info *mtd, loff_t offs)
-+static int nand_update_bbt(struct mtd_info *mtd, loff_t offs)
- {
- 	struct nand_chip *this = mtd->priv;
- 	int len, res = 0;
-@@ -1345,13 +1347,13 @@ static int nand_create_badblock_pattern(struct nand_chip *this)
- }
- 
- /**
-- * nand_default_bbt - [NAND Interface] Select a default bad block table for the device
-+ * nand_create_bbt - [NAND Interface] Select a default bad block table for the device
-  * @mtd: MTD device structure
-  *
-  * This function selects the default bad block table support for the device and
-  * calls the nand_scan_bbt function.
-  */
--int nand_default_bbt(struct mtd_info *mtd)
-+int nand_create_bbt(struct mtd_info *mtd)
- {
- 	struct nand_chip *this = mtd->priv;
- 	int ret;
-@@ -1450,4 +1452,3 @@ int nand_markgood_bbt(struct mtd_info *mtd, loff_t offs)
- 
- EXPORT_SYMBOL(nand_scan_bbt);
- EXPORT_SYMBOL(nand_default_bbt);
--EXPORT_SYMBOL_GPL(nand_update_bbt);
-diff --git a/drivers/mtd/nand/nand_imx_bbm.c b/drivers/mtd/nand/nand_imx_bbm.c
-index 23722a906..4fd5487aa 100644
---- a/drivers/mtd/nand/nand_imx_bbm.c
-+++ b/drivers/mtd/nand/nand_imx_bbm.c
-@@ -129,7 +129,7 @@ static int attach_bbt(struct mtd_info *mtd, void *bbt)
- 	free(chip->bbt);
- 	chip->bbt = bbt;
- 
--	return nand_update_bbt(mtd, 0);
-+	return nand_create_bbt(mtd);
- }
- 
- static int do_imx_nand_bbm(int argc, char *argv[])
-diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
-index 28a07d4cb..f69453aba 100644
---- a/drivers/mtd/nand/nand_mxs.c
-+++ b/drivers/mtd/nand/nand_mxs.c
-@@ -1201,21 +1201,7 @@ static int mxs_nand_block_bad(struct mtd_info *mtd, loff_t ofs, int getchip)
- 	return 0;
- }
- 
--/*
-- * Nominally, the purpose of this function is to look for or create the bad
-- * block table. In fact, since the we call this function at the very end of
-- * the initialization process started by nand_scan(), and we doesn't have a
-- * more formal mechanism, we "hook" this function to continue init process.
-- *
-- * At this point, the physical NAND Flash chips have been identified and
-- * counted, so we know the physical geometry. This enables us to make some
-- * important configuration decisions.
-- *
-- * The return value of this function propogates directly back to this driver's
-- * call to nand_scan(). Anything other than zero will cause this driver to
-- * tear everything down and declare failure.
-- */
--static int mxs_nand_scan_bbt(struct mtd_info *mtd)
-+static int mxs_nand_init_bch(struct mtd_info *mtd)
- {
- 	struct nand_chip *nand = mtd->priv;
- 	struct mxs_nand_info *nand_info = nand->priv;
-@@ -1252,8 +1238,7 @@ static int mxs_nand_scan_bbt(struct mtd_info *mtd)
- 		mtd->block_markbad = mxs_nand_hook_block_markbad;
- 	}
- 
--	/* We use the reference implementation for bad block management. */
--	return nand_default_bbt(mtd);
-+	return 0;
- }
- 
++	bits = cellinfo & NAND_CI_CELLTYPE_MSK;
++	bits >>= NAND_CI_CELLTYPE_SHIFT;
++	return bits + 1;
++}
++
  /*
-@@ -2183,7 +2168,6 @@ static int mxs_nand_probe(struct device_d *dev)
- 	nand->dev_ready		= mxs_nand_device_ready;
- 	nand->select_chip	= mxs_nand_select_chip;
- 	nand->block_bad		= mxs_nand_block_bad;
--	nand->scan_bbt		= mxs_nand_scan_bbt;
+  * Many new NAND share similar device ID codes, which represent the size of the
+  * chip. The rest of the parameters must be decoded according to generic or
+@@ -3108,7 +3118,7 @@ static void nand_decode_ext_id(struct mtd_info *mtd, struct nand_chip *chip,
+ {
+ 	int extid, id_len;
+ 	/* The 3rd id byte holds MLC / multichip data */
+-	chip->cellinfo = id_data[2];
++	chip->bits_per_cell = nand_get_bits_per_cell(id_data[2]);
+ 	/* The 4th id byte is the important one */
+ 	extid = id_data[3];
  
- 	nand->read_byte		= mxs_nand_read_byte;
+@@ -3124,8 +3134,7 @@ static void nand_decode_ext_id(struct mtd_info *mtd, struct nand_chip *chip,
+ 	 * ID to decide what to do.
+ 	 */
+ 	if (id_len == 6 && id_data[0] == NAND_MFR_SAMSUNG &&
+-			(chip->cellinfo & NAND_CI_CELLTYPE_MSK) &&
+-			id_data[5] != 0x00) {
++			!nand_is_slc(chip) && id_data[5] != 0x00) {
+ 		/* Calc pagesize */
+ 		mtd->writesize = 2048 << (extid & 0x03);
+ 		extid >>= 2;
+@@ -3157,7 +3166,7 @@ static void nand_decode_ext_id(struct mtd_info *mtd, struct nand_chip *chip,
+ 			(((extid >> 1) & 0x04) | (extid & 0x03));
+ 		*busw = 0;
+ 	} else if (id_len == 6 && id_data[0] == NAND_MFR_HYNIX &&
+-			(chip->cellinfo & NAND_CI_CELLTYPE_MSK)) {
++			!nand_is_slc(chip)) {
+ 		unsigned int tmp;
  
-@@ -2215,6 +2199,13 @@ static int mxs_nand_probe(struct device_d *dev)
+ 		/* Calc pagesize */
+@@ -3229,6 +3238,9 @@ static void nand_decode_id(struct mtd_info *mtd, struct nand_chip *chip,
+ 	mtd->oobsize = mtd->writesize / 32;
+ 	*busw = type->options & NAND_BUSWIDTH_16;
  
- 	mxs_nand_setup_timing(nand_info);
- 
-+	err = mxs_nand_init_bch(mtd);
-+	if (err)
-+		goto err2;
-+	err = nand_create_bbt(mtd);
-+	if (err)
-+		goto err2;
++	/* All legacy ID NAND are small-page, SLC */
++	chip->bits_per_cell = 1;
 +
- 	/* second phase scan */
- 	err = nand_scan_tail(mtd);
- 	if (err)
+ 	/*
+ 	 * Check for Spansion/AMD ID + repeating 5th, 6th byte since
+ 	 * some Spansion chips have erasesize that conflicts with size
+@@ -3265,11 +3277,11 @@ static void nand_decode_bbm_options(struct mtd_info *mtd,
+ 	 * Micron devices with 2KiB pages and on SLC Samsung, Hynix, Toshiba,
+ 	 * AMD/Spansion, and Macronix.  All others scan only the first page.
+ 	 */
+-	if ((chip->cellinfo & NAND_CI_CELLTYPE_MSK) &&
++	if (!nand_is_slc(chip) &&
+ 			(maf_id == NAND_MFR_SAMSUNG ||
+ 			 maf_id == NAND_MFR_HYNIX))
+ 		chip->bbt_options |= NAND_BBT_SCANLASTPAGE;
+-	else if ((!(chip->cellinfo & NAND_CI_CELLTYPE_MSK) &&
++	else if ((nand_is_slc(chip) &&
+ 				(maf_id == NAND_MFR_SAMSUNG ||
+ 				 maf_id == NAND_MFR_HYNIX ||
+ 				 maf_id == NAND_MFR_TOSHIBA ||
+@@ -3293,7 +3305,7 @@ static bool find_full_id_nand(struct mtd_info *mtd, struct nand_chip *chip,
+ 		mtd->erasesize = type->erasesize;
+ 		mtd->oobsize = type->oobsize;
+ 
+-		chip->cellinfo = id_data[2];
++		chip->bits_per_cell = nand_get_bits_per_cell(id_data[2]);
+ 		chip->chipsize = (uint64_t)type->chipsize << 20;
+ 		chip->options |= type->options;
+ 
+@@ -3739,8 +3751,7 @@ int nand_scan_tail(struct mtd_info *mtd)
+ 	chip->ecc.total = chip->ecc.steps * chip->ecc.bytes;
+ 
+ 	/* Allow subpage writes up to ecc.steps. Not possible for MLC flash */
+-	if (!(chip->options & NAND_NO_SUBPAGE_WRITE) &&
+-	    !(chip->cellinfo & NAND_CI_CELLTYPE_MSK)) {
++	if (!(chip->options & NAND_NO_SUBPAGE_WRITE) && nand_is_slc(chip)) {
+ 		switch (chip->ecc.steps) {
+ 		case 2:
+ 			mtd->subpage_sft = 1;
 diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
-index ed70c18a1..e1c7837a8 100644
+index e1c7837a8..c3eb16f90 100644
 --- a/include/linux/mtd/nand.h
 +++ b/include/linux/mtd/nand.h
-@@ -417,7 +417,6 @@ struct nand_buffers {
-  * @hwcontrol:		platform-specific hardware control structure
-  * @erase_cmd:		[INTERN] erase command write function, selectable due
-  *			to AND support.
-- * @scan_bbt:		[REPLACEABLE] function to scan bad block table
-  * @chip_delay:		[BOARDSPECIFIC] chip dependent delay for transferring
-  *			data from array to read regs (tR).
-  * @state:		[INTERN] the current state of the NAND device
-@@ -491,7 +490,6 @@ struct nand_chip {
- 			int page_addr);
- 	int(*waitfunc)(struct mtd_info *mtd, struct nand_chip *this);
- 	void (*erase_cmd)(struct mtd_info *mtd, int page);
--	int (*scan_bbt)(struct mtd_info *mtd);
- 	int (*errstat)(struct mtd_info *mtd, struct nand_chip *this, int state,
- 			int status, int page);
- 	int (*write_page)(struct mtd_info *mtd, struct nand_chip *chip,
-@@ -634,8 +632,7 @@ struct nand_manufacturers {
- extern struct nand_flash_dev nand_flash_ids[];
- extern struct nand_manufacturers nand_manuf_ids[];
+@@ -203,6 +203,7 @@ typedef enum {
+ /* Cell info constants */
+ #define NAND_CI_CHIPNR_MSK	0x03
+ #define NAND_CI_CELLTYPE_MSK	0x0C
++#define NAND_CI_CELLTYPE_SHIFT	2
  
--extern int nand_update_bbt(struct mtd_info *mtd, loff_t offs);
--extern int nand_default_bbt(struct mtd_info *mtd);
-+extern int nand_create_bbt(struct mtd_info *mtd);
- extern int nand_markbad_bbt(struct mtd_info *mtd, loff_t offs);
- extern int nand_markgood_bbt(struct mtd_info *mtd, loff_t offs);
- extern int nand_isbad_bbt(struct mtd_info *mtd, loff_t offs, int allowbbt);
+ /* Keep gcc happy */
+ struct nand_chip;
+@@ -439,7 +440,6 @@ struct nand_buffers {
+  *			bad block marker position; i.e., BBM == 11110111b is
+  *			not bad when badblockbits == 7
+  * @bits_per_cell:	[INTERN] number of bits per cell. i.e., 1 means SLC.
+- * @cellinfo:		[INTERN] MLC/multichip data from chip ident
+  * @numchips:		[INTERN] number of physical chips
+  * @chipsize:		[INTERN] the size of one chip for multichip arrays
+  * @pagemask:		[INTERN] page number mask = number of (pages / chip) - 1
+@@ -515,7 +515,6 @@ struct nand_chip {
+ 	unsigned int pagebuf_bitflips;
+ 	int subpagesize;
+ 	uint8_t bits_per_cell;
+-	uint8_t cellinfo;
+ 	int badblockpos;
+ 	int badblockbits;
+ 
 -- 
 2.19.1
 
