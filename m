@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gGsXJ-0004G5-Jw
- for barebox@lists.infradead.org; Sun, 28 Oct 2018 21:23:55 +0000
+ id 1gGsXn-0004G5-5H
+ for barebox@lists.infradead.org; Sun, 28 Oct 2018 21:24:24 +0000
 Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
  (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
- id S23990392AbeJ1VXxTUm86 (ORCPT
+ id S23990392AbeJ1VYWt6cp0 (ORCPT
  <rfc822;barebox@lists.infradead.org>);
- Sun, 28 Oct 2018 22:23:53 +0100
-Date: Sun, 28 Oct 2018 22:23:50 +0100
+ Sun, 28 Oct 2018 22:24:22 +0100
+Date: Sun, 28 Oct 2018 22:24:21 +0100
 From: Ladislav Michl <ladis@linux-mips.org>
-Message-ID: <20181028212349.GH14788@lenoch>
+Message-ID: <20181028212421.GI14788@lenoch>
 References: <20181028211947.GA14788@lenoch>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -27,147 +27,117 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/16] mtd: nand: simplify nand_bch_init() usage
+Subject: [PATCH 08/16] mtd: nand_bbt: kill NAND_BBT_SCANALLPAGES
 To: barebox@lists.infradead.org
 
-Linux commit a8c65d504e0b modified for Barebox:
+Linux commit 5961ad2cb4dd adapted for Barebox:
 
-  nand_bch_init() requires several arguments which could directly be deduced
-  from the mtd device. Get rid of those useless parameters.
-
-  nand_bch_init() is also requiring the caller to provide a proper eccbytes
-  value, while this value could be deduced from the ecc.size and
-  ecc.strength value. Fallback to eccbytes calculation when it is set to 0.
+  Now that the last user of NAND_BBT_SCANALLPAGES has been removed, let's
+  kill this peculiar BBT feature flag.
 
 Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
 ---
- drivers/mtd/nand/nand_base.c |  8 ++------
- drivers/mtd/nand/nand_bch.c  | 27 +++++++++++++++++----------
- include/linux/mtd/nand_bch.h |  8 ++------
- 3 files changed, 21 insertions(+), 22 deletions(-)
+ drivers/mtd/nand/nand_bbt.c       | 37 +++----------------------------
+ drivers/mtd/nand/nand_omap_gpmc.c |  1 -
+ include/linux/mtd/bbm.h           |  2 --
+ 3 files changed, 3 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index 24fa0e3a7..8faf5c587 100644
---- a/drivers/mtd/nand/nand_base.c
-+++ b/drivers/mtd/nand/nand_base.c
-@@ -3687,12 +3687,8 @@ int nand_scan_tail(struct mtd_info *mtd)
- 		}
- 
- 		/* See nand_bch_init() for details. */
--		chip->ecc.bytes = DIV_ROUND_UP(
--				chip->ecc.strength * fls(8 * chip->ecc.size), 8);
--		chip->ecc.priv = nand_bch_init(mtd,
--					       chip->ecc.size,
--					       chip->ecc.bytes,
--					       &chip->ecc.layout);
-+		chip->ecc.bytes = 0;
-+		chip->ecc.priv = nand_bch_init(mtd);
- 		if (!chip->ecc.priv) {
- 			pr_warn("BCH ECC initialization failed!\n");
- 			BUG();
-diff --git a/drivers/mtd/nand/nand_bch.c b/drivers/mtd/nand/nand_bch.c
-index e37135f51..d4f2a8cbe 100644
---- a/drivers/mtd/nand/nand_bch.c
-+++ b/drivers/mtd/nand/nand_bch.c
-@@ -104,9 +104,6 @@ EXPORT_SYMBOL(nand_bch_correct_data);
- /**
-  * nand_bch_init - [NAND Interface] Initialize NAND BCH error correction
-  * @mtd:	MTD block structure
-- * @eccsize:	ecc block size in bytes
-- * @eccbytes:	ecc length in bytes
-- * @ecclayout:	output default layout
-  *
-  * Returns:
-  *  a pointer to a new NAND BCH control structure, or NULL upon failure
-@@ -120,14 +117,21 @@ EXPORT_SYMBOL(nand_bch_correct_data);
-  * @eccsize = 512  (thus, m=13 is the smallest integer such that 2^m-1 > 512*8)
-  * @eccbytes = 7   (7 bytes are required to store m*t = 13*4 = 52 bits)
-  */
--struct nand_bch_control *
--nand_bch_init(struct mtd_info *mtd, unsigned int eccsize, unsigned int eccbytes,
--	      struct nand_ecclayout **ecclayout)
-+struct nand_bch_control *nand_bch_init(struct mtd_info *mtd)
- {
-+	struct nand_chip *nand = mtd->priv;
- 	unsigned int m, t, eccsteps, i;
--	struct nand_ecclayout *layout;
-+	struct nand_ecclayout *layout = nand->ecc.layout;
- 	struct nand_bch_control *nbc = NULL;
- 	unsigned char *erased_page;
-+	unsigned int eccsize = nand->ecc.size;
-+	unsigned int eccbytes = nand->ecc.bytes;
-+	unsigned int eccstrength = nand->ecc.strength;
-+
-+	if (!eccbytes && eccstrength) {
-+		eccbytes = DIV_ROUND_UP(eccstrength * fls(8 * eccsize), 8);
-+		nand->ecc.bytes = eccbytes;
-+	}
- 
- 	if (!eccsize || !eccbytes) {
- 		printk(KERN_WARNING "ecc parameters not supplied\n");
-@@ -155,7 +159,7 @@ nand_bch_init(struct mtd_info *mtd, unsigned int eccsize, unsigned int eccbytes,
- 	eccsteps = mtd->writesize/eccsize;
- 
- 	/* if no ecc placement scheme was provided, build one */
--	if (!*ecclayout) {
-+	if (!layout) {
- 
- 		/* handle large page devices only */
- 		if (mtd->oobsize < 64) {
-@@ -181,7 +185,7 @@ nand_bch_init(struct mtd_info *mtd, unsigned int eccsize, unsigned int eccbytes,
- 		layout->oobfree[0].offset = 2;
- 		layout->oobfree[0].length = mtd->oobsize-2-layout->eccbytes;
- 
--		*ecclayout = layout;
-+		nand->ecc.layout = layout;
+diff --git a/drivers/mtd/nand/nand_bbt.c b/drivers/mtd/nand/nand_bbt.c
+index 19888589f..e296fe204 100644
+--- a/drivers/mtd/nand/nand_bbt.c
++++ b/drivers/mtd/nand/nand_bbt.c
+@@ -404,25 +404,6 @@ static void read_abs_bbts(struct mtd_info *mtd, uint8_t *buf,
  	}
- 
- 	/* sanity checks */
-@@ -189,7 +193,7 @@ nand_bch_init(struct mtd_info *mtd, unsigned int eccsize, unsigned int eccbytes,
- 		printk(KERN_WARNING "eccsize %u is too large\n", eccsize);
- 		goto fail;
- 	}
--	if ((*ecclayout)->eccbytes != (eccsteps*eccbytes)) {
-+	if (layout->eccbytes != (eccsteps*eccbytes)) {
- 		printk(KERN_WARNING "invalid ecc layout\n");
- 		goto fail;
- 	}
-@@ -213,6 +217,9 @@ nand_bch_init(struct mtd_info *mtd, unsigned int eccsize, unsigned int eccbytes,
- 	for (i = 0; i < eccbytes; i++)
- 		nbc->eccmask[i] ^= 0xff;
- 
-+	if (!eccstrength)
-+		nand->ecc.strength = (eccbytes * 8) / fls(8 * eccsize);
-+
- 	return nbc;
- fail:
- 	nand_bch_free(nbc);
-diff --git a/include/linux/mtd/nand_bch.h b/include/linux/mtd/nand_bch.h
-index 61c4607fa..5465ddd13 100644
---- a/include/linux/mtd/nand_bch.h
-+++ b/include/linux/mtd/nand_bch.h
-@@ -32,9 +32,7 @@ int nand_bch_correct_data(struct mtd_info *mtd, u_char *dat, u_char *read_ecc,
- /*
-  * Initialize BCH encoder/decoder
-  */
--struct nand_bch_control *
--nand_bch_init(struct mtd_info *mtd, unsigned int eccsize,
--	      unsigned int eccbytes, struct nand_ecclayout **ecclayout);
-+struct nand_bch_control *nand_bch_init(struct mtd_info *mtd);
- /*
-  * Release BCH encoder/decoder resources
-  */
-@@ -58,9 +56,7 @@ nand_bch_correct_data(struct mtd_info *mtd, unsigned char *buf,
- 	return -1;
  }
  
--static inline struct nand_bch_control *
--nand_bch_init(struct mtd_info *mtd, unsigned int eccsize,
--	      unsigned int eccbytes, struct nand_ecclayout **ecclayout)
-+static inline struct nand_bch_control *nand_bch_init(struct mtd_info *mtd)
+-/* Scan a given block full */
+-static int scan_block_full(struct mtd_info *mtd, struct nand_bbt_descr *bd,
+-			   loff_t offs, uint8_t *buf, size_t readlen,
+-			   int scanlen, int numpages)
+-{
+-	int ret, j;
+-
+-	ret = scan_read_oob(mtd, buf, offs, readlen);
+-	/* Ignore ECC errors when checking for BBM */
+-	if (ret && !mtd_is_bitflip_or_eccerr(ret))
+-		return ret;
+-
+-	for (j = 0; j < numpages; j++, buf += scanlen) {
+-		if (check_pattern(buf, scanlen, mtd->writesize, bd))
+-			return 1;
+-	}
+-	return 0;
+-}
+-
+ /* Scan a given block partially */
+ static int scan_block_fast(struct mtd_info *mtd, struct nand_bbt_descr *bd,
+ 			   loff_t offs, uint8_t *buf, int numpages)
+@@ -469,24 +450,17 @@ static int create_bbt(struct mtd_info *mtd, uint8_t *buf,
+ 	struct nand_bbt_descr *bd, int chip)
  {
- 	return NULL;
- }
+ 	struct nand_chip *this = mtd->priv;
+-	int i, numblocks, numpages, scanlen;
++	int i, numblocks, numpages;
+ 	int startblock;
+ 	loff_t from;
+-	size_t readlen;
+ 
+ 	pr_info("Scanning device for bad blocks\n");
+ 
+-	if (bd->options & NAND_BBT_SCANALLPAGES)
+-		numpages = 1 << (this->bbt_erase_shift - this->page_shift);
+-	else if (bd->options & NAND_BBT_SCAN2NDPAGE)
++	if (bd->options & NAND_BBT_SCAN2NDPAGE)
+ 		numpages = 2;
+ 	else
+ 		numpages = 1;
+ 
+-	/* We need only read few bytes from the OOB area */
+-	scanlen = 0;
+-	readlen = bd->len;
+-
+ 	if (chip == -1) {
+ 		numblocks = mtd->size >> this->bbt_erase_shift;
+ 		startblock = 0;
+@@ -511,12 +485,7 @@ static int create_bbt(struct mtd_info *mtd, uint8_t *buf,
+ 
+ 		BUG_ON(bd->options & NAND_BBT_NO_OOB);
+ 
+-		if (bd->options & NAND_BBT_SCANALLPAGES)
+-			ret = scan_block_full(mtd, bd, from, buf, readlen,
+-					      scanlen, numpages);
+-		else
+-			ret = scan_block_fast(mtd, bd, from, buf, numpages);
+-
++		ret = scan_block_fast(mtd, bd, from, buf, numpages);
+ 		if (ret < 0)
+ 			return ret;
+ 
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index c4de38096..91c2a7a9b 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -125,7 +125,6 @@ static struct nand_ecclayout omap_oobinfo;
+  */
+ static uint8_t scan_ff_pattern[] = { 0xff };
+ static struct nand_bbt_descr bb_descrip_flashbased = {
+-	.options = NAND_BBT_SCANALLPAGES,
+ 	.offs = 0,
+ 	.len = 1,
+ 	.pattern = scan_ff_pattern,
+diff --git a/include/linux/mtd/bbm.h b/include/linux/mtd/bbm.h
+index 95fc482ce..36bb6a503 100644
+--- a/include/linux/mtd/bbm.h
++++ b/include/linux/mtd/bbm.h
+@@ -91,8 +91,6 @@ struct nand_bbt_descr {
+  * with NAND_BBT_CREATE.
+  */
+ #define NAND_BBT_CREATE_EMPTY	0x00000400
+-/* Search good / bad pattern through all pages of a block */
+-#define NAND_BBT_SCANALLPAGES	0x00000800
+ /* Write bbt if neccecary */
+ #define NAND_BBT_WRITE		0x00002000
+ /* Read and write back block contents when writing bbt */
 -- 
 2.19.1
 
