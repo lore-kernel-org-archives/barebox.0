@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gGsW4-0002IP-Mw
- for barebox@lists.infradead.org; Sun, 28 Oct 2018 21:22:38 +0000
+ id 1gGsWQ-0002IP-Jv
+ for barebox@lists.infradead.org; Sun, 28 Oct 2018 21:23:00 +0000
 Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
  (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
- id S23990392AbeJ1VWetd2lF (ORCPT
+ id S23991063AbeJ1VW6TiaDF (ORCPT
  <rfc822;barebox@lists.infradead.org>);
- Sun, 28 Oct 2018 22:22:34 +0100
-Date: Sun, 28 Oct 2018 22:22:30 +0100
+ Sun, 28 Oct 2018 22:22:58 +0100
+Date: Sun, 28 Oct 2018 22:22:57 +0100
 From: Ladislav Michl <ladis@linux-mips.org>
-Message-ID: <20181028212230.GE14788@lenoch>
+Message-ID: <20181028212257.GF14788@lenoch>
 References: <20181028211947.GA14788@lenoch>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -27,122 +27,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/16] mtd: nand: remove NAND_BBT_SCANEMPTY
+Subject: [PATCH 05/16] mtd: nand: Request strength instead of bytes for soft
+ BCH
 To: barebox@lists.infradead.org
 
-Relevant part of Linux commit dad2256269cb:
+Linux commits e0377cdebaf3 and 438320dd34a4 combined and adapted
+for Barebox:
 
-  NAND_BBT_SCANEMPTY is a strange, badly-supported option with omap as its
-  single remaining user.
+  Previously, we requested that drivers pass ecc.size and ecc.bytes when
+  using NAND_ECC_SOFT_BCH. However, a driver is likely to only know the ECC
+  strength required for its NAND, so each driver would need to perform a
+  strength-to-bytes calculation.
 
-  NAND_BBT_SCANEMPTY was likely used by accident in omap2[1]. And anyway,
-  omap2 doesn't scan the chip for bad blocks (courtesy of
-  NAND_SKIP_BBTSCAN), and so its use of this option is irrelevant.
-
-  This patch drops the NAND_BBT_SCANEMPTY option.
-
-  [1] http://lists.infradead.org/pipermail/linux-mtd/2012-July/042902.html
+  Avoid duplicating this calculation in each driver by asking drivers to
+  pass ecc.size and ecc.strength so that the strength-to-bytes calculation
+  need only be implemented once.
 
 Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
 ---
- drivers/mtd/nand/nand_bbt.c       | 33 +++++--------------------------
- drivers/mtd/nand/nand_omap_gpmc.c |  2 +-
- include/linux/mtd/bbm.h           |  2 --
- 3 files changed, 6 insertions(+), 31 deletions(-)
+ drivers/mtd/nand/nand_base.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand_bbt.c b/drivers/mtd/nand/nand_bbt.c
-index b54936a43..19888589f 100644
---- a/drivers/mtd/nand/nand_bbt.c
-+++ b/drivers/mtd/nand/nand_bbt.c
-@@ -106,33 +106,17 @@ static int check_pattern_no_oob(uint8_t *buf, struct nand_bbt_descr *td)
-  * @td: search pattern descriptor
-  *
-  * Check for a pattern at the given place. Used to search bad block tables and
-- * good / bad block identifiers. If the SCAN_EMPTY option is set then check, if
-- * all bytes except the pattern area contain 0xff.
-+ * good / bad block identifiers.
-  */
- static int check_pattern(uint8_t *buf, int len, int paglen, struct nand_bbt_descr *td)
- {
--	int end = 0;
--	uint8_t *p = buf;
--
- 	if (td->options & NAND_BBT_NO_OOB)
- 		return check_pattern_no_oob(buf, td);
- 
--	end = paglen + td->offs;
--	if (td->options & NAND_BBT_SCANEMPTY)
--		if (memchr_inv(p, 0xff, end))
--			return -1;
--	p += end;
--
- 	/* Compare the pattern */
--	if (memcmp(p, td->pattern, td->len))
-+	if (memcmp(buf + paglen + td->offs, td->pattern, td->len))
- 		return -1;
- 
--	if (td->options & NAND_BBT_SCANEMPTY) {
--		p += td->len;
--		end += td->len;
--		if (memchr_inv(p, 0xff, len - end))
--			return -1;
--	}
- 	return 0;
- }
- 
-@@ -499,15 +483,9 @@ static int create_bbt(struct mtd_info *mtd, uint8_t *buf,
- 	else
- 		numpages = 1;
- 
--	if (!(bd->options & NAND_BBT_SCANEMPTY)) {
--		/* We need only read few bytes from the OOB area */
--		scanlen = 0;
--		readlen = bd->len;
--	} else {
--		/* Full page content should be read */
--		scanlen = mtd->writesize + mtd->oobsize;
--		readlen = numpages * mtd->writesize;
--	}
-+	/* We need only read few bytes from the OOB area */
-+	scanlen = 0;
-+	readlen = bd->len;
- 
- 	if (chip == -1) {
- 		numblocks = mtd->size >> this->bbt_erase_shift;
-@@ -869,7 +847,6 @@ static inline int nand_memory_bbt(struct mtd_info *mtd, struct nand_bbt_descr *b
- {
- 	struct nand_chip *this = mtd->priv;
- 
--	bd->options &= ~NAND_BBT_SCANEMPTY;
- 	return create_bbt(mtd, this->buffers->databuf, bd, -1);
- }
- 
-diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
-index d0b169983..c4de38096 100644
---- a/drivers/mtd/nand/nand_omap_gpmc.c
-+++ b/drivers/mtd/nand/nand_omap_gpmc.c
-@@ -125,7 +125,7 @@ static struct nand_ecclayout omap_oobinfo;
-  */
- static uint8_t scan_ff_pattern[] = { 0xff };
- static struct nand_bbt_descr bb_descrip_flashbased = {
--	.options = NAND_BBT_SCANEMPTY | NAND_BBT_SCANALLPAGES,
-+	.options = NAND_BBT_SCANALLPAGES,
- 	.offs = 0,
- 	.len = 1,
- 	.pattern = scan_ff_pattern,
-diff --git a/include/linux/mtd/bbm.h b/include/linux/mtd/bbm.h
-index 211ff67e8..95fc482ce 100644
---- a/include/linux/mtd/bbm.h
-+++ b/include/linux/mtd/bbm.h
-@@ -93,8 +93,6 @@ struct nand_bbt_descr {
- #define NAND_BBT_CREATE_EMPTY	0x00000400
- /* Search good / bad pattern through all pages of a block */
- #define NAND_BBT_SCANALLPAGES	0x00000800
--/* Scan block empty during good / bad block scan */
--#define NAND_BBT_SCANEMPTY	0x00001000
- /* Write bbt if neccecary */
- #define NAND_BBT_WRITE		0x00002000
- /* Read and write back block contents when writing bbt */
+diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+index d4b7167f5..24fa0e3a7 100644
+--- a/drivers/mtd/nand/nand_base.c
++++ b/drivers/mtd/nand/nand_base.c
+@@ -3677,15 +3677,18 @@ int nand_scan_tail(struct mtd_info *mtd)
+ 		chip->ecc.read_oob = nand_read_oob_std;
+ 		chip->ecc.write_oob = nand_write_oob_std;
+ 		/*
+-		 * Board driver should supply ecc.size and ecc.bytes values to
+-		 * select how many bits are correctable; see nand_bch_init()
+-		 * for details. Otherwise, default to 4 bits for large page
+-		 * devices.
++		 * Board driver should supply ecc.size and ecc.strength values
++		 * to select how many bits are correctable. Otherwise, default
++		 * to 4 bits for large page devices.
+ 		 */
+ 		if (!chip->ecc.size && (mtd->oobsize >= 64)) {
+ 			chip->ecc.size = 512;
+-			chip->ecc.bytes = 7;
++			chip->ecc.strength = 4;
+ 		}
++
++		/* See nand_bch_init() for details. */
++		chip->ecc.bytes = DIV_ROUND_UP(
++				chip->ecc.strength * fls(8 * chip->ecc.size), 8);
+ 		chip->ecc.priv = nand_bch_init(mtd,
+ 					       chip->ecc.size,
+ 					       chip->ecc.bytes,
+@@ -3694,8 +3697,6 @@ int nand_scan_tail(struct mtd_info *mtd)
+ 			pr_warn("BCH ECC initialization failed!\n");
+ 			BUG();
+ 		}
+-		chip->ecc.strength =
+-			chip->ecc.bytes * 8 / fls(8 * chip->ecc.size);
+ 		break;
+ #endif
+ #ifdef CONFIG_NAND_ECC_NONE
 -- 
 2.19.1
 
