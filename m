@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gH3Pq-00039e-Jn
- for barebox@lists.infradead.org; Mon, 29 Oct 2018 09:00:55 +0000
-Date: Mon, 29 Oct 2018 10:00:39 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181029090039.4c6agc3rcf67vn3v@pengutronix.de>
-References: <20181027013230.24387-1-andrew.smirnov@gmail.com>
+Received: from mout02.posteo.de ([185.67.36.142])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gGm0D-0001PW-HO
+ for barebox@lists.infradead.org; Sun, 28 Oct 2018 14:25:25 +0000
+Received: from submission (posteo.de [89.146.220.130]) 
+ by mout02.posteo.de (Postfix) with ESMTPS id 2C8A12400E5
+ for <barebox@lists.infradead.org>; Sun, 28 Oct 2018 15:25:01 +0100 (CET)
+From: Patrick Boettcher <p@yai.se>
+Date: Sun, 28 Oct 2018 15:24:51 +0100
+Message-Id: <20181028142451.23205-1-p@yai.se>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181027013230.24387-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +22,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/6] Refactor driver resource allocation code
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] bootm: abort if kernel is outside the first 128MB
+To: barebox@lists.infradead.org
+Cc: Patrick Boettcher <p@yai.se>
 
-On Fri, Oct 26, 2018 at 06:32:24PM -0700, Andrey Smirnov wrote:
-> Everyone:
-> 
-> This series is my attempt to minimzie amount of repeating code in
-> various resource allocating function in drivers/base/driver.c. All
-> patches are optional, so if some/all changes don't seem like an
-> improvement, I am more than happy to drop them.
-> 
-> Thanks,
-> Andrey Smirnov
-> 
-> Andrey Smirnov (6):
->   drivers: base: Simplify generic_memmap_ro()
->   drivers: base: Drop dev_get_mem_region_by_name()
->   drivers: base: Share implementations for dev_get_resource*()
->   drivers: base: Simplify dev_request_mem_region_err_null()
->   drivers: base: Share code for dev_request_mem_region*()
->   drivers: base: Share code for getting and then requesting a region
+Huge images and the pessimistic approach of barebox to put the
+kernel-image at five times its size may lead to it being
+positioned not in the first 128MiB of RAM. This is however
+required for it to be boot. (Referring to
 
-Ok, I took:
+  https://www.kernel.org/doc/Documentation/arm/Booting
 
-[PATCH 1/6] drivers: base: Simplify generic_memmap_ro()
-[PATCH 2/6] drivers: base: Drop dev_get_mem_region_by_name()
-[PATCH 4/6] drivers: base: Simplify dev_request_mem_region_err_null()
+"Calling the kernel image")
 
-Sascha
+This commit aborts the boot and displays a message if the
+image is located outside the first 128MB.
 
+Signed-off-by: Patrick Boettcher <p@yai.se>
+---
+ arch/arm/lib32/bootm.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
+index 4cf570e57..42febdc71 100644
+--- a/arch/arm/lib32/bootm.c
++++ b/arch/arm/lib32/bootm.c
+@@ -121,6 +121,12 @@ static int get_kernel_addresses(size_t image_size,
+ 		spacing += image_decomp_size;
+ 	}
+ 
++	if ((*load_address - mem_start) > SZ_128M) {
++		printf("boot aborted: kernel address outside 128MiB "
++		       "(0x%08lx)\n", *load_address);
++		return -ENOMEM;
++	}
++
+ 	*mem_free = PAGE_ALIGN(*load_address + image_size + spacing);
+ 
+ 	/*
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
