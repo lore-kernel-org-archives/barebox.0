@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gGKBE-0004PM-Pj
- for barebox@lists.infradead.org; Sat, 27 Oct 2018 08:42:50 +0000
-Date: Sat, 27 Oct 2018 10:42:35 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20181027084235.GD28052@ravnborg.org>
+ id 1gH5Xy-00009h-BV
+ for barebox@lists.infradead.org; Mon, 29 Oct 2018 11:18:01 +0000
+Date: Mon, 29 Oct 2018 12:17:13 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20181029111713.ni3nnzpi24xyyyi7@pengutronix.de>
 References: <20181027013157.23135-1-andrew.smirnov@gmail.com>
+ <20181027084235.GD28052@ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181027013157.23135-1-andrew.smirnov@gmail.com>
+In-Reply-To: <20181027084235.GD28052@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,32 +24,46 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 00/11] Allow GPIOs to be referenced by label
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
 
-Hi Andrey.
+On Sat, Oct 27, 2018 at 10:42:35AM +0200, Sam Ravnborg wrote:
+> Hi Andrey.
+> 
+> > This patch series is the result of my work on extending various gpio_*
+> > commands in Barebox CLI to allow referencing GPIOs by a label assigned
+> > to them via Device Tree or in any other way.
+> 
+> Thanks, I have missed this in the past.
+> 
+> I browsed the patches.
+> There are a few that is missing a newline, that you may fix if you post a v2.
+> But other than that everything looked good to me.
+> 
+> > AFAICT majority of callers of simple_strto*() functions don't really
+> > do very strict error checking which seems really undesirable. With
+> > kstrto*() functions in place, and assuming there's no objections to
+> > that, what do you think about a separate patch series to replace all
+> > of the uses of simple_strto*() with kstrto*() and eventually drop
+> > majority of simple_strto*() implementation code?
+> 
+> There should be only one implmentation, and the more strict
+> variant makes good sense.
 
-> This patch series is the result of my work on extending various gpio_*
-> commands in Barebox CLI to allow referencing GPIOs by a label assigned
-> to them via Device Tree or in any other way.
+The kstrtox functions epect a terminating 0 or a newline at the end of
+the string. strtoull_suffix() is at least one place that cannot directly
+be implemented with the kernel functions.
 
-Thanks, I have missed this in the past.
+Otherwise yes, I am also in favour to be more strict with the string
+checking.
 
-I browsed the patches.
-There are a few that is missing a newline, that you may fix if you post a v2.
-But other than that everything looked good to me.
+Sascha
 
-> AFAICT majority of callers of simple_strto*() functions don't really
-> do very strict error checking which seems really undesirable. With
-> kstrto*() functions in place, and assuming there's no objections to
-> that, what do you think about a separate patch series to replace all
-> of the uses of simple_strto*() with kstrto*() and eventually drop
-> majority of simple_strto*() implementation code?
-
-There should be only one implmentation, and the more strict
-variant makes good sense.
-
-	Sam
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
