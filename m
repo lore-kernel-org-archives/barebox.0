@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mout01.posteo.de ([185.67.36.65])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gH69O-0008Pz-EU
- for barebox@lists.infradead.org; Mon, 29 Oct 2018 11:56:08 +0000
-Date: Mon, 29 Oct 2018 12:55:53 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181029115553.uyz3u7cpaxgczguz@pengutronix.de>
+ id 1gH7XR-00039l-0l
+ for barebox@lists.infradead.org; Mon, 29 Oct 2018 13:25:12 +0000
+Received: from submission (posteo.de [89.146.220.130]) 
+ by mout01.posteo.de (Postfix) with ESMTPS id 940DF213E5
+ for <barebox@lists.infradead.org>; Mon, 29 Oct 2018 14:24:43 +0100 (CET)
+Date: Mon, 29 Oct 2018 14:24:14 +0100
+From: Patrick Boettcher <patrick.boettcher@posteo.de>
+Message-ID: <20181029142414.30b99d88@yaise-pc1>
+In-Reply-To: <20181029115553.uyz3u7cpaxgczguz@pengutronix.de>
 References: <20181028142451.23205-1-p@yai.se>
+ <20181029115553.uyz3u7cpaxgczguz@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181028142451.23205-1-p@yai.se>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,94 +26,54 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] bootm: abort if kernel is outside the first 128MB
-To: Patrick Boettcher <p@yai.se>
-Cc: barebox@lists.infradead.org, lst@pengutronix.de
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Patrick Boettcher <p@yai.se>, lst@pengutronix.de
 
-On Sun, Oct 28, 2018 at 03:24:51PM +0100, Patrick Boettcher wrote:
-> Huge images and the pessimistic approach of barebox to put the
-> kernel-image at five times its size may lead to it being
-> positioned not in the first 128MiB of RAM. This is however
-> required for it to be boot. (Referring to
+On Mon, 29 Oct 2018 12:55:53 +0100
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
+> > index 4cf570e57..42febdc71 100644
+> > --- a/arch/arm/lib32/bootm.c
+> > +++ b/arch/arm/lib32/bootm.c
+> > @@ -121,6 +121,12 @@ static int get_kernel_addresses(size_t
+> > image_size, spacing += image_decomp_size;
+> >  	}
+> >  
+> > +	if ((*load_address - mem_start) > SZ_128M) {
+> > +		printf("boot aborted: kernel address outside
+> > 128MiB "
+> > +		       "(0x%08lx)\n", *load_address);
+> > +		return -ENOMEM;
+> > +	}  
 > 
->   https://www.kernel.org/doc/Documentation/arm/Booting
+> This is a bit harsh. The 128MiB problem only exists with
+> CONFIG_AUTO_ZRELADDR enabled in the kernel, otherwise it's fine to
+> put the kernel above that limit.
+
+My patch was also a test-balloon for me to learn. Instead of returning
+maybe a warning could be emitted - maybe in verbose mode only?
+
+Hmm, no not in only-verbose-mode, because it my case it silently didn't
+work, whereas with an error/warning I would have immediately understood
+what's wrong.
+
+> We only put the kernel above the 128MiB limit because we want to find
+> a place where the kernel doesn't have to move itself around in order
+> to not overwrite itself during decompression.
 > 
-> "Calling the kernel image")
-> 
-> This commit aborts the boot and displays a message if the
-> image is located outside the first 128MB.
-> 
-> Signed-off-by: Patrick Boettcher <p@yai.se>
-> ---
->  arch/arm/lib32/bootm.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
-> index 4cf570e57..42febdc71 100644
-> --- a/arch/arm/lib32/bootm.c
-> +++ b/arch/arm/lib32/bootm.c
-> @@ -121,6 +121,12 @@ static int get_kernel_addresses(size_t image_size,
->  		spacing += image_decomp_size;
->  	}
->  
-> +	if ((*load_address - mem_start) > SZ_128M) {
-> +		printf("boot aborted: kernel address outside 128MiB "
-> +		       "(0x%08lx)\n", *load_address);
-> +		return -ENOMEM;
-> +	}
+> Could we instead just use 128MiB as an upper limit to put the kernel
+> to?
 
-This is a bit harsh. The 128MiB problem only exists with CONFIG_AUTO_ZRELADDR
-enabled in the kernel, otherwise it's fine to put the kernel above that
-limit.
+Would that mean the maximum address is (always):
 
-We only put the kernel above the 128MiB limit because we want to find a
-place where the kernel doesn't have to move itself around in order to
-not overwrite itself during decompression.
+  load_address = mem_end > SZ_128M ? mem_start + SZ_128M : end_of_ram;
+  load_address -= image_size + 1MiB_margin_for_dtb;
 
-Could we instead just use 128MiB as an upper limit to put the kernel to?
+or is it only the start_address which has to be inside the first 128MB?
 
-Sascha
-
---------------------------------8<----------------------------
-
-From 25479ebf25de6464b51cdfc103cf4639b142d70c Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 29 Oct 2018 12:55:20 +0100
-Subject: [PATCH] ARM: bootm: Make sure the kernel is in the first 128MiB of
- memory
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/lib32/bootm.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
-index 4cf570e577..7e00fe922e 100644
---- a/arch/arm/lib32/bootm.c
-+++ b/arch/arm/lib32/bootm.c
-@@ -96,6 +96,14 @@ static int get_kernel_addresses(size_t image_size,
- 	if (mem_size >= SZ_64M)
- 		image_decomp_size = max_t(size_t, image_decomp_size, SZ_32M);
- 
-+	/*
-+	 * with CONFIG_AUTO_ZRELADDR the Kernel calculates the memory base
-+	 * address by masking the current instruction counter with 0xf8000000,
-+	 * so make sure we do not put the kernel outside this limit.
-+	 */
-+	if (image_decomp_size >= SZ_128M)
-+		image_decomp_size = SZ_128M - 16;
-+
- 	/*
- 	 * By default put oftree/initrd close behind compressed kernel image to
- 	 * avoid placing it outside of the kernels lowmem region.
--- 
-2.19.0
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+regards,
+--
+Patrick.
 
 _______________________________________________
 barebox mailing list
