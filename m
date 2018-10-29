@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gH91o-0005uV-SJ
- for barebox@lists.infradead.org; Mon, 29 Oct 2018 15:00:36 +0000
-Date: Mon, 29 Oct 2018 16:00:15 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181029150015.l7rhqbcqo3jz2qxj@pengutronix.de>
-References: <1540823231090.67191@mixed-mode.de>
+ id 1gHBk1-0002kg-80
+ for barebox@lists.infradead.org; Mon, 29 Oct 2018 17:54:24 +0000
+Received: by mail-ot1-x32a.google.com with SMTP id o14so8451154oth.4
+ for <barebox@lists.infradead.org>; Mon, 29 Oct 2018 10:54:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1540823231090.67191@mixed-mode.de>
+From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
+Date: Mon, 29 Oct 2018 18:53:55 +0100
+Message-ID: <CAEp+FuBh4S3a_yHmzegNCFDXqMDYjhpAMaWwWAE6zpfC9R0ERA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +21,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: issues loading a FIT image with bootm
-To: Kai Che <Kai.Che@mixed-mode.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: 
+To: barebox@lists.infradead.org
 
-Hi Kai,
+Hello,
 
-On Mon, Oct 29, 2018 at 02:27:06PM +0000, Kai Che wrote:
-> Hi all,
-> 
-> I'm trying to load a FIT image (image.itb) with the bootm command, but I'm getting the following issue:
-> 
-> barebox@RaspberryPi 3 Model B:/ bootm
-> Loading open firmware Device Tree flattened Binary '/mnt/disk0.3/image.itb'
-> no image handler found for image type open firmware Device Tree flattened Binary
+     I am working with barebox 2018.04 version. I would like to create
+a script file that can be present initially in the new barebox image
+and then modified and saved by users.
+     What is the best solution?
+     Creating a separate partition in NAND and there put a sh file in
+the barebox yocto recipe?
+     I don't know how to create it from barebox shell and where to
+save it so it can pe persistent after reset.
 
-This sounds like you have CONFIG_FITIMAGE or CONFIG_BOOTM_FITIMAGE disabled.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Thanks,
+       Mihaita
 
 _______________________________________________
 barebox mailing list
