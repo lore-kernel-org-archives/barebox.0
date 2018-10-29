@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gGJq2-0006IF-9A
- for barebox@lists.infradead.org; Sat, 27 Oct 2018 08:20:56 +0000
-Date: Sat, 27 Oct 2018 10:20:39 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20181027082039.GB28052@ravnborg.org>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gH3O8-00086O-74
+ for barebox@lists.infradead.org; Mon, 29 Oct 2018 08:59:10 +0000
+Date: Mon, 29 Oct 2018 09:58:53 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20181029085853.lu3c3acsgrcu463n@pengutronix.de>
 References: <20181027013230.24387-1-andrew.smirnov@gmail.com>
  <20181027013230.24387-6-andrew.smirnov@gmail.com>
+ <20181027082039.GB28052@ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181027013230.24387-6-andrew.smirnov@gmail.com>
+In-Reply-To: <20181027082039.GB28052@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,85 +26,34 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 5/6] drivers: base: Share code for
  dev_request_mem_region*()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
 
-Hi Andrey
-
-On Fri, Oct 26, 2018 at 06:32:29PM -0700, Andrey Smirnov wrote:
-> Both dev_request_mem_region() and dev_request_mem_region_err_null()
-> implement exactly the same functionality different only in error
-> reporting value. Change the code to make use of a common generic
-> function whose return type can be specified via an argument.
+On Sat, Oct 27, 2018 at 10:20:39AM +0200, Sam Ravnborg wrote:
+> Hi Andrey
 > 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-
-Using functions that takes a boolean to do two different things
-is not an improvement.
-At least not when the functions are this small and obvious.
-
-This is not in the public interface, only a few static
-functions which helps a lot.
-
-Well, thats my personal preference, and in this case
-not something I feel strong about.
-
-	Sam
-
-
-> ---
->  drivers/base/driver.c | 18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
+> On Fri, Oct 26, 2018 at 06:32:29PM -0700, Andrey Smirnov wrote:
+> > Both dev_request_mem_region() and dev_request_mem_region_err_null()
+> > implement exactly the same functionality different only in error
+> > reporting value. Change the code to make use of a common generic
+> > function whose return type can be specified via an argument.
+> > 
+> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > 
-> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-> index c687afd75..476f844be 100644
-> --- a/drivers/base/driver.c
-> +++ b/drivers/base/driver.c
-> @@ -407,27 +407,27 @@ struct resource *dev_request_mem_resource(struct device_d *dev, int num)
->  	return request_iomem_region(dev_name(dev), res->start, res->end);
->  }
->  
-> -void __iomem *dev_request_mem_region_err_null(struct device_d *dev, int num)
-> +static void __iomem *__dev_request_mem_region(struct device_d *dev, int num,
-> +					      bool null_on_error)
->  {
->  	struct resource *res;
->  
->  	res = dev_request_mem_resource(dev, num);
->  	if (IS_ERR(res))
-> -		return NULL;
-> +		return null_on_error ? NULL : ERR_CAST(res);
->  
->  	return IOMEM(res->start);
->  }
-> +
-> +void __iomem *dev_request_mem_region_err_null(struct device_d *dev, int num)
-> +{
-> +	return __dev_request_mem_region(dev, num, true);
-> +}
->  EXPORT_SYMBOL(dev_request_mem_region_err_null);
->  
->  void __iomem *dev_request_mem_region(struct device_d *dev, int num)
->  {
-> -	struct resource *res;
-> -
-> -	res = dev_request_mem_resource(dev, num);
-> -	if (IS_ERR(res))
-> -		return ERR_CAST(res);
-> -
-> -	return IOMEM(res->start);
-> +	return __dev_request_mem_region(dev, num, false);
->  }
->  EXPORT_SYMBOL(dev_request_mem_region);
->  
-> -- 
-> 2.17.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> Using functions that takes a boolean to do two different things
+> is not an improvement.
+> At least not when the functions are this small and obvious.
+
++1
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
