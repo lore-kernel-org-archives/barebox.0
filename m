@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gHQ15-0003pj-C4
- for barebox@lists.infradead.org; Tue, 30 Oct 2018 09:08:53 +0000
-Date: Tue, 30 Oct 2018 10:07:48 +0100
+ id 1gHOX5-0004vg-E1
+ for barebox@lists.infradead.org; Tue, 30 Oct 2018 07:33:50 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181030090748.sht2avigo5do4prd@pengutronix.de>
-References: <20181028211947.GA14788@lenoch> <20181028212213.GD14788@lenoch>
- <20181029100702.GA7947@lenoch> <20181029114329.GA12977@lenoch>
+Date: Tue, 30 Oct 2018 08:30:36 +0100
+Message-Id: <20181030073036.28835-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181029114329.GA12977@lenoch>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,49 +19,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 03/16] mtd: nand: hide in-memory BBT implementation details
-To: Ladislav Michl <ladis@linux-mips.org>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] of: unflatten: access property properly
+To: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Oct 29, 2018 at 12:43:29PM +0100, Ladislav Michl wrote:
-> On Mon, Oct 29, 2018 at 11:07:02AM +0100, Ladislav Michl wrote:
-> > On Sun, Oct 28, 2018 at 10:22:13PM +0100, Ladislav Michl wrote:
-> > > Linux commit b32843b772db adapted for Barebox:
-> > 
-> > Hmm, there's something fishy with markgood functions (trying different board).
-> > Debugging now...
-> > 
-> > >   nand_base.c shouldn't have to know the implementation details of
-> > >   nand_bbt's in-memory BBT. Specifically, nand_base shouldn't perform the
-> > >   bit masking and shifting to isolate a BBT entry.
-> > > 
-> > >   Instead, just move some of the BBT code into a new nand_markbad_bbt()
-> > >   interface. This interface allows external users (i.e., nand_base) to
-> > >   mark a single block as bad in the BBT. Then nand_bbt will take care of
-> > >   modifying the in-memory BBT and updating the flash-based BBT (if
-> > >   applicable).
-> 
-> Two bugs spotted:
-> 1) we need to select chip again after erase
-> 2) Linux cares only about marking block bad in BBT while Barebox supports
->    also unmarking it. Thus we need a bit more complicated version of
->    bbt_mark_entry.
-> 
-> Incremental patch bellow. Please let me know if there are another issues
-> with this serie, I'll squash it for v2.
+Properties have to be accessed with of_property_get_value() rather than
+accessing them directly from the devicenode. The accessor does the
+right thing when of_new_property_const() is used.
 
-I had a look over the series, but it's very hard to do a proper review
-without spending a lot of time. I guess I just have to believe that
-these are Linux commits and thus are good and valuable for barebox
-aswell ;)
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/of/fdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 92dd86e4ec..cf3f1ee147 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -227,7 +227,7 @@ static struct device_node *__of_unflatten_dtb(const void *infdt, bool constprops
+ 				p = of_new_property(node, name, nodep, len);
+ 
+ 			if (!strcmp(name, "phandle") && len == 4)
+-				node->phandle = be32_to_cpup(p->value);
++				node->phandle = be32_to_cpup(of_property_get_value(p));
+ 
+ 			dt_struct = dt_struct_advance(&f, dt_struct,
+ 					sizeof(struct fdt_property) + len);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
