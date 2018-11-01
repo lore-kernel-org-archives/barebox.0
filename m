@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gIHfT-0003qr-EH
+ id 1gIHfT-0003qp-EJ
  for barebox@lists.infradead.org; Thu, 01 Nov 2018 18:26:09 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1gIHfH-0008Pp-5b
+ (envelope-from <l.stach@pengutronix.de>) id 1gIHfH-0008Pp-3N
  for barebox@lists.infradead.org; Thu, 01 Nov 2018 19:25:55 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu,  1 Nov 2018 19:25:55 +0100
-Message-Id: <20181101182555.18561-4-l.stach@pengutronix.de>
+Date: Thu,  1 Nov 2018 19:25:53 +0100
+Message-Id: <20181101182555.18561-2-l.stach@pengutronix.de>
 In-Reply-To: <20181101182555.18561-1-l.stach@pengutronix.de>
 References: <20181101182555.18561-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
@@ -26,44 +26,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] ARM: rdu2: fix warnings in Barebox internal DT
+Subject: [PATCH 2/4] ARM: rdu2: configure the USB port as OTG
 To: barebox@lists.infradead.org
 
-Drop partially wrong pcie nodes, so we pick up the correct ones
-from the kernel DT.
+While the USB port is host-only for the Linux system, it is useful
+to be able to switch it into device mode for debugging purposes in
+Barebox.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/dts/imx6qdl-zii-rdu2.dtsi | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ arch/arm/dts/imx6qdl-zii-rdu2.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/arch/arm/dts/imx6qdl-zii-rdu2.dtsi b/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
-index a885e4f3f2c0..a77b9001834f 100644
+index f63b5d2ed760..a885e4f3f2c0 100644
 --- a/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
 +++ b/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
-@@ -110,19 +110,9 @@
+@@ -124,3 +124,7 @@
+ 		};
  	};
  };
- 
--&pcie {
--	host@0 {
--		#address-cells = <3>;
--		#size-cells = <2>;
--		reg = <0 0 0 0 0>;
--		device_type = "pci";
--
--		i210: i210@0 {
--			reg = <0 0 0 0 0>;
--			nvmem-cells = <&mac_address_1>;
--			nvmem-cell-names = "mac-address";
--		};
--	};
-+&i210 {
-+	nvmem-cells = <&mac_address_1>;
-+	nvmem-cell-names = "mac-address";
- };
- 
- &usbotg {
++
++&usbotg {
++	dr_mode = "otg";
++};
 -- 
 2.19.1
 
