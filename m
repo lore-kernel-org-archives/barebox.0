@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gI980-0006S6-E8
- for barebox@lists.infradead.org; Thu, 01 Nov 2018 09:19:07 +0000
+ id 1gI980-0006Ru-Di
+ for barebox@lists.infradead.org; Thu, 01 Nov 2018 09:19:09 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1gI97m-0003fn-Or
+ (envelope-from <l.stach@pengutronix.de>) id 1gI97m-0003fn-E9
  for barebox@lists.infradead.org; Thu, 01 Nov 2018 10:18:46 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu,  1 Nov 2018 10:18:45 +0100
-Message-Id: <20181101091846.10882-10-l.stach@pengutronix.de>
+Date: Thu,  1 Nov 2018 10:18:37 +0100
+Message-Id: <20181101091846.10882-2-l.stach@pengutronix.de>
 In-Reply-To: <20181101091846.10882-1-l.stach@pengutronix.de>
 References: <20181101091846.10882-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
@@ -26,145 +26,303 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 10/11] ARM: rpi: add raspberry pi 3 support
+Subject: [PATCH v4 02/11] ARM: import opcode helpers from Linux kernel
 To: barebox@lists.infradead.org
 
-This adds basic support at the same feature level as the other
-supported raspberry pi boards.
+Those are needed to generate some of the ARM SEC and VIRT
+opcodes in a portable way.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Tested-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- arch/arm/boards/raspberry-pi/lowlevel.c | 14 ++++++++++++--
- arch/arm/configs/rpi_defconfig          |  2 ++
- arch/arm/dts/Makefile                   |  1 +
- arch/arm/dts/bcm2837-rpi-3.dts          | 16 ++++++++++++++++
- arch/arm/mach-bcm283x/Kconfig           |  6 ++++++
- arch/arm/mach-bcm283x/core.c            |  1 +
- images/Makefile.bcm283x                 |  4 ++++
- 7 files changed, 42 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm/dts/bcm2837-rpi-3.dts
+ arch/arm/include/asm/opcodes-virt.h |  39 +++++
+ arch/arm/include/asm/opcodes.h      | 231 ++++++++++++++++++++++++++++
+ 2 files changed, 270 insertions(+)
+ create mode 100644 arch/arm/include/asm/opcodes-virt.h
+ create mode 100644 arch/arm/include/asm/opcodes.h
 
-diff --git a/arch/arm/boards/raspberry-pi/lowlevel.c b/arch/arm/boards/raspberry-pi/lowlevel.c
-index cbc6caa4b9ed..34c9350920e9 100644
---- a/arch/arm/boards/raspberry-pi/lowlevel.c
-+++ b/arch/arm/boards/raspberry-pi/lowlevel.c
-@@ -1,7 +1,7 @@
-+#include <asm/barebox-arm.h>
-+#include <asm/cache.h>
- #include <common.h>
- #include <linux/sizes.h>
--#include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
- #include <mach/platform.h>
- 
- extern char __dtb_bcm2835_rpi_start[];
-@@ -23,3 +23,13 @@ ENTRY_FUNCTION(start_raspberry_pi2, r0, r1, r2)
- 
- 	barebox_arm_entry(BCM2835_SDRAM_BASE, SZ_512M, fdt);
- }
-+
-+extern char __dtb_bcm2837_rpi_3_start[];
-+ENTRY_FUNCTION(start_raspberry_pi3, r0, r1, r2)
-+{
-+	void *fdt = __dtb_bcm2837_rpi_3_start + get_runtime_offset();
-+
-+	arm_cpu_lowlevel_init();
-+
-+	barebox_arm_entry(BCM2835_SDRAM_BASE, SZ_512M, fdt);
-+}
-diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
-index f3aef4290425..cd88b4ac751c 100644
---- a/arch/arm/configs/rpi_defconfig
-+++ b/arch/arm/configs/rpi_defconfig
-@@ -1,9 +1,11 @@
- CONFIG_ARCH_BCM283X=y
- CONFIG_MACH_RPI=y
- CONFIG_MACH_RPI2=y
-+CONFIG_MACH_RPI3=y
- CONFIG_AEABI=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_ARM_UNWIND=y
-+CONFIG_IMAGE_COMPRESSION_NONE=y
- CONFIG_MMU=y
- CONFIG_MALLOC_TLSF=y
- CONFIG_KALLSYMS=y
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 1caeca35b484..4e063902c635 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -71,6 +71,7 @@ pbl-dtb-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += rk3288-phycore-som.dtb.o
- pbl-dtb-$(CONFIG_MACH_REALQ7) += imx6q-dmo-edmqmx6.dtb.o
- pbl-dtb-$(CONFIG_MACH_RPI) += bcm2835-rpi.dtb.o
- pbl-dtb-$(CONFIG_MACH_RPI2) += bcm2836-rpi-2.dtb.o
-+pbl-dtb-$(CONFIG_MACH_RPI3) += bcm2837-rpi-3.dtb.o
- pbl-dtb-$(CONFIG_MACH_SABRELITE) += imx6q-sabrelite.dtb.o imx6dl-sabrelite.dtb.o
- pbl-dtb-$(CONFIG_MACH_SABRESD) += imx6q-sabresd.dtb.o
- pbl-dtb-$(CONFIG_MACH_FREESCALE_IMX6SX_SABRESDB) += imx6sx-sdb.dtb.o
-diff --git a/arch/arm/dts/bcm2837-rpi-3.dts b/arch/arm/dts/bcm2837-rpi-3.dts
+diff --git a/arch/arm/include/asm/opcodes-virt.h b/arch/arm/include/asm/opcodes-virt.h
 new file mode 100644
-index 000000000000..d6ffc369122c
+index 000000000000..efcfdf92d9d5
 --- /dev/null
-+++ b/arch/arm/dts/bcm2837-rpi-3.dts
-@@ -0,0 +1,16 @@
-+#include <arm64/broadcom/bcm2837-rpi-3-b.dts>
++++ b/arch/arm/include/asm/opcodes-virt.h
+@@ -0,0 +1,39 @@
++/*
++ * opcodes-virt.h: Opcode definitions for the ARM virtualization extensions
++ * Copyright (C) 2012  Linaro Limited
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, write to the Free Software Foundation, Inc.,
++ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ */
++#ifndef __ASM_ARM_OPCODES_VIRT_H
++#define __ASM_ARM_OPCODES_VIRT_H
 +
-+/ {
-+	chosen {
-+		stdout-path = &uart0;
-+	};
++#include <asm/opcodes.h>
 +
-+	memory {
-+		reg = <0x0 0x0>;
-+	};
-+};
++#define __HVC(imm16) __inst_arm_thumb32(				\
++	0xE1400070 | (((imm16) & 0xFFF0) << 4) | ((imm16) & 0x000F),	\
++	0xF7E08000 | (((imm16) & 0xF000) << 4) | ((imm16) & 0x0FFF)	\
++)
 +
-+&uart0 {
-+	status = "okay";
-+	/delete-node/ bluetooth;
-+};
-diff --git a/arch/arm/mach-bcm283x/Kconfig b/arch/arm/mach-bcm283x/Kconfig
-index 1457f114ccaa..af2f88c47acb 100644
---- a/arch/arm/mach-bcm283x/Kconfig
-+++ b/arch/arm/mach-bcm283x/Kconfig
-@@ -19,6 +19,12 @@ config MACH_RPI2
- 	select CPU_V7
- 	select MACH_RPI_COMMON
- 
-+config MACH_RPI3
-+	bool "RaspberryPi 3 (BCM2837/CORTEX-A53)"
-+	select CPU_V7
-+	select MACH_RPI_COMMON
-+	select ARM_SECURE_MONITOR
++#define __ERET	__inst_arm_thumb32(					\
++	0xE160006E,							\
++	0xF3DE8F00							\
++)
 +
- endmenu
- 
- config MACH_RPI_DEBUG_UART_BASE
-diff --git a/arch/arm/mach-bcm283x/core.c b/arch/arm/mach-bcm283x/core.c
-index fddcb0d1a1d4..26f0996b1cb8 100644
---- a/arch/arm/mach-bcm283x/core.c
-+++ b/arch/arm/mach-bcm283x/core.c
-@@ -41,6 +41,7 @@ static int bcm2835_clk_init(void)
- 	clk = clk_fixed("uart0-pl0110", 3 * 1000 * 1000);
- 	clk_register_clkdev(clk, NULL, "uart0-pl0110");
- 	clk_register_clkdev(clk, NULL, "20201000.serial");
-+	clk_register_clkdev(clk, NULL, "3f201000.serial");
- 
- 	clk = clk_fixed("bcm2835-cs", 1 * 1000 * 1000);
- 	clk_register_clkdev(clk, NULL, "bcm2835-cs");
-diff --git a/images/Makefile.bcm283x b/images/Makefile.bcm283x
-index d59ef043f05c..d14e648926ac 100644
---- a/images/Makefile.bcm283x
-+++ b/images/Makefile.bcm283x
-@@ -9,3 +9,7 @@ image-$(CONFIG_MACH_RPI) += barebox-raspberry-pi-1.img
- pblx-$(CONFIG_MACH_RPI2) += start_raspberry_pi2
- FILE_barebox-raspberry-pi-2.img = start_raspberry_pi2.pblx
- image-$(CONFIG_MACH_RPI2) += barebox-raspberry-pi-2.img
++#define __MSR_ELR_HYP(regnum)	__inst_arm_thumb32(			\
++	0xE12EF300 | regnum,						\
++	0xF3808E30 | (regnum << 16)					\
++)
 +
-+pblx-$(CONFIG_MACH_RPI3) += start_raspberry_pi3
-+FILE_barebox-raspberry-pi-3.img = start_raspberry_pi3.pblx
-+image-$(CONFIG_MACH_RPI3) += barebox-raspberry-pi-3.img
-\ No newline at end of file
++#endif /* ! __ASM_ARM_OPCODES_VIRT_H */
+diff --git a/arch/arm/include/asm/opcodes.h b/arch/arm/include/asm/opcodes.h
+new file mode 100644
+index 000000000000..a78bf5d2c518
+--- /dev/null
++++ b/arch/arm/include/asm/opcodes.h
+@@ -0,0 +1,231 @@
++/*
++ *  arch/arm/include/asm/opcodes.h
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#ifndef __ASM_ARM_OPCODES_H
++#define __ASM_ARM_OPCODES_H
++
++#ifndef __ASSEMBLY__
++#include <linux/linkage.h>
++extern asmlinkage unsigned int arm_check_condition(u32 opcode, u32 psr);
++#endif
++
++#define ARM_OPCODE_CONDTEST_FAIL   0
++#define ARM_OPCODE_CONDTEST_PASS   1
++#define ARM_OPCODE_CONDTEST_UNCOND 2
++
++
++/*
++ * Assembler opcode byteswap helpers.
++ * These are only intended for use by this header: don't use them directly,
++ * because they will be suboptimal in most cases.
++ */
++#define ___asm_opcode_swab32(x) (	\
++	  (((x) << 24) & 0xFF000000)	\
++	| (((x) <<  8) & 0x00FF0000)	\
++	| (((x) >>  8) & 0x0000FF00)	\
++	| (((x) >> 24) & 0x000000FF)	\
++)
++#define ___asm_opcode_swab16(x) (	\
++	  (((x) << 8) & 0xFF00)		\
++	| (((x) >> 8) & 0x00FF)		\
++)
++#define ___asm_opcode_swahb32(x) (	\
++	  (((x) << 8) & 0xFF00FF00)	\
++	| (((x) >> 8) & 0x00FF00FF)	\
++)
++#define ___asm_opcode_swahw32(x) (	\
++	  (((x) << 16) & 0xFFFF0000)	\
++	| (((x) >> 16) & 0x0000FFFF)	\
++)
++#define ___asm_opcode_identity32(x) ((x) & 0xFFFFFFFF)
++#define ___asm_opcode_identity16(x) ((x) & 0xFFFF)
++
++
++/*
++ * Opcode byteswap helpers
++ *
++ * These macros help with converting instructions between a canonical integer
++ * format and in-memory representation, in an endianness-agnostic manner.
++ *
++ * __mem_to_opcode_*() convert from in-memory representation to canonical form.
++ * __opcode_to_mem_*() convert from canonical form to in-memory representation.
++ *
++ *
++ * Canonical instruction representation:
++ *
++ *	ARM:		0xKKLLMMNN
++ *	Thumb 16-bit:	0x0000KKLL, where KK < 0xE8
++ *	Thumb 32-bit:	0xKKLLMMNN, where KK >= 0xE8
++ *
++ * There is no way to distinguish an ARM instruction in canonical representation
++ * from a Thumb instruction (just as these cannot be distinguished in memory).
++ * Where this distinction is important, it needs to be tracked separately.
++ *
++ * Note that values in the range 0x0000E800..0xE7FFFFFF intentionally do not
++ * represent any valid Thumb-2 instruction.  For this range,
++ * __opcode_is_thumb32() and __opcode_is_thumb16() will both be false.
++ *
++ * The ___asm variants are intended only for use by this header, in situations
++ * involving inline assembler.  For .S files, the normal __opcode_*() macros
++ * should do the right thing.
++ */
++#ifdef __ASSEMBLY__
++
++#define ___opcode_swab32(x) ___asm_opcode_swab32(x)
++#define ___opcode_swab16(x) ___asm_opcode_swab16(x)
++#define ___opcode_swahb32(x) ___asm_opcode_swahb32(x)
++#define ___opcode_swahw32(x) ___asm_opcode_swahw32(x)
++#define ___opcode_identity32(x) ___asm_opcode_identity32(x)
++#define ___opcode_identity16(x) ___asm_opcode_identity16(x)
++
++#else /* ! __ASSEMBLY__ */
++
++#include <linux/types.h>
++#include <linux/swab.h>
++
++#define ___opcode_swab32(x) swab32(x)
++#define ___opcode_swab16(x) swab16(x)
++#define ___opcode_swahb32(x) swahb32(x)
++#define ___opcode_swahw32(x) swahw32(x)
++#define ___opcode_identity32(x) ((u32)(x))
++#define ___opcode_identity16(x) ((u16)(x))
++
++#endif /* ! __ASSEMBLY__ */
++
++
++#ifdef CONFIG_CPU_ENDIAN_BE8
++
++#define __opcode_to_mem_arm(x) ___opcode_swab32(x)
++#define __opcode_to_mem_thumb16(x) ___opcode_swab16(x)
++#define __opcode_to_mem_thumb32(x) ___opcode_swahb32(x)
++#define ___asm_opcode_to_mem_arm(x) ___asm_opcode_swab32(x)
++#define ___asm_opcode_to_mem_thumb16(x) ___asm_opcode_swab16(x)
++#define ___asm_opcode_to_mem_thumb32(x) ___asm_opcode_swahb32(x)
++
++#else /* ! CONFIG_CPU_ENDIAN_BE8 */
++
++#define __opcode_to_mem_arm(x) ___opcode_identity32(x)
++#define __opcode_to_mem_thumb16(x) ___opcode_identity16(x)
++#define ___asm_opcode_to_mem_arm(x) ___asm_opcode_identity32(x)
++#define ___asm_opcode_to_mem_thumb16(x) ___asm_opcode_identity16(x)
++#ifndef CONFIG_CPU_ENDIAN_BE32
++/*
++ * On BE32 systems, using 32-bit accesses to store Thumb instructions will not
++ * work in all cases, due to alignment constraints.  For now, a correct
++ * version is not provided for BE32.
++ */
++#define __opcode_to_mem_thumb32(x) ___opcode_swahw32(x)
++#define ___asm_opcode_to_mem_thumb32(x) ___asm_opcode_swahw32(x)
++#endif
++
++#endif /* ! CONFIG_CPU_ENDIAN_BE8 */
++
++#define __mem_to_opcode_arm(x) __opcode_to_mem_arm(x)
++#define __mem_to_opcode_thumb16(x) __opcode_to_mem_thumb16(x)
++#ifndef CONFIG_CPU_ENDIAN_BE32
++#define __mem_to_opcode_thumb32(x) __opcode_to_mem_thumb32(x)
++#endif
++
++/* Operations specific to Thumb opcodes */
++
++/* Instruction size checks: */
++#define __opcode_is_thumb32(x) (		\
++	   ((x) & 0xF8000000) == 0xE8000000	\
++	|| ((x) & 0xF0000000) == 0xF0000000	\
++)
++#define __opcode_is_thumb16(x) (					\
++	   ((x) & 0xFFFF0000) == 0					\
++	&& !(((x) & 0xF800) == 0xE800 || ((x) & 0xF000) == 0xF000)	\
++)
++
++/* Operations to construct or split 32-bit Thumb instructions: */
++#define __opcode_thumb32_first(x) (___opcode_identity16((x) >> 16))
++#define __opcode_thumb32_second(x) (___opcode_identity16(x))
++#define __opcode_thumb32_compose(first, second) (			\
++	  (___opcode_identity32(___opcode_identity16(first)) << 16)	\
++	| ___opcode_identity32(___opcode_identity16(second))		\
++)
++#define ___asm_opcode_thumb32_first(x) (___asm_opcode_identity16((x) >> 16))
++#define ___asm_opcode_thumb32_second(x) (___asm_opcode_identity16(x))
++#define ___asm_opcode_thumb32_compose(first, second) (			    \
++	  (___asm_opcode_identity32(___asm_opcode_identity16(first)) << 16) \
++	| ___asm_opcode_identity32(___asm_opcode_identity16(second))	    \
++)
++
++/*
++ * Opcode injection helpers
++ *
++ * In rare cases it is necessary to assemble an opcode which the
++ * assembler does not support directly, or which would normally be
++ * rejected because of the CFLAGS or AFLAGS used to build the affected
++ * file.
++ *
++ * Before using these macros, consider carefully whether it is feasible
++ * instead to change the build flags for your file, or whether it really
++ * makes sense to support old assembler versions when building that
++ * particular kernel feature.
++ *
++ * The macros defined here should only be used where there is no viable
++ * alternative.
++ *
++ *
++ * __inst_arm(x): emit the specified ARM opcode
++ * __inst_thumb16(x): emit the specified 16-bit Thumb opcode
++ * __inst_thumb32(x): emit the specified 32-bit Thumb opcode
++ *
++ * __inst_arm_thumb16(arm, thumb): emit either the specified arm or
++ *	16-bit Thumb opcode, depending on whether an ARM or Thumb-2
++ *	kernel is being built
++ *
++ * __inst_arm_thumb32(arm, thumb): emit either the specified arm or
++ *	32-bit Thumb opcode, depending on whether an ARM or Thumb-2
++ *	kernel is being built
++ *
++ *
++ * Note that using these macros directly is poor practice.  Instead, you
++ * should use them to define human-readable wrapper macros to encode the
++ * instructions that you care about.  In code which might run on ARMv7 or
++ * above, you can usually use the __inst_arm_thumb{16,32} macros to
++ * specify the ARM and Thumb alternatives at the same time.  This ensures
++ * that the correct opcode gets emitted depending on the instruction set
++ * used for the kernel build.
++ *
++ * Look at opcodes-virt.h for an example of how to use these macros.
++ */
++#include <linux/stringify.h>
++
++#define __inst_arm(x) ___inst_arm(___asm_opcode_to_mem_arm(x))
++#define __inst_thumb32(x) ___inst_thumb32(				\
++	___asm_opcode_to_mem_thumb16(___asm_opcode_thumb32_first(x)),	\
++	___asm_opcode_to_mem_thumb16(___asm_opcode_thumb32_second(x))	\
++)
++#define __inst_thumb16(x) ___inst_thumb16(___asm_opcode_to_mem_thumb16(x))
++
++#ifdef CONFIG_THUMB2_BAREBOX
++#define __inst_arm_thumb16(arm_opcode, thumb_opcode) \
++	__inst_thumb16(thumb_opcode)
++#define __inst_arm_thumb32(arm_opcode, thumb_opcode) \
++	__inst_thumb32(thumb_opcode)
++#else
++#define __inst_arm_thumb16(arm_opcode, thumb_opcode) __inst_arm(arm_opcode)
++#define __inst_arm_thumb32(arm_opcode, thumb_opcode) __inst_arm(arm_opcode)
++#endif
++
++/* Helpers for the helpers.  Don't use these directly. */
++#ifdef __ASSEMBLY__
++#define ___inst_arm(x) .long x
++#define ___inst_thumb16(x) .short x
++#define ___inst_thumb32(first, second) .short first, second
++#else
++#define ___inst_arm(x) ".long " __stringify(x) "\n\t"
++#define ___inst_thumb16(x) ".short " __stringify(x) "\n\t"
++#define ___inst_thumb32(first, second) \
++	".short " __stringify(first) ", " __stringify(second) "\n\t"
++#endif
++
++#endif /* __ASM_ARM_OPCODES_H */
 -- 
 2.19.1
 
