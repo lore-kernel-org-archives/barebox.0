@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gI980-0006S0-C4
+ id 1gI980-0006S1-D8
  for barebox@lists.infradead.org; Thu, 01 Nov 2018 09:19:03 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1gI97m-0003fn-K3
+ (envelope-from <l.stach@pengutronix.de>) id 1gI97m-0003fn-Lo
  for barebox@lists.infradead.org; Thu, 01 Nov 2018 10:18:46 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu,  1 Nov 2018 10:18:41 +0100
-Message-Id: <20181101091846.10882-6-l.stach@pengutronix.de>
+Date: Thu,  1 Nov 2018 10:18:42 +0100
+Message-Id: <20181101091846.10882-7-l.stach@pengutronix.de>
 In-Reply-To: <20181101091846.10882-1-l.stach@pengutronix.de>
 References: <20181101091846.10882-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
@@ -26,13 +26,13 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 06/11] ARM: don't try to install secure monitor when
- entered in HYP mode
+Subject: [PATCH v4 07/11] ARM: default to starting kernel in HYP mode when
+ entered in HYP
 To: barebox@lists.infradead.org
 
-When Barebox has been entered in HYP mode, the CPU is already switched
-to the non-secure world and it's not possible for Barebox to install
-it's own secure monitor.
+When Barebox has been entered in HYP mode, there is a high chance that
+the kernel is  intended to be started in HYP mode also. Get this
+default into place.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Tested-by: Roland Hieber <r.hieber@pengutronix.de>
@@ -41,19 +41,20 @@ Tested-by: Roland Hieber <r.hieber@pengutronix.de>
  1 file changed, 3 insertions(+)
 
 diff --git a/arch/arm/cpu/sm.c b/arch/arm/cpu/sm.c
-index cb0bac106b5f..1246d8e3a441 100644
+index 1246d8e3a441..6fad30adabc9 100644
 --- a/arch/arm/cpu/sm.c
 +++ b/arch/arm/cpu/sm.c
-@@ -184,6 +184,9 @@ int armv7_secure_monitor_install(void)
- 		return -EINVAL;
- 	}
+@@ -262,6 +262,9 @@ static int sm_init(void)
+ 				  bootm_secure_state_names,
+ 				  ARRAY_SIZE(bootm_secure_state_names));
  
 +	if (__boot_cpu_mode == HYP_MODE)
-+		return 0;
++		bootm_secure_state = ARM_STATE_HYP;
 +
- 	mmuon = get_cr() & CR_M;
- 
- 	vbar = get_vbar();
+ 	return 0;
+ }
+ device_initcall(sm_init);
+\ No newline at end of file
 -- 
 2.19.1
 
