@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gI980-0006SA-4N
- for barebox@lists.infradead.org; Thu, 01 Nov 2018 09:19:02 +0000
+ id 1gI980-0006S0-C4
+ for barebox@lists.infradead.org; Thu, 01 Nov 2018 09:19:03 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1gI97m-0003fn-Qh
+ (envelope-from <l.stach@pengutronix.de>) id 1gI97m-0003fn-K3
  for barebox@lists.infradead.org; Thu, 01 Nov 2018 10:18:46 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu,  1 Nov 2018 10:18:46 +0100
-Message-Id: <20181101091846.10882-11-l.stach@pengutronix.de>
+Date: Thu,  1 Nov 2018 10:18:41 +0100
+Message-Id: <20181101091846.10882-6-l.stach@pengutronix.de>
 In-Reply-To: <20181101091846.10882-1-l.stach@pengutronix.de>
 References: <20181101091846.10882-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
@@ -26,29 +26,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 11/11] ARM: rpi: autosize malloc area
+Subject: [PATCH v4 06/11] ARM: don't try to install secure monitor when
+ entered in HYP mode
 To: barebox@lists.infradead.org
 
-Autosize the malloc area according to the available RAM size.
+When Barebox has been entered in HYP mode, the CPU is already switched
+to the non-secure world and it's not possible for Barebox to install
+it's own secure monitor.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Tested-by: Roland Hieber <r.hieber@pengutronix.de>
 ---
- arch/arm/configs/rpi_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/cpu/sm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
-index cd88b4ac751c..2bb615849324 100644
---- a/arch/arm/configs/rpi_defconfig
-+++ b/arch/arm/configs/rpi_defconfig
-@@ -7,6 +7,7 @@ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_ARM_UNWIND=y
- CONFIG_IMAGE_COMPRESSION_NONE=y
- CONFIG_MMU=y
-+CONFIG_MALLOC_SIZE=0x0
- CONFIG_MALLOC_TLSF=y
- CONFIG_KALLSYMS=y
- CONFIG_PROMPT="R-Pi> "
+diff --git a/arch/arm/cpu/sm.c b/arch/arm/cpu/sm.c
+index cb0bac106b5f..1246d8e3a441 100644
+--- a/arch/arm/cpu/sm.c
++++ b/arch/arm/cpu/sm.c
+@@ -184,6 +184,9 @@ int armv7_secure_monitor_install(void)
+ 		return -EINVAL;
+ 	}
+ 
++	if (__boot_cpu_mode == HYP_MODE)
++		return 0;
++
+ 	mmuon = get_cr() & CR_M;
+ 
+ 	vbar = get_vbar();
 -- 
 2.19.1
 
