@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gIT3J-0003HG-MH
- for barebox@lists.infradead.org; Fri, 02 Nov 2018 06:35:31 +0000
-Date: Fri, 2 Nov 2018 07:35:17 +0100
+ id 1gITrA-00051M-TU
+ for barebox@lists.infradead.org; Fri, 02 Nov 2018 07:27:02 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181102063517.dt4lf4izn5mrbetk@pengutronix.de>
-References: <20181101182555.18561-1-l.stach@pengutronix.de>
+Date: Fri,  2 Nov 2018 08:26:29 +0100
+Message-Id: <20181102072632.10654-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181101182555.18561-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +19,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] ARM: rdu2: config PMIC SW1AB and SW1C rails to 1.375
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/4] net: macb: no need for coherent memory for receive buffer
+To: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Nov 01, 2018 at 07:25:52PM +0100, Lucas Stach wrote:
-> This is the default out-of-reset voltage, but if only the i.MX6 SoC
-> got reset, the PMIC might still be stuck at the lower volatge for the
-> slow operating point.
+The receive buffers are properly synchronized with dma_sync_*, no need
+to use coherent memory for them.
 
-s/volatge/voltage and applied, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/net/macb.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Sascha
-
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index 7721bcb56a..8575c838a8 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -697,8 +697,7 @@ static int macb_probe(struct device_d *dev)
+ 		edev->recv = macb_recv;
+ 
+ 	macb_init_rx_buffer_size(macb, PKTSIZE);
+-	macb->rx_buffer = dma_alloc_coherent(macb->rx_buffer_size * macb->rx_ring_size,
+-					     DMA_ADDRESS_BROKEN);
++	macb->rx_buffer = dma_alloc(macb->rx_buffer_size * macb->rx_ring_size);
+ 	macb->rx_ring = dma_alloc_coherent(RX_RING_BYTES(macb), DMA_ADDRESS_BROKEN);
+ 	macb->tx_ring = dma_alloc_coherent(TX_RING_BYTES, DMA_ADDRESS_BROKEN);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
