@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gI980-0006Rx-Ar
- for barebox@lists.infradead.org; Thu, 01 Nov 2018 09:19:02 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
- helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1gI97m-0003fn-Hw
- for barebox@lists.infradead.org; Thu, 01 Nov 2018 10:18:46 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu,  1 Nov 2018 10:18:39 +0100
-Message-Id: <20181101091846.10882-4-l.stach@pengutronix.de>
-In-Reply-To: <20181101091846.10882-1-l.stach@pengutronix.de>
+ id 1gIhwp-0002G7-Vc
+ for barebox@lists.infradead.org; Fri, 02 Nov 2018 22:29:49 +0000
+Date: Fri, 2 Nov 2018 23:27:27 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20181102222727.GA17886@ravnborg.org>
 References: <20181101091846.10882-1-l.stach@pengutronix.de>
+ <20181101091846.10882-4-l.stach@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20181101091846.10882-4-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,45 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 04/11] ARM: allow secure monitor code to be built without
- PSCI
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v4 04/11] ARM: allow secure monitor code to be built
+ without PSCI
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The hyp mode handling added in the secure monitor code is also useful
-when Barebox doesn't have PSCI control. Allow to build without PSCI.
+Hi Lucas.
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Tested-by: Roland Hieber <r.hieber@pengutronix.de>
----
- arch/arm/cpu/sm_as.S | 4 ++++
- 1 file changed, 4 insertions(+)
+On Thu, Nov 01, 2018 at 10:18:39AM +0100, Lucas Stach wrote:
+> The hyp mode handling added in the secure monitor code is also useful
+> when Barebox doesn't have PSCI control. Allow to build without PSCI.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> Tested-by: Roland Hieber <r.hieber@pengutronix.de>
+> ---
+>  arch/arm/cpu/sm_as.S | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/arch/arm/cpu/sm_as.S b/arch/arm/cpu/sm_as.S
+> index 09580e75de5f..0d01e1bf2435 100644
+> --- a/arch/arm/cpu/sm_as.S
+> +++ b/arch/arm/cpu/sm_as.S
+> @@ -129,7 +129,9 @@ secure_monitor:
+>  	sub	sp, sp, #4*4			@ allocate result structure on stack
+>  	mov	r12, sp
+>  	push	{r4-r6, r12}
+> +#ifdef CONFIG_ARM_PSCI
+>  	bl	psci_entry
+> +#endif
+>  	pop	{r4-r6, r12}
+>  	ldm	r12, {r0-r3}
+>  	add	sp, sp, #4*4
+> @@ -163,6 +165,8 @@ ENTRY(psci_cpu_entry)
+>  	mcr	p15, 0, r0, c1, c0, 1	@ ACTLR
+>  
+>  	bl	secure_monitor_stack_setup
+> +#ifdef CONFIG_ARM_PSCI
+>  	bl	psci_cpu_entry_c
+> +#endif
 
-diff --git a/arch/arm/cpu/sm_as.S b/arch/arm/cpu/sm_as.S
-index 09580e75de5f..0d01e1bf2435 100644
---- a/arch/arm/cpu/sm_as.S
-+++ b/arch/arm/cpu/sm_as.S
-@@ -129,7 +129,9 @@ secure_monitor:
- 	sub	sp, sp, #4*4			@ allocate result structure on stack
- 	mov	r12, sp
- 	push	{r4-r6, r12}
-+#ifdef CONFIG_ARM_PSCI
- 	bl	psci_entry
-+#endif
- 	pop	{r4-r6, r12}
- 	ldm	r12, {r0-r3}
- 	add	sp, sp, #4*4
-@@ -163,6 +165,8 @@ ENTRY(psci_cpu_entry)
- 	mcr	p15, 0, r0, c1, c0, 1	@ ACTLR
- 
- 	bl	secure_monitor_stack_setup
-+#ifdef CONFIG_ARM_PSCI
- 	bl	psci_cpu_entry_c
-+#endif
- 
- ENDPROC(psci_cpu_entry)
--- 
-2.19.1
+It looks strange to have two consecutive
 
+	bl  something
+	bl  something_else
+
+In the above (when CONFIG_ARM_PSCI is defined).
+Seems that we will never hit the second branch long instruction.
+
+But maybe I am just clueless on the assembly syntax?
+
+	Sam
 
 _______________________________________________
 barebox mailing list
