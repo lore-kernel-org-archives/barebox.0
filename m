@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gITqv-0004zG-BQ
- for barebox@lists.infradead.org; Fri, 02 Nov 2018 07:26:46 +0000
+ id 1gITrA-0005AR-TV
+ for barebox@lists.infradead.org; Fri, 02 Nov 2018 07:27:02 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  2 Nov 2018 08:26:31 +0100
-Message-Id: <20181102072632.10654-3-s.hauer@pengutronix.de>
+Date: Fri,  2 Nov 2018 08:26:30 +0100
+Message-Id: <20181102072632.10654-2-s.hauer@pengutronix.de>
 In-Reply-To: <20181102072632.10654-1-s.hauer@pengutronix.de>
 References: <20181102072632.10654-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,35 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] net: macb: simplify private data allocation
+Subject: [PATCH 2/4] net: macb: remove unused variable
 To: Barebox List <barebox@lists.infradead.org>
 
-Instead of allocating struct macb_device and a struct eth_device
-separately just use the eth_device structure that is already embedded
-in struct macb_device but currently unused.
+tx_tail is unused. Remove it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/macb.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/macb.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index 28065e1e13..fe192f9bf4 100644
+index 8575c838a8..28065e1e13 100644
 --- a/drivers/net/macb.c
 +++ b/drivers/net/macb.c
-@@ -618,9 +618,10 @@ static int macb_probe(struct device_d *dev)
- 	const char *pclk_name;
- 	u32 ncfgr;
+@@ -65,7 +65,6 @@ struct macb_device {
  
--	edev = xzalloc(sizeof(struct eth_device) + sizeof(struct macb_device));
--	edev->priv = (struct macb_device *)(edev + 1);
--	macb = edev->priv;
-+	macb = xzalloc(sizeof(*macb));
-+	edev = &macb->netdev;
-+	edev->priv = macb;
-+	dev->priv = macb;
+ 	unsigned int		rx_tail;
+ 	unsigned int		tx_head;
+-	unsigned int		tx_tail;
  
- 	macb->dev = dev;
+ 	void			*rx_buffer;
+ 	void			*tx_buffer;
+@@ -344,7 +343,7 @@ static void macb_init(struct macb_device *macb)
+ 	}
+ 	macb->tx_ring[TX_RING_SIZE - 1].addr |= MACB_BIT(TX_WRAP);
+ 
+-	macb->rx_tail = macb->tx_head = macb->tx_tail = 0;
++	macb->rx_tail = macb->tx_head = 0;
+ 
+ 	macb_configure_dma(macb);
  
 -- 
 2.19.1
