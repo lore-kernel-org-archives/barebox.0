@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gIVX1-00046w-Ka
- for barebox@lists.infradead.org; Fri, 02 Nov 2018 09:14:21 +0000
-Date: Fri, 2 Nov 2018 10:14:06 +0100
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gIhNa-0006Px-NJ
+ for barebox@lists.infradead.org; Fri, 02 Nov 2018 21:53:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181102091406.qewpj5eszyrmrhpu@pengutronix.de>
-References: <20181102091156.26476-1-s.hauer@pengutronix.de>
+Date: Fri,  2 Nov 2018 22:53:09 +0100
+Message-Id: <20181102215309.8519-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181102091156.26476-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,35 +15,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mmc: atmel: Make write work on sama5d3
+Subject: [PATCH] kconfig: Avoid format overflow warning from GCC 8.1
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Fri, Nov 02, 2018 at 10:11:56AM +0100, Sascha Hauer wrote:
-> For some reason the sama5d3 needs a delay after a
-> MMC_CMD_STOP_TRANSMISSION command. Without it writing fails with:
-> 
-> ERROR: atmel_mci f0000000.mmc@f0000000: command/data timeout
-> ERROR: atmel_mci f0000000.mmc@f0000000: command/data timeout
-> 
-> The reason is not yet clear, so live with this hack for now.
-
-I won't apply this one, just want to have that noted somewhere. If
-anyone has an idea please tell me, I am clueless :(
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+TGludXggY29tbWl0IDJhZTg5YzdhODJlYTlkODFhMTliNGZjMmRmMjNiZWY0YjExMmYyNGUgYWRh
+cHRlZCBmb3IKYmFyZWJveDoKCkluIGZpbGUgaW5jbHVkZWQgZnJvbSBzY3JpcHRzL2tjb25maWcv
+emNvbmYudGFiLmM6MjQ4NToKc2NyaXB0cy9rY29uZmlnL2NvbmZkYXRhLmM6IEluIGZ1bmN0aW9u
+IOKAmGNvbmZfd3JpdGXigJk6CnNjcmlwdHMva2NvbmZpZy9jb25mZGF0YS5jOjc3MzoyMjogd2Fy
+bmluZzog4oCYJXPigJkgZGlyZWN0aXZlIHdyaXRpbmcgbGlrZWx5IDcgb3IgbW9yZSBieXRlcyBp
+bnRvIGEgcmVnaW9uIG9mIHNpemUgYmV0d2VlbiAxIGFuZCA0MDk3IFstV2Zvcm1hdC1vdmVyZmxv
+dz1dCiAgc3ByaW50ZihuZXduYW1lLCAiJXMlcyIsIGRpcm5hbWUsIGJhc2VuYW1lKTsKICAgICAg
+ICAgICAgICAgICAgICAgIF5+CnNjcmlwdHMva2NvbmZpZy9jb25mZGF0YS5jOjc3MzoxOTogbm90
+ZTogYXNzdW1pbmcgZGlyZWN0aXZlIG91dHB1dCBvZiA3IGJ5dGVzCiAgc3ByaW50ZihuZXduYW1l
+LCAiJXMlcyIsIGRpcm5hbWUsIGJhc2VuYW1lKTsKICAgICAgICAgICAgICAgICAgIF5+fn5+fgpz
+Y3JpcHRzL2tjb25maWcvY29uZmRhdGEuYzo3NzM6Mjogbm90ZTog4oCYc3ByaW50ZuKAmSBvdXRw
+dXQgMSBvciBtb3JlIGJ5dGVzIChhc3N1bWluZyA0MTA0KSBpbnRvIGEgZGVzdGluYXRpb24gb2Yg
+c2l6ZSA0MDk3CiAgc3ByaW50ZihuZXduYW1lLCAiJXMlcyIsIGRpcm5hbWUsIGJhc2VuYW1lKTsK
+ICBefn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+CnNjcmlwdHMva2Nv
+bmZpZy9jb25mZGF0YS5jOjc3NjoyMzogd2FybmluZzog4oCYLnRtcGNvbmZpZy7igJkgZGlyZWN0
+aXZlIHdyaXRpbmcgMTEgYnl0ZXMgaW50byBhIHJlZ2lvbiBvZiBzaXplIGJldHdlZW4gMSBhbmQg
+NDA5NyBbLVdmb3JtYXQtb3ZlcmZsb3c9XQogICBzcHJpbnRmKHRtcG5hbWUsICIlcy50bXBjb25m
+aWcuJWQiLCBkaXJuYW1lLCAoaW50KWdldHBpZCgpKTsKICAgICAgICAgICAgICAgICAgICAgICBe
+fn5+fn5+fn5+fgpzY3JpcHRzL2tjb25maWcvY29uZmRhdGEuYzo3NzY6Mzogbm90ZTog4oCYc3By
+aW50ZuKAmSBvdXRwdXQgYmV0d2VlbiAxMyBhbmQgNDExOSBieXRlcyBpbnRvIGEgZGVzdGluYXRp
+b24gb2Ygc2l6ZSA0MDk3CiAgIHNwcmludGYodG1wbmFtZSwgIiVzLnRtcGNvbmZpZy4lZCIsIGRp
+cm5hbWUsIChpbnQpZ2V0cGlkKCkpOwogICBefn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+
+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fgoKSW5jcmVhc2UgdGhlIHNpemUgb2YgdG1wbmFt
+ZSBhbmQgbmV3bmFtZSB0byBtYWtlIEdDQyBoYXBweS4KClNpZ25lZC1vZmYtYnk6IFNhc2NoYSBI
+YXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KLS0tCiBzY3JpcHRzL2tjb25maWcvY29uZmRh
+dGEuYyB8IDIgKy0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigt
+KQoKZGlmZiAtLWdpdCBhL3NjcmlwdHMva2NvbmZpZy9jb25mZGF0YS5jIGIvc2NyaXB0cy9rY29u
+ZmlnL2NvbmZkYXRhLmMKaW5kZXggZjg4ZDkwZjIwMi4uY2UxMmJkNTU1ZiAxMDA2NDQKLS0tIGEv
+c2NyaXB0cy9rY29uZmlnL2NvbmZkYXRhLmMKKysrIGIvc2NyaXB0cy9rY29uZmlnL2NvbmZkYXRh
+LmMKQEAgLTczOSw3ICs3MzksNyBAQCBpbnQgY29uZl93cml0ZShjb25zdCBjaGFyICpuYW1lKQog
+CXN0cnVjdCBtZW51ICptZW51OwogCWNvbnN0IGNoYXIgKmJhc2VuYW1lOwogCWNvbnN0IGNoYXIg
+KnN0cjsKLQljaGFyIGRpcm5hbWVbUEFUSF9NQVgrMV0sIHRtcG5hbWVbUEFUSF9NQVgrMV0sIG5l
+d25hbWVbUEFUSF9NQVgrMV07CisJY2hhciBkaXJuYW1lW1BBVEhfTUFYKzFdLCB0bXBuYW1lW1BB
+VEhfTUFYKzIyXSwgbmV3bmFtZVtQQVRIX01BWCs4XTsKIAljaGFyICplbnY7CiAKIAlkaXJuYW1l
+WzBdID0gMDsKLS0gCjIuMTkuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
+Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
