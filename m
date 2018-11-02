@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gIb0B-0003nw-Ln
+ id 1gIb0B-0003nu-M3
  for barebox@lists.infradead.org; Fri, 02 Nov 2018 15:04:49 +0000
 Received: from unicorn.hi.pengutronix.de
  ([2001:67c:670:100:a61f:72ff:fe69:16d] helo=unicorn)
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <str@pengutronix.de>) id 1gIazy-0000wB-4c
+ (envelope-from <str@pengutronix.de>) id 1gIazy-0000w9-1M
  for barebox@lists.infradead.org; Fri, 02 Nov 2018 16:04:34 +0100
 Received: from str by unicorn with local (Exim 4.89)
- (envelope-from <str@pengutronix.de>) id 1gIazx-0006Nr-SG
+ (envelope-from <str@pengutronix.de>) id 1gIazx-0006Nm-P5
  for barebox@lists.infradead.org; Fri, 02 Nov 2018 16:04:33 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri,  2 Nov 2018 16:04:23 +0100
-Message-Id: <20181102150424.24400-4-s.trumtrar@pengutronix.de>
+Date: Fri,  2 Nov 2018 16:04:21 +0100
+Message-Id: <20181102150424.24400-2-s.trumtrar@pengutronix.de>
 In-Reply-To: <20181102150424.24400-1-s.trumtrar@pengutronix.de>
 References: <20181102150424.24400-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
@@ -30,19 +30,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] ARM: socfpga: socdk: convert to lowlevel helpers
+Subject: [PATCH 2/5] ARM: socfpga: sockit: convert to lowlevel helper
 To: Barebox List <barebox@lists.infradead.org>
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/boards/altera-socdk/lowlevel.c | 69 ++-----------------------
- 1 file changed, 3 insertions(+), 66 deletions(-)
+ arch/arm/boards/terasic-sockit/lowlevel.c | 71 ++---------------------
+ 1 file changed, 4 insertions(+), 67 deletions(-)
 
-diff --git a/arch/arm/boards/altera-socdk/lowlevel.c b/arch/arm/boards/altera-socdk/lowlevel.c
-index 08e70a0fc659..822c3d8ee60d 100644
---- a/arch/arm/boards/altera-socdk/lowlevel.c
-+++ b/arch/arm/boards/altera-socdk/lowlevel.c
-@@ -1,76 +1,13 @@
+diff --git a/arch/arm/boards/terasic-sockit/lowlevel.c b/arch/arm/boards/terasic-sockit/lowlevel.c
+index 05b7d800a244..1dd7940aebd9 100644
+--- a/arch/arm/boards/terasic-sockit/lowlevel.c
++++ b/arch/arm/boards/terasic-sockit/lowlevel.c
+@@ -1,23 +1,14 @@
 -#include <common.h>
 -#include <linux/sizes.h>
 -#include <io.h>
@@ -63,21 +63,29 @@ index 08e70a0fc659..822c3d8ee60d 100644
  #include "sequencer_auto_ac_init.c"
  #include "iocsr_config_cyclone5.c"
  
--extern char __dtb_socfpga_cyclone5_socdk_start[];
 +#include <mach/lowlevel.h>
++
+ static inline void ledon(int led)
+ {
+ 	u32 val;
+@@ -44,59 +35,5 @@ static inline void ledoff(int led)
+ 	writel(val, 0xFF709004);
+ }
  
--ENTRY_FUNCTION(start_socfpga_socdk, r0, r1, r2)
+-extern char __dtb_socfpga_cyclone5_sockit_start[];
+-
+-ENTRY_FUNCTION(start_socfpga_sockit, r0, r1, r2)
 -{
 -	void *fdt;
 -
 -	arm_cpu_lowlevel_init();
 -
--	fdt = __dtb_socfpga_cyclone5_socdk_start + get_runtime_offset();
+-	fdt = __dtb_socfpga_cyclone5_sockit_start + get_runtime_offset();
 -
 -	barebox_arm_entry(0x0, SZ_1G, fdt);
 -}
 -
--static noinline void socdk_entry(void)
+-static noinline void sockit_entry(void)
 -{
 -	struct socfpga_io_config io_config;
 -	int ret;
@@ -112,16 +120,16 @@ index 08e70a0fc659..822c3d8ee60d 100644
 -	barebox_arm_entry(0x0, SZ_1G, NULL);
 -}
 -
--ENTRY_FUNCTION(start_socfpga_socdk_xload, r0, r1, r2)
+-ENTRY_FUNCTION(start_socfpga_sockit_xload, r0, r1, r2)
 -{
 -	arm_cpu_lowlevel_init();
 -
 -	arm_setup_stack(0xffff0000 + SZ_64K - SZ_4K - 16);
 -
--	socdk_entry();
+-	sockit_entry();
 -}
-+SOCFPGA_C5_ENTRY(start_socfpga_socdk, socfpga_cyclone5_socdk, SZ_1G);
-+SOCFPGA_C5_XLOAD_ENTRY(start_socfpga_socdk_xload, SZ_1G);
++SOCFPGA_C5_ENTRY(start_socfpga_sockit, socfpga_cyclone5_sockit, SZ_1G);
++SOCFPGA_C5_XLOAD_ENTRY(start_socfpga_sockit_xload, SZ_1G);
 -- 
 2.19.1
 
