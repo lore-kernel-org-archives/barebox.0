@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gITrA-0005AR-TV
- for barebox@lists.infradead.org; Fri, 02 Nov 2018 07:27:02 +0000
+ id 1gITrQ-0005EZ-PF
+ for barebox@lists.infradead.org; Fri, 02 Nov 2018 07:27:17 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  2 Nov 2018 08:26:30 +0100
-Message-Id: <20181102072632.10654-2-s.hauer@pengutronix.de>
-In-Reply-To: <20181102072632.10654-1-s.hauer@pengutronix.de>
-References: <20181102072632.10654-1-s.hauer@pengutronix.de>
+Date: Fri,  2 Nov 2018 08:27:04 +0100
+Message-Id: <20181102072704.26807-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,37 +19,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] net: macb: remove unused variable
+Subject: [PATCH] pinctrl: at91: Do not print registration messages
 To: Barebox List <barebox@lists.infradead.org>
 
-tx_tail is unused. Remove it.
+Turn registration messages into dev_dbg.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/macb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/pinctrl/pinctrl-at91.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index 8575c838a8..28065e1e13 100644
---- a/drivers/net/macb.c
-+++ b/drivers/net/macb.c
-@@ -65,7 +65,6 @@ struct macb_device {
+diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
+index 0303869774..630f11be76 100644
+--- a/drivers/pinctrl/pinctrl-at91.c
++++ b/drivers/pinctrl/pinctrl-at91.c
+@@ -510,7 +510,7 @@ static int at91_pinctrl_probe(struct device_d *dev)
+ 	if (ret)
+ 		return ret;
  
- 	unsigned int		rx_tail;
- 	unsigned int		tx_head;
--	unsigned int		tx_tail;
+-	dev_info(dev, "AT91 pinctrl registered\n");
++	dev_dbg(dev, "AT91 pinctrl registered\n");
  
- 	void			*rx_buffer;
- 	void			*tx_buffer;
-@@ -344,7 +343,7 @@ static void macb_init(struct macb_device *macb)
+ 	return 0;
+ }
+@@ -690,7 +690,7 @@ static int at91_gpio_probe(struct device_d *dev)
+ 		return ret;
  	}
- 	macb->tx_ring[TX_RING_SIZE - 1].addr |= MACB_BIT(TX_WRAP);
  
--	macb->rx_tail = macb->tx_head = macb->tx_tail = 0;
-+	macb->rx_tail = macb->tx_head = 0;
+-	dev_info(dev, "AT91 gpio driver registered\n");
++	dev_dbg(dev, "AT91 gpio driver registered\n");
  
- 	macb_configure_dma(macb);
- 
+ 	return 0;
+ }
 -- 
 2.19.1
 
