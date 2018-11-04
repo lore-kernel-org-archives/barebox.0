@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from mout02.posteo.de ([185.67.36.66])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gJfNL-00068S-Ht
- for barebox@lists.infradead.org; Mon, 05 Nov 2018 13:57:09 +0000
-Date: Mon, 5 Nov 2018 14:56:53 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20181105135653.GB22964@ravnborg.org>
-References: <20181105072826.912-1-s.hauer@pengutronix.de>
+ id 1gJR3H-00023d-Fg
+ for barebox@lists.infradead.org; Sun, 04 Nov 2018 22:39:29 +0000
+Received: from submission (posteo.de [89.146.220.130]) 
+ by mout02.posteo.de (Postfix) with ESMTPS id EA75D2400E6
+ for <barebox@lists.infradead.org>; Sun,  4 Nov 2018 23:39:09 +0100 (CET)
+Received: from customer (localhost [127.0.0.1])
+ by submission (posteo.de) with ESMTPSA id 42p9hr5wRTz9rxK
+ for <barebox@lists.infradead.org>; Sun,  4 Nov 2018 23:39:08 +0100 (CET)
+Date: Sun, 4 Nov 2018 23:39:08 +0100
+From: Patrick Boettcher <patrick.boettcher@posteo.de>
+Message-ID: <20181104233908.48ce2577@yaise-pc1>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181105072826.912-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,22 +25,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: at91: fix sdram controller init
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: barebox state is not fixed up into kernel-device-tree
+To: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Nov 05, 2018 at 08:28:26AM +0100, Sascha Hauer wrote:
-> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> 
-> e739663535 confused parameters to __raw_writel. The value and the base
-> address was mixed up.
-> 
-> Fixes: e739663535 (arm: at91: code cleanup in at91sam926x_board_init)
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Hi,
 
-	Sam
+I'm using a device-state (for bootchooser) which is stored in an eeprom.
+
+Works fine from within barebox - read and write.
+
+Userspace does not see the state:
+
+  Neither /aliases/state nor /state found
+
+The displayed device-tree when booting with 'boot -v -v <name>' does
+not contain the state-entry.
+
+However, there is a warning of a failed fixup:
+
+  Failed to fixup node in of_state_fixup+0x1/0x1ac: No such device
+
+Could it be that the eeprom-alias is missing? I'm still learning
+device-tree and stuff and I'm not yet entirely sure how everything is
+related.
+
+The partition is created within a 
+
+  &eeprom {
+     [..]
+  }
+
+section and eeprom is defined as 
+
+  eeprom: eeprom@52 {
+
+  }
+
+(I added the 'eeprom: '- name/alias)
+
+Where am I missing the link?
+
+best regards,
+--
+Patrick.
 
 _______________________________________________
 barebox mailing list
