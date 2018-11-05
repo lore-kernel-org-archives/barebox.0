@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gJh9z-0000Ox-23
- for barebox@lists.infradead.org; Mon, 05 Nov 2018 15:51:30 +0000
+ id 1gJh9z-0000Ot-26
+ for barebox@lists.infradead.org; Mon, 05 Nov 2018 15:51:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  5 Nov 2018 16:51:06 +0100
-Message-Id: <20181105155113.3434-16-s.hauer@pengutronix.de>
+Date: Mon,  5 Nov 2018 16:50:56 +0100
+Message-Id: <20181105155113.3434-6-s.hauer@pengutronix.de>
 In-Reply-To: <20181105155113.3434-1-s.hauer@pengutronix.de>
 References: <20181105155113.3434-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,183 +21,349 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/22] ARM: at91rm9200 timer: Make system timer defines SoC
- specific
+Subject: [PATCH 05/22] ARM: at91: remove unused defines
 To: Barebox List <barebox@lists.infradead.org>
-
-- rename at91_st.h to at91rm9200_st.h
-- rename prefix from AT91_ to AT91RM9200_
-- remove register offset from System timer defines
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-at91/at91rm9200_time.c          | 14 +++---
- arch/arm/mach-at91/include/mach/at91_st.h     | 49 -------------------
- .../mach-at91/include/mach/at91rm9200_st.h    | 49 +++++++++++++++++++
- 3 files changed, 57 insertions(+), 55 deletions(-)
- delete mode 100644 arch/arm/mach-at91/include/mach/at91_st.h
- create mode 100644 arch/arm/mach-at91/include/mach/at91rm9200_st.h
+ arch/arm/mach-at91/include/mach/at91rm9200.h  | 20 -------------
+ arch/arm/mach-at91/include/mach/at91sam9260.h | 29 +------------------
+ arch/arm/mach-at91/include/mach/at91sam9261.h | 14 ---------
+ arch/arm/mach-at91/include/mach/at91sam9263.h | 23 +--------------
+ .../include/mach/at91sam926x_board_init.h     |  3 +-
+ arch/arm/mach-at91/include/mach/at91sam9g45.h | 17 -----------
+ arch/arm/mach-at91/include/mach/at91sam9n12.h | 11 -------
+ arch/arm/mach-at91/include/mach/at91sam9x5.h  | 11 -------
+ arch/arm/mach-at91/include/mach/sama5d3.h     |  2 --
+ 9 files changed, 4 insertions(+), 126 deletions(-)
 
-diff --git a/arch/arm/mach-at91/at91rm9200_time.c b/arch/arm/mach-at91/at91rm9200_time.c
-index 259fdd508d..ef85502f5e 100644
---- a/arch/arm/mach-at91/at91rm9200_time.c
-+++ b/arch/arm/mach-at91/at91rm9200_time.c
-@@ -30,10 +30,12 @@
- #include <clock.h>
- #include <restart.h>
- #include <mach/hardware.h>
--#include <mach/at91_st.h>
-+#include <mach/at91rm9200_st.h>
- #include <mach/io.h>
- #include <io.h>
- 
-+static void __iomem *st = IOMEM(AT91RM9200_BASE_ST);
-+
+diff --git a/arch/arm/mach-at91/include/mach/at91rm9200.h b/arch/arm/mach-at91/include/mach/at91rm9200.h
+index 4fe8fd891c..8e323ea615 100644
+--- a/arch/arm/mach-at91/include/mach/at91rm9200.h
++++ b/arch/arm/mach-at91/include/mach/at91rm9200.h
+@@ -19,8 +19,6 @@
  /*
-  * The ST_CRTR is updated asynchronously to the master clock ... but
-  * the updates as seen by the CPU don't seem to be strictly monotonic.
-@@ -43,9 +45,9 @@ uint64_t at91rm9200_clocksource_read(void)
- {
- 	unsigned long x1, x2;
+  * Peripheral identifiers/interrupts.
+  */
+-#define AT91_ID_FIQ		0	/* Advanced Interrupt Controller (FIQ) */
+-#define AT91_ID_SYS		1	/* System Peripheral */
+ #define AT91RM9200_ID_PIOA	2	/* Parallel IO Controller A */
+ #define AT91RM9200_ID_PIOB	3	/* Parallel IO Controller B */
+ #define AT91RM9200_ID_PIOC	4	/* Parallel IO Controller C */
+@@ -99,21 +97,8 @@
+ #define AT91_RTC	(0xfffffe00 - AT91_BASE_SYS)	/* Real-Time Clock */
+ #define AT91_MC		(0xffffff00 - AT91_BASE_SYS)	/* Memory Controllers */
  
--	x1 = at91_sys_read(AT91_ST_CRTR);
-+	x1 = readl(st + AT91RM9200_ST_CRTR);
- 	do {
--		x2 = at91_sys_read(AT91_ST_CRTR);
-+		x2 = readl(st + AT91RM9200_ST_CRTR);
- 		if (x1 == x2)
- 			break;
- 		x1 = x2;
-@@ -65,7 +67,7 @@ static int clocksource_init (void)
- 	 * directly for the clocksource and all clockevents, after adjusting
- 	 * its prescaler from the 1 Hz default.
- 	 */
--	at91_sys_write(AT91_ST_RTMR, 1);
-+	writel(1, st + AT91RM9200_ST_RTMR);
+-#define AT91_BASE_PIOA	AT91RM9200_BASE_PIOA	/* PIO Controller A */
+-#define AT91_BASE_PIOB	AT91RM9200_BASE_PIOB	/* PIO Controller B */
+-#define AT91_BASE_PIOC	AT91RM9200_BASE_PIOC	/* PIO Controller C */
+-#define AT91_BASE_PIOD	AT91RM9200_BASE_PIOD	/* PIO Controller D */
+-
+-#define AT91_USART0	AT91RM9200_BASE_US0
+-#define AT91_USART1	AT91RM9200_BASE_US1
+-#define AT91_USART2	AT91RM9200_BASE_US2
+-#define AT91_USART3	AT91RM9200_BASE_US3
+ #define AT91_NB_USART	5
  
- 	cs.mult = clocksource_hz2mult(AT91_SLOW_CLOCK, cs.shift);
+-#define AT91_BASE_SPI	AT91RM9200_BASE_SPI
+-#define AT91_BASE_TWI	AT91RM9200_BASE_TWI
+-#define AT91_ID_UHP	AT91RM9200_ID_UHP
+-#define AT91_PMC_UHP	AT91RM9200_PMC_UHP
+ #define AT91_TC		(AT91RM9200_BASE_TC0 - AT91_BASE_SYS)
  
-@@ -81,8 +83,8 @@ static void __noreturn at91rm9200_restart_soc(struct restart_handler *rst)
- 	/*
- 	 * Perform a hardware reset with the use of the Watchdog timer.
- 	 */
--	at91_sys_write(AT91_ST_WDMR, AT91_ST_RSTEN | AT91_ST_EXTEN | 1);
--	at91_sys_write(AT91_ST_CR, AT91_ST_WDRST);
-+	writel(AT91RM9200_ST_RSTEN | AT91RM9200_ST_EXTEN | 1, st + AT91RM9200_ST_WDMR);
-+	writel(AT91RM9200_ST_WDRST, st + AT91RM9200_ST_CR);
+ #define AT91_MATRIX	0	/* not supported */
+@@ -133,9 +118,4 @@
  
- 	/* Not reached */
- 	hang();
-diff --git a/arch/arm/mach-at91/include/mach/at91_st.h b/arch/arm/mach-at91/include/mach/at91_st.h
-deleted file mode 100644
-index 8847173e41..0000000000
---- a/arch/arm/mach-at91/include/mach/at91_st.h
-+++ /dev/null
-@@ -1,49 +0,0 @@
+ #define AT91_VA_BASE_EMAC	AT91RM9200_BASE_EMAC
+ 
 -/*
-- * arch/arm/mach-at91/include/mach/at91_st.h
-- *
-- * Copyright (C) 2005 Ivan Kokshaysky
-- * Copyright (C) SAN People
-- *
-- * System Timer (ST) - System peripherals registers.
-- * Based on AT91RM9200 datasheet revision E.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
+- * Cpu Name
 - */
+-#define AT91_CPU_NAME	"AT91RM9200"
 -
--#ifndef AT91_ST_H
--#define AT91_ST_H
+ #endif
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9260.h b/arch/arm/mach-at91/include/mach/at91sam9260.h
+index 919901d6da..1cff76b4ee 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9260.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9260.h
+@@ -18,8 +18,6 @@
+ /*
+  * Peripheral identifiers/interrupts.
+  */
+-#define AT91_ID_FIQ		0	/* Advanced Interrupt Controller (FIQ) */
+-#define AT91_ID_SYS		1	/* System Peripherals */
+ #define AT91SAM9260_ID_PIOA	2	/* Parallel IO Controller A */
+ #define AT91SAM9260_ID_PIOB	3	/* Parallel IO Controller B */
+ #define AT91SAM9260_ID_PIOC	4	/* Parallel IO Controller C */
+@@ -105,25 +103,9 @@
+ #define AT91_RSTC	(0xfffffd00 - AT91_BASE_SYS)
+ #define AT91_SHDWC	(0xfffffd10 - AT91_BASE_SYS)
+ 
+-#define AT91_BASE_WDT	AT91SAM9260_BASE_WDT
+ #define AT91_BASE_SMC	AT91SAM9260_BASE_SMC
+-#define AT91_BASE_PIOA	AT91SAM9260_BASE_PIOA
+-#define AT91_BASE_PIOA	AT91SAM9260_BASE_PIOA
+-#define AT91_BASE_PIOB	AT91SAM9260_BASE_PIOB
+-#define AT91_BASE_PIOC	AT91SAM9260_BASE_PIOC
 -
--#define	AT91_ST_CR		(AT91_ST + 0x00)	/* Control Register */
--#define 	AT91_ST_WDRST		(1 << 0)		/* Watchdog Timer Restart */
--
--#define	AT91_ST_PIMR		(AT91_ST + 0x04)	/* Period Interval Mode Register */
--#define		AT91_ST_PIV		(0xffff <<  0)		/* Period Interval Value */
--
--#define	AT91_ST_WDMR		(AT91_ST + 0x08)	/* Watchdog Mode Register */
--#define		AT91_ST_WDV		(0xffff <<  0)		/* Watchdog Counter Value */
--#define		AT91_ST_RSTEN		(1	<< 16)		/* Reset Enable */
--#define		AT91_ST_EXTEN		(1	<< 17)		/* External Signal Assertion Enable */
--
--#define	AT91_ST_RTMR		(AT91_ST + 0x0c)	/* Real-time Mode Register */
--#define		AT91_ST_RTPRES		(0xffff <<  0)		/* Real-time Prescalar Value */
--
--#define	AT91_ST_SR		(AT91_ST + 0x10)	/* Status Register */
--#define		AT91_ST_PITS		(1 << 0)		/* Period Interval Timer Status */
--#define		AT91_ST_WDOVF		(1 << 1) 		/* Watchdog Overflow */
--#define		AT91_ST_RTTINC		(1 << 2) 		/* Real-time Timer Increment */
--#define		AT91_ST_ALMS		(1 << 3) 		/* Alarm Status */
--
--#define	AT91_ST_IER		(AT91_ST + 0x14)	/* Interrupt Enable Register */
--#define	AT91_ST_IDR		(AT91_ST + 0x18)	/* Interrupt Disable Register */
--#define	AT91_ST_IMR		(AT91_ST + 0x1c)	/* Interrupt Mask Register */
--
--#define	AT91_ST_RTAR		(AT91_ST + 0x20)	/* Real-time Alarm Register */
--#define		AT91_ST_ALMV		(0xfffff << 0)		/* Alarm Value */
--
--#define	AT91_ST_CRTR		(AT91_ST + 0x24)	/* Current Real-time Register */
--#define		AT91_ST_CRTV		(0xfffff << 0)		/* Current Real-Time Value */
--
+-#define AT91_USART0	AT91SAM9260_BASE_US0
+-#define AT91_USART1	AT91SAM9260_BASE_US1
+-#define AT91_USART2	AT91SAM9260_BASE_US2
+-#define AT91_USART3	AT91SAM9260_BASE_US3
+-#define AT91_USART4	AT91SAM9260_BASE_US4
+-#define AT91_USART5	AT91SAM9260_BASE_US5
+-#define AT91_NB_USART	7
+ 
+-#define AT91_BASE_SPI	AT91SAM9260_BASE_SPI0
+-#define AT91_BASE_TWI	AT91SAM9260_BASE_TWI
+-#define AT91_ID_UHP	AT91SAM9260_ID_UHP
+-#define AT91_PMC_UHP	AT91SAM926x_PMC_UHP
++#define AT91_NB_USART	7
+ 
+ #define AT91_PMC	0xfffffc00
+ 
+@@ -157,13 +139,4 @@
+ 
+ #define AT91SAM9G20_UHP_BASE	0x00500000	/* USB Host controller */
+ 
+-/*
+- * Cpu Name
+- */
+-#if defined(CONFIG_AT91SAM9260)
+-#define AT91_CPU_NAME	"AT91SAM9260"
+-#elif defined(CONFIG_AT91SAM9G20)
+-#define AT91_CPU_NAME	"AT91SAM9G20"
 -#endif
-diff --git a/arch/arm/mach-at91/include/mach/at91rm9200_st.h b/arch/arm/mach-at91/include/mach/at91rm9200_st.h
-new file mode 100644
-index 0000000000..bd676a7081
---- /dev/null
-+++ b/arch/arm/mach-at91/include/mach/at91rm9200_st.h
-@@ -0,0 +1,49 @@
-+/*
-+ * arch/arm/mach-at91/include/mach/at91_st.h
-+ *
-+ * Copyright (C) 2005 Ivan Kokshaysky
-+ * Copyright (C) SAN People
-+ *
-+ * System Timer (ST) - System peripherals registers.
-+ * Based on AT91RM9200 datasheet revision E.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ */
+-
+ #endif
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9261.h b/arch/arm/mach-at91/include/mach/at91sam9261.h
+index 9124df5caa..d9172879b9 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9261.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9261.h
+@@ -18,8 +18,6 @@
+ /*
+  * Peripheral identifiers/interrupts.
+  */
+-#define AT91_ID_FIQ		0	/* Advanced Interrupt Controller (FIQ) */
+-#define AT91_ID_SYS		1	/* System Peripherals */
+ #define AT91SAM9261_ID_PIOA	2	/* Parallel IO Controller A */
+ #define AT91SAM9261_ID_PIOB	3	/* Parallel IO Controller B */
+ #define AT91SAM9261_ID_PIOC	4	/* Parallel IO Controller C */
+@@ -91,15 +89,8 @@
+ #define AT91_RSTC	(0xfffffd00 - AT91_BASE_SYS)
+ #define AT91_SHDWC	(0xfffffd10 - AT91_BASE_SYS)
+ 
+-#define AT91_BASE_WDT	AT91SAM9261_BASE_WDT
+ #define AT91_BASE_SMC	AT91SAM9261_BASE_SMC
+-#define AT91_BASE_PIOA	AT91SAM9261_BASE_PIOA
+-#define AT91_BASE_PIOB	AT91SAM9261_BASE_PIOB
+-#define AT91_BASE_PIOC	AT91SAM9261_BASE_PIOC
+ 
+-#define AT91_USART0	AT91SAM9261_BASE_US0
+-#define AT91_USART1	AT91SAM9261_BASE_US1
+-#define AT91_USART2	AT91SAM9261_BASE_US2
+ #define AT91_NB_USART	4
+ 
+ #define AT91_PMC	0xfffffc00
+@@ -119,9 +110,4 @@
+ #define AT91SAM9261_UHP_BASE	0x00500000	/* USB Host controller */
+ #define AT91SAM9261_LCDC_BASE	0x00600000	/* LDC controller */
+ 
+-/*
+- * Cpu Name
+- */
+-#define AT91_CPU_NAME	"AT91SAM9261"
+-
+ #endif
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9263.h b/arch/arm/mach-at91/include/mach/at91sam9263.h
+index e7ca8b63aa..f1dd848cc0 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9263.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9263.h
+@@ -18,8 +18,6 @@
+ /*
+  * Peripheral identifiers/interrupts.
+  */
+-#define AT91_ID_FIQ		0	/* Advanced Interrupt Controller (FIQ) */
+-#define AT91_ID_SYS		1	/* System Peripherals */
+ #define AT91SAM9263_ID_PIOA	2	/* Parallel IO Controller A */
+ #define AT91SAM9263_ID_PIOB	3	/* Parallel IO Controller B */
+ #define AT91SAM9263_ID_PIOCDE	4	/* Parallel IO Controller C, D and E */
+@@ -109,26 +107,12 @@
+ #define AT91_RSTC	(0xfffffd00 - AT91_BASE_SYS)
+ #define AT91_SHDWC	(0xfffffd10 - AT91_BASE_SYS)
+ 
+-#define AT91_BASE_WDT	AT91SAM9263_BASE_WDT
+ #define AT91_BASE_SMC	AT91SAM9263_BASE_SMC0
+-#define AT91_BASE_PIOA	AT91SAM9263_BASE_PIOA
+-#define AT91_BASE_PIOB	AT91SAM9263_BASE_PIOB
+-#define AT91_BASE_PIOC	AT91SAM9263_BASE_PIOC
+-#define AT91_BASE_PIOD	AT91SAM9263_BASE_PIOD
+-#define AT91_BASE_PIOE	AT91SAM9263_BASE_PIOE
+-
+-#define AT91_USART0	AT91SAM9263_BASE_US0
+-#define AT91_USART1	AT91SAM9263_BASE_US1
+-#define AT91_USART2	AT91SAM9263_BASE_US2
 +
-+#ifndef AT91RM9200_ST_H
-+#define AT91RM9200_ST_H
-+
-+#define	AT91RM9200_ST_CR		(0x00)	/* Control Register */
-+#define 	AT91RM9200_ST_WDRST		(1 << 0)		/* Watchdog Timer Restart */
-+
-+#define	AT91RM9200_ST_PIMR		(0x04)	/* Period Interval Mode Register */
-+#define		AT91RM9200_ST_PIV		(0xffff <<  0)		/* Period Interval Value */
-+
-+#define	AT91RM9200_ST_WDMR		(0x08)	/* Watchdog Mode Register */
-+#define		AT91RM9200_ST_WDV		(0xffff <<  0)		/* Watchdog Counter Value */
-+#define		AT91RM9200_ST_RSTEN		(1	<< 16)		/* Reset Enable */
-+#define		AT91RM9200_ST_EXTEN		(1	<< 17)		/* External Signal Assertion Enable */
-+
-+#define	AT91RM9200_ST_RTMR		(0x0c)	/* Real-time Mode Register */
-+#define		AT91RM9200_ST_RTPRES		(0xffff <<  0)		/* Real-time Prescalar Value */
-+
-+#define	AT91RM9200_ST_SR		(0x10)	/* Status Register */
-+#define		AT91RM9200_ST_PITS		(1 << 0)		/* Period Interval Timer Status */
-+#define		AT91RM9200_ST_WDOVF		(1 << 1) 		/* Watchdog Overflow */
-+#define		AT91RM9200_ST_RTTINC		(1 << 2) 		/* Real-time Timer Increment */
-+#define		AT91RM9200_ST_ALMS		(1 << 3) 		/* Alarm Status */
-+
-+#define	AT91RM9200_ST_IER		(0x14)	/* Interrupt Enable Register */
-+#define	AT91RM9200_ST_IDR		(0x18)	/* Interrupt Disable Register */
-+#define	AT91RM9200_ST_IMR		(0x1c)	/* Interrupt Mask Register */
-+
-+#define	AT91RM9200_ST_RTAR		(0x20)	/* Real-time Alarm Register */
-+#define		AT91RM9200_ST_ALMV		(0xfffff << 0)		/* Alarm Value */
-+
-+#define	AT91RM9200_ST_CRTR		(0x24)	/* Current Real-time Register */
-+#define		AT91RM9200_ST_CRTV		(0xfffff << 0)		/* Current Real-Time Value */
-+
-+#endif
+ #define AT91_NB_USART	4
+ 
+ #define AT91_SDRAMC	AT91_SDRAMC0
+ 
+-#define AT91_BASE_SPI	AT91SAM9263_BASE_SPI0
+-#define AT91_BASE_TWI	AT91SAM9263_BASE_TWI
+-#define AT91_ID_UHP	AT91SAM9263_ID_UHP
+-#define AT91_PMC_UHP	AT91SAM926x_PMC_UHP
+-
+ #define AT91_PMC	0xfffffc00
+ 
+ /*
+@@ -147,9 +131,4 @@
+ #define AT91SAM9263_DMAC_BASE	0x00800000	/* DMA Controller */
+ #define AT91SAM9263_UHP_BASE	0x00a00000	/* USB Host controller */
+ 
+-/*
+- * Cpu Name
+- */
+-#define AT91_CPU_NAME	"AT91SAM9263"
+-
+ #endif
+diff --git a/arch/arm/mach-at91/include/mach/at91sam926x_board_init.h b/arch/arm/mach-at91/include/mach/at91sam926x_board_init.h
+index 7cacc0c8d7..749baaa8a6 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam926x_board_init.h
++++ b/arch/arm/mach-at91/include/mach/at91sam926x_board_init.h
+@@ -18,6 +18,7 @@
+ #include <mach/at91_wdt.h>
+ #include <mach/hardware.h>
+ #include <mach/gpio.h>
++#include <mach/at91sam926x.h>
+ 
+ struct at91sam926x_board_cfg {
+ 	/* SoC specific */
+@@ -124,7 +125,7 @@ static void __always_inline at91sam926x_board_init(struct at91sam926x_board_cfg
+ 	if (!IS_ENABLED(CONFIG_AT91SAM926X_BOARD_INIT))
+ 		return;
+ 
+-	__raw_writel(cfg->wdt_mr, AT91_BASE_WDT + AT91_WDT_MR);
++	__raw_writel(cfg->wdt_mr, AT91SAM926X_BASE_WDT + AT91_WDT_MR);
+ 
+ 	/* configure PIOx as EBI0 D[16-31] */
+ 	at91_mux_gpio_disable(cfg->pio, cfg->ebi_pio_pdr);
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9g45.h b/arch/arm/mach-at91/include/mach/at91sam9g45.h
+index 7faa435b83..2847541f9a 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9g45.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9g45.h
+@@ -18,8 +18,6 @@
+ /*
+  * Peripheral identifiers/interrupts.
+  */
+-#define AT91_ID_FIQ		0	/* Advanced Interrupt Controller (FIQ) */
+-#define AT91_ID_SYS		1	/* System Controller Interrupt */
+ #define AT91SAM9G45_ID_PIOA	2	/* Parallel I/O Controller A */
+ #define AT91SAM9G45_ID_PIOB	3	/* Parallel I/O Controller B */
+ #define AT91SAM9G45_ID_PIOC	4	/* Parallel I/O Controller C */
+@@ -120,18 +118,8 @@
+ #define AT91_RSTC	(0xfffffd00 - AT91_BASE_SYS)
+ #define AT91_SHDWC	(0xfffffd10 - AT91_BASE_SYS)
+ 
+-#define AT91_BASE_WDT	AT91SAM9G45_BASE_WDT
+ #define AT91_BASE_SMC	AT91SAM9G45_BASE_SMC
+-#define AT91_BASE_PIOA	AT91SAM9G45_BASE_PIOA
+-#define AT91_BASE_PIOB	AT91SAM9G45_BASE_PIOB
+-#define AT91_BASE_PIOC	AT91SAM9G45_BASE_PIOC
+-#define AT91_BASE_PIOD	AT91SAM9G45_BASE_PIOD
+-#define AT91_BASE_PIOE	AT91SAM9G45_BASE_PIOE
+ 
+-#define AT91_USART0	AT91SAM9G45_BASE_US0
+-#define AT91_USART1	AT91SAM9G45_BASE_US1
+-#define AT91_USART2	AT91SAM9G45_BASE_US2
+-#define AT91_USART3	AT91SAM9G45_BASE_US3
+ #define AT91_NB_USART	5
+ 
+ #define AT91_PMC	0xfffffc00
+@@ -153,9 +141,4 @@
+ 
+ #define CONFIG_DRAM_BASE	AT91_CHIPSELECT_6
+ 
+-/*
+- * Cpu Name
+- */
+-#define AT91_CPU_NAME	"AT91SAM9G45"
+-
+ #endif
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9n12.h b/arch/arm/mach-at91/include/mach/at91sam9n12.h
+index cbb4f81da8..7fdd7528a0 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9n12.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9n12.h
+@@ -18,8 +18,6 @@
+ /*
+  * Peripheral identifiers/interrupts.
+  */
+-#define AT91_ID_FIQ		0	/* Advanced Interrupt Controller (FIQ) */
+-#define AT91_ID_SYS		1	/* System Controller Interrupt */
+ #define AT91SAM9N12_ID_PIOAB	2	/* Parallel I/O Controller A and B */
+ #define AT91SAM9N12_ID_PIOCD	3	/* Parallel I/O Controller C and D */
+ /* Reserved			4	*/
+@@ -116,17 +114,8 @@
+ #define AT91_RSTC	(0xfffffe00 - AT91_BASE_SYS)
+ #define AT91_SHDWC	(0xfffffe10 - AT91_BASE_SYS)
+ 
+-#define AT91_BASE_WDT	AT91SAM9N12_BASE_WDT
+ #define AT91_BASE_SMC	AT91SAM9N12_BASE_SMC
+-#define AT91_BASE_PIOA	AT91SAM9N12_BASE_PIOA
+-#define AT91_BASE_PIOB	AT91SAM9N12_BASE_PIOB
+-#define AT91_BASE_PIOC	AT91SAM9N12_BASE_PIOC
+-#define AT91_BASE_PIOD	AT91SAM9N12_BASE_PIOD
+ 
+-#define AT91_USART0	AT91SAM9X5_BASE_US0
+-#define AT91_USART1	AT91SAM9X5_BASE_US1
+-#define AT91_USART2	AT91SAM9X5_BASE_US2
+-#define AT91_USART3	AT91SAM9X5_BASE_US3
+ #define AT91_NB_USART	5
+ 
+ #define AT91_PMC	0xfffffc00
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9x5.h b/arch/arm/mach-at91/include/mach/at91sam9x5.h
+index 0c26eab7e6..112cda0aef 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9x5.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9x5.h
+@@ -18,8 +18,6 @@
+ /*
+  * Peripheral identifiers/interrupts.
+  */
+-#define AT91_ID_FIQ		0	/* Advanced Interrupt Controller (FIQ) */
+-#define AT91_ID_SYS		1	/* System Controller Interrupt */
+ #define AT91SAM9X5_ID_PIOAB	2	/* Parallel I/O Controller A and B */
+ #define AT91SAM9X5_ID_PIOCD	3	/* Parallel I/O Controller C and D */
+ #define AT91SAM9X5_ID_SMD	4	/* SMD Soft Modem (SMD) */
+@@ -123,17 +121,8 @@
+ #define AT91_RSTC	(0xfffffe00 - AT91_BASE_SYS)
+ #define AT91_SHDWC	(0xfffffe10 - AT91_BASE_SYS)
+ 
+-#define AT91_BASE_WDT	AT91SAM9X5_BASE_WDT
+ #define AT91_BASE_SMC	AT91SAM9X5_BASE_SMC
+-#define AT91_BASE_PIOA	AT91SAM9X5_BASE_PIOA
+-#define AT91_BASE_PIOB	AT91SAM9X5_BASE_PIOB
+-#define AT91_BASE_PIOC	AT91SAM9X5_BASE_PIOC
+-#define AT91_BASE_PIOD	AT91SAM9X5_BASE_PIOD
+ 
+-#define AT91_USART0	AT91SAM9X5_BASE_US0
+-#define AT91_USART1	AT91SAM9X5_BASE_US1
+-#define AT91_USART2	AT91SAM9X5_BASE_US2
+-#define AT91_USART3	AT91SAM9X5_BASE_US3
+ #define AT91_NB_USART	5
+ 
+ #define AT91_PMC	0xfffffc00
+diff --git a/arch/arm/mach-at91/include/mach/sama5d3.h b/arch/arm/mach-at91/include/mach/sama5d3.h
+index d53bcaee1a..00fd88dd72 100644
+--- a/arch/arm/mach-at91/include/mach/sama5d3.h
++++ b/arch/arm/mach-at91/include/mach/sama5d3.h
+@@ -15,8 +15,6 @@
+ /*
+  * Peripheral identifiers/interrupts.
+  */
+-#define AT91_ID_FIQ		 0	/* Advanced Interrupt Controller (FIQ) */
+-#define AT91_ID_SYS		 1	/* System Peripherals */
+ #define SAMA5D3_ID_DBGU		 2	/* debug Unit (usually no special interrupt line) */
+ #define SAMA5D3_ID_PIT		 3	/* Periodic Interval Timer Interrupt */
+ #define SAMA5D3_ID_WDT		 4	/* Watchdog timer Interrupt */
 -- 
 2.19.1
 
