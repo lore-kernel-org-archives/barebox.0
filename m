@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout02.posteo.de ([185.67.36.66])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gJR3H-00023d-Fg
- for barebox@lists.infradead.org; Sun, 04 Nov 2018 22:39:29 +0000
-Received: from submission (posteo.de [89.146.220.130]) 
- by mout02.posteo.de (Postfix) with ESMTPS id EA75D2400E6
- for <barebox@lists.infradead.org>; Sun,  4 Nov 2018 23:39:09 +0100 (CET)
-Received: from customer (localhost [127.0.0.1])
- by submission (posteo.de) with ESMTPSA id 42p9hr5wRTz9rxK
- for <barebox@lists.infradead.org>; Sun,  4 Nov 2018 23:39:08 +0100 (CET)
-Date: Sun, 4 Nov 2018 23:39:08 +0100
-From: Patrick Boettcher <patrick.boettcher@posteo.de>
-Message-ID: <20181104233908.48ce2577@yaise-pc1>
+ id 1gJaFw-0007HZ-Tq
+ for barebox@lists.infradead.org; Mon, 05 Nov 2018 08:29:10 +0000
+References: <20181104233908.48ce2577@yaise-pc1>
+From: Ulrich =?utf-8?Q?=C3=96lmann?= <u.oelmann@pengutronix.de>
+In-reply-to: <20181104233908.48ce2577@yaise-pc1>
+Date: Mon, 05 Nov 2018 09:28:53 +0100
+Message-ID: <6rd0rk7wsa.fsf@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,55 +17,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: barebox state is not fixed up into kernel-device-tree
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: barebox state is not fixed up into kernel-device-tree
+To: Patrick Boettcher <patrick.boettcher@posteo.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi,
-
-I'm using a device-state (for bootchooser) which is stored in an eeprom.
-
-Works fine from within barebox - read and write.
-
-Userspace does not see the state:
-
-  Neither /aliases/state nor /state found
-
-The displayed device-tree when booting with 'boot -v -v <name>' does
-not contain the state-entry.
-
-However, there is a warning of a failed fixup:
-
-  Failed to fixup node in of_state_fixup+0x1/0x1ac: No such device
-
-Could it be that the eeprom-alias is missing? I'm still learning
-device-tree and stuff and I'm not yet entirely sure how everything is
-related.
-
-The partition is created within a 
-
-  &eeprom {
-     [..]
-  }
-
-section and eeprom is defined as 
-
-  eeprom: eeprom@52 {
-
-  }
-
-(I added the 'eeprom: '- name/alias)
-
-Where am I missing the link?
-
-best regards,
---
-Patrick.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgUGF0cmljaywKClBhdHJpY2sgQm9ldHRjaGVyIDxwYXRyaWNrLmJvZXR0Y2hlckBwb3N0ZW8u
+ZGU+IHdyaXRlczoKPiBJJ20gdXNpbmcgYSBkZXZpY2Utc3RhdGUgKGZvciBib290Y2hvb3Nlcikg
+d2hpY2ggaXMgc3RvcmVkIGluIGFuCj4gZWVwcm9tLgo+Cj4gV29ya3MgZmluZSBmcm9tIHdpdGhp
+biBiYXJlYm94IC0gcmVhZCBhbmQgd3JpdGUuCj4KPiBVc2Vyc3BhY2UgZG9lcyBub3Qgc2VlIHRo
+ZSBzdGF0ZToKPgo+ICAgTmVpdGhlciAvYWxpYXNlcy9zdGF0ZSBub3IgL3N0YXRlIGZvdW5kCj4K
+PiBUaGUgZGlzcGxheWVkIGRldmljZS10cmVlIHdoZW4gYm9vdGluZyB3aXRoICdib290IC12IC12
+IDxuYW1lPicgZG9lcwo+IG5vdCBjb250YWluIHRoZSBzdGF0ZS1lbnRyeS4KPgo+IEhvd2V2ZXIs
+IHRoZXJlIGlzIGEgd2FybmluZyBvZiBhIGZhaWxlZCBmaXh1cDoKPgo+ICAgRmFpbGVkIHRvIGZp
+eHVwIG5vZGUgaW4gb2Zfc3RhdGVfZml4dXArMHgxLzB4MWFjOiBObyBzdWNoIGRldmljZQo+Cj4g
+Q291bGQgaXQgYmUgdGhhdCB0aGUgZWVwcm9tLWFsaWFzIGlzIG1pc3Npbmc/IEknbSBzdGlsbCBs
+ZWFybmluZwo+IGRldmljZS10cmVlIGFuZCBzdHVmZiBhbmQgSSdtIG5vdCB5ZXQgZW50aXJlbHkg
+c3VyZSBob3cgZXZlcnl0aGluZyBpcwo+IHJlbGF0ZWQuCj4KPiBUaGUgcGFydGl0aW9uIGlzIGNy
+ZWF0ZWQgd2l0aGluIGEKPgo+ICAgJmVlcHJvbSB7Cj4gICAgICBbLi5dCj4gICB9Cj4KPiBzZWN0
+aW9uIGFuZCBlZXByb20gaXMgZGVmaW5lZCBhcwo+Cj4gICBlZXByb206IGVlcHJvbUA1MiB7Cj4K
+PiAgIH0KPgo+IChJIGFkZGVkIHRoZSAnZWVwcm9tOiAnLSBuYW1lL2FsaWFzKQo+Cj4gV2hlcmUg
+YW0gSSBtaXNzaW5nIHRoZSBsaW5rPwoKdGhlcmUgd2FzIGEgcGF0Y2ggcmVjZW50bHkgdGhhdCBm
+aXhlZCBhIGJ1ZyBpbiB0aGUgY29udGV4dCBvZiBwYXJ0aXRpb24KZml4dXBzIGFuZCBhcyBhIHJl
+c3VsdCByZXBhaXJlZCB0aGUgc3RhdGUgZml4dXAgYXMgd2VsbCBmb3Igc29tZSBzZXR1cHM6Cgog
+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL3BpcGVybWFpbC9iYXJlYm94LzIwMTgtT2N0b2Jl
+ci8wMzUwOTEuaHRtbAoKUGxlYXNlIGNoZWNrIGlmIGl0IHNvbHZlcyB5b3VyIHByb2JsZW0uIElm
+IG5vdCB0aGVuIHBsZWFzZSBwcm92aWRlIG1vcmUKaW5zaWdodCBpbnRvIHlvdXIgZGV2aWNldHJl
+ZXMgKGJhcmVib3ggJiBrZXJuZWwpIGFuZCBwb3N0IGEgbGl0dGxlIGJpdAptb3JlIGNvbnRleHQg
+b2YgdGhlIHN0YXRlIG5vZGUgYXMgd2VsbCBhcyB0aGUgZWVwcm9tIGFuZCB0aGUgYWxpYXNlcwpu
+b2Rlcy4KCkJlc3QgcmVnYXJkcwpVbHJpY2gKLS0KUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIHwgVWxyaWNoIMOWbG1hbm4gICAgICAgICAgICAgICB8CkluZHVzdHJp
+YWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9u
+aXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBo
+b25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAy
+Njg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
+dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
