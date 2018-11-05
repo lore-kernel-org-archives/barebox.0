@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gJwuX-0008UW-S1
- for barebox@lists.infradead.org; Tue, 06 Nov 2018 08:40:35 +0000
-Date: Tue, 6 Nov 2018 09:40:21 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181106084021.xhnucn5k2rvwcxnz@pengutronix.de>
-References: <20181105153825.26450-1-l.stach@pengutronix.de>
+ id 1gJjg7-00065e-B4
+ for barebox@lists.infradead.org; Mon, 05 Nov 2018 18:32:48 +0000
+Received: by mail-pg1-x541.google.com with SMTP id f8-v6so4606855pgq.5
+ for <barebox@lists.infradead.org>; Mon, 05 Nov 2018 10:32:36 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon,  5 Nov 2018 10:32:18 -0800
+Message-Id: <20181105183222.25637-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181105153825.26450-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] fixup! ARM: add file for HYP mode related setup
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/4] RDU1 config blob loading
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Mon, Nov 05, 2018 at 04:38:24PM +0100, Lucas Stach wrote:
-> ---
->  arch/arm/cpu/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-> index 45de2728d01a..a35db435c1b9 100644
-> --- a/arch/arm/cpu/Makefile
-> +++ b/arch/arm/cpu/Makefile
-> @@ -4,7 +4,7 @@ obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions$(S64).o interrupts$(S64).o
->  obj-$(CONFIG_MMU) += mmu$(S64).o
->  lwl-y += lowlevel$(S64).o
->  obj-pbl-$(CONFIG_MMU) += mmu-early$(S64).o
-> -obj-pbl-y += hyp.o
-> +obj-pbl-$(CONFIG_CPU_32v7) += hyp.o
->  AFLAGS_hyp.o :=-Wa,-march=armv7-a -Wa,-mcpu=all
->  AFLAGS_pbl-hyp.o :=-Wa,-march=armv7-a -Wa,-mcpu=all
+Everyone:
 
-Applied, thanks.
+This is a small series adding patches necessary to load config blob on
+RDU1 boards, which, among other things, contains MAC address to be
+used for FEC. Hopefully all of the commits are self-explanatory.
 
-The series now compiles successfully \o/
+Feedback is welcome!
 
-Sascha
+Thanks,
+Andrey Smirnov
+
+Andrey Smirnov (4):
+  lib: Port CRC8 implementation from Linux kernel
+  nvmem: Port Linux driver for Microwire 93XX46 EEPROM chips
+  ARM: rdu1: Add an alias for Microwire EEPROM
+  ARM: rdu1: Implement RDU1 config loading
+
+ arch/arm/boards/zii-imx51-rdu1/board.c | 179 ++++++++++
+ arch/arm/dts/imx51-zii-rdu1.dts        |  12 +
+ arch/arm/mach-imx/Kconfig              |   1 +
+ drivers/nvmem/Kconfig                  |   8 +
+ drivers/nvmem/Makefile                 |   5 +-
+ drivers/nvmem/eeprom_93xx46.c          | 446 +++++++++++++++++++++++++
+ include/linux/crc8.h                   | 101 ++++++
+ lib/Kconfig                            |   7 +
+ lib/Makefile                           |   1 +
+ lib/crc8.c                             |  82 +++++
+ 10 files changed, 841 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/nvmem/eeprom_93xx46.c
+ create mode 100644 include/linux/crc8.h
+ create mode 100644 lib/crc8.c
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
