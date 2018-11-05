@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gJjgR-0006Bz-Mi
- for barebox@lists.infradead.org; Mon, 05 Nov 2018 18:33:09 +0000
-Received: by mail-pf1-x441.google.com with SMTP id b11-v6so4836670pfi.5
- for <barebox@lists.infradead.org>; Mon, 05 Nov 2018 10:33:01 -0800 (PST)
+ id 1gJjgR-0006BF-Mg
+ for barebox@lists.infradead.org; Mon, 05 Nov 2018 18:33:11 +0000
+Received: by mail-pf1-x441.google.com with SMTP id v68-v6so1244017pfk.0
+ for <barebox@lists.infradead.org>; Mon, 05 Nov 2018 10:32:57 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  5 Nov 2018 10:32:22 -0800
-Message-Id: <20181105183222.25637-5-andrew.smirnov@gmail.com>
+Date: Mon,  5 Nov 2018 10:32:19 -0800
+Message-Id: <20181105183222.25637-2-andrew.smirnov@gmail.com>
 In-Reply-To: <20181105183222.25637-1-andrew.smirnov@gmail.com>
 References: <20181105183222.25637-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,258 +23,245 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] ARM: rdu1: Implement RDU1 config loading
+Subject: [PATCH 1/4] lib: Port CRC8 implementation from Linux kernel
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-RDU1 stores various configuration parameters, including FEC's MAC
-address, in a configuration blob that can be located in on of three
-places: SPI NOR, RAVE SP EEPROM or Microwire EEPROM.
-
-This patch add an initcall to load those configuration variables from
-a valid source (CRC8 checked) as well as expose then as "config_<var>"
-environment variables.
-
-This patch also adds appropriate code to register MAC address obtained
-from config blob.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/zii-imx51-rdu1/board.c | 179 +++++++++++++++++++++++++
- arch/arm/dts/imx51-zii-rdu1.dts        |   7 +
- arch/arm/mach-imx/Kconfig              |   1 +
- 3 files changed, 187 insertions(+)
+ include/linux/crc8.h | 101 +++++++++++++++++++++++++++++++++++++++++++
+ lib/Kconfig          |   7 +++
+ lib/Makefile         |   1 +
+ lib/crc8.c           |  82 +++++++++++++++++++++++++++++++++++
+ 4 files changed, 191 insertions(+)
+ create mode 100644 include/linux/crc8.h
+ create mode 100644 lib/crc8.c
 
-diff --git a/arch/arm/boards/zii-imx51-rdu1/board.c b/arch/arm/boards/zii-imx51-rdu1/board.c
-index 46368cccc..f739f3b7b 100644
---- a/arch/arm/boards/zii-imx51-rdu1/board.c
-+++ b/arch/arm/boards/zii-imx51-rdu1/board.c
-@@ -17,9 +17,16 @@
+diff --git a/include/linux/crc8.h b/include/linux/crc8.h
+new file mode 100644
+index 000000000..13c8dabb0
+--- /dev/null
++++ b/include/linux/crc8.h
+@@ -0,0 +1,101 @@
++/*
++ * Copyright (c) 2011 Broadcom Corporation
++ *
++ * Permission to use, copy, modify, and/or distribute this software for any
++ * purpose with or without fee is hereby granted, provided that the above
++ * copyright notice and this permission notice appear in all copies.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
++ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
++ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
++ * SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
++ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
++ * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
++ * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++ */
++#ifndef __CRC8_H_
++#define __CRC8_H_
++
++#include <linux/types.h>
++
++/* see usage of this value in crc8() description */
++#define CRC8_INIT_VALUE		0xFF
++
++/*
++ * Return value of crc8() indicating valid message+crc. This is true
++ * if a CRC is inverted before transmission. The CRC computed over the
++ * whole received bitstream is _table[x], where x is the bit pattern
++ * of the modification (almost always 0xff).
++ */
++#define CRC8_GOOD_VALUE(_table)	(_table[0xFF])
++
++/* required table size for crc8 algorithm */
++#define CRC8_TABLE_SIZE			256
++
++/* helper macro assuring right table size is used */
++#define DECLARE_CRC8_TABLE(_table) \
++	static u8 _table[CRC8_TABLE_SIZE]
++
++/**
++ * crc8_populate_lsb - fill crc table for given polynomial in regular bit order.
++ *
++ * @table:	table to be filled.
++ * @polynomial:	polynomial for which table is to be filled.
++ *
++ * This function fills the provided table according the polynomial provided for
++ * regular bit order (lsb first). Polynomials in CRC algorithms are typically
++ * represented as shown below.
++ *
++ *	poly = x^8 + x^7 + x^6 + x^4 + x^2 + 1
++ *
++ * For lsb first direction x^7 maps to the lsb. So the polynomial is as below.
++ *
++ * - lsb first: poly = 10101011(1) = 0xAB
++ */
++void crc8_populate_lsb(u8 table[CRC8_TABLE_SIZE], u8 polynomial);
++
++/**
++ * crc8_populate_msb - fill crc table for given polynomial in reverse bit order.
++ *
++ * @table:	table to be filled.
++ * @polynomial:	polynomial for which table is to be filled.
++ *
++ * This function fills the provided table according the polynomial provided for
++ * reverse bit order (msb first). Polynomials in CRC algorithms are typically
++ * represented as shown below.
++ *
++ *	poly = x^8 + x^7 + x^6 + x^4 + x^2 + 1
++ *
++ * For msb first direction x^7 maps to the msb. So the polynomial is as below.
++ *
++ * - msb first: poly = (1)11010101 = 0xD5
++ */
++void crc8_populate_msb(u8 table[CRC8_TABLE_SIZE], u8 polynomial);
++
++/**
++ * crc8() - calculate a crc8 over the given input data.
++ *
++ * @table:	crc table used for calculation.
++ * @pdata:	pointer to data buffer.
++ * @nbytes:	number of bytes in data buffer.
++ * @crc:	previous returned crc8 value.
++ *
++ * The CRC8 is calculated using the polynomial given in crc8_populate_msb()
++ * or crc8_populate_lsb().
++ *
++ * The caller provides the initial value (either %CRC8_INIT_VALUE
++ * or the previous returned value) to allow for processing of
++ * discontiguous blocks of data.  When generating the CRC the
++ * caller is responsible for complementing the final return value
++ * and inserting it into the byte stream.  When validating a byte
++ * stream (including CRC8), a final return value of %CRC8_GOOD_VALUE
++ * indicates the byte stream data can be considered valid.
++ *
++ * Reference:
++ * "A Painless Guide to CRC Error Detection Algorithms", ver 3, Aug 1993
++ * Williams, Ross N., ross<at>ross.net
++ * (see URL http://www.ross.net/crc/download/crc_v3.txt).
++ */
++u8 crc8(const u8 table[CRC8_TABLE_SIZE], u8 *pdata, size_t nbytes, u8 crc);
++
++#endif /* __CRC8_H_ */
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 860d471de..67680adbb 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -118,6 +118,13 @@ config CRC_CCITT
+ 	  the kernel tree does. Such modules that use library CRC-CCITT
+ 	  functions require M here.
  
- #include <common.h>
- #include <init.h>
-+#include <environment.h>
- #include <mach/bbu.h>
- #include <libfile.h>
- #include <mach/imx5.h>
-+#include <net.h>
++config CRC8
++        bool "CRC8 function"
++	help
++	  This option provides CRC8 function. Drivers may select this
++	  when they need to do cyclic redundancy check according CRC8
++	  algorithm. Module will be called crc8.
++
+ source lib/gui/Kconfig
+ 
+ source lib/fonts/Kconfig
+diff --git a/lib/Makefile b/lib/Makefile
+index 24dc3d9ee..8ece2c284 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -66,6 +66,7 @@ obj-y			+= int_sqrt.o
+ obj-y			+= parseopt.o
+ obj-y			+= clz_ctz.o
+ obj-$(CONFIG_CRC_CCITT) += crc-ccitt.o
++obj-$(CONFIG_CRC8)	+= crc8.o
+ 
+ # GCC library routines
+ obj-$(CONFIG_GENERIC_LIB_ASHLDI3) += ashldi3.o
+diff --git a/lib/crc8.c b/lib/crc8.c
+new file mode 100644
+index 000000000..a89160bde
+--- /dev/null
++++ b/lib/crc8.c
+@@ -0,0 +1,82 @@
++/*
++ * Copyright (c) 2011 Broadcom Corporation
++ *
++ * Permission to use, copy, modify, and/or distribute this software for any
++ * purpose with or without fee is hereby granted, provided that the above
++ * copyright notice and this permission notice appear in all copies.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
++ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
++ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
++ * SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
++ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
++ * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
++ * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++ */
++#include <module.h>
 +#include <linux/crc8.h>
-+#include <linux/sizes.h>
-+#include <linux/nvmem-consumer.h>
 +
-+#include <envfs.h>
- 
- static int zii_rdu1_init(void)
- {
-@@ -45,3 +52,175 @@ static int zii_rdu1_init(void)
- 	return 0;
- }
- coredevice_initcall(zii_rdu1_init);
-+
-+#define KEY		0
-+#define VALUE		1
-+#define STRINGS_NUM	2
-+
-+static int zii_rdu1_load_config(void)
++/**
++ * crc8_populate_msb - fill crc table for given polynomial in reverse bit order.
++ *
++ * @table:	table to be filled.
++ * @polynomial:	polynomial for which table is to be filled.
++ */
++void crc8_populate_msb(u8 table[CRC8_TABLE_SIZE], u8 polynomial)
 +{
-+	struct device_node *np, *root;
-+	size_t len, remaining_space;
-+	const uint8_t crc8_polynomial = 0x8c;
-+	DECLARE_CRC8_TABLE(crc8_table);
-+	const char *cursor, *end;
-+	const char *file = "/dev/dataflash0.config";
-+	uint8_t *config;
-+	int ret = 0;
-+	enum {
-+		BLOB_SPINOR,
-+		BLOB_RAVE_SP_EEPROM,
-+		BLOB_MICROWIRE,
-+	} blob;
++	int i, j;
++	const u8 msbit = 0x80;
++	u8 t = msbit;
 +
-+	if (!of_machine_is_compatible("zii,imx51-rdu1"))
-+		return 0;
++	table[0] = 0;
 +
-+	crc8_populate_lsb(crc8_table, crc8_polynomial);
-+
-+	for (blob = BLOB_SPINOR; blob <= BLOB_MICROWIRE; blob++) {
-+		switch (blob) {
-+		case BLOB_MICROWIRE:
-+			file = "/dev/microwire-eeprom";
-+			/* FALLTHROUGH */
-+		case BLOB_SPINOR:
-+			config = read_file(file, &remaining_space);
-+			if (!config) {
-+				pr_err("Failed to read %s\n", file);
-+				return -EIO;
-+			}
-+			break;
-+		case BLOB_RAVE_SP_EEPROM:
-+			/* Needed for error logging below */
-+			file = "shadow copy in RAVE SP EEPROM";
-+
-+			root = of_get_root_node();
-+			np   = of_find_node_by_name(root, "eeprom@a4");
-+			if (!np)
-+				return -ENODEV;
-+
-+			pr_info("Loading %s, this may take a while\n", file);
-+
-+			remaining_space = SZ_1K;
-+			config = nvmem_cell_get_and_read(np, "shadow-config",
-+							 remaining_space);
-+			if (IS_ERR(config))
-+				return PTR_ERR(config);
-+
-+			break;
-+		}
-+
-+		/*
-+		 * The environment blob has its CRC8 stored as the
-+		 * last byte of the blob, so calculating CRC8 over the
-+		 * whole things should return 0
-+		 */
-+		if (crc8(crc8_table, config, remaining_space, 0)) {
-+			pr_err("CRC mismatch for %s\n", file);
-+			free(config);
-+			config = NULL;
-+		} else {
-+			/*
-+			 * We are done if there's a blob with a valid
-+			 * CRC8
-+			 */
-+			break;
-+		}
++	for (i = 1; i < CRC8_TABLE_SIZE; i *= 2) {
++		t = (t << 1) ^ (t & msbit ? polynomial : 0);
++		for (j = 0; j < i; j++)
++			table[i+j] = table[j] ^ t;
 +	}
-+
-+	if (!config) {
-+		pr_err("No valid config blobs were found\n");
-+		ret = -EINVAL;
-+		goto free_config;
-+	}
-+
-+	/*
-+	 * Last byte is CRC8, so it is of no use for our parsing
-+	 * algorithm
-+	 */
-+	remaining_space--;
-+
-+	cursor = config;
-+	end = cursor + remaining_space;
-+
-+	/*
-+	 * The environemnt is stored a a bunch of zero-terminated
-+	 * ASCII strings in "key":"value" pairs
-+	 */
-+	while (cursor < end) {
-+		const char *strings[STRINGS_NUM] = { NULL, NULL };
-+		char *key;
-+		unsigned int i;
-+
-+		for (i = 0; i < ARRAY_SIZE(strings); i++) {
-+			if (!*cursor) {
-+				/* We assume that last key:value pair
-+				 * will be terminated by an extra '\0'
-+				 * at the end */
-+				goto free_config;
-+			}
-+
-+			len = strnlen(cursor, remaining_space);
-+			if (len >= remaining_space) {
-+				ret = -EOVERFLOW;
-+				goto free_config;
-+			}
-+
-+			strings[i] = cursor;
-+
-+			len++;	/* Account for '\0' at the end of the string */
-+			cursor += len;
-+			remaining_space -= len;
-+
-+			if (cursor > end) {
-+				ret = -EOVERFLOW;
-+				goto free_config;
-+			}
-+		}
-+
-+		key = basprintf("config_%s", strings[KEY]);
-+		ret = setenv(key, strings[VALUE]);
-+		free(key);
-+
-+		if (ret)
-+			goto free_config;
-+	}
-+
-+free_config:
-+	free(config);
-+	return ret;
 +}
-+late_initcall(zii_rdu1_load_config);
++EXPORT_SYMBOL(crc8_populate_msb);
 +
-+static int zii_rdu1_ethernet_init(void)
++/**
++ * crc8_populate_lsb - fill crc table for given polynomial in regular bit order.
++ *
++ * @table:	table to be filled.
++ * @polynomial:	polynomial for which table is to be filled.
++ */
++void crc8_populate_lsb(u8 table[CRC8_TABLE_SIZE], u8 polynomial)
 +{
-+	const char *mac_string;
-+	struct device_node *np, *root;
-+	uint8_t mac[ETH_ALEN];
-+	int ret;
++	int i, j;
++	u8 t = 1;
 +
-+	if (!of_machine_is_compatible("zii,imx51-rdu1"))
-+		return 0;
++	table[0] = 0;
 +
-+	root = of_get_root_node();
-+
-+	np = of_find_node_by_alias(root, "ethernet0");
-+	if (!np) {
-+		pr_warn("Failed to find ethernet0\n");
-+		return -ENOENT;
++	for (i = (CRC8_TABLE_SIZE >> 1); i; i >>= 1) {
++		t = (t >> 1) ^ (t & 1 ? polynomial : 0);
++		for (j = 0; j < CRC8_TABLE_SIZE; j += 2*i)
++			table[i+j] = table[j] ^ t;
 +	}
-+
-+	mac_string = getenv("config_mac");
-+	if (!mac_string)
-+		return -ENOENT;
-+
-+	ret = string_to_ethaddr(mac_string, mac);
-+	if (ret < 0)
-+		return ret;
-+
-+	of_eth_register_ethaddr(np, mac);
-+	return 0;
 +}
-+/* This needs to happen only after zii_rdu1_load_config was
-+ * executed */
-+environment_initcall(zii_rdu1_ethernet_init);
-diff --git a/arch/arm/dts/imx51-zii-rdu1.dts b/arch/arm/dts/imx51-zii-rdu1.dts
-index b5744dac1..01e46baf2 100644
---- a/arch/arm/dts/imx51-zii-rdu1.dts
-+++ b/arch/arm/dts/imx51-zii-rdu1.dts
-@@ -77,9 +77,16 @@
- 		};
- 
- 		eeprom@a4 {
-+			nvmem-cells = <&shadow_config>;
-+			nvmem-cell-names = "shadow-config";
++EXPORT_SYMBOL(crc8_populate_lsb);
 +
- 			boot_source: boot-source@83 {
- 				reg = <0x83 1>;
- 			};
++/**
++ * crc8 - calculate a crc8 over the given input data.
++ *
++ * @table: crc table used for calculation.
++ * @pdata: pointer to data buffer.
++ * @nbytes: number of bytes in data buffer.
++ * @crc: previous returned crc8 value.
++ */
++u8 crc8(const u8 table[CRC8_TABLE_SIZE], u8 *pdata, size_t nbytes, u8 crc)
++{
++	/* loop over the buffer data */
++	while (nbytes-- > 0)
++		crc = table[(crc ^ *pdata++) & 0xff];
 +
-+			shadow_config: shadow-config@1000 {
-+				reg = <0x1000 0x400>;
-+			};
- 		};
- 	};
- };
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index c0788e7d9..c0a4cc1c8 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -425,6 +425,7 @@ config MACH_ZII_RDU1
- 	bool "ZII i.MX51 RDU1"
- 	select ARCH_IMX51
- 	select MACH_FREESCALE_MX51_PDK_POWER
-+	select CRC8
- 
- config MACH_ZII_RDU2
- 	bool "ZII i.MX6Q(+) RDU2"
++	return crc;
++}
++EXPORT_SYMBOL(crc8);
++
++MODULE_DESCRIPTION("CRC8 (by Williams, Ross N.) function");
++MODULE_AUTHOR("Broadcom Corporation");
++MODULE_LICENSE("Dual BSD/GPL");
 -- 
 2.19.1
 
