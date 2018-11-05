@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gJhAC-0000VD-9T
- for barebox@lists.infradead.org; Mon, 05 Nov 2018 15:51:50 +0000
+ id 1gJhA7-0000PP-Es
+ for barebox@lists.infradead.org; Mon, 05 Nov 2018 15:51:54 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  5 Nov 2018 16:51:09 +0100
-Message-Id: <20181105155113.3434-19-s.hauer@pengutronix.de>
+Date: Mon,  5 Nov 2018 16:50:59 +0100
+Message-Id: <20181105155113.3434-9-s.hauer@pengutronix.de>
 In-Reply-To: <20181105155113.3434-1-s.hauer@pengutronix.de>
 References: <20181105155113.3434-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,93 +21,432 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/22] ARM: at91rm9200ek: use plain readl/writel for pmc
- accesses
+Subject: [PATCH 08/22] ARM: at91: consolidate phy reset functions
 To: Barebox List <barebox@lists.infradead.org>
 
-at91_pmc_write() needs a compile time base address, so rather use plain
-read/writel.
+Many boards have the same ethernet phy reset function, so share the code
+in a common function.
+While at it remove the AT91_RSTC offset from the rstc register defines.
+AT91_RSTC was the offset between the AT91_SYSTEM_BASE and the reset
+controller.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/at91rm9200ek/lowlevel.c      | 17 +++++++++--------
- arch/arm/mach-at91/include/mach/at91rm9200.h |  1 +
- 2 files changed, 10 insertions(+), 8 deletions(-)
+ arch/arm/boards/animeo_ip/init.c              | 20 +--------------
+ arch/arm/boards/at91sam9260ek/init.c          | 21 +---------------
+ arch/arm/boards/dss11/init.c                  | 22 +---------------
+ arch/arm/boards/haba-knx/init.c               | 23 +----------------
+ arch/arm/boards/qil-a926x/init.c              | 22 +---------------
+ arch/arm/boards/telit-evk-pro3/init.c         | 21 +---------------
+ arch/arm/boards/usb-a926x/init.c              | 24 +++---------------
+ arch/arm/mach-at91/at91sam9_reset.S           |  2 +-
+ arch/arm/mach-at91/at91sam9g45_reset.S        |  2 +-
+ arch/arm/mach-at91/include/mach/at91_rstc.h   |  6 ++---
+ .../include/mach/at91sam926x_board_init.h     |  2 +-
+ arch/arm/mach-at91/include/mach/board.h       |  3 +++
+ arch/arm/mach-at91/setup.c                    | 25 +++++++++++++++++++
+ 13 files changed, 43 insertions(+), 150 deletions(-)
 
-diff --git a/arch/arm/boards/at91rm9200ek/lowlevel.c b/arch/arm/boards/at91rm9200ek/lowlevel.c
-index 3fb6ca3381..a5c9058552 100644
---- a/arch/arm/boards/at91rm9200ek/lowlevel.c
-+++ b/arch/arm/boards/at91rm9200ek/lowlevel.c
-@@ -26,23 +26,24 @@ void __naked __bare_init barebox_arm_reset_vector(void)
- 	u32 r;
+diff --git a/arch/arm/boards/animeo_ip/init.c b/arch/arm/boards/animeo_ip/init.c
+index 847417398a..775c818df6 100644
+--- a/arch/arm/boards/animeo_ip/init.c
++++ b/arch/arm/boards/animeo_ip/init.c
+@@ -231,30 +231,12 @@ static void animeo_ip_power_control(void)
+ 
+ static void animeo_ip_phy_reset(void)
+ {
+-	unsigned long rstc;
  	int i;
- 	void __iomem *mc = IOMEM(AT91RM9200_BASE_MC);
-+	void __iomem *pmc = IOMEM(AT91RM9200_BASE_PMC);
+-	struct clk *clk = clk_get(NULL, "macb_clk");
+-
+-	clk_enable(clk);
  
- 	arm_cpu_lowlevel_init();
+ 	for (i = AT91_PIN_PA12; i <= AT91_PIN_PA29; i++)
+ 		at91_set_gpio_input(i, 0);
+ 
+-	rstc = at91_sys_read(AT91_RSTC_MR) & AT91_RSTC_ERSTL;
+-
+-	/* Need to reset PHY -> 500ms reset */
+-	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
+-				     (AT91_RSTC_ERSTL & (0x0d << 8)) |
+-				     AT91_RSTC_URSTEN);
+-
+-	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY | AT91_RSTC_EXTRST);
+-
+-	/* Wait for end hardware reset */
+-	while (!(at91_sys_read(AT91_RSTC_SR) & AT91_RSTC_NRSTL))
+-		;
+-
+-	/* Restore NRST value */
+-	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY | (rstc) | AT91_RSTC_URSTEN);
++	at91sam_phy_reset(IOMEM(AT91SAM9260_BASE_RSTC));
+ }
+ 
+ #define MACB_SA1B	0x0098
+diff --git a/arch/arm/boards/at91sam9260ek/init.c b/arch/arm/boards/at91sam9260ek/init.c
+index 5a21ac12fe..de74835d78 100644
+--- a/arch/arm/boards/at91sam9260ek/init.c
++++ b/arch/arm/boards/at91sam9260ek/init.c
+@@ -125,11 +125,6 @@ static struct macb_platform_data macb_pdata = {
+ 
+ static void at91sam9260ek_phy_reset(void)
+ {
+-	unsigned long rstc;
+-	struct clk *clk = clk_get(NULL, "macb_clk");
+-
+-	clk_enable(clk);
+-
+ 	at91_set_gpio_input(AT91_PIN_PA14, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA15, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA17, 0);
+@@ -137,21 +132,7 @@ static void at91sam9260ek_phy_reset(void)
+ 	at91_set_gpio_input(AT91_PIN_PA26, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA28, 0);
+ 
+-	rstc = at91_sys_read(AT91_RSTC_MR) & AT91_RSTC_ERSTL;
+-
+-	/* Need to reset PHY -> 500ms reset */
+-	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
+-				     (AT91_RSTC_ERSTL & (0x0d << 8)) |
+-				     AT91_RSTC_URSTEN);
+-
+-	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY | AT91_RSTC_EXTRST);
+-
+-	/* Wait for end hardware reset */
+-	while (!(at91_sys_read(AT91_RSTC_SR) & AT91_RSTC_NRSTL))
+-		;
+-
+-	/* Restore NRST value */
+-	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY | (rstc) | AT91_RSTC_URSTEN);
++	at91sam_phy_reset(IOMEM(AT91SAM9260_BASE_RSTC));
+ }
+ 
+ /*
+diff --git a/arch/arm/boards/dss11/init.c b/arch/arm/boards/dss11/init.c
+index 321c383ffc..432613ff4a 100644
+--- a/arch/arm/boards/dss11/init.c
++++ b/arch/arm/boards/dss11/init.c
+@@ -80,11 +80,6 @@ static struct macb_platform_data macb_pdata = {
+ 
+ static void dss11_phy_reset(void)
+ {
+-	unsigned long rstc;
+-	struct clk *clk = clk_get(NULL, "macb_clk");
+-
+-	clk_enable(clk);
+-
+ 	at91_set_gpio_input(AT91_PIN_PA14, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA15, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA17, 0);
+@@ -92,22 +87,7 @@ static void dss11_phy_reset(void)
+ 	at91_set_gpio_input(AT91_PIN_PA26, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA28, 0);
+ 
+-	rstc = at91_sys_read(AT91_RSTC_MR) & AT91_RSTC_ERSTL;
+-
+-	/* Need to reset PHY -> 500ms reset */
+-	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
+-				     (AT91_RSTC_ERSTL & (0x0d << 8)) |
+-				     AT91_RSTC_URSTEN);
+-
+-	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY | AT91_RSTC_EXTRST);
+-
+-	/* Wait for end hardware reset */
+-	while (!(at91_sys_read(AT91_RSTC_SR) & AT91_RSTC_NRSTL));
+-
+-	/* Restore NRST value */
+-	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
+-				     (rstc) |
+-				     AT91_RSTC_URSTEN);
++	at91sam_phy_reset(IOMEM(AT91SAM9260_BASE_RSTC));
+ }
+ 
+ static struct atmel_mci_platform_data dss11_mci_data = {
+diff --git a/arch/arm/boards/haba-knx/init.c b/arch/arm/boards/haba-knx/init.c
+index 36f1e8b741..4a000d9aed 100644
+--- a/arch/arm/boards/haba-knx/init.c
++++ b/arch/arm/boards/haba-knx/init.c
+@@ -91,33 +91,12 @@ static struct macb_platform_data macb_pdata = {
+ 
+ static void haba_knx_phy_reset(void)
+ {
+-	unsigned long rstc;
+-	struct clk *clk = clk_get(NULL, "macb_clk");
+-
+-	clk_enable(clk);
+-
+ 	at91_set_gpio_input(AT91_PIN_PA14, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA15, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA17, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA18, 0);
+ 
+-	rstc = at91_sys_read(AT91_RSTC_MR) & AT91_RSTC_ERSTL;
+-
+-	/* Need to reset PHY -> 500ms reset */
+-	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
+-				     (AT91_RSTC_ERSTL & (0x0d << 8)) |
+-				     AT91_RSTC_URSTEN);
+-
+-	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY | AT91_RSTC_EXTRST);
+-
+-	/* Wait for end hardware reset */
+-	while (!(at91_sys_read(AT91_RSTC_SR) & AT91_RSTC_NRSTL))
+-		;
+-
+-	/* Restore NRST value */
+-	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
+-				     (rstc) |
+-				     AT91_RSTC_URSTEN);
++	at91sam_phy_reset(IOMEM(AT91SAM9260_BASE_RSTC));
+ }
+ 
+ #define MACB_SA1B	0x0098
+diff --git a/arch/arm/boards/qil-a926x/init.c b/arch/arm/boards/qil-a926x/init.c
+index 3ef9872797..6fa0df033e 100644
+--- a/arch/arm/boards/qil-a926x/init.c
++++ b/arch/arm/boards/qil-a926x/init.c
+@@ -118,11 +118,6 @@ static struct macb_platform_data macb_pdata = {
+ 
+ static void qil_a9260_phy_reset(void)
+ {
+-	unsigned long rstc;
+-	struct clk *clk = clk_get(NULL, "macb_clk");
+-
+-	clk_enable(clk);
+-
+ 	at91_set_gpio_input(AT91_PIN_PA14, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA15, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA17, 0);
+@@ -130,22 +125,7 @@ static void qil_a9260_phy_reset(void)
+ 	at91_set_gpio_input(AT91_PIN_PA26, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA28, 0);
+ 
+-	rstc = at91_sys_read(AT91_RSTC_MR) & AT91_RSTC_ERSTL;
+-
+-	/* Need to reset PHY -> 500ms reset */
+-	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
+-				     (AT91_RSTC_ERSTL & (0x0d << 8)) |
+-				     AT91_RSTC_URSTEN);
+-
+-	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY | AT91_RSTC_EXTRST);
+-
+-	/* Wait for end hardware reset */
+-	while (!(at91_sys_read(AT91_RSTC_SR) & AT91_RSTC_NRSTL));
+-
+-	/* Restore NRST value */
+-	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
+-				     (rstc) |
+-				     AT91_RSTC_URSTEN);
++	at91sam_phy_reset(IOMEM(AT91SAM9260_BASE_RSTC));
+ }
+ 
+ /*
+diff --git a/arch/arm/boards/telit-evk-pro3/init.c b/arch/arm/boards/telit-evk-pro3/init.c
+index ea63b1a094..4f536079cc 100644
+--- a/arch/arm/boards/telit-evk-pro3/init.c
++++ b/arch/arm/boards/telit-evk-pro3/init.c
+@@ -72,11 +72,6 @@ static struct macb_platform_data macb_pdata = {
+ 
+ static void evk_phy_reset(void)
+ {
+-	unsigned long rstc;
+-	struct clk *clk = clk_get(NULL, "macb_clk");
+-
+-	clk_enable(clk);
+-
+ 	at91_set_gpio_input(AT91_PIN_PA14, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA15, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA17, 0);
+@@ -84,21 +79,7 @@ static void evk_phy_reset(void)
+ 	at91_set_gpio_input(AT91_PIN_PA26, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA28, 0);
+ 
+-	rstc = at91_sys_read(AT91_RSTC_MR) & AT91_RSTC_ERSTL;
+-
+-	/* Need to reset PHY -> 500ms reset */
+-	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
+-				     (AT91_RSTC_ERSTL & (0x0d << 8)) |
+-				     AT91_RSTC_URSTEN);
+-
+-	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY | AT91_RSTC_EXTRST);
+-
+-	/* Wait for end hardware reset */
+-	while (!(at91_sys_read(AT91_RSTC_SR) & AT91_RSTC_NRSTL))
+-		;
+-
+-	/* Restore NRST value */
+-	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY | (rstc) | AT91_RSTC_URSTEN);
++	at91sam_phy_reset(IOMEM(AT91SAM9260_BASE_RSTC));
+ }
+ 
+ /*
+diff --git a/arch/arm/boards/usb-a926x/init.c b/arch/arm/boards/usb-a926x/init.c
+index 12e8f4e0d6..e431cd4603 100644
+--- a/arch/arm/boards/usb-a926x/init.c
++++ b/arch/arm/boards/usb-a926x/init.c
+@@ -26,6 +26,7 @@
+ #include <io.h>
+ #include <envfs.h>
+ #include <mach/hardware.h>
++#include <mach/at91sam926x.h>
+ #include <nand.h>
+ #include <linux/sizes.h>
+ #include <linux/mtd/nand.h>
+@@ -128,11 +129,6 @@ static struct macb_platform_data macb_pdata = {
+ 
+ static void usb_a9260_phy_reset(void)
+ {
+-	unsigned long rstc;
+-	struct clk *clk = clk_get(NULL, "macb_clk");
+-
+-	clk_enable(clk);
+-
+ 	at91_set_gpio_input(AT91_PIN_PA14, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA15, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA17, 0);
+@@ -140,22 +136,8 @@ static void usb_a9260_phy_reset(void)
+ 	at91_set_gpio_input(AT91_PIN_PA26, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA28, 0);
+ 
+-	rstc = at91_sys_read(AT91_RSTC_MR) & AT91_RSTC_ERSTL;
+-
+-	/* Need to reset PHY -> 500ms reset */
+-	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
+-				     (AT91_RSTC_ERSTL & (0x0d << 8)) |
+-				     AT91_RSTC_URSTEN);
+-
+-	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY | AT91_RSTC_EXTRST);
+-
+-	/* Wait for end hardware reset */
+-	while (!(at91_sys_read(AT91_RSTC_SR) & AT91_RSTC_NRSTL));
+-
+-	/* Restore NRST value */
+-	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
+-				     (rstc) |
+-				     AT91_RSTC_URSTEN);
++	/* same address for the different supported SoCs */
++	at91sam_phy_reset(IOMEM(AT91SAM926X_BASE_RSTC));
+ }
+ 
+ static void usb_a9260_add_device_eth(void)
+diff --git a/arch/arm/mach-at91/at91sam9_reset.S b/arch/arm/mach-at91/at91sam9_reset.S
+index 890545edbf..c10674aa40 100644
+--- a/arch/arm/mach-at91/at91sam9_reset.S
++++ b/arch/arm/mach-at91/at91sam9_reset.S
+@@ -40,4 +40,4 @@ restart_sam9:		ldr	r0, .at91_va_base_sdramc			@ preload constants
+ .at91_va_base_sdramc:
+ 	.word AT91_BASE_SYS + AT91_SDRAMC
+ .at91_va_base_rstc_cr:
+-	.word AT91_BASE_SYS + AT91_RSTC_CR
++	.word AT91_BASE_SYS + AT91_RSTC + AT91_RSTC_CR
+diff --git a/arch/arm/mach-at91/at91sam9g45_reset.S b/arch/arm/mach-at91/at91sam9g45_reset.S
+index 2cb113cdb4..be2ad9d396 100644
+--- a/arch/arm/mach-at91/at91sam9g45_reset.S
++++ b/arch/arm/mach-at91/at91sam9g45_reset.S
+@@ -37,4 +37,4 @@ restart_sam9g45:	ldr	r0, .at91_va_base_sdramc	@ preload constants
+ .at91_va_base_sdramc:
+ 	.word AT91_BASE_SYS + AT91_DDRSDRC0
+ .at91_va_base_rstc_cr:
+-	.word AT91_BASE_SYS + AT91_RSTC_CR
++	.word AT91_BASE_SYS + AT91_RSTC + AT91_RSTC_CR
+diff --git a/arch/arm/mach-at91/include/mach/at91_rstc.h b/arch/arm/mach-at91/include/mach/at91_rstc.h
+index e49caef921..d67bed5213 100644
+--- a/arch/arm/mach-at91/include/mach/at91_rstc.h
++++ b/arch/arm/mach-at91/include/mach/at91_rstc.h
+@@ -16,13 +16,13 @@
+ #ifndef AT91_RSTC_H
+ #define AT91_RSTC_H
+ 
+-#define AT91_RSTC_CR		(AT91_RSTC + 0x00)	/* Reset Controller Control Register */
++#define AT91_RSTC_CR		(0x00)	/* Reset Controller Control Register */
+ #define		AT91_RSTC_PROCRST	(1 << 0)		/* Processor Reset */
+ #define		AT91_RSTC_PERRST	(1 << 2)		/* Peripheral Reset */
+ #define		AT91_RSTC_EXTRST	(1 << 3)		/* External Reset */
+ #define		AT91_RSTC_KEY		(0xa5 << 24)		/* KEY Password */
+ 
+-#define AT91_RSTC_SR		(AT91_RSTC + 0x04)	/* Reset Controller Status Register */
++#define AT91_RSTC_SR		(0x04)	/* Reset Controller Status Register */
+ #define		AT91_RSTC_URSTS		(1 << 0)		/* User Reset Status */
+ #define		AT91_RSTC_RSTTYP	(7 << 8)		/* Reset Type */
+ #define			AT91_RSTC_RSTTYP_GENERAL	(0 << 8)
+@@ -33,7 +33,7 @@
+ #define		AT91_RSTC_NRSTL		(1 << 16)		/* NRST Pin Level */
+ #define		AT91_RSTC_SRCMP		(1 << 17)		/* Software Reset Command in Progress */
+ 
+-#define AT91_RSTC_MR		(AT91_RSTC + 0x08)	/* Reset Controller Mode Register */
++#define AT91_RSTC_MR		(0x08)	/* Reset Controller Mode Register */
+ #define		AT91_RSTC_URSTEN	(1 << 0)		/* User Reset Enable */
+ #define		AT91_RSTC_URSTIEN	(1 << 4)		/* User Reset Interrupt Enable */
+ #define		AT91_RSTC_ERSTL		(0xf << 8)		/* External Reset Length */
+diff --git a/arch/arm/mach-at91/include/mach/at91sam926x_board_init.h b/arch/arm/mach-at91/include/mach/at91sam926x_board_init.h
+index b93b37d8c7..42bb6a04c1 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam926x_board_init.h
++++ b/arch/arm/mach-at91/include/mach/at91sam926x_board_init.h
+@@ -170,7 +170,7 @@ static void __always_inline at91sam926x_board_init(struct at91sam926x_board_cfg
+ 	at91sam926x_sdramc_init(cfg);
+ 
+ 	/* User reset enable*/
+-	at91_sys_write(AT91_RSTC_MR, cfg->rstc_rmr);
++	writel(cfg->rstc_rmr, AT91SAM926X_BASE_RSTC + AT91_RSTC_MR);
  
  	/*
- 	 * PMC Check if the PLL is already initialized
- 	 */
--	r = at91_pmc_read(AT91_PMC_MCKR);
-+	r = __raw_readl(pmc + AT91_PMC_MCKR);
- 	if (r & AT91_PMC_CSS)
- 		goto end;
+ 	 * When boot from external boot
+diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
+index 7735a6f38b..56c86f0bfb 100644
+--- a/arch/arm/mach-at91/include/mach/board.h
++++ b/arch/arm/mach-at91/include/mach/board.h
+@@ -164,4 +164,7 @@ struct at91_spi_platform_data {
+ void at91_add_device_spi(int spi_id, struct at91_spi_platform_data *pdata);
  
- 	/*
- 	 * Enable the Main Oscillator
- 	 */
--	at91_pmc_write(AT91_CKGR_MOR, CONFIG_SYS_MOR_VAL);
-+	__raw_writel(CONFIG_SYS_MOR_VAL, pmc + AT91_CKGR_MOR);
+ void __init at91_add_device_lcdc(struct atmel_lcdfb_platform_data *data);
++
++void at91sam_phy_reset(void __iomem *rstc_base);
++
+ #endif
+diff --git a/arch/arm/mach-at91/setup.c b/arch/arm/mach-at91/setup.c
+index 7a19c45ea4..0cc3cc3dec 100644
+--- a/arch/arm/mach-at91/setup.c
++++ b/arch/arm/mach-at91/setup.c
+@@ -9,10 +9,12 @@
+ #include <io.h>
+ #include <init.h>
+ #include <restart.h>
++#include <linux/clk.h>
  
- 	do {
--		r = at91_pmc_read(AT91_PMC_SR);
-+		r = __raw_readl(pmc + AT91_PMC_SR);
- 	} while (!(r & AT91_PMC_MOSCS));
+ #include <mach/hardware.h>
+ #include <mach/cpu.h>
+ #include <mach/at91_dbgu.h>
++#include <mach/at91_rstc.h>
  
- 	/*
-@@ -62,24 +63,24 @@ void __naked __bare_init barebox_arm_reset_vector(void)
- 	/*
- 	 * PLLAR: x MHz for PCK
- 	 */
--	at91_pmc_write(AT91_CKGR_PLLAR, CONFIG_SYS_PLLAR_VAL);
-+	__raw_writel(CONFIG_SYS_PLLAR_VAL, pmc + AT91_CKGR_PLLAR);
+ #include "generic.h"
  
- 	do {
--		r = at91_pmc_read(AT91_PMC_SR);
-+		r = __raw_readl(pmc + AT91_PMC_SR);
- 	} while (!(r & AT91_PMC_LOCKA));
- 
- 	/*
- 	 * PCK/x = MCK Master Clock from SLOW
- 	 */
--	at91_pmc_write(AT91_PMC_MCKR, CONFIG_SYS_MCKR2_VAL1);
-+	__raw_writel(CONFIG_SYS_MCKR2_VAL1, pmc + AT91_PMC_MCKR);
- 
- 	/*
- 	 * PCK/x = MCK Master Clock from PLLA
- 	 */
--	at91_pmc_write(AT91_PMC_MCKR, CONFIG_SYS_MCKR2_VAL2);
-+	__raw_writel(CONFIG_SYS_MCKR2_VAL2, pmc + AT91_PMC_MCKR);
- 
- 	do {
--		r = at91_pmc_read(AT91_PMC_SR);
-+		r = __raw_readl(pmc + AT91_PMC_SR);
- 	} while (!(r & AT91_PMC_MCKRDY));
- 
- 	/*
-diff --git a/arch/arm/mach-at91/include/mach/at91rm9200.h b/arch/arm/mach-at91/include/mach/at91rm9200.h
-index d06dfa7388..e2af3585af 100644
---- a/arch/arm/mach-at91/include/mach/at91rm9200.h
-+++ b/arch/arm/mach-at91/include/mach/at91rm9200.h
-@@ -84,6 +84,7 @@
- #define AT91RM9200_BASE_PIOB	0xfffff600	/* PIO Controller B */
- #define AT91RM9200_BASE_PIOC	0xfffff800	/* PIO Controller C */
- #define AT91RM9200_BASE_PIOD	0xfffffa00	/* PIO Controller D */
-+#define AT91RM9200_BASE_PMC	0xfffffc00
- #define AT91RM9200_BASE_ST	0xfffffd00	/* System Timer */
- #define AT91RM9200_BASE_RTC	0xfffffe00	/* Real-Time Clock */
- #define AT91RM9200_BASE_MC	0xffffff00	/* Memory Controllers */
+@@ -300,3 +302,26 @@ static int at91_soc_device(void)
+ 	return 0;
+ }
+ coredevice_initcall(at91_soc_device);
++
++void at91sam_phy_reset(void __iomem *rstc_base)
++{
++	unsigned long rstc;
++	struct clk *clk = clk_get(NULL, "macb_clk");
++
++	clk_enable(clk);
++
++	rstc = readl(rstc_base + AT91_RSTC_MR) & AT91_RSTC_ERSTL;
++
++	/* Need to reset PHY -> 500ms reset */
++	writel(AT91_RSTC_KEY | (AT91_RSTC_ERSTL & (0x0d << 8)) | AT91_RSTC_URSTEN,
++		rstc_base + AT91_RSTC_MR);
++
++	writel(AT91_RSTC_KEY | AT91_RSTC_EXTRST, rstc_base + AT91_RSTC_CR);
++
++	/* Wait for end hardware reset */
++	while (!(readl(rstc_base + AT91_RSTC_SR) & AT91_RSTC_NRSTL))
++		;
++
++	/* Restore NRST value */
++	writel(AT91_RSTC_KEY | (rstc) | AT91_RSTC_URSTEN, rstc_base + AT91_RSTC_MR);
++}
 -- 
 2.19.1
 
