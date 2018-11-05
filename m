@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wr1-x444.google.com ([2a00:1450:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gJu8H-0002KE-SX
- for barebox@lists.infradead.org; Tue, 06 Nov 2018 05:42:37 +0000
-References: <20181104233908.48ce2577@yaise-pc1>
- <6rd0rk7wsa.fsf@pengutronix.de> <20181105094151.262ed3fd@yaise-pc1>
- <20181105102024.5a1b54a5@yaise-pc1>
-From: Ulrich =?utf-8?Q?=C3=96lmann?= <u.oelmann@pengutronix.de>
-In-reply-to: <20181105102024.5a1b54a5@yaise-pc1>
-Date: Tue, 06 Nov 2018 06:42:18 +0100
-Message-ID: <6ra7mm92yt.fsf@pengutronix.de>
+ id 1gJhhY-0008AE-3E
+ for barebox@lists.infradead.org; Mon, 05 Nov 2018 16:26:09 +0000
+Received: by mail-wr1-x444.google.com with SMTP id d10-v6so10205680wrs.5
+ for <barebox@lists.infradead.org>; Mon, 05 Nov 2018 08:25:57 -0800 (PST)
 MIME-Version: 1.0
+References: <20181027013157.23135-1-andrew.smirnov@gmail.com>
+ <20181027013157.23135-12-andrew.smirnov@gmail.com>
+In-Reply-To: <20181027013157.23135-12-andrew.smirnov@gmail.com>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 5 Nov 2018 08:25:44 -0800
+Message-ID: <CAHQ1cqFivNrvsgvLUbRn_Ufv+VukHwzpbW6GvK3ePt-3LNDzrQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,85 +20,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox state is not fixed up into kernel-device-tree
-To: Patrick Boettcher <patrick.boettcher@posteo.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 11/11] ARM: rdu2: Replace board code with gpio-hog nodes
+To: Barebox List <barebox@lists.infradead.org>
 
-SGkgUGF0cmljaywKClBhdHJpY2sgQm9ldHRjaGVyIDxwYXRyaWNrLmJvZXR0Y2hlckBwb3N0ZW8u
-ZGU+IHdyaXRlczoKPiBPbiBNb24sIDUgTm92IDIwMTggMDk6NDE6NTEgKzAxMDAKPiBQYXRyaWNr
-IEJvZXR0Y2hlciA8cGF0cmljay5ib2V0dGNoZXJAcG9zdGVvLmRlPiB3cm90ZToKPj4gT24gTW9u
-LCAwNSBOb3YgMjAxOCAwOToyODo1MyArMDEwMAo+PiBVbHJpY2ggw5ZsbWFubiA8dS5vZWxtYW5u
-QHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPj4gPiBQYXRyaWNrIEJvZXR0Y2hlciA8cGF0cmljay5i
-b2V0dGNoZXJAcG9zdGVvLmRlPiB3cml0ZXM6Cj4+ID4gPiBJJ20gdXNpbmcgYSBkZXZpY2Utc3Rh
-dGUgKGZvciBib290Y2hvb3Nlcikgd2hpY2ggaXMgc3RvcmVkIGluIGFuCj4+ID4gPiBlZXByb20u
-Cj4+ID4gPgo+PiA+ID4gV29ya3MgZmluZSBmcm9tIHdpdGhpbiBiYXJlYm94IC0gcmVhZCBhbmQg
-d3JpdGUuCj4+ID4gPgo+PiA+ID4gVXNlcnNwYWNlIGRvZXMgbm90IHNlZSB0aGUgc3RhdGU6Cj4+
-ID4gPgo+PiA+ID4gICBOZWl0aGVyIC9hbGlhc2VzL3N0YXRlIG5vciAvc3RhdGUgZm91bmQKPj4g
-PiA+Cj4+ID4gPiBUaGUgZGlzcGxheWVkIGRldmljZS10cmVlIHdoZW4gYm9vdGluZyB3aXRoICdi
-b290IC12IC12IDxuYW1lPicKPj4gPiA+IGRvZXMgbm90IGNvbnRhaW4gdGhlIHN0YXRlLWVudHJ5
-Lgo+PiA+ID4KPj4gPiA+IEhvd2V2ZXIsIHRoZXJlIGlzIGEgd2FybmluZyBvZiBhIGZhaWxlZCBm
-aXh1cDoKPj4gPiA+Cj4+ID4gPiAgIEZhaWxlZCB0byBmaXh1cCBub2RlIGluIG9mX3N0YXRlX2Zp
-eHVwKzB4MS8weDFhYzogTm8gc3VjaCBkZXZpY2UKPj4gPiA+Cj4+ID4gPiBDb3VsZCBpdCBiZSB0
-aGF0IHRoZSBlZXByb20tYWxpYXMgaXMgbWlzc2luZz8gSSdtIHN0aWxsIGxlYXJuaW5nCj4+ID4g
-PiBkZXZpY2UtdHJlZSBhbmQgc3R1ZmYgYW5kIEknbSBub3QgeWV0IGVudGlyZWx5IHN1cmUgaG93
-IGV2ZXJ5dGhpbmcKPj4gPiA+IGlzIHJlbGF0ZWQuCj4+ID4gPgo+PiA+ID4gVGhlIHBhcnRpdGlv
-biBpcyBjcmVhdGVkIHdpdGhpbiBhCj4+ID4gPgo+PiA+ID4gICAmZWVwcm9tIHsKPj4gPiA+ICAg
-ICAgWy4uXQo+PiA+ID4gICB9Cj4+ID4gPgo+PiA+ID4gc2VjdGlvbiBhbmQgZWVwcm9tIGlzIGRl
-ZmluZWQgYXMKPj4gPiA+Cj4+ID4gPiAgIGVlcHJvbTogZWVwcm9tQDUyIHsKPj4gPiA+Cj4+ID4g
-PiAgIH0KPj4gPiA+Cj4+ID4gPiAoSSBhZGRlZCB0aGUgJ2VlcHJvbTogJy0gbmFtZS9hbGlhcykK
-Pj4gPiA+Cj4+ID4gPiBXaGVyZSBhbSBJIG1pc3NpbmcgdGhlIGxpbms/Cj4+ID4KPj4gPiB0aGVy
-ZSB3YXMgYSBwYXRjaCByZWNlbnRseSB0aGF0IGZpeGVkIGEgYnVnIGluIHRoZSBjb250ZXh0IG9m
-Cj4+ID4gcGFydGl0aW9uIGZpeHVwcyBhbmQgYXMgYSByZXN1bHQgcmVwYWlyZWQgdGhlIHN0YXRl
-IGZpeHVwIGFzIHdlbGwKPj4gPiBmb3Igc29tZSBzZXR1cHM6Cj4+ID4KPj4gPiAgIGh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL3BpcGVybWFpbC9iYXJlYm94LzIwMTgtT2N0b2Jlci8wMzUwOTEu
-aHRtbAo+PiA+Cj4+ID4gUGxlYXNlIGNoZWNrIGlmIGl0IHNvbHZlcyB5b3VyIHByb2JsZW0uIElm
-IG5vdCB0aGVuIHBsZWFzZSBwcm92aWRlCj4+ID4gbW9yZSBpbnNpZ2h0IGludG8geW91ciBkZXZp
-Y2V0cmVlcyAoYmFyZWJveCAmIGtlcm5lbCkgYW5kIHBvc3QgYQo+PiA+IGxpdHRsZSBiaXQgbW9y
-ZSBjb250ZXh0IG9mIHRoZSBzdGF0ZSBub2RlIGFzIHdlbGwgYXMgdGhlIGVlcHJvbSBhbmQKPj4g
-PiB0aGUgYWxpYXNlcyBub2Rlcy4KPj4KPj4gSSBpbnZlc3RpZ2F0ZWQgZnVydGhlciAoc3RpbGwg
-ZG9pbmcgcmlnaHQgbm93KS4gSW4gbXkga2VybmVsCj4+IGRldmljZS10cmVlIHRoZSBlZXByb20g
-ZG9lcyBub3QgaGF2ZSB0aGUgcGFydGl0aW9uIGRlZmluaXRpb24uIFNvCj4+IG9mX3N0YXRlX2Zp
-eHVwKCkgZG9lcyBub3QgZmluZCBpdCAoSSBhZGRlZCBzb21lIGRlYnVnIHByaW50cyB0bwo+PiBh
-bmFseXplKToKPj4KPj4gICAgb2ZfZmluZF9ub2RlX2J5X3BhdGhfZnJvbToKPj4gICAgICAgIC9z
-b2MvYWlwcy1idXNAMDIxMDAwMDAvaTJjQDAyMWEwMDAwL2VlcHJvbUA1Mi9wYXJ0aXRpb25zL3N0
-YXRlQDAKPj4gICAgICAgIG5vdCBmb3VuZAo+Pgo+PiBJIHdyb25nbHkgYXNzdW1lZCBmcm9tIG1h
-aWxzIEkgZm91bmQgaW4gdGhlIGFyY2hpdmUgdGhhdCBiYXJlYm94IGlzCj4+IGZpeGluZyB1cCBl
-dmVuIHRoZSBwYXJ0aXRpb25zLgo+Pgo+PiBEb2VzIHlvdXIgcGF0Y2ggZnJvbSBhYm92ZSB3aWxs
-IGJlIGhlbHBmdWwgaW4gbXkgY2FzZT8KPj4KPj4gRG8gSSBuZWVkIHRvIGNoYW5nZSB0aGUga2Vy
-bmVsLWRldmljZS10cmVlIHRvIGluc2VydCB0aGUgcGFydGl0aW9ucwo+PiBtYW51YWxseT8gSWYg
-c28sIGhvdyBzaG91bGQgaXQgbG9vayBsaWtlIGlmIHRoZSBzdGF0ZS1wYXJ0aXRpb24gaW4KPj4g
-YmFyZWJveCBpcyBkZWZpbmVkIGxpa2UgdGhpczoKPj4KPj4gICAmZWVwcm9tIHsKPj4gCXN0YXR1
-cyA9ICJva2F5IjsKPj4gCXBhcnRpdGlvbnMgewo+PiAJCWNvbXBhdGlibGUgPSAiZml4ZWQtcGFy
-dGl0aW9ucyI7Cj4+IAkJI3NpemUtY2VsbHMgPSA8MT47Cj4+IAkJI2FkZHJlc3MtY2VsbHMgPSA8
-MT47Cj4+IAkJYmFja2VuZF91cGRhdGVfZWVwcm9tOiBzdGF0ZUAwIHsKPj4gCQkJcmVnID0gPDB4
-MCAweDEwMD47Cj4+IAkJCWxhYmVsID0gImJhcmVib3gtc3RhdGUtZWVwcm9tIjsKPj4gCQl9Owo+
-PiAJfTsKPj4gICB9Owo+Cj4gQWZ0ZXIgYWRkaW5nIHRoZSBwYXJ0aXRpb24gdGhlIGtlcm5lbC1k
-ZXZpY2UtdHJlZQo+Cj4gICAmZWVwcm9tIHsKPiAJc3RhdHVzID0gIm9rYXkiOwo+IAlwYXJ0aXRp
-b25zIHsKPiAJCWJhY2tlbmRfdXBkYXRlX2VlcHJvbTogc3RhdGVAMCB7Cj4gCQkJcmVnID0gPDB4
-MCAweDEwMD47Cj4gCQl9Owo+IAl9Owo+ICAgfTsKPgo+IFRoZSBiYXJlYm94LWZpeHVwIGVycm9y
-IGRpc2FwcGVhciwgdGhlIGR1bXBlZCBkZXZpY2UgdHJlZSBhdCBib290LXRpbWUKPiBjb250YWlu
-cyB0aGUgc3RhdGUtbm9kZS4KPgo+IEhvd2V2ZXIsIGJhcmVib3gtc3RhdGUsIHJ1biBmcm9tIHVz
-ZXJzcGFjZSBnaXZlcwo+Cj4gICBvZl9nZXRfZGV2aWNlcGF0aDogbm8gJ2xhYmVsJyBwcm9wZXJ0
-eSBmb3VuZAo+ICAgaW4gL3NvYy9haXBzLWJ1c0AwMjEwMDAwMC9pMmNAMDIxYTAwMDAvZWVwcm9t
-QDUyL3BhcnRpdGlvbnMvc3RhdGVAMAo+ICAgQ2Fubm90IGZpbmQgYmFja2VuZCBwYXRoIGluIC9z
-dGF0ZQo+Cj4KPiBEbyBJIG5lZWQgdG8gY29weSBhbGwgb2YgdGhlIHBhcnRpdGlvbi1kZXNjcmlw
-dGlvbiBpbnRvIHRoZQo+IGtlcm5lbC1kZXZpY2UtdHJlZT8gSXMgdGhpcywgd2hhdCB5b3VyIHBh
-dGNoIGFkZHJlc3Nlcz8KClRoZSBwYXRjaCBpcyBuZWVkZWQgdG8gZml4IG5ld2VyIGJhcmVib3gg
-cmVsZWFzZXMsIGJ1dCB5b3UgYXJlIHVzaW5nIGFuCm9sZCB2ZW5kb3IgcGF0Y2hlZCB2ZXJzaW9u
-IHdoZXJlIGl0IGlzIG5vdCBuZWVkZWQuCgpJdCBsb29rcyBsaWtlIG5vIGZpeHVwIGZvciB0aGUg
-ZWVwcm9tIHBhcnRpdGlvbnMgaW4gdGhlIGtlcm5lbApkZXZpY2V0cmVlIHRha2VzIHBsYWNlLiBB
-cyBhbiBhbHRlcm5hdGl2ZSB0byBhZGRpbmcgdGhlIHBhcnRpdGlvbnMKbWFudWFsbHkgeW91IGNv
-dWxkIHByb2JhYmx5IHBhdGNoIHlvdXIgYmFyZWJveCB0byByZWdpc3RlciB0aGUgd2FudGVkCmZp
-eHVwIGluIHRoZSBkcml2ZXIuCgpCZXN0IHJlZ2FyZHMKVWxyaWNoCi0tClBlbmd1dHJvbml4IGUu
-Sy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8IFVscmljaCDDlmxtYW5uICAgICAgICAgICAg
-ICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8v
-d3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0s
-IEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxk
-ZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUg
-fAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJv
-eCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5p
-bmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Fri, Oct 26, 2018 at 6:32 PM Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
+>
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+
+Sascha, it seems that this patch was not applied. This one, unlike
+"VF610: zii-vf610-dev: Replace board code with gpio-hog nodes", will
+_not_ interfere with kernel boot in any way, it just configures
+UCS1002 into USB data pass-through(default bootstrapping is BCD 1.2
+mode). It should be safe to have.
+
+Thanks,
+Andrey Smirnov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
