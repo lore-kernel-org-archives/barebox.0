@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gJh9z-0000Ou-24
+ id 1gJh9z-0000Ox-23
  for barebox@lists.infradead.org; Mon, 05 Nov 2018 15:51:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  5 Nov 2018 16:50:58 +0100
-Message-Id: <20181105155113.3434-8-s.hauer@pengutronix.de>
+Date: Mon,  5 Nov 2018 16:51:06 +0100
+Message-Id: <20181105155113.3434-16-s.hauer@pengutronix.de>
 In-Reply-To: <20181105155113.3434-1-s.hauer@pengutronix.de>
 References: <20181105155113.3434-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,87 +21,183 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/22] ARM: at91: remove AT91_SDRAM_BASE
+Subject: [PATCH 15/22] ARM: at91rm9200 timer: Make system timer defines SoC
+ specific
 To: Barebox List <barebox@lists.infradead.org>
 
-AT91_SDRAM_BASE is only used in board code which known the SDRAM base
-address, so we do not need a common define.
+- rename at91_st.h to at91rm9200_st.h
+- rename prefix from AT91_ to AT91RM9200_
+- remove register offset from System timer defines
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/at91rm9200ek/lowlevel.c                  | 2 +-
- arch/arm/mach-at91/include/mach/at91sam926x_board_init.h | 2 +-
- arch/arm/mach-at91/include/mach/at91sam9g45.h            | 2 --
- arch/arm/mach-at91/include/mach/at91sam9n12.h            | 2 --
- arch/arm/mach-at91/include/mach/hardware.h               | 7 -------
- 5 files changed, 2 insertions(+), 13 deletions(-)
+ arch/arm/mach-at91/at91rm9200_time.c          | 14 +++---
+ arch/arm/mach-at91/include/mach/at91_st.h     | 49 -------------------
+ .../mach-at91/include/mach/at91rm9200_st.h    | 49 +++++++++++++++++++
+ 3 files changed, 57 insertions(+), 55 deletions(-)
+ delete mode 100644 arch/arm/mach-at91/include/mach/at91_st.h
+ create mode 100644 arch/arm/mach-at91/include/mach/at91rm9200_st.h
 
-diff --git a/arch/arm/boards/at91rm9200ek/lowlevel.c b/arch/arm/boards/at91rm9200ek/lowlevel.c
-index 905f5999d6..acff615779 100644
---- a/arch/arm/boards/at91rm9200ek/lowlevel.c
-+++ b/arch/arm/boards/at91rm9200ek/lowlevel.c
-@@ -18,7 +18,7 @@
+diff --git a/arch/arm/mach-at91/at91rm9200_time.c b/arch/arm/mach-at91/at91rm9200_time.c
+index 259fdd508d..ef85502f5e 100644
+--- a/arch/arm/mach-at91/at91rm9200_time.c
++++ b/arch/arm/mach-at91/at91rm9200_time.c
+@@ -30,10 +30,12 @@
+ #include <clock.h>
+ #include <restart.h>
+ #include <mach/hardware.h>
+-#include <mach/at91_st.h>
++#include <mach/at91rm9200_st.h>
+ #include <mach/io.h>
+ #include <io.h>
  
- void static inline access_sdram(void)
++static void __iomem *st = IOMEM(AT91RM9200_BASE_ST);
++
+ /*
+  * The ST_CRTR is updated asynchronously to the master clock ... but
+  * the updates as seen by the CPU don't seem to be strictly monotonic.
+@@ -43,9 +45,9 @@ uint64_t at91rm9200_clocksource_read(void)
  {
--	writel(0x00000000, AT91_SDRAM_BASE);
-+	writel(0x00000000, AT91_CHIPSELECT_1);
- }
+ 	unsigned long x1, x2;
  
- void __naked __bare_init barebox_arm_reset_vector(void)
-diff --git a/arch/arm/mach-at91/include/mach/at91sam926x_board_init.h b/arch/arm/mach-at91/include/mach/at91sam926x_board_init.h
-index 749baaa8a6..b93b37d8c7 100644
---- a/arch/arm/mach-at91/include/mach/at91sam926x_board_init.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam926x_board_init.h
-@@ -51,7 +51,7 @@ struct at91sam926x_board_cfg {
+-	x1 = at91_sys_read(AT91_ST_CRTR);
++	x1 = readl(st + AT91RM9200_ST_CRTR);
+ 	do {
+-		x2 = at91_sys_read(AT91_ST_CRTR);
++		x2 = readl(st + AT91RM9200_ST_CRTR);
+ 		if (x1 == x2)
+ 			break;
+ 		x1 = x2;
+@@ -65,7 +67,7 @@ static int clocksource_init (void)
+ 	 * directly for the clocksource and all clockevents, after adjusting
+ 	 * its prescaler from the 1 Hz default.
+ 	 */
+-	at91_sys_write(AT91_ST_RTMR, 1);
++	writel(1, st + AT91RM9200_ST_RTMR);
  
- static void __always_inline access_sdram(void)
- {
--	writel(0x00000000, AT91_SDRAM_BASE);
-+	writel(0x00000000, AT91_CHIPSELECT_1);
- }
+ 	cs.mult = clocksource_hz2mult(AT91_SLOW_CLOCK, cs.shift);
  
- static void __always_inline pmc_check_mckrdy(void)
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9g45.h b/arch/arm/mach-at91/include/mach/at91sam9g45.h
-index e9c7d7572a..7b19d92ad3 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9g45.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9g45.h
-@@ -137,6 +137,4 @@
- #define AT91SAM9G45_EHCI_BASE	0x00800000	/* USB Host controller (EHCI) */
- #define AT91SAM9G45_VDEC_BASE	0x00900000	/* Video Decoder Controller */
+@@ -81,8 +83,8 @@ static void __noreturn at91rm9200_restart_soc(struct restart_handler *rst)
+ 	/*
+ 	 * Perform a hardware reset with the use of the Watchdog timer.
+ 	 */
+-	at91_sys_write(AT91_ST_WDMR, AT91_ST_RSTEN | AT91_ST_EXTEN | 1);
+-	at91_sys_write(AT91_ST_CR, AT91_ST_WDRST);
++	writel(AT91RM9200_ST_RSTEN | AT91RM9200_ST_EXTEN | 1, st + AT91RM9200_ST_WDMR);
++	writel(AT91RM9200_ST_WDRST, st + AT91RM9200_ST_CR);
  
--#define CONFIG_DRAM_BASE	AT91_CHIPSELECT_6
+ 	/* Not reached */
+ 	hang();
+diff --git a/arch/arm/mach-at91/include/mach/at91_st.h b/arch/arm/mach-at91/include/mach/at91_st.h
+deleted file mode 100644
+index 8847173e41..0000000000
+--- a/arch/arm/mach-at91/include/mach/at91_st.h
++++ /dev/null
+@@ -1,49 +0,0 @@
+-/*
+- * arch/arm/mach-at91/include/mach/at91_st.h
+- *
+- * Copyright (C) 2005 Ivan Kokshaysky
+- * Copyright (C) SAN People
+- *
+- * System Timer (ST) - System peripherals registers.
+- * Based on AT91RM9200 datasheet revision E.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- */
 -
- #endif
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9n12.h b/arch/arm/mach-at91/include/mach/at91sam9n12.h
-index cb84e4cf76..0bb105b910 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9n12.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9n12.h
-@@ -130,6 +130,4 @@
- #define AT91SAM9N12_SMD_BASE	0x00400000	/* SMD Controller */
- #define AT91SAM9N12_OHCI_BASE	0x00500000	/* USB Host controller (OHCI) */
- 
--#define CONFIG_DRAM_BASE	AT91_CHIPSELECT_1
+-#ifndef AT91_ST_H
+-#define AT91_ST_H
 -
- #endif
-diff --git a/arch/arm/mach-at91/include/mach/hardware.h b/arch/arm/mach-at91/include/mach/hardware.h
-index bbaad714cf..e2e01343d4 100644
---- a/arch/arm/mach-at91/include/mach/hardware.h
-+++ b/arch/arm/mach-at91/include/mach/hardware.h
-@@ -66,13 +66,6 @@
- #define SAMA5_CHIPSELECT_2	0x50000000
- #define SAMA5_CHIPSELECT_3	0x60000000
- 
--/* SDRAM */
--#ifdef CONFIG_DRAM_BASE
--#define AT91_SDRAM_BASE		CONFIG_DRAM_BASE
--#else
--#define AT91_SDRAM_BASE		AT91_CHIPSELECT_1
+-#define	AT91_ST_CR		(AT91_ST + 0x00)	/* Control Register */
+-#define 	AT91_ST_WDRST		(1 << 0)		/* Watchdog Timer Restart */
+-
+-#define	AT91_ST_PIMR		(AT91_ST + 0x04)	/* Period Interval Mode Register */
+-#define		AT91_ST_PIV		(0xffff <<  0)		/* Period Interval Value */
+-
+-#define	AT91_ST_WDMR		(AT91_ST + 0x08)	/* Watchdog Mode Register */
+-#define		AT91_ST_WDV		(0xffff <<  0)		/* Watchdog Counter Value */
+-#define		AT91_ST_RSTEN		(1	<< 16)		/* Reset Enable */
+-#define		AT91_ST_EXTEN		(1	<< 17)		/* External Signal Assertion Enable */
+-
+-#define	AT91_ST_RTMR		(AT91_ST + 0x0c)	/* Real-time Mode Register */
+-#define		AT91_ST_RTPRES		(0xffff <<  0)		/* Real-time Prescalar Value */
+-
+-#define	AT91_ST_SR		(AT91_ST + 0x10)	/* Status Register */
+-#define		AT91_ST_PITS		(1 << 0)		/* Period Interval Timer Status */
+-#define		AT91_ST_WDOVF		(1 << 1) 		/* Watchdog Overflow */
+-#define		AT91_ST_RTTINC		(1 << 2) 		/* Real-time Timer Increment */
+-#define		AT91_ST_ALMS		(1 << 3) 		/* Alarm Status */
+-
+-#define	AT91_ST_IER		(AT91_ST + 0x14)	/* Interrupt Enable Register */
+-#define	AT91_ST_IDR		(AT91_ST + 0x18)	/* Interrupt Disable Register */
+-#define	AT91_ST_IMR		(AT91_ST + 0x1c)	/* Interrupt Mask Register */
+-
+-#define	AT91_ST_RTAR		(AT91_ST + 0x20)	/* Real-time Alarm Register */
+-#define		AT91_ST_ALMV		(0xfffff << 0)		/* Alarm Value */
+-
+-#define	AT91_ST_CRTR		(AT91_ST + 0x24)	/* Current Real-time Register */
+-#define		AT91_ST_CRTV		(0xfffff << 0)		/* Current Real-Time Value */
+-
 -#endif
--
- /* Clocks */
- #define AT91_SLOW_CLOCK		32768		/* slow clock */
- 
+diff --git a/arch/arm/mach-at91/include/mach/at91rm9200_st.h b/arch/arm/mach-at91/include/mach/at91rm9200_st.h
+new file mode 100644
+index 0000000000..bd676a7081
+--- /dev/null
++++ b/arch/arm/mach-at91/include/mach/at91rm9200_st.h
+@@ -0,0 +1,49 @@
++/*
++ * arch/arm/mach-at91/include/mach/at91_st.h
++ *
++ * Copyright (C) 2005 Ivan Kokshaysky
++ * Copyright (C) SAN People
++ *
++ * System Timer (ST) - System peripherals registers.
++ * Based on AT91RM9200 datasheet revision E.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ */
++
++#ifndef AT91RM9200_ST_H
++#define AT91RM9200_ST_H
++
++#define	AT91RM9200_ST_CR		(0x00)	/* Control Register */
++#define 	AT91RM9200_ST_WDRST		(1 << 0)		/* Watchdog Timer Restart */
++
++#define	AT91RM9200_ST_PIMR		(0x04)	/* Period Interval Mode Register */
++#define		AT91RM9200_ST_PIV		(0xffff <<  0)		/* Period Interval Value */
++
++#define	AT91RM9200_ST_WDMR		(0x08)	/* Watchdog Mode Register */
++#define		AT91RM9200_ST_WDV		(0xffff <<  0)		/* Watchdog Counter Value */
++#define		AT91RM9200_ST_RSTEN		(1	<< 16)		/* Reset Enable */
++#define		AT91RM9200_ST_EXTEN		(1	<< 17)		/* External Signal Assertion Enable */
++
++#define	AT91RM9200_ST_RTMR		(0x0c)	/* Real-time Mode Register */
++#define		AT91RM9200_ST_RTPRES		(0xffff <<  0)		/* Real-time Prescalar Value */
++
++#define	AT91RM9200_ST_SR		(0x10)	/* Status Register */
++#define		AT91RM9200_ST_PITS		(1 << 0)		/* Period Interval Timer Status */
++#define		AT91RM9200_ST_WDOVF		(1 << 1) 		/* Watchdog Overflow */
++#define		AT91RM9200_ST_RTTINC		(1 << 2) 		/* Real-time Timer Increment */
++#define		AT91RM9200_ST_ALMS		(1 << 3) 		/* Alarm Status */
++
++#define	AT91RM9200_ST_IER		(0x14)	/* Interrupt Enable Register */
++#define	AT91RM9200_ST_IDR		(0x18)	/* Interrupt Disable Register */
++#define	AT91RM9200_ST_IMR		(0x1c)	/* Interrupt Mask Register */
++
++#define	AT91RM9200_ST_RTAR		(0x20)	/* Real-time Alarm Register */
++#define		AT91RM9200_ST_ALMV		(0xfffff << 0)		/* Alarm Value */
++
++#define	AT91RM9200_ST_CRTR		(0x24)	/* Current Real-time Register */
++#define		AT91RM9200_ST_CRTV		(0xfffff << 0)		/* Current Real-Time Value */
++
++#endif
 -- 
 2.19.1
 
