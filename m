@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout01.posteo.de ([185.67.36.65])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gJKvs-0005Qz-7J
- for barebox@lists.infradead.org; Sun, 04 Nov 2018 16:07:26 +0000
-Received: from submission (posteo.de [89.146.220.130]) 
- by mout01.posteo.de (Postfix) with ESMTPS id 803CF20F05
- for <barebox@lists.infradead.org>; Sun,  4 Nov 2018 17:07:06 +0100 (CET)
-Received: from customer (localhost [127.0.0.1])
- by submission (posteo.de) with ESMTPSA id 42p10V0Y5Zz6tm8
- for <barebox@lists.infradead.org>; Sun,  4 Nov 2018 17:07:05 +0100 (CET)
-Date: Sun, 4 Nov 2018 17:07:05 +0100
-From: Patrick Boettcher <patrick.boettcher@posteo.de>
-Message-ID: <20181104170705.0ad35065@yaise-pc1>
-In-Reply-To: <20181102152751.2a0b995c@yaise-pc1>
+ id 1gJwjn-0003Mz-8a
+ for barebox@lists.infradead.org; Tue, 06 Nov 2018 08:29:29 +0000
+Date: Tue, 6 Nov 2018 09:29:14 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20181106082914.ykoffbmdfqkdaflg@pengutronix.de>
 References: <20181102152751.2a0b995c@yaise-pc1>
+ <20181104170705.0ad35065@yaise-pc1>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20181104170705.0ad35065@yaise-pc1>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,41 +24,50 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Barebox stops working if /env/boot/mmc is removed
-To: Barebox List <barebox@lists.infradead.org>
+To: Patrick Boettcher <patrick.boettcher@posteo.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Fri, 2 Nov 2018 15:27:51 +0100
-Patrick Boettcher <patrick.boettcher@posteo.de> wrote:
+Hi Patrick,
 
-> Hi list,
+On Sun, Nov 04, 2018 at 05:07:05PM +0100, Patrick Boettcher wrote:
+> On Fri, 2 Nov 2018 15:27:51 +0100
+> Patrick Boettcher <patrick.boettcher@posteo.de> wrote:
 > 
-> I'm using barebox 2017.04.0-BSP (phytec's fork though).
+> > Hi list,
+> > 
+> > I'm using barebox 2017.04.0-BSP (phytec's fork though).
+> > 
+> > I'm customizing my environment in a (Yocto) .bbappend-file.
+> > 
+> > When I'm removing (or not adding) the /env/boot/mmc-file the
+> > barebox-image created by Yocto is not booting at all, that is, on the
+> > serial console I don't see anything.
+> > 
+> > Maybe this is a problem of phytec's fork, but I'm wondering what could
+> > create this behavior in general? Missing env-files make barebox not
+> > boot.
 > 
-> I'm customizing my environment in a (Yocto) .bbappend-file.
+> The issue seems to have come from a file which was maybe in a previous
+> default environment and has been modified in the user-environment and
+> was now remove in the default-env or overwritten or whatnot.
 > 
-> When I'm removing (or not adding) the /env/boot/mmc-file the
-> barebox-image created by Yocto is not booting at all, that is, on the
-> serial console I don't see anything.
+> It seems that I fixed it by erasing
+> the /dev/barebox-environment-partition after flashing the new
+> barebox-version.
 > 
-> Maybe this is a problem of phytec's fork, but I'm wondering what could
-> create this behavior in general? Missing env-files make barebox not
-> boot.
+> For the moment this is not an issue for my system/application. It's a
+> bit scary though.
 
-The issue seems to have come from a file which was maybe in a previous
-default environment and has been modified in the user-environment and
-was now remove in the default-env or overwritten or whatnot.
+What does "Stops working" mean? Doesn't start at all? Doesn't start
+kernel? Your description is a bit vague.
 
-It seems that I fixed it by erasing
-the /dev/barebox-environment-partition after flashing the new
-barebox-version.
+Sascha
 
-For the moment this is not an issue for my system/application. It's a
-bit scary though. 
-
-regards,
---
-Patrick.
-
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
