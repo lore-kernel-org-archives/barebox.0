@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gK8NW-00088o-B8
- for barebox@lists.infradead.org; Tue, 06 Nov 2018 20:55:15 +0000
-Received: by mail-wr1-x442.google.com with SMTP id j26-v6so15123885wre.1
- for <barebox@lists.infradead.org>; Tue, 06 Nov 2018 12:55:02 -0800 (PST)
+ id 1gK5Nb-0007ex-Ok
+ for barebox@lists.infradead.org; Tue, 06 Nov 2018 17:43:09 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1gK5NO-0000gK-Ts
+ for barebox@lists.infradead.org; Tue, 06 Nov 2018 18:42:54 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Tue,  6 Nov 2018 18:42:53 +0100
+Message-Id: <20181106174254.21371-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
-References: <20181106143605.29820-1-l.stach@pengutronix.de>
-In-Reply-To: <20181106143605.29820-1-l.stach@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 6 Nov 2018 12:54:48 -0800
-Message-ID: <CAHQ1cqF1JKPm3tstZrB0oWdjF0xxhFPU86g_twnuCKLctrRhCQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,29 +24,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts: imx-image: fix first instruction in i.MX8MQ
- header
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] ARM: nxp-imx8mq-evk: remove SDRAM reservation for ATF
+To: barebox@lists.infradead.org
 
-On Tue, Nov 6, 2018 at 6:36 AM Lucas Stach <l.stach@pengutronix.de> wrote:
->
-> The instruction being patched in was a branch to 0x24000, instead of
-> the intended 0x9000. This doesn't matter when starting the image from
-> a regular boot source, but breaks starting the image via bootm, as we
-> rely on the jump in the first header instruction taking us to the
-> actual code.
->
+Recent versions of the i.MX8MQ ATF (like the one shipped with Barebox)
+reside in a part of OCRAM, so there is no need to reserve any part of
+SDRAM anymore.
 
-For some reason I thought I submitted a patch fixing this, but
-apparently not. Did you have a chance to run this fix with and without
-signed HDMI firmware blob? AFAIR, adding it shifts entry point from
-0x9000 to 0x28000 (don't quote me on this), so it's possible that some
-code around imx-image.c:894 might have to be added to handle this
-problem. This can be a subject for another patch, though.
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/boards/nxp-imx8mq-evk/board.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-Thanks,
-Andrey Smirnov
+diff --git a/arch/arm/boards/nxp-imx8mq-evk/board.c b/arch/arm/boards/nxp-imx8mq-evk/board.c
+index 764eadb766a9..7918b5fb3e36 100644
+--- a/arch/arm/boards/nxp-imx8mq-evk/board.c
++++ b/arch/arm/boards/nxp-imx8mq-evk/board.c
+@@ -45,17 +45,6 @@ static int ar8031_phy_fixup(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
+-static int imx8mq_evk_mem_init(void)
+-{
+-	if (!of_machine_is_compatible("fsl,imx8mq-evk"))
+-		return 0;
+-
+-	request_sdram_region("ATF", 0x40000000, SZ_128K);
+-
+-	return 0;
+-}
+-mem_initcall(imx8mq_evk_mem_init);
+-
+ static int nxp_imx8mq_evk_init(void)
+ {
+ 	if (!of_machine_is_compatible("fsl,imx8mq-evk"))
+-- 
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
