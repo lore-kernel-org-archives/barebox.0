@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gKIOB-0005QS-W9
- for barebox@lists.infradead.org; Wed, 07 Nov 2018 07:36:38 +0000
-Date: Wed, 7 Nov 2018 08:36:21 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181107073621.yqrnr7ajovrldza3@pengutronix.de>
-References: <20181102152751.2a0b995c@yaise-pc1>
- <20181104170705.0ad35065@yaise-pc1>
- <20181106082914.ykoffbmdfqkdaflg@pengutronix.de>
- <20181106141126.1d930ce2@posteo.de>
+ id 1gK2oj-0006Pd-V4
+ for barebox@lists.infradead.org; Tue, 06 Nov 2018 14:58:59 +0000
+From: Bastian Krause <bst@pengutronix.de>
+Date: Tue,  6 Nov 2018 15:58:06 +0100
+Message-Id: <20181106145806.15952-1-bst@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181106141126.1d930ce2@posteo.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,48 +19,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox stops working if /env/boot/mmc is removed
-To: Patrick Boettcher <patrick.boettcher@posteo.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] mtd: nand_denali: update compatible
+To: barebox@lists.infradead.org
+Cc: Bastian Krause <bst@pengutronix.de>
 
-On Tue, Nov 06, 2018 at 02:11:26PM +0100, Patrick Boettcher wrote:
-> On Tue, 6 Nov 2018 09:29:14 +0100
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > > The issue seems to have come from a file which was maybe in a
-> > > previous default environment and has been modified in the
-> > > user-environment and was now remove in the default-env or
-> > > overwritten or whatnot.
-> > > 
-> > > It seems that I fixed it by erasing
-> > > the /dev/barebox-environment-partition after flashing the new
-> > > barebox-version.
-> > > 
-> > > For the moment this is not an issue for my system/application. It's
-> > > a bit scary though.  
-> > 
-> > What does "Stops working" mean? Doesn't start at all? Doesn't start
-> > kernel? Your description is a bit vague.
-> 
-> Stops working means no more output on the serial port after having
-> barebox_updated the image and issued 'reset'. Hardware reset did not do
-> anything.
+190a1c6e47 ("dts: update to v4.18-rc3") changed the compatible of the
+Denali NAND controller. Update the compatible in the barebox driver
+accordingly.
 
-Console output starts before the environment is looked at, so this
-shouldn't be the root cause. I didn't understand where you erased the
-file. Did you erase it in your build, so in the default environment, or
-did you erase it during runtime from the saved environment? For the
-former it could be that the object positions in the binary moved to some
-unlucky place. FOr the latter it could be that the environment partition
-overlaps with the barebox partition so that a saveenv accidently
-overwrites parts of the barebox image.
+Signed-off-by: Bastian Krause <bst@pengutronix.de>
+---
+ drivers/mtd/nand/nand_denali_dt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
+diff --git a/drivers/mtd/nand/nand_denali_dt.c b/drivers/mtd/nand/nand_denali_dt.c
+index 2c6b188094..e3024549cd 100644
+--- a/drivers/mtd/nand/nand_denali_dt.c
++++ b/drivers/mtd/nand/nand_denali_dt.c
+@@ -86,7 +86,7 @@ out_disable_clk:
+ 
+ static __maybe_unused struct of_device_id denali_nand_compatible[] = {
+ 	{
+-		.compatible = "denali,denali-nand-dt"
++		.compatible = "altr,socfpga-denali-nand"
+ 	}, {
+ 		/* sentinel */
+ 	}
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
