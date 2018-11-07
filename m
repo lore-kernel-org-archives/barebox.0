@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout02.posteo.de ([185.67.36.66])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gKLSZ-0004ik-6D
- for barebox@lists.infradead.org; Wed, 07 Nov 2018 10:53:20 +0000
-Received: from submission (posteo.de [89.146.220.130]) 
- by mout02.posteo.de (Postfix) with ESMTPS id 6D0C92400FC
- for <barebox@lists.infradead.org>; Wed,  7 Nov 2018 11:52:48 +0100 (CET)
-Date: Wed, 7 Nov 2018 11:52:44 +0100
-From: Patrick Boettcher <patrick.boettcher@posteo.de>
-Message-ID: <20181107115244.60cfb5e5@posteo.de>
-In-Reply-To: <20181107073621.yqrnr7ajovrldza3@pengutronix.de>
-References: <20181102152751.2a0b995c@yaise-pc1>
- <20181104170705.0ad35065@yaise-pc1>
- <20181106082914.ykoffbmdfqkdaflg@pengutronix.de>
- <20181106141126.1d930ce2@posteo.de>
- <20181107073621.yqrnr7ajovrldza3@pengutronix.de>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gKMXv-0006hU-W1
+ for barebox@lists.infradead.org; Wed, 07 Nov 2018 12:02:57 +0000
+Message-ID: <1541592163.2508.40.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 07 Nov 2018 13:02:43 +0100
+In-Reply-To: <CAHQ1cqHBUguROV=pi9qq1_6D4qm07X3wzPYooqHEVcMcHNWVDA@mail.gmail.com>
+References: <20181106174254.21371-1-l.stach@pengutronix.de>
+ <CAHQ1cqHBUguROV=pi9qq1_6D4qm07X3wzPYooqHEVcMcHNWVDA@mail.gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,66 +18,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox stops working if /env/boot/mmc is removed
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 1/2] ARM: nxp-imx8mq-evk: remove SDRAM reservation for ATF
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Wed, 7 Nov 2018 08:36:21 +0100
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
-
-> On Tue, Nov 06, 2018 at 02:11:26PM +0100, Patrick Boettcher wrote:
-> > On Tue, 6 Nov 2018 09:29:14 +0100
-> > Sascha Hauer <s.hauer@pengutronix.de> wrote:  
-> > > > The issue seems to have come from a file which was maybe in a
-> > > > previous default environment and has been modified in the
-> > > > user-environment and was now remove in the default-env or
-> > > > overwritten or whatnot.
-> > > > 
-> > > > It seems that I fixed it by erasing
-> > > > the /dev/barebox-environment-partition after flashing the new
-> > > > barebox-version.
-> > > > 
-> > > > For the moment this is not an issue for my system/application.
-> > > > It's a bit scary though.    
-> > > 
-> > > What does "Stops working" mean? Doesn't start at all? Doesn't
-> > > start kernel? Your description is a bit vague.  
-> > 
-> > Stops working means no more output on the serial port after having
-> > barebox_updated the image and issued 'reset'. Hardware reset did
-> > not do anything.  
-> 
-> Console output starts before the environment is looked at, so this
-> shouldn't be the root cause. I didn't understand where you erased the
-> file. Did you erase it in your build, so in the default environment,
-> or did you erase it during runtime from the saved environment? For the
-> former it could be that the object positions in the binary moved to
-> some unlucky place. 
-
-This must have been my case. I deleted a file from the default
-environment within my build which was in a previous image.
-
-As I didn't really knew what's going on, I don't remember exactly what
-I did.
-
-But I'm quite sure that erasing the barbox-environment-partition fixed
-the problem. 
-
-I haven't seen it since then, no matter how much I changed the
-built-in-env.
-
-Thanks for your feedback and explanation, I'll keep my eyes open in
-case the problem reappears.
-
-regards,
---
-Patrick.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gRGllbnN0YWcsIGRlbiAwNi4xMS4yMDE4LCAxMjo1NyAtMDgwMCBzY2hyaWViIEFuZHJleSBT
+bWlybm92Ogo+IE9uIFR1ZSwgTm92IDYsIDIwMTggYXQgOTo0MyBBTSBMdWNhcyBTdGFjaCA8bC5z
+dGFjaEBwZW5ndXRyb25peC5kZT4KPiB3cm90ZToKPiA+IAo+ID4gUmVjZW50IHZlcnNpb25zIG9m
+IHRoZSBpLk1YOE1RIEFURiAobGlrZSB0aGUgb25lIHNoaXBwZWQgd2l0aAo+ID4gQmFyZWJveCkK
+PiA+IHJlc2lkZSBpbiBhIHBhcnQgb2YgT0NSQU0sIHNvIHRoZXJlIGlzIG5vIG5lZWQgdG8gcmVz
+ZXJ2ZSBhbnkgcGFydAo+ID4gb2YKPiA+IFNEUkFNIGFueW1vcmUuCj4gPiAKPiAKPiBOb3Qgc3Vy
+ZSBpZiB0aGlzIHdpbGwgYmUgaGFuZGxlZCBieSBCYXJlYm94LCBidXQgdGhlcmUncyBhbHNvOgo+
+IAo+IC9tZW1yZXNlcnZlLyAweDQwMDAwMDAwIDB4MDAwMjAwMDA7Cj4gCj4gaW4gYXJjaC9hcm0v
+ZHRzL2lteDhtcS5kdHNpLCBkbyB3ZSB3YW50IHRvIGRyb3AgdGhhdCBhcyB3ZWxsPwoKSXQgZG9l
+c24ndCBodXJ0LCBhcyBCYXJlYm94IGlzbid0IGxvb2tpbmcgYXQgdGhlIHJlc2VydmVkIHJhbmdl
+cyByaWdodApub3csIGJ1dCB5ZXMgaXQgc2hvdWxkIGdvIGV2ZW50dWFsbHkuCgpSZWdhcmRzLApM
+dWNhcwoKPiBPdGhlciB0aGFuIHRoYXQsIGRlZmluaXRlbHkgYSBnb29kIGNoYW5nZToKPiAKPiBB
+Y2tlZC1ieTogQW5kcmV5IFNtaXJub3YgPGFuZHJldy5zbWlybm92QGdtYWlsLmNvbT4KPiAKPiA+
+IFNpZ25lZC1vZmYtYnk6IEx1Y2FzIFN0YWNoIDxsLnN0YWNoQHBlbmd1dHJvbml4LmRlPgo+ID4g
+LS0tCj4gPiDCoGFyY2gvYXJtL2JvYXJkcy9ueHAtaW14OG1xLWV2ay9ib2FyZC5jIHwgMTEgLS0t
+LS0tLS0tLS0KPiA+IMKgMSBmaWxlIGNoYW5nZWQsIDExIGRlbGV0aW9ucygtKQo+ID4gCj4gPiBk
+aWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL254cC1pbXg4bXEtZXZrL2JvYXJkLmMKPiA+IGIv
+YXJjaC9hcm0vYm9hcmRzL254cC1pbXg4bXEtZXZrL2JvYXJkLmMKPiA+IGluZGV4IDc2NGVhZGI3
+NjZhOS4uNzkxOGI1ZmIzZTM2IDEwMDY0NAo+ID4gLS0tIGEvYXJjaC9hcm0vYm9hcmRzL254cC1p
+bXg4bXEtZXZrL2JvYXJkLmMKPiA+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9ueHAtaW14OG1xLWV2
+ay9ib2FyZC5jCj4gPiBAQCAtNDUsMTcgKzQ1LDYgQEAgc3RhdGljIGludCBhcjgwMzFfcGh5X2Zp
+eHVwKHN0cnVjdCBwaHlfZGV2aWNlCj4gPiAqcGh5ZGV2KQo+ID4gwqDCoMKgwqDCoMKgwqDCoHJl
+dHVybiAwOwo+ID4gwqB9Cj4gPiAKPiA+IC1zdGF0aWMgaW50IGlteDhtcV9ldmtfbWVtX2luaXQo
+dm9pZCkKPiA+IC17Cj4gPiAtwqDCoMKgwqDCoMKgwqBpZiAoIW9mX21hY2hpbmVfaXNfY29tcGF0
+aWJsZSgiZnNsLGlteDhtcS1ldmsiKSkKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqByZXR1cm4gMDsKPiA+IC0KPiA+IC3CoMKgwqDCoMKgwqDCoHJlcXVlc3Rfc2RyYW1fcmVnaW9u
+KCJBVEYiLCAweDQwMDAwMDAwLCBTWl8xMjhLKTsKPiA+IC0KPiA+IC3CoMKgwqDCoMKgwqDCoHJl
+dHVybiAwOwo+ID4gLX0KPiA+IC1tZW1faW5pdGNhbGwoaW14OG1xX2V2a19tZW1faW5pdCk7Cj4g
+PiAtCj4gPiDCoHN0YXRpYyBpbnQgbnhwX2lteDhtcV9ldmtfaW5pdCh2b2lkKQo+ID4gwqB7Cj4g
+PiDCoMKgwqDCoMKgwqDCoMKgaWYgKCFvZl9tYWNoaW5lX2lzX2NvbXBhdGlibGUoImZzbCxpbXg4
+bXEtZXZrIikpCj4gPiAtLQo+ID4gMi4xOS4xCj4gPiAKPiA+IAo+ID4gX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiA+IGJhcmVib3ggbWFpbGluZyBsaXN0
+Cj4gPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiA+IGh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAoKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
+cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
+Zm8vYmFyZWJveAo=
