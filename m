@@ -1,19 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
- by merlin.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gKKpS-0003zU-CL
- for barebox@lists.infradead.org; Wed, 07 Nov 2018 10:12:55 +0000
-Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
- (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
- id S23991112AbeKGKMhaXv2K (ORCPT
- <rfc822;barebox@lists.infradead.org>); Wed, 7 Nov 2018 11:12:37 +0100
-Date: Wed, 7 Nov 2018 11:12:35 +0100
-From: Ladislav Michl <ladis@linux-mips.org>
-Message-ID: <20181107101235.GA6313@lenoch>
-References: <20181105155113.3434-1-s.hauer@pengutronix.de>
+Received: from mout02.posteo.de ([185.67.36.66])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gKLSZ-0004ik-6D
+ for barebox@lists.infradead.org; Wed, 07 Nov 2018 10:53:20 +0000
+Received: from submission (posteo.de [89.146.220.130]) 
+ by mout02.posteo.de (Postfix) with ESMTPS id 6D0C92400FC
+ for <barebox@lists.infradead.org>; Wed,  7 Nov 2018 11:52:48 +0100 (CET)
+Date: Wed, 7 Nov 2018 11:52:44 +0100
+From: Patrick Boettcher <patrick.boettcher@posteo.de>
+Message-ID: <20181107115244.60cfb5e5@posteo.de>
+In-Reply-To: <20181107073621.yqrnr7ajovrldza3@pengutronix.de>
+References: <20181102152751.2a0b995c@yaise-pc1>
+ <20181104170705.0ad35065@yaise-pc1>
+ <20181106082914.ykoffbmdfqkdaflg@pengutronix.de>
+ <20181106141126.1d930ce2@posteo.de>
+ <20181107073621.yqrnr7ajovrldza3@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181105155113.3434-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,56 +28,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/22] AT91 header cleanup
+Subject: Re: Barebox stops working if /env/boot/mmc is removed
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Nov 05, 2018 at 04:50:51PM +0100, Sascha Hauer wrote:
-> The following series contains a bigger at91 header file cleanup. With
-> this the SoC header files become completely SoC namespaced which means
-> they can all be included as desired without conflicts. This makes the
-> way free for more at91 multiboard support.
+On Wed, 7 Nov 2018 08:36:21 +0100
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
+
+> On Tue, Nov 06, 2018 at 02:11:26PM +0100, Patrick Boettcher wrote:
+> > On Tue, 6 Nov 2018 09:29:14 +0100
+> > Sascha Hauer <s.hauer@pengutronix.de> wrote:  
+> > > > The issue seems to have come from a file which was maybe in a
+> > > > previous default environment and has been modified in the
+> > > > user-environment and was now remove in the default-env or
+> > > > overwritten or whatnot.
+> > > > 
+> > > > It seems that I fixed it by erasing
+> > > > the /dev/barebox-environment-partition after flashing the new
+> > > > barebox-version.
+> > > > 
+> > > > For the moment this is not an issue for my system/application.
+> > > > It's a bit scary though.    
+> > > 
+> > > What does "Stops working" mean? Doesn't start at all? Doesn't
+> > > start kernel? Your description is a bit vague.  
+> > 
+> > Stops working means no more output on the serial port after having
+> > barebox_updated the image and issued 'reset'. Hardware reset did
+> > not do anything.  
 > 
-> I don't have that much AT91 hardware on my desk, so I am unable to test
-> this properly. Testing feedback very much appreciated. Sam maybe?
+> Console output starts before the environment is looked at, so this
+> shouldn't be the root cause. I didn't understand where you erased the
+> file. Did you erase it in your build, so in the default environment,
+> or did you erase it during runtime from the saved environment? For the
+> former it could be that the object positions in the binary moved to
+> some unlucky place. 
 
-Tested on custom AT91SAM9G20 based board. However as patch
-"ARM: at91: separate restart handler registration into SoC specific code"
-does exactly what its commit message says it brings some issues with
-devicetree based boot. Nearly everything works except NAND and that would
-work too if one uses old binding. As that is not my case, I'm using pdata
-to register NAND, so I need also:
+This must have been my case. I deleted a file from the default
+environment within my build which was in a previous image.
 
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index d81683ac1..75442bd72 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -18,11 +18,12 @@ obj-$(CONFIG_ARCH_AT91RM9200)	+= at91rm9200.o at91rm9200_time.o at91rm9200_devic
- obj-$(CONFIG_ARCH_AT91SAM9260) += at91sam9260.o at91sam9260_devices.o
- obj-$(CONFIG_ARCH_AT91SAM9261) += at91sam9261.o at91sam9261_devices.o
- obj-$(CONFIG_ARCH_AT91SAM9G10) += at91sam9261.o at91sam9261_devices.o
-+obj-$(CONFIG_ARCH_AT91SAM9G20) += at91sam9260_devices.o
- ifeq ($(CONFIG_OFDEVICE),)
- obj-$(CONFIG_ARCH_AT91SAM9263) += at91sam9263.o at91sam9263_devices.o
- obj-$(CONFIG_ARCH_SAMA5D3)	+= sama5d3.o sama5d3_devices.o
-+obj-$(CONFIG_ARCH_AT91SAM9G20)	+= at91sam9260.o
- endif
--obj-$(CONFIG_ARCH_AT91SAM9G20) += at91sam9260.o at91sam9260_devices.o
- obj-$(CONFIG_ARCH_AT91SAM9G45) += at91sam9g45.o at91sam9g45_devices.o
- obj-$(CONFIG_ARCH_AT91SAM9X5)	+= at91sam9x5.o at91sam9x5_devices.o
- obj-$(CONFIG_ARCH_AT91SAM9N12)	+= at91sam9n12.o at91sam9n12_devices.o
+As I didn't really knew what's going on, I don't remember exactly what
+I did.
 
-Note, that with above change, once we move to device tree, there's noone
-to register restart handler. I guess, that will get eventually sorted
-by writing proper reset driver, right? For now I put reset handler
-registration into a board file.
+But I'm quite sure that erasing the barbox-environment-partition fixed
+the problem. 
 
-Above is just extraordinary long way to say, that without updating
-Barebox' MTD code it is hard to move to full DT boot and someone
-should start testing ;-)
+I haven't seen it since then, no matter how much I changed the
+built-in-env.
 
-Best regards,
-	ladis
+Thanks for your feedback and explanation, I'll keep my eyes open in
+case the problem reappears.
+
+regards,
+--
+Patrick.
 
 _______________________________________________
 barebox mailing list
