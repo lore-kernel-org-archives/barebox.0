@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf1-x144.google.com ([2a00:1450:4864:20::144])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gKIYl-0000CI-AJ
- for barebox@lists.infradead.org; Wed, 07 Nov 2018 07:47:32 +0000
-Date: Wed, 7 Nov 2018 08:47:18 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181107074718.s2dsi6phmz4egcov@pengutronix.de>
+ id 1gKO9X-0002up-CF
+ for barebox@lists.infradead.org; Wed, 07 Nov 2018 13:45:53 +0000
+Received: by mail-lf1-x144.google.com with SMTP id d7-v6so11523361lfi.2
+ for <barebox@lists.infradead.org>; Wed, 07 Nov 2018 05:45:38 -0800 (PST)
+Date: Wed, 7 Nov 2018 16:45:23 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20181107134522.y7awdhz2uowjnqh7@localhost.localdomain>
 References: <20181106161407.20974-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -27,21 +29,28 @@ Subject: Re: [PATCH] commands: mem: truncate mem device size to fit the
 To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
+Hi, Lucas,
+
 On Tue, Nov 06, 2018 at 05:14:07PM +0100, Lucas Stach wrote:
 > On 64bit arches the file covering the whole address space is larger than
 > what can be represented in the loff_t type (s64) used for the file size.
 > Thus the size of this device is interpreted as negative in a lot of
 > places. Fix this by truncating the size to fit the file size type.
+
+While this is probably an appropriate solution for some architectures, it will 
+cause problems on MIPS64. The root of evil is MIPS64 address space 
+segmentation: https://docplayer.net/docs-images/25/4553906/images/21-0.png).  
+Most notably your patch prevents access to the xkphys segment, where most 
+peripheral devices of a SoC are accessible.
+
+Regards,
+Peter
+
 > 
 > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 > ---
 >  commands/mem.c | 3 ++-
 >  1 file changed, 2 insertions(+), 1 deletion(-)
-
-Applied, thanks
-
-Sascha
-
 > 
 > diff --git a/commands/mem.c b/commands/mem.c
 > index eb91ade05a88..cdd7a492d0d5 100644
@@ -65,13 +74,6 @@ Sascha
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
