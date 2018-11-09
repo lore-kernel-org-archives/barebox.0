@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gL3TN-0002hZ-Aw
- for barebox@lists.infradead.org; Fri, 09 Nov 2018 09:53:07 +0000
+ id 1gL3TN-0002hb-BE
+ for barebox@lists.infradead.org; Fri, 09 Nov 2018 09:53:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  9 Nov 2018 10:52:36 +0100
-Message-Id: <20181109095246.15068-11-s.hauer@pengutronix.de>
+Date: Fri,  9 Nov 2018 10:52:42 +0100
+Message-Id: <20181109095246.15068-17-s.hauer@pengutronix.de>
 In-Reply-To: <20181109095246.15068-1-s.hauer@pengutronix.de>
 References: <20181109095246.15068-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,29 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/20] ARM: i.MX27: Add missing prototype for
- imx27_get_boot_source()
+Subject: [PATCH 16/20] pinctrl: at91: Add missing include
 To: Barebox List <barebox@lists.infradead.org>
 
-imx27_get_boot_source() is exported, so add a prototype for it.
+mach/iomux.h provides prototypes for functions that the pinctrl driver
+implements, so include it. With this we have a duplicate definition of
+enum at91_mux so remove it from the pinctrl driver.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/include/mach/generic.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pinctrl/pinctrl-at91.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
-index dc537941a7..be58da4da2 100644
---- a/arch/arm/mach-imx/include/mach/generic.h
-+++ b/arch/arm/mach-imx/include/mach/generic.h
-@@ -19,6 +19,7 @@ void vf610_boot_save_loc(void);
- void imx8_boot_save_loc(void);
+diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
+index 3201eb9cb1..11e00833c5 100644
+--- a/drivers/pinctrl/pinctrl-at91.c
++++ b/drivers/pinctrl/pinctrl-at91.c
+@@ -32,6 +32,7 @@
  
- void imx25_get_boot_source(enum bootsource *src, int *instance);
-+void imx27_get_boot_source(enum bootsource *src, int *instance);
- void imx35_get_boot_source(enum bootsource *src, int *instance);
- void imx51_get_boot_source(enum bootsource *src, int *instance);
- void imx53_get_boot_source(enum bootsource *src, int *instance);
+ #include <mach/at91_pio.h>
+ #include <mach/gpio.h>
++#include <mach/iomux.h>
+ 
+ #include <pinctrl.h>
+ 
+@@ -46,14 +47,6 @@ struct at91_gpio_chip {
+ 	struct at91_pinctrl_mux_ops *ops;	/* ops */
+ };
+ 
+-enum at91_mux {
+-	AT91_MUX_GPIO = 0,
+-	AT91_MUX_PERIPH_A = 1,
+-	AT91_MUX_PERIPH_B = 2,
+-	AT91_MUX_PERIPH_C = 3,
+-	AT91_MUX_PERIPH_D = 4,
+-};
+-
+ #define MAX_GPIO_BANKS		5
+ #define to_at91_pinctrl(c) container_of(c, struct at91_pinctrl, pctl);
+ #define to_at91_gpio_chip(c) container_of(c, struct at91_gpio_chip, chip)
 -- 
 2.19.1
 
