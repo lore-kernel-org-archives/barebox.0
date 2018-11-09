@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gL3TI-0002hV-Bt
+ id 1gL3TI-0002hW-Bu
  for barebox@lists.infradead.org; Fri, 09 Nov 2018 09:53:03 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  9 Nov 2018 10:52:33 +0100
-Message-Id: <20181109095246.15068-8-s.hauer@pengutronix.de>
+Date: Fri,  9 Nov 2018 10:52:35 +0100
+Message-Id: <20181109095246.15068-10-s.hauer@pengutronix.de>
 In-Reply-To: <20181109095246.15068-1-s.hauer@pengutronix.de>
 References: <20181109095246.15068-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,30 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/20] ARM: start: Add missing prototype
+Subject: [PATCH 09/20] ARM: i.MX50: Make locally used function static
 To: Barebox List <barebox@lists.infradead.org>
 
-start() has no prototype, add it. Since it is not called from
-anywhere in the barebox binary just add the prototype to the C file.
+imx50_init_lowlevel_early() is only used locally, so make it static.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/start.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/mach-imx/imx50.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 540480d04e..0b3722e31d 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -239,6 +239,8 @@ void NAKED __section(.text_entry) start(void)
+diff --git a/arch/arm/mach-imx/imx50.c b/arch/arm/mach-imx/imx50.c
+index 4fd5481670..b76e3794e3 100644
+--- a/arch/arm/mach-imx/imx50.c
++++ b/arch/arm/mach-imx/imx50.c
+@@ -86,7 +86,7 @@ int imx50_devices_init(void)
+ 	return 0;
  }
  
- #else
-+
-+void start(unsigned long membase, unsigned long memsize, void *boarddata);
- /*
-  * First function in the uncompressed image. We get here from
-  * the pbl. The stack already has been set up by the pbl.
+-void imx50_init_lowlevel_early(unsigned int cpufreq_mhz)
++static void imx50_init_lowlevel_early(unsigned int cpufreq_mhz)
+ {
+ 	void __iomem *ccm = IOMEM(MX50_CCM_BASE_ADDR);
+ 	u32 r;
 -- 
 2.19.1
 
