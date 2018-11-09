@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gL3TV-0002ln-0p
- for barebox@lists.infradead.org; Fri, 09 Nov 2018 09:53:14 +0000
+ id 1gL3TQ-0002hg-9V
+ for barebox@lists.infradead.org; Fri, 09 Nov 2018 09:53:12 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  9 Nov 2018 10:52:37 +0100
-Message-Id: <20181109095246.15068-12-s.hauer@pengutronix.de>
+Date: Fri,  9 Nov 2018 10:52:41 +0100
+Message-Id: <20181109095246.15068-16-s.hauer@pengutronix.de>
 In-Reply-To: <20181109095246.15068-1-s.hauer@pengutronix.de>
 References: <20181109095246.15068-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,29 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/20] ARM: i.MX: add missing include
+Subject: [PATCH 15/20] dma: apbh: make locally used function static
 To: Barebox List <barebox@lists.infradead.org>
 
-mach/imx-nand.h provides the prototype for imx_nand_set_layout() which
-this file implements, so include the header file.
+To avoid missing prototype warning.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/nand.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/dma/apbh_dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/nand.c b/arch/arm/mach-imx/nand.c
-index f298a36046..7574fe80b2 100644
---- a/arch/arm/mach-imx/nand.c
-+++ b/arch/arm/mach-imx/nand.c
-@@ -17,6 +17,7 @@
- #include <mach/imx25-regs.h>
- #include <mach/imx27-regs.h>
- #include <mach/imx35-regs.h>
-+#include <mach/imx-nand.h>
- #include <io.h>
+diff --git a/drivers/dma/apbh_dma.c b/drivers/dma/apbh_dma.c
+index 79f25109f9..72c2f364c5 100644
+--- a/drivers/dma/apbh_dma.c
++++ b/drivers/dma/apbh_dma.c
+@@ -67,7 +67,7 @@ static struct apbh_dma *apbh_dma;
+ /*
+  * Test is the DMA channel is valid channel
+  */
+-int mxs_dma_validate_chan(int channel)
++static int mxs_dma_validate_chan(int channel)
+ {
+ 	struct mxs_dma_chan *pchan;
  
- #define RCSR_NFC_FMS		(1 << 8)
 -- 
 2.19.1
 
