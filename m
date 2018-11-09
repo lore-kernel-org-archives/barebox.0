@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gL3TN-0002ha-Ak
+ id 1gL3TN-0002hZ-Aw
  for barebox@lists.infradead.org; Fri, 09 Nov 2018 09:53:07 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  9 Nov 2018 10:52:44 +0100
-Message-Id: <20181109095246.15068-19-s.hauer@pengutronix.de>
+Date: Fri,  9 Nov 2018 10:52:36 +0100
+Message-Id: <20181109095246.15068-11-s.hauer@pengutronix.de>
 In-Reply-To: <20181109095246.15068-1-s.hauer@pengutronix.de>
 References: <20181109095246.15068-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,29 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/20] fs: devfs: Make locally used function static
+Subject: [PATCH 10/20] ARM: i.MX27: Add missing prototype for
+ imx27_get_boot_source()
 To: Barebox List <barebox@lists.infradead.org>
 
-devfs_iterate() is only used locally, so make it static.
+imx27_get_boot_source() is exported, so add a prototype for it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/devfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-imx/include/mach/generic.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/devfs.c b/fs/devfs.c
-index 717e66c5dc..81ae2c25a5 100644
---- a/fs/devfs.c
-+++ b/fs/devfs.c
-@@ -193,7 +193,7 @@ static struct inode *devfs_alloc_inode(struct super_block *sb)
- 	return &node->inode;
- }
+diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
+index dc537941a7..be58da4da2 100644
+--- a/arch/arm/mach-imx/include/mach/generic.h
++++ b/arch/arm/mach-imx/include/mach/generic.h
+@@ -19,6 +19,7 @@ void vf610_boot_save_loc(void);
+ void imx8_boot_save_loc(void);
  
--int devfs_iterate(struct file *file, struct dir_context *ctx)
-+static int devfs_iterate(struct file *file, struct dir_context *ctx)
- {
- 	struct cdev *cdev;
- 
+ void imx25_get_boot_source(enum bootsource *src, int *instance);
++void imx27_get_boot_source(enum bootsource *src, int *instance);
+ void imx35_get_boot_source(enum bootsource *src, int *instance);
+ void imx51_get_boot_source(enum bootsource *src, int *instance);
+ void imx53_get_boot_source(enum bootsource *src, int *instance);
 -- 
 2.19.1
 
