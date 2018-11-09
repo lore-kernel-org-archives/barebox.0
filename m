@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gL0uL-0002AI-Sq
- for barebox@lists.infradead.org; Fri, 09 Nov 2018 07:08:47 +0000
-Date: Fri, 9 Nov 2018 08:08:33 +0100
+ id 1gL13b-0005tJ-OB
+ for barebox@lists.infradead.org; Fri, 09 Nov 2018 07:18:21 +0000
+Date: Fri, 9 Nov 2018 08:18:06 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181109070833.kvvqqiqdz367pmas@pengutronix.de>
-References: <20181108103207.12189-1-m.niestroj@grinn-global.com>
+Message-ID: <20181109071806.6l4us6ahcn2vvwwg@pengutronix.de>
+References: <2337209.lTZxGkHaYR@think-future.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181108103207.12189-1-m.niestroj@grinn-global.com>
+In-Reply-To: <2337209.lTZxGkHaYR@think-future.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,47 +18,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3] ARM: i.MX: Add liteboard support
-To: Marcin Niestroj <m.niestroj@grinn-global.com>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH 1/1] rk3188: don't set same clk rate twice
+To: perachet7@gmail.com
+Cc: barebox@lists.infradead.org
 
-On Thu, Nov 08, 2018 at 11:32:07AM +0100, Marcin Niestroj wrote:
-> liteboard is a development board which uses liteSOM as its
-> base. liteSOM can't exist on its own, but is used as part
-> of other boards - it only contains processor and memory.
-> 
-> Hardware specification:
->  * liteSOM:
->    - i.MX6UL
->    - 256M or 512M DDR3 RAM
->    - eMMC (uSDHC2)
->  * Ethernet PHY
->  * USB host (usb_otg1)
->  * MicroSD slot (uSDHC1)
-> 
-> Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
-> ---
-> Hi,
-> 
-> It's a third attemt to add support for liteboard. You can find
-> PATCH v1 in [1] and PATCH v2 in [2].
-
-Applied, thanks
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgpPbiBUaHUsIE5vdiAwOCwgMjAxOCBhdCAwMzozNDoyOVBNICswMTAwLCBwZXJhY2hldDdA
+Z21haWwuY29tIHdyb3RlOgo+IEhpLAo+IAo+IFdlIGZvdW5kIHNldHRpbmcgYSBjbG9jayByYXRl
+IHdoaWNoIGhhcyBhbHJlYWR5IGJlZW4gc2V0LCByazMxODggKHJhZHhhIHJvY2sgCj4gcHJvKSBi
+YWlscyBvdXQuIFRoaXMgaXMgYSBxdWljayBmaXggb25seS4gVW5kZXJseWluZyBzaXR1YXRpb24g
+bm90ICh5ZXQpIAo+IGludmVzdGlnYXRlZDogd2h5IGl0IGlzIGV2ZW4gdHJ5aW5nIHRvIHNldCBp
+dCB0byB0aGUgc2FtZSByYXRlIGFnYWluLiBJdCAKPiByZW1haW5zIHRvIHN0YXRlIHRoYXQgc29t
+ZSBidXQgbm90IGFsbCBycnBybyBib2FyZHMgZXhoaWJpdCB0aGlzIGJlaGF2aW91ciwgbm8gCj4g
+b3RoZXIgcmszMTg4IGJvYXJkcyBoYXZlIGJlZW4gdGVzdGVkLgo+IAo+IFNpZ25lZC1vZmYtYnk6
+IFAuIFJhY2hldCA8cGVyYWNoZXQ3QGdtYWlsLmNvbT4KPiAtLS0KPiAgZHJpdmVycy9jbGsvcm9j
+a2NoaXAvY2xrLXBsbC5jIHwgNSArKysrKwo+ICAxIGZpbGUgY2hhbmdlZCwgNSBpbnNlcnRpb25z
+KCspCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvY2xrL3JvY2tjaGlwL2Nsay1wbGwuYyBiL2Ry
+aXZlcnMvY2xrL3JvY2tjaGlwL2Nsay1wbGwuYwo+IGluZGV4IGYwZGMxMjA5MS4uNjkwZGE0YWZi
+IDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvY2xrL3JvY2tjaGlwL2Nsay1wbGwuYwo+ICsrKyBiL2Ry
+aXZlcnMvY2xrL3JvY2tjaGlwL2Nsay1wbGwuYwo+IEBAIC0xNjQsNiArMTY0LDExIEBAIHN0YXRp
+YyBpbnQgcm9ja2NoaXBfcmszMDY2X3BsbF9zZXRfcmF0ZShzdHJ1Y3QgY2xrICpodywgCj4gdW5z
+aWduZWQgbG9uZyBkcmF0ZSwKPiAgIGludCBjdXJfcGFyZW50Owo+ICAgaW50IHJldDsKPiAKPiAr
+ICBpZiAob2xkX3JhdGUgPT0gZHJhdGUpIHsKPiArICAgIHByX2RlYnVnKCIlczogbm90IGNoYW5n
+aW5nIHJhdGUsIG9sZCA9PSBuZXcgcmF0ZSAoY2xrL29sZC9uZXcvcGFyZW50KTogCj4gJXMvJWx1
+LyVsdS8lbHVcbiIsIF9fZnVuY19fLCBfX2Nsa19nZXRfbmFtZShodyksIG9sZF9yYXRlLCBkcmF0
+ZSwgcHJhdGUpOwo+ICsgICAgcmV0dXJuIDA7Cj4gKyAgfQo+ICsKClRoZSBwYXRjaCBpcyB3aGl0
+ZXNwYWNlIGRhbWFnZWQuIEkgYXBwbGllZCBpdCBtYW51YWxseSB0aGlzIHRpbWUsIGJ1dApwbGVh
+c2UgY29uc2lkZXIgdXNpbmcgZ2l0LXNlbmQtZW1haWwgbmV4dCB0aW1lLiBJdCBqdXN0IGRvZXMg
+aXQgcmlnaHTihKIKClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAg
+ICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGlu
+dXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUv
+ICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiAr
+NDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAg
+ICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
+Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9iYXJlYm94Cg==
