@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gL3TQ-0002he-7g
+ id 1gL3TQ-0002hh-AV
  for barebox@lists.infradead.org; Fri, 09 Nov 2018 09:53:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  9 Nov 2018 10:52:30 +0100
-Message-Id: <20181109095246.15068-5-s.hauer@pengutronix.de>
+Date: Fri,  9 Nov 2018 10:52:40 +0100
+Message-Id: <20181109095246.15068-15-s.hauer@pengutronix.de>
 In-Reply-To: <20181109095246.15068-1-s.hauer@pengutronix.de>
 References: <20181109095246.15068-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,29 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/20] ARM: sm: Make locally used function static
+Subject: [PATCH 14/20] clk: imx: Avoid missing prototype warnings
 To: Barebox List <barebox@lists.infradead.org>
 
-To avoid missing prototype warning.
+clk_gate2_free() is unused, so remove it. clk_gate2_alloc() is only
+used locally, so make it static.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/sm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/imx/clk-gate2.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/arch/arm/cpu/sm.c b/arch/arm/cpu/sm.c
-index 6fad30adab..633c9e8c83 100644
---- a/arch/arm/cpu/sm.c
-+++ b/arch/arm/cpu/sm.c
-@@ -94,7 +94,7 @@ static unsigned long get_gicc_base_address(void)
+diff --git a/drivers/clk/imx/clk-gate2.c b/drivers/clk/imx/clk-gate2.c
+index f2e704cdb2..8d5ed7e05c 100644
+--- a/drivers/clk/imx/clk-gate2.c
++++ b/drivers/clk/imx/clk-gate2.c
+@@ -87,7 +87,7 @@ static struct clk_ops clk_gate2_ops = {
+ 	.is_enabled = clk_gate2_is_enabled,
+ };
  
- #define GICD_IGROUPRn             0x0080
- 
--int armv7_init_nonsec(void)
-+static int armv7_init_nonsec(void)
+-struct clk *clk_gate2_alloc(const char *name, const char *parent,
++static struct clk *clk_gate2_alloc(const char *name, const char *parent,
+ 			    void __iomem *reg, u8 shift, u8 cgr_val,
+ 			    unsigned long flags)
  {
- 	void __iomem *gicd = IOMEM(get_gicd_base_address());
- 	unsigned itlinesnr, i;
+@@ -106,13 +106,6 @@ struct clk *clk_gate2_alloc(const char *name, const char *parent,
+ 	return &g->clk;
+ }
+ 
+-void clk_gate2_free(struct clk *clk)
+-{
+-	struct clk_gate2 *g = to_clk_gate2(clk);
+-
+-	free(g);
+-}
+-
+ struct clk *clk_gate2(const char *name, const char *parent, void __iomem *reg,
+ 		      u8 shift, u8 cgr_val, unsigned long flags)
+ {
 -- 
 2.19.1
 
