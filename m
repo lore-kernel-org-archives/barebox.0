@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gL13b-0005tJ-OB
- for barebox@lists.infradead.org; Fri, 09 Nov 2018 07:18:21 +0000
-Date: Fri, 9 Nov 2018 08:18:06 +0100
+ id 1gL19V-0007WL-L6
+ for barebox@lists.infradead.org; Fri, 09 Nov 2018 07:24:27 +0000
+Date: Fri, 9 Nov 2018 08:24:13 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181109071806.6l4us6ahcn2vvwwg@pengutronix.de>
-References: <2337209.lTZxGkHaYR@think-future.de>
+Message-ID: <20181109072413.q56x43nwlpfjmjz3@pengutronix.de>
+References: <20181106174254.21371-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <2337209.lTZxGkHaYR@think-future.de>
+In-Reply-To: <20181106174254.21371-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,42 +18,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] rk3188: don't set same clk rate twice
-To: perachet7@gmail.com
+Subject: Re: [PATCH 1/2] ARM: nxp-imx8mq-evk: remove SDRAM reservation for ATF
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-SGksCgpPbiBUaHUsIE5vdiAwOCwgMjAxOCBhdCAwMzozNDoyOVBNICswMTAwLCBwZXJhY2hldDdA
-Z21haWwuY29tIHdyb3RlOgo+IEhpLAo+IAo+IFdlIGZvdW5kIHNldHRpbmcgYSBjbG9jayByYXRl
-IHdoaWNoIGhhcyBhbHJlYWR5IGJlZW4gc2V0LCByazMxODggKHJhZHhhIHJvY2sgCj4gcHJvKSBi
-YWlscyBvdXQuIFRoaXMgaXMgYSBxdWljayBmaXggb25seS4gVW5kZXJseWluZyBzaXR1YXRpb24g
-bm90ICh5ZXQpIAo+IGludmVzdGlnYXRlZDogd2h5IGl0IGlzIGV2ZW4gdHJ5aW5nIHRvIHNldCBp
-dCB0byB0aGUgc2FtZSByYXRlIGFnYWluLiBJdCAKPiByZW1haW5zIHRvIHN0YXRlIHRoYXQgc29t
-ZSBidXQgbm90IGFsbCBycnBybyBib2FyZHMgZXhoaWJpdCB0aGlzIGJlaGF2aW91ciwgbm8gCj4g
-b3RoZXIgcmszMTg4IGJvYXJkcyBoYXZlIGJlZW4gdGVzdGVkLgo+IAo+IFNpZ25lZC1vZmYtYnk6
-IFAuIFJhY2hldCA8cGVyYWNoZXQ3QGdtYWlsLmNvbT4KPiAtLS0KPiAgZHJpdmVycy9jbGsvcm9j
-a2NoaXAvY2xrLXBsbC5jIHwgNSArKysrKwo+ICAxIGZpbGUgY2hhbmdlZCwgNSBpbnNlcnRpb25z
-KCspCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvY2xrL3JvY2tjaGlwL2Nsay1wbGwuYyBiL2Ry
-aXZlcnMvY2xrL3JvY2tjaGlwL2Nsay1wbGwuYwo+IGluZGV4IGYwZGMxMjA5MS4uNjkwZGE0YWZi
-IDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvY2xrL3JvY2tjaGlwL2Nsay1wbGwuYwo+ICsrKyBiL2Ry
-aXZlcnMvY2xrL3JvY2tjaGlwL2Nsay1wbGwuYwo+IEBAIC0xNjQsNiArMTY0LDExIEBAIHN0YXRp
-YyBpbnQgcm9ja2NoaXBfcmszMDY2X3BsbF9zZXRfcmF0ZShzdHJ1Y3QgY2xrICpodywgCj4gdW5z
-aWduZWQgbG9uZyBkcmF0ZSwKPiAgIGludCBjdXJfcGFyZW50Owo+ICAgaW50IHJldDsKPiAKPiAr
-ICBpZiAob2xkX3JhdGUgPT0gZHJhdGUpIHsKPiArICAgIHByX2RlYnVnKCIlczogbm90IGNoYW5n
-aW5nIHJhdGUsIG9sZCA9PSBuZXcgcmF0ZSAoY2xrL29sZC9uZXcvcGFyZW50KTogCj4gJXMvJWx1
-LyVsdS8lbHVcbiIsIF9fZnVuY19fLCBfX2Nsa19nZXRfbmFtZShodyksIG9sZF9yYXRlLCBkcmF0
-ZSwgcHJhdGUpOwo+ICsgICAgcmV0dXJuIDA7Cj4gKyAgfQo+ICsKClRoZSBwYXRjaCBpcyB3aGl0
-ZXNwYWNlIGRhbWFnZWQuIEkgYXBwbGllZCBpdCBtYW51YWxseSB0aGlzIHRpbWUsIGJ1dApwbGVh
-c2UgY29uc2lkZXIgdXNpbmcgZ2l0LXNlbmQtZW1haWwgbmV4dCB0aW1lLiBJdCBqdXN0IGRvZXMg
-aXQgcmlnaHTihKIKClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAg
-ICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGlu
-dXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUv
-ICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiAr
-NDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAg
-ICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94Cg==
+On Tue, Nov 06, 2018 at 06:42:53PM +0100, Lucas Stach wrote:
+> Recent versions of the i.MX8MQ ATF (like the one shipped with Barebox)
+> reside in a part of OCRAM, so there is no need to reserve any part of
+> SDRAM anymore.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  arch/arm/boards/nxp-imx8mq-evk/board.c | 11 -----------
+>  1 file changed, 11 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/arch/arm/boards/nxp-imx8mq-evk/board.c b/arch/arm/boards/nxp-imx8mq-evk/board.c
+> index 764eadb766a9..7918b5fb3e36 100644
+> --- a/arch/arm/boards/nxp-imx8mq-evk/board.c
+> +++ b/arch/arm/boards/nxp-imx8mq-evk/board.c
+> @@ -45,17 +45,6 @@ static int ar8031_phy_fixup(struct phy_device *phydev)
+>  	return 0;
+>  }
+>  
+> -static int imx8mq_evk_mem_init(void)
+> -{
+> -	if (!of_machine_is_compatible("fsl,imx8mq-evk"))
+> -		return 0;
+> -
+> -	request_sdram_region("ATF", 0x40000000, SZ_128K);
+> -
+> -	return 0;
+> -}
+> -mem_initcall(imx8mq_evk_mem_init);
+> -
+>  static int nxp_imx8mq_evk_init(void)
+>  {
+>  	if (!of_machine_is_compatible("fsl,imx8mq-evk"))
+> -- 
+> 2.19.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
