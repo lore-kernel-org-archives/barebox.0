@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gL3TI-0002hR-Bv
- for barebox@lists.infradead.org; Fri, 09 Nov 2018 09:53:03 +0000
+ id 1gL3TI-0002hS-Bn
+ for barebox@lists.infradead.org; Fri, 09 Nov 2018 09:53:04 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  9 Nov 2018 10:52:32 +0100
-Message-Id: <20181109095246.15068-7-s.hauer@pengutronix.de>
+Date: Fri,  9 Nov 2018 10:52:31 +0100
+Message-Id: <20181109095246.15068-6-s.hauer@pengutronix.de>
 In-Reply-To: <20181109095246.15068-1-s.hauer@pengutronix.de>
 References: <20181109095246.15068-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,43 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/20] ARM: start: Add missing include
+Subject: [PATCH 05/20] fs: ubifs: Avoid missing prototype warning
 To: Barebox List <barebox@lists.infradead.org>
 
-entry.h provides prototypes for some functions, so include it.
+Remove unused ubifs_iput() and make locally used functions static.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/start.c      | 2 ++
- arch/arm/cpu/uncompress.c | 2 ++
- 2 files changed, 4 insertions(+)
+ fs/ubifs/super.c | 10 +---------
+ fs/ubifs/ubifs.c |  2 +-
+ 2 files changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index a79d64eaa6..540480d04e 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -34,6 +34,8 @@
+diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
+index 2fe2f3f640..fd1b645f9f 100644
+--- a/fs/ubifs/super.c
++++ b/fs/ubifs/super.c
+@@ -37,14 +37,6 @@
+ #include "ubifs.h"
+ #include <mtd/ubi-user.h>
  
- #include <debug_ll.h>
+-int ubifs_iput(struct inode *inode)
+-{
+-	list_del_init(&inode->i_sb_list);
+-
+-	free(inode);
+-	return 0;
+-}
+-
+ /* from include/linux/fs.h */
+ static inline void i_uid_write(struct inode *inode, uid_t uid)
+ {
+@@ -56,7 +48,7 @@ static inline void i_gid_write(struct inode *inode, gid_t gid)
+ 	inode->i_gid = gid;
+ }
  
-+#include "entry.h"
-+
- unsigned long arm_stack_top;
- static unsigned long arm_barebox_size;
- static void *barebox_boarddata;
-diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-index 048bca0c95..21d72c58b2 100644
---- a/arch/arm/cpu/uncompress.c
-+++ b/arch/arm/cpu/uncompress.c
-@@ -34,6 +34,8 @@
+-void unlock_new_inode(struct inode *inode)
++static void unlock_new_inode(struct inode *inode)
+ {
+ 	return;
+ }
+diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
+index bbe382dab0..7545dd4c9b 100644
+--- a/fs/ubifs/ubifs.c
++++ b/fs/ubifs/ubifs.c
+@@ -401,7 +401,7 @@ static loff_t ubifs_lseek(struct device_d *dev, FILE *f, loff_t pos)
+ 	return pos;
+ }
  
- #include <debug_ll.h>
- 
-+#include "entry.h"
-+
- unsigned long free_mem_ptr;
- unsigned long free_mem_end_ptr;
- 
+-void ubifs_set_rootarg(struct ubifs_priv *priv, struct fs_device_d *fsdev)
++static void ubifs_set_rootarg(struct ubifs_priv *priv, struct fs_device_d *fsdev)
+ {
+ 	struct ubi_volume_info vi = {};
+ 	struct ubi_device_info di = {};
 -- 
 2.19.1
 
