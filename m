@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gL3TQ-0002hd-0y
- for barebox@lists.infradead.org; Fri, 09 Nov 2018 09:53:09 +0000
+ id 1gL3TQ-0002hf-8q
+ for barebox@lists.infradead.org; Fri, 09 Nov 2018 09:53:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  9 Nov 2018 10:52:27 +0100
-Message-Id: <20181109095246.15068-2-s.hauer@pengutronix.de>
+Date: Fri,  9 Nov 2018 10:52:45 +0100
+Message-Id: <20181109095246.15068-20-s.hauer@pengutronix.de>
 In-Reply-To: <20181109095246.15068-1-s.hauer@pengutronix.de>
 References: <20181109095246.15068-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,36 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/20] ARM: interrupts: Avoid missing prototypes warning
+Subject: [PATCH 19/20] nvmem: Add prototype for exported functions
 To: Barebox List <barebox@lists.infradead.org>
 
-Add prototypes for various functions. Since these are called from
-assembly add the prototype in the C file itself.
+nvmem_device_cell_read() and nvmem_device_cell_write() are exported, so
+add a prototype to the header file.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/interrupts.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/linux/nvmem-consumer.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/cpu/interrupts.c b/arch/arm/cpu/interrupts.c
-index 73f023bd71..b9b91f3153 100644
---- a/arch/arm/cpu/interrupts.c
-+++ b/arch/arm/cpu/interrupts.c
-@@ -28,6 +28,14 @@
- #include <asm/unwind.h>
- #include <init.h>
+diff --git a/include/linux/nvmem-consumer.h b/include/linux/nvmem-consumer.h
+index 0ec2f05b97..32ea46e3bf 100644
+--- a/include/linux/nvmem-consumer.h
++++ b/include/linux/nvmem-consumer.h
+@@ -40,6 +40,10 @@ int nvmem_cell_write(struct nvmem_cell *cell, void *buf, size_t len);
+ /* direct nvmem device read/write interface */
+ struct nvmem_device *nvmem_device_get(struct device_d *dev, const char *name);
+ void nvmem_device_put(struct nvmem_device *nvmem);
++ssize_t nvmem_device_cell_read(struct nvmem_device *nvmem,
++			       struct nvmem_cell_info *info, void *buf);
++int nvmem_device_cell_write(struct nvmem_device *nvmem,
++			    struct nvmem_cell_info *info, void *buf);
  
-+/* Avoid missing prototype warning, called from assembly */
-+void do_undefined_instruction (struct pt_regs *pt_regs);
-+void do_software_interrupt (struct pt_regs *pt_regs);
-+void do_prefetch_abort (struct pt_regs *pt_regs);
-+void do_data_abort (struct pt_regs *pt_regs);
-+void do_fiq (struct pt_regs *pt_regs);
-+void do_irq (struct pt_regs *pt_regs);
-+
- /**
-  * Display current register set content
-  * @param[in] regs Guess what
+ #else
+ 
 -- 
 2.19.1
 
