@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gL3TI-0002hW-Bu
+ id 1gL3TI-0002hR-Bv
  for barebox@lists.infradead.org; Fri, 09 Nov 2018 09:53:03 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  9 Nov 2018 10:52:35 +0100
-Message-Id: <20181109095246.15068-10-s.hauer@pengutronix.de>
+Date: Fri,  9 Nov 2018 10:52:32 +0100
+Message-Id: <20181109095246.15068-7-s.hauer@pengutronix.de>
 In-Reply-To: <20181109095246.15068-1-s.hauer@pengutronix.de>
 References: <20181109095246.15068-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,29 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/20] ARM: i.MX50: Make locally used function static
+Subject: [PATCH 06/20] ARM: start: Add missing include
 To: Barebox List <barebox@lists.infradead.org>
 
-imx50_init_lowlevel_early() is only used locally, so make it static.
+entry.h provides prototypes for some functions, so include it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/imx50.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/cpu/start.c      | 2 ++
+ arch/arm/cpu/uncompress.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/arch/arm/mach-imx/imx50.c b/arch/arm/mach-imx/imx50.c
-index 4fd5481670..b76e3794e3 100644
---- a/arch/arm/mach-imx/imx50.c
-+++ b/arch/arm/mach-imx/imx50.c
-@@ -86,7 +86,7 @@ int imx50_devices_init(void)
- 	return 0;
- }
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index a79d64eaa6..540480d04e 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -34,6 +34,8 @@
  
--void imx50_init_lowlevel_early(unsigned int cpufreq_mhz)
-+static void imx50_init_lowlevel_early(unsigned int cpufreq_mhz)
- {
- 	void __iomem *ccm = IOMEM(MX50_CCM_BASE_ADDR);
- 	u32 r;
+ #include <debug_ll.h>
+ 
++#include "entry.h"
++
+ unsigned long arm_stack_top;
+ static unsigned long arm_barebox_size;
+ static void *barebox_boarddata;
+diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
+index 048bca0c95..21d72c58b2 100644
+--- a/arch/arm/cpu/uncompress.c
++++ b/arch/arm/cpu/uncompress.c
+@@ -34,6 +34,8 @@
+ 
+ #include <debug_ll.h>
+ 
++#include "entry.h"
++
+ unsigned long free_mem_ptr;
+ unsigned long free_mem_end_ptr;
+ 
 -- 
 2.19.1
 
