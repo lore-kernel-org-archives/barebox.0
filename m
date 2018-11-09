@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gL3TI-0002hX-Bx
+ id 1gL3TI-0002hY-Bw
  for barebox@lists.infradead.org; Fri, 09 Nov 2018 09:53:04 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  9 Nov 2018 10:52:38 +0100
-Message-Id: <20181109095246.15068-13-s.hauer@pengutronix.de>
+Date: Fri,  9 Nov 2018 10:52:43 +0100
+Message-Id: <20181109095246.15068-18-s.hauer@pengutronix.de>
 In-Reply-To: <20181109095246.15068-1-s.hauer@pengutronix.de>
 References: <20181109095246.15068-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,37 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/20] ARM: i.MX6 usb: Add missing include
+Subject: [PATCH 17/20] video: vpl: make locally used function static
 To: Barebox List <barebox@lists.infradead.org>
 
-include header file providing the protype for functions that usb-imx6.c
-implements.
+of_find_vpl() is only used locally, so make it static.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/usb-imx6.c | 2 +-
+ drivers/video/vpl.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/usb-imx6.c b/arch/arm/mach-imx/usb-imx6.c
-index 5e3df10e44..4236bcb772 100644
---- a/arch/arm/mach-imx/usb-imx6.c
-+++ b/arch/arm/mach-imx/usb-imx6.c
-@@ -20,6 +20,7 @@
- #include <common.h>
- #include <io.h>
- #include <mach/imx6-regs.h>
-+#include <mach/usb.h>
+diff --git a/drivers/video/vpl.c b/drivers/video/vpl.c
+index 99ad180eec..82ceeebada 100644
+--- a/drivers/video/vpl.c
++++ b/drivers/video/vpl.c
+@@ -36,7 +36,7 @@ int vpl_register(struct vpl *vpl)
+ 	return 0;
+ }
  
- #define SET				0x4
- #define CLR				0x8
-@@ -33,7 +34,6 @@
- #define USB_UH1_USBCMD			0x340
+-struct vpl *of_find_vpl(struct device_node *node)
++static struct vpl *of_find_vpl(struct device_node *node)
+ {
+ 	struct vpl *vpl;
  
- #define USB_CMD_RUNSTOP			(1 <<  0)
--#define USB_CMD_RESET			(1 <<  1)
- 
- #define USB_OVER_CUR_DIS		(1 <<  7)
- #define USBPHY_CTRL_SFTRST		(1 << 31)
 -- 
 2.19.1
 
