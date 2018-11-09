@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gL3TQ-0002hh-AV
- for barebox@lists.infradead.org; Fri, 09 Nov 2018 09:53:10 +0000
+ id 1gL3TQ-0002hj-BR
+ for barebox@lists.infradead.org; Fri, 09 Nov 2018 09:53:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  9 Nov 2018 10:52:40 +0100
-Message-Id: <20181109095246.15068-15-s.hauer@pengutronix.de>
+Date: Fri,  9 Nov 2018 10:52:46 +0100
+Message-Id: <20181109095246.15068-21-s.hauer@pengutronix.de>
 In-Reply-To: <20181109095246.15068-1-s.hauer@pengutronix.de>
 References: <20181109095246.15068-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,44 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/20] clk: imx: Avoid missing prototype warnings
+Subject: [PATCH 20/20] Make: Add -Wmissing-prototypes
 To: Barebox List <barebox@lists.infradead.org>
 
-clk_gate2_free() is unused, so remove it. clk_gate2_alloc() is only
-used locally, so make it static.
+-Wmissing-prototypes is a useful warning, so add it to the build.
+
+With this we can detect conflicting function prototypes. When a file
+implements a function but doesn't include the header file which
+provides the prototype for it then conflicting prototypes would go
+unnoticed without this warning.
+
+MIPS already had that warning, so we can remove it from the MIPS
+Makefile.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clk/imx/clk-gate2.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ Makefile           | 2 +-
+ arch/mips/Makefile | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-gate2.c b/drivers/clk/imx/clk-gate2.c
-index f2e704cdb2..8d5ed7e05c 100644
---- a/drivers/clk/imx/clk-gate2.c
-+++ b/drivers/clk/imx/clk-gate2.c
-@@ -87,7 +87,7 @@ static struct clk_ops clk_gate2_ops = {
- 	.is_enabled = clk_gate2_is_enabled,
- };
+diff --git a/Makefile b/Makefile
+index db474af502..203ae20e7e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -307,7 +307,7 @@ CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(LINUXINCLUDE) -fno-builtin -ffre
  
--struct clk *clk_gate2_alloc(const char *name, const char *parent,
-+static struct clk *clk_gate2_alloc(const char *name, const char *parent,
- 			    void __iomem *reg, u8 shift, u8 cgr_val,
- 			    unsigned long flags)
- {
-@@ -106,13 +106,6 @@ struct clk *clk_gate2_alloc(const char *name, const char *parent,
- 	return &g->clk;
- }
+ CFLAGS          := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+                    -Werror-implicit-function-declaration \
+-                   -fno-strict-aliasing -fno-common -Os -pipe
++                   -fno-strict-aliasing -fno-common -Os -pipe -Wmissing-prototypes
+ AFLAGS          := -D__ASSEMBLY__
  
--void clk_gate2_free(struct clk *clk)
--{
--	struct clk_gate2 *g = to_clk_gate2(clk);
--
--	free(g);
--}
--
- struct clk *clk_gate2(const char *name, const char *parent, void __iomem *reg,
- 		      u8 shift, u8 cgr_val, unsigned long flags)
- {
+ LDFLAGS_barebox	:= -Map barebox.map
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 3342e0eafd..6338dc174d 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -12,7 +12,7 @@ endif
+ CPPFLAGS += -D__MIPS__ -fno-strict-aliasing -fno-merge-constants
+ 
+ cflags-y += -G 0 -mno-abicalls -fno-pic -pipe
+-cflags-y += -Wall -Wmissing-prototypes -Wstrict-prototypes \
++cflags-y += -Wall -Wstrict-prototypes \
+ 	-Wno-uninitialized -Wno-format -Wno-main
+ 
+ ifdef CONFIG_32BIT
 -- 
 2.19.1
 
