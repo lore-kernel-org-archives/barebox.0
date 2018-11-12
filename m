@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gMEx8-0001vv-Ht
- for barebox@lists.infradead.org; Mon, 12 Nov 2018 16:20:43 +0000
-Message-ID: <1542039628.4011.7.camel@pengutronix.de>
+ id 1gMEzV-00023p-3k
+ for barebox@lists.infradead.org; Mon, 12 Nov 2018 16:23:10 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1gMEzJ-0003bY-MV
+ for barebox@lists.infradead.org; Mon, 12 Nov 2018 17:22:57 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 12 Nov 2018 17:20:28 +0100
-In-Reply-To: <20180824123800.4927-1-m.grzeschik@pengutronix.de>
-References: <20180824123800.4927-1-m.grzeschik@pengutronix.de>
-Mime-Version: 1.0
+Date: Mon, 12 Nov 2018 17:22:56 +0100
+Message-Id: <20181112162257.2209-1-l.stach@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,41 +20,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX5 clock: add clock provider support
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>, barebox@lists.infradead.org
+Subject: [PATCH 1/2] video: ipuv3: use closest fractional divider
+To: barebox@lists.infradead.org
 
-QW0gRnJlaXRhZywgZGVuIDI0LjA4LjIwMTgsIDE0OjM4ICswMjAwIHNjaHJpZWIgTWljaGFlbCBH
-cnplc2NoaWs6Cj4gQ3VycmVudGx5IGl0IGlzIGltcG9zc2libGUgdG8gZ2V0IGNsa3Mgd2l0aCBj
-bGtfZ2V0KCZjbGssICJuYW1lIik7Cj4gb24gdGhlIG14NSBwbGF0Zm9ybS4gQ2hhbmdlIHRoYXQg
-YnkgYWRkaW5nIGNsay1pbXg1IGFzIGNsa19wcm92aWRlci4KCkl0IHNlZW1zIHRoaXMgcGF0Y2gg
-aGFzIGJlZW4gZm9yZ290dGVuLiBBcyBTYXNjaGEgZGlkbid0IGFwcGx5IHRoZQpwYXRjaCByZXdv
-cmtpbmcgdGhlIHdoaWxlIE1YNTEgY2xvY2sgc3R1ZmYgdG8gdGhlIGtlcm5lbAppbXBsZW1lbnRh
-dGlvbiwgSSB0aGluayBpdCB3b3VsZCBiZSBnb29kIHRvIGF0IGxlYXN0IHB1bGwgdGhpcyBwYXRj
-aAppbi4KClJlZ2FyZHMsCkx1Y2FzCgo+IFNpZ25lZC1vZmYtYnk6IE1pY2hhZWwgR3J6ZXNjaGlr
-IDxtLmdyemVzY2hpa0BwZW5ndXRyb25peC5kZT4KPiAtLS0KPiDCoGRyaXZlcnMvY2xrL2lteC9j
-bGstaW14NS5jIHwgOSArKysrKysrKysKPiDCoDEgZmlsZSBjaGFuZ2VkLCA5IGluc2VydGlvbnMo
-KykKPiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9jbGsvaW14L2Nsay1pbXg1LmMgYi9kcml2ZXJz
-L2Nsay9pbXgvY2xrLWlteDUuYwo+IGluZGV4IGVkZWJkMjVhMzguLjM4NDAxMjI0MTkgMTAwNjQ0
-Cj4gLS0tIGEvZHJpdmVycy9jbGsvaW14L2Nsay1pbXg1LmMKPiArKysgYi9kcml2ZXJzL2Nsay9p
-bXgvY2xrLWlteDUuYwo+IEBAIC02MCw2ICs2MCw3IEBACj4gPiDCoCNkZWZpbmUgQ0NNX0NNRU9S
-CTB4ODQKPiDCoAo+IMKgc3RhdGljIHN0cnVjdCBjbGsgKmNsa3NbSU1YNV9DTEtfRU5EXTsKPiAr
-c3RhdGljIHN0cnVjdCBjbGtfb25lY2VsbF9kYXRhIGNsa19kYXRhOwo+IMKgCj4gwqAvKiBUaGlz
-IGlzIHVzZWQgbXVsdGlwbGUgdGltZXMgKi8KPiDCoHN0YXRpYyBjb25zdCBjaGFyICpzdGFuZGFy
-ZF9wbGxfc2VsW10gPSB7Cj4gQEAgLTQxMSw2ICs0MTIsMTAgQEAgc3RhdGljIGludCBpbXg1MV9j
-Y21fcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYpCj4gwqAKPiA+IMKgCW14NTFfY2xvY2tzX2lu
-aXQoZGV2LCByZWdzKTsKPiDCoAo+ID4gKwljbGtfZGF0YS5jbGtzID0gY2xrczsKPiA+ICsJY2xr
-X2RhdGEuY2xrX251bSA9IElNWDVfQ0xLX0VORDsKPiA+ICsJb2ZfY2xrX2FkZF9wcm92aWRlcihk
-ZXYtPmRldmljZV9ub2RlLCBvZl9jbGtfc3JjX29uZWNlbGxfZ2V0LCAmY2xrX2RhdGEpOwo+ICsK
-PiA+IMKgCXJldHVybiAwOwo+IMKgfQo+IMKgCj4gQEAgLTUwMyw2ICs1MDgsMTAgQEAgc3RhdGlj
-IGludCBpbXg1M19jY21fcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYpCj4gwqAKPiA+IMKgCW14
-NTNfY2xvY2tzX2luaXQoZGV2LCByZWdzKTsKPiDCoAo+ID4gKwljbGtfZGF0YS5jbGtzID0gY2xr
-czsKPiA+ICsJY2xrX2RhdGEuY2xrX251bSA9IElNWDVfQ0xLX0VORDsKPiA+ICsJb2ZfY2xrX2Fk
-ZF9wcm92aWRlcihkZXYtPmRldmljZV9ub2RlLCBvZl9jbGtfc3JjX29uZWNlbGxfZ2V0LCAmY2xr
-X2RhdGEpOwo+ICsKPiA+IMKgCXJldHVybiAwOwo+IMKgfQo+IMKgCgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94Cg==
+Currently the divider is always rounded down, which may lead to a
+rather big overshoot of the display clock. Try to match the clock
+better by rounding to closest.
+
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ drivers/video/imx-ipu-v3/ipu-di.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/drivers/video/imx-ipu-v3/ipu-di.c b/drivers/video/imx-ipu-v3/ipu-di.c
+index b6e64fe16a85..5751c678b28e 100644
+--- a/drivers/video/imx-ipu-v3/ipu-di.c
++++ b/drivers/video/imx-ipu-v3/ipu-di.c
+@@ -140,10 +140,7 @@ static int ipu_di_clk_calc_div(unsigned long inrate, unsigned long outrate)
+ 	int div;
+ 
+ 	tmp *= 16;
+-
+-	do_div(tmp, outrate);
+-
+-	div = tmp;
++	div = DIV_ROUND_CLOSEST(tmp, outrate);
+ 
+ 	if (div < 0x10)
+ 		div = 0x10;
+-- 
+2.19.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
