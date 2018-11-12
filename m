@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gMEzV-00023p-3k
+ id 1gMEzV-00023q-3l
  for barebox@lists.infradead.org; Mon, 12 Nov 2018 16:23:10 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1gMEzJ-0003bY-MV
+ (envelope-from <l.stach@pengutronix.de>) id 1gMEzJ-0003bY-OL
  for barebox@lists.infradead.org; Mon, 12 Nov 2018 17:22:57 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 12 Nov 2018 17:22:56 +0100
-Message-Id: <20181112162257.2209-1-l.stach@pengutronix.de>
+Date: Mon, 12 Nov 2018 17:22:57 +0100
+Message-Id: <20181112162257.2209-2-l.stach@pengutronix.de>
+In-Reply-To: <20181112162257.2209-1-l.stach@pengutronix.de>
+References: <20181112162257.2209-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,34 +26,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] video: ipuv3: use closest fractional divider
+Subject: [PATCH 2/2] video: ipuv3: use non-fractional clock for parallel
+ display
 To: barebox@lists.infradead.org
 
-Currently the divider is always rounded down, which may lead to a
-rather big overshoot of the display clock. Try to match the clock
-better by rounding to closest.
+There is no need to keep DI and parent clock in sync for the parallel
+display interface, but some displays really don't like the jitter
+introduced by using a fractional clock.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- drivers/video/imx-ipu-v3/ipu-di.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/video/imx-ipu-v3/imx-pd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/imx-ipu-v3/ipu-di.c b/drivers/video/imx-ipu-v3/ipu-di.c
-index b6e64fe16a85..5751c678b28e 100644
---- a/drivers/video/imx-ipu-v3/ipu-di.c
-+++ b/drivers/video/imx-ipu-v3/ipu-di.c
-@@ -140,10 +140,7 @@ static int ipu_di_clk_calc_div(unsigned long inrate, unsigned long outrate)
- 	int div;
+diff --git a/drivers/video/imx-ipu-v3/imx-pd.c b/drivers/video/imx-ipu-v3/imx-pd.c
+index 09d8a3ae2a84..601be35880ac 100644
+--- a/drivers/video/imx-ipu-v3/imx-pd.c
++++ b/drivers/video/imx-ipu-v3/imx-pd.c
+@@ -45,7 +45,7 @@ static int imx_pd_ioctl(struct vpl *vpl, unsigned int port,
+ 	case IMX_IPU_VPL_DI_MODE:
+ 		mode = data;
  
- 	tmp *= 16;
--
--	do_div(tmp, outrate);
--
--	div = tmp;
-+	div = DIV_ROUND_CLOSEST(tmp, outrate);
+-		mode->di_clkflags = IPU_DI_CLKMODE_SYNC;
++		mode->di_clkflags = IPU_DI_CLKMODE_NON_FRACTIONAL;
+ 		mode->bus_format = imx_pd->bus_format;
+ 		return 0;
  
- 	if (div < 0x10)
- 		div = 0x10;
 -- 
 2.19.1
 
