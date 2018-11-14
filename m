@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gMquq-0008QN-Mj
- for barebox@lists.infradead.org; Wed, 14 Nov 2018 08:52:54 +0000
+ id 1gMqy3-0001Rv-7Y
+ for barebox@lists.infradead.org; Wed, 14 Nov 2018 08:56:12 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 14 Nov 2018 09:52:33 +0100
-Message-Id: <20181114085233.5000-1-s.hauer@pengutronix.de>
+Date: Wed, 14 Nov 2018 09:55:57 +0100
+Message-Id: <20181114085558.13025-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,46 +15,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] of: Add .of suffix to device names from devicetree
+Subject: [PATCH 1/2] ARM: stack unwind: Print messages with pr_warning
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-UHJldmlvdXMgaW1wbGVtZW50YXRpb24gdXNlZCB0byBhZGQgYSBudW1iZXIgdG8gdGhlIGRldmlj
-ZSBuYW1lcwpmb3IgZGV2aWNlcyByZWdpc3RlcmVkIGZyb20gdGhlIGRldmljZSB0cmVlIHdoaWNo
-IGRpZCBub3QgaGF2ZSBhICdyZWcnCnByb3BlcnR5LCB0aHVzIGEgZGV2aWNlIG5vZGUgbmFtZWQg
-InN0YXRlIiByZXN1bHRlZCBpbiBhIGRldmljZSBuYW1lCiJzdGF0ZS48eD4iLiBDdXJyZW50IGlt
-cGxlbWVudGF0aW9uIHNraXBzIHRoYXQgbnVtYmVyIGFuZCB3ZSBnZXQgYQpkZXZpY2UgbmFtZWQg
-InN0YXRlIi4gVGhpcyBjb25mbGljdHMgd2l0aCBvdXIgYmFyZWJveCBzdGF0ZQppbXBsZW1lbnRh
-dGlvbiB3aGljaCB0cmllcyB0byByZWdpc3RlciBhIGRldmljZSBuYW1lZCAic3RhdGUiIGl0c2Vs
-Zi4KV2UgY291bGQgcmVuYW1lIHRoZSBzdGF0ZSBkZXZpY2Ugbm9kZXMgb2YgYWxsIG91ciBkZXZp
-Y2UgdHJlZXMsIGJ1dCBpdApjYXVzZXMgbGVzcyB0cm91YmxlIHRvIHJlbmFtZSB0aGUgZGV2aWNl
-cy4KClRoaXMgYWRkcyBhICIub2YiIHN1ZmZpeCB0byB0aGUgZGV2aWNlIG5hbWVzIGZvciBkZXZp
-Y2VzIHJlZ2lzdGVyZWQgZnJvbQp0aGUgZGV2aWNlIHRyZWUgd2hpY2ggYWxzbyBoYXMgdGhlIG5p
-Y2UgZWZmZWN0IHRoYXQgdGhleSBub3cgY2FuIGVhc2lseQpiZSByZWNvZ25pemVkLgoKRml4ZXM6
-IDdlNDk3ZDQ4YWNiZDExICgib2Y6IFBvcnQgbGF0ZXN0IG9mX2RldmljZV9tYWtlX2J1c19pZCgp
-IGltcGxlbWVudGF0aW9uIikKClNpZ25lZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBw
-ZW5ndXRyb25peC5kZT4KQ2M6IEFuZHJleSBTbWlybm92IDxhbmRyZXcuc21pcm5vdkBnbWFpbC5j
-b20+CkNjOiBKYW4gTMO8YmJlIDxqbHVAcGVuZ3V0cm9uaXguZGU+Ci0tLQogZHJpdmVycy9vZi9w
-bGF0Zm9ybS5jIHwgNCArKy0tCiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRl
-bGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvb2YvcGxhdGZvcm0uYyBiL2RyaXZlcnMv
-b2YvcGxhdGZvcm0uYwppbmRleCAxNzA1MmY0MTk5Li5lZjg5NjljYThiIDEwMDY0NAotLS0gYS9k
-cml2ZXJzL29mL3BsYXRmb3JtLmMKKysrIGIvZHJpdmVycy9vZi9wbGF0Zm9ybS5jCkBAIC02MSwx
-NCArNjEsMTQgQEAgc3RhdGljIHZvaWQgb2ZfZGV2aWNlX21ha2VfYnVzX2lkKHN0cnVjdCBkZXZp
-Y2VfZCAqZGV2KQogCQkgKi8KIAkJcmVnID0gb2ZfZ2V0X3Byb3BlcnR5KG5vZGUsICJyZWciLCBO
-VUxMKTsKIAkJaWYgKHJlZyAmJiAoYWRkciA9IG9mX3RyYW5zbGF0ZV9hZGRyZXNzKG5vZGUsIHJl
-ZykpICE9IE9GX0JBRF9BRERSKSB7Ci0JCQlkZXZfc2V0X25hbWUoZGV2LCBkZXYtPm5hbWUgPyAi
-JWxseC4lczolcyIgOiAiJWxseC4lcyIsCisJCQlkZXZfc2V0X25hbWUoZGV2LCBkZXYtPm5hbWUg
-PyAiJWxseC4lczolcyIgOiAiJWxseC4lcy5vZiIsCiAJCQkJICAgICAodW5zaWduZWQgbG9uZyBs
-b25nKWFkZHIsIG5vZGUtPm5hbWUsCiAJCQkJICAgICBkZXYtPm5hbWUpOwogCQkJcmV0dXJuOwog
-CQl9CiAKIAkJLyogZm9ybWF0IGFyZ3VtZW50cyBvbmx5IHVzZWQgaWYgZGV2X25hbWUoKSByZXNv
-bHZlcyB0byBOVUxMICovCi0JCWRldl9zZXRfbmFtZShkZXYsIGRldi0+bmFtZSA/ICIlczolcyIg
-OiAiJXMiLAorCQlkZXZfc2V0X25hbWUoZGV2LCBkZXYtPm5hbWUgPyAiJXM6JXMiIDogIiVzLm9m
-IiwKIAkJCSAgICAga2Jhc2VuYW1lKG5vZGUtPmZ1bGxfbmFtZSksIGRldi0+bmFtZSk7CiAJCW5v
-ZGUgPSBub2RlLT5wYXJlbnQ7CiAJfQotLSAKMi4xOS4xCgoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+print stack traces with pr_err() rather than printf() to make sure they appear
+in the logs.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/lib32/unwind.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/lib32/unwind.c b/arch/arm/lib32/unwind.c
+index fd4b0b22cb..02fae3c253 100644
+--- a/arch/arm/lib32/unwind.c
++++ b/arch/arm/lib32/unwind.c
+@@ -62,9 +62,9 @@ static void dump_backtrace_entry(unsigned long where, unsigned long from,
+ 				 unsigned long frame)
+ {
+ #ifdef CONFIG_KALLSYMS
+-	printk("[<%08lx>] (%pS) from [<%08lx>] (%pS)\n", where, (void *)where, from, (void *)from);
++	pr_warning("[<%08lx>] (%pS) from [<%08lx>] (%pS)\n", where, (void *)where, from, (void *)from);
+ #else
+-	printk("Function entered at [<%08lx>] from [<%08lx>]\n", where, from);
++	pr_warning("Function entered at [<%08lx>] from [<%08lx>]\n", where, from);
+ #endif
+ }
+ 
+-- 
+2.19.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
