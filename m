@@ -1,14 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gNfib-0000WA-Kq
- for barebox@lists.infradead.org; Fri, 16 Nov 2018 15:07:39 +0000
-Message-ID: <1542380845.23489.24.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 16 Nov 2018 16:07:25 +0100
-In-Reply-To: <20181115003637.GA16443@lenoch>
-References: <20181115003637.GA16443@lenoch>
-Mime-Version: 1.0
+ id 1gMwt1-0005BC-Tg
+ for barebox@lists.infradead.org; Wed, 14 Nov 2018 15:15:25 +0000
+From: Enrico Jorns <ejo@pengutronix.de>
+Date: Wed, 14 Nov 2018 16:14:54 +0100
+Message-Id: <20181114151454.8326-1-ejo@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,56 +15,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: macb: dma_sync_* receive buffers
-To: Ladislav Michl <ladis@linux-mips.org>, barebox@lists.infradead.org
+Subject: [PATCH] nand: denali: remove undefined GFP_DMA flag
+To: barebox@lists.infradead.org
+Cc: Enrico Jorns <ejo@pengutronix.de>
 
-QW0gRG9ubmVyc3RhZywgZGVuIDE1LjExLjIwMTgsIDAxOjM2ICswMTAwIHNjaHJpZWIgTGFkaXNs
-YXYgTWljaGw6Cj4gUmVjZWl2ZSBidWZmZXJzIGFyZSBwcm9wZXJseSBzeW5jaHJvbml6ZWQgb25s
-eSBpZiBDYWRlbmNlIGlzCj4gR0VNLiBGaXggaXQgZm9yIE1BQ0IgYXMgd2VsbC4KPiAKPiBGaXhl
-czogODZkYzUyNTllMjVkIChuZXQ6IG1hY2I6IG5vIG5lZWQgZm9yIGNvaGVyZW50IG1lbW9yeSBm
-b3IgcmVjZWl2ZSBidWZmZXIpCj4gPiBTaWduZWQtb2ZmLWJ5OiBMYWRpc2xhdiBNaWNobCA8bGFk
-aXNAbGludXgtbWlwcy5vcmc+Cj4gLS0tCj4gwqBIaSBTYXNjaGEsCj4gCj4gwqBJJ20gdW5zdXJl
-IHRoaXMgaXMgcHJvcGVyIGZpeCwgYnV0IHdvcmtzIGZvciBtZSAoYXMgd2VsbCBhcwo+IMKgcmV2
-ZXJ0aW5nIDg2ZGM1MjU5ZTI1ZCkKPiAKPiDCoGRyaXZlcnMvbmV0L21hY2IuYyB8IDEwICsrKysr
-KysrKy0KPiDCoDEgZmlsZSBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkK
-PiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvbWFjYi5jIGIvZHJpdmVycy9uZXQvbWFjYi5j
-Cj4gaW5kZXggMWM1NzUyZDEwLi4yYmQ1YjYyYTQgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9uZXQv
-bWFjYi5jCj4gKysrIGIvZHJpdmVycy9uZXQvbWFjYi5jCj4gQEAgLTIxNiw5ICsyMTYsMTEgQEAg
-c3RhdGljIGludCBtYWNiX3JlY3Yoc3RydWN0IGV0aF9kZXZpY2UgKmVkZXYpCj4gPiDCoAlkZXZf
-ZGJnKG1hY2ItPmRldiwgIiVzXG4iLCBfX2Z1bmNfXyk7Cj4gwqAKPiA+IMKgCWZvciAoOzspIHsK
-PiA+ICsJCWJhcnJpZXIoKTsKPiA+IMKgCQlpZiAoIShtYWNiLT5yeF9yaW5nW3J4X3RhaWxdLmFk
-ZHIgJiBNQUNCX0JJVChSWF9VU0VEKSkpCj4gPiDCoAkJCXJldHVybiAtMTsKPiDCoAo+ID4gKwkJ
-YmFycmllcigpOwo+ID4gwqAJCXN0YXR1cyA9IG1hY2ItPnJ4X3JpbmdbcnhfdGFpbF0uY3RybDsK
-PiA+IMKgCQlpZiAoc3RhdHVzICYgTUFDQl9CSVQoUlhfU09GKSkgewo+ID4gwqAJCQlpZiAocnhf
-dGFpbCAhPSBtYWNiLT5yeF90YWlsKQo+IEBAIC0yMjksNiArMjMxLDggQEAgc3RhdGljIGludCBt
-YWNiX3JlY3Yoc3RydWN0IGV0aF9kZXZpY2UgKmVkZXYpCj4gPiDCoAkJaWYgKHN0YXR1cyAmIE1B
-Q0JfQklUKFJYX0VPRikpIHsKPiA+IMKgCQkJYnVmZmVyID0gbWFjYi0+cnhfYnVmZmVyICsgbWFj
-Yi0+cnhfYnVmZmVyX3NpemUgKiBtYWNiLT5yeF90YWlsOwo+ID4gwqAJCQlsZW5ndGggPSBNQUNC
-X0JGRVhUKFJYX0ZSTUxFTiwgc3RhdHVzKTsKPiA+ICsJCQlkbWFfc3luY19zaW5nbGVfZm9yX2Nw
-dSgodW5zaWduZWQgbG9uZylidWZmZXIsIGxlbmd0aCwKPiA+ICsJCQkJCQlETUFfRlJPTV9ERVZJ
-Q0UpOwo+ID4gwqAJCQlpZiAod3JhcHBlZCkgewo+ID4gwqAJCQkJdW5zaWduZWQgaW50IGhlYWRs
-ZW4sIHRhaWxsZW47Cj4gwqAKPiBAQCAtMjM3LDEyICsyNDEsMTcgQEAgc3RhdGljIGludCBtYWNi
-X3JlY3Yoc3RydWN0IGV0aF9kZXZpY2UgKmVkZXYpCj4gPiDCoAkJCQl0YWlsbGVuID0gbGVuZ3Ro
-IC0gaGVhZGxlbjsKPiA+IMKgCQkJCW1lbWNweSgodm9pZCAqKU5ldFJ4UGFja2V0c1swXSwKPiA+
-IMKgCQkJCcKgwqDCoMKgwqDCoMKgYnVmZmVyLCBoZWFkbGVuKTsKPiA+ICsJCQkJZG1hX3N5bmNf
-c2luZ2xlX2Zvcl9jcHUoKHVuc2lnbmVkIGxvbmcpbWFjYi0+cnhfYnVmZmVyLAo+ID4gKwkJCQkJ
-CQl0YWlsbGVuLCBETUFfRlJPTV9ERVZJQ0UpOwo+ID4gwqAJCQkJbWVtY3B5KCh2b2lkICopTmV0
-UnhQYWNrZXRzWzBdICsgaGVhZGxlbiwKPiDCoAkJCQnCoMKgwqDCoMKgwqDCoG1hY2ItPnJ4X2J1
-ZmZlciwgdGFpbGxlbik7CgpUaGlzIGlzIG1pc3NpbmcgYSBkbWFfc3luY19zaW5nbGVfZm9yX2Rl
-dmljZSgpIGhlcmUsIG1hdGNoaW5nIHRoZQouLi5mb3JfY3B1IGFkZGVkIGFib3ZlLiBPdGhlcndp
-c2UgcGF0Y2ggbG9va3MgZ29vZC4KClJlZ2FyZHMsCkx1Y2FzCgo+IMKgCQkJCWJ1ZmZlciA9ICh2
-b2lkICopTmV0UnhQYWNrZXRzWzBdOwo+ID4gwqAJCQl9Cj4gwqAKPiA+IMKgCQkJbmV0X3JlY2Vp
-dmUoZWRldiwgYnVmZmVyLCBsZW5ndGgpOwo+ID4gKwkJCWRtYV9zeW5jX3NpbmdsZV9mb3JfZGV2
-aWNlKCh1bnNpZ25lZCBsb25nKWJ1ZmZlciwgbGVuZ3RoLAo+ID4gKwkJCQkJCcKgwqDCoERNQV9G
-Uk9NX0RFVklDRSk7Cj4gPiArCQkJYmFycmllcigpOwo+ID4gwqAJCQlpZiAoKytyeF90YWlsID49
-IG1hY2ItPnJ4X3Jpbmdfc2l6ZSkKPiA+IMKgCQkJCXJ4X3RhaWwgPSAwOwo+ID4gwqAJCQlyZWNs
-YWltX3J4X2J1ZmZlcnMobWFjYiwgcnhfdGFpbCk7Cj4gQEAgLTI1Miw3ICsyNjEsNiBAQCBzdGF0
-aWMgaW50IG1hY2JfcmVjdihzdHJ1Y3QgZXRoX2RldmljZSAqZWRldikKPiA+IMKgCQkJCXJ4X3Rh
-aWwgPSAwOwo+ID4gwqAJCQl9Cj4gPiDCoAkJfQo+ID4gLQkJYmFycmllcigpOwo+ID4gwqAJfQo+
-IMKgCj4gPiDCoAlyZXR1cm4gMDsKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+This was a remnant from porting kernel code to barebox.
+While being uncritical so far, this will now cause a compiler error
+since kzalloc is not a define but a static inline function.
+
+As the kzalloc() 'mode' argument was ignored before and still will be,
+it is safe to remove the parameter.
+
+Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
+---
+ drivers/mtd/nand/nand_denali.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/mtd/nand/nand_denali.c b/drivers/mtd/nand/nand_denali.c
+index 8b09b3722f..ef3395864c 100644
+--- a/drivers/mtd/nand/nand_denali.c
++++ b/drivers/mtd/nand/nand_denali.c
+@@ -1387,7 +1387,7 @@ int denali_init(struct denali_nand_info *denali)
+ 	}
+ 
+ 	/* allocate a temporary buffer for nand_scan_ident() */
+-	denali->buf.buf = kzalloc(PAGE_SIZE, GFP_DMA | GFP_KERNEL);
++	denali->buf.buf = kzalloc(PAGE_SIZE, GFP_KERNEL);
+ 	if (!denali->buf.buf)
+ 		return -ENOMEM;
+ 
+-- 
+2.19.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
