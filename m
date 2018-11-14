@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gMr1r-0001pa-Mu
- for barebox@lists.infradead.org; Wed, 14 Nov 2018 09:00:13 +0000
-Date: Wed, 14 Nov 2018 09:59:55 +0100
+ id 1gMtrI-0002a9-AX
+ for barebox@lists.infradead.org; Wed, 14 Nov 2018 12:01:26 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181114085955.o5hz7riqxbg2kbt6@pengutronix.de>
-References: <20181112162257.2209-1-l.stach@pengutronix.de>
+Date: Wed, 14 Nov 2018 13:01:11 +0100
+Message-Id: <20181114120112.20748-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181112162257.2209-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,56 +19,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] video: ipuv3: use closest fractional divider
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ubiformat: print messages after checking a block is not bad
+To: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Nov 12, 2018 at 05:22:56PM +0100, Lucas Stach wrote:
-> Currently the divider is always rounded down, which may lead to a
-> rather big overshoot of the display clock. Try to match the clock
-> better by rounding to closest.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  drivers/video/imx-ipu-v3/ipu-di.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+ubiformat prints its "flashing eraseblock x" and "formatting eraseblock
+x" messages before having checked that a block is actually good. This
+is misleading, so first check if a block is good and only if it is
+print a message.
 
-Applied, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/ubiformat.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Sascha
-
-> 
-> diff --git a/drivers/video/imx-ipu-v3/ipu-di.c b/drivers/video/imx-ipu-v3/ipu-di.c
-> index b6e64fe16a85..5751c678b28e 100644
-> --- a/drivers/video/imx-ipu-v3/ipu-di.c
-> +++ b/drivers/video/imx-ipu-v3/ipu-di.c
-> @@ -140,10 +140,7 @@ static int ipu_di_clk_calc_div(unsigned long inrate, unsigned long outrate)
->  	int div;
->  
->  	tmp *= 16;
-> -
-> -	do_div(tmp, outrate);
-> -
-> -	div = tmp;
-> +	div = DIV_ROUND_CLOSEST(tmp, outrate);
->  
->  	if (div < 0x10)
->  		div = 0x10;
-> -- 
-> 2.19.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/common/ubiformat.c b/common/ubiformat.c
+index 9fe1c7c501..0811525bd2 100644
+--- a/common/ubiformat.c
++++ b/common/ubiformat.c
+@@ -235,6 +235,9 @@ static int flash_image(struct ubiformat_args *args, struct mtd_info *mtd,
+ 		int err, new_len;
+ 		long long ec;
+ 
++		if (si->ec[eb] == EB_BAD)
++			continue;
++
+ 		if (!args->quiet && !args->verbose) {
+ 			if (is_timeout(lastprint, 300 * MSECOND) ||
+ 			    eb == eb_cnt - 1) {
+@@ -244,9 +247,6 @@ static int flash_image(struct ubiformat_args *args, struct mtd_info *mtd,
+ 			}
+ 		}
+ 
+-		if (si->ec[eb] == EB_BAD)
+-			continue;
+-
+ 		if (args->verbose) {
+ 			normsg_cont("eraseblock %d: erase", eb);
+ 		}
+@@ -357,6 +357,9 @@ static int format(struct ubiformat_args *args, struct mtd_info *mtd,
+ 	for (eb = start_eb; eb < eb_cnt; eb++) {
+ 		long long ec;
+ 
++		if (si->ec[eb] == EB_BAD)
++			continue;
++
+ 		if (!args->quiet && !args->verbose) {
+ 			if (is_timeout(lastprint, 300 * MSECOND) ||
+ 			    eb == eb_cnt - 1) {
+@@ -366,9 +369,6 @@ static int format(struct ubiformat_args *args, struct mtd_info *mtd,
+ 			}
+ 		}
+ 
+-		if (si->ec[eb] == EB_BAD)
+-			continue;
+-
+ 		if (args->override_ec)
+ 			ec = args->ec;
+ 		else if (si->ec[eb] <= EC_MAX)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
