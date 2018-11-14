@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gMEzV-00023q-3l
- for barebox@lists.infradead.org; Mon, 12 Nov 2018 16:23:10 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
- helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1gMEzJ-0003bY-OL
- for barebox@lists.infradead.org; Mon, 12 Nov 2018 17:22:57 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 12 Nov 2018 17:22:57 +0100
-Message-Id: <20181112162257.2209-2-l.stach@pengutronix.de>
-In-Reply-To: <20181112162257.2209-1-l.stach@pengutronix.de>
-References: <20181112162257.2209-1-l.stach@pengutronix.de>
+ id 1gMquq-0008QN-Mj
+ for barebox@lists.infradead.org; Wed, 14 Nov 2018 08:52:54 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 14 Nov 2018 09:52:33 +0100
+Message-Id: <20181114085233.5000-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,41 +15,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] video: ipuv3: use non-fractional clock for parallel
- display
-To: barebox@lists.infradead.org
+Subject: [PATCH] of: Add .of suffix to device names from devicetree
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-There is no need to keep DI and parent clock in sync for the parallel
-display interface, but some displays really don't like the jitter
-introduced by using a fractional clock.
-
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- drivers/video/imx-ipu-v3/imx-pd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/video/imx-ipu-v3/imx-pd.c b/drivers/video/imx-ipu-v3/imx-pd.c
-index 09d8a3ae2a84..601be35880ac 100644
---- a/drivers/video/imx-ipu-v3/imx-pd.c
-+++ b/drivers/video/imx-ipu-v3/imx-pd.c
-@@ -45,7 +45,7 @@ static int imx_pd_ioctl(struct vpl *vpl, unsigned int port,
- 	case IMX_IPU_VPL_DI_MODE:
- 		mode = data;
- 
--		mode->di_clkflags = IPU_DI_CLKMODE_SYNC;
-+		mode->di_clkflags = IPU_DI_CLKMODE_NON_FRACTIONAL;
- 		mode->bus_format = imx_pd->bus_format;
- 		return 0;
- 
--- 
-2.19.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+UHJldmlvdXMgaW1wbGVtZW50YXRpb24gdXNlZCB0byBhZGQgYSBudW1iZXIgdG8gdGhlIGRldmlj
+ZSBuYW1lcwpmb3IgZGV2aWNlcyByZWdpc3RlcmVkIGZyb20gdGhlIGRldmljZSB0cmVlIHdoaWNo
+IGRpZCBub3QgaGF2ZSBhICdyZWcnCnByb3BlcnR5LCB0aHVzIGEgZGV2aWNlIG5vZGUgbmFtZWQg
+InN0YXRlIiByZXN1bHRlZCBpbiBhIGRldmljZSBuYW1lCiJzdGF0ZS48eD4iLiBDdXJyZW50IGlt
+cGxlbWVudGF0aW9uIHNraXBzIHRoYXQgbnVtYmVyIGFuZCB3ZSBnZXQgYQpkZXZpY2UgbmFtZWQg
+InN0YXRlIi4gVGhpcyBjb25mbGljdHMgd2l0aCBvdXIgYmFyZWJveCBzdGF0ZQppbXBsZW1lbnRh
+dGlvbiB3aGljaCB0cmllcyB0byByZWdpc3RlciBhIGRldmljZSBuYW1lZCAic3RhdGUiIGl0c2Vs
+Zi4KV2UgY291bGQgcmVuYW1lIHRoZSBzdGF0ZSBkZXZpY2Ugbm9kZXMgb2YgYWxsIG91ciBkZXZp
+Y2UgdHJlZXMsIGJ1dCBpdApjYXVzZXMgbGVzcyB0cm91YmxlIHRvIHJlbmFtZSB0aGUgZGV2aWNl
+cy4KClRoaXMgYWRkcyBhICIub2YiIHN1ZmZpeCB0byB0aGUgZGV2aWNlIG5hbWVzIGZvciBkZXZp
+Y2VzIHJlZ2lzdGVyZWQgZnJvbQp0aGUgZGV2aWNlIHRyZWUgd2hpY2ggYWxzbyBoYXMgdGhlIG5p
+Y2UgZWZmZWN0IHRoYXQgdGhleSBub3cgY2FuIGVhc2lseQpiZSByZWNvZ25pemVkLgoKRml4ZXM6
+IDdlNDk3ZDQ4YWNiZDExICgib2Y6IFBvcnQgbGF0ZXN0IG9mX2RldmljZV9tYWtlX2J1c19pZCgp
+IGltcGxlbWVudGF0aW9uIikKClNpZ25lZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBw
+ZW5ndXRyb25peC5kZT4KQ2M6IEFuZHJleSBTbWlybm92IDxhbmRyZXcuc21pcm5vdkBnbWFpbC5j
+b20+CkNjOiBKYW4gTMO8YmJlIDxqbHVAcGVuZ3V0cm9uaXguZGU+Ci0tLQogZHJpdmVycy9vZi9w
+bGF0Zm9ybS5jIHwgNCArKy0tCiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRl
+bGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvb2YvcGxhdGZvcm0uYyBiL2RyaXZlcnMv
+b2YvcGxhdGZvcm0uYwppbmRleCAxNzA1MmY0MTk5Li5lZjg5NjljYThiIDEwMDY0NAotLS0gYS9k
+cml2ZXJzL29mL3BsYXRmb3JtLmMKKysrIGIvZHJpdmVycy9vZi9wbGF0Zm9ybS5jCkBAIC02MSwx
+NCArNjEsMTQgQEAgc3RhdGljIHZvaWQgb2ZfZGV2aWNlX21ha2VfYnVzX2lkKHN0cnVjdCBkZXZp
+Y2VfZCAqZGV2KQogCQkgKi8KIAkJcmVnID0gb2ZfZ2V0X3Byb3BlcnR5KG5vZGUsICJyZWciLCBO
+VUxMKTsKIAkJaWYgKHJlZyAmJiAoYWRkciA9IG9mX3RyYW5zbGF0ZV9hZGRyZXNzKG5vZGUsIHJl
+ZykpICE9IE9GX0JBRF9BRERSKSB7Ci0JCQlkZXZfc2V0X25hbWUoZGV2LCBkZXYtPm5hbWUgPyAi
+JWxseC4lczolcyIgOiAiJWxseC4lcyIsCisJCQlkZXZfc2V0X25hbWUoZGV2LCBkZXYtPm5hbWUg
+PyAiJWxseC4lczolcyIgOiAiJWxseC4lcy5vZiIsCiAJCQkJICAgICAodW5zaWduZWQgbG9uZyBs
+b25nKWFkZHIsIG5vZGUtPm5hbWUsCiAJCQkJICAgICBkZXYtPm5hbWUpOwogCQkJcmV0dXJuOwog
+CQl9CiAKIAkJLyogZm9ybWF0IGFyZ3VtZW50cyBvbmx5IHVzZWQgaWYgZGV2X25hbWUoKSByZXNv
+bHZlcyB0byBOVUxMICovCi0JCWRldl9zZXRfbmFtZShkZXYsIGRldi0+bmFtZSA/ICIlczolcyIg
+OiAiJXMiLAorCQlkZXZfc2V0X25hbWUoZGV2LCBkZXYtPm5hbWUgPyAiJXM6JXMiIDogIiVzLm9m
+IiwKIAkJCSAgICAga2Jhc2VuYW1lKG5vZGUtPmZ1bGxfbmFtZSksIGRldi0+bmFtZSk7CiAJCW5v
+ZGUgPSBub2RlLT5wYXJlbnQ7CiAJfQotLSAKMi4xOS4xCgoKX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
+aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
+dGluZm8vYmFyZWJveAo=
