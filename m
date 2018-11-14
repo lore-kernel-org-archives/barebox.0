@@ -1,12 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gNDny-00018q-1z
- for barebox@lists.infradead.org; Thu, 15 Nov 2018 09:19:19 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 15 Nov 2018 10:19:03 +0100
-Message-Id: <20181115091903.25592-1-s.hauer@pengutronix.de>
-MIME-Version: 1.0
+ id 1gMuay-0002FL-4F
+ for barebox@lists.infradead.org; Wed, 14 Nov 2018 12:48:37 +0000
+Message-ID: <1542199701.5526.57.camel@pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Wed, 14 Nov 2018 13:48:21 +0100
+In-Reply-To: <20181114085233.5000-1-s.hauer@pengutronix.de>
+References: <20181114085233.5000-1-s.hauer@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,55 +17,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Reply-To: jlu@pengutronix.de
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] bootm: Print which file cannot be opened
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] of: Add .of suffix to device names from devicetree
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-When opening the OS image fails we used to print a message *which* file
-could not be opened. This message is no longer printed since we now fail
-in read_file_2 when there is an error. Move the message in the
-read_file_2 failure path to print it again. file_detect_type() needs no
-handling for ret < 0, in case of failure it returns filetype_unknown
-which is handled later, so we can remove the error handling there.
+On Wed, 2018-11-14 at 09:52 +0100, Sascha Hauer wrote:
+> Previous implementation used to add a number to the device names
+> for devices registered from the device tree which did not have a 'reg'
+> property, thus a device node named "state" resulted in a device name
+> "state.<x>". Current implementation skips that number and we get a
+> device named "state". This conflicts with our barebox state
+> implementation which tries to register a device named "state" itself.
+> We could rename the state device nodes of all our device trees, but it
+> causes less trouble to rename the devices.
+> 
+> This adds a ".of" suffix to the device names for devices registered from
+> the device tree which also has the nice effect that they now can easily
+> be recognized.
+> 
+> Fixes: 7e497d48acbd11 ("of: Port latest of_device_make_bus_id()
+> implementation")
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/bootm.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+This looks like it should the fix the problem I saw in my integration
+test.
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 169000cccb..36f6c41bbd 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -562,18 +562,15 @@ int bootm_boot(struct bootm_data *bootm_data)
- 	data->os_entry = bootm_data->os_entry;
- 
- 	ret = read_file_2(data->os_file, &size, &data->os_header, PAGE_SIZE);
--	if (ret < 0 && ret != -EFBIG)
-+	if (ret < 0 && ret != -EFBIG) {
-+		printf("could not open %s: %s\n", data->os_file,
-+				strerror(-ret));
- 		goto err_out;
-+	}
- 	if (size < PAGE_SIZE)
- 		goto err_out;
- 
- 	os_type = file_detect_type(data->os_header, PAGE_SIZE);
--	if ((int)os_type < 0) {
--		printf("could not open %s: %s\n", data->os_file,
--				strerror(-os_type));
--		ret = (int)os_type;
--		goto err_out;
--	}
- 
- 	if (!data->force && os_type == filetype_unknown) {
- 		printf("Unknown OS filetype (try -f)\n");
+Thanks,
+Jan
 -- 
-2.19.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
