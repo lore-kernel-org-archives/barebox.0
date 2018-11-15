@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gSJuZ-0003Ti-GW
- for barebox@lists.infradead.org; Thu, 29 Nov 2018 10:51:13 +0000
-Date: Thu, 29 Nov 2018 11:50:59 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181129105059.eigz6szza7xwg2qk@pengutronix.de>
-References: <1b0d8708-3da5-0ff6-ed99-3531a4bcf58d@denx.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1b0d8708-3da5-0ff6-ed99-3531a4bcf58d@denx.de>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by merlin.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gNJVT-0004E4-85
+ for barebox@lists.infradead.org; Thu, 15 Nov 2018 15:24:36 +0000
+Message-ID: <1542295458.2675.12.camel@phytec.de>
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Thu, 15 Nov 2018 16:24:18 +0100
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,43 +15,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: CONFIG_AUTOBOOT_STOP_STR to stop autoboot in barebox
-To: Parthiban Nallathambi <pn@denx.de>
-Cc: barebox@lists.infradead.org
+Subject: Transferring files over tftp
+To: barebox@lists.infradead.org
 
-Hi, Parthiban,
-
-On Wed, Nov 28, 2018 at 03:44:17PM +0100, Parthiban Nallathambi wrote:
-> Hello All,
-> 
-> I see there are they ways to stop the autoboot in barebox as of now,
-> 
-> - ENTER
-> - Ctrl - C
-> - Any single Key
-> 
-> please correct me if I have missed anything.
-> 
-> Question: Do we have option for sequence of character to stop the
-> autoboot?
-
-Simple answer: No, we don't have that yet.
-
-Patches welcome ;)
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sCgpJIGFtIGZhY2luZyB0ZnRwIGlzc3VlcyB3aGVuIHRyeWluZyB0byB0cmFuc2ZlciBm
+aWxlcyA+IDJHQi4gVGhpcyBlbmRzIHVwIGluIGEgY3Jhc2g6CgpiYXJlYm94QFBoeXRlYyBwaHlD
+T1JFIEFNMzM1eDovIGNwIC9tbnQvdGZ0cC8yR0JfcGx1c18xTSAuCmV0aDA6IDEwME1icHMgZnVs
+bCBkdXBsZXggbGluayBkZXRlY3RlZApUIFQgVCBUIFQgVCBUIFQgVCBUIFQgVCBUIFQgcmVhZDog
+Q29ubmVjdGlvbiB0aW1lZCBvdXQKdW5hYmxlIHRvIGhhbmRsZSBwYWdpbmcgcmVxdWVzdCBhdCBh
+ZGRyZXNzIDB4MjAwZDMxOWEKcGMgOiBbPDlmZTA1ODdhPl3CoMKgwqDCoGxyIDogWzw5ZmUwNThj
+Yj5dCnNwIDogOWZmZWY4MTDCoMKgaXAgOiBmZmZmZmZmZsKgwqBmcCA6IDkwMDRkNGQwCnIxMDog
+MDAwMDAwMDDCoMKgcjkgOiA5MDA0ZTQxMMKgwqByOCA6IDAwMDAwMDA2CnI3IDogMDAwMDAwMDDC
+oMKgcjYgOiA4ZmVmZWVjMMKgwqByNSA6IGE3OWNkYmY2wqDCoHI0IDogMjAwZDMxOGUKcjMgOiAw
+MDAwMDAxYcKgwqByMiA6IDAwMDAwMDE5wqDCoHIxIDogOTAwNGY0MGPCoMKgcjAgOiA4ZmVmZWVj
+MApGbGFnczogbnpDdsKgwqBJUlFzIG9mZsKgwqBGSVFzIG9uwqDCoE1vZGUgU1ZDXzMyCls8OWZl
+MDU4N2E+XSAocmVtb3ZlX2ZyZWVfYmxvY2srMHhlLzB4M2UpIGZyb20gWzw5ZmUwNThjYj5dIChi
+bG9ja19yZW1vdmUrMHgyMS8weDI0KQpbPDlmZTA1OGNiPl0gKGJsb2NrX3JlbW92ZSsweDIxLzB4
+MjQpIGZyb20gWzw5ZmUwNThlYj5dIChibG9ja19tZXJnZV9uZXh0KzB4MWQvMHgzNCkKWzw5ZmUw
+NThlYj5dIChibG9ja19tZXJnZV9uZXh0KzB4MWQvMHgzNCkgZnJvbSBbPDlmZTA1YjczPl0gKHRs
+c2ZfZnJlZSsweDU1LzB4NjIpCls8OWZlMDViNzM+XSAodGxzZl9mcmVlKzB4NTUvMHg2MikgZnJv
+bSBbPDlmZTQwOGU3Pl0gKGNvcHlfZmlsZSsweDc3LzB4MTNjKQpbPDlmZTQwOGU3Pl0gKGNvcHlf
+ZmlsZSsweDc3LzB4MTNjKSBmcm9tIFs8OWZlMzNjNDE+XSAoZG9fY3ArMHgxMDEvMHgxMjQpCls8
+OWZlMzNjNDE+XSAoZG9fY3ArMHgxMDEvMHgxMjQpIGZyb20gWzw5ZmUwMzE4ZD5dIChleGVjdXRl
+X2NvbW1hbmQrMHgyMS8weDQ4KQpbPDlmZTAzMThkPl0gKGV4ZWN1dGVfY29tbWFuZCsweDIxLzB4
+NDgpIGZyb20gWzw5ZmUwN2M4MT5dIChydW5fbGlzdF9yZWFsKzB4NWE5LzB4NjA4KQpbPDlmZTA3
+YzgxPl0gKHJ1bl9saXN0X3JlYWwrMHg1YTkvMHg2MDgpIGZyb20gWzw5ZmUwNzVkZD5dIChwYXJz
+ZV9zdHJlYW1fb3V0ZXIrMHgxMDUvMHgxCjVjKQpbPDlmZTA3NWRkPl0gKHBhcnNlX3N0cmVhbV9v
+dXRlcisweDEwNS8weDE1YykgZnJvbSBbPDlmZTA3ZWEzPl0gKHJ1bl9zaGVsbCsweDMzLzB4NjAp
+Cls8OWZlMDdlYTM+XSAocnVuX3NoZWxsKzB4MzMvMHg2MCkgZnJvbSBbPDlmZTAzMThkPl0gKGV4
+ZWN1dGVfY29tbWFuZCsweDIxLzB4NDgpCls8OWZlMDMxOGQ+XSAoZXhlY3V0ZV9jb21tYW5kKzB4
+MjEvMHg0OCkgZnJvbSBbPDlmZTA3YzgxPl0gKHJ1bl9saXN0X3JlYWwrMHg1YTkvMHg2MDgpCls8
+OWZlMDdjODE+XSAocnVuX2xpc3RfcmVhbCsweDVhOS8weDYwOCkgZnJvbSBbPDlmZTA3OTZkPl0g
+KHJ1bl9saXN0X3JlYWwrMHgyOTUvMHg2MDgpCgpbPDlmZTU2MDNkPl0gKHVud2luZF9iYWNrdHJh
+Y2UrMHgxLzB4NTgpIGZyb20gWzw5ZmUwMGNmMT5dIChwYW5pYysweDFkLzB4MzQpCls8OWZlMDBj
+ZjE+XSAocGFuaWMrMHgxZC8weDM0KSBmcm9tIFs8OWZlNTQzYWQ+XSAoZG9fZXhjZXB0aW9uKzB4
+ZC8weDEwKQpbPDlmZTU0M2FkPl0gKGRvX2V4Y2VwdGlvbisweGQvMHgxMCkgZnJvbSBbPDlmZTU0
+NDBkPl0gKGRvX2RhdGFfYWJvcnQrMHgyMS8weDJjKQpbPDlmZTU0NDBkPl0gKGRvX2RhdGFfYWJv
+cnQrMHgyMS8weDJjKSBmcm9tIFs8OWZlNTQxMzQ+XSAoZG9fYWJvcnRfNisweDQ4LzB4NTQpCgpD
+b3B5aW5nIGEgZmlsZSA8MkdCIHdvcmtzIGV2ZW4gd2l0aG91dCB0aW1lb3V0cy4KCkNhdXNpbmcg
+dGhpcyBzZWVtcyB0byBiZSBjb21taXQ6Cgpjb21taXQgZTNlNTVmYTNhYTY5OGJiOTJmYTQzNjJh
+MzZlMTAyNzQ5YzEzYzEyNApBdXRob3I6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25p
+eC5kZT4KRGF0ZTrCoMKgwqBUaHUgQXVnIDMwIDEyOjI3OjAwIDIwMTggKzAyMDAKCsKgwqDCoMKg
+ZnM6IHRmdHA6IGltcHJvdmUgZmlsZSBzaXplIGhhbmRsaW5nCsKgwqDCoMKgCsKgwqDCoMKgUHJl
+dmlvdXNseSB3ZSB1c2VkIEZJTEVfU0laRV9TVFJFQU0gdW5jb25kaXRpb25hbGx5LiBJbnN0ZWFk
+LCBmaWxsIHRoZQrCoMKgwqDCoGlub2RlIHNpemUgd2l0aCBhIHZhbGlkIGZpbGVzaXplIGlmIHdl
+IGhhdmUgb25lIGFuZCBvbmx5IGlmIG5vdCBmYWxsCsKgwqDCoMKgYmFjayB0byBGSUxFX1NJWkVf
+U1RSRUFNLgoKUmV2ZXJ0aW5nIHRoZSBjb21taXQgcmV2ZWFscyBhIHNlY29uZCBpc3N1ZS4gQWZ0
+ZXIgMkdCIHRoZSB0cmFuc2ZlciBicmVha3MgdXAgc2lsZW50bHkuCk1heWJlIHNvbWUgb3ZlcmZs
+b3c/IEFueSBpZGVhIHdoZXJlIHRvIGxvb2sgYXQgdGhpcyBmdXJ0aGVyPwoKVGhhbmtzLApUZXJl
+c2EKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
+b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
+aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
