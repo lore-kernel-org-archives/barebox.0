@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gNCf4-00056t-GF
- for barebox@lists.infradead.org; Thu, 15 Nov 2018 08:06:04 +0000
-Date: Thu, 15 Nov 2018 09:05:50 +0100
+ id 1gNDny-00018q-1z
+ for barebox@lists.infradead.org; Thu, 15 Nov 2018 09:19:19 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181115080550.pqfr7gfjehf25zdz@pengutronix.de>
-References: <20181115072054.6297-1-ejo@pengutronix.de>
+Date: Thu, 15 Nov 2018 10:19:03 +0100
+Message-Id: <20181115091903.25592-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181115072054.6297-1-ejo@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,53 +19,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: socfpga: achilles: enable watchdog1
-To: Enrico Jorns <ejo@pengutronix.de>
-Cc: barebox@lists.infradead.org, s.trumtrar@pengutronix.de
+Subject: [PATCH] bootm: Print which file cannot be opened
+To: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Nov 15, 2018 at 08:20:54AM +0100, Enrico Jorns wrote:
-> This one is required for guarding the boot procedure
-> 
-> Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
-> ---
->  arch/arm/dts/socfpga_arria10_achilles.dts | 4 ++++
->  1 file changed, 4 insertions(+)
+When opening the OS image fails we used to print a message *which* file
+could not be opened. This message is no longer printed since we now fail
+in read_file_2 when there is an error. Move the message in the
+read_file_2 failure path to print it again. file_detect_type() needs no
+handling for ret < 0, in case of failure it returns filetype_unknown
+which is handled later, so we can remove the error handling there.
 
-Applied, thanks.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/bootm.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-Is there any point in disabling the watchdog in the dtsi file? Why isn't
-it enabled there already?
-
-Sascha
-
-> 
-> diff --git a/arch/arm/dts/socfpga_arria10_achilles.dts b/arch/arm/dts/socfpga_arria10_achilles.dts
-> index 176e06df12..e94a321999 100644
-> --- a/arch/arm/dts/socfpga_arria10_achilles.dts
-> +++ b/arch/arm/dts/socfpga_arria10_achilles.dts
-> @@ -242,3 +242,7 @@
->  	reg-io-width = <4>;
->  	status = "okay";
->  };
-> +
-> +&watchdog1 {
-> +	status = "okay";
-> +};
-> -- 
-> 2.19.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/common/bootm.c b/common/bootm.c
+index 169000cccb..36f6c41bbd 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -562,18 +562,15 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 	data->os_entry = bootm_data->os_entry;
+ 
+ 	ret = read_file_2(data->os_file, &size, &data->os_header, PAGE_SIZE);
+-	if (ret < 0 && ret != -EFBIG)
++	if (ret < 0 && ret != -EFBIG) {
++		printf("could not open %s: %s\n", data->os_file,
++				strerror(-ret));
+ 		goto err_out;
++	}
+ 	if (size < PAGE_SIZE)
+ 		goto err_out;
+ 
+ 	os_type = file_detect_type(data->os_header, PAGE_SIZE);
+-	if ((int)os_type < 0) {
+-		printf("could not open %s: %s\n", data->os_file,
+-				strerror(-os_type));
+-		ret = (int)os_type;
+-		goto err_out;
+-	}
+ 
+ 	if (!data->force && os_type == filetype_unknown) {
+ 		printf("Unknown OS filetype (try -f)\n");
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
