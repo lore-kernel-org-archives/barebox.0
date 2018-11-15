@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gNYvk-0004S8-HG
- for barebox@lists.infradead.org; Fri, 16 Nov 2018 07:52:46 +0000
-Date: Fri, 16 Nov 2018 08:52:32 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181116075232.bgbgqjwomgvzukft@pengutronix.de>
-References: <20181110075954.32746-1-linux@rempel-privat.de>
- <20181110075954.32746-4-linux@rempel-privat.de>
+Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
+ by merlin.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gN5fp-0003vb-IV
+ for barebox@lists.infradead.org; Thu, 15 Nov 2018 00:38:22 +0000
+Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
+ (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
+ id S23992408AbeKOAgixn61U (ORCPT
+ <rfc822;barebox@lists.infradead.org>);
+ Thu, 15 Nov 2018 01:36:38 +0100
+Date: Thu, 15 Nov 2018 01:36:37 +0100
+From: Ladislav Michl <ladis@linux-mips.org>
+Message-ID: <20181115003637.GA16443@lenoch>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181110075954.32746-4-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,41 +25,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 3/5] video/ssd1307fb: fix potential memory leak on error
-To: Oleksij Rempel <linux@rempel-privat.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] net: macb: dma_sync_* receive buffers
+To: barebox@lists.infradead.org
 
-On Sat, Nov 10, 2018 at 08:59:52AM +0100, Oleksij Rempel wrote:
-> Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
-> ---
->  drivers/video/ssd1307fb.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/video/ssd1307fb.c b/drivers/video/ssd1307fb.c
-> index d68f0c505..1fd1a3cfb 100644
-> --- a/drivers/video/ssd1307fb.c
-> +++ b/drivers/video/ssd1307fb.c
-> @@ -548,8 +548,11 @@ static int ssd1307fb_probe(struct device_d *dev)
->  	/* clear display */
->  	array = ssd1307fb_alloc_array(par->width * par->height / 8,
->  				      SSD1307FB_DATA);
-> -	if (!array)
-> -		return -ENOMEM;
-> +	if (!array) {
-> +		dev_err(&client->dev, "Couldn't not allocate an array\n");
+Receive buffers are properly synchronized only if Cadence is
+GEM. Fix it for MACB as well.
 
-Please do not add messages in allocation failure pathes. When we get out
-of memory it's not really interesting where it happened, at least not
-when it's not the culprit itself. It would rather be interesting who ate
-all your memory before.
+Fixes: 86dc5259e25d (net: macb: no need for coherent memory for receive buffer)
+Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
+---
+ Hi Sascha,
 
-Sascha
+ I'm unsure this is proper fix, but works for me (as well as
+ reverting 86dc5259e25d)
 
+ drivers/net/macb.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index 1c5752d10..2bd5b62a4 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -216,9 +216,11 @@ static int macb_recv(struct eth_device *edev)
+ 	dev_dbg(macb->dev, "%s\n", __func__);
+ 
+ 	for (;;) {
++		barrier();
+ 		if (!(macb->rx_ring[rx_tail].addr & MACB_BIT(RX_USED)))
+ 			return -1;
+ 
++		barrier();
+ 		status = macb->rx_ring[rx_tail].ctrl;
+ 		if (status & MACB_BIT(RX_SOF)) {
+ 			if (rx_tail != macb->rx_tail)
+@@ -229,6 +231,8 @@ static int macb_recv(struct eth_device *edev)
+ 		if (status & MACB_BIT(RX_EOF)) {
+ 			buffer = macb->rx_buffer + macb->rx_buffer_size * macb->rx_tail;
+ 			length = MACB_BFEXT(RX_FRMLEN, status);
++			dma_sync_single_for_cpu((unsigned long)buffer, length,
++						DMA_FROM_DEVICE);
+ 			if (wrapped) {
+ 				unsigned int headlen, taillen;
+ 
+@@ -237,12 +241,17 @@ static int macb_recv(struct eth_device *edev)
+ 				taillen = length - headlen;
+ 				memcpy((void *)NetRxPackets[0],
+ 				       buffer, headlen);
++				dma_sync_single_for_cpu((unsigned long)macb->rx_buffer,
++							taillen, DMA_FROM_DEVICE);
+ 				memcpy((void *)NetRxPackets[0] + headlen,
+ 				       macb->rx_buffer, taillen);
+ 				buffer = (void *)NetRxPackets[0];
+ 			}
+ 
+ 			net_receive(edev, buffer, length);
++			dma_sync_single_for_device((unsigned long)buffer, length,
++						   DMA_FROM_DEVICE);
++			barrier();
+ 			if (++rx_tail >= macb->rx_ring_size)
+ 				rx_tail = 0;
+ 			reclaim_rx_buffers(macb, rx_tail);
+@@ -252,7 +261,6 @@ static int macb_recv(struct eth_device *edev)
+ 				rx_tail = 0;
+ 			}
+ 		}
+-		barrier();
+ 	}
+ 
+ 	return 0;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
