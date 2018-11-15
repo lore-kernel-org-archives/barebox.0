@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gNYoA-0001Bk-Ny
- for barebox@lists.infradead.org; Fri, 16 Nov 2018 07:44:56 +0000
-Date: Fri, 16 Nov 2018 08:44:42 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181116074442.mkx2lj3dozbf2n7w@pengutronix.de>
-References: <20181115090530.10081-1-s.trumtrar@pengutronix.de>
+ id 1gNMnW-0000Bc-QR
+ for barebox@lists.infradead.org; Thu, 15 Nov 2018 18:55:28 +0000
+Received: by mail-pf1-x442.google.com with SMTP id c72so5438010pfc.6
+ for <barebox@lists.infradead.org>; Thu, 15 Nov 2018 10:55:15 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Thu, 15 Nov 2018 10:54:58 -0800
+Message-Id: <20181115185458.22396-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181115090530.10081-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,74 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: socfpga: update defconfig
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] rtc: ds1307: Set DS1341_BIT_DOSF in the right register
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Thu, Nov 15, 2018 at 10:05:29AM +0100, Steffen Trumtrar wrote:
-> Select some more common drivers in the defconfig.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
->  arch/arm/configs/socfpga_defconfig | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
+DS1341_BIT_DOSF is located in DS1337_REG_STATUS, not
+DS1337_REG_CONTROL. Fix the code to reflect that.
 
-Applied, thanks
+Also fix "additionale" -> "additional" typo while at it.
 
-Sascha
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/rtc/rtc-ds1307.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> 
-> diff --git a/arch/arm/configs/socfpga_defconfig b/arch/arm/configs/socfpga_defconfig
-> index 3a50bae8f2dc..d9688ca29ce3 100644
-> --- a/arch/arm/configs/socfpga_defconfig
-> +++ b/arch/arm/configs/socfpga_defconfig
-> @@ -59,6 +59,7 @@ CONFIG_CMD_GPIO=y
->  CONFIG_CMD_LED=y
->  CONFIG_CMD_SPI=y
->  CONFIG_CMD_LED_TRIGGER=y
-> +CONFIG_CMD_WD=y
->  CONFIG_CMD_BAREBOX_UPDATE=y
->  CONFIG_CMD_FIRMWARELOAD=y
->  CONFIG_CMD_OF_NODE=y
-> @@ -73,15 +74,22 @@ CONFIG_OF_BAREBOX_ENV_IN_FS=y
->  CONFIG_DRIVER_SERIAL_NS16550=y
->  CONFIG_DRIVER_NET_DESIGNWARE=y
->  CONFIG_DRIVER_NET_DESIGNWARE_SOCFPGA=y
-> +CONFIG_MTD=y
-> +CONFIG_NAND=y
-> +CONFIG_MTD_NAND_DENALI=y
-> +CONFIG_MTD_NAND_DENALI_DT=y
-> +CONFIG_MTD_SPI_NOR=y
-> +CONFIG_SPI_CADENCE_QUADSPI=y
->  CONFIG_MCI=y
->  CONFIG_MCI_DW=y
-> -CONFIG_MFD_MC13XXX=y
->  CONFIG_LED=y
->  CONFIG_LED_GPIO=y
->  CONFIG_LED_GPIO_OF=y
->  CONFIG_LED_TRIGGERS=y
->  CONFIG_EEPROM_AT25=y
->  CONFIG_KEYBOARD_GPIO=y
-> +CONFIG_WATCHDOG=y
-> +CONFIG_WATCHDOG_DW=y
->  CONFIG_GPIO_DESIGNWARE=y
->  CONFIG_FIRMWARE_ALTERA_SOCFPGA=y
->  CONFIG_FS_EXT4=y
-> -- 
-> 2.19.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index bb597305e..f1feee468 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -348,10 +348,10 @@ static int ds1307_probe(struct device_d *dev)
+ 			ds1307->regs[1] &= ~DS1341_BIT_ECLK;
+ 
+ 			/*
+-			 * Let's set additionale RTC bits to
++			 * Let's set additional RTC bits to
+ 			 * facilitate maximum power saving.
+ 			 */
+-			ds1307->regs[0] |=  DS1341_BIT_DOSF;
++			ds1307->regs[1] |=  DS1341_BIT_DOSF;
+ 			ds1307->regs[0] &= ~DS1341_BIT_EGFIL;
+ 
+ 			i2c_smbus_write_byte_data(client, DS1337_REG_CONTROL,
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
