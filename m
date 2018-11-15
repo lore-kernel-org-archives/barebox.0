@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gMxa2-0004UC-Vb
- for barebox@lists.infradead.org; Wed, 14 Nov 2018 15:59:52 +0000
-Received: by mail-wr1-x442.google.com with SMTP id r10so335488wrs.10
- for <barebox@lists.infradead.org>; Wed, 14 Nov 2018 07:59:39 -0800 (PST)
-MIME-Version: 1.0
+ id 1gNE1W-0007ez-SP
+ for barebox@lists.infradead.org; Thu, 15 Nov 2018 09:33:20 +0000
+Date: Thu, 15 Nov 2018 10:33:06 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20181115093306.344snwqocwfhhgsr@pengutronix.de>
 References: <20181114085233.5000-1-s.hauer@pengutronix.de>
-In-Reply-To: <20181114085233.5000-1-s.hauer@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 14 Nov 2018 07:59:25 -0800
-Message-ID: <CAHQ1cqFY+9+atQh+ZHHgQL_eRV+gFebAp=X6=TZwrtJsztpx=g@mail.gmail.com>
+ <CAHQ1cqFY+9+atQh+ZHHgQL_eRV+gFebAp=X6=TZwrtJsztpx=g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAHQ1cqFY+9+atQh+ZHHgQL_eRV+gFebAp=X6=TZwrtJsztpx=g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,66 +19,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] of: Add .of suffix to device names from devicetree
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-T24gV2VkLCBOb3YgMTQsIDIwMTggYXQgMTI6NTIgQU0gU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBl
-bmd1dHJvbml4LmRlPiB3cm90ZToKPgo+IFByZXZpb3VzIGltcGxlbWVudGF0aW9uIHVzZWQgdG8g
-YWRkIGEgbnVtYmVyIHRvIHRoZSBkZXZpY2UgbmFtZXMKPiBmb3IgZGV2aWNlcyByZWdpc3RlcmVk
-IGZyb20gdGhlIGRldmljZSB0cmVlIHdoaWNoIGRpZCBub3QgaGF2ZSBhICdyZWcnCj4gcHJvcGVy
-dHksIHRodXMgYSBkZXZpY2Ugbm9kZSBuYW1lZCAic3RhdGUiIHJlc3VsdGVkIGluIGEgZGV2aWNl
-IG5hbWUKPiAic3RhdGUuPHg+Ii4gQ3VycmVudCBpbXBsZW1lbnRhdGlvbiBza2lwcyB0aGF0IG51
-bWJlciBhbmQgd2UgZ2V0IGEKPiBkZXZpY2UgbmFtZWQgInN0YXRlIi4gVGhpcyBjb25mbGljdHMg
-d2l0aCBvdXIgYmFyZWJveCBzdGF0ZQo+IGltcGxlbWVudGF0aW9uIHdoaWNoIHRyaWVzIHRvIHJl
-Z2lzdGVyIGEgZGV2aWNlIG5hbWVkICJzdGF0ZSIgaXRzZWxmLgo+IFdlIGNvdWxkIHJlbmFtZSB0
-aGUgc3RhdGUgZGV2aWNlIG5vZGVzIG9mIGFsbCBvdXIgZGV2aWNlIHRyZWVzLCBidXQgaXQKPiBj
-YXVzZXMgbGVzcyB0cm91YmxlIHRvIHJlbmFtZSB0aGUgZGV2aWNlcy4KPgoKU3RhdGUgaW1wbGVt
-ZW50YXRpb24gd2lsbCByZWdpc3RlciBhIGRldmljZSBuYW1lZCB0aGUgc2FtZSBhcyBhbGlhcwpw
-b2ludGluZyB0byBjb3JyZXNwb25kaW5nIG5vZGUsIHNvIHRoZSBwcm9ibGVtIG9ubHkgYXJpc2Vz
-IGlmIERUIGhhcwpib3RoIGEgc3RhdGUgbm9kZSBuYW1lZCAiZm9vIiBhbmQgYW4gYWxpYXMgdG8g
-aXQgbmFtZWQgImZvbyIgYXMgd2VsbC4KSXQgc2VlbXMgdGhhdCB0aGUgd2hvbGUgYWxpYXMvc3Rh
-bmRhbG9uZSBkZXZpY2UgY3JlYXRpb24gY29kZSBpbgpjb21tb24vc3RhdGUvc3RhdGUuYyB3YXMg
-d3JpdHRlbiBwcmVjaXNlbHkgYmVjYXVzZSBvcmlnaW5hbCBEVCBuYW1pbmcKc2NoZW1lIHdhcyBu
-b3QgcHJvZHVjaW5nICJmaXhlZC9zdGFibGUiIG5hbWVzLCBzbyBjaGFuZ2luZyB0aGVuIG5hbWlu
-ZwpzY2hlbWUgZnJvbSBtYXRjaGluZyB3aGF0IExpbnV4IGRvZXMgaW4gb3JkZXIgdG8gZml0IHNv
-bWUgYXNzdW1wdGlvbnMKaW4gc3RhdGUgY29kZSBhbmQgdW5mb3J0dW5hdGUgRFQgbmFtaW5nLCB3
-aGlsZSB0aGUgZWFzaWVzdCBzb2x1dGlvbiwKc2VlbXMgYSBiaXQgYmFja3dhcmRzLgoKQ2FuIHdl
-IGZpeCB0aGlzIHVzaW5nIGFuIGVhcmx5IGludGVybmFsIERUIGZpeHVwIHRoYXQgd291bGQgcmVu
-YW1lCnByb2JsZW1hdGljIG5vZGUgYW5kIG1heWJlIGV2ZW4gcHJpbnQgYSB3YXJuaW5nIHVyZ2lu
-ZyB1c2VycyB0byByZW5hbWUKdGhlaXIgc3RhdGUgbm9kZXM/CgpUaGFua3MsCkFuZHJleSBTbWly
-bm92Cgo+IFRoaXMgYWRkcyBhICIub2YiIHN1ZmZpeCB0byB0aGUgZGV2aWNlIG5hbWVzIGZvciBk
-ZXZpY2VzIHJlZ2lzdGVyZWQgZnJvbQo+IHRoZSBkZXZpY2UgdHJlZSB3aGljaCBhbHNvIGhhcyB0
-aGUgbmljZSBlZmZlY3QgdGhhdCB0aGV5IG5vdyBjYW4gZWFzaWx5Cj4gYmUgcmVjb2duaXplZC4K
-Pgo+IEZpeGVzOiA3ZTQ5N2Q0OGFjYmQxMSAoIm9mOiBQb3J0IGxhdGVzdCBvZl9kZXZpY2VfbWFr
-ZV9idXNfaWQoKSBpbXBsZW1lbnRhdGlvbiIpCj4KPiBTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1
-ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Cj4gQ2M6IEFuZHJleSBTbWlybm92IDxhbmRyZXcu
-c21pcm5vdkBnbWFpbC5jb20+Cj4gQ2M6IEphbiBMw7xiYmUgPGpsdUBwZW5ndXRyb25peC5kZT4K
-PiAtLS0KPiAgZHJpdmVycy9vZi9wbGF0Zm9ybS5jIHwgNCArKy0tCj4gIDEgZmlsZSBjaGFuZ2Vk
-LCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCj4KPiBkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9vZi9wbGF0Zm9ybS5jIGIvZHJpdmVycy9vZi9wbGF0Zm9ybS5jCj4gaW5kZXggMTcwNTJmNDE5
-OS4uZWY4OTY5Y2E4YiAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL29mL3BsYXRmb3JtLmMKPiArKysg
-Yi9kcml2ZXJzL29mL3BsYXRmb3JtLmMKPiBAQCAtNjEsMTQgKzYxLDE0IEBAIHN0YXRpYyB2b2lk
-IG9mX2RldmljZV9tYWtlX2J1c19pZChzdHJ1Y3QgZGV2aWNlX2QgKmRldikKPiAgICAgICAgICAg
-ICAgICAgICovCj4gICAgICAgICAgICAgICAgIHJlZyA9IG9mX2dldF9wcm9wZXJ0eShub2RlLCAi
-cmVnIiwgTlVMTCk7Cj4gICAgICAgICAgICAgICAgIGlmIChyZWcgJiYgKGFkZHIgPSBvZl90cmFu
-c2xhdGVfYWRkcmVzcyhub2RlLCByZWcpKSAhPSBPRl9CQURfQUREUikgewo+IC0gICAgICAgICAg
-ICAgICAgICAgICAgIGRldl9zZXRfbmFtZShkZXYsIGRldi0+bmFtZSA/ICIlbGx4LiVzOiVzIiA6
-ICIlbGx4LiVzIiwKPiArICAgICAgICAgICAgICAgICAgICAgICBkZXZfc2V0X25hbWUoZGV2LCBk
-ZXYtPm5hbWUgPyAiJWxseC4lczolcyIgOiAiJWxseC4lcy5vZiIsCj4gICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICh1bnNpZ25lZCBsb25nIGxvbmcpYWRkciwgbm9kZS0+bmFt
-ZSwKPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGV2LT5uYW1lKTsKPiAg
-ICAgICAgICAgICAgICAgICAgICAgICByZXR1cm47Cj4gICAgICAgICAgICAgICAgIH0KPgo+ICAg
-ICAgICAgICAgICAgICAvKiBmb3JtYXQgYXJndW1lbnRzIG9ubHkgdXNlZCBpZiBkZXZfbmFtZSgp
-IHJlc29sdmVzIHRvIE5VTEwgKi8KPiAtICAgICAgICAgICAgICAgZGV2X3NldF9uYW1lKGRldiwg
-ZGV2LT5uYW1lID8gIiVzOiVzIiA6ICIlcyIsCj4gKyAgICAgICAgICAgICAgIGRldl9zZXRfbmFt
-ZShkZXYsIGRldi0+bmFtZSA/ICIlczolcyIgOiAiJXMub2YiLAo+ICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAga2Jhc2VuYW1lKG5vZGUtPmZ1bGxfbmFtZSksIGRldi0+bmFtZSk7Cj4gICAg
-ICAgICAgICAgICAgIG5vZGUgPSBub2RlLT5wYXJlbnQ7Cj4gICAgICAgICB9Cj4gLS0KPiAyLjE5
-LjEKPgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
-ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
-cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Wed, Nov 14, 2018 at 07:59:25AM -0800, Andrey Smirnov wrote:
+> On Wed, Nov 14, 2018 at 12:52 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> >
+> > Previous implementation used to add a number to the device names
+> > for devices registered from the device tree which did not have a 'reg'
+> > property, thus a device node named "state" resulted in a device name
+> > "state.<x>". Current implementation skips that number and we get a
+> > device named "state". This conflicts with our barebox state
+> > implementation which tries to register a device named "state" itself.
+> > We could rename the state device nodes of all our device trees, but it
+> > causes less trouble to rename the devices.
+> >
+> 
+> State implementation will register a device named the same as alias
+> pointing to corresponding node, so the problem only arises if DT has
+> both a state node named "foo" and an alias to it named "foo" as well.
+> It seems that the whole alias/standalone device creation code in
+> common/state/state.c was written precisely because original DT naming
+> scheme was not producing "fixed/stable" names, so changing then naming
+> scheme from matching what Linux does in order to fit some assumptions
+> in state code and unfortunate DT naming, while the easiest solution,
+> seems a bit backwards.
+> 
+> Can we fix this using an early internal DT fixup that would rename
+> problematic node and maybe even print a warning urging users to rename
+> their state nodes?
+
+We have boards that have multiple state instances registered with
+different names, but all follow the same pattern and have the same
+problem, so it's not only "state" that causes problems, but could be
+any string. Lucas noted there were problems with imx-thermal aswell.
+We have the general problem that devices that have variables attached
+to them shall have a specific name, so we must make sure these are
+not used by devices registered from the device tree.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
