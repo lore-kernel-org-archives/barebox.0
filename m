@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.20])
+Received: from mout.gmx.net ([212.227.17.22])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gNb5R-0004J3-10
- for barebox@lists.infradead.org; Fri, 16 Nov 2018 10:10:56 +0000
+ id 1gNb5Q-0004J6-Tx
+ for barebox@lists.infradead.org; Fri, 16 Nov 2018 10:10:54 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Fri, 16 Nov 2018 11:10:28 +0100
-Message-Id: <20181116101032.3358-1-linux@rempel-privat.de>
+Date: Fri, 16 Nov 2018 11:10:30 +0100
+Message-Id: <20181116101032.3358-3-linux@rempel-privat.de>
+In-Reply-To: <20181116101032.3358-1-linux@rempel-privat.de>
+References: <20181116101032.3358-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,24 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/4] random fixes
+Subject: [PATCH v2 2/4] video/ssd1307fb: fix potential memory leak on error
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-Some random fixes for issues found by https://app.codacy.com
-
-Oleksij Rempel (4):
-  ddr_spd: remove unused array
-  video/ssd1307fb: fix potential memory leak on error
-  clk: imx: cpu: avoid use after free on error
-  of: partition: set ret for error cases
-
- common/ddr_spd.c          | 2 --
- drivers/clk/imx/clk-cpu.c | 4 +++-
- drivers/of/partition.c    | 4 ++--
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+---
  drivers/video/ssd1307fb.c | 7 +++++--
- 4 files changed, 10 insertions(+), 7 deletions(-)
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/video/ssd1307fb.c b/drivers/video/ssd1307fb.c
+index d68f0c505..70077e43a 100644
+--- a/drivers/video/ssd1307fb.c
++++ b/drivers/video/ssd1307fb.c
+@@ -548,8 +548,10 @@ static int ssd1307fb_probe(struct device_d *dev)
+ 	/* clear display */
+ 	array = ssd1307fb_alloc_array(par->width * par->height / 8,
+ 				      SSD1307FB_DATA);
+-	if (!array)
+-		return -ENOMEM;
++	if (!array) {
++		ret = -ENOMEM;
++		goto panel_init_error;
++	}
+ 
+ 	for (i = 0; i < (par->height / 8); i++) {
+ 		for (j = 0; j < par->width; j++) {
+@@ -569,6 +571,7 @@ static int ssd1307fb_probe(struct device_d *dev)
+ 
+ panel_init_error:
+ reset_oled_error:
++	free(vmem);
+ fb_alloc_error:
+ 	regulator_disable(par->vbat);
+ 	free(info);
 -- 
 2.17.1
 
