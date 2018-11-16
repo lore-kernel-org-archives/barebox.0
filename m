@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gNYqd-0002gn-HD
- for barebox@lists.infradead.org; Fri, 16 Nov 2018 07:47:29 +0000
-Date: Fri, 16 Nov 2018 08:47:15 +0100
+ id 1gNYvk-0004S8-HG
+ for barebox@lists.infradead.org; Fri, 16 Nov 2018 07:52:46 +0000
+Date: Fri, 16 Nov 2018 08:52:32 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181116074715.ssfhmje4xuvy66fd@pengutronix.de>
-References: <20181115185700.24823-1-andrew.smirnov@gmail.com>
+Message-ID: <20181116075232.bgbgqjwomgvzukft@pengutronix.de>
+References: <20181110075954.32746-1-linux@rempel-privat.de>
+ <20181110075954.32746-4-linux@rempel-privat.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181115185700.24823-1-andrew.smirnov@gmail.com>
+In-Reply-To: <20181110075954.32746-4-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] aiodev: mc13xxx: Mark mc13xxx_adc_do_conversion()
- static
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH v1 3/5] video/ssd1307fb: fix potential memory leak on error
+To: Oleksij Rempel <linux@rempel-privat.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Nov 15, 2018 at 10:56:58AM -0800, Andrey Smirnov wrote:
-> Mark mc13xxx_adc_do_conversion() static because it is not used outside
-> the source file.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+On Sat, Nov 10, 2018 at 08:59:52AM +0100, Oleksij Rempel wrote:
+> Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 > ---
->  drivers/aiodev/mc13xxx_adc.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+>  drivers/video/ssd1307fb.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/video/ssd1307fb.c b/drivers/video/ssd1307fb.c
+> index d68f0c505..1fd1a3cfb 100644
+> --- a/drivers/video/ssd1307fb.c
+> +++ b/drivers/video/ssd1307fb.c
+> @@ -548,8 +548,11 @@ static int ssd1307fb_probe(struct device_d *dev)
+>  	/* clear display */
+>  	array = ssd1307fb_alloc_array(par->width * par->height / 8,
+>  				      SSD1307FB_DATA);
+> -	if (!array)
+> -		return -ENOMEM;
+> +	if (!array) {
+> +		dev_err(&client->dev, "Couldn't not allocate an array\n");
 
-Applied, thanks. More of these please ;)
+Please do not add messages in allocation failure pathes. When we get out
+of memory it's not really interesting where it happened, at least not
+when it's not the culprit itself. It would rather be interesting who ate
+all your memory before.
 
 Sascha
-
-> 
-> diff --git a/drivers/aiodev/mc13xxx_adc.c b/drivers/aiodev/mc13xxx_adc.c
-> index 4e7204816..d445d1ec6 100644
-> --- a/drivers/aiodev/mc13xxx_adc.c
-> +++ b/drivers/aiodev/mc13xxx_adc.c
-> @@ -75,8 +75,9 @@ to_mc13xx_adc_data(struct aiochannel *chan)
->  	return container_of(chan->aiodev, struct mc13xx_adc_data, aiodev);
->  }
->  
-> -int mc13xxx_adc_do_conversion(struct mc13xxx *mc13xxx,
-> -		unsigned int channel, unsigned int *sample)
-> +static int mc13xxx_adc_do_conversion(struct mc13xxx *mc13xxx,
-> +				     unsigned int channel,
-> +				     unsigned int *sample)
->  {
->  	int i;
->  	int timeout = 100;
-> -- 
-> 2.19.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
