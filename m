@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x441.google.com ([2a00:1450:4864:20::441])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gN44g-0007kw-MB
- for barebox@lists.infradead.org; Wed, 14 Nov 2018 22:55:55 +0000
-Received: by mail-wr1-x441.google.com with SMTP id u5-v6so13824691wrn.9
- for <barebox@lists.infradead.org>; Wed, 14 Nov 2018 14:55:44 -0800 (PST)
-MIME-Version: 1.0
+ id 1gNaep-0004Qq-JR
+ for barebox@lists.infradead.org; Fri, 16 Nov 2018 09:43:27 +0000
 References: <20181114151454.8326-1-ejo@pengutronix.de>
-In-Reply-To: <20181114151454.8326-1-ejo@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 14 Nov 2018 14:55:31 -0800
-Message-ID: <CAHQ1cqEiST3eJwRmRYP3s1WDdb4jL0Bv-ETK-xP8G9=OYDM9DQ@mail.gmail.com>
+ <CAHQ1cqEiST3eJwRmRYP3s1WDdb4jL0Bv-ETK-xP8G9=OYDM9DQ@mail.gmail.com>
+From: Enrico Joerns <ejo@pengutronix.de>
+Message-ID: <897009dc-4b2b-6074-4310-72fc8b6a2bea@pengutronix.de>
+Date: Fri, 16 Nov 2018 10:43:07 +0100
+MIME-Version: 1.0
+In-Reply-To: <CAHQ1cqEiST3eJwRmRYP3s1WDdb4jL0Bv-ETK-xP8G9=OYDM9DQ@mail.gmail.com>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,49 +19,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] nand: denali: remove undefined GFP_DMA flag
-To: ejo@pengutronix.de
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Nov 14, 2018 at 7:15 AM Enrico Jorns <ejo@pengutronix.de> wrote:
->
-> This was a remnant from porting kernel code to barebox.
-> While being uncritical so far, this will now cause a compiler error
-> since kzalloc is not a define but a static inline function.
->
-> As the kzalloc() 'mode' argument was ignored before and still will be,
-> it is safe to remove the parameter.
->
-> Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
-> ---
->  drivers/mtd/nand/nand_denali.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/mtd/nand/nand_denali.c b/drivers/mtd/nand/nand_denali.c
-> index 8b09b3722f..ef3395864c 100644
-> --- a/drivers/mtd/nand/nand_denali.c
-> +++ b/drivers/mtd/nand/nand_denali.c
-> @@ -1387,7 +1387,7 @@ int denali_init(struct denali_nand_info *denali)
->         }
->
->         /* allocate a temporary buffer for nand_scan_ident() */
-> -       denali->buf.buf = kzalloc(PAGE_SIZE, GFP_DMA | GFP_KERNEL);
-> +       denali->buf.buf = kzalloc(PAGE_SIZE, GFP_KERNEL);
->         if (!denali->buf.buf)
->                 return -ENOMEM;
-
-Just as a suggestion, maybe just replace this call with xzalloc,
-getting rid of meaningless GFP_KERNEL as well, and dropping the OOM
-check below?
-
-Thanks,
-Andrey Smirnov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMTEvMTQvMTggMTE6NTUgUE0sIEFuZHJleSBTbWlybm92IHdyb3RlOgo+IE9uIFdlZCwgTm92
+IDE0LCAyMDE4IGF0IDc6MTUgQU0gRW5yaWNvIEpvcm5zIDxlam9AcGVuZ3V0cm9uaXguZGU+IHdy
+b3RlOgo+Pgo+PiBUaGlzIHdhcyBhIHJlbW5hbnQgZnJvbSBwb3J0aW5nIGtlcm5lbCBjb2RlIHRv
+IGJhcmVib3guCj4+IFdoaWxlIGJlaW5nIHVuY3JpdGljYWwgc28gZmFyLCB0aGlzIHdpbGwgbm93
+IGNhdXNlIGEgY29tcGlsZXIgZXJyb3IKPj4gc2luY2Uga3phbGxvYyBpcyBub3QgYSBkZWZpbmUg
+YnV0IGEgc3RhdGljIGlubGluZSBmdW5jdGlvbi4KPj4KPj4gQXMgdGhlIGt6YWxsb2MoKSAnbW9k
+ZScgYXJndW1lbnQgd2FzIGlnbm9yZWQgYmVmb3JlIGFuZCBzdGlsbCB3aWxsIGJlLAo+PiBpdCBp
+cyBzYWZlIHRvIHJlbW92ZSB0aGUgcGFyYW1ldGVyLgo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBFbnJp
+Y28gSm9ybnMgPGVqb0BwZW5ndXRyb25peC5kZT4KPj4gLS0tCj4+ICAgZHJpdmVycy9tdGQvbmFu
+ZC9uYW5kX2RlbmFsaS5jIHwgMiArLQo+PiAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigr
+KSwgMSBkZWxldGlvbigtKQo+Pgo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvbmFuZC9uYW5k
+X2RlbmFsaS5jIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX2RlbmFsaS5jCj4+IGluZGV4IDhiMDli
+MzcyMmYuLmVmMzM5NTg2NGMgMTAwNjQ0Cj4+IC0tLSBhL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9k
+ZW5hbGkuYwo+PiArKysgYi9kcml2ZXJzL210ZC9uYW5kL25hbmRfZGVuYWxpLmMKPj4gQEAgLTEz
+ODcsNyArMTM4Nyw3IEBAIGludCBkZW5hbGlfaW5pdChzdHJ1Y3QgZGVuYWxpX25hbmRfaW5mbyAq
+ZGVuYWxpKQo+PiAgICAgICAgICB9Cj4+Cj4+ICAgICAgICAgIC8qIGFsbG9jYXRlIGEgdGVtcG9y
+YXJ5IGJ1ZmZlciBmb3IgbmFuZF9zY2FuX2lkZW50KCkgKi8KPj4gLSAgICAgICBkZW5hbGktPmJ1
+Zi5idWYgPSBremFsbG9jKFBBR0VfU0laRSwgR0ZQX0RNQSB8IEdGUF9LRVJORUwpOwo+PiArICAg
+ICAgIGRlbmFsaS0+YnVmLmJ1ZiA9IGt6YWxsb2MoUEFHRV9TSVpFLCBHRlBfS0VSTkVMKTsKPj4g
+ICAgICAgICAgaWYgKCFkZW5hbGktPmJ1Zi5idWYpCj4+ICAgICAgICAgICAgICAgICAgcmV0dXJu
+IC1FTk9NRU07Cj4gCj4gSnVzdCBhcyBhIHN1Z2dlc3Rpb24sIG1heWJlIGp1c3QgcmVwbGFjZSB0
+aGlzIGNhbGwgd2l0aCB4emFsbG9jLAo+IGdldHRpbmcgcmlkIG9mIG1lYW5pbmdsZXNzIEdGUF9L
+RVJORUwgYXMgd2VsbCwgYW5kIGRyb3BwaW5nIHRoZSBPT00KPiBjaGVjayBiZWxvdz8KClNpbmNl
+IGt6YWxsb2MoKSBpcyBub3QgYSBtYWNybyB0byB4emFsbG9jKCkgYW55bW9yZSBidXQgdXNlcyBj
+YWxsb2MoKSBpbnN0ZWFkLAp3aGljaCBhY3R1YWxseSBtYXkgcmV0dXJuIE5VTEwsIEkgYW0gbm90
+IHN1cmUgaWYgdGhpcyBpcyBhIGJldHRlciBhcHByb2FjaC4KQnV0IEkgYW0gbm90IHRoYXQgZGVl
+cCBpbnRvIHRoZSB0b3BpYyBvZiBkaWZmZXJlbmNlcyBiZXR3ZWVuICphbGxvYyBjYWxscyB0bwpk
+ZWZpbml0ZWx5IGRlY2lkZSB0aGF0LgoKUmVnYXJkcywgRW5yaWNvCgotLSAKUGVuZ3V0cm9uaXgg
+ZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgRW5yaWNvIErDtnJucyAgICAgICAgICAg
+ICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6
+Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVp
+bSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctNTA4MCB8CkFtdHNnZXJpY2h0IEhp
+bGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1
+NSB8CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
+ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
+cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
