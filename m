@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
- by merlin.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gN5fp-0003vb-IV
- for barebox@lists.infradead.org; Thu, 15 Nov 2018 00:38:22 +0000
-Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
- (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
- id S23992408AbeKOAgixn61U (ORCPT
- <rfc822;barebox@lists.infradead.org>);
- Thu, 15 Nov 2018 01:36:38 +0100
-Date: Thu, 15 Nov 2018 01:36:37 +0100
-From: Ladislav Michl <ladis@linux-mips.org>
-Message-ID: <20181115003637.GA16443@lenoch>
-MIME-Version: 1.0
-Content-Disposition: inline
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gNfib-0000WA-Kq
+ for barebox@lists.infradead.org; Fri, 16 Nov 2018 15:07:39 +0000
+Message-ID: <1542380845.23489.24.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Fri, 16 Nov 2018 16:07:25 +0100
+In-Reply-To: <20181115003637.GA16443@lenoch>
+References: <20181115003637.GA16443@lenoch>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,83 +17,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: macb: dma_sync_* receive buffers
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] net: macb: dma_sync_* receive buffers
+To: Ladislav Michl <ladis@linux-mips.org>, barebox@lists.infradead.org
 
-Receive buffers are properly synchronized only if Cadence is
-GEM. Fix it for MACB as well.
-
-Fixes: 86dc5259e25d (net: macb: no need for coherent memory for receive buffer)
-Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
----
- Hi Sascha,
-
- I'm unsure this is proper fix, but works for me (as well as
- reverting 86dc5259e25d)
-
- drivers/net/macb.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index 1c5752d10..2bd5b62a4 100644
---- a/drivers/net/macb.c
-+++ b/drivers/net/macb.c
-@@ -216,9 +216,11 @@ static int macb_recv(struct eth_device *edev)
- 	dev_dbg(macb->dev, "%s\n", __func__);
- 
- 	for (;;) {
-+		barrier();
- 		if (!(macb->rx_ring[rx_tail].addr & MACB_BIT(RX_USED)))
- 			return -1;
- 
-+		barrier();
- 		status = macb->rx_ring[rx_tail].ctrl;
- 		if (status & MACB_BIT(RX_SOF)) {
- 			if (rx_tail != macb->rx_tail)
-@@ -229,6 +231,8 @@ static int macb_recv(struct eth_device *edev)
- 		if (status & MACB_BIT(RX_EOF)) {
- 			buffer = macb->rx_buffer + macb->rx_buffer_size * macb->rx_tail;
- 			length = MACB_BFEXT(RX_FRMLEN, status);
-+			dma_sync_single_for_cpu((unsigned long)buffer, length,
-+						DMA_FROM_DEVICE);
- 			if (wrapped) {
- 				unsigned int headlen, taillen;
- 
-@@ -237,12 +241,17 @@ static int macb_recv(struct eth_device *edev)
- 				taillen = length - headlen;
- 				memcpy((void *)NetRxPackets[0],
- 				       buffer, headlen);
-+				dma_sync_single_for_cpu((unsigned long)macb->rx_buffer,
-+							taillen, DMA_FROM_DEVICE);
- 				memcpy((void *)NetRxPackets[0] + headlen,
- 				       macb->rx_buffer, taillen);
- 				buffer = (void *)NetRxPackets[0];
- 			}
- 
- 			net_receive(edev, buffer, length);
-+			dma_sync_single_for_device((unsigned long)buffer, length,
-+						   DMA_FROM_DEVICE);
-+			barrier();
- 			if (++rx_tail >= macb->rx_ring_size)
- 				rx_tail = 0;
- 			reclaim_rx_buffers(macb, rx_tail);
-@@ -252,7 +261,6 @@ static int macb_recv(struct eth_device *edev)
- 				rx_tail = 0;
- 			}
- 		}
--		barrier();
- 	}
- 
- 	return 0;
--- 
-2.19.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gRG9ubmVyc3RhZywgZGVuIDE1LjExLjIwMTgsIDAxOjM2ICswMTAwIHNjaHJpZWIgTGFkaXNs
+YXYgTWljaGw6Cj4gUmVjZWl2ZSBidWZmZXJzIGFyZSBwcm9wZXJseSBzeW5jaHJvbml6ZWQgb25s
+eSBpZiBDYWRlbmNlIGlzCj4gR0VNLiBGaXggaXQgZm9yIE1BQ0IgYXMgd2VsbC4KPiAKPiBGaXhl
+czogODZkYzUyNTllMjVkIChuZXQ6IG1hY2I6IG5vIG5lZWQgZm9yIGNvaGVyZW50IG1lbW9yeSBm
+b3IgcmVjZWl2ZSBidWZmZXIpCj4gPiBTaWduZWQtb2ZmLWJ5OiBMYWRpc2xhdiBNaWNobCA8bGFk
+aXNAbGludXgtbWlwcy5vcmc+Cj4gLS0tCj4gwqBIaSBTYXNjaGEsCj4gCj4gwqBJJ20gdW5zdXJl
+IHRoaXMgaXMgcHJvcGVyIGZpeCwgYnV0IHdvcmtzIGZvciBtZSAoYXMgd2VsbCBhcwo+IMKgcmV2
+ZXJ0aW5nIDg2ZGM1MjU5ZTI1ZCkKPiAKPiDCoGRyaXZlcnMvbmV0L21hY2IuYyB8IDEwICsrKysr
+KysrKy0KPiDCoDEgZmlsZSBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkK
+PiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvbWFjYi5jIGIvZHJpdmVycy9uZXQvbWFjYi5j
+Cj4gaW5kZXggMWM1NzUyZDEwLi4yYmQ1YjYyYTQgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9uZXQv
+bWFjYi5jCj4gKysrIGIvZHJpdmVycy9uZXQvbWFjYi5jCj4gQEAgLTIxNiw5ICsyMTYsMTEgQEAg
+c3RhdGljIGludCBtYWNiX3JlY3Yoc3RydWN0IGV0aF9kZXZpY2UgKmVkZXYpCj4gPiDCoAlkZXZf
+ZGJnKG1hY2ItPmRldiwgIiVzXG4iLCBfX2Z1bmNfXyk7Cj4gwqAKPiA+IMKgCWZvciAoOzspIHsK
+PiA+ICsJCWJhcnJpZXIoKTsKPiA+IMKgCQlpZiAoIShtYWNiLT5yeF9yaW5nW3J4X3RhaWxdLmFk
+ZHIgJiBNQUNCX0JJVChSWF9VU0VEKSkpCj4gPiDCoAkJCXJldHVybiAtMTsKPiDCoAo+ID4gKwkJ
+YmFycmllcigpOwo+ID4gwqAJCXN0YXR1cyA9IG1hY2ItPnJ4X3JpbmdbcnhfdGFpbF0uY3RybDsK
+PiA+IMKgCQlpZiAoc3RhdHVzICYgTUFDQl9CSVQoUlhfU09GKSkgewo+ID4gwqAJCQlpZiAocnhf
+dGFpbCAhPSBtYWNiLT5yeF90YWlsKQo+IEBAIC0yMjksNiArMjMxLDggQEAgc3RhdGljIGludCBt
+YWNiX3JlY3Yoc3RydWN0IGV0aF9kZXZpY2UgKmVkZXYpCj4gPiDCoAkJaWYgKHN0YXR1cyAmIE1B
+Q0JfQklUKFJYX0VPRikpIHsKPiA+IMKgCQkJYnVmZmVyID0gbWFjYi0+cnhfYnVmZmVyICsgbWFj
+Yi0+cnhfYnVmZmVyX3NpemUgKiBtYWNiLT5yeF90YWlsOwo+ID4gwqAJCQlsZW5ndGggPSBNQUNC
+X0JGRVhUKFJYX0ZSTUxFTiwgc3RhdHVzKTsKPiA+ICsJCQlkbWFfc3luY19zaW5nbGVfZm9yX2Nw
+dSgodW5zaWduZWQgbG9uZylidWZmZXIsIGxlbmd0aCwKPiA+ICsJCQkJCQlETUFfRlJPTV9ERVZJ
+Q0UpOwo+ID4gwqAJCQlpZiAod3JhcHBlZCkgewo+ID4gwqAJCQkJdW5zaWduZWQgaW50IGhlYWRs
+ZW4sIHRhaWxsZW47Cj4gwqAKPiBAQCAtMjM3LDEyICsyNDEsMTcgQEAgc3RhdGljIGludCBtYWNi
+X3JlY3Yoc3RydWN0IGV0aF9kZXZpY2UgKmVkZXYpCj4gPiDCoAkJCQl0YWlsbGVuID0gbGVuZ3Ro
+IC0gaGVhZGxlbjsKPiA+IMKgCQkJCW1lbWNweSgodm9pZCAqKU5ldFJ4UGFja2V0c1swXSwKPiA+
+IMKgCQkJCcKgwqDCoMKgwqDCoMKgYnVmZmVyLCBoZWFkbGVuKTsKPiA+ICsJCQkJZG1hX3N5bmNf
+c2luZ2xlX2Zvcl9jcHUoKHVuc2lnbmVkIGxvbmcpbWFjYi0+cnhfYnVmZmVyLAo+ID4gKwkJCQkJ
+CQl0YWlsbGVuLCBETUFfRlJPTV9ERVZJQ0UpOwo+ID4gwqAJCQkJbWVtY3B5KCh2b2lkICopTmV0
+UnhQYWNrZXRzWzBdICsgaGVhZGxlbiwKPiDCoAkJCQnCoMKgwqDCoMKgwqDCoG1hY2ItPnJ4X2J1
+ZmZlciwgdGFpbGxlbik7CgpUaGlzIGlzIG1pc3NpbmcgYSBkbWFfc3luY19zaW5nbGVfZm9yX2Rl
+dmljZSgpIGhlcmUsIG1hdGNoaW5nIHRoZQouLi5mb3JfY3B1IGFkZGVkIGFib3ZlLiBPdGhlcndp
+c2UgcGF0Y2ggbG9va3MgZ29vZC4KClJlZ2FyZHMsCkx1Y2FzCgo+IMKgCQkJCWJ1ZmZlciA9ICh2
+b2lkICopTmV0UnhQYWNrZXRzWzBdOwo+ID4gwqAJCQl9Cj4gwqAKPiA+IMKgCQkJbmV0X3JlY2Vp
+dmUoZWRldiwgYnVmZmVyLCBsZW5ndGgpOwo+ID4gKwkJCWRtYV9zeW5jX3NpbmdsZV9mb3JfZGV2
+aWNlKCh1bnNpZ25lZCBsb25nKWJ1ZmZlciwgbGVuZ3RoLAo+ID4gKwkJCQkJCcKgwqDCoERNQV9G
+Uk9NX0RFVklDRSk7Cj4gPiArCQkJYmFycmllcigpOwo+ID4gwqAJCQlpZiAoKytyeF90YWlsID49
+IG1hY2ItPnJ4X3Jpbmdfc2l6ZSkKPiA+IMKgCQkJCXJ4X3RhaWwgPSAwOwo+ID4gwqAJCQlyZWNs
+YWltX3J4X2J1ZmZlcnMobWFjYiwgcnhfdGFpbCk7Cj4gQEAgLTI1Miw3ICsyNjEsNiBAQCBzdGF0
+aWMgaW50IG1hY2JfcmVjdihzdHJ1Y3QgZXRoX2RldmljZSAqZWRldikKPiA+IMKgCQkJCXJ4X3Rh
+aWwgPSAwOwo+ID4gwqAJCQl9Cj4gPiDCoAkJfQo+ID4gLQkJYmFycmllcigpOwo+ID4gwqAJfQo+
+IMKgCj4gPiDCoAlyZXR1cm4gMDsKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
+Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
