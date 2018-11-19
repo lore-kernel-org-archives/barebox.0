@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gOfB6-0003Eo-28
- for barebox@lists.infradead.org; Mon, 19 Nov 2018 08:45:10 +0000
+ id 1gOfB6-0003Eq-27
+ for barebox@lists.infradead.org; Mon, 19 Nov 2018 08:45:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 19 Nov 2018 09:44:42 +0100
-Message-Id: <20181119084454.17599-1-s.hauer@pengutronix.de>
+Date: Mon, 19 Nov 2018 09:44:51 +0100
+Message-Id: <20181119084454.17599-10-s.hauer@pengutronix.de>
+In-Reply-To: <20181119084454.17599-1-s.hauer@pengutronix.de>
+References: <20181119084454.17599-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,45 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/12] More -Wmissing-prototypes fixes
+Subject: [PATCH 09/12] usb: musb: Add missing includes
 To: Barebox List <barebox@lists.infradead.org>
 
-It's a long way to go still...
+phy-am335x.c and phy-am335x-control.c both implement functions that they
+do not include the header file providing the prototype for. Add the
+missing include and remove the duplicate definition of struct
+phy_control.
 
-Sascha Hauer (12):
-  ARM: start: Add missing prototype
-  ARM: samsung: remove unused function
-  ARM: samsung: make locally used function static
-  ARM: samsung: provide prototype for nand_boot()
-  ARM: samsung: Add missing include
-  state: remove unused function
-  mtd: nand: omap: Add header file for bch decoder
-  net: cpsw: Make locally used function static
-  usb: musb: Add missing includes
-  spi: omap: make locally used functions static
-  bus: omap-gpmc: make locally used function static
-  ARM: omap: Add missing includes
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/usb/musb/phy-am335x-control.c | 5 +----
+ drivers/usb/musb/phy-am335x.c         | 1 +
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
- arch/arm/boards/a9m2440/a9m2410dev.c              |  2 ++
- arch/arm/cpu/start.c                              |  2 ++
- arch/arm/mach-omap/am33xx_bbu_emmc.c              |  1 +
- arch/arm/mach-omap/am33xx_bbu_nand.c              |  1 +
- arch/arm/mach-omap/am33xx_bbu_spi_mlo.c           |  1 +
- arch/arm/mach-omap/am33xx_clock.c                 |  1 +
- arch/arm/mach-samsung/clocks-s3c24xx.c            | 11 +----------
- arch/arm/mach-samsung/include/mach/s3c24xx-nand.h |  2 ++
- common/state/state_variables.c                    | 13 -------------
- drivers/bus/omap-gpmc.c                           |  2 +-
- drivers/mtd/nand/nand_omap_bch_decoder.c          |  2 ++
- drivers/mtd/nand/nand_omap_bch_decoder.h          |  6 ++++++
- drivers/mtd/nand/nand_omap_gpmc.c                 |  4 ++--
- drivers/net/cpsw.c                                |  2 +-
- drivers/spi/omap3_spi.c                           |  8 ++++----
- drivers/usb/musb/phy-am335x-control.c             |  5 +----
- drivers/usb/musb/phy-am335x.c                     |  1 +
- 17 files changed, 29 insertions(+), 35 deletions(-)
- create mode 100644 drivers/mtd/nand/nand_omap_bch_decoder.h
-
+diff --git a/drivers/usb/musb/phy-am335x-control.c b/drivers/usb/musb/phy-am335x-control.c
+index 55a2ed27b7..c84525ec7e 100644
+--- a/drivers/usb/musb/phy-am335x-control.c
++++ b/drivers/usb/musb/phy-am335x-control.c
+@@ -4,10 +4,7 @@
+ #include <linux/err.h>
+ #include <linux/spinlock.h>
+ 
+-struct phy_control {
+-	void (*phy_power)(struct phy_control *phy_ctrl, u32 id, bool on);
+-	void (*phy_wkup)(struct phy_control *phy_ctrl, u32 id, bool on);
+-};
++#include "am35x-phy-control.h"
+ 
+ struct am335x_control_usb {
+ 	struct device_d *dev;
+diff --git a/drivers/usb/musb/phy-am335x.c b/drivers/usb/musb/phy-am335x.c
+index ec8c0f538b..df31255d89 100644
+--- a/drivers/usb/musb/phy-am335x.c
++++ b/drivers/usb/musb/phy-am335x.c
+@@ -5,6 +5,7 @@
+ #include <linux/err.h>
+ #include "am35x-phy-control.h"
+ #include "musb_core.h"
++#include "phy-am335x.h"
+ 
+ struct am335x_usbphy {
+ 	void __iomem *base;
 -- 
 2.19.1
 
