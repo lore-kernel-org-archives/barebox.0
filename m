@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gOfB6-0003is-2A
- for barebox@lists.infradead.org; Mon, 19 Nov 2018 08:45:10 +0000
+ id 1gOfB6-0003Ep-24
+ for barebox@lists.infradead.org; Mon, 19 Nov 2018 08:45:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 19 Nov 2018 09:44:47 +0100
-Message-Id: <20181119084454.17599-6-s.hauer@pengutronix.de>
+Date: Mon, 19 Nov 2018 09:44:46 +0100
+Message-Id: <20181119084454.17599-5-s.hauer@pengutronix.de>
 In-Reply-To: <20181119084454.17599-1-s.hauer@pengutronix.de>
 References: <20181119084454.17599-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,27 +21,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/12] ARM: samsung: Add missing include
+Subject: [PATCH 04/12] ARM: samsung: provide prototype for nand_boot()
 To: Barebox List <barebox@lists.infradead.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/a9m2440/a9m2410dev.c | 2 ++
+ arch/arm/mach-samsung/include/mach/s3c24xx-nand.h | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boards/a9m2440/a9m2410dev.c b/arch/arm/boards/a9m2440/a9m2410dev.c
-index f12a0b9652..b115c4a954 100644
---- a/arch/arm/boards/a9m2440/a9m2410dev.c
-+++ b/arch/arm/boards/a9m2440/a9m2410dev.c
-@@ -28,6 +28,8 @@
- #include <mach/s3c-busctl.h>
- #include <mach/s3c24xx-gpio.h>
- 
-+#include "baseboards.h"
-+
- /**
-  * Initialize the CPU to be able to work with the a9m2410dev evaluation board
+diff --git a/arch/arm/mach-samsung/include/mach/s3c24xx-nand.h b/arch/arm/mach-samsung/include/mach/s3c24xx-nand.h
+index f9c6d91b5b..52642ee81f 100644
+--- a/arch/arm/mach-samsung/include/mach/s3c24xx-nand.h
++++ b/arch/arm/mach-samsung/include/mach/s3c24xx-nand.h
+@@ -52,4 +52,6 @@ struct s3c24x0_nand_platform_data {
+  * @brief Basic declaration to use the s3c24x0 NAND driver
   */
+ 
++void nand_boot(void);
++
+ #endif /* MACH_S3C24XX_NAND_H */
 -- 
 2.19.1
 
