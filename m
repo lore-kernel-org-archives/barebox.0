@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gOex2-0007cG-Dz
- for barebox@lists.infradead.org; Mon, 19 Nov 2018 08:30:38 +0000
-References: <20181116143127.13875-1-s.hauer@pengutronix.de>
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-In-reply-to: <20181116143127.13875-1-s.hauer@pengutronix.de>
-Date: Mon, 19 Nov 2018 09:30:21 +0100
-Message-ID: <73wop95v1e.fsf@pengutronix.de>
+ id 1gOfB6-0003Eo-28
+ for barebox@lists.infradead.org; Mon, 19 Nov 2018 08:45:10 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 19 Nov 2018 09:44:42 +0100
+Message-Id: <20181119084454.17599-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,54 +15,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: socfpga: generate smaller images when multiple
- boards are selected
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 00/12] More -Wmissing-prototypes fixes
+To: Barebox List <barebox@lists.infradead.org>
 
+It's a long way to go still...
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
+Sascha Hauer (12):
+  ARM: start: Add missing prototype
+  ARM: samsung: remove unused function
+  ARM: samsung: make locally used function static
+  ARM: samsung: provide prototype for nand_boot()
+  ARM: samsung: Add missing include
+  state: remove unused function
+  mtd: nand: omap: Add header file for bch decoder
+  net: cpsw: Make locally used function static
+  usb: musb: Add missing includes
+  spi: omap: make locally used functions static
+  bus: omap-gpmc: make locally used function static
+  ARM: omap: Add missing includes
 
-> The socfpga xload images are limited to 64KiB. This doesn't fit 
-> if
-> multiple boards are selected. The reason is that we include huge
-> C files and arrays in the early init code which get compiled 
-> once
-> for each board. -ffunction-sections is without effect here since 
-> all
-> functions have the same name and hence we get the same function
-> multiple times in the same section.
->
-> To overcome this we surround all function names with a SECT() 
-> macro which
-> is used to add a board specific prefix to the section names. 
-> This way
-> -ffunction-sections can now do its work and discard unused 
-> functions.
->
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-\o/
-
-Tested-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-
-
-Thanks,
-Steffen
+ arch/arm/boards/a9m2440/a9m2410dev.c              |  2 ++
+ arch/arm/cpu/start.c                              |  2 ++
+ arch/arm/mach-omap/am33xx_bbu_emmc.c              |  1 +
+ arch/arm/mach-omap/am33xx_bbu_nand.c              |  1 +
+ arch/arm/mach-omap/am33xx_bbu_spi_mlo.c           |  1 +
+ arch/arm/mach-omap/am33xx_clock.c                 |  1 +
+ arch/arm/mach-samsung/clocks-s3c24xx.c            | 11 +----------
+ arch/arm/mach-samsung/include/mach/s3c24xx-nand.h |  2 ++
+ common/state/state_variables.c                    | 13 -------------
+ drivers/bus/omap-gpmc.c                           |  2 +-
+ drivers/mtd/nand/nand_omap_bch_decoder.c          |  2 ++
+ drivers/mtd/nand/nand_omap_bch_decoder.h          |  6 ++++++
+ drivers/mtd/nand/nand_omap_gpmc.c                 |  4 ++--
+ drivers/net/cpsw.c                                |  2 +-
+ drivers/spi/omap3_spi.c                           |  8 ++++----
+ drivers/usb/musb/phy-am335x-control.c             |  5 +----
+ drivers/usb/musb/phy-am335x.c                     |  1 +
+ 17 files changed, 29 insertions(+), 35 deletions(-)
+ create mode 100644 drivers/mtd/nand/nand_omap_bch_decoder.h
 
 -- 
-Pengutronix e.K.                          | Steffen Trumtrar 
-|
-Industrial Linux Solutions                | 
-http://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim, Germany| Phone: 
-+49-5121-206917-0   |
-Amtsgericht Hildesheim, HRA 2686          | Fax: 
-+49-5121-206917-5555|
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
