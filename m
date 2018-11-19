@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gOfBb-0004ze-Lo
- for barebox@lists.infradead.org; Mon, 19 Nov 2018 08:45:41 +0000
+ id 1gOgRU-0000tH-O5
+ for barebox@lists.infradead.org; Mon, 19 Nov 2018 10:06:11 +0000
+Date: Mon, 19 Nov 2018 11:05:56 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 19 Nov 2018 09:44:52 +0100
-Message-Id: <20181119084454.17599-11-s.hauer@pengutronix.de>
-In-Reply-To: <20181119084454.17599-1-s.hauer@pengutronix.de>
-References: <20181119084454.17599-1-s.hauer@pengutronix.de>
+Message-ID: <20181119100556.xpliscvowx4oipfl@pengutronix.de>
+References: <20181112162257.2209-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20181112162257.2209-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,57 +22,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/12] spi: omap: make locally used functions static
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/2] video: ipuv3: use closest fractional divider
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
+On Mon, Nov 12, 2018 at 05:22:56PM +0100, Lucas Stach wrote:
+> Currently the divider is always rounded down, which may lead to a
+> rather big overshoot of the display clock. Try to match the clock
+> better by rounding to closest.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  drivers/video/imx-ipu-v3/ipu-di.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/drivers/video/imx-ipu-v3/ipu-di.c b/drivers/video/imx-ipu-v3/ipu-di.c
+> index b6e64fe16a85..5751c678b28e 100644
+> --- a/drivers/video/imx-ipu-v3/ipu-di.c
+> +++ b/drivers/video/imx-ipu-v3/ipu-di.c
+> @@ -140,10 +140,7 @@ static int ipu_di_clk_calc_div(unsigned long inrate, unsigned long outrate)
+>  	int div;
+>  
+>  	tmp *= 16;
+> -
+> -	do_div(tmp, outrate);
+> -
+> -	div = tmp;
+> +	div = DIV_ROUND_CLOSEST(tmp, outrate);
+>  
+
+On ARM32 this fails with:
+
+undefined reference to `__aeabi_uldivmod'
+
+Fixed up like this:
+
+----------------------------8<-------------------------
+
+From 6b14328204f3978abeb91e8e779f6444c3c74df8 Mon Sep 17 00:00:00 2001
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 12 Nov 2018 17:22:56 +0100
+Subject: [PATCH] video: ipuv3: use closest fractional divider
+
+Currently the divider is always rounded down, which may lead to a
+rather big overshoot of the display clock. Try to match the clock
+better by rounding to closest.
+
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/spi/omap3_spi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/video/imx-ipu-v3/ipu-di.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/omap3_spi.c b/drivers/spi/omap3_spi.c
-index f63039718f..beea772aa9 100644
---- a/drivers/spi/omap3_spi.c
-+++ b/drivers/spi/omap3_spi.c
-@@ -67,7 +67,7 @@ static void spi_reset(struct spi_master *master)
- 	writel(OMAP3_MCSPI_WAKEUPENABLE_WKEN, regs + OMAP3_MCSPI_WAKEUPENABLE);
- }
+diff --git a/drivers/video/imx-ipu-v3/ipu-di.c b/drivers/video/imx-ipu-v3/ipu-di.c
+index b6e64fe16a..b4302412e0 100644
+--- a/drivers/video/imx-ipu-v3/ipu-di.c
++++ b/drivers/video/imx-ipu-v3/ipu-di.c
+@@ -140,6 +140,7 @@ static int ipu_di_clk_calc_div(unsigned long inrate, unsigned long outrate)
+ 	int div;
  
--int spi_claim_bus(struct spi_device *spi)
-+static int spi_claim_bus(struct spi_device *spi)
- {
- 	struct spi_master *master = spi->master;
- 	struct omap3_spi_master *omap3_master = container_of(master, struct omap3_spi_master, master);
-@@ -144,7 +144,7 @@ int spi_claim_bus(struct spi_device *spi)
- 	return 0;
- }
+ 	tmp *= 16;
++	tmp += outrate / 2;
  
--int omap3_spi_write(struct spi_device *spi, unsigned int len, const u8 *txp,
-+static int omap3_spi_write(struct spi_device *spi, unsigned int len, const u8 *txp,
- 		    unsigned long flags)
- {
- 	struct spi_master *master = spi->master;
-@@ -198,7 +198,7 @@ int omap3_spi_write(struct spi_device *spi, unsigned int len, const u8 *txp,
- 	return 0;
- }
+ 	do_div(tmp, outrate);
  
--int omap3_spi_read(struct spi_device *spi, unsigned int len, u8 *rxp,
-+static int omap3_spi_read(struct spi_device *spi, unsigned int len, u8 *rxp,
- 		   unsigned long flags)
- {
- 	struct spi_master *master = spi->master;
-@@ -245,7 +245,7 @@ int omap3_spi_read(struct spi_device *spi, unsigned int len, u8 *rxp,
- 	return 0;
- }
- 
--int spi_xfer(struct spi_device *spi, struct spi_transfer *t, unsigned long flags)
-+static int spi_xfer(struct spi_device *spi, struct spi_transfer *t, unsigned long flags)
- {
- 	struct spi_master *master = spi->master;
- 	struct omap3_spi_master *omap3_master = container_of(master, struct omap3_spi_master, master);
 -- 
 2.19.1
 
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
