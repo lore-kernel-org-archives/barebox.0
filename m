@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mx1.tq-group.com ([62.157.118.193])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gP2X7-0008Gk-Ft
- for barebox@lists.infradead.org; Tue, 20 Nov 2018 09:41:27 +0000
+ id 1gP2XA-0008Gk-M2
+ for barebox@lists.infradead.org; Tue, 20 Nov 2018 09:41:30 +0000
 From: matthias.schiffer@ew.tq-group.com
-Date: Tue, 20 Nov 2018 10:40:33 +0100
-Message-Id: <20181120094035.18252-1-matthias.schiffer@ew.tq-group.com>
+Date: Tue, 20 Nov 2018 10:40:35 +0100
+Message-Id: <20181120094035.18252-3-matthias.schiffer@ew.tq-group.com>
+In-Reply-To: <20181120094035.18252-1-matthias.schiffer@ew.tq-group.com>
+References: <20181120094035.18252-1-matthias.schiffer@ew.tq-group.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,37 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] clk: fix NULL deref without OF node in debug message
+Subject: [PATCH] FIT: look for hash-1 as well as hash@1 nodes in signature
+ check
 To: barebox@lists.infradead.org
 Cc: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 
 From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 
-of_clk_add_provider() may be called for devices added via
-add_generic_device(). There is no OF node in this case, leading to a crash
-when debug logs are enabled.
-
-This affects various i.MX CPUs, which add imx*-ccm clock devices using
-add_generic_device().
+The examples in the U-boot docs use "hash-N" as the name for hash nodes.
+It seems "hash@N" was used instead at some point during the development of
+the FIT format and "hash-N" is more correct; support for "hash@N" is
+preserved for backward compatibility.
 
 Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 ---
- drivers/clk/clk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/image-fit.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 24759b45b..6a2d8ad17 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -413,7 +413,7 @@ int of_clk_add_provider(struct device_node *np,
- 	cp->get = clk_src_get;
+diff --git a/common/image-fit.c b/common/image-fit.c
+index dfd1fa02c..356c1ae5d 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -392,7 +392,9 @@ static int fit_verify_hash(struct fit_handle *handle, struct device_node *image,
+ 		ret = -EINVAL;
+ 	}
  
- 	list_add(&cp->link, &of_clk_providers);
--	pr_debug("Added clock from %s\n", np->full_name);
-+	pr_debug("Added clock from %s\n", np ? np->full_name : "<none>");
- 
- 	return 0;
- }
+-	hash = of_get_child_by_name(image, "hash@1");
++	hash = of_get_child_by_name(image, "hash-1");
++	if (!hash)
++		hash = of_get_child_by_name(image, "hash@1");
+ 	if (!hash) {
+ 		if (ret)
+ 			pr_err("image %s does not have hashes\n",
 -- 
 2.17.1
 
