@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gPOEy-0001jD-3m
- for barebox@lists.infradead.org; Wed, 21 Nov 2018 08:52:12 +0000
-Date: Wed, 21 Nov 2018 09:51:56 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181121085156.hkzzvv7t4h3jl3tt@pengutronix.de>
-References: <20181120205044.30768-1-r.hieber@pengutronix.de>
+ id 1gPExg-000750-07
+ for barebox@lists.infradead.org; Tue, 20 Nov 2018 22:57:42 +0000
+From: Roland Hieber <r.hieber@pengutronix.de>
+Date: Tue, 20 Nov 2018 23:57:13 +0100
+Message-Id: <20181120225713.10047-1-r.hieber@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181120205044.30768-1-r.hieber@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,62 +15,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] printk: make line continuation not result in stray
- emergency errors
-To: Roland Hieber <r.hieber@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] memory_display: add padding to simplify counting
+To: barebox@lists.infradead.org
+Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-T24gVHVlLCBOb3YgMjAsIDIwMTggYXQgMDk6NTA6NDRQTSArMDEwMCwgUm9sYW5kIEhpZWJlciB3
-cm90ZToKPiBUaGUgbGV2ZWxzIG9mIHByX2VtZXJnKCkgYW5kIHByX2NvbnQoKSBhcmUgYm90aCBz
-ZXQgdG8gMC4gV2hlbiBwcl9jb250KCkKPiBpcyB1c2VkIHRvIGNvbnRpbnVlIGEgcHJldmlvdXMg
-bGluZSwgYW5kIGNvbG9yZWQgY29uc29sZSBvdXRwdXQgaXMKPiBlbmFibGVkLCB0aGlzIGNhbiBy
-ZXN1bHQgaW4gZ2FyYmxlZCBsb2cgbWVzc2FnZXMgYmVpbmcgcHJpbnRlZCwgZS5nLjoKPiAKPiAg
-ICAgRVJST1I6IEhBQnY0OiAtLS0tLS0tLSBIQUIgd2FybmluZyBFdmVudCAwIC0tLS0tLS0tCj4g
-ICAgIEVSUk9SOiBIQUJ2NDogZXZlbnQgZGF0YToKPiAgICAgRVJST1I6IEhBQnY0OiAgZGJFTUVS
-RzogIDAwRU1FUkc6ICAyNEVNRVJHOiAgNDJFTUVSRzogICA2OUVNRVJHOiAgMzBFTUVSRzogIGUx
-RU1FUkc6ICAxZAo+ICAgICBFUlJPUjogSEFCdjQ6ICAwMEVNRVJHOiAgMDRFTUVSRzogIDAwRU1F
-Ukc6ICAwMkVNRVJHOiAgIDQwRU1FUkc6ICAwMEVNRVJHOiAgMzZFTUVSRzogIDA2Cj4gICAgIEVS
-Uk9SOiBIQUJ2NDogIDU1RU1FUkc6ICA1NUVNRVJHOiAgMDBFTUVSRzogIDAzRU1FUkc6ICAgMDBF
-TUVSRzogIDAwRU1FUkc6ICAwMEVNRVJHOiAgMDAKPiAgICAgRVJST1I6IEhBQnY0OiAgMDBFTUVS
-RzogIDAwRU1FUkc6ICAwMEVNRVJHOiAgMDBFTUVSRzogICAwMEVNRVJHOiAgMDBFTUVSRzogIDAw
-RU1FUkc6ICAwMAo+ICAgICBFUlJPUjogSEFCdjQ6ICAwMEVNRVJHOiAgMDBFTUVSRzogIDAwRU1F
-Ukc6ICAwMUVNRVJHOgo+ICAgICBFUlJPUjogSEFCdjQ6IFN0YXR1czogT3BlcmF0aW9uIGNvbXBs
-ZXRlZCB3aXRoIHdhcm5pbmcgKDB4NjkpCj4gCj4gTm90ZSB0aGUgYWRkaXRpb25hbCAiRU1FUkc6
-ICIgaW4gZnJvbnQgb2YgZWFjaCBjb250aW51YXRpb24sIHdoaWNoIGlzCj4gaW5zZXJ0ZWQgYnkg
-cHJfY29udChidWYpIGJlaW5nIGV4cGFuZGVkIHRvIHByX3ByaW50aygwLCBidWYpLiBUaGVzZQo+
-IGFkZGl0aW9uYWwgc3RyaW5ncyBzaG93IHVwIGluIGRlZXAgcmVkIG9uIHRoZSBjb25zb2xlICh3
-aGljaCBpcyBub3QKPiBzdXBwb3J0ZWQgaW4gR2l0IGNvbW1pdCBtZXNzYWdlc+KApikuIE9uZSBt
-aWdodCBhcmd1ZSB0aGF0IHRoaXMgaXMgdGhlCj4gc2FtZSBjb2xvciBhcyB0aGUgIkVSUk9SOiAi
-IHByZWZpeCwgYnV0IHdoZW4gcHJfY29udCgpIGlzIHVzZWQgd2l0aAo+IHByX25vdGljZSgpIGFu
-ZCBwcl93YXJuaW5nKCksIHdoaWNoIGFyZSBwcmludGVkIGluIGJsdWUgYW5kIHllbGxvdwo+IHJl
-c3BlY3RpdmVseSwgYXQgbGVhc3QgdGhlbiB0aGUgY2hhbmdlIGluIGNvbG9yIHdvdWxkIGxlYWQg
-dG8gYWRkaXRpb25hbAo+IGNvbmZ1c2lvbi4KPiAKPiBUaGUgbG9nIGxldmVsIGFyZ3VtZW50IHRv
-IHByX3ByaW50ayBpcyBkZWZpbmVkIGFzIGludCwgc28gd2UgY2FuIHNvbHZlCj4gdGhpcyBieSBk
-ZWZpbmluZyB0aGUgbGV2ZWwgZm9yIHByX2NvbnQoKSB0byAtMSwgd2hpY2ggaXMgbm90IHVzZWQg
-Zm9yCj4gYW55IGxvZ2xldmVsOgo+IAo+ICAgICBFUlJPUjogSEFCdjQ6IC0tLS0tLS0tIEhBQiB3
-YXJuaW5nIEV2ZW50IDAgLS0tLS0tLS0KPiAgICAgRVJST1I6IEhBQnY0OiBldmVudCBkYXRhOgo+
-ICAgICBFUlJPUjogSEFCdjQ6ICBkYiAwMCAyNCA0MiAgNjkgMzAgZTEgMWQKPiAgICAgRVJST1I6
-IEhBQnY0OiAgMDAgMDQgMDAgMDIgIDQwIDAwIDM2IDA2Cj4gICAgIEVSUk9SOiBIQUJ2NDogIDU1
-IDU1IDAwIDAzICAwMCAwMCAwMCAwMAo+ICAgICBFUlJPUjogSEFCdjQ6ICAwMCAwMCAwMCAwMCAg
-MDAgMDAgMDAgMDAKPiAgICAgRVJST1I6IEhBQnY0OiAgMDAgMDAgMDAgMDEKPiAgICAgRVJST1I6
-IEhBQnY0OiBTdGF0dXM6IE9wZXJhdGlvbiBjb21wbGV0ZWQgd2l0aCB3YXJuaW5nICgweDY5KQo+
-IAo+IEZpeGVzOiAwZmNlZmRkOTM2OTA1MGYzNWE4OGI0MWRjZDQyY2M1YTNjNmM2YjMzICgicHJp
-bnRrOiBBZGQgcHJfY29udCIpCj4gRml4ZXM6IGVhMGUwNzdlZDY1YTAwM2U0ZDdhMWUwMjNhZWUz
-OGNiZTJkMTQ4OTggKCJwcmludGs6IEZpeCBwcl9jb250IikKPiBTaWduZWQtb2ZmLWJ5OiBSb2xh
-bmQgSGllYmVyIDxyLmhpZWJlckBwZW5ndXRyb25peC5kZT4KPiAtLS0KClNpbmNlIGl0IGltcHJv
-dmVkIHRoaW5nczogQXBwbGllZCwgdGhhbmtzLgoKSG93ZXZlciwgSSB0aGluayB3ZSBzaG91bGQg
-bWFrZSBvdXIgbWluZHMgaWYgd2Uga2VlcCBwcl9jb250IG9yIGlmIGl0J3MKanVzdCB1bm5lY2Vz
-c2FyeSBiYWxsYXN0LiBSaWdodCBub3cgd2Ugb25seSBoYXZlIGEgZmV3IHVzZXJzIHdoaWNoIGNv
-dWxkCmJlIHJlbW92ZWQgd2l0aG91dCBtdWNoIGhhc3NsZS4KClNhc2NoYQoKLS0gClBlbmd1dHJv
-bml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0
-dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVz
-aGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0
-IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTct
-NTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
-YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
-c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Trying to count single bytes (e.g. when adding an offset) in 'word' or
+'byte' output mode is not easy in the current formatting, and (at least
+for me) has a high chance of miscounting or losing track of groups:
+
+    barebox@boardname:/ md -b 0x149983f0+32
+    149983f0: 18 00 00 00 00 00 0d 86 00 00 00 00 00 00 00 00    ................
+    14998400: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
+
+    barebox@boardname:/ md -w 0x149983f0+32
+    149983f0: 0018 0000 0000 860d 0000 0000 0000 0000            ................
+    14998400: 0000 0000 0000 0000 0000 0000 0000 0000            ................
+
+With an additional space after 8 bytes, counting becomes easier:
+
+    barebox@boardname:/ md -b 0x149983f0+32
+    149983f0: 18 00 00 00 00 00 0d 86  00 00 00 00 00 00 00 00   ................
+    14998400: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ................
+
+    barebox@boardname:/ md -w 0x149983f0+32
+    149983f0: 0018 0000 0000 860d  0000 0000 0000 0000           ................
+    14998400: 0000 0000 0000 0000  0000 0000 0000 0000           ................
+
+The 'quad' and 'long' output modes stay the same and are already much
+more easier to count because they build bigger and therefore less groups
+of bytes per line.
+
+Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
+---
+ common/memory_display.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/common/memory_display.c b/common/memory_display.c
+index ea91985e5d..30821cced4 100644
+--- a/common/memory_display.c
++++ b/common/memory_display.c
+@@ -55,23 +55,27 @@ int memory_display(const void *addr, loff_t offs, unsigned nbytes, int size, int
+ 			} else if (size == 2) {
+ 				uint16_t res;
+ 				data_abort_mask();
+ 				res = *((uint16_t *)addr);
+ 				if (swab)
+ 					res = __swab16(res);
++				if (i > 1 && i % 8 == 0)
++					count -= printf(" ");
+ 				if (data_abort_unmask()) {
+ 					res = 0xffff;
+ 					count -= printf(" xxxx");
+ 				} else {
+ 					count -= printf(" %04x", res);
+ 				}
+ 				*usp++ = res;
+ 			} else {
+ 				uint8_t res;
+ 				data_abort_mask();
+ 				res = *((uint8_t *)addr);
++				if (i > 1 && i % 8 == 0)
++					count -= printf(" ");
+ 				if (data_abort_unmask()) {
+ 					res = 0xff;
+ 					count -= printf(" xx");
+ 				} else {
+ 					count -= printf(" %02x", res);
+ 				}
+-- 
+2.19.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
