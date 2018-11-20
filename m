@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.20])
+Received: from mout.gmx.net ([212.227.17.21])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gPCJA-0002Ok-VV
- for barebox@lists.infradead.org; Tue, 20 Nov 2018 20:07:44 +0000
+ id 1gPCJC-0002Oi-Bd
+ for barebox@lists.infradead.org; Tue, 20 Nov 2018 20:07:46 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Tue, 20 Nov 2018 21:07:11 +0100
-Message-Id: <20181120200714.3692-7-linux@rempel-privat.de>
+Date: Tue, 20 Nov 2018 21:07:06 +0100
+Message-Id: <20181120200714.3692-2-linux@rempel-privat.de>
 In-Reply-To: <20181120200714.3692-1-linux@rempel-privat.de>
 References: <20181120200714.3692-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,32 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 6/9] usb: at91_udc: remove useless NULL check
+Subject: [PATCH v1 1/9] net: e1000: fix "Uninitialized variable: phy_data"
+ warning
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-if _ep or ep is NULL, we would get at least in two places
-before this test a NULL pointer dereference.
+After carefully reading the code, this situation should
+never happen. This patch is to reduce warning noise.
 
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- drivers/usb/gadget/at91_udc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/e1000/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/at91_udc.c b/drivers/usb/gadget/at91_udc.c
-index 729f75212..243656d44 100644
---- a/drivers/usb/gadget/at91_udc.c
-+++ b/drivers/usb/gadget/at91_udc.c
-@@ -288,8 +288,7 @@ static int at91_ep_enable(struct usb_ep *_ep,
- 	u16		maxpacket;
- 	u32		tmp;
+diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
+index bb6ab4eb0..caa7274a8 100644
+--- a/drivers/net/e1000/main.c
++++ b/drivers/net/e1000/main.c
+@@ -1130,7 +1130,7 @@ static int32_t e1000_set_d3_lplu_state_off(struct e1000_hw *hw)
+ {
+ 	uint32_t phy_ctrl = 0;
+ 	int32_t ret_val;
+-	uint16_t phy_data;
++	uint16_t phy_data = 0;
+ 	DEBUGFUNC();
  
--	if (!_ep || !ep
--			|| !desc || ep->desc
-+	if (!desc || ep->desc
- 			|| _ep->name == ep0name
- 			|| desc->bDescriptorType != USB_DT_ENDPOINT
- 			|| (maxpacket = le16_to_cpu(desc->wMaxPacketSize)) == 0
+ 	/* During driver activity LPLU should not be used or it will attain link
 -- 
 2.17.1
 
