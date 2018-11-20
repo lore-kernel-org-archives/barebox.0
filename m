@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.21])
+Received: from mout.gmx.net ([212.227.17.20])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gPCJC-0002Oi-Bd
+ id 1gPCJB-0002Oo-61
  for barebox@lists.infradead.org; Tue, 20 Nov 2018 20:07:46 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Tue, 20 Nov 2018 21:07:06 +0100
-Message-Id: <20181120200714.3692-2-linux@rempel-privat.de>
+Date: Tue, 20 Nov 2018 21:07:14 +0100
+Message-Id: <20181120200714.3692-10-linux@rempel-privat.de>
 In-Reply-To: <20181120200714.3692-1-linux@rempel-privat.de>
 References: <20181120200714.3692-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,32 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 1/9] net: e1000: fix "Uninitialized variable: phy_data"
- warning
+Subject: [PATCH v1 9/9] lib: lodepng: remove useless test
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-After carefully reading the code, this situation should
-never happen. This patch is to reduce warning noise.
+Either the condition 'code_ll==(unsigned int)(-1)' is redundant or the
+array 'LENGTHBASE[29]' is accessed at index 4294967038, which is out of
+bounds.
+
+On other hand this condition is tested within other scope:
+"if(code_ll >= FIRST_LENGTH_CODE_INDEX && code_ll <= LAST_LENGTH_CODE_INDEX)"
+with is already limited to (code_ll >= 257 && code_ll <= 285),
+so it can't be -1 any way.
 
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- drivers/net/e1000/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/gui/lodepng.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
-index bb6ab4eb0..caa7274a8 100644
---- a/drivers/net/e1000/main.c
-+++ b/drivers/net/e1000/main.c
-@@ -1130,7 +1130,7 @@ static int32_t e1000_set_d3_lplu_state_off(struct e1000_hw *hw)
- {
- 	uint32_t phy_ctrl = 0;
- 	int32_t ret_val;
--	uint16_t phy_data;
-+	uint16_t phy_data = 0;
- 	DEBUGFUNC();
- 
- 	/* During driver activity LPLU should not be used or it will attain link
+diff --git a/lib/gui/lodepng.c b/lib/gui/lodepng.c
+index 9cc59d709..78a34db47 100644
+--- a/lib/gui/lodepng.c
++++ b/lib/gui/lodepng.c
+@@ -1140,13 +1140,7 @@ static unsigned inflateHuffmanBlock(ucvector* out, const unsigned char* in, size
+       code_d = huffmanDecodeSymbol(in, bp, &tree_d, inbitlength);
+       if(code_d > 29)
+       {
+-        if(code_ll == (unsigned)(-1)) /*huffmanDecodeSymbol returns (unsigned)(-1) in case of error*/
+-        {
+-          /*return error code 10 or 11 depending on the situation that happened in huffmanDecodeSymbol
+-          (10=no endcode, 11=wrong jump outside of tree)*/
+-          error = (*bp) > inlength * 8 ? 10 : 11;
+-        }
+-        else error = 18; /*error: invalid distance code (30-31 are never used)*/
++        error = 18; /*error: invalid distance code (30-31 are never used)*/
+         break;
+       }
+       distance = DISTANCEBASE[code_d];
 -- 
 2.17.1
 
