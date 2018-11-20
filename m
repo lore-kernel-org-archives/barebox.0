@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.22])
+Received: from mout.gmx.net ([212.227.17.20])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gPCJA-0002Of-VO
- for barebox@lists.infradead.org; Tue, 20 Nov 2018 20:07:43 +0000
+ id 1gPCJB-0002Ol-20
+ for barebox@lists.infradead.org; Tue, 20 Nov 2018 20:07:44 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Tue, 20 Nov 2018 21:07:07 +0100
-Message-Id: <20181120200714.3692-3-linux@rempel-privat.de>
+Date: Tue, 20 Nov 2018 21:07:10 +0100
+Message-Id: <20181120200714.3692-6-linux@rempel-privat.de>
 In-Reply-To: <20181120200714.3692-1-linux@rempel-privat.de>
 References: <20181120200714.3692-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,34 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 2/9] pinctrl: tegra30: fix "Possible null pointer
- dereference: group" warning
+Subject: [PATCH v1 5/9] mfd: da9063: fix wrong NULL pointer test
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-The code is correct but it takes more seconds for me to understand.
-And static code analyzer do not understand it at all.
+checking for priv == NULL and using in this case priv->dev
+makes no sense.
 
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- drivers/pinctrl/pinctrl-tegra30.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mfd/da9063.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-tegra30.c b/drivers/pinctrl/pinctrl-tegra30.c
-index d9b49c57d..ffb04eebb 100644
---- a/drivers/pinctrl/pinctrl-tegra30.c
-+++ b/drivers/pinctrl/pinctrl-tegra30.c
-@@ -658,8 +658,8 @@ static int pinctrl_tegra30_set_drvstate(struct pinctrl_tegra30 *ctrl,
- 			break;
- 		}
- 	}
--	/* if no matching drivegroup is found */
--	if (i == ctrl->drvdata->num_drvgrps)
-+
-+	if (!group)
- 		return 0;
+diff --git a/drivers/mfd/da9063.c b/drivers/mfd/da9063.c
+index b6114a614..a7fff2c5b 100644
+--- a/drivers/mfd/da9063.c
++++ b/drivers/mfd/da9063.c
+@@ -201,7 +201,7 @@ static int da9062_device_init(struct da9063 *priv)
  
- 	regaddr = ctrl->regs.ctrl + (group->reg >> 2);
+ 	priv->client1 = i2c_new_dummy(priv->client->adapter,
+ 				      priv->client->addr + 1);
+-	if (!priv) {
++	if (!priv->client1) {
+ 		dev_warn(priv->dev, "failed to create bank 1 device\n");
+ 		/* TODO: return -EINVAL; i2c api does not return more
+ 		 * details */
 -- 
 2.17.1
 
