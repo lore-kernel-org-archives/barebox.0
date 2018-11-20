@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mout.gmx.net ([212.227.17.22])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gPCJB-0002Og-5A
- for barebox@lists.infradead.org; Tue, 20 Nov 2018 20:07:44 +0000
+ id 1gPCJA-0002Oh-Tm
+ for barebox@lists.infradead.org; Tue, 20 Nov 2018 20:07:43 +0000
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Tue, 20 Nov 2018 21:07:09 +0100
-Message-Id: <20181120200714.3692-5-linux@rempel-privat.de>
+Date: Tue, 20 Nov 2018 21:07:08 +0100
+Message-Id: <20181120200714.3692-4-linux@rempel-privat.de>
 In-Reply-To: <20181120200714.3692-1-linux@rempel-privat.de>
 References: <20181120200714.3692-1-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,38 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 4/9] fs: fix possible null pointer dereference of base.
+Subject: [PATCH v1 3/9] fs: closedir: remove uninitialized variable ret
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-we use base before checking if it is NULL
-
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 ---
- fs/fs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/fs.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/fs/fs.c b/fs/fs.c
-index 42fd63ad0..625ed10b7 100644
+index a30afa35f..42fd63ad0 100644
 --- a/fs/fs.c
 +++ b/fs/fs.c
-@@ -1526,7 +1526,7 @@ static struct dentry *__lookup_hash(const struct qstr *name,
+@@ -2527,8 +2527,6 @@ EXPORT_SYMBOL(opendir);
+ 
+ int closedir(DIR *dir)
  {
- 	struct dentry *dentry;
- 	struct dentry *old;
--	struct inode *dir = base->d_inode;
-+	struct inode *dir;
+-	int ret;
+-
+ 	if (!dir) {
+ 		errno = EBADF;
+ 		return -EBADF;
+@@ -2536,7 +2534,7 @@ int closedir(DIR *dir)
  
- 	if (!base)
- 		return ERR_PTR(-ENOENT);
-@@ -1539,6 +1539,7 @@ static struct dentry *__lookup_hash(const struct qstr *name,
- 	if (unlikely(!dentry))
- 		return ERR_PTR(-ENOMEM);
+ 	release_dir(dir);
  
-+	dir = base->d_inode;
- 	old = dir->i_op->lookup(dir, dentry, flags);
- 	if (IS_ERR(old)) {
- 		dput(dentry);
+-	return ret;
++	return 0;
+ }
+ EXPORT_SYMBOL(closedir);
+ 
 -- 
 2.17.1
 
