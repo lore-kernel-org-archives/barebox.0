@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gPNiM-0004Ng-4x
- for barebox@lists.infradead.org; Wed, 21 Nov 2018 08:18:27 +0000
-Date: Wed, 21 Nov 2018 09:18:13 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181121081813.biacokuvrvpx7ktd@pengutronix.de>
-References: <1542744481.4097.40.camel@erwinrol.com>
+ id 1gPD3P-0003us-Sl
+ for barebox@lists.infradead.org; Tue, 20 Nov 2018 20:55:32 +0000
+From: Roland Hieber <r.hieber@pengutronix.de>
+Date: Tue, 20 Nov 2018 21:50:44 +0100
+Message-Id: <20181120205044.30768-1-r.hieber@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1542744481.4097.40.camel@erwinrol.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,46 +15,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: powerfail safe env save
-To: Erwin Rol <mailinglists@erwinrol.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] printk: make line continuation not result in stray emergency
+ errors
+To: barebox@lists.infradead.org
+Cc: Roland Hieber <r.hieber@pengutronix.de>
 
-Hi Erwin,
-
-On Tue, Nov 20, 2018 at 09:08:01PM +0100, Erwin Rol wrote:
-> Hallo,
-> 
-> as long time u-boot user I have several projects where we have a dual
-> dataflash "sector" in wich we store our env variables. And dual so we
-> always have or the correct old version or the correct new version even
-> if there is a power fail during saveenv.
-> 
-> Is powerfail robust env writing also available in barebox. Or what
-> would be the barebox equifelant of a number of config variables?
-
-We do not have redundant environment right now.
-
-There have been attempts in the past, but they fell short in flexibility
-and/or robustness. Nowadays we normally do not use environment in
-products anymore, so this isn't much of an issue.
-
-If you have flash I would consider using UBI for the environment. With
-atomic LEB change a robust environment could be implemented fairly
-easily.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIGxldmVscyBvZiBwcl9lbWVyZygpIGFuZCBwcl9jb250KCkgYXJlIGJvdGggc2V0IHRvIDAu
+IFdoZW4gcHJfY29udCgpCmlzIHVzZWQgdG8gY29udGludWUgYSBwcmV2aW91cyBsaW5lLCBhbmQg
+Y29sb3JlZCBjb25zb2xlIG91dHB1dCBpcwplbmFibGVkLCB0aGlzIGNhbiByZXN1bHQgaW4gZ2Fy
+YmxlZCBsb2cgbWVzc2FnZXMgYmVpbmcgcHJpbnRlZCwgZS5nLjoKCiAgICBFUlJPUjogSEFCdjQ6
+IC0tLS0tLS0tIEhBQiB3YXJuaW5nIEV2ZW50IDAgLS0tLS0tLS0KICAgIEVSUk9SOiBIQUJ2NDog
+ZXZlbnQgZGF0YToKICAgIEVSUk9SOiBIQUJ2NDogIGRiRU1FUkc6ICAwMEVNRVJHOiAgMjRFTUVS
+RzogIDQyRU1FUkc6ICAgNjlFTUVSRzogIDMwRU1FUkc6ICBlMUVNRVJHOiAgMWQKICAgIEVSUk9S
+OiBIQUJ2NDogIDAwRU1FUkc6ICAwNEVNRVJHOiAgMDBFTUVSRzogIDAyRU1FUkc6ICAgNDBFTUVS
+RzogIDAwRU1FUkc6ICAzNkVNRVJHOiAgMDYKICAgIEVSUk9SOiBIQUJ2NDogIDU1RU1FUkc6ICA1
+NUVNRVJHOiAgMDBFTUVSRzogIDAzRU1FUkc6ICAgMDBFTUVSRzogIDAwRU1FUkc6ICAwMEVNRVJH
+OiAgMDAKICAgIEVSUk9SOiBIQUJ2NDogIDAwRU1FUkc6ICAwMEVNRVJHOiAgMDBFTUVSRzogIDAw
+RU1FUkc6ICAgMDBFTUVSRzogIDAwRU1FUkc6ICAwMEVNRVJHOiAgMDAKICAgIEVSUk9SOiBIQUJ2
+NDogIDAwRU1FUkc6ICAwMEVNRVJHOiAgMDBFTUVSRzogIDAxRU1FUkc6CiAgICBFUlJPUjogSEFC
+djQ6IFN0YXR1czogT3BlcmF0aW9uIGNvbXBsZXRlZCB3aXRoIHdhcm5pbmcgKDB4NjkpCgpOb3Rl
+IHRoZSBhZGRpdGlvbmFsICJFTUVSRzogIiBpbiBmcm9udCBvZiBlYWNoIGNvbnRpbnVhdGlvbiwg
+d2hpY2ggaXMKaW5zZXJ0ZWQgYnkgcHJfY29udChidWYpIGJlaW5nIGV4cGFuZGVkIHRvIHByX3By
+aW50aygwLCBidWYpLiBUaGVzZQphZGRpdGlvbmFsIHN0cmluZ3Mgc2hvdyB1cCBpbiBkZWVwIHJl
+ZCBvbiB0aGUgY29uc29sZSAod2hpY2ggaXMgbm90CnN1cHBvcnRlZCBpbiBHaXQgY29tbWl0IG1l
+c3NhZ2Vz4oCmKS4gT25lIG1pZ2h0IGFyZ3VlIHRoYXQgdGhpcyBpcyB0aGUKc2FtZSBjb2xvciBh
+cyB0aGUgIkVSUk9SOiAiIHByZWZpeCwgYnV0IHdoZW4gcHJfY29udCgpIGlzIHVzZWQgd2l0aApw
+cl9ub3RpY2UoKSBhbmQgcHJfd2FybmluZygpLCB3aGljaCBhcmUgcHJpbnRlZCBpbiBibHVlIGFu
+ZCB5ZWxsb3cKcmVzcGVjdGl2ZWx5LCBhdCBsZWFzdCB0aGVuIHRoZSBjaGFuZ2UgaW4gY29sb3Ig
+d291bGQgbGVhZCB0byBhZGRpdGlvbmFsCmNvbmZ1c2lvbi4KClRoZSBsb2cgbGV2ZWwgYXJndW1l
+bnQgdG8gcHJfcHJpbnRrIGlzIGRlZmluZWQgYXMgaW50LCBzbyB3ZSBjYW4gc29sdmUKdGhpcyBi
+eSBkZWZpbmluZyB0aGUgbGV2ZWwgZm9yIHByX2NvbnQoKSB0byAtMSwgd2hpY2ggaXMgbm90IHVz
+ZWQgZm9yCmFueSBsb2dsZXZlbDoKCiAgICBFUlJPUjogSEFCdjQ6IC0tLS0tLS0tIEhBQiB3YXJu
+aW5nIEV2ZW50IDAgLS0tLS0tLS0KICAgIEVSUk9SOiBIQUJ2NDogZXZlbnQgZGF0YToKICAgIEVS
+Uk9SOiBIQUJ2NDogIGRiIDAwIDI0IDQyICA2OSAzMCBlMSAxZAogICAgRVJST1I6IEhBQnY0OiAg
+MDAgMDQgMDAgMDIgIDQwIDAwIDM2IDA2CiAgICBFUlJPUjogSEFCdjQ6ICA1NSA1NSAwMCAwMyAg
+MDAgMDAgMDAgMDAKICAgIEVSUk9SOiBIQUJ2NDogIDAwIDAwIDAwIDAwICAwMCAwMCAwMCAwMAog
+ICAgRVJST1I6IEhBQnY0OiAgMDAgMDAgMDAgMDEKICAgIEVSUk9SOiBIQUJ2NDogU3RhdHVzOiBP
+cGVyYXRpb24gY29tcGxldGVkIHdpdGggd2FybmluZyAoMHg2OSkKCkZpeGVzOiAwZmNlZmRkOTM2
+OTA1MGYzNWE4OGI0MWRjZDQyY2M1YTNjNmM2YjMzICgicHJpbnRrOiBBZGQgcHJfY29udCIpCkZp
+eGVzOiBlYTBlMDc3ZWQ2NWEwMDNlNGQ3YTFlMDIzYWVlMzhjYmUyZDE0ODk4ICgicHJpbnRrOiBG
+aXggcHJfY29udCIpClNpZ25lZC1vZmYtYnk6IFJvbGFuZCBIaWViZXIgPHIuaGllYmVyQHBlbmd1
+dHJvbml4LmRlPgotLS0KIGluY2x1ZGUvcHJpbnRrLmggfCAyICstCiAxIGZpbGUgY2hhbmdlZCwg
+MSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9pbmNsdWRlL3ByaW50
+ay5oIGIvaW5jbHVkZS9wcmludGsuaAppbmRleCA0Mzg0ZmI4NWVhLi44NThlODAwNTQzIDEwMDY0
+NAotLS0gYS9pbmNsdWRlL3ByaW50ay5oCisrKyBiL2luY2x1ZGUvcHJpbnRrLmgKQEAgLTg0LDIx
+ICs4NCwyMSBAQCBzdGF0aWMgaW5saW5lIGludCBwcl9wcmludChpbnQgbGV2ZWwsIGNvbnN0IGNo
+YXIgKmZvcm1hdCwgLi4uKQogI2RlZmluZSBwcl9lbWVyZyhmbXQsIGFyZy4uLikJX19wcl9wcmlu
+dGsoMCwgcHJfZm10KGZtdCksICMjYXJnKQogI2RlZmluZSBwcl9hbGVydChmbXQsIGFyZy4uLikJ
+X19wcl9wcmludGsoMSwgcHJfZm10KGZtdCksICMjYXJnKQogI2RlZmluZSBwcl9jcml0KGZtdCwg
+YXJnLi4uKQlfX3ByX3ByaW50aygyLCBwcl9mbXQoZm10KSwgIyNhcmcpCiAjZGVmaW5lIHByX2Vy
+cihmbXQsIGFyZy4uLikJX19wcl9wcmludGsoMywgcHJfZm10KGZtdCksICMjYXJnKQogI2RlZmlu
+ZSBwcl93YXJuaW5nKGZtdCwgYXJnLi4uKQlfX3ByX3ByaW50ayg0LCBwcl9mbXQoZm10KSwgIyNh
+cmcpCiAjZGVmaW5lIHByX25vdGljZShmbXQsIGFyZy4uLikJX19wcl9wcmludGsoNSwgcHJfZm10
+KGZtdCksICMjYXJnKQogI2RlZmluZSBwcl9pbmZvKGZtdCwgYXJnLi4uKQlfX3ByX3ByaW50ayg2
+LCBwcl9mbXQoZm10KSwgIyNhcmcpCiAjZGVmaW5lIHByX2RlYnVnKGZtdCwgYXJnLi4uKQlfX3By
+X3ByaW50ayg3LCBwcl9mbXQoZm10KSwgIyNhcmcpCiAjZGVmaW5lIGRlYnVnKGZtdCwgYXJnLi4u
+KQlfX3ByX3ByaW50ayg3LCBwcl9mbXQoZm10KSwgIyNhcmcpCiAjZGVmaW5lIHByX3ZkZWJ1Zyhm
+bXQsIGFyZy4uLikJX19wcl9wcmludGsoOCwgcHJfZm10KGZtdCksICMjYXJnKQotI2RlZmluZSBw
+cl9jb250KGZtdCwgYXJnLi4uKQlfX3ByX3ByaW50aygwLCBmbXQsICMjYXJnKQorI2RlZmluZSBw
+cl9jb250KGZtdCwgYXJnLi4uKQlfX3ByX3ByaW50aygtMSwgZm10LCAjI2FyZykKIAogI2RlZmlu
+ZSBwcmludGtfb25jZShmbXQsIC4uLikJCQkJCVwKICh7CQkJCQkJCQlcCiAJc3RhdGljIGJvb2wg
+X19wcmludF9vbmNlCTsJCQlcCiAJCQkJCQkJCVwKIAlpZiAoIV9fcHJpbnRfb25jZSkgewkJCQkJ
+XAogCQlfX3ByaW50X29uY2UgPSB0cnVlOwkJCQlcCiAJCXByaW50ayhmbXQsICMjX19WQV9BUkdT
+X18pOwkJCVwKIAl9CQkJCQkJCVwKIH0pCi0tIAoyLjE5LjEKCgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
+QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9iYXJlYm94Cg==
