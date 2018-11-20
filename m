@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gSHSo-00020g-5W
- for barebox@lists.infradead.org; Thu, 29 Nov 2018 08:14:24 +0000
-Message-ID: <1543479249.18108.4.camel@phytec.de>
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Thu, 29 Nov 2018 09:14:09 +0100
-In-Reply-To: <20181116073206.3773odofpb2xxnbl@pengutronix.de>
-References: <1542295458.2675.12.camel@phytec.de>
- <20181116073206.3773odofpb2xxnbl@pengutronix.de>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gP0yT-0002MH-RG
+ for barebox@lists.infradead.org; Tue, 20 Nov 2018 08:01:36 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 20 Nov 2018 09:01:21 +0100
+Message-Id: <20181120080121.18824-1-s.hauer@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +15,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Transferring files over tftp
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] scripts: imx-image: Fix typos in comments
+To: Barebox List <barebox@lists.infradead.org>
 
-SGVsbG8gU2FzY2hhLAoKQW0gRnJlaXRhZywgZGVuIDE2LjExLjIwMTgsIDA4OjMyICswMTAwIHNj
-aHJpZWIgU2FzY2hhIEhhdWVyOgoKLi4uCgo+IAo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tODwtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+IC0tLS0tCj4gCj4g
-RnJvbSBiZjNkZTMzOTFjOTU4YzljNDRmY2ZhNTRiMmMxYTZhMjllNjhhNWE0IE1vbiBTZXAgMTcg
-MDA6MDA6MDAKPiAyMDAxCj4gRnJvbTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4
-LmRlPgo+IERhdGU6IEZyaSwgMTYgTm92IDIwMTggMDg6MjQ6MDYgKzAxMDAKPiBTdWJqZWN0OiBb
-UEFUQ0hdIGZzOiB0ZnRwOiBNYWtlIGZpbGVzaXplIGEgNjRiaXQgdHlwZQo+IAo+IFNpZ25lZC1v
-ZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KCkkgbWlzcyB0aGlz
-IHBhdGNoIG9uIG5leHQuIEFzIGl0IGZpeGVzIG15IHByb2JsZW0uIElzIHRoZXJlIGFueSByZWFz
-b24Kd2h5IGl0IGlzIG5vdCBhcHBsaWVkPwoKVGhhbmtzLApUZXJlc2EKCj4gLS0tCj4gwqBmcy90
-ZnRwLmMgfCA4ICsrKystLS0tCj4gwqAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCA0
-IGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS9mcy90ZnRwLmMgYi9mcy90ZnRwLmMKPiBp
-bmRleCAwZDllZTZlZmZkLi44MTMxYWIyN2IzIDEwMDY0NAo+IC0tLSBhL2ZzL3RmdHAuYwo+ICsr
-KyBiL2ZzL3RmdHAuYwo+IEBAIC04MCw3ICs4MCw3IEBAIHN0cnVjdCBmaWxlX3ByaXYgewo+IMKg
-CWludCBzdGF0ZTsKPiDCoAlpbnQgZXJyOwo+IMKgCWNoYXIgKmZpbGVuYW1lOwo+IC0JaW50IGZp
-bGVzaXplOwo+ICsJbG9mZl90IGZpbGVzaXplOwo+IMKgCXVpbnQ2NF90IHJlc2VuZF90aW1lb3V0
-Owo+IMKgCXVpbnQ2NF90IHByb2dyZXNzX3RpbWVvdXQ7Cj4gwqAJc3RydWN0IGtmaWZvICpmaWZv
-Owo+IEBAIC0xMzYsNyArMTM2LDcgQEAgc3RhdGljIGludCB0ZnRwX3NlbmQoc3RydWN0IGZpbGVf
-cHJpdiAqcHJpdikKPiDCoAkJCQkidGltZW91dCVjIgo+IMKgCQkJCSIlZCVjIgo+IMKgCQkJCSJ0
-c2l6ZSVjIgo+IC0JCQkJIiVkJWMiCj4gKwkJCQkiJWxsZCVjIgo+IMKgCQkJCSJibGtzaXplJWMi
-Cj4gwqAJCQkJIjE0MzIiLAo+IMKgCQkJCXByaXYtPmZpbGVuYW1lICsgMSwgMCwKPiBAQCAtMjM1
-LDcgKzIzNSw3IEBAIHN0YXRpYyB2b2lkIHRmdHBfcGFyc2Vfb2FjayhzdHJ1Y3QgZmlsZV9wcml2
-Cj4gKnByaXYsIHVuc2lnbmVkIGNoYXIgKnBrdCwgaW50IGxlbikKPiDCoAkJaWYgKHZhbCA+IHMg
-KyBsZW4pCj4gwqAJCQlyZXR1cm47Cj4gwqAJCWlmICghc3RyY21wKG9wdCwgInRzaXplIikpCj4g
-LQkJCXByaXYtPmZpbGVzaXplID0gc2ltcGxlX3N0cnRvdWwodmFsLCBOVUxMLAo+IDEwKTsKPiAr
-CQkJcHJpdi0+ZmlsZXNpemUgPSBzaW1wbGVfc3RydG91bGwodmFsLCBOVUxMLAo+IDEwKTsKPiDC
-oAkJaWYgKCFzdHJjbXAob3B0LCAiYmxrc2l6ZSIpKQo+IMKgCQkJcHJpdi0+YmxvY2tzaXplID0g
-c2ltcGxlX3N0cnRvdWwodmFsLCBOVUxMLAo+IDEwKTsKPiDCoAkJcHJfZGVidWcoIk9BQ0sgb3B0
-OiAlcyB2YWw6ICVzXG4iLCBvcHQsIHZhbCk7Cj4gQEAgLTY1OCw3ICs2NTgsNyBAQCBzdGF0aWMg
-c3RydWN0IGRlbnRyeSAqdGZ0cF9sb29rdXAoc3RydWN0IGlub2RlCj4gKmRpciwgc3RydWN0IGRl
-bnRyeSAqZGVudHJ5LAo+IMKgCXN0cnVjdCBmc19kZXZpY2VfZCAqZnNkZXYgPSBjb250YWluZXJf
-b2Yoc2IsIHN0cnVjdAo+IGZzX2RldmljZV9kLCBzYik7Cj4gwqAJc3RydWN0IGlub2RlICppbm9k
-ZTsKPiDCoAlzdHJ1Y3QgZmlsZV9wcml2ICpwcml2Owo+IC0JaW50IGZpbGVzaXplOwo+ICsJbG9m
-Zl90IGZpbGVzaXplOwo+IMKgCj4gwqAJcHJpdiA9IHRmdHBfZG9fb3BlbigmZnNkZXYtPmRldiwg
-T19SRE9OTFksIGRlbnRyeSk7Cj4gwqAJaWYgKElTX0VSUihwcml2KSkKPiAtLcKgCj4gMi4xOS4x
-Cj4gCj4gCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
-YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
-c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ scripts/imx/imx-image.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index fa93e47917..9c173cd23b 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -797,12 +797,12 @@ int main(int argc, char *argv[])
+ 	}
+ 
+ 	/*
+-	 * Add HEADER_LEN to the image size for the blank aera + IVT + DCD.
++	 * Add HEADER_LEN to the image size for the blank area + IVT + DCD.
+ 	 * Align up to a 4k boundary, because:
+ 	 * - at least i.MX5 NAND boot only reads full NAND pages and misses the
+ 	 *   last partial NAND page.
+ 	 * - i.MX6 SPI NOR boot corrupts the last few bytes of an image loaded
+-	 *   in ver funy ways when the image size is not 4 byte aligned
++	 *   in very funny ways when the image size is not 4 byte aligned
+ 	 */
+ 	data.load_size = roundup(data.image_size + header_len, 0x1000);
+ 
+-- 
+2.19.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
