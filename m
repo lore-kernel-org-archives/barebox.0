@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo4-p00-ob.smtp.rzone.de ([81.169.146.162])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gPCMh-0003OD-NY
- for barebox@lists.infradead.org; Tue, 20 Nov 2018 20:11:22 +0000
-Received: from odin.home.erwinrol.com by smtp.strato.de (RZmta 44.4 DYNA|AUTH)
- with ESMTPSA id R0a5f6uAKK82a4F
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with
- 521 ECDH bits, eq. 15360 bits RSA))
- (Client did not present a certificate)
- for <barebox@lists.infradead.org>;
- Tue, 20 Nov 2018 21:08:02 +0100 (CET)
-Message-ID: <1542744481.4097.40.camel@erwinrol.com>
-From: Erwin Rol <mailinglists@erwinrol.com>
-Date: Tue, 20 Nov 2018 21:08:01 +0100
-Mime-Version: 1.0
+ id 1gPNiM-0004Ng-4x
+ for barebox@lists.infradead.org; Wed, 21 Nov 2018 08:18:27 +0000
+Date: Wed, 21 Nov 2018 09:18:13 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20181121081813.biacokuvrvpx7ktd@pengutronix.de>
+References: <1542744481.4097.40.camel@erwinrol.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1542744481.4097.40.camel@erwinrol.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,25 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: powerfail safe env save
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: powerfail safe env save
+To: Erwin Rol <mailinglists@erwinrol.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Hallo,
+Hi Erwin,
 
-as long time u-boot user I have several projects where we have a dual
-dataflash "sector" in wich we store our env variables. And dual so we
-always have or the correct old version or the correct new version even
-if there is a power fail during saveenv.
+On Tue, Nov 20, 2018 at 09:08:01PM +0100, Erwin Rol wrote:
+> Hallo,
+> 
+> as long time u-boot user I have several projects where we have a dual
+> dataflash "sector" in wich we store our env variables. And dual so we
+> always have or the correct old version or the correct new version even
+> if there is a power fail during saveenv.
+> 
+> Is powerfail robust env writing also available in barebox. Or what
+> would be the barebox equifelant of a number of config variables?
 
-Is powerfail robust env writing also available in barebox. Or what
-would be the barebox equifelant of a number of config variables?
+We do not have redundant environment right now.
 
-Any hints and tips are welcome.
+There have been attempts in the past, but they fell short in flexibility
+and/or robustness. Nowadays we normally do not use environment in
+products anymore, so this isn't much of an issue.
 
-TIA,
+If you have flash I would consider using UBI for the environment. With
+atomic LEB change a robust environment could be implemented fairly
+easily.
 
-Erwin
+Sascha
 
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
