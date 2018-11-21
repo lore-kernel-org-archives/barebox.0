@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gPOzd-0006nt-8b
- for barebox@lists.infradead.org; Wed, 21 Nov 2018 09:40:22 +0000
-Date: Wed, 21 Nov 2018 10:40:05 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <20181121094005.bmjdpt3fz7pa62rh@pengutronix.de>
+ id 1gPPJn-0007WP-O8
+ for barebox@lists.infradead.org; Wed, 21 Nov 2018 10:01:19 +0000
+Message-ID: <1542794460.23859.3.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 21 Nov 2018 11:01:00 +0100
+In-Reply-To: <20181121094005.bmjdpt3fz7pa62rh@pengutronix.de>
 References: <20181120200714.3692-1-linux@rempel-privat.de>
  <20181120200714.3692-3-linux@rempel-privat.de>
  <1542791818.23859.1.camel@pengutronix.de>
-MIME-Version: 1.0
-In-Reply-To: <1542791818.23859.1.camel@pengutronix.de>
+ <20181121094005.bmjdpt3fz7pa62rh@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,142 +20,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============4971635903398599098=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v1 2/9] pinctrl: tegra30: fix "Possible null pointer
  dereference: group" warning
-To: Lucas Stach <l.stach@pengutronix.de>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org, Oleksij Rempel <linux@rempel-privat.de>
 
-
---===============4971635903398599098==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="koztx2s2fu6rxuh4"
-Content-Disposition: inline
-
-
---koztx2s2fu6rxuh4
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Nov 21, 2018 at 10:16:58AM +0100, Lucas Stach wrote:
-> Am Dienstag, den 20.11.2018, 21:07 +0100 schrieb Oleksij Rempel:
-> > The code is correct but it takes more seconds for me to understand.
-> > And static code analyzer do not understand it at all.
-> >=20
-> > > Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
-> > ---
-> > =A0drivers/pinctrl/pinctrl-tegra30.c | 4 ++--
-> > =A01 file changed, 2 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/drivers/pinctrl/pinctrl-tegra30.c b/drivers/pinctrl/pinctr=
-l-tegra30.c
-> > index d9b49c57d..ffb04eebb 100644
-> > --- a/drivers/pinctrl/pinctrl-tegra30.c
-> > +++ b/drivers/pinctrl/pinctrl-tegra30.c
-> > @@ -658,8 +658,8 @@ static int pinctrl_tegra30_set_drvstate(struct pinc=
-trl_tegra30 *ctrl,
-> > > =A0			break;
-> > > =A0		}
-> > > =A0	}
-> > > -	/* if no matching drivegroup is found */
-> > > -	if (i =3D=3D ctrl->drvdata->num_drvgrps)
-> > +
-> > > +	if (!group)
-> > > =A0		return 0;
->=20
-> Huh? This is a pretty standard idiom in C codebases to check if we
-> broke out of a loop early.
->=20
-> Actually this change breaks the code, as this check is inside of an
-> outer loop that doesn't reinitialize the group variable. So while the
-> code as-is correctly checks if a group was found in the current
-> iteration of the outer loop, after this patch it also matches a group
-> that was found on a previous iteration of the outer loop.
-
-Probably I still do not understand it:
-
-static const struct pinctrl_tegra30_drvdata tegra124_drvdata =3D {
-	.pingrps =3D tegra124_pin_groups,
-	.num_pingrps =3D ARRAY_SIZE(tegra124_pin_groups),
-	.drvgrps =3D tegra124_drive_groups,
-	.num_drvgrps =3D ARRAY_SIZE(tegra124_drive_groups),=20
-	^^^^^ this is constant.
-};
-
-static int pinctrl_tegra30_set_drvstate(struct pinctrl_tegra30 *ctrl,
-                                        struct device_node *np)
-{
-	const char *pins =3D NULL;
-	const struct tegra_drive_pingroup *group =3D NULL;
-	^^^^ here we init *group to NULL
-
-	int hsm =3D -1, schmitt =3D -1, pds =3D -1, pus =3D -1, srr =3D -1, srf =
-=3D -1;
-	int i;
-	u32 __iomem *regaddr;
-	u32 val;
-
-	if (of_property_read_string(np, "nvidia,pins", &pins))
-		return 0;
-
-	for (i =3D 0; i < ctrl->drvdata->num_drvgrps; i++) {
-	^^^^ here we init i
-		if (!strcmp(pins, ctrl->drvdata->drvgrps[i].name)) {
-			group =3D &ctrl->drvdata->drvgrps[i];
-			^^^^^ -- only here group is not NULL
-			break;
-		}
-	}
-	/* if no matching drivegroup is found */
-	if (i =3D=3D ctrl->drvdata->num_drvgrps)
-	^^^^^ if i =3D=3D num_drvgrps, group is also NULL..
-		return 0;
-
-I don't see any technical problems. Or i do oversee some thing?
-
-> This is a prime example where static checker warnings can prompt wrong
-> fixes. Frankly codacy should smart up to correctly analyze the
-> controlflow interdependency.
-
-Well, amount of real problems found by this code check is still higher.
-So why not to use it?
-
---=20
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
---koztx2s2fu6rxuh4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEpENFL0P3hvQ7p0DDdQOiSHVI77QFAlv1J/EACgkQdQOiSHVI
-77RRQgf/f4hvwaBTmADsFn2Yx78j5iA5xmWhzuZNS9FJG+5XByWUNyQsseYdXbiA
-ycLxChnjLI+QDilEQx5cW3AyGycN3hdgMlBc34y96DqToB5glIXpS9F0PmSHaFNK
-el/ynNRg8+iSmA5NpPdpoQCL0lto63wWzXpf8wYhaqHBzZLChquB8VNB2z0+Ouee
-P55OXS/+DJzlsTSp0Wh0rJB3qi0QNCSEfD9ckVuTTz2xwc1+JwQMsiSshloitZcW
-W/IWcx1zmBR0fvpcB1TSVQF0ouNcBT8PzgMiYgzNiT8ncW7nKa7GYt2M6+yaUGw/
-gK2dQjb3x69K/sMBe5RCCH30w28sMA==
-=i/XF
------END PGP SIGNATURE-----
-
---koztx2s2fu6rxuh4--
-
-
---===============4971635903398599098==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
-
---===============4971635903398599098==--
+QW0gTWl0dHdvY2gsIGRlbiAyMS4xMS4yMDE4LCAxMDo0MCArMDEwMCBzY2hyaWViIE9sZWtzaWog
+UmVtcGVsOgo+IE9uIFdlZCwgTm92IDIxLCAyMDE4IGF0IDEwOjE2OjU4QU0gKzAxMDAsIEx1Y2Fz
+IFN0YWNoIHdyb3RlOgo+ID4gQW0gRGllbnN0YWcsIGRlbiAyMC4xMS4yMDE4LCAyMTowNyArMDEw
+MCBzY2hyaWViIE9sZWtzaWogUmVtcGVsOgo+ID4gPiBUaGUgY29kZSBpcyBjb3JyZWN0IGJ1dCBp
+dCB0YWtlcyBtb3JlIHNlY29uZHMgZm9yIG1lIHRvIHVuZGVyc3RhbmQuCj4gPiA+IEFuZCBzdGF0
+aWMgY29kZSBhbmFseXplciBkbyBub3QgdW5kZXJzdGFuZCBpdCBhdCBhbGwuCj4gPiA+IAo+ID4g
+PiA+IFNpZ25lZC1vZmYtYnk6IE9sZWtzaWogUmVtcGVsIDxsaW51eEByZW1wZWwtcHJpdmF0LmRl
+Pgo+ID4gPiAKPiA+ID4gLS0tCj4gPiA+IMKgZHJpdmVycy9waW5jdHJsL3BpbmN0cmwtdGVncmEz
+MC5jIHwgNCArKy0tCj4gPiA+IMKgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBk
+ZWxldGlvbnMoLSkKPiA+ID4gCj4gPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3BpbmN0cmwvcGlu
+Y3RybC10ZWdyYTMwLmMgYi9kcml2ZXJzL3BpbmN0cmwvcGluY3RybC10ZWdyYTMwLmMKPiA+ID4g
+aW5kZXggZDliNDljNTdkLi5mZmIwNGVlYmIgMTAwNjQ0Cj4gPiA+IC0tLSBhL2RyaXZlcnMvcGlu
+Y3RybC9waW5jdHJsLXRlZ3JhMzAuYwo+ID4gPiArKysgYi9kcml2ZXJzL3BpbmN0cmwvcGluY3Ry
+bC10ZWdyYTMwLmMKPiA+ID4gQEAgLTY1OCw4ICs2NTgsOCBAQCBzdGF0aWMgaW50IHBpbmN0cmxf
+dGVncmEzMF9zZXRfZHJ2c3RhdGUoc3RydWN0IHBpbmN0cmxfdGVncmEzMCAqY3RybCwKPiA+ID4g
+PiA+ID4gPiA+IMKgCQkJYnJlYWs7Cj4gPiA+ID4gPiA+ID4gPiDCoAkJfQo+ID4gPiA+ID4gPiA+
+ID4gwqAJfQo+ID4gPiA+ID4gPiA+ID4gLQkvKiBpZiBubyBtYXRjaGluZyBkcml2ZWdyb3VwIGlz
+IGZvdW5kICovCj4gPiA+ID4gLQlpZiAoaSA9PSBjdHJsLT5kcnZkYXRhLT5udW1fZHJ2Z3JwcykK
+PiA+ID4gCj4gPiA+ICsKPiA+ID4gPiA+ID4gPiA+ICsJaWYgKCFncm91cCkKPiA+ID4gPiDCoAkJ
+cmV0dXJuIDA7Cj4gPiAKPiA+IEh1aD8gVGhpcyBpcyBhIHByZXR0eSBzdGFuZGFyZCBpZGlvbSBp
+biBDIGNvZGViYXNlcyB0byBjaGVjayBpZiB3ZQo+ID4gYnJva2Ugb3V0IG9mIGEgbG9vcCBlYXJs
+eS4KPiA+IAo+ID4gQWN0dWFsbHkgdGhpcyBjaGFuZ2UgYnJlYWtzIHRoZSBjb2RlLCBhcyB0aGlz
+IGNoZWNrIGlzIGluc2lkZSBvZiBhbgo+ID4gb3V0ZXIgbG9vcCB0aGF0IGRvZXNuJ3QgcmVpbml0
+aWFsaXplIHRoZSBncm91cCB2YXJpYWJsZS4gU28gd2hpbGUgdGhlCj4gPiBjb2RlIGFzLWlzIGNv
+cnJlY3RseSBjaGVja3MgaWYgYSBncm91cCB3YXMgZm91bmQgaW4gdGhlIGN1cnJlbnQKPiA+IGl0
+ZXJhdGlvbiBvZiB0aGUgb3V0ZXIgbG9vcCwgYWZ0ZXIgdGhpcyBwYXRjaCBpdCBhbHNvIG1hdGNo
+ZXMgYSBncm91cAo+ID4gdGhhdCB3YXMgZm91bmQgb24gYSBwcmV2aW91cyBpdGVyYXRpb24gb2Yg
+dGhlIG91dGVyIGxvb3AuCj4gCj4gUHJvYmFibHkgSSBzdGlsbCBkbyBub3QgdW5kZXJzdGFuZCBp
+dDoKPiAKPiBzdGF0aWMgY29uc3Qgc3RydWN0IHBpbmN0cmxfdGVncmEzMF9kcnZkYXRhIHRlZ3Jh
+MTI0X2RydmRhdGEgPSB7Cj4gCS5waW5ncnBzID0gdGVncmExMjRfcGluX2dyb3VwcywKPiAJLm51
+bV9waW5ncnBzID0gQVJSQVlfU0laRSh0ZWdyYTEyNF9waW5fZ3JvdXBzKSwKPiAJLmRydmdycHMg
+PSB0ZWdyYTEyNF9kcml2ZV9ncm91cHMsCj4gCS5udW1fZHJ2Z3JwcyA9IEFSUkFZX1NJWkUodGVn
+cmExMjRfZHJpdmVfZ3JvdXBzKSzCoAo+IAleXl5eXiB0aGlzIGlzIGNvbnN0YW50Lgo+IH07Cj4g
+Cj4gc3RhdGljIGludCBwaW5jdHJsX3RlZ3JhMzBfc2V0X2RydnN0YXRlKHN0cnVjdCBwaW5jdHJs
+X3RlZ3JhMzAgKmN0cmwsCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBzdHJ1Y3QgZGV2aWNlX25v
+ZGUgKm5wKQo+IHsKPiAJY29uc3QgY2hhciAqcGlucyA9IE5VTEw7Cj4gCWNvbnN0IHN0cnVjdCB0
+ZWdyYV9kcml2ZV9waW5ncm91cCAqZ3JvdXAgPSBOVUxMOwo+IAleXl5eIGhlcmUgd2UgaW5pdCAq
+Z3JvdXAgdG8gTlVMTAo+IAo+IAlpbnQgaHNtID0gLTEsIHNjaG1pdHQgPSAtMSwgcGRzID0gLTEs
+IHB1cyA9IC0xLCBzcnIgPSAtMSwgc3JmID0gLTE7Cj4gCWludCBpOwo+IAl1MzIgX19pb21lbSAq
+cmVnYWRkcjsKPiAJdTMyIHZhbDsKPiAKPiAJaWYgKG9mX3Byb3BlcnR5X3JlYWRfc3RyaW5nKG5w
+LCAibnZpZGlhLHBpbnMiLCAmcGlucykpCj4gPiAJCXJldHVybiAwOwo+IAo+IAlmb3IgKGkgPSAw
+OyBpIDwgY3RybC0+ZHJ2ZGF0YS0+bnVtX2RydmdycHM7IGkrKykgewo+IAleXl5eIGhlcmUgd2Ug
+aW5pdCBpCj4gPiAJCWlmICghc3RyY21wKHBpbnMsIGN0cmwtPmRydmRhdGEtPmRydmdycHNbaV0u
+bmFtZSkpIHsKPiA+IAkJCWdyb3VwID0gJmN0cmwtPmRydmRhdGEtPmRydmdycHNbaV07Cj4gPiAJ
+CQleXl5eXiAtLSBvbmx5IGhlcmUgZ3JvdXAgaXMgbm90IE5VTEwKPiA+IAkJCWJyZWFrOwo+ID4g
+CQl9Cj4gCX0KPiAJLyogaWYgbm8gbWF0Y2hpbmcgZHJpdmVncm91cCBpcyBmb3VuZCAqLwo+IAlp
+ZiAoaSA9PSBjdHJsLT5kcnZkYXRhLT5udW1fZHJ2Z3JwcykKPiAJXl5eXl4gaWYgaSA9PSBudW1f
+ZHJ2Z3JwcywgZ3JvdXAgaXMgYWxzbyBOVUxMLi4KPiA+IAkJcmV0dXJuIDA7Cj4gCj4gSSBkb24n
+dCBzZWUgYW55IHRlY2huaWNhbCBwcm9ibGVtcy4gT3IgaSBkbyBvdmVyc2VlIHNvbWUgdGhpbmc/
+CgpTb3JyeSwgSSd2ZSBsb29rZWQgYXQgdGhlIHdyb25nIGZ1bmN0aW9uLiBUaGlzIHBhdGNoIGRv
+ZXNuJ3QgYnJlYWsKYW55dGhpbmcsIGJ1dCBub3cgbWFrZXMgdGhlIGNvZGUgaW5jb25zaXN0ZW50
+LiBJbgpwaW5jdHJsX3RlZ3JhMzBfc2V0X3N0YXRlKCkgdGhpcyBpZGlvbSBpcyBuZWVkZWQgdG8g
+bWFrZSB0aGUgY29kZQpjb3JyZWN0IGFuZCBJIHdvdWxkIHJhdGhlciBoYXZlIHRoZSBncm91cHMg
+c2VhcmNoZXMgY29uc2lzdGVudCBiZXR3ZWVuCnRoZSAyIGZ1bmN0aW9ucy4KCj4gPiBUaGlzIGlz
+IGEgcHJpbWUgZXhhbXBsZSB3aGVyZSBzdGF0aWMgY2hlY2tlciB3YXJuaW5ncyBjYW4gcHJvbXB0
+IHdyb25nCj4gPiBmaXhlcy4gRnJhbmtseSBjb2RhY3kgc2hvdWxkIHNtYXJ0IHVwIHRvIGNvcnJl
+Y3RseSBhbmFseXplIHRoZQo+ID4gY29udHJvbGZsb3cgaW50ZXJkZXBlbmRlbmN5Lgo+IAo+IFdl
+bGwsIGFtb3VudCBvZiByZWFsIHByb2JsZW1zIGZvdW5kIGJ5IHRoaXMgY29kZSBjaGVjayBpcyBz
+dGlsbCBoaWdoZXIuCj4gU28gd2h5IG5vdCB0byB1c2UgaXQ/CgpJJ20gbm90IGFyZ3VpbmcgYWdh
+aW5zdCBzdGF0aWMgY2hlY2tlcnMsIGJ1dCBJJ20gc2F5aW5nIHRoYXQgaXQgY2FuCnNvbWV0aW1l
+cyBiZSBoYXJkIHRvIGdldCB0byB0aGUgcmVhbCBpc3N1ZXMsIHdoZW4gdGhlIGNoZWNrZXIgaXMK
+cHJvZHVjaW5nIGEgc2lnbmlmaWNhbnQgYW1vdW50IG9mIGZhbHNlIHBvc2l0aXZlcy4gQW5kIEkn
+bSBhZ2FpbnN0CmNoYW5naW5nIGNvZGUganVzdCB0byBtYWtlIGNoZWNrZXJzIGhhcHB5LCBiZWNh
+dXNlIGV2ZXJ5IG9uZSBvZiB0aGVtCmdldHMgc29tZXRoaW5nIGRpZmZlcmVudCB3cm9uZy4uLgoK
+QnV0IHdoYXRldmVyLCB0aGUgY29kZSBpcyBzdGlsbCBjb3JyZWN0LCBzbyB0aGUgcGF0Y2ggY2Fu
+IHN0YXkuCgpSZWdhcmRzLApMdWNhcwoKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
+ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
+Ym94Cg==
