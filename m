@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gPPJn-0007WP-O8
- for barebox@lists.infradead.org; Wed, 21 Nov 2018 10:01:19 +0000
-Message-ID: <1542794460.23859.3.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 21 Nov 2018 11:01:00 +0100
-In-Reply-To: <20181121094005.bmjdpt3fz7pa62rh@pengutronix.de>
-References: <20181120200714.3692-1-linux@rempel-privat.de>
- <20181120200714.3692-3-linux@rempel-privat.de>
- <1542791818.23859.1.camel@pengutronix.de>
- <20181121094005.bmjdpt3fz7pa62rh@pengutronix.de>
-Mime-Version: 1.0
+ id 1gPRA7-0006vs-6G
+ for barebox@lists.infradead.org; Wed, 21 Nov 2018 11:59:20 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 21 Nov 2018 12:59:04 +0100
+Message-Id: <20181121115904.26371-1-s.hauer@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,82 +15,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 2/9] pinctrl: tegra30: fix "Possible null pointer
- dereference: group" warning
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org, Oleksij Rempel <linux@rempel-privat.de>
+Subject: [PATCH] mount command: Fix "mount /dev/<devname>"
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-QW0gTWl0dHdvY2gsIGRlbiAyMS4xMS4yMDE4LCAxMDo0MCArMDEwMCBzY2hyaWViIE9sZWtzaWog
-UmVtcGVsOgo+IE9uIFdlZCwgTm92IDIxLCAyMDE4IGF0IDEwOjE2OjU4QU0gKzAxMDAsIEx1Y2Fz
-IFN0YWNoIHdyb3RlOgo+ID4gQW0gRGllbnN0YWcsIGRlbiAyMC4xMS4yMDE4LCAyMTowNyArMDEw
-MCBzY2hyaWViIE9sZWtzaWogUmVtcGVsOgo+ID4gPiBUaGUgY29kZSBpcyBjb3JyZWN0IGJ1dCBp
-dCB0YWtlcyBtb3JlIHNlY29uZHMgZm9yIG1lIHRvIHVuZGVyc3RhbmQuCj4gPiA+IEFuZCBzdGF0
-aWMgY29kZSBhbmFseXplciBkbyBub3QgdW5kZXJzdGFuZCBpdCBhdCBhbGwuCj4gPiA+IAo+ID4g
-PiA+IFNpZ25lZC1vZmYtYnk6IE9sZWtzaWogUmVtcGVsIDxsaW51eEByZW1wZWwtcHJpdmF0LmRl
-Pgo+ID4gPiAKPiA+ID4gLS0tCj4gPiA+IMKgZHJpdmVycy9waW5jdHJsL3BpbmN0cmwtdGVncmEz
-MC5jIHwgNCArKy0tCj4gPiA+IMKgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBk
-ZWxldGlvbnMoLSkKPiA+ID4gCj4gPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3BpbmN0cmwvcGlu
-Y3RybC10ZWdyYTMwLmMgYi9kcml2ZXJzL3BpbmN0cmwvcGluY3RybC10ZWdyYTMwLmMKPiA+ID4g
-aW5kZXggZDliNDljNTdkLi5mZmIwNGVlYmIgMTAwNjQ0Cj4gPiA+IC0tLSBhL2RyaXZlcnMvcGlu
-Y3RybC9waW5jdHJsLXRlZ3JhMzAuYwo+ID4gPiArKysgYi9kcml2ZXJzL3BpbmN0cmwvcGluY3Ry
-bC10ZWdyYTMwLmMKPiA+ID4gQEAgLTY1OCw4ICs2NTgsOCBAQCBzdGF0aWMgaW50IHBpbmN0cmxf
-dGVncmEzMF9zZXRfZHJ2c3RhdGUoc3RydWN0IHBpbmN0cmxfdGVncmEzMCAqY3RybCwKPiA+ID4g
-PiA+ID4gPiA+IMKgCQkJYnJlYWs7Cj4gPiA+ID4gPiA+ID4gPiDCoAkJfQo+ID4gPiA+ID4gPiA+
-ID4gwqAJfQo+ID4gPiA+ID4gPiA+ID4gLQkvKiBpZiBubyBtYXRjaGluZyBkcml2ZWdyb3VwIGlz
-IGZvdW5kICovCj4gPiA+ID4gLQlpZiAoaSA9PSBjdHJsLT5kcnZkYXRhLT5udW1fZHJ2Z3JwcykK
-PiA+ID4gCj4gPiA+ICsKPiA+ID4gPiA+ID4gPiA+ICsJaWYgKCFncm91cCkKPiA+ID4gPiDCoAkJ
-cmV0dXJuIDA7Cj4gPiAKPiA+IEh1aD8gVGhpcyBpcyBhIHByZXR0eSBzdGFuZGFyZCBpZGlvbSBp
-biBDIGNvZGViYXNlcyB0byBjaGVjayBpZiB3ZQo+ID4gYnJva2Ugb3V0IG9mIGEgbG9vcCBlYXJs
-eS4KPiA+IAo+ID4gQWN0dWFsbHkgdGhpcyBjaGFuZ2UgYnJlYWtzIHRoZSBjb2RlLCBhcyB0aGlz
-IGNoZWNrIGlzIGluc2lkZSBvZiBhbgo+ID4gb3V0ZXIgbG9vcCB0aGF0IGRvZXNuJ3QgcmVpbml0
-aWFsaXplIHRoZSBncm91cCB2YXJpYWJsZS4gU28gd2hpbGUgdGhlCj4gPiBjb2RlIGFzLWlzIGNv
-cnJlY3RseSBjaGVja3MgaWYgYSBncm91cCB3YXMgZm91bmQgaW4gdGhlIGN1cnJlbnQKPiA+IGl0
-ZXJhdGlvbiBvZiB0aGUgb3V0ZXIgbG9vcCwgYWZ0ZXIgdGhpcyBwYXRjaCBpdCBhbHNvIG1hdGNo
-ZXMgYSBncm91cAo+ID4gdGhhdCB3YXMgZm91bmQgb24gYSBwcmV2aW91cyBpdGVyYXRpb24gb2Yg
-dGhlIG91dGVyIGxvb3AuCj4gCj4gUHJvYmFibHkgSSBzdGlsbCBkbyBub3QgdW5kZXJzdGFuZCBp
-dDoKPiAKPiBzdGF0aWMgY29uc3Qgc3RydWN0IHBpbmN0cmxfdGVncmEzMF9kcnZkYXRhIHRlZ3Jh
-MTI0X2RydmRhdGEgPSB7Cj4gCS5waW5ncnBzID0gdGVncmExMjRfcGluX2dyb3VwcywKPiAJLm51
-bV9waW5ncnBzID0gQVJSQVlfU0laRSh0ZWdyYTEyNF9waW5fZ3JvdXBzKSwKPiAJLmRydmdycHMg
-PSB0ZWdyYTEyNF9kcml2ZV9ncm91cHMsCj4gCS5udW1fZHJ2Z3JwcyA9IEFSUkFZX1NJWkUodGVn
-cmExMjRfZHJpdmVfZ3JvdXBzKSzCoAo+IAleXl5eXiB0aGlzIGlzIGNvbnN0YW50Lgo+IH07Cj4g
-Cj4gc3RhdGljIGludCBwaW5jdHJsX3RlZ3JhMzBfc2V0X2RydnN0YXRlKHN0cnVjdCBwaW5jdHJs
-X3RlZ3JhMzAgKmN0cmwsCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBzdHJ1Y3QgZGV2aWNlX25v
-ZGUgKm5wKQo+IHsKPiAJY29uc3QgY2hhciAqcGlucyA9IE5VTEw7Cj4gCWNvbnN0IHN0cnVjdCB0
-ZWdyYV9kcml2ZV9waW5ncm91cCAqZ3JvdXAgPSBOVUxMOwo+IAleXl5eIGhlcmUgd2UgaW5pdCAq
-Z3JvdXAgdG8gTlVMTAo+IAo+IAlpbnQgaHNtID0gLTEsIHNjaG1pdHQgPSAtMSwgcGRzID0gLTEs
-IHB1cyA9IC0xLCBzcnIgPSAtMSwgc3JmID0gLTE7Cj4gCWludCBpOwo+IAl1MzIgX19pb21lbSAq
-cmVnYWRkcjsKPiAJdTMyIHZhbDsKPiAKPiAJaWYgKG9mX3Byb3BlcnR5X3JlYWRfc3RyaW5nKG5w
-LCAibnZpZGlhLHBpbnMiLCAmcGlucykpCj4gPiAJCXJldHVybiAwOwo+IAo+IAlmb3IgKGkgPSAw
-OyBpIDwgY3RybC0+ZHJ2ZGF0YS0+bnVtX2RydmdycHM7IGkrKykgewo+IAleXl5eIGhlcmUgd2Ug
-aW5pdCBpCj4gPiAJCWlmICghc3RyY21wKHBpbnMsIGN0cmwtPmRydmRhdGEtPmRydmdycHNbaV0u
-bmFtZSkpIHsKPiA+IAkJCWdyb3VwID0gJmN0cmwtPmRydmRhdGEtPmRydmdycHNbaV07Cj4gPiAJ
-CQleXl5eXiAtLSBvbmx5IGhlcmUgZ3JvdXAgaXMgbm90IE5VTEwKPiA+IAkJCWJyZWFrOwo+ID4g
-CQl9Cj4gCX0KPiAJLyogaWYgbm8gbWF0Y2hpbmcgZHJpdmVncm91cCBpcyBmb3VuZCAqLwo+IAlp
-ZiAoaSA9PSBjdHJsLT5kcnZkYXRhLT5udW1fZHJ2Z3JwcykKPiAJXl5eXl4gaWYgaSA9PSBudW1f
-ZHJ2Z3JwcywgZ3JvdXAgaXMgYWxzbyBOVUxMLi4KPiA+IAkJcmV0dXJuIDA7Cj4gCj4gSSBkb24n
-dCBzZWUgYW55IHRlY2huaWNhbCBwcm9ibGVtcy4gT3IgaSBkbyBvdmVyc2VlIHNvbWUgdGhpbmc/
-CgpTb3JyeSwgSSd2ZSBsb29rZWQgYXQgdGhlIHdyb25nIGZ1bmN0aW9uLiBUaGlzIHBhdGNoIGRv
-ZXNuJ3QgYnJlYWsKYW55dGhpbmcsIGJ1dCBub3cgbWFrZXMgdGhlIGNvZGUgaW5jb25zaXN0ZW50
-LiBJbgpwaW5jdHJsX3RlZ3JhMzBfc2V0X3N0YXRlKCkgdGhpcyBpZGlvbSBpcyBuZWVkZWQgdG8g
-bWFrZSB0aGUgY29kZQpjb3JyZWN0IGFuZCBJIHdvdWxkIHJhdGhlciBoYXZlIHRoZSBncm91cHMg
-c2VhcmNoZXMgY29uc2lzdGVudCBiZXR3ZWVuCnRoZSAyIGZ1bmN0aW9ucy4KCj4gPiBUaGlzIGlz
-IGEgcHJpbWUgZXhhbXBsZSB3aGVyZSBzdGF0aWMgY2hlY2tlciB3YXJuaW5ncyBjYW4gcHJvbXB0
-IHdyb25nCj4gPiBmaXhlcy4gRnJhbmtseSBjb2RhY3kgc2hvdWxkIHNtYXJ0IHVwIHRvIGNvcnJl
-Y3RseSBhbmFseXplIHRoZQo+ID4gY29udHJvbGZsb3cgaW50ZXJkZXBlbmRlbmN5Lgo+IAo+IFdl
-bGwsIGFtb3VudCBvZiByZWFsIHByb2JsZW1zIGZvdW5kIGJ5IHRoaXMgY29kZSBjaGVjayBpcyBz
-dGlsbCBoaWdoZXIuCj4gU28gd2h5IG5vdCB0byB1c2UgaXQ/CgpJJ20gbm90IGFyZ3VpbmcgYWdh
-aW5zdCBzdGF0aWMgY2hlY2tlcnMsIGJ1dCBJJ20gc2F5aW5nIHRoYXQgaXQgY2FuCnNvbWV0aW1l
-cyBiZSBoYXJkIHRvIGdldCB0byB0aGUgcmVhbCBpc3N1ZXMsIHdoZW4gdGhlIGNoZWNrZXIgaXMK
-cHJvZHVjaW5nIGEgc2lnbmlmaWNhbnQgYW1vdW50IG9mIGZhbHNlIHBvc2l0aXZlcy4gQW5kIEkn
-bSBhZ2FpbnN0CmNoYW5naW5nIGNvZGUganVzdCB0byBtYWtlIGNoZWNrZXJzIGhhcHB5LCBiZWNh
-dXNlIGV2ZXJ5IG9uZSBvZiB0aGVtCmdldHMgc29tZXRoaW5nIGRpZmZlcmVudCB3cm9uZy4uLgoK
-QnV0IHdoYXRldmVyLCB0aGUgY29kZSBpcyBzdGlsbCBjb3JyZWN0LCBzbyB0aGUgcGF0Y2ggY2Fu
-IHN0YXkuCgpSZWdhcmRzLApMdWNhcwoKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
-ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
-Ym94Cg==
+We used to put the device name without the "/dev/" component into
+device_detect_by_name() and cdev_by_name(). Since 8ca7053b3ff we only
+put the device name into device_detect_by_name(), but cdev_by_name()
+still gets the full path. The result is that a "mount /dev/<devname>" no
+longer works. Fix this.
+
+Fixes: 8ca7053b3ff ("commands: mount: Make use of devpath_to_name()")
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ commands/mount.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/commands/mount.c b/commands/mount.c
+index 834b06386b..f523f6b3b6 100644
+--- a/commands/mount.c
++++ b/commands/mount.c
+@@ -76,7 +76,9 @@ static int do_mount(int argc, char *argv[])
+ 		struct cdev *cdev;
+ 		const char *path;
+ 
+-		device_detect_by_name(devpath_to_name(devstr));
++		devstr = devpath_to_name(devstr);
++
++		device_detect_by_name(devstr);
+ 
+ 		cdev = cdev_by_name(devstr);
+ 		if (!cdev)
+-- 
+2.19.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
