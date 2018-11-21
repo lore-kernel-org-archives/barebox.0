@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gPNS4-0006FU-Vt
- for barebox@lists.infradead.org; Wed, 21 Nov 2018 08:01:42 +0000
-Date: Wed, 21 Nov 2018 09:01:25 +0100
+ id 1gPNTc-0006nI-Ch
+ for barebox@lists.infradead.org; Wed, 21 Nov 2018 08:03:14 +0000
+Date: Wed, 21 Nov 2018 09:03:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181121080124.s47maw3ex6dmzgm7@pengutronix.de>
-References: <20181120094035.18252-1-matthias.schiffer@ew.tq-group.com>
- <20181120094035.18252-3-matthias.schiffer@ew.tq-group.com>
+Message-ID: <20181121080300.hutupwph3j66m5kw@pengutronix.de>
+References: <1542721630-8082-1-git-send-email-t.remmet@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181120094035.18252-3-matthias.schiffer@ew.tq-group.com>
+In-Reply-To: <1542721630-8082-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,48 +22,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] FIT: look for hash-1 as well as hash@1 nodes in
- signature check
-To: matthias.schiffer@ew.tq-group.com
+Subject: Re: [PATCH] arm: boards: phytec-som-am335x: Fix mac overwrite from
+ state
+To: Teresa Remmet <t.remmet@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Nov 20, 2018 at 10:40:35AM +0100, matthias.schiffer@ew.tq-group.com wrote:
-> From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+On Tue, Nov 20, 2018 at 02:47:10PM +0100, Teresa Remmet wrote:
+> state_read_mac() returns 0 on success so mac never was overwritten.
+> Fix this and add check for valid mac address.
 > 
-> The examples in the U-boot docs use "hash-N" as the name for hash nodes.
-> It seems "hash@N" was used instead at some point during the development of
-> the FIT format and "hash-N" is more correct; support for "hash@N" is
-> preserved for backward compatibility.
-
-Indeed. dtc lately throughs warnings when a node with a '@' in it
-doesn't have a reg property.
-
-> 
-> Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 > ---
->  common/image-fit.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/common/image-fit.c b/common/image-fit.c
-> index dfd1fa02c..356c1ae5d 100644
-> --- a/common/image-fit.c
-> +++ b/common/image-fit.c
-> @@ -392,7 +392,9 @@ static int fit_verify_hash(struct fit_handle *handle, struct device_node *image,
->  		ret = -EINVAL;
->  	}
->  
-> -	hash = of_get_child_by_name(image, "hash@1");
-> +	hash = of_get_child_by_name(image, "hash-1");
-> +	if (!hash)
-> +		hash = of_get_child_by_name(image, "hash@1");
+>  arch/arm/boards/phytec-som-am335x/board.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-A few lines below we have the same with:
-
-	sig_node = of_get_child_by_name(image, "signature@1");
-
-Care to fix this aswell in this patch?
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/arch/arm/boards/phytec-som-am335x/board.c b/arch/arm/boards/phytec-som-am335x/board.c
+> index 8c24f2b33249..441d56348cc7 100644
+> --- a/arch/arm/boards/phytec-som-am335x/board.c
+> +++ b/arch/arm/boards/phytec-som-am335x/board.c
+> @@ -73,7 +73,7 @@ static const char *eth_names[ETH_COUNT] = {"mac0", "mac1"};
+>  static int physom_devices_init(void)
+>  {
+>  	struct state *state;
+> -	u8 mac[6];
+> +	uint8_t mac[6];
+>  	int state_ret;
+>  	int state_i;
+>  
+> @@ -130,7 +130,7 @@ static int physom_devices_init(void)
+>  			for (state_i = 0; state_i < 2; state_i++) {
+>  				state_ret = state_read_mac(state,
+>  						      eth_names[state_i], &mac[0]);
+> -				if (state_ret == 6)
+> +				if (!state_ret && is_valid_ether_addr(&mac[0]))
+>  					eth_register_ethaddr(state_i, mac);
+>  			}
+>  	}
+> -- 
+> 2.7.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
