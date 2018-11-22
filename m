@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gPk60-0006GY-Sn
- for barebox@lists.infradead.org; Thu, 22 Nov 2018 08:12:22 +0000
-From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
-Date: Thu, 22 Nov 2018 09:12:00 +0100
-Message-Id: <20181122081200.12642-1-u.oelmann@pengutronix.de>
-MIME-Version: 1.0
+ id 1gPr4q-00011k-3q
+ for barebox@lists.infradead.org; Thu, 22 Nov 2018 15:39:37 +0000
+Received: by mail-lj1-x22e.google.com with SMTP id z80-v6so8325896ljb.8
+ for <barebox@lists.infradead.org>; Thu, 22 Nov 2018 07:39:22 -0800 (PST)
+Date: Thu, 22 Nov 2018 18:39:18 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20181122183918.e222c20e51c6e41afcfd5d6a@gmail.com>
+In-Reply-To: <20181122081200.12642-1-u.oelmann@pengutronix.de>
+References: <20181122081200.12642-1-u.oelmann@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,43 +19,98 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] arch: *: cpuinfo: harmonize command description
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] arch: *: cpuinfo: harmonize command description
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-VW5pZnkgdGhlIGRpZmZlcmVudCBjcHVpbmZvIGNvbW1hbmRzJyBkZXNjcmlwdGlvbiBhbmQgYWRq
-dXN0IHRoZW0gdG8gdGhlCmRlc2NyaXB0aW9ucyBvZiAiY2xrX2R1bXAiIGFuZCAiZGV2aW5mbyIu
-CgpTaWduZWQtb2ZmLWJ5OiBVbHJpY2ggw5ZsbWFubiA8dS5vZWxtYW5uQHBlbmd1dHJvbml4LmRl
-PgotLS0KIGFyY2gvYXJtL2NwdS9jcHVpbmZvLmMgICAgICB8IDIgKy0KIGFyY2gvbWlwcy9saWIv
-Y3B1aW5mby5jICAgICB8IDIgKy0KIGFyY2gvb3BlbnJpc2MvbGliL2NwdWluZm8uYyB8IDIgKy0K
-IDMgZmlsZXMgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAt
-LWdpdCBhL2FyY2gvYXJtL2NwdS9jcHVpbmZvLmMgYi9hcmNoL2FybS9jcHUvY3B1aW5mby5jCmlu
-ZGV4IDE3NTQ3NWIwMzhkYy4uMjQyMWI5MWU1N2YxIDEwMDY0NAotLS0gYS9hcmNoL2FybS9jcHUv
-Y3B1aW5mby5jCisrKyBiL2FyY2gvYXJtL2NwdS9jcHVpbmZvLmMKQEAgLTI2OCw3ICsyNjgsNyBA
-QCBzdGF0aWMgaW50IGRvX2NwdWluZm8oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKIAogQkFSRUJP
-WF9DTURfU1RBUlQoY3B1aW5mbykKIAkuY21kICAgICAgICAgICAgPSBkb19jcHVpbmZvLAotCUJB
-UkVCT1hfQ01EX0RFU0MoInNob3cgaW5mbyBhYm91dCBDUFUiKQorCUJBUkVCT1hfQ01EX0RFU0Mo
-InNob3cgaW5mb3JtYXRpb24gYWJvdXQgQ1BVIikKIAlCQVJFQk9YX0NNRF9HUk9VUChDTURfR1JQ
-X0lORk8pCiAJQkFSRUJPWF9DTURfQ09NUExFVEUoZW1wdHlfY29tcGxldGUpCiBCQVJFQk9YX0NN
-RF9FTkQKZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9saWIvY3B1aW5mby5jIGIvYXJjaC9taXBzL2xp
-Yi9jcHVpbmZvLmMKaW5kZXggZmIwMmE0ZDIwMjE3Li5hMzI3NjcyZjc4YTUgMTAwNjQ0Ci0tLSBh
-L2FyY2gvbWlwcy9saWIvY3B1aW5mby5jCisrKyBiL2FyY2gvbWlwcy9saWIvY3B1aW5mby5jCkBA
-IC02Myw2ICs2Myw2IEBAIHN0YXRpYyBpbnQgZG9fY3B1aW5mbyhpbnQgYXJnYywgY2hhciAqYXJn
-dltdKQogCiBCQVJFQk9YX0NNRF9TVEFSVChjcHVpbmZvKQogCS5jbWQgICAgICAgICAgICA9IGRv
-X2NwdWluZm8sCi0JQkFSRUJPWF9DTURfREVTQygic2hvdyBDUFUgaW5mb3JtYXRpb24iKQorCUJB
-UkVCT1hfQ01EX0RFU0MoInNob3cgaW5mb3JtYXRpb24gYWJvdXQgQ1BVIikKIAlCQVJFQk9YX0NN
-RF9HUk9VUChDTURfR1JQX0lORk8pCiBCQVJFQk9YX0NNRF9FTkQKZGlmZiAtLWdpdCBhL2FyY2gv
-b3BlbnJpc2MvbGliL2NwdWluZm8uYyBiL2FyY2gvb3BlbnJpc2MvbGliL2NwdWluZm8uYwppbmRl
-eCAxNzVhZGM1ODJjYTQuLjNkN2ZjYjFmNTljZSAxMDA2NDQKLS0tIGEvYXJjaC9vcGVucmlzYy9s
-aWIvY3B1aW5mby5jCisrKyBiL2FyY2gvb3BlbnJpc2MvbGliL2NwdWluZm8uYwpAQCAtMTk4LDYg
-KzE5OCw2IEBAIHN0YXRpYyBpbnQgZG9fY3B1aW5mbyhpbnQgYXJnYywgY2hhciAqYXJndltdKQog
-CiBCQVJFQk9YX0NNRF9TVEFSVChjcHVpbmZvKQogCS5jbWQgICAgICAgICAgICA9IGRvX2NwdWlu
-Zm8sCi0JQkFSRUJPWF9DTURfREVTQygic2hvdyBDUFUgaW5mb3JtYXRpb24iKQorCUJBUkVCT1hf
-Q01EX0RFU0MoInNob3cgaW5mb3JtYXRpb24gYWJvdXQgQ1BVIikKIAlCQVJFQk9YX0NNRF9HUk9V
-UChDTURfR1JQX0lORk8pCiBCQVJFQk9YX0NNRF9FTkQKLS0gCjIuMTkuMQoKCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
-CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Thu, 22 Nov 2018 09:12:00 +0100
+Ulrich =D6lmann <u.oelmann@pengutronix.de> wrote:
+
+Hello Robert!
+
+AFAIR you are a native English speaker.
+
+Would you please comment this change
+
+> -	BAREBOX_CMD_DESC("show CPU information")
+> +	BAREBOX_CMD_DESC("show information about CPU")
+
+Which version of the cpuinfo command description is better?
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
+
+> Unify the different cpuinfo commands' description and adjust them to the
+> descriptions of "clk_dump" and "devinfo".
+> =
+
+> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
+> ---
+>  arch/arm/cpu/cpuinfo.c      | 2 +-
+>  arch/mips/lib/cpuinfo.c     | 2 +-
+>  arch/openrisc/lib/cpuinfo.c | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+> =
+
+> diff --git a/arch/arm/cpu/cpuinfo.c b/arch/arm/cpu/cpuinfo.c
+> index 175475b038dc..2421b91e57f1 100644
+> --- a/arch/arm/cpu/cpuinfo.c
+> +++ b/arch/arm/cpu/cpuinfo.c
+> @@ -268,7 +268,7 @@ static int do_cpuinfo(int argc, char *argv[])
+>  =
+
+>  BAREBOX_CMD_START(cpuinfo)
+>  	.cmd            =3D do_cpuinfo,
+> -	BAREBOX_CMD_DESC("show info about CPU")
+> +	BAREBOX_CMD_DESC("show information about CPU")
+>  	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
+>  	BAREBOX_CMD_COMPLETE(empty_complete)
+>  BAREBOX_CMD_END
+> diff --git a/arch/mips/lib/cpuinfo.c b/arch/mips/lib/cpuinfo.c
+> index fb02a4d20217..a327672f78a5 100644
+> --- a/arch/mips/lib/cpuinfo.c
+> +++ b/arch/mips/lib/cpuinfo.c
+> @@ -63,6 +63,6 @@ static int do_cpuinfo(int argc, char *argv[])
+>  =
+
+>  BAREBOX_CMD_START(cpuinfo)
+>  	.cmd            =3D do_cpuinfo,
+> -	BAREBOX_CMD_DESC("show CPU information")
+> +	BAREBOX_CMD_DESC("show information about CPU")
+>  	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
+>  BAREBOX_CMD_END
+> diff --git a/arch/openrisc/lib/cpuinfo.c b/arch/openrisc/lib/cpuinfo.c
+> index 175adc582ca4..3d7fcb1f59ce 100644
+> --- a/arch/openrisc/lib/cpuinfo.c
+> +++ b/arch/openrisc/lib/cpuinfo.c
+> @@ -198,6 +198,6 @@ static int do_cpuinfo(int argc, char *argv[])
+>  =
+
+>  BAREBOX_CMD_START(cpuinfo)
+>  	.cmd            =3D do_cpuinfo,
+> -	BAREBOX_CMD_DESC("show CPU information")
+> +	BAREBOX_CMD_DESC("show information about CPU")
+>  	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
+>  BAREBOX_CMD_END
+> -- =
+
+> 2.19.1
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
