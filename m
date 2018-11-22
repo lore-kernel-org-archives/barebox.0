@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx1.tq-group.com ([62.157.118.193])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gPmQO-0006Ji-01
- for barebox@lists.infradead.org; Thu, 22 Nov 2018 10:41:33 +0000
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Date: Thu, 22 Nov 2018 11:41:01 +0100
-Message-Id: <20181122104101.25796-1-matthias.schiffer@ew.tq-group.com>
-In-Reply-To: <20181121080124.s47maw3ex6dmzgm7@pengutronix.de>
-References: <20181121080124.s47maw3ex6dmzgm7@pengutronix.de>
+ id 1gPk60-0006GY-Sn
+ for barebox@lists.infradead.org; Thu, 22 Nov 2018 08:12:22 +0000
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Date: Thu, 22 Nov 2018 09:12:00 +0100
+Message-Id: <20181122081200.12642-1-u.oelmann@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,60 +15,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] FIT: support hash-1/signature-1 nodes in signature check
-To: barebox@lists.infradead.org
-Cc: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Subject: [PATCH] arch: *: cpuinfo: harmonize command description
+To: Barebox List <barebox@lists.infradead.org>
 
-The examples in the U-boot docs use "hash-N" and "signature-N" as the names
-for hash/signature nodes. It seems "@N" was used instead at some point
-during the development of the FIT format and "-N" is more correct (in fact,
-dtc throws warnings when using "@N" without a reg attribute). Support for
-the "@N" node names is preserved for backward compatibility.
-
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
----
-
-v2: add signature-1 in addition to hash-1
-
- common/image-fit.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/common/image-fit.c b/common/image-fit.c
-index dfd1fa02c..87a55b7e2 100644
---- a/common/image-fit.c
-+++ b/common/image-fit.c
-@@ -392,7 +392,9 @@ static int fit_verify_hash(struct fit_handle *handle, struct device_node *image,
- 		ret = -EINVAL;
- 	}
- 
--	hash = of_get_child_by_name(image, "hash@1");
-+	hash = of_get_child_by_name(image, "hash-1");
-+	if (!hash)
-+		hash = of_get_child_by_name(image, "hash@1");
- 	if (!hash) {
- 		if (ret)
- 			pr_err("image %s does not have hashes\n",
-@@ -468,7 +470,9 @@ static int fit_image_verify_signature(struct fit_handle *handle,
- 		ret = -EINVAL;
- 	}
- 
--	sig_node = of_get_child_by_name(image, "signature@1");
-+	sig_node = of_get_child_by_name(image, "signature-1");
-+	if (!sig_node)
-+		sig_node = of_get_child_by_name(image, "signature@1");
- 	if (!sig_node) {
- 		pr_err("Image %s has no signature\n", image->full_name);
- 		return ret;
--- 
-2.17.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VW5pZnkgdGhlIGRpZmZlcmVudCBjcHVpbmZvIGNvbW1hbmRzJyBkZXNjcmlwdGlvbiBhbmQgYWRq
+dXN0IHRoZW0gdG8gdGhlCmRlc2NyaXB0aW9ucyBvZiAiY2xrX2R1bXAiIGFuZCAiZGV2aW5mbyIu
+CgpTaWduZWQtb2ZmLWJ5OiBVbHJpY2ggw5ZsbWFubiA8dS5vZWxtYW5uQHBlbmd1dHJvbml4LmRl
+PgotLS0KIGFyY2gvYXJtL2NwdS9jcHVpbmZvLmMgICAgICB8IDIgKy0KIGFyY2gvbWlwcy9saWIv
+Y3B1aW5mby5jICAgICB8IDIgKy0KIGFyY2gvb3BlbnJpc2MvbGliL2NwdWluZm8uYyB8IDIgKy0K
+IDMgZmlsZXMgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAt
+LWdpdCBhL2FyY2gvYXJtL2NwdS9jcHVpbmZvLmMgYi9hcmNoL2FybS9jcHUvY3B1aW5mby5jCmlu
+ZGV4IDE3NTQ3NWIwMzhkYy4uMjQyMWI5MWU1N2YxIDEwMDY0NAotLS0gYS9hcmNoL2FybS9jcHUv
+Y3B1aW5mby5jCisrKyBiL2FyY2gvYXJtL2NwdS9jcHVpbmZvLmMKQEAgLTI2OCw3ICsyNjgsNyBA
+QCBzdGF0aWMgaW50IGRvX2NwdWluZm8oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKIAogQkFSRUJP
+WF9DTURfU1RBUlQoY3B1aW5mbykKIAkuY21kICAgICAgICAgICAgPSBkb19jcHVpbmZvLAotCUJB
+UkVCT1hfQ01EX0RFU0MoInNob3cgaW5mbyBhYm91dCBDUFUiKQorCUJBUkVCT1hfQ01EX0RFU0Mo
+InNob3cgaW5mb3JtYXRpb24gYWJvdXQgQ1BVIikKIAlCQVJFQk9YX0NNRF9HUk9VUChDTURfR1JQ
+X0lORk8pCiAJQkFSRUJPWF9DTURfQ09NUExFVEUoZW1wdHlfY29tcGxldGUpCiBCQVJFQk9YX0NN
+RF9FTkQKZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9saWIvY3B1aW5mby5jIGIvYXJjaC9taXBzL2xp
+Yi9jcHVpbmZvLmMKaW5kZXggZmIwMmE0ZDIwMjE3Li5hMzI3NjcyZjc4YTUgMTAwNjQ0Ci0tLSBh
+L2FyY2gvbWlwcy9saWIvY3B1aW5mby5jCisrKyBiL2FyY2gvbWlwcy9saWIvY3B1aW5mby5jCkBA
+IC02Myw2ICs2Myw2IEBAIHN0YXRpYyBpbnQgZG9fY3B1aW5mbyhpbnQgYXJnYywgY2hhciAqYXJn
+dltdKQogCiBCQVJFQk9YX0NNRF9TVEFSVChjcHVpbmZvKQogCS5jbWQgICAgICAgICAgICA9IGRv
+X2NwdWluZm8sCi0JQkFSRUJPWF9DTURfREVTQygic2hvdyBDUFUgaW5mb3JtYXRpb24iKQorCUJB
+UkVCT1hfQ01EX0RFU0MoInNob3cgaW5mb3JtYXRpb24gYWJvdXQgQ1BVIikKIAlCQVJFQk9YX0NN
+RF9HUk9VUChDTURfR1JQX0lORk8pCiBCQVJFQk9YX0NNRF9FTkQKZGlmZiAtLWdpdCBhL2FyY2gv
+b3BlbnJpc2MvbGliL2NwdWluZm8uYyBiL2FyY2gvb3BlbnJpc2MvbGliL2NwdWluZm8uYwppbmRl
+eCAxNzVhZGM1ODJjYTQuLjNkN2ZjYjFmNTljZSAxMDA2NDQKLS0tIGEvYXJjaC9vcGVucmlzYy9s
+aWIvY3B1aW5mby5jCisrKyBiL2FyY2gvb3BlbnJpc2MvbGliL2NwdWluZm8uYwpAQCAtMTk4LDYg
+KzE5OCw2IEBAIHN0YXRpYyBpbnQgZG9fY3B1aW5mbyhpbnQgYXJnYywgY2hhciAqYXJndltdKQog
+CiBCQVJFQk9YX0NNRF9TVEFSVChjcHVpbmZvKQogCS5jbWQgICAgICAgICAgICA9IGRvX2NwdWlu
+Zm8sCi0JQkFSRUJPWF9DTURfREVTQygic2hvdyBDUFUgaW5mb3JtYXRpb24iKQorCUJBUkVCT1hf
+Q01EX0RFU0MoInNob3cgaW5mb3JtYXRpb24gYWJvdXQgQ1BVIikKIAlCQVJFQk9YX0NNRF9HUk9V
+UChDTURfR1JQX0lORk8pCiBCQVJFQk9YX0NNRF9FTkQKLS0gCjIuMTkuMQoKCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
+CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
