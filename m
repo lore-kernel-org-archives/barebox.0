@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mx1.tq-group.com ([62.157.118.193])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gPm5P-0001Hr-IJ
- for barebox@lists.infradead.org; Thu, 22 Nov 2018 10:19:53 +0000
-Message-ID: <e8a745f8ce80ae9a17cb3d7278732d77cec8277f.camel@ew.tq-group.com>
+ id 1gPmQO-0006Ji-01
+ for barebox@lists.infradead.org; Thu, 22 Nov 2018 10:41:33 +0000
 From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Date: Thu, 22 Nov 2018 11:19:30 +0100
-In-Reply-To: <20181121075649.uheexugggfy6rp6n@pengutronix.de>
-References: <20181120094035.18252-1-matthias.schiffer@ew.tq-group.com>
- <20181120094035.18252-2-matthias.schiffer@ew.tq-group.com>
- <20181121075649.uheexugggfy6rp6n@pengutronix.de>
-Mime-Version: 1.0
+Date: Thu, 22 Nov 2018 11:41:01 +0100
+Message-Id: <20181122104101.25796-1-matthias.schiffer@ew.tq-group.com>
+In-Reply-To: <20181121080124.s47maw3ex6dmzgm7@pengutronix.de>
+References: <20181121080124.s47maw3ex6dmzgm7@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,70 +16,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] environment: do not attempt to erase devices with
- MTD_NO_ERASE
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] FIT: support hash-1/signature-1 nodes in signature check
+To: barebox@lists.infradead.org
+Cc: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 
-On Wed, 2018-11-21 at 08:56 +0100, Sascha Hauer wrote:
-> Hi Matthias,
-> 
-> On Tue, Nov 20, 2018 at 10:40:34AM +0100, 
-> matthias.schiffer@ew.tq-group.com wrote:
-> > From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-> > 
-> > Devices like MRAM do not need to be erased; in fact, trying to do a
-> > partial
-> > erase will fail with -EINVAL, as they don't have a proper erase
-> > block size
-> > defined.
-> 
-> Where does this -EINVAL come from? Wouldn't it be an option to check
-> for
-> the MTD_NO_ERASE flag mtd_op_erase() and return -EOPNOTSUPP there?
-> 
-> Sascha
-> 
+The examples in the U-boot docs use "hash-N" and "signature-N" as the names
+for hash/signature nodes. It seems "@N" was used instead at some point
+during the development of the FIT format and "-N" is more correct (in fact,
+dtc throws warnings when using "@N" without a reg attribute). Support for
+the "@N" node names is preserved for backward compatibility.
 
-Hmm, what are the expected semantics of MTD_NO_ERASE - "does not need
-erase" or "does not support erase"? According to code comments, it's
-the former.
+Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+---
 
-The MRAM I'm working with reports an erase size equal to its total
-size:
+v2: add signature-1 in addition to hash-1
 
-barebox:/ devinfo m25p0
-Parameters:
-  erasesize: 131072 (type: uint32)
-  oobsize: 0 (type: uint32)
-  partitions: 128k(barebox-environment) (type: string)
-  size: 131072 (type: uint64)
-  writesize: 1 (type: uint32)
+ common/image-fit.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-This matches what Linux reports, but it seems to me that this MRAM does
-not actually implement it: When I try to erase the whole flash (from
-Linux or Barebox), it does return success, but the data is unchanged.
-When I configure the environment to span the whole flash, envfs_save()
-is working fine without my patch, as the erase is successful.
-
-The problems start when I try to partition the MRAM, as envfs_save()
-will now try to erase a block smaller than the erasesize, leading to
--EINVAL.
-
-I'm not sure if making mtd_op_erase() check for MTD_NO_ERASE is the
-correct solution - it would obviously be fine for my MRAM, as erase is
-a noop anyways, but I have no idea if there are other devices that set
-the flag, but do support erase (and just don't need it for normal write
-operations).
-
-Anyways, I have no problem with implementing the fix that way if we
-decide that these are the semantics we want.
-
-Matthias
+diff --git a/common/image-fit.c b/common/image-fit.c
+index dfd1fa02c..87a55b7e2 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -392,7 +392,9 @@ static int fit_verify_hash(struct fit_handle *handle, struct device_node *image,
+ 		ret = -EINVAL;
+ 	}
+ 
+-	hash = of_get_child_by_name(image, "hash@1");
++	hash = of_get_child_by_name(image, "hash-1");
++	if (!hash)
++		hash = of_get_child_by_name(image, "hash@1");
+ 	if (!hash) {
+ 		if (ret)
+ 			pr_err("image %s does not have hashes\n",
+@@ -468,7 +470,9 @@ static int fit_image_verify_signature(struct fit_handle *handle,
+ 		ret = -EINVAL;
+ 	}
+ 
+-	sig_node = of_get_child_by_name(image, "signature@1");
++	sig_node = of_get_child_by_name(image, "signature-1");
++	if (!sig_node)
++		sig_node = of_get_child_by_name(image, "signature@1");
+ 	if (!sig_node) {
+ 		pr_err("Image %s has no signature\n", image->full_name);
+ 		return ret;
+-- 
+2.17.1
 
 
 _______________________________________________
