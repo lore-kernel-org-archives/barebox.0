@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gQBcv-0002q6-Ux
+ id 1gQBcv-0002q8-VL
  for barebox@lists.infradead.org; Fri, 23 Nov 2018 13:36:11 +0000
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Fri, 23 Nov 2018 14:35:51 +0100
-Message-Id: <20181123133553.24761-2-m.tretter@pengutronix.de>
+Date: Fri, 23 Nov 2018 14:35:52 +0100
+Message-Id: <20181123133553.24761-3-m.tretter@pengutronix.de>
 In-Reply-To: <20181123133553.24761-1-m.tretter@pengutronix.de>
 References: <20181123133553.24761-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
@@ -21,32 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] ARM: lib64: .gitignore barebox.lds
+Subject: [PATCH 2/3] ARM: aarch64: compile with general-regs-only
 To: barebox@lists.infradead.org
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-Commit e1287b1a8b27 ("arm: rework lib directory to support arm64")
-restructured the lib directory and added the lib64 directory. It moved
-the existing .gitignore to the lib32 directory but didn't add a new
-.gitignore for lib64.
+Without this flag, gcc generates code to save the Q/V registers to the
+stack for handling the va_list in pr_print(). Saving the registers is
+use useless, as the registers are never restored, but this hangs the
+CPU.
 
-Thus building Barebox for arm64 results in stray barebox.lds files.
-
-Copy the .gitignore from lib32 to lib64.
+Follow the Linux arch/arm64/Makefile and the general-regs-only flag, to
+prevent usage of floating point and Advanced SIMD register.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- arch/arm/lib64/.gitignore | 1 +
- 1 file changed, 1 insertion(+)
- create mode 100644 arch/arm/lib64/.gitignore
+ arch/arm/Makefile | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/lib64/.gitignore b/arch/arm/lib64/.gitignore
-new file mode 100644
-index 0000000000..d1165788c9
---- /dev/null
-+++ b/arch/arm/lib64/.gitignore
-@@ -0,0 +1 @@
-+barebox.lds
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 5db67b9db8..50958b787f 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -27,6 +27,10 @@ else
+ CFLAGS += -mstrict-align
+ endif
+ 
++# Prevent use of floating point and Advanced SIMD registers.
++ifeq ($(CONFIG_CPU_V8),y)
++CFLAGS += -mgeneral-regs-only
++endif
+ 
+ # This selects which instruction set is used.
+ # Note that GCC does not numerically define an architecture version
 -- 
 2.19.1
 
