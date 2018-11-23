@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mx1.tq-group.com ([62.157.118.193])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gQ6VY-0000Kr-0D
- for barebox@lists.infradead.org; Fri, 23 Nov 2018 08:08:13 +0000
-Date: Fri, 23 Nov 2018 09:07:59 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181123080759.xw3nokc6jn4rohsc@pengutronix.de>
-References: <20181120094035.18252-1-matthias.schiffer@ew.tq-group.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181120094035.18252-1-matthias.schiffer@ew.tq-group.com>
+ id 1gQCnQ-0005fV-Kx
+ for barebox@lists.infradead.org; Fri, 23 Nov 2018 14:51:06 +0000
+From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Date: Fri, 23 Nov 2018 15:50:15 +0100
+Message-Id: <20181123145015.20623-1-matthias.schiffer@ew.tq-group.com>
+In-Reply-To: <20181123080522.5vwc4makxbhycscq@pengutronix.de>
+References: <20181123080522.5vwc4makxbhycscq@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,39 +16,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] clk: fix NULL deref without OF node in debug message
-To: matthias.schiffer@ew.tq-group.com
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] mtd: return EOPNOTSUPP when attempting to erase an
+ MTD_NO_ERASE device
+To: barebox@lists.infradead.org
+Cc: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 
-On Tue, Nov 20, 2018 at 10:40:33AM +0100, matthias.schiffer@ew.tq-group.com wrote:
-> From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-> 
-> of_clk_add_provider() may be called for devices added via
-> add_generic_device(). There is no OF node in this case, leading to a crash
-> when debug logs are enabled.
-> 
-> This affects various i.MX CPUs, which add imx*-ccm clock devices using
-> add_generic_device().
-> 
-> Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-> ---
->  drivers/clk/clk.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+At least some MTD_NO_ERASE devices like MRAM do not specify a sensible
+erase block size; instead, erasesize is equal to the whole flash size. This
+leads to an EINVAL return from mtd_erase_align() whenever a partial erase
+is attempted.
 
-Applied this one and the third one for now.
+At least on the MRAM I tested, a full flash erase did not return an error,
+but it did not have any effect on the flash either. As erase seems to be
+entirely unsupported on this class of devices, and it is not necessary
+anyways, it's better to return early with EOPNOTSUPP.
 
-Sascha
+This fixes envfs_save() on a partitioned MRAM.
 
+Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+---
 
+v2: handle in mtd_op_erase() instead of envfs_save()
+
+ drivers/mtd/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index 56e85b3d8..d3cbe502f 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -178,6 +178,9 @@ static int mtd_op_erase(struct cdev *cdev, loff_t count, loff_t offset)
+ 	loff_t addr;
+ 	int ret;
+ 
++	if (mtd->flags & MTD_NO_ERASE)
++		return -EOPNOTSUPP;
++
+ 	ret = mtd_erase_align(mtd, &count, &offset);
+ 	if (ret)
+ 		return ret;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
