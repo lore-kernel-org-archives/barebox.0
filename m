@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conssluserg-03.nifty.com ([210.131.2.82])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gRBbd-0008CU-Ib
- for barebox@lists.infradead.org; Mon, 26 Nov 2018 07:46:59 +0000
-Date: Mon, 26 Nov 2018 08:46:41 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181126074641.jqu5zxfk26rtyrju@pengutronix.de>
-References: <20181123080522.5vwc4makxbhycscq@pengutronix.de>
- <20181123145015.20623-1-matthias.schiffer@ew.tq-group.com>
+ id 1gQ7AX-0006nT-9w
+ for barebox@lists.infradead.org; Fri, 23 Nov 2018 08:50:36 +0000
+Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com
+ [209.85.217.54]) (authenticated)
+ by conssluserg-03.nifty.com with ESMTP id wAN8o7hi032053
+ for <barebox@lists.infradead.org>; Fri, 23 Nov 2018 17:50:07 +0900
+Received: by mail-vs1-f54.google.com with SMTP id g68so6731358vsd.11
+ for <barebox@lists.infradead.org>; Fri, 23 Nov 2018 00:50:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181123145015.20623-1-matthias.schiffer@ew.tq-group.com>
+References: <20181116143127.13875-1-s.hauer@pengutronix.de>
+In-Reply-To: <20181116143127.13875-1-s.hauer@pengutronix.de>
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Fri, 23 Nov 2018 17:49:30 +0900
+Message-ID: <CAK7LNATiis8ci+bczBsPWHfVSC=pePnpTNddQigJ9uVWOtqDww@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,66 +27,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] mtd: return EOPNOTSUPP when attempting to erase an
- MTD_NO_ERASE device
-To: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Subject: Re: [PATCH] ARM: socfpga: generate smaller images when multiple
+ boards are selected
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Nov 23, 2018 at 03:50:15PM +0100, Matthias Schiffer wrote:
-> At least some MTD_NO_ERASE devices like MRAM do not specify a sensible
-> erase block size; instead, erasesize is equal to the whole flash size. This
-> leads to an EINVAL return from mtd_erase_align() whenever a partial erase
-> is attempted.
-> 
-> At least on the MRAM I tested, a full flash erase did not return an error,
-> but it did not have any effect on the flash either. As erase seems to be
-> entirely unsupported on this class of devices, and it is not necessary
-> anyways, it's better to return early with EOPNOTSUPP.
-> 
-> This fixes envfs_save() on a partitioned MRAM.
-> 
-> Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-> ---
+On Fri, Nov 16, 2018 at 11:31 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>
+> The socfpga xload images are limited to 64KiB. This doesn't fit if
+> multiple boards are selected. The reason is that we include huge
+> C files and arrays in the early init code which get compiled once
+> for each board. -ffunction-sections is without effect here since all
+> functions have the same name and hence we get the same function
+> multiple times in the same section.
+>
+> To overcome this we surround all function names with a SECT() macro which
+> is used to add a board specific prefix to the section names. This way
+> -ffunction-sections can now do its work and discard unused functions.
+>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-Applied, thanks
 
-Sascha
+I just accidentally stopped by this commit.
 
-> 
-> v2: handle in mtd_op_erase() instead of envfs_save()
-> 
->  drivers/mtd/core.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-> index 56e85b3d8..d3cbe502f 100644
-> --- a/drivers/mtd/core.c
-> +++ b/drivers/mtd/core.c
-> @@ -178,6 +178,9 @@ static int mtd_op_erase(struct cdev *cdev, loff_t count, loff_t offset)
->  	loff_t addr;
->  	int ret;
->  
-> +	if (mtd->flags & MTD_NO_ERASE)
-> +		return -EOPNOTSUPP;
-> +
->  	ret = mtd_erase_align(mtd, &count, &offset);
->  	if (ret)
->  		return ret;
-> -- 
-> 2.17.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+It is a good thing that you noticed dead code elimination
+(-ffunction-sections -fdata-sections, --gc-sections)
+does not work if the same symbol names are used
+in the conventional incremental linking
+Linux kernel used to use.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+As you notice, this is a potential problem
+of CONFIG_PBL_MULTI_IMAGES,
+and I know the right solution.
+
+
+Since Linux v4.13 (commit 98ced886dd79a),
+Linux kernel build system uses thin archive,
+where Kbuild uses $(AR) rcSTP instead of $(LD) -r
+to combine built-in objects.
+
+With this, the final link stage does the right thing to do
+for --gc-sections.
+
+Besides, thin archive is faster,
+and saves disk spaces.
+
+If you sync core Makefiles with Linux,
+your problem will be solved.
+
+
+
+
+
+--
+Best Regards
+Masahiro Yamada
 
 _______________________________________________
 barebox mailing list
