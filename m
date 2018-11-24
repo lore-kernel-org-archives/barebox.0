@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mo6-p00-ob.smtp.rzone.de ([2a01:238:20a:202:5300::9])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gRDTR-0004GN-HL
- for barebox@lists.infradead.org; Mon, 26 Nov 2018 09:46:43 +0000
-Date: Mon, 26 Nov 2018 10:46:24 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181126094624.l56oxn7kintdqc7s@pengutronix.de>
-References: <20181116143127.13875-1-s.hauer@pengutronix.de>
- <CAK7LNATiis8ci+bczBsPWHfVSC=pePnpTNddQigJ9uVWOtqDww@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAK7LNATiis8ci+bczBsPWHfVSC=pePnpTNddQigJ9uVWOtqDww@mail.gmail.com>
+ id 1gQVtZ-0002Il-O6
+ for barebox@lists.infradead.org; Sat, 24 Nov 2018 11:14:44 +0000
+Message-ID: <1543058064.5085.4.camel@erwinrol.com>
+From: Erwin Rol <mailinglists@erwinrol.com>
+Date: Sat, 24 Nov 2018 12:14:24 +0100
+In-Reply-To: <20181121081813.biacokuvrvpx7ktd@pengutronix.de>
+References: <1542744481.4097.40.camel@erwinrol.com>
+ <20181121081813.biacokuvrvpx7ktd@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,70 +22,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: socfpga: generate smaller images when multiple
- boards are selected
-To: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: powerfail safe env save
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Fri, Nov 23, 2018 at 05:49:30PM +0900, Masahiro Yamada wrote:
-> On Fri, Nov 16, 2018 at 11:31 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> >
-> > The socfpga xload images are limited to 64KiB. This doesn't fit if
-> > multiple boards are selected. The reason is that we include huge
-> > C files and arrays in the early init code which get compiled once
-> > for each board. -ffunction-sections is without effect here since all
-> > functions have the same name and hence we get the same function
-> > multiple times in the same section.
-> >
-> > To overcome this we surround all function names with a SECT() macro which
-> > is used to add a board specific prefix to the section names. This way
-> > -ffunction-sections can now do its work and discard unused functions.
-> >
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> 
-> 
-> I just accidentally stopped by this commit.
-> 
-> It is a good thing that you noticed dead code elimination
-> (-ffunction-sections -fdata-sections, --gc-sections)
-> does not work if the same symbol names are used
-> in the conventional incremental linking
-> Linux kernel used to use.
-> 
-> As you notice, this is a potential problem
-> of CONFIG_PBL_MULTI_IMAGES,
-> and I know the right solution.
-> 
-> 
-> Since Linux v4.13 (commit 98ced886dd79a),
-> Linux kernel build system uses thin archive,
-> where Kbuild uses $(AR) rcSTP instead of $(LD) -r
-> to combine built-in objects.
-> 
-> With this, the final link stage does the right thing to do
-> for --gc-sections.
-> 
-> Besides, thin archive is faster,
-> and saves disk spaces.
-> 
-> If you sync core Makefiles with Linux,
-> your problem will be solved.
+Hallo Sascha,
 
-That's really nice, thanks for noting this.
+On Wed, 2018-11-21 at 09:18 +0100, Sascha Hauer wrote:
+> Hi Erwin,
+> 
+> On Tue, Nov 20, 2018 at 09:08:01PM +0100, Erwin Rol wrote:
+> > Hallo,
+> > 
+> > as long time u-boot user I have several projects where we have a dual
+> > dataflash "sector" in wich we store our env variables. And dual so we
+> > always have or the correct old version or the correct new version even
+> > if there is a power fail during saveenv.
+> > 
+> > Is powerfail robust env writing also available in barebox. Or what
+> > would be the barebox equifelant of a number of config variables?
+> 
+> We do not have redundant environment right now.
+> 
+> There have been attempts in the past, but they fell short in flexibility
+> and/or robustness. Nowadays we normally do not use environment in
+> products anymore, so this isn't much of an issue.
 
-I had a short look into it, unfortunately syncing the Makefile doesn't
-appear to be an easy job. I think we stick to the current patch for now
-until someone finds time to do it. It's good to know there's a proper
-solution to the problem though
+So what do you use? Some sort of configuration (mac addresses, serial
+numbers, etc.) will still be needed, or ?
 
-Sascha
+> 
+> If you have flash I would consider using UBI for the environment. With
+> atomic LEB change a robust environment could be implemented fairly
+> easily.
+
+It is a phycore imx6 module with NAND, so that should be possible. But
+I rather stay as close by "mainline" as possible, so I would rather use
+what ever feature Barebox hhas to offer out of the box.
+
+What I have in U-boot is that we have 2 kernels (and rootfs) and after
+an update I write in the uboot env which kernel/rootfs is active. This
+is something that happens in the field and so the writing to the uboot
+env must be so robuste that the system will not be bricked.
+
+What would be the equivalent of such a setup in Barebox ?
+
+- Erwin
 
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
