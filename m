@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gRD27-0000ey-TP
- for barebox@lists.infradead.org; Mon, 26 Nov 2018 09:18:28 +0000
+ id 1gRD27-0000ex-UF
+ for barebox@lists.infradead.org; Mon, 26 Nov 2018 09:18:30 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Mon, 26 Nov 2018 10:18:04 +0100
-Message-Id: <20181126091807.19398-8-o.rempel@pengutronix.de>
+Date: Mon, 26 Nov 2018 10:17:59 +0100
+Message-Id: <20181126091807.19398-3-o.rempel@pengutronix.de>
 In-Reply-To: <20181126091807.19398-1-o.rempel@pengutronix.de>
 References: <20181126091807.19398-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,40 +21,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 07/10] MIPS: put main_entry to __bare_init section
+Subject: [PATCH v1 02/10] MIPS: add arch/mips/lib/pbl.lds.S
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-To make disassambly easier to read.
-With this patch main_entry will be at the start of the text section
-and not in the middle.
+we need it for multiimage support.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/mips/boot/main_entry.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/lib/pbl.lds.S | 54 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
+ create mode 100644 arch/mips/lib/pbl.lds.S
 
-diff --git a/arch/mips/boot/main_entry.c b/arch/mips/boot/main_entry.c
-index e51e1b2f96..e33ae64e72 100644
---- a/arch/mips/boot/main_entry.c
-+++ b/arch/mips/boot/main_entry.c
-@@ -16,6 +16,7 @@
-  *
-  */
- 
-+#include <init.h>
- #include <common.h>
- #include <string.h>
- #include <memory.h>
-@@ -79,7 +80,7 @@ extern u32 glob_fdt_size;
-  *
-  * @note The C environment isn't initialized yet
-  */
--void main_entry(void *fdt, u32 fdt_size)
-+void __bare_init main_entry(void *fdt, u32 fdt_size)
- {
- 	/* clear the BSS first */
- 	memset(__bss_start, 0x00, __bss_stop - __bss_start);
+diff --git a/arch/mips/lib/pbl.lds.S b/arch/mips/lib/pbl.lds.S
+new file mode 100644
+index 0000000000..51dd088d51
+--- /dev/null
++++ b/arch/mips/lib/pbl.lds.S
+@@ -0,0 +1,54 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * (C) Copyright 2018 Oleksij Rempel <o.rempel@pengutronix.de>, Pengutronix
++ * (C) Copyright 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ */
++
++#include <asm-generic/barebox.lds.h>
++#include <asm-generic/memory_layout.h>
++
++OUTPUT_ARCH("mips")
++ENTRY(pbl_start)
++SECTIONS
++{
++	. = HEAD_TEXT_BASE;
++
++	PRE_IMAGE
++
++	. = ALIGN(4);
++	.text      :
++	{
++		_stext = .;
++		_text = .;
++		*(.text_head_entry*)
++		__bare_init_start = .;
++		*(.text_bare_init*)
++		__bare_init_end = .;
++		*(.text*)
++	}
++
++	BAREBOX_BARE_INIT_SIZE
++
++	. = ALIGN(4);
++	.rodata : { *(.rodata*) }
++
++	.barebox_imd : { BAREBOX_IMD }
++
++	_etext = .;			/* End of text and rodata section */
++
++	. = ALIGN(4);
++	.data : { *(.data*) }
++
++	. = ALIGN(4);
++	__piggydata_start = .;
++	.piggydata : {
++		*(.piggydata)
++	}
++	__piggydata_end = .;
++
++	. = ALIGN(4);
++	__bss_start = .;
++	.bss : { *(.bss*) }
++	__bss_stop = .;
++	_end = .;
++}
 -- 
 2.19.1
 
