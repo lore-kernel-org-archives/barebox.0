@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gRD27-0000f2-0Z
- for barebox@lists.infradead.org; Mon, 26 Nov 2018 09:18:25 +0000
+ id 1gRD27-0000f3-2J
+ for barebox@lists.infradead.org; Mon, 26 Nov 2018 09:18:26 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Mon, 26 Nov 2018 10:18:00 +0100
-Message-Id: <20181126091807.19398-4-o.rempel@pengutronix.de>
+Date: Mon, 26 Nov 2018 10:18:06 +0100
+Message-Id: <20181126091807.19398-10-o.rempel@pengutronix.de>
 In-Reply-To: <20181126091807.19398-1-o.rempel@pengutronix.de>
 References: <20181126091807.19398-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,30 +21,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 03/10] pbl: enable MIPS for PBL_RELOCATABLE
+Subject: [PATCH v1 09/10] MIPS: remove HAS_NO_BOARD_HL_CODE support
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-it is needed for multiimage support
+With multiimage support it makes no more sense,
+every board should have Makefile and some lowlevel code.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- pbl/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/Kconfig            | 3 ---
+ arch/mips/Makefile           | 2 --
+ arch/mips/mach-ath79/Kconfig | 2 --
+ 3 files changed, 7 deletions(-)
 
-diff --git a/pbl/Kconfig b/pbl/Kconfig
-index 117b79dcbd..f2250dd73b 100644
---- a/pbl/Kconfig
-+++ b/pbl/Kconfig
-@@ -35,7 +35,7 @@ config PBL_FORCE_PIGGYDATA_COPY
- if PBL_IMAGE
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 3934b803a5..088d02424f 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -26,9 +26,6 @@ config GENERIC_LINKER_SCRIPT
+ 	bool
+ 	default y
  
- config PBL_RELOCATABLE
--	depends on ARM
-+	depends on ARM || MIPS
- 	bool "relocatable pbl image"
- 	help
- 	  Generate a pbl binary which can relocate itself during startup to run
+-config HAS_NO_BOARD_HL_CODE
+-	bool
+-
+ config PHYS_ADDR_T_64BIT
+ 	bool
+ 
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 422e844d9f..c08e53ca3d 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -103,9 +103,7 @@ else
+ MACH  :=
+ endif
+ 
+-ifndef CONFIG_HAS_NO_BOARD_HL_CODE
+ common-y += $(BOARD)
+-endif
+ 
+ common-y += $(MACH)
+ common-y += arch/mips/lib/
+diff --git a/arch/mips/mach-ath79/Kconfig b/arch/mips/mach-ath79/Kconfig
+index e992af2824..e943de64de 100644
+--- a/arch/mips/mach-ath79/Kconfig
++++ b/arch/mips/mach-ath79/Kconfig
+@@ -35,7 +35,6 @@ config BOARD_8DEVICES_LIMA
+ 	select HAVE_PBL_IMAGE
+ 	select HAVE_IMAGE_COMPRESSION
+ 	select HAS_NMON
+-	select HAS_NO_BOARD_HL_CODE
+ 
+ config BOARD_DPTECHNICS_DPT_MODULE
+ 	bool "DPTechnics DPT-Module"
+@@ -43,7 +42,6 @@ config BOARD_DPTECHNICS_DPT_MODULE
+ 	select HAVE_PBL_IMAGE
+ 	select HAVE_IMAGE_COMPRESSION
+ 	select HAS_NMON
+-	select HAS_NO_BOARD_HL_CODE
+ 
+ config BOARD_TPLINK_MR3020
+ 	bool "TP-LINK MR3020"
 -- 
 2.19.1
 
