@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from enterprise01.smtp.diehl.com ([193.201.238.219])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gR3Nq-0006FB-P7
- for barebox@lists.infradead.org; Sun, 25 Nov 2018 23:00:13 +0000
-From: Roland Hieber <r.hieber@pengutronix.de>
-Date: Sun, 25 Nov 2018 23:59:52 +0100
-Message-Id: <20181125225952.16159-2-r.hieber@pengutronix.de>
-In-Reply-To: <20181125225952.16159-1-r.hieber@pengutronix.de>
+ id 1gRBlJ-0003D4-CG
+ for barebox@lists.infradead.org; Mon, 26 Nov 2018 07:56:59 +0000
+From: Denis OSTERLAND <denis.osterland@diehl.com>
+Date: Mon, 26 Nov 2018 07:56:34 +0000
+Message-ID: <1543218994.4842.4.camel@diehl.com>
 References: <20181125225952.16159-1-r.hieber@pengutronix.de>
+ <20181125225952.16159-2-r.hieber@pengutronix.de>
+In-Reply-To: <20181125225952.16159-2-r.hieber@pengutronix.de>
+Content-Language: en-US
+Content-ID: <82E39131FEB1EE46999075A5214F598C@diehl.internal>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,106 +20,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] i.MX: HABv4: always print HAB status at boot time
-To: barebox@lists.infradead.org
-Cc: Roland Hieber <r.hieber@pengutronix.de>
+Subject: Re: [PATCH 2/2] i.MX: HABv4: always print HAB status at boot time
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Currently, board code needs to call habv4_get_status() explicitely, but
-there is no reason that it cannot be called automatically at startup
-when HABv4 is enabled. This way the call cannot be forgotten and we can
-make sure to report all potentially occuring HAB warnings and errors.
-
-Signed-off-by: Roland Hieber <r.hieber@pengutronix.de>
----
- drivers/hab/habv3.c |  4 ++++
- drivers/hab/habv4.c | 41 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 45 insertions(+)
-
-diff --git a/drivers/hab/habv3.c b/drivers/hab/habv3.c
-index 82ae245f8a..c190c78d40 100644
---- a/drivers/hab/habv3.c
-+++ b/drivers/hab/habv3.c
-@@ -78,5 +78,9 @@ int imx_habv3_get_status(uint32_t status)
- 
- int imx25_hab_get_status(void)
- {
-+	if (!cpu_is_mx25()) {
-+		return 0;
-+	}
- 	return imx_habv3_get_status(readl(IOMEM(0x780018d4)));
- }
-+postmmu_initcall(imx25_hab_get_status);
-diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
-index e64f34870e..09f598631b 100644
---- a/drivers/hab/habv4.c
-+++ b/drivers/hab/habv4.c
-@@ -20,6 +20,7 @@
- 
- #include <common.h>
- #include <hab.h>
-+#include <init.h>
- #include <types.h>
- 
- #include <mach/generic.h>
-@@ -500,9 +501,49 @@ int imx6_hab_get_status(void)
- 	return -EINVAL;
- }
- 
-+static int init_imx6_hab_get_status(void)
-+{
-+	int ret = 0;
-+
-+	if (!cpu_is_mx6())
-+		/* can happen in multi-image builds and is not an error */
-+		return 0;
-+
-+	ret = imx6_hab_get_status();
-+
-+	/* nobody will check the return value if there were HAB errors, but the
-+	 * initcall will fail spectaculously with a strange error message. */
-+	if (ret == -EPERM)
-+		return 0;
-+	return ret;
-+}
-+/* need to run before MMU setup because i.MX6 ROM code is mapped near 0x0,
-+ * which will no longer be accessible when the MMU sets the zero page to
-+ * faulting. */
-+postconsole_initcall(init_imx6_hab_get_status);
-+
- int imx28_hab_get_status(void)
- {
- 	const struct habv4_rvt *rvt = (void *)HABV4_RVT_IMX28;
- 
- 	return habv4_get_status(rvt);
- }
-+
-+static int init_imx28_hab_get_status(void)
-+{
-+	int ret = 0;
-+
-+	if (!cpu_is_mx28())
-+		/* can happen in multi-image builds and is not an error */
-+		return 0;
-+
-+	ret = imx28_hab_get_status();
-+
-+	/* nobody will check the return value if there were HAB errors, but the
-+	 * initcall will fail spectaculously with a strange error message. */
-+	if (ret == -EPERM)
-+		return 0;
-+	return ret;
-+}
-+/* i.MX28 ROM code can be run after MMU setup to make use of caching */
-+postmmu_initcall(init_imx28_hab_get_status);
--- 
-2.19.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gU29ubnRhZywgZGVuIDI1LjExLjIwMTgsIDIzOjU5ICswMTAwIHNjaHJpZWIgUm9sYW5kIEhp
+ZWJlcjoNCj4gQ3VycmVudGx5LCBib2FyZCBjb2RlIG5lZWRzIHRvIGNhbGwgaGFidjRfZ2V0X3N0
+YXR1cygpIGV4cGxpY2l0ZWx5LCBidXQNCj4gdGhlcmUgaXMgbm8gcmVhc29uIHRoYXQgaXQgY2Fu
+bm90IGJlIGNhbGxlZCBhdXRvbWF0aWNhbGx5IGF0IHN0YXJ0dXANCj4gd2hlbiBIQUJ2NCBpcyBl
+bmFibGVkLiBUaGlzIHdheSB0aGUgY2FsbCBjYW5ub3QgYmUgZm9yZ290dGVuIGFuZCB3ZSBjYW4N
+Cj4gbWFrZSBzdXJlIHRvIHJlcG9ydCBhbGwgcG90ZW50aWFsbHkgb2NjdXJpbmcgSEFCIHdhcm5p
+bmdzIGFuZCBlcnJvcnMuDQpMb29rcyBsaWtlIHRoZSBlYXNpZXIgd2F5LCB0aGFuIHRyeWluZyB0
+byBnZXQgdGhpcyB0byB3b3JrIGFzIGEgY29tbWFuZC4NCkkgaG9wZSBJIGZvdW5kIHNvbWUgdGlt
+ZSB0byB0ZXN0IGl0Lg0KDQpSZWdhcmRzIERlbmlzDQoNCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFJv
+bGFuZCBIaWViZXIgPHIuaGllYmVyQHBlbmd1dHJvbml4LmRlPg0KPiAtLS0NCj4gwqBkcml2ZXJz
+L2hhYi9oYWJ2My5jIHzCoMKgNCArKysrDQo+IMKgZHJpdmVycy9oYWIvaGFidjQuYyB8IDQxICsr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+IMKgMiBmaWxlcyBjaGFu
+Z2VkLCA0NSBpbnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9oYWIvaGFi
+djMuYyBiL2RyaXZlcnMvaGFiL2hhYnYzLmMNCj4gaW5kZXggODJhZTI0NWY4YS4uYzE5MGM3OGQ0
+MCAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9oYWIvaGFidjMuYw0KPiArKysgYi9kcml2ZXJzL2hh
+Yi9oYWJ2My5jDQo+IEBAIC03OCw1ICs3OCw5IEBAIGludCBpbXhfaGFidjNfZ2V0X3N0YXR1cyh1
+aW50MzJfdCBzdGF0dXMpDQo+IMKgDQo+IMKgaW50IGlteDI1X2hhYl9nZXRfc3RhdHVzKHZvaWQp
+DQo+IMKgew0KPiArCWlmICghY3B1X2lzX214MjUoKSkgew0KPiArCQlyZXR1cm4gMDsNCj4gKwl9
+DQo+IMKgCXJldHVybiBpbXhfaGFidjNfZ2V0X3N0YXR1cyhyZWFkbChJT01FTSgweDc4MDAxOGQ0
+KSkpOw0KPiDCoH0NCj4gK3Bvc3RtbXVfaW5pdGNhbGwoaW14MjVfaGFiX2dldF9zdGF0dXMpOw0K
+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9oYWIvaGFidjQuYyBiL2RyaXZlcnMvaGFiL2hhYnY0LmMN
+Cj4gaW5kZXggZTY0ZjM0ODcwZS4uMDlmNTk4NjMxYiAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9o
+YWIvaGFidjQuYw0KPiArKysgYi9kcml2ZXJzL2hhYi9oYWJ2NC5jDQo+IEBAIC0yMCw2ICsyMCw3
+IEBADQo+IMKgDQo+IMKgI2luY2x1ZGUgPGNvbW1vbi5oPg0KPiDCoCNpbmNsdWRlIDxoYWIuaD4N
+Cj4gKyNpbmNsdWRlIDxpbml0Lmg+DQo+IMKgI2luY2x1ZGUgPHR5cGVzLmg+DQo+IMKgDQo+IMKg
+I2luY2x1ZGUgPG1hY2gvZ2VuZXJpYy5oPg0KPiBAQCAtNTAwLDkgKzUwMSw0OSBAQCBpbnQgaW14
+Nl9oYWJfZ2V0X3N0YXR1cyh2b2lkKQ0KPiDCoAlyZXR1cm4gLUVJTlZBTDsNCj4gwqB9DQo+IMKg
+DQo+ICtzdGF0aWMgaW50IGluaXRfaW14Nl9oYWJfZ2V0X3N0YXR1cyh2b2lkKQ0KPiArew0KPiAr
+CWludCByZXQgPSAwOw0KPiArDQo+ICsJaWYgKCFjcHVfaXNfbXg2KCkpDQo+ICsJCS8qIGNhbiBo
+YXBwZW4gaW4gbXVsdGktaW1hZ2UgYnVpbGRzIGFuZCBpcyBub3QgYW4gZXJyb3IgKi8NCj4gKwkJ
+cmV0dXJuIDA7DQo+ICsNCj4gKwlyZXQgPSBpbXg2X2hhYl9nZXRfc3RhdHVzKCk7DQo+ICsNCj4g
+KwkvKiBub2JvZHkgd2lsbCBjaGVjayB0aGUgcmV0dXJuIHZhbHVlIGlmIHRoZXJlIHdlcmUgSEFC
+IGVycm9ycywgYnV0IHRoZQ0KPiArCcKgKiBpbml0Y2FsbCB3aWxsIGZhaWwgc3BlY3RhY3Vsb3Vz
+bHkgd2l0aCBhIHN0cmFuZ2UgZXJyb3IgbWVzc2FnZS4gKi8NCj4gKwlpZiAocmV0ID09IC1FUEVS
+TSkNCj4gKwkJcmV0dXJuIDA7DQo+ICsJcmV0dXJuIHJldDsNCj4gK30NCj4gKy8qIG5lZWQgdG8g
+cnVuIGJlZm9yZSBNTVUgc2V0dXAgYmVjYXVzZSBpLk1YNiBST00gY29kZSBpcyBtYXBwZWQgbmVh
+ciAweDAsDQo+ICsgKiB3aGljaCB3aWxsIG5vIGxvbmdlciBiZSBhY2Nlc3NpYmxlIHdoZW4gdGhl
+IE1NVSBzZXRzIHRoZSB6ZXJvIHBhZ2UgdG8NCj4gKyAqIGZhdWx0aW5nLiAqLw0KPiArcG9zdGNv
+bnNvbGVfaW5pdGNhbGwoaW5pdF9pbXg2X2hhYl9nZXRfc3RhdHVzKTsNCj4gKw0KPiDCoGludCBp
+bXgyOF9oYWJfZ2V0X3N0YXR1cyh2b2lkKQ0KPiDCoHsNCj4gwqAJY29uc3Qgc3RydWN0IGhhYnY0
+X3J2dCAqcnZ0ID0gKHZvaWQgKilIQUJWNF9SVlRfSU1YMjg7DQo+IMKgDQo+IMKgCXJldHVybiBo
+YWJ2NF9nZXRfc3RhdHVzKHJ2dCk7DQo+IMKgfQ0KPiArDQo+ICtzdGF0aWMgaW50IGluaXRfaW14
+MjhfaGFiX2dldF9zdGF0dXModm9pZCkNCj4gK3sNCj4gKwlpbnQgcmV0ID0gMDsNCj4gKw0KPiAr
+CWlmICghY3B1X2lzX214MjgoKSkNCj4gKwkJLyogY2FuIGhhcHBlbiBpbiBtdWx0aS1pbWFnZSBi
+dWlsZHMgYW5kIGlzIG5vdCBhbiBlcnJvciAqLw0KPiArCQlyZXR1cm4gMDsNCj4gKw0KPiArCXJl
+dCA9IGlteDI4X2hhYl9nZXRfc3RhdHVzKCk7DQo+ICsNCj4gKwkvKiBub2JvZHkgd2lsbCBjaGVj
+ayB0aGUgcmV0dXJuIHZhbHVlIGlmIHRoZXJlIHdlcmUgSEFCIGVycm9ycywgYnV0IHRoZQ0KPiAr
+CcKgKiBpbml0Y2FsbCB3aWxsIGZhaWwgc3BlY3RhY3Vsb3VzbHkgd2l0aCBhIHN0cmFuZ2UgZXJy
+b3IgbWVzc2FnZS4gKi8NCj4gKwlpZiAocmV0ID09IC1FUEVSTSkNCj4gKwkJcmV0dXJuIDA7DQo+
+ICsJcmV0dXJuIHJldDsNCj4gK30NCj4gKy8qIGkuTVgyOCBST00gY29kZSBjYW4gYmUgcnVuIGFm
+dGVyIE1NVSBzZXR1cCB0byBtYWtlIHVzZSBvZiBjYWNoaW5nICovDQo+ICtwb3N0bW11X2luaXRj
+YWxsKGluaXRfaW14MjhfaGFiX2dldF9zdGF0dXMpOw0KDQpEaWVobCBDb25uZWN0aXZpdHkgU29s
+dXRpb25zIEdtYkgNCkdlc2Now6RmdHNmw7xocnVuZzogSG9yc3QgTGVvbmJlcmdlcg0KU2l0eiBk
+ZXIgR2VzZWxsc2NoYWZ0OiBOw7xybmJlcmcgLSBSZWdpc3RlcmdlcmljaHQ6IEFtdHNnZXJpY2h0
+DQpOw7xybmJlcmc6IEhSQiAzMjMxNQ0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fDQoNCkRlciBJbmhhbHQgZGVyIHZvcnN0ZWhlbmRlbiBFLU1haWwgaXN0IG5pY2h0
+IHJlY2h0bGljaCBiaW5kZW5kLiBEaWVzZSBFLU1haWwgZW50aGFlbHQgdmVydHJhdWxpY2hlIHVu
+ZC9vZGVyIHJlY2h0bGljaCBnZXNjaHVldHp0ZSBJbmZvcm1hdGlvbmVuLg0KSW5mb3JtaWVyZW4g
+U2llIHVucyBiaXR0ZSwgd2VubiBTaWUgZGllc2UgRS1NYWlsIGZhZWxzY2hsaWNoZXJ3ZWlzZSBl
+cmhhbHRlbiBoYWJlbi4gQml0dGUgbG9lc2NoZW4gU2llIGluIGRpZXNlbSBGYWxsIGRpZSBOYWNo
+cmljaHQuDQpKZWRlIHVuZXJsYXVidGUgRm9ybSBkZXIgUmVwcm9kdWt0aW9uLCBCZWthbm50Z2Fi
+ZSwgQWVuZGVydW5nLCBWZXJ0ZWlsdW5nIHVuZC9vZGVyIFB1Ymxpa2F0aW9uIGRpZXNlciBFLU1h
+aWwgaXN0IHN0cmVuZ3N0ZW5zIHVudGVyc2FndC4NClRoZSBjb250ZW50cyBvZiB0aGUgYWJvdmUg
+bWVudGlvbmVkIGUtbWFpbCBpcyBub3QgbGVnYWxseSBiaW5kaW5nLiBUaGlzIGUtbWFpbCBjb250
+YWlucyBjb25maWRlbnRpYWwgYW5kL29yIGxlZ2FsbHkgcHJvdGVjdGVkIGluZm9ybWF0aW9uLiBQ
+bGVhc2UgaW5mb3JtIHVzIGlmIHlvdSBoYXZlIHJlY2VpdmVkIHRoaXMgZS1tYWlsIGJ5DQptaXN0
+YWtlIGFuZCBkZWxldGUgaXQgaW4gc3VjaCBhIGNhc2UuIEVhY2ggdW5hdXRob3JpemVkIHJlcHJv
+ZHVjdGlvbiwgZGlzY2xvc3VyZSwgYWx0ZXJhdGlvbiwgZGlzdHJpYnV0aW9uIGFuZC9vciBwdWJs
+aWNhdGlvbiBvZiB0aGlzIGUtbWFpbCBpcyBzdHJpY3RseSBwcm9oaWJpdGVkLiANCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
+aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
