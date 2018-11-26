@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gRD27-0000f0-25
+ id 1gRD27-0000f6-3W
  for barebox@lists.infradead.org; Mon, 26 Nov 2018 09:18:25 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Mon, 26 Nov 2018 10:18:01 +0100
-Message-Id: <20181126091807.19398-5-o.rempel@pengutronix.de>
+Date: Mon, 26 Nov 2018 10:18:02 +0100
+Message-Id: <20181126091807.19398-6-o.rempel@pengutronix.de>
 In-Reply-To: <20181126091807.19398-1-o.rempel@pengutronix.de>
 References: <20181126091807.19398-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,44 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 04/10] MIPS: start: preserve DTB pointer for later use
+Subject: [PATCH v1 05/10] MIPS: multiimage: add ENTRY_FUNCTION macros
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-We will get DTB pointer in a0 register. Since a0 is used as argument by
-other functions, we need to preserve it and then pass as argument to the
-main_entry().
-
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/mips/boot/start.S | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/mips/include/asm/asm.h | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/arch/mips/boot/start.S b/arch/mips/boot/start.S
-index e937e89af1..39ac9414d8 100644
---- a/arch/mips/boot/start.S
-+++ b/arch/mips/boot/start.S
-@@ -27,6 +27,10 @@ EXPORT(_start)
+diff --git a/arch/mips/include/asm/asm.h b/arch/mips/include/asm/asm.h
+index 12e17581b8..b9ccccc0cc 100644
+--- a/arch/mips/include/asm/asm.h
++++ b/arch/mips/include/asm/asm.h
+@@ -79,6 +79,35 @@ symbol:		.frame	sp, framesize, rpc
+ 		.globl	symbol;                         \
+ symbol:
  
- 	mips_barebox_10h
- 
-+	/* save dtb pointer */
-+	move	s0, a0
-+	move	s1, a1
++/*
++ * ENTRY_FUNCTION - mark start of entry function
++ */
++#define ENTRY_FUNCTION(symbol)				\
++	.set noreorder;					\
++	.section .text_head_entry.BOARD_PBL_START;	\
++	.align 4;					\
++							\
++EXPORT(symbol)
 +
- 	/* disable watchpoints */
- 	mtc0	zero, CP0_WATCHLO
- 	mtc0	zero, CP0_WATCHHI
-@@ -37,6 +41,9 @@ EXPORT(_start)
- 
- 	stack_setup
- 
-+	/* restore dtb pointer */
-+	move	a0, s0
-+	move	a1, s1
- 	la	v0, main_entry
- 	jal	v0
- 	 nop
++/*
++ * ENTRY_FUNCTION_END - mark end of entry function
++ */
++#define ENTRY_FUNCTION_END(symbol,dtb_start,dtb_end)	\
++	mips_nmon;					\
++	copy_to_link_location	symbol;			\
++	stack_setup;					\
++							\
++	la	a0, dtb_start;				\
++	la	a1, dtb_end;				\
++	la	v0, pbl_main_entry;			\
++	jal	v0;					\
++	 nop;						\
++							\
++	/* No return */					\
++__error:						\
++	b	__error;				\
++	 nop;
++
+ /*
+  * FEXPORT - export definition of a function symbol
+  */
 -- 
 2.19.1
 
