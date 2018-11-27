@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gRZX5-0000iY-Pj
- for barebox@lists.infradead.org; Tue, 27 Nov 2018 09:19:55 +0000
+ id 1gRZX5-0000ia-Pb
+ for barebox@lists.infradead.org; Tue, 27 Nov 2018 09:19:56 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue, 27 Nov 2018 10:19:28 +0100
-Message-Id: <20181127091935.2992-4-o.rempel@pengutronix.de>
+Date: Tue, 27 Nov 2018 10:19:30 +0100
+Message-Id: <20181127091935.2992-6-o.rempel@pengutronix.de>
 In-Reply-To: <20181127091935.2992-1-o.rempel@pengutronix.de>
 References: <20181127091935.2992-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,30 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 03/10] pbl: enable MIPS for PBL_RELOCATABLE
+Subject: [PATCH v3 05/10] MIPS: multiimage: add ENTRY_FUNCTION macros
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-it is needed for multiimage support
-
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- pbl/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/include/asm/asm.h | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/pbl/Kconfig b/pbl/Kconfig
-index 117b79dcbd..f2250dd73b 100644
---- a/pbl/Kconfig
-+++ b/pbl/Kconfig
-@@ -35,7 +35,7 @@ config PBL_FORCE_PIGGYDATA_COPY
- if PBL_IMAGE
+diff --git a/arch/mips/include/asm/asm.h b/arch/mips/include/asm/asm.h
+index 12e17581b8..5ead754b13 100644
+--- a/arch/mips/include/asm/asm.h
++++ b/arch/mips/include/asm/asm.h
+@@ -79,6 +79,35 @@ symbol:		.frame	sp, framesize, rpc
+ 		.globl	symbol;                         \
+ symbol:
  
- config PBL_RELOCATABLE
--	depends on ARM
-+	depends on ARM || MIPS
- 	bool "relocatable pbl image"
- 	help
- 	  Generate a pbl binary which can relocate itself during startup to run
++/*
++ * ENTRY_FUNCTION - mark start of entry function
++ */
++#define ENTRY_FUNCTION(symbol)				\
++	.set noreorder;					\
++	.section .text_head_entry.symbol;		\
++	.align 4;					\
++							\
++EXPORT(symbol)
++
++/*
++ * ENTRY_FUNCTION_END - mark end of entry function
++ */
++#define ENTRY_FUNCTION_END(symbol, dtb)			\
++	mips_nmon;					\
++	copy_to_link_location	symbol;			\
++	stack_setup;					\
++							\
++	la	a0, __dtb_ ## dtb##_start;		\
++	la	a1, __dtb_ ## dtb##_end;		\
++	la	v0, pbl_main_entry;			\
++	jal	v0;					\
++	 nop;						\
++							\
++	/* No return */					\
++__error:						\
++	b	__error;				\
++	 nop;
++
+ /*
+  * FEXPORT - export definition of a function symbol
+  */
 -- 
 2.19.1
 
