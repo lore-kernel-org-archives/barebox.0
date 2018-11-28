@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gSHKw-00086i-SK
- for barebox@lists.infradead.org; Thu, 29 Nov 2018 08:06:16 +0000
-Date: Thu, 29 Nov 2018 09:06:03 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181129080603.d47oxk2tek6pbgkj@pengutronix.de>
-References: <20181127160730.20147-1-t.scherer@eckelmann.de>
+ id 1gRwfS-0003Kz-87
+ for barebox@lists.infradead.org; Wed, 28 Nov 2018 10:02:08 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 3C71827E0327
+ for <barebox@lists.infradead.org>; Wed, 28 Nov 2018 11:01:47 +0100 (CET)
+From: Jules Maselbas <jmaselbas@kalray.eu>
+Date: Wed, 28 Nov 2018 11:01:18 +0100
+Message-Id: <20181128100118.28873-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181127160730.20147-1-t.scherer@eckelmann.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,78 +18,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] imd: fix missing error message
-To: "Thorsten K. Scherer" <t.scherer@eckelmann.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Kconfig: Add clocksource menu
+To: barebox@lists.infradead.org
+Cc: cleger@kalray.eu, Jules Maselbas <jmaselbas@kalray.eu>
 
-On Tue, Nov 27, 2018 at 05:07:30PM +0100, Thorsten K. Scherer wrote:
-> imd -t just returns 'imd: error 61', if there is not tag for <type>
-> =
+Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+---
+ drivers/clocksource/Kconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> reference: common/imd.c:357 if (!imd) { ...
-> Signed-off-by: Thorsten K. Scherer <t.scherer@eckelmann.de>
-> ---
->  common/misc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index 3caf72503..02659d86a 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -1,3 +1,5 @@
++menu "Clocksource"
++
+ config ARCH_HAS_IMX_GPT
+        bool
+ 
+@@ -80,3 +82,5 @@ config CLOCKSOURCE_ARM_GLOBAL_TIMER
+ config CLOCKSOURCE_IMX_GPT
+ 	def_bool y
+ 	depends on ARCH_HAS_IMX_GPT
++
++endmenu
+-- 
+2.19.1.1052.gd166e6a
 
-Applied, thanks
-
-Sascha
-
-> =
-
-> diff --git a/common/misc.c b/common/misc.c
-> index 665f72be7..66aba534f 100644
-> --- a/common/misc.c
-> +++ b/common/misc.c
-> @@ -67,11 +67,11 @@ const char *strerror(int errnum)
->  	case	ETIMEDOUT	: str =3D "Connection timed out"; break;
->  	case	EPROBE_DEFER	: str =3D "Requested probe deferral"; break;
->  	case	ELOOP		: str =3D "Too many symbolic links encountered"; break;
-> +	case	ENODATA		: str =3D "No data available"; break;
->  #if 0 /* These are probably not needed */
->  	case	ENOTBLK		: str =3D "Block device required"; break;
->  	case	EFBIG		: str =3D "File too large"; break;
->  	case	EBADSLT		: str =3D "Invalid slot"; break;
-> -	case	ENODATA		: str =3D "No data available"; break;
->  	case	ETIME		: str =3D "Timer expired"; break;
->  	case	ENONET		: str =3D "Machine is not on the network"; break;
->  	case	EADV		: str =3D "Advertise error"; break;
-> -- =
-
-> 2.19.1
-> =
-
-> =
-
-> -- =
-
-> Eckelmann AG
-> Vorstand: Dipl.-Ing. Peter Frankenbach (Sprecher) Dipl.-Wi.-Ing. Philipp =
-Eckelmann
-> Dr.-Ing. Marco M=FCnchhof Dr.-Ing. Frank Uhlemann
-> Vorsitzender des Aufsichtsrats: Hubertus G. Krossa
-> Stv. Vorsitzender des Aufsichtsrats: Dr.-Ing. Gerd Eckelmann
-> Sitz der Gesellschaft: Berliner Str. 161, 65205 Wiesbaden, Amtsgericht Wi=
-esbaden HRB 12636
-> http://www.eckelmann.de
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
