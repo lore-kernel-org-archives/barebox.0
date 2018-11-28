@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x143.google.com ([2a00:1450:4864:20::143])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gSJJs-0005jA-S8
- for barebox@lists.infradead.org; Thu, 29 Nov 2018 10:13:18 +0000
-Received: by mail-lf1-x143.google.com with SMTP id v5so999046lfe.7
- for <barebox@lists.infradead.org>; Thu, 29 Nov 2018 02:13:06 -0800 (PST)
-Date: Thu, 29 Nov 2018 13:13:02 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20181129131302.410619d147a07360aa68deaa@gmail.com>
-In-Reply-To: <20181129095247.24443-1-antonynpavlov@gmail.com>
-References: <20181129095247.24443-1-antonynpavlov@gmail.com>
-Mime-Version: 1.0
+ id 1gRxu1-0005Eb-H9
+ for barebox@lists.infradead.org; Wed, 28 Nov 2018 11:21:12 +0000
+From: Michael Tretter <m.tretter@pengutronix.de>
+Date: Wed, 28 Nov 2018 12:20:49 +0100
+Message-Id: <20181128112053.6027-1-m.tretter@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,72 +15,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Reply-To: 20181123133553.24761-1-m.tretter@pengutronix.de
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Kconfig: drop duplicate PHYS_ADDR_T_64BIT definitions
-To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH v2 0/4] Xilinx Zynq Ultrascale+ MPSoC support
+To: barebox@lists.infradead.org
+Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-On Thu, 29 Nov 2018 12:52:47 +0300
-Antony Pavlov <antonynpavlov@gmail.com> wrote:
+This is v2 of the series to add support for the Xilinx Zynq Ultrascale+ MPSoC
+platform and the ZCU104 Evaluation Kit.
 
-Please ignore this patch.
+The patch "[PATCH v2 3/4] ARM: aarch64: add ENTRY_PROC macro for arm64"
+probably needs a closer look, as it adds a generic macro that is expected to
+be used by other arm64 architectures as well.
 
-It looks like the patch fails on imx_v8_defconfig build.
+Changelog:
 
+v1 -> v2:
+- move ENTRY_PROC to a more generic location
+- add separate patch for ENTRY_PROC
+- rebase onto piggydata patches
+- remove empty zynqmp.c and board.c
+- use SPDX-License-Identifiers
 
-> PHYS_ADDR_T_64BIT is already defined in common/Kconfig.
-> =
+Michael Tretter (4):
+  ARM: lib64: .gitignore barebox.lds
+  ARM: aarch64: compile with general-regs-only
+  ARM: aarch64: add ENTRY_PROC macro for arm64
+  ARM: zynqmp: add support for Xilinx ZCU104 board
 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  arch/arm/cpu/Kconfig | 3 ---
->  arch/mips/Kconfig    | 3 ---
->  2 files changed, 6 deletions(-)
-> =
+ arch/arm/Kconfig                              | 14 +++++++
+ arch/arm/Makefile                             |  5 +++
+ arch/arm/boards/Makefile                      |  1 +
+ arch/arm/boards/xilinx-zcu104/Makefile        |  1 +
+ arch/arm/boards/xilinx-zcu104/lowlevel.c      | 21 ++++++++++
+ arch/arm/boards/xilinx-zcu104/lowlevel_init.S | 11 ++++++
+ arch/arm/configs/zynqmp_defconfig             | 38 +++++++++++++++++++
+ arch/arm/dts/Makefile                         |  1 +
+ arch/arm/dts/zynqmp-zcu104-revA.dts           | 10 +++++
+ arch/arm/include/asm/barebox-arm64.h          | 34 +++++++++++++++++
+ arch/arm/lib64/.gitignore                     |  1 +
+ arch/arm/mach-zynqmp/Kconfig                  |  9 +++++
+ arch/arm/mach-zynqmp/Makefile                 |  1 +
+ arch/arm/mach-zynqmp/include/mach/debug_ll.h  | 30 +++++++++++++++
+ images/Makefile                               |  1 +
+ images/Makefile.zynqmp                        |  7 ++++
+ 16 files changed, 185 insertions(+)
+ create mode 100644 arch/arm/boards/xilinx-zcu104/Makefile
+ create mode 100644 arch/arm/boards/xilinx-zcu104/lowlevel.c
+ create mode 100644 arch/arm/boards/xilinx-zcu104/lowlevel_init.S
+ create mode 100644 arch/arm/configs/zynqmp_defconfig
+ create mode 100644 arch/arm/dts/zynqmp-zcu104-revA.dts
+ create mode 100644 arch/arm/include/asm/barebox-arm64.h
+ create mode 100644 arch/arm/lib64/.gitignore
+ create mode 100644 arch/arm/mach-zynqmp/Kconfig
+ create mode 100644 arch/arm/mach-zynqmp/Makefile
+ create mode 100644 arch/arm/mach-zynqmp/include/mach/debug_ll.h
+ create mode 100644 images/Makefile.zynqmp
 
-> diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
-> index 2359c56b30..f3b35d19fd 100644
-> --- a/arch/arm/cpu/Kconfig
-> +++ b/arch/arm/cpu/Kconfig
-> @@ -1,8 +1,5 @@
->  comment "Processor Type"
->  =
+-- 
+2.19.1
 
-> -config PHYS_ADDR_T_64BIT
-> -	bool
-> -
->  config CPU_32
->  	bool
->  	select HAS_MODULES
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 524375a81a..75bfcb74e9 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -29,9 +29,6 @@ config GENERIC_LINKER_SCRIPT
->  config HAS_NO_BOARD_HL_CODE
->  	bool
->  =
-
-> -config PHYS_ADDR_T_64BIT
-> -	bool
-> -
->  menu "Machine selection"
->  =
-
->  config BUILTIN_DTB
-> -- =
-
-> 2.20.0.rc1
-> =
-
-
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
