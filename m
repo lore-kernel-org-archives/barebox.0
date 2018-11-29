@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gSibc-0008Gd-UT
- for barebox@lists.infradead.org; Fri, 30 Nov 2018 13:13:20 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
- helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1gSibQ-0003ku-5Q
- for barebox@lists.infradead.org; Fri, 30 Nov 2018 14:13:04 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 30 Nov 2018 14:13:03 +0100
-Message-Id: <20181130131303.2934-6-l.stach@pengutronix.de>
-In-Reply-To: <20181130131303.2934-1-l.stach@pengutronix.de>
-References: <20181130131303.2934-1-l.stach@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gSKfa-0007vP-Gm
+ for barebox@lists.infradead.org; Thu, 29 Nov 2018 11:39:47 +0000
+Received: from unicorn.hi.pengutronix.de
+ ([2001:67c:670:100:a61f:72ff:fe69:16d] helo=unicorn)
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <str@pengutronix.de>) id 1gSKfP-0003hG-1w
+ for barebox@lists.infradead.org; Thu, 29 Nov 2018 12:39:35 +0100
+Received: from str by unicorn with local (Exim 4.89)
+ (envelope-from <str@pengutronix.de>) id 1gSKfO-0001KC-IV
+ for barebox@lists.infradead.org; Thu, 29 Nov 2018 12:39:34 +0100
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Thu, 29 Nov 2018 12:39:28 +0100
+Message-Id: <20181129113931.5045-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -26,40 +28,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] ARM64: backtrace: fix missing prototypes
-To: barebox@lists.infradead.org
+Subject: [PATCH 1/4] net: designware: socfpga: return error value
+To: Barebox List <barebox@lists.infradead.org>
 
-Include header for unwind_backtrace prototype and mark dump_backtrace_entry
-as static.
+Instead of silently dropping the return value of socfpga_dwc_set_phy_mode,
+use it as the return value of the function, instead.
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/lib64/stacktrace.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/designware_socfpga.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/arm/lib64/stacktrace.c b/arch/arm/lib64/stacktrace.c
-index b8352c1454da..43911884466d 100644
---- a/arch/arm/lib64/stacktrace.c
-+++ b/arch/arm/lib64/stacktrace.c
-@@ -11,6 +11,7 @@
+diff --git a/drivers/net/designware_socfpga.c b/drivers/net/designware_socfpga.c
+index cb88882d66a0..ff4b6a565559 100644
+--- a/drivers/net/designware_socfpga.c
++++ b/drivers/net/designware_socfpga.c
+@@ -158,9 +158,7 @@ static int socfpga_dwc_ether_probe(struct device_d *dev)
+ 	if (ret)
+ 		return ret;
  
- #include <common.h>
- #include <asm/stacktrace.h>
-+#include <asm/unwind.h>
- 
- #define THREAD_SIZE 16384
- 
-@@ -45,7 +46,7 @@ int unwind_frame(struct stackframe *frame)
- 	return 0;
+-	socfpga_dwc_set_phy_mode(dwc_dev);
+-
+-	return 0;
++	return socfpga_dwc_set_phy_mode(dwc_dev);
  }
  
--void dump_backtrace_entry(unsigned long where, unsigned long from)
-+static void dump_backtrace_entry(unsigned long where, unsigned long from)
- {
- #ifdef CONFIG_KALLSYMS
- 	printf("[<%08lx>] (%pS) from [<%08lx>] (%pS)\n", where, (void *)where, from, (void *)from);
+ static struct dw_eth_drvdata socfpga_stmmac_drvdata = {
 -- 
-2.19.1
+2.19.2
 
 
 _______________________________________________
