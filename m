@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gSKXB-0003j0-Pr
+ id 1gSKXB-0003iq-RI
  for barebox@lists.infradead.org; Thu, 29 Nov 2018 11:31:09 +0000
 Received: from unicorn.hi.pengutronix.de
  ([2001:67c:670:100:a61f:72ff:fe69:16d] helo=unicorn)
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <str@pengutronix.de>) id 1gSKWz-0001xB-1c
- for barebox@lists.infradead.org; Thu, 29 Nov 2018 12:30:53 +0100
-Received: from str by unicorn with local (Exim 4.89)
- (envelope-from <str@pengutronix.de>) id 1gSKWy-0000Ai-Ad
+ (envelope-from <str@pengutronix.de>) id 1gSKWy-0001wx-B1
  for barebox@lists.infradead.org; Thu, 29 Nov 2018 12:30:52 +0100
+Received: from str by unicorn with local (Exim 4.89)
+ (envelope-from <str@pengutronix.de>) id 1gSKWx-0000AG-TV
+ for barebox@lists.infradead.org; Thu, 29 Nov 2018 12:30:51 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Thu, 29 Nov 2018 12:30:42 +0100
-Message-Id: <20181129113048.31857-10-s.trumtrar@pengutronix.de>
+Date: Thu, 29 Nov 2018 12:30:34 +0100
+Message-Id: <20181129113048.31857-2-s.trumtrar@pengutronix.de>
 In-Reply-To: <20181129113048.31857-1-s.trumtrar@pengutronix.de>
 References: <20181129113048.31857-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
@@ -30,48 +30,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/15] scripts: link-barebox: force error on kallsyms failure
+Subject: [PATCH 01/15] Makefile: replace LINUXINCLUDE with BAREBOXINCLUDE
 To: Barebox List <barebox@lists.infradead.org>
-
-Based on linux v4.5 patch: a043934207c5eb271deeaed2e9bd019c3be92cad
-
-    scripts/link-vmlinux.sh: force error on kallsyms failure
-
-    Since the output of the invocation of scripts/kallsyms is piped directly
-    into the assembler, error messages it emits are visible on stderr, but
-    a non-zero return code is ignored, and the build simply proceeds in that
-    case. However, the resulting kernel is most likely broken, and will crash
-    at boot.
-
-    So instead, capture the output of kallsyms in a separate .S file, and pass
-    that to the assembler in a separate step.
-
-    Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-    Signed-off-by: Michal Marek <mmarek@suse.com>
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- scripts/link-barebox.sh | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ Makefile | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/link-barebox.sh b/scripts/link-barebox.sh
-index bff2363a19d5..20375792a7f7 100755
---- a/scripts/link-barebox.sh
-+++ b/scripts/link-barebox.sh
-@@ -94,9 +94,10 @@ kallsyms()
- 	local aflags="${AFLAGS} ${AFLAGS_KERNEL}			\
- 		      ${NOSTDINC_FLAGS} ${BAREBOXINCLUDE} ${CPPFLAGS}"
+diff --git a/Makefile b/Makefile
+index 10e1b74a6d60..dedb16d60069 100644
+--- a/Makefile
++++ b/Makefile
+@@ -295,15 +295,15 @@ LDFLAGS_MODULE  = -T common/module.lds
+ # even be read-only.
+ export MODVERDIR := $(if $(KBUILD_EXTMOD),$(firstword $(KBUILD_EXTMOD))/).tmp_versions
  
--	${NM} -n ${1} | \
--		${KALLSYMS} ${kallsymopt} | \
--		${CC} ${aflags} -c -o ${2} -x assembler-with-cpp -
-+	local afile="`basename ${2} .o`.S"
-+
-+	${NM} -n ${1} | ${KALLSYMS} ${kallsymopt} > ${afile}
-+	${CC} ${aflags} -c -o ${2} -x assembler-with-cpp ${afile}
- }
+-# Use LINUXINCLUDE when you must reference the include/ directory.
++# Use BAREBOXINCLUDE when you must reference the include/ directory.
+ # Needed to be compatible with the O= option
+-LINUXINCLUDE    := -Iinclude -I$(srctree)/dts/include \
++BAREBOXINCLUDE    := -Iinclude -I$(srctree)/dts/include \
+                    $(if $(KBUILD_SRC), -I$(srctree)/include) \
+ 		   -I$(srctree)/arch/$(ARCH)/include \
+ 		   -I$(objtree)/arch/$(ARCH)/include \
+                    -include $(srctree)/include/linux/kconfig.h
  
- # Create map file with all symbols from ${1}
+-CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(LINUXINCLUDE) -fno-builtin -ffreestanding
++CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(BAREBOXINCLUDE) -fno-builtin -ffreestanding
+ 
+ CFLAGS          := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+                    -Werror-implicit-function-declaration \
+@@ -324,7 +324,7 @@ export ARCH SRCARCH CONFIG_SHELL HOSTCC HOSTCFLAGS CROSS_COMPILE AS LD CC
+ export CPP AR NM STRIP OBJCOPY OBJDUMP MAKE AWK GENKSYMS PERL UTS_MACHINE
+ export HOSTCXX HOSTCXXFLAGS HOSTLDFLAGS HOST_LOADLIBES LDFLAGS_MODULE CHECK CHECKFLAGS
+ 
+-export CPPFLAGS NOSTDINC_FLAGS LINUXINCLUDE OBJCOPYFLAGS LDFLAGS
++export CPPFLAGS NOSTDINC_FLAGS BAREBOXINCLUDE OBJCOPYFLAGS LDFLAGS
+ export CFLAGS CFLAGS_KERNEL
+ export AFLAGS AFLAGS_KERNEL
+ export LDFLAGS_barebox
 -- 
 2.19.2
 
