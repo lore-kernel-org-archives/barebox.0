@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gSKXB-0003iv-OB
- for barebox@lists.infradead.org; Thu, 29 Nov 2018 11:31:07 +0000
+ id 1gSKXB-0003it-Rp
+ for barebox@lists.infradead.org; Thu, 29 Nov 2018 11:31:09 +0000
 Received: from unicorn.hi.pengutronix.de
  ([2001:67c:670:100:a61f:72ff:fe69:16d] helo=unicorn)
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <str@pengutronix.de>) id 1gSKWy-0001x3-Id
+ (envelope-from <str@pengutronix.de>) id 1gSKWy-0001x2-DJ
  for barebox@lists.infradead.org; Thu, 29 Nov 2018 12:30:52 +0100
 Received: from str by unicorn with local (Exim 4.89)
- (envelope-from <str@pengutronix.de>) id 1gSKWy-0000AS-3K
+ (envelope-from <str@pengutronix.de>) id 1gSKWy-0000AP-1z
  for barebox@lists.infradead.org; Thu, 29 Nov 2018 12:30:52 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Thu, 29 Nov 2018 12:30:38 +0100
-Message-Id: <20181129113048.31857-6-s.trumtrar@pengutronix.de>
+Date: Thu, 29 Nov 2018 12:30:37 +0100
+Message-Id: <20181129113048.31857-5-s.trumtrar@pengutronix.de>
 In-Reply-To: <20181129113048.31857-1-s.trumtrar@pengutronix.de>
 References: <20181129113048.31857-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
@@ -30,70 +30,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/15] debug: Add CONFIG_DEBUG_READABLE_ASM
+Subject: [PATCH 04/15] scripts/Kbuild.include: replace KBUILD_CPPFLAGS with
+ CPPFLAGS
 To: Barebox List <barebox@lists.infradead.org>
 
-Based on linux v3.3 patch: 1873e870fd63ee4b87dbe0125ca373e420fb4987
-
-    debug: Add CONFIG_READABLE_ASM
-
-    Add a config option to disable various gcc compiler optimizations that
-    make assembler listings much harder to read. This is everything that reorders
-    code significantly or creates partial functions.
-
-    This is mainly to keep kernel hackers sane.
-
-    Signed-off-by: Andi Kleen <ak@linux.intel.com>
-    Link: http://lkml.kernel.org/r/1332960678-11879-2-git-send-email-andi@firstfloor.org
-    Signed-off-by: H. Peter Anvin <hpa@zytor.com>
+The barebox Makefiles do not use KBUILD_CPPFLAGS but CPPFLAGS as variable name.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- Makefile       | 11 +++++++++++
- common/Kconfig |  8 ++++++++
- 2 files changed, 19 insertions(+)
+ scripts/Kbuild.include | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index cddff1267972..ee6c8fc82d5a 100644
---- a/Makefile
-+++ b/Makefile
-@@ -478,6 +478,17 @@ CFLAGS += $(call cc-option,-Wdeclaration-after-statement,)
- # disable pointer signed / unsigned warnings in gcc 4.0
- CFLAGS += $(call cc-option,-Wno-pointer-sign,)
+diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
+index e62bd35692d0..0cb3a70a6a42 100644
+--- a/scripts/Kbuild.include
++++ b/scripts/Kbuild.include
+@@ -111,12 +111,12 @@ as-instr = $(call try-run,\
+ # Usage: cflags-y += $(call cc-option,-march=winchip-c6,-march=i586)
  
-+ifdef CONFIG_DEBUG_READABLE_ASM
-+# Disable optimizations that make assembler listings hard to read.
-+# reorder blocks reorders the control in the function
-+# ipa clone creates specialized cloned functions
-+# partial inlining inlines only parts of functions
-+CFLAGS += $(call cc-option,-fno-reorder-blocks,) \
-+          $(call cc-option,-fno-ipa-cp-clone,) \
-+          $(call cc-option,-fno-partial-inlining)
-+endif
-+
-+
- # KBUILD_IMAGE: Default barebox image to build
- # Depending on the architecture, this can be either compressed or not.
- # It will also include any necessary headers to be bootable.
-diff --git a/common/Kconfig b/common/Kconfig
-index 2ad92158c145..c97beea81513 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1228,6 +1228,14 @@ config DEBUG_INITCALLS
- 	help
- 	  If enabled this will print initcall traces.
+ cc-option = $(call try-run,\
+-	$(CC) $(KBUILD_CPPFLAGS) $(CFLAGS) $(1) -c -xc /dev/null -o "$$TMP",$(1),$(2))
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(1) -c -xc /dev/null -o "$$TMP",$(1),$(2))
  
-+config DEBUG_READABLE_ASM
-+        bool "Generate readable assembler code"
-+        help
-+          Disable some compiler optimizations that tend to generate human unreadable
-+          assembler output. This may make the kernel slightly slower, but it helps
-+          to keep kernel developers who have to stare a lot at assembler listings
-+          sane.
-+
- endmenu
+ # cc-option-yn
+ # Usage: flag := $(call cc-option-yn,-march=winchip-c6)
+ cc-option-yn = $(call try-run,\
+-	$(CC) $(KBUILD_CPPFLAGS) $(CFLAGS) $(1) -c -xc /dev/null -o "$$TMP",y,n)
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(1) -c -xc /dev/null -o "$$TMP",y,n)
  
- config HAS_DEBUG_LL
+ # cc-option-align
+ # Prefix align with either -falign or -malign
+@@ -126,7 +126,7 @@ cc-option-align = $(subst -functions=0,,\
+ # cc-disable-warning
+ # Usage: cflags-y += $(call cc-disable-warning,unused-but-set-variable)
+ cc-disable-warning = $(call try-run,\
+-	$(CC) $(KBUILD_CPPFLAGS) $(CFLAGS) -W$(strip $(1)) -c -xc /dev/null -o "$$TMP",-Wno-$(strip $(1)))
++	$(CC) $(CPPFLAGS) $(CFLAGS) -W$(strip $(1)) -c -xc /dev/null -o "$$TMP",-Wno-$(strip $(1)))
+ 
+ # cc-version
+ # Usage gcc-ver := $(call cc-version)
 -- 
 2.19.2
 
