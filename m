@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gS2Fx-0000x2-Oa
- for barebox@lists.infradead.org; Wed, 28 Nov 2018 16:00:13 +0000
-Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
- (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
- id S23993903AbeK1P7vb18yf (ORCPT
- <rfc822;barebox@lists.infradead.org>);
- Wed, 28 Nov 2018 16:59:51 +0100
-Date: Wed, 28 Nov 2018 16:59:48 +0100
-From: Ladislav Michl <ladis@linux-mips.org>
-Message-ID: <20181128155948.GA24013@lenoch>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gSK2y-0005y3-Vo
+ for barebox@lists.infradead.org; Thu, 29 Nov 2018 10:59:55 +0000
+Date: Thu, 29 Nov 2018 11:59:41 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20181129105941.5n424vfjiw6e7s5j@pengutronix.de>
 References: <1543416825.5085.11.camel@erwinrol.com>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -31,6 +26,8 @@ Subject: Re: imx6ul (phytec Segin board) USB/DFU
 To: Erwin Rol <mailinglists@erwinrol.com>
 Cc: Barebox List <barebox@lists.infradead.org>
 
+Hi Erwin,
+
 On Wed, Nov 28, 2018 at 03:53:45PM +0100, Erwin Rol wrote:
 > Hallo All,
 > 
@@ -45,59 +42,27 @@ On Wed, Nov 28, 2018 at 03:53:45PM +0100, Erwin Rol wrote:
 > 
 > But I can't get it to work, I assume USB device mode setup is missing
 > from the board setup, but I can't really find info on how to add it.
-> 
-> Any hints are very welcome.
 
-For custom AT91 based board I did:
+First check the dr_mode property in you OTG device tree node. It should
+be either "peripheral" or "otg". If it's "otg" then you have to do a
+otg.mode=peripheral on the command line for your device to show up.
 
-$ cat arch/arm/boards/simear4/env/nv/usbgadget.dfu_function 
-/dev/dataflash0.at91bootstrap(bootstrap)sr,/dev/dataflash0.barebox(bootloader)sr,/dev/nand0.bb(system)ru
-EOF
+Note that newer versions of dfu-util do not work with barebox. I never
+tracked this down unfortunately. More specifically this one is the
+evil commit:
 
-$ cat arch/arm/boards/simear4/env/init/usbgadget 
-#!/bin/sh
+commit 377f6f136d3369529f44578acaeee82d7c7d7af9 (breaks-barebox,
+refs/bisect/bad)
+Author: Paul Fertser <fercerpav@gmail.com>
+Date:   Sun Aug 10 14:26:05 2014 +0400
 
-if [ ${fffa4000.gadget@fffa4000.vbus} != 1 ]
-then
-	echo "No USB Device cable plugged, normal boot"
-	exit 0
-fi
+Sascha
 
-echo "USB Device cable plugged, waiting for DFU button"
-
-global.autoboot_timeout=60
-
-dfu_button=79
-dfu=0
-
-if gpio_get_value ${dfu_button}
-then
-	dfu=1
-else
-	timeout -s -a 1
-	if gpio_get_value ${dfu_button}
-	then
-		dfu=1
-	fi
-fi
-
-if [ ${dfu} -eq 1 ]
-then
-	led green 1
-	led red 1
-	echo "Activating DFU"
-	usbgadget -a -D
-else
-	led green 1
-	echo "Activating USB console"
-	usbgadget -a
-fi
-EOF
-
-Note that current DFU implemetation does not follow DFU 1.1 specification,
-that's something courious reader should fix ;-)
-
-	ladis
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
