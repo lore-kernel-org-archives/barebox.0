@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf1-x143.google.com ([2a00:1450:4864:20::143])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gSHLs-0008EP-8t
- for barebox@lists.infradead.org; Thu, 29 Nov 2018 08:07:13 +0000
-Date: Thu, 29 Nov 2018 09:07:00 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181129080700.wav4b2tbk3l5sh43@pengutronix.de>
-References: <20181128100118.28873-1-jmaselbas@kalray.eu>
+ id 1gSJ0U-0007Fx-WC
+ for barebox@lists.infradead.org; Thu, 29 Nov 2018 09:53:16 +0000
+Received: by mail-lf1-x143.google.com with SMTP id p17so961271lfh.4
+ for <barebox@lists.infradead.org>; Thu, 29 Nov 2018 01:53:03 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 29 Nov 2018 12:52:47 +0300
+Message-Id: <20181129095247.24443-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181128100118.28873-1-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,52 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Kconfig: Add clocksource menu
-To: Jules Maselbas <jmaselbas@kalray.eu>
-Cc: cleger@kalray.eu, barebox@lists.infradead.org
+Subject: [PATCH] Kconfig: drop duplicate PHYS_ADDR_T_64BIT definitions
+To: barebox@lists.infradead.org
 
-On Wed, Nov 28, 2018 at 11:01:18AM +0100, Jules Maselbas wrote:
-> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
-> ---
->  drivers/clocksource/Kconfig | 4 ++++
->  1 file changed, 4 insertions(+)
+PHYS_ADDR_T_64BIT is already defined in common/Kconfig.
 
-Appliedm, thanks
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/arm/cpu/Kconfig | 3 ---
+ arch/mips/Kconfig    | 3 ---
+ 2 files changed, 6 deletions(-)
 
-Sascha
-
-> 
-> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-> index 3caf72503..02659d86a 100644
-> --- a/drivers/clocksource/Kconfig
-> +++ b/drivers/clocksource/Kconfig
-> @@ -1,3 +1,5 @@
-> +menu "Clocksource"
-> +
->  config ARCH_HAS_IMX_GPT
->         bool
->  
-> @@ -80,3 +82,5 @@ config CLOCKSOURCE_ARM_GLOBAL_TIMER
->  config CLOCKSOURCE_IMX_GPT
->  	def_bool y
->  	depends on ARCH_HAS_IMX_GPT
-> +
-> +endmenu
-> -- 
-> 2.19.1.1052.gd166e6a
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index 2359c56b30..f3b35d19fd 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -1,8 +1,5 @@
+ comment "Processor Type"
+ 
+-config PHYS_ADDR_T_64BIT
+-	bool
+-
+ config CPU_32
+ 	bool
+ 	select HAS_MODULES
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 524375a81a..75bfcb74e9 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -29,9 +29,6 @@ config GENERIC_LINKER_SCRIPT
+ config HAS_NO_BOARD_HL_CODE
+ 	bool
+ 
+-config PHYS_ADDR_T_64BIT
+-	bool
+-
+ menu "Machine selection"
+ 
+ config BUILTIN_DTB
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.0.rc1
+
 
 _______________________________________________
 barebox mailing list
