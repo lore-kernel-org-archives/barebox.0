@@ -1,13 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x142.google.com ([2a00:1450:4864:20::142])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gSUaG-0003Bk-Et
- for barebox@lists.infradead.org; Thu, 29 Nov 2018 22:14:57 +0000
-Received: by mail-lf1-x142.google.com with SMTP id f23so2634993lfc.13
- for <barebox@lists.infradead.org>; Thu, 29 Nov 2018 14:14:45 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 30 Nov 2018 01:14:28 +0300
-Message-Id: <20181129221428.4505-1-antonynpavlov@gmail.com>
+ id 1gSKXB-0003ip-Nw
+ for barebox@lists.infradead.org; Thu, 29 Nov 2018 11:31:07 +0000
+Received: from unicorn.hi.pengutronix.de
+ ([2001:67c:670:100:a61f:72ff:fe69:16d] helo=unicorn)
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <str@pengutronix.de>) id 1gSKWy-0001ww-8F
+ for barebox@lists.infradead.org; Thu, 29 Nov 2018 12:30:52 +0100
+Received: from str by unicorn with local (Exim 4.89)
+ (envelope-from <str@pengutronix.de>) id 1gSKWx-0000AE-RF
+ for barebox@lists.infradead.org; Thu, 29 Nov 2018 12:30:51 +0100
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Thu, 29 Nov 2018 12:30:33 +0100
+Message-Id: <20181129113048.31857-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,177 +28,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] kconfig: include common Kconfig files from top-level Kconfig
-To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH 00/15] Makefile: sync with linux v4.13 and add thin archives
+ support
+To: Barebox List <barebox@lists.infradead.org>
 
-Based on this linux kernel commit:
+Hi!
 
-> commit 1572497cb0e6d2016078bc9d5a95786bb878389f
-> Author: Christoph Hellwig <hch@lst.de>
-> Date:   Tue Jul 31 13:39:30 2018 +0200
->
->     kconfig: include common Kconfig files from top-level Kconfig
+This series synchronizes parts of the Makefile with Linux v4.13 and adds
+scripts/link-barebox.sh. Finally support for thin archives is added.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- Kconfig               | 8 ++++++++
- arch/arm/Kconfig      | 9 ---------
- arch/blackfin/Kconfig | 8 --------
- arch/mips/Kconfig     | 8 --------
- arch/nios2/Kconfig    | 8 --------
- arch/openrisc/Kconfig | 8 --------
- arch/ppc/Kconfig      | 7 -------
- arch/sandbox/Kconfig  | 8 --------
- arch/x86/Kconfig      | 8 --------
- 9 files changed, 8 insertions(+), 64 deletions(-)
+This support is mainly needed for socfpga-xload, because now all unneeded
+objects are discarded and the xloader files do not blow up in size once
+multiple boards are selected at the same time.
+As is also speeds up the build time a little bit and shouldn't break
+anything (hopefully), it is selected for all ARM platforms.
 
-diff --git a/Kconfig b/Kconfig
-index 197dd1c4b3..5c99e666c0 100644
---- a/Kconfig
-+++ b/Kconfig
-@@ -10,4 +10,12 @@ config SRCARCH
- 
- source "arch/$SRCARCH/Kconfig"
- 
-+source common/Kconfig
-+source commands/Kconfig
-+source net/Kconfig
-+source drivers/Kconfig
-+source fs/Kconfig
-+source lib/Kconfig
-+source crypto/Kconfig
-+source firmware/Kconfig
- source "scripts/Kconfig"
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 3b486f7b8b..cdc22efdeb 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -412,12 +412,3 @@ config ARM_PSCI_DEBUG
- 	  Only use for debugging.
- 
- endmenu
--
--source common/Kconfig
--source commands/Kconfig
--source net/Kconfig
--source drivers/Kconfig
--source fs/Kconfig
--source lib/Kconfig
--source crypto/Kconfig
--source firmware/Kconfig
-diff --git a/arch/blackfin/Kconfig b/arch/blackfin/Kconfig
-index 6233614e19..c9b5512c0a 100644
---- a/arch/blackfin/Kconfig
-+++ b/arch/blackfin/Kconfig
-@@ -64,11 +64,3 @@ config BFIN_BOOT_FLASH16
- 	  blackfin is strapped to boot from 16bit wide flash via boot ROM
- 
- endchoice
--
--source common/Kconfig
--source commands/Kconfig
--source net/Kconfig
--source drivers/Kconfig
--source fs/Kconfig
--source lib/Kconfig
--source crypto/Kconfig
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 524375a81a..7c40991cab 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -353,11 +353,3 @@ config MIPS_OPTIMIZED_STRING_FUNCTIONS
- 	  increase your binary size.
- 
- endmenu
--
--source common/Kconfig
--source commands/Kconfig
--source net/Kconfig
--source drivers/Kconfig
--source fs/Kconfig
--source lib/Kconfig
--source crypto/Kconfig
-diff --git a/arch/nios2/Kconfig b/arch/nios2/Kconfig
-index 199540ba74..c7c13a464b 100644
---- a/arch/nios2/Kconfig
-+++ b/arch/nios2/Kconfig
-@@ -27,11 +27,3 @@ config EARLY_PRINTF
- 	bool "Enable early printf functions"
- 
- endmenu
--
--source common/Kconfig
--source commands/Kconfig
--source net/Kconfig
--source drivers/Kconfig
--source fs/Kconfig
--source lib/Kconfig
--source crypto/Kconfig
-diff --git a/arch/openrisc/Kconfig b/arch/openrisc/Kconfig
-index 2a8abf0ff8..32d23029d8 100644
---- a/arch/openrisc/Kconfig
-+++ b/arch/openrisc/Kconfig
-@@ -27,11 +27,3 @@ config GENERIC
- 	select OPENRISC
- 
- endchoice
--
--source common/Kconfig
--source commands/Kconfig
--source net/Kconfig
--source drivers/Kconfig
--source fs/Kconfig
--source lib/Kconfig
--source crypto/Kconfig
-diff --git a/arch/ppc/Kconfig b/arch/ppc/Kconfig
-index 97e6c00689..7a45ced7cd 100644
---- a/arch/ppc/Kconfig
-+++ b/arch/ppc/Kconfig
-@@ -20,10 +20,3 @@ endchoice
- 
- source arch/ppc/mach-mpc5xxx/Kconfig
- source arch/ppc/mach-mpc85xx/Kconfig
--source common/Kconfig
--source commands/Kconfig
--source net/Kconfig
--source drivers/Kconfig
--source fs/Kconfig
--source lib/Kconfig
--source crypto/Kconfig
-diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
-index 3f1cefb837..5227cb624f 100644
---- a/arch/sandbox/Kconfig
-+++ b/arch/sandbox/Kconfig
-@@ -15,11 +15,3 @@ config LINUX
- 
- config ARCH_LINUX
- 	bool
--
--source common/Kconfig
--source commands/Kconfig
--source net/Kconfig
--source drivers/Kconfig
--source fs/Kconfig
--source lib/Kconfig
--source crypto/Kconfig
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 52ccf4894f..3f91585d02 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -97,11 +97,3 @@ endchoice
- 
- source arch/x86/boot/Kconfig
- source arch/x86/mach-i386/Kconfig
--
--source common/Kconfig
--source commands/Kconfig
--source net/Kconfig
--source drivers/Kconfig
--source fs/Kconfig
--source lib/Kconfig
--source crypto/Kconfig
+Compile tested for socfpga(-xload)_defconfig and imx_v7_defconfig
+Tested on the socrates board.
+
+Please test if this breaks anything for your hardware or not.
+
+Steffen Trumtrar (15):
+  Makefile: replace LINUXINCLUDE with BAREBOXINCLUDE
+  Makefile: Correctly deal with make options which contain an "s"
+  scripts/Kbuild.include: Fix portability problem of "echo -e"
+  scripts/Kbuild.include: replace KBUILD_CPPFLAGS with CPPFLAGS
+  debug: Add CONFIG_DEBUG_READABLE_ASM
+  Makefile: improve line wrapping
+  Makefile: link of barebox moved to script
+  scripts: link-barebox: fix bash-ism
+  scripts: link-barebox: force error on kallsyms failure
+  scripts: link-barebox: allow architectures to use thin archives
+    instead of ld -r
+  scripts: link-barebox: kallsyms allow 3-pass generation
+  scripts: link-barebox: minor improvement for thin archives build
+  scripts: link-barebox: close thin archives --whole-archives option
+  scripts: link-barebox: thin archives use P option to ar
+  ARM: Kconfig: select THIN_ARCHIVES for ARM
+
+ Makefile                | 221 +++++++---------------------------
+ arch/arm/Kconfig        |   1 +
+ common/Kconfig          |  14 +++
+ scripts/Kbuild.include  |   8 +-
+ scripts/Makefile.build  |  30 ++++-
+ scripts/link-barebox.sh | 259 ++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 345 insertions(+), 188 deletions(-)
+ create mode 100755 scripts/link-barebox.sh
+
 -- 
-2.20.0.rc1
+2.19.2
 
 
 _______________________________________________
