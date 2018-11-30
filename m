@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gSfJN-0002Yi-Ga
- for barebox@lists.infradead.org; Fri, 30 Nov 2018 09:42:15 +0000
-Received: by mail-lf1-x12d.google.com with SMTP id v5so3616741lfe.7
- for <barebox@lists.infradead.org>; Fri, 30 Nov 2018 01:42:02 -0800 (PST)
-Date: Fri, 30 Nov 2018 12:41:58 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20181130124158.9421f5fe32593037ec3671a8@gmail.com>
-In-Reply-To: <20181130074626.aqk52vvo2j26dkor@pengutronix.de>
-References: <20181127091935.2992-1-o.rempel@pengutronix.de>
- <20181130074626.aqk52vvo2j26dkor@pengutronix.de>
-Mime-Version: 1.0
+ id 1gSibb-00075r-HR
+ for barebox@lists.infradead.org; Fri, 30 Nov 2018 13:13:25 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1gSibP-0003ku-TE
+ for barebox@lists.infradead.org; Fri, 30 Nov 2018 14:13:03 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Fri, 30 Nov 2018 14:12:58 +0100
+Message-Id: <20181130131303.2934-1-l.stach@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,215 +20,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 00/10] MIPS: migrate to multiimage support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org
+Subject: [PATCH 1/6] ARM: mmu64: include dma.h
+To: barebox@lists.infradead.org
 
-On Fri, 30 Nov 2018 08:46:26 +0100
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+dma.h provides the prototypes for the different dma_alloc_* functions,
+so we should include it to make sure the prototypes are consistent.
 
-> Hi Oleksij, Antony,
-> =
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/cpu/mmu_64.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> I am fine with this series. Antony, is it ok for you adwell?
+diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+index 69d1b20718f7..99ddd5a441b9 100644
+--- a/arch/arm/cpu/mmu_64.c
++++ b/arch/arm/cpu/mmu_64.c
+@@ -19,6 +19,7 @@
+ #define pr_fmt(fmt)	"mmu: " fmt
+ 
+ #include <common.h>
++#include <dma.h>
+ #include <dma-dir.h>
+ #include <init.h>
+ #include <mmu.h>
+-- 
+2.19.1
 
-I have not tested v3 patchseries yet.
-
-I suppose to test v3 patchseries on several ar9331 boards this weekend.
-
-> I would merge it to next after the coming release since it depends on
-> the pbl-piggydata series which currently sits in the i.MX branch where
-> it already doesn't belong to.
-> =
-
-> Sascha
-> =
-
-> On Tue, Nov 27, 2018 at 10:19:25AM +0100, Oleksij Rempel wrote:
-> > 20181127 v3:
-> > - remove ENTRY(pbl_start)
-> > - rework ENTRY_FUNCTION, ENTRY_FUNCTION_END
-> > - move HAVE_PBL_MULTI_IMAGES to the CONFIG_MIPS
-> > - remove arch/mips/boot/start-pbl.S
-> > =
-
-> > 20181127 v2:
-> > - rebase against latest next
-> > - fix trailing spaces in arch/mips/dts/Makefile
-> > =
-
-> > 20181126 v1:
-> > This patch series is a huge move to a multiimage support.
-> > As long as we do not have lots of boards, it is better to do it now.
-> > The most painful patch is "MIPS: port all mach* to multiimage", since
-> > it was too hard to split the work to multiple step, it is all-in-one
-> > patch. I hope my children will forgive me this... ;)
-> > =
-
-> > Oleksij Rempel (10):
-> >   images: piggy: use "a" instead of #alloc flag
-> >   MIPS: add arch/mips/lib/pbl.lds.S
-> >   pbl: enable MIPS for PBL_RELOCATABLE
-> >   MIPS: start: preserve DTB pointer for later use
-> >   MIPS: multiimage: add ENTRY_FUNCTION macros
-> >   MIPS: mutliimage: pass devicetree from PBL to the main_entry
-> >   MIPS: put main_entry to __bare_init section
-> >   MIPS: port all mach* to multiimage
-> >   MIPS: remove HAS_NO_BOARD_HL_CODE support
-> >   MIPS: remove useless board files
-> > =
-
-> >  arch/mips/Kconfig                             |  7 +-
-> >  arch/mips/Makefile                            | 30 +------
-> >  arch/mips/boards/8devices-lima/Makefile       |  1 +
-> >  .../board/board_pbl_start.h =3D> lowlevel.S}    | 26 ++----
-> >  arch/mips/boards/Makefile                     | 11 +++
-> >  arch/mips/boards/black-swift/Makefile         |  2 +-
-> >  arch/mips/boards/black-swift/board.c          | 27 ------
-> >  .../board/board_pbl_start.h =3D> lowlevel.S}    | 16 ++--
-> >  .../boards/dptechnics-dpt-module/Makefile     |  1 +
-> >  .../board/board_pbl_start.h =3D> lowlevel.S}    | 13 +--
-> >  arch/mips/boards/img-ci20/Makefile            |  2 +-
-> >  arch/mips/boards/img-ci20/board.c             | 27 ------
-> >  .../boards/img-ci20/include/board/debug_ll.h  | 23 -----
-> >  .../board/board_pbl_start.h =3D> lowlevel.S}    | 13 +--
-> >  arch/mips/boards/loongson-ls1b/Makefile       |  2 +-
-> >  .../board/board_pbl_start.h =3D> lowlevel.S}    | 13 +--
-> >  arch/mips/boards/loongson-ls1b/serial.c       | 10 ---
-> >  arch/mips/boards/netgear-wg102/Makefile       |  1 +
-> >  .../board/board_pbl_start.h =3D> lowlevel.S}    | 20 +++--
-> >  arch/mips/boards/qemu-malta/Makefile          |  2 +-
-> >  arch/mips/boards/qemu-malta/init.c            | 29 ------
-> >  .../board/board_pbl_start.h =3D> lowlevel.S}    | 15 ++--
-> >  arch/mips/boards/ritmix-rzx50/Makefile        |  2 +-
-> >  .../ritmix-rzx50/include/board/debug_ll.h     | 23 -----
-> >  .../board/board_pbl_start.h =3D> lowlevel.S}    | 13 +--
-> >  arch/mips/boards/ritmix-rzx50/serial.c        | 27 ------
-> >  arch/mips/boards/tplink-mr3020/Makefile       |  2 +-
-> >  arch/mips/boards/tplink-mr3020/board.c        | 27 ------
-> >  .../board/board_pbl_start.h =3D> lowlevel.S}    | 16 ++--
-> >  arch/mips/boards/tplink-wdr4300/Makefile      |  2 +-
-> >  arch/mips/boards/tplink-wdr4300/board.c       | 28 ------
-> >  .../board/board_pbl_start.h =3D> lowlevel.S}    | 26 ++----
-> >  arch/mips/boot/Makefile                       |  4 +-
-> >  arch/mips/boot/dtb.c                          | 16 +++-
-> >  arch/mips/boot/main_entry-pbl.c               | 15 ++--
-> >  arch/mips/boot/main_entry.c                   | 11 ++-
-> >  arch/mips/boot/start-pbl.S                    | 44 ---------
-> >  arch/mips/boot/start.S                        |  7 ++
-> >  arch/mips/configs/8devices-lima_defconfig     | 83 -----------------
-> >  ...plink-mr3020_defconfig =3D> ath79_defconfig} |  9 +-
-> >  arch/mips/configs/black-swift_defconfig       | 54 -----------
-> >  .../configs/dptechnics-dpt-module_defconfig   | 89 -------------------
-> >  arch/mips/configs/img-ci20_defconfig          | 45 ----------
-> >  arch/mips/configs/qemu-malta_defconfig        | 12 +--
-> >  arch/mips/configs/tplink-wdr4300_defconfig    | 82 -----------------
-> >  ...itmix-rzx50_defconfig =3D> xburst_defconfig} |  8 +-
-> >  arch/mips/dts/Makefile                        | 15 +++-
-> >  arch/mips/include/asm/asm.h                   | 29 ++++++
-> >  arch/mips/lib/pbl.lds.S                       | 53 +++++++++++
-> >  arch/mips/mach-ar231x/include/mach/debug_ll.h |  1 -
-> >  arch/mips/mach-ath79/Kconfig                  | 16 ++--
-> >  arch/mips/mach-ath79/include/mach/debug_ll.h  | 12 ++-
-> >  .../mach-ath79/include/mach/debug_ll_ar9331.h |  2 +-
-> >  .../mach-ath79/include/mach/debug_ll_ar9344.h |  4 +-
-> >  .../mips/mach-ath79/include/mach/pbl_macros.h |  5 +-
-> >  .../mach-loongson/include/mach/debug_ll.h     |  1 -
-> >  arch/mips/mach-malta/Kconfig                  |  9 +-
-> >  arch/mips/mach-malta/include/mach/debug_ll.h  | 10 ++-
-> >  arch/mips/mach-xburst/Kconfig                 | 14 ++-
-> >  arch/mips/mach-xburst/include/mach/debug_ll.h | 14 ++-
-> >  images/Makefile                               |  7 +-
-> >  images/Makefile.ar231x                        |  3 +
-> >  images/Makefile.ath79                         | 20 +++++
-> >  images/Makefile.loongson                      |  3 +
-> >  images/Makefile.malta                         |  3 +
-> >  images/Makefile.xburst                        |  7 ++
-> >  images/piggy.S                                |  2 +-
-> >  pbl/Kconfig                                   |  2 +-
-> >  68 files changed, 354 insertions(+), 814 deletions(-)
-> >  create mode 100644 arch/mips/boards/8devices-lima/Makefile
-> >  rename arch/mips/boards/8devices-lima/{include/board/board_pbl_start.h=
- =3D> lowlevel.S} (78%)
-> >  create mode 100644 arch/mips/boards/Makefile
-> >  delete mode 100644 arch/mips/boards/black-swift/board.c
-> >  rename arch/mips/boards/black-swift/{include/board/board_pbl_start.h =
-=3D> lowlevel.S} (86%)
-> >  create mode 100644 arch/mips/boards/dptechnics-dpt-module/Makefile
-> >  rename arch/mips/boards/dptechnics-dpt-module/{include/board/board_pbl=
-_start.h =3D> lowlevel.S} (59%)
-> >  delete mode 100644 arch/mips/boards/img-ci20/board.c
-> >  delete mode 100644 arch/mips/boards/img-ci20/include/board/debug_ll.h
-> >  rename arch/mips/boards/img-ci20/{include/board/board_pbl_start.h =3D>=
- lowlevel.S} (88%)
-> >  rename arch/mips/boards/loongson-ls1b/{include/board/board_pbl_start.h=
- =3D> lowlevel.S} (86%)
-> >  delete mode 100644 arch/mips/boards/loongson-ls1b/serial.c
-> >  rename arch/mips/boards/netgear-wg102/{include/board/board_pbl_start.h=
- =3D> lowlevel.S} (87%)
-> >  delete mode 100644 arch/mips/boards/qemu-malta/init.c
-> >  rename arch/mips/boards/qemu-malta/{include/board/board_pbl_start.h =
-=3D> lowlevel.S} (94%)
-> >  delete mode 100644 arch/mips/boards/ritmix-rzx50/include/board/debug_l=
-l.h
-> >  rename arch/mips/boards/ritmix-rzx50/{include/board/board_pbl_start.h =
-=3D> lowlevel.S} (88%)
-> >  delete mode 100644 arch/mips/boards/ritmix-rzx50/serial.c
-> >  delete mode 100644 arch/mips/boards/tplink-mr3020/board.c
-> >  rename arch/mips/boards/tplink-mr3020/{include/board/board_pbl_start.h=
- =3D> lowlevel.S} (86%)
-> >  delete mode 100644 arch/mips/boards/tplink-wdr4300/board.c
-> >  rename arch/mips/boards/tplink-wdr4300/{include/board/board_pbl_start.=
-h =3D> lowlevel.S} (77%)
-> >  delete mode 100644 arch/mips/boot/start-pbl.S
-> >  delete mode 100644 arch/mips/configs/8devices-lima_defconfig
-> >  rename arch/mips/configs/{tplink-mr3020_defconfig =3D> ath79_defconfig=
-} (90%)
-> >  delete mode 100644 arch/mips/configs/black-swift_defconfig
-> >  delete mode 100644 arch/mips/configs/dptechnics-dpt-module_defconfig
-> >  delete mode 100644 arch/mips/configs/img-ci20_defconfig
-> >  delete mode 100644 arch/mips/configs/tplink-wdr4300_defconfig
-> >  rename arch/mips/configs/{ritmix-rzx50_defconfig =3D> xburst_defconfig=
-} (89%)
-> >  create mode 100644 arch/mips/lib/pbl.lds.S
-> >  create mode 100644 images/Makefile.ar231x
-> >  create mode 100644 images/Makefile.ath79
-> >  create mode 100644 images/Makefile.loongson
-> >  create mode 100644 images/Makefile.malta
-> >  create mode 100644 images/Makefile.xburst
-> > =
-
-> > -- =
-
-> > 2.19.1
-> > =
-
-> > =
-
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> > =
-
-> =
-
-> -- =
-
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
