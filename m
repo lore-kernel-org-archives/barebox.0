@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gSq9J-0008Cy-Hk
- for barebox@lists.infradead.org; Fri, 30 Nov 2018 21:16:35 +0000
-Date: Fri, 30 Nov 2018 22:16:20 +0100
+ id 1gSqFB-0001qI-CS
+ for barebox@lists.infradead.org; Fri, 30 Nov 2018 21:22:38 +0000
+Date: Fri, 30 Nov 2018 22:22:25 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181130211620.dkxcnyigrpvsjnfo@pengutronix.de>
-References: <1543585763.5085.14.camel@erwinrol.com>
- <1543590330.5085.16.camel@erwinrol.com>
+Message-ID: <20181130212225.gqtowx54ikq6aqo7@pengutronix.de>
+References: <20181130131240.10558-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1543590330.5085.16.camel@erwinrol.com>
+In-Reply-To: <20181130131240.10558-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,30 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: imx6 usb update
-To: Erwin Rol <mailinglists@erwinrol.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] fixup! ARM: i.MX: Add max_load_size option to boards
+ that will need it
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Fri, Nov 30, 2018 at 04:05:30PM +0100, Erwin Rol wrote:
-> Hey all,
+On Fri, Nov 30, 2018 at 02:12:40PM +0100, Lucas Stach wrote:
+> ---
+>  arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> the bootmode detection I figured out, but the using DFU to directly
-> flash barebox bricks my system;
-> 
-> usbgadget -D /dev/nand0.barebox(barebox)s
-> 
-> That doesn't work.
+> diff --git a/arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg b/arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
+> index 14e4a595a06a..aff8321b9ad6 100644
+> --- a/arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
+> +++ b/arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
+> @@ -1,5 +1,5 @@
+>  soc imx8mq
+>  
+>  loadaddr 0x007E1000
+> -max_load_size 0x10000
+> +max_load_size 0x3F000
+>  dcdofs 0x400
 
-Nope, that doesn't work. For boot sources like SD/eMMC that would
-indeed work, but NAND needs special treatment.
-You can add what fastboot does:
-
-	if(filetype_is_barebox_image(data)) {
-		...
-		barebox_update();
-	}
-
-There is currently no way to trigger a script.
+Applied, thanks
 
 Sascha
 
