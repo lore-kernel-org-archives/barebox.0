@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gSJS0-0000ue-H7
- for barebox@lists.infradead.org; Thu, 29 Nov 2018 10:21:43 +0000
+ id 1gSdVX-0005Jt-0E
+ for barebox@lists.infradead.org; Fri, 30 Nov 2018 07:46:41 +0000
+Date: Fri, 30 Nov 2018 08:46:26 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 29 Nov 2018 11:21:27 +0100
-Message-Id: <20181129102127.17158-3-s.hauer@pengutronix.de>
-In-Reply-To: <20181129102127.17158-1-s.hauer@pengutronix.de>
-References: <20181129102127.17158-1-s.hauer@pengutronix.de>
+Message-ID: <20181130074626.aqk52vvo2j26dkor@pengutronix.de>
+References: <20181127091935.2992-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20181127091935.2992-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,257 +22,171 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] net: dns: return error codes
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v3 00/10] MIPS: migrate to multiimage support
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The resolv() function used to return the IP address. When net_udp_new()
-fails we return an error code though which the callers of resolv() take
-as an IP address. This is wrong of course and we could return 0 in this
-case. Instead we return an error code and pass the resolved IP as a
-pointer which allows us to return proper error codes.
+Hi Oleksij, Antony,
 
-This patch also adds error messages and error returns to the various
-callers of resolv() which used to just continue with a zero IP and
-let the user figure out what went wrong.
+I am fine with this series. Antony, is it ok for you adwell?
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/blspec.c |  6 ++++--
- fs/nfs.c        |  6 +++++-
- fs/tftp.c       | 11 ++++++++++-
- include/net.h   |  8 +++-----
- net/dhcp.c      |  6 ++++--
- net/dns.c       | 36 ++++++++++++++++++++++--------------
- net/net.c       |  4 +++-
- net/ping.c      |  6 +++---
- 8 files changed, 54 insertions(+), 29 deletions(-)
+I would merge it to next after the coming release since it depends on
+the pbl-piggydata series which currently sits in the i.MX branch where
+it already doesn't belong to.
 
-diff --git a/common/blspec.c b/common/blspec.c
-index 2c682e1990..41f2a4c534 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -303,9 +303,11 @@ static char *parse_nfs_url(const char *url)
- 		goto out;
- 	}
- 
--	ip = resolv(host);
--	if (ip == 0)
-+	ret = resolv(host, &ip);
-+	if (ret) {
-+		pr_err("Cannot resolve \"%s\": %s\n", host, strerror(-ret));
- 		goto out;
-+	}
- 
- 	hostpath = basprintf("%pI4:%s", &ip, path);
- 
-diff --git a/fs/nfs.c b/fs/nfs.c
-index eb5db344db..d7f156687f 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -1293,7 +1293,11 @@ static int nfs_probe(struct device_d *dev)
- 
- 	npriv->path = xstrdup(path + 1);
- 
--	npriv->server = resolv(tmp);
-+	ret = resolv(tmp, &npriv->server);
-+	if (ret) {
-+		printf("cannot resolve \"%s\": %s\n", tmp, strerror(-ret));
-+		goto err1;
-+	}
- 
- 	debug("nfs: server: %s path: %s\n", tmp, npriv->path);
- 
-diff --git a/fs/tftp.c b/fs/tftp.c
-index 0d9ee6effd..907adc7434 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -696,10 +696,15 @@ static int tftp_probe(struct device_d *dev)
- 	struct tftp_priv *priv = xzalloc(sizeof(struct tftp_priv));
- 	struct super_block *sb = &fsdev->sb;
- 	struct inode *inode;
-+	int ret;
- 
- 	dev->priv = priv;
- 
--	priv->server = resolv(fsdev->backingstore);
-+	ret = resolv(fsdev->backingstore, &priv->server);
-+	if (ret) {
-+		pr_err("Cannot resolve \"%s\": %s\n", fsdev->backingstore, strerror(-ret));
-+		goto err;
-+	}
- 
- 	sb->s_op = &tftp_ops;
- 
-@@ -707,6 +712,10 @@ static int tftp_probe(struct device_d *dev)
- 	sb->s_root = d_make_root(inode);
- 
- 	return 0;
-+err:
-+	free(priv);
-+
-+	return ret;
- }
- 
- static void tftp_remove(struct device_d *dev)
-diff --git a/include/net.h b/include/net.h
-index a09cb155a8..6912a557b5 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -330,13 +330,11 @@ int string_to_ethaddr(const char *str, u8 enetaddr[6]);
- void ethaddr_to_string(const u8 enetaddr[6], char *str);
- 
- #ifdef CONFIG_NET_RESOLV
--IPaddr_t resolv(const char *host);
-+int resolv(const char *host, IPaddr_t *ip);
- #else
--static inline IPaddr_t resolv(const char *host)
-+static inline int resolv(const char *host, IPaddr_t *ip)
- {
--	IPaddr_t ip = 0;
--	string_to_ip(host, &ip);
--	return ip;
-+	return string_to_ip(host, ip);
- }
- #endif
- 
-diff --git a/net/dhcp.c b/net/dhcp.c
-index 79aa75d878..670a6a6422 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -562,6 +562,8 @@ out:
- 
- int dhcp_set_result(struct eth_device *edev, struct dhcp_result *res)
- {
-+	int ret;
-+
- 	net_set_ip(edev, res->ip);
- 	net_set_netmask(edev, res->netmask);
- 	net_set_gateway(res->gateway);
-@@ -580,8 +582,8 @@ int dhcp_set_result(struct eth_device *edev, struct dhcp_result *res)
- 	if (res->tftp_server_name) {
- 		IPaddr_t ip;
- 
--		ip = resolv(res->tftp_server_name);
--		if (ip)
-+		ret = resolv(res->tftp_server_name, &ip);
-+		if (!ret)
- 			net_set_serverip_empty(ip);
- 	} else if (res->serverip) {
- 		net_set_serverip_empty(res->serverip);
-diff --git a/net/dns.c b/net/dns.c
-index a3a3b94145..4516235df2 100644
---- a/net/dns.c
-+++ b/net/dns.c
-@@ -201,26 +201,27 @@ static void dns_handler(void *ctx, char *packet, unsigned len)
- 		net_eth_to_udplen(packet));
- }
- 
--IPaddr_t resolv(const char *host)
-+int resolv(const char *host, IPaddr_t *ip)
- {
--	IPaddr_t ip;
-+	IPaddr_t nameserver;
- 
--	if (!string_to_ip(host, &ip))
--		return ip;
-+	if (!string_to_ip(host, ip))
-+		return 0;
- 
- 	dns_ip = 0;
-+	*ip = 0;
- 
- 	dns_state = STATE_INIT;
- 
--	ip = net_get_nameserver();
--	if (!ip) {
-+	nameserver = net_get_nameserver();
-+	if (!nameserver) {
- 		pr_err("no nameserver specified in $net.nameserver\n");
- 		return 0;
- 	}
- 
--	pr_debug("resolving host %s via nameserver %pI4\n", host, &ip);
-+	pr_debug("resolving host %s via nameserver %pI4\n", host, &nameserver);
- 
--	dns_con = net_udp_new(ip, DNS_PORT, dns_handler, NULL);
-+	dns_con = net_udp_new(nameserver, DNS_PORT, dns_handler, NULL);
- 	if (IS_ERR(dns_con))
- 		return PTR_ERR(dns_con);
- 	dns_timer_start = get_time_ns();
-@@ -240,25 +241,32 @@ IPaddr_t resolv(const char *host)
- 
- 	net_unregister(dns_con);
- 
--	pr_debug("host %s is at %pI4\n", host, &dns_ip);
-+	if (dns_ip) {
-+		pr_debug("host %s is at %pI4\n", host, &dns_ip);
-+	} else {
-+		pr_debug("host %s not found\n", host);
-+		return -ENOENT;
-+	}
-+
-+	*ip = dns_ip;
- 
--	return dns_ip;
-+	return 0;
- }
- 
- #ifdef CONFIG_CMD_HOST
- static int do_host(int argc, char *argv[])
- {
- 	IPaddr_t ip;
-+	int ret;
- 
- 	if (argc != 2)
- 		return COMMAND_ERROR_USAGE;
- 
--	ip = resolv(argv[1]);
--	if (!ip)
-+	ret = resolv(argv[1], &ip);
-+	if (ret)
- 		printf("unknown host %s\n", argv[1]);
--	else {
-+	else
- 		printf("%s is at %pI4\n", argv[1], &ip);
--	}
- 
- 	return 0;
- }
-diff --git a/net/net.c b/net/net.c
-index 63f42fa5cc..f1a7df0298 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -107,7 +107,9 @@ IPaddr_t getenv_ip(const char *name)
- 	if (!string_to_ip(var, &ip))
- 		return ip;
- 
--	return resolv((char*)var);
-+	resolv(var, &ip);
-+
-+	return ip;
- }
- 
- int setenv_ip(const char *name, IPaddr_t ip)
-diff --git a/net/ping.c b/net/ping.c
-index b5926280e0..a71f59a805 100644
---- a/net/ping.c
-+++ b/net/ping.c
-@@ -61,9 +61,9 @@ static int do_ping(int argc, char *argv[])
- 	if (argc < 2)
- 		return COMMAND_ERROR_USAGE;
- 
--	net_ping_ip = resolv(argv[1]);
--	if (!net_ping_ip) {
--		printf("unknown host %s\n", argv[1]);
-+	ret = resolv(argv[1], &net_ping_ip);
-+	if (ret) {
-+		printf("Cannot resolve \"%s\": %s\n", argv[1], strerror(-ret));
- 		return 1;
- 	}
- 
+Sascha
+
+On Tue, Nov 27, 2018 at 10:19:25AM +0100, Oleksij Rempel wrote:
+> 20181127 v3:
+> - remove ENTRY(pbl_start)
+> - rework ENTRY_FUNCTION, ENTRY_FUNCTION_END
+> - move HAVE_PBL_MULTI_IMAGES to the CONFIG_MIPS
+> - remove arch/mips/boot/start-pbl.S
+> 
+> 20181127 v2:
+> - rebase against latest next
+> - fix trailing spaces in arch/mips/dts/Makefile
+> 
+> 20181126 v1:
+> This patch series is a huge move to a multiimage support.
+> As long as we do not have lots of boards, it is better to do it now.
+> The most painful patch is "MIPS: port all mach* to multiimage", since
+> it was too hard to split the work to multiple step, it is all-in-one
+> patch. I hope my children will forgive me this... ;)
+> 
+> Oleksij Rempel (10):
+>   images: piggy: use "a" instead of #alloc flag
+>   MIPS: add arch/mips/lib/pbl.lds.S
+>   pbl: enable MIPS for PBL_RELOCATABLE
+>   MIPS: start: preserve DTB pointer for later use
+>   MIPS: multiimage: add ENTRY_FUNCTION macros
+>   MIPS: mutliimage: pass devicetree from PBL to the main_entry
+>   MIPS: put main_entry to __bare_init section
+>   MIPS: port all mach* to multiimage
+>   MIPS: remove HAS_NO_BOARD_HL_CODE support
+>   MIPS: remove useless board files
+> 
+>  arch/mips/Kconfig                             |  7 +-
+>  arch/mips/Makefile                            | 30 +------
+>  arch/mips/boards/8devices-lima/Makefile       |  1 +
+>  .../board/board_pbl_start.h => lowlevel.S}    | 26 ++----
+>  arch/mips/boards/Makefile                     | 11 +++
+>  arch/mips/boards/black-swift/Makefile         |  2 +-
+>  arch/mips/boards/black-swift/board.c          | 27 ------
+>  .../board/board_pbl_start.h => lowlevel.S}    | 16 ++--
+>  .../boards/dptechnics-dpt-module/Makefile     |  1 +
+>  .../board/board_pbl_start.h => lowlevel.S}    | 13 +--
+>  arch/mips/boards/img-ci20/Makefile            |  2 +-
+>  arch/mips/boards/img-ci20/board.c             | 27 ------
+>  .../boards/img-ci20/include/board/debug_ll.h  | 23 -----
+>  .../board/board_pbl_start.h => lowlevel.S}    | 13 +--
+>  arch/mips/boards/loongson-ls1b/Makefile       |  2 +-
+>  .../board/board_pbl_start.h => lowlevel.S}    | 13 +--
+>  arch/mips/boards/loongson-ls1b/serial.c       | 10 ---
+>  arch/mips/boards/netgear-wg102/Makefile       |  1 +
+>  .../board/board_pbl_start.h => lowlevel.S}    | 20 +++--
+>  arch/mips/boards/qemu-malta/Makefile          |  2 +-
+>  arch/mips/boards/qemu-malta/init.c            | 29 ------
+>  .../board/board_pbl_start.h => lowlevel.S}    | 15 ++--
+>  arch/mips/boards/ritmix-rzx50/Makefile        |  2 +-
+>  .../ritmix-rzx50/include/board/debug_ll.h     | 23 -----
+>  .../board/board_pbl_start.h => lowlevel.S}    | 13 +--
+>  arch/mips/boards/ritmix-rzx50/serial.c        | 27 ------
+>  arch/mips/boards/tplink-mr3020/Makefile       |  2 +-
+>  arch/mips/boards/tplink-mr3020/board.c        | 27 ------
+>  .../board/board_pbl_start.h => lowlevel.S}    | 16 ++--
+>  arch/mips/boards/tplink-wdr4300/Makefile      |  2 +-
+>  arch/mips/boards/tplink-wdr4300/board.c       | 28 ------
+>  .../board/board_pbl_start.h => lowlevel.S}    | 26 ++----
+>  arch/mips/boot/Makefile                       |  4 +-
+>  arch/mips/boot/dtb.c                          | 16 +++-
+>  arch/mips/boot/main_entry-pbl.c               | 15 ++--
+>  arch/mips/boot/main_entry.c                   | 11 ++-
+>  arch/mips/boot/start-pbl.S                    | 44 ---------
+>  arch/mips/boot/start.S                        |  7 ++
+>  arch/mips/configs/8devices-lima_defconfig     | 83 -----------------
+>  ...plink-mr3020_defconfig => ath79_defconfig} |  9 +-
+>  arch/mips/configs/black-swift_defconfig       | 54 -----------
+>  .../configs/dptechnics-dpt-module_defconfig   | 89 -------------------
+>  arch/mips/configs/img-ci20_defconfig          | 45 ----------
+>  arch/mips/configs/qemu-malta_defconfig        | 12 +--
+>  arch/mips/configs/tplink-wdr4300_defconfig    | 82 -----------------
+>  ...itmix-rzx50_defconfig => xburst_defconfig} |  8 +-
+>  arch/mips/dts/Makefile                        | 15 +++-
+>  arch/mips/include/asm/asm.h                   | 29 ++++++
+>  arch/mips/lib/pbl.lds.S                       | 53 +++++++++++
+>  arch/mips/mach-ar231x/include/mach/debug_ll.h |  1 -
+>  arch/mips/mach-ath79/Kconfig                  | 16 ++--
+>  arch/mips/mach-ath79/include/mach/debug_ll.h  | 12 ++-
+>  .../mach-ath79/include/mach/debug_ll_ar9331.h |  2 +-
+>  .../mach-ath79/include/mach/debug_ll_ar9344.h |  4 +-
+>  .../mips/mach-ath79/include/mach/pbl_macros.h |  5 +-
+>  .../mach-loongson/include/mach/debug_ll.h     |  1 -
+>  arch/mips/mach-malta/Kconfig                  |  9 +-
+>  arch/mips/mach-malta/include/mach/debug_ll.h  | 10 ++-
+>  arch/mips/mach-xburst/Kconfig                 | 14 ++-
+>  arch/mips/mach-xburst/include/mach/debug_ll.h | 14 ++-
+>  images/Makefile                               |  7 +-
+>  images/Makefile.ar231x                        |  3 +
+>  images/Makefile.ath79                         | 20 +++++
+>  images/Makefile.loongson                      |  3 +
+>  images/Makefile.malta                         |  3 +
+>  images/Makefile.xburst                        |  7 ++
+>  images/piggy.S                                |  2 +-
+>  pbl/Kconfig                                   |  2 +-
+>  68 files changed, 354 insertions(+), 814 deletions(-)
+>  create mode 100644 arch/mips/boards/8devices-lima/Makefile
+>  rename arch/mips/boards/8devices-lima/{include/board/board_pbl_start.h => lowlevel.S} (78%)
+>  create mode 100644 arch/mips/boards/Makefile
+>  delete mode 100644 arch/mips/boards/black-swift/board.c
+>  rename arch/mips/boards/black-swift/{include/board/board_pbl_start.h => lowlevel.S} (86%)
+>  create mode 100644 arch/mips/boards/dptechnics-dpt-module/Makefile
+>  rename arch/mips/boards/dptechnics-dpt-module/{include/board/board_pbl_start.h => lowlevel.S} (59%)
+>  delete mode 100644 arch/mips/boards/img-ci20/board.c
+>  delete mode 100644 arch/mips/boards/img-ci20/include/board/debug_ll.h
+>  rename arch/mips/boards/img-ci20/{include/board/board_pbl_start.h => lowlevel.S} (88%)
+>  rename arch/mips/boards/loongson-ls1b/{include/board/board_pbl_start.h => lowlevel.S} (86%)
+>  delete mode 100644 arch/mips/boards/loongson-ls1b/serial.c
+>  rename arch/mips/boards/netgear-wg102/{include/board/board_pbl_start.h => lowlevel.S} (87%)
+>  delete mode 100644 arch/mips/boards/qemu-malta/init.c
+>  rename arch/mips/boards/qemu-malta/{include/board/board_pbl_start.h => lowlevel.S} (94%)
+>  delete mode 100644 arch/mips/boards/ritmix-rzx50/include/board/debug_ll.h
+>  rename arch/mips/boards/ritmix-rzx50/{include/board/board_pbl_start.h => lowlevel.S} (88%)
+>  delete mode 100644 arch/mips/boards/ritmix-rzx50/serial.c
+>  delete mode 100644 arch/mips/boards/tplink-mr3020/board.c
+>  rename arch/mips/boards/tplink-mr3020/{include/board/board_pbl_start.h => lowlevel.S} (86%)
+>  delete mode 100644 arch/mips/boards/tplink-wdr4300/board.c
+>  rename arch/mips/boards/tplink-wdr4300/{include/board/board_pbl_start.h => lowlevel.S} (77%)
+>  delete mode 100644 arch/mips/boot/start-pbl.S
+>  delete mode 100644 arch/mips/configs/8devices-lima_defconfig
+>  rename arch/mips/configs/{tplink-mr3020_defconfig => ath79_defconfig} (90%)
+>  delete mode 100644 arch/mips/configs/black-swift_defconfig
+>  delete mode 100644 arch/mips/configs/dptechnics-dpt-module_defconfig
+>  delete mode 100644 arch/mips/configs/img-ci20_defconfig
+>  delete mode 100644 arch/mips/configs/tplink-wdr4300_defconfig
+>  rename arch/mips/configs/{ritmix-rzx50_defconfig => xburst_defconfig} (89%)
+>  create mode 100644 arch/mips/lib/pbl.lds.S
+>  create mode 100644 images/Makefile.ar231x
+>  create mode 100644 images/Makefile.ath79
+>  create mode 100644 images/Makefile.loongson
+>  create mode 100644 images/Makefile.malta
+>  create mode 100644 images/Makefile.xburst
+> 
+> -- 
+> 2.19.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.19.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
