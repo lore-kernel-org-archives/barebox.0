@@ -1,12 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mo6-p00-ob.smtp.rzone.de ([2a01:238:20a:202:5300::9])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gSkMJ-00010B-7M
- for barebox@lists.infradead.org; Fri, 30 Nov 2018 15:05:48 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Fri, 30 Nov 2018 16:05:20 +0100
-Message-Id: <20181130150520.5876-1-o.rempel@pengutronix.de>
-MIME-Version: 1.0
+ id 1gSjAq-0005Kx-NX
+ for barebox@lists.infradead.org; Fri, 30 Nov 2018 13:49:43 +0000
+Received: from odin.home.erwinrol.com by smtp.strato.de (RZmta 44.6 DYNA|AUTH)
+ with ESMTPSA id L03290uAUDnOITj
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with
+ 521 ECDH bits, eq. 15360 bits RSA))
+ (Client did not present a certificate)
+ for <barebox@lists.infradead.org>;
+ Fri, 30 Nov 2018 14:49:24 +0100 (CET)
+Message-ID: <1543585763.5085.14.camel@erwinrol.com>
+From: Erwin Rol <mailinglists@erwinrol.com>
+Date: Fri, 30 Nov 2018 14:49:23 +0100
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +26,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1] defaultenv-2: add bnet script to second stage barebox over
- net
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: imx6 usb update
+To: Barebox List <barebox@lists.infradead.org>
 
-Doing cycling barebox boot over the net is a good testing practice.
-It is possible to detect at least some bugs before flushing it to
-the system. Suddenly it looks like, it is done not oft enough. So, let's
-add this option mainline.
+Hallo all,
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- defaultenv/defaultenv-2-base/boot/bnet | 5 +++++
- 1 file changed, 5 insertions(+)
- create mode 100644 defaultenv/defaultenv-2-base/boot/bnet
+I have my barebox running on a iMx6 (phyBOARD-Segin + phyCORE-i.MX 6UL
+Modul).
 
-diff --git a/defaultenv/defaultenv-2-base/boot/bnet b/defaultenv/defaultenv-2-base/boot/bnet
-new file mode 100644
-index 0000000000..1290a7acfc
---- /dev/null
-+++ b/defaultenv/defaultenv-2-base/boot/bnet
-@@ -0,0 +1,5 @@
-+#!/bin/sh
-+
-+path="/mnt/tftp"
-+
-+global.bootm.image="${path}/${global.user}-barebox-${global.hostname}"
--- 
-2.19.1
+Loading via USB works fine, and via DFU I can upload a barebox image
+and use barebox_update to flash barebox in NAND.
+
+Is it possible to have DFU correctly flash barebox, without first
+upload a image to /tmp/barebox and than use barebox_update ?
+
+And a second question is it possible to detect if barebox was booted
+from NAND or from USB via imx-loader ? I woud like to use that to start
+the system normal when it boots from NAND but go in DFU update mode
+when it was started via imx-usb-loader.
+
+As always hints and tips are very welcome,
+
+Erwin
+
 
 
 _______________________________________________
