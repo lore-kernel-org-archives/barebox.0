@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo6-p00-ob.smtp.rzone.de ([2a01:238:20a:202:5300::6])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gSkMR-00011X-Uz
- for barebox@lists.infradead.org; Fri, 30 Nov 2018 15:05:51 +0000
-Received: from odin.home.erwinrol.com by smtp.strato.de (RZmta 44.6 DYNA|AUTH)
- with ESMTPSA id L03290uAUF5UIsV
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with
- 521 ECDH bits, eq. 15360 bits RSA))
- (Client did not present a certificate)
- for <barebox@lists.infradead.org>;
- Fri, 30 Nov 2018 16:05:30 +0100 (CET)
-Message-ID: <1543590330.5085.16.camel@erwinrol.com>
-From: Erwin Rol <mailinglists@erwinrol.com>
-Date: Fri, 30 Nov 2018 16:05:30 +0100
-In-Reply-To: <1543585763.5085.14.camel@erwinrol.com>
-References: <1543585763.5085.14.camel@erwinrol.com>
-Mime-Version: 1.0
+ id 1gSoLa-0001Hi-Ly
+ for barebox@lists.infradead.org; Fri, 30 Nov 2018 19:21:08 +0000
+Date: Fri, 30 Nov 2018 20:20:54 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20181130192054.shky2runlrk5siij@pengutronix.de>
+References: <20181129124556.8179-1-jmaselbas@kalray.eu>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20181129124556.8179-1-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,56 +22,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: imx6 usb update
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] clocksource: Add dw_apb_timer driver
+To: Jules Maselbas <jmaselbas@kalray.eu>
+Cc: cleger@kalray.eu, barebox@lists.infradead.org
 
-Hey all,
-
-the bootmode detection I figured out, but the using DFU to directly
-flash barebox bricks my system;
-
-usbgadget -D /dev/nand0.barebox(barebox)s
-
-That doesn't work. 
-
-Is there a way to update barebox via DFU? 
-
-If not directly is it possible to trigger a script after DFU uploaded a
-file, so I can call barebox_update ?
-
-Or what would be the "barebox" way to do it ?
-
-TIA,
-
-Erwin
-
-On Fri, 2018-11-30 at 14:49 +0100, Erwin Rol wrote:
-> Hallo all,
+On Thu, Nov 29, 2018 at 01:45:56PM +0100, Jules Maselbas wrote:
+> Adapt linux kernel dw_apb_timer driver to barebox.
 > 
-> I have my barebox running on a iMx6 (phyBOARD-Segin + phyCORE-i.MX 6UL
-> Modul).
-> 
-> Loading via USB works fine, and via DFU I can upload a barebox image
-> and use barebox_update to flash barebox in NAND.
-> 
-> Is it possible to have DFU correctly flash barebox, without first
-> upload a image to /tmp/barebox and than use barebox_update ?
-> 
-> And a second question is it possible to detect if barebox was booted
-> from NAND or from USB via imx-loader ? I woud like to use that to start
-> the system normal when it boots from NAND but go in DFU update mode
-> when it was started via imx-usb-loader.
-> 
-> As always hints and tips are very welcome,
-> 
-> Erwin
-> 
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+> ---
+>  drivers/clocksource/Kconfig        |   5 +
+>  drivers/clocksource/Makefile       |   1 +
+>  drivers/clocksource/dw_apb_timer.c | 148 +++++++++++++++++++++++++++++
+>  3 files changed, 154 insertions(+)
+>  create mode 100644 drivers/clocksource/dw_apb_timer.c
+
+Applied, thanks
+
+Out of curiosity, where are you using this driver on?
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
