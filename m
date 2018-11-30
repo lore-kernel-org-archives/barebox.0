@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gSibc-0008Gb-VU
- for barebox@lists.infradead.org; Fri, 30 Nov 2018 13:13:20 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
- helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1gSibQ-0003ku-0D
- for barebox@lists.infradead.org; Fri, 30 Nov 2018 14:13:04 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 30 Nov 2018 14:13:00 +0100
-Message-Id: <20181130131303.2934-3-l.stach@pengutronix.de>
-In-Reply-To: <20181130131303.2934-1-l.stach@pengutronix.de>
-References: <20181130131303.2934-1-l.stach@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gSkMJ-00010B-7M
+ for barebox@lists.infradead.org; Fri, 30 Nov 2018 15:05:48 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Fri, 30 Nov 2018 16:05:20 +0100
+Message-Id: <20181130150520.5876-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -26,28 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] ARM: ptrace: add mssing show_regs prototype in aarch64
- path
+Subject: [PATCH v1] defaultenv-2: add bnet script to second stage barebox over
+ net
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Doing cycling barebox boot over the net is a good testing practice.
+It is possible to detect at least some bugs before flushing it to
+the system. Suddenly it looks like, it is done not oft enough. So, let's
+add this option mainline.
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/include/asm/ptrace.h | 2 ++
- 1 file changed, 2 insertions(+)
+ defaultenv/defaultenv-2-base/boot/bnet | 5 +++++
+ 1 file changed, 5 insertions(+)
+ create mode 100644 defaultenv/defaultenv-2-base/boot/bnet
 
-diff --git a/arch/arm/include/asm/ptrace.h b/arch/arm/include/asm/ptrace.h
-index 7fbd8d9b6f2e..042e0cef700b 100644
---- a/arch/arm/include/asm/ptrace.h
-+++ b/arch/arm/include/asm/ptrace.h
-@@ -23,6 +23,8 @@ struct pt_regs {
- 	unsigned long regs[31];
- };
- 
-+void show_regs(struct pt_regs *);
+diff --git a/defaultenv/defaultenv-2-base/boot/bnet b/defaultenv/defaultenv-2-base/boot/bnet
+new file mode 100644
+index 0000000000..1290a7acfc
+--- /dev/null
++++ b/defaultenv/defaultenv-2-base/boot/bnet
+@@ -0,0 +1,5 @@
++#!/bin/sh
 +
- #endif  /* __ASSEMBLY__ */
- 
- #else   /* CONFIG_CPU_64 */
++path="/mnt/tftp"
++
++global.bootm.image="${path}/${global.user}-barebox-${global.hostname}"
 -- 
 2.19.1
 
