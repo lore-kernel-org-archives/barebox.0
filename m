@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo6-p00-ob.smtp.rzone.de ([2a01:238:20a:202:5300::12])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gToNs-0005WF-BU
- for barebox@lists.infradead.org; Mon, 03 Dec 2018 13:35:38 +0000
-Message-ID: <1543844122.5085.26.camel@erwinrol.com>
-From: Erwin Rol <mailinglists@erwinrol.com>
-Date: Mon, 03 Dec 2018 14:35:22 +0100
-In-Reply-To: <20181203132655.kngrgqk4ocaej6vc@pengutronix.de>
-References: <1543840931.5085.22.camel@erwinrol.com>
- <20181203125811.cm6mzwrjy7glrh5j@pengutronix.de>
- <1543842381.5085.24.camel@erwinrol.com>
- <20181203132655.kngrgqk4ocaej6vc@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gTkxK-0004Tn-J5
+ for barebox@lists.infradead.org; Mon, 03 Dec 2018 09:55:59 +0000
+Received: from kresse.hi.pengutronix.de ([2001:67c:670:100:1d::2a])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1gTkx7-00009t-BU
+ for barebox@lists.infradead.org; Mon, 03 Dec 2018 10:55:45 +0100
+Message-ID: <1543830945.3709.0.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 03 Dec 2018 10:55:45 +0100
+In-Reply-To: <20180608110605.8248-1-l.stach@pengutronix.de>
+References: <20180608110605.8248-1-l.stach@pengutronix.de>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -20,51 +21,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: ubifs
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] serdev: select POLLER
+To: barebox@lists.infradead.org
 
-On Mon, 2018-12-03 at 14:26 +0100, Sascha Hauer wrote:
-> On Mon, Dec 03, 2018 at 02:06:21PM +0100, Erwin Rol wrote:
-> > On Mon, 2018-12-03 at 13:58 +0100, Sascha Hauer wrote:
-> > > Hi Erwin,
-> > > 
-> > > On Mon, Dec 03, 2018 at 01:42:11PM +0100, Erwin Rol wrote:
-> > > > Hallo all,
-> > > > 
-> > > > I want to create empty ubifs volumes, like this;
-> > > > 
-> > > > 1) ubiformat -y -q /dev/nand0.system
-> > > > 2) ubiattach /dev/nand0.system
-> > > > 3) ubimkvol -t dynamic /dev/nand0.system.ubi system 0
-> > > > 
-> > > > 4) .... ???? 
-> > > > 
-> > > > 5) mount -t ubifs -o rw /dev/nand0.system.ubi.system /mnt/system/
-> > > > 
-> > > > 
-> > > > Is this possible with barebox?
-> > > 
-> > > It depends on what you do in step 4. Should be something like
-> > > 'ubiupdatevol' or cp /some/image /dev/nand0.system.ubi.system. But then,
-> > > yes, this works
-> > 
-> > But I need some sort of image, I can not create an empty ubifs volume
-> > and mount it with just barebox tools ?
-> 
-> Nope, because we only have a readonly UBIFS implementation.
-
-So that means I can not add files to a ubifs ? That would seriously
-suck :-(
-
-- Erwin
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gRnJlaXRhZywgZGVuIDA4LjA2LjIwMTgsIDEzOjA2ICswMjAwIHNjaHJpZWIgTHVjYXMgU3Rh
+Y2g6Cj4gQSBsb3Qgb2YgdGhlIGlubmVyIHdvcmtpbmcgb2YgdGhlIHNlcmRldiBmcmFtZXdvcmsg
+ZGVwZW5kIG9uIHRoZSBwb2xsZXIsCj4gc28gdGhlcmUgaXMgbm8gcG9pbnQgaW4gYWxsb3dpbmcg
+dG8gYnVpbGQgd2l0aG91dCBwb2xsZXIgc3VwcG9ydC4KCkl0IHNlZW1zIHRoaXMgcGF0Y2ggZmVs
+bCB0aHJvdWdoIHRoZSBjcmFja3MuCgo+IFNpZ25lZC1vZmYtYnk6IEx1Y2FzIFN0YWNoIDxsLnN0
+YWNoQHBlbmd1dHJvbml4LmRlPgo+IC0tLQo+IMKgZHJpdmVycy9zZXJpYWwvS2NvbmZpZyB8IDEg
+Kwo+IMKgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspCj4gCj4gZGlmZiAtLWdpdCBhL2Ry
+aXZlcnMvc2VyaWFsL0tjb25maWcgYi9kcml2ZXJzL3NlcmlhbC9LY29uZmlnCj4gaW5kZXggOGE1
+NmQzOWY3Yzg0Li5kNDYyYzExYzE2OWQgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9zZXJpYWwvS2Nv
+bmZpZwo+ICsrKyBiL2RyaXZlcnMvc2VyaWFsL0tjb25maWcKPiBAQCAtMyw2ICszLDcgQEAgbWVu
+dSAic2VyaWFsIGRyaXZlcnMiCj4gwqAKPiDCoGNvbmZpZyBTRVJJQUxfREVWX0JVUwo+ID4gwqAJ
+Ym9vbCAiU2VyaWFsIGRldmljZSBidXMiCj4gPiArCXNlbGVjdCBQT0xMRVIKPiA+IMKgCWRlcGVu
+ZHMgb24gQ09OU09MRV9GVUxMCj4gPiDCoAloZWxwCj4gPiDCoAnCoMKgQ29yZSBzdXBwb3J0IGZv
+ciBkZXZpY2VzIGNvbm5lY3RlZCB2aWEgYSBzZXJpYWwgcG9ydC4KCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gK
