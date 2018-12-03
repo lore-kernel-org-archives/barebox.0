@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from enterprise01.smtp.diehl.com ([193.201.238.219])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gTkja-0005Ft-Qj
- for barebox@lists.infradead.org; Mon, 03 Dec 2018 09:41:48 +0000
-Date: Mon, 3 Dec 2018 10:41:31 +0100
-From: Roland Hieber <r.hieber@pengutronix.de>
-Message-ID: <20181203094131.d4h3nyxgawovgnlx@pengutronix.de>
+ id 1gTlIV-0001Ag-Gi
+ for barebox@lists.infradead.org; Mon, 03 Dec 2018 10:18:38 +0000
+From: Denis OSTERLAND <denis.osterland@diehl.com>
+Date: Mon, 3 Dec 2018 10:17:35 +0000
+Message-ID: <1543832254.4674.4.camel@diehl.com>
 References: <20181125225952.16159-1-r.hieber@pengutronix.de>
- <20181126090140.k443kixpzmcxhjim@pengutronix.de>
- <20181126105347.dlfdxjwdas3s57ia@pengutronix.de>
- <20181129141100.yhexyeerzlqdwo3s@pengutronix.de>
- <20181203074512.4gdreahxjqubp5ns@pengutronix.de>
+ <20181125225952.16159-2-r.hieber@pengutronix.de>
+In-Reply-To: <20181125225952.16159-2-r.hieber@pengutronix.de>
+Content-Language: en-US
+Content-ID: <55FA43DCE970F7489B38CCB709103F47@diehl.internal>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181203074512.4gdreahxjqubp5ns@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,60 +20,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] drivers: caam: add RNG software self-test
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/2] i.MX: HABv4: always print HAB status at boot time
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Mon, Dec 03, 2018 at 08:45:12AM +0100, Sascha Hauer wrote:
-> On Thu, Nov 29, 2018 at 03:11:00PM +0100, Roland Hieber wrote:
-> > On Mon, Nov 26, 2018 at 11:53:47AM +0100, Roland Hieber wrote:
-> > > > > +	pr_vdebug("Result\n");
-> > > > > +	for (i = 0; i < RESULT_SIZE; i++) {
-> > > > > +		pr_vdebug("%02X\n", result[i]);
-> > > > > +	}
-> > > > > +
-> > > > > +	pr_vdebug("Expected Result:\n");
-> > > > > +	for (i = 0; i < RESULT_SIZE; i++) {
-> > > > > +		pr_vdebug("%02X\n", exp_result[i]);
-> > > > > +	}
-> > > > 
-> > > > Use memory_display to display this. Also this is only interesting if
-> > > > both differ, so better print it in the failure path.
-> > > 
-> > > I thought about that too, but I didn't see a way to make memory_display
-> > > use pr_vdebug, or otherwise make its output depend on the debug level.
-> > 
-> > I have several solutions in mind: one would be to introduce a function
-> > log_level() to get the current log level and decide on that whether to
-> > call memory_display. However then memory dump won't pick up the pr_*
-> > prefixes and use plain printf nevertheless. So my second thought is to
-> > add a callback function to memory_display to pass pr_debug or else to it
-> > which it can use to print stuff. However then we need to remodel
-> > memory_display so it always prints full lines (or uses pr_cont which it
-> > would need to know about, and you wanted to get rid of pr_cont anyway).
-> > We could also use a third way and implement a custom printf escape, say
-> > %md, that gets replaced with memory_display output when calling
-> > pr_printk, and move the core formatting of memory_display into a helper.
-> 
-> Just posted another possibility. See if it fits your needs.
-
-I would have solved it a bit differently with the callback, but yours I
-find much more elegant as the whole pr_memory_dump can be optimised out.
-Thanks!
-
- - Roland
-
--- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gU29ubnRhZywgZGVuIDI1LjExLjIwMTgsIDIzOjU5ICswMTAwIHNjaHJpZWIgUm9sYW5kIEhp
+ZWJlcjoNCj4gQ3VycmVudGx5LCBib2FyZCBjb2RlIG5lZWRzIHRvIGNhbGwgaGFidjRfZ2V0X3N0
+YXR1cygpIGV4cGxpY2l0ZWx5LCBidXQNCj4gdGhlcmUgaXMgbm8gcmVhc29uIHRoYXQgaXQgY2Fu
+bm90IGJlIGNhbGxlZCBhdXRvbWF0aWNhbGx5IGF0IHN0YXJ0dXANCj4gd2hlbiBIQUJ2NCBpcyBl
+bmFibGVkLiBUaGlzIHdheSB0aGUgY2FsbCBjYW5ub3QgYmUgZm9yZ290dGVuIGFuZCB3ZSBjYW4N
+Cj4gbWFrZSBzdXJlIHRvIHJlcG9ydCBhbGwgcG90ZW50aWFsbHkgb2NjdXJpbmcgSEFCIHdhcm5p
+bmdzIGFuZCBlcnJvcnMuDQpUaGlzIGZ1bGx5IGZpdHMgbXkgbmVlZHMuDQpUZXN0ZWQgb24gaS5N
+WDYuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBSb2xhbmQgSGllYmVyIDxyLmhpZWJlckBwZW5ndXRy
+b25peC5kZT4NCkFja2VkLWJ5OiBEZW5pcyBPc3RlcmxhbmQgPERlbmlzIE9zdGVybGFuZEBkaWVo
+bC5jb20+DQo+IC0tLQ0KPiDCoGRyaXZlcnMvaGFiL2hhYnYzLmMgfMKgwqA0ICsrKysNCj4gwqBk
+cml2ZXJzL2hhYi9oYWJ2NC5jIHwgNDEgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysNCj4gwqAyIGZpbGVzIGNoYW5nZWQsIDQ1IGluc2VydGlvbnMoKykNCj4gDQo+IGRp
+ZmYgLS1naXQgYS9kcml2ZXJzL2hhYi9oYWJ2My5jIGIvZHJpdmVycy9oYWIvaGFidjMuYw0KPiBp
+bmRleCA4MmFlMjQ1ZjhhLi5jMTkwYzc4ZDQwIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL2hhYi9o
+YWJ2My5jDQo+ICsrKyBiL2RyaXZlcnMvaGFiL2hhYnYzLmMNCj4gQEAgLTc4LDUgKzc4LDkgQEAg
+aW50IGlteF9oYWJ2M19nZXRfc3RhdHVzKHVpbnQzMl90IHN0YXR1cykNCj4gwqANCj4gwqBpbnQg
+aW14MjVfaGFiX2dldF9zdGF0dXModm9pZCkNCj4gwqB7DQo+ICsJaWYgKCFjcHVfaXNfbXgyNSgp
+KSB7DQo+ICsJCXJldHVybiAwOw0KPiArCX0NCj4gwqAJcmV0dXJuIGlteF9oYWJ2M19nZXRfc3Rh
+dHVzKHJlYWRsKElPTUVNKDB4NzgwMDE4ZDQpKSk7DQo+IMKgfQ0KPiArcG9zdG1tdV9pbml0Y2Fs
+bChpbXgyNV9oYWJfZ2V0X3N0YXR1cyk7DQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2hhYi9oYWJ2
+NC5jIGIvZHJpdmVycy9oYWIvaGFidjQuYw0KPiBpbmRleCBlNjRmMzQ4NzBlLi4wOWY1OTg2MzFi
+IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL2hhYi9oYWJ2NC5jDQo+ICsrKyBiL2RyaXZlcnMvaGFi
+L2hhYnY0LmMNCj4gQEAgLTIwLDYgKzIwLDcgQEANCj4gwqANCj4gwqAjaW5jbHVkZSA8Y29tbW9u
+Lmg+DQo+IMKgI2luY2x1ZGUgPGhhYi5oPg0KPiArI2luY2x1ZGUgPGluaXQuaD4NCj4gwqAjaW5j
+bHVkZSA8dHlwZXMuaD4NCj4gwqANCj4gwqAjaW5jbHVkZSA8bWFjaC9nZW5lcmljLmg+DQo+IEBA
+IC01MDAsOSArNTAxLDQ5IEBAIGludCBpbXg2X2hhYl9nZXRfc3RhdHVzKHZvaWQpDQo+IMKgCXJl
+dHVybiAtRUlOVkFMOw0KPiDCoH0NCj4gwqANCj4gK3N0YXRpYyBpbnQgaW5pdF9pbXg2X2hhYl9n
+ZXRfc3RhdHVzKHZvaWQpDQo+ICt7DQo+ICsJaW50IHJldCA9IDA7DQo+ICsNCj4gKwlpZiAoIWNw
+dV9pc19teDYoKSkNCj4gKwkJLyogY2FuIGhhcHBlbiBpbiBtdWx0aS1pbWFnZSBidWlsZHMgYW5k
+IGlzIG5vdCBhbiBlcnJvciAqLw0KPiArCQlyZXR1cm4gMDsNCj4gKw0KPiArCXJldCA9IGlteDZf
+aGFiX2dldF9zdGF0dXMoKTsNCj4gKw0KPiArCS8qIG5vYm9keSB3aWxsIGNoZWNrIHRoZSByZXR1
+cm4gdmFsdWUgaWYgdGhlcmUgd2VyZSBIQUIgZXJyb3JzLCBidXQgdGhlDQo+ICsJwqAqIGluaXRj
+YWxsIHdpbGwgZmFpbCBzcGVjdGFjdWxvdXNseSB3aXRoIGEgc3RyYW5nZSBlcnJvciBtZXNzYWdl
+LiAqLw0KPiArCWlmIChyZXQgPT0gLUVQRVJNKQ0KPiArCQlyZXR1cm4gMDsNCj4gKwlyZXR1cm4g
+cmV0Ow0KPiArfQ0KPiArLyogbmVlZCB0byBydW4gYmVmb3JlIE1NVSBzZXR1cCBiZWNhdXNlIGku
+TVg2IFJPTSBjb2RlIGlzIG1hcHBlZCBuZWFyIDB4MCwNCj4gKyAqIHdoaWNoIHdpbGwgbm8gbG9u
+Z2VyIGJlIGFjY2Vzc2libGUgd2hlbiB0aGUgTU1VIHNldHMgdGhlIHplcm8gcGFnZSB0bw0KPiAr
+ICogZmF1bHRpbmcuICovDQo+ICtwb3N0Y29uc29sZV9pbml0Y2FsbChpbml0X2lteDZfaGFiX2dl
+dF9zdGF0dXMpOw0KPiArDQo+IMKgaW50IGlteDI4X2hhYl9nZXRfc3RhdHVzKHZvaWQpDQo+IMKg
+ew0KPiDCoAljb25zdCBzdHJ1Y3QgaGFidjRfcnZ0ICpydnQgPSAodm9pZCAqKUhBQlY0X1JWVF9J
+TVgyODsNCj4gwqANCj4gwqAJcmV0dXJuIGhhYnY0X2dldF9zdGF0dXMocnZ0KTsNCj4gwqB9DQo+
+ICsNCj4gK3N0YXRpYyBpbnQgaW5pdF9pbXgyOF9oYWJfZ2V0X3N0YXR1cyh2b2lkKQ0KPiArew0K
+PiArCWludCByZXQgPSAwOw0KPiArDQo+ICsJaWYgKCFjcHVfaXNfbXgyOCgpKQ0KPiArCQkvKiBj
+YW4gaGFwcGVuIGluIG11bHRpLWltYWdlIGJ1aWxkcyBhbmQgaXMgbm90IGFuIGVycm9yICovDQo+
+ICsJCXJldHVybiAwOw0KPiArDQo+ICsJcmV0ID0gaW14MjhfaGFiX2dldF9zdGF0dXMoKTsNCj4g
+Kw0KPiArCS8qIG5vYm9keSB3aWxsIGNoZWNrIHRoZSByZXR1cm4gdmFsdWUgaWYgdGhlcmUgd2Vy
+ZSBIQUIgZXJyb3JzLCBidXQgdGhlDQo+ICsJwqAqIGluaXRjYWxsIHdpbGwgZmFpbCBzcGVjdGFj
+dWxvdXNseSB3aXRoIGEgc3RyYW5nZSBlcnJvciBtZXNzYWdlLiAqLw0KPiArCWlmIChyZXQgPT0g
+LUVQRVJNKQ0KPiArCQlyZXR1cm4gMDsNCj4gKwlyZXR1cm4gcmV0Ow0KPiArfQ0KPiArLyogaS5N
+WDI4IFJPTSBjb2RlIGNhbiBiZSBydW4gYWZ0ZXIgTU1VIHNldHVwIHRvIG1ha2UgdXNlIG9mIGNh
+Y2hpbmcgKi8NCj4gK3Bvc3RtbXVfaW5pdGNhbGwoaW5pdF9pbXgyOF9oYWJfZ2V0X3N0YXR1cyk7
+DQoNCkRpZWhsIENvbm5lY3Rpdml0eSBTb2x1dGlvbnMgR21iSA0KR2VzY2jDpGZ0c2bDvGhydW5n
+OiBIb3JzdCBMZW9uYmVyZ2VyDQpTaXR6IGRlciBHZXNlbGxzY2hhZnQ6IE7DvHJuYmVyZyAtIFJl
+Z2lzdGVyZ2VyaWNodDogQW10c2dlcmljaHQNCk7DvHJuYmVyZzogSFJCIDMyMzE1DQpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCg0KRGVyIEluaGFsdCBkZXIgdm9y
+c3RlaGVuZGVuIEUtTWFpbCBpc3QgbmljaHQgcmVjaHRsaWNoIGJpbmRlbmQuIERpZXNlIEUtTWFp
+bCBlbnRoYWVsdCB2ZXJ0cmF1bGljaGUgdW5kL29kZXIgcmVjaHRsaWNoIGdlc2NodWV0enRlIElu
+Zm9ybWF0aW9uZW4uDQpJbmZvcm1pZXJlbiBTaWUgdW5zIGJpdHRlLCB3ZW5uIFNpZSBkaWVzZSBF
+LU1haWwgZmFlbHNjaGxpY2hlcndlaXNlIGVyaGFsdGVuIGhhYmVuLiBCaXR0ZSBsb2VzY2hlbiBT
+aWUgaW4gZGllc2VtIEZhbGwgZGllIE5hY2hyaWNodC4NCkplZGUgdW5lcmxhdWJ0ZSBGb3JtIGRl
+ciBSZXByb2R1a3Rpb24sIEJla2FubnRnYWJlLCBBZW5kZXJ1bmcsIFZlcnRlaWx1bmcgdW5kL29k
+ZXIgUHVibGlrYXRpb24gZGllc2VyIEUtTWFpbCBpc3Qgc3RyZW5nc3RlbnMgdW50ZXJzYWd0Lg0K
+VGhlIGNvbnRlbnRzIG9mIHRoZSBhYm92ZSBtZW50aW9uZWQgZS1tYWlsIGlzIG5vdCBsZWdhbGx5
+IGJpbmRpbmcuIFRoaXMgZS1tYWlsIGNvbnRhaW5zIGNvbmZpZGVudGlhbCBhbmQvb3IgbGVnYWxs
+eSBwcm90ZWN0ZWQgaW5mb3JtYXRpb24uIFBsZWFzZSBpbmZvcm0gdXMgaWYgeW91IGhhdmUgcmVj
+ZWl2ZWQgdGhpcyBlLW1haWwgYnkNCm1pc3Rha2UgYW5kIGRlbGV0ZSBpdCBpbiBzdWNoIGEgY2Fz
+ZS4gRWFjaCB1bmF1dGhvcml6ZWQgcmVwcm9kdWN0aW9uLCBkaXNjbG9zdXJlLCBhbHRlcmF0aW9u
+LCBkaXN0cmlidXRpb24gYW5kL29yIHB1YmxpY2F0aW9uIG9mIHRoaXMgZS1tYWlsIGlzIHN0cmlj
+dGx5IHByb2hpYml0ZWQuIA0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
