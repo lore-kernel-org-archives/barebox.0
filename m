@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gTjV2-0006Ad-LB
- for barebox@lists.infradead.org; Mon, 03 Dec 2018 08:22:42 +0000
-Date: Mon, 3 Dec 2018 09:22:28 +0100
+ id 1gTiuy-0005op-Cx
+ for barebox@lists.infradead.org; Mon, 03 Dec 2018 07:45:26 +0000
+Date: Mon, 3 Dec 2018 08:45:12 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181203082228.ivp37yikyugkyksf@pengutronix.de>
-References: <20181130131303.2934-1-l.stach@pengutronix.de>
+Message-ID: <20181203074512.4gdreahxjqubp5ns@pengutronix.de>
+References: <20181125225952.16159-1-r.hieber@pengutronix.de>
+ <20181126090140.k443kixpzmcxhjim@pengutronix.de>
+ <20181126105347.dlfdxjwdas3s57ia@pengutronix.de>
+ <20181129141100.yhexyeerzlqdwo3s@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181130131303.2934-1-l.stach@pengutronix.de>
+In-Reply-To: <20181129141100.yhexyeerzlqdwo3s@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +25,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/6] ARM: mmu64: include dma.h
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH 1/2] drivers: caam: add RNG software self-test
+To: Roland Hieber <r.hieber@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Nov 30, 2018 at 02:12:58PM +0100, Lucas Stach wrote:
-> dma.h provides the prototypes for the different dma_alloc_* functions,
-> so we should include it to make sure the prototypes are consistent.
+On Thu, Nov 29, 2018 at 03:11:00PM +0100, Roland Hieber wrote:
+> On Mon, Nov 26, 2018 at 11:53:47AM +0100, Roland Hieber wrote:
+> > > > +	pr_vdebug("Result\n");
+> > > > +	for (i = 0; i < RESULT_SIZE; i++) {
+> > > > +		pr_vdebug("%02X\n", result[i]);
+> > > > +	}
+> > > > +
+> > > > +	pr_vdebug("Expected Result:\n");
+> > > > +	for (i = 0; i < RESULT_SIZE; i++) {
+> > > > +		pr_vdebug("%02X\n", exp_result[i]);
+> > > > +	}
+> > > 
+> > > Use memory_display to display this. Also this is only interesting if
+> > > both differ, so better print it in the failure path.
+> > 
+> > I thought about that too, but I didn't see a way to make memory_display
+> > use pr_vdebug, or otherwise make its output depend on the debug level.
 > 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  arch/arm/cpu/mmu_64.c | 1 +
->  1 file changed, 1 insertion(+)
+> I have several solutions in mind: one would be to introduce a function
+> log_level() to get the current log level and decide on that whether to
+> call memory_display. However then memory dump won't pick up the pr_*
+> prefixes and use plain printf nevertheless. So my second thought is to
+> add a callback function to memory_display to pass pr_debug or else to it
+> which it can use to print stuff. However then we need to remodel
+> memory_display so it always prints full lines (or uses pr_cont which it
+> would need to know about, and you wanted to get rid of pr_cont anyway).
+> We could also use a third way and implement a custom printf escape, say
+> %md, that gets replaced with memory_display output when calling
+> pr_printk, and move the core formatting of memory_display into a helper.
 
-Applied, thanks
+Just posted another possibility. See if it fits your needs.
 
 Sascha
-
-> 
-> diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-> index 69d1b20718f7..99ddd5a441b9 100644
-> --- a/arch/arm/cpu/mmu_64.c
-> +++ b/arch/arm/cpu/mmu_64.c
-> @@ -19,6 +19,7 @@
->  #define pr_fmt(fmt)	"mmu: " fmt
->  
->  #include <common.h>
-> +#include <dma.h>
->  #include <dma-dir.h>
->  #include <init.h>
->  #include <mmu.h>
-> -- 
-> 2.19.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
