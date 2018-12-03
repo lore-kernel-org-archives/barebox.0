@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gU5Cu-0000rs-MZ
- for barebox@lists.infradead.org; Tue, 04 Dec 2018 07:33:26 +0000
-Date: Tue, 4 Dec 2018 08:33:13 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181204073313.ugpjdcmxxmilum5o@pengutronix.de>
-References: <20180608110605.8248-1-l.stach@pengutronix.de>
- <1543830945.3709.0.camel@pengutronix.de>
+ id 1gTgBT-0006E3-9M
+ for barebox@lists.infradead.org; Mon, 03 Dec 2018 04:50:16 +0000
+Date: Mon, 3 Dec 2018 05:49:52 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20181203044952.GA29581@ravnborg.org>
+References: <20181129113048.31857-1-s.trumtrar@pengutronix.de>
+ <20181129113048.31857-8-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1543830945.3709.0.camel@pengutronix.de>
+In-Reply-To: <20181129113048.31857-8-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,61 +19,25 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] serdev: select POLLER
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 07/15] Makefile: link of barebox moved to script
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Dec 03, 2018 at 10:55:45AM +0100, Lucas Stach wrote:
-> Am Freitag, den 08.06.2018, 13:06 +0200 schrieb Lucas Stach:
-> > A lot of the inner working of the serdev framework depend on the poller,
-> > so there is no point in allowing to build without poller support.
-> =
+Hi Steffen.
 
-> It seems this patch fell through the cracks.
+In general - nice patch series.
 
-Applied, for real this time.
+On Thu, Nov 29, 2018 at 12:30:40PM +0100, Steffen Trumtrar wrote:
+> Adoption of the linux v3.4 patch: 1f2bfbd00e466ff3489b2ca5cc75b1cccd14c123
 
-Thanks
+It would be simpler if you just synchronized the current state of the
+link script - it has seen many improvements since the introduction.
 
-Sascha
-
-> =
-
-> > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> > ---
-> > =A0drivers/serial/Kconfig | 1 +
-> > =A01 file changed, 1 insertion(+)
-> > =
-
-> > diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-> > index 8a56d39f7c84..d462c11c169d 100644
-> > --- a/drivers/serial/Kconfig
-> > +++ b/drivers/serial/Kconfig
-> > @@ -3,6 +3,7 @@ menu "serial drivers"
-> > =A0
-> > =A0config SERIAL_DEV_BUS
-> > > =A0	bool "Serial device bus"
-> > > +	select POLLER
-> > > =A0	depends on CONSOLE_FULL
-> > > =A0	help
-> > > =A0	=A0=A0Core support for devices connected via a serial port.
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+	Sam
 
 _______________________________________________
 barebox mailing list
