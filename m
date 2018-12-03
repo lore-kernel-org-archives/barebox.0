@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo6-p00-ob.smtp.rzone.de ([2a01:238:20a:202:5300::11])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gTnYS-00029M-Aq
- for barebox@lists.infradead.org; Mon, 03 Dec 2018 12:42:30 +0000
-Received: from odin.home.erwinrol.com by smtp.strato.de (RZmta 44.6 DYNA|AUTH)
- with ESMTPSA id L03290uB3CgCV2E
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with
- 521 ECDH bits, eq. 15360 bits RSA))
- (Client did not present a certificate)
- for <barebox@lists.infradead.org>;
- Mon, 3 Dec 2018 13:42:12 +0100 (CET)
-Message-ID: <1543840931.5085.22.camel@erwinrol.com>
-From: Erwin Rol <mailinglists@erwinrol.com>
-Date: Mon, 03 Dec 2018 13:42:11 +0100
-Mime-Version: 1.0
+ id 1gTnns-0008HO-8z
+ for barebox@lists.infradead.org; Mon, 03 Dec 2018 12:58:25 +0000
+Date: Mon, 3 Dec 2018 13:58:11 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20181203125811.cm6mzwrjy7glrh5j@pengutronix.de>
+References: <1543840931.5085.22.camel@erwinrol.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1543840931.5085.22.camel@erwinrol.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,26 +22,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: ubifs
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: ubifs
+To: Erwin Rol <mailinglists@erwinrol.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Hallo all,
+Hi Erwin,
 
-I want to create empty ubifs volumes, like this;
+On Mon, Dec 03, 2018 at 01:42:11PM +0100, Erwin Rol wrote:
+> Hallo all,
+> 
+> I want to create empty ubifs volumes, like this;
+> 
+> 1) ubiformat -y -q /dev/nand0.system
+> 2) ubiattach /dev/nand0.system
+> 3) ubimkvol -t dynamic /dev/nand0.system.ubi system 0
+> 
+> 4) .... ???? 
+> 
+> 5) mount -t ubifs -o rw /dev/nand0.system.ubi.system /mnt/system/
+> 
+> 
+> Is this possible with barebox?
 
-1) ubiformat -y -q /dev/nand0.system
-2) ubiattach /dev/nand0.system
-3) ubimkvol -t dynamic /dev/nand0.system.ubi system 0
+It depends on what you do in step 4. Should be something like
+'ubiupdatevol' or cp /some/image /dev/nand0.system.ubi.system. But then,
+yes, this works.
 
-4) .... ???? 
+Sascha
 
-5) mount -t ubifs -o rw /dev/nand0.system.ubi.system /mnt/system/
-
-
-Is this possible with barebox? 
-
-- Erwin
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
