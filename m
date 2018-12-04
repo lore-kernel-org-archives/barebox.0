@@ -1,11 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gU6l4-0000Iq-Pw
- for barebox@lists.infradead.org; Tue, 04 Dec 2018 09:12:48 +0000
-From: Stefan Riedmueller <s.riedmueller@phytec.de>
-Date: Tue, 4 Dec 2018 10:12:27 +0100
-Message-Id: <1543914747-37917-1-git-send-email-s.riedmueller@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gU6m1-0000f2-N7
+ for barebox@lists.infradead.org; Tue, 04 Dec 2018 09:13:47 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <afa@pengutronix.de>) id 1gU6lq-0002JD-Aa
+ for barebox@lists.infradead.org; Tue, 04 Dec 2018 10:13:34 +0100
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.91)
+ (envelope-from <afa@pengutronix.de>) id 1gU6lq-0006Yw-1P
+ for barebox@lists.infradead.org; Tue, 04 Dec 2018 10:13:34 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue,  4 Dec 2018 10:13:18 +0100
+Message-Id: <20181204091317.17106-1-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,91 +23,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] nvmem: ocotp: Add support for second mac address fuses on
- imx6ul
+Subject: [PATCH] lib: bootstrap: fix instance of possibly mismatched pointer
+ sizes
 To: barebox@lists.infradead.org
 
-From: Christian Hemp <c.hemp@phytec.de>
+len was int but &len is passed to read_file(..., size_t *size),
+Fix this.
 
-The i.MX 6UL/ULL has fuses for two MAC addresses. Both MAC addresses
-share the fuse address 0x23.
-
-		-----------------------------
-	0x22	| MAC0 | MAC0 | MAC0 | MAC0 |
-		-----------------------------
-	0x23	| MAC0 | MAC0 | MAC1 | MAC1 |
-		-----------------------------
-	0x24	| MAC1 | MAC1 | MAC1 | MAC1 |
-		-----------------------------
-
-So to read the second MAC address the first two bytes of 0x23 need to be
-skipped.
-
-Signed-off-by: Christian Hemp <c.hemp@phytec.de>
-Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/nvmem/ocotp.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ lib/bootstrap/disk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index e689559ee362..e0cf35f0b73c 100644
---- a/drivers/nvmem/ocotp.c
-+++ b/drivers/nvmem/ocotp.c
-@@ -70,6 +70,7 @@
- #define IMX6_OTP_DATA_ERROR_VAL		0xBADABADA
- #define DEF_RELAX			20
- #define MAC_OFFSET_0			(0x22 * 4)
-+#define IMX6UL_MAC_OFFSET_1		(0x23 * 4)
- #define MAC_OFFSET_1			(0x24 * 4)
- #define MAX_MAC_OFFSETS			2
- #define MAC_BYTES			8
-@@ -421,10 +422,14 @@ static int imx_ocotp_read_mac(const struct imx_ocotp_data *data,
+diff --git a/lib/bootstrap/disk.c b/lib/bootstrap/disk.c
+index a55d5d77f4cf..fd016166e6e4 100644
+--- a/lib/bootstrap/disk.c
++++ b/lib/bootstrap/disk.c
+@@ -18,7 +18,7 @@ void* bootstrap_read_disk(const char *dev, const char *fstype)
+ {
  	int ret;
+ 	void *buf;
+-	int len;
++	size_t len;
+ 	const char *path = "/";
  
- 	ret = regmap_bulk_read(map, offset, buf, MAC_BYTES);
-+
- 	if (ret < 0)
- 		return ret;
- 
--	data->format_mac(mac, buf, OCOTP_HW_TO_MAC);
-+	if (offset != IMX6UL_MAC_OFFSET_1)
-+		data->format_mac(mac, buf, OCOTP_HW_TO_MAC);
-+	else
-+		data->format_mac(mac, buf + 2, OCOTP_HW_TO_MAC);
- 
- 	return 0;
- }
-@@ -639,6 +644,14 @@ static struct imx_ocotp_data imx6sl_ocotp_data = {
- 	.format_mac = imx_ocotp_format_mac,
- };
- 
-+static struct imx_ocotp_data imx6ul_ocotp_data = {
-+	.num_regs = 512,
-+	.addr_to_offset = imx6q_addr_to_offset,
-+	.mac_offsets_num = 2,
-+	.mac_offsets = { MAC_OFFSET_0, IMX6UL_MAC_OFFSET_1 },
-+	.format_mac = imx_ocotp_format_mac,
-+};
-+
- static struct imx_ocotp_data vf610_ocotp_data = {
- 	.num_regs = 512,
- 	.addr_to_offset = vf610_addr_to_offset,
-@@ -667,7 +680,7 @@ static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
- 		.data = &imx6sl_ocotp_data,
- 	}, {
- 		.compatible = "fsl,imx6ul-ocotp",
--		.data = &imx6q_ocotp_data,
-+		.data = &imx6ul_ocotp_data,
- 	}, {
- 		.compatible = "fsl,imx8mq-ocotp",
- 		.data = &imx8mq_ocotp_data,
+ 	ret = mount(dev, fstype, path, NULL);
 -- 
-2.7.4
+2.19.1
 
 
 _______________________________________________
