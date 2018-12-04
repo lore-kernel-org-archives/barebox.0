@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gU6VG-0002ED-KQ
- for barebox@lists.infradead.org; Tue, 04 Dec 2018 08:56:28 +0000
-References: <20181203183840.21801-1-linux@rempel-privat.de>
- <bfe7408f5a7978e67c284e47caeb8829d931c7a6.camel@lynxeye.de>
- <20181204082909.c4rkejoae6ev6gdp@pengutronix.de>
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <d900be31-cfc9-d5e4-595e-1759929fb212@pengutronix.de>
-Date: Tue, 4 Dec 2018 09:56:12 +0100
+ id 1gU6kJ-0008R9-65
+ for barebox@lists.infradead.org; Tue, 04 Dec 2018 09:12:00 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <afa@pengutronix.de>) id 1gU6k5-0001yA-4u
+ for barebox@lists.infradead.org; Tue, 04 Dec 2018 10:11:45 +0100
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.91)
+ (envelope-from <afa@pengutronix.de>) id 1gU6k4-00027a-Tb
+ for barebox@lists.infradead.org; Tue, 04 Dec 2018 10:11:44 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue,  4 Dec 2018 10:11:34 +0100
+Message-Id: <20181204091135.4566-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20181204082909.c4rkejoae6ev6gdp@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,51 +23,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1] drivers: net: convert drivers to spdx
-To: Roland Hieber <r.hieber@pengutronix.de>, Lucas Stach <dev@lynxeye.de>
-Cc: barebox@lists.infradead.org, Oleksij Rempel <linux@rempel-privat.de>
+Subject: [PATCH 1/2] mtd: spi-nor: Add support for sst25wf020a
+To: barebox@lists.infradead.org
 
+From: Alexis Ballier <aballier@gentoo.org>
 
+It is a 256KiB flash with 4 KiB erase sectors
+and 64KiB overlay blocks.
 
-On 04.12.18 09:29, Roland Hieber wrote:
-> On Mon, Dec 03, 2018 at 08:14:29PM +0100, Lucas Stach wrote:
->> Am Montag, den 03.12.2018, 19:38 +0100 schrieb Oleksij Rempel:
->>>   /*
->>>    *  Atheros AR71xx built-in ethernet mac driver
->>>    *
->>> @@ -5,10 +6,6 @@
->>>    *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
->>>    *
->>>    *  Based on Atheros' AG7100 driver
->>> - *
->>> - *  This program is free software; you can redistribute it and/or modify it
->>> - *  under the terms of the GNU General Public License version 2 as published
->>> - *  by the Free Software Foundation.
->>>    */
->>
->> [snip]
->>
->> And while I know that the Linux kernel still wants the GPL-2.0+ tag,
->> I'm really not sure if we should use the deprecated tag in Barebox, or
->> if it would better to go straight to the GPL-2.0-or-later tag.
-> 
-> GPL-2.0-or-later is canon since version 2.0 of the SPDX standard [0]. I
-> don't see any reason to stick with an outdated standard if we're just
-> starting with it.
-> 
->   - Roland
-> 
-> [0]: https://spdx.org/licenses/, section "Deprecated Licenses"
-> 
+This is the one available on Hardkernel's Odroid U3 shield.
 
-According to the link, we should use:
-GPL-2.0-only and GPL-2.0-or-later
-instead of:
-GPL-2.0 and GPL-2.0+
+Signed-off-by: Alexis Ballier <aballier@gentoo.org>
+[Brian: seems like this does NOT require the usual SST_WRITE hacks]
+Signed-off-by: Brian Norris <computersforpeace@gmail.com>
+[Linux upstream commit: a1d97ef96e38]
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/mtd/spi-nor/spi-nor.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+index d15a7954136e..48d5742d5b26 100644
+--- a/drivers/mtd/spi-nor/spi-nor.c
++++ b/drivers/mtd/spi-nor/spi-nor.c
+@@ -594,6 +594,7 @@ static const struct spi_device_id spi_nor_ids[] = {
+ 	{ "sst25wf512",  INFO(0xbf2501, 0, 64 * 1024,  1, SECT_4K | SST_WRITE) },
+ 	{ "sst25wf010",  INFO(0xbf2502, 0, 64 * 1024,  2, SECT_4K | SST_WRITE) },
+ 	{ "sst25wf020",  INFO(0xbf2503, 0, 64 * 1024,  4, SECT_4K | SST_WRITE) },
++	{ "sst25wf020a", INFO(0x621612, 0, 64 * 1024,  4, SECT_4K) },
+ 	{ "sst25wf040",  INFO(0xbf2504, 0, 64 * 1024,  8, SECT_4K | SST_WRITE) },
+ 	{ "sst25wf080",  INFO(0xbf2505, 0, 64 * 1024, 16, SECT_4K | SST_WRITE) },
+ 
+-- 
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
