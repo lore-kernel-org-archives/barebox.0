@@ -1,12 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gU6o8-00028J-Vu
- for barebox@lists.infradead.org; Tue, 04 Dec 2018 09:15:58 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  4 Dec 2018 10:15:01 +0100
-Message-Id: <20181204091500.2841-1-a.fatoum@pengutronix.de>
-MIME-Version: 1.0
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gU8BP-0002Ne-Lp
+ for barebox@lists.infradead.org; Tue, 04 Dec 2018 10:44:06 +0000
+From: Stefan Riedmueller <s.riedmueller@phytec.de>
+Date: Tue, 4 Dec 2018 11:43:45 +0100
+Message-Id: <1543920225-20866-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,38 +14,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] arm: common: document safe usage of arm_setup_stack
+Subject: [PATCH] phytec-som-imx6: ksz8081_phy_fixup: Don't override B-CAST_OFF
+ strap-in
 To: barebox@lists.infradead.org
+Cc: Jan Remmet <j.remmet@phytec.de>
 
-Cc: Lucas Stach <l.stach@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+From: Jan Remmet <j.remmet@phytec.de>
+
+As PHY address 0 is not used on PHYTEC i.MX 6 and i.MX 6UL SOMs we do
+not have to override the B-CAST_OFF strap-in which disables broadcast
+on PHY address 0.
+
+Also add some comments about the magic values.
+
+Signed-off-by: Jan Remmet <j.remmet@phytec.de>
+Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 ---
- arch/arm/include/asm/common.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm/boards/phytec-som-imx6/board.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/common.h b/arch/arm/include/asm/common.h
-index c32cdfe5ec2f..72ac988cc131 100644
---- a/arch/arm/include/asm/common.h
-+++ b/arch/arm/include/asm/common.h
-@@ -46,6 +46,12 @@ static inline unsigned long get_sp(void)
- 	return sp;
- }
+diff --git a/arch/arm/boards/phytec-som-imx6/board.c b/arch/arm/boards/phytec-som-imx6/board.c
+index 4079bc9de1b3..38a2ef641e47 100644
+--- a/arch/arm/boards/phytec-som-imx6/board.c
++++ b/arch/arm/boards/phytec-som-imx6/board.c
+@@ -99,8 +99,17 @@ static unsigned int get_module_rev(void)
  
-+/*
-+ * At least with GCC 7.3.1, listing sp in the clobber register can generate
-+ * erroneous accesses to the fp, even in __naked functions. Therefore _always_
-+ * branch to a noinline function as soon as possible (usually after relocation
-+ * and c_setup).
-+ */
- static inline void arm_setup_stack(unsigned long top)
+ static int ksz8081_phy_fixup(struct phy_device *phydev)
  {
- 	__asm__ __volatile__("mov sp, %0"
++	/*
++	 * 0x8100 default
++	 * 0x0080 RMII 50 MHz clock mode
++	 * 0x0010 LED Mode 1
++	 */
+ 	phy_write(phydev, 0x1f, 0x8190);
+-	phy_write(phydev, 0x16, 0x202);
++	/*
++	 * 0x0002 Override strap-in for RMII mode
++	 * This should be default but after reset we occasionally read 0x0001
++	 */
++	phy_write(phydev, 0x16, 0x2);
+ 
+ 	return 0;
+ }
 -- 
-2.19.1
+2.7.4
 
 
 _______________________________________________
