@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gU5au-00035r-Uo
- for barebox@lists.infradead.org; Tue, 04 Dec 2018 07:58:14 +0000
-Date: Tue, 4 Dec 2018 08:58:01 +0100
+ id 1gU5cn-0003Dr-VW
+ for barebox@lists.infradead.org; Tue, 04 Dec 2018 08:00:12 +0000
+Date: Tue, 4 Dec 2018 08:59:58 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181204075801.rku7i6vfgy55mp2c@pengutronix.de>
-References: <20181115003637.GA16443@lenoch>
- <1542380845.23489.24.camel@pengutronix.de>
+Message-ID: <20181204075958.ormajl7wupxvdp4p@pengutronix.de>
+References: <20181130150520.5876-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1542380845.23489.24.camel@pengutronix.de>
+In-Reply-To: <20181130150520.5876-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,36 +18,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: macb: dma_sync_* receive buffers
-To: Ladislav Michl <ladis@linux-mips.org>
+Subject: Re: [PATCH v1] defaultenv-2: add bnet script to second stage barebox
+ over net
+To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Ladis,
+On Fri, Nov 30, 2018 at 04:05:20PM +0100, Oleksij Rempel wrote:
+> Doing cycling barebox boot over the net is a good testing practice.
+> It is possible to detect at least some bugs before flushing it to
+> the system. Suddenly it looks like, it is done not oft enough. So, let's
+> add this option mainline.
+> 
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
 
-On Fri, Nov 16, 2018 at 04:07:25PM +0100, Lucas Stach wrote:
-> > @@ -237,12 +241,17 @@ static int macb_recv(struct eth_device *edev)
-> > > =A0				taillen =3D length - headlen;
-> > > =A0				memcpy((void *)NetRxPackets[0],
-> > > =A0				=A0=A0=A0=A0=A0=A0=A0buffer, headlen);
-> > > +				dma_sync_single_for_cpu((unsigned long)macb->rx_buffer,
-> > > +							taillen, DMA_FROM_DEVICE);
-> > > =A0				memcpy((void *)NetRxPackets[0] + headlen,
-> > =A0				=A0=A0=A0=A0=A0=A0=A0macb->rx_buffer, taillen);
-> =
-
-> This is missing a dma_sync_single_for_device() here, matching the
-> ...for_cpu added above. Otherwise patch looks good.
-
-Any input to this one or an updated patch?
+Applied, thanks
 
 Sascha
 
--- =
+>  defaultenv/defaultenv-2-base/boot/bnet | 5 +++++
+>  1 file changed, 5 insertions(+)
+>  create mode 100644 defaultenv/defaultenv-2-base/boot/bnet
+> 
+> diff --git a/defaultenv/defaultenv-2-base/boot/bnet b/defaultenv/defaultenv-2-base/boot/bnet
+> new file mode 100644
+> index 0000000000..1290a7acfc
+> --- /dev/null
+> +++ b/defaultenv/defaultenv-2-base/boot/bnet
+> @@ -0,0 +1,5 @@
+> +#!/bin/sh
+> +
+> +path="/mnt/tftp"
+> +
+> +global.bootm.image="${path}/${global.user}-barebox-${global.hostname}"
+> -- 
+> 2.19.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
