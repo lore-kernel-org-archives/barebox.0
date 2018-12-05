@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x241.google.com ([2a00:1450:4864:20::241])
+Received: from mail-lj1-x243.google.com ([2a00:1450:4864:20::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gUWyU-0007T2-LU
- for barebox@lists.infradead.org; Wed, 05 Dec 2018 13:12:32 +0000
-Received: by mail-lj1-x241.google.com with SMTP id k19-v6so18243705lji.11
- for <barebox@lists.infradead.org>; Wed, 05 Dec 2018 05:12:10 -0800 (PST)
+ id 1gUWyU-0007TY-Uv
+ for barebox@lists.infradead.org; Wed, 05 Dec 2018 13:12:33 +0000
+Received: by mail-lj1-x243.google.com with SMTP id t9-v6so18259983ljh.6
+ for <barebox@lists.infradead.org>; Wed, 05 Dec 2018 05:12:11 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  5 Dec 2018 16:11:43 +0300
-Message-Id: <20181205131144.31512-4-antonynpavlov@gmail.com>
+Date: Wed,  5 Dec 2018 16:11:44 +0300
+Message-Id: <20181205131144.31512-5-antonynpavlov@gmail.com>
 In-Reply-To: <20181205131144.31512-1-antonynpavlov@gmail.com>
 References: <20181205131144.31512-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
@@ -23,36 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] checkpatch.pl: use SPDX tag
+Subject: [PATCH 4/4] checkpatch.pl: check for #if 0/#if 1
 To: barebox@lists.infradead.org
 
-Also add Joe's copyright.
+The #if 0 or #if 1 is used to toggle features. Warn if #if 0 or #if 1
+is present and suggest that they can be removed.
 
-Based on Linux kernel commit 882ea1d64eb3956
-("scripts: use SPDX tag in get_maintainer and checkpatch").
+Based on 60f890105547f7a4 ("checkpatch: check for #if 0/#if 1")
+Linux kernel commit.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- scripts/checkpatch.pl | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ scripts/checkpatch.pl | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index d8a8e5004f..d1fe6659ce 100755
+index d1fe6659ce..4e17347a84 100755
 --- a/scripts/checkpatch.pl
 +++ b/scripts/checkpatch.pl
-@@ -1,9 +1,11 @@
- #!/usr/bin/perl -w
-+# SPDX-License-Identifier: GPL-2.0
-+#
- # (c) 2001, Dave Jones. (the file handling bit)
- # (c) 2005, Joel Schopp <jschopp@austin.ibm.com> (the ugly bit)
- # (c) 2007,2008, Andy Whitcroft <apw@uk.ibm.com> (new conditions, test suite)
- # (c) 2008-2010 Andy Whitcroft <apw@canonical.com>
--# Licensed under the terms of the GNU GPL License version 2
-+# (c) 2010-2018 Joe Perches <joe@perches.com>
+@@ -2863,9 +2863,14 @@ sub process {
  
- use strict;
+ # warn about #if 0
+ 		if ($line =~ /^.\s*\#\s*if\s+0\b/) {
+-			CHK("REDUNDANT_CODE",
+-			    "if this code is redundant consider removing it\n" .
+-				$herecurr);
++			WARN("IF_0",
++			     "Consider removing the code enclosed by this #if 0 and its #endif\n" . $herecurr);
++		}
++
++# warn about #if 1
++		if ($line =~ /^.\s*\#\s*if\s+1\b/) {
++			WARN("IF_1",
++			     "Consider removing the #if 1 and its #endif\n" . $herecurr);
+ 		}
  
+ # check for needless kfree() checks
 -- 
 2.20.0.rc2
 
