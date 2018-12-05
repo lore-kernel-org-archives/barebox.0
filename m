@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
+Received: from mail-lj1-x241.google.com ([2a00:1450:4864:20::241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gUX8G-0004Un-Fd
- for barebox@lists.infradead.org; Wed, 05 Dec 2018 13:22:34 +0000
-Received: by mail-lf1-x141.google.com with SMTP id e26so14716050lfc.2
- for <barebox@lists.infradead.org>; Wed, 05 Dec 2018 05:22:18 -0800 (PST)
+ id 1gUXEK-00074i-2b
+ for barebox@lists.infradead.org; Wed, 05 Dec 2018 13:28:45 +0000
+Received: by mail-lj1-x241.google.com with SMTP id u6-v6so18329654ljd.1
+ for <barebox@lists.infradead.org>; Wed, 05 Dec 2018 05:28:33 -0800 (PST)
+Date: Wed, 5 Dec 2018 16:28:30 +0300
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  5 Dec 2018 16:21:58 +0300
-Message-Id: <20181205132158.32337-5-antonynpavlov@gmail.com>
+Message-Id: <20181205162830.46aa824e925e132fec0a2ddc@gmail.com>
 In-Reply-To: <20181205132158.32337-1-antonynpavlov@gmail.com>
 References: <20181205132158.32337-1-antonynpavlov@gmail.com>
-MIME-Version: 1.0
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,49 +19,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/4] checkpatch.pl: check for #if 0/#if 1
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 0/4] checkpatch.pl: add ability to ignore various
+ messages
+To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
 
-The #if 0 or #if 1 is used to toggle features. Warn if #if 0 or #if 1
-is present and suggest that they can be removed.
+On Wed,  5 Dec 2018 16:21:54 +0300
+Antony Pavlov <antonynpavlov@gmail.com> wrote:
 
-Based on 60f890105547f7a4 ("checkpatch: check for #if 0/#if 1")
-Linux kernel commit.
+Haste makes waste.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- scripts/checkpatch.pl | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+Sorry!
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index d1fe6659ce..4e17347a84 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -2863,9 +2863,14 @@ sub process {
- 
- # warn about #if 0
- 		if ($line =~ /^.\s*\#\s*if\s+0\b/) {
--			CHK("REDUNDANT_CODE",
--			    "if this code is redundant consider removing it\n" .
--				$herecurr);
-+			WARN("IF_0",
-+			     "Consider removing the code enclosed by this #if 0 and its #endif\n" . $herecurr);
-+		}
-+
-+# warn about #if 1
-+		if ($line =~ /^.\s*\#\s*if\s+1\b/) {
-+			WARN("IF_1",
-+			     "Consider removing the #if 1 and its #endif\n" . $herecurr);
- 		}
- 
- # check for needless kfree() checks
--- 
-2.20.0.rc2
+The correct subject for this message is "[PATCH v2 0/4] checkpatch.pl: port=
+ misc linux commits".
 
+> Changes since PATCH v1:
+> =
+
+>   * fix linux kernel git repo hash sums in "checkpatch.pl: check
+>     for common memset parameter issues against statements" commit message.
+> =
+
+> Antony Pavlov (4):
+>   checkpatch.pl: add ability to ignore various messages
+>   checkpatch.pl: check for common memset parameter issues against
+>     statements
+>   checkpatch.pl: use SPDX tag
+>   checkpatch.pl: check for #if 0/#if 1
+> =
+
+>  scripts/checkpatch.pl | 508 ++++++++++++++++++++++++++++++------------
+>  1 file changed, 367 insertions(+), 141 deletions(-)
+> =
+
+> -- =
+
+> 2.20.0.rc2
+> =
+
+
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
