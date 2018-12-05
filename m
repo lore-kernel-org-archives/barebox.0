@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gUS08-0004KM-Bx
- for barebox@lists.infradead.org; Wed, 05 Dec 2018 07:53:45 +0000
-Date: Wed, 5 Dec 2018 08:53:32 +0100
+ id 1gUS2R-0005zY-MS
+ for barebox@lists.infradead.org; Wed, 05 Dec 2018 07:56:09 +0000
+Date: Wed, 5 Dec 2018 08:55:55 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181205075332.xulu6usobqtujcjg@pengutronix.de>
-References: <20181204091631.18775-1-a.fatoum@pengutronix.de>
+Message-ID: <20181205075555.yd2hyk3jb4cqfupx@pengutronix.de>
+References: <1543920225-20866-1-git-send-email-s.riedmueller@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181204091631.18775-1-a.fatoum@pengutronix.de>
+In-Reply-To: <1543920225-20866-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +22,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] common/parser.c: s/%d/%zu/ when printing size_t
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] phytec-som-imx6: ksz8081_phy_fixup: Don't override
+ B-CAST_OFF strap-in
+To: Stefan Riedmueller <s.riedmueller@phytec.de>
+Cc: barebox@lists.infradead.org, Jan Remmet <j.remmet@phytec.de>
 
-On Tue, Dec 04, 2018 at 10:16:32AM +0100, Ahmad Fatoum wrote:
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  common/parser.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+On Tue, Dec 04, 2018 at 11:43:45AM +0100, Stefan Riedmueller wrote:
+> From: Jan Remmet <j.remmet@phytec.de>
 > 
+> As PHY address 0 is not used on PHYTEC i.MX 6 and i.MX 6UL SOMs we do
+> not have to override the B-CAST_OFF strap-in which disables broadcast
+> on PHY address 0.
+> 
+> Also add some comments about the magic values.
+> 
+> Signed-off-by: Jan Remmet <j.remmet@phytec.de>
+> Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+> ---
+>  arch/arm/boards/phytec-som-imx6/board.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
-> diff --git a/common/parser.c b/common/parser.c
-> index 6136dbf36f5f..397d268da1c9 100644
-> --- a/common/parser.c
-> +++ b/common/parser.c
-> @@ -70,7 +70,7 @@ static void process_macros (const char *input, char *output)
->  	/* 3 = waiting for '''  */
->  	char __maybe_unused *output_start = output;
+> 
+> diff --git a/arch/arm/boards/phytec-som-imx6/board.c b/arch/arm/boards/phytec-som-imx6/board.c
+> index 4079bc9de1b3..38a2ef641e47 100644
+> --- a/arch/arm/boards/phytec-som-imx6/board.c
+> +++ b/arch/arm/boards/phytec-som-imx6/board.c
+> @@ -99,8 +99,17 @@ static unsigned int get_module_rev(void)
 >  
-> -	pr_debug("[PROCESS_MACROS] INPUT len %d: \"%s\"\n", strlen (input),
-> +	pr_debug("[PROCESS_MACROS] INPUT len %zu: \"%s\"\n", strlen (input),
->  		input);
+>  static int ksz8081_phy_fixup(struct phy_device *phydev)
+>  {
+> +	/*
+> +	 * 0x8100 default
+> +	 * 0x0080 RMII 50 MHz clock mode
+> +	 * 0x0010 LED Mode 1
+> +	 */
+>  	phy_write(phydev, 0x1f, 0x8190);
+> -	phy_write(phydev, 0x16, 0x202);
+> +	/*
+> +	 * 0x0002 Override strap-in for RMII mode
+> +	 * This should be default but after reset we occasionally read 0x0001
+> +	 */
+> +	phy_write(phydev, 0x16, 0x2);
 >  
->  	prev = '\0';		/* previous character   */
-> @@ -158,7 +158,7 @@ static void process_macros (const char *input, char *output)
->  	if (outputcnt)
->  		*output = 0;
->  
-> -	pr_debug("[PROCESS_MACROS] OUTPUT len %d: \"%s\"\n",
-> +	pr_debug("[PROCESS_MACROS] OUTPUT len %zu: \"%s\"\n",
->  		strlen (output_start), output_start);
+>  	return 0;
 >  }
->  
 > -- 
-> 2.19.1
+> 2.7.4
 > 
 > 
 > _______________________________________________
