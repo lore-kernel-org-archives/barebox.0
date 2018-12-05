@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gURyJ-00045y-BJ
- for barebox@lists.infradead.org; Wed, 05 Dec 2018 07:51:53 +0000
-Date: Wed, 5 Dec 2018 08:51:39 +0100
+ id 1gURz5-0004Co-6P
+ for barebox@lists.infradead.org; Wed, 05 Dec 2018 07:52:40 +0000
+Date: Wed, 5 Dec 2018 08:52:27 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181205075139.d65356mmag2iiyqw@pengutronix.de>
-References: <1543914747-37917-1-git-send-email-s.riedmueller@phytec.de>
+Message-ID: <20181205075227.clmrz7gaqcgp7xc6@pengutronix.de>
+References: <20181204091317.17106-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1543914747-37917-1-git-send-email-s.riedmueller@phytec.de>
+In-Reply-To: <20181204091317.17106-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,93 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] nvmem: ocotp: Add support for second mac address fuses
- on imx6ul
-To: Stefan Riedmueller <s.riedmueller@phytec.de>
+Subject: Re: [PATCH] lib: bootstrap: fix instance of possibly mismatched
+ pointer sizes
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Dec 04, 2018 at 10:12:27AM +0100, Stefan Riedmueller wrote:
-> From: Christian Hemp <c.hemp@phytec.de>
+On Tue, Dec 04, 2018 at 10:13:18AM +0100, Ahmad Fatoum wrote:
+> len was int but &len is passed to read_file(..., size_t *size),
+> Fix this.
 > 
-> The i.MX 6UL/ULL has fuses for two MAC addresses. Both MAC addresses
-> share the fuse address 0x23.
-> 
-> 		-----------------------------
-> 	0x22	| MAC0 | MAC0 | MAC0 | MAC0 |
-> 		-----------------------------
-> 	0x23	| MAC0 | MAC0 | MAC1 | MAC1 |
-> 		-----------------------------
-> 	0x24	| MAC1 | MAC1 | MAC1 | MAC1 |
-> 		-----------------------------
-> 
-> So to read the second MAC address the first two bytes of 0x23 need to be
-> skipped.
-> 
-> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
-> Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
+>  lib/bootstrap/disk.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
->  drivers/nvmem/ocotp.c | 17 +++++++++++++++--
->  1 file changed, 15 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-> index e689559ee362..e0cf35f0b73c 100644
-> --- a/drivers/nvmem/ocotp.c
-> +++ b/drivers/nvmem/ocotp.c
-> @@ -70,6 +70,7 @@
->  #define IMX6_OTP_DATA_ERROR_VAL		0xBADABADA
->  #define DEF_RELAX			20
->  #define MAC_OFFSET_0			(0x22 * 4)
-> +#define IMX6UL_MAC_OFFSET_1		(0x23 * 4)
->  #define MAC_OFFSET_1			(0x24 * 4)
->  #define MAX_MAC_OFFSETS			2
->  #define MAC_BYTES			8
-> @@ -421,10 +422,14 @@ static int imx_ocotp_read_mac(const struct imx_ocotp_data *data,
+> diff --git a/lib/bootstrap/disk.c b/lib/bootstrap/disk.c
+> index a55d5d77f4cf..fd016166e6e4 100644
+> --- a/lib/bootstrap/disk.c
+> +++ b/lib/bootstrap/disk.c
+> @@ -18,7 +18,7 @@ void* bootstrap_read_disk(const char *dev, const char *fstype)
+>  {
 >  	int ret;
+>  	void *buf;
+> -	int len;
+> +	size_t len;
+>  	const char *path = "/";
 >  
->  	ret = regmap_bulk_read(map, offset, buf, MAC_BYTES);
-> +
->  	if (ret < 0)
->  		return ret;
->  
-> -	data->format_mac(mac, buf, OCOTP_HW_TO_MAC);
-> +	if (offset != IMX6UL_MAC_OFFSET_1)
-> +		data->format_mac(mac, buf, OCOTP_HW_TO_MAC);
-> +	else
-> +		data->format_mac(mac, buf + 2, OCOTP_HW_TO_MAC);
->  
->  	return 0;
->  }
-> @@ -639,6 +644,14 @@ static struct imx_ocotp_data imx6sl_ocotp_data = {
->  	.format_mac = imx_ocotp_format_mac,
->  };
->  
-> +static struct imx_ocotp_data imx6ul_ocotp_data = {
-> +	.num_regs = 512,
-> +	.addr_to_offset = imx6q_addr_to_offset,
-> +	.mac_offsets_num = 2,
-> +	.mac_offsets = { MAC_OFFSET_0, IMX6UL_MAC_OFFSET_1 },
-> +	.format_mac = imx_ocotp_format_mac,
-> +};
-> +
->  static struct imx_ocotp_data vf610_ocotp_data = {
->  	.num_regs = 512,
->  	.addr_to_offset = vf610_addr_to_offset,
-> @@ -667,7 +680,7 @@ static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
->  		.data = &imx6sl_ocotp_data,
->  	}, {
->  		.compatible = "fsl,imx6ul-ocotp",
-> -		.data = &imx6q_ocotp_data,
-> +		.data = &imx6ul_ocotp_data,
->  	}, {
->  		.compatible = "fsl,imx8mq-ocotp",
->  		.data = &imx8mq_ocotp_data,
+>  	ret = mount(dev, fstype, path, NULL);
 > -- 
-> 2.7.4
+> 2.19.1
 > 
 > 
 > _______________________________________________
