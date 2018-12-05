@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gUoUb-0000Bt-Hq
- for barebox@lists.infradead.org; Thu, 06 Dec 2018 07:54:46 +0000
-Date: Thu, 6 Dec 2018 08:54:27 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181206075427.s35o3vn4dzdfyfdc@pengutronix.de>
-References: <20181129113048.31857-1-s.trumtrar@pengutronix.de>
- <20181129113048.31857-5-s.trumtrar@pengutronix.de>
- <CAK7LNAS5eO1yRQRQGPcH-PKS2f_-9Oruhb5Pp+O6-ztwJZHw4A@mail.gmail.com>
+ id 1gUX8B-0004Ue-Ae
+ for barebox@lists.infradead.org; Wed, 05 Dec 2018 13:22:24 +0000
+Received: by mail-lf1-x12b.google.com with SMTP id p6so14699154lfc.1
+ for <barebox@lists.infradead.org>; Wed, 05 Dec 2018 05:22:12 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed,  5 Dec 2018 16:21:54 +0300
+Message-Id: <20181205132158.32337-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAK7LNAS5eO1yRQRQGPcH-PKS2f_-9Oruhb5Pp+O6-ztwJZHw4A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,38 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/15] scripts/Kbuild.include: replace KBUILD_CPPFLAGS
- with CPPFLAGS
-To: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: [PATCH v2 0/4] checkpatch.pl: add ability to ignore various messages
+To: barebox@lists.infradead.org
 
-On Wed, Dec 05, 2018 at 09:22:29PM +0900, Masahiro Yamada wrote:
-> On Thu, Nov 29, 2018 at 8:31 PM Steffen Trumtrar
-> <s.trumtrar@pengutronix.de> wrote:
-> >
-> > The barebox Makefiles do not use KBUILD_CPPFLAGS but CPPFLAGS as variable name.
-> >
-> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > ---
-> 
-> 
-> This might be a step backward.
-> 
-> 
-> In old days, Linux also used well-known CPPFLAGS.
-> 
-> Then Linux renamed CPPFLAGS -> KBUILD_CFLAGS
+Changes since PATCH v1:
 
-I'm with you here. Steffen, why was this change necessary?
+  * fix linux kernel git repo hash sums in "checkpatch.pl: check
+    for common memset parameter issues against statements" commit message.
 
-Sascha
+Antony Pavlov (4):
+  checkpatch.pl: add ability to ignore various messages
+  checkpatch.pl: check for common memset parameter issues against
+    statements
+  checkpatch.pl: use SPDX tag
+  checkpatch.pl: check for #if 0/#if 1
 
+ scripts/checkpatch.pl | 508 ++++++++++++++++++++++++++++++------------
+ 1 file changed, 367 insertions(+), 141 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.0.rc2
+
 
 _______________________________________________
 barebox mailing list
