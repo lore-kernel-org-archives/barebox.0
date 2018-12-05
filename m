@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x142.google.com ([2a00:1450:4864:20::142])
+Received: from mail-lj1-x242.google.com ([2a00:1450:4864:20::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gUX8D-0004Ug-S0
- for barebox@lists.infradead.org; Wed, 05 Dec 2018 13:22:27 +0000
-Received: by mail-lf1-x142.google.com with SMTP id c16so14695459lfj.8
- for <barebox@lists.infradead.org>; Wed, 05 Dec 2018 05:22:15 -0800 (PST)
+ id 1gUX8F-0004Uk-UM
+ for barebox@lists.infradead.org; Wed, 05 Dec 2018 13:22:30 +0000
+Received: by mail-lj1-x242.google.com with SMTP id k19-v6so18274951lji.11
+ for <barebox@lists.infradead.org>; Wed, 05 Dec 2018 05:22:17 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  5 Dec 2018 16:21:56 +0300
-Message-Id: <20181205132158.32337-3-antonynpavlov@gmail.com>
+Date: Wed,  5 Dec 2018 16:21:57 +0300
+Message-Id: <20181205132158.32337-4-antonynpavlov@gmail.com>
 In-Reply-To: <20181205132158.32337-1-antonynpavlov@gmail.com>
 References: <20181205132158.32337-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
@@ -23,53 +23,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/4] checkpatch.pl: check for common memset parameter
- issues against statements
+Subject: [PATCH v2 3/4] checkpatch.pl: use SPDX tag
 To: barebox@lists.infradead.org
 
-Based on these Linux kernel commits
+Also add Joe's copyright.
 
-> 309c00c73f053a90 checkpatch: warn about memset with swapped arguments
-> 554e165cf32610ec checkpatch: check for common memset parameter issues against statments
+Based on Linux kernel commit 882ea1d64eb3956
+("scripts: use SPDX tag in get_maintainer and checkpatch").
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- scripts/checkpatch.pl | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ scripts/checkpatch.pl | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 4b9b9d06f3..d8a8e5004f 100755
+index d8a8e5004f..d1fe6659ce 100755
 --- a/scripts/checkpatch.pl
 +++ b/scripts/checkpatch.pl
-@@ -2961,6 +2961,28 @@ sub process {
- 			     "sizeof(& should be avoided\n" . $herecurr);
- 		}
+@@ -1,9 +1,11 @@
+ #!/usr/bin/perl -w
++# SPDX-License-Identifier: GPL-2.0
++#
+ # (c) 2001, Dave Jones. (the file handling bit)
+ # (c) 2005, Joel Schopp <jschopp@austin.ibm.com> (the ugly bit)
+ # (c) 2007,2008, Andy Whitcroft <apw@uk.ibm.com> (new conditions, test suite)
+ # (c) 2008-2010 Andy Whitcroft <apw@canonical.com>
+-# Licensed under the terms of the GNU GPL License version 2
++# (c) 2010-2018 Joe Perches <joe@perches.com>
  
-+# Check for misused memsets
-+		if (defined $stat && $stat =~ /\bmemset\s*\((.*)\)/s) {
-+			my $args = $1;
-+
-+			# Flatten any parentheses and braces
-+			while ($args =~ s/\([^\(\)]*\)/10/s ||
-+			       $args =~ s/\{[^\{\}]*\}/10/s ||
-+			       $args =~ s/\[[^\[\]]*\]/10/s)
-+			{
-+			}
-+			# Extract the simplified arguments.
-+			my ($ms_addr, $ms_val, $ms_size) =
-+						split(/\s*,\s*/, $args);
-+			if ($ms_size =~ /^(0x|)0$/i) {
-+				ERROR("MEMSET",
-+				      "memset size is 3rd argument, not the second.\n" . $herecurr);
-+			} elsif ($ms_size =~ /^(0x|)1$/i) {
-+				WARN("MEMSET",
-+				     "single byte memset is suspicious. Swapped 2nd/3rd argument?\n" . $herecurr);
-+			}
-+		}
-+
- # check for new externs in .c files.
- 		if ($realfile =~ /\.c$/ && defined $stat &&
- 		    $stat =~ /^.\s*(?:extern\s+)?$Type\s+($Ident)(\s*)\(/s)
+ use strict;
+ 
 -- 
 2.20.0.rc2
 
