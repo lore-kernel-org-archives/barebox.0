@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailgate.pixel-group.de ([145.253.133.146])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gUZ0t-0000RQ-MZ
- for barebox@lists.infradead.org; Wed, 05 Dec 2018 15:23:02 +0000
-Received: from mail.pixel.de (unknown [10.63.25.81])
- by mailgate.pixel-group.de (Postfix) with ESMTP id 00FBF5E117
- for <barebox@lists.infradead.org>; Wed,  5 Dec 2018 16:22:41 +0100 (CET)
-Received: from tragicomix (localhost [127.0.0.1])
- by mail.pixel.de (Postfix) with ESMTP id BAC701A0B9
- for <barebox@lists.infradead.org>; Wed,  5 Dec 2018 16:22:40 +0100 (CET)
-From: Kai Che <Kai.Che@mixed-mode.de>
-Date: Wed, 5 Dec 2018 15:22:40 +0000
-Message-ID: <1544023361576.94285@mixed-mode.de>
-Content-Language: de-DE
+ id 1gUodR-00035X-LF
+ for barebox@lists.infradead.org; Thu, 06 Dec 2018 08:03:53 +0000
+Date: Thu, 6 Dec 2018 09:03:36 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20181206080336.cjf244h57y56wnvh@pengutronix.de>
+References: <1544023361576.94285@mixed-mode.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1544023361576.94285@mixed-mode.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,32 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: issues communicating with SPI on Raspberry Pi 3
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: issues communicating with SPI on Raspberry Pi 3
+To: Kai Che <Kai.Che@mixed-mode.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi all,
+On Wed, Dec 05, 2018 at 03:22:40PM +0000, Kai Che wrote:
+> Hi all,
+> 
+> I'm trying to communicate with a TPM 2.0 (infineon,slb9670) over SPI on a Raspberry Pi 3 in barebox.
+> 
+> CONFIG_SPI=y
+> CONFIG_DRIVER_SPI_GPIO=y
+> CONFIG_CMD_SPI=y
+> 
+> are set in the barebox configuration and
+> 
+> dtparam=spi=on
+> 
+> is set in the /boot/config.txt on the raspberry pi.
+> 
+> But when checking /dev/ on barebox, there is nothing related to spi except cs0.
+> 
+> I would have expected something similiar to /dev/spidev0.0 showing up.
 
-I'm trying to communicate with a TPM 2.0 (infineon,slb9670) over SPI on a Raspberry Pi 3 in barebox.
+I you want to communicate with a SPI device directly without the driver,
+there's the 'spi' command. It directly uses internal functions without
+the need of any file in /dev/.
 
-CONFIG_SPI=y
-CONFIG_DRIVER_SPI_GPIO=y
-CONFIG_CMD_SPI=y
+We don't have any bcm283x SPI driver in barebox. You probably already
+noticed that and enable the spi-gpio driver for this reason. However,
+you'll need the appropriate device nodes (Compatible to "spi-gpio")
+and the pinctrl setup to make this work.
 
-are set in the barebox configuration and
+Sascha
 
-dtparam=spi=on
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
-is set in the /boot/config.txt on the raspberry pi.
-
-But when checking /dev/ on barebox, there is nothing related to spi except cs0.
-
-I would have expected something similiar to /dev/spidev0.0 showing up.
-
-Did I miss any configurations?
-
-Best Regrds,
-
-Kai Che
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
