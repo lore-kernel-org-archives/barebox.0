@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gUs5q-00043b-Tp
- for barebox@lists.infradead.org; Thu, 06 Dec 2018 11:45:27 +0000
+ id 1gUs5q-00043a-Tq
+ for barebox@lists.infradead.org; Thu, 06 Dec 2018 11:45:31 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
  helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1gUs5e-0006pV-Ui
+ (envelope-from <l.stach@pengutronix.de>) id 1gUs5e-0006pV-T6
  for barebox@lists.infradead.org; Thu, 06 Dec 2018 12:45:10 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu,  6 Dec 2018 12:45:09 +0100
-Message-Id: <20181206114510.20643-3-l.stach@pengutronix.de>
+Date: Thu,  6 Dec 2018 12:45:08 +0100
+Message-Id: <20181206114510.20643-2-l.stach@pengutronix.de>
 In-Reply-To: <20181206114510.20643-1-l.stach@pengutronix.de>
 References: <20181206114510.20643-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
@@ -26,28 +26,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] ARM: at91: add architecture dependecy to KSZ9477_EVB board
+Subject: [PATCH 2/4] of: remove non-existent of_match_ptr
 To: barebox@lists.infradead.org
 
-This board is part of the SAMA5D3 architecture.
+It's only used in the !OFTREE stub functions, so can be safely removed.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/mach-at91/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ include/of_device.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index bb8305fd1675..e6b4f99c969b 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -539,6 +539,7 @@ config MACH_AT91SAM9X5EK
+diff --git a/include/of_device.h b/include/of_device.h
+index e84fc9c37775..44c1c0f54551 100644
+--- a/include/of_device.h
++++ b/include/of_device.h
+@@ -41,7 +41,7 @@ static inline const struct of_device_id *__of_match_device(
+ 	return NULL;
+ }
+ #define of_match_device(matches, dev)	\
+-	__of_match_device(of_match_ptr(matches), (dev))
++	__of_match_device(matches, (dev))
  
- config MACH_MICROCHIP_KSZ9477_EVB
- 	bool "Microchip EVB-KSZ9477 Evaluation Kit"
-+	depends on ARCH_SAMA5D3
- 	select OFDEVICE
- 	select COMMON_CLK_OF_PROVIDER
- 	help
+ #endif /* CONFIG_OF */
+ 
 -- 
 2.19.1
 
