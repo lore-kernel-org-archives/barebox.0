@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gUWmy-0001KX-7Q
- for barebox@lists.infradead.org; Wed, 05 Dec 2018 13:00:46 +0000
-Date: Wed, 5 Dec 2018 14:00:12 +0100
-From: Roland Hieber <r.hieber@pengutronix.de>
-Message-ID: <20181205130012.vqwk2gzioc5mmwpu@pengutronix.de>
+ id 1gUoHa-0003RR-6T
+ for barebox@lists.infradead.org; Thu, 06 Dec 2018 07:41:19 +0000
+Date: Thu, 6 Dec 2018 08:41:01 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20181206074101.2qkt6lv753iv3awf@pengutronix.de>
 References: <20181204213618.6900-1-linux@rempel-privat.de>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -28,11 +28,6 @@ Cc: barebox@lists.infradead.org
 
 On Tue, Dec 04, 2018 at 10:36:18PM +0100, Oleksij Rempel wrote:
 > Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
-
-Looks good to me.
-
-Reviewed-by: Roland Hieber <r.hieber@pengutronix.de>
-
 > ---
 >  drivers/net/ag71xx.c             |  5 +----
 >  drivers/net/altera_tse.c         | 15 +--------------
@@ -75,6 +70,11 @@ Reviewed-by: Roland Hieber <r.hieber@pengutronix.de>
 >  drivers/net/tap.c                | 14 +-------------
 >  drivers/net/xgmac.c              | 14 +-------------
 >  40 files changed, 41 insertions(+), 436 deletions(-)
+
+Applied, thanks
+
+Sascha
+
 > 
 > diff --git a/drivers/net/ag71xx.c b/drivers/net/ag71xx.c
 > index a422aacdd..0565c9049 100644
@@ -1082,10 +1082,10 @@ Reviewed-by: Roland Hieber <r.hieber@pengutronix.de>
 > 
 
 -- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
