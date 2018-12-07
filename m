@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gVAcm-0000vC-Eq
- for barebox@lists.infradead.org; Fri, 07 Dec 2018 07:32:37 +0000
-Received: by mail-pf1-x443.google.com with SMTP id w73so1516320pfk.10
- for <barebox@lists.infradead.org>; Thu, 06 Dec 2018 23:32:25 -0800 (PST)
+ id 1gVAeB-00017W-Md
+ for barebox@lists.infradead.org; Fri, 07 Dec 2018 07:34:05 +0000
+Received: by mail-pg1-x541.google.com with SMTP id y4so1328345pgc.12
+ for <barebox@lists.infradead.org>; Thu, 06 Dec 2018 23:33:53 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu,  6 Dec 2018 23:32:18 -0800
-Message-Id: <20181207073218.3858-1-andrew.smirnov@gmail.com>
+Date: Thu,  6 Dec 2018 23:33:40 -0800
+Message-Id: <20181207073345.5638-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,37 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] lib/parameter: Fix typecases to match corresponding
- PARAM_TYPE_*
+Subject: [PATCH 1/6] mci: core: Use alias as a devname by default
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-This change should be a no-op in terms of behavior, but it makes code
-less confusing when PARAM_TYPE_* matches the type used in the type
-cast.
+This idiom is repeatead by almost every mci driver, so move it to
+mci_of_parse() in order to reduce amount of duplicated code.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- lib/parameter.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mci/mci-core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/lib/parameter.c b/lib/parameter.c
-index a21b8fa4a..00e9a9ff4 100644
---- a/lib/parameter.c
-+++ b/lib/parameter.c
-@@ -343,10 +343,10 @@ static int param_int_set(struct device_d *dev, struct param_d *p, const char *va
- 		ret = strtobool(val, pi->value);
- 		break;
- 	case PARAM_TYPE_INT32:
--		*(uint32_t *)pi->value = simple_strtol(val, NULL, 0);
-+		*(int32_t *)pi->value = simple_strtol(val, NULL, 0);
- 		break;
- 	case PARAM_TYPE_UINT32:
--		*(int32_t *)pi->value = simple_strtoul(val, NULL, 0);
-+		*(uint32_t *)pi->value = simple_strtoul(val, NULL, 0);
- 		break;
- 	case PARAM_TYPE_INT64:
- 		*(int64_t *)pi->value = simple_strtoll(val, NULL, 0);
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index c8d1d5e16..3efd80a8a 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -1858,6 +1858,7 @@ void mci_of_parse_node(struct mci_host *host,
+ {
+ 	u32 bus_width;
+ 	u32 dsr_val;
++	const char *alias;
+ 
+ 	if (!IS_ENABLED(CONFIG_OFDEVICE))
+ 		return;
+@@ -1865,6 +1866,10 @@ void mci_of_parse_node(struct mci_host *host,
+ 	if (!host->hw_dev || !np)
+ 		return;
+ 
++	alias = of_alias_get(np);
++	if (alias)
++		host->devname = xstrdup(alias);
++
+ 	/* "bus-width" is translated to MMC_CAP_*_BIT_DATA flags */
+ 	if (of_property_read_u32(np, "bus-width", &bus_width) < 0) {
+ 		/* If bus-width is missing we get the driver's default, which
 -- 
 2.19.1
 
