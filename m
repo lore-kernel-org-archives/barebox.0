@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gVD7N-0004iS-SP
- for barebox@lists.infradead.org; Fri, 07 Dec 2018 10:12:23 +0000
+ id 1gVD7N-0004iW-S0
+ for barebox@lists.infradead.org; Fri, 07 Dec 2018 10:12:24 +0000
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Fri,  7 Dec 2018 11:11:54 +0100
-Message-Id: <20181207101156.2213-3-m.tretter@pengutronix.de>
+Date: Fri,  7 Dec 2018 11:11:55 +0100
+Message-Id: <20181207101156.2213-4-m.tretter@pengutronix.de>
 In-Reply-To: <20181207101156.2213-1-m.tretter@pengutronix.de>
 References: <20181128112053.6027-1-m.tretter@pengutronix.de>
  <20181207101156.2213-1-m.tretter@pengutronix.de>
@@ -22,38 +22,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 2/4] ARM: aarch64: compile with general-regs-only
+Subject: [PATCH v3 3/4] ARM: aarch64: add ENTRY_PROC macro for arm64
 To: barebox@lists.infradead.org
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-Without this flag, gcc generates code to save the Q/V registers to the
-stack for handling the va_list in pr_print(). Saving the registers is
-useless, as the registers are never restored, but accessing the
-registers to save them hangs the CPU.
+arm64 has no __naked__ attribute and the compiler adds a function prologue
+for saving x29 and x30 to the stack for all C functions. This includes
+functions defined using the ENTRY_FUNCTION macro. Therefore, the stack
+needs to be setup before entering a C function, which is not possible if
+the entry is a C function.
 
-Follow the Linux arch/arm64/Makefile and use the general-regs-only flag
-to prevent usage of floating point and Advanced SIMD register.
+Provide a macro to implement the entry in assembly to be able to setup the
+stack before entering the low level entry function.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- arch/arm/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
+v3:
+- add SPDX-License-Identifier
+---
+ arch/arm/include/asm/barebox-arm64.h | 35 ++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+ create mode 100644 arch/arm/include/asm/barebox-arm64.h
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 5db67b9db8..50958b787f 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -27,6 +27,10 @@ else
- CFLAGS += -mstrict-align
- endif
- 
-+# Prevent use of floating point and Advanced SIMD registers.
-+ifeq ($(CONFIG_CPU_V8),y)
-+CFLAGS += -mgeneral-regs-only
-+endif
- 
- # This selects which instruction set is used.
- # Note that GCC does not numerically define an architecture version
+diff --git a/arch/arm/include/asm/barebox-arm64.h b/arch/arm/include/asm/barebox-arm64.h
+new file mode 100644
+index 0000000000..58ff7b9b36
+--- /dev/null
++++ b/arch/arm/include/asm/barebox-arm64.h
+@@ -0,0 +1,35 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef _BAREBOX_ARM64_H_
++#define _BAREBOX_ARM64_H_
++
++#include <linux/linkage.h>
++
++/*
++ * ENTRY_PROC - mark start of entry procedure
++ */
++#define ENTRY_PROC(name) \
++	.section .text_head_entry_##name; \
++	ENTRY(##name); \
++		b 2f; \
++		nop; \
++		nop; \
++		nop; \
++		nop; \
++		nop; \
++		nop; \
++		nop; \
++		.asciz "barebox"; \
++		.word 0xffffffff; \
++		.word _barebox_image_size; \
++		.rept 8; \
++		.word 0x55555555; \
++		.endr; \
++		2:
++
++/*
++ * ENTRY_PROC_END - mark end of entry procedure
++ */
++#define ENTRY_PROC_END(name) \
++	END(##name)
++
++#endif /* _BAREBOX_ARM64_H_ */
 -- 
 2.19.1
 
