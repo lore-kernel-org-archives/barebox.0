@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gVAn4-0004pD-Sq
- for barebox@lists.infradead.org; Fri, 07 Dec 2018 07:43:16 +0000
-Date: Fri, 7 Dec 2018 08:43:03 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181207074302.babciy2rcwjvh2iq@pengutronix.de>
-References: <20181207063433.7623-1-a.fatoum@pengutronix.de>
- <20181207063433.7623-4-a.fatoum@pengutronix.de>
+ id 1gVBGa-0001aY-9v
+ for barebox@lists.infradead.org; Fri, 07 Dec 2018 08:13:45 +0000
+Received: by mail-pf1-x442.google.com with SMTP id 64so1571149pfr.9
+ for <barebox@lists.infradead.org>; Fri, 07 Dec 2018 00:13:34 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Fri,  7 Dec 2018 00:13:22 -0800
+Message-Id: <20181207081322.15539-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181207063433.7623-4-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,58 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] of: partition: add no-fixup device tree property
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Documentation: i.MX: Document how to use GPT
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Fri, Dec 07, 2018 at 07:34:37AM +0100, Ahmad Fatoum wrote:
-> Users can have reasons to inhibit barebox from fixing up partitions nodes
-> into the kernel device tree, like if it's a boot0-partitions node, which
-> doesn't have a kernel binding.
-> Allow users to specify a no-fixup property to indicate so.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  Documentation/devicetree/bindings/mtd/partition.txt | 3 +++
->  drivers/of/partition.c                              | 9 +++++++++
->  fs/devfs-core.c                                     | 1 +
->  3 files changed, 13 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/mtd/partition.txt b/Documentation/devicetree/bindings/mtd/partition.txt
-> index 4288a82437b4..a2e810276a9c 100644
-> --- a/Documentation/devicetree/bindings/mtd/partition.txt
-> +++ b/Documentation/devicetree/bindings/mtd/partition.txt
-> @@ -4,6 +4,8 @@ In addition to the upstream binding, another property is added:
->  
->  Optional properties:
->  - partuuid : The partition UUID for this partition.
-> +- no-fixup : empty property, indicates that barebox shouldn't fix up the
-> +             containing node into the kernel device tree.
->  
->  Additionally, barebox also supports partitioning the eMMC boot partitions if
->  the partition table node is named appropriately:
-> @@ -28,6 +30,7 @@ flash@0 {
->  emmc@1 {
->  	boot0-partitions {
->  		compatible = "fixed-partitions";
-> +		no-fixup;
->  		#address-cells = <1>;
->  		#size-cells = <1>;
+Document a way to avoid clashes between i.MX boot info/Barebox and
+GPT's Partition Entry Array.
 
-I am not so happy that we need an extra device tree property just to let
-barebox know that it shouldn't try a fixup for the boot partitions.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ Documentation/boards/imx.rst | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-In mci_register_partition() we unconditionally call
-of_partitions_register_fixup() even for the boot partitions. Wouldn't it
-be sufficient to just skip the call for the boot partitions?
-
-Sascha
-
+diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
+index 99ca10b7c..a87acbee2 100644
+--- a/Documentation/boards/imx.rst
++++ b/Documentation/boards/imx.rst
+@@ -60,6 +60,25 @@ The images can also always be started second stage::
+ 
+   bootm /mnt/tftp/barebox-freescale-imx51-babbage.img
+ 
++Using GPT on i.MX
++^^^^^^^^^^^^^^^^^
++
++For i.MX SoCs that place vendor specific header at +1KiB mark of a
++boot medium, special care needs to be taken when parition that medium
++with GPT. In order to make room for i.MX boot headr GPT Partition
++Entry Array needs to be moved from its typical location, LBA 2, to an
++offset past vendor specific information. One way to do this would be
++to use ``-j`` or ``--adjust-main-table`` option of ``sgdisk``. For
++example, the following sequence:
++
++  sgdisk -Z <block device>
++  sgdisk -o -j 2048 -n 1:8192:+100M <block device>
++
++will create a single GPT partition starting at LBA 8192 and would
++place Partition Entry Array starting at LBA 2048 which should leave
++enough room for Barebox/i.MX boot header. Once that is done ``dd``
++command above can be used to place Barebox on the same medium.
++
+ Information about the ``imx-image`` tool
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
