@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gVAeB-00017W-Md
- for barebox@lists.infradead.org; Fri, 07 Dec 2018 07:34:05 +0000
-Received: by mail-pg1-x541.google.com with SMTP id y4so1328345pgc.12
- for <barebox@lists.infradead.org>; Thu, 06 Dec 2018 23:33:53 -0800 (PST)
+ id 1gVAeC-00017h-Od
+ for barebox@lists.infradead.org; Fri, 07 Dec 2018 07:34:06 +0000
+Received: by mail-pf1-x441.google.com with SMTP id b85so1533252pfc.3
+ for <barebox@lists.infradead.org>; Thu, 06 Dec 2018 23:33:54 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu,  6 Dec 2018 23:33:40 -0800
-Message-Id: <20181207073345.5638-1-andrew.smirnov@gmail.com>
+Date: Thu,  6 Dec 2018 23:33:41 -0800
+Message-Id: <20181207073345.5638-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20181207073345.5638-1-andrew.smirnov@gmail.com>
+References: <20181207073345.5638-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,41 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] mci: core: Use alias as a devname by default
+Subject: [PATCH 2/6] mci: tegra-sdmmc: Drop explicit devname setup code
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-This idiom is repeatead by almost every mci driver, so move it to
-mci_of_parse() in order to reduce amount of duplicated code.
+Drop explicit devname setup code. Same setup will be done by
+mci_of_parse().
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mci/mci-core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/mci/tegra-sdmmc.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index c8d1d5e16..3efd80a8a 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -1858,6 +1858,7 @@ void mci_of_parse_node(struct mci_host *host,
+diff --git a/drivers/mci/tegra-sdmmc.c b/drivers/mci/tegra-sdmmc.c
+index e465d891a..4c4791807 100644
+--- a/drivers/mci/tegra-sdmmc.c
++++ b/drivers/mci/tegra-sdmmc.c
+@@ -411,10 +411,7 @@ static int tegra_sdmmc_detect(struct device_d *dev)
+ static void tegra_sdmmc_parse_dt(struct tegra_sdmmc_host *host)
  {
- 	u32 bus_width;
- 	u32 dsr_val;
-+	const char *alias;
+ 	struct device_node *np = host->mci.hw_dev->device_node;
+-	const char *alias = of_alias_get(np);
  
- 	if (!IS_ENABLED(CONFIG_OFDEVICE))
- 		return;
-@@ -1865,6 +1866,10 @@ void mci_of_parse_node(struct mci_host *host,
- 	if (!host->hw_dev || !np)
- 		return;
- 
-+	alias = of_alias_get(np);
-+	if (alias)
-+		host->devname = xstrdup(alias);
-+
- 	/* "bus-width" is translated to MMC_CAP_*_BIT_DATA flags */
- 	if (of_property_read_u32(np, "bus-width", &bus_width) < 0) {
- 		/* If bus-width is missing we get the driver's default, which
+-	if (alias)
+-		host->mci.devname = xstrdup(alias);
+ 	host->gpio_cd = of_get_named_gpio(np, "cd-gpios", 0);
+ 	host->gpio_pwr = of_get_named_gpio(np, "power-gpios", 0);
+ 	mci_of_parse(&host->mci);
 -- 
 2.19.1
 
