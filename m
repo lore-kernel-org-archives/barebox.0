@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp77.iad3a.emailsrvr.com ([173.203.187.77])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gVDT8-00071o-Lz
- for barebox@lists.infradead.org; Fri, 07 Dec 2018 10:34:56 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  7 Dec 2018 11:34:03 +0100
-Message-Id: <20181207103405.27365-6-s.hauer@pengutronix.de>
-In-Reply-To: <20181207103405.27365-1-s.hauer@pengutronix.de>
-References: <20181207103405.27365-1-s.hauer@pengutronix.de>
+ id 1gVHvI-0000BE-94
+ for barebox@lists.infradead.org; Fri, 07 Dec 2018 15:20:13 +0000
+From: Ian Abbott <abbotti@mev.co.uk>
+Message-ID: <9fe4263a-2331-362f-2e68-7563115a3b8a@mev.co.uk>
+Date: Fri, 7 Dec 2018 15:19:58 +0000
 MIME-Version: 1.0
+Content-Language: en-GB
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,68 +16,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] usb: gadget: fastboot: be more informative on booting
+Subject: GPIO support missing for SoCFPGA?
 To: Barebox List <barebox@lists.infradead.org>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-We used to end the fastboot session once we received the boot command.
-Now that we end the session during shutdown we can do better: We can
-end the session once we actually shutdown, or more importantly in the
-case of an error.
+Hi,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/usb/gadget/f_fastboot.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+Commit 8a680e3c9b5dd8470b7437654877d5439e9a6407 ("ARM: socfpga: Arria10: 
+support programming FPGA in PBL") deselected GPIOLIB, so none of the 
+SoCFPGA boards support GPIO any more.  There is no mention of this in 
+the commit message.  Was this a deliberate change, or accidental?  Where 
+is the best place to re-enable the option?
 
-diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-index 08ea9bce6b..f6eb30dec4 100644
---- a/drivers/usb/gadget/f_fastboot.c
-+++ b/drivers/usb/gadget/f_fastboot.c
-@@ -759,7 +759,7 @@ static void cb_download(struct f_fastboot *f_fb, const char *cmd)
- 	}
- }
- 
--static void do_bootm_on_complete(struct usb_ep *ep, struct usb_request *req)
-+static void __maybe_unused cb_boot(struct f_fastboot *f_fb, const char *opt)
- {
- 	int ret;
- 	struct bootm_data data = {
-@@ -767,7 +767,7 @@ static void do_bootm_on_complete(struct usb_ep *ep, struct usb_request *req)
- 		.os_address = UIMAGE_SOME_ADDRESS,
- 	};
- 
--	pr_info("Booting kernel..\n");
-+	fastboot_tx_print(f_fb, FASTBOOT_MSG_INFO, "Booting kernel..\n");
- 
- 	globalvar_set_match("linux.bootargs.dyn.", "");
- 	globalvar_set_match("bootm.", "");
-@@ -775,14 +775,12 @@ static void do_bootm_on_complete(struct usb_ep *ep, struct usb_request *req)
- 	data.os_file = xstrdup(FASTBOOT_TMPFILE);
- 
- 	ret = bootm_boot(&data);
--	if (ret)
--		pr_err("Booting failed\n");
--}
- 
--static void __maybe_unused cb_boot(struct f_fastboot *f_fb, const char *opt)
--{
--	f_fb->in_req->complete = do_bootm_on_complete;
--	fastboot_tx_print(f_fb, FASTBOOT_MSG_OKAY, "");
-+	if (ret)
-+		fastboot_tx_print(f_fb, FASTBOOT_MSG_FAIL, "Booting failed: %s",
-+				   strerror(-ret));
-+	else
-+		fastboot_tx_print(f_fb, FASTBOOT_MSG_OKAY, "");
- }
- 
- static struct mtd_info *get_mtd(struct f_fastboot *f_fb, const char *filename)
+Best regards,
+Ian Abbott.
+
 -- 
-2.19.1
-
+-=( Ian Abbott <abbotti@mev.co.uk> || Web: www.mev.co.uk )=-
+-=( MEV Ltd. is a company registered in England & Wales. )=-
+-=( Registered number: 02862268.  Registered address:    )=-
+-=( 15 West Park Road, Bramhall, STOCKPORT, SK7 3JZ, UK. )=-
 
 _______________________________________________
 barebox mailing list
