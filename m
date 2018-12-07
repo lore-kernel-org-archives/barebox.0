@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-sn1nam04on0711.outbound.protection.outlook.com
+ ([2a01:111:f400:fe4c::711]
+ helo=NAM04-SN1-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gWHdT-0004CS-Pf
- for barebox@lists.infradead.org; Mon, 10 Dec 2018 09:13:57 +0000
-Date: Mon, 10 Dec 2018 10:13:43 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181210091343.rqqve4qb4ek5hmtq@pengutronix.de>
-References: <20181128112053.6027-1-m.tretter@pengutronix.de>
- <20181207101156.2213-1-m.tretter@pengutronix.de>
+ id 1gVIpK-000149-Kr
+ for barebox@lists.infradead.org; Fri, 07 Dec 2018 16:18:08 +0000
+From: "Baeuerle, Florian" <Florian.Baeuerle@allegion.com>
+Date: Fri, 7 Dec 2018 16:17:53 +0000
+Message-ID: <20181207161732.16561-1-florian.baeuerle@allegion.com>
+Content-Language: en-US
+Content-ID: <2BCFC714A70EBC4EAF98D77B431F71C2@prod.exchangelabs.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181207101156.2213-1-m.tretter@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,92 +19,102 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 0/4] Xilinx Zynq Ultrascale+ MPSoC support
-To: Michael Tretter <m.tretter@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] phycard-imx27: add support for 64MB RAM variants
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Fri, Dec 07, 2018 at 11:11:52AM +0100, Michael Tretter wrote:
-> This is v3 of the series to add support for the Xilinx Zynq Ultrascale+ MPSoC
-> platform and the ZCU104 Evaluation Kit.
-> 
-> I checked the SPDX-License-Identifiers and added them on all newly added
-> source files.
-> 
-> Michael
-
-Applied, thanks
-
-Sascha
-
-> 
-> Changelog:
-> 
-> v2 -> v3:
-> - add SPDX-License-Identifiers to all newly added source files
-> 
-> v1 -> v2:
-> - move ENTRY_PROC to a more generic location
-> - add separate patch for ENTRY_PROC
-> - rebase onto piggydata patches
-> - remove empty zynqmp.c and board.c
-> - use SPDX-License-Identifiers
-> 
-> Michael Tretter (4):
->   ARM: lib64: .gitignore barebox.lds
->   ARM: aarch64: compile with general-regs-only
->   ARM: aarch64: add ENTRY_PROC macro for arm64
->   ARM: zynqmp: add support for Xilinx ZCU104 board
-> 
->  arch/arm/Kconfig                              | 14 +++++++
->  arch/arm/Makefile                             |  5 +++
->  arch/arm/boards/Makefile                      |  1 +
->  arch/arm/boards/xilinx-zcu104/Makefile        |  2 +
->  arch/arm/boards/xilinx-zcu104/lowlevel.c      | 21 ++++++++++
->  arch/arm/boards/xilinx-zcu104/lowlevel_init.S | 12 ++++++
->  arch/arm/configs/zynqmp_defconfig             | 38 +++++++++++++++++++
->  arch/arm/dts/Makefile                         |  1 +
->  arch/arm/dts/zynqmp-zcu104-revA.dts           | 10 +++++
->  arch/arm/include/asm/barebox-arm64.h          | 35 +++++++++++++++++
->  arch/arm/lib64/.gitignore                     |  1 +
->  arch/arm/mach-zynqmp/Kconfig                  | 10 +++++
->  arch/arm/mach-zynqmp/Makefile                 |  2 +
->  arch/arm/mach-zynqmp/include/mach/debug_ll.h  | 31 +++++++++++++++
->  images/Makefile                               |  1 +
->  images/Makefile.zynqmp                        |  8 ++++
->  16 files changed, 192 insertions(+)
->  create mode 100644 arch/arm/boards/xilinx-zcu104/Makefile
->  create mode 100644 arch/arm/boards/xilinx-zcu104/lowlevel.c
->  create mode 100644 arch/arm/boards/xilinx-zcu104/lowlevel_init.S
->  create mode 100644 arch/arm/configs/zynqmp_defconfig
->  create mode 100644 arch/arm/dts/zynqmp-zcu104-revA.dts
->  create mode 100644 arch/arm/include/asm/barebox-arm64.h
->  create mode 100644 arch/arm/lib64/.gitignore
->  create mode 100644 arch/arm/mach-zynqmp/Kconfig
->  create mode 100644 arch/arm/mach-zynqmp/Makefile
->  create mode 100644 arch/arm/mach-zynqmp/include/mach/debug_ll.h
->  create mode 100644 images/Makefile.zynqmp
-> 
-> -- 
-> 2.19.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U29tZSBvbGRlciBwY2ExMDAgYm9hcmRzIHdlcmUgYXZhaWxhYmxlIHdpdGggNjRNQiBSQU0uIFRo
+ZSBjaGlwcw0KcmVxdWlyZSBhIHNsaWdodGx5IGRpZmZlcmVudCBzZHJhbSBjb250cm9sbGVyIGlu
+aXRpYWxpemF0aW9uLiBTdXBwb3J0DQp0aGlzIGJ5IGJ1aWxkaW5nIGJvb3Rsb2FkZXIgaW1hZ2Vz
+IGZvciBib3RoIHZhcmlhbnRzLg0KDQpTaWduZWQtb2ZmLWJ5OiBGbG9yaWFuIELDpHVlcmxlIDxm
+bG9yaWFuLmJhZXVlcmxlQGFsbGVnaW9uLmNvbT4NCi0tLQ0KIGFyY2gvYXJtL2JvYXJkcy9waHl0
+ZWMtcGh5Y2FyZC1pbXgyNy9sb3dsZXZlbC5jIHwgNTIgKysrKysrKysrKysrKysrKysrKy0tLS0t
+LQ0KIGltYWdlcy9NYWtlZmlsZS5pbXggICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgMTAg
+KysrLS0NCiAyIGZpbGVzIGNoYW5nZWQsIDQ4IGluc2VydGlvbnMoKyksIDE0IGRlbGV0aW9ucygt
+KQ0KDQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljYXJkLWlteDI3L2xv
+d2xldmVsLmMgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNhcmQtaW14MjcvbG93bGV2ZWwu
+Yw0KaW5kZXggZTExMzJlMC4uMWU5NmMwOCAxMDA2NDQNCi0tLSBhL2FyY2gvYXJtL2JvYXJkcy9w
+aHl0ZWMtcGh5Y2FyZC1pbXgyNy9sb3dsZXZlbC5jDQorKysgYi9hcmNoL2FybS9ib2FyZHMvcGh5
+dGVjLXBoeWNhcmQtaW14MjcvbG93bGV2ZWwuYw0KQEAgLTE1LDExICsxNSwzMCBAQA0KICNpbmNs
+dWRlIDxtYWNoL2VzZGN0bC5oPg0KICNpbmNsdWRlIDxtYWNoL2lteC1uYW5kLmg+DQogDQotI2Rl
+ZmluZSBFU0RDVEwwX1ZBTCAoRVNEQ1RMMF9TREUgfCBFU0RDVEwwX1JPVzEzIHwgRVNEQ1RMMF9D
+T0wxMCkNCitlbnVtIHsNCisJUEhZQ0FSRF9NSUNST05fNjRNQiwNCisJUEhZQ0FSRF9NSUNST05f
+MTI4TUIsDQorfTsNCiANCi1zdGF0aWMgdm9pZCBzZHJhbV9pbml0KHZvaWQpDQorI2RlZmluZSBF
+U0RDVEwwX1ZBTF82NE1CIChFU0RDVEwwX1NERSB8IEVTRENUTDBfUk9XMTMgfCBFU0RDVEwwX0NP
+TDkpDQorI2RlZmluZSBFU0RDRkcwX1ZBTF82NE1CIDB4MDA2OTY0MjkNCisjZGVmaW5lIEVTRENU
+TDBfVkFMXzEyOE1CIChFU0RDVEwwX1NERSB8IEVTRENUTDBfUk9XMTMgfCBFU0RDVEwwX0NPTDEw
+KQ0KKyNkZWZpbmUgRVNEQ0ZHMF9WQUxfMTI4TUIgMHgwMDZhYzczYQ0KKw0KK3N0YXRpYyB2b2lk
+IHNkcmFtX2luaXQoaW50IHNkcmFtKQ0KIHsNCiAJaW50IGk7DQorCXVuc2lnbmVkIGVzZGNmZywg
+ZXNkY3RsOw0KKw0KKwlpZiAoc2RyYW0gPT0gUEhZQ0FSRF9NSUNST05fNjRNQikgew0KKwkJZXNk
+Y2ZnID0gRVNEQ0ZHMF9WQUxfNjRNQjsNCisJCWVzZGN0bCA9IEVTRENUTDBfVkFMXzY0TUI7DQor
+CX0gZWxzZSBpZiAoc2RyYW0gPT0gUEhZQ0FSRF9NSUNST05fMTI4TUIpIHsNCisJCWVzZGNmZyA9
+IEVTRENGRzBfVkFMXzEyOE1COw0KKwkJZXNkY3RsID0gRVNEQ1RMMF9WQUxfMTI4TUI7DQorCX0g
+ZWxzZSB7DQorCQloYW5nKCk7DQorCX0NCiANCiAJLyoNCiAJICogRERSIG9uIENTRDANCkBAIC0z
+NiwyOSArNTUsMjkgQEAgc3RhdGljIHZvaWQgc2RyYW1faW5pdCh2b2lkKQ0KIA0KIAkvKiBJbml0
+aWFsIHJlc2V0ICovDQogCXdyaXRlbCgweDAwMDAwMDA0LCBNWDI3X0VTRENUTF9CQVNFX0FERFIg
+KyBJTVhfRVNETUlTQyk7DQotCXdyaXRlbCgweDAwNmFjNzNhLCBNWDI3X0VTRENUTF9CQVNFX0FE
+RFIgKyBJTVhfRVNEQ0ZHMCk7DQorCXdyaXRlbChlc2RjZmcsIE1YMjdfRVNEQ1RMX0JBU0VfQURE
+UiArIElNWF9FU0RDRkcwKTsNCiANCiAJLyogcHJlY2hhcmdlIENTRDAgYWxsIGJhbmtzICovDQot
+CXdyaXRlbChFU0RDVEwwX1ZBTCB8IEVTRENUTDBfU01PREVfUFJFQ0hBUkdFLA0KKwl3cml0ZWwo
+ZXNkY3RsIHwgRVNEQ1RMMF9TTU9ERV9QUkVDSEFSR0UsDQogCQkJTVgyN19FU0RDVExfQkFTRV9B
+RERSICsgSU1YX0VTRENUTDApOw0KIAl3cml0ZWwoMHgwMDAwMDAwMCwgMHhhMDAwMGYwMCk7CS8q
+IENTRDAgcHJlY2hhcmdlIGFkZHJlc3MgKEExMCA9IDEpICovDQotCXdyaXRlbChFU0RDVEwwX1ZB
+TCB8IEVTRENUTDBfU01PREVfQVVUT19SRUZSRVNILA0KKwl3cml0ZWwoZXNkY3RsIHwgRVNEQ1RM
+MF9TTU9ERV9BVVRPX1JFRlJFU0gsDQogCQkJTVgyN19FU0RDVExfQkFTRV9BRERSICsgSU1YX0VT
+RENUTDApOw0KIA0KIAlmb3IgKGkgPSAwOyBpIDwgODsgaSsrKQ0KIAkJd3JpdGVsKDAsIDB4YTAw
+MDBmMDApOw0KIA0KLQl3cml0ZWwoRVNEQ1RMMF9WQUwgfCBFU0RDVEwwX1NNT0RFX0xPQURfTU9E
+RSwNCisJd3JpdGVsKGVzZGN0bCB8IEVTRENUTDBfU01PREVfTE9BRF9NT0RFLA0KIAkJCU1YMjdf
+RVNEQ1RMX0JBU0VfQUREUiArIElNWF9FU0RDVEwwKTsNCiAJd3JpdGViKDB4ZGEsIDB4YTAwMDAw
+MzMpOw0KIAl3cml0ZWIoMHhmZiwgMHhhMTAwMDAwMCk7DQogDQotCXdyaXRlbChFU0RDVEwwX1ZB
+TCB8IEVTRENUTDBfRFNJWl8zMV8wIHwgRVNEQ1RMMF9SRUY0IHwNCisJd3JpdGVsKGVzZGN0bCB8
+IEVTRENUTDBfRFNJWl8zMV8wIHwgRVNEQ1RMMF9SRUY0IHwNCiAJCQlFU0RDVEwwX0JMIHwgRVNE
+Q1RMMF9TTU9ERV9OT1JNQUwsDQogCQkJTVgyN19FU0RDVExfQkFTRV9BRERSICsgSU1YX0VTRENU
+TDApOw0KIH0NCiANCi12b2lkIF9fYmFyZV9pbml0IF9fbmFrZWQgcGh5dGVjX3BoeWNhcmRfaW14
+MjdfY29tbW9uX2luaXQodm9pZCAqZmR0KQ0KK3ZvaWQgX19iYXJlX2luaXQgX19uYWtlZCBwaHl0
+ZWNfcGh5Y2FyZF9pbXgyN19jb21tb25faW5pdCh2b2lkICpmZHQsIGludCBzZHJhbSkNCiB7DQog
+CXVuc2lnbmVkIGxvbmcgcjsNCiANCkBAIC05NiwxNCArMTE1LDI1IEBAIHZvaWQgX19iYXJlX2lu
+aXQgX19uYWtlZCBwaHl0ZWNfcGh5Y2FyZF9pbXgyN19jb21tb25faW5pdCh2b2lkICpmZHQpDQog
+CQlNWDI3X0NTQ1JfU1NJMV9TRUwgfCBNWDI3X0NTQ1JfSDI2NF9TRUwgfA0KIAkJTVgyN19DU0NS
+X01TSENfU0VMLCBNWDI3X0NDTV9CQVNFX0FERFIgKyBNWDI3X0NTQ1IpOw0KIA0KLQlzZHJhbV9p
+bml0KCk7DQorCXNkcmFtX2luaXQoc2RyYW0pOw0KIA0KIAlpbXgyN19iYXJlYm94X2Jvb3RfbmFu
+ZF9leHRlcm5hbChmZHQpOw0KIH0NCiANCiBleHRlcm4gY2hhciBfX2R0Yl9pbXgyN19waHl0ZWNf
+cGh5Y2FyZF9zX3Jka19iYl9zdGFydFtdOw0KIA0KLUVOVFJZX0ZVTkNUSU9OKHN0YXJ0X3BoeXRl
+Y19waHljYXJkX2lteDI3LCByMCwgcjEsIHIyKQ0KK0VOVFJZX0ZVTkNUSU9OKHN0YXJ0X3BoeXRl
+Y19waHljYXJkX2lteDI3XzY0bWIsIHIwLCByMSwgcjIpDQorew0KKwl2b2lkICpmZHQ7DQorDQor
+CWFybV9zZXR1cF9zdGFjayhNWDI3X0lSQU1fQkFTRV9BRERSICsgTVgyN19JUkFNX1NJWkUgLSAx
+Mik7DQorDQorCWZkdCA9IF9fZHRiX2lteDI3X3BoeXRlY19waHljYXJkX3NfcmRrX2JiX3N0YXJ0
+ICsgZ2V0X3J1bnRpbWVfb2Zmc2V0KCk7DQorDQorCXBoeXRlY19waHljYXJkX2lteDI3X2NvbW1v
+bl9pbml0KGZkdCwgUEhZQ0FSRF9NSUNST05fNjRNQik7DQorfQ0KKw0KK0VOVFJZX0ZVTkNUSU9O
+KHN0YXJ0X3BoeXRlY19waHljYXJkX2lteDI3XzEyOG1iLCByMCwgcjEsIHIyKQ0KIHsNCiAJdm9p
+ZCAqZmR0Ow0KIA0KQEAgLTExMSw1ICsxNDEsNSBAQCBFTlRSWV9GVU5DVElPTihzdGFydF9waHl0
+ZWNfcGh5Y2FyZF9pbXgyNywgcjAsIHIxLCByMikNCiANCiAJZmR0ID0gX19kdGJfaW14MjdfcGh5
+dGVjX3BoeWNhcmRfc19yZGtfYmJfc3RhcnQgKyBnZXRfcnVudGltZV9vZmZzZXQoKTsNCiANCi0J
+cGh5dGVjX3BoeWNhcmRfaW14MjdfY29tbW9uX2luaXQoZmR0KTsNCisJcGh5dGVjX3BoeWNhcmRf
+aW14MjdfY29tbW9uX2luaXQoZmR0LCBQSFlDQVJEX01JQ1JPTl8xMjhNQik7DQogfQ0KZGlmZiAt
+LWdpdCBhL2ltYWdlcy9NYWtlZmlsZS5pbXggYi9pbWFnZXMvTWFrZWZpbGUuaW14DQppbmRleCA5
+YjVjZDU3Li44MWRmODhlIDEwMDY0NA0KLS0tIGEvaW1hZ2VzL01ha2VmaWxlLmlteA0KKysrIGIv
+aW1hZ2VzL01ha2VmaWxlLmlteA0KQEAgLTQzLDkgKzQzLDEzIEBAIENGR19zdGFydF9pbXgyNV9r
+YXJvX3R4MjUucGJseC5pbXhpbWcgPSAkKGJvYXJkKS9rYXJvLXR4MjUvZmxhc2gtaGVhZGVyLXR4
+MjUuaW14DQogRklMRV9iYXJlYm94LWthcm8tdHgyNS1pbnRlcm5hbC5pbWcgPSBzdGFydF9pbXgy
+NV9rYXJvX3R4MjUucGJseC5pbXhpbWcNCiBpbWFnZS0kKENPTkZJR19NQUNIX1RYMjUpICs9IGJh
+cmVib3gta2Fyby10eDI1LWludGVybmFsLmltZw0KIA0KLXBibHgtJChDT05GSUdfTUFDSF9QQ0Ex
+MDApICs9IHN0YXJ0X3BoeXRlY19waHljYXJkX2lteDI3DQotRklMRV9iYXJlYm94LXBoeXRlYy1w
+aHljYXJkLWlteDI3LmltZyA9IHN0YXJ0X3BoeXRlY19waHljYXJkX2lteDI3LnBibHgNCi1pbWFn
+ZS0kKENPTkZJR19NQUNIX1BDQTEwMCkgKz0gYmFyZWJveC1waHl0ZWMtcGh5Y2FyZC1pbXgyNy5p
+bWcNCitwYmx4LSQoQ09ORklHX01BQ0hfUENBMTAwKSArPSBzdGFydF9waHl0ZWNfcGh5Y2FyZF9p
+bXgyN182NG1iDQorRklMRV9iYXJlYm94LXBoeXRlYy1waHljYXJkLWlteDI3LTY0bWIuaW1nID0g
+c3RhcnRfcGh5dGVjX3BoeWNhcmRfaW14MjdfNjRtYi5wYmx4DQoraW1hZ2UtJChDT05GSUdfTUFD
+SF9QQ0ExMDApICs9IGJhcmVib3gtcGh5dGVjLXBoeWNhcmQtaW14MjctNjRtYi5pbWcNCisNCitw
+Ymx4LSQoQ09ORklHX01BQ0hfUENBMTAwKSArPSBzdGFydF9waHl0ZWNfcGh5Y2FyZF9pbXgyN18x
+MjhtYg0KK0ZJTEVfYmFyZWJveC1waHl0ZWMtcGh5Y2FyZC1pbXgyNy0xMjhtYi5pbWcgPSBzdGFy
+dF9waHl0ZWNfcGh5Y2FyZF9pbXgyN18xMjhtYi5wYmx4DQoraW1hZ2UtJChDT05GSUdfTUFDSF9Q
+Q0ExMDApICs9IGJhcmVib3gtcGh5dGVjLXBoeWNhcmQtaW14MjctMTI4bWIuaW1nDQogDQogcGJs
+eC0kKENPTkZJR19NQUNIX1BDTTAzOCkgKz0gc3RhcnRfcGh5dGVjX3BoeWNvcmVfaW14MjcNCiBG
+SUxFX2JhcmVib3gtcGh5dGVjLXBoeWNvcmUtaW14MjcuaW1nID0gc3RhcnRfcGh5dGVjX3BoeWNv
+cmVfaW14MjcucGJseA0KLS0gDQoxLjguMy4xDQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
+aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2JhcmVib3gK
