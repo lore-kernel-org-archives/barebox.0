@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gVDSe-0006Yz-Ht
+ id 1gVDSe-0006Z0-Hw
  for barebox@lists.infradead.org; Fri, 07 Dec 2018 10:34:22 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  7 Dec 2018 11:34:00 +0100
-Message-Id: <20181207103405.27365-3-s.hauer@pengutronix.de>
+Date: Fri,  7 Dec 2018 11:34:05 +0100
+Message-Id: <20181207103405.27365-8-s.hauer@pengutronix.de>
 In-Reply-To: <20181207103405.27365-1-s.hauer@pengutronix.de>
 References: <20181207103405.27365-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,62 +21,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] usb: gadget: fastboot: drop unnecessary global variable
+Subject: [PATCH 7/7] usb: gadget: fastboot: print fastboot messages also to
+ the logs
 To: Barebox List <barebox@lists.infradead.org>
 
-Polling for the status of a request does not require a global variable.
-We can poll for the status directly.
+It's nice to also see on the barebox side what is going on with
+fastboot, so print the messages to the logs also.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/gadget/f_fastboot.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/usb/gadget/f_fastboot.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-index a5b2564814..61cc0b2e62 100644
+index 067b43ebed..bdf0c807df 100644
 --- a/drivers/usb/gadget/f_fastboot.c
 +++ b/drivers/usb/gadget/f_fastboot.c
-@@ -182,15 +182,8 @@ static struct usb_gadget_strings *fastboot_strings[] = {
+@@ -608,8 +608,11 @@ int fastboot_tx_print(struct f_fastboot *f_fb, enum fastboot_msg_type type,
+ 		break;
+ 	case FASTBOOT_MSG_FAIL:
+ 		f_fb->active = false;
++		pr_err("%pV\n", &vaf);
+ 		break;
+ 	case FASTBOOT_MSG_INFO:
++		pr_info("%pV\n", &vaf);
++		break;
+ 	case FASTBOOT_MSG_DATA:
+ 		break;
+ 	}
+@@ -702,12 +705,12 @@ static void rx_handler_dl_image(struct usb_ep *ep, struct usb_request *req)
+ 		req->length = EP_BUFFER_SIZE;
+ 		close(f_fb->download_fd);
  
- static void rx_handler_command(struct usb_ep *ep, struct usb_request *req);
- 
--static int in_req_complete;
--
- static void fastboot_complete(struct usb_ep *ep, struct usb_request *req)
- {
--	int status = req->status;
--
--	in_req_complete = 1;
--
--	pr_debug("status: %d ep '%s' trans: %d\n", status, ep->name, req->actual);
- }
- 
- static struct usb_request *fastboot_alloc_request(struct usb_ep *ep)
-@@ -540,19 +533,22 @@ static int fastboot_tx_write(struct f_fastboot *f_fb, const char *buffer, unsign
- 
- 	memcpy(in_req->buf, buffer, buffer_size);
- 	in_req->length = buffer_size;
--	in_req_complete = 0;
++		printf("\n");
 +
- 	ret = usb_ep_queue(f_fb->in_ep, in_req);
- 	if (ret)
- 		pr_err("Error %d on queue\n", ret);
+ 		fastboot_tx_print(f_fb, FASTBOOT_MSG_INFO, "Downloading %d bytes finished",
+ 				  f_fb->download_bytes);
  
- 	start = get_time_ns();
- 
--	while (!in_req_complete) {
-+	while (in_req->status == -EINPROGRESS) {
- 		if (is_timeout(start, 2 * SECOND))
- 			return -ETIMEDOUT;
- 		usb_gadget_poll();
+ 		fastboot_tx_print(f_fb, FASTBOOT_MSG_OKAY, "");
+-
+-		printf("\n");
  	}
  
-+	if (in_req->status)
-+		pr_err("Failed to send answer: %d\n", in_req->status);
-+
- 	return 0;
- }
- 
+ 	req->actual = 0;
 -- 
 2.19.1
 
