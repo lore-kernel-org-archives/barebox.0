@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLAO-0005ff-PC
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:22 +0000
-Received: by mail-pf1-x444.google.com with SMTP id c123so654543pfb.0
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:11 -0800 (PST)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:11:01 -0800
-Message-Id: <20181213071144.31691-16-andrew.smirnov@gmail.com>
-In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
-References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
+ id 1gVBet-0002st-7x
+ for barebox@lists.infradead.org; Fri, 07 Dec 2018 08:38:53 +0000
+References: <20181207063433.7623-1-a.fatoum@pengutronix.de>
+ <20181207063433.7623-4-a.fatoum@pengutronix.de>
+ <20181207074302.babciy2rcwjvh2iq@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <e57bbb6a-9055-2986-8045-223b1ed84f5e@pengutronix.de>
+Date: Fri, 7 Dec 2018 09:38:37 +0100
 MIME-Version: 1.0
+In-Reply-To: <20181207074302.babciy2rcwjvh2iq@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,60 +24,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/58] PCI: designware: Add default link up check if
- sub-driver doesn't override
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 4/4] of: partition: add no-fixup device tree property
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Port of a Linux commit dac29e6c5460d05774e3e8c4fdf4d6e7bd481fab
+Hello Sascha,
 
-  Add a default DesignWare "link_up" test for use when a sub-driver doesn't
-  supply its own pcie_host_ops.link_up() method.
+On 7/12/18 08:43, Sascha Hauer wrote:
+> On Fri, Dec 07, 2018 at 07:34:37AM +0100, Ahmad Fatoum wrote:
+>> Users can have reasons to inhibit barebox from fixing up partitions nodes
+>> into the kernel device tree, like if it's a boot0-partitions node, which
+>> doesn't have a kernel binding.
+>> Allow users to specify a no-fixup property to indicate so.
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  Documentation/devicetree/bindings/mtd/partition.txt | 3 +++
+>>  drivers/of/partition.c                              | 9 +++++++++
+>>  fs/devfs-core.c                                     | 1 +
+>>  3 files changed, 13 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/mtd/partition.txt b/Documentation/devicetree/bindings/mtd/partition.txt
+>> index 4288a82437b4..a2e810276a9c 100644
+>> --- a/Documentation/devicetree/bindings/mtd/partition.txt
+>> +++ b/Documentation/devicetree/bindings/mtd/partition.txt
+>> @@ -4,6 +4,8 @@ In addition to the upstream binding, another property is added:
+>>  
+>>  Optional properties:
+>>  - partuuid : The partition UUID for this partition.
+>> +- no-fixup : empty property, indicates that barebox shouldn't fix up the
+>> +             containing node into the kernel device tree.
+>>  
+>>  Additionally, barebox also supports partitioning the eMMC boot partitions if
+>>  the partition table node is named appropriately:
+>> @@ -28,6 +30,7 @@ flash@0 {
+>>  emmc@1 {
+>>  	boot0-partitions {
+>>  		compatible = "fixed-partitions";
+>> +		no-fixup;
+>>  		#address-cells = <1>;
+>>  		#size-cells = <1>;
+> 
+> I am not so happy that we need an extra device tree property just to let
+> barebox know that it shouldn't try a fixup for the boot partitions.
+While my use case are the emmc boot-partitions, the binding is applicable to
+all fixed-partitions. Before, there has only been an universal
+of_partition_binding device parameter to turn off fixups.
 
-  [bhelgaas: changelog, split into its own patch]
-  Signed-off-by: Joao Pinto <jpinto@synopsys.com>
-  Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-  Acked-by: Pratyush Anand <pratyush.anand@gmail.com>
+> 
+> In mci_register_partition() we unconditionally call
+> of_partitions_register_fixup() even for the boot partitions. Wouldn't it
+> be sufficient to just skip the call for the boot partitions?
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- drivers/pci/pcie-designware.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+To expand on my reasoning, there are 3 device trees in arch/arm/dts that
+use boot0-partitions. Their users would have had barebox print scary warnings
+about their use on fixup unless they:
+1) disabled partition fixups completely
+2) added a boot0-partitions node to the kernel device tree, either unused
+   or for use by custom tooling
 
-diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index ab6f1d289..d1c2635d6 100644
---- a/drivers/pci/pcie-designware.c
-+++ b/drivers/pci/pcie-designware.c
-@@ -72,6 +72,11 @@
- #define PCIE_ATU_FUNC(x)		(((x) & 0x7) << 16)
- #define PCIE_ATU_UPPER_TARGET		0x91C
- 
-+/* PCIe Port Logic registers */
-+#define PLR_OFFSET                     0x700
-+#define PCIE_PHY_DEBUG_R1              (PLR_OFFSET + 0x2c)
-+#define PCIE_PHY_DEBUG_R1_LINK_UP      0x00000010
-+
- static unsigned long global_io_offset;
- 
- int dw_pcie_cfg_read(void __iomem *addr, int size, u32 *val)
-@@ -191,10 +196,13 @@ int dw_pcie_wait_for_link(struct pcie_port *pp)
- 
- int dw_pcie_link_up(struct pcie_port *pp)
- {
-+	u32 val;
-+
- 	if (pp->ops->link_up)
- 		return pp->ops->link_up(pp);
- 
--	return 0;
-+	val = readl(pp->dbi_base + PCIE_PHY_DEBUG_R1);
-+	return val & PCIE_PHY_DEBUG_R1_LINK_UP;
- }
- 
- static inline struct pcie_port *host_to_pcie(struct pci_controller *host)
+The patch addresses both points, there is a device tree property to
+selectively disable fixup and the second use case isn't broken,
+unlike an unconditional (non-backward-compatible) skipping of fixups
+for the boot partitions.
+
+
+Thoughts?
+
+Cheers
+Ahmad
+
 -- 
-2.19.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
