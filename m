@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gV9jf-0006WR-23
- for barebox@lists.infradead.org; Fri, 07 Dec 2018 06:35:40 +0000
+ id 1gV9kA-0006iZ-04
+ for barebox@lists.infradead.org; Fri, 07 Dec 2018 06:36:11 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <afa@pengutronix.de>) id 1gV9jT-0000t3-JB
- for barebox@lists.infradead.org; Fri, 07 Dec 2018 07:35:27 +0100
+ (envelope-from <afa@pengutronix.de>) id 1gV9jy-00019v-Jo
+ for barebox@lists.infradead.org; Fri, 07 Dec 2018 07:35:58 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.91)
- (envelope-from <afa@pengutronix.de>) id 1gV9jT-0002Gw-Bb
- for barebox@lists.infradead.org; Fri, 07 Dec 2018 07:35:27 +0100
+ (envelope-from <afa@pengutronix.de>) id 1gV9jy-0002HN-CB
+ for barebox@lists.infradead.org; Fri, 07 Dec 2018 07:35:58 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri,  7 Dec 2018 07:34:35 +0100
-Message-Id: <20181207063433.7623-3-a.fatoum@pengutronix.de>
+Date: Fri,  7 Dec 2018 07:34:37 +0100
+Message-Id: <20181207063433.7623-4-a.fatoum@pengutronix.de>
 In-Reply-To: <20181207063433.7623-1-a.fatoum@pengutronix.de>
 References: <20181207063433.7623-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -29,68 +29,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] of: partitions: make macro name more generic
+Subject: [PATCH 4/4] of: partition: add no-fixup device tree property
 To: barebox@lists.infradead.org
 
-DEVFS_PARTITION_FROM_TABLE's only effect at the moment is to disable
-device tree fixups. Rename it accordingly, so it looks less out-of-place
-when using it in the next commit to implement the no-fixup property.
+Users can have reasons to inhibit barebox from fixing up partitions nodes
+into the kernel device tree, like if it's a boot0-partitions node, which
+doesn't have a kernel binding.
+Allow users to specify a no-fixup property to indicate so.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/partitions.c    | 2 +-
- drivers/of/partition.c | 4 ++--
- include/driver.h       | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ Documentation/devicetree/bindings/mtd/partition.txt | 3 +++
+ drivers/of/partition.c                              | 9 +++++++++
+ fs/devfs-core.c                                     | 1 +
+ 3 files changed, 13 insertions(+)
 
-diff --git a/common/partitions.c b/common/partitions.c
-index 574b31fbbe9b..cb4e0c8c133e 100644
---- a/common/partitions.c
-+++ b/common/partitions.c
-@@ -63,7 +63,7 @@ static int register_one_partition(struct block_device *blk,
- 		goto out;
- 	}
+diff --git a/Documentation/devicetree/bindings/mtd/partition.txt b/Documentation/devicetree/bindings/mtd/partition.txt
+index 4288a82437b4..a2e810276a9c 100644
+--- a/Documentation/devicetree/bindings/mtd/partition.txt
++++ b/Documentation/devicetree/bindings/mtd/partition.txt
+@@ -4,6 +4,8 @@ In addition to the upstream binding, another property is added:
  
--	cdev->flags |= DEVFS_PARTITION_FROM_TABLE;
-+	cdev->flags |= DEVFS_PARTITION_NO_FIXUP;
+ Optional properties:
+ - partuuid : The partition UUID for this partition.
++- no-fixup : empty property, indicates that barebox shouldn't fix up the
++             containing node into the kernel device tree.
  
- 	cdev->dos_partition_type = part->dos_partition_type;
- 	strcpy(cdev->partuuid, part->partuuid);
+ Additionally, barebox also supports partitioning the eMMC boot partitions if
+ the partition table node is named appropriately:
+@@ -28,6 +30,7 @@ flash@0 {
+ emmc@1 {
+ 	boot0-partitions {
+ 		compatible = "fixed-partitions";
++		no-fixup;
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 
 diff --git a/drivers/of/partition.c b/drivers/of/partition.c
-index 257100112108..450dda17dfd7 100644
+index 450dda17dfd7..219a91eeff44 100644
 --- a/drivers/of/partition.c
 +++ b/drivers/of/partition.c
-@@ -141,7 +141,7 @@ static int of_partition_fixup(struct device_node *root, void *ctx)
- 		return -EINVAL;
+@@ -77,6 +77,9 @@ struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node)
+ 	if (of_get_property(node, "read-only", NULL))
+ 		flags = DEVFS_PARTITION_READONLY;
  
- 	list_for_each_entry(partcdev, &cdev->partitions, partition_entry) {
--		if (partcdev->flags & DEVFS_PARTITION_FROM_TABLE)
-+		if (partcdev->flags & DEVFS_PARTITION_NO_FIXUP)
- 			continue;
- 		n_parts++;
++	if (of_get_property(node, "no-fixup", NULL))
++		flags |= DEVFS_PARTITION_NO_FIXUP;
++
+ 	filename = basprintf("%s.%s", cdev->name, partname);
+ 
+ 	new = devfs_add_partition(cdev->name, offset, size, flags, filename);
+@@ -107,6 +110,9 @@ int of_parse_partitions(struct cdev *cdev, struct device_node *node)
+ 		node = subnode;
  	}
-@@ -201,7 +201,7 @@ static int of_partition_fixup(struct device_node *root, void *ctx)
- 		u8 tmp[16 * 16]; /* Up to 64-bit address + 64-bit size */
- 		loff_t partoffset;
  
--		if (partcdev->flags & DEVFS_PARTITION_FROM_TABLE)
-+		if (partcdev->flags & DEVFS_PARTITION_NO_FIXUP)
- 			continue;
++	if (of_get_property(node, "no-fixup", NULL))
++		cdev->flags |= DEVFS_PARTITION_NO_FIXUP;
++
+ 	for_each_child_of_node(node, n) {
+ 		of_parse_partition(cdev, n);
+ 	}
+@@ -247,6 +253,9 @@ static int of_partition_fixup(struct device_node *root, void *ctx)
  
- 		if (partcdev->mtd)
-diff --git a/include/driver.h b/include/driver.h
-index d509031f4980..ba2dc209c239 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -490,7 +490,7 @@ int cdev_erase(struct cdev *cdev, loff_t count, loff_t offset);
- #define DEVFS_PARTITION_FIXED		(1U << 0)
- #define DEVFS_PARTITION_READONLY	(1U << 1)
- #define DEVFS_IS_CHARACTER_DEV		(1U << 3)
--#define DEVFS_PARTITION_FROM_TABLE	(1U << 4)
-+#define DEVFS_PARTITION_NO_FIXUP	(1U << 4)
+ int of_partitions_register_fixup(struct cdev *cdev)
+ {
++	if (cdev->flags & DEVFS_PARTITION_NO_FIXUP)
++		return 0;
++
+ 	return of_register_fixup(of_partition_fixup, cdev);
+ }
  
- struct cdev *devfs_add_partition(const char *devname, loff_t offset,
- 		loff_t size, unsigned int flags, const char *name);
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index f017e1c55d4c..19cea8a7ce56 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -339,6 +339,7 @@ static struct cdev *__devfs_add_partition(struct cdev *cdev,
+ 	new->priv = cdev->priv;
+ 	new->size = size;
+ 	new->offset = cdev->offset + offset;
++	new->flags = partinfo->flags;
+ 
+ 	new->dev = cdev->dev;
+ 	new->master = cdev;
 -- 
 2.19.1
 
