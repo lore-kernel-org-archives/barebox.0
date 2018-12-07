@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gVAcX-0000ta-BW
- for barebox@lists.infradead.org; Fri, 07 Dec 2018 07:32:22 +0000
-Received: by mail-pf1-x441.google.com with SMTP id i12so1520383pfo.7
- for <barebox@lists.infradead.org>; Thu, 06 Dec 2018 23:32:10 -0800 (PST)
+ id 1gVAcm-0000vC-Eq
+ for barebox@lists.infradead.org; Fri, 07 Dec 2018 07:32:37 +0000
+Received: by mail-pf1-x443.google.com with SMTP id w73so1516320pfk.10
+ for <barebox@lists.infradead.org>; Thu, 06 Dec 2018 23:32:25 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu,  6 Dec 2018 23:32:04 -0800
-Message-Id: <20181207073204.3358-1-andrew.smirnov@gmail.com>
+Date: Thu,  6 Dec 2018 23:32:18 -0800
+Message-Id: <20181207073218.3858-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,32 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] nvmem: ocotp: Make use of postcore_platform_driver macro
+Subject: [PATCH] lib/parameter: Fix typecases to match corresponding
+ PARAM_TYPE_*
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+This change should be a no-op in terms of behavior, but it makes code
+less confusing when PARAM_TYPE_* matches the type used in the type
+cast.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/nvmem/ocotp.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ lib/parameter.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index e0cf35f0b..2952988f8 100644
---- a/drivers/nvmem/ocotp.c
-+++ b/drivers/nvmem/ocotp.c
-@@ -697,11 +697,4 @@ static struct driver_d imx_ocotp_driver = {
- 	.probe	= imx_ocotp_probe,
- 	.of_compatible = DRV_OF_COMPAT(imx_ocotp_dt_ids),
- };
--
--static int imx_ocotp_init(void)
--{
--	platform_driver_register(&imx_ocotp_driver);
--
--	return 0;
--}
--postcore_initcall(imx_ocotp_init);
-+postcore_platform_driver(imx_ocotp_driver);
+diff --git a/lib/parameter.c b/lib/parameter.c
+index a21b8fa4a..00e9a9ff4 100644
+--- a/lib/parameter.c
++++ b/lib/parameter.c
+@@ -343,10 +343,10 @@ static int param_int_set(struct device_d *dev, struct param_d *p, const char *va
+ 		ret = strtobool(val, pi->value);
+ 		break;
+ 	case PARAM_TYPE_INT32:
+-		*(uint32_t *)pi->value = simple_strtol(val, NULL, 0);
++		*(int32_t *)pi->value = simple_strtol(val, NULL, 0);
+ 		break;
+ 	case PARAM_TYPE_UINT32:
+-		*(int32_t *)pi->value = simple_strtoul(val, NULL, 0);
++		*(uint32_t *)pi->value = simple_strtoul(val, NULL, 0);
+ 		break;
+ 	case PARAM_TYPE_INT64:
+ 		*(int64_t *)pi->value = simple_strtoll(val, NULL, 0);
 -- 
 2.19.1
 
