@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gUs5q-00043a-Tq
- for barebox@lists.infradead.org; Thu, 06 Dec 2018 11:45:31 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
- helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1gUs5e-0006pV-T6
- for barebox@lists.infradead.org; Thu, 06 Dec 2018 12:45:10 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu,  6 Dec 2018 12:45:08 +0100
-Message-Id: <20181206114510.20643-2-l.stach@pengutronix.de>
-In-Reply-To: <20181206114510.20643-1-l.stach@pengutronix.de>
+ id 1gVA2B-0003ci-JK
+ for barebox@lists.infradead.org; Fri, 07 Dec 2018 06:54:49 +0000
+Date: Fri, 7 Dec 2018 07:54:35 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20181207065435.33uzhiw6nppf3sul@pengutronix.de>
 References: <20181206114510.20643-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20181206114510.20643-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,32 +22,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] of: remove non-existent of_match_ptr
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/4] ARM: imx: select OFDEVICE for VF610
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-It's only used in the !OFTREE stub functions, so can be safely removed.
+On Thu, Dec 06, 2018 at 12:45:07PM +0100, Lucas Stach wrote:
+> It's a dependency for IMX_OCOTP, which is selected by VF610.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  arch/arm/mach-imx/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- include/of_device.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/include/of_device.h b/include/of_device.h
-index e84fc9c37775..44c1c0f54551 100644
---- a/include/of_device.h
-+++ b/include/of_device.h
-@@ -41,7 +41,7 @@ static inline const struct of_device_id *__of_match_device(
- 	return NULL;
- }
- #define of_match_device(matches, dev)	\
--	__of_match_device(of_match_ptr(matches), (dev))
-+	__of_match_device(matches, (dev))
- 
- #endif /* CONFIG_OF */
- 
+Sascha
+
+> 
+> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> index 69d359b8520c..5b641655d2ba 100644
+> --- a/arch/arm/mach-imx/Kconfig
+> +++ b/arch/arm/mach-imx/Kconfig
+> @@ -190,6 +190,7 @@ config ARCH_VF610
+>  	select ARCH_HAS_FEC_IMX
+>  	select CPU_V7
+>  	select PINCTRL
+> +	select OFDEVICE
+>  	select OFTREE
+>  	select COMMON_CLK
+>  	select COMMON_CLK_OF_PROVIDER
+> -- 
+> 2.19.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.19.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
