@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXKpP-0003ur-Lb
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 06:50:37 +0000
-Date: Thu, 13 Dec 2018 07:50:23 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181213065023.wppwrpxcq45tctro@pengutronix.de>
-References: <20181210144824.4172-1-l.stach@pengutronix.de>
+ id 1gWNu1-00059T-EA
+ for barebox@lists.infradead.org; Mon, 10 Dec 2018 15:55:33 +0000
+From: Roland Hieber <rhi@pengutronix.de>
+Date: Mon, 10 Dec 2018 16:55:09 +0100
+Message-Id: <20181210155511.1376-1-rhi@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181210144824.4172-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,177 +19,195 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] mfd: rave-sp: Add parameters to query IP
- address/netmask
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] Documentation: i.MX: improve wording,
+ add markup and missing articles
+To: Barebox Mailing List <barebox@lists.infradead.org>
+Cc: Roland Hieber <rhi@pengutronix.de>
 
-On Mon, Dec 10, 2018 at 03:48:23PM +0100, Lucas Stach wrote:
-> From: Andrey Smirnov <andrew.smirnov@gmail.com>
-> 
-> Unlike LCD type information, IP address as well as netmaks are not
-> stored in an easily usable format in RAVE SP EEPROM. In order to obtain
-> them we need to issue a special command to RAVE SP. For that purpose add
-> device "sp" and expose that data as a device parameters (sp.ipaddr and
-> sp.netmask, correspondingly)
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
+Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+---
+ Documentation/boards/imx.rst | 102 +++++++++++++++++++----------------
+ 1 file changed, 57 insertions(+), 45 deletions(-)
 
-Applied, thanks
-
-Sascha
-
->  drivers/mfd/rave-sp.c       | 72 +++++++++++++++++++++++++++++++++++++
->  include/linux/mfd/rave-sp.h |  1 +
->  2 files changed, 73 insertions(+)
-> 
-> diff --git a/drivers/mfd/rave-sp.c b/drivers/mfd/rave-sp.c
-> index 469ce4cc0d08..b7efb62617dc 100644
-> --- a/drivers/mfd/rave-sp.c
-> +++ b/drivers/mfd/rave-sp.c
-> @@ -57,6 +57,8 @@
->  #define RAVE_SP_TX_BUFFER_SIZE				\
->  	(RAVE_SP_STX_ETX_SIZE + 2 * RAVE_SP_RX_BUFFER_SIZE)
->  
-> +#define RAVE_SP_IPADDR_INVALID		U32_MAX
-> +
->  /**
->   * enum rave_sp_deframer_state - Possible state for de-framer
->   *
-> @@ -183,6 +185,7 @@ struct rave_sp_variant {
->   * @part_number_bootloader:	Bootloader version
->   */
->  struct rave_sp {
-> +	struct device_d dev;
->  	struct serdev_device *serdev;
->  	struct rave_sp_deframer deframer;
->  	unsigned int ackid;
-> @@ -192,6 +195,9 @@ struct rave_sp {
->  
->  	const char *part_number_firmware;
->  	const char *part_number_bootloader;
-> +
-> +	IPaddr_t ipaddr;
-> +	IPaddr_t netmask;
->  };
->  
->  static bool rave_sp_id_is_event(u8 code)
-> @@ -718,6 +724,65 @@ static const struct of_device_id __maybe_unused rave_sp_dt_ids[] = {
->  	{ /* sentinel */ }
->  };
->  
-> +static int rave_sp_req_ip_addr(struct param_d *p, void *context)
-> +{
-> +	struct rave_sp *sp = context;
-> +	u8 cmd[] = {
-> +		[0] = RAVE_SP_CMD_REQ_IP_ADDR,
-> +		[1] = 0,
-> +		[2] = 0, 	/* FIXME: Support for RJU? */
-> +		[3] = 0,	/* Add support for IPs other than "self" */
-> +	};
-> +	struct {
-> +		__le32 ipaddr;
-> +		__le32 netmask;
-> +	} __packed rsp;
-> +	int ret;
-> +
-> +	/*
-> +	 * We only query RAVE SP device for IP/Netmask once, after
-> +	 * that we just "serve" cached data.
-> +	 */
-> +	if (sp->ipaddr != RAVE_SP_IPADDR_INVALID)
-> +		return 0;
-> +
-> +	ret = rave_sp_exec(sp, &cmd, sizeof(cmd), &rsp, sizeof(rsp));
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	sp->ipaddr  = le32_to_cpu(rsp.ipaddr);
-> +	sp->netmask = le32_to_cpu(rsp.netmask);
-> +
-> +	return 0;
-> +}
-> +
-> +static int rave_sp_add_params(struct rave_sp *sp)
-> +{
-> +	struct device_d *dev = &sp->dev;
-> +	struct param_d *p;
-> +	int ret;
-> +
-> +	dev->parent = sp->serdev->dev;
-> +	dev_set_name(dev, "sp");
-> +	dev->id = DEVICE_ID_SINGLE;
-> +
-> +	ret = register_device(dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	p = dev_add_param_ip(dev, "ipaddr", NULL, rave_sp_req_ip_addr,
-> +			     &sp->ipaddr, sp);
-> +	if (IS_ERR(p))
-> +		return PTR_ERR(p);
-> +
-> +	p = dev_add_param_ip(dev, "netmask", NULL, rave_sp_req_ip_addr,
-> +			     &sp->netmask, sp);
-> +	if (IS_ERR(p))
-> +		return PTR_ERR(p);
-> +
-> +	return 0;
-> +}
-> +
->  static int rave_sp_probe(struct device_d *dev)
->  {
->  	struct serdev_device *serdev = to_serdev_device(dev->parent);
-> @@ -733,6 +798,7 @@ static int rave_sp_probe(struct device_d *dev)
->  
->  	sp = xzalloc(sizeof(*sp));
->  	sp->serdev = serdev;
-> +	sp->ipaddr = RAVE_SP_IPADDR_INVALID;
->  	dev->priv = sp;
->  	serdev->dev = dev;
->  	serdev->receive_buf = rave_sp_receive_buf;
-> @@ -773,6 +839,12 @@ static int rave_sp_probe(struct device_d *dev)
->  	dev_info(dev, "Firmware version: %s",   sp->part_number_firmware);
->  	dev_info(dev, "Bootloader version: %s", sp->part_number_bootloader);
->  
-> +	ret = rave_sp_add_params(sp);
-> +	if (ret) {
-> +		dev_err(dev, "Failed to add parameters to RAVE SP\n");
-> +		return ret;
-> +	}
-> +
->  	return of_platform_populate(dev->device_node, NULL, dev);
->  }
->  
-> diff --git a/include/linux/mfd/rave-sp.h b/include/linux/mfd/rave-sp.h
-> index 50c9865c00da..37a37788d885 100644
-> --- a/include/linux/mfd/rave-sp.h
-> +++ b/include/linux/mfd/rave-sp.h
-> @@ -28,6 +28,7 @@ enum rave_sp_command {
->  
->  	RAVE_SP_CMD_JUMP_TO_BOOTLOADER		= 0xB0,
->  	RAVE_SP_CMD_BOOTLOADER			= 0xB1,
-> +	RAVE_SP_CMD_REQ_IP_ADDR			= 0xB2,
->  	RAVE_SP_CMD_REQ_COPPER_REV		= 0xB6,
->  	RAVE_SP_CMD_GET_I2C_DEVICE_STATUS	= 0xBA,
->  	RAVE_SP_CMD_GET_SP_SILICON_REV		= 0xB9,
-> -- 
-> 2.19.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
+index 35a180b0dd..2e6a30fd2f 100644
+--- a/Documentation/boards/imx.rst
++++ b/Documentation/boards/imx.rst
+@@ -32,114 +32,126 @@ Normally it's not necessary to call this tool manually, it is executed
+ automatically at the end of the build process.
+ 
+ The images generated by the build process can be directly written to an
+ SD card:
+ 
+ .. code-block:: sh
+ 
+   # with Multi Image support:
+   cat images/barebox-freescale-imx51-babbage.img > /dev/sdd
+   # otherwise:
+   cat barebox-flash-image > /dev/sdd
+ 
+ The above will overwrite the MBR (and consequently the partition table)
+ on the destination SD card. To preserve the MBR while writing the rest
+-of the image to the card, use::
++of the image to the card, use:
++
++.. code-block:: sh
+ 
+   dd if=images/barebox-freescale-imx51-babbage.img of=/dev/sdd bs=1024 skip=1 seek=1
+ 
+-NOTE: MaskROM on i.MX8 expects image to start at +33KiB mark, so the
++Note that MaskROM on i.MX8 expects the image to start at the +33KiB mark, so the
+ following command has to be used instead:
+ 
++.. code-block:: sh
++
+   dd if=images/barebox-nxp-imx8mq-evk.img of=/dev/sdd bs=1024 skip=33 seek=33
+ 
+ Or, in case of NAND:
+ 
++.. code-block:: sh
++
+   dd if=images/barebox-nxp-imx8mq-evk.img of=/dev/nand bs=1024 skip=33 seek=1
+ 
+-The images can also always be started second stage::
++The images can also always be started as second stage on the target:
++
++.. code-block:: console
+ 
+-  bootm /mnt/tftp/barebox-freescale-imx51-babbage.img
++  barebox@Board Name:/ bootm /mnt/tftp/barebox-freescale-imx51-babbage.img
+ 
+ Using GPT on i.MX
+ ^^^^^^^^^^^^^^^^^
+ 
+-For i.MX SoCs that place vendor specific header at +1KiB mark of a
+-boot medium, special care needs to be taken when parition that medium
+-with GPT. In order to make room for i.MX boot header GPT Partition
++For i.MX SoCs that place a vendor specific header at the +1KiB mark of a
++boot medium, special care needs to be taken when partitioning that medium
++with GPT. In order to make room for the i.MX boot header, the GPT Partition
+ Entry Array needs to be moved from its typical location, LBA 2, to an
+ offset past vendor specific information. One way to do this would be
+-to use ``-j`` or ``--adjust-main-table`` option of ``sgdisk``. For
+-example, the following sequence:
++to use the ``-j`` or ``--adjust-main-table`` option of ``sgdisk``. For
++example, the following sequence
++
++.. code-block:: sh
+ 
+   sgdisk -Z <block device>
+   sgdisk -o -j 2048 -n 1:8192:+100M <block device>
+ 
+ will create a single GPT partition starting at LBA 8192 and would
+-place Partition Entry Array starting at LBA 2048 which should leave
+-enough room for Barebox/i.MX boot header. Once that is done ``dd``
++place the Partition Entry Array starting at LBA 2048, which should leave
++enough room for the Barebox/i.MX boot header. Once that is done, the ``dd``
+ command above can be used to place Barebox on the same medium.
+ 
+ Information about the ``imx-image`` tool
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 
+ The imx-image tool can be used to generate imximages from raw binaries.
+ It requires an configuration file describing how to setup the SDRAM on
+ a particular board. This mainly consists of a poke table. The recognized
+ options in this file are:
+ 
+ Header:
+ 
+-+----------------+--------------------------------------------------------------+
+-| soc <soctype>  |soctype can be one of imx35, imx51, imx53, imx6, imx7, vf610, |
+-|                |                             imx8mq                           |
+-+----------------+--------------------------------------------------------------+
+-| loadaddr <adr> |     The address the binary is uploaded to                    |
+-+----------------+--------------------------------------------------------------+
+-| dcdofs <ofs>   | The offset of the image header in the image. This should be: |
+-|                | * ``0x400``:  MMC/SD, NAND, serial ROM, PATA, SATA           |
+-|                | * ``0x1000``: NOR Flash                                      |
+-|                | * ``0x100``: OneNAND                                         |
+-+----------------+--------------------------------------------------------------+
+++--------------------+--------------------------------------------------------------+
++| ``soc <soctype>``  | soctype can be one of imx35, imx51, imx53, imx6, imx7, vf610,|
++|                    |                             imx8mq                           |
+++--------------------+--------------------------------------------------------------+
++| ``loadaddr <adr>`` |     The address the binary is uploaded to                    |
+++--------------------+--------------------------------------------------------------+
++| ``dcdofs <ofs>``   | The offset of the image header in the image. This should be: |
++|                    |                                                              |
++|                    | * ``0x400``:  MMC/SD, NAND, serial ROM, PATA, SATA           |
++|                    | * ``0x1000``: NOR Flash                                      |
++|                    | * ``0x100``: OneNAND                                         |
+++--------------------+--------------------------------------------------------------+
+ 
+ Memory manipulation:
+ 
+-+------------------------------------+-----------------------------------------+
+-| wm 8 <addr> <value>                | write <value> into byte <addr>          |
+-+------------------------------------+-----------------------------------------+
+-| wm 16 <addr> <value>               | write <value> into short <addr>         |
+-+------------------------------------+-----------------------------------------+
+-| wm 32 <addr> <value>               | write <value> into word <addr>          |
+-+------------------------------------+-----------------------------------------+
+-| set_bits <width> <addr> <value>    | set set bits in <value> in <addr>       |
+-+------------------------------------+-----------------------------------------+
+-| clear_bits <width> <addr> <value>  | clear set bits in <value> in <addr>     |
+-+------------------------------------+-----------------------------------------+
+-| nop                                | do nothing (just waste time)            |
+-+------------------------------------+-----------------------------------------+
+-
+-<width> can be of 8, 16 or 32.
+++----------------------------------------+-------------------------------------------------+
++| ``wm 8 <addr> <value>``                | write ``<value>`` into byte ``<addr>``          |
+++----------------------------------------+-------------------------------------------------+
++| ``wm 16 <addr> <value>``               | write ``<value>`` into short ``<addr>``         |
+++----------------------------------------+-------------------------------------------------+
++| ``wm 32 <addr> <value>``               | write ``<value>`` into word ``<addr>``          |
+++----------------------------------------+-------------------------------------------------+
++| ``set_bits <width> <addr> <value>``    | set set bits in ``<value>`` in ``<addr>``       |
+++----------------------------------------+-------------------------------------------------+
++| ``clear_bits <width> <addr> <value>``  | clear set bits in ``<value>`` in ``<addr>``     |
+++----------------------------------------+-------------------------------------------------+
++| ``nop``                                | do nothing (just waste time)                    |
+++----------------------------------------+-------------------------------------------------+
++
++``<width>`` can be one of 8, 16 or 32.
+ 
+ Checking conditions:
+ 
+-+------------------------------------+-----------------------------------------+
+-| check <width> <cond> <addr> <mask> | Poll until condition becomes true.      |
+-|                                    | with <cond> being one of:               |
+-|                                    | * ``until_all_bits_clear``              |
+-|                                    | * ``until_all_bits_set``                |
+-|                                    | * ``until_any_bit_clear``               |
+-|                                    | * ``until_any_bit_set``                 |
+-+------------------------------------+-----------------------------------------+
+++----------------------------------------+-----------------------------------------+
++| ``check <width> <cond> <addr> <mask>`` | Poll until condition becomes true.      |
++|                                        | with ``<cond>`` being one of:           |
++|                                        |                                         |
++|                                        | * ``until_all_bits_clear``              |
++|                                        | * ``until_all_bits_set``                |
++|                                        | * ``until_any_bit_clear``               |
++|                                        | * ``until_any_bit_set``                 |
+++----------------------------------------+-----------------------------------------+
+ 
+ Some notes about the mentioned *conditions*.
+ 
+  - ``until_all_bits_clear`` waits until ``(*addr & mask) == 0`` is true
+  - ``until_all_bits_set`` waits until ``(*addr & mask) == mask`` is true
+  - ``until_any_bit_clear`` waits until ``(*addr & mask) != mask`` is true
+  - ``until_any_bit_set`` waits until ``(*addr & mask) != 0`` is true.
+ 
+ USB Boot
+ ^^^^^^^^
+ 
+ Most boards can be explicitly configured for USB Boot Mode or fall back
+ to USB Boot when no other medium can be found. The barebox repository
+ contains a USB upload tool. As it depends on the libusb development headers,
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
