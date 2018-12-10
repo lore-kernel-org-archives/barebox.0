@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-sn1nam04on0711.outbound.protection.outlook.com
- ([2a01:111:f400:fe4c::711]
- helo=NAM04-SN1-obe.outbound.protection.outlook.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gVIpK-000149-Kr
- for barebox@lists.infradead.org; Fri, 07 Dec 2018 16:18:08 +0000
-From: "Baeuerle, Florian" <Florian.Baeuerle@allegion.com>
-Date: Fri, 7 Dec 2018 16:17:53 +0000
-Message-ID: <20181207161732.16561-1-florian.baeuerle@allegion.com>
-Content-Language: en-US
-Content-ID: <2BCFC714A70EBC4EAF98D77B431F71C2@prod.exchangelabs.com>
+ id 1gWHjA-0006JG-DO
+ for barebox@lists.infradead.org; Mon, 10 Dec 2018 09:19:50 +0000
+Date: Mon, 10 Dec 2018 10:19:33 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20181210091933.3lrzl5efmrn2v3p3@pengutronix.de>
+References: <20181207161732.16561-1-florian.baeuerle@allegion.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20181207161732.16561-1-florian.baeuerle@allegion.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,102 +18,207 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] phycard-imx27: add support for 64MB RAM variants
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] phycard-imx27: add support for 64MB RAM variants
+To: "Baeuerle, Florian" <Florian.Baeuerle@allegion.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-U29tZSBvbGRlciBwY2ExMDAgYm9hcmRzIHdlcmUgYXZhaWxhYmxlIHdpdGggNjRNQiBSQU0uIFRo
-ZSBjaGlwcw0KcmVxdWlyZSBhIHNsaWdodGx5IGRpZmZlcmVudCBzZHJhbSBjb250cm9sbGVyIGlu
-aXRpYWxpemF0aW9uLiBTdXBwb3J0DQp0aGlzIGJ5IGJ1aWxkaW5nIGJvb3Rsb2FkZXIgaW1hZ2Vz
-IGZvciBib3RoIHZhcmlhbnRzLg0KDQpTaWduZWQtb2ZmLWJ5OiBGbG9yaWFuIELDpHVlcmxlIDxm
-bG9yaWFuLmJhZXVlcmxlQGFsbGVnaW9uLmNvbT4NCi0tLQ0KIGFyY2gvYXJtL2JvYXJkcy9waHl0
-ZWMtcGh5Y2FyZC1pbXgyNy9sb3dsZXZlbC5jIHwgNTIgKysrKysrKysrKysrKysrKysrKy0tLS0t
-LQ0KIGltYWdlcy9NYWtlZmlsZS5pbXggICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgMTAg
-KysrLS0NCiAyIGZpbGVzIGNoYW5nZWQsIDQ4IGluc2VydGlvbnMoKyksIDE0IGRlbGV0aW9ucygt
-KQ0KDQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljYXJkLWlteDI3L2xv
-d2xldmVsLmMgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNhcmQtaW14MjcvbG93bGV2ZWwu
-Yw0KaW5kZXggZTExMzJlMC4uMWU5NmMwOCAxMDA2NDQNCi0tLSBhL2FyY2gvYXJtL2JvYXJkcy9w
-aHl0ZWMtcGh5Y2FyZC1pbXgyNy9sb3dsZXZlbC5jDQorKysgYi9hcmNoL2FybS9ib2FyZHMvcGh5
-dGVjLXBoeWNhcmQtaW14MjcvbG93bGV2ZWwuYw0KQEAgLTE1LDExICsxNSwzMCBAQA0KICNpbmNs
-dWRlIDxtYWNoL2VzZGN0bC5oPg0KICNpbmNsdWRlIDxtYWNoL2lteC1uYW5kLmg+DQogDQotI2Rl
-ZmluZSBFU0RDVEwwX1ZBTCAoRVNEQ1RMMF9TREUgfCBFU0RDVEwwX1JPVzEzIHwgRVNEQ1RMMF9D
-T0wxMCkNCitlbnVtIHsNCisJUEhZQ0FSRF9NSUNST05fNjRNQiwNCisJUEhZQ0FSRF9NSUNST05f
-MTI4TUIsDQorfTsNCiANCi1zdGF0aWMgdm9pZCBzZHJhbV9pbml0KHZvaWQpDQorI2RlZmluZSBF
-U0RDVEwwX1ZBTF82NE1CIChFU0RDVEwwX1NERSB8IEVTRENUTDBfUk9XMTMgfCBFU0RDVEwwX0NP
-TDkpDQorI2RlZmluZSBFU0RDRkcwX1ZBTF82NE1CIDB4MDA2OTY0MjkNCisjZGVmaW5lIEVTRENU
-TDBfVkFMXzEyOE1CIChFU0RDVEwwX1NERSB8IEVTRENUTDBfUk9XMTMgfCBFU0RDVEwwX0NPTDEw
-KQ0KKyNkZWZpbmUgRVNEQ0ZHMF9WQUxfMTI4TUIgMHgwMDZhYzczYQ0KKw0KK3N0YXRpYyB2b2lk
-IHNkcmFtX2luaXQoaW50IHNkcmFtKQ0KIHsNCiAJaW50IGk7DQorCXVuc2lnbmVkIGVzZGNmZywg
-ZXNkY3RsOw0KKw0KKwlpZiAoc2RyYW0gPT0gUEhZQ0FSRF9NSUNST05fNjRNQikgew0KKwkJZXNk
-Y2ZnID0gRVNEQ0ZHMF9WQUxfNjRNQjsNCisJCWVzZGN0bCA9IEVTRENUTDBfVkFMXzY0TUI7DQor
-CX0gZWxzZSBpZiAoc2RyYW0gPT0gUEhZQ0FSRF9NSUNST05fMTI4TUIpIHsNCisJCWVzZGNmZyA9
-IEVTRENGRzBfVkFMXzEyOE1COw0KKwkJZXNkY3RsID0gRVNEQ1RMMF9WQUxfMTI4TUI7DQorCX0g
-ZWxzZSB7DQorCQloYW5nKCk7DQorCX0NCiANCiAJLyoNCiAJICogRERSIG9uIENTRDANCkBAIC0z
-NiwyOSArNTUsMjkgQEAgc3RhdGljIHZvaWQgc2RyYW1faW5pdCh2b2lkKQ0KIA0KIAkvKiBJbml0
-aWFsIHJlc2V0ICovDQogCXdyaXRlbCgweDAwMDAwMDA0LCBNWDI3X0VTRENUTF9CQVNFX0FERFIg
-KyBJTVhfRVNETUlTQyk7DQotCXdyaXRlbCgweDAwNmFjNzNhLCBNWDI3X0VTRENUTF9CQVNFX0FE
-RFIgKyBJTVhfRVNEQ0ZHMCk7DQorCXdyaXRlbChlc2RjZmcsIE1YMjdfRVNEQ1RMX0JBU0VfQURE
-UiArIElNWF9FU0RDRkcwKTsNCiANCiAJLyogcHJlY2hhcmdlIENTRDAgYWxsIGJhbmtzICovDQot
-CXdyaXRlbChFU0RDVEwwX1ZBTCB8IEVTRENUTDBfU01PREVfUFJFQ0hBUkdFLA0KKwl3cml0ZWwo
-ZXNkY3RsIHwgRVNEQ1RMMF9TTU9ERV9QUkVDSEFSR0UsDQogCQkJTVgyN19FU0RDVExfQkFTRV9B
-RERSICsgSU1YX0VTRENUTDApOw0KIAl3cml0ZWwoMHgwMDAwMDAwMCwgMHhhMDAwMGYwMCk7CS8q
-IENTRDAgcHJlY2hhcmdlIGFkZHJlc3MgKEExMCA9IDEpICovDQotCXdyaXRlbChFU0RDVEwwX1ZB
-TCB8IEVTRENUTDBfU01PREVfQVVUT19SRUZSRVNILA0KKwl3cml0ZWwoZXNkY3RsIHwgRVNEQ1RM
-MF9TTU9ERV9BVVRPX1JFRlJFU0gsDQogCQkJTVgyN19FU0RDVExfQkFTRV9BRERSICsgSU1YX0VT
-RENUTDApOw0KIA0KIAlmb3IgKGkgPSAwOyBpIDwgODsgaSsrKQ0KIAkJd3JpdGVsKDAsIDB4YTAw
-MDBmMDApOw0KIA0KLQl3cml0ZWwoRVNEQ1RMMF9WQUwgfCBFU0RDVEwwX1NNT0RFX0xPQURfTU9E
-RSwNCisJd3JpdGVsKGVzZGN0bCB8IEVTRENUTDBfU01PREVfTE9BRF9NT0RFLA0KIAkJCU1YMjdf
-RVNEQ1RMX0JBU0VfQUREUiArIElNWF9FU0RDVEwwKTsNCiAJd3JpdGViKDB4ZGEsIDB4YTAwMDAw
-MzMpOw0KIAl3cml0ZWIoMHhmZiwgMHhhMTAwMDAwMCk7DQogDQotCXdyaXRlbChFU0RDVEwwX1ZB
-TCB8IEVTRENUTDBfRFNJWl8zMV8wIHwgRVNEQ1RMMF9SRUY0IHwNCisJd3JpdGVsKGVzZGN0bCB8
-IEVTRENUTDBfRFNJWl8zMV8wIHwgRVNEQ1RMMF9SRUY0IHwNCiAJCQlFU0RDVEwwX0JMIHwgRVNE
-Q1RMMF9TTU9ERV9OT1JNQUwsDQogCQkJTVgyN19FU0RDVExfQkFTRV9BRERSICsgSU1YX0VTRENU
-TDApOw0KIH0NCiANCi12b2lkIF9fYmFyZV9pbml0IF9fbmFrZWQgcGh5dGVjX3BoeWNhcmRfaW14
-MjdfY29tbW9uX2luaXQodm9pZCAqZmR0KQ0KK3ZvaWQgX19iYXJlX2luaXQgX19uYWtlZCBwaHl0
-ZWNfcGh5Y2FyZF9pbXgyN19jb21tb25faW5pdCh2b2lkICpmZHQsIGludCBzZHJhbSkNCiB7DQog
-CXVuc2lnbmVkIGxvbmcgcjsNCiANCkBAIC05NiwxNCArMTE1LDI1IEBAIHZvaWQgX19iYXJlX2lu
-aXQgX19uYWtlZCBwaHl0ZWNfcGh5Y2FyZF9pbXgyN19jb21tb25faW5pdCh2b2lkICpmZHQpDQog
-CQlNWDI3X0NTQ1JfU1NJMV9TRUwgfCBNWDI3X0NTQ1JfSDI2NF9TRUwgfA0KIAkJTVgyN19DU0NS
-X01TSENfU0VMLCBNWDI3X0NDTV9CQVNFX0FERFIgKyBNWDI3X0NTQ1IpOw0KIA0KLQlzZHJhbV9p
-bml0KCk7DQorCXNkcmFtX2luaXQoc2RyYW0pOw0KIA0KIAlpbXgyN19iYXJlYm94X2Jvb3RfbmFu
-ZF9leHRlcm5hbChmZHQpOw0KIH0NCiANCiBleHRlcm4gY2hhciBfX2R0Yl9pbXgyN19waHl0ZWNf
-cGh5Y2FyZF9zX3Jka19iYl9zdGFydFtdOw0KIA0KLUVOVFJZX0ZVTkNUSU9OKHN0YXJ0X3BoeXRl
-Y19waHljYXJkX2lteDI3LCByMCwgcjEsIHIyKQ0KK0VOVFJZX0ZVTkNUSU9OKHN0YXJ0X3BoeXRl
-Y19waHljYXJkX2lteDI3XzY0bWIsIHIwLCByMSwgcjIpDQorew0KKwl2b2lkICpmZHQ7DQorDQor
-CWFybV9zZXR1cF9zdGFjayhNWDI3X0lSQU1fQkFTRV9BRERSICsgTVgyN19JUkFNX1NJWkUgLSAx
-Mik7DQorDQorCWZkdCA9IF9fZHRiX2lteDI3X3BoeXRlY19waHljYXJkX3NfcmRrX2JiX3N0YXJ0
-ICsgZ2V0X3J1bnRpbWVfb2Zmc2V0KCk7DQorDQorCXBoeXRlY19waHljYXJkX2lteDI3X2NvbW1v
-bl9pbml0KGZkdCwgUEhZQ0FSRF9NSUNST05fNjRNQik7DQorfQ0KKw0KK0VOVFJZX0ZVTkNUSU9O
-KHN0YXJ0X3BoeXRlY19waHljYXJkX2lteDI3XzEyOG1iLCByMCwgcjEsIHIyKQ0KIHsNCiAJdm9p
-ZCAqZmR0Ow0KIA0KQEAgLTExMSw1ICsxNDEsNSBAQCBFTlRSWV9GVU5DVElPTihzdGFydF9waHl0
-ZWNfcGh5Y2FyZF9pbXgyNywgcjAsIHIxLCByMikNCiANCiAJZmR0ID0gX19kdGJfaW14MjdfcGh5
-dGVjX3BoeWNhcmRfc19yZGtfYmJfc3RhcnQgKyBnZXRfcnVudGltZV9vZmZzZXQoKTsNCiANCi0J
-cGh5dGVjX3BoeWNhcmRfaW14MjdfY29tbW9uX2luaXQoZmR0KTsNCisJcGh5dGVjX3BoeWNhcmRf
-aW14MjdfY29tbW9uX2luaXQoZmR0LCBQSFlDQVJEX01JQ1JPTl8xMjhNQik7DQogfQ0KZGlmZiAt
-LWdpdCBhL2ltYWdlcy9NYWtlZmlsZS5pbXggYi9pbWFnZXMvTWFrZWZpbGUuaW14DQppbmRleCA5
-YjVjZDU3Li44MWRmODhlIDEwMDY0NA0KLS0tIGEvaW1hZ2VzL01ha2VmaWxlLmlteA0KKysrIGIv
-aW1hZ2VzL01ha2VmaWxlLmlteA0KQEAgLTQzLDkgKzQzLDEzIEBAIENGR19zdGFydF9pbXgyNV9r
-YXJvX3R4MjUucGJseC5pbXhpbWcgPSAkKGJvYXJkKS9rYXJvLXR4MjUvZmxhc2gtaGVhZGVyLXR4
-MjUuaW14DQogRklMRV9iYXJlYm94LWthcm8tdHgyNS1pbnRlcm5hbC5pbWcgPSBzdGFydF9pbXgy
-NV9rYXJvX3R4MjUucGJseC5pbXhpbWcNCiBpbWFnZS0kKENPTkZJR19NQUNIX1RYMjUpICs9IGJh
-cmVib3gta2Fyby10eDI1LWludGVybmFsLmltZw0KIA0KLXBibHgtJChDT05GSUdfTUFDSF9QQ0Ex
-MDApICs9IHN0YXJ0X3BoeXRlY19waHljYXJkX2lteDI3DQotRklMRV9iYXJlYm94LXBoeXRlYy1w
-aHljYXJkLWlteDI3LmltZyA9IHN0YXJ0X3BoeXRlY19waHljYXJkX2lteDI3LnBibHgNCi1pbWFn
-ZS0kKENPTkZJR19NQUNIX1BDQTEwMCkgKz0gYmFyZWJveC1waHl0ZWMtcGh5Y2FyZC1pbXgyNy5p
-bWcNCitwYmx4LSQoQ09ORklHX01BQ0hfUENBMTAwKSArPSBzdGFydF9waHl0ZWNfcGh5Y2FyZF9p
-bXgyN182NG1iDQorRklMRV9iYXJlYm94LXBoeXRlYy1waHljYXJkLWlteDI3LTY0bWIuaW1nID0g
-c3RhcnRfcGh5dGVjX3BoeWNhcmRfaW14MjdfNjRtYi5wYmx4DQoraW1hZ2UtJChDT05GSUdfTUFD
-SF9QQ0ExMDApICs9IGJhcmVib3gtcGh5dGVjLXBoeWNhcmQtaW14MjctNjRtYi5pbWcNCisNCitw
-Ymx4LSQoQ09ORklHX01BQ0hfUENBMTAwKSArPSBzdGFydF9waHl0ZWNfcGh5Y2FyZF9pbXgyN18x
-MjhtYg0KK0ZJTEVfYmFyZWJveC1waHl0ZWMtcGh5Y2FyZC1pbXgyNy0xMjhtYi5pbWcgPSBzdGFy
-dF9waHl0ZWNfcGh5Y2FyZF9pbXgyN18xMjhtYi5wYmx4DQoraW1hZ2UtJChDT05GSUdfTUFDSF9Q
-Q0ExMDApICs9IGJhcmVib3gtcGh5dGVjLXBoeWNhcmQtaW14MjctMTI4bWIuaW1nDQogDQogcGJs
-eC0kKENPTkZJR19NQUNIX1BDTTAzOCkgKz0gc3RhcnRfcGh5dGVjX3BoeWNvcmVfaW14MjcNCiBG
-SUxFX2JhcmVib3gtcGh5dGVjLXBoeWNvcmUtaW14MjcuaW1nID0gc3RhcnRfcGh5dGVjX3BoeWNv
-cmVfaW14MjcucGJseA0KLS0gDQoxLjguMy4xDQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+On Fri, Dec 07, 2018 at 04:17:53PM +0000, Baeuerle, Florian wrote:
+> Some older pca100 boards were available with 64MB RAM. The chips
+> require a slightly different sdram controller initialization. Support
+> this by building bootloader images for both variants.
+> =
+
+> Signed-off-by: Florian B=E4uerle <florian.baeuerle@allegion.com>
+> ---
+>  arch/arm/boards/phytec-phycard-imx27/lowlevel.c | 52 +++++++++++++++++++=
+------
+>  images/Makefile.imx                             | 10 +++--
+>  2 files changed, 48 insertions(+), 14 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+> =
+
+> diff --git a/arch/arm/boards/phytec-phycard-imx27/lowlevel.c b/arch/arm/b=
+oards/phytec-phycard-imx27/lowlevel.c
+> index e1132e0..1e96c08 100644
+> --- a/arch/arm/boards/phytec-phycard-imx27/lowlevel.c
+> +++ b/arch/arm/boards/phytec-phycard-imx27/lowlevel.c
+> @@ -15,11 +15,30 @@
+>  #include <mach/esdctl.h>
+>  #include <mach/imx-nand.h>
+>  =
+
+> -#define ESDCTL0_VAL (ESDCTL0_SDE | ESDCTL0_ROW13 | ESDCTL0_COL10)
+> +enum {
+> +	PHYCARD_MICRON_64MB,
+> +	PHYCARD_MICRON_128MB,
+> +};
+>  =
+
+> -static void sdram_init(void)
+> +#define ESDCTL0_VAL_64MB (ESDCTL0_SDE | ESDCTL0_ROW13 | ESDCTL0_COL9)
+> +#define ESDCFG0_VAL_64MB 0x00696429
+> +#define ESDCTL0_VAL_128MB (ESDCTL0_SDE | ESDCTL0_ROW13 | ESDCTL0_COL10)
+> +#define ESDCFG0_VAL_128MB 0x006ac73a
+> +
+> +static void sdram_init(int sdram)
+>  {
+>  	int i;
+> +	unsigned esdcfg, esdctl;
+> +
+> +	if (sdram =3D=3D PHYCARD_MICRON_64MB) {
+> +		esdcfg =3D ESDCFG0_VAL_64MB;
+> +		esdctl =3D ESDCTL0_VAL_64MB;
+> +	} else if (sdram =3D=3D PHYCARD_MICRON_128MB) {
+> +		esdcfg =3D ESDCFG0_VAL_128MB;
+> +		esdctl =3D ESDCTL0_VAL_128MB;
+> +	} else {
+> +		hang();
+> +	}
+>  =
+
+>  	/*
+>  	 * DDR on CSD0
+> @@ -36,29 +55,29 @@ static void sdram_init(void)
+>  =
+
+>  	/* Initial reset */
+>  	writel(0x00000004, MX27_ESDCTL_BASE_ADDR + IMX_ESDMISC);
+> -	writel(0x006ac73a, MX27_ESDCTL_BASE_ADDR + IMX_ESDCFG0);
+> +	writel(esdcfg, MX27_ESDCTL_BASE_ADDR + IMX_ESDCFG0);
+>  =
+
+>  	/* precharge CSD0 all banks */
+> -	writel(ESDCTL0_VAL | ESDCTL0_SMODE_PRECHARGE,
+> +	writel(esdctl | ESDCTL0_SMODE_PRECHARGE,
+>  			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
+>  	writel(0x00000000, 0xa0000f00);	/* CSD0 precharge address (A10 =3D 1) */
+> -	writel(ESDCTL0_VAL | ESDCTL0_SMODE_AUTO_REFRESH,
+> +	writel(esdctl | ESDCTL0_SMODE_AUTO_REFRESH,
+>  			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
+>  =
+
+>  	for (i =3D 0; i < 8; i++)
+>  		writel(0, 0xa0000f00);
+>  =
+
+> -	writel(ESDCTL0_VAL | ESDCTL0_SMODE_LOAD_MODE,
+> +	writel(esdctl | ESDCTL0_SMODE_LOAD_MODE,
+>  			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
+>  	writeb(0xda, 0xa0000033);
+>  	writeb(0xff, 0xa1000000);
+>  =
+
+> -	writel(ESDCTL0_VAL | ESDCTL0_DSIZ_31_0 | ESDCTL0_REF4 |
+> +	writel(esdctl | ESDCTL0_DSIZ_31_0 | ESDCTL0_REF4 |
+>  			ESDCTL0_BL | ESDCTL0_SMODE_NORMAL,
+>  			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
+>  }
+>  =
+
+> -void __bare_init __naked phytec_phycard_imx27_common_init(void *fdt)
+> +void __bare_init __naked phytec_phycard_imx27_common_init(void *fdt, int=
+ sdram)
+>  {
+>  	unsigned long r;
+>  =
+
+> @@ -96,14 +115,25 @@ void __bare_init __naked phytec_phycard_imx27_common=
+_init(void *fdt)
+>  		MX27_CSCR_SSI1_SEL | MX27_CSCR_H264_SEL |
+>  		MX27_CSCR_MSHC_SEL, MX27_CCM_BASE_ADDR + MX27_CSCR);
+>  =
+
+> -	sdram_init();
+> +	sdram_init(sdram);
+>  =
+
+>  	imx27_barebox_boot_nand_external(fdt);
+>  }
+>  =
+
+>  extern char __dtb_imx27_phytec_phycard_s_rdk_bb_start[];
+>  =
+
+> -ENTRY_FUNCTION(start_phytec_phycard_imx27, r0, r1, r2)
+> +ENTRY_FUNCTION(start_phytec_phycard_imx27_64mb, r0, r1, r2)
+> +{
+> +	void *fdt;
+> +
+> +	arm_setup_stack(MX27_IRAM_BASE_ADDR + MX27_IRAM_SIZE - 12);
+> +
+> +	fdt =3D __dtb_imx27_phytec_phycard_s_rdk_bb_start + get_runtime_offset(=
+);
+> +
+> +	phytec_phycard_imx27_common_init(fdt, PHYCARD_MICRON_64MB);
+> +}
+> +
+> +ENTRY_FUNCTION(start_phytec_phycard_imx27_128mb, r0, r1, r2)
+>  {
+>  	void *fdt;
+>  =
+
+> @@ -111,5 +141,5 @@ ENTRY_FUNCTION(start_phytec_phycard_imx27, r0, r1, r2)
+>  =
+
+>  	fdt =3D __dtb_imx27_phytec_phycard_s_rdk_bb_start + get_runtime_offset(=
+);
+>  =
+
+> -	phytec_phycard_imx27_common_init(fdt);
+> +	phytec_phycard_imx27_common_init(fdt, PHYCARD_MICRON_128MB);
+>  }
+> diff --git a/images/Makefile.imx b/images/Makefile.imx
+> index 9b5cd57..81df88e 100644
+> --- a/images/Makefile.imx
+> +++ b/images/Makefile.imx
+> @@ -43,9 +43,13 @@ CFG_start_imx25_karo_tx25.pblx.imximg =3D $(board)/kar=
+o-tx25/flash-header-tx25.imx
+>  FILE_barebox-karo-tx25-internal.img =3D start_imx25_karo_tx25.pblx.imximg
+>  image-$(CONFIG_MACH_TX25) +=3D barebox-karo-tx25-internal.img
+>  =
+
+> -pblx-$(CONFIG_MACH_PCA100) +=3D start_phytec_phycard_imx27
+> -FILE_barebox-phytec-phycard-imx27.img =3D start_phytec_phycard_imx27.pblx
+> -image-$(CONFIG_MACH_PCA100) +=3D barebox-phytec-phycard-imx27.img
+> +pblx-$(CONFIG_MACH_PCA100) +=3D start_phytec_phycard_imx27_64mb
+> +FILE_barebox-phytec-phycard-imx27-64mb.img =3D start_phytec_phycard_imx2=
+7_64mb.pblx
+> +image-$(CONFIG_MACH_PCA100) +=3D barebox-phytec-phycard-imx27-64mb.img
+> +
+> +pblx-$(CONFIG_MACH_PCA100) +=3D start_phytec_phycard_imx27_128mb
+> +FILE_barebox-phytec-phycard-imx27-128mb.img =3D start_phytec_phycard_imx=
+27_128mb.pblx
+> +image-$(CONFIG_MACH_PCA100) +=3D barebox-phytec-phycard-imx27-128mb.img
+>  =
+
+>  pblx-$(CONFIG_MACH_PCM038) +=3D start_phytec_phycore_imx27
+>  FILE_barebox-phytec-phycore-imx27.img =3D start_phytec_phycore_imx27.pblx
+> -- =
+
+> 1.8.3.1
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
