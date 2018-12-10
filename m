@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gWHK8-00082R-NT
- for barebox@lists.infradead.org; Mon, 10 Dec 2018 08:54:05 +0000
-Date: Mon, 10 Dec 2018 09:53:44 +0100
+ id 1gWHKZ-0008ST-Ee
+ for barebox@lists.infradead.org; Mon, 10 Dec 2018 08:54:45 +0000
+Date: Mon, 10 Dec 2018 09:54:11 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181210085344.gsm35kclihq6j2wl@pengutronix.de>
-References: <20181207072902.32049-1-andrew.smirnov@gmail.com>
+Message-ID: <20181210085411.qzauw3inuim2lkbb@pengutronix.de>
+References: <20181207072951.557-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181207072902.32049-1-andrew.smirnov@gmail.com>
+In-Reply-To: <20181207072951.557-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,59 +22,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: lib: Make use of ETH_ALEN
+Subject: Re: [PATCH] commands: boot: Remove useless code
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Dec 06, 2018 at 11:29:02PM -0800, Andrey Smirnov wrote:
+On Thu, Dec 06, 2018 at 11:29:51PM -0800, Andrey Smirnov wrote:
+> All of those variables are already initialized in-place in the
+> variable declaration section above to exactly the same values
+> 
 > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  net/lib.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  commands/boot.c | 4 ----
+>  1 file changed, 4 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/net/lib.c b/net/lib.c
-> index d4343bced..d2b33132d 100644
-> --- a/net/lib.c
-> +++ b/net/lib.c
-> @@ -28,13 +28,13 @@
->  #include <net.h>
->  #include <linux/ctype.h>
+> diff --git a/commands/boot.c b/commands/boot.c
+> index 5d81d79ce..0257b3dd4 100644
+> --- a/commands/boot.c
+> +++ b/commands/boot.c
+> @@ -29,10 +29,6 @@ static int do_boot(int argc, char *argv[])
+>  	struct bootentries *entries;
+>  	struct bootentry *entry;
 >  
-> -int string_to_ethaddr(const char *str, u8 enetaddr[6])
-> +int string_to_ethaddr(const char *str, u8 enetaddr[ETH_ALEN])
->  {
->  	int reg;
->  	char *e;
->  
->  	if (!str || strlen(str) != 17) {
-> -		memset(enetaddr, 0, 6);
-> +		memset(enetaddr, 0, ETH_ALEN);
->  		return -EINVAL;
->  	}
->  
-> @@ -42,7 +42,7 @@ int string_to_ethaddr(const char *str, u8 enetaddr[6])
->  			str[11] != ':' || str[14] != ':')
->  		return -EINVAL;
->  
-> -	for (reg = 0; reg < 6; ++reg) {
-> +	for (reg = 0; reg < ETH_ALEN; ++reg) {
->  		enetaddr[reg] = simple_strtoul(str, &e, 16);
->  		str = e + 1;
->  	}
-> @@ -50,7 +50,7 @@ int string_to_ethaddr(const char *str, u8 enetaddr[6])
->  	return 0;
->  }
->  
-> -void ethaddr_to_string(const u8 enetaddr[6], char *str)
-> +void ethaddr_to_string(const u8 enetaddr[ETH_ALEN], char *str)
->  {
->  	sprintf(str, "%02x:%02x:%02x:%02x:%02x:%02x",
->  		 enetaddr[0], enetaddr[1], enetaddr[2], enetaddr[3],
+> -	verbose = 0;
+> -	dryrun = 0;
+> -	timeout = -1;
+> -
+>  	while ((opt = getopt(argc, argv, "vldmt:w:")) > 0) {
+>  		switch (opt) {
+>  		case 'v':
 > -- 
 > 2.19.1
 > 
