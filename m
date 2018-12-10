@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gWHNT-00081L-UW
- for barebox@lists.infradead.org; Mon, 10 Dec 2018 08:57:25 +0000
-Date: Mon, 10 Dec 2018 09:57:13 +0100
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gWHdT-0004CS-Pf
+ for barebox@lists.infradead.org; Mon, 10 Dec 2018 09:13:57 +0000
+Date: Mon, 10 Dec 2018 10:13:43 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181210085713.lcvaxveiqwgtt53v@pengutronix.de>
-References: <20181207073218.3858-1-andrew.smirnov@gmail.com>
+Message-ID: <20181210091343.rqqve4qb4ek5hmtq@pengutronix.de>
+References: <20181128112053.6027-1-m.tretter@pengutronix.de>
+ <20181207101156.2213-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181207073218.3858-1-andrew.smirnov@gmail.com>
+In-Reply-To: <20181207101156.2213-1-m.tretter@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,43 +23,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] lib/parameter: Fix typecases to match corresponding
- PARAM_TYPE_*
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH v3 0/4] Xilinx Zynq Ultrascale+ MPSoC support
+To: Michael Tretter <m.tretter@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Dec 06, 2018 at 11:32:18PM -0800, Andrey Smirnov wrote:
-> This change should be a no-op in terms of behavior, but it makes code
-> less confusing when PARAM_TYPE_* matches the type used in the type
-> cast.
+On Fri, Dec 07, 2018 at 11:11:52AM +0100, Michael Tretter wrote:
+> This is v3 of the series to add support for the Xilinx Zynq Ultrascale+ MPSoC
+> platform and the ZCU104 Evaluation Kit.
 > 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  lib/parameter.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> I checked the SPDX-License-Identifiers and added them on all newly added
+> source files.
+> 
+> Michael
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/lib/parameter.c b/lib/parameter.c
-> index a21b8fa4a..00e9a9ff4 100644
-> --- a/lib/parameter.c
-> +++ b/lib/parameter.c
-> @@ -343,10 +343,10 @@ static int param_int_set(struct device_d *dev, struct param_d *p, const char *va
->  		ret = strtobool(val, pi->value);
->  		break;
->  	case PARAM_TYPE_INT32:
-> -		*(uint32_t *)pi->value = simple_strtol(val, NULL, 0);
-> +		*(int32_t *)pi->value = simple_strtol(val, NULL, 0);
->  		break;
->  	case PARAM_TYPE_UINT32:
-> -		*(int32_t *)pi->value = simple_strtoul(val, NULL, 0);
-> +		*(uint32_t *)pi->value = simple_strtoul(val, NULL, 0);
->  		break;
->  	case PARAM_TYPE_INT64:
->  		*(int64_t *)pi->value = simple_strtoll(val, NULL, 0);
+> Changelog:
+> 
+> v2 -> v3:
+> - add SPDX-License-Identifiers to all newly added source files
+> 
+> v1 -> v2:
+> - move ENTRY_PROC to a more generic location
+> - add separate patch for ENTRY_PROC
+> - rebase onto piggydata patches
+> - remove empty zynqmp.c and board.c
+> - use SPDX-License-Identifiers
+> 
+> Michael Tretter (4):
+>   ARM: lib64: .gitignore barebox.lds
+>   ARM: aarch64: compile with general-regs-only
+>   ARM: aarch64: add ENTRY_PROC macro for arm64
+>   ARM: zynqmp: add support for Xilinx ZCU104 board
+> 
+>  arch/arm/Kconfig                              | 14 +++++++
+>  arch/arm/Makefile                             |  5 +++
+>  arch/arm/boards/Makefile                      |  1 +
+>  arch/arm/boards/xilinx-zcu104/Makefile        |  2 +
+>  arch/arm/boards/xilinx-zcu104/lowlevel.c      | 21 ++++++++++
+>  arch/arm/boards/xilinx-zcu104/lowlevel_init.S | 12 ++++++
+>  arch/arm/configs/zynqmp_defconfig             | 38 +++++++++++++++++++
+>  arch/arm/dts/Makefile                         |  1 +
+>  arch/arm/dts/zynqmp-zcu104-revA.dts           | 10 +++++
+>  arch/arm/include/asm/barebox-arm64.h          | 35 +++++++++++++++++
+>  arch/arm/lib64/.gitignore                     |  1 +
+>  arch/arm/mach-zynqmp/Kconfig                  | 10 +++++
+>  arch/arm/mach-zynqmp/Makefile                 |  2 +
+>  arch/arm/mach-zynqmp/include/mach/debug_ll.h  | 31 +++++++++++++++
+>  images/Makefile                               |  1 +
+>  images/Makefile.zynqmp                        |  8 ++++
+>  16 files changed, 192 insertions(+)
+>  create mode 100644 arch/arm/boards/xilinx-zcu104/Makefile
+>  create mode 100644 arch/arm/boards/xilinx-zcu104/lowlevel.c
+>  create mode 100644 arch/arm/boards/xilinx-zcu104/lowlevel_init.S
+>  create mode 100644 arch/arm/configs/zynqmp_defconfig
+>  create mode 100644 arch/arm/dts/zynqmp-zcu104-revA.dts
+>  create mode 100644 arch/arm/include/asm/barebox-arm64.h
+>  create mode 100644 arch/arm/lib64/.gitignore
+>  create mode 100644 arch/arm/mach-zynqmp/Kconfig
+>  create mode 100644 arch/arm/mach-zynqmp/Makefile
+>  create mode 100644 arch/arm/mach-zynqmp/include/mach/debug_ll.h
+>  create mode 100644 images/Makefile.zynqmp
+> 
 > -- 
 > 2.19.1
 > 
