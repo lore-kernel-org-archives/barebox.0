@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gWH6T-0007AB-Od
- for barebox@lists.infradead.org; Mon, 10 Dec 2018 08:39:54 +0000
-Date: Mon, 10 Dec 2018 09:39:37 +0100
+ id 1gWHK8-00082R-NT
+ for barebox@lists.infradead.org; Mon, 10 Dec 2018 08:54:05 +0000
+Date: Mon, 10 Dec 2018 09:53:44 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181210083937.7edjbvfih57shwrz@pengutronix.de>
-References: <20181207063433.7623-1-a.fatoum@pengutronix.de>
- <20181207063433.7623-4-a.fatoum@pengutronix.de>
- <20181207074302.babciy2rcwjvh2iq@pengutronix.de>
- <e57bbb6a-9055-2986-8045-223b1ed84f5e@pengutronix.de>
+Message-ID: <20181210085344.gsm35kclihq6j2wl@pengutronix.de>
+References: <20181207072902.32049-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <e57bbb6a-9055-2986-8045-223b1ed84f5e@pengutronix.de>
+In-Reply-To: <20181207072902.32049-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,75 +22,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] of: partition: add no-fixup device tree property
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] net: lib: Make use of ETH_ALEN
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Dec 07, 2018 at 09:38:37AM +0100, Ahmad Fatoum wrote:
-> Hello Sascha,
-> 
-> On 7/12/18 08:43, Sascha Hauer wrote:
-> > On Fri, Dec 07, 2018 at 07:34:37AM +0100, Ahmad Fatoum wrote:
-> >> Users can have reasons to inhibit barebox from fixing up partitions nodes
-> >> into the kernel device tree, like if it's a boot0-partitions node, which
-> >> doesn't have a kernel binding.
-> >> Allow users to specify a no-fixup property to indicate so.
-> >>
-> >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> >> ---
-> >>  Documentation/devicetree/bindings/mtd/partition.txt | 3 +++
-> >>  drivers/of/partition.c                              | 9 +++++++++
-> >>  fs/devfs-core.c                                     | 1 +
-> >>  3 files changed, 13 insertions(+)
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/mtd/partition.txt b/Documentation/devicetree/bindings/mtd/partition.txt
-> >> index 4288a82437b4..a2e810276a9c 100644
-> >> --- a/Documentation/devicetree/bindings/mtd/partition.txt
-> >> +++ b/Documentation/devicetree/bindings/mtd/partition.txt
-> >> @@ -4,6 +4,8 @@ In addition to the upstream binding, another property is added:
-> >>  
-> >>  Optional properties:
-> >>  - partuuid : The partition UUID for this partition.
-> >> +- no-fixup : empty property, indicates that barebox shouldn't fix up the
-> >> +             containing node into the kernel device tree.
-> >>  
-> >>  Additionally, barebox also supports partitioning the eMMC boot partitions if
-> >>  the partition table node is named appropriately:
-> >> @@ -28,6 +30,7 @@ flash@0 {
-> >>  emmc@1 {
-> >>  	boot0-partitions {
-> >>  		compatible = "fixed-partitions";
-> >> +		no-fixup;
-> >>  		#address-cells = <1>;
-> >>  		#size-cells = <1>;
-> > 
-> > I am not so happy that we need an extra device tree property just to let
-> > barebox know that it shouldn't try a fixup for the boot partitions.
-> While my use case are the emmc boot-partitions, the binding is applicable to
-> all fixed-partitions. Before, there has only been an universal
-> of_partition_binding device parameter to turn off fixups.
-> 
-> > 
-> > In mci_register_partition() we unconditionally call
-> > of_partitions_register_fixup() even for the boot partitions. Wouldn't it
-> > be sufficient to just skip the call for the boot partitions?
-> 
-> To expand on my reasoning, there are 3 device trees in arch/arm/dts that
-> use boot0-partitions. Their users would have had barebox print scary warnings
-> about their use on fixup unless they:
-> 1) disabled partition fixups completely
-> 2) added a boot0-partitions node to the kernel device tree, either unused
->    or for use by custom tooling
-> 
-> The patch addresses both points, there is a device tree property to
-> selectively disable fixup and the second use case isn't broken,
-> unlike an unconditional (non-backward-compatible) skipping of fixups
-> for the boot partitions.
+On Thu, Dec 06, 2018 at 11:29:02PM -0800, Andrey Smirnov wrote:
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  net/lib.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 
-Still why do we need a device tree property when all we have to do is to
-not call of_partitions_register_fixup() for the boot partitions?
+Applied, thanks
 
-sascha
+Sascha
+
+> 
+> diff --git a/net/lib.c b/net/lib.c
+> index d4343bced..d2b33132d 100644
+> --- a/net/lib.c
+> +++ b/net/lib.c
+> @@ -28,13 +28,13 @@
+>  #include <net.h>
+>  #include <linux/ctype.h>
+>  
+> -int string_to_ethaddr(const char *str, u8 enetaddr[6])
+> +int string_to_ethaddr(const char *str, u8 enetaddr[ETH_ALEN])
+>  {
+>  	int reg;
+>  	char *e;
+>  
+>  	if (!str || strlen(str) != 17) {
+> -		memset(enetaddr, 0, 6);
+> +		memset(enetaddr, 0, ETH_ALEN);
+>  		return -EINVAL;
+>  	}
+>  
+> @@ -42,7 +42,7 @@ int string_to_ethaddr(const char *str, u8 enetaddr[6])
+>  			str[11] != ':' || str[14] != ':')
+>  		return -EINVAL;
+>  
+> -	for (reg = 0; reg < 6; ++reg) {
+> +	for (reg = 0; reg < ETH_ALEN; ++reg) {
+>  		enetaddr[reg] = simple_strtoul(str, &e, 16);
+>  		str = e + 1;
+>  	}
+> @@ -50,7 +50,7 @@ int string_to_ethaddr(const char *str, u8 enetaddr[6])
+>  	return 0;
+>  }
+>  
+> -void ethaddr_to_string(const u8 enetaddr[6], char *str)
+> +void ethaddr_to_string(const u8 enetaddr[ETH_ALEN], char *str)
+>  {
+>  	sprintf(str, "%02x:%02x:%02x:%02x:%02x:%02x",
+>  		 enetaddr[0], enetaddr[1], enetaddr[2], enetaddr[3],
+> -- 
+> 2.19.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
