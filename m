@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gWHKP-0002pc-Rt
- for barebox@lists.infradead.org; Mon, 10 Dec 2018 08:54:15 +0000
-Date: Mon, 10 Dec 2018 09:53:57 +0100
+ id 1gWHV6-0002vW-RP
+ for barebox@lists.infradead.org; Mon, 10 Dec 2018 09:05:22 +0000
+Date: Mon, 10 Dec 2018 10:05:05 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181210085357.nr7nqykdinvh6s37@pengutronix.de>
-References: <20181207072932.32647-1-andrew.smirnov@gmail.com>
+Message-ID: <20181210090505.vn7i6i4scezizmdt@pengutronix.de>
+References: <20181207081322.15539-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181207072932.32647-1-andrew.smirnov@gmail.com>
+In-Reply-To: <20181207081322.15539-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,57 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mfd: rave-sp: Make use of wait_on_timeout()
+Subject: Re: [PATCH] Documentation: i.MX: Document how to use GPT
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Dec 06, 2018 at 11:29:32PM -0800, Andrey Smirnov wrote:
+On Fri, Dec 07, 2018 at 12:13:22AM -0800, Andrey Smirnov wrote:
+> Document a way to avoid clashes between i.MX boot info/Barebox and
+> GPT's Partition Entry Array.
+> 
 > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  drivers/mfd/rave-sp.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
+>  Documentation/boards/imx.rst | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+> 
+> diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
+> index 99ca10b7c..a87acbee2 100644
+> --- a/Documentation/boards/imx.rst
+> +++ b/Documentation/boards/imx.rst
+> @@ -60,6 +60,25 @@ The images can also always be started second stage::
+>  
+>    bootm /mnt/tftp/barebox-freescale-imx51-babbage.img
+>  
+> +Using GPT on i.MX
+> +^^^^^^^^^^^^^^^^^
+> +
+> +For i.MX SoCs that place vendor specific header at +1KiB mark of a
+> +boot medium, special care needs to be taken when parition that medium
+> +with GPT. In order to make room for i.MX boot headr GPT Partition
 
-Applied, thanks
+s/headr/header/ and applied, thanks
 
 Sascha
-
-> 
-> diff --git a/drivers/mfd/rave-sp.c b/drivers/mfd/rave-sp.c
-> index 469ce4cc0..cc897b122 100644
-> --- a/drivers/mfd/rave-sp.c
-> +++ b/drivers/mfd/rave-sp.c
-> @@ -314,7 +314,6 @@ int rave_sp_exec(struct rave_sp *sp,
->  	unsigned char *data = __data;
->  	int command, ret = 0;
->  	u8 ackid;
-> -	uint64_t start = get_time_ns();
->  
->  	command = sp->variant->cmd.translate(data[0]);
->  	if (command < 0)
-> @@ -334,12 +333,9 @@ int rave_sp_exec(struct rave_sp *sp,
->  	 * is_timeout will implicitly poll serdev via poller
->  	 * infrastructure
->  	 */
-> -	while (!is_timeout(start, SECOND) && !reply.received)
-> -		;
-> -
-> -	if (!reply.received) {
-> +	ret = wait_on_timeout(SECOND, reply.received);
-> +	if (ret) {
->  		dev_err(dev, "Command timeout\n");
-> -		ret = -ETIMEDOUT;
->  		sp->reply = NULL;
->  	}
->  
-> -- 
-> 2.19.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
