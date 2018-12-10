@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gWHV6-0002vW-RP
- for barebox@lists.infradead.org; Mon, 10 Dec 2018 09:05:22 +0000
-Date: Mon, 10 Dec 2018 10:05:05 +0100
+ id 1gWHTA-0002uu-Qx
+ for barebox@lists.infradead.org; Mon, 10 Dec 2018 09:03:18 +0000
+Date: Mon, 10 Dec 2018 10:03:05 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181210090505.vn7i6i4scezizmdt@pengutronix.de>
-References: <20181207081322.15539-1-andrew.smirnov@gmail.com>
+Message-ID: <20181210090304.4tz56pv3vuokfgj7@pengutronix.de>
+References: <20181207073345.5638-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181207081322.15539-1-andrew.smirnov@gmail.com>
+In-Reply-To: <20181207073345.5638-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +22,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: i.MX: Document how to use GPT
+Subject: Re: [PATCH 1/6] mci: core: Use alias as a devname by default
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Dec 07, 2018 at 12:13:22AM -0800, Andrey Smirnov wrote:
-> Document a way to avoid clashes between i.MX boot info/Barebox and
-> GPT's Partition Entry Array.
+On Thu, Dec 06, 2018 at 11:33:40PM -0800, Andrey Smirnov wrote:
+> This idiom is repeatead by almost every mci driver, so move it to
+> mci_of_parse() in order to reduce amount of duplicated code.
 > 
 > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  Documentation/boards/imx.rst | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
-> 
-> diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
-> index 99ca10b7c..a87acbee2 100644
-> --- a/Documentation/boards/imx.rst
-> +++ b/Documentation/boards/imx.rst
-> @@ -60,6 +60,25 @@ The images can also always be started second stage::
->  
->    bootm /mnt/tftp/barebox-freescale-imx51-babbage.img
->  
-> +Using GPT on i.MX
-> +^^^^^^^^^^^^^^^^^
-> +
-> +For i.MX SoCs that place vendor specific header at +1KiB mark of a
-> +boot medium, special care needs to be taken when parition that medium
-> +with GPT. In order to make room for i.MX boot headr GPT Partition
+>  drivers/mci/mci-core.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 
-s/headr/header/ and applied, thanks
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+> index c8d1d5e16..3efd80a8a 100644
+> --- a/drivers/mci/mci-core.c
+> +++ b/drivers/mci/mci-core.c
+> @@ -1858,6 +1858,7 @@ void mci_of_parse_node(struct mci_host *host,
+>  {
+>  	u32 bus_width;
+>  	u32 dsr_val;
+> +	const char *alias;
+>  
+>  	if (!IS_ENABLED(CONFIG_OFDEVICE))
+>  		return;
+> @@ -1865,6 +1866,10 @@ void mci_of_parse_node(struct mci_host *host,
+>  	if (!host->hw_dev || !np)
+>  		return;
+>  
+> +	alias = of_alias_get(np);
+> +	if (alias)
+> +		host->devname = xstrdup(alias);
+> +
+>  	/* "bus-width" is translated to MMC_CAP_*_BIT_DATA flags */
+>  	if (of_property_read_u32(np, "bus-width", &bus_width) < 0) {
+>  		/* If bus-width is missing we get the driver's default, which
+> -- 
+> 2.19.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
