@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXKfs-0000ZG-1t
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 06:40:46 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Dec 2018 07:40:26 +0100
-Message-Id: <20181213064026.15127-1-s.hauer@pengutronix.de>
+ id 1gWLlR-0003zt-Pd
+ for barebox@lists.infradead.org; Mon, 10 Dec 2018 13:38:27 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1gWLlG-00058i-96
+ for barebox@lists.infradead.org; Mon, 10 Dec 2018 14:38:14 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 10 Dec 2018 14:38:14 +0100
+Message-Id: <20181210133814.29219-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,57 +24,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: fix setup_c when runtime offset is != 0
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: rdu2: add command to reset network switch
+To: barebox@lists.infradead.org
 
-The runtime offset has to be added to the memcpy source address and
-substracted from the return address. This should have been changed in
-a43e2bbc46 which changed from returning the negative runtime offset
-into changing the positive runtime offset. Instead a43e2bbc46 only
-changed a zero substraction ("subs r4, r0, #0") into a zero addition
-("adds r4, r0, #0") which was used as a equal to zero test and changed
-nothing. This part is reverted here.
+This command allows to reset the network switch on the DEB,
+clearing any DSA configuration, which may still be present from
+a prior boot.
 
-Fixes wrong copy / return locations when setup_c is called with
-different runtime and link addresses.
-
-fixes: a43e2bbc46 ("ARM: return positive offset in get_runtime_offset()")
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/cpu/setupc.S | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/boards/zii-imx6q-rdu2/Makefile     |  2 +-
+ arch/arm/boards/zii-imx6q-rdu2/switch-cmd.c | 49 +++++++++++++++++++++
+ 2 files changed, 50 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/boards/zii-imx6q-rdu2/switch-cmd.c
 
-diff --git a/arch/arm/cpu/setupc.S b/arch/arm/cpu/setupc.S
-index 717500cfff..a5f311b8ec 100644
---- a/arch/arm/cpu/setupc.S
-+++ b/arch/arm/cpu/setupc.S
-@@ -15,13 +15,13 @@ ENTRY(setup_c)
- 	push	{r4, r5}
- 	mov	r5, lr
- 	bl	get_runtime_offset
--	adds	r4, r0, #0
-+	subs	r4, r0, #0
- 	beq	1f			/* skip memcpy if already at correct address */
- 	ldr	r0,=_text
- 	ldr	r2,=__bss_start
- 	sub	r2, r2, r0
--	sub	r1, r0, r4
--	bl	memcpy			/* memcpy(_text, _text - offset, __bss_start - _text) */
-+	add	r1, r0, r4
-+	bl	memcpy			/* memcpy(_text, _text + offset, __bss_start - _text) */
- 1:	ldr	r0, =__bss_start
- 	mov	r1, #0
- 	ldr	r2, =__bss_stop
-@@ -32,7 +32,7 @@ ENTRY(setup_c)
- #endif
- 	mov	r0, #0
- 	mcr	p15, 0, r0, c7, c5, 0	/* flush icache */
--	add	lr, r5, r4		/* adjust return address to new location */
-+	sub	lr, r5, r4		/* adjust return address to new location */
- 	pop	{r4, r5}
- 	mov	pc, lr
- ENDPROC(setup_c)
+diff --git a/arch/arm/boards/zii-imx6q-rdu2/Makefile b/arch/arm/boards/zii-imx6q-rdu2/Makefile
+index c6285362f2ee..10dfba3a3cf3 100644
+--- a/arch/arm/boards/zii-imx6q-rdu2/Makefile
++++ b/arch/arm/boards/zii-imx6q-rdu2/Makefile
+@@ -1,3 +1,3 @@
+-obj-y += board.o
++obj-y += board.o switch-cmd.o
+ lwl-y += lowlevel.o
+ bbenv-y += defaultenv-rdu2
+diff --git a/arch/arm/boards/zii-imx6q-rdu2/switch-cmd.c b/arch/arm/boards/zii-imx6q-rdu2/switch-cmd.c
+new file mode 100644
+index 000000000000..bdba46fb3615
+--- /dev/null
++++ b/arch/arm/boards/zii-imx6q-rdu2/switch-cmd.c
+@@ -0,0 +1,49 @@
++/*
++ * Copyright (C) 2018 Zodiac Inflight Innovation
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++#include <common.h>
++#include <command.h>
++#include <i2c/i2c.h>
++
++static int do_rave_switch_reset(int argc, char *argv[])
++{
++	struct i2c_client client;
++	u8 reg;
++
++	if (!of_machine_is_compatible("zii,imx6q-zii-rdu2") &&
++	    !of_machine_is_compatible("zii,imx6qp-zii-rdu2"))
++		return -ENODEV;
++
++	client.adapter = i2c_get_adapter(1);
++	if (!client.adapter)
++		return -ENODEV;
++
++	/* address of the switch watchdog microcontroller */
++	client.addr = 0x38;
++	reg = 0x78;
++	/* set switch reset time to 100ms */
++	i2c_write_reg(&client, 0x0a, &reg, 1);
++	/* reset the switch */
++	reg = 0x01;
++	i2c_write_reg(&client, 0x0d, &reg, 1);
++	/* issue dummy command to work around firmware bug */
++	i2c_read_reg(&client, 0x01, &reg, 1);
++
++	return 0;
++}
++
++BAREBOX_CMD_START(rave_reset_switch)
++	.cmd		= do_rave_switch_reset,
++	BAREBOX_CMD_DESC("reset ethernet switch on RDU2")
++	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
++BAREBOX_CMD_END
 -- 
 2.19.1
 
