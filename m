@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXKmF-0002LR-S2
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 06:47:21 +0000
-Date: Thu, 13 Dec 2018 07:47:07 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181213064707.termfqcixpsnhdal@pengutronix.de>
-References: <20181210133814.29219-1-l.stach@pengutronix.de>
+ id 1gWMc6-0001nE-Vl
+ for barebox@lists.infradead.org; Mon, 10 Dec 2018 14:32:52 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1gWMbv-0004Pg-9f
+ for barebox@lists.infradead.org; Mon, 10 Dec 2018 15:32:39 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 10 Dec 2018 15:32:39 +0100
+Message-Id: <20181210143239.3844-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181210133814.29219-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,106 +24,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: rdu2: add command to reset network switch
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] clk: imx5: add di_pred
+To: barebox@lists.infradead.org
 
-On Mon, Dec 10, 2018 at 02:38:14PM +0100, Lucas Stach wrote:
-> This command allows to reset the network switch on the DEB,
-> clearing any DSA configuration, which may still be present from
-> a prior boot.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
+This was missing, so the default external DI clock source on i.MX51 was
+missing. Also set the divider to a division ratio of 1 initially, to avoid
+complicating the logic in the IPU driver further.
 
-Applied, thanks
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ drivers/clk/imx/clk-imx5.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Sascha
-
->  arch/arm/boards/zii-imx6q-rdu2/Makefile     |  2 +-
->  arch/arm/boards/zii-imx6q-rdu2/switch-cmd.c | 49 +++++++++++++++++++++
->  2 files changed, 50 insertions(+), 1 deletion(-)
->  create mode 100644 arch/arm/boards/zii-imx6q-rdu2/switch-cmd.c
-> 
-> diff --git a/arch/arm/boards/zii-imx6q-rdu2/Makefile b/arch/arm/boards/zii-imx6q-rdu2/Makefile
-> index c6285362f2ee..10dfba3a3cf3 100644
-> --- a/arch/arm/boards/zii-imx6q-rdu2/Makefile
-> +++ b/arch/arm/boards/zii-imx6q-rdu2/Makefile
-> @@ -1,3 +1,3 @@
-> -obj-y += board.o
-> +obj-y += board.o switch-cmd.o
->  lwl-y += lowlevel.o
->  bbenv-y += defaultenv-rdu2
-> diff --git a/arch/arm/boards/zii-imx6q-rdu2/switch-cmd.c b/arch/arm/boards/zii-imx6q-rdu2/switch-cmd.c
-> new file mode 100644
-> index 000000000000..bdba46fb3615
-> --- /dev/null
-> +++ b/arch/arm/boards/zii-imx6q-rdu2/switch-cmd.c
-> @@ -0,0 +1,49 @@
-> +/*
-> + * Copyright (C) 2018 Zodiac Inflight Innovation
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + */
-> +#include <common.h>
-> +#include <command.h>
-> +#include <i2c/i2c.h>
-> +
-> +static int do_rave_switch_reset(int argc, char *argv[])
-> +{
-> +	struct i2c_client client;
-> +	u8 reg;
-> +
-> +	if (!of_machine_is_compatible("zii,imx6q-zii-rdu2") &&
-> +	    !of_machine_is_compatible("zii,imx6qp-zii-rdu2"))
-> +		return -ENODEV;
-> +
-> +	client.adapter = i2c_get_adapter(1);
-> +	if (!client.adapter)
-> +		return -ENODEV;
-> +
-> +	/* address of the switch watchdog microcontroller */
-> +	client.addr = 0x38;
-> +	reg = 0x78;
-> +	/* set switch reset time to 100ms */
-> +	i2c_write_reg(&client, 0x0a, &reg, 1);
-> +	/* reset the switch */
-> +	reg = 0x01;
-> +	i2c_write_reg(&client, 0x0d, &reg, 1);
-> +	/* issue dummy command to work around firmware bug */
-> +	i2c_read_reg(&client, 0x01, &reg, 1);
-> +
-> +	return 0;
-> +}
-> +
-> +BAREBOX_CMD_START(rave_reset_switch)
-> +	.cmd		= do_rave_switch_reset,
-> +	BAREBOX_CMD_DESC("reset ethernet switch on RDU2")
-> +	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
-> +BAREBOX_CMD_END
-> -- 
-> 2.19.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/clk/imx/clk-imx5.c b/drivers/clk/imx/clk-imx5.c
+index f59a41b00169..69ac2f5e3ed2 100644
+--- a/drivers/clk/imx/clk-imx5.c
++++ b/drivers/clk/imx/clk-imx5.c
+@@ -271,6 +271,7 @@ static void mx5_clocks_mx51_mx53_init(void __iomem *base)
+ 	clks[IMX5_CLK_USBOH3_PODF] = imx_clk_divider("usboh3_podf", "usboh3_pred", base + CCM_CSCDR1, 6, 2);
+ 	clks[IMX5_CLK_USB_PHY_PRED] = imx_clk_divider("usb_phy_pred", "pll3_sw", base + CCM_CDCDR, 3, 3);
+ 	clks[IMX5_CLK_USB_PHY_PODF] = imx_clk_divider("usb_phy_podf", "usb_phy_pred", base + CCM_CDCDR, 0, 3);
++	clks[IMX5_CLK_DI_PRED] = imx_clk_divider_np("di_pred", "pll3_sw", base + CCM_CDCDR, 6, 3);
+ 	clks[IMX5_CLK_USB_PHY_SEL] = imx_clk_mux("usb_phy_sel", base + CCM_CSCMR1, 26, 1,
+ 				usb_phy_sel_str, ARRAY_SIZE(usb_phy_sel_str));
+ }
+@@ -362,6 +363,8 @@ static void mx51_clocks_ipu_init(void __iomem *regs)
+ 
+ 	mx5_clocks_ipu_init(regs);
+ 
++	clk_set_rate(clks[IMX5_CLK_DI_PRED], clk_get_rate(clks[IMX5_CLK_PLL3_SW]));
++
+ 	clkdev_add_physbase(clks[IMX5_CLK_IPU_SEL], MX51_IPU_BASE_ADDR, "bus");
+ 	clkdev_add_physbase(clks[IMX5_CLK_IPU_DI0_SEL], MX51_IPU_BASE_ADDR, "di0");
+ 	clkdev_add_physbase(clks[IMX5_CLK_IPU_DI1_SEL], MX51_IPU_BASE_ADDR, "di1");
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
