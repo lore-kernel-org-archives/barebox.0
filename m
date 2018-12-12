@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gX5EE-000431-KR
- for barebox@lists.infradead.org; Wed, 12 Dec 2018 14:11:17 +0000
+ id 1gX5EE-00042v-LL
+ for barebox@lists.infradead.org; Wed, 12 Dec 2018 14:11:19 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Wed, 12 Dec 2018 15:10:54 +0100
-Message-Id: <20181212141054.7513-7-r.czerwinski@pengutronix.de>
+Date: Wed, 12 Dec 2018 15:10:49 +0100
+Message-Id: <20181212141054.7513-2-r.czerwinski@pengutronix.de>
 In-Reply-To: <20181212141054.7513-1-r.czerwinski@pengutronix.de>
 References: <20181212141054.7513-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] doc: bcm283x: remove miniuart overlay instruction
+Subject: [PATCH 1/6] mach-bcm2835/core: add clkdev for uart1
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Since we now use the miniuart on the raspberry pi 3, the miniuart overlay is no
-longer needed.
+Add a clkdev for uart1 which will be used on the Raspberry Pi 3.
+Double the clockrate since the ns16550 driver used for the uart will divide by
+16, while the bcm2835 peripheral manual describes that the bcm2835 miniuart will
+only divide by 8.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- Documentation/boards/bcm2835.rst | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm/mach-bcm283x/core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/Documentation/boards/bcm2835.rst b/Documentation/boards/bcm2835.rst
-index 79ea0ff7a..ea80d5834 100644
---- a/Documentation/boards/bcm2835.rst
-+++ b/Documentation/boards/bcm2835.rst
-@@ -22,7 +22,6 @@ Raspberry Pi
+diff --git a/arch/arm/mach-bcm283x/core.c b/arch/arm/mach-bcm283x/core.c
+index f1dcda86f..66af76b09 100644
+--- a/arch/arm/mach-bcm283x/core.c
++++ b/arch/arm/mach-bcm283x/core.c
+@@ -42,6 +42,12 @@ static int bcm2835_clk_init(void)
+ 	clk_register_clkdev(clk, NULL, "uart0-pl0110");
+ 	clkdev_add_physbase(clk, 0x20201000, NULL);
+ 	clkdev_add_physbase(clk, 0x3f201000, NULL);
++	/*
++	 * We double the clock rate since the 16550 will divide by 16
++	 * (instead of 8 required by the BCM2835 peripheral manual)
++	 */
++	clk = clk_fixed("uart1-8250", 500 * 1000 * 1000);
++	clkdev_add_physbase(clk, 0x3f215040, NULL);
  
-          kernel=barebox.img
-          enable_uart=1
--         dtoverlay=pi3-miniuart-bt
- 
-      (For more information, refer to the `documentation for config.txt`_.)
- 
+ 	clk = clk_fixed("bcm2835-cs", 1 * 1000 * 1000);
+ 	clk_register_clkdev(clk, NULL, "bcm2835-cs");
 -- 
 2.11.0
 
