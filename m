@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gX5EE-00042v-LL
- for barebox@lists.infradead.org; Wed, 12 Dec 2018 14:11:19 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Wed, 12 Dec 2018 15:10:49 +0100
-Message-Id: <20181212141054.7513-2-r.czerwinski@pengutronix.de>
-In-Reply-To: <20181212141054.7513-1-r.czerwinski@pengutronix.de>
+ id 1gX5P1-0000Gv-U4
+ for barebox@lists.infradead.org; Wed, 12 Dec 2018 14:22:21 +0000
+Message-ID: <1544624524.3137.23.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 12 Dec 2018 15:22:04 +0100
+In-Reply-To: <20181212141054.7513-2-r.czerwinski@pengutronix.de>
 References: <20181212141054.7513-1-r.czerwinski@pengutronix.de>
+ <20181212141054.7513-2-r.czerwinski@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,47 +18,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] mach-bcm2835/core: add clkdev for uart1
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH 1/6] mach-bcm2835/core: add clkdev for uart1
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>, barebox@lists.infradead.org
 
-Add a clkdev for uart1 which will be used on the Raspberry Pi 3.
-Double the clockrate since the ns16550 driver used for the uart will divide by
-16, while the bcm2835 peripheral manual describes that the bcm2835 miniuart will
-only divide by 8.
-
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
- arch/arm/mach-bcm283x/core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/arch/arm/mach-bcm283x/core.c b/arch/arm/mach-bcm283x/core.c
-index f1dcda86f..66af76b09 100644
---- a/arch/arm/mach-bcm283x/core.c
-+++ b/arch/arm/mach-bcm283x/core.c
-@@ -42,6 +42,12 @@ static int bcm2835_clk_init(void)
- 	clk_register_clkdev(clk, NULL, "uart0-pl0110");
- 	clkdev_add_physbase(clk, 0x20201000, NULL);
- 	clkdev_add_physbase(clk, 0x3f201000, NULL);
-+	/*
-+	 * We double the clock rate since the 16550 will divide by 16
-+	 * (instead of 8 required by the BCM2835 peripheral manual)
-+	 */
-+	clk = clk_fixed("uart1-8250", 500 * 1000 * 1000);
-+	clkdev_add_physbase(clk, 0x3f215040, NULL);
- 
- 	clk = clk_fixed("bcm2835-cs", 1 * 1000 * 1000);
- 	clk_register_clkdev(clk, NULL, "bcm2835-cs");
--- 
-2.11.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gTWl0dHdvY2gsIGRlbiAxMi4xMi4yMDE4LCAxNToxMCArMDEwMCBzY2hyaWViIFJvdXZlbiBD
+emVyd2luc2tpOgo+IEFkZCBhIGNsa2RldiBmb3IgdWFydDEgd2hpY2ggd2lsbCBiZSB1c2VkIG9u
+IHRoZSBSYXNwYmVycnkgUGkgMy4KPiBEb3VibGUgdGhlIGNsb2NrcmF0ZSBzaW5jZSB0aGUgbnMx
+NjU1MCBkcml2ZXIgdXNlZCBmb3IgdGhlIHVhcnQgd2lsbCBkaXZpZGUgYnkKPiAxNiwgd2hpbGUg
+dGhlIGJjbTI4MzUgcGVyaXBoZXJhbCBtYW51YWwgZGVzY3JpYmVzIHRoYXQgdGhlIGJjbTI4MzUg
+bWluaXVhcnQgd2lsbAo+IG9ubHkgZGl2aWRlIGJ5IDguCj4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBS
+b3V2ZW4gQ3plcndpbnNraSA8ci5jemVyd2luc2tpQHBlbmd1dHJvbml4LmRlPgo+IC0tLQo+IMKg
+YXJjaC9hcm0vbWFjaC1iY20yODN4L2NvcmUuYyB8IDYgKysrKysrCj4gwqAxIGZpbGUgY2hhbmdl
+ZCwgNiBpbnNlcnRpb25zKCspCj4gCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtYmNtMjgz
+eC9jb3JlLmMgYi9hcmNoL2FybS9tYWNoLWJjbTI4M3gvY29yZS5jCj4gaW5kZXggZjFkY2RhODZm
+Li42NmFmNzZiMDkgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9hcm0vbWFjaC1iY20yODN4L2NvcmUuYwo+
+ICsrKyBiL2FyY2gvYXJtL21hY2gtYmNtMjgzeC9jb3JlLmMKPiBAQCAtNDIsNiArNDIsMTIgQEAg
+c3RhdGljIGludCBiY20yODM1X2Nsa19pbml0KHZvaWQpCj4gPiDCoAljbGtfcmVnaXN0ZXJfY2xr
+ZGV2KGNsaywgTlVMTCwgInVhcnQwLXBsMDExMCIpOwo+ID4gwqAJY2xrZGV2X2FkZF9waHlzYmFz
+ZShjbGssIDB4MjAyMDEwMDAsIE5VTEwpOwo+ID4gwqAJY2xrZGV2X2FkZF9waHlzYmFzZShjbGss
+IDB4M2YyMDEwMDAsIE5VTEwpOwo+ID4gKwkvKgo+ID4gKwnCoCogV2UgZG91YmxlIHRoZSBjbG9j
+ayByYXRlIHNpbmNlIHRoZSAxNjU1MCB3aWxsIGRpdmlkZSBieSAxNgo+ID4gKwnCoCogKGluc3Rl
+YWQgb2YgOCByZXF1aXJlZCBieSB0aGUgQkNNMjgzNSBwZXJpcGhlcmFsIG1hbnVhbCkKPiArCcKg
+Ki8KClRoaXMgaXMgY29uZnVzaW5nLiBUaGUgY2xvY2sgaXMgcnVubmluZyBhdCBhbm90aGVyIHJh
+dGUuIEkgd291bGQgcHJlZmVyCnRvIGRvIHRoaXMgYWRqdXN0bWVudCBpbiBycGlfaW5pdF9wb3J0
+KCkgaW4gdGhlIG5zMTY1NTAgZHJpdmVyLCBhcwp0aGF0J3MgdGhlIHBvaW50IHdoZXJlIHRoZSBo
+YXJkd2FyZSBkZXZpYXRpb24gYWN0dWFsbHkgaXMuCgpSZWdhcmRzLApMdWNhcwoKPiArCWNsayA9
+IGNsa19maXhlZCgidWFydDEtODI1MCIsIDUwMCAqIDEwMDAgKiAxMDAwKTsKPiA+ICsJY2xrZGV2
+X2FkZF9waHlzYmFzZShjbGssIDB4M2YyMTUwNDAsIE5VTEwpOwo+IMKgCj4gPiDCoAljbGsgPSBj
+bGtfZml4ZWQoImJjbTI4MzUtY3MiLCAxICogMTAwMCAqIDEwMDApOwo+ID4gwqAJY2xrX3JlZ2lz
+dGVyX2Nsa2RldihjbGssIE5VTEwsICJiY20yODM1LWNzIik7CgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
+QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9iYXJlYm94Cg==
