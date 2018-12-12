@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gX5yB-0004PF-KW
- for barebox@lists.infradead.org; Wed, 12 Dec 2018 14:58:41 +0000
-Message-ID: <1544626706.2473.3.camel@pengutronix.de>
+ id 1gX5EE-00042y-Jr
+ for barebox@lists.infradead.org; Wed, 12 Dec 2018 14:11:13 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Wed, 12 Dec 2018 15:58:26 +0100
-In-Reply-To: <1544624524.3137.23.camel@pengutronix.de>
+Date: Wed, 12 Dec 2018 15:10:51 +0100
+Message-Id: <20181212141054.7513-4-r.czerwinski@pengutronix.de>
+In-Reply-To: <20181212141054.7513-1-r.czerwinski@pengutronix.de>
 References: <20181212141054.7513-1-r.czerwinski@pengutronix.de>
- <20181212141054.7513-2-r.czerwinski@pengutronix.de>
- <1544624524.3137.23.camel@pengutronix.de>
-Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,38 +16,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/6] mach-bcm2835/core: add clkdev for uart1
-To: Lucas Stach <l.stach@pengutronix.de>, barebox@lists.infradead.org
+Subject: [PATCH 3/6] serial_ns16550: add raspberry pi compatible and init
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-T24gV2VkLCAyMDE4LTEyLTEyIGF0IDE1OjIyICswMTAwLCBMdWNhcyBTdGFjaCB3cm90ZToKPiBB
-bSBNaXR0d29jaCwgZGVuIDEyLjEyLjIwMTgsIDE1OjEwICswMTAwIHNjaHJpZWIgUm91dmVuIEN6
-ZXJ3aW5za2k6Cj4gPiBBZGQgYSBjbGtkZXYgZm9yIHVhcnQxIHdoaWNoIHdpbGwgYmUgdXNlZCBv
-biB0aGUgUmFzcGJlcnJ5IFBpIDMuCj4gPiBEb3VibGUgdGhlIGNsb2NrcmF0ZSBzaW5jZSB0aGUg
-bnMxNjU1MCBkcml2ZXIgdXNlZCBmb3IgdGhlIHVhcnQKPiA+IHdpbGwgZGl2aWRlIGJ5Cj4gPiAx
-Niwgd2hpbGUgdGhlIGJjbTI4MzUgcGVyaXBoZXJhbCBtYW51YWwgZGVzY3JpYmVzIHRoYXQgdGhl
-IGJjbTI4MzUKPiA+IG1pbml1YXJ0IHdpbGwKPiA+IG9ubHkgZGl2aWRlIGJ5IDguCj4gPiAKPiA+
-ID4gU2lnbmVkLW9mZi1ieTogUm91dmVuIEN6ZXJ3aW5za2kgPHIuY3plcndpbnNraUBwZW5ndXRy
-b25peC5kZT4KPiA+IAo+ID4gLS0tCj4gPiDCoGFyY2gvYXJtL21hY2gtYmNtMjgzeC9jb3JlLmMg
-fCA2ICsrKysrKwo+ID4gwqAxIGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspCj4gPiAKPiA+
-IGRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWJjbTI4M3gvY29yZS5jIGIvYXJjaC9hcm0vbWFj
-aC0KPiA+IGJjbTI4M3gvY29yZS5jCj4gPiBpbmRleCBmMWRjZGE4NmYuLjY2YWY3NmIwOSAxMDA2
-NDQKPiA+IC0tLSBhL2FyY2gvYXJtL21hY2gtYmNtMjgzeC9jb3JlLmMKPiA+ICsrKyBiL2FyY2gv
-YXJtL21hY2gtYmNtMjgzeC9jb3JlLmMKPiA+IEBAIC00Miw2ICs0MiwxMiBAQCBzdGF0aWMgaW50
-IGJjbTI4MzVfY2xrX2luaXQodm9pZCkKPiA+ID4gwqAJY2xrX3JlZ2lzdGVyX2Nsa2RldihjbGss
-IE5VTEwsICJ1YXJ0MC1wbDAxMTAiKTsKPiA+ID4gwqAJY2xrZGV2X2FkZF9waHlzYmFzZShjbGss
-IDB4MjAyMDEwMDAsIE5VTEwpOwo+ID4gPiDCoAljbGtkZXZfYWRkX3BoeXNiYXNlKGNsaywgMHgz
-ZjIwMTAwMCwgTlVMTCk7Cj4gPiA+ICsJLyoKPiA+ID4gKwnCoCogV2UgZG91YmxlIHRoZSBjbG9j
-ayByYXRlIHNpbmNlIHRoZSAxNjU1MCB3aWxsIGRpdmlkZQo+ID4gPiBieSAxNgo+ID4gPiArCcKg
-KiAoaW5zdGVhZCBvZiA4IHJlcXVpcmVkIGJ5IHRoZSBCQ00yODM1IHBlcmlwaGVyYWwKPiA+ID4g
-bWFudWFsKQo+ID4gCj4gPiArCcKgKi8KPiAKPiBUaGlzIGlzIGNvbmZ1c2luZy4gVGhlIGNsb2Nr
-IGlzIHJ1bm5pbmcgYXQgYW5vdGhlciByYXRlLiBJIHdvdWxkCj4gcHJlZmVyCj4gdG8gZG8gdGhp
-cyBhZGp1c3RtZW50IGluIHJwaV9pbml0X3BvcnQoKSBpbiB0aGUgbnMxNjU1MCBkcml2ZXIsIGFz
-Cj4gdGhhdCdzIHRoZSBwb2ludCB3aGVyZSB0aGUgaGFyZHdhcmUgZGV2aWF0aW9uIGFjdHVhbGx5
-IGlzLgoKVGhhdHMgcmVhc29uYWJsZSwgSSdsbCBpbmNsdWRlIGl0IGluIGEgdjIuCgpHcmVldGlu
-Z3MsClJvdXZlbgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
-Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Add the compatible for the Raspberry Pi AUX UART and an init function which
+enables it via the aux register and configures the correct shift value.
+
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+---
+ drivers/serial/serial_ns16550.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index 8ddcfdbef..e872fb886 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -253,6 +253,15 @@ static void ns16550_jz_init_port(struct console_device *cdev)
+ 	ns16550_serial_init_port(cdev);
+ }
+ 
++static void rpi_init_port(struct console_device *cdev)
++{
++  struct ns16550_priv *priv = to_ns16550_priv(cdev);
++
++  writeb(0x01, 0x3f215004);
++  priv->plat.shift = 2;
++  ns16550_serial_init_port(cdev);
++}
++
+ /*********** Exposed Functions **********************************/
+ 
+ /**
+@@ -353,6 +362,11 @@ static __maybe_unused struct ns16550_drvdata tegra_drvdata = {
+ 	.linux_console_name = "ttyS",
+ };
+ 
++static struct ns16550_drvdata rpi_drvdata = {
++  .init_port = rpi_init_port,
++  .linux_console_name = "ttyS",
++};
++
+ static int ns16550_init_iomem(struct device_d *dev, struct ns16550_priv *priv)
+ {
+ 	struct resource *iores;
+@@ -528,6 +542,12 @@ static struct of_device_id ns16550_serial_dt_ids[] = {
+ 		.data = &jz_drvdata,
+ 	},
+ #endif
++#if IS_ENABLED(CONFIG_MACH_RPI_COMMON)
++	{
++	  .compatible = "brcm,bcm2835-aux-uart",
++	  .data = &rpi_drvdata,
++	},
++#endif
+ 	{
+ 		/* sentinel */
+ 	},
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
