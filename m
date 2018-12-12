@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gX5EE-00042x-L0
- for barebox@lists.infradead.org; Wed, 12 Dec 2018 14:11:13 +0000
+ id 1gX5EE-000430-Jr
+ for barebox@lists.infradead.org; Wed, 12 Dec 2018 14:11:16 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Wed, 12 Dec 2018 15:10:50 +0100
-Message-Id: <20181212141054.7513-3-r.czerwinski@pengutronix.de>
+Date: Wed, 12 Dec 2018 15:10:52 +0100
+Message-Id: <20181212141054.7513-5-r.czerwinski@pengutronix.de>
 In-Reply-To: <20181212141054.7513-1-r.czerwinski@pengutronix.de>
 References: <20181212141054.7513-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,84 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] serial_ns16550: handle default reg-io-width
+Subject: [PATCH 4/6] ARM: rpi: add NS16550 support
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-According to the device tree bindings for 8250, width is an optional property.
-Default to 1 which is the same default value as used by the kernel.
-Before this change the driver would not work for device trees which do not
-include the optional binding.
+Since the 16550 driver now supports the RPI3 miniuart, enable it in the default
+config.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- drivers/serial/serial_ns16550.c | 46 ++++++++++++++++++++---------------------
- 1 file changed, 23 insertions(+), 23 deletions(-)
+ arch/arm/configs/rpi_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-index 4d73ea8b8..8ddcfdbef 100644
---- a/drivers/serial/serial_ns16550.c
-+++ b/drivers/serial/serial_ns16550.c
-@@ -297,36 +297,36 @@ static int ns16550_tstc(struct console_device *cdev)
- static void ns16550_probe_dt(struct device_d *dev, struct ns16550_priv *priv)
- {
- 	struct device_node *np = dev->device_node;
--	u32 width;
-+	u32 width = 1;
- 
- 	if (!IS_ENABLED(CONFIG_OFDEVICE))
- 		return;
- 
- 	of_property_read_u32(np, "clock-frequency", &priv->plat.clock);
- 	of_property_read_u32(np, "reg-shift", &priv->plat.shift);
--	if (!of_property_read_u32(np, "reg-io-width", &width))
--		switch (width) {
--		case 1:
--			priv->read_reg = ns16550_read_reg_mmio_8;
--			priv->write_reg = ns16550_write_reg_mmio_8;
--			break;
--		case 2:
--			priv->read_reg = ns16550_read_reg_mmio_16;
--			priv->write_reg = ns16550_write_reg_mmio_16;
--			break;
--		case 4:
--			if (of_device_is_big_endian(np)) {
--				priv->read_reg = ns16550_read_reg_mmio_32be;
--				priv->write_reg = ns16550_write_reg_mmio_32be;
--			} else {
--				priv->read_reg = ns16550_read_reg_mmio_32;
--				priv->write_reg = ns16550_write_reg_mmio_32;
--			}
--			break;
--		default:
--			dev_err(dev, "unsupported reg-io-width (%d)\n",
--				width);
-+	of_property_read_u32(np, "reg-io-width", &width);
-+	switch (width) {
-+	case 1:
-+		priv->read_reg = ns16550_read_reg_mmio_8;
-+		priv->write_reg = ns16550_write_reg_mmio_8;
-+		break;
-+	case 2:
-+		priv->read_reg = ns16550_read_reg_mmio_16;
-+		priv->write_reg = ns16550_write_reg_mmio_16;
-+		break;
-+	case 4:
-+		if (of_device_is_big_endian(np)) {
-+			priv->read_reg = ns16550_read_reg_mmio_32be;
-+			priv->write_reg = ns16550_write_reg_mmio_32be;
-+		} else {
-+			priv->read_reg = ns16550_read_reg_mmio_32;
-+			priv->write_reg = ns16550_write_reg_mmio_32;
- 		}
-+		break;
-+	default:
-+		dev_err(dev, "unsupported reg-io-width (%d)\n",
-+			width);
-+	}
- }
- 
- static struct ns16550_drvdata ns16450_drvdata = {
+diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
+index 2bb615849..dc5ab1fe1 100644
+--- a/arch/arm/configs/rpi_defconfig
++++ b/arch/arm/configs/rpi_defconfig
+@@ -63,6 +63,7 @@ CONFIG_CMD_OF_PROPERTY=y
+ CONFIG_CMD_OFTREE=y
+ CONFIG_CMD_TIME=y
+ CONFIG_SERIAL_AMBA_PL011=y
++CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_MCI=y
+ CONFIG_MCI_BCM283X=y
+ CONFIG_LED=y
 -- 
 2.11.0
 
