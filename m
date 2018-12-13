@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLAN-0005ZH-A6
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:21 +0000
-Received: by mail-pf1-x441.google.com with SMTP id c123so654381pfb.0
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:05 -0800 (PST)
+ id 1gXLAS-0005oY-8O
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:24 +0000
+Received: by mail-pf1-x442.google.com with SMTP id h3so652906pfg.1
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:18 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:10:56 -0800
-Message-Id: <20181213071144.31691-11-andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:11:07 -0800
+Message-Id: <20181213071144.31691-22-andrew.smirnov@gmail.com>
 In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,123 +23,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/58] PCI: designware: Simplify control flow
+Subject: [PATCH 21/58] PCI: designware: Check LTSSM training bit before
+ deciding link is up
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 116a489d78b30862a2dd04961d3ba98fe4704220
+Port of a Linux commit 01c076732e8288485c22ef50f20949455a783ca9
 
-  Return values immediately when possible to simplify the control flow.
+  The link may be up but still in link training.  In this case, we can't
+  think the link is up and operating correctly.  Teach dw_pcie_link_up() to
+  be aware of the PCIE_PHY_DEBUG_R1_LINK_IN_TRAINING bit.
 
-  No functional change intended.  Folded in unused variable removal as
-  pointed out by Fabio Estevam <fabio.estevam@nxp.com>, Arnd Bergmann
-  <arnd@arndb.de>, and Thierry Reding <thierry.reding@gmail.com>.
+  Also rewrite PCIE_PHY_DEBUG_R1_LINK_UP definition so that it's consistent
+  with other macros.
 
+  Signed-off-by: Jisheng Zhang <jszhang@marvell.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-  Acked-by: Pratyush Anand <pratyush.anand@gmail.com>
+  Acked-by: Joao Pinto <jpinto@synopsys.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 53 ++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 32 deletions(-)
+ drivers/pci/pcie-designware.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index f52b67f4f..782da2626 100644
+index b56c466fd..6de9fa7e3 100644
 --- a/drivers/pci/pcie-designware.c
 +++ b/drivers/pci/pcie-designware.c
-@@ -133,29 +133,19 @@ static inline void dw_pcie_writel_rc(struct pcie_port *pp, u32 val, u32 reg)
- static int dw_pcie_rd_own_conf(struct pcie_port *pp, int where, int size,
- 			       u32 *val)
- {
--	int ret;
--
- 	if (pp->ops->rd_own_conf)
--		ret = pp->ops->rd_own_conf(pp, where, size, val);
--	else
--		ret = dw_pcie_cfg_read(pp->dbi_base + where,
--				       size, val);
-+		return pp->ops->rd_own_conf(pp, where, size, val);
+@@ -83,7 +83,8 @@
+ /* PCIe Port Logic registers */
+ #define PLR_OFFSET                     0x700
+ #define PCIE_PHY_DEBUG_R1              (PLR_OFFSET + 0x2c)
+-#define PCIE_PHY_DEBUG_R1_LINK_UP      0x00000010
++#define PCIE_PHY_DEBUG_R1_LINK_UP      (0x1 << 4)
++#define PCIE_PHY_DEBUG_R1_LINK_IN_TRAINING     (0x1 << 29)
  
--	return ret;
-+	return dw_pcie_cfg_read(pp->dbi_base + where, size, val);
- }
+ static unsigned long global_io_offset;
  
- static int dw_pcie_wr_own_conf(struct pcie_port *pp, int where, int size,
- 			       u32 val)
- {
--	int ret;
--
- 	if (pp->ops->wr_own_conf)
--		ret = pp->ops->wr_own_conf(pp, where, size, val);
--	else
--		ret = dw_pcie_cfg_write(pp->dbi_base + where,
--					size, val);
-+		return pp->ops->wr_own_conf(pp, where, size, val);
- 
--	return ret;
-+	return dw_pcie_cfg_write(pp->dbi_base + where, size, val);
- }
- 
- static void dw_pcie_prog_outbound_atu(struct pcie_port *pp, int index,
-@@ -185,8 +175,8 @@ int dw_pcie_link_up(struct pcie_port *pp)
- {
- 	if (pp->ops->link_up)
+@@ -217,7 +218,8 @@ int dw_pcie_link_up(struct pcie_port *pp)
  		return pp->ops->link_up(pp);
--	else
--		return 0;
-+
-+	return 0;
+ 
+ 	val = readl(pp->dbi_base + PCIE_PHY_DEBUG_R1);
+-	return val & PCIE_PHY_DEBUG_R1_LINK_UP;
++	return ((val & PCIE_PHY_DEBUG_R1_LINK_UP) &&
++		!(val & PCIE_PHY_DEBUG_R1_LINK_IN_TRAINING));
  }
  
  static inline struct pcie_port *host_to_pcie(struct pci_controller *host)
-@@ -430,16 +420,16 @@ static int dw_pcie_rd_conf(struct pci_bus *bus, u32 devfn, int where,
- 
- 	data_abort_mask();
- 
--	if (bus->number != pp->root_bus_nr)
--		if (pp->ops->rd_other_conf)
--			ret = pp->ops->rd_other_conf(pp, bus, devfn,
--						where, size, val);
--		else
--			ret = dw_pcie_rd_other_conf(pp, bus, devfn,
--						where, size, val);
--	else
-+	if (bus->number == pp->root_bus_nr)
- 		ret = dw_pcie_rd_own_conf(pp, where, size, val);
- 
-+	else if (pp->ops->rd_other_conf)
-+		ret = pp->ops->rd_other_conf(pp, bus, devfn,
-+					     where, size, val);
-+	else
-+		ret = dw_pcie_rd_other_conf(pp, bus, devfn,
-+					    where, size, val);
-+
- 	if (data_abort_unmask())
- 		return PCIBIOS_DEVICE_NOT_FOUND;
- 
-@@ -457,15 +447,14 @@ static int dw_pcie_wr_conf(struct pci_bus *bus, u32 devfn,
- 
- 	data_abort_mask();
- 
--	if (bus->number != pp->root_bus_nr)
--		if (pp->ops->wr_other_conf)
--			ret = pp->ops->wr_other_conf(pp, bus, devfn,
--						where, size, val);
--		else
--			ret = dw_pcie_wr_other_conf(pp, bus, devfn,
--						where, size, val);
--	else
-+	if (bus->number == pp->root_bus_nr)
- 		ret = dw_pcie_wr_own_conf(pp, where, size, val);
-+	else if (pp->ops->wr_other_conf)
-+		ret = pp->ops->wr_other_conf(pp, bus, devfn,
-+					     where, size, val);
-+	else
-+		ret = dw_pcie_wr_other_conf(pp, bus, devfn,
-+					    where, size, val);
- 
- 	if (data_abort_unmask())
- 		return PCIBIOS_DEVICE_NOT_FOUND;
 -- 
 2.19.1
 
