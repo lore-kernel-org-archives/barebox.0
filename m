@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+Received: from mail-lj1-x242.google.com ([2a00:1450:4864:20::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXL93-00051n-Oy
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:10:55 +0000
-Received: by mail-pl1-x641.google.com with SMTP id t13so592232ply.13
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:10:43 -0800 (PST)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:10:33 -0800
-Message-Id: <20181213071033.30932-3-andrew.smirnov@gmail.com>
-In-Reply-To: <20181213071033.30932-1-andrew.smirnov@gmail.com>
-References: <20181213071033.30932-1-andrew.smirnov@gmail.com>
+ id 1gXKZw-0004Zz-O5
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 06:34:38 +0000
+Received: by mail-lj1-x242.google.com with SMTP id l15-v6so739421lja.9
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 22:34:26 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 13 Dec 2018 09:34:08 +0300
+Message-Id: <20181213063408.18849-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,39 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] video: mtl017: Make sure errno is not used as a regulator
- pointer
+Subject: [PATCH] scripts/mkcompile_h: Remove trailing spaces from compiler
+ version
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Since regulator_get() can return an errno via regulator pointer, we
-need to make sure we handle that case without passing bogus pointers
-around.
+This is an adoption of the linux kernel commit
 
-Add code to convert mtl017->regulator to a dummy regulator if
-regulator_get() fails.
+| commit adcc3f7cee29eb831f79f4ac7ba6a0fbce7ac936
+| Author: Jonathan Liu <net147@gmail.com>
+| Date:   Mon Jun 12 18:23:17 2017 +1000
+|
+|    scripts/mkcompile_h: Remove trailing spaces from compiler version
+|
+|    Improves the output of "cat /proc/version" by getting rid of the
+|    trailing space at the end of the compiler version when the kernel
+|    is compiled using GCC.
+|
+|    Signed-off-by: Jonathan Liu <net147@gmail.com>
+|    Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/video/mtl017.c | 3 +++
- 1 file changed, 3 insertions(+)
+ scripts/mkcompile_h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/mtl017.c b/drivers/video/mtl017.c
-index 085ea110b..423fb8e4f 100644
---- a/drivers/video/mtl017.c
-+++ b/drivers/video/mtl017.c
-@@ -244,6 +244,9 @@ static int mtl017_probe(struct device_d *dev)
- 	mtl017->client = to_i2c_client(dev);
- 	mtl017->regulator = regulator_get(dev, "vdd");
+diff --git a/scripts/mkcompile_h b/scripts/mkcompile_h
+index 1a80ef7c70..60b20cafc6 100755
+--- a/scripts/mkcompile_h
++++ b/scripts/mkcompile_h
+@@ -72,7 +72,7 @@ UTS_TRUNCATE="cut -b -$UTS_LEN"
+   echo \#define BAREBOX_COMPILE_BY \"`echo $BAREBOX_COMPILE_BY | $UTS_TRUNCATE`\"
+   echo \#define BAREBOX_COMPILE_HOST \"`echo $BAREBOX_COMPILE_HOST | $UTS_TRUNCATE`\"
  
-+	if (IS_ERR(mtl017->regulator))
-+		mtl017->regulator = NULL;
-+
- 	mtl017->enable_gpio = of_get_named_gpio_flags(dev->device_node,
- 			"enable-gpios", 0, &flags);
- 	if (gpio_is_valid(mtl017->enable_gpio)) {
+-  echo \#define BAREBOX_COMPILER \"`$CC -v 2>&1 | tail -n 1`\"
++  echo \#define BAREBOX_COMPILER \"`$CC -v 2>&1 | grep ' version ' | sed 's/[[:space:]]*$//'`\"
+ ) > .tmpcompile
+ 
+ # Only replace the real compile.h if the new one is different,
 -- 
-2.19.1
+2.20.0.rc2
 
 
 _______________________________________________
