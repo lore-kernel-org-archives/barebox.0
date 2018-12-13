@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gVA2B-0003ci-JK
- for barebox@lists.infradead.org; Fri, 07 Dec 2018 06:54:49 +0000
-Date: Fri, 7 Dec 2018 07:54:35 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181207065435.33uzhiw6nppf3sul@pengutronix.de>
-References: <20181206114510.20643-1-l.stach@pengutronix.de>
+ id 1gXLAO-0005ff-PC
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:22 +0000
+Received: by mail-pf1-x444.google.com with SMTP id c123so654543pfb.0
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:11 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:11:01 -0800
+Message-Id: <20181213071144.31691-16-andrew.smirnov@gmail.com>
+In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
+References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181206114510.20643-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +23,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] ARM: imx: select OFDEVICE for VF610
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 15/58] PCI: designware: Add default link up check if
+ sub-driver doesn't override
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Thu, Dec 06, 2018 at 12:45:07PM +0100, Lucas Stach wrote:
-> It's a dependency for IMX_OCOTP, which is selected by VF610.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  arch/arm/mach-imx/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
+Port of a Linux commit dac29e6c5460d05774e3e8c4fdf4d6e7bd481fab
 
-Applied, thanks
+  Add a default DesignWare "link_up" test for use when a sub-driver doesn't
+  supply its own pcie_host_ops.link_up() method.
 
-Sascha
+  [bhelgaas: changelog, split into its own patch]
+  Signed-off-by: Joao Pinto <jpinto@synopsys.com>
+  Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+  Acked-by: Pratyush Anand <pratyush.anand@gmail.com>
 
-> 
-> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> index 69d359b8520c..5b641655d2ba 100644
-> --- a/arch/arm/mach-imx/Kconfig
-> +++ b/arch/arm/mach-imx/Kconfig
-> @@ -190,6 +190,7 @@ config ARCH_VF610
->  	select ARCH_HAS_FEC_IMX
->  	select CPU_V7
->  	select PINCTRL
-> +	select OFDEVICE
->  	select OFTREE
->  	select COMMON_CLK
->  	select COMMON_CLK_OF_PROVIDER
-> -- 
-> 2.19.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/pci/pcie-designware.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
+index ab6f1d289..d1c2635d6 100644
+--- a/drivers/pci/pcie-designware.c
++++ b/drivers/pci/pcie-designware.c
+@@ -72,6 +72,11 @@
+ #define PCIE_ATU_FUNC(x)		(((x) & 0x7) << 16)
+ #define PCIE_ATU_UPPER_TARGET		0x91C
+ 
++/* PCIe Port Logic registers */
++#define PLR_OFFSET                     0x700
++#define PCIE_PHY_DEBUG_R1              (PLR_OFFSET + 0x2c)
++#define PCIE_PHY_DEBUG_R1_LINK_UP      0x00000010
++
+ static unsigned long global_io_offset;
+ 
+ int dw_pcie_cfg_read(void __iomem *addr, int size, u32 *val)
+@@ -191,10 +196,13 @@ int dw_pcie_wait_for_link(struct pcie_port *pp)
+ 
+ int dw_pcie_link_up(struct pcie_port *pp)
+ {
++	u32 val;
++
+ 	if (pp->ops->link_up)
+ 		return pp->ops->link_up(pp);
+ 
+-	return 0;
++	val = readl(pp->dbi_base + PCIE_PHY_DEBUG_R1);
++	return val & PCIE_PHY_DEBUG_R1_LINK_UP;
+ }
+ 
+ static inline struct pcie_port *host_to_pcie(struct pci_controller *host)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
