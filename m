@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLAu-0006Fb-Q7
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:13:10 +0000
-Received: by mail-pf1-x443.google.com with SMTP id c73so625533pfe.13
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:44 -0800 (PST)
+ id 1gXLB5-0006Lw-GD
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:13:15 +0000
+Received: by mail-pg1-x541.google.com with SMTP id w7so592521pgp.13
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:50 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:11:28 -0800
-Message-Id: <20181213071144.31691-43-andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:11:33 -0800
+Message-Id: <20181213071144.31691-48-andrew.smirnov@gmail.com>
 In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,115 +23,103 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 42/58] PCI: imx6: Remove LTSSM disable workaround
+Subject: [PATCH 47/58] PCI: dwc: all: Modify dbi accessors to take dbi_base as
+ argument
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit a71280722eeba8f1afa51ad6656028dcb96e110b
+Port of a Linux commit b50b2db266d8a8c303e8d88590c6416dfe576c6c
 
-  This causes CPU hangs when the system is reset by the watchdog, as the GPRs
-  aren't cleared, but the clocks are back to disabled state.
+  dwc has 2 dbi address space labeled dbics and dbics2. The existing helper
+  to access dbi address space can access only dbics. However dbics2 has to
+  be accessed for programming the BAR registers in the case of EP mode. This
+  is in preparation for adding EP mode support to dwc driver.
 
-  If the bootloader uses PCIe, it must take care to bring it down into a safe
-  state, before passing control to the Linux kernel.  This is the only way to
-  get a properly operating system at all times and circumstances.
-
-  Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+  Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-
-LTSSM disable workaround still needs to be performed before passing
-control to Linux. However, in order to avoid the hang described above,
-we move it to imx6_pcie_remove() and apply it without relying on
-values in GPR.
+  Acked-by: Niklas Cassel <niklas.cassel@axis.com>
+  Cc: Jingoo Han <jingoohan1@gmail.com>
+  Cc: Joao Pinto <Joao.Pinto@synopsys.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c | 57 +++++++++++++++++++++---------------------
- 1 file changed, 28 insertions(+), 29 deletions(-)
+ drivers/pci/pcie-designware.c | 13 +++++++------
+ drivers/pci/pcie-designware.h | 19 +++++++++++++++----
+ 2 files changed, 22 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index a9a4be927..023e6f07f 100644
---- a/drivers/pci/pci-imx6.c
-+++ b/drivers/pci/pci-imx6.c
-@@ -239,8 +239,7 @@ static void imx6_pcie_reset_phy(struct imx6_pcie *imx6_pcie)
- 
- static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
- {
--	struct pcie_port *pp = &imx6_pcie->pp;
--	u32 val, gpr1, gpr12;
-+	u32 gpr1;
- 
- 	switch (imx6_pcie->variant) {
- 	case IMX6QP:
-@@ -249,34 +248,7 @@ static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
- 		writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
- 		break;
- 	case IMX6Q:
--		/*
--		 * If the bootloader already enabled the link we need some special
--		 * handling to get the core back into a state where it is safe to
--		 * touch it for configuration.  As there is no dedicated reset signal
--		 * wired up for MX6QDL, we need to manually force LTSSM into "detect"
--		 * state before completely disabling LTSSM, which is a prerequisite
--		 * for core configuration.
--		 *
--		 * If both LTSSM_ENABLE and REF_SSP_ENABLE are active we have a strong
--		 * indication that the bootloader activated the link.
--		 */
- 		gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
--		gpr12 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
--
--		if ((gpr1 & IMX6Q_GPR1_PCIE_REF_CLK_EN) &&
--		    (gpr12 & IMX6Q_GPR12_PCIE_CTL_2)) {
--			val = dw_pcie_readl_rc(pp, PCIE_PL_PFLR);
--			val &= ~PCIE_PL_PFLR_LINK_STATE_MASK;
--			val |= PCIE_PL_PFLR_FORCE_LINK;
--
--			data_abort_mask();
--			dw_pcie_writel_rc(pp, PCIE_PL_PFLR, val);
--			data_abort_unmask();
--
--			gpr12 &= ~IMX6Q_GPR12_PCIE_CTL_2;
--			writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
--		}
--
- 		gpr1 |= IMX6Q_GPR1_PCIE_TEST_PD;
- 		writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
- 
-@@ -642,6 +614,33 @@ static void imx6_pcie_remove(struct device_d *dev)
- {
- 	struct imx6_pcie *imx6_pcie = dev->priv;
- 
-+	if (imx6_pcie->variant == IMX6Q) {
-+		/*
-+		 * If the bootloader already enabled the link we need
-+		 * some special handling to get the core back into a
-+		 * state where it is safe to touch it for
-+		 * configuration.  As there is no dedicated reset
-+		 * signal wired up for MX6QDL, we need to manually
-+		 * force LTSSM into "detect" state before completely
-+		 * disabling LTSSM, which is a prerequisite for core
-+		 * configuration.
-+		 */
-+		struct pcie_port *pp = &imx6_pcie->pp;
-+		u32 gpr12, val;
-+
-+		val = dw_pcie_readl_rc(pp, PCIE_PL_PFLR);
-+		val &= ~PCIE_PL_PFLR_LINK_STATE_MASK;
-+		val |= PCIE_PL_PFLR_FORCE_LINK;
-+
-+		data_abort_mask();
-+		dw_pcie_writel_rc(pp, PCIE_PL_PFLR, val);
-+		data_abort_unmask();
-+
-+		gpr12 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
-+		gpr12 &= ~IMX6Q_GPR12_PCIE_CTL_2;
-+		writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
-+	}
-+
- 	imx6_pcie_assert_core_reset(imx6_pcie);
+diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
+index 0eb3bc20d..2d8bbd32a 100644
+--- a/drivers/pci/pcie-designware.c
++++ b/drivers/pci/pcie-designware.c
+@@ -68,20 +68,21 @@ int dw_pcie_write(void __iomem *addr, int size, u32 val)
+ 	return PCIBIOS_SUCCESSFUL;
  }
  
+-u32 dw_pcie_readl_dbi(struct dw_pcie *pci, u32 reg)
++u32 __dw_pcie_readl_dbi(struct dw_pcie *pci, void __iomem *base, u32 reg)
+ {
+ 	if (pci->ops->readl_dbi)
+-		return pci->ops->readl_dbi(pci, reg);
++		return pci->ops->readl_dbi(pci, base, reg);
+ 
+-	return readl(pci->dbi_base + reg);
++	return readl(base + reg);
+ }
+ 
+-void dw_pcie_writel_dbi(struct dw_pcie *pci, u32 reg, u32 val)
++void __dw_pcie_writel_dbi(struct dw_pcie *pci, void __iomem *base, u32 reg,
++			  u32 val)
+ {
+ 	if (pci->ops->writel_dbi)
+-		pci->ops->writel_dbi(pci, reg, val);
++		pci->ops->writel_dbi(pci, base, reg, val);
+ 	else
+-		writel(val, pci->dbi_base + reg);
++		writel(val, base + reg);
+ }
+ 
+ void dw_pcie_prog_outbound_atu(struct dw_pcie *pci, int index,
+diff --git a/drivers/pci/pcie-designware.h b/drivers/pci/pcie-designware.h
+index e81941826..3839263e9 100644
+--- a/drivers/pci/pcie-designware.h
++++ b/drivers/pci/pcie-designware.h
+@@ -113,8 +113,9 @@ struct pcie_port {
+ };
+ 
+ struct dw_pcie_ops {
+-	u32     (*readl_dbi)(struct dw_pcie *pcie, u32 reg);
+-	void    (*writel_dbi)(struct dw_pcie *pcie, u32 reg, u32 val);
++	u32     (*readl_dbi)(struct dw_pcie *pcie, void __iomem *base, u32 reg);
++	void    (*writel_dbi)(struct dw_pcie *pcie, void __iomem *base, u32 reg,
++			      u32 val);
+ 	int     (*link_up)(struct dw_pcie *pcie);
+ };
+ 
+@@ -133,12 +134,22 @@ int dw_pcie_write(void __iomem *addr, int size, u32 val);
+ void dw_pcie_setup_rc(struct pcie_port *pp);
+ int dw_pcie_host_init(struct pcie_port *pp);
+ 
+-u32 dw_pcie_readl_dbi(struct dw_pcie *pci, u32 reg);
+-void dw_pcie_writel_dbi(struct dw_pcie *pci, u32 reg, u32 val);
++u32 __dw_pcie_readl_dbi(struct dw_pcie *pci, void __iomem *addr, u32 reg);
++void __dw_pcie_writel_dbi(struct dw_pcie *pci, void __iomem *addr, u32 reg, u32 val);
+ int dw_pcie_link_up(struct dw_pcie *pci);
+ int dw_pcie_wait_for_link(struct dw_pcie *pci);
+ void dw_pcie_prog_outbound_atu(struct dw_pcie *pci, int index,
+ 			       int type, u64 cpu_addr, u64 pci_addr,
+ 			       u32 size);
+ void dw_pcie_setup(struct dw_pcie *pci);
++
++static inline void dw_pcie_writel_dbi(struct dw_pcie *pci, u32 reg, u32 val)
++{
++	__dw_pcie_writel_dbi(pci, pci->dbi_base, reg, val);
++}
++
++static inline u32 dw_pcie_readl_dbi(struct dw_pcie *pci, u32 reg)
++{
++	return  __dw_pcie_readl_dbi(pci, pci->dbi_base, reg);
++}
+ #endif /* _PCIE_DESIGNWARE_H */
 -- 
 2.19.1
 
