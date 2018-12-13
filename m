@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLAh-0005up-Ck
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:45 +0000
-Received: by mail-pf1-x443.google.com with SMTP id c73so625053pfe.13
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:25 -0800 (PST)
+ id 1gXLAl-0005zc-Li
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:49 +0000
+Received: by mail-pl1-x644.google.com with SMTP id u6so606720plm.8
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:29 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:11:12 -0800
-Message-Id: <20181213071144.31691-27-andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:11:16 -0800
+Message-Id: <20181213071144.31691-31-andrew.smirnov@gmail.com>
 In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,125 +23,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 26/58] PCI: designware: Swap order of dw_pcie_writel_rc()
- reg/val arguments
+Subject: [PATCH 30/58] PCI: dwc: designware: Get device pointer at the start
+ of dw_pcie_host_init()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit ad8802189426cf7b3a2ad0444f71981fb81312a8
+Port of a Linux commit 40f67fb2c384fe12741aa35010d62bfe8c98286c
 
-  Swap order of dw_pcie_writel_rc() arguments to match the "dev, pos, val"
-  order used by pci_write_config_word() and other drivers.  No functional
-  change intended.
+  No functional change. Get device pointer at the beginning of
+  dw_pcie_host_init() instead of getting it all over dw_pcie_host_init().
+  This is in preparation for splitting struct pcie_port into host and core
+  structures (once split pcie_port will not have device pointer).
 
+  Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 40 +++++++++++++++++++----------------
- drivers/pci/pcie-designware.h |  2 +-
- 2 files changed, 23 insertions(+), 19 deletions(-)
+ drivers/pci/pcie-designware.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index 95752d43e..ed3e4b750 100644
+index 816a70539..7ea48819b 100644
 --- a/drivers/pci/pcie-designware.c
 +++ b/drivers/pci/pcie-designware.c
-@@ -135,10 +135,10 @@ static inline u32 dw_pcie_readl_rc(struct pcie_port *pp, u32 reg)
- 	return readl(pp->dbi_base + reg);
- }
+@@ -186,7 +186,8 @@ static struct pci_ops dw_pcie_ops;
  
--static inline void dw_pcie_writel_rc(struct pcie_port *pp, u32 val, u32 reg)
-+static inline void dw_pcie_writel_rc(struct pcie_port *pp, u32 reg, u32 val)
+ int __init dw_pcie_host_init(struct pcie_port *pp)
  {
- 	if (pp->ops->writel_rc)
--		pp->ops->writel_rc(pp, val, reg);
-+		pp->ops->writel_rc(pp, reg, val);
- 	else
- 		writel(val, pp->dbi_base + reg);
- }
-@@ -168,16 +168,20 @@ static void dw_pcie_prog_outbound_atu(struct pcie_port *pp, int index,
- {
- 	u32 retries, val;
+-	struct device_node *np = pp->dev->device_node;
++	struct device_d *dev = pp->dev;
++	struct device_node *np = dev->device_node;
+ 	struct of_pci_range range;
+ 	struct of_pci_range_parser parser;
+ 	struct resource *cfg_res;
+@@ -200,7 +201,7 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
+ 	of_property_read_u32(np, "#address-cells", &na);
+ 	ns = of_n_size_cells(np);
  
--	dw_pcie_writel_rc(pp, PCIE_ATU_REGION_OUTBOUND | index,
--			  PCIE_ATU_VIEWPORT);
--	dw_pcie_writel_rc(pp, lower_32_bits(cpu_addr), PCIE_ATU_LOWER_BASE);
--	dw_pcie_writel_rc(pp, upper_32_bits(cpu_addr), PCIE_ATU_UPPER_BASE);
--	dw_pcie_writel_rc(pp, lower_32_bits(cpu_addr + size - 1),
--			  PCIE_ATU_LIMIT);
--	dw_pcie_writel_rc(pp, lower_32_bits(pci_addr), PCIE_ATU_LOWER_TARGET);
--	dw_pcie_writel_rc(pp, upper_32_bits(pci_addr), PCIE_ATU_UPPER_TARGET);
--	dw_pcie_writel_rc(pp, type, PCIE_ATU_CR1);
--	dw_pcie_writel_rc(pp, PCIE_ATU_ENABLE, PCIE_ATU_CR2);
-+	dw_pcie_writel_rc(pp, PCIE_ATU_VIEWPORT,
-+			  PCIE_ATU_REGION_OUTBOUND | index);
-+	dw_pcie_writel_rc(pp, PCIE_ATU_LOWER_BASE,
-+			  lower_32_bits(cpu_addr));
-+	dw_pcie_writel_rc(pp, PCIE_ATU_UPPER_BASE,
-+			  upper_32_bits(cpu_addr));
-+	dw_pcie_writel_rc(pp, PCIE_ATU_LIMIT,
-+			  lower_32_bits(cpu_addr + size - 1));
-+	dw_pcie_writel_rc(pp, PCIE_ATU_LOWER_TARGET,
-+			  lower_32_bits(pci_addr));
-+	dw_pcie_writel_rc(pp, PCIE_ATU_UPPER_TARGET,
-+			  upper_32_bits(pci_addr));
-+	dw_pcie_writel_rc(pp, PCIE_ATU_CR1, type);
-+	dw_pcie_writel_rc(pp, PCIE_ATU_CR2, PCIE_ATU_ENABLE);
- 
- 	/*
- 	 * Make sure ATU enable takes effect before any subsequent config
-@@ -531,7 +535,7 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
-                dev_err(pp->dev, "num-lanes %u: invalid value\n", pp->lanes);
-                return;
+-	cfg_res = dev_get_resource_by_name(pp->dev, IORESOURCE_MEM, "config");
++	cfg_res = dev_get_resource_by_name(dev, IORESOURCE_MEM, "config");
+ 	if (cfg_res) {
+ 		pp->cfg0_size = resource_size(cfg_res)/2;
+ 		pp->cfg1_size = resource_size(cfg_res)/2;
+@@ -213,11 +214,11 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
+ 		pp->cfg0_mod_base = of_read_number(addrp, ns);
+ 		pp->cfg1_mod_base = pp->cfg0_mod_base + pp->cfg0_size;
+ 	} else {
+-		dev_err(pp->dev, "missing *config* reg space\n");
++		dev_err(dev, "missing *config* reg space\n");
  	}
--	dw_pcie_writel_rc(pp, val, PCIE_PORT_LINK_CONTROL);
-+	dw_pcie_writel_rc(pp, PCIE_PORT_LINK_CONTROL, val);
  
- 	/* set link width speed control register */
- 	val = dw_pcie_readl_rc(pp, PCIE_LINK_WIDTH_SPEED_CONTROL);
-@@ -547,24 +551,24 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
- 		val |= PORT_LOGIC_LINK_WIDTH_4_LANES;
- 		break;
+ 	if (of_pci_range_parser_init(&parser, np)) {
+-		dev_err(pp->dev, "missing ranges property\n");
++		dev_err(dev, "missing ranges property\n");
+ 		return -EINVAL;
  	}
--	dw_pcie_writel_rc(pp, val, PCIE_LINK_WIDTH_SPEED_CONTROL);
-+	dw_pcie_writel_rc(pp, PCIE_LINK_WIDTH_SPEED_CONTROL, val);
  
- 	/* setup RC BARs */
--	dw_pcie_writel_rc(pp, 0x00000004, PCI_BASE_ADDRESS_0);
--	dw_pcie_writel_rc(pp, 0x00000000, PCI_BASE_ADDRESS_1);
-+	dw_pcie_writel_rc(pp, PCI_BASE_ADDRESS_0, 0x00000004);
-+	dw_pcie_writel_rc(pp, PCI_BASE_ADDRESS_1, 0x00000000);
+@@ -285,7 +286,7 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
+ 	if (pp->ops->host_init)
+ 		pp->ops->host_init(pp);
  
- 	/* setup bus numbers */
- 	val = dw_pcie_readl_rc(pp, PCI_PRIMARY_BUS);
- 	val &= 0xff000000;
- 	val |= 0x00010100;
--	dw_pcie_writel_rc(pp, val, PCI_PRIMARY_BUS);
-+	dw_pcie_writel_rc(pp, PCI_PRIMARY_BUS, val);
- 
- 	/* setup command register */
- 	val = dw_pcie_readl_rc(pp, PCI_COMMAND);
- 	val &= 0xffff0000;
- 	val |= PCI_COMMAND_IO | PCI_COMMAND_MEMORY |
- 		PCI_COMMAND_MASTER | PCI_COMMAND_SERR;
--	dw_pcie_writel_rc(pp, val, PCI_COMMAND);
-+	dw_pcie_writel_rc(pp, PCI_COMMAND, val);
- 
-        /*
-         * If the platform provides ->rd_other_conf, it means the platform
-diff --git a/drivers/pci/pcie-designware.h b/drivers/pci/pcie-designware.h
-index 9a3b251fc..525030542 100644
---- a/drivers/pci/pcie-designware.h
-+++ b/drivers/pci/pcie-designware.h
-@@ -47,7 +47,7 @@ struct pcie_port {
- 
- struct pcie_host_ops {
- 	u32 (*readl_rc)(struct pcie_port *pp, u32 reg);
--	void (*writel_rc)(struct pcie_port *pp, u32 val, u32 reg);
-+	void (*writel_rc)(struct pcie_port *pp, u32 reg, u32 val);
- 	int (*rd_own_conf)(struct pcie_port *pp, int where, int size, u32 *val);
- 	int (*wr_own_conf)(struct pcie_port *pp, int where, int size, u32 val);
- 	int (*rd_other_conf)(struct pcie_port *pp, struct pci_bus *bus,
+-	pp->pci.parent = pp->dev;
++	pp->pci.parent = dev;
+ 	pp->pci.pci_ops = &dw_pcie_ops;
+ 	pp->pci.set_busno = dw_pcie_set_local_bus_nr;
+ 	pp->pci.mem_resource = &pp->mem;
 -- 
 2.19.1
 
