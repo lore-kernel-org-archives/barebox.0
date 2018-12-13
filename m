@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLAc-0005x1-42
+ id 1gXLAf-0005tX-Tk
  for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:43 +0000
-Received: by mail-pf1-x444.google.com with SMTP id w73so631890pfk.10
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:27 -0800 (PST)
+Received: by mail-pg1-x542.google.com with SMTP id d72so601224pga.9
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:23 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:11:14 -0800
-Message-Id: <20181213071144.31691-29-andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:11:11 -0800
+Message-Id: <20181213071144.31691-26-andrew.smirnov@gmail.com>
 In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,178 +23,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 28/58] PCI: dwc: designware: Move register defines to
- designware header file
+Subject: [PATCH 25/58] PCI: designware: Simplify pcie_host_ops.readl_rc() and
+ .writel_rc() interfaces
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commmit b90dc392212d1153a12eea15cbc6eae352a3c989
+Port of a Linux commit 7e00dfd0fbbb2fc276592613f76ded0b9a139a04
 
-  No functional change. Move the register defines and other macros from
-  pcie-designware.c to pcie-designware.h. This is in preparation to split the
-  pcie-designware.c file into designware core file and host-specific file.
+  The struct pcie_host_ops.readl_rc() and .writel_rc() function pointers
+  allow a driver to override the default DesignWare register accessors.
 
-  While at that also fix a checkpatch warning.
+  Make the signature of the override functions the same as the default
+  accessors.  This makes the default dw_pcie_readl_rc() and the corresponding
+  override more structurally similar: both will compute the final register
+  address with "pp->dbi_base + reg".  Previously dw_pcie_readl_rc() computed
+  the address and passed it to the override.
 
-  Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+  No functional change intended.
+
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-  Reviewed-By: Joao Pinto <jpinto@synopsys.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c        |  1 -
- drivers/pci/pcie-designware.c | 57 -----------------------------------
- drivers/pci/pcie-designware.h | 57 +++++++++++++++++++++++++++++++++++
- 3 files changed, 57 insertions(+), 58 deletions(-)
+ drivers/pci/pcie-designware.c | 4 ++--
+ drivers/pci/pcie-designware.h | 5 ++---
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index 18965c7c3..c499f4c83 100644
---- a/drivers/pci/pci-imx6.c
-+++ b/drivers/pci/pci-imx6.c
-@@ -72,7 +72,6 @@ struct imx6_pcie {
- #define PCIE_PL_PFLR_LINK_STATE_MASK		(0x3f << 16)
- #define PCIE_PL_PFLR_FORCE_LINK			(1 << 15)
- #define PCIE_PHY_DEBUG_R0 (PL_OFFSET + 0x28)
--#define PCIE_PHY_DEBUG_R1 (PL_OFFSET + 0x2c)
- #define PCIE_PHY_DEBUG_R1_XMLH_LINK_IN_TRAINING	(1 << 29)
- #define PCIE_PHY_DEBUG_R1_XMLH_LINK_UP		(1 << 4)
- 
 diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index 4f6a4e7e7..c0a1c0b73 100644
+index 509fac718..95752d43e 100644
 --- a/drivers/pci/pcie-designware.c
 +++ b/drivers/pci/pcie-designware.c
-@@ -30,63 +30,6 @@
+@@ -130,7 +130,7 @@ int dw_pcie_cfg_write(void __iomem *addr, int size, u32 val)
+ static inline u32 dw_pcie_readl_rc(struct pcie_port *pp, u32 reg)
+ {
+ 	if (pp->ops->readl_rc)
+-		return pp->ops->readl_rc(pp, pp->dbi_base + reg);
++		return pp->ops->readl_rc(pp, reg);
  
- #include "pcie-designware.h"
- 
--/* Parameters for the waiting for link up routine */
--#define LINK_WAIT_MAX_RETRIES		10
--#define LINK_WAIT_USLEEP_MAX		100000
--
--/* Parameters for the waiting for iATU enabled routine */
--#define LINK_WAIT_MAX_IATU_RETRIES     5
--#define LINK_WAIT_IATU_MAX             10000
--
--/* Synopsis specific PCIE configuration registers */
--#define PCIE_PORT_LINK_CONTROL		0x710
--#define PORT_LINK_MODE_MASK		(0x3f << 16)
--#define PORT_LINK_MODE_1_LANES		(0x1 << 16)
--#define PORT_LINK_MODE_2_LANES		(0x3 << 16)
--#define PORT_LINK_MODE_4_LANES		(0x7 << 16)
--
--#define PCIE_LINK_WIDTH_SPEED_CONTROL	0x80C
--#define PORT_LOGIC_SPEED_CHANGE		(0x1 << 17)
--#define PORT_LOGIC_LINK_WIDTH_MASK	(0x1f << 8)
--#define PORT_LOGIC_LINK_WIDTH_1_LANES	(0x1 << 8)
--#define PORT_LOGIC_LINK_WIDTH_2_LANES	(0x2 << 8)
--#define PORT_LOGIC_LINK_WIDTH_4_LANES	(0x4 << 8)
--
--#define PCIE_MSI_ADDR_LO		0x820
--#define PCIE_MSI_ADDR_HI		0x824
--#define PCIE_MSI_INTR0_ENABLE		0x828
--#define PCIE_MSI_INTR0_MASK		0x82C
--#define PCIE_MSI_INTR0_STATUS		0x830
--
--#define PCIE_ATU_VIEWPORT		0x900
--#define PCIE_ATU_REGION_INBOUND		(0x1 << 31)
--#define PCIE_ATU_REGION_OUTBOUND	(0x0 << 31)
--#define PCIE_ATU_REGION_INDEX2		(0x2 << 0)
--#define PCIE_ATU_REGION_INDEX1		(0x1 << 0)
--#define PCIE_ATU_REGION_INDEX0		(0x0 << 0)
--#define PCIE_ATU_CR1			0x904
--#define PCIE_ATU_TYPE_MEM		(0x0 << 0)
--#define PCIE_ATU_TYPE_IO		(0x2 << 0)
--#define PCIE_ATU_TYPE_CFG0		(0x4 << 0)
--#define PCIE_ATU_TYPE_CFG1		(0x5 << 0)
--#define PCIE_ATU_CR2			0x908
--#define PCIE_ATU_ENABLE			(0x1 << 31)
--#define PCIE_ATU_BAR_MODE_ENABLE	(0x1 << 30)
--#define PCIE_ATU_LOWER_BASE		0x90C
--#define PCIE_ATU_UPPER_BASE		0x910
--#define PCIE_ATU_LIMIT			0x914
--#define PCIE_ATU_LOWER_TARGET		0x918
--#define PCIE_ATU_BUS(x)			(((x) & 0xff) << 24)
--#define PCIE_ATU_DEV(x)			(((x) & 0x1f) << 19)
--#define PCIE_ATU_FUNC(x)		(((x) & 0x7) << 16)
--#define PCIE_ATU_UPPER_TARGET		0x91C
--
--/* PCIe Port Logic registers */
--#define PLR_OFFSET                     0x700
--#define PCIE_PHY_DEBUG_R1              (PLR_OFFSET + 0x2c)
--#define PCIE_PHY_DEBUG_R1_LINK_UP      (0x1 << 4)
--#define PCIE_PHY_DEBUG_R1_LINK_IN_TRAINING     (0x1 << 29)
--
- static unsigned long global_io_offset;
- 
- int dw_pcie_cfg_read(void __iomem *addr, int size, u32 *val)
+ 	return readl(pp->dbi_base + reg);
+ }
+@@ -138,7 +138,7 @@ static inline u32 dw_pcie_readl_rc(struct pcie_port *pp, u32 reg)
+ static inline void dw_pcie_writel_rc(struct pcie_port *pp, u32 val, u32 reg)
+ {
+ 	if (pp->ops->writel_rc)
+-		pp->ops->writel_rc(pp, val, pp->dbi_base + reg);
++		pp->ops->writel_rc(pp, val, reg);
+ 	else
+ 		writel(val, pp->dbi_base + reg);
+ }
 diff --git a/drivers/pci/pcie-designware.h b/drivers/pci/pcie-designware.h
-index 8313d6fdc..a18f322c1 100644
+index 295c05f2b..9a3b251fc 100644
 --- a/drivers/pci/pcie-designware.h
 +++ b/drivers/pci/pcie-designware.h
-@@ -14,6 +14,63 @@
- #ifndef _PCIE_DESIGNWARE_H
- #define _PCIE_DESIGNWARE_H
+@@ -46,9 +46,8 @@ struct pcie_port {
+ };
  
-+/* Parameters for the waiting for link up routine */
-+#define LINK_WAIT_MAX_RETRIES		10
-+#define LINK_WAIT_USLEEP_MAX		100000
-+
-+/* Parameters for the waiting for iATU enabled routine */
-+#define LINK_WAIT_MAX_IATU_RETRIES     5
-+#define LINK_WAIT_IATU_MAX             10000
-+
-+/* Synopsis specific PCIE configuration registers */
-+#define PCIE_PORT_LINK_CONTROL		0x710
-+#define PORT_LINK_MODE_MASK		(0x3f << 16)
-+#define PORT_LINK_MODE_1_LANES		(0x1 << 16)
-+#define PORT_LINK_MODE_2_LANES		(0x3 << 16)
-+#define PORT_LINK_MODE_4_LANES		(0x7 << 16)
-+
-+#define PCIE_LINK_WIDTH_SPEED_CONTROL	0x80C
-+#define PORT_LOGIC_SPEED_CHANGE		(0x1 << 17)
-+#define PORT_LOGIC_LINK_WIDTH_MASK	(0x1f << 8)
-+#define PORT_LOGIC_LINK_WIDTH_1_LANES	(0x1 << 8)
-+#define PORT_LOGIC_LINK_WIDTH_2_LANES	(0x2 << 8)
-+#define PORT_LOGIC_LINK_WIDTH_4_LANES	(0x4 << 8)
-+
-+#define PCIE_MSI_ADDR_LO		0x820
-+#define PCIE_MSI_ADDR_HI		0x824
-+#define PCIE_MSI_INTR0_ENABLE		0x828
-+#define PCIE_MSI_INTR0_MASK		0x82C
-+#define PCIE_MSI_INTR0_STATUS		0x830
-+
-+#define PCIE_ATU_VIEWPORT		0x900
-+#define PCIE_ATU_REGION_INBOUND		(0x1 << 31)
-+#define PCIE_ATU_REGION_OUTBOUND	(0x0 << 31)
-+#define PCIE_ATU_REGION_INDEX2		(0x2 << 0)
-+#define PCIE_ATU_REGION_INDEX1		(0x1 << 0)
-+#define PCIE_ATU_REGION_INDEX0		(0x0 << 0)
-+#define PCIE_ATU_CR1			0x904
-+#define PCIE_ATU_TYPE_MEM		(0x0 << 0)
-+#define PCIE_ATU_TYPE_IO		(0x2 << 0)
-+#define PCIE_ATU_TYPE_CFG0		(0x4 << 0)
-+#define PCIE_ATU_TYPE_CFG1		(0x5 << 0)
-+#define PCIE_ATU_CR2			0x908
-+#define PCIE_ATU_ENABLE			(0x1 << 31)
-+#define PCIE_ATU_BAR_MODE_ENABLE	(0x1 << 30)
-+#define PCIE_ATU_LOWER_BASE		0x90C
-+#define PCIE_ATU_UPPER_BASE		0x910
-+#define PCIE_ATU_LIMIT			0x914
-+#define PCIE_ATU_LOWER_TARGET		0x918
-+#define PCIE_ATU_BUS(x)			(((x) & 0xff) << 24)
-+#define PCIE_ATU_DEV(x)			(((x) & 0x1f) << 19)
-+#define PCIE_ATU_FUNC(x)		(((x) & 0x7) << 16)
-+#define PCIE_ATU_UPPER_TARGET		0x91C
-+
-+/* PCIe Port Logic registers */
-+#define PLR_OFFSET                     0x700
-+#define PCIE_PHY_DEBUG_R1              (PLR_OFFSET + 0x2c)
-+#define PCIE_PHY_DEBUG_R1_LINK_UP      (0x1 << 4)
-+#define PCIE_PHY_DEBUG_R1_LINK_IN_TRAINING     (0x1 << 29)
-+
- struct pcie_port {
- 	struct device_d		*dev;
- 	u8			root_bus_nr;
+ struct pcie_host_ops {
+-	u32 (*readl_rc)(struct pcie_port *pp, void __iomem *dbi_base);
+-	void (*writel_rc)(struct pcie_port *pp,
+-			u32 val, void __iomem *dbi_base);
++	u32 (*readl_rc)(struct pcie_port *pp, u32 reg);
++	void (*writel_rc)(struct pcie_port *pp, u32 val, u32 reg);
+ 	int (*rd_own_conf)(struct pcie_port *pp, int where, int size, u32 *val);
+ 	int (*wr_own_conf)(struct pcie_port *pp, int where, int size, u32 val);
+ 	int (*rd_other_conf)(struct pcie_port *pp, struct pci_bus *bus,
 -- 
 2.19.1
 
