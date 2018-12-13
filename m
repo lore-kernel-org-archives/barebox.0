@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLAL-0005hC-Mo
+ id 1gXLAK-0005YJ-KO
  for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:19 +0000
-Received: by mail-pl1-x644.google.com with SMTP id b5so617851plr.4
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:12 -0800 (PST)
+Received: by mail-pg1-x543.google.com with SMTP id n2so616343pgm.3
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:02 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:11:02 -0800
-Message-Id: <20181213071144.31691-17-andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:10:54 -0800
+Message-Id: <20181213071144.31691-9-andrew.smirnov@gmail.com>
 In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,102 +23,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 16/58] PCI: designware: Move Root Complex setup code to
- dw_pcie_setup_rc()
+Subject: [PATCH 08/58] PCI: designware: Make "num-lanes" an optional DT
+ property
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 7e57fd1444bf8f4ba9179f826ed6817c56b801d4
+Port of a Linux commit 907fce0902539ecde609e485eb2ecd7119a7a623
 
-  dw_pcie_host_init() looks up host bridge resources, ioremaps them, creates
-  IRQ domains, and enumerates devices below the bridge.  dw_pcie_setup_rc()
-  programs the Root Complex registers.  The Root Complex may lose power
-  during suspend-to-RAM, and when we resume, we want to redo the latter but
-  not the former.
+  Currently "num-lanes" is read in dw_pcie_host_init(), but it is only used
+  if we call dw_pcie_setup_rc() while bringing up the link.  If the link has
+  already been brought up by firmware, we need not call dw_pcie_setup_rc(),
+  and "num-lanes" is unnecessary.
 
-  Move some Root Complex programming from dw_pcie_host_init() to
-  dw_pcie_setup_rc() where it belongs.  DesignWare-based drivers can call
-  dw_pcie_setup_rc() in their resume paths.
+  Only complain about "num-lanes" if we actually need it and we didn't find a
+  valid value.
 
-  [Niklas Cassel <niklas.cassel@axis.com>:  This change moves outbound ATU
-  programming, which uses pp->mem_base, to dw_pcie_setup_rc().  Apply the
-  dra7xx pp->mem_base update before calling dw_pcie_setup_rc().]
-
-  [bhelgaas: changelog, fold in dra7xx fix from Niklas]
-  Signed-off-by: Jisheng Zhang <jszhang@marvell.com>
+  [bhelgaas: changelog]
+  Signed-off-by: Gabriele Paoloni <gabriele.paoloni@huawei.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-  Acked-by: Pratyush Anand <pratyush.anand@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 40 +++++++++++++++++------------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ drivers/pci/pcie-designware.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index d1c2635d6..5e824cedc 100644
+index f47e5eb1e..977548f01 100644
 --- a/drivers/pci/pcie-designware.c
 +++ b/drivers/pci/pcie-designware.c
-@@ -225,7 +225,7 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
- 	struct of_pci_range range;
- 	struct of_pci_range_parser parser;
+@@ -203,7 +203,7 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
  	struct resource *cfg_res;
--	u32 val, na, ns;
-+	u32 na, ns;
+ 	u32 val, na, ns;
  	const __be32 *addrp;
- 	int index, ret;
+-	int index;
++	int index, ret;
  
-@@ -316,25 +316,6 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
+ 	/* Find the address cell size and the number of cells in order to get
+ 	 * the untranslated address.
+@@ -285,10 +285,9 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
+ 	if (!pp->va_cfg1_base)
+ 		pp->va_cfg1_base = (void __force *)(u32)pp->cfg1_base;
+ 
+-	if (of_property_read_u32(np, "num-lanes", &pp->lanes)) {
+-		dev_err(pp->dev, "Failed to parse the number of lanes\n");
+-		return -EINVAL;
+-	}
++	ret = of_property_read_u32(np, "num-lanes", &pp->lanes);
++	if (ret)
++		pp->lanes = 0;
+ 
  	if (pp->ops->host_init)
  		pp->ops->host_init(pp);
+@@ -496,6 +495,9 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
+ 	case 4:
+ 		val |= PORT_LINK_MODE_4_LANES;
+ 		break;
++       default:
++               dev_err(pp->dev, "num-lanes %u: invalid value\n", pp->lanes);
++               return;
+ 	}
+ 	dw_pcie_writel_rc(pp, val, PCIE_PORT_LINK_CONTROL);
  
--       /*
--        * If the platform provides ->rd_other_conf, it means the platform
--        * uses its own address translation component rather than ATU, so
--        * we should not program the ATU here.
--        */
--	if (!pp->ops->rd_other_conf)
--		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
--					  PCIE_ATU_TYPE_MEM, pp->mem_mod_base,
--					  pp->mem_bus_addr, pp->mem_size);
--
--	dw_pcie_wr_own_conf(pp, PCI_BASE_ADDRESS_0, 4, 0);
--
--	/* program correct class for RC */
--	dw_pcie_wr_own_conf(pp, PCI_CLASS_DEVICE, 2, PCI_CLASS_BRIDGE_PCI);
--
--	dw_pcie_rd_own_conf(pp, PCIE_LINK_WIDTH_SPEED_CONTROL, 4, &val);
--	val |= PORT_LOGIC_SPEED_CHANGE;
--	dw_pcie_wr_own_conf(pp, PCIE_LINK_WIDTH_SPEED_CONTROL, 4, val);
--
- 	pp->pci.parent = pp->dev;
- 	pp->pci.pci_ops = &dw_pcie_ops;
- 	pp->pci.set_busno = dw_pcie_set_local_bus_nr;
-@@ -568,6 +549,25 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
- 	val |= PCI_COMMAND_IO | PCI_COMMAND_MEMORY |
- 		PCI_COMMAND_MASTER | PCI_COMMAND_SERR;
- 	dw_pcie_writel_rc(pp, val, PCI_COMMAND);
-+
-+       /*
-+        * If the platform provides ->rd_other_conf, it means the platform
-+        * uses its own address translation component rather than ATU, so
-+        * we should not program the ATU here.
-+        */
-+	if (!pp->ops->rd_other_conf)
-+		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
-+					  PCIE_ATU_TYPE_MEM, pp->mem_mod_base,
-+					  pp->mem_bus_addr, pp->mem_size);
-+
-+	dw_pcie_wr_own_conf(pp, PCI_BASE_ADDRESS_0, 4, 0);
-+
-+	/* program correct class for RC */
-+	dw_pcie_wr_own_conf(pp, PCI_CLASS_DEVICE, 2, PCI_CLASS_BRIDGE_PCI);
-+
-+	dw_pcie_rd_own_conf(pp, PCIE_LINK_WIDTH_SPEED_CONTROL, 4, &val);
-+	val |= PORT_LOGIC_SPEED_CHANGE;
-+	dw_pcie_wr_own_conf(pp, PCIE_LINK_WIDTH_SPEED_CONTROL, 4, val);
- }
- 
- MODULE_AUTHOR("Jingoo Han <jg1.han@samsung.com>");
 -- 
 2.19.1
 
