@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp35.i.mail.ru ([94.100.177.95])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXM7Z-0001BY-Rc
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 08:13:27 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Thu, 13 Dec 2018 11:13:06 +0300
-Message-Id: <20181213081306.9045-1-shc_work@mail.ru>
+ id 1gXMs1-00087K-OS
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 09:01:31 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 13 Dec 2018 10:01:12 +0100
+Message-Id: <20181213090112.6131-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,20 +15,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Fix email address
-To: barebox@lists.infradead.org
+Subject: [PATCH] commands: miitool: remove unsupported options a and b
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Andreas Schmidt <andreas.schmidt@wago.com>
 
-U2lnbmVkLW9mZi1ieTogQWxleGFuZGVyIFNoaXlhbiA8c2hjX3dvcmtAbWFpbC5ydT4KCmRpZmYg
-LS1naXQgYS8ubWFpbG1hcCBiLy5tYWlsbWFwCmluZGV4IDgyNjMxYjI4NC4uZDA0ZjI4YmVkIDEw
-MDY0NAotLS0gYS8ubWFpbG1hcAorKysgYi8ubWFpbG1hcApAQCAtOCw3ICs4LDcgQEAKICMgIHNj
-cmlwdHMvbWFpbG1hcHBlciA+IHRtcDsgbXYgdG1wIC5tYWlsbWFwCiAjCiAKLUFsZXhhbmRlciBT
-aGl5YW4gPHNoY0BtaWxhcy5zcGIucnU+CitBbGV4YW5kZXIgU2hpeWFuIDxzaGNfd29ya0BtYWls
-LnJ1PgogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+CiBGcmFuY2sgSnVsbGllbiA8ZnJh
-bmNrLmp1bGxpZW5AZ21haWwuY29tPgogSmluIFpoZW5neGlvbmcgPEphc29uLkppbkBmcmVlc2Nh
-bGUuY29tPgotLSAKMi4xMy4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
-b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+From: Andreas Schmidt <andreas.schmidt@wago.com>
+
+Signed-off-by: Andreas Schmidt <andreas.schmidt@wago.com>
+---
+ commands/miitool.c | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/commands/miitool.c b/commands/miitool.c
+index acf61421b8..4ea6fda34d 100644
+--- a/commands/miitool.c
++++ b/commands/miitool.c
+@@ -281,12 +281,6 @@ static int do_miitool(int argc, char *argv[])
+ 
+ 	while ((opt = getopt(argc, argv, "vs:r:")) > 0) {
+ 		switch (opt) {
+-		case 'a':
+-			addr = simple_strtol(optarg, NULL, 0);
+-			break;
+-		case 'b':
+-			bus = simple_strtoul(optarg, NULL, 0);
+-			break;
+ 		case 's':
+ 			action = MIITOOL_SHOW;
+ 			phydevname = xstrdup(optarg);
+-- 
+2.19.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
