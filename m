@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLAa-0005nM-9j
+ id 1gXLAc-0005ps-43
  for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:34 +0000
-Received: by mail-pg1-x543.google.com with SMTP id w7so591754pgp.13
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:18 -0800 (PST)
+Received: by mail-pf1-x444.google.com with SMTP id 64so632931pfr.9
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:20 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:11:06 -0800
-Message-Id: <20181213071144.31691-21-andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:11:08 -0800
+Message-Id: <20181213071144.31691-23-andrew.smirnov@gmail.com>
 In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,64 +23,108 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 20/58] PCI: designware: Wait for iATU enable
+Subject: [PATCH 22/58] PCI: designware: Keep viewport fixed for IO transaction
+ if num_viewport > 2
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit d8bbeb39fbf3ff06b6adae9d336f44bee4e3f3ec
+Port of a Linux commit fe48cb8538421fbd16ecf8bf95829faf8d8c001e
 
-  Add a loop with timeout to make sure the iATU is really enabled before
-  subsequent config and I/O accesses.
+  Most of the platforms have 3 or more viewports.  For such platforms, We do
+  not need to share viewports between IO and CFG.  Assign viewport 2 to IO
+  transactions in such cases.
 
-  [bhelgaas: split to separate patch, use dev_err() instead of dev_dbg()]
-  Signed-off-by: Joao Pinto <jpinto@synopsys.com>
+  Tested-by: Dong Bo <dongbo4@huawei.com>
+  Signed-off-by: Pratyush Anand <pratyush.anand@gmail.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+  Acked-by: Rob Herring <robh@kernel.org>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/pci/pcie-designware.c | 26 +++++++++++++++++++-------
+ drivers/pci/pcie-designware.h |  1 +
+ 2 files changed, 20 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index 450885f07..b56c466fd 100644
+index 6de9fa7e3..cf1b3032e 100644
 --- a/drivers/pci/pcie-designware.c
 +++ b/drivers/pci/pcie-designware.c
-@@ -34,6 +34,10 @@
- #define LINK_WAIT_MAX_RETRIES		10
- #define LINK_WAIT_USLEEP_MAX		100000
+@@ -61,6 +61,7 @@
+ #define PCIE_ATU_VIEWPORT		0x900
+ #define PCIE_ATU_REGION_INBOUND		(0x1 << 31)
+ #define PCIE_ATU_REGION_OUTBOUND	(0x0 << 31)
++#define PCIE_ATU_REGION_INDEX2		(0x2 << 0)
+ #define PCIE_ATU_REGION_INDEX1		(0x1 << 0)
+ #define PCIE_ATU_REGION_INDEX0		(0x0 << 0)
+ #define PCIE_ATU_CR1			0x904
+@@ -330,6 +331,10 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
+ 	if (ret)
+ 		pp->lanes = 0;
  
-+/* Parameters for the waiting for iATU enabled routine */
-+#define LINK_WAIT_MAX_IATU_RETRIES     5
-+#define LINK_WAIT_IATU_MAX             10000
++	ret = of_property_read_u32(np, "num-viewport", &pp->num_viewport);
++	if (ret)
++		pp->num_viewport = 2;
 +
- /* Synopsis specific PCIE configuration registers */
- #define PCIE_PORT_LINK_CONTROL		0x710
- #define PORT_LINK_MODE_MASK		(0x3f << 16)
-@@ -160,7 +164,7 @@ static int dw_pcie_wr_own_conf(struct pcie_port *pp, int where, int size,
- static void dw_pcie_prog_outbound_atu(struct pcie_port *pp, int index,
-                int type, u64 cpu_addr, u64 pci_addr, u32 size)
- {
--	u32 val;
-+	u32 retries, val;
+ 	if (pp->ops->host_init)
+ 		pp->ops->host_init(pp);
  
- 	dw_pcie_writel_rc(pp, PCIE_ATU_REGION_OUTBOUND | index,
- 			  PCIE_ATU_VIEWPORT);
-@@ -177,7 +181,14 @@ static void dw_pcie_prog_outbound_atu(struct pcie_port *pp, int index,
- 	 * Make sure ATU enable takes effect before any subsequent config
- 	 * and I/O accesses.
- 	 */
--	dw_pcie_readl_rc(pp, PCIE_ATU_CR2);
-+	for (retries = 0; retries < LINK_WAIT_MAX_IATU_RETRIES; retries++) {
-+		val = dw_pcie_readl_rc(pp, PCIE_ATU_CR2);
-+		if (val == PCIE_ATU_ENABLE)
-+			return;
-+
-+		udelay(LINK_WAIT_IATU_MAX);
-+	}
-+	dev_err(pp->dev, "iATU is not being enabled\n");
+@@ -376,9 +381,10 @@ static int dw_pcie_rd_other_conf(struct pcie_port *pp, struct pci_bus *bus,
+ 				  type, cpu_addr,
+ 				  busdev, cfg_size);
+ 	ret = dw_pcie_cfg_read(va_cfg_base + where, size, val);
+-	dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
+-				  PCIE_ATU_TYPE_IO, pp->io_mod_base,
+-				  pp->io_bus_addr, pp->io_size);
++	if (pp->num_viewport <= 2)
++		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
++					  PCIE_ATU_TYPE_IO, pp->io_mod_base,
++					  pp->io_bus_addr, pp->io_size);
+ 
+ 	return ret;
  }
+@@ -414,9 +420,10 @@ static int dw_pcie_wr_other_conf(struct pcie_port *pp, struct pci_bus *bus,
+ 				  type, cpu_addr,
+ 				  busdev, cfg_size);
+ 	ret = dw_pcie_cfg_write(va_cfg_base + where, size, val);
+-	dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
+-				  PCIE_ATU_TYPE_IO, pp->io_mod_base,
+-				  pp->io_bus_addr, pp->io_size);
++	if (pp->num_viewport <= 2)
++		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
++					  PCIE_ATU_TYPE_IO, pp->io_mod_base,
++					  pp->io_bus_addr, pp->io_size);
  
- int dw_pcie_wait_for_link(struct pcie_port *pp)
+ 	return ret;
+ }
+@@ -564,10 +571,15 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
+         * uses its own address translation component rather than ATU, so
+         * we should not program the ATU here.
+         */
+-	if (!pp->ops->rd_other_conf)
++	if (!pp->ops->rd_other_conf) {
+ 		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
+ 					  PCIE_ATU_TYPE_MEM, pp->mem_mod_base,
+ 					  pp->mem_bus_addr, pp->mem_size);
++		if (pp->num_viewport <= 2)
++			dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX2,
++						  PCIE_ATU_TYPE_IO, pp->io_base,
++						  pp->io_bus_addr, pp->io_size);
++	}
+ 
+ 	dw_pcie_wr_own_conf(pp, PCI_BASE_ADDRESS_0, 4, 0);
+ 
+diff --git a/drivers/pci/pcie-designware.h b/drivers/pci/pcie-designware.h
+index 0d777ce00..295c05f2b 100644
+--- a/drivers/pci/pcie-designware.h
++++ b/drivers/pci/pcie-designware.h
+@@ -40,6 +40,7 @@ struct pcie_port {
+ 	struct resource		busn;
+ 	int			irq;
+ 	u32			lanes;
++	u32			num_viewport;
+ 	struct pcie_host_ops	*ops;
+ 	struct pci_controller	pci;
+ };
 -- 
 2.19.1
 
