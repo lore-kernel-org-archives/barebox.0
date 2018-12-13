@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLAp-00063t-Bg
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:13:02 +0000
-Received: by mail-pl1-x641.google.com with SMTP id t13so594730ply.13
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:33 -0800 (PST)
+ id 1gXLAt-0006Hc-KU
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:13:08 +0000
+Received: by mail-pg1-x543.google.com with SMTP id t13so597870pgr.11
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:46 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:11:19 -0800
-Message-Id: <20181213071144.31691-34-andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:11:30 -0800
+Message-Id: <20181213071144.31691-45-andrew.smirnov@gmail.com>
 In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,169 +23,96 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 33/58] PCI: imx6: Pass struct imx6_pcie to PHY accessors
+Subject: [PATCH 44/58] PCI: dwc: designware: Parse "num-lanes" property in
+ dw_pcie_setup_rc()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 8bad7f2fc3006d1752c426343ca77f1fbe61cf00
+Port of a Linux commit 5f334db665173facf2213854408bb5fa2445d0b3
 
-  Pass the struct imx6_pcie pointer, not dbi_base address, to PHY accessors.
-  This enables future simplifications.  No functional change intended.
+  The "num-lanes" DT property is parsed in dw_pcie_host_init(). However
+  num-lanes is applicable to both root complex mode and endpoint mode. As a
+  first step, move the parsing of this property outside dw_pcie_host_init().
+  This is in preparation for splitting pcie-designware.c to pcie-designware.c
+  and pcie-designware-host.c
 
+  Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c | 41 +++++++++++++++++++++++------------------
- 1 file changed, 23 insertions(+), 18 deletions(-)
+ drivers/pci/pcie-designware.c | 18 +++++++++++-------
+ drivers/pci/pcie-designware.h |  1 -
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index a3658844c..8b78f3ec1 100644
---- a/drivers/pci/pci-imx6.c
-+++ b/drivers/pci/pci-imx6.c
-@@ -94,8 +94,9 @@ struct imx6_pcie {
- #define PHY_RX_OVRD_IN_LO_RX_DATA_EN (1 << 5)
- #define PHY_RX_OVRD_IN_LO_RX_PLL_EN (1 << 3)
+diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
+index 0abca9db3..bffbc83bc 100644
+--- a/drivers/pci/pcie-designware.c
++++ b/drivers/pci/pcie-designware.c
+@@ -283,10 +283,6 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
+ 	if (!pp->va_cfg1_base)
+ 		pp->va_cfg1_base = (void __force *)(u32)pp->cfg1_base;
  
--static int pcie_phy_poll_ack(void __iomem *dbi_base, int exp_val)
-+static int pcie_phy_poll_ack(struct imx6_pcie *imx6_pcie, int exp_val)
+-	ret = of_property_read_u32(np, "num-lanes", &pci->lanes);
+-	if (ret)
+-		pci->lanes = 0;
+-
+ 	ret = of_property_read_u32(np, "num-viewport", &pci->num_viewport);
+ 	if (ret)
+ 		pci->num_viewport = 2;
+@@ -472,13 +468,21 @@ static struct pci_ops dw_pcie_ops = {
+ 
+ void dw_pcie_setup_rc(struct pcie_port *pp)
  {
-+	void __iomem *dbi_base = imx6_pcie->pp.dbi_base;
++	int ret;
++	u32 lanes;
  	u32 val;
- 	u32 max_iterations = 10;
- 	u32 wait_counter = 0;
-@@ -114,8 +115,9 @@ static int pcie_phy_poll_ack(void __iomem *dbi_base, int exp_val)
- 	return -ETIMEDOUT;
- }
+ 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
++	struct device_d *dev = pci->dev;
++	struct device_node *np = dev->device_node;
++
++	ret = of_property_read_u32(np, "num-lanes", &lanes);
++	if (ret)
++		lanes = 0;
  
--static int pcie_phy_wait_ack(void __iomem *dbi_base, int addr)
-+static int pcie_phy_wait_ack(struct imx6_pcie *imx6_pcie, int addr)
- {
-+	void __iomem *dbi_base = imx6_pcie->pp.dbi_base;
- 	u32 val;
- 	int ret;
- 
-@@ -125,23 +127,24 @@ static int pcie_phy_wait_ack(void __iomem *dbi_base, int addr)
- 	val |= (0x1 << PCIE_PHY_CTRL_CAP_ADR_LOC);
- 	writel(val, dbi_base + PCIE_PHY_CTRL);
- 
--	ret = pcie_phy_poll_ack(dbi_base, 1);
-+	ret = pcie_phy_poll_ack(imx6_pcie, 1);
- 	if (ret)
- 		return ret;
- 
- 	val = addr << PCIE_PHY_CTRL_DATA_LOC;
- 	writel(val, dbi_base + PCIE_PHY_CTRL);
- 
--	return pcie_phy_poll_ack(dbi_base, 0);
-+	return pcie_phy_poll_ack(imx6_pcie, 0);
- }
- 
- /* Read from the 16-bit PCIe PHY control registers (not memory-mapped) */
--static int pcie_phy_read(void __iomem *dbi_base, int addr , int *data)
-+static int pcie_phy_read(struct imx6_pcie *imx6_pcie, int addr , int *data)
- {
-+	void __iomem *dbi_base = imx6_pcie->pp.dbi_base;
- 	u32 val, phy_ctl;
- 	int ret;
- 
--	ret = pcie_phy_wait_ack(dbi_base, addr);
-+	ret = pcie_phy_wait_ack(imx6_pcie, addr);
- 	if (ret)
- 		return ret;
- 
-@@ -149,7 +152,7 @@ static int pcie_phy_read(void __iomem *dbi_base, int addr , int *data)
- 	phy_ctl = 0x1 << PCIE_PHY_CTRL_RD_LOC;
- 	writel(phy_ctl, dbi_base + PCIE_PHY_CTRL);
- 
--	ret = pcie_phy_poll_ack(dbi_base, 1);
-+	ret = pcie_phy_poll_ack(imx6_pcie, 1);
- 	if (ret)
- 		return ret;
- 
-@@ -159,17 +162,18 @@ static int pcie_phy_read(void __iomem *dbi_base, int addr , int *data)
- 	/* deassert Read signal */
- 	writel(0x00, dbi_base + PCIE_PHY_CTRL);
- 
--	return pcie_phy_poll_ack(dbi_base, 0);
-+	return pcie_phy_poll_ack(imx6_pcie, 0);
- }
- 
--static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
-+static int pcie_phy_write(struct imx6_pcie *imx6_pcie, int addr, int data)
- {
-+	void __iomem *dbi_base = imx6_pcie->pp.dbi_base;
- 	u32 var;
- 	int ret;
- 
- 	/* write addr */
- 	/* cap addr */
--	ret = pcie_phy_wait_ack(dbi_base, addr);
-+	ret = pcie_phy_wait_ack(imx6_pcie, addr);
- 	if (ret)
- 		return ret;
- 
-@@ -180,7 +184,7 @@ static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
- 	var |= (0x1 << PCIE_PHY_CTRL_CAP_DAT_LOC);
- 	writel(var, dbi_base + PCIE_PHY_CTRL);
- 
--	ret = pcie_phy_poll_ack(dbi_base, 1);
-+	ret = pcie_phy_poll_ack(imx6_pcie, 1);
- 	if (ret)
- 		return ret;
- 
-@@ -189,7 +193,7 @@ static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
- 	writel(var, dbi_base + PCIE_PHY_CTRL);
- 
- 	/* wait for ack de-assertion */
--	ret = pcie_phy_poll_ack(dbi_base, 0);
-+	ret = pcie_phy_poll_ack(imx6_pcie, 0);
- 	if (ret)
- 		return ret;
- 
-@@ -198,7 +202,7 @@ static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
- 	writel(var, dbi_base + PCIE_PHY_CTRL);
- 
- 	/* wait for ack */
--	ret = pcie_phy_poll_ack(dbi_base, 1);
-+	ret = pcie_phy_poll_ack(imx6_pcie, 1);
- 	if (ret)
- 		return ret;
- 
-@@ -207,7 +211,7 @@ static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
- 	writel(var, dbi_base + PCIE_PHY_CTRL);
- 
- 	/* wait for ack de-assertion */
--	ret = pcie_phy_poll_ack(dbi_base, 0);
-+	ret = pcie_phy_poll_ack(imx6_pcie, 0);
- 	if (ret)
- 		return ret;
- 
-@@ -218,19 +222,20 @@ static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
- 
- static void imx6_pcie_reset_phy(struct pcie_port *pp)
- {
-+	struct imx6_pcie *imx6_pcie = to_imx6_pcie(pp);
- 	uint32_t temp;
- 
--	pcie_phy_read(pp->dbi_base, PHY_RX_OVRD_IN_LO, &temp);
-+	pcie_phy_read(imx6_pcie, PHY_RX_OVRD_IN_LO, &temp);
- 	temp |= (PHY_RX_OVRD_IN_LO_RX_DATA_EN |
- 		 PHY_RX_OVRD_IN_LO_RX_PLL_EN);
--	pcie_phy_write(pp->dbi_base, PHY_RX_OVRD_IN_LO, temp);
-+	pcie_phy_write(imx6_pcie, PHY_RX_OVRD_IN_LO, temp);
- 
- 	udelay(2000);
- 
--	pcie_phy_read(pp->dbi_base, PHY_RX_OVRD_IN_LO, &temp);
-+	pcie_phy_read(imx6_pcie, PHY_RX_OVRD_IN_LO, &temp);
- 	temp &= ~(PHY_RX_OVRD_IN_LO_RX_DATA_EN |
- 		  PHY_RX_OVRD_IN_LO_RX_PLL_EN);
--	pcie_phy_write(pp->dbi_base, PHY_RX_OVRD_IN_LO, temp);
-+	pcie_phy_write(imx6_pcie, PHY_RX_OVRD_IN_LO, temp);
- }
- 
- static int imx6_pcie_assert_core_reset(struct pcie_port *pp)
+ 	/* set the number of lanes */
+ 	val = dw_pcie_readl_dbi(pci, PCIE_PORT_LINK_CONTROL);
+ 	val &= ~PORT_LINK_MODE_MASK;
+-	switch (pci->lanes) {
++	switch (lanes) {
+ 	case 1:
+ 		val |= PORT_LINK_MODE_1_LANES;
+ 		break;
+@@ -489,7 +493,7 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
+ 		val |= PORT_LINK_MODE_4_LANES;
+ 		break;
+        default:
+-               dev_err(pci->dev, "num-lanes %u: invalid value\n", pci->lanes);
++               dev_err(pci->dev, "num-lanes %u: invalid value\n", lanes);
+                return;
+ 	}
+ 	dw_pcie_writel_dbi(pci, PCIE_PORT_LINK_CONTROL, val);
+@@ -497,7 +501,7 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
+ 	/* set link width speed control register */
+ 	val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
+ 	val &= ~PORT_LOGIC_LINK_WIDTH_MASK;
+-	switch (pci->lanes) {
++	switch (lanes) {
+ 	case 1:
+ 		val |= PORT_LOGIC_LINK_WIDTH_1_LANES;
+ 		break;
+diff --git a/drivers/pci/pcie-designware.h b/drivers/pci/pcie-designware.h
+index 07e7948a5..382a01219 100644
+--- a/drivers/pci/pcie-designware.h
++++ b/drivers/pci/pcie-designware.h
+@@ -121,7 +121,6 @@ struct dw_pcie_ops {
+ struct dw_pcie {
+ 	struct device_d         *dev;
+ 	void __iomem            *dbi_base;
+-	u32                     lanes;
+ 	u32                     num_viewport;
+ 	struct pcie_port        pp;
+ 	const struct dw_pcie_ops *ops;
 -- 
 2.19.1
 
