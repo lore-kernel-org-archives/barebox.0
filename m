@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLAl-0005zc-Li
+ id 1gXLAh-00060w-Co
  for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:49 +0000
-Received: by mail-pl1-x644.google.com with SMTP id u6so606720plm.8
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:29 -0800 (PST)
+Received: by mail-pf1-x443.google.com with SMTP id y126so645210pfb.4
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:30 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:11:16 -0800
-Message-Id: <20181213071144.31691-31-andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:11:17 -0800
+Message-Id: <20181213071144.31691-32-andrew.smirnov@gmail.com>
 In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,72 +23,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 30/58] PCI: dwc: designware: Get device pointer at the start
- of dw_pcie_host_init()
+Subject: [PATCH 31/58] PCI: imx6: Add local struct device pointers
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 40f67fb2c384fe12741aa35010d62bfe8c98286c
+Port of a Linux commit 13957652f7242a8cb02ffb8c96f412f62c486ee1
 
-  No functional change. Get device pointer at the beginning of
-  dw_pcie_host_init() instead of getting it all over dw_pcie_host_init().
-  This is in preparation for splitting struct pcie_port into host and core
-  structures (once split pcie_port will not have device pointer).
+  Use a local "struct device *dev" for brevity and consistency with other
+  drivers.  No functional change intended.
 
-  Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/pci/pci-imx6.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index 816a70539..7ea48819b 100644
---- a/drivers/pci/pcie-designware.c
-+++ b/drivers/pci/pcie-designware.c
-@@ -186,7 +186,8 @@ static struct pci_ops dw_pcie_ops;
+diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
+index c499f4c83..0ede1abfa 100644
+--- a/drivers/pci/pci-imx6.c
++++ b/drivers/pci/pci-imx6.c
+@@ -401,6 +401,7 @@ static int imx6_pcie_wait_for_link(struct pcie_port *pp)
  
- int __init dw_pcie_host_init(struct pcie_port *pp)
+ static int imx6_pcie_wait_for_speed_change(struct pcie_port *pp)
  {
--	struct device_node *np = pp->dev->device_node;
 +	struct device_d *dev = pp->dev;
-+	struct device_node *np = dev->device_node;
- 	struct of_pci_range range;
- 	struct of_pci_range_parser parser;
- 	struct resource *cfg_res;
-@@ -200,7 +201,7 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
- 	of_property_read_u32(np, "#address-cells", &na);
- 	ns = of_n_size_cells(np);
+ 	uint32_t tmp;
+ 	uint64_t start = get_time_ns();
  
--	cfg_res = dev_get_resource_by_name(pp->dev, IORESOURCE_MEM, "config");
-+	cfg_res = dev_get_resource_by_name(dev, IORESOURCE_MEM, "config");
- 	if (cfg_res) {
- 		pp->cfg0_size = resource_size(cfg_res)/2;
- 		pp->cfg1_size = resource_size(cfg_res)/2;
-@@ -213,11 +214,11 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
- 		pp->cfg0_mod_base = of_read_number(addrp, ns);
- 		pp->cfg1_mod_base = pp->cfg0_mod_base + pp->cfg0_size;
- 	} else {
--		dev_err(pp->dev, "missing *config* reg space\n");
-+		dev_err(dev, "missing *config* reg space\n");
+@@ -411,7 +412,7 @@ static int imx6_pcie_wait_for_speed_change(struct pcie_port *pp)
+ 			return 0;
  	}
  
- 	if (of_pci_range_parser_init(&parser, np)) {
--		dev_err(pp->dev, "missing ranges property\n");
-+		dev_err(dev, "missing ranges property\n");
- 		return -EINVAL;
+-	dev_err(pp->dev, "Speed change timeout\n");
++	dev_err(dev, "Speed change timeout\n");
+ 	return -EINVAL;
+ }
+ 
+@@ -419,6 +420,7 @@ static int imx6_pcie_wait_for_speed_change(struct pcie_port *pp)
+ static int imx6_pcie_establish_link(struct pcie_port *pp)
+ {
+ 	struct imx6_pcie *imx6_pcie = to_imx6_pcie(pp);
++	struct device_d *dev = pp->dev;
+ 	uint32_t tmp;
+ 	int ret;
+ 	u32 gpr12;
+@@ -440,7 +442,7 @@ static int imx6_pcie_establish_link(struct pcie_port *pp)
+ 
+ 	ret = imx6_pcie_wait_for_link(pp);
+ 	if (ret) {
+-		dev_info(pp->dev, "Link never came up\n");
++		dev_info(dev, "Link never came up\n");
+ 		goto err_reset_phy;
  	}
  
-@@ -285,7 +286,7 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
- 	if (pp->ops->host_init)
- 		pp->ops->host_init(pp);
+@@ -460,24 +462,24 @@ static int imx6_pcie_establish_link(struct pcie_port *pp)
  
--	pp->pci.parent = pp->dev;
-+	pp->pci.parent = dev;
- 	pp->pci.pci_ops = &dw_pcie_ops;
- 	pp->pci.set_busno = dw_pcie_set_local_bus_nr;
- 	pp->pci.mem_resource = &pp->mem;
+ 	ret = imx6_pcie_wait_for_speed_change(pp);
+ 	if (ret) {
+-		dev_err(pp->dev, "Failed to bring link up!\n");
++		dev_err(dev, "Failed to bring link up!\n");
+ 		goto err_reset_phy;
+ 	}
+ 
+ 	/* Make sure link training is finished as well! */
+ 	ret = imx6_pcie_wait_for_link(pp);
+ 	if (ret) {
+-		dev_err(pp->dev, "Failed to bring link up!\n");
++		dev_err(dev, "Failed to bring link up!\n");
+ 		goto err_reset_phy;
+ 	}
+ 
+ 	tmp = readl(pp->dbi_base + PCIE_RC_LCSR);
+-	dev_dbg(pp->dev, "Link up, Gen=%i\n", (tmp >> 16) & 0xf);
++	dev_dbg(dev, "Link up, Gen=%i\n", (tmp >> 16) & 0xf);
+ 
+ 	return 0;
+ 
+ err_reset_phy:
+-       dev_dbg(pp->dev, "PHY DEBUG_R0=0x%08x DEBUG_R1=0x%08x\n",
++       dev_dbg(dev, "PHY DEBUG_R0=0x%08x DEBUG_R1=0x%08x\n",
+                readl(pp->dbi_base + PCIE_PHY_DEBUG_R0),
+                readl(pp->dbi_base + PCIE_PHY_DEBUG_R1));
+        imx6_pcie_reset_phy(pp);
+@@ -500,6 +502,7 @@ static void imx6_pcie_host_init(struct pcie_port *pp)
+ 
+ static int imx6_pcie_link_up(struct pcie_port *pp)
+ {
++	struct device_d *dev = pp->dev;
+ 	u32 rc;
+ 	int count = 5;
+ 
+@@ -527,7 +530,7 @@ static int imx6_pcie_link_up(struct pcie_port *pp)
+ 			return 1;
+ 		if (!count--)
+ 			break;
+-		dev_dbg(pp->dev, "Link is up, but still in training\n");
++		dev_dbg(dev, "Link is up, but still in training\n");
+ 		/*
+ 		 * Wait a little bit, then re-check if the link finished
+ 		 * the training.
 -- 
 2.19.1
 
