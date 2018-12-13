@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXL92-00051m-OJ
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:10:54 +0000
-Received: by mail-pl1-x643.google.com with SMTP id g9so616421plo.3
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:10:42 -0800 (PST)
+ id 1gXL93-00051n-Oy
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:10:55 +0000
+Received: by mail-pl1-x641.google.com with SMTP id t13so592232ply.13
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:10:43 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:10:32 -0800
-Message-Id: <20181213071033.30932-2-andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:10:33 -0800
+Message-Id: <20181213071033.30932-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20181213071033.30932-1-andrew.smirnov@gmail.com>
 References: <20181213071033.30932-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,64 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] mci: Rely on NULL being a dummy regulator
+Subject: [PATCH 3/3] video: mtl017: Make sure errno is not used as a regulator
+ pointer
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Since NULL, is a dummy regulator, we can drop a bit of error checking
-logic and simplify the code if we assing host->supply to NULL in case
-we can't find an appropriate regulator during probing.
+Since regulator_get() can return an errno via regulator pointer, we
+need to make sure we handle that case without passing bogus pointers
+around.
+
+Add code to convert mtl017->regulator to a dummy regulator if
+regulator_get() fails.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mci/mci-core.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ drivers/video/mtl017.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 3efd80a8a..c71d91fd0 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -1650,13 +1650,11 @@ static int mci_card_probe(struct mci *mci)
- 		return -ENODEV;
- 	}
+diff --git a/drivers/video/mtl017.c b/drivers/video/mtl017.c
+index 085ea110b..423fb8e4f 100644
+--- a/drivers/video/mtl017.c
++++ b/drivers/video/mtl017.c
+@@ -244,6 +244,9 @@ static int mtl017_probe(struct device_d *dev)
+ 	mtl017->client = to_i2c_client(dev);
+ 	mtl017->regulator = regulator_get(dev, "vdd");
  
--	if (!IS_ERR(host->supply)) {
--		ret = regulator_enable(host->supply);
--		if (ret) {
--			dev_err(&mci->dev, "failed to enable regulator: %s\n",
--				strerror(-ret));
--			return ret;
--		}
-+	ret = regulator_enable(host->supply);
-+	if (ret) {
-+		dev_err(&mci->dev, "failed to enable regulator: %s\n",
-+			strerror(-ret));
-+		return ret;
- 	}
- 
- 	/* start with a host interface reset */
-@@ -1728,8 +1726,7 @@ on_error:
- 	if (rc != 0) {
- 		host->clock = 0;	/* disable the MCI clock */
- 		mci_set_ios(mci);
--		if (!IS_ERR(host->supply))
--			regulator_disable(host->supply);
-+		regulator_disable(host->supply);
- 	}
- 
- 	return rc;
-@@ -1816,8 +1813,10 @@ int mci_register(struct mci_host *host)
- 	mci->dev.detect = mci_detect;
- 
- 	host->supply = regulator_get(host->hw_dev, "vmmc");
--	if (IS_ERR(host->supply))
-+	if (IS_ERR(host->supply)) {
- 		dev_err(&mci->dev, "Failed to get 'vmmc' regulator.\n");
-+		host->supply = NULL;
-+	}
- 
- 	ret = register_device(&mci->dev);
- 	if (ret)
++	if (IS_ERR(mtl017->regulator))
++		mtl017->regulator = NULL;
++
+ 	mtl017->enable_gpio = of_get_named_gpio_flags(dev->device_node,
+ 			"enable-gpios", 0, &flags);
+ 	if (gpio_is_valid(mtl017->enable_gpio)) {
 -- 
 2.19.1
 
