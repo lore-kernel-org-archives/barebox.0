@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-eopbgr680129.outbound.protection.outlook.com
+ ([40.107.68.129] helo=NAM04-BN3-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZCzs-0005ZR-SD
- for barebox@lists.infradead.org; Tue, 18 Dec 2018 10:53:10 +0000
-Date: Tue, 18 Dec 2018 11:52:54 +0100
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Message-ID: <20181218105254.jsaewf5glubqh4wt@pengutronix.de>
-References: <20181215100235.22494-1-linux@rempel-privat.de>
- <20181218103257.4c4ae9f5651bafc774e9230a@gmail.com>
- <e9ce6255-0da2-f244-16b5-46e9d251b216@pengutronix.de>
- <20181218123250.5a76fa37a9ceba65dd68fff9@gmail.com>
+ id 1gXTD3-00034V-PG
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 15:47:35 +0000
+From: "Baeuerle, Florian" <Florian.Baeuerle@allegion.com>
+Date: Thu, 13 Dec 2018 15:47:20 +0000
+Message-ID: <24299a5b0abeaa6e99252753c9043121678bd0ce.camel@allegion.com>
+Content-Language: en-US
+Content-ID: <A03CED81C42C18458667E17D7214CD5D@prod.exchangelabs.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181218123250.5a76fa37a9ceba65dd68fff9@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,39 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 1/3] MIPS: migrate all files to SPDX
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Oleksij Rempel <linux@rempel-privat.de>, barebox@lists.infradead.org
+Subject: bareboxenv -s: output depends on filesystem
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Tue, Dec 18, 2018 at 12:32:50PM +0300, Antony Pavlov wrote:
-> > Beside, go you agree to upgrade files copyrighted by you as 
-> > GPL-2.0-or-later?
-> 
-> Not now. We use many codes from linux kernel (mostly GPL-2.0-only).
-> Can we face the problems of porting linux kernel code to barebox?
-> 
-> I see strange thing: most barebox files are GPL-2.0-only,
-> but asm/bitopts.h changed GPL-2.0-only to GPL-2.0-or-later after the commit
-> 
-> commit 227a20fe31c6a03795a202f95af95fb371951963
-> Author: Sascha Hauer <s.hauer@pengutronix.de>
-> Date:   Wed Jul 16 09:40:30 2014 +0200
-> 
->     consistently use the same bitops.h file
-> 
-> @Sascha Please comment on GPL-2.0-only vs GPL-2.0-or-later in barebox.
+Hi,
 
-Barebox has preferred GPL-2.0-only starting from day-1, see toplevel
-COPYING. As GPL-2.0-or-later is compatible with that, it is ok to
-include or-later code into an otherwhise-2.0-only codebase.
+I'm currently trying to get reproducible barebox binaries.
 
-rsc
--- 
-Pengutronix e.K.                           | Dipl.-Ing. Robert Schwebel  |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+One problem I'm facing is, that the barebox defaultenv generated during build
+depends on the filesystem used on the build machine. That is, because
+envfs_save() uses recursive_action(), which in turn uses readdir() without
+sorting the entries afterwards.
 
+quoting man readdir:
+  The order in which filenames are read by successive calls to readdir() depends
+on the filesystem implementation; it is unlikely that the names will be sorted
+in any fashion.
+
+In fact, on ext4 I get a different barebox binary as on XFS.
+
+
+Is this considered something worth being fixed?
+
+It should be sufficient to build a list of directories and sort it before
+recursing. It is, however, shared code which is also used by the saveenv command
+and I'm not sure if malloc'ing recursively is a good idea on all targets where
+saveenv is used.
+
+I would go ahead and implement it if no one opposes.
+
+Should I introduce a flag for recursive_action() that allows taking an
+"unsorted" (non-malloc) code path for use with the saveenv command?
+
+
+- Florian
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
