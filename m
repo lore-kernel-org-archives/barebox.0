@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLfr-0005QZ-Co
+ id 1gXLfr-0005Qh-Ch
  for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:44:49 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Thu, 13 Dec 2018 08:44:25 +0100
-Message-Id: <20181213074430.25614-4-r.czerwinski@pengutronix.de>
+Date: Thu, 13 Dec 2018 08:44:28 +0100
+Message-Id: <20181213074430.25614-7-r.czerwinski@pengutronix.de>
 In-Reply-To: <20181213074430.25614-1-r.czerwinski@pengutronix.de>
 References: <20181213074430.25614-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,40 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/8] ARM: rpi: retrieve miniuart clock from firmware
+Subject: [PATCH v2 6/8] ARM: rpi: add NS16550 support
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-The miniuart uses the core clock as the clock source. This clock is fixed by the
-firmware to 250Mhz if enable_uart=1 is set in the config.txt file.
-However a user could still choose to overclock the core frequency,
-which would result in wrong baudrates computed by barebox.
-Retrieve the core clock frequency from the firmware to allow all potential
-firmware configurations to work with barebox.
+Since the 16550 driver now supports the RPI3 miniuart, enable it in the default
+config.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/boards/raspberry-pi/rpi-common.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm/configs/rpi_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-index 887f096f7..f22239c7c 100644
---- a/arch/arm/boards/raspberry-pi/rpi-common.c
-+++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-@@ -310,6 +310,13 @@ static int rpi_console_clock_init(void)
- 	clkdev_add_physbase(clk, 0x20201000, NULL);
- 	clkdev_add_physbase(clk, 0x3f201000, NULL);
- 
-+	clk = rpi_register_firmware_clock(BCM2835_MBOX_CLOCK_ID_CORE,
-+					  "uart1-8250");
-+	if (IS_ERR(clk))
-+		return PTR_ERR(clk);
-+
-+	clkdev_add_physbase(clk, 0x3f215040, NULL);
-+
- 	clk = clk_fixed("bcm2835-cs", 1 * 1000 * 1000);
- 	clk_register_clkdev(clk, NULL, "bcm2835-cs");
- 
+diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
+index 2bb615849..dc5ab1fe1 100644
+--- a/arch/arm/configs/rpi_defconfig
++++ b/arch/arm/configs/rpi_defconfig
+@@ -63,6 +63,7 @@ CONFIG_CMD_OF_PROPERTY=y
+ CONFIG_CMD_OFTREE=y
+ CONFIG_CMD_TIME=y
+ CONFIG_SERIAL_AMBA_PL011=y
++CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_MCI=y
+ CONFIG_MCI_BCM283X=y
+ CONFIG_LED=y
 -- 
 2.19.1
 
