@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLAh-00060w-Co
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:49 +0000
-Received: by mail-pf1-x443.google.com with SMTP id y126so645210pfb.4
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:30 -0800 (PST)
+ id 1gXLAk-0005y6-Il
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:50 +0000
+Received: by mail-pg1-x541.google.com with SMTP id z10so607246pgp.7
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:28 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:11:17 -0800
-Message-Id: <20181213071144.31691-32-andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:11:15 -0800
+Message-Id: <20181213071144.31691-30-andrew.smirnov@gmail.com>
 In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,106 +23,101 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 31/58] PCI: imx6: Add local struct device pointers
+Subject: [PATCH 29/58] PCI: dwc: all: Rename cfg_read/cfg_write to read/write
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 13957652f7242a8cb02ffb8c96f412f62c486ee1
+  No functional change. dw_pcie_cfg_read()/dw_pcie_cfg_write() doesn't do
+  anything specific to access configuration space. It can be just renamed to
+  dw_pcie_read()/dw_pcie_write() and used to read/write data to dbi space.
 
-  Use a local "struct device *dev" for brevity and consistency with other
-  drivers.  No functional change intended.
-
+  Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+  Reviewed-By: Joao Pinto <jpinto@synopsys.com>
+  CC: Jingoo Han <jingoohan1@gmail.com>
+  CC: Murali Karicheri <m-karicheri2@ti.com>
+  CC: Stanimir Varbanov <svarbanov@mm-sol.com>
+  CC: Pratyush Anand <pratyush.anand@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/pci/pcie-designware.c | 12 ++++++------
+ drivers/pci/pcie-designware.h |  4 ++--
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index c499f4c83..0ede1abfa 100644
---- a/drivers/pci/pci-imx6.c
-+++ b/drivers/pci/pci-imx6.c
-@@ -401,6 +401,7 @@ static int imx6_pcie_wait_for_link(struct pcie_port *pp)
+diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
+index c0a1c0b73..816a70539 100644
+--- a/drivers/pci/pcie-designware.c
++++ b/drivers/pci/pcie-designware.c
+@@ -32,7 +32,7 @@
  
- static int imx6_pcie_wait_for_speed_change(struct pcie_port *pp)
+ static unsigned long global_io_offset;
+ 
+-int dw_pcie_cfg_read(void __iomem *addr, int size, u32 *val)
++int dw_pcie_read(void __iomem *addr, int size, u32 *val)
  {
-+	struct device_d *dev = pp->dev;
- 	uint32_t tmp;
- 	uint64_t start = get_time_ns();
- 
-@@ -411,7 +412,7 @@ static int imx6_pcie_wait_for_speed_change(struct pcie_port *pp)
- 			return 0;
- 	}
- 
--	dev_err(pp->dev, "Speed change timeout\n");
-+	dev_err(dev, "Speed change timeout\n");
- 	return -EINVAL;
+ 	if ((uintptr_t)addr & (size - 1)) {
+ 		*val = 0;
+@@ -53,7 +53,7 @@ int dw_pcie_cfg_read(void __iomem *addr, int size, u32 *val)
+ 	return PCIBIOS_SUCCESSFUL;
  }
  
-@@ -419,6 +420,7 @@ static int imx6_pcie_wait_for_speed_change(struct pcie_port *pp)
- static int imx6_pcie_establish_link(struct pcie_port *pp)
+-int dw_pcie_cfg_write(void __iomem *addr, int size, u32 val)
++int dw_pcie_write(void __iomem *addr, int size, u32 val)
  {
- 	struct imx6_pcie *imx6_pcie = to_imx6_pcie(pp);
-+	struct device_d *dev = pp->dev;
- 	uint32_t tmp;
- 	int ret;
- 	u32 gpr12;
-@@ -440,7 +442,7 @@ static int imx6_pcie_establish_link(struct pcie_port *pp)
+ 	if ((uintptr_t)addr & (size - 1))
+ 		return PCIBIOS_BAD_REGISTER_NUMBER;
+@@ -94,7 +94,7 @@ static int dw_pcie_rd_own_conf(struct pcie_port *pp, int where, int size,
+ 	if (pp->ops->rd_own_conf)
+ 		return pp->ops->rd_own_conf(pp, where, size, val);
  
- 	ret = imx6_pcie_wait_for_link(pp);
- 	if (ret) {
--		dev_info(pp->dev, "Link never came up\n");
-+		dev_info(dev, "Link never came up\n");
- 		goto err_reset_phy;
- 	}
+-	return dw_pcie_cfg_read(pp->dbi_base + where, size, val);
++	return dw_pcie_read(pp->dbi_base + where, size, val);
+ }
  
-@@ -460,24 +462,24 @@ static int imx6_pcie_establish_link(struct pcie_port *pp)
+ static int dw_pcie_wr_own_conf(struct pcie_port *pp, int where, int size,
+@@ -103,7 +103,7 @@ static int dw_pcie_wr_own_conf(struct pcie_port *pp, int where, int size,
+ 	if (pp->ops->wr_own_conf)
+ 		return pp->ops->wr_own_conf(pp, where, size, val);
  
- 	ret = imx6_pcie_wait_for_speed_change(pp);
- 	if (ret) {
--		dev_err(pp->dev, "Failed to bring link up!\n");
-+		dev_err(dev, "Failed to bring link up!\n");
- 		goto err_reset_phy;
- 	}
+-	return dw_pcie_cfg_write(pp->dbi_base + where, size, val);
++	return dw_pcie_write(pp->dbi_base + where, size, val);
+ }
  
- 	/* Make sure link training is finished as well! */
- 	ret = imx6_pcie_wait_for_link(pp);
- 	if (ret) {
--		dev_err(pp->dev, "Failed to bring link up!\n");
-+		dev_err(dev, "Failed to bring link up!\n");
- 		goto err_reset_phy;
- 	}
+ static void dw_pcie_prog_outbound_atu(struct pcie_port *pp, int index,
+@@ -327,7 +327,7 @@ static int dw_pcie_rd_other_conf(struct pcie_port *pp, struct pci_bus *bus,
+ 	dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
+ 				  type, cpu_addr,
+ 				  busdev, cfg_size);
+-	ret = dw_pcie_cfg_read(va_cfg_base + where, size, val);
++	ret = dw_pcie_read(va_cfg_base + where, size, val);
+ 	if (pp->num_viewport <= 2)
+ 		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
+ 					  PCIE_ATU_TYPE_IO, pp->io_mod_base,
+@@ -366,7 +366,7 @@ static int dw_pcie_wr_other_conf(struct pcie_port *pp, struct pci_bus *bus,
+ 	dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
+ 				  type, cpu_addr,
+ 				  busdev, cfg_size);
+-	ret = dw_pcie_cfg_write(va_cfg_base + where, size, val);
++	ret = dw_pcie_write(va_cfg_base + where, size, val);
+ 	if (pp->num_viewport <= 2)
+ 		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
+ 					  PCIE_ATU_TYPE_IO, pp->io_mod_base,
+diff --git a/drivers/pci/pcie-designware.h b/drivers/pci/pcie-designware.h
+index a18f322c1..1e842cb6d 100644
+--- a/drivers/pci/pcie-designware.h
++++ b/drivers/pci/pcie-designware.h
+@@ -118,8 +118,8 @@ struct pcie_host_ops {
  
- 	tmp = readl(pp->dbi_base + PCIE_RC_LCSR);
--	dev_dbg(pp->dev, "Link up, Gen=%i\n", (tmp >> 16) & 0xf);
-+	dev_dbg(dev, "Link up, Gen=%i\n", (tmp >> 16) & 0xf);
- 
- 	return 0;
- 
- err_reset_phy:
--       dev_dbg(pp->dev, "PHY DEBUG_R0=0x%08x DEBUG_R1=0x%08x\n",
-+       dev_dbg(dev, "PHY DEBUG_R0=0x%08x DEBUG_R1=0x%08x\n",
-                readl(pp->dbi_base + PCIE_PHY_DEBUG_R0),
-                readl(pp->dbi_base + PCIE_PHY_DEBUG_R1));
-        imx6_pcie_reset_phy(pp);
-@@ -500,6 +502,7 @@ static void imx6_pcie_host_init(struct pcie_port *pp)
- 
- static int imx6_pcie_link_up(struct pcie_port *pp)
- {
-+	struct device_d *dev = pp->dev;
- 	u32 rc;
- 	int count = 5;
- 
-@@ -527,7 +530,7 @@ static int imx6_pcie_link_up(struct pcie_port *pp)
- 			return 1;
- 		if (!count--)
- 			break;
--		dev_dbg(pp->dev, "Link is up, but still in training\n");
-+		dev_dbg(dev, "Link is up, but still in training\n");
- 		/*
- 		 * Wait a little bit, then re-check if the link finished
- 		 * the training.
+ u32 dw_pcie_readl_rc(struct pcie_port *pp, u32 reg);
+ void dw_pcie_writel_rc(struct pcie_port *pp, u32 reg, u32 val);
+-int dw_pcie_cfg_read(void __iomem *addr, int size, u32 *val);
+-int dw_pcie_cfg_write(void __iomem *addr, int size, u32 val);
++int dw_pcie_read(void __iomem *addr, int size, u32 *val);
++int dw_pcie_write(void __iomem *addr, int size, u32 val);
+ int dw_pcie_link_up(struct pcie_port *pp);
+ void dw_pcie_setup_rc(struct pcie_port *pp);
+ int dw_pcie_host_init(struct pcie_port *pp);
 -- 
 2.19.1
 
