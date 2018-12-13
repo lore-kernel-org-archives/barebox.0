@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlKF-0001MU-95
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:32 +0000
-Received: by mail-pg1-x541.google.com with SMTP id d72so5521146pga.9
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:08 -0800 (PST)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:18:42 -0800
-Message-Id: <20181217051925.17582-23-andrew.smirnov@gmail.com>
-In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
-References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
+ id 1gXLfr-0005QZ-Co
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:44:49 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Thu, 13 Dec 2018 08:44:25 +0100
+Message-Id: <20181213074430.25614-4-r.czerwinski@pengutronix.de>
+In-Reply-To: <20181213074430.25614-1-r.czerwinski@pengutronix.de>
+References: <20181213074430.25614-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,53 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 22/65] PCI: designware: Check LTSSM training bit before
- deciding link is up
+Subject: [PATCH v2 3/8] ARM: rpi: retrieve miniuart clock from firmware
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Port of a Linux commit 01c076732e8288485c22ef50f20949455a783ca9
+The miniuart uses the core clock as the clock source. This clock is fixed by the
+firmware to 250Mhz if enable_uart=1 is set in the config.txt file.
+However a user could still choose to overclock the core frequency,
+which would result in wrong baudrates computed by barebox.
+Retrieve the core clock frequency from the firmware to allow all potential
+firmware configurations to work with barebox.
 
-  The link may be up but still in link training.  In this case, we can't
-  think the link is up and operating correctly.  Teach dw_pcie_link_up() to
-  be aware of the PCIE_PHY_DEBUG_R1_LINK_IN_TRAINING bit.
-
-  Also rewrite PCIE_PHY_DEBUG_R1_LINK_UP definition so that it's consistent
-  with other macros.
-
-  Signed-off-by: Jisheng Zhang <jszhang@marvell.com>
-  Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-  Acked-by: Joao Pinto <jpinto@synopsys.com>
-
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- drivers/pci/pcie-designware.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm/boards/raspberry-pi/rpi-common.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index 5d0f782f4..a6006201e 100644
---- a/drivers/pci/pcie-designware.c
-+++ b/drivers/pci/pcie-designware.c
-@@ -98,7 +98,8 @@
- /* PCIe Port Logic registers */
- #define PLR_OFFSET                     0x700
- #define PCIE_PHY_DEBUG_R1              (PLR_OFFSET + 0x2c)
--#define PCIE_PHY_DEBUG_R1_LINK_UP      0x00000010
-+#define PCIE_PHY_DEBUG_R1_LINK_UP      (0x1 << 4)
-+#define PCIE_PHY_DEBUG_R1_LINK_IN_TRAINING     (0x1 << 29)
+diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
+index 887f096f7..f22239c7c 100644
+--- a/arch/arm/boards/raspberry-pi/rpi-common.c
++++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+@@ -310,6 +310,13 @@ static int rpi_console_clock_init(void)
+ 	clkdev_add_physbase(clk, 0x20201000, NULL);
+ 	clkdev_add_physbase(clk, 0x3f201000, NULL);
  
- static unsigned long global_io_offset;
++	clk = rpi_register_firmware_clock(BCM2835_MBOX_CLOCK_ID_CORE,
++					  "uart1-8250");
++	if (IS_ERR(clk))
++		return PTR_ERR(clk);
++
++	clkdev_add_physbase(clk, 0x3f215040, NULL);
++
+ 	clk = clk_fixed("bcm2835-cs", 1 * 1000 * 1000);
+ 	clk_register_clkdev(clk, NULL, "bcm2835-cs");
  
-@@ -279,7 +280,8 @@ int dw_pcie_link_up(struct pcie_port *pp)
- 		return pp->ops->link_up(pp);
- 
- 	val = readl(pp->dbi_base + PCIE_PHY_DEBUG_R1);
--	return val & PCIE_PHY_DEBUG_R1_LINK_UP;
-+	return ((val & PCIE_PHY_DEBUG_R1_LINK_UP) &&
-+		!(val & PCIE_PHY_DEBUG_R1_LINK_IN_TRAINING));
- }
- 
- static inline struct pcie_port *host_to_pcie(struct pci_controller *host)
 -- 
 2.19.1
 
