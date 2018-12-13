@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLAe-0005sc-QS
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:36 +0000
-Received: by mail-pf1-x442.google.com with SMTP id c73so624989pfe.13
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:22 -0800 (PST)
+ id 1gXLAa-0005nM-9j
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:34 +0000
+Received: by mail-pg1-x543.google.com with SMTP id w7so591754pgp.13
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:18 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:11:10 -0800
-Message-Id: <20181213071144.31691-25-andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:11:06 -0800
+Message-Id: <20181213071144.31691-21-andrew.smirnov@gmail.com>
 In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,57 +23,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 24/58] PCI: designware: Rename dw_pcie_valid_config() to
- dw_pcie_valid_device()
+Subject: [PATCH 20/58] PCI: designware: Wait for iATU enable
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 1034023606d0e971f4dee6f725e441b785a846b5
+Port of a Linux commit d8bbeb39fbf3ff06b6adae9d336f44bee4e3f3ec
 
-  Rename dw_pcie_valid_config() to dw_pcie_valid_device() and use the result
-  directly as a boolean value instead of testing against 0.  No functional
-  change intended.
+  Add a loop with timeout to make sure the iATU is really enabled before
+  subsequent config and I/O accesses.
 
+  [bhelgaas: split to separate patch, use dev_err() instead of dev_dbg()]
+  Signed-off-by: Joao Pinto <jpinto@synopsys.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/pcie-designware.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index 817d70850..509fac718 100644
+index 450885f07..b56c466fd 100644
 --- a/drivers/pci/pcie-designware.c
 +++ b/drivers/pci/pcie-designware.c
-@@ -428,8 +428,8 @@ static int dw_pcie_wr_other_conf(struct pcie_port *pp, struct pci_bus *bus,
- 	return ret;
+@@ -34,6 +34,10 @@
+ #define LINK_WAIT_MAX_RETRIES		10
+ #define LINK_WAIT_USLEEP_MAX		100000
+ 
++/* Parameters for the waiting for iATU enabled routine */
++#define LINK_WAIT_MAX_IATU_RETRIES     5
++#define LINK_WAIT_IATU_MAX             10000
++
+ /* Synopsis specific PCIE configuration registers */
+ #define PCIE_PORT_LINK_CONTROL		0x710
+ #define PORT_LINK_MODE_MASK		(0x3f << 16)
+@@ -160,7 +164,7 @@ static int dw_pcie_wr_own_conf(struct pcie_port *pp, int where, int size,
+ static void dw_pcie_prog_outbound_atu(struct pcie_port *pp, int index,
+                int type, u64 cpu_addr, u64 pci_addr, u32 size)
+ {
+-	u32 val;
++	u32 retries, val;
+ 
+ 	dw_pcie_writel_rc(pp, PCIE_ATU_REGION_OUTBOUND | index,
+ 			  PCIE_ATU_VIEWPORT);
+@@ -177,7 +181,14 @@ static void dw_pcie_prog_outbound_atu(struct pcie_port *pp, int index,
+ 	 * Make sure ATU enable takes effect before any subsequent config
+ 	 * and I/O accesses.
+ 	 */
+-	dw_pcie_readl_rc(pp, PCIE_ATU_CR2);
++	for (retries = 0; retries < LINK_WAIT_MAX_IATU_RETRIES; retries++) {
++		val = dw_pcie_readl_rc(pp, PCIE_ATU_CR2);
++		if (val == PCIE_ATU_ENABLE)
++			return;
++
++		udelay(LINK_WAIT_IATU_MAX);
++	}
++	dev_err(pp->dev, "iATU is not being enabled\n");
  }
  
--static int dw_pcie_valid_config(struct pcie_port *pp,
--				struct pci_bus *bus, int dev)
-+static int dw_pcie_valid_device(struct pcie_port *pp, struct pci_bus *bus,
-+				int dev)
- {
- 	/* If there is no link, then there is no device */
- 	if (bus->number != pp->root_bus_nr) {
-@@ -459,7 +459,7 @@ static int dw_pcie_rd_conf(struct pci_bus *bus, u32 devfn, int where,
- 
- 	*val = 0xffffffff;
- 
--	if (dw_pcie_valid_config(pp, bus, PCI_SLOT(devfn)) == 0)
-+	if (!dw_pcie_valid_device(pp, bus, PCI_SLOT(devfn)))
- 		return PCIBIOS_DEVICE_NOT_FOUND;
- 
- 	data_abort_mask();
-@@ -482,7 +482,7 @@ static int dw_pcie_wr_conf(struct pci_bus *bus, u32 devfn,
- 	struct pcie_port *pp = host_to_pcie(bus->host);
- 	int ret;
- 
--	if (dw_pcie_valid_config(pp, bus, PCI_SLOT(devfn)) == 0)
-+	if (!dw_pcie_valid_device(pp, bus, PCI_SLOT(devfn)))
- 		return PCIBIOS_DEVICE_NOT_FOUND;
- 
- 	data_abort_mask();
+ int dw_pcie_wait_for_link(struct pcie_port *pp)
 -- 
 2.19.1
 
