@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLAK-0005YJ-KO
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:19 +0000
-Received: by mail-pg1-x543.google.com with SMTP id n2so616343pgm.3
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:02 -0800 (PST)
+ id 1gXLAJ-0005YI-0b
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:18 +0000
+Received: by mail-pl1-x642.google.com with SMTP id 101so612101pld.6
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:00 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:10:54 -0800
-Message-Id: <20181213071144.31691-9-andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:10:53 -0800
+Message-Id: <20181213071144.31691-8-andrew.smirnov@gmail.com>
 In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,67 +23,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/58] PCI: designware: Make "num-lanes" an optional DT
- property
+Subject: [PATCH 07/58] PCI: designware: Require config accesses to be
+ naturally aligned
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 907fce0902539ecde609e485eb2ecd7119a7a623
+Port of a Linux commit b6b18f589e1ddbfbc31f72ea7fb8a723a2d10058
 
-  Currently "num-lanes" is read in dw_pcie_host_init(), but it is only used
-  if we call dw_pcie_setup_rc() while bringing up the link.  If the link has
-  already been brought up by firmware, we need not call dw_pcie_setup_rc(),
-  and "num-lanes" is unnecessary.
+  Add sanity checks on "addr" input parameter in dw_pcie_cfg_read() and
+  dw_pcie_cfg_write().  These checks make sure that accesses are aligned on
+  their size, e.g., a 4-byte config access is aligned on a 4-byte boundary.
 
-  Only complain about "num-lanes" if we actually need it and we didn't find a
-  valid value.
-
-  [bhelgaas: changelog]
+  [bhelgaas: changelog, set *val = 0 in failure case]
   Signed-off-by: Gabriele Paoloni <gabriele.paoloni@huawei.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+  Acked-by: Pratyush Anand <pratyush.anand@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/pci/pcie-designware.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index f47e5eb1e..977548f01 100644
+index f46d33265..f47e5eb1e 100644
 --- a/drivers/pci/pcie-designware.c
 +++ b/drivers/pci/pcie-designware.c
-@@ -203,7 +203,7 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
- 	struct resource *cfg_res;
- 	u32 val, na, ns;
- 	const __be32 *addrp;
--	int index;
-+	int index, ret;
+@@ -76,6 +76,11 @@ static unsigned long global_io_offset;
  
- 	/* Find the address cell size and the number of cells in order to get
- 	 * the untranslated address.
-@@ -285,10 +285,9 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
- 	if (!pp->va_cfg1_base)
- 		pp->va_cfg1_base = (void __force *)(u32)pp->cfg1_base;
+ int dw_pcie_cfg_read(void __iomem *addr, int size, u32 *val)
+ {
++	if ((uintptr_t)addr & (size - 1)) {
++		*val = 0;
++		return PCIBIOS_BAD_REGISTER_NUMBER;
++	}
++
+ 	if (size == 4)
+ 		*val = readl(addr);
+ 	else if (size == 2)
+@@ -92,6 +97,9 @@ int dw_pcie_cfg_read(void __iomem *addr, int size, u32 *val)
  
--	if (of_property_read_u32(np, "num-lanes", &pp->lanes)) {
--		dev_err(pp->dev, "Failed to parse the number of lanes\n");
--		return -EINVAL;
--	}
-+	ret = of_property_read_u32(np, "num-lanes", &pp->lanes);
-+	if (ret)
-+		pp->lanes = 0;
- 
- 	if (pp->ops->host_init)
- 		pp->ops->host_init(pp);
-@@ -496,6 +495,9 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
- 	case 4:
- 		val |= PORT_LINK_MODE_4_LANES;
- 		break;
-+       default:
-+               dev_err(pp->dev, "num-lanes %u: invalid value\n", pp->lanes);
-+               return;
- 	}
- 	dw_pcie_writel_rc(pp, val, PCIE_PORT_LINK_CONTROL);
- 
+ int dw_pcie_cfg_write(void __iomem *addr, int size, u32 val)
+ {
++	if ((uintptr_t)addr & (size - 1))
++		return PCIBIOS_BAD_REGISTER_NUMBER;
++
+ 	if (size == 4)
+ 		writel(val, addr);
+ 	else if (size == 2)
 -- 
 2.19.1
 
