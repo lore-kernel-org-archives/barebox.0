@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLAa-0005rL-98
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:38 +0000
-Received: by mail-pg1-x543.google.com with SMTP id w6so608574pgl.6
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:21 -0800 (PST)
+ id 1gXLAh-0005vm-Cv
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:43 +0000
+Received: by mail-pf1-x443.google.com with SMTP id c72so640518pfc.6
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:26 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:11:09 -0800
-Message-Id: <20181213071144.31691-24-andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:11:13 -0800
+Message-Id: <20181213071144.31691-28-andrew.smirnov@gmail.com>
 In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,93 +23,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 23/58] PCI: designware: Exchange viewport of `MEMORYs' and
- `CFGs/IOs'
+Subject: [PATCH 27/58] PCI: designware: Export dw_pcie_readl_rc(),
+ dw_pcie_writel_rc()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 68a0bfec72cb4f117198ae31df114dad4c5e405d
+  Export dw_pcie_readl_rc() and dw_pcie_writel_rc().  Many other drivers can
+  use these instead of implementing their own versions.  No functional change
+  intended.
 
-  When we have only two view ports in a DesignWare PCIe platform, iatu0
-  is used for both CFG and IO accesses.  When CFGs are sent to peripherals
-  (e.g., lspci), iatu0 frequently switches between CFG and IO.
-
-  For such scenarios, a MEMORY might be sent as an IOs by mistake.
-  Considering the following configurations:
-
-    MEMORY  ->   BASE_ADDR: 0xb4100000, LIMIT: 0xb4100FFF, TYPE=mem
-    CFG     ->   BASE_ADDR: 0xb4000000, LIMIT: 0xb4000FFF, TYPE=cfg
-    IO      ->   BASE_ADDR: 0xFFFFFFFF, LIMIT: 0xFFFFFFFE, TYPE=io
-
-  Suppose PCIe has just completed a CFG access.  To switch back to IO, it
-  sets the BASE_ADDR to 0xFFFFFFFF, LIMIT 0xFFFFFFFE and TYPE to IO.  When
-  another CFG comes, the BASE_ADDR is set to 0xb4000000 to switch to CFG.  At
-  this moment, a MEMORY access shows up, since it matches with iatu0 (due to
-  0xb4000000 <= MEMORY BASE_ADDR <= MEMORY LIMIT <= 0xFFFFFFF), it is treated
-  as an IO access by mistake, then sent to perpheral.
-
-  This patch fixes the problem by exchanging the assignments of `MEMORYs' and
-  `CFGs/IOs', which assigning MEMORYs to iatu0, CFGs and IOs to iatu1.
-
-  We can still have issues with IO transfer, however memory transfer is used
-  predominantly therefore we are just minimizing the risk of failure.
-  Actually, we can not do much when we have only two viewports.  We can
-  either not allow the less frequent IO transfers at all, or can live with a
-  remote possibility of getting it corrupted.
-
-  Signed-off-by: Dong Bo <dongbo4@huawei.com>
-  [pratyush.anand@gmail.com: Modified commit log to capture remote risk]
-  Signed-off-by: Pratyush Anand <pratyush.anand@gmail.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/pci/pcie-designware.c | 4 ++--
+ drivers/pci/pcie-designware.h | 2 ++
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index cf1b3032e..817d70850 100644
+index ed3e4b750..4f6a4e7e7 100644
 --- a/drivers/pci/pcie-designware.c
 +++ b/drivers/pci/pcie-designware.c
-@@ -377,12 +377,12 @@ static int dw_pcie_rd_other_conf(struct pcie_port *pp, struct pci_bus *bus,
- 		va_cfg_base = pp->va_cfg1_base;
- 	}
+@@ -127,7 +127,7 @@ int dw_pcie_cfg_write(void __iomem *addr, int size, u32 val)
+ 	return PCIBIOS_SUCCESSFUL;
+ }
  
--	dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
-+	dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
- 				  type, cpu_addr,
- 				  busdev, cfg_size);
- 	ret = dw_pcie_cfg_read(va_cfg_base + where, size, val);
- 	if (pp->num_viewport <= 2)
--		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
-+		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
- 					  PCIE_ATU_TYPE_IO, pp->io_mod_base,
- 					  pp->io_bus_addr, pp->io_size);
+-static inline u32 dw_pcie_readl_rc(struct pcie_port *pp, u32 reg)
++u32 dw_pcie_readl_rc(struct pcie_port *pp, u32 reg)
+ {
+ 	if (pp->ops->readl_rc)
+ 		return pp->ops->readl_rc(pp, reg);
+@@ -135,7 +135,7 @@ static inline u32 dw_pcie_readl_rc(struct pcie_port *pp, u32 reg)
+ 	return readl(pp->dbi_base + reg);
+ }
  
-@@ -416,12 +416,12 @@ static int dw_pcie_wr_other_conf(struct pcie_port *pp, struct pci_bus *bus,
- 		va_cfg_base = pp->va_cfg1_base;
- 	}
+-static inline void dw_pcie_writel_rc(struct pcie_port *pp, u32 reg, u32 val)
++void dw_pcie_writel_rc(struct pcie_port *pp, u32 reg, u32 val)
+ {
+ 	if (pp->ops->writel_rc)
+ 		pp->ops->writel_rc(pp, reg, val);
+diff --git a/drivers/pci/pcie-designware.h b/drivers/pci/pcie-designware.h
+index 525030542..8313d6fdc 100644
+--- a/drivers/pci/pcie-designware.h
++++ b/drivers/pci/pcie-designware.h
+@@ -59,6 +59,8 @@ struct pcie_host_ops {
+ 	void (*scan_bus)(struct pcie_port *pp);
+ };
  
--	dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
-+	dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
- 				  type, cpu_addr,
- 				  busdev, cfg_size);
- 	ret = dw_pcie_cfg_write(va_cfg_base + where, size, val);
- 	if (pp->num_viewport <= 2)
--		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
-+		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
- 					  PCIE_ATU_TYPE_IO, pp->io_mod_base,
- 					  pp->io_bus_addr, pp->io_size);
- 
-@@ -572,7 +572,7 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
-         * we should not program the ATU here.
-         */
- 	if (!pp->ops->rd_other_conf) {
--		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
-+		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
- 					  PCIE_ATU_TYPE_MEM, pp->mem_mod_base,
- 					  pp->mem_bus_addr, pp->mem_size);
- 		if (pp->num_viewport <= 2)
++u32 dw_pcie_readl_rc(struct pcie_port *pp, u32 reg);
++void dw_pcie_writel_rc(struct pcie_port *pp, u32 reg, u32 val);
+ int dw_pcie_cfg_read(void __iomem *addr, int size, u32 *val);
+ int dw_pcie_cfg_write(void __iomem *addr, int size, u32 val);
+ int dw_pcie_link_up(struct pcie_port *pp);
 -- 
 2.19.1
 
