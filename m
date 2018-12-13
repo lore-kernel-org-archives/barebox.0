@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp77.ord1d.emailsrvr.com ([184.106.54.77])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gVIA4-0002jc-Ug
- for barebox@lists.infradead.org; Fri, 07 Dec 2018 15:35:32 +0000
-References: <9fe4263a-2331-362f-2e68-7563115a3b8a@mev.co.uk>
- <20181207152935.b3b2ohuslcex4pec@pengutronix.de>
-From: Ian Abbott <abbotti@mev.co.uk>
-Message-ID: <e46cb144-3069-3253-2726-7858b23862bc@mev.co.uk>
-Date: Fri, 7 Dec 2018 15:35:15 +0000
+ id 1gXLAO-0005ao-Ox
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:23 +0000
+Received: by mail-pf1-x444.google.com with SMTP id y126so644594pfb.4
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:06 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:10:57 -0800
+Message-Id: <20181213071144.31691-12-andrew.smirnov@gmail.com>
+In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
+References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20181207152935.b3b2ohuslcex4pec@pengutronix.de>
-Content-Language: en-GB
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,43 +19,92 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: GPIO support missing for SoCFPGA?
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>, Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: [PATCH 11/58] PCI: designware: Make config accessor override checking
+ symmetric
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hi Sascha,
+Port of a Linux commit 67de2dc34cc30d334cb66ab4f466e80f04d5b618
 
-On 07/12/2018 15:29, Sascha Hauer wrote:
-> Hi Ian,
-> 
-> On Fri, Dec 07, 2018 at 03:19:58PM +0000, Ian Abbott wrote:
->> Hi,
->>
->> Commit 8a680e3c9b5dd8470b7437654877d5439e9a6407 ("ARM: socfpga: Arria10:
->> support programming FPGA in PBL") deselected GPIOLIB, so none of the SoCFPGA
->> boards support GPIO any more.  There is no mention of this in the commit
->> message.  Was this a deliberate change, or accidental?  Where is the best
->> place to re-enable the option?
-> 
-> Should be fixed by 34a9cd2a46 already, no?
-> 
-> Sascha
+  Drivers based on the DesignWare core can override the config read accessors
+  by supplying rd_own_conf() and rd_other_conf() function pointers.
+  dw_pcie_rd_conf() calls dw_pcie_rd_own_conf() (for accesses to the root
+  bus) or dw_pcie_rd_other_conf():
 
-Yes, that should fix it.  I forgot to check the "next" branch.  Sorry 
-for the noise.
+    dw_pcie_rd_conf
+      dw_pcie_rd_own_conf                # if on root bus
+      dw_pcie_rd_other_conf              # if not on root bus
 
-Best regards,
-Ian
+  Previously we checked for rd_other_conf() directly in dw_pcie_rd_conf(),
+  but we checked for rd_own_conf() in dw_pcie_rd_own_conf().
 
+  Check for rd_other_conf() in dw_pcie_rd_other_conf() to make this symmetric
+  with the rd_own_conf() checking, and similarly for the write path.
+
+  No functional change intended.
+
+  Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+  Acked-by: Pratyush Anand <pratyush.anand@gmail.com>
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/pci/pcie-designware.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
+index 782da2626..28f57f9d2 100644
+--- a/drivers/pci/pcie-designware.c
++++ b/drivers/pci/pcie-designware.c
+@@ -323,6 +323,10 @@ static int dw_pcie_rd_other_conf(struct pcie_port *pp, struct pci_bus *bus,
+ 	u64 cpu_addr;
+ 	void __iomem *va_cfg_base;
+ 
++	if (pp->ops->rd_other_conf)
++		return pp->ops->rd_other_conf(pp, bus, devfn,
++					      where, size, val);
++
+ 	busdev = PCIE_ATU_BUS(bus->number) | PCIE_ATU_DEV(PCI_SLOT(devfn)) |
+ 		PCIE_ATU_FUNC(PCI_FUNC(devfn));
+ 	address = where & ~0x3;
+@@ -358,6 +362,10 @@ static int dw_pcie_wr_other_conf(struct pcie_port *pp, struct pci_bus *bus,
+ 	u64 cpu_addr;
+ 	void __iomem *va_cfg_base;
+ 
++	if (pp->ops->wr_other_conf)
++		return pp->ops->wr_other_conf(pp, bus, devfn,
++					      where, size, val);
++
+ 	busdev = PCIE_ATU_BUS(bus->number) | PCIE_ATU_DEV(PCI_SLOT(devfn)) |
+ 		 PCIE_ATU_FUNC(PCI_FUNC(devfn));
+ 
+@@ -422,10 +430,6 @@ static int dw_pcie_rd_conf(struct pci_bus *bus, u32 devfn, int where,
+ 
+ 	if (bus->number == pp->root_bus_nr)
+ 		ret = dw_pcie_rd_own_conf(pp, where, size, val);
+-
+-	else if (pp->ops->rd_other_conf)
+-		ret = pp->ops->rd_other_conf(pp, bus, devfn,
+-					     where, size, val);
+ 	else
+ 		ret = dw_pcie_rd_other_conf(pp, bus, devfn,
+ 					    where, size, val);
+@@ -449,9 +453,6 @@ static int dw_pcie_wr_conf(struct pci_bus *bus, u32 devfn,
+ 
+ 	if (bus->number == pp->root_bus_nr)
+ 		ret = dw_pcie_wr_own_conf(pp, where, size, val);
+-	else if (pp->ops->wr_other_conf)
+-		ret = pp->ops->wr_other_conf(pp, bus, devfn,
+-					     where, size, val);
+ 	else
+ 		ret = dw_pcie_wr_other_conf(pp, bus, devfn,
+ 					    where, size, val);
 -- 
--=( Ian Abbott <abbotti@mev.co.uk> || Web: www.mev.co.uk )=-
--=( MEV Ltd. is a company registered in England & Wales. )=-
--=( Registered number: 02862268.  Registered address:    )=-
--=( 15 West Park Road, Bramhall, STOCKPORT, SK7 3JZ, UK. )=-
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
