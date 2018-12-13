@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLAx-0008Gh-GV
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:53 +0000
-Received: by mail-pf1-x442.google.com with SMTP id b85so646623pfc.3
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:40 -0800 (PST)
+ id 1gXLBA-0008Hj-9s
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:13:06 +0000
+Received: by mail-pl1-x643.google.com with SMTP id b5so618740plr.4
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:54 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:11:24 -0800
-Message-Id: <20181213071144.31691-39-andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:11:35 -0800
+Message-Id: <20181213071144.31691-50-andrew.smirnov@gmail.com>
 In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,73 +23,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 38/58] PCI: imx6: Remove unused return values
+Subject: [PATCH 49/58] PCI: dwc: designware: Test PCIE_ATU_ENABLE bit
+ specifically
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 9ab021b6cf8b5bfc40ea9333c9b64b554fe01cd4
+Port of a Linux commit e9be4d78618af2e0d5592d9556cf0bba210cfd1a
 
-  Remove unused return values.  No functional change intended.
+  The ATU CTRL2 register is 32 bits, and bits other than the enable bit may
+  be set.  To check whether the ATU is enabled or not, we should test the
+  enable bit specifically.
 
+  Signed-off-by: Jisheng Zhang <jszhang@marvell.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+  Acked-by: Joao Pinto <jpinto@synopsys.com>
+  Acked-by: Jingoo Han <jingoohan1@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ drivers/pci/pcie-designware.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index 8e7bae258..fa62aa3a4 100644
---- a/drivers/pci/pci-imx6.c
-+++ b/drivers/pci/pci-imx6.c
-@@ -236,7 +236,7 @@ static void imx6_pcie_reset_phy(struct imx6_pcie *imx6_pcie)
- 	pcie_phy_write(imx6_pcie, PHY_RX_OVRD_IN_LO, temp);
- }
+diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
+index 2baf6c3b1..b365b1617 100644
+--- a/drivers/pci/pcie-designware.c
++++ b/drivers/pci/pcie-designware.c
+@@ -126,7 +126,7 @@ void dw_pcie_prog_outbound_atu(struct dw_pcie *pci, int index,
+ 	 */
+ 	for (retries = 0; retries < LINK_WAIT_MAX_IATU_RETRIES; retries++) {
+ 		val = dw_pcie_readl_dbi(pci, PCIE_ATU_CR2);
+-		if (val == PCIE_ATU_ENABLE)
++		if (val & PCIE_ATU_ENABLE)
+ 			return;
  
--static int imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
-+static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
- {
- 	struct pcie_port *pp = &imx6_pcie->pp;
- 	u32 val, gpr1, gpr12;
-@@ -283,11 +283,9 @@ static int imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
- 		writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
- 		break;
- 	}
--
--	return 0;
- }
- 
--static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
-+static void imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
- {
- 	struct device_d *dev = imx6_pcie->pp.dev;
- 	int ret;
-@@ -296,7 +294,7 @@ static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
- 	ret = clk_enable(imx6_pcie->pcie_phy);
- 	if (ret) {
- 		dev_err(dev, "unable to enable pcie_phy clock\n");
--		goto err_pcie_phy;
-+		return;
- 	}
- 
- 	ret = clk_enable(imx6_pcie->pcie_bus);
-@@ -351,15 +349,12 @@ static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
- 		break;
- 	}
- 
--	return 0;
-+	return;
- 
- err_pcie:
- 	clk_disable(imx6_pcie->pcie_bus);
- err_pcie_bus:
- 	clk_disable(imx6_pcie->pcie_phy);
--err_pcie_phy:
--	return ret;
--
- }
- 
- static void imx6_pcie_init_phy(struct imx6_pcie *imx6_pcie)
+ 		udelay(LINK_WAIT_IATU_MAX);
 -- 
 2.19.1
 
