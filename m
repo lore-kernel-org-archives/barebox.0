@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLAS-0005oY-8O
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:24 +0000
-Received: by mail-pf1-x442.google.com with SMTP id h3so652906pfg.1
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:18 -0800 (PST)
+ id 1gXLAV-0005iu-Vu
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:28 +0000
+Received: by mail-pl1-x643.google.com with SMTP id w4so627406plz.1
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:13 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:11:07 -0800
-Message-Id: <20181213071144.31691-22-andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:11:03 -0800
+Message-Id: <20181213071144.31691-18-andrew.smirnov@gmail.com>
 In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,53 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 21/58] PCI: designware: Check LTSSM training bit before
- deciding link is up
+Subject: [PATCH 17/58] PCI: designware: Remove incorrect RC memory base/limit
+ configuration
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 01c076732e8288485c22ef50f20949455a783ca9
+Port of a Linux commit a5cb903aef8c642e6f0f6810d46dacedf666b54a
 
-  The link may be up but still in link training.  In this case, we can't
-  think the link is up and operating correctly.  Teach dw_pcie_link_up() to
-  be aware of the PCIE_PHY_DEBUG_R1_LINK_IN_TRAINING bit.
+  Currently dw_pcie_setup_rc() configures memory base and memory limit in the
+  type1 configuration header for the root complex.  In doing so it uses the
+  CPU address (pp->mem_base) rather than the bus address (pp->mem_bus_addr).
+  This is wrong and it is useless since the configuration is overwritten
+  later on when pci_bus_assign_resources() is called.
 
-  Also rewrite PCIE_PHY_DEBUG_R1_LINK_UP definition so that it's consistent
-  with other macros.
+  Remove this configuration from dw_pcie_setup_rc().
 
-  Signed-off-by: Jisheng Zhang <jszhang@marvell.com>
+  Signed-off-by: Gabriele Paoloni <gabriele.paoloni@huawei.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-  Acked-by: Joao Pinto <jpinto@synopsys.com>
+  Acked-by: Pratyush Anand <pratyush.anand@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/pci/pcie-designware.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
 diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index b56c466fd..6de9fa7e3 100644
+index 5e824cedc..e9058768d 100644
 --- a/drivers/pci/pcie-designware.c
 +++ b/drivers/pci/pcie-designware.c
-@@ -83,7 +83,8 @@
- /* PCIe Port Logic registers */
- #define PLR_OFFSET                     0x700
- #define PCIE_PHY_DEBUG_R1              (PLR_OFFSET + 0x2c)
--#define PCIE_PHY_DEBUG_R1_LINK_UP      0x00000010
-+#define PCIE_PHY_DEBUG_R1_LINK_UP      (0x1 << 4)
-+#define PCIE_PHY_DEBUG_R1_LINK_IN_TRAINING     (0x1 << 29)
+@@ -489,8 +489,6 @@ static struct pci_ops dw_pcie_ops = {
+ void dw_pcie_setup_rc(struct pcie_port *pp)
+ {
+ 	u32 val;
+-	u32 membase;
+-	u32 memlimit;
  
- static unsigned long global_io_offset;
+ 	/* set the number of lanes */
+ 	dw_pcie_readl_rc(pp, PCIE_PORT_LINK_CONTROL, &val);
+@@ -537,12 +535,6 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
+ 	val |= 0x00010100;
+ 	dw_pcie_writel_rc(pp, val, PCI_PRIMARY_BUS);
  
-@@ -217,7 +218,8 @@ int dw_pcie_link_up(struct pcie_port *pp)
- 		return pp->ops->link_up(pp);
- 
- 	val = readl(pp->dbi_base + PCIE_PHY_DEBUG_R1);
--	return val & PCIE_PHY_DEBUG_R1_LINK_UP;
-+	return ((val & PCIE_PHY_DEBUG_R1_LINK_UP) &&
-+		!(val & PCIE_PHY_DEBUG_R1_LINK_IN_TRAINING));
- }
- 
- static inline struct pcie_port *host_to_pcie(struct pci_controller *host)
+-	/* setup memory base, memory limit */
+-	membase = ((u32)pp->mem_base & 0xfff00000) >> 16;
+-	memlimit = (pp->mem_size + (u32)pp->mem_base) & 0xfff00000;
+-	val = memlimit | membase;
+-	dw_pcie_writel_rc(pp, val, PCI_MEMORY_BASE);
+-
+ 	/* setup command register */
+ 	dw_pcie_readl_rc(pp, PCI_COMMAND, &val);
+ 	val &= 0xffff0000;
 -- 
 2.19.1
 
