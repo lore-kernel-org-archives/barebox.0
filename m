@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mx01.eckelmann.de ([217.19.183.92])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZtDU-0004IN-1F
- for barebox@lists.infradead.org; Thu, 20 Dec 2018 07:58:01 +0000
-Date: Thu, 20 Dec 2018 08:57:47 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181220075747.z32zarcpenlp23zn@pengutronix.de>
-References: <20181219080403.13737-1-shc_work@mail.ru>
+ id 1gXKaA-0004a3-7q
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 06:34:52 +0000
+Received: from ex-srv2.eckelmann.group ([172.18.35.5]:12294
+ helo=smtp.eckelmann.de)
+ by mx01.eckelmann.de with esmtps (TLSv1.2:AES256-GCM-SHA384:256)
+ (Exim 4.82_1-5b7a7c0-XX) (envelope-from <T.Scherer@eckelmann.de>)
+ id 1gXKZp-00022M-1R
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:34:29 +0100
+From: "Thorsten K. Scherer" <t.scherer@eckelmann.de>
+Date: Thu, 13 Dec 2018 07:33:56 +0100
+Message-ID: <20181213063356.19138-1-t.scherer@eckelmann.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181219080403.13737-1-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,58 +21,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/10] serial: clps711x: Change compatible string
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] imd: model and compatible missing in metadata
+To: barebox@lists.infradead.org
+Cc: "Thorsten K. Scherer" <t.scherer@eckelmann.de>
 
-On Wed, Dec 19, 2018 at 11:03:54AM +0300, Alexander Shiyan wrote:
-> This patch changes compatible string for CLPS711X serial driver
-> to "cirrus,ep7209-uart" for conform with linux kernel.
-> 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> ---
->  drivers/serial/serial_clps711x.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Applied all, thanks
-
-Sascha
-
-> 
-> diff --git a/drivers/serial/serial_clps711x.c b/drivers/serial/serial_clps711x.c
-> index fa6342346..9a9ae24c0 100644
-> --- a/drivers/serial/serial_clps711x.c
-> +++ b/drivers/serial/serial_clps711x.c
-> @@ -182,7 +182,7 @@ out_err:
->  }
->  
->  static struct of_device_id __maybe_unused clps711x_uart_dt_ids[] = {
-> -	{ .compatible = "cirrus,clps711x-uart", },
-> +	{ .compatible = "cirrus,ep7209-uart", },
->  };
->  
->  static struct driver_d clps711x_driver = {
-> -- 
-> 2.13.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Zml4ZXMgOTdlODFmMgoKU2lnbmVkLW9mZi1ieTogVGhvcnN0ZW4gSy4gU2NoZXJlciA8dC5zY2hl
+cmVyQGVja2VsbWFubi5kZT4KLS0tCiBpbmNsdWRlL2FzbS1nZW5lcmljL2JhcmVib3gubGRzLmgg
+fCAyICstCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRp
+ZmYgLS1naXQgYS9pbmNsdWRlL2FzbS1nZW5lcmljL2JhcmVib3gubGRzLmggYi9pbmNsdWRlL2Fz
+bS1nZW5lcmljL2JhcmVib3gubGRzLmgKaW5kZXggNzRkM2NhNGE5Li5kZWNhYWI3OWEgMTAwNjQ0
+Ci0tLSBhL2luY2x1ZGUvYXNtLWdlbmVyaWMvYmFyZWJveC5sZHMuaAorKysgYi9pbmNsdWRlL2Fz
+bS1nZW5lcmljL2JhcmVib3gubGRzLmgKQEAgLTY2LDcgKzY2LDcgQEAKICNkZWZpbmUgQkFSRUJP
+WF9JTUQJCQkJXAogCUtFRVAoKiguYmFyZWJveF9pbWRfc3RhcnQpKQkJXAogCUtFRVAoKiguYmFy
+ZWJveF9pbWRfMSopKQkJXAotCSooLmJhcmVib3hfaW1kXzAqKQkJCVwKKwlLRUVQKCooLmJhcmVi
+b3hfaW1kXzAqKSkJCVwKIAlLRUVQKCooLmJhcmVib3hfaW1kX2VuZCkpCiAKICNpZiBkZWZpbmVk
+KENPTkZJR19BUkNIX0JBUkVCT1hfTUFYX0JBUkVfSU5JVF9TSVpFKSAmJiBcCi0tIAoyLjE5LjEK
+CgotLSAKRWNrZWxtYW5uIEFHClZvcnN0YW5kOiBEaXBsLi1JbmcuIFBldGVyIEZyYW5rZW5iYWNo
+IChTcHJlY2hlcikgRGlwbC4tV2kuLUluZy4gUGhpbGlwcCBFY2tlbG1hbm4KRHIuLUluZy4gTWFy
+Y28gTcO8bmNoaG9mIERyLi1JbmcuIEZyYW5rIFVobGVtYW5uClZvcnNpdHplbmRlciBkZXMgQXVm
+c2ljaHRzcmF0czogSHViZXJ0dXMgRy4gS3Jvc3NhClN0di4gVm9yc2l0emVuZGVyIGRlcyBBdWZz
+aWNodHNyYXRzOiBEci4tSW5nLiBHZXJkIEVja2VsbWFubgpTaXR6IGRlciBHZXNlbGxzY2hhZnQ6
+IEJlcmxpbmVyIFN0ci4gMTYxLCA2NTIwNSBXaWVzYmFkZW4sIEFtdHNnZXJpY2h0IFdpZXNiYWRl
+biBIUkIgMTI2MzYKaHR0cDovL3d3dy5lY2tlbG1hbm4uZGUKCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
+bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
+c3RpbmZvL2JhcmVib3gK
