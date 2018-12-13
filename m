@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLfr-0005Qb-Ci
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:44:50 +0000
+ id 1gXLfr-0005Qa-Cn
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:44:52 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Thu, 13 Dec 2018 08:44:23 +0100
-Message-Id: <20181213074430.25614-2-r.czerwinski@pengutronix.de>
+Date: Thu, 13 Dec 2018 08:44:27 +0100
+Message-Id: <20181213074430.25614-6-r.czerwinski@pengutronix.de>
 In-Reply-To: <20181213074430.25614-1-r.czerwinski@pengutronix.de>
 References: <20181213074430.25614-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,37 +21,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/8] ARM: rpi: fix typo in rpi-common.c
+Subject: [PATCH v2 5/8] serial_ns16550: add raspberry pi compatible and init
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
+Add the compatible for the Raspberry Pi AUX UART and an init function which
+enables it via the aux register and configures the correct shift value.
+
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/boards/raspberry-pi/rpi-common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/serial/serial_ns16550.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-index 650b26ce7..840f525bb 100644
---- a/arch/arm/boards/raspberry-pi/rpi-common.c
-+++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-@@ -73,7 +73,7 @@ static int rpi_get_arm_mem(u32 *size)
- 	return 0;
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index 8ddcfdbef..7a4054a67 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -253,6 +253,20 @@ static void ns16550_jz_init_port(struct console_device *cdev)
+ 	ns16550_serial_init_port(cdev);
  }
  
--static struct clk *rpi_register_firmare_clock(u32 clock_id, const char *name)
-+static struct clk *rpi_register_firmware_clock(u32 clock_id, const char *name)
- {
- 	BCM2835_MBOX_STACK_ALIGN(struct msg_get_clock_rate, msg);
- 	int ret;
-@@ -286,7 +286,7 @@ static int rpi_clock_init(void)
- {
- 	struct clk *clk;
++static void rpi_init_port(struct console_device *cdev)
++{
++  struct ns16550_priv *priv = to_ns16550_priv(cdev);
++
++  writeb(0x01, 0x3f215004);
++  priv->plat.shift = 2;
++  /*
++   * We double the clock rate since the 16550 will divide by 16
++   * (instead of 8 required by the BCM2835 peripheral manual)
++   */
++  priv->plat.clock = priv->plat.clock*2;
++  ns16550_serial_init_port(cdev);
++}
++
+ /*********** Exposed Functions **********************************/
  
--	clk = rpi_register_firmare_clock(BCM2835_MBOX_CLOCK_ID_EMMC,
-+	clk = rpi_register_firmware_clock(BCM2835_MBOX_CLOCK_ID_EMMC,
- 					 "bcm2835_mci0");
- 	if (IS_ERR(clk))
- 		return PTR_ERR(clk);
+ /**
+@@ -353,6 +367,11 @@ static __maybe_unused struct ns16550_drvdata tegra_drvdata = {
+ 	.linux_console_name = "ttyS",
+ };
+ 
++static struct ns16550_drvdata rpi_drvdata = {
++  .init_port = rpi_init_port,
++  .linux_console_name = "ttyS",
++};
++
+ static int ns16550_init_iomem(struct device_d *dev, struct ns16550_priv *priv)
+ {
+ 	struct resource *iores;
+@@ -527,6 +546,12 @@ static struct of_device_id ns16550_serial_dt_ids[] = {
+ 		.compatible = "ingenic,jz4740-uart",
+ 		.data = &jz_drvdata,
+ 	},
++#endif
++#if IS_ENABLED(CONFIG_MACH_RPI_COMMON)
++	{
++	  .compatible = "brcm,bcm2835-aux-uart",
++	  .data = &rpi_drvdata,
++	},
+ #endif
+ 	{
+ 		/* sentinel */
 -- 
 2.19.1
 
