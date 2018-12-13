@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLAV-0005iu-Vu
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:28 +0000
-Received: by mail-pl1-x643.google.com with SMTP id w4so627406plz.1
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:13 -0800 (PST)
+ id 1gXLAY-0005lq-Lo
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:12:29 +0000
+Received: by mail-pl1-x644.google.com with SMTP id u6so606448plm.8
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:16 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:11:03 -0800
-Message-Id: <20181213071144.31691-18-andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:11:05 -0800
+Message-Id: <20181213071144.31691-20-andrew.smirnov@gmail.com>
 In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,56 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/58] PCI: designware: Remove incorrect RC memory base/limit
- configuration
+Subject: [PATCH 19/58] PCI: designware: Move link wait definitions to .c file
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit a5cb903aef8c642e6f0f6810d46dacedf666b54a
+Port of a Linux commit c388de1c4f0e5da3e96b49efb0388e2a0d34e079
 
-  Currently dw_pcie_setup_rc() configures memory base and memory limit in the
-  type1 configuration header for the root complex.  In doing so it uses the
-  CPU address (pp->mem_base) rather than the bus address (pp->mem_bus_addr).
-  This is wrong and it is useless since the configuration is overwritten
-  later on when pci_bus_assign_resources() is called.
+  Move the link wait sleep definitions to the .c file as suggested by
+  Jisheng Zhang in a previous patch.
 
-  Remove this configuration from dw_pcie_setup_rc().
-
-  Signed-off-by: Gabriele Paoloni <gabriele.paoloni@huawei.com>
+  Signed-off-by: Joao Pinto <jpinto@synopsys.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-  Acked-by: Pratyush Anand <pratyush.anand@gmail.com>
+  CC: Jisheng Zhang <jszhang@marvell.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/pci/pcie-designware.c | 4 ++++
+ drivers/pci/pcie-designware.h | 4 ----
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index 5e824cedc..e9058768d 100644
+index 995fe997e..450885f07 100644
 --- a/drivers/pci/pcie-designware.c
 +++ b/drivers/pci/pcie-designware.c
-@@ -489,8 +489,6 @@ static struct pci_ops dw_pcie_ops = {
- void dw_pcie_setup_rc(struct pcie_port *pp)
- {
- 	u32 val;
--	u32 membase;
--	u32 memlimit;
+@@ -30,6 +30,10 @@
  
- 	/* set the number of lanes */
- 	dw_pcie_readl_rc(pp, PCIE_PORT_LINK_CONTROL, &val);
-@@ -537,12 +535,6 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
- 	val |= 0x00010100;
- 	dw_pcie_writel_rc(pp, val, PCI_PRIMARY_BUS);
+ #include "pcie-designware.h"
  
--	/* setup memory base, memory limit */
--	membase = ((u32)pp->mem_base & 0xfff00000) >> 16;
--	memlimit = (pp->mem_size + (u32)pp->mem_base) & 0xfff00000;
--	val = memlimit | membase;
--	dw_pcie_writel_rc(pp, val, PCI_MEMORY_BASE);
++/* Parameters for the waiting for link up routine */
++#define LINK_WAIT_MAX_RETRIES		10
++#define LINK_WAIT_USLEEP_MAX		100000
++
+ /* Synopsis specific PCIE configuration registers */
+ #define PCIE_PORT_LINK_CONTROL		0x710
+ #define PORT_LINK_MODE_MASK		(0x3f << 16)
+diff --git a/drivers/pci/pcie-designware.h b/drivers/pci/pcie-designware.h
+index 547ab3151..0d777ce00 100644
+--- a/drivers/pci/pcie-designware.h
++++ b/drivers/pci/pcie-designware.h
+@@ -14,10 +14,6 @@
+ #ifndef _PCIE_DESIGNWARE_H
+ #define _PCIE_DESIGNWARE_H
+ 
+-/* Parameters for the waiting for link up routine */
+-#define LINK_WAIT_MAX_RETRIES		10
+-#define LINK_WAIT_USLEEP_MAX		100000
 -
- 	/* setup command register */
- 	dw_pcie_readl_rc(pp, PCI_COMMAND, &val);
- 	val &= 0xffff0000;
+ struct pcie_port {
+ 	struct device_d		*dev;
+ 	u8			root_bus_nr;
 -- 
 2.19.1
 
