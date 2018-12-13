@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXLBD-0001Mq-Df
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:13:09 +0000
-Received: by mail-pl1-x642.google.com with SMTP id y1so607144plp.9
- for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:57 -0800 (PST)
+ id 1gXLB5-0001Ml-R4
+ for barebox@lists.infradead.org; Thu, 13 Dec 2018 07:13:01 +0000
+Received: by mail-pf1-x442.google.com with SMTP id b7so635415pfi.8
+ for <barebox@lists.infradead.org>; Wed, 12 Dec 2018 23:12:55 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 12 Dec 2018 23:11:37 -0800
-Message-Id: <20181213071144.31691-52-andrew.smirnov@gmail.com>
+Date: Wed, 12 Dec 2018 23:11:36 -0800
+Message-Id: <20181213071144.31691-51-andrew.smirnov@gmail.com>
 In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,194 +23,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 51/58] PCI: Add SPDX GPL-2.0 to replace GPL v2 boilerplate
+Subject: [PATCH 50/58] PCI: Fix typos and whitespace errors
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 8cfab3cf63cfe5a53e2e566b3b86b30c187edf3a
+Port of a Linux commit 96291d565550c1fd363e488cc17cb3189d2e4cc2
 
-  Add SPDX GPL-2.0 to all PCI files that specified the GPL version 2 license.
+  Fix various typos and whitespace errors:
 
-  Remove the boilerplate GPL version 2 language, relying on the assertion in
-  b24413180f56 ("License cleanup: add SPDX GPL-2.0 license identifier to
-  files with no license") that the SPDX identifier may be used instead of the
-  full boilerplate text.
+    s/Synopsis/Synopsys/
+    s/Designware/DesignWare/
+    s/Keystine/Keystone/
+    s/gpio/GPIO/
+    s/pcie/PCIe/
+    s/phy/PHY/
+    s/confgiruation/configuration/
+
+  No functional change intended.
 
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-  Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c             |  5 +----
- drivers/pci/pci-mvebu-phy.c        |  5 +----
- drivers/pci/pci-mvebu.c            |  5 +----
- drivers/pci/pci-mvebu.h            |  5 +----
- drivers/pci/pci-tegra.c            | 13 +------------
- drivers/pci/pcie-designware-host.c |  5 +----
- drivers/pci/pcie-designware.c      |  5 +----
- drivers/pci/pcie-designware.h      |  5 +----
- 8 files changed, 8 insertions(+), 40 deletions(-)
+ drivers/pci/pcie-designware-host.c | 2 +-
+ drivers/pci/pcie-designware.c      | 2 +-
+ drivers/pci/pcie-designware.h      | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index 67ef47db9..78aa5215a 100644
---- a/drivers/pci/pci-imx6.c
-+++ b/drivers/pci/pci-imx6.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: GPL-2.0
- /*
-  * PCIe host controller driver for Freescale i.MX6 SoCs
-  *
-@@ -5,10 +6,6 @@
-  *		http://www.kosagi.com
-  *
-  * Author: Sean Cross <xobs@kosagi.com>
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-  */
- 
- #include <common.h>
-diff --git a/drivers/pci/pci-mvebu-phy.c b/drivers/pci/pci-mvebu-phy.c
-index 55a1d39f6..f1bfc99ee 100644
---- a/drivers/pci/pci-mvebu-phy.c
-+++ b/drivers/pci/pci-mvebu-phy.c
-@@ -1,13 +1,10 @@
-+// SPDX-License-Identifier: GPL-2.0
- /*
-  * SoC specific PCIe PHY setup for Marvell MVEBU SoCs
-  *
-  * Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-  *
-  * based on Marvell BSP code (C) Marvell International Ltd.
-- *
-- * This file is licensed under the terms of the GNU General Public
-- * License version 2.  This program is licensed "as is" without any
-- * warranty of any kind, whether express or implied.
-  */
- 
- #include <common.h>
-diff --git a/drivers/pci/pci-mvebu.c b/drivers/pci/pci-mvebu.c
-index 91e8ca870..1c20f9154 100644
---- a/drivers/pci/pci-mvebu.c
-+++ b/drivers/pci/pci-mvebu.c
-@@ -1,11 +1,8 @@
-+// SPDX-License-Identifier: GPL-2.0
- /*
-  * PCIe driver for Marvell MVEBU SoCs
-  *
-  * Based on Linux drivers/pci/host/pci-mvebu.c
-- *
-- * This file is licensed under the terms of the GNU General Public
-- * License version 2.  This program is licensed "as is" without any
-- * warranty of any kind, whether express or implied.
-  */
- 
- #include <common.h>
-diff --git a/drivers/pci/pci-mvebu.h b/drivers/pci/pci-mvebu.h
-index 8ced9fefc..2797bc4c8 100644
---- a/drivers/pci/pci-mvebu.h
-+++ b/drivers/pci/pci-mvebu.h
-@@ -1,11 +1,8 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
- /*
-  * PCIe include for Marvell MVEBU SoCs
-  *
-  * Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-- *
-- * This file is licensed under the terms of the GNU General Public
-- * License version 2.  This program is licensed "as is" without any
-- * warranty of any kind, whether express or implied.
-  */
- 
- #ifndef __MVEBU_PCI_H
-diff --git a/drivers/pci/pci-tegra.c b/drivers/pci/pci-tegra.c
-index b532c464a..b6ccf8e5b 100644
---- a/drivers/pci/pci-tegra.c
-+++ b/drivers/pci/pci-tegra.c
-@@ -1,21 +1,10 @@
-+// SPDX-License-Identifier: GPL-2.0
- /*
-  * Copyright (C) 2014 Lucas Stach <l.stach@pengutronix.de>
-  *
-  * based on code
-  * Copyright (c) 2010, CompuLab, Ltd.
-  * Copyright (c) 2008-2009, NVIDIA Corporation.
-- *
-- * This program is free software; you can redistribute it and/or modify it
-- * under the terms and conditions of the GNU General Public License,
-- * version 2, as published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope it will be useful, but WITHOUT
-- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-- * more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
- 
- #include <common.h>
 diff --git a/drivers/pci/pcie-designware-host.c b/drivers/pci/pcie-designware-host.c
-index f37f14647..8bf5699d7 100644
+index 19e5d0b27..f37f14647 100644
 --- a/drivers/pci/pcie-designware-host.c
 +++ b/drivers/pci/pcie-designware-host.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: GPL-2.0
+@@ -1,5 +1,5 @@
  /*
-  * Synopsys DesignWare PCIe host controller driver
+- * Synopsys Designware PCIe host controller driver
++ * Synopsys DesignWare PCIe host controller driver
   *
-@@ -5,10 +6,6 @@
+  * Copyright (C) 2013 Samsung Electronics Co., Ltd.
   *		http://www.samsung.com
-  *
-  * Author: Jingoo Han <jg1.han@samsung.com>
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-  */
- 
- 
 diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index 0674cbbec..efc823b8f 100644
+index b365b1617..0674cbbec 100644
 --- a/drivers/pci/pcie-designware.c
 +++ b/drivers/pci/pcie-designware.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: GPL-2.0
+@@ -1,5 +1,5 @@
  /*
-  * Synopsys DesignWare PCIe host controller driver
+- * Synopsys Designware PCIe host controller driver
++ * Synopsys DesignWare PCIe host controller driver
   *
-@@ -5,10 +6,6 @@
+  * Copyright (C) 2013 Samsung Electronics Co., Ltd.
   *		http://www.samsung.com
-  *
-  * Author: Jingoo Han <jg1.han@samsung.com>
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-  */
- 
- 
 diff --git a/drivers/pci/pcie-designware.h b/drivers/pci/pcie-designware.h
-index bc94f6648..f45d89a25 100644
+index 02e451756..bc94f6648 100644
 --- a/drivers/pci/pcie-designware.h
 +++ b/drivers/pci/pcie-designware.h
-@@ -1,3 +1,4 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
+@@ -1,5 +1,5 @@
  /*
-  * Synopsys DesignWare PCIe host controller driver
+- * Synopsys Designware PCIe host controller driver
++ * Synopsys DesignWare PCIe host controller driver
   *
-@@ -5,10 +6,6 @@
+  * Copyright (C) 2013 Samsung Electronics Co., Ltd.
   *		http://www.samsung.com
-  *
-  * Author: Jingoo Han <jg1.han@samsung.com>
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-  */
- 
- #ifndef _PCIE_DESIGNWARE_H
 -- 
 2.19.1
 
