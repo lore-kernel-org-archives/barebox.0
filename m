@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYpPr-00046y-LD
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 09:42:25 +0000
-Date: Mon, 17 Dec 2018 10:42:09 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181217094209.al7uf2sz2z2ls5mm@pengutronix.de>
-References: <20181213070336.26837-1-andrew.smirnov@gmail.com>
+ id 1gXkTT-0001CN-QL
+ for barebox@lists.infradead.org; Fri, 14 Dec 2018 10:13:42 +0000
+Date: Fri, 14 Dec 2018 11:13:25 +0100
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20181214101325.s7skmbskin2qvvfv@pengutronix.de>
+References: <20181210155511.1376-1-rhi@pengutronix.de>
+ <20181213065758.i6pujqsmk7ezuw3i@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181213070336.26837-1-andrew.smirnov@gmail.com>
+In-Reply-To: <20181213065758.i6pujqsmk7ezuw3i@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,90 +23,229 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] net/e1000: Map custom error codes to more
- appropriate errno values
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/3] Documentation: i.MX: improve wording, add markup and
+ missing articles
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox Mailing List <barebox@lists.infradead.org>
 
-On Wed, Dec 12, 2018 at 11:03:33PM -0800, Andrey Smirnov wrote:
-> A number of custom error codes used by e1000 driver will be propagated
-> all the way up to generic networking code and will end up being fed to
-> strerror(). As a result of that, some of the current error codes will
-> result in not very helpful failure messages. For example, trying to
-> ping a host on a system where access to i210's EEPROM fails results in
-> the following message:
-> 
->   barebox@ZII RDU2 Board:/ ping 192.168.53.7
->   ping failed: Operation not permitted
-> 
-> In order to make message like that one a little bit more helpful,
-> change definitions of various E1000_ERR_* constants to map to a bit
-> more appropriate error codes.
-> 
-> While at it, remove E1000_ERR_MASTER_REQUESTS_PENDING and
-> E1000_ERR_HOST_INTERFACE_COMMAND that are not referenced anywhere in
-> the codebase.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  drivers/net/e1000/e1000.h | 24 +++++++++++-------------
->  1 file changed, 11 insertions(+), 13 deletions(-)
+Hmm. It still applies here cleanly on next. Do you want it on master
+instead? I don't mind having it in next, and if you applied this series
+on master instead, the conflicts with next will probably be the other
+way around for the next release.
 
-Applied, thanks
+ - Roland
 
-Sascha
-
+On Thu, Dec 13, 2018 at 07:57:58AM +0100, Sascha Hauer wrote:
+> Hi Roland,
 > 
-> diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
-> index 4a1a1aa33..0a9e107c0 100644
-> --- a/drivers/net/e1000/e1000.h
-> +++ b/drivers/net/e1000/e1000.h
-> @@ -95,19 +95,17 @@ typedef enum {
->  
->  /* Error Codes */
->  #define E1000_SUCCESS				0
-> -#define E1000_ERR_EEPROM			1
-> -#define E1000_ERR_PHY				2
-> -#define E1000_ERR_CONFIG			3
-> -#define E1000_ERR_PARAM				4
-> -#define E1000_ERR_MAC_TYPE			5
-> -#define E1000_ERR_PHY_TYPE			6
-> -#define E1000_ERR_NOLINK			7
-> -#define E1000_ERR_TIMEOUT			8
-> -#define E1000_ERR_RESET				9
-> -#define E1000_ERR_MASTER_REQUESTS_PENDING	10
-> -#define E1000_ERR_HOST_INTERFACE_COMMAND	11
-> -#define E1000_BLK_PHY_RESET			12
-> -#define E1000_ERR_SWFW_SYNC 			13
-> +#define E1000_ERR_EEPROM			EIO
-> +#define E1000_ERR_PHY				EIO
-> +#define E1000_ERR_CONFIG			EINVAL
-> +#define E1000_ERR_PARAM				EINVAL
-> +#define E1000_ERR_MAC_TYPE			EINVAL
-> +#define E1000_ERR_PHY_TYPE			EINVAL
-> +#define E1000_ERR_NOLINK			ENETDOWN
-> +#define E1000_ERR_TIMEOUT			ETIMEDOUT
-> +#define E1000_ERR_RESET				EIO
-> +#define E1000_BLK_PHY_RESET			EWOULDBLOCK
-> +#define E1000_ERR_SWFW_SYNC 			EBUSY
->  
->  /* PCI Device IDs */
->  #define E1000_DEV_ID_82542			0x1000
+> This one doesn't apply. Could you rebase?
+> 
+> Sascha
+> 
+> On Mon, Dec 10, 2018 at 04:55:09PM +0100, Roland Hieber wrote:
+> > Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+> > ---
+> >  Documentation/boards/imx.rst | 102 +++++++++++++++++++----------------
+> >  1 file changed, 57 insertions(+), 45 deletions(-)
+> > 
+> > diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
+> > index 35a180b0dd..2e6a30fd2f 100644
+> > --- a/Documentation/boards/imx.rst
+> > +++ b/Documentation/boards/imx.rst
+> > @@ -32,114 +32,126 @@ Normally it's not necessary to call this tool manually, it is executed
+> >  automatically at the end of the build process.
+> >  
+> >  The images generated by the build process can be directly written to an
+> >  SD card:
+> >  
+> >  .. code-block:: sh
+> >  
+> >    # with Multi Image support:
+> >    cat images/barebox-freescale-imx51-babbage.img > /dev/sdd
+> >    # otherwise:
+> >    cat barebox-flash-image > /dev/sdd
+> >  
+> >  The above will overwrite the MBR (and consequently the partition table)
+> >  on the destination SD card. To preserve the MBR while writing the rest
+> > -of the image to the card, use::
+> > +of the image to the card, use:
+> > +
+> > +.. code-block:: sh
+> >  
+> >    dd if=images/barebox-freescale-imx51-babbage.img of=/dev/sdd bs=1024 skip=1 seek=1
+> >  
+> > -NOTE: MaskROM on i.MX8 expects image to start at +33KiB mark, so the
+> > +Note that MaskROM on i.MX8 expects the image to start at the +33KiB mark, so the
+> >  following command has to be used instead:
+> >  
+> > +.. code-block:: sh
+> > +
+> >    dd if=images/barebox-nxp-imx8mq-evk.img of=/dev/sdd bs=1024 skip=33 seek=33
+> >  
+> >  Or, in case of NAND:
+> >  
+> > +.. code-block:: sh
+> > +
+> >    dd if=images/barebox-nxp-imx8mq-evk.img of=/dev/nand bs=1024 skip=33 seek=1
+> >  
+> > -The images can also always be started second stage::
+> > +The images can also always be started as second stage on the target:
+> > +
+> > +.. code-block:: console
+> >  
+> > -  bootm /mnt/tftp/barebox-freescale-imx51-babbage.img
+> > +  barebox@Board Name:/ bootm /mnt/tftp/barebox-freescale-imx51-babbage.img
+> >  
+> >  Using GPT on i.MX
+> >  ^^^^^^^^^^^^^^^^^
+> >  
+> > -For i.MX SoCs that place vendor specific header at +1KiB mark of a
+> > -boot medium, special care needs to be taken when parition that medium
+> > -with GPT. In order to make room for i.MX boot header GPT Partition
+> > +For i.MX SoCs that place a vendor specific header at the +1KiB mark of a
+> > +boot medium, special care needs to be taken when partitioning that medium
+> > +with GPT. In order to make room for the i.MX boot header, the GPT Partition
+> >  Entry Array needs to be moved from its typical location, LBA 2, to an
+> >  offset past vendor specific information. One way to do this would be
+> > -to use ``-j`` or ``--adjust-main-table`` option of ``sgdisk``. For
+> > -example, the following sequence:
+> > +to use the ``-j`` or ``--adjust-main-table`` option of ``sgdisk``. For
+> > +example, the following sequence
+> > +
+> > +.. code-block:: sh
+> >  
+> >    sgdisk -Z <block device>
+> >    sgdisk -o -j 2048 -n 1:8192:+100M <block device>
+> >  
+> >  will create a single GPT partition starting at LBA 8192 and would
+> > -place Partition Entry Array starting at LBA 2048 which should leave
+> > -enough room for Barebox/i.MX boot header. Once that is done ``dd``
+> > +place the Partition Entry Array starting at LBA 2048, which should leave
+> > +enough room for the Barebox/i.MX boot header. Once that is done, the ``dd``
+> >  command above can be used to place Barebox on the same medium.
+> >  
+> >  Information about the ``imx-image`` tool
+> >  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> >  
+> >  The imx-image tool can be used to generate imximages from raw binaries.
+> >  It requires an configuration file describing how to setup the SDRAM on
+> >  a particular board. This mainly consists of a poke table. The recognized
+> >  options in this file are:
+> >  
+> >  Header:
+> >  
+> > -+----------------+--------------------------------------------------------------+
+> > -| soc <soctype>  |soctype can be one of imx35, imx51, imx53, imx6, imx7, vf610, |
+> > -|                |                             imx8mq                           |
+> > -+----------------+--------------------------------------------------------------+
+> > -| loadaddr <adr> |     The address the binary is uploaded to                    |
+> > -+----------------+--------------------------------------------------------------+
+> > -| dcdofs <ofs>   | The offset of the image header in the image. This should be: |
+> > -|                | * ``0x400``:  MMC/SD, NAND, serial ROM, PATA, SATA           |
+> > -|                | * ``0x1000``: NOR Flash                                      |
+> > -|                | * ``0x100``: OneNAND                                         |
+> > -+----------------+--------------------------------------------------------------+
+> > ++--------------------+--------------------------------------------------------------+
+> > +| ``soc <soctype>``  | soctype can be one of imx35, imx51, imx53, imx6, imx7, vf610,|
+> > +|                    |                             imx8mq                           |
+> > ++--------------------+--------------------------------------------------------------+
+> > +| ``loadaddr <adr>`` |     The address the binary is uploaded to                    |
+> > ++--------------------+--------------------------------------------------------------+
+> > +| ``dcdofs <ofs>``   | The offset of the image header in the image. This should be: |
+> > +|                    |                                                              |
+> > +|                    | * ``0x400``:  MMC/SD, NAND, serial ROM, PATA, SATA           |
+> > +|                    | * ``0x1000``: NOR Flash                                      |
+> > +|                    | * ``0x100``: OneNAND                                         |
+> > ++--------------------+--------------------------------------------------------------+
+> >  
+> >  Memory manipulation:
+> >  
+> > -+------------------------------------+-----------------------------------------+
+> > -| wm 8 <addr> <value>                | write <value> into byte <addr>          |
+> > -+------------------------------------+-----------------------------------------+
+> > -| wm 16 <addr> <value>               | write <value> into short <addr>         |
+> > -+------------------------------------+-----------------------------------------+
+> > -| wm 32 <addr> <value>               | write <value> into word <addr>          |
+> > -+------------------------------------+-----------------------------------------+
+> > -| set_bits <width> <addr> <value>    | set set bits in <value> in <addr>       |
+> > -+------------------------------------+-----------------------------------------+
+> > -| clear_bits <width> <addr> <value>  | clear set bits in <value> in <addr>     |
+> > -+------------------------------------+-----------------------------------------+
+> > -| nop                                | do nothing (just waste time)            |
+> > -+------------------------------------+-----------------------------------------+
+> > -
+> > -<width> can be of 8, 16 or 32.
+> > ++----------------------------------------+-------------------------------------------------+
+> > +| ``wm 8 <addr> <value>``                | write ``<value>`` into byte ``<addr>``          |
+> > ++----------------------------------------+-------------------------------------------------+
+> > +| ``wm 16 <addr> <value>``               | write ``<value>`` into short ``<addr>``         |
+> > ++----------------------------------------+-------------------------------------------------+
+> > +| ``wm 32 <addr> <value>``               | write ``<value>`` into word ``<addr>``          |
+> > ++----------------------------------------+-------------------------------------------------+
+> > +| ``set_bits <width> <addr> <value>``    | set set bits in ``<value>`` in ``<addr>``       |
+> > ++----------------------------------------+-------------------------------------------------+
+> > +| ``clear_bits <width> <addr> <value>``  | clear set bits in ``<value>`` in ``<addr>``     |
+> > ++----------------------------------------+-------------------------------------------------+
+> > +| ``nop``                                | do nothing (just waste time)                    |
+> > ++----------------------------------------+-------------------------------------------------+
+> > +
+> > +``<width>`` can be one of 8, 16 or 32.
+> >  
+> >  Checking conditions:
+> >  
+> > -+------------------------------------+-----------------------------------------+
+> > -| check <width> <cond> <addr> <mask> | Poll until condition becomes true.      |
+> > -|                                    | with <cond> being one of:               |
+> > -|                                    | * ``until_all_bits_clear``              |
+> > -|                                    | * ``until_all_bits_set``                |
+> > -|                                    | * ``until_any_bit_clear``               |
+> > -|                                    | * ``until_any_bit_set``                 |
+> > -+------------------------------------+-----------------------------------------+
+> > ++----------------------------------------+-----------------------------------------+
+> > +| ``check <width> <cond> <addr> <mask>`` | Poll until condition becomes true.      |
+> > +|                                        | with ``<cond>`` being one of:           |
+> > +|                                        |                                         |
+> > +|                                        | * ``until_all_bits_clear``              |
+> > +|                                        | * ``until_all_bits_set``                |
+> > +|                                        | * ``until_any_bit_clear``               |
+> > +|                                        | * ``until_any_bit_set``                 |
+> > ++----------------------------------------+-----------------------------------------+
+> >  
+> >  Some notes about the mentioned *conditions*.
+> >  
+> >   - ``until_all_bits_clear`` waits until ``(*addr & mask) == 0`` is true
+> >   - ``until_all_bits_set`` waits until ``(*addr & mask) == mask`` is true
+> >   - ``until_any_bit_clear`` waits until ``(*addr & mask) != mask`` is true
+> >   - ``until_any_bit_set`` waits until ``(*addr & mask) != 0`` is true.
+> >  
+> >  USB Boot
+> >  ^^^^^^^^
+> >  
+> >  Most boards can be explicitly configured for USB Boot Mode or fall back
+> >  to USB Boot when no other medium can be found. The barebox repository
+> >  contains a USB upload tool. As it depends on the libusb development headers,
+> > -- 
+> > 2.19.1
+> > 
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> > 
+> 
 > -- 
-> 2.19.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 > 
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Roland Hieber                     | r.hieber@pengutronix.de     |
+Pengutronix e.K.                  | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
