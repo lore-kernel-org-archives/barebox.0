@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXo9I-0003CG-2z
- for barebox@lists.infradead.org; Fri, 14 Dec 2018 14:09:06 +0000
-Date: Fri, 14 Dec 2018 15:08:51 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181214140851.5r72avd74etxydzh@pengutronix.de>
-References: <20181213080144.8401-1-shc_work@mail.ru>
+ id 1gXpRa-0002fV-DE
+ for barebox@lists.infradead.org; Fri, 14 Dec 2018 15:32:05 +0000
+References: <20181207063433.7623-1-a.fatoum@pengutronix.de>
+ <20181207063433.7623-4-a.fatoum@pengutronix.de>
+ <20181207074302.babciy2rcwjvh2iq@pengutronix.de>
+ <e57bbb6a-9055-2986-8045-223b1ed84f5e@pengutronix.de>
+ <20181210083937.7edjbvfih57shwrz@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <f4e71979-864a-f090-9080-24939d859385@pengutronix.de>
+Date: Fri, 14 Dec 2018 16:31:50 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181213080144.8401-1-shc_work@mail.ru>
+In-Reply-To: <20181210083937.7edjbvfih57shwrz@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,56 +26,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] spi: i.MX: Fix wrong bus nubering with devicetree
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH 4/4] of: partition: add no-fixup device tree property
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Dec 13, 2018 at 11:01:43AM +0300, Alexander Shiyan wrote:
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> 
+Hello,
 
-Applied, thanks
+On 10/12/18 09:39, Sascha Hauer wrote:
+> 
+> Still why do we need a device tree property when all we have to do is to
+> not call of_partitions_register_fixup() for the boot partitions?
 
-Sascha
+I figured current users might want to keep the current behavior, but ok,
+I will send another patch that skips fixup for the eMMC boot partitions.
 
-> diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-> index 10621d00c..46e8955ab 100644
-> --- a/drivers/spi/imx_spi.c
-> +++ b/drivers/spi/imx_spi.c
-> @@ -605,17 +605,20 @@ static int imx_spi_probe(struct device_d *dev)
->  
->  	master = &imx->master;
->  	master->dev = dev;
-> -	master->bus_num = dev->id;
->  
->  	master->setup = imx_spi_setup;
->  	master->transfer = imx_spi_transfer;
->  
->  	if (pdata) {
-> +		master->bus_num = dev->id;
->  		master->num_chipselect = pdata->num_chipselect;
->  		imx->cs_array = pdata->chipselect;
-> -	} else {
-> -		if (IS_ENABLED(CONFIG_OFDEVICE))
-> -			imx_spi_dt_probe(imx);
-> +	} else if (IS_ENABLED(CONFIG_OFDEVICE)) {
-> +		ret = of_alias_get_id(dev->device_node, "spi");
-> +		if (ret < 0)
-> +			goto err_free;
-> +		master->bus_num = ret;
-> +		imx_spi_dt_probe(imx);
->  	}
->  
->  	imx->clk = clk_get(dev, NULL);
-> -- 
-> 2.13.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+You can still merge the first two patches in this patchset however, they
+are applicable regardless.
+
+
+Cheers
+Ahmad
 
 -- 
 Pengutronix e.K.                           |                             |
