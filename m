@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXoHg-00005j-Or
- for barebox@lists.infradead.org; Fri, 14 Dec 2018 14:17:56 +0000
+ id 1gXoHo-00005w-NN
+ for barebox@lists.infradead.org; Fri, 14 Dec 2018 14:17:57 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Dec 2018 15:17:28 +0100
-Message-Id: <20181214141730.26181-22-s.hauer@pengutronix.de>
+Date: Fri, 14 Dec 2018 15:17:18 +0100
+Message-Id: <20181214141730.26181-12-s.hauer@pengutronix.de>
 In-Reply-To: <20181214141730.26181-1-s.hauer@pengutronix.de>
 References: <20181214141730.26181-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,46 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 21/23] ARM: omap: AM3517: Change default clock rate for AM3517
+Subject: [PATCH 11/23] mtd: nand: omap: set eccbytes correctly
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Heinrich Toews <heinrich.toews@wago.com>
 
-From: Heinrich Toews <heinrich.toews@wago.com>
+The total number of ecc bytes per page must be provided to the
+nand core. This patch fixes this for bch8_hw and bch8_hw_romcode.
 
-This is an adoption of U-Boot commit:
-
-| commit c8e5ba8034ad2a961782a092498f6ea71237c63f
-| Author: Schuyler Patton <spatton@ti.com>
-| Date:   Wed Feb 1 07:31:44 2012 +0000
-|
-|    AM3517: Changed default clock rate for AM3517
-|
-|    Changed #define MPU_M_13_ES2 from 0x1F4 to 0x258, this allows
-|    the AM3517 to boot up at 600MHz instead of 500 MHz
-|
-|    Signed-off-by: Schuyler Patton <spatton@ti.com>
-|    CC: Tom Rini <tom.rini@gmail.com>
-|    CC: Simon Schwarz <simonschwarzcor@gmail.com>
-|    CC: Stefano Babic <sbabic@denx.de>
-
-Signed-off-by: Heinrich Toews <heinrich.toews@wago.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-omap/omap3_clock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/nand_omap_gpmc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/mach-omap/omap3_clock.c b/arch/arm/mach-omap/omap3_clock.c
-index 0159574f30..03b866c28e 100644
---- a/arch/arm/mach-omap/omap3_clock.c
-+++ b/arch/arm/mach-omap/omap3_clock.c
-@@ -290,7 +290,7 @@ static struct dpll_param mpu_dpll_param_34x_es1[] = {
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index d64ae41e7a..58ba95cb48 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -765,6 +765,7 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
+ 		omap_oobinfo.oobfree->offset = offset;
+ 		oinfo->nand.ecc.steps = minfo->writesize / oinfo->nand.ecc.size;
+ 		oinfo->nand.ecc.total = oinfo->nand.ecc.steps * oinfo->nand.ecc.bytes;
++		omap_oobinfo.eccbytes = oinfo->nand.ecc.total;
  
- static struct dpll_param mpu_dpll_param_34x_es2[] = {
- 	{.m = 0x0FA, .n = 0x05, .fsel = 0x07, .m2 = 0x01, }, /* 12   MHz */
--	{.m = 0x1F4, .n = 0x0C, .fsel = 0x03, .m2 = 0x01, }, /* 13   MHz */
-+	{.m = 0x258, .n = 0x0C, .fsel = 0x03, .m2 = 0x01, }, /* 13   MHz */
- 	{.m = 0x271, .n = 0x17, .fsel = 0x03, .m2 = 0x01, }, /* 19.2 MHz */
- 	{.m = 0x0FA, .n = 0x0C, .fsel = 0x07, .m2 = 0x01, }, /* 26   MHz */
- 	{.m = 0x271, .n = 0x2F, .fsel = 0x03, .m2 = 0x01, }, /* 38.4 MHz */
+ 		omap_oobinfo.oobfree->length = minfo->oobsize -
+ 					offset - omap_oobinfo.eccbytes;
+@@ -779,6 +780,9 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
+ 		oinfo->nand.ecc.strength = BCH8_MAX_ERROR;
+ 		nand->ecc.read_page = omap_gpmc_read_page_bch_rom_mode;
+ 		omap_oobinfo.oobfree->length = 0;
++		oinfo->nand.ecc.steps = minfo->writesize / oinfo->nand.ecc.size;
++		oinfo->nand.ecc.total = oinfo->nand.ecc.steps * oinfo->nand.ecc.bytes;
++		omap_oobinfo.eccbytes = oinfo->nand.ecc.total;
+ 		j = 0;
+ 		for (i = 2; i < 58; i++)
+ 			omap_oobinfo.eccpos[j++] = i;
 -- 
 2.19.1
 
