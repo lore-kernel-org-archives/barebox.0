@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXoHg-00005g-1P
- for barebox@lists.infradead.org; Fri, 14 Dec 2018 14:17:49 +0000
+ id 1gXoHg-00005d-1L
+ for barebox@lists.infradead.org; Fri, 14 Dec 2018 14:17:52 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Dec 2018 15:17:15 +0100
-Message-Id: <20181214141730.26181-9-s.hauer@pengutronix.de>
+Date: Fri, 14 Dec 2018 15:17:17 +0100
+Message-Id: <20181214141730.26181-11-s.hauer@pengutronix.de>
 In-Reply-To: <20181214141730.26181-1-s.hauer@pengutronix.de>
 References: <20181214141730.26181-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,31 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/23] mtd: nand: omap: Disable subpage reads in hardware ecc
- mode
+Subject: [PATCH 10/23] mtd: nand: omap: fix bch8_hw_romcode ecc layout
 To: Barebox List <barebox@lists.infradead.org>
 
-Once the driver has started in software ECC mode the NAND core will set
-the NAND_SUBPAGE_READ flag. We have to clear it explicitly when we
-change to another mode afterwards.
+The ecc layout we provide to the nand core is broken since
+00f119a293. Before this commit ecc bytes/size were per page
+and now they are per subpage. The offset for the first ecc
+byte was calculated as oob_end - num_ecc_bytes which must
+now become oob_end - num_ecc_bytes * ecc_steps.
+
+Fixes: 00f119a293 ("mtd: omap gpmc: fix ecc bytes/size")
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/nand_omap_gpmc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/nand/nand_omap_gpmc.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
-index 4ec4b93595..9b92f179b1 100644
+index 91f5682e9e..d64ae41e7a 100644
 --- a/drivers/mtd/nand/nand_omap_gpmc.c
 +++ b/drivers/mtd/nand/nand_omap_gpmc.c
-@@ -736,6 +736,7 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
- 		nand->ecc.read_oob = NULL;
- 		nand->ecc.write_oob = NULL;
- 		nand->ecc.mode = NAND_ECC_HW;
-+		nand->options &= ~NAND_SUBPAGE_READ;
- 	}
- 
- 	switch (mode) {
+@@ -763,10 +763,14 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
+ 		oinfo->nand.ecc.size     = 512;
+ 		oinfo->nand.ecc.strength = BCH8_MAX_ERROR;
+ 		omap_oobinfo.oobfree->offset = offset;
++		oinfo->nand.ecc.steps = minfo->writesize / oinfo->nand.ecc.size;
++		oinfo->nand.ecc.total = oinfo->nand.ecc.steps * oinfo->nand.ecc.bytes;
++
+ 		omap_oobinfo.oobfree->length = minfo->oobsize -
+ 					offset - omap_oobinfo.eccbytes;
+-		offset = minfo->oobsize - oinfo->nand.ecc.bytes;
+-		for (i = 0; i < oinfo->nand.ecc.bytes; i++)
++		offset = minfo->oobsize - oinfo->nand.ecc.total;
++
++		for (i = 0; i < oinfo->nand.ecc.total; i++)
+ 			omap_oobinfo.eccpos[i] = i + offset;
+ 		break;
+ 	case OMAP_ECC_BCH8_CODE_HW_ROMCODE:
 -- 
 2.19.1
 
