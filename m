@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXkuB-0003uX-DX
- for barebox@lists.infradead.org; Fri, 14 Dec 2018 10:41:16 +0000
+ id 1gXkuB-0003ua-Dw
+ for barebox@lists.infradead.org; Fri, 14 Dec 2018 10:41:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Dec 2018 11:40:58 +0100
-Message-Id: <20181214104100.6296-4-s.hauer@pengutronix.de>
+Date: Fri, 14 Dec 2018 11:40:57 +0100
+Message-Id: <20181214104100.6296-3-s.hauer@pengutronix.de>
 In-Reply-To: <20181214104100.6296-1-s.hauer@pengutronix.de>
 References: <20181214104100.6296-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,51 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/6] ARM: omap: fix missing prototypes warnings
+Subject: [PATCH 3/6] ARM: AT91: remove unused function
 To: Barebox List <barebox@lists.infradead.org>
 
-- make locally used function static
-- include mach/omap4-generic.h to get prototypes
+at91rm9200_set_type() is unused. Remove it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-omap/include/mach/omap4-generic.h | 1 +
- arch/arm/mach-omap/omap4_generic.c              | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/mach-at91/setup.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-diff --git a/arch/arm/mach-omap/include/mach/omap4-generic.h b/arch/arm/mach-omap/include/mach/omap4-generic.h
-index 7ec41d880b..c1d0a3c900 100644
---- a/arch/arm/mach-omap/include/mach/omap4-generic.h
-+++ b/arch/arm/mach-omap/include/mach/omap4-generic.h
-@@ -1,6 +1,7 @@
- #ifndef __MACH_OMAP4_GENERIC_H
- #define __MACH_OMAP4_GENERIC_H
+diff --git a/arch/arm/mach-at91/setup.c b/arch/arm/mach-at91/setup.c
+index adc614c42c..a2f594bbd0 100644
+--- a/arch/arm/mach-at91/setup.c
++++ b/arch/arm/mach-at91/setup.c
+@@ -24,17 +24,6 @@ void __initdata (*at91_boot_soc)(void);
+ struct at91_socinfo at91_soc_initdata;
+ EXPORT_SYMBOL(at91_soc_initdata);
  
-+#include <linux/sizes.h>
- #include <mach/generic.h>
- #include <mach/omap4-silicon.h>
- 
-diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
-index a3f370df8f..ed3bb7524e 100644
---- a/arch/arm/mach-omap/omap4_generic.c
-+++ b/arch/arm/mach-omap/omap4_generic.c
-@@ -10,6 +10,7 @@
- #include <mach/generic.h>
- #include <mach/gpmc.h>
- #include <mach/omap4_rom_usb.h>
-+#include <mach/omap4-generic.h>
- 
- /*
-  *  The following several lines are taken from U-Boot to support
-@@ -179,7 +180,7 @@ static inline void delay(unsigned long loops)
- 			  "bne 1b" : "=r" (loops) : "0"(loops));
- }
- 
--int omap4_emif_config(unsigned int base, const struct ddr_regs *ddr_regs)
-+static int omap4_emif_config(unsigned int base, const struct ddr_regs *ddr_regs)
+-void __init at91rm9200_set_type(int type)
+-{
+-	if (type == ARCH_REVISON_9200_PQFP)
+-		at91_soc_initdata.subtype = AT91_SOC_RM9200_PQFP;
+-	else
+-		at91_soc_initdata.subtype = AT91_SOC_RM9200_BGA;
+-
+-	pr_info("AT91: filled in soc subtype: %s\n",
+-		at91_get_soc_subtype(&at91_soc_initdata));
+-}
+-
+ static void __init soc_detect(u32 dbgu_base)
  {
- 	/*
- 	 * set SDRAM CONFIG register
+ 	u32 cidr, socid;
 -- 
 2.19.1
 
