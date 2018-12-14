@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYpSp-0005j9-Sl
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 09:45:29 +0000
-Date: Mon, 17 Dec 2018 10:45:15 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181217094515.yc3bs4mu74gnog77@pengutronix.de>
-References: <20181210155511.1376-1-rhi@pengutronix.de>
- <20181213065758.i6pujqsmk7ezuw3i@pengutronix.de>
- <20181214101325.s7skmbskin2qvvfv@pengutronix.de>
+ id 1gXpJL-0006H9-Bl
+ for barebox@lists.infradead.org; Fri, 14 Dec 2018 15:23:32 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <afa@pengutronix.de>) id 1gXpJ6-0002Wi-VS
+ for barebox@lists.infradead.org; Fri, 14 Dec 2018 16:23:16 +0100
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.91)
+ (envelope-from <afa@pengutronix.de>) id 1gXpJ6-0001v4-NM
+ for barebox@lists.infradead.org; Fri, 14 Dec 2018 16:23:16 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 14 Dec 2018 16:23:05 +0100
+Message-Id: <20181214152305.30412-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181214101325.s7skmbskin2qvvfv@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,27 +27,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] Documentation: i.MX: improve wording, add markup and
- missing articles
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: Barebox Mailing List <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] include/linux/time.h: define USEC_PER_SEC and friends
+To: barebox@lists.infradead.org
 
-On Fri, Dec 14, 2018 at 11:13:25AM +0100, Roland Hieber wrote:
-> Hmm. It still applies here cleanly on next. Do you want it on master
-> instead? I don't mind having it in next, and if you applied this series
-> on master instead, the conflicts with next will probably be the other
-> way around for the next release.
+Linux has them in include/linux/time64.h and they are useful for
+making (especially microsecond) use readable such as in read*_poll_timeout.
 
-Right, I found the conflicting patch and applied ontop of it.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ include/linux/time.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Sascha
-
-
+diff --git a/include/linux/time.h b/include/linux/time.h
+index 3a1bb50020fd..7903139a65b2 100644
+--- a/include/linux/time.h
++++ b/include/linux/time.h
+@@ -3,7 +3,13 @@
+ 
+ #include <linux/types.h>
+ 
++#define MSEC_PER_SEC	1000L
++#define USEC_PER_MSEC	1000L
++#define NSEC_PER_USEC	1000L
++#define NSEC_PER_MSEC	1000000L
++#define USEC_PER_SEC	1000000L
+ #define NSEC_PER_SEC	1000000000L
++#define FSEC_PER_SEC	1000000000000000LL
+ 
+ struct timespec {
+ 	time_t	tv_sec;		/* seconds */
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
