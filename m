@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXoHg-00005e-1G
+ id 1gXoHg-00005i-Mw
  for barebox@lists.infradead.org; Fri, 14 Dec 2018 14:17:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Dec 2018 15:17:12 +0100
-Message-Id: <20181214141730.26181-6-s.hauer@pengutronix.de>
+Date: Fri, 14 Dec 2018 15:17:16 +0100
+Message-Id: <20181214141730.26181-10-s.hauer@pengutronix.de>
 In-Reply-To: <20181214141730.26181-1-s.hauer@pengutronix.de>
 References: <20181214141730.26181-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,63 +21,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/23] mci: omap: use IS_ENABLED() rather than #ifdef
+Subject: [PATCH 09/23] mtd: nand: omap: remove unused function argument
 To: Barebox List <barebox@lists.infradead.org>
 
-While touching it propagate the errors from read/write functions instead
-of silently ignoring them.
+__omap_calculate_ecc doesn't use the provided buffer argument, so remove
+it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/omap_hsmmc.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ drivers/mtd/nand/nand_omap_gpmc.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mci/omap_hsmmc.c b/drivers/mci/omap_hsmmc.c
-index 9e7ecabf85..d8e40aba20 100644
---- a/drivers/mci/omap_hsmmc.c
-+++ b/drivers/mci/omap_hsmmc.c
-@@ -352,7 +352,6 @@ static int mmc_read_data(struct omap_hsmmc *hsmmc, char *buf, unsigned int size)
- 	return 0;
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index 9b92f179b1..91f5682e9e 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -228,8 +228,8 @@ static unsigned int gen_true_ecc(u8 *ecc_buf)
+ 	    ((ecc_buf[2] & 0x0F) << 8);
  }
  
--#ifdef CONFIG_MCI_WRITE
- static int mmc_write_data(struct omap_hsmmc *hsmmc, const char *buf, unsigned int size)
+-static int __omap_calculate_ecc(struct mtd_info *mtd, const uint8_t *dat,
+-			      uint8_t *ecc_code, int sblock)
++static int __omap_calculate_ecc(struct mtd_info *mtd, uint8_t *ecc_code,
++				int sblock)
  {
- 	struct hsmmc *mmc_base = hsmmc->base;
-@@ -406,7 +405,6 @@ static int mmc_write_data(struct omap_hsmmc *hsmmc, const char *buf, unsigned in
- 	}
- 	return 0;
- }
--#endif
- 
- static int mmc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
- 		struct mci_data *data)
-@@ -517,13 +515,18 @@ static int mmc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
- 		}
- 	}
- 
--	if (data && (data->flags & MMC_DATA_READ))
--		mmc_read_data(hsmmc, data->dest, data->blocksize * data->blocks);
--#ifdef CONFIG_MCI_WRITE
--	else if (data && (data->flags & MMC_DATA_WRITE))
--		mmc_write_data(hsmmc, data->src, data->blocksize * data->blocks);
--#endif
--	return 0;
-+	if (!data)
-+		return 0;
-+
-+	if (data->flags & MMC_DATA_READ)
-+		return mmc_read_data(hsmmc, data->dest,
-+				     data->blocksize * data->blocks);
-+
-+	if (IS_ENABLED(CONFIG_MCI_WRITE))
-+		return mmc_write_data(hsmmc, data->src,
-+				      data->blocksize * data->blocks);
-+
-+	return -ENOSYS;
+ 	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
+ 	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
+@@ -288,7 +288,7 @@ static int __omap_calculate_ecc(struct mtd_info *mtd, const uint8_t *dat,
+ static int omap_calculate_ecc(struct mtd_info *mtd, const uint8_t *dat,
+ 			      uint8_t *ecc_code)
+ {
+-	return __omap_calculate_ecc(mtd, dat, ecc_code, 0);
++	return __omap_calculate_ecc(mtd, ecc_code, 0);
  }
  
- static void mmc_set_ios(struct mci_host *mci, struct mci_ios *ios)
+ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
+@@ -436,7 +436,7 @@ static int omap_correct_data(struct mtd_info *mtd, uint8_t *dat,
+ 		 * but before it has read the oob data. Do it again,
+ 		 * this time with oob data.
+ 		 */
+-		__omap_calculate_ecc(mtd, dat, calc_ecc, 0);
++		__omap_calculate_ecc(mtd, calc_ecc, 0);
+ 		return omap_correct_bch(mtd, dat, read_ecc, calc_ecc);
+ 	default:
+ 		return -EINVAL;
+@@ -691,7 +691,7 @@ static int omap_gpmc_read_page_bch_rom_mode(struct mtd_info *mtd,
+ 	for (i = 0; i < chip->ecc.total; i++)
+ 		ecc_code[i] = chip->oob_poi[eccpos[i]];
+ 
+-	__omap_calculate_ecc(mtd, buf, ecc_calc, 1);
++	__omap_calculate_ecc(mtd, ecc_calc, 1);
+ 
+ 	p = buf;
+ 
 -- 
 2.19.1
 
