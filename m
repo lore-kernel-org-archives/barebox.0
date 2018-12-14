@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXkuB-0003ui-Cw
+ id 1gXkuB-0003ub-El
  for barebox@lists.infradead.org; Fri, 14 Dec 2018 10:41:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Dec 2018 11:40:59 +0100
-Message-Id: <20181214104100.6296-5-s.hauer@pengutronix.de>
+Date: Fri, 14 Dec 2018 11:41:00 +0100
+Message-Id: <20181214104100.6296-6-s.hauer@pengutronix.de>
 In-Reply-To: <20181214104100.6296-1-s.hauer@pengutronix.de>
 References: <20181214104100.6296-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,27 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/6] ARM: AT91: pit: Make locally used function static
+Subject: [PATCH 6/6] ARM: AT91: add missing includes
 To: Barebox List <barebox@lists.infradead.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clocksource/timer-atmel-pit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-at91/clock.c | 1 +
+ arch/arm/mach-at91/setup.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/clocksource/timer-atmel-pit.c b/drivers/clocksource/timer-atmel-pit.c
-index 40895847f0..e23f1e5ec4 100644
---- a/drivers/clocksource/timer-atmel-pit.c
-+++ b/drivers/clocksource/timer-atmel-pit.c
-@@ -40,7 +40,7 @@
+diff --git a/arch/arm/mach-at91/clock.c b/arch/arm/mach-at91/clock.c
+index 9d2e3a3acc..d2691acae3 100644
+--- a/arch/arm/mach-at91/clock.c
++++ b/arch/arm/mach-at91/clock.c
+@@ -22,6 +22,7 @@
+ #include <mach/hardware.h>
+ #include <mach/at91_pmc.h>
+ #include <mach/cpu.h>
++#include <mach/board.h>
  
- static __iomem void *pit_base;
+ #include "clock.h"
+ #include "generic.h"
+diff --git a/arch/arm/mach-at91/setup.c b/arch/arm/mach-at91/setup.c
+index a2f594bbd0..cb79eb26b8 100644
+--- a/arch/arm/mach-at91/setup.c
++++ b/arch/arm/mach-at91/setup.c
+@@ -15,6 +15,7 @@
+ #include <mach/cpu.h>
+ #include <mach/at91_dbgu.h>
+ #include <mach/at91_rstc.h>
++#include <mach/board.h>
  
--uint64_t at91sam9_clocksource_read(void)
-+static uint64_t at91sam9_clocksource_read(void)
- {
- 	return pit_read(AT91_PIT_PIIR);
- }
+ #include "generic.h"
+ 
 -- 
 2.19.1
 
