@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x342.google.com ([2a00:1450:4864:20::342])
+Received: from mail-wr1-x443.google.com ([2a00:1450:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXhIF-0004Me-Df
- for barebox@lists.infradead.org; Fri, 14 Dec 2018 06:49:52 +0000
-Received: by mail-wm1-x342.google.com with SMTP id c126so4677006wmh.0
- for <barebox@lists.infradead.org>; Thu, 13 Dec 2018 22:49:40 -0800 (PST)
+ id 1gXiqE-0004vP-2F
+ for barebox@lists.infradead.org; Fri, 14 Dec 2018 08:29:03 +0000
+Received: by mail-wr1-x443.google.com with SMTP id t27so4544665wra.6
+ for <barebox@lists.infradead.org>; Fri, 14 Dec 2018 00:28:51 -0800 (PST)
 MIME-Version: 1.0
 References: <20181213071144.31691-1-andrew.smirnov@gmail.com>
- <20181213071144.31691-23-andrew.smirnov@gmail.com>
-In-Reply-To: <20181213071144.31691-23-andrew.smirnov@gmail.com>
+In-Reply-To: <20181213071144.31691-1-andrew.smirnov@gmail.com>
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 13 Dec 2018 22:49:27 -0800
-Message-ID: <CAHQ1cqE+=UF-H7pG7HZwM9p_u24tv_baa4pxNRj7S70q151NDg@mail.gmail.com>
+Date: Fri, 14 Dec 2018 00:28:38 -0800
+Message-ID: <CAHQ1cqGc+bY08A0V6kv-W+C+O-EjNoD6SCko2z-f-mfzj=rwSw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,93 +23,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 22/58] PCI: designware: Keep viewport fixed for IO
- transaction if num_viewport > 2
+Subject: Re: [PATCH 00/58] PCI i.MX6/DesignWare sync up with 4.20-rc1
 To: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Dec 12, 2018 at 11:12 PM Andrey Smirnov
+On Wed, Dec 12, 2018 at 11:11 PM Andrey Smirnov
 <andrew.smirnov@gmail.com> wrote:
 >
-> Port of a Linux commit fe48cb8538421fbd16ecf8bf95829faf8d8c001e
+> Everyone:
 >
->   Most of the platforms have 3 or more viewports.  For such platforms, We do
->   not need to share viewports between IO and CFG.  Assign viewport 2 to IO
->   transactions in such cases.
+> As a part of working on adding support for PCI on i.MX7D/8MQ, I spent
+> some time looking through Linux commit history of pci-imx6.c and
+> pcie-designware*.c and porting various patches to minimize the
+> differences between the two codebases. This series is the result of
+> that effort. All of the patches are either fixes for missed corner
+> cases or code simplifications/improvements, so no functonal changes
+> are expected.
 >
->   Tested-by: Dong Bo <dongbo4@huawei.com>
->   Signed-off-by: Pratyush Anand <pratyush.anand@gmail.com>
->   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
->   Acked-by: Rob Herring <robh@kernel.org>
->
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  drivers/pci/pcie-designware.c | 26 +++++++++++++++++++-------
->  drivers/pci/pcie-designware.h |  1 +
->  2 files changed, 20 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-> index 6de9fa7e3..cf1b3032e 100644
-> --- a/drivers/pci/pcie-designware.c
-> +++ b/drivers/pci/pcie-designware.c
-> @@ -61,6 +61,7 @@
->  #define PCIE_ATU_VIEWPORT              0x900
->  #define PCIE_ATU_REGION_INBOUND                (0x1 << 31)
->  #define PCIE_ATU_REGION_OUTBOUND       (0x0 << 31)
-> +#define PCIE_ATU_REGION_INDEX2         (0x2 << 0)
->  #define PCIE_ATU_REGION_INDEX1         (0x1 << 0)
->  #define PCIE_ATU_REGION_INDEX0         (0x0 << 0)
->  #define PCIE_ATU_CR1                   0x904
-> @@ -330,6 +331,10 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
->         if (ret)
->                 pp->lanes = 0;
->
-> +       ret = of_property_read_u32(np, "num-viewport", &pp->num_viewport);
-> +       if (ret)
-> +               pp->num_viewport = 2;
-> +
->         if (pp->ops->host_init)
->                 pp->ops->host_init(pp);
->
-> @@ -376,9 +381,10 @@ static int dw_pcie_rd_other_conf(struct pcie_port *pp, struct pci_bus *bus,
->                                   type, cpu_addr,
->                                   busdev, cfg_size);
->         ret = dw_pcie_cfg_read(va_cfg_base + where, size, val);
-> -       dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
-> -                                 PCIE_ATU_TYPE_IO, pp->io_mod_base,
-> -                                 pp->io_bus_addr, pp->io_size);
-> +       if (pp->num_viewport <= 2)
-> +               dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
-> +                                         PCIE_ATU_TYPE_IO, pp->io_mod_base,
-> +                                         pp->io_bus_addr, pp->io_size);
->
->         return ret;
->  }
-> @@ -414,9 +420,10 @@ static int dw_pcie_wr_other_conf(struct pcie_port *pp, struct pci_bus *bus,
->                                   type, cpu_addr,
->                                   busdev, cfg_size);
->         ret = dw_pcie_cfg_write(va_cfg_base + where, size, val);
-> -       dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
-> -                                 PCIE_ATU_TYPE_IO, pp->io_mod_base,
-> -                                 pp->io_bus_addr, pp->io_size);
-> +       if (pp->num_viewport <= 2)
-> +               dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
-> +                                         PCIE_ATU_TYPE_IO, pp->io_mod_base,
-> +                                         pp->io_bus_addr, pp->io_size);
->
->         return ret;
->  }
-> @@ -564,10 +571,15 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
->          * uses its own address translation component rather than ATU, so
->          * we should not program the ATU here.
->          */
-> -       if (!pp->ops->rd_other_conf)
-> +       if (!pp->ops->rd_other_conf) {
->                 dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
->                                           PCIE_ATU_TYPE_MEM, pp->mem_mod_base,
->                                           pp->mem_bus_addr, pp->mem_size);
-> +               if (pp->num_viewport <= 2)
 
-Ugh, this is incorrect. Should be pp->num_viewport > 2, instead. Will fix in v2.
+As it turns out, i.MX8MQ support requires iATU unroll patches for
+which I skipped in this version of the set. Will add in v2.
 
 Thanks,
 Andrey Smirnov
