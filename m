@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXoHg-00005V-1O
- for barebox@lists.infradead.org; Fri, 14 Dec 2018 14:17:49 +0000
+ id 1gXoHg-00005e-1G
+ for barebox@lists.infradead.org; Fri, 14 Dec 2018 14:17:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Dec 2018 15:17:07 +0100
-Message-Id: <20181214141730.26181-1-s.hauer@pengutronix.de>
+Date: Fri, 14 Dec 2018 15:17:12 +0100
+Message-Id: <20181214141730.26181-6-s.hauer@pengutronix.de>
+In-Reply-To: <20181214141730.26181-1-s.hauer@pengutronix.de>
+References: <20181214141730.26181-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,96 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/23] AM3517 support
+Subject: [PATCH 05/23] mci: omap: use IS_ENABLED() rather than #ifdef
 To: Barebox List <barebox@lists.infradead.org>
 
-This series adds support for the TI AM3517 SoC along with Wago PFC-200
-board support. Also in this series some TI related driver patches. Most
-notably some significant chages to the GPMC Nand driver which was not
-really working anymore.
+While touching it propagate the errors from read/write functions instead
+of silently ignoring them.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mci/omap_hsmmc.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-Heinrich Toews (3):
-  net: davinci-emac: fix buggy channel tear down
-  net: davinci-emac: switch to device tree support
-  ARM: omap: AM3517: Change default clock rate for AM3517
-
-Oleg Karfich (1):
-  ARM: omap3: Add support for reset reason detection
-
-Sascha Hauer (19):
-  net: davinci-emac: Add timeout to polling loop
-  mci: omap: Improve error handling
-  mci: omap: use IS_ENABLED() rather than #ifdef
-  mtd: nand: omap: Use dev_dbg when a struct device * is available
-  mtd: nand: omap: Fix hamming correct return values
-  mtd: nand: omap: Disable subpage reads in hardware ecc mode
-  mtd: nand: omap: remove unused function argument
-  mtd: nand: omap: fix bch8_hw_romcode ecc layout
-  mtd: nand: omap: set eccbytes correctly
-  mtd: nand: omap: unbreak BCH8 support
-  ARM: omap: Add missing include
-  ARM: omap: dmtimer: Turn into a driver
-  ARM: omap: 32ktimer: Turn into a driver
-  ARM: omap: Add AM35XX support
-  ARM: omap: enable am33xx_uart_soft_reset for AM35xx
-  ARM: omap: Add AM3517 specific mux configuration
-  ARM: omap: Add emif4 support for AM3517
-  ARM: omap: Add board support for WAGO pfc200 platform
-  ARM: omap: am33xx_defconfig: Enable more boards and rename
-
- arch/arm/boards/Makefile                      |   1 +
- arch/arm/boards/wago-pfc-am35xx/Makefile      |   6 +
- arch/arm/boards/wago-pfc-am35xx/board-mlo.c   |  73 +++
- arch/arm/boards/wago-pfc-am35xx/board.c       |  39 ++
- arch/arm/boards/wago-pfc-am35xx/lowlevel.c    | 231 +++++++++
- .../arm/configs/am35xx_pfc200_xload_defconfig |  40 ++
- .../{am335x_defconfig => omap_defconfig}      |   5 +-
- arch/arm/dts/Makefile                         |   1 +
- arch/arm/dts/am35xx-pfc-750_820x.dts          | 487 ++++++++++++++++++
- arch/arm/dts/am3xxx-pfc-nandparts.dtsi        |  63 +++
- arch/arm/mach-omap/Kconfig                    |  24 +-
- arch/arm/mach-omap/Makefile                   |   5 +-
- arch/arm/mach-omap/am33xx_generic.c           |  32 +-
- arch/arm/mach-omap/am35xx_emif4.c             |  85 +++
- arch/arm/mach-omap/am3xxx.c                   |  32 ++
- .../mach-omap/include/mach/am3xxx-silicon.h   |   6 +
- arch/arm/mach-omap/include/mach/emif4.h       | 105 ++++
- arch/arm/mach-omap/include/mach/omap3-clock.h |   2 +
- arch/arm/mach-omap/include/mach/omap3-mux.h   |  49 +-
- arch/arm/mach-omap/include/mach/sys_info.h    |   2 +
- arch/arm/mach-omap/omap3_clock.c              |  16 +-
- arch/arm/mach-omap/omap3_generic.c            |  58 ++-
- arch/arm/mach-omap/omap4_generic.c            |   5 +-
- drivers/clocksource/Kconfig                   |   6 +
- drivers/clocksource/Makefile                  |   2 +
- .../clocksource/timer-ti-32k.c                |  39 +-
- .../clocksource/timer-ti-dm.c                 |  47 +-
- drivers/mci/omap_hsmmc.c                      |  37 +-
- drivers/mtd/nand/nand_omap_gpmc.c             | 141 +++--
- drivers/net/davinci_emac.c                    | 210 +++++---
- images/Makefile                               |   1 +
- images/Makefile.am35xx                        |  24 +
- include/platform_data/eth-davinci-emac.h      |  10 -
- 33 files changed, 1657 insertions(+), 227 deletions(-)
- create mode 100644 arch/arm/boards/wago-pfc-am35xx/Makefile
- create mode 100644 arch/arm/boards/wago-pfc-am35xx/board-mlo.c
- create mode 100644 arch/arm/boards/wago-pfc-am35xx/board.c
- create mode 100644 arch/arm/boards/wago-pfc-am35xx/lowlevel.c
- create mode 100644 arch/arm/configs/am35xx_pfc200_xload_defconfig
- rename arch/arm/configs/{am335x_defconfig => omap_defconfig} (96%)
- create mode 100644 arch/arm/dts/am35xx-pfc-750_820x.dts
- create mode 100644 arch/arm/dts/am3xxx-pfc-nandparts.dtsi
- create mode 100644 arch/arm/mach-omap/am35xx_emif4.c
- create mode 100644 arch/arm/mach-omap/am3xxx.c
- create mode 100644 arch/arm/mach-omap/include/mach/am3xxx-silicon.h
- create mode 100644 arch/arm/mach-omap/include/mach/emif4.h
- rename arch/arm/mach-omap/s32k_clksource.c => drivers/clocksource/timer-ti-32k.c (73%)
- rename arch/arm/mach-omap/dmtimer.c => drivers/clocksource/timer-ti-dm.c (72%)
- create mode 100644 images/Makefile.am35xx
- delete mode 100644 include/platform_data/eth-davinci-emac.h
-
+diff --git a/drivers/mci/omap_hsmmc.c b/drivers/mci/omap_hsmmc.c
+index 9e7ecabf85..d8e40aba20 100644
+--- a/drivers/mci/omap_hsmmc.c
++++ b/drivers/mci/omap_hsmmc.c
+@@ -352,7 +352,6 @@ static int mmc_read_data(struct omap_hsmmc *hsmmc, char *buf, unsigned int size)
+ 	return 0;
+ }
+ 
+-#ifdef CONFIG_MCI_WRITE
+ static int mmc_write_data(struct omap_hsmmc *hsmmc, const char *buf, unsigned int size)
+ {
+ 	struct hsmmc *mmc_base = hsmmc->base;
+@@ -406,7 +405,6 @@ static int mmc_write_data(struct omap_hsmmc *hsmmc, const char *buf, unsigned in
+ 	}
+ 	return 0;
+ }
+-#endif
+ 
+ static int mmc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 		struct mci_data *data)
+@@ -517,13 +515,18 @@ static int mmc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 		}
+ 	}
+ 
+-	if (data && (data->flags & MMC_DATA_READ))
+-		mmc_read_data(hsmmc, data->dest, data->blocksize * data->blocks);
+-#ifdef CONFIG_MCI_WRITE
+-	else if (data && (data->flags & MMC_DATA_WRITE))
+-		mmc_write_data(hsmmc, data->src, data->blocksize * data->blocks);
+-#endif
+-	return 0;
++	if (!data)
++		return 0;
++
++	if (data->flags & MMC_DATA_READ)
++		return mmc_read_data(hsmmc, data->dest,
++				     data->blocksize * data->blocks);
++
++	if (IS_ENABLED(CONFIG_MCI_WRITE))
++		return mmc_write_data(hsmmc, data->src,
++				      data->blocksize * data->blocks);
++
++	return -ENOSYS;
+ }
+ 
+ static void mmc_set_ios(struct mci_host *mci, struct mci_ios *ios)
 -- 
 2.19.1
 
