@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXoHg-00005W-1N
- for barebox@lists.infradead.org; Fri, 14 Dec 2018 14:17:48 +0000
+ id 1gXoHg-00005h-MZ
+ for barebox@lists.infradead.org; Fri, 14 Dec 2018 14:17:49 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Dec 2018 15:17:08 +0100
-Message-Id: <20181214141730.26181-2-s.hauer@pengutronix.de>
+Date: Fri, 14 Dec 2018 15:17:13 +0100
+Message-Id: <20181214141730.26181-7-s.hauer@pengutronix.de>
 In-Reply-To: <20181214141730.26181-1-s.hauer@pengutronix.de>
 References: <20181214141730.26181-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,52 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/23] net: davinci-emac: fix buggy channel tear down
+Subject: [PATCH 06/23] mtd: nand: omap: Use dev_dbg when a struct device * is
+ available
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Heinrich Toews <heinrich.toews@wago.com>, Oleg Karfich <oleg.karfich@wago.com>
 
-From: Heinrich Toews <heinrich.toews@wago.com>
-
-Druing a barebox_shutdown() already probed platform devices are being halted.
-While trying to halt the davinci emac a channel tear down operation is triggered
-which leads due to a missing DMA pointer configuration to a memory corruption
-whithin the decompressed kernel memory. In this case the devices failed to boot
-and are completely freezed.
-
-In the davinci driver DMA initialisation is only done during the opening of the
-device which is done only when the device is setup for communication.
-
-The problem was solved by adding DMA init code to emacs_init() which is called
-shortly after the probing of the device. In this case the tearing down of the
-channels completes successfully.
-
-Signed-off-by: Oleg Karfich <oleg.karfich@wago.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/davinci_emac.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/mtd/nand/nand_omap_gpmc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/davinci_emac.c b/drivers/net/davinci_emac.c
-index 2fccd4681e..2f6091d155 100644
---- a/drivers/net/davinci_emac.c
-+++ b/drivers/net/davinci_emac.c
-@@ -173,6 +173,17 @@ static int davinci_emac_set_ethaddr(struct eth_device *edev, const unsigned char
- 
- static int davinci_emac_init(struct eth_device *edev)
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index 323a9c7532..8e29bae831 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -162,7 +162,7 @@ static void gpmc_nand_wp(struct gpmc_nand_info *oinfo, int mode)
  {
-+	struct davinci_emac_priv *priv = edev->priv;
-+	uint32_t cnt;
-+
-+	/* Set DMA head and completion pointers to 0 */
-+	for(cnt = 0; cnt < 8; cnt++) {
-+		writel(0, (void *)priv->adap_emac + EMAC_TX0HDP + 4 * cnt);
-+		writel(0, (void *)priv->adap_emac + EMAC_RX0HDP + 4 * cnt);
-+		writel(0, (void *)priv->adap_emac + EMAC_TX0CP + 4 * cnt);
-+		writel(0, (void *)priv->adap_emac + EMAC_RX0CP + 4 * cnt);
-+	}
-+
- 	dev_dbg(&edev->dev, "* emac_init\n");
- 	return 0;
- }
+ 	unsigned long config = readl(oinfo->gpmc_base + GPMC_CFG);
+ 
+-	debug("%s: mode=%x\n", __func__, mode);
++	dev_dbg(oinfo->pdev, "%s: mode=%x\n", __func__, mode);
+ 
+ 	if (mode)
+ 		config &= ~(NAND_WP_BIT);	/* WP is ON */
+@@ -425,7 +425,7 @@ static int omap_correct_data(struct mtd_info *mtd, uint8_t *dat,
+ 	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
+ 	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
+ 
+-	debug("%s\n", __func__);
++	dev_dbg(oinfo->pdev, "%s\n", __func__);
+ 
+ 	switch (oinfo->ecc_mode) {
+ 	case OMAP_ECC_HAMMING_CODE_HW_ROMCODE:
 -- 
 2.19.1
 
