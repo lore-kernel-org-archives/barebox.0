@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXpRa-0002fV-DE
- for barebox@lists.infradead.org; Fri, 14 Dec 2018 15:32:05 +0000
-References: <20181207063433.7623-1-a.fatoum@pengutronix.de>
- <20181207063433.7623-4-a.fatoum@pengutronix.de>
- <20181207074302.babciy2rcwjvh2iq@pengutronix.de>
- <e57bbb6a-9055-2986-8045-223b1ed84f5e@pengutronix.de>
- <20181210083937.7edjbvfih57shwrz@pengutronix.de>
+ id 1gXpRx-0002p5-HG
+ for barebox@lists.infradead.org; Fri, 14 Dec 2018 15:32:27 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=a3f-osx.local)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <a.fatoum@pengutronix.de>) id 1gXpRm-0003qa-2N
+ for barebox@lists.infradead.org; Fri, 14 Dec 2018 16:32:14 +0100
+References: <20181204091500.2841-1-a.fatoum@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <f4e71979-864a-f090-9080-24939d859385@pengutronix.de>
-Date: Fri, 14 Dec 2018 16:31:50 +0100
+Message-ID: <c362fe2d-5c2a-b402-88b9-c9d9baa8901c@pengutronix.de>
+Date: Fri, 14 Dec 2018 16:32:13 +0100
 MIME-Version: 1.0
-In-Reply-To: <20181210083937.7edjbvfih57shwrz@pengutronix.de>
+In-Reply-To: <20181204091500.2841-1-a.fatoum@pengutronix.de>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -26,23 +27,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] of: partition: add no-fixup device tree property
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] arm: common: document safe usage of arm_setup_stack
+To: barebox@lists.infradead.org
 
 Hello,
 
-On 10/12/18 09:39, Sascha Hauer wrote:
+On 4/12/18 10:15, Ahmad Fatoum wrote:
+> Cc: Lucas Stach <l.stach@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/include/asm/common.h | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> Still why do we need a device tree property when all we have to do is to
-> not call of_partitions_register_fixup() for the boot partitions?
+> diff --git a/arch/arm/include/asm/common.h b/arch/arm/include/asm/common.h
+> index c32cdfe5ec2f..72ac988cc131 100644
+> --- a/arch/arm/include/asm/common.h
+> +++ b/arch/arm/include/asm/common.h
+> @@ -46,6 +46,12 @@ static inline unsigned long get_sp(void)
+>  	return sp;
+>  }
+>  
+> +/*
+> + * At least with GCC 7.3.1, listing sp in the clobber register can generate
+> + * erroneous accesses to the fp, even in __naked functions. Therefore _always_
+> + * branch to a noinline function as soon as possible (usually after relocation
+> + * and c_setup).
+> + */
+>  static inline void arm_setup_stack(unsigned long top)
+>  {
+>  	__asm__ __volatile__("mov sp, %0"
+> 
 
-I figured current users might want to keep the current behavior, but ok,
-I will send another patch that skips fixup for the eMMC boot partitions.
-
-You can still merge the first two patches in this patchset however, they
-are applicable regardless.
-
+any comments?
 
 Cheers
 Ahmad
