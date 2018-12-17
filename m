@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlKX-0002al-82
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:21:17 +0000
-Received: by mail-pl1-x641.google.com with SMTP id z23so5560040plo.0
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:27 -0800 (PST)
+ id 1gYlKh-0002n7-Ug
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:21:22 +0000
+Received: by mail-pg1-x543.google.com with SMTP id s198so5537507pgs.2
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:37 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:18:55 -0800
-Message-Id: <20181217051925.17582-36-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:19:04 -0800
+Message-Id: <20181217051925.17582-45-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,72 +23,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 35/65] PCI: dwc: designware: Get device pointer at the
- start of dw_pcie_host_init()
+Subject: [PATCH v2 44/65] PCI: imx6: Factor out ref clock enable
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 40f67fb2c384fe12741aa35010d62bfe8c98286c
+Port of a Linux commit 4d1821e729b5d2060ef8c9825af1dacc2182da38
 
-  No functional change. Get device pointer at the beginning of
-  dw_pcie_host_init() instead of getting it all over dw_pcie_host_init().
-  This is in preparation for splitting struct pcie_port into host and core
-  structures (once split pcie_port will not have device pointer).
+  Factor out ref clock enable to make it cleaner to add imx6sx support.  No
+  functional change intended.
 
-  Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+  Tested-by: Christoph Fritz <chf.fritz@googlemail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/pci/pci-imx6.c | 43 ++++++++++++++++++++++++++++--------------
+ 1 file changed, 29 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index 74769de7f..7e65b56b9 100644
---- a/drivers/pci/pcie-designware.c
-+++ b/drivers/pci/pcie-designware.c
-@@ -235,7 +235,8 @@ static u8 dw_pcie_iatu_unroll_enabled(struct pcie_port *pp)
+diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
+index fa62aa3a4..447bb72ad 100644
+--- a/drivers/pci/pci-imx6.c
++++ b/drivers/pci/pci-imx6.c
+@@ -285,6 +285,28 @@ static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
+ 	}
+ }
  
- int __init dw_pcie_host_init(struct pcie_port *pp)
++static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
++{
++	u32 gpr1;
++
++	/* power up core phy and enable ref clock */
++	gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
++	gpr1 &= ~IMX6Q_GPR1_PCIE_TEST_PD;
++	writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
++	/*
++	 * the async reset input need ref clock to sync internally,
++	 * when the ref clock comes after reset, internal synced
++	 * reset time is too short, cannot meet the requirement.
++	 * add one ~10us delay here.
++	 */
++	udelay(10);
++	gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
++	gpr1 |= IMX6Q_GPR1_PCIE_REF_CLK_EN;
++	writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
++
++	return 0;
++}
++
+ static void imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
  {
--	struct device_node *np = pp->dev->device_node;
-+	struct device_d *dev = pp->dev;
-+	struct device_node *np = dev->device_node;
- 	struct of_pci_range range;
- 	struct of_pci_range_parser parser;
- 	struct resource *cfg_res;
-@@ -249,7 +250,7 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
- 	of_property_read_u32(np, "#address-cells", &na);
- 	ns = of_n_size_cells(np);
- 
--	cfg_res = dev_get_resource_by_name(pp->dev, IORESOURCE_MEM, "config");
-+	cfg_res = dev_get_resource_by_name(dev, IORESOURCE_MEM, "config");
- 	if (cfg_res) {
- 		pp->cfg0_size = resource_size(cfg_res)/2;
- 		pp->cfg1_size = resource_size(cfg_res)/2;
-@@ -262,11 +263,11 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
- 		pp->cfg0_mod_base = of_read_number(addrp, ns);
- 		pp->cfg1_mod_base = pp->cfg0_mod_base + pp->cfg0_size;
- 	} else {
--		dev_err(pp->dev, "missing *config* reg space\n");
-+		dev_err(dev, "missing *config* reg space\n");
+ 	struct device_d *dev = imx6_pcie->pp.dev;
+@@ -309,20 +331,11 @@ static void imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
+ 		goto err_pcie;
  	}
  
- 	if (of_pci_range_parser_init(&parser, np)) {
--		dev_err(pp->dev, "missing ranges property\n");
-+		dev_err(dev, "missing ranges property\n");
- 		return -EINVAL;
- 	}
+-	/* power up core phy and enable ref clock */
+-	gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
+-	gpr1 &= ~IMX6Q_GPR1_PCIE_TEST_PD;
+-	writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
+-	/*
+-	 * the async reset input need ref clock to sync internally,
+-	 * when the ref clock comes after reset, internal synced
+-	 * reset time is too short, cannot meet the requirement.
+-	 * add one ~10us delay here.
+-	 */
+-	udelay(10);
+-	gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
+-	gpr1 |= IMX6Q_GPR1_PCIE_REF_CLK_EN;
+-	writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
++	ret = imx6_pcie_enable_ref_clk(imx6_pcie);
++	if (ret) {
++		dev_err(dev, "unable to enable pcie ref clock\n");
++		goto err_ref_clk;
++	}
  
-@@ -334,7 +335,7 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
- 	if (pp->ops->host_init)
- 		pp->ops->host_init(pp);
+ 	/* allow the clocks to stabilize */
+ 	udelay(200);
+@@ -351,6 +364,8 @@ static void imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
  
--	pp->pci.parent = pp->dev;
-+	pp->pci.parent = dev;
- 	pp->pci.pci_ops = &dw_pcie_ops;
- 	pp->pci.set_busno = dw_pcie_set_local_bus_nr;
- 	pp->pci.mem_resource = &pp->mem;
+ 	return;
+ 
++err_ref_clk:
++	clk_disable(imx6_pcie->pcie);
+ err_pcie:
+ 	clk_disable(imx6_pcie->pcie_bus);
+ err_pcie_bus:
 -- 
 2.19.1
 
