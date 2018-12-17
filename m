@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlKc-0005H4-Jm
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:44 +0000
-Received: by mail-pf1-x441.google.com with SMTP id y126so5766213pfb.4
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:38 -0800 (PST)
+ id 1gYlKc-0005Gj-Jn
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:43 +0000
+Received: by mail-pf1-x441.google.com with SMTP id u6so5749911pfh.11
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:32 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:19:03 -0800
-Message-Id: <20181217051925.17582-44-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:18:58 -0800
+Message-Id: <20181217051925.17582-39-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,73 +23,169 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 43/65] PCI: imx6: Remove unused return values
+Subject: [PATCH v2 38/65] PCI: imx6: Pass struct imx6_pcie to PHY accessors
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 9ab021b6cf8b5bfc40ea9333c9b64b554fe01cd4
+Port of a Linux commit 8bad7f2fc3006d1752c426343ca77f1fbe61cf00
 
-  Remove unused return values.  No functional change intended.
+  Pass the struct imx6_pcie pointer, not dbi_base address, to PHY accessors.
+  This enables future simplifications.  No functional change intended.
 
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ drivers/pci/pci-imx6.c | 41 +++++++++++++++++++++++------------------
+ 1 file changed, 23 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index 8e7bae258..fa62aa3a4 100644
+index a3658844c..8b78f3ec1 100644
 --- a/drivers/pci/pci-imx6.c
 +++ b/drivers/pci/pci-imx6.c
-@@ -236,7 +236,7 @@ static void imx6_pcie_reset_phy(struct imx6_pcie *imx6_pcie)
- 	pcie_phy_write(imx6_pcie, PHY_RX_OVRD_IN_LO, temp);
+@@ -94,8 +94,9 @@ struct imx6_pcie {
+ #define PHY_RX_OVRD_IN_LO_RX_DATA_EN (1 << 5)
+ #define PHY_RX_OVRD_IN_LO_RX_PLL_EN (1 << 3)
+ 
+-static int pcie_phy_poll_ack(void __iomem *dbi_base, int exp_val)
++static int pcie_phy_poll_ack(struct imx6_pcie *imx6_pcie, int exp_val)
+ {
++	void __iomem *dbi_base = imx6_pcie->pp.dbi_base;
+ 	u32 val;
+ 	u32 max_iterations = 10;
+ 	u32 wait_counter = 0;
+@@ -114,8 +115,9 @@ static int pcie_phy_poll_ack(void __iomem *dbi_base, int exp_val)
+ 	return -ETIMEDOUT;
  }
  
--static int imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
-+static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
+-static int pcie_phy_wait_ack(void __iomem *dbi_base, int addr)
++static int pcie_phy_wait_ack(struct imx6_pcie *imx6_pcie, int addr)
  {
- 	struct pcie_port *pp = &imx6_pcie->pp;
- 	u32 val, gpr1, gpr12;
-@@ -283,11 +283,9 @@ static int imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
- 		writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
- 		break;
- 	}
--
--	return 0;
- }
- 
--static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
-+static void imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
- {
- 	struct device_d *dev = imx6_pcie->pp.dev;
++	void __iomem *dbi_base = imx6_pcie->pp.dbi_base;
+ 	u32 val;
  	int ret;
-@@ -296,7 +294,7 @@ static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
- 	ret = clk_enable(imx6_pcie->pcie_phy);
- 	if (ret) {
- 		dev_err(dev, "unable to enable pcie_phy clock\n");
--		goto err_pcie_phy;
-+		return;
- 	}
  
- 	ret = clk_enable(imx6_pcie->pcie_bus);
-@@ -351,15 +349,12 @@ static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
- 		break;
- 	}
+@@ -125,23 +127,24 @@ static int pcie_phy_wait_ack(void __iomem *dbi_base, int addr)
+ 	val |= (0x1 << PCIE_PHY_CTRL_CAP_ADR_LOC);
+ 	writel(val, dbi_base + PCIE_PHY_CTRL);
  
--	return 0;
-+	return;
+-	ret = pcie_phy_poll_ack(dbi_base, 1);
++	ret = pcie_phy_poll_ack(imx6_pcie, 1);
+ 	if (ret)
+ 		return ret;
  
- err_pcie:
- 	clk_disable(imx6_pcie->pcie_bus);
- err_pcie_bus:
- 	clk_disable(imx6_pcie->pcie_phy);
--err_pcie_phy:
--	return ret;
--
+ 	val = addr << PCIE_PHY_CTRL_DATA_LOC;
+ 	writel(val, dbi_base + PCIE_PHY_CTRL);
+ 
+-	return pcie_phy_poll_ack(dbi_base, 0);
++	return pcie_phy_poll_ack(imx6_pcie, 0);
  }
  
- static void imx6_pcie_init_phy(struct imx6_pcie *imx6_pcie)
+ /* Read from the 16-bit PCIe PHY control registers (not memory-mapped) */
+-static int pcie_phy_read(void __iomem *dbi_base, int addr , int *data)
++static int pcie_phy_read(struct imx6_pcie *imx6_pcie, int addr , int *data)
+ {
++	void __iomem *dbi_base = imx6_pcie->pp.dbi_base;
+ 	u32 val, phy_ctl;
+ 	int ret;
+ 
+-	ret = pcie_phy_wait_ack(dbi_base, addr);
++	ret = pcie_phy_wait_ack(imx6_pcie, addr);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -149,7 +152,7 @@ static int pcie_phy_read(void __iomem *dbi_base, int addr , int *data)
+ 	phy_ctl = 0x1 << PCIE_PHY_CTRL_RD_LOC;
+ 	writel(phy_ctl, dbi_base + PCIE_PHY_CTRL);
+ 
+-	ret = pcie_phy_poll_ack(dbi_base, 1);
++	ret = pcie_phy_poll_ack(imx6_pcie, 1);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -159,17 +162,18 @@ static int pcie_phy_read(void __iomem *dbi_base, int addr , int *data)
+ 	/* deassert Read signal */
+ 	writel(0x00, dbi_base + PCIE_PHY_CTRL);
+ 
+-	return pcie_phy_poll_ack(dbi_base, 0);
++	return pcie_phy_poll_ack(imx6_pcie, 0);
+ }
+ 
+-static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
++static int pcie_phy_write(struct imx6_pcie *imx6_pcie, int addr, int data)
+ {
++	void __iomem *dbi_base = imx6_pcie->pp.dbi_base;
+ 	u32 var;
+ 	int ret;
+ 
+ 	/* write addr */
+ 	/* cap addr */
+-	ret = pcie_phy_wait_ack(dbi_base, addr);
++	ret = pcie_phy_wait_ack(imx6_pcie, addr);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -180,7 +184,7 @@ static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
+ 	var |= (0x1 << PCIE_PHY_CTRL_CAP_DAT_LOC);
+ 	writel(var, dbi_base + PCIE_PHY_CTRL);
+ 
+-	ret = pcie_phy_poll_ack(dbi_base, 1);
++	ret = pcie_phy_poll_ack(imx6_pcie, 1);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -189,7 +193,7 @@ static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
+ 	writel(var, dbi_base + PCIE_PHY_CTRL);
+ 
+ 	/* wait for ack de-assertion */
+-	ret = pcie_phy_poll_ack(dbi_base, 0);
++	ret = pcie_phy_poll_ack(imx6_pcie, 0);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -198,7 +202,7 @@ static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
+ 	writel(var, dbi_base + PCIE_PHY_CTRL);
+ 
+ 	/* wait for ack */
+-	ret = pcie_phy_poll_ack(dbi_base, 1);
++	ret = pcie_phy_poll_ack(imx6_pcie, 1);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -207,7 +211,7 @@ static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
+ 	writel(var, dbi_base + PCIE_PHY_CTRL);
+ 
+ 	/* wait for ack de-assertion */
+-	ret = pcie_phy_poll_ack(dbi_base, 0);
++	ret = pcie_phy_poll_ack(imx6_pcie, 0);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -218,19 +222,20 @@ static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
+ 
+ static void imx6_pcie_reset_phy(struct pcie_port *pp)
+ {
++	struct imx6_pcie *imx6_pcie = to_imx6_pcie(pp);
+ 	uint32_t temp;
+ 
+-	pcie_phy_read(pp->dbi_base, PHY_RX_OVRD_IN_LO, &temp);
++	pcie_phy_read(imx6_pcie, PHY_RX_OVRD_IN_LO, &temp);
+ 	temp |= (PHY_RX_OVRD_IN_LO_RX_DATA_EN |
+ 		 PHY_RX_OVRD_IN_LO_RX_PLL_EN);
+-	pcie_phy_write(pp->dbi_base, PHY_RX_OVRD_IN_LO, temp);
++	pcie_phy_write(imx6_pcie, PHY_RX_OVRD_IN_LO, temp);
+ 
+ 	udelay(2000);
+ 
+-	pcie_phy_read(pp->dbi_base, PHY_RX_OVRD_IN_LO, &temp);
++	pcie_phy_read(imx6_pcie, PHY_RX_OVRD_IN_LO, &temp);
+ 	temp &= ~(PHY_RX_OVRD_IN_LO_RX_DATA_EN |
+ 		  PHY_RX_OVRD_IN_LO_RX_PLL_EN);
+-	pcie_phy_write(pp->dbi_base, PHY_RX_OVRD_IN_LO, temp);
++	pcie_phy_write(imx6_pcie, PHY_RX_OVRD_IN_LO, temp);
+ }
+ 
+ static int imx6_pcie_assert_core_reset(struct pcie_port *pp)
 -- 
 2.19.1
 
