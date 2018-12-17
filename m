@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlKh-0002n7-Ug
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:21:22 +0000
-Received: by mail-pg1-x543.google.com with SMTP id s198so5537507pgs.2
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:37 -0800 (PST)
+ id 1gYlKm-0002ra-FT
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:21:25 +0000
+Received: by mail-pl1-x643.google.com with SMTP id z23so5560384plo.0
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:41 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:19:04 -0800
-Message-Id: <20181217051925.17582-45-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:19:07 -0800
+Message-Id: <20181217051925.17582-48-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,91 +23,115 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 44/65] PCI: imx6: Factor out ref clock enable
+Subject: [PATCH v2 47/65] PCI: imx6: Remove LTSSM disable workaround
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 4d1821e729b5d2060ef8c9825af1dacc2182da38
+Port of a Linux commit a71280722eeba8f1afa51ad6656028dcb96e110b
 
-  Factor out ref clock enable to make it cleaner to add imx6sx support.  No
-  functional change intended.
+  This causes CPU hangs when the system is reset by the watchdog, as the GPRs
+  aren't cleared, but the clocks are back to disabled state.
 
+  If the bootloader uses PCIe, it must take care to bring it down into a safe
+  state, before passing control to the Linux kernel.  This is the only way to
+  get a properly operating system at all times and circumstances.
+
+  Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-  Tested-by: Christoph Fritz <chf.fritz@googlemail.com>
+
+LTSSM disable workaround still needs to be performed before passing
+control to Linux. However, in order to avoid the hang described above,
+we move it to imx6_pcie_remove() and apply it without relying on
+values in GPR.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c | 43 ++++++++++++++++++++++++++++--------------
- 1 file changed, 29 insertions(+), 14 deletions(-)
+ drivers/pci/pci-imx6.c | 57 +++++++++++++++++++++---------------------
+ 1 file changed, 28 insertions(+), 29 deletions(-)
 
 diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index fa62aa3a4..447bb72ad 100644
+index a9a4be927..023e6f07f 100644
 --- a/drivers/pci/pci-imx6.c
 +++ b/drivers/pci/pci-imx6.c
-@@ -285,6 +285,28 @@ static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
- 	}
+@@ -239,8 +239,7 @@ static void imx6_pcie_reset_phy(struct imx6_pcie *imx6_pcie)
+ 
+ static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
+ {
+-	struct pcie_port *pp = &imx6_pcie->pp;
+-	u32 val, gpr1, gpr12;
++	u32 gpr1;
+ 
+ 	switch (imx6_pcie->variant) {
+ 	case IMX6QP:
+@@ -249,34 +248,7 @@ static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
+ 		writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
+ 		break;
+ 	case IMX6Q:
+-		/*
+-		 * If the bootloader already enabled the link we need some special
+-		 * handling to get the core back into a state where it is safe to
+-		 * touch it for configuration.  As there is no dedicated reset signal
+-		 * wired up for MX6QDL, we need to manually force LTSSM into "detect"
+-		 * state before completely disabling LTSSM, which is a prerequisite
+-		 * for core configuration.
+-		 *
+-		 * If both LTSSM_ENABLE and REF_SSP_ENABLE are active we have a strong
+-		 * indication that the bootloader activated the link.
+-		 */
+ 		gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
+-		gpr12 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
+-
+-		if ((gpr1 & IMX6Q_GPR1_PCIE_REF_CLK_EN) &&
+-		    (gpr12 & IMX6Q_GPR12_PCIE_CTL_2)) {
+-			val = dw_pcie_readl_rc(pp, PCIE_PL_PFLR);
+-			val &= ~PCIE_PL_PFLR_LINK_STATE_MASK;
+-			val |= PCIE_PL_PFLR_FORCE_LINK;
+-
+-			data_abort_mask();
+-			dw_pcie_writel_rc(pp, PCIE_PL_PFLR, val);
+-			data_abort_unmask();
+-
+-			gpr12 &= ~IMX6Q_GPR12_PCIE_CTL_2;
+-			writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
+-		}
+-
+ 		gpr1 |= IMX6Q_GPR1_PCIE_TEST_PD;
+ 		writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
+ 
+@@ -642,6 +614,33 @@ static void imx6_pcie_remove(struct device_d *dev)
+ {
+ 	struct imx6_pcie *imx6_pcie = dev->priv;
+ 
++	if (imx6_pcie->variant == IMX6Q) {
++		/*
++		 * If the bootloader already enabled the link we need
++		 * some special handling to get the core back into a
++		 * state where it is safe to touch it for
++		 * configuration.  As there is no dedicated reset
++		 * signal wired up for MX6QDL, we need to manually
++		 * force LTSSM into "detect" state before completely
++		 * disabling LTSSM, which is a prerequisite for core
++		 * configuration.
++		 */
++		struct pcie_port *pp = &imx6_pcie->pp;
++		u32 gpr12, val;
++
++		val = dw_pcie_readl_rc(pp, PCIE_PL_PFLR);
++		val &= ~PCIE_PL_PFLR_LINK_STATE_MASK;
++		val |= PCIE_PL_PFLR_FORCE_LINK;
++
++		data_abort_mask();
++		dw_pcie_writel_rc(pp, PCIE_PL_PFLR, val);
++		data_abort_unmask();
++
++		gpr12 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
++		gpr12 &= ~IMX6Q_GPR12_PCIE_CTL_2;
++		writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
++	}
++
+ 	imx6_pcie_assert_core_reset(imx6_pcie);
  }
  
-+static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
-+{
-+	u32 gpr1;
-+
-+	/* power up core phy and enable ref clock */
-+	gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
-+	gpr1 &= ~IMX6Q_GPR1_PCIE_TEST_PD;
-+	writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
-+	/*
-+	 * the async reset input need ref clock to sync internally,
-+	 * when the ref clock comes after reset, internal synced
-+	 * reset time is too short, cannot meet the requirement.
-+	 * add one ~10us delay here.
-+	 */
-+	udelay(10);
-+	gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
-+	gpr1 |= IMX6Q_GPR1_PCIE_REF_CLK_EN;
-+	writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
-+
-+	return 0;
-+}
-+
- static void imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
- {
- 	struct device_d *dev = imx6_pcie->pp.dev;
-@@ -309,20 +331,11 @@ static void imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
- 		goto err_pcie;
- 	}
- 
--	/* power up core phy and enable ref clock */
--	gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
--	gpr1 &= ~IMX6Q_GPR1_PCIE_TEST_PD;
--	writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
--	/*
--	 * the async reset input need ref clock to sync internally,
--	 * when the ref clock comes after reset, internal synced
--	 * reset time is too short, cannot meet the requirement.
--	 * add one ~10us delay here.
--	 */
--	udelay(10);
--	gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
--	gpr1 |= IMX6Q_GPR1_PCIE_REF_CLK_EN;
--	writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
-+	ret = imx6_pcie_enable_ref_clk(imx6_pcie);
-+	if (ret) {
-+		dev_err(dev, "unable to enable pcie ref clock\n");
-+		goto err_ref_clk;
-+	}
- 
- 	/* allow the clocks to stabilize */
- 	udelay(200);
-@@ -351,6 +364,8 @@ static void imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
- 
- 	return;
- 
-+err_ref_clk:
-+	clk_disable(imx6_pcie->pcie);
- err_pcie:
- 	clk_disable(imx6_pcie->pcie_bus);
- err_pcie_bus:
 -- 
 2.19.1
 
