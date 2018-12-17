@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201]
+Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2]
  helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYnL9-000244-0k
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 07:29:24 +0000
+ id 1gYnL9-00025t-Bb
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 07:29:25 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon, 17 Dec 2018 08:28:05 +0100
-Message-Id: <024afdabd161315653370a6c90a995e45608b0fb.1545031438.git-series.r.czerwinski@pengutronix.de>
+Date: Mon, 17 Dec 2018 08:28:06 +0100
+Message-Id: <47e6066ba573e1a1a7b5cb809764e9208e1d46ff.1545031438.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.48072dc0c2851fc176d68ed0eccf022fc17732e1.1545031438.git-series.r.czerwinski@pengutronix.de>
 References: <cover.48072dc0c2851fc176d68ed0eccf022fc17732e1.1545031438.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -22,40 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 6/7] ARM: rpi: choose miniuart as stdout
+Subject: [PATCH v3 7/7] doc: bcm283x: remove miniuart overlay instruction
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Since we now support the miniuart, enable it as the default stdout port.
-With this change the device tree overlay to switch the miniuart to bluetooth is
-no longer necessary.
+Since we now use the miniuart on the raspberry pi 3, the miniuart overlay is no
+longer needed.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/dts/bcm2837-rpi-3.dts | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ Documentation/boards/bcm2835.rst | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/dts/bcm2837-rpi-3.dts b/arch/arm/dts/bcm2837-rpi-3.dts
-index d6ffc36..194b41c 100644
---- a/arch/arm/dts/bcm2837-rpi-3.dts
-+++ b/arch/arm/dts/bcm2837-rpi-3.dts
-@@ -2,15 +2,10 @@
+diff --git a/Documentation/boards/bcm2835.rst b/Documentation/boards/bcm2835.rst
+index 79ea0ff..ea80d58 100644
+--- a/Documentation/boards/bcm2835.rst
++++ b/Documentation/boards/bcm2835.rst
+@@ -22,7 +22,6 @@ Raspberry Pi
  
- / {
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = &uart1;
- 	};
+          kernel=barebox.img
+          enable_uart=1
+-         dtoverlay=pi3-miniuart-bt
  
- 	memory {
- 		reg = <0x0 0x0>;
- 	};
- };
--
--&uart0 {
--	status = "okay";
--	/delete-node/ bluetooth;
--};
+      (For more information, refer to the `documentation for config.txt`_.)
+ 
 -- 
 git-series 0.9.1
 
