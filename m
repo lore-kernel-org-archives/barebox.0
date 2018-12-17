@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlKc-0005Gj-Jn
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:43 +0000
-Received: by mail-pf1-x441.google.com with SMTP id u6so5749911pfh.11
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:32 -0800 (PST)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:18:58 -0800
-Message-Id: <20181217051925.17582-39-andrew.smirnov@gmail.com>
-In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
-References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
+Received: from magratgarlick.emantor.de ([78.46.208.201]
+ helo=margratgarlick.emantor.de)
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gYnKn-0001sF-D3
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 07:29:02 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Mon, 17 Dec 2018 08:27:59 +0100
+Message-Id: <cover.48072dc0c2851fc176d68ed0eccf022fc17732e1.1545031438.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,172 +20,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 38/65] PCI: imx6: Pass struct imx6_pcie to PHY accessors
+Subject: [PATCH v3 0/7] Raspberry Pi miniuart support
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Port of a Linux commit 8bad7f2fc3006d1752c426343ca77f1fbe61cf00
+This patch series adds support for the raspberry pi miniuart (also called
+aux-uart) to barebox.
+With this series the miniuart overlay is no longer necessary to start barebox on
+Raspberry Pi 3.
 
-  Pass the struct imx6_pcie pointer, not dbi_base address, to PHY accessors.
-  This enables future simplifications.  No functional change intended.
+v3:
+- Fix Indentation
+  from Oleksij Rempel and Sascha Hauer
 
-  Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+v2:
+- Move console clock initialization into board core
+- Retrieve the core clock frequency for the miniuart from the firmware
+- Double the clock frequency in the ns16550 rpi init function instead of
+  during initialization
+  from Lucas Stach
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- drivers/pci/pci-imx6.c | 41 +++++++++++++++++++++++------------------
- 1 file changed, 23 insertions(+), 18 deletions(-)
+Rouven Czerwinski (7):
+  ARM: rpi: move clks into board specific rpi-common
+  ARM: rpi: retrieve miniuart clock from firmware
+  serial_ns16550: handle default reg-io-width
+  serial_ns16550: add raspberry pi compatible and init
+  ARM: rpi: add NS16550 support
+  ARM: rpi: choose miniuart as stdout
+  doc: bcm283x: remove miniuart overlay instruction
 
-diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index a3658844c..8b78f3ec1 100644
---- a/drivers/pci/pci-imx6.c
-+++ b/drivers/pci/pci-imx6.c
-@@ -94,8 +94,9 @@ struct imx6_pcie {
- #define PHY_RX_OVRD_IN_LO_RX_DATA_EN (1 << 5)
- #define PHY_RX_OVRD_IN_LO_RX_PLL_EN (1 << 3)
- 
--static int pcie_phy_poll_ack(void __iomem *dbi_base, int exp_val)
-+static int pcie_phy_poll_ack(struct imx6_pcie *imx6_pcie, int exp_val)
- {
-+	void __iomem *dbi_base = imx6_pcie->pp.dbi_base;
- 	u32 val;
- 	u32 max_iterations = 10;
- 	u32 wait_counter = 0;
-@@ -114,8 +115,9 @@ static int pcie_phy_poll_ack(void __iomem *dbi_base, int exp_val)
- 	return -ETIMEDOUT;
- }
- 
--static int pcie_phy_wait_ack(void __iomem *dbi_base, int addr)
-+static int pcie_phy_wait_ack(struct imx6_pcie *imx6_pcie, int addr)
- {
-+	void __iomem *dbi_base = imx6_pcie->pp.dbi_base;
- 	u32 val;
- 	int ret;
- 
-@@ -125,23 +127,24 @@ static int pcie_phy_wait_ack(void __iomem *dbi_base, int addr)
- 	val |= (0x1 << PCIE_PHY_CTRL_CAP_ADR_LOC);
- 	writel(val, dbi_base + PCIE_PHY_CTRL);
- 
--	ret = pcie_phy_poll_ack(dbi_base, 1);
-+	ret = pcie_phy_poll_ack(imx6_pcie, 1);
- 	if (ret)
- 		return ret;
- 
- 	val = addr << PCIE_PHY_CTRL_DATA_LOC;
- 	writel(val, dbi_base + PCIE_PHY_CTRL);
- 
--	return pcie_phy_poll_ack(dbi_base, 0);
-+	return pcie_phy_poll_ack(imx6_pcie, 0);
- }
- 
- /* Read from the 16-bit PCIe PHY control registers (not memory-mapped) */
--static int pcie_phy_read(void __iomem *dbi_base, int addr , int *data)
-+static int pcie_phy_read(struct imx6_pcie *imx6_pcie, int addr , int *data)
- {
-+	void __iomem *dbi_base = imx6_pcie->pp.dbi_base;
- 	u32 val, phy_ctl;
- 	int ret;
- 
--	ret = pcie_phy_wait_ack(dbi_base, addr);
-+	ret = pcie_phy_wait_ack(imx6_pcie, addr);
- 	if (ret)
- 		return ret;
- 
-@@ -149,7 +152,7 @@ static int pcie_phy_read(void __iomem *dbi_base, int addr , int *data)
- 	phy_ctl = 0x1 << PCIE_PHY_CTRL_RD_LOC;
- 	writel(phy_ctl, dbi_base + PCIE_PHY_CTRL);
- 
--	ret = pcie_phy_poll_ack(dbi_base, 1);
-+	ret = pcie_phy_poll_ack(imx6_pcie, 1);
- 	if (ret)
- 		return ret;
- 
-@@ -159,17 +162,18 @@ static int pcie_phy_read(void __iomem *dbi_base, int addr , int *data)
- 	/* deassert Read signal */
- 	writel(0x00, dbi_base + PCIE_PHY_CTRL);
- 
--	return pcie_phy_poll_ack(dbi_base, 0);
-+	return pcie_phy_poll_ack(imx6_pcie, 0);
- }
- 
--static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
-+static int pcie_phy_write(struct imx6_pcie *imx6_pcie, int addr, int data)
- {
-+	void __iomem *dbi_base = imx6_pcie->pp.dbi_base;
- 	u32 var;
- 	int ret;
- 
- 	/* write addr */
- 	/* cap addr */
--	ret = pcie_phy_wait_ack(dbi_base, addr);
-+	ret = pcie_phy_wait_ack(imx6_pcie, addr);
- 	if (ret)
- 		return ret;
- 
-@@ -180,7 +184,7 @@ static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
- 	var |= (0x1 << PCIE_PHY_CTRL_CAP_DAT_LOC);
- 	writel(var, dbi_base + PCIE_PHY_CTRL);
- 
--	ret = pcie_phy_poll_ack(dbi_base, 1);
-+	ret = pcie_phy_poll_ack(imx6_pcie, 1);
- 	if (ret)
- 		return ret;
- 
-@@ -189,7 +193,7 @@ static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
- 	writel(var, dbi_base + PCIE_PHY_CTRL);
- 
- 	/* wait for ack de-assertion */
--	ret = pcie_phy_poll_ack(dbi_base, 0);
-+	ret = pcie_phy_poll_ack(imx6_pcie, 0);
- 	if (ret)
- 		return ret;
- 
-@@ -198,7 +202,7 @@ static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
- 	writel(var, dbi_base + PCIE_PHY_CTRL);
- 
- 	/* wait for ack */
--	ret = pcie_phy_poll_ack(dbi_base, 1);
-+	ret = pcie_phy_poll_ack(imx6_pcie, 1);
- 	if (ret)
- 		return ret;
- 
-@@ -207,7 +211,7 @@ static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
- 	writel(var, dbi_base + PCIE_PHY_CTRL);
- 
- 	/* wait for ack de-assertion */
--	ret = pcie_phy_poll_ack(dbi_base, 0);
-+	ret = pcie_phy_poll_ack(imx6_pcie, 0);
- 	if (ret)
- 		return ret;
- 
-@@ -218,19 +222,20 @@ static int pcie_phy_write(void __iomem *dbi_base, int addr, int data)
- 
- static void imx6_pcie_reset_phy(struct pcie_port *pp)
- {
-+	struct imx6_pcie *imx6_pcie = to_imx6_pcie(pp);
- 	uint32_t temp;
- 
--	pcie_phy_read(pp->dbi_base, PHY_RX_OVRD_IN_LO, &temp);
-+	pcie_phy_read(imx6_pcie, PHY_RX_OVRD_IN_LO, &temp);
- 	temp |= (PHY_RX_OVRD_IN_LO_RX_DATA_EN |
- 		 PHY_RX_OVRD_IN_LO_RX_PLL_EN);
--	pcie_phy_write(pp->dbi_base, PHY_RX_OVRD_IN_LO, temp);
-+	pcie_phy_write(imx6_pcie, PHY_RX_OVRD_IN_LO, temp);
- 
- 	udelay(2000);
- 
--	pcie_phy_read(pp->dbi_base, PHY_RX_OVRD_IN_LO, &temp);
-+	pcie_phy_read(imx6_pcie, PHY_RX_OVRD_IN_LO, &temp);
- 	temp &= ~(PHY_RX_OVRD_IN_LO_RX_DATA_EN |
- 		  PHY_RX_OVRD_IN_LO_RX_PLL_EN);
--	pcie_phy_write(pp->dbi_base, PHY_RX_OVRD_IN_LO, temp);
-+	pcie_phy_write(imx6_pcie, PHY_RX_OVRD_IN_LO, temp);
- }
- 
- static int imx6_pcie_assert_core_reset(struct pcie_port *pp)
+ Documentation/boards/bcm2835.rst          |  1 +-
+ arch/arm/boards/raspberry-pi/rpi-common.c | 26 +++++++++-
+ arch/arm/configs/rpi_defconfig            |  1 +-
+ arch/arm/dts/bcm2837-rpi-3.dts            |  7 +--
+ arch/arm/mach-bcm283x/core.c              | 19 +------
+ drivers/serial/serial_ns16550.c           | 71 ++++++++++++++++--------
+ 6 files changed, 76 insertions(+), 49 deletions(-)
+
+base-commit: 4d94b3c0208fedf9c9c2eed0053e9dffb9d52506
 -- 
-2.19.1
-
+git-series 0.9.1
 
 _______________________________________________
 barebox mailing list
