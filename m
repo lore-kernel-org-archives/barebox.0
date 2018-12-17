@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlL8-0003Gz-Gz
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:21:42 +0000
-Received: by mail-pf1-x441.google.com with SMTP id c72so5760264pfc.6
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:21:04 -0800 (PST)
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gYlL3-0003ak-Rk
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:21:11 +0000
+Received: by mail-pl1-x642.google.com with SMTP id z23so5560739plo.0
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:59 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:19:25 -0800
-Message-Id: <20181217051925.17582-66-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:19:20 -0800
+Message-Id: <20181217051925.17582-61-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,50 +23,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 65/65] PCI: dwc: Constify dw_pcie_host_ops structures
+Subject: [PATCH v2 60/65] PCI: dwc: designware: Handle ->host_init() failures
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 4ab2e7c0df6b8bbc6c8ea1617b737d33c2510012
+Port of a Linux commit 4a301766f5263dd94c1b95d1b1bbdf338afb1a37
 
-  The dw_pcie_host_ops structures are never modified.  Constify these
-  structures such that these can be write-protected.
+  In several dwc-based drivers, ->host_init() can fail, so make sure to
+  propagate and handle this to avoid continuing operation of a driver or
+  hardware in an invalid state.
 
-  Signed-off-by: Jisheng Zhang <jszhang@marvell.com>
+  Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+  Acked-by: Joao Pinto <jpinto@synopsys.com>
   Acked-by: Jingoo Han <jingoohan1@gmail.com>
-  Acked-by: Kishon Vijay Abraham I <kishon@ti.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c        | 2 +-
- drivers/pci/pcie-designware.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/pci-imx6.c             | 4 +++-
+ drivers/pci/pcie-designware-host.c | 7 +++++--
+ drivers/pci/pcie-designware.h      | 2 +-
+ 3 files changed, 9 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index 1807f29c9..38e002a1c 100644
+index 78aa5215a..1807f29c9 100644
 --- a/drivers/pci/pci-imx6.c
 +++ b/drivers/pci/pci-imx6.c
-@@ -501,7 +501,7 @@ static const struct dw_pcie_ops dw_pcie_ops = {
-        .link_up = imx6_pcie_link_up,
- };
+@@ -477,7 +477,7 @@ err_reset_phy:
+        return ret;
+ }
  
--static struct dw_pcie_host_ops imx6_pcie_host_ops = {
-+static const struct dw_pcie_host_ops imx6_pcie_host_ops = {
- 	.host_init = imx6_pcie_host_init,
- };
+-static void imx6_pcie_host_init(struct pcie_port *pp)
++static int imx6_pcie_host_init(struct pcie_port *pp)
+ {
+ 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+ 	struct imx6_pcie *imx6_pcie = to_imx6_pcie(pci);
+@@ -487,6 +487,8 @@ static void imx6_pcie_host_init(struct pcie_port *pp)
+ 	imx6_pcie_deassert_core_reset(imx6_pcie);
+ 	dw_pcie_setup_rc(pp);
+ 	imx6_pcie_establish_link(imx6_pcie);
++
++	return 0;
+ }
  
+ static int imx6_pcie_link_up(struct dw_pcie *pci)
+diff --git a/drivers/pci/pcie-designware-host.c b/drivers/pci/pcie-designware-host.c
+index 5de9cd8ea..e98560818 100644
+--- a/drivers/pci/pcie-designware-host.c
++++ b/drivers/pci/pcie-designware-host.c
+@@ -164,8 +164,11 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
+ 	if (ret)
+ 		pci->num_viewport = 2;
+ 
+-	if (pp->ops->host_init)
+-		pp->ops->host_init(pp);
++	if (pp->ops->host_init) {
++		ret = pp->ops->host_init(pp);
++		if (ret)
++			return ret;
++	}
+ 
+ 	pp->pci.parent = dev;
+ 	pp->pci.pci_ops = &dw_pcie_ops;
 diff --git a/drivers/pci/pcie-designware.h b/drivers/pci/pcie-designware.h
-index 0f1659319..058a0acbb 100644
+index b18f1b83e..933c2b533 100644
 --- a/drivers/pci/pcie-designware.h
 +++ b/drivers/pci/pcie-designware.h
-@@ -129,7 +129,7 @@ struct pcie_port {
- 	struct resource		mem;
- 	struct resource		busn;
- 	int			irq;
--	struct dw_pcie_host_ops	*ops;
-+	const struct dw_pcie_host_ops	*ops;
- 	struct pci_controller	pci;
+@@ -99,7 +99,7 @@ struct dw_pcie_host_ops {
+ 			     unsigned int devfn, int where, int size, u32 *val);
+ 	int (*wr_other_conf)(struct pcie_port *pp, struct pci_bus *bus,
+ 			     unsigned int devfn, int where, int size, u32 val);
+-	void (*host_init)(struct pcie_port *pp);
++	int (*host_init)(struct pcie_port *pp);
+ 	void (*scan_bus)(struct pcie_port *pp);
  };
  
 -- 
