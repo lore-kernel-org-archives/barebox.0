@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlL3-0003ak-Rk
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:21:11 +0000
-Received: by mail-pl1-x642.google.com with SMTP id z23so5560739plo.0
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:59 -0800 (PST)
+ id 1gYlL0-0003aF-3K
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:21:08 +0000
+Received: by mail-pf1-x441.google.com with SMTP id z9so5769890pfi.2
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:55 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:19:20 -0800
-Message-Id: <20181217051925.17582-61-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:19:17 -0800
+Message-Id: <20181217051925.17582-58-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,81 +23,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 60/65] PCI: dwc: designware: Handle ->host_init() failures
+Subject: [PATCH v2 57/65] PCI: Fix typos and whitespace errors
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 4a301766f5263dd94c1b95d1b1bbdf338afb1a37
+Port of a Linux commit 96291d565550c1fd363e488cc17cb3189d2e4cc2
 
-  In several dwc-based drivers, ->host_init() can fail, so make sure to
-  propagate and handle this to avoid continuing operation of a driver or
-  hardware in an invalid state.
+  Fix various typos and whitespace errors:
 
-  Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+    s/Synopsis/Synopsys/
+    s/Designware/DesignWare/
+    s/Keystine/Keystone/
+    s/gpio/GPIO/
+    s/pcie/PCIe/
+    s/phy/PHY/
+    s/confgiruation/configuration/
+
+  No functional change intended.
+
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-  Acked-by: Joao Pinto <jpinto@synopsys.com>
-  Acked-by: Jingoo Han <jingoohan1@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c             | 4 +++-
- drivers/pci/pcie-designware-host.c | 7 +++++--
+ drivers/pci/pcie-designware-host.c | 2 +-
+ drivers/pci/pcie-designware.c      | 2 +-
  drivers/pci/pcie-designware.h      | 2 +-
- 3 files changed, 9 insertions(+), 4 deletions(-)
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index 78aa5215a..1807f29c9 100644
---- a/drivers/pci/pci-imx6.c
-+++ b/drivers/pci/pci-imx6.c
-@@ -477,7 +477,7 @@ err_reset_phy:
-        return ret;
- }
- 
--static void imx6_pcie_host_init(struct pcie_port *pp)
-+static int imx6_pcie_host_init(struct pcie_port *pp)
- {
- 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
- 	struct imx6_pcie *imx6_pcie = to_imx6_pcie(pci);
-@@ -487,6 +487,8 @@ static void imx6_pcie_host_init(struct pcie_port *pp)
- 	imx6_pcie_deassert_core_reset(imx6_pcie);
- 	dw_pcie_setup_rc(pp);
- 	imx6_pcie_establish_link(imx6_pcie);
-+
-+	return 0;
- }
- 
- static int imx6_pcie_link_up(struct dw_pcie *pci)
 diff --git a/drivers/pci/pcie-designware-host.c b/drivers/pci/pcie-designware-host.c
-index 5de9cd8ea..e98560818 100644
+index 30bed9444..d4fd58377 100644
 --- a/drivers/pci/pcie-designware-host.c
 +++ b/drivers/pci/pcie-designware-host.c
-@@ -164,8 +164,11 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
- 	if (ret)
- 		pci->num_viewport = 2;
- 
--	if (pp->ops->host_init)
--		pp->ops->host_init(pp);
-+	if (pp->ops->host_init) {
-+		ret = pp->ops->host_init(pp);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	pp->pci.parent = dev;
- 	pp->pci.pci_ops = &dw_pcie_ops;
+@@ -1,5 +1,5 @@
+ /*
+- * Synopsys Designware PCIe host controller driver
++ * Synopsys DesignWare PCIe host controller driver
+  *
+  * Copyright (C) 2013 Samsung Electronics Co., Ltd.
+  *		http://www.samsung.com
+diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
+index 211acdfed..e608ad47a 100644
+--- a/drivers/pci/pcie-designware.c
++++ b/drivers/pci/pcie-designware.c
+@@ -1,5 +1,5 @@
+ /*
+- * Synopsys Designware PCIe host controller driver
++ * Synopsys DesignWare PCIe host controller driver
+  *
+  * Copyright (C) 2013 Samsung Electronics Co., Ltd.
+  *		http://www.samsung.com
 diff --git a/drivers/pci/pcie-designware.h b/drivers/pci/pcie-designware.h
-index b18f1b83e..933c2b533 100644
+index 149ce1da5..98565f201 100644
 --- a/drivers/pci/pcie-designware.h
 +++ b/drivers/pci/pcie-designware.h
-@@ -99,7 +99,7 @@ struct dw_pcie_host_ops {
- 			     unsigned int devfn, int where, int size, u32 *val);
- 	int (*wr_other_conf)(struct pcie_port *pp, struct pci_bus *bus,
- 			     unsigned int devfn, int where, int size, u32 val);
--	void (*host_init)(struct pcie_port *pp);
-+	int (*host_init)(struct pcie_port *pp);
- 	void (*scan_bus)(struct pcie_port *pp);
- };
- 
+@@ -1,5 +1,5 @@
+ /*
+- * Synopsys Designware PCIe host controller driver
++ * Synopsys DesignWare PCIe host controller driver
+  *
+  * Copyright (C) 2013 Samsung Electronics Co., Ltd.
+  *		http://www.samsung.com
 -- 
 2.19.1
 
