@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlKh-0005Hz-Ir
+ id 1gYlKh-0005H2-Gt
  for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:48 +0000
-Received: by mail-pf1-x442.google.com with SMTP id q1so5762504pfi.5
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:47 -0800 (PST)
+Received: by mail-pf1-x442.google.com with SMTP id b85so5767722pfc.3
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:37 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:19:10 -0800
-Message-Id: <20181217051925.17582-51-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:19:02 -0800
+Message-Id: <20181217051925.17582-43-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,105 +23,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 50/65] PCI: dwc: designware: Fix style errors in
- pcie-designware.c
+Subject: [PATCH v2 42/65] PCI: imx6: Port error messages for
+ imx6_pcie_deassert_core_reset()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 314fc854f50317931fb4dfaab431695ab886e8de
-
-  No functional change. Fix all checkpatch warnings and check errors in
-  pcie-designware.c
-
-  Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
-  Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-  Acked-By: Joao Pinto <jpinto@synopsys.com>
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/pci/pci-imx6.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index 59884d514..f5a77ae15 100644
---- a/drivers/pci/pcie-designware.c
-+++ b/drivers/pci/pcie-designware.c
-@@ -39,13 +39,13 @@ int dw_pcie_read(void __iomem *addr, int size, u32 *val)
- 		return PCIBIOS_BAD_REGISTER_NUMBER;
- 	}
+diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
+index baa07447e..8e7bae258 100644
+--- a/drivers/pci/pci-imx6.c
++++ b/drivers/pci/pci-imx6.c
+@@ -289,20 +289,27 @@ static int imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
  
--	if (size == 4)
-+	if (size == 4) {
- 		*val = readl(addr);
--	else if (size == 2)
-+	} else if (size == 2) {
- 		*val = readw(addr);
--	else if (size == 1)
-+	} else if (size == 1) {
- 		*val = readb(addr);
--	else {
-+	} else {
- 		*val = 0;
- 		return PCIBIOS_BAD_REGISTER_NUMBER;
- 	}
-@@ -260,8 +260,8 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
- 
- 	cfg_res = dev_get_resource_by_name(dev, IORESOURCE_MEM, "config");
- 	if (cfg_res) {
--		pp->cfg0_size = resource_size(cfg_res)/2;
--		pp->cfg1_size = resource_size(cfg_res)/2;
-+		pp->cfg0_size = resource_size(cfg_res) / 2;
-+		pp->cfg1_size = resource_size(cfg_res) / 2;
- 		pp->cfg0_base = cfg_res->start;
- 		pp->cfg1_base = cfg_res->start + pp->cfg0_size;
- 
-@@ -308,8 +308,8 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
- 		}
- 		if (restype == 0) {
- 			of_pci_range_to_resource(&range, np, &pp->cfg);
--			pp->cfg0_size = resource_size(&pp->cfg)/2;
--			pp->cfg1_size = resource_size(&pp->cfg)/2;
-+			pp->cfg0_size = resource_size(&pp->cfg) / 2;
-+			pp->cfg1_size = resource_size(&pp->cfg) / 2;
- 			pp->cfg0_base = pp->cfg.start;
- 			pp->cfg1_base = pp->cfg.start + pp->cfg0_size;
- 
-@@ -351,7 +351,7 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
- }
- 
- static int dw_pcie_rd_other_conf(struct pcie_port *pp, struct pci_bus *bus,
--		u32 devfn, int where, int size, u32 *val)
-+				 u32 devfn, int where, int size, u32 *val)
+ static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
  {
- 	int ret, type;
- 	u32 address, busdev, cfg_size;
-@@ -392,7 +392,7 @@ static int dw_pcie_rd_other_conf(struct pcie_port *pp, struct pci_bus *bus,
- }
- 
- static int dw_pcie_wr_other_conf(struct pcie_port *pp, struct pci_bus *bus,
--		u32 devfn, int where, int size, u32 val)
-+				 u32 devfn, int where, int size, u32 val)
- {
- 	int ret, type;
- 	u32 busdev, cfg_size;
-@@ -457,7 +457,7 @@ static int dw_pcie_valid_device(struct pcie_port *pp, struct pci_bus *bus,
- }
- 
- static int dw_pcie_rd_conf(struct pci_bus *bus, u32 devfn, int where,
--			int size, u32 *val)
-+			   int size, u32 *val)
- {
- 	struct pcie_port *pp = host_to_pcie(bus->host);
++	struct device_d *dev = imx6_pcie->pp.dev;
  	int ret;
-@@ -482,7 +482,7 @@ static int dw_pcie_rd_conf(struct pci_bus *bus, u32 devfn, int where,
- }
+ 	u32 gpr1;
  
- static int dw_pcie_wr_conf(struct pci_bus *bus, u32 devfn,
--			int where, int size, u32 val)
-+			   int where, int size, u32 val)
- {
- 	struct pcie_port *pp = host_to_pcie(bus->host);
- 	int ret;
+ 	ret = clk_enable(imx6_pcie->pcie_phy);
+-	if (ret)
++	if (ret) {
++		dev_err(dev, "unable to enable pcie_phy clock\n");
+ 		goto err_pcie_phy;
++	}
+ 
+ 	ret = clk_enable(imx6_pcie->pcie_bus);
+-	if (ret)
++	if (ret) {
++		dev_err(dev, "unable to enable pcie_bus clock\n");
+ 		goto err_pcie_bus;
++	}
+ 
+ 	ret = clk_enable(imx6_pcie->pcie);
+-	if (ret)
++	if (ret) {
++		dev_err(dev, "unable to enable pcie clock\n");
+ 		goto err_pcie;
++	}
+ 
+ 	/* power up core phy and enable ref clock */
+ 	gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
 -- 
 2.19.1
 
