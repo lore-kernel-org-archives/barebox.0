@@ -2,11 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from magratgarlick.emantor.de ([78.46.208.201]
  helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYnL9-00022e-0l
+ id 1gYnL9-000244-0k
  for barebox@lists.infradead.org; Mon, 17 Dec 2018 07:29:24 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon, 17 Dec 2018 08:28:04 +0100
-Message-Id: <9a32a90c6c40dc44e73a0933a42a7aefbf880e54.1545031438.git-series.r.czerwinski@pengutronix.de>
+Date: Mon, 17 Dec 2018 08:28:05 +0100
+Message-Id: <024afdabd161315653370a6c90a995e45608b0fb.1545031438.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.48072dc0c2851fc176d68ed0eccf022fc17732e1.1545031438.git-series.r.czerwinski@pengutronix.de>
 References: <cover.48072dc0c2851fc176d68ed0eccf022fc17732e1.1545031438.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -22,30 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 5/7] ARM: rpi: add NS16550 support
+Subject: [PATCH v3 6/7] ARM: rpi: choose miniuart as stdout
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Since the 16550 driver now supports the RPI3 miniuart, enable it in the default
-config.
+Since we now support the miniuart, enable it as the default stdout port.
+With this change the device tree overlay to switch the miniuart to bluetooth is
+no longer necessary.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/configs/rpi_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/dts/bcm2837-rpi-3.dts | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
-index 2bb6158..dc5ab1f 100644
---- a/arch/arm/configs/rpi_defconfig
-+++ b/arch/arm/configs/rpi_defconfig
-@@ -63,6 +63,7 @@ CONFIG_CMD_OF_PROPERTY=y
- CONFIG_CMD_OFTREE=y
- CONFIG_CMD_TIME=y
- CONFIG_SERIAL_AMBA_PL011=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
- CONFIG_MCI=y
- CONFIG_MCI_BCM283X=y
- CONFIG_LED=y
+diff --git a/arch/arm/dts/bcm2837-rpi-3.dts b/arch/arm/dts/bcm2837-rpi-3.dts
+index d6ffc36..194b41c 100644
+--- a/arch/arm/dts/bcm2837-rpi-3.dts
++++ b/arch/arm/dts/bcm2837-rpi-3.dts
+@@ -2,15 +2,10 @@
+ 
+ / {
+ 	chosen {
+-		stdout-path = &uart0;
++		stdout-path = &uart1;
+ 	};
+ 
+ 	memory {
+ 		reg = <0x0 0x0>;
+ 	};
+ };
+-
+-&uart0 {
+-	status = "okay";
+-	/delete-node/ bluetooth;
+-};
 -- 
 git-series 0.9.1
 
