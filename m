@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlJv-0000oD-Mp
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:06 +0000
-Received: by mail-pl1-x642.google.com with SMTP id g9so5544690plo.3
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:19:49 -0800 (PST)
+ id 1gYlJw-0000qe-Mp
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:11 +0000
+Received: by mail-pg1-x542.google.com with SMTP id j10so4320833pga.1
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:19:56 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:18:27 -0800
-Message-Id: <20181217051925.17582-8-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:18:33 -0800
+Message-Id: <20181217051925.17582-14-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,53 +23,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 07/65] PCI: designware: Require config accesses to be
- naturally aligned
+Subject: [PATCH v2 13/65] PCI: imx6: Move link up check into
+ imx6_pcie_wait_for_link()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit b6b18f589e1ddbfbc31f72ea7fb8a723a2d10058
+Port of a Linux commit 4d107d3b5a686b5834e533a00b73bf7b1cf59df7
 
-  Add sanity checks on "addr" input parameter in dw_pcie_cfg_read() and
-  dw_pcie_cfg_write().  These checks make sure that accesses are aligned on
-  their size, e.g., a 4-byte config access is aligned on a 4-byte boundary.
+  imx6_pcie_link_up() previously used usleep_range() to wait for the link to
+  come up.  Since it may be called while holding the config spinlock, the
+  sleep causes a "BUG: scheduling while atomic" error.
 
-  [bhelgaas: changelog, set *val = 0 in failure case]
-  Signed-off-by: Gabriele Paoloni <gabriele.paoloni@huawei.com>
+  Instead of waiting for the link to come up in imx6_pcie_link_up(), do the
+  waiting in imx6_pcie_wait_for_link(), where we're not holding a lock and
+  sleeping is allowed.
+
+  [bhelgaas: changelog, references to bugzilla and f95d3ae77191]
+  Link: https://bugzilla.kernel.org/show_bug.cgi?id=100031
+  Fixes: f95d3ae77191 ("PCI: imx6: Wait for retraining")
+  Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-  Acked-by: Pratyush Anand <pratyush.anand@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pci/pci-imx6.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index f46d33265..f47e5eb1e 100644
---- a/drivers/pci/pcie-designware.c
-+++ b/drivers/pci/pcie-designware.c
-@@ -76,6 +76,11 @@ static unsigned long global_io_offset;
- 
- int dw_pcie_cfg_read(void __iomem *addr, int size, u32 *val)
+diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
+index fc56a0d14..53d767824 100644
+--- a/drivers/pci/pci-imx6.c
++++ b/drivers/pci/pci-imx6.c
+@@ -399,8 +399,26 @@ static int imx6_pcie_wait_for_link(struct pcie_port *pp)
  {
-+	if ((uintptr_t)addr & (size - 1)) {
-+		*val = 0;
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
-+	}
-+
- 	if (size == 4)
- 		*val = readl(addr);
- 	else if (size == 2)
-@@ -92,6 +97,9 @@ int dw_pcie_cfg_read(void __iomem *addr, int size, u32 *val)
+ 	uint64_t start = get_time_ns();
  
- int dw_pcie_cfg_write(void __iomem *addr, int size, u32 val)
- {
-+	if ((uintptr_t)addr & (size - 1))
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
-+
- 	if (size == 4)
- 		writel(val, addr);
- 	else if (size == 2)
++	/*
++	 * Test if the PHY reports that the link is up and also that the LTSSM
++	 * training finished. There are three possible states of the link when
++	 * this code is called:
++	 * 1) The link is DOWN (unlikely)
++	 *    The link didn't come up yet for some reason. This usually means
++	 *    we have a real problem somewhere, if it happens with a peripheral
++	 *    connected. This state calls for inspection of the DEBUG registers.
++	 * 2) The link is UP, but still in LTSSM training
++	 *    Wait for the training to finish, which should take a very short
++	 *    time. If the training does not finish, we have a problem and we
++	 *    need to inspect the DEBUG registers. If the training does finish,
++	 *    the link is up and operating correctly.
++	 * 3) The link is UP and no longer in LTSSM training
++	 *    The link is up and operating correctly.
++	 */
+ 	while (1) {
+-		if (dw_pcie_link_up(pp))
++		u32 reg = readl(pp->dbi_base + PCIE_PHY_DEBUG_R1);
++		if ((reg & PCIE_PHY_DEBUG_R1_XMLH_LINK_UP) &&
++		    !(reg & PCIE_PHY_DEBUG_R1_XMLH_LINK_IN_TRAINING))
+ 			return 0;
+ 
+ 		if (!is_timeout(start, SECOND))
 -- 
 2.19.1
 
