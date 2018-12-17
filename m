@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlK2-0000wc-70
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:19 +0000
-Received: by mail-pg1-x541.google.com with SMTP id n2so5532992pgm.3
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:02 -0800 (PST)
+ id 1gYlK4-0000rR-Cc
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:22 +0000
+Received: by mail-pl1-x641.google.com with SMTP id z23so5559410plo.0
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:19:58 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:18:37 -0800
-Message-Id: <20181217051925.17582-18-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:18:34 -0800
+Message-Id: <20181217051925.17582-15-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,56 +23,133 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 17/65] PCI: designware: Remove incorrect RC memory
- base/limit configuration
+Subject: [PATCH v2 14/65] PCI: designware: Add generic dw_pcie_wait_for_link()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit a5cb903aef8c642e6f0f6810d46dacedf666b54a
+Port of Linux commit 886bc5ceb5cc3ad4b219502d72b277e3c3255a32
 
-  Currently dw_pcie_setup_rc() configures memory base and memory limit in the
-  type1 configuration header for the root complex.  In doing so it uses the
-  CPU address (pp->mem_base) rather than the bus address (pp->mem_bus_addr).
-  This is wrong and it is useless since the configuration is overwritten
-  later on when pci_bus_assign_resources() is called.
+  Several DesignWare-based drivers (dra7xx, exynos, imx6, keystone, qcom, and
+  spear13xx) had similar loops waiting for the link to come up.
 
-  Remove this configuration from dw_pcie_setup_rc().
+  Add a generic dw_pcie_wait_for_link() for use by all these drivers so the
+  waiting is done consistently, e.g., always using usleep_range() rather than
+  mdelay() and using similar timeouts and retry counts.
 
-  Signed-off-by: Gabriele Paoloni <gabriele.paoloni@huawei.com>
+  Note that this changes the Keystone link training/wait for link strategy,
+  so we initiate link training, then wait longer for the link to come up
+  before re-initiating link training.
+
+  [bhelgaas: changelog, split into its own patch, update pci-keystone.c, pcie-qcom.c]
+  Signed-off-by: Joao Pinto <jpinto@synopsys.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
   Acked-by: Pratyush Anand <pratyush.anand@gmail.com>
 
+NOTE: For some reason, all of the changes to imx6_pcie_wait_for_link()
+made in 4d107d3b5a686b5834e533a00b73bf7b1cf59df7 are actually not
+present 886bc5ceb5cc3ad4b219502d72b277e3c3255a32. So there isn't
+really a kernel commit corresponding to removal of the large comment
+block or check for !(reg & PCIE_PHY_DEBUG_R1_XMLH_LINK_IN_TRAINING)
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/pci/pci-imx6.c        | 30 +-----------------------------
+ drivers/pci/pcie-designware.c | 18 ++++++++++++++++++
+ drivers/pci/pcie-designware.h |  6 ++++++
+ 3 files changed, 25 insertions(+), 29 deletions(-)
 
+diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
+index 53d767824..18965c7c3 100644
+--- a/drivers/pci/pci-imx6.c
++++ b/drivers/pci/pci-imx6.c
+@@ -397,35 +397,7 @@ static void imx6_pcie_init_phy(struct pcie_port *pp)
+ 
+ static int imx6_pcie_wait_for_link(struct pcie_port *pp)
+ {
+-	uint64_t start = get_time_ns();
+-
+-	/*
+-	 * Test if the PHY reports that the link is up and also that the LTSSM
+-	 * training finished. There are three possible states of the link when
+-	 * this code is called:
+-	 * 1) The link is DOWN (unlikely)
+-	 *    The link didn't come up yet for some reason. This usually means
+-	 *    we have a real problem somewhere, if it happens with a peripheral
+-	 *    connected. This state calls for inspection of the DEBUG registers.
+-	 * 2) The link is UP, but still in LTSSM training
+-	 *    Wait for the training to finish, which should take a very short
+-	 *    time. If the training does not finish, we have a problem and we
+-	 *    need to inspect the DEBUG registers. If the training does finish,
+-	 *    the link is up and operating correctly.
+-	 * 3) The link is UP and no longer in LTSSM training
+-	 *    The link is up and operating correctly.
+-	 */
+-	while (1) {
+-		u32 reg = readl(pp->dbi_base + PCIE_PHY_DEBUG_R1);
+-		if ((reg & PCIE_PHY_DEBUG_R1_XMLH_LINK_UP) &&
+-		    !(reg & PCIE_PHY_DEBUG_R1_XMLH_LINK_IN_TRAINING))
+-			return 0;
+-
+-		if (!is_timeout(start, SECOND))
+-			continue;
+-
+-		return -EINVAL;
+-	}
++	return dw_pcie_wait_for_link(pp);
+ }
+ 
+ static int imx6_pcie_wait_for_speed_change(struct pcie_port *pp)
 diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index 5e824cedc..e9058768d 100644
+index 34dba5898..ab6f1d289 100644
 --- a/drivers/pci/pcie-designware.c
 +++ b/drivers/pci/pcie-designware.c
-@@ -489,8 +489,6 @@ static struct pci_ops dw_pcie_ops = {
- void dw_pcie_setup_rc(struct pcie_port *pp)
+@@ -171,6 +171,24 @@ static void dw_pcie_prog_outbound_atu(struct pcie_port *pp, int index,
+ 	dw_pcie_readl_rc(pp, PCIE_ATU_CR2, &val);
+ }
+ 
++int dw_pcie_wait_for_link(struct pcie_port *pp)
++{
++	int retries;
++
++	/* Check if the link is up or not */
++	for (retries = 0; retries < LINK_WAIT_MAX_RETRIES; retries++) {
++		if (dw_pcie_link_up(pp)) {
++			dev_info(pp->dev, "Link up\n");
++			return 0;
++		}
++		udelay(LINK_WAIT_USLEEP_MAX);
++	}
++
++	dev_err(pp->dev, "Phy link never came up\n");
++
++	return -ETIMEDOUT;
++}
++
+ int dw_pcie_link_up(struct pcie_port *pp)
  {
- 	u32 val;
--	u32 membase;
--	u32 memlimit;
+ 	if (pp->ops->link_up)
+diff --git a/drivers/pci/pcie-designware.h b/drivers/pci/pcie-designware.h
+index b8b85c575..051511a26 100644
+--- a/drivers/pci/pcie-designware.h
++++ b/drivers/pci/pcie-designware.h
+@@ -14,6 +14,10 @@
+ #ifndef _PCIE_DESIGNWARE_H
+ #define _PCIE_DESIGNWARE_H
  
- 	/* set the number of lanes */
- 	dw_pcie_readl_rc(pp, PCIE_PORT_LINK_CONTROL, &val);
-@@ -537,12 +535,6 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
- 	val |= 0x00010100;
- 	dw_pcie_writel_rc(pp, val, PCI_PRIMARY_BUS);
++/* Parameters for the waiting for link up routine */
++#define LINK_WAIT_MAX_RETRIES		10
++#define LINK_WAIT_USLEEP_MAX		100000
++
+ struct pcie_port {
+ 	struct device_d		*dev;
+ 	u8			root_bus_nr;
+@@ -66,4 +70,6 @@ int dw_pcie_link_up(struct pcie_port *pp);
+ void dw_pcie_setup_rc(struct pcie_port *pp);
+ int dw_pcie_host_init(struct pcie_port *pp);
  
--	/* setup memory base, memory limit */
--	membase = ((u32)pp->mem_base & 0xfff00000) >> 16;
--	memlimit = (pp->mem_size + (u32)pp->mem_base) & 0xfff00000;
--	val = memlimit | membase;
--	dw_pcie_writel_rc(pp, val, PCI_MEMORY_BASE);
--
- 	/* setup command register */
- 	dw_pcie_readl_rc(pp, PCI_COMMAND, &val);
- 	val &= 0xffff0000;
++int dw_pcie_wait_for_link(struct pcie_port *pp);
++
+ #endif /* _PCIE_DESIGNWARE_H */
 -- 
 2.19.1
 
