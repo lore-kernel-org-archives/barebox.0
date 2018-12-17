@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYtTX-0000lT-2B
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 14:02:29 +0000
+ id 1gYtTa-0000lT-8z
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 14:02:37 +0000
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 17 Dec 2018 15:02:09 +0100
-Message-Id: <1545055330-33957-1-git-send-email-t.remmet@phytec.de>
+Date: Mon, 17 Dec 2018 15:02:10 +0100
+Message-Id: <1545055330-33957-2-git-send-email-t.remmet@phytec.de>
+In-Reply-To: <1545055330-33957-1-git-send-email-t.remmet@phytec.de>
+References: <1545055330-33957-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] arm: boards: vscom-baltos: Run environment_initcall only
- on correct board
+Subject: [PATCH 2/2] arm: dts: am335x strip: Don't strip timer2 anymore
 To: barebox@lists.infradead.org
 
-Check for the correct hardware before reading the eeprom.
+dmtimer has been converted to a real driver and needs a device now.
+am335x devices are taken from dt also in mlo. Don't strip the dmtimer device
+from the include as we need it now.
 
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- arch/arm/boards/vscom-baltos/board.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/dts/am33xx-clocks-strip.dtsi | 2 --
+ arch/arm/dts/am33xx-strip.dtsi        | 1 -
+ 2 files changed, 3 deletions(-)
 
-diff --git a/arch/arm/boards/vscom-baltos/board.c b/arch/arm/boards/vscom-baltos/board.c
-index 39f40a6061f8..c64864d43200 100644
---- a/arch/arm/boards/vscom-baltos/board.c
-+++ b/arch/arm/boards/vscom-baltos/board.c
-@@ -68,6 +68,9 @@ static int baltos_read_eeprom(void)
- 	int rc;
- 	unsigned char mac_addr[6];
- 
-+	if (!of_machine_is_compatible("vscom,onrisc"))
-+		return 0;
-+
- 	rc = read_file_2("/dev/eeprom0",
- 			 &size,
- 			 (void *)&buf,
+diff --git a/arch/arm/dts/am33xx-clocks-strip.dtsi b/arch/arm/dts/am33xx-clocks-strip.dtsi
+index 92906deafe6e..706e1c971202 100644
+--- a/arch/arm/dts/am33xx-clocks-strip.dtsi
++++ b/arch/arm/dts/am33xx-clocks-strip.dtsi
+@@ -22,7 +22,6 @@
+ /delete-node/ &ehrpwm2_tbclk;
+ /delete-node/ &clk_32768_ck;
+ /delete-node/ &clk_rc32k_ck;
+-/delete-node/ &tclkin_ck;
+ /delete-node/ &dpll_core_m6_ck;
+ /delete-node/ &dpll_mpu_m2_ck;
+ /delete-node/ &dpll_ddr_ck;
+@@ -40,7 +39,6 @@
+ /delete-node/ &pruss_ocp_gclk;
+ /delete-node/ &mmu_fck;
+ /delete-node/ &timer1_fck;
+-/delete-node/ &timer2_fck;
+ /delete-node/ &timer3_fck;
+ /delete-node/ &timer4_fck;
+ /delete-node/ &timer5_fck;
+diff --git a/arch/arm/dts/am33xx-strip.dtsi b/arch/arm/dts/am33xx-strip.dtsi
+index 0c9d8526304d..b776c9cee740 100644
+--- a/arch/arm/dts/am33xx-strip.dtsi
++++ b/arch/arm/dts/am33xx-strip.dtsi
+@@ -27,7 +27,6 @@
+ /delete-node/ &dcan1;
+ /delete-node/ &mailbox;
+ /delete-node/ &timer1;
+-/delete-node/ &timer2;
+ /delete-node/ &timer3;
+ /delete-node/ &timer4;
+ /delete-node/ &timer5;
 -- 
 2.7.4
 
