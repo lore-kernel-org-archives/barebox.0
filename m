@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZ9bB-0001md-BB
- for barebox@lists.infradead.org; Tue, 18 Dec 2018 07:15:27 +0000
-Date: Tue, 18 Dec 2018 08:15:13 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181218071513.aerljezvblmkqsbz@pengutronix.de>
-References: <1545061423-3004-1-git-send-email-t.remmet@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1545061423-3004-1-git-send-email-t.remmet@phytec.de>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gYqXr-00084j-Se
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 10:54:45 +0000
+Message-ID: <1545044070.6213.11.camel@phytec.de>
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Mon, 17 Dec 2018 11:54:30 +0100
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,61 +15,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH for next] mtd: nand: nand_base: Fix compile warning if
- CONFIG_MTD_WRITE is not enabled
-To: Teresa Remmet <t.remmet@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: AM335x NAND boot on next
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Dec 17, 2018 at 04:43:43PM +0100, Teresa Remmet wrote:
-> drivers/mtd/nand/nand_base.c:337:12: warning: 'nand_default_block_markbad'
-> defined but not used [-Wunused-function]
-> 
-> Add __maybe_unused again to silence warning when CONFIG_MTD_WRITE is not enabled.
-> 
-> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
-> ---
->  drivers/mtd/nand/nand_base.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-> index 05bfac15f822..8ae6f344686d 100644
-> --- a/drivers/mtd/nand/nand_base.c
-> +++ b/drivers/mtd/nand/nand_base.c
-> @@ -334,7 +334,7 @@ static int nand_block_bad(struct mtd_info *mtd, loff_t ofs, int getchip)
->   * specific driver. It provides the details for writing a bad block marker to a
->   * block.
->   */
-> -static int nand_default_block_markbad(struct mtd_info *mtd, loff_t ofs)
-> +static __maybe_unused int nand_default_block_markbad(struct mtd_info *mtd, loff_t ofs)
->  {
->  	struct nand_chip *chip = mtd->priv;
->  	struct mtd_oob_ops ops;
-> -- 
-> 2.7.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gU2FzY2hhLAoKSSB3YXRlbmQgdG8gdGVzdCB0aGUgZ3BtYyBkcml2ZXIgY2hhbmdlcyBm
+b3Igb3VyIGFtMzM1eCBib2FyZHMgdXNpbmcKbGF0ZXN0IG5leHQuIEkgbm90aWNlZCB0aGF0IGJv
+b3RpbmcgZnJvbSBuYW5kIGlzIG5vdCB3b3JraW5nIGNvcnJlY3QKYW55IG1vcmUuIFRoZSBNTE8g
+Y2FuIG5vdCBjb3JyZWN0bHkgb2J0YWluIHRoZSBpbWFnZSBzaXplIG9mIHRoZQpiYXJlYm94IGlt
+YWdlLgoKYmFyZWJveCAyMDE4LjExLjAtMDAxOTktZzVhMWE1ZWQyNTM3ZCAjMTU0OSBNb24gRGVj
+IDE3IDEwOjQ2OjAxIENFVAoyMDE4CgoKQm9hcmQ6IFBoeXRlYyBwaHlDT1JFIEFNMzM1eApuYW5k
+OiBPTkZJIGZsYXNoIGRldGVjdGVkCm5hbmQ6IE5BTkQgZGV2aWNlOiBNYW51ZmFjdHVyZXIgSUQ6
+IDB4MmMsIENoaXAgSUQ6IDB4ZGMgKE1pY3JvbgpNVDI5RjRHMDhBQkFEQUg0KSwgNTEyTWkKQiwg
+cGFnZSBzaXplOiAyMDQ4LCBPT0Igc2l6ZTogNjQKYm9vdGluZyBmcm9tIE5BTkQKZmFpbGVkIHRv
+IGdldCBpbWFnZSBzaXplCnRyeWluZyB0byBsb2FkIGltYWdlIGZyb20gYmFja3VwIHBhcnRpdGlv
+bi4KZmFpbGVkIHRvIGdldCBpbWFnZSBzaXplCmJvb3RpbmcgZmFpbGVkCgpiaXNlY3RlZCB0aGlz
+IGRvd24gdG86CjVhMWE1ZWQyNTM3ZDdkMTJmODUxZjM3Nzg3MDc2ODFkNmMwOGQ2ZTggaXMgdGhl
+IGZpcnN0IGJhZCBjb21taXQKY29tbWl0IDVhMWE1ZWQyNTM3ZDdkMTJmODUxZjM3Nzg3MDc2ODFk
+NmMwOGQ2ZTgKQXV0aG9yOiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+CkRh
+dGU6wqDCoMKgVHVlIE9jdCA5IDE1OjI4OjEyIDIwMTggKzAyMDAKCsKgwqDCoMKgQVJNOiBpbWFn
+ZXM6IHVzZSBwaWdneWRhdGEKCgpJIGd1ZXNzIHRoZSBnZXRfaW1hZ2Vfc2l6ZSh2b2lkICpoZWFk
+KSBvZsKgYXJjaC9hcm0vbWFjaC1vbWFwL3hsb2FkLmMKbmVlZHMgcmV3b3JrLiBBbnkgaGludCBo
+b3cgdG8gZml4IHRoaXM/ClNELUNhcmQgYm9vdGluZyB3b3Jrcy4gQXMgdGVzdGVkIHdpdGggYmJi
+LgoKUmVnYXJkcywKVGVyZXNhCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
+cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
