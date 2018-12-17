@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlKZ-0002cj-6H
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:21:15 +0000
-Received: by mail-pf1-x442.google.com with SMTP id 64so5751536pfr.9
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:29 -0800 (PST)
+ id 1gYlKX-0002al-82
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:21:17 +0000
+Received: by mail-pl1-x641.google.com with SMTP id z23so5560040plo.0
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:27 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:18:57 -0800
-Message-Id: <20181217051925.17582-38-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:18:55 -0800
+Message-Id: <20181217051925.17582-36-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,36 +23,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 37/65] PCI: imx6: Removed unused struct imx6_pcie.mem_base
+Subject: [PATCH v2 35/65] PCI: dwc: designware: Get device pointer at the
+ start of dw_pcie_host_init()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 51c84709b8c4065fe83b84a487fe7822c2271e77
+Port of a Linux commit 40f67fb2c384fe12741aa35010d62bfe8c98286c
 
-  PCI: imx6: Removed unused struct imx6_pcie.mem_base
+  No functional change. Get device pointer at the beginning of
+  dw_pcie_host_init() instead of getting it all over dw_pcie_host_init().
+  This is in preparation for splitting struct pcie_port into host and core
+  structures (once split pcie_port will not have device pointer).
 
-  Removed the unused struct imx6_pcie.mem_base member.  No functional change
-  intended.
-
+  Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/pci/pcie-designware.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index 0ede1abfa..a3658844c 100644
---- a/drivers/pci/pci-imx6.c
-+++ b/drivers/pci/pci-imx6.c
-@@ -50,7 +50,6 @@ struct imx6_pcie {
- 	struct pcie_port	pp;
- 	void __iomem		*iomuxc_gpr;
- 	enum imx6_pcie_variants variant;
--	void __iomem		*mem_base;
- 	u32                     tx_deemph_gen1;
- 	u32                     tx_deemph_gen2_3p5db;
- 	u32                     tx_deemph_gen2_6db;
+diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
+index 74769de7f..7e65b56b9 100644
+--- a/drivers/pci/pcie-designware.c
++++ b/drivers/pci/pcie-designware.c
+@@ -235,7 +235,8 @@ static u8 dw_pcie_iatu_unroll_enabled(struct pcie_port *pp)
+ 
+ int __init dw_pcie_host_init(struct pcie_port *pp)
+ {
+-	struct device_node *np = pp->dev->device_node;
++	struct device_d *dev = pp->dev;
++	struct device_node *np = dev->device_node;
+ 	struct of_pci_range range;
+ 	struct of_pci_range_parser parser;
+ 	struct resource *cfg_res;
+@@ -249,7 +250,7 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
+ 	of_property_read_u32(np, "#address-cells", &na);
+ 	ns = of_n_size_cells(np);
+ 
+-	cfg_res = dev_get_resource_by_name(pp->dev, IORESOURCE_MEM, "config");
++	cfg_res = dev_get_resource_by_name(dev, IORESOURCE_MEM, "config");
+ 	if (cfg_res) {
+ 		pp->cfg0_size = resource_size(cfg_res)/2;
+ 		pp->cfg1_size = resource_size(cfg_res)/2;
+@@ -262,11 +263,11 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
+ 		pp->cfg0_mod_base = of_read_number(addrp, ns);
+ 		pp->cfg1_mod_base = pp->cfg0_mod_base + pp->cfg0_size;
+ 	} else {
+-		dev_err(pp->dev, "missing *config* reg space\n");
++		dev_err(dev, "missing *config* reg space\n");
+ 	}
+ 
+ 	if (of_pci_range_parser_init(&parser, np)) {
+-		dev_err(pp->dev, "missing ranges property\n");
++		dev_err(dev, "missing ranges property\n");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -334,7 +335,7 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
+ 	if (pp->ops->host_init)
+ 		pp->ops->host_init(pp);
+ 
+-	pp->pci.parent = pp->dev;
++	pp->pci.parent = dev;
+ 	pp->pci.pci_ops = &dw_pcie_ops;
+ 	pp->pci.set_busno = dw_pcie_set_local_bus_nr;
+ 	pp->pci.mem_resource = &pp->mem;
 -- 
 2.19.1
 
