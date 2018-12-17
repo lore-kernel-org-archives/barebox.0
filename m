@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gXMs1-00087K-OS
- for barebox@lists.infradead.org; Thu, 13 Dec 2018 09:01:31 +0000
+ id 1gYqX5-0007mR-HH
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 10:53:57 +0000
+Date: Mon, 17 Dec 2018 11:53:43 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Dec 2018 10:01:12 +0100
-Message-Id: <20181213090112.6131-1-s.hauer@pengutronix.de>
+Message-ID: <20181217105343.kkfo4ihynrcv7dis@pengutronix.de>
+References: <24299a5b0abeaa6e99252753c9043121678bd0ce.camel@allegion.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <24299a5b0abeaa6e99252753c9043121678bd0ce.camel@allegion.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,37 +22,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands: miitool: remove unsupported options a and b
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Andreas Schmidt <andreas.schmidt@wago.com>
+Subject: Re: bareboxenv -s: output depends on filesystem
+To: "Baeuerle, Florian" <Florian.Baeuerle@allegion.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-From: Andreas Schmidt <andreas.schmidt@wago.com>
+Hi Florian,
 
-Signed-off-by: Andreas Schmidt <andreas.schmidt@wago.com>
----
- commands/miitool.c | 6 ------
- 1 file changed, 6 deletions(-)
+On Thu, Dec 13, 2018 at 03:47:20PM +0000, Baeuerle, Florian wrote:
+> Hi,
+> 
+> I'm currently trying to get reproducible barebox binaries.
+> 
+> One problem I'm facing is, that the barebox defaultenv generated during build
+> depends on the filesystem used on the build machine. That is, because
+> envfs_save() uses recursive_action(), which in turn uses readdir() without
+> sorting the entries afterwards.
+> 
+> quoting man readdir:
+>   The order in which filenames are read by successive calls to readdir() depends
+> on the filesystem implementation; it is unlikely that the names will be sorted
+> in any fashion.
+> 
+> In fact, on ext4 I get a different barebox binary as on XFS.
+> 
+> 
+> Is this considered something worth being fixed?
 
-diff --git a/commands/miitool.c b/commands/miitool.c
-index acf61421b8..4ea6fda34d 100644
---- a/commands/miitool.c
-+++ b/commands/miitool.c
-@@ -281,12 +281,6 @@ static int do_miitool(int argc, char *argv[])
- 
- 	while ((opt = getopt(argc, argv, "vs:r:")) > 0) {
- 		switch (opt) {
--		case 'a':
--			addr = simple_strtol(optarg, NULL, 0);
--			break;
--		case 'b':
--			bus = simple_strtoul(optarg, NULL, 0);
--			break;
- 		case 's':
- 			action = MIITOOL_SHOW;
- 			phydevname = xstrdup(optarg);
+Yes, sure.
+
+> 
+> It should be sufficient to build a list of directories and sort it before
+> recursing. It is, however, shared code which is also used by the saveenv command
+> and I'm not sure if malloc'ing recursively is a good idea on all targets where
+> saveenv is used.
+> 
+> I would go ahead and implement it if no one opposes.
+> 
+> Should I introduce a flag for recursive_action() that allows taking an
+> "unsorted" (non-malloc) code path for use with the saveenv command?
+
+Yes, that would be good. I guess there's no point in letting barebox
+sort the entries.
+
+Sascha
+
 -- 
-2.19.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
