@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYqX5-0007mR-HH
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 10:53:57 +0000
-Date: Mon, 17 Dec 2018 11:53:43 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181217105343.kkfo4ihynrcv7dis@pengutronix.de>
-References: <24299a5b0abeaa6e99252753c9043121678bd0ce.camel@allegion.com>
+ id 1gYlKF-0001MU-95
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:32 +0000
+Received: by mail-pg1-x541.google.com with SMTP id d72so5521146pga.9
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:08 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:18:42 -0800
+Message-Id: <20181217051925.17582-23-andrew.smirnov@gmail.com>
+In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
+References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <24299a5b0abeaa6e99252753c9043121678bd0ce.camel@allegion.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,55 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: bareboxenv -s: output depends on filesystem
-To: "Baeuerle, Florian" <Florian.Baeuerle@allegion.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH v2 22/65] PCI: designware: Check LTSSM training bit before
+ deciding link is up
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hi Florian,
+Port of a Linux commit 01c076732e8288485c22ef50f20949455a783ca9
 
-On Thu, Dec 13, 2018 at 03:47:20PM +0000, Baeuerle, Florian wrote:
-> Hi,
-> 
-> I'm currently trying to get reproducible barebox binaries.
-> 
-> One problem I'm facing is, that the barebox defaultenv generated during build
-> depends on the filesystem used on the build machine. That is, because
-> envfs_save() uses recursive_action(), which in turn uses readdir() without
-> sorting the entries afterwards.
-> 
-> quoting man readdir:
->   The order in which filenames are read by successive calls to readdir() depends
-> on the filesystem implementation; it is unlikely that the names will be sorted
-> in any fashion.
-> 
-> In fact, on ext4 I get a different barebox binary as on XFS.
-> 
-> 
-> Is this considered something worth being fixed?
+  The link may be up but still in link training.  In this case, we can't
+  think the link is up and operating correctly.  Teach dw_pcie_link_up() to
+  be aware of the PCIE_PHY_DEBUG_R1_LINK_IN_TRAINING bit.
 
-Yes, sure.
+  Also rewrite PCIE_PHY_DEBUG_R1_LINK_UP definition so that it's consistent
+  with other macros.
 
-> 
-> It should be sufficient to build a list of directories and sort it before
-> recursing. It is, however, shared code which is also used by the saveenv command
-> and I'm not sure if malloc'ing recursively is a good idea on all targets where
-> saveenv is used.
-> 
-> I would go ahead and implement it if no one opposes.
-> 
-> Should I introduce a flag for recursive_action() that allows taking an
-> "unsorted" (non-malloc) code path for use with the saveenv command?
+  Signed-off-by: Jisheng Zhang <jszhang@marvell.com>
+  Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+  Acked-by: Joao Pinto <jpinto@synopsys.com>
 
-Yes, that would be good. I guess there's no point in letting barebox
-sort the entries.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/pci/pcie-designware.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Sascha
-
+diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
+index 5d0f782f4..a6006201e 100644
+--- a/drivers/pci/pcie-designware.c
++++ b/drivers/pci/pcie-designware.c
+@@ -98,7 +98,8 @@
+ /* PCIe Port Logic registers */
+ #define PLR_OFFSET                     0x700
+ #define PCIE_PHY_DEBUG_R1              (PLR_OFFSET + 0x2c)
+-#define PCIE_PHY_DEBUG_R1_LINK_UP      0x00000010
++#define PCIE_PHY_DEBUG_R1_LINK_UP      (0x1 << 4)
++#define PCIE_PHY_DEBUG_R1_LINK_IN_TRAINING     (0x1 << 29)
+ 
+ static unsigned long global_io_offset;
+ 
+@@ -279,7 +280,8 @@ int dw_pcie_link_up(struct pcie_port *pp)
+ 		return pp->ops->link_up(pp);
+ 
+ 	val = readl(pp->dbi_base + PCIE_PHY_DEBUG_R1);
+-	return val & PCIE_PHY_DEBUG_R1_LINK_UP;
++	return ((val & PCIE_PHY_DEBUG_R1_LINK_UP) &&
++		!(val & PCIE_PHY_DEBUG_R1_LINK_IN_TRAINING));
+ }
+ 
+ static inline struct pcie_port *host_to_pcie(struct pci_controller *host)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.19.1
+
 
 _______________________________________________
 barebox mailing list
