@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-f194.google.com ([209.85.215.194])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlL7-0003Fn-Nz
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:21:42 +0000
-Received: by mail-pg1-f194.google.com with SMTP id v28so5519660pgk.10
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:21:03 -0800 (PST)
+ id 1gYlKQ-00029R-8Y
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:51 +0000
+Received: by mail-pf1-x443.google.com with SMTP id c72so5759324pfc.6
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:20 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:19:24 -0800
-Message-Id: <20181217051925.17582-65-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:18:50 -0800
+Message-Id: <20181217051925.17582-31-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,56 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 64/65] PCI: dwc: Small computation improvement
+Subject: [PATCH v2 30/65] PCI: designware: Uninline register accessors
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 6995de2168edc6e58a350e7eb76e02dd191b64f4
+Port of a Linux commit 3d469939bcdf044d9f370be4f6bf21436afea310
 
-  Replace a division by 2 operation for a right shift rotation of 1 bit.
+  The register accessors are not performance critical and small enough that
+  the compiler can inline them itself if it makes sense.
 
-  Probably any recent and decent compiler does this kind of substitution
-  in order to improve code performance. Nevertheless it's a coding good
-  practice whenever there is a division / multiplication by multiple of 2
-  to replace it by the equivalent operation in this case, the shift
-  rotation.
-
-  Signed-off-by: Gustavo Pimentel <gustavo.pimentel@synopsys.com>
-  Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-  Acked-by: Jingoo Han <jingoohan1@gmail.com>
-  Acked-by: Joao Pinto <jpinto@synopsys.com>
+  Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware-host.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/pcie-designware.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pcie-designware-host.c b/drivers/pci/pcie-designware-host.c
-index 7af5a6561..6cc4b93a3 100644
---- a/drivers/pci/pcie-designware-host.c
-+++ b/drivers/pci/pcie-designware-host.c
-@@ -88,8 +88,8 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
+diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
+index e01621d03..3aa048779 100644
+--- a/drivers/pci/pcie-designware.c
++++ b/drivers/pci/pcie-designware.c
+@@ -158,14 +158,14 @@ void dw_pcie_writel_rc(struct pcie_port *pp, u32 reg, u32 val)
+ 		writel(val, pp->dbi_base + reg);
+ }
  
- 	cfg_res = dev_get_resource_by_name(dev, IORESOURCE_MEM, "config");
- 	if (cfg_res) {
--		pp->cfg0_size = resource_size(cfg_res) / 2;
--		pp->cfg1_size = resource_size(cfg_res) / 2;
-+		pp->cfg0_size = resource_size(cfg_res) >> 1;
-+		pp->cfg1_size = resource_size(cfg_res) >> 1;
- 		pp->cfg0_base = cfg_res->start;
- 		pp->cfg1_base = cfg_res->start + pp->cfg0_size;
+-static inline u32 dw_pcie_readl_unroll(struct pcie_port *pp, u32 index, u32 reg)
++static u32 dw_pcie_readl_unroll(struct pcie_port *pp, u32 index, u32 reg)
+ {
+ 	u32 offset = PCIE_GET_ATU_OUTB_UNR_REG_OFFSET(index);
  
-@@ -136,8 +136,8 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
- 		}
- 		if (restype == 0) {
- 			of_pci_range_to_resource(&range, np, &pp->cfg);
--			pp->cfg0_size = resource_size(&pp->cfg) / 2;
--			pp->cfg1_size = resource_size(&pp->cfg) / 2;
-+			pp->cfg0_size = resource_size(&pp->cfg) >> 1;
-+			pp->cfg1_size = resource_size(&pp->cfg) >> 1;
- 			pp->cfg0_base = pp->cfg.start;
- 			pp->cfg1_base = pp->cfg.start + pp->cfg0_size;
+ 	return dw_pcie_readl_rc(pp, offset + reg);
+ }
  
+-static inline void dw_pcie_writel_unroll(struct pcie_port *pp, u32 index,
++static void dw_pcie_writel_unroll(struct pcie_port *pp, u32 index,
+ 					u32 val, u32 reg)
+ {
+ 	u32 offset = PCIE_GET_ATU_OUTB_UNR_REG_OFFSET(index);
 -- 
 2.19.1
 
