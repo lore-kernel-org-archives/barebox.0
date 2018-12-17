@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlKp-0003Zu-Br
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:57 +0000
-Received: by mail-pg1-x543.google.com with SMTP id z11so5543029pgu.0
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:45 -0800 (PST)
+ id 1gYlKc-0003ZB-NF
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:44 +0000
+Received: by mail-pf1-x443.google.com with SMTP id w73so5750329pfk.10
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:32 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:19:09 -0800
-Message-Id: <20181217051925.17582-50-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:18:59 -0800
+Message-Id: <20181217051925.17582-40-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,96 +23,191 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 49/65] PCI: dwc: designware: Parse "num-lanes" property in
- dw_pcie_setup_rc()
+Subject: [PATCH v2 39/65] PCI: imx6: Pass device-specific struct to internal
+ functions
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 5f334db665173facf2213854408bb5fa2445d0b3
+Port of a Linux commit e7d7705ace9494949863848ec77536d5a3287b0a
 
-  The "num-lanes" DT property is parsed in dw_pcie_host_init(). However
-  num-lanes is applicable to both root complex mode and endpoint mode. As a
-  first step, move the parsing of this property outside dw_pcie_host_init().
-  This is in preparation for splitting pcie-designware.c to pcie-designware.c
-  and pcie-designware-host.c
+   Only interfaces used from outside the driver, e.g., those called by
+   the DesignWare core, need to accept pointers to the generic struct
+   pcie_port.  Internal interfaces can accept pointers to the
+   device-specific struct, which makes them more straightforward.  No
+   functional change intended.
 
-  Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
-  Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 18 +++++++++++-------
- drivers/pci/pcie-designware.h |  1 -
- 2 files changed, 11 insertions(+), 8 deletions(-)
+ drivers/pci/pci-imx6.c | 53 ++++++++++++++++++++----------------------
+ 1 file changed, 25 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index f44046245..59884d514 100644
---- a/drivers/pci/pcie-designware.c
-+++ b/drivers/pci/pcie-designware.c
-@@ -332,10 +332,6 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
- 	if (!pp->va_cfg1_base)
- 		pp->va_cfg1_base = (void __force *)(u32)pp->cfg1_base;
+diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
+index 8b78f3ec1..4692dab5b 100644
+--- a/drivers/pci/pci-imx6.c
++++ b/drivers/pci/pci-imx6.c
+@@ -220,9 +220,8 @@ static int pcie_phy_write(struct imx6_pcie *imx6_pcie, int addr, int data)
+ 	return 0;
+ }
  
--	ret = of_property_read_u32(np, "num-lanes", &pci->lanes);
--	if (ret)
--		pci->lanes = 0;
--
- 	ret = of_property_read_u32(np, "num-viewport", &pci->num_viewport);
- 	if (ret)
- 		pci->num_viewport = 2;
-@@ -521,13 +517,21 @@ static struct pci_ops dw_pcie_ops = {
- 
- void dw_pcie_setup_rc(struct pcie_port *pp)
+-static void imx6_pcie_reset_phy(struct pcie_port *pp)
++static void imx6_pcie_reset_phy(struct imx6_pcie *imx6_pcie)
  {
-+	int ret;
-+	u32 lanes;
- 	u32 val;
- 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-+	struct device_d *dev = pci->dev;
-+	struct device_node *np = dev->device_node;
-+
-+	ret = of_property_read_u32(np, "num-lanes", &lanes);
-+	if (ret)
-+		lanes = 0;
+-	struct imx6_pcie *imx6_pcie = to_imx6_pcie(pp);
+ 	uint32_t temp;
  
- 	/* set the number of lanes */
- 	val = dw_pcie_readl_dbi(pci, PCIE_PORT_LINK_CONTROL);
- 	val &= ~PORT_LINK_MODE_MASK;
--	switch (pci->lanes) {
-+	switch (lanes) {
- 	case 1:
- 		val |= PORT_LINK_MODE_1_LANES;
- 		break;
-@@ -538,7 +542,7 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
- 		val |= PORT_LINK_MODE_4_LANES;
- 		break;
-        default:
--               dev_err(pci->dev, "num-lanes %u: invalid value\n", pci->lanes);
-+               dev_err(pci->dev, "num-lanes %u: invalid value\n", lanes);
-                return;
+ 	pcie_phy_read(imx6_pcie, PHY_RX_OVRD_IN_LO, &temp);
+@@ -238,9 +237,9 @@ static void imx6_pcie_reset_phy(struct pcie_port *pp)
+ 	pcie_phy_write(imx6_pcie, PHY_RX_OVRD_IN_LO, temp);
+ }
+ 
+-static int imx6_pcie_assert_core_reset(struct pcie_port *pp)
++static int imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
+ {
+-	struct imx6_pcie *imx6_pcie = to_imx6_pcie(pp);
++	struct pcie_port *pp = &imx6_pcie->pp;
+ 	u32 val, gpr1, gpr12;
+ 
+ 	switch (imx6_pcie->variant) {
+@@ -289,9 +288,8 @@ static int imx6_pcie_assert_core_reset(struct pcie_port *pp)
+ 	return 0;
+ }
+ 
+-static int imx6_pcie_deassert_core_reset(struct pcie_port *pp)
++static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
+ {
+-	struct imx6_pcie *imx6_pcie = to_imx6_pcie(pp);
+ 	int ret;
+ 	u32 gpr1;
+ 
+@@ -358,9 +356,8 @@ err_pcie_phy:
+ 
+ }
+ 
+-static void imx6_pcie_init_phy(struct pcie_port *pp)
++static void imx6_pcie_init_phy(struct imx6_pcie *imx6_pcie)
+ {
+-	struct imx6_pcie *imx6_pcie = to_imx6_pcie(pp);
+ 	u32 gpr12, gpr8;
+ 
+ 	gpr12 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
+@@ -398,13 +395,14 @@ static void imx6_pcie_init_phy(struct pcie_port *pp)
+ 	writel(gpr8, imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
+ }
+ 
+-static int imx6_pcie_wait_for_link(struct pcie_port *pp)
++static int imx6_pcie_wait_for_link(struct imx6_pcie *imx6_pcie)
+ {
+-	return dw_pcie_wait_for_link(pp);
++	return dw_pcie_wait_for_link(&imx6_pcie->pp);
+ }
+ 
+-static int imx6_pcie_wait_for_speed_change(struct pcie_port *pp)
++static int imx6_pcie_wait_for_speed_change(struct imx6_pcie *imx6_pcie)
+ {
++	struct pcie_port *pp = &imx6_pcie->pp;
+ 	struct device_d *dev = pp->dev;
+ 	uint32_t tmp;
+ 	uint64_t start = get_time_ns();
+@@ -421,9 +419,9 @@ static int imx6_pcie_wait_for_speed_change(struct pcie_port *pp)
+ }
+ 
+ 
+-static int imx6_pcie_establish_link(struct pcie_port *pp)
++static int imx6_pcie_establish_link(struct imx6_pcie *imx6_pcie)
+ {
+-	struct imx6_pcie *imx6_pcie = to_imx6_pcie(pp);
++	struct pcie_port *pp = &imx6_pcie->pp;
+ 	struct device_d *dev = pp->dev;
+ 	uint32_t tmp;
+ 	int ret;
+@@ -444,7 +442,7 @@ static int imx6_pcie_establish_link(struct pcie_port *pp)
+ 	gpr12 |= IMX6Q_GPR12_PCIE_CTL_2;
+ 	writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
+ 
+-	ret = imx6_pcie_wait_for_link(pp);
++	ret = imx6_pcie_wait_for_link(imx6_pcie);
+ 	if (ret) {
+ 		dev_info(dev, "Link never came up\n");
+ 		goto err_reset_phy;
+@@ -464,14 +462,14 @@ static int imx6_pcie_establish_link(struct pcie_port *pp)
+ 	tmp |= PORT_LOGIC_SPEED_CHANGE;
+ 	writel(tmp, pp->dbi_base + PCIE_LINK_WIDTH_SPEED_CONTROL);
+ 
+-	ret = imx6_pcie_wait_for_speed_change(pp);
++	ret = imx6_pcie_wait_for_speed_change(imx6_pcie);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to bring link up!\n");
+ 		goto err_reset_phy;
  	}
- 	dw_pcie_writel_dbi(pci, PCIE_PORT_LINK_CONTROL, val);
-@@ -546,7 +550,7 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
- 	/* set link width speed control register */
- 	val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
- 	val &= ~PORT_LOGIC_LINK_WIDTH_MASK;
--	switch (pci->lanes) {
-+	switch (lanes) {
- 	case 1:
- 		val |= PORT_LOGIC_LINK_WIDTH_1_LANES;
- 		break;
-diff --git a/drivers/pci/pcie-designware.h b/drivers/pci/pcie-designware.h
-index b1b8e0554..06d8c769c 100644
---- a/drivers/pci/pcie-designware.h
-+++ b/drivers/pci/pcie-designware.h
-@@ -142,7 +142,6 @@ struct dw_pcie_ops {
- struct dw_pcie {
- 	struct device_d         *dev;
- 	void __iomem            *dbi_base;
--	u32                     lanes;
- 	u32                     num_viewport;
- 	u8                      iatu_unroll_enabled;
- 	struct pcie_port        pp;
+ 
+ 	/* Make sure link training is finished as well! */
+-	ret = imx6_pcie_wait_for_link(pp);
++	ret = imx6_pcie_wait_for_link(imx6_pcie);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to bring link up!\n");
+ 		goto err_reset_phy;
+@@ -486,22 +484,20 @@ err_reset_phy:
+        dev_dbg(dev, "PHY DEBUG_R0=0x%08x DEBUG_R1=0x%08x\n",
+                readl(pp->dbi_base + PCIE_PHY_DEBUG_R0),
+                readl(pp->dbi_base + PCIE_PHY_DEBUG_R1));
+-       imx6_pcie_reset_phy(pp);
++       imx6_pcie_reset_phy(imx6_pcie);
+ 
+        return ret;
+ }
+ 
+ static void imx6_pcie_host_init(struct pcie_port *pp)
+ {
+-	imx6_pcie_assert_core_reset(pp);
+-
+-	imx6_pcie_init_phy(pp);
+-
+-	imx6_pcie_deassert_core_reset(pp);
++	struct imx6_pcie *imx6_pcie = to_imx6_pcie(pp);
+ 
++	imx6_pcie_assert_core_reset(imx6_pcie);
++	imx6_pcie_init_phy(imx6_pcie);
++	imx6_pcie_deassert_core_reset(imx6_pcie);
+ 	dw_pcie_setup_rc(pp);
+-
+-	imx6_pcie_establish_link(pp);
++	imx6_pcie_establish_link(imx6_pcie);
+ }
+ 
+ static int imx6_pcie_link_up(struct pcie_port *pp)
+@@ -550,9 +546,10 @@ static struct pcie_host_ops imx6_pcie_host_ops = {
+ 	.host_init = imx6_pcie_host_init,
+ };
+ 
+-static int __init imx6_add_pcie_port(struct pcie_port *pp,
+-			struct device_d *dev)
++static int __init imx6_add_pcie_port(struct imx6_pcie *imx6_pcie,
++				     struct device_d *dev)
+ {
++	struct pcie_port *pp = &imx6_pcie->pp;
+ 	int ret;
+ 
+ 	pp->root_bus_nr = -1;
+@@ -642,7 +639,7 @@ static int __init imx6_pcie_probe(struct device_d *dev)
+ 				 &imx6_pcie->tx_swing_low))
+ 		imx6_pcie->tx_swing_low = 127;
+ 
+-	ret = imx6_add_pcie_port(pp, dev);
++	ret = imx6_add_pcie_port(imx6_pcie, dev);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -655,7 +652,7 @@ static void imx6_pcie_remove(struct device_d *dev)
+ {
+ 	struct imx6_pcie *imx6_pcie = dev->priv;
+ 
+-	imx6_pcie_assert_core_reset(&imx6_pcie->pp);
++	imx6_pcie_assert_core_reset(imx6_pcie);
+ }
+ 
+ static struct of_device_id imx6_pcie_of_match[] = {
 -- 
 2.19.1
 
