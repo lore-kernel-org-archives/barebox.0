@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlJs-0000o4-Tc
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:01 +0000
-Received: by mail-pf1-x442.google.com with SMTP id c72so5758608pfc.6
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:19:46 -0800 (PST)
+ id 1gYlJr-0000nx-Eu
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:03 +0000
+Received: by mail-pg1-x541.google.com with SMTP id c25so4023110pgb.4
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:19:44 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:18:25 -0800
-Message-Id: <20181217051925.17582-6-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:18:23 -0800
+Message-Id: <20181217051925.17582-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,73 +23,151 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 05/65] PCI: designware: Use exact access size in
- dw_pcie_cfg_read()
+Subject: [PATCH v2 03/65] PCI: designware: Use iATU0 for cfg and IO,
+ iATU1 for MEM
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit c003ca99632e1783466f459033874a0e1e31457b
+Port of a Linux commit 2d91b491d5be13602a73be789bb8a3c28d06b7f2
 
-  dw_pcie_cfg_write() uses the exact 8-, 16-, or 32-bit access size
-  requested, but dw_pcie_cfg_read() previously performed a 32-bit read and
-  masked out the bits requested.
+  Most transactions' type are cfg0 and MEM, so the current iATU usage is not
+  balanced: iATU0 is hot while iATU1 is rarely used.
 
-  Use the exact access size in dw_pcie_cfg_read().  For example, if we want
-  an 8-bit read, use readb() instead of using readl() and masking out the 8
-  bits we need.  This makes it symmetric with dw_pcie_cfg_write().
+  Refactor the iATU usage so we use iATU0 for cfg and IO and iATU1 for MEM.
+  This allocation idea comes from Minghuan Lian
+  <Minghuan.Lian@freescale.com>:
 
-  [bhelgaas: split into separate patch, set *val = 0 in failure case]
-  Signed-off-by: Gabriele Paoloni <gabriele.paoloni@huawei.com>
+  [bhelgaas: use link with Message-ID]
+  Link: http://lkml.kernel.org/r/1429091315-31891-3-git-send-email-Minghuan.Lian@freescale.com
+  Signed-off-by: Jisheng Zhang <jszhang@marvell.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-
-NOTE: Original Linux commit incorrectly handles the case of single
-byte read by doing
-
-       else if (size == 1)
-               *val = readb(addr + (where & 1));
-
-instead of
-
-       else if (size == 1)
-               *val = readb(addr + (where & 3));
-
-which would be symmetric with what's done in dw_pcie_cfg_write(). This
-was most likely overlooked since commit that follow change the
-signature of the function, remove 'where' as argument completely,
-inadvertenly fixing the problem.
+  Acked-by: Pratyush Anand <pratyush.anand@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/pci/pcie-designware.c | 79 ++++++++++++++++++++---------------
+ 1 file changed, 46 insertions(+), 33 deletions(-)
 
 diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index 547d402a7..bda85c30e 100644
+index d54e47074..1ef544c7b 100644
 --- a/drivers/pci/pcie-designware.c
 +++ b/drivers/pci/pcie-designware.c
-@@ -76,14 +76,16 @@ static unsigned long global_io_offset;
+@@ -283,6 +283,11 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
+ 	if (pp->ops->host_init)
+ 		pp->ops->host_init(pp);
  
- int dw_pcie_cfg_read(void __iomem *addr, int where, int size, u32 *val)
++	if (!pp->ops->rd_other_conf)
++		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
++					  PCIE_ATU_TYPE_MEM, pp->mem_mod_base,
++					  pp->mem_bus_addr, pp->mem_size);
++
+ 	dw_pcie_wr_own_conf(pp, PCI_BASE_ADDRESS_0, 4, 0);
+ 
+ 	/* program correct class for RC */
+@@ -306,62 +311,70 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
+ static int dw_pcie_rd_other_conf(struct pcie_port *pp, struct pci_bus *bus,
+ 		u32 devfn, int where, int size, u32 *val)
  {
--	*val = readl(addr);
--
--	if (size == 1)
--		*val = (*val >> (8 * (where & 3))) & 0xff;
-+	if (size == 4)
-+		*val = readl(addr);
- 	else if (size == 2)
--		*val = (*val >> (8 * (where & 3))) & 0xffff;
--	else if (size != 4)
-+		*val = readw(addr + (where & 2));
-+	else if (size == 1)
-+		*val = readb(addr + (where & 3));
-+	else {
-+		*val = 0;
- 		return PCIBIOS_BAD_REGISTER_NUMBER;
-+	}
+-	int ret = PCIBIOS_SUCCESSFUL;
+-	u32 address, busdev;
++	int ret, type;
++	u32 address, busdev, cfg_size;
++	u64 cpu_addr;
++	void __iomem *va_cfg_base;
  
- 	return PCIBIOS_SUCCESSFUL;
+ 	busdev = PCIE_ATU_BUS(bus->number) | PCIE_ATU_DEV(PCI_SLOT(devfn)) |
+-		 PCIE_ATU_FUNC(PCI_FUNC(devfn));
++		PCIE_ATU_FUNC(PCI_FUNC(devfn));
+ 	address = where & ~0x3;
+ 
+ 	if (bus->primary == pp->root_bus_nr) {
+-		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
+-					  PCIE_ATU_TYPE_CFG0, pp->cfg0_mod_base,
+-					  busdev, pp->cfg0_size);
+-		ret = dw_pcie_cfg_read(pp->va_cfg0_base + address, where, size, val);
+-		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
+-					  PCIE_ATU_TYPE_MEM, pp->mem_mod_base,
+-					  pp->mem_bus_addr, pp->mem_size);
++		type = PCIE_ATU_TYPE_CFG0;
++		cpu_addr = pp->cfg0_mod_base;
++		cfg_size = pp->cfg0_size;
++		va_cfg_base = pp->va_cfg0_base;
+ 	} else {
+-		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
+-					  PCIE_ATU_TYPE_CFG1, pp->cfg1_mod_base,
+-					  busdev, pp->cfg1_size);
+-		ret = dw_pcie_cfg_read(pp->va_cfg1_base + address, where, size, val);
+-		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
+-					  PCIE_ATU_TYPE_IO, pp->io_mod_base,
+-					  pp->io_bus_addr, pp->io_size);
++		type = PCIE_ATU_TYPE_CFG1;
++		cpu_addr = pp->cfg1_mod_base;
++		cfg_size = pp->cfg1_size;
++		va_cfg_base = pp->va_cfg1_base;
+ 	}
+ 
++	dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
++				  type, cpu_addr,
++				  busdev, cfg_size);
++	ret = dw_pcie_cfg_read(va_cfg_base + address, where, size, val);
++	dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
++				  PCIE_ATU_TYPE_IO, pp->io_mod_base,
++				  pp->io_bus_addr, pp->io_size);
++
+ 	return ret;
  }
+ 
+ static int dw_pcie_wr_other_conf(struct pcie_port *pp, struct pci_bus *bus,
+ 		u32 devfn, int where, int size, u32 val)
+ {
+-	int ret = PCIBIOS_SUCCESSFUL;
+-	u32 address, busdev;
++	int ret, type;
++	u32 address, busdev, cfg_size;
++	u64 cpu_addr;
++	void __iomem *va_cfg_base;
+ 
+ 	busdev = PCIE_ATU_BUS(bus->number) | PCIE_ATU_DEV(PCI_SLOT(devfn)) |
+ 		 PCIE_ATU_FUNC(PCI_FUNC(devfn));
+ 	address = where & ~0x3;
+ 
+ 	if (bus->primary == pp->root_bus_nr) {
+-		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
+-					  PCIE_ATU_TYPE_CFG0, pp->cfg0_mod_base,
+-					  busdev, pp->cfg0_size);
+-		ret = dw_pcie_cfg_write(pp->va_cfg0_base + address, where, size, val);
+-		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
+-					  PCIE_ATU_TYPE_MEM, pp->mem_mod_base,
+-					  pp->mem_bus_addr, pp->mem_size);
++		type = PCIE_ATU_TYPE_CFG0;
++		cpu_addr = pp->cfg0_mod_base;
++		cfg_size = pp->cfg0_size;
++		va_cfg_base = pp->va_cfg0_base;
+ 	} else {
+-		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
+-					  PCIE_ATU_TYPE_CFG1, pp->cfg1_mod_base,
+-					  busdev, pp->cfg1_size);
+-		ret = dw_pcie_cfg_write(pp->va_cfg1_base + address, where, size, val);
+-		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
+-					  PCIE_ATU_TYPE_IO, pp->io_mod_base,
+-					  pp->io_bus_addr, pp->io_size);
++		type = PCIE_ATU_TYPE_CFG1;
++		cpu_addr = pp->cfg1_mod_base;
++		cfg_size = pp->cfg1_size;
++		va_cfg_base = pp->va_cfg1_base;
+ 	}
+ 
++	dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
++				  type, cpu_addr,
++				  busdev, cfg_size);
++	ret = dw_pcie_cfg_write(va_cfg_base + address, where, size, val);
++	dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
++				  PCIE_ATU_TYPE_IO, pp->io_mod_base,
++				  pp->io_bus_addr, pp->io_size);
++
+ 	return ret;
+ }
+ 
 -- 
 2.19.1
 
