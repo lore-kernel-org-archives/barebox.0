@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlKG-0001S9-KQ
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:32 +0000
-Received: by mail-pg1-x544.google.com with SMTP id g189so5528439pgc.5
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:10 -0800 (PST)
+ id 1gYlKD-0001Hf-VN
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:34 +0000
+Received: by mail-pg1-x542.google.com with SMTP id c25so4023576pgb.4
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:07 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:18:43 -0800
-Message-Id: <20181217051925.17582-24-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:18:41 -0800
+Message-Id: <20181217051925.17582-22-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,108 +23,204 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 23/65] PCI: designware: Keep viewport fixed for IO
- transaction if num_viewport > 2
+Subject: [PATCH v2 21/65] PCI: designware: Add iATU Unroll feature
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit fe48cb8538421fbd16ecf8bf95829faf8d8c001e
+Port of a Linux commit a0601a47053714eecec726aea5ebcd829f817497
 
-  Most of the platforms have 3 or more viewports.  For such platforms, We do
-  not need to share viewports between IO and CFG.  Assign viewport 2 to IO
-  transactions in such cases.
+  Add support for the new iATU Unroll mechanism that will be used from Core
+  version 4.80.  The new Cores can support either iATU Unroll or the "old"
+  iATU method, now called Legacy Mode.  The driver is perfectly capable of
+  performing well for both.
 
-  Tested-by: Dong Bo <dongbo4@huawei.com>
-  Signed-off-by: Pratyush Anand <pratyush.anand@gmail.com>
+  [bhelgaas: split ATU enable timeout to separate patch]
+  Signed-off-by: Joao Pinto <jpinto@synopsys.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-  Acked-by: Rob Herring <robh@kernel.org>
+
+To avoid breaking i.MX6 PCIE support commit
+416379f9ebded501eda882e6af0a7aafc1866700 was squashed here as well
+
+  PCI: designware: Check for iATU unroll support after initializing host
+
+  dw_pcie_iatu_unroll_enabled() reads a dbi_base register.  Reading any
+  dbi_base register before pp->ops->host_init has been called causes
+  "imprecise external abort" on platforms like ARTPEC-6, where the PCIe
+  module is disabled at boot and first enabled in pp->ops->host_init.  Move
+  dw_pcie_iatu_unroll_enabled() to dw_pcie_setup_rc(), since it is after
+  pp->ops->host_init, but before pp->iatu_unroll_enabled is actually used.
+
+  Fixes: a0601a470537 ("PCI: designware: Add iATU Unroll feature")
+  Tested-by: James Le Cuirot <chewi@gentoo.org>
+  Signed-off-by: Niklas Cassel <niklas.cassel@axis.com>
+  Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+  Acked-by: Joao Pinto <jpinto@synopsys.com>
+  Acked-by: Olof Johansson <olof@lixom.net>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 26 +++++++++++++++++++-------
- drivers/pci/pcie-designware.h |  1 +
- 2 files changed, 20 insertions(+), 7 deletions(-)
+ drivers/pci/pcie-designware.c | 101 ++++++++++++++++++++++++++++++----
+ drivers/pci/pcie-designware.h |   1 +
+ 2 files changed, 91 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index a6006201e..a591ac7a9 100644
+index b56c466fd..5d0f782f4 100644
 --- a/drivers/pci/pcie-designware.c
 +++ b/drivers/pci/pcie-designware.c
-@@ -61,6 +61,7 @@
- #define PCIE_ATU_VIEWPORT		0x900
- #define PCIE_ATU_REGION_INBOUND		(0x1 << 31)
- #define PCIE_ATU_REGION_OUTBOUND	(0x0 << 31)
-+#define PCIE_ATU_REGION_INDEX2		(0x2 << 0)
- #define PCIE_ATU_REGION_INDEX1		(0x1 << 0)
- #define PCIE_ATU_REGION_INDEX0		(0x0 << 0)
- #define PCIE_ATU_CR1			0x904
-@@ -404,6 +405,10 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
- 	if (ret)
- 		pp->lanes = 0;
+@@ -80,6 +80,21 @@
+ #define PCIE_ATU_FUNC(x)		(((x) & 0x7) << 16)
+ #define PCIE_ATU_UPPER_TARGET		0x91C
  
-+	ret = of_property_read_u32(np, "num-viewport", &pp->num_viewport);
-+	if (ret)
-+		pp->num_viewport = 2;
++/*
++ * iATU Unroll-specific register definitions
++ * From 4.80 core version the address translation will be made by unroll
++ */
++#define PCIE_ATU_UNR_REGION_CTRL1	0x00
++#define PCIE_ATU_UNR_REGION_CTRL2	0x04
++#define PCIE_ATU_UNR_LOWER_BASE	0x08
++#define PCIE_ATU_UNR_UPPER_BASE	0x0C
++#define PCIE_ATU_UNR_LIMIT		0x10
++#define PCIE_ATU_UNR_LOWER_TARGET	0x14
++#define PCIE_ATU_UNR_UPPER_TARGET	0x18
 +
- 	if (pp->ops->host_init)
- 		pp->ops->host_init(pp);
- 
-@@ -450,9 +455,10 @@ static int dw_pcie_rd_other_conf(struct pcie_port *pp, struct pci_bus *bus,
- 				  type, cpu_addr,
- 				  busdev, cfg_size);
- 	ret = dw_pcie_cfg_read(va_cfg_base + where, size, val);
--	dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
--				  PCIE_ATU_TYPE_IO, pp->io_mod_base,
--				  pp->io_bus_addr, pp->io_size);
-+	if (pp->num_viewport <= 2)
-+		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
-+					  PCIE_ATU_TYPE_IO, pp->io_mod_base,
-+					  pp->io_bus_addr, pp->io_size);
- 
- 	return ret;
++/* Register address builder */
++#define PCIE_GET_ATU_OUTB_UNR_REG_OFFSET(region)  ((0x3 << 20) | (region << 9))
++
+ /* PCIe Port Logic registers */
+ #define PLR_OFFSET                     0x700
+ #define PCIE_PHY_DEBUG_R1              (PLR_OFFSET + 0x2c)
+@@ -141,6 +156,27 @@ static inline void dw_pcie_writel_rc(struct pcie_port *pp, u32 val, u32 reg)
+ 		writel(val, pp->dbi_base + reg);
  }
-@@ -488,9 +494,10 @@ static int dw_pcie_wr_other_conf(struct pcie_port *pp, struct pci_bus *bus,
- 				  type, cpu_addr,
- 				  busdev, cfg_size);
- 	ret = dw_pcie_cfg_write(va_cfg_base + where, size, val);
--	dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
--				  PCIE_ATU_TYPE_IO, pp->io_mod_base,
--				  pp->io_bus_addr, pp->io_size);
-+	if (pp->num_viewport <= 2)
-+		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
-+					  PCIE_ATU_TYPE_IO, pp->io_mod_base,
-+					  pp->io_bus_addr, pp->io_size);
  
- 	return ret;
- }
-@@ -643,10 +650,15 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
-         * uses its own address translation component rather than ATU, so
-         * we should not program the ATU here.
-         */
--	if (!pp->ops->rd_other_conf)
-+	if (!pp->ops->rd_other_conf) {
- 		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
- 					  PCIE_ATU_TYPE_MEM, pp->mem_mod_base,
- 					  pp->mem_bus_addr, pp->mem_size);
-+		if (pp->num_viewport > 2)
-+			dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX2,
-+						  PCIE_ATU_TYPE_IO, pp->io_base,
-+						  pp->io_bus_addr, pp->io_size);
++static inline u32 dw_pcie_readl_unroll(struct pcie_port *pp, u32 index, u32 reg)
++{
++	u32 offset = PCIE_GET_ATU_OUTB_UNR_REG_OFFSET(index);
++
++	if (pp->ops->readl_rc)
++		return pp->ops->readl_rc(pp, pp->dbi_base + offset + reg);
++
++	return readl(pp->dbi_base + offset + reg);
++}
++
++static inline void dw_pcie_writel_unroll(struct pcie_port *pp, u32 index,
++					u32 val, u32 reg)
++{
++	u32 offset = PCIE_GET_ATU_OUTB_UNR_REG_OFFSET(index);
++
++	if (pp->ops->writel_rc)
++		pp->ops->writel_rc(pp, val, pp->dbi_base + offset + reg);
++	else
++		writel(val, pp->dbi_base + offset + reg);
++}
++
+ #include <abort.h>
+ 
+ static int dw_pcie_rd_own_conf(struct pcie_port *pp, int where, int size,
+@@ -166,23 +202,49 @@ static void dw_pcie_prog_outbound_atu(struct pcie_port *pp, int index,
+ {
+ 	u32 retries, val;
+ 
+-	dw_pcie_writel_rc(pp, PCIE_ATU_REGION_OUTBOUND | index,
+-			  PCIE_ATU_VIEWPORT);
+-	dw_pcie_writel_rc(pp, lower_32_bits(cpu_addr), PCIE_ATU_LOWER_BASE);
+-	dw_pcie_writel_rc(pp, upper_32_bits(cpu_addr), PCIE_ATU_UPPER_BASE);
+-	dw_pcie_writel_rc(pp, lower_32_bits(cpu_addr + size - 1),
+-			  PCIE_ATU_LIMIT);
+-	dw_pcie_writel_rc(pp, lower_32_bits(pci_addr), PCIE_ATU_LOWER_TARGET);
+-	dw_pcie_writel_rc(pp, upper_32_bits(pci_addr), PCIE_ATU_UPPER_TARGET);
+-	dw_pcie_writel_rc(pp, type, PCIE_ATU_CR1);
+-	dw_pcie_writel_rc(pp, PCIE_ATU_ENABLE, PCIE_ATU_CR2);
++	if (pp->iatu_unroll_enabled) {
++		dw_pcie_writel_unroll(pp, index,
++			lower_32_bits(cpu_addr), PCIE_ATU_UNR_LOWER_BASE);
++		dw_pcie_writel_unroll(pp, index,
++			upper_32_bits(cpu_addr), PCIE_ATU_UNR_UPPER_BASE);
++		dw_pcie_writel_unroll(pp, index,
++			lower_32_bits(cpu_addr + size - 1), PCIE_ATU_UNR_LIMIT);
++		dw_pcie_writel_unroll(pp, index,
++			lower_32_bits(pci_addr), PCIE_ATU_UNR_LOWER_TARGET);
++		dw_pcie_writel_unroll(pp, index,
++			upper_32_bits(pci_addr), PCIE_ATU_UNR_UPPER_TARGET);
++		dw_pcie_writel_unroll(pp, index,
++			type, PCIE_ATU_UNR_REGION_CTRL1);
++		dw_pcie_writel_unroll(pp, index,
++			PCIE_ATU_ENABLE, PCIE_ATU_UNR_REGION_CTRL2);
++	} else {
++		dw_pcie_writel_rc(pp, PCIE_ATU_REGION_OUTBOUND | index,
++				  PCIE_ATU_VIEWPORT);
++		dw_pcie_writel_rc(pp, lower_32_bits(cpu_addr),
++				  PCIE_ATU_LOWER_BASE);
++		dw_pcie_writel_rc(pp, upper_32_bits(cpu_addr),
++				  PCIE_ATU_UPPER_BASE);
++		dw_pcie_writel_rc(pp, lower_32_bits(cpu_addr + size - 1),
++				  PCIE_ATU_LIMIT);
++		dw_pcie_writel_rc(pp, lower_32_bits(pci_addr),
++				  PCIE_ATU_LOWER_TARGET);
++		dw_pcie_writel_rc(pp, upper_32_bits(pci_addr),
++				  PCIE_ATU_UPPER_TARGET);
++		dw_pcie_writel_rc(pp, type, PCIE_ATU_CR1);
++		dw_pcie_writel_rc(pp, PCIE_ATU_ENABLE, PCIE_ATU_CR2);
 +	}
  
- 	dw_pcie_wr_own_conf(pp, PCI_BASE_ADDRESS_0, 4, 0);
+ 	/*
+ 	 * Make sure ATU enable takes effect before any subsequent config
+ 	 * and I/O accesses.
+ 	 */
+ 	for (retries = 0; retries < LINK_WAIT_MAX_IATU_RETRIES; retries++) {
+-		val = dw_pcie_readl_rc(pp, PCIE_ATU_CR2);
++		if (pp->iatu_unroll_enabled)
++			val = dw_pcie_readl_unroll(pp, index,
++						   PCIE_ATU_UNR_REGION_CTRL2);
++		else
++			val = dw_pcie_readl_rc(pp, PCIE_ATU_CR2);
++
+ 		if (val == PCIE_ATU_ENABLE)
+ 			return;
  
+@@ -234,6 +296,18 @@ static void dw_pcie_set_local_bus_nr(struct pci_controller *host, int busno)
+ 
+ static struct pci_ops dw_pcie_ops;
+ 
++static u8 dw_pcie_iatu_unroll_enabled(struct pcie_port *pp)
++{
++	u32 val;
++
++	val = dw_pcie_readl_rc(pp, PCIE_ATU_VIEWPORT);
++	if (val == 0xffffffff)
++		return 1;
++
++	return 0;
++}
++
++
+ int __init dw_pcie_host_init(struct pcie_port *pp)
+ {
+ 	struct device_node *np = pp->dev->device_node;
+@@ -505,6 +579,11 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
+ {
+ 	u32 val;
+ 
++	/* get iATU unroll support */
++	pp->iatu_unroll_enabled = dw_pcie_iatu_unroll_enabled(pp);
++	dev_dbg(pp->dev, "iATU unroll: %s\n",
++		pp->iatu_unroll_enabled ? "enabled" : "disabled");
++
+ 	/* set the number of lanes */
+ 	val = dw_pcie_readl_rc(pp, PCIE_PORT_LINK_CONTROL);
+ 	val &= ~PORT_LINK_MODE_MASK;
 diff --git a/drivers/pci/pcie-designware.h b/drivers/pci/pcie-designware.h
-index b2f492a5d..62f04e69b 100644
+index 0d777ce00..b2f492a5d 100644
 --- a/drivers/pci/pcie-designware.h
 +++ b/drivers/pci/pcie-designware.h
-@@ -40,6 +40,7 @@ struct pcie_port {
- 	struct resource		busn;
- 	int			irq;
+@@ -42,6 +42,7 @@ struct pcie_port {
  	u32			lanes;
-+	u32			num_viewport;
  	struct pcie_host_ops	*ops;
  	struct pci_controller	pci;
- 	u8                      iatu_unroll_enabled;
++	u8                      iatu_unroll_enabled;
+ };
+ 
+ struct pcie_host_ops {
 -- 
 2.19.1
 
