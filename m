@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
+Received: from mail-pg1-f194.google.com ([209.85.215.194])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlL4-0003Bt-1q
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:21:37 +0000
-Received: by mail-pg1-x544.google.com with SMTP id v28so5519601pgk.10
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:59 -0800 (PST)
+ id 1gYlL7-0003Fn-Nz
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:21:42 +0000
+Received: by mail-pg1-f194.google.com with SMTP id v28so5519660pgk.10
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:21:03 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:19:21 -0800
-Message-Id: <20181217051925.17582-62-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:19:24 -0800
+Message-Id: <20181217051925.17582-65-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,70 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 61/65] PCI: dwc: Add accessors for write permission of DBI
+Subject: [PATCH v2 64/65] PCI: dwc: Small computation improvement
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit e44abfed6fcb750d24f4438dc9d5a02eebb5fcac
+Port of a Linux commit 6995de2168edc6e58a350e7eb76e02dd191b64f4
 
-  The read-only DBI registers can be written only when the "Write to RO
-  Registers Using DBI" (DBI_RO_WR_EN) field of MISC_CONTROL_1_OFF is set.
+  Replace a division by 2 operation for a right shift rotation of 1 bit.
 
-  Add accessors to enable and disable write permission, and use them instead
-  of accessing MISC_CONTROL_1_OFF directly.
+  Probably any recent and decent compiler does this kind of substitution
+  in order to improve code performance. Nevertheless it's a coding good
+  practice whenever there is a division / multiplication by multiple of 2
+  to replace it by the equivalent operation in this case, the shift
+  rotation.
 
-  Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
-  Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+  Signed-off-by: Gustavo Pimentel <gustavo.pimentel@synopsys.com>
+  Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+  Acked-by: Jingoo Han <jingoohan1@gmail.com>
   Acked-by: Joao Pinto <jpinto@synopsys.com>
-  Acked-by: Roy Zang <tie-fei.zang@freescale.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.h | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ drivers/pci/pcie-designware-host.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/pcie-designware.h b/drivers/pci/pcie-designware.h
-index 933c2b533..0f1659319 100644
---- a/drivers/pci/pcie-designware.h
-+++ b/drivers/pci/pcie-designware.h
-@@ -83,6 +83,9 @@
- #define PCIE_PHY_DEBUG_R1_LINK_UP      (0x1 << 4)
- #define PCIE_PHY_DEBUG_R1_LINK_IN_TRAINING     (0x1 << 29)
+diff --git a/drivers/pci/pcie-designware-host.c b/drivers/pci/pcie-designware-host.c
+index 7af5a6561..6cc4b93a3 100644
+--- a/drivers/pci/pcie-designware-host.c
++++ b/drivers/pci/pcie-designware-host.c
+@@ -88,8 +88,8 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
  
-+#define PCIE_MISC_CONTROL_1_OFF		0x8BC
-+#define PCIE_DBI_RO_WR_EN		(0x1 << 0)
-+
- /* PCIe Port Logic registers */
- #define PLR_OFFSET                     0x700
- #define PCIE_PHY_DEBUG_R1              (PLR_OFFSET + 0x2c)
-@@ -174,4 +177,27 @@ static inline u32 dw_pcie_readl_dbi(struct dw_pcie *pci, u32 reg)
- {
- 	return  __dw_pcie_readl_dbi(pci, pci->dbi_base, reg, 0x4);
- }
-+
-+static inline void dw_pcie_dbi_ro_wr_en(struct dw_pcie *pci)
-+{
-+	u32 reg;
-+	u32 val;
-+
-+	reg = PCIE_MISC_CONTROL_1_OFF;
-+	val = dw_pcie_readl_dbi(pci, reg);
-+	val |= PCIE_DBI_RO_WR_EN;
-+	dw_pcie_writel_dbi(pci, reg, val);
-+}
-+
-+static inline void dw_pcie_dbi_ro_wr_dis(struct dw_pcie *pci)
-+{
-+	u32 reg;
-+	u32 val;
-+
-+	reg = PCIE_MISC_CONTROL_1_OFF;
-+	val = dw_pcie_readl_dbi(pci, reg);
-+	val &= ~PCIE_DBI_RO_WR_EN;
-+	dw_pcie_writel_dbi(pci, reg, val);
-+}
-+
- #endif /* _PCIE_DESIGNWARE_H */
+ 	cfg_res = dev_get_resource_by_name(dev, IORESOURCE_MEM, "config");
+ 	if (cfg_res) {
+-		pp->cfg0_size = resource_size(cfg_res) / 2;
+-		pp->cfg1_size = resource_size(cfg_res) / 2;
++		pp->cfg0_size = resource_size(cfg_res) >> 1;
++		pp->cfg1_size = resource_size(cfg_res) >> 1;
+ 		pp->cfg0_base = cfg_res->start;
+ 		pp->cfg1_base = cfg_res->start + pp->cfg0_size;
+ 
+@@ -136,8 +136,8 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
+ 		}
+ 		if (restype == 0) {
+ 			of_pci_range_to_resource(&range, np, &pp->cfg);
+-			pp->cfg0_size = resource_size(&pp->cfg) / 2;
+-			pp->cfg1_size = resource_size(&pp->cfg) / 2;
++			pp->cfg0_size = resource_size(&pp->cfg) >> 1;
++			pp->cfg1_size = resource_size(&pp->cfg) >> 1;
+ 			pp->cfg0_base = pp->cfg.start;
+ 			pp->cfg1_base = pp->cfg.start + pp->cfg0_size;
+ 
 -- 
 2.19.1
 
