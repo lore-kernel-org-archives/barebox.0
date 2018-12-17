@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlJy-0000oH-CR
+ id 1gYlJv-0000ov-Ms
  for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:11 +0000
-Received: by mail-pl1-x644.google.com with SMTP id u6so5539019plm.8
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:19:52 -0800 (PST)
+Received: by mail-pl1-x642.google.com with SMTP id u18so5548941plq.7
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:19:53 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:18:29 -0800
-Message-Id: <20181217051925.17582-10-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:18:30 -0800
+Message-Id: <20181217051925.17582-11-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,54 +23,123 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 09/65] PCI: designware: Ensure ATU is enabled before
- IO/conf space accesses
+Subject: [PATCH v2 10/65] PCI: designware: Simplify control flow
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 17209dfb35a228e597a387bfc83b68093b247f78
+Port of a Linux commit 116a489d78b30862a2dd04961d3ba98fe4704220
 
-  Read back the ATU CR2 register to ensure ATU programming is effective
-  before any subsequent I/O or config space accesses.
+  Return values immediately when possible to simplify the control flow.
 
-  Without this, PCI device enumeration is unreliable.
+  No functional change intended.  Folded in unused variable removal as
+  pointed out by Fabio Estevam <fabio.estevam@nxp.com>, Arnd Bergmann
+  <arnd@arndb.de>, and Thierry Reding <thierry.reding@gmail.com>.
 
-  [bhelgaas: changelog, comment]
-  Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
   Acked-by: Pratyush Anand <pratyush.anand@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pci/pcie-designware.c | 53 ++++++++++++++---------------------
+ 1 file changed, 21 insertions(+), 32 deletions(-)
 
 diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index 977548f01..f52b67f4f 100644
+index f52b67f4f..782da2626 100644
 --- a/drivers/pci/pcie-designware.c
 +++ b/drivers/pci/pcie-designware.c
-@@ -161,6 +161,8 @@ static int dw_pcie_wr_own_conf(struct pcie_port *pp, int where, int size,
- static void dw_pcie_prog_outbound_atu(struct pcie_port *pp, int index,
-                int type, u64 cpu_addr, u64 pci_addr, u32 size)
+@@ -133,29 +133,19 @@ static inline void dw_pcie_writel_rc(struct pcie_port *pp, u32 val, u32 reg)
+ static int dw_pcie_rd_own_conf(struct pcie_port *pp, int where, int size,
+ 			       u32 *val)
  {
-+	u32 val;
-+
- 	dw_pcie_writel_rc(pp, PCIE_ATU_REGION_OUTBOUND | index,
- 			  PCIE_ATU_VIEWPORT);
- 	dw_pcie_writel_rc(pp, lower_32_bits(cpu_addr), PCIE_ATU_LOWER_BASE);
-@@ -171,6 +173,12 @@ static void dw_pcie_prog_outbound_atu(struct pcie_port *pp, int index,
- 	dw_pcie_writel_rc(pp, upper_32_bits(pci_addr), PCIE_ATU_UPPER_TARGET);
- 	dw_pcie_writel_rc(pp, type, PCIE_ATU_CR1);
- 	dw_pcie_writel_rc(pp, PCIE_ATU_ENABLE, PCIE_ATU_CR2);
-+
-+	/*
-+	 * Make sure ATU enable takes effect before any subsequent config
-+	 * and I/O accesses.
-+	 */
-+	dw_pcie_readl_rc(pp, PCIE_ATU_CR2, &val);
+-	int ret;
+-
+ 	if (pp->ops->rd_own_conf)
+-		ret = pp->ops->rd_own_conf(pp, where, size, val);
+-	else
+-		ret = dw_pcie_cfg_read(pp->dbi_base + where,
+-				       size, val);
++		return pp->ops->rd_own_conf(pp, where, size, val);
+ 
+-	return ret;
++	return dw_pcie_cfg_read(pp->dbi_base + where, size, val);
  }
  
- int dw_pcie_link_up(struct pcie_port *pp)
+ static int dw_pcie_wr_own_conf(struct pcie_port *pp, int where, int size,
+ 			       u32 val)
+ {
+-	int ret;
+-
+ 	if (pp->ops->wr_own_conf)
+-		ret = pp->ops->wr_own_conf(pp, where, size, val);
+-	else
+-		ret = dw_pcie_cfg_write(pp->dbi_base + where,
+-					size, val);
++		return pp->ops->wr_own_conf(pp, where, size, val);
+ 
+-	return ret;
++	return dw_pcie_cfg_write(pp->dbi_base + where, size, val);
+ }
+ 
+ static void dw_pcie_prog_outbound_atu(struct pcie_port *pp, int index,
+@@ -185,8 +175,8 @@ int dw_pcie_link_up(struct pcie_port *pp)
+ {
+ 	if (pp->ops->link_up)
+ 		return pp->ops->link_up(pp);
+-	else
+-		return 0;
++
++	return 0;
+ }
+ 
+ static inline struct pcie_port *host_to_pcie(struct pci_controller *host)
+@@ -430,16 +420,16 @@ static int dw_pcie_rd_conf(struct pci_bus *bus, u32 devfn, int where,
+ 
+ 	data_abort_mask();
+ 
+-	if (bus->number != pp->root_bus_nr)
+-		if (pp->ops->rd_other_conf)
+-			ret = pp->ops->rd_other_conf(pp, bus, devfn,
+-						where, size, val);
+-		else
+-			ret = dw_pcie_rd_other_conf(pp, bus, devfn,
+-						where, size, val);
+-	else
++	if (bus->number == pp->root_bus_nr)
+ 		ret = dw_pcie_rd_own_conf(pp, where, size, val);
+ 
++	else if (pp->ops->rd_other_conf)
++		ret = pp->ops->rd_other_conf(pp, bus, devfn,
++					     where, size, val);
++	else
++		ret = dw_pcie_rd_other_conf(pp, bus, devfn,
++					    where, size, val);
++
+ 	if (data_abort_unmask())
+ 		return PCIBIOS_DEVICE_NOT_FOUND;
+ 
+@@ -457,15 +447,14 @@ static int dw_pcie_wr_conf(struct pci_bus *bus, u32 devfn,
+ 
+ 	data_abort_mask();
+ 
+-	if (bus->number != pp->root_bus_nr)
+-		if (pp->ops->wr_other_conf)
+-			ret = pp->ops->wr_other_conf(pp, bus, devfn,
+-						where, size, val);
+-		else
+-			ret = dw_pcie_wr_other_conf(pp, bus, devfn,
+-						where, size, val);
+-	else
++	if (bus->number == pp->root_bus_nr)
+ 		ret = dw_pcie_wr_own_conf(pp, where, size, val);
++	else if (pp->ops->wr_other_conf)
++		ret = pp->ops->wr_other_conf(pp, bus, devfn,
++					     where, size, val);
++	else
++		ret = dw_pcie_wr_other_conf(pp, bus, devfn,
++					    where, size, val);
+ 
+ 	if (data_abort_unmask())
+ 		return PCIBIOS_DEVICE_NOT_FOUND;
 -- 
 2.19.1
 
