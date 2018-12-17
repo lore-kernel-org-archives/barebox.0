@@ -2,11 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2]
  helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYnzQ-0001nX-Uf
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 08:11:02 +0000
+ id 1gYnzQ-0001nc-Uh
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 08:11:03 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon, 17 Dec 2018 09:10:39 +0100
-Message-Id: <1856fb4bc00497d8463df146d5776f9941d6d6af.1545034218.git-series.r.czerwinski@pengutronix.de>
+Date: Mon, 17 Dec 2018 09:10:41 +0100
+Message-Id: <539d8beaa104038b63ec7a3edd96aaedca6f582c.1545034218.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.e610a402e2d09170d606caefc97f20a39572bbde.1545034218.git-series.r.czerwinski@pengutronix.de>
 References: <cover.e610a402e2d09170d606caefc97f20a39572bbde.1545034218.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -22,83 +22,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 1/7] ARM: rpi: move clks into board specific rpi-common
+Subject: [PATCH v4 3/7] serial_ns16550: handle default reg-io-width
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-We don't know if the firmware running on the raspberry pi is the same firmware
-which is running on all bcm283x devices.
-Therefore move the console clock initialization into the rpi-common.c board file.
-A future commit will use this function to retrieve the miniuart clock from the
-raspberry pi firmware.
-No functional changes.
+According to the device tree bindings for 8250, width is an optional property.
+Default to 1 which is the same default value as used by the kernel.
+Before this change the driver would not work for device trees which do not
+include the optional binding.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/boards/raspberry-pi/rpi-common.c | 19 +++++++++++++++++++
- arch/arm/mach-bcm283x/core.c              | 19 -------------------
- 2 files changed, 19 insertions(+), 19 deletions(-)
+ drivers/serial/serial_ns16550.c | 46 +++++++++++++++++-----------------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
 
-diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-index 9f0531f..490aeef 100644
---- a/arch/arm/boards/raspberry-pi/rpi-common.c
-+++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-@@ -297,6 +297,25 @@ static int rpi_clock_init(void)
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index 4d73ea8..8ddcfdb 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -297,36 +297,36 @@ static int ns16550_tstc(struct console_device *cdev)
+ static void ns16550_probe_dt(struct device_d *dev, struct ns16550_priv *priv)
+ {
+ 	struct device_node *np = dev->device_node;
+-	u32 width;
++	u32 width = 1;
+ 
+ 	if (!IS_ENABLED(CONFIG_OFDEVICE))
+ 		return;
+ 
+ 	of_property_read_u32(np, "clock-frequency", &priv->plat.clock);
+ 	of_property_read_u32(np, "reg-shift", &priv->plat.shift);
+-	if (!of_property_read_u32(np, "reg-io-width", &width))
+-		switch (width) {
+-		case 1:
+-			priv->read_reg = ns16550_read_reg_mmio_8;
+-			priv->write_reg = ns16550_write_reg_mmio_8;
+-			break;
+-		case 2:
+-			priv->read_reg = ns16550_read_reg_mmio_16;
+-			priv->write_reg = ns16550_write_reg_mmio_16;
+-			break;
+-		case 4:
+-			if (of_device_is_big_endian(np)) {
+-				priv->read_reg = ns16550_read_reg_mmio_32be;
+-				priv->write_reg = ns16550_write_reg_mmio_32be;
+-			} else {
+-				priv->read_reg = ns16550_read_reg_mmio_32;
+-				priv->write_reg = ns16550_write_reg_mmio_32;
+-			}
+-			break;
+-		default:
+-			dev_err(dev, "unsupported reg-io-width (%d)\n",
+-				width);
++	of_property_read_u32(np, "reg-io-width", &width);
++	switch (width) {
++	case 1:
++		priv->read_reg = ns16550_read_reg_mmio_8;
++		priv->write_reg = ns16550_write_reg_mmio_8;
++		break;
++	case 2:
++		priv->read_reg = ns16550_read_reg_mmio_16;
++		priv->write_reg = ns16550_write_reg_mmio_16;
++		break;
++	case 4:
++		if (of_device_is_big_endian(np)) {
++			priv->read_reg = ns16550_read_reg_mmio_32be;
++			priv->write_reg = ns16550_write_reg_mmio_32be;
++		} else {
++			priv->read_reg = ns16550_read_reg_mmio_32;
++			priv->write_reg = ns16550_write_reg_mmio_32;
+ 		}
++		break;
++	default:
++		dev_err(dev, "unsupported reg-io-width (%d)\n",
++			width);
++	}
  }
- postconsole_initcall(rpi_clock_init);
  
-+static int rpi_console_clock_init(void)
-+{
-+	struct clk *clk;
-+
-+	clk = clk_fixed("apb_pclk", 0);
-+	clk_register_clkdev(clk, "apb_pclk", NULL);
-+
-+	clk = clk_fixed("uart0-pl0110", 3 * 1000 * 1000);
-+	clk_register_clkdev(clk, NULL, "uart0-pl0110");
-+	clkdev_add_physbase(clk, 0x20201000, NULL);
-+	clkdev_add_physbase(clk, 0x3f201000, NULL);
-+
-+	clk = clk_fixed("bcm2835-cs", 1 * 1000 * 1000);
-+	clk_register_clkdev(clk, NULL, "bcm2835-cs");
-+
-+	return 0;
-+}
-+postcore_initcall(rpi_console_clock_init);
-+
- static int rpi_env_init(void)
- {
- 	struct stat s;
-diff --git a/arch/arm/mach-bcm283x/core.c b/arch/arm/mach-bcm283x/core.c
-index f1dcda8..f2528cf 100644
---- a/arch/arm/mach-bcm283x/core.c
-+++ b/arch/arm/mach-bcm283x/core.c
-@@ -31,25 +31,6 @@
- #include <mach/core.h>
- #include <linux/amba/bus.h>
- 
--static int bcm2835_clk_init(void)
--{
--	struct clk *clk;
--
--	clk = clk_fixed("apb_pclk", 0);
--	clk_register_clkdev(clk, "apb_pclk", NULL);
--
--	clk = clk_fixed("uart0-pl0110", 3 * 1000 * 1000);
--	clk_register_clkdev(clk, NULL, "uart0-pl0110");
--	clkdev_add_physbase(clk, 0x20201000, NULL);
--	clkdev_add_physbase(clk, 0x3f201000, NULL);
--
--	clk = clk_fixed("bcm2835-cs", 1 * 1000 * 1000);
--	clk_register_clkdev(clk, NULL, "bcm2835-cs");
--
--	return 0;
--}
--postcore_initcall(bcm2835_clk_init);
--
- void bcm2835_add_device_sdram(u32 size)
- {
- 	if (!size)
+ static struct ns16550_drvdata ns16450_drvdata = {
 -- 
 git-series 0.9.1
 
