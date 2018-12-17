@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlKY-0003Yt-D0
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:40 +0000
-Received: by mail-pf1-x444.google.com with SMTP id c123so5775895pfb.0
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:26 -0800 (PST)
+ id 1gYlKN-0003Ys-HS
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:29 +0000
+Received: by mail-pl1-x643.google.com with SMTP id b5so5553980plr.4
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:16 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:18:54 -0800
-Message-Id: <20181217051925.17582-35-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:18:47 -0800
+Message-Id: <20181217051925.17582-28-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,102 +23,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 34/65] PCI: dwc: all: Rename cfg_read/cfg_write to
- read/write
+Subject: [PATCH v2 27/65] PCI: designware: Simplify pcie_host_ops.readl_rc()
+ and .writel_rc() interfaces
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-  No functional change. dw_pcie_cfg_read()/dw_pcie_cfg_write() doesn't do
-  anything specific to access configuration space. It can be just renamed to
-  dw_pcie_read()/dw_pcie_write() and used to read/write data to dbi space.
+Port of a Linux commit 7e00dfd0fbbb2fc276592613f76ded0b9a139a04
 
-  Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+  The struct pcie_host_ops.readl_rc() and .writel_rc() function pointers
+  allow a driver to override the default DesignWare register accessors.
+
+  Make the signature of the override functions the same as the default
+  accessors.  This makes the default dw_pcie_readl_rc() and the corresponding
+  override more structurally similar: both will compute the final register
+  address with "pp->dbi_base + reg".  Previously dw_pcie_readl_rc() computed
+  the address and passed it to the override.
+
+  No functional change intended.
+
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-  Reviewed-By: Joao Pinto <jpinto@synopsys.com>
-  CC: Jingoo Han <jingoohan1@gmail.com>
-  CC: Murali Karicheri <m-karicheri2@ti.com>
-  CC: Stanimir Varbanov <svarbanov@mm-sol.com>
-  CC: Pratyush Anand <pratyush.anand@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 12 ++++++------
- drivers/pci/pcie-designware.h |  4 ++--
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/pci/pcie-designware.c | 4 ++--
+ drivers/pci/pcie-designware.h | 5 ++---
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index 2ddda3192..74769de7f 100644
+index fd529c114..4595167c4 100644
 --- a/drivers/pci/pcie-designware.c
 +++ b/drivers/pci/pcie-designware.c
-@@ -32,7 +32,7 @@
- 
- static unsigned long global_io_offset;
- 
--int dw_pcie_cfg_read(void __iomem *addr, int size, u32 *val)
-+int dw_pcie_read(void __iomem *addr, int size, u32 *val)
+@@ -145,7 +145,7 @@ int dw_pcie_cfg_write(void __iomem *addr, int size, u32 val)
+ static inline u32 dw_pcie_readl_rc(struct pcie_port *pp, u32 reg)
  {
- 	if ((uintptr_t)addr & (size - 1)) {
- 		*val = 0;
-@@ -53,7 +53,7 @@ int dw_pcie_cfg_read(void __iomem *addr, int size, u32 *val)
- 	return PCIBIOS_SUCCESSFUL;
- }
+ 	if (pp->ops->readl_rc)
+-		return pp->ops->readl_rc(pp, pp->dbi_base + reg);
++		return pp->ops->readl_rc(pp, reg);
  
--int dw_pcie_cfg_write(void __iomem *addr, int size, u32 val)
-+int dw_pcie_write(void __iomem *addr, int size, u32 val)
+ 	return readl(pp->dbi_base + reg);
+ }
+@@ -153,7 +153,7 @@ static inline u32 dw_pcie_readl_rc(struct pcie_port *pp, u32 reg)
+ static inline void dw_pcie_writel_rc(struct pcie_port *pp, u32 val, u32 reg)
  {
- 	if ((uintptr_t)addr & (size - 1))
- 		return PCIBIOS_BAD_REGISTER_NUMBER;
-@@ -109,7 +109,7 @@ static int dw_pcie_rd_own_conf(struct pcie_port *pp, int where, int size,
- 	if (pp->ops->rd_own_conf)
- 		return pp->ops->rd_own_conf(pp, where, size, val);
- 
--	return dw_pcie_cfg_read(pp->dbi_base + where, size, val);
-+	return dw_pcie_read(pp->dbi_base + where, size, val);
+ 	if (pp->ops->writel_rc)
+-		pp->ops->writel_rc(pp, val, pp->dbi_base + reg);
++		pp->ops->writel_rc(pp, val, reg);
+ 	else
+ 		writel(val, pp->dbi_base + reg);
  }
- 
- static int dw_pcie_wr_own_conf(struct pcie_port *pp, int where, int size,
-@@ -118,7 +118,7 @@ static int dw_pcie_wr_own_conf(struct pcie_port *pp, int where, int size,
- 	if (pp->ops->wr_own_conf)
- 		return pp->ops->wr_own_conf(pp, where, size, val);
- 
--	return dw_pcie_cfg_write(pp->dbi_base + where, size, val);
-+	return dw_pcie_write(pp->dbi_base + where, size, val);
- }
- 
- static void dw_pcie_prog_outbound_atu(struct pcie_port *pp, int index,
-@@ -376,7 +376,7 @@ static int dw_pcie_rd_other_conf(struct pcie_port *pp, struct pci_bus *bus,
- 	dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
- 				  type, cpu_addr,
- 				  busdev, cfg_size);
--	ret = dw_pcie_cfg_read(va_cfg_base + where, size, val);
-+	ret = dw_pcie_read(va_cfg_base + where, size, val);
- 	if (pp->num_viewport <= 2)
- 		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
- 					  PCIE_ATU_TYPE_IO, pp->io_mod_base,
-@@ -415,7 +415,7 @@ static int dw_pcie_wr_other_conf(struct pcie_port *pp, struct pci_bus *bus,
- 	dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
- 				  type, cpu_addr,
- 				  busdev, cfg_size);
--	ret = dw_pcie_cfg_write(va_cfg_base + where, size, val);
-+	ret = dw_pcie_write(va_cfg_base + where, size, val);
- 	if (pp->num_viewport <= 2)
- 		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX1,
- 					  PCIE_ATU_TYPE_IO, pp->io_mod_base,
 diff --git a/drivers/pci/pcie-designware.h b/drivers/pci/pcie-designware.h
-index 3171adfe7..fb9d2fdb6 100644
+index 62f04e69b..b7ce73718 100644
 --- a/drivers/pci/pcie-designware.h
 +++ b/drivers/pci/pcie-designware.h
-@@ -140,8 +140,8 @@ struct pcie_host_ops {
+@@ -47,9 +47,8 @@ struct pcie_port {
+ };
  
- u32 dw_pcie_readl_rc(struct pcie_port *pp, u32 reg);
- void dw_pcie_writel_rc(struct pcie_port *pp, u32 reg, u32 val);
--int dw_pcie_cfg_read(void __iomem *addr, int size, u32 *val);
--int dw_pcie_cfg_write(void __iomem *addr, int size, u32 val);
-+int dw_pcie_read(void __iomem *addr, int size, u32 *val);
-+int dw_pcie_write(void __iomem *addr, int size, u32 val);
- int dw_pcie_link_up(struct pcie_port *pp);
- void dw_pcie_setup_rc(struct pcie_port *pp);
- int dw_pcie_host_init(struct pcie_port *pp);
+ struct pcie_host_ops {
+-	u32 (*readl_rc)(struct pcie_port *pp, void __iomem *dbi_base);
+-	void (*writel_rc)(struct pcie_port *pp,
+-			u32 val, void __iomem *dbi_base);
++	u32 (*readl_rc)(struct pcie_port *pp, u32 reg);
++	void (*writel_rc)(struct pcie_port *pp, u32 val, u32 reg);
+ 	int (*rd_own_conf)(struct pcie_port *pp, int where, int size, u32 *val);
+ 	int (*wr_own_conf)(struct pcie_port *pp, int where, int size, u32 val);
+ 	int (*rd_other_conf)(struct pcie_port *pp, struct pci_bus *bus,
 -- 
 2.19.1
 
