@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlKh-0005H2-Gt
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:48 +0000
-Received: by mail-pf1-x442.google.com with SMTP id b85so5767722pfc.3
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:37 -0800 (PST)
+ id 1gYlKc-0005H4-Jm
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:44 +0000
+Received: by mail-pf1-x441.google.com with SMTP id y126so5766213pfb.4
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:38 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:19:02 -0800
-Message-Id: <20181217051925.17582-43-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:19:03 -0800
+Message-Id: <20181217051925.17582-44-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,51 +23,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 42/65] PCI: imx6: Port error messages for
- imx6_pcie_deassert_core_reset()
+Subject: [PATCH v2 43/65] PCI: imx6: Remove unused return values
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Port of a Linux commit 9ab021b6cf8b5bfc40ea9333c9b64b554fe01cd4
+
+  Remove unused return values.  No functional change intended.
+
+  Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/pci/pci-imx6.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index baa07447e..8e7bae258 100644
+index 8e7bae258..fa62aa3a4 100644
 --- a/drivers/pci/pci-imx6.c
 +++ b/drivers/pci/pci-imx6.c
-@@ -289,20 +289,27 @@ static int imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
+@@ -236,7 +236,7 @@ static void imx6_pcie_reset_phy(struct imx6_pcie *imx6_pcie)
+ 	pcie_phy_write(imx6_pcie, PHY_RX_OVRD_IN_LO, temp);
+ }
  
- static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
+-static int imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
++static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
  {
-+	struct device_d *dev = imx6_pcie->pp.dev;
- 	int ret;
- 	u32 gpr1;
+ 	struct pcie_port *pp = &imx6_pcie->pp;
+ 	u32 val, gpr1, gpr12;
+@@ -283,11 +283,9 @@ static int imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
+ 		writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
+ 		break;
+ 	}
+-
+-	return 0;
+ }
  
+-static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
++static void imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
+ {
+ 	struct device_d *dev = imx6_pcie->pp.dev;
+ 	int ret;
+@@ -296,7 +294,7 @@ static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
  	ret = clk_enable(imx6_pcie->pcie_phy);
--	if (ret)
-+	if (ret) {
-+		dev_err(dev, "unable to enable pcie_phy clock\n");
- 		goto err_pcie_phy;
-+	}
+ 	if (ret) {
+ 		dev_err(dev, "unable to enable pcie_phy clock\n");
+-		goto err_pcie_phy;
++		return;
+ 	}
  
  	ret = clk_enable(imx6_pcie->pcie_bus);
--	if (ret)
-+	if (ret) {
-+		dev_err(dev, "unable to enable pcie_bus clock\n");
- 		goto err_pcie_bus;
-+	}
+@@ -351,15 +349,12 @@ static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
+ 		break;
+ 	}
  
- 	ret = clk_enable(imx6_pcie->pcie);
--	if (ret)
-+	if (ret) {
-+		dev_err(dev, "unable to enable pcie clock\n");
- 		goto err_pcie;
-+	}
+-	return 0;
++	return;
  
- 	/* power up core phy and enable ref clock */
- 	gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
+ err_pcie:
+ 	clk_disable(imx6_pcie->pcie_bus);
+ err_pcie_bus:
+ 	clk_disable(imx6_pcie->pcie_phy);
+-err_pcie_phy:
+-	return ret;
+-
+ }
+ 
+ static void imx6_pcie_init_phy(struct imx6_pcie *imx6_pcie)
 -- 
 2.19.1
 
