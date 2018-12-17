@@ -2,11 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2]
  helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYnKn-0001sc-EJ
+ id 1gYnKn-0001sY-EK
  for barebox@lists.infradead.org; Mon, 17 Dec 2018 07:29:04 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon, 17 Dec 2018 08:28:02 +0100
-Message-Id: <539d8beaa104038b63ec7a3edd96aaedca6f582c.1545031438.git-series.r.czerwinski@pengutronix.de>
+Date: Mon, 17 Dec 2018 08:28:01 +0100
+Message-Id: <39d36e54718c9c5c75175e3836de5425b1f73fb3.1545031438.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.48072dc0c2851fc176d68ed0eccf022fc17732e1.1545031438.git-series.r.czerwinski@pengutronix.de>
 References: <cover.48072dc0c2851fc176d68ed0eccf022fc17732e1.1545031438.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -22,84 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 3/7] serial_ns16550: handle default reg-io-width
+Subject: [PATCH v3 2/7] ARM: rpi: retrieve miniuart clock from firmware
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-According to the device tree bindings for 8250, width is an optional property.
-Default to 1 which is the same default value as used by the kernel.
-Before this change the driver would not work for device trees which do not
-include the optional binding.
+The miniuart uses the core clock as the clock source. This clock is fixed by the
+firmware to 250Mhz if enable_uart=1 is set in the config.txt file.
+However a user could still choose to overclock the core frequency,
+which would result in wrong baudrates computed by barebox.
+Retrieve the core clock frequency from the firmware to allow all potential
+firmware configurations to work with barebox.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- drivers/serial/serial_ns16550.c | 46 +++++++++++++++++-----------------
- 1 file changed, 23 insertions(+), 23 deletions(-)
+ arch/arm/boards/raspberry-pi/rpi-common.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-index 4d73ea8..8ddcfdb 100644
---- a/drivers/serial/serial_ns16550.c
-+++ b/drivers/serial/serial_ns16550.c
-@@ -297,36 +297,36 @@ static int ns16550_tstc(struct console_device *cdev)
- static void ns16550_probe_dt(struct device_d *dev, struct ns16550_priv *priv)
- {
- 	struct device_node *np = dev->device_node;
--	u32 width;
-+	u32 width = 1;
+diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
+index 490aeef..e29177d 100644
+--- a/arch/arm/boards/raspberry-pi/rpi-common.c
++++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+@@ -309,6 +309,13 @@ static int rpi_console_clock_init(void)
+ 	clkdev_add_physbase(clk, 0x20201000, NULL);
+ 	clkdev_add_physbase(clk, 0x3f201000, NULL);
  
- 	if (!IS_ENABLED(CONFIG_OFDEVICE))
- 		return;
++	clk = rpi_register_firmware_clock(BCM2835_MBOX_CLOCK_ID_CORE,
++					  "uart1-8250");
++	if (IS_ERR(clk))
++		return PTR_ERR(clk);
++
++	clkdev_add_physbase(clk, 0x3f215040, NULL);
++
+ 	clk = clk_fixed("bcm2835-cs", 1 * 1000 * 1000);
+ 	clk_register_clkdev(clk, NULL, "bcm2835-cs");
  
- 	of_property_read_u32(np, "clock-frequency", &priv->plat.clock);
- 	of_property_read_u32(np, "reg-shift", &priv->plat.shift);
--	if (!of_property_read_u32(np, "reg-io-width", &width))
--		switch (width) {
--		case 1:
--			priv->read_reg = ns16550_read_reg_mmio_8;
--			priv->write_reg = ns16550_write_reg_mmio_8;
--			break;
--		case 2:
--			priv->read_reg = ns16550_read_reg_mmio_16;
--			priv->write_reg = ns16550_write_reg_mmio_16;
--			break;
--		case 4:
--			if (of_device_is_big_endian(np)) {
--				priv->read_reg = ns16550_read_reg_mmio_32be;
--				priv->write_reg = ns16550_write_reg_mmio_32be;
--			} else {
--				priv->read_reg = ns16550_read_reg_mmio_32;
--				priv->write_reg = ns16550_write_reg_mmio_32;
--			}
--			break;
--		default:
--			dev_err(dev, "unsupported reg-io-width (%d)\n",
--				width);
-+	of_property_read_u32(np, "reg-io-width", &width);
-+	switch (width) {
-+	case 1:
-+		priv->read_reg = ns16550_read_reg_mmio_8;
-+		priv->write_reg = ns16550_write_reg_mmio_8;
-+		break;
-+	case 2:
-+		priv->read_reg = ns16550_read_reg_mmio_16;
-+		priv->write_reg = ns16550_write_reg_mmio_16;
-+		break;
-+	case 4:
-+		if (of_device_is_big_endian(np)) {
-+			priv->read_reg = ns16550_read_reg_mmio_32be;
-+			priv->write_reg = ns16550_write_reg_mmio_32be;
-+		} else {
-+			priv->read_reg = ns16550_read_reg_mmio_32;
-+			priv->write_reg = ns16550_write_reg_mmio_32;
- 		}
-+		break;
-+	default:
-+		dev_err(dev, "unsupported reg-io-width (%d)\n",
-+			width);
-+	}
- }
- 
- static struct ns16550_drvdata ns16450_drvdata = {
 -- 
 git-series 0.9.1
 
