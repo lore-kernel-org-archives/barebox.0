@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlJw-0000qe-Mp
+ id 1gYlJw-0000oE-Mn
  for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:20:11 +0000
-Received: by mail-pg1-x542.google.com with SMTP id j10so4320833pga.1
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:19:56 -0800 (PST)
+Received: by mail-pg1-x542.google.com with SMTP id z11so5541966pgu.0
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:19:50 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:18:33 -0800
-Message-Id: <20181217051925.17582-14-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:18:28 -0800
+Message-Id: <20181217051925.17582-9-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,64 +23,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 13/65] PCI: imx6: Move link up check into
- imx6_pcie_wait_for_link()
+Subject: [PATCH v2 08/65] PCI: designware: Make "num-lanes" an optional DT
+ property
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 4d107d3b5a686b5834e533a00b73bf7b1cf59df7
+Port of a Linux commit 907fce0902539ecde609e485eb2ecd7119a7a623
 
-  imx6_pcie_link_up() previously used usleep_range() to wait for the link to
-  come up.  Since it may be called while holding the config spinlock, the
-  sleep causes a "BUG: scheduling while atomic" error.
+  Currently "num-lanes" is read in dw_pcie_host_init(), but it is only used
+  if we call dw_pcie_setup_rc() while bringing up the link.  If the link has
+  already been brought up by firmware, we need not call dw_pcie_setup_rc(),
+  and "num-lanes" is unnecessary.
 
-  Instead of waiting for the link to come up in imx6_pcie_link_up(), do the
-  waiting in imx6_pcie_wait_for_link(), where we're not holding a lock and
-  sleeping is allowed.
+  Only complain about "num-lanes" if we actually need it and we didn't find a
+  valid value.
 
-  [bhelgaas: changelog, references to bugzilla and f95d3ae77191]
-  Link: https://bugzilla.kernel.org/show_bug.cgi?id=100031
-  Fixes: f95d3ae77191 ("PCI: imx6: Wait for retraining")
-  Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+  [bhelgaas: changelog]
+  Signed-off-by: Gabriele Paoloni <gabriele.paoloni@huawei.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/pci/pcie-designware.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index fc56a0d14..53d767824 100644
---- a/drivers/pci/pci-imx6.c
-+++ b/drivers/pci/pci-imx6.c
-@@ -399,8 +399,26 @@ static int imx6_pcie_wait_for_link(struct pcie_port *pp)
- {
- 	uint64_t start = get_time_ns();
+diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
+index f47e5eb1e..977548f01 100644
+--- a/drivers/pci/pcie-designware.c
++++ b/drivers/pci/pcie-designware.c
+@@ -203,7 +203,7 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
+ 	struct resource *cfg_res;
+ 	u32 val, na, ns;
+ 	const __be32 *addrp;
+-	int index;
++	int index, ret;
  
-+	/*
-+	 * Test if the PHY reports that the link is up and also that the LTSSM
-+	 * training finished. There are three possible states of the link when
-+	 * this code is called:
-+	 * 1) The link is DOWN (unlikely)
-+	 *    The link didn't come up yet for some reason. This usually means
-+	 *    we have a real problem somewhere, if it happens with a peripheral
-+	 *    connected. This state calls for inspection of the DEBUG registers.
-+	 * 2) The link is UP, but still in LTSSM training
-+	 *    Wait for the training to finish, which should take a very short
-+	 *    time. If the training does not finish, we have a problem and we
-+	 *    need to inspect the DEBUG registers. If the training does finish,
-+	 *    the link is up and operating correctly.
-+	 * 3) The link is UP and no longer in LTSSM training
-+	 *    The link is up and operating correctly.
-+	 */
- 	while (1) {
--		if (dw_pcie_link_up(pp))
-+		u32 reg = readl(pp->dbi_base + PCIE_PHY_DEBUG_R1);
-+		if ((reg & PCIE_PHY_DEBUG_R1_XMLH_LINK_UP) &&
-+		    !(reg & PCIE_PHY_DEBUG_R1_XMLH_LINK_IN_TRAINING))
- 			return 0;
+ 	/* Find the address cell size and the number of cells in order to get
+ 	 * the untranslated address.
+@@ -285,10 +285,9 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
+ 	if (!pp->va_cfg1_base)
+ 		pp->va_cfg1_base = (void __force *)(u32)pp->cfg1_base;
  
- 		if (!is_timeout(start, SECOND))
+-	if (of_property_read_u32(np, "num-lanes", &pp->lanes)) {
+-		dev_err(pp->dev, "Failed to parse the number of lanes\n");
+-		return -EINVAL;
+-	}
++	ret = of_property_read_u32(np, "num-lanes", &pp->lanes);
++	if (ret)
++		pp->lanes = 0;
+ 
+ 	if (pp->ops->host_init)
+ 		pp->ops->host_init(pp);
+@@ -496,6 +495,9 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
+ 	case 4:
+ 		val |= PORT_LINK_MODE_4_LANES;
+ 		break;
++       default:
++               dev_err(pp->dev, "num-lanes %u: invalid value\n", pp->lanes);
++               return;
+ 	}
+ 	dw_pcie_writel_rc(pp, val, PCIE_PORT_LINK_CONTROL);
+ 
 -- 
 2.19.1
 
