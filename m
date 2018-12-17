@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2]
+Received: from magratgarlick.emantor.de ([78.46.208.201]
  helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYnzQ-0001nc-Uh
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 08:11:03 +0000
+ id 1gYo04-0002BB-I7
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 08:11:41 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon, 17 Dec 2018 09:10:41 +0100
-Message-Id: <539d8beaa104038b63ec7a3edd96aaedca6f582c.1545034218.git-series.r.czerwinski@pengutronix.de>
+Date: Mon, 17 Dec 2018 09:10:43 +0100
+Message-Id: <1deb34fe683cf56d3b90e7252195d16678293a9e.1545034218.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.e610a402e2d09170d606caefc97f20a39572bbde.1545034218.git-series.r.czerwinski@pengutronix.de>
 References: <cover.e610a402e2d09170d606caefc97f20a39572bbde.1545034218.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -22,84 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 3/7] serial_ns16550: handle default reg-io-width
+Subject: [PATCH v4 5/7] ARM: rpi: add NS16550 support
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-According to the device tree bindings for 8250, width is an optional property.
-Default to 1 which is the same default value as used by the kernel.
-Before this change the driver would not work for device trees which do not
-include the optional binding.
+Since the 16550 driver now supports the RPI3 miniuart, enable it in the default
+config.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- drivers/serial/serial_ns16550.c | 46 +++++++++++++++++-----------------
- 1 file changed, 23 insertions(+), 23 deletions(-)
+ arch/arm/configs/rpi_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-index 4d73ea8..8ddcfdb 100644
---- a/drivers/serial/serial_ns16550.c
-+++ b/drivers/serial/serial_ns16550.c
-@@ -297,36 +297,36 @@ static int ns16550_tstc(struct console_device *cdev)
- static void ns16550_probe_dt(struct device_d *dev, struct ns16550_priv *priv)
- {
- 	struct device_node *np = dev->device_node;
--	u32 width;
-+	u32 width = 1;
- 
- 	if (!IS_ENABLED(CONFIG_OFDEVICE))
- 		return;
- 
- 	of_property_read_u32(np, "clock-frequency", &priv->plat.clock);
- 	of_property_read_u32(np, "reg-shift", &priv->plat.shift);
--	if (!of_property_read_u32(np, "reg-io-width", &width))
--		switch (width) {
--		case 1:
--			priv->read_reg = ns16550_read_reg_mmio_8;
--			priv->write_reg = ns16550_write_reg_mmio_8;
--			break;
--		case 2:
--			priv->read_reg = ns16550_read_reg_mmio_16;
--			priv->write_reg = ns16550_write_reg_mmio_16;
--			break;
--		case 4:
--			if (of_device_is_big_endian(np)) {
--				priv->read_reg = ns16550_read_reg_mmio_32be;
--				priv->write_reg = ns16550_write_reg_mmio_32be;
--			} else {
--				priv->read_reg = ns16550_read_reg_mmio_32;
--				priv->write_reg = ns16550_write_reg_mmio_32;
--			}
--			break;
--		default:
--			dev_err(dev, "unsupported reg-io-width (%d)\n",
--				width);
-+	of_property_read_u32(np, "reg-io-width", &width);
-+	switch (width) {
-+	case 1:
-+		priv->read_reg = ns16550_read_reg_mmio_8;
-+		priv->write_reg = ns16550_write_reg_mmio_8;
-+		break;
-+	case 2:
-+		priv->read_reg = ns16550_read_reg_mmio_16;
-+		priv->write_reg = ns16550_write_reg_mmio_16;
-+		break;
-+	case 4:
-+		if (of_device_is_big_endian(np)) {
-+			priv->read_reg = ns16550_read_reg_mmio_32be;
-+			priv->write_reg = ns16550_write_reg_mmio_32be;
-+		} else {
-+			priv->read_reg = ns16550_read_reg_mmio_32;
-+			priv->write_reg = ns16550_write_reg_mmio_32;
- 		}
-+		break;
-+	default:
-+		dev_err(dev, "unsupported reg-io-width (%d)\n",
-+			width);
-+	}
- }
- 
- static struct ns16550_drvdata ns16450_drvdata = {
+diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
+index 2bb6158..dc5ab1f 100644
+--- a/arch/arm/configs/rpi_defconfig
++++ b/arch/arm/configs/rpi_defconfig
+@@ -63,6 +63,7 @@ CONFIG_CMD_OF_PROPERTY=y
+ CONFIG_CMD_OFTREE=y
+ CONFIG_CMD_TIME=y
+ CONFIG_SERIAL_AMBA_PL011=y
++CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_MCI=y
+ CONFIG_MCI_BCM283X=y
+ CONFIG_LED=y
 -- 
 git-series 0.9.1
 
