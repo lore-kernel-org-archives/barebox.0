@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYlKT-0002N7-Cg
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:21:09 +0000
-Received: by mail-pg1-x543.google.com with SMTP id s198so5537174pgs.2
- for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:23 -0800 (PST)
+ id 1gYlKT-0002bY-Ck
+ for barebox@lists.infradead.org; Mon, 17 Dec 2018 05:21:11 +0000
+Received: by mail-pg1-x543.google.com with SMTP id v28so5518983pgk.10
+ for <barebox@lists.infradead.org>; Sun, 16 Dec 2018 21:20:28 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 16 Dec 2018 21:18:52 -0800
-Message-Id: <20181217051925.17582-33-andrew.smirnov@gmail.com>
+Date: Sun, 16 Dec 2018 21:18:56 -0800
+Message-Id: <20181217051925.17582-37-andrew.smirnov@gmail.com>
 In-Reply-To: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,75 +23,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 32/65] PCI: designware: Check for iATU unroll only on
- platforms that use ATU
+Subject: [PATCH v2 36/65] PCI: imx6: Add local struct device pointers
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit a782b5f986c3fa1cfa7f2b57941200c6a5809242
+Port of a Linux commit 13957652f7242a8cb02ffb8c96f412f62c486ee1
 
-  Previously we checked for iATU unroll support by reading PCIE_ATU_VIEWPORT
-  even on platforms, e.g., Keystone, that do not have ATU ports.  This can
-  cause bad behavior such as asynchronous external aborts:
+  Use a local "struct device *dev" for brevity and consistency with other
+  drivers.  No functional change intended.
 
-    OF: PCI:   MEM 0x60000000..0x6fffffff -> 0x60000000
-    Unhandled fault: asynchronous external abort (0x1211) at 0x00000000
-    pgd = c0003000
-    [00000000] *pgd=80000800004003, *pmd=00000000
-    Internal error: : 1211 [#1] PREEMPT SMP ARM
-    Modules linked in:
-    CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.9.0-00009-g6ff59d2-dirty #7
-    Hardware name: Keystone
-    task: eb878000 task.stack: eb866000
-    PC is at dw_pcie_setup_rc+0x24/0x380
-    LR is at ks_pcie_host_init+0x10/0x170
-
-  Move the dw_pcie_iatu_unroll_enabled() check so we only call it on
-  platforms that do not use the ATU.  These platforms supply their own
-  ->rd_other_conf() and ->wr_other_conf() methods.
-
-  [bhelgaas: changelog]
-  Fixes: a0601a470537 ("PCI: designware: Add iATU Unroll feature")
-  Fixes: 416379f9ebde ("PCI: designware: Check for iATU unroll support after initializing host")
-  Tested-by: Kishon Vijay Abraham I <kishon@ti.com>
-  Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-  Acked-By: Joao Pinto <jpinto@synopsys.com>
-  CC: stable@vger.kernel.org      # v4.9+
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/pci/pci-imx6.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index 2b39e39e0..d42045088 100644
---- a/drivers/pci/pcie-designware.c
-+++ b/drivers/pci/pcie-designware.c
-@@ -582,11 +582,6 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
- {
- 	u32 val;
+diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
+index c499f4c83..0ede1abfa 100644
+--- a/drivers/pci/pci-imx6.c
++++ b/drivers/pci/pci-imx6.c
+@@ -401,6 +401,7 @@ static int imx6_pcie_wait_for_link(struct pcie_port *pp)
  
--	/* get iATU unroll support */
--	pp->iatu_unroll_enabled = dw_pcie_iatu_unroll_enabled(pp);
--	dev_dbg(pp->dev, "iATU unroll: %s\n",
--		pp->iatu_unroll_enabled ? "enabled" : "disabled");
--
- 	/* set the number of lanes */
- 	val = dw_pcie_readl_rc(pp, PCIE_PORT_LINK_CONTROL);
- 	val &= ~PORT_LINK_MODE_MASK;
-@@ -645,6 +640,11 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
-         * we should not program the ATU here.
-         */
- 	if (!pp->ops->rd_other_conf) {
-+		/* get iATU unroll support */
-+		pp->iatu_unroll_enabled = dw_pcie_iatu_unroll_enabled(pp);
-+		dev_dbg(pp->dev, "iATU unroll: %s\n",
-+			pp->iatu_unroll_enabled ? "enabled" : "disabled");
-+
- 		dw_pcie_prog_outbound_atu(pp, PCIE_ATU_REGION_INDEX0,
- 					  PCIE_ATU_TYPE_MEM, pp->mem_mod_base,
- 					  pp->mem_bus_addr, pp->mem_size);
+ static int imx6_pcie_wait_for_speed_change(struct pcie_port *pp)
+ {
++	struct device_d *dev = pp->dev;
+ 	uint32_t tmp;
+ 	uint64_t start = get_time_ns();
+ 
+@@ -411,7 +412,7 @@ static int imx6_pcie_wait_for_speed_change(struct pcie_port *pp)
+ 			return 0;
+ 	}
+ 
+-	dev_err(pp->dev, "Speed change timeout\n");
++	dev_err(dev, "Speed change timeout\n");
+ 	return -EINVAL;
+ }
+ 
+@@ -419,6 +420,7 @@ static int imx6_pcie_wait_for_speed_change(struct pcie_port *pp)
+ static int imx6_pcie_establish_link(struct pcie_port *pp)
+ {
+ 	struct imx6_pcie *imx6_pcie = to_imx6_pcie(pp);
++	struct device_d *dev = pp->dev;
+ 	uint32_t tmp;
+ 	int ret;
+ 	u32 gpr12;
+@@ -440,7 +442,7 @@ static int imx6_pcie_establish_link(struct pcie_port *pp)
+ 
+ 	ret = imx6_pcie_wait_for_link(pp);
+ 	if (ret) {
+-		dev_info(pp->dev, "Link never came up\n");
++		dev_info(dev, "Link never came up\n");
+ 		goto err_reset_phy;
+ 	}
+ 
+@@ -460,24 +462,24 @@ static int imx6_pcie_establish_link(struct pcie_port *pp)
+ 
+ 	ret = imx6_pcie_wait_for_speed_change(pp);
+ 	if (ret) {
+-		dev_err(pp->dev, "Failed to bring link up!\n");
++		dev_err(dev, "Failed to bring link up!\n");
+ 		goto err_reset_phy;
+ 	}
+ 
+ 	/* Make sure link training is finished as well! */
+ 	ret = imx6_pcie_wait_for_link(pp);
+ 	if (ret) {
+-		dev_err(pp->dev, "Failed to bring link up!\n");
++		dev_err(dev, "Failed to bring link up!\n");
+ 		goto err_reset_phy;
+ 	}
+ 
+ 	tmp = readl(pp->dbi_base + PCIE_RC_LCSR);
+-	dev_dbg(pp->dev, "Link up, Gen=%i\n", (tmp >> 16) & 0xf);
++	dev_dbg(dev, "Link up, Gen=%i\n", (tmp >> 16) & 0xf);
+ 
+ 	return 0;
+ 
+ err_reset_phy:
+-       dev_dbg(pp->dev, "PHY DEBUG_R0=0x%08x DEBUG_R1=0x%08x\n",
++       dev_dbg(dev, "PHY DEBUG_R0=0x%08x DEBUG_R1=0x%08x\n",
+                readl(pp->dbi_base + PCIE_PHY_DEBUG_R0),
+                readl(pp->dbi_base + PCIE_PHY_DEBUG_R1));
+        imx6_pcie_reset_phy(pp);
+@@ -500,6 +502,7 @@ static void imx6_pcie_host_init(struct pcie_port *pp)
+ 
+ static int imx6_pcie_link_up(struct pcie_port *pp)
+ {
++	struct device_d *dev = pp->dev;
+ 	u32 rc;
+ 	int count = 5;
+ 
+@@ -527,7 +530,7 @@ static int imx6_pcie_link_up(struct pcie_port *pp)
+ 			return 1;
+ 		if (!count--)
+ 			break;
+-		dev_dbg(pp->dev, "Link is up, but still in training\n");
++		dev_dbg(dev, "Link is up, but still in training\n");
+ 		/*
+ 		 * Wait a little bit, then re-check if the link finished
+ 		 * the training.
 -- 
 2.19.1
 
