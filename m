@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZAua-0001HS-Ao
- for barebox@lists.infradead.org; Tue, 18 Dec 2018 08:39:33 +0000
-Message-ID: <1545122359.5234.2.camel@pengutronix.de>
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue, 18 Dec 2018 09:39:19 +0100
-In-Reply-To: <20181218072114.thijfcbgack4sprf@pengutronix.de>
+ id 1gZB0L-0004I6-V7
+ for barebox@lists.infradead.org; Tue, 18 Dec 2018 08:45:31 +0000
+Date: Tue, 18 Dec 2018 09:45:18 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20181218084518.vjk6xzk5oatqkal2@pengutronix.de>
 References: <cover.e610a402e2d09170d606caefc97f20a39572bbde.1545034218.git-series.r.czerwinski@pengutronix.de>
  <39d36e54718c9c5c75175e3836de5425b1f73fb3.1545034218.git-series.r.czerwinski@pengutronix.de>
  <20181218072114.thijfcbgack4sprf@pengutronix.de>
-Mime-Version: 1.0
+ <1545122359.5234.2.camel@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1545122359.5234.2.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,41 +21,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v4 2/7] ARM: rpi: retrieve miniuart clock from firmware
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-T24gVHVlLCAyMDE4LTEyLTE4IGF0IDA4OjIxICswMTAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4g
-T24gTW9uLCBEZWMgMTcsIDIwMTggYXQgMDk6MTA6NDBBTSArMDEwMCwgUm91dmVuIEN6ZXJ3aW5z
-a2kgd3JvdGU6Cj4gPiBUaGUgbWluaXVhcnQgdXNlcyB0aGUgY29yZSBjbG9jayBhcyB0aGUgY2xv
-Y2sgc291cmNlLiBUaGlzIGNsb2NrIGlzCj4gPiBmaXhlZCBieSB0aGUKPiA+IGZpcm13YXJlIHRv
-IDI1ME1oeiBpZiBlbmFibGVfdWFydD0xIGlzIHNldCBpbiB0aGUgY29uZmlnLnR4dCBmaWxlLgo+
-ID4gSG93ZXZlciBhIHVzZXIgY291bGQgc3RpbGwgY2hvb3NlIHRvIG92ZXJjbG9jayB0aGUgY29y
-ZSBmcmVxdWVuY3ksCj4gPiB3aGljaCB3b3VsZCByZXN1bHQgaW4gd3JvbmcgYmF1ZHJhdGVzIGNv
-bXB1dGVkIGJ5IGJhcmVib3guCj4gPiBSZXRyaWV2ZSB0aGUgY29yZSBjbG9jayBmcmVxdWVuY3kg
-ZnJvbSB0aGUgZmlybXdhcmUgdG8gYWxsb3cgYWxsCj4gPiBwb3RlbnRpYWwKPiA+IGZpcm13YXJl
-IGNvbmZpZ3VyYXRpb25zIHRvIHdvcmsgd2l0aCBiYXJlYm94Lgo+ID4gCj4gPiBTaWduZWQtb2Zm
-LWJ5OiBSb3V2ZW4gQ3plcndpbnNraSA8ci5jemVyd2luc2tpQHBlbmd1dHJvbml4LmRlPgo+ID4g
-LS0tCj4gPiDCoGFyY2gvYXJtL2JvYXJkcy9yYXNwYmVycnktcGkvcnBpLWNvbW1vbi5jIHwgNyAr
-KysrKysrCj4gPiDCoDEgZmlsZSBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKykKPiA+IAo+ID4gZGlm
-ZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9yYXNwYmVycnktcGkvcnBpLWNvbW1vbi5jCj4gPiBi
-L2FyY2gvYXJtL2JvYXJkcy9yYXNwYmVycnktcGkvcnBpLWNvbW1vbi5jCj4gPiBpbmRleCA0OTBh
-ZWVmLi5lMjkxNzdkIDEwMDY0NAo+ID4gLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3Jhc3BiZXJyeS1w
-aS9ycGktY29tbW9uLmMKPiA+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9yYXNwYmVycnktcGkvcnBp
-LWNvbW1vbi5jCj4gPiBAQCAtMzA5LDYgKzMwOSwxMyBAQCBzdGF0aWMgaW50IHJwaV9jb25zb2xl
-X2Nsb2NrX2luaXQodm9pZCkKPiA+IMKgCWNsa2Rldl9hZGRfcGh5c2Jhc2UoY2xrLCAweDIwMjAx
-MDAwLCBOVUxMKTsKPiA+IMKgCWNsa2Rldl9hZGRfcGh5c2Jhc2UoY2xrLCAweDNmMjAxMDAwLCBO
-VUxMKTsKPiA+IMKgCj4gPiArCWNsayA9Cj4gPiBycGlfcmVnaXN0ZXJfZmlybXdhcmVfY2xvY2so
-QkNNMjgzNV9NQk9YX0NMT0NLX0lEX0NPUkUsCj4gPiArCQkJCQnCoMKgInVhcnQxLTgyNTAiKTsK
-PiAKPiBXZSBkb24ndCBoYXZlIHRoaXMgZnVuY3Rpb24gYW55d2hlcmUgaW4gdGhlIHRyZWUsIHRo
-aXMgYnJlYWtzCj4gY29tcGlsYXRpb24uClllcyB0aGUgYmFzZSBvbiBteSBzZXJpZXMgd2FzIHdy
-b25nLCBpdHMgbWlzc2luZyBhIGNsZWFudXAgcGF0Y2guCgpEbyB5b3Ugd2FudCBhIHNpbmdsZSBw
-YXRjaCBvciBzaGFsbCBJIHBvc3QgYSBuZXcgc2VyaWVzIHdoaWNoCmluY29ycG9yYXRlcyB0aGUg
-c3VnZ2VzdGlvbnMgZnJvbSBSb2xhbmQgYW5kIHlvdT8KCi0gUm91dmVuCgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApi
-YXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Tue, Dec 18, 2018 at 09:39:19AM +0100, Rouven Czerwinski wrote:
+> On Tue, 2018-12-18 at 08:21 +0100, Sascha Hauer wrote:
+> > On Mon, Dec 17, 2018 at 09:10:40AM +0100, Rouven Czerwinski wrote:
+> > > The miniuart uses the core clock as the clock source. This clock is
+> > > fixed by the
+> > > firmware to 250Mhz if enable_uart=3D1 is set in the config.txt file.
+> > > However a user could still choose to overclock the core frequency,
+> > > which would result in wrong baudrates computed by barebox.
+> > > Retrieve the core clock frequency from the firmware to allow all
+> > > potential
+> > > firmware configurations to work with barebox.
+> > > =
+
+> > > Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> > > ---
+> > > =A0arch/arm/boards/raspberry-pi/rpi-common.c | 7 +++++++
+> > > =A01 file changed, 7 insertions(+)
+> > > =
+
+> > > diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c
+> > > b/arch/arm/boards/raspberry-pi/rpi-common.c
+> > > index 490aeef..e29177d 100644
+> > > --- a/arch/arm/boards/raspberry-pi/rpi-common.c
+> > > +++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+> > > @@ -309,6 +309,13 @@ static int rpi_console_clock_init(void)
+> > > =A0	clkdev_add_physbase(clk, 0x20201000, NULL);
+> > > =A0	clkdev_add_physbase(clk, 0x3f201000, NULL);
+> > > =A0
+> > > +	clk =3D
+> > > rpi_register_firmware_clock(BCM2835_MBOX_CLOCK_ID_CORE,
+> > > +					=A0=A0"uart1-8250");
+> > =
+
+> > We don't have this function anywhere in the tree, this breaks
+> > compilation.
+> Yes the base on my series was wrong, its missing a cleanup patch.
+> =
+
+> Do you want a single patch or shall I post a new series which
+> incorporates the suggestions from Roland and you?
+
+Please resend the whole series.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
