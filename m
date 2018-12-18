@@ -2,11 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2]
  helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZCv9-0002qx-89
- for barebox@lists.infradead.org; Tue, 18 Dec 2018 10:48:19 +0000
+ id 1gZCv9-0002qk-8B
+ for barebox@lists.infradead.org; Tue, 18 Dec 2018 10:48:24 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue, 18 Dec 2018 11:47:42 +0100
-Message-Id: <c4ef5b03a78c69b16a9f7b07dcea6affd6400a59.1545130027.git-series.r.czerwinski@pengutronix.de>
+Date: Tue, 18 Dec 2018 11:47:40 +0100
+Message-Id: <1ce9b3de1464acae378eaaae5324b724d187f1a6.1545130027.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.61efbc8cc3e2f39adccce96b40af1bb32a30bc66.1545130027.git-series.r.czerwinski@pengutronix.de>
 References: <cover.61efbc8cc3e2f39adccce96b40af1bb32a30bc66.1545130027.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -22,40 +22,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 7/9] ARM: rpi: choose miniuart as stdout
+Subject: [PATCH v5 5/9] serial_ns16550: add raspberry pi compatible and init
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Since we now support the miniuart, enable it as the default stdout port.
-With this change the device tree overlay to switch the miniuart to bluetooth is
-no longer necessary.
+Add the compatible for the Raspberry Pi AUX UART and an init function which
+enables it via the aux register and configures the correct shift value.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/dts/bcm2837-rpi-3.dts | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/serial/serial_ns16550.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/arch/arm/dts/bcm2837-rpi-3.dts b/arch/arm/dts/bcm2837-rpi-3.dts
-index d6ffc36..194b41c 100644
---- a/arch/arm/dts/bcm2837-rpi-3.dts
-+++ b/arch/arm/dts/bcm2837-rpi-3.dts
-@@ -2,15 +2,10 @@
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index 8ddcfdb..256063a 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -253,6 +253,20 @@ static void ns16550_jz_init_port(struct console_device *cdev)
+ 	ns16550_serial_init_port(cdev);
+ }
  
- / {
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = &uart1;
- 	};
++static void rpi_init_port(struct console_device *cdev)
++{
++	struct ns16550_priv *priv = to_ns16550_priv(cdev);
++
++	writeb(0x01, 0x3f215004);
++	priv->plat.shift = 2;
++	/*
++	 * We double the clock rate since the 16550 will divide by 16
++	 * (instead of 8 required by the BCM2835 peripheral manual)
++	 */
++	priv->plat.clock = priv->plat.clock*2;
++	ns16550_serial_init_port(cdev);
++}
++
+ /*********** Exposed Functions **********************************/
  
- 	memory {
- 		reg = <0x0 0x0>;
- 	};
+ /**
+@@ -353,6 +367,11 @@ static __maybe_unused struct ns16550_drvdata tegra_drvdata = {
+ 	.linux_console_name = "ttyS",
  };
--
--&uart0 {
--	status = "okay";
--	/delete-node/ bluetooth;
--};
+ 
++static __maybe_unused struct ns16550_drvdata rpi_drvdata = {
++	.init_port = rpi_init_port,
++	.linux_console_name = "ttyS",
++};
++
+ static int ns16550_init_iomem(struct device_d *dev, struct ns16550_priv *priv)
+ {
+ 	struct resource *iores;
+@@ -528,6 +547,12 @@ static struct of_device_id ns16550_serial_dt_ids[] = {
+ 		.data = &jz_drvdata,
+ 	},
+ #endif
++#if IS_ENABLED(CONFIG_MACH_RPI_COMMON)
++	{
++		.compatible = "brcm,bcm2835-aux-uart",
++		.data = &rpi_drvdata,
++	},
++#endif
+ 	{
+ 		/* sentinel */
+ 	},
 -- 
 git-series 0.9.1
 
