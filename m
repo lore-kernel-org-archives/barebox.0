@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2]
+Received: from magratgarlick.emantor.de ([78.46.208.201]
  helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZCv9-0002qk-8B
+ id 1gZCv9-0002qj-8C
  for barebox@lists.infradead.org; Tue, 18 Dec 2018 10:48:24 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue, 18 Dec 2018 11:47:40 +0100
-Message-Id: <1ce9b3de1464acae378eaaae5324b724d187f1a6.1545130027.git-series.r.czerwinski@pengutronix.de>
+Date: Tue, 18 Dec 2018 11:47:41 +0100
+Message-Id: <ff5a5e32f29b3c3a035196fd350d9e520837b2c5.1545130027.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.61efbc8cc3e2f39adccce96b40af1bb32a30bc66.1545130027.git-series.r.czerwinski@pengutronix.de>
 References: <cover.61efbc8cc3e2f39adccce96b40af1bb32a30bc66.1545130027.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -22,68 +22,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 5/9] serial_ns16550: add raspberry pi compatible and init
+Subject: [PATCH v5 6/9] ARM: rpi: add NS16550 support
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Add the compatible for the Raspberry Pi AUX UART and an init function which
-enables it via the aux register and configures the correct shift value.
+Since the 16550 driver now supports the RPI3 miniuart, enable it in the default
+config.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- drivers/serial/serial_ns16550.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ arch/arm/configs/rpi_defconfig  | 1 +
+ drivers/serial/serial_ns16550.c | 6 +++++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
+diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
+index 2bb6158..dc5ab1f 100644
+--- a/arch/arm/configs/rpi_defconfig
++++ b/arch/arm/configs/rpi_defconfig
+@@ -63,6 +63,7 @@ CONFIG_CMD_OF_PROPERTY=y
+ CONFIG_CMD_OFTREE=y
+ CONFIG_CMD_TIME=y
+ CONFIG_SERIAL_AMBA_PL011=y
++CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_MCI=y
+ CONFIG_MCI_BCM283X=y
+ CONFIG_LED=y
 diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-index 8ddcfdb..256063a 100644
+index 256063a..5e5b671 100644
 --- a/drivers/serial/serial_ns16550.c
 +++ b/drivers/serial/serial_ns16550.c
-@@ -253,6 +253,20 @@ static void ns16550_jz_init_port(struct console_device *cdev)
+@@ -253,11 +253,15 @@ static void ns16550_jz_init_port(struct console_device *cdev)
  	ns16550_serial_init_port(cdev);
  }
  
-+static void rpi_init_port(struct console_device *cdev)
-+{
-+	struct ns16550_priv *priv = to_ns16550_priv(cdev);
++#define BCM2836_AUX_CLOCK_ENB 0x3f215004 /* BCM2835 AUX Clock enable register */
++#define BCM2836_AUX_CLOCK_EN_UART BIT(0) /* Bit 0 enables the Miniuart */
 +
-+	writeb(0x01, 0x3f215004);
-+	priv->plat.shift = 2;
-+	/*
-+	 * We double the clock rate since the 16550 will divide by 16
-+	 * (instead of 8 required by the BCM2835 peripheral manual)
-+	 */
-+	priv->plat.clock = priv->plat.clock*2;
-+	ns16550_serial_init_port(cdev);
-+}
-+
- /*********** Exposed Functions **********************************/
- 
- /**
-@@ -353,6 +367,11 @@ static __maybe_unused struct ns16550_drvdata tegra_drvdata = {
- 	.linux_console_name = "ttyS",
- };
- 
-+static __maybe_unused struct ns16550_drvdata rpi_drvdata = {
-+	.init_port = rpi_init_port,
-+	.linux_console_name = "ttyS",
-+};
-+
- static int ns16550_init_iomem(struct device_d *dev, struct ns16550_priv *priv)
+ static void rpi_init_port(struct console_device *cdev)
  {
- 	struct resource *iores;
-@@ -528,6 +547,12 @@ static struct of_device_id ns16550_serial_dt_ids[] = {
- 		.data = &jz_drvdata,
- 	},
- #endif
-+#if IS_ENABLED(CONFIG_MACH_RPI_COMMON)
-+	{
-+		.compatible = "brcm,bcm2835-aux-uart",
-+		.data = &rpi_drvdata,
-+	},
-+#endif
- 	{
- 		/* sentinel */
- 	},
++	uint8_t val;
+ 	struct ns16550_priv *priv = to_ns16550_priv(cdev);
+ 
+-	writeb(0x01, 0x3f215004);
++	writeb(BCM2835_AUX_CLOCK_EN_UART, BCM2835_AUX_CLOCK_ENB);
+ 	priv->plat.shift = 2;
+ 	/*
+ 	 * We double the clock rate since the 16550 will divide by 16
 -- 
 git-series 0.9.1
 
