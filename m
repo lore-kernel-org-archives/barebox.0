@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201]
+Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2]
  helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZCuw-0002oM-3s
- for barebox@lists.infradead.org; Tue, 18 Dec 2018 10:48:04 +0000
+ id 1gZCux-0002oT-9a
+ for barebox@lists.infradead.org; Tue, 18 Dec 2018 10:48:05 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue, 18 Dec 2018 11:47:36 +0100
-Message-Id: <4d94b3c0208fedf9c9c2eed0053e9dffb9d52506.1545130027.git-series.r.czerwinski@pengutronix.de>
+Date: Tue, 18 Dec 2018 11:47:39 +0100
+Message-Id: <539d8beaa104038b63ec7a3edd96aaedca6f582c.1545130027.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.61efbc8cc3e2f39adccce96b40af1bb32a30bc66.1545130027.git-series.r.czerwinski@pengutronix.de>
 References: <cover.61efbc8cc3e2f39adccce96b40af1bb32a30bc66.1545130027.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -22,37 +22,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 1/9] ARM: rpi: fix typo in rpi-common.c
+Subject: [PATCH v5 4/9] serial_ns16550: handle default reg-io-width
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
+According to the device tree bindings for 8250, width is an optional property.
+Default to 1 which is the same default value as used by the kernel.
+Before this change the driver would not work for device trees which do not
+include the optional binding.
+
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/boards/raspberry-pi/rpi-common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/serial/serial_ns16550.c | 46 +++++++++++++++++-----------------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
 
-diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-index b7ce0ad..9f0531f 100644
---- a/arch/arm/boards/raspberry-pi/rpi-common.c
-+++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-@@ -73,7 +73,7 @@ static int rpi_get_arm_mem(u32 *size)
- 	return 0;
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index 4d73ea8..8ddcfdb 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -297,36 +297,36 @@ static int ns16550_tstc(struct console_device *cdev)
+ static void ns16550_probe_dt(struct device_d *dev, struct ns16550_priv *priv)
+ {
+ 	struct device_node *np = dev->device_node;
+-	u32 width;
++	u32 width = 1;
+ 
+ 	if (!IS_ENABLED(CONFIG_OFDEVICE))
+ 		return;
+ 
+ 	of_property_read_u32(np, "clock-frequency", &priv->plat.clock);
+ 	of_property_read_u32(np, "reg-shift", &priv->plat.shift);
+-	if (!of_property_read_u32(np, "reg-io-width", &width))
+-		switch (width) {
+-		case 1:
+-			priv->read_reg = ns16550_read_reg_mmio_8;
+-			priv->write_reg = ns16550_write_reg_mmio_8;
+-			break;
+-		case 2:
+-			priv->read_reg = ns16550_read_reg_mmio_16;
+-			priv->write_reg = ns16550_write_reg_mmio_16;
+-			break;
+-		case 4:
+-			if (of_device_is_big_endian(np)) {
+-				priv->read_reg = ns16550_read_reg_mmio_32be;
+-				priv->write_reg = ns16550_write_reg_mmio_32be;
+-			} else {
+-				priv->read_reg = ns16550_read_reg_mmio_32;
+-				priv->write_reg = ns16550_write_reg_mmio_32;
+-			}
+-			break;
+-		default:
+-			dev_err(dev, "unsupported reg-io-width (%d)\n",
+-				width);
++	of_property_read_u32(np, "reg-io-width", &width);
++	switch (width) {
++	case 1:
++		priv->read_reg = ns16550_read_reg_mmio_8;
++		priv->write_reg = ns16550_write_reg_mmio_8;
++		break;
++	case 2:
++		priv->read_reg = ns16550_read_reg_mmio_16;
++		priv->write_reg = ns16550_write_reg_mmio_16;
++		break;
++	case 4:
++		if (of_device_is_big_endian(np)) {
++			priv->read_reg = ns16550_read_reg_mmio_32be;
++			priv->write_reg = ns16550_write_reg_mmio_32be;
++		} else {
++			priv->read_reg = ns16550_read_reg_mmio_32;
++			priv->write_reg = ns16550_write_reg_mmio_32;
+ 		}
++		break;
++	default:
++		dev_err(dev, "unsupported reg-io-width (%d)\n",
++			width);
++	}
  }
  
--static struct clk *rpi_register_firmare_clock(u32 clock_id, const char *name)
-+static struct clk *rpi_register_firmware_clock(u32 clock_id, const char *name)
- {
- 	BCM2835_MBOX_STACK_ALIGN(struct msg_get_clock_rate, msg);
- 	int ret;
-@@ -285,7 +285,7 @@ static int rpi_clock_init(void)
- {
- 	struct clk *clk;
- 
--	clk = rpi_register_firmare_clock(BCM2835_MBOX_CLOCK_ID_EMMC,
-+	clk = rpi_register_firmware_clock(BCM2835_MBOX_CLOCK_ID_EMMC,
- 					 "bcm2835_mci0");
- 	if (IS_ERR(clk))
- 		return PTR_ERR(clk);
+ static struct ns16550_drvdata ns16450_drvdata = {
 -- 
 git-series 0.9.1
 
