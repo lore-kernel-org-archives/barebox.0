@@ -2,11 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from magratgarlick.emantor.de ([78.46.208.201]
  helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZCv9-0002qj-8C
+ id 1gZCv9-0002r6-5Q
  for barebox@lists.infradead.org; Tue, 18 Dec 2018 10:48:24 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue, 18 Dec 2018 11:47:41 +0100
-Message-Id: <ff5a5e32f29b3c3a035196fd350d9e520837b2c5.1545130027.git-series.r.czerwinski@pengutronix.de>
+Date: Tue, 18 Dec 2018 11:47:44 +0100
+Message-Id: <3358cd79a94a83760ee8277da18da3bea5dc036d.1545130027.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.61efbc8cc3e2f39adccce96b40af1bb32a30bc66.1545130027.git-series.r.czerwinski@pengutronix.de>
 References: <cover.61efbc8cc3e2f39adccce96b40af1bb32a30bc66.1545130027.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -22,52 +22,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 6/9] ARM: rpi: add NS16550 support
+Subject: [PATCH v5 9/9] ARM: rpi: use defines for uart bases
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Since the 16550 driver now supports the RPI3 miniuart, enable it in the default
-config.
+Previously the clkdev_add_phybase was called on magic register values,
+add defines which clarify the device for which the phybase clkdev is created.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/configs/rpi_defconfig  | 1 +
- drivers/serial/serial_ns16550.c | 6 +++++-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ arch/arm/boards/raspberry-pi/rpi-common.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
-index 2bb6158..dc5ab1f 100644
---- a/arch/arm/configs/rpi_defconfig
-+++ b/arch/arm/configs/rpi_defconfig
-@@ -63,6 +63,7 @@ CONFIG_CMD_OF_PROPERTY=y
- CONFIG_CMD_OFTREE=y
- CONFIG_CMD_TIME=y
- CONFIG_SERIAL_AMBA_PL011=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
- CONFIG_MCI=y
- CONFIG_MCI_BCM283X=y
- CONFIG_LED=y
-diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-index 256063a..5e5b671 100644
---- a/drivers/serial/serial_ns16550.c
-+++ b/drivers/serial/serial_ns16550.c
-@@ -253,11 +253,15 @@ static void ns16550_jz_init_port(struct console_device *cdev)
- 	ns16550_serial_init_port(cdev);
+diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
+index e29177d..b8a41b2 100644
+--- a/arch/arm/boards/raspberry-pi/rpi-common.c
++++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+@@ -297,6 +297,10 @@ static int rpi_clock_init(void)
  }
+ postconsole_initcall(rpi_clock_init);
  
-+#define BCM2836_AUX_CLOCK_ENB 0x3f215004 /* BCM2835 AUX Clock enable register */
-+#define BCM2836_AUX_CLOCK_EN_UART BIT(0) /* Bit 0 enables the Miniuart */
++#define BCM2835_PL011_BASE 0x20201000
++#define BCM2836_PL011_BASE 0x3f201000
++#define BCM2836_MINIUART_BASE 0x3f215040
 +
- static void rpi_init_port(struct console_device *cdev)
+ static int rpi_console_clock_init(void)
  {
-+	uint8_t val;
- 	struct ns16550_priv *priv = to_ns16550_priv(cdev);
+ 	struct clk *clk;
+@@ -306,15 +310,15 @@ static int rpi_console_clock_init(void)
  
--	writeb(0x01, 0x3f215004);
-+	writeb(BCM2835_AUX_CLOCK_EN_UART, BCM2835_AUX_CLOCK_ENB);
- 	priv->plat.shift = 2;
- 	/*
- 	 * We double the clock rate since the 16550 will divide by 16
+ 	clk = clk_fixed("uart0-pl0110", 3 * 1000 * 1000);
+ 	clk_register_clkdev(clk, NULL, "uart0-pl0110");
+-	clkdev_add_physbase(clk, 0x20201000, NULL);
+-	clkdev_add_physbase(clk, 0x3f201000, NULL);
++	clkdev_add_physbase(clk, BCM2835_PL011_BASE, NULL);
++	clkdev_add_physbase(clk, BCM2836_PL011_BASE, NULL);
+ 
+ 	clk = rpi_register_firmware_clock(BCM2835_MBOX_CLOCK_ID_CORE,
+ 					  "uart1-8250");
+ 	if (IS_ERR(clk))
+ 		return PTR_ERR(clk);
+ 
+-	clkdev_add_physbase(clk, 0x3f215040, NULL);
++	clkdev_add_physbase(clk, BCM2836_MINIUART_BASE, NULL);
+ 
+ 	clk = clk_fixed("bcm2835-cs", 1 * 1000 * 1000);
+ 	clk_register_clkdev(clk, NULL, "bcm2835-cs");
 -- 
 git-series 0.9.1
 
