@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-sn1nam01on0720.outbound.protection.outlook.com
- ([2a01:111:f400:fe40::720]
- helo=NAM01-SN1-obe.outbound.protection.outlook.com)
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZFL1-0004e6-UB
- for barebox@lists.infradead.org; Tue, 18 Dec 2018 13:23:09 +0000
-From: "Baeuerle, Florian" <Florian.Baeuerle@allegion.com>
-Date: Tue, 18 Dec 2018 13:22:52 +0000
-Message-ID: <20181218132233.23669-2-florian.baeuerle@allegion.com>
-References: <20181217105343.kkfo4ihynrcv7dis@pengutronix.de>
- <20181218132233.23669-1-florian.baeuerle@allegion.com>
-In-Reply-To: <20181218132233.23669-1-florian.baeuerle@allegion.com>
-Content-Language: en-US
-Content-ID: <E7662123DA1DF24CB0C5E211A0BDF25A@prod.exchangelabs.com>
-MIME-Version: 1.0
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gZEfa-0005Ou-30
+ for barebox@lists.infradead.org; Tue, 18 Dec 2018 12:40:20 +0000
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Tue, 18 Dec 2018 13:40:03 +0100
+Message-Id: <1545136803-42645-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,56 +14,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] envfs: new flag for sorting env before saving
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] commands: nand-bitflip: Add documentation for option '-c'
+To: barebox@lists.infradead.org
 
-VGhlIHJlc3VsdGluZyBlbnZpcm9ubWVudCB3YXMgZGVwZW5kZW5kIG9mIHRoZSBidWlsZCBtYWNo
-aW5lcycNCmZpbGVzeXN0ZW0sIGkuZS4gdGhlIG9yZGVyIGluIHdoaWNoIHJlYWRkaXIgcmV0dXJu
-cyBkaXJlbnRzIGRlcGVuZHMgb24NCnRoZSBmaWxlc3lzdGVtIGltcGxlbWVudGF0aW9uLg0KDQpV
-c2UgdGhlIG5ldyBmbGFnIGluIHNjcmlwdHMvYmFyZWJveGVudi5jIGZvciBnZW5lcmF0aW5nIGEg
-cmVwcm9kdWNpYmxlDQpidWlsdC1pbiBlbnZpcm9ubWVudC4NCg0KU2lnbmVkLW9mZi1ieTogRmxv
-cmlhbiBCw6R1ZXJsZSA8Zmxvcmlhbi5iYWV1ZXJsZUBhbGxlZ2lvbi5jb20+DQotLS0NCiBjb21t
-b24vZW52aXJvbm1lbnQuYyB8IDggKysrKysrLS0NCiBpbmNsdWRlL2VudmZzLmggICAgICB8IDEg
-Kw0KIHNjcmlwdHMvYmFyZWJveGVudi5jIHwgMiArLQ0KIDMgZmlsZXMgY2hhbmdlZCwgOCBpbnNl
-cnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvY29tbW9uL2Vudmlyb25t
-ZW50LmMgYi9jb21tb24vZW52aXJvbm1lbnQuYw0KaW5kZXggNTZhMDMwZWRhLi5jZWE1NWYzMTMg
-MTAwNjQ0DQotLS0gYS9jb21tb24vZW52aXJvbm1lbnQuYw0KKysrIGIvY29tbW9uL2Vudmlyb25t
-ZW50LmMNCkBAIC0yNTcsNiArMjU3LDcgQEAgaW50IGVudmZzX3NhdmUoY29uc3QgY2hhciAqZmls
-ZW5hbWUsIGNvbnN0IGNoYXIgKmRpcm5hbWUsIHVuc2lnbmVkIGZsYWdzKQ0KIAl2b2lkICpidWYg
-PSBOVUxMLCAqd2J1ZjsNCiAJc3RydWN0IGVudmZzX2VudHJ5ICplbnY7DQogCWNvbnN0IGNoYXIg
-KmRlZmVudl9wYXRoID0gZGVmYXVsdF9lbnZpcm9ubWVudF9wYXRoX2dldCgpOw0KKwlpbnQgcmVj
-dXJzaXZlX2ZsYWdzID0gQUNUSU9OX1JFQ1VSU0U7DQogDQogCWlmICghZmlsZW5hbWUpDQogCQlm
-aWxlbmFtZSA9IGRlZmVudl9wYXRoOw0KQEAgLTI3NiwxMCArMjc3LDEzIEBAIGludCBlbnZmc19z
-YXZlKGNvbnN0IGNoYXIgKmZpbGVuYW1lLCBjb25zdCBjaGFyICpkaXJuYW1lLCB1bnNpZ25lZCBm
-bGFncykNCiAJaWYgKGZsYWdzICYgRU5WRlNfRkxBR1NfRk9SQ0VfQlVJTFRfSU4pIHsNCiAJCXNp
-emUgPSAwOyAvKiBmb3JjZSBubyBjb250ZW50ICovDQogCX0gZWxzZSB7DQorCQlpZiAoZmxhZ3Mg
-JiBFTlZGU19GTEFHU19TT1JURUQpDQorCQkJcmVjdXJzaXZlX2ZsYWdzIHw9IEFDVElPTl9TT1JU
-Ow0KKw0KIAkJLyogZmlyc3QgcGFzczogY2FsY3VsYXRlIHNpemUgKi8NCi0JCXJlY3Vyc2l2ZV9h
-Y3Rpb24oZGlybmFtZSwgQUNUSU9OX1JFQ1VSU0UsIGZpbGVfYWN0aW9uLA0KKwkJcmVjdXJzaXZl
-X2FjdGlvbihkaXJuYW1lLCByZWN1cnNpdmVfZmxhZ3MsIGZpbGVfYWN0aW9uLA0KIAkJCQlOVUxM
-LCAmZGF0YSwgMCk7DQotCQlyZWN1cnNpdmVfYWN0aW9uKCIvLmRlZmF1bHRlbnYiLCBBQ1RJT05f
-UkVDVVJTRSwNCisJCXJlY3Vyc2l2ZV9hY3Rpb24oIi8uZGVmYXVsdGVudiIsIHJlY3Vyc2l2ZV9m
-bGFncywNCiAJCQkJZmlsZV9yZW1vdmVfYWN0aW9uLCBOVUxMLCAmZGF0YSwgMCk7DQogCQlzaXpl
-ID0gMDsNCiANCmRpZmYgLS1naXQgYS9pbmNsdWRlL2VudmZzLmggYi9pbmNsdWRlL2VudmZzLmgN
-CmluZGV4IDI3YzRiNDJjNi4uZmExMmM2MGE4IDEwMDY0NA0KLS0tIGEvaW5jbHVkZS9lbnZmcy5o
-DQorKysgYi9pbmNsdWRlL2VudmZzLmgNCkBAIC00NSw2ICs0NSw3IEBAIHN0cnVjdCBlbnZmc19z
-dXBlciB7DQogCXVpbnQxNl90IGZ1dHVyZTsJCS8qIHJlc2VydmVkIGZvciBmdXR1cmUgdXNlICov
-DQogCXVpbnQzMl90IGZsYWdzOwkJCS8qIGZlYXR1cmUgZmxhZ3MgKi8NCiAjZGVmaW5lIEVOVkZT
-X0ZMQUdTX0ZPUkNFX0JVSUxUX0lOCSgxIDw8IDApDQorI2RlZmluZSBFTlZGU19GTEFHU19TT1JU
-RUQJCSgxIDw8IDEpDQogCXVpbnQzMl90IHNiX2NyYzsJCS8qIGNyYyBmb3IgdGhlIHN1cGVyYmxv
-Y2sgKi8NCiB9Ow0KIA0KZGlmZiAtLWdpdCBhL3NjcmlwdHMvYmFyZWJveGVudi5jIGIvc2NyaXB0
-cy9iYXJlYm94ZW52LmMNCmluZGV4IGRlNTdjMmZjZS4uM2U3YzczNmI5IDEwMDY0NA0KLS0tIGEv
-c2NyaXB0cy9iYXJlYm94ZW52LmMNCisrKyBiL3NjcmlwdHMvYmFyZWJveGVudi5jDQpAQCAtMTI3
-LDcgKzEyNyw3IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICphcmd2W10pDQogCWludCBvcHQ7
-DQogCWludCBzYXZlID0gMCwgbG9hZCA9IDAsIHBhZCA9IDAsIGVyciA9IDAsIGZkOw0KIAljaGFy
-ICpmaWxlbmFtZSA9IE5VTEwsICpkaXJuYW1lID0gTlVMTDsNCi0JdW5zaWduZWQgZW52ZnNfZmxh
-Z3MgPSAwOw0KKwl1bnNpZ25lZCBlbnZmc19mbGFncyA9IEVOVkZTX0ZMQUdTX1NPUlRFRDsNCiAJ
-aW50IHZlcmJvc2UgPSAwOw0KIA0KIAl3aGlsZSgob3B0ID0gZ2V0b3B0KGFyZ2MsIGFyZ3YsICJz
-bHA6dnoiKSkgIT0gLTEpIHsNCi0tIA0KMi4xOS4yDQoNCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ commands/nand-bitflip.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/commands/nand-bitflip.c b/commands/nand-bitflip.c
+index a8a97c153aa0..cfde2f4040e7 100644
+--- a/commands/nand-bitflip.c
++++ b/commands/nand-bitflip.c
+@@ -107,6 +107,7 @@ BAREBOX_CMD_HELP_START(nand_bitflip)
+ BAREBOX_CMD_HELP_TEXT("This command creates bitflips on Nand pages.")
+ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT ("-b <block>",  "block to work on")
++BAREBOX_CMD_HELP_OPT ("-c\t",  "Check only for bitflips")
+ BAREBOX_CMD_HELP_OPT ("-o <offset>",  "offset in Nand")
+ BAREBOX_CMD_HELP_OPT ("-r\t",  "flip random bits")
+ BAREBOX_CMD_HELP_OPT ("-n <numbitflips>",  "Specify maximum number of bitflips to generate")
+-- 
+2.7.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
