@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x241.google.com ([2a00:1450:4864:20::241])
+Received: from mail-lf1-x143.google.com ([2a00:1450:4864:20::143])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZ9fr-0003ia-Mj
- for barebox@lists.infradead.org; Tue, 18 Dec 2018 07:20:19 +0000
-Received: by mail-lj1-x241.google.com with SMTP id x85-v6so13286132ljb.2
- for <barebox@lists.infradead.org>; Mon, 17 Dec 2018 23:20:11 -0800 (PST)
+ id 1gZ9ft-000388-2K
+ for barebox@lists.infradead.org; Tue, 18 Dec 2018 07:20:24 +0000
+Received: by mail-lf1-x143.google.com with SMTP id n18so11440582lfh.6
+ for <barebox@lists.infradead.org>; Mon, 17 Dec 2018 23:20:06 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 18 Dec 2018 10:19:41 +0300
-Message-Id: <20181218071943.2560-9-antonynpavlov@gmail.com>
+Date: Tue, 18 Dec 2018 10:19:37 +0300
+Message-Id: <20181218071943.2560-5-antonynpavlov@gmail.com>
 In-Reply-To: <20181218071943.2560-1-antonynpavlov@gmail.com>
 References: <20181218071943.2560-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
@@ -23,71 +23,322 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 08/10] RISC-V: add erizo_generic_defconfig
+Subject: [PATCH v3 04/10] RISC-V: add nmon nano-monitor
 To: barebox@lists.infradead.org
+
+nmon is a tiny (<1024 bytes) monitor program
+for the RV32I processors.
+
+It can operate with NO working RAM at all!
+
+It uses only the processor registers and NS16550-compatible
+UART port for operation, so it can be used for a memory
+controller setup code debugging.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/riscv/configs/erizo_generic_defconfig | 51 ++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ arch/riscv/Kconfig                  |  24 +++
+ arch/riscv/boot/start.S             |   8 +
+ arch/riscv/include/asm/riscv_nmon.h | 234 ++++++++++++++++++++++++++++
+ 3 files changed, 266 insertions(+)
 
-diff --git a/arch/riscv/configs/erizo_generic_defconfig b/arch/riscv/configs/erizo_generic_defconfig
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index ee532ac11a..f1e69377e5 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -63,3 +63,27 @@ config BUILTIN_DTB_NAME
+ source arch/riscv/mach-erizo/Kconfig
+ 
+ endmenu
++
++menu "RISC-V specific settings"
++
++config HAS_NMON
++	bool
++
++config NMON
++	bool "nmon"
++	depends on HAS_NMON
++	depends on DEBUG_LL
++	help
++	  Say yes here to add the nmon to pbl.
++	  nmon -- nano-monitor program for the RISC-V processors.
++	  It can operate with NO working RAM, using only
++	  the processor registers.
++
++config NMON_HELP
++	bool "nmon help message"
++	depends on NMON
++	help
++	  Say yes here to get the nmon commands message on
++	  every nmon start.
++
++endmenu
+diff --git a/arch/riscv/boot/start.S b/arch/riscv/boot/start.S
+index d13708740b..d1dbe48b7b 100644
+--- a/arch/riscv/boot/start.S
++++ b/arch/riscv/boot/start.S
+@@ -18,12 +18,20 @@
+ 
+ #include <asm-generic/memory_layout.h>
+ 
++#include "mach/debug_ll.h"
++
++#include "asm/riscv_nmon.h"
++
+ 	.text
+ 	.section ".text_entry"
+ 	.align 2
+ 
+ .globl _start
+ _start:
++	debug_ll_ns16550_init
++
++	riscv_nmon
++
+ 	li	sp, STACK_BASE + STACK_SIZE
+ 
+ 	/* copy barebox to link location */
+diff --git a/arch/riscv/include/asm/riscv_nmon.h b/arch/riscv/include/asm/riscv_nmon.h
 new file mode 100644
-index 0000000000..2ea1e46cc9
+index 0000000000..caf213cdd8
 --- /dev/null
-+++ b/arch/riscv/configs/erizo_generic_defconfig
-@@ -0,0 +1,51 @@
-+# CONFIG_GLOBALVAR is not set
-+CONFIG_TEXT_BASE=0x80000000
-+CONFIG_MEMORY_LAYOUT_FIXED=y
-+CONFIG_STACK_BASE=0x800e0000
-+CONFIG_STACK_SIZE=0x20000
-+CONFIG_MALLOC_BASE=0x80100000
-+CONFIG_MALLOC_SIZE=0x100000
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_PANIC_HANG=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+# CONFIG_ERRNO_MESSAGES is not set
-+# CONFIG_TIMESTAMP is not set
-+# CONFIG_BOOTM is not set
-+# CONFIG_ENV_HANDLING is not set
-+CONFIG_POLLER=y
-+CONFIG_DEBUG_LL=y
-+CONFIG_LONGHELP=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_IMD=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_LOADY=y
-+CONFIG_CMD_CMP=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_SHA1SUM=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_MEMTEST=y
-+CONFIG_CMD_MM=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_I2C=y
-+CONFIG_CMD_SPI=y
-+CONFIG_CMD_OF_DUMP=y
-+CONFIG_CMD_TIME=y
-+CONFIG_CMD_DHRYSTONE=y
-+CONFIG_OFDEVICE=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_DRIVER_SPI_GPIO=y
-+CONFIG_I2C=y
-+CONFIG_I2C_GPIO=y
-+CONFIG_MTD=y
-+# CONFIG_MTD_OOB_DEVICE is not set
-+CONFIG_MTD_M25P80=y
-+CONFIG_CLOCKSOURCE_DUMMY_RATE=60000
-+CONFIG_EEPROM_AT24=y
-+CONFIG_GPIO_GENERIC_PLATFORM=y
-+# CONFIG_PINCTRL is not set
-+CONFIG_DIGEST_CRC32_GENERIC=y
++++ b/arch/riscv/include/asm/riscv_nmon.h
+@@ -0,0 +1,234 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * nano-monitor for RISC-V CPU
++ *
++ * Copyright (C) 2016, 2017 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#ifndef __ASM_RISCV_NMON_H
++#define __ASM_RISCV_NMON_H
++
++#define CODE_ESC	0x1b
++
++.macro nmon_outs msg
++
++	la	a1, \msg
++
++	jal	_nmon_outs
++
++.endm
++
++/*
++ * output a 32-bit value in hex
++ */
++.macro debug_ll_outhexw
++#ifdef CONFIG_DEBUG_LL
++	move	t6, a0
++	li	t5, 32
++
++202:
++	addi	t5, t5, -4
++	srl	a0, t6, t5
++
++	/* output one hex digit */
++	andi	a0, a0, 15
++	li	t4, 10
++	blt	a0, t4, 203f
++
++	addi	a0, a0, ('a' - '9' - 1)
++
++203:
++	addi	a0, a0, '0'
++
++	debug_ll_outc_a0
++
++	li	t4, 1
++	bge	t5, t4, 202b
++
++#endif /* CONFIG_DEBUG_LL */
++.endm
++
++.macro riscv_nmon
++
++#ifdef CONFIG_NMON
++
++nmon_main_help:
++#ifdef CONFIG_NMON_HELP
++	nmon_outs	msg_nmon_help
++#endif /* CONFIG_NMON_HELP */
++
++nmon_main:
++	nmon_outs	msg_prompt
++
++	debug_ll_getc
++
++	li	a0, 'q'
++	bne	s0, a0, 3f
++
++	jal	_nmon_outc_a0
++
++	j	nmon_exit
++
++3:
++	li	a0, 'd'
++	beq	s0, a0, nmon_cmd_d
++
++	li	a0, 'w'
++	beq	s0, a0, nmon_cmd_w
++
++	li	a0, 'g'
++	beq	s0, a0, nmon_cmd_g
++
++	j	nmon_main_help
++
++nmon_cmd_d:
++	jal	_nmon_outc_a0
++
++	li	a0, ' '
++	jal	_nmon_outc_a0
++
++	jal	_nmon_gethexw
++
++	nmon_outs	msg_nl
++
++	lw	a0, (s0)
++	debug_ll_outhexw
++
++	j	nmon_main
++
++nmon_cmd_w:
++	jal	_nmon_outc_a0
++
++	li	a0, ' '
++	jal	_nmon_outc_a0
++
++	jal	_nmon_gethexw
++	move	s2, s0
++
++	li	a0, ' '
++	jal	_nmon_outc_a0
++	jal	_nmon_gethexw
++
++	sw	s0, 0(s2)
++	j	nmon_main
++
++nmon_cmd_g:
++	jal	_nmon_outc_a0
++
++	li	a0, ' '
++	jal	_nmon_outc_a0
++
++	jal	_nmon_gethexw
++	move	s2, s0
++
++	nmon_outs	msg_nl
++
++	jalr	s2
++	j	nmon_main
++
++_nmon_outc_a0:
++	debug_ll_outc_a0
++	jr	ra
++
++_nmon_outs:
++
++	lb	a0, 0(a1)
++	addi	a1, a1, 1
++	beqz	a0, _nmon_jr_ra_exit
++
++	debug_ll_outc_a0
++
++	j	_nmon_outs
++
++_nmon_gethexw:
++
++	li	t3, 8
++	li	t2, 0
++
++_get_hex_digit:
++	debug_ll_getc
++
++	li	s1, CODE_ESC
++	beq	s0, s1, nmon_main
++
++	li	s1, '0'
++	bge	s0, s1, 0f
++	j	_get_hex_digit
++
++0:
++	li	s1, '9'
++	ble	s0, s1, 9f
++
++	li	s1, 'f'
++	ble	s0, s1, 1f
++	j	_get_hex_digit
++
++1:
++	li	s1, 'a'
++	bge	s0, s1, 8f
++
++	j	_get_hex_digit
++
++8: /* s0 \in {'a', 'b' ... 'f'} */
++	sub	a3, s0, s1
++	addi	a3, a3, 0xa
++	j	0f
++
++9: /* s0 \in {'0', '1' ... '9'} */
++	li	a3, '0'
++	sub	a3, s0, a3
++
++0:	move	a0, s0
++	debug_ll_outc_a0
++
++	sll	t2, t2, 4
++	or	t2, t2, a3
++	li	t0, 1
++	sub	t3, t3, t0
++
++	beqz	t3, 0f
++
++	j	_get_hex_digit
++
++0:
++	move	s0, t2
++
++_nmon_jr_ra_exit:
++	jr	ra
++
++msg_prompt:
++	.asciz "\r\nnmon> "
++
++msg_nl:
++	.asciz "\r\n"
++
++msg_bsp:
++	.asciz "\b \b"
++
++#ifdef CONFIG_NMON_HELP
++msg_nmon_help:
++	.ascii "\r\n\r\nnmon commands:\r\n"
++	.ascii " q - quit\r\n"
++	.ascii " d <addr> - read 32-bit word from <addr>\r\n"
++	.ascii " w <addr> <val> - write 32-bit word to <addr>\r\n"
++	.ascii " g <addr> - jump to <addr>\r\n"
++	.asciz "   use <ESC> key to interrupt current command\r\n"
++#endif /* CONFIG_NMON_HELP */
++
++	.align 2
++nmon_exit:
++	nmon_outs	msg_nl
++
++#endif /* CONFIG_NMON */
++
++.endm
++
++#endif /* __ASM_RISCV_NMON_H */
 -- 
 2.20.0
 
