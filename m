@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZ9fn-0002SD-VZ
- for barebox@lists.infradead.org; Tue, 18 Dec 2018 07:20:17 +0000
-Received: by mail-lj1-x244.google.com with SMTP id t9-v6so13269763ljh.6
- for <barebox@lists.infradead.org>; Mon, 17 Dec 2018 23:20:01 -0800 (PST)
+ id 1gZ9fn-0002g9-VU
+ for barebox@lists.infradead.org; Tue, 18 Dec 2018 07:20:16 +0000
+Received: by mail-lj1-x244.google.com with SMTP id v15-v6so13230561ljh.13
+ for <barebox@lists.infradead.org>; Mon, 17 Dec 2018 23:20:03 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 18 Dec 2018 10:19:33 +0300
-Message-Id: <20181218071943.2560-1-antonynpavlov@gmail.com>
+Date: Tue, 18 Dec 2018 10:19:35 +0300
+Message-Id: <20181218071943.2560-3-antonynpavlov@gmail.com>
+In-Reply-To: <20181218071943.2560-1-antonynpavlov@gmail.com>
+References: <20181218071943.2560-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,157 +23,173 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 00/10] Add initial RISC-V architecture support
+Subject: [PATCH v3 02/10] RISC-V: add Erizo SoC support
 To: barebox@lists.infradead.org
 
-This patchseries adds initial RISC-V architecture support for barebox.
+Erizo is an opensource hardware SoC for FPGA.
 
-See Documentation/boards/riscv.rst for instructions.
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/riscv/Kconfig               | 11 ++++++++
+ arch/riscv/Makefile              |  2 ++
+ arch/riscv/dts/Makefile          |  2 ++
+ arch/riscv/dts/erizo-generic.dts | 14 ++++++++++
+ arch/riscv/dts/erizo.dtsi        | 46 ++++++++++++++++++++++++++++++++
+ arch/riscv/mach-erizo/Kconfig    | 11 ++++++++
+ arch/riscv/mach-erizo/Makefile   |  3 +++
+ 7 files changed, 89 insertions(+)
 
-You can obtain this patchseries from github:
-
-    $ git clone -b 20181218.riscv https://github.com/frantony/barebox
-
-Changes since PATCH v2 (20180628)
-(http://lists.infradead.org/pipermail/barebox/2018-June/033879.html)
-
-    * eliminate arch/riscv/boards/erizo-generic;
-    * use obj-dtb-y to include the dtb;
-    * simplify barebox.lds.S (see http://lists.infradead.org/pipermail/barebox/2018-June/033901.html);
-    * add SPDX-License-Identifier;
-    * rebase over latest master.
-
-Changes since PATCH v1 (20170415)
-(http://lists.infradead.org/pipermail/barebox/2018-April/032647.html)
-
-    * drop skeleton.dtsi;
-    * drop SPI GPIO bindings for erizo_generic;
-    * improve erizo-nmon-image;
-    * generic linker script is dropped;
-    * use generic GCC library routines from lib.
-
-Changes since RFC v4 (20170927)
-(http://lists.infradead.org/pipermail/barebox/2017-September/031226.html)
-
-    * drop 64-bit support;
-    * sync with RISC-V linux;
-    * RISC-V in barebox now is little endian only;
-    * fix according to notes by Oleksij Rempel.
-
-Changes since RFC v3 (20161212)
-(http://lists.infradead.org/pipermail/barebox/2016-December/028716.html)
-
-    * drop SiFive support, add support for custom Erizo SoC;
-    * barebox runs on real hardware (e.g. DE0-Nano FPGA board,
-      see https://github.com/miet-riscv-workgroup/rv32-simple-soc for
-details);
-    * introduce NMON for RISC-V;
-    * add relocator to start.S.
-
-Changes since RFC v2 (20161113)
-(http://lists.infradead.org/pipermail/barebox/2016-November/028533.html):
-
-    * add RV32 support.
-
-Changes since RFC v1 (20161013)
-(http://lists.infradead.org/pipermail/barebox/2016-October/028309.html):
-
-    * drop spike pk support;
-    * add qemu-sifive board support;
-    * add Documentation/boards/riscv.rst;
-    * fix guard macro names.
-
-Antony Pavlov (10):
-  Add initial RISC-V architecture support
-  RISC-V: add Erizo SoC support
-  RISC-V: add low-level debug macros for ns16550
-  RISC-V: add nmon nano-monitor
-  RISC-V: erizo: add DEBUG_LL support
-  RISC-V: erizo: enable nmon
-  RISC-V: erizo: add nmon image creation
-  RISC-V: add erizo_generic_defconfig
-  scripts: add nmon-loader
-  Documentation: add RISC-V docs
-
- Documentation/boards/riscv.rst                |  91 +++++++
- arch/riscv/Kconfig                            |  91 +++++++
- arch/riscv/Makefile                           |  67 +++++
- arch/riscv/boot/Makefile                      |   3 +
- arch/riscv/boot/dtb.c                         |  37 +++
- arch/riscv/boot/main_entry.c                  |  35 +++
- arch/riscv/boot/start.S                       |  68 +++++
- arch/riscv/configs/erizo_generic_defconfig    |  51 ++++
- arch/riscv/dts/.gitignore                     |   1 +
- arch/riscv/dts/Makefile                       |  13 +
- arch/riscv/dts/erizo-generic.dts              |  14 ++
- arch/riscv/dts/erizo.dtsi                     |  46 ++++
- arch/riscv/include/asm/barebox.h              |   1 +
- arch/riscv/include/asm/bitops.h               |  32 +++
- arch/riscv/include/asm/bitsperlong.h          |  10 +
- arch/riscv/include/asm/byteorder.h            |   6 +
- arch/riscv/include/asm/common.h               |   6 +
- arch/riscv/include/asm/debug_ll_ns16550.h     | 182 ++++++++++++++
- arch/riscv/include/asm/elf.h                  |  11 +
- arch/riscv/include/asm/io.h                   |   8 +
- arch/riscv/include/asm/mmu.h                  |   6 +
- arch/riscv/include/asm/posix_types.h          |   1 +
- arch/riscv/include/asm/riscv_nmon.h           | 234 ++++++++++++++++++
- arch/riscv/include/asm/sections.h             |   1 +
- arch/riscv/include/asm/string.h               |   1 +
- arch/riscv/include/asm/swab.h                 |   6 +
- arch/riscv/include/asm/types.h                |  60 +++++
- arch/riscv/include/asm/unaligned.h            |  19 ++
- arch/riscv/lib/.gitignore                     |   1 +
- arch/riscv/lib/Makefile                       |   3 +
- arch/riscv/lib/asm-offsets.c                  |  12 +
- arch/riscv/lib/barebox.lds.S                  |  79 ++++++
- arch/riscv/lib/riscv_timer.c                  |  63 +++++
- arch/riscv/mach-erizo/Kconfig                 |  11 +
- arch/riscv/mach-erizo/Makefile                |   3 +
- arch/riscv/mach-erizo/include/mach/debug_ll.h |  33 +++
- drivers/of/Kconfig                            |   2 +-
- scripts/erizo-nmon-image                      |  10 +
- scripts/nmon-loader                           |  31 +++
- 39 files changed, 1348 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/boards/riscv.rst
- create mode 100644 arch/riscv/Kconfig
- create mode 100644 arch/riscv/Makefile
- create mode 100644 arch/riscv/boot/Makefile
- create mode 100644 arch/riscv/boot/dtb.c
- create mode 100644 arch/riscv/boot/main_entry.c
- create mode 100644 arch/riscv/boot/start.S
- create mode 100644 arch/riscv/configs/erizo_generic_defconfig
- create mode 100644 arch/riscv/dts/.gitignore
- create mode 100644 arch/riscv/dts/Makefile
- create mode 100644 arch/riscv/dts/erizo-generic.dts
- create mode 100644 arch/riscv/dts/erizo.dtsi
- create mode 100644 arch/riscv/include/asm/barebox.h
- create mode 100644 arch/riscv/include/asm/bitops.h
- create mode 100644 arch/riscv/include/asm/bitsperlong.h
- create mode 100644 arch/riscv/include/asm/byteorder.h
- create mode 100644 arch/riscv/include/asm/common.h
- create mode 100644 arch/riscv/include/asm/debug_ll_ns16550.h
- create mode 100644 arch/riscv/include/asm/elf.h
- create mode 100644 arch/riscv/include/asm/io.h
- create mode 100644 arch/riscv/include/asm/mmu.h
- create mode 100644 arch/riscv/include/asm/posix_types.h
- create mode 100644 arch/riscv/include/asm/riscv_nmon.h
- create mode 100644 arch/riscv/include/asm/sections.h
- create mode 100644 arch/riscv/include/asm/string.h
- create mode 100644 arch/riscv/include/asm/swab.h
- create mode 100644 arch/riscv/include/asm/types.h
- create mode 100644 arch/riscv/include/asm/unaligned.h
- create mode 100644 arch/riscv/lib/.gitignore
- create mode 100644 arch/riscv/lib/Makefile
- create mode 100644 arch/riscv/lib/asm-offsets.c
- create mode 100644 arch/riscv/lib/barebox.lds.S
- create mode 100644 arch/riscv/lib/riscv_timer.c
- create mode 100644 arch/riscv/mach-erizo/Kconfig
- create mode 100644 arch/riscv/mach-erizo/Makefile
- create mode 100644 arch/riscv/mach-erizo/include/mach/debug_ll.h
- create mode 100755 scripts/erizo-nmon-image
- create mode 100755 scripts/nmon-loader
-
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index c9719dfeca..ee532ac11a 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -15,6 +15,15 @@ config ARCH_TEXT_BASE
+ 
+ menu "Machine selection"
+ 
++choice
++	prompt "System type"
++	default MACH_ERIZO
++
++config MACH_ERIZO
++	bool "erizo family"
++
++endchoice
++
+ choice
+ 	prompt "Base ISA"
+ 	default ARCH_RV32I
+@@ -51,4 +60,6 @@ config BUILTIN_DTB_NAME
+ 	string "DTB to build into the barebox image"
+ 	depends on BUILTIN_DTB
+ 
++source arch/riscv/mach-erizo/Kconfig
++
+ endmenu
+diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+index 28eb414452..d5a392de05 100644
+--- a/arch/riscv/Makefile
++++ b/arch/riscv/Makefile
+@@ -11,6 +11,8 @@ cflags-y += -Wall -Wstrict-prototypes \
+ LDFLAGS += $(ldflags-y)
+ LDFLAGS_barebox += -nostdlib
+ 
++machine-$(CONFIG_MACH_ERIZO)	:= erizo
++
+ TEXT_BASE = $(CONFIG_TEXT_BASE)
+ CPPFLAGS += -DTEXT_BASE=$(CONFIG_TEXT_BASE)
+ 
+diff --git a/arch/riscv/dts/Makefile b/arch/riscv/dts/Makefile
+index 0a88af1603..903fe8ff34 100644
+--- a/arch/riscv/dts/Makefile
++++ b/arch/riscv/dts/Makefile
+@@ -3,6 +3,8 @@ ifneq ($(BUILTIN_DTB),)
+ obj-dtb-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
+ endif
+ 
++obj-dtb-$(CONFIG_BOARD_ERIZO_GENERIC) += erizo-generic.dtb.o
++
+ # just to build a built-in.o. Otherwise compilation fails when no devicetree is
+ # created.
+ obj- += dummy.o
+diff --git a/arch/riscv/dts/erizo-generic.dts b/arch/riscv/dts/erizo-generic.dts
+new file mode 100644
+index 0000000000..d1f8d57168
+--- /dev/null
++++ b/arch/riscv/dts/erizo-generic.dts
+@@ -0,0 +1,14 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include "erizo.dtsi"
++#include <dt-bindings/gpio/gpio.h>
++
++/ {
++	model = "generic Erizo SoC board";
++	compatible = "miet-riscv-workgroup,erizo-generic-board";
++
++	memory@0 {
++		device_type = "memory";
++		reg = <0x80000000 0x00800000>;
++	};
++};
+diff --git a/arch/riscv/dts/erizo.dtsi b/arch/riscv/dts/erizo.dtsi
+new file mode 100644
+index 0000000000..07534798ac
+--- /dev/null
++++ b/arch/riscv/dts/erizo.dtsi
+@@ -0,0 +1,46 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++/dts-v1/;
++
++/ {
++	compatible = "miet-riscv-workgroup,erizo";
++
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	clocks {
++		ref_clk: ref_clk {
++			#clock-cells = <0>;
++			compatible = "fixed-clock";
++			clock-frequency = <24000000>;
++		};
++	};
++
++	cpus {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		cpu@0 {
++			device_type = "cpu";
++			compatible = "cliffordwolf,picorv32";
++			clocks = <&ref_clk>;
++			reg = <0>;
++		};
++	};
++
++	uart0: uart@90000000 {
++		compatible = "ns16550a";
++		reg = <0x90000000 0x20>;
++		reg-shift = <2>;
++		clocks = <&ref_clk>;
++	};
++
++	gpio0: gpio@91000000 {
++		compatible = "wd,mbl-gpio";
++		reg-names = "dat", "dirout";
++		reg = <0x91000000 0x4>,
++			<0x91000004 0x4>;
++		#gpio-cells = <2>;
++		gpio-controller;
++	};
++};
+diff --git a/arch/riscv/mach-erizo/Kconfig b/arch/riscv/mach-erizo/Kconfig
+new file mode 100644
+index 0000000000..2400b4437b
+--- /dev/null
++++ b/arch/riscv/mach-erizo/Kconfig
+@@ -0,0 +1,11 @@
++if MACH_ERIZO
++
++choice
++	prompt "Board type"
++
++config BOARD_ERIZO_GENERIC
++	bool "erizo generic board"
++
++endchoice
++
++endif
+diff --git a/arch/riscv/mach-erizo/Makefile b/arch/riscv/mach-erizo/Makefile
+new file mode 100644
+index 0000000000..d9c51e74c3
+--- /dev/null
++++ b/arch/riscv/mach-erizo/Makefile
+@@ -0,0 +1,3 @@
++# just to build a built-in.o. Otherwise compilation fails when no o-files is
++# created.
++obj- += dummy.o
 -- 
 2.20.0
 
