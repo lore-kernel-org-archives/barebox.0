@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYt61-0006jU-0C
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 13:38:10 +0000
-Message-ID: <1545053877.6213.14.camel@phytec.de>
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 17 Dec 2018 14:37:57 +0100
-In-Reply-To: <20181214141730.26181-15-s.hauer@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gZA5J-0005zL-F3
+ for barebox@lists.infradead.org; Tue, 18 Dec 2018 07:46:35 +0000
+Date: Tue, 18 Dec 2018 08:46:21 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20181218074621.apvx6h32aqh5hje5@pengutronix.de>
 References: <20181214141730.26181-1-s.hauer@pengutronix.de>
  <20181214141730.26181-15-s.hauer@pengutronix.de>
-Mime-Version: 1.0
+ <1545053877.6213.14.camel@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1545053877.6213.14.camel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,51 +20,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 14/23] ARM: omap: dmtimer: Turn into a driver
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+To: Teresa Remmet <t.remmet@phytec.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-SGVsbG8gU2FzY2hhLAoKLi4uCgo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW9tYXAvZG10
-aW1lci5jCj4gYi9kcml2ZXJzL2Nsb2Nrc291cmNlL3RpbWVyLXRpLWRtLmMKPiBzaW1pbGFyaXR5
-IGluZGV4IDcyJQo+IHJlbmFtZSBmcm9tIGFyY2gvYXJtL21hY2gtb21hcC9kbXRpbWVyLmMKPiBy
-ZW5hbWUgdG8gZHJpdmVycy9jbG9ja3NvdXJjZS90aW1lci10aS1kbS5jCj4gaW5kZXggZTIyM2I4
-Y2M4Zi4uNjM1Yjg2MGNmOSAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9tYWNoLW9tYXAvZG10aW1l
-ci5jCj4gKysrIGIvZHJpdmVycy9jbG9ja3NvdXJjZS90aW1lci10aS1kbS5jCj4gQEAgLTI3LDYg
-KzI3LDcgQEAKPiDCoCAqCj4gwqAgKi8KPiDCoAo+ICsjaW5jbHVkZSA8Y29tbW9uLmg+Cj4gwqAj
-aW5jbHVkZSA8Y2xvY2suaD4KPiDCoCNpbmNsdWRlIDxpbml0Lmg+Cj4gwqAjaW5jbHVkZSA8aW8u
-aD4KPiBAQCAtNTUsNyArNTYsNyBAQAo+IMKgI2RlZmluZSBUU0lDUgkJCTB4NTQKPiDCoCNkZWZp
-bmUgVENBUjIJCQkweDU4Cj4gwqAKPiAtc3RhdGljIHZvaWQgKmJhc2UgPSAodm9pZCAqKUFNMzNY
-WF9ETVRJTUVSMl9CQVNFOwo+ICtzdGF0aWMgdm9pZCAqYmFzZTsKPiDCoAo+IMKgLyoqCj4gwqAg
-KiBAYnJpZWYgUHJvdmlkZSBhIHNpbXBsZSBjb3VudGVyIHJlYWQKPiBAQCAtNzMsMTcgKzc0LDIw
-IEBAIHN0YXRpYyBzdHJ1Y3QgY2xvY2tzb3VyY2UgZG10aW1lcl9jcyA9IHsKPiDCoAkuc2hpZnQJ
-PSAxMCwKPiDCoH07Cj4gwqAKPiAtLyoqCj4gLSAqIEBicmllZiBJbml0aWFsaXplIHRoZSBDbG9j
-awo+IC0gKgo+IC0gKiBFbmFibGUgZG10aW1lci4KPiAtICoKPiAtICogQHJldHVybiByZXN1bHQg
-b2YgQHJlZiBpbml0X2Nsb2NrCj4gLSAqLwo+IC1zdGF0aWMgaW50IGRtdGltZXJfaW5pdCh2b2lk
-KQo+ICtzdGF0aWMgaW50IG9tYXBfZG10aW1lcl9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikK
-PiDCoHsKPiArCXN0cnVjdCByZXNvdXJjZSAqaW9yZXM7Cj4gwqAJdTY0IGNsa19zcGVlZDsKPiDC
-oAo+ICsJLyogb25lIHRpbWVyIGlzIGVub3VnaCAqLwo+ICsJaWYgKGJhc2UpCj4gKwkJcmV0dXJu
-IDA7Cj4gKwo+ICsJaW9yZXMgPSBkZXZfcmVxdWVzdF9tZW1fcmVzb3VyY2UoZGV2LCAwKTsKPiAr
-CWlmIChJU19FUlIoaW9yZXMpKQo+ICsJCXJldHVybiBQVFJfRVJSKGlvcmVzKTsKPiArCWJhc2Ug
-PSBJT01FTShpb3Jlcy0+c3RhcnQpOwo+ICsKPiDCoAljbGtfc3BlZWQgPSBhbTMzeHhfZ2V0X29z
-Y19jbG9jaygpOwo+IMKgCWNsa19zcGVlZCAqPSAxMDAwOwo+IMKgCWRtdGltZXJfY3MubXVsdCA9
-IGNsb2Nrc291cmNlX2h6Mm11bHQoY2xrX3NwZWVkLAo+IGRtdGltZXJfY3Muc2hpZnQpOwo+IEBA
-IC05MSw4ICs5NSwyNyBAQCBzdGF0aWMgaW50IGRtdGltZXJfaW5pdCh2b2lkKQo+IMKgCS8qIEVu
-YWJsZSBjb3VudGVyICovCj4gwqAJd3JpdGVsKDB4MywgYmFzZSArIFRDTFIpOwo+IMKgCj4gLQly
-ZXR1cm4gaW5pdF9jbG9jaygmZG10aW1lcl9jcyk7Cj4gKwlpbml0X2Nsb2NrKCZkbXRpbWVyX2Nz
-KTsKPiArCj4gKwlyZXR1cm4gMDsKCmlzIHRoZXJlIGFueSByZWFzb24gd2h5IHlvdSBhbHdheXMg
-cmV0dXJuIDAgbm93PwoKVGVyZXNhCgo+IMKgfQo+IMKgCj4gLS8qIFJ1biBtZSBhdCBib290IHRp
-bWUgKi8KPiAtY29yZV9pbml0Y2FsbChkbXRpbWVyX2luaXQpOwo+ICtzdGF0aWMgX19tYXliZV91
-bnVzZWQgc3RydWN0IG9mX2RldmljZV9pZCBvbWFwX2RtdGltZXJfZHRfaWRzW10gPSB7Cj4gKwl7
-Cj4gKwkJLmNvbXBhdGlibGUgPSAidGksYW0zMzV4LXRpbWVyIiwKPiArCX0sIHsKPiArCQkvKiBz
-ZW50aW5lbCAqLwo+ICsJfQo+ICt9Owo+ICsKPiArc3RhdGljIHN0cnVjdCBkcml2ZXJfZCBvbWFw
-X2RtdGltZXJfZHJpdmVyID0gewo+ICsJLm5hbWUgPSAib21hcC1kbXRpbWVyIiwKPiArCS5wcm9i
-ZSA9IG9tYXBfZG10aW1lcl9wcm9iZSwKPiArCS5vZl9jb21wYXRpYmxlID0gRFJWX09GX0NPTVBB
-VChvbWFwX2RtdGltZXJfZHRfaWRzKSwKPiArfTsKPiArCj4gK3N0YXRpYyBpbnQgb21hcF9kbXRp
-bWVyX2luaXQodm9pZCkKPiArewo+ICsJcmV0dXJuIHBsYXRmb3JtX2RyaXZlcl9yZWdpc3Rlcigm
-b21hcF9kbXRpbWVyX2RyaXZlcik7Cj4gK30KPiArcG9zdGNvcmVfaW5pdGNhbGwob21hcF9kbXRp
-bWVyX2luaXQpOwoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
-Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Mon, Dec 17, 2018 at 02:37:57PM +0100, Teresa Remmet wrote:
+> Hello Sascha,
+> =
+
+> > =A0	/* Enable counter */
+> > =A0	writel(0x3, base + TCLR);
+> > =A0
+> > -	return init_clock(&dmtimer_cs);
+> > +	init_clock(&dmtimer_cs);
+> > +
+> > +	return 0;
+> =
+
+> is there any reason why you always return 0 now?
+
+No particular reason. Fixed it.
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
