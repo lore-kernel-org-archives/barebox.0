@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x144.google.com ([2a00:1450:4864:20::144])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZ9fv-0003cn-Jd
- for barebox@lists.infradead.org; Tue, 18 Dec 2018 07:20:25 +0000
-Received: by mail-lf1-x144.google.com with SMTP id p86so11461086lfg.5
- for <barebox@lists.infradead.org>; Mon, 17 Dec 2018 23:20:09 -0800 (PST)
+Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gZ9g0-0004IY-7s
+ for barebox@lists.infradead.org; Tue, 18 Dec 2018 07:20:26 +0000
+Received: by mail-lf1-x141.google.com with SMTP id v5so11457632lfe.7
+ for <barebox@lists.infradead.org>; Mon, 17 Dec 2018 23:20:13 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 18 Dec 2018 10:19:39 +0300
-Message-Id: <20181218071943.2560-7-antonynpavlov@gmail.com>
+Date: Tue, 18 Dec 2018 10:19:43 +0300
+Message-Id: <20181218071943.2560-11-antonynpavlov@gmail.com>
 In-Reply-To: <20181218071943.2560-1-antonynpavlov@gmail.com>
 References: <20181218071943.2560-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
@@ -23,26 +23,111 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 06/10] RISC-V: erizo: enable nmon
+Subject: [PATCH v3 10/10] Documentation: add RISC-V docs
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/riscv/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/boards/riscv.rst | 91 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 91 insertions(+)
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 617656ae5e..c435cc8a31 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -22,6 +22,7 @@ choice
- config MACH_ERIZO
- 	bool "erizo family"
- 	select HAS_DEBUG_LL
-+	select HAS_NMON
- 
- endchoice
- 
+diff --git a/Documentation/boards/riscv.rst b/Documentation/boards/riscv.rst
+new file mode 100644
+index 0000000000..c7fa52aadb
+--- /dev/null
++++ b/Documentation/boards/riscv.rst
+@@ -0,0 +1,91 @@
++RISC-V
++======
++
++Running RISC-V barebox on qemu
++------------------------------
++
++Obtain RISC-V GCC/Newlib Toolchain,
++see https://github.com/riscv/riscv-tools/blob/master/README.md
++for details. The ``build.sh`` script from ``riscv-tools`` should
++create toolchain.
++
++Next compile qemu emulator::
++
++  $ git clone -b 20180409.erizo https://github.com/miet-riscv-workgroup/riscv-qemu
++  $ cd riscv-qemu
++  $ cap="no" ./configure \
++    --extra-cflags="-Wno-maybe-uninitialized" \
++    --audio-drv-list="" \
++    --disable-attr \
++    --disable-blobs \
++    --disable-bluez \
++    --disable-brlapi \
++    --disable-curl \
++    --disable-curses \
++    --disable-docs \
++    --disable-kvm \
++    --disable-spice \
++    --disable-sdl \
++    --disable-vde \
++    --disable-vnc-sasl \
++    --disable-werror \
++    --enable-trace-backend=simple \
++    --disable-stack-protector \
++    --target-list=riscv32-softmmu,riscv64-softmmu
++  $ make
++
++
++Next compile barebox::
++
++  $ make erizo_generic_defconfig ARCH=riscv
++  ...
++  $ make ARCH=riscv CROSS_COMPILE=<path to your riscv toolchain>/riscv32-unknown-elf-
++
++Run barebox::
++
++  $ <path to riscv-qemu source>/riscv32-softmmu/qemu-system-riscv32 \
++      -nographic -M erizo -bios <path to barebox sources >/barebox.bin \
++      -serial stdio -monitor none -trace file=/dev/null
++  Switch to console [cs0]
++  
++  
++  barebox 2018.12.0-00148-g60e49c4e16 #1 Tue Dec 18 01:12:29 MSK 2018
++  
++  
++  Board: generic Erizo SoC board
++  malloc space: 0x80100000 -> 0x801fffff (size 1 MiB)
++  running /env/bin/init...
++  /env/bin/init not found
++  barebox:/
++
++
++Running RISC-V barebox on DE0-Nano FPGA board
++---------------------------------------------
++
++See https://github.com/open-design/riscv-soc-cores/ for instructions
++on DE0-Nano bitstream generation and loading.
++
++Connect to board's UART with your favorite serial communication software
++(e.g. minicom) and check 'nmon> ' prompt (nmon runs from onchip ROM).
++
++Next close your communication software and use ./scripts/nmon-loader
++to load barebox image into board's DRAM, e.g.
++
++  # ./scripts/nmon-loader barebox.erizo.nmon /dev/ttyUSB0 115200
++
++Wait several munutes for 'nmon> ' prompt.
++
++Next, start barebox from DRAM:
++
++  nmon> g 80000000
++  Switch to console [cs0]
++  
++  
++  barebox 2018.12.0-00148-g60e49c4e16 #1 Tue Dec 18 01:12:29 MSK 2018
++  
++  
++  Board: generic Erizo SoC board
++  malloc space: 0x80100000 -> 0x801fffff (size 1 MiB)
++  running /env/bin/init...
++  /env/bin/init not found
++  barebox:/
 -- 
 2.20.0
 
