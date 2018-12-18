@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gYtTh-0000lT-F2
- for barebox@lists.infradead.org; Mon, 17 Dec 2018 14:02:39 +0000
-Message-ID: <1545055337.6213.18.camel@phytec.de>
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 17 Dec 2018 15:02:17 +0100
-In-Reply-To: <20181217111407.bsdwqy2lqfinwj2p@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gZA32-0004Oi-2B
+ for barebox@lists.infradead.org; Tue, 18 Dec 2018 07:44:13 +0000
+Date: Tue, 18 Dec 2018 08:44:00 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20181218074400.wg7fx3cl42tsk66g@pengutronix.de>
 References: <1545044070.6213.11.camel@phytec.de>
  <20181217111407.bsdwqy2lqfinwj2p@pengutronix.de>
-Mime-Version: 1.0
+ <1545055337.6213.18.camel@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1545055337.6213.18.camel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,47 +20,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: AM335x NAND boot on next
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Teresa Remmet <t.remmet@phytec.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-SGVsbG8gU2FzY2hhLAoKQW0gTW9udGFnLCBkZW4gMTcuMTIuMjAxOCwgMTI6MTQgKzAxMDAgc2No
-cmllYiBTYXNjaGEgSGF1ZXI6Cj4gSGkgVGVyZXNhLAo+IAo+IE9uIE1vbiwgRGVjIDE3LCAyMDE4
-IGF0IDExOjU0OjMwQU0gKzAxMDAsIFRlcmVzYSBSZW1tZXQgd3JvdGU6Cj4gPiAKPiA+IEhlbGxv
-IFNhc2NoYSwKPiA+IAo+ID4gSSB3YXRlbmQgdG8gdGVzdCB0aGUgZ3BtYyBkcml2ZXIgY2hhbmdl
-cyBmb3Igb3VyIGFtMzM1eCBib2FyZHMKPiA+IHVzaW5nCj4gPiBsYXRlc3QgbmV4dC4gSSBub3Rp
-Y2VkIHRoYXQgYm9vdGluZyBmcm9tIG5hbmQgaXMgbm90IHdvcmtpbmcKPiA+IGNvcnJlY3QKPiA+
-IGFueSBtb3JlLiBUaGUgTUxPIGNhbiBub3QgY29ycmVjdGx5IG9idGFpbiB0aGUgaW1hZ2Ugc2l6
-ZSBvZiB0aGUKPiA+IGJhcmVib3ggaW1hZ2UuCj4gVXBzLCByaWdodC4gVHJ5IHRoZSBmb2xsb3dp
-bmcuCgpZZXMsIHRoaXMgaGVscHMuIFRoYW5rcy4KCj4gCj4gV2hpbGUgeW91IGFyZSB0ZXN0aW5n
-IHRoaXMgYm9hcmQgYW55d2F5IGNvdWxkIHlvdSBzZWUgaWYgdGhlIE5BTkQKPiBnZW5lcmFsbHkg
-c3RpbGwgd29ya3Mgb24gQU0zM3h4PyBUaGVyZSBhcmUgc2l0dGluZyBzb21lIGNoYW5nZXMgdG8K
-PiB0aGUKPiBOQU5EIGRyaXZlciBpbiBuZXh0LgoKSSdsbCBoYXZlIGEgbG9vayBhdCBpdC4gTm90
-aWNlZCBhbHNvIHR3byBvdGhlciB0aGluZ3Mgd2l0aCB0aGUgQU0zNXh4CnBhdGNoIHN0YWNrLiBJ
-IHdpbGwgc2VuZCBwYXRjaGVzIGZvciB0aGlzLgoKVGVyZXNhCgo+IAo+IFNhc2NoYQo+IAo+IC0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tODwtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+IAo+
-IEZyb20gMTk3ODA2OTY1ZmUyNmE0NDRkNDA3OTFmZGU1YWNmZjdlYjRjZDgwNSBNb24gU2VwIDE3
-IDAwOjAwOjAwCj4gMjAwMQo+IEZyb206IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25p
-eC5kZT4KPiBEYXRlOiBNb24sIDE3IERlYyAyMDE4IDEyOjA5OjIzICswMTAwCj4gU3ViamVjdDog
-W1BBVENIXSBJbWFnZXM6IEFkZCBpbWFnZSBzaXplIHRvIGJ1aWx0IGltYWdlcwo+IAo+IFRoaXMg
-YnJpbmdzIGJhY2sgdGhlIGltYWdlIHNpemUgd3JpdHRlbiBpbnRvIHRoZSBidWlsdCBpbWFnZXMg
-d2hpY2gKPiBnb3QKPiBsb3N0IGluIHRoZSBjb252ZXJzaW9uIHRvIHVzaW5nIHBpZ2d5ZGF0YSBp
-biB0aGUgUEJMIGltYWdlcy4KPiAKPiBGaXhlczogNWExYTVlZDI1MyAoIkFSTTogaW1hZ2VzOiB1
-c2UgcGlnZ3lkYXRhIikKPiAKPiBSZXBvcnRlZC1ieTogVGVyZXNhIFJlbW1ldCA8dC5yZW1tZXRA
-cGh5dGVjLmRlPgo+IFNpZ25lZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRy
-b25peC5kZT4KPiAtLS0KPiDCoGltYWdlcy9NYWtlZmlsZSB8IDEgKwo+IMKgMSBmaWxlIGNoYW5n
-ZWQsIDEgaW5zZXJ0aW9uKCspCj4gCj4gZGlmZiAtLWdpdCBhL2ltYWdlcy9NYWtlZmlsZSBiL2lt
-YWdlcy9NYWtlZmlsZQo+IGluZGV4IDRjNmQ0ODZmMDguLjQxNTA5YWE5NTcgMTAwNjQ0Cj4gLS0t
-IGEvaW1hZ2VzL01ha2VmaWxlCj4gKysrIGIvaW1hZ2VzL01ha2VmaWxlCj4gQEAgLTY2LDYgKzY2
-LDcgQEAgJChvYmopLyUucGJsOiAkKHBibC1sZHMpICQoYmFyZWJveC1wYmwtY29tbW9uKQo+ICQo
-b2JqKS9waWdneS5vIEZPUkNFCj4gwqAKPiDCoCQob2JqKS8lLnBibGI6ICQob2JqKS8lLnBibCBG
-T1JDRQo+IMKgCSQoY2FsbCBpZl9jaGFuZ2VkLG9iamNvcHlfYmluLCQoKkYpKQo+ICsJJChRKSQo
-b2JqdHJlZSkvc2NyaXB0cy9maXhfc2l6ZSAtZiAkQAo+IMKgCj4gwqAkKG9iaikvJS5zOiAkKG9i
-aikvJSBGT1JDRQo+IMKgCSQoY2FsbCBpZl9jaGFuZ2VkLGRpc2FzbSkKPiAtLcKgCj4gMi4xOS4x
-Cj4gCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
-Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Mon, Dec 17, 2018 at 03:02:17PM +0100, Teresa Remmet wrote:
+> Hello Sascha,
+> 
+> Am Montag, den 17.12.2018, 12:14 +0100 schrieb Sascha Hauer:
+> > Hi Teresa,
+> > 
+> > On Mon, Dec 17, 2018 at 11:54:30AM +0100, Teresa Remmet wrote:
+> > > 
+> > > Hello Sascha,
+> > > 
+> > > I watend to test the gpmc driver changes for our am335x boards
+> > > using
+> > > latest next. I noticed that booting from nand is not working
+> > > correct
+> > > any more. The MLO can not correctly obtain the image size of the
+> > > barebox image.
+> > Ups, right. Try the following.
+> 
+> Yes, this helps. Thanks.
+
+Ok, I'll take this as a 
+
+Tested-by: Teresa Remmet <t.remmet@phytec.de>
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
