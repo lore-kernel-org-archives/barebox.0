@@ -1,9 +1,9 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201]
+Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2]
  helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZXMV-0003ko-TJ
- for barebox@lists.infradead.org; Wed, 19 Dec 2018 08:37:53 +0000
+ id 1gZa1y-00012e-Qq
+ for barebox@lists.infradead.org; Wed, 19 Dec 2018 11:28:53 +0000
 References: <cover.61efbc8cc3e2f39adccce96b40af1bb32a30bc66.1545130027.git-series.r.czerwinski@pengutronix.de>
  <20181218140606.lmubb4dff77khwgq@pengutronix.de>
  <87mup229o8.fsf@dell.be.48ers.dk>
@@ -11,8 +11,8 @@ References: <cover.61efbc8cc3e2f39adccce96b40af1bb32a30bc66.1545130027.git-serie
  <87efad2a3k.fsf@dell.be.48ers.dk>
 From: Rouven Czerwinski <rouven@czerwinskis.de>
 In-reply-to: <87efad2a3k.fsf@dell.be.48ers.dk>
-Date: Wed, 19 Dec 2018 09:37:37 +0100
-Message-ID: <874lb9di9a.fsf@czerwinskis.de>
+Date: Wed, 19 Dec 2018 12:28:36 +0100
+Message-ID: <871s6ddacb.fsf@czerwinskis.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -56,11 +56,14 @@ Peter Korsgaard <peter@korsgaard.com> writes:
 >
 > Wasn't this comment about replacing them with sensible defines?
 
-Yes, looking into the next branch, it still contains the old patchset
-without the defines. Maybe Sascha has not pushed yet?
+Looking at the patches again the change to defines for the AUX Clock
+domain was squashed into the wrong commit.
+
+I'll resend the corrected version.
+
+Thanks for noticing.
 
 - Rouven
-
 
 _______________________________________________
 barebox mailing list
