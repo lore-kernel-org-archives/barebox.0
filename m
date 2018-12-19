@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp38.i.mail.ru ([94.100.177.98])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZt8l-0002m0-8A
- for barebox@lists.infradead.org; Thu, 20 Dec 2018 07:53:09 +0000
-Date: Thu, 20 Dec 2018 08:52:52 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20181220075252.xn22ep2gcoyo7635@pengutronix.de>
-References: <1545222473-22214-1-git-send-email-t.remmet@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1545222473-22214-1-git-send-email-t.remmet@phytec.de>
+ id 1gZWq8-0004yo-0O
+ for barebox@lists.infradead.org; Wed, 19 Dec 2018 08:04:27 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Wed, 19 Dec 2018 11:03:54 +0300
+Message-Id: <20181219080403.13737-1-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,31 +14,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH for next] mtd: nand: nand_omap_gpmc: Fix GPMC_BCH_RESULT
- offset
-To: Teresa Remmet <t.remmet@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 01/10] serial: clps711x: Change compatible string
+To: barebox@lists.infradead.org
 
-On Wed, Dec 19, 2018 at 01:27:53PM +0100, Teresa Remmet wrote:
-> Using BCH rom code mode we start calculating with GPMC_BCH_RESULTx_1.
-> Fix offset for correct error correction.
-> 
-> Fixes: d4077860c902 ("mtd: nand: omap: unbreak BCH8 support")
+This patch changes compatible string for CLPS711X serial driver
+to "cirrus,ep7209-uart" for conform with linux kernel.
 
-This controller is really strange sometimes. Indeed, tested it and you
-are right. I squashed it into the original commit breaking it.
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ drivers/serial/serial_clps711x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
+diff --git a/drivers/serial/serial_clps711x.c b/drivers/serial/serial_clps711x.c
+index fa6342346..9a9ae24c0 100644
+--- a/drivers/serial/serial_clps711x.c
++++ b/drivers/serial/serial_clps711x.c
+@@ -182,7 +182,7 @@ out_err:
+ }
+ 
+ static struct of_device_id __maybe_unused clps711x_uart_dt_ids[] = {
+-	{ .compatible = "cirrus,clps711x-uart", },
++	{ .compatible = "cirrus,ep7209-uart", },
+ };
+ 
+ static struct driver_d clps711x_driver = {
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.13.0
+
 
 _______________________________________________
 barebox mailing list
