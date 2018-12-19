@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ed1-x544.google.com ([2a00:1450:4864:20::544])
+Received: from magratgarlick.emantor.de ([78.46.208.201]
+ helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZGKK-0005ZU-Il
- for barebox@lists.infradead.org; Tue, 18 Dec 2018 14:26:29 +0000
-Received: by mail-ed1-x544.google.com with SMTP id o10so14007008edt.13
- for <barebox@lists.infradead.org>; Tue, 18 Dec 2018 06:26:17 -0800 (PST)
-From: Peter Korsgaard <peter@korsgaard.com>
+ id 1gZa0B-0000b5-Le
+ for barebox@lists.infradead.org; Wed, 19 Dec 2018 11:27:01 +0000
 References: <cover.61efbc8cc3e2f39adccce96b40af1bb32a30bc66.1545130027.git-series.r.czerwinski@pengutronix.de>
- <20181218140606.lmubb4dff77khwgq@pengutronix.de>
-Date: Tue, 18 Dec 2018 15:26:15 +0100
-In-Reply-To: <20181218140606.lmubb4dff77khwgq@pengutronix.de> (Sascha Hauer's
- message of "Tue, 18 Dec 2018 15:06:06 +0100")
-Message-ID: <87mup229o8.fsf@dell.be.48ers.dk>
+ <ff5a5e32f29b3c3a035196fd350d9e520837b2c5.1545130027.git-series.r.czerwinski@pengutronix.de>
+From: Rouven Czerwinski <rouven@czerwinskis.de>
+In-reply-to: <ff5a5e32f29b3c3a035196fd350d9e520837b2c5.1545130027.git-series.r.czerwinski@pengutronix.de>
+Date: Wed, 19 Dec 2018 12:26:44 +0100
+Message-ID: <8736qtdaff.fsf@czerwinskis.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,29 +23,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v5 0/9] Raspberry Pi miniuart support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH v5 6/9] ARM: rpi: add NS16550 support
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
->>>>> "Sascha" == Sascha Hauer <s.hauer@pengutronix.de> writes:
 
- > On Tue, Dec 18, 2018 at 11:47:35AM +0100, Rouven Czerwinski wrote:
- >> This patch series adds support for the raspberry pi miniuart (also called
- >> aux-uart) to barebox.
- >> With this series the miniuart overlay is no longer necessary to start barebox on
- >> Raspberry Pi 3.
- >> 
- >> v5:
- >> - Add defines for register and base values
- >> from Sascha Hauer and Roland Hieber
+Rouven Czerwinski <r.czerwinski@pengutronix.de> writes:
 
- > Applied, thanks
+> Since the 16550 driver now supports the RPI3 miniuart, enable it in the default
+> config.
+>
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+>  arch/arm/configs/rpi_defconfig  | 1 +
+>  drivers/serial/serial_ns16550.c | 6 +++++-
+>  2 files changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
+> index 2bb6158..dc5ab1f 100644
+> --- a/arch/arm/configs/rpi_defconfig
+> +++ b/arch/arm/configs/rpi_defconfig
+> @@ -63,6 +63,7 @@ CONFIG_CMD_OF_PROPERTY=y
+>  CONFIG_CMD_OFTREE=y
+>  CONFIG_CMD_TIME=y
+>  CONFIG_SERIAL_AMBA_PL011=y
+> +CONFIG_DRIVER_SERIAL_NS16550=y
+>  CONFIG_MCI=y
+>  CONFIG_MCI_BCM283X=y
+>  CONFIG_LED=y
+> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+> index 256063a..5e5b671 100644
+> --- a/drivers/serial/serial_ns16550.c
+> +++ b/drivers/serial/serial_ns16550.c
+> @@ -253,11 +253,15 @@ static void ns16550_jz_init_port(struct console_device *cdev)
+>  	ns16550_serial_init_port(cdev);
+>  }
+>  
+> +#define BCM2836_AUX_CLOCK_ENB 0x3f215004 /* BCM2835 AUX Clock enable register */
+> +#define BCM2836_AUX_CLOCK_EN_UART BIT(0) /* Bit 0 enables the Miniuart */
+> +
+>  static void rpi_init_port(struct console_device *cdev)
+>  {
+> +	uint8_t val;
+                ^ This leftover should be removed
+>  	struct ns16550_priv *priv = to_ns16550_priv(cdev);
+>  
+> -	writeb(0x01, 0x3f215004);
+> +	writeb(BCM2835_AUX_CLOCK_EN_UART, BCM2835_AUX_CLOCK_ENB);
+                     ^ this is broken, the Define uses 6 not 5 (since
+                     for rpi2 and 3 the address is different)
 
-Where did those defines actually go? I still see a bunch of magic
-values.
+I'll resend the series with these changes squashed into the previous
+commit which touches this file.
+>  	priv->plat.shift = 2;
+>  	/*
+>  	 * We double the clock rate since the 16550 will divide by 16
 
--- 
-Bye, Peter Korsgaard
 
 _______________________________________________
 barebox mailing list
