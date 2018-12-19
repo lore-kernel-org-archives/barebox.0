@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp38.i.mail.ru ([94.100.177.98])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZWq8-00050A-0s
- for barebox@lists.infradead.org; Wed, 19 Dec 2018 08:04:29 +0000
+ id 1gZWq8-000505-0r
+ for barebox@lists.infradead.org; Wed, 19 Dec 2018 08:04:30 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Wed, 19 Dec 2018 11:04:00 +0300
-Message-Id: <20181219080403.13737-7-shc_work@mail.ru>
+Date: Wed, 19 Dec 2018 11:03:59 +0300
+Message-Id: <20181219080403.13737-6-shc_work@mail.ru>
 In-Reply-To: <20181219080403.13737-1-shc_work@mail.ru>
 References: <20181219080403.13737-1-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,29 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/10] gpio: clps711x: Use coredevice_platform_driver() macro
+Subject: [PATCH 06/10] gpio: clps711x: Switch to SPDX identifier
 To: barebox@lists.infradead.org
+
+Adopt the SPDX license identifier headers to ease license compliance
+management.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/gpio/gpio-clps711x.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/gpio/gpio-clps711x.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/gpio/gpio-clps711x.c b/drivers/gpio/gpio-clps711x.c
-index d3d669713..946da533b 100644
+index eef2a29e8..d3d669713 100644
 --- a/drivers/gpio/gpio-clps711x.c
 +++ b/drivers/gpio/gpio-clps711x.c
-@@ -74,9 +74,4 @@ static struct driver_d clps711x_gpio_driver = {
- 	.probe		= clps711x_gpio_probe,
- 	.of_compatible	= DRV_OF_COMPAT(clps711x_gpio_dt_ids),
- };
--
--static __init int clps711x_gpio_register(void)
--{
--	return platform_driver_register(&clps711x_gpio_driver);
--}
--coredevice_initcall(clps711x_gpio_register);
-+coredevice_platform_driver(clps711x_gpio_driver);
+@@ -1,11 +1,5 @@
+-/*
+- * Copyright (C) 2013-2014 Alexander Shiyan <shc_work@mail.ru>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- */
++// SPDX-License-Identifier: GPL-2.0+
++/* Author: Alexander Shiyan <shc_work@mail.ru> */
+ 
+ #include <init.h>
+ #include <common.h>
 -- 
 2.13.0
 
