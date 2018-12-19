@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp38.i.mail.ru ([94.100.177.98])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZWq8-000514-0m
+ id 1gZWq8-00050t-0d
  for barebox@lists.infradead.org; Wed, 19 Dec 2018 08:04:27 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Wed, 19 Dec 2018 11:04:03 +0300
-Message-Id: <20181219080403.13737-10-shc_work@mail.ru>
+Date: Wed, 19 Dec 2018 11:04:02 +0300
+Message-Id: <20181219080403.13737-9-shc_work@mail.ru>
 In-Reply-To: <20181219080403.13737-1-shc_work@mail.ru>
 References: <20181219080403.13737-1-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/10] clocksource: clps711x: Use coredevice_platform_driver()
- macro
+Subject: [PATCH 09/10] clocksource: clps711x: Switch to SPDX identifier
 To: barebox@lists.infradead.org
+
+Adopt the SPDX license identifier headers to ease license compliance
+management.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/clocksource/clps711x.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/clocksource/clps711x.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/clocksource/clps711x.c b/drivers/clocksource/clps711x.c
-index a3070e727..3df2c81e9 100644
+index d9e0f795e..a3070e727 100644
 --- a/drivers/clocksource/clps711x.c
 +++ b/drivers/clocksource/clps711x.c
-@@ -55,9 +55,4 @@ static struct driver_d clps711x_cs_driver = {
- 	.probe = clps711x_cs_probe,
- 	.of_compatible = DRV_OF_COMPAT(clps711x_timer_dt_ids),
- };
--
--static __init int clps711x_cs_init(void)
--{
--	return platform_driver_register(&clps711x_cs_driver);
--}
--coredevice_initcall(clps711x_cs_init);
-+coredevice_platform_driver(clps711x_cs_driver);
+@@ -1,11 +1,5 @@
+-/*
+- * Copyright (C) 2013 Alexander Shiyan <shc_work@mail.ru>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- */
++// SPDX-License-Identifier: GPL-2.0+
++/* Author: Alexander Shiyan <shc_work@mail.ru> */
+ 
+ #include <common.h>
+ #include <clock.h>
 -- 
 2.13.0
 
