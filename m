@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gZcVN-0008Ch-J1
- for barebox@lists.infradead.org; Wed, 19 Dec 2018 14:07:23 +0000
-From: Stefan Riedmueller <s.riedmueller@phytec.de>
-Date: Wed, 19 Dec 2018 15:07:03 +0100
-Message-Id: <1545228423-7461-1-git-send-email-s.riedmueller@phytec.de>
+ id 1gZaxJ-0000wF-IW
+ for barebox@lists.infradead.org; Wed, 19 Dec 2018 12:28:07 +0000
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Wed, 19 Dec 2018 13:27:53 +0100
+Message-Id: <1545222473-22214-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,45 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] nvmem: ocotp: Fix writing of second mac address fuses on
- imx6ul
+Subject: [PATCH for next] mtd: nand: nand_omap_gpmc: Fix GPMC_BCH_RESULT offset
 To: barebox@lists.infradead.org
 
-Commit 19a32c0f6bf0 ("nvmem: ocotp: Add support for second mac address
-fuses on imx6ul") added support for correctly reading the second MAC
-address from fuses of the i.MX 6UL/ULL but not for writing. So also fit
-writing of the second MAC address fuses to the correct method.
+Using BCH rom code mode we start calculating with GPMC_BCH_RESULTx_1.
+Fix offset for correct error correction.
 
-Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+Fixes: d4077860c902 ("mtd: nand: omap: unbreak BCH8 support")
+
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/nvmem/ocotp.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/nand_omap_gpmc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index e0cf35f0b73c..d904bd08f0c5 100644
---- a/drivers/nvmem/ocotp.c
-+++ b/drivers/nvmem/ocotp.c
-@@ -446,9 +446,18 @@ static int imx_ocotp_set_mac(struct param_d *param, void *priv)
- {
- 	char buf[MAC_BYTES];
- 	struct ocotp_priv_ethaddr *ethaddr = priv;
-+	int ret;
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index 277e23e57f7d..2dcf7e723b9f 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -676,7 +676,7 @@ static int omap_gpmc_read_page_bch_rom_mode(struct mtd_info *mtd,
+ 	p = buf;
  
--	ethaddr->data->format_mac(buf, ethaddr->value,
--				  OCOTP_MAC_TO_HW);
-+	ret = regmap_bulk_read(ethaddr->map, ethaddr->offset, buf, MAC_BYTES);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (ethaddr->offset != IMX6UL_MAC_OFFSET_1)
-+		ethaddr->data->format_mac(buf, ethaddr->value,
-+					  OCOTP_MAC_TO_HW);
-+	else
-+		ethaddr->data->format_mac(buf + 2, ethaddr->value,
-+					  OCOTP_MAC_TO_HW);
- 
- 	return regmap_bulk_write(ethaddr->map, ethaddr->offset,
- 				 buf, MAC_BYTES);
+ 	for (i = 0, j = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize, j++) {
+-		__omap_calculate_ecc(mtd, &ecc_calc[i - j], j);
++		__omap_calculate_ecc(mtd, &ecc_calc[i - j], j + 1);
+ 		stat = omap_correct_bch(mtd, p, &ecc_code[i], &ecc_calc[i - j]);
+ 		if (stat < 0) {
+ 			mtd->ecc_stats.failed++;
 -- 
 2.7.4
 
