@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from mout.gmx.net ([212.227.15.15])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gduTq-0005ik-FF
- for barebox@lists.infradead.org; Mon, 31 Dec 2018 10:07:32 +0000
-Date: Mon, 31 Dec 2018 11:07:24 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20181231100724.GA8407@ravnborg.org>
+ id 1gae5e-0000yl-Uw
+ for barebox@lists.infradead.org; Sat, 22 Dec 2018 10:01:04 +0000
 References: <ec676ac6-39e7-8962-7eb5-e73f62938900@rempel-privat.de>
  <20181222095656.GA27911@ravnborg.org>
- <20181222100043.GA9339@ravnborg.org>
- <a1fbae3e-1b53-49fc-04ec-4b581557c0af@rempel-privat.de>
+From: Oleksij Rempel <linux@rempel-privat.de>
+Message-ID: <33739d90-5710-b9b9-bee9-73f2d0ff1e25@rempel-privat.de>
+Date: Sat, 22 Dec 2018 11:00:46 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <a1fbae3e-1b53-49fc-04ec-4b581557c0af@rempel-privat.de>
+In-Reply-To: <20181222095656.GA27911@ravnborg.org>
+Content-Language: en-GB
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,28 +23,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: MIPS multiimabe is brocken after "Images: Add image size to
- built images"
-To: Oleksij Rempel <linux@rempel-privat.de>
+Subject: Re: MIPS multiimabe is brocken after "Images: Add image size to built
+ images"
+To: Sam Ravnborg <sam@ravnborg.org>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Oleksij.
-
-> > can you then recommend a toolchain to use?
+Am 22.12.18 um 10:56 schrieb Sam Ravnborg:
+> Hi Oleksij
 > 
-> Mostly I use native toolchain provided by debian/ubuntu
-> mips-linux-gnu-gcc
+>> i can't build MIPS images after this patch:
+>>
+>> commit 3abeee3e45224c73245e32cb614c241cd195f1c4 (bb/master)
+>> Author: Sascha Hauer <s.hauer@pengutronix.de>
+>> Date:   Mon Dec 17 12:09:23 2018 +0100
 > 
-> As alternative i also use toolchain provided by pengutronix:
-> https://www.pengutronix.de/de/software/toolchain.html
-> 
-> https://debian.pengutronix.de/
-> package: oselas.toolchain-2018.12-mips-softfloat-linux-gnu
+> Can you elaborate a little what goes wrong.
+> Does the build fail or you cannot boot barebox?
 
-Thanks for the pointers. I never managed to take a look at this,
-as I was sidetracked by something else.
+The build will fail with:
 
-	Sam
+  OBJCOPYB images/start_black_swift.pblb
+  OBJCOPYB images/start_dptechnics_dpt_module.pblb
+  OBJCOPYB images/start_8devices_lima.pblb
+  OBJCOPYB images/start_tplink_mr3020.pblb
+  OBJCOPYB images/start_tplink_wdr4300.pblb
+invalid magic
+barebox/images/Makefile:68: recipe for target
+'images/start_black_swift.pblb' failed
+make[1]: *** [images/start_black_swift.pblb] Error 1
+make[1]: *** Waiting for unfinished jobs....
+invalid magic
+invalid magic
+barebox/images/Makefile:68: recipe for target
+'images/start_dptechnics_dpt_module.pblb' failed
+make[1]: *** [images/start_dptechnics_dpt_module.pblb] Error 1
+barebox/images/Makefile:68: recipe for target
+'images/start_tplink_mr3020.pblb' failed
+make[1]: *** [images/start_tplink_mr3020.pblb] Error 1
+invalid magic
+barebox/images/Makefile:68: recipe for target
+'images/start_8devices_lima.pblb' failed
+make[1]: *** [images/start_8devices_lima.pblb] Error 1
+invalid magic
+barebox/images/Makefile:68: recipe for target
+'images/start_tplink_wdr4300.pblb' failed
+make[1]: *** [images/start_tplink_wdr4300.pblb] Error 1
+rm images/start_black_swift.pbl
+Makefile:501: recipe for target 'images' failed
+make: *** [images] Error 2
+
+-- 
+Regards,
+Oleksij
 
 _______________________________________________
 barebox mailing list
