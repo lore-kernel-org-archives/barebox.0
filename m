@@ -1,12 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vs10.datenmanufaktur-hosting.net ([213.160.73.65]
- helo=vs81.iboxed.net)
+Received: from smtp43.i.mail.ru ([94.100.177.103])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gcQsZ-0006wE-GU
- for barebox@lists.infradead.org; Thu, 27 Dec 2018 08:19:00 +0000
-From: Alexander Kurz <akurz@blala.de>
-Date: Mon, 24 Dec 2018 10:16:42 +0000
-Message-Id: <20181224101642.21722-1-user@vserver64>
+ id 1gbJfz-00063T-6T
+ for barebox@lists.infradead.org; Mon, 24 Dec 2018 06:25:21 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Mon, 24 Dec 2018 09:24:56 +0300
+Message-Id: <20181224062457.10318-1-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,59 +19,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fs/fat: fix FAT32 detection
-To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Alexander Kurz <akurz@blala.de>
+Subject: [PATCH V3 1/2] mfd: mc13892: MC13892_POWER_MISC bits revision
+To: barebox@lists.infradead.org
 
-From: Alexander Kurz <akurz@blala.de>
+This patch revises the bits for register MC13892_POWER_MISC.
+ - Added definition for one missing bit (0).
+ - Changed the name for bit 21 for accordance with the datasheet.
+ - Updated affected board that uses these definitions.
+ - Replaced spaces with tabs for the remaining bits.
 
-Limits for the number of clusters were used to determine the FAT fs type.
-This fails e.g. for FAT32 fs with low cluster number that can be found
-in certain Android images.
-Sync the FAT fs type detection to the method used in linux by checking
-the sectors/FAT entries at offset 0x16 (must be zero for FAT32) and offset
-0x24 (must be non-zero for FAT32).
-
-Signed-off-by: Alexander Kurz <akurz@blala.de>
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- fs/fat/ff.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/arm/boards/efika-mx-smartbook/board.c |  2 +-
+ include/mfd/mc13892.h                      | 23 ++++++++++++-----------
+ 2 files changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/fs/fat/ff.c b/fs/fat/ff.c
-index 33f8b6195..ba4adfc13 100644
---- a/fs/fat/ff.c
-+++ b/fs/fat/ff.c
-@@ -1591,9 +1591,14 @@ static int chk_mounted (	/* 0(0): successful, !=0: any error occurred */
- 		return -EINVAL;
+diff --git a/arch/arm/boards/efika-mx-smartbook/board.c b/arch/arm/boards/efika-mx-smartbook/board.c
+index d7c5681db..ec41eb8c1 100644
+--- a/arch/arm/boards/efika-mx-smartbook/board.c
++++ b/arch/arm/boards/efika-mx-smartbook/board.c
+@@ -79,7 +79,7 @@ static void efikamx_power_init(struct mc13xxx *mc)
  
- 	/* Number of sectors per FAT */
-+	fmt = FS_FAT12;
- 	fasize = LD_WORD(fs->win+BPB_FATSz16);
--	if (!fasize)
-+	if (!fasize) {
- 		fasize = LD_DWORD(fs->win+BPB_FATSz32);
-+		if (fasize)
-+			/* Must be FAT32 */
-+			fmt = FS_FAT32;
-+	}
- 	fs->fsize = fasize;
+ 	/* power up the system first */
+ 	mc13xxx_reg_write(mc, MC13892_REG_POWER_MISC,
+-			MC13892_POWER_MISC_PWUP);
++			  MC13892_POWER_MISC_GPO4ADIN);
  
- 	/* Number of FAT copies */
-@@ -1633,11 +1638,8 @@ static int chk_mounted (	/* 0(0): successful, !=0: any error occurred */
- 	nclst = (tsect - sysect) / fs->csize;
- 	if (!nclst)
- 		return -EINVAL;	/* (Invalid volume size) */
--	fmt = FS_FAT12;
--	if (nclst >= MIN_FAT16)
-+	if (fmt == FS_FAT12 && nclst >= MIN_FAT16)
- 		fmt = FS_FAT16;
--	if (nclst >= MIN_FAT32)
--		fmt = FS_FAT32;
+ 	/* Set core voltage to 1.1V */
+ 	mc13xxx_reg_read(mc, MC13892_REG_SW_0, &val);
+diff --git a/include/mfd/mc13892.h b/include/mfd/mc13892.h
+index 8b522391b..e9a41ba21 100644
+--- a/include/mfd/mc13892.h
++++ b/include/mfd/mc13892.h
+@@ -182,17 +182,18 @@
+ #define MC13892_MODE_1_VSDMODE		(1 << 20)
  
- 	/* Boundaries and Limits */
- 	/* Number of FAT entries */
+ /* Reg Power misc */
+-#define MC13892_POWER_MISC_GPO1EN          (1 << 6)
+-#define MC13892_POWER_MISC_GPO1STBY        (1 << 7)
+-#define MC13892_POWER_MISC_GPO2EN          (1 << 8)
+-#define MC13892_POWER_MISC_GPO2STBY        (1 << 9)
+-#define MC13892_POWER_MISC_GPO3EN          (1 << 10)
+-#define MC13892_POWER_MISC_GPO3STBY        (1 << 11)
+-#define MC13892_POWER_MISC_GPO4EN          (1 << 12)
+-#define MC13892_POWER_MISC_GPO4STBY        (1 << 13)
+-#define MC13892_POWER_MISC_PWGT1SPIEN      (1 << 15)
+-#define MC13892_POWER_MISC_PWGT2SPIEN      (1 << 16)
+-#define MC13892_POWER_MISC_PWUP            (1 << 21)
++#define MC13892_POWER_MISC_REGSCPEN	(1 << 0)
++#define MC13892_POWER_MISC_GPO1EN	(1 << 6)
++#define MC13892_POWER_MISC_GPO1STBY	(1 << 7)
++#define MC13892_POWER_MISC_GPO2EN	(1 << 8)
++#define MC13892_POWER_MISC_GPO2STBY	(1 << 9)
++#define MC13892_POWER_MISC_GPO3EN	(1 << 10)
++#define MC13892_POWER_MISC_GPO3STBY	(1 << 11)
++#define MC13892_POWER_MISC_GPO4EN	(1 << 12)
++#define MC13892_POWER_MISC_GPO4STBY	(1 << 13)
++#define MC13892_POWER_MISC_PWGT1SPIEN	(1 << 15)
++#define MC13892_POWER_MISC_PWGT2SPIEN	(1 << 16)
++#define MC13892_POWER_MISC_GPO4ADIN	(1 << 21)
+ 
+ /* Reg Power Control 2*/
+ #define MC13892_POWER_CONTROL_2_WDIRESET	(1 << 12)
 -- 
-2.11.0
+2.13.0
 
 
 _______________________________________________
