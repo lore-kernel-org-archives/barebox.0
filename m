@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qt1-x843.google.com ([2607:f8b0:4864:20::843])
+Received: from smtp63.i.mail.ru ([217.69.128.43])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gcaqa-00021z-FH
- for barebox@lists.infradead.org; Thu, 27 Dec 2018 18:57:36 +0000
-Received: by mail-qt1-x843.google.com with SMTP id e5so21048048qtr.12
- for <barebox@lists.infradead.org>; Thu, 27 Dec 2018 10:57:20 -0800 (PST)
-From: Fabio Estevam <festevam@gmail.com>
-Date: Thu, 27 Dec 2018 16:57:14 -0200
-Message-Id: <20181227185714.16738-1-festevam@gmail.com>
+ id 1gbggt-0004a7-U5
+ for barebox@lists.infradead.org; Tue, 25 Dec 2018 06:59:50 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Tue, 25 Dec 2018 09:59:22 +0300
+Message-Id: <20181225065923.15943-1-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,35 +19,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation: imx8mq-evk: Pass the full path for file names
-To: s.hauer@pengutronix.de
-Cc: andrew.smirnov@gmail.com, barebox@lists.infradead.org
+Subject: [PATCH 1/2] imx-bbu-nand-fcb: Check the required space a bit earlier
+To: barebox@lists.infradead.org
 
-Passing the full path of the referenced files make the text
-clearer.
+If the partition size is too small for imx_bbu_nand_update(),
+this can lead to an infinite loop in the imx_bbu_firmware_fcb_start_page()
+function, because imx_bbu_firmware_max_blocks() returns zero.
+Fix this by place imx_bbu_firmware_max_blocks() a bit early.
 
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- Documentation/boards/imx/nxp-imx8mq-evk.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ common/imx-bbu-nand-fcb.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/boards/imx/nxp-imx8mq-evk.rst b/Documentation/boards/imx/nxp-imx8mq-evk.rst
-index f0cdc3486..dfe004e0e 100644
---- a/Documentation/boards/imx/nxp-imx8mq-evk.rst
-+++ b/Documentation/boards/imx/nxp-imx8mq-evk.rst
-@@ -45,8 +45,8 @@ DDR Configuration Code
+diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
+index 8c276a43c..8383aeacf 100644
+--- a/common/imx-bbu-nand-fcb.c
++++ b/common/imx-bbu-nand-fcb.c
+@@ -1224,6 +1224,12 @@ static int imx_bbu_nand_update(struct bbu_handler *handler, struct bbu_data *dat
+ 	mtd = bcb_cdev->mtd;
+ 	partition_size = mtd->size;
  
- The following two files:
++	num_blocks_fw = imx_bbu_firmware_max_blocks(mtd);
++	if (num_blocks_fw < 1) {
++		pr_err("Not enough space for firmware\n");
++		return -ENOSPC;
++	}
++
+ 	for (i = 0; i < 4; i++) {
+ 		read_fcb(mtd, i, &fcb);
+ 		if (fcb)
+@@ -1329,8 +1335,6 @@ static int imx_bbu_nand_update(struct bbu_handler *handler, struct bbu_data *dat
+ 		pr_info("Refreshing existing firmware\n");
+ 	}
  
--  - ddr_init.c
--  - ddrphy_train.c
-+  - arch/arm/boards/nxp-imx8mq-evk/ddr_init.c
-+  - arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c
- 
- were obtained by running i.MX 8M DDR Tool that can be found here:
- 
+-	num_blocks_fw = imx_bbu_firmware_max_blocks(mtd);
+-
+ 	if (num_blocks_fw * mtd->erasesize < fw_size) {
+ 		pr_err("Not enough space for update\n");
+ 		return -ENOSPC;
 -- 
-2.17.1
+2.13.0
 
 
 _______________________________________________
