@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gdQiM-0008NB-T1
- for barebox@lists.infradead.org; Sun, 30 Dec 2018 02:20:36 +0000
-Date: Sun, 30 Dec 2018 03:20:19 +0100
+ id 1gdQjP-0008TZ-KA
+ for barebox@lists.infradead.org; Sun, 30 Dec 2018 02:21:41 +0000
+Date: Sun, 30 Dec 2018 03:21:23 +0100
 From: Roland Hieber <r.hieber@pengutronix.de>
-Message-ID: <20181230022019.rfj542p4gvwyc4ty@pengutronix.de>
+Message-ID: <20181230022123.dduux7g4v5qharnj@pengutronix.de>
 References: <20181222085012.9852-1-linux@rempel-privat.de>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -25,6 +25,10 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2 1/3] MIPS: migrate all files to SPDX
 To: Oleksij Rempel <linux@rempel-privat.de>
 Cc: barebox@lists.infradead.org
+
+For all three patches in this series:
+
+Reviewed-by: Roland Hieber <r.hieber@pengutronix.de>
 
 On Sat, Dec 22, 2018 at 09:50:10AM +0100, Oleksij Rempel wrote:
 > Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
@@ -107,9 +111,6 @@ On Sat, Dec 22, 2018 at 09:50:10AM +0100, Oleksij Rempel wrote:
 > - *
 > - * This file is part of barebox.
 > - * See file CREDITS for list of people who contributed to this project.
-
-Ah yes, right, we don't have a CREDITS file.
-
 > - *
 > - * This program is free software; you can redistribute it and/or modify
 > - * it under the terms of the GNU General Public License version 2
@@ -120,14 +121,6 @@ Ah yes, right, we don't have a CREDITS file.
 > - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 > - * GNU General Public License for more details.
 > - *
-
-I noticed you are consistently reducing the license boilerplate to the
-SPDX tag only, also deleting the warranty notices. I am not a lawyer
-(yet), but I think we should retain that notice at least somewhere, also
-with a note saying what these SPDX-License-Identifier tags mean. I've
-posted an appriopriate patch just now ("[PATCH] README: add licensing
-information").
-
 >   */
 >  
 >  #define BOARD_PBL_START start_8devices_lima
@@ -634,10 +627,6 @@ information").
 > - *
 > - */
 > +/* SPDX-License-Identifier: GPL-2.0-or-later */
-
-Hmm. There is no copyright notice in that file, but given that it is
-mostly empty otherwise, nobody will probably care.
-
 >  
 >  /**
 >   * @file
@@ -1157,13 +1146,6 @@ mostly empty otherwise, nobody will probably care.
 > - * GNU General Public License for more details.
 > - *
 >   */
-
-No copyright notice either, but it was added by yourself in commit
-196aa5cd216ae80 ("MIPS: ath79: add initial QCA AR9344 SoC support") and
-never changed since.
-
- - Roland
-
 >  
 >  #ifndef __AR933X_DEBUG_LL__
 > diff --git a/arch/mips/mach-ath79/include/mach/debug_ll_ar9344.h b/arch/mips/mach-ath79/include/mach/debug_ll_ar9344.h
