@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-09.nifty.com ([210.131.2.76])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gdbdf-0007gP-HA
- for barebox@lists.infradead.org; Sun, 30 Dec 2018 14:00:28 +0000
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Sun, 30 Dec 2018 22:59:19 +0900
-Message-Id: <1546178368-26182-3-git-send-email-yamada.masahiro@socionext.com>
-In-Reply-To: <1546178368-26182-1-git-send-email-yamada.masahiro@socionext.com>
+ id 1gdqUn-0002Id-AD
+ for barebox@lists.infradead.org; Mon, 31 Dec 2018 05:52:14 +0000
+Date: Mon, 31 Dec 2018 06:52:03 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20181231055203.GA25643@ravnborg.org>
 References: <1546178368-26182-1-git-send-email-yamada.masahiro@socionext.com>
+ <1546178368-26182-3-git-send-email-yamada.masahiro@socionext.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1546178368-26182-3-git-send-email-yamada.masahiro@socionext.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,44 +19,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/11] kbuild: add .DELETE_ON_ERROR special target
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 02/11] kbuild: add .DELETE_ON_ERROR special target
+To: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: barebox@lists.infradead.org
 
-TGludXggY29tbWl0IDljMmFmMWM3Mzc3YThhNmVmODZlNWNhYmY4MDk3OGYzZGJiYjI1YzAKKGFk
-anVzdCBjb21taXQgbG9nIGJlY2F1c2UgYmFyZWJveCBkb2VzIG5vdCBzdXBwb3J0IGV4dGVybmFs
-IG1vZHVsZSkKCklmIE1ha2UgZ2V0cyBhIGZhdGFsIHNpZ25hbCB3aGlsZSBhIHNoZWxsIGlzIGV4
-ZWN1dGluZywgaXQgbWF5IGRlbGV0ZQp0aGUgdGFyZ2V0IGZpbGUgdGhhdCB0aGUgcmVjaXBlIHdh
-cyBzdXBwb3NlZCB0byB1cGRhdGUuICBUaGlzIGlzIG5lZWRlZAp0byBtYWtlIHN1cmUgdGhhdCBp
-dCBpcyByZW1hZGUgZnJvbSBzY3JhdGNoIHdoZW4gTWFrZSBpcyBuZXh0IHJ1bjsgaWYKTWFrZSBp
-cyBpbnRlcnJ1cHRlZCBhZnRlciB0aGUgcmVjaXBlIGhhcyBiZWd1biB0byB3cml0ZSB0aGUgdGFy
-Z2V0IGZpbGUsCml0IHJlc3VsdHMgaW4gYW4gaW5jb21wbGV0ZSBmaWxlIHdob3NlIHRpbWUgc3Rh
-bXAgaXMgbmV3ZXIgdGhhbiB0aGF0Cm9mIHRoZSBwcmVyZXF1aXNpdGVzIGZpbGVzLiAgTWFrZSBh
-dXRvbWF0aWNhbGx5IGRlbGV0ZXMgdGhlIGluY29tcGxldGUKZmlsZSBvbiBpbnRlcnJ1cHQgdW5s
-ZXNzIHRoZSB0YXJnZXQgaXMgbWFya2VkIC5QUkVDSU9VUy4KClRoZSBzaXR1YXRpb24gaXMganVz
-dCB0aGUgc2FtZSBhcyB3aGVuIHRoZSBzaGVsbCBmYWlscyBmb3Igc29tZSByZWFzb25zLgpVc3Vh
-bGx5IHdoZW4gYSByZWNpcGUgbGluZSBmYWlscywgaWYgaXQgaGFzIGNoYW5nZWQgdGhlIHRhcmdl
-dCBmaWxlIGF0CmFsbCwgdGhlIGZpbGUgaXMgY29ycnVwdGVkLCBvciBhdCBsZWFzdCBpdCBpcyBu
-b3QgY29tcGxldGVseSB1cGRhdGVkLgpZZXQgdGhlIGZpbGXigJlzIHRpbWUgc3RhbXAgc2F5cyB0
-aGF0IGl0IGlzIG5vdyB1cCB0byBkYXRlLCBzbyB0aGUgbmV4dAp0aW1lIE1ha2UgcnVucywgaXQg
-d2lsbCBub3QgdHJ5IHRvIHVwZGF0ZSB0aGF0IGZpbGUuCgpIb3dldmVyLCBNYWtlIGRvZXMgbm90
-IGNhdGVyIHRvIGRlbGV0ZSB0aGUgaW5jb21wbGV0ZSB0YXJnZXQgZmlsZSBpbgp0aGlzIGNhc2Uu
-ICBXZSBuZWVkIHRvIGFkZCAuREVMRVRFX09OX0VSUk9SIHNvbWV3aGVyZSBpbiB0aGUgTWFrZWZp
-bGUKdG8gcmVxdWVzdCBpdC4KCnNjcmlwdHMvS2J1aWxkLmluY2x1ZGUgc2VlbXMgYSBzdWl0YWJs
-ZSBwbGFjZSB0byBhZGQgaXQgYmVjYXVzZSBpdCBpcwppbmNsdWRlZCBmcm9tIGFsbW9zdCBhbGwg
-c3ViLW1ha2VzLgoKU2lnbmVkLW9mZi1ieTogTWFzYWhpcm8gWWFtYWRhIDx5YW1hZGEubWFzYWhp
-cm9Ac29jaW9uZXh0LmNvbT4KLS0tCgogc2NyaXB0cy9LYnVpbGQuaW5jbHVkZSB8IDMgKysrCiAx
-IGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvc2NyaXB0cy9LYnVp
-bGQuaW5jbHVkZSBiL3NjcmlwdHMvS2J1aWxkLmluY2x1ZGUKaW5kZXggNTEyZDIxNy4uM2I3MTk0
-OSAxMDA2NDQKLS0tIGEvc2NyaXB0cy9LYnVpbGQuaW5jbHVkZQorKysgYi9zY3JpcHRzL0tidWls
-ZC5pbmNsdWRlCkBAIC0yNzksMyArMjc5LDYgQEAgd2h5ID0gICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcCiAKIGVj
-aG8td2h5ID0gJChjYWxsIGVzY3NxLCAkKHN0cmlwICQod2h5KSkpCiBlbmRpZgorCisjIGRlbGV0
-ZSBwYXJ0aWFsbHkgdXBkYXRlZCAoaS5lLiBjb3JydXB0ZWQpIGZpbGVzIG9uIGVycm9yCisuREVM
-RVRFX09OX0VSUk9SOgotLSAKMi43LjQKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
-ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
-Ym94Cg==
+Hi Masahiro
+
+On Sun, Dec 30, 2018 at 10:59:19PM +0900, Masahiro Yamada wrote:
+> Linux commit 9c2af1c7377a8a6ef86e5cabf80978f3dbbb25c0
+> (adjust commit log because barebox does not support external module)
+Actually barebox has some very limited support for external modules
+and the plan is to make this to something that is useable.
+For kbuild stuff all the external module support, from when
+barebox copied it from the kernel, has been kept.
+
+In this case it is only relevant for the changelog as the patch is
+the same.
+
+	Sam
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
