@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gdvVJ-0001M9-DL
- for barebox@lists.infradead.org; Mon, 31 Dec 2018 11:13:07 +0000
-Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
- (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
- id S23990397AbeLaLM7bLe0p (ORCPT
- <rfc822;barebox@lists.infradead.org>);
- Mon, 31 Dec 2018 12:12:59 +0100
-Date: Mon, 31 Dec 2018 12:12:58 +0100
-From: Ladislav Michl <ladis@linux-mips.org>
-Message-ID: <20181231111258.GA6011@lenoch>
-References: <20181114085233.5000-1-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181114085233.5000-1-s.hauer@pengutronix.de>
+Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gdsbo-00009A-Qr
+ for barebox@lists.infradead.org; Mon, 31 Dec 2018 08:07:38 +0000
+Received: by mail-lf1-x141.google.com with SMTP id l10so17932132lfh.9
+ for <barebox@lists.infradead.org>; Mon, 31 Dec 2018 00:07:35 -0800 (PST)
+From: Sam Ravnborg <sam@ravnborg.org>
+Date: Mon, 31 Dec 2018 09:07:20 +0100
+Message-Id: <20181231080725.2141-1-sam@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,41 +16,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] of: Add .of suffix to device names from devicetree
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 0/5] Independent collection of patches 
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Sam Ravnborg <sam@ravnborg.org>
 
-On Wed, Nov 14, 2018 at 09:52:33AM +0100, Sascha Hauer wrote:
-> Previous implementation used to add a number to the device names
-> for devices registered from the device tree which did not have a 'reg'
-> property, thus a device node named "state" resulted in a device name
-> "state.<x>". Current implementation skips that number and we get a
-> device named "state". This conflicts with our barebox state
-> implementation which tries to register a device named "state" itself.
-> We could rename the state device nodes of all our device trees, but it
-> causes less trouble to rename the devices.
-> 
-> This adds a ".of" suffix to the device names for devices registered from
-> the device tree which also has the nice effect that they now can easily
-> be recognized.
+Random collection of patches that accumulated the last weeks.
+They are done on top of the next branch.
 
-Well, that also breaks scripting based on device name (example):
--if [ ${fffa4000.gadget@fffa4000.vbus} != 1 ]
-+if [ ${fffa4000.gadget@fffa4000.of.vbus} != 1 ]
- then
-        echo "No USB Device cable plugged, normal boot"
-        exit 0
+No dependencies between the patches.
 
-I can live with that, but would welcome suggestions how to write above
-code in some nicer way.
+	Sam
 
-Thank you
+Sam Ravnborg (5):
+      2d-primitives: fix no previous prototype warning
+      images: fix force rebuild of piggy.o
+      arm: fix no prototype for barebox_arm_reset_vector()
+      at91sam9263ek: fix build of of_init
+      video: mtl017: fix driver name variable
 
-> Fixes: 7e497d48acbd11 ("of: Port latest of_device_make_bus_id() implementation")
+ arch/arm/boards/at91sam9263ek/Makefile | 2 +-
+ arch/arm/include/asm/barebox-arm.h     | 2 ++
+ drivers/video/mtl017.c                 | 4 ++--
+ images/Makefile                        | 9 ++++-----
+ lib/gui/2d-primitives.c                | 2 ++
+ 5 files changed, 11 insertions(+), 8 deletions(-)
 
 _______________________________________________
 barebox mailing list
