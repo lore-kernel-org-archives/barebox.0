@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
+Received: from mail-lf1-x142.google.com ([2a00:1450:4864:20::142])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gdsbr-00009s-7M
- for barebox@lists.infradead.org; Mon, 31 Dec 2018 08:07:40 +0000
-Received: by mail-lf1-x141.google.com with SMTP id u18so17937627lff.10
- for <barebox@lists.infradead.org>; Mon, 31 Dec 2018 00:07:39 -0800 (PST)
+ id 1gdsbs-0000AG-EX
+ for barebox@lists.infradead.org; Mon, 31 Dec 2018 08:07:42 +0000
+Received: by mail-lf1-x142.google.com with SMTP id b20so17925652lfa.12
+ for <barebox@lists.infradead.org>; Mon, 31 Dec 2018 00:07:40 -0800 (PST)
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Mon, 31 Dec 2018 09:07:24 +0100
-Message-Id: <20181231080725.2141-5-sam@ravnborg.org>
+Date: Mon, 31 Dec 2018 09:07:25 +0100
+Message-Id: <20181231080725.2141-6-sam@ravnborg.org>
 In-Reply-To: <20181231080725.2141-1-sam@ravnborg.org>
 References: <20181231080725.2141-1-sam@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -23,39 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 4/5] at91sam9263ek: fix build of of_init
+Subject: [PATCH v1 5/5] video: mtl017: fix driver name variable
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Fix mistake in Makefile that prevented build of
-of_init.o
+It look like a copy-paste bug that the twl_driver name
+was used.
+Rename to the more sensible mtl_driver
 
-With this fix smc shows up in iomem like this:
-
-  0xffffe400 - 0xffffe5ff (size 0x00000200) at91sam9-smc0
-  0xffffea00 - 0xffffebff (size 0x00000200) at91sam9-smc1
-
-And we get access to the files from defaultenv provided by the board
-
-Fixes: b467c262b5a7 (at91sam9263ek: enable DT support)
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- arch/arm/boards/at91sam9263ek/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/mtl017.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/at91sam9263ek/Makefile b/arch/arm/boards/at91sam9263ek/Makefile
-index 66083a239..d4d5e7639 100644
---- a/arch/arm/boards/at91sam9263ek/Makefile
-+++ b/arch/arm/boards/at91sam9263ek/Makefile
-@@ -1,7 +1,7 @@
- ifeq ($(CONFIG_OFDEVICE),)
- obj-y += init.o
- endif
--obj-$(CONFIG_OF_DEVICE) += of_init.o
-+obj-$(CONFIG_OFDEVICE) += of_init.o
+diff --git a/drivers/video/mtl017.c b/drivers/video/mtl017.c
+index 423fb8e4f..c04875cd0 100644
+--- a/drivers/video/mtl017.c
++++ b/drivers/video/mtl017.c
+@@ -268,8 +268,8 @@ static int mtl017_probe(struct device_d *dev)
+ 	return 0;
+ }
  
- lwl-y += lowlevel_init.o
- 
+-static struct driver_d twl_driver = {
++static struct driver_d mtl_driver = {
+ 	.name  = "mtl017",
+ 	.probe = mtl017_probe,
+ };
+-device_i2c_driver(twl_driver);
++device_i2c_driver(mtl_driver);
 -- 
 2.12.0
 
