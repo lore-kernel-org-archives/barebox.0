@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gdsbp-00009B-9n
- for barebox@lists.infradead.org; Mon, 31 Dec 2018 08:07:38 +0000
-Received: by mail-lf1-x141.google.com with SMTP id b20so17925602lfa.12
- for <barebox@lists.infradead.org>; Mon, 31 Dec 2018 00:07:36 -0800 (PST)
+ id 1gdsbr-00009s-7M
+ for barebox@lists.infradead.org; Mon, 31 Dec 2018 08:07:40 +0000
+Received: by mail-lf1-x141.google.com with SMTP id u18so17937627lff.10
+ for <barebox@lists.infradead.org>; Mon, 31 Dec 2018 00:07:39 -0800 (PST)
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Mon, 31 Dec 2018 09:07:21 +0100
-Message-Id: <20181231080725.2141-2-sam@ravnborg.org>
+Date: Mon, 31 Dec 2018 09:07:24 +0100
+Message-Id: <20181231080725.2141-5-sam@ravnborg.org>
 In-Reply-To: <20181231080725.2141-1-sam@ravnborg.org>
 References: <20181231080725.2141-1-sam@ravnborg.org>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,29 +18,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 1/5] 2d-primitives: fix no previous prototype warning
+Subject: [PATCH v1 4/5] at91sam9263ek: fix build of of_init
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Rml4IHRoZSBmb2xsb3dpbmcgd2FybmluZ3M6CgpsaWIvZ3VpLzJkLXByaW1pdGl2ZXMuYzo4ODo2
-OiB3YXJuaW5nOiBubwpwcmV2aW91cyBwcm90b3R5cGUgZm9yIOKAmGd1X2RyYXdfbGluZeKAmSBb
-LVdtaXNzaW5nLXByb3RvdHlwZXNdCiB2b2lkIGd1X2RyYXdfbGluZShzdHJ1Y3Qgc2NyZWVuICpz
-YywKICAgICAgXn5+fn5+fn5+fn5+CmxpYi9ndWkvMmQtcHJpbWl0aXZlcy5jOjE3NDo2OiB3YXJu
-aW5nOiBubwpwcmV2aW91cyBwcm90b3R5cGUgZm9yIOKAmGd1X2RyYXdfY2lyY2xl4oCZIFstV21p
-c3NpbmctcHJvdG90eXBlc10KIHZvaWQgZ3VfZHJhd19jaXJjbGUoc3RydWN0IHNjcmVlbiAqc2Ms
-CiAgICAgIF5+fn5+fn5+fn5+fn5+CgpTaWduZWQtb2ZmLWJ5OiBTYW0gUmF2bmJvcmcgPHNhbUBy
-YXZuYm9yZy5vcmc+Ci0tLQogbGliL2d1aS8yZC1wcmltaXRpdmVzLmMgfCAyICsrCiAxIGZpbGUg
-Y2hhbmdlZCwgMiBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvbGliL2d1aS8yZC1wcmltaXRp
-dmVzLmMgYi9saWIvZ3VpLzJkLXByaW1pdGl2ZXMuYwppbmRleCA4MmU1OWQ5YTYuLjk0MGU4MmI3
-ZCAxMDA2NDQKLS0tIGEvbGliL2d1aS8yZC1wcmltaXRpdmVzLmMKKysrIGIvbGliL2d1aS8yZC1w
-cmltaXRpdmVzLmMKQEAgLTcsNiArNyw4IEBACiAjaW5jbHVkZSA8ZnMuaD4KICNpbmNsdWRlIDxt
-YWxsb2MuaD4KIAorI2luY2x1ZGUgPGd1aS8yZC1wcmltaXRpdmVzLmg+CisKIHN0YXRpYyB2b2lk
-IF9faWxsdW1pbmF0ZShzdHJ1Y3QgZmJfaW5mbyAqaW5mbywKIAkJCSBpbnQgeCwgaW50IHksCiAJ
-CQkgdTggciwgdTggZywgdTggYiwgdTggYSkKLS0gCjIuMTIuMAoKCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+Fix mistake in Makefile that prevented build of
+of_init.o
+
+With this fix smc shows up in iomem like this:
+
+  0xffffe400 - 0xffffe5ff (size 0x00000200) at91sam9-smc0
+  0xffffea00 - 0xffffebff (size 0x00000200) at91sam9-smc1
+
+And we get access to the files from defaultenv provided by the board
+
+Fixes: b467c262b5a7 (at91sam9263ek: enable DT support)
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+---
+ arch/arm/boards/at91sam9263ek/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boards/at91sam9263ek/Makefile b/arch/arm/boards/at91sam9263ek/Makefile
+index 66083a239..d4d5e7639 100644
+--- a/arch/arm/boards/at91sam9263ek/Makefile
++++ b/arch/arm/boards/at91sam9263ek/Makefile
+@@ -1,7 +1,7 @@
+ ifeq ($(CONFIG_OFDEVICE),)
+ obj-y += init.o
+ endif
+-obj-$(CONFIG_OF_DEVICE) += of_init.o
++obj-$(CONFIG_OFDEVICE) += of_init.o
+ 
+ lwl-y += lowlevel_init.o
+ 
+-- 
+2.12.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
