@@ -1,12 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gdQgb-0006nz-VW
- for barebox@lists.infradead.org; Sun, 30 Dec 2018 02:18:44 +0000
-From: Roland Hieber <rhi@pengutronix.de>
-Date: Sun, 30 Dec 2018 03:18:23 +0100
-Message-Id: <20181230021823.7412-1-rhi@pengutronix.de>
+Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gdvVJ-0001M9-DL
+ for barebox@lists.infradead.org; Mon, 31 Dec 2018 11:13:07 +0000
+Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
+ (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
+ id S23990397AbeLaLM7bLe0p (ORCPT
+ <rfc822;barebox@lists.infradead.org>);
+ Mon, 31 Dec 2018 12:12:59 +0100
+Date: Mon, 31 Dec 2018 12:12:58 +0100
+From: Ladislav Michl <ladis@linux-mips.org>
+Message-ID: <20181231111258.GA6011@lenoch>
+References: <20181114085233.5000-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20181114085233.5000-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,69 +23,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] README: add licensing information
-To: barebox@lists.infradead.org
-Cc: Roland Hieber <rhi@pengutronix.de>
+Subject: Re: [PATCH] of: Add .of suffix to device names from devicetree
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Barebox List <barebox@lists.infradead.org>
 
-Tm93IHRoYXQgd2UgYXJlIG1vdmluZyBhd2F5IGZyb20gYm9pbGVycGxhdGUgY29kZSB0b3dhcmRz
-IFNQRFggbGljZW5zZQp0YWdzIGluIGluZGl2aWR1YWwgZmlsZSBoZWFkZXJzLCB3ZSBzaG91bGQg
-aGF2ZSBhIHNob3J0IG5vdGUgYWJvdXQgd2hhdAp0aGVzZSB0YWdzIG1lYW4uIEFsc28sIHVudGls
-IG5vdywgdGhlcmUgd2FzIGVmZmVjdGl2ZWx5IG5vIGV4cGxpY2l0CmluZm9ybWF0aW9uIHRoYXQg
-YmFyZWJveCBpcyBsaWNlbnNlZCB1bmRlciBHUEx2MiAob25seSkuIFRoaXMgY291bGQgaGF2ZQpi
-ZWVuIGludGVycG9sYXRlZCBmcm9tIHRoZSBleGlzdGVuY2Ugb2YgYSBHUEx2MiB0ZXh0IGluIC4v
-Q09QWUlORyAoYW5kCmZyb20gbW9zdCBvZiB0aGUgaW5kaXZpZHVhbCBmaWxlIGhlYWRlcnPigKYg
-aGF2ZSBmdW4gcmVhZGluZyBhbGwgb2YgdGhlbSksCmJ1dCBhIHdhcnJhbnR5IGFuZCBjb3B5cmln
-aHQgbm90aWNlIHdhcyBzdGlsbCBtaXNzaW5nLiBBZGQgdGhvc2UgYXMgYQpjYXRjaC1hbGwgZm9y
-IHRoZSBwcm9qZWN0IHRvIGVhc2UgYXBwbGljYXRpb24gb2YgR1BMdjIgYXJ0aWNsZSAwOgoKICAg
-ICAgMC4gVGhpcyBMaWNlbnNlIGFwcGxpZXMgdG8gYW55IHByb2dyYW0gb3Igb3RoZXIgd29yayB3
-aGljaCBjb250YWlucwogICAgYSBub3RpY2UgcGxhY2VkIGJ5IHRoZSBjb3B5cmlnaHQgaG9sZGVy
-IHNheWluZyBpdCBtYXkgYmUgZGlzdHJpYnV0ZWQKICAgIHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGlz
-IEdlbmVyYWwgUHVibGljIExpY2Vuc2UuIFvigKZdCgphbmQgYXJ0aWNsZSAxOgoKICAgICAgMS4g
-WW91IG1heSBjb3B5IGFuZCBkaXN0cmlidXRlIHZlcmJhdGltIGNvcGllcyBvZiB0aGUgUHJvZ3Jh
-bSdzCiAgICBzb3VyY2UgY29kZSBhcyB5b3UgcmVjZWl2ZSBpdCwgaW4gYW55IG1lZGl1bSwgcHJv
-dmlkZWQgdGhhdCB5b3UKICAgIGNvbnNwaWN1b3VzbHkgYW5kIGFwcHJvcHJpYXRlbHkgcHVibGlz
-aCBvbiBlYWNoIGNvcHkgYW4gYXBwcm9wcmlhdGUKICAgIGNvcHlyaWdodCBub3RpY2UgYW5kIGRp
-c2NsYWltZXIgb2Ygd2FycmFudHk7IFvigKZdCgpTaW5jZSBiYXJlYm94IGdvZXMgYmFjayB0byBV
-LUJvb3QsIEkgdHJpZWQgdG8gZmluZCBleHBsaWNpdCBwcm9qZWN0LXdpZGUKY29weXJpZ2h0IGxp
-bmVzLCBidXQgdGhlIG9ubHkgb25lIEkgY291bGQgZmluZCB3YXMgdGhlIG9uZSBmcm9tIFUtQm9v
-dCdzCm9sZCBSRUFETUUgaW4gY29tbWl0IDdlMTQ5Yzg5N2I5NWI0MDc1Mi4gSWYgdGhlcmUgYXJl
-IGFkZGl0aW9uYWwKY29weXJpZ2h0IGhvbGRlcnMsIHRob3NlIGFyZSBwcm9iYWJseSBvbmx5IHBy
-ZXNlbnQgaW4gdGhlIHJlc3BlY3RpdmUKZmlsZSBoZWFkZXJzLgoKU2lnbmVkLW9mZi1ieTogUm9s
-YW5kIEhpZWJlciA8cmhpQHBlbmd1dHJvbml4LmRlPgotLS0KIFJFQURNRSB8IDMyICsrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrCiAxIGZpbGUgY2hhbmdlZCwgMzIgaW5zZXJ0aW9ucygr
-KQoKZGlmZiAtLWdpdCBhL1JFQURNRSBiL1JFQURNRQppbmRleCA5NDBlMWY5NmRkLi5kYWRhOTdj
-YWIzIDEwMDY0NAotLS0gYS9SRUFETUUKKysrIGIvUkVBRE1FCkBAIC0xLDMgKzEsNSBAQAorIyBT
-UERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vbmx5CisKIEJhcmVib3gKIC0tLS0tLS0K
-IApAQCAtMjIyLDMgKzIyNCwzMyBAQCBhcmUgdGhlIHJlbGVhc2UgcnVsZXM6CiAgIGRvZXMgbmV2
-ZXIgY2hhbmdlLCBpbiBvcmRlciB0byBtYWtlIGxpZmUgZWFzaWVyIGZvciBkaXN0cmlidXRpb24K
-ICAgcGVvcGxlLgogCisKK0xpY2Vuc2UKKy0tLS0tLS0KKworQ29weXJpZ2h0IChDKSAyMDAwIC0g
-MjAwNSBXb2xmZ2FuZyBEZW5rLCBERU5YIFNvZnR3YXJlIEVuZ2luZWVyaW5nLCB3ZEBkZW54LmRl
-LgorQ29weXJpZ2h0IChDKSAyMDE4IFNhc2NoYSBIYXVlciwgUGVuZ3V0cm9uaXgsIGFuZCBpbmRp
-dmlkdWFsIGNvbnRyaWJ1dG9ycworCitCYXJlYm94IGlzIGZyZWUgc29mdHdhcmU6IHlvdSBjYW4g
-cmVkaXN0cmlidXRlIGl0IGFuZC9vciBtb2RpZnkgaXQgdW5kZXIgdGhlCit0ZXJtcyBvZiB0aGUg
-R05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UsIHZlcnNpb24gMiwgYXMgcHVibGlzaGVkIGJ5IHRo
-ZSBGcmVlCitTb2Z0d2FyZSBGb3VuZGF0aW9uLgorCitUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0
-ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwgYnV0IFdJVEhPVVQgQU5ZCitX
-QVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mIE1FUkNIQU5UQUJJ
-TElUWSBvciBGSVRORVNTIEZPUiBBCitQQVJUSUNVTEFSIFBVUlBPU0UuIFNlZSB0aGUgR05VIEdl
-bmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KKworWW91IHNob3VsZCBoYXZl
-IHJlY2VpdmVkIGEgY29weSBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgaW4gdGhl
-IGZpbGUKK0NPUFlJTkcgYWxvbmcgd2l0aCB0aGlzIHByb2dyYW0uIElmIG5vdCwgc2VlIDxodHRw
-czovL3d3dy5nbnUub3JnL2xpY2Vuc2VzLz4uCisKK0luZGl2aWR1YWwgZmlsZXMgbWF5IGNvbnRh
-aW4gdGhlIGZvbGxvd2luZyBTUERYIGxpY2Vuc2UgdGFncyBhcyBhIHNob3J0aGFuZCBmb3IKK3Ro
-ZSBhYm92ZSBjb3B5cmlnaHQgYW5kIHdhcnJhbnR5IG5vdGljZXM6CisKKyAgICBTUERYLUxpY2Vu
-c2UtSWRlbnRpZmllcjogR1BMLTIuMC1vbmx5CisgICAgU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6
-IEdQTC0yLjAtb3ItbGF0ZXIKKworVGhpcyBlYXNlcyBtYWNoaW5lIHByb2Nlc3Npbmcgb2YgbGlj
-ZW5zaW5nIGluZm9ybWF0aW9uIGJhc2VkIG9uIHRoZSBTUERYCitMaWNlbnNlIElkZW50aWZpZXJz
-IHRoYXQgYXJlIGF2YWlsYWJsZSBhdCBodHRwOi8vc3BkeC5vcmcvbGljZW5zZXMvLgorCitBbHNv
-IG5vdGUgdGhhdCBzb21lIGZpbGVzIGluIHRoZSBCYXJlYm94IHNvdXJjZSB0cmVlIGFyZSBhdmFp
-bGFibGUgdW5kZXIKK3NldmVyYWwgZGlmZmVyZW50IEdQTHYyLWNvbXBhdGlibGUgb3Blbi1zb3Vy
-Y2UgbGljZW5zZXMuIFRoaXMgZmFjdCBpcyBub3RlZAorY2xlYXJseSBpbiB0aGUgZmlsZSBoZWFk
-ZXJzIG9mIHRoZSByZXNwZWN0aXZlIGZpbGVzLgotLSAKMi4xOS4xCgoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vYmFyZWJveAo=
+On Wed, Nov 14, 2018 at 09:52:33AM +0100, Sascha Hauer wrote:
+> Previous implementation used to add a number to the device names
+> for devices registered from the device tree which did not have a 'reg'
+> property, thus a device node named "state" resulted in a device name
+> "state.<x>". Current implementation skips that number and we get a
+> device named "state". This conflicts with our barebox state
+> implementation which tries to register a device named "state" itself.
+> We could rename the state device nodes of all our device trees, but it
+> causes less trouble to rename the devices.
+> 
+> This adds a ".of" suffix to the device names for devices registered from
+> the device tree which also has the nice effect that they now can easily
+> be recognized.
+
+Well, that also breaks scripting based on device name (example):
+-if [ ${fffa4000.gadget@fffa4000.vbus} != 1 ]
++if [ ${fffa4000.gadget@fffa4000.of.vbus} != 1 ]
+ then
+        echo "No USB Device cable plugged, normal boot"
+        exit 0
+
+I can live with that, but would welcome suggestions how to write above
+code in some nicer way.
+
+Thank you
+
+> Fixes: 7e497d48acbd11 ("of: Port latest of_device_make_bus_id() implementation")
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
