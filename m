@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x142.google.com ([2a00:1450:4864:20::142])
+Received: from mail-lj1-x243.google.com ([2a00:1450:4864:20::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gdsbs-0000AG-EX
- for barebox@lists.infradead.org; Mon, 31 Dec 2018 08:07:42 +0000
-Received: by mail-lf1-x142.google.com with SMTP id b20so17925652lfa.12
- for <barebox@lists.infradead.org>; Mon, 31 Dec 2018 00:07:40 -0800 (PST)
+ id 1gdsbq-00009G-0Y
+ for barebox@lists.infradead.org; Mon, 31 Dec 2018 08:07:39 +0000
+Received: by mail-lj1-x243.google.com with SMTP id k19-v6so23136353lji.11
+ for <barebox@lists.infradead.org>; Mon, 31 Dec 2018 00:07:37 -0800 (PST)
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Mon, 31 Dec 2018 09:07:25 +0100
-Message-Id: <20181231080725.2141-6-sam@ravnborg.org>
+Date: Mon, 31 Dec 2018 09:07:22 +0100
+Message-Id: <20181231080725.2141-3-sam@ravnborg.org>
 In-Reply-To: <20181231080725.2141-1-sam@ravnborg.org>
 References: <20181231080725.2141-1-sam@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -23,34 +23,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 5/5] video: mtl017: fix driver name variable
+Subject: [PATCH v1 2/5] images: fix force rebuild of piggy.o
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-It look like a copy-paste bug that the twl_driver name
-was used.
-Rename to the more sensible mtl_driver
+piggy.o would be build for every time barebox was built
+This had the sideeffect that the image(s) would
+always be rebuilt despite no changes
 
+Fix this by adding piggy.o to targets
+and avoid an extra command in the rule to create .pblb files
+
+The patch includes the removal of a stray assignment
+
+Fixes: 2078438662 ("Add multi images support")
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- drivers/video/mtl017.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ images/Makefile | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/video/mtl017.c b/drivers/video/mtl017.c
-index 423fb8e4f..c04875cd0 100644
---- a/drivers/video/mtl017.c
-+++ b/drivers/video/mtl017.c
-@@ -268,8 +268,8 @@ static int mtl017_probe(struct device_d *dev)
- 	return 0;
- }
+diff --git a/images/Makefile b/images/Makefile
+index 8271a0d24..dfdc89811 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -43,7 +43,9 @@
+ #
  
--static struct driver_d twl_driver = {
-+static struct driver_d mtl_driver = {
- 	.name  = "mtl017",
- 	.probe = mtl017_probe,
- };
--device_i2c_driver(twl_driver);
-+device_i2c_driver(mtl_driver);
+ quiet_cmd_objcopy_bin = OBJCOPYB $@
+-      cmd_objcopy_bin = $(OBJCOPY) -O binary $(OBJCOPYFLAGS) $(OBJCOPYFLAGS_$(@F)) $< $@
++      cmd_objcopy_bin = \
++		$(OBJCOPY) -O binary $(OBJCOPYFLAGS) $(OBJCOPYFLAGS_$(@F)) $< $@ && \
++		$(objtree)/scripts/fix_size -f $@
+ 
+ pbl-lds := $(obj)/pbl.lds
+ extra-y += $(pbl-lds)
+@@ -59,14 +61,11 @@ quiet_cmd_elf__ ?= LD      $@
+ 
+ PBL_CPPFLAGS	+= -fdata-sections -ffunction-sections
+ 
+-piggy_o := piggy.$(suffix_y).o
+-
+ $(obj)/%.pbl: $(pbl-lds) $(barebox-pbl-common) $(obj)/piggy.o FORCE
+ 	$(call if_changed,elf__,$(*F))
+ 
+ $(obj)/%.pblb: $(obj)/%.pbl FORCE
+ 	$(call if_changed,objcopy_bin,$(*F))
+-	$(Q)$(objtree)/scripts/fix_size -f $@
+ 
+ $(obj)/%.s: $(obj)/% FORCE
+ 	$(call if_changed,disasm)
+@@ -114,7 +113,7 @@ include $(srctree)/images/Makefile.xburst
+ include $(srctree)/images/Makefile.at91
+ include $(srctree)/images/Makefile.zynqmp
+ 
+-targets += $(image-y) pbl.lds barebox.x barebox.z
++targets += $(image-y) pbl.lds barebox.x barebox.z piggy.o
+ targets += $(patsubst %,%.pblb,$(pblb-y))
+ targets += $(patsubst %,%.pbl,$(pblb-y))
+ targets += $(patsubst %,%.s,$(pblb-y))
 -- 
 2.12.0
 
