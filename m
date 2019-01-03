@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gez9E-0000op-0U
- for barebox@lists.infradead.org; Thu, 03 Jan 2019 09:18:41 +0000
-Date: Thu, 3 Jan 2019 10:18:33 +0100
+ id 1gezAm-0002Cl-Ih
+ for barebox@lists.infradead.org; Thu, 03 Jan 2019 09:20:18 +0000
+Date: Thu, 3 Jan 2019 10:20:13 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190103091833.7toenpso5b36wqd2@pengutronix.de>
-References: <1546178368-26182-1-git-send-email-yamada.masahiro@socionext.com>
- <20181231061208.GA12963@ravnborg.org>
- <CAK7LNAQ_LbK0-cFy393cdxj2ERpNWHV+9R21hDzdyX8Uf7avGA@mail.gmail.com>
+Message-ID: <20190103092013.oytk22fq4s45v2os@pengutronix.de>
+References: <20181227185714.16738-1-festevam@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAK7LNAQ_LbK0-cFy393cdxj2ERpNWHV+9R21hDzdyX8Uf7avGA@mail.gmail.com>
+In-Reply-To: <20181227185714.16738-1-festevam@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,36 +22,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/11] Sync Kconfig to Linux 4.20
-To: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: barebox@lists.infradead.org, Sam Ravnborg <sam@ravnborg.org>
+Subject: Re: [PATCH] Documentation: imx8mq-evk: Pass the full path for file
+ names
+To: Fabio Estevam <festevam@gmail.com>
+Cc: andrew.smirnov@gmail.com, barebox@lists.infradead.org
 
-Hi Masahiro,
-
-On Tue, Jan 01, 2019 at 06:13:06PM +0900, Masahiro Yamada wrote:
-> Hi Sam,
+On Thu, Dec 27, 2018 at 04:57:14PM -0200, Fabio Estevam wrote:
+> Passing the full path of the referenced files make the text
+> clearer.
 > 
-> On Mon, Dec 31, 2018 at 3:12 PM Sam Ravnborg <sam@ravnborg.org> wrote:
-> >
-> > Hi Masahiro
-> >
-> > Thanks for taking your time to sync kconfig up with the kernel, very appreciated!
-> >
-> > I left a few comments to some of the patches, but nothing that require
-> > a re-spin.
-> 
-> 
-> Thanks for the review!
-> 
-> I hope Sascha will fix up flaws in the commit log.
+> Signed-off-by: Fabio Estevam <festevam@gmail.com>
+> ---
+>  Documentation/boards/imx/nxp-imx8mq-evk.rst | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks for working on this. I can only repeat Sam, this is really
-appreciated.
+Applied, thanks
 
-I fixed up the commit messaged and applied.
-
-Thanks
- Sascha
+Sascha
 
 
 -- 
