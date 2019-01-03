@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x143.google.com ([2a00:1450:4864:20::143])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gfN7o-0002sr-Ki
- for barebox@lists.infradead.org; Fri, 04 Jan 2019 10:54:50 +0000
-Received: by mail-lf1-x143.google.com with SMTP id y11so25138654lfj.4
- for <barebox@lists.infradead.org>; Fri, 04 Jan 2019 02:54:48 -0800 (PST)
-Date: Fri, 4 Jan 2019 13:54:44 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20190104135444.01b4689b768453fa22fca68a@gmail.com>
-In-Reply-To: <20190104081741.mxdgg4dwm4l5s4ki@pengutronix.de>
-References: <20190104015641.e6d525f098c5e272694faa62@gmail.com>
- <20190104081741.mxdgg4dwm4l5s4ki@pengutronix.de>
-Mime-Version: 1.0
+ id 1gf4xw-0003OU-FO
+ for barebox@lists.infradead.org; Thu, 03 Jan 2019 15:31:26 +0000
+Date: Thu, 3 Jan 2019 16:31:20 +0100
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20190103153120.efhgd2xtcct5xjq4@pengutronix.de>
+References: <20181213070336.26837-1-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20181213070336.26837-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,134 +18,108 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox on Canon A1100
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>, Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, QEMU Developers <qemu-devel@nongnu.org>, qemu-arm <qemu-arm@nongnu.org>
+Subject: Re: [PATCH 1/4] net/e1000: Map custom error codes to more
+ appropriate errno values
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Fri, 4 Jan 2019 09:17:41 +0100
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Wed, Dec 12, 2018 at 11:03:33PM -0800, Andrey Smirnov wrote:
+> A number of custom error codes used by e1000 driver will be propagated
+> all the way up to generic networking code and will end up being fed to
+> strerror(). As a result of that, some of the current error codes will
+> result in not very helpful failure messages. For example, trying to
+> ping a host on a system where access to i210's EEPROM fails results in
+> the following message:
+> 
+>   barebox@ZII RDU2 Board:/ ping 192.168.53.7
+>   ping failed: Operation not permitted
+> 
+> In order to make message like that one a little bit more helpful,
+> change definitions of various E1000_ERR_* constants to map to a bit
+> more appropriate error codes.
+> 
+> While at it, remove E1000_ERR_MASTER_REQUESTS_PENDING and
+> E1000_ERR_HOST_INTERFACE_COMMAND that are not referenced anywhere in
+> the codebase.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  drivers/net/e1000/e1000.h | 24 +++++++++++-------------
+>  1 file changed, 11 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
+> index 4a1a1aa33..0a9e107c0 100644
+> --- a/drivers/net/e1000/e1000.h
+> +++ b/drivers/net/e1000/e1000.h
+> @@ -95,19 +95,17 @@ typedef enum {
+>  
+>  /* Error Codes */
+>  #define E1000_SUCCESS				0
+> -#define E1000_ERR_EEPROM			1
+> -#define E1000_ERR_PHY				2
+> -#define E1000_ERR_CONFIG			3
+> -#define E1000_ERR_PARAM				4
+> -#define E1000_ERR_MAC_TYPE			5
+> -#define E1000_ERR_PHY_TYPE			6
+> -#define E1000_ERR_NOLINK			7
+> -#define E1000_ERR_TIMEOUT			8
+> -#define E1000_ERR_RESET				9
+> -#define E1000_ERR_MASTER_REQUESTS_PENDING	10
+> -#define E1000_ERR_HOST_INTERFACE_COMMAND	11
+> -#define E1000_BLK_PHY_RESET			12
+> -#define E1000_ERR_SWFW_SYNC 			13
+> +#define E1000_ERR_EEPROM			EIO
+> +#define E1000_ERR_PHY				EIO
+> +#define E1000_ERR_CONFIG			EINVAL
+> +#define E1000_ERR_PARAM				EINVAL
+> +#define E1000_ERR_MAC_TYPE			EINVAL
+> +#define E1000_ERR_PHY_TYPE			EINVAL
+> +#define E1000_ERR_NOLINK			ENETDOWN
+> +#define E1000_ERR_TIMEOUT			ETIMEDOUT
+> +#define E1000_ERR_RESET				EIO
+> +#define E1000_BLK_PHY_RESET			EWOULDBLOCK
+> +#define E1000_ERR_SWFW_SYNC 			EBUSY
 
-> On Fri, Jan 04, 2019 at 01:56:41AM +0300, Antony Pavlov wrote:
-> > Hi Sascha!
-> > =
+Just a small nitpick, and I'm not sure it's relevant somewhere in the
+code: previously the mapping of symbols to numbers was bijective, but
+now it is no longer surjective. This may result in confusion when
+checking return codes, for example:
 
-> > I have some good news and some bad news.
-> > =
+    int ret = e1000_set_phy_mode(...;
+    if (ret == E1000_ERR_EEPROM) { 
+        printf("could not read from eeprom\n");
+    } else if (ret == E1000_ERR_PHY) {
+        printf("could not write to phy register\n");
+    }
 
-> > First the good news.
-> > =
+In this case, when the e1000_set_phy_mode() code path returns
+E1000_ERR_PHY, it is interpreted as E1000_ERR_EEPROM because both are
+defined to EIO.
 
-> > Barebox was used for Day 18 of QEMU 2018 advent (https://www.qemu-adven=
-t-calendar.org/2018/).
-> > =
+ - Roland
 
-> > Here is a quote:
-> > =
+>  
+>  /* PCI Device IDs */
+>  #define E1000_DEV_ID_82542			0x1000
+> -- 
+> 2.19.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-> >   > This is an image for QEMU's emulated Canon A1100 Arm machine:
-> >   > Play 2048 in the Barebox firmware environment.
-> =
-
-> Hey nice :)
-> =
-
-> > =
-
-> > The bad news.
-> > =
-
-> > Current master branch barebox for Canon A1100 does not work under qemu,
-> > barebox v2017.02.0 was used for qemu advent.
-> > =
-
-> > Thomas Huth reported the problem in the qemu-devel mailing
-> > list two months ago. Please see https://www.mail-archive.com/qemu-devel=
-@nongnu.org/msg571887.html
-> > for details.
-> > =
-
-> > The commit a43e2bbc468a71 breaks barebox for Canon A1100:
-> > =
-
-> >   > commit a43e2bbc468a71fb8825e8acafb7fac7ad7c6dad
-> >   > Author: Sascha Hauer <s.hauer@pengutronix.de>
-> >   > Date:   Wed Mar 7 10:04:07 2018 +0100
-> >   >
-> >   >    ARM: return positive offset in get_runtime_offset()
-> > =
-
-> > Any suggestion?
-> =
-
-> Yes, try again with a recent barebox. There was a bug in this commit that
-> should be fixed with the following:
->
-> | commit 0230365df6601cd561c9e3e368c96222076ec9f5
-> | Author: Sascha Hauer <s.hauer@pengutronix.de>
-> | Date:   Wed Dec 12 08:55:31 2018 +0100
-> | =
-
-> |     ARM: fix setup_c when runtime offset is !=3D 0
-> |     =
-
-> |     The runtime offset has to be added to the memcpy source address and
-> |     substracted from the return address. This should have been changed =
-in
-> |     a43e2bbc46 which changed from returning the negative runtime offset
-> |     into changing the positive runtime offset. Instead a43e2bbc46 only
-> |     changed a zero substraction ("subs r4, r0, #0") into a zero addition
-> |     ("adds r4, r0, #0") which was used as a equal to zero test and chan=
-ged
-> |     nothing. This part is reverted here.
-> |     =
-
-> |     Fixes wrong copy / return locations when setup_c is called with
-> |     different runtime and link addresses.
-> |     =
-
-> |     fixes: a43e2bbc46 ("ARM: return positive offset in get_runtime_offs=
-et()")
-> |     =
-
-> |     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-Thanks for noting!
-
-I have just tested recent master branch barebox with qemu-3.1.0 from Debian=
- unstable.
-It works!
-
-Here is the log:
-
-$ qemu-system-arm --version
-QEMU emulator version 3.1.0 (Debian 1:3.1+dfsg-2)
-Copyright (c) 2003-2018 Fabrice Bellard and the QEMU Project developers
-$ qemu-system-arm -M canon-a1100 -display none -serial stdio -bios barebox.=
-canon-a1100.bin
-Switch to console [cs0]
-
-
-barebox 2018.12.0-00140-g64fc4ac1b5 #1 Fri Jan 4 13:36:42 MSK 2019
-
-
-Board: Canon PowerShot A1100 IS
-digic-gpio c0220000.gpio.of: probed gpiochip-1 with base 0
-cfi_flash f8000000.flash@f8000000.of: found cfi flash at 0xf8000000, size 4=
- MiB
-malloc space: 0x00100000 -> 0x002fffff (size 2 MiB)
-running /env/bin/init...
-/env/bin/init not found
-canon-a1100 > /
-
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
+-- 
+Roland Hieber                     | r.hieber@pengutronix.de     |
+Pengutronix e.K.                  | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
