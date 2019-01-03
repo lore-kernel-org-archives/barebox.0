@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp.megiteam.pl ([31.186.83.105])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gf0ob-0008Um-8k
- for barebox@lists.infradead.org; Thu, 03 Jan 2019 11:05:31 +0000
-Date: Thu, 3 Jan 2019 12:05:27 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190103110527.bc7othajlohs6mqq@pengutronix.de>
-References: <20181230021823.7412-1-rhi@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181230021823.7412-1-rhi@pengutronix.de>
+ id 1gezD4-0002PT-BG
+ for barebox@lists.infradead.org; Thu, 03 Jan 2019 09:22:39 +0000
+From: Lukasz Madej <l.madej@grinn-global.com>
+Date: Thu,  3 Jan 2019 10:22:21 +0100
+Message-Id: <20190103092221.5937-1-l.madej@grinn-global.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,48 +14,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] README: add licensing information
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: imx7: missing config for AIPS3 bridge added
+To: barebox@lists.infradead.org
+Cc: Lukasz Madej <l.madej@grinn-global.com>
 
-T24gU3VuLCBEZWMgMzAsIDIwMTggYXQgMDM6MTg6MjNBTSArMDEwMCwgUm9sYW5kIEhpZWJlciB3
-cm90ZToKPiBOb3cgdGhhdCB3ZSBhcmUgbW92aW5nIGF3YXkgZnJvbSBib2lsZXJwbGF0ZSBjb2Rl
-IHRvd2FyZHMgU1BEWCBsaWNlbnNlCj4gdGFncyBpbiBpbmRpdmlkdWFsIGZpbGUgaGVhZGVycywg
-d2Ugc2hvdWxkIGhhdmUgYSBzaG9ydCBub3RlIGFib3V0IHdoYXQKPiB0aGVzZSB0YWdzIG1lYW4u
-IEFsc28sIHVudGlsIG5vdywgdGhlcmUgd2FzIGVmZmVjdGl2ZWx5IG5vIGV4cGxpY2l0Cj4gaW5m
-b3JtYXRpb24gdGhhdCBiYXJlYm94IGlzIGxpY2Vuc2VkIHVuZGVyIEdQTHYyIChvbmx5KS4gVGhp
-cyBjb3VsZCBoYXZlCj4gYmVlbiBpbnRlcnBvbGF0ZWQgZnJvbSB0aGUgZXhpc3RlbmNlIG9mIGEg
-R1BMdjIgdGV4dCBpbiAuL0NPUFlJTkcgKGFuZAo+IGZyb20gbW9zdCBvZiB0aGUgaW5kaXZpZHVh
-bCBmaWxlIGhlYWRlcnPigKYgaGF2ZSBmdW4gcmVhZGluZyBhbGwgb2YgdGhlbSksCj4gYnV0IGEg
-d2FycmFudHkgYW5kIGNvcHlyaWdodCBub3RpY2Ugd2FzIHN0aWxsIG1pc3NpbmcuIEFkZCB0aG9z
-ZSBhcyBhCj4gY2F0Y2gtYWxsIGZvciB0aGUgcHJvamVjdCB0byBlYXNlIGFwcGxpY2F0aW9uIG9m
-IEdQTHYyIGFydGljbGUgMDoKPiAKPiAgICAgICAwLiBUaGlzIExpY2Vuc2UgYXBwbGllcyB0byBh
-bnkgcHJvZ3JhbSBvciBvdGhlciB3b3JrIHdoaWNoIGNvbnRhaW5zCj4gICAgIGEgbm90aWNlIHBs
-YWNlZCBieSB0aGUgY29weXJpZ2h0IGhvbGRlciBzYXlpbmcgaXQgbWF5IGJlIGRpc3RyaWJ1dGVk
-Cj4gICAgIHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGlzIEdlbmVyYWwgUHVibGljIExpY2Vuc2UuIFvi
-gKZdCj4gCj4gYW5kIGFydGljbGUgMToKPiAKPiAgICAgICAxLiBZb3UgbWF5IGNvcHkgYW5kIGRp
-c3RyaWJ1dGUgdmVyYmF0aW0gY29waWVzIG9mIHRoZSBQcm9ncmFtJ3MKPiAgICAgc291cmNlIGNv
-ZGUgYXMgeW91IHJlY2VpdmUgaXQsIGluIGFueSBtZWRpdW0sIHByb3ZpZGVkIHRoYXQgeW91Cj4g
-ICAgIGNvbnNwaWN1b3VzbHkgYW5kIGFwcHJvcHJpYXRlbHkgcHVibGlzaCBvbiBlYWNoIGNvcHkg
-YW4gYXBwcm9wcmlhdGUKPiAgICAgY29weXJpZ2h0IG5vdGljZSBhbmQgZGlzY2xhaW1lciBvZiB3
-YXJyYW50eTsgW+KApl0KPiAKPiBTaW5jZSBiYXJlYm94IGdvZXMgYmFjayB0byBVLUJvb3QsIEkg
-dHJpZWQgdG8gZmluZCBleHBsaWNpdCBwcm9qZWN0LXdpZGUKPiBjb3B5cmlnaHQgbGluZXMsIGJ1
-dCB0aGUgb25seSBvbmUgSSBjb3VsZCBmaW5kIHdhcyB0aGUgb25lIGZyb20gVS1Cb290J3MKPiBv
-bGQgUkVBRE1FIGluIGNvbW1pdCA3ZTE0OWM4OTdiOTViNDA3NTIuIElmIHRoZXJlIGFyZSBhZGRp
-dGlvbmFsCj4gY29weXJpZ2h0IGhvbGRlcnMsIHRob3NlIGFyZSBwcm9iYWJseSBvbmx5IHByZXNl
-bnQgaW4gdGhlIHJlc3BlY3RpdmUKPiBmaWxlIGhlYWRlcnMuCj4gCj4gU2lnbmVkLW9mZi1ieTog
-Um9sYW5kIEhpZWJlciA8cmhpQHBlbmd1dHJvbml4LmRlPgo+IC0tLQo+ICBSRUFETUUgfCAzMiAr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+ICAxIGZpbGUgY2hhbmdlZCwgMzIgaW5z
-ZXJ0aW9ucygrKQoKQXBwbGllZCwgdGhhbmtzCgpTYXNjaGEKCgotLSAKUGVuZ3V0cm9uaXggZS5L
-LiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3
-dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBH
-ZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVz
-aGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Access priviledges for AIPS3 bridge have been configured so peripherals
+connected to it (like SDMA, SAI etc.) can work properly.
+
+Signed-off-by: Lukasz Madej <l.madej@grinn-global.com>
+---
+ arch/arm/mach-imx/imx7.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/arch/arm/mach-imx/imx7.c b/arch/arm/mach-imx/imx7.c
+index ca11e8345..ff2a828c7 100644
+--- a/arch/arm/mach-imx/imx7.c
++++ b/arch/arm/mach-imx/imx7.c
+@@ -26,6 +26,7 @@ void imx7_init_lowlevel(void)
+ {
+ 	void __iomem *aips1 = IOMEM(MX7_AIPS1_CONFIG_BASE_ADDR);
+ 	void __iomem *aips2 = IOMEM(MX7_AIPS2_CONFIG_BASE_ADDR);
++	void __iomem *aips3 = IOMEM(MX7_AIPS3_CONFIG_BASE_ADDR);
+ 
+ 	/*
+ 	 * Set all MPROTx to be non-bufferable, trusted for R/W,
+@@ -46,6 +47,14 @@ void imx7_init_lowlevel(void)
+ 	writel(0, aips2 + 0x48);
+ 	writel(0, aips2 + 0x4c);
+ 	writel(0, aips2 + 0x50);
++
++	writel(0x77777777, aips3);
++	writel(0x77777777, aips3 + 0x4);
++	writel(0, aips3 + 0x40);
++	writel(0, aips3 + 0x44);
++	writel(0, aips3 + 0x48);
++	writel(0, aips3 + 0x4c);
++	writel(0, aips3 + 0x50);
+ }
+ 
+ #define SC_CNTCR	0x0
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
