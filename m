@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ggtLu-0008OL-0E
- for barebox@lists.infradead.org; Tue, 08 Jan 2019 15:31:39 +0000
-Date: Tue, 8 Jan 2019 16:31:36 +0100
+ id 1gf0iw-0005Dc-OU
+ for barebox@lists.infradead.org; Thu, 03 Jan 2019 10:59:40 +0000
+Date: Thu, 3 Jan 2019 11:59:36 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190108153136.4zajgi4q4oomrsj5@pengutronix.de>
-References: <20181217051925.17582-1-andrew.smirnov@gmail.com>
- <CAHQ1cqE4Yw42KROoddZ_1OabhwN7jrutbA_u3LDGkgJrz1X=DA@mail.gmail.com>
+Message-ID: <20190103105936.b3nkdub77cpeoad4@pengutronix.de>
+References: <20181218132233.23669-1-florian.baeuerle@allegion.com>
+ <20181219140146.11806-1-florian.baeuerle@allegion.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAHQ1cqE4Yw42KROoddZ_1OabhwN7jrutbA_u3LDGkgJrz1X=DA@mail.gmail.com>
+In-Reply-To: <20181219140146.11806-1-florian.baeuerle@allegion.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,49 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 00/65] PCI i.MX6/DesignWare sync up with 4.20-rc1
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2 1/2] recursive_action: add ACTION_SORT flag
+To: "Baeuerle, Florian" <Florian.Baeuerle@allegion.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Mon, Jan 07, 2019 at 02:55:56PM -0800, Andrey Smirnov wrote:
-> On Sun, Dec 16, 2018 at 9:19 PM Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
-> >
-> > Everyone:
-> >
-> > As a part of working on adding support for PCI on i.MX7D/8MQ, I spent
-> > some time looking through Linux commit history of pci-imx6.c and
-> > pcie-designware*.c and porting various patches to minimize the
-> > differences between the two codebases. This series is the result of
-> > that effort. All of the patches are either fixes for missed corner
-> > cases or code simplifications/improvements, so no functonal changes
-> > are expected.
-> >
-> > Tested on ZII RDU2 i.MX6Q board with i210 Ethernet card by booting
-> > 4.20-rc1 via TFTP (via PCI/i210). Also tested as a part of adding on
-> > i.MX7D/i.MX8MQ suport on i.MX7D SabreSD and i.MX8MQ RDU3 boards.
-> >
-> > Feedback is welcome!
-> >
-> > Changes since v1:
-> >
-> >   - Fixed incorrect check/bug in "PCI: designware: Keep viewport fixed
-> >     for IO transaction if num_viewport > 2"
-> >
-> >   - Added patches containing code to support iATU unroll in order to
-> >     support i.MX8MQ
-> >
-> > Thanks,
-> > Andrey Smirnov
+Hi Florian,
+
+On Wed, Dec 19, 2018 at 02:02:03PM +0000, Baeuerle, Florian wrote:
+> Add a flag to sort directory entries before recursing into them.
 > 
-> Sascha:
+> Since this part of lib/ is used inside barebox as well as in
+> scripts/bareboxenv.c, we cannot easily use stringlists from lib/, which
+> would have made the code a bit nicer.
 > 
-> Just to make sure, this series is in you review queue and it didn't
-> get lost, correct?
+> Further, add poison.h from kernel 4.5-rc1, which was the base for
+> importing linux headers under scripts/ in a883d9a. This is required for
+> actually using kernel linked lists within scripts/ tools.
 
-Hm, yes of course :)
-
-I applied this series without looking at it. I hope nobody else realizes
-he just has to send that many patches to bypass any review :/
+I applied this with some changes. It was important for me that the sort
+support does not leak into the barebox image so we do not increase the
+binary size. Please check the result in the -next branch, it should do
+what you need.
 
 Sascha
 
