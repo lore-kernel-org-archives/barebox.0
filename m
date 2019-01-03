@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjMT3-0003ST-E3
- for barebox@lists.infradead.org; Tue, 15 Jan 2019 11:01:15 +0000
-Date: Tue, 15 Jan 2019 12:01:11 +0100
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190115110111.mkedj7f2gmvsp4va@pengutronix.de>
-References: <cover.cea99e013da63859278229c6e1566362a1800ff4.1547530950.git-series.r.czerwinski@pengutronix.de>
+ id 1gf0lv-0006z9-Dv
+ for barebox@lists.infradead.org; Thu, 03 Jan 2019 11:02:46 +0000
+Date: Thu, 3 Jan 2019 12:02:41 +0100
+From: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
+Message-ID: <20190103110241.adt27f3gkq4xc4p7@pengutronix.de>
+References: <20181213063356.19138-1-t.scherer@eckelmann.de>
+ <20181217141852.9c9dd9acf3072d07af8af20b@gmail.com>
+ <20181217113102.kjlim22expeyz627@pengutronix.de>
+ <9048331c298200e72ac622400f056bb30a2ab8d4.camel@eckelmann.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <cover.cea99e013da63859278229c6e1566362a1800ff4.1547530950.git-series.r.czerwinski@pengutronix.de>
+In-Reply-To: <9048331c298200e72ac622400f056bb30a2ab8d4.camel@eckelmann.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,86 +25,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v6 0/9] Raspberry Pi miniuart support
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] imd: model and compatible missing in metadata
+To: "Scherer, Thorsten" <T.Scherer@eckelmann.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi,
+On Thu, Dec 20, 2018 at 12:54:08PM +0000, Scherer, Thorsten wrote:
+> Hallo Sascha,
+> 
+> On Mon, 2018-12-17 at 12:31 +0100, Sascha Hauer wrote:
+> > On Mon, Dec 17, 2018 at 02:18:52PM +0300, Antony Pavlov wrote:
+> > > On Thu, 13 Dec 2018 07:33:56 +0100
+> > > "Thorsten K. Scherer" <t.scherer@eckelmann.de> wrote:
+> > > 
+> > > Hi!
+> > > 
+> > > 
+> > > > fixes 97e81f2
+> > > > 
+> > > > Signed-off-by: Thorsten K. Scherer <t.scherer@eckelmann.de>
+> > > > ---
+> > > >  include/asm-generic/barebox.lds.h | 2 +-
+> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/include/asm-generic/barebox.lds.h b/include/asm-
+> > > > generic/barebox.lds.h
+> > > > index 74d3ca4a9..decaab79a 100644
+> > > > --- a/include/asm-generic/barebox.lds.h
+> > > > +++ b/include/asm-generic/barebox.lds.h
+> > > > @@ -66,7 +66,7 @@
+> > > >  #define BAREBOX_IMD				\
+> > > >  	KEEP(*(.barebox_imd_start))		\
+> > > >  	KEEP(*(.barebox_imd_1*))		\
+> > > > -	*(.barebox_imd_0*)			\
+> > > > +	KEEP(*(.barebox_imd_0*))		\
+> > > >  	KEEP(*(.barebox_imd_end))
+> > > >  
+> > > >  #if defined(CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE) && \
+> > > > -- 
+> > > > 2.19.1
+> > > 
+> > > It looks like this patch has unobvious drawback.
+> > > The bareboximd utility sees too many 'model' and 'compatible'
+> > > strings in a single image, e.g.:
+> > 
+> > Now I remember what the intention was that this line looks so
+> > apparently
+> > different from the other ones ;)
+> > 
+> > To get the compatible strings into the binary I have created
+> > imd_used().
+> > This should be called with the symbol that should be kept in the
+> > resulting image.
+> > 
+> > Sascha
+> > 
+> 
+> sorry for introducing confusion.   I misread the documenation on IMD as
+> "of_compatible and model will be figured out and put into the
+> proper  location by barebox".  What's your opinion on adding some
+> documentation for "imd_used" in (user/imd.rst)?  So I may try to
+> produce a meaningful  a patch for that.
 
-just a short notice, I tested in on my small board farm, RPi 1 and RPi 3
-boot okay, but RPi Zero W doesn't show a barebox prompt. When enabling
-uart_2ndstage=1 in config.txt, the firmware hangs after
+Sure, that would be appreciated.
 
-    MESS:00:00:02.864061:0: uart: Baud rate change done...
-    MESS:00:00:02.867490:0: uart: Baud rate
-
-The docs don't claim that we officially to support that board though... :P
-
- - Roland
-
-On Tue, Jan 15, 2019 at 06:44:00AM +0100, Rouven Czerwinski wrote:
-> This patch series adds support for the raspberry pi miniuart (also called
-> aux-uart) to barebox.
-> With this series the miniuart overlay is no longer necessary to start barebox on
-> Raspberry Pi 3.
-> 
-> v6:
-> - Remove leftover val and missing fixup of the AUX Clock defines
-> 
-> v5:
-> - Add defines for register and base values
->   from Sascha Hauer and Roland Hieber
-> 
-> v4:
-> - Fix indentation for compatible
-> - Fix __maybe_unused annnotation for rpi_drvdata missed in v3
->   from Sascha Hauer
-> 
-> v3:
-> - Fix Indentation
->   from Oleksij Rempel and Sascha Hauer
-> 
-> v2:
-> - Move console clock initialization into board core
-> - Retrieve the core clock frequency for the miniuart from the firmware
-> - Double the clock frequency in the ns16550 rpi init function instead of
->   during initialization
->   from Lucas Stach
-> 
-> Rouven Czerwinski (9):
->   ARM: rpi: fix typo in rpi-common.c
->   ARM: rpi: move clks into board specific rpi-common
->   ARM: rpi: retrieve miniuart clock from firmware
->   serial_ns16550: handle default reg-io-width
->   serial_ns16550: add raspberry pi compatible and init
->   ARM: rpi: add NS16550 support
->   ARM: rpi: choose miniuart as stdout
->   doc: bcm283x: remove miniuart overlay instruction
->   ARM: rpi: use defines for uart bases
-> 
->  Documentation/boards/bcm2835.rst          |  1 +-
->  arch/arm/boards/raspberry-pi/rpi-common.c | 34 ++++++++++-
->  arch/arm/configs/rpi_defconfig            |  1 +-
->  arch/arm/dts/bcm2837-rpi-3.dts            |  7 +--
->  arch/arm/mach-bcm283x/core.c              | 19 +------
->  drivers/serial/serial_ns16550.c           | 74 ++++++++++++++++--------
->  6 files changed, 85 insertions(+), 51 deletions(-)
-> 
-> base-commit: 0b5361a328632e64c14a54306119093a0c7fecdf
-> -- 
-> git-series 0.9.1
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Sascha
 
 -- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
