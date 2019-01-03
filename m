@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ggPXC-0001ps-9W
- for barebox@lists.infradead.org; Mon, 07 Jan 2019 07:41:19 +0000
-Date: Mon, 7 Jan 2019 08:41:16 +0100
+ id 1gf10t-0003tH-EQ
+ for barebox@lists.infradead.org; Thu, 03 Jan 2019 11:18:13 +0000
+Date: Thu, 3 Jan 2019 12:18:09 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190107074116.ssxbxjvhlxp44m65@pengutronix.de>
-References: <20181231080725.2141-1-sam@ravnborg.org>
- <20181231080725.2141-4-sam@ravnborg.org>
- <20190104072718.czf6qqojjzluua46@pengutronix.de>
- <20190106203811.GA5376@ravnborg.org>
+Message-ID: <20190103111809.ctogjrhe4d2eyxg7@pengutronix.de>
+References: <20181218071943.2560-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190106203811.GA5376@ravnborg.org>
+In-Reply-To: <20181218071943.2560-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,28 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 3/5] arm: fix no prototype for
- barebox_arm_reset_vector()
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v3 00/10] Add initial RISC-V architecture support
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Sun, Jan 06, 2019 at 09:38:11PM +0100, Sam Ravnborg wrote:
-> Hi Sasha.
+Hi Antony,
+
+On Tue, Dec 18, 2018 at 10:19:33AM +0300, Antony Pavlov wrote:
+> This patchseries adds initial RISC-V architecture support for barebox.
 > 
-> > > +void __naked __bare_init barebox_arm_reset_vector(void);
-> > 
-> > I had to drop this one as it breaks compilation on some boards. Some
-> > boards need r0 from the ROM so they have:
-> > 
-> > void __naked __bare_init barebox_arm_reset_vector(uint32_t *data)
-> > 
-> > We have to harmonize these first.
-> Sorry - I did not test more than a few boards.
 
-Don't worry, that's what my compile tests are good for.
+It's very nice to get RISC-V support for barebox.
+
+The code looks fine from a first glance. I would prefer using multi
+image support from the start of course, but I think I can live without
+it.
+I do not have the bandwidth to look at the code so closely to give any
+valuable input though. I am fine to apply it if you want to, or you
+could continue to develop it out of tree if that's more convenient for
+you. Your choice.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
