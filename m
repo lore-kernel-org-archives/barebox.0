@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gfKb2-0000Rc-Om
- for barebox@lists.infradead.org; Fri, 04 Jan 2019 08:12:50 +0000
-Date: Fri, 4 Jan 2019 09:12:45 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190104081245.k4apq6qhvvibwt7e@pengutronix.de>
-References: <20181114085233.5000-1-s.hauer@pengutronix.de>
- <20181231111258.GA6011@lenoch>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181231111258.GA6011@lenoch>
+ id 1gfBuw-0007gQ-9W
+ for barebox@lists.infradead.org; Thu, 03 Jan 2019 22:56:47 +0000
+Received: by mail-lj1-x22a.google.com with SMTP id q2-v6so31024265lji.10
+ for <barebox@lists.infradead.org>; Thu, 03 Jan 2019 14:56:45 -0800 (PST)
+Date: Fri, 4 Jan 2019 01:56:41 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20190104015641.e6d525f098c5e272694faa62@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,66 +17,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] of: Add .of suffix to device names from devicetree
-To: Ladislav Michl <ladis@linux-mips.org>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Barebox List <barebox@lists.infradead.org>
+Subject: barebox on Canon A1100
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>, Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, QEMU Developers <qemu-devel@nongnu.org>, qemu-arm <qemu-arm@nongnu.org>
 
-On Mon, Dec 31, 2018 at 12:12:58PM +0100, Ladislav Michl wrote:
-> On Wed, Nov 14, 2018 at 09:52:33AM +0100, Sascha Hauer wrote:
-> > Previous implementation used to add a number to the device names
-> > for devices registered from the device tree which did not have a 'reg'
-> > property, thus a device node named "state" resulted in a device name
-> > "state.<x>". Current implementation skips that number and we get a
-> > device named "state". This conflicts with our barebox state
-> > implementation which tries to register a device named "state" itself.
-> > We could rename the state device nodes of all our device trees, but it
-> > causes less trouble to rename the devices.
-> > 
-> > This adds a ".of" suffix to the device names for devices registered from
-> > the device tree which also has the nice effect that they now can easily
-> > be recognized.
-> 
-> Well, that also breaks scripting based on device name (example):
-> -if [ ${fffa4000.gadget@fffa4000.vbus} != 1 ]
-> +if [ ${fffa4000.gadget@fffa4000.of.vbus} != 1 ]
->  then
->         echo "No USB Device cable plugged, normal boot"
->         exit 0
-> 
-> I can live with that, but would welcome suggestions how to write above
-> code in some nicer way.
+Hi Sascha!
 
-This only becomes a problem when you peristently store an environment and
-update barebox afterwards.
+I have some good news and some bad news.
 
-I generally avoid scripting as much as I can. It's good to be able to do
-scripting, but it's even better to not have to. Scripting is great for
-hacking and development but IMHO is bad in production. Correct error
-handling is hard to archieve in scripts, even more so in a restricted
-shell like hush. Then with scripts it's tempting to store them on the
-device. When this is done you can run into surprising compatibility
-issues like above, so you are doomed to maintain compatibility to some
-ancient scripts that might be on your device.
+First the good news.
 
-With the example you have given I would rather write the corresponding C
-code which is much easier to maintain.
+Barebox was used for Day 18 of QEMU 2018 advent (https://www.qemu-advent-ca=
+lendar.org/2018/).
 
-Sidenote: Your script example only works because your devices base
-address happens to be in the a-f hexadecimal range. Shell variables
-cannot start with a number, so 800a4000.gadget@800a4000.vbus would not
-work.
+Here is a quote:
 
-Sascha
+  > This is an image for QEMU's emulated Canon A1100 Arm machine:
+  > Play 2048 in the Barebox firmware environment.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+The bad news.
+
+Current master branch barebox for Canon A1100 does not work under qemu,
+barebox v2017.02.0 was used for qemu advent.
+
+Thomas Huth reported the problem in the qemu-devel mailing
+list two months ago. Please see https://www.mail-archive.com/qemu-devel@non=
+gnu.org/msg571887.html
+for details.
+
+The commit a43e2bbc468a71 breaks barebox for Canon A1100:
+
+  > commit a43e2bbc468a71fb8825e8acafb7fac7ad7c6dad
+  > Author: Sascha Hauer <s.hauer@pengutronix.de>
+  > Date:   Wed Mar 7 10:04:07 2018 +0100
+  >
+  >    ARM: return positive offset in get_runtime_offset()
+
+Any suggestion?
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
