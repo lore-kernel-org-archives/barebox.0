@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1geyx6-0003GC-3U
- for barebox@lists.infradead.org; Thu, 03 Jan 2019 09:06:09 +0000
-Date: Thu, 3 Jan 2019 10:06:05 +0100
+ id 1gfJt4-0002Js-Pd
+ for barebox@lists.infradead.org; Fri, 04 Jan 2019 07:27:24 +0000
+Date: Fri, 4 Jan 2019 08:27:18 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190103090605.3qycpb22j3nveo6p@pengutronix.de>
+Message-ID: <20190104072718.czf6qqojjzluua46@pengutronix.de>
 References: <20181231080725.2141-1-sam@ravnborg.org>
- <20181231080725.2141-3-sam@ravnborg.org>
+ <20181231080725.2141-4-sam@ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20181231080725.2141-3-sam@ravnborg.org>
+In-Reply-To: <20181231080725.2141-4-sam@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,42 +19,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 2/5] images: fix force rebuild of piggy.o
+Subject: Re: [PATCH v1 3/5] arm: fix no prototype for
+ barebox_arm_reset_vector()
 To: Sam Ravnborg <sam@ravnborg.org>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Dec 31, 2018 at 09:07:22AM +0100, Sam Ravnborg wrote:
-> piggy.o would be build for every time barebox was built
-> This had the sideeffect that the image(s) would
-> always be rebuilt despite no changes
-> 
-> Fix this by adding piggy.o to targets
-> and avoid an extra command in the rule to create .pblb files
-> 
-> The patch includes the removal of a stray assignment
-> 
-> Fixes: 2078438662 ("Add multi images support")
-
-This adds multi images support, but the actual change that this patch
-fixes came with 5a1a5ed253 ("ARM: images: use piggydata").
-
-I changed that while applying.
-
-Thanks,
- Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW9uLCBEZWMgMzEsIDIwMTggYXQgMDk6MDc6MjNBTSArMDEwMCwgU2FtIFJhdm5ib3JnIHdy
+b3RlOgo+IEZpeCB0aGUgZm9sbG93aW5nIHdhcm5pbmc6Cj4gCj4gUEJMQ0MgICBhcmNoL2FybS9i
+b2FyZHMvYXQ5MXNhbTkyNjFlay9wYmwtbG93bGV2ZWxfaW5pdC5vCj4gYXJjaC9hcm0vYm9hcmRz
+L2F0OTFzYW05MjYxZWsvbG93bGV2ZWxfaW5pdC5jOjEyMDoyNjoKPiB3YXJuaW5nOiBubyBwcmV2
+aW91cyBwcm90b3R5cGUgZm9yIOKAmGJhcmVib3hfYXJtX3Jlc2V0X3ZlY3RvcuKAmSBbLVdtaXNz
+aW5nLXByb3RvdHlwZXNdCj4gCj4gUHJvdG90eXBlIGFkZGVkIHNvIGl0IGNvdmVycyBtYWNocyB3
+aXRoIHRoZWlyIG93bgo+IGRlZmluaXRpb24gYW5kIHRoZSBtYWNocyB1c2luZyB0aGUgYXJtIGdl
+bmVyYWwgdmFyaWFudAo+IAo+IFNpZ25lZC1vZmYtYnk6IFNhbSBSYXZuYm9yZyA8c2FtQHJhdm5i
+b3JnLm9yZz4KPiAtLS0KPiAgYXJjaC9hcm0vaW5jbHVkZS9hc20vYmFyZWJveC1hcm0uaCB8IDIg
+KysKPiAgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKQo+IAo+IGRpZmYgLS1naXQgYS9h
+cmNoL2FybS9pbmNsdWRlL2FzbS9iYXJlYm94LWFybS5oIGIvYXJjaC9hcm0vaW5jbHVkZS9hc20v
+YmFyZWJveC1hcm0uaAo+IGluZGV4IGUwNjViNDc5ZS4uMzEyNjg1NDg2IDEwMDY0NAo+IC0tLSBh
+L2FyY2gvYXJtL2luY2x1ZGUvYXNtL2JhcmVib3gtYXJtLmgKPiArKysgYi9hcmNoL2FybS9pbmNs
+dWRlL2FzbS9iYXJlYm94LWFybS5oCj4gQEAgLTI1LDYgKzI1LDcgQEAKPiAgI2lmbmRlZiBfQkFS
+RUJPWF9BUk1fSF8KPiAgI2RlZmluZSBfQkFSRUJPWF9BUk1fSF8KPiAgCj4gKyNpbmNsdWRlIDxp
+bml0Lmg+Cj4gICNpbmNsdWRlIDxsaW51eC9zaXplcy5oPgo+ICAjaW5jbHVkZSA8YXNtLWdlbmVy
+aWMvbWVtb3J5X2xheW91dC5oPgo+ICAjaW5jbHVkZSA8bGludXgva2VybmVsLmg+Cj4gQEAgLTU4
+LDYgKzU5LDcgQEAgdm9pZCBzZXR1cF9jKHZvaWQpOwo+ICB2b2lkIHJlbG9jYXRlX3RvX2N1cnJl
+bnRfYWRyKHZvaWQpOwo+ICB2b2lkIHJlbG9jYXRlX3RvX2Fkcih1bnNpZ25lZCBsb25nIHRhcmdl
+dCk7Cj4gIHZvaWQgX19ub3JldHVybiBiYXJlYm94X2FybV9lbnRyeSh1bnNpZ25lZCBsb25nIG1l
+bWJhc2UsIHVuc2lnbmVkIGxvbmcgbWVtc2l6ZSwgdm9pZCAqYm9hcmRkYXRhKTsKPiArdm9pZCBf
+X25ha2VkIF9fYmFyZV9pbml0IGJhcmVib3hfYXJtX3Jlc2V0X3ZlY3Rvcih2b2lkKTsKCkkgaGFk
+IHRvIGRyb3AgdGhpcyBvbmUgYXMgaXQgYnJlYWtzIGNvbXBpbGF0aW9uIG9uIHNvbWUgYm9hcmRz
+LiBTb21lCmJvYXJkcyBuZWVkIHIwIGZyb20gdGhlIFJPTSBzbyB0aGV5IGhhdmU6Cgp2b2lkIF9f
+bmFrZWQgX19iYXJlX2luaXQgYmFyZWJveF9hcm1fcmVzZXRfdmVjdG9yKHVpbnQzMl90ICpkYXRh
+KQoKV2UgaGF2ZSB0byBoYXJtb25pemUgdGhlc2UgZmlyc3QuIEkgc3VnZ2VzdCB0byB1c2UKCnZv
+aWQgX19uYWtlZCBfX2JhcmVfaW5pdCBiYXJlYm94X2FybV9yZXNldF92ZWN0b3IodWludDMyX3Qg
+cjAsIHVpbnQzMl90IHIxLCB1aW50MzJfdCByMikKClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUu
+Sy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93
+d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwg
+R2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRl
+c2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
+IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
