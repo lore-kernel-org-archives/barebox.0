@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f511.i.mail.ru ([217.69.138.178])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ggotA-0007le-Is
- for barebox@lists.infradead.org; Tue, 08 Jan 2019 10:45:42 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1gfRDO-00054B-MW
+ for barebox@lists.infradead.org; Fri, 04 Jan 2019 15:16:52 +0000
+From: Roland Hieber <rhi@pengutronix.de>
+Date: Fri,  4 Jan 2019 16:16:44 +0100
+Message-Id: <20190104151644.12393-1-rhi@pengutronix.de>
 MIME-Version: 1.0
-Date: Tue, 08 Jan 2019 13:45:34 +0300
-Message-ID: <1546944334.58058325@f511.i.mail.ru>
-In-Reply-To: <20190104104806.2a4sa6ozuftgd5nj@pengutronix.de>
-References: <20181219080403.13737-1-shc_work@mail.ru>
- <20190104104655.xgwbijdqbay2pq5u@pengutronix.de>
- <20190104104806.2a4sa6ozuftgd5nj@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,49 +15,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCAwMi8xMF0gc2VyaWFsOiBjbHBzNzExeDogU3dpdGNoIHRv?=
- =?UTF-8?B?IFNQRFggaWRlbnRpZmllcg==?=
-To: =?UTF-8?B?Um9sYW5kIEhpZWJlcg==?= <rhi@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] common: state: fix alignment
+To: barebox@lists.infradead.org
+Cc: Roland Hieber <rhi@pengutronix.de>
 
-PtCf0Y/RgtC90LjRhtCwLCAgNCDRj9C90LLQsNGA0Y8gMjAxOSwgMTM6NDggKzAzOjAwINC+0YIg
-Um9sYW5kIEhpZWJlciA8cmhpQHBlbmd1dHJvbml4LmRlPjoKPgo+T24gRnJpLCBKYW4gMDQsIDIw
-MTkgYXQgMTE6NDY6NTVBTSArMDEwMCwgUm9sYW5kIEhpZWJlciB3cm90ZToKPj4gSGkgQWxleGFu
-ZGVyLAo+PiAKPj4gT24gV2VkLCBEZWMgMTksIDIwMTggYXQgMTE6MDM6NTVBTSArMDMwMCwgQWxl
-eGFuZGVyIFNoaXlhbiB3cm90ZToKPj4gPiBBZG9wdCB0aGUgU1BEWCBsaWNlbnNlIGlkZW50aWZp
-ZXIgaGVhZGVycyB0byBlYXNlIGxpY2Vuc2UgY29tcGxpYW5jZQo+PiA+IG1hbmFnZW1lbnQuCj4+
-ID4gCj4+ID4gU2lnbmVkLW9mZi1ieTogQWxleGFuZGVyIFNoaXlhbiA8IHNoY193b3JrQG1haWwu
-cnUgPgo+PiA+IC0tLQo+PiA+ICBkcml2ZXJzL3NlcmlhbC9zZXJpYWxfY2xwczcxMXguYyB8IDEy
-ICsrLS0tLS0tLS0tLQo+PiA+ICAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAxMCBk
-ZWxldGlvbnMoLSkKPj4gPiAKPj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zZXJpYWwvc2VyaWFs
-X2NscHM3MTF4LmMgYi9kcml2ZXJzL3NlcmlhbC9zZXJpYWxfY2xwczcxMXguYwo+PiA+IGluZGV4
-IDlhOWFlMjRjMC4uYzIxY2E2NTEwIDEwMDY0NAo+PiA+IC0tLSBhL2RyaXZlcnMvc2VyaWFsL3Nl
-cmlhbF9jbHBzNzExeC5jCj4+ID4gKysrIGIvZHJpdmVycy9zZXJpYWwvc2VyaWFsX2NscHM3MTF4
-LmMKPj4gPiBAQCAtMSwxMyArMSw1IEBACj4+ID4gLS8qCj4+ID4gLSAqIFNpbXBsZSBDTFBTNzEx
-WCBzZXJpYWwgZHJpdmVyCj4+ID4gLSAqCj4+ID4gLSAqIChDKSBDb3B5cmlnaHQgMjAxMi0yMDE0
-IEFsZXhhbmRlciBTaGl5YW4gPCBzaGNfd29ya0BtYWlsLnJ1ID4KPj4gPiAtICoKPj4gPiAtICog
-VGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFu
-ZC9vcgo+PiA+IC0gKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJh
-bCBQdWJsaWMgTGljZW5zZSBhcwo+PiA+IC0gKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdh
-cmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZgo+PiA+IC0gKiB0aGUgTGljZW5zZSwg
-b3IgKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4KPj4gPiAtICovCj4+ID4gKy8v
-IFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wKwo+PiA+ICsvKiBBdXRob3I6IEFsZXhh
-bmRlciBTaGl5YW4gPCBzaGNfd29ya0BtYWlsLnJ1ID4gKi8KPj4gCj4+IFlvdXIgcmVtb3ZlZCB0
-aGUgIkNvcHlyaWdodCIgaGVyZSBhbmQgcmVwbGFjZWQgaXQgd2l0aCAiQXV0aG9yIiwgYnV0IGlu
-Cj4+IHNvbWUganVyaXNkaWN0aW9ucyBjb3B5cmlnaHQgYW5kIGF1dGhvcnNoaXAgYXJlIGFjdHVh
-bGx5IGRpZmZlcmVudAo+PiB0aGluZ3MsIGFuZCBtb3N0IGF1dG9tYXRlZCBsaWNlbnNlIGNvbXBs
-aWFuY2UgdG9vbHMgb25seSBsb29rIGZvciB0aGUKPj4gc3RyaW5nICJDb3B5cmlnaHQiLCBzbyB5
-b3VyIGNoYW5nZSB3aWxsIHByb2JhYmx5IG1lYW4gdGhhdCB5b3VyIG5hbWUKPj4gd2lsbCBub3Qg
-YmUgcGlja2VkIHVwIGFzIGNvcHlyaWdodC4gV2FzIHRoaXMgY2hhbmdlIG1hZGUgZGVsaWJlcmF0
-ZWx5Pwo+PiAKPj4gU2FtZSBnb2VzIGZvciAiW1BBVENIIDA2LzEwXSBncGlvOiBjbHBzNzExeDog
-U3dpdGNoIHRvIFNQRFggaWRlbnRpZmllciIuCj4KPmFuZCAiW1BBVENIIDA5LzEwXSBjbG9ja3Nv
-dXJjZTogY2xwczcxMXg6IFN3aXRjaCB0byBTUERYIGlkZW50aWZpZXIiLgoKRXZlcnl0aGluZyBp
-cyBPSywgYXMgaXQgd2FzIGludGVuZGVkLgoKLS0tCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+Fixes: 7126dffd0be ("common: state: Add variable_type to state_variable")
+Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+---
+ common/state/state_variables.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/common/state/state_variables.c b/common/state/state_variables.c
+index 269d175874..50cffba700 100644
+--- a/common/state/state_variables.c
++++ b/common/state/state_variables.c
+@@ -132,7 +132,7 @@ static struct state_variable *state_uint8_create(struct state *state,
+ static struct state_variable *state_uint32_create(struct state *state,
+ 						  const char *name,
+ 						  struct device_node *node,
+-					      const struct variable_type *vtype)
++						  const struct variable_type *vtype)
+ {
+ 	struct state_uint32 *su32;
+ 	struct param_d *param;
+@@ -223,7 +223,7 @@ static int state_enum32_import(struct state_variable *sv,
+ static struct state_variable *state_enum32_create(struct state *state,
+ 						  const char *name,
+ 						  struct device_node *node,
+-					      const struct variable_type *vtype)
++						  const struct variable_type *vtype)
+ {
+ 	struct state_enum32 *enum32;
+ 	int ret, i, num_names;
+@@ -307,7 +307,7 @@ static int state_mac_import(struct state_variable *sv, struct device_node *node)
+ static struct state_variable *state_mac_create(struct state *state,
+ 					       const char *name,
+ 					       struct device_node *node,
+-					      const struct variable_type *vtype)
++					       const struct variable_type *vtype)
+ {
+ 	struct state_mac *mac;
+ 	int ret;
+@@ -409,7 +409,7 @@ static int state_string_get(struct param_d *p, void *priv)
+ static struct state_variable *state_string_create(struct state *state,
+ 						  const char *name,
+ 						  struct device_node *node,
+-					      const struct variable_type *vtype)
++						  const struct variable_type *vtype)
+ {
+ 	struct state_string *string;
+ 	uint32_t start_size[2];
+-- 
+2.19.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
