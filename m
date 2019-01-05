@@ -1,17 +1,28 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mout1.fh-giessen.de ([212.201.18.42])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ggPjZ-0005Al-P5
- for barebox@lists.infradead.org; Mon, 07 Jan 2019 07:54:07 +0000
-Date: Mon, 7 Jan 2019 08:54:03 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190107075403.lpzswz2lcbtel4vj@pengutronix.de>
-References: <20181218071943.2560-1-antonynpavlov@gmail.com>
- <20190103111809.ctogjrhe4d2eyxg7@pengutronix.de>
- <20190104114737.7070d48ba7a2b486d6ee46e0@gmail.com>
+ id 1gfqwm-0001HH-LJ
+ for barebox@lists.infradead.org; Sat, 05 Jan 2019 18:45:27 +0000
+Received: from mx1.fh-giessen.de ([212.201.18.40])
+ by mout1.fh-giessen.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.91) (envelope-from <martin.hofmann@mni.thm.de>)
+ id 1gfqwb-0004cU-Ku
+ for barebox@lists.infradead.org; Sat, 05 Jan 2019 19:45:13 +0100
+Received: from mailgate-2.its.fh-giessen.de ([212.201.18.14])
+ by mx1.fh-giessen.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.91) (envelope-from <martin.hofmann@mni.thm.de>)
+ id 1gfqwb-00ETz4-Gx
+ for barebox@lists.infradead.org; Sat, 05 Jan 2019 19:45:13 +0100
+Received: from ip-178-203-145-104.hsi10.unitymediagroup.de ([178.203.145.104]
+ helo=[192.168.0.73]) by mailgate-2.its.fh-giessen.de with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.91)
+ (envelope-from <martin.hofmann@mni.thm.de>) id 1gfqwb-000Rzf-96
+ for barebox@lists.infradead.org; Sat, 05 Jan 2019 19:45:13 +0100
+From: Martin Hofmann <martin.hofmann@mni.thm.de>
+Message-ID: <4e760479-94dc-d3b5-8056-8c15e743c990@mni.thm.de>
+Date: Sat, 5 Jan 2019 19:45:12 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190104114737.7070d48ba7a2b486d6ee46e0@gmail.com>
+Content-Language: de-DE
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,40 +35,144 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 00/10] Add initial RISC-V architecture support
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v1 1/1] Add generic implementation for muldi3
+To: barebox@lists.infradead.org
 
-On Fri, Jan 04, 2019 at 11:47:37AM +0300, Antony Pavlov wrote:
-> On Thu, 3 Jan 2019 12:18:09 +0100
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> > On Tue, Dec 18, 2018 at 10:19:33AM +0300, Antony Pavlov wrote:
-> > > This patchseries adds initial RISC-V architecture support for barebox.
-> > 
-> > It's very nice to get RISC-V support for barebox.
-> > 
-> > The code looks fine from a first glance. I would prefer using multi
-> > image support from the start of course, but I think I can live without
-> > it.
-> > I do not have the bandwidth to look at the code so closely to give any
-> > valuable input though. I am fine to apply it if you want to, or you
-> > could continue to develop it out of tree if that's more convenient for
-> > you. Your choice.
-> 
-> Hi Sascha!
-> 
-> Please apply RISC-V patchseries.
+Since version v2018.08.0 some shared copies of gcc routines got added to
+barebox so that archs don't need to have thier own copy inside thier
+lib. The arch I am working on atm also needs support for muldi3 which is
+not present as a generic version right now.
 
-Ok, just did that.
+This patch addes the generic version form latest linux v4.20 to barebox
+and lets the archs select it in thier Kconfig so they don't need to
+provide it themself.
 
-Sascha
+Signed-off-by: Martin Hofmann <martin.hofmann_at_mni.thm.de>
 
+---
+ include/lib/libgcc.h |  1 +
+ lib/Kconfig          |  3 ++
+ lib/Makefile         |  1 +
+ lib/muldi3.c         | 73 ++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 78 insertions(+)
+ create mode 100644 lib/muldi3.c
+
+diff --git a/include/lib/libgcc.h b/include/lib/libgcc.h
+index adad27704..f7b9be61f 100644
+--- a/include/lib/libgcc.h
++++ b/include/lib/libgcc.h
+@@ -43,5 +43,6 @@ typedef union {
+ long long __lshrdi3(long long u, word_type b);
+ long long __ashldi3(long long u, word_type b);
+ long long __ashrdi3(long long u, word_type b);
++long long __muldi3(long long u, long long v);
+
+ #endif /* __ASM_LIBGCC_H */
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 67680adbb..e048aded8 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -145,4 +145,7 @@ config GENERIC_LIB_ASHRDI3
+ config GENERIC_LIB_LSHRDI3
+ 	bool
+
++config GENERIC_LIB_MULDI3
++	bool
++
+ endmenu
+diff --git a/lib/Makefile b/lib/Makefile
+index 8ece2c284..e72aa6655 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -72,5 +72,6 @@ obj-$(CONFIG_CRC8)	+= crc8.o
+ obj-$(CONFIG_GENERIC_LIB_ASHLDI3) += ashldi3.o
+ obj-$(CONFIG_GENERIC_LIB_ASHRDI3) += ashrdi3.o
+ obj-$(CONFIG_GENERIC_LIB_LSHRDI3) += lshrdi3.o
++obj-$(CONFIG_GENERIC_LIB_MULDI3)  += muldi3.o
+
+ pbl-$(CONFIG_GENERIC_LIB_ASHLDI3) += ashldi3.o
+diff --git a/lib/muldi3.c b/lib/muldi3.c
+new file mode 100644
+index 000000000..eec810e80
+--- /dev/null
++++ b/lib/muldi3.c
+@@ -0,0 +1,73 @@
++/*
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, see the file COPYING, or write
++ * to the Free Software Foundation, Inc.
++ */
++
++#include <module.h>
++
++#include <lib/libgcc.h>
++
++#define W_TYPE_SIZE 32
++
++#define __ll_B ((unsigned long) 1 << (W_TYPE_SIZE / 2))
++#define __ll_lowpart(t) ((unsigned long) (t) & (__ll_B - 1))
++#define __ll_highpart(t) ((unsigned long) (t) >> (W_TYPE_SIZE / 2))
++
++/* If we still don't have umul_ppmm, define it using plain C.  */
++#if !defined(umul_ppmm)
++#define umul_ppmm(w1, w0, u, v)						\
++	do {								\
++		unsigned long __x0, __x1, __x2, __x3;			\
++		unsigned short __ul, __vl, __uh, __vh;			\
++									\
++		__ul = __ll_lowpart(u);					\
++		__uh = __ll_highpart(u);				\
++		__vl = __ll_lowpart(v);					\
++		__vh = __ll_highpart(v);				\
++									\
++		__x0 = (unsigned long) __ul * __vl;			\
++		__x1 = (unsigned long) __ul * __vh;			\
++		__x2 = (unsigned long) __uh * __vl;			\
++		__x3 = (unsigned long) __uh * __vh;			\
++									\
++		__x1 += __ll_highpart(__x0); /* this can't give carry */\
++		__x1 += __x2; /* but this indeed can */			\
++		if (__x1 < __x2) /* did we get it? */			\
++		__x3 += __ll_B; /* yes, add it in the proper pos */	\
++									\
++		(w1) = __x3 + __ll_highpart(__x1);			\
++		(w0) = __ll_lowpart(__x1) * __ll_B + __ll_lowpart(__x0);\
++	} while (0)
++#endif
++
++#if !defined(__umulsidi3)
++#define __umulsidi3(u, v) ({				\
++	DWunion __w;					\
++	umul_ppmm(__w.s.high, __w.s.low, u, v);		\
++	__w.ll;						\
++	})
++#endif
++
++long long notrace __muldi3(long long u, long long v)
++{
++	const DWunion uu = {.ll = u};
++	const DWunion vv = {.ll = v};
++	DWunion w = {.ll = __umulsidi3(uu.s.low, vv.s.low)};
++
++	w.s.high += ((unsigned long) uu.s.low * (unsigned long) vv.s.high
++		+ (unsigned long) uu.s.high * (unsigned long) vv.s.low);
++
++	return w.ll;
++}
++EXPORT_SYMBOL(__muldi3);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
