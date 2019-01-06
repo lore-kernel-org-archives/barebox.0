@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x144.google.com ([2a00:1450:4864:20::144])
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ggD09-000386-2R
- for barebox@lists.infradead.org; Sun, 06 Jan 2019 18:18:22 +0000
-Received: by mail-lf1-x144.google.com with SMTP id i26so28641032lfc.0
- for <barebox@lists.infradead.org>; Sun, 06 Jan 2019 10:18:19 -0800 (PST)
+ id 1ggD09-00038M-IK
+ for barebox@lists.infradead.org; Sun, 06 Jan 2019 18:18:24 +0000
+Received: by mail-lf1-x130.google.com with SMTP id p6so28659086lfc.1
+ for <barebox@lists.infradead.org>; Sun, 06 Jan 2019 10:18:20 -0800 (PST)
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Sun,  6 Jan 2019 19:18:07 +0100
-Message-Id: <20190106181808.8382-3-sam@ravnborg.org>
+Date: Sun,  6 Jan 2019 19:18:08 +0100
+Message-Id: <20190106181808.8382-4-sam@ravnborg.org>
 In-Reply-To: <20190106181808.8382-1-sam@ravnborg.org>
 References: <20190106181808.8382-1-sam@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -23,112 +23,147 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 2/3] doc: add additional at91 boards
+Subject: [PATCH v1 3/3] doc: at91sam9263-ek: add notes
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Simple files that makes it simple to add further documentation later
+Add notes from working on bootstrap support
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- Documentation/boards/at91/microchip-ksz9477-evb.rst      | 11 +++++++++++
- Documentation/boards/at91/microchip-sama5d3-xplained.rst |  8 ++++++++
- Documentation/boards/at91/microchip-sama5d3x-ek.rst      |  8 ++++++++
- Documentation/boards/at91/microchip-sama5d4-xplained.rst |  8 ++++++++
- Documentation/boards/at91/somfy-animeo-ip.rst            |  4 ++++
- Documentation/boards/at91/telit-evk-pro3.rst             |  9 +++++++++
- 6 files changed, 48 insertions(+)
- create mode 100644 Documentation/boards/at91/microchip-ksz9477-evb.rst
- create mode 100644 Documentation/boards/at91/microchip-sama5d3-xplained.rst
- create mode 100644 Documentation/boards/at91/microchip-sama5d3x-ek.rst
- create mode 100644 Documentation/boards/at91/microchip-sama5d4-xplained.rst
- create mode 100644 Documentation/boards/at91/somfy-animeo-ip.rst
- create mode 100644 Documentation/boards/at91/telit-evk-pro3.rst
+ .../boards/at91/microchip-at91sam9263-ek.rst       | 122 +++++++++++++++++++++
+ 1 file changed, 122 insertions(+)
 
-diff --git a/Documentation/boards/at91/microchip-ksz9477-evb.rst b/Documentation/boards/at91/microchip-ksz9477-evb.rst
-new file mode 100644
-index 000000000..4c4c4aecb
---- /dev/null
-+++ b/Documentation/boards/at91/microchip-ksz9477-evb.rst
-@@ -0,0 +1,11 @@
-+Microchip KSZ 9477 Evaluation board
-+===================================
+diff --git a/Documentation/boards/at91/microchip-at91sam9263-ek.rst b/Documentation/boards/at91/microchip-at91sam9263-ek.rst
+index 74ddb3cdb..8022cdd67 100644
+--- a/Documentation/boards/at91/microchip-at91sam9263-ek.rst
++++ b/Documentation/boards/at91/microchip-at91sam9263-ek.rst
+@@ -8,3 +8,125 @@ Building barebox:
+ .. code-block:: sh
+ 
+   make ARCH=arm at91sam9263ek_defconfig
 +
-+This is an evaluation board for a switch that uses the at91sam9x5 CPU.
-+The board uses Device Tree and supports multi image.
++Notes while working on at91sam9263ek bootstrap support
 +
-+Building barebox:
++The at91sam9263 have support for a boot program,
++like the other members in the Atmel at91 series.
 +
-+.. code-block:: sh
++The boot program (ROMBOOT) will try to load the
++boot program from DataFlash, SD Card, NAND Flash and USB
 +
-+  make ARCH=arm microchip_ksz9477_evb_defconfig
-diff --git a/Documentation/boards/at91/microchip-sama5d3-xplained.rst b/Documentation/boards/at91/microchip-sama5d3-xplained.rst
-new file mode 100644
-index 000000000..e96111af7
---- /dev/null
-+++ b/Documentation/boards/at91/microchip-sama5d3-xplained.rst
-@@ -0,0 +1,8 @@
-+Atmel SAMA5D3_XPLAINED Evaluation Kit
-+=====================================
++SD Card is the first to try.
++It looks for a file named BOOT.BIN in the first
++partition in a FAT16/32 filesystem.
 +
-+Building barebox:
++To generate the SD Card image I used genimage:
++(https://github.com/pengutronix/genimage)
++Onle 2 GB SD card works, 4 GB did not work. ROMBOOT do not
++support high capacity SD cards.
 +
-+.. code-block:: sh
++Configuration file:
 +
-+  make ARCH=arm sama5d3_xplained_defconfig
-diff --git a/Documentation/boards/at91/microchip-sama5d3x-ek.rst b/Documentation/boards/at91/microchip-sama5d3x-ek.rst
-new file mode 100644
-index 000000000..10bf2e611
---- /dev/null
-+++ b/Documentation/boards/at91/microchip-sama5d3x-ek.rst
-@@ -0,0 +1,8 @@
-+Atmel SAMA5D3X Evaluation Kit
-+=============================
++.. code-block:: none
 +
-+Building barebox:
++  image boot.vfat {
++	name = "boot"
++	vfat {
++		/*
++		 * RomBOOT in the at91sam9263 does not recognize
++		 * the default FAT partition created by mkdosfs.
++		 * -n BOOT - Set volume label to "BOOT"
++		 * -F 16   - Force the partition to FAT 16
++		 * -D 0    - Set drive number to 0
++		 * -R 1 -a - Reserve only one sector
++		 * The combination of "-D 0" AND "-R 1 -a"
++		 * is required with mkdosfs version 4.1
++		 */
++		extraargs = "-n BOOT -F 16 -D 0 -R 1 -a"
++		file BOOT.BIN    { image = "barebox.bin" } // barebox.bin from root of barebox dir 
++		file barebox.bin { image = "barebox-at91sam9263ek.img" }
++		file zImage      { image = "zImage" }
++	}
 +
-+.. code-block:: sh
++	size = 16M
++  }
 +
-+  make ARCH=arm sama5d3xek_defconfig
-diff --git a/Documentation/boards/at91/microchip-sama5d4-xplained.rst b/Documentation/boards/at91/microchip-sama5d4-xplained.rst
-new file mode 100644
-index 000000000..d8615e4af
---- /dev/null
-+++ b/Documentation/boards/at91/microchip-sama5d4-xplained.rst
-@@ -0,0 +1,8 @@
-+Atmel SAMA5D4 XPLAINED ULTRA Evaluation Kit
-+===========================================
++  image rootfs.ext4 {
++	ext4 {
++		label = "root"
++	}
++	mountpoint = "/"
++	size = 1500M
++  }
 +
-+Building barebox:
++  image SD {
++	hdimage {}
 +
-+.. code-block:: sh
++	partition boot {
++		partition-type = 0xc
++		bootable = "true"
++		image = "boot.vfat"
++	}
 +
-+  make ARCH=arm sama5d4_xplained_defconfig
-diff --git a/Documentation/boards/at91/somfy-animeo-ip.rst b/Documentation/boards/at91/somfy-animeo-ip.rst
-new file mode 100644
-index 000000000..a87179469
---- /dev/null
-+++ b/Documentation/boards/at91/somfy-animeo-ip.rst
-@@ -0,0 +1,4 @@
-+Somfy Animeo IP
-+===============
++	partition root {
++		image = "rootfs.ext4"
++		partition-type = 0x83
++	}
 +
-+No defconfig provided to build barebox
-diff --git a/Documentation/boards/at91/telit-evk-pro3.rst b/Documentation/boards/at91/telit-evk-pro3.rst
-new file mode 100644
-index 000000000..ea0b070fd
---- /dev/null
-+++ b/Documentation/boards/at91/telit-evk-pro3.rst
-@@ -0,0 +1,9 @@
-+Atmel Telit EVK-PRO3
-+====================
++  }
 +
-+Telit EVK-PRO3 with GE863-PRO3
-+Building barebox:
++ROMBOOT will load the BOOT.BIN file to internal SRAM that
++starts at 0x300000. Maximum size 0x12000 (72 KiB).
++When loaded ROMBOOT will remap like this:
 +
-+.. code-block:: sh
++.. code-block:: none
 +
-+  make ARCH=arm telit_evk_pro3_defconfig
++  0x00000000           0x00000000
++    Internal ROM   =>     Internal SRAM
++
++  0x00300000          0x00400000
++    Internal SRAM  =>     Internal ROM
++
++It is not documented but assumed that ROMBOOT uses the
++MMU to remap the addresses.
++There seems not to be a dedicated remapping feature that is used.
++
++Note: For DataFlash and NAND Flash the image is validated.
++The first 28 bytes must be valid load PC or PC relative addressing.
++Vector 0x6 must include the size of the image (in bytes).
++This validation is (according to datasheet) not done for SD Card boots.
++
++barebox related notes when trying to make it work with PBL enabled
++
++To let barebox detect the SD card early use: CONFIG_MCI_STARTUP=y
++
++When PBL (and MULTI_IMAGE) are enabled then barebox creates
++a binary with the following structure:
++
++.. code-block:: none
++
++  +----------------------+
++  | PBL (PreBootLoader)  |
++  +----------------------+
++  | piggy.o              |
++  |+--------------------+|
++  ||barebox second stage||
++  |+--------------------+|
++  +----------------------+
++
++The PBL contains code from the sections .text_head_entry*, .text_bare_init* and .text*
++
++``.text_head_entry*:``
++This is the reset vector and exception vectors. Must be the very first in the file
++
++``.text_bare_init*:``
++Everything in this section, and , is checked at link time.
++Size most be less than BAREBOX_MAX_BARE_INIT_SIZE / ARCH_BAREBOX_MAX_BARE_INIT_SIZE
++
++at91 specify the size of the two sections in exception vector 6 (see above),
++if CONFIG_AT91_LOAD_BAREBOX_SRAM is defined.
++I think this is because some at91 variants have only very limited SRAM size,
++and we copy only a minimal part to the SRAM. The remaining part is then
++executed in-place.
++For at91sam9263 we have a large SRAM so there is room for the full bootstrap binary.
 -- 
 2.12.0
 
