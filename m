@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x242.google.com ([2a00:1450:4864:20::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ggtUV-0004AF-1S
- for barebox@lists.infradead.org; Tue, 08 Jan 2019 15:40:34 +0000
-Date: Tue, 8 Jan 2019 16:40:28 +0100
-From: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-Message-ID: <20190108154028.adxnpobfluvphque@pengutronix.de>
-References: <20181218132233.23669-1-florian.baeuerle@allegion.com>
- <20181219140146.11806-1-florian.baeuerle@allegion.com>
- <20190103105936.b3nkdub77cpeoad4@pengutronix.de>
- <61e7e82c99bb2d70b8e8502daaf2cab8135851cc.camel@allegion.com>
- <20190107075821.x7gwx2mrlcyfvvz7@pengutronix.de>
- <a86ae0154c6069405619d7752fcb227d5f2384b6.camel@allegion.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <a86ae0154c6069405619d7752fcb227d5f2384b6.camel@allegion.com>
+ id 1ggD05-00037p-OZ
+ for barebox@lists.infradead.org; Sun, 06 Jan 2019 18:18:19 +0000
+Received: by mail-lj1-x242.google.com with SMTP id l15-v6so36256186lja.9
+ for <barebox@lists.infradead.org>; Sun, 06 Jan 2019 10:18:16 -0800 (PST)
+From: Sam Ravnborg <sam@ravnborg.org>
+Date: Sun,  6 Jan 2019 19:18:05 +0100
+Message-Id: <20190106181808.8382-1-sam@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,41 +16,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] recursive_action: add ACTION_SORT flag
-To: "Baeuerle, Florian" <Florian.Baeuerle@allegion.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 0/3] add at91 documentation 
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Sam Ravnborg <sam@ravnborg.org>
 
-On Tue, Jan 08, 2019 at 09:47:04AM +0000, Baeuerle, Florian wrote:
-> NAK! NAK!
-> 
-> There are two terrible mistakes - indeed the patches produce a very reproducible
-> environment. Independent of what environment you want, you'd get an empty one.
-> 
-> Problem 1: a2f3b3d
-> it requires ACTION_RECURSE | ACTION_SORT
-> 
-> Problem 2: f5c0978
-> +			e->dirname = xstrdup(next->d_name);
-> should be much more like:
-> +			e->dirname = xstrdup(fileName);
-> 
-> Sorry for that, problem 2 should really *not* have happened.
+While working on at91sam9263-ek I started to take a few notes.
+And missing a place to put these notes I ended up adding
+files for the most relevant at91 based boards.
+Following the barebox principle I added one file per board,
+even though most files just list the defconfig file.
 
-Don't worry, it's still in -next and not yet in master.
-I squashed your fixups into the broken commits.
+The idea is the it is now easier to add some documentation
+for an existing baord or a new board.
+I also added my ramling for at91sam9263 - so it is saved
+somewhere and maybe useful for someone else in the future.
 
-Sascha
+Sphinx did not report any warnings - and it looked as expected.
 
+	Sam
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+
+Sam Ravnborg (3):
+      doc: add at91 documentation
+      doc: add additional at91 boards
+      doc: at91sam9263-ek: add notes
+
+ Documentation/boards/at91.rst                      |  51 ++++++++
+ .../boards/at91/microchip-at91rm9200-ek.rst        |   8 ++
+ .../boards/at91/microchip-at91sam9260-ek.rst       |   8 ++
+ .../boards/at91/microchip-at91sam9261-ek.rst       |  18 +++
+ .../boards/at91/microchip-at91sam9263-ek.rst       | 132 +++++++++++++++++++++
+ .../boards/at91/microchip-at91sam9g10-ek.rst       |   8 ++
+ .../boards/at91/microchip-at91sam9g20-ek.rst       |   8 ++
+ .../boards/at91/microchip-at91sam9m10g45-ek.rst    |   8 ++
+ .../boards/at91/microchip-at91sam9n12-ek.rst       |   8 ++
+ .../boards/at91/microchip-at91sam9x5-ek.rst        |  10 ++
+ .../boards/at91/microchip-ksz9477-evb.rst          |  11 ++
+ .../boards/at91/microchip-sama5d3-xplained.rst     |   8 ++
+ .../boards/at91/microchip-sama5d3x-ek.rst          |   8 ++
+ .../boards/at91/microchip-sama5d4-xplained.rst     |   8 ++
+ Documentation/boards/at91/somfy-animeo-ip.rst      |   4 +
+ Documentation/boards/at91/telit-evk-pro3.rst       |   9 ++
+ 16 files changed, 307 insertions(+)
+
 
 _______________________________________________
 barebox mailing list
