@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail1.bemta26.messagelabs.com ([85.158.142.3])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ggSgF-0001G1-DI
- for barebox@lists.infradead.org; Mon, 07 Jan 2019 11:02:58 +0000
-Message-ID: <1546858965.3580.9.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 07 Jan 2019 12:02:45 +0100
-In-Reply-To: <f50ffe18-7a58-4427-3050-1ca29eb9832e@126.com>
-References: <f50ffe18-7a58-4427-3050-1ca29eb9832e@126.com>
-Mime-Version: 1.0
+ id 1ggTGW-0000Bb-2P
+ for barebox@lists.infradead.org; Mon, 07 Jan 2019 11:40:22 +0000
+From: <Heinrich.Toews@wago.com>
+Date: Mon, 7 Jan 2019 11:40:13 +0000
+Message-ID: <aca969f3-1591-b18b-3a4b-49ad546092d5@wago.com>
+References: <20181214141730.26181-1-s.hauer@pengutronix.de>
+ <20181214141730.26181-23-s.hauer@pengutronix.de>
+In-Reply-To: <20181214141730.26181-23-s.hauer@pengutronix.de>
+Content-Language: en-US
+Content-ID: <864301690514F240A8B40B0F2D462DFA@WAGO.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,92 +20,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: unalignment access on cortex-a8 caues exception
-To: =?UTF-8?Q?=E5=BC=A0=E5=BF=A0=E5=B1=B1?= <zzs213@126.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH 22/23] ARM: omap: Add board support for WAGO pfc200
+ platform
+To: barebox@lists.infradead.org
 
-QW0gTW9udGFnLCBkZW4gMDcuMDEuMjAxOSwgMTY6MTMgKzA4MDAgc2NocmllYiDlvKDlv6DlsbE6
-Cj4gTXkgYm9hcmQgYmFzZWQgZnJpZW5kbHlhcm0tdGlueTIxMCwgY3B1IGlzIHM1cHYyMTAuIEl0
-IGludGVncmF0ZXMgdGhlCj4gQVJNIENvcnRleC1BOCBjb3JlLgo+IAo+IEkgd2FudCB0byBwZXJm
-b3JtIHVuYWxpZ25tZW50IGFjY2VzcywgYnV0IGJhcmVib3ggY3Jhc2guCj4gCj4gVGhlIGZsb3d3
-aW5nIGNvZGUgdXNlZCB0byB0ZXN0IHVuYWxpZ25tZW50IGFjY2VzczoKPiAKPiAJc3RhdGljIGlu
-dCBkb19sZHIoaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKPiAJewo+ID4gCQl1bnNpZ25lZCBpbnQg
-c2N0bHI7Cj4gPiAJCXVuc2lnbmVkIGludCB4eDsKPiAKPiA+IAkJYXNtIHZvbGF0aWxlKCJtcmMg
-cDE1LCAwLCAlW3Jlc3VsdF0sIGMxLCBjMCwgMCI6IFtyZXN1bHRdIj1yIihzY3RscikpOwo+ID4g
-CQlwcmludGYoInNjdGxyID0gMHglMDh4XG4iLCBzY3Rscik7Cj4gCj4gPiAJCWFzbSB2b2xhdGls
-ZSgKPiA+IAkJCSJsZHIgcjAsID0weDMwMDAwMDAxXG5cdCIKPiA+IAkJCSJsZHIgJVtyZXN1bHRd
-LCBbcjBdLCAjNCI6IFtyZXN1bHRdIj1yIih4eCkpO8KgwqAvLyB0aGlzIGNhdXNlIGBkYXRhIGZh
-dWx0YCBleGNlcHRpb24KPiAKPiA+IAkJcmV0dXJuIDA7Cj4gCX0KPiAJQkFSRUJPWF9DTURfU1RB
-UlQobGRyKQo+ID4gCQkuY21kID0gZG9fbGRyLAo+ID4gCQlCQVJFQk9YX0NNRF9ERVNDKCJUaGlz
-IGNvbW1hbmQgdGVzdCBsZHIiKQo+ID4gCQlCQVJFQk9YX0NNRF9HUk9VUChDTURfR1JQX0NVU1RP
-TSkKPiAJQkFSRUJPWF9DTURfRU5ECj4gCj4gVGhlIGNvcnJlc3BvbmRpbmcgYXNtIGNvZGUgaXM6
-Cj4gCTAwMDU0N2IwIDxkb19sZHI+Ogo+IAnCoMKgwqA1NDdiMDrCoMKgwqDCoMKgwqDCoGU5MmQ0
-MDEwwqDCoMKgwqDCoMKgwqDCoHB1c2jCoMKgwqDCoHtyNCwgbHJ9Cj4gCcKgwqDCoDU0N2I0OsKg
-wqDCoMKgwqDCoMKgZWUxMTFmMTDCoMKgwqDCoMKgwqDCoMKgbXJjwqDCoMKgwqDCoDE1LCAwLCBy
-MSwgY3IxLCBjcjAsIHswfQo+IAnCoMKgwqA1NDdiODrCoMKgwqDCoMKgwqDCoGU1OWYwMDEwwqDC
-oMKgwqDCoMKgwqDCoGxkcsKgwqDCoMKgwqByMCwgW3BjLCAjMTZdwqDCoMKgOyA1NDdkMCA8ZG9f
-bGRyKzB4MjA+Cj4gCcKgwqDCoDU0N2JjOsKgwqDCoMKgwqDCoMKgZWJmZWIxMzPCoMKgwqDCoMKg
-wqDCoMKgYmzCoMKgwqDCoMKgwqBjOTAgPHByaW50Zj4KPiAJwqDCoMKgNTQ3YzA6wqDCoMKgwqDC
-oMKgwqBlM2EwMDIxM8KgwqDCoMKgwqDCoMKgwqBtb3bCoMKgwqDCoMKgcjAsICM4MDUzMDYzNjnC
-oMKgOyAweDMwMDAwMDAxCj4gCcKgwqDCoDU0N2M0OsKgwqDCoMKgwqDCoMKgZTQ5MDMwMDTCoMKg
-wqDCoMKgwqDCoMKgbGRywqDCoMKgwqDCoHIzLCBbcjBdLCAjNAo+IAnCoMKgwqA1NDdjODrCoMKg
-wqDCoMKgwqDCoGUzYTAwMDAwwqDCoMKgwqDCoMKgwqDCoG1vdsKgwqDCoMKgwqByMCwgIzAKPiAJ
-wqDCoMKgNTQ3Y2M6wqDCoMKgwqDCoMKgwqBlOGJkODAxMMKgwqDCoMKgwqDCoMKgwqBwb3DCoMKg
-wqDCoMKge3I0LCBwY30KPiAJwqDCoMKgNTQ3ZDA6wqDCoMKgwqDCoMKgwqAwMDA3YjY1YcKgwqDC
-oMKgwqDCoMKgwqBhbmRlccKgwqDCoGZwLCByNywgc2wsIGFzciByNgo+IAo+IAo+IFdoZW4gcnVu
-IHRoaXMgZnVuY3Rpb24gdW5kZXIgYmFyZWJveCBwcm9tcHQsIGJhcmVib3ggb3V0cHV0IGZsb3d3
-aW5nCj4gbWVzc2FnZToKPiAKPiDCoMKgwqDCoMKgc2N0bHIgPSAweDAwYzUxMDc4Cj4gwqDCoMKg
-wqDCoHVuYWJsZSB0byBoYW5kbGUgcGFnaW5nIHJlcXVlc3QgYXQgYWRkcmVzcyAweDMwMDAwMDAx
-Cj4gwqDCoMKgwqDCoHBjIDogWzw1ZmY1NDdjYz5dwqDCoMKgwqBsciA6IFs8NWZmNTQ3YzA+XQo+
-IMKgwqDCoMKgwqBzcCA6IDVmZmVmZTAwwqDCoGlwIDogMDAwMDAwMzDCoMKgZnAgOiA1ZmZlZmYz
-OAo+IMKgwqDCoMKgwqByMTA6IDAwMDAwMDAwwqDCoHI5IDogM2ZmYjI1YTDCoMKgcjggOiAzZmZi
-MDMwOAo+IMKgwqDCoMKgwqByNyA6IDNmZmIyNzMwwqDCoHI2IDogMDAwMDAwMDHCoMKgcjUgOiA1
-ZmY5NDNmY8KgwqByNCA6IDNmZmIyNzMwCj4gwqDCoMKgwqDCoHIzIDogNWZmOGY3MjTCoMKgcjIg
-OiAwMDAwMDAwMsKgwqByMSA6IDAwMDAwMDBhwqDCoHIwIDogMzAwMDAwMDEKPiDCoMKgwqDCoMKg
-RmxhZ3M6IG5aQ3bCoMKgSVJRcyBvZmbCoMKgRklRcyBvZmbCoMKgTW9kZSBTVkNfMzIKPiDCoMKg
-wqDCoMKgWzw1ZmY1NDdjYz5dIChkb19sZHIrMHgxYy8weDI0KSBmcm9tIFs8NWZmMDM3M2M+XSAo
-ZXhlY3V0ZV9jb21tYW5kKzB4MzgvMHg3OCkKPiDCoMKgwqDCoMKgWzw1ZmYwMzczYz5dIChleGVj
-dXRlX2NvbW1hbmQrMHgzOC8weDc4KSBmcm9tIFs8NWZmMDlkMmM+XSAocnVuX2xpc3RfcmVhbCsw
-eDg0MC8weDk3MCkKPiDCoMKgwqDCoMKgWzw1ZmYwOWQyYz5dIChydW5fbGlzdF9yZWFsKzB4ODQw
-LzB4OTcwKSBmcm9tIFs8NWZmMDkzMjg+XSAocGFyc2Vfc3RyZWFtX291dGVyKzB4MTQ0LzB4MjA4
-KQo+IMKgwqDCoMKgwqBbPDVmZjA5MzI4Pl0gKHBhcnNlX3N0cmVhbV9vdXRlcisweDE0NC8weDIw
-OCkgZnJvbSBbPDVmZjBhMDUwPl0gKHJ1bl9zaGVsbCsweDRjLzB4OGMpCj4gwqDCoMKgwqDCoFs8
-NWZmMGEwNTA+XSAocnVuX3NoZWxsKzB4NGMvMHg4YykgZnJvbSBbPDVmZjAxMGU4Pl0gKHN0YXJ0
-X2JhcmVib3grMHhiYy8weGU4KQo+IMKgwqDCoMKgwqBbPDVmZjAxMGU4Pl0gKHN0YXJ0X2JhcmVi
-b3grMHhiYy8weGU4KSBmcm9tIFs8NWZmNjQ0OGM+XSAoYmFyZWJveF9ub25fcGJsX3N0YXJ0KzB4
-MTM4LzB4MTVjKQo+IMKgwqDCoMKgwqBbPDVmZjY0NDhjPl0gKGJhcmVib3hfbm9uX3BibF9zdGFy
-dCsweDEzOC8weDE1YykgZnJvbSBbPDVmZjAwMDA0Pl0gKF9fYmFyZV9pbml0X3N0YXJ0KzB4MC8w
-eDEwKQo+IAo+IMKgwqDCoMKgwqBbPDVmZjY1YzU0Pl0gKHVud2luZF9iYWNrdHJhY2UrMHgwLzB4
-OTApIGZyb20gWzw1ZmYwMTQ0OD5dIChwYW5pYysweDI4LzB4NDQpCj4gwqDCoMKgwqDCoFs8NWZm
-MDE0NDg+XSAocGFuaWMrMHgyOC8weDQ0KSBmcm9tIFs8NWZmNjQyMDA+XSAoZG9fZXhjZXB0aW9u
-KzB4MTAvMHgxNCkKPiDCoMKgwqDCoMKgWzw1ZmY2NDIwMD5dIChkb19leGNlcHRpb24rMHgxMC8w
-eDE0KSBmcm9tIFs8NWZmNjQyODQ+XSAoZG9fZGF0YV9hYm9ydCsweDJjLzB4MzgpCj4gwqDCoMKg
-wqDCoFs8NWZmNjQyODQ+XSAoZG9fZGF0YV9hYm9ydCsweDJjLzB4MzgpIGZyb20gWzw1ZmY2M2Yx
-ND5dIChkb19hYm9ydF82KzB4NDgvMHg1NCkKPiAKPiBJdCBzaG93cyB0aGF0IGBBYCBiaXQgaW4g
-U0NUTFIgd2FzIGNsZWFyZWQuIEJ1dCB3aGVuZXZlciBhY2Nlc3MKPiAweDMwMDAwMDAxLCBgZGF0
-YSBmYXVsdGAgZXhjZXB0aW9uIHJhaXNlZC4KPiAKPiBBY2NvcmRpbmcgYXJtIGNvcnRleC1hOCB0
-ZWNobmljYWwgcmVmZXJlbmNlIG1hbnVhbDoKPiAKPiDCoMKgwqDCoMKgQSwgYml0WzFdCj4gCUFs
-aWdubWVudCBjaGVjayBlbmFibGUuIFRoaXMgaXMgdGhlIGVuYWJsZSBiaXQgZm9yIEFsaWdubWVu
-dAo+IAlmYXVsdCBjaGVja2luZy4gVGhlIHBvc3NpYmxlIHZhbHVlcyBvZiB0aGlzIGJpdCBhcmU6
-Cj4gCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAqIDAgQWxpZ25tZW50IGZhdWx0IGNoZWNr
-aW5nIGRpc2FibGVkLgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgKiAxIEFsaWdubWVudCBm
-YXVsdCBjaGVja2luZyBlbmFibGVkLgo+IAo+ICoqV2h5IHVuYWxpZ25tZW50IGFjY2VzcyBjYXVz
-ZSBgZGF0YSBmYXVsdGAgZXZlbiB0aGUgYEFgIGJpdCBjbGVhcmVkKioKPiAKPiBDT05GSUdfTU1V
-ICoqbm90IGVuYWJsZWQqKiBpbiBteSBjb25maWcgZmlsZS4gRG9lcyB0aGlzIGNhdXNlIHRoZQo+
-IHN0cmFuZ2UgYmVoYXZpb3VyPwoKSFcgYXNzaXN0ZWQgdW5hbGlnbmVkIGFjY2VzcyBpcyBvbmx5
-IHN1cHBvcnRlZCBieSB0aGUgQVJNIGFyY2hpdGVjdHVyZQpydWxlcyB0byBtZW1vcnkgcmVnaW9u
-cyB0aGF0IGFyZSBhdCBsZWFzdCBidWZmZXJhYmxlICh0aGF0J3MgYSBsb2dpY2FsCmNvbnNlcXVl
-bmNlIG9mIHRoZSB1bmFsaWduZWQgYWNjZXNzIGJlaW5nIHBlcmZvcm1lZCBieSBtdWx0aXBsZSBh
-bGlnbmVkCm9uZXMsIHdpdGggdGhlIHVuYWxpZ25lZCBoYW5kbGluZyBoYXBwZW5pbmcgb24gYSBy
-ZWFkIGJ1ZmZlcikuCgpTbyBmb3IgdW5hbGlnbmVkIGFjY2Vzc2VzIHRvIHdvcmsgMiB0aGluZ3Mg
-bmVlZCB0byBiZSBzYXRpc2ZpZWQ6CjEuIENPTkZJR19NTVUgbmVlZHMgdG8gYmUgZW5hYmxlZCwg
-YXMgb3RoZXJ3aXNlIGFsbCBtZW1vcnkgYWNjZXNzZXMgYXJlCnRyZWF0ZWQgYXMgc3Ryb25nbHkg
-b3JkZXJlZC4KMi4gVGhlIGFjY2VzcyBtdXN0IGJlIHRvIGEgcmVnaW9uIHRoYXQgaXMgYWN0dWFs
-bHkgbWFwcGVkIGFzIGJ1ZmZlcmFibGUKb3IgY2FjaGFibGUsIHdoaWNoIGJ5IGRlZmF1bHQgaXMg
-b25seSB0aGUgRFJBTSBtZW1vcnkgcmVnaW9uLgoKUmVnYXJkcywKTHVjYXMKCgpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
-dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi Sascha,
+
+Am 14.12.18 um 15:17 schrieb Sascha Hauer:
+> This adds support for the AM3517 based WAGO pfc100/200 SPS.
+                                                   ^
+CAUTION: The PFC100 SPS is based on AM335x and NOT AM35xx. Would be nice 
+to fix the commit message in order to prevent a misunderstanding.
+
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+
+---
+
+Thanks,
+Heinrich
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
