@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ggPWF-0001AI-Oi
+ id 1ggPWF-0001AL-Q4
  for barebox@lists.infradead.org; Mon, 07 Jan 2019 07:40:23 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  7 Jan 2019 08:40:08 +0100
-Message-Id: <20190107074008.3797-10-s.hauer@pengutronix.de>
+Date: Mon,  7 Jan 2019 08:40:06 +0100
+Message-Id: <20190107074008.3797-8-s.hauer@pengutronix.de>
 In-Reply-To: <20190107074008.3797-1-s.hauer@pengutronix.de>
 References: <20190107074008.3797-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,49 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9] defaultenv: resolve global.net.server before using it
+Subject: [PATCH 7/9] net: ip_route_get: resolv hostnames
 To: Barebox List <barebox@lists.infradead.org>
 
-global.net.server may contain a hostname, so we have to resolve it
-before using it.
+When global.net.server is a hostname instead of an IP address we have to
+resolv it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/Kconfig                        | 1 +
- defaultenv/defaultenv-2-base/boot/net | 8 +++++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ commands/ip-route-get.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 1c2669084a..b522a86ad4 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -867,6 +867,7 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW
- 	select CMD_BOOT
- 	select NET_CMD_IFUP if NET
- 	select CMD_IP_ROUTE_GET if NET
-+	select CMD_HOST if NET
+diff --git a/commands/ip-route-get.c b/commands/ip-route-get.c
+index b3d4ecce82..d3c15b7798 100644
+--- a/commands/ip-route-get.c
++++ b/commands/ip-route-get.c
+@@ -40,7 +40,7 @@ static int do_ip_route_get(int argc, char *argv[])
+ 	if (argc == optind + 2)
+ 		variable = argv[optind + 1];
  
- config DEFAULT_ENVIRONMENT_GENERIC
- 	bool "Generic environment template (old version)"
-diff --git a/defaultenv/defaultenv-2-base/boot/net b/defaultenv/defaultenv-2-base/boot/net
-index 840e9fc1f0..f8895290ad 100644
---- a/defaultenv/defaultenv-2-base/boot/net
-+++ b/defaultenv/defaultenv-2-base/boot/net
-@@ -9,7 +9,13 @@ if [ -f "${oftree}" ]; then
- 	global.bootm.oftree="$oftree"
- fi
- 
--nfsroot="${global.net.server}:/home/${global.user}/nfsroot/${global.hostname}"
-+host ${global.net.server} nfsserver
-+if [ $? != 0 ]; then
-+	echo "Cannot resolve \"${global.net.server}\""
-+	exit 1
-+fi
-+
-+nfsroot="${nfsserver}:/home/${global.user}/nfsroot/${global.hostname}"
- 
- ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
- 
+-	ret = string_to_ip(argv[optind], &ip);
++	ret = resolv(argv[optind], &ip);
+ 	if (ret) {
+ 		printf("Cannot convert \"%s\" into a IP address: %s\n",
+ 		       argv[optind], strerror(-ret));
 -- 
 2.19.1
 
