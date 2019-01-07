@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ggPW8-00015v-9O
- for barebox@lists.infradead.org; Mon, 07 Jan 2019 07:40:15 +0000
+ id 1ggPWF-0001AI-Oi
+ for barebox@lists.infradead.org; Mon, 07 Jan 2019 07:40:23 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  7 Jan 2019 08:40:03 +0100
-Message-Id: <20190107074008.3797-5-s.hauer@pengutronix.de>
+Date: Mon,  7 Jan 2019 08:40:08 +0100
+Message-Id: <20190107074008.3797-10-s.hauer@pengutronix.de>
 In-Reply-To: <20190107074008.3797-1-s.hauer@pengutronix.de>
 References: <20190107074008.3797-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,60 +21,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/9] net: dns: Allow to set variable with the resolved host
+Subject: [PATCH 9/9] defaultenv: resolve global.net.server before using it
 To: Barebox List <barebox@lists.infradead.org>
 
-Add an additional [VARIABLE] parameter to the host command to allow
-setting a variable with the resolved IP address.
+global.net.server may contain a hostname, so we have to resolve it
+before using it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/dns.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ common/Kconfig                        | 1 +
+ defaultenv/defaultenv-2-base/boot/net | 8 +++++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/dns.c b/net/dns.c
-index d241781939..ffe98ef9e3 100644
---- a/net/dns.c
-+++ b/net/dns.c
-@@ -258,20 +258,26 @@ static int do_host(int argc, char *argv[])
- {
- 	IPaddr_t ip;
- 	int ret;
--	char *hostname;
-+	char *hostname, *varname = NULL;
+diff --git a/common/Kconfig b/common/Kconfig
+index 1c2669084a..b522a86ad4 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -867,6 +867,7 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW
+ 	select CMD_BOOT
+ 	select NET_CMD_IFUP if NET
+ 	select CMD_IP_ROUTE_GET if NET
++	select CMD_HOST if NET
  
--	if (argc != 2)
-+	if (argc < 2)
- 		return COMMAND_ERROR_USAGE;
+ config DEFAULT_ENVIRONMENT_GENERIC
+ 	bool "Generic environment template (old version)"
+diff --git a/defaultenv/defaultenv-2-base/boot/net b/defaultenv/defaultenv-2-base/boot/net
+index 840e9fc1f0..f8895290ad 100644
+--- a/defaultenv/defaultenv-2-base/boot/net
++++ b/defaultenv/defaultenv-2-base/boot/net
+@@ -9,7 +9,13 @@ if [ -f "${oftree}" ]; then
+ 	global.bootm.oftree="$oftree"
+ fi
  
- 	hostname = argv[1];
- 
-+	if (argc > 2)
-+		varname = argv[2];
+-nfsroot="${global.net.server}:/home/${global.user}/nfsroot/${global.hostname}"
++host ${global.net.server} nfsserver
++if [ $? != 0 ]; then
++	echo "Cannot resolve \"${global.net.server}\""
++	exit 1
++fi
 +
- 	ret = resolv(argv[1], &ip);
- 	if (ret) {
- 		printf("unknown host %s\n", hostname);
- 		return 1;
- 	}
++nfsroot="${nfsserver}:/home/${global.user}/nfsroot/${global.hostname}"
  
--	printf("%s is at %pI4\n", hostname, &ip);
-+	if (varname)
-+		setenv_ip(varname, ip);
-+	else
-+		printf("%s is at %pI4\n", hostname, &ip);
+ ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
  
- 	return 0;
- }
-@@ -279,7 +285,7 @@ static int do_host(int argc, char *argv[])
- BAREBOX_CMD_START(host)
- 	.cmd		= do_host,
- 	BAREBOX_CMD_DESC("resolve a hostname")
--	BAREBOX_CMD_OPTS("HOSTNAME")
-+	BAREBOX_CMD_OPTS("<HOSTNAME> [VARIABLE]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_NET)
- BAREBOX_CMD_END
- #endif
 -- 
 2.19.1
 
