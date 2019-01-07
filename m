@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ggPW8-00015y-9M
+ id 1ggPW8-00015z-9N
  for barebox@lists.infradead.org; Mon, 07 Jan 2019 07:40:15 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  7 Jan 2019 08:40:04 +0100
-Message-Id: <20190107074008.3797-6-s.hauer@pengutronix.de>
+Date: Mon,  7 Jan 2019 08:40:02 +0100
+Message-Id: <20190107074008.3797-4-s.hauer@pengutronix.de>
 In-Reply-To: <20190107074008.3797-1-s.hauer@pengutronix.de>
 References: <20190107074008.3797-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,29 +21,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/9] defaultenv: Pass serverip to nfsroot string
+Subject: [PATCH 3/9] net: dns: leave host command with error on failure
 To: Barebox List <barebox@lists.infradead.org>
 
-This is necessary to allow overwriting the NFS server Linux boots from.
+When we can't resolv a host we should return an error rather than just
+successfully.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- defaultenv/defaultenv-2-base/boot/net | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/dns.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/defaultenv/defaultenv-2-base/boot/net b/defaultenv/defaultenv-2-base/boot/net
-index aaa5394f27..840e9fc1f0 100644
---- a/defaultenv/defaultenv-2-base/boot/net
-+++ b/defaultenv/defaultenv-2-base/boot/net
-@@ -9,7 +9,7 @@ if [ -f "${oftree}" ]; then
- 	global.bootm.oftree="$oftree"
- fi
+diff --git a/net/dns.c b/net/dns.c
+index 4516235df2..d241781939 100644
+--- a/net/dns.c
++++ b/net/dns.c
+@@ -258,15 +258,20 @@ static int do_host(int argc, char *argv[])
+ {
+ 	IPaddr_t ip;
+ 	int ret;
++	char *hostname;
  
--nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
-+nfsroot="${global.net.server}:/home/${global.user}/nfsroot/${global.hostname}"
+ 	if (argc != 2)
+ 		return COMMAND_ERROR_USAGE;
  
- ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
++	hostname = argv[1];
++
+ 	ret = resolv(argv[1], &ip);
+-	if (ret)
+-		printf("unknown host %s\n", argv[1]);
+-	else
+-		printf("%s is at %pI4\n", argv[1], &ip);
++	if (ret) {
++		printf("unknown host %s\n", hostname);
++		return 1;
++	}
++
++	printf("%s is at %pI4\n", hostname, &ip);
  
+ 	return 0;
+ }
 -- 
 2.19.1
 
