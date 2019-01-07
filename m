@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ggPW8-00015z-9N
+ id 1ggPW8-00015w-9P
  for barebox@lists.infradead.org; Mon, 07 Jan 2019 07:40:15 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  7 Jan 2019 08:40:02 +0100
-Message-Id: <20190107074008.3797-4-s.hauer@pengutronix.de>
+Date: Mon,  7 Jan 2019 08:40:00 +0100
+Message-Id: <20190107074008.3797-2-s.hauer@pengutronix.de>
 In-Reply-To: <20190107074008.3797-1-s.hauer@pengutronix.de>
 References: <20190107074008.3797-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,46 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/9] net: dns: leave host command with error on failure
+Subject: [PATCH 1/9] net: ip_route_get: Fix error message
 To: Barebox List <barebox@lists.infradead.org>
 
-When we can't resolv a host we should return an error rather than just
-successfully.
+We do getopt(), so the next argument is in argv[optind], not in argv[1].
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/dns.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ commands/ip-route-get.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/dns.c b/net/dns.c
-index 4516235df2..d241781939 100644
---- a/net/dns.c
-+++ b/net/dns.c
-@@ -258,15 +258,20 @@ static int do_host(int argc, char *argv[])
- {
- 	IPaddr_t ip;
- 	int ret;
-+	char *hostname;
+diff --git a/commands/ip-route-get.c b/commands/ip-route-get.c
+index d393218188..7c304694db 100644
+--- a/commands/ip-route-get.c
++++ b/commands/ip-route-get.c
+@@ -42,8 +42,8 @@ static int do_ip_route_get(int argc, char *argv[])
  
- 	if (argc != 2)
- 		return COMMAND_ERROR_USAGE;
+ 	ret = string_to_ip(argv[optind], &ip);
+ 	if (ret) {
+-		printf("Cannot convert %s into a IP address: %s\n",
+-		       argv[1], strerror(-ret));
++		printf("Cannot convert \"%s\" into a IP address: %s\n",
++		       argv[optind], strerror(-ret));
+ 		return 1;
+ 	}
  
-+	hostname = argv[1];
-+
- 	ret = resolv(argv[1], &ip);
--	if (ret)
--		printf("unknown host %s\n", argv[1]);
--	else
--		printf("%s is at %pI4\n", argv[1], &ip);
-+	if (ret) {
-+		printf("unknown host %s\n", hostname);
-+		return 1;
-+	}
-+
-+	printf("%s is at %pI4\n", hostname, &ip);
- 
- 	return 0;
- }
 -- 
 2.19.1
 
