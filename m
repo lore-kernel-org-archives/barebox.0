@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ggFDC-0004RX-LV
- for barebox@lists.infradead.org; Sun, 06 Jan 2019 20:40:00 +0000
-Received: from ravnborg.org (unknown [158.248.194.18])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by asavdk3.altibox.net (Postfix) with ESMTPS id 21B9020050
- for <barebox@lists.infradead.org>; Sun,  6 Jan 2019 21:39:57 +0100 (CET)
-Date: Sun, 6 Jan 2019 21:39:55 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20190106203955.GC5376@ravnborg.org>
+ id 1ggPLW-0004bA-Gd
+ for barebox@lists.infradead.org; Mon, 07 Jan 2019 07:29:16 +0000
+Date: Mon, 7 Jan 2019 08:29:07 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190107072907.7eps33ajis3imwh4@pengutronix.de>
 References: <20190102202611.6530-1-sam@ravnborg.org>
  <20190102202611.6530-2-sam@ravnborg.org>
 MIME-Version: 1.0
@@ -29,14 +24,58 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v1 1/3] arm: at91: fix clock to mci1 for at91sam9263
-To: Barebox List <barebox@lists.infradead.org>
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi Sasha.
+On Wed, Jan 02, 2019 at 09:26:09PM +0100, Sam Ravnborg wrote:
+> at91_add_device_mci() was missing configuration of PIOA6
+> when configuring mci1.
+> With this fix we can read data from SD card with at91sam9263ek,
+> when built without DT.
+> Building without a DT is required when we do a bootstrap build.
+> 
+> The other at91samxxx_devices was checked - only the 9263 was
+> missing the CLK configuration for mci1.
+> 
+> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> ---
 
-This patch is OK - but the other two are bogus.
-Please apply.
+Applied (this one), thanks
 
-	Sam
+Sascha
+
+>  arch/arm/mach-at91/at91sam9263_devices.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/arm/mach-at91/at91sam9263_devices.c b/arch/arm/mach-at91/at91sam9263_devices.c
+> index a67345f05..c7e4962a9 100644
+> --- a/arch/arm/mach-at91/at91sam9263_devices.c
+> +++ b/arch/arm/mach-at91/at91sam9263_devices.c
+> @@ -396,6 +396,9 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
+>  	} else {			/* MCI1 */
+>  		start = AT91SAM9263_BASE_MCI1;
+>  
+> +		/* CLK */
+> +		at91_set_A_periph(AT91_PIN_PA6, 0);
+> +
+>  		if (data->slot_b) {
+>  			/* CMD */
+>  			at91_set_A_periph(AT91_PIN_PA21, 1);
+> -- 
+> 2.12.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
