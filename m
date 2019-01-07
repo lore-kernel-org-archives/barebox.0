@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from m15-114.126.com ([220.181.15.114])
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ggQ25-0002ai-Be
- for barebox@lists.infradead.org; Mon, 07 Jan 2019 08:13:15 +0000
-From: =?UTF-8?B?5byg5b+g5bGx?= <zzs213@126.com>
-Message-ID: <f50ffe18-7a58-4427-3050-1ca29eb9832e@126.com>
-Date: Mon, 7 Jan 2019 16:13:04 +0800
-MIME-Version: 1.0
-Content-Language: en-US
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1ggSgF-0001G1-DI
+ for barebox@lists.infradead.org; Mon, 07 Jan 2019 11:02:58 +0000
+Message-ID: <1546858965.3580.9.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 07 Jan 2019 12:02:45 +0100
+In-Reply-To: <f50ffe18-7a58-4427-3050-1ca29eb9832e@126.com>
+References: <f50ffe18-7a58-4427-3050-1ca29eb9832e@126.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,98 +17,92 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: unalignment access on cortex-a8 caues exception
-To: barebox@lists.infradead.org
+Subject: Re: unalignment access on cortex-a8 caues exception
+To: =?UTF-8?Q?=E5=BC=A0=E5=BF=A0=E5=B1=B1?= <zzs213@126.com>, barebox@lists.infradead.org
 
-My board based friendlyarm-tiny210, cpu is s5pv210. It integrates the
-ARM Cortex-A8 core.
-
-I want to perform unalignment access, but barebox crash.
-
-The flowwing code used to test unalignment access:
-
-	static int do_ldr(int argc, char *argv[])
-	{
-		unsigned int sctlr;
-		unsigned int xx;
-
-		asm volatile("mrc p15, 0, %[result], c1, c0, 0": [result]"=r"(sctlr));
-		printf("sctlr = 0x%08x\n", sctlr);
-
-		asm volatile(
-			"ldr r0, =0x30000001\n\t"
-			"ldr %[result], [r0], #4": [result]"=r"(xx));  // this cause `data fault` exception
-
-		return 0;
-	}
-	BAREBOX_CMD_START(ldr)
-		.cmd = do_ldr,
-		BAREBOX_CMD_DESC("This command test ldr")
-		BAREBOX_CMD_GROUP(CMD_GRP_CUSTOM)
-	BAREBOX_CMD_END
-
-The corresponding asm code is:
-	000547b0 <do_ldr>:
-	   547b0:       e92d4010        push    {r4, lr}
-	   547b4:       ee111f10        mrc     15, 0, r1, cr1, cr0, {0}
-	   547b8:       e59f0010        ldr     r0, [pc, #16]   ; 547d0 <do_ldr+0x20>
-	   547bc:       ebfeb133        bl      c90 <printf>
-	   547c0:       e3a00213        mov     r0, #805306369  ; 0x30000001
-	   547c4:       e4903004        ldr     r3, [r0], #4
-	   547c8:       e3a00000        mov     r0, #0
-	   547cc:       e8bd8010        pop     {r4, pc}
-	   547d0:       0007b65a        andeq   fp, r7, sl, asr r6
-
-
-When run this function under barebox prompt, barebox output flowwing
-message:
-
-     sctlr = 0x00c51078
-     unable to handle paging request at address 0x30000001
-     pc : [<5ff547cc>]    lr : [<5ff547c0>]
-     sp : 5ffefe00  ip : 00000030  fp : 5ffeff38
-     r10: 00000000  r9 : 3ffb25a0  r8 : 3ffb0308
-     r7 : 3ffb2730  r6 : 00000001  r5 : 5ff943fc  r4 : 3ffb2730
-     r3 : 5ff8f724  r2 : 00000002  r1 : 0000000a  r0 : 30000001
-     Flags: nZCv  IRQs off  FIQs off  Mode SVC_32
-     [<5ff547cc>] (do_ldr+0x1c/0x24) from [<5ff0373c>] (execute_command+0x38/0x78)
-     [<5ff0373c>] (execute_command+0x38/0x78) from [<5ff09d2c>] (run_list_real+0x840/0x970)
-     [<5ff09d2c>] (run_list_real+0x840/0x970) from [<5ff09328>] (parse_stream_outer+0x144/0x208)
-     [<5ff09328>] (parse_stream_outer+0x144/0x208) from [<5ff0a050>] (run_shell+0x4c/0x8c)
-     [<5ff0a050>] (run_shell+0x4c/0x8c) from [<5ff010e8>] (start_barebox+0xbc/0xe8)
-     [<5ff010e8>] (start_barebox+0xbc/0xe8) from [<5ff6448c>] (barebox_non_pbl_start+0x138/0x15c)
-     [<5ff6448c>] (barebox_non_pbl_start+0x138/0x15c) from [<5ff00004>] (__bare_init_start+0x0/0x10)
-
-     [<5ff65c54>] (unwind_backtrace+0x0/0x90) from [<5ff01448>] (panic+0x28/0x44)
-     [<5ff01448>] (panic+0x28/0x44) from [<5ff64200>] (do_exception+0x10/0x14)
-     [<5ff64200>] (do_exception+0x10/0x14) from [<5ff64284>] (do_data_abort+0x2c/0x38)
-     [<5ff64284>] (do_data_abort+0x2c/0x38) from [<5ff63f14>] (do_abort_6+0x48/0x54)
-
-It shows that `A` bit in SCTLR was cleared. But whenever access
-0x30000001, `data fault` exception raised.
-
-According arm cortex-a8 technical reference manual:
-
-     A, bit[1]
-	Alignment check enable. This is the enable bit for Alignment
-	fault checking. The possible values of this bit are:
-
-             * 0 Alignment fault checking disabled.
-             * 1 Alignment fault checking enabled.
-
-**Why unalignment access cause `data fault` even the `A` bit cleared**
-
-CONFIG_MMU **not enabled** in my config file. Does this cause the
-strange behaviour?
-
-Anybody help me please!!
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gTW9udGFnLCBkZW4gMDcuMDEuMjAxOSwgMTY6MTMgKzA4MDAgc2NocmllYiDlvKDlv6DlsbE6
+Cj4gTXkgYm9hcmQgYmFzZWQgZnJpZW5kbHlhcm0tdGlueTIxMCwgY3B1IGlzIHM1cHYyMTAuIEl0
+IGludGVncmF0ZXMgdGhlCj4gQVJNIENvcnRleC1BOCBjb3JlLgo+IAo+IEkgd2FudCB0byBwZXJm
+b3JtIHVuYWxpZ25tZW50IGFjY2VzcywgYnV0IGJhcmVib3ggY3Jhc2guCj4gCj4gVGhlIGZsb3d3
+aW5nIGNvZGUgdXNlZCB0byB0ZXN0IHVuYWxpZ25tZW50IGFjY2VzczoKPiAKPiAJc3RhdGljIGlu
+dCBkb19sZHIoaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKPiAJewo+ID4gCQl1bnNpZ25lZCBpbnQg
+c2N0bHI7Cj4gPiAJCXVuc2lnbmVkIGludCB4eDsKPiAKPiA+IAkJYXNtIHZvbGF0aWxlKCJtcmMg
+cDE1LCAwLCAlW3Jlc3VsdF0sIGMxLCBjMCwgMCI6IFtyZXN1bHRdIj1yIihzY3RscikpOwo+ID4g
+CQlwcmludGYoInNjdGxyID0gMHglMDh4XG4iLCBzY3Rscik7Cj4gCj4gPiAJCWFzbSB2b2xhdGls
+ZSgKPiA+IAkJCSJsZHIgcjAsID0weDMwMDAwMDAxXG5cdCIKPiA+IAkJCSJsZHIgJVtyZXN1bHRd
+LCBbcjBdLCAjNCI6IFtyZXN1bHRdIj1yIih4eCkpO8KgwqAvLyB0aGlzIGNhdXNlIGBkYXRhIGZh
+dWx0YCBleGNlcHRpb24KPiAKPiA+IAkJcmV0dXJuIDA7Cj4gCX0KPiAJQkFSRUJPWF9DTURfU1RB
+UlQobGRyKQo+ID4gCQkuY21kID0gZG9fbGRyLAo+ID4gCQlCQVJFQk9YX0NNRF9ERVNDKCJUaGlz
+IGNvbW1hbmQgdGVzdCBsZHIiKQo+ID4gCQlCQVJFQk9YX0NNRF9HUk9VUChDTURfR1JQX0NVU1RP
+TSkKPiAJQkFSRUJPWF9DTURfRU5ECj4gCj4gVGhlIGNvcnJlc3BvbmRpbmcgYXNtIGNvZGUgaXM6
+Cj4gCTAwMDU0N2IwIDxkb19sZHI+Ogo+IAnCoMKgwqA1NDdiMDrCoMKgwqDCoMKgwqDCoGU5MmQ0
+MDEwwqDCoMKgwqDCoMKgwqDCoHB1c2jCoMKgwqDCoHtyNCwgbHJ9Cj4gCcKgwqDCoDU0N2I0OsKg
+wqDCoMKgwqDCoMKgZWUxMTFmMTDCoMKgwqDCoMKgwqDCoMKgbXJjwqDCoMKgwqDCoDE1LCAwLCBy
+MSwgY3IxLCBjcjAsIHswfQo+IAnCoMKgwqA1NDdiODrCoMKgwqDCoMKgwqDCoGU1OWYwMDEwwqDC
+oMKgwqDCoMKgwqDCoGxkcsKgwqDCoMKgwqByMCwgW3BjLCAjMTZdwqDCoMKgOyA1NDdkMCA8ZG9f
+bGRyKzB4MjA+Cj4gCcKgwqDCoDU0N2JjOsKgwqDCoMKgwqDCoMKgZWJmZWIxMzPCoMKgwqDCoMKg
+wqDCoMKgYmzCoMKgwqDCoMKgwqBjOTAgPHByaW50Zj4KPiAJwqDCoMKgNTQ3YzA6wqDCoMKgwqDC
+oMKgwqBlM2EwMDIxM8KgwqDCoMKgwqDCoMKgwqBtb3bCoMKgwqDCoMKgcjAsICM4MDUzMDYzNjnC
+oMKgOyAweDMwMDAwMDAxCj4gCcKgwqDCoDU0N2M0OsKgwqDCoMKgwqDCoMKgZTQ5MDMwMDTCoMKg
+wqDCoMKgwqDCoMKgbGRywqDCoMKgwqDCoHIzLCBbcjBdLCAjNAo+IAnCoMKgwqA1NDdjODrCoMKg
+wqDCoMKgwqDCoGUzYTAwMDAwwqDCoMKgwqDCoMKgwqDCoG1vdsKgwqDCoMKgwqByMCwgIzAKPiAJ
+wqDCoMKgNTQ3Y2M6wqDCoMKgwqDCoMKgwqBlOGJkODAxMMKgwqDCoMKgwqDCoMKgwqBwb3DCoMKg
+wqDCoMKge3I0LCBwY30KPiAJwqDCoMKgNTQ3ZDA6wqDCoMKgwqDCoMKgwqAwMDA3YjY1YcKgwqDC
+oMKgwqDCoMKgwqBhbmRlccKgwqDCoGZwLCByNywgc2wsIGFzciByNgo+IAo+IAo+IFdoZW4gcnVu
+IHRoaXMgZnVuY3Rpb24gdW5kZXIgYmFyZWJveCBwcm9tcHQsIGJhcmVib3ggb3V0cHV0IGZsb3d3
+aW5nCj4gbWVzc2FnZToKPiAKPiDCoMKgwqDCoMKgc2N0bHIgPSAweDAwYzUxMDc4Cj4gwqDCoMKg
+wqDCoHVuYWJsZSB0byBoYW5kbGUgcGFnaW5nIHJlcXVlc3QgYXQgYWRkcmVzcyAweDMwMDAwMDAx
+Cj4gwqDCoMKgwqDCoHBjIDogWzw1ZmY1NDdjYz5dwqDCoMKgwqBsciA6IFs8NWZmNTQ3YzA+XQo+
+IMKgwqDCoMKgwqBzcCA6IDVmZmVmZTAwwqDCoGlwIDogMDAwMDAwMzDCoMKgZnAgOiA1ZmZlZmYz
+OAo+IMKgwqDCoMKgwqByMTA6IDAwMDAwMDAwwqDCoHI5IDogM2ZmYjI1YTDCoMKgcjggOiAzZmZi
+MDMwOAo+IMKgwqDCoMKgwqByNyA6IDNmZmIyNzMwwqDCoHI2IDogMDAwMDAwMDHCoMKgcjUgOiA1
+ZmY5NDNmY8KgwqByNCA6IDNmZmIyNzMwCj4gwqDCoMKgwqDCoHIzIDogNWZmOGY3MjTCoMKgcjIg
+OiAwMDAwMDAwMsKgwqByMSA6IDAwMDAwMDBhwqDCoHIwIDogMzAwMDAwMDEKPiDCoMKgwqDCoMKg
+RmxhZ3M6IG5aQ3bCoMKgSVJRcyBvZmbCoMKgRklRcyBvZmbCoMKgTW9kZSBTVkNfMzIKPiDCoMKg
+wqDCoMKgWzw1ZmY1NDdjYz5dIChkb19sZHIrMHgxYy8weDI0KSBmcm9tIFs8NWZmMDM3M2M+XSAo
+ZXhlY3V0ZV9jb21tYW5kKzB4MzgvMHg3OCkKPiDCoMKgwqDCoMKgWzw1ZmYwMzczYz5dIChleGVj
+dXRlX2NvbW1hbmQrMHgzOC8weDc4KSBmcm9tIFs8NWZmMDlkMmM+XSAocnVuX2xpc3RfcmVhbCsw
+eDg0MC8weDk3MCkKPiDCoMKgwqDCoMKgWzw1ZmYwOWQyYz5dIChydW5fbGlzdF9yZWFsKzB4ODQw
+LzB4OTcwKSBmcm9tIFs8NWZmMDkzMjg+XSAocGFyc2Vfc3RyZWFtX291dGVyKzB4MTQ0LzB4MjA4
+KQo+IMKgwqDCoMKgwqBbPDVmZjA5MzI4Pl0gKHBhcnNlX3N0cmVhbV9vdXRlcisweDE0NC8weDIw
+OCkgZnJvbSBbPDVmZjBhMDUwPl0gKHJ1bl9zaGVsbCsweDRjLzB4OGMpCj4gwqDCoMKgwqDCoFs8
+NWZmMGEwNTA+XSAocnVuX3NoZWxsKzB4NGMvMHg4YykgZnJvbSBbPDVmZjAxMGU4Pl0gKHN0YXJ0
+X2JhcmVib3grMHhiYy8weGU4KQo+IMKgwqDCoMKgwqBbPDVmZjAxMGU4Pl0gKHN0YXJ0X2JhcmVi
+b3grMHhiYy8weGU4KSBmcm9tIFs8NWZmNjQ0OGM+XSAoYmFyZWJveF9ub25fcGJsX3N0YXJ0KzB4
+MTM4LzB4MTVjKQo+IMKgwqDCoMKgwqBbPDVmZjY0NDhjPl0gKGJhcmVib3hfbm9uX3BibF9zdGFy
+dCsweDEzOC8weDE1YykgZnJvbSBbPDVmZjAwMDA0Pl0gKF9fYmFyZV9pbml0X3N0YXJ0KzB4MC8w
+eDEwKQo+IAo+IMKgwqDCoMKgwqBbPDVmZjY1YzU0Pl0gKHVud2luZF9iYWNrdHJhY2UrMHgwLzB4
+OTApIGZyb20gWzw1ZmYwMTQ0OD5dIChwYW5pYysweDI4LzB4NDQpCj4gwqDCoMKgwqDCoFs8NWZm
+MDE0NDg+XSAocGFuaWMrMHgyOC8weDQ0KSBmcm9tIFs8NWZmNjQyMDA+XSAoZG9fZXhjZXB0aW9u
+KzB4MTAvMHgxNCkKPiDCoMKgwqDCoMKgWzw1ZmY2NDIwMD5dIChkb19leGNlcHRpb24rMHgxMC8w
+eDE0KSBmcm9tIFs8NWZmNjQyODQ+XSAoZG9fZGF0YV9hYm9ydCsweDJjLzB4MzgpCj4gwqDCoMKg
+wqDCoFs8NWZmNjQyODQ+XSAoZG9fZGF0YV9hYm9ydCsweDJjLzB4MzgpIGZyb20gWzw1ZmY2M2Yx
+ND5dIChkb19hYm9ydF82KzB4NDgvMHg1NCkKPiAKPiBJdCBzaG93cyB0aGF0IGBBYCBiaXQgaW4g
+U0NUTFIgd2FzIGNsZWFyZWQuIEJ1dCB3aGVuZXZlciBhY2Nlc3MKPiAweDMwMDAwMDAxLCBgZGF0
+YSBmYXVsdGAgZXhjZXB0aW9uIHJhaXNlZC4KPiAKPiBBY2NvcmRpbmcgYXJtIGNvcnRleC1hOCB0
+ZWNobmljYWwgcmVmZXJlbmNlIG1hbnVhbDoKPiAKPiDCoMKgwqDCoMKgQSwgYml0WzFdCj4gCUFs
+aWdubWVudCBjaGVjayBlbmFibGUuIFRoaXMgaXMgdGhlIGVuYWJsZSBiaXQgZm9yIEFsaWdubWVu
+dAo+IAlmYXVsdCBjaGVja2luZy4gVGhlIHBvc3NpYmxlIHZhbHVlcyBvZiB0aGlzIGJpdCBhcmU6
+Cj4gCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAqIDAgQWxpZ25tZW50IGZhdWx0IGNoZWNr
+aW5nIGRpc2FibGVkLgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgKiAxIEFsaWdubWVudCBm
+YXVsdCBjaGVja2luZyBlbmFibGVkLgo+IAo+ICoqV2h5IHVuYWxpZ25tZW50IGFjY2VzcyBjYXVz
+ZSBgZGF0YSBmYXVsdGAgZXZlbiB0aGUgYEFgIGJpdCBjbGVhcmVkKioKPiAKPiBDT05GSUdfTU1V
+ICoqbm90IGVuYWJsZWQqKiBpbiBteSBjb25maWcgZmlsZS4gRG9lcyB0aGlzIGNhdXNlIHRoZQo+
+IHN0cmFuZ2UgYmVoYXZpb3VyPwoKSFcgYXNzaXN0ZWQgdW5hbGlnbmVkIGFjY2VzcyBpcyBvbmx5
+IHN1cHBvcnRlZCBieSB0aGUgQVJNIGFyY2hpdGVjdHVyZQpydWxlcyB0byBtZW1vcnkgcmVnaW9u
+cyB0aGF0IGFyZSBhdCBsZWFzdCBidWZmZXJhYmxlICh0aGF0J3MgYSBsb2dpY2FsCmNvbnNlcXVl
+bmNlIG9mIHRoZSB1bmFsaWduZWQgYWNjZXNzIGJlaW5nIHBlcmZvcm1lZCBieSBtdWx0aXBsZSBh
+bGlnbmVkCm9uZXMsIHdpdGggdGhlIHVuYWxpZ25lZCBoYW5kbGluZyBoYXBwZW5pbmcgb24gYSBy
+ZWFkIGJ1ZmZlcikuCgpTbyBmb3IgdW5hbGlnbmVkIGFjY2Vzc2VzIHRvIHdvcmsgMiB0aGluZ3Mg
+bmVlZCB0byBiZSBzYXRpc2ZpZWQ6CjEuIENPTkZJR19NTVUgbmVlZHMgdG8gYmUgZW5hYmxlZCwg
+YXMgb3RoZXJ3aXNlIGFsbCBtZW1vcnkgYWNjZXNzZXMgYXJlCnRyZWF0ZWQgYXMgc3Ryb25nbHkg
+b3JkZXJlZC4KMi4gVGhlIGFjY2VzcyBtdXN0IGJlIHRvIGEgcmVnaW9uIHRoYXQgaXMgYWN0dWFs
+bHkgbWFwcGVkIGFzIGJ1ZmZlcmFibGUKb3IgY2FjaGFibGUsIHdoaWNoIGJ5IGRlZmF1bHQgaXMg
+b25seSB0aGUgRFJBTSBtZW1vcnkgcmVnaW9uLgoKUmVnYXJkcywKTHVjYXMKCgpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
+dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
