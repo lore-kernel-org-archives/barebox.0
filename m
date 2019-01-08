@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-eopbgr70051.outbound.protection.outlook.com ([40.107.7.51]
- helo=EUR04-HE1-obe.outbound.protection.outlook.com)
+Received: from mail-eopbgr140059.outbound.protection.outlook.com
+ ([40.107.14.59] helo=EUR01-VE1-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ggsU2-0007zQ-EP
- for barebox@lists.infradead.org; Tue, 08 Jan 2019 14:35:59 +0000
+ id 1ggsU3-0007zY-C5
+ for barebox@lists.infradead.org; Tue, 08 Jan 2019 14:36:01 +0000
 From: =?iso-8859-1?Q?Thomas_H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
-Date: Tue, 8 Jan 2019 14:35:47 +0000
-Message-ID: <1546958133-6556-2-git-send-email-thomas.haemmerle@wolfvision.net>
+Date: Tue, 8 Jan 2019 14:35:50 +0000
+Message-ID: <1546958133-6556-4-git-send-email-thomas.haemmerle@wolfvision.net>
 References: <1546958133-6556-1-git-send-email-thomas.haemmerle@wolfvision.net>
- <afd44571-b69b-41cc-bf15-9eff29f89a72.95bf7d06-047e-438c-8c7b-895af195351a.2f59ab5f-ece6-4f67-bfed-5c6c80a92f11@emailsignatures365.codetwo.com>
+ <afd44571-b69b-41cc-bf15-9eff29f89a72.95bf7d06-047e-438c-8c7b-895af195351a.d7953183-96ef-4a79-9c25-4e47b7b852de@emailsignatures365.codetwo.com>
 In-Reply-To: <1546958133-6556-1-git-send-email-thomas.haemmerle@wolfvision.net>
 Content-Language: en-US
 MIME-Version: 1.0
@@ -24,34 +24,36 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] macb: fix format specifiers for debug output
+Subject: [PATCH 4/6] macb: fix memory leakage due to double allocation of
+ rx_buffer
 To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 Cc: =?iso-8859-1?Q?Thomas_H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
 
-Fixes compiler warning "format '%d' expects argument of type 'int', but
-argument 4 has type 'size_t {aka long unsigned int}' [-Wformat=3D]".
+Remove memory allocation of rx buffer in function
+macb_init_rx_buffer_size, which caused a memory leak since it also is
+alocated in macb_probe().
 
 Signed-off-by: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
 ---
- drivers/net/macb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/macb.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index 1a8f6da..240802e 100644
+index c776535..c129282 100644
 --- a/drivers/net/macb.c
 +++ b/drivers/net/macb.c
-@@ -596,7 +596,7 @@ static void macb_init_rx_buffer_size(struct macb_device=
+@@ -592,8 +592,6 @@ static void macb_init_rx_buffer_size(struct macb_device=
  *bp, size_t size)
- 						   DMA_ADDRESS_BROKEN);
+ 			bp->rx_buffer_size =3D
+ 				roundup(bp->rx_buffer_size, RX_BUFFER_MULTIPLE);
+ 		}
+-		bp->rx_buffer =3D dma_alloc_coherent(bp->rx_buffer_size * bp->rx_ring_si=
+ze,
+-						   DMA_ADDRESS_BROKEN);
  	}
  =
 
--	dev_dbg(bp->dev, "[%d] rx_buffer_size [%d]\n",
-+	dev_dbg(bp->dev, "[%zu] rx_buffer_size [%d]\n",
- 		   size, bp->rx_buffer_size);
- }
- =
-
+ 	dev_dbg(bp->dev, "[%zu] rx_buffer_size [%d]\n",
 -- =
 
 2.7.4
