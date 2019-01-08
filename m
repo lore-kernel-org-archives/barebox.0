@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ggD09-00038M-IK
- for barebox@lists.infradead.org; Sun, 06 Jan 2019 18:18:24 +0000
-Received: by mail-lf1-x130.google.com with SMTP id p6so28659086lfc.1
- for <barebox@lists.infradead.org>; Sun, 06 Jan 2019 10:18:20 -0800 (PST)
-From: Sam Ravnborg <sam@ravnborg.org>
-Date: Sun,  6 Jan 2019 19:18:08 +0100
-Message-Id: <20190106181808.8382-4-sam@ravnborg.org>
-In-Reply-To: <20190106181808.8382-1-sam@ravnborg.org>
+ id 1ggtVN-0004Wb-U6
+ for barebox@lists.infradead.org; Tue, 08 Jan 2019 15:41:28 +0000
+Date: Tue, 8 Jan 2019 16:41:23 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190108154123.qnc445qjcqgm43k5@pengutronix.de>
 References: <20190106181808.8382-1-sam@ravnborg.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190106181808.8382-1-sam@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,155 +18,72 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 3/3] doc: at91sam9263-ek: add notes
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Sam Ravnborg <sam@ravnborg.org>
+Subject: Re: [PATCH 0/3] add at91 documentation
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Add notes from working on bootstrap support
+On Sun, Jan 06, 2019 at 07:18:05PM +0100, Sam Ravnborg wrote:
+> While working on at91sam9263-ek I started to take a few notes.
+> And missing a place to put these notes I ended up adding
+> files for the most relevant at91 based boards.
+> Following the barebox principle I added one file per board,
+> even though most files just list the defconfig file.
+> 
+> The idea is the it is now easier to add some documentation
+> for an existing baord or a new board.
+> I also added my ramling for at91sam9263 - so it is saved
+> somewhere and maybe useful for someone else in the future.
+> 
+> Sphinx did not report any warnings - and it looked as expected.
+> 
+> 	Sam
+> 
+> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> 
+> Sam Ravnborg (3):
+>       doc: add at91 documentation
+>       doc: add additional at91 boards
+>       doc: at91sam9263-ek: add notes
 
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
----
- .../boards/at91/microchip-at91sam9263-ek.rst       | 122 +++++++++++++++++++++
- 1 file changed, 122 insertions(+)
+Applied, thanks
 
-diff --git a/Documentation/boards/at91/microchip-at91sam9263-ek.rst b/Documentation/boards/at91/microchip-at91sam9263-ek.rst
-index 74ddb3cdb..8022cdd67 100644
---- a/Documentation/boards/at91/microchip-at91sam9263-ek.rst
-+++ b/Documentation/boards/at91/microchip-at91sam9263-ek.rst
-@@ -8,3 +8,125 @@ Building barebox:
- .. code-block:: sh
- 
-   make ARCH=arm at91sam9263ek_defconfig
-+
-+Notes while working on at91sam9263ek bootstrap support
-+
-+The at91sam9263 have support for a boot program,
-+like the other members in the Atmel at91 series.
-+
-+The boot program (ROMBOOT) will try to load the
-+boot program from DataFlash, SD Card, NAND Flash and USB
-+
-+SD Card is the first to try.
-+It looks for a file named BOOT.BIN in the first
-+partition in a FAT16/32 filesystem.
-+
-+To generate the SD Card image I used genimage:
-+(https://github.com/pengutronix/genimage)
-+Onle 2 GB SD card works, 4 GB did not work. ROMBOOT do not
-+support high capacity SD cards.
-+
-+Configuration file:
-+
-+.. code-block:: none
-+
-+  image boot.vfat {
-+	name = "boot"
-+	vfat {
-+		/*
-+		 * RomBOOT in the at91sam9263 does not recognize
-+		 * the default FAT partition created by mkdosfs.
-+		 * -n BOOT - Set volume label to "BOOT"
-+		 * -F 16   - Force the partition to FAT 16
-+		 * -D 0    - Set drive number to 0
-+		 * -R 1 -a - Reserve only one sector
-+		 * The combination of "-D 0" AND "-R 1 -a"
-+		 * is required with mkdosfs version 4.1
-+		 */
-+		extraargs = "-n BOOT -F 16 -D 0 -R 1 -a"
-+		file BOOT.BIN    { image = "barebox.bin" } // barebox.bin from root of barebox dir 
-+		file barebox.bin { image = "barebox-at91sam9263ek.img" }
-+		file zImage      { image = "zImage" }
-+	}
-+
-+	size = 16M
-+  }
-+
-+  image rootfs.ext4 {
-+	ext4 {
-+		label = "root"
-+	}
-+	mountpoint = "/"
-+	size = 1500M
-+  }
-+
-+  image SD {
-+	hdimage {}
-+
-+	partition boot {
-+		partition-type = 0xc
-+		bootable = "true"
-+		image = "boot.vfat"
-+	}
-+
-+	partition root {
-+		image = "rootfs.ext4"
-+		partition-type = 0x83
-+	}
-+
-+  }
-+
-+ROMBOOT will load the BOOT.BIN file to internal SRAM that
-+starts at 0x300000. Maximum size 0x12000 (72 KiB).
-+When loaded ROMBOOT will remap like this:
-+
-+.. code-block:: none
-+
-+  0x00000000           0x00000000
-+    Internal ROM   =>     Internal SRAM
-+
-+  0x00300000          0x00400000
-+    Internal SRAM  =>     Internal ROM
-+
-+It is not documented but assumed that ROMBOOT uses the
-+MMU to remap the addresses.
-+There seems not to be a dedicated remapping feature that is used.
-+
-+Note: For DataFlash and NAND Flash the image is validated.
-+The first 28 bytes must be valid load PC or PC relative addressing.
-+Vector 0x6 must include the size of the image (in bytes).
-+This validation is (according to datasheet) not done for SD Card boots.
-+
-+barebox related notes when trying to make it work with PBL enabled
-+
-+To let barebox detect the SD card early use: CONFIG_MCI_STARTUP=y
-+
-+When PBL (and MULTI_IMAGE) are enabled then barebox creates
-+a binary with the following structure:
-+
-+.. code-block:: none
-+
-+  +----------------------+
-+  | PBL (PreBootLoader)  |
-+  +----------------------+
-+  | piggy.o              |
-+  |+--------------------+|
-+  ||barebox second stage||
-+  |+--------------------+|
-+  +----------------------+
-+
-+The PBL contains code from the sections .text_head_entry*, .text_bare_init* and .text*
-+
-+``.text_head_entry*:``
-+This is the reset vector and exception vectors. Must be the very first in the file
-+
-+``.text_bare_init*:``
-+Everything in this section, and , is checked at link time.
-+Size most be less than BAREBOX_MAX_BARE_INIT_SIZE / ARCH_BAREBOX_MAX_BARE_INIT_SIZE
-+
-+at91 specify the size of the two sections in exception vector 6 (see above),
-+if CONFIG_AT91_LOAD_BAREBOX_SRAM is defined.
-+I think this is because some at91 variants have only very limited SRAM size,
-+and we copy only a minimal part to the SRAM. The remaining part is then
-+executed in-place.
-+For at91sam9263 we have a large SRAM so there is room for the full bootstrap binary.
+Sascha
+
+> 
+>  Documentation/boards/at91.rst                      |  51 ++++++++
+>  .../boards/at91/microchip-at91rm9200-ek.rst        |   8 ++
+>  .../boards/at91/microchip-at91sam9260-ek.rst       |   8 ++
+>  .../boards/at91/microchip-at91sam9261-ek.rst       |  18 +++
+>  .../boards/at91/microchip-at91sam9263-ek.rst       | 132 +++++++++++++++++++++
+>  .../boards/at91/microchip-at91sam9g10-ek.rst       |   8 ++
+>  .../boards/at91/microchip-at91sam9g20-ek.rst       |   8 ++
+>  .../boards/at91/microchip-at91sam9m10g45-ek.rst    |   8 ++
+>  .../boards/at91/microchip-at91sam9n12-ek.rst       |   8 ++
+>  .../boards/at91/microchip-at91sam9x5-ek.rst        |  10 ++
+>  .../boards/at91/microchip-ksz9477-evb.rst          |  11 ++
+>  .../boards/at91/microchip-sama5d3-xplained.rst     |   8 ++
+>  .../boards/at91/microchip-sama5d3x-ek.rst          |   8 ++
+>  .../boards/at91/microchip-sama5d4-xplained.rst     |   8 ++
+>  Documentation/boards/at91/somfy-animeo-ip.rst      |   4 +
+>  Documentation/boards/at91/telit-evk-pro3.rst       |   9 ++
+>  16 files changed, 307 insertions(+)
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.12.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
