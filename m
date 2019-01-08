@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from f511.i.mail.ru ([217.69.138.178])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gfN1L-00011F-Vg
- for barebox@lists.infradead.org; Fri, 04 Jan 2019 10:48:09 +0000
-Date: Fri, 4 Jan 2019 11:48:06 +0100
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190104104806.2a4sa6ozuftgd5nj@pengutronix.de>
-References: <20181219080403.13737-1-shc_work@mail.ru>
- <20181219080403.13737-2-shc_work@mail.ru>
- <20190104104655.xgwbijdqbay2pq5u@pengutronix.de>
+ id 1ggotA-0007le-Is
+ for barebox@lists.infradead.org; Tue, 08 Jan 2019 10:45:42 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190104104655.xgwbijdqbay2pq5u@pengutronix.de>
+Date: Tue, 08 Jan 2019 13:45:34 +0300
+Message-ID: <1546944334.58058325@f511.i.mail.ru>
+In-Reply-To: <20190104104806.2a4sa6ozuftgd5nj@pengutronix.de>
+References: <20181219080403.13737-1-shc_work@mail.ru>
+ <20190104104655.xgwbijdqbay2pq5u@pengutronix.de>
+ <20190104104806.2a4sa6ozuftgd5nj@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,57 +19,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 02/10] serial: clps711x: Switch to SPDX identifier
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCAwMi8xMF0gc2VyaWFsOiBjbHBzNzExeDogU3dpdGNoIHRv?=
+ =?UTF-8?B?IFNQRFggaWRlbnRpZmllcg==?=
+To: =?UTF-8?B?Um9sYW5kIEhpZWJlcg==?= <rhi@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jan 04, 2019 at 11:46:55AM +0100, Roland Hieber wrote:
-> Hi Alexander,
-> 
-> On Wed, Dec 19, 2018 at 11:03:55AM +0300, Alexander Shiyan wrote:
-> > Adopt the SPDX license identifier headers to ease license compliance
-> > management.
-> > 
-> > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> > ---
-> >  drivers/serial/serial_clps711x.c | 12 ++----------
-> >  1 file changed, 2 insertions(+), 10 deletions(-)
-> > 
-> > diff --git a/drivers/serial/serial_clps711x.c b/drivers/serial/serial_clps711x.c
-> > index 9a9ae24c0..c21ca6510 100644
-> > --- a/drivers/serial/serial_clps711x.c
-> > +++ b/drivers/serial/serial_clps711x.c
-> > @@ -1,13 +1,5 @@
-> > -/*
-> > - * Simple CLPS711X serial driver
-> > - *
-> > - * (C) Copyright 2012-2014 Alexander Shiyan <shc_work@mail.ru>
-> > - *
-> > - * This program is free software; you can redistribute it and/or
-> > - * modify it under the terms of the GNU General Public License as
-> > - * published by the Free Software Foundation; either version 2 of
-> > - * the License, or (at your option) any later version.
-> > - */
-> > +// SPDX-License-Identifier: GPL-2.0+
-> > +/* Author: Alexander Shiyan <shc_work@mail.ru> */
-> 
-> Your removed the "Copyright" here and replaced it with "Author", but in
-> some jurisdictions copyright and authorship are actually different
-> things, and most automated license compliance tools only look for the
-> string "Copyright", so your change will probably mean that your name
-> will not be picked up as copyright. Was this change made deliberately?
-> 
-> Same goes for "[PATCH 06/10] gpio: clps711x: Switch to SPDX identifier".
-
-and "[PATCH 09/10] clocksource: clps711x: Switch to SPDX identifier".
-
- - Roland
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+PtCf0Y/RgtC90LjRhtCwLCAgNCDRj9C90LLQsNGA0Y8gMjAxOSwgMTM6NDggKzAzOjAwINC+0YIg
+Um9sYW5kIEhpZWJlciA8cmhpQHBlbmd1dHJvbml4LmRlPjoKPgo+T24gRnJpLCBKYW4gMDQsIDIw
+MTkgYXQgMTE6NDY6NTVBTSArMDEwMCwgUm9sYW5kIEhpZWJlciB3cm90ZToKPj4gSGkgQWxleGFu
+ZGVyLAo+PiAKPj4gT24gV2VkLCBEZWMgMTksIDIwMTggYXQgMTE6MDM6NTVBTSArMDMwMCwgQWxl
+eGFuZGVyIFNoaXlhbiB3cm90ZToKPj4gPiBBZG9wdCB0aGUgU1BEWCBsaWNlbnNlIGlkZW50aWZp
+ZXIgaGVhZGVycyB0byBlYXNlIGxpY2Vuc2UgY29tcGxpYW5jZQo+PiA+IG1hbmFnZW1lbnQuCj4+
+ID4gCj4+ID4gU2lnbmVkLW9mZi1ieTogQWxleGFuZGVyIFNoaXlhbiA8IHNoY193b3JrQG1haWwu
+cnUgPgo+PiA+IC0tLQo+PiA+ICBkcml2ZXJzL3NlcmlhbC9zZXJpYWxfY2xwczcxMXguYyB8IDEy
+ICsrLS0tLS0tLS0tLQo+PiA+ICAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAxMCBk
+ZWxldGlvbnMoLSkKPj4gPiAKPj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zZXJpYWwvc2VyaWFs
+X2NscHM3MTF4LmMgYi9kcml2ZXJzL3NlcmlhbC9zZXJpYWxfY2xwczcxMXguYwo+PiA+IGluZGV4
+IDlhOWFlMjRjMC4uYzIxY2E2NTEwIDEwMDY0NAo+PiA+IC0tLSBhL2RyaXZlcnMvc2VyaWFsL3Nl
+cmlhbF9jbHBzNzExeC5jCj4+ID4gKysrIGIvZHJpdmVycy9zZXJpYWwvc2VyaWFsX2NscHM3MTF4
+LmMKPj4gPiBAQCAtMSwxMyArMSw1IEBACj4+ID4gLS8qCj4+ID4gLSAqIFNpbXBsZSBDTFBTNzEx
+WCBzZXJpYWwgZHJpdmVyCj4+ID4gLSAqCj4+ID4gLSAqIChDKSBDb3B5cmlnaHQgMjAxMi0yMDE0
+IEFsZXhhbmRlciBTaGl5YW4gPCBzaGNfd29ya0BtYWlsLnJ1ID4KPj4gPiAtICoKPj4gPiAtICog
+VGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFu
+ZC9vcgo+PiA+IC0gKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJh
+bCBQdWJsaWMgTGljZW5zZSBhcwo+PiA+IC0gKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdh
+cmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZgo+PiA+IC0gKiB0aGUgTGljZW5zZSwg
+b3IgKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4KPj4gPiAtICovCj4+ID4gKy8v
+IFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wKwo+PiA+ICsvKiBBdXRob3I6IEFsZXhh
+bmRlciBTaGl5YW4gPCBzaGNfd29ya0BtYWlsLnJ1ID4gKi8KPj4gCj4+IFlvdXIgcmVtb3ZlZCB0
+aGUgIkNvcHlyaWdodCIgaGVyZSBhbmQgcmVwbGFjZWQgaXQgd2l0aCAiQXV0aG9yIiwgYnV0IGlu
+Cj4+IHNvbWUganVyaXNkaWN0aW9ucyBjb3B5cmlnaHQgYW5kIGF1dGhvcnNoaXAgYXJlIGFjdHVh
+bGx5IGRpZmZlcmVudAo+PiB0aGluZ3MsIGFuZCBtb3N0IGF1dG9tYXRlZCBsaWNlbnNlIGNvbXBs
+aWFuY2UgdG9vbHMgb25seSBsb29rIGZvciB0aGUKPj4gc3RyaW5nICJDb3B5cmlnaHQiLCBzbyB5
+b3VyIGNoYW5nZSB3aWxsIHByb2JhYmx5IG1lYW4gdGhhdCB5b3VyIG5hbWUKPj4gd2lsbCBub3Qg
+YmUgcGlja2VkIHVwIGFzIGNvcHlyaWdodC4gV2FzIHRoaXMgY2hhbmdlIG1hZGUgZGVsaWJlcmF0
+ZWx5Pwo+PiAKPj4gU2FtZSBnb2VzIGZvciAiW1BBVENIIDA2LzEwXSBncGlvOiBjbHBzNzExeDog
+U3dpdGNoIHRvIFNQRFggaWRlbnRpZmllciIuCj4KPmFuZCAiW1BBVENIIDA5LzEwXSBjbG9ja3Nv
+dXJjZTogY2xwczcxMXg6IFN3aXRjaCB0byBTUERYIGlkZW50aWZpZXIiLgoKRXZlcnl0aGluZyBp
+cyBPSywgYXMgaXQgd2FzIGludGVuZGVkLgoKLS0tCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
+aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2JhcmVib3gK
