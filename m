@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ghVlY-0006v6-BJ
- for barebox@lists.infradead.org; Thu, 10 Jan 2019 08:32:41 +0000
-Date: Thu, 10 Jan 2019 09:32:38 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190110083238.db4j3vs6qegh7r2y@pengutronix.de>
-References: <20190109112945.GB918@lenoch>
+ id 1ghKOy-0003oJ-Lj
+ for barebox@lists.infradead.org; Wed, 09 Jan 2019 20:24:38 +0000
+Received: by mail-lf1-x12a.google.com with SMTP id n18so6644325lfh.6
+ for <barebox@lists.infradead.org>; Wed, 09 Jan 2019 12:24:35 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed,  9 Jan 2019 23:24:24 +0300
+Message-Id: <20190109202427.29535-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190109112945.GB918@lenoch>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +21,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] usbgadget: dfu: remove useless break in the switch
- statement
-To: Ladislav Michl <ladis@linux-mips.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 0/3] drivers: fix "no previous prototype" warnings
+To: barebox@lists.infradead.org
 
-On Wed, Jan 09, 2019 at 12:29:45PM +0100, Ladislav Michl wrote:
-> Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
-> ---
->  drivers/usb/gadget/dfu.c | 5 -----
->  1 file changed, 5 deletions(-)
+Antony Pavlov (3):
+  w1: fix "no previous prototype for 'w1_found'" warning
+  serial: amba-pl011: fix "no previous prototype for 'pl011_init_port'" warning
+  net: ks8851_mll: fix "no previous prototype for 'ks_enable_qmu'" warning
 
-Applied, thanks
-
-Sascha
+ drivers/net/ks8851_mll.c    | 2 +-
+ drivers/serial/amba-pl011.c | 2 +-
+ drivers/w1/w1.c             | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
