@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gh5Al-00038g-Nr
- for barebox@lists.infradead.org; Wed, 09 Jan 2019 04:08:57 +0000
-Received: by mail-pg1-x52f.google.com with SMTP id w7so2688187pgp.13
- for <barebox@lists.infradead.org>; Tue, 08 Jan 2019 20:08:53 -0800 (PST)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue,  8 Jan 2019 20:08:37 -0800
-Message-Id: <20190109040837.18600-1-andrew.smirnov@gmail.com>
+ id 1gh8D6-0008Sv-W7
+ for barebox@lists.infradead.org; Wed, 09 Jan 2019 07:23:34 +0000
+Date: Wed, 9 Jan 2019 08:23:31 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190109072331.roas3etgvajylhlk@pengutronix.de>
+References: <20190109040837.18600-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190109040837.18600-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,43 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! arm: fix no prototype for barebox_arm_reset_vector()
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH] fixup! arm: fix no prototype for
+ barebox_arm_reset_vector()
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
----
+On Tue, Jan 08, 2019 at 08:08:37PM -0800, Andrey Smirnov wrote:
+> ---
+> 
+> Sascha, hopefully fixup is enough, but let me know if you need me to
+> generate a standalone patch.
 
-Sascha, hopefully fixup is enough, but let me know if you need me to
-generate a standalone patch.
+Generally a fixup is fine. In this case I dropped the original patch, so
+nothing to fixup.
 
-Thanks,
-Andrey Smirnov
+Sascha
 
- arch/arm/include/asm/barebox-arm.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-index 312685486..ee18075bb 100644
---- a/arch/arm/include/asm/barebox-arm.h
-+++ b/arch/arm/include/asm/barebox-arm.h
-@@ -59,7 +59,6 @@ void setup_c(void);
- void relocate_to_current_adr(void);
- void relocate_to_adr(unsigned long target);
- void __noreturn barebox_arm_entry(unsigned long membase, unsigned long memsize, void *boarddata);
--void __naked __bare_init barebox_arm_reset_vector(void);
- 
- struct barebox_arm_boarddata {
- #define BAREBOX_ARM_BOARDDATA_MAGIC	0xabe742c3
-@@ -207,4 +206,6 @@ static inline unsigned long arm_mem_barebox_image(unsigned long membase,
- #define NAKED
- #endif
- 
-+void NAKED __bare_init barebox_arm_reset_vector(void);
-+
- #endif	/* _BAREBOX_ARM_H_ */
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
