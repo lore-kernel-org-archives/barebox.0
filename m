@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gh8D6-0008Sv-W7
- for barebox@lists.infradead.org; Wed, 09 Jan 2019 07:23:34 +0000
-Date: Wed, 9 Jan 2019 08:23:31 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190109072331.roas3etgvajylhlk@pengutronix.de>
-References: <20190109040837.18600-1-andrew.smirnov@gmail.com>
+ id 1gh5B0-0003CH-3L
+ for barebox@lists.infradead.org; Wed, 09 Jan 2019 04:09:11 +0000
+Received: by mail-pg1-x543.google.com with SMTP id z10so2708086pgp.7
+ for <barebox@lists.infradead.org>; Tue, 08 Jan 2019 20:09:09 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue,  8 Jan 2019 20:09:02 -0800
+Message-Id: <20190109040902.18956-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190109040837.18600-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! arm: fix no prototype for
- barebox_arm_reset_vector()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] memory_display: Fix type of argument passed to %*s
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Tue, Jan 08, 2019 at 08:08:37PM -0800, Andrey Smirnov wrote:
-> ---
-> 
-> Sascha, hopefully fixup is enough, but let me know if you need me to
-> generate a standalone patch.
+On AArch64, pointer arithmetic in (pos - line) resolves into "long
+int", whereas "%*s" is expecting regular "int". Add explicit cast to
+avoid compiler warnings.
 
-Generally a fixup is fine. In this case I dropped the original patch, so
-nothing to fixup.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ common/memory_display.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
+diff --git a/common/memory_display.c b/common/memory_display.c
+index cd0eadf88..fbb8bbb6f 100644
+--- a/common/memory_display.c
++++ b/common/memory_display.c
+@@ -96,7 +96,7 @@ int __pr_memory_display(int level, const void *addr, loff_t offs, unsigned nbyte
+ 			offs += size;
+ 		}
+ 
+-		pos += sprintf(pos, "%*s", 61 - (pos - line), "");
++		pos += sprintf(pos, "%*s", (int)(61 - (pos - line)), "");
+ 
+ 		cp = linebuf;
+ 		for (i = 0; i < linebytes; i++) {
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
