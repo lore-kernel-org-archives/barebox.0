@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gh8Bw-0008Jt-Cs
- for barebox@lists.infradead.org; Wed, 09 Jan 2019 07:22:21 +0000
-Date: Wed, 9 Jan 2019 08:22:17 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190109072217.2n2h5pym66gokl5v@pengutronix.de>
-References: <afd44571-b69b-41cc-bf15-9eff29f89a72.95bf7d06-047e-438c-8c7b-895af195351a.c64368fe-8a97-44b6-81ce-d981799f53c2@emailsignatures365.codetwo.com>
- <1546958133-6556-1-git-send-email-thomas.haemmerle@wolfvision.net>
+ id 1gh5Al-00038g-Nr
+ for barebox@lists.infradead.org; Wed, 09 Jan 2019 04:08:57 +0000
+Received: by mail-pg1-x52f.google.com with SMTP id w7so2688187pgp.13
+ for <barebox@lists.infradead.org>; Tue, 08 Jan 2019 20:08:53 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue,  8 Jan 2019 20:08:37 -0800
+Message-Id: <20190109040837.18600-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1546958133-6556-1-git-send-email-thomas.haemmerle@wolfvision.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,37 +17,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/6] dp83867: port from linux
-To: Thomas =?iso-8859-15?Q?H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] fixup! arm: fix no prototype for barebox_arm_reset_vector()
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Tue, Jan 08, 2019 at 02:35:45PM +0000, Thomas H=E4mmerle wrote:
-> Port driver for TI DP83867 Gigabit Ethernet PHY from linux.
-> =
+---
 
-> Signed-off-by: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
-> ---
->  drivers/net/phy/Kconfig   |   5 +
->  drivers/net/phy/Makefile  |   1 +
->  drivers/net/phy/dp83867.c | 323 ++++++++++++++++++++++++++++++++++++++++=
-++++++
->  3 files changed, 329 insertions(+)
->  create mode 100644 drivers/net/phy/dp83867.c
+Sascha, hopefully fixup is enough, but let me know if you need me to
+generate a standalone patch.
 
-Applied, thanks
+Thanks,
+Andrey Smirnov
 
-Sascha
+ arch/arm/include/asm/barebox-arm.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
--- =
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 312685486..ee18075bb 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -59,7 +59,6 @@ void setup_c(void);
+ void relocate_to_current_adr(void);
+ void relocate_to_adr(unsigned long target);
+ void __noreturn barebox_arm_entry(unsigned long membase, unsigned long memsize, void *boarddata);
+-void __naked __bare_init barebox_arm_reset_vector(void);
+ 
+ struct barebox_arm_boarddata {
+ #define BAREBOX_ARM_BOARDDATA_MAGIC	0xabe742c3
+@@ -207,4 +206,6 @@ static inline unsigned long arm_mem_barebox_image(unsigned long membase,
+ #define NAKED
+ #endif
+ 
++void NAKED __bare_init barebox_arm_reset_vector(void);
++
+ #endif	/* _BAREBOX_ARM_H_ */
+-- 
+2.20.1
 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
