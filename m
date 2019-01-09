@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gh82W-0003oC-Fq
- for barebox@lists.infradead.org; Wed, 09 Jan 2019 07:12:38 +0000
-Received: by mail-pg1-x541.google.com with SMTP id w7so2892732pgp.13
- for <barebox@lists.infradead.org>; Tue, 08 Jan 2019 23:12:35 -0800 (PST)
+ id 1gh82W-0003n6-GF
+ for barebox@lists.infradead.org; Wed, 09 Jan 2019 07:12:40 +0000
+Received: by mail-pl1-x644.google.com with SMTP id gn14so3154349plb.10
+ for <barebox@lists.infradead.org>; Tue, 08 Jan 2019 23:12:31 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue,  8 Jan 2019 23:11:53 -0800
-Message-Id: <20190109071210.18896-5-andrew.smirnov@gmail.com>
+Date: Tue,  8 Jan 2019 23:11:50 -0800
+Message-Id: <20190109071210.18896-2-andrew.smirnov@gmail.com>
 In-Reply-To: <20190109071210.18896-1-andrew.smirnov@gmail.com>
 References: <20190109071210.18896-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,37 +23,130 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/21] base: driver: Drop redundant list_empty() check
+Subject: [PATCH 01/21] regulator: Convert drivers to use struct regulator_desc
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+To simplify porting kernel code, port a very basic struct
+regulator_desc and convert all of the code to use it.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/base/driver.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/regulator/bcm2835.c | 6 ++++--
+ drivers/regulator/core.c    | 8 ++++----
+ drivers/regulator/fixed.c   | 6 ++++--
+ include/regulator.h         | 6 +++++-
+ 4 files changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 1fd890542..1fd6bbc01 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -269,7 +269,7 @@ static int device_probe_deferred(void)
- 		success = false;
+diff --git a/drivers/regulator/bcm2835.c b/drivers/regulator/bcm2835.c
+index 0ada05db1..ea7cf7fe1 100644
+--- a/drivers/regulator/bcm2835.c
++++ b/drivers/regulator/bcm2835.c
+@@ -24,6 +24,7 @@ static struct regulator_bcm2835 {
  
- 		if (list_empty(&deferred))
--			break;
-+			return 0;
+ 	struct device_d *dev;
+ 	struct regulator_dev rdev;
++	struct regulator_desc rdesc;
+ } regs[] = {
+ 	REG_DEV(BCM2835_MBOX_POWER_DEVID_SDHCI, "bcm2835_mci0"),
+ 	REG_DEV(BCM2835_MBOX_POWER_DEVID_UART0, "uart0-pl0110"),
+@@ -108,7 +109,7 @@ static int regulator_bcm2835_is_enabled(struct regulator_dev *rdev)
+ 	return msg_pwr->get_power_state.body.resp.state;
+ }
  
- 		list_for_each_entry_safe(dev, tmp, &deferred, active) {
- 			list_del(&dev->active);
-@@ -285,9 +285,6 @@ static int device_probe_deferred(void)
- 		}
- 	} while (success);
+-static struct regulator_ops bcm2835_ops = {
++const static struct regulator_ops bcm2835_ops = {
+ 	.enable = regulator_bcm2835_enable,
+ 	.disable = regulator_bcm2835_disable,
+ 	.is_enabled = regulator_bcm2835_is_enabled,
+@@ -122,7 +123,8 @@ static int regulator_bcm2835_probe(struct device_d *dev)
+ 	for (i = 0; i < ARRAY_SIZE(regs); i++) {
+ 		rb = &regs[i];
  
--	if (list_empty(&deferred))
--		return 0;
--
- 	list_for_each_entry(dev, &deferred, active)
- 		dev_err(dev, "probe permanently deferred\n");
+-		rb->rdev.ops = &bcm2835_ops;
++		rb->rdesc.ops = &bcm2835_ops;
++		rb->rdev.desc = &rb->rdesc;
+ 		rb->dev = dev;
+ 
+ 		ret = dev_regulator_register(&rb->rdev, rb->devname, NULL);
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 39df980dc..bcfbda62e 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -52,10 +52,10 @@ static int regulator_enable_internal(struct regulator_internal *ri)
+ 		return 0;
+ 	}
+ 
+-	if (!ri->rdev->ops->enable)
++	if (!ri->rdev->desc->ops->enable)
+ 		return -ENOSYS;
+ 
+-	ret = ri->rdev->ops->enable(ri->rdev);
++	ret = ri->rdev->desc->ops->enable(ri->rdev);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -74,10 +74,10 @@ static int regulator_disable_internal(struct regulator_internal *ri)
+ 	if (!ri->enable_count)
+ 		return -EINVAL;
+ 
+-	if (!ri->rdev->ops->disable)
++	if (!ri->rdev->desc->ops->disable)
+ 		return -ENOSYS;
+ 
+-	ret = ri->rdev->ops->disable(ri->rdev);
++	ret = ri->rdev->desc->ops->disable(ri->rdev);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/regulator/fixed.c b/drivers/regulator/fixed.c
+index 87554d22e..cb5d78581 100644
+--- a/drivers/regulator/fixed.c
++++ b/drivers/regulator/fixed.c
+@@ -29,6 +29,7 @@ struct regulator_fixed {
+ 	int active_low;
+ 	int always_on;
+ 	struct regulator_dev rdev;
++	struct regulator_desc rdesc;
+ };
+ 
+ static int regulator_fixed_enable(struct regulator_dev *rdev)
+@@ -54,7 +55,7 @@ static int regulator_fixed_disable(struct regulator_dev *rdev)
+ 	return gpio_direction_output(fix->gpio, fix->active_low);
+ }
+ 
+-static struct regulator_ops fixed_ops = {
++const static struct regulator_ops fixed_ops = {
+ 	.enable = regulator_fixed_enable,
+ 	.disable = regulator_fixed_disable,
+ };
+@@ -82,7 +83,8 @@ static int regulator_fixed_probe(struct device_d *dev)
+ 			fix->active_low = 1;
+ 	}
+ 
+-	fix->rdev.ops = &fixed_ops;
++	fix->rdesc.ops = &fixed_ops;
++	fix->rdev.desc = &fix->rdesc;
+ 
+ 	if (of_find_property(dev->device_node, "regulator-always-on", NULL)) {
+ 		fix->always_on = 1;
+diff --git a/include/regulator.h b/include/regulator.h
+index 367e13f05..907073607 100644
+--- a/include/regulator.h
++++ b/include/regulator.h
+@@ -4,8 +4,12 @@
+ /* struct regulator is an opaque object for consumers */
+ struct regulator;
+ 
++struct regulator_desc {
++	const struct regulator_ops *ops;
++};
++
+ struct regulator_dev {
+-	struct regulator_ops *ops;
++	const struct regulator_desc *desc;
+ 	int boot_on;
+ };
  
 -- 
 2.20.1
