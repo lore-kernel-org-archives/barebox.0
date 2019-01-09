@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-f196.google.com ([209.85.210.196])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gh82r-0004Dm-SL
- for barebox@lists.infradead.org; Wed, 09 Jan 2019 07:13:34 +0000
-Received: by mail-pf1-f196.google.com with SMTP id r136so3222477pfc.6
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gh82r-0005so-7z
+ for barebox@lists.infradead.org; Wed, 09 Jan 2019 07:12:59 +0000
+Received: by mail-pf1-x443.google.com with SMTP id i12so3226534pfo.7
  for <barebox@lists.infradead.org>; Tue, 08 Jan 2019 23:12:57 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue,  8 Jan 2019 23:12:10 -0800
-Message-Id: <20190109071210.18896-22-andrew.smirnov@gmail.com>
+Date: Tue,  8 Jan 2019 23:12:09 -0800
+Message-Id: <20190109071210.18896-21-andrew.smirnov@gmail.com>
 In-Reply-To: <20190109071210.18896-1-andrew.smirnov@gmail.com>
 References: <20190109071210.18896-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,69 +23,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 21/21] PCI: imx6: Port imx6_pcie_ltssm_enable()
+Subject: [PATCH 20/21] PCI: imx6: Drop unnecessary root_bus_nr setting
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port imx6_pcie_ltssm_enable() from Linux kernel driver.
+Port of a Linux commit 39f712e989c5e591c58b65b62981b85027ba3103
+
+  Function dw_pcie_host_init() already initializes the root_bus_nr field
+  of 'struct pcie_port', so the -1 assignment prior to calling
+  dw_pcie_host_init() in platform specific driver is not really needed.
+  Drop it.
+
+  Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+  Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+  Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+  Cc: Richard Zhu <hongxing.zhu@nxp.com>
+  Cc: Lucas Stach <l.stach@pengutronix.de>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ drivers/pci/pci-imx6.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index 573888a33..ab67a552c 100644
+index b8d54d17a..573888a33 100644
 --- a/drivers/pci/pci-imx6.c
 +++ b/drivers/pci/pci-imx6.c
-@@ -457,6 +457,23 @@ static int imx6_pcie_wait_for_speed_change(struct imx6_pcie *imx6_pcie)
- 	return -EINVAL;
- }
- 
-+static void imx6_pcie_ltssm_enable(struct device_d *dev)
-+{
-+	struct imx6_pcie *imx6_pcie = dev->priv;
-+	u32 gpr12;
-+
-+	switch (imx6_pcie->variant) {
-+	case IMX6Q:
-+	case IMX6QP:
-+		gpr12 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
-+		gpr12 |= IMX6Q_GPR12_PCIE_CTL_2;
-+		writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
-+		break;
-+	case IMX7D:
-+		reset_control_deassert(imx6_pcie->apps_reset);
-+		break;
-+	}
-+}
- 
- static int imx6_pcie_establish_link(struct imx6_pcie *imx6_pcie)
- {
-@@ -464,7 +481,6 @@ static int imx6_pcie_establish_link(struct imx6_pcie *imx6_pcie)
- 	struct device_d *dev = pci->dev;
- 	uint32_t tmp;
+@@ -581,7 +581,6 @@ static int imx6_add_pcie_port(struct imx6_pcie *imx6_pcie,
+ 	struct pcie_port *pp = &pci->pp;
  	int ret;
--	u32 gpr12;
  
- 	/*
- 	 * Force Gen1 operation when starting the link.  In case the link is
-@@ -476,14 +492,7 @@ static int imx6_pcie_establish_link(struct imx6_pcie *imx6_pcie)
- 	tmp |= PCIE_RC_LCR_MAX_LINK_SPEEDS_GEN1;
- 	dw_pcie_writel_dbi(pci, PCIE_RC_LCR, tmp);
+-	pp->root_bus_nr = -1;
+ 	pp->ops = &imx6_pcie_host_ops;
  
--	/* Start LTSSM. */
--	if (imx6_pcie->variant == IMX7D) {
--		reset_control_deassert(imx6_pcie->apps_reset);
--	} else {
--		gpr12 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
--		gpr12 |= IMX6Q_GPR12_PCIE_CTL_2;
--		writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
--	}
-+	imx6_pcie_ltssm_enable(dev);
- 
- 	ret = imx6_pcie_wait_for_link(imx6_pcie);
- 	if (ret)
+ 	ret = dw_pcie_host_init(pp);
 -- 
 2.20.1
 
