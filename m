@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gh82R-0003n5-D1
- for barebox@lists.infradead.org; Wed, 09 Jan 2019 07:12:33 +0000
-Received: by mail-pf1-x442.google.com with SMTP id c123so3244702pfb.0
- for <barebox@lists.infradead.org>; Tue, 08 Jan 2019 23:12:30 -0800 (PST)
+ id 1gh82S-0003nM-SZ
+ for barebox@lists.infradead.org; Wed, 09 Jan 2019 07:12:34 +0000
+Received: by mail-pl1-x642.google.com with SMTP id 101so3164960pld.6
+ for <barebox@lists.infradead.org>; Tue, 08 Jan 2019 23:12:32 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue,  8 Jan 2019 23:11:49 -0800
-Message-Id: <20190109071210.18896-1-andrew.smirnov@gmail.com>
+Date: Tue,  8 Jan 2019 23:11:51 -0800
+Message-Id: <20190109071210.18896-3-andrew.smirnov@gmail.com>
+In-Reply-To: <20190109071210.18896-1-andrew.smirnov@gmail.com>
+References: <20190109071210.18896-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,105 +23,158 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/21] PCIe support for i.MX7
+Subject: [PATCH 02/21] regulator: Port basic regmap regulator functions
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Everyone:
+In order to be able to port Linux driver relying on this API, port
+various regmap related regulator function to Barebox.
 
-This seires is a build-up on previously submitted PCI sync set [1] and
-contains the patches I created while working on adding support for
-PCIe on i.MX7. The series consists of following:
-
- - Patches adding necessary regulator pluming to support porint ANATOP
-   driver
-
- - ANATOP driver port
-
- - Port of basic power domain infrastructure from Linux kernel needed
-   for controlling GPCv2 (useful for both i.MX7 and, especially, for
-   i.MX8MQ)
-
- - Port of GPCv2 driver from Linux as well as of some bug fixes for it
-
- - Port of i.MX7 reset controller driver
-
- - Patches adding support for i.MX7 to existing i.MX6 PCIe host
-   controller driver
-
- - Misc fixes
-
-This series has been tested on i.MX7D SabreSD board against Toshiba
-NVMe device.
-
-Feedback is welcome!
-
-Thanks,
-Andrey Smirnov
-
-[1] http://lists.infradead.org/pipermail/barebox/2018-December/036005.html
-
-Andrey Smirnov (21):
-  regulator: Convert drivers to use struct regulator_desc
-  regulator: Port basic regmap regulator functions
-  regulator: Add support for setting regulator's voltage
-  base: driver: Drop redundant list_empty() check
-  base: Port driver_deferred_probe_check_state() from Linux
-  regulator: Add primitive support for deferred probe
-  regulator: Port ANATOP driver from Linux
-  drivers: base: Port power management code from Linux
-  soc: imx: Add GPCv2 power gating driver
-  soc: imx: gpcv2: fix regulator deferred probe
-  soc: imx: gpcv2: correct PGC offset
-  reset: Add i.MX7 SRC reset driver
-  reset: imx7: Fix always writing bits as 0
-  reset: Mark local functions as static
-  PCI: imx6: Add code to support i.MX7D
-  PCI: imx6: Allow probe deferral by reset GPIO
-  PCI: imx6: Do not wait for speed change on i.MX7
-  PCI: imx6: Do not switch speed if Gen2 is disabled
-  PCI: imx6: Fix spelling mistake: "contol" -> "control"
-  PCI: imx6: Drop unnecessary root_bus_nr setting
-  PCI: imx6: Port imx6_pcie_ltssm_enable()
-
- arch/arm/mach-imx/Kconfig            |   1 +
- drivers/Kconfig                      |   2 +
- drivers/Makefile                     |   1 +
- drivers/base/Kconfig                 |   3 +
- drivers/base/Makefile                |   4 +-
- drivers/base/driver.c                |  68 ++++--
- drivers/base/platform.c              |   7 +
- drivers/base/power.c                 | 245 +++++++++++++++++++++
- drivers/pci/Kconfig                  |   4 +-
- drivers/pci/pci-imx6.c               | 245 +++++++++++++++------
- drivers/regulator/Kconfig            |   8 +
- drivers/regulator/Makefile           |   5 +-
- drivers/regulator/anatop-regulator.c | 161 ++++++++++++++
- drivers/regulator/bcm2835.c          |   6 +-
- drivers/regulator/core.c             |  60 ++++-
- drivers/regulator/fixed.c            |   6 +-
- drivers/regulator/helpers.c          | 186 ++++++++++++++++
- drivers/reset/Kconfig                |  11 +
- drivers/reset/Makefile               |   1 +
- drivers/reset/core.c                 |   8 +-
- drivers/reset/reset-imx7.c           | 151 +++++++++++++
- drivers/soc/imx/Kconfig              |   9 +
- drivers/soc/imx/Makefile             |   1 +
- drivers/soc/imx/gpcv2.c              | 315 +++++++++++++++++++++++++++
- include/driver.h                     |   2 +
- include/pm_domain.h                  |  82 +++++++
- include/regulator.h                  |  41 +++-
- 27 files changed, 1524 insertions(+), 109 deletions(-)
- create mode 100644 drivers/base/Kconfig
- create mode 100644 drivers/base/power.c
- create mode 100644 drivers/regulator/anatop-regulator.c
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/regulator/Makefile  |  2 +-
+ drivers/regulator/helpers.c | 87 +++++++++++++++++++++++++++++++++++++
+ include/regulator.h         | 11 ++++-
+ 3 files changed, 98 insertions(+), 2 deletions(-)
  create mode 100644 drivers/regulator/helpers.c
- create mode 100644 drivers/reset/reset-imx7.c
- create mode 100644 drivers/soc/imx/Kconfig
- create mode 100644 drivers/soc/imx/Makefile
- create mode 100644 drivers/soc/imx/gpcv2.c
- create mode 100644 include/pm_domain.h
 
+diff --git a/drivers/regulator/Makefile b/drivers/regulator/Makefile
+index ff5daf9a7..36ce3e87f 100644
+--- a/drivers/regulator/Makefile
++++ b/drivers/regulator/Makefile
+@@ -1,4 +1,4 @@
+-obj-$(CONFIG_REGULATOR) += core.o
++obj-$(CONFIG_REGULATOR) += core.o helpers.o
+ obj-$(CONFIG_REGULATOR_FIXED) += fixed.o
+ obj-$(CONFIG_REGULATOR_BCM283X) += bcm2835.o
+ obj-$(CONFIG_REGULATOR_PFUZE) += pfuze.o
+\ No newline at end of file
+diff --git a/drivers/regulator/helpers.c b/drivers/regulator/helpers.c
+new file mode 100644
+index 000000000..4495b4403
+--- /dev/null
++++ b/drivers/regulator/helpers.c
+@@ -0,0 +1,87 @@
++#include <common.h>
++#include <regmap.h>
++#include <regulator.h>
++
++/**
++ * regulator_is_enabled_regmap - standard is_enabled() for regmap users
++ *
++ * @rdev: regulator to operate on
++ *
++ * Regulators that use regmap for their register I/O can set the
++ * enable_reg and enable_mask fields in their descriptor and then use
++ * this as their is_enabled operation, saving some code.
++ */
++int regulator_is_enabled_regmap(struct regulator_dev *rdev)
++{
++	unsigned int val;
++	int ret;
++
++	ret = regmap_read(rdev->regmap, rdev->desc->enable_reg, &val);
++	if (ret != 0)
++		return ret;
++
++	val &= rdev->desc->enable_mask;
++
++	if (rdev->desc->enable_is_inverted) {
++		if (rdev->desc->enable_val)
++			return val != rdev->desc->enable_val;
++		return val == 0;
++	} else {
++		if (rdev->desc->enable_val)
++			return val == rdev->desc->enable_val;
++		return val != 0;
++	}
++}
++EXPORT_SYMBOL_GPL(regulator_is_enabled_regmap);
++
++/**
++ * regulator_enable_regmap - standard enable() for regmap users
++ *
++ * @rdev: regulator to operate on
++ *
++ * Regulators that use regmap for their register I/O can set the
++ * enable_reg and enable_mask fields in their descriptor and then use
++ * this as their enable() operation, saving some code.
++ */
++int regulator_enable_regmap(struct regulator_dev *rdev)
++{
++	unsigned int val;
++
++	if (rdev->desc->enable_is_inverted) {
++		val = rdev->desc->disable_val;
++	} else {
++		val = rdev->desc->enable_val;
++		if (!val)
++			val = rdev->desc->enable_mask;
++	}
++
++	return regmap_update_bits(rdev->regmap, rdev->desc->enable_reg,
++				  rdev->desc->enable_mask, val);
++}
++EXPORT_SYMBOL_GPL(regulator_enable_regmap);
++
++/**
++ * regulator_disable_regmap - standard disable() for regmap users
++ *
++ * @rdev: regulator to operate on
++ *
++ * Regulators that use regmap for their register I/O can set the
++ * enable_reg and enable_mask fields in their descriptor and then use
++ * this as their disable() operation, saving some code.
++ */
++int regulator_disable_regmap(struct regulator_dev *rdev)
++{
++	unsigned int val;
++
++	if (rdev->desc->enable_is_inverted) {
++		val = rdev->desc->enable_val;
++		if (!val)
++			val = rdev->desc->enable_mask;
++	} else {
++		val = rdev->desc->disable_val;
++	}
++
++	return regmap_update_bits(rdev->regmap, rdev->desc->enable_reg,
++				  rdev->desc->enable_mask, val);
++}
++EXPORT_SYMBOL_GPL(regulator_disable_regmap);
+diff --git a/include/regulator.h b/include/regulator.h
+index 907073607..1824e6ea1 100644
+--- a/include/regulator.h
++++ b/include/regulator.h
+@@ -6,10 +6,17 @@ struct regulator;
+ 
+ struct regulator_desc {
+ 	const struct regulator_ops *ops;
++
++	unsigned int enable_reg;
++	unsigned int enable_mask;
++	unsigned int enable_val;
++	unsigned int disable_val;
++	bool enable_is_inverted;
+ };
+ 
+ struct regulator_dev {
+ 	const struct regulator_desc *desc;
++	struct regmap *regmap;
+ 	int boot_on;
+ };
+ 
+@@ -39,7 +46,9 @@ void regulators_print(void);
+ struct regulator *regulator_get(struct device_d *, const char *);
+ int regulator_enable(struct regulator *);
+ int regulator_disable(struct regulator *);
+-
++int regulator_is_enabled_regmap(struct regulator_dev *);
++int regulator_enable_regmap(struct regulator_dev *);
++int regulator_disable_regmap(struct regulator_dev *);
+ #else
+ 
+ static inline struct regulator *regulator_get(struct device_d *dev, const char *id)
 -- 
 2.20.1
 
