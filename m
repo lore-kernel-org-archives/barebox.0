@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from forward101j.mail.yandex.net ([5.45.198.241])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gh8G3-0001yx-6k
- for barebox@lists.infradead.org; Wed, 09 Jan 2019 07:26:36 +0000
-Date: Wed, 9 Jan 2019 08:26:33 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190109072633.ud37c42awunyfhxj@pengutronix.de>
-References: <20190109040933.19554-1-andrew.smirnov@gmail.com>
+ id 1ghDA3-0000LA-KU
+ for barebox@lists.infradead.org; Wed, 09 Jan 2019 12:40:46 +0000
+Received: from mxback8j.mail.yandex.net (mxback8j.mail.yandex.net
+ [IPv6:2a02:6b8:0:1619::111])
+ by forward101j.mail.yandex.net (Yandex) with ESMTP id E98BB2E827B6
+ for <barebox@lists.infradead.org>; Wed,  9 Jan 2019 15:40:37 +0300 (MSK)
+From: =?utf-8?B?0KHQtdGA0LDRhNC40Lwg0JTQvtC70LHQuNC70L7Qsg==?= <s.dlblv@ya.ru>
+In-Reply-To: <44943261547037040@iva5-750e13568e4d.qloud-c.yandex.net>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190109040933.19554-1-andrew.smirnov@gmail.com>
+Date: Wed, 09 Jan 2019 15:40:37 +0300
+Message-Id: <87941547037637@iva6-19b25c513db4.qloud-c.yandex.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,60 +20,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] printk: Pass groupsize to memory_display() in
- print_hex_dump()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [HELP] Barebox porting
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Jan 08, 2019 at 08:09:33PM -0800, Andrey Smirnov wrote:
-> Don't hardcode grouping data into 4-byte words in print_hex_dump()
-> implementation and instead pass 'groupsize' to memory_display(), since
-> that's what that parameter is for.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  include/printk.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/include/printk.h b/include/printk.h
-> index aaad07552..ab2c64cf3 100644
-> --- a/include/printk.h
-> +++ b/include/printk.h
-> @@ -119,7 +119,7 @@ static inline void print_hex_dump(const char *level, const char *prefix_str,
->  		int prefix_type, int rowsize, int groupsize,
->  		const void *buf, size_t len, bool ascii)
->  {
-> -	memory_display(buf, 0, len, 4, 0);
-> +	memory_display(buf, 0, len, groupsize, 0);
->  }
->  
->  struct log_entry {
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksIEknbSB0cnlpbmcgdG8gYWRkIG15IG93biBjdXN0b20gYm9hcmQgc3VwcG9ydCB0byBiYXJl
+Ym94LiBJdCdzIGJhc2VkIG9uIGkuTVg2VUxMIENQVS4KU28sIEkgaGF2ZSB0aGUgZm9sbG93aW5n
+IHF1ZXN0aW9uczoKCiogV2h5IGRvZXMgdGhlIGNvbmZpZyBwYXJhbWV0ZXIgSU1YX01VTFRJX0JP
+QVJEUyBleGlzdD8gV2h5IHN1Y2ggYm9hcmRzIGFzIEVVS1JFQSBDUFVJTVgzNSBhbmQgaS5NWDUz
+IFNNRCBhcmUgaXNvbGF0ZWQgZnJvbSB0aGUgb3RoZXJzPyBTbywgaWYgSSBhZGQgY3VzdG9tIGJv
+YXJkLCB3aGljaCBjbGFzcyBpdCBtdXN0IHNoYXJlPyAiSXNvbGF0ZWQiIG9yICJtYWlubGluZSI/
+CiogQUZBSUssIG9uZSBvZiBtYWluIEJhcmVib3ggYWR2YW50YWdlcyBpcyB0aGF0IGl0IGNhbiB1
+c2UgdGhlIG9ubHkgRFQgZm9yIGJvdGggaXRzZWxmIGFuZCBMaW51eCBrZXJuZWwuIEknbSBpbnRl
+cmVzdGVkIGluIGhvdyBpcyB0aGlzIGJlaGF2aW91ciByZWFsaXplZCBpbiBwcmFjdGljZS4gSG93
+IGNhbiBJIHVzZSB0aGUgb25seSBEVFMgZm9yIEJhcmVib3ggYW5kIHBhc3MgaXQgdG8gTGludXgg
+a2VybmVsIG9uIGl0cyBib290PwoqIEkgbmVlZCBzb21lIGhlbHAgd2l0aCBzdHJ1Y3R1cmUgb2Yg
+aW1hZ2VzL01ha2VmaWxlLmlteCBmaWxlLiBJIGNhbm5vdCBtYWtlIGFueSBzZW5zZSBpbiB3aHkg
+cGJseC0qLCBDRkctKiwgRklMRS0qIHRhcmdldHMgYXJlIHVzZWQgYW5kIGhvdyBkb2VzIGl0IGV2
+ZXJ5dGhpbmcgaW50ZXJhY3QgaW4gcmVzdWx0aW5nIGltYWdlLgpUaGFua3MgYSBsb3QhCgotLcKg
+CtChINGD0LLQsNC20LXQvdC40LXQvCwK0JTQvtC70LHQuNC70L7QsiDQodC10YDQsNGE0LjQvAor
+NyAoOTc3KSA4MTgtMTAtNTAKcy5kbGJsdkB5YS5ydQoKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
+cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
+Zm8vYmFyZWJveAo=
