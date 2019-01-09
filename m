@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gh82m-000482-If
- for barebox@lists.infradead.org; Wed, 09 Jan 2019 07:13:22 +0000
-Received: by mail-pg1-x542.google.com with SMTP id n2so2917649pgm.3
- for <barebox@lists.infradead.org>; Tue, 08 Jan 2019 23:12:52 -0800 (PST)
+ id 1gh82n-00049V-RZ
+ for barebox@lists.infradead.org; Wed, 09 Jan 2019 07:13:28 +0000
+Received: by mail-pf1-x443.google.com with SMTP id b7so3223244pfi.8
+ for <barebox@lists.infradead.org>; Tue, 08 Jan 2019 23:12:53 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue,  8 Jan 2019 23:12:06 -0800
-Message-Id: <20190109071210.18896-18-andrew.smirnov@gmail.com>
+Date: Tue,  8 Jan 2019 23:12:07 -0800
+Message-Id: <20190109071210.18896-19-andrew.smirnov@gmail.com>
 In-Reply-To: <20190109071210.18896-1-andrew.smirnov@gmail.com>
 References: <20190109071210.18896-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -19,61 +19,111 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/21] PCI: imx6: Do not wait for speed change on i.MX7
+Subject: [PATCH 18/21] PCI: imx6: Do not switch speed if Gen2 is disabled
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-UG9ydCBvZiBhIExpbnV4IGNvbW1pdCBlNmRjZDg3ZmZmNjlhOWQ0NTQxMDRiNjU1NjkwNzQ4NTVj
-Zjk1YjFlCgogIEFzIGNhbiBiZSBzZWVuIGZyb20gWzFdOgoKICAgICIuLi50aGUgZGlmZmVyZW50
-IGJlaGF2aW9yIGJldHdlZW4gaU1YNlEgUENJZSBhbmQgaU1YN0QgUENJZSBtYXliZSBjYXVzZWQK
-ICAgIGJ5IHRoZSBkaWZmZXJlbnQgY29udHJvbGxlciB2ZXJzaW9uLgoKICAgIFJlZ2FyZGluZyB0
-byB0aGUgRE9DIGRlc2NyaXB0aW9uLCB0aGUgRElSRUNUX1NQRUVEX0NIQU5HRSBzaG91bGQgYmUK
-ICAgIGNsZWFyZWQgYWZ0ZXIgdGhlIHNwZWVkIGNoYW5nZSBmcm9tIEdFTjEgdG8gR0VOMi4gVW5m
-b3J0dW5hdGVseSwgd2hlbgogICAgR0VOMSBkZXZpY2UgaXMgdXNlZCwgdGhlIGJlaGF2aW9yIGlz
-IG5vdCBkb2N1bWVudGVkLgoKICAgIFNvLCBJQyBkZXNpZ24gZ3V5cyBydW4gdGhlIHNpbXVsYXRp
-b24gYW5kIGZpbmQgb3V0IHRoZSBmb2xsb3dpbmcKICAgIGJlaGF2aW9yczoKCiAgICAgICAxLiBE
-SVJFQ1RfU1BFRURfQ0hBTkdFIHdpbGwgYmUgY2xlYXJlZCBpbiA3RCBhZnRlciBzcGVlZCBjaGFu
-Z2UKICAgICAgICAgIGZyb20gR0VOMSB0byBHRU4yLiBUaGlzIG1hdGNoZXMgZG9j4oCZcyBkZXNj
-cmlwdGlvbgoKICAgICAgIDIuIHNldCBNQVggbGluayBzcGVlZChQQ0lFX0NBUF9UQVJHRVRfTElO
-S19TUEVFRD0weDAxKSBhcyBHRU4xIGFuZAogICAgICAgICAgcmUtcnVuIHRoZSBzaW11bGF0aW9u
-LCBESVJFQ1RfU1BFRURfQ0hBTkdFIHdpbGwgbm90IGJlIGNsZWFyZWQ7CiAgICAgICAgICByZW1h
-aW4gYXMgMSwgdGhpcyBtYXRjaGVzIHlvdXIgcmVzdWx0LCBidXQgZnVuY3Rpb24gdGVzdCBpcwog
-ICAgICAgICAgcGFzc2VkLCBzbyB0aGlzIGJpdCBzaG91bGQgbm90IGFmZmVjdCB0aGUgbm9ybWFs
-IFBDSWUgZnVuY3Rpb24uIgoKICBpbXg2X3BjaWVfd2FpdF9mb3Jfc3BlZWRfY2hhbmdlKCkgd2ls
-bCByZXBvcnQgZmFsc2UgZmFpbHVyZXMgZm9yIEdlbjEgLT4KICBHZW4xIHNwZWVkIHRyYW5zaXRp
-b24sIHNvIGF2b2lkIGRvaW5nIHRoYXQgY2hlY2sgYW5kIGp1c3QgcmVseSBvbgogIGlteDZfcGNp
-ZV93YWl0X2Zvcl9saW5rKCkgb25seS4KCiAgWzFdIGh0dHBzOi8vY29tbXVuaXR5Lm54cC5jb20v
-bWVzc2FnZS84Njc5NDMKCiAgU2lnbmVkLW9mZi1ieTogQW5kcmV5IFNtaXJub3YgPGFuZHJldy5z
-bWlybm92QGdtYWlsLmNvbT4KICBTaWduZWQtb2ZmLWJ5OiBCam9ybiBIZWxnYWFzIDxiaGVsZ2Fh
-c0Bnb29nbGUuY29tPgogIFJldmlld2VkLWJ5OiBMdWNhcyBTdGFjaCA8bC5zdGFjaEBwZW5ndXRy
-b25peC5kZT4KICBDYzogeXVyb3Zza3lAZ21haWwuY29tCiAgQ2M6IEZhYmlvIEVzdGV2YW0gPGZh
-YmlvLmVzdGV2YW1AbnhwLmNvbT4KICBDYzogRG9uZyBBaXNoZW5nIDxkb25nYXM4NkBnbWFpbC5j
-b20+CiAgQ2M6IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwoKU2lnbmVkLW9m
-Zi1ieTogQW5kcmV5IFNtaXJub3YgPGFuZHJldy5zbWlybm92QGdtYWlsLmNvbT4KLS0tCiBkcml2
-ZXJzL3BjaS9wY2ktaW14Ni5jIHwgMTkgKysrKysrKysrKysrKysrLS0tLQogMSBmaWxlIGNoYW5n
-ZWQsIDE1IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9wY2kvcGNpLWlteDYuYyBiL2RyaXZlcnMvcGNpL3BjaS1pbXg2LmMKaW5kZXggNTE3YzZiZWY4
-Li5kYjdiMTBiYzkgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvcGNpL3BjaS1pbXg2LmMKKysrIGIvZHJp
-dmVycy9wY2kvcGNpLWlteDYuYwpAQCAtNTA4LDEwICs1MDgsMjEgQEAgc3RhdGljIGludCBpbXg2
-X3BjaWVfZXN0YWJsaXNoX2xpbmsoc3RydWN0IGlteDZfcGNpZSAqaW14Nl9wY2llKQogCXRtcCB8
-PSBQT1JUX0xPR0lDX1NQRUVEX0NIQU5HRTsKIAlkd19wY2llX3dyaXRlbF9kYmkocGNpLCBQQ0lF
-X0xJTktfV0lEVEhfU1BFRURfQ09OVFJPTCwgdG1wKTsKIAotCXJldCA9IGlteDZfcGNpZV93YWl0
-X2Zvcl9zcGVlZF9jaGFuZ2UoaW14Nl9wY2llKTsKLQlpZiAocmV0KSB7Ci0JCWRldl9lcnIoZGV2
-LCAiRmFpbGVkIHRvIGJyaW5nIGxpbmsgdXAhXG4iKTsKLQkJZ290byBlcnJfcmVzZXRfcGh5Owor
-CWlmIChpbXg2X3BjaWUtPnZhcmlhbnQgIT0gSU1YN0QpIHsKKwkJLyoKKwkJICogT24gaS5NWDcs
-IERJUkVDVF9TUEVFRF9DSEFOR0UgYmVoYXZlcyBkaWZmZXJlbnRseQorCQkgKiBmcm9tIGkuTVg2
-IGZhbWlseSB3aGVuIG5vIGxpbmsgc3BlZWQgdHJhbnNpdGlvbgorCQkgKiBvY2N1cnMgYW5kIHdl
-IGdvIEdlbjEgLT4geWVwLCBHZW4xLiBUaGUgZGlmZmVyZW5jZQorCQkgKiBpcyB0aGF0LCBpbiBz
-dWNoIGNhc2UsIGl0IHdpbGwgbm90IGJlIGNsZWFyZWQgYnkgSFcKKwkJICogd2hpY2ggd2lsbCBj
-YXVzZSB0aGUgZm9sbG93aW5nIGNvZGUgdG8gcmVwb3J0IGZhbHNlCisJCSAqIGZhaWx1cmUuCisJ
-CSAqLworCisJCXJldCA9IGlteDZfcGNpZV93YWl0X2Zvcl9zcGVlZF9jaGFuZ2UoaW14Nl9wY2ll
-KTsKKwkJaWYgKHJldCkgeworCQkJZGV2X2VycihkZXYsICJGYWlsZWQgdG8gYnJpbmcgbGluayB1
-cCFcbiIpOworCQkJZ290byBlcnJfcmVzZXRfcGh5OworCQl9CiAJfQogCiAJLyogTWFrZSBzdXJl
-IGxpbmsgdHJhaW5pbmcgaXMgZmluaXNoZWQgYXMgd2VsbCEgKi8KLS0gCjIuMjAuMQoKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
-ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Port of a Linux commit 93b226f9c65a951a91617f87ba1f05f14e59f26f
+
+  Save a bit of time and avoid going through link speed change procedure in
+  configuration where link max speed is limited to Gen1 in DT.
+
+  Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+  Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+  Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+  Cc: yurovsky@gmail.com
+  Cc: Fabio Estevam <fabio.estevam@nxp.com>
+  Cc: Dong Aisheng <dongas86@gmail.com>
+  Cc: linux-arm-kernel@lists.infradead.org
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/pci/pci-imx6.c | 55 +++++++++++++++++++++---------------------
+ 1 file changed, 28 insertions(+), 27 deletions(-)
+
+diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
+index db7b10bc9..978c5392f 100644
+--- a/drivers/pci/pci-imx6.c
++++ b/drivers/pci/pci-imx6.c
+@@ -496,41 +496,42 @@ static int imx6_pcie_establish_link(struct imx6_pcie *imx6_pcie)
+ 		tmp &= ~PCIE_RC_LCR_MAX_LINK_SPEEDS_MASK;
+ 		tmp |= PCIE_RC_LCR_MAX_LINK_SPEEDS_GEN2;
+ 		dw_pcie_writel_dbi(pci, PCIE_RC_LCR, tmp);
+-	} else {
+-		dev_info(dev, "Link: Gen2 disabled\n");
+-	}
+-
+-	/*
+-	 * Start Directed Speed Change so the best possible speed both link
+-	 * partners support can be negotiated.
+-	 */
+-	tmp = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
+-	tmp |= PORT_LOGIC_SPEED_CHANGE;
+-	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, tmp);
+ 
+-	if (imx6_pcie->variant != IMX7D) {
+ 		/*
+-		 * On i.MX7, DIRECT_SPEED_CHANGE behaves differently
+-		 * from i.MX6 family when no link speed transition
+-		 * occurs and we go Gen1 -> yep, Gen1. The difference
+-		 * is that, in such case, it will not be cleared by HW
+-		 * which will cause the following code to report false
+-		 * failure.
++		 * Start Directed Speed Change so the best possible
++		 * speed both link partners support can be negotiated.
+ 		 */
++		tmp = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
++		tmp |= PORT_LOGIC_SPEED_CHANGE;
++		dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, tmp);
++
++		if (imx6_pcie->variant != IMX7D) {
++			/*
++			 * On i.MX7, DIRECT_SPEED_CHANGE behaves
++			 * differently from i.MX6 family when no link
++			 * speed transition occurs and we go Gen1 ->
++			 * yep, Gen1. The difference is that, in such
++			 * case, it will not be cleared by HW which
++			 * will cause the following code to report
++			 * false failure.
++			 */
++
++			ret = imx6_pcie_wait_for_speed_change(imx6_pcie);
++			if (ret) {
++				dev_err(dev, "Failed to bring link up!\n");
++				goto err_reset_phy;
++			}
++		}
+ 
+-		ret = imx6_pcie_wait_for_speed_change(imx6_pcie);
++		/* Make sure link training is finished as well! */
++		ret = imx6_pcie_wait_for_link(imx6_pcie);
+ 		if (ret) {
+ 			dev_err(dev, "Failed to bring link up!\n");
+ 			goto err_reset_phy;
+ 		}
+-	}
+-
+-	/* Make sure link training is finished as well! */
+-	ret = imx6_pcie_wait_for_link(imx6_pcie);
+-	if (ret) {
+-		dev_err(dev, "Failed to bring link up!\n");
+-		goto err_reset_phy;
+-	}
++	} else {
++		dev_info(dev, "Link: Gen2 disabled\n");
++        }
+ 
+ 	tmp = dw_pcie_readl_dbi(pci, PCIE_RC_LCSR);
+ 	dev_info(dev, "Link up, Gen%i\n", (tmp >> 16) & 0xf);
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
