@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gh8Ef-0001bd-3v
- for barebox@lists.infradead.org; Wed, 09 Jan 2019 07:25:10 +0000
-Date: Wed, 9 Jan 2019 08:25:07 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190109072507.fd3pmrmapubzeo2h@pengutronix.de>
-References: <20190109040902.18956-1-andrew.smirnov@gmail.com>
+ id 1gh5BE-0003It-FE
+ for barebox@lists.infradead.org; Wed, 09 Jan 2019 04:09:26 +0000
+Received: by mail-pg1-x543.google.com with SMTP id z11so2723793pgu.0
+ for <barebox@lists.infradead.org>; Tue, 08 Jan 2019 20:09:24 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue,  8 Jan 2019 20:09:17 -0800
+Message-Id: <20190109040917.19246-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190109040902.18956-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,53 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] memory_display: Fix type of argument passed to %*s
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mfd: syscon: Switch to using %pa to print memory addresses
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Tue, Jan 08, 2019 at 08:09:02PM -0800, Andrey Smirnov wrote:
-> On AArch64, pointer arithmetic in (pos - line) resolves into "long
-> int", whereas "%*s" is expecting regular "int". Add explicit cast to
-> avoid compiler warnings.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  common/memory_display.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Switch to using %pa to print memory addresses in order to be able to
+support both 64 and 32 bit builds.
 
-Applied, thanks
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/mfd/syscon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
-> 
-> diff --git a/common/memory_display.c b/common/memory_display.c
-> index cd0eadf88..fbb8bbb6f 100644
-> --- a/common/memory_display.c
-> +++ b/common/memory_display.c
-> @@ -96,7 +96,7 @@ int __pr_memory_display(int level, const void *addr, loff_t offs, unsigned nbyte
->  			offs += size;
->  		}
->  
-> -		pos += sprintf(pos, "%*s", 61 - (pos - line), "");
-> +		pos += sprintf(pos, "%*s", (int)(61 - (pos - line)), "");
->  
->  		cp = linebuf;
->  		for (i = 0; i < linebytes; i++) {
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index 957d9a726..30ed65f73 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -176,7 +176,7 @@ static int syscon_probe(struct device_d *dev)
+ 	syscon->base = IOMEM(res->start);
+ 	dev->priv = syscon;
+ 
+-	dev_dbg(dev, "map 0x%x-0x%x registered\n", res->start, res->end);
++	dev_dbg(dev, "map %pa-%pa registered\n", &res->start, &res->end);
+ 
+ 	return 0;
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
