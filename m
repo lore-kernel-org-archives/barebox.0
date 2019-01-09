@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ghDWM-0000SH-En
- for barebox@lists.infradead.org; Wed, 09 Jan 2019 13:03:48 +0000
-Date: Wed, 9 Jan 2019 14:03:41 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190109130341.sxiqrcg43mxuzrai@pengutronix.de>
-References: <44943261547037040@iva5-750e13568e4d.qloud-c.yandex.net>
- <87941547037637@iva6-19b25c513db4.qloud-c.yandex.net>
+Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1ghC3P-0005fd-RR
+ for barebox@lists.infradead.org; Wed, 09 Jan 2019 11:29:49 +0000
+Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
+ (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
+ id S23993973AbfAIL3rKWEsC (ORCPT
+ <rfc822;barebox@lists.infradead.org>); Wed, 9 Jan 2019 12:29:47 +0100
+Date: Wed, 9 Jan 2019 12:29:45 +0100
+From: Ladislav Michl <ladis@linux-mips.org>
+Message-ID: <20190109112945.GB918@lenoch>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <87941547037637@iva6-19b25c513db4.qloud-c.yandex.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,55 +20,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [HELP] Barebox porting
-To: =?utf-8?B?0KHQtdGA0LDRhNC40Lwg0JTQvtC70LHQuNC70L7Qsg==?= <s.dlblv@ya.ru>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 3/5] usbgadget: dfu: remove useless break in the switch
+ statement
+To: Barebox List <barebox@lists.infradead.org>
 
-SGksCgpPbiBXZWQsIEphbiAwOSwgMjAxOSBhdCAwMzo0MDozN1BNICswMzAwLCDQodC10YDQsNGE
-0LjQvCDQlNC+0LvQsdC40LvQvtCyIHdyb3RlOgo+IEhpLCBJJ20gdHJ5aW5nIHRvIGFkZCBteSBv
-d24gY3VzdG9tIGJvYXJkIHN1cHBvcnQgdG8gYmFyZWJveC4gSXQncyBiYXNlZCBvbiBpLk1YNlVM
-TCBDUFUuCj4gU28sIEkgaGF2ZSB0aGUgZm9sbG93aW5nIHF1ZXN0aW9uczoKPiAKPiAqIFdoeSBk
-b2VzIHRoZSBjb25maWcgcGFyYW1ldGVyIElNWF9NVUxUSV9CT0FSRFMgZXhpc3Q/IFdoeSBzdWNo
-Cj4gYm9hcmRzIGFzIEVVS1JFQSBDUFVJTVgzNSBhbmQgaS5NWDUzIFNNRCBhcmUgaXNvbGF0ZWQg
-ZnJvbSB0aGUgb3RoZXJzPwo+IFNvLCBpZiBJIGFkZCBjdXN0b20gYm9hcmQsIHdoaWNoIGNsYXNz
-IGl0IG11c3Qgc2hhcmU/ICJJc29sYXRlZCIgb3IKPiAibWFpbmxpbmUiPwoKYmFyZWJveCBjYW4g
-YmUgYnVpbHQgZm9yIG11bHRpcGxlIGJvYXJkcyBpbiBhIHNpbmdsZSBidWlsZCwgcmVmZXJyZWQg
-dG8KYXMgbXVsdGkgaW1hZ2Ugc3VwcG9ydC4gVGhpcyBuZWVkcyBzb21lIHN1cHBvcnQgYnkgdGhl
-IGJvYXJkIGNvZGUsCnNwZWNpZmljYWxseSBpdCBoYXMgdXNlIGRldmljZSB0cmVlIHJhdGhlciB0
-aGFuIHBsYXRmb3JtIHN1cHBvcnQuIFNvbWUKYm9hcmRzIGRvIG5vdCBzdXBwb3J0IHRoaXMgYW5k
-IGFyZSBpbiB0aGUgIUlNWF9NVUxUSV9CT0FSRFMgc2VjdGlvbi4KCkZvciBuZXcgYm9hcmRzIHlv
-dSBzaG91bGQgdXNlIElNWF9NVUxUSV9CT0FSRFMuCgo+ICogQUZBSUssIG9uZSBvZiBtYWluIEJh
-cmVib3ggYWR2YW50YWdlcyBpcyB0aGF0IGl0IGNhbiB1c2UgdGhlIG9ubHkgRFQKPiBmb3IgYm90
-aCBpdHNlbGYgYW5kIExpbnV4IGtlcm5lbC4gSSdtIGludGVyZXN0ZWQgaW4gaG93IGlzIHRoaXMK
-PiBiZWhhdmlvdXIgcmVhbGl6ZWQgaW4gcHJhY3RpY2UuIEhvdyBjYW4gSSB1c2UgdGhlIG9ubHkg
-RFRTIGZvciBCYXJlYm94Cj4gYW5kIHBhc3MgaXQgdG8gTGludXgga2VybmVsIG9uIGl0cyBib290
-PwoKYmFyZWJveCB3aWxsIHBhc3MgdGhlIERUQiAobm90IERUUykgaXQgaXMgcHJvYmVkIHdpdGgg
-dG8gdGhlIGtlcm5lbAphdXRvbWF0aWNhbGx5LiBOb3RoaW5nIHRvIGRvIGhlcmUuCgo+ICogSSBu
-ZWVkIHNvbWUgaGVscCB3aXRoIHN0cnVjdHVyZSBvZiBpbWFnZXMvTWFrZWZpbGUuaW14IGZpbGUu
-IEkgY2Fubm90IG1ha2UgYW55IHNlbnNlIGluIHdoeSBwYmx4LSosIENGRy0qLCBGSUxFLSogdGFy
-Z2V0cyBhcmUgdXNlZCBhbmQgaG93IGRvZXMgaXQgZXZlcnl0aGluZyBpbnRlcmFjdCBpbiByZXN1
-bHRpbmcgaW1hZ2UuCgpTb21lIGRvY3VtZW50YXRpb24gaXMgYXQgdGhlIHRvcCBvZiBpbWFnZXMv
-TWFrZWZpbGUuCgpBcyBhbiBleGFtcGxlIHRha2UgdGhlIHJlYWxxNyBlbnRyeToKCnBibGItJChD
-T05GSUdfTUFDSF9SRUFMUTcpICs9IHN0YXJ0X2lteDZfcmVhbHE3CkNGR19zdGFydF9pbXg2X3Jl
-YWxxNy5wYmxiLmlteGltZyA9ICQoYm9hcmQpL2RhdGFtb2R1bC1lZG0tcW14Ni9mbGFzaC1oZWFk
-ZXIuaW14Y2ZnCkZJTEVfYmFyZWJveC1kYXRhbW9kdWwtZWRtLXFteDYuaW1nID0gc3RhcnRfaW14
-Nl9yZWFscTcucGJsYi5pbXhpbWcKaW1hZ2UtJChDT05GSUdfTUFDSF9SRUFMUTcpICs9IGJhcmVi
-b3gtZGF0YW1vZHVsLWVkbS1xbXg2LmltZwoKQ09ORklHX01BQ0hfUkVBTFE3IHNob3VsZCBiZSBy
-ZXBsYWNlZCBieSB5b3VyIG93biBLY29uZmlnIGJvYXJkIG5hbWUuCnN0YXJ0X2lteDZfcmVhbHE3
-IGlzIHRoZSBuYW1lIG9mIHRoZSBlbnRyeSBmdW5jdGlvbiwgc2hvdWxkIGJlIHJlcGxhY2VkCndp
-dGggd2hhdGV2ZXIgeW91IHBhc3MgdG8geW91ciBFTlRSWV9GVU5DVElPTiBtYWNyby4gQ0ZHXyog
-c2hvdWxkIHBvaW50CnRvIHlvdXIgZmxhc2ggaGVhZGVyIGNvbmZpZyBmaWxlLiBUaGUgcmVzdWx0
-aW5nIGltYWdlIHdpbGwgYmUgY2FsbGVkCmJhcmVib3gtZGF0YW1vZHVsLWVkbS1xbXg2LmltZyBp
-biB0aGlzIGV4YW1wbGUuCgpIb3BlIHRoYXQgaGVscHMuCgpTYXNjaGEKCi0tIApQZW5ndXRyb25p
-eCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRw
-Oi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hl
-aW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBI
-aWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1
-NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
-ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
-cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
+---
+ drivers/usb/gadget/dfu.c | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
+index d7bf92cdf..c2b3d481a 100644
+--- a/drivers/usb/gadget/dfu.c
++++ b/drivers/usb/gadget/dfu.c
+@@ -489,7 +489,6 @@ static int dfu_setup(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
+ 			value = handle_dnload(f, ctrl);
+ 			dfu->dfu_state = DFU_STATE_dfuDNLOAD_IDLE;
+ 			return 0;
+-			break;
+ 		case USB_REQ_DFU_UPLOAD:
+ 			dfu->dfu_state = DFU_STATE_dfuUPLOAD_IDLE;
+ 			debug("dfu: starting upload from %s\n", dfu_file_entry->filename);
+@@ -505,7 +504,6 @@ static int dfu_setup(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
+ 			}
+ 			handle_upload(f, ctrl);
+ 			return 0;
+-			break;
+ 		case USB_REQ_DFU_ABORT:
+ 			dfu->dfu_status = DFU_STATUS_OK;
+ 			value = 0;
+@@ -517,7 +515,6 @@ static int dfu_setup(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
+ 		default:
+ 			dfu->dfu_state = DFU_STATE_dfuERROR;
+ 			value = -EINVAL;
+-			goto out;
+ 			break;
+ 		}
+ 		break;
+@@ -544,7 +541,6 @@ static int dfu_setup(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
+ 		case USB_REQ_DFU_UPLOAD:
+ 			handle_upload(f, ctrl);
+ 			return 0;
+-			break;
+ 		case USB_REQ_DFU_ABORT:
+ 			dfu_abort(dfu);
+ 			value = 0;
+@@ -574,7 +570,6 @@ static int dfu_setup(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
+ 	case DFU_STATE_dfuMANIFEST:
+ 		dfu->dfu_state = DFU_STATE_dfuERROR;
+ 		value = -EINVAL;
+-		goto out;
+ 		break;
+ 	default:
+ 		break;
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
