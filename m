@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gh82k-0003zv-6c
- for barebox@lists.infradead.org; Wed, 09 Jan 2019 07:13:13 +0000
-Received: by mail-pg1-x543.google.com with SMTP id c25so2916915pgb.4
- for <barebox@lists.infradead.org>; Tue, 08 Jan 2019 23:12:45 -0800 (PST)
+ id 1gh82j-00044a-Is
+ for barebox@lists.infradead.org; Wed, 09 Jan 2019 07:13:15 +0000
+Received: by mail-pf1-x444.google.com with SMTP id b85so3233786pfc.3
+ for <barebox@lists.infradead.org>; Tue, 08 Jan 2019 23:12:49 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue,  8 Jan 2019 23:12:01 -0800
-Message-Id: <20190109071210.18896-13-andrew.smirnov@gmail.com>
+Date: Tue,  8 Jan 2019 23:12:04 -0800
+Message-Id: <20190109071210.18896-16-andrew.smirnov@gmail.com>
 In-Reply-To: <20190109071210.18896-1-andrew.smirnov@gmail.com>
 References: <20190109071210.18896-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,216 +23,320 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/21] reset: Add i.MX7 SRC reset driver
+Subject: [PATCH 15/21] PCI: imx6: Add code to support i.MX7D
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit abf97755ae31aaaf35156438dd3036e96f66da83
+Port of a Linux commit 9b3fe6796d7c0e0c2b87243ce0c7f4744c54efad
 
-  Add reset controller driver exposing various reset faculties,
-  implemented by System Reset Controller IP block.
+  Add various bits of code needed to support i.MX7D variant of the IP.
 
-  Cc: Lucas Stach <l.stach@pengutronix.de>
-  Cc: Mark Rutland <mark.rutland@arm.com>
-  Cc: devicetree@vger.kernel.org
-  Cc: linux-kernel@vger.kernel.org
-  Cc: linux-arm-kernel@lists.infradead.org
   Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+  Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+  Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+  Acked-by: Lee Jones <lee.jones@linaro.org>
   Acked-by: Rob Herring <robh@kernel.org>
-  Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+  Cc: yurovsky@gmail.com
+  Cc: Mark Rutland <mark.rutland@arm.com>
+  Cc: Fabio Estevam <fabio.estevam@nxp.com>
+  Cc: Dong Aisheng <dongas86@gmail.com>
+  Cc: linux-arm-kernel@lists.infradead.org
+  Cc: devicetree@vger.kernel.org
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/reset/Kconfig      |  11 +++
- drivers/reset/Makefile     |   1 +
- drivers/reset/reset-imx7.c | 151 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 163 insertions(+)
- create mode 100644 drivers/reset/reset-imx7.c
+ arch/arm/mach-imx/Kconfig |   1 +
+ drivers/pci/Kconfig       |   4 +-
+ drivers/pci/pci-imx6.c    | 166 ++++++++++++++++++++++++++++----------
+ 3 files changed, 125 insertions(+), 46 deletions(-)
 
-diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-index c9d04f797..caf1dc9ac 100644
---- a/drivers/reset/Kconfig
-+++ b/drivers/reset/Kconfig
-@@ -11,3 +11,14 @@ menuconfig RESET_CONTROLLER
- 	  via GPIOs or SoC-internal reset controller modules.
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index f14c9c3ed..3ad922c50 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -173,6 +173,7 @@ config ARCH_IMX7
+ 	select COMMON_CLK_OF_PROVIDER
+ 	select ARCH_HAS_FEC_IMX
+ 	select ARCH_HAS_IMX_GPT
++	select HW_HAS_PCI
  
- 	  If unsure, say no.
+ config ARCH_IMX8MQ
+ 	bool
+diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+index 1c45a1c22..d81afb3d2 100644
+--- a/drivers/pci/Kconfig
++++ b/drivers/pci/Kconfig
+@@ -41,8 +41,8 @@ config PCI_TEGRA
+ 	select PCI
+ 
+ config PCI_IMX6
+-	bool "Freescale i.MX6 PCIe controller"
+-	depends on ARCH_IMX6
++	bool "Freescale i.MX6/7 PCIe controller"
++	depends on ARCH_IMX6 || ARCH_IMX7
+ 	select PCIE_DW
+ 	select OF_PCI
+ 	select PCI
+diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
+index 38e002a1c..6471f95b6 100644
+--- a/drivers/pci/pci-imx6.c
++++ b/drivers/pci/pci-imx6.c
+@@ -27,8 +27,10 @@
+ #include <linux/reset.h>
+ #include <linux/sizes.h>
+ #include <mfd/imx6q-iomuxc-gpr.h>
++#include <mfd/imx7-iomuxc-gpr.h>
+ 
+ #include <mach/imx6-regs.h>
++#include <mach/imx7-regs.h>
+ 
+ #include "pcie-designware.h"
+ 
+@@ -37,6 +39,7 @@
+ enum imx6_pcie_variants {
+ 	IMX6Q,
+ 	IMX6QP,
++	IMX7D,
+ };
+ 
+ struct imx6_pcie {
+@@ -46,6 +49,8 @@ struct imx6_pcie {
+ 	struct clk		*pcie_phy;
+ 	struct clk		*pcie;
+ 	void __iomem		*iomuxc_gpr;
++	struct reset_control	*pciephy_reset;
++	struct reset_control	*apps_reset;
+ 	enum imx6_pcie_variants variant;
+ 	u32                     tx_deemph_gen1;
+ 	u32                     tx_deemph_gen2_3p5db;
+@@ -55,6 +60,11 @@ struct imx6_pcie {
+ 	int			link_gen;
+ };
+ 
++/* Parameters for the waiting for PCIe PHY PLL to lock on i.MX7 */
++#define PHY_PLL_LOCK_WAIT_MAX_RETRIES  2000
++#define PHY_PLL_LOCK_WAIT_USLEEP_MIN   50
++#define PHY_PLL_LOCK_WAIT_USLEEP_MAX   200
 +
-+if RESET_CONTROLLER
-+
-+config RESET_IMX7
-+	bool "i.MX7 Reset Driver"
-+	default SOC_IMX7D
-+	select MFD_SYSCON
-+	help
-+	  This enables the reset controller driver for i.MX7 SoCs.
-+
-+endif
-diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
-index 52b10cd48..0b55caa20 100644
---- a/drivers/reset/Makefile
-+++ b/drivers/reset/Makefile
-@@ -1,2 +1,3 @@
- obj-$(CONFIG_RESET_CONTROLLER) += core.o
- obj-$(CONFIG_ARCH_SOCFPGA) += reset-socfpga.o
-+obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
-diff --git a/drivers/reset/reset-imx7.c b/drivers/reset/reset-imx7.c
-new file mode 100644
-index 000000000..c8b7f86d4
---- /dev/null
-+++ b/drivers/reset/reset-imx7.c
-@@ -0,0 +1,151 @@
-+/*
-+ * Copyright (c) 2017, Impinj, Inc.
-+ *
-+ * i.MX7 System Reset Controller (SRC) driver
-+ *
-+ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; version 2 of the License.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <common.h>
-+#include <dt-bindings/reset/imx7-reset.h>
-+#include <init.h>
-+#include <linux/err.h>
-+#include <linux/reset-controller.h>
-+#include <mfd/syscon.h>
-+#include <regmap.h>
-+
-+struct imx7_src {
-+	struct reset_controller_dev rcdev;
-+	struct regmap *regmap;
-+};
-+
-+enum imx7_src_registers {
-+	SRC_A7RCR0		= 0x0004,
-+	SRC_M4RCR		= 0x000c,
-+	SRC_ERCR		= 0x0014,
-+	SRC_HSICPHY_RCR		= 0x001c,
-+	SRC_USBOPHY1_RCR	= 0x0020,
-+	SRC_USBOPHY2_RCR	= 0x0024,
-+	SRC_MIPIPHY_RCR		= 0x0028,
-+	SRC_PCIEPHY_RCR		= 0x002c,
-+	SRC_DDRC_RCR		= 0x1000,
-+};
-+
-+struct imx7_src_signal {
-+	unsigned int offset, bit;
-+};
-+
-+static const struct imx7_src_signal imx7_src_signals[IMX7_RESET_NUM] = {
-+	[IMX7_RESET_A7_CORE_POR_RESET0] = { SRC_A7RCR0, BIT(0) },
-+	[IMX7_RESET_A7_CORE_POR_RESET1] = { SRC_A7RCR0, BIT(1) },
-+	[IMX7_RESET_A7_CORE_RESET0]     = { SRC_A7RCR0, BIT(4) },
-+	[IMX7_RESET_A7_CORE_RESET1]	= { SRC_A7RCR0, BIT(5) },
-+	[IMX7_RESET_A7_DBG_RESET0]	= { SRC_A7RCR0, BIT(8) },
-+	[IMX7_RESET_A7_DBG_RESET1]	= { SRC_A7RCR0, BIT(9) },
-+	[IMX7_RESET_A7_ETM_RESET0]	= { SRC_A7RCR0, BIT(12) },
-+	[IMX7_RESET_A7_ETM_RESET1]	= { SRC_A7RCR0, BIT(13) },
-+	[IMX7_RESET_A7_SOC_DBG_RESET]	= { SRC_A7RCR0, BIT(20) },
-+	[IMX7_RESET_A7_L2RESET]		= { SRC_A7RCR0, BIT(21) },
-+	[IMX7_RESET_SW_M4C_RST]		= { SRC_M4RCR, BIT(1) },
-+	[IMX7_RESET_SW_M4P_RST]		= { SRC_M4RCR, BIT(2) },
-+	[IMX7_RESET_EIM_RST]		= { SRC_ERCR, BIT(0) },
-+	[IMX7_RESET_HSICPHY_PORT_RST]	= { SRC_HSICPHY_RCR, BIT(1) },
-+	[IMX7_RESET_USBPHY1_POR]	= { SRC_USBOPHY1_RCR, BIT(0) },
-+	[IMX7_RESET_USBPHY1_PORT_RST]	= { SRC_USBOPHY1_RCR, BIT(1) },
-+	[IMX7_RESET_USBPHY2_POR]	= { SRC_USBOPHY2_RCR, BIT(0) },
-+	[IMX7_RESET_USBPHY2_PORT_RST]	= { SRC_USBOPHY2_RCR, BIT(1) },
-+	[IMX7_RESET_MIPI_PHY_MRST]	= { SRC_MIPIPHY_RCR, BIT(1) },
-+	[IMX7_RESET_MIPI_PHY_SRST]	= { SRC_MIPIPHY_RCR, BIT(2) },
-+	[IMX7_RESET_PCIEPHY]		= { SRC_PCIEPHY_RCR, BIT(2) | BIT(1) },
-+	[IMX7_RESET_PCIEPHY_PERST]	= { SRC_PCIEPHY_RCR, BIT(3) },
-+	[IMX7_RESET_PCIE_CTRL_APPS_EN]	= { SRC_PCIEPHY_RCR, BIT(6) },
-+	[IMX7_RESET_DDRC_PRST]		= { SRC_DDRC_RCR, BIT(0) },
-+	[IMX7_RESET_DDRC_CORE_RST]	= { SRC_DDRC_RCR, BIT(1) },
-+};
-+
-+static struct imx7_src *to_imx7_src(struct reset_controller_dev *rcdev)
-+{
-+	return container_of(rcdev, struct imx7_src, rcdev);
-+}
-+
-+static int imx7_reset_set(struct reset_controller_dev *rcdev,
-+			  unsigned long id, bool assert)
-+{
-+	struct imx7_src *imx7src = to_imx7_src(rcdev);
-+	const struct imx7_src_signal *signal = &imx7_src_signals[id];
-+	unsigned int value = 0;
-+
-+	switch (id) {
-+	case IMX7_RESET_PCIEPHY:
+ /* PCIe Root Complex registers (memory-mapped) */
+ #define PCIE_RC_LCR				0x7c
+ #define PCIE_RC_LCR_MAX_LINK_SPEEDS_GEN1	0x1
+@@ -239,6 +249,10 @@ static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
+ 	u32 gpr1;
+ 
+ 	switch (imx6_pcie->variant) {
++	case IMX7D:
++		reset_control_assert(imx6_pcie->pciephy_reset);
++		reset_control_assert(imx6_pcie->apps_reset);
++		break;
+ 	case IMX6QP:
+ 		gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
+ 		gpr1 |= IMX6Q_GPR1_PCIE_SW_RST;
+@@ -259,24 +273,49 @@ static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
+ {
+ 	u32 gpr1;
+ 
+-	/* power up core phy and enable ref clock */
+-	gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
+-	gpr1 &= ~IMX6Q_GPR1_PCIE_TEST_PD;
+-	writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
+-	/*
+-	 * the async reset input need ref clock to sync internally,
+-	 * when the ref clock comes after reset, internal synced
+-	 * reset time is too short, cannot meet the requirement.
+-	 * add one ~10us delay here.
+-	 */
+-	udelay(10);
+-	gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
+-	gpr1 |= IMX6Q_GPR1_PCIE_REF_CLK_EN;
+-	writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
++	switch (imx6_pcie->variant) {
++	case IMX6QP:
++	case IMX6Q:		/* FALLTHROUGH */
++		/* power up core phy and enable ref clock */
++		gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
++		gpr1 &= ~IMX6Q_GPR1_PCIE_TEST_PD;
++		writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
 +		/*
-+		 * wait for more than 10us to release phy g_rst and
-+		 * btnrst
++		 * the async reset input need ref clock to sync
++		 * internally, when the ref clock comes after reset,
++		 * internal synced reset time is too short, cannot
++		 * meet the requirement.  add one ~10us delay here.
 +		 */
-+		if (!assert)
-+			udelay(10);
++		udelay(10);
++		gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
++		gpr1 |= IMX6Q_GPR1_PCIE_REF_CLK_EN;
++		writel(gpr1, imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
 +		break;
++	case IMX7D:
++		break;
++	}
+ 
+ 	return 0;
+ }
+ 
++static void imx7d_pcie_wait_for_phy_pll_lock(struct imx6_pcie *imx6_pcie)
++{
++	u32 val;
++	unsigned int retries;
++	struct device_d *dev = imx6_pcie->pci->dev;
 +
-+	case IMX7_RESET_PCIE_CTRL_APPS_EN:
-+		value = (assert) ? 0 : signal->bit;
++	for (retries = 0; retries < PHY_PLL_LOCK_WAIT_MAX_RETRIES; retries++) {
++		val = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR22);
++
++		if (val & IMX7D_GPR22_PCIE_PHY_PLL_LOCKED)
++			return;
++
++		udelay(PHY_PLL_LOCK_WAIT_USLEEP_MAX);
++	}
++
++	dev_err(dev, "PCIe PLL lock timeout\n");
++}
++
+ static void imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
+ {
+ 	struct device_d *dev = imx6_pcie->pci->dev;
+@@ -321,6 +360,10 @@ static void imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
+ 	 * Release the PCIe PHY reset here
+ 	 */
+ 	switch (imx6_pcie->variant) {
++	case IMX7D:
++		reset_control_deassert(imx6_pcie->pciephy_reset);
++		imx7d_pcie_wait_for_phy_pll_lock(imx6_pcie);
++		break;
+ 	case IMX6QP:
+ 		gpr1 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR1);
+ 		gpr1 &= ~IMX6Q_GPR1_PCIE_SW_RST;
+@@ -347,38 +390,48 @@ static void imx6_pcie_init_phy(struct imx6_pcie *imx6_pcie)
+ 	u32 gpr12, gpr8;
+ 
+ 	gpr12 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
+-	gpr12 &= ~IMX6Q_GPR12_PCIE_CTL_2;
+-	writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
+ 
+-	/* configure constant input signal to the pcie ctrl and phy */
+-	gpr12 &= ~IMX6Q_GPR12_DEVICE_TYPE;
+-	gpr12 |= PCI_EXP_TYPE_ROOT_PORT << 12;
+-	writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
++	switch (imx6_pcie->variant) {
++	case IMX7D:
++		gpr12 &= ~IMX7D_GPR12_PCIE_PHY_REFCLK_SEL;
++		writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
++		break;
++	case IMX6QP:
++	case IMX6Q:	/* FALLTHROUGH */
++		gpr12 &= ~IMX6Q_GPR12_PCIE_CTL_2;
++		writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
+ 
+-	gpr12 &= ~IMX6Q_GPR12_LOS_LEVEL;
+-	gpr12 |= 9 << 4;
+-	writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
++		/* configure constant input signal to the pcie ctrl and phy */
++		gpr12 &= ~IMX6Q_GPR12_LOS_LEVEL;
++		gpr12 |= 9 << 4;
++		writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
+ 
+-	gpr8 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
+-	gpr8 &= ~IMX6Q_GPR8_TX_DEEMPH_GEN1;
+-	gpr8 |= imx6_pcie->tx_deemph_gen1 << 0;
+-	writel(gpr8, imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
++		gpr8 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
++		gpr8 &= ~IMX6Q_GPR8_TX_DEEMPH_GEN1;
++		gpr8 |= imx6_pcie->tx_deemph_gen1 << 0;
++		writel(gpr8, imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
+ 
+-	gpr8 &= ~IMX6Q_GPR8_TX_DEEMPH_GEN2_3P5DB;
+-	gpr8 |= imx6_pcie->tx_deemph_gen2_3p5db << 6;
+-	writel(gpr8, imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
++		gpr8 &= ~IMX6Q_GPR8_TX_DEEMPH_GEN2_3P5DB;
++		gpr8 |= imx6_pcie->tx_deemph_gen2_3p5db << 6;
++		writel(gpr8, imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
+ 
+-	gpr8 &= ~IMX6Q_GPR8_TX_DEEMPH_GEN2_6DB;
+-	gpr8 |= imx6_pcie->tx_deemph_gen2_6db << 12;
+-	writel(gpr8, imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
++		gpr8 &= ~IMX6Q_GPR8_TX_DEEMPH_GEN2_6DB;
++		gpr8 |= imx6_pcie->tx_deemph_gen2_6db << 12;
++		writel(gpr8, imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
+ 
+-	gpr8 &= ~IMX6Q_GPR8_TX_SWING_FULL;
+-	gpr8 |= imx6_pcie->tx_swing_full << 18;
+-	writel(gpr8, imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
++		gpr8 &= ~IMX6Q_GPR8_TX_SWING_FULL;
++		gpr8 |= imx6_pcie->tx_swing_full << 18;
++		writel(gpr8, imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
+ 
+-	gpr8 &= ~IMX6Q_GPR8_TX_SWING_LOW;
+-	gpr8 |= imx6_pcie->tx_swing_low << 25;
+-	writel(gpr8, imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
++		gpr8 &= ~IMX6Q_GPR8_TX_SWING_LOW;
++		gpr8 |= imx6_pcie->tx_swing_low << 25;
++		writel(gpr8, imx6_pcie->iomuxc_gpr + IOMUXC_GPR8);
 +		break;
 +	}
 +
-+	return regmap_update_bits(imx7src->regmap,
-+				  signal->offset, signal->bit, value);
-+}
++	gpr12 &= ~IMX6Q_GPR12_DEVICE_TYPE;
++	gpr12 |= PCI_EXP_TYPE_ROOT_PORT << 12;
++	writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
+ }
+ 
+ static int imx6_pcie_wait_for_link(struct imx6_pcie *imx6_pcie)
+@@ -424,9 +477,13 @@ static int imx6_pcie_establish_link(struct imx6_pcie *imx6_pcie)
+ 	dw_pcie_writel_dbi(pci, PCIE_RC_LCR, tmp);
+ 
+ 	/* Start LTSSM. */
+-	gpr12 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
+-	gpr12 |= IMX6Q_GPR12_PCIE_CTL_2;
+-	writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
++	if (imx6_pcie->variant == IMX7D) {
++		reset_control_deassert(imx6_pcie->apps_reset);
++	} else {
++		gpr12 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
++		gpr12 |= IMX6Q_GPR12_PCIE_CTL_2;
++		writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
++	}
+ 
+ 	ret = imx6_pcie_wait_for_link(imx6_pcie);
+ 	if (ret)
+@@ -577,8 +634,28 @@ static int __init imx6_pcie_probe(struct device_d *dev)
+ 		return PTR_ERR(imx6_pcie->pcie);
+ 	}
+ 
+-	/* Grab GPR config register range */
+-	imx6_pcie->iomuxc_gpr = IOMEM(MX6_IOMUXC_BASE_ADDR);
++	switch (imx6_pcie->variant) {
++	case IMX7D:
++		imx6_pcie->iomuxc_gpr = IOMEM(MX7_IOMUXC_GPR_BASE_ADDR);
 +
-+static int imx7_reset_assert(struct reset_controller_dev *rcdev,
-+			     unsigned long id)
-+{
-+	return imx7_reset_set(rcdev, id, true);
-+}
++		imx6_pcie->pciephy_reset = reset_control_get(dev, "pciephy");
++		if (IS_ERR(imx6_pcie->pciephy_reset)) {
++			dev_err(dev, "Failed to get PCIEPHY reset contol\n");
++			return PTR_ERR(imx6_pcie->pciephy_reset);
++		}
 +
-+static int imx7_reset_deassert(struct reset_controller_dev *rcdev,
-+			       unsigned long id)
-+{
-+	return imx7_reset_set(rcdev, id, false);
-+}
-+
-+static struct reset_control_ops imx7_reset_ops = {
-+	.assert		= imx7_reset_assert,
-+	.deassert	= imx7_reset_deassert,
-+};
-+
-+static int imx7_reset_probe(struct device_d *dev)
-+{
-+	struct imx7_src *imx7src;
-+
-+	imx7src = xzalloc(sizeof(*imx7src));
-+	imx7src->regmap = syscon_node_to_regmap(dev->device_node);
-+	if (IS_ERR(imx7src->regmap)) {
-+		dev_err(dev, "Unable to get imx7-src regmap");
-+		return PTR_ERR(imx7src->regmap);
++		imx6_pcie->apps_reset = reset_control_get(dev, "apps");
++		if (IS_ERR(imx6_pcie->apps_reset)) {
++			dev_err(dev, "Failed to get PCIE APPS reset contol\n");
++			return PTR_ERR(imx6_pcie->apps_reset);
++		}
++		break;
++	default:
++		/* Grab GPR config register range */
++		imx6_pcie->iomuxc_gpr = IOMEM(MX6_IOMUXC_BASE_ADDR);
++		break;
 +	}
 +
-+	imx7src->rcdev.nr_resets = IMX7_RESET_NUM;
-+	imx7src->rcdev.ops       = &imx7_reset_ops;
-+	imx7src->rcdev.of_node   = dev->device_node;
-+
-+	return reset_controller_register(&imx7src->rcdev);
-+}
-+
-+static const struct of_device_id imx7_reset_dt_ids[] = {
-+	{ .compatible = "fsl,imx7d-src", },
-+	{ /* sentinel */ },
-+};
-+
-+static struct driver_d imx7_reset_driver = {
-+	.name = "imx7d-src",
-+	.probe = imx7_reset_probe,
-+	.of_compatible = DRV_OF_COMPAT(imx7_reset_dt_ids),
-+};
-+device_platform_driver(imx7_reset_driver);
+ 
+ 	/* Grab PCIe PHY Tx Settings */
+ 	if (of_property_read_u32(np, "fsl,tx-deemph-gen1",
+@@ -653,6 +730,7 @@ static void imx6_pcie_remove(struct device_d *dev)
+ static struct of_device_id imx6_pcie_of_match[] = {
+ 	{ .compatible = "fsl,imx6q-pcie",  .data = (void *)IMX6Q,  },
+ 	{ .compatible = "fsl,imx6qp-pcie", .data = (void *)IMX6QP, },
++	{ .compatible = "fsl,imx7d-pcie",  .data = (void *)IMX7D,  },
+ 	{},
+ };
+ 
 -- 
 2.20.1
 
