@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ghSPv-0003Jw-LI
- for barebox@lists.infradead.org; Thu, 10 Jan 2019 04:58:10 +0000
-Received: by mail-pl1-x641.google.com with SMTP id u6so4641792plm.8
- for <barebox@lists.infradead.org>; Wed, 09 Jan 2019 20:58:06 -0800 (PST)
+ id 1ghSPw-0003Ld-E2
+ for barebox@lists.infradead.org; Thu, 10 Jan 2019 04:58:11 +0000
+Received: by mail-pl1-x643.google.com with SMTP id w4so4655185plz.1
+ for <barebox@lists.infradead.org>; Wed, 09 Jan 2019 20:58:08 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  9 Jan 2019 20:57:28 -0800
-Message-Id: <20190110045739.19399-11-andrew.smirnov@gmail.com>
+Date: Wed,  9 Jan 2019 20:57:29 -0800
+Message-Id: <20190110045739.19399-12-andrew.smirnov@gmail.com>
 In-Reply-To: <20190110045739.19399-1-andrew.smirnov@gmail.com>
 References: <20190110045739.19399-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,53 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/21] PCI: Conver register_pci_controller() to use a loop
+Subject: [PATCH 11/21] PCI: Remove unused variables/code
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Conver register_pci_controller() to use a loop. No functional change
-intended.
+Both host_head and host_tail are not used anywhere in the codebase and
+look like a leftover. Remove them.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+ drivers/pci/pci.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
 diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 3e249abe4f..e1c059f2a9 100644
+index e1c059f2a9..9bfa54d054 100644
 --- a/drivers/pci/pci.c
 +++ b/drivers/pci/pci.c
-@@ -42,6 +42,7 @@ static void pci_bus_register_devices(struct pci_bus *bus)
- void register_pci_controller(struct pci_controller *hose)
- {
+@@ -4,8 +4,6 @@
+ #include <linux/sizes.h>
+ #include <linux/pci.h>
+ 
+-static struct pci_controller *hose_head, **hose_tail = &hose_head;
+-
+ LIST_HEAD(pci_root_buses);
+ EXPORT_SYMBOL(pci_root_buses);
+ static resource_size_t last[PCI_BRIDGE_RESOURCE_NUM];
+@@ -44,9 +42,6 @@ void register_pci_controller(struct pci_controller *hose)
  	struct pci_bus *bus;
-+	int r;
+ 	int r;
  
- 	*hose_tail = hose;
- 	hose_tail = &hose->next;
-@@ -59,20 +60,8 @@ void register_pci_controller(struct pci_controller *hose)
- 	if (hose->set_busno)
- 		hose->set_busno(hose, bus->number);
- 
--	if (bus->resource[PCI_BUS_RESOURCE_MEM])
--		last[PCI_BUS_RESOURCE_MEM] = bus->resource[PCI_BUS_RESOURCE_MEM]->start;
--	else
--		last[PCI_BUS_RESOURCE_MEM] = 0;
+-	*hose_tail = hose;
+-	hose_tail = &hose->next;
 -
--	if (bus->resource[PCI_BUS_RESOURCE_MEM_PREF])
--		last[PCI_BUS_RESOURCE_MEM_PREF] = bus->resource[PCI_BUS_RESOURCE_MEM_PREF]->start;
--	else
--		last[PCI_BUS_RESOURCE_MEM_PREF] = 0;
--
--	if (bus->resource[PCI_BUS_RESOURCE_IO])
--		last[PCI_BUS_RESOURCE_IO] = bus->resource[PCI_BUS_RESOURCE_IO]->start;
--	else
--		last[PCI_BUS_RESOURCE_IO] = 0;
-+	for (r = PCI_BUS_RESOURCE_IO; r <= PCI_BUS_RESOURCE_MEM_PREF; r++)
-+		last[r] = bus->resource[r] ? bus->resource[r]->start : 0;
- 
- 	pci_scan_bus(bus);
- 	pci_bus_register_devices(bus);
+ 	bus = pci_alloc_bus();
+ 	hose->bus = bus;
+ 	bus->parent = hose->parent;
 -- 
 2.20.1
 
