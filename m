@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ghSPm-0003BU-Ij
+ id 1ghSPl-0003Av-GE
  for barebox@lists.infradead.org; Thu, 10 Jan 2019 04:58:01 +0000
-Received: by mail-pf1-x443.google.com with SMTP id c123so4769118pfb.0
- for <barebox@lists.infradead.org>; Wed, 09 Jan 2019 20:57:58 -0800 (PST)
+Received: by mail-pg1-x543.google.com with SMTP id g189so4320911pgc.5
+ for <barebox@lists.infradead.org>; Wed, 09 Jan 2019 20:57:57 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  9 Jan 2019 20:57:22 -0800
-Message-Id: <20190110045739.19399-5-andrew.smirnov@gmail.com>
+Date: Wed,  9 Jan 2019 20:57:21 -0800
+Message-Id: <20190110045739.19399-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20190110045739.19399-1-andrew.smirnov@gmail.com>
 References: <20190110045739.19399-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,87 +23,131 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/21] PCI: Convert prescan_setup_bridge() to use a loop
+Subject: [PATCH 03/21] PCI: Consolidate limit/base settting code
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Simplify prescan_setup_bridge() by folding base setup code into a
-loop. No functional change intended.
+Move limit/base settting code into a dedicated function order to avoid
+repeating address masking code. No functional change intended.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci.c | 37 ++++++++++++++-----------------------
- 1 file changed, 14 insertions(+), 23 deletions(-)
+ drivers/pci/pci.c | 64 +++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 48 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 11f84934f5..02b7f091f7 100644
+index 6a327c6f88..11f84934f5 100644
 --- a/drivers/pci/pci.c
 +++ b/drivers/pci/pci.c
-@@ -256,6 +256,11 @@ static void setup_device(struct pci_dev *dev, int max_bar)
+@@ -256,6 +256,42 @@ static void setup_device(struct pci_dev *dev, int max_bar)
  	list_add_tail(&dev->bus_list, &dev->bus->devices);
  }
  
-+static size_t pci_resource_to_alignment(int r)
++static void __pci_set_base_or_limit(struct pci_dev *dev, int r,
++				    resource_size_t addr, bool limit)
 +{
-+	return (r == PCI_BUS_RESOURCE_IO) ? SZ_4K : SZ_1M;
++	int upper, where;
++
++	switch (r) {
++	case PCI_BUS_RESOURCE_IO:
++		where = limit ? PCI_IO_LIMIT : PCI_IO_BASE;
++		upper = limit ? PCI_IO_LIMIT_UPPER16 : PCI_IO_BASE_UPPER16;
++
++		pci_write_config_byte(dev, where, (addr & 0x0000f000) >> 8);
++		pci_write_config_word(dev, upper, (addr & 0xffff0000) >> 16);
++		return;
++	case PCI_BUS_RESOURCE_MEM:
++		where = limit ? PCI_MEMORY_LIMIT : PCI_MEMORY_BASE;
++		break;
++	case PCI_BUS_RESOURCE_MEM_PREF:
++		where = limit ? PCI_PREF_MEMORY_LIMIT : PCI_PREF_MEMORY_BASE;
++		break;
++	default:
++		BUG();
++	}
++
++	pci_write_config_word(dev, where, (addr & 0xfff00000) >> 16);
 +}
 +
- static void __pci_set_base_or_limit(struct pci_dev *dev, int r,
- 				    resource_size_t addr, bool limit)
- {
-@@ -295,6 +300,7 @@ static void pci_set_base(struct pci_dev *dev, int r, resource_size_t addr)
++static void pci_set_limit(struct pci_dev *dev, int r, resource_size_t addr)
++{
++	__pci_set_base_or_limit(dev, r, addr, true);
++}
++
++static void pci_set_base(struct pci_dev *dev, int r, resource_size_t addr)
++{
++	__pci_set_base_or_limit(dev, r, addr, false);
++}
++
  static void prescan_setup_bridge(struct pci_dev *dev)
  {
  	u16 cmdstat;
-+	int r;
- 
- 	pci_read_config_word(dev, PCI_COMMAND, &cmdstat);
- 
-@@ -303,36 +309,21 @@ static void prescan_setup_bridge(struct pci_dev *dev)
- 	pci_write_config_byte(dev, PCI_SECONDARY_BUS, dev->subordinate->number);
- 	pci_write_config_byte(dev, PCI_SUBORDINATE_BUS, 0xff);
- 
--	if (last[PCI_BUS_RESOURCE_MEM]) {
--		/* Set up memory and I/O filter limits, assume 32-bit I/O space */
--		last[PCI_BUS_RESOURCE_MEM] = ALIGN(last[PCI_BUS_RESOURCE_MEM], SZ_1M);
--		pci_set_base(dev, PCI_BUS_RESOURCE_MEM,
--			     last[PCI_BUS_RESOURCE_MEM]);
--		cmdstat |= PCI_COMMAND_MEMORY;
-+	for (r = PCI_BUS_RESOURCE_IO; r <= PCI_BUS_RESOURCE_MEM_PREF; r++) {
-+		if (last[r]) {
-+			cmdstat |= (r == PCI_BUS_RESOURCE_IO) ?
-+				PCI_COMMAND_IO : PCI_COMMAND_MEMORY;
-+			last[r] = ALIGN(last[r], pci_resource_to_alignment(r));
-+			pci_set_base(dev, r, last[r]);
-+		}
+@@ -270,8 +306,8 @@ static void prescan_setup_bridge(struct pci_dev *dev)
+ 	if (last[PCI_BUS_RESOURCE_MEM]) {
+ 		/* Set up memory and I/O filter limits, assume 32-bit I/O space */
+ 		last[PCI_BUS_RESOURCE_MEM] = ALIGN(last[PCI_BUS_RESOURCE_MEM], SZ_1M);
+-		pci_write_config_word(dev, PCI_MEMORY_BASE,
+-				      (last[PCI_BUS_RESOURCE_MEM] & 0xfff00000) >> 16);
++		pci_set_base(dev, PCI_BUS_RESOURCE_MEM,
++			     last[PCI_BUS_RESOURCE_MEM]);
+ 		cmdstat |= PCI_COMMAND_MEMORY;
  	}
  
--	if (last[PCI_BUS_RESOURCE_MEM_PREF]) {
--		/* Set up memory and I/O filter limits, assume 32-bit I/O space */
--		last[PCI_BUS_RESOURCE_MEM_PREF] =
--			ALIGN(last[PCI_BUS_RESOURCE_MEM_PREF],
--			      SZ_1M);
--		pci_set_base(dev, PCI_BUS_RESOURCE_MEM_PREF,
--			     last[PCI_BUS_RESOURCE_MEM_PREF]);
--		cmdstat |= PCI_COMMAND_MEMORY;
--	} else {
--
-+	if (!last[PCI_BUS_RESOURCE_MEM_PREF]) {
- 		/* We don't support prefetchable memory for now, so disable */
- 		pci_write_config_word(dev, PCI_PREF_MEMORY_BASE, 0x1000);
- 		pci_write_config_word(dev, PCI_PREF_MEMORY_LIMIT, 0x0);
+@@ -280,8 +316,8 @@ static void prescan_setup_bridge(struct pci_dev *dev)
+ 		last[PCI_BUS_RESOURCE_MEM_PREF] =
+ 			ALIGN(last[PCI_BUS_RESOURCE_MEM_PREF],
+ 			      SZ_1M);
+-		pci_write_config_word(dev, PCI_PREF_MEMORY_BASE,
+-				      (last[PCI_BUS_RESOURCE_MEM_PREF] & 0xfff00000) >> 16);
++		pci_set_base(dev, PCI_BUS_RESOURCE_MEM_PREF,
++			     last[PCI_BUS_RESOURCE_MEM_PREF]);
+ 		cmdstat |= PCI_COMMAND_MEMORY;
+ 	} else {
+ 
+@@ -292,10 +328,8 @@ static void prescan_setup_bridge(struct pci_dev *dev)
+ 
+ 	if (last[PCI_BUS_RESOURCE_IO]) {
+ 		last[PCI_BUS_RESOURCE_IO] = ALIGN(last[PCI_BUS_RESOURCE_IO], SZ_4K);
+-		pci_write_config_byte(dev, PCI_IO_BASE,
+-				      (last[PCI_BUS_RESOURCE_IO] & 0x0000f000) >> 8);
+-		pci_write_config_word(dev, PCI_IO_BASE_UPPER16,
+-				      (last[PCI_BUS_RESOURCE_IO] & 0xffff0000) >> 16);
++		pci_set_base(dev, PCI_BUS_RESOURCE_IO,
++			     last[PCI_BUS_RESOURCE_IO]);
+ 		cmdstat |= PCI_COMMAND_IO;
  	}
  
--	if (last[PCI_BUS_RESOURCE_IO]) {
--		last[PCI_BUS_RESOURCE_IO] = ALIGN(last[PCI_BUS_RESOURCE_IO], SZ_4K);
--		pci_set_base(dev, PCI_BUS_RESOURCE_IO,
--			     last[PCI_BUS_RESOURCE_IO]);
--		cmdstat |= PCI_COMMAND_IO;
--	}
--
- 	/* Enable memory and I/O accesses, enable bus master */
- 	pci_write_config_word(dev, PCI_COMMAND, cmdstat | PCI_COMMAND_MASTER);
+@@ -311,24 +345,22 @@ static void postscan_setup_bridge(struct pci_dev *dev)
+ 	if (last[PCI_BUS_RESOURCE_MEM]) {
+ 		last[PCI_BUS_RESOURCE_MEM] = ALIGN(last[PCI_BUS_RESOURCE_MEM], SZ_1M);
+ 		pr_debug("bridge NP limit at %pa\n", &last[PCI_BUS_RESOURCE_MEM]);
+-		pci_write_config_word(dev, PCI_MEMORY_LIMIT,
+-				      ((last[PCI_BUS_RESOURCE_MEM] - 1) & 0xfff00000) >> 16);
++		pci_set_limit(dev, PCI_BUS_RESOURCE_MEM,
++			      last[PCI_BUS_RESOURCE_MEM] - 1);
+ 	}
+ 
+ 	if (last[PCI_BUS_RESOURCE_MEM_PREF]) {
+ 		last[PCI_BUS_RESOURCE_MEM_PREF] = ALIGN(last[PCI_BUS_RESOURCE_MEM_PREF], SZ_1M);
+ 		pr_debug("bridge P limit at %pa\n", &last[PCI_BUS_RESOURCE_MEM_PREF]);
+-		pci_write_config_word(dev, PCI_PREF_MEMORY_LIMIT,
+-				      ((last[PCI_BUS_RESOURCE_MEM_PREF] - 1) & 0xfff00000) >> 16);
++		pci_set_limit(dev, PCI_BUS_RESOURCE_MEM_PREF,
++			      last[PCI_BUS_RESOURCE_MEM_PREF] - 1);
+ 	}
+ 
+ 	if (last[PCI_BUS_RESOURCE_IO]) {
+ 		last[PCI_BUS_RESOURCE_IO] = ALIGN(last[PCI_BUS_RESOURCE_IO], SZ_4K);
+ 		pr_debug("bridge IO limit at %pa\n", &last[PCI_BUS_RESOURCE_IO]);
+-		pci_write_config_byte(dev, PCI_IO_LIMIT,
+-				((last[PCI_BUS_RESOURCE_IO] - 1) & 0x0000f000) >> 8);
+-		pci_write_config_word(dev, PCI_IO_LIMIT_UPPER16,
+-				((last[PCI_BUS_RESOURCE_IO] - 1) & 0xffff0000) >> 16);
++		pci_set_limit(dev, PCI_BUS_RESOURCE_IO,
++			      last[PCI_BUS_RESOURCE_IO] - 1);
+ 	}
  }
+ 
 -- 
 2.20.1
 
