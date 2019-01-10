@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ghSPi-0003AE-G2
- for barebox@lists.infradead.org; Thu, 10 Jan 2019 04:57:55 +0000
-Received: by mail-pl1-x629.google.com with SMTP id w4so4654902plz.1
- for <barebox@lists.infradead.org>; Wed, 09 Jan 2019 20:57:53 -0800 (PST)
+ id 1ghSPk-0003AQ-LM
+ for barebox@lists.infradead.org; Thu, 10 Jan 2019 04:57:58 +0000
+Received: by mail-pf1-x443.google.com with SMTP id w73so4741081pfk.10
+ for <barebox@lists.infradead.org>; Wed, 09 Jan 2019 20:57:55 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  9 Jan 2019 20:57:18 -0800
-Message-Id: <20190110045739.19399-1-andrew.smirnov@gmail.com>
+Date: Wed,  9 Jan 2019 20:57:19 -0800
+Message-Id: <20190110045739.19399-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20190110045739.19399-1-andrew.smirnov@gmail.com>
+References: <20190110045739.19399-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,58 +23,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/21] PCI improvements
+Subject: [PATCH 01/21] PCI: Switch to using %pa to print memory addresses
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Everyone:
+Switch to using %pa to print memory addresses in order to be able to
+support both 64 and 32 bit builds.
 
-This series is a number of various small improvementes (or at least
-they seemed so to me) as well as a couple of small fixes for 64-bit
-builds. With exception of "PCI: Switch to using %pa to print memory
-addresses" and "Convert ->res_start() to return resource_size_t" none
-of the patches are fixing problems so all of them are optional and can
-be dropped from the series.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/pci/pci.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-Hopefully all of the patches are self-explanatory.
-
-Feedback is welcome!
-
-Thanks,
-Andrey Smirnov
-
-Andrey Smirnov (21):
-  PCI: Switch to using %pa to print memory addresses
-  PCI: Replace last_* variables with an array
-  PCI: Consolidate limit/base settting code
-  PCI: Convert prescan_setup_bridge() to use a loop
-  PCI: Convert postscan_setup_bridge() to use a loop
-  PCI: Replace magic number in setup_device()
-  PCI: Remove superfluous parens in setup_device()
-  PCI: Simplify resource setup code in setup_device()
-  PCI: Store and reuse BAR offsets
-  PCI: Conver register_pci_controller() to use a loop
-  PCI: Remove unused variables/code
-  PCI: Make pci_scan_bus static
-  PCI: Drop "slots" from struct pci_bus
-  PCI: Drop "resources" from struct pci_bus
-  PCI: Drop "name" from struct pci_bus
-  PCI: Drop "ops" from struct pci_bus
-  PCI: Drop "rom_address" from struct pci_dev
-  PCI: Simplify alloc_pci_dev()
-  PCI: Assume 1:1 mapping if .res_start callback is NULL
-  PCI: Convert ->res_start() to return resource_size_t
-  PCI: Consify pci_ops in struct pci_controller
-
- arch/mips/mach-malta/pci.c         |   3 +-
- drivers/pci/pci-mvebu.c            |   8 +-
- drivers/pci/pci-tegra.c            |   8 +-
- drivers/pci/pci.c                  | 281 +++++++++++++----------------
- drivers/pci/pci_iomap.c            |   6 +-
- drivers/pci/pcie-designware-host.c |  10 +-
- include/linux/pci.h                |  12 +-
- 7 files changed, 139 insertions(+), 189 deletions(-)
-
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 7abc7a3439..1f9d360d79 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -195,7 +195,7 @@ static void setup_device(struct pci_dev *dev, int max_bar)
+ 				return;
+ 			}
+ 			last_io = ALIGN(last_io, size);
+-			pr_debug("pbar%d: allocated at 0x%08x\n", bar, last_io);
++			pr_debug("pbar%d: allocated at %pa\n", bar, &last_io);
+ 			pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_io);
+ 			dev->resource[bar].flags = IORESOURCE_IO;
+ 			last_addr = last_io;
+@@ -215,7 +215,7 @@ static void setup_device(struct pci_dev *dev, int max_bar)
+ 				return;
+ 			}
+ 			last_mem_pref = ALIGN(last_mem_pref, size);
+-			pr_debug("pbar%d: allocated at 0x%08x\n", bar, last_mem_pref);
++			pr_debug("pbar%d: allocated at %pa\n", bar, &last_mem_pref);
+ 			pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_mem_pref);
+ 			dev->resource[bar].flags = IORESOURCE_MEM |
+ 			                           IORESOURCE_PREFETCH;
+@@ -235,7 +235,7 @@ static void setup_device(struct pci_dev *dev, int max_bar)
+ 				return;
+ 			}
+ 			last_mem = ALIGN(last_mem, size);
+-			pr_debug("pbar%d: allocated at 0x%08x\n", bar, last_mem);
++			pr_debug("pbar%d: allocated at %pa\n", bar, &last_mem);
+ 			pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_mem);
+ 			dev->resource[bar].flags = IORESOURCE_MEM;
+ 			last_addr = last_mem;
+@@ -311,21 +311,21 @@ static void postscan_setup_bridge(struct pci_dev *dev)
+ 
+ 	if (last_mem) {
+ 		last_mem = ALIGN(last_mem, SZ_1M);
+-		pr_debug("bridge NP limit at 0x%08x\n", last_mem);
++		pr_debug("bridge NP limit at %pa\n", &last_mem);
+ 		pci_write_config_word(dev, PCI_MEMORY_LIMIT,
+ 				      ((last_mem - 1) & 0xfff00000) >> 16);
+ 	}
+ 
+ 	if (last_mem_pref) {
+ 		last_mem_pref = ALIGN(last_mem_pref, SZ_1M);
+-		pr_debug("bridge P limit at 0x%08x\n", last_mem_pref);
++		pr_debug("bridge P limit at %pa\n", &last_mem_pref);
+ 		pci_write_config_word(dev, PCI_PREF_MEMORY_LIMIT,
+ 				      ((last_mem_pref - 1) & 0xfff00000) >> 16);
+ 	}
+ 
+ 	if (last_io) {
+ 		last_io = ALIGN(last_io, SZ_4K);
+-		pr_debug("bridge IO limit at 0x%08x\n", last_io);
++		pr_debug("bridge IO limit at %pa\n", &last_io);
+ 		pci_write_config_byte(dev, PCI_IO_LIMIT,
+ 				((last_io - 1) & 0x0000f000) >> 8);
+ 		pci_write_config_word(dev, PCI_IO_LIMIT_UPPER16,
+@@ -366,8 +366,8 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
+ 	unsigned char cmd, tmp, hdr_type, is_multi = 0;
+ 
+ 	pr_debug("pci_scan_bus for bus %d\n", bus->number);
+-	pr_debug(" last_io = 0x%08x, last_mem = 0x%08x, last_mem_pref = 0x%08x\n",
+-	    last_io, last_mem, last_mem_pref);
++	pr_debug(" last_io = %pa, last_mem = %pa, last_mem_pref = %pa\n",
++	    &last_io, &last_mem, &last_mem_pref);
+ 
+ 	max = bus->secondary;
+ 
 -- 
 2.20.1
 
