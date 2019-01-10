@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ghSQ4-0003X8-G7
- for barebox@lists.infradead.org; Thu, 10 Jan 2019 04:58:34 +0000
-Received: by mail-pl1-x643.google.com with SMTP id a14so4634104plm.12
- for <barebox@lists.infradead.org>; Wed, 09 Jan 2019 20:58:16 -0800 (PST)
+ id 1ghSQ5-0003YD-M3
+ for barebox@lists.infradead.org; Thu, 10 Jan 2019 04:58:35 +0000
+Received: by mail-pf1-x441.google.com with SMTP id r136so4746621pfc.6
+ for <barebox@lists.infradead.org>; Wed, 09 Jan 2019 20:58:17 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  9 Jan 2019 20:57:36 -0800
-Message-Id: <20190110045739.19399-19-andrew.smirnov@gmail.com>
+Date: Wed,  9 Jan 2019 20:57:37 -0800
+Message-Id: <20190110045739.19399-20-andrew.smirnov@gmail.com>
 In-Reply-To: <20190110045739.19399-1-andrew.smirnov@gmail.com>
 References: <20190110045739.19399-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,43 +23,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/21] PCI: Simplify alloc_pci_dev()
+Subject: [PATCH 19/21] PCI: Assume 1:1 mapping if .res_start callback is NULL
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Use xzalloc() to allocate PCI device and drop OOM checking code.
+Save a bit of no-op boilerplate by converting pci_iomap() to treat
+absense of .res_start callback as an indicator that 1:1 mapping is
+being used.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/pci/pci-tegra.c            | 6 ------
+ drivers/pci/pci_iomap.c            | 6 +++++-
+ drivers/pci/pcie-designware-host.c | 6 ------
+ 3 files changed, 5 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 12f438d3ff..8a0d7fb03b 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -115,10 +115,7 @@ static struct pci_dev *alloc_pci_dev(void)
- {
- 	struct pci_dev *dev;
+diff --git a/drivers/pci/pci-tegra.c b/drivers/pci/pci-tegra.c
+index b6ccf8e5b5..7c9dd80c00 100644
+--- a/drivers/pci/pci-tegra.c
++++ b/drivers/pci/pci-tegra.c
+@@ -366,15 +366,9 @@ static int tegra_pcie_write_conf(struct pci_bus *bus, unsigned int devfn,
+ 	return PCIBIOS_SUCCESSFUL;
+ }
  
--	dev = kzalloc(sizeof(struct pci_dev), GFP_KERNEL);
--	if (!dev)
--		return NULL;
+-static int tegra_pcie_res_start(struct pci_bus *bus, resource_size_t res_addr)
+-{
+-	return res_addr;
+-}
 -
-+	dev = xzalloc(sizeof(struct pci_dev));
- 	INIT_LIST_HEAD(&dev->bus_list);
+ static struct pci_ops tegra_pcie_ops = {
+ 	.read = tegra_pcie_read_conf,
+ 	.write = tegra_pcie_write_conf,
+-	.res_start = tegra_pcie_res_start,
+ };
  
- 	return dev;
-@@ -364,9 +361,6 @@ static unsigned int pci_scan_bus(struct pci_bus *bus)
- 			continue;
+ static unsigned long tegra_pcie_port_get_pex_ctrl(struct tegra_pcie_port *port)
+diff --git a/drivers/pci/pci_iomap.c b/drivers/pci/pci_iomap.c
+index 2c58c0c0f9..2f06e60e38 100644
+--- a/drivers/pci/pci_iomap.c
++++ b/drivers/pci/pci_iomap.c
+@@ -3,6 +3,7 @@
+  *
+  * (C) Copyright 2004 Linus Torvalds
+  */
++#include <common.h>
+ #include <linux/pci.h>
+ #include <io.h>
  
- 		dev = alloc_pci_dev();
--		if (!dev)
--			return 0;
+@@ -24,6 +25,9 @@ void __iomem *pci_iomap(struct pci_dev *dev, int bar)
+ 	struct pci_bus *bus = dev->bus;
+ 	resource_size_t start = pci_resource_start(dev, bar);
+ 
+-	return (void *)bus->host->pci_ops->res_start(bus, start);
++	if (bus->host->pci_ops->res_start)
++		start = bus->host->pci_ops->res_start(bus, start);
++
++	return IOMEM(start);
+ }
+ EXPORT_SYMBOL(pci_iomap);
+diff --git a/drivers/pci/pcie-designware-host.c b/drivers/pci/pcie-designware-host.c
+index 6cc4b93a31..af37a502d8 100644
+--- a/drivers/pci/pcie-designware-host.c
++++ b/drivers/pci/pcie-designware-host.c
+@@ -335,15 +335,9 @@ static int dw_pcie_wr_conf(struct pci_bus *bus, u32 devfn,
+ 	return ret;
+ }
+ 
+-static int dw_pcie_res_start(struct pci_bus *bus, resource_size_t res_addr)
+-{
+-	return res_addr;
+-}
 -
- 		dev->bus = bus;
- 		dev->devfn = devfn;
- 		dev->vendor = l & 0xffff;
+ static struct pci_ops dw_pcie_ops = {
+ 	.read = dw_pcie_rd_conf,
+ 	.write = dw_pcie_wr_conf,
+-	.res_start = dw_pcie_res_start,
+ };
+ 
+ static u8 dw_pcie_iatu_unroll_enabled(struct dw_pcie *pci)
 -- 
 2.20.1
 
