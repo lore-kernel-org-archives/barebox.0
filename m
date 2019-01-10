@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ghSQ0-0003S6-GF
- for barebox@lists.infradead.org; Thu, 10 Jan 2019 04:58:23 +0000
-Received: by mail-pg1-x544.google.com with SMTP id j10so4331200pga.1
- for <barebox@lists.infradead.org>; Wed, 09 Jan 2019 20:58:12 -0800 (PST)
+ id 1ghSQ1-0003To-MP
+ for barebox@lists.infradead.org; Thu, 10 Jan 2019 04:58:28 +0000
+Received: by mail-pf1-x443.google.com with SMTP id r136so4746560pfc.6
+ for <barebox@lists.infradead.org>; Wed, 09 Jan 2019 20:58:13 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  9 Jan 2019 20:57:33 -0800
-Message-Id: <20190110045739.19399-16-andrew.smirnov@gmail.com>
+Date: Wed,  9 Jan 2019 20:57:34 -0800
+Message-Id: <20190110045739.19399-17-andrew.smirnov@gmail.com>
 In-Reply-To: <20190110045739.19399-1-andrew.smirnov@gmail.com>
 References: <20190110045739.19399-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,31 +23,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/21] PCI: Drop "name" from struct pci_bus
+Subject: [PATCH 16/21] PCI: Drop "ops" from struct pci_bus
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-This field is not used by Barebox. Remove it. No functional change
-intended.
+Drop "ops" from struct pci_bus, since the same struct can be accessed
+via host->pci_ops. No functional change intended.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- include/linux/pci.h | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/pci/pci.c       | 6 ++----
+ drivers/pci/pci_iomap.c | 2 +-
+ include/linux/pci.h     | 2 --
+ 3 files changed, 3 insertions(+), 7 deletions(-)
 
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 78c0daffcd..c34b918453 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -46,7 +46,6 @@ void register_pci_controller(struct pci_controller *hose)
+ 	hose->bus = bus;
+ 	bus->parent = hose->parent;
+ 	bus->host = hose;
+-	bus->ops = hose->pci_ops;
+ 	bus->resource[PCI_BUS_RESOURCE_MEM] = hose->mem_resource;
+ 	bus->resource[PCI_BUS_RESOURCE_MEM_PREF] = hose->mem_pref_resource;
+ 	bus->resource[PCI_BUS_RESOURCE_IO] = hose->io_resource;
+@@ -83,7 +82,7 @@ int pci_bus_read_config_##size \
+ 	int res;							\
+ 	u32 data = 0;							\
+ 	if (PCI_##size##_BAD) return PCIBIOS_BAD_REGISTER_NUMBER;	\
+-	res = bus->ops->read(bus, devfn, pos, len, &data);		\
++	res = bus->host->pci_ops->read(bus, devfn, pos, len, &data);	\
+ 	*value = (type)data;						\
+ 	return res;							\
+ }
+@@ -94,7 +93,7 @@ int pci_bus_write_config_##size \
+ {									\
+ 	int res;							\
+ 	if (PCI_##size##_BAD) return PCIBIOS_BAD_REGISTER_NUMBER;	\
+-	res = bus->ops->write(bus, devfn, pos, len, value);		\
++	res = bus->host->pci_ops->write(bus, devfn, pos, len, value);	\
+ 	return res;							\
+ }
+ 
+@@ -418,7 +417,6 @@ static unsigned int pci_scan_bus(struct pci_bus *bus)
+ 			child_bus = pci_alloc_bus();
+ 			/* inherit parent properties */
+ 			child_bus->host = bus->host;
+-			child_bus->ops = bus->host->pci_ops;
+ 			child_bus->parent_bus = bus;
+ 			child_bus->resource[PCI_BUS_RESOURCE_MEM] =
+ 				bus->resource[PCI_BUS_RESOURCE_MEM];
+diff --git a/drivers/pci/pci_iomap.c b/drivers/pci/pci_iomap.c
+index a56f61dc1a..2c58c0c0f9 100644
+--- a/drivers/pci/pci_iomap.c
++++ b/drivers/pci/pci_iomap.c
+@@ -24,6 +24,6 @@ void __iomem *pci_iomap(struct pci_dev *dev, int bar)
+ 	struct pci_bus *bus = dev->bus;
+ 	resource_size_t start = pci_resource_start(dev, bar);
+ 
+-	return (void *)bus->ops->res_start(bus, start);
++	return (void *)bus->host->pci_ops->res_start(bus, start);
+ }
+ EXPORT_SYMBOL(pci_iomap);
 diff --git a/include/linux/pci.h b/include/linux/pci.h
-index d7a0e2babc..a519a9dc81 100644
+index a519a9dc81..b609a1330b 100644
 --- a/include/linux/pci.h
 +++ b/include/linux/pci.h
-@@ -137,8 +137,6 @@ struct pci_bus {
+@@ -131,8 +131,6 @@ struct pci_bus {
+ 	struct list_head devices;	/* list of devices on this bus */
+ 	struct resource *resource[PCI_BRIDGE_RESOURCE_NUM];
+ 
+-	struct pci_ops	*ops;		/* configuration access functions */
+-
+ 	unsigned char	number;		/* bus number */
  	unsigned char	primary;	/* number of primary bridge */
  	unsigned char	secondary;	/* number of secondary bridge */
- 	unsigned char	subordinate;	/* max number of subordinate buses */
--
--	char		name[48];
- };
- 
- /* Low-level architecture-dependent routines */
 -- 
 2.20.1
 
