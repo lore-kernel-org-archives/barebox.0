@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ghSQ6-0003a6-TZ
- for barebox@lists.infradead.org; Thu, 10 Jan 2019 04:58:41 +0000
-Received: by mail-pl1-x644.google.com with SMTP id z23so4669459plo.0
- for <barebox@lists.infradead.org>; Wed, 09 Jan 2019 20:58:18 -0800 (PST)
+ id 1ghSPo-0003Cb-79
+ for barebox@lists.infradead.org; Thu, 10 Jan 2019 04:58:01 +0000
+Received: by mail-pf1-x444.google.com with SMTP id y126so4759497pfb.4
+ for <barebox@lists.infradead.org>; Wed, 09 Jan 2019 20:58:00 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  9 Jan 2019 20:57:38 -0800
-Message-Id: <20190110045739.19399-21-andrew.smirnov@gmail.com>
+Date: Wed,  9 Jan 2019 20:57:23 -0800
+Message-Id: <20190110045739.19399-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20190110045739.19399-1-andrew.smirnov@gmail.com>
 References: <20190110045739.19399-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,68 +23,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 20/21] PCI: Convert ->res_start() to return resource_size_t
+Subject: [PATCH 05/21] PCI: Convert postscan_setup_bridge() to use a loop
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On 64-bit machines int doesn't cover full address space, so convert
-.res_start to both accept resource_size_t as a parameter and return it
-as result.
+Simplify postscan_setup_bridge() by folding limit setting code into a
+loop. No functional change intended.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/mips/mach-malta/pci.c | 3 ++-
- drivers/pci/pci-mvebu.c    | 6 ++++--
- include/linux/pci.h        | 2 +-
- 3 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/pci/pci.c | 26 +++++++-------------------
+ 1 file changed, 7 insertions(+), 19 deletions(-)
 
-diff --git a/arch/mips/mach-malta/pci.c b/arch/mips/mach-malta/pci.c
-index 47c0e228a7..4561123d22 100644
---- a/arch/mips/mach-malta/pci.c
-+++ b/arch/mips/mach-malta/pci.c
-@@ -131,7 +131,8 @@ static int gt64xxx_pci0_pcibios_write(struct pci_bus *bus, unsigned int devfn,
- }
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 02b7f091f7..b5e13e5dbc 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -330,28 +330,16 @@ static void prescan_setup_bridge(struct pci_dev *dev)
  
- /* function returns memory address for begin of pci resource */
--static int gt64xxx_res_start(struct pci_bus *bus, resource_size_t res_addr)
-+static resource_size_t gt64xxx_res_start(struct pci_bus *bus,
-+					 resource_size_t res_addr)
+ static void postscan_setup_bridge(struct pci_dev *dev)
  {
- 	return KSEG0ADDR(res_addr);
++	int r;
++
+ 	/* limit subordinate to last used bus number */
+ 	pci_write_config_byte(dev, PCI_SUBORDINATE_BUS, last[PCI_BUS_RESOURCE_BUSN] - 1);
+ 
+-	if (last[PCI_BUS_RESOURCE_MEM]) {
+-		last[PCI_BUS_RESOURCE_MEM] = ALIGN(last[PCI_BUS_RESOURCE_MEM], SZ_1M);
+-		pr_debug("bridge NP limit at %pa\n", &last[PCI_BUS_RESOURCE_MEM]);
+-		pci_set_limit(dev, PCI_BUS_RESOURCE_MEM,
+-			      last[PCI_BUS_RESOURCE_MEM] - 1);
+-	}
+-
+-	if (last[PCI_BUS_RESOURCE_MEM_PREF]) {
+-		last[PCI_BUS_RESOURCE_MEM_PREF] = ALIGN(last[PCI_BUS_RESOURCE_MEM_PREF], SZ_1M);
+-		pr_debug("bridge P limit at %pa\n", &last[PCI_BUS_RESOURCE_MEM_PREF]);
+-		pci_set_limit(dev, PCI_BUS_RESOURCE_MEM_PREF,
+-			      last[PCI_BUS_RESOURCE_MEM_PREF] - 1);
+-	}
+-
+-	if (last[PCI_BUS_RESOURCE_IO]) {
+-		last[PCI_BUS_RESOURCE_IO] = ALIGN(last[PCI_BUS_RESOURCE_IO], SZ_4K);
+-		pr_debug("bridge IO limit at %pa\n", &last[PCI_BUS_RESOURCE_IO]);
+-		pci_set_limit(dev, PCI_BUS_RESOURCE_IO,
+-			      last[PCI_BUS_RESOURCE_IO] - 1);
++	for (r = PCI_BUS_RESOURCE_IO; r <= PCI_BUS_RESOURCE_MEM_PREF; r++) {
++		if (last[r]) {
++			last[r] = ALIGN(last[r], pci_resource_to_alignment(r));
++			pci_set_limit(dev, r, last[r] - 1);
++		}
+ 	}
  }
-diff --git a/drivers/pci/pci-mvebu.c b/drivers/pci/pci-mvebu.c
-index 1c20f91544..c17ef3898b 100644
---- a/drivers/pci/pci-mvebu.c
-+++ b/drivers/pci/pci-mvebu.c
-@@ -145,11 +145,13 @@ static int mvebu_pcie_indirect_wr_conf(struct pci_bus *bus,
- 	return PCIBIOS_SUCCESSFUL;
- }
  
--static int mvebu_pcie_res_start(struct pci_bus *bus, resource_size_t res_addr)
-+static resource_size_t mvebu_pcie_res_start(struct pci_bus *bus,
-+					    resource_size_t res_addr)
- {
- 	struct mvebu_pcie *pcie = to_pcie(bus->host);
- 
--	return (int)pcie->membase + (res_addr & (resource_size(&pcie->mem)-1));
-+	return (resource_size_t)pcie->membase +
-+		(res_addr & (resource_size(&pcie->mem) - 1));
- }
- 
- static struct pci_ops mvebu_pcie_indirect_ops = {
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 2c7acbdda9..c00a866a48 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -143,7 +143,7 @@ struct pci_ops {
- 	int (*write)(struct pci_bus *bus, unsigned int devfn, int where, int size, u32 val);
- 
- 	/* return memory address for pci resource */
--	int (*res_start)(struct pci_bus *bus, resource_size_t res_addr);
-+	resource_size_t (*res_start)(struct pci_bus *bus, resource_size_t res_addr);
- };
- 
- extern struct pci_ops *pci_ops;
 -- 
 2.20.1
 
