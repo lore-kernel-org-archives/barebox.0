@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ghSPp-0003DF-EW
- for barebox@lists.infradead.org; Thu, 10 Jan 2019 04:58:05 +0000
-Received: by mail-pg1-x541.google.com with SMTP id m1so4315799pgq.8
- for <barebox@lists.infradead.org>; Wed, 09 Jan 2019 20:58:01 -0800 (PST)
+ id 1ghSPq-0003F2-ST
+ for barebox@lists.infradead.org; Thu, 10 Jan 2019 04:58:07 +0000
+Received: by mail-pl1-x642.google.com with SMTP id u18so4651989plq.7
+ for <barebox@lists.infradead.org>; Wed, 09 Jan 2019 20:58:02 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  9 Jan 2019 20:57:24 -0800
-Message-Id: <20190110045739.19399-7-andrew.smirnov@gmail.com>
+Date: Wed,  9 Jan 2019 20:57:25 -0800
+Message-Id: <20190110045739.19399-8-andrew.smirnov@gmail.com>
 In-Reply-To: <20190110045739.19399-1-andrew.smirnov@gmail.com>
 References: <20190110045739.19399-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,12 +23,12 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/21] PCI: Replace magic number in setup_device()
+Subject: [PATCH 07/21] PCI: Remove superfluous parens in setup_device()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-User PCI_BASE_ADDRESS_SPACE_IO instead of explicit magic number. No
-functional change intended.
+Remove superfluous parens in setup_device(). No functional change
+intended.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
@@ -36,18 +36,18 @@ Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index b5e13e5dbc..341af5212f 100644
+index 341af5212f..c9b6e840b2 100644
 --- a/drivers/pci/pci.c
 +++ b/drivers/pci/pci.c
-@@ -179,7 +179,7 @@ static void setup_device(struct pci_dev *dev, int max_bar)
- 			continue;
- 		}
+@@ -242,7 +242,7 @@ static void setup_device(struct pci_dev *dev, int max_bar)
+ 		dev->resource[bar].start = last_addr;
+ 		dev->resource[bar].end = last_addr + size - 1;
  
--		if (mask & 0x01) { /* IO */
-+		if (mask & PCI_BASE_ADDRESS_SPACE_IO) { /* IO */
- 			size = pci_size(orig, mask, 0xfffffffe);
- 			if (!size) {
- 				pr_debug("pbar%d bad IO mask\n", bar);
+-		if ((mask & PCI_BASE_ADDRESS_MEM_TYPE_64)) {
++		if (mask & PCI_BASE_ADDRESS_MEM_TYPE_64) {
+ 			dev->resource[bar].flags |= IORESOURCE_MEM_64;
+ 			pci_write_config_dword(dev,
+ 			       PCI_BASE_ADDRESS_1 + bar * 4, 0);
 -- 
 2.20.1
 
