@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ghL4Y-0003et-My
- for barebox@lists.infradead.org; Wed, 09 Jan 2019 21:07:37 +0000
-Date: Wed, 9 Jan 2019 22:07:25 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20190109210725.GA9601@ravnborg.org>
+ id 1ghVr9-00012W-4q
+ for barebox@lists.infradead.org; Thu, 10 Jan 2019 08:38:28 +0000
+Date: Thu, 10 Jan 2019 09:38:25 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190110083825.fgez6zfmfwyqafw2@pengutronix.de>
 References: <20190109202754.29784-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -25,8 +25,6 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [RFC] ARM: zynq: fix "'IO_SPACE_LIMIT' redefined" warning
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
-
-Hi Anthony.
 
 On Wed, Jan 09, 2019 at 11:27:54PM +0300, Antony Pavlov wrote:
 > The patch fixes the following compiler's warning:
@@ -56,17 +54,18 @@ On Wed, Jan 09, 2019 at 11:27:54PM +0300, Antony Pavlov wrote:
 >  
 >  #include <asm/system.h>
 > -#include <asm-generic/io.h>
->  #include <common.h>
->  #include <init.h>
->  #include <restart.h>
 
-This patch rely on other headers to pull in <asm/io.h>.
+asm-generic/io.h shouldn't be included directly, but only from asm/io.h
+if it decides to do so. io.h includes asm/io.h, so this is the one that
+should be included instead.
 
-As zynq.c uses a lot of functions from <asm/io.h> then 
-using an explicit include would be better.
-Just my opinion, you could argue this is bikeshedding.
+Sascha
 
-	Sam
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
