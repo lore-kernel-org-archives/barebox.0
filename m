@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gj5JX-0006yf-BI
- for barebox@lists.infradead.org; Mon, 14 Jan 2019 16:42:20 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
- helo=dude02.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1gj5JT-0007Zj-UH
- for barebox@lists.infradead.org; Mon, 14 Jan 2019 17:42:11 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 14 Jan 2019 17:42:04 +0100
-Message-Id: <20190114164211.10871-1-l.stach@pengutronix.de>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1ghcgn-00019E-Rv
+ for barebox@lists.infradead.org; Thu, 10 Jan 2019 15:56:15 +0000
+References: <20190108102412.10553-1-u.kleine-koenig@pengutronix.de>
+From: =?UTF-8?Q?Stefan_Riedm=c3=bcller?= <s.riedmueller@phytec.de>
+Message-ID: <44c7edc5-ad92-eaa2-a3b9-20d7748331ec@phytec.de>
+Date: Thu, 10 Jan 2019 16:56:10 +0100
 MIME-Version: 1.0
+In-Reply-To: <20190108102412.10553-1-u.kleine-koenig@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,36 +18,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/8] clk: add missing list.h include
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH RFC] imx6ul-phytec-phycore-som: don't use
+ fsl,no-blockmark-swap for the NAND
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>, barebox@lists.infradead.org
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- include/linux/clk.h | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 26da1114e85a..494221a43070 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -197,6 +197,8 @@ static inline int clk_set_rate(struct clk *clk, unsigned long rate)
- 
- #ifdef CONFIG_COMMON_CLK
- 
-+#include <linux/list.h>
-+
- #define CLK_SET_RATE_PARENT     (1 << 0) /* propagate rate change up one level */
- /* parents need enable during gate/ungate, set rate and re-parent */
- #define CLK_OPS_PARENT_ENABLE   (1 << 12)
--- 
-2.20.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgVXdlLAoKT24gMDguMDEuMTkgMTE6MjQsIFV3ZSBLbGVpbmUtS8O2bmlnIHdyb3RlOgo+IGJh
+cmVib3ggZG9lc24ndCBob25vciB0aGF0IHByb3BlcnR5IHdoaWNoIHlpZWxkcyB0byBpbmNvbnNp
+dGVuY2llcwo+IGJldHdlZW4gTGludXggYW5kIGJhcmVib3ggYWZ0ZXIgZm9yIGV4YW1wbGUgZmls
+bGluZyBhbiBVQkkgd2l0aCBhIGZpbGUKPiBzeXN0ZW0gd2l0aCBiYXJlYm94IGFuZCB0aGVuIHRy
+eWluZyB0byBtb3VudCB0aGF0IGZyb20gTGludXguCj4gCj4gTm90ZSB0aGlzIGlzIGFuIGludGVy
+cnVwdGl2ZSBjaGFuZ2UgYXMgaXQgcmVxdWlyZXMgdG8gcmV3cml0ZSB0aGUgZmxhc2gKPiB0byBt
+YWtlIGl0IHdvcmtpbmcgd2l0aCBMaW51eCBhZ2Fpbi4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBVd2Ug
+S2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgo+IC0tLQo+IEhl
+bGxvLAo+IAo+IEkgd29uZGVyIHdoeSBQaHl0ZWMgY2hvc2UgdG8gdXNlIHRoaXMgY29uZmlndXJh
+dGlvbi4gV2FzIHRoaXMganVzdAo+IGNvcGllZCBmcm9tIGFub3RoZXIgYm9hcmQ/CgpJIGhhdmUg
+dG8gYWRtaXQsIEkgZG9uJ3Qga25vdyB3aHkgdGhpcyBjb25maWd1cmF0aW9uIHdhcyBhZGRlZC4g
+SSBndWVzcyBpdCB3YXMgCmFkZGVkIHVuaW50ZW50aW9uYWxseSBzaW5jZSB3ZSBkbyBub3QgdXNl
+IHRoaXMgY29uZmlndXJhdGlvbiBpbiB0aGUga2VybmVsLgoKU28gZnJvbSBteSBzaWRlIHRoZXJl
+IGlzIG5vIG9iamVjdGlvbiB0byB0aGlzIHBhdGNoLgoKVGhhbmtzIGZvciBzcG90aW5nIHRoaXMg
+YW5kIGJlc3QgcmVnYXJkcwpTdGVmYW4KCj4gCj4gQmVzdCByZWdhcmRzCj4gVXdlCj4gCj4gICBh
+cmNoL2FybS9kdHMvaW14NnVsLXBoeXRlYy1waHljb3JlLXNvbS5kdHNpIHwgMSAtCj4gICAxIGZp
+bGUgY2hhbmdlZCwgMSBkZWxldGlvbigtKQo+IAo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMv
+aW14NnVsLXBoeXRlYy1waHljb3JlLXNvbS5kdHNpIGIvYXJjaC9hcm0vZHRzL2lteDZ1bC1waHl0
+ZWMtcGh5Y29yZS1zb20uZHRzaQo+IGluZGV4IGQ4MjlmZGQ2ZmIyOS4uMzk4NTQ2ZDdiOTJlIDEw
+MDY0NAo+IC0tLSBhL2FyY2gvYXJtL2R0cy9pbXg2dWwtcGh5dGVjLXBoeWNvcmUtc29tLmR0c2kK
+PiArKysgYi9hcmNoL2FybS9kdHMvaW14NnVsLXBoeXRlYy1waHljb3JlLXNvbS5kdHNpCj4gQEAg
+LTQ5LDcgKzQ5LDYgQEAKPiAgIAlwaW5jdHJsLW5hbWVzID0gImRlZmF1bHQiOwo+ICAgCXBpbmN0
+cmwtMCA9IDwmcGluY3RybF9ncG1pX25hbmQ+Owo+ICAgCW5hbmQtb24tZmxhc2gtYmJ0Owo+IC0J
+ZnNsLG5vLWJsb2NrbWFyay1zd2FwOwo+ICAgCXN0YXR1cyA9ICJkaXNhYmxlZCI7Cj4gICAKPiAg
+IAkjYWRkcmVzcy1jZWxscyA9IDwxPjsKPiAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
+cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
+cmVib3gK
