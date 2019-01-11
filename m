@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ghs5z-0003fG-4i
- for barebox@lists.infradead.org; Fri, 11 Jan 2019 08:23:17 +0000
-Date: Fri, 11 Jan 2019 09:23:11 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20190111082311.pvjibjdkpfvvb2k4@pengutronix.de>
-References: <20190111104541.7dec78587e650eb199e81cf1@gmail.com>
+ id 1ghuae-0005vv-OH
+ for barebox@lists.infradead.org; Fri, 11 Jan 2019 11:03:06 +0000
+Date: Fri, 11 Jan 2019 12:03:03 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190111110302.gioxtjns6w5tfzqu@pengutronix.de>
+References: <20190108102412.10553-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190111104541.7dec78587e650eb199e81cf1@gmail.com>
+In-Reply-To: <20190108102412.10553-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,78 +18,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox: plathome-openblocks-a6/kwbimage.cfg is missed
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@collabora.com>
+Subject: Re: [PATCH RFC] imx6ul-phytec-phycore-som: don't use fsl,
+ no-blockmark-swap for the NAND
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org, Stefan Riedmueller <s.riedmueller@phytec.de>
 
-[fixed e-mail address of Ezequiel, added Sebastian to Cc:]
-
-Hello,
-
-On Fri, Jan 11, 2019 at 10:45:41AM +0300, Antony Pavlov wrote:
-> Hi!
+On Tue, Jan 08, 2019 at 11:24:12AM +0100, Uwe Kleine-K=F6nig wrote:
+> barebox doesn't honor that property which yields to inconsitencies
+> between Linux and barebox after for example filling an UBI with a file
+> system with barebox and then trying to mount that from Linux.
 > =
 
-> It looks like the file arch/arm/boards/plathome-openblocks-a6/kwbimage.cf=
-g is missed.
+> Note this is an interruptive change as it requires to rewrite the flash
+> to make it working with Linux again.
 > =
 
-> Here is my build log quotes:
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+> Hello,
 > =
 
->   git clone git://git.pengutronix.de/git/barebox.git
->   cd barebox
->   git describe
->   v2018.12.0-140-g64fc4ac1b
-> =
+> I wonder why Phytec chose to use this configuration. Was this just
+> copied from another board?
 
->   touch arch/arm/boards/globalscale-mirabox/binary.0
->   touch arch/arm/boards/lenovo-ix4-300d/binary.0
->   touch arch/arm/boards/marvell-armada-xp-gp/binary.0
->   touch arch/arm/boards/netgear-rn104/binary.0
->   touch arch/arm/boards/plathome-openblocks-ax3/binary.0
-> =
+Applied, thanks
 
->   CROSS_COMPILE=3Darm-linux-gnueabi- ./MAKEALL -a arm mvebu_defconfig
-> =
+Sascha
 
->   ...
-> =
-
->   Could not open input file /home/builduser/barebox/arch/arm/boards/plath=
-ome-openblocks-a6/kwbimage.cfg
-
-That problem goes back to v2014.08.0-242-g906afb533186 ("ARM: mvebu: Add
-Plat'home's Kirkwood Openblocks A6 board support")
-
-I didn't find vendor U-Boot sources for that machine, also mainline
-U-Boot doesn't seem to support it.
-
-According to the dts/src/arm/kirkwood-openblocks_a6.dts
-that device has an "uboot" partition in NAND. So I suggest:
-
-diff --git a/arch/arm/boards/plathome-openblocks-a6/kwbimage.cfg b/arch/arm=
-/boards/plathome-openblocks-a6/kwbimage.cfg
-new file mode 100644
-index 000000000000..ba3011736fb7
---- /dev/null
-+++ b/arch/arm/boards/plathome-openblocks-a6/kwbimage.cfg
-@@ -0,0 +1,3 @@
-+VERSION 1
-+BOOT_FROM nand
-+BINARY ./binary.0 0000005b 00000068
-
-Best regards
-Uwe
 
 -- =
 
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
