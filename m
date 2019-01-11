@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ghukY-0001rI-Ly
- for barebox@lists.infradead.org; Fri, 11 Jan 2019 11:13:20 +0000
-Date: Fri, 11 Jan 2019 12:13:16 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190111111316.i4sbti24awp2in3e@pengutronix.de>
-References: <1b58b623-806b-7e15-7419-7fdd97a85f2a@data-modul.com>
+ id 1ghv6U-0002dL-HN
+ for barebox@lists.infradead.org; Fri, 11 Jan 2019 11:36:00 +0000
+Date: Fri, 11 Jan 2019 12:35:54 +0100
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20190111113554.2zck5xq76ztn6xrb@pengutronix.de>
+References: <20181210155511.1376-1-rhi@pengutronix.de>
+ <20181213065758.i6pujqsmk7ezuw3i@pengutronix.de>
+ <20181214101325.s7skmbskin2qvvfv@pengutronix.de>
+ <20181217094515.yc3bs4mu74gnog77@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1b58b623-806b-7e15-7419-7fdd97a85f2a@data-modul.com>
+In-Reply-To: <20181217094515.yc3bs4mu74gnog77@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,39 +21,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: build barebox for imx8mqevk
-To: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/3] Documentation: i.MX: improve wording, add markup and
+ missing articles
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox Mailing List <barebox@lists.infradead.org>
 
-SGksCgpPbiBGcmksIEphbiAxMSwgMjAxOSBhdCAwNzo1MzoxNUFNICswMDAwLCBZYXpkYW5pLCBS
-ZXloYW5laCB3cm90ZToKPiBIZWxsbyBldmVyeW9uZSwKPiAKPiBJIGFtIGdvaW5nIHRvIGJ1aWxk
-IEJhcmVib3ggZm9yIG15IGlteDhtcSBldmFsdWF0aW9uIGtpdCBhbmQgaW4gdGhpcyBwcm9jZXNz
-LCBJCj4gaGF2ZSBmYWNlZCBhIHByb2JsZW0uCj4gCj4gQXQgZmlyc3QsIEkgdXNlZCBhIDMyYml0
-LWFybXRvb2xjaGFpbihhcm0tcG9reS1saW51eC1nbnVlYWJpLWdjYyksIHdoaWNoIEkgaGF2ZQo+
-IHVzZWQgZm9yIGJ1aWxkaW5nIGJhcmVib3ggZm9yIGlteDYuLgo+ICQgbWFrZSBpbXhfdjhfZGVm
-Y29uZmlnCj4gJCBtYWtlCj4gCj4gVGhlbiBJIGdvdCB0aGlzIGVycm9yOgo+IGFybS1wb2t5LWxp
-bnV4LWdudWVhYmktZ2NjOiBlcnJvcjogdW5yZWNvZ25pemVkIGFyZ3VtZW50IGluIG9wdGlvbiDi
-gJgtbWFiaT1scDY04oCZCgpUaGlzIGNhbm5vdCB3b3JrLiBZb3UgbmVlZCBhIDY0Yml0IHRvb2xj
-aGFpbi4KCj4gCj4gCj4gVGhlbiwgSSB1c2VkIGEgNjRiaXQtYXJtLXRvb2xjaGFpbihhYXJjaDY0
-LXBva3ktbGludXgtZ2NjKS4KPiBXaGVuIEkgdHJ5IGFnYWluOgo+IAo+ICQgbWFrZSBpbXhfdjhf
-ZGVmY29uZmlnCj4gTWFrZWZpbGU6NDA1OiAvZGV2ZWxvcG1lbnQvZ2l0YXJjaGl2ZXMvYmFyZWJv
-eC9hcmNoL2FybTY0L01ha2VmaWxlOiBObyBzdWNoIGZpbGUKPiBvciBkaXJlY3RvcnkKPiBtYWtl
-OiAqKiogTm8gcnVsZSB0byBtYWtlIHRhcmdldAo+ICcvZGV2ZWxvcG1lbnQvZ2l0YXJjaGl2ZXMv
-YmFyZWJveC9hcmNoL2FybTY0L01ha2VmaWxlJy4gIFN0b3AuCj4gCj4gSSB3b3VsZCBhcHByZWNp
-YXRlIGlmIHlvdSBoZWxwIG1lLCBob3cgdG8gY29tcGlsZSBCYXJlYm94IGZvciBpbXg4LgoKWW91
-IGhhdmUgdG8gcGFzcyBBUkNIPWFybSBhcyBlbnZpcm9ubWVudCB2YXJpYWJsZS4gSXQgc2VlbXMg
-dGhhdCB5b3UKcGFzcyBBUkNIPWFybTY0LgoKSW4gYmFyZWJveCBib3RoIEFSTSAzMmJpdCBhbmQg
-NjRiaXQgYXJlIGhhbmRsZWQgdW5kZXIgYXJjaC9hcm0sCm5ldmVydGhlbGVzcyB5b3UgaGF2ZSB0
-byBwYXNzIGEgc3VpdGFibGUgdG9vbGNoYWluLgoKUmVnYXJkcywKICBTYXNjaGEKCi0tIApQZW5n
-dXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAg
-fCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhp
-bGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2Vy
-aWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2
-OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
-Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Mon, Dec 17, 2018 at 10:45:15AM +0100, Sascha Hauer wrote:
+> On Fri, Dec 14, 2018 at 11:13:25AM +0100, Roland Hieber wrote:
+> > Hmm. It still applies here cleanly on next. Do you want it on master
+> > instead? I don't mind having it in next, and if you applied this series
+> > on master instead, the conflicts with next will probably be the other
+> > way around for the next release.
+> 
+> Right, I found the conflicting patch and applied ontop of it.
+
+I can only find PATCH 1/1 on next, 2 and 3 seem to be lost? Do you want
+me to respin them?
+
+ - Roland
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
