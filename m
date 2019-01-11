@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ghueg-0007xR-W0
- for barebox@lists.infradead.org; Fri, 11 Jan 2019 11:07:19 +0000
-Date: Fri, 11 Jan 2019 12:07:13 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190111110713.44lzu7ulhxnnfcoz@pengutronix.de>
-References: <20190110164335.2970-1-p.zabel@pengutronix.de>
+ id 1ghmNa-00039Q-Sa
+ for barebox@lists.infradead.org; Fri, 11 Jan 2019 02:17:04 +0000
+Received: by mail-pg1-x541.google.com with SMTP id d72so5632232pga.9
+ for <barebox@lists.infradead.org>; Thu, 10 Jan 2019 18:17:02 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Thu, 10 Jan 2019 18:16:46 -0800
+Message-Id: <20190111021646.19503-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190110164335.2970-1-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: nitrogen6x: remove conflicting upstream SPI NOR
- partitions
-To: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: i.MX8MQ: Add alias for ECSPI1
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Thu, Jan 10, 2019 at 05:43:35PM +0100, Philipp Zabel wrote:
-> Since kernel commit 44eac6ef3779 ("ARM: dts: imx6qdl-nitrogen6x: Add SPI
-> NOR partitions"), included in barebox commit a9c5f6b9ec88 ("dts: update
-> to v4.16-rc1"), the upstream device tree contains partition definitions
-> that conflict with preexisting barebox partitions:
-> 
->   ERROR: m25p0.env: New partition m25p0.env conflicts with m25p0.barebox
->   ERROR: m25p0.splash: New partition m25p0.splash conflicts with m25p0.barebox
-> 
-> Remove them so we can add the larger barebox and barebox-environment
-> partitions that are used since commit 3fb70de496b3 ("ARM: i.MX: increase
-> barebox partition sizes").
-> 
-> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-> ---
->  arch/arm/dts/imx6qdl-nitrogen6x.dtsi | 3 +++
->  1 file changed, 3 insertions(+)
+Add alias for ECSPI1. Without it, the driver will fail to probe due
+to:
 
-Applied, thanks
+c6ded00cbd ("spi: i.MX: Fix wrong bus nubering with devicetree")
 
-Sascha
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/dts/imx8mq.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-
+diff --git a/arch/arm/dts/imx8mq.dtsi b/arch/arm/dts/imx8mq.dtsi
+index 33b2ca2e6c..8b6bdc6711 100644
+--- a/arch/arm/dts/imx8mq.dtsi
++++ b/arch/arm/dts/imx8mq.dtsi
+@@ -37,6 +37,7 @@
+ 		gpio4 = &gpio5;
+ 		mmc0 = &usdhc1;
+ 		mmc1 = &usdhc2;
++		spi0 = &ecspi1;
+ 	};
+ 
+ 	ckil: clk-ckil {
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
