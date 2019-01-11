@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1glqRR-0001Lz-Gw
- for barebox@lists.infradead.org; Tue, 22 Jan 2019 07:25:51 +0000
-Date: Tue, 22 Jan 2019 08:25:47 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190122072547.wbb2nsk6cldmmzvb@pengutronix.de>
-References: <20190121112732.23772-1-u.kleine-koenig@pengutronix.de>
+Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1ghtxc-0005ik-Ez
+ for barebox@lists.infradead.org; Fri, 11 Jan 2019 10:22:46 +0000
+Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
+ (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
+ id S23992363AbfAKKWjXIN7P (ORCPT
+ <rfc822;barebox@lists.infradead.org>);
+ Fri, 11 Jan 2019 11:22:39 +0100
+Date: Fri, 11 Jan 2019 11:22:35 +0100
+From: Ladislav Michl <ladis@linux-mips.org>
+Message-ID: <20190111102235.GA3464@lenoch>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190121112732.23772-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,44 +21,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 1/3] fs/nfs: don't try to set nfs error code from
- mount rpc call
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: dfu: Does is work for anybody with dfu-util 0.9?
+To: barebox@lists.infradead.org
 
-On Mon, Jan 21, 2019 at 12:27:30PM +0100, Uwe Kleine-K=F6nig wrote:
-> A packet from a mount rpc call doesn't have an NFS error field, so don't
-> try to access this.
-> =
+Hi,
 
-> In the case of the MOUNT_UMOUNT procedure the reply package is short
-> such that accessing the u32 after the rpc_reply structure is already
-> after the end of the packet. Apart from the access to out-of-packet data
-> there is no harm because the wrongly read value is unused. But make this
-> more explicit by only using nfserr if the call was an NFS request.
-> =
+I'm using DFU to download firmware to AT91 based device. Registered
+configurations are:
+dfu: register alt0(bootstrap) with device /dev/dataflash0.at91bootstrap
+dfu: register alt1(bootloader) with device /dev/dataflash0.barebox
+dfu: register alt2(system) with device /dev/nand0.bb
+So with the bit of luck even bootstrap is upgradable using DFU, however
+dfu-util refuses doing anything, bailing out here on dfu_root->next
+not being NULL:
 
-> Fixes: 9ede56ad2476 ("fs: Add NFS support")
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  fs/nfs.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+	if (dfu_root == NULL) {
+		errx(EX_IOERR, "No DFU capable USB device available");
+	} else if (dfu_root->next != NULL) {
+		/* We cannot safely support more than one DFU capable device
+		 * with same vendor/product ID, since during DFU we need to do
+		 * a USB bus reset, after which the target device will get a
+		 * new address */
+		errx(EX_IOERR, "More than one DFU capable USB device found! "
+		       "Try `--list' and specify the serial number "
+		       "or disconnect all but one device\n");
+	}
 
-Applied, thanks
+That comes from src/dfu_util.c:probe_configuration() which check for:
 
-Sascha
+	dfu_mode = (intf->bInterfaceProtocol == 2);
+	/* e.g. DSO Nano has bInterfaceProtocol 0 instead of 2 */
+	if (func_dfu.bcdDFUVersion == 0x011a && intf->bInterfaceProtocol == 0)
+		dfu_mode = 1;
 
+	/* LPC DFU bootloader has bInterfaceProtocol 1 (Runtime) instead of 2 */
+	if (desc->idVendor == 0x1fc9 && desc->idProduct == 0x000c && intf->bInterfaceProtocol == 1)
+		dfu_mode = 1;
 
--- =
+	/*
+	 * Old Jabra devices may have bInterfaceProtocol 0 instead of 2.
+	 * Also runtime PID and DFU pid are the same.
+	 * In DFU mode, the configuration descriptor has only 1 interface.
+	 */
+	if (desc->idVendor == 0x0b0e && intf->bInterfaceProtocol == 0 && cfg->bNumInterfaces == 1)
+		dfu_mode = 1;
 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+and as Barebox sets bInterfaceProtocol to one and it is not listed in
+exceptions individual devices are added for each alt settings.
+
+As a quick hack I'd suggest patch bellow, but I'm not sure whenever it will
+break someone's setup. DFU code would certainly welcome some
+polishing/improvements, but time does not permit that on my side for
+the time being :(
+
+diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
+index c2b3d481a..aee86906a 100644
+--- a/drivers/usb/gadget/dfu.c
++++ b/drivers/usb/gadget/dfu.c
+@@ -233,7 +233,7 @@ dfu_bind(struct usb_configuration *c, struct usb_function *f)
+ 		desc[i].bNumEndpoints	=	0;
+ 		desc[i].bInterfaceClass =	0xfe;
+ 		desc[i].bInterfaceSubClass =	1;
+-		desc[i].bInterfaceProtocol =	1;
++		desc[i].bInterfaceProtocol =	2;
+ 		desc[i].bAlternateSetting = i;
+ 		desc[i].iInterface = us[i + 1].id;
+ 		header[i] = (struct usb_descriptor_header *)&desc[i];
+-- 
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
