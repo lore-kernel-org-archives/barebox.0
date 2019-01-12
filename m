@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1giDdB-0006a2-FJ
- for barebox@lists.infradead.org; Sat, 12 Jan 2019 07:23:03 +0000
-Received: by mail-pg1-x544.google.com with SMTP id t13so7256911pgr.11
- for <barebox@lists.infradead.org>; Fri, 11 Jan 2019 23:22:57 -0800 (PST)
+ id 1giDdD-0006bX-54
+ for barebox@lists.infradead.org; Sat, 12 Jan 2019 07:23:05 +0000
+Received: by mail-pf1-x444.google.com with SMTP id i12so8001976pfo.7
+ for <barebox@lists.infradead.org>; Fri, 11 Jan 2019 23:22:58 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 11 Jan 2019 23:22:26 -0800
-Message-Id: <20190112072234.21878-9-andrew.smirnov@gmail.com>
+Date: Fri, 11 Jan 2019 23:22:27 -0800
+Message-Id: <20190112072234.21878-10-andrew.smirnov@gmail.com>
 In-Reply-To: <20190112072234.21878-1-andrew.smirnov@gmail.com>
 References: <20190112072234.21878-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,7 +23,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 08/16] PCI: Drop "slots" from struct pci_bus
+Subject: [PATCH v2 09/16] PCI: Drop "resources" from struct pci_bus
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
@@ -37,28 +37,28 @@ Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
  2 files changed, 2 deletions(-)
 
 diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index b0f5ac1b15..683f4e5540 100644
+index 683f4e5540..0c5a22fd59 100644
 --- a/drivers/pci/pci.c
 +++ b/drivers/pci/pci.c
 @@ -22,7 +22,6 @@ static struct pci_bus *pci_alloc_bus(void)
  	INIT_LIST_HEAD(&b->node);
  	INIT_LIST_HEAD(&b->children);
  	INIT_LIST_HEAD(&b->devices);
--	INIT_LIST_HEAD(&b->slots);
- 	INIT_LIST_HEAD(&b->resources);
+-	INIT_LIST_HEAD(&b->resources);
  
  	return b;
+ }
 diff --git a/include/linux/pci.h b/include/linux/pci.h
-index c8f91cdd96..28aa56343b 100644
+index 28aa56343b..d7a0e2babc 100644
 --- a/include/linux/pci.h
 +++ b/include/linux/pci.h
-@@ -129,7 +129,6 @@ struct pci_bus {
- 	struct list_head node;		/* node in list of buses */
+@@ -130,7 +130,6 @@ struct pci_bus {
  	struct list_head children;	/* list of child buses */
  	struct list_head devices;	/* list of devices on this bus */
--	struct list_head slots;		/* list of slots on this bus */
  	struct resource *resource[PCI_BRIDGE_RESOURCE_NUM];
- 	struct list_head resources;	/* address space routed to this bus */
+-	struct list_head resources;	/* address space routed to this bus */
+ 
+ 	struct pci_ops	*ops;		/* configuration access functions */
  
 -- 
 2.20.1
