@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1giEbP-0002BK-TC
- for barebox@lists.infradead.org; Sat, 12 Jan 2019 08:25:13 +0000
-Received: by mail-pf1-x443.google.com with SMTP id c73so8032878pfe.13
- for <barebox@lists.infradead.org>; Sat, 12 Jan 2019 00:25:11 -0800 (PST)
+ id 1giEbS-0002DK-Mz
+ for barebox@lists.infradead.org; Sat, 12 Jan 2019 08:25:16 +0000
+Received: by mail-pl1-x641.google.com with SMTP id gn14so7838238plb.10
+ for <barebox@lists.infradead.org>; Sat, 12 Jan 2019 00:25:14 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 12 Jan 2019 00:24:53 -0800
-Message-Id: <20190112082456.7441-4-andrew.smirnov@gmail.com>
+Date: Sat, 12 Jan 2019 00:24:55 -0800
+Message-Id: <20190112082456.7441-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20190112082456.7441-1-andrew.smirnov@gmail.com>
 References: <20190112082456.7441-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,37 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] crypto: digest: Replace 4096 with PAGE_SIZE
+Subject: [PATCH 5/6] commands: digest: Use MAX_LFS_FILESIZE instead of ~0
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Loff_t is a signed type, so ~0 is a negative number. While it works OK
+due to clamping/conversion to ulong when passed to
+digest_file_window(), it is better not to rely on that fact and use an
+appropriate constant.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- crypto/digest.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ commands/digest.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/crypto/digest.c b/crypto/digest.c
-index aff6d9876a..980a694915 100644
---- a/crypto/digest.c
-+++ b/crypto/digest.c
-@@ -232,7 +232,7 @@ int digest_file_window(struct digest *d, const char *filename,
+diff --git a/commands/digest.c b/commands/digest.c
+index 0edbbec32c..99b27dcc25 100644
+--- a/commands/digest.c
++++ b/commands/digest.c
+@@ -6,6 +6,7 @@
  
- 	buf = memmap(fd, PROT_READ);
- 	if (buf == MAP_FAILED) {
--		buf = xmalloc(4096);
-+		buf = xmalloc(PAGE_SIZE);
- 		flags = 1;
- 	}
+ #include <common.h>
+ #include <command.h>
++#include <linux/pagemap.h>
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <errno.h>
+@@ -35,7 +36,7 @@ int __do_digest(struct digest *d, unsigned char *sig,
  
-@@ -249,7 +249,7 @@ int digest_file_window(struct digest *d, const char *filename,
- 	}
+ 	while (*argv) {
+ 		char *filename = "/dev/mem";
+-		loff_t start = 0, size = ~0;
++		loff_t start = 0, size = MAX_LFS_FILESIZE;
+ 		int show_area = 1;
  
- 	while (size) {
--		now = min((ulong)4096, size);
-+		now = min((ulong)PAGE_SIZE, size);
- 		if (flags) {
- 			now = read(fd, buf, now);
- 			if (now < 0) {
+ 		/* arguments are either file, file+area or area */
 -- 
 2.20.1
 
