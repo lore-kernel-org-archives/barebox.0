@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1giDdG-0006gc-Q7
+ id 1giDdK-0006kV-Dv
  for barebox@lists.infradead.org; Sat, 12 Jan 2019 07:23:11 +0000
-Received: by mail-pg1-x543.google.com with SMTP id d72so7261854pga.9
- for <barebox@lists.infradead.org>; Fri, 11 Jan 2019 23:23:02 -0800 (PST)
+Received: by mail-pg1-x544.google.com with SMTP id g189so7276173pgc.5
+ for <barebox@lists.infradead.org>; Fri, 11 Jan 2019 23:23:06 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 11 Jan 2019 23:22:30 -0800
-Message-Id: <20190112072234.21878-13-andrew.smirnov@gmail.com>
+Date: Fri, 11 Jan 2019 23:22:33 -0800
+Message-Id: <20190112072234.21878-16-andrew.smirnov@gmail.com>
 In-Reply-To: <20190112072234.21878-1-andrew.smirnov@gmail.com>
 References: <20190112072234.21878-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,48 +23,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 12/16] PCI: Drop "rom_address" from struct pci_dev
+Subject: [PATCH v2 15/16] PCI: Convert ->res_start() to return resource_size_t
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-This field is not being used in Barebox. Drop it.
+On 64-bit machines int doesn't cover full address space, so convert
+.res_start to both accept resource_size_t as a parameter and return it
+as result.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci.c   | 7 -------
- include/linux/pci.h | 1 -
- 2 files changed, 8 deletions(-)
+ arch/mips/mach-malta/pci.c | 3 ++-
+ drivers/pci/pci-mvebu.c    | 6 ++++--
+ include/linux/pci.h        | 2 +-
+ 3 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index a94864b0c6..10890d07eb 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -406,13 +406,6 @@ static unsigned int pci_scan_bus(struct pci_bus *bus)
- 			if (class == PCI_CLASS_BRIDGE_PCI)
- 				goto bad;
+diff --git a/arch/mips/mach-malta/pci.c b/arch/mips/mach-malta/pci.c
+index 47c0e228a7..4561123d22 100644
+--- a/arch/mips/mach-malta/pci.c
++++ b/arch/mips/mach-malta/pci.c
+@@ -131,7 +131,8 @@ static int gt64xxx_pci0_pcibios_write(struct pci_bus *bus, unsigned int devfn,
+ }
  
--			/*
--			 * read base address registers, again pcibios_fixup() can
--			 * tweak these
--			 */
--			pci_read_config_dword(dev, PCI_ROM_ADDRESS, &l);
--			dev->rom_address = (l == 0xffffffff) ? 0 : l;
--
- 			setup_device(dev, 6);
- 			break;
- 		case PCI_HEADER_TYPE_BRIDGE:
+ /* function returns memory address for begin of pci resource */
+-static int gt64xxx_res_start(struct pci_bus *bus, resource_size_t res_addr)
++static resource_size_t gt64xxx_res_start(struct pci_bus *bus,
++					 resource_size_t res_addr)
+ {
+ 	return KSEG0ADDR(res_addr);
+ }
+diff --git a/drivers/pci/pci-mvebu.c b/drivers/pci/pci-mvebu.c
+index 1c20f91544..c17ef3898b 100644
+--- a/drivers/pci/pci-mvebu.c
++++ b/drivers/pci/pci-mvebu.c
+@@ -145,11 +145,13 @@ static int mvebu_pcie_indirect_wr_conf(struct pci_bus *bus,
+ 	return PCIBIOS_SUCCESSFUL;
+ }
+ 
+-static int mvebu_pcie_res_start(struct pci_bus *bus, resource_size_t res_addr)
++static resource_size_t mvebu_pcie_res_start(struct pci_bus *bus,
++					    resource_size_t res_addr)
+ {
+ 	struct mvebu_pcie *pcie = to_pcie(bus->host);
+ 
+-	return (int)pcie->membase + (res_addr & (resource_size(&pcie->mem)-1));
++	return (resource_size_t)pcie->membase +
++		(res_addr & (resource_size(&pcie->mem) - 1));
+ }
+ 
+ static struct pci_ops mvebu_pcie_indirect_ops = {
 diff --git a/include/linux/pci.h b/include/linux/pci.h
-index b609a1330b..2c7acbdda9 100644
+index 2c7acbdda9..c00a866a48 100644
 --- a/include/linux/pci.h
 +++ b/include/linux/pci.h
-@@ -112,7 +112,6 @@ struct pci_dev {
- 	 * pcibios_fixup() as necessary.
- 	 */
- 	unsigned long	base_address[6];
--	unsigned long	rom_address;
- };
- #define	to_pci_dev(dev) container_of(dev, struct pci_dev, dev)
+@@ -143,7 +143,7 @@ struct pci_ops {
+ 	int (*write)(struct pci_bus *bus, unsigned int devfn, int where, int size, u32 val);
  
+ 	/* return memory address for pci resource */
+-	int (*res_start)(struct pci_bus *bus, resource_size_t res_addr);
++	resource_size_t (*res_start)(struct pci_bus *bus, resource_size_t res_addr);
+ };
+ 
+ extern struct pci_ops *pci_ops;
 -- 
 2.20.1
 
