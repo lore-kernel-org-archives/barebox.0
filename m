@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1giCGz-0004Ca-JA
- for barebox@lists.infradead.org; Sat, 12 Jan 2019 05:55:59 +0000
-Received: by mail-pl1-x644.google.com with SMTP id w4so7728655plz.1
- for <barebox@lists.infradead.org>; Fri, 11 Jan 2019 21:55:57 -0800 (PST)
+ id 1giCH2-0004ES-FN
+ for barebox@lists.infradead.org; Sat, 12 Jan 2019 05:56:02 +0000
+Received: by mail-pl1-x643.google.com with SMTP id u6so7720156plm.8
+ for <barebox@lists.infradead.org>; Fri, 11 Jan 2019 21:56:00 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 11 Jan 2019 21:55:10 -0800
-Message-Id: <20190112055524.7733-5-andrew.smirnov@gmail.com>
+Date: Fri, 11 Jan 2019 21:55:12 -0800
+Message-Id: <20190112055524.7733-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20190112055524.7733-1-andrew.smirnov@gmail.com>
 References: <20190112055524.7733-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,37 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 04/18] base: driver: Drop redundant list_empty() check
+Subject: [PATCH v2 06/18] regulator: Add primitive support for deferred probe
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Don't report requested regulator (via of_regulator_get()) as
+non-existent if said regulator is missing from regulator list. Instead
+rely on driver_deferred_probe_check_state() to properly declare
+regulator as such after all of the initcalls were done and no further
+missing dependencies could be resolved.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/base/driver.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/regulator/core.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 1fd890542e..1fd6bbc014 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -269,7 +269,7 @@ static int device_probe_deferred(void)
- 		success = false;
- 
- 		if (list_empty(&deferred))
--			break;
-+			return 0;
- 
- 		list_for_each_entry_safe(dev, tmp, &deferred, active) {
- 			list_del(&dev->active);
-@@ -285,9 +285,6 @@ static int device_probe_deferred(void)
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 795dcdb8c1..a5ac8f3c94 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -227,7 +227,13 @@ static struct regulator_internal *of_regulator_get(struct device_d *dev, const c
  		}
- 	} while (success);
+ 	}
  
--	if (list_empty(&deferred))
--		return 0;
--
- 	list_for_each_entry(dev, &deferred, active)
- 		dev_err(dev, "probe permanently deferred\n");
+-	ri = ERR_PTR(-ENODEV);
++	/*
++	 * It is possible that regulator we are looking for will be
++	 * added in future initcalls, so, instead of reporting a
++	 * complete failure we see if probe deferral is more
++	 * appropriate
++	 */
++	ri = ERR_PTR(driver_deferred_probe_check_state(dev));
+ out:
+ 	free(propname);
  
 -- 
 2.20.1
