@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1giCH2-0004DY-Mo
- for barebox@lists.infradead.org; Sat, 12 Jan 2019 05:56:04 +0000
-Received: by mail-pf1-x443.google.com with SMTP id h3so7950735pfg.1
- for <barebox@lists.infradead.org>; Fri, 11 Jan 2019 21:55:58 -0800 (PST)
+ id 1giCH3-0004Fw-Sv
+ for barebox@lists.infradead.org; Sat, 12 Jan 2019 05:56:05 +0000
+Received: by mail-pl1-x642.google.com with SMTP id t13so7711919ply.13
+ for <barebox@lists.infradead.org>; Fri, 11 Jan 2019 21:56:01 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 11 Jan 2019 21:55:11 -0800
-Message-Id: <20190112055524.7733-6-andrew.smirnov@gmail.com>
+Date: Fri, 11 Jan 2019 21:55:13 -0800
+Message-Id: <20190112055524.7733-8-andrew.smirnov@gmail.com>
 In-Reply-To: <20190112055524.7733-1-andrew.smirnov@gmail.com>
 References: <20190112055524.7733-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,132 +23,218 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 05/18] base: Port driver_deferred_probe_check_state() from
- Linux
+Subject: [PATCH v2 07/18] regulator: Port ANATOP driver from Linux
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port driver_deferred_probe_check_state() from Linux by adding on last
-pass going through all of the deferred drivers that allows us to
-declare all unresolved dependencies as missing.
+Port a subset of Linux driver sufficient enough to support feature
+needed for PCIe on i.MX7.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/base/driver.c | 73 ++++++++++++++++++++++++++++++++-----------
- include/driver.h      |  2 ++
- 2 files changed, 57 insertions(+), 18 deletions(-)
+ drivers/regulator/Kconfig            |   8 ++
+ drivers/regulator/Makefile           |   3 +-
+ drivers/regulator/anatop-regulator.c | 161 +++++++++++++++++++++++++++
+ 3 files changed, 171 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/regulator/anatop-regulator.c
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 1fd6bbc014..be735189a5 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -46,6 +46,8 @@ EXPORT_SYMBOL(driver_list);
- static LIST_HEAD(active);
- static LIST_HEAD(deferred);
+diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
+index 92db8dc0e0..c734ef5ef9 100644
+--- a/drivers/regulator/Kconfig
++++ b/drivers/regulator/Kconfig
+@@ -21,4 +21,12 @@ config REGULATOR_PFUZE
+ 	depends on I2C
+ 	depends on ARCH_IMX6
  
-+static bool initcalls_done;
++config REGULATOR_ANATOP
++	tristate "Freescale i.MX on-chip ANATOP LDO regulators"
++	depends on MFD_SYSCON
++	help
++	  Say y here to support Freescale i.MX on-chip ANATOP LDOs
++	  regulators. It is recommended that this option be
++	  enabled on i.MX6 platform.
 +
- struct device_d *get_device_by_name(const char *name)
- {
- 	struct device_d *dev;
-@@ -259,31 +261,66 @@ EXPORT_SYMBOL(unregister_device);
-  * For devices finally left in deferred list -EPROBE_DEFER
-  * becomes a fatal error.
-  */
--static int device_probe_deferred(void)
-+
-+/**
-+ * driver_deferred_probe_check_state() - Check deferred probe state
-+ * @dev: device to check
-+ *
-+ * Returns -ENODEV if init is done and all built-in drivers have had a chance
-+ * to probe (i.e. initcalls are done), -ETIMEDOUT if deferred probe debug
-+ * timeout has expired, or -EPROBE_DEFER if none of those conditions are met.
-+ *
-+ * Drivers or subsystems can opt-in to calling this function instead of directly
-+ * returning -EPROBE_DEFER.
+ endif
+diff --git a/drivers/regulator/Makefile b/drivers/regulator/Makefile
+index 36ce3e87f7..b2fc5b79b6 100644
+--- a/drivers/regulator/Makefile
++++ b/drivers/regulator/Makefile
+@@ -1,4 +1,5 @@
+ obj-$(CONFIG_REGULATOR) += core.o helpers.o
+ obj-$(CONFIG_REGULATOR_FIXED) += fixed.o
+ obj-$(CONFIG_REGULATOR_BCM283X) += bcm2835.o
+-obj-$(CONFIG_REGULATOR_PFUZE) += pfuze.o
+\ No newline at end of file
++obj-$(CONFIG_REGULATOR_PFUZE) += pfuze.o
++obj-$(CONFIG_REGULATOR_ANATOP) += anatop-regulator.o
+\ No newline at end of file
+diff --git a/drivers/regulator/anatop-regulator.c b/drivers/regulator/anatop-regulator.c
+new file mode 100644
+index 0000000000..3944fd592c
+--- /dev/null
++++ b/drivers/regulator/anatop-regulator.c
+@@ -0,0 +1,161 @@
++/*
++ * Copyright (C) 2011 Freescale Semiconductor, Inc. All Rights Reserved.
 + */
-+int driver_deferred_probe_check_state(struct device_d *dev)
-+{
-+	if (initcalls_done) {
-+		dev_warn(dev, "ignoring dependency for device, assuming no driver");
-+		return -ENODEV;
-+	}
-+	return -EPROBE_DEFER;
-+}
 +
-+static bool device_probe_deferred_match_all(void)
- {
- 	struct device_d *dev, *tmp;
- 	struct driver_d *drv;
--	bool success;
-+	bool success = false;
- 
--	do {
--		success = false;
-+	list_for_each_entry_safe(dev, tmp, &deferred, active) {
-+		list_del(&dev->active);
-+		INIT_LIST_HEAD(&dev->active);
- 
--		if (list_empty(&deferred))
--			return 0;
-+		dev_dbg(dev, "re-probe device\n");
-+		bus_for_each_driver(dev->bus, drv) {
-+			if (match(drv, dev))
-+				continue;
-+			success = true;
-+			break;
++/*
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, write to the Free Software Foundation, Inc.,
++ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ */
++
++#include <common.h>
++#include <init.h>
++#include <mfd/syscon.h>
++#include <regmap.h>
++#include <regulator.h>
++
++struct anatop_regulator {
++	u32 control_reg;
++	struct regmap *anatop;
++	int vol_bit_shift;
++	int vol_bit_width;
++	u32 delay_reg;
++	int delay_bit_shift;
++	int delay_bit_width;
++	int min_bit_val;
++	int min_voltage;
++	int max_voltage;
++
++	struct regulator_dev  rdev;
++	struct regulator_desc rdesc;
++
++	bool bypass;
++	int sel;
++};
++
++static struct regulator_ops anatop_rops = {
++	.set_voltage_sel = regulator_set_voltage_sel_regmap,
++	.list_voltage = regulator_list_voltage_linear,
++};
++
++static int anatop_regulator_probe(struct device_d *dev)
++{
++	struct device_node *np = dev->device_node;
++	struct device_node *anatop_np;
++	struct regulator_desc *rdesc;
++	struct regulator_dev *rdev;
++	struct anatop_regulator *sreg;
++	int ret = 0;
++
++	sreg  = xzalloc(sizeof(*sreg));
++	rdesc = &sreg->rdesc;
++	rdev  = &sreg->rdev;
++
++	anatop_np = of_get_parent(np);
++	if (!anatop_np)
++		return -ENODEV;
++
++	rdev->desc = rdesc;
++	rdev->regmap = syscon_node_to_regmap(anatop_np);
++	if (IS_ERR(rdev->regmap))
++		return PTR_ERR(rdev->regmap);
++
++	ret = of_property_read_u32(np, "anatop-reg-offset",
++				   &sreg->control_reg);
++	if (ret) {
++		dev_err(dev, "no anatop-reg-offset property set\n");
++		return ret;
++	}
++	ret = of_property_read_u32(np, "anatop-vol-bit-width",
++				   &sreg->vol_bit_width);
++	if (ret) {
++		dev_err(dev, "no anatop-vol-bit-width property set\n");
++		return ret;
++	}
++	ret = of_property_read_u32(np, "anatop-vol-bit-shift",
++				   &sreg->vol_bit_shift);
++	if (ret) {
++		dev_err(dev, "no anatop-vol-bit-shift property set\n");
++		return ret;
++	}
++	ret = of_property_read_u32(np, "anatop-min-bit-val",
++				   &sreg->min_bit_val);
++	if (ret) {
++		dev_err(dev, "no anatop-min-bit-val property set\n");
++		return ret;
++	}
++	ret = of_property_read_u32(np, "anatop-min-voltage",
++				   &sreg->min_voltage);
++	if (ret) {
++		dev_err(dev, "no anatop-min-voltage property set\n");
++		return ret;
++	}
++	ret = of_property_read_u32(np, "anatop-max-voltage",
++				   &sreg->max_voltage);
++	if (ret) {
++		dev_err(dev, "no anatop-max-voltage property set\n");
++		return ret;
++	}
++
++	/* read LDO ramp up setting, only for core reg */
++	of_property_read_u32(np, "anatop-delay-reg-offset",
++			     &sreg->delay_reg);
++	of_property_read_u32(np, "anatop-delay-bit-width",
++			     &sreg->delay_bit_width);
++	of_property_read_u32(np, "anatop-delay-bit-shift",
++			     &sreg->delay_bit_shift);
++
++	rdesc->n_voltages = (sreg->max_voltage - sreg->min_voltage) / 25000 + 1
++			    + sreg->min_bit_val;
++	rdesc->min_uV = sreg->min_voltage;
++	rdesc->uV_step = 25000;
++	rdesc->linear_min_sel = sreg->min_bit_val;
++	rdesc->vsel_reg  = sreg->control_reg;
++	rdesc->vsel_mask = GENMASK(sreg->vol_bit_width + sreg->vol_bit_shift,
++				   sreg->vol_bit_shift);
++
++	/* Only core regulators have the ramp up delay configuration. */
++	if (sreg->control_reg && sreg->delay_bit_width) {
++		free(sreg);
++		return -ENODEV;
++	} else {
++		u32 enable_bit;
++
++		rdesc->ops = &anatop_rops;
++
++		if (!of_property_read_u32(np, "anatop-enable-bit",
++					  &enable_bit)) {
++			anatop_rops.enable  = regulator_enable_regmap;
++			anatop_rops.disable = regulator_disable_regmap;
++			anatop_rops.is_enabled = regulator_is_enabled_regmap;
++
++			rdesc->enable_reg = sreg->control_reg;
++			rdesc->enable_mask = BIT(enable_bit);
 +		}
 +	}
- 
--		list_for_each_entry_safe(dev, tmp, &deferred, active) {
--			list_del(&dev->active);
--			INIT_LIST_HEAD(&dev->active);
-+	return success;
++
++	return of_regulator_register(rdev, dev->device_node);
 +}
- 
--			dev_dbg(dev, "re-probe device\n");
--			bus_for_each_driver(dev->bus, drv) {
--				if (match(drv, dev))
--					continue;
--				success = true;
--				break;
--			}
--		}
--	} while (success);
-+static int device_probe_deferred(void)
-+{
-+	struct device_d *dev;
 +
-+	while (device_probe_deferred_match_all())
-+		;
++static const struct of_device_id of_anatop_regulator_match_tbl[] = {
++	{ .compatible = "fsl,anatop-regulator", },
++	{ /* end */ }
++};
 +
-+	initcalls_done = true;
++static struct driver_d anatop_regulator_driver = {
++	.name = "anatop_regulator",
++	.probe = anatop_regulator_probe,
++	.of_compatible = DRV_OF_COMPAT(of_anatop_regulator_match_tbl),
++};
++device_platform_driver(anatop_regulator_driver);
 +
-+	if (list_empty(&deferred))
-+		return 0;
-+	/*
-+	 * Loop over all deferred devices to give various functions
-+	 * that call driver_deferred_probe_check_state() a chance to
-+	 * finally return -ENODEV as opposed to -EPROBE_DEFER
-+	 */
-+	device_probe_deferred_match_all();
- 
- 	list_for_each_entry(dev, &deferred, active)
- 		dev_err(dev, "probe permanently deferred\n");
-diff --git a/include/driver.h b/include/driver.h
-index 3d9970df53..385e410dd4 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -151,6 +151,8 @@ void device_detect_all(void);
-  */
- int unregister_device(struct device_d *);
- 
-+int driver_deferred_probe_check_state(struct device_d *dev);
-+
- /* Iterate over a devices children
-  */
- #define device_for_each_child(dev, child) \
 -- 
 2.20.1
 
