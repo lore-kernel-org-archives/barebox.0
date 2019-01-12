@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1giCH5-0004Hp-Hm
- for barebox@lists.infradead.org; Sat, 12 Jan 2019 05:56:14 +0000
-Received: by mail-pg1-x541.google.com with SMTP id c25so7217344pgb.4
- for <barebox@lists.infradead.org>; Fri, 11 Jan 2019 21:56:03 -0800 (PST)
+ id 1giCH7-0004KX-MF
+ for barebox@lists.infradead.org; Sat, 12 Jan 2019 05:56:12 +0000
+Received: by mail-pl1-x644.google.com with SMTP id p8so7731700plo.2
+ for <barebox@lists.infradead.org>; Fri, 11 Jan 2019 21:56:05 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 11 Jan 2019 21:55:14 -0800
-Message-Id: <20190112055524.7733-9-andrew.smirnov@gmail.com>
+Date: Fri, 11 Jan 2019 21:55:16 -0800
+Message-Id: <20190112055524.7733-11-andrew.smirnov@gmail.com>
 In-Reply-To: <20190112055524.7733-1-andrew.smirnov@gmail.com>
 References: <20190112055524.7733-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,421 +23,236 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 08/18] drivers: base: Port power management code from Linux
+Subject: [PATCH v2 10/18] reset: Add i.MX7 SRC reset driver
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port an extremely abridged version of power management/power domain
-code from Linux as a dependency of i.MX7D PCIe work. Currenlty only
-bare minimum of functionality is implemented.
+Port of a Linux commit abf97755ae31aaaf35156438dd3036e96f66da83
+
+  Add reset controller driver exposing various reset faculties,
+  implemented by System Reset Controller IP block.
+
+  Cc: Lucas Stach <l.stach@pengutronix.de>
+  Cc: Mark Rutland <mark.rutland@arm.com>
+  Cc: devicetree@vger.kernel.org
+  Cc: linux-kernel@vger.kernel.org
+  Cc: linux-arm-kernel@lists.infradead.org
+  Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+  Acked-by: Rob Herring <robh@kernel.org>
+  Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+
+Linux commit 26fce0557fa639fb7bbc33e31a57cff7df25c3a0 was squashed
+here as well:
+
+  reset: imx7: Fix always writing bits as 0
+
+  Right now the only user of reset-imx7 is pci-imx6 and the
+  reset_control_assert and deassert calls on pciephy_reset don't toggle
+  the PCIEPHY_BTN and PCIEPHY_G_RST bits as expected. Fix this by writing
+  1 or 0 respectively.
+
+  The reference manual is not very clear regarding SRC_PCIEPHY_RCR but for
+  other registers like MIPIPHY and HSICPHY the bits are explicitly
+  documented as "1 means assert, 0 means deassert".
+
+  The values are still reversed for IMX7_RESET_PCIE_CTRL_APPS_EN.
+
+  Signed-off-by: Leonard Crestez <leonard.crestez@nxp.com>
+  Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+  Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/Kconfig         |   1 +
- drivers/base/Kconfig    |   3 +
- drivers/base/Makefile   |   4 +-
- drivers/base/platform.c |   7 ++
- drivers/base/power.c    | 245 ++++++++++++++++++++++++++++++++++++++++
- include/pm_domain.h     |  82 ++++++++++++++
- 6 files changed, 341 insertions(+), 1 deletion(-)
- create mode 100644 drivers/base/Kconfig
- create mode 100644 drivers/base/power.c
- create mode 100644 include/pm_domain.h
+ drivers/reset/Kconfig      |  11 +++
+ drivers/reset/Makefile     |   1 +
+ drivers/reset/reset-imx7.c | 151 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 163 insertions(+)
+ create mode 100644 drivers/reset/reset-imx7.c
 
-diff --git a/drivers/Kconfig b/drivers/Kconfig
-index 1e0246da6d..c3bf9dfe18 100644
---- a/drivers/Kconfig
-+++ b/drivers/Kconfig
-@@ -1,5 +1,6 @@
- menu "Drivers"
+diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
+index c9d04f7978..caf1dc9acb 100644
+--- a/drivers/reset/Kconfig
++++ b/drivers/reset/Kconfig
+@@ -11,3 +11,14 @@ menuconfig RESET_CONTROLLER
+ 	  via GPIOs or SoC-internal reset controller modules.
  
-+source "drivers/base/Kconfig"
- source "drivers/efi/Kconfig"
- source "drivers/of/Kconfig"
- source "drivers/aiodev/Kconfig"
-diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
+ 	  If unsure, say no.
++
++if RESET_CONTROLLER
++
++config RESET_IMX7
++	bool "i.MX7 Reset Driver"
++	default SOC_IMX7D
++	select MFD_SYSCON
++	help
++	  This enables the reset controller driver for i.MX7 SoCs.
++
++endif
+diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
+index 52b10cd480..0b55caa204 100644
+--- a/drivers/reset/Makefile
++++ b/drivers/reset/Makefile
+@@ -1,2 +1,3 @@
+ obj-$(CONFIG_RESET_CONTROLLER) += core.o
+ obj-$(CONFIG_ARCH_SOCFPGA) += reset-socfpga.o
++obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
+diff --git a/drivers/reset/reset-imx7.c b/drivers/reset/reset-imx7.c
 new file mode 100644
-index 0000000000..1e13e5ed9d
+index 0000000000..6dc5de16a7
 --- /dev/null
-+++ b/drivers/base/Kconfig
-@@ -0,0 +1,3 @@
++++ b/drivers/reset/reset-imx7.c
+@@ -0,0 +1,151 @@
++/*
++ * Copyright (c) 2017, Impinj, Inc.
++ *
++ * i.MX7 System Reset Controller (SRC) driver
++ *
++ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; version 2 of the License.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
++ */
 +
-+config PM_GENERIC_DOMAINS
-+	bool
-diff --git a/drivers/base/Makefile b/drivers/base/Makefile
-index 4bd4217745..6d2cef8e1a 100644
---- a/drivers/base/Makefile
-+++ b/drivers/base/Makefile
-@@ -2,4 +2,6 @@ obj-y	+= bus.o
- obj-y	+= driver.o
- obj-y	+= platform.o
- obj-y	+= resource.o
--obj-y	+= regmap/
-\ No newline at end of file
-+obj-y	+= regmap/
-+
-+obj-$(CONFIG_PM_GENERIC_DOMAINS) += power.o
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index 85bdfb0149..1d3fa2eb44 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -21,9 +21,16 @@
- #include <errno.h>
- #include <init.h>
- #include <of.h>
-+#include <pm_domain.h>
- 
- static int platform_probe(struct device_d *dev)
- {
-+	int ret;
-+
-+	ret = genpd_dev_pm_attach(dev);
-+	if (ret < 0)
-+		return ret;
-+
- 	return dev->driver->probe(dev);
- }
- 
-diff --git a/drivers/base/power.c b/drivers/base/power.c
-new file mode 100644
-index 0000000000..fd9c4e2ba1
---- /dev/null
-+++ b/drivers/base/power.c
-@@ -0,0 +1,245 @@
 +#include <common.h>
-+#include <driver.h>
-+#include <errno.h>
-+#include <of.h>
++#include <dt-bindings/reset/imx7-reset.h>
++#include <init.h>
++#include <linux/err.h>
++#include <linux/reset-controller.h>
++#include <mfd/syscon.h>
++#include <regmap.h>
 +
-+#include <pm_domain.h>
-+
-+#define genpd_status_on(genpd)		(genpd->status == GPD_STATE_ACTIVE)
-+
-+static LIST_HEAD(gpd_list);
-+
-+/**
-+ * pm_genpd_init - Initialize a generic I/O PM domain object.
-+ * @genpd: PM domain object to initialize.
-+ * @gov: PM domain governor to associate with the domain (may be NULL).
-+ * @is_off: Initial value of the domain's power_is_off field.
-+ *
-+ * Returns 0 on successful initialization, else a negative error code.
-+ */
-+int pm_genpd_init(struct generic_pm_domain *genpd, void *gov, bool is_off)
-+{
-+	if (IS_ERR_OR_NULL(genpd))
-+		return -EINVAL;
-+
-+	genpd->status = is_off ? GPD_STATE_POWER_OFF : GPD_STATE_ACTIVE;
-+
-+	list_add(&genpd->gpd_list_node, &gpd_list);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(pm_genpd_init);
-+
-+/**
-+ * struct of_genpd_provider - PM domain provider registration structure
-+ * @link: Entry in global list of PM domain providers
-+ * @node: Pointer to device tree node of PM domain provider
-+ * @xlate: Provider-specific xlate callback mapping a set of specifier cells
-+ *         into a PM domain.
-+ * @data: context pointer to be passed into @xlate callback
-+ */
-+struct of_genpd_provider {
-+	struct list_head link;
-+	struct device_node *node;
-+	genpd_xlate_t xlate;
-+	void *data;
++struct imx7_src {
++	struct reset_controller_dev rcdev;
++	struct regmap *regmap;
 +};
 +
-+/* List of registered PM domain providers. */
-+static LIST_HEAD(of_genpd_providers);
++enum imx7_src_registers {
++	SRC_A7RCR0		= 0x0004,
++	SRC_M4RCR		= 0x000c,
++	SRC_ERCR		= 0x0014,
++	SRC_HSICPHY_RCR		= 0x001c,
++	SRC_USBOPHY1_RCR	= 0x0020,
++	SRC_USBOPHY2_RCR	= 0x0024,
++	SRC_MIPIPHY_RCR		= 0x0028,
++	SRC_PCIEPHY_RCR		= 0x002c,
++	SRC_DDRC_RCR		= 0x1000,
++};
 +
-+static bool genpd_present(const struct generic_pm_domain *genpd)
++struct imx7_src_signal {
++	unsigned int offset, bit;
++};
++
++static const struct imx7_src_signal imx7_src_signals[IMX7_RESET_NUM] = {
++	[IMX7_RESET_A7_CORE_POR_RESET0] = { SRC_A7RCR0, BIT(0) },
++	[IMX7_RESET_A7_CORE_POR_RESET1] = { SRC_A7RCR0, BIT(1) },
++	[IMX7_RESET_A7_CORE_RESET0]     = { SRC_A7RCR0, BIT(4) },
++	[IMX7_RESET_A7_CORE_RESET1]	= { SRC_A7RCR0, BIT(5) },
++	[IMX7_RESET_A7_DBG_RESET0]	= { SRC_A7RCR0, BIT(8) },
++	[IMX7_RESET_A7_DBG_RESET1]	= { SRC_A7RCR0, BIT(9) },
++	[IMX7_RESET_A7_ETM_RESET0]	= { SRC_A7RCR0, BIT(12) },
++	[IMX7_RESET_A7_ETM_RESET1]	= { SRC_A7RCR0, BIT(13) },
++	[IMX7_RESET_A7_SOC_DBG_RESET]	= { SRC_A7RCR0, BIT(20) },
++	[IMX7_RESET_A7_L2RESET]		= { SRC_A7RCR0, BIT(21) },
++	[IMX7_RESET_SW_M4C_RST]		= { SRC_M4RCR, BIT(1) },
++	[IMX7_RESET_SW_M4P_RST]		= { SRC_M4RCR, BIT(2) },
++	[IMX7_RESET_EIM_RST]		= { SRC_ERCR, BIT(0) },
++	[IMX7_RESET_HSICPHY_PORT_RST]	= { SRC_HSICPHY_RCR, BIT(1) },
++	[IMX7_RESET_USBPHY1_POR]	= { SRC_USBOPHY1_RCR, BIT(0) },
++	[IMX7_RESET_USBPHY1_PORT_RST]	= { SRC_USBOPHY1_RCR, BIT(1) },
++	[IMX7_RESET_USBPHY2_POR]	= { SRC_USBOPHY2_RCR, BIT(0) },
++	[IMX7_RESET_USBPHY2_PORT_RST]	= { SRC_USBOPHY2_RCR, BIT(1) },
++	[IMX7_RESET_MIPI_PHY_MRST]	= { SRC_MIPIPHY_RCR, BIT(1) },
++	[IMX7_RESET_MIPI_PHY_SRST]	= { SRC_MIPIPHY_RCR, BIT(2) },
++	[IMX7_RESET_PCIEPHY]		= { SRC_PCIEPHY_RCR, BIT(2) | BIT(1) },
++	[IMX7_RESET_PCIEPHY_PERST]	= { SRC_PCIEPHY_RCR, BIT(3) },
++	[IMX7_RESET_PCIE_CTRL_APPS_EN]	= { SRC_PCIEPHY_RCR, BIT(6) },
++	[IMX7_RESET_DDRC_PRST]		= { SRC_DDRC_RCR, BIT(0) },
++	[IMX7_RESET_DDRC_CORE_RST]	= { SRC_DDRC_RCR, BIT(1) },
++};
++
++static struct imx7_src *to_imx7_src(struct reset_controller_dev *rcdev)
 +{
-+	const struct generic_pm_domain *gpd;
-+
-+	if (IS_ERR_OR_NULL(genpd))
-+		return false;
-+
-+	list_for_each_entry(gpd, &gpd_list, gpd_list_node)
-+		if (gpd == genpd)
-+			return true;
-+
-+	return false;
++	return container_of(rcdev, struct imx7_src, rcdev);
 +}
 +
-+/**
-+ * genpd_xlate_simple() - Xlate function for direct node-domain mapping
-+ * @genpdspec: OF phandle args to map into a PM domain
-+ * @data: xlate function private data - pointer to struct generic_pm_domain
-+ *
-+ * This is a generic xlate function that can be used to model PM domains that
-+ * have their own device tree nodes. The private data of xlate function needs
-+ * to be a valid pointer to struct generic_pm_domain.
-+ */
-+static struct generic_pm_domain *genpd_xlate_simple(
-+					struct of_phandle_args *genpdspec,
-+					void *data)
++static int imx7_reset_set(struct reset_controller_dev *rcdev,
++			  unsigned long id, bool assert)
 +{
-+	return data;
-+}
++	struct imx7_src *imx7src = to_imx7_src(rcdev);
++	const struct imx7_src_signal *signal = &imx7_src_signals[id];
++	unsigned int value = assert ? signal->bit : 0;;
 +
-+/**
-+ * genpd_add_provider() - Register a PM domain provider for a node
-+ * @np: Device node pointer associated with the PM domain provider.
-+ * @xlate: Callback for decoding PM domain from phandle arguments.
-+ * @data: Context pointer for @xlate callback.
-+ */
-+static int genpd_add_provider(struct device_node *np, genpd_xlate_t xlate,
-+			      void *data)
-+{
-+	struct of_genpd_provider *cp;
++	switch (id) {
++	case IMX7_RESET_PCIEPHY:
++		/*
++		 * wait for more than 10us to release phy g_rst and
++		 * btnrst
++		 */
++		if (!assert)
++			udelay(10);
++		break;
 +
-+	cp = kzalloc(sizeof(*cp), GFP_KERNEL);
-+	if (!cp)
-+		return -ENOMEM;
-+
-+	cp->node  = np;
-+	cp->data  = data;
-+	cp->xlate = xlate;
-+
-+	list_add(&cp->link, &of_genpd_providers);
-+	pr_debug("Added domain provider from %pOF\n", np);
-+
-+	return 0;
-+}
-+
-+/**
-+ * of_genpd_add_provider_simple() - Register a simple PM domain provider
-+ * @np: Device node pointer associated with the PM domain provider.
-+ * @genpd: Pointer to PM domain associated with the PM domain provider.
-+ */
-+int of_genpd_add_provider_simple(struct device_node *np,
-+				 struct generic_pm_domain *genpd)
-+{
-+	int ret = -EINVAL;
-+
-+	if (!np || !genpd)
-+		return -EINVAL;
-+
-+	if (genpd_present(genpd))
-+		ret = genpd_add_provider(np, genpd_xlate_simple, genpd);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(of_genpd_add_provider_simple);
-+
-+/**
-+ * genpd_get_from_provider() - Look-up PM domain
-+ * @genpdspec: OF phandle args to use for look-up
-+ *
-+ * Looks for a PM domain provider under the node specified by @genpdspec and if
-+ * found, uses xlate function of the provider to map phandle args to a PM
-+ * domain.
-+ *
-+ * Returns a valid pointer to struct generic_pm_domain on success or ERR_PTR()
-+ * on failure.
-+ */
-+static struct generic_pm_domain *genpd_get_from_provider(
-+					struct of_phandle_args *genpdspec)
-+{
-+	struct generic_pm_domain *genpd = ERR_PTR(-ENOENT);
-+	struct of_genpd_provider *provider;
-+
-+	if (!genpdspec)
-+		return ERR_PTR(-EINVAL);
-+
-+	/* Check if we have such a provider in our array */
-+	list_for_each_entry(provider, &of_genpd_providers, link) {
-+		if (provider->node == genpdspec->np)
-+			genpd = provider->xlate(genpdspec, provider->data);
-+		if (!IS_ERR(genpd))
-+			break;
++	case IMX7_RESET_PCIE_CTRL_APPS_EN:
++		value = (assert) ? 0 : signal->bit;
++		break;
 +	}
 +
-+	return genpd;
++	return regmap_update_bits(imx7src->regmap,
++				  signal->offset, signal->bit, value);
 +}
 +
-+static int _genpd_power_on(struct generic_pm_domain *genpd, bool timed)
++static int imx7_reset_assert(struct reset_controller_dev *rcdev,
++			     unsigned long id)
 +{
-+	if (!genpd->power_on)
-+		return 0;
-+
-+	return genpd->power_on(genpd);
++	return imx7_reset_set(rcdev, id, true);
 +}
 +
-+/**
-+ * genpd_power_on - Restore power to a given PM domain and its masters.
-+ * @genpd: PM domain to power up.
-+ * @depth: nesting count for lockdep.
-+ *
-+ * Restore power to @genpd and all of its masters so that it is possible to
-+ * resume a device belonging to it.
-+ */
-+static int genpd_power_on(struct generic_pm_domain *genpd, unsigned int depth)
++static int imx7_reset_deassert(struct reset_controller_dev *rcdev,
++			       unsigned long id)
 +{
-+	int ret;
-+
-+	if (genpd_status_on(genpd))
-+		return 0;
-+
-+	ret = _genpd_power_on(genpd, true);
-+	if (ret)
-+		return ret;
-+
-+	genpd->status = GPD_STATE_ACTIVE;
-+
-+	return 0;
++	return imx7_reset_set(rcdev, id, false);
 +}
 +
-+static int __genpd_dev_pm_attach(struct device_d *dev, struct device_node *np,
-+				 unsigned int index, bool power_on)
++static struct reset_control_ops imx7_reset_ops = {
++	.assert		= imx7_reset_assert,
++	.deassert	= imx7_reset_deassert,
++};
++
++static int imx7_reset_probe(struct device_d *dev)
 +{
-+	struct of_phandle_args pd_args;
-+	struct generic_pm_domain *pd;
-+	int ret;
++	struct imx7_src *imx7src;
 +
-+	ret = of_parse_phandle_with_args(np, "power-domains",
-+				"#power-domain-cells", index, &pd_args);
-+	if (ret < 0)
-+		return ret;
-+
-+	pd = genpd_get_from_provider(&pd_args);
-+	if (IS_ERR(pd)) {
-+		ret = PTR_ERR(pd);
-+		dev_dbg(dev, "%s() failed to find PM domain: %d\n",
-+			__func__, ret);
-+		return driver_deferred_probe_check_state(dev);
++	imx7src = xzalloc(sizeof(*imx7src));
++	imx7src->regmap = syscon_node_to_regmap(dev->device_node);
++	if (IS_ERR(imx7src->regmap)) {
++		dev_err(dev, "Unable to get imx7-src regmap");
++		return PTR_ERR(imx7src->regmap);
 +	}
 +
-+	dev_dbg(dev, "adding to PM domain %s\n", pd->name);
++	imx7src->rcdev.nr_resets = IMX7_RESET_NUM;
++	imx7src->rcdev.ops       = &imx7_reset_ops;
++	imx7src->rcdev.of_node   = dev->device_node;
 +
-+	if (power_on)
-+		ret = genpd_power_on(pd, 0);
-+
-+	return ret ?: 1;
++	return reset_controller_register(&imx7src->rcdev);
 +}
 +
-+/**
-+ * genpd_dev_pm_attach - Attach a device to its PM domain using DT.
-+ * @dev: Device to attach.
-+ *
-+ * Parse device's OF node to find a PM domain specifier. If such is found,
-+ * attaches the device to retrieved pm_domain ops.
-+ *
-+ * Returns 1 on successfully attached PM domain, 0 when the device don't need a
-+ * PM domain or when multiple power-domains exists for it, else a negative error
-+ * code. Note that if a power-domain exists for the device, but it cannot be
-+ * found or turned on, then return -EPROBE_DEFER to ensure that the device is
-+ * not probed and to re-try again later.
-+ */
-+int genpd_dev_pm_attach(struct device_d *dev)
-+{
-+	if (!dev->device_node)
-+		return 0;
-+
-+	/*
-+	 * Devices with multiple PM domains must be attached separately, as we
-+	 * can only attach one PM domain per device.
-+	 */
-+	if (of_count_phandle_with_args(dev->device_node, "power-domains",
-+				       "#power-domain-cells") != 1)
-+		return 0;
-+
-+	return __genpd_dev_pm_attach(dev, dev->device_node, 0, true);
-+}
-+EXPORT_SYMBOL_GPL(genpd_dev_pm_attach);
-diff --git a/include/pm_domain.h b/include/pm_domain.h
-new file mode 100644
-index 0000000000..6d59587ece
---- /dev/null
-+++ b/include/pm_domain.h
-@@ -0,0 +1,82 @@
-+#ifndef _PM_DOMAIN_H
-+#define _PM_DOMAIN_H
-+
-+enum gpd_status {
-+	GPD_STATE_ACTIVE = 0,	/* PM domain is active */
-+	GPD_STATE_POWER_OFF,	/* PM domain is off */
++static const struct of_device_id imx7_reset_dt_ids[] = {
++	{ .compatible = "fsl,imx7d-src", },
++	{ /* sentinel */ },
 +};
 +
-+struct generic_pm_domain {
-+	const char *name;
-+	struct list_head gpd_list_node;	/* Node in the global PM domains list */
-+
-+	enum gpd_status status;	/* Current state of the domain */
-+
-+	int (*power_off)(struct generic_pm_domain *domain);
-+	int (*power_on)(struct generic_pm_domain *domain);
++static struct driver_d imx7_reset_driver = {
++	.name = "imx7d-src",
++	.probe = imx7_reset_probe,
++	.of_compatible = DRV_OF_COMPAT(imx7_reset_dt_ids),
 +};
-+
-+typedef struct generic_pm_domain *(*genpd_xlate_t)(struct of_phandle_args *args,
-+						   void *data);
-+
-+#ifdef CONFIG_PM_GENERIC_DOMAINS
-+
-+int genpd_dev_pm_attach(struct device_d *dev);
-+
-+/**
-+ * dev_pm_domain_attach - Attach a device to its PM domain.
-+ * @dev: Device to attach.
-+ * @power_on: Used to indicate whether we should power on the device.
-+ *
-+ * The @dev may only be attached to a single PM domain. By iterating through
-+ * the available alternatives we try to find a valid PM domain for the device.
-+ * As attachment succeeds, the ->detach() callback in the struct dev_pm_domain
-+ * should be assigned by the corresponding attach function.
-+ *
-+ * This function should typically be invoked from subsystem level code during
-+ * the probe phase. Especially for those that holds devices which requires
-+ * power management through PM domains.
-+ *
-+ * Callers must ensure proper synchronization of this function with power
-+ * management callbacks.
-+ *
-+ * Returns 0 on successfully attached PM domain or negative error code.
-+ */
-+static inline int dev_pm_domain_attach(struct device_d *dev, bool power_on)
-+{
-+	return genpd_dev_pm_attach(dev);
-+}
-+
-+int pm_genpd_init(struct generic_pm_domain *genpd, void *gov, bool is_off);
-+
-+int of_genpd_add_provider_simple(struct device_node *np,
-+				 struct generic_pm_domain *genpd);
-+
-+#else
-+
-+static inline int pm_genpd_init(struct generic_pm_domain *genpd,
-+				void *gov, bool is_off)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline int genpd_dev_pm_attach(struct device_d *dev)
-+{
-+	return 0;
-+}
-+
-+static inline int dev_pm_domain_attach(struct device_d *dev, bool power_on)
-+{
-+	return 0;
-+}
-+
-+static inline int
-+of_genpd_add_provider_simple(struct device_node *np,
-+			     struct generic_pm_domain *genpd)
-+{
-+	return -ENOTSUPP;
-+}
-+
-+#endif
-+
-+#endif
-\ No newline at end of file
++device_platform_driver(imx7_reset_driver);
 -- 
 2.20.1
 
