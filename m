@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1giCHC-0004Qh-ED
- for barebox@lists.infradead.org; Sat, 12 Jan 2019 05:56:20 +0000
-Received: by mail-pg1-x541.google.com with SMTP id g189so7217225pgc.5
- for <barebox@lists.infradead.org>; Fri, 11 Jan 2019 21:56:10 -0800 (PST)
+ id 1giCHB-0004PB-8z
+ for barebox@lists.infradead.org; Sat, 12 Jan 2019 05:56:18 +0000
+Received: by mail-pl1-x644.google.com with SMTP id b5so7731977plr.4
+ for <barebox@lists.infradead.org>; Fri, 11 Jan 2019 21:56:09 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 11 Jan 2019 21:55:20 -0800
-Message-Id: <20190112055524.7733-15-andrew.smirnov@gmail.com>
+Date: Fri, 11 Jan 2019 21:55:19 -0800
+Message-Id: <20190112055524.7733-14-andrew.smirnov@gmail.com>
 In-Reply-To: <20190112055524.7733-1-andrew.smirnov@gmail.com>
 References: <20190112055524.7733-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -19,61 +19,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 14/18] PCI: imx6: Do not wait for speed change on i.MX7
+Subject: [PATCH v2 13/18] PCI: imx6: Allow probe deferral by reset GPIO
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-UG9ydCBvZiBhIExpbnV4IGNvbW1pdCBlNmRjZDg3ZmZmNjlhOWQ0NTQxMDRiNjU1NjkwNzQ4NTVj
-Zjk1YjFlCgogIEFzIGNhbiBiZSBzZWVuIGZyb20gWzFdOgoKICAgICIuLi50aGUgZGlmZmVyZW50
-IGJlaGF2aW9yIGJldHdlZW4gaU1YNlEgUENJZSBhbmQgaU1YN0QgUENJZSBtYXliZSBjYXVzZWQK
-ICAgIGJ5IHRoZSBkaWZmZXJlbnQgY29udHJvbGxlciB2ZXJzaW9uLgoKICAgIFJlZ2FyZGluZyB0
-byB0aGUgRE9DIGRlc2NyaXB0aW9uLCB0aGUgRElSRUNUX1NQRUVEX0NIQU5HRSBzaG91bGQgYmUK
-ICAgIGNsZWFyZWQgYWZ0ZXIgdGhlIHNwZWVkIGNoYW5nZSBmcm9tIEdFTjEgdG8gR0VOMi4gVW5m
-b3J0dW5hdGVseSwgd2hlbgogICAgR0VOMSBkZXZpY2UgaXMgdXNlZCwgdGhlIGJlaGF2aW9yIGlz
-IG5vdCBkb2N1bWVudGVkLgoKICAgIFNvLCBJQyBkZXNpZ24gZ3V5cyBydW4gdGhlIHNpbXVsYXRp
-b24gYW5kIGZpbmQgb3V0IHRoZSBmb2xsb3dpbmcKICAgIGJlaGF2aW9yczoKCiAgICAgICAxLiBE
-SVJFQ1RfU1BFRURfQ0hBTkdFIHdpbGwgYmUgY2xlYXJlZCBpbiA3RCBhZnRlciBzcGVlZCBjaGFu
-Z2UKICAgICAgICAgIGZyb20gR0VOMSB0byBHRU4yLiBUaGlzIG1hdGNoZXMgZG9j4oCZcyBkZXNj
-cmlwdGlvbgoKICAgICAgIDIuIHNldCBNQVggbGluayBzcGVlZChQQ0lFX0NBUF9UQVJHRVRfTElO
-S19TUEVFRD0weDAxKSBhcyBHRU4xIGFuZAogICAgICAgICAgcmUtcnVuIHRoZSBzaW11bGF0aW9u
-LCBESVJFQ1RfU1BFRURfQ0hBTkdFIHdpbGwgbm90IGJlIGNsZWFyZWQ7CiAgICAgICAgICByZW1h
-aW4gYXMgMSwgdGhpcyBtYXRjaGVzIHlvdXIgcmVzdWx0LCBidXQgZnVuY3Rpb24gdGVzdCBpcwog
-ICAgICAgICAgcGFzc2VkLCBzbyB0aGlzIGJpdCBzaG91bGQgbm90IGFmZmVjdCB0aGUgbm9ybWFs
-IFBDSWUgZnVuY3Rpb24uIgoKICBpbXg2X3BjaWVfd2FpdF9mb3Jfc3BlZWRfY2hhbmdlKCkgd2ls
-bCByZXBvcnQgZmFsc2UgZmFpbHVyZXMgZm9yIEdlbjEgLT4KICBHZW4xIHNwZWVkIHRyYW5zaXRp
-b24sIHNvIGF2b2lkIGRvaW5nIHRoYXQgY2hlY2sgYW5kIGp1c3QgcmVseSBvbgogIGlteDZfcGNp
-ZV93YWl0X2Zvcl9saW5rKCkgb25seS4KCiAgWzFdIGh0dHBzOi8vY29tbXVuaXR5Lm54cC5jb20v
-bWVzc2FnZS84Njc5NDMKCiAgU2lnbmVkLW9mZi1ieTogQW5kcmV5IFNtaXJub3YgPGFuZHJldy5z
-bWlybm92QGdtYWlsLmNvbT4KICBTaWduZWQtb2ZmLWJ5OiBCam9ybiBIZWxnYWFzIDxiaGVsZ2Fh
-c0Bnb29nbGUuY29tPgogIFJldmlld2VkLWJ5OiBMdWNhcyBTdGFjaCA8bC5zdGFjaEBwZW5ndXRy
-b25peC5kZT4KICBDYzogeXVyb3Zza3lAZ21haWwuY29tCiAgQ2M6IEZhYmlvIEVzdGV2YW0gPGZh
-YmlvLmVzdGV2YW1AbnhwLmNvbT4KICBDYzogRG9uZyBBaXNoZW5nIDxkb25nYXM4NkBnbWFpbC5j
-b20+CiAgQ2M6IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwoKU2lnbmVkLW9m
-Zi1ieTogQW5kcmV5IFNtaXJub3YgPGFuZHJldy5zbWlybm92QGdtYWlsLmNvbT4KLS0tCiBkcml2
-ZXJzL3BjaS9wY2ktaW14Ni5jIHwgMTkgKysrKysrKysrKysrKysrLS0tLQogMSBmaWxlIGNoYW5n
-ZWQsIDE1IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9wY2kvcGNpLWlteDYuYyBiL2RyaXZlcnMvcGNpL3BjaS1pbXg2LmMKaW5kZXggY2U2OGIwMDdh
-Yi4uZDEyMWEyMGNlMSAxMDA2NDQKLS0tIGEvZHJpdmVycy9wY2kvcGNpLWlteDYuYworKysgYi9k
-cml2ZXJzL3BjaS9wY2ktaW14Ni5jCkBAIC01MDgsMTAgKzUwOCwyMSBAQCBzdGF0aWMgaW50IGlt
-eDZfcGNpZV9lc3RhYmxpc2hfbGluayhzdHJ1Y3QgaW14Nl9wY2llICppbXg2X3BjaWUpCiAJdG1w
-IHw9IFBPUlRfTE9HSUNfU1BFRURfQ0hBTkdFOwogCWR3X3BjaWVfd3JpdGVsX2RiaShwY2ksIFBD
-SUVfTElOS19XSURUSF9TUEVFRF9DT05UUk9MLCB0bXApOwogCi0JcmV0ID0gaW14Nl9wY2llX3dh
-aXRfZm9yX3NwZWVkX2NoYW5nZShpbXg2X3BjaWUpOwotCWlmIChyZXQpIHsKLQkJZGV2X2Vycihk
-ZXYsICJGYWlsZWQgdG8gYnJpbmcgbGluayB1cCFcbiIpOwotCQlnb3RvIGVycl9yZXNldF9waHk7
-CisJaWYgKGlteDZfcGNpZS0+dmFyaWFudCAhPSBJTVg3RCkgeworCQkvKgorCQkgKiBPbiBpLk1Y
-NywgRElSRUNUX1NQRUVEX0NIQU5HRSBiZWhhdmVzIGRpZmZlcmVudGx5CisJCSAqIGZyb20gaS5N
-WDYgZmFtaWx5IHdoZW4gbm8gbGluayBzcGVlZCB0cmFuc2l0aW9uCisJCSAqIG9jY3VycyBhbmQg
-d2UgZ28gR2VuMSAtPiB5ZXAsIEdlbjEuIFRoZSBkaWZmZXJlbmNlCisJCSAqIGlzIHRoYXQsIGlu
-IHN1Y2ggY2FzZSwgaXQgd2lsbCBub3QgYmUgY2xlYXJlZCBieSBIVworCQkgKiB3aGljaCB3aWxs
-IGNhdXNlIHRoZSBmb2xsb3dpbmcgY29kZSB0byByZXBvcnQgZmFsc2UKKwkJICogZmFpbHVyZS4K
-KwkJICovCisKKwkJcmV0ID0gaW14Nl9wY2llX3dhaXRfZm9yX3NwZWVkX2NoYW5nZShpbXg2X3Bj
-aWUpOworCQlpZiAocmV0KSB7CisJCQlkZXZfZXJyKGRldiwgIkZhaWxlZCB0byBicmluZyBsaW5r
-IHVwIVxuIik7CisJCQlnb3RvIGVycl9yZXNldF9waHk7CisJCX0KIAl9CiAKIAkvKiBNYWtlIHN1
-cmUgbGluayB0cmFpbmluZyBpcyBmaW5pc2hlZCBhcyB3ZWxsISAqLwotLSAKMi4yMC4xCgoKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
-aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
-YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Port of a Linux commit bde4a5a00e761f55be92f62378cf5024ced79ee3
+
+  Some designs implement reset GPIO via a GPIO expander connected to a
+  peripheral bus.  One such example would be i.MX7 Sabre board where said
+  GPIO is provided by SPI shift register connected to a bitbanged SPI bus.
+  To support such designs, allow reset GPIO request to defer probing of the
+  driver.
+
+  Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+  Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+  Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+  Cc: yurovsky@gmail.com
+  Cc: Fabio Estevam <fabio.estevam@nxp.com>
+  Cc: Dong Aisheng <dongas86@gmail.com>
+  Cc: linux-arm-kernel@lists.infradead.org
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/pci/pci-imx6.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
+index 6471f95b62..ce68b007ab 100644
+--- a/drivers/pci/pci-imx6.c
++++ b/drivers/pci/pci-imx6.c
+@@ -562,8 +562,8 @@ static const struct dw_pcie_host_ops imx6_pcie_host_ops = {
+ 	.host_init = imx6_pcie_host_init,
+ };
+ 
+-static int __init imx6_add_pcie_port(struct imx6_pcie *imx6_pcie,
+-				     struct device_d *dev)
++static int imx6_add_pcie_port(struct imx6_pcie *imx6_pcie,
++			      struct device_d *dev)
+ {
+ 	struct dw_pcie *pci = imx6_pcie->pci;
+ 	struct pcie_port *pp = &pci->pp;
+@@ -581,7 +581,7 @@ static int __init imx6_add_pcie_port(struct imx6_pcie *imx6_pcie,
+ 	return 0;
+ }
+ 
+-static int __init imx6_pcie_probe(struct device_d *dev)
++static int imx6_pcie_probe(struct device_d *dev)
+ {
+ 	struct resource *iores;
+ 	struct dw_pcie *pci;
+@@ -599,13 +599,11 @@ static int __init imx6_pcie_probe(struct device_d *dev)
+ 	imx6_pcie->variant =
+ 		(enum imx6_pcie_variants)of_device_get_match_data(dev);
+ 
+-	iores = dev_request_mem_resource(dev, 0);
+-	if (IS_ERR(iores))
+-		return PTR_ERR(iores);
+-	pci->dbi_base = IOMEM(iores->start);
+-
+ 	/* Fetch GPIOs */
+ 	imx6_pcie->reset_gpio = of_get_named_gpio(np, "reset-gpio", 0);
++	if (imx6_pcie->reset_gpio == -EPROBE_DEFER)
++		return imx6_pcie->reset_gpio;
++
+ 	if (gpio_is_valid(imx6_pcie->reset_gpio)) {
+ 		ret = gpio_request_one(imx6_pcie->reset_gpio,
+ 					    GPIOF_OUT_INIT_LOW, "PCIe reset");
+@@ -615,6 +613,11 @@ static int __init imx6_pcie_probe(struct device_d *dev)
+ 		}
+ 	}
+ 
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++	pci->dbi_base = IOMEM(iores->start);
++
+ 	/* Fetch clocks */
+ 	imx6_pcie->pcie_phy = clk_get(dev, "pcie_phy");
+ 	if (IS_ERR(imx6_pcie->pcie_phy)) {
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
