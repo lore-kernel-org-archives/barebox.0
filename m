@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1giDd9-0006XN-9m
- for barebox@lists.infradead.org; Sat, 12 Jan 2019 07:22:57 +0000
-Received: by mail-pg1-x543.google.com with SMTP id j10so7286636pga.1
- for <barebox@lists.infradead.org>; Fri, 11 Jan 2019 23:22:54 -0800 (PST)
+ id 1giDdB-0006a2-FJ
+ for barebox@lists.infradead.org; Sat, 12 Jan 2019 07:23:03 +0000
+Received: by mail-pg1-x544.google.com with SMTP id t13so7256911pgr.11
+ for <barebox@lists.infradead.org>; Fri, 11 Jan 2019 23:22:57 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 11 Jan 2019 23:22:24 -0800
-Message-Id: <20190112072234.21878-7-andrew.smirnov@gmail.com>
+Date: Fri, 11 Jan 2019 23:22:26 -0800
+Message-Id: <20190112072234.21878-9-andrew.smirnov@gmail.com>
 In-Reply-To: <20190112072234.21878-1-andrew.smirnov@gmail.com>
 References: <20190112072234.21878-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,41 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 06/16] PCI: Remove unused variables/code
+Subject: [PATCH v2 08/16] PCI: Drop "slots" from struct pci_bus
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Both host_head and host_tail are not used anywhere in the codebase and
-look like a leftover. Remove them.
+This field is not used by Barebox. Remove it. No functional change
+intended.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/pci/pci.c   | 1 -
+ include/linux/pci.h | 1 -
+ 2 files changed, 2 deletions(-)
 
 diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index ee8afa7e87..198ec9e995 100644
+index b0f5ac1b15..683f4e5540 100644
 --- a/drivers/pci/pci.c
 +++ b/drivers/pci/pci.c
-@@ -4,8 +4,6 @@
- #include <linux/sizes.h>
- #include <linux/pci.h>
+@@ -22,7 +22,6 @@ static struct pci_bus *pci_alloc_bus(void)
+ 	INIT_LIST_HEAD(&b->node);
+ 	INIT_LIST_HEAD(&b->children);
+ 	INIT_LIST_HEAD(&b->devices);
+-	INIT_LIST_HEAD(&b->slots);
+ 	INIT_LIST_HEAD(&b->resources);
  
--static struct pci_controller *hose_head, **hose_tail = &hose_head;
--
- LIST_HEAD(pci_root_buses);
- EXPORT_SYMBOL(pci_root_buses);
- static u8 bus_index;
-@@ -46,9 +44,6 @@ void register_pci_controller(struct pci_controller *hose)
- {
- 	struct pci_bus *bus;
+ 	return b;
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index c8f91cdd96..28aa56343b 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -129,7 +129,6 @@ struct pci_bus {
+ 	struct list_head node;		/* node in list of buses */
+ 	struct list_head children;	/* list of child buses */
+ 	struct list_head devices;	/* list of devices on this bus */
+-	struct list_head slots;		/* list of slots on this bus */
+ 	struct resource *resource[PCI_BRIDGE_RESOURCE_NUM];
+ 	struct list_head resources;	/* address space routed to this bus */
  
--	*hose_tail = hose;
--	hose_tail = &hose->next;
--
- 	bus = pci_alloc_bus();
- 	hose->bus = bus;
- 	bus->parent = hose->parent;
 -- 
 2.20.1
 
