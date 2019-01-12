@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1giDd8-0006WN-4G
+ id 1giDd9-0006XN-9m
  for barebox@lists.infradead.org; Sat, 12 Jan 2019 07:22:57 +0000
-Received: by mail-pf1-x443.google.com with SMTP id b7so8001813pfi.8
- for <barebox@lists.infradead.org>; Fri, 11 Jan 2019 23:22:53 -0800 (PST)
+Received: by mail-pg1-x543.google.com with SMTP id j10so7286636pga.1
+ for <barebox@lists.infradead.org>; Fri, 11 Jan 2019 23:22:54 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 11 Jan 2019 23:22:23 -0800
-Message-Id: <20190112072234.21878-6-andrew.smirnov@gmail.com>
+Date: Fri, 11 Jan 2019 23:22:24 -0800
+Message-Id: <20190112072234.21878-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20190112072234.21878-1-andrew.smirnov@gmail.com>
 References: <20190112072234.21878-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,65 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 05/16] PCI: Store and reuse BAR offsets
+Subject: [PATCH v2 06/16] PCI: Remove unused variables/code
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Save and reuse BAR offsets in dedicated constants instead of repeating
-the same expression multiple times. No functional change intended.
+Both host_head and host_tail are not used anywhere in the codebase and
+look like a leftover. Remove them.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/pci/pci.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
 diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 666b457257..ee8afa7e87 100644
+index ee8afa7e87..198ec9e995 100644
 --- a/drivers/pci/pci.c
 +++ b/drivers/pci/pci.c
-@@ -169,16 +169,18 @@ static void setup_device(struct pci_dev *dev, int max_bar)
- 			      cmd & ~(PCI_COMMAND_IO | PCI_COMMAND_MEMORY));
+@@ -4,8 +4,6 @@
+ #include <linux/sizes.h>
+ #include <linux/pci.h>
  
- 	for (bar = 0; bar < max_bar; bar++) {
-+		const int pci_base_address_0 = PCI_BASE_ADDRESS_0 + bar * 4;
-+		const int pci_base_address_1 = PCI_BASE_ADDRESS_1 + bar * 4;
- 		resource_size_t *last;
- 		u32 orig, mask, size;
- 		unsigned long flags;
- 		const char *kind;
- 		int r;
+-static struct pci_controller *hose_head, **hose_tail = &hose_head;
+-
+ LIST_HEAD(pci_root_buses);
+ EXPORT_SYMBOL(pci_root_buses);
+ static u8 bus_index;
+@@ -46,9 +44,6 @@ void register_pci_controller(struct pci_controller *hose)
+ {
+ 	struct pci_bus *bus;
  
--		pci_read_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, &orig);
--		pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, 0xfffffffe);
--		pci_read_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, &mask);
--		pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, orig);
-+		pci_read_config_dword(dev, pci_base_address_0, &orig);
-+		pci_write_config_dword(dev, pci_base_address_0, 0xfffffffe);
-+		pci_read_config_dword(dev, pci_base_address_0, &mask);
-+		pci_write_config_dword(dev, pci_base_address_0, orig);
- 
- 		if (mask == 0 || mask == 0xffffffff) {
- 			pr_debug("pbar%d set bad mask\n", bar);
-@@ -220,8 +222,7 @@ static void setup_device(struct pci_dev *dev, int max_bar)
- 		}
- 
- 		*last = ALIGN(*last, size);
--		pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4,
--				       *last);
-+		pci_write_config_dword(dev, pci_base_address_0, *last);
- 		dev->resource[bar].flags = flags;
- 		dev->resource[bar].start = *last;
- 		dev->resource[bar].end = dev->resource[bar].start + size - 1;
-@@ -232,8 +233,7 @@ static void setup_device(struct pci_dev *dev, int max_bar)
- 
- 		if (mask & PCI_BASE_ADDRESS_MEM_TYPE_64) {
- 			dev->resource[bar].flags |= IORESOURCE_MEM_64;
--			pci_write_config_dword(dev,
--			       PCI_BASE_ADDRESS_1 + bar * 4, 0);
-+			pci_write_config_dword(dev, pci_base_address_1, 0);
- 			bar++;
- 		}
- 	}
+-	*hose_tail = hose;
+-	hose_tail = &hose->next;
+-
+ 	bus = pci_alloc_bus();
+ 	hose->bus = bus;
+ 	bus->parent = hose->parent;
 -- 
 2.20.1
 
