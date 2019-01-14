@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gj2bL-0000J5-JT
- for barebox@lists.infradead.org; Mon, 14 Jan 2019 13:48:29 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <afa@pengutronix.de>) id 1gj2bH-00039P-P8
- for barebox@lists.infradead.org; Mon, 14 Jan 2019 14:48:23 +0100
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92-RC4)
- (envelope-from <afa@pengutronix.de>) id 1gj2bH-0003rs-HT
- for barebox@lists.infradead.org; Mon, 14 Jan 2019 14:48:23 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 14 Jan 2019 14:48:08 +0100
-Message-Id: <20190114134807.9638-1-a.fatoum@pengutronix.de>
+ id 1gj5JX-0006yf-BI
+ for barebox@lists.infradead.org; Mon, 14 Jan 2019 16:42:20 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
+ helo=dude02.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1gj5JT-0007Zj-UH
+ for barebox@lists.infradead.org; Mon, 14 Jan 2019 17:42:11 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 14 Jan 2019 17:42:04 +0100
+Message-Id: <20190114164211.10871-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -27,38 +24,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] images: check for use of obsolete pblx-*
+Subject: [PATCH 1/8] clk: add missing list.h include
 To: barebox@lists.infradead.org
 
-pblx-* has been removed in 5a1a5ed253 ("ARM: images: use piggydata")
-and using it (e.g. because a patchset was rebased) results in a non-obvious:
-
-	make[1]: *** No rule to make target 'images/*.pblx.*', \
-	needed by 'images/barebox-*.img'.  Stop.
-
-Avoid this by explicitly failing with an error message whenever pblx-y
-or pblx- has been defined.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- images/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/clk.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/images/Makefile b/images/Makefile
-index c4b2a483fbd1..c3ec498865da 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -105,6 +105,10 @@ include $(srctree)/images/Makefile.tegra
- include $(srctree)/images/Makefile.vexpress
- include $(srctree)/images/Makefile.at91
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 26da1114e85a..494221a43070 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -197,6 +197,8 @@ static inline int clk_set_rate(struct clk *clk, unsigned long rate)
  
-+ifneq ($(pblx-y)$(pblx-),)
-+  $(error pblx- has been removed. Please use pblb- instead.)
-+endif
+ #ifdef CONFIG_COMMON_CLK
+ 
++#include <linux/list.h>
 +
- targets += $(image-y) pbl.lds barebox.x barebox.z piggy.o
- targets += $(patsubst %,%.pblb,$(pblb-y))
- targets += $(patsubst %,%.pbl,$(pblb-y))
+ #define CLK_SET_RATE_PARENT     (1 << 0) /* propagate rate change up one level */
+ /* parents need enable during gate/ungate, set rate and re-parent */
+ #define CLK_OPS_PARENT_ENABLE   (1 << 12)
 -- 
 2.20.1
 
