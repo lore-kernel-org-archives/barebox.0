@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gj5ww-0006xX-I1
- for barebox@lists.infradead.org; Mon, 14 Jan 2019 17:23:00 +0000
-Date: Mon, 14 Jan 2019 18:22:52 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20190114172252.GA21469@ravnborg.org>
-References: <20181120084100.8737-1-s.hauer@pengutronix.de>
- <20190114163450.aydh27jptkc6p24y@pengutronix.de>
+ id 1gj8VU-0006yG-VR
+ for barebox@lists.infradead.org; Mon, 14 Jan 2019 20:06:50 +0000
+Received: by mail-lf1-x12d.google.com with SMTP id c16so210251lfj.8
+ for <barebox@lists.infradead.org>; Mon, 14 Jan 2019 12:06:47 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon, 14 Jan 2019 23:06:38 +0300
+Message-Id: <20190114200641.4242-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190114163450.aydh27jptkc6p24y@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,25 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] ARM: images: Use piggydata
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH-for-next 0/2] move umode_t typedef from asm/types.h to
+To: barebox@lists.infradead.org
 
-Hi Roland.
+This patchseries is marked "for-next" because it contains
+arch/riscv changes.
 
-On Mon, Jan 14, 2019 at 05:34:50PM +0100, Roland Hieber wrote:
-> Hi,
-> 
-> There are still two references to 'pblx' in the tree:
-> 
-> $ g grep pblx
-> Documentation/boards/mxs.rst:self extracting barebox image (``*.pblx``) and the prepare stage
-> common/Kconfig:          The pblx is a self extracting barebox binary.
-> 
-> Do those need to be updated, or can they stay?
-Please update - in 6 months from now it would just confuse the reader.
+Antony Pavlov (2):
+  MIPS: asm/types.h: drop unused stuff
+  move umode_t typedef from asm/types.h to linux/types.h
 
-	Sam
+ arch/arm/include/asm/types.h      |  2 --
+ arch/blackfin/include/asm/types.h |  2 --
+ arch/mips/include/asm/types.h     | 35 -------------------------------
+ arch/nios2/include/asm/types.h    |  2 --
+ arch/openrisc/include/asm/types.h |  2 --
+ arch/ppc/include/asm/types.h      |  2 --
+ arch/riscv/include/asm/types.h    |  2 --
+ arch/sandbox/include/asm/types.h  |  2 --
+ arch/x86/include/asm/types.h      |  2 --
+ include/linux/types.h             |  1 +
+ 10 files changed, 1 insertion(+), 51 deletions(-)
+
+-- 
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
