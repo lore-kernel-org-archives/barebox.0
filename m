@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1givZ8-00081r-GJ
- for barebox@lists.infradead.org; Mon, 14 Jan 2019 06:17:51 +0000
-Received: by mail-pg1-x541.google.com with SMTP id z10so9009168pgp.7
- for <barebox@lists.infradead.org>; Sun, 13 Jan 2019 22:17:42 -0800 (PST)
+ id 1givZB-00084p-DL
+ for barebox@lists.infradead.org; Mon, 14 Jan 2019 06:17:52 +0000
+Received: by mail-pf1-x441.google.com with SMTP id c73so9834933pfe.13
+ for <barebox@lists.infradead.org>; Sun, 13 Jan 2019 22:17:44 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 13 Jan 2019 22:17:07 -0800
-Message-Id: <20190114061709.13948-15-andrew.smirnov@gmail.com>
+Date: Sun, 13 Jan 2019 22:17:09 -0800
+Message-Id: <20190114061709.13948-17-andrew.smirnov@gmail.com>
 In-Reply-To: <20190114061709.13948-1-andrew.smirnov@gmail.com>
 References: <20190114061709.13948-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,86 +23,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 14/16] PCI: Assume 1:1 mapping if .res_start callback is
- NULL
+Subject: [PATCH v3 16/16] PCI: Consify pci_ops in struct pci_controller
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Sam Ravnborg <sam@ravnborg.org>
-
-Save a bit of no-op boilerplate by converting pci_iomap() to treat
-absense of .res_start callback as an indicator that 1:1 mapping is
-being used.
 
 Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-tegra.c            | 6 ------
- drivers/pci/pci_iomap.c            | 6 +++++-
- drivers/pci/pcie-designware-host.c | 6 ------
- 3 files changed, 5 insertions(+), 13 deletions(-)
+ drivers/pci/pci-mvebu.c            | 2 +-
+ drivers/pci/pci-tegra.c            | 2 +-
+ drivers/pci/pcie-designware-host.c | 4 ++--
+ include/linux/pci.h                | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/pci/pci-mvebu.c b/drivers/pci/pci-mvebu.c
+index c17ef3898b..ae2e83dacd 100644
+--- a/drivers/pci/pci-mvebu.c
++++ b/drivers/pci/pci-mvebu.c
+@@ -154,7 +154,7 @@ static resource_size_t mvebu_pcie_res_start(struct pci_bus *bus,
+ 		(res_addr & (resource_size(&pcie->mem) - 1));
+ }
+ 
+-static struct pci_ops mvebu_pcie_indirect_ops = {
++static const struct pci_ops mvebu_pcie_indirect_ops = {
+ 	.read = mvebu_pcie_indirect_rd_conf,
+ 	.write = mvebu_pcie_indirect_wr_conf,
+ 	.res_start = mvebu_pcie_res_start,
 diff --git a/drivers/pci/pci-tegra.c b/drivers/pci/pci-tegra.c
-index b6ccf8e5b5..7c9dd80c00 100644
+index 7c9dd80c00..7f10b7af2e 100644
 --- a/drivers/pci/pci-tegra.c
 +++ b/drivers/pci/pci-tegra.c
-@@ -366,15 +366,9 @@ static int tegra_pcie_write_conf(struct pci_bus *bus, unsigned int devfn,
+@@ -366,7 +366,7 @@ static int tegra_pcie_write_conf(struct pci_bus *bus, unsigned int devfn,
  	return PCIBIOS_SUCCESSFUL;
  }
  
--static int tegra_pcie_res_start(struct pci_bus *bus, resource_size_t res_addr)
--{
--	return res_addr;
--}
--
- static struct pci_ops tegra_pcie_ops = {
+-static struct pci_ops tegra_pcie_ops = {
++static const struct pci_ops tegra_pcie_ops = {
  	.read = tegra_pcie_read_conf,
  	.write = tegra_pcie_write_conf,
--	.res_start = tegra_pcie_res_start,
  };
- 
- static unsigned long tegra_pcie_port_get_pex_ctrl(struct tegra_pcie_port *port)
-diff --git a/drivers/pci/pci_iomap.c b/drivers/pci/pci_iomap.c
-index 2c58c0c0f9..2f06e60e38 100644
---- a/drivers/pci/pci_iomap.c
-+++ b/drivers/pci/pci_iomap.c
-@@ -3,6 +3,7 @@
-  *
-  * (C) Copyright 2004 Linus Torvalds
-  */
-+#include <common.h>
- #include <linux/pci.h>
- #include <io.h>
- 
-@@ -24,6 +25,9 @@ void __iomem *pci_iomap(struct pci_dev *dev, int bar)
- 	struct pci_bus *bus = dev->bus;
- 	resource_size_t start = pci_resource_start(dev, bar);
- 
--	return (void *)bus->host->pci_ops->res_start(bus, start);
-+	if (bus->host->pci_ops->res_start)
-+		start = bus->host->pci_ops->res_start(bus, start);
-+
-+	return IOMEM(start);
- }
- EXPORT_SYMBOL(pci_iomap);
 diff --git a/drivers/pci/pcie-designware-host.c b/drivers/pci/pcie-designware-host.c
-index 6cc4b93a31..af37a502d8 100644
+index af37a502d8..0c6ace0928 100644
 --- a/drivers/pci/pcie-designware-host.c
 +++ b/drivers/pci/pcie-designware-host.c
-@@ -335,15 +335,9 @@ static int dw_pcie_wr_conf(struct pci_bus *bus, u32 devfn,
+@@ -29,7 +29,7 @@
+ 
+ #include <abort.h>
+ 
+-static struct pci_ops dw_pcie_ops;
++static const struct pci_ops dw_pcie_ops;
+ static unsigned long global_io_offset;
+ 
+ static int dw_pcie_rd_own_conf(struct pcie_port *pp, int where, int size,
+@@ -335,7 +335,7 @@ static int dw_pcie_wr_conf(struct pci_bus *bus, u32 devfn,
  	return ret;
  }
  
--static int dw_pcie_res_start(struct pci_bus *bus, resource_size_t res_addr)
--{
--	return res_addr;
--}
--
- static struct pci_ops dw_pcie_ops = {
+-static struct pci_ops dw_pcie_ops = {
++static const struct pci_ops dw_pcie_ops = {
  	.read = dw_pcie_rd_conf,
  	.write = dw_pcie_wr_conf,
--	.res_start = dw_pcie_res_start,
  };
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index c00a866a48..478f10207a 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -158,7 +158,7 @@ struct pci_controller {
+ 	struct device_d *parent;
+ 	struct pci_bus *bus;
  
- static u8 dw_pcie_iatu_unroll_enabled(struct dw_pcie *pci)
+-	struct pci_ops *pci_ops;
++	const struct pci_ops *pci_ops;
+ 	struct resource *mem_resource;
+ 	struct resource *mem_pref_resource;
+ 	unsigned long mem_offset;
 -- 
 2.20.1
 
