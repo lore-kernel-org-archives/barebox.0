@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1giQwM-0001n2-1W
- for barebox@lists.infradead.org; Sat, 12 Jan 2019 21:35:39 +0000
-Date: Sat, 12 Jan 2019 22:35:30 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20190112213530.GA28606@ravnborg.org>
-References: <20190112072234.21878-1-andrew.smirnov@gmail.com>
- <20190112072234.21878-5-andrew.smirnov@gmail.com>
- <20190112110008.GC14273@ravnborg.org>
- <CAHQ1cqF65-fSEn9S=ZUzibnTmYWTSGypA_YDqjzakC1YSa4mTg@mail.gmail.com>
+ id 1givYr-0007mh-TV
+ for barebox@lists.infradead.org; Mon, 14 Jan 2019 06:17:27 +0000
+Received: by mail-pg1-x541.google.com with SMTP id g189so9011622pgc.5
+ for <barebox@lists.infradead.org>; Sun, 13 Jan 2019 22:17:25 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Sun, 13 Jan 2019 22:16:53 -0800
+Message-Id: <20190114061709.13948-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqF65-fSEn9S=ZUzibnTmYWTSGypA_YDqjzakC1YSa4mTg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,107 +21,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 04/16] PCI: Simplify resource setup code in
- setup_device()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v3 00/16] PCI improvements
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hi Andrey.
+Everyone:
 
-On Sat, Jan 12, 2019 at 12:49:17PM -0800, Andrey Smirnov wrote:
-> On Sat, Jan 12, 2019 at 3:00 AM Sam Ravnborg <sam@ravnborg.org> wrote:
-> >
-> > Hi Andrey.
-> >
-> > > ---
-> > >  drivers/pci/pci.c | 99 ++++++++++++++++++++---------------------------
-> > >  1 file changed, 42 insertions(+), 57 deletions(-)
-> > >
-> > > diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> > > index b8089207a4..666b457257 100644
-> > > --- a/drivers/pci/pci.c
-> > > +++ b/drivers/pci/pci.c
-> > > @@ -169,8 +169,11 @@ static void setup_device(struct pci_dev *dev, int max_bar)
-> > >                             cmd & ~(PCI_COMMAND_IO | PCI_COMMAND_MEMORY));
-> > >
-> > >       for (bar = 0; bar < max_bar; bar++) {
-> > > -             resource_size_t last_addr;
-> > > +             resource_size_t *last;
-> > >               u32 orig, mask, size;
-> > > +             unsigned long flags;
-> > > +             const char *kind;
-> > > +             int r;
-> > A more descriptine name than "r" would maybe improve readability.
-> >
-> 
-> It's just an index of an array, so single letter name seemed
-> reasonable. However, if you give me concrete suggestions, I am more
-> than happy to change it.
-busres - is this is the type of bus resource we deal with?
+This series is a number of various small improvementes (or at least
+they seemed so to me) as well as a couple of small fixes for 64-bit
+builds. With exception of "PCI: Switch to using %pa to print memory
+addresses" and "Convert ->res_start() to return resource_size_t" none
+of the patches are fixing problems so all of them are optional and can
+be dropped from the series.
 
-> 
-> > > @@ -183,67 +186,49 @@ static void setup_device(struct pci_dev *dev, int max_bar)
-> > >               if (mask & PCI_BASE_ADDRESS_SPACE_IO) { /* IO */
-> > > -                     last_io = ALIGN(last_io, size);
-> > > -                     last_addr = last_io;
-> > >               } else if ((mask & PCI_BASE_ADDRESS_MEM_PREFETCH) &&
-> > >                          last_mem_pref) /* prefetchable MEM */ {
-> > > -                     last_mem_pref = ALIGN(last_mem_pref, size);
-> > > -                                                IORESOURCE_PREFETCH;
-> > > -                     last_addr = last_mem_pref;
-> > >               } else { /* non-prefetch MEM */
-> > > -                     last_mem = ALIGN(last_mem, size);
-> > > -                     last_addr = last_mem;
-> > >               }
-> > >
-> 
-> You omitted
-> 
-> -               dev->resource[bar].start = last_addr;
-> 
-> here, which would make things a bit more clear since it make easier to
-> see that "dev->resource[bar].start" and "last_addr" are
-> interchangeable.
+Hopefully all of the patches are self-explanatory.
 
-Missed that - thanks.
+Feedback is welcome!
 
-> 
-> > > -             dev->resource[bar].end = last_addr + size - 1;
-> > > +             dev->resource[bar].start = *last;
-> > > +             dev->resource[bar].end = dev->resource[bar].start + size - 1;
-> > > +
-> > > +             pr_debug("pbar%d: allocated at %pa\n", bar, last);
-> > > +
-> > > +             *last += size;
-> >
-> > I could not see that dev->resource[bar].end was assigned the
-> > same value with the new code.
-> > Maybe I just missed it because I did not follow *last?
-> >
-> 
-> Yes, "*last" should have the same value as "last_addr" (I probably
-> should've kept the name). Also
-> 
-> dev->resource[bar].end = dev->resource[bar].start + size - 1;
-> 
-> should always be true, just by definition, so as long as
-> dev->resource[bar].start is the same (and it is) the value of .end
-> should be OK.
-> 
-> > I think it is worth to double check it.
-> >
-> 
-> I did compare debug outputs before/after when I was writing the patch,
-> and AFAICT they matched.
-Good!
+Changes since [v2]:
 
-You can add my:
+  - Collected Reviewed-by from Sam Ravnborg
 
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+  - Trivial renames 'r' -> 'busres', 'last' -> 'last_addr' in "PCI:
+    Simplify resource setup code in setup_device()"
 
-if you spin a new version.
+Changes since [v1]:
 
-	Sam
+  - Dropped all of the rejected patches
+
+Thanks,
+Andrey Smirnov
+
+[v2] http://lists.infradead.org/pipermail/barebox/2019-January/036426.html
+[v1] http://lists.infradead.org/pipermail/barebox/2019-January/036355.html
+
+Andrey Smirnov (16):
+  PCI: Switch to using %pa to print memory addresses
+  PCI: Replace magic number in setup_device()
+  PCI: Remove superfluous parens in setup_device()
+  PCI: Simplify resource setup code in setup_device()
+  PCI: Store and reuse BAR offsets
+  PCI: Remove unused variables/code
+  PCI: Make pci_scan_bus static
+  PCI: Drop "slots" from struct pci_bus
+  PCI: Drop "resources" from struct pci_bus
+  PCI: Drop "name" from struct pci_bus
+  PCI: Drop "ops" from struct pci_bus
+  PCI: Drop "rom_address" from struct pci_dev
+  PCI: Simplify alloc_pci_dev()
+  PCI: Assume 1:1 mapping if .res_start callback is NULL
+  PCI: Convert ->res_start() to return resource_size_t
+  PCI: Consify pci_ops in struct pci_controller
+
+ arch/mips/mach-malta/pci.c         |   3 +-
+ drivers/pci/pci-mvebu.c            |   8 +-
+ drivers/pci/pci-tegra.c            |   8 +-
+ drivers/pci/pci.c                  | 156 +++++++++++------------------
+ drivers/pci/pci_iomap.c            |   6 +-
+ drivers/pci/pcie-designware-host.c |  10 +-
+ include/linux/pci.h                |  12 +--
+ 7 files changed, 78 insertions(+), 125 deletions(-)
+
+-- 
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
