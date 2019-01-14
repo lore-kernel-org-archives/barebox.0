@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gj1FG-00089n-PE
- for barebox@lists.infradead.org; Mon, 14 Jan 2019 12:21:36 +0000
-Date: Mon, 14 Jan 2019 13:21:30 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20190114122130.dsfqagod6rrpqv2x@pengutronix.de>
-References: <20180918052122.12248-1-andrew.smirnov@gmail.com>
- <20180918052122.12248-8-andrew.smirnov@gmail.com>
+ id 1gj5JX-0006yz-CE
+ for barebox@lists.infradead.org; Mon, 14 Jan 2019 16:42:27 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
+ helo=dude02.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1gj5JU-0007Zj-4v
+ for barebox@lists.infradead.org; Mon, 14 Jan 2019 17:42:12 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 14 Jan 2019 17:42:10 +0100
+Message-Id: <20190114164211.10871-7-l.stach@pengutronix.de>
+In-Reply-To: <20190114164211.10871-1-l.stach@pengutronix.de>
+References: <20190114164211.10871-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180918052122.12248-8-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,40 +22,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/7] net: fec_imx: Do not use DMA coherent memory for Rx
- buffers
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 7/8] pinctrl: imx-v3: imx8mq does use the old binding
+To: barebox@lists.infradead.org
 
-Hello,
+The upstream discussion concluded on using the same binding as
+on previous i.MX SoCs.
 
-On Mon, Sep 17, 2018 at 10:21:22PM -0700, Andrey Smirnov wrote:
-> Trying to do unaligned access of coherent memory on AArch64 will lead
-> to an abort and some parts of our IP stack will do exactly that with
-> received packet buffer by using memcpy() to extracts parts of it.
-> =
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ drivers/pinctrl/imx-iomux-v3.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-> Convert the driver to use regular memory for received data buffers to
-> prevent the issue from happening.
+diff --git a/drivers/pinctrl/imx-iomux-v3.c b/drivers/pinctrl/imx-iomux-v3.c
+index b2a67fcccc5f..5fadc84151eb 100644
+--- a/drivers/pinctrl/imx-iomux-v3.c
++++ b/drivers/pinctrl/imx-iomux-v3.c
+@@ -220,9 +220,6 @@ static struct imx_iomux_v3_data imx_iomux_imx7_lpsr_data = {
+ 	.flags = ZERO_OFFSET_VALID | IMX7_PINMUX_LPSR,
+ };
+ 
+-static struct imx_iomux_v3_data imx_iomux_imx8_data = {
+-	.flags = SHARE_CONF,
+-};
+ 
+ static __maybe_unused struct of_device_id imx_iomux_v3_dt_ids[] = {
+ 	{
+@@ -250,7 +247,6 @@ static __maybe_unused struct of_device_id imx_iomux_v3_dt_ids[] = {
+ 		.data = &imx_iomux_imx7_lpsr_data,
+ 	}, {
+ 		.compatible = "fsl,imx8mq-iomuxc",
+-		.data = &imx_iomux_imx8_data,
+ 	}, {
+ 		/* sentinel */
+ 	}
+-- 
+2.20.1
 
-I didn't spend time yet to debug, but this commit is pointed out to
-break nfs booting on an mx28evk board.
-
-Maybe someone spots the obvious problem before I come around to fix
-this.
-
-Best regards
-Uwe
-
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
