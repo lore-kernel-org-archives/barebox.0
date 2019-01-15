@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gf0kM-0006qA-KL
- for barebox@lists.infradead.org; Thu, 03 Jan 2019 11:01:08 +0000
-Date: Thu, 3 Jan 2019 12:01:04 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190103110104.7dvssb3qnqh5y2sj@pengutronix.de>
-References: <1545228423-7461-1-git-send-email-s.riedmueller@phytec.de>
+Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat
+ Linux)) id 1gjPw5-0005SO-E5
+ for barebox@lists.infradead.org; Tue, 15 Jan 2019 14:43:28 +0000
+From: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+Date: Tue, 15 Jan 2019 14:42:59 +0000
+Message-ID: <faedf740-1747-9484-fb70-2bfa36689602@data-modul.com>
+References: <1b58b623-806b-7e15-7419-7fdd97a85f2a@data-modul.com>
+ <20190111111316.i4sbti24awp2in3e@pengutronix.de>
+In-Reply-To: <20190111111316.i4sbti24awp2in3e@pengutronix.de>
+Content-Language: de-DE
+Content-ID: <0E8122B93E678B448F4E611E5089CCBC@data-modul.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1545228423-7461-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,73 +20,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] nvmem: ocotp: Fix writing of second mac address fuses on
- imx6ul
-To: Stefan Riedmueller <s.riedmueller@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: build barebox for imx8mqevk
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Wed, Dec 19, 2018 at 03:07:03PM +0100, Stefan Riedmueller wrote:
-> Commit 19a32c0f6bf0 ("nvmem: ocotp: Add support for second mac address
-> fuses on imx6ul") added support for correctly reading the second MAC
-> address from fuses of the i.MX 6UL/ULL but not for writing. So also fit
-> writing of the second MAC address fuses to the correct method.
-> 
-> Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
-> ---
->  drivers/nvmem/ocotp.c | 13 +++++++++++--
->  1 file changed, 11 insertions(+), 2 deletions(-)
-
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-> index e0cf35f0b73c..d904bd08f0c5 100644
-> --- a/drivers/nvmem/ocotp.c
-> +++ b/drivers/nvmem/ocotp.c
-> @@ -446,9 +446,18 @@ static int imx_ocotp_set_mac(struct param_d *param, void *priv)
->  {
->  	char buf[MAC_BYTES];
->  	struct ocotp_priv_ethaddr *ethaddr = priv;
-> +	int ret;
->  
-> -	ethaddr->data->format_mac(buf, ethaddr->value,
-> -				  OCOTP_MAC_TO_HW);
-> +	ret = regmap_bulk_read(ethaddr->map, ethaddr->offset, buf, MAC_BYTES);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (ethaddr->offset != IMX6UL_MAC_OFFSET_1)
-> +		ethaddr->data->format_mac(buf, ethaddr->value,
-> +					  OCOTP_MAC_TO_HW);
-> +	else
-> +		ethaddr->data->format_mac(buf + 2, ethaddr->value,
-> +					  OCOTP_MAC_TO_HW);
->  
->  	return regmap_bulk_write(ethaddr->map, ethaddr->offset,
->  				 buf, MAC_BYTES);
-> -- 
-> 2.7.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksDQoNClRoYW5rIHlvdS4gTm93IEkgY291bGQgYnVpbGQgdGhlIEJhcmVib3ggOikNCg0KDQpC
+ZXN0LA0KUmV5aGFuZWgNCg0KT24gMS8xMS8xOSAxMjoxMyBQTSwgU2FzY2hhIEhhdWVyIHdyb3Rl
+Og0KPiBIaSwNCj4NCj4gT24gRnJpLCBKYW4gMTEsIDIwMTkgYXQgMDc6NTM6MTVBTSArMDAwMCwg
+WWF6ZGFuaSwgUmV5aGFuZWggd3JvdGU6DQo+PiBIZWxsbyBldmVyeW9uZSwNCj4+DQo+PiBJIGFt
+IGdvaW5nIHRvIGJ1aWxkIEJhcmVib3ggZm9yIG15IGlteDhtcSBldmFsdWF0aW9uIGtpdCBhbmQg
+aW4gdGhpcyBwcm9jZXNzLCBJDQo+PiBoYXZlIGZhY2VkIGEgcHJvYmxlbS4NCj4+DQo+PiBBdCBm
+aXJzdCwgSSB1c2VkIGEgMzJiaXQtYXJtdG9vbGNoYWluKGFybS1wb2t5LWxpbnV4LWdudWVhYmkt
+Z2NjKSwgd2hpY2ggSSBoYXZlDQo+PiB1c2VkIGZvciBidWlsZGluZyBiYXJlYm94IGZvciBpbXg2
+Li4NCj4+ICQgbWFrZSBpbXhfdjhfZGVmY29uZmlnDQo+PiAkIG1ha2UNCj4+DQo+PiBUaGVuIEkg
+Z290IHRoaXMgZXJyb3I6DQo+PiBhcm0tcG9reS1saW51eC1nbnVlYWJpLWdjYzogZXJyb3I6IHVu
+cmVjb2duaXplZCBhcmd1bWVudCBpbiBvcHRpb24g4oCYLW1hYmk9bHA2NOKAmQ0KPg0KPiBUaGlz
+IGNhbm5vdCB3b3JrLiBZb3UgbmVlZCBhIDY0Yml0IHRvb2xjaGFpbi4NCj4NCj4+DQo+Pg0KPj4g
+VGhlbiwgSSB1c2VkIGEgNjRiaXQtYXJtLXRvb2xjaGFpbihhYXJjaDY0LXBva3ktbGludXgtZ2Nj
+KS4NCj4+IFdoZW4gSSB0cnkgYWdhaW46DQo+Pg0KPj4gJCBtYWtlIGlteF92OF9kZWZjb25maWcN
+Cj4+IE1ha2VmaWxlOjQwNTogL2RldmVsb3BtZW50L2dpdGFyY2hpdmVzL2JhcmVib3gvYXJjaC9h
+cm02NC9NYWtlZmlsZTogTm8gc3VjaCBmaWxlDQo+PiBvciBkaXJlY3RvcnkNCj4+IG1ha2U6ICoq
+KiBObyBydWxlIHRvIG1ha2UgdGFyZ2V0DQo+PiAnL2RldmVsb3BtZW50L2dpdGFyY2hpdmVzL2Jh
+cmVib3gvYXJjaC9hcm02NC9NYWtlZmlsZScuICBTdG9wLg0KPj4NCj4+IEkgd291bGQgYXBwcmVj
+aWF0ZSBpZiB5b3UgaGVscCBtZSwgaG93IHRvIGNvbXBpbGUgQmFyZWJveCBmb3IgaW14OC4NCj4N
+Cj4gWW91IGhhdmUgdG8gcGFzcyBBUkNIPWFybSBhcyBlbnZpcm9ubWVudCB2YXJpYWJsZS4gSXQg
+c2VlbXMgdGhhdCB5b3UNCj4gcGFzcyBBUkNIPWFybTY0Lg0KPg0KPiBJbiBiYXJlYm94IGJvdGgg
+QVJNIDMyYml0IGFuZCA2NGJpdCBhcmUgaGFuZGxlZCB1bmRlciBhcmNoL2FybSwNCj4gbmV2ZXJ0
+aGVsZXNzIHlvdSBoYXZlIHRvIHBhc3MgYSBzdWl0YWJsZSB0b29sY2hhaW4uDQo+DQo+IFJlZ2Fy
+ZHMsDQo+ICAgU2FzY2hhDQo+DQoNCi0tDQpSZXloYW5laCBZYXpkYW5pDQpEYXRhIE1vZHVsIEFH
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIFRFTDogICAgKzQ5LTg5LTU2MDE3LTE1NA0KRW1i
+ZWRkZWQgZGV2ZWxvcG1lbnQgICAgICAgICAgICAgICAgIEZBWDogICAgKzQ5LTg5LTU2MDE3LTEx
+OQ0KTGludXggLSBEZXZlbG9wbWVudCAgICAgICAgICAgICAgICAgICAgICBSRzogSFItTXVlbmNo
+ZW4gQi04NTU5MQ0KTGFuZHNiZXJnZXIgU3RyLiAzMjIgRC04MDY4NyBNdWVuY2hlbiAtIGh0dHA6
+Ly93d3cuZGF0YS1tb2R1bC5jb20NCg0KVmVydHJhdWxpY2hlIEUtTWFpbCB2b24gLyBDb25maWRl
+bnRpYWwgZS1tYWlsIGZyb206IERBVEEgTU9EVUwgQUcNClZvcnN0YW5kIC8gQ0VPOiBEci4gRmxv
+cmlhbiBQZXNhaGwNClZvcnNpdHplbmRlIGRlcyBBdWZzaWNodHNyYXRlcyAvIENoYWlyd29tYW4g
+b2YgdGhlIFN1cGVydmlzb3J5IEJvYXJkOiBLcmlzdGluIEQuIFJ1c3NlbGwNClNpdHogZGVyIEdl
+c2VsbHNjaGFmdCAvIFJlZ2lzdGVyZWQgT2ZmaWNlOiBNw7xuY2hlbg0KUmVnaXN0ZXJnZXJpY2h0
+IC8gUmVnaXN0cmF0aW9uIENvdXJ0OiBNw7xuY2hlbiBIYW5kZWxzcmVnaXN0ZXIgQiA4NSA1OTEN
+Cg0KDQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJh
+cmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
+dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
