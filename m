@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjIRf-0005f1-6A
- for barebox@lists.infradead.org; Tue, 15 Jan 2019 06:43:32 +0000
-Date: Tue, 15 Jan 2019 07:43:27 +0100
+ id 1gjJ3S-00022E-La
+ for barebox@lists.infradead.org; Tue, 15 Jan 2019 07:22:36 +0000
+Date: Tue, 15 Jan 2019 08:22:31 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190115064327.d2ydxfuyzlkgkiil@pengutronix.de>
-References: <20190114164211.10871-1-l.stach@pengutronix.de>
- <20190114164211.10871-4-l.stach@pengutronix.de>
- <CAHQ1cqEhbRQiM27vXtn4oExK4ZRVr3Cv8QooHE-=jzEH_V3zZg@mail.gmail.com>
+Message-ID: <20190115072231.cn7edbxsskx63ces@pengutronix.de>
+References: <20190112055524.7733-1-andrew.smirnov@gmail.com>
+ <20190112104822.GB14273@ravnborg.org>
+ <CAHQ1cqGD9sTWP4yS2OFDuXAdQaC5L6JnbyQPd71pO49v2qBxYg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAHQ1cqEhbRQiM27vXtn4oExK4ZRVr3Cv8QooHE-=jzEH_V3zZg@mail.gmail.com>
+In-Reply-To: <CAHQ1cqGD9sTWP4yS2OFDuXAdQaC5L6JnbyQPd71pO49v2qBxYg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,80 +24,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/8] clk: add divider_recalc_rate helper
+Subject: Re: [PATCH v2 00/18] PCIe support for i.MX7
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Cc: Barebox List <barebox@lists.infradead.org>, Sam Ravnborg <sam@ravnborg.org>
 
-On Mon, Jan 14, 2019 at 04:20:04PM -0800, Andrey Smirnov wrote:
-> On Mon, Jan 14, 2019 at 8:42 AM Lucas Stach <l.stach@pengutronix.de> wrote:
+On Sat, Jan 12, 2019 at 11:49:19AM -0800, Andrey Smirnov wrote:
+> On Sat, Jan 12, 2019 at 2:48 AM Sam Ravnborg <sam@ravnborg.org> wrote:
 > >
-> > Closer to Linux kernel implementation and needed for imx8mq
-> > composite clock.
+> > Hi Andrey.
 > >
-> > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> > ---
-> >  drivers/clk/clk-divider.c | 30 ++++++++++++++++++++++--------
-> >  include/linux/clk.h       |  5 +++++
-> >  2 files changed, 27 insertions(+), 8 deletions(-)
+> > > Feedback is welcome!
 > >
-> > diff --git a/drivers/clk/clk-divider.c b/drivers/clk/clk-divider.c
-> > index 791e10ea99cd..7b1bdde1ce18 100644
-> > --- a/drivers/clk/clk-divider.c
-> > +++ b/drivers/clk/clk-divider.c
-> > @@ -20,6 +20,7 @@
-> >  #include <linux/clk.h>
-> >  #include <linux/err.h>
-> >  #include <linux/log2.h>
-> > +#include <asm-generic/div64.h>
+> > I have looked through the patches - and nothing jumped at me.
+> > A few places could use a newline but not worth a re-spin.
 > >
-> >  #define div_mask(d)    ((1 << ((d)->width)) - 1)
+> > I personal dislike filenames like "helpers.c" but thats pure bikeshedding.
 > >
-> > @@ -56,17 +57,17 @@ static unsigned int _get_table_div(const struct clk_div_table *table,
-> >         return 0;
-> >  }
-> >
-> > -static unsigned int _get_div(struct clk_divider *divider, unsigned int val)
-> > +static unsigned int _get_div(const struct clk_div_table *table,
-> > +                            unsigned int val, unsigned long flags, u8 width)
-> >  {
-> > -       if (divider->flags & CLK_DIVIDER_ONE_BASED)
-> > +       if (flags & CLK_DIVIDER_ONE_BASED)
-> >                 return val;
-> > -       if (divider->flags & CLK_DIVIDER_POWER_OF_TWO)
-> > +       if (flags & CLK_DIVIDER_POWER_OF_TWO)
-> >                 return 1 << val;
-> > -       if (divider->table)
-> > -               return _get_table_div(divider->table, val);
-> > +       if (table)
-> > +               return _get_table_div(table, val);
-> >         return val + 1;
-> >  }
-> > -
-> >  static unsigned int _get_table_val(const struct clk_div_table *table,
-> >                                                         unsigned int div)
-> >  {
-> > @@ -89,6 +90,18 @@ static unsigned int _get_val(struct clk_divider *divider, unsigned int div)
-> >         return div - 1;
-> >  }
-> >
-> > +unsigned long divider_recalc_rate(struct clk *clk, unsigned long parent_rate,
-> > +               unsigned int val,
-> > +               const struct clk_div_table *table,
-> > +               unsigned long flags, unsigned long width)
-> > +{
-> > +       unsigned int div;
-> > +
-> > +       div = _get_div(table, val, flags, width);
-> > +
-> > +       return DIV_ROUND_UP_ULL((u64)parent_rate, div);
 > 
-> I just rebased on latest 'next', but I don't seem to have the
-> definition for DIV_ROUND_UP_ULL(), which breaks the build. Is there a
-> patch that I am missing?
+> One of my goals was to keep things as close to how they are in Linux
+> as possible. That's how that file is called there, so you might have
+> to take it with Mark Brown if you want to change that.
+> 
+> > Looks good with the simple regulator support, which most likely will prove
+> > useful later also for other drivers.
+> > I hope we do not need deferred probe much...
+> >
+> > With deferred probe ported from the kernel, I wonder
+> > how far we are from porting the devm_* functionlity too.
+> > Not the I think this will share code with deferred probe,
+> > just that this is another nice kernel idiom we could
+> > benefit from in barebox.
+> >
+> 
+> Just to clarify, deferred probe was already a part of Barebox for a
+> while, the patches in this series only change the fact that Barebox
+> core now has a chance to "give up" on deferred device and declare it
+> as non-existent.
+> 
+> As for devm_* functions, not far at all. I don't think it would be
+> difficult to port and I've been meaning to do that for a while, just
+> never had an opportunity to do it so far.
 
-It was part of "mtd: core: Fix erase area alignment for non power of 2
-erasesize" from Ladis, but not in v2 anymore. I'll add it to this patch
-then.
+There's another idea I'd like to explore before we go deeper into probe
+deferral.
+
+Whenever a framework needs a device probed from some device tree node it
+could call a of_ensure_probed(struct device_node *np) function. This
+function would then go back into the driver core and probe the device
+behind this device node.
+
+This would require some restructuring of the driver core, like for
+example all devices and drivers have to be registered before they are
+actually probed. This of course goes against non device tree based
+builds which have a hand crafted initcall order to resolve dependencies.
+
+Maybe this is a crazy idea, but at least I'd like to know why this
+doesn't work ;)
 
 Sascha
 
