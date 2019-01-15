@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
+Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjVIK-0005sW-Ve
- for barebox@lists.infradead.org; Tue, 15 Jan 2019 20:26:55 +0000
-Received: by mail-pg1-x542.google.com with SMTP id w6so1717462pgl.6
- for <barebox@lists.infradead.org>; Tue, 15 Jan 2019 12:26:44 -0800 (PST)
+ id 1gjVIO-0005wW-8D
+ for barebox@lists.infradead.org; Tue, 15 Jan 2019 20:26:58 +0000
+Received: by mail-pg1-x544.google.com with SMTP id z10so1716484pgp.7
+ for <barebox@lists.infradead.org>; Tue, 15 Jan 2019 12:26:48 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 15 Jan 2019 12:25:56 -0800
-Message-Id: <20190115202601.24831-13-andrew.smirnov@gmail.com>
+Date: Tue, 15 Jan 2019 12:25:58 -0800
+Message-Id: <20190115202601.24831-15-andrew.smirnov@gmail.com>
 In-Reply-To: <20190115202601.24831-1-andrew.smirnov@gmail.com>
 References: <20190115202601.24831-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,17 +23,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 12/17] PCI: imx6: Allow probe deferral by reset GPIO
+Subject: [PATCH v3 14/17] PCI: imx6: Do not switch speed if Gen2 is disabled
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit bde4a5a00e761f55be92f62378cf5024ced79ee3
+Port of a Linux commit 93b226f9c65a951a91617f87ba1f05f14e59f26f
 
-  Some designs implement reset GPIO via a GPIO expander connected to a
-  peripheral bus.  One such example would be i.MX7 Sabre board where said
-  GPIO is provided by SPI shift register connected to a bitbanged SPI bus.
-  To support such designs, allow reset GPIO request to defer probing of the
-  driver.
+  Save a bit of time and avoid going through link speed change procedure in
+  configuration where link max speed is limited to Gen1 in DT.
 
   Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
   Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
@@ -45,62 +42,83 @@ Port of a Linux commit bde4a5a00e761f55be92f62378cf5024ced79ee3
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ drivers/pci/pci-imx6.c | 55 +++++++++++++++++++++---------------------
+ 1 file changed, 28 insertions(+), 27 deletions(-)
 
 diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index 6471f95b62..ce68b007ab 100644
+index d121a20ce1..6bdc9465db 100644
 --- a/drivers/pci/pci-imx6.c
 +++ b/drivers/pci/pci-imx6.c
-@@ -562,8 +562,8 @@ static const struct dw_pcie_host_ops imx6_pcie_host_ops = {
- 	.host_init = imx6_pcie_host_init,
- };
- 
--static int __init imx6_add_pcie_port(struct imx6_pcie *imx6_pcie,
--				     struct device_d *dev)
-+static int imx6_add_pcie_port(struct imx6_pcie *imx6_pcie,
-+			      struct device_d *dev)
- {
- 	struct dw_pcie *pci = imx6_pcie->pci;
- 	struct pcie_port *pp = &pci->pp;
-@@ -581,7 +581,7 @@ static int __init imx6_add_pcie_port(struct imx6_pcie *imx6_pcie,
- 	return 0;
- }
- 
--static int __init imx6_pcie_probe(struct device_d *dev)
-+static int imx6_pcie_probe(struct device_d *dev)
- {
- 	struct resource *iores;
- 	struct dw_pcie *pci;
-@@ -599,13 +599,11 @@ static int __init imx6_pcie_probe(struct device_d *dev)
- 	imx6_pcie->variant =
- 		(enum imx6_pcie_variants)of_device_get_match_data(dev);
- 
--	iores = dev_request_mem_resource(dev, 0);
--	if (IS_ERR(iores))
--		return PTR_ERR(iores);
--	pci->dbi_base = IOMEM(iores->start);
+@@ -496,41 +496,42 @@ static int imx6_pcie_establish_link(struct imx6_pcie *imx6_pcie)
+ 		tmp &= ~PCIE_RC_LCR_MAX_LINK_SPEEDS_MASK;
+ 		tmp |= PCIE_RC_LCR_MAX_LINK_SPEEDS_GEN2;
+ 		dw_pcie_writel_dbi(pci, PCIE_RC_LCR, tmp);
+-	} else {
+-		dev_info(dev, "Link: Gen2 disabled\n");
+-	}
 -
- 	/* Fetch GPIOs */
- 	imx6_pcie->reset_gpio = of_get_named_gpio(np, "reset-gpio", 0);
-+	if (imx6_pcie->reset_gpio == -EPROBE_DEFER)
-+		return imx6_pcie->reset_gpio;
-+
- 	if (gpio_is_valid(imx6_pcie->reset_gpio)) {
- 		ret = gpio_request_one(imx6_pcie->reset_gpio,
- 					    GPIOF_OUT_INIT_LOW, "PCIe reset");
-@@ -615,6 +613,11 @@ static int __init imx6_pcie_probe(struct device_d *dev)
- 		}
- 	}
+-	/*
+-	 * Start Directed Speed Change so the best possible speed both link
+-	 * partners support can be negotiated.
+-	 */
+-	tmp = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
+-	tmp |= PORT_LOGIC_SPEED_CHANGE;
+-	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, tmp);
  
-+	iores = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(iores))
-+		return PTR_ERR(iores);
-+	pci->dbi_base = IOMEM(iores->start);
+-	if (imx6_pcie->variant != IMX7D) {
+ 		/*
+-		 * On i.MX7, DIRECT_SPEED_CHANGE behaves differently
+-		 * from i.MX6 family when no link speed transition
+-		 * occurs and we go Gen1 -> yep, Gen1. The difference
+-		 * is that, in such case, it will not be cleared by HW
+-		 * which will cause the following code to report false
+-		 * failure.
++		 * Start Directed Speed Change so the best possible
++		 * speed both link partners support can be negotiated.
+ 		 */
++		tmp = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
++		tmp |= PORT_LOGIC_SPEED_CHANGE;
++		dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, tmp);
 +
- 	/* Fetch clocks */
- 	imx6_pcie->pcie_phy = clk_get(dev, "pcie_phy");
- 	if (IS_ERR(imx6_pcie->pcie_phy)) {
++		if (imx6_pcie->variant != IMX7D) {
++			/*
++			 * On i.MX7, DIRECT_SPEED_CHANGE behaves
++			 * differently from i.MX6 family when no link
++			 * speed transition occurs and we go Gen1 ->
++			 * yep, Gen1. The difference is that, in such
++			 * case, it will not be cleared by HW which
++			 * will cause the following code to report
++			 * false failure.
++			 */
++
++			ret = imx6_pcie_wait_for_speed_change(imx6_pcie);
++			if (ret) {
++				dev_err(dev, "Failed to bring link up!\n");
++				goto err_reset_phy;
++			}
++		}
+ 
+-		ret = imx6_pcie_wait_for_speed_change(imx6_pcie);
++		/* Make sure link training is finished as well! */
++		ret = imx6_pcie_wait_for_link(imx6_pcie);
+ 		if (ret) {
+ 			dev_err(dev, "Failed to bring link up!\n");
+ 			goto err_reset_phy;
+ 		}
+-	}
+-
+-	/* Make sure link training is finished as well! */
+-	ret = imx6_pcie_wait_for_link(imx6_pcie);
+-	if (ret) {
+-		dev_err(dev, "Failed to bring link up!\n");
+-		goto err_reset_phy;
+-	}
++	} else {
++		dev_info(dev, "Link: Gen2 disabled\n");
++        }
+ 
+ 	tmp = dw_pcie_readl_dbi(pci, PCIE_RC_LCSR);
+ 	dev_info(dev, "Link up, Gen%i\n", (tmp >> 16) & 0xf);
 -- 
 2.20.1
 
