@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201]
+Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2]
  helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjHWZ-0007Sz-Ai
- for barebox@lists.infradead.org; Tue, 15 Jan 2019 05:44:36 +0000
+ id 1gjHWa-0007Tl-5P
+ for barebox@lists.infradead.org; Tue, 15 Jan 2019 05:44:38 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue, 15 Jan 2019 06:44:08 +0100
-Message-Id: <47655dedf3006959ed976ad4c7fc0adc9ebf5a30.1547530950.git-series.r.czerwinski@pengutronix.de>
+Date: Tue, 15 Jan 2019 06:44:09 +0100
+Message-Id: <9320eb666c0057ffb3b7475108a16c76623a527d.1547530950.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.cea99e013da63859278229c6e1566362a1800ff4.1547530950.git-series.r.czerwinski@pengutronix.de>
 References: <cover.cea99e013da63859278229c6e1566362a1800ff4.1547530950.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -22,30 +22,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v6 8/9] doc: bcm283x: remove miniuart overlay instruction
+Subject: [PATCH v6 9/9] ARM: rpi: use defines for uart bases
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Since we now use the miniuart on the raspberry pi 3, the miniuart overlay is no
-longer needed.
+Previously the clkdev_add_phybase was called on magic register values,
+add defines which clarify the device for which the phybase clkdev is created.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- Documentation/boards/bcm2835.rst | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm/boards/raspberry-pi/rpi-common.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/boards/bcm2835.rst b/Documentation/boards/bcm2835.rst
-index 79ea0ff..ea80d58 100644
---- a/Documentation/boards/bcm2835.rst
-+++ b/Documentation/boards/bcm2835.rst
-@@ -22,7 +22,6 @@ Raspberry Pi
+diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
+index e29177d..b8a41b2 100644
+--- a/arch/arm/boards/raspberry-pi/rpi-common.c
++++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+@@ -297,6 +297,10 @@ static int rpi_clock_init(void)
+ }
+ postconsole_initcall(rpi_clock_init);
  
-          kernel=barebox.img
-          enable_uart=1
--         dtoverlay=pi3-miniuart-bt
++#define BCM2835_PL011_BASE 0x20201000
++#define BCM2836_PL011_BASE 0x3f201000
++#define BCM2836_MINIUART_BASE 0x3f215040
++
+ static int rpi_console_clock_init(void)
+ {
+ 	struct clk *clk;
+@@ -306,15 +310,15 @@ static int rpi_console_clock_init(void)
  
-      (For more information, refer to the `documentation for config.txt`_.)
+ 	clk = clk_fixed("uart0-pl0110", 3 * 1000 * 1000);
+ 	clk_register_clkdev(clk, NULL, "uart0-pl0110");
+-	clkdev_add_physbase(clk, 0x20201000, NULL);
+-	clkdev_add_physbase(clk, 0x3f201000, NULL);
++	clkdev_add_physbase(clk, BCM2835_PL011_BASE, NULL);
++	clkdev_add_physbase(clk, BCM2836_PL011_BASE, NULL);
  
+ 	clk = rpi_register_firmware_clock(BCM2835_MBOX_CLOCK_ID_CORE,
+ 					  "uart1-8250");
+ 	if (IS_ERR(clk))
+ 		return PTR_ERR(clk);
+ 
+-	clkdev_add_physbase(clk, 0x3f215040, NULL);
++	clkdev_add_physbase(clk, BCM2836_MINIUART_BASE, NULL);
+ 
+ 	clk = clk_fixed("bcm2835-cs", 1 * 1000 * 1000);
+ 	clk_register_clkdev(clk, NULL, "bcm2835-cs");
 -- 
 git-series 0.9.1
 
