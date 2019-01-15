@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2]
- helo=margratgarlick.emantor.de)
+Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjHWa-0007Tl-5P
- for barebox@lists.infradead.org; Tue, 15 Jan 2019 05:44:38 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue, 15 Jan 2019 06:44:09 +0100
-Message-Id: <9320eb666c0057ffb3b7475108a16c76623a527d.1547530950.git-series.r.czerwinski@pengutronix.de>
-In-Reply-To: <cover.cea99e013da63859278229c6e1566362a1800ff4.1547530950.git-series.r.czerwinski@pengutronix.de>
-References: <cover.cea99e013da63859278229c6e1566362a1800ff4.1547530950.git-series.r.czerwinski@pengutronix.de>
+ id 1gjCno-00028S-IV
+ for barebox@lists.infradead.org; Tue, 15 Jan 2019 00:42:02 +0000
+Received: by mail-wr1-x442.google.com with SMTP id s12so1062377wrt.4
+ for <barebox@lists.infradead.org>; Mon, 14 Jan 2019 16:42:00 -0800 (PST)
 MIME-Version: 1.0
+References: <20190114164211.10871-1-l.stach@pengutronix.de>
+ <20190114164211.10871-8-l.stach@pengutronix.de>
+In-Reply-To: <20190114164211.10871-8-l.stach@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 14 Jan 2019 16:41:47 -0800
+Message-ID: <CAHQ1cqGLuhRxzRAG3t=dokyetzgo6Ws27icSeyg5UTe6R0btPQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,54 +24,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v6 9/9] ARM: rpi: use defines for uart bases
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH 8/8] ARM: imx8mq: use upstream devicetree
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Previously the clkdev_add_phybase was called on magic register values,
-add defines which clarify the device for which the phybase clkdev is created.
+"
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
- arch/arm/boards/raspberry-pi/rpi-common.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+On Mon, Jan 14, 2019 at 8:43 AM Lucas Stach <l.stach@pengutronix.de> wrote:
+>
+> The basic DT is upstream now, so we can now reuse this in Barebox.
+>
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  arch/arm/dts/imx8mq-evk.dts              | 427 +------------
+>  arch/arm/dts/imx8mq-pinfunc.h            | 623 ------------------
+>  arch/arm/dts/imx8mq.dtsi                 | 771 +++--------------------
+>  include/dt-bindings/clock/imx8mq-clock.h | 629 ------------------
+>  4 files changed, 87 insertions(+), 2363 deletions(-)
+>  delete mode 100644 arch/arm/dts/imx8mq-pinfunc.h
+>  delete mode 100644 include/dt-bindings/clock/imx8mq-clock.h
+>
+> diff --git a/arch/arm/dts/imx8mq-evk.dts b/arch/arm/dts/imx8mq-evk.dts
+> index 56a35173a04f..9593c555f926 100644
+> --- a/arch/arm/dts/imx8mq-evk.dts
+> +++ b/arch/arm/dts/imx8mq-evk.dts
+> @@ -6,16 +6,11 @@
+>
+>  /dts-v1/;
+>
+> +#include <arm64/freescale/imx8mq-evk.dts>
+>  #include "imx8mq.dtsi"
+> -#include "imx8mq-ddrc.dtsi"
+>
 
-diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-index e29177d..b8a41b2 100644
---- a/arch/arm/boards/raspberry-pi/rpi-common.c
-+++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-@@ -297,6 +297,10 @@ static int rpi_clock_init(void)
- }
- postconsole_initcall(rpi_clock_init);
- 
-+#define BCM2835_PL011_BASE 0x20201000
-+#define BCM2836_PL011_BASE 0x3f201000
-+#define BCM2836_MINIUART_BASE 0x3f215040
-+
- static int rpi_console_clock_init(void)
- {
- 	struct clk *clk;
-@@ -306,15 +310,15 @@ static int rpi_console_clock_init(void)
- 
- 	clk = clk_fixed("uart0-pl0110", 3 * 1000 * 1000);
- 	clk_register_clkdev(clk, NULL, "uart0-pl0110");
--	clkdev_add_physbase(clk, 0x20201000, NULL);
--	clkdev_add_physbase(clk, 0x3f201000, NULL);
-+	clkdev_add_physbase(clk, BCM2835_PL011_BASE, NULL);
-+	clkdev_add_physbase(clk, BCM2836_PL011_BASE, NULL);
- 
- 	clk = rpi_register_firmware_clock(BCM2835_MBOX_CLOCK_ID_CORE,
- 					  "uart1-8250");
- 	if (IS_ERR(clk))
- 		return PTR_ERR(clk);
- 
--	clkdev_add_physbase(clk, 0x3f215040, NULL);
-+	clkdev_add_physbase(clk, BCM2836_MINIUART_BASE, NULL);
- 
- 	clk = clk_fixed("bcm2835-cs", 1 * 1000 * 1000);
- 	clk_register_clkdev(clk, NULL, "bcm2835-cs");
--- 
-git-series 0.9.1
+The above include was added as a part of 3da52f308a ("ARM: i.MX:
+esdctl: Add memory size detection for i.MX8MQ") in order to facilitate
+memory size detection. I don't think it should be removed, since that
+functionality isn't covered by upstream DTS. Moreso,
+"imx8mq-ddrc.dtsi" needs to be updated to reference "soc@0" instead of
+"peripherals@0".
+
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
