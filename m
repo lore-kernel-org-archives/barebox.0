@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjflt-0008HP-9T
- for barebox@lists.infradead.org; Wed, 16 Jan 2019 07:37:58 +0000
-Date: Wed, 16 Jan 2019 08:37:55 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190116073755.jh3effujhnzwxyqc@pengutronix.de>
-References: <20190114200641.4242-1-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190114200641.4242-1-antonynpavlov@gmail.com>
+ id 1gjOBt-0004pi-BG
+ for barebox@lists.infradead.org; Tue, 15 Jan 2019 12:51:39 +0000
+Message-ID: <1547556692.4278.1.camel@pengutronix.de>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue, 15 Jan 2019 13:51:32 +0100
+In-Reply-To: <20190115110111.mkedj7f2gmvsp4va@pengutronix.de>
+References: <cover.cea99e013da63859278229c6e1566362a1800ff4.1547530950.git-series.r.czerwinski@pengutronix.de>
+ <20190115110111.mkedj7f2gmvsp4va@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,33 +18,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH-for-next 0/2] move umode_t typedef from asm/types.h to
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH v6 0/9] Raspberry Pi miniuart support
+To: Roland Hieber <rhi@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jan 14, 2019 at 11:06:38PM +0300, Antony Pavlov wrote:
-> This patchseries is marked "for-next" because it contains
-> arch/riscv changes.
-> 
-> Antony Pavlov (2):
->   MIPS: asm/types.h: drop unused stuff
->   move umode_t typedef from asm/types.h to linux/types.h
-
-Applied, thanks
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+TG9va3MgbGlrZSBSUEkgVyBpcyB3aXJlZCB0aGUgc2FtZSB3YXkgYXMgUlBJMy4KSSB0aGluayBm
+b3IgdGhlIFJQSSBaZXJvIFcgeW91J2xsIG5lZWQgdHdvIGFkZGl0aW9uYWwgbGluZXM6CgojZGVm
+aW5lIEJDTTI4MzVfTUlOSVVBUlRfQkFTRSAweDIwMjE1MDQwCgphbmQKY2xrZGV2X2FkZF9waHlz
+YmFzZShjbGssIEJDTTI4MzVfTUlOSVVBUlRfQkFTRSwgTlVMTCk7CmluIHJwaV9jb25zb2xlX2Ns
+b2NrX2luaXQuCgpUaGVzZSBzaG91bGQgZW5hYmxlIHRoZSBjbGtkZXYgZm9yIHRoZSB1YXJ0IGFu
+ZCBzaG91bGQgYmFyZWJveCBhbGxvdyB0bwpwcm9iZSB0aGUgbWluaXVhcnQgb24gUlBJIFplcm8g
+Vy4KCkRvbid0IGZvcmdldCB0byByZW1vdmUgdGhlIHVhcnRfMm5kc3RhZ2U9MSwgdGhpcyBsaW5l
+IGFsc28gc3dpdGNoZXMKUEwwMTEgYW5kIHRoZSBtaW5pdWFydC4KCi0gRW1hbnRvcgoKT24gVHVl
+LCAyMDE5LTAxLTE1IGF0IDEyOjAxICswMTAwLCBSb2xhbmQgSGllYmVyIHdyb3RlOgo+IEhpLAo+
+IAo+IGp1c3QgYSBzaG9ydCBub3RpY2UsIEkgdGVzdGVkIGluIG9uIG15IHNtYWxsIGJvYXJkIGZh
+cm0sIFJQaSAxIGFuZAo+IFJQaSAzCj4gYm9vdCBva2F5LCBidXQgUlBpIFplcm8gVyBkb2Vzbid0
+IHNob3cgYSBiYXJlYm94IHByb21wdC4gV2hlbgo+IGVuYWJsaW5nCj4gdWFydF8ybmRzdGFnZT0x
+IGluIGNvbmZpZy50eHQsIHRoZSBmaXJtd2FyZSBoYW5ncyBhZnRlcgo+IAo+IMKgwqDCoMKgTUVT
+UzowMDowMDowMi44NjQwNjE6MDogdWFydDogQmF1ZCByYXRlIGNoYW5nZSBkb25lLi4uCj4gwqDC
+oMKgwqBNRVNTOjAwOjAwOjAyLjg2NzQ5MDowOiB1YXJ0OiBCYXVkIHJhdGUKPiAKPiBUaGUgZG9j
+cyBkb24ndCBjbGFpbSB0aGF0IHdlIG9mZmljaWFsbHkgdG8gc3VwcG9ydCB0aGF0IGJvYXJkCj4g
+dGhvdWdoLi4uIDpQCj4gCj4gwqAtIFJvbGFuZAo+IAo+IE9uIFR1ZSwgSmFuIDE1LCAyMDE5IGF0
+IDA2OjQ0OjAwQU0gKzAxMDAsIFJvdXZlbiBDemVyd2luc2tpIHdyb3RlOgo+ID4gVGhpcyBwYXRj
+aCBzZXJpZXMgYWRkcyBzdXBwb3J0IGZvciB0aGUgcmFzcGJlcnJ5IHBpIG1pbml1YXJ0IChhbHNv
+Cj4gPiBjYWxsZWQKPiA+IGF1eC11YXJ0KSB0byBiYXJlYm94Lgo+ID4gV2l0aCB0aGlzIHNlcmll
+cyB0aGUgbWluaXVhcnQgb3ZlcmxheSBpcyBubyBsb25nZXIgbmVjZXNzYXJ5IHRvCj4gPiBzdGFy
+dCBiYXJlYm94IG9uCj4gPiBSYXNwYmVycnkgUGkgMy4KPiA+IAo+ID4gdjY6Cj4gPiAtIFJlbW92
+ZSBsZWZ0b3ZlciB2YWwgYW5kIG1pc3NpbmcgZml4dXAgb2YgdGhlIEFVWCBDbG9jayBkZWZpbmVz
+Cj4gPiAKPiA+IHY1Ogo+ID4gLSBBZGQgZGVmaW5lcyBmb3IgcmVnaXN0ZXIgYW5kIGJhc2UgdmFs
+dWVzCj4gPiDCoCBmcm9tIFNhc2NoYSBIYXVlciBhbmQgUm9sYW5kIEhpZWJlcgo+ID4gCj4gPiB2
+NDoKPiA+IC0gRml4IGluZGVudGF0aW9uIGZvciBjb21wYXRpYmxlCj4gPiAtIEZpeCBfX21heWJl
+X3VudXNlZCBhbm5ub3RhdGlvbiBmb3IgcnBpX2RydmRhdGEgbWlzc2VkIGluIHYzCj4gPiDCoCBm
+cm9tIFNhc2NoYSBIYXVlcgo+ID4gCj4gPiB2MzoKPiA+IC0gRml4IEluZGVudGF0aW9uCj4gPiDC
+oCBmcm9tIE9sZWtzaWogUmVtcGVsIGFuZCBTYXNjaGEgSGF1ZXIKPiA+IAo+ID4gdjI6Cj4gPiAt
+IE1vdmUgY29uc29sZSBjbG9jayBpbml0aWFsaXphdGlvbiBpbnRvIGJvYXJkIGNvcmUKPiA+IC0g
+UmV0cmlldmUgdGhlIGNvcmUgY2xvY2sgZnJlcXVlbmN5IGZvciB0aGUgbWluaXVhcnQgZnJvbSB0
+aGUKPiA+IGZpcm13YXJlCj4gPiAtIERvdWJsZSB0aGUgY2xvY2sgZnJlcXVlbmN5IGluIHRoZSBu
+czE2NTUwIHJwaSBpbml0IGZ1bmN0aW9uCj4gPiBpbnN0ZWFkIG9mCj4gPiDCoCBkdXJpbmcgaW5p
+dGlhbGl6YXRpb24KPiA+IMKgIGZyb20gTHVjYXMgU3RhY2gKPiA+IAo+ID4gUm91dmVuIEN6ZXJ3
+aW5za2kgKDkpOgo+ID4gwqAgQVJNOiBycGk6IGZpeCB0eXBvIGluIHJwaS1jb21tb24uYwo+ID4g
+wqAgQVJNOiBycGk6IG1vdmUgY2xrcyBpbnRvIGJvYXJkIHNwZWNpZmljIHJwaS1jb21tb24KPiA+
+IMKgIEFSTTogcnBpOiByZXRyaWV2ZSBtaW5pdWFydCBjbG9jayBmcm9tIGZpcm13YXJlCj4gPiDC
+oCBzZXJpYWxfbnMxNjU1MDogaGFuZGxlIGRlZmF1bHQgcmVnLWlvLXdpZHRoCj4gPiDCoCBzZXJp
+YWxfbnMxNjU1MDogYWRkIHJhc3BiZXJyeSBwaSBjb21wYXRpYmxlIGFuZCBpbml0Cj4gPiDCoCBB
+Uk06IHJwaTogYWRkIE5TMTY1NTAgc3VwcG9ydAo+ID4gwqAgQVJNOiBycGk6IGNob29zZSBtaW5p
+dWFydCBhcyBzdGRvdXQKPiA+IMKgIGRvYzogYmNtMjgzeDogcmVtb3ZlIG1pbml1YXJ0IG92ZXJs
+YXkgaW5zdHJ1Y3Rpb24KPiA+IMKgIEFSTTogcnBpOiB1c2UgZGVmaW5lcyBmb3IgdWFydCBiYXNl
+cwo+ID4gCj4gPiDCoERvY3VtZW50YXRpb24vYm9hcmRzL2JjbTI4MzUucnN0wqDCoMKgwqDCoMKg
+wqDCoMKgwqB8wqDCoDEgKy0KPiA+IMKgYXJjaC9hcm0vYm9hcmRzL3Jhc3BiZXJyeS1waS9ycGkt
+Y29tbW9uLmMgfCAzNCArKysrKysrKysrLQo+ID4gwqBhcmNoL2FybS9jb25maWdzL3JwaV9kZWZj
+b25maWfCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB8wqDCoDEgKy0KPiA+IMKgYXJjaC9hcm0vZHRz
+L2JjbTI4MzctcnBpLTMuZHRzwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfMKgwqA3ICstLQo+ID4g
+wqBhcmNoL2FybS9tYWNoLWJjbTI4M3gvY29yZS5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oHwgMTkgKy0tLS0tLQo+ID4gwqBkcml2ZXJzL3NlcmlhbC9zZXJpYWxfbnMxNjU1MC5jwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoHwgNzQgKysrKysrKysrKysrKysrKy0tLQo+ID4gLS0tLS0KPiA+IMKg
+NiBmaWxlcyBjaGFuZ2VkLCA4NSBpbnNlcnRpb25zKCspLCA1MSBkZWxldGlvbnMoLSkKPiA+IAo+
+ID4gYmFzZS1jb21taXQ6IDBiNTM2MWEzMjg2MzJlNjRjMTRhNTQzMDYxMTkwOTNhMGM3ZmVjZGYK
+PiA+IC0twqAKPiA+IGdpdC1zZXJpZXMgMC45LjEKPiA+IAo+ID4gX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiA+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4g
+PiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiA+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
+b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo+ID4gCj4gCj4gCgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
+Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9iYXJlYm94Cg==
