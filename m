@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjM3B-0007zc-Lg
- for barebox@lists.infradead.org; Tue, 15 Jan 2019 10:34:32 +0000
+ id 1gjM3B-0007ze-Lj
+ for barebox@lists.infradead.org; Tue, 15 Jan 2019 10:34:31 +0000
 From: Roland Hieber <rhi@pengutronix.de>
-Date: Tue, 15 Jan 2019 11:34:21 +0100
-Message-Id: <20190115103423.5233-1-rhi@pengutronix.de>
+Date: Tue, 15 Jan 2019 11:34:23 +0100
+Message-Id: <20190115103423.5233-3-rhi@pengutronix.de>
+In-Reply-To: <20190115103423.5233-1-rhi@pengutronix.de>
+References: <20190115103423.5233-1-rhi@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,70 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 1/3] ARM: rpi: make locally used functions static
+Subject: [PATCH v1 3/3] amba: pl011: make locally used functions static
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <rhi@pengutronix.de>
 
-These functions are not meant to be a public interface, so they can well
-be static. rpi_b_plus_init() was previously declared with a prototype,
-which is no longer needed.
+This function is not part of a public interface and only used locally.
 
-This fixes the following build warnings:
+Fixes the following build warning:
 
-    .../arch/arm/boards/raspberry-pi/rpi-common.c:124:6: warning: no previous prototype for 'rpi_add_led' [-Wmissing-prototypes]
-     void rpi_add_led(void)
-          ^~~~~~~~~~~
-    .../arch/arm/boards/raspberry-pi/rpi-common.c:141:6: warning: no previous prototype for 'rpi_b_init' [-Wmissing-prototypes]
-     void rpi_b_init(void)
+    .../drivers/serial/amba-pl011.c:151:5: warning: no previous prototype for 'pl011_init_port' [-Wmissing-prototypes]
+     int pl011_init_port (struct console_device *cdev)
+         ^~~~~~~~~~~~~~~
 
 Signed-off-by: Roland Hieber <rhi@pengutronix.de>
 ---
- arch/arm/boards/raspberry-pi/rpi-common.c | 6 +++---
- arch/arm/boards/raspberry-pi/rpi.h        | 1 -
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ drivers/serial/amba-pl011.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-index 650b26ce7d..2521bb7aa2 100644
---- a/arch/arm/boards/raspberry-pi/rpi-common.c
-+++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-@@ -121,7 +121,7 @@ struct gpio_led rpi_leds[] = {
- 	},
- };
- 
--void rpi_add_led(void)
-+static void rpi_add_led(void)
- {
- 	int i;
- 	struct gpio_led *l;
-@@ -138,14 +138,14 @@ void rpi_add_led(void)
- 		led_set_trigger(LED_TRIGGER_HEARTBEAT, &l->led);
+diff --git a/drivers/serial/amba-pl011.c b/drivers/serial/amba-pl011.c
+index 4c4067d5b5..99b82e3c03 100644
+--- a/drivers/serial/amba-pl011.c
++++ b/drivers/serial/amba-pl011.c
+@@ -148,7 +148,7 @@ static void pl011_rlcr(struct amba_uart_port *uart, u32 lcr)
+ 	}
  }
  
--void rpi_b_init(void)
-+static void rpi_b_init(void)
+-int pl011_init_port (struct console_device *cdev)
++static int pl011_init_port(struct console_device *cdev)
  {
- 	rpi_leds[0].gpio = 16;
- 	rpi_leds[0].active_low = 1;
- 	rpi_set_usbethaddr();
- }
+ 	struct amba_uart_port *uart = to_amba_uart_port(cdev);
  
--void rpi_b_plus_init(void)
-+static void rpi_b_plus_init(void)
- {
- 	rpi_leds[0].gpio = 47;
- 	rpi_leds[1].gpio = 35;
-diff --git a/arch/arm/boards/raspberry-pi/rpi.h b/arch/arm/boards/raspberry-pi/rpi.h
-index dd32fee809..b2a0401bd0 100644
---- a/arch/arm/boards/raspberry-pi/rpi.h
-+++ b/arch/arm/boards/raspberry-pi/rpi.h
-@@ -19,7 +19,6 @@ struct rpi_model {
- 
- extern struct gpio_led rpi_leds[];
- 
--void rpi_b_plus_init(void);
- void rpi_set_usbethaddr(void);
- 
- #endif /* __ARCH_ARM_BOARDS_RPI_H__ */
 -- 
 2.20.1
 
