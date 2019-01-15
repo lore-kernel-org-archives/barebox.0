@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjYR0-0002d2-Kt
- for barebox@lists.infradead.org; Tue, 15 Jan 2019 23:47:56 +0000
-Date: Wed, 16 Jan 2019 00:47:49 +0100
+ id 1gjYRt-0002j5-OL
+ for barebox@lists.infradead.org; Tue, 15 Jan 2019 23:48:51 +0000
+Date: Wed, 16 Jan 2019 00:48:48 +0100
 From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190115234749.2ahxspspwwfssbcm@pengutronix.de>
+Message-ID: <20190115234848.hgovahib5rbnrh3y@pengutronix.de>
 References: <cover.cea99e013da63859278229c6e1566362a1800ff4.1547530950.git-series.r.czerwinski@pengutronix.de>
- <20190115110111.mkedj7f2gmvsp4va@pengutronix.de>
- <1547556692.4278.1.camel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1547556692.4278.1.camel@pengutronix.de>
+In-Reply-To: <cover.cea99e013da63859278229c6e1566362a1800ff4.1547530950.git-series.r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,89 +18,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v6 0/9] Raspberry Pi miniuart support
 To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-T24gVHVlLCBKYW4gMTUsIDIwMTkgYXQgMDE6NTE6MzJQTSArMDEwMCwgUm91dmVuIEN6ZXJ3aW5z
-a2kgd3JvdGU6Cj4gTG9va3MgbGlrZSBSUEkgVyBpcyB3aXJlZCB0aGUgc2FtZSB3YXkgYXMgUlBJ
-My4KPiBJIHRoaW5rIGZvciB0aGUgUlBJIFplcm8gVyB5b3UnbGwgbmVlZCB0d28gYWRkaXRpb25h
-bCBsaW5lczoKPiAKPiAjZGVmaW5lIEJDTTI4MzVfTUlOSVVBUlRfQkFTRSAweDIwMjE1MDQwCj4g
-Cj4gYW5kCj4gY2xrZGV2X2FkZF9waHlzYmFzZShjbGssIEJDTTI4MzVfTUlOSVVBUlRfQkFTRSwg
-TlVMTCk7Cj4gaW4gcnBpX2NvbnNvbGVfY2xvY2tfaW5pdC4KPiAKPiBUaGVzZSBzaG91bGQgZW5h
-YmxlIHRoZSBjbGtkZXYgZm9yIHRoZSB1YXJ0IGFuZCBzaG91bGQgYmFyZWJveCBhbGxvdyB0bwo+
-IHByb2JlIHRoZSBtaW5pdWFydCBvbiBSUEkgWmVybyBXLgoKQXBwYXJlbnRseSB0aGlzIGlzIG5v
-dCBlbm91Z2gsIHNhbWUgYmVoYXZpb3VyLiBJIGFsc28gdHJpZWQgYWRkaW5nIGEKc2VwYXJhdGUg
-ZGV2aWNlIHRyZWUgYW5kIGltYWdlIGZvciBSUGkgWmVybyBhbmQgaGF2ZSB0aGUgY2hvc2VuIG5v
-ZGUKcG9pbnQgdG8gdWFydDEsIGxpa2Ugb24gdGhlIFJQaSAzLCBidXQgdGhhdCBkaWRuJ3QgaGVs
-cCBlaXRoZXIuCgpBZGRpdGlvbmFsbHkgaXQgdHVybmVkIG91dCB0aGF0IFJQaSBaZXJvIGlzIG5v
-dCBldmVuIGJvb3Rpbmcgd2l0aApwcmV2aW91cyByZWxlYXNlcyAtIERpc3Ryb0tpdCBoYWQgYSBw
-YXRjaCByZWNlbnRseSB0byBlbmFibGUgdGhlIGRlYnVnCnVhcnQgZm9yIHRoZSBSUGkgWmVybyBp
-biBjb25maWcudHh0LCBiYXNlZCBvbiBiYXJlYm94IDIwMTguMDMuMCwgYnV0IEkKY291bGRuJ3Qg
-ZXZlbiBnZXQgdGhpcyBjb25zdGVsbGF0aW9uIHRvIGJvb3QgdG8gYmFyZWJveC4gU28gSSB0aGlu
-awpmdXJ0aGVyIGludmVzdGlnYXRpb24gaXMgbmVlZGVkLCBhbmQgbXkgY29tcGxhaW50cyBhcmUg
-b3V0IG9mIGZvY3VzIGZvcgp0aGlzIHBhdGNoIHNlcmllcyA6KQoKIC0gUm9sYW5kCgo+IAo+IERv
-bid0IGZvcmdldCB0byByZW1vdmUgdGhlIHVhcnRfMm5kc3RhZ2U9MSwgdGhpcyBsaW5lIGFsc28g
-c3dpdGNoZXMKPiBQTDAxMSBhbmQgdGhlIG1pbml1YXJ0Lgo+IAo+IC0gRW1hbnRvcgo+IAo+IE9u
-IFR1ZSwgMjAxOS0wMS0xNSBhdCAxMjowMSArMDEwMCwgUm9sYW5kIEhpZWJlciB3cm90ZToKPiA+
-IEhpLAo+ID4gCj4gPiBqdXN0IGEgc2hvcnQgbm90aWNlLCBJIHRlc3RlZCBpbiBvbiBteSBzbWFs
-bCBib2FyZCBmYXJtLCBSUGkgMSBhbmQKPiA+IFJQaSAzCj4gPiBib290IG9rYXksIGJ1dCBSUGkg
-WmVybyBXIGRvZXNuJ3Qgc2hvdyBhIGJhcmVib3ggcHJvbXB0LiBXaGVuCj4gPiBlbmFibGluZwo+
-ID4gdWFydF8ybmRzdGFnZT0xIGluIGNvbmZpZy50eHQsIHRoZSBmaXJtd2FyZSBoYW5ncyBhZnRl
-cgo+ID4gCj4gPiDCoMKgwqDCoE1FU1M6MDA6MDA6MDIuODY0MDYxOjA6IHVhcnQ6IEJhdWQgcmF0
-ZSBjaGFuZ2UgZG9uZS4uLgo+ID4gwqDCoMKgwqBNRVNTOjAwOjAwOjAyLjg2NzQ5MDowOiB1YXJ0
-OiBCYXVkIHJhdGUKPiA+IAo+ID4gVGhlIGRvY3MgZG9uJ3QgY2xhaW0gdGhhdCB3ZSBvZmZpY2lh
-bGx5IHRvIHN1cHBvcnQgdGhhdCBib2FyZAo+ID4gdGhvdWdoLi4uIDpQCj4gPiAKPiA+IMKgLSBS
-b2xhbmQKPiA+IAo+ID4gT24gVHVlLCBKYW4gMTUsIDIwMTkgYXQgMDY6NDQ6MDBBTSArMDEwMCwg
-Um91dmVuIEN6ZXJ3aW5za2kgd3JvdGU6Cj4gPiA+IFRoaXMgcGF0Y2ggc2VyaWVzIGFkZHMgc3Vw
-cG9ydCBmb3IgdGhlIHJhc3BiZXJyeSBwaSBtaW5pdWFydCAoYWxzbwo+ID4gPiBjYWxsZWQKPiA+
-ID4gYXV4LXVhcnQpIHRvIGJhcmVib3guCj4gPiA+IFdpdGggdGhpcyBzZXJpZXMgdGhlIG1pbml1
-YXJ0IG92ZXJsYXkgaXMgbm8gbG9uZ2VyIG5lY2Vzc2FyeSB0bwo+ID4gPiBzdGFydCBiYXJlYm94
-IG9uCj4gPiA+IFJhc3BiZXJyeSBQaSAzLgo+ID4gPiAKPiA+ID4gdjY6Cj4gPiA+IC0gUmVtb3Zl
-IGxlZnRvdmVyIHZhbCBhbmQgbWlzc2luZyBmaXh1cCBvZiB0aGUgQVVYIENsb2NrIGRlZmluZXMK
-PiA+ID4gCj4gPiA+IHY1Ogo+ID4gPiAtIEFkZCBkZWZpbmVzIGZvciByZWdpc3RlciBhbmQgYmFz
-ZSB2YWx1ZXMKPiA+ID4gwqAgZnJvbSBTYXNjaGEgSGF1ZXIgYW5kIFJvbGFuZCBIaWViZXIKPiA+
-ID4gCj4gPiA+IHY0Ogo+ID4gPiAtIEZpeCBpbmRlbnRhdGlvbiBmb3IgY29tcGF0aWJsZQo+ID4g
-PiAtIEZpeCBfX21heWJlX3VudXNlZCBhbm5ub3RhdGlvbiBmb3IgcnBpX2RydmRhdGEgbWlzc2Vk
-IGluIHYzCj4gPiA+IMKgIGZyb20gU2FzY2hhIEhhdWVyCj4gPiA+IAo+ID4gPiB2MzoKPiA+ID4g
-LSBGaXggSW5kZW50YXRpb24KPiA+ID4gwqAgZnJvbSBPbGVrc2lqIFJlbXBlbCBhbmQgU2FzY2hh
-IEhhdWVyCj4gPiA+IAo+ID4gPiB2MjoKPiA+ID4gLSBNb3ZlIGNvbnNvbGUgY2xvY2sgaW5pdGlh
-bGl6YXRpb24gaW50byBib2FyZCBjb3JlCj4gPiA+IC0gUmV0cmlldmUgdGhlIGNvcmUgY2xvY2sg
-ZnJlcXVlbmN5IGZvciB0aGUgbWluaXVhcnQgZnJvbSB0aGUKPiA+ID4gZmlybXdhcmUKPiA+ID4g
-LSBEb3VibGUgdGhlIGNsb2NrIGZyZXF1ZW5jeSBpbiB0aGUgbnMxNjU1MCBycGkgaW5pdCBmdW5j
-dGlvbgo+ID4gPiBpbnN0ZWFkIG9mCj4gPiA+IMKgIGR1cmluZyBpbml0aWFsaXphdGlvbgo+ID4g
-PiDCoCBmcm9tIEx1Y2FzIFN0YWNoCj4gPiA+IAo+ID4gPiBSb3V2ZW4gQ3plcndpbnNraSAoOSk6
-Cj4gPiA+IMKgIEFSTTogcnBpOiBmaXggdHlwbyBpbiBycGktY29tbW9uLmMKPiA+ID4gwqAgQVJN
-OiBycGk6IG1vdmUgY2xrcyBpbnRvIGJvYXJkIHNwZWNpZmljIHJwaS1jb21tb24KPiA+ID4gwqAg
-QVJNOiBycGk6IHJldHJpZXZlIG1pbml1YXJ0IGNsb2NrIGZyb20gZmlybXdhcmUKPiA+ID4gwqAg
-c2VyaWFsX25zMTY1NTA6IGhhbmRsZSBkZWZhdWx0IHJlZy1pby13aWR0aAo+ID4gPiDCoCBzZXJp
-YWxfbnMxNjU1MDogYWRkIHJhc3BiZXJyeSBwaSBjb21wYXRpYmxlIGFuZCBpbml0Cj4gPiA+IMKg
-IEFSTTogcnBpOiBhZGQgTlMxNjU1MCBzdXBwb3J0Cj4gPiA+IMKgIEFSTTogcnBpOiBjaG9vc2Ug
-bWluaXVhcnQgYXMgc3Rkb3V0Cj4gPiA+IMKgIGRvYzogYmNtMjgzeDogcmVtb3ZlIG1pbml1YXJ0
-IG92ZXJsYXkgaW5zdHJ1Y3Rpb24KPiA+ID4gwqAgQVJNOiBycGk6IHVzZSBkZWZpbmVzIGZvciB1
-YXJ0IGJhc2VzCj4gPiA+IAo+ID4gPiDCoERvY3VtZW50YXRpb24vYm9hcmRzL2JjbTI4MzUucnN0
-wqDCoMKgwqDCoMKgwqDCoMKgwqB8wqDCoDEgKy0KPiA+ID4gwqBhcmNoL2FybS9ib2FyZHMvcmFz
-cGJlcnJ5LXBpL3JwaS1jb21tb24uYyB8IDM0ICsrKysrKysrKystCj4gPiA+IMKgYXJjaC9hcm0v
-Y29uZmlncy9ycGlfZGVmY29uZmlnwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfMKgwqAxICstCj4g
-PiA+IMKgYXJjaC9hcm0vZHRzL2JjbTI4MzctcnBpLTMuZHRzwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgfMKgwqA3ICstLQo+ID4gPiDCoGFyY2gvYXJtL21hY2gtYmNtMjgzeC9jb3JlLmPCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgfCAxOSArLS0tLS0tCj4gPiA+IMKgZHJpdmVycy9zZXJpYWwv
-c2VyaWFsX25zMTY1NTAuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqB8IDc0ICsrKysrKysrKysrKysr
-KystLS0KPiA+ID4gLS0tLS0KPiA+ID4gwqA2IGZpbGVzIGNoYW5nZWQsIDg1IGluc2VydGlvbnMo
-KyksIDUxIGRlbGV0aW9ucygtKQo+ID4gPiAKPiA+ID4gYmFzZS1jb21taXQ6IDBiNTM2MWEzMjg2
-MzJlNjRjMTRhNTQzMDYxMTkwOTNhMGM3ZmVjZGYKPiA+ID4gLS3CoAo+ID4gPiBnaXQtc2VyaWVz
-IDAuOS4xCj4gPiA+IAo+ID4gPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwo+ID4gPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+ID4gPiBiYXJlYm94QGxpc3Rz
-LmluZnJhZGVhZC5vcmcKPiA+ID4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9iYXJlYm94Cj4gPiA+IAo+ID4gCj4gPiAKPiAKCi0tIApSb2xhbmQgSGllYmVyICAg
-ICAgICAgICAgICAgICAgICAgfCByLmhpZWJlckBwZW5ndXRyb25peC5kZSAgICAgfApQZW5ndXRy
-b25peCBlLksuICAgICAgICAgICAgICAgICAgfCBodHRwczovL3d3dy5wZW5ndXRyb25peC5kZS8g
-fApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0gfCBQaG9uZTogKzQ5LTUxMjEtMjA2
-OTE3LTUwODYgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgfCBGYXg6ICAgKzQ5
-LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
-b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+For this series:
+
+Tested-by: Roland Hieber <rhi@pengutronix.de>
+
+On Tue, Jan 15, 2019 at 06:44:00AM +0100, Rouven Czerwinski wrote:
+> This patch series adds support for the raspberry pi miniuart (also called
+> aux-uart) to barebox.
+> With this series the miniuart overlay is no longer necessary to start barebox on
+> Raspberry Pi 3.
+> 
+> v6:
+> - Remove leftover val and missing fixup of the AUX Clock defines
+> 
+> v5:
+> - Add defines for register and base values
+>   from Sascha Hauer and Roland Hieber
+> 
+> v4:
+> - Fix indentation for compatible
+> - Fix __maybe_unused annnotation for rpi_drvdata missed in v3
+>   from Sascha Hauer
+> 
+> v3:
+> - Fix Indentation
+>   from Oleksij Rempel and Sascha Hauer
+> 
+> v2:
+> - Move console clock initialization into board core
+> - Retrieve the core clock frequency for the miniuart from the firmware
+> - Double the clock frequency in the ns16550 rpi init function instead of
+>   during initialization
+>   from Lucas Stach
+> 
+> Rouven Czerwinski (9):
+>   ARM: rpi: fix typo in rpi-common.c
+>   ARM: rpi: move clks into board specific rpi-common
+>   ARM: rpi: retrieve miniuart clock from firmware
+>   serial_ns16550: handle default reg-io-width
+>   serial_ns16550: add raspberry pi compatible and init
+>   ARM: rpi: add NS16550 support
+>   ARM: rpi: choose miniuart as stdout
+>   doc: bcm283x: remove miniuart overlay instruction
+>   ARM: rpi: use defines for uart bases
+> 
+>  Documentation/boards/bcm2835.rst          |  1 +-
+>  arch/arm/boards/raspberry-pi/rpi-common.c | 34 ++++++++++-
+>  arch/arm/configs/rpi_defconfig            |  1 +-
+>  arch/arm/dts/bcm2837-rpi-3.dts            |  7 +--
+>  arch/arm/mach-bcm283x/core.c              | 19 +------
+>  drivers/serial/serial_ns16550.c           | 74 ++++++++++++++++--------
+>  6 files changed, 85 insertions(+), 51 deletions(-)
+> 
+> base-commit: 0b5361a328632e64c14a54306119093a0c7fecdf
+> -- 
+> git-series 0.9.1
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Roland Hieber                     | r.hieber@pengutronix.de     |
+Pengutronix e.K.                  | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
