@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjVI4-0005dT-RG
- for barebox@lists.infradead.org; Tue, 15 Jan 2019 20:26:30 +0000
-Received: by mail-pg1-x541.google.com with SMTP id j10so1730944pga.1
- for <barebox@lists.infradead.org>; Tue, 15 Jan 2019 12:26:28 -0800 (PST)
+ id 1gjVI6-0005dv-8T
+ for barebox@lists.infradead.org; Tue, 15 Jan 2019 20:26:32 +0000
+Received: by mail-pg1-x542.google.com with SMTP id c25so1722727pgb.4
+ for <barebox@lists.infradead.org>; Tue, 15 Jan 2019 12:26:30 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 15 Jan 2019 12:25:45 -0800
-Message-Id: <20190115202601.24831-2-andrew.smirnov@gmail.com>
+Date: Tue, 15 Jan 2019 12:25:46 -0800
+Message-Id: <20190115202601.24831-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20190115202601.24831-1-andrew.smirnov@gmail.com>
 References: <20190115202601.24831-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,132 +23,158 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 01/17] regulator: Convert drivers to use struct
- regulator_desc
+Subject: [PATCH v3 02/17] regulator: Port basic regmap regulator functions
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-To simplify porting kernel code, port a very basic struct
-regulator_desc and convert all of the code to use it.
+In order to be able to port Linux driver relying on this API, port
+various regmap related regulator function to Barebox.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/regulator/bcm2835.c | 6 ++++--
- drivers/regulator/core.c    | 8 ++++----
- drivers/regulator/fixed.c   | 6 ++++--
- include/regulator.h         | 6 +++++-
- 4 files changed, 17 insertions(+), 9 deletions(-)
+ drivers/regulator/Makefile  |  2 +-
+ drivers/regulator/helpers.c | 87 +++++++++++++++++++++++++++++++++++++
+ include/regulator.h         | 11 ++++-
+ 3 files changed, 98 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/regulator/helpers.c
 
-diff --git a/drivers/regulator/bcm2835.c b/drivers/regulator/bcm2835.c
-index 0ada05db16..ea7cf7fe1e 100644
---- a/drivers/regulator/bcm2835.c
-+++ b/drivers/regulator/bcm2835.c
-@@ -24,6 +24,7 @@ static struct regulator_bcm2835 {
- 
- 	struct device_d *dev;
- 	struct regulator_dev rdev;
-+	struct regulator_desc rdesc;
- } regs[] = {
- 	REG_DEV(BCM2835_MBOX_POWER_DEVID_SDHCI, "bcm2835_mci0"),
- 	REG_DEV(BCM2835_MBOX_POWER_DEVID_UART0, "uart0-pl0110"),
-@@ -108,7 +109,7 @@ static int regulator_bcm2835_is_enabled(struct regulator_dev *rdev)
- 	return msg_pwr->get_power_state.body.resp.state;
- }
- 
--static struct regulator_ops bcm2835_ops = {
-+const static struct regulator_ops bcm2835_ops = {
- 	.enable = regulator_bcm2835_enable,
- 	.disable = regulator_bcm2835_disable,
- 	.is_enabled = regulator_bcm2835_is_enabled,
-@@ -122,7 +123,8 @@ static int regulator_bcm2835_probe(struct device_d *dev)
- 	for (i = 0; i < ARRAY_SIZE(regs); i++) {
- 		rb = &regs[i];
- 
--		rb->rdev.ops = &bcm2835_ops;
-+		rb->rdesc.ops = &bcm2835_ops;
-+		rb->rdev.desc = &rb->rdesc;
- 		rb->dev = dev;
- 
- 		ret = dev_regulator_register(&rb->rdev, rb->devname, NULL);
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 39df980dcb..bcfbda62e3 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -52,10 +52,10 @@ static int regulator_enable_internal(struct regulator_internal *ri)
- 		return 0;
- 	}
- 
--	if (!ri->rdev->ops->enable)
-+	if (!ri->rdev->desc->ops->enable)
- 		return -ENOSYS;
- 
--	ret = ri->rdev->ops->enable(ri->rdev);
-+	ret = ri->rdev->desc->ops->enable(ri->rdev);
- 	if (ret)
- 		return ret;
- 
-@@ -74,10 +74,10 @@ static int regulator_disable_internal(struct regulator_internal *ri)
- 	if (!ri->enable_count)
- 		return -EINVAL;
- 
--	if (!ri->rdev->ops->disable)
-+	if (!ri->rdev->desc->ops->disable)
- 		return -ENOSYS;
- 
--	ret = ri->rdev->ops->disable(ri->rdev);
-+	ret = ri->rdev->desc->ops->disable(ri->rdev);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/regulator/fixed.c b/drivers/regulator/fixed.c
-index 87554d22e3..cb5d785817 100644
---- a/drivers/regulator/fixed.c
-+++ b/drivers/regulator/fixed.c
-@@ -29,6 +29,7 @@ struct regulator_fixed {
- 	int active_low;
- 	int always_on;
- 	struct regulator_dev rdev;
-+	struct regulator_desc rdesc;
- };
- 
- static int regulator_fixed_enable(struct regulator_dev *rdev)
-@@ -54,7 +55,7 @@ static int regulator_fixed_disable(struct regulator_dev *rdev)
- 	return gpio_direction_output(fix->gpio, fix->active_low);
- }
- 
--static struct regulator_ops fixed_ops = {
-+const static struct regulator_ops fixed_ops = {
- 	.enable = regulator_fixed_enable,
- 	.disable = regulator_fixed_disable,
- };
-@@ -82,7 +83,8 @@ static int regulator_fixed_probe(struct device_d *dev)
- 			fix->active_low = 1;
- 	}
- 
--	fix->rdev.ops = &fixed_ops;
-+	fix->rdesc.ops = &fixed_ops;
-+	fix->rdev.desc = &fix->rdesc;
- 
- 	if (of_find_property(dev->device_node, "regulator-always-on", NULL)) {
- 		fix->always_on = 1;
+diff --git a/drivers/regulator/Makefile b/drivers/regulator/Makefile
+index ff5daf9a7d..36ce3e87f7 100644
+--- a/drivers/regulator/Makefile
++++ b/drivers/regulator/Makefile
+@@ -1,4 +1,4 @@
+-obj-$(CONFIG_REGULATOR) += core.o
++obj-$(CONFIG_REGULATOR) += core.o helpers.o
+ obj-$(CONFIG_REGULATOR_FIXED) += fixed.o
+ obj-$(CONFIG_REGULATOR_BCM283X) += bcm2835.o
+ obj-$(CONFIG_REGULATOR_PFUZE) += pfuze.o
+\ No newline at end of file
+diff --git a/drivers/regulator/helpers.c b/drivers/regulator/helpers.c
+new file mode 100644
+index 0000000000..4495b4403f
+--- /dev/null
++++ b/drivers/regulator/helpers.c
+@@ -0,0 +1,87 @@
++#include <common.h>
++#include <regmap.h>
++#include <regulator.h>
++
++/**
++ * regulator_is_enabled_regmap - standard is_enabled() for regmap users
++ *
++ * @rdev: regulator to operate on
++ *
++ * Regulators that use regmap for their register I/O can set the
++ * enable_reg and enable_mask fields in their descriptor and then use
++ * this as their is_enabled operation, saving some code.
++ */
++int regulator_is_enabled_regmap(struct regulator_dev *rdev)
++{
++	unsigned int val;
++	int ret;
++
++	ret = regmap_read(rdev->regmap, rdev->desc->enable_reg, &val);
++	if (ret != 0)
++		return ret;
++
++	val &= rdev->desc->enable_mask;
++
++	if (rdev->desc->enable_is_inverted) {
++		if (rdev->desc->enable_val)
++			return val != rdev->desc->enable_val;
++		return val == 0;
++	} else {
++		if (rdev->desc->enable_val)
++			return val == rdev->desc->enable_val;
++		return val != 0;
++	}
++}
++EXPORT_SYMBOL_GPL(regulator_is_enabled_regmap);
++
++/**
++ * regulator_enable_regmap - standard enable() for regmap users
++ *
++ * @rdev: regulator to operate on
++ *
++ * Regulators that use regmap for their register I/O can set the
++ * enable_reg and enable_mask fields in their descriptor and then use
++ * this as their enable() operation, saving some code.
++ */
++int regulator_enable_regmap(struct regulator_dev *rdev)
++{
++	unsigned int val;
++
++	if (rdev->desc->enable_is_inverted) {
++		val = rdev->desc->disable_val;
++	} else {
++		val = rdev->desc->enable_val;
++		if (!val)
++			val = rdev->desc->enable_mask;
++	}
++
++	return regmap_update_bits(rdev->regmap, rdev->desc->enable_reg,
++				  rdev->desc->enable_mask, val);
++}
++EXPORT_SYMBOL_GPL(regulator_enable_regmap);
++
++/**
++ * regulator_disable_regmap - standard disable() for regmap users
++ *
++ * @rdev: regulator to operate on
++ *
++ * Regulators that use regmap for their register I/O can set the
++ * enable_reg and enable_mask fields in their descriptor and then use
++ * this as their disable() operation, saving some code.
++ */
++int regulator_disable_regmap(struct regulator_dev *rdev)
++{
++	unsigned int val;
++
++	if (rdev->desc->enable_is_inverted) {
++		val = rdev->desc->enable_val;
++		if (!val)
++			val = rdev->desc->enable_mask;
++	} else {
++		val = rdev->desc->disable_val;
++	}
++
++	return regmap_update_bits(rdev->regmap, rdev->desc->enable_reg,
++				  rdev->desc->enable_mask, val);
++}
++EXPORT_SYMBOL_GPL(regulator_disable_regmap);
 diff --git a/include/regulator.h b/include/regulator.h
-index 367e13f05b..907073607f 100644
+index 907073607f..1824e6ea14 100644
 --- a/include/regulator.h
 +++ b/include/regulator.h
-@@ -4,8 +4,12 @@
- /* struct regulator is an opaque object for consumers */
- struct regulator;
+@@ -6,10 +6,17 @@ struct regulator;
  
-+struct regulator_desc {
-+	const struct regulator_ops *ops;
-+};
+ struct regulator_desc {
+ 	const struct regulator_ops *ops;
 +
++	unsigned int enable_reg;
++	unsigned int enable_mask;
++	unsigned int enable_val;
++	unsigned int disable_val;
++	bool enable_is_inverted;
+ };
+ 
  struct regulator_dev {
--	struct regulator_ops *ops;
-+	const struct regulator_desc *desc;
+ 	const struct regulator_desc *desc;
++	struct regmap *regmap;
  	int boot_on;
  };
  
+@@ -39,7 +46,9 @@ void regulators_print(void);
+ struct regulator *regulator_get(struct device_d *, const char *);
+ int regulator_enable(struct regulator *);
+ int regulator_disable(struct regulator *);
+-
++int regulator_is_enabled_regmap(struct regulator_dev *);
++int regulator_enable_regmap(struct regulator_dev *);
++int regulator_disable_regmap(struct regulator_dev *);
+ #else
+ 
+ static inline struct regulator *regulator_get(struct device_d *dev, const char *id)
 -- 
 2.20.1
 
