@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjhKG-0003uF-BB
- for barebox@lists.infradead.org; Wed, 16 Jan 2019 09:17:34 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 16 Jan 2019 10:17:27 +0100
-Message-Id: <20190116091727.20447-1-s.hauer@pengutronix.de>
+ id 1gjixI-0003P1-Hi
+ for barebox@lists.infradead.org; Wed, 16 Jan 2019 11:01:58 +0000
+Date: Wed, 16 Jan 2019 12:01:52 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20190116110152.GA2508@ravnborg.org>
+References: <20190116091727.20447-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190116091727.20447-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,48 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] images: Drop unnecessary fix_size
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] images: Drop unnecessary fix_size
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Now that we compile the compressed binary into the decompressor we
-no longer need fix_size but can use the linker to fill in the image
-size into the binary.
+Hi Sascha.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/lib/pbl.lds.S | 2 +-
- images/Makefile        | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+On Wed, Jan 16, 2019 at 10:17:27AM +0100, Sascha Hauer wrote:
+> Now that we compile the compressed binary into the decompressor we
+> no longer need fix_size but can use the linker to fill in the image
+> size into the binary.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/lib/pbl.lds.S | 2 +-
+>  images/Makefile        | 3 +--
+>  2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
-index 53c9ce0fe6..e7a94f912e 100644
---- a/arch/arm/lib/pbl.lds.S
-+++ b/arch/arm/lib/pbl.lds.S
-@@ -95,6 +95,6 @@ SECTIONS
- 
- 	.image_end : { *(.__image_end) }
- 
--	_barebox_image_size = __image_end - BASE;
-+	_barebox_image_size = __piggydata_end - BASE;
- 	_barebox_pbl_size = __bss_start - BASE;
- }
-diff --git a/images/Makefile b/images/Makefile
-index 9bd3caa578..aaf7479a70 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -44,8 +44,7 @@
- 
- quiet_cmd_objcopy_bin = OBJCOPYB $@
-       cmd_objcopy_bin = \
--		$(OBJCOPY) -O binary $(OBJCOPYFLAGS) $(OBJCOPYFLAGS_$(@F)) $< $@ && \
--		$(objtree)/scripts/fix_size -f $@
-+		$(OBJCOPY) -O binary $(OBJCOPYFLAGS) $(OBJCOPYFLAGS_$(@F)) $< $@
- 
- pbl-lds := $(obj)/pbl.lds
- extra-y += $(pbl-lds)
--- 
-2.20.1
+This patch drops the sole user of fix_size.
+Should it be ditched from barebox or do we keep it just-in-case?
 
+If ditched from barebox remember to update .gitignore
+
+	Sam
 
 _______________________________________________
 barebox mailing list
