@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjYRt-0002j5-OL
- for barebox@lists.infradead.org; Tue, 15 Jan 2019 23:48:51 +0000
-Date: Wed, 16 Jan 2019 00:48:48 +0100
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190115234848.hgovahib5rbnrh3y@pengutronix.de>
+ id 1gjftn-0002e0-O9
+ for barebox@lists.infradead.org; Wed, 16 Jan 2019 07:46:09 +0000
+Date: Wed, 16 Jan 2019 08:46:05 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190116074605.ez3m56se3yz3vj5q@pengutronix.de>
 References: <cover.cea99e013da63859278229c6e1566362a1800ff4.1547530950.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -26,10 +26,6 @@ Subject: Re: [PATCH v6 0/9] Raspberry Pi miniuart support
 To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-For this series:
-
-Tested-by: Roland Hieber <rhi@pengutronix.de>
-
 On Tue, Jan 15, 2019 at 06:44:00AM +0100, Rouven Czerwinski wrote:
 > This patch series adds support for the raspberry pi miniuart (also called
 > aux-uart) to barebox.
@@ -38,61 +34,17 @@ On Tue, Jan 15, 2019 at 06:44:00AM +0100, Rouven Czerwinski wrote:
 > 
 > v6:
 > - Remove leftover val and missing fixup of the AUX Clock defines
-> 
-> v5:
-> - Add defines for register and base values
->   from Sascha Hauer and Roland Hieber
-> 
-> v4:
-> - Fix indentation for compatible
-> - Fix __maybe_unused annnotation for rpi_drvdata missed in v3
->   from Sascha Hauer
-> 
-> v3:
-> - Fix Indentation
->   from Oleksij Rempel and Sascha Hauer
-> 
-> v2:
-> - Move console clock initialization into board core
-> - Retrieve the core clock frequency for the miniuart from the firmware
-> - Double the clock frequency in the ns16550 rpi init function instead of
->   during initialization
->   from Lucas Stach
-> 
-> Rouven Czerwinski (9):
->   ARM: rpi: fix typo in rpi-common.c
->   ARM: rpi: move clks into board specific rpi-common
->   ARM: rpi: retrieve miniuart clock from firmware
->   serial_ns16550: handle default reg-io-width
->   serial_ns16550: add raspberry pi compatible and init
->   ARM: rpi: add NS16550 support
->   ARM: rpi: choose miniuart as stdout
->   doc: bcm283x: remove miniuart overlay instruction
->   ARM: rpi: use defines for uart bases
-> 
->  Documentation/boards/bcm2835.rst          |  1 +-
->  arch/arm/boards/raspberry-pi/rpi-common.c | 34 ++++++++++-
->  arch/arm/configs/rpi_defconfig            |  1 +-
->  arch/arm/dts/bcm2837-rpi-3.dts            |  7 +--
->  arch/arm/mach-bcm283x/core.c              | 19 +------
->  drivers/serial/serial_ns16550.c           | 74 ++++++++++++++++--------
->  6 files changed, 85 insertions(+), 51 deletions(-)
-> 
-> base-commit: 0b5361a328632e64c14a54306119093a0c7fecdf
-> -- 
-> git-series 0.9.1
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+
+Applied, thanks
+
+Sascha
+
 
 -- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
