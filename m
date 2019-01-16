@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjfzi-0005MJ-42
- for barebox@lists.infradead.org; Wed, 16 Jan 2019 07:52:17 +0000
-Date: Wed, 16 Jan 2019 08:52:12 +0100
+ id 1gjhLv-0004ce-Uc
+ for barebox@lists.infradead.org; Wed, 16 Jan 2019 09:19:21 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190116075212.rnhenmixnhvfojjc@pengutronix.de>
-References: <20190115103423.5233-1-rhi@pengutronix.de>
+Date: Wed, 16 Jan 2019 10:19:13 +0100
+Message-Id: <20190116091913.23298-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190115103423.5233-1-rhi@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +19,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 1/3] ARM: rpi: make locally used functions static
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: Makefile: Drop unnecessary imxcfg-y settings
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Jan 15, 2019 at 11:34:21AM +0100, Roland Hieber wrote:
-> These functions are not meant to be a public interface, so they can well
-> be static. rpi_b_plus_init() was previously declared with a prototype,
-> which is no longer needed.
-> 
-> This fixes the following build warnings:
-> 
->     .../arch/arm/boards/raspberry-pi/rpi-common.c:124:6: warning: no previous prototype for 'rpi_add_led' [-Wmissing-prototypes]
->      void rpi_add_led(void)
->           ^~~~~~~~~~~
->     .../arch/arm/boards/raspberry-pi/rpi-common.c:141:6: warning: no previous prototype for 'rpi_b_init' [-Wmissing-prototypes]
->      void rpi_b_init(void)
-> 
-> Signed-off-by: Roland Hieber <rhi@pengutronix.de>
-> ---
+For boards built with multiimage support imxcfg-y is not needed.
+Remove it for these boards.
 
-Applied, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/Makefile | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Sascha
-
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 0fd63105d7..6b5f21a7a9 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -252,15 +252,12 @@ barebox.imximg: $(KBUILD_BINARY) FORCE
+ boarddir = $(srctree)/arch/arm/boards
+ imxcfg-$(CONFIG_MACH_FREESCALE_MX53_SMD) += $(boarddir)/freescale-mx53-smd/flash-header.imxcfg
+ imxcfg-$(CONFIG_MACH_TX51) += $(boarddir)/karo-tx51/flash-header-karo-tx51.imxcfg
+-imxcfg-$(CONFIG_MACH_GUF_VINCELL) += $(boarddir)/guf-vincell/flash-header.imxcfg
+ imxcfg-$(CONFIG_MACH_EUKREA_CPUIMX51SD) += $(boarddir)/eukrea_cpuimx51/flash-header.imxcfg
+ imxcfg-$(CONFIG_MACH_FREESCALE_MX25_3STACK) += $(boarddir)/freescale-mx25-3ds/flash-header.imxcfg
+ imxcfg-$(CONFIG_MACH_FREESCALE_MX35_3STACK) += $(boarddir)/freescale-mx35-3ds/flash-header.imxcfg
+-imxcfg-$(CONFIG_MACH_TQMA53) += $(boarddir)/tqma53/flash-header.imxcfg
+ imxcfg-$(CONFIG_MACH_EUKREA_CPUIMX25) += $(boarddir)/eukrea_cpuimx25/flash-header.imxcfg
+ imxcfg-$(CONFIG_MACH_EUKREA_CPUIMX35) += $(boarddir)/eukrea_cpuimx35/flash-header.imxcfg
+ imxcfg-$(CONFIG_MACH_PCM043) += $(boarddir)/phytec-phycore-imx35/flash-header.imxcfg
+-imxcfg-$(CONFIG_MACH_KINDLE3) += $(boarddir)/kindle3/flash-header.imxcfg
+ ifneq ($(imxcfg-y),)
+ CFG_barebox.imximg := $(imxcfg-y)
+ KBUILD_IMAGE  := barebox.imximg
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
