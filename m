@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gn8Zm-0001pf-IX
- for barebox@lists.infradead.org; Fri, 25 Jan 2019 20:59:48 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri, 25 Jan 2019 21:59:34 +0100
-Message-Id: <20190125205935.15135-1-u.kleine-koenig@pengutronix.de>
+ id 1gjhKG-0003uF-BB
+ for barebox@lists.infradead.org; Wed, 16 Jan 2019 09:17:34 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 16 Jan 2019 10:17:27 +0100
+Message-Id: <20190116091727.20447-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,37 +15,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] i2c_probe: limit slave addresses to [0x04, 0x77]
-To: barebox@lists.infradead.org
+Subject: [PATCH] images: Drop unnecessary fix_size
+To: Barebox List <barebox@lists.infradead.org>
 
-QWRyZXNzZXMgYmVsb3cgMHgwNCBhbmQgYWJvdmUgMHg3NyBhcmUgcmVzZXJ2ZWQgaW4gdGhlIGky
-YyBidXMKc3BlY2lmaWNhdGlvbiwgc28gZG9uJ3QgcHJvYmUgdGhlc2UgYWRkcmVzc2VzIHVubGVz
-cyByZXF1ZXN0ZWQKZXhwbGljaXRseS4KCkFsc28gZG8gbW9yZSBzdHJpY3QgYm91bmRhcnkgY2hl
-Y2tpbmc6CgogLSBlbnN1cmUgc3RhcnQgYWRkcmVzcyBpcyBncmVhdGVyIG9yIGVxdWFsIHRvIHpl
-cm87CiAtIGRvbid0IGRlY3JlYXNlIHN0b3BhZGRyIGFmdGVyIGNoZWNraW5nIGl0IGJlaW5nIGdy
-ZWF0ZXIgb3IgZXF1YWwgdG8KICAgc3RhcnRhZGRyLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWlu
-ZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBjb21tYW5kcy9p
-MmMuYyB8IDEwICsrKysrKy0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlvbnMoKyksIDQg
-ZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvY29tbWFuZHMvaTJjLmMgYi9jb21tYW5kcy9pMmMu
-YwppbmRleCAyZjdmODIwZDRkNTUuLjY1ZmY3Mzc4ZWMxNCAxMDA2NDQKLS0tIGEvY29tbWFuZHMv
-aTJjLmMKKysrIGIvY29tbWFuZHMvaTJjLmMKQEAgLTQ0LDcgKzQ0LDcgQEAgc3RhdGljIHZvaWQg
-aTJjX3Byb2JlX3JhbmdlKHN0cnVjdCBpMmNfYWRhcHRlciAqYWRhcHRlciwgaW50IHN0YXJ0YWRk
-ciwgaW50IHN0b3AKIHN0YXRpYyBpbnQgZG9faTJjX3Byb2JlKGludCBhcmdjLCBjaGFyICphcmd2
-W10pCiB7CiAJc3RydWN0IGkyY19hZGFwdGVyICphZGFwdGVyID0gTlVMTDsKLQlpbnQgc3RhcnRh
-ZGRyID0gMCwgc3RvcGFkZHIgPSAweDdmOworCWludCBzdGFydGFkZHIgPSA0LCBzdG9wYWRkciA9
-IDB4Nzc7CiAKIAlpZiAoYXJnYyA+IDEpIHsKIAkJYWRhcHRlciA9IGkyY19nZXRfYWRhcHRlcihz
-aW1wbGVfc3RydG91bChhcmd2WzFdLCBOVUxMLCAwKSk7CkBAIC01NywxMyArNTcsMTUgQEAgc3Rh
-dGljIGludCBkb19pMmNfcHJvYmUoaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKIAlpZiAoYXJnYyA+
-IDMpCiAJCXN0b3BhZGRyID0gc2ltcGxlX3N0cnRvbChhcmd2WzNdLCBOVUxMLCAwKTsKIAorCWlm
-IChzdG9wYWRkciA+IDB4N2YpCisJCXN0b3BhZGRyID0gMHg3ZjsKKworCWlmIChzdGFydGFkZHIg
-PCAwKQorCQlzdGFydGFkZHIgPSAwOwogCiAJaWYgKHN0YXJ0YWRkciA+IHN0b3BhZGRyKQogCQly
-ZXR1cm4gQ09NTUFORF9FUlJPUl9VU0FHRTsKIAotCWlmIChzdG9wYWRkciA+IDB4N0YpCi0JCXN0
-b3BhZGRyID0gMHg3RjsKLQogCWlmIChhZGFwdGVyKSB7CiAJCWkyY19wcm9iZV9yYW5nZShhZGFw
-dGVyLCBzdGFydGFkZHIsIHN0b3BhZGRyKTsKIAl9IGVsc2UgewotLSAKMi4yMC4xCgoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
-IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Now that we compile the compressed binary into the decompressor we
+no longer need fix_size but can use the linker to fill in the image
+size into the binary.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/lib/pbl.lds.S | 2 +-
+ images/Makefile        | 3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
+index 53c9ce0fe6..e7a94f912e 100644
+--- a/arch/arm/lib/pbl.lds.S
++++ b/arch/arm/lib/pbl.lds.S
+@@ -95,6 +95,6 @@ SECTIONS
+ 
+ 	.image_end : { *(.__image_end) }
+ 
+-	_barebox_image_size = __image_end - BASE;
++	_barebox_image_size = __piggydata_end - BASE;
+ 	_barebox_pbl_size = __bss_start - BASE;
+ }
+diff --git a/images/Makefile b/images/Makefile
+index 9bd3caa578..aaf7479a70 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -44,8 +44,7 @@
+ 
+ quiet_cmd_objcopy_bin = OBJCOPYB $@
+       cmd_objcopy_bin = \
+-		$(OBJCOPY) -O binary $(OBJCOPYFLAGS) $(OBJCOPYFLAGS_$(@F)) $< $@ && \
+-		$(objtree)/scripts/fix_size -f $@
++		$(OBJCOPY) -O binary $(OBJCOPYFLAGS) $(OBJCOPYFLAGS_$(@F)) $< $@
+ 
+ pbl-lds := $(obj)/pbl.lds
+ extra-y += $(pbl-lds)
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
