@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat
- Linux)) id 1gk2uP-0000mi-2q
- for barebox@lists.infradead.org; Thu, 17 Jan 2019 08:20:19 +0000
-From: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
-Date: Thu, 17 Jan 2019 08:19:48 +0000
-Message-ID: <0e681bb5-54cf-c0a6-8a12-a5fed4a37e60@data-modul.com>
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gjrqA-0002PJ-T2
+ for barebox@lists.infradead.org; Wed, 16 Jan 2019 20:31:12 +0000
+Received: by mail-wr1-x429.google.com with SMTP id c14so8552627wrr.0
+ for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 12:31:08 -0800 (PST)
+MIME-Version: 1.0
 References: <a47578bb-9855-9645-e48b-fc9d3478a173@data-modul.com>
  <1547631290.4339.26.camel@pengutronix.de>
 In-Reply-To: <1547631290.4339.26.camel@pengutronix.de>
-Content-Language: de-DE
-Content-ID: <7DD4186D75B14A469FCCB1823424CDB0@data-modul.com>
-MIME-Version: 1.0
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 16 Jan 2019 12:30:54 -0800
+Message-ID: <CAHQ1cqGzMcgUGYXn5uq_86kHb_QSb2ZeQCrG-5jc1wS4rvC5aA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,51 +20,72 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: signed HDMI firmware in imx8mq image
-To: Lucas Stach <l.stach@pengutronix.de>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+To: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-SGkgTHVjYXMsDQoNCkkgYnVpbHQgQVRGIHZlcnNpb24gdGhhdCBpcyB1c2VkIGluIHRoZSBOWFAt
-VUJvb3QtS2VybmVsIGltYWdlLCBhbmQgY29tcGlsZWQNCkJhcmVib3ggd2l0aCB0aGF0IG9uZS4g
-QnV0IHN0aWxsIG5vIGZ1cnRoZXIgcHJvY2Vzcy4gSSB0aGluayBpdCBpcyBub3QgcmVsYXRlZA0K
-dG8gdGhlIFRydXN0ZWQgRmlybXdhcmUuDQoNCkJlc3QsDQpSZXloYW5laA0KDQpPbiAxLzE2LzE5
-IDEwOjM0IEFNLCBMdWNhcyBTdGFjaCB3cm90ZToNCj4gSGkgUmV5aGFuZWgsDQo+DQo+IEFtIE1p
-dHR3b2NoLCBkZW4gMTYuMDEuMjAxOSwgMDg6NDggKzAwMDAgc2NocmllYiBZYXpkYW5pLCBSZXlo
-YW5laDoNCj4+IEV2ZXJ5IG9uZSwNCj4+DQo+PiBJbiBvcmRlciB0byBidWlsZCBhIEJhcmVib3gg
-aW1hZ2UgdG8gYm9vdCBpbXg4bXEtZXZrIHdpdGggSERNSSwgSSBoYXZlIHRyaWVkIHRvDQo+PiB0
-ZWxsIEJhcmVib3ggYWJvdXQgdGhlIGVtYmVkZGVkIHNpZ25lZCBIRE1JIGZpcm13YXJlLCB3aGlj
-aCBpcyBuZWNlc3NhcnkgZm9yDQo+PiBwcm92aWRlZCBrZXJuZWwgaW1hZ2UgYnkgTlhQLg0KPj4N
-Cj4+IGZvciB0aGlzIG1hdHRlciwgSSBhZGRlZCB0aGUgYmVsb3cgbGluZSBpbnRvIHRoZQ0KPj4g
-YXJjaC9hcm0vYm9hcmRzL254cC1pbXg4bXEtZXZrL2ZsYXNoLWhlYWRlci1pbXg4bXEtZXZrLmlt
-eGNmZw0KPj4NCj4+ICAgc29jIGlteDhtcQ0KPj4gICBsb2FkYWRkciAweDAwN0UxMDAwDQo+PiAg
-IGRjZG9mcyAweDQwMA0KPj4gKyBzaWduZWRfaGRtaV9maXJtd2FyZSBmaXJtd2FyZS9pbXgvc2ln
-bmVkX2hkbWlfaW14OG0uYmluDQo+Pg0KPj4gQW5kIHBsYWNlZCB0aGUgZmlybXdhcmUgaW50byB0
-aGUgYnVpbGQtZGlyZWN0b3J5L2Zpcm13YXJlL2lteA0KPj4NCj4+DQo+PiBCeSBjaGVja2luZyBr
-ZXJuZWwgYm9vdCBtZXNzYWdlLCBpdCBzZWVtcyB0aGUgSERNSSBGVyBpcyBydW5uaW5nLCBidXQg
-bm8gYWNjZXNzDQo+PiB0byB0aGUgSERNSToNCj4+IFtkcm06aGRtaV9waHlfaW5pdF90MjhocGNd
-ICpFUlJPUiogSERNSSBtYWlsYm94IGFjY2VzcyBmYWlsZWQNCj4+DQo+PiBXaGF0IHNob3VsZCBJ
-IGRvIG1vcmUgaW4gQmFyZWJveCB0byBtYWtlIEhETUkgYWNjZXNzaWJsZSBieSBrZXJuZWw/DQo+
-DQo+IEkgZG9uJ3QgdGhpbmsgdGhlcmUgaXMgYW55dGhpbmcgbW9yZSBuZWVkZWQgZnJvbSB0aGUg
-QmFyZWJveCBzaWRlLiBBdA0KPiBsZWFzdCB0aGUgc2FtZSBjaGFuZ2Ugd29ya3MgZm9yIG1lIGFu
-ZCBnZXRzIG1lIGEgd29ya2luZyBIRE1JIGRpc3BsYXkNCj4gb24gdGhlIEVWSyBib2FyZC4NCj4N
-Cj4gSSBkb24ndCB1c2UgdGhlIE5YUCBrZXJuZWwgdGhyb3VnaCwgYnV0IHJ1bm5pbmcgYSA0LjIw
-IGJhc2VkIGtlcm5lbA0KPiB3aXRoIGxvdCBvZiBkb3duc3RyZWFtIGJpdHMgcG9ydGVkLiBUaGlz
-IG1pZ2h0IGJlIGEgaW5jb21wYXRpYmlsaXR5IG9mDQo+IHlvdXIga2VybmVsIHdpdGggdGhlIGlt
-eDggQVRGIHZlcnNpb24gc2hpcHBlZCB3aXRoIEJhcmVib3guDQo+DQo+IFJlZ2FyZHMsDQo+IEx1
-Y2FzDQo+DQoNCi0tDQpSZXloYW5laCBZYXpkYW5pDQpEYXRhIE1vZHVsIEFHICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIFRFTDogICAgKzQ5LTg5LTU2MDE3LTE1NA0KRW1iZWRkZWQgZGV2ZWxv
-cG1lbnQgICAgICAgICAgICAgICAgIEZBWDogICAgKzQ5LTg5LTU2MDE3LTExOQ0KTGludXggLSBE
-ZXZlbG9wbWVudCAgICAgICAgICAgICAgICAgICAgICBSRzogSFItTXVlbmNoZW4gQi04NTU5MQ0K
-TGFuZHNiZXJnZXIgU3RyLiAzMjIgRC04MDY4NyBNdWVuY2hlbiAtIGh0dHA6Ly93d3cuZGF0YS1t
-b2R1bC5jb20NCg0KVmVydHJhdWxpY2hlIEUtTWFpbCB2b24gLyBDb25maWRlbnRpYWwgZS1tYWls
-IGZyb206IERBVEEgTU9EVUwgQUcNClZvcnN0YW5kIC8gQ0VPOiBEci4gRmxvcmlhbiBQZXNhaGwN
-ClZvcnNpdHplbmRlIGRlcyBBdWZzaWNodHNyYXRlcyAvIENoYWlyd29tYW4gb2YgdGhlIFN1cGVy
-dmlzb3J5IEJvYXJkOiBLcmlzdGluIEQuIFJ1c3NlbGwNClNpdHogZGVyIEdlc2VsbHNjaGFmdCAv
-IFJlZ2lzdGVyZWQgT2ZmaWNlOiBNw7xuY2hlbg0KUmVnaXN0ZXJnZXJpY2h0IC8gUmVnaXN0cmF0
-aW9uIENvdXJ0OiBNw7xuY2hlbiBIYW5kZWxzcmVnaXN0ZXIgQiA4NSA1OTENCg0KDQoNCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
-ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Wed, Jan 16, 2019 at 1:34 AM Lucas Stach <l.stach@pengutronix.de> wrote:
+>
+> Hi Reyhaneh,
+>
+> Am Mittwoch, den 16.01.2019, 08:48 +0000 schrieb Yazdani, Reyhaneh:
+> > Every one,
+> >
+> > In order to build a Barebox image to boot imx8mq-evk with HDMI, I have tried to
+> > tell Barebox about the embedded signed HDMI firmware, which is necessary for
+> > provided kernel image by NXP.
+> >
+> > for this matter, I added the below line into the
+> > arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
+> >
+> >   soc imx8mq
+> >   loadaddr 0x007E1000
+> >   dcdofs 0x400
+> > + signed_hdmi_firmware firmware/imx/signed_hdmi_imx8m.bin
+> >
+> > And placed the firmware into the build-directory/firmware/imx
+> >
+> >
+> > By checking kernel boot message, it seems the HDMI FW is running, but no access
+> > to the HDMI:
+> > [drm:hdmi_phy_init_t28hpc] *ERROR* HDMI mailbox access failed
+> >
+> > What should I do more in Barebox to make HDMI accessible by kernel?
+>
+> I don't think there is anything more needed from the Barebox side. At
+> least the same change works for me and gets me a working HDMI display
+> on the EVK board.
+>
+
+FWIW, I don't see anything missing either.
+
+> I don't use the NXP kernel through, but running a 4.20 based kernel
+> with lot of downstream bits ported. This might be a incompatibility of
+> your kernel with the imx8 ATF version shipped with Barebox.
+>
+
+I was using vendor kernel when I was working on
+implementing/validating initial support of that and it worked alright.
+However, that has been over 5 month ago, so it is entirely possible
+that newer version of various components might have become
+problematic.
+
+It is probably not a problem in your case, but do keep in mind, that
+i.MX8MQ mask ROM code uses SD2 as a "backup" boot option, so if it
+doesn't find anything bootable on the selected (via pins or fuses)
+medium it will revert to that. If that happens, HDMI firmware present
+on SD card will _not_ be loaded into HDMI IP block. I've been bitten
+by this when I was working with a board that I forgot was configured
+to boot from eMMC and was booting from SD card by coincidence.
+
+Thanks,
+Andrey Smirnov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
