@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjftn-0002e0-O9
- for barebox@lists.infradead.org; Wed, 16 Jan 2019 07:46:09 +0000
-Date: Wed, 16 Jan 2019 08:46:05 +0100
+ id 1gjfwl-00032j-9Z
+ for barebox@lists.infradead.org; Wed, 16 Jan 2019 07:49:12 +0000
+Date: Wed, 16 Jan 2019 08:49:09 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190116074605.ez3m56se3yz3vj5q@pengutronix.de>
-References: <cover.cea99e013da63859278229c6e1566362a1800ff4.1547530950.git-series.r.czerwinski@pengutronix.de>
+Message-ID: <20190116074909.zrfisfxf4wothpu2@pengutronix.de>
+References: <20190115090049.8361-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <cover.cea99e013da63859278229c6e1566362a1800ff4.1547530950.git-series.r.czerwinski@pengutronix.de>
+In-Reply-To: <20190115090049.8361-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,23 +22,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v6 0/9] Raspberry Pi miniuart support
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH] fixup! ARM: imx8mq: use upstream devicetree
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jan 15, 2019 at 06:44:00AM +0100, Rouven Czerwinski wrote:
-> This patch series adds support for the raspberry pi miniuart (also called
-> aux-uart) to barebox.
-> With this series the miniuart overlay is no longer necessary to start barebox on
-> Raspberry Pi 3.
-> 
-> v6:
-> - Remove leftover val and missing fixup of the AUX Clock defines
+On Tue, Jan 15, 2019 at 10:00:49AM +0100, Lucas Stach wrote:
+> ---
+>  arch/arm/dts/imx8mq-ddrc.dtsi | 2 +-
+>  arch/arm/dts/imx8mq-evk.dts   | 3 ++-
+>  2 files changed, 3 insertions(+), 2 deletions(-)
 
 Applied, thanks
 
 Sascha
 
+> 
+> diff --git a/arch/arm/dts/imx8mq-ddrc.dtsi b/arch/arm/dts/imx8mq-ddrc.dtsi
+> index 26d3da857951..64826b03735f 100644
+> --- a/arch/arm/dts/imx8mq-ddrc.dtsi
+> +++ b/arch/arm/dts/imx8mq-ddrc.dtsi
+> @@ -7,7 +7,7 @@
+>  
+>  	/delete-node/ memory@40000000;
+>  
+> -	peripherals@0 {
+> +	soc@0 {
+>  		ddrc@3d400000 {
+>  			compatible = "fsl,imx8mq-ddrc";
+>  			reg = <0x3d400000 0x400000>;
+> diff --git a/arch/arm/dts/imx8mq-evk.dts b/arch/arm/dts/imx8mq-evk.dts
+> index 9593c555f926..8ef2c984ac6f 100644
+> --- a/arch/arm/dts/imx8mq-evk.dts
+> +++ b/arch/arm/dts/imx8mq-evk.dts
+> @@ -8,6 +8,7 @@
+>  
+>  #include <arm64/freescale/imx8mq-evk.dts>
+>  #include "imx8mq.dtsi"
+> +#include "imx8mq-ddrc.dtsi"
+>  
+>  / {
+>  	chosen {
+> @@ -56,4 +57,4 @@
+>  
+>  &ocotp {
+>  	barebox,provide-mac-address = <&fec1 0x640>;
+> -};
+> \ No newline at end of file
+> +};
+> -- 
+> 2.20.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
