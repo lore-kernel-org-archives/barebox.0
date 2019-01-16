@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjfdR-0004kD-O6
- for barebox@lists.infradead.org; Wed, 16 Jan 2019 07:29:15 +0000
-Date: Wed, 16 Jan 2019 08:29:08 +0100
+ id 1gjfi5-0006RW-R9
+ for barebox@lists.infradead.org; Wed, 16 Jan 2019 07:34:03 +0000
+Date: Wed, 16 Jan 2019 08:34:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190116072908.ykjsg2kjbpdxxtna@pengutronix.de>
-References: <20190112055815.12180-1-andrew.smirnov@gmail.com>
+Message-ID: <20190116073400.lo2ljnezfxri6jki@pengutronix.de>
+References: <20190112082456.7441-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190112055815.12180-1-andrew.smirnov@gmail.com>
+In-Reply-To: <20190112082456.7441-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,61 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] block: Alias block_op_close() to block_op_flush()
+Subject: Re: [PATCH 0/6] Support for digesting large files (> 4 GiB)
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jan 11, 2019 at 09:58:14PM -0800, Andrey Smirnov wrote:
-> The two functions are identical, so there's no need to keep two copies
-> of the same code around. Alias block_op_close() to block_op_flush()
-> and drop standalone definition for the former.
+On Sat, Jan 12, 2019 at 12:24:50AM -0800, Andrey Smirnov wrote:
+> Everyone:
 > 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  common/block.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
+> This is the series of patches I made while to fix incorrect behaviour
+> while trying to md5sum a 128 GiB file. Most of the patches should be
+> pretty straightforward. If "crypto: digest: Split memory vs. file code
+> into separate functions" is too controversial it can be dropped.
+> 
+> Feedback is welcome!
+> 
+> Thanks,
+> Andrey Smirnov
+> 
+> Andrey Smirnov (6):
+>   treewide: Introduce MAP_FAILED and replace ad-hoc constants with it
+>   crypto: digest: Remove unused variable
+>   crypto: digest: Replace 4096 with PAGE_SIZE
+>   crypto: digest: Split memory vs. file code into separate functions
+>   commands: digest: Use MAX_LFS_FILESIZE instead of ~0
+>   crypto: digest: Change the signature of digest_file_window()
 
 Applied, thanks
 
 Sascha
 
-> 
-> diff --git a/common/block.c b/common/block.c
-> index 8d0de42d90..549df71a9d 100644
-> --- a/common/block.c
-> +++ b/common/block.c
-> @@ -329,13 +329,6 @@ static ssize_t block_op_write(struct cdev *cdev, const void *buf, size_t count,
->  }
->  #endif
->  
-> -static int block_op_close(struct cdev *cdev)
-> -{
-> -	struct block_device *blk = cdev->priv;
-> -
-> -	return writebuffer_flush(blk);
-> -}
-> -
->  static int block_op_flush(struct cdev *cdev)
->  {
->  	struct block_device *blk = cdev->priv;
-> @@ -343,6 +336,8 @@ static int block_op_flush(struct cdev *cdev)
->  	return writebuffer_flush(blk);
->  }
->  
-> +static int block_op_close(struct cdev *cdev) __alias(block_op_flush);
-> +
->  static struct cdev_operations block_ops = {
->  	.read	= block_op_read,
->  #ifdef CONFIG_BLOCK_WRITE
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
