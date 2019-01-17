@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gk2m2-0005e3-N6
- for barebox@lists.infradead.org; Thu, 17 Jan 2019 08:11:40 +0000
-Date: Thu, 17 Jan 2019 09:11:36 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190117081136.lkoso5bwrrt34ga3@pengutronix.de>
+ id 1gk3yS-0007wl-4c
+ for barebox@lists.infradead.org; Thu, 17 Jan 2019 09:28:39 +0000
 References: <20190116174559.17416-1-a.fatoum@pengutronix.de>
  <20190116174559.17416-8-a.fatoum@pengutronix.de>
+ <20190117081136.lkoso5bwrrt34ga3@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <28ea8268-ebb3-f7e6-4006-1b02f72963a1@pengutronix.de>
+Date: Thu, 17 Jan 2019 10:28:30 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190116174559.17416-8-a.fatoum@pengutronix.de>
+In-Reply-To: <20190117081136.lkoso5bwrrt34ga3@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,25 +26,34 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 07/11] ARM: at91: import low level DDRAMC initialization
  code from at91bootstrap
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jan 16, 2019 at 06:45:55PM +0100, Ahmad Fatoum wrote:
-> This commit imports DDRAMC initialization routines for use in PBL from
-> https://github.com/linux4sam/at91bootstrap/blob/v3.8.12/driver/ddramc.c
+
+
+On 17/1/19 09:11, Sascha Hauer wrote:
+> On Wed, Jan 16, 2019 at 06:45:55PM +0100, Ahmad Fatoum wrote:
+>> This commit imports DDRAMC initialization routines for use in PBL from
+>> https://github.com/linux4sam/at91bootstrap/blob/v3.8.12/driver/ddramc.c
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>> +
+>> +void ddram_initialize(unsigned long base_address,
+>> +		     unsigned long ram_address,
+>> +		     struct ddramc_register *ddramc_config)
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
-> +
-> +void ddram_initialize(unsigned long base_address,
-> +		     unsigned long ram_address,
-> +		     struct ddramc_register *ddramc_config)
+> All the exported functions should have a proper at91_ or whatever
+> prefix.
+> 
+> Sascha
+> 
+> 
 
-All the exported functions should have a proper at91_ or whatever
-prefix.
+Will do in v2.
 
-Sascha
-
+Thanks
+Ahmad
 
 -- 
 Pengutronix e.K.                           |                             |
