@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjxFa-0006mW-F2
+ id 1gjxFX-0006jc-Dn
  for barebox@lists.infradead.org; Thu, 17 Jan 2019 02:17:59 +0000
-Received: by mail-pf1-x441.google.com with SMTP id q1so4021172pfi.5
- for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 18:17:46 -0800 (PST)
+Received: by mail-pg1-x542.google.com with SMTP id d72so3691148pga.9
+ for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 18:17:43 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 16 Jan 2019 18:17:00 -0800
-Message-Id: <20190117021700.4443-18-andrew.smirnov@gmail.com>
+Date: Wed, 16 Jan 2019 18:16:58 -0800
+Message-Id: <20190117021700.4443-16-andrew.smirnov@gmail.com>
 In-Reply-To: <20190117021700.4443-1-andrew.smirnov@gmail.com>
 References: <20190117021700.4443-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,69 +23,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 17/17] PCI: imx6: Port imx6_pcie_ltssm_enable()
+Subject: [PATCH v4 15/17] PCI: imx6: Fix spelling mistake: "contol" ->
+ "control"
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port imx6_pcie_ltssm_enable() from Linux kernel driver.
+Port of a Linux commit 7221547e55b7929e4d46983f6f3ca15f36ee4dac
+
+  Trivial fix to spelling mistake in dev_err message
+
+  Signed-off-by: Colin Ian King <colin.king@canonical.com>
+  Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+  Acked-by: Richard Zhu <hongxing.Zhu@nxp.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ drivers/pci/pci-imx6.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index 9aa307aabf..c1719093be 100644
+index 6bdc9465db..9f3c9b69a5 100644
 --- a/drivers/pci/pci-imx6.c
 +++ b/drivers/pci/pci-imx6.c
-@@ -457,6 +457,23 @@ static int imx6_pcie_wait_for_speed_change(struct imx6_pcie *imx6_pcie)
- 	return -EINVAL;
- }
+@@ -655,13 +655,13 @@ static int imx6_pcie_probe(struct device_d *dev)
  
-+static void imx6_pcie_ltssm_enable(struct device_d *dev)
-+{
-+	struct imx6_pcie *imx6_pcie = dev->priv;
-+	u32 gpr12;
-+
-+	switch (imx6_pcie->variant) {
-+	case IMX6Q:
-+	case IMX6QP:
-+		gpr12 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
-+		gpr12 |= IMX6Q_GPR12_PCIE_CTL_2;
-+		writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
-+		break;
-+	case IMX7D:
-+		reset_control_deassert(imx6_pcie->apps_reset);
-+		break;
-+	}
-+}
+ 		imx6_pcie->pciephy_reset = reset_control_get(dev, "pciephy");
+ 		if (IS_ERR(imx6_pcie->pciephy_reset)) {
+-			dev_err(dev, "Failed to get PCIEPHY reset contol\n");
++			dev_err(dev, "Failed to get PCIEPHY reset control\n");
+ 			return PTR_ERR(imx6_pcie->pciephy_reset);
+ 		}
  
- static int imx6_pcie_establish_link(struct imx6_pcie *imx6_pcie)
- {
-@@ -464,7 +481,6 @@ static int imx6_pcie_establish_link(struct imx6_pcie *imx6_pcie)
- 	struct device_d *dev = pci->dev;
- 	uint32_t tmp;
- 	int ret;
--	u32 gpr12;
- 
- 	/*
- 	 * Force Gen1 operation when starting the link.  In case the link is
-@@ -476,14 +492,7 @@ static int imx6_pcie_establish_link(struct imx6_pcie *imx6_pcie)
- 	tmp |= PCIE_RC_LCR_MAX_LINK_SPEEDS_GEN1;
- 	dw_pcie_writel_dbi(pci, PCIE_RC_LCR, tmp);
- 
--	/* Start LTSSM. */
--	if (imx6_pcie->variant == IMX7D) {
--		reset_control_deassert(imx6_pcie->apps_reset);
--	} else {
--		gpr12 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
--		gpr12 |= IMX6Q_GPR12_PCIE_CTL_2;
--		writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
--	}
-+	imx6_pcie_ltssm_enable(dev);
- 
- 	ret = imx6_pcie_wait_for_link(imx6_pcie);
- 	if (ret)
+ 		imx6_pcie->apps_reset = reset_control_get(dev, "apps");
+ 		if (IS_ERR(imx6_pcie->apps_reset)) {
+-			dev_err(dev, "Failed to get PCIE APPS reset contol\n");
++			dev_err(dev, "Failed to get PCIE APPS reset control\n");
+ 			return PTR_ERR(imx6_pcie->apps_reset);
+ 		}
+ 		break;
 -- 
 2.20.1
 
