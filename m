@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gk1KQ-000499-2L
- for barebox@lists.infradead.org; Thu, 17 Jan 2019 06:39:09 +0000
-Received: by mail-pl1-x643.google.com with SMTP id gn14so4248799plb.10
- for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 22:39:02 -0800 (PST)
+ id 1gk1KR-0004AJ-7l
+ for barebox@lists.infradead.org; Thu, 17 Jan 2019 06:39:12 +0000
+Received: by mail-pl1-x644.google.com with SMTP id u18so4258115plq.7
+ for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 22:39:03 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 16 Jan 2019 22:38:38 -0800
-Message-Id: <20190117063840.13674-11-andrew.smirnov@gmail.com>
+Date: Wed, 16 Jan 2019 22:38:39 -0800
+Message-Id: <20190117063840.13674-12-andrew.smirnov@gmail.com>
 In-Reply-To: <20190117063840.13674-1-andrew.smirnov@gmail.com>
 References: <20190117063840.13674-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,160 +23,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/12] ARM: mmu: Share sanity checking code in mmu_init()
+Subject: [PATCH 11/12] ARM: mmu: Share code for arm_mmu_not_initialized_error()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Share sanity checking code in mmu_init() as well as code to detect if
-MMU is on or not on both ARM and ARM64.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu-common.c | 23 +++++++++++++++++++++--
- arch/arm/cpu/mmu-common.h |  1 +
- arch/arm/cpu/mmu.c        | 16 ++--------------
- arch/arm/cpu/mmu_64.c     | 16 ++--------------
- 4 files changed, 26 insertions(+), 30 deletions(-)
+ arch/arm/cpu/mmu-common.h | 11 +++++++++++
+ arch/arm/cpu/mmu.c        | 11 -----------
+ arch/arm/cpu/mmu_64.c     | 11 -----------
+ 3 files changed, 11 insertions(+), 22 deletions(-)
 
-diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
-index a7d3b5b11..c5b24bff8 100644
---- a/arch/arm/cpu/mmu-common.c
-+++ b/arch/arm/cpu/mmu-common.c
-@@ -2,10 +2,12 @@
- #define pr_fmt(fmt)	"mmu: " fmt
- 
- #include <common.h>
-+#include <init.h>
- #include <dma-dir.h>
- #include <dma.h>
- #include <mmu.h>
--
-+#include <asm/system.h>
-+#include <memory.h>
- #include "mmu.h"
- 
- 
-@@ -59,4 +61,21 @@ void dma_free_coherent(void *mem, dma_addr_t dma_handle, size_t size)
- 	arch_remap_range(mem, size, MAP_CACHED);
- 
- 	free(mem);
--}
-\ No newline at end of file
-+}
-+
-+static int mmu_init(void)
-+{
-+	if (list_empty(&memory_banks))
-+		/*
-+		 * If you see this it means you have no memory registered.
-+		 * This can be done either with arm_add_mem_device() in an
-+		 * initcall prior to mmu_initcall or via devicetree in the
-+		 * memory node.
-+		 */
-+		panic("MMU: No memory bank found! Cannot continue\n");
-+
-+	__mmu_init(get_cr() & CR_M);
-+
-+	return 0;
-+}
-+mmu_initcall(mmu_init);
-\ No newline at end of file
 diff --git a/arch/arm/cpu/mmu-common.h b/arch/arm/cpu/mmu-common.h
-index e8689ac31..37eef3ef2 100644
+index 37eef3ef2..679799c3c 100644
 --- a/arch/arm/cpu/mmu-common.h
 +++ b/arch/arm/cpu/mmu-common.h
-@@ -3,5 +3,6 @@
- 
- void dma_inv_range(void *ptr, size_t size);
+@@ -5,4 +5,15 @@ void dma_inv_range(void *ptr, size_t size);
  void *dma_alloc_map(size_t size, dma_addr_t *dma_handle, unsigned flags);
-+void __mmu_init(bool mmu_on);
+ void __mmu_init(bool mmu_on);
  
++static inline void arm_mmu_not_initialized_error(void)
++{
++	/*
++	 * This means:
++	 * - one of the MMU functions like dma_alloc_coherent
++	 *   or remap_range is called too early, before the MMU is initialized
++	 * - Or the MMU initialization has failed earlier
++	 */
++	panic("MMU not initialized\n");
++}
++
  #endif
 \ No newline at end of file
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 97c459ff0..ba1c3e007 100644
+index ba1c3e007..9e261a0be 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -412,19 +412,10 @@ static void vectors_init(void)
- /*
-  * Prepare MMU for usage enable it.
-  */
--static int mmu_init(void)
-+void __mmu_init(bool mmu_on)
+@@ -75,17 +75,6 @@ static uint32_t pgd_flags_wc;
+ 
+ #define PTE_MASK ((1 << 12) - 1)
+ 
+-static void arm_mmu_not_initialized_error(void)
+-{
+-	/*
+-	 * This means:
+-	 * - one of the MMU functions like dma_alloc_coherent
+-	 *   or remap_range is called too early, before the MMU is initialized
+-	 * - Or the MMU initialization has failed earlier
+-	 */
+-	panic("MMU not initialized\n");
+-}
+-
+ static bool pgd_type_table(u32 pgd)
  {
- 	struct memory_bank *bank;
- 
--	if (list_empty(&memory_banks))
--		/*
--		 * If you see this it means you have no memory registered.
--		 * This can be done either with arm_add_mem_device() in an
--		 * initcall prior to mmu_initcall or via devicetree in the
--		 * memory node.
--		 */
--		panic("MMU: No memory bank found! Cannot continue\n");
--
- 	arm_set_cache_functions();
- 
- 	if (cpu_architecture() >= CPU_ARCH_ARMv7) {
-@@ -439,7 +430,7 @@ static int mmu_init(void)
- 		pte_flags_uncached = PTE_FLAGS_UNCACHED_V4;
- 	}
- 
--	if (get_cr() & CR_M) {
-+	if (mmu_on) {
- 		/*
- 		 * Early MMU code has already enabled the MMU. We assume a
- 		 * flat 1:1 section mapping in this case.
-@@ -483,10 +474,7 @@ static int mmu_init(void)
- 	}
- 
- 	__mmu_cache_on();
--
--	return 0;
- }
--mmu_initcall(mmu_init);
- 
- /*
-  * Clean and invalide caches, disable MMU
+ 	return (pgd & PMD_TYPE_MASK) == PMD_TYPE_TABLE;
 diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 2cb62370e..7f8a8f249 100644
+index 7f8a8f249..a3074b10d 100644
 --- a/arch/arm/cpu/mmu_64.c
 +++ b/arch/arm/cpu/mmu_64.c
-@@ -194,21 +194,12 @@ static void mmu_enable(void)
- /*
-  * Prepare MMU for usage enable it.
-  */
--static int mmu_init(void)
-+void __mmu_init(bool mmu_on)
- {
- 	struct memory_bank *bank;
- 	unsigned int el;
+@@ -37,17 +37,6 @@
  
--	if (list_empty(&memory_banks))
--		/*
--		 * If you see this it means you have no memory registered.
--		 * This can be done either with arm_add_mem_device() in an
--		 * initcall prior to mmu_initcall or via devicetree in the
--		 * memory node.
--		 */
--		panic("MMU: No memory bank found! Cannot continue\n");
+ static uint64_t *ttb;
+ 
+-static void arm_mmu_not_initialized_error(void)
+-{
+-	/*
+-	 * This means:
+-	 * - one of the MMU functions like dma_alloc_coherent
+-	 *   or remap_range is called too early, before the MMU is initialized
+-	 * - Or the MMU initialization has failed earlier
+-	 */
+-	panic("MMU not initialized\n");
+-}
 -
--	if (get_cr() & CR_M)
-+	if (mmu_on)
- 		mmu_disable();
- 
- 	ttb = create_table();
-@@ -228,10 +219,7 @@ static int mmu_init(void)
- 	create_sections(0x0, 0x0, 0x1000, 0x0);
- 
- 	mmu_enable();
--
--	return 0;
- }
--mmu_initcall(mmu_init);
- 
- void mmu_disable(void)
+ static void set_table(uint64_t *pt, uint64_t *table_addr)
  {
+ 	uint64_t val;
 -- 
 2.20.1
 
