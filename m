@@ -1,23 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gkEs4-0001D5-Kb
- for barebox@lists.infradead.org; Thu, 17 Jan 2019 21:06:42 +0000
-Date: Thu, 17 Jan 2019 22:06:33 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190117210633.55qy73uxxxyouabj@pengutronix.de>
-References: <44943261547037040@iva5-750e13568e4d.qloud-c.yandex.net>
- <87941547037637@iva6-19b25c513db4.qloud-c.yandex.net>
- <20190109130341.sxiqrcg43mxuzrai@pengutronix.de>
- <26388451547654386@iva5-0acfc31d2b43.qloud-c.yandex.net>
- <20190117075948.4f6pwllc66k774gj@pengutronix.de>
- <3289771547729062@iva1-5148b5385b62.qloud-c.yandex.net>
- <20190117132845.wkyeunk3b5nze7jv@pengutronix.de>
- <3768381547736522@iva8-8d7a47df0521.qloud-c.yandex.net>
- <20190117162618.GA31768@ravnborg.org>
+ id 1gkFDW-0000Um-9J
+ for barebox@lists.infradead.org; Thu, 17 Jan 2019 21:28:51 +0000
+Date: Thu, 17 Jan 2019 22:28:47 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20190117212847.GB4532@ravnborg.org>
+References: <20190117063840.13674-1-andrew.smirnov@gmail.com>
+ <20190117063840.13674-10-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190117162618.GA31768@ravnborg.org>
+In-Reply-To: <20190117063840.13674-10-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,29 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [HELP] Barebox porting
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>, =?utf-8?B?0KHQtdGA0LDRhNC40Lwg0JTQvtC70LHQuNC70L7Qsg==?= <s.dlblv@ya.ru>
+Subject: Re: [PATCH 09/12] ARM: mmu: Share code for dma_sync_single_for_cpu()
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Thu, Jan 17, 2019 at 05:26:18PM +0100, Sam Ravnborg wrote:
-> Hi Serapim
+Hi Andrey.
+
+On Wed, Jan 16, 2019 at 10:38:37PM -0800, Andrey Smirnov wrote:
+> Both ARM and ARM64 have identical code for
+> dma_sync_single_for_cpu(). Move it to mmu-common.c so it can be shared.
 > 
-> > BTW, am I right to suppose that all functions in `obj-y` marked
-> > as `initcall` and `exitcall` are invoked in the beginning and in the
-> > end of barebox main code respectively?
-> Enabel initcall debug - then you can see when they are called.
-> It is a very usefull debug tool.
-> Use the .map file to go from an address to a function.
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  arch/arm/cpu/mmu-common.c | 8 ++++++++
+>  arch/arm/cpu/mmu.c        | 7 -------
+>  arch/arm/cpu/mmu_64.c     | 7 -------
+>  3 files changed, 8 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
+> index 8c7d61447..a7d3b5b11 100644
+> --- a/arch/arm/cpu/mmu-common.c
+> +++ b/arch/arm/cpu/mmu-common.c
+> @@ -8,6 +8,14 @@
+>  
+>  #include "mmu.h"
+>  
+> +
+> +void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
+> +			     enum dma_data_direction dir)
+> +{
+> +	if (dir != DMA_TO_DEVICE)
+> +		dma_inv_range((void *)address, size);
+> +}
 
-Or enable CONFIG_KALLSYMS, then the name of the function is printed.
+I cannot see how this will work?!?
+We are on a v8 architecture for a 64bit variant.
+But in cache.c we have only:
 
-Sascha
+DEFINE_CPU_FNS(v4)
+DEFINE_CPU_FNS(v5)
+DEFINE_CPU_FNS(v6)
+DEFINE_CPU_FNS(v7)
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+So I do not see how we call v8_inv_dcache_range() here.
+Do I miss something?
+
+	Sam
 
 _______________________________________________
 barebox mailing list
