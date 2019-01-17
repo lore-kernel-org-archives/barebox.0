@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjxFL-0006X1-Jp
+ id 1gjxFN-0006YC-3y
  for barebox@lists.infradead.org; Thu, 17 Jan 2019 02:17:35 +0000
-Received: by mail-pg1-x542.google.com with SMTP id j10so3710173pga.1
- for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 18:17:31 -0800 (PST)
+Received: by mail-pg1-x542.google.com with SMTP id c25so3700240pgb.4
+ for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 18:17:33 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 16 Jan 2019 18:16:49 -0800
-Message-Id: <20190117021700.4443-7-andrew.smirnov@gmail.com>
+Date: Wed, 16 Jan 2019 18:16:50 -0800
+Message-Id: <20190117021700.4443-8-andrew.smirnov@gmail.com>
 In-Reply-To: <20190117021700.4443-1-andrew.smirnov@gmail.com>
 References: <20190117021700.4443-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,219 +23,425 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 06/17] regulator: Port ANATOP driver from Linux
+Subject: [PATCH v4 07/17] drivers: base: Port power management code from Linux
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port a subset of Linux driver sufficient enough to support feature
-needed for PCIe on i.MX7.
+Port an extremely abridged version of power management/power domain
+code from Linux as a dependency of i.MX7D PCIe work. Currenlty only
+bare minimum of functionality is implemented.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/regulator/Kconfig            |   8 ++
- drivers/regulator/Makefile           |   3 +-
- drivers/regulator/anatop-regulator.c | 162 +++++++++++++++++++++++++++
- 3 files changed, 172 insertions(+), 1 deletion(-)
- create mode 100644 drivers/regulator/anatop-regulator.c
+ drivers/Kconfig         |   1 +
+ drivers/base/Kconfig    |   3 +
+ drivers/base/Makefile   |   4 +-
+ drivers/base/platform.c |   7 ++
+ drivers/base/power.c    | 249 ++++++++++++++++++++++++++++++++++++++++
+ include/pm_domain.h     |  82 +++++++++++++
+ 6 files changed, 345 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/base/Kconfig
+ create mode 100644 drivers/base/power.c
+ create mode 100644 include/pm_domain.h
 
-diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
-index 92db8dc0e0..c734ef5ef9 100644
---- a/drivers/regulator/Kconfig
-+++ b/drivers/regulator/Kconfig
-@@ -21,4 +21,12 @@ config REGULATOR_PFUZE
- 	depends on I2C
- 	depends on ARCH_IMX6
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index 1e0246da6d..c3bf9dfe18 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -1,5 +1,6 @@
+ menu "Drivers"
  
-+config REGULATOR_ANATOP
-+	tristate "Freescale i.MX on-chip ANATOP LDO regulators"
-+	depends on MFD_SYSCON
-+	help
-+	  Say y here to support Freescale i.MX on-chip ANATOP LDOs
-+	  regulators. It is recommended that this option be
-+	  enabled on i.MX6 platform.
-+
- endif
-diff --git a/drivers/regulator/Makefile b/drivers/regulator/Makefile
-index 36ce3e87f7..b2fc5b79b6 100644
---- a/drivers/regulator/Makefile
-+++ b/drivers/regulator/Makefile
-@@ -1,4 +1,5 @@
- obj-$(CONFIG_REGULATOR) += core.o helpers.o
- obj-$(CONFIG_REGULATOR_FIXED) += fixed.o
- obj-$(CONFIG_REGULATOR_BCM283X) += bcm2835.o
--obj-$(CONFIG_REGULATOR_PFUZE) += pfuze.o
-\ No newline at end of file
-+obj-$(CONFIG_REGULATOR_PFUZE) += pfuze.o
-+obj-$(CONFIG_REGULATOR_ANATOP) += anatop-regulator.o
-\ No newline at end of file
-diff --git a/drivers/regulator/anatop-regulator.c b/drivers/regulator/anatop-regulator.c
++source "drivers/base/Kconfig"
+ source "drivers/efi/Kconfig"
+ source "drivers/of/Kconfig"
+ source "drivers/aiodev/Kconfig"
+diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
 new file mode 100644
-index 0000000000..7ec9446a0a
+index 0000000000..1e13e5ed9d
 --- /dev/null
-+++ b/drivers/regulator/anatop-regulator.c
-@@ -0,0 +1,162 @@
-+/*
-+ * Copyright (C) 2011 Freescale Semiconductor, Inc. All Rights Reserved.
-+ */
++++ b/drivers/base/Kconfig
+@@ -0,0 +1,3 @@
 +
-+/*
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
++config PM_GENERIC_DOMAINS
++	bool
+diff --git a/drivers/base/Makefile b/drivers/base/Makefile
+index 4bd4217745..6d2cef8e1a 100644
+--- a/drivers/base/Makefile
++++ b/drivers/base/Makefile
+@@ -2,4 +2,6 @@ obj-y	+= bus.o
+ obj-y	+= driver.o
+ obj-y	+= platform.o
+ obj-y	+= resource.o
+-obj-y	+= regmap/
+\ No newline at end of file
++obj-y	+= regmap/
 +
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
++obj-$(CONFIG_PM_GENERIC_DOMAINS) += power.o
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 85bdfb0149..1d3fa2eb44 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -21,9 +21,16 @@
+ #include <errno.h>
+ #include <init.h>
+ #include <of.h>
++#include <pm_domain.h>
+ 
+ static int platform_probe(struct device_d *dev)
+ {
++	int ret;
 +
-+ * You should have received a copy of the GNU General Public License along
-+ * with this program; if not, write to the Free Software Foundation, Inc.,
-+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-+ */
++	ret = genpd_dev_pm_attach(dev);
++	if (ret < 0)
++		return ret;
 +
+ 	return dev->driver->probe(dev);
+ }
+ 
+diff --git a/drivers/base/power.c b/drivers/base/power.c
+new file mode 100644
+index 0000000000..12674ca7d9
+--- /dev/null
++++ b/drivers/base/power.c
+@@ -0,0 +1,249 @@
 +#include <common.h>
-+#include <init.h>
-+#include <mfd/syscon.h>
-+#include <regmap.h>
-+#include <regulator.h>
++#include <driver.h>
++#include <errno.h>
++#include <of.h>
 +
-+struct anatop_regulator {
-+	u32 control_reg;
-+	struct regmap *anatop;
-+	int vol_bit_shift;
-+	int vol_bit_width;
-+	u32 delay_reg;
-+	int delay_bit_shift;
-+	int delay_bit_width;
-+	int min_bit_val;
-+	int min_voltage;
-+	int max_voltage;
++#include <pm_domain.h>
 +
-+	struct regulator_dev  rdev;
-+	struct regulator_desc rdesc;
++#define genpd_status_on(genpd)		(genpd->status == GPD_STATE_ACTIVE)
 +
-+	bool bypass;
-+	int sel;
-+};
++static LIST_HEAD(gpd_list);
 +
-+static struct regulator_ops anatop_rops = {
-+	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-+	.list_voltage = regulator_list_voltage_linear,
-+};
-+
-+static int anatop_regulator_probe(struct device_d *dev)
++/**
++ * pm_genpd_init - Initialize a generic I/O PM domain object.
++ * @genpd: PM domain object to initialize.
++ * @gov: PM domain governor to associate with the domain (may be NULL).
++ * @is_off: Initial value of the domain's power_is_off field.
++ *
++ * Returns 0 on successful initialization, else a negative error code.
++ */
++int pm_genpd_init(struct generic_pm_domain *genpd, void *gov, bool is_off)
 +{
-+	struct device_node *np = dev->device_node;
-+	struct device_node *anatop_np;
-+	struct regulator_desc *rdesc;
-+	struct regulator_dev *rdev;
-+	struct anatop_regulator *sreg;
-+	int ret = 0;
++	if (IS_ERR_OR_NULL(genpd))
++		return -EINVAL;
 +
-+	sreg  = xzalloc(sizeof(*sreg));
-+	rdesc = &sreg->rdesc;
-+	rdev  = &sreg->rdev;
++	genpd->status = is_off ? GPD_STATE_POWER_OFF : GPD_STATE_ACTIVE;
 +
-+	anatop_np = of_get_parent(np);
-+	if (!anatop_np)
-+		return -ENODEV;
++	list_add(&genpd->gpd_list_node, &gpd_list);
 +
-+	rdev->desc = rdesc;
-+	rdev->regmap = syscon_node_to_regmap(anatop_np);
-+	if (IS_ERR(rdev->regmap))
-+		return PTR_ERR(rdev->regmap);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(pm_genpd_init);
 +
-+	ret = of_property_read_u32(np, "anatop-reg-offset",
-+				   &sreg->control_reg);
-+	if (ret) {
-+		dev_err(dev, "no anatop-reg-offset property set\n");
-+		return ret;
-+	}
-+	ret = of_property_read_u32(np, "anatop-vol-bit-width",
-+				   &sreg->vol_bit_width);
-+	if (ret) {
-+		dev_err(dev, "no anatop-vol-bit-width property set\n");
-+		return ret;
-+	}
-+	ret = of_property_read_u32(np, "anatop-vol-bit-shift",
-+				   &sreg->vol_bit_shift);
-+	if (ret) {
-+		dev_err(dev, "no anatop-vol-bit-shift property set\n");
-+		return ret;
-+	}
-+	ret = of_property_read_u32(np, "anatop-min-bit-val",
-+				   &sreg->min_bit_val);
-+	if (ret) {
-+		dev_err(dev, "no anatop-min-bit-val property set\n");
-+		return ret;
-+	}
-+	ret = of_property_read_u32(np, "anatop-min-voltage",
-+				   &sreg->min_voltage);
-+	if (ret) {
-+		dev_err(dev, "no anatop-min-voltage property set\n");
-+		return ret;
-+	}
-+	ret = of_property_read_u32(np, "anatop-max-voltage",
-+				   &sreg->max_voltage);
-+	if (ret) {
-+		dev_err(dev, "no anatop-max-voltage property set\n");
-+		return ret;
-+	}
++/**
++ * struct of_genpd_provider - PM domain provider registration structure
++ * @link: Entry in global list of PM domain providers
++ * @node: Pointer to device tree node of PM domain provider
++ * @xlate: Provider-specific xlate callback mapping a set of specifier cells
++ *         into a PM domain.
++ * @data: context pointer to be passed into @xlate callback
++ */
++struct of_genpd_provider {
++	struct list_head link;
++	struct device_node *node;
++	genpd_xlate_t xlate;
++	void *data;
++};
 +
-+	/* read LDO ramp up setting, only for core reg */
-+	of_property_read_u32(np, "anatop-delay-reg-offset",
-+			     &sreg->delay_reg);
-+	of_property_read_u32(np, "anatop-delay-bit-width",
-+			     &sreg->delay_bit_width);
-+	of_property_read_u32(np, "anatop-delay-bit-shift",
-+			     &sreg->delay_bit_shift);
++/* List of registered PM domain providers. */
++static LIST_HEAD(of_genpd_providers);
 +
-+	rdesc->n_voltages = (sreg->max_voltage - sreg->min_voltage) / 25000 + 1
-+			    + sreg->min_bit_val;
-+	rdesc->min_uV = sreg->min_voltage;
-+	rdesc->uV_step = 25000;
-+	rdesc->linear_min_sel = sreg->min_bit_val;
-+	rdesc->vsel_reg  = sreg->control_reg;
-+	rdesc->vsel_mask = GENMASK(sreg->vol_bit_width + sreg->vol_bit_shift,
-+				   sreg->vol_bit_shift);
++static bool genpd_present(const struct generic_pm_domain *genpd)
++{
++	const struct generic_pm_domain *gpd;
 +
-+	/* Only core regulators have the ramp up delay configuration. */
-+	if (sreg->control_reg && sreg->delay_bit_width) {
-+		free(sreg);
-+		/* FIXME: This case is not supported */
-+		return 0;
-+	} else {
-+		u32 enable_bit;
++	if (IS_ERR_OR_NULL(genpd))
++		return false;
 +
-+		rdesc->ops = &anatop_rops;
++	list_for_each_entry(gpd, &gpd_list, gpd_list_node)
++		if (gpd == genpd)
++			return true;
 +
-+		if (!of_property_read_u32(np, "anatop-enable-bit",
-+					  &enable_bit)) {
-+			anatop_rops.enable  = regulator_enable_regmap;
-+			anatop_rops.disable = regulator_disable_regmap;
-+			anatop_rops.is_enabled = regulator_is_enabled_regmap;
-+
-+			rdesc->enable_reg = sreg->control_reg;
-+			rdesc->enable_mask = BIT(enable_bit);
-+		}
-+	}
-+
-+	return of_regulator_register(rdev, dev->device_node);
++	return false;
 +}
 +
-+static const struct of_device_id of_anatop_regulator_match_tbl[] = {
-+	{ .compatible = "fsl,anatop-regulator", },
-+	{ /* end */ }
++/**
++ * genpd_xlate_simple() - Xlate function for direct node-domain mapping
++ * @genpdspec: OF phandle args to map into a PM domain
++ * @data: xlate function private data - pointer to struct generic_pm_domain
++ *
++ * This is a generic xlate function that can be used to model PM domains that
++ * have their own device tree nodes. The private data of xlate function needs
++ * to be a valid pointer to struct generic_pm_domain.
++ */
++static struct generic_pm_domain *genpd_xlate_simple(
++					struct of_phandle_args *genpdspec,
++					void *data)
++{
++	return data;
++}
++
++/**
++ * genpd_add_provider() - Register a PM domain provider for a node
++ * @np: Device node pointer associated with the PM domain provider.
++ * @xlate: Callback for decoding PM domain from phandle arguments.
++ * @data: Context pointer for @xlate callback.
++ */
++static int genpd_add_provider(struct device_node *np, genpd_xlate_t xlate,
++			      void *data)
++{
++	struct of_genpd_provider *cp;
++
++	cp = kzalloc(sizeof(*cp), GFP_KERNEL);
++	if (!cp)
++		return -ENOMEM;
++
++	cp->node  = np;
++	cp->data  = data;
++	cp->xlate = xlate;
++
++	list_add(&cp->link, &of_genpd_providers);
++	pr_debug("Added domain provider from %pOF\n", np);
++
++	return 0;
++}
++
++/**
++ * of_genpd_add_provider_simple() - Register a simple PM domain provider
++ * @np: Device node pointer associated with the PM domain provider.
++ * @genpd: Pointer to PM domain associated with the PM domain provider.
++ */
++int of_genpd_add_provider_simple(struct device_node *np,
++				 struct generic_pm_domain *genpd)
++{
++	int ret = -EINVAL;
++
++	if (!np || !genpd)
++		return -EINVAL;
++
++	if (genpd_present(genpd))
++		ret = genpd_add_provider(np, genpd_xlate_simple, genpd);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(of_genpd_add_provider_simple);
++
++/**
++ * genpd_get_from_provider() - Look-up PM domain
++ * @genpdspec: OF phandle args to use for look-up
++ *
++ * Looks for a PM domain provider under the node specified by @genpdspec and if
++ * found, uses xlate function of the provider to map phandle args to a PM
++ * domain.
++ *
++ * Returns a valid pointer to struct generic_pm_domain on success or ERR_PTR()
++ * on failure.
++ */
++static struct generic_pm_domain *genpd_get_from_provider(
++					struct of_phandle_args *genpdspec)
++{
++	struct generic_pm_domain *genpd = ERR_PTR(-ENOENT);
++	struct of_genpd_provider *provider;
++
++	if (!genpdspec)
++		return ERR_PTR(-EINVAL);
++
++	/* Check if we have such a provider in our array */
++	list_for_each_entry(provider, &of_genpd_providers, link) {
++		if (provider->node == genpdspec->np)
++			genpd = provider->xlate(genpdspec, provider->data);
++		if (!IS_ERR(genpd))
++			break;
++	}
++
++	return genpd;
++}
++
++static int _genpd_power_on(struct generic_pm_domain *genpd, bool timed)
++{
++	if (!genpd->power_on)
++		return 0;
++
++	return genpd->power_on(genpd);
++}
++
++/**
++ * genpd_power_on - Restore power to a given PM domain and its masters.
++ * @genpd: PM domain to power up.
++ * @depth: nesting count for lockdep.
++ *
++ * Restore power to @genpd and all of its masters so that it is possible to
++ * resume a device belonging to it.
++ */
++static int genpd_power_on(struct generic_pm_domain *genpd, unsigned int depth)
++{
++	int ret;
++
++	if (genpd_status_on(genpd))
++		return 0;
++
++	ret = _genpd_power_on(genpd, true);
++	if (ret)
++		return ret;
++
++	genpd->status = GPD_STATE_ACTIVE;
++
++	return 0;
++}
++
++static int __genpd_dev_pm_attach(struct device_d *dev, struct device_node *np,
++				 unsigned int index, bool power_on)
++{
++	struct of_phandle_args pd_args;
++	struct generic_pm_domain *pd;
++	int ret;
++
++	ret = of_parse_phandle_with_args(np, "power-domains",
++				"#power-domain-cells", index, &pd_args);
++	if (ret < 0)
++		return ret;
++
++	pd = genpd_get_from_provider(&pd_args);
++	if (IS_ERR(pd)) {
++		ret = PTR_ERR(pd);
++		dev_dbg(dev, "%s() failed to find PM domain: %d\n",
++			__func__, ret);
++		/*
++		 * Assume that missing genpds are unresolved
++		 * dependency are report them as deferred
++		 */
++		return (ret == -ENOENT) ? -EPROBE_DEFER : ret;
++	}
++
++	dev_dbg(dev, "adding to PM domain %s\n", pd->name);
++
++	if (power_on)
++		ret = genpd_power_on(pd, 0);
++
++	return ret ?: 1;
++}
++
++/**
++ * genpd_dev_pm_attach - Attach a device to its PM domain using DT.
++ * @dev: Device to attach.
++ *
++ * Parse device's OF node to find a PM domain specifier. If such is found,
++ * attaches the device to retrieved pm_domain ops.
++ *
++ * Returns 1 on successfully attached PM domain, 0 when the device don't need a
++ * PM domain or when multiple power-domains exists for it, else a negative error
++ * code. Note that if a power-domain exists for the device, but it cannot be
++ * found or turned on, then return -EPROBE_DEFER to ensure that the device is
++ * not probed and to re-try again later.
++ */
++int genpd_dev_pm_attach(struct device_d *dev)
++{
++	if (!dev->device_node)
++		return 0;
++
++	/*
++	 * Devices with multiple PM domains must be attached separately, as we
++	 * can only attach one PM domain per device.
++	 */
++	if (of_count_phandle_with_args(dev->device_node, "power-domains",
++				       "#power-domain-cells") != 1)
++		return 0;
++
++	return __genpd_dev_pm_attach(dev, dev->device_node, 0, true);
++}
++EXPORT_SYMBOL_GPL(genpd_dev_pm_attach);
+diff --git a/include/pm_domain.h b/include/pm_domain.h
+new file mode 100644
+index 0000000000..6d59587ece
+--- /dev/null
++++ b/include/pm_domain.h
+@@ -0,0 +1,82 @@
++#ifndef _PM_DOMAIN_H
++#define _PM_DOMAIN_H
++
++enum gpd_status {
++	GPD_STATE_ACTIVE = 0,	/* PM domain is active */
++	GPD_STATE_POWER_OFF,	/* PM domain is off */
 +};
 +
-+static struct driver_d anatop_regulator_driver = {
-+	.name = "anatop_regulator",
-+	.probe = anatop_regulator_probe,
-+	.of_compatible = DRV_OF_COMPAT(of_anatop_regulator_match_tbl),
-+};
-+device_platform_driver(anatop_regulator_driver);
++struct generic_pm_domain {
++	const char *name;
++	struct list_head gpd_list_node;	/* Node in the global PM domains list */
 +
++	enum gpd_status status;	/* Current state of the domain */
++
++	int (*power_off)(struct generic_pm_domain *domain);
++	int (*power_on)(struct generic_pm_domain *domain);
++};
++
++typedef struct generic_pm_domain *(*genpd_xlate_t)(struct of_phandle_args *args,
++						   void *data);
++
++#ifdef CONFIG_PM_GENERIC_DOMAINS
++
++int genpd_dev_pm_attach(struct device_d *dev);
++
++/**
++ * dev_pm_domain_attach - Attach a device to its PM domain.
++ * @dev: Device to attach.
++ * @power_on: Used to indicate whether we should power on the device.
++ *
++ * The @dev may only be attached to a single PM domain. By iterating through
++ * the available alternatives we try to find a valid PM domain for the device.
++ * As attachment succeeds, the ->detach() callback in the struct dev_pm_domain
++ * should be assigned by the corresponding attach function.
++ *
++ * This function should typically be invoked from subsystem level code during
++ * the probe phase. Especially for those that holds devices which requires
++ * power management through PM domains.
++ *
++ * Callers must ensure proper synchronization of this function with power
++ * management callbacks.
++ *
++ * Returns 0 on successfully attached PM domain or negative error code.
++ */
++static inline int dev_pm_domain_attach(struct device_d *dev, bool power_on)
++{
++	return genpd_dev_pm_attach(dev);
++}
++
++int pm_genpd_init(struct generic_pm_domain *genpd, void *gov, bool is_off);
++
++int of_genpd_add_provider_simple(struct device_node *np,
++				 struct generic_pm_domain *genpd);
++
++#else
++
++static inline int pm_genpd_init(struct generic_pm_domain *genpd,
++				void *gov, bool is_off)
++{
++	return -ENOSYS;
++}
++
++static inline int genpd_dev_pm_attach(struct device_d *dev)
++{
++	return 0;
++}
++
++static inline int dev_pm_domain_attach(struct device_d *dev, bool power_on)
++{
++	return 0;
++}
++
++static inline int
++of_genpd_add_provider_simple(struct device_node *np,
++			     struct generic_pm_domain *genpd)
++{
++	return -ENOTSUPP;
++}
++
++#endif
++
++#endif
+\ No newline at end of file
 -- 
 2.20.1
 
