@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gk3D6-0006n3-7b
- for barebox@lists.infradead.org; Thu, 17 Jan 2019 08:39:37 +0000
-Date: Thu, 17 Jan 2019 09:39:34 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190117083934.lyxauy2ikumgnwop@pengutronix.de>
-References: <20190116091727.20447-1-s.hauer@pengutronix.de>
- <20190116110152.GA2508@ravnborg.org>
+ id 1gjzYV-0006IA-Ho
+ for barebox@lists.infradead.org; Thu, 17 Jan 2019 04:45:28 +0000
+Received: by mail-pf1-x442.google.com with SMTP id c73so4172179pfe.13
+ for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 20:45:27 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 16 Jan 2019 20:45:04 -0800
+Message-Id: <20190117044506.20628-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190116110152.GA2508@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,38 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] images: Drop unnecessary fix_size
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/3] crypto: digest: Return -errno if open() fails
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Wed, Jan 16, 2019 at 12:01:52PM +0100, Sam Ravnborg wrote:
-> Hi Sascha.
-> 
-> On Wed, Jan 16, 2019 at 10:17:27AM +0100, Sascha Hauer wrote:
-> > Now that we compile the compressed binary into the decompressor we
-> > no longer need fix_size but can use the linker to fill in the image
-> > size into the binary.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  arch/arm/lib/pbl.lds.S | 2 +-
-> >  images/Makefile        | 3 +--
-> >  2 files changed, 2 insertions(+), 3 deletions(-)
-> 
-> This patch drops the sole user of fix_size.
-> Should it be ditched from barebox or do we keep it just-in-case?
+Strictly speaking, open() doesn't return a detailed error code as its
+return value and it can and should be obtained via 'errno'.
 
-I kept it around intentionally in case we need it later. I think we can
-remove it in a few releases though.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ crypto/digest.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
-
+diff --git a/crypto/digest.c b/crypto/digest.c
+index 9b7b73019..493e56902 100644
+--- a/crypto/digest.c
++++ b/crypto/digest.c
+@@ -289,7 +289,7 @@ int digest_file_window(struct digest *d, const char *filename,
+ 	fd = open(filename, O_RDONLY);
+ 	if (fd < 0) {
+ 		perror(filename);
+-		return fd;
++		return -errno;
+ 	}
+ 
+ 	buf = memmap(fd, PROT_READ);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
