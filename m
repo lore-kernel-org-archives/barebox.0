@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gk1KK-00042R-FU
- for barebox@lists.infradead.org; Thu, 17 Jan 2019 06:39:03 +0000
-Received: by mail-pg1-x542.google.com with SMTP id z11so3998733pgu.0
- for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 22:38:56 -0800 (PST)
+ id 1gk1KL-00043k-KN
+ for barebox@lists.infradead.org; Thu, 17 Jan 2019 06:39:02 +0000
+Received: by mail-pl1-x643.google.com with SMTP id g9so4269782plo.3
+ for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 22:38:57 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 16 Jan 2019 22:38:33 -0800
-Message-Id: <20190117063840.13674-6-andrew.smirnov@gmail.com>
+Date: Wed, 16 Jan 2019 22:38:34 -0800
+Message-Id: <20190117063840.13674-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20190117063840.13674-1-andrew.smirnov@gmail.com>
 References: <20190117063840.13674-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,58 +23,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/12] ARM64: mmu: Merge create_sections() and map_region()
- together
+Subject: [PATCH 06/12] ARM: mmu: Share code for dma_free_coherent()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Since map_region() is never called without being followed by
-tlb_invalidate(), merge it with create_sections() to simplify the
-code.
+Now that AArch64 version is calling arch_remap_range() it is identical
+to ARM version in mmu.c. Move the definition to mmu-common.c to avoid
+duplication.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu_64.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ arch/arm/cpu/mmu-common.c | 8 ++++++++
+ arch/arm/cpu/mmu.c        | 8 --------
+ arch/arm/cpu/mmu_64.c     | 8 --------
+ 3 files changed, 8 insertions(+), 16 deletions(-)
 
+diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
+index 5d5812974..65cc786e1 100644
+--- a/arch/arm/cpu/mmu-common.c
++++ b/arch/arm/cpu/mmu-common.c
+@@ -23,3 +23,11 @@ void dma_unmap_single(struct device_d *dev, dma_addr_t addr, size_t size,
+ {
+ 	dma_sync_single_for_cpu(addr, size, dir);
+ }
++
++void dma_free_coherent(void *mem, dma_addr_t dma_handle, size_t size)
++{
++	size = PAGE_ALIGN(size);
++	arch_remap_range(mem, size, MAP_CACHED);
++
++	free(mem);
++}
+\ No newline at end of file
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index f134e8bb3..70ab5ebb5 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -527,14 +527,6 @@ void *dma_alloc_writecombine(size_t size, dma_addr_t *dma_handle)
+ 	return dma_alloc_map(size, dma_handle, ARCH_MAP_WRITECOMBINE);
+ }
+ 
+-void dma_free_coherent(void *mem, dma_addr_t dma_handle, size_t size)
+-{
+-	size = PAGE_ALIGN(size);
+-	arch_remap_range(mem, size, MAP_CACHED);
+-
+-	free(mem);
+-}
+-
+ void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
+ 			     enum dma_data_direction dir)
+ {
 diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index d7c2542d1..ad94ff14d 100644
+index ad94ff14d..a7186eda4 100644
 --- a/arch/arm/cpu/mmu_64.c
 +++ b/arch/arm/cpu/mmu_64.c
-@@ -119,7 +119,8 @@ static void split_block(uint64_t *pte, int level)
- 	set_table(pte, new_table);
+@@ -262,14 +262,6 @@ void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
+ 	return ret;
  }
  
--static void map_region(uint64_t virt, uint64_t phys, uint64_t size, uint64_t attr)
-+static void create_sections(uint64_t virt, uint64_t phys, uint64_t size,
-+			    uint64_t attr)
- {
- 	uint64_t block_size;
- 	uint64_t block_shift;
-@@ -162,11 +163,7 @@ static void map_region(uint64_t virt, uint64_t phys, uint64_t size, uint64_t att
- 		}
- 
- 	}
--}
- 
--static void create_sections(uint64_t virt, uint64_t phys, uint64_t size, uint64_t flags)
+-void dma_free_coherent(void *mem, dma_addr_t dma_handle, size_t size)
 -{
--	map_region(virt, phys, size, flags);
- 	tlb_invalidate();
- }
- 
-@@ -183,9 +180,8 @@ int arch_remap_range(void *_start, size_t size, unsigned flags)
- 		return -EINVAL;
- 	}
- 
--	map_region((uint64_t)_start, (uint64_t)_start, (uint64_t)size, flags);
--	tlb_invalidate();
+-	size = PAGE_ALIGN(size);
+-	arch_remap_range(ret, size, MAP_CACHED);
 -
-+	create_sections((uint64_t)_start, (uint64_t)_start, (uint64_t)size,
-+			flags);
- 	return 0;
- }
- 
+-	free(mem);
+-}
+-
+ void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
+                              enum dma_data_direction dir)
+ {
 -- 
 2.20.1
 
