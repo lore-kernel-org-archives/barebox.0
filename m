@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gk0gp-0004Wq-Fp
- for barebox@lists.infradead.org; Thu, 17 Jan 2019 05:58:08 +0000
-Date: Thu, 17 Jan 2019 06:55:58 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20190117055558.GA28203@ravnborg.org>
+ id 1gk3Fw-0008Oc-VX
+ for barebox@lists.infradead.org; Thu, 17 Jan 2019 08:42:35 +0000
+Date: Thu, 17 Jan 2019 09:42:31 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190117084231.a5glnxomp34pma6e@pengutronix.de>
 References: <20190117044506.20628-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -34,23 +34,17 @@ On Wed, Jan 16, 2019 at 08:45:04PM -0800, Andrey Smirnov wrote:
 > ---
 >  crypto/digest.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/crypto/digest.c b/crypto/digest.c
-> index 9b7b73019..493e56902 100644
-> --- a/crypto/digest.c
-> +++ b/crypto/digest.c
-> @@ -289,7 +289,7 @@ int digest_file_window(struct digest *d, const char *filename,
->  	fd = open(filename, O_RDONLY);
->  	if (fd < 0) {
->  		perror(filename);
-> -		return fd;
-> +		return -errno;
->  	}
->  
->  	buf = memmap(fd, PROT_READ);
 
-Looks fine,
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Applied, thanks
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
