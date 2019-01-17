@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gk1KN-00046N-Sx
- for barebox@lists.infradead.org; Thu, 17 Jan 2019 06:39:08 +0000
-Received: by mail-pl1-x644.google.com with SMTP id b5so4270091plr.4
- for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 22:38:59 -0800 (PST)
+ id 1gk1KQ-000499-2L
+ for barebox@lists.infradead.org; Thu, 17 Jan 2019 06:39:09 +0000
+Received: by mail-pl1-x643.google.com with SMTP id gn14so4248799plb.10
+ for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 22:39:02 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 16 Jan 2019 22:38:36 -0800
-Message-Id: <20190117063840.13674-9-andrew.smirnov@gmail.com>
+Date: Wed, 16 Jan 2019 22:38:38 -0800
+Message-Id: <20190117063840.13674-11-andrew.smirnov@gmail.com>
 In-Reply-To: <20190117063840.13674-1-andrew.smirnov@gmail.com>
 References: <20190117063840.13674-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,172 +23,160 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/12] ARM: mmu: Share code for dma_alloc_coherent()
+Subject: [PATCH 10/12] ARM: mmu: Share sanity checking code in mmu_init()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Both ARM and ARM64 implement almost identical algorithms in
-dma_alloc_coherent(). Move the code to mmu-common.c, so it can be
-shared.
+Share sanity checking code in mmu_init() as well as code to detect if
+MMU is on or not on both ARM and ARM64.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu-common.c | 21 +++++++++++++++++++++
- arch/arm/cpu/mmu-common.h |  7 +++++++
- arch/arm/cpu/mmu.c        | 23 +----------------------
- arch/arm/cpu/mmu.h        |  2 ++
- arch/arm/cpu/mmu_64.c     | 18 +-----------------
- arch/arm/cpu/mmu_64.h     |  2 ++
- 6 files changed, 34 insertions(+), 39 deletions(-)
- create mode 100644 arch/arm/cpu/mmu-common.h
+ arch/arm/cpu/mmu-common.c | 23 +++++++++++++++++++++--
+ arch/arm/cpu/mmu-common.h |  1 +
+ arch/arm/cpu/mmu.c        | 16 ++--------------
+ arch/arm/cpu/mmu_64.c     | 16 ++--------------
+ 4 files changed, 26 insertions(+), 30 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
-index 65cc786e1..8c7d61447 100644
+index a7d3b5b11..c5b24bff8 100644
 --- a/arch/arm/cpu/mmu-common.c
 +++ b/arch/arm/cpu/mmu-common.c
-@@ -24,6 +24,27 @@ void dma_unmap_single(struct device_d *dev, dma_addr_t addr, size_t size,
- 	dma_sync_single_for_cpu(addr, size, dir);
- }
+@@ -2,10 +2,12 @@
+ #define pr_fmt(fmt)	"mmu: " fmt
  
-+void *dma_alloc_map(size_t size, dma_addr_t *dma_handle, unsigned flags)
-+{
-+	void *ret;
-+
-+	size = PAGE_ALIGN(size);
-+	ret = xmemalign(PAGE_SIZE, size);
-+	if (dma_handle)
-+		*dma_handle = (dma_addr_t)ret;
-+
-+	dma_inv_range(ret, size);
-+
-+	arch_remap_range(ret, size, flags);
-+
-+	return ret;
+ #include <common.h>
++#include <init.h>
+ #include <dma-dir.h>
+ #include <dma.h>
+ #include <mmu.h>
+-
++#include <asm/system.h>
++#include <memory.h>
+ #include "mmu.h"
+ 
+ 
+@@ -59,4 +61,21 @@ void dma_free_coherent(void *mem, dma_addr_t dma_handle, size_t size)
+ 	arch_remap_range(mem, size, MAP_CACHED);
+ 
+ 	free(mem);
+-}
+\ No newline at end of file
 +}
 +
-+void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
++static int mmu_init(void)
 +{
-+	return dma_alloc_map(size, dma_handle, MAP_UNCACHED);
-+}
++	if (list_empty(&memory_banks))
++		/*
++		 * If you see this it means you have no memory registered.
++		 * This can be done either with arm_add_mem_device() in an
++		 * initcall prior to mmu_initcall or via devicetree in the
++		 * memory node.
++		 */
++		panic("MMU: No memory bank found! Cannot continue\n");
 +
- void dma_free_coherent(void *mem, dma_addr_t dma_handle, size_t size)
- {
- 	size = PAGE_ALIGN(size);
++	__mmu_init(get_cr() & CR_M);
++
++	return 0;
++}
++mmu_initcall(mmu_init);
+\ No newline at end of file
 diff --git a/arch/arm/cpu/mmu-common.h b/arch/arm/cpu/mmu-common.h
-new file mode 100644
-index 000000000..e8689ac31
---- /dev/null
+index e8689ac31..37eef3ef2 100644
+--- a/arch/arm/cpu/mmu-common.h
 +++ b/arch/arm/cpu/mmu-common.h
-@@ -0,0 +1,7 @@
-+#ifndef __ARM_MMU_COMMON_H
-+#define __ARM_MMU_COMMON_H
-+
-+void dma_inv_range(void *ptr, size_t size);
-+void *dma_alloc_map(size_t size, dma_addr_t *dma_handle, unsigned flags);
-+
-+#endif
+@@ -3,5 +3,6 @@
+ 
+ void dma_inv_range(void *ptr, size_t size);
+ void *dma_alloc_map(size_t size, dma_addr_t *dma_handle, unsigned flags);
++void __mmu_init(bool mmu_on);
+ 
+ #endif
 \ No newline at end of file
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 70ab5ebb5..35ac00a8f 100644
+index 97c459ff0..ba1c3e007 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -118,7 +118,7 @@ static void dma_flush_range(void *ptr, size_t size)
- 		outer_cache.flush_range(start, end);
- }
- 
--static void dma_inv_range(void *ptr, size_t size)
-+void dma_inv_range(void *ptr, size_t size)
+@@ -412,19 +412,10 @@ static void vectors_init(void)
+ /*
+  * Prepare MMU for usage enable it.
+  */
+-static int mmu_init(void)
++void __mmu_init(bool mmu_on)
  {
- 	unsigned long start = (unsigned long)ptr;
- 	unsigned long end = start + size;
-@@ -501,27 +501,6 @@ void mmu_disable(void)
- 	__mmu_cache_off();
+ 	struct memory_bank *bank;
+ 
+-	if (list_empty(&memory_banks))
+-		/*
+-		 * If you see this it means you have no memory registered.
+-		 * This can be done either with arm_add_mem_device() in an
+-		 * initcall prior to mmu_initcall or via devicetree in the
+-		 * memory node.
+-		 */
+-		panic("MMU: No memory bank found! Cannot continue\n");
+-
+ 	arm_set_cache_functions();
+ 
+ 	if (cpu_architecture() >= CPU_ARCH_ARMv7) {
+@@ -439,7 +430,7 @@ static int mmu_init(void)
+ 		pte_flags_uncached = PTE_FLAGS_UNCACHED_V4;
+ 	}
+ 
+-	if (get_cr() & CR_M) {
++	if (mmu_on) {
+ 		/*
+ 		 * Early MMU code has already enabled the MMU. We assume a
+ 		 * flat 1:1 section mapping in this case.
+@@ -483,10 +474,7 @@ static int mmu_init(void)
+ 	}
+ 
+ 	__mmu_cache_on();
+-
+-	return 0;
  }
+-mmu_initcall(mmu_init);
  
--static void *dma_alloc_map(size_t size, dma_addr_t *dma_handle, unsigned flags)
--{
--	void *ret;
--
--	size = PAGE_ALIGN(size);
--	ret = xmemalign(PAGE_SIZE, size);
--	if (dma_handle)
--		*dma_handle = (dma_addr_t)ret;
--
--	dma_inv_range(ret, size);
--
--	arch_remap_range(ret, size, flags);
--
--	return ret;
--}
--
--void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
--{
--	return dma_alloc_map(size, dma_handle, MAP_UNCACHED);
--}
--
- void *dma_alloc_writecombine(size_t size, dma_addr_t *dma_handle)
- {
- 	return dma_alloc_map(size, dma_handle, ARCH_MAP_WRITECOMBINE);
-diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
-index 2e425e092..338728aac 100644
---- a/arch/arm/cpu/mmu.h
-+++ b/arch/arm/cpu/mmu.h
-@@ -4,6 +4,8 @@
- #include <asm/pgtable.h>
- #include <linux/sizes.h>
- 
-+#include "mmu-common.h"
-+
- #define PGDIR_SHIFT	20
- #define PGDIR_SIZE	(1UL << PGDIR_SHIFT)
- 
+ /*
+  * Clean and invalide caches, disable MMU
 diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 1ee6a3b8c..ed4aa00a8 100644
+index 2cb62370e..7f8a8f249 100644
 --- a/arch/arm/cpu/mmu_64.c
 +++ b/arch/arm/cpu/mmu_64.c
-@@ -248,7 +248,7 @@ void mmu_disable(void)
- 	isb();
- }
- 
--static void dma_inv_range(void *ptr, size_t size)
-+void dma_inv_range(void *ptr, size_t size)
+@@ -194,21 +194,12 @@ static void mmu_enable(void)
+ /*
+  * Prepare MMU for usage enable it.
+  */
+-static int mmu_init(void)
++void __mmu_init(bool mmu_on)
  {
- 	unsigned long start = (unsigned long)ptr;
- 	unsigned long end = start + size - 1;
-@@ -256,22 +256,6 @@ static void dma_inv_range(void *ptr, size_t size)
- 	v8_inv_dcache_range(start, end);
+ 	struct memory_bank *bank;
+ 	unsigned int el;
+ 
+-	if (list_empty(&memory_banks))
+-		/*
+-		 * If you see this it means you have no memory registered.
+-		 * This can be done either with arm_add_mem_device() in an
+-		 * initcall prior to mmu_initcall or via devicetree in the
+-		 * memory node.
+-		 */
+-		panic("MMU: No memory bank found! Cannot continue\n");
+-
+-	if (get_cr() & CR_M)
++	if (mmu_on)
+ 		mmu_disable();
+ 
+ 	ttb = create_table();
+@@ -228,10 +219,7 @@ static int mmu_init(void)
+ 	create_sections(0x0, 0x0, 0x1000, 0x0);
+ 
+ 	mmu_enable();
+-
+-	return 0;
  }
+-mmu_initcall(mmu_init);
  
--void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
--{
--	void *ret;
--
--	size = PAGE_ALIGN(size);
--	ret = xmemalign(PAGE_SIZE, size);
--	if (dma_handle)
--		*dma_handle = (dma_addr_t)ret;
--
--	dma_inv_range(ret, size);
--
--	arch_remap_range(ret, size, MAP_UNCACHED);
--
--	return ret;
--}
--
- void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
-                              enum dma_data_direction dir)
+ void mmu_disable(void)
  {
-diff --git a/arch/arm/cpu/mmu_64.h b/arch/arm/cpu/mmu_64.h
-index 2cbe72062..e2e125686 100644
---- a/arch/arm/cpu/mmu_64.h
-+++ b/arch/arm/cpu/mmu_64.h
-@@ -1,4 +1,6 @@
- 
-+#include "mmu-common.h"
-+
- #define CACHED_MEM      (PTE_BLOCK_MEMTYPE(MT_NORMAL) | \
- 			 PTE_BLOCK_OUTER_SHARE | \
- 			 PTE_BLOCK_AF)
 -- 
 2.20.1
 
