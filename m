@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjxFH-0006V8-84
- for barebox@lists.infradead.org; Thu, 17 Jan 2019 02:17:30 +0000
-Received: by mail-pg1-x542.google.com with SMTP id d72so3690830pga.9
- for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 18:17:27 -0800 (PST)
+ id 1gjxFL-0006X1-Jp
+ for barebox@lists.infradead.org; Thu, 17 Jan 2019 02:17:35 +0000
+Received: by mail-pg1-x542.google.com with SMTP id j10so3710173pga.1
+ for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 18:17:31 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 16 Jan 2019 18:16:46 -0800
-Message-Id: <20190117021700.4443-4-andrew.smirnov@gmail.com>
+Date: Wed, 16 Jan 2019 18:16:49 -0800
+Message-Id: <20190117021700.4443-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20190117021700.4443-1-andrew.smirnov@gmail.com>
 References: <20190117021700.4443-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,256 +23,219 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 03/17] regulator: Add support for setting regulator's
- voltage
+Subject: [PATCH v4 06/17] regulator: Port ANATOP driver from Linux
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add code needed to implement regulator_set_voltage(). Currently only
-bare minmum needed for ANATOP driver (added in follow up commit) is
-supported.
+Port a subset of Linux driver sufficient enough to support feature
+needed for PCIe on i.MX7.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/regulator/core.c    | 44 +++++++++++++++++
- drivers/regulator/helpers.c | 99 +++++++++++++++++++++++++++++++++++++
- include/regulator.h         | 24 +++++++++
- 3 files changed, 167 insertions(+)
+ drivers/regulator/Kconfig            |   8 ++
+ drivers/regulator/Makefile           |   3 +-
+ drivers/regulator/anatop-regulator.c | 162 +++++++++++++++++++++++++++
+ 3 files changed, 172 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/regulator/anatop-regulator.c
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index bcfbda62e3..795dcdb8c1 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -43,6 +43,15 @@ struct regulator {
- 	struct device_d *dev;
- };
+diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
+index 92db8dc0e0..c734ef5ef9 100644
+--- a/drivers/regulator/Kconfig
++++ b/drivers/regulator/Kconfig
+@@ -21,4 +21,12 @@ config REGULATOR_PFUZE
+ 	depends on I2C
+ 	depends on ARCH_IMX6
  
-+static int regulator_map_voltage(struct regulator_dev *rdev, int min_uV,
-+				 int max_uV)
++config REGULATOR_ANATOP
++	tristate "Freescale i.MX on-chip ANATOP LDO regulators"
++	depends on MFD_SYSCON
++	help
++	  Say y here to support Freescale i.MX on-chip ANATOP LDOs
++	  regulators. It is recommended that this option be
++	  enabled on i.MX6 platform.
++
+ endif
+diff --git a/drivers/regulator/Makefile b/drivers/regulator/Makefile
+index 36ce3e87f7..b2fc5b79b6 100644
+--- a/drivers/regulator/Makefile
++++ b/drivers/regulator/Makefile
+@@ -1,4 +1,5 @@
+ obj-$(CONFIG_REGULATOR) += core.o helpers.o
+ obj-$(CONFIG_REGULATOR_FIXED) += fixed.o
+ obj-$(CONFIG_REGULATOR_BCM283X) += bcm2835.o
+-obj-$(CONFIG_REGULATOR_PFUZE) += pfuze.o
+\ No newline at end of file
++obj-$(CONFIG_REGULATOR_PFUZE) += pfuze.o
++obj-$(CONFIG_REGULATOR_ANATOP) += anatop-regulator.o
+\ No newline at end of file
+diff --git a/drivers/regulator/anatop-regulator.c b/drivers/regulator/anatop-regulator.c
+new file mode 100644
+index 0000000000..7ec9446a0a
+--- /dev/null
++++ b/drivers/regulator/anatop-regulator.c
+@@ -0,0 +1,162 @@
++/*
++ * Copyright (C) 2011 Freescale Semiconductor, Inc. All Rights Reserved.
++ */
++
++/*
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, write to the Free Software Foundation, Inc.,
++ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ */
++
++#include <common.h>
++#include <init.h>
++#include <mfd/syscon.h>
++#include <regmap.h>
++#include <regulator.h>
++
++struct anatop_regulator {
++	u32 control_reg;
++	struct regmap *anatop;
++	int vol_bit_shift;
++	int vol_bit_width;
++	u32 delay_reg;
++	int delay_bit_shift;
++	int delay_bit_width;
++	int min_bit_val;
++	int min_voltage;
++	int max_voltage;
++
++	struct regulator_dev  rdev;
++	struct regulator_desc rdesc;
++
++	bool bypass;
++	int sel;
++};
++
++static struct regulator_ops anatop_rops = {
++	.set_voltage_sel = regulator_set_voltage_sel_regmap,
++	.list_voltage = regulator_list_voltage_linear,
++};
++
++static int anatop_regulator_probe(struct device_d *dev)
 +{
-+	if (rdev->desc->ops->list_voltage == regulator_list_voltage_linear)
-+		return regulator_map_voltage_linear(rdev, min_uV, max_uV);
++	struct device_node *np = dev->device_node;
++	struct device_node *anatop_np;
++	struct regulator_desc *rdesc;
++	struct regulator_dev *rdev;
++	struct anatop_regulator *sreg;
++	int ret = 0;
 +
-+	return -ENOSYS;
-+}
++	sreg  = xzalloc(sizeof(*sreg));
++	rdesc = &sreg->rdesc;
++	rdev  = &sreg->rdev;
 +
- static int regulator_enable_internal(struct regulator_internal *ri)
- {
- 	int ret;
-@@ -86,6 +95,33 @@ static int regulator_disable_internal(struct regulator_internal *ri)
- 	return 0;
- }
- 
-+static int regulator_set_voltage_internal(struct regulator_internal *ri,
-+					  int min_uV, int max_uV)
-+{
-+	struct regulator_dev *rdev = ri->rdev;
-+	const struct regulator_ops *ops = rdev->desc->ops;
-+	unsigned int selector;
-+	int best_val = 0;
-+	int ret;
++	anatop_np = of_get_parent(np);
++	if (!anatop_np)
++		return -ENODEV;
 +
-+	if (ops->set_voltage_sel) {
-+		ret = regulator_map_voltage(rdev, min_uV, max_uV);
-+		if (ret >= 0) {
-+			best_val = ops->list_voltage(rdev, ret);
-+			if (min_uV <= best_val && max_uV >= best_val) {
-+				selector = ret;
-+				ret = ops->set_voltage_sel(rdev, selector);
-+			} else {
-+				ret = -EINVAL;
-+			}
++	rdev->desc = rdesc;
++	rdev->regmap = syscon_node_to_regmap(anatop_np);
++	if (IS_ERR(rdev->regmap))
++		return PTR_ERR(rdev->regmap);
++
++	ret = of_property_read_u32(np, "anatop-reg-offset",
++				   &sreg->control_reg);
++	if (ret) {
++		dev_err(dev, "no anatop-reg-offset property set\n");
++		return ret;
++	}
++	ret = of_property_read_u32(np, "anatop-vol-bit-width",
++				   &sreg->vol_bit_width);
++	if (ret) {
++		dev_err(dev, "no anatop-vol-bit-width property set\n");
++		return ret;
++	}
++	ret = of_property_read_u32(np, "anatop-vol-bit-shift",
++				   &sreg->vol_bit_shift);
++	if (ret) {
++		dev_err(dev, "no anatop-vol-bit-shift property set\n");
++		return ret;
++	}
++	ret = of_property_read_u32(np, "anatop-min-bit-val",
++				   &sreg->min_bit_val);
++	if (ret) {
++		dev_err(dev, "no anatop-min-bit-val property set\n");
++		return ret;
++	}
++	ret = of_property_read_u32(np, "anatop-min-voltage",
++				   &sreg->min_voltage);
++	if (ret) {
++		dev_err(dev, "no anatop-min-voltage property set\n");
++		return ret;
++	}
++	ret = of_property_read_u32(np, "anatop-max-voltage",
++				   &sreg->max_voltage);
++	if (ret) {
++		dev_err(dev, "no anatop-max-voltage property set\n");
++		return ret;
++	}
++
++	/* read LDO ramp up setting, only for core reg */
++	of_property_read_u32(np, "anatop-delay-reg-offset",
++			     &sreg->delay_reg);
++	of_property_read_u32(np, "anatop-delay-bit-width",
++			     &sreg->delay_bit_width);
++	of_property_read_u32(np, "anatop-delay-bit-shift",
++			     &sreg->delay_bit_shift);
++
++	rdesc->n_voltages = (sreg->max_voltage - sreg->min_voltage) / 25000 + 1
++			    + sreg->min_bit_val;
++	rdesc->min_uV = sreg->min_voltage;
++	rdesc->uV_step = 25000;
++	rdesc->linear_min_sel = sreg->min_bit_val;
++	rdesc->vsel_reg  = sreg->control_reg;
++	rdesc->vsel_mask = GENMASK(sreg->vol_bit_width + sreg->vol_bit_shift,
++				   sreg->vol_bit_shift);
++
++	/* Only core regulators have the ramp up delay configuration. */
++	if (sreg->control_reg && sreg->delay_bit_width) {
++		free(sreg);
++		/* FIXME: This case is not supported */
++		return 0;
++	} else {
++		u32 enable_bit;
++
++		rdesc->ops = &anatop_rops;
++
++		if (!of_property_read_u32(np, "anatop-enable-bit",
++					  &enable_bit)) {
++			anatop_rops.enable  = regulator_enable_regmap;
++			anatop_rops.disable = regulator_disable_regmap;
++			anatop_rops.is_enabled = regulator_is_enabled_regmap;
++
++			rdesc->enable_reg = sreg->control_reg;
++			rdesc->enable_mask = BIT(enable_bit);
 +		}
-+
-+		return ret;
 +	}
 +
-+	return -ENOSYS;
++	return of_regulator_register(rdev, dev->device_node);
 +}
 +
- static struct regulator_internal * __regulator_register(struct regulator_dev *rd, const char *name)
- {
- 	struct regulator_internal *ri;
-@@ -320,6 +356,14 @@ int regulator_disable(struct regulator *r)
- 	return regulator_disable_internal(r->ri);
- }
- 
-+int regulator_set_voltage(struct regulator *r, int min_uV, int max_uV)
-+{
-+	if (!r)
-+		return 0;
++static const struct of_device_id of_anatop_regulator_match_tbl[] = {
++	{ .compatible = "fsl,anatop-regulator", },
++	{ /* end */ }
++};
 +
-+	return regulator_set_voltage_internal(r->ri, min_uV, max_uV);
-+}
++static struct driver_d anatop_regulator_driver = {
++	.name = "anatop_regulator",
++	.probe = anatop_regulator_probe,
++	.of_compatible = DRV_OF_COMPAT(of_anatop_regulator_match_tbl),
++};
++device_platform_driver(anatop_regulator_driver);
 +
- static void regulator_print_one(struct regulator_internal *ri)
- {
- 	struct regulator *r;
-diff --git a/drivers/regulator/helpers.c b/drivers/regulator/helpers.c
-index 4495b4403f..f22d21b35d 100644
---- a/drivers/regulator/helpers.c
-+++ b/drivers/regulator/helpers.c
-@@ -85,3 +85,102 @@ int regulator_disable_regmap(struct regulator_dev *rdev)
- 				  rdev->desc->enable_mask, val);
- }
- EXPORT_SYMBOL_GPL(regulator_disable_regmap);
-+
-+/**
-+ * regulator_set_voltage_sel_regmap - standard set_voltage_sel for regmap users
-+ *
-+ * @rdev: regulator to operate on
-+ * @sel: Selector to set
-+ *
-+ * Regulators that use regmap for their register I/O can set the
-+ * vsel_reg and vsel_mask fields in their descriptor and then use this
-+ * as their set_voltage_vsel operation, saving some code.
-+ */
-+int regulator_set_voltage_sel_regmap(struct regulator_dev *rdev, unsigned sel)
-+{
-+	int ret;
-+
-+	sel <<= ffs(rdev->desc->vsel_mask) - 1;
-+
-+	ret = regmap_update_bits(rdev->regmap, rdev->desc->vsel_reg,
-+				  rdev->desc->vsel_mask, sel);
-+	if (ret)
-+		return ret;
-+
-+	if (rdev->desc->apply_bit)
-+		ret = regmap_update_bits(rdev->regmap, rdev->desc->apply_reg,
-+					 rdev->desc->apply_bit,
-+					 rdev->desc->apply_bit);
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(regulator_set_voltage_sel_regmap);
-+
-+/**
-+ * regulator_map_voltage_linear - map_voltage() for simple linear mappings
-+ *
-+ * @rdev: Regulator to operate on
-+ * @min_uV: Lower bound for voltage
-+ * @max_uV: Upper bound for voltage
-+ *
-+ * Drivers providing min_uV and uV_step in their regulator_desc can
-+ * use this as their map_voltage() operation.
-+ */
-+int regulator_map_voltage_linear(struct regulator_dev *rdev,
-+				 int min_uV, int max_uV)
-+{
-+	int ret, voltage;
-+
-+	/* Allow uV_step to be 0 for fixed voltage */
-+	if (rdev->desc->n_voltages == 1 && rdev->desc->uV_step == 0) {
-+		if (min_uV <= rdev->desc->min_uV && rdev->desc->min_uV <= max_uV)
-+			return 0;
-+		else
-+			return -EINVAL;
-+	}
-+
-+	if (!rdev->desc->uV_step) {
-+		BUG_ON(!rdev->desc->uV_step);
-+		return -EINVAL;
-+	}
-+
-+	if (min_uV < rdev->desc->min_uV)
-+		min_uV = rdev->desc->min_uV;
-+
-+	ret = DIV_ROUND_UP(min_uV - rdev->desc->min_uV, rdev->desc->uV_step);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret += rdev->desc->linear_min_sel;
-+
-+	/* Map back into a voltage to verify we're still in bounds */
-+	voltage = rdev->desc->ops->list_voltage(rdev, ret);
-+	if (voltage < min_uV || voltage > max_uV)
-+		return -EINVAL;
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(regulator_map_voltage_linear);
-+
-+/**
-+ * regulator_list_voltage_linear - List voltages with simple calculation
-+ *
-+ * @rdev: Regulator device
-+ * @selector: Selector to convert into a voltage
-+ *
-+ * Regulators with a simple linear mapping between voltages and
-+ * selectors can set min_uV and uV_step in the regulator descriptor
-+ * and then use this function as their list_voltage() operation,
-+ */
-+int regulator_list_voltage_linear(struct regulator_dev *rdev,
-+				  unsigned int selector)
-+{
-+	if (selector >= rdev->desc->n_voltages)
-+		return -EINVAL;
-+	if (selector < rdev->desc->linear_min_sel)
-+		return 0;
-+
-+	selector -= rdev->desc->linear_min_sel;
-+
-+	return rdev->desc->min_uV + (rdev->desc->uV_step * selector);
-+}
-+EXPORT_SYMBOL_GPL(regulator_list_voltage_linear);
-diff --git a/include/regulator.h b/include/regulator.h
-index 1824e6ea14..cd1d3ccf55 100644
---- a/include/regulator.h
-+++ b/include/regulator.h
-@@ -5,8 +5,17 @@
- struct regulator;
- 
- struct regulator_desc {
-+	unsigned n_voltages;
- 	const struct regulator_ops *ops;
- 
-+	unsigned int min_uV;
-+	unsigned int uV_step;
-+	unsigned int linear_min_sel;
-+
-+	unsigned int vsel_reg;
-+	unsigned int vsel_mask;
-+	unsigned int apply_reg;
-+	unsigned int apply_bit;
- 	unsigned int enable_reg;
- 	unsigned int enable_mask;
- 	unsigned int enable_val;
-@@ -25,6 +34,9 @@ struct regulator_ops {
- 	int (*enable) (struct regulator_dev *);
- 	int (*disable) (struct regulator_dev *);
- 	int (*is_enabled) (struct regulator_dev *);
-+
-+	int (*list_voltage) (struct regulator_dev *, unsigned int);
-+	int (*set_voltage_sel) (struct regulator_dev *, unsigned int);
- };
- 
- #ifdef CONFIG_OFDEVICE
-@@ -49,6 +61,12 @@ int regulator_disable(struct regulator *);
- int regulator_is_enabled_regmap(struct regulator_dev *);
- int regulator_enable_regmap(struct regulator_dev *);
- int regulator_disable_regmap(struct regulator_dev *);
-+int regulator_set_voltage_sel_regmap(struct regulator_dev *, unsigned);
-+int regulator_set_voltage(struct regulator *regulator, int min_uV, int max_uV);
-+int regulator_map_voltage_linear(struct regulator_dev *rdev,
-+				 int min_uV, int max_uV);
-+int regulator_list_voltage_linear(struct regulator_dev *rdev,
-+				  unsigned int selector);
- #else
- 
- static inline struct regulator *regulator_get(struct device_d *dev, const char *id)
-@@ -66,6 +84,12 @@ static inline int regulator_disable(struct regulator *r)
- 	return 0;
- }
- 
-+static inline int regulator_set_voltage(struct regulator *regulator,
-+					int min_uV, int max_uV)
-+{
-+	return 0;
-+}
-+
- #endif
- 
- #endif /* __REGULATOR_H */
 -- 
 2.20.1
 
