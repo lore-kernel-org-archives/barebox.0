@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gk2HB-0002EY-Rv
- for barebox@lists.infradead.org; Thu, 17 Jan 2019 07:39:47 +0000
-Date: Thu, 17 Jan 2019 08:39:41 +0100
+ id 1gk2QO-0005O8-UK
+ for barebox@lists.infradead.org; Thu, 17 Jan 2019 07:49:18 +0000
+Date: Thu, 17 Jan 2019 08:49:14 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190117073941.hlfcdfpo4tvau2pd@pengutronix.de>
-References: <20190111113554.2zck5xq76ztn6xrb@pengutronix.de>
- <20190116101601.3441-1-rhi@pengutronix.de>
+Message-ID: <20190117074914.hrwylhhfj6n3kmbu@pengutronix.de>
+References: <20190114134807.9638-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190116101601.3441-1-rhi@pengutronix.de>
+In-Reply-To: <20190114134807.9638-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,24 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RESEND] [PATCH 0/2] small doc fixes
-To: Roland Hieber <rhi@pengutronix.de>
+Subject: Re: [PATCH] images: check for use of obsolete pblx-*
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jan 16, 2019 at 11:15:59AM +0100, Roland Hieber wrote:
-> Hi Sascha,
+On Mon, Jan 14, 2019 at 02:48:08PM +0100, Ahmad Fatoum wrote:
+> pblx-* has been removed in 5a1a5ed253 ("ARM: images: use piggydata")
+> and using it (e.g. because a patchset was rebased) results in a non-obvious:
 > 
-> I'll resend these two, they are not applied yet, and now apply cleanly
-> to master.
+> 	make[1]: *** No rule to make target 'images/*.pblx.*', \
+> 	needed by 'images/barebox-*.img'.  Stop.
 > 
-> Roland Hieber (2):
->   Documentation: state: fix closing brace without opening brace
->   Documentation: i.MX: Kindle 4/5: fix sphinx warnings
+> Avoid this by explicitly failing with an error message whenever pblx-y
+> or pblx- has been defined.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
 
-Applied now, thanks
+Hey, it just triggered in master ;)
+
+Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
