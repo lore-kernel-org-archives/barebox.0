@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1ghY5m-0002ei-HT
- for barebox@lists.infradead.org; Thu, 10 Jan 2019 11:01:50 +0000
-Date: Thu, 10 Jan 2019 12:01:39 +0100
+ id 1gk391-0006CD-Rg
+ for barebox@lists.infradead.org; Thu, 17 Jan 2019 08:35:25 +0000
+Date: Thu, 17 Jan 2019 09:35:21 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190110110139.6k5tkxscqiazgddg@pengutronix.de>
-References: <20190109202754.29784-1-antonynpavlov@gmail.com>
- <20190110083825.fgez6zfmfwyqafw2@pengutronix.de>
- <20190110135519.87505f79ee6e4be71c710cca@gmail.com>
+Message-ID: <20190117083521.qgeqkwa4codkf2zb@pengutronix.de>
+References: <20190116092952.31011-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190110135519.87505f79ee6e4be71c710cca@gmail.com>
+In-Reply-To: <20190116092952.31011-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,74 +18,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] ARM: zynq: fix "'IO_SPACE_LIMIT' redefined" warning
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH v2] ARM: imx: add support for Udoo Neo full
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org, Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 
-On Thu, Jan 10, 2019 at 01:55:19PM +0300, Antony Pavlov wrote:
-> On Thu, 10 Jan 2019 09:38:25 +0100
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> > On Wed, Jan 09, 2019 at 11:27:54PM +0300, Antony Pavlov wrote:
-> > > The patch fixes the following compiler's warning:
-> > > 
-> > > In file included from include/common.h:33:0,
-> > >                  from arch/arm/mach-zynq/zynq.c:18:
-> > > arch/arm/include/asm/io.h:4:0: warning: "IO_SPACE_LIMIT" redefined
-> > >  #define IO_SPACE_LIMIT 0
-> > > 
-> > > In file included from
-> > > arch/arm/mach-zynq/zynq.c:17:0:
-> > > include/asm-generic/io.h:92:0: note: this is the location of the previous definition
-> > >  #define IO_SPACE_LIMIT 0xffff
-> > > 
-> > > Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > > ---
-> > >  arch/arm/mach-zynq/zynq.c | 1 -
-> > >  1 file changed, 1 deletion(-)
-> > > 
-> > > diff --git a/arch/arm/mach-zynq/zynq.c b/arch/arm/mach-zynq/zynq.c
-> > > index a0a8d0d249..dd8f12c16a 100644
-> > > --- a/arch/arm/mach-zynq/zynq.c
-> > > +++ b/arch/arm/mach-zynq/zynq.c
-> > > @@ -14,7 +14,6 @@
-> > >   */
-> > >  
-> > >  #include <asm/system.h>
-> > > -#include <asm-generic/io.h>
-> > 
-> > asm-generic/io.h shouldn't be included directly, but only from asm/io.h
-> > if it decides to do so. io.h includes asm/io.h, so this is the one that
-> > should be included instead.
-> 
-> common.h includes asm/io.h, please see full patch context:
-> 
-> --- a/arch/arm/mach-zynq/zynq.c
-> +++ b/arch/arm/mach-zynq/zynq.c
-> @@ -14,7 +14,6 @@
->   */
->  
->  #include <asm/system.h>
-> -#include <asm-generic/io.h>
->  #include <common.h>
->  #include <init.h>
->  #include <restart.h>
-> 
-> 
-> The question is, should we just drop this "#include <asm-generic/io.h>" or
-> change "#include <asm-generic/io.h>" into "#include <io.h>".
+On Wed, Jan 16, 2019 at 10:29:52AM +0100, Rouven Czerwinski wrote:
+> From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> =
 
-Since this file really uses readl and friends I'd say let's change it to
-"#include <io.h>" rather than removing the inclusion.
+> Original patch from Uwe Kleine-K=F6nig, I fixed the
+> review comments and the imxcfg file to use the udoo neo values.
+> =
+
+> I also tested the support on the udoo neo full board.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+
+Applied, thanks
 
 Sascha
 
--- 
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
