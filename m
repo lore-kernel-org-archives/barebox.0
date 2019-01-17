@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjhLv-0004ce-Uc
- for barebox@lists.infradead.org; Wed, 16 Jan 2019 09:19:21 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 16 Jan 2019 10:19:13 +0100
-Message-Id: <20190116091913.23298-1-s.hauer@pengutronix.de>
+ id 1gk1KE-0003vN-HA
+ for barebox@lists.infradead.org; Thu, 17 Jan 2019 06:38:54 +0000
+Received: by mail-pl1-x644.google.com with SMTP id b5so4269924plr.4
+ for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 22:38:50 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 16 Jan 2019 22:38:28 -0800
+Message-Id: <20190117063840.13674-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,37 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: Makefile: Drop unnecessary imxcfg-y settings
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 00/12] ARM/ARM64 MMU code consolidation,
+ zeroing of DMA coherent memory
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-For boards built with multiimage support imxcfg-y is not needed.
-Remove it for these boards.
+Everyone:
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/Makefile | 3 ---
- 1 file changed, 3 deletions(-)
+This series is a result of my attempt at changing the behaviour of
+dma_alloc_coherent() to guarantee that memory it returns is zeroed
+out. Mostly to avoid having to do that explicitly in driver code, but
+also to match behaviour that that function has in Linux. While working
+on that I noticed that there was a fair bit of MMU/DMA related code
+between ARM/ARM64 that can be shared, so I created a number of patches
+to do just that.
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 0fd63105d7..6b5f21a7a9 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -252,15 +252,12 @@ barebox.imximg: $(KBUILD_BINARY) FORCE
- boarddir = $(srctree)/arch/arm/boards
- imxcfg-$(CONFIG_MACH_FREESCALE_MX53_SMD) += $(boarddir)/freescale-mx53-smd/flash-header.imxcfg
- imxcfg-$(CONFIG_MACH_TX51) += $(boarddir)/karo-tx51/flash-header-karo-tx51.imxcfg
--imxcfg-$(CONFIG_MACH_GUF_VINCELL) += $(boarddir)/guf-vincell/flash-header.imxcfg
- imxcfg-$(CONFIG_MACH_EUKREA_CPUIMX51SD) += $(boarddir)/eukrea_cpuimx51/flash-header.imxcfg
- imxcfg-$(CONFIG_MACH_FREESCALE_MX25_3STACK) += $(boarddir)/freescale-mx25-3ds/flash-header.imxcfg
- imxcfg-$(CONFIG_MACH_FREESCALE_MX35_3STACK) += $(boarddir)/freescale-mx35-3ds/flash-header.imxcfg
--imxcfg-$(CONFIG_MACH_TQMA53) += $(boarddir)/tqma53/flash-header.imxcfg
- imxcfg-$(CONFIG_MACH_EUKREA_CPUIMX25) += $(boarddir)/eukrea_cpuimx25/flash-header.imxcfg
- imxcfg-$(CONFIG_MACH_EUKREA_CPUIMX35) += $(boarddir)/eukrea_cpuimx35/flash-header.imxcfg
- imxcfg-$(CONFIG_MACH_PCM043) += $(boarddir)/phytec-phycore-imx35/flash-header.imxcfg
--imxcfg-$(CONFIG_MACH_KINDLE3) += $(boarddir)/kindle3/flash-header.imxcfg
- ifneq ($(imxcfg-y),)
- CFG_barebox.imximg := $(imxcfg-y)
- KBUILD_IMAGE  := barebox.imximg
+Feedback is welcome!
+
+Thanks,
+Andrey Smirnov
+
+Andrey Smirnov (12):
+  ARM: mmu: Drop custom virt_to_phys/phys_to_virt
+  ARM: mmu: Simplify the use of dma_inv_range()
+  ARM: mmu: Share code for dma_(un)map_single()
+  ARM64: mmu: Use arch_remap_range() internaly
+  ARM64: mmu: Merge create_sections() and map_region() together
+  ARM: mmu: Share code for dma_free_coherent()
+  ARM64: mmu: Invalidate memory before remapping as DMA coherent
+  ARM: mmu: Share code for dma_alloc_coherent()
+  ARM: mmu: Share code for dma_sync_single_for_cpu()
+  ARM: mmu: Share sanity checking code in mmu_init()
+  ARM: mmu: Share code for arm_mmu_not_initialized_error()
+  ARM: mmu: Make sure DMA coherent memory is zeroed out
+
+ arch/arm/cpu/Makefile     |  2 +-
+ arch/arm/cpu/mmu-common.c | 82 +++++++++++++++++++++++++++++++++
+ arch/arm/cpu/mmu-common.h | 20 ++++++++
+ arch/arm/cpu/mmu.c        | 96 +++------------------------------------
+ arch/arm/cpu/mmu.h        |  2 +
+ arch/arm/cpu/mmu_64.c     | 96 ++++++---------------------------------
+ arch/arm/cpu/mmu_64.h     |  2 +
+ arch/arm/include/asm/io.h |  5 --
+ 8 files changed, 128 insertions(+), 177 deletions(-)
+ create mode 100644 arch/arm/cpu/mmu-common.c
+ create mode 100644 arch/arm/cpu/mmu-common.h
+
 -- 
 2.20.1
 
