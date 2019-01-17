@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x441.google.com ([2a00:1450:4864:20::441])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gkFjS-0003uW-IG
- for barebox@lists.infradead.org; Thu, 17 Jan 2019 22:01:52 +0000
-Received: by mail-wr1-x441.google.com with SMTP id v13so12779611wrw.5
- for <barebox@lists.infradead.org>; Thu, 17 Jan 2019 14:01:50 -0800 (PST)
-MIME-Version: 1.0
+ id 1gkFoR-0005YQ-2X
+ for barebox@lists.infradead.org; Thu, 17 Jan 2019 22:07:00 +0000
+Date: Thu, 17 Jan 2019 23:06:56 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20190117220656.GC12259@ravnborg.org>
 References: <20190117063840.13674-1-andrew.smirnov@gmail.com>
  <20190117214039.GA17261@ravnborg.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 In-Reply-To: <20190117214039.GA17261@ravnborg.org>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 17 Jan 2019 14:01:37 -0800
-Message-ID: <CAHQ1cqGkaUT_4fcb_FqWEYvA3Ly15wsvEyYydw+bbbAAxXbwJQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,15 +25,14 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 00/12] ARM/ARM64 MMU code consolidation, zeroing of DMA
  coherent memory
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Thu, Jan 17, 2019 at 1:40 PM Sam Ravnborg <sam@ravnborg.org> wrote:
->
+On Thu, Jan 17, 2019 at 10:40:39PM +0100, Sam Ravnborg wrote:
 > Hi Andrey.
->
+> 
 > > Everyone:
-> >
+> > 
 > > This series is a result of my attempt at changing the behaviour of
 > > dma_alloc_coherent() to guarantee that memory it returns is zeroed
 > > out. Mostly to avoid having to do that explicitly in driver code, but
@@ -42,26 +40,15 @@ On Thu, Jan 17, 2019 at 1:40 PM Sam Ravnborg <sam@ravnborg.org> wrote:
 > > on that I noticed that there was a fair bit of MMU/DMA related code
 > > between ARM/ARM64 that can be shared, so I created a number of patches
 > > to do just that.
-> >
+> > 
 > > Feedback is welcome!
->
+> 
 > I read all the patches, and due to the nice small incremental patches
 > you do (well done!) I could follow them all.
 > A few comments and for the rest you can add my "Reviewed-by:" tag.
->
->
-> > Andrey Smirnov (12):
-> >   ARM: mmu: Drop custom virt_to_phys/phys_to_virt
-> >   ARM: mmu: Simplify the use of dma_inv_range()
-> >   ARM: mmu: Share code for dma_(un)map_single()
-> >   ARM64: mmu: Use arch_remap_range() internaly
-> internally
->
+You can extend this to all patches now.
 
-Will fix in v2.
-
-Thanks,
-Andrey Smirnov
+	Sam
 
 _______________________________________________
 barebox mailing list
