@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjxFW-0006hy-DN
- for barebox@lists.infradead.org; Thu, 17 Jan 2019 02:17:59 +0000
-Received: by mail-pg1-x544.google.com with SMTP id w6so3696840pgl.6
- for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 18:17:42 -0800 (PST)
+ id 1gjxFZ-0006l6-OQ
+ for barebox@lists.infradead.org; Thu, 17 Jan 2019 02:18:04 +0000
+Received: by mail-pg1-x542.google.com with SMTP id j10so3710381pga.1
+ for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 18:17:45 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 16 Jan 2019 18:16:57 -0800
-Message-Id: <20190117021700.4443-15-andrew.smirnov@gmail.com>
+Date: Wed, 16 Jan 2019 18:16:59 -0800
+Message-Id: <20190117021700.4443-17-andrew.smirnov@gmail.com>
 In-Reply-To: <20190117021700.4443-1-andrew.smirnov@gmail.com>
 References: <20190117021700.4443-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,102 +23,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 14/17] PCI: imx6: Do not switch speed if Gen2 is disabled
+Subject: [PATCH v4 16/17] PCI: imx6: Drop unnecessary root_bus_nr setting
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 93b226f9c65a951a91617f87ba1f05f14e59f26f
+Port of a Linux commit 39f712e989c5e591c58b65b62981b85027ba3103
 
-  Save a bit of time and avoid going through link speed change procedure in
-  configuration where link max speed is limited to Gen1 in DT.
+  Function dw_pcie_host_init() already initializes the root_bus_nr field
+  of 'struct pcie_port', so the -1 assignment prior to calling
+  dw_pcie_host_init() in platform specific driver is not really needed.
+  Drop it.
 
-  Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-  Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+  Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+  Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
   Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
-  Cc: yurovsky@gmail.com
-  Cc: Fabio Estevam <fabio.estevam@nxp.com>
-  Cc: Dong Aisheng <dongas86@gmail.com>
-  Cc: linux-arm-kernel@lists.infradead.org
+  Cc: Richard Zhu <hongxing.zhu@nxp.com>
+  Cc: Lucas Stach <l.stach@pengutronix.de>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c | 55 +++++++++++++++++++++---------------------
- 1 file changed, 28 insertions(+), 27 deletions(-)
+ drivers/pci/pci-imx6.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index d121a20ce1..6bdc9465db 100644
+index 9f3c9b69a5..9aa307aabf 100644
 --- a/drivers/pci/pci-imx6.c
 +++ b/drivers/pci/pci-imx6.c
-@@ -496,41 +496,42 @@ static int imx6_pcie_establish_link(struct imx6_pcie *imx6_pcie)
- 		tmp &= ~PCIE_RC_LCR_MAX_LINK_SPEEDS_MASK;
- 		tmp |= PCIE_RC_LCR_MAX_LINK_SPEEDS_GEN2;
- 		dw_pcie_writel_dbi(pci, PCIE_RC_LCR, tmp);
--	} else {
--		dev_info(dev, "Link: Gen2 disabled\n");
--	}
--
--	/*
--	 * Start Directed Speed Change so the best possible speed both link
--	 * partners support can be negotiated.
--	 */
--	tmp = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
--	tmp |= PORT_LOGIC_SPEED_CHANGE;
--	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, tmp);
+@@ -581,7 +581,6 @@ static int imx6_add_pcie_port(struct imx6_pcie *imx6_pcie,
+ 	struct pcie_port *pp = &pci->pp;
+ 	int ret;
  
--	if (imx6_pcie->variant != IMX7D) {
- 		/*
--		 * On i.MX7, DIRECT_SPEED_CHANGE behaves differently
--		 * from i.MX6 family when no link speed transition
--		 * occurs and we go Gen1 -> yep, Gen1. The difference
--		 * is that, in such case, it will not be cleared by HW
--		 * which will cause the following code to report false
--		 * failure.
-+		 * Start Directed Speed Change so the best possible
-+		 * speed both link partners support can be negotiated.
- 		 */
-+		tmp = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
-+		tmp |= PORT_LOGIC_SPEED_CHANGE;
-+		dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, tmp);
-+
-+		if (imx6_pcie->variant != IMX7D) {
-+			/*
-+			 * On i.MX7, DIRECT_SPEED_CHANGE behaves
-+			 * differently from i.MX6 family when no link
-+			 * speed transition occurs and we go Gen1 ->
-+			 * yep, Gen1. The difference is that, in such
-+			 * case, it will not be cleared by HW which
-+			 * will cause the following code to report
-+			 * false failure.
-+			 */
-+
-+			ret = imx6_pcie_wait_for_speed_change(imx6_pcie);
-+			if (ret) {
-+				dev_err(dev, "Failed to bring link up!\n");
-+				goto err_reset_phy;
-+			}
-+		}
+-	pp->root_bus_nr = -1;
+ 	pp->ops = &imx6_pcie_host_ops;
  
--		ret = imx6_pcie_wait_for_speed_change(imx6_pcie);
-+		/* Make sure link training is finished as well! */
-+		ret = imx6_pcie_wait_for_link(imx6_pcie);
- 		if (ret) {
- 			dev_err(dev, "Failed to bring link up!\n");
- 			goto err_reset_phy;
- 		}
--	}
--
--	/* Make sure link training is finished as well! */
--	ret = imx6_pcie_wait_for_link(imx6_pcie);
--	if (ret) {
--		dev_err(dev, "Failed to bring link up!\n");
--		goto err_reset_phy;
--	}
-+	} else {
-+		dev_info(dev, "Link: Gen2 disabled\n");
-+        }
- 
- 	tmp = dw_pcie_readl_dbi(pci, PCIE_RC_LCSR);
- 	dev_info(dev, "Link up, Gen%i\n", (tmp >> 16) & 0xf);
+ 	ret = dw_pcie_host_init(pp);
 -- 
 2.20.1
 
