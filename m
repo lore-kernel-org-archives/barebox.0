@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gk1KG-0003y4-Pt
- for barebox@lists.infradead.org; Thu, 17 Jan 2019 06:38:59 +0000
-Received: by mail-pg1-x541.google.com with SMTP id m1so3977680pgq.8
- for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 22:38:52 -0800 (PST)
+ id 1gk1KH-0003zL-UB
+ for barebox@lists.infradead.org; Thu, 17 Jan 2019 06:39:03 +0000
+Received: by mail-pf1-x444.google.com with SMTP id y126so4332059pfb.4
+ for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 22:38:53 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 16 Jan 2019 22:38:30 -0800
-Message-Id: <20190117063840.13674-3-andrew.smirnov@gmail.com>
+Date: Wed, 16 Jan 2019 22:38:31 -0800
+Message-Id: <20190117063840.13674-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20190117063840.13674-1-andrew.smirnov@gmail.com>
 References: <20190117063840.13674-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,55 +23,115 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/12] ARM: mmu: Simplify the use of dma_inv_range()
+Subject: [PATCH 03/12] ARM: mmu: Share code for dma_(un)map_single()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Simplify the use of dma_inv_range() by changing its signature to
-accept pointer to start of the data and data size. This change allows
-us to avoid a whole bunch of repetitive arithmetic currently done by
-all of the callers.
+Both ARM and ARM64 define DMA mapping/unmapping functions that are
+exactly the same. Introduce mmu-common.c and move the code there so it
+can be shared.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/cpu/mmu.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/arm/cpu/Makefile     |  2 +-
+ arch/arm/cpu/mmu-common.c | 25 +++++++++++++++++++++++++
+ arch/arm/cpu/mmu.c        | 16 ----------------
+ arch/arm/cpu/mmu_64.c     | 16 ----------------
+ 4 files changed, 26 insertions(+), 33 deletions(-)
+ create mode 100644 arch/arm/cpu/mmu-common.c
 
+diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
+index a35db435c..8e1af8bf8 100644
+--- a/arch/arm/cpu/Makefile
++++ b/arch/arm/cpu/Makefile
+@@ -1,7 +1,7 @@
+ obj-y += cpu.o
+ 
+ obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions$(S64).o interrupts$(S64).o
+-obj-$(CONFIG_MMU) += mmu$(S64).o
++obj-$(CONFIG_MMU) += mmu$(S64).o mmu-common.o
+ lwl-y += lowlevel$(S64).o
+ obj-pbl-$(CONFIG_MMU) += mmu-early$(S64).o
+ obj-pbl-$(CONFIG_CPU_32v7) += hyp.o
+diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
+new file mode 100644
+index 000000000..5d5812974
+--- /dev/null
++++ b/arch/arm/cpu/mmu-common.c
+@@ -0,0 +1,25 @@
++
++#define pr_fmt(fmt)	"mmu: " fmt
++
++#include <common.h>
++#include <dma-dir.h>
++#include <dma.h>
++#include <mmu.h>
++
++#include "mmu.h"
++
++dma_addr_t dma_map_single(struct device_d *dev, void *ptr, size_t size,
++			  enum dma_data_direction dir)
++{
++	unsigned long addr = (unsigned long)ptr;
++
++	dma_sync_single_for_device(addr, size, dir);
++
++	return addr;
++}
++
++void dma_unmap_single(struct device_d *dev, dma_addr_t addr, size_t size,
++		      enum dma_data_direction dir)
++{
++	dma_sync_single_for_cpu(addr, size, dir);
++}
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 2b7b9e30a..390ccc581 100644
+index 390ccc581..f134e8bb3 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -118,8 +118,11 @@ static void dma_flush_range(void *ptr, size_t size)
- 		outer_cache.flush_range(start, end);
+@@ -555,19 +555,3 @@ void dma_sync_single_for_device(dma_addr_t address, size_t size,
+ 			outer_cache.clean_range(address, address + size);
+ 	}
  }
- 
--static void dma_inv_range(unsigned long start, unsigned long end)
-+static void dma_inv_range(void *ptr, size_t size)
- {
-+	unsigned long start = (unsigned long)ptr;
-+	unsigned long end = start + size;
-+
- 	if (outer_cache.inv_range)
- 		outer_cache.inv_range(start, end);
- 	__dma_inv_range(start, end);
-@@ -507,7 +510,7 @@ static void *dma_alloc_map(size_t size, dma_addr_t *dma_handle, unsigned flags)
- 	if (dma_handle)
- 		*dma_handle = (dma_addr_t)ret;
- 
--	dma_inv_range((unsigned long)ret, (unsigned long)ret + size);
-+	dma_inv_range(ret, size);
- 
- 	arch_remap_range(ret, size, flags);
- 
-@@ -536,7 +539,7 @@ void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
- 			     enum dma_data_direction dir)
- {
- 	if (dir != DMA_TO_DEVICE)
--		dma_inv_range(address, address + size);
-+		dma_inv_range((void *)address, size);
+-
+-dma_addr_t dma_map_single(struct device_d *dev, void *ptr, size_t size,
+-			  enum dma_data_direction dir)
+-{
+-	unsigned long addr = (unsigned long)ptr;
+-
+-	dma_sync_single_for_device(addr, size, dir);
+-
+-	return addr;
+-}
+-
+-void dma_unmap_single(struct device_d *dev, dma_addr_t addr, size_t size,
+-		      enum dma_data_direction dir)
+-{
+-	dma_sync_single_for_cpu(addr, size, dir);
+-}
+diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+index b6f30d1b3..e2dd5b4d8 100644
+--- a/arch/arm/cpu/mmu_64.c
++++ b/arch/arm/cpu/mmu_64.c
+@@ -291,19 +291,3 @@ void dma_sync_single_for_device(dma_addr_t address, size_t size,
+ 	else
+ 		v8_flush_dcache_range(address, address + size - 1);
  }
- 
- void dma_sync_single_for_device(dma_addr_t address, size_t size,
+-
+-dma_addr_t dma_map_single(struct device_d *dev, void *ptr, size_t size,
+-			  enum dma_data_direction dir)
+-{
+-	unsigned long addr = (unsigned long)ptr;
+-
+-	dma_sync_single_for_device(addr, size, dir);
+-
+-	return addr;
+-}
+-
+-void dma_unmap_single(struct device_d *dev, dma_addr_t addr, size_t size,
+-		      enum dma_data_direction dir)
+-{
+-	dma_sync_single_for_cpu(addr, size, dir);
+-}
 -- 
 2.20.1
 
