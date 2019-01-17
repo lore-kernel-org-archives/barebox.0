@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from mail-wm1-x341.google.com ([2a00:1450:4864:20::341])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gkF8a-0007D5-LJ
- for barebox@lists.infradead.org; Thu, 17 Jan 2019 21:23:46 +0000
-Date: Thu, 17 Jan 2019 22:23:39 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20190117212339.GA4532@ravnborg.org>
+ id 1gkFct-0000fN-O4
+ for barebox@lists.infradead.org; Thu, 17 Jan 2019 21:55:05 +0000
+Received: by mail-wm1-x341.google.com with SMTP id d15so2670446wmb.3
+ for <barebox@lists.infradead.org>; Thu, 17 Jan 2019 13:54:59 -0800 (PST)
+MIME-Version: 1.0
 References: <20190117063840.13674-1-andrew.smirnov@gmail.com>
  <20190117063840.13674-9-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190117063840.13674-9-andrew.smirnov@gmail.com>
+ <20190117212339.GA4532@ravnborg.org>
+In-Reply-To: <20190117212339.GA4532@ravnborg.org>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Thu, 17 Jan 2019 13:54:46 -0800
+Message-ID: <CAHQ1cqEuppxED3KNjw08eg5QzBG5tjnPk6uAk-L2QYresOdHmg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,24 +26,31 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 08/12] ARM: mmu: Share code for dma_alloc_coherent()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi Andrey.
+On Thu, Jan 17, 2019 at 1:23 PM Sam Ravnborg <sam@ravnborg.org> wrote:
+>
+> Hi Andrey.
+>
+> On Wed, Jan 16, 2019 at 10:38:36PM -0800, Andrey Smirnov wrote:
+> > Both ARM and ARM64 implement almost identical algorithms in
+> > dma_alloc_coherent(). Move the code to mmu-common.c, so it can be
+> > shared.
+> >
+> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> > ---
+> >  arch/arm/cpu/mmu-common.c | 21 +++++++++++++++++++++
+> >  arch/arm/cpu/mmu-common.h |  7 +++++++
+> We already have rch/arm/cpu/mmu.h, wait is the benefit of the extra header file?
 
-On Wed, Jan 16, 2019 at 10:38:36PM -0800, Andrey Smirnov wrote:
-> Both ARM and ARM64 implement almost identical algorithms in
-> dma_alloc_coherent(). Move the code to mmu-common.c, so it can be
-> shared.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  arch/arm/cpu/mmu-common.c | 21 +++++++++++++++++++++
->  arch/arm/cpu/mmu-common.h |  7 +++++++
-We already have rch/arm/cpu/mmu.h, wait is the benefit of the extra header file?
-In other words, suggest to move this to mmu.h
+Arch/arm/cpu/mmu.h is a 32-bit specific file that is not used on
+AArch64, which has its own counterpart in arch/arm/cpu/mmu_64.h.
+Mmu-common.h contains the bits that are shared between the two
+architectures.
 
-	Sam
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
