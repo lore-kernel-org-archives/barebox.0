@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gjrqA-0002PJ-T2
- for barebox@lists.infradead.org; Wed, 16 Jan 2019 20:31:12 +0000
-Received: by mail-wr1-x429.google.com with SMTP id c14so8552627wrr.0
- for <barebox@lists.infradead.org>; Wed, 16 Jan 2019 12:31:08 -0800 (PST)
-MIME-Version: 1.0
+Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat
+ Linux)) id 1gk4Xy-0006jS-Aw
+ for barebox@lists.infradead.org; Thu, 17 Jan 2019 10:05:21 +0000
+From: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+Date: Thu, 17 Jan 2019 10:04:46 +0000
+Message-ID: <89d426c4-ccfa-98e5-4a2b-8f0881328bbe@data-modul.com>
 References: <a47578bb-9855-9645-e48b-fc9d3478a173@data-modul.com>
  <1547631290.4339.26.camel@pengutronix.de>
-In-Reply-To: <1547631290.4339.26.camel@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 16 Jan 2019 12:30:54 -0800
-Message-ID: <CAHQ1cqGzMcgUGYXn5uq_86kHb_QSb2ZeQCrG-5jc1wS4rvC5aA@mail.gmail.com>
+ <CAHQ1cqGzMcgUGYXn5uq_86kHb_QSb2ZeQCrG-5jc1wS4rvC5aA@mail.gmail.com>
+In-Reply-To: <CAHQ1cqGzMcgUGYXn5uq_86kHb_QSb2ZeQCrG-5jc1wS4rvC5aA@mail.gmail.com>
+Content-Language: de-DE
+Content-ID: <92EF07C25DBF5E4FAD424AF2ECE6D756@data-modul.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,72 +21,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: signed HDMI firmware in imx8mq image
-To: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Wed, Jan 16, 2019 at 1:34 AM Lucas Stach <l.stach@pengutronix.de> wrote:
->
-> Hi Reyhaneh,
->
-> Am Mittwoch, den 16.01.2019, 08:48 +0000 schrieb Yazdani, Reyhaneh:
-> > Every one,
-> >
-> > In order to build a Barebox image to boot imx8mq-evk with HDMI, I have tried to
-> > tell Barebox about the embedded signed HDMI firmware, which is necessary for
-> > provided kernel image by NXP.
-> >
-> > for this matter, I added the below line into the
-> > arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
-> >
-> >   soc imx8mq
-> >   loadaddr 0x007E1000
-> >   dcdofs 0x400
-> > + signed_hdmi_firmware firmware/imx/signed_hdmi_imx8m.bin
-> >
-> > And placed the firmware into the build-directory/firmware/imx
-> >
-> >
-> > By checking kernel boot message, it seems the HDMI FW is running, but no access
-> > to the HDMI:
-> > [drm:hdmi_phy_init_t28hpc] *ERROR* HDMI mailbox access failed
-> >
-> > What should I do more in Barebox to make HDMI accessible by kernel?
->
-> I don't think there is anything more needed from the Barebox side. At
-> least the same change works for me and gets me a working HDMI display
-> on the EVK board.
->
-
-FWIW, I don't see anything missing either.
-
-> I don't use the NXP kernel through, but running a 4.20 based kernel
-> with lot of downstream bits ported. This might be a incompatibility of
-> your kernel with the imx8 ATF version shipped with Barebox.
->
-
-I was using vendor kernel when I was working on
-implementing/validating initial support of that and it worked alright.
-However, that has been over 5 month ago, so it is entirely possible
-that newer version of various components might have become
-problematic.
-
-It is probably not a problem in your case, but do keep in mind, that
-i.MX8MQ mask ROM code uses SD2 as a "backup" boot option, so if it
-doesn't find anything bootable on the selected (via pins or fuses)
-medium it will revert to that. If that happens, HDMI firmware present
-on SD card will _not_ be loaded into HDMI IP block. I've been bitten
-by this when I was working with a board that I forgot was configured
-to boot from eMMC and was booting from SD card by coincidence.
-
-Thanks,
-Andrey Smirnov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+DQoNCk9uIDEvMTYvMTkgOTozMCBQTSwgQW5kcmV5IFNtaXJub3Ygd3JvdGU6DQo+IE9uIFdlZCwg
+SmFuIDE2LCAyMDE5IGF0IDE6MzQgQU0gTHVjYXMgU3RhY2ggPGwuc3RhY2hAcGVuZ3V0cm9uaXgu
+ZGU+IHdyb3RlOg0KPj4NCj4+IEhpIFJleWhhbmVoLA0KPj4NCj4+IEFtIE1pdHR3b2NoLCBkZW4g
+MTYuMDEuMjAxOSwgMDg6NDggKzAwMDAgc2NocmllYiBZYXpkYW5pLCBSZXloYW5laDoNCj4+PiBF
+dmVyeSBvbmUsDQo+Pj4NCj4+PiBJbiBvcmRlciB0byBidWlsZCBhIEJhcmVib3ggaW1hZ2UgdG8g
+Ym9vdCBpbXg4bXEtZXZrIHdpdGggSERNSSwgSSBoYXZlIHRyaWVkIHRvDQo+Pj4gdGVsbCBCYXJl
+Ym94IGFib3V0IHRoZSBlbWJlZGRlZCBzaWduZWQgSERNSSBmaXJtd2FyZSwgd2hpY2ggaXMgbmVj
+ZXNzYXJ5IGZvcg0KPj4+IHByb3ZpZGVkIGtlcm5lbCBpbWFnZSBieSBOWFAuDQo+Pj4NCj4+PiBm
+b3IgdGhpcyBtYXR0ZXIsIEkgYWRkZWQgdGhlIGJlbG93IGxpbmUgaW50byB0aGUNCj4+PiBhcmNo
+L2FybS9ib2FyZHMvbnhwLWlteDhtcS1ldmsvZmxhc2gtaGVhZGVyLWlteDhtcS1ldmsuaW14Y2Zn
+DQo+Pj4NCj4+PiAgIHNvYyBpbXg4bXENCj4+PiAgIGxvYWRhZGRyIDB4MDA3RTEwMDANCj4+PiAg
+IGRjZG9mcyAweDQwMA0KPj4+ICsgc2lnbmVkX2hkbWlfZmlybXdhcmUgZmlybXdhcmUvaW14L3Np
+Z25lZF9oZG1pX2lteDhtLmJpbg0KPj4+DQo+Pj4gQW5kIHBsYWNlZCB0aGUgZmlybXdhcmUgaW50
+byB0aGUgYnVpbGQtZGlyZWN0b3J5L2Zpcm13YXJlL2lteA0KPj4+DQo+Pj4NCj4+PiBCeSBjaGVj
+a2luZyBrZXJuZWwgYm9vdCBtZXNzYWdlLCBpdCBzZWVtcyB0aGUgSERNSSBGVyBpcyBydW5uaW5n
+LCBidXQgbm8gYWNjZXNzDQo+Pj4gdG8gdGhlIEhETUk6DQo+Pj4gW2RybTpoZG1pX3BoeV9pbml0
+X3QyOGhwY10gKkVSUk9SKiBIRE1JIG1haWxib3ggYWNjZXNzIGZhaWxlZA0KPj4+DQo+Pj4gV2hh
+dCBzaG91bGQgSSBkbyBtb3JlIGluIEJhcmVib3ggdG8gbWFrZSBIRE1JIGFjY2Vzc2libGUgYnkg
+a2VybmVsPw0KPj4NCj4+IEkgZG9uJ3QgdGhpbmsgdGhlcmUgaXMgYW55dGhpbmcgbW9yZSBuZWVk
+ZWQgZnJvbSB0aGUgQmFyZWJveCBzaWRlLiBBdA0KPj4gbGVhc3QgdGhlIHNhbWUgY2hhbmdlIHdv
+cmtzIGZvciBtZSBhbmQgZ2V0cyBtZSBhIHdvcmtpbmcgSERNSSBkaXNwbGF5DQo+PiBvbiB0aGUg
+RVZLIGJvYXJkLg0KPj4NCj4NCj4gRldJVywgSSBkb24ndCBzZWUgYW55dGhpbmcgbWlzc2luZyBl
+aXRoZXIuDQo+DQo+PiBJIGRvbid0IHVzZSB0aGUgTlhQIGtlcm5lbCB0aHJvdWdoLCBidXQgcnVu
+bmluZyBhIDQuMjAgYmFzZWQga2VybmVsDQo+PiB3aXRoIGxvdCBvZiBkb3duc3RyZWFtIGJpdHMg
+cG9ydGVkLiBUaGlzIG1pZ2h0IGJlIGEgaW5jb21wYXRpYmlsaXR5IG9mDQo+PiB5b3VyIGtlcm5l
+bCB3aXRoIHRoZSBpbXg4IEFURiB2ZXJzaW9uIHNoaXBwZWQgd2l0aCBCYXJlYm94Lg0KPj4NCj4N
+Cj4gSSB3YXMgdXNpbmcgdmVuZG9yIGtlcm5lbCB3aGVuIEkgd2FzIHdvcmtpbmcgb24NCj4gaW1w
+bGVtZW50aW5nL3ZhbGlkYXRpbmcgaW5pdGlhbCBzdXBwb3J0IG9mIHRoYXQgYW5kIGl0IHdvcmtl
+ZCBhbHJpZ2h0Lg0KPiBIb3dldmVyLCB0aGF0IGhhcyBiZWVuIG92ZXIgNSBtb250aCBhZ28sIHNv
+IGl0IGlzIGVudGlyZWx5IHBvc3NpYmxlDQo+IHRoYXQgbmV3ZXIgdmVyc2lvbiBvZiB2YXJpb3Vz
+IGNvbXBvbmVudHMgbWlnaHQgaGF2ZSBiZWNvbWUNCj4gcHJvYmxlbWF0aWMuDQo+DQo+IEl0IGlz
+IHByb2JhYmx5IG5vdCBhIHByb2JsZW0gaW4geW91ciBjYXNlLCBidXQgZG8ga2VlcCBpbiBtaW5k
+LCB0aGF0DQo+IGkuTVg4TVEgbWFzayBST00gY29kZSB1c2VzIFNEMiBhcyBhICJiYWNrdXAiIGJv
+b3Qgb3B0aW9uLCBzbyBpZiBpdA0KPiBkb2Vzbid0IGZpbmQgYW55dGhpbmcgYm9vdGFibGUgb24g
+dGhlIHNlbGVjdGVkICh2aWEgcGlucyBvciBmdXNlcykNCj4gbWVkaXVtIGl0IHdpbGwgcmV2ZXJ0
+IHRvIHRoYXQuIElmIHRoYXQgaGFwcGVucywgSERNSSBmaXJtd2FyZSBwcmVzZW50DQo+IG9uIFNE
+IGNhcmQgd2lsbCBfbm90XyBiZSBsb2FkZWQgaW50byBIRE1JIElQIGJsb2NrLiBJJ3ZlIGJlZW4g
+Yml0dGVuDQo+IGJ5IHRoaXMgd2hlbiBJIHdhcyB3b3JraW5nIHdpdGggYSBib2FyZCB0aGF0IEkg
+Zm9yZ290IHdhcyBjb25maWd1cmVkDQo+IHRvIGJvb3QgZnJvbSBlTU1DIGFuZCB3YXMgYm9vdGlu
+ZyBmcm9tIFNEIGNhcmQgYnkgY29pbmNpZGVuY2UuDQo+DQo+IFRoYW5rcywNCj4gQW5kcmV5IFNt
+aXJub3YNCj4NCg0KSGkgQW5kcmV5LA0KDQpUaGFua3MgZm9yIHlvdXIgY29tbWVudC4NCg0KSSBh
+bSBib290aW5nICBmcm9tIFNEIGNhcmQuIEFuZCB0aGUgY2FyZCB3aXRoIGNvbXBsZXRlIE5YUCBp
+bWFnZSh1Ym9vdCtrZXJuZWwpDQpsb2FkcyBjb21wbGV0ZWx5LiBXaGVuIEkgcmVwbGFjZSB1Ym9v
+dCB3aXRoIEJhcmVib3gsIEhETUkgZXJyb3IgaGFwcGVucy4NCg0KVGhlIHBvaW50IGlzLCBiZWZv
+cmUgYWRkaW5nIHNpZ25lZF9oZG1pX2Zpcm13YXJlIGludG8gQmFyZWJveCwgSSBnb3QgdGhlIGVy
+cm9yDQpkdXJpbmcga2VybmVsIGJvb3QgcmVnYXJkaW5nIG5vIEZXIGxvYWRlZC4NCg0KQnV0IGFm
+dGVyIHRoYXQsIGtlcm5lbCBkZXRlY3RzIEhETUkgRlcgaXMgbG9hZGVkIGJ1dCBjYW5ub3QgY29t
+bXVuaWNhdGUgd2l0aCBpdC4NCg0KQmVzdCwNClJleWhhbmVoDQotLQ0KUmV5aGFuZWggWWF6ZGFu
+aQ0KRGF0YSBNb2R1bCBBRyAgICAgICAgICAgICAgICAgICAgICAgICAgICBURUw6ICAgICs0OS04
+OS01NjAxNy0xNTQNCkVtYmVkZGVkIGRldmVsb3BtZW50ICAgICAgICAgICAgICAgICBGQVg6ICAg
+ICs0OS04OS01NjAxNy0xMTkNCkxpbnV4IC0gRGV2ZWxvcG1lbnQgICAgICAgICAgICAgICAgICAg
+ICAgUkc6IEhSLU11ZW5jaGVuIEItODU1OTENCkxhbmRzYmVyZ2VyIFN0ci4gMzIyIEQtODA2ODcg
+TXVlbmNoZW4gLSBodHRwOi8vd3d3LmRhdGEtbW9kdWwuY29tDQoNClZlcnRyYXVsaWNoZSBFLU1h
+aWwgdm9uIC8gQ29uZmlkZW50aWFsIGUtbWFpbCBmcm9tOiBEQVRBIE1PRFVMIEFHDQpWb3JzdGFu
+ZCAvIENFTzogRHIuIEZsb3JpYW4gUGVzYWhsDQpWb3JzaXR6ZW5kZSBkZXMgQXVmc2ljaHRzcmF0
+ZXMgLyBDaGFpcndvbWFuIG9mIHRoZSBTdXBlcnZpc29yeSBCb2FyZDogS3Jpc3RpbiBELiBSdXNz
+ZWxsDQpTaXR6IGRlciBHZXNlbGxzY2hhZnQgLyBSZWdpc3RlcmVkIE9mZmljZTogTcO8bmNoZW4N
+ClJlZ2lzdGVyZ2VyaWNodCAvIFJlZ2lzdHJhdGlvbiBDb3VydDogTcO8bmNoZW4gSGFuZGVsc3Jl
+Z2lzdGVyIEIgODUgNTkxDQoNCg0KDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
+ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
+Cg==
