@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x444.google.com ([2a00:1450:4864:20::444])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gmUxK-0004mD-94
- for barebox@lists.infradead.org; Thu, 24 Jan 2019 02:41:28 +0000
-Received: by mail-wr1-x444.google.com with SMTP id p7so4844972wru.0
- for <barebox@lists.infradead.org>; Wed, 23 Jan 2019 18:41:24 -0800 (PST)
-MIME-Version: 1.0
-References: <20190123150153.11a91063828b62bfd89c9bdf@gmail.com>
-In-Reply-To: <20190123150153.11a91063828b62bfd89c9bdf@gmail.com>
+ id 1gkIDp-0006ar-U2
+ for barebox@lists.infradead.org; Fri, 18 Jan 2019 00:41:23 +0000
+Received: by mail-pg1-x543.google.com with SMTP id z10so5203226pgp.7
+ for <barebox@lists.infradead.org>; Thu, 17 Jan 2019 16:41:21 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 23 Jan 2019 18:41:11 -0800
-Message-ID: <CAHQ1cqEcMK-npMm57w8w-jVJP89nCxGcoFKaJCOmGCMs=WGcnQ@mail.gmail.com>
+Date: Thu, 17 Jan 2019 16:41:13 -0800
+Message-Id: <20190118004113.20740-1-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,62 +17,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IHBvd2VycGMtbGludXgtZ251LWdjYzogZXJyb3I6IHVucmVjb2duaXplZCBjb21tYQ==?=
- =?UTF-8?B?bmQgbGluZSBvcHRpb24g4oCYLW1uby1zcGXigJk=?=
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] ls: Adjust amount of space allocated for filesize
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-T24gV2VkLCBKYW4gMjMsIDIwMTkgYXQgNDowMiBBTSBBbnRvbnkgUGF2bG92IDxhbnRvbnlucGF2
-bG92QGdtYWlsLmNvbT4gd3JvdGU6Cj4KPiBIaSBTYXNjaGEhCj4KPiBJJ20gcGxheWluZyB3aXRo
-IE1BS0VBTEwgc2NyaXB0IHRvIGJ1aWxkIGFzIG1hbnkgZGVmY29uZmlncyBhcyBwb3NzaWJsZS4K
-PiBNeSBidWlsZCBlbnZpcm9ubWVudCBpcyBiYXNlIG9uIERlYmlhbiBCdXN0ZXIuCj4gRGViaWFu
-IEJ1c3RlciBoYXMgY3Jvc3MgY29tcGlsZXIgZm9yIFBvd2VyUEMzMi4KPgo+IEFsYXMgSSBoYXZl
-IG5vIHN1Y2Nlc3Mgd2l0aCBkZWJpYW4gcG93ZXJwYy1saW51eC1nbnUtZ2NjIDguMi4wLTIuCj4K
-PiBBZnRlcgo+Cj4gICBDUk9TU19DT01QSUxFPXBvd2VycGMtbGludXgtZ251LSAuL01BS0VBTEwg
-LWEgcHBjCj4KPiB0aGUgZXJyb3IgbWVzc2FnZSBpczoKPgo+ICAgcG93ZXJwYy1saW51eC1nbnUt
-Z2NjOiBlcnJvcjogdW5yZWNvZ25pemVkIGNvbW1hbmQgbGluZSBvcHRpb24g4oCYLW1uby1zcGXi
-gJk7IGRpZCB5b3UgbWVhbiDigJgtZm5vLXNlZeKAmT8KPiAgIHBvd2VycGMtbGludXgtZ251LWdj
-YzogZXJyb3I6IHVucmVjb2duaXplZCBjb21tYW5kIGxpbmUgb3B0aW9uIOKAmC1tc3BlPW5v4oCZ
-OyBkaWQgeW91IG1lYW4g4oCYLW1pc2VsPW5v4oCZPwo+ICAgbWFrZVsyXTogKioqIFsvaG9tZS9i
-dWlsZHVzZXIvYmFyZWJveC8uL0tidWlsZDo0MDogYXJjaC9wcGMvbGliL2FzbS1vZmZzZXRzLnNd
-IEVycm9yIDEKPiAgIG1ha2VbMV06ICoqKiBbL2hvbWUvYnVpbGR1c2VyL2JhcmVib3gvTWFrZWZp
-bGU6ODMyOiBwcmVwYXJlMF0gRXJyb3IgMgo+ICAgbWFrZVsxXTogKioqIFdhaXRpbmcgZm9yIHVu
-ZmluaXNoZWQgam9icy4uLi4KPiAgIHBvd2VycGMtbGludXgtZ251LWdjYzogZXJyb3I6IHVucmVj
-b2duaXplZCBjb21tYW5kIGxpbmUgb3B0aW9uIOKAmC1tbm8tc3Bl4oCZOyBkaWQgeW91IG1lYW4g
-4oCYLWZuby1zZWXigJk/Cj4gICBwb3dlcnBjLWxpbnV4LWdudS1nY2M6IGVycm9yOiB1bnJlY29n
-bml6ZWQgY29tbWFuZCBsaW5lIG9wdGlvbiDigJgtbXNwZT1ub+KAmTsgZGlkIHlvdSBtZWFuIOKA
-mC1taXNlbD1ub+KAmT8KPiAgIG1ha2VbM106ICoqKiBbL2hvbWUvYnVpbGR1c2VyL2JhcmVib3gv
-c2NyaXB0cy9NYWtlZmlsZS5idWlsZDoyNTA6IHNjcmlwdHMvbW9kL2VtcHR5Lm9dIEVycm9yIDEK
-PiAgIG1ha2VbM106ICoqKiBXYWl0aW5nIGZvciB1bmZpbmlzaGVkIGpvYnMuLi4uCj4KPgo+IFdp
-dGggdGhpcyBsaW51eCBrZXJuZWwtYmFzZWQgcGF0Y2ggcHBjIGJ1aWxkIGhhcyBubyBmYWlsLgo+
-Cj4gZGlmZiAtLWdpdCBhL2FyY2gvcHBjL01ha2VmaWxlIGIvYXJjaC9wcGMvTWFrZWZpbGUKPiBp
-bmRleCAwNWVjMjQzOGEuLmU1NzVlNTkyMyAxMDA2NDQKPiAtLS0gYS9hcmNoL3BwYy9NYWtlZmls
-ZQo+ICsrKyBiL2FyY2gvcHBjL01ha2VmaWxlCj4gQEAgLTEsNyArMSwxMiBAQAo+Cj4gIENQUEZM
-QUdTICs9IC1mZml4ZWQtcjE0IC1tMzIgICBcCj4gICAgICAgICAtbWVhYmkgLUQgX19QUENfXyAt
-RCBDT05GSUdfUFBDIFwKPiAtICAgICAgIC1mbm8tc3RyaWN0LWFsaWFzaW5nIC1tbm8tc3BlIC1t
-c3BlPW5vCj4gKyAgICAgICAtZm5vLXN0cmljdC1hbGlhc2luZwo+ICsKPiArIyBObyBTUEUgaW5z
-dHJ1Y3Rpb24gd2hlbiBidWlsZGluZyBrZXJuZWwKPiArIyAoV2UgdXNlIGFsbCBhdmFpbGFibGUg
-b3B0aW9ucyB0byBoZWxwIHNlbWktYnJva2VuIGNvbXBpbGVycykKPiArQ1BQRkxBR1MgKz0gJChj
-YWxsIGNjLW9wdGlvbiwtbW5vLXNwZSkKPiArQ1BQRkxBR1MgKz0gJChjYWxsIGNjLW9wdGlvbiwt
-bXNwZT1ubykKPgo+ICBpZmRlZiBDT05GSUdfUkVMT0NBVEFCTEUKPiAgQ1BQRkxBR1MgKz0gLWZQ
-SUMgLW1yZWxvY2F0YWJsZQo+Cj4KPiBJIGhhdmUgbm8gcmVhbCBwb3dlcnBjIGV4cGVyaWVuY2Ug
-dG8gc3VibWl0IHRoaXMgcGF0Y2guCj4KPiBDb3VsZCB5b3UgcGxlYXNlIGNvbW1lbnQgdGhpcyBw
-YXRjaD8KPgoKU2luY2UgdXAgdW50aWwgYSB5ZWFyIGFnbyBJIHdhcyB1c2luZyBCYXJlYm94IG9u
-IE1QQzg1NDQgb24gYSBkYWlseQpiYXNpcyBhbmQgaGF2ZSBzb21lIFBvd2VyUEMgcGF0Y2hlcyBJ
-J3ZlIGJlZW4gbWVhbmluZyB0byB1cHN0cmVhbSwKSSdsbCBjaGltZSBpbi4gWW91IHdvdWxkbid0
-IHNlZSB0aGlzIGJ1aWxkIGZhaWx1cmUgaWYgeW91IHdlcmUgdXNpbmcgYQpQb3dlclBDIHRvb2xj
-aGFpbiBidWlsZCB3aXRoIHN1cHBvcnQgZm9yIGU1MDAgZW5hYmxlZC4gQUZBSUssIGRpc3Ryb3MK
-ZG9uJ3QgdXN1YWxseSBzaGlwIGFueXRoaW5nIGxpa2UgdGhhdCwgYnV0IHlvdSBjYW4gZ2V0IGEg
-cHJlLWJ1aWxkIG9uZQpmcm9tIGhlcmUgaHR0cHM6Ly90b29sY2hhaW5zLmJvb3RsaW4uY29tL3Jl
-bGVhc2VzX3Bvd2VycGMtZTUwMG1jLmh0bWwKCkhvd2V2ZXIsIEkndmUgbmV2ZXIgdHJpZWQgdG8g
-YnVpbGQgQmFyZWJveCB1c2luZyBhIGdlbmVyaWMgUG93ZXJQQwp0b29sY2hhaW4sIHNvIEkgZG9u
-J3QgcmVhbGx5IGtub3cgZm9yIHN1cmUgaWYgaGF2aW5nIGU1MDAgc3VwcG9ydAp0cnVseSBtYXR0
-ZXJzIGZvciBnZXR0aW5nIGEgd29ya2luZyBCYXJlYm94IGJpbmFyeS4gR2l2ZW4gdGhhdCwgSQpk
-b24ndCBzZWUgYW55IGhhcm0gaW4gdGhlIGNoYW5nZSBhYm92ZS4KClRoYW5rcywKQW5kcmV5IFNt
-aXJub3YKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJh
-cmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
-dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Maximum file size on 64-bit system is 2^63-1 (9223372036854775807),
+which takes more that 14 characters of space. In order to keep things
+properly aligned adjust that spacing to 20 on 64-bit platforms.
+
+Before:
+
+ls -l /dev/
+d---------              0 .
+d---------              0 ..
+crw-------          16384 dds-eeprom
+crw-------            256 e1000-invm0
+crw-------          16384 eeprom0
+cr--------              0 full
+crw-------           2048 imx-ocotp
+crw-------          16384 main-eeprom
+crw-------             64 mdio0-phy00
+crw------- 9223372036854775807 mem
+c-w-------              0 netconsole-1
+c-w-------              0 null
+crw-------   256060514304 nvme0n1
+cr--------              0 prng
+crw-------     4294967296 ram0
+c-w-------              0 serial0-1
+cr--------              0 zero
+
+After:
+
+ls -l /dev/
+d---------                   0 .
+d---------                   0 ..
+crw-------               16384 dds-eeprom
+crw-------                 256 e1000-invm0
+crw-------               16384 eeprom0
+cr--------                   0 full
+crw-------                2048 imx-ocotp
+crw-------               16384 main-eeprom
+crw-------                  64 mdio0-phy00
+crw------- 9223372036854775807 mem
+c-w-------                   0 netconsole-1
+c-w-------                   0 null
+crw-------        256060514304 nvme0n1
+cr--------                   0 prng
+crw-------          4294967296 ram0
+c-w-------                   0 serial0-1
+cr--------                   0 zero
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ commands/ls.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/commands/ls.c b/commands/ls.c
+index e54991862..e5e37d75c 100644
+--- a/commands/ls.c
++++ b/commands/ls.c
+@@ -26,6 +26,15 @@
+ #include <getopt.h>
+ #include <stringlist.h>
+ 
++/*
++ * SIZELEN = strlen(itoa(MAX_LFS_FILESIZE)) + 1;
++ */
++#ifdef CONFIG_CPU_64
++#define SIZELEN		20
++#else
++#define SIZELEN		14
++#endif
++
+ static void ls_one(const char *path, const char* fullname)
+ {
+ 	char modestr[11];
+@@ -38,7 +47,8 @@ static void ls_one(const char *path, const char* fullname)
+ 		return;
+ 
+ 	mkmodestr(s.st_mode, modestr);
+-	printf("%s %14llu %*.*s", modestr, s.st_size, namelen, namelen, path);
++	printf("%s %*llu %*.*s", modestr, SIZELEN, s.st_size, namelen,
++	       namelen, path);
+ 
+ 	if (S_ISLNK(s.st_mode)) {
+ 		char realname[PATH_MAX];
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
