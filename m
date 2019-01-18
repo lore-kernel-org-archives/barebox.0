@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gkO8L-0003Fv-4n
- for barebox@lists.infradead.org; Fri, 18 Jan 2019 07:00:07 +0000
-Date: Fri, 18 Jan 2019 08:00:00 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190118070000.j6oa4vtj6yzwqjoj@pengutronix.de>
+ id 1gkRjA-0005d1-61
+ for barebox@lists.infradead.org; Fri, 18 Jan 2019 10:50:22 +0000
+Date: Fri, 18 Jan 2019 11:50:18 +0100
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20190118105018.fssx46kgru7mypha@pengutronix.de>
 References: <20190117142138.21679-1-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -26,6 +26,10 @@ Subject: Re: [PATCH 1/2] ARN: boards: Remove duplicate includes
 To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
+Did you mean "ARM" in the subject? :-)
+
+ - Roland
+
 On Thu, Jan 17, 2019 at 05:21:37PM +0300, Alexander Shiyan wrote:
 > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 > ---
@@ -40,11 +44,6 @@ On Thu, Jan 17, 2019 at 05:21:37PM +0300, Alexander Shiyan wrote:
 >  arch/arm/boards/sama5d3xek/init.c               | 1 -
 >  arch/arm/boards/vscom-baltos/board.c            | 1 -
 >  10 files changed, 13 deletions(-)
-
-Applied, thanks
-
-Sascha
-
 > 
 > diff --git a/arch/arm/boards/advantech-mx6/lowlevel.c b/arch/arm/boards/advantech-mx6/lowlevel.c
 > index 8921cd4..de1d344 100644
@@ -180,10 +179,10 @@ Sascha
 > 
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Roland Hieber                     | r.hieber@pengutronix.de     |
+Pengutronix e.K.                  | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
