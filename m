@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-qt1-x833.google.com ([2607:f8b0:4864:20::833])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1glV0r-0007Qz-Ds
- for barebox@lists.infradead.org; Mon, 21 Jan 2019 08:32:59 +0000
-Date: Mon, 21 Jan 2019 09:32:55 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190121083255.4stf3pdjw2wnhj3a@pengutronix.de>
-References: <20181028211947.GA14788@lenoch>
- <20181028212638.GO14788@lenoch>
+ id 1gkeqN-0001RU-4j
+ for barebox@lists.infradead.org; Sat, 19 Jan 2019 00:50:40 +0000
+Received: by mail-qt1-x833.google.com with SMTP id r14so17350171qtp.1
+ for <barebox@lists.infradead.org>; Fri, 18 Jan 2019 16:50:37 -0800 (PST)
+From: Vivien Didelot <vivien.didelot@gmail.com>
+Date: Fri, 18 Jan 2019 19:50:18 -0500
+Message-Id: <20190119005018.31502-1-vivien.didelot@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181028212638.GO14788@lenoch>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,97 +21,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 14/16] mtd: nand: Kill the chip->scan_bbt() hook
-To: Ladislav Michl <ladis@linux-mips.org>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] defaultenv-2: trigger DHCP before booting 'net'
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Vivien Didelot <vivien.didelot@gmail.com>
 
-On Sun, Oct 28, 2018 at 10:26:38PM +0100, Ladislav Michl wrote:
-> Linux commit e80eba758151 adapted for Barebox:
-> 
->   None of the existing drivers are overloading the ->scan_bbt()
->   method, let's get rid of it and replace calls to ->scan_bbt()
->   by nand_create_bbt() ones.
-> 
-> Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
-> ---
-> diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
-> index 28a07d4cb..f69453aba 100644
-> --- a/drivers/mtd/nand/nand_mxs.c
-> +++ b/drivers/mtd/nand/nand_mxs.c
-> @@ -1201,21 +1201,7 @@ static int mxs_nand_block_bad(struct mtd_info *mtd, loff_t ofs, int getchip)
->  	return 0;
->  }
->  
-> -/*
-> - * Nominally, the purpose of this function is to look for or create the bad
-> - * block table. In fact, since the we call this function at the very end of
-> - * the initialization process started by nand_scan(), and we doesn't have a
-> - * more formal mechanism, we "hook" this function to continue init process.
-> - *
-> - * At this point, the physical NAND Flash chips have been identified and
-> - * counted, so we know the physical geometry. This enables us to make some
-> - * important configuration decisions.
-> - *
-> - * The return value of this function propogates directly back to this driver's
-> - * call to nand_scan(). Anything other than zero will cause this driver to
-> - * tear everything down and declare failure.
-> - */
-> -static int mxs_nand_scan_bbt(struct mtd_info *mtd)
-> +static int mxs_nand_init_bch(struct mtd_info *mtd)
->  {
->  	struct nand_chip *nand = mtd->priv;
->  	struct mxs_nand_info *nand_info = nand->priv;
-> @@ -1252,8 +1238,7 @@ static int mxs_nand_scan_bbt(struct mtd_info *mtd)
->  		mtd->block_markbad = mxs_nand_hook_block_markbad;
->  	}
->  
-> -	/* We use the reference implementation for bad block management. */
-> -	return nand_default_bbt(mtd);
-> +	return 0;
->  }
->  
->  /*
-> @@ -2183,7 +2168,6 @@ static int mxs_nand_probe(struct device_d *dev)
->  	nand->dev_ready		= mxs_nand_device_ready;
->  	nand->select_chip	= mxs_nand_select_chip;
->  	nand->block_bad		= mxs_nand_block_bad;
-> -	nand->scan_bbt		= mxs_nand_scan_bbt;
->  
->  	nand->read_byte		= mxs_nand_read_byte;
->  
-> @@ -2215,6 +2199,13 @@ static int mxs_nand_probe(struct device_d *dev)
->  
->  	mxs_nand_setup_timing(nand_info);
->  
-> +	err = mxs_nand_init_bch(mtd);
-> +	if (err)
-> +		goto err2;
-> +	err = nand_create_bbt(mtd);
-> +	if (err)
-> +		goto err2;
-> +
+Some variables may be set from DHCP requests, as shown below:
 
-By the time nand_create_bbt() is called mtd->read is not yet set, so we
-end up with a NULL pointer deref here.
+    barebox@ZII VF610 Development Board, Rev C:/ echo $global.hostname
+    dev-rev-c
+    barebox@ZII VF610 Development Board, Rev C:/ echo $global.net.server
+    0.0.0.0
+    barebox@ZII VF610 Development Board, Rev C:/ dhcp
+    eth0: 100Mbps full duplex link detected
+    T T T eth0: DHCP client bound to address 192.168.203.31
+    barebox@ZII VF610 Development Board, Rev C:/ echo $global.hostname
+    zii-dev-rev-c-1
+    barebox@ZII VF610 Development Board, Rev C:/ echo $global.net.server
+    192.168.203.1
+    barebox@ZII VF610 Development Board, Rev C:/
 
->  	/* second phase scan */
->  	err = nand_scan_tail(mtd);
+These variables are used by the boot/net script, so it is necessary
+to trigger DHCP before we set the TFTP file paths, otherwise booting
+from net will fail like below and will need to be triggered twice:
 
-This call sets mtd->read, so we can call nand_create_bbt() only after
-it.
+    running /env/bin/init...
 
-The MXS nand driver plays some funny tricks, so the correct fix is non
-obvious to me.
+    Hit m for menu or any key to stop autoboot:    1
+    booting 'net'
+    eth0: 100Mbps full duplex link detected
+    T T T eth0: DHCP client bound to address 192.168.203.31
+    WARNING: eth1: No MAC address set. Using random address 8a:ee:18:f5:98:e7
+    T T T T T T T T T T T T T T T T T T T T could not open /mnt/tftp/none-linux-dev-rev-c: No such file or directory
+    ERROR: Booting 'net' failed: No such file or directory
+    boot: No such file or directory
 
-I reverted this patch for now.
+    type exit to get to the menu
+    barebox@ZII VF610 Development Board, Rev C:/ boot
+    booting 'net'
 
-Sascha
+    Loading ARM Linux zImage '/mnt/tftp/none-linux-zii-dev-rev-c-1'
+    Loaded initrd unknown '/mnt/tftp/none-initramfs-zii-dev-rev-c-1'
+    initrd is at 0x82509000-0x835593ff
+    Loading devicetree from '/mnt/tftp/none-oftree-zii-dev-rev-c-1'
+    commandline:  console=ttyLP0,115200n8 ip=dhcp
+    Ucompressing Linux... done, booting the kernel.
 
+To fix this, bring the interfaces up before setting up tftpboot.
+
+Signed-off-by: Vivien Didelot <vivien.didelot@gmail.com>
+---
+ defaultenv/defaultenv-2-base/boot/net | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/defaultenv/defaultenv-2-base/boot/net b/defaultenv/defaultenv-2-base/boot/net
+index aaa5394f2..b0fe4f584 100644
+--- a/defaultenv/defaultenv-2-base/boot/net
++++ b/defaultenv/defaultenv-2-base/boot/net
+@@ -2,6 +2,9 @@
+ 
+ path="/mnt/tftp"
+ 
++# global.net.server and global.hostname may be set by DHCP, so trigger it first
++ifup -a
++
+ global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
+ 
+ oftree="${path}/${global.user}-oftree-${global.hostname}"
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
