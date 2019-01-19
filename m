@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-qt1-x843.google.com ([2607:f8b0:4864:20::843])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gktc7-0001Nq-My
- for barebox@lists.infradead.org; Sat, 19 Jan 2019 16:36:59 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Sat, 19 Jan 2019 17:36:47 +0100
-Message-Id: <20190119163647.9119-5-o.rempel@pengutronix.de>
-In-Reply-To: <20190119163647.9119-1-o.rempel@pengutronix.de>
-References: <20190119163647.9119-1-o.rempel@pengutronix.de>
+ id 1gker2-0001fI-Kb
+ for barebox@lists.infradead.org; Sat, 19 Jan 2019 00:51:21 +0000
+Received: by mail-qt1-x843.google.com with SMTP id k12so17253373qtf.7
+ for <barebox@lists.infradead.org>; Fri, 18 Jan 2019 16:51:20 -0800 (PST)
+From: Vivien Didelot <vivien.didelot@gmail.com>
+Date: Fri, 18 Jan 2019 19:51:08 -0500
+Message-Id: <20190119005108.31747-1-vivien.didelot@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,110 +21,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] MIPS: ath79: add SRAM support
+Subject: [PATCH] ARM: zii-vf610-dev: fix boot sd
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Vivien Didelot <vivien.didelot@gmail.com>
 
-From: Oleksij Rempel <linux@rempel-privat.de>
+The 'sd' boot is currently broken on zii-vf610-dev because there are no
+mci devices (anymore?), only mmc. There are also no need to check
+for the device number since both Rev B and Rev C report their SD card
+slot on mmc1.
 
-At least some ath79 SoC have build in 32K RAM. It allow us to use
-lowlevel portion of barebox for OpenOCD and reduce code duplication
-between this projects. The workflow should be as follow:
-- Load reduced barebox to SRAM by using OpenOCD and execute it.
-  This part will do all needed low level initialization - PLL, RAM.
-- Load complete barebox to the main RAM (DDR or what ever technology is
-  used).
+Note that mmc1.0 is already mounted on /mnt/mmc1.0 once mmc1.probe=1
+is typed. It would've been more appropriate to use "ln /mnt/mmc1.0
+/mnt/sd", but ln isn't useable with automount since the mountpoint
+needs to be already created and ln has no force option. There are
+no complains with having two mountpoints for a device, so just blindly
+mount the device again.
 
-It can be used for recovery and for bring-up, so no flashing is needed.
-
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+Signed-off-by: Vivien Didelot <vivien.didelot@gmail.com>
 ---
- arch/mips/mach-ath79/Makefile                 |  1 +
- .../mips/mach-ath79/include/mach/pbl_macros.h | 21 +++++++++++++++++++
- arch/mips/mach-ath79/lowlevel_ar9331_sram.S   | 18 ++++++++++++++++
- images/Makefile.ath79                         |  4 ++++
- 4 files changed, 44 insertions(+)
- create mode 100644 arch/mips/mach-ath79/lowlevel_ar9331_sram.S
+ .../defaultenv-zii-vf610-dev/init/automount-sd       | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/arch/mips/mach-ath79/Makefile b/arch/mips/mach-ath79/Makefile
-index c12444ff47..396df66bf1 100644
---- a/arch/mips/mach-ath79/Makefile
-+++ b/arch/mips/mach-ath79/Makefile
-@@ -1,4 +1,5 @@
- lwl-y += lowlevel_ar9331_spi_trap.o
-+lwl-y += lowlevel_ar9331_sram.o
+diff --git a/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/init/automount-sd b/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/init/automount-sd
+index f44dab34e..442c8a61c 100644
+--- a/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/init/automount-sd
++++ b/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/init/automount-sd
+@@ -1,13 +1,3 @@
+ #!/bin/sh
  
- obj-y += reset.o
- obj-y += bbu.o
-diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
-index 70736b3680..c5f3d4150e 100644
---- a/arch/mips/mach-ath79/include/mach/pbl_macros.h
-+++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
-@@ -400,4 +400,25 @@ skip_pll_ram_config:
- 	.set	pop
- 	.endm
- 
-+	.macro	ar9331_pbl_generic_sram_start
-+	.set	push
-+	.set	noreorder
-+
-+	mips_barebox_10h
-+
-+	hornet_mips24k_cp0_setup
-+
-+	hornet_1_1_war
-+
-+	pbl_ar9331_pll
-+	pbl_ar9331_ram_generic_config
-+
-+	pbl_ar9331_uart_enable
-+	debug_ll_ath79_init
-+
-+	pbl_ar9331_mdio_gpio_enable
-+
-+	.set	pop
-+	.endm
-+
- #endif /* __ASM_MACH_ATH79_PBL_MACROS_H */
-diff --git a/arch/mips/mach-ath79/lowlevel_ar9331_sram.S b/arch/mips/mach-ath79/lowlevel_ar9331_sram.S
-new file mode 100644
-index 0000000000..7c25d8765c
---- /dev/null
-+++ b/arch/mips/mach-ath79/lowlevel_ar9331_sram.S
-@@ -0,0 +1,18 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Copyright (C) 2018 Oleksij Rempel <linux@rempel-privat.de>
-+ */
-+
-+#define BOARD_PBL_START start_ar9331_sram
-+
-+#include <mach/debug_ll.h>
-+#include <asm/asm.h>
-+#include <asm/pbl_macros.h>
-+#include <mach/pbl_macros.h>
-+#include <asm/pbl_nmon.h>
-+
-+ENTRY_FUNCTION(BOARD_PBL_START)
-+
-+	ar9331_pbl_generic_sram_start
-+
-+ENTRY_FUNCTION_SRAM_END
-diff --git a/images/Makefile.ath79 b/images/Makefile.ath79
-index 181f951595..5dda411d8f 100644
---- a/images/Makefile.ath79
-+++ b/images/Makefile.ath79
-@@ -2,6 +2,10 @@ pblb-$(CONFIG_SOC_QCA_AR9331) += start_ar9331_spi_trap
- FILE_barebox-ar9331-spi-trap.img = start_ar9331_spi_trap.pblb
- image-$(CONFIG_SOC_QCA_AR9331) += barebox-ar9331-spi-trap.img
- 
-+pblb-$(CONFIG_SOC_QCA_AR9331) += start_ar9331_sram
-+FILE_barebox-ar9331-sram.img = start_ar9331_sram.pblb
-+image-$(CONFIG_SOC_QCA_AR9331) += barebox-ar9331-sram.img
-+
- pblb-$(CONFIG_BOARD_8DEVICES_LIMA) += start_8devices_lima
- FILE_barebox-8devices-lima.img = start_8devices_lima.pblb
- image-$(CONFIG_BOARD_8DEVICES_LIMA) += barebox-8devices-lima.img
+-if [ x${global.hostname} = xdev-rev-b -o x${global.hostname} = xdev-rev-c ];
+-then
+-    global sd=0
+-else
+-    global sd=1
+-fi
+-
+-mkdir -p /mnt/sd
+-automount /mnt/sd 'mci${global.sd}.probe=1 && mount /dev/disk${global.sd}.0 /mnt/sd'
+-
+-exit 0
++automount -d /mnt/sd 'mmc1.probe=1 && mount /dev/mmc1.0 /mnt/sd'
 -- 
 2.20.1
 
