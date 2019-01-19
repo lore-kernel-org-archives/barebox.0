@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-qt1-x841.google.com ([2607:f8b0:4864:20::841])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1glV6P-0002mY-9u
- for barebox@lists.infradead.org; Mon, 21 Jan 2019 08:38:42 +0000
-Date: Mon, 21 Jan 2019 09:38:39 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190121083839.3tqtigsn3276b3gr@pengutronix.de>
-References: <20190119005039.31592-1-vivien.didelot@gmail.com>
+ id 1gkeqp-0001aJ-Iy
+ for barebox@lists.infradead.org; Sat, 19 Jan 2019 00:51:09 +0000
+Received: by mail-qt1-x841.google.com with SMTP id t13so17289771qtn.3
+ for <barebox@lists.infradead.org>; Fri, 18 Jan 2019 16:51:07 -0800 (PST)
+From: Vivien Didelot <vivien.didelot@gmail.com>
+Date: Fri, 18 Jan 2019 19:50:51 -0500
+Message-Id: <20190119005051.31656-1-vivien.didelot@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190119005039.31592-1-vivien.didelot@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,41 +21,105 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] defaultenv-2: centralize nfs commands for 'net'
-To: Vivien Didelot <vivien.didelot@gmail.com>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+Subject: [PATCH] boot: make it a little bit less verbose
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Vivien Didelot <vivien.didelot@gmail.com>
 
-On Fri, Jan 18, 2019 at 07:50:39PM -0500, Vivien Didelot wrote:
-> Setting the nfsroot variable as well as the kernel bootargs for the
-> interface used to reach the server is specific to nfs, which are used
-> only if there's no initramfs to load from tftp. Move these statements
-> within the condition.
-> 
-> Signed-off-by: Vivien Didelot <vivien.didelot@gmail.com>
-> ---
->  defaultenv/defaultenv-2-base/boot/net | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/defaultenv/defaultenv-2-base/boot/net b/defaultenv/defaultenv-2-base/boot/net
-> index b0fe4f584..5bd077d80 100644
-> --- a/defaultenv/defaultenv-2-base/boot/net
-> +++ b/defaultenv/defaultenv-2-base/boot/net
-> @@ -12,13 +12,11 @@ if [ -f "${oftree}" ]; then
->  	global.bootm.oftree="$oftree"
->  fi
->  
-> -nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
+The current boot code prints too much error messages without much value
+in them. This patch prints the error string when it makes sense and
+simplifies the return path of bootscript_boot(). Make use of pr_err()
+in boot_entry() which is the shared code responsible for calling the
+boot_entry->boot callback. Remove the unnecessary print statement
+from bootsource_action() as well.
 
-Applied with some fixup. We have nfsroot="${nfsserver}:/..." now.
+This removes a single print statement ATM, allowing us to go from this:
 
-Sascha
+    booting 'sd'
+    Cannot set parameter mci0.probe: No such device
+    running automount command 'mci${global.sd}.probe=1 && mount /dev/disk${global.sd}.0 /mnt/sd' failed
+    could not open /mnt/sd/zImage: No such device
+    ERROR: Booting 'sd' failed: No such device
+    booting 'sd' failed: No such device
+    boot: No such device
 
+to this:
 
+    Booting entry 'sd'
+    Cannot set parameter mci0.probe: No such device
+    running automount command 'mci${global.sd}.probe=1 && mount /dev/disk${global.sd}.0 /mnt/sd' failed
+    could not open /mnt/sd/zImage: No such device
+    ERROR: Booting entry 'sd' failed
+    boot: No such device
+
+Signed-off-by: Vivien Didelot <vivien.didelot@gmail.com>
+---
+ common/boot.c | 20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
+
+diff --git a/common/boot.c b/common/boot.c
+index 41bf1ce64..974eaf5d0 100644
+--- a/common/boot.c
++++ b/common/boot.c
+@@ -96,8 +96,8 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
+ 
+ 	ret = run_command(bs->scriptpath);
+ 	if (ret) {
+-		printf("Running %s failed\n", bs->scriptpath);
+-		goto out;
++		pr_err("Running script '%s' failed: %s\n", bs->scriptpath, strerror(-ret));
++		return ret;
+ 	}
+ 
+ 	bootm_data_init_defaults(&data);
+@@ -107,11 +107,7 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
+ 	if (dryrun)
+ 		data.dryrun = dryrun;
+ 
+-	ret = bootm_boot(&data);
+-	if (ret)
+-		pr_err("Booting '%s' failed: %s\n", basename(bs->scriptpath), strerror(-ret));
+-out:
+-	return ret;
++	return bootm_boot(&data);
+ }
+ 
+ static unsigned int boot_watchdog_timeout;
+@@ -135,7 +131,7 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun)
+ {
+ 	int ret;
+ 
+-	printf("booting '%s'\n", be->title);
++	printf("Booting entry '%s'\n", be->title);
+ 
+ 	if (IS_ENABLED(CONFIG_WATCHDOG) && boot_watchdog_timeout) {
+ 		ret = watchdog_set_timeout(boot_watchdog_timeout);
+@@ -144,9 +140,8 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun)
+ 	}
+ 
+ 	ret = be->boot(be, verbose, dryrun);
+-
+ 	if (ret)
+-		printf("booting '%s' failed: %s\n", be->title, strerror(-ret));
++		pr_err("Booting entry '%s' failed\n", be->title);
+ 
+ 	return ret;
+ }
+@@ -154,11 +149,8 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun)
+ static void bootsource_action(struct menu *m, struct menu_entry *me)
+ {
+ 	struct bootentry *be = container_of(me, struct bootentry, me);
+-	int ret;
+ 
+-	ret = boot_entry(be, 0, 0);
+-	if (ret)
+-		printf("Booting failed with: %s\n", strerror(-ret));
++	boot_entry(be, 0, 0);
+ 
+ 	printf("Press any key to continue\n");
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
