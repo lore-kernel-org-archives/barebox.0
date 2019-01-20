@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp60.i.mail.ru ([217.69.128.40])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gkOAe-0004Zs-2n
- for barebox@lists.infradead.org; Fri, 18 Jan 2019 07:02:29 +0000
-Date: Fri, 18 Jan 2019 08:02:25 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190118070225.ch7wtqos7dw3uhhn@pengutronix.de>
-References: <65aaade8-4825-e310-5006-b86df5f72f81@mev.co.uk>
- <CAHQ1cqGmLGkHQXDOQgasp0naeX5NomG9iODJrx0veAb_ByNGzQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqGmLGkHQXDOQgasp0naeX5NomG9iODJrx0veAb_ByNGzQ@mail.gmail.com>
+ id 1gl480-0007rN-Oh
+ for barebox@lists.infradead.org; Sun, 20 Jan 2019 03:50:34 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sun, 20 Jan 2019 06:50:24 +0300
+Message-Id: <20190120035024.18282-3-shc_work@mail.ru>
+In-Reply-To: <20190120035024.18282-1-shc_work@mail.ru>
+References: <20190120035024.18282-1-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,37 +16,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox state alias with same name as node doesn't work
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>, Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 3/3] MIPS: malta: Typo fix
+To: barebox@lists.infradead.org
 
-On Thu, Jan 17, 2019 at 01:10:46PM -0800, Andrey Smirnov wrote:
-> On Thu, Jan 17, 2019 at 8:16 AM Ian Abbott <abbotti@mev.co.uk> wrote:
-> >
-> >
-> > I'm currently using Barebox 2018.12.0, but I don't see any relevant
-> > changes in Barebox 2019.01.0 or barebox-next.
-> >
-> 
-> This should be fixed by:
-> http://lists.infradead.org/pipermail/barebox/2018-November/035432.html
-> I don't think it is a part of 2018.12.0, though
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/mips/mach-malta/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-Indeed not, but it should have been :(
-Sorry, I missed that one.
-
-Sascha
-
+diff --git a/arch/mips/mach-malta/Kconfig b/arch/mips/mach-malta/Kconfig
+index ceea937..dab0a7c 100644
+--- a/arch/mips/mach-malta/Kconfig
++++ b/arch/mips/mach-malta/Kconfig
+@@ -6,7 +6,7 @@ config ARCH_TEXT_BASE
+ 
+ config MIPS_MALTA_MULTI_BOARDS
+ 	bool "Allow multiple boards to be selected"
+-	select HAVE_PBL_MULTI_IMAGE
++	select HAVE_PBL_MULTI_IMAGES
+ 
+ if MIPS_MALTA_MULTI_BOARDS
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.10.2
+
 
 _______________________________________________
 barebox mailing list
