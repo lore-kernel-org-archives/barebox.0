@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp37.i.mail.ru ([94.100.177.97])
+Received: from smtp60.i.mail.ru ([217.69.128.40])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gk8YE-0007ZT-9I
- for barebox@lists.infradead.org; Thu, 17 Jan 2019 14:21:48 +0000
+ id 1gl480-0007rK-NZ
+ for barebox@lists.infradead.org; Sun, 20 Jan 2019 03:50:34 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Thu, 17 Jan 2019 17:21:38 +0300
-Message-Id: <20190117142138.21679-2-shc_work@mail.ru>
-In-Reply-To: <20190117142138.21679-1-shc_work@mail.ru>
-References: <20190117142138.21679-1-shc_work@mail.ru>
+Date: Sun, 20 Jan 2019 06:50:22 +0300
+Message-Id: <20190120035024.18282-1-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,60 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARN: Remove duplicate includes
+Subject: [PATCH 1/3] ARM: qemu-virt64: Remove orphan Kconfig
 To: barebox@lists.infradead.org
+
+arch/arm/boards/qemu-virt64/Kconfig is not used by build system,
+so it can be removed.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/mach-imx/imx27.c    | 1 -
- arch/arm/mach-imx/imx6.c     | 4 ----
- arch/arm/mach-nomadik/8815.c | 1 -
- 3 files changed, 6 deletions(-)
+ arch/arm/boards/qemu-virt64/Kconfig | 8 --------
+ 1 file changed, 8 deletions(-)
+ delete mode 100644 arch/arm/boards/qemu-virt64/Kconfig
 
-diff --git a/arch/arm/mach-imx/imx27.c b/arch/arm/mach-imx/imx27.c
-index 81b9f53..1c62449 100644
---- a/arch/arm/mach-imx/imx27.c
-+++ b/arch/arm/mach-imx/imx27.c
-@@ -20,7 +20,6 @@
- #include <mach/generic.h>
- #include <init.h>
- #include <io.h>
--#include <mach/generic.h>
- 
- static int imx27_silicon_revision(void)
- {
-diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-index cc368c5..01b4274 100644
---- a/arch/arm/mach-imx/imx6.c
-+++ b/arch/arm/mach-imx/imx6.c
-@@ -23,15 +23,11 @@
- #include <mach/reset-reason.h>
- #include <mach/imx6-anadig.h>
- #include <mach/imx6-regs.h>
--#include <mach/generic.h>
- #include <mach/usb.h>
- #include <asm/mmu.h>
- #include <asm/cache-l2x0.h>
- 
- #include <poweroff.h>
--#include <mach/imx6-regs.h>
--#include <mach/clock-imx6.h>
--#include <io.h>
- 
- #define CLPCR				0x54
- #define BP_CLPCR_LPM(mode)		((mode) & 0x3)
-diff --git a/arch/arm/mach-nomadik/8815.c b/arch/arm/mach-nomadik/8815.c
-index af32c9c..dc1bcd2 100644
---- a/arch/arm/mach-nomadik/8815.c
-+++ b/arch/arm/mach-nomadik/8815.c
-@@ -18,7 +18,6 @@
- #include <init.h>
- #include <linux/clkdev.h>
- #include <mach/hardware.h>
--#include <mach/hardware.h>
- #include <asm/armlinux.h>
- #include <generated/mach-types.h>
- #include <linux/amba/bus.h>
+diff --git a/arch/arm/boards/qemu-virt64/Kconfig b/arch/arm/boards/qemu-virt64/Kconfig
+deleted file mode 100644
+index b7bee3a..0000000
+--- a/arch/arm/boards/qemu-virt64/Kconfig
++++ /dev/null
+@@ -1,8 +0,0 @@
+-
+-if MACH_QEMU
+-
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x40000000
+-
+-endif
 -- 
 2.10.2
 
