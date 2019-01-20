@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp48.i.mail.ru ([94.100.177.108])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1glAS7-0002U5-GG
+ id 1glAS7-0002UK-GF
  for barebox@lists.infradead.org; Sun, 20 Jan 2019 10:35:47 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun, 20 Jan 2019 13:35:28 +0300
-Message-Id: <20190120103533.7146-5-shc_work@mail.ru>
+Date: Sun, 20 Jan 2019 13:35:29 +0300
+Message-Id: <20190120103533.7146-6-shc_work@mail.ru>
 In-Reply-To: <20190120103533.7146-1-shc_work@mail.ru>
 References: <20190120103533.7146-1-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,28 +21,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/10] ARM: imx: delete unused mach/clock-imx1.h
+Subject: [PATCH 06/10] ARM: mvebu: delete unused mach/dove.h
 To: barebox@lists.infradead.org
 
-This removes the stale mach/clock-imx1.h include as there is no user of it.
+This removes the stale mach/dove.h include as there is no user of it.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/mach-imx/include/mach/clock-imx1.h | 5 -----
- 1 file changed, 5 deletions(-)
- delete mode 100644 arch/arm/mach-imx/include/mach/clock-imx1.h
+ arch/arm/mach-mvebu/include/mach/dove.h | 23 -----------------------
+ 1 file changed, 23 deletions(-)
+ delete mode 100644 arch/arm/mach-mvebu/include/mach/dove.h
 
-diff --git a/arch/arm/mach-imx/include/mach/clock-imx1.h b/arch/arm/mach-imx/include/mach/clock-imx1.h
+diff --git a/arch/arm/mach-mvebu/include/mach/dove.h b/arch/arm/mach-mvebu/include/mach/dove.h
 deleted file mode 100644
-index 8d456b8..0000000
---- a/arch/arm/mach-imx/include/mach/clock-imx1.h
+index 1712fa7..0000000
+--- a/arch/arm/mach-mvebu/include/mach/dove.h
 +++ /dev/null
-@@ -1,5 +0,0 @@
--#ifndef ASM_ARCH_CLOCK_IMX1_H
--#define ASM_ARCH_CLOCK_IMX1_H
+@@ -1,23 +0,0 @@
+-/*
+- * Copyright
+- * (C) 2013 Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
 -
--#endif /* ASM_ARCH_CLOCK_IMX1_H */
+-#ifndef __MACH_MVEBU_DOVE_H
+-#define __MACH_MVEBU_DOVE_H
 -
+-int dove_add_uart(int num);
+-void __naked __noreturn dove_barebox_entry(void);
+-
+-#endif /* __MACH_MVEBU_DOVE_H */
 -- 
 2.10.2
 
