@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp48.i.mail.ru ([94.100.177.108])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1glAS8-0002UV-WB
+ id 1glAS9-0002Vw-VJ
  for barebox@lists.infradead.org; Sun, 20 Jan 2019 10:35:49 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun, 20 Jan 2019 13:35:31 +0300
-Message-Id: <20190120103533.7146-8-shc_work@mail.ru>
+Date: Sun, 20 Jan 2019 13:35:32 +0300
+Message-Id: <20190120103533.7146-9-shc_work@mail.ru>
 In-Reply-To: <20190120103533.7146-1-shc_work@mail.ru>
 References: <20190120103533.7146-1-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,50 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/10] PPC: delete unused asm/mc146818rtc.h
+Subject: [PATCH 09/10] ARM: at91: delete unused mach/sama5d3_matrix.h
 To: barebox@lists.infradead.org
 
-This removes the stale asm/mc146818rtc.h include as there is no user of it.
+This removes the stale mach/sama5d3_matrix.h include as there is no user of it.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/ppc/include/asm/mc146818rtc.h | 27 ---------------------------
- 1 file changed, 27 deletions(-)
- delete mode 100644 arch/ppc/include/asm/mc146818rtc.h
+ arch/arm/mach-at91/include/mach/sama5d3_matrix.h | 15 ---------------
+ 1 file changed, 15 deletions(-)
+ delete mode 100644 arch/arm/mach-at91/include/mach/sama5d3_matrix.h
 
-diff --git a/arch/ppc/include/asm/mc146818rtc.h b/arch/ppc/include/asm/mc146818rtc.h
+diff --git a/arch/arm/mach-at91/include/mach/sama5d3_matrix.h b/arch/arm/mach-at91/include/mach/sama5d3_matrix.h
 deleted file mode 100644
-index adc4e24..0000000
---- a/arch/ppc/include/asm/mc146818rtc.h
+index 8176b38..0000000
+--- a/arch/arm/mach-at91/include/mach/sama5d3_matrix.h
 +++ /dev/null
-@@ -1,27 +0,0 @@
+@@ -1,15 +0,0 @@
 -/*
-- * Machine dependent access functions for RTC registers.
+- * Matrix-centric header file for the SAMA5D3 family
+- *
+- *  Copyright (C) 2009-2012 Atmel Corporation.
+- *
+- * Only EBI related registers.
+- * Write Protect register definitions may be useful.
+- *
+- * Licensed under GPLv2 or later.
 - */
--#ifndef __ASM_PPC_MC146818RTC_H
--#define __ASM_PPC_MC146818RTC_H
 -
--#include <io.h>
+-#ifndef SAMA5D3_MATRIX_H
+-#define SAMA5D3_MATRIX_H
 -
--#ifndef RTC_PORT
--#define RTC_PORT(x) (0x70 + (x))
--#define RTC_ALWAYS_BCD  1   /* RTC operates in binary mode */
 -#endif
--
--/*
-- * The yet supported machines all access the RTC index register via
-- * an ISA port access but the way to access the date register differs ...
-- */
--#define CMOS_READ(addr) ({ \
--outb_p((addr),RTC_PORT(0)); \
--inb_p(RTC_PORT(1)); \
--})
--#define CMOS_WRITE(val, addr) ({ \
--outb_p((addr),RTC_PORT(0)); \
--outb_p((val),RTC_PORT(1)); \
--})
--
--#endif /* __ASM_PPC_MC146818RTC_H */
 -- 
 2.10.2
 
