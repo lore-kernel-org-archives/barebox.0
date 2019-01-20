@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp48.i.mail.ru ([94.100.177.108])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1glVAY-00050V-1Z
- for barebox@lists.infradead.org; Mon, 21 Jan 2019 08:43:01 +0000
-Date: Mon, 21 Jan 2019 09:42:55 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190121084255.j36s6kbljtl6xanu@pengutronix.de>
-References: <20190119005051.31656-1-vivien.didelot@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190119005051.31656-1-vivien.didelot@gmail.com>
+ id 1glAS7-0002U1-GI
+ for barebox@lists.infradead.org; Sun, 20 Jan 2019 10:35:47 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sun, 20 Jan 2019 13:35:24 +0300
+Message-Id: <20190120103533.7146-1-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,57 +14,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] boot: make it a little bit less verbose
-To: Vivien Didelot <vivien.didelot@gmail.com>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+Subject: [PATCH 01/10] ARM: mvebu: delete unused mach/kirkwood.h
+To: barebox@lists.infradead.org
 
-On Fri, Jan 18, 2019 at 07:50:51PM -0500, Vivien Didelot wrote:
-> The current boot code prints too much error messages without much value
-> in them. This patch prints the error string when it makes sense and
-> simplifies the return path of bootscript_boot(). Make use of pr_err()
-> in boot_entry() which is the shared code responsible for calling the
-> boot_entry->boot callback. Remove the unnecessary print statement
-> from bootsource_action() as well.
-> 
-> This removes a single print statement ATM, allowing us to go from this:
-> 
->     booting 'sd'
->     Cannot set parameter mci0.probe: No such device
->     running automount command 'mci${global.sd}.probe=1 && mount /dev/disk${global.sd}.0 /mnt/sd' failed
->     could not open /mnt/sd/zImage: No such device
->     ERROR: Booting 'sd' failed: No such device
->     booting 'sd' failed: No such device
->     boot: No such device
-> 
-> to this:
-> 
->     Booting entry 'sd'
->     Cannot set parameter mci0.probe: No such device
->     running automount command 'mci${global.sd}.probe=1 && mount /dev/disk${global.sd}.0 /mnt/sd' failed
->     could not open /mnt/sd/zImage: No such device
->     ERROR: Booting entry 'sd' failed
->     boot: No such device
-> 
-> Signed-off-by: Vivien Didelot <vivien.didelot@gmail.com>
-> ---
->  common/boot.c | 20 ++++++--------------
->  1 file changed, 6 insertions(+), 14 deletions(-)
+This removes the stale mach/kirkwood.h include as there is no user of it.
 
-Yeah, looks better.
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/mach-mvebu/include/mach/kirkwood.h | 22 ----------------------
+ 1 file changed, 22 deletions(-)
+ delete mode 100644 arch/arm/mach-mvebu/include/mach/kirkwood.h
 
-Applied, thanks
-
-Sascha
-
+diff --git a/arch/arm/mach-mvebu/include/mach/kirkwood.h b/arch/arm/mach-mvebu/include/mach/kirkwood.h
+deleted file mode 100644
+index 7fe002d..0000000
+--- a/arch/arm/mach-mvebu/include/mach/kirkwood.h
++++ /dev/null
+@@ -1,22 +0,0 @@
+-/*
+- * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-#ifndef __MACH_KIRKWOOD_H
+-#define __MACH_KIRKWOOD_H
+-
+-int kirkwood_add_uart0(void);
+-void __naked __noreturn kirkwood_barebox_entry(void);
+-
+-#endif /* __MACH_KIRKWOOD_H */
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.10.2
+
 
 _______________________________________________
 barebox mailing list
