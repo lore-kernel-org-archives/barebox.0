@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x242.google.com ([2a00:1450:4864:20::242])
+Received: from mail-qk1-x742.google.com ([2607:f8b0:4864:20::742])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1glWfg-0004HI-3p
- for barebox@lists.infradead.org; Mon, 21 Jan 2019 10:19:13 +0000
-Received: by mail-lj1-x242.google.com with SMTP id l15-v6so17008856lja.9
- for <barebox@lists.infradead.org>; Mon, 21 Jan 2019 02:19:11 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 21 Jan 2019 13:18:53 +0300
-Message-Id: <20190121101853.23301-1-antonynpavlov@gmail.com>
+ id 1glcrG-0007p8-12
+ for barebox@lists.infradead.org; Mon, 21 Jan 2019 16:55:37 +0000
+Received: by mail-qk1-x742.google.com with SMTP id w204so12651530qka.2
+ for <barebox@lists.infradead.org>; Mon, 21 Jan 2019 08:55:33 -0800 (PST)
+Date: Mon, 21 Jan 2019 11:55:30 -0500
+Message-ID: <20190121115530.GC3832@t480s.localdomain>
+From: Vivien Didelot <vivien.didelot@gmail.com>
+In-Reply-To: <CAHQ1cqEaDYyFRo_GJWEEpNOTz57nowhg5rbx+Xj+WptsYbQ7dw@mail.gmail.com>
+References: <20190119005108.31747-1-vivien.didelot@gmail.com>
+ <CAHQ1cqEaDYyFRo_GJWEEpNOTz57nowhg5rbx+Xj+WptsYbQ7dw@mail.gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,62 +25,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MIPS: drop *_MULTI_BOARDS atavisms
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH] ARM: zii-vf610-dev: fix boot sd
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/configs/ath79_defconfig      | 1 -
- arch/mips/configs/qemu-malta_defconfig | 1 -
- arch/mips/mach-malta/Kconfig           | 8 --------
- 3 files changed, 10 deletions(-)
+Hi Andrey,
 
-diff --git a/arch/mips/configs/ath79_defconfig b/arch/mips/configs/ath79_defconfig
-index 781786bc52..8d7d5a1722 100644
---- a/arch/mips/configs/ath79_defconfig
-+++ b/arch/mips/configs/ath79_defconfig
-@@ -1,5 +1,4 @@
- CONFIG_MACH_MIPS_ATH79=y
--CONFIG_MIPS_ATH79_MULTI_BOARDS=y
- CONFIG_BOARD_8DEVICES_LIMA=y
- CONFIG_BOARD_DPTECHNICS_DPT_MODULE=y
- CONFIG_BOARD_TPLINK_MR3020=y
-diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu-malta_defconfig
-index 1314783e02..69c7b0b10a 100644
---- a/arch/mips/configs/qemu-malta_defconfig
-+++ b/arch/mips/configs/qemu-malta_defconfig
-@@ -1,4 +1,3 @@
--CONFIG_MIPS_MALTA_MULTI_BOARDS=y
- CONFIG_BOARD_QEMU_MALTA=y
- CONFIG_IMAGE_COMPRESSION_XZKERN=y
- CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x400000
-diff --git a/arch/mips/mach-malta/Kconfig b/arch/mips/mach-malta/Kconfig
-index ceea937e30..70799808f9 100644
---- a/arch/mips/mach-malta/Kconfig
-+++ b/arch/mips/mach-malta/Kconfig
-@@ -4,18 +4,10 @@ config ARCH_TEXT_BASE
- 	hex
- 	default 0xa0800000
- 
--config MIPS_MALTA_MULTI_BOARDS
--	bool "Allow multiple boards to be selected"
--	select HAVE_PBL_MULTI_IMAGE
--
--if MIPS_MALTA_MULTI_BOARDS
--
- config BOARD_QEMU_MALTA
- 	bool "qemu malta"
- 	select HAVE_PBL_IMAGE
- 	select HAVE_IMAGE_COMPRESSION
- 	select HAS_NMON
- 
--endif # MIPS_MALTA_MULTI_BOARDS
--
- endif
--- 
-2.20.1
+On Sat, 19 Jan 2019 12:39:45 -0800, Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
+> On Fri, Jan 18, 2019 at 4:51 PM Vivien Didelot <vivien.didelot@gmail.com> wrote:
+> >
+> > The 'sd' boot is currently broken on zii-vf610-dev because there are no
+> > mci devices (anymore?), only mmc.
+> 
+> Yeah, I forgot to update this part in 5f99a8d403 "dts: VFxxx: Add
+> aliases for ESDHC controllers", sorry about that!
 
+No worries, I'll add a Fixes tag in v2, if Barebox likes that ;-)
+
+> >  There are also no need to check
+> > for the device number since both Rev B and Rev C report their SD card
+> > slot on mmc1.
+> >
+> 
+> I think you might be misreading the if condition in that check. What
+> it is meant to test is:
+> 
+> if ((board == VF610 Dev Rev C) || (board == VF610 Dev Rev B)) {
+>      SDHCI = SDHCI1
+> } else {
+>      SDHCI = SDHCI2
+> }
+> 
+> IOW, it is meant to configure development boards to boot from SD card
+> (attached to SDHCI1 on both revisions) and from eMMC on other boards
+> supported by that build (CFU1, SPU3, SCU4).
+
+OK I got confused because I didn't know that zii-vf610-dev was used by
+other platforms, I'll keep the check.
+
+> > Note that mmc1.0 is already mounted on /mnt/mmc1.0 once mmc1.probe=1
+> > is typed. It would've been more appropriate to use "ln /mnt/mmc1.0
+> > /mnt/sd", but ln isn't useable with automount since the mountpoint
+> > needs to be already created and ln has no force option. There are
+> > no complains with having two mountpoints for a device, so just blindly
+> > mount the device again.
+> >
+> 
+> I think we can still take advantage of default automount path
+> (/mnt/mmc1.0), by moving the if check to "boot/sd" and using
+> "/mnt/mmc${global.sd}.0/" as a prefix for Linux image and DTB blob.
+> This way there would be no need to create a symlink or a second mount
+> point and "init/automount-sd" could be dropped completely.
+
+Will do, thank you.
+
+
+	Vivien
 
 _______________________________________________
 barebox mailing list
