@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from forward501p.mail.yandex.net ([77.88.28.111])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1glbFa-0004Gk-If
- for barebox@lists.infradead.org; Mon, 21 Jan 2019 15:12:36 +0000
-Date: Mon, 21 Jan 2019 16:12:32 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190121151232.djbrymvdolvpva3z@pengutronix.de>
+ id 1glbcE-0008K8-06
+ for barebox@lists.infradead.org; Mon, 21 Jan 2019 15:36:17 +0000
+From: Seraphim Dolbilov <s.dlblv@ya.ru>
+In-Reply-To: <20190121151232.djbrymvdolvpva3z@pengutronix.de>
 References: <49608661548074089@myt5-f1576e7b5bad.qloud-c.yandex.net>
+ <20190121151232.djbrymvdolvpva3z@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <49608661548074089@myt5-f1576e7b5bad.qloud-c.yandex.net>
+Date: Mon, 21 Jan 2019 18:35:48 +0300
+Message-Id: <51196121548084948@myt5-f1576e7b5bad.qloud-c.yandex.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,35 +18,23 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [HELP] Barebox porting
-To: Seraphim Dolbilov <s.dlblv@ya.ru>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Jan 21, 2019 at 03:34:49PM +0300, Seraphim Dolbilov wrote:
-> Hi friends,
-> 
-> I need some help with barebox environment management. I've added env/config file
-> to arch/arm/myboard/ directory, fixed Makefile with `bbenv-y += env` string, but
-> this config file doesn't apply on barebox boots. What can be the reason for such a problem?
-
-with bbenv-y it is only compiled it, but remains unused. You have to add
-it using defaultenv_append_directory().
-
-Regards
- Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+MjEuMDEuMjAxOSwgMTg6MTIsICJTYXNjaGEgSGF1ZXIiIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRl
+PjoKPiB3aXRoIGJiZW52LXkgaXQgaXMgb25seSBjb21waWxlZCBpdCwgYnV0IHJlbWFpbnMgdW51
+c2VkLiBZb3UgaGF2ZSB0byBhZGQKPiBpdCB1c2luZyBkZWZhdWx0ZW52X2FwcGVuZF9kaXJlY3Rv
+cnkoKS4KCldlbGwsIGl0IHNlZW1zLCBJJ3ZlIHNvbHZlZCB0aGlzIHByb2JsZW0gYnkgYWRkaW5n
+IHBhdGggdG8gbXkgYm9hcmQncyBlbnYgdG8KQ09ORklHX0RFRkFVTFRfRU5WSVJPTk1FTlRfUEFU
+SCAod2l0aG91dCBiYmVudi15IGVudHJ5IGluIE1ha2VmaWxlKS4gCklzIGl0IGEgcmlnaHQgd2F5
+LCBvciBJIHNoYWxsIGNvbXBpbGUgZW52IGludG8gYmluYXJ5IG1hbnVhbGx5IHNvbWVob3c/Cklm
+IHVzZSBkZWZhdWx0ZW52X2FwcGVuZF9kaXJlY3RvcnkoKSwgd2hlcmUgZXhhY3RseSBpdCBtdXN0
+IGJlIHVzZWQ/CgotLcKgCllvdXJzIHNpbmNlcmVseSwKU2VyYXBoaW0gRG9sYmlsb3YKCgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
+bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
+ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
