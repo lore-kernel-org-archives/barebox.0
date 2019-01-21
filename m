@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1glqIz-0005PF-EI
- for barebox@lists.infradead.org; Tue, 22 Jan 2019 07:17:06 +0000
-Date: Tue, 22 Jan 2019 08:17:03 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190122071703.mqyo4p7vvsj2plzm@pengutronix.de>
-References: <20190121101853.23301-1-antonynpavlov@gmail.com>
+ id 1glXjs-0006BD-HE
+ for barebox@lists.infradead.org; Mon, 21 Jan 2019 11:27:48 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Mon, 21 Jan 2019 12:27:31 +0100
+Message-Id: <20190121112732.23772-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20190121112732.23772-1-u.kleine-koenig@pengutronix.de>
+References: <20190121112732.23772-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190121101853.23301-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,35 +17,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: drop *_MULTI_BOARDS atavisms
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: [PATCH v3 2/3] fs/nfs: copy data from rpc replies to local storage
+To: barebox@lists.infradead.org
 
-On Mon, Jan 21, 2019 at 01:18:53PM +0300, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  arch/mips/configs/ath79_defconfig      | 1 -
->  arch/mips/configs/qemu-malta_defconfig | 1 -
->  arch/mips/mach-malta/Kconfig           | 8 --------
->  3 files changed, 10 deletions(-)
->
-
-Applied, thanks
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIG5mcyBjb2RlIHVzZXMgZGF0YSBwcm92aWRlZCB0byB0aGUgcGFja2V0IGhhbmRsZXIgYWZ0
+ZXIgbmV0X3BvbGwoKQpyZXR1cm5lZC4gQnV0IHRoZSBsaWZlIHRpbWUgb2YgdGhpcyBkYXRhIGFs
+cmVhZHkgZW5kZWQgd2hlbiBuZXRfcG9sbCgpCnJldHVybnMuIE1vc3Qgb2YgdGhlIHRpbWUgaXQg
+aXMgcG9zc2libGUgdG8gZ2V0IGF3YXkgaGVyZSBidXQgb24gaS5NWDI4CnRoZSBkYXRhIGlzIG92
+ZXJ3cml0dGVuIHNpbmNlIGNvbW1pdCA4MmVjMjg5MjljYzkgKCJuZXQ6IGZlY19pbXg6IERvIG5v
+dAp1c2UgRE1BIGNvaGVyZW50IG1lbW9yeSBmb3IgUnggYnVmZmVycyIpLgoKU28gdGhlIGRhdGEg
+ZnJvbSB0aGUgcGFja2V0IGlzIGNvcGllZCB0byBhIG1hbGxvY2VkIGJ1ZmZlciB0aGF0IG5lZWRz
+CmZyZWUoKWluZyB3aGVuIHRoZSBkYXRhIGlzIG5vdCB1c2VkIGFueSBtb3JlLgoKU2lnbmVkLW9m
+Zi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4K
+LS0tCiBmcy9uZnMuYyB8IDMxICsrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0KIDEgZmls
+ZSBjaGFuZ2VkLCAyNiBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBh
+L2ZzL25mcy5jIGIvZnMvbmZzLmMKaW5kZXggNzY5NWZkNDJiYTEzLi5mYTBhYjc1YjU2MDkgMTAw
+NjQ0Ci0tLSBhL2ZzL25mcy5jCisrKyBiL2ZzL25mcy5jCkBAIC00NDAsNyArNDQwLDYgQEAgYWdh
+aW46CiAJbmZzX3RpbWVyX3N0YXJ0ID0gZ2V0X3RpbWVfbnMoKTsKIAogCW5mc19zdGF0ZSA9IFNU
+QVRFX1NUQVJUOwotCW5mc19wYWNrZXQgPSBOVUxMOwogCiAJd2hpbGUgKG5mc19zdGF0ZSAhPSBT
+VEFURV9ET05FKSB7CiAJCWlmIChjdHJsYygpKSB7CkBAIC00NTksOCArNDU4LDEwIEBAIGFnYWlu
+OgogCQlyZXQgPSBycGNfY2hlY2tfcmVwbHkobmZzX3BhY2tldCwgcnBjX3Byb2csCiAJCQkJbnBy
+aXYtPnJwY19pZCwgJm5mc2Vycik7CiAJCWlmICghcmV0KSB7Ci0JCQlpZiAocnBjX3Byb2cgPT0g
+UFJPR19ORlMpCisJCQlpZiAocnBjX3Byb2cgPT0gUFJPR19ORlMgJiYgbmZzZXJyKSB7CisJCQkJ
+ZnJlZShuZnNfcGFja2V0KTsKIAkJCQlyZXQgPSBuZnNlcnI7CisJCQl9CiAJCQlicmVhazsKIAkJ
+fQogCX0KQEAgLTQ4OSw2ICs0OTAsOSBAQCBzdGF0aWMgaW50IHJwY19sb29rdXBfcmVxKHN0cnVj
+dCBuZnNfcHJpdiAqbnByaXYsIHVpbnQzMl90IHByb2csIHVpbnQzMl90IHZlcikKIAkJcmV0dXJu
+IHJldDsKIAogCXBvcnQgPSBudG9oMzIobmV0X3JlYWRfdWludDMyKG5mc19wYWNrZXQgKyBzaXpl
+b2Yoc3RydWN0IHJwY19yZXBseSkpKTsKKworCWZyZWUobmZzX3BhY2tldCk7CisKIAlyZXR1cm4g
+cG9ydDsKIH0KIApAQCAtNjU4LDExICs2NjIsMTQgQEAgc3RhdGljIGludCBuZnNfbW91bnRfcmVx
+KHN0cnVjdCBuZnNfcHJpdiAqbnByaXYpCiAJaWYgKG5wcml2LT5yb290Zmguc2l6ZSA+IE5GUzNf
+RkhTSVpFKSB7CiAJCXByaW50ZigiJXM6IGZpbGUgaGFuZGxlIHRvbyBiaWc6ICVsdVxuIiwgX19m
+dW5jX18sCiAJCQkJKHVuc2lnbmVkIGxvbmcpbnByaXYtPnJvb3RmaC5zaXplKTsKKwkJZnJlZShu
+ZnNfcGFja2V0KTsKIAkJcmV0dXJuIC1FSU87CiAJfQogCW1lbWNweShucHJpdi0+cm9vdGZoLmRh
+dGEsIHAsIG5wcml2LT5yb290Zmguc2l6ZSk7CiAJcCArPSBESVZfUk9VTkRfVVAobnByaXYtPnJv
+b3RmaC5zaXplLCA0KTsKIAorCWZyZWUobmZzX3BhY2tldCk7CisKIAlyZXR1cm4gMDsKIH0KIApA
+QCAtNjc1LDYgKzY4Miw3IEBAIHN0YXRpYyB2b2lkIG5mc191bW91bnRfcmVxKHN0cnVjdCBuZnNf
+cHJpdiAqbnByaXYpCiAJdWludDMyX3QgKnA7CiAJaW50IGxlbjsKIAlpbnQgcGF0aGxlbjsKKwlp
+bnQgcmV0OwogCiAJcGF0aGxlbiA9IHN0cmxlbihucHJpdi0+cGF0aCk7CiAKQEAgLTY4NSw3ICs2
+OTMsOSBAQCBzdGF0aWMgdm9pZCBuZnNfdW1vdW50X3JlcShzdHJ1Y3QgbmZzX3ByaXYgKm5wcml2
+KQogCiAJbGVuID0gcCAtICYoZGF0YVswXSk7CiAKLQlycGNfcmVxKG5wcml2LCBQUk9HX01PVU5U
+LCBNT1VOVF9VTU9VTlQsIGRhdGEsIGxlbik7CisJcmV0ID0gcnBjX3JlcShucHJpdiwgUFJPR19N
+T1VOVCwgTU9VTlRfVU1PVU5ULCBkYXRhLCBsZW4pOworCWlmICghcmV0KQorCQlmcmVlKG5mc19w
+YWNrZXQpOwogfQogCiAvKgpAQCAtNzUzLDYgKzc2Myw4IEBAIHN0YXRpYyBpbnQgbmZzX2xvb2t1
+cF9yZXEoc3RydWN0IG5mc19wcml2ICpucHJpdiwgc3RydWN0IG5mc19maCAqZmgsCiAKIAluZnNf
+cmVhZF9wb3N0X29wX2F0dHIocCwgaW5vZGUpOwogCisJZnJlZShuZnNfcGFja2V0KTsKKwogCXJl
+dHVybiAwOwogfQogCkBAIC04MzEsNiArODQzLDcgQEAgc3RhdGljIHZvaWQgKm5mc19yZWFkZGly
+YXR0cl9yZXEoc3RydWN0IG5mc19wcml2ICpucHJpdiwgc3RydWN0IG5mc19kaXIgKmRpcikKIAls
+ZW4gPSBuZnNfcGFja2V0ICsgbmZzX2xlbiAtICh2b2lkICopcDsKIAlpZiAoIWxlbikgewogCQlw
+cmludGYoIiVzOiBodWgsIG5vIHBheWxvYWQgbGVmdFxuIiwgX19mdW5jX18pOworCQlmcmVlKG5m
+c19wYWNrZXQpOwogCQlyZXR1cm4gTlVMTDsKIAl9CiAKQEAgLTgzOCw2ICs4NTEsOCBAQCBzdGF0
+aWMgdm9pZCAqbmZzX3JlYWRkaXJhdHRyX3JlcShzdHJ1Y3QgbmZzX3ByaXYgKm5wcml2LCBzdHJ1
+Y3QgbmZzX2RpciAqZGlyKQogCiAJbWVtY3B5KGJ1ZiwgcCwgbGVuKTsKIAorCWZyZWUobmZzX3Bh
+Y2tldCk7CisKIAl4ZHJfaW5pdCgmZGlyLT5zdHJlYW0sIGJ1ZiwgbGVuKTsKIAogCS8qIG5vdyB4
+ZHIgcG9pbnRzIHRvIGRpcmxpc3QzIHJlcy5yZXNvay5yZXBseSAqLwpAQCAtOTEyLDExICs5Mjcs
+MTUgQEAgc3RhdGljIGludCBuZnNfcmVhZF9yZXEoc3RydWN0IGZpbGVfcHJpdiAqcHJpdiwgdWlu
+dDY0X3Qgb2Zmc2V0LAogCSAqLwogCXAgKz0gMjsKIAotCWlmIChyZWFkbGVuICYmICFybGVuICYm
+ICFlb2YpCisJaWYgKHJlYWRsZW4gJiYgIXJsZW4gJiYgIWVvZikgeworCQlmcmVlKG5mc19wYWNr
+ZXQpOwogCQlyZXR1cm4gLUVJTzsKKwl9CiAKIAlrZmlmb19wdXQocHJpdi0+ZmlmbywgKGNoYXIg
+KilwLCBybGVuKTsKIAorCWZyZWUobmZzX3BhY2tldCk7CisKIAlyZXR1cm4gMDsKIH0KIApAQCAt
+OTI1LDcgKzk0NCw3IEBAIHN0YXRpYyB2b2lkIG5mc19oYW5kbGVyKHZvaWQgKmN0eCwgY2hhciAq
+cGFja2V0LCB1bnNpZ25lZCBsZW4pCiAJY2hhciAqcGt0ID0gbmV0X2V0aF90b191ZHBfcGF5bG9h
+ZChwYWNrZXQpOwogCiAJbmZzX3N0YXRlID0gU1RBVEVfRE9ORTsKLQluZnNfcGFja2V0ID0gcGt0
+OworCW5mc19wYWNrZXQgPSB4bWVtZHVwKHBrdCwgbGVuKTsKIAluZnNfbGVuID0gbGVuOwogfQog
+CkBAIC05OTIsNiArMTAxMSw4IEBAIHN0YXRpYyBpbnQgbmZzX3JlYWRsaW5rX3JlcShzdHJ1Y3Qg
+bmZzX3ByaXYgKm5wcml2LCBzdHJ1Y3QgbmZzX2ZoICpmaCwKIAkqdGFyZ2V0ID0geHphbGxvYyhs
+ZW4gKyAxKTsKIAltZW1jcHkoKnRhcmdldCwgcCwgbGVuKTsKIAorCWZyZWUobmZzX3BhY2tldCk7
+CisKIAlyZXR1cm4gMDsKIH0KIAotLSAKMi4yMC4xCgoKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
+cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
+Zm8vYmFyZWJveAo=
