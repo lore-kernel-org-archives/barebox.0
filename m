@@ -1,23 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1glcrY-0007tP-Eu
- for barebox@lists.infradead.org; Mon, 21 Jan 2019 16:55:54 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <rhi@pengutronix.de>) id 1glcrW-0007P9-SM
- for barebox@lists.infradead.org; Mon, 21 Jan 2019 17:55:50 +0100
-Received: from rhi by ptx.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <rhi@pengutronix.de>) id 1glcrW-0007lJ-KJ
- for barebox@lists.infradead.org; Mon, 21 Jan 2019 17:55:50 +0100
-Date: Mon, 21 Jan 2019 17:55:50 +0100
+ id 1glcsI-0008En-IE
+ for barebox@lists.infradead.org; Mon, 21 Jan 2019 16:56:39 +0000
 From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190121165550.pcfwruyaaaglm7zp@pengutronix.de>
+Date: Mon, 21 Jan 2019 17:56:16 +0100
+Message-Id: <20190121165616.19170-1-rhi@pengutronix.de>
+In-Reply-To: <20190121162926.26051-1-rhi@pengutronix.de>
 References: <20190121162926.26051-1-rhi@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190121162926.26051-1-rhi@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,48 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ubi: prevent null pointer reference
+Subject: [PATCH v2] ubi: prevent null pointer reference
 To: Barebox Mailing List <barebox@lists.infradead.org>
+Cc: Roland Hieber <rhi@pengutronix.de>
 
-On Mon, Jan 21, 2019 at 05:29:26PM +0100, Roland Hieber wrote:
-> diff --git a/drivers/mtd/ubi/vtbl.c b/drivers/mtd/ubi/vtbl.c
-> index 6959564a13..68302f4a33 100644
-> --- a/drivers/mtd/ubi/vtbl.c
-> +++ b/drivers/mtd/ubi/vtbl.c
-> @@ -850,6 +850,12 @@ int ubi_read_volume_table(struct ubi_device *ubi, struct ubi_attach_info *ai)
->  out_free:
->  	vfree(ubi->vtbl);
->  	for (i = 0; i < ubi->vtbl_slots + UBI_INT_VOL_COUNT; i++) {
-> +
-> +		dev_vdbg(&ubi->dev, "destroying fastmap %d: 0x%x\n", i, ubi->volumes[i]);
-> +
-> +		if (!ubi->volumes[i])
-> +			continue;
-> +
->  		ubi_fastmap_destroy_checkmap(ubi->volumes[i]);
+After flashing a bogus UBI image, e.g. when the UBI is bigger than the
+available flash size, it can happen that barebox hangs itself with a
+stacktrace when the board code or the environment does a ubi_attach() on
+boot:
 
-No wait. I should rather check in ubi_fastmap_destroy_checkmap(). Will
-send v2.
+    ERROR: ubi0 error: init_volumes: not enough PEBs, required 7478, available 4024
+    unable to handle NULL pointer dereference at address 0x00000204
+    pc : [<1fd1eaf2>]    lr : [<1fd15aad>]
+    sp : 1feefd30  ip : 0000000a  fp : 1fd5d1d7
+    r10: 00001d34  r9 : 00000000  r8 : 1fd5d540
+    r7 : 14983148  r6 : 00000006  r5 : ffffffe4  r4 : 14983004
+    r3 : 1fd82bfc  r2 : 021f0000  r1 : 0000000a  r0 : 00000000
+    Flags: nzcv  IRQs off  FIQs off  Mode SVC_32
+    [<1fd1eaf2>] (ubi_fastmap_destroy_checkmap+0x8/0xa) from [<1fd15aad>] (ubi_read_volume_table+0x4d9/0x71c)
+    [<1fd15aad>] (ubi_read_volume_table+0x4d9/0x71c) from [<1fd1cbf7>] (ubi_attach+0x157/0x1f8)
+    [<1fd1cbf7>] (ubi_attach+0x157/0x1f8) from [<1fd16ec3>] (ubi_attach_mtd_dev+0x4a3/0x954)
+    [...]
 
- - Roland
+After this change, barebox at least boots to a prompt where the faulty
+flash can be repaired:
 
->  		kfree(ubi->volumes[i]);
->  		ubi->volumes[i] = NULL;
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+    ERROR: ubi0 error: init_volumes: not enough PEBs, required 7478, available 4024
+    ERROR: ubi0 error: ubi_attach_mtd_dev: failed to attach mtd0, error -28
+    [...]
+    running /env/bin/init...
+    barebox@boardname:/
 
+Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+---
+v1 -> v2: better check for NULLness in ubi_fastmap_destroy_checkmap()
+          instead of the calling code, same effect but more elegant.
+
+---
+ drivers/mtd/ubi/fastmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
+index 84c2912bf5..32b60ccad8 100644
+--- a/drivers/mtd/ubi/fastmap.c
++++ b/drivers/mtd/ubi/fastmap.c
+@@ -1051,7 +1051,8 @@ int ubi_fastmap_init_checkmap(struct ubi_volume *vol, int leb_count)
+ 
+ void ubi_fastmap_destroy_checkmap(struct ubi_volume *vol)
+ {
+-	kfree(vol->checkmap);
++	if (vol)
++		kfree(vol->checkmap);
+ }
+ 
+ /**
 -- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
