@@ -1,12 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1glXjs-0006BB-HD
- for barebox@lists.infradead.org; Mon, 21 Jan 2019 11:27:52 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Mon, 21 Jan 2019 12:27:30 +0100
-Message-Id: <20190121112732.23772-1-u.kleine-koenig@pengutronix.de>
+ id 1glroT-0000vl-R2
+ for barebox@lists.infradead.org; Tue, 22 Jan 2019 08:53:43 +0000
+Date: Tue, 22 Jan 2019 09:53:37 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20190122085337.rs6iyfddji5qmtlv@pengutronix.de>
+References: <20181213063356.19138-1-t.scherer@eckelmann.de>
+ <20181217141852.9c9dd9acf3072d07af8af20b@gmail.com>
+ <20181217113102.kjlim22expeyz627@pengutronix.de>
+ <20190122081040.GA23658@ws067.eckelmann.group>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190122081040.GA23658@ws067.eckelmann.group>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,35 +21,91 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 1/3] fs/nfs: don't try to set nfs error code from mount rpc
- call
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] imd: model and compatible missing in metadata
+To: "Scherer, Thorsten" <thorsten.scherer@eckelmann.de>
+Cc: barebox@lists.infradead.org
 
-QSBwYWNrZXQgZnJvbSBhIG1vdW50IHJwYyBjYWxsIGRvZXNuJ3QgaGF2ZSBhbiBORlMgZXJyb3Ig
-ZmllbGQsIHNvIGRvbid0CnRyeSB0byBhY2Nlc3MgdGhpcy4KCkluIHRoZSBjYXNlIG9mIHRoZSBN
-T1VOVF9VTU9VTlQgcHJvY2VkdXJlIHRoZSByZXBseSBwYWNrYWdlIGlzIHNob3J0CnN1Y2ggdGhh
-dCBhY2Nlc3NpbmcgdGhlIHUzMiBhZnRlciB0aGUgcnBjX3JlcGx5IHN0cnVjdHVyZSBpcyBhbHJl
-YWR5CmFmdGVyIHRoZSBlbmQgb2YgdGhlIHBhY2tldC4gQXBhcnQgZnJvbSB0aGUgYWNjZXNzIHRv
-IG91dC1vZi1wYWNrZXQgZGF0YQp0aGVyZSBpcyBubyBoYXJtIGJlY2F1c2UgdGhlIHdyb25nbHkg
-cmVhZCB2YWx1ZSBpcyB1bnVzZWQuIEJ1dCBtYWtlIHRoaXMKbW9yZSBleHBsaWNpdCBieSBvbmx5
-IHVzaW5nIG5mc2VyciBpZiB0aGUgY2FsbCB3YXMgYW4gTkZTIHJlcXVlc3QuCgpGaXhlczogOWVk
-ZTU2YWQyNDc2ICgiZnM6IEFkZCBORlMgc3VwcG9ydCIpClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVp
-bmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogZnMvbmZzLmMg
-fCA1ICsrKy0tCiAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygt
-KQoKZGlmZiAtLWdpdCBhL2ZzL25mcy5jIGIvZnMvbmZzLmMKaW5kZXggZDdmMTU2Njg3ZmM5Li43
-Njk1ZmQ0MmJhMTMgMTAwNjQ0Ci0tLSBhL2ZzL25mcy5jCisrKyBiL2ZzL25mcy5jCkBAIC0zODIs
-NyArMzgyLDcgQEAgc3RhdGljIGludCBycGNfY2hlY2tfcmVwbHkodW5zaWduZWQgY2hhciAqcGt0
-LAogCQlyZXR1cm4gLUVJTlZBTDsKIAl9CiAKLQlpZiAocnBjX3Byb2cgPT0gUFJPR19QT1JUTUFQ
-KQorCWlmIChycGNfcHJvZyAhPSBQUk9HX05GUykKIAkJcmV0dXJuIDA7CiAKIAlkYXRhID0gKHVp
-bnQzMl90ICopKHBrdCArIHNpemVvZihzdHJ1Y3QgcnBjX3JlcGx5KSk7CkBAIC00NTksNyArNDU5
-LDggQEAgYWdhaW46CiAJCXJldCA9IHJwY19jaGVja19yZXBseShuZnNfcGFja2V0LCBycGNfcHJv
-ZywKIAkJCQlucHJpdi0+cnBjX2lkLCAmbmZzZXJyKTsKIAkJaWYgKCFyZXQpIHsKLQkJCXJldCA9
-IG5mc2VycjsKKwkJCWlmIChycGNfcHJvZyA9PSBQUk9HX05GUykKKwkJCQlyZXQgPSBuZnNlcnI7
-CiAJCQlicmVhazsKIAkJfQogCX0KLS0gCjIuMjAuMQoKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+Hello,
+
+On Tue, Jan 22, 2019 at 09:10:40AM +0100, Scherer, Thorsten wrote:
+> i spent some time trying to understand the usage of imd_used etc. =
+
+> =
+
+> In another reply I stated:
+> =
+
+> 'I misread the documenation on IMD as "of_compatible and model will be
+> figured out and put into the proper location by barebox".'
+
+That is wrong. The current code doesn't ensure that and I don't see a
+way how this could be done comfortably without per-board changes.
+ =
+
+> I am not so sure, if that is really the case.
+> =
+
+> As far as i understand things:
+> =
+
+> 1. 	of_compatible and model are (should be) automagically added to imd fr=
+om the
+> 	entries in the dts.
+> =
+
+> git show 97e81f2d7 | grep -A 1 'For.*model.*of_compatible'
+> cat scripts/gen-dtb-s | grep -A 23 -B 3 'barebox_imd_0'
+
+The imd tags for compatible and model are generated, but not
+automatically included with this change. This is AFAICT the current
+state.
+
+The problem is that the needed information is included in the "barebox"
+image (i.e. the file with the name "barebox" that is build in the top
+build dir) but then there is an additional step that extracts "all
+needed" parts from that image to create a binary that then is able to be
+started on your target. So if "barebox" has three entry points for
+different machines, there are three images generated and each only has a
+single entry point. Unused functions and data structures are stripped.
+The linker detects that the imd section that contains the compatible and
+model is not used and so this goes away in all three generated binaries.
+
+> 2.	the IMD_USED macro puts arbitrary tags in the metadata.  Which may
+> 	also be a tag named model.
+
+The IMD_USED claims a certain data structure is used such that the
+linker doesn't throw it away.
+ =
+
+> Now I wonder, if the lack of the patch just covers up an issue at another
+> place or if there is something (in the context of multi image support?) w=
+hich
+> I do not understand. =
+
+
+Did you look at the patch I sent you?
+
+> Maybe there is something messed up with the entries in
+> the device tree?
+> =
+
+> https://www.spinics.net/lists/arm-kernel/msg699453.html
+
+This is unrelated, this is a patch for Linux to add a device tree.
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
