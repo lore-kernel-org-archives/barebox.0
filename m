@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gm771-0007Rq-Mz
- for barebox@lists.infradead.org; Wed, 23 Jan 2019 01:13:53 +0000
-Received: by mail-pf1-x442.google.com with SMTP id c73so257816pfe.13
- for <barebox@lists.infradead.org>; Tue, 22 Jan 2019 17:13:51 -0800 (PST)
+ id 1gm772-0007S8-Og
+ for barebox@lists.infradead.org; Wed, 23 Jan 2019 01:13:54 +0000
+Received: by mail-pf1-x443.google.com with SMTP id g62so261091pfd.12
+ for <barebox@lists.infradead.org>; Tue, 22 Jan 2019 17:13:52 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 22 Jan 2019 17:13:31 -0800
-Message-Id: <20190123011338.32517-1-andrew.smirnov@gmail.com>
+Date: Tue, 22 Jan 2019 17:13:32 -0800
+Message-Id: <20190123011338.32517-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20190123011338.32517-1-andrew.smirnov@gmail.com>
+References: <20190123011338.32517-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,55 +23,135 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/7] 32-bit lseek and /dev/mem fixes/improvements
+Subject: [PATCH 1/7] commands: Move mem_parse_options() to lib/misc.c
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Everyone:
+As a first step of de-cluttering /dev/mem related code, move
+mem_parse_options() out of commands/mem.c into lib/misc.c where it
+seem to fit better. With this change we no longer explicitly turn this
+code off using CONFIG_COMPILE_MEMORY and instead rely on LTO to get
+rid of it when it's not being used.
 
-This series is a result of my attempt to fix a regression in lseek()
-on 32-bit platforms. The regression manifested in lseek() unable to
-seek past ~4GiB mark caused and was caused by usage of IS_ERR_VALUE()
-(see commit messages for more detailed explanation). My goal was to
-both get rid of IS_ERR_VALUE() while still make it possible to access
-all 64-bits of address space via /dev/mem on 64-bit machines.
+While at it, also fix return value by replacing COMMAND_ERROR_USAGE
+with -EINVAL. All of the callers of mem_parse_options() expect
+negative error code as a sign of failure and COMMAND_ERROR_USAGE is
+not negative.
 
-First three commits are optional and can be dropped.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ commands/mem.c | 40 ----------------------------------------
+ lib/misc.c     | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 42 insertions(+), 40 deletions(-)
 
-Feedback is welcome!
-
-Thanks,
-Andrey Smirnov
-
-Andrey Smirnov (7):
-  commands: Move mem_parse_options() to lib/misc.c
-  commands: Get rid of mem_rw_buf
-  commands: Move /dev/mem driver to drivers/misc
-  fs: Change error checking logic for fsdrv->lseek() call
-  fs: Calculate new position before validtiy check in lseek()
-  fs: Add support for files larger than MAX_LFS_FILESIZE
-  misc: mem: Set correct size for /dev/mem
-
- commands/Kconfig      |  17 +++---
- commands/Makefile     |   1 -
- commands/md.c         |  12 +++--
- commands/mem.c        | 123 ------------------------------------------
- commands/memcmp.c     |  16 +++---
- commands/memcpy.c     |  10 ++--
- commands/memset.c     |   2 -
- common/ratp/md.c      |   9 ++--
- drivers/misc/Kconfig  |   3 ++
- drivers/misc/Makefile |   1 +
- drivers/misc/mem.c    |  45 ++++++++++++++++
- fs/devfs.c            |   2 +
- fs/fs.c               |  48 +++++++++++------
- include/driver.h      |   1 +
- include/fs.h          |   1 +
- lib/misc.c            |  42 +++++++++++++++
- 16 files changed, 160 insertions(+), 173 deletions(-)
- delete mode 100644 commands/mem.c
- create mode 100644 drivers/misc/mem.c
-
+diff --git a/commands/mem.c b/commands/mem.c
+index a9e12f3e5..62488bf52 100644
+--- a/commands/mem.c
++++ b/commands/mem.c
+@@ -41,46 +41,6 @@
+ 
+ char *mem_rw_buf;
+ 
+-/*
+- * Common function for parsing options for the 'md', 'mw', 'memcpy', 'memcmp'
+- * commands.
+- */
+-int mem_parse_options(int argc, char *argv[], char *optstr, int *mode,
+-		char **sourcefile, char **destfile, int *swab)
+-{
+-	int opt;
+-
+-	while((opt = getopt(argc, argv, optstr)) > 0) {
+-		switch(opt) {
+-		case 'b':
+-			*mode = O_RWSIZE_1;
+-			break;
+-		case 'w':
+-			*mode = O_RWSIZE_2;
+-			break;
+-		case 'l':
+-			*mode = O_RWSIZE_4;
+-			break;
+-		case 'q':
+-			*mode = O_RWSIZE_8;
+-			break;
+-		case 's':
+-			*sourcefile = optarg;
+-			break;
+-		case 'd':
+-			*destfile = optarg;
+-			break;
+-		case 'x':
+-			*swab = 1;
+-			break;
+-		default:
+-			return COMMAND_ERROR_USAGE;
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+ static struct cdev_operations memops = {
+ 	.read  = mem_read,
+ 	.write = mem_write,
+diff --git a/lib/misc.c b/lib/misc.c
+index 1d20e1b09..cd420a57d 100644
+--- a/lib/misc.c
++++ b/lib/misc.c
+@@ -23,6 +23,7 @@
+ #include <fs.h>
+ #include <string.h>
+ #include <linux/ctype.h>
++#include <getopt.h>
+ 
+ /*
+  * Like simple_strtoull() but handles an optional G, M, K or k
+@@ -129,3 +130,44 @@ success:
+ 	return 0;
+ }
+ EXPORT_SYMBOL(parse_area_spec);
++
++/*
++ * Common function for parsing options for the 'md', 'mw', 'memcpy', 'memcmp'
++ * commands.
++ */
++int mem_parse_options(int argc, char *argv[], char *optstr, int *mode,
++		      char **sourcefile, char **destfile, int *swab)
++{
++	int opt;
++
++	while((opt = getopt(argc, argv, optstr)) > 0) {
++		switch(opt) {
++		case 'b':
++			*mode = O_RWSIZE_1;
++			break;
++		case 'w':
++			*mode = O_RWSIZE_2;
++			break;
++		case 'l':
++			*mode = O_RWSIZE_4;
++			break;
++		case 'q':
++			*mode = O_RWSIZE_8;
++			break;
++		case 's':
++			*sourcefile = optarg;
++			break;
++		case 'd':
++			*destfile = optarg;
++			break;
++		case 'x':
++			*swab = 1;
++			break;
++		default:
++			return -EINVAL;
++		}
++	}
++
++	return 0;
++}
++
 -- 
 2.20.1
 
