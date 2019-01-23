@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gm774-0007SS-3o
+ id 1gm775-0007T2-Ax
  for barebox@lists.infradead.org; Wed, 23 Jan 2019 01:13:57 +0000
-Received: by mail-pl1-x644.google.com with SMTP id gn14so243336plb.10
- for <barebox@lists.infradead.org>; Tue, 22 Jan 2019 17:13:53 -0800 (PST)
+Received: by mail-pl1-x643.google.com with SMTP id b5so257117plr.4
+ for <barebox@lists.infradead.org>; Tue, 22 Jan 2019 17:13:55 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 22 Jan 2019 17:13:33 -0800
-Message-Id: <20190123011338.32517-3-andrew.smirnov@gmail.com>
+Date: Tue, 22 Jan 2019 17:13:34 -0800
+Message-Id: <20190123011338.32517-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20190123011338.32517-1-andrew.smirnov@gmail.com>
 References: <20190123011338.32517-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,285 +23,263 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] commands: Get rid of mem_rw_buf
+Subject: [PATCH 3/7] commands: Move /dev/mem driver to drivers/misc
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-There doesn't seem to be any good reason for all of the memory
-commands (md, mw, etc.) to rely on a shared pre-allocated buffer
-anymore. So, to simplify things, drop the shared buffer and adjust all
-of the utilites to allocate needed memory.
+With all other code gone from commands/mem.c, move it into
+driver/misc, where it fits better. While at it, expose it directly via
+a Kconfig options instead of relying on CONFIG_COMPILE_MEMORY
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- commands/md.c     | 12 +++++++-----
- commands/mem.c    |  6 ------
- commands/memcmp.c | 16 ++++++++--------
- commands/memcpy.c | 10 ++++++----
- commands/memset.c |  2 --
- common/ratp/md.c  |  9 +++++----
- 6 files changed, 26 insertions(+), 29 deletions(-)
+ commands/Kconfig      | 17 ++++------
+ commands/Makefile     |  1 -
+ commands/mem.c        | 77 -------------------------------------------
+ drivers/misc/Kconfig  |  3 ++
+ drivers/misc/Makefile |  1 +
+ drivers/misc/mem.c    | 45 +++++++++++++++++++++++++
+ 6 files changed, 55 insertions(+), 89 deletions(-)
+ delete mode 100644 commands/mem.c
+ create mode 100644 drivers/misc/mem.c
 
-diff --git a/commands/md.c b/commands/md.c
-index a495fc8b4..2389c12d1 100644
---- a/commands/md.c
-+++ b/commands/md.c
-@@ -34,8 +34,6 @@
- #include <linux/stat.h>
- #include <xfuncs.h>
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 45592f26c..901036f59 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -14,11 +14,6 @@ config COMPILE_HASH
+ 	help
+ 	  Turns on compilation of digest.c
  
--extern char *mem_rw_buf;
+-config COMPILE_MEMORY
+-	bool
+-	help
+-	  Turns on compilation of mem.c
 -
- static int do_mem_md(int argc, char *argv[])
- {
- 	loff_t	start = 0, size = 0x100;
-@@ -46,6 +44,7 @@ static int do_mem_md(int argc, char *argv[])
- 	int mode = O_RWSIZE_4;
- 	int swab = 0;
- 	void *map;
-+	void *buf = NULL;
+ menu "Commands"
  
- 	if (argc < 2)
- 		return COMMAND_ERROR_USAGE;
-@@ -74,9 +73,11 @@ static int do_mem_md(int argc, char *argv[])
- 		goto out;
- 	}
  
-+	buf = xmalloc(RW_BUF_SIZE);
-+
- 	do {
- 		now = min(size, (loff_t)RW_BUF_SIZE);
--		r = read(fd, mem_rw_buf, now);
-+		r = read(fd, buf, now);
- 		if (r < 0) {
- 			perror("read");
- 			goto out;
-@@ -84,8 +85,8 @@ static int do_mem_md(int argc, char *argv[])
- 		if (!r)
- 			goto out;
+@@ -1493,7 +1488,7 @@ config CMD_CRC_CMP
+ config CMD_MD
+ 	tristate
+ 	default y
+-	select COMPILE_MEMORY
++	select DEV_MEM
+ 	prompt "md"
+ 	help
+ 	  Memory display
+@@ -1517,7 +1512,7 @@ config CMD_MD
+ config CMD_MEMCMP
+ 	tristate
+ 	default y
+-	select COMPILE_MEMORY
++	select DEV_MEM
+ 	prompt "memcmp"
+ 	help
+ 	  Memory compare
+@@ -1539,7 +1534,7 @@ config CMD_MEMCMP
+ config CMD_MEMCPY
+ 	tristate
+ 	default y
+-	select COMPILE_MEMORY
++	select DEV_MEM
+ 	prompt "memcpy"
+ 	help
+ 	  Memory copy
+@@ -1558,7 +1553,7 @@ config CMD_MEMCPY
+ config CMD_MEMSET
+ 	tristate
+ 	default y
+-	select COMPILE_MEMORY
++	select DEV_MEM
+ 	prompt "memset"
+ 	help
+ 	  Memory fill
+@@ -1591,7 +1586,7 @@ config CMD_MEMTEST
  
--		if ((ret = memory_display(mem_rw_buf, start, r,
--				mode >> O_RWSIZE_SHIFT, swab)))
-+		if ((ret = memory_display(buf, start, r,
-+					  mode >> O_RWSIZE_SHIFT, swab)))
- 			goto out;
- 
- 		start += r;
-@@ -93,6 +94,7 @@ static int do_mem_md(int argc, char *argv[])
- 	} while (size);
- 
- out:
-+	free(buf);
- 	close(fd);
- 
- 	return ret ? 1 : 0;
+ config CMD_MM
+ 	tristate
+-	select COMPILE_MEMORY
++	select DEV_MEM
+ 	prompt "memory modify (mm)"
+ 	help
+ 	  Memory modify with mask
+@@ -1609,7 +1604,7 @@ config CMD_MM
+ config CMD_MW
+ 	tristate
+ 	default y
+-	select COMPILE_MEMORY
++	select DEV_MEM
+ 	prompt "mw"
+ 	help
+ 	  Memory write
+diff --git a/commands/Makefile b/commands/Makefile
+index ecd2c99e1..ce4c4f6eb 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -1,7 +1,6 @@
+ obj-$(CONFIG_STDDEV)		+= stddev.o
+ obj-$(CONFIG_CMD_DIGEST)	+= digest.o
+ obj-$(CONFIG_COMPILE_HASH)	+= hashsum.o
+-obj-$(CONFIG_COMPILE_MEMORY)	+= mem.o
+ obj-$(CONFIG_CMD_BOOTM)		+= bootm.o
+ obj-$(CONFIG_CMD_UIMAGE)	+= uimage.o
+ obj-$(CONFIG_CMD_LINUX16)	+= linux16.o
 diff --git a/commands/mem.c b/commands/mem.c
-index 62488bf52..8a47e1fe1 100644
+deleted file mode 100644
+index 8a47e1fe1..000000000
 --- a/commands/mem.c
-+++ b/commands/mem.c
-@@ -39,8 +39,6 @@
- #define PRINTF(fmt,args...)
- #endif
- 
--char *mem_rw_buf;
++++ /dev/null
+@@ -1,77 +0,0 @@
+-/*
+- * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2
+- * as published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
 -
- static struct cdev_operations memops = {
- 	.read  = mem_read,
- 	.write = mem_write,
-@@ -73,10 +71,6 @@ static struct driver_d mem_drv = {
- 
- static int mem_init(void)
- {
--	mem_rw_buf = malloc(RW_BUF_SIZE);
--	if(!mem_rw_buf)
--		return -ENOMEM;
+-/*
+- * Memory Functions
+- *
+- * Copied from FADS ROM, Dan Malek (dmalek@jlc.net)
+- */
 -
- 	add_mem_device("mem", 0, ~0, IORESOURCE_MEM_WRITEABLE);
- 	return platform_driver_register(&mem_drv);
- }
-diff --git a/commands/memcmp.c b/commands/memcmp.c
-index 981c8cb38..48957b450 100644
---- a/commands/memcmp.c
-+++ b/commands/memcmp.c
-@@ -34,8 +34,6 @@
- #include <linux/stat.h>
- #include <xfuncs.h>
- 
--extern char *mem_rw_buf;
+-#include <common.h>
+-#include <command.h>
+-#include <init.h>
+-#include <driver.h>
+-#include <malloc.h>
+-#include <errno.h>
+-#include <fs.h>
+-#include <fcntl.h>
+-#include <getopt.h>
+-#include <linux/stat.h>
+-#include <xfuncs.h>
 -
- static char *devmem = "/dev/mem";
- 
- static int do_memcmp(int argc, char *argv[])
-@@ -45,7 +43,7 @@ static int do_memcmp(int argc, char *argv[])
- 	char   *sourcefile = devmem;
- 	char   *destfile = devmem;
- 	int     sourcefd, destfd;
--	char   *rw_buf1;
-+	char   *buf, *source_data, *dest_data;
- 	int     ret = 1;
- 	int     offset = 0;
- 	struct  stat statbuf;
-@@ -84,20 +82,22 @@ static int do_memcmp(int argc, char *argv[])
- 		return 1;
- 	}
- 
--	rw_buf1 = xmalloc(RW_BUF_SIZE);
-+	buf = xmalloc(RW_BUF_SIZE + RW_BUF_SIZE);
-+	source_data = buf;
-+	dest_data   = buf + RW_BUF_SIZE;
- 
- 	while (count > 0) {
- 		int now, r1, r2, i;
- 
- 		now = min((loff_t)RW_BUF_SIZE, count);
- 
--		r1 = read_full(sourcefd, mem_rw_buf, now);
-+		r1 = read_full(sourcefd, source_data, now);
- 		if (r1 < 0) {
- 			perror("read");
- 			goto out;
- 		}
- 
--		r2 = read_full(destfd, rw_buf1, now);
-+		r2 = read_full(destfd, dest_data, now);
- 		if (r2 < 0) {
- 			perror("read");
- 			goto out;
-@@ -109,7 +109,7 @@ static int do_memcmp(int argc, char *argv[])
- 		}
- 
- 		for (i = 0; i < now; i++) {
--			if (mem_rw_buf[i] != rw_buf1[i]) {
-+			if (source_data[i] != dest_data[i]) {
- 				printf("files differ at offset %d\n", offset);
- 				goto out;
- 			}
-@@ -124,7 +124,7 @@ static int do_memcmp(int argc, char *argv[])
- out:
- 	close(sourcefd);
- 	close(destfd);
--	free(rw_buf1);
-+	free(buf);
- 
- 	return ret;
- }
-diff --git a/commands/memcpy.c b/commands/memcpy.c
-index 168ef3b4f..ddaf767ea 100644
---- a/commands/memcpy.c
-+++ b/commands/memcpy.c
-@@ -34,8 +34,6 @@
- #include <linux/stat.h>
- #include <xfuncs.h>
- 
--extern char *mem_rw_buf;
+-#ifdef	CMD_MEM_DEBUG
+-#define	PRINTF(fmt,args...)	printf (fmt ,##args)
+-#else
+-#define PRINTF(fmt,args...)
+-#endif
 -
- static char *devmem = "/dev/mem";
+-static struct cdev_operations memops = {
+-	.read  = mem_read,
+-	.write = mem_write,
+-	.memmap = generic_memmap_rw,
+-	.lseek = dev_lseek_default,
+-};
+-
+-static int mem_probe(struct device_d *dev)
+-{
+-	struct cdev *cdev;
+-
+-	cdev = xzalloc(sizeof (*cdev));
+-	dev->priv = cdev;
+-
+-	cdev->name = (char*)dev->resource[0].name;
+-	cdev->size = min_t(unsigned long long, resource_size(&dev->resource[0]),
+-			   S64_MAX);
+-	cdev->ops = &memops;
+-	cdev->dev = dev;
+-
+-	devfs_create(cdev);
+-
+-	return 0;
+-}
+-
+-static struct driver_d mem_drv = {
+-	.name  = "mem",
+-	.probe = mem_probe,
+-};
+-
+-static int mem_init(void)
+-{
+-	add_mem_device("mem", 0, ~0, IORESOURCE_MEM_WRITEABLE);
+-	return platform_driver_register(&mem_drv);
+-}
+-device_initcall(mem_init);
+diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+index df74cca97..f547024bd 100644
+--- a/drivers/misc/Kconfig
++++ b/drivers/misc/Kconfig
+@@ -24,4 +24,7 @@ config BLINK_ENCODER
+         tristate "Blinking LED encoder"
+ 	depends on LED && LED_TRIGGERS
  
- static int do_memcpy(int argc, char *argv[])
-@@ -47,6 +45,7 @@ static int do_memcpy(int argc, char *argv[])
- 	int mode = 0;
- 	struct stat statbuf;
- 	int ret = 0;
-+	char *buf;
- 
- 	if (mem_parse_options(argc, argv, "bwlqs:d:", &mode, &sourcefile,
- 			&destfile, NULL) < 0)
-@@ -82,12 +81,14 @@ static int do_memcpy(int argc, char *argv[])
- 		return 1;
- 	}
- 
-+	buf = xmalloc(RW_BUF_SIZE);
++config DEV_MEM
++        bool "Generic memory I/O device (/dev/mem)"
 +
- 	while (count > 0) {
- 		int now, r, w, tmp;
- 
- 		now = min((loff_t)RW_BUF_SIZE, count);
- 
--		r = read(sourcefd, mem_rw_buf, now);
-+		r = read(sourcefd, buf, now);
- 		if (r < 0) {
- 			perror("read");
- 			goto out;
-@@ -99,7 +100,7 @@ static int do_memcpy(int argc, char *argv[])
- 		tmp = 0;
- 		now = r;
- 		while (now) {
--			w = write(destfd, mem_rw_buf + tmp, now);
-+			w = write(destfd, buf + tmp, now);
- 			if (w < 0) {
- 				perror("write");
- 				goto out;
-@@ -123,6 +124,7 @@ static int do_memcpy(int argc, char *argv[])
- 	}
- 
- out:
-+	free(buf);
- 	close(sourcefd);
- 	close(destfd);
- 
-diff --git a/commands/memset.c b/commands/memset.c
-index f99bf86c0..b0770159f 100644
---- a/commands/memset.c
-+++ b/commands/memset.c
-@@ -34,8 +34,6 @@
- #include <linux/stat.h>
- #include <xfuncs.h>
- 
--extern char *mem_rw_buf;
--
- static int do_memset(int argc, char *argv[])
- {
- 	loff_t	s, c, n;
-diff --git a/common/ratp/md.c b/common/ratp/md.c
-index ce343d7c7..a25cbf112 100644
---- a/common/ratp/md.c
-+++ b/common/ratp/md.c
-@@ -59,8 +59,6 @@ struct ratp_bb_md_response {
- 	uint8_t  buffer[];
- } __packed;
- 
--extern char *mem_rw_buf;
--
- static int do_ratp_mem_md(const char *filename,
- 			  loff_t start,
- 			  loff_t size,
-@@ -70,6 +68,7 @@ static int do_ratp_mem_md(const char *filename,
- 	int ret = 0;
- 	int fd;
- 	void *map;
-+	char *buf = NULL;
- 
- 	fd = open_and_lseek(filename, O_RWSIZE_1 | O_RDONLY, start);
- 	if (fd < 0)
-@@ -81,10 +80,11 @@ static int do_ratp_mem_md(const char *filename,
- 		goto out;
- 	}
- 
-+	buf = xmalloc(RW_BUF_SIZE);
- 	t = 0;
- 	do {
- 		now = min(size, (loff_t)RW_BUF_SIZE);
--		r = read(fd, mem_rw_buf, now);
-+		r = read(fd, buf, now);
- 		if (r < 0) {
- 			ret = -errno;
- 			perror("read");
-@@ -93,13 +93,14 @@ static int do_ratp_mem_md(const char *filename,
- 		if (!r)
- 			goto out;
- 
--		memcpy(output + t, (uint8_t *)(mem_rw_buf), r);
-+		memcpy(output + t, buf, r);
- 
- 		size  -= r;
- 		t     += r;
- 	} while (size);
- 
- out:
-+	free(buf);
- 	close(fd);
- 
- 	return ret;
+ endmenu
+diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
+index 2e80f1a63..8b5140536 100644
+--- a/drivers/misc/Makefile
++++ b/drivers/misc/Makefile
+@@ -6,3 +6,4 @@ obj-$(CONFIG_JTAG)		+= jtag.o
+ obj-$(CONFIG_SRAM)		+= sram.o
+ obj-$(CONFIG_STATE_DRV)		+= state.o
+ obj-$(CONFIG_BLINK_ENCODER)	+= blink-encoder.o
++obj-$(CONFIG_DEV_MEM)		+= mem.o
+diff --git a/drivers/misc/mem.c b/drivers/misc/mem.c
+new file mode 100644
+index 000000000..d829af724
+--- /dev/null
++++ b/drivers/misc/mem.c
+@@ -0,0 +1,45 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ */
++
++#include <common.h>
++#include <driver.h>
++#include <init.h>
++
++static struct cdev_operations memops = {
++	.read  = mem_read,
++	.write = mem_write,
++	.memmap = generic_memmap_rw,
++	.lseek = dev_lseek_default,
++};
++
++static int mem_probe(struct device_d *dev)
++{
++	struct cdev *cdev;
++
++	cdev = xzalloc(sizeof (*cdev));
++	dev->priv = cdev;
++
++	cdev->name = (char*)dev->resource[0].name;
++	cdev->size = min_t(unsigned long long, resource_size(&dev->resource[0]),
++			   S64_MAX);
++	cdev->ops = &memops;
++	cdev->dev = dev;
++
++	devfs_create(cdev);
++
++	return 0;
++}
++
++static struct driver_d mem_drv = {
++	.name  = "mem",
++	.probe = mem_probe,
++};
++
++static int mem_init(void)
++{
++	add_mem_device("mem", 0, ~0, IORESOURCE_MEM_WRITEABLE);
++	return platform_driver_register(&mem_drv);
++}
++device_initcall(mem_init);
 -- 
 2.20.1
 
