@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx01.eckelmann.de ([217.19.183.92])
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gmJAQ-0001Yr-1s
- for barebox@lists.infradead.org; Wed, 23 Jan 2019 14:06:13 +0000
-Date: Wed, 23 Jan 2019 15:05:55 +0100
-From: "Scherer, Thorsten" <thorsten.scherer@eckelmann.de>
-Message-ID: <20190123140555.GC3923@ws067.eckelmann.group>
-References: <20181213063356.19138-1-t.scherer@eckelmann.de>
- <20181217141852.9c9dd9acf3072d07af8af20b@gmail.com>
- <20181217113102.kjlim22expeyz627@pengutronix.de>
- <20190122081040.GA23658@ws067.eckelmann.group>
- <20190122085337.rs6iyfddji5qmtlv@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190122085337.rs6iyfddji5qmtlv@pengutronix.de>
+ id 1gmHEF-00010F-4U
+ for barebox@lists.infradead.org; Wed, 23 Jan 2019 12:02:00 +0000
+Received: by mail-lj1-x22d.google.com with SMTP id l15-v6so1676853lja.9
+ for <barebox@lists.infradead.org>; Wed, 23 Jan 2019 04:01:58 -0800 (PST)
+Date: Wed, 23 Jan 2019 15:01:53 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20190123150153.11a91063828b62bfd89c9bdf@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,149 +17,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] imd: model and compatible missing in metadata
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: powerpc-linux-gnu-gcc: error: unrecognized command line option
+ =?UTF-8?B?4oCYLW1uby1zcGXigJk=?=
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hello,
-
-On Tue, Jan 22, 2019 at 09:53:37AM +0100, Uwe Kleine-K=F6nig wrote:
-> Hello,
-> =
-
-> On Tue, Jan 22, 2019 at 09:10:40AM +0100, Scherer, Thorsten wrote:
-> > i spent some time trying to understand the usage of imd_used etc. =
-
-> > =
-
-> > In another reply I stated:
-> > =
-
-> > 'I misread the documenation on IMD as "of_compatible and model will be
-> > figured out and put into the proper location by barebox".'
-> =
-
-> That is wrong. The current code doesn't ensure that and I don't see a
-> way how this could be done comfortably without per-board changes.
->  =
-
-> > I am not so sure, if that is really the case.
-> > =
-
-> > As far as i understand things:
-> > =
-
-> > 1. 	of_compatible and model are (should be) automagically added to imd =
-from the
-> > 	entries in the dts.
-> > =
-
-> > git show 97e81f2d7 | grep -A 1 'For.*model.*of_compatible'
-> > cat scripts/gen-dtb-s | grep -A 23 -B 3 'barebox_imd_0'
-> =
-
-> The imd tags for compatible and model are generated, but not
-> automatically included with this change. This is AFAICT the current
-> state.
-> =
-
-> The problem is that the needed information is included in the "barebox"
-> image (i.e. the file with the name "barebox" that is build in the top
-> build dir) but then there is an additional step that extracts "all
-> needed" parts from that image to create a binary that then is able to be
-> started on your target. So if "barebox" has three entry points for
-> different machines, there are three images generated and each only has a
-> single entry point. Unused functions and data structures are stripped.
-> The linker detects that the imd section that contains the compatible and
-> model is not used and so this goes away in all three generated binaries.
-> =
-
-
-Thank you for the explanation.  Now things start to clear up a bit.  =
-
-
-> > 2.	the IMD_USED macro puts arbitrary tags in the metadata.  Which may
-> > 	also be a tag named model.
-> =
-
-> The IMD_USED claims a certain data structure is used such that the
-> linker doesn't throw it away.
->  =
-
-
-Ok.
-
-> > Now I wonder, if the lack of the patch just covers up an issue at anoth=
-er
-> > place or if there is something (in the context of multi image support?)=
- which
-> > I do not understand. =
-
-> =
-
-> Did you look at the patch I sent you?
-> =
-
-
-I did.  But not closely enough.  On the invokation of imd, model and
-of_compatible were not displayed.  Somehow I did not get, that your
-patch was made to apply for the imx25 boards and not for the imx6
-board (the one which I was checking).  After adjusting the lowlevel.c
-file of the imx6 board, everything went fine.
-
-> > Maybe there is something messed up with the entries in
-> > the device tree?
-> > =
-
-> > https://www.spinics.net/lists/arm-kernel/msg699453.html
-> =
-
-> This is unrelated, this is a patch for Linux to add a device tree.
-
-Right.  It didn't make sense to add this.
-
-> =
-
-> Best regards
-> Uwe
-> =
-
-
-Again, thank you for feedback.
-
-Best regards
-Thorsten
-
-> -- =
-
-> Pengutronix e.K.                           | Uwe Kleine-K=F6nig          =
-  |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
--- =
-
-Mit freundlichen Gr=FC=DFen
-Thorsten K. Scherer
-Diplom-Ingenieur (FH)
-K=E4lte- und Geb=E4udeleittechnik
-Datentechnik
-
-
-Eckelmann AG
-Berliner Str. 161, 65205 Wiesbaden
-Telefon +49 611 7103-329     =
-
-Fax +49 611 7103-133
-thorsten.scherer@eckelmann.de
-https://www.eckelmann.de
-
-Eckelmann Group - Source of inspiration
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhIQoKSSdtIHBsYXlpbmcgd2l0aCBNQUtFQUxMIHNjcmlwdCB0byBidWlsZCBhcyBt
+YW55IGRlZmNvbmZpZ3MgYXMgcG9zc2libGUuCk15IGJ1aWxkIGVudmlyb25tZW50IGlzIGJhc2Ug
+b24gRGViaWFuIEJ1c3Rlci4KRGViaWFuIEJ1c3RlciBoYXMgY3Jvc3MgY29tcGlsZXIgZm9yIFBv
+d2VyUEMzMi4KCkFsYXMgSSBoYXZlIG5vIHN1Y2Nlc3Mgd2l0aCBkZWJpYW4gcG93ZXJwYy1saW51
+eC1nbnUtZ2NjIDguMi4wLTIuCgpBZnRlcgoKICBDUk9TU19DT01QSUxFPXBvd2VycGMtbGludXgt
+Z251LSAuL01BS0VBTEwgLWEgcHBjCgp0aGUgZXJyb3IgbWVzc2FnZSBpczoKCiAgcG93ZXJwYy1s
+aW51eC1nbnUtZ2NjOiBlcnJvcjogdW5yZWNvZ25pemVkIGNvbW1hbmQgbGluZSBvcHRpb24g4oCY
+LW1uby1zcGXigJk7IGRpZCB5b3UgbWVhbiDigJgtZm5vLXNlZeKAmT8KICBwb3dlcnBjLWxpbnV4
+LWdudS1nY2M6IGVycm9yOiB1bnJlY29nbml6ZWQgY29tbWFuZCBsaW5lIG9wdGlvbiDigJgtbXNw
+ZT1ub+KAmTsgZGlkIHlvdSBtZWFuIOKAmC1taXNlbD1ub+KAmT8KICBtYWtlWzJdOiAqKiogWy9o
+b21lL2J1aWxkdXNlci9iYXJlYm94Ly4vS2J1aWxkOjQwOiBhcmNoL3BwYy9saWIvYXNtLW9mZnNl
+dHMuc10gRXJyb3IgMQogIG1ha2VbMV06ICoqKiBbL2hvbWUvYnVpbGR1c2VyL2JhcmVib3gvTWFr
+ZWZpbGU6ODMyOiBwcmVwYXJlMF0gRXJyb3IgMgogIG1ha2VbMV06ICoqKiBXYWl0aW5nIGZvciB1
+bmZpbmlzaGVkIGpvYnMuLi4uCiAgcG93ZXJwYy1saW51eC1nbnUtZ2NjOiBlcnJvcjogdW5yZWNv
+Z25pemVkIGNvbW1hbmQgbGluZSBvcHRpb24g4oCYLW1uby1zcGXigJk7IGRpZCB5b3UgbWVhbiDi
+gJgtZm5vLXNlZeKAmT8KICBwb3dlcnBjLWxpbnV4LWdudS1nY2M6IGVycm9yOiB1bnJlY29nbml6
+ZWQgY29tbWFuZCBsaW5lIG9wdGlvbiDigJgtbXNwZT1ub+KAmTsgZGlkIHlvdSBtZWFuIOKAmC1t
+aXNlbD1ub+KAmT8KICBtYWtlWzNdOiAqKiogWy9ob21lL2J1aWxkdXNlci9iYXJlYm94L3Njcmlw
+dHMvTWFrZWZpbGUuYnVpbGQ6MjUwOiBzY3JpcHRzL21vZC9lbXB0eS5vXSBFcnJvciAxCiAgbWFr
+ZVszXTogKioqIFdhaXRpbmcgZm9yIHVuZmluaXNoZWQgam9icy4uLi4KCgpXaXRoIHRoaXMgbGlu
+dXgga2VybmVsLWJhc2VkIHBhdGNoIHBwYyBidWlsZCBoYXMgbm8gZmFpbC4KCmRpZmYgLS1naXQg
+YS9hcmNoL3BwYy9NYWtlZmlsZSBiL2FyY2gvcHBjL01ha2VmaWxlCmluZGV4IDA1ZWMyNDM4YS4u
+ZTU3NWU1OTIzIDEwMDY0NAotLS0gYS9hcmNoL3BwYy9NYWtlZmlsZQorKysgYi9hcmNoL3BwYy9N
+YWtlZmlsZQpAQCAtMSw3ICsxLDEyIEBACiAKIENQUEZMQUdTICs9IC1mZml4ZWQtcjE0IC1tMzIg
+ICBcCiAgICAgICAgLW1lYWJpIC1EIF9fUFBDX18gLUQgQ09ORklHX1BQQyBcCi0gICAgICAgLWZu
+by1zdHJpY3QtYWxpYXNpbmcgLW1uby1zcGUgLW1zcGU9bm8KKyAgICAgICAtZm5vLXN0cmljdC1h
+bGlhc2luZworCisjIE5vIFNQRSBpbnN0cnVjdGlvbiB3aGVuIGJ1aWxkaW5nIGtlcm5lbAorIyAo
+V2UgdXNlIGFsbCBhdmFpbGFibGUgb3B0aW9ucyB0byBoZWxwIHNlbWktYnJva2VuIGNvbXBpbGVy
+cykKK0NQUEZMQUdTICs9ICQoY2FsbCBjYy1vcHRpb24sLW1uby1zcGUpCitDUFBGTEFHUyArPSAk
+KGNhbGwgY2Mtb3B0aW9uLC1tc3BlPW5vKQogCiBpZmRlZiBDT05GSUdfUkVMT0NBVEFCTEUKIENQ
+UEZMQUdTICs9IC1mUElDIC1tcmVsb2NhdGFibGUKCgpJIGhhdmUgbm8gcmVhbCBwb3dlcnBjIGV4
+cGVyaWVuY2UgdG8gc3VibWl0IHRoaXMgcGF0Y2guCgpDb3VsZCB5b3UgcGxlYXNlIGNvbW1lbnQg
+dGhpcyBwYXRjaD8KCi0tIApCZXN0IHJlZ2FyZHMsCsKgIEFudG9ueSBQYXZsb3YKCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
+aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
