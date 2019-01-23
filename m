@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gmZZb-0002Ob-3J
- for barebox@lists.infradead.org; Thu, 24 Jan 2019 07:37:16 +0000
-Date: Thu, 24 Jan 2019 08:37:12 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190124073712.pirxmdvonmvnbolg@pengutronix.de>
-References: <20190123151620.4398-1-vivien.didelot@gmail.com>
+ id 1gm771-0007Rq-Mz
+ for barebox@lists.infradead.org; Wed, 23 Jan 2019 01:13:53 +0000
+Received: by mail-pf1-x442.google.com with SMTP id c73so257816pfe.13
+ for <barebox@lists.infradead.org>; Tue, 22 Jan 2019 17:13:51 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 22 Jan 2019 17:13:31 -0800
+Message-Id: <20190123011338.32517-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190123151620.4398-1-vivien.didelot@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] ARM: zii-vf610-dev: fix boot from SD
-To: Vivien Didelot <vivien.didelot@gmail.com>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+Subject: [PATCH 0/7] 32-bit lseek and /dev/mem fixes/improvements
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Wed, Jan 23, 2019 at 10:16:19AM -0500, Vivien Didelot wrote:
-> Since 5f99a8d40305 ("dts: VFxxx: Add aliases for ESDHC controllers"),
-> the SD card slot has a consistent name across all ZII Dev platforms,
-> including CFU1. They all use mmc1 instead of mci0 or mci1.
-> 
-> This allows us to completely drop the init scripts from the default
-> ZII VF610 Dev environment, and fix the boot/sd script.
-> 
-> Signed-off-by: Vivien Didelot <vivien.didelot@gmail.com>
-> ---
->  .../zii-vf610-dev/defaultenv-zii-vf610-dev/boot/sd  |  8 ++++++--
->  .../defaultenv-zii-vf610-dev/init/automount-sd      | 13 -------------
->  .../defaultenv-zii-vf610-dev/init/choose-dtb        |  4 ----
->  3 files changed, 6 insertions(+), 19 deletions(-)
->  delete mode 100644 arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/init/automount-sd
->  delete mode 100644 arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/init/choose-dtb
+Everyone:
 
-Applied, thanks
+This series is a result of my attempt to fix a regression in lseek()
+on 32-bit platforms. The regression manifested in lseek() unable to
+seek past ~4GiB mark caused and was caused by usage of IS_ERR_VALUE()
+(see commit messages for more detailed explanation). My goal was to
+both get rid of IS_ERR_VALUE() while still make it possible to access
+all 64-bits of address space via /dev/mem on 64-bit machines.
 
-Sascha
+First three commits are optional and can be dropped.
 
+Feedback is welcome!
+
+Thanks,
+Andrey Smirnov
+
+Andrey Smirnov (7):
+  commands: Move mem_parse_options() to lib/misc.c
+  commands: Get rid of mem_rw_buf
+  commands: Move /dev/mem driver to drivers/misc
+  fs: Change error checking logic for fsdrv->lseek() call
+  fs: Calculate new position before validtiy check in lseek()
+  fs: Add support for files larger than MAX_LFS_FILESIZE
+  misc: mem: Set correct size for /dev/mem
+
+ commands/Kconfig      |  17 +++---
+ commands/Makefile     |   1 -
+ commands/md.c         |  12 +++--
+ commands/mem.c        | 123 ------------------------------------------
+ commands/memcmp.c     |  16 +++---
+ commands/memcpy.c     |  10 ++--
+ commands/memset.c     |   2 -
+ common/ratp/md.c      |   9 ++--
+ drivers/misc/Kconfig  |   3 ++
+ drivers/misc/Makefile |   1 +
+ drivers/misc/mem.c    |  45 ++++++++++++++++
+ fs/devfs.c            |   2 +
+ fs/fs.c               |  48 +++++++++++------
+ include/driver.h      |   1 +
+ include/fs.h          |   1 +
+ lib/misc.c            |  42 +++++++++++++++
+ 16 files changed, 160 insertions(+), 173 deletions(-)
+ delete mode 100644 commands/mem.c
+ create mode 100644 drivers/misc/mem.c
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
