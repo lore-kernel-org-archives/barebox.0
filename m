@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat
- Linux)) id 1gmG0e-00070H-Hu
- for barebox@lists.infradead.org; Wed, 23 Jan 2019 10:43:54 +0000
-From: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
-Date: Wed, 23 Jan 2019 10:43:20 +0000
-Message-ID: <5ecaaf25-3fc4-f970-e22b-afb3abfc8bf6@data-modul.com>
-References: <a47578bb-9855-9645-e48b-fc9d3478a173@data-modul.com>
- <1547631290.4339.26.camel@pengutronix.de>
- <CAHQ1cqGzMcgUGYXn5uq_86kHb_QSb2ZeQCrG-5jc1wS4rvC5aA@mail.gmail.com>
-In-Reply-To: <CAHQ1cqGzMcgUGYXn5uq_86kHb_QSb2ZeQCrG-5jc1wS4rvC5aA@mail.gmail.com>
-Content-Language: de-DE
-Content-ID: <BA557BC4D45B374D889BB0937ADA6B8D@data-modul.com>
+Received: from mx01.eckelmann.de ([217.19.183.92])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gmJAQ-0001Yr-1s
+ for barebox@lists.infradead.org; Wed, 23 Jan 2019 14:06:13 +0000
+Date: Wed, 23 Jan 2019 15:05:55 +0100
+From: "Scherer, Thorsten" <thorsten.scherer@eckelmann.de>
+Message-ID: <20190123140555.GC3923@ws067.eckelmann.group>
+References: <20181213063356.19138-1-t.scherer@eckelmann.de>
+ <20181217141852.9c9dd9acf3072d07af8af20b@gmail.com>
+ <20181217113102.kjlim22expeyz627@pengutronix.de>
+ <20190122081040.GA23658@ws067.eckelmann.group>
+ <20190122085337.rs6iyfddji5qmtlv@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190122085337.rs6iyfddji5qmtlv@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,70 +22,149 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: signed HDMI firmware in imx8mq image
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] imd: model and compatible missing in metadata
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-SGkgZXZlcnlvbmUsDQoNCkkgZm91bmQgdGhlIHJlYXNvbiBvZiB0aGUgcHJvYmxlbS4gSXQgaXMg
-YWxsIHJlbGF0ZWQgdG8gdGhlIEhETUkgRlcgaXRzZWxmLiBUaGUNCm9uZSB0aGF0IEkgdG9vayBm
-cm9tIGlteC1ta2ltYWdlIHJlcG9zaXRvcnkgaXMgZGlmZmVyZW50IGZyb20gdGhlIG9uZSwgd2hp
-Y2ggaXMNCnVzZWQgdmlhIFlvY3RvIHRvIGJ1aWxkIGZpbmFsIGltYWdlLg0KTm93IEhETUkgaXMg
-d29ya2luZyA6KQ0KDQpCZXN0LA0KUmV5aGFuZWgNCg0KT24gMS8xNi8xOSA5OjMwIFBNLCBBbmRy
-ZXkgU21pcm5vdiB3cm90ZToNCj4gT24gV2VkLCBKYW4gMTYsIDIwMTkgYXQgMTozNCBBTSBMdWNh
-cyBTdGFjaCA8bC5zdGFjaEBwZW5ndXRyb25peC5kZT4gd3JvdGU6DQo+Pg0KPj4gSGkgUmV5aGFu
-ZWgsDQo+Pg0KPj4gQW0gTWl0dHdvY2gsIGRlbiAxNi4wMS4yMDE5LCAwODo0OCArMDAwMCBzY2hy
-aWViIFlhemRhbmksIFJleWhhbmVoOg0KPj4+IEV2ZXJ5IG9uZSwNCj4+Pg0KPj4+IEluIG9yZGVy
-IHRvIGJ1aWxkIGEgQmFyZWJveCBpbWFnZSB0byBib290IGlteDhtcS1ldmsgd2l0aCBIRE1JLCBJ
-IGhhdmUgdHJpZWQgdG8NCj4+PiB0ZWxsIEJhcmVib3ggYWJvdXQgdGhlIGVtYmVkZGVkIHNpZ25l
-ZCBIRE1JIGZpcm13YXJlLCB3aGljaCBpcyBuZWNlc3NhcnkgZm9yDQo+Pj4gcHJvdmlkZWQga2Vy
-bmVsIGltYWdlIGJ5IE5YUC4NCj4+Pg0KPj4+IGZvciB0aGlzIG1hdHRlciwgSSBhZGRlZCB0aGUg
-YmVsb3cgbGluZSBpbnRvIHRoZQ0KPj4+IGFyY2gvYXJtL2JvYXJkcy9ueHAtaW14OG1xLWV2ay9m
-bGFzaC1oZWFkZXItaW14OG1xLWV2ay5pbXhjZmcNCj4+Pg0KPj4+ICAgc29jIGlteDhtcQ0KPj4+
-ICAgbG9hZGFkZHIgMHgwMDdFMTAwMA0KPj4+ICAgZGNkb2ZzIDB4NDAwDQo+Pj4gKyBzaWduZWRf
-aGRtaV9maXJtd2FyZSBmaXJtd2FyZS9pbXgvc2lnbmVkX2hkbWlfaW14OG0uYmluDQo+Pj4NCj4+
-PiBBbmQgcGxhY2VkIHRoZSBmaXJtd2FyZSBpbnRvIHRoZSBidWlsZC1kaXJlY3RvcnkvZmlybXdh
-cmUvaW14DQo+Pj4NCj4+Pg0KPj4+IEJ5IGNoZWNraW5nIGtlcm5lbCBib290IG1lc3NhZ2UsIGl0
-IHNlZW1zIHRoZSBIRE1JIEZXIGlzIHJ1bm5pbmcsIGJ1dCBubyBhY2Nlc3MNCj4+PiB0byB0aGUg
-SERNSToNCj4+PiBbZHJtOmhkbWlfcGh5X2luaXRfdDI4aHBjXSAqRVJST1IqIEhETUkgbWFpbGJv
-eCBhY2Nlc3MgZmFpbGVkDQo+Pj4NCj4+PiBXaGF0IHNob3VsZCBJIGRvIG1vcmUgaW4gQmFyZWJv
-eCB0byBtYWtlIEhETUkgYWNjZXNzaWJsZSBieSBrZXJuZWw/DQo+Pg0KPj4gSSBkb24ndCB0aGlu
-ayB0aGVyZSBpcyBhbnl0aGluZyBtb3JlIG5lZWRlZCBmcm9tIHRoZSBCYXJlYm94IHNpZGUuIEF0
-DQo+PiBsZWFzdCB0aGUgc2FtZSBjaGFuZ2Ugd29ya3MgZm9yIG1lIGFuZCBnZXRzIG1lIGEgd29y
-a2luZyBIRE1JIGRpc3BsYXkNCj4+IG9uIHRoZSBFVksgYm9hcmQuDQo+Pg0KPg0KPiBGV0lXLCBJ
-IGRvbid0IHNlZSBhbnl0aGluZyBtaXNzaW5nIGVpdGhlci4NCj4NCj4+IEkgZG9uJ3QgdXNlIHRo
-ZSBOWFAga2VybmVsIHRocm91Z2gsIGJ1dCBydW5uaW5nIGEgNC4yMCBiYXNlZCBrZXJuZWwNCj4+
-IHdpdGggbG90IG9mIGRvd25zdHJlYW0gYml0cyBwb3J0ZWQuIFRoaXMgbWlnaHQgYmUgYSBpbmNv
-bXBhdGliaWxpdHkgb2YNCj4+IHlvdXIga2VybmVsIHdpdGggdGhlIGlteDggQVRGIHZlcnNpb24g
-c2hpcHBlZCB3aXRoIEJhcmVib3guDQo+Pg0KPg0KPiBJIHdhcyB1c2luZyB2ZW5kb3Iga2VybmVs
-IHdoZW4gSSB3YXMgd29ya2luZyBvbg0KPiBpbXBsZW1lbnRpbmcvdmFsaWRhdGluZyBpbml0aWFs
-IHN1cHBvcnQgb2YgdGhhdCBhbmQgaXQgd29ya2VkIGFscmlnaHQuDQo+IEhvd2V2ZXIsIHRoYXQg
-aGFzIGJlZW4gb3ZlciA1IG1vbnRoIGFnbywgc28gaXQgaXMgZW50aXJlbHkgcG9zc2libGUNCj4g
-dGhhdCBuZXdlciB2ZXJzaW9uIG9mIHZhcmlvdXMgY29tcG9uZW50cyBtaWdodCBoYXZlIGJlY29t
-ZQ0KPiBwcm9ibGVtYXRpYy4NCj4NCj4gSXQgaXMgcHJvYmFibHkgbm90IGEgcHJvYmxlbSBpbiB5
-b3VyIGNhc2UsIGJ1dCBkbyBrZWVwIGluIG1pbmQsIHRoYXQNCj4gaS5NWDhNUSBtYXNrIFJPTSBj
-b2RlIHVzZXMgU0QyIGFzIGEgImJhY2t1cCIgYm9vdCBvcHRpb24sIHNvIGlmIGl0DQo+IGRvZXNu
-J3QgZmluZCBhbnl0aGluZyBib290YWJsZSBvbiB0aGUgc2VsZWN0ZWQgKHZpYSBwaW5zIG9yIGZ1
-c2VzKQ0KPiBtZWRpdW0gaXQgd2lsbCByZXZlcnQgdG8gdGhhdC4gSWYgdGhhdCBoYXBwZW5zLCBI
-RE1JIGZpcm13YXJlIHByZXNlbnQNCj4gb24gU0QgY2FyZCB3aWxsIF9ub3RfIGJlIGxvYWRlZCBp
-bnRvIEhETUkgSVAgYmxvY2suIEkndmUgYmVlbiBiaXR0ZW4NCj4gYnkgdGhpcyB3aGVuIEkgd2Fz
-IHdvcmtpbmcgd2l0aCBhIGJvYXJkIHRoYXQgSSBmb3Jnb3Qgd2FzIGNvbmZpZ3VyZWQNCj4gdG8g
-Ym9vdCBmcm9tIGVNTUMgYW5kIHdhcyBib290aW5nIGZyb20gU0QgY2FyZCBieSBjb2luY2lkZW5j
-ZS4NCj4NCj4gVGhhbmtzLA0KPiBBbmRyZXkgU21pcm5vdg0KPg0KDQotLQ0KUmV5aGFuZWggWWF6
-ZGFuaQ0KRGF0YSBNb2R1bCBBRyAgICAgICAgICAgICAgICAgICAgICAgICAgICBURUw6ICAgICs0
-OS04OS01NjAxNy0xNTQNCkVtYmVkZGVkIGRldmVsb3BtZW50ICAgICAgICAgICAgICAgICBGQVg6
-ICAgICs0OS04OS01NjAxNy0xMTkNCkxpbnV4IC0gRGV2ZWxvcG1lbnQgICAgICAgICAgICAgICAg
-ICAgICAgUkc6IEhSLU11ZW5jaGVuIEItODU1OTENCkxhbmRzYmVyZ2VyIFN0ci4gMzIyIEQtODA2
-ODcgTXVlbmNoZW4gLSBodHRwOi8vd3d3LmRhdGEtbW9kdWwuY29tDQoNClZlcnRyYXVsaWNoZSBF
-LU1haWwgdm9uIC8gQ29uZmlkZW50aWFsIGUtbWFpbCBmcm9tOiBEQVRBIE1PRFVMIEFHDQpWb3Jz
-dGFuZCAvIENFTzogRHIuIEZsb3JpYW4gUGVzYWhsDQpWb3JzaXR6ZW5kZSBkZXMgQXVmc2ljaHRz
-cmF0ZXMgLyBDaGFpcndvbWFuIG9mIHRoZSBTdXBlcnZpc29yeSBCb2FyZDogS3Jpc3RpbiBELiBS
-dXNzZWxsDQpTaXR6IGRlciBHZXNlbGxzY2hhZnQgLyBSZWdpc3RlcmVkIE9mZmljZTogTcO8bmNo
-ZW4NClJlZ2lzdGVyZ2VyaWNodCAvIFJlZ2lzdHJhdGlvbiBDb3VydDogTcO8bmNoZW4gSGFuZGVs
-c3JlZ2lzdGVyIEIgODUgNTkxDQoNCg0KDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
-ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
-Ym94Cg==
+Hello,
+
+On Tue, Jan 22, 2019 at 09:53:37AM +0100, Uwe Kleine-K=F6nig wrote:
+> Hello,
+> =
+
+> On Tue, Jan 22, 2019 at 09:10:40AM +0100, Scherer, Thorsten wrote:
+> > i spent some time trying to understand the usage of imd_used etc. =
+
+> > =
+
+> > In another reply I stated:
+> > =
+
+> > 'I misread the documenation on IMD as "of_compatible and model will be
+> > figured out and put into the proper location by barebox".'
+> =
+
+> That is wrong. The current code doesn't ensure that and I don't see a
+> way how this could be done comfortably without per-board changes.
+>  =
+
+> > I am not so sure, if that is really the case.
+> > =
+
+> > As far as i understand things:
+> > =
+
+> > 1. 	of_compatible and model are (should be) automagically added to imd =
+from the
+> > 	entries in the dts.
+> > =
+
+> > git show 97e81f2d7 | grep -A 1 'For.*model.*of_compatible'
+> > cat scripts/gen-dtb-s | grep -A 23 -B 3 'barebox_imd_0'
+> =
+
+> The imd tags for compatible and model are generated, but not
+> automatically included with this change. This is AFAICT the current
+> state.
+> =
+
+> The problem is that the needed information is included in the "barebox"
+> image (i.e. the file with the name "barebox" that is build in the top
+> build dir) but then there is an additional step that extracts "all
+> needed" parts from that image to create a binary that then is able to be
+> started on your target. So if "barebox" has three entry points for
+> different machines, there are three images generated and each only has a
+> single entry point. Unused functions and data structures are stripped.
+> The linker detects that the imd section that contains the compatible and
+> model is not used and so this goes away in all three generated binaries.
+> =
+
+
+Thank you for the explanation.  Now things start to clear up a bit.  =
+
+
+> > 2.	the IMD_USED macro puts arbitrary tags in the metadata.  Which may
+> > 	also be a tag named model.
+> =
+
+> The IMD_USED claims a certain data structure is used such that the
+> linker doesn't throw it away.
+>  =
+
+
+Ok.
+
+> > Now I wonder, if the lack of the patch just covers up an issue at anoth=
+er
+> > place or if there is something (in the context of multi image support?)=
+ which
+> > I do not understand. =
+
+> =
+
+> Did you look at the patch I sent you?
+> =
+
+
+I did.  But not closely enough.  On the invokation of imd, model and
+of_compatible were not displayed.  Somehow I did not get, that your
+patch was made to apply for the imx25 boards and not for the imx6
+board (the one which I was checking).  After adjusting the lowlevel.c
+file of the imx6 board, everything went fine.
+
+> > Maybe there is something messed up with the entries in
+> > the device tree?
+> > =
+
+> > https://www.spinics.net/lists/arm-kernel/msg699453.html
+> =
+
+> This is unrelated, this is a patch for Linux to add a device tree.
+
+Right.  It didn't make sense to add this.
+
+> =
+
+> Best regards
+> Uwe
+> =
+
+
+Again, thank you for feedback.
+
+Best regards
+Thorsten
+
+> -- =
+
+> Pengutronix e.K.                           | Uwe Kleine-K=F6nig          =
+  |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+-- =
+
+Mit freundlichen Gr=FC=DFen
+Thorsten K. Scherer
+Diplom-Ingenieur (FH)
+K=E4lte- und Geb=E4udeleittechnik
+Datentechnik
+
+
+Eckelmann AG
+Berliner Str. 161, 65205 Wiesbaden
+Telefon +49 611 7103-329     =
+
+Fax +49 611 7103-133
+thorsten.scherer@eckelmann.de
+https://www.eckelmann.de
+
+Eckelmann Group - Source of inspiration
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
