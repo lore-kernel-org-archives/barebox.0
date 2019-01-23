@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-qt1-x842.google.com ([2607:f8b0:4864:20::842])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gmZW0-0008WU-Gf
- for barebox@lists.infradead.org; Thu, 24 Jan 2019 07:33:34 +0000
-Date: Thu, 24 Jan 2019 08:33:30 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190124073330.o5pq3rmvyr7qrtvs@pengutronix.de>
-References: <20190123072403.30981-1-o.rempel@pengutronix.de>
+ id 1gmKGU-0006Gt-Oc
+ for barebox@lists.infradead.org; Wed, 23 Jan 2019 15:16:32 +0000
+Received: by mail-qt1-x842.google.com with SMTP id y20so2659726qtm.13
+ for <barebox@lists.infradead.org>; Wed, 23 Jan 2019 07:16:30 -0800 (PST)
+From: Vivien Didelot <vivien.didelot@gmail.com>
+Date: Wed, 23 Jan 2019 10:16:19 -0500
+Message-Id: <20190123151620.4398-1-vivien.didelot@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190123072403.30981-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +21,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/3] ath79: enhancements
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 1/2] ARM: zii-vf610-dev: fix boot from SD
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Vivien Didelot <vivien.didelot@gmail.com>
 
-On Wed, Jan 23, 2019 at 08:24:00AM +0100, Oleksij Rempel wrote:
-> changes v2 20190123:
-> - squash bootstrap helper patches to one patch
-> - rename helper macro
-> - Add more comments
-> 
-> Oleksij Rempel (3):
->   MIPS: tplink-mr3020: use ar9331_pbl_generic_start
->   MIPS: black-swift: use ar9331_pbl_generic_start
->   MIPS: ath79: add spi and sram bootstrap helpers
+Since 5f99a8d40305 ("dts: VFxxx: Add aliases for ESDHC controllers"),
+the SD card slot has a consistent name across all ZII Dev platforms,
+including CFU1. They all use mmc1 instead of mci0 or mci1.
 
-Applied with typos fixed, thanks
+This allows us to completely drop the init scripts from the default
+ZII VF610 Dev environment, and fix the boot/sd script.
 
-Sascha
+Signed-off-by: Vivien Didelot <vivien.didelot@gmail.com>
+---
+ .../zii-vf610-dev/defaultenv-zii-vf610-dev/boot/sd  |  8 ++++++--
+ .../defaultenv-zii-vf610-dev/init/automount-sd      | 13 -------------
+ .../defaultenv-zii-vf610-dev/init/choose-dtb        |  4 ----
+ 3 files changed, 6 insertions(+), 19 deletions(-)
+ delete mode 100644 arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/init/automount-sd
+ delete mode 100644 arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/init/choose-dtb
 
+diff --git a/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/boot/sd b/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/boot/sd
+index cf8eec363..92dfae0ab 100644
+--- a/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/boot/sd
++++ b/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/boot/sd
+@@ -1,4 +1,8 @@
+ #!/bin/sh
+ 
+-global.bootm.image=/mnt/sd/zImage
+-global.bootm.oftree=/mnt/sd/${global.bootm.oftree}
++detect mmc1
++
++path="/mnt/mmc1.0"
++
++global.bootm.image="${path}/zImage"
++global.bootm.oftree="${path}/vf610-zii-${global.hostname}.dtb"
+diff --git a/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/init/automount-sd b/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/init/automount-sd
+deleted file mode 100644
+index f44dab34e..000000000
+--- a/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/init/automount-sd
++++ /dev/null
+@@ -1,13 +0,0 @@
+-#!/bin/sh
+-
+-if [ x${global.hostname} = xdev-rev-b -o x${global.hostname} = xdev-rev-c ];
+-then
+-    global sd=0
+-else
+-    global sd=1
+-fi
+-
+-mkdir -p /mnt/sd
+-automount /mnt/sd 'mci${global.sd}.probe=1 && mount /dev/disk${global.sd}.0 /mnt/sd'
+-
+-exit 0
+diff --git a/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/init/choose-dtb b/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/init/choose-dtb
+deleted file mode 100644
+index 41a74c3a9..000000000
+--- a/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/init/choose-dtb
++++ /dev/null
+@@ -1,4 +0,0 @@
+-#!/bin/sh
+-
+-global.bootm.oftree=vf610-zii-${global.hostname}.dtb
+-
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
