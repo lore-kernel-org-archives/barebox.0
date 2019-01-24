@@ -1,20 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gp9zx-0006bz-5t
- for barebox@lists.infradead.org; Thu, 31 Jan 2019 10:55:10 +0000
-Received: by mail-lf1-x141.google.com with SMTP id q3so740037lfm.2
- for <barebox@lists.infradead.org>; Thu, 31 Jan 2019 02:55:08 -0800 (PST)
-Date: Thu, 31 Jan 2019 13:54:53 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20190131105452.smetw36klsxmvtaq@localhost.localdomain>
-References: <20190129065549.29161-1-andrew.smirnov@gmail.com>
- <20190129065549.29161-19-andrew.smirnov@gmail.com>
- <20190129084847.spkfbeksb7xne46g@pengutronix.de>
- <CAHQ1cqGm+VUgZDScpPVTDuPX89FNSr1JiecqBah_o2piNT-ayg@mail.gmail.com>
+ id 1gmVUn-0007ed-EE
+ for barebox@lists.infradead.org; Thu, 24 Jan 2019 03:16:02 +0000
+Received: by mail-pg1-x542.google.com with SMTP id j10so2036737pga.1
+ for <barebox@lists.infradead.org>; Wed, 23 Jan 2019 19:15:59 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 23 Jan 2019 19:15:43 -0800
+Message-Id: <20190124031543.11733-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqGm+VUgZDScpPVTDuPX89FNSr1JiecqBah_o2piNT-ayg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,37 +21,114 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 18/19] drivers: mem: Create file to access second half
- of 64-bit memory
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: aarch64: Avoid relocations in runtime-offset.S
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hello, Andrey,
+Since get_runtime_offset() is executed as a part of reloaction logic,
+it cannot have code dependend on any kind of
+relocation. Unfortunately, current codebase violates this rule and
 
-> In order to allow access to second half of address space on 64-bit
-> machines, add code that creates /dev/highmem dedicated for that.
-> 
-> Note that due to maximum file size being limited to MAX_LFS_FILESIZE
-> or 0x7fff_ffff_ffff_ffff bytes at addresses 0x7fff_ffff_ffff_ffff and
-> 0xffff_ffff_ffff_ffff cannot be access through /dev/mem and
-> /dev/hightmem correspondingly.
+linkadr:
+.quad get_runtime_offset
 
-Does it imply using `-s /dev/highmem` argument when accessing addresses beyond 
-MAX_LFS_FILESIZE? That's not very convenient:
+ends up producing R_AARCH64_RELATIVE relocation that has to be
+resolved at runtime. From tiral and error experimentation it seems
+that the simplest way to do this is to drop "a" (allocatable)
+attribute fom the section directive in runtime-offset.S
 
-	$ git grep -l /dev/mem
-	commands/crc.c
-	commands/digest.c
-	commands/disasm.c
-	commands/md.c
-	commands/memcmp.c
-	commands/memcpy.c
-	commands/memset.c
-	commands/mm.c
-	commands/mw.c
+With "a" (see first entry):
 
-Regards,
-Peter
+aarch64-linux-gnu-objdump -R images/start_zii_imx8mq_dev.pbl
+
+images/start_zii_imx8mq_dev.pbl:     file format elf64-littleaarch64
+
+DYNAMIC RELOCATION RECORDS
+OFFSET           TYPE              VALUE
+00000000000000b0 R_AARCH64_RELATIVE  *ABS*+0x00000000000000a0
+0000000000004258 R_AARCH64_RELATIVE  *ABS*+0x0000000000028118
+0000000000004260 R_AARCH64_RELATIVE  *ABS*+0x0000000000028128
+00000000000042e0 R_AARCH64_RELATIVE  *ABS*
+00000000000042e8 R_AARCH64_RELATIVE  *ABS*+0x0000000000028118
+00000000000042f0 R_AARCH64_RELATIVE  *ABS*+0x00000000000042c8
+
+Without "a":
+
+ aarch64-linux-gnu-objdump -R images/start_zii_imx8mq_dev.pbl
+
+images/start_zii_imx8mq_dev.pbl:     file format elf64-littleaarch64
+
+DYNAMIC RELOCATION RECORDS
+OFFSET           TYPE              VALUE
+0000000000004258 R_AARCH64_RELATIVE  *ABS*+0x0000000000028100
+0000000000004260 R_AARCH64_RELATIVE  *ABS*+0x0000000000028110
+00000000000042e0 R_AARCH64_RELATIVE  *ABS*
+00000000000042e8 R_AARCH64_RELATIVE  *ABS*+0x0000000000028100
+00000000000042f0 R_AARCH64_RELATIVE  *ABS*+0x00000000000042c8
+
+Note that on recent toolchains (tested on 8.1.1), this problem is
+masked by the fact that
+
+.quad get_runtime_offset
+
+will be initialized with link-time value of "get_runtime_offset" in
+addition to having a R_AARCH64_RELATIVE relocation.
+
+00000000000000a0 <get_runtime_offset>:
+      a0:	10000000 	adr	x0, a0 <get_runtime_offset>
+      a4:	58000061 	ldr	x1, b0 <linkadr>
+      a8:	eb010000 	subs	x0, x0, x1
+      ac:	d65f03c0 	ret
+
+00000000000000b0 <linkadr>:
+      b0:	000000a0 	.word	0x000000a0
+      b4:	00000000 	.word	0x00000000
+
+_However_, older toolchains (tested on 5.5.0), will only issue a
+R_AARCH64_RELATIVE, so memory location will contain only zeroes:
+
+00000000000000a0 <get_runtime_offset>:
+      a0:	10000000 	adr	x0, a0 <get_runtime_offset>
+      a4:	58000061 	ldr	x1, b0 <linkadr>
+      a8:	eb010000 	subs	x0, x0, x1
+      ac:	d65f03c0 	ret
+
+00000000000000b0 <linkadr>:
+	...
+
+This leads to an very early crash and complete boot failure in the
+latter case.
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+
+Sascha:
+
+Assuming that proposed fix is OK, this should probably got to 'master'
+as well as 'next'.
+
+Thanks,
+Andrey Smirnov
+
+ arch/arm/lib64/runtime-offset.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/lib64/runtime-offset.S b/arch/arm/lib64/runtime-offset.S
+index 177ca6478..c90469e66 100644
+--- a/arch/arm/lib64/runtime-offset.S
++++ b/arch/arm/lib64/runtime-offset.S
+@@ -1,7 +1,7 @@
+ #include <linux/linkage.h>
+ #include <asm/assembler.h>
+ 
+-.section ".text_bare_init","ax"
++.section ".text_bare_init","x"
+ 
+ /*
+  * Get the offset between the link address and the address
+-- 
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
