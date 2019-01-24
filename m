@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gmDeS-0002ea-0T
- for barebox@lists.infradead.org; Wed, 23 Jan 2019 08:12:49 +0000
-Date: Wed, 23 Jan 2019 09:12:44 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20190123081244.GB29247@ravnborg.org>
+ id 1gmZW0-0008WU-Gf
+ for barebox@lists.infradead.org; Thu, 24 Jan 2019 07:33:34 +0000
+Date: Thu, 24 Jan 2019 08:33:30 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190124073330.o5pq3rmvyr7qrtvs@pengutronix.de>
 References: <20190123072403.30981-1-o.rempel@pengutronix.de>
- <20190123072403.30981-3-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190123072403.30981-3-o.rempel@pengutronix.de>
+In-Reply-To: <20190123072403.30981-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,15 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/3] MIPS: black-swift: use ar9331_pbl_generic_start
+Subject: Re: [PATCH v2 0/3] ath79: enhancements
 To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org, Oleksij Rempel <linux@rempel-privat.de>
+Cc: barebox@lists.infradead.org
 
-On Wed, Jan 23, 2019 at 08:24:02AM +0100, Oleksij Rempel wrote:
-> From: Oleksij Rempel <linux@rempel-privat.de>
+On Wed, Jan 23, 2019 at 08:24:00AM +0100, Oleksij Rempel wrote:
+> changes v2 20190123:
+> - squash bootstrap helper patches to one patch
+> - rename helper macro
+> - Add more comments
 > 
-> most ar9331 boards are almost identical. Remove as match duplicate code
-Here too.
+> Oleksij Rempel (3):
+>   MIPS: tplink-mr3020: use ar9331_pbl_generic_start
+>   MIPS: black-swift: use ar9331_pbl_generic_start
+>   MIPS: ath79: add spi and sram bootstrap helpers
+
+Applied with typos fixed, thanks
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
