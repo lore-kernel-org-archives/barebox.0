@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gkIDp-0006ar-U2
- for barebox@lists.infradead.org; Fri, 18 Jan 2019 00:41:23 +0000
-Received: by mail-pg1-x543.google.com with SMTP id z10so5203226pgp.7
- for <barebox@lists.infradead.org>; Thu, 17 Jan 2019 16:41:21 -0800 (PST)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 17 Jan 2019 16:41:13 -0800
-Message-Id: <20190118004113.20740-1-andrew.smirnov@gmail.com>
+ id 1gmZOe-00065u-UG
+ for barebox@lists.infradead.org; Thu, 24 Jan 2019 07:25:58 +0000
+Date: Thu, 24 Jan 2019 08:25:55 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190124072555.pwhkzwe37xsdcd2z@pengutronix.de>
+References: <20190118004155.21725-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190118004155.21725-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,94 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ls: Adjust amount of space allocated for filesize
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH] unlink_recursive: Drop struct data
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Maximum file size on 64-bit system is 2^63-1 (9223372036854775807),
-which takes more that 14 characters of space. In order to keep things
-properly aligned adjust that spacing to 20 on 64-bit platforms.
+On Thu, Jan 17, 2019 at 04:41:55PM -0800, Andrey Smirnov wrote:
+> Drop struct data which doesn't seem to serve any purpose in the code
+> and looks like a leftover.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  lib/unlink-recursive.c | 27 +++++++--------------------
+>  1 file changed, 7 insertions(+), 20 deletions(-)
 
-Before:
+Applied, thanks
 
-ls -l /dev/
-d---------              0 .
-d---------              0 ..
-crw-------          16384 dds-eeprom
-crw-------            256 e1000-invm0
-crw-------          16384 eeprom0
-cr--------              0 full
-crw-------           2048 imx-ocotp
-crw-------          16384 main-eeprom
-crw-------             64 mdio0-phy00
-crw------- 9223372036854775807 mem
-c-w-------              0 netconsole-1
-c-w-------              0 null
-crw-------   256060514304 nvme0n1
-cr--------              0 prng
-crw-------     4294967296 ram0
-c-w-------              0 serial0-1
-cr--------              0 zero
+Sascha
 
-After:
-
-ls -l /dev/
-d---------                   0 .
-d---------                   0 ..
-crw-------               16384 dds-eeprom
-crw-------                 256 e1000-invm0
-crw-------               16384 eeprom0
-cr--------                   0 full
-crw-------                2048 imx-ocotp
-crw-------               16384 main-eeprom
-crw-------                  64 mdio0-phy00
-crw------- 9223372036854775807 mem
-c-w-------                   0 netconsole-1
-c-w-------                   0 null
-crw-------        256060514304 nvme0n1
-cr--------                   0 prng
-crw-------          4294967296 ram0
-c-w-------                   0 serial0-1
-cr--------                   0 zero
-
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- commands/ls.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/commands/ls.c b/commands/ls.c
-index e54991862..e5e37d75c 100644
---- a/commands/ls.c
-+++ b/commands/ls.c
-@@ -26,6 +26,15 @@
- #include <getopt.h>
- #include <stringlist.h>
- 
-+/*
-+ * SIZELEN = strlen(itoa(MAX_LFS_FILESIZE)) + 1;
-+ */
-+#ifdef CONFIG_CPU_64
-+#define SIZELEN		20
-+#else
-+#define SIZELEN		14
-+#endif
-+
- static void ls_one(const char *path, const char* fullname)
- {
- 	char modestr[11];
-@@ -38,7 +47,8 @@ static void ls_one(const char *path, const char* fullname)
- 		return;
- 
- 	mkmodestr(s.st_mode, modestr);
--	printf("%s %14llu %*.*s", modestr, s.st_size, namelen, namelen, path);
-+	printf("%s %*llu %*.*s", modestr, SIZELEN, s.st_size, namelen,
-+	       namelen, path);
- 
- 	if (S_ISLNK(s.st_mode)) {
- 		char realname[PATH_MAX];
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
