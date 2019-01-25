@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gk2ac-0000GE-Ug
- for barebox@lists.infradead.org; Thu, 17 Jan 2019 07:59:52 +0000
-Date: Thu, 17 Jan 2019 08:59:48 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190117075948.4f6pwllc66k774gj@pengutronix.de>
-References: <44943261547037040@iva5-750e13568e4d.qloud-c.yandex.net>
- <87941547037637@iva6-19b25c513db4.qloud-c.yandex.net>
- <20190109130341.sxiqrcg43mxuzrai@pengutronix.de>
- <26388451547654386@iva5-0acfc31d2b43.qloud-c.yandex.net>
+ id 1gn8Zf-0001nz-06
+ for barebox@lists.infradead.org; Fri, 25 Jan 2019 20:59:40 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri, 25 Jan 2019 21:59:35 +0100
+Message-Id: <20190125205935.15135-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20190125205935.15135-1-u.kleine-koenig@pengutronix.de>
+References: <20190125205935.15135-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <26388451547654386@iva5-0acfc31d2b43.qloud-c.yandex.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,27 +21,34 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [HELP] Barebox porting
-To: =?utf-8?B?0KHQtdGA0LDRhNC40Lwg0JTQvtC70LHQuNC70L7Qsg==?= <s.dlblv@ya.ru>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 2/2] i2c_probe: Use a quick write transfer instead of writing
+ a zero
+To: barebox@lists.infradead.org
 
-T24gV2VkLCBKYW4gMTYsIDIwMTkgYXQgMDY6NTk6NDZQTSArMDMwMCwg0KHQtdGA0LDRhNC40Lwg
-0JTQvtC70LHQuNC70L7QsiB3cm90ZToKPiBJcyB0aGVyZSBhbnkgYW5vdGhlciB3YXkgdG8gbGlu
-ayBEVCB0byB0aGUgaW1hZ2UgYmVzaWRlcyBpbXgqX2JhcmVib3hfZW50cnkodm9pZCAqYm9hcmRk
-YXRhKSBmdW5jdGlvbnM/CgpZb3UgY2FuIGhhdmUgYW55IGRldmljZXRyZWUgYnkgYWRkaW5nIGl0
-IHRvIGFyY2gvYXJtL2R0cy9NYWtlZmlsZToKCnBibC1kdGItJChDT05GSUdfTUFDSF9GUkVFU0NB
-TEVfTVg1MV9QREspICs9IGlteDUxLWJhYmJhZ2UuZHRiLm8KClRoZW4gYWRkIGEgZGVjbGFyYXRp
-b24gZm9yIGl0IChyZXBsYWNlIGJlZ2lubmluZyBvZiBmaWxlbmFtZSB3aXRoCl9fZHRiXywgLmR0
-Yi5vIHdpdGggX3N0YXJ0IGFuZCAnLScgd2l0aCAnXycpOgoKZXh0ZXJuIGNoYXIgX19kdGJfaW14
-NTFfYmFiYmFnZV9zdGFydFtdOwoKQW5kIHRoZW4geW91IGNhbiB1c2UgaXQuIFVzZSBvYmotZHRi
-LSQoQ09ORklHX01BQ0hfRlJFRVNDQUxFX01YNTFfUERLKQp3aGVuIHlvdSB3YW50IHRvIGhhdmUg
-aXQgaW4gdGhlIGZ1bGwgYmFyZWJveCBpbWFnZSByYXRoZXIgdGhhbiBpbiB0aGUKUEJMLgoKU2Fz
-Y2hhCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAg
-ICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4g
-Ni04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0w
-ICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAg
-ICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+VGhpcyBtYXRjaGVzIHRoZSBtZXRob2QgaW1wbGVtZW50ZWQgaW4gaTJjZGV0ZWN0KDgpIHdoZW4g
+dXNpbmcgaXRzIC1xCm9wdGlvbi4KCldpdGggdGhpcyBjaGFuZ2UgYW4gcng4MTMwIFJUQyBpcyBk
+ZXRlY3RhYmxlIHVzaW5nIGkyY19wcm9iZS4gVGhpcwpmYWlsZWQgYmVmb3JlIGJlY2F1c2UgdGhp
+cyBjaGlwIGFja3MgdGhlIGZpcnN0IGJ5dGUgKGNvbnRhaW5pbmcgaXRzCmFkZHJlc3MgYW5kIHRo
+ZSBSL8yFVyBiaXQpIGJ1dCBuYWNrcyB0aGUgZm9sbG93aW5nIDAgKHJlcHJlc2VudGluZyB0aGUK
+dGFyZ2V0IGFkZHJlc3MgdG8gd3JpdGUgbm90aGluZyB0bykgd2hpY2ggbWFrZXMgaTJjX3dyaXRl
+X3JlZygpIHJldHVybgp3aXRoIGFuIGVycm9yIGFuZCBzbyB0aGUgY2hpcCBpcyBub3QgbGlzdGVk
+IGFzIGF2YWlsYWJsZS4KClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWlu
+ZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogY29tbWFuZHMvaTJjLmMgfCAxNiArKysrKysr
+Ky0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgOCBpbnNlcnRpb25zKCspLCA4IGRlbGV0aW9ucygt
+KQoKZGlmZiAtLWdpdCBhL2NvbW1hbmRzL2kyYy5jIGIvY29tbWFuZHMvaTJjLmMKaW5kZXggNjVm
+ZjczNzhlYzE0Li43N2Q2NWUzZmEzMmIgMTAwNjQ0Ci0tLSBhL2NvbW1hbmRzL2kyYy5jCisrKyBi
+L2NvbW1hbmRzL2kyYy5jCkBAIC0yNCwxOSArMjQsMTkgQEAKIAogc3RhdGljIHZvaWQgaTJjX3By
+b2JlX3JhbmdlKHN0cnVjdCBpMmNfYWRhcHRlciAqYWRhcHRlciwgaW50IHN0YXJ0YWRkciwgaW50
+IHN0b3BhZGRyKQogewotCXN0cnVjdCBpMmNfY2xpZW50IGNsaWVudCA9IHt9OwogCWludCBhZGRy
+OwotCWludCByZXQ7Ci0JdTggcmVnOwotCi0JY2xpZW50LmFkYXB0ZXIgPSBhZGFwdGVyOwogCiAJ
+cHJpbnRmKCJwcm9iaW5nIGkyYyVkIHJhbmdlIDB4JTAyeC0weCUwMng6ICIsIGFkYXB0ZXItPm5y
+LCBzdGFydGFkZHIsIHN0b3BhZGRyKTsKIAlmb3IgKGFkZHIgPSBzdGFydGFkZHI7IGFkZHIgPD0g
+c3RvcGFkZHIgJiYgIWN0cmxjKCk7IGFkZHIrKykgewotCQljbGllbnQuYWRkciA9IGFkZHI7Ci0J
+CXJldCA9IGkyY193cml0ZV9yZWcoJmNsaWVudCwgMHgwMCwgJnJlZywgMCk7Ci0JCWlmIChyZXQg
+PT0gMCkKKwkJc3RydWN0IGkyY19tc2cgbXNnID0geworCQkJLmFkZHIgPSBhZGRyLAorCQkJLmJ1
+ZiA9IE5VTEwsCisJCQkubGVuID0gMCwKKwkJfTsKKwkJaW50IHJldCA9IGkyY190cmFuc2Zlcihh
+ZGFwdGVyLCAmbXNnLCAxKTsKKwkJaWYgKHJldCA9PSAxKQogCQkJcHJpbnRmKCIweCUwMnggIiwg
+YWRkcik7CisKIAl9CiAJcHJpbnRmKCJcbiIpOwogfQotLSAKMi4yMC4xCgoKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
+YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
