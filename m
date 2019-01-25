@@ -1,21 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gmuQM-0007F5-AZ
- for barebox@lists.infradead.org; Fri, 25 Jan 2019 05:53:08 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <uol@pengutronix.de>) id 1gmuQH-0004G8-0f
- for barebox@lists.infradead.org; Fri, 25 Jan 2019 06:53:01 +0100
-Received: from uol by dude.hi.pengutronix.de with local (Exim 4.92-RC4)
- (envelope-from <uol@pengutronix.de>) id 1gmuQG-0004vH-PR
- for barebox@lists.infradead.org; Fri, 25 Jan 2019 06:53:00 +0100
-References: <75fa7503-7633-3a67-4f5b-b857809bdfb5@mev.co.uk>
-From: Ulrich =?utf-8?Q?=C3=96lmann?= <u.oelmann@pengutronix.de>
-In-reply-to: <75fa7503-7633-3a67-4f5b-b857809bdfb5@mev.co.uk>
-Date: Fri, 25 Jan 2019 06:53:00 +0100
-Message-ID: <6rva2dwaf7.fsf@pengutronix.de>
+ id 1gmtmv-0003oR-IG
+ for barebox@lists.infradead.org; Fri, 25 Jan 2019 05:12:22 +0000
+Received: by mail-pf1-x441.google.com with SMTP id b85so4181068pfc.3
+ for <barebox@lists.infradead.org>; Thu, 24 Jan 2019 21:12:20 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Thu, 24 Jan 2019 21:12:04 -0800
+Message-Id: <20190125051204.15749-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,49 +17,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Do I really need 3 buckets for state?
+Subject: [PATCH] lib: image-sparse: Mark sparse_seek() as static
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-SGkgSWFuLAoKT24gVGh1LCBKYW4gMjQgMjAxOSBhdCAxNjoyOCArMDEwMCwgSWFuIEFiYm90dCA8
-YWJib3R0aUBtZXYuY28udWs+IHdyb3RlOgo+IEJhY2sgd2hlbiBJIHdhcyBkZXRlcm1pbmluZyBo
-b3cgdG8gcGFydGl0aW9uIHRoZSBzcGktbm9yIGZsYXNoIG9uIG15Cj4gZW1iZWRkZWQgZGV2aWNl
-LCBJIHJlc2VydmVkIHR3byBlcmFzZSBibG9ja3MgKGVhY2ggb2Ygc2l6ZSA2NTUzNikgZm9yCj4g
-dXNlIGFzIGEgYmFyZWJveCBzdGF0ZSBwYXJ0aXRpb24uICBJIHdhc24ndCB1c2luZyBpdCBmb3Ig
-YW55dGhpbmcgYXQgdGhlCj4gdGltZS4gIE5vdyBJIHdhbnQgdG8gdXNlIGl0IHRvIGhvbGQgYm9v
-dHN0YXRlIGluZm9ybWF0aW9uIGZvciBiYXJlYm94Cj4gYm9vdGNob29zZXIgKGZvciB1c2UgaW4g
-Y29tYmluYXRpb24gd2l0aCByYXVjIHRvIGhhbmRsZSBzeXN0ZW0gdXBkYXRlcykuCj4KPiBJIGFt
-IHVzaW5nIGJhY2tlbmQtdHlwZT0icmF3IjsgYmFja2VuZC1zdG9yYWdlLXR5cGU9ImNpcmN1bGFy
-IjsgYW5kCj4gYmFja2VuZC1zdHJpZGVzaXplPTwweDQwPjsuCgp0aGUgZG9jdW1lbnRhdGlvbiBp
-cyBub3QgY29ycmVjdCBoZXJlOiBmb3IgdGhlIGNhc2Ugb2Ygc3BpLW5vciBmbGFzaCB0aGUKc3Ry
-aWRlc2l6ZSBpcyBub3QgdXNlZCBhdCBhbGwgKGFuZCB0aGVyZWZvcmUgbm90IG5lZWRlZCBpbiB0
-aGUKZGV2aWNldHJlZSkuIEluc3RlYWQgZWFjaCBidWNrZXQgaXMgc2VhcmNoZWQgaW4gcmV2ZXJz
-ZSBkaXJlY3Rpb24Kc3RhcnRpbmcgZnJvbSB0aGUgZW5kIGZvciBub24gMHhmZiBieXRlcyBhbmQg
-YSBtYWdpYyB2YWx1ZSB0byBzZWUgd2hlcmUKdGhlIGxhc3QgY29weSBvZiB0aGUgc3RhdGUgdmFy
-aWFibGVzIGhhcyBiZWVuIHdyaXR0ZW4gdG8sIHNlZSBbMV0uCgo+IEl0IGFsbCB3b3JrcyBmaW5l
-IGV4Y2VwdCB0aGF0IEkgZ2V0IGEgd2FybmluZyBmcm9tIGJhcmVib3g6Cj4KPiBGYWlsZWQgdG8g
-aW5pdGlhbGl6ZSBkZXNpcmVkIGFtb3VudCBvZiBidWNrZXRzLCBvbmx5IDIgb2YgMyBzdWNjZWVk
-ZWQKPgo+IEkgaGF2ZSAiZml4ZWQiIHRoZSB3YXJuaW5nIHdpdGggYSBsb2NhbCBwYXRjaCB0byBy
-ZWR1Y2UgdGhlCj4gJ2Rlc2lyZWRfYnVja2V0cycgY29uc3RhbnQgaW4gImNvbW1vbi9zdGF0ZS9i
-YWNrZW5kX3N0b3JhZ2UuYyIgZnJvbSAzIHRvIDIuCj4KPiBNeSBxdWVzdGlvbiBpcywgaG93IG11
-Y2ggdHJvdWJsZSBhbSBJIGxldHRpbmcgbXlzZWxmIGluIGZvciB3aXRoIHRoaXMKPiBsb2NhbCBw
-YXRjaD8gIEkgYXNzdW1lIHRoZSBzdGF0ZSBkcml2ZXIgd2lsbCBvbmx5IGVyYXNlIGFuZCB1cGRh
-dGUgMQo+IGJ1Y2tldCBhdCBhIHRpbWUgd2hlbiB0aGUgYnVja2V0cyBhcmUgZnVsbC4KCkNvcnJl
-Y3QsIHRoaXMgaXMgZG9uZSBpbiBzdGF0ZV9zdG9yYWdlX3dyaXRlKCksIHNlZSBbMl0uCgo+IERv
-IEkgcmVhbGx5IG5lZWQgMyBidWNrZXRzIG9yIHdpbGwgMiBidWNrZXRzIGJlIGVub3VnaD8KClRo
-aXMgZGVwZW5kcyBvbiBob3cgbXVjaCByZWR1bmRhbmN5IHlvdSBuZWVkIHRvIHNsZWVwIHdlbGwu
-Li4KCkJlc3QgcmVnYXJkcwpVbHJpY2gKCgpbMV0gaHR0cHM6Ly9naXRodWIuY29tL3Nhc2NoYWhh
-dWVyL2JhcmVib3gvYmxvYi9tYXN0ZXIvY29tbW9uL3N0YXRlL2JhY2tlbmRfYnVja2V0X2NpcmN1
-bGFyLmMjTDM4OApbMl0gaHR0cHM6Ly9naXRodWIuY29tL3Nhc2NoYWhhdWVyL2JhcmVib3gvYmxv
-Yi9tYXN0ZXIvY29tbW9uL3N0YXRlL2JhY2tlbmRfc3RvcmFnZS5jI0w1MgotLQpQZW5ndXRyb25p
-eCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCBVbHJpY2ggw5ZsbWFubiAgICAgICAg
-ICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0
-cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNo
-ZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQg
-SGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01
-NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJh
-cmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
-dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Mark sparse_seek() as static to avoid -Wmissing-prototypes warnings
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ lib/image-sparse.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/image-sparse.c b/lib/image-sparse.c
+index 7137d15fd..0c31742ab 100644
+--- a/lib/image-sparse.c
++++ b/lib/image-sparse.c
+@@ -60,7 +60,7 @@ struct sparse_image_ctx {
+ 	uint32_t fill_val;
+ };
+ 
+-int sparse_seek(struct sparse_image_ctx *si)
++static int sparse_seek(struct sparse_image_ctx *si)
+ {
+ 	unsigned int chunk_data_sz, payload;
+ 	loff_t offs;
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
