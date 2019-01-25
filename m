@@ -1,24 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1go2Ya-0008GS-Ul
- for barebox@lists.infradead.org; Mon, 28 Jan 2019 08:46:18 +0000
-Date: Mon, 28 Jan 2019 09:46:15 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190128084615.ssynohnulsd4sjwi@pengutronix.de>
-References: <20190121163503.GA2854@ravnborg.org>
- <20190122063306.yvfd6p2b52ofw2ab@pengutronix.de>
- <33796811548166043@iva7-4f557d6b60d4.qloud-c.yandex.net>
- <20190122144240.t7bknlqpipjpzeda@pengutronix.de>
- <12201721548173536@iva5-750e13568e4d.qloud-c.yandex.net>
- <20190123091134.2ibecc3f2sxgr6gc@pengutronix.de>
- <39543571548237706@iva8-6be7d23653d9.qloud-c.yandex.net>
- <20190123101735.faeyxjmmfxogvwqt@pengutronix.de>
- <8696391548418684@myt4-929fb874f3f2.qloud-c.yandex.net>
- <61845721548425461@sas2-80cfc068821c.qloud-c.yandex.net>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gn1Lf-0007zu-9W
+ for barebox@lists.infradead.org; Fri, 25 Jan 2019 13:16:45 +0000
+From: Christian Hemp <c.hemp@phytec.de>
+Date: Fri, 25 Jan 2019 14:16:40 +0100
+Message-ID: <4561415.JmzvUQDMJA@llp-hemp>
+In-Reply-To: <20190111111316.i4sbti24awp2in3e@pengutronix.de>
+References: <1b58b623-806b-7e15-7419-7fdd97a85f2a@data-modul.com>
+ <20190111111316.i4sbti24awp2in3e@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <61845721548425461@sas2-80cfc068821c.qloud-c.yandex.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,30 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [HELP] Barebox porting
-To: Seraphim Dolbilov <s.dlblv@ya.ru>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: build barebox for imx8mqevk
+To: barebox@lists.infradead.org
 
-On Fri, Jan 25, 2019 at 05:11:01PM +0300, Seraphim Dolbilov wrote:
-> Hello, friends!
+Hello Sascha,
+
+Am Freitag, 11. Januar 2019, 12:13:16 CET schrieb Sascha Hauer:
+> You have to pass ARCH=arm as environment variable. It seems that you
+> pass ARCH=arm64.
 > 
-> I'm interested if there is any internal Barebox convention about
-> return types and values of initcall functions. What shall return
-> my initcall if I want to stop booting and display error message?
+> In barebox both ARM 32bit and 64bit are handled under arch/arm,
+> nevertheless you have to pass a suitable toolchain.
 
-An error message will be printed whenever you return an initcall with an
-error. barebox won't stop then, but instead continues. This is done to
-be able to tell the user something went wrong without adding many
-printfs. If your error is so severe that you can't continue you have to
-use panic() instead.
+Is there a specific reason why ARM 32bit and 64bit are handled under arch/arm 
+and not separate?
 
-Sascha
+Regards
+Christian
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> Regards,
+>   Sascha
+> 
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+
+
 
 _______________________________________________
 barebox mailing list
