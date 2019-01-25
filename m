@@ -1,19 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp109.ord1c.emailsrvr.com ([108.166.43.109])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gmgvh-0001nF-Ht
- for barebox@lists.infradead.org; Thu, 24 Jan 2019 15:28:58 +0000
-Received: from smtp14.relay.ord1c.emailsrvr.com (localhost [127.0.0.1])
- by smtp14.relay.ord1c.emailsrvr.com (SMTP Server) with ESMTP id 07E54C041C
- for <barebox@lists.infradead.org>; Thu, 24 Jan 2019 10:28:31 -0500 (EST)
-Received: by smtp14.relay.ord1c.emailsrvr.com (Authenticated sender:
- siepeng-AT-mev.co.uk) with ESMTPSA id B4574C0361
- for <barebox@lists.infradead.org>; Thu, 24 Jan 2019 10:28:30 -0500 (EST)
-From: Ian Abbott <abbotti@mev.co.uk>
-Message-ID: <75fa7503-7633-3a67-4f5b-b857809bdfb5@mev.co.uk>
-Date: Thu, 24 Jan 2019 15:28:29 +0000
+ id 1gmuQM-0007F5-AZ
+ for barebox@lists.infradead.org; Fri, 25 Jan 2019 05:53:08 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <uol@pengutronix.de>) id 1gmuQH-0004G8-0f
+ for barebox@lists.infradead.org; Fri, 25 Jan 2019 06:53:01 +0100
+Received: from uol by dude.hi.pengutronix.de with local (Exim 4.92-RC4)
+ (envelope-from <uol@pengutronix.de>) id 1gmuQG-0004vH-PR
+ for barebox@lists.infradead.org; Fri, 25 Jan 2019 06:53:00 +0100
+References: <75fa7503-7633-3a67-4f5b-b857809bdfb5@mev.co.uk>
+From: Ulrich =?utf-8?Q?=C3=96lmann?= <u.oelmann@pengutronix.de>
+In-reply-to: <75fa7503-7633-3a67-4f5b-b857809bdfb5@mev.co.uk>
+Date: Fri, 25 Jan 2019 06:53:00 +0100
+Message-ID: <6rva2dwaf7.fsf@pengutronix.de>
 MIME-Version: 1.0
-Content-Language: en-GB
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +25,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Do I really need 3 buckets for state?
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: Do I really need 3 buckets for state?
+To: barebox@lists.infradead.org
 
-Hi,
-
-Back when I was determining how to partition the spi-nor flash on my 
-embedded device, I reserved two erase blocks (each of size 65536) for 
-use as a barebox state partition.  I wasn't using it for anything at the 
-time.  Now I want to use it to hold bootstate information for barebox 
-bootchooser (for use in combination with rauc to handle system updates).
-
-I am using backend-type="raw"; backend-storage-type="circular"; and 
-backend-stridesize=<0x40>;.  It all works fine except that I get a 
-warning from barebox:
-
-Failed to initialize desired amount of buckets, only 2 of 3 succeeded
-
-I have "fixed" the warning with a local patch to reduce the 
-'desired_buckets' constant in "common/state/backend_storage.c" from 3 to 2.
-
-My question is, how much trouble am I letting myself in for with this 
-local patch?  I assume the state driver will only erase and update 1 
-bucket at a time when the buckets are full.  Do I really need 3 buckets 
-or will 2 buckets be enough?
-
-Best regards,
-Ian Abbott.
-
--- 
--=( Ian Abbott <abbotti@mev.co.uk> || Web: www.mev.co.uk )=-
--=( MEV Ltd. is a company registered in England & Wales. )=-
--=( Registered number: 02862268.  Registered address:    )=-
--=( 15 West Park Road, Bramhall, STOCKPORT, SK7 3JZ, UK. )=-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgSWFuLAoKT24gVGh1LCBKYW4gMjQgMjAxOSBhdCAxNjoyOCArMDEwMCwgSWFuIEFiYm90dCA8
+YWJib3R0aUBtZXYuY28udWs+IHdyb3RlOgo+IEJhY2sgd2hlbiBJIHdhcyBkZXRlcm1pbmluZyBo
+b3cgdG8gcGFydGl0aW9uIHRoZSBzcGktbm9yIGZsYXNoIG9uIG15Cj4gZW1iZWRkZWQgZGV2aWNl
+LCBJIHJlc2VydmVkIHR3byBlcmFzZSBibG9ja3MgKGVhY2ggb2Ygc2l6ZSA2NTUzNikgZm9yCj4g
+dXNlIGFzIGEgYmFyZWJveCBzdGF0ZSBwYXJ0aXRpb24uICBJIHdhc24ndCB1c2luZyBpdCBmb3Ig
+YW55dGhpbmcgYXQgdGhlCj4gdGltZS4gIE5vdyBJIHdhbnQgdG8gdXNlIGl0IHRvIGhvbGQgYm9v
+dHN0YXRlIGluZm9ybWF0aW9uIGZvciBiYXJlYm94Cj4gYm9vdGNob29zZXIgKGZvciB1c2UgaW4g
+Y29tYmluYXRpb24gd2l0aCByYXVjIHRvIGhhbmRsZSBzeXN0ZW0gdXBkYXRlcykuCj4KPiBJIGFt
+IHVzaW5nIGJhY2tlbmQtdHlwZT0icmF3IjsgYmFja2VuZC1zdG9yYWdlLXR5cGU9ImNpcmN1bGFy
+IjsgYW5kCj4gYmFja2VuZC1zdHJpZGVzaXplPTwweDQwPjsuCgp0aGUgZG9jdW1lbnRhdGlvbiBp
+cyBub3QgY29ycmVjdCBoZXJlOiBmb3IgdGhlIGNhc2Ugb2Ygc3BpLW5vciBmbGFzaCB0aGUKc3Ry
+aWRlc2l6ZSBpcyBub3QgdXNlZCBhdCBhbGwgKGFuZCB0aGVyZWZvcmUgbm90IG5lZWRlZCBpbiB0
+aGUKZGV2aWNldHJlZSkuIEluc3RlYWQgZWFjaCBidWNrZXQgaXMgc2VhcmNoZWQgaW4gcmV2ZXJz
+ZSBkaXJlY3Rpb24Kc3RhcnRpbmcgZnJvbSB0aGUgZW5kIGZvciBub24gMHhmZiBieXRlcyBhbmQg
+YSBtYWdpYyB2YWx1ZSB0byBzZWUgd2hlcmUKdGhlIGxhc3QgY29weSBvZiB0aGUgc3RhdGUgdmFy
+aWFibGVzIGhhcyBiZWVuIHdyaXR0ZW4gdG8sIHNlZSBbMV0uCgo+IEl0IGFsbCB3b3JrcyBmaW5l
+IGV4Y2VwdCB0aGF0IEkgZ2V0IGEgd2FybmluZyBmcm9tIGJhcmVib3g6Cj4KPiBGYWlsZWQgdG8g
+aW5pdGlhbGl6ZSBkZXNpcmVkIGFtb3VudCBvZiBidWNrZXRzLCBvbmx5IDIgb2YgMyBzdWNjZWVk
+ZWQKPgo+IEkgaGF2ZSAiZml4ZWQiIHRoZSB3YXJuaW5nIHdpdGggYSBsb2NhbCBwYXRjaCB0byBy
+ZWR1Y2UgdGhlCj4gJ2Rlc2lyZWRfYnVja2V0cycgY29uc3RhbnQgaW4gImNvbW1vbi9zdGF0ZS9i
+YWNrZW5kX3N0b3JhZ2UuYyIgZnJvbSAzIHRvIDIuCj4KPiBNeSBxdWVzdGlvbiBpcywgaG93IG11
+Y2ggdHJvdWJsZSBhbSBJIGxldHRpbmcgbXlzZWxmIGluIGZvciB3aXRoIHRoaXMKPiBsb2NhbCBw
+YXRjaD8gIEkgYXNzdW1lIHRoZSBzdGF0ZSBkcml2ZXIgd2lsbCBvbmx5IGVyYXNlIGFuZCB1cGRh
+dGUgMQo+IGJ1Y2tldCBhdCBhIHRpbWUgd2hlbiB0aGUgYnVja2V0cyBhcmUgZnVsbC4KCkNvcnJl
+Y3QsIHRoaXMgaXMgZG9uZSBpbiBzdGF0ZV9zdG9yYWdlX3dyaXRlKCksIHNlZSBbMl0uCgo+IERv
+IEkgcmVhbGx5IG5lZWQgMyBidWNrZXRzIG9yIHdpbGwgMiBidWNrZXRzIGJlIGVub3VnaD8KClRo
+aXMgZGVwZW5kcyBvbiBob3cgbXVjaCByZWR1bmRhbmN5IHlvdSBuZWVkIHRvIHNsZWVwIHdlbGwu
+Li4KCkJlc3QgcmVnYXJkcwpVbHJpY2gKCgpbMV0gaHR0cHM6Ly9naXRodWIuY29tL3Nhc2NoYWhh
+dWVyL2JhcmVib3gvYmxvYi9tYXN0ZXIvY29tbW9uL3N0YXRlL2JhY2tlbmRfYnVja2V0X2NpcmN1
+bGFyLmMjTDM4OApbMl0gaHR0cHM6Ly9naXRodWIuY29tL3Nhc2NoYWhhdWVyL2JhcmVib3gvYmxv
+Yi9tYXN0ZXIvY29tbW9uL3N0YXRlL2JhY2tlbmRfc3RvcmFnZS5jI0w1MgotLQpQZW5ndXRyb25p
+eCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCBVbHJpY2ggw5ZsbWFubiAgICAgICAg
+ICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0
+cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNo
+ZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQg
+SGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01
+NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJh
+cmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
+dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
