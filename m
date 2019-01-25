@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1go2kU-0003xR-1z
- for barebox@lists.infradead.org; Mon, 28 Jan 2019 08:59:02 +0000
-Date: Mon, 28 Jan 2019 09:58:32 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190128085832.m3hu6jb6dqfjtkw2@pengutronix.de>
-References: <1b58b623-806b-7e15-7419-7fdd97a85f2a@data-modul.com>
- <20190111111316.i4sbti24awp2in3e@pengutronix.de>
- <4561415.JmzvUQDMJA@llp-hemp>
+ id 1gn8Bx-0001JC-JN
+ for barebox@lists.infradead.org; Fri, 25 Jan 2019 20:35:11 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri, 25 Jan 2019 21:35:04 +0100
+Message-Id: <20190125203504.22764-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4561415.JmzvUQDMJA@llp-hemp>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,38 +15,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: build barebox for imx8mqevk
-To: Christian Hemp <c.hemp@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] gen-dtb-s: annotate magic values with their meaning
+To: barebox@lists.infradead.org
 
-On Fri, Jan 25, 2019 at 02:16:40PM +0100, Christian Hemp wrote:
-> Hello Sascha,
-> 
-> Am Freitag, 11. Januar 2019, 12:13:16 CET schrieb Sascha Hauer:
-> > You have to pass ARCH=arm as environment variable. It seems that you
-> > pass ARCH=arm64.
-> > 
-> > In barebox both ARM 32bit and 64bit are handled under arch/arm,
-> > nevertheless you have to pass a suitable toolchain.
-> 
-> Is there a specific reason why ARM 32bit and 64bit are handled under arch/arm 
-> and not separate?
-
-Yes. They share a lot of code.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBoZWxwcyB1bmRlcnN0YW5kIGhvdyB0aGUgaW1kIHN0dWZmIHdvcmtzIGJlY2F1c2Ugbm93
+CiQoZ2l0IGdyZXAgSU1EX1RZUEVfT0ZfQ09NUEFUSUJMRSkgYWxzbyBtYXRjaGVzIHRoZSBjcml0
+aWNhbCBjb2RlCmxvY2F0aW9uIHRoYXQgY3JlYXRlcyB0aGUgaW1kIGVudHJ5LgoKU2lnbmVkLW9m
+Zi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4K
+LS0tCiBzY3JpcHRzL2dlbi1kdGItcyB8IDQgKystLQogMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0
+aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9zY3JpcHRzL2dlbi1kdGItcyBi
+L3NjcmlwdHMvZ2VuLWR0Yi1zCmluZGV4IDQyMTU0NjFlZGIzYy4uMmI0NGZmYjM2MWViIDEwMDc1
+NQotLS0gYS9zY3JpcHRzL2dlbi1kdGItcworKysgYi9zY3JpcHRzL2dlbi1kdGItcwpAQCAtMjUs
+NyArMjUsNyBAQCBpZiBbICIkaW1kIiA9ICJ5IiBdOyB0aGVuCiAJaWYgWyAiJGNvbXBhdCIgIT0g
+Im5vdGZvdW5kIiBdOyB0aGVuCiAKIAkJY29tcGF0bGVuPSQoJEZEVEdFVCAtdCBzICIkZHRiIiAv
+IGNvbXBhdGlibGUgfCB3YyAtYykKLQkJbGUzMiAweDY0MGM4MDA1CisJCWxlMzIgMHg2NDBjODAw
+NSAjIElNRF9UWVBFX09GX0NPTVBBVElCTEUKIAkJbGUzMiAkY29tcGF0bGVuCiAJCWVjaG8gIi5i
+eXRlICIgJGNvbXBhdAogCQllY2hvICIuYmFsaWduIDQiCkBAIC0zNSw3ICszNSw3IEBAIGlmIFsg
+IiRpbWQiID0gInkiIF07IHRoZW4KIAogCWlmIFsgIiRtb2RlbCIgIT0gIm5vdGZvdW5kIiBdOyB0
+aGVuCiAJCW1vZGVsbGVuPSQoJEZEVEdFVCAtdCBzICIkZHRiIiAvIG1vZGVsIHwgd2MgLWMpCi0J
+CWxlMzIgMHg2NDBjODAwNAorCQlsZTMyIDB4NjQwYzgwMDQgIyBJTURfVFlQRV9NT0RFTAogCQls
+ZTMyICRtb2RlbGxlbgogCQllY2hvICIuYnl0ZSAiICRtb2RlbAogCQllY2hvICIuYmFsaWduIDQi
+Ci0tIAoyLjIwLjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
