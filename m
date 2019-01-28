@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1go227-0004qI-55
- for barebox@lists.infradead.org; Mon, 28 Jan 2019 08:12:44 +0000
-Received: by mail-pf1-x443.google.com with SMTP id c123so7690423pfb.0
+ id 1go227-0004qj-U4
+ for barebox@lists.infradead.org; Mon, 28 Jan 2019 08:12:45 +0000
+Received: by mail-pl1-x644.google.com with SMTP id e11so7403419plt.11
  for <barebox@lists.infradead.org>; Mon, 28 Jan 2019 00:12:43 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 28 Jan 2019 00:12:28 -0800
-Message-Id: <20190128081230.13165-1-andrew.smirnov@gmail.com>
+Date: Mon, 28 Jan 2019 00:12:29 -0800
+Message-Id: <20190128081230.13165-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20190128081230.13165-1-andrew.smirnov@gmail.com>
+References: <20190128081230.13165-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,31 +23,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/3] Documentation: i.MX: Increase :maxdepth: for board
- documentation
+Subject: [PATCH v2 2/3] ARM: i.MX8MQ: bbu: Add MMC boot handler
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-A number of board documentation file have subsections. Increase
-:maxdepth: so we'd get proper TOC and numbering.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- Documentation/boards/imx.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-imx/imx-bbu-internal.c | 5 +++++
+ arch/arm/mach-imx/include/mach/bbu.h | 9 +++++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
-index 2e6a30fd2..6606b88ac 100644
---- a/Documentation/boards/imx.rst
-+++ b/Documentation/boards/imx.rst
-@@ -201,6 +201,6 @@ or ``imx_defconfig`` instead.
+diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+index 5f85b13dc..188369fe3 100644
+--- a/arch/arm/mach-imx/imx-bbu-internal.c
++++ b/arch/arm/mach-imx/imx-bbu-internal.c
+@@ -629,6 +629,11 @@ int imx7_bbu_internal_mmcboot_register_handler(const char *name,
+ 						unsigned long flags)
+ 	__alias(imx_bbu_internal_mmcboot_register_handler);
  
- .. toctree::
-   :glob:
--  :maxdepth: 1
-+  :maxdepth: 2
++int imx8mq_bbu_internal_mmcboot_register_handler(const char *name,
++						 const char *devicefile,
++						 unsigned long flags)
++	__alias(imx_bbu_internal_mmcboot_register_handler);
++
+ /*
+  * Register an i.MX53 internal boot update handler for i2c/spi
+  * EEPROMs / flashes. Nearly the same as MMC/SD, but we do not need to
+diff --git a/arch/arm/mach-imx/include/mach/bbu.h b/arch/arm/mach-imx/include/mach/bbu.h
+index c8223c840..10638a7fc 100644
+--- a/arch/arm/mach-imx/include/mach/bbu.h
++++ b/arch/arm/mach-imx/include/mach/bbu.h
+@@ -76,6 +76,8 @@ int imx7_bbu_internal_spi_i2c_register_handler(const char *name, const char *dev
  
-   imx/*
+ int imx8mq_bbu_internal_mmc_register_handler(const char *name, const char *devicefile,
+ 					     unsigned long flags);
++int imx8mq_bbu_internal_mmcboot_register_handler(const char *name, const char *devicefile,
++						 unsigned long flags);
+ 
+ int imx_bbu_external_nor_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags);
+@@ -165,6 +167,13 @@ static inline int imx8mq_bbu_internal_mmc_register_handler(const char *name, con
+ 	return -ENOSYS;
+ }
+ 
++static inline int imx8mq_bbu_internal_mmcboot_register_handler(const char *name,
++							       const char *devicefile,
++							       unsigned long flags)
++{
++	return -ENOSYS;
++}
++
+ static inline int imx_bbu_external_nor_register_handler(const char *name, const char *devicefile,
+ 		unsigned long flags)
+ {
 -- 
 2.20.1
 
