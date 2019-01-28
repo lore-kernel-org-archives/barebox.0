@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1go6mK-0004me-BO
- for barebox@lists.infradead.org; Mon, 28 Jan 2019 13:16:45 +0000
+ id 1go6mR-0004p8-U1
+ for barebox@lists.infradead.org; Mon, 28 Jan 2019 13:16:53 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 28 Jan 2019 14:16:39 +0100
-Message-Id: <20190128131640.3692-1-s.hauer@pengutronix.de>
+Date: Mon, 28 Jan 2019 14:16:40 +0100
+Message-Id: <20190128131640.3692-2-s.hauer@pengutronix.de>
+In-Reply-To: <20190128131640.3692-1-s.hauer@pengutronix.de>
+References: <20190128131640.3692-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,70 +21,107 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] mtd: peb: Add function to skip bad blocks
+Subject: [PATCH 2/2] usb: fastboot: ubiformat: Fix bad block handling
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-This adds a function that given a pointer to a PEB number increases the
-number until the corresponding PEB is good. It also checks for the PEB
-number being inside the mtd device.
+When fastboot handles UBI images in sparse file format then bad blocks
+of the underlying mtd device are not skipped. This patch fixes this.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/peb.c     | 27 +++++++++++++++++++++++++++
- include/mtd/mtd-peb.h |  1 +
- 2 files changed, 28 insertions(+)
+ common/ubiformat.c | 40 ++++++++++++++++++++++++++++------------
+ 1 file changed, 28 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/mtd/peb.c b/drivers/mtd/peb.c
-index c35b63f2fd..388db7f587 100644
---- a/drivers/mtd/peb.c
-+++ b/drivers/mtd/peb.c
-@@ -129,6 +129,33 @@ int mtd_num_pebs(struct mtd_info *mtd)
- 	return mtd_div_by_eb(mtd->size, mtd);
- }
+diff --git a/common/ubiformat.c b/common/ubiformat.c
+index 0811525bd2..1968bd98f8 100644
+--- a/common/ubiformat.c
++++ b/common/ubiformat.c
+@@ -710,8 +710,10 @@ int ubiformat_write(struct mtd_info *mtd, const void *buf, size_t count,
+ 		    loff_t offset)
+ {
+ 	int writesize = mtd->writesize >> mtd->subpage_sft;
+-	size_t retlen;
+ 	int ret;
++	int peb = 0;
++	int n_skip_blocks = mtd_div_by_eb(offset, mtd);
++	int offset_in_peb = mtd_mod_by_eb(offset, mtd);
  
-+/**
-+ * mtd_skip_bad - skip bad blocks
-+ * @mtd: mtd device
-+ * @pnum: The number of the block
-+ *
-+ * This function skips bad blocks beginning from @pnum. Returns 0 for success and
-+ * a negative error code otherwise. on successful exit @pnum points to the next
-+ * good block.
-+ */
-+int mtd_skip_bad(struct mtd_info *mtd, int *pnum)
-+{
-+	if (*pnum < 0)
-+		return -EINVAL;
-+
+ 	if (offset & (mtd->writesize - 1))
+ 		return -EINVAL;
+@@ -719,27 +721,44 @@ int ubiformat_write(struct mtd_info *mtd, const void *buf, size_t count,
+ 	if (count & (mtd->writesize - 1))
+ 		return -EINVAL;
+ 
++	/* Seek forward to the first PEB we actually want to write */
 +	while (1) {
-+		loff_t offset = (uint64_t)mtd->erasesize * *pnum;
++		ret = mtd_skip_bad(mtd, &peb);
++		if (ret)
++			return ret;
 +
-+		if (offset >= mtd->size)
-+			return -ENOSPC;
++		if (!n_skip_blocks)
++			break;
 +
-+		if (!mtd_block_isbad(mtd, offset))
-+		    return 0;
-+
-+		*pnum = *pnum + 1;
++		peb++;
++		n_skip_blocks--;
 +	}
-+}
 +
- /**
-  * mtd_peb_mark_bad - mark a physical eraseblock as bad
-  * @mtd: mtd device
-diff --git a/include/mtd/mtd-peb.h b/include/mtd/mtd-peb.h
-index e4fd01df90..23f89d89a8 100644
---- a/include/mtd/mtd-peb.h
-+++ b/include/mtd/mtd-peb.h
-@@ -12,6 +12,7 @@ int mtd_peb_torture(struct mtd_info *mtd, int pnum);
- int mtd_peb_erase(struct mtd_info *mtd, int pnum);
- int mtd_peb_mark_bad(struct mtd_info *mtd, int pnum);
- int mtd_peb_is_bad(struct mtd_info *mtd, int pnum);
-+int mtd_skip_bad(struct mtd_info *mtd, int *pnum);
- int mtd_peb_check_all_ff(struct mtd_info *mtd, int pnum, int offset, int len,
- 			 int warn);
- int mtd_peb_verify(struct mtd_info *mtd, const void *buf, int pnum,
+ 	while (count) {
+-		size_t now;
++		size_t now = mtd->erasesize - offset_in_peb;
+ 
+-		now = ALIGN(offset, mtd->erasesize) - offset;
+ 		if (now > count)
+ 			now = count;
+ 
+-		if (!now) {
++		if (!offset_in_peb) {
+ 			const struct ubi_ec_hdr *ec = buf;
+ 			const struct ubi_vid_hdr *vid;
+ 
++			ret = mtd_skip_bad(mtd, &peb);
++			if (ret)
++				return ret;
++
+ 			if (be32_to_cpu(ec->magic) != UBI_EC_HDR_MAGIC) {
+ 				pr_err("bad UBI magic %#08x, should be %#08x",
+ 					be32_to_cpu(ec->magic), UBI_EC_HDR_MAGIC);
+ 				return -EINVAL;
+ 			}
+ 
+-			/* skip ec header */
+-			offset += writesize;
++			/* skip ec header in both flash and image */
++			offset_in_peb = writesize;
+ 			buf += writesize;
+ 			count -= writesize;
++			now -= writesize;
+ 
+ 			if (!count)
+ 				break;
+@@ -750,19 +769,16 @@ int ubiformat_write(struct mtd_info *mtd, const void *buf, size_t count,
+ 				       be32_to_cpu(vid->magic), UBI_VID_HDR_MAGIC);
+ 				return -EINVAL;
+ 			}
+-
+-			continue;
+ 		}
+ 
+-		ret = mtd_write(mtd, offset, now, &retlen, buf);
++		ret = mtd_peb_write(mtd, buf, peb, offset_in_peb, now);
+ 		if (ret < 0)
+ 			return ret;
+-		if (retlen != now)
+-			return -EIO;
+ 
+ 		buf += now;
+ 		count -= now;
+-		offset += now;
++		offset_in_peb = 0;
++		peb++;
+ 	}
+ 
+ 	return 0;
 -- 
 2.20.1
 
