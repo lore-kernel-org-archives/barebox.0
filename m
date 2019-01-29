@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1goNJe-00050H-Nk
- for barebox@lists.infradead.org; Tue, 29 Jan 2019 06:56:16 +0000
-Received: by mail-pf1-x443.google.com with SMTP id u6so9213713pfh.11
- for <barebox@lists.infradead.org>; Mon, 28 Jan 2019 22:56:14 -0800 (PST)
+ id 1goNJg-00050c-FI
+ for barebox@lists.infradead.org; Tue, 29 Jan 2019 06:56:18 +0000
+Received: by mail-pf1-x444.google.com with SMTP id u6so9213745pfh.11
+ for <barebox@lists.infradead.org>; Mon, 28 Jan 2019 22:56:16 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 28 Jan 2019 22:55:31 -0800
-Message-Id: <20190129065549.29161-2-andrew.smirnov@gmail.com>
+Date: Mon, 28 Jan 2019 22:55:32 -0800
+Message-Id: <20190129065549.29161-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20190129065549.29161-1-andrew.smirnov@gmail.com>
 References: <20190129065549.29161-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,135 +23,285 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 01/19] commands: Move mem_parse_options() to lib/misc.c
+Subject: [PATCH v2 02/19] commands: Get rid of mem_rw_buf
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-As a first step of de-cluttering /dev/mem related code, move
-mem_parse_options() out of commands/mem.c into lib/misc.c where it
-seem to fit better. With this change we no longer explicitly turn this
-code off using CONFIG_COMPILE_MEMORY and instead rely on LTO to get
-rid of it when it's not being used.
-
-While at it, also fix return value by replacing COMMAND_ERROR_USAGE
-with -EINVAL. All of the callers of mem_parse_options() expect
-negative error code as a sign of failure and COMMAND_ERROR_USAGE is
-not negative.
+There doesn't seem to be any good reason for all of the memory
+commands (md, mw, etc.) to rely on a shared pre-allocated buffer
+anymore. So, to simplify things, drop the shared buffer and adjust all
+of the utilites to allocate needed memory.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- commands/mem.c | 40 ----------------------------------------
- lib/misc.c     | 42 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 42 insertions(+), 40 deletions(-)
+ commands/md.c     | 12 +++++++-----
+ commands/mem.c    |  6 ------
+ commands/memcmp.c | 16 ++++++++--------
+ commands/memcpy.c | 10 ++++++----
+ commands/memset.c |  2 --
+ common/ratp/md.c  |  9 +++++----
+ 6 files changed, 26 insertions(+), 29 deletions(-)
 
+diff --git a/commands/md.c b/commands/md.c
+index a495fc8b4..2389c12d1 100644
+--- a/commands/md.c
++++ b/commands/md.c
+@@ -34,8 +34,6 @@
+ #include <linux/stat.h>
+ #include <xfuncs.h>
+ 
+-extern char *mem_rw_buf;
+-
+ static int do_mem_md(int argc, char *argv[])
+ {
+ 	loff_t	start = 0, size = 0x100;
+@@ -46,6 +44,7 @@ static int do_mem_md(int argc, char *argv[])
+ 	int mode = O_RWSIZE_4;
+ 	int swab = 0;
+ 	void *map;
++	void *buf = NULL;
+ 
+ 	if (argc < 2)
+ 		return COMMAND_ERROR_USAGE;
+@@ -74,9 +73,11 @@ static int do_mem_md(int argc, char *argv[])
+ 		goto out;
+ 	}
+ 
++	buf = xmalloc(RW_BUF_SIZE);
++
+ 	do {
+ 		now = min(size, (loff_t)RW_BUF_SIZE);
+-		r = read(fd, mem_rw_buf, now);
++		r = read(fd, buf, now);
+ 		if (r < 0) {
+ 			perror("read");
+ 			goto out;
+@@ -84,8 +85,8 @@ static int do_mem_md(int argc, char *argv[])
+ 		if (!r)
+ 			goto out;
+ 
+-		if ((ret = memory_display(mem_rw_buf, start, r,
+-				mode >> O_RWSIZE_SHIFT, swab)))
++		if ((ret = memory_display(buf, start, r,
++					  mode >> O_RWSIZE_SHIFT, swab)))
+ 			goto out;
+ 
+ 		start += r;
+@@ -93,6 +94,7 @@ static int do_mem_md(int argc, char *argv[])
+ 	} while (size);
+ 
+ out:
++	free(buf);
+ 	close(fd);
+ 
+ 	return ret ? 1 : 0;
 diff --git a/commands/mem.c b/commands/mem.c
-index a9e12f3e5..62488bf52 100644
+index 62488bf52..8a47e1fe1 100644
 --- a/commands/mem.c
 +++ b/commands/mem.c
-@@ -41,46 +41,6 @@
+@@ -39,8 +39,6 @@
+ #define PRINTF(fmt,args...)
+ #endif
  
- char *mem_rw_buf;
- 
--/*
-- * Common function for parsing options for the 'md', 'mw', 'memcpy', 'memcmp'
-- * commands.
-- */
--int mem_parse_options(int argc, char *argv[], char *optstr, int *mode,
--		char **sourcefile, char **destfile, int *swab)
--{
--	int opt;
--
--	while((opt = getopt(argc, argv, optstr)) > 0) {
--		switch(opt) {
--		case 'b':
--			*mode = O_RWSIZE_1;
--			break;
--		case 'w':
--			*mode = O_RWSIZE_2;
--			break;
--		case 'l':
--			*mode = O_RWSIZE_4;
--			break;
--		case 'q':
--			*mode = O_RWSIZE_8;
--			break;
--		case 's':
--			*sourcefile = optarg;
--			break;
--		case 'd':
--			*destfile = optarg;
--			break;
--		case 'x':
--			*swab = 1;
--			break;
--		default:
--			return COMMAND_ERROR_USAGE;
--		}
--	}
--
--	return 0;
--}
+-char *mem_rw_buf;
 -
  static struct cdev_operations memops = {
  	.read  = mem_read,
  	.write = mem_write,
-diff --git a/lib/misc.c b/lib/misc.c
-index 1d20e1b09..cd420a57d 100644
---- a/lib/misc.c
-+++ b/lib/misc.c
-@@ -23,6 +23,7 @@
- #include <fs.h>
- #include <string.h>
- #include <linux/ctype.h>
-+#include <getopt.h>
+@@ -73,10 +71,6 @@ static struct driver_d mem_drv = {
  
- /*
-  * Like simple_strtoull() but handles an optional G, M, K or k
-@@ -129,3 +130,44 @@ success:
- 	return 0;
+ static int mem_init(void)
+ {
+-	mem_rw_buf = malloc(RW_BUF_SIZE);
+-	if(!mem_rw_buf)
+-		return -ENOMEM;
+-
+ 	add_mem_device("mem", 0, ~0, IORESOURCE_MEM_WRITEABLE);
+ 	return platform_driver_register(&mem_drv);
  }
- EXPORT_SYMBOL(parse_area_spec);
+diff --git a/commands/memcmp.c b/commands/memcmp.c
+index 981c8cb38..48957b450 100644
+--- a/commands/memcmp.c
++++ b/commands/memcmp.c
+@@ -34,8 +34,6 @@
+ #include <linux/stat.h>
+ #include <xfuncs.h>
+ 
+-extern char *mem_rw_buf;
+-
+ static char *devmem = "/dev/mem";
+ 
+ static int do_memcmp(int argc, char *argv[])
+@@ -45,7 +43,7 @@ static int do_memcmp(int argc, char *argv[])
+ 	char   *sourcefile = devmem;
+ 	char   *destfile = devmem;
+ 	int     sourcefd, destfd;
+-	char   *rw_buf1;
++	char   *buf, *source_data, *dest_data;
+ 	int     ret = 1;
+ 	int     offset = 0;
+ 	struct  stat statbuf;
+@@ -84,20 +82,22 @@ static int do_memcmp(int argc, char *argv[])
+ 		return 1;
+ 	}
+ 
+-	rw_buf1 = xmalloc(RW_BUF_SIZE);
++	buf = xmalloc(RW_BUF_SIZE + RW_BUF_SIZE);
++	source_data = buf;
++	dest_data   = buf + RW_BUF_SIZE;
+ 
+ 	while (count > 0) {
+ 		int now, r1, r2, i;
+ 
+ 		now = min((loff_t)RW_BUF_SIZE, count);
+ 
+-		r1 = read_full(sourcefd, mem_rw_buf, now);
++		r1 = read_full(sourcefd, source_data, now);
+ 		if (r1 < 0) {
+ 			perror("read");
+ 			goto out;
+ 		}
+ 
+-		r2 = read_full(destfd, rw_buf1, now);
++		r2 = read_full(destfd, dest_data, now);
+ 		if (r2 < 0) {
+ 			perror("read");
+ 			goto out;
+@@ -109,7 +109,7 @@ static int do_memcmp(int argc, char *argv[])
+ 		}
+ 
+ 		for (i = 0; i < now; i++) {
+-			if (mem_rw_buf[i] != rw_buf1[i]) {
++			if (source_data[i] != dest_data[i]) {
+ 				printf("files differ at offset %d\n", offset);
+ 				goto out;
+ 			}
+@@ -124,7 +124,7 @@ static int do_memcmp(int argc, char *argv[])
+ out:
+ 	close(sourcefd);
+ 	close(destfd);
+-	free(rw_buf1);
++	free(buf);
+ 
+ 	return ret;
+ }
+diff --git a/commands/memcpy.c b/commands/memcpy.c
+index 168ef3b4f..ddaf767ea 100644
+--- a/commands/memcpy.c
++++ b/commands/memcpy.c
+@@ -34,8 +34,6 @@
+ #include <linux/stat.h>
+ #include <xfuncs.h>
+ 
+-extern char *mem_rw_buf;
+-
+ static char *devmem = "/dev/mem";
+ 
+ static int do_memcpy(int argc, char *argv[])
+@@ -47,6 +45,7 @@ static int do_memcpy(int argc, char *argv[])
+ 	int mode = 0;
+ 	struct stat statbuf;
+ 	int ret = 0;
++	char *buf;
+ 
+ 	if (mem_parse_options(argc, argv, "bwlqs:d:", &mode, &sourcefile,
+ 			&destfile, NULL) < 0)
+@@ -82,12 +81,14 @@ static int do_memcpy(int argc, char *argv[])
+ 		return 1;
+ 	}
+ 
++	buf = xmalloc(RW_BUF_SIZE);
 +
-+/*
-+ * Common function for parsing options for the 'md', 'mw', 'memcpy', 'memcmp'
-+ * commands.
-+ */
-+int mem_parse_options(int argc, char *argv[], char *optstr, int *mode,
-+		      char **sourcefile, char **destfile, int *swab)
-+{
-+	int opt;
-+
-+	while((opt = getopt(argc, argv, optstr)) > 0) {
-+		switch(opt) {
-+		case 'b':
-+			*mode = O_RWSIZE_1;
-+			break;
-+		case 'w':
-+			*mode = O_RWSIZE_2;
-+			break;
-+		case 'l':
-+			*mode = O_RWSIZE_4;
-+			break;
-+		case 'q':
-+			*mode = O_RWSIZE_8;
-+			break;
-+		case 's':
-+			*sourcefile = optarg;
-+			break;
-+		case 'd':
-+			*destfile = optarg;
-+			break;
-+		case 'x':
-+			*swab = 1;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
+ 	while (count > 0) {
+ 		int now, r, w, tmp;
+ 
+ 		now = min((loff_t)RW_BUF_SIZE, count);
+ 
+-		r = read(sourcefd, mem_rw_buf, now);
++		r = read(sourcefd, buf, now);
+ 		if (r < 0) {
+ 			perror("read");
+ 			goto out;
+@@ -99,7 +100,7 @@ static int do_memcpy(int argc, char *argv[])
+ 		tmp = 0;
+ 		now = r;
+ 		while (now) {
+-			w = write(destfd, mem_rw_buf + tmp, now);
++			w = write(destfd, buf + tmp, now);
+ 			if (w < 0) {
+ 				perror("write");
+ 				goto out;
+@@ -123,6 +124,7 @@ static int do_memcpy(int argc, char *argv[])
+ 	}
+ 
+ out:
++	free(buf);
+ 	close(sourcefd);
+ 	close(destfd);
+ 
+diff --git a/commands/memset.c b/commands/memset.c
+index f99bf86c0..b0770159f 100644
+--- a/commands/memset.c
++++ b/commands/memset.c
+@@ -34,8 +34,6 @@
+ #include <linux/stat.h>
+ #include <xfuncs.h>
+ 
+-extern char *mem_rw_buf;
+-
+ static int do_memset(int argc, char *argv[])
+ {
+ 	loff_t	s, c, n;
+diff --git a/common/ratp/md.c b/common/ratp/md.c
+index ce343d7c7..a25cbf112 100644
+--- a/common/ratp/md.c
++++ b/common/ratp/md.c
+@@ -59,8 +59,6 @@ struct ratp_bb_md_response {
+ 	uint8_t  buffer[];
+ } __packed;
+ 
+-extern char *mem_rw_buf;
+-
+ static int do_ratp_mem_md(const char *filename,
+ 			  loff_t start,
+ 			  loff_t size,
+@@ -70,6 +68,7 @@ static int do_ratp_mem_md(const char *filename,
+ 	int ret = 0;
+ 	int fd;
+ 	void *map;
++	char *buf = NULL;
+ 
+ 	fd = open_and_lseek(filename, O_RWSIZE_1 | O_RDONLY, start);
+ 	if (fd < 0)
+@@ -81,10 +80,11 @@ static int do_ratp_mem_md(const char *filename,
+ 		goto out;
+ 	}
+ 
++	buf = xmalloc(RW_BUF_SIZE);
+ 	t = 0;
+ 	do {
+ 		now = min(size, (loff_t)RW_BUF_SIZE);
+-		r = read(fd, mem_rw_buf, now);
++		r = read(fd, buf, now);
+ 		if (r < 0) {
+ 			ret = -errno;
+ 			perror("read");
+@@ -93,13 +93,14 @@ static int do_ratp_mem_md(const char *filename,
+ 		if (!r)
+ 			goto out;
+ 
+-		memcpy(output + t, (uint8_t *)(mem_rw_buf), r);
++		memcpy(output + t, buf, r);
+ 
+ 		size  -= r;
+ 		t     += r;
+ 	} while (size);
+ 
+ out:
++	free(buf);
+ 	close(fd);
+ 
+ 	return ret;
 -- 
 2.20.1
 
