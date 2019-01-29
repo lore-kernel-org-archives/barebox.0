@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1goNJy-0005Hh-H0
+ id 1goNJy-0005GY-Bt
  for barebox@lists.infradead.org; Tue, 29 Jan 2019 06:56:42 +0000
-Received: by mail-pg1-x541.google.com with SMTP id j10so8373380pga.1
- for <barebox@lists.infradead.org>; Mon, 28 Jan 2019 22:56:34 -0800 (PST)
+Received: by mail-pl1-x643.google.com with SMTP id u6so8945859plm.8
+ for <barebox@lists.infradead.org>; Mon, 28 Jan 2019 22:56:33 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 28 Jan 2019 22:55:47 -0800
-Message-Id: <20190129065549.29161-18-andrew.smirnov@gmail.com>
+Date: Mon, 28 Jan 2019 22:55:46 -0800
+Message-Id: <20190129065549.29161-17-andrew.smirnov@gmail.com>
 In-Reply-To: <20190129065549.29161-1-andrew.smirnov@gmail.com>
 References: <20190129065549.29161-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,120 +23,158 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 17/19] commands: md: Do not use memmap()
+Subject: [PATCH v2 16/19] fs: Introduce mem_read_nofail()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Codepaths using memmap() in md.c don't do any boundary checks, so it
-can be easily made to read past the underlying file's
-boundary. For example on i.MX8MQ based board with 4GiB or RAM we get:
-
-md -b -s /dev/ram0 0xfffffff0
-fffffff0: 00 00 00 00 00 00 08 0c  00 02 20 00 20 00 05 20   .......... . ..
-100000000: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-100000010: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-100000020: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-100000030: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-100000040: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-100000050: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-100000060: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-100000070: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-100000080: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-100000090: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-1000000a0: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-1000000b0: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-1000000c0: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-1000000d0: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-1000000e0: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-
-Drop the memmap() realted codepath, so we can realy on boundary
-checking done by file I/O layer.
-
-Note that this change has a cosmetic side effect, before:
-
-md -b 0x7ffffffffffffffff000
-7ffffffffffff000: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx     ................
-7ffffffffffff010: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx     ................
-7ffffffffffff020: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx     ................
-7ffffffffffff030: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx     ................
-7ffffffffffff040: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx     ................
-7ffffffffffff050: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx     ................
-7ffffffffffff060: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx     ................
-7ffffffffffff070: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx     ................
-7ffffffffffff080: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx     ................
-7ffffffffffff090: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx     ................
-7ffffffffffff0a0: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx     ................
-7ffffffffffff0b0: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx     ................
-7ffffffffffff0c0: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx     ................
-7ffffffffffff0d0: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx     ................
-7ffffffffffff0e0: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx     ................
-7ffffffffffff0f0: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx     ................
-
-after:
-
-md -b 0x7ffffffffffffffff000
-7ffffffffffff000: ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff     ................
-7ffffffffffff010: ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff     ................
-7ffffffffffff020: ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff     ................
-7ffffffffffff030: ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff     ................
-7ffffffffffff040: ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff     ................
-7ffffffffffff050: ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff     ................
-7ffffffffffff060: ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff     ................
-7ffffffffffff070: ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff     ................
-7ffffffffffff080: ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff     ................
-7ffffffffffff090: ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff     ................
-7ffffffffffff0a0: ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff     ................
-7ffffffffffff0b0: ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff     ................
-7ffffffffffff0c0: ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff     ................
-7ffffffffffff0d0: ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff     ................
-7ffffffffffff0e0: ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff     ................
-7ffffffffffff0f0: ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff     ................
+Introduce mem_read_nofail() to allow memory reads of
+unused/not-implmented memory addresses.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- commands/md.c      | 8 --------
- drivers/misc/mem.c | 2 +-
- 2 files changed, 1 insertion(+), 9 deletions(-)
+ fs/devfs-core.c  | 64 ++++++++++++++++++++++++++++++++++++++++++------
+ include/driver.h |  2 ++
+ 2 files changed, 58 insertions(+), 8 deletions(-)
 
-diff --git a/commands/md.c b/commands/md.c
-index 2389c12d1..507823c67 100644
---- a/commands/md.c
-+++ b/commands/md.c
-@@ -43,7 +43,6 @@ static int do_mem_md(int argc, char *argv[])
- 	char *filename = "/dev/mem";
- 	int mode = O_RWSIZE_4;
- 	int swab = 0;
--	void *map;
- 	void *buf = NULL;
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index b2f66578d..84234fd38 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -29,6 +29,7 @@
+ #include <linux/mtd/mtd.h>
+ #include <unistd.h>
+ #include <fs.h>
++#include <abort.h>
  
- 	if (argc < 2)
-@@ -66,13 +65,6 @@ static int do_mem_md(int argc, char *argv[])
- 	if (fd < 0)
- 		return 1;
+ LIST_HEAD(cdev_list);
  
--	map = memmap(fd, PROT_READ);
--	if (map != MAP_FAILED) {
--		ret = memory_display(map + start, start, size,
--				mode >> O_RWSIZE_SHIFT, swab);
--		goto out;
--	}
--
- 	buf = xmalloc(RW_BUF_SIZE);
+@@ -528,9 +529,39 @@ void cdev_remove_loop(struct cdev *cdev)
+ 	free(cdev);
+ }
  
- 	do {
-diff --git a/drivers/misc/mem.c b/drivers/misc/mem.c
-index 60981a3e9..2f3316307 100644
---- a/drivers/misc/mem.c
-+++ b/drivers/misc/mem.c
-@@ -8,7 +8,7 @@
- #include <init.h>
++static u64 mem_read_ptr(const void *ptr, int rwsize)
++{
++	switch (rwsize) {
++	case 1:
++		return *((u8 *)ptr);
++	case 2:
++		return *((u16 *)ptr);
++	case 4:
++		return *((u32 *)ptr);
++	case 8:
++		return *((u64 *)ptr);
++	}
++
++	BUG();
++	return 0;
++}
++
++static u64 mem_read_ptr_nofail(const void *ptr, int rwsize)
++{
++	u64 data;
++
++	data_abort_mask();
++	data = mem_read_ptr(ptr, rwsize);
++
++	if (data_abort_unmask())
++		return U64_MAX;
++
++	return data;
++}
++
+ static ssize_t mem_copy(struct device_d *dev, void *dst, const void *src,
+ 			resource_size_t count, resource_size_t offset,
+-			unsigned long flags)
++			unsigned long flags, bool nofail)
+ {
+ 	ssize_t size;
+ 	int rwsize = flags & O_RWSIZE_MASK;
+@@ -541,7 +572,7 @@ static ssize_t mem_copy(struct device_d *dev, void *dst, const void *src,
+ 	count = size = min(count, resource_size(&dev->resource[0]) - offset);
  
- static struct cdev_operations memops = {
--	.read  = mem_read,
-+	.read  = mem_read_nofail,
- 	.write = mem_write,
- 	.memmap = generic_memmap_rw,
- };
+ 	/* no rwsize specification given. Do whatever memcpy likes best */
+-	if (!rwsize) {
++	if (!nofail && !rwsize) {
+ 		memcpy(dst, src, count);
+ 		goto out;
+ 	}
+@@ -551,18 +582,22 @@ static ssize_t mem_copy(struct device_d *dev, void *dst, const void *src,
+ 	count = size = ALIGN_DOWN(count, rwsize);
+ 
+ 	while (count) {
++		const u64 data = nofail ?
++			mem_read_ptr_nofail(src, rwsize) :
++			mem_read_ptr(src, rwsize);
++
+ 		switch (rwsize) {
+ 		case 1:
+-			*((u8 *)dst) = *((u8 *)src);
++			*((u8 *)dst) = data;
+ 			break;
+ 		case 2:
+-			*((u16 *)dst) = *((u16 *)src);
++			*((u16 *)dst) = data;
+ 			break;
+ 		case 4:
+-			*((u32  *)dst) = *((u32  *)src);
++			*((u32  *)dst) = data;
+ 			break;
+ 		case 8:
+-			*((u64  *)dst) = *((u64  *)src);
++			*((u64  *)dst) = data;
+ 			break;
+ 		}
+ 		dst += rwsize;
+@@ -573,6 +608,19 @@ out:
+ 	return size;
+ }
+ 
++ssize_t mem_read_nofail(struct cdev *cdev, void *buf, size_t count,
++			loff_t offset, unsigned long flags)
++{
++	struct device_d *dev = cdev->dev;
++
++	if (!dev)
++		return -1;
++
++	return mem_copy(dev, buf, dev_get_mem_region(dev, 0) + offset,
++			count, offset, flags, true);
++}
++EXPORT_SYMBOL(mem_read_nofail);
++
+ ssize_t mem_read(struct cdev *cdev, void *buf, size_t count, loff_t offset,
+ 		 unsigned long flags)
+ {
+@@ -582,7 +630,7 @@ ssize_t mem_read(struct cdev *cdev, void *buf, size_t count, loff_t offset,
+ 		return -1;
+ 
+ 	return mem_copy(dev, buf, dev_get_mem_region(dev, 0) + offset,
+-			count, offset, flags);
++			count, offset, flags, false);
+ }
+ EXPORT_SYMBOL(mem_read);
+ 
+@@ -595,6 +643,6 @@ ssize_t mem_write(struct cdev *cdev, const void *buf, size_t count,
+ 		return -1;
+ 
+ 	return mem_copy(dev, dev_get_mem_region(dev, 0) + offset, buf,
+-			count, offset, flags);
++			count, offset, flags, false);
+ }
+ EXPORT_SYMBOL(mem_write);
+diff --git a/include/driver.h b/include/driver.h
+index 2db1cf1a8..270b3805d 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -350,6 +350,8 @@ struct driver_d *get_driver_by_name(const char *name);
+ struct cdev;
+ 
+ /* These are used by drivers which work with direct memory accesses */
++ssize_t mem_read_nofail(struct cdev *cdev, void *buf, size_t count,
++			loff_t offset, unsigned long flags);
+ ssize_t mem_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags);
+ ssize_t mem_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags);
+ int mem_memmap(struct cdev *cdev, void **map, int flags);
 -- 
 2.20.1
 
