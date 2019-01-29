@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gpBjO-0004sI-Qm
- for barebox@lists.infradead.org; Thu, 31 Jan 2019 12:46:13 +0000
-Date: Thu, 31 Jan 2019 13:46:05 +0100
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190131124605.s4oq5pzigbjk2avv@pengutronix.de>
-References: <19d6d395-5263-26f0-b940-abbe60a0fc1b@nexgo.de>
- <CAHQ1cqG3YLtHG8TsNnEk2Wk4h1KEA1YBzzkXUXPTM6Ffe0mFQw@mail.gmail.com>
- <ae549ae2-65a0-f63b-2d52-8c190c90bbb6@nexgo.de>
+ id 1goNJz-0005JB-Be
+ for barebox@lists.infradead.org; Tue, 29 Jan 2019 06:56:44 +0000
+Received: by mail-pg1-x544.google.com with SMTP id z10so8355383pgp.7
+ for <barebox@lists.infradead.org>; Mon, 28 Jan 2019 22:56:35 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 28 Jan 2019 22:55:48 -0800
+Message-Id: <20190129065549.29161-19-andrew.smirnov@gmail.com>
+In-Reply-To: <20190129065549.29161-1-andrew.smirnov@gmail.com>
+References: <20190129065549.29161-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <ae549ae2-65a0-f63b-2d52-8c190c90bbb6@nexgo.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,31 +23,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: bootm of 2019.01.0 doesn't load/start images
-To: Kai Volkmar <kai.volkmar@nexgo.de>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+Subject: [PATCH v2 18/19] drivers: mem: Create file to access second half of
+ 64-bit memory
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hi Kai,
+In order to allow access to second half of address space on 64-bit
+machines, add code that creates /dev/highmem dedicated for that.
 
-On Thu, Jan 31, 2019 at 11:47:54AM +0100, Kai Volkmar wrote:
-> On 31.01.19 00:35, Andrey Smirnov wrote:
-> > On Wed, Jan 30, 2019 at 11:26 AM Kai Volkmar <kai.volkmar@nexgo.de> wrote:
-> thanks for your quick answer. I'm not familiar with git bisect yet, but
-> I just identified the last working and the first defective release.
-> 
-> 18.07.2 works (as well as 18.07.0 did), 18.08.0 doesn't.
+Note that due to maximum file size being limited to MAX_LFS_FILESIZE
+or 0x7fff_ffff_ffff_ffff bytes at addresses 0x7fff_ffff_ffff_ffff and
+0xffff_ffff_ffff_ffff cannot be access through /dev/mem and
+/dev/hightmem correspondingly.
 
-Git bisect does the same as you (pobably manually) did just now, but
-more efficiently with a binary search. Here is a short descriptive
-chapter in the Git book:
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/misc/mem.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-https://git-scm.com/book/en/v2/Git-Tools-Debugging-with-Git
-
+diff --git a/drivers/misc/mem.c b/drivers/misc/mem.c
+index 2f3316307..e3fb0d04a 100644
+--- a/drivers/misc/mem.c
++++ b/drivers/misc/mem.c
+@@ -7,6 +7,10 @@
+ #include <driver.h>
+ #include <init.h>
+ 
++#include <linux/pagemap.h>
++#include <linux/fs.h>
++
++
+ static struct cdev_operations memops = {
+ 	.read  = mem_read_nofail,
+ 	.write = mem_write,
+@@ -21,8 +25,7 @@ static int mem_probe(struct device_d *dev)
+ 	dev->priv = cdev;
+ 
+ 	cdev->name = (char*)dev->resource[0].name;
+-	cdev->size = min_t(unsigned long long, resource_size(&dev->resource[0]),
+-			   S64_MAX);
++	cdev->size = resource_size(&dev->resource[0]);
+ 	cdev->ops = &memops;
+ 	cdev->dev = dev;
+ 
+@@ -38,7 +41,21 @@ static struct driver_d mem_drv = {
+ 
+ static int mem_init(void)
+ {
+-	add_mem_device("mem", 0, ~0, IORESOURCE_MEM_WRITEABLE);
++	const resource_size_t size = min_t(unsigned long long,
++					   MAX_LFS_FILESIZE,
++					   (resource_size_t)~0);
++	add_mem_device("mem", 0, size, IORESOURCE_MEM_WRITEABLE);
++	/*
++	 * We can't fit all of 64-bit address space into a single
++	 * file, so we create a separate one to allow acces to the
++	 * second half
++	 */
++	if (IS_ENABLED(CONFIG_CPU_64))
++		add_mem_device("highmem",
++			       (resource_size_t)MAX_LFS_FILESIZE + 1,
++			       size,
++			       IORESOURCE_MEM_WRITEABLE);
++
+ 	return platform_driver_register(&mem_drv);
+ }
+ device_initcall(mem_init);
 -- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
