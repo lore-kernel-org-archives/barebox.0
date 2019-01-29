@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from magratgarlick.emantor.de ([78.46.208.201]
+ helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1goj5l-0008OP-Dp
- for barebox@lists.infradead.org; Wed, 30 Jan 2019 06:11:23 +0000
-Date: Wed, 30 Jan 2019 07:11:19 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190130061119.tpz643ggexlnn27r@pengutronix.de>
-References: <1548756816-808-1-git-send-email-thomas.haemmerle1988@gmail.com>
+ id 1goRIL-0006iX-Cv
+ for barebox@lists.infradead.org; Tue, 29 Jan 2019 11:11:11 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue, 29 Jan 2019 12:10:30 +0100
+Message-Id: <cover.419382c8daad35fe16e2722dfdf83304674a066b.1548760200.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1548756816-808-1-git-send-email-thomas.haemmerle1988@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +20,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: zynqmp: select macb driver
-To: thomas.haemmerle1988@gmail.com
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/1] OP-TEE support for barebox
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Hi Thomas,
+This is a rebase and update of the testing patch posted by Sascha Hauer
+in 2017.
 
-On Tue, Jan 29, 2019 at 11:13:36AM +0100, thomas.haemmerle1988@gmail.com wrote:
-> From: Thomas Haemmerle <thomas.haemmerle1988@gmail.com>
-> 
-> macb supports Xilinx ZynqMP GEM, so select HAS_MACB by default.
+The FIXMEs in the code have been addressed and additional support for
+loading optee as a builtin firmware has been added.
 
-I think this should be solved by 508b996a62 ("ARM: zynq: add support for
-ethernet") already.
+Rouven Czerwinski
 
-Sascha
+Sascha Hauer (1):
+  ARM: Initial OP-TEE support
 
+ arch/arm/cpu/Makefile              |   2 +-
+ arch/arm/cpu/start-kernel-optee.S  |  14 ++++-
+ arch/arm/cpu/start.c               |   3 +-
+ arch/arm/include/asm/armlinux.h    |   2 +-
+ arch/arm/include/asm/barebox-arm.h |   9 ++-
+ arch/arm/lib32/armlinux.c          |  10 ++-
+ arch/arm/lib32/bootm.c             | 109 +++++++++++++++++++++++++++++-
+ arch/arm/lib32/bootu.c             |   2 +-
+ arch/arm/lib32/bootz.c             |   2 +-
+ commands/bootm.c                   |  11 ++-
+ common/Kconfig                     |  33 +++++++++-
+ common/bootm.c                     |   6 ++-
+ firmware/Kconfig                   |   3 +-
+ firmware/Makefile                  |   2 +-
+ include/bootm.h                    |   3 +-
+ include/tee/optee.h                |  30 ++++++++-
+ 16 files changed, 234 insertions(+), 7 deletions(-)
+ create mode 100644 arch/arm/cpu/start-kernel-optee.S
+ create mode 100644 include/tee/optee.h
 
+base-commit: 60e12093cf3288086b62612bb3cf565a0b4320aa
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+git-series 0.9.1
 
 _______________________________________________
 barebox mailing list
