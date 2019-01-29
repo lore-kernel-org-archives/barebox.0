@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1goNJn-000569-3l
- for barebox@lists.infradead.org; Tue, 29 Jan 2019 06:56:25 +0000
-Received: by mail-pf1-x443.google.com with SMTP id i12so9232245pfo.7
- for <barebox@lists.infradead.org>; Mon, 28 Jan 2019 22:56:23 -0800 (PST)
+ id 1goNJp-00058T-Su
+ for barebox@lists.infradead.org; Tue, 29 Jan 2019 06:56:33 +0000
+Received: by mail-pf1-x442.google.com with SMTP id r136so9238380pfc.6
+ for <barebox@lists.infradead.org>; Mon, 28 Jan 2019 22:56:25 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 28 Jan 2019 22:55:38 -0800
-Message-Id: <20190129065549.29161-9-andrew.smirnov@gmail.com>
+Date: Mon, 28 Jan 2019 22:55:40 -0800
+Message-Id: <20190129065549.29161-11-andrew.smirnov@gmail.com>
 In-Reply-To: <20190129065549.29161-1-andrew.smirnov@gmail.com>
 References: <20190129065549.29161-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,260 +23,342 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 08/19] fs: Drop trivial .lseek() implementaitons in FS
- drivers
+Subject: [PATCH v2 10/19] fs: devfs: Change .lseek callbacks to return 'int'
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-There are no FS drivers that do not implement .lseek callback in the
-codebase, so there doesn't seem to exist a use-case where lseek()
-would return -ENOSYS due to fsdrv->lseek being NULL. At the same time
-a large number of FS drivers implement only the most basic "always
-succeeds" custom .lseek() hook.
-
-Change the code of lseek() to treat absense of .lseek() to mean that
-no special actions needs to be taken by FS driver and seek is always
-successful and drop all of the trivial .lseek() implementations.
+Returning requested offset from .lseek() callback doesn't really give
+us any new information while bringing unnecessary
+complications. Change all .lseek() types (both in struct struct
+cdev_operations and in struct fs_driver_d) to return 'int' and adjust
+the rest of the codebase accordingly.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- fs/cramfs/cramfs.c     |  6 ------
- fs/efivarfs.c          |  6 ------
- fs/ext4/ext_barebox.c  |  6 ------
- fs/fs.c                | 14 ++++++--------
- fs/omap4_usbbootfs.c   |  6 ------
- fs/ramfs.c             |  6 ------
- fs/ratpfs.c            |  8 --------
- fs/squashfs/squashfs.c |  6 ------
- fs/ubifs/ubifs.c       |  6 ------
- 9 files changed, 6 insertions(+), 58 deletions(-)
+ drivers/mtd/nand/nand-bb.c |  5 ++---
+ drivers/mtd/ubi/barebox.c  |  4 ++--
+ fs/bpkfs.c                 |  4 ++--
+ fs/devfs.c                 |  6 +++---
+ fs/efi.c                   |  4 ++--
+ fs/fat/fat.c               |  4 ++--
+ fs/fs.c                    |  8 +++-----
+ fs/nfs.c                   |  4 ++--
+ fs/pstore/fs.c             |  4 ++--
+ fs/smhfs.c                 |  4 ++--
+ fs/tftp.c                  | 10 +++++-----
+ fs/uimagefs.c              |  4 ++--
+ include/driver.h           |  2 +-
+ include/fs.h               |  2 +-
+ 14 files changed, 31 insertions(+), 34 deletions(-)
 
-diff --git a/fs/cramfs/cramfs.c b/fs/cramfs/cramfs.c
-index 1cce04fce..99cbdb920 100644
---- a/fs/cramfs/cramfs.c
-+++ b/fs/cramfs/cramfs.c
-@@ -166,11 +166,6 @@ static int cramfs_read(struct device_d *_dev, FILE *f, void *buf, size_t size)
- 	return cramfs_read_file(f->f_inode, f->pos, buf, size);
- }
- 
--static loff_t cramfs_lseek(struct device_d *dev, FILE *f, loff_t pos)
--{
--	return pos;
--}
--
- #if 0
- static int cramfs_info (struct device_d *dev)
- {
-@@ -490,7 +485,6 @@ static void cramfs_remove(struct device_d *dev)
- 
- static struct fs_driver_d cramfs_driver = {
- 	.read		= cramfs_read,
--	.lseek		= cramfs_lseek,
- 	.drv = {
- 		.probe = cramfs_probe,
- 		.remove = cramfs_remove,
-diff --git a/fs/efivarfs.c b/fs/efivarfs.c
-index 34a261935..d2615774e 100644
---- a/fs/efivarfs.c
-+++ b/fs/efivarfs.c
-@@ -307,11 +307,6 @@ static int efivarfs_truncate(struct device_d *dev, FILE *f, ulong size)
+diff --git a/drivers/mtd/nand/nand-bb.c b/drivers/mtd/nand/nand-bb.c
+index 012163ebb..eea4bb43e 100644
+--- a/drivers/mtd/nand/nand-bb.c
++++ b/drivers/mtd/nand/nand-bb.c
+@@ -236,11 +236,10 @@ static int nand_bb_calc_size(struct nand_bb *bb)
  	return 0;
  }
  
--static loff_t efivarfs_lseek(struct device_d *dev, FILE *f, loff_t pos)
--{
--	return pos;
--}
--
- static DIR *efivarfs_opendir(struct device_d *dev, const char *pathname)
+-static loff_t nand_bb_lseek(struct cdev *cdev, loff_t __offset)
++static int nand_bb_lseek(struct cdev *cdev, loff_t offset)
  {
- 	struct efivarfs_priv *priv = dev->priv;
-@@ -435,7 +430,6 @@ static struct fs_driver_d efivarfs_driver = {
- 	.read      = efivarfs_read,
- 	.write     = efivarfs_write,
- 	.truncate  = efivarfs_truncate,
--	.lseek     = efivarfs_lseek,
- 	.opendir   = efivarfs_opendir,
- 	.readdir   = efivarfs_readdir,
- 	.closedir  = efivarfs_closedir,
-diff --git a/fs/ext4/ext_barebox.c b/fs/ext4/ext_barebox.c
-index 6e41b8345..82d4c581e 100644
---- a/fs/ext4/ext_barebox.c
-+++ b/fs/ext4/ext_barebox.c
-@@ -59,11 +59,6 @@ static int ext_read(struct device_d *_dev, FILE *f, void *buf, size_t insize)
- 	return ext4fs_read_file(node, f->pos, insize, buf);
- }
+ 	struct nand_bb *bb = cdev->priv;
+ 	loff_t raw_pos = 0;
+-	uint32_t offset = __offset;
  
--static loff_t ext_lseek(struct device_d *dev, FILE *f, loff_t pos)
--{
--	return pos;
--}
--
- static struct inode *ext_alloc_inode(struct super_block *sb)
- {
- 	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-@@ -302,7 +297,6 @@ static void ext_remove(struct device_d *dev)
+ 	/* lseek only in readonly mode */
+ 	if (bb->flags & O_ACCMODE)
+@@ -257,7 +256,7 @@ static loff_t nand_bb_lseek(struct cdev *cdev, loff_t __offset)
  
- static struct fs_driver_d ext_driver = {
- 	.read      = ext_read,
--	.lseek     = ext_lseek,
- 	.type      = filetype_ext,
- 	.flags     = 0,
- 	.drv = {
-diff --git a/fs/fs.c b/fs/fs.c
-index 7729fe8b1..34de0669a 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -413,10 +413,6 @@ loff_t lseek(int fildes, loff_t offset, int whence)
- 
- 	f = &files[fildes];
- 	fsdrv = f->fsdev->driver;
--	if (!fsdrv->lseek) {
--		ret = -ENOSYS;
--		goto out;
--	}
- 
- 	ret = -EINVAL;
- 
-@@ -442,10 +438,12 @@ loff_t lseek(int fildes, loff_t offset, int whence)
- 		goto out;
+ 		if (!offset) {
+ 			bb->offset = raw_pos;
+-			return __offset;
++			return 0;
+ 		}
  	}
  
--	pos = fsdrv->lseek(&f->fsdev->dev, f, pos);
--	if (IS_ERR_VALUE(pos)) {
--		errno = -pos;
--		return -1;
-+	if (fsdrv->lseek) {
-+		pos = fsdrv->lseek(&f->fsdev->dev, f, pos);
-+		if (IS_ERR_VALUE(pos)) {
-+			errno = -pos;
-+			return -1;
-+		}
+diff --git a/drivers/mtd/ubi/barebox.c b/drivers/mtd/ubi/barebox.c
+index 65f545645..781061d9a 100644
+--- a/drivers/mtd/ubi/barebox.c
++++ b/drivers/mtd/ubi/barebox.c
+@@ -151,7 +151,7 @@ static int ubi_volume_cdev_close(struct cdev *cdev)
+ 	return 0;
+ }
+ 
+-static loff_t ubi_volume_cdev_lseek(struct cdev *cdev, loff_t ofs)
++static int ubi_volume_cdev_lseek(struct cdev *cdev, loff_t ofs)
+ {
+ 	struct ubi_volume_cdev_priv *priv = cdev->priv;
+ 
+@@ -159,7 +159,7 @@ static loff_t ubi_volume_cdev_lseek(struct cdev *cdev, loff_t ofs)
+ 	if (priv->written)
+ 		return -EINVAL;
+ 
+-	return ofs;
++	return 0;
+ }
+ 
+ static int ubi_volume_cdev_truncate(struct cdev *cdev, size_t size)
+diff --git a/fs/bpkfs.c b/fs/bpkfs.c
+index f1db963d0..655cde09b 100644
+--- a/fs/bpkfs.c
++++ b/fs/bpkfs.c
+@@ -192,7 +192,7 @@ static int bpkfs_read(struct device_d *dev, FILE *file, void *buf, size_t insize
+ 	}
+ }
+ 
+-static loff_t bpkfs_lseek(struct device_d *dev, FILE *file, loff_t pos)
++static int bpkfs_lseek(struct device_d *dev, FILE *file, loff_t pos)
+ {
+ 	struct bpkfs_handle_data *d = file->priv;
+ 
+@@ -201,7 +201,7 @@ static loff_t bpkfs_lseek(struct device_d *dev, FILE *file, loff_t pos)
+ 
+ 	d->pos = pos;
+ 
+-	return pos;
++	return 0;
+ }
+ 
+ struct somfy_readdir {
+diff --git a/fs/devfs.c b/fs/devfs.c
+index 5599f39e8..007dea96d 100644
+--- a/fs/devfs.c
++++ b/fs/devfs.c
+@@ -57,10 +57,10 @@ static int devfs_write(struct device_d *_dev, FILE *f, const void *buf, size_t s
+ 	return cdev_write(cdev, buf, size, f->pos, f->flags);
+ }
+ 
+-static loff_t devfs_lseek(struct device_d *_dev, FILE *f, loff_t pos)
++static int devfs_lseek(struct device_d *_dev, FILE *f, loff_t pos)
+ {
+ 	struct cdev *cdev = f->priv;
+-	loff_t ret;
++	int ret;
+ 
+ 	if (cdev->ops->lseek) {
+ 		ret = cdev->ops->lseek(cdev, pos + cdev->offset);
+@@ -68,7 +68,7 @@ static loff_t devfs_lseek(struct device_d *_dev, FILE *f, loff_t pos)
+ 			return ret;
+ 	}
+ 
+-	return pos;
++	return 0;
+ }
+ 
+ static int devfs_erase(struct device_d *_dev, FILE *f, loff_t count, loff_t offset)
+diff --git a/fs/efi.c b/fs/efi.c
+index 074ef6b53..cd4fee79a 100644
+--- a/fs/efi.c
++++ b/fs/efi.c
+@@ -292,7 +292,7 @@ static int efifs_write(struct device_d *_dev, FILE *f, const void *buf, size_t i
+ 	return bufsize;
+ }
+ 
+-static loff_t efifs_lseek(struct device_d *dev, FILE *f, loff_t pos)
++static int efifs_lseek(struct device_d *dev, FILE *f, loff_t pos)
+ {
+ 	struct efifs_file *ufile = f->priv;
+ 	efi_status_t efiret;
+@@ -302,7 +302,7 @@ static loff_t efifs_lseek(struct device_d *dev, FILE *f, loff_t pos)
+ 		return -efi_errno(efiret);
+ 	}
+ 
+-	return pos;
++	return 0;
+ }
+ 
+ static int efifs_truncate(struct device_d *dev, FILE *f, unsigned long size)
+diff --git a/fs/fat/fat.c b/fs/fat/fat.c
+index ee7751e94..136757772 100644
+--- a/fs/fat/fat.c
++++ b/fs/fat/fat.c
+@@ -268,7 +268,7 @@ static int fat_read(struct device_d *_dev, FILE *f, void *buf, size_t insize)
+ 	return outsize;
+ }
+ 
+-static loff_t fat_lseek(struct device_d *dev, FILE *f, loff_t pos)
++static int fat_lseek(struct device_d *dev, FILE *f, loff_t pos)
+ {
+ 	FIL *f_file = f->priv;
+ 	int ret;
+@@ -277,7 +277,7 @@ static loff_t fat_lseek(struct device_d *dev, FILE *f, loff_t pos)
+ 	if (ret)
+ 		return ret;
+ 
+-	return pos;
++	return 0;
+ }
+ 
+ static DIR* fat_opendir(struct device_d *dev, const char *pathname)
+diff --git a/fs/fs.c b/fs/fs.c
+index 34de0669a..7e62b89e4 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -439,11 +439,9 @@ loff_t lseek(int fildes, loff_t offset, int whence)
+ 	}
+ 
+ 	if (fsdrv->lseek) {
+-		pos = fsdrv->lseek(&f->fsdev->dev, f, pos);
+-		if (IS_ERR_VALUE(pos)) {
+-			errno = -pos;
+-			return -1;
+-		}
++		ret = fsdrv->lseek(&f->fsdev->dev, f, pos);
++		if (ret < 0)
++			goto out;
  	}
  
  	f->pos = pos;
-diff --git a/fs/omap4_usbbootfs.c b/fs/omap4_usbbootfs.c
-index 51038c705..cc33287b9 100644
---- a/fs/omap4_usbbootfs.c
-+++ b/fs/omap4_usbbootfs.c
-@@ -149,11 +149,6 @@ static int omap4_usbbootfs_read(
- 	return size;
+diff --git a/fs/nfs.c b/fs/nfs.c
+index d83f25007..8112830f7 100644
+--- a/fs/nfs.c
++++ b/fs/nfs.c
+@@ -1088,13 +1088,13 @@ static int nfs_read(struct device_d *dev, FILE *file, void *buf, size_t insize)
+ 	return kfifo_get(priv->fifo, buf, insize);
  }
  
--static loff_t omap4_usbbootfs_lseek(struct device_d *dev, FILE *f, loff_t pos)
--{
--	return pos;
--}
--
- static DIR *omap4_usbbootfs_opendir(struct device_d *dev, const char *pathname)
+-static loff_t nfs_lseek(struct device_d *dev, FILE *file, loff_t pos)
++static int nfs_lseek(struct device_d *dev, FILE *file, loff_t pos)
  {
- 	return NULL;
-@@ -190,7 +185,6 @@ static struct fs_driver_d omap4_usbbootfs_driver = {
- 	.open    = omap4_usbbootfs_open,
- 	.close   = omap4_usbbootfs_close,
- 	.read    = omap4_usbbootfs_read,
--	.lseek   = omap4_usbbootfs_lseek,
- 	.opendir = omap4_usbbootfs_opendir,
- 	.stat    = omap4_usbbootfs_stat,
- /*
-diff --git a/fs/ramfs.c b/fs/ramfs.c
-index f571cd5ca..153b9b614 100644
---- a/fs/ramfs.c
-+++ b/fs/ramfs.c
-@@ -347,11 +347,6 @@ static int ramfs_write(struct device_d *_dev, FILE *f, const void *buf, size_t i
+ 	struct file_priv *priv = file->priv;
+ 
+ 	kfifo_reset(priv->fifo);
+ 
+-	return pos;
++	return 0;
+ }
+ 
+ static int nfs_iterate(struct file *file, struct dir_context *ctx)
+diff --git a/fs/pstore/fs.c b/fs/pstore/fs.c
+index a879a6806..9a7e0b552 100644
+--- a/fs/pstore/fs.c
++++ b/fs/pstore/fs.c
+@@ -172,13 +172,13 @@ static int pstore_read(struct device_d *dev, FILE *file, void *buf,
  	return insize;
  }
  
--static loff_t ramfs_lseek(struct device_d *dev, FILE *f, loff_t pos)
--{
--	return pos;
--}
--
- static int ramfs_truncate(struct device_d *dev, FILE *f, ulong size)
+-static loff_t pstore_lseek(struct device_d *dev, FILE *file, loff_t pos)
++static int pstore_lseek(struct device_d *dev, FILE *file, loff_t pos)
  {
- 	struct inode *inode = f->f_inode;
-@@ -447,7 +442,6 @@ static void ramfs_remove(struct device_d *dev)
- static struct fs_driver_d ramfs_driver = {
- 	.read      = ramfs_read,
- 	.write     = ramfs_write,
--	.lseek     = ramfs_lseek,
- 	.truncate  = ramfs_truncate,
- 	.flags     = FS_DRIVER_NO_DEV,
- 	.drv = {
-diff --git a/fs/ratpfs.c b/fs/ratpfs.c
-index e316289d7..dffd27654 100644
---- a/fs/ratpfs.c
-+++ b/fs/ratpfs.c
-@@ -284,13 +284,6 @@ out:
- 	return ret;
+ 	struct pstore_private *d = file->priv;
+ 
+ 	d->pos = pos;
+ 
+-	return pos;
++	return 0;
  }
  
--static loff_t ratpfs_lseek(struct device_d __always_unused *dev,
--			  FILE *f, loff_t pos)
--{
--	pr_debug("%s\n", __func__);
--	return pos;
--}
--
- static DIR* ratpfs_opendir(struct device_d __always_unused *dev,
- 			  const char *pathname)
- {
-@@ -449,7 +442,6 @@ static struct fs_driver_d ratpfs_driver = {
- 	.open      = ratpfs_open,
- 	.close     = ratpfs_close,
- 	.read      = ratpfs_read,
--	.lseek     = ratpfs_lseek,
- 	.opendir   = ratpfs_opendir,
- 	.readdir   = ratpfs_readdir,
- 	.closedir  = ratpfs_closedir,
-diff --git a/fs/squashfs/squashfs.c b/fs/squashfs/squashfs.c
-index 87b182a78..38aff6d5b 100644
---- a/fs/squashfs/squashfs.c
-+++ b/fs/squashfs/squashfs.c
-@@ -231,11 +231,6 @@ static int squashfs_read(struct device_d *_dev, FILE *f, void *buf,
- 	return insize;
+ static DIR *pstore_opendir(struct device_d *dev, const char *pathname)
+diff --git a/fs/smhfs.c b/fs/smhfs.c
+index 18eaa9dfc..7a6933630 100644
+--- a/fs/smhfs.c
++++ b/fs/smhfs.c
+@@ -109,13 +109,13 @@ static int smhfs_read(struct device_d __always_unused *dev,
+ 		return -semihosting_errno();
  }
  
--static loff_t squashfs_lseek(struct device_d *dev, FILE *f, loff_t pos)
--{
+-static loff_t smhfs_lseek(struct device_d __always_unused *dev,
++static int smhfs_lseek(struct device_d __always_unused *dev,
+ 			  FILE *f, loff_t pos)
+ {
+ 	if (semihosting_seek(file_to_fd(f), pos))
+ 		return -semihosting_errno();
+ 
 -	return pos;
--}
--
- struct squashfs_dir {
- 	struct file file;
- 	struct dentry dentry;
-@@ -251,7 +246,6 @@ static struct fs_driver_d squashfs_driver = {
- 	.open		= squashfs_open,
- 	.close		= squashfs_close,
- 	.read		= squashfs_read,
--	.lseek		= squashfs_lseek,
- 	.type		= filetype_squashfs,
- 	.drv = {
- 		.probe = squashfs_probe,
-diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
-index ec6d00890..494b1f261 100644
---- a/fs/ubifs/ubifs.c
-+++ b/fs/ubifs/ubifs.c
-@@ -394,11 +394,6 @@ static int ubifs_read(struct device_d *_dev, FILE *f, void *buf, size_t insize)
- 	return insize;
++	return 0;
  }
  
--static loff_t ubifs_lseek(struct device_d *dev, FILE *f, loff_t pos)
--{
--	return pos;
--}
--
- static void ubifs_set_rootarg(struct ubifs_priv *priv, struct fs_device_d *fsdev)
+ static DIR* smhfs_opendir(struct device_d __always_unused *dev,
+diff --git a/fs/tftp.c b/fs/tftp.c
+index f9e204db5..41f904f29 100644
+--- a/fs/tftp.c
++++ b/fs/tftp.c
+@@ -573,13 +573,13 @@ static int tftp_read(struct device_d *dev, FILE *f, void *buf, size_t insize)
+ 	return outsize;
+ }
+ 
+-static loff_t tftp_lseek(struct device_d *dev, FILE *f, loff_t pos)
++static int tftp_lseek(struct device_d *dev, FILE *f, loff_t pos)
  {
- 	struct ubi_volume_info vi = {};
-@@ -475,7 +470,6 @@ static struct fs_driver_d ubifs_driver = {
- 	.open      = ubifs_open,
- 	.close     = ubifs_close,
- 	.read      = ubifs_read,
--	.lseek     = ubifs_lseek,
- 	.type = filetype_ubifs,
- 	.flags     = 0,
- 	.drv = {
+ 	/* We cannot seek backwards without reloading or caching the file */
+ 	loff_t f_pos = f->pos;
+ 
+ 	if (pos >= f_pos) {
+-		loff_t ret;
++		int ret = 0;
+ 		char *buf = xmalloc(1024);
+ 
+ 		while (pos > f_pos) {
+@@ -596,8 +596,6 @@ static loff_t tftp_lseek(struct device_d *dev, FILE *f, loff_t pos)
+ 			f_pos += ret;
+ 		}
+ 
+-		ret = pos;
+-
+ out_free:
+ 		free(buf);
+ 		if (ret < 0) {
+@@ -606,8 +604,10 @@ out_free:
+ 			 * failed since we can't move backwards
+ 			 */
+ 			f->pos = f_pos;
++			return ret;
+ 		}
+-		return ret;
++
++		return 0;
+ 	}
+ 
+ 	return -ENOSYS;
+diff --git a/fs/uimagefs.c b/fs/uimagefs.c
+index c120944a4..e5ada82da 100644
+--- a/fs/uimagefs.c
++++ b/fs/uimagefs.c
+@@ -116,7 +116,7 @@ static int uimagefs_read(struct device_d *dev, FILE *file, void *buf, size_t ins
+ 	}
+ }
+ 
+-static loff_t uimagefs_lseek(struct device_d *dev, FILE *file, loff_t pos)
++static int uimagefs_lseek(struct device_d *dev, FILE *file, loff_t pos)
+ {
+ 	struct uimagefs_handle_data *d = file->priv;
+ 
+@@ -125,7 +125,7 @@ static loff_t uimagefs_lseek(struct device_d *dev, FILE *file, loff_t pos)
+ 
+ 	d->pos = pos;
+ 
+-	return pos;
++	return 0;
+ }
+ 
+ static DIR *uimagefs_opendir(struct device_d *dev, const char *pathname)
+diff --git a/include/driver.h b/include/driver.h
+index 72741a964..2db1cf1a8 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -434,7 +434,7 @@ struct cdev_operations {
+ 	ssize_t (*write)(struct cdev*, const void* buf, size_t count, loff_t offset, ulong flags);
+ 
+ 	int (*ioctl)(struct cdev*, int, void *);
+-	loff_t (*lseek)(struct cdev*, loff_t);
++	int (*lseek)(struct cdev*, loff_t);
+ 	int (*open)(struct cdev*, unsigned long flags);
+ 	int (*close)(struct cdev*);
+ 	int (*flush)(struct cdev*);
+diff --git a/include/fs.h b/include/fs.h
+index f1514afa9..be8241fd4 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -53,7 +53,7 @@ struct fs_driver_d {
+ 	int (*read)(struct device_d *dev, FILE *f, void *buf, size_t size);
+ 	int (*write)(struct device_d *dev, FILE *f, const void *buf, size_t size);
+ 	int (*flush)(struct device_d *dev, FILE *f);
+-	loff_t (*lseek)(struct device_d *dev, FILE *f, loff_t pos);
++	int (*lseek)(struct device_d *dev, FILE *f, loff_t pos);
+ 
+ 	int (*ioctl)(struct device_d *dev, FILE *f, int request, void *buf);
+ 	int (*erase)(struct device_d *dev, FILE *f, loff_t count,
 -- 
 2.20.1
 
