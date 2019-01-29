@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1goNJs-0005Ae-8q
- for barebox@lists.infradead.org; Tue, 29 Jan 2019 06:56:36 +0000
-Received: by mail-pg1-x542.google.com with SMTP id w6so8355419pgl.6
- for <barebox@lists.infradead.org>; Mon, 28 Jan 2019 22:56:28 -0800 (PST)
+ id 1goNJt-0005CI-GO
+ for barebox@lists.infradead.org; Tue, 29 Jan 2019 06:56:41 +0000
+Received: by mail-pl1-x644.google.com with SMTP id w4so8966754plz.1
+ for <barebox@lists.infradead.org>; Mon, 28 Jan 2019 22:56:29 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 28 Jan 2019 22:55:42 -0800
-Message-Id: <20190129065549.29161-13-andrew.smirnov@gmail.com>
+Date: Mon, 28 Jan 2019 22:55:43 -0800
+Message-Id: <20190129065549.29161-14-andrew.smirnov@gmail.com>
 In-Reply-To: <20190129065549.29161-1-andrew.smirnov@gmail.com>
 References: <20190129065549.29161-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,63 +23,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 12/19] fs: Simplify new position calculation in lseek()
+Subject: [PATCH v2 13/19] fs: Share code between mem_write()/mem_read()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-All these checks are really testing is that resulting position is
-within [0; f->size] interval. Convert all of the custom checks into a
-signle one done after the switch statement to simplify the code.
-
-Note this change also disables the validity check for f->size ==
-FILE_SIZE_STREAM and whence == SEEK_END, but lseek(stream_fd, offset,
-SEEK_END) wasn't a meaningful operation to begin with, so this
-shouldn't be a problem.
+Rename memcpy_sz() to mem_copy() and move all of the identical code
+from mem_write()/mem_read() there.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- fs/fs.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ fs/devfs-core.c | 46 ++++++++++++++++++++++++----------------------
+ 1 file changed, 24 insertions(+), 22 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 2638e7458..d785c0c3a 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -418,26 +418,23 @@ loff_t lseek(int fildes, loff_t offset, int whence)
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index 5dbb67b43..37c4bd0ad 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -528,12 +528,22 @@ void cdev_remove_loop(struct cdev *cdev)
+ 	free(cdev);
+ }
  
- 	switch (whence) {
- 	case SEEK_SET:
--		if (f->size != FILE_SIZE_STREAM && offset > f->size)
--			goto out;
--		if (offset < 0)
--			goto out;
--		pos = offset;
-+		pos = 0;
- 		break;
- 	case SEEK_CUR:
--		if (f->size != FILE_SIZE_STREAM && offset + f->pos > f->size)
--			goto out;
--		pos = f->pos + offset;
-+		pos = f->pos;
- 		break;
- 	case SEEK_END:
--		if (offset > 0)
--			goto out;
--		pos = f->size + offset;
-+		pos = f->size;
- 		break;
- 	default:
- 		goto out;
+-static void memcpy_sz(void *dst, const void *src, size_t count, int rwsize)
++static ssize_t mem_copy(struct device_d *dev, void *dst, const void *src,
++			resource_size_t count, resource_size_t offset,
++			unsigned long flags)
+ {
++	ssize_t size;
++	int rwsize = flags & O_RWSIZE_MASK;
++
++	if (!dev || dev->num_resources < 1)
++		return -1;
++
++	count = size = min(count, resource_size(&dev->resource[0]) - offset);
++
+ 	/* no rwsize specification given. Do whatever memcpy likes best */
+ 	if (!rwsize) {
+ 		memcpy(dst, src, count);
+-		return;
++		goto out;
  	}
  
-+	pos += offset;
-+
-+	if (f->size != FILE_SIZE_STREAM && (pos < 0 || pos > f->size))
-+		goto out;
-+
- 	if (fsdrv->lseek) {
- 		ret = fsdrv->lseek(&f->fsdev->dev, f, pos);
- 		if (ret < 0)
+ 	rwsize = rwsize >> O_RWSIZE_SHIFT;
+@@ -558,40 +568,32 @@ static void memcpy_sz(void *dst, const void *src, size_t count, int rwsize)
+ 		dst += rwsize;
+ 		src += rwsize;
+ 	}
++out:
++	return size;
+ }
+ 
+ ssize_t mem_read(struct cdev *cdev, void *buf, size_t count, loff_t offset,
+ 		 unsigned long flags)
+ {
+-	unsigned long size;
+-	struct device_d *dev;
++	struct device_d *dev = cdev->dev;
+ 
+-	if (!cdev->dev || cdev->dev->num_resources < 1)
++	if (!dev)
+ 		return -1;
+-	dev = cdev->dev;
+ 
+-	size = min((resource_size_t)count,
+-			resource_size(&dev->resource[0]) -
+-			(resource_size_t)offset);
+-	memcpy_sz(buf, dev_get_mem_region(dev, 0) + offset, size, flags & O_RWSIZE_MASK);
+-	return size;
++	return mem_copy(dev, buf, dev_get_mem_region(dev, 0) + offset,
++			count, offset, flags);
+ }
+ EXPORT_SYMBOL(mem_read);
+ 
+-ssize_t mem_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset,
+-		  unsigned long flags)
++ssize_t mem_write(struct cdev *cdev, const void *buf, size_t count,
++		  loff_t offset, unsigned long flags)
+ {
+-	unsigned long size;
+-	struct device_d *dev;
++	struct device_d *dev = cdev->dev;
+ 
+-	if (!cdev->dev || cdev->dev->num_resources < 1)
++	if (!dev)
+ 		return -1;
+-	dev = cdev->dev;
+ 
+-	size = min((resource_size_t)count,
+-			resource_size(&dev->resource[0]) -
+-			(resource_size_t)offset);
+-	memcpy_sz(dev_get_mem_region(dev, 0) + offset, buf, size, flags & O_RWSIZE_MASK);
+-	return size;
++	return mem_copy(dev, dev_get_mem_region(dev, 0) + offset, buf,
++			count, offset, flags);
+ }
+ EXPORT_SYMBOL(mem_write);
 -- 
 2.20.1
 
