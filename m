@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1goNJv-0005F0-Op
- for barebox@lists.infradead.org; Tue, 29 Jan 2019 06:56:40 +0000
-Received: by mail-pg1-x544.google.com with SMTP id v28so8353682pgk.10
- for <barebox@lists.infradead.org>; Mon, 28 Jan 2019 22:56:31 -0800 (PST)
+ id 1goNK0-0005Kb-A7
+ for barebox@lists.infradead.org; Tue, 29 Jan 2019 06:56:44 +0000
+Received: by mail-pg1-x542.google.com with SMTP id d72so8352067pga.9
+ for <barebox@lists.infradead.org>; Mon, 28 Jan 2019 22:56:36 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 28 Jan 2019 22:55:45 -0800
-Message-Id: <20190129065549.29161-16-andrew.smirnov@gmail.com>
+Date: Mon, 28 Jan 2019 22:55:49 -0800
+Message-Id: <20190129065549.29161-20-andrew.smirnov@gmail.com>
 In-Reply-To: <20190129065549.29161-1-andrew.smirnov@gmail.com>
 References: <20190129065549.29161-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,32 +23,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 15/19] fs: Report actual data processed by mem_copy()
+Subject: [PATCH v2 19/19] libfile: Fix incorrect lseek check in
+ open_and_lseek()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-If we are asked to copy amount of data that is not a multiple of
-"rwsize", we won't process all "count" bytes, so we should reflect
-that in the value we return.
+We can't use "int" to caputre output of lseek which is "loff_t", since
+former does not cover all of the range of the values of the latter and
+any pos >= 0xffff_ffff will result in a false positive "failure". To
+avoid that replace the check to check that new position matches what
+was requested.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- fs/devfs-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/libfile.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 8d5ff71d6..b2f66578d 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -548,7 +548,7 @@ static ssize_t mem_copy(struct device_d *dev, void *dst, const void *src,
+diff --git a/lib/libfile.c b/lib/libfile.c
+index 8f2aed230..9a223d232 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -556,8 +556,7 @@ int open_and_lseek(const char *filename, int mode, loff_t pos)
+ 		}
+ 	}
  
- 	rwsize = rwsize >> O_RWSIZE_SHIFT;
- 
--	count = ALIGN_DOWN(count, rwsize);
-+	count = size = ALIGN_DOWN(count, rwsize);
- 
- 	while (count) {
- 		switch (rwsize) {
+-	ret = lseek(fd, pos, SEEK_SET);
+-	if (ret == -1) {
++	if (lseek(fd, pos, SEEK_SET) != pos) {
+ 		perror("lseek");
+ 		close(fd);
+ 		return -errno;
 -- 
 2.20.1
 
