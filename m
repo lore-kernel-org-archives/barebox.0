@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1goNJr-00059V-5y
- for barebox@lists.infradead.org; Tue, 29 Jan 2019 06:56:35 +0000
-Received: by mail-pg1-x542.google.com with SMTP id v28so8353605pgk.10
- for <barebox@lists.infradead.org>; Mon, 28 Jan 2019 22:56:26 -0800 (PST)
+ id 1goNJs-0005Ae-8q
+ for barebox@lists.infradead.org; Tue, 29 Jan 2019 06:56:36 +0000
+Received: by mail-pg1-x542.google.com with SMTP id w6so8355419pgl.6
+ for <barebox@lists.infradead.org>; Mon, 28 Jan 2019 22:56:28 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 28 Jan 2019 22:55:41 -0800
-Message-Id: <20190129065549.29161-12-andrew.smirnov@gmail.com>
+Date: Mon, 28 Jan 2019 22:55:42 -0800
+Message-Id: <20190129065549.29161-13-andrew.smirnov@gmail.com>
 In-Reply-To: <20190129065549.29161-1-andrew.smirnov@gmail.com>
 References: <20190129065549.29161-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,49 +23,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 11/19] fs: Do not use IS_ERR_VALUE() to validate offset in
- lseek()
+Subject: [PATCH v2 12/19] fs: Simplify new position calculation in lseek()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On 32-bit systems, checking for IS_ERR_VALUE(pos) is not
-correct. Expanding that code we get (loff_t cast is added for clarity):
+All these checks are really testing is that resulting position is
+within [0; f->size] interval. Convert all of the custom checks into a
+signle one done after the switch statement to simplify the code.
 
- (loff_t)pos >= (unsigned long)-MAX_ERRNO
-
-given that loff_t is a 64-bit signed value, any perfectly valid seek
-offset that is greater than 0xffffc000 will result in false positive.
-
-Moreso, as a part of fix introduced in e10efc5080 ("fs: fix memory
-access via /dev/mem for MIPS64") it doesn't really solve the problem
-completely on on 64-bit platforms, becuase it still leaves out a
-number of perfectly valid offsets (e.g. "md 0xffffffffffffff00"
-doesn't work)
-
-Undo the original change and convert the check to simply test if
-offset is negative.
-
-Changes neccessary to alllow access to end of 64-bit address space
-will be implemented in the follow-up patch.
+Note this change also disables the validity check for f->size ==
+FILE_SIZE_STREAM and whence == SEEK_END, but lseek(stream_fd, offset,
+SEEK_END) wasn't a meaningful operation to begin with, so this
+shouldn't be a problem.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- fs/fs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/fs.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
 diff --git a/fs/fs.c b/fs/fs.c
-index 7e62b89e4..2638e7458 100644
+index 2638e7458..d785c0c3a 100644
 --- a/fs/fs.c
 +++ b/fs/fs.c
-@@ -420,7 +420,7 @@ loff_t lseek(int fildes, loff_t offset, int whence)
+@@ -418,26 +418,23 @@ loff_t lseek(int fildes, loff_t offset, int whence)
+ 
+ 	switch (whence) {
  	case SEEK_SET:
- 		if (f->size != FILE_SIZE_STREAM && offset > f->size)
- 			goto out;
--		if (IS_ERR_VALUE(offset))
-+		if (offset < 0)
- 			goto out;
- 		pos = offset;
+-		if (f->size != FILE_SIZE_STREAM && offset > f->size)
+-			goto out;
+-		if (offset < 0)
+-			goto out;
+-		pos = offset;
++		pos = 0;
  		break;
+ 	case SEEK_CUR:
+-		if (f->size != FILE_SIZE_STREAM && offset + f->pos > f->size)
+-			goto out;
+-		pos = f->pos + offset;
++		pos = f->pos;
+ 		break;
+ 	case SEEK_END:
+-		if (offset > 0)
+-			goto out;
+-		pos = f->size + offset;
++		pos = f->size;
+ 		break;
+ 	default:
+ 		goto out;
+ 	}
+ 
++	pos += offset;
++
++	if (f->size != FILE_SIZE_STREAM && (pos < 0 || pos > f->size))
++		goto out;
++
+ 	if (fsdrv->lseek) {
+ 		ret = fsdrv->lseek(&f->fsdev->dev, f, pos);
+ 		if (ret < 0)
 -- 
 2.20.1
 
