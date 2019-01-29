@@ -1,22 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx0.a-ix.net ([2a03:4000:21:445::fe61:e52a])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1go3f6-00031G-3O
- for barebox@lists.infradead.org; Mon, 28 Jan 2019 09:57:06 +0000
-Received: from web.lxd ([172.22.0.93] helo=mail.a-ix.net)
- by mx0.a-ix.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.89) (envelope-from <ml+barebox@moritz.augsburger.name>)
- id 1go3f2-0002Pl-3Y
- for barebox@lists.infradead.org; Mon, 28 Jan 2019 09:57:00 +0000
-MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="=_e57ddd035ab07cd226f6852f12871581"
-Date: Mon, 28 Jan 2019 10:57:00 +0100
-From: Moritz Augsburger <ml+barebox@moritz.augsburger.name>
-In-Reply-To: <20190128080225.asjbq2sugnaof6tu@pengutronix.de>
+ id 1goVHQ-0007PX-MC
+ for barebox@lists.infradead.org; Tue, 29 Jan 2019 15:26:30 +0000
+Date: Tue, 29 Jan 2019 16:26:26 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190129152626.vipm6yi4ovel54oa@pengutronix.de>
 References: <c1d66b9b8990989493a16d8c3a1d663e@moritz.augsburger.name>
  <20190128080225.asjbq2sugnaof6tu@pengutronix.de>
-Message-ID: <a391df2b46e827a4248821be10482999@moritz.augsburger.name>
+ <a391df2b46e827a4248821be10482999@moritz.augsburger.name>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <a391df2b46e827a4248821be10482999@moritz.augsburger.name>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,151 +20,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] rpi: completed new revision scheme
-To: Barebox List <barebox@lists.infradead.org>
+To: Moritz Augsburger <ml+barebox@moritz.augsburger.name>
+Cc: Barebox List <barebox@lists.infradead.org>
 
---=_e57ddd035ab07cd226f6852f12871581
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-
-Hi Sascha,
-
-Am 2019-01-28 09:02, schrieb Sascha Hauer:
->>  static int rpi_board_rev = 0;
->> @@ -211,10 +225,12 @@ static void rpi_get_board_rev(void)
->>          * 
->> http://www.raspberrypi.org/forums/viewtopic.php?f=31&t=20594
->>          */
->>         rpi_board_rev = msg->get_board_rev.body.resp.rev;
->> +       printf("RPI: Board rev %x\n", rpi_board_rev);
->>         if (rpi_board_rev & 0x800000) {
->>                 rpi_board_rev = (rpi_board_rev >> 4) & 0xff;
->>                 rpi_models = rpi_models_new_scheme;
->>                 rpi_models_size = ARRAY_SIZE(rpi_models_new_scheme);
->> +               printf("RPI: Board rev %u new\n", rpi_board_rev);
+On Mon, Jan 28, 2019 at 10:57:00AM +0100, Moritz Augsburger wrote:
+> Hi Sascha,
 > 
-> Are these printfs necessary? Looks like debugging aid. If yes, please
-> remove.
+> Am 2019-01-28 09:02, schrieb Sascha Hauer:
+> > >  static int rpi_board_rev = 0;
+> > > @@ -211,10 +225,12 @@ static void rpi_get_board_rev(void)
+> > >          *
+> > > http://www.raspberrypi.org/forums/viewtopic.php?f=31&t=20594
+> > >          */
+> > >         rpi_board_rev = msg->get_board_rev.body.resp.rev;
+> > > +       printf("RPI: Board rev %x\n", rpi_board_rev);
+> > >         if (rpi_board_rev & 0x800000) {
+> > >                 rpi_board_rev = (rpi_board_rev >> 4) & 0xff;
+> > >                 rpi_models = rpi_models_new_scheme;
+> > >                 rpi_models_size = ARRAY_SIZE(rpi_models_new_scheme);
+> > > +               printf("RPI: Board rev %u new\n", rpi_board_rev);
+> > 
+> > Are these printfs necessary? Looks like debugging aid. If yes, please
+> > remove.
+> 
+> You're right, they were overseen and are a debugging leftover.
+> 
+> > Otherwise the patch looks fine, but I can't apply it due to whitespace
+> > damages. Could you send it using git-send-emain? If that's no option
+> > maybe a github pull request could do it.
+> 
+> This time as attachement, hope it  works better.
 
-You're right, they were overseen and are a debugging leftover.
+Indeed, yes. Applied, thanks
 
-> Otherwise the patch looks fine, but I can't apply it due to whitespace
-> damages. Could you send it using git-send-emain? If that's no option
-> maybe a github pull request could do it.
+Sascha
 
-This time as attachement, hope it  works better.
 
-Best regards
-Moritz
 
---=_e57ddd035ab07cd226f6852f12871581
-Content-Transfer-Encoding: base64
-Content-Type: text/x-diff;
- name=0001-rpi-complete-new-revision-scheme.patch
-Content-Disposition: attachment;
- filename=0001-rpi-complete-new-revision-scheme.patch;
- size=5010
-
-RnJvbSA3NDRmZDRhY2Q4YTNhNWVlNDhlNjhiM2UxZjNlMTRlMjUzODZhNDlhIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBNb3JpdHogQXVnc2J1cmdlciA8bW9yaXR6QGF1Z3NidXJnZXIu
-bmFtZT4KRGF0ZTogTW9uLCAyOCBKYW4gMjAxOSAwOTo1MToyNSArMDAwMApTdWJqZWN0OiBbUEFU
-Q0hdIHJwaTogY29tcGxldGUgbmV3IHJldmlzaW9uIHNjaGVtZQoKLS0tCiBhcmNoL2FybS9ib2Fy
-ZHMvcmFzcGJlcnJ5LXBpL3JwaS1jb21tb24uYyB8IDI5ICsrKysrKysrKysrKysrKy0tLS0tLQog
-YXJjaC9hcm0vbWFjaC1iY20yODN4L2luY2x1ZGUvbWFjaC9tYm94LmggfCA0MiArKysrKysrKysr
-KysrKysrKysrLS0tLS0tLS0tLS0tCiAyIGZpbGVzIGNoYW5nZWQsIDQ3IGluc2VydGlvbnMoKyks
-IDI0IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9yYXNwYmVycnkt
-cGkvcnBpLWNvbW1vbi5jIGIvYXJjaC9hcm0vYm9hcmRzL3Jhc3BiZXJyeS1waS9ycGktY29tbW9u
-LmMKaW5kZXggNjUwYjI2Y2U3Li4wOWQwMjA1NDcgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJk
-cy9yYXNwYmVycnktcGkvcnBpLWNvbW1vbi5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9yYXNwYmVy
-cnktcGkvcnBpLWNvbW1vbi5jCkBAIC0xNjYsMTcgKzE2NiwzMCBAQCBjb25zdCBzdHJ1Y3QgcnBp
-X21vZGVsIHJwaV9tb2RlbHNfb2xkX3NjaGVtZVtdID0gewogCVJQSV9NT0RFTChCQ00yODM1X0JP
-QVJEX1JFVl9CX1JFVjJfZCwgIk1vZGVsIEIgcmV2MiIsIHJwaV9iX2luaXQpLAogCVJQSV9NT0RF
-TChCQ00yODM1X0JPQVJEX1JFVl9CX1JFVjJfZSwgIk1vZGVsIEIgcmV2MiIsIHJwaV9iX2luaXQp
-LAogCVJQSV9NT0RFTChCQ00yODM1X0JPQVJEX1JFVl9CX1JFVjJfZiwgIk1vZGVsIEIgcmV2MiIs
-IHJwaV9iX2luaXQpLAotCVJQSV9NT0RFTChCQ00yODM1X0JPQVJEX1JFVl9CX1BMVVMsICJNb2Rl
-bCBCKyIsIHJwaV9iX3BsdXNfaW5pdCksCi0JUlBJX01PREVMKEJDTTI4MzVfQk9BUkRfUkVWX0NN
-LCAiQ29tcHV0ZSBNb2R1bGUiLCBOVUxMKSwKLQlSUElfTU9ERUwoQkNNMjgzNV9CT0FSRF9SRVZf
-QV9QTFVTLCAiTW9kZWwgQSsiLCBOVUxMKSwKKwlSUElfTU9ERUwoQkNNMjgzNV9CT0FSRF9SRVZf
-Ql9QTFVTXzEwLCAiTW9kZWwgQisiLCBycGlfYl9wbHVzX2luaXQpLAorCVJQSV9NT0RFTChCQ00y
-ODM1X0JPQVJEX1JFVl9DTV8xMSwgIkNvbXB1dGUgTW9kdWxlIiwgTlVMTCksCisJUlBJX01PREVM
-KEJDTTI4MzVfQk9BUkRfUkVWX0FfUExVU18xMiwgIk1vZGVsIEErIiwgTlVMTCksCisJUlBJX01P
-REVMKEJDTTI4MzVfQk9BUkRfUkVWX0JfUExVU18xMywgIk1vZGVsIEIrIiwgcnBpX2JfcGx1c19p
-bml0KSwKKwlSUElfTU9ERUwoQkNNMjgzNV9CT0FSRF9SRVZfQ01fMTQsICJDb21wdXRlIE1vZHVs
-ZSIsIE5VTEwpLAorCVJQSV9NT0RFTChCQ00yODM1X0JPQVJEX1JFVl9BX1BMVVNfMTUsICJNb2Rl
-bCBBKyIsIE5VTEwpLAogfTsKIAogY29uc3Qgc3RydWN0IHJwaV9tb2RlbCBycGlfbW9kZWxzX25l
-d19zY2hlbWVbXSA9IHsKLQlSUElfTU9ERUwoMCwgIlVua25vd24gbW9kZWwiLCBOVUxMKSwKLQlS
-UElfTU9ERUwoQkNNMjgzNl9CT0FSRF9SRVZfMl9CLCAiMiBNb2RlbCBCIiwgcnBpX2JfcGx1c19p
-bml0KSwKLQlSUElfTU9ERUwoQkNNMjgzN19CT0FSRF9SRVZfM19CLCAiMyBNb2RlbCBCIiwgcnBp
-X2JfcGx1c19pbml0KSwKLQlSUElfTU9ERUwoQkNNMjgzNV9CT0FSRF9SRVZfWkVSTywgIlplcm8i
-LCBycGlfYl9wbHVzX2luaXQpLAotCVJQSV9NT0RFTChCQ00yODM1X0JPQVJEX1JFVl9aRVJPX1cs
-ICJaZXJvIFciLCBycGlfYl9wbHVzX2luaXQpLAorCVJQSV9NT0RFTChCQ00yODM1X0JPQVJEX1JF
-Vl9BLCAJCSJNb2RlbCBBIiwJTlVMTCApLAorCVJQSV9NT0RFTChCQ00yODM1X0JPQVJEX1JFVl9C
-LCAJCSJNb2RlbCBCIiwgCXJwaV9iX2luaXQgKSwKKwlSUElfTU9ERUwoQkNNMjgzNV9CT0FSRF9S
-RVZfQV9QTFVTLCAJIk1vZGVsIEErIiwgCU5VTEwgKSwKKwlSUElfTU9ERUwoQkNNMjgzNV9CT0FS
-RF9SRVZfQl9QTFVTLCAJIk1vZGVsIEIrIiwgCXJwaV9iX3BsdXNfaW5pdCApLAorCVJQSV9NT0RF
-TChCQ00yODM2X0JPQVJEX1JFVl8yX0IsIAkiTW9kZWwgMkIiLCAJcnBpX2JfcGx1c19pbml0KSwK
-KwlSUElfTU9ERUwoQkNNMjgzeF9CT0FSRF9SRVZfQWxwaGEsIAkiQWxwaGEiLCAJTlVMTCksCisJ
-UlBJX01PREVMKEJDTTI4MzVfQk9BUkRfUkVWX0NNMSwgCSJDb21wdXRlIE1vZHVsZSIsIE5VTEwg
-KSwKKwlSUElfTU9ERUwoMHg3LCAiVW5rbm93biBtb2RlbCIsIE5VTEwpLAorCVJQSV9NT0RFTChC
-Q00yODM3X0JPQVJEX1JFVl8zX0IsIAkiTW9kZWwgM0IiLCAJcnBpX2JfaW5pdCApLAorCVJQSV9N
-T0RFTChCQ00yODM1X0JPQVJEX1JFVl9aRVJPLCAJIlplcm8iLCAJcnBpX2JfcGx1c19pbml0KSwK
-KwlSUElfTU9ERUwoQkNNMjgzN19CT0FSRF9SRVZfQ00zLCAJIkNvbXB1dGUgTW9kdWxlIDMiLCBO
-VUxMICksCisJUlBJX01PREVMKDB4YiwgIlVua25vd24gbW9kZWwiLCBOVUxMKSwKKwlSUElfTU9E
-RUwoQkNNMjgzNV9CT0FSRF9SRVZfWkVST19XLCAJIlplcm8gVyIsIAlycGlfYl9wbHVzX2luaXQp
-LAorCVJQSV9NT0RFTChCQ00yODM3QjBfQk9BUkRfUkVWXzNCX1BMVVMsIAkiTW9kZWwgMyBCKyIs
-IAlycGlfYl9wbHVzX2luaXQgKSwKKwlSUElfTU9ERUwoQkNNMjgzN0IwX0JPQVJEX1JFVl8zQV9Q
-TFVTLCAJIk5vZGVsIDMgQSsiLCAJcnBpX2JfcGx1c19pbml0KSwKIH07CiAKIHN0YXRpYyBpbnQg
-cnBpX2JvYXJkX3JldiA9IDA7CmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWJjbTI4M3gvaW5j
-bHVkZS9tYWNoL21ib3guaCBiL2FyY2gvYXJtL21hY2gtYmNtMjgzeC9pbmNsdWRlL21hY2gvbWJv
-eC5oCmluZGV4IDc2YjU3M2Y4NS4uZTRmNmNiNjc1IDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNo
-LWJjbTI4M3gvaW5jbHVkZS9tYWNoL21ib3guaAorKysgYi9hcmNoL2FybS9tYWNoLWJjbTI4M3gv
-aW5jbHVkZS9tYWNoL21ib3guaApAQCAtMTI3LDIwICsxMjcsMTIgQEAgc3RydWN0IGJjbTI4MzVf
-bWJveF90YWdfaGRyIHsKIAogI2RlZmluZSBCQ00yODM1X01CT1hfVEFHX0dFVF9CT0FSRF9SRVYJ
-MHgwMDAxMDAwMgogCi0vKiBSUGkgMiAqLwotI2RlZmluZSBCQ00yODM2X0JPQVJEX1JFVl8yX0IJ
-CTB4NAotLyogUlBpIDMgKi8KLSNkZWZpbmUgQkNNMjgzN19CT0FSRF9SRVZfM19CCQkweDgKLS8q
-IFplcm8gKi8KLSNkZWZpbmUgQkNNMjgzNV9CT0FSRF9SRVZfWkVSTwkJMHg5Ci0vKiBaZXJvIFcg
-Ki8KLSNkZWZpbmUgQkNNMjgzNV9CT0FSRF9SRVZfWkVST19XCTB4YwotCiAvKgotICogMHgyLi4w
-eGYgZnJvbToKLSAqIGh0dHA6Ly9yYXNwYmVycnlhbHBoYW9tZWdhLm9yZy51ay8yMDEzLzAyLzA2
-L2F1dG9tYXRpYy1yYXNwYmVycnktcGktYm9hcmQtcmV2aXNpb24tZGV0ZWN0aW9uLW1vZGVsLWEt
-YjEtYW5kLWIyLwotICogaHR0cDovL3d3dy5yYXNwYmVycnlwaS5vcmcvZm9ydW1zL3ZpZXd0b3Bp
-Yy5waHA/Zj02MyZ0PTMyNzMzCi0gKiAweDEwLCAweDExIGZyb20gc3dhcnJlbidzIHRlc3RpbmcK
-KyAqIGlkcworICogCWh0dHBzOi8vd3d3LnJhc3BiZXJyeXBpLm9yZy9kb2N1bWVudGF0aW9uL2hh
-cmR3YXJlL3Jhc3BiZXJyeXBpL3JldmlzaW9uLWNvZGVzL1JFQURNRS5tZAorICogY3B1IGluZm8K
-KyAqIAlodHRwczovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9SYXNwYmVycnlfUGkjUHJvY2Vzc29y
-CisgKgogICovCiAjZGVmaW5lIEJDTTI4MzVfQk9BUkRfUkVWX0JfSTJDMF8yCTB4MgogI2RlZmlu
-ZSBCQ00yODM1X0JPQVJEX1JFVl9CX0kyQzBfMwkweDMKQEAgLTE1Myw5ICsxNDUsMjcgQEAgc3Ry
-dWN0IGJjbTI4MzVfbWJveF90YWdfaGRyIHsKICNkZWZpbmUgQkNNMjgzNV9CT0FSRF9SRVZfQl9S
-RVYyX2QJMHhkCiAjZGVmaW5lIEJDTTI4MzVfQk9BUkRfUkVWX0JfUkVWMl9lCTB4ZQogI2RlZmlu
-ZSBCQ00yODM1X0JPQVJEX1JFVl9CX1JFVjJfZgkweGYKLSNkZWZpbmUgQkNNMjgzNV9CT0FSRF9S
-RVZfQl9QTFVTCTB4MTAKLSNkZWZpbmUgQkNNMjgzNV9CT0FSRF9SRVZfQ00JCTB4MTEKLSNkZWZp
-bmUgQkNNMjgzNV9CT0FSRF9SRVZfQV9QTFVTCTB4MTIKKyNkZWZpbmUgQkNNMjgzNV9CT0FSRF9S
-RVZfQl9QTFVTXzEwCTB4MTAKKyNkZWZpbmUgQkNNMjgzNV9CT0FSRF9SRVZfQ01fMTEJCTB4MTEK
-KyNkZWZpbmUgQkNNMjgzNV9CT0FSRF9SRVZfQV9QTFVTXzEyCTB4MTIKKyNkZWZpbmUgQkNNMjgz
-NV9CT0FSRF9SRVZfQl9QTFVTXzEzCTB4MTMKKyNkZWZpbmUgQkNNMjgzNV9CT0FSRF9SRVZfQ01f
-MTQJCTB4MTQKKyNkZWZpbmUgQkNNMjgzNV9CT0FSRF9SRVZfQV9QTFVTXzE1CTB4MTUKKworCisj
-ZGVmaW5lIEJDTTI4MzVfQk9BUkRfUkVWX0EgICAJCTB4MDAKKyNkZWZpbmUgQkNNMjgzNV9CT0FS
-RF9SRVZfQiAgIAkJMHgwMQorI2RlZmluZSBCQ00yODM1X0JPQVJEX1JFVl9BX1BMVVMgICAJMHgw
-MgorI2RlZmluZSBCQ00yODM1X0JPQVJEX1JFVl9CX1BMVVMgICAJMHgwMworI2RlZmluZSBCQ00y
-ODM2X0JPQVJEX1JFVl8yX0IgICAJMHgwNAorI2RlZmluZSBCQ00yODN4X0JPQVJEX1JFVl9BbHBo
-YSAgIAkweDA1CisjZGVmaW5lIEJDTTI4MzVfQk9BUkRfUkVWX0NNMSAgIAkweDA2CisjZGVmaW5l
-IEJDTTI4MzdfQk9BUkRfUkVWXzNfQiAgIAkweDA4CisjZGVmaW5lIEJDTTI4MzVfQk9BUkRfUkVW
-X1pFUk8gICAJMHgwOQorI2RlZmluZSBCQ00yODM3X0JPQVJEX1JFVl9DTTMgICAJMHgwYQorI2Rl
-ZmluZSBCQ00yODM1X0JPQVJEX1JFVl9aRVJPX1cgICAJMHgwYworI2RlZmluZSBCQ00yODM3QjBf
-Qk9BUkRfUkVWXzNCX1BMVVMgICAJMHgwZAorI2RlZmluZSBCQ00yODM3QjBfQk9BUkRfUkVWXzNB
-X1BMVVMgICAJMHgwZQogCiBzdHJ1Y3QgYmNtMjgzNV9tYm94X3RhZ19nZXRfYm9hcmRfcmV2IHsK
-IAlzdHJ1Y3QgYmNtMjgzNV9tYm94X3RhZ19oZHIgdGFnX2hkcjsKLS0gCjIuMTEuMAoK
---=_e57ddd035ab07cd226f6852f12871581
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---=_e57ddd035ab07cd226f6852f12871581--
