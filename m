@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vsmx012.vodafonemail.xion.oxcs.net ([153.92.174.90])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1govUf-0006sw-FM
- for barebox@lists.infradead.org; Wed, 30 Jan 2019 19:25:56 +0000
-Received: from vsmx004.vodafonemail.xion.oxcs.net (unknown [192.168.75.198])
- by mta-8-out.mta.xion.oxcs.net (Postfix) with ESMTP id A0D75F34DC6
- for <barebox@lists.infradead.org>; Wed, 30 Jan 2019 19:25:51 +0000 (UTC)
-Received: from edelweiss.myhome.de (unknown [91.56.159.211])
- by mta-8-out.mta.xion.oxcs.net (Postfix) with ESMTPA id 6295819AD8A
- for <barebox@lists.infradead.org>; Wed, 30 Jan 2019 19:25:48 +0000 (UTC)
-From: Kai Volkmar <kai.volkmar@nexgo.de>
-Message-ID: <19d6d395-5263-26f0-b940-abbe60a0fc1b@nexgo.de>
-Date: Wed, 30 Jan 2019 20:25:47 +0100
+ id 1govq5-0006BV-3C
+ for barebox@lists.infradead.org; Wed, 30 Jan 2019 19:48:02 +0000
+Received: by mail-pg1-x543.google.com with SMTP id v28so261635pgk.10
+ for <barebox@lists.infradead.org>; Wed, 30 Jan 2019 11:48:00 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 30 Jan 2019 11:47:46 -0800
+Message-Id: <20190130194748.30566-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Language: de-DE
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +17,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: bootm of 2019.01.0 doesn't load/start images
+Subject: [PATCH v3 1/3] Documentation: i.MX: Increase :maxdepth: for board
+ documentation
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hi everyone,
+A number of board documentation file have subsections. Increase
+:maxdepth:, so we'd get proper TOC and numbering.
 
-I tried to renew the barebox of an EDB9302 by 2019.01.0.
-I used to load the new image by bootm command of the old version which
-worked fine in at least 2018.01.0:
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ Documentation/boards/imx.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-=A0=A0=A0 Loading ARM barebox image 'barebox.bin'
-=A0=A0=A0 commandline: <NULL>
-=A0=A0=A0 a=FFch_number: 538
-
-2019.01.0's bootm recognizes the file type but fails afterwards with
-
-=A0=A0=A0 Loading ARM barebox image 'barebox.bin'
-=A0=A0=A0 handler failed with: Function not implemented
-
-.
-
-I'm not able to boot zImages by 2019.01.0's bootm as well which worked
-with 2018.01.0 so I assume bootm is broken anywere between 2018.01.0 and
-2019.01.0.
-
-Anyway, it is possible to boot zImages by bootz.
-
-Could you please point me in the right direction - I'm quite new at this
-field, maybe I'm mistaking?
-
-I can try other releases as well if this would be of any help.
-
-Best regards,
-
-Kai
-
+diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
+index 2e6a30fd2..6606b88ac 100644
+--- a/Documentation/boards/imx.rst
++++ b/Documentation/boards/imx.rst
+@@ -201,6 +201,6 @@ or ``imx_defconfig`` instead.
+ 
+ .. toctree::
+   :glob:
+-  :maxdepth: 1
++  :maxdepth: 2
+ 
+   imx/*
+-- 
+2.20.1
 
 
 _______________________________________________
