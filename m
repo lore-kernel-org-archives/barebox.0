@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x344.google.com ([2a00:1450:4864:20::344])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gobz1-00010w-JO
- for barebox@lists.infradead.org; Tue, 29 Jan 2019 22:35:58 +0000
-Received: by mail-wm1-x344.google.com with SMTP id a62so19630066wmh.4
- for <barebox@lists.infradead.org>; Tue, 29 Jan 2019 14:35:54 -0800 (PST)
-MIME-Version: 1.0
+ id 1gok6k-0004XC-Fd
+ for barebox@lists.infradead.org; Wed, 30 Jan 2019 07:16:33 +0000
+Message-ID: <1548832584.25432.13.camel@pengutronix.de>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Wed, 30 Jan 2019 08:16:24 +0100
+In-Reply-To: <CAHQ1cqH01_01H-+wgur4HEYfSaJWg_pFuGTK+6Wiw8wMxHDRug@mail.gmail.com>
 References: <cover.419382c8daad35fe16e2722dfdf83304674a066b.1548760200.git-series.r.czerwinski@pengutronix.de>
  <d85fd6ff3a46012e532ee5b1f568ff1d5b3afe5a.1548760200.git-series.r.czerwinski@pengutronix.de>
-In-Reply-To: <d85fd6ff3a46012e532ee5b1f568ff1d5b3afe5a.1548760200.git-series.r.czerwinski@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 29 Jan 2019 14:35:40 -0800
-Message-ID: <CAHQ1cqH01_01H-+wgur4HEYfSaJWg_pFuGTK+6Wiw8wMxHDRug@mail.gmail.com>
+ <CAHQ1cqH01_01H-+wgur4HEYfSaJWg_pFuGTK+6Wiw8wMxHDRug@mail.gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,633 +19,491 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/1] ARM: Initial OP-TEE support
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Jan 29, 2019 at 3:11 AM Rouven Czerwinski
-<r.czerwinski@pengutronix.de> wrote:
->
-> From: Sascha Hauer <s.hauer@xxxxxxxxxxxxxx>
->
-> This adds initial support for OP-TEE, see https://www.op-tee.org/
->
-> barebox starts in secure mode as usual. When booting a kernel
-> the bootm code also loads the optee_os binary. Instead of jumping
-> into the kernel barebox jumps into the optee_os binary and puts
-> the kernel execution address into the lr register. OP-TEE then
-> jumps into the kernel in nonsecure mode.
->
-> The optee_os binary is passed with the -t option to bootm or
-> with global.bootm.tee.
->
-> Optionally OP-TEE can be compiled into barebox using the builtin firmware
-> feature. Enable the Kconfig option and place or link your tee binary as
-> optee.bin into the firmware directory.
->
-> The amount of SDRAM which is kept free for OP-TEE is configurable.
->
-> This patch was tested on a i.MX6 Nitrogen6x board.
->
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-> ---
->  arch/arm/cpu/Makefile              |   2 +-
->  arch/arm/cpu/start-kernel-optee.S  |  14 ++++-
->  arch/arm/cpu/start.c               |   3 +-
->  arch/arm/include/asm/armlinux.h    |   2 +-
->  arch/arm/include/asm/barebox-arm.h |   9 ++-
->  arch/arm/lib32/armlinux.c          |  10 ++-
->  arch/arm/lib32/bootm.c             | 109 +++++++++++++++++++++++++++++-
->  arch/arm/lib32/bootu.c             |   2 +-
->  arch/arm/lib32/bootz.c             |   2 +-
->  commands/bootm.c                   |  11 ++-
->  common/Kconfig                     |  33 +++++++++-
->  common/bootm.c                     |   6 ++-
->  firmware/Kconfig                   |   3 +-
->  firmware/Makefile                  |   2 +-
->  include/bootm.h                    |   3 +-
->  include/tee/optee.h                |  30 ++++++++-
->  16 files changed, 234 insertions(+), 7 deletions(-)
->  create mode 100644 arch/arm/cpu/start-kernel-optee.S
->  create mode 100644 include/tee/optee.h
->
-> diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-> index a35db43..e6e74e0 100644
-> --- a/arch/arm/cpu/Makefile
-> +++ b/arch/arm/cpu/Makefile
-> @@ -12,6 +12,8 @@ obj-y += start.o entry.o
->
->  obj-pbl-y += setupc$(S64).o cache$(S64).o
->
-> +obj-$(CONFIG_BOOTM_OPTEE) += start-kernel-optee.o
-> +
->  #
->  # Any variants can be called as start-armxyz.S
->  #
-> diff --git a/arch/arm/cpu/start-kernel-optee.S b/arch/arm/cpu/start-kernel-optee.S
-> new file mode 100644
-> index 0000000..ce5ac17
-> --- /dev/null
-> +++ b/arch/arm/cpu/start-kernel-optee.S
-> @@ -0,0 +1,14 @@
-> +#include <linux/linkage.h>
-> +
-> +ENTRY(start_kernel_optee)
-> +        /*
-> +         * r0 = optee
-> +         * r1 = kernel
-> +         * r2 = oftree
-> +         */
-> +         mov r4, r0
-> +         mov r0, #0
-> +         mov lr, r1
-> +         mov r1, #0
-> +         bx r4
-> +ENDPROC(start_kernel_optee)
-> diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-> index 768fa9e..e78a820 100644
-> --- a/arch/arm/cpu/start.c
-> +++ b/arch/arm/cpu/start.c
-> @@ -226,6 +226,9 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
->
->         mem_malloc_init((void *)malloc_start, (void *)malloc_end - 1);
->
-> +       if (IS_ENABLED(CONFIG_BOOTM_OPTEE))
-> +               of_add_reserve_entry(endmem - CONFIG_BOOTM_OPTEE_SIZE, endmem - 1);
-> +
->         pr_debug("starting barebox...\n");
->
->         start_barebox();
-> diff --git a/arch/arm/include/asm/armlinux.h b/arch/arm/include/asm/armlinux.h
-> index 135f11b..6af9896 100644
-> --- a/arch/arm/include/asm/armlinux.h
-> +++ b/arch/arm/include/asm/armlinux.h
-> @@ -40,6 +40,6 @@ struct image_data;
->
->  void start_linux(void *adr, int swap, unsigned long initrd_address,
->                  unsigned long initrd_size, void *oftree,
-> -                enum arm_security_state);
-> +                enum arm_security_state, void *optee);
->
->  #endif /* __ARCH_ARMLINUX_H */
-> diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-> index e065b47..95765f9 100644
-> --- a/arch/arm/include/asm/barebox-arm.h
-> +++ b/arch/arm/include/asm/barebox-arm.h
-> @@ -109,6 +109,15 @@ void *barebox_arm_boot_dtb(void);
->  static inline unsigned long arm_mem_stack_top(unsigned long membase,
->                                               unsigned long endmem)
->  {
-> +       /*
-> +        * FIXME:
-> +        * OP-TEE expects to be executed somewhere at the end of RAM.
-> +        * Since we normally occupy all RAM at the end, move ourselves
-> +        * a bit lower.
-> +        */
-> +       if (IS_ENABLED(CONFIG_BOOTM_OPTEE))
-> +               return endmem - CONFIG_BOOTM_OPTEE_SIZE - SZ_64K;
-
-You can probably change it to:
-
-if (IS_ENABLED(CONFIG_BOOTM_OPTEE))
-    endmem -= CONFIG_BOOTM_OPTEE_SIZE;
-
-to avoid hard-coding SZ_64K in two places
-
-> +
->         return endmem - SZ_64K;
->  }
->
-> diff --git a/arch/arm/lib32/armlinux.c b/arch/arm/lib32/armlinux.c
-> index c970f02..a1e3375 100644
-> --- a/arch/arm/lib32/armlinux.c
-> +++ b/arch/arm/lib32/armlinux.c
-> @@ -258,9 +258,11 @@ static void setup_tags(unsigned long initrd_address,
->
->  }
->
-> +void start_kernel_optee(void *optee, void *kernel, void *oftree);
-> +
->  void start_linux(void *adr, int swap, unsigned long initrd_address,
->                  unsigned long initrd_size, void *oftree,
-> -                enum arm_security_state state)
-> +                enum arm_security_state state, void *optee)
->  {
->         void (*kernel)(int zero, int arch, void *params) = adr;
->         void *params = NULL;
-> @@ -294,5 +296,9 @@ void start_linux(void *adr, int swap, unsigned long initrd_address,
->                 __asm__ __volatile__("mcr p15, 0, %0, c1, c0" :: "r" (reg));
->         }
->
-> -       kernel(0, architecture, params);
-> +       if (optee) {
-> +               start_kernel_optee(optee, kernel, oftree);
-> +       } else {
-> +               kernel(0, architecture, params);
-> +       }
-
-Just out of curiosity, can we return back to this function in
-non-secure mode and just do:
-
-if (optee)
-    optee();
-kernel(0, architecture, params);
-
-?
-
->  }
-> diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
-> index 4cf570e..69bf5bb 100644
-> --- a/arch/arm/lib32/bootm.c
-> +++ b/arch/arm/lib32/bootm.c
-> @@ -4,6 +4,7 @@
->  #include <command.h>
->  #include <driver.h>
->  #include <environment.h>
-> +#include <firmware.h>
->  #include <image.h>
->  #include <init.h>
->  #include <fs.h>
-> @@ -19,6 +20,7 @@
->  #include <binfmt.h>
->  #include <restart.h>
->  #include <globalvar.h>
-> +#include <tee/optee.h>
->
->  #include <asm/byteorder.h>
->  #include <asm/setup.h>
-> @@ -133,11 +135,96 @@ static int get_kernel_addresses(size_t image_size,
->         return 0;
->  }
->
-> +static int optee_verify_header_request_region(struct image_data *data, struct optee_header *hdr)
-> +{
-> +       int ret;
-
-This function uses "ret" in some really superfluous way. I'd consider
-just dropping "ret".
-
-> +
-> +       if (hdr->magic != OPTEE_MAGIC) {
-> +               printf("Invalid header magic 0x%08x, expected 0x%08x\n",
-> +                      hdr->magic, OPTEE_MAGIC);
-> +               ret = -EINVAL;
-> +               return ret;
-> +       }
-> +
-> +       if (hdr->arch != OPTEE_ARCH_ARM32 || hdr->init_load_addr_hi) {
-> +               printf("Only 32bit supported\n");
-> +               ret = -EINVAL;
-> +               return ret;
-> +       }
-> +
-> +       data->tee_res = request_sdram_region("TEE", hdr->init_load_addr_lo, hdr->init_size);
-> +       if (!data->tee_res) {
-> +               ret = -EBUSY;
-
-Underlying call to __request_region() in request_sdram_region() can
-also return -EINVAL if, for example, requested region is too big. I
-don't think hard-coding -EBUSY, really adds any useful info here.
-
-> +               printf("Cannot request SDRAM region 0x%08x-0x%08x: %s\n",
-> +                      hdr->init_load_addr_lo, hdr->init_load_addr_lo + hdr->init_size - 1,
-> +                      strerror(-ret));
-> +       }
-> +
-> +       ret = 0;
-> +       return ret;
-> +}
-> +
-> +static int bootm_load_tee_from_firmware(struct image_data *data)
-> +{
-> +       int ret;
-> +
-> +       u8 *optee;
-> +       size_t optee_size;
-> +
-> +       struct optee_header hdr;
-> +
-> +       get_builtin_firmware(optee_bin, &optee, &optee_size);
-> +
-> +       memcpy(optee, &hdr, sizeof(hdr));
-> +
-> +       ret = optee_verify_header_request_region(data, &hdr);
-> +       if (ret < 0)
-> +               return ret;
-> +
-> +       memcpy(optee, (void *)data->tee_res->start, hdr.init_size);
-> +
-> +       printf("Copied optee binary to 0x%08x, size 0x%08x\n", data->tee_res->start, hdr.init_size);
-> +
-> +       ret = 0;
-> +       return ret;
-> +}
-
-What if we instead do:
-
-get_builtin_firmware(optee_bin, &optee, &optee_size);
-add_mem_device("optee", optee, optee_size, 0);
-
-and then handle that case via "/dev/optee" and
-bootm_load_tee_from_file()? Is there any reason it wouldn't work?
-Moreso, if that can be done we should consider just providing an API
-to handle built-in firmware case and delegating that job to individual
-board files, so that we have the freedom of having per-board version
-of OP-TEE firmware.
-
-> +
-> +static int bootm_load_tee_from_file(struct image_data *data)
-> +{
-> +       int fd, ret;
-> +       struct optee_header hdr;
-> +
-> +       fd = open(data->tee_file, O_RDONLY);
-> +       if (fd < 0)
-> +               return fd;
-
-Purely optional, but please consider changing this code to be a bit
-more POSIX compliant and avoid relying on getting proper error codes
-from various API calls. Calls to open(), read() and read_full() should
-just check if the return value is negative and return -errno if so. On
-the bright side this should allow you to get rid of "ret", since you
-can just do:
-
-if (read(...) < 0)
-    goto out;
-
-    ...
-
-out:
-    ...
-    return -errno
-
-> +
-> +       ret = read(fd, &hdr, sizeof(hdr));
-
-It's very unlikely to happen, but, strictly speaking, read() doesn't
-guarantee to read all sizeof(hdr) bytes, so I'd use read_full() here
-as well.
-
-> +       if (ret < 0)
-> +               goto out;
-> +
-> +       optee_verify_header_request_region(data, &hdr);
-> +       if (ret < 0)
-> +               goto out;
-> +
-> +       ret = read_full(fd, (void *)data->tee_res->start, hdr.init_size);
-> +       if (ret < 0)
-> +               goto out;
-> +
-> +       printf("Read optee file to 0x%08x, size 0x%08x\n", data->tee_res->start, hdr.init_size);
-> +
-> +       ret = 0;
-> +out:
-> +       close(fd);
-> +
-> +       return ret;
-> +}
-> +
->  static int __do_bootm_linux(struct image_data *data, unsigned long free_mem,
->                             int swap, void *fdt)
->  {
->         unsigned long kernel;
->         unsigned long initrd_start = 0, initrd_size = 0, initrd_end = 0;
-> +       void *tee;
->         enum arm_security_state state = bootm_arm_security_state();
->         void *fdt_load_address = NULL;
->         int ret;
-> @@ -189,6 +276,21 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem,
->                         return ret;
->         }
->
-> +       if (IS_ENABLED(CONFIG_BOOTM_OPTEE)) {
-> +               if (data->tee_file) {
-> +                       ret = bootm_load_tee_from_file(data);
-> +                       if (ret)
-> +                               return ret;
-> +               } else {
-> +                       if (IS_ENABLED(CONFIG_BOOTM_OPTEE_FIRMWARE)) {
-> +                               ret = bootm_load_tee_from_firmware(data);
-> +                               if (ret)
-> +                                       return ret;
-> +                       }
-> +               }
-> +       }
-> +
-> +
->         if (bootm_verbose(data)) {
->                 printf("\nStarting kernel at 0x%08lx", kernel);
->                 if (initrd_size)
-> @@ -210,8 +312,13 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem,
->         if (data->dryrun)
->                 return 0;
->
-> +       if (data->tee_res)
-> +               tee = (void *)data->tee_res->start;
-> +       else
-> +               tee = NULL;
-> +
->         start_linux((void *)kernel, swap, initrd_start, initrd_size,
-> -                   fdt_load_address, state);
-> +                   fdt_load_address, state, tee);
->
->         restart_machine();
->
-> diff --git a/arch/arm/lib32/bootu.c b/arch/arm/lib32/bootu.c
-> index d811da3..24c744d 100644
-> --- a/arch/arm/lib32/bootu.c
-> +++ b/arch/arm/lib32/bootu.c
-> @@ -26,7 +26,7 @@ static int do_bootu(int argc, char *argv[])
->         oftree = of_get_fixed_tree(NULL);
->  #endif
->
-> -       start_linux(kernel, 0, 0, 0, oftree, ARM_STATE_SECURE);
-> +       start_linux(kernel, 0, 0, 0, oftree, ARM_STATE_SECURE, NULL);
->
->         return 1;
->  }
-> diff --git a/arch/arm/lib32/bootz.c b/arch/arm/lib32/bootz.c
-> index c0ffd93..a2a26ac 100644
-> --- a/arch/arm/lib32/bootz.c
-> +++ b/arch/arm/lib32/bootz.c
-> @@ -112,7 +112,7 @@ static int do_bootz(int argc, char *argv[])
->         oftree = of_get_fixed_tree(NULL);
->  #endif
->
-> -       start_linux(zimage, swap, 0, 0, oftree, ARM_STATE_SECURE);
-> +       start_linux(zimage, swap, 0, 0, oftree, ARM_STATE_SECURE, NULL);
->
->         return 0;
->
-> diff --git a/commands/bootm.c b/commands/bootm.c
-> index c7cbdbe..100c2e9 100644
-> --- a/commands/bootm.c
-> +++ b/commands/bootm.c
-> @@ -45,7 +45,7 @@
->  #include <magicvar.h>
->  #include <asm-generic/memory_layout.h>
->
-> -#define BOOTM_OPTS_COMMON "sca:e:vo:fd"
-> +#define BOOTM_OPTS_COMMON "sca:e:vo:fdt:"
->
->  #ifdef CONFIG_BOOTM_INITRD
->  #define BOOTM_OPTS BOOTM_OPTS_COMMON "L:r:"
-> @@ -96,6 +96,9 @@ static int do_bootm(int argc, char *argv[])
->                 case 'd':
->                         data.dryrun = 1;
->                         break;
-> +               case 't':
-> +                       data.tee_file = optarg;
-> +                       break;
->                 default:
->                         return COMMAND_ERROR_USAGE;
->                 }
-> @@ -134,6 +137,9 @@ BAREBOX_CMD_HELP_OPT ("-e OFFS\t","entry point to the image relative to start (0
->  #ifdef CONFIG_OFTREE
->  BAREBOX_CMD_HELP_OPT ("-o DTB\t","specify open firmware device tree")
->  #endif
-> +#ifdef CONFIG_BOOTM_OPTEE
-> +BAREBOX_CMD_HELP_OPT ("-t TEE\t","specify TEE image")
-> +#endif
->  #ifdef CONFIG_BOOTM_VERBOSE
->  BAREBOX_CMD_HELP_OPT ("-v\t","verbose")
->  #endif
-> @@ -153,6 +159,9 @@ BAREBOX_CMD_START(bootm)
->  #ifdef CONFIG_BOOTM_VERBOSE
->                                           "v"
->  #endif
-> +#ifdef CONFIG_BOOTM_OPTEE
-> +                                         "t"
-> +#endif
->                                           "] IMAGE")
->         BAREBOX_CMD_GROUP(CMD_GRP_BOOT)
->         BAREBOX_CMD_HELP(cmd_bootm_help)
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 2ad9215..d5858b4 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -659,6 +659,39 @@ config BOOTM_FORCE_SIGNED_IMAGES
->           are refused to boot. Effectively this means only FIT images can be booted
->           since they are the only supported image type that support signing.
->
-> +config BOOTM_OPTEE
-> +       bool
-> +       prompt "support booting OP-TEE"
-> +       depends on BOOTM && ARM
-> +       help
-> +         OP-TEE is a trusted execution environment (TEE). With this option
-> +         enabled barebox supports starting optee_os as part of the bootm command.
-> +         Instead of the kernel bootm starts the optee_os binary which then starts
-> +         the kernel in nonsecure mode. Pass the optee_os binary with the -t option
-> +         or in the global.bootm.tee variable.
-> +
-> +config BOOTM_OPTEE_SIZE
-> +       hex
-> +       default 0x02000000
-> +       prompt "OP-TEE Memory Size"
-> +       depends on BOOTM_OPTEE
-> +       help
-> +         Size to reserve in main memory for OP-TEE.
-> +         Can be smaller than the actual size used by OP-TEE, this is used to prevent
-> +         barebox from allocating memory in this area.
-> +
-> +config BOOTM_OPTEE_FIRMWARE
-> +       bool
-> +       prompt "load OP-TEE from builtin firmware"
-> +       depends on BOOTM_OPTEE
-> +       select FIRMWARE_OPTEE
-> +       help
-> +         Build OP-TEE into the barebox binary as a firmware image.
-> +         Place your tee.bin into the firmware directory or the external firmware
-> +         directory if defined.
-> +         Barebox will use the builtin optee.bin if a separate tee_file is not
-> +         defined.
-> +
->  config BLSPEC
->         depends on FLEXIBLE_BOOTARGS
->         depends on !SHELL_NONE
-> diff --git a/common/bootm.c b/common/bootm.c
-> index 36f6c41..d7232f6 100644
-> --- a/common/bootm.c
-> +++ b/common/bootm.c
-> @@ -58,6 +58,7 @@ void bootm_data_init_defaults(struct bootm_data *data)
->         data->initrd_address = UIMAGE_INVALID_ADDRESS;
->         data->os_address = UIMAGE_SOME_ADDRESS;
->         data->oftree_file = getenv_nonempty("global.bootm.oftree");
-> +       data->tee_file = getenv_nonempty("global.bootm.tee");
->         data->os_file = getenv_nonempty("global.bootm.image");
->         getenv_ul("global.bootm.image.loadaddr", &data->os_address);
->         getenv_ul("global.bootm.initrd.loadaddr", &data->initrd_address);
-> @@ -553,6 +554,8 @@ int bootm_boot(struct bootm_data *bootm_data)
->         bootm_image_name_and_part(bootm_data->os_file, &data->os_file, &data->os_part);
->         bootm_image_name_and_part(bootm_data->oftree_file, &data->oftree_file, &data->oftree_part);
->         bootm_image_name_and_part(bootm_data->initrd_file, &data->initrd_file, &data->initrd_part);
-> +       if (bootm_data->tee_file)
-> +               data->tee_file = xstrdup(bootm_data->tee_file);
->         data->verbose = bootm_data->verbose;
->         data->verify = bootm_data->verify;
->         data->force = bootm_data->force;
-> @@ -693,6 +696,7 @@ err_out:
->         free(data->os_file);
->         free(data->oftree_file);
->         free(data->initrd_file);
-> +       free(data->tee_file);
->         free(data);
->
->         return ret;
-> @@ -703,6 +707,7 @@ static int bootm_init(void)
->         globalvar_add_simple("bootm.image", NULL);
->         globalvar_add_simple("bootm.image.loadaddr", NULL);
->         globalvar_add_simple("bootm.oftree", NULL);
-> +       globalvar_add_simple("bootm.tee", NULL);
->         globalvar_add_simple_bool("bootm.appendroot", &bootm_appendroot);
->         if (IS_ENABLED(CONFIG_BOOTM_INITRD)) {
->                 globalvar_add_simple("bootm.initrd", NULL);
-> @@ -727,6 +732,7 @@ BAREBOX_MAGICVAR_NAMED(global_bootm_image_loadaddr, global.bootm.image.loadaddr,
->  BAREBOX_MAGICVAR_NAMED(global_bootm_initrd, global.bootm.initrd, "bootm default initrd");
->  BAREBOX_MAGICVAR_NAMED(global_bootm_initrd_loadaddr, global.bootm.initrd.loadaddr, "bootm default initrd loadaddr");
->  BAREBOX_MAGICVAR_NAMED(global_bootm_oftree, global.bootm.oftree, "bootm default oftree");
-> +BAREBOX_MAGICVAR_NAMED(global_bootm_tee, global.bootm.tee, "bootm default tee image");
->  BAREBOX_MAGICVAR_NAMED(global_bootm_verify, global.bootm.verify, "bootm default verify level");
->  BAREBOX_MAGICVAR_NAMED(global_bootm_verbose, global.bootm.verbose, "bootm default verbosity level (0=quiet)");
->  BAREBOX_MAGICVAR_NAMED(global_bootm_appendroot, global.bootm.appendroot, "Add root= option to Kernel to mount rootfs from the device the Kernel comes from");
-> diff --git a/firmware/Kconfig b/firmware/Kconfig
-> index a6f79e8..9dc9b49 100644
-> --- a/firmware/Kconfig
-> +++ b/firmware/Kconfig
-> @@ -10,4 +10,7 @@ config FIRMWARE_IMX_LPDDR4_PMU_TRAIN
->  config FIRMWARE_IMX8MQ_ATF
->          bool
->
-> +config FIRMWARE_OPTEE
-> +       bool
-> +
->  endmenu
-> diff --git a/firmware/Makefile b/firmware/Makefile
-> index 7f4dc49..5606d71 100644
-> --- a/firmware/Makefile
-> +++ b/firmware/Makefile
-> @@ -11,6 +11,8 @@ firmware-$(CONFIG_FIRMWARE_IMX_LPDDR4_PMU_TRAIN) += \
->
->  firmware-$(CONFIG_FIRMWARE_IMX8MQ_ATF) += imx/imx8m-bl31.bin
->
-> +firmware-$(CONFIG_FIRMWARE_OPTEE) += optee.bin
-> +
->  # Create $(fwabs) from $(CONFIG_EXTRA_FIRMWARE_DIR) -- if it doesn't have a
->  # leading /, it's relative to $(srctree).
->  fwdir := $(subst $(quote),,$(CONFIG_EXTRA_FIRMWARE_DIR))
-> diff --git a/include/bootm.h b/include/bootm.h
-> index fdc73f7..5ce3318 100644
-> --- a/include/bootm.h
-> +++ b/include/bootm.h
-> @@ -16,6 +16,7 @@ struct bootm_data {
->         const char *os_file;
->         const char *initrd_file;
->         const char *oftree_file;
-> +       const char *tee_file;
->         int verbose;
->         enum bootm_verify verify;
->         bool force;
-> @@ -86,6 +87,8 @@ struct image_data {
->          * it.
->          */
->         void *os_header;
-> +       char *tee_file;
-> +       struct resource *tee_res;
->
->         enum bootm_verify verify;
->         int verbose;
-> diff --git a/include/tee/optee.h b/include/tee/optee.h
-> new file mode 100644
-> index 0000000..8cfe06d
-> --- /dev/null
-> +++ b/include/tee/optee.h
-> @@ -0,0 +1,30 @@
-> +/*
-> + * OP-TEE related definitions
-> + *
-> + * (C) Copyright 2016 Linaro Limited
-> + * Andrew F. Davis <andrew.davis@xxxxxxxxxx>
-> + *
-> + * SPDX-License-Identifier: BSD-2-Clause
-> + */
-> +
-> +#ifndef _OPTEE_H
-> +#define _OPTEE_H
-> +
-> +#define OPTEE_MAGIC             0x4554504f
-> +#define OPTEE_VERSION           1
-> +#define OPTEE_ARCH_ARM32        0
-> +#define OPTEE_ARCH_ARM64        1
-> +
-> +struct optee_header {
-> +       uint32_t magic;
-> +       uint8_t version;
-> +       uint8_t arch;
-> +       uint16_t flags;
-> +       uint32_t init_size;
-> +       uint32_t init_load_addr_hi;
-> +       uint32_t init_load_addr_lo;
-> +       uint32_t init_mem_usage;
-> +       uint32_t paged_size;
-> +};
-> +
-> +#endif /* _OPTEE_H */
-> --
-> git-series 0.9.1
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVHVlLCAyMDE5LTAxLTI5IGF0IDE0OjM1IC0wODAwLCBBbmRyZXkgU21pcm5vdiB3cm90ZToK
+PiBPbiBUdWUsIEphbiAyOSwgMjAxOSBhdCAzOjExIEFNIFJvdXZlbiBDemVyd2luc2tpCj4gPHIu
+Y3plcndpbnNraUBwZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4gPiAKPiA+IEZyb206IFNhc2NoYSBI
+YXVlciA8cy5oYXVlckB4eHh4eHh4eHh4eHh4eD4KPiA+IAo+ID4gVGhpcyBhZGRzIGluaXRpYWwg
+c3VwcG9ydCBmb3IgT1AtVEVFLCBzZWUgaHR0cHM6Ly93d3cub3AtdGVlLm9yZy8KPiA+IAo+ID4g
+YmFyZWJveCBzdGFydHMgaW4gc2VjdXJlIG1vZGUgYXMgdXN1YWwuIFdoZW4gYm9vdGluZyBhIGtl
+cm5lbAo+ID4gdGhlIGJvb3RtIGNvZGUgYWxzbyBsb2FkcyB0aGUgb3B0ZWVfb3MgYmluYXJ5LiBJ
+bnN0ZWFkIG9mIGp1bXBpbmcKPiA+IGludG8gdGhlIGtlcm5lbCBiYXJlYm94IGp1bXBzIGludG8g
+dGhlIG9wdGVlX29zIGJpbmFyeSBhbmQgcHV0cwo+ID4gdGhlIGtlcm5lbCBleGVjdXRpb24gYWRk
+cmVzcyBpbnRvIHRoZSBsciByZWdpc3Rlci4gT1AtVEVFIHRoZW4KPiA+IGp1bXBzIGludG8gdGhl
+IGtlcm5lbCBpbiBub25zZWN1cmUgbW9kZS4KPiA+IAo+ID4gVGhlIG9wdGVlX29zIGJpbmFyeSBp
+cyBwYXNzZWQgd2l0aCB0aGUgLXQgb3B0aW9uIHRvIGJvb3RtIG9yCj4gPiB3aXRoIGdsb2JhbC5i
+b290bS50ZWUuCj4gPiAKPiA+IE9wdGlvbmFsbHkgT1AtVEVFIGNhbiBiZSBjb21waWxlZCBpbnRv
+IGJhcmVib3ggdXNpbmcgdGhlIGJ1aWx0aW4KPiA+IGZpcm13YXJlCj4gPiBmZWF0dXJlLiBFbmFi
+bGUgdGhlIEtjb25maWcgb3B0aW9uIGFuZCBwbGFjZSBvciBsaW5rIHlvdXIgdGVlCj4gPiBiaW5h
+cnkgYXMKPiA+IG9wdGVlLmJpbiBpbnRvIHRoZSBmaXJtd2FyZSBkaXJlY3RvcnkuCj4gPiAKPiA+
+IFRoZSBhbW91bnQgb2YgU0RSQU0gd2hpY2ggaXMga2VwdCBmcmVlIGZvciBPUC1URUUgaXMgY29u
+ZmlndXJhYmxlLgo+ID4gCj4gPiBUaGlzIHBhdGNoIHdhcyB0ZXN0ZWQgb24gYSBpLk1YNiBOaXRy
+b2dlbjZ4IGJvYXJkLgo+ID4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1
+ZXJAcGVuZ3V0cm9uaXguZGU+Cj4gPiBTaWduZWQtb2ZmLWJ5OiBSb3V2ZW4gQ3plcndpbnNraSA8
+ci5jemVyd2luc2tpQHBlbmd1dHJvbml4LmRlPgo+ID4gLS0tCj4gPiDCoGFyY2gvYXJtL2NwdS9N
+YWtlZmlsZcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB8wqDCoMKgMiArLQo+ID4gwqBhcmNo
+L2FybS9jcHUvc3RhcnQta2VybmVsLW9wdGVlLlPCoMKgfMKgwqAxNCArKysrLQo+ID4gwqBhcmNo
+L2FybS9jcHUvc3RhcnQuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHzCoMKgwqAzICst
+Cj4gPiDCoGFyY2gvYXJtL2luY2x1ZGUvYXNtL2FybWxpbnV4LmjCoMKgwqDCoHzCoMKgwqAyICst
+Cj4gPiDCoGFyY2gvYXJtL2luY2x1ZGUvYXNtL2JhcmVib3gtYXJtLmggfMKgwqDCoDkgKystCj4g
+PiDCoGFyY2gvYXJtL2xpYjMyL2FybWxpbnV4LmPCoMKgwqDCoMKgwqDCoMKgwqDCoHzCoMKgMTAg
+KystCj4gPiDCoGFyY2gvYXJtL2xpYjMyL2Jvb3RtLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oHwgMTA5Cj4gPiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0KPiA+IMKgYXJjaC9hcm0v
+bGliMzIvYm9vdHUuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfMKgwqDCoDIgKy0KPiA+IMKg
+YXJjaC9hcm0vbGliMzIvYm9vdHouY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfMKgwqDCoDIg
+Ky0KPiA+IMKgY29tbWFuZHMvYm9vdG0uY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgfMKgwqAxMSArKy0KPiA+IMKgY29tbW9uL0tjb25maWfCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB8wqDCoDMzICsrKysrKysrKy0KPiA+IMKgY29tbW9uL2Jv
+b3RtLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB8wqDCoMKgNiAr
+Ky0KPiA+IMKgZmlybXdhcmUvS2NvbmZpZ8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgfMKgwqDCoDMgKy0KPiA+IMKgZmlybXdhcmUvTWFrZWZpbGXCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqB8wqDCoMKgMiArLQo+ID4gwqBpbmNsdWRlL2Jvb3RtLmjCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfMKgwqDCoDMgKy0KPiA+IMKgaW5j
+bHVkZS90ZWUvb3B0ZWUuaMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfMKgwqAzMCAr
+KysrKysrKy0KPiA+IMKgMTYgZmlsZXMgY2hhbmdlZCwgMjM0IGluc2VydGlvbnMoKyksIDcgZGVs
+ZXRpb25zKC0pCj4gPiDCoGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9jcHUvc3RhcnQta2Vy
+bmVsLW9wdGVlLlMKPiA+IMKgY3JlYXRlIG1vZGUgMTAwNjQ0IGluY2x1ZGUvdGVlL29wdGVlLmgK
+PiA+IAo+ID4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2NwdS9NYWtlZmlsZSBiL2FyY2gvYXJtL2Nw
+dS9NYWtlZmlsZQo+ID4gaW5kZXggYTM1ZGI0My4uZTZlNzRlMCAxMDA2NDQKPiA+IC0tLSBhL2Fy
+Y2gvYXJtL2NwdS9NYWtlZmlsZQo+ID4gKysrIGIvYXJjaC9hcm0vY3B1L01ha2VmaWxlCj4gPiBA
+QCAtMTIsNiArMTIsOCBAQCBvYmoteSArPSBzdGFydC5vIGVudHJ5Lm8KPiA+IAo+ID4gwqBvYmot
+cGJsLXkgKz0gc2V0dXBjJChTNjQpLm8gY2FjaGUkKFM2NCkubwo+ID4gCj4gPiArb2JqLSQoQ09O
+RklHX0JPT1RNX09QVEVFKSArPSBzdGFydC1rZXJuZWwtb3B0ZWUubwo+ID4gKwo+ID4gwqAjCj4g
+PiDCoCMgQW55IHZhcmlhbnRzIGNhbiBiZSBjYWxsZWQgYXMgc3RhcnQtYXJteHl6LlMKPiA+IMKg
+Iwo+ID4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2NwdS9zdGFydC1rZXJuZWwtb3B0ZWUuUwo+ID4g
+Yi9hcmNoL2FybS9jcHUvc3RhcnQta2VybmVsLW9wdGVlLlMKPiA+IG5ldyBmaWxlIG1vZGUgMTAw
+NjQ0Cj4gPiBpbmRleCAwMDAwMDAwLi5jZTVhYzE3Cj4gPiAtLS0gL2Rldi9udWxsCj4gPiArKysg
+Yi9hcmNoL2FybS9jcHUvc3RhcnQta2VybmVsLW9wdGVlLlMKPiA+IEBAIC0wLDAgKzEsMTQgQEAK
+PiA+ICsjaW5jbHVkZSA8bGludXgvbGlua2FnZS5oPgo+ID4gKwo+ID4gK0VOVFJZKHN0YXJ0X2tl
+cm5lbF9vcHRlZSkKPiA+ICvCoMKgwqDCoMKgwqDCoMKgLyoKPiA+ICvCoMKgwqDCoMKgwqDCoMKg
+wqAqIHIwID0gb3B0ZWUKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqAqIHIxID0ga2VybmVsCj4gPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgKiByMiA9IG9mdHJlZQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoCov
+Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgbW92IHI0LCByMAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDC
+oG1vdiByMCwgIzAKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqBtb3YgbHIsIHIxCj4gPiArwqDCoMKg
+wqDCoMKgwqDCoMKgbW92IHIxLCAjMAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoGJ4IHI0Cj4gPiAr
+RU5EUFJPQyhzdGFydF9rZXJuZWxfb3B0ZWUpCj4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vY3B1
+L3N0YXJ0LmMgYi9hcmNoL2FybS9jcHUvc3RhcnQuYwo+ID4gaW5kZXggNzY4ZmE5ZS4uZTc4YTgy
+MCAxMDA2NDQKPiA+IC0tLSBhL2FyY2gvYXJtL2NwdS9zdGFydC5jCj4gPiArKysgYi9hcmNoL2Fy
+bS9jcHUvc3RhcnQuYwo+ID4gQEAgLTIyNiw2ICsyMjYsOSBAQCBfX25vcmV0dXJuIHZvaWQgYmFy
+ZWJveF9ub25fcGJsX3N0YXJ0KHVuc2lnbmVkCj4gPiBsb25nIG1lbWJhc2UsCj4gPiAKPiA+IMKg
+wqDCoMKgwqDCoMKgwqBtZW1fbWFsbG9jX2luaXQoKHZvaWQgKiltYWxsb2Nfc3RhcnQsICh2b2lk
+ICopbWFsbG9jX2VuZCAtCj4gPiAxKTsKPiA+IAo+ID4gK8KgwqDCoMKgwqDCoMKgaWYgKElTX0VO
+QUJMRUQoQ09ORklHX0JPT1RNX09QVEVFKSkKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBvZl9hZGRfcmVzZXJ2ZV9lbnRyeShlbmRtZW0gLQo+ID4gQ09ORklHX0JPT1RNX09QVEVF
+X1NJWkUsIGVuZG1lbSAtIDEpOwo+ID4gKwo+ID4gwqDCoMKgwqDCoMKgwqDCoHByX2RlYnVnKCJz
+dGFydGluZyBiYXJlYm94Li4uXG4iKTsKPiA+IAo+ID4gwqDCoMKgwqDCoMKgwqDCoHN0YXJ0X2Jh
+cmVib3goKTsKPiA+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9pbmNsdWRlL2FzbS9hcm1saW51eC5o
+Cj4gPiBiL2FyY2gvYXJtL2luY2x1ZGUvYXNtL2FybWxpbnV4LmgKPiA+IGluZGV4IDEzNWYxMWIu
+LjZhZjk4OTYgMTAwNjQ0Cj4gPiAtLS0gYS9hcmNoL2FybS9pbmNsdWRlL2FzbS9hcm1saW51eC5o
+Cj4gPiArKysgYi9hcmNoL2FybS9pbmNsdWRlL2FzbS9hcm1saW51eC5oCj4gPiBAQCAtNDAsNiAr
+NDAsNiBAQCBzdHJ1Y3QgaW1hZ2VfZGF0YTsKPiA+IAo+ID4gwqB2b2lkIHN0YXJ0X2xpbnV4KHZv
+aWQgKmFkciwgaW50IHN3YXAsIHVuc2lnbmVkIGxvbmcKPiA+IGluaXRyZF9hZGRyZXNzLAo+ID4g
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHVuc2lnbmVkIGxvbmcgaW5pdHJkX3Np
+emUsIHZvaWQgKm9mdHJlZSwKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGVu
+dW0gYXJtX3NlY3VyaXR5X3N0YXRlKTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGVudW0gYXJtX3NlY3VyaXR5X3N0YXRlLCB2b2lkICpvcHRlZSk7Cj4gPiAKPiA+IMKgI2Vu
+ZGlmIC8qIF9fQVJDSF9BUk1MSU5VWF9IICovCj4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vaW5j
+bHVkZS9hc20vYmFyZWJveC1hcm0uaAo+ID4gYi9hcmNoL2FybS9pbmNsdWRlL2FzbS9iYXJlYm94
+LWFybS5oCj4gPiBpbmRleCBlMDY1YjQ3Li45NTc2NWY5IDEwMDY0NAo+ID4gLS0tIGEvYXJjaC9h
+cm0vaW5jbHVkZS9hc20vYmFyZWJveC1hcm0uaAo+ID4gKysrIGIvYXJjaC9hcm0vaW5jbHVkZS9h
+c20vYmFyZWJveC1hcm0uaAo+ID4gQEAgLTEwOSw2ICsxMDksMTUgQEAgdm9pZCAqYmFyZWJveF9h
+cm1fYm9vdF9kdGIodm9pZCk7Cj4gPiDCoHN0YXRpYyBpbmxpbmUgdW5zaWduZWQgbG9uZyBhcm1f
+bWVtX3N0YWNrX3RvcCh1bnNpZ25lZCBsb25nCj4gPiBtZW1iYXNlLAo+ID4gwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB1bnNpZ25lZCBsb25nIGVuZG1lbSkKPiA+IMKgewo+ID4g
+K8KgwqDCoMKgwqDCoMKgLyoKPiA+ICvCoMKgwqDCoMKgwqDCoMKgKiBGSVhNRToKPiA+ICvCoMKg
+wqDCoMKgwqDCoMKgKiBPUC1URUUgZXhwZWN0cyB0byBiZSBleGVjdXRlZCBzb21ld2hlcmUgYXQg
+dGhlIGVuZCBvZgo+ID4gUkFNLgo+ID4gK8KgwqDCoMKgwqDCoMKgwqAqIFNpbmNlIHdlIG5vcm1h
+bGx5IG9jY3VweSBhbGwgUkFNIGF0IHRoZSBlbmQsIG1vdmUKPiA+IG91cnNlbHZlcwo+ID4gK8Kg
+wqDCoMKgwqDCoMKgwqAqIGEgYml0IGxvd2VyLgo+ID4gK8KgwqDCoMKgwqDCoMKgwqAqLwo+ID4g
+K8KgwqDCoMKgwqDCoMKgaWYgKElTX0VOQUJMRUQoQ09ORklHX0JPT1RNX09QVEVFKSkKPiA+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gZW5kbWVtIC0gQ09ORklHX0JPT1RN
+X09QVEVFX1NJWkUgLSBTWl82NEs7Cj4gCj4gWW91IGNhbiBwcm9iYWJseSBjaGFuZ2UgaXQgdG86
+Cj4gCj4gaWYgKElTX0VOQUJMRUQoQ09ORklHX0JPT1RNX09QVEVFKSkKPiDCoMKgwqDCoGVuZG1l
+bSAtPSBDT05GSUdfQk9PVE1fT1BURUVfU0laRTsKPiAKPiB0byBhdm9pZCBoYXJkLWNvZGluZyBT
+Wl82NEsgaW4gdHdvIHBsYWNlcwo+IApzZW5zaWJsZSwgd2lsbCBmaXguCgo+ID4gKwo+ID4gwqDC
+oMKgwqDCoMKgwqDCoHJldHVybiBlbmRtZW0gLSBTWl82NEs7Cj4gPiDCoH0KPiA+IAo+ID4gZGlm
+ZiAtLWdpdCBhL2FyY2gvYXJtL2xpYjMyL2FybWxpbnV4LmMgYi9hcmNoL2FybS9saWIzMi9hcm1s
+aW51eC5jCj4gPiBpbmRleCBjOTcwZjAyLi5hMWUzMzc1IDEwMDY0NAo+ID4gLS0tIGEvYXJjaC9h
+cm0vbGliMzIvYXJtbGludXguYwo+ID4gKysrIGIvYXJjaC9hcm0vbGliMzIvYXJtbGludXguYwo+
+ID4gQEAgLTI1OCw5ICsyNTgsMTEgQEAgc3RhdGljIHZvaWQgc2V0dXBfdGFncyh1bnNpZ25lZCBs
+b25nCj4gPiBpbml0cmRfYWRkcmVzcywKPiA+IAo+ID4gwqB9Cj4gPiAKPiA+ICt2b2lkIHN0YXJ0
+X2tlcm5lbF9vcHRlZSh2b2lkICpvcHRlZSwgdm9pZCAqa2VybmVsLCB2b2lkICpvZnRyZWUpOwo+
+ID4gKwo+ID4gwqB2b2lkIHN0YXJ0X2xpbnV4KHZvaWQgKmFkciwgaW50IHN3YXAsIHVuc2lnbmVk
+IGxvbmcKPiA+IGluaXRyZF9hZGRyZXNzLAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoHVuc2lnbmVkIGxvbmcgaW5pdHJkX3NpemUsIHZvaWQgKm9mdHJlZSwKPiA+IC3CoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGVudW0gYXJtX3NlY3VyaXR5X3N0YXRlIHN0YXRl
+KQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZW51bSBhcm1fc2VjdXJpdHlf
+c3RhdGUgc3RhdGUsIHZvaWQgKm9wdGVlKQo+ID4gwqB7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgdm9p
+ZCAoKmtlcm5lbCkoaW50IHplcm8sIGludCBhcmNoLCB2b2lkICpwYXJhbXMpID0gYWRyOwo+ID4g
+wqDCoMKgwqDCoMKgwqDCoHZvaWQgKnBhcmFtcyA9IE5VTEw7Cj4gPiBAQCAtMjk0LDUgKzI5Niw5
+IEBAIHZvaWQgc3RhcnRfbGludXgodm9pZCAqYWRyLCBpbnQgc3dhcCwgdW5zaWduZWQKPiA+IGxv
+bmcgaW5pdHJkX2FkZHJlc3MsCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoF9f
+YXNtX18gX192b2xhdGlsZV9fKCJtY3IgcDE1LCAwLCAlMCwgYzEsIGMwIiA6Ogo+ID4gInIiIChy
+ZWcpKTsKPiA+IMKgwqDCoMKgwqDCoMKgwqB9Cj4gPiAKPiA+IC3CoMKgwqDCoMKgwqDCoGtlcm5l
+bCgwLCBhcmNoaXRlY3R1cmUsIHBhcmFtcyk7Cj4gPiArwqDCoMKgwqDCoMKgwqBpZiAob3B0ZWUp
+IHsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBzdGFydF9rZXJuZWxfb3B0ZWUo
+b3B0ZWUsIGtlcm5lbCwgb2Z0cmVlKTsKPiA+ICvCoMKgwqDCoMKgwqDCoH0gZWxzZSB7Cj4gPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKga2VybmVsKDAsIGFyY2hpdGVjdHVyZSwgcGFy
+YW1zKTsKPiA+ICvCoMKgwqDCoMKgwqDCoH0KPiAKPiBKdXN0IG91dCBvZiBjdXJpb3NpdHksIGNh
+biB3ZSByZXR1cm4gYmFjayB0byB0aGlzIGZ1bmN0aW9uIGluCj4gbm9uLXNlY3VyZSBtb2RlIGFu
+ZCBqdXN0IGRvOgo+IAo+IGlmIChvcHRlZSkKPiDCoMKgwqDCoG9wdGVlKCk7Cj4ga2VybmVsKDAs
+IGFyY2hpdGVjdHVyZSwgcGFyYW1zKTsKPiAKPiA/CkkgZG9uJ3QgcXVpdGUgZ2V0IHlvdXIgaW50
+ZW50aW9uIGhlcmUuIFdlIGNhbid0IHN0YXJ0IE9QLVRFRSBpbiBub24tCnNlY3VyZSBtb2RlIGFu
+ZCBhdCBsZWFzdCBjdXJyZW50bHkgT1AtVEVFIHN0YXJ0cyB3aXRob3V0IHJldHVybmluZyBiYWNr
+CnRvIGJhcmVib3guCsKgCj4gCj4gPiDCoH0KPiA+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9saWIz
+Mi9ib290bS5jIGIvYXJjaC9hcm0vbGliMzIvYm9vdG0uYwo+ID4gaW5kZXggNGNmNTcwZS4uNjli
+ZjViYiAxMDA2NDQKPiA+IC0tLSBhL2FyY2gvYXJtL2xpYjMyL2Jvb3RtLmMKPiA+ICsrKyBiL2Fy
+Y2gvYXJtL2xpYjMyL2Jvb3RtLmMKPiA+IEBAIC00LDYgKzQsNyBAQAo+ID4gwqAjaW5jbHVkZSA8
+Y29tbWFuZC5oPgo+ID4gwqAjaW5jbHVkZSA8ZHJpdmVyLmg+Cj4gPiDCoCNpbmNsdWRlIDxlbnZp
+cm9ubWVudC5oPgo+ID4gKyNpbmNsdWRlIDxmaXJtd2FyZS5oPgo+ID4gwqAjaW5jbHVkZSA8aW1h
+Z2UuaD4KPiA+IMKgI2luY2x1ZGUgPGluaXQuaD4KPiA+IMKgI2luY2x1ZGUgPGZzLmg+Cj4gPiBA
+QCAtMTksNiArMjAsNyBAQAo+ID4gwqAjaW5jbHVkZSA8YmluZm10Lmg+Cj4gPiDCoCNpbmNsdWRl
+IDxyZXN0YXJ0Lmg+Cj4gPiDCoCNpbmNsdWRlIDxnbG9iYWx2YXIuaD4KPiA+ICsjaW5jbHVkZSA8
+dGVlL29wdGVlLmg+Cj4gPiAKPiA+IMKgI2luY2x1ZGUgPGFzbS9ieXRlb3JkZXIuaD4KPiA+IMKg
+I2luY2x1ZGUgPGFzbS9zZXR1cC5oPgo+ID4gQEAgLTEzMywxMSArMTM1LDk2IEBAIHN0YXRpYyBp
+bnQgZ2V0X2tlcm5lbF9hZGRyZXNzZXMoc2l6ZV90Cj4gPiBpbWFnZV9zaXplLAo+ID4gwqDCoMKg
+wqDCoMKgwqDCoHJldHVybiAwOwo+ID4gwqB9Cj4gPiAKPiA+ICtzdGF0aWMgaW50IG9wdGVlX3Zl
+cmlmeV9oZWFkZXJfcmVxdWVzdF9yZWdpb24oc3RydWN0IGltYWdlX2RhdGEKPiA+ICpkYXRhLCBz
+dHJ1Y3Qgb3B0ZWVfaGVhZGVyICpoZHIpCj4gPiArewo+ID4gK8KgwqDCoMKgwqDCoMKgaW50IHJl
+dDsKPiAKPiBUaGlzIGZ1bmN0aW9uIHVzZXMgInJldCIgaW4gc29tZSByZWFsbHkgc3VwZXJmbHVv
+dXMgd2F5LiBJJ2QgY29uc2lkZXIKPiBqdXN0IGRyb3BwaW5nICJyZXQiLgp5ZXMsIHdpbGwgZml4
+LgoKPiAKPiA+ICsKPiA+ICvCoMKgwqDCoMKgwqDCoGlmIChoZHItPm1hZ2ljICE9IE9QVEVFX01B
+R0lDKSB7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHJpbnRmKCJJbnZhbGlk
+IGhlYWRlciBtYWdpYyAweCUwOHgsIGV4cGVjdGVkCj4gPiAweCUwOHhcbiIsCj4gPiArwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBoZHItPm1hZ2ljLCBPUFRFRV9N
+QUdJQyk7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0ID0gLUVJTlZBTDsK
+PiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gcmV0Owo+ID4gK8KgwqDC
+oMKgwqDCoMKgfQo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgaWYgKGhkci0+YXJjaCAhPSBPUFRF
+RV9BUkNIX0FSTTMyIHx8IGhkci0KPiA+ID5pbml0X2xvYWRfYWRkcl9oaSkgewo+ID4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHByaW50ZigiT25seSAzMmJpdCBzdXBwb3J0ZWRcbiIp
+Owo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldCA9IC1FSU5WQUw7Cj4gPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIHJldDsKPiA+ICvCoMKgwqDCoMKg
+wqDCoH0KPiA+ICsKPiA+ICvCoMKgwqDCoMKgwqDCoGRhdGEtPnRlZV9yZXMgPSByZXF1ZXN0X3Nk
+cmFtX3JlZ2lvbigiVEVFIiwgaGRyLQo+ID4gPmluaXRfbG9hZF9hZGRyX2xvLCBoZHItPmluaXRf
+c2l6ZSk7Cj4gPiArwqDCoMKgwqDCoMKgwqBpZiAoIWRhdGEtPnRlZV9yZXMpIHsKPiA+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXQgPSAtRUJVU1k7Cj4gCj4gVW5kZXJseWluZyBj
+YWxsIHRvIF9fcmVxdWVzdF9yZWdpb24oKSBpbiByZXF1ZXN0X3NkcmFtX3JlZ2lvbigpIGNhbgo+
+IGFsc28gcmV0dXJuIC1FSU5WQUwgaWYsIGZvciBleGFtcGxlLCByZXF1ZXN0ZWQgcmVnaW9uIGlz
+IHRvbyBiaWcuIEkKPiBkb24ndCB0aGluayBoYXJkLWNvZGluZyAtRUJVU1ksIHJlYWxseSBhZGRz
+IGFueSB1c2VmdWwgaW5mbyBoZXJlLgp3aWxsIGZpeC4KCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgcHJpbnRmKCJDYW5ub3QgcmVxdWVzdCBTRFJBTSByZWdpb24gMHglMDh4LTB4
+JTA4eDoKPiA+ICVzXG4iLAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgaGRyLT5pbml0X2xvYWRfYWRkcl9sbywgaGRyLQo+ID4gPmluaXRfbG9hZF9hZGRy
+X2xvICsgaGRyLT5pbml0X3NpemUgLSAxLAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgc3RyZXJyb3IoLXJldCkpOwo+ID4gK8KgwqDCoMKgwqDCoMKgfQo+
+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgcmV0ID0gMDsKPiA+ICvCoMKgwqDCoMKgwqDCoHJldHVy
+biByZXQ7Cj4gPiArfQo+ID4gKwo+ID4gK3N0YXRpYyBpbnQgYm9vdG1fbG9hZF90ZWVfZnJvbV9m
+aXJtd2FyZShzdHJ1Y3QgaW1hZ2VfZGF0YSAqZGF0YSkKPiA+ICt7Cj4gPiArwqDCoMKgwqDCoMKg
+wqBpbnQgcmV0Owo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgdTggKm9wdGVlOwo+ID4gK8KgwqDC
+oMKgwqDCoMKgc2l6ZV90IG9wdGVlX3NpemU7Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqBzdHJ1
+Y3Qgb3B0ZWVfaGVhZGVyIGhkcjsKPiA+ICsKPiA+ICvCoMKgwqDCoMKgwqDCoGdldF9idWlsdGlu
+X2Zpcm13YXJlKG9wdGVlX2JpbiwgJm9wdGVlLCAmb3B0ZWVfc2l6ZSk7Cj4gPiArCj4gPiArwqDC
+oMKgwqDCoMKgwqBtZW1jcHkob3B0ZWUsICZoZHIsIHNpemVvZihoZHIpKTsKPiA+ICsKPiA+ICvC
+oMKgwqDCoMKgwqDCoHJldCA9IG9wdGVlX3ZlcmlmeV9oZWFkZXJfcmVxdWVzdF9yZWdpb24oZGF0
+YSwgJmhkcik7Cj4gPiArwqDCoMKgwqDCoMKgwqBpZiAocmV0IDwgMCkKPiA+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gcmV0Owo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKg
+bWVtY3B5KG9wdGVlLCAodm9pZCAqKWRhdGEtPnRlZV9yZXMtPnN0YXJ0LCBoZHIuaW5pdF9zaXpl
+KTsKPiA+ICsKPiA+ICvCoMKgwqDCoMKgwqDCoHByaW50ZigiQ29waWVkIG9wdGVlIGJpbmFyeSB0
+byAweCUwOHgsIHNpemUgMHglMDh4XG4iLAo+ID4gZGF0YS0+dGVlX3Jlcy0+c3RhcnQsIGhkci5p
+bml0X3NpemUpOwo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgcmV0ID0gMDsKPiA+ICvCoMKgwqDC
+oMKgwqDCoHJldHVybiByZXQ7Cj4gPiArfQo+IAo+IFdoYXQgaWYgd2UgaW5zdGVhZCBkbzoKPiAK
+PiBnZXRfYnVpbHRpbl9maXJtd2FyZShvcHRlZV9iaW4sICZvcHRlZSwgJm9wdGVlX3NpemUpOwo+
+IGFkZF9tZW1fZGV2aWNlKCJvcHRlZSIsIG9wdGVlLCBvcHRlZV9zaXplLCAwKTsKPiAKPiBhbmQg
+dGhlbiBoYW5kbGUgdGhhdCBjYXNlIHZpYSAiL2Rldi9vcHRlZSIgYW5kCj4gYm9vdG1fbG9hZF90
+ZWVfZnJvbV9maWxlKCk/IElzIHRoZXJlIGFueSByZWFzb24gaXQgd291bGRuJ3Qgd29yaz8KVGhh
+dHMgYSBnb29kIGlkZWEgdG8gZXhwb3NlIHRoZSBpZGVhIGFuZCBzaW1wbGlmeSB0aGUgdGVlIGxv
+YWRpbmcgY29kZS4KwqAKPiBNb3Jlc28sIGlmIHRoYXQgY2FuIGJlIGRvbmUgd2Ugc2hvdWxkIGNv
+bnNpZGVyIGp1c3QgcHJvdmlkaW5nIGFuIEFQSQo+IHRvIGhhbmRsZSBidWlsdC1pbiBmaXJtd2Fy
+ZSBjYXNlIGFuZCBkZWxlZ2F0aW5nIHRoYXQgam9iIHRvCj4gaW5kaXZpZHVhbAo+IGJvYXJkIGZp
+bGVzLCBzbyB0aGF0IHdlIGhhdmUgdGhlIGZyZWVkb20gb2YgaGF2aW5nIHBlci1ib2FyZCB2ZXJz
+aW9uCj4gb2YgT1AtVEVFIGZpcm13YXJlLgpUaGUgaWRlYSBoZXJlIHdhcyB0byBub3QgaW5jbHVk
+ZSB0aGUgT1AtVEVFIGJpbmFyeSBpbnRvIHRoZSBiYXJlYm94CnVwc3RyZWFtIHJlcG9zaXRvcnkg
+YW5kIG9ubHkgcHJvdmlkZSB0aGUgb3B0aW9uIHRvIGluY2x1ZGUgb3B0ZWUgZm9yCnByb2R1Y3Rp
+b24gZGV2aWNlcy4KSSBjYW4ndCB0aGluayBvZiBhIHVzZSBjYXNlIHdoZXJlIHdlIHdhbnQgdG8g
+aW5jbHVkZSBPUC1URUUgaW50byBhbgp1cHN0cmVhbSBiYXJlYm94LCBzaW5jZSB0aGUgZmVhdHVy
+ZXMgZm9yIE9QLVRFRSAoaW5jbHVkZWQgZWFybHkgVEFzLAptZW1vcnkgc2l6ZSwuLi4pIGFyZSBx
+dWl0ZSBzcGVjaWZpYyBmb3IgdGhlIHVzZSBjYXNlLgoKPiA+ICtzdGF0aWMgaW50IGJvb3RtX2xv
+YWRfdGVlX2Zyb21fZmlsZShzdHJ1Y3QgaW1hZ2VfZGF0YSAqZGF0YSkKPiA+ICt7Cj4gPiArwqDC
+oMKgwqDCoMKgwqBpbnQgZmQsIHJldDsKPiA+ICvCoMKgwqDCoMKgwqDCoHN0cnVjdCBvcHRlZV9o
+ZWFkZXIgaGRyOwo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgZmQgPSBvcGVuKGRhdGEtPnRlZV9m
+aWxlLCBPX1JET05MWSk7Cj4gPiArwqDCoMKgwqDCoMKgwqBpZiAoZmQgPCAwKQo+ID4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiBmZDsKPiAKPiBQdXJlbHkgb3B0aW9uYWws
+IGJ1dCBwbGVhc2UgY29uc2lkZXIgY2hhbmdpbmcgdGhpcyBjb2RlIHRvIGJlIGEgYml0Cj4gbW9y
+ZSBQT1NJWCBjb21wbGlhbnQgYW5kIGF2b2lkIHJlbHlpbmcgb24gZ2V0dGluZyBwcm9wZXIgZXJy
+b3IgY29kZXMKPiBmcm9tIHZhcmlvdXMgQVBJIGNhbGxzLiBDYWxscyB0byBvcGVuKCksIHJlYWQo
+KSBhbmQgcmVhZF9mdWxsKCkKPiBzaG91bGQKPiBqdXN0IGNoZWNrIGlmIHRoZSByZXR1cm4gdmFs
+dWUgaXMgbmVnYXRpdmUgYW5kIHJldHVybiAtZXJybm8gaWYgc28uCj4gT24KPiB0aGUgYnJpZ2h0
+IHNpZGUgdGhpcyBzaG91bGQgYWxsb3cgeW91IHRvIGdldCByaWQgb2YgInJldCIsIHNpbmNlIHlv
+dQo+IGNhbiBqdXN0IGRvOgo+IAo+IGlmIChyZWFkKC4uLikgPCAwKQo+IMKgwqDCoMKgZ290byBv
+dXQ7Cj4gCj4gwqDCoMKgwqAuLi4KPiAKPiBvdXQ6Cj4gwqDCoMKgwqAuLi4KPiDCoMKgwqDCoHJl
+dHVybiAtZXJybm8KPiAKc291bmRzIGdvb2QsIHdpbGwgZG8uCgo+ID4gKwo+ID4gK8KgwqDCoMKg
+wqDCoMKgcmV0ID0gcmVhZChmZCwgJmhkciwgc2l6ZW9mKGhkcikpOwo+IAo+IEl0J3MgdmVyeSB1
+bmxpa2VseSB0byBoYXBwZW4sIGJ1dCwgc3RyaWN0bHkgc3BlYWtpbmcsIHJlYWQoKSBkb2Vzbid0
+Cj4gZ3VhcmFudGVlIHRvIHJlYWQgYWxsIHNpemVvZihoZHIpIGJ5dGVzLCBzbyBJJ2QgdXNlIHJl
+YWRfZnVsbCgpIGhlcmUKPiBhcyB3ZWxsLgp3aWxsIGZpeC4KCj4gCj4gPiArwqDCoMKgwqDCoMKg
+wqBpZiAocmV0IDwgMCkKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBnb3RvIG91
+dDsKPiA+ICsKPiA+ICvCoMKgwqDCoMKgwqDCoG9wdGVlX3ZlcmlmeV9oZWFkZXJfcmVxdWVzdF9y
+ZWdpb24oZGF0YSwgJmhkcik7Cj4gPiArwqDCoMKgwqDCoMKgwqBpZiAocmV0IDwgMCkKPiA+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBnb3RvIG91dDsKPiA+ICsKPiA+ICvCoMKgwqDC
+oMKgwqDCoHJldCA9IHJlYWRfZnVsbChmZCwgKHZvaWQgKilkYXRhLT50ZWVfcmVzLT5zdGFydCwK
+PiA+IGhkci5pbml0X3NpemUpOwo+ID4gK8KgwqDCoMKgwqDCoMKgaWYgKHJldCA8IDApCj4gPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZ290byBvdXQ7Cj4gPiArCj4gPiArwqDCoMKg
+wqDCoMKgwqBwcmludGYoIlJlYWQgb3B0ZWUgZmlsZSB0byAweCUwOHgsIHNpemUgMHglMDh4XG4i
+LCBkYXRhLQo+ID4gPnRlZV9yZXMtPnN0YXJ0LCBoZHIuaW5pdF9zaXplKTsKPiA+ICsKPiA+ICvC
+oMKgwqDCoMKgwqDCoHJldCA9IDA7Cj4gPiArb3V0Ogo+ID4gK8KgwqDCoMKgwqDCoMKgY2xvc2Uo
+ZmQpOwo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgcmV0dXJuIHJldDsKPiA+ICt9Cj4gPiArCj4g
+PiDCoHN0YXRpYyBpbnQgX19kb19ib290bV9saW51eChzdHJ1Y3QgaW1hZ2VfZGF0YSAqZGF0YSwg
+dW5zaWduZWQgbG9uZwo+ID4gZnJlZV9tZW0sCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGludCBzd2FwLCB2b2lkICpmZHQpCj4gPiDC
+oHsKPiA+IMKgwqDCoMKgwqDCoMKgwqB1bnNpZ25lZCBsb25nIGtlcm5lbDsKPiA+IMKgwqDCoMKg
+wqDCoMKgwqB1bnNpZ25lZCBsb25nIGluaXRyZF9zdGFydCA9IDAsIGluaXRyZF9zaXplID0gMCwg
+aW5pdHJkX2VuZAo+ID4gPSAwOwo+ID4gK8KgwqDCoMKgwqDCoMKgdm9pZCAqdGVlOwo+ID4gwqDC
+oMKgwqDCoMKgwqDCoGVudW0gYXJtX3NlY3VyaXR5X3N0YXRlIHN0YXRlID0gYm9vdG1fYXJtX3Nl
+Y3VyaXR5X3N0YXRlKCk7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgdm9pZCAqZmR0X2xvYWRfYWRkcmVz
+cyA9IE5VTEw7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgaW50IHJldDsKPiA+IEBAIC0xODksNiArMjc2
+LDIxIEBAIHN0YXRpYyBpbnQgX19kb19ib290bV9saW51eChzdHJ1Y3QgaW1hZ2VfZGF0YQo+ID4g
+KmRhdGEsIHVuc2lnbmVkIGxvbmcgZnJlZV9tZW0sCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gcmV0Owo+ID4gwqDCoMKgwqDCoMKgwqDC
+oH0KPiA+IAo+ID4gK8KgwqDCoMKgwqDCoMKgaWYgKElTX0VOQUJMRUQoQ09ORklHX0JPT1RNX09Q
+VEVFKSkgewo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChkYXRhLT50ZWVf
+ZmlsZSkgewo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqByZXQgPSBib290bV9sb2FkX3RlZV9mcm9tX2ZpbGUoZGF0YSk7Cj4gPiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChyZXQpCj4gPiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1
+cm4gcmV0Owo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0gZWxzZSB7Cj4gPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmCj4gPiAoSVNf
+RU5BQkxFRChDT05GSUdfQk9PVE1fT1BURUVfRklSTVdBUkUpKSB7Cj4gPiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXQgPQo+
+ID4gYm9vdG1fbG9hZF90ZWVfZnJvbV9maXJtd2FyZShkYXRhKTsKPiA+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChyZXQp
+Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIHJldDsKPiA+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoH0KPiA+ICvCoMKgwqDCoMKgwqDCoH0KPiA+ICsKPiA+ICsKPiA+IMKgwqDC
+oMKgwqDCoMKgwqBpZiAoYm9vdG1fdmVyYm9zZShkYXRhKSkgewo+ID4gwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBwcmludGYoIlxuU3RhcnRpbmcga2VybmVsIGF0IDB4JTA4bHgiLCBr
+ZXJuZWwpOwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAoaW5pdHJkX3Np
+emUpCj4gPiBAQCAtMjEwLDggKzMxMiwxMyBAQCBzdGF0aWMgaW50IF9fZG9fYm9vdG1fbGludXgo
+c3RydWN0IGltYWdlX2RhdGEKPiA+ICpkYXRhLCB1bnNpZ25lZCBsb25nIGZyZWVfbWVtLAo+ID4g
+wqDCoMKgwqDCoMKgwqDCoGlmIChkYXRhLT5kcnlydW4pCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoHJldHVybiAwOwo+ID4gCj4gPiArwqDCoMKgwqDCoMKgwqBpZiAoZGF0YS0+
+dGVlX3JlcykKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZWUgPSAodm9pZCAq
+KWRhdGEtPnRlZV9yZXMtPnN0YXJ0Owo+ID4gK8KgwqDCoMKgwqDCoMKgZWxzZQo+ID4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRlZSA9IE5VTEw7Cj4gPiArCj4gPiDCoMKgwqDCoMKg
+wqDCoMKgc3RhcnRfbGludXgoKHZvaWQgKilrZXJuZWwsIHN3YXAsIGluaXRyZF9zdGFydCwKPiA+
+IGluaXRyZF9zaXplLAo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+ZmR0X2xvYWRfYWRkcmVzcywgc3RhdGUpOwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgZmR0X2xvYWRfYWRkcmVzcywgc3RhdGUsIHRlZSk7Cj4gPiAKPiA+IMKgwqDC
+oMKgwqDCoMKgwqByZXN0YXJ0X21hY2hpbmUoKTsKPiA+IAo+ID4gZGlmZiAtLWdpdCBhL2FyY2gv
+YXJtL2xpYjMyL2Jvb3R1LmMgYi9hcmNoL2FybS9saWIzMi9ib290dS5jCj4gPiBpbmRleCBkODEx
+ZGEzLi4yNGM3NDRkIDEwMDY0NAo+ID4gLS0tIGEvYXJjaC9hcm0vbGliMzIvYm9vdHUuYwo+ID4g
+KysrIGIvYXJjaC9hcm0vbGliMzIvYm9vdHUuYwo+ID4gQEAgLTI2LDcgKzI2LDcgQEAgc3RhdGlj
+IGludCBkb19ib290dShpbnQgYXJnYywgY2hhciAqYXJndltdKQo+ID4gwqDCoMKgwqDCoMKgwqDC
+oG9mdHJlZSA9IG9mX2dldF9maXhlZF90cmVlKE5VTEwpOwo+ID4gwqAjZW5kaWYKPiA+IAo+ID4g
+LcKgwqDCoMKgwqDCoMKgc3RhcnRfbGludXgoa2VybmVsLCAwLCAwLCAwLCBvZnRyZWUsIEFSTV9T
+VEFURV9TRUNVUkUpOwo+ID4gK8KgwqDCoMKgwqDCoMKgc3RhcnRfbGludXgoa2VybmVsLCAwLCAw
+LCAwLCBvZnRyZWUsIEFSTV9TVEFURV9TRUNVUkUsCj4gPiBOVUxMKTsKPiA+IAo+ID4gwqDCoMKg
+wqDCoMKgwqDCoHJldHVybiAxOwo+ID4gwqB9Cj4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbGli
+MzIvYm9vdHouYyBiL2FyY2gvYXJtL2xpYjMyL2Jvb3R6LmMKPiA+IGluZGV4IGMwZmZkOTMuLmEy
+YTI2YWMgMTAwNjQ0Cj4gPiAtLS0gYS9hcmNoL2FybS9saWIzMi9ib290ei5jCj4gPiArKysgYi9h
+cmNoL2FybS9saWIzMi9ib290ei5jCj4gPiBAQCAtMTEyLDcgKzExMiw3IEBAIHN0YXRpYyBpbnQg
+ZG9fYm9vdHooaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKPiA+IMKgwqDCoMKgwqDCoMKgwqBvZnRy
+ZWUgPSBvZl9nZXRfZml4ZWRfdHJlZShOVUxMKTsKPiA+IMKgI2VuZGlmCj4gPiAKPiA+IC3CoMKg
+wqDCoMKgwqDCoHN0YXJ0X2xpbnV4KHppbWFnZSwgc3dhcCwgMCwgMCwgb2Z0cmVlLCBBUk1fU1RB
+VEVfU0VDVVJFKTsKPiA+ICvCoMKgwqDCoMKgwqDCoHN0YXJ0X2xpbnV4KHppbWFnZSwgc3dhcCwg
+MCwgMCwgb2Z0cmVlLCBBUk1fU1RBVEVfU0VDVVJFLAo+ID4gTlVMTCk7Cj4gPiAKPiA+IMKgwqDC
+oMKgwqDCoMKgwqByZXR1cm4gMDsKPiA+IAo+ID4gZGlmZiAtLWdpdCBhL2NvbW1hbmRzL2Jvb3Rt
+LmMgYi9jb21tYW5kcy9ib290bS5jCj4gPiBpbmRleCBjN2NiZGJlLi4xMDBjMmU5IDEwMDY0NAo+
+ID4gLS0tIGEvY29tbWFuZHMvYm9vdG0uYwo+ID4gKysrIGIvY29tbWFuZHMvYm9vdG0uYwo+ID4g
+QEAgLTQ1LDcgKzQ1LDcgQEAKPiA+IMKgI2luY2x1ZGUgPG1hZ2ljdmFyLmg+Cj4gPiDCoCNpbmNs
+dWRlIDxhc20tZ2VuZXJpYy9tZW1vcnlfbGF5b3V0Lmg+Cj4gPiAKPiA+IC0jZGVmaW5lIEJPT1RN
+X09QVFNfQ09NTU9OICJzY2E6ZTp2bzpmZCIKPiA+ICsjZGVmaW5lIEJPT1RNX09QVFNfQ09NTU9O
+ICJzY2E6ZTp2bzpmZHQ6Igo+ID4gCj4gPiDCoCNpZmRlZiBDT05GSUdfQk9PVE1fSU5JVFJECj4g
+PiDCoCNkZWZpbmUgQk9PVE1fT1BUUyBCT09UTV9PUFRTX0NPTU1PTiAiTDpyOiIKPiA+IEBAIC05
+Niw2ICs5Niw5IEBAIHN0YXRpYyBpbnQgZG9fYm9vdG0oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkK
+PiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY2FzZSAnZCc6Cj4gPiDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLmRyeXJ1biA9IDE7
+Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBicmVh
+azsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjYXNlICd0JzoKPiA+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS50ZWVfZmlsZSA9
+IG9wdGFyZzsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgYnJlYWs7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRlZmF1bHQ6Cj4g
+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4g
+Q09NTUFORF9FUlJPUl9VU0FHRTsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+fQo+ID4gQEAgLTEzNCw2ICsxMzcsOSBAQCBCQVJFQk9YX0NNRF9IRUxQX09QVCAoIi1lIE9GRlNc
+dCIsImVudHJ5IHBvaW50Cj4gPiB0byB0aGUgaW1hZ2UgcmVsYXRpdmUgdG8gc3RhcnQgKDAKPiA+
+IMKgI2lmZGVmIENPTkZJR19PRlRSRUUKPiA+IMKgQkFSRUJPWF9DTURfSEVMUF9PUFQgKCItbyBE
+VEJcdCIsInNwZWNpZnkgb3BlbiBmaXJtd2FyZSBkZXZpY2UKPiA+IHRyZWUiKQo+ID4gwqAjZW5k
+aWYKPiA+ICsjaWZkZWYgQ09ORklHX0JPT1RNX09QVEVFCj4gPiArQkFSRUJPWF9DTURfSEVMUF9P
+UFQgKCItdCBURUVcdCIsInNwZWNpZnkgVEVFIGltYWdlIikKPiA+ICsjZW5kaWYKPiA+IMKgI2lm
+ZGVmIENPTkZJR19CT09UTV9WRVJCT1NFCj4gPiDCoEJBUkVCT1hfQ01EX0hFTFBfT1BUICgiLXZc
+dCIsInZlcmJvc2UiKQo+ID4gwqAjZW5kaWYKPiA+IEBAIC0xNTMsNiArMTU5LDkgQEAgQkFSRUJP
+WF9DTURfU1RBUlQoYm9vdG0pCj4gPiDCoCNpZmRlZiBDT05GSUdfQk9PVE1fVkVSQk9TRQo+ID4g
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgInYiCj4gPiDCoCNlbmRpZgo+ID4gKyNpZmRlZiBD
+T05GSUdfQk9PVE1fT1BURUUKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgInQiCj4gPiAr
+I2VuZGlmCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAiXSBJTUFHRSIpCj4gPiDCoMKg
+wqDCoMKgwqDCoMKgQkFSRUJPWF9DTURfR1JPVVAoQ01EX0dSUF9CT09UKQo+ID4gwqDCoMKgwqDC
+oMKgwqDCoEJBUkVCT1hfQ01EX0hFTFAoY21kX2Jvb3RtX2hlbHApCj4gPiBkaWZmIC0tZ2l0IGEv
+Y29tbW9uL0tjb25maWcgYi9jb21tb24vS2NvbmZpZwo+ID4gaW5kZXggMmFkOTIxNS4uZDU4NThi
+NCAxMDA2NDQKPiA+IC0tLSBhL2NvbW1vbi9LY29uZmlnCj4gPiArKysgYi9jb21tb24vS2NvbmZp
+Zwo+ID4gQEAgLTY1OSw2ICs2NTksMzkgQEAgY29uZmlnIEJPT1RNX0ZPUkNFX1NJR05FRF9JTUFH
+RVMKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgYXJlIHJlZnVzZWQgdG8gYm9vdC4gRWZmZWN0aXZl
+bHkgdGhpcyBtZWFucyBvbmx5IEZJVAo+ID4gaW1hZ2VzIGNhbiBiZSBib290ZWQKPiA+IMKgwqDC
+oMKgwqDCoMKgwqDCoMKgc2luY2UgdGhleSBhcmUgdGhlIG9ubHkgc3VwcG9ydGVkIGltYWdlIHR5
+cGUgdGhhdCBzdXBwb3J0Cj4gPiBzaWduaW5nLgo+ID4gCj4gPiArY29uZmlnIEJPT1RNX09QVEVF
+Cj4gPiArwqDCoMKgwqDCoMKgwqBib29sCj4gPiArwqDCoMKgwqDCoMKgwqBwcm9tcHQgInN1cHBv
+cnQgYm9vdGluZyBPUC1URUUiCj4gPiArwqDCoMKgwqDCoMKgwqBkZXBlbmRzIG9uIEJPT1RNICYm
+IEFSTQo+ID4gK8KgwqDCoMKgwqDCoMKgaGVscAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoE9QLVRF
+RSBpcyBhIHRydXN0ZWQgZXhlY3V0aW9uIGVudmlyb25tZW50IChURUUpLiBXaXRoCj4gPiB0aGlz
+IG9wdGlvbgo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoGVuYWJsZWQgYmFyZWJveCBzdXBwb3J0cyBz
+dGFydGluZyBvcHRlZV9vcyBhcyBwYXJ0IG9mIHRoZQo+ID4gYm9vdG0gY29tbWFuZC4KPiA+ICvC
+oMKgwqDCoMKgwqDCoMKgwqBJbnN0ZWFkIG9mIHRoZSBrZXJuZWwgYm9vdG0gc3RhcnRzIHRoZSBv
+cHRlZV9vcyBiaW5hcnkKPiA+IHdoaWNoIHRoZW4gc3RhcnRzCj4gPiArwqDCoMKgwqDCoMKgwqDC
+oMKgdGhlIGtlcm5lbCBpbiBub25zZWN1cmUgbW9kZS4gUGFzcyB0aGUgb3B0ZWVfb3MgYmluYXJ5
+Cj4gPiB3aXRoIHRoZSAtdCBvcHRpb24KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqBvciBpbiB0aGUg
+Z2xvYmFsLmJvb3RtLnRlZSB2YXJpYWJsZS4KPiA+ICsKPiA+ICtjb25maWcgQk9PVE1fT1BURUVf
+U0laRQo+ID4gK8KgwqDCoMKgwqDCoMKgaGV4Cj4gPiArwqDCoMKgwqDCoMKgwqBkZWZhdWx0IDB4
+MDIwMDAwMDAKPiA+ICvCoMKgwqDCoMKgwqDCoHByb21wdCAiT1AtVEVFIE1lbW9yeSBTaXplIgo+
+ID4gK8KgwqDCoMKgwqDCoMKgZGVwZW5kcyBvbiBCT09UTV9PUFRFRQo+ID4gK8KgwqDCoMKgwqDC
+oMKgaGVscAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoFNpemUgdG8gcmVzZXJ2ZSBpbiBtYWluIG1l
+bW9yeSBmb3IgT1AtVEVFLgo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoENhbiBiZSBzbWFsbGVyIHRo
+YW4gdGhlIGFjdHVhbCBzaXplIHVzZWQgYnkgT1AtVEVFLCB0aGlzCj4gPiBpcyB1c2VkIHRvIHBy
+ZXZlbnQKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqBiYXJlYm94IGZyb20gYWxsb2NhdGluZyBtZW1v
+cnkgaW4gdGhpcyBhcmVhLgo+ID4gKwo+ID4gK2NvbmZpZyBCT09UTV9PUFRFRV9GSVJNV0FSRQo+
+ID4gK8KgwqDCoMKgwqDCoMKgYm9vbAo+ID4gK8KgwqDCoMKgwqDCoMKgcHJvbXB0ICJsb2FkIE9Q
+LVRFRSBmcm9tIGJ1aWx0aW4gZmlybXdhcmUiCj4gPiArwqDCoMKgwqDCoMKgwqBkZXBlbmRzIG9u
+IEJPT1RNX09QVEVFCj4gPiArwqDCoMKgwqDCoMKgwqBzZWxlY3QgRklSTVdBUkVfT1BURUUKPiA+
+ICvCoMKgwqDCoMKgwqDCoGhlbHAKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqBCdWlsZCBPUC1URUUg
+aW50byB0aGUgYmFyZWJveCBiaW5hcnkgYXMgYSBmaXJtd2FyZSBpbWFnZS4KPiA+ICvCoMKgwqDC
+oMKgwqDCoMKgwqBQbGFjZSB5b3VyIHRlZS5iaW4gaW50byB0aGUgZmlybXdhcmUgZGlyZWN0b3J5
+IG9yIHRoZQo+ID4gZXh0ZXJuYWwgZmlybXdhcmUKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqBkaXJl
+Y3RvcnkgaWYgZGVmaW5lZC4KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqBCYXJlYm94IHdpbGwgdXNl
+IHRoZSBidWlsdGluIG9wdGVlLmJpbiBpZiBhIHNlcGFyYXRlCj4gPiB0ZWVfZmlsZSBpcyBub3QK
+PiA+ICvCoMKgwqDCoMKgwqDCoMKgwqBkZWZpbmVkLgo+ID4gKwo+ID4gwqBjb25maWcgQkxTUEVD
+Cj4gPiDCoMKgwqDCoMKgwqDCoMKgZGVwZW5kcyBvbiBGTEVYSUJMRV9CT09UQVJHUwo+ID4gwqDC
+oMKgwqDCoMKgwqDCoGRlcGVuZHMgb24gIVNIRUxMX05PTkUKPiA+IGRpZmYgLS1naXQgYS9jb21t
+b24vYm9vdG0uYyBiL2NvbW1vbi9ib290bS5jCj4gPiBpbmRleCAzNmY2YzQxLi5kNzIzMmY2IDEw
+MDY0NAo+ID4gLS0tIGEvY29tbW9uL2Jvb3RtLmMKPiA+ICsrKyBiL2NvbW1vbi9ib290bS5jCj4g
+PiBAQCAtNTgsNiArNTgsNyBAQCB2b2lkIGJvb3RtX2RhdGFfaW5pdF9kZWZhdWx0cyhzdHJ1Y3Qg
+Ym9vdG1fZGF0YQo+ID4gKmRhdGEpCj4gPiDCoMKgwqDCoMKgwqDCoMKgZGF0YS0+aW5pdHJkX2Fk
+ZHJlc3MgPSBVSU1BR0VfSU5WQUxJRF9BRERSRVNTOwo+ID4gwqDCoMKgwqDCoMKgwqDCoGRhdGEt
+Pm9zX2FkZHJlc3MgPSBVSU1BR0VfU09NRV9BRERSRVNTOwo+ID4gwqDCoMKgwqDCoMKgwqDCoGRh
+dGEtPm9mdHJlZV9maWxlID0gZ2V0ZW52X25vbmVtcHR5KCJnbG9iYWwuYm9vdG0ub2Z0cmVlIik7
+Cj4gPiArwqDCoMKgwqDCoMKgwqBkYXRhLT50ZWVfZmlsZSA9IGdldGVudl9ub25lbXB0eSgiZ2xv
+YmFsLmJvb3RtLnRlZSIpOwo+ID4gwqDCoMKgwqDCoMKgwqDCoGRhdGEtPm9zX2ZpbGUgPSBnZXRl
+bnZfbm9uZW1wdHkoImdsb2JhbC5ib290bS5pbWFnZSIpOwo+ID4gwqDCoMKgwqDCoMKgwqDCoGdl
+dGVudl91bCgiZ2xvYmFsLmJvb3RtLmltYWdlLmxvYWRhZGRyIiwgJmRhdGEtCj4gPiA+b3NfYWRk
+cmVzcyk7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgZ2V0ZW52X3VsKCJnbG9iYWwuYm9vdG0uaW5pdHJk
+LmxvYWRhZGRyIiwgJmRhdGEtCj4gPiA+aW5pdHJkX2FkZHJlc3MpOwo+ID4gQEAgLTU1Myw2ICs1
+NTQsOCBAQCBpbnQgYm9vdG1fYm9vdChzdHJ1Y3QgYm9vdG1fZGF0YSAqYm9vdG1fZGF0YSkKPiA+
+IMKgwqDCoMKgwqDCoMKgwqBib290bV9pbWFnZV9uYW1lX2FuZF9wYXJ0KGJvb3RtX2RhdGEtPm9z
+X2ZpbGUsICZkYXRhLQo+ID4gPm9zX2ZpbGUsICZkYXRhLT5vc19wYXJ0KTsKPiA+IMKgwqDCoMKg
+wqDCoMKgwqBib290bV9pbWFnZV9uYW1lX2FuZF9wYXJ0KGJvb3RtX2RhdGEtPm9mdHJlZV9maWxl
+LCAmZGF0YS0KPiA+ID5vZnRyZWVfZmlsZSwgJmRhdGEtPm9mdHJlZV9wYXJ0KTsKPiA+IMKgwqDC
+oMKgwqDCoMKgwqBib290bV9pbWFnZV9uYW1lX2FuZF9wYXJ0KGJvb3RtX2RhdGEtPmluaXRyZF9m
+aWxlLCAmZGF0YS0KPiA+ID5pbml0cmRfZmlsZSwgJmRhdGEtPmluaXRyZF9wYXJ0KTsKPiA+ICvC
+oMKgwqDCoMKgwqDCoGlmIChib290bV9kYXRhLT50ZWVfZmlsZSkKPiA+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBkYXRhLT50ZWVfZmlsZSA9IHhzdHJkdXAoYm9vdG1fZGF0YS0+dGVl
+X2ZpbGUpOwo+ID4gwqDCoMKgwqDCoMKgwqDCoGRhdGEtPnZlcmJvc2UgPSBib290bV9kYXRhLT52
+ZXJib3NlOwo+ID4gwqDCoMKgwqDCoMKgwqDCoGRhdGEtPnZlcmlmeSA9IGJvb3RtX2RhdGEtPnZl
+cmlmeTsKPiA+IMKgwqDCoMKgwqDCoMKgwqBkYXRhLT5mb3JjZSA9IGJvb3RtX2RhdGEtPmZvcmNl
+Owo+ID4gQEAgLTY5Myw2ICs2OTYsNyBAQCBlcnJfb3V0Ogo+ID4gwqDCoMKgwqDCoMKgwqDCoGZy
+ZWUoZGF0YS0+b3NfZmlsZSk7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgZnJlZShkYXRhLT5vZnRyZWVf
+ZmlsZSk7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgZnJlZShkYXRhLT5pbml0cmRfZmlsZSk7Cj4gPiAr
+wqDCoMKgwqDCoMKgwqBmcmVlKGRhdGEtPnRlZV9maWxlKTsKPiA+IMKgwqDCoMKgwqDCoMKgwqBm
+cmVlKGRhdGEpOwo+ID4gCj4gPiDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIHJldDsKPiA+IEBAIC03
+MDMsNiArNzA3LDcgQEAgc3RhdGljIGludCBib290bV9pbml0KHZvaWQpCj4gPiDCoMKgwqDCoMKg
+wqDCoMKgZ2xvYmFsdmFyX2FkZF9zaW1wbGUoImJvb3RtLmltYWdlIiwgTlVMTCk7Cj4gPiDCoMKg
+wqDCoMKgwqDCoMKgZ2xvYmFsdmFyX2FkZF9zaW1wbGUoImJvb3RtLmltYWdlLmxvYWRhZGRyIiwg
+TlVMTCk7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgZ2xvYmFsdmFyX2FkZF9zaW1wbGUoImJvb3RtLm9m
+dHJlZSIsIE5VTEwpOwo+ID4gK8KgwqDCoMKgwqDCoMKgZ2xvYmFsdmFyX2FkZF9zaW1wbGUoImJv
+b3RtLnRlZSIsIE5VTEwpOwo+ID4gwqDCoMKgwqDCoMKgwqDCoGdsb2JhbHZhcl9hZGRfc2ltcGxl
+X2Jvb2woImJvb3RtLmFwcGVuZHJvb3QiLAo+ID4gJmJvb3RtX2FwcGVuZHJvb3QpOwo+ID4gwqDC
+oMKgwqDCoMKgwqDCoGlmIChJU19FTkFCTEVEKENPTkZJR19CT09UTV9JTklUUkQpKSB7Cj4gPiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGdsb2JhbHZhcl9hZGRfc2ltcGxlKCJib290
+bS5pbml0cmQiLCBOVUxMKTsKPiA+IEBAIC03MjcsNiArNzMyLDcgQEAKPiA+IEJBUkVCT1hfTUFH
+SUNWQVJfTkFNRUQoZ2xvYmFsX2Jvb3RtX2ltYWdlX2xvYWRhZGRyLAo+ID4gZ2xvYmFsLmJvb3Rt
+LmltYWdlLmxvYWRhZGRyLAo+ID4gwqBCQVJFQk9YX01BR0lDVkFSX05BTUVEKGdsb2JhbF9ib290
+bV9pbml0cmQsIGdsb2JhbC5ib290bS5pbml0cmQsCj4gPiAiYm9vdG0gZGVmYXVsdCBpbml0cmQi
+KTsKPiA+IMKgQkFSRUJPWF9NQUdJQ1ZBUl9OQU1FRChnbG9iYWxfYm9vdG1faW5pdHJkX2xvYWRh
+ZGRyLAo+ID4gZ2xvYmFsLmJvb3RtLmluaXRyZC5sb2FkYWRkciwgImJvb3RtIGRlZmF1bHQgaW5p
+dHJkIGxvYWRhZGRyIik7Cj4gPiDCoEJBUkVCT1hfTUFHSUNWQVJfTkFNRUQoZ2xvYmFsX2Jvb3Rt
+X29mdHJlZSwgZ2xvYmFsLmJvb3RtLm9mdHJlZSwKPiA+ICJib290bSBkZWZhdWx0IG9mdHJlZSIp
+Owo+ID4gK0JBUkVCT1hfTUFHSUNWQVJfTkFNRUQoZ2xvYmFsX2Jvb3RtX3RlZSwgZ2xvYmFsLmJv
+b3RtLnRlZSwgImJvb3RtCj4gPiBkZWZhdWx0IHRlZSBpbWFnZSIpOwo+ID4gwqBCQVJFQk9YX01B
+R0lDVkFSX05BTUVEKGdsb2JhbF9ib290bV92ZXJpZnksIGdsb2JhbC5ib290bS52ZXJpZnksCj4g
+PiAiYm9vdG0gZGVmYXVsdCB2ZXJpZnkgbGV2ZWwiKTsKPiA+IMKgQkFSRUJPWF9NQUdJQ1ZBUl9O
+QU1FRChnbG9iYWxfYm9vdG1fdmVyYm9zZSwgZ2xvYmFsLmJvb3RtLnZlcmJvc2UsCj4gPiAiYm9v
+dG0gZGVmYXVsdCB2ZXJib3NpdHkgbGV2ZWwgKDA9cXVpZXQpIik7Cj4gPiDCoEJBUkVCT1hfTUFH
+SUNWQVJfTkFNRUQoZ2xvYmFsX2Jvb3RtX2FwcGVuZHJvb3QsCj4gPiBnbG9iYWwuYm9vdG0uYXBw
+ZW5kcm9vdCwgIkFkZCByb290PSBvcHRpb24gdG8gS2VybmVsIHRvIG1vdW50Cj4gPiByb290ZnMg
+ZnJvbSB0aGUgZGV2aWNlIHRoZSBLZXJuZWwgY29tZXMgZnJvbSIpOwo+ID4gZGlmZiAtLWdpdCBh
+L2Zpcm13YXJlL0tjb25maWcgYi9maXJtd2FyZS9LY29uZmlnCj4gPiBpbmRleCBhNmY3OWU4Li45
+ZGM5YjQ5IDEwMDY0NAo+ID4gLS0tIGEvZmlybXdhcmUvS2NvbmZpZwo+ID4gKysrIGIvZmlybXdh
+cmUvS2NvbmZpZwo+ID4gQEAgLTEwLDQgKzEwLDcgQEAgY29uZmlnIEZJUk1XQVJFX0lNWF9MUERE
+UjRfUE1VX1RSQUlOCj4gPiDCoGNvbmZpZyBGSVJNV0FSRV9JTVg4TVFfQVRGCj4gPiDCoMKgwqDC
+oMKgwqDCoMKgwqBib29sCj4gPiAKPiA+ICtjb25maWcgRklSTVdBUkVfT1BURUUKPiA+ICvCoMKg
+wqDCoMKgwqDCoGJvb2wKPiA+ICsKPiA+IMKgZW5kbWVudQo+ID4gZGlmZiAtLWdpdCBhL2Zpcm13
+YXJlL01ha2VmaWxlIGIvZmlybXdhcmUvTWFrZWZpbGUKPiA+IGluZGV4IDdmNGRjNDkuLjU2MDZk
+NzEgMTAwNjQ0Cj4gPiAtLS0gYS9maXJtd2FyZS9NYWtlZmlsZQo+ID4gKysrIGIvZmlybXdhcmUv
+TWFrZWZpbGUKPiA+IEBAIC0xMSw2ICsxMSw4IEBAIGZpcm13YXJlLSQoQ09ORklHX0ZJUk1XQVJF
+X0lNWF9MUEREUjRfUE1VX1RSQUlOKQo+ID4gKz0gXAo+ID4gCj4gPiDCoGZpcm13YXJlLSQoQ09O
+RklHX0ZJUk1XQVJFX0lNWDhNUV9BVEYpICs9IGlteC9pbXg4bS1ibDMxLmJpbgo+ID4gCj4gPiAr
+ZmlybXdhcmUtJChDT05GSUdfRklSTVdBUkVfT1BURUUpICs9IG9wdGVlLmJpbgo+ID4gKwo+ID4g
+wqAjIENyZWF0ZSAkKGZ3YWJzKSBmcm9tICQoQ09ORklHX0VYVFJBX0ZJUk1XQVJFX0RJUikgLS0g
+aWYgaXQKPiA+IGRvZXNuJ3QgaGF2ZSBhCj4gPiDCoCMgbGVhZGluZyAvLCBpdCdzIHJlbGF0aXZl
+IHRvICQoc3JjdHJlZSkuCj4gPiDCoGZ3ZGlyIDo9ICQoc3Vic3QgJChxdW90ZSksLCQoQ09ORklH
+X0VYVFJBX0ZJUk1XQVJFX0RJUikpCj4gPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9ib290bS5oIGIv
+aW5jbHVkZS9ib290bS5oCj4gPiBpbmRleCBmZGM3M2Y3Li41Y2UzMzE4IDEwMDY0NAo+ID4gLS0t
+IGEvaW5jbHVkZS9ib290bS5oCj4gPiArKysgYi9pbmNsdWRlL2Jvb3RtLmgKPiA+IEBAIC0xNiw2
+ICsxNiw3IEBAIHN0cnVjdCBib290bV9kYXRhIHsKPiA+IMKgwqDCoMKgwqDCoMKgwqBjb25zdCBj
+aGFyICpvc19maWxlOwo+ID4gwqDCoMKgwqDCoMKgwqDCoGNvbnN0IGNoYXIgKmluaXRyZF9maWxl
+Owo+ID4gwqDCoMKgwqDCoMKgwqDCoGNvbnN0IGNoYXIgKm9mdHJlZV9maWxlOwo+ID4gK8KgwqDC
+oMKgwqDCoMKgY29uc3QgY2hhciAqdGVlX2ZpbGU7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgaW50IHZl
+cmJvc2U7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgZW51bSBib290bV92ZXJpZnkgdmVyaWZ5Owo+ID4g
+wqDCoMKgwqDCoMKgwqDCoGJvb2wgZm9yY2U7Cj4gPiBAQCAtODYsNiArODcsOCBAQCBzdHJ1Y3Qg
+aW1hZ2VfZGF0YSB7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqAqIGl0Lgo+ID4gwqDCoMKgwqDCoMKg
+wqDCoMKgKi8KPiA+IMKgwqDCoMKgwqDCoMKgwqB2b2lkICpvc19oZWFkZXI7Cj4gPiArwqDCoMKg
+wqDCoMKgwqBjaGFyICp0ZWVfZmlsZTsKPiA+ICvCoMKgwqDCoMKgwqDCoHN0cnVjdCByZXNvdXJj
+ZSAqdGVlX3JlczsKPiA+IAo+ID4gwqDCoMKgwqDCoMKgwqDCoGVudW0gYm9vdG1fdmVyaWZ5IHZl
+cmlmeTsKPiA+IMKgwqDCoMKgwqDCoMKgwqBpbnQgdmVyYm9zZTsKPiA+IGRpZmYgLS1naXQgYS9p
+bmNsdWRlL3RlZS9vcHRlZS5oIGIvaW5jbHVkZS90ZWUvb3B0ZWUuaAo+ID4gbmV3IGZpbGUgbW9k
+ZSAxMDA2NDQKPiA+IGluZGV4IDAwMDAwMDAuLjhjZmUwNmQKPiA+IC0tLSAvZGV2L251bGwKPiA+
+ICsrKyBiL2luY2x1ZGUvdGVlL29wdGVlLmgKPiA+IEBAIC0wLDAgKzEsMzAgQEAKPiA+ICsvKgo+
+ID4gKyAqIE9QLVRFRSByZWxhdGVkIGRlZmluaXRpb25zCj4gPiArICoKPiA+ICsgKiAoQykgQ29w
+eXJpZ2h0IDIwMTYgTGluYXJvIExpbWl0ZWQKPiA+ICsgKiBBbmRyZXcgRi4gRGF2aXMgPGFuZHJl
+dy5kYXZpc0B4eHh4eHh4eHh4Pgo+ID4gKyAqCj4gPiArICogU1BEWC1MaWNlbnNlLUlkZW50aWZp
+ZXI6IEJTRC0yLUNsYXVzZQpKdXN0IGEgbm90ZSBoZXJlLCBJIHRhbGtlZCB0byB0aGUgT1AtVEVF
+IE1haW50YWluZXJzIG9uIEdpdGh1YiBbMV0sIGFuZAp0aGV5IGFyZSB3aWxsaW5nIHRvIGR1YWwg
+bGljZW5zZSB0aGUgc3RydWN0IGRlZmluaXRpb25zLCBzbyB3ZSBjYW4Kc3RpbGwgcHJvdmlkZSBi
+YXJlYm94IGFzIHB1cmVseSBHUEwuCgpbMV06IGh0dHBzOi8vZ2l0aHViLmNvbS9PUC1URUUvb3B0
+ZWVfb3MvaXNzdWVzLzI3NzEKPiA+ICsgKi8KPiA+ICsKPiA+ICsjaWZuZGVmIF9PUFRFRV9ICj4g
+PiArI2RlZmluZSBfT1BURUVfSAo+ID4gKwo+ID4gKyNkZWZpbmUgT1BURUVfTUFHSUPCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoDB4NDU1NDUwNGYKPiA+ICsjZGVmaW5lIE9QVEVFX1ZFUlNJT07C
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgMQo+ID4gKyNkZWZpbmUgT1BURUVfQVJDSF9BUk0zMsKgwqDC
+oMKgwqDCoMKgwqAwCj4gPiArI2RlZmluZSBPUFRFRV9BUkNIX0FSTTY0wqDCoMKgwqDCoMKgwqDC
+oDEKPiA+ICsKPiA+ICtzdHJ1Y3Qgb3B0ZWVfaGVhZGVyIHsKPiA+ICvCoMKgwqDCoMKgwqDCoHVp
+bnQzMl90IG1hZ2ljOwo+ID4gK8KgwqDCoMKgwqDCoMKgdWludDhfdCB2ZXJzaW9uOwo+ID4gK8Kg
+wqDCoMKgwqDCoMKgdWludDhfdCBhcmNoOwo+ID4gK8KgwqDCoMKgwqDCoMKgdWludDE2X3QgZmxh
+Z3M7Cj4gPiArwqDCoMKgwqDCoMKgwqB1aW50MzJfdCBpbml0X3NpemU7Cj4gPiArwqDCoMKgwqDC
+oMKgwqB1aW50MzJfdCBpbml0X2xvYWRfYWRkcl9oaTsKPiA+ICvCoMKgwqDCoMKgwqDCoHVpbnQz
+Ml90IGluaXRfbG9hZF9hZGRyX2xvOwo+ID4gK8KgwqDCoMKgwqDCoMKgdWludDMyX3QgaW5pdF9t
+ZW1fdXNhZ2U7Cj4gPiArwqDCoMKgwqDCoMKgwqB1aW50MzJfdCBwYWdlZF9zaXplOwo+ID4gK307
+Cj4gPiArCj4gPiArI2VuZGlmIC8qIF9PUFRFRV9IICovCj4gPiAtLQo+ID4gZ2l0LXNlcmllcyAw
+LjkuMQo+ID4gCj4gPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwo+ID4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPiA+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
+Lm9yZwo+ID4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
+Ym94Cj4gCj4gCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
+L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
