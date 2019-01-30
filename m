@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x343.google.com ([2a00:1450:4864:20::343])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1goQOo-0003ip-OG
- for barebox@lists.infradead.org; Tue, 29 Jan 2019 10:13:48 +0000
-Received: by mail-wm1-x343.google.com with SMTP id m1so17147241wml.2
- for <barebox@lists.infradead.org>; Tue, 29 Jan 2019 02:13:46 -0800 (PST)
-From: thomas.haemmerle1988@gmail.com
-Date: Tue, 29 Jan 2019 11:13:36 +0100
-Message-Id: <1548756816-808-1-git-send-email-thomas.haemmerle1988@gmail.com>
+ id 1goj5l-0008OP-Dp
+ for barebox@lists.infradead.org; Wed, 30 Jan 2019 06:11:23 +0000
+Date: Wed, 30 Jan 2019 07:11:19 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190130061119.tpz643ggexlnn27r@pengutronix.de>
+References: <1548756816-808-1-git-send-email-thomas.haemmerle1988@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1548756816-808-1-git-send-email-thomas.haemmerle1988@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,39 +18,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: zynqmp: select macb driver
-To: barebox@lists.infradead.org
-Cc: Thomas Haemmerle <thomas.haemmerle1988@gmail.com>
+Subject: Re: [PATCH] ARM: zynqmp: select macb driver
+To: thomas.haemmerle1988@gmail.com
+Cc: barebox@lists.infradead.org
 
-From: Thomas Haemmerle <thomas.haemmerle1988@gmail.com>
+Hi Thomas,
 
-macb supports Xilinx ZynqMP GEM, so select HAS_MACB by default.
+On Tue, Jan 29, 2019 at 11:13:36AM +0100, thomas.haemmerle1988@gmail.com wrote:
+> From: Thomas Haemmerle <thomas.haemmerle1988@gmail.com>
+> 
+> macb supports Xilinx ZynqMP GEM, so select HAS_MACB by default.
 
-Signed-off-by: Thomas Haemmerle <thomas.haemmerle1988@gmail.com>
----
- arch/arm/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+I think this should be solved by 508b996a62 ("ARM: zynq: add support for
+ethernet") already.
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index c1f385b..f5c1471 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -257,6 +257,7 @@ config ARCH_ZYNQMP
- 	select OFTREE
- 	select RELOCATABLE
- 	select SYS_SUPPORTS_64BIT_KERNEL
-+	select HAS_MACB
- 
- config ARCH_QEMU
- 	bool "ARM QEMU boards"
+Sascha
+
+
 -- 
-2.7.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
