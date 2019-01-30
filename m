@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f333.i.mail.ru ([217.69.140.229])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gol5q-0001jJ-W0
- for barebox@lists.infradead.org; Wed, 30 Jan 2019 08:19:37 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-MIME-Version: 1.0
-Date: Wed, 30 Jan 2019 11:19:30 +0300
-Message-ID: <1548836370.666230746@f333.i.mail.ru>
-In-Reply-To: <1548835382.499237981@f484.i.mail.ru>
+ id 1golxF-00029p-4x
+ for barebox@lists.infradead.org; Wed, 30 Jan 2019 09:14:47 +0000
+Date: Wed, 30 Jan 2019 10:14:41 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190130091441.b6tnhtk5ppob7qju@pengutronix.de>
 References: <1548322649.666663534@f388.i.mail.ru>
  <20190130060800.kjizme7u36nwvflz@pengutronix.de>
  <1548835382.499237981@f484.i.mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1548835382.499237981@f484.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,49 +20,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IGluaXRyZCBwcm9ibGVt?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Subject: Re: initrd problem
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
->>On Thu, Jan 24, 2019 at 12:37:29PM +0300, Alexander Shiyan wrote:
->>> I decided to change the size of the UBI volume for the root file system to 60 MB.
->>> Now I get a weird OOM error. Turning on debug information shows a conflict,
->>> but I do not quite understand where to look for the problem.
->>> Where is the starting point to try to solve this problem?
->>> 
->>> malloc space: 0x95df8d40 -> 0x97df8d3f (size 32 MiB)
->>> 
->>> Loading ARM Linux zImage '/dev/nand0.system.ubi.kernel'
->>> __request_region ok: 0x92000000:0x922a244f
->>The Kernel documentation recommends putting the Kernel 32MiB into SDRAM
->>to avoid relocation. This is what we see here.
->>
->>> __request_region: 0x923a3000:0x95e02fff conflicts with 0x95df8d40:0x97df8d3f
->>
->>Now we try allocate space for the initrd above it which is 60MiB. This
->>conflicts with the malloc space.
->>
->>So yes, you're out of memory.
->Memory should be enough (256 Mb). I think the problem is that the memory is
->divided into two banks of 128 Mb each.
->
->Just look for a next line:
->__request_region: 0x923a3000:0x95e02fff outside parent resource 0x98000000:0x9fffffff
->
->Maybe we need some kind of option to merge nearby banks?
-
-Problem is resolved by adding:
-global.bootm.initrd.loadaddr=0x98000000
-
-...But I do not really like this method.
-
----
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gV2VkLCBKYW4gMzAsIDIwMTkgYXQgMTE6MDM6MDJBTSArMDMwMCwgQWxleGFuZGVyIFNoaXlh
+biB3cm90ZToKPiBIZWxsby4KPiAKPiA+0KHRgNC10LTQsCwgMzAg0Y/QvdCy0LDRgNGPIDIwMTks
+IDk6MDggKzAzOjAwINC+0YIgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoK
+PiA+U29ycnkgZm9yIHRoZSBkZWxheS4gSGFzIHRoaXMgYmVlbiByZXNvbHZlZCBpbiB0aGUgbWVh
+bnRpbWU/Cj4gCj4gU3RpbGwgbm8uCj4gCj4gPk9uIFRodSwgSmFuIDI0LCAyMDE5IGF0IDEyOjM3
+OjI5UE0gKzAzMDAsIEFsZXhhbmRlciBTaGl5YW4gd3JvdGU6Cj4gPj4gSSBkZWNpZGVkIHRvIGNo
+YW5nZSB0aGUgc2l6ZSBvZiB0aGUgVUJJIHZvbHVtZSBmb3IgdGhlIHJvb3QgZmlsZSBzeXN0ZW0g
+dG8gNjAgTUIuCj4gPj4gTm93IEkgZ2V0IGEgd2VpcmQgT09NIGVycm9yLiBUdXJuaW5nIG9uIGRl
+YnVnIGluZm9ybWF0aW9uIHNob3dzIGEgY29uZmxpY3QsCj4gPj4gYnV0IEkgZG8gbm90IHF1aXRl
+IHVuZGVyc3RhbmQgd2hlcmUgdG8gbG9vayBmb3IgdGhlIHByb2JsZW0uCj4gPj4gV2hlcmUgaXMg
+dGhlIHN0YXJ0aW5nIHBvaW50IHRvIHRyeSB0byBzb2x2ZSB0aGlzIHByb2JsZW0/Cj4gPj4gCj4g
+Pj4gbWFsbG9jIHNwYWNlOiAweDk1ZGY4ZDQwIC0+IDB4OTdkZjhkM2YgKHNpemUgMzIgTWlCKQo+
+ID4+IAo+ID4+IExvYWRpbmcgQVJNIExpbnV4IHpJbWFnZSAnL2Rldi9uYW5kMC5zeXN0ZW0udWJp
+Lmtlcm5lbCcKPiA+PiBfX3JlcXVlc3RfcmVnaW9uIG9rOiAweDkyMDAwMDAwOjB4OTIyYTI0NGYK
+PiA+VGhlIEtlcm5lbCBkb2N1bWVudGF0aW9uIHJlY29tbWVuZHMgcHV0dGluZyB0aGUgS2VybmVs
+IDMyTWlCIGludG8gU0RSQU0KPiA+dG8gYXZvaWQgcmVsb2NhdGlvbi4gVGhpcyBpcyB3aGF0IHdl
+IHNlZSBoZXJlLgo+ID4KPiA+PiBfX3JlcXVlc3RfcmVnaW9uOiAweDkyM2EzMDAwOjB4OTVlMDJm
+ZmYgY29uZmxpY3RzIHdpdGggMHg5NWRmOGQ0MDoweDk3ZGY4ZDNmCj4gPgo+ID5Ob3cgd2UgdHJ5
+IGFsbG9jYXRlIHNwYWNlIGZvciB0aGUgaW5pdHJkIGFib3ZlIGl0IHdoaWNoIGlzIDYwTWlCLiBU
+aGlzCj4gPmNvbmZsaWN0cyB3aXRoIHRoZSBtYWxsb2Mgc3BhY2UuCj4gPgo+ID5TbyB5ZXMsIHlv
+dSdyZSBvdXQgb2YgbWVtb3J5Lgo+IE1lbW9yeSBzaG91bGQgYmUgZW5vdWdoICgyNTYgTWIpLiBJ
+IHRoaW5rIHRoZSBwcm9ibGVtIGlzIHRoYXQgdGhlIG1lbW9yeSBpcwo+IGRpdmlkZWQgaW50byB0
+d28gYmFua3Mgb2YgMTI4IE1iIGVhY2guCj4gCj4gSnVzdCBsb29rIGZvciBhIG5leHQgbGluZToK
+PiBfX3JlcXVlc3RfcmVnaW9uOiAweDkyM2EzMDAwOjB4OTVlMDJmZmYgb3V0c2lkZSBwYXJlbnQg
+cmVzb3VyY2UgMHg5ODAwMDAwMDoweDlmZmZmZmZmCj4gCj4gTWF5YmUgd2UgbmVlZCBzb21lIGtp
+bmQgb2Ygb3B0aW9uIHRvIG1lcmdlIG5lYXJieSBiYW5rcz8KCklmIEknbSBub3QgbWlzdGFrZW4g
+dGhlIGJhbmtzIGFyZSBub3QgcmVhbGx5IG5lYXJieS4gWW91IHNob3VsZCBoYXZlIHR3bwpiYW5r
+cywgb25lIGZyb20gMHg5MDAwMDAwMCB0byAweDk3ZmZmZmZmIGFuZCBvbmUgZnJvbSAweGEwMDAw
+MDAwIHRvCjB4YTdmZmZmZmYuCkkgZG9uJ3Qga25vdyB3aGVyZSB0aGUgcmVzb3VyY2UgMHg5ODAw
+MDAwMDoweDlmZmZmZmZmIGNvbWVzIGZyb20uIENvdWxkCnlvdSBwYXN0ZSB0aGUgb3V0cHV0IG9m
+IHRoZSBpb21lbSBjb21tYW5kPyBBcmUgeW91IHVzaW5nIHRoZSBjb2RlIGZyb20KYXJjaC9hcm0v
+bWFjaC1pbXgvZXNkY3RsLmMgb3IgYXJlIHlvdSBieXBhc3NpbmcgaXQ/CgpTYXNjaGEKCi0tIApQ
+ZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAg
+ICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3
+IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRz
+Z2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEt
+MjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
+dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
