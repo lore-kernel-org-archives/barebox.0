@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f527.i.mail.ru ([94.100.184.33])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gp8GF-0002oE-MP
- for barebox@lists.infradead.org; Thu, 31 Jan 2019 09:03:54 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1gp8On-0000fD-Tg
+ for barebox@lists.infradead.org; Thu, 31 Jan 2019 09:12:43 +0000
+Date: Thu, 31 Jan 2019 10:12:37 +0100
+From: Michael Tretter <m.tretter@pengutronix.de>
+Message-ID: <20190131101237.686faaf7@litschi.hi.pengutronix.de>
+In-Reply-To: <20190130061119.tpz643ggexlnn27r@pengutronix.de>
+References: <1548756816-808-1-git-send-email-thomas.haemmerle1988@gmail.com>
+ <20190130061119.tpz643ggexlnn27r@pengutronix.de>
 MIME-Version: 1.0
-Date: Thu, 31 Jan 2019 12:03:44 +0300
-Message-ID: <1548925424.229023384@f527.i.mail.ru>
-In-Reply-To: <20190130093554.znyd74hzu3mucxwk@pengutronix.de>
-References: <1548322649.666663534@f388.i.mail.ru>
- <1548840038.556794175@f490.i.mail.ru>
- <20190130093554.znyd74hzu3mucxwk@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,61 +18,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IGluaXRyZCBwcm9ibGVt?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: zynqmp: select macb driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: thomas.haemmerle1988@gmail.com, barebox@lists.infradead.org
 
-PtCh0YDQtdC00LAsIDMwINGP0L3QstCw0YDRjyAyMDE5LCAxMjozNSArMDM6MDAg0L7RgiBTYXNj
-aGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ogo+PiA+PiA+PiBJIGRlY2lkZWQgdG8g
-Y2hhbmdlIHRoZSBzaXplIG9mIHRoZSBVQkkgdm9sdW1lIGZvciB0aGUgcm9vdCBmaWxlIHN5c3Rl
-bSB0byA2MCBNQi4KPj4gPj4gPj4gTm93IEkgZ2V0IGEgd2VpcmQgT09NIGVycm9yLiBUdXJuaW5n
-IG9uIGRlYnVnIGluZm9ybWF0aW9uIHNob3dzIGEgY29uZmxpY3QsCj4+ID4+ID4+IGJ1dCBJIGRv
-IG5vdCBxdWl0ZSB1bmRlcnN0YW5kIHdoZXJlIHRvIGxvb2sgZm9yIHRoZSBwcm9ibGVtLgo+PiA+
-PiA+PiBXaGVyZSBpcyB0aGUgc3RhcnRpbmcgcG9pbnQgdG8gdHJ5IHRvIHNvbHZlIHRoaXMgcHJv
-YmxlbT8KPj4gPj4gPj4gCj4+ID4+ID4+IG1hbGxvYyBzcGFjZTogMHg5NWRmOGQ0MCAtPiAweDk3
-ZGY4ZDNmIChzaXplIDMyIE1pQikKPj4gPj4gPj4gCj4+ID4+ID4+IExvYWRpbmcgQVJNIExpbnV4
-IHpJbWFnZSAnL2Rldi9uYW5kMC5zeXN0ZW0udWJpLmtlcm5lbCcKPj4gPj4gPj4gX19yZXF1ZXN0
-X3JlZ2lvbiBvazogMHg5MjAwMDAwMDoweDkyMmEyNDRmCj4+ID4+ID5UaGUgS2VybmVsIGRvY3Vt
-ZW50YXRpb24gcmVjb21tZW5kcyBwdXR0aW5nIHRoZSBLZXJuZWwgMzJNaUIgaW50byBTRFJBTQo+
-PiA+PiA+dG8gYXZvaWQgcmVsb2NhdGlvbi4gVGhpcyBpcyB3aGF0IHdlIHNlZSBoZXJlLgo+PiA+
-PiA+Cj4+ID4+ID4+IF9fcmVxdWVzdF9yZWdpb246IDB4OTIzYTMwMDA6MHg5NWUwMmZmZiBjb25m
-bGljdHMgd2l0aCAweDk1ZGY4ZDQwOjB4OTdkZjhkM2YKPj4gPj4gPgo+PiA+PiA+Tm93IHdlIHRy
-eSBhbGxvY2F0ZSBzcGFjZSBmb3IgdGhlIGluaXRyZCBhYm92ZSBpdCB3aGljaCBpcyA2ME1pQi4g
-VGhpcwo+PiA+PiA+Y29uZmxpY3RzIHdpdGggdGhlIG1hbGxvYyBzcGFjZS4KPj4gPj4gPgo+PiA+
-PiA+U28geWVzLCB5b3UncmUgb3V0IG9mIG1lbW9yeS4KPj4gPj4gTWVtb3J5IHNob3VsZCBiZSBl
-bm91Z2ggKDI1NiBNYikuIEkgdGhpbmsgdGhlIHByb2JsZW0gaXMgdGhhdCB0aGUgbWVtb3J5IGlz
-Cj4+ID4+IGRpdmlkZWQgaW50byB0d28gYmFua3Mgb2YgMTI4IE1iIGVhY2guCj4+ID4+IAo+PiA+
-PiBKdXN0IGxvb2sgZm9yIGEgbmV4dCBsaW5lOgo+PiA+PiBfX3JlcXVlc3RfcmVnaW9uOiAweDky
-M2EzMDAwOjB4OTVlMDJmZmYgb3V0c2lkZSBwYXJlbnQgcmVzb3VyY2UgMHg5ODAwMDAwMDoweDlm
-ZmZmZmZmCj4+ID4+IAo+PiA+PiBNYXliZSB3ZSBuZWVkIHNvbWUga2luZCBvZiBvcHRpb24gdG8g
-bWVyZ2UgbmVhcmJ5IGJhbmtzPwo+PiA+Cj4+ID5JZiBJJ20gbm90IG1pc3Rha2VuIHRoZSBiYW5r
-cyBhcmUgbm90IHJlYWxseSBuZWFyYnkuIFlvdSBzaG91bGQgaGF2ZSB0d28KPj4gPmJhbmtzLCBv
-bmUgZnJvbSAweDkwMDAwMDAwIHRvIDB4OTdmZmZmZmYgYW5kIG9uZSBmcm9tIDB4YTAwMDAwMDAg
-dG8KPj4gPjB4YTdmZmZmZmYuCj4+ID5JIGRvbid0IGtub3cgd2hlcmUgdGhlIHJlc291cmNlIDB4
-OTgwMDAwMDA6MHg5ZmZmZmZmZiBjb21lcyBmcm9tLiBDb3VsZAo+PiA+eW91IHBhc3RlIHRoZSBv
-dXRwdXQgb2YgdGhlIGlvbWVtIGNvbW1hbmQ/IEFyZSB5b3UgdXNpbmcgdGhlIGNvZGUgZnJvbQo+
-PiA+YXJjaC9hcm0vbWFjaC1pbXgvZXNkY3RsLmMgb3IgYXJlIHlvdSBieXBhc3NpbmcgaXQ/Cj4+
-IAo+PiBJdCBpcyBub3QgYW4gZXJyb3IuIENDTVg1MSBub3QgdXNpbmcgRVNEQ1RMLgo+PiBUaGUg
-Zmlyc3QgYmFuayBpcyBtaW5pbWFsIHNpemUgMTI4TS4gVGhlIHNlY29uZCBpcyBhIGNoYWluIHRv
-IGZpcnN0LCBpdHMgc2l6ZQo+PiBkZXBlbmRzIG9uIG1vZHVsZSB2YXJpYW50Lgo+Cj5JIHNlZS4g
-U2ltaWxhciB0byB3aGF0IGlzIGRvbmUgaW4gYXJjaC9hcm0vYm9hcmRzL2NjeG14NTEvY2N4bXg1
-MS5jLAo+cmlnaHQ/Cj4KPkluIHRoYXQgY2FzZSBtZXJnaW5nIHRoZSB0d28gYmFua3Mgd29uJ3Qg
-Z2l2ZSB5b3UgbXVjaCBzaW5jZSBiYXJlYm94Cj53aWxsIGFscmVhZHkgYmUgcGxhY2VkIGluIHRo
-ZSBtaWRkbGUgb2YgdGhlIGF2YWlsYWJsZSBSQU0uCj4KPkNhbid0IHlvdSBzaHVmZmxlIHRoZSBj
-b2RlIHNvIHRoYXQgeW91IGNhbiBkZXRlY3QgdGhlIGJvYXJkIHZhcmlhbnQgYW5kCj50aHVzIHRo
-ZSBhbW91bnQgb2YgU0RSQU0gYmVmb3JlIGV2ZW4gY2FsbGluZyBiYXJlYm94X2FybV9lbnRyeT8g
-WW91Cj53b3VsZCBuZWVkIHNvbWUgZWFybHkgdmFyaWFudCBvZiBpbXhfaWltX3JlYWQoKSwgYnV0
-IGluIHRoZSBlbmQgdGhpcwo+Z29lcyBkb3duIHRvIGEgcmVnaXN0ZXIgcmVhZCwgc28gc2hvdWxk
-bid0IGJlIGhhcmQgdG8gaW1wbGVtZW50Lgo+VGhlbiB5b3UgY291bGQgZHJvcCB0aGUgc3BsaXR0
-aW5nIGludG8gc2VwYXJhdGUgU0RSQU0gcmVnaW9ucyBlbnRpcmVseS4KCkF0IHRoZSBtb21lbnQg
-SSBoYXZlIHVzZWQgYW4gYWx0ZXJuYXRpdmUgbWV0aG9kIHRvIHNvbHZlIHRoaXMgcHJvYmxlbS4K
-SSBoYXZlIHJlZHVjZWQgTUFMTE9DX1NJWkUgdG8gMTYgTWIgYW5kIGFzIGEgcmVzdWx0LCB0aGUg
-NjAgTWIgaW5pdGQKbG9hZGVkIGZpbmUgZm9yIGJvYXJkcyB3aXRoIDEyOCBNQiBSQU0uCgotLS0K
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
-YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Wed, 30 Jan 2019 07:11:19 +0100, Sascha Hauer wrote:
+> Hi Thomas,
+> 
+> On Tue, Jan 29, 2019 at 11:13:36AM +0100, thomas.haemmerle1988@gmail.com wrote:
+> > From: Thomas Haemmerle <thomas.haemmerle1988@gmail.com>
+> > 
+> > macb supports Xilinx ZynqMP GEM, so select HAS_MACB by default.  
+> 
+> I think this should be solved by 508b996a62 ("ARM: zynq: add support for
+> ethernet") already.
+
+The new Patch selects HAS_MACHB for ARCH_ZYNQMP, while 508b996a62
+("ARM: zynq: add support for ethernet") selects it for ARCH_ZYNQ. They
+are different SoCs.
+
+Michael
+
+> 
+> Sascha
+> 
+> 
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
