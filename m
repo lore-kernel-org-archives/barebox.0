@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1goad1-0004SX-9a
- for barebox@lists.infradead.org; Tue, 29 Jan 2019 21:09:08 +0000
-Date: Tue, 29 Jan 2019 22:09:01 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20190129210901.GA28953@ravnborg.org>
+ id 1gp9zx-0006bz-5t
+ for barebox@lists.infradead.org; Thu, 31 Jan 2019 10:55:10 +0000
+Received: by mail-lf1-x141.google.com with SMTP id q3so740037lfm.2
+ for <barebox@lists.infradead.org>; Thu, 31 Jan 2019 02:55:08 -0800 (PST)
+Date: Thu, 31 Jan 2019 13:54:53 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20190131105452.smetw36klsxmvtaq@localhost.localdomain>
 References: <20190129065549.29161-1-andrew.smirnov@gmail.com>
  <20190129065549.29161-19-andrew.smirnov@gmail.com>
  <20190129084847.spkfbeksb7xne46g@pengutronix.de>
@@ -30,33 +32,32 @@ Subject: Re: [PATCH v2 18/19] drivers: mem: Create file to access second half
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi Andrey
+Hello, Andrey,
 
-On Tue, Jan 29, 2019 at 12:40:21PM -0800, Andrey Smirnov wrote:
-> On Tue, Jan 29, 2019 at 12:48 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> >
-> > On Mon, Jan 28, 2019 at 10:55:48PM -0800, Andrey Smirnov wrote:
-> > > In order to allow access to second half of address space on 64-bit
-> > > machines, add code that creates /dev/highmem dedicated for that.
-> >
-> > Very nice series, I applied it right away with the exception of this
-> > patch.
+> In order to allow access to second half of address space on 64-bit
+> machines, add code that creates /dev/highmem dedicated for that.
 > 
-> Cool, thanks!
-> 
-> > I don't like naming it "highmem" because normally this describes
-> > a hardware feature, namely a technique for reaching memory that is
-> > outside the CPUs address space. What we have here is a technique for
-> > reaching memory that is outside the range of a poorly chosen variable
-> > type ;)
-> >
-> > That said my alternative suggestions are not very striking and range
-> > from /dev/mem1 to /dev/uppermem or /dev/mem-upper. Any other ideas?
+> Note that due to maximum file size being limited to MAX_LFS_FILESIZE
+> or 0x7fff_ffff_ffff_ffff bytes at addresses 0x7fff_ffff_ffff_ffff and
+> 0xffff_ffff_ffff_ffff cannot be access through /dev/mem and
+> /dev/hightmem correspondingly.
 
-No good ideas here either.
-/dev/mem-upper get my vote as it will sit next to /dev/mem in an ls.
+Does it imply using `-s /dev/highmem` argument when accessing addresses beyond 
+MAX_LFS_FILESIZE? That's not very convenient:
 
-	Sam
+	$ git grep -l /dev/mem
+	commands/crc.c
+	commands/digest.c
+	commands/disasm.c
+	commands/md.c
+	commands/memcmp.c
+	commands/memcpy.c
+	commands/memset.c
+	commands/mm.c
+	commands/mw.c
+
+Regards,
+Peter
 
 _______________________________________________
 barebox mailing list
