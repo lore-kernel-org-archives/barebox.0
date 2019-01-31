@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x441.google.com ([2a00:1450:4864:20::441])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1goeWu-0007sw-AZ
- for barebox@lists.infradead.org; Wed, 30 Jan 2019 01:19:06 +0000
-Received: by mail-wr1-x441.google.com with SMTP id f7so24326943wrp.1
- for <barebox@lists.infradead.org>; Tue, 29 Jan 2019 17:19:03 -0800 (PST)
+ id 1gpCUt-00042p-Cg
+ for barebox@lists.infradead.org; Thu, 31 Jan 2019 13:35:16 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
+ helo=dude02.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1gpCUr-0002jN-SJ
+ for barebox@lists.infradead.org; Thu, 31 Jan 2019 14:35:13 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 31 Jan 2019 14:35:13 +0100
+Message-Id: <20190131133513.5857-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
-References: <20190124031543.11733-1-andrew.smirnov@gmail.com>
- <20190128085656.frx6xv55k7f7fvxf@pengutronix.de>
- <CAHQ1cqG8RS7VXCV5yYe_bWJ_79W4L4mHXYue+Kpz1s=s0DQ7SQ@mail.gmail.com>
- <20190129094439.bighzaslxca4lcnp@pengutronix.de>
-In-Reply-To: <20190129094439.bighzaslxca4lcnp@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 29 Jan 2019 17:18:50 -0800
-Message-ID: <CAHQ1cqHxFr3-gOQ-QkeoEfpSSfLVokKF+p_SKRNNdiVfh_1=PQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,82 +24,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: aarch64: Avoid relocations in runtime-offset.S
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] fixup! firmware: drop the imx subdir
+To: barebox@lists.infradead.org
 
-On Tue, Jan 29, 2019 at 1:44 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Mon, Jan 28, 2019 at 11:12:29AM -0800, Andrey Smirnov wrote:
-> > > > _However_, older toolchains (tested on 5.5.0), will only issue a
-> > > > R_AARCH64_RELATIVE, so memory location will contain only zeroes:
-> > > >
-> > > > 00000000000000a0 <get_runtime_offset>:
-> > > >       a0:     10000000        adr     x0, a0 <get_runtime_offset>
-> > > >       a4:     58000061        ldr     x1, b0 <linkadr>
-> > > >       a8:     eb010000        subs    x0, x0, x1
-> > > >       ac:     d65f03c0        ret
-> > > >
-> > > > 00000000000000b0 <linkadr>:
-> > > >       ...
-> > > >
-> > > > This leads to an very early crash and complete boot failure in the
-> > > > latter case.
-> > >
-> > > I can reproduce this issue here. As you can imagine I do not really like
-> > > this "fix". I have no idea what the proper solution is (other than
-> > > deprecating gcc5), so I am fine removing the "a" flag as you suggested.
-> > > I think though that we should add a big comment above this function
-> >
-> > Sure, will add the comment in v2.
-> >
-> > > *why* this lacks the "a" flag and that we can add it back once gcc5
-> > > is retired.
-> > >
-> >
-> > AFAICT, we don't want a relocation there even if GCC5 is deprecated
-> > and it will always be conveniently initialized for us. To turn the
-> > tables a bit, why do we need that "a" there? What's its purpose?
->
-> The "a" is for "allocatable"
+The imx-atf build target is called imx8mq, so to avoid any renaming
+look for a ATF binary of the same name.
+---
+ arch/arm/boards/nxp-imx8mq-evk/lowlevel.c | 2 +-
+ firmware/Makefile                         | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Yeah, this part of the desciprion in LD manual makes some sense
+diff --git a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
+index 629564c28b2a..ffbe14836f92 100644
+--- a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
++++ b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
+@@ -115,7 +115,7 @@ ENTRY_FUNCTION(start_nxp_imx8mq_evk, r0, r1, r2)
+ 		const u8 *bl31;
+ 		size_t bl31_size;
+ 
+-		get_builtin_firmware(imx8m_bl31_bin, &bl31, &bl31_size);
++		get_builtin_firmware(imx8mq_bl31_bin, &bl31, &bl31_size);
+ 		imx8mq_atf_load_bl31(bl31, bl31_size);
+ 	}
+ 
+diff --git a/firmware/Makefile b/firmware/Makefile
+index 170588e14520..f238ce25383c 100644
+--- a/firmware/Makefile
++++ b/firmware/Makefile
+@@ -9,7 +9,7 @@ firmware-$(CONFIG_FIRMWARE_IMX_LPDDR4_PMU_TRAIN) += \
+ 	lpddr4_pmu_train_2d_dmem.bin \
+ 	lpddr4_pmu_train_2d_imem.bin
+ 
+-firmware-$(CONFIG_FIRMWARE_IMX8MQ_ATF) += imx8m-bl31.bin
++firmware-$(CONFIG_FIRMWARE_IMX8MQ_ATF) += imx8mq-bl31.bin
+ 
+ # Create $(fwabs) from $(CONFIG_EXTRA_FIRMWARE_DIR) -- if it doesn't have a
+ # leading /, it's relative to $(srctree).
+-- 
+2.20.1
 
-> meaning that space should be allocated in the output binary.
-
-but this is the part I have trouble reasoning through or reconciling
-with result I see in binary files. I can see how "a" would be
-important in case when we have a full blown OS loading a proper ELF
-file from disk to memory. However, I am not sure how to apply the
-concept of allocatabilty to the case where we have flat binary file
-created ahead of time using a linker script. It seems to me that what
-should and shouldn't go into binary file should already be captured by
-the script file.
-
-> If you put get_runtime_offset into its own section
-> (outside .text) without the "a" flag then the linker linker bails out
-> moaning about overlapping sections.
-
-Hmm, maybe I am not replicating your experiment exactly, but I just
-tired compiling get_runtime_offset() with .section
-".__image_start","x" directive on both ARM and ARM64 and it seemed to
-work as you'd expect.
-
-> I think the .text segment is
-> inherently allocatable somehow, but then I wonder why the "a" flag makes
-> a difference at all. It may just be a bug in the early aarc64
-> toolchains, who knows...
->
-
-Yeah, I guess what I was trying to say that this is definitely a "fix"
-that's not 100% reasoned out, but that might be because the original
-code that's being fixed is not quite reasoned out either.
-
-Anyway, adding a comment with explanation is definitely a good idea.
-I'll re-spin v2 with it shortly.
-
-Thanks,
-Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
