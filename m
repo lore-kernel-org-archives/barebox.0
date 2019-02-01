@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gpSm9-0007eu-H4
- for barebox@lists.infradead.org; Fri, 01 Feb 2019 06:58:11 +0000
-Date: Fri, 1 Feb 2019 07:58:07 +0100
+ id 1gpTXe-0002rl-IC
+ for barebox@lists.infradead.org; Fri, 01 Feb 2019 07:47:16 +0000
+Date: Fri, 1 Feb 2019 08:47:11 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190201065807.j4oroxhoelncp4q5@pengutronix.de>
-References: <20190131171905.20634-1-abbotti@mev.co.uk>
+Message-ID: <20190201074711.clrwidodo5hpqb7y@pengutronix.de>
+References: <20190129065549.29161-1-andrew.smirnov@gmail.com>
+ <20190129065549.29161-19-andrew.smirnov@gmail.com>
+ <20190129084847.spkfbeksb7xne46g@pengutronix.de>
+ <CAHQ1cqGm+VUgZDScpPVTDuPX89FNSr1JiecqBah_o2piNT-ayg@mail.gmail.com>
+ <20190131105452.smetw36klsxmvtaq@localhost.localdomain>
+ <20190131125028.glbnt55zmhqowi6p@localhost.localdomain>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190131171905.20634-1-abbotti@mev.co.uk>
+In-Reply-To: <20190131125028.glbnt55zmhqowi6p@localhost.localdomain>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,59 +27,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: designware: fix TX descriptor length corruption
-To: Ian Abbott <abbotti@mev.co.uk>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 18/19] drivers: mem: Create file to access second half
+ of 64-bit memory
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Barebox List <barebox@lists.infradead.org>
 
-On Thu, Jan 31, 2019 at 05:19:05PM +0000, Ian Abbott wrote:
-> dwc_ether_send() sets the SIZE1 field of the TX descriptor incorrectly.
-> It sets the SIZE1 field to a bit-wise OR of the old value and the new
-> value.  If the old value differs from the new value, the transmitted
-> Ethernet frame will be longer than it should be and is likely to have an
-> incorrect frame check sequence.  As more and more Ethernet frames of
-> different lengths are sent, more and more of the TX descriptors are
-> affected (up to a maximum number of CONFIG_TX_DESCR_NUM, defined as 16
-> in "designware.h").  Fix it by setting the SIZE1 field of the TX
-> descriptor to just the new value.
+On Thu, Jan 31, 2019 at 03:50:28PM +0300, Peter Mamonov wrote:
+> On Thu, Jan 31, 2019 at 01:54:52PM +0300, Peter Mamonov wrote:
+> > Hello, Andrey,
+> > 
+> > > In order to allow access to second half of address space on 64-bit
+> > > machines, add code that creates /dev/highmem dedicated for that.
+> > > 
+> > > Note that due to maximum file size being limited to MAX_LFS_FILESIZE
+> > > or 0x7fff_ffff_ffff_ffff bytes at addresses 0x7fff_ffff_ffff_ffff and
+> > > 0xffff_ffff_ffff_ffff cannot be access through /dev/mem and
+> > > /dev/hightmem correspondingly.
+> > 
+> > Does it imply using `-s /dev/highmem` argument when accessing addresses beyond 
+> > MAX_LFS_FILESIZE? That's not very convenient:
+> > 
+> > 	$ git grep -l /dev/mem
+> > 	commands/crc.c
+> > 	commands/digest.c
+> > 	commands/disasm.c
+> > 	commands/md.c
+> > 	commands/memcmp.c
+> > 	commands/memcpy.c
+> > 	commands/memset.c
+> > 	commands/mm.c
+> > 	commands/mw.c
 > 
-> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-> ---
->  drivers/net/designware.c | 2 ++
->  1 file changed, 2 insertions(+)
+> I've forgotten to mention, that all meaningful MIPS64 virtual addresses  
+> belong to the 2nd half of the address space. Except for user segment addresses 
+> which are not used in barebox.
 
-Applied, thanks
+In that case our only option seems to be to use an unsigned 64bit type
+for filesize. We would need an additional lseek like function which
+is able to reach the upper half of the address space and with regular
+lseek simply only the lower half would be reachable.
+
+Note that currently we don't seem to have a problem as even with Andreys
+series applied we can still 'md' the whole address space. The test if we
+lseek outside the file never triggers since the signed comparison of
+offset > f->size never evaluates to true for f->size == S64_MAX.
 
 Sascha
-
-> 
-> diff --git a/drivers/net/designware.c b/drivers/net/designware.c
-> index ad70967e8..3c9bca981 100644
-> --- a/drivers/net/designware.c
-> +++ b/drivers/net/designware.c
-> @@ -291,12 +291,14 @@ static int dwc_ether_send(struct eth_device *dev, void *packet, int length)
->  
->  	if (priv->enh_desc) {
->  		desc_p->txrx_status |= DESC_ENH_TXSTS_TXFIRST | DESC_ENH_TXSTS_TXLAST;
-> +		desc_p->dmamac_cntl &= ~(DESC_ENH_TXCTRL_SIZE1MASK);
->  		desc_p->dmamac_cntl |= (length << DESC_ENH_TXCTRL_SIZE1SHFT) &
->  				       DESC_ENH_TXCTRL_SIZE1MASK;
->  
->  		desc_p->txrx_status &= ~(DESC_ENH_TXSTS_MSK);
->  		desc_p->txrx_status |= DESC_ENH_TXSTS_OWNBYDMA;
->  	} else {
-> +		desc_p->dmamac_cntl &= ~(DESC_TXCTRL_SIZE1MASK);
->  		desc_p->dmamac_cntl |= ((length << DESC_TXCTRL_SIZE1SHFT) &
->  				       DESC_TXCTRL_SIZE1MASK) | DESC_TXCTRL_TXLAST |
->  				       DESC_TXCTRL_TXFIRST;
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
