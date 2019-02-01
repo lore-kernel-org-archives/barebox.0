@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gpOcY-00051G-3R
- for barebox@lists.infradead.org; Fri, 01 Feb 2019 02:32:02 +0000
-Received: by mail-pf1-x442.google.com with SMTP id q1so2409276pfi.5
- for <barebox@lists.infradead.org>; Thu, 31 Jan 2019 18:31:57 -0800 (PST)
+ id 1gpOcZ-00053z-SW
+ for barebox@lists.infradead.org; Fri, 01 Feb 2019 02:32:06 +0000
+Received: by mail-pf1-x444.google.com with SMTP id b7so2399475pfi.8
+ for <barebox@lists.infradead.org>; Thu, 31 Jan 2019 18:31:59 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 31 Jan 2019 18:31:28 -0800
-Message-Id: <20190201023133.1078-11-andrew.smirnov@gmail.com>
+Date: Thu, 31 Jan 2019 18:31:30 -0800
+Message-Id: <20190201023133.1078-13-andrew.smirnov@gmail.com>
 In-Reply-To: <20190201023133.1078-1-andrew.smirnov@gmail.com>
 References: <20190201023133.1078-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,89 +23,174 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/15] include: Import dt-bindings/reset/imx8mq-reset.h
+Subject: [RFC 12/15] PCI: imx6: Introduce drvdata
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Import dt-bindings/reset/imx8mq-reset.h from Liunx kernel until that
-file trickles down into dts/include/.
+Port of a Linux commit <TBD>
+
+  Introduce driver data struct. This will simplify handling of device
+  specific differences.
+
+  Signed-off-by: Stefan Agner <stefan@agner.ch>
+  [andrew.smirnov@gmail.com reformatted drvdata, to simplify future diffs]
+  Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+  Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+  Cc: Bjorn Helgaas <bhelgaas@google.com>
+  Cc: Fabio Estevam <fabio.estevam@nxp.com>
+  Cc: Chris Healy <cphealy@gmail.com>
+  Cc: Lucas Stach <l.stach@pengutronix.de>
+  Cc: Leonard Crestez <leonard.crestez@nxp.com>
+  Cc: "A.s. Dong" <aisheng.dong@nxp.com>
+  Cc: Richard Zhu <hongxing.zhu@nxp.com>
+  Cc: linux-imx@nxp.com
+  Cc: linux-arm-kernel@lists.infradead.org
+  Cc: linux-kernel@vger.kernel.org
+  Cc: linux-pci@vger.kernel.org
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- include/dt-bindings/reset/imx8mq-reset.h | 64 ++++++++++++++++++++++++
- 1 file changed, 64 insertions(+)
- create mode 100644 include/dt-bindings/reset/imx8mq-reset.h
+ drivers/pci/pci-imx6.c | 43 ++++++++++++++++++++++++++++--------------
+ 1 file changed, 29 insertions(+), 14 deletions(-)
 
-diff --git a/include/dt-bindings/reset/imx8mq-reset.h b/include/dt-bindings/reset/imx8mq-reset.h
-new file mode 100644
-index 000000000..57c592498
---- /dev/null
-+++ b/include/dt-bindings/reset/imx8mq-reset.h
-@@ -0,0 +1,64 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (C) 2018 Zodiac Inflight Innovations
-+ *
-+ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-+ */
+diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
+index c1719093b..dcebd7658 100644
+--- a/drivers/pci/pci-imx6.c
++++ b/drivers/pci/pci-imx6.c
+@@ -42,6 +42,10 @@ enum imx6_pcie_variants {
+ 	IMX7D,
+ };
+ 
++struct imx6_pcie_drvdata {
++	enum imx6_pcie_variants variant;
++};
 +
-+#ifndef DT_BINDING_RESET_IMX8MQ_H
-+#define DT_BINDING_RESET_IMX8MQ_H
+ struct imx6_pcie {
+ 	struct dw_pcie		*pci;
+ 	int			reset_gpio;
+@@ -51,13 +55,13 @@ struct imx6_pcie {
+ 	void __iomem		*iomuxc_gpr;
+ 	struct reset_control	*pciephy_reset;
+ 	struct reset_control	*apps_reset;
+-	enum imx6_pcie_variants variant;
+ 	u32                     tx_deemph_gen1;
+ 	u32                     tx_deemph_gen2_3p5db;
+ 	u32                     tx_deemph_gen2_6db;
+ 	u32                     tx_swing_full;
+ 	u32                     tx_swing_low;
+ 	int			link_gen;
++	const struct imx6_pcie_drvdata *drvdata;
+ };
+ 
+ /* Parameters for the waiting for PCIe PHY PLL to lock on i.MX7 */
+@@ -248,7 +252,7 @@ static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
+ {
+ 	u32 gpr1;
+ 
+-	switch (imx6_pcie->variant) {
++	switch (imx6_pcie->drvdata->variant) {
+ 	case IMX7D:
+ 		reset_control_assert(imx6_pcie->pciephy_reset);
+ 		reset_control_assert(imx6_pcie->apps_reset);
+@@ -273,7 +277,7 @@ static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
+ {
+ 	u32 gpr1;
+ 
+-	switch (imx6_pcie->variant) {
++	switch (imx6_pcie->drvdata->variant) {
+ 	case IMX6QP:
+ 	case IMX6Q:		/* FALLTHROUGH */
+ 		/* power up core phy and enable ref clock */
+@@ -359,7 +363,7 @@ static void imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
+ 	/*
+ 	 * Release the PCIe PHY reset here
+ 	 */
+-	switch (imx6_pcie->variant) {
++	switch (imx6_pcie->drvdata->variant) {
+ 	case IMX7D:
+ 		reset_control_deassert(imx6_pcie->pciephy_reset);
+ 		imx7d_pcie_wait_for_phy_pll_lock(imx6_pcie);
+@@ -391,7 +395,7 @@ static void imx6_pcie_init_phy(struct imx6_pcie *imx6_pcie)
+ 
+ 	gpr12 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
+ 
+-	switch (imx6_pcie->variant) {
++	switch (imx6_pcie->drvdata->variant) {
+ 	case IMX7D:
+ 		gpr12 &= ~IMX7D_GPR12_PCIE_PHY_REFCLK_SEL;
+ 		writel(gpr12, imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
+@@ -462,7 +466,7 @@ static void imx6_pcie_ltssm_enable(struct device_d *dev)
+ 	struct imx6_pcie *imx6_pcie = dev->priv;
+ 	u32 gpr12;
+ 
+-	switch (imx6_pcie->variant) {
++	switch (imx6_pcie->drvdata->variant) {
+ 	case IMX6Q:
+ 	case IMX6QP:
+ 		gpr12 = readl(imx6_pcie->iomuxc_gpr + IOMUXC_GPR12);
+@@ -514,7 +518,7 @@ static int imx6_pcie_establish_link(struct imx6_pcie *imx6_pcie)
+ 		tmp |= PORT_LOGIC_SPEED_CHANGE;
+ 		dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, tmp);
+ 
+-		if (imx6_pcie->variant != IMX7D) {
++		if (imx6_pcie->drvdata->variant != IMX7D) {
+ 			/*
+ 			 * On i.MX7, DIRECT_SPEED_CHANGE behaves
+ 			 * differently from i.MX6 family when no link
+@@ -616,8 +620,7 @@ static int imx6_pcie_probe(struct device_d *dev)
+ 	pci->ops = &dw_pcie_ops;
+ 
+ 	imx6_pcie->pci = pci;
+-	imx6_pcie->variant =
+-		(enum imx6_pcie_variants)of_device_get_match_data(dev);
++	imx6_pcie->drvdata = of_device_get_match_data(dev);
+ 
+ 	/* Fetch GPIOs */
+ 	imx6_pcie->reset_gpio = of_get_named_gpio(np, "reset-gpio", 0);
+@@ -657,7 +660,7 @@ static int imx6_pcie_probe(struct device_d *dev)
+ 		return PTR_ERR(imx6_pcie->pcie);
+ 	}
+ 
+-	switch (imx6_pcie->variant) {
++	switch (imx6_pcie->drvdata->variant) {
+ 	case IMX7D:
+ 		imx6_pcie->iomuxc_gpr = IOMEM(MX7_IOMUXC_GPR_BASE_ADDR);
+ 
+@@ -720,7 +723,7 @@ static void imx6_pcie_remove(struct device_d *dev)
+ {
+ 	struct imx6_pcie *imx6_pcie = dev->priv;
+ 
+-	if (imx6_pcie->variant == IMX6Q) {
++	if (imx6_pcie->drvdata->variant == IMX6Q) {
+ 		/*
+ 		 * If the bootloader already enabled the link we need
+ 		 * some special handling to get the core back into a
+@@ -750,10 +753,22 @@ static void imx6_pcie_remove(struct device_d *dev)
+ 	imx6_pcie_assert_core_reset(imx6_pcie);
+ }
+ 
++static const struct imx6_pcie_drvdata drvdata[] = {
++	[IMX6Q] = {
++		.variant = IMX6Q,
++	},
++	[IMX6QP] = {
++		.variant = IMX6QP,
++	},
++	[IMX7D] = {
++		.variant = IMX7D,
++	},
++};
 +
-+#define IMX8MQ_RESET_A53_CORE_POR_RESET0	0
-+#define IMX8MQ_RESET_A53_CORE_POR_RESET1	1
-+#define IMX8MQ_RESET_A53_CORE_POR_RESET2	2
-+#define IMX8MQ_RESET_A53_CORE_POR_RESET3	3
-+#define IMX8MQ_RESET_A53_CORE_RESET0		4
-+#define IMX8MQ_RESET_A53_CORE_RESET1		5
-+#define IMX8MQ_RESET_A53_CORE_RESET2		6
-+#define IMX8MQ_RESET_A53_CORE_RESET3		7
-+#define IMX8MQ_RESET_A53_DBG_RESET0		8
-+#define IMX8MQ_RESET_A53_DBG_RESET1		9
-+#define IMX8MQ_RESET_A53_DBG_RESET2		10
-+#define IMX8MQ_RESET_A53_DBG_RESET3		11
-+#define IMX8MQ_RESET_A53_ETM_RESET0		12
-+#define IMX8MQ_RESET_A53_ETM_RESET1		13
-+#define IMX8MQ_RESET_A53_ETM_RESET2		14
-+#define IMX8MQ_RESET_A53_ETM_RESET3		15
-+#define IMX8MQ_RESET_A53_SOC_DBG_RESET		16
-+#define IMX8MQ_RESET_A53_L2RESET		17
-+#define IMX8MQ_RESET_SW_NON_SCLR_M4C_RST	18
-+#define IMX8MQ_RESET_OTG1_PHY_RESET		19
-+#define IMX8MQ_RESET_OTG2_PHY_RESET		20
-+#define IMX8MQ_RESET_MIPI_DSI_RESET_BYTE_N	21
-+#define IMX8MQ_RESET_MIPI_DSI_RESET_N		22
-+#define IMX8MQ_RESET_MIPI_DIS_DPI_RESET_N	23
-+#define IMX8MQ_RESET_MIPI_DIS_ESC_RESET_N	24
-+#define IMX8MQ_RESET_MIPI_DIS_PCLK_RESET_N	25
-+#define IMX8MQ_RESET_PCIEPHY			26
-+#define IMX8MQ_RESET_PCIEPHY_PERST		27
-+#define IMX8MQ_RESET_PCIE_CTRL_APPS_EN		28
-+#define IMX8MQ_RESET_PCIE_CTRL_APPS_TURNOFF	29
-+#define IMX8MQ_RESET_HDMI_PHY_APB_RESET		30
-+#define IMX8MQ_RESET_DISP_RESET			31
-+#define IMX8MQ_RESET_GPU_RESET			32
-+#define IMX8MQ_RESET_VPU_RESET			33
-+#define IMX8MQ_RESET_PCIEPHY2			34
-+#define IMX8MQ_RESET_PCIEPHY2_PERST		35
-+#define IMX8MQ_RESET_PCIE2_CTRL_APPS_EN		36
-+#define IMX8MQ_RESET_PCIE2_CTRL_APPS_TURNOFF	37
-+#define IMX8MQ_RESET_MIPI_CSI1_CORE_RESET	38
-+#define IMX8MQ_RESET_MIPI_CSI1_PHY_REF_RESET	39
-+#define IMX8MQ_RESET_MIPI_CSI1_ESC_RESET	40
-+#define IMX8MQ_RESET_MIPI_CSI2_CORE_RESET	41
-+#define IMX8MQ_RESET_MIPI_CSI2_PHY_REF_RESET	42
-+#define IMX8MQ_RESET_MIPI_CSI2_ESC_RESET	43
-+#define IMX8MQ_RESET_DDRC1_PRST			44
-+#define IMX8MQ_RESET_DDRC1_CORE_RESET		45
-+#define IMX8MQ_RESET_DDRC1_PHY_RESET		46
-+#define IMX8MQ_RESET_DDRC2_PRST			47
-+#define IMX8MQ_RESET_DDRC2_CORE_RESET		48
-+#define IMX8MQ_RESET_DDRC2_PHY_RESET		49
-+
-+#define IMX8MQ_RESET_NUM			50
-+
-+#endif
+ static struct of_device_id imx6_pcie_of_match[] = {
+-	{ .compatible = "fsl,imx6q-pcie",  .data = (void *)IMX6Q,  },
+-	{ .compatible = "fsl,imx6qp-pcie", .data = (void *)IMX6QP, },
+-	{ .compatible = "fsl,imx7d-pcie",  .data = (void *)IMX7D,  },
++	{ .compatible = "fsl,imx6q-pcie",  .data = &drvdata[IMX6Q],  },
++	{ .compatible = "fsl,imx6qp-pcie", .data = &drvdata[IMX6QP], },
++	{ .compatible = "fsl,imx7d-pcie",  .data = &drvdata[IMX7D],  },
+ 	{},
+ };
+ 
 -- 
 2.20.1
 
