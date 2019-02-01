@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1grYOs-0003j7-Ai
- for barebox@lists.infradead.org; Thu, 07 Feb 2019 01:22:51 +0000
-Received: by mail-pl1-x643.google.com with SMTP id k15so3992258pls.8
- for <barebox@lists.infradead.org>; Wed, 06 Feb 2019 17:22:46 -0800 (PST)
+ id 1gpOcL-0004s0-7V
+ for barebox@lists.infradead.org; Fri, 01 Feb 2019 02:31:46 +0000
+Received: by mail-pl1-x644.google.com with SMTP id b5so2417350plr.4
+ for <barebox@lists.infradead.org>; Thu, 31 Jan 2019 18:31:44 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Feb 2019 17:22:10 -0800
-Message-Id: <20190207012214.5060-13-andrew.smirnov@gmail.com>
-In-Reply-To: <20190207012214.5060-1-andrew.smirnov@gmail.com>
-References: <20190207012214.5060-1-andrew.smirnov@gmail.com>
+Date: Thu, 31 Jan 2019 18:31:18 -0800
+Message-Id: <20190201023133.1078-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,49 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/16] net/e1000: Rename fill_rx() to e1000_fill_rx()
+Subject: [PATCH 00/15] PCIE support for i.MX8MQ
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Rename fill_rx() to e1000_fill_rx() to match the naming convention of
-other functions in the file.
+Everyone:
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- drivers/net/e1000/main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+This series contains port of the various Linux patches needed to
+enable support of PCIE IP block on i.MX8MQ SoCs. Last four patches are
+marked as RFC since correpsonding Linux series hasn't been picked into
+PCI tree yet [pcie-imx8mq]. However all of the code should be in good
+enough shape for review and discussion.
 
-diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
-index 425d478ed..b728add7f 100644
---- a/drivers/net/e1000/main.c
-+++ b/drivers/net/e1000/main.c
-@@ -3198,7 +3198,7 @@ static int e1000_sw_init(struct eth_device *edev)
- 	return E1000_SUCCESS;
- }
- 
--static void fill_rx(struct e1000_hw *hw)
-+static void e1000_fill_rx(struct e1000_hw *hw)
- {
- 	volatile struct e1000_rx_desc *rd;
- 	volatile u32 *bla;
-@@ -3387,7 +3387,7 @@ static void e1000_configure_rx(struct e1000_hw *hw)
- 
- 	e1000_write_reg(hw, E1000_RCTL, rctl);
- 
--	fill_rx(hw);
-+	e1000_fill_rx(hw);
- }
- 
- static int e1000_poll(struct eth_device *edev)
-@@ -3405,7 +3405,7 @@ static int e1000_poll(struct eth_device *edev)
- 
- 		dma_sync_single_for_device(hw->packet_dma, len,
- 					   DMA_FROM_DEVICE);
--		fill_rx(hw);
-+		e1000_fill_rx(hw);
- 		return 1;
- 	}
- 
+Feedback is welcome!
+
+Thanks,
+Andrey Smirnov
+
+[pcie-imx8mq] https://lore.kernel.org/lkml/20190124201522.8973-1-andrew.smirnov@gmail.com/T/#u
+
+Andrey Smirnov (15):
+  PCI: dwc: Fix pointer width cast problem
+  ARM: aarch64: Add PCI fixups section to linker script
+  soc: imx: gpcv2: use A_CORE instread of A7 for more i.MX platforms
+  soc: imx: gpcv2: make pgc driver more generic for other i.MX platforms
+  soc: imx: gpcv2: Switch to SPDX identifier
+  soc: imx: gpcv2: prefix i.MX7 specific defines
+  soc: imx: gpcv2: add support for i.MX8MQ SoC
+  reset: Constify "ops" in struct reset_controller_dev
+  reset: imx7: Add plubming to support multiple IP variants
+  include: Import dt-bindings/reset/imx8mq-reset.h
+  reset: imx7: Add support for i.MX8MQ IP block variant
+  PCI: imx6: Introduce drvdata
+  PCI: imx6: Mark PHY functions as i.MX6 specific
+  PCI: imx6: Convert DIRECT_SPEED_CHANGE quirk code to use a flag
+  PCI: imx6: Add support for i.MX8MQ
+
+ arch/arm/lib64/barebox.lds.S             |  12 +
+ arch/arm/mach-imx/Kconfig                |   1 +
+ drivers/pci/Kconfig                      |   4 +-
+ drivers/pci/pci-imx6.c                   | 149 ++++++++++--
+ drivers/pci/pcie-designware-host.c       |   6 +-
+ drivers/reset/reset-imx7.c               | 172 +++++++++++--
+ drivers/reset/reset-socfpga.c            |   2 +-
+ drivers/soc/imx/Kconfig                  |   8 +-
+ drivers/soc/imx/Makefile                 |   2 +-
+ drivers/soc/imx/gpcv2.c                  | 297 ++++++++++++++++++-----
+ include/dt-bindings/reset/imx8mq-reset.h |  64 +++++
+ include/linux/reset-controller.h         |   2 +-
+ 12 files changed, 614 insertions(+), 105 deletions(-)
+ create mode 100644 include/dt-bindings/reset/imx8mq-reset.h
+
 -- 
 2.20.1
 
