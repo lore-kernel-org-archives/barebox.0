@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gpOcM-0004sE-3J
- for barebox@lists.infradead.org; Fri, 01 Feb 2019 02:31:47 +0000
-Received: by mail-pl1-x644.google.com with SMTP id z23so2422403plo.0
- for <barebox@lists.infradead.org>; Thu, 31 Jan 2019 18:31:46 -0800 (PST)
+ id 1gpOcN-0004sa-R2
+ for barebox@lists.infradead.org; Fri, 01 Feb 2019 02:31:49 +0000
+Received: by mail-pl1-x62a.google.com with SMTP id u18so2400611plq.7
+ for <barebox@lists.infradead.org>; Thu, 31 Jan 2019 18:31:47 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 31 Jan 2019 18:31:19 -0800
-Message-Id: <20190201023133.1078-2-andrew.smirnov@gmail.com>
+Date: Thu, 31 Jan 2019 18:31:20 -0800
+Message-Id: <20190201023133.1078-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20190201023133.1078-1-andrew.smirnov@gmail.com>
 References: <20190201023133.1078-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,44 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/15] PCI: dwc: Fix pointer width cast problem
+Subject: [PATCH 02/15] ARM: aarch64: Add PCI fixups section to linker script
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Casting to u32 works well on 32-bit builds, but causes problem when
-compiled on 64-bit machines. Switch it to cast to "unsigned long", so
-that it would have appropriate width in both cases.
-
-While at it, replace explicit casts to void * with IOMEM.
+Add PCI fixups section to linker script, so it would be possible to
+enable PCI support.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pcie-designware-host.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/lib64/barebox.lds.S | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/pci/pcie-designware-host.c b/drivers/pci/pcie-designware-host.c
-index 5acd47f6e..7a95b2a09 100644
---- a/drivers/pci/pcie-designware-host.c
-+++ b/drivers/pci/pcie-designware-host.c
-@@ -150,15 +150,15 @@ int __init dw_pcie_host_init(struct pcie_port *pp)
- 	}
+diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
+index 08adc44e8..b3e6843a1 100644
+--- a/arch/arm/lib64/barebox.lds.S
++++ b/arch/arm/lib64/barebox.lds.S
+@@ -86,6 +86,18 @@ SECTIONS
+ 	__usymtab : { BAREBOX_SYMS }
+ 	__usymtab_end = .;
  
- 	if (!pci->dbi_base)
--		pci->dbi_base = (void __force *)pp->cfg.start;
-+		pci->dbi_base = IOMEM(pp->cfg.start);
++#ifdef CONFIG_PCI
++	__start_pci_fixups_early = .;
++	.pci_fixup_early : { KEEP(*(.pci_fixup_early)) }
++	__end_pci_fixups_early = .;
++	__start_pci_fixups_header = .;
++	.pci_fixup_header : { KEEP(*(.pci_fixup_header)) }
++	__end_pci_fixups_header = .;
++	__start_pci_fixups_enable = .;
++	.pci_fixup_enable : { KEEP(*(.pci_fixup_enable)) }
++	__end_pci_fixups_enable = .;
++#endif
++
+ 	.oftables : { BAREBOX_CLK_TABLE() }
  
- 	pp->mem_base = pp->mem.start;
- 
- 	if (!pp->va_cfg0_base)
--		pp->va_cfg0_base = (void __force *)(u32)pp->cfg0_base;
-+		pp->va_cfg0_base = IOMEM((unsigned long)pp->cfg0_base);
- 
- 	if (!pp->va_cfg1_base)
--		pp->va_cfg1_base = (void __force *)(u32)pp->cfg1_base;
-+		pp->va_cfg1_base = IOMEM((unsigned long)pp->cfg1_base);
- 
- 	ret = of_property_read_u32(np, "num-viewport", &pci->num_viewport);
- 	if (ret)
+ 	.dtb : { BAREBOX_DTB() }
 -- 
 2.20.1
 
