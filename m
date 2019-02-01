@@ -1,20 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf1-x143.google.com ([2a00:1450:4864:20::143])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gpTXe-0002rl-IC
- for barebox@lists.infradead.org; Fri, 01 Feb 2019 07:47:16 +0000
-Date: Fri, 1 Feb 2019 08:47:11 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190201074711.clrwidodo5hpqb7y@pengutronix.de>
+ id 1gpVpy-0005uK-2J
+ for barebox@lists.infradead.org; Fri, 01 Feb 2019 10:14:19 +0000
+Received: by mail-lf1-x143.google.com with SMTP id x201so3326605lff.10
+ for <barebox@lists.infradead.org>; Fri, 01 Feb 2019 02:14:16 -0800 (PST)
+Date: Fri, 1 Feb 2019 13:14:09 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20190201101408.dj66i7lsfceteve5@localhost.localdomain>
 References: <20190129065549.29161-1-andrew.smirnov@gmail.com>
  <20190129065549.29161-19-andrew.smirnov@gmail.com>
  <20190129084847.spkfbeksb7xne46g@pengutronix.de>
  <CAHQ1cqGm+VUgZDScpPVTDuPX89FNSr1JiecqBah_o2piNT-ayg@mail.gmail.com>
  <20190131105452.smetw36klsxmvtaq@localhost.localdomain>
- <20190131125028.glbnt55zmhqowi6p@localhost.localdomain>
+ <CAHQ1cqH=nccB4+ztNE+LfRus3E+6N=6SC3a1pkkFgeoYkVhYoQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190131125028.glbnt55zmhqowi6p@localhost.localdomain>
+In-Reply-To: <CAHQ1cqH=nccB4+ztNE+LfRus3E+6N=6SC3a1pkkFgeoYkVhYoQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,56 +31,68 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2 18/19] drivers: mem: Create file to access second half
  of 64-bit memory
-To: Peter Mamonov <pmamonov@gmail.com>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Barebox List <barebox@lists.infradead.org>
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Jan 31, 2019 at 03:50:28PM +0300, Peter Mamonov wrote:
-> On Thu, Jan 31, 2019 at 01:54:52PM +0300, Peter Mamonov wrote:
+On Thu, Jan 31, 2019 at 12:17:08PM -0800, Andrey Smirnov wrote:
+> On Thu, Jan 31, 2019 at 2:55 AM Peter Mamonov <pmamonov@gmail.com> wrote:
+> >
 > > Hello, Andrey,
-> > 
+> >
 > > > In order to allow access to second half of address space on 64-bit
 > > > machines, add code that creates /dev/highmem dedicated for that.
-> > > 
+> > >
 > > > Note that due to maximum file size being limited to MAX_LFS_FILESIZE
 > > > or 0x7fff_ffff_ffff_ffff bytes at addresses 0x7fff_ffff_ffff_ffff and
 > > > 0xffff_ffff_ffff_ffff cannot be access through /dev/mem and
 > > > /dev/hightmem correspondingly.
-> > 
-> > Does it imply using `-s /dev/highmem` argument when accessing addresses beyond 
-> > MAX_LFS_FILESIZE? That's not very convenient:
-> > 
-> > 	$ git grep -l /dev/mem
-> > 	commands/crc.c
-> > 	commands/digest.c
-> > 	commands/disasm.c
-> > 	commands/md.c
-> > 	commands/memcmp.c
-> > 	commands/memcpy.c
-> > 	commands/memset.c
-> > 	commands/mm.c
-> > 	commands/mw.c
+> >
+> > Does it imply using `-s /dev/highmem` argument when accessing addresses beyond
+> > MAX_LFS_FILESIZE?
 > 
-> I've forgotten to mention, that all meaningful MIPS64 virtual addresses  
-> belong to the 2nd half of the address space. Except for user segment addresses 
-> which are not used in barebox.
+> Yes, it does.
+> 
+> > That's not very convenient:
+> >
+> >         $ git grep -l /dev/mem
+> >         commands/crc.c
+> >         commands/digest.c
+> >         commands/disasm.c
+> >         commands/md.c
+> >         commands/memcmp.c
+> >         commands/memcpy.c
+> >         commands/memset.c
+> >         commands/mm.c
+> >         commands/mw.c
+> >
+> 
+> I don't disagree, but there isn't much that can be done about that
+> AFAICT. The first version of this fix kept single /dev/mem file, but
+> ended up introducing quite a bit of special cases all over the FS
+> layer, so it was rejected. The only two options to make it more
+> convenient that I can see would be to either modify "/dev/mem" users
+> to make "/dev/highmem" substitution automatically based on offset they
+> are given, or, assuming it is possible, create a mapping that would
+> expose all of the interesting registers on MIPS64 in the lower half of
+> 64-bit address space.
 
-In that case our only option seems to be to use an unsigned 64bit type
-for filesize. We would need an additional lseek like function which
-is able to reach the upper half of the address space and with regular
-lseek simply only the lower half would be reachable.
+Guess we can just adopt Linux's approach. Linux recognizes /dev/mem's lseek as
+a special case and has a dedicated implementation for it. Here is a relevant
+comment from drivers/char/mem.c:
 
-Note that currently we don't seem to have a problem as even with Andreys
-series applied we can still 'md' the whole address space. The test if we
-lseek outside the file never triggers since the signed comparison of
-offset > f->size never evaluates to true for f->size == S64_MAX.
+	/*
+	 * The memory devices use the full 32/64 bits of the offset, and so we cannot
+	 * check against negative addresses: they are ok. The return value is weird,
+	 * though, in that case (0).
+	 *
+	 * also note that seeking relative to the "end of file" isn't supported:
+	 * it has no meaning, so it returns -EINVAL.
+	 */
+	static loff_t memory_lseek(struct file *file, loff_t offset, int orig)
+	{
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Regards,
+Peter
 
 _______________________________________________
 barebox mailing list
