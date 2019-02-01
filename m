@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
+Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gpOcb-000552-Bb
- for barebox@lists.infradead.org; Fri, 01 Feb 2019 02:32:10 +0000
-Received: by mail-pf1-x441.google.com with SMTP id b7so2399492pfi.8
- for <barebox@lists.infradead.org>; Thu, 31 Jan 2019 18:32:01 -0800 (PST)
+ id 1gpOce-00056b-8g
+ for barebox@lists.infradead.org; Fri, 01 Feb 2019 02:32:13 +0000
+Received: by mail-pg1-x541.google.com with SMTP id z11so2236348pgu.0
+ for <barebox@lists.infradead.org>; Thu, 31 Jan 2019 18:32:02 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 31 Jan 2019 18:31:31 -0800
-Message-Id: <20190201023133.1078-14-andrew.smirnov@gmail.com>
+Date: Thu, 31 Jan 2019 18:31:32 -0800
+Message-Id: <20190201023133.1078-15-andrew.smirnov@gmail.com>
 In-Reply-To: <20190201023133.1078-1-andrew.smirnov@gmail.com>
 References: <20190201023133.1078-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,17 +23,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 13/15] PCI: imx6: Mark PHY functions as i.MX6 specific
+Subject: [RFC 14/15] PCI: imx6: Convert DIRECT_SPEED_CHANGE quirk code to use
+ a flag
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Port of a Linux commit <TBD>
 
-  PCIE PHY IP block on i.MX7D differs from the one used on i.MX6 family,
-  so none of the code in current implementation of imx6_setup_phy_mpll()
-  is applicable.
+  Both i.MX7D and i.MX8MQ have the same behaviour when it comes to
+  clearing DIRECT_SPEED_CHANGE bit when no speed change occur. To
+  account for that change the code handling that to use a generic flag
+  instead of checking IP block variant.
 
-  Tested-by: Trent Piepho <tpiepho@impinj.com>
   Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
   Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
   Cc: Bjorn Helgaas <bhelgaas@google.com>
@@ -50,44 +51,44 @@ Port of a Linux commit <TBD>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/pci/pci-imx6.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pci/pci-imx6.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
-index dcebd7658..2911a019c 100644
+index 2911a019c..d77c24990 100644
 --- a/drivers/pci/pci-imx6.c
 +++ b/drivers/pci/pci-imx6.c
-@@ -42,8 +42,11 @@ enum imx6_pcie_variants {
- 	IMX7D,
+@@ -43,6 +43,7 @@ enum imx6_pcie_variants {
  };
  
-+#define IMX6_PCIE_FLAG_IMX6_PHY			BIT(0)
-+
+ #define IMX6_PCIE_FLAG_IMX6_PHY			BIT(0)
++#define IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE	BIT(1)
+ 
  struct imx6_pcie_drvdata {
  	enum imx6_pcie_variants variant;
-+	u32 flags;
- };
+@@ -524,7 +525,8 @@ static int imx6_pcie_establish_link(struct imx6_pcie *imx6_pcie)
+ 		tmp |= PORT_LOGIC_SPEED_CHANGE;
+ 		dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, tmp);
  
- struct imx6_pcie {
-@@ -235,6 +238,9 @@ static void imx6_pcie_reset_phy(struct imx6_pcie *imx6_pcie)
- {
- 	uint32_t temp;
- 
-+	if (!(imx6_pcie->drvdata->flags & IMX6_PCIE_FLAG_IMX6_PHY))
-+		return;
-+
- 	pcie_phy_read(imx6_pcie, PHY_RX_OVRD_IN_LO, &temp);
- 	temp |= (PHY_RX_OVRD_IN_LO_RX_DATA_EN |
- 		 PHY_RX_OVRD_IN_LO_RX_PLL_EN);
-@@ -756,9 +762,11 @@ static void imx6_pcie_remove(struct device_d *dev)
+-		if (imx6_pcie->drvdata->variant != IMX7D) {
++		if (imx6_pcie->drvdata->flags &
++		    IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE) {
+ 			/*
+ 			 * On i.MX7, DIRECT_SPEED_CHANGE behaves
+ 			 * differently from i.MX6 family when no link
+@@ -762,11 +764,13 @@ static void imx6_pcie_remove(struct device_d *dev)
  static const struct imx6_pcie_drvdata drvdata[] = {
  	[IMX6Q] = {
  		.variant = IMX6Q,
-+		.flags = IMX6_PCIE_FLAG_IMX6_PHY,
+-		.flags = IMX6_PCIE_FLAG_IMX6_PHY,
++		.flags = IMX6_PCIE_FLAG_IMX6_PHY |
++			 IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE,
  	},
  	[IMX6QP] = {
  		.variant = IMX6QP,
-+		.flags = IMX6_PCIE_FLAG_IMX6_PHY,
+-		.flags = IMX6_PCIE_FLAG_IMX6_PHY,
++		.flags = IMX6_PCIE_FLAG_IMX6_PHY |
++			 IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE,
  	},
  	[IMX7D] = {
  		.variant = IMX7D,
