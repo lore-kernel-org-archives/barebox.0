@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gpOcS-0004wK-LU
- for barebox@lists.infradead.org; Fri, 01 Feb 2019 02:31:55 +0000
-Received: by mail-pf1-x444.google.com with SMTP id w73so2395413pfk.10
- for <barebox@lists.infradead.org>; Thu, 31 Jan 2019 18:31:52 -0800 (PST)
+ id 1gpOcW-000508-JR
+ for barebox@lists.infradead.org; Fri, 01 Feb 2019 02:32:00 +0000
+Received: by mail-pf1-x444.google.com with SMTP id i12so2405180pfo.7
+ for <barebox@lists.infradead.org>; Thu, 31 Jan 2019 18:31:56 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 31 Jan 2019 18:31:24 -0800
-Message-Id: <20190201023133.1078-7-andrew.smirnov@gmail.com>
+Date: Thu, 31 Jan 2019 18:31:27 -0800
+Message-Id: <20190201023133.1078-10-andrew.smirnov@gmail.com>
 In-Reply-To: <20190201023133.1078-1-andrew.smirnov@gmail.com>
 References: <20190201023133.1078-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,112 +23,148 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/15] soc: imx: gpcv2: prefix i.MX7 specific defines
+Subject: [PATCH 09/15] reset: imx7: Add plubming to support multiple IP
+ variants
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit a800f418420d37f60fa471665a156c45d2702437
+Port of a Linux commit cffaab878178c7842ab38690070d665adb3f41fd
 
-  So we can add i.MX8M support without introducing name clashes.
+  In order to enable supporting i.MX8MQ with this driver, convert it to
+  expect variant specific bits to be passed via driver data.
 
-  Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-  Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+  Cc: p.zabel@pengutronix.de
+  Cc: Fabio Estevam <fabio.estevam@nxp.com>
+  Cc: cphealy@gmail.com
+  Cc: l.stach@pengutronix.de
+  Cc: Leonard Crestez <leonard.crestez@nxp.com>
+  Cc: "A.s. Dong" <aisheng.dong@nxp.com>
+  Cc: Richard Zhu <hongxing.zhu@nxp.com>
+  Cc: Rob Herring <robh@kernel.org>
+  Cc: devicetree@vger.kernel.org
+  Cc: linux-imx@nxp.com
+  Cc: linux-arm-kernel@lists.infradead.org
+  Cc: linux-kernel@vger.kernel.org
+  Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/soc/imx/gpcv2.c | 44 ++++++++++++++++++++---------------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+ drivers/reset/reset-imx7.c | 50 +++++++++++++++++++++++++++-----------
+ 1 file changed, 36 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/soc/imx/gpcv2.c b/drivers/soc/imx/gpcv2.c
-index 7bf45d42b..24a6b96c1 100644
---- a/drivers/soc/imx/gpcv2.c
-+++ b/drivers/soc/imx/gpcv2.c
-@@ -24,19 +24,19 @@
- #define GPC_LPCR_A_BSC			0x000
+diff --git a/drivers/reset/reset-imx7.c b/drivers/reset/reset-imx7.c
+index 6dc5de16a..f723dc28e 100644
+--- a/drivers/reset/reset-imx7.c
++++ b/drivers/reset/reset-imx7.c
+@@ -22,10 +22,22 @@
+ #include <linux/reset-controller.h>
+ #include <mfd/syscon.h>
+ #include <regmap.h>
++#include <of_device.h>
++
++struct imx7_src_signal {
++	unsigned int offset, bit;
++};
++
++struct imx7_src_variant {
++	const struct imx7_src_signal *signals;
++	unsigned int signals_num;
++	struct reset_control_ops ops;
++};
  
- #define GPC_PGC_CPU_MAPPING		0x0ec
--#define USB_HSIC_PHY_A_DOMAIN		BIT(6)
--#define USB_OTG2_PHY_A_DOMAIN		BIT(5)
--#define USB_OTG1_PHY_A_DOMAIN		BIT(4)
--#define PCIE_PHY_A_DOMAIN		BIT(3)
--#define MIPI_PHY_A_DOMAIN		BIT(2)
-+#define IMX7_USB_HSIC_PHY_A_DOMAIN	BIT(6)
-+#define IMX7_USB_OTG2_PHY_A_DOMAIN	BIT(5)
-+#define IMX7_USB_OTG1_PHY_A_DOMAIN	BIT(4)
-+#define IMX7_PCIE_PHY_A_DOMAIN		BIT(3)
-+#define IMX7_MIPI_PHY_A_DOMAIN		BIT(2)
+ struct imx7_src {
+ 	struct reset_controller_dev rcdev;
+ 	struct regmap *regmap;
++	const struct imx7_src_signal *signals;
+ };
  
- #define GPC_PU_PGC_SW_PUP_REQ		0x0f8
- #define GPC_PU_PGC_SW_PDN_REQ		0x104
--#define USB_HSIC_PHY_SW_Pxx_REQ		BIT(4)
--#define USB_OTG2_PHY_SW_Pxx_REQ		BIT(3)
--#define USB_OTG1_PHY_SW_Pxx_REQ		BIT(2)
--#define PCIE_PHY_SW_Pxx_REQ		BIT(1)
--#define MIPI_PHY_SW_Pxx_REQ		BIT(0)
-+#define IMX7_USB_HSIC_PHY_SW_Pxx_REQ	BIT(4)
-+#define IMX7_USB_OTG2_PHY_SW_Pxx_REQ	BIT(3)
-+#define IMX7_USB_OTG1_PHY_SW_Pxx_REQ	BIT(2)
-+#define IMX7_PCIE_PHY_SW_Pxx_REQ	BIT(1)
-+#define IMX7_MIPI_PHY_SW_Pxx_REQ	BIT(0)
+ enum imx7_src_registers {
+@@ -40,9 +52,14 @@ enum imx7_src_registers {
+ 	SRC_DDRC_RCR		= 0x1000,
+ };
  
- #define GPC_M4_PU_PDN_FLG		0x1bc
+-struct imx7_src_signal {
+-	unsigned int offset, bit;
+-};
++static int imx7_reset_update(struct imx7_src *imx7src,
++			     unsigned long id, unsigned int value)
++{
++	const struct imx7_src_signal *signal = &imx7src->signals[id];
++
++	return regmap_update_bits(imx7src->regmap,
++				  signal->offset, signal->bit, value);
++}
  
-@@ -46,9 +46,9 @@
-  * GPC_PGC memory map are incorrect, below offset
-  * values are from design RTL.
-  */
--#define PGC_MIPI                       16
--#define PGC_PCIE                       17
--#define PGC_USB_HSIC                   20
-+#define IMX7_PGC_MIPI                       16
-+#define IMX7_PGC_PCIE                       17
-+#define IMX7_PGC_USB_HSIC                   20
- #define GPC_PGC_CTRL(n)			(0x800 + (n) * 0x40)
- #define GPC_PGC_SR(n)			(GPC_PGC_CTRL(n) + 0xc)
+ static const struct imx7_src_signal imx7_src_signals[IMX7_RESET_NUM] = {
+ 	[IMX7_RESET_A7_CORE_POR_RESET0] = { SRC_A7RCR0, BIT(0) },
+@@ -81,8 +98,8 @@ static int imx7_reset_set(struct reset_controller_dev *rcdev,
+ 			  unsigned long id, bool assert)
+ {
+ 	struct imx7_src *imx7src = to_imx7_src(rcdev);
+-	const struct imx7_src_signal *signal = &imx7_src_signals[id];
+-	unsigned int value = assert ? signal->bit : 0;;
++	const unsigned int bit = imx7src->signals[id].bit;
++	unsigned int value = assert ? bit : 0;
  
-@@ -166,11 +166,11 @@ static const struct imx_pgc_domain imx7_pgc_domains[] = {
- 			.name      = "mipi-phy",
- 		},
- 		.bits  = {
--			.pxx = MIPI_PHY_SW_Pxx_REQ,
--			.map = MIPI_PHY_A_DOMAIN,
-+			.pxx = IMX7_MIPI_PHY_SW_Pxx_REQ,
-+			.map = IMX7_MIPI_PHY_A_DOMAIN,
- 		},
- 		.voltage   = 1000000,
--		.pgc	   = PGC_MIPI,
-+		.pgc	   = IMX7_PGC_MIPI,
- 	},
+ 	switch (id) {
+ 	case IMX7_RESET_PCIEPHY:
+@@ -95,12 +112,11 @@ static int imx7_reset_set(struct reset_controller_dev *rcdev,
+ 		break;
  
- 	[IMX7_POWER_DOMAIN_PCIE_PHY] = {
-@@ -178,11 +178,11 @@ static const struct imx_pgc_domain imx7_pgc_domains[] = {
- 			.name      = "pcie-phy",
- 		},
- 		.bits  = {
--			.pxx = PCIE_PHY_SW_Pxx_REQ,
--			.map = PCIE_PHY_A_DOMAIN,
-+			.pxx = IMX7_PCIE_PHY_SW_Pxx_REQ,
-+			.map = IMX7_PCIE_PHY_A_DOMAIN,
- 		},
- 		.voltage   = 1000000,
--		.pgc	   = PGC_PCIE,
-+		.pgc	   = IMX7_PGC_PCIE,
- 	},
+ 	case IMX7_RESET_PCIE_CTRL_APPS_EN:
+-		value = (assert) ? 0 : signal->bit;
++		value = assert ? 0 : bit;
+ 		break;
+ 	}
  
- 	[IMX7_POWER_DOMAIN_USB_HSIC_PHY] = {
-@@ -190,11 +190,11 @@ static const struct imx_pgc_domain imx7_pgc_domains[] = {
- 			.name      = "usb-hsic-phy",
- 		},
- 		.bits  = {
--			.pxx = USB_HSIC_PHY_SW_Pxx_REQ,
--			.map = USB_HSIC_PHY_A_DOMAIN,
-+			.pxx = IMX7_USB_HSIC_PHY_SW_Pxx_REQ,
-+			.map = IMX7_USB_HSIC_PHY_A_DOMAIN,
- 	},
- 		.voltage   = 1200000,
--		.pgc	   = PGC_USB_HSIC,
-+		.pgc	   = IMX7_PGC_USB_HSIC,
- 	},
+-	return regmap_update_bits(imx7src->regmap,
+-				  signal->offset, signal->bit, value);
++	return imx7_reset_update(imx7src, id, value);
+ }
+ 
+ static int imx7_reset_assert(struct reset_controller_dev *rcdev,
+@@ -115,31 +131,37 @@ static int imx7_reset_deassert(struct reset_controller_dev *rcdev,
+ 	return imx7_reset_set(rcdev, id, false);
+ }
+ 
+-static struct reset_control_ops imx7_reset_ops = {
+-	.assert		= imx7_reset_assert,
+-	.deassert	= imx7_reset_deassert,
++static const struct imx7_src_variant variant_imx7 = {
++	.signals = imx7_src_signals,
++	.signals_num = ARRAY_SIZE(imx7_src_signals),
++	.ops = {
++		.assert   = imx7_reset_assert,
++		.deassert = imx7_reset_deassert,
++	},
+ };
+ 
+ static int imx7_reset_probe(struct device_d *dev)
+ {
+ 	struct imx7_src *imx7src;
++	const struct imx7_src_variant *variant = of_device_get_match_data(dev);
+ 
+ 	imx7src = xzalloc(sizeof(*imx7src));
++	imx7src->signals = variant->signals;
+ 	imx7src->regmap = syscon_node_to_regmap(dev->device_node);
+ 	if (IS_ERR(imx7src->regmap)) {
+ 		dev_err(dev, "Unable to get imx7-src regmap");
+ 		return PTR_ERR(imx7src->regmap);
+ 	}
+ 
+-	imx7src->rcdev.nr_resets = IMX7_RESET_NUM;
+-	imx7src->rcdev.ops       = &imx7_reset_ops;
++	imx7src->rcdev.nr_resets = variant->signals_num;
++	imx7src->rcdev.ops       = &variant->ops;
+ 	imx7src->rcdev.of_node   = dev->device_node;
+ 
+ 	return reset_controller_register(&imx7src->rcdev);
+ }
+ 
+ static const struct of_device_id imx7_reset_dt_ids[] = {
+-	{ .compatible = "fsl,imx7d-src", },
++	{ .compatible = "fsl,imx7d-src", .data = &variant_imx7 },
+ 	{ /* sentinel */ },
  };
  
 -- 
