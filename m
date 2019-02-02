@@ -1,16 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-wr1-x443.google.com ([2a00:1450:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1grYOu-0003lk-OH
- for barebox@lists.infradead.org; Thu, 07 Feb 2019 01:22:54 +0000
-Received: by mail-pl1-x644.google.com with SMTP id a14so3992167plm.12
- for <barebox@lists.infradead.org>; Wed, 06 Feb 2019 17:22:48 -0800 (PST)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Feb 2019 17:22:12 -0800
-Message-Id: <20190207012214.5060-15-andrew.smirnov@gmail.com>
-In-Reply-To: <20190207012214.5060-1-andrew.smirnov@gmail.com>
-References: <20190207012214.5060-1-andrew.smirnov@gmail.com>
+ id 1gpjmH-0002IE-Tk
+ for barebox@lists.infradead.org; Sat, 02 Feb 2019 01:07:27 +0000
+Received: by mail-wr1-x443.google.com with SMTP id a16so3356037wrv.0
+ for <barebox@lists.infradead.org>; Fri, 01 Feb 2019 17:07:25 -0800 (PST)
 MIME-Version: 1.0
+References: <20190129065549.29161-1-andrew.smirnov@gmail.com>
+ <20190129065549.29161-19-andrew.smirnov@gmail.com>
+ <20190129084847.spkfbeksb7xne46g@pengutronix.de>
+ <CAHQ1cqGm+VUgZDScpPVTDuPX89FNSr1JiecqBah_o2piNT-ayg@mail.gmail.com>
+ <20190131105452.smetw36klsxmvtaq@localhost.localdomain>
+ <20190131125028.glbnt55zmhqowi6p@localhost.localdomain>
+ <20190201074711.clrwidodo5hpqb7y@pengutronix.de>
+ <20190201102520.33sxx2pdcawg2tlx@localhost.localdomain>
+In-Reply-To: <20190201102520.33sxx2pdcawg2tlx@localhost.localdomain>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Fri, 1 Feb 2019 17:07:12 -0800
+Message-ID: <CAHQ1cqG324C54JBMAerJNFfugo8Z9fK7qAwDrQrMJzJu1-0ZUA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,55 +30,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/16] net/e1000: Consolidate next index calculation code
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH v2 18/19] drivers: mem: Create file to access second half
+ of 64-bit memory
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Consolidate next index calculation code into a helper function and
-convert the code to make use of it.
+On Fri, Feb 1, 2019 at 2:25 AM Peter Mamonov <pmamonov@gmail.com> wrote:
+>
+> On Fri, Feb 01, 2019 at 08:47:11AM +0100, Sascha Hauer wrote:
+> > On Thu, Jan 31, 2019 at 03:50:28PM +0300, Peter Mamonov wrote:
+> > > On Thu, Jan 31, 2019 at 01:54:52PM +0300, Peter Mamonov wrote:
+> > > > Hello, Andrey,
+> > > >
+> > > > > In order to allow access to second half of address space on 64-bit
+> > > > > machines, add code that creates /dev/highmem dedicated for that.
+> > > > >
+> > > > > Note that due to maximum file size being limited to MAX_LFS_FILESIZE
+> > > > > or 0x7fff_ffff_ffff_ffff bytes at addresses 0x7fff_ffff_ffff_ffff and
+> > > > > 0xffff_ffff_ffff_ffff cannot be access through /dev/mem and
+> > > > > /dev/hightmem correspondingly.
+> > > >
+> > > > Does it imply using `-s /dev/highmem` argument when accessing addresses beyond
+> > > > MAX_LFS_FILESIZE? That's not very convenient:
+> > > >
+> > > >   $ git grep -l /dev/mem
+> > > >   commands/crc.c
+> > > >   commands/digest.c
+> > > >   commands/disasm.c
+> > > >   commands/md.c
+> > > >   commands/memcmp.c
+> > > >   commands/memcpy.c
+> > > >   commands/memset.c
+> > > >   commands/mm.c
+> > > >   commands/mw.c
+> > >
+> > > I've forgotten to mention, that all meaningful MIPS64 virtual addresses
+> > > belong to the 2nd half of the address space. Except for user segment addresses
+> > > which are not used in barebox.
+> >
+> > In that case our only option seems to be to use an unsigned 64bit type
+> > for filesize. We would need an additional lseek like function which
+> > is able to reach the upper half of the address space and with regular
+> > lseek simply only the lower half would be reachable.
+> >
+> > Note that currently we don't seem to have a problem as even with Andreys
+> > series applied we can still 'md' the whole address space. The test if we
+> > lseek outside the file never triggers since the signed comparison of
+> > offset > f->size never evaluates to true for f->size == S64_MAX.
+>
+> I can confirm that it is possible to enable access to the whole 64 bit address
+> space via /dev/mem after adjusting /dev/mem size and eliminating checks for
+> negative offset/pos in lseek().
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- drivers/net/e1000/main.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+Assuming you are running on top of this patchset, if you just set
+/dev/mem's size to U64_MAX, that alone should disable any checks since
+U64_MAX is also FILE_SIZE_STREAM and validation code in lseek() is:
 
-diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
-index 90b6d6e43..01330f5a5 100644
---- a/drivers/net/e1000/main.c
-+++ b/drivers/net/e1000/main.c
-@@ -3198,6 +3198,11 @@ static int e1000_sw_init(struct eth_device *edev)
- 	return E1000_SUCCESS;
- }
- 
-+static int e1000_bd_next_index(int index)
-+{
-+	return (index + 1) % 8;
-+}
-+
- static void e1000_fill_rx(struct e1000_hw *hw)
- {
- 	volatile struct e1000_rx_desc *rd = &hw->rx_base[hw->rx_tail];
-@@ -3205,7 +3210,7 @@ static void e1000_fill_rx(struct e1000_hw *hw)
- 	int i;
- 
- 	hw->rx_last = hw->rx_tail;
--	hw->rx_tail = (hw->rx_tail + 1) % 8;
-+	hw->rx_tail = e1000_bd_next_index(hw->rx_tail);
- 
- 	bla = (void *)rd;
- 	for (i = 0; i < 4; i++)
-@@ -3419,7 +3424,7 @@ static int e1000_transmit(struct eth_device *edev, void *txpacket, int length)
- 	uint32_t stat;
- 	int ret;
- 
--	hw->tx_tail = (hw->tx_tail + 1) % 8;
-+	hw->tx_tail = e1000_bd_next_index(hw->tx_tail);
- 
- 	writel(hw->txd_cmd | length, &txp->lower.data);
- 	writel(0, &txp->upper.data);
--- 
-2.20.1
+if (f->size != FILE_SIZE_STREAM && (pos < 0 || pos > f->size))
+    goto out;
 
+Sascha, is this the direction you want to go? Should we rename
+DEVFS_IS_CHARACTER_DEV to something more generic and use it on
+/dev/mem?
+
+>  Yet the proper approach seems to be to add a
+> dedicated lseek implementation for /dev/mem, as in Linux.
+>
+
+The checks we are talking about are done before custom .lseek()
+implementation is called. The execution goes: lseek() -> validity
+checks -> cdev_lseek() -> cdev's (which /dev/mem is) custom .lseek()
+callback. Following Linux's example would require quite a bit of
+rework of how lseek() is handled.
+
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
