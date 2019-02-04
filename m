@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gqfWV-0001RU-Sc
- for barebox@lists.infradead.org; Mon, 04 Feb 2019 14:47:01 +0000
+ id 1gqfWd-0001Z0-U0
+ for barebox@lists.infradead.org; Mon, 04 Feb 2019 14:47:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Feb 2019 15:46:40 +0100
-Message-Id: <20190204144641.19600-5-s.hauer@pengutronix.de>
+Date: Mon,  4 Feb 2019 15:46:38 +0100
+Message-Id: <20190204144641.19600-3-s.hauer@pengutronix.de>
 In-Reply-To: <20190204144641.19600-1-s.hauer@pengutronix.de>
 References: <20190204144641.19600-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,40 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] fs: devfs: forbid truncation when cdev has no truncate
- operation
+Subject: [PATCH 2/5] fs: set errno in ftruncate()
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-When a cdev doesn't have a truncate callback then forbid truncation
-and fail with -EPERM.
-Before this we had always failed with -ENOSPC in this situation.
-We checked for f->fsdev->dev.num_resources being nonzero, but this
-check was absolutely meaningless. It goes back to ancient times when
-the resources of a device were automatically added to devfs.
+ftruncate needs to set errno correctly on error.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/devfs.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ fs/fs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/devfs.c b/fs/devfs.c
-index aa44e32613..a7400df1c5 100644
---- a/fs/devfs.c
-+++ b/fs/devfs.c
-@@ -175,11 +175,7 @@ static int devfs_truncate(struct device_d *dev, FILE *f, loff_t size)
- 	if (cdev->ops->truncate)
- 		return cdev->ops->truncate(cdev, size);
+diff --git a/fs/fs.c b/fs/fs.c
+index 4ec9c7a842..c5b17e158a 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -216,8 +216,10 @@ int ftruncate(int fd, loff_t length)
+ 	fsdrv = f->fsdev->driver;
  
--	if (f->fsdev->dev.num_resources < 1)
--		return -ENOSPC;
--	if (size > resource_size(&f->fsdev->dev.resource[0]))
--		return -ENOSPC;
--	return 0;
-+	return -EPERM;
- }
+ 	ret = fsdrv->truncate(&f->fsdev->dev, f, length);
+-	if (ret)
++	if (ret) {
++		errno = -ret;
+ 		return ret;
++	}
  
- static struct inode *devfs_alloc_inode(struct super_block *sb)
+ 	f->size = length;
+ 
 -- 
 2.20.1
 
