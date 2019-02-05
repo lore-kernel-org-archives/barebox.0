@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gr1qf-00036Z-RU
- for barebox@lists.infradead.org; Tue, 05 Feb 2019 14:37:19 +0000
-Date: Tue, 5 Feb 2019 15:37:08 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20190205143708.GA28266@ravnborg.org>
-References: <20190204102937.GA2663@lenoch>
- <20190205115927.nyirklt3cz2lw6by@pengutronix.de>
+ id 1gr8fk-0002xT-Q2
+ for barebox@lists.infradead.org; Tue, 05 Feb 2019 21:54:30 +0000
+Received: by mail-pl1-x642.google.com with SMTP id a14so2111776plm.12
+ for <barebox@lists.infradead.org>; Tue, 05 Feb 2019 13:54:27 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue,  5 Feb 2019 13:53:56 -0800
+Message-Id: <20190205215411.589-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190205115927.nyirklt3cz2lw6by@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,37 +21,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] dts: Revert at91 switch to new PMC clock bindings
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ladislav Michl <ladis@linux-mips.org>
+Subject: [PATCH v2 00/15] PCIE support for i.MX8MQ
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hi Sasha
-> 
-> dts/ contains a 1:1 copy from the upstream devicetree-rebasing
-> repository. I can't apply any patches to this directory.
-> 
-> You would have to merge the changes to the changes to the corresponding
-> files in arch/arm/dts. I'm not sure how feasible this is in this case
-> since not only the clock nodes are changed, but also the references to
-> the clocks.
+This series contains port of the various Linux patches needed to
+enable support of PCIE IP block on i.MX8MQ SoCs.
 
-The breakage was anticipated for my part, no suprise.
-I just do not have time to look into it at the moment.
+Feedback is welcome!
 
-The objective for my part is to have all at91 boards moved over to DT,
-so we will have to face this.
+Changes since [v1]:
 
-Or in other words patching all DT files in arch/arm/dts is
-not IMO a feasible long term solution.
+    - Added proper SHA1s and removed RFC tag from last four patches
+      since their Linux counterparts were accepted to PCI tree
 
-I got a new at91sam9gxx board from Microchip two weeks ago,
-and that is my next DT target.
-Then I hope we can maybe mass convert the rest of the
-at91 baords with some limited testing.
+Thanks,
+Andrey Smirnov
 
-But this clock issue will need to be fixed first.
+[v1] http://lists.infradead.org/pipermail/barebox/2019-January/036899.html
 
-	Sam
+Andrey Smirnov (15):
+  PCI: dwc: Fix pointer width cast problem
+  ARM: aarch64: Add PCI fixups section to linker script
+  soc: imx: gpcv2: use A_CORE instread of A7 for more i.MX platforms
+  soc: imx: gpcv2: make pgc driver more generic for other i.MX platforms
+  soc: imx: gpcv2: Switch to SPDX identifier
+  soc: imx: gpcv2: prefix i.MX7 specific defines
+  soc: imx: gpcv2: add support for i.MX8MQ SoC
+  reset: Constify "ops" in struct reset_controller_dev
+  reset: imx7: Add plubming to support multiple IP variants
+  include: Import dt-bindings/reset/imx8mq-reset.h
+  reset: imx7: Add support for i.MX8MQ IP block variant
+  PCI: imx6: Introduce drvdata
+  PCI: imx6: Mark PHY functions as i.MX6 specific
+  PCI: imx6: Convert DIRECT_SPEED_CHANGE quirk code to use a flag
+  PCI: imx6: Add support for i.MX8MQ
+
+ arch/arm/lib64/barebox.lds.S             |  12 +
+ arch/arm/mach-imx/Kconfig                |   1 +
+ drivers/pci/Kconfig                      |   4 +-
+ drivers/pci/pci-imx6.c                   | 149 ++++++++++--
+ drivers/pci/pcie-designware-host.c       |   6 +-
+ drivers/reset/reset-imx7.c               | 172 +++++++++++--
+ drivers/reset/reset-socfpga.c            |   2 +-
+ drivers/soc/imx/Kconfig                  |   8 +-
+ drivers/soc/imx/Makefile                 |   2 +-
+ drivers/soc/imx/gpcv2.c                  | 297 ++++++++++++++++++-----
+ include/dt-bindings/reset/imx8mq-reset.h |  64 +++++
+ include/linux/reset-controller.h         |   2 +-
+ 12 files changed, 614 insertions(+), 105 deletions(-)
+ create mode 100644 include/dt-bindings/reset/imx8mq-reset.h
+
+-- 
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
