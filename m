@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gqwZO-0006Gx-GZ
- for barebox@lists.infradead.org; Tue, 05 Feb 2019 08:59:07 +0000
+ id 1gqwZU-0006IN-Mj
+ for barebox@lists.infradead.org; Tue, 05 Feb 2019 08:59:14 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  5 Feb 2019 09:59:00 +0100
-Message-Id: <20190205085901.2271-1-s.hauer@pengutronix.de>
+Date: Tue,  5 Feb 2019 09:59:01 +0100
+Message-Id: <20190205085901.2271-2-s.hauer@pengutronix.de>
+In-Reply-To: <20190205085901.2271-1-s.hauer@pengutronix.de>
+References: <20190205085901.2271-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,73 +21,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] scripts: imx-image: Be more informative on open errors
+Subject: [PATCH 2/2] scripts: imx-image: make read_file behaviour consistent
 To: Barebox List <barebox@lists.infradead.org>
 
-When opening a file fails then consistently print a message which
-file we cannot open and why. In one place no error checking was done at
-all, so add this.
+When read_file fails then it exits the program in most cases. Let's exit
+the program when stat() fails aswell, so that we *always* exit the
+program on failure. Drop all error handling for read_file since that's
+no longer necessary and rename the function to xread_file to make
+clear it won't fail.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/imx/imx-image.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ scripts/imx/imx-image.c | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
 diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index 34a072039d..4933703fdc 100644
+index 4933703fdc..a7f1421fa3 100644
 --- a/scripts/imx/imx-image.c
 +++ b/scripts/imx/imx-image.c
-@@ -153,7 +153,8 @@ static int extract_key(const char *certfile, uint8_t **modulus, int *modulus_len
+@@ -694,7 +694,7 @@ static int hab_sign(struct config_data *data)
+ 	return 0;
+ }
  
- 	fp = fopen(certfile, "r");
- 	if (!fp) {
--		fprintf(stderr, "unable to open certfile: %s\n", certfile);
-+		fprintf(stderr, "unable to open certfile %s: %s\n", certfile,
-+			strerror(errno));
- 		return -errno;
+-static void *read_file(const char *filename, size_t *size)
++static void *xread_file(const char *filename, size_t *size)
+ {
+ 	int fd, ret;
+ 	void *buf;
+@@ -707,13 +707,17 @@ static void *read_file(const char *filename, size_t *size)
  	}
  
-@@ -458,7 +459,8 @@ static void write_dcd(const char *outfile)
- 
- 	outfd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
- 	if (outfd < 0) {
--		perror("open");
-+		fprintf(stderr, "Cannot open %s for wrinting: %s\n", outfile,
-+			strerror(errno));
- 		exit(1);
- 	}
- 
-@@ -671,6 +673,11 @@ static int hab_sign(struct config_data *data)
- 	}
- 
- 	outfd = open(data->outfile, O_WRONLY | O_APPEND);
-+	if (outfd < 0) {
-+		fprintf(stderr, "Cannot open %s for writing: %s\n", data->outfile,
-+			strerror(errno));
+ 	ret = fstat(fd, &s);
+-	if (ret)
+-		return NULL;
++	if (ret) {
++		fprintf(stderr, "Cannot stat %s: %s\n", filename, strerror(errno));
 +		exit(1);
 +	}
  
- 	ret = xwrite(outfd, buf, csf_space);
- 	if (ret < 0) {
-@@ -695,7 +702,7 @@ static void *read_file(const char *filename, size_t *size)
- 
- 	fd = open(filename, O_RDONLY);
- 	if (fd < 0) {
--		perror("open");
-+		fprintf(stderr, "Cannot open %s: %s\n", filename, strerror(errno));
+ 	*size = s.st_size;
+ 	buf = malloc(*size);
+-	if (!buf)
++	if (!buf) {
++		perror("malloc");
  		exit(1);
- 	}
++	}
  
-@@ -930,7 +937,8 @@ int main(int argc, char *argv[])
+ 	xread(fd, buf, *size);
+ 
+@@ -884,12 +888,8 @@ int main(int argc, char *argv[])
+ 
+ 		if (data.signed_hdmi_firmware_file) {
+ 			free(buf);
+-			buf = read_file(data.signed_hdmi_firmware_file,
++			buf = xread_file(data.signed_hdmi_firmware_file,
+ 					&signed_hdmi_firmware_size);
+-			if (!buf) {
+-				perror("read_file");
+-				exit(1);
+-			}
+ 
+ 			signed_hdmi_firmware_size =
+ 				roundup(signed_hdmi_firmware_size,
+@@ -931,9 +931,7 @@ int main(int argc, char *argv[])
+ 	bb_header[0] = data.first_opcode;
+ 	bb_header[ARM_HEAD_SIZE_INDEX] = barebox_image_size;
+ 
+-	infile = read_file(imagename, &insize);
+-	if (!infile)
+-		exit(1);
++	infile = xread_file(imagename, &insize);
  
  	outfd = open(data.outfile, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
  	if (outfd < 0) {
--		perror("open");
-+		fprintf(stderr, "Cannot open %s for writing: %s\n", data.outfile,
-+			strerror(errno));
- 		exit(1);
- 	}
+@@ -998,7 +996,7 @@ int main(int argc, char *argv[])
+ 	if (create_usb_image) {
+ 		uint32_t *dcd;
  
+-		infile = read_file(data.outfile, &insize);
++		infile = xread_file(data.outfile, &insize);
+ 
+ 		dcd = infile + dcd_ptr_offset;
+ 		*dcd = dcd_ptr_content;
 -- 
 2.20.1
 
