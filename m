@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gr8fp-0002zY-9r
+ id 1gr8fs-00031F-FA
  for barebox@lists.infradead.org; Tue, 05 Feb 2019 21:54:41 +0000
-Received: by mail-pf1-x444.google.com with SMTP id w73so2109530pfk.10
- for <barebox@lists.infradead.org>; Tue, 05 Feb 2019 13:54:33 -0800 (PST)
+Received: by mail-pg1-x543.google.com with SMTP id s198so1999635pgs.2
+ for <barebox@lists.infradead.org>; Tue, 05 Feb 2019 13:54:35 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue,  5 Feb 2019 13:54:00 -0800
-Message-Id: <20190205215411.589-5-andrew.smirnov@gmail.com>
+Date: Tue,  5 Feb 2019 13:54:02 -0800
+Message-Id: <20190205215411.589-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20190205215411.589-1-andrew.smirnov@gmail.com>
 References: <20190205215411.589-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,199 +23,112 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 04/15] soc: imx: gpcv2: make pgc driver more generic for
- other i.MX platforms
+Subject: [PATCH v2 06/15] soc: imx: gpcv2: prefix i.MX7 specific defines
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 73f59712a1a3e532a2cbfe582ecfdbf56c33297d
+Port of a Linux commit a800f418420d37f60fa471665a156c45d2702437
 
-  i.MX8MQ and i.MX8MM share same gpc module with i.MX7D, they
-  can reuse gpcv2 pgc driver for power domain control, this
-  patch renames all functions and structure definitions started
-  with "imx7" to "imx", and use .data in imx_gpcv2_dt_ids[] to
-  pass platform specific power domain data for power domain
-  driver, thus make gpcv2 pgc driver more generic for i.MX
-  platforms.
+  So we can add i.MX8M support without introducing name clashes.
 
-  Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
-  Acked-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+  Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
   Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/soc/imx/gpcv2.c | 68 +++++++++++++++++++++++++----------------
- 1 file changed, 41 insertions(+), 27 deletions(-)
+ drivers/soc/imx/gpcv2.c | 44 ++++++++++++++++++++---------------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
 diff --git a/drivers/soc/imx/gpcv2.c b/drivers/soc/imx/gpcv2.c
-index a48f6d9a7..0b428bfc1 100644
+index 7bf45d42b..24a6b96c1 100644
 --- a/drivers/soc/imx/gpcv2.c
 +++ b/drivers/soc/imx/gpcv2.c
-@@ -14,6 +14,7 @@
-  * http://www.gnu.org/copyleft/gpl.html
+@@ -24,19 +24,19 @@
+ #define GPC_LPCR_A_BSC			0x000
+ 
+ #define GPC_PGC_CPU_MAPPING		0x0ec
+-#define USB_HSIC_PHY_A_DOMAIN		BIT(6)
+-#define USB_OTG2_PHY_A_DOMAIN		BIT(5)
+-#define USB_OTG1_PHY_A_DOMAIN		BIT(4)
+-#define PCIE_PHY_A_DOMAIN		BIT(3)
+-#define MIPI_PHY_A_DOMAIN		BIT(2)
++#define IMX7_USB_HSIC_PHY_A_DOMAIN	BIT(6)
++#define IMX7_USB_OTG2_PHY_A_DOMAIN	BIT(5)
++#define IMX7_USB_OTG1_PHY_A_DOMAIN	BIT(4)
++#define IMX7_PCIE_PHY_A_DOMAIN		BIT(3)
++#define IMX7_MIPI_PHY_A_DOMAIN		BIT(2)
+ 
+ #define GPC_PU_PGC_SW_PUP_REQ		0x0f8
+ #define GPC_PU_PGC_SW_PDN_REQ		0x104
+-#define USB_HSIC_PHY_SW_Pxx_REQ		BIT(4)
+-#define USB_OTG2_PHY_SW_Pxx_REQ		BIT(3)
+-#define USB_OTG1_PHY_SW_Pxx_REQ		BIT(2)
+-#define PCIE_PHY_SW_Pxx_REQ		BIT(1)
+-#define MIPI_PHY_SW_Pxx_REQ		BIT(0)
++#define IMX7_USB_HSIC_PHY_SW_Pxx_REQ	BIT(4)
++#define IMX7_USB_OTG2_PHY_SW_Pxx_REQ	BIT(3)
++#define IMX7_USB_OTG1_PHY_SW_Pxx_REQ	BIT(2)
++#define IMX7_PCIE_PHY_SW_Pxx_REQ	BIT(1)
++#define IMX7_MIPI_PHY_SW_Pxx_REQ	BIT(0)
+ 
+ #define GPC_M4_PU_PDN_FLG		0x1bc
+ 
+@@ -46,9 +46,9 @@
+  * GPC_PGC memory map are incorrect, below offset
+  * values are from design RTL.
   */
+-#define PGC_MIPI                       16
+-#define PGC_PCIE                       17
+-#define PGC_USB_HSIC                   20
++#define IMX7_PGC_MIPI                       16
++#define IMX7_PGC_PCIE                       17
++#define IMX7_PGC_USB_HSIC                   20
+ #define GPC_PGC_CTRL(n)			(0x800 + (n) * 0x40)
+ #define GPC_PGC_SR(n)			(GPC_PGC_CTRL(n) + 0xc)
  
-+#include <of_device.h>
- #include <common.h>
- #include <clock.h>
- #include <abort.h>
-@@ -59,7 +60,7 @@
- 
- #define GPC_PGC_CTRL_PCR		BIT(0)
- 
--struct imx7_pgc_domain {
-+struct imx_pgc_domain {
- 	struct generic_pm_domain genpd;
- 	void __iomem *base;
- 	struct regulator *regulator;
-@@ -75,12 +76,17 @@ struct imx7_pgc_domain {
- 	struct device_d *dev;
- };
- 
--static int imx7_gpc_pu_pgc_sw_pxx_req(struct generic_pm_domain *genpd,
-+struct imx_pgc_domain_data {
-+       const struct imx_pgc_domain *domains;
-+       size_t domains_num;
-+};
-+
-+static int imx_gpc_pu_pgc_sw_pxx_req(struct generic_pm_domain *genpd,
- 				      bool on)
- {
--	struct imx7_pgc_domain *domain = container_of(genpd,
--						      struct imx7_pgc_domain,
--						      genpd);
-+	struct imx_pgc_domain *domain = container_of(genpd,
-+						     struct imx_pgc_domain,
-+						     genpd);
- 	unsigned int offset = on ?
- 		GPC_PU_PGC_SW_PUP_REQ : GPC_PU_PGC_SW_PDN_REQ;
- 	const bool enable_power_control = !on;
-@@ -150,17 +156,17 @@ unmap:
- 	return ret;
- }
- 
--static int imx7_gpc_pu_pgc_sw_pup_req(struct generic_pm_domain *genpd)
-+static int imx_gpc_pu_pgc_sw_pup_req(struct generic_pm_domain *genpd)
- {
--	return imx7_gpc_pu_pgc_sw_pxx_req(genpd, true);
-+	return imx_gpc_pu_pgc_sw_pxx_req(genpd, true);
- }
- 
--static int imx7_gpc_pu_pgc_sw_pdn_req(struct generic_pm_domain *genpd)
-+static int imx_gpc_pu_pgc_sw_pdn_req(struct generic_pm_domain *genpd)
- {
--	return imx7_gpc_pu_pgc_sw_pxx_req(genpd, false);
-+	return imx_gpc_pu_pgc_sw_pxx_req(genpd, false);
- }
- 
--static const struct imx7_pgc_domain imx7_pgc_domains[] = {
-+static const struct imx_pgc_domain imx7_pgc_domains[] = {
- 	[IMX7_POWER_DOMAIN_MIPI_PHY] = {
- 		.genpd = {
+@@ -166,11 +166,11 @@ static const struct imx_pgc_domain imx7_pgc_domains[] = {
  			.name      = "mipi-phy",
-@@ -198,9 +204,14 @@ static const struct imx7_pgc_domain imx7_pgc_domains[] = {
+ 		},
+ 		.bits  = {
+-			.pxx = MIPI_PHY_SW_Pxx_REQ,
+-			.map = MIPI_PHY_A_DOMAIN,
++			.pxx = IMX7_MIPI_PHY_SW_Pxx_REQ,
++			.map = IMX7_MIPI_PHY_A_DOMAIN,
+ 		},
+ 		.voltage   = 1000000,
+-		.pgc	   = PGC_MIPI,
++		.pgc	   = IMX7_PGC_MIPI,
  	},
- };
  
--static int imx7_pgc_domain_probe(struct device_d *dev)
-+static const struct imx_pgc_domain_data imx7_pgc_domain_data = {
-+       .domains = imx7_pgc_domains,
-+       .domains_num = ARRAY_SIZE(imx7_pgc_domains),
-+};
-+
-+static int imx_pgc_domain_probe(struct device_d *dev)
- {
--	struct imx7_pgc_domain *domain = dev->priv;
-+	struct imx_pgc_domain *domain = dev->priv;
- 	int ret;
+ 	[IMX7_POWER_DOMAIN_PCIE_PHY] = {
+@@ -178,11 +178,11 @@ static const struct imx_pgc_domain imx7_pgc_domains[] = {
+ 			.name      = "pcie-phy",
+ 		},
+ 		.bits  = {
+-			.pxx = PCIE_PHY_SW_Pxx_REQ,
+-			.map = PCIE_PHY_A_DOMAIN,
++			.pxx = IMX7_PCIE_PHY_SW_Pxx_REQ,
++			.map = IMX7_PCIE_PHY_A_DOMAIN,
+ 		},
+ 		.voltage   = 1000000,
+-		.pgc	   = PGC_PCIE,
++		.pgc	   = IMX7_PGC_PCIE,
+ 	},
  
- 	domain->dev = dev;
-@@ -232,24 +243,25 @@ static int imx7_pgc_domain_probe(struct device_d *dev)
- 	return ret;
- }
- 
--static const struct platform_device_id imx7_pgc_domain_id[] = {
--	{ "imx7-pgc-domain", },
-+static const struct platform_device_id imx_pgc_domain_id[] = {
-+	{ "imx-pgc-domain", },
- 	{ },
- };
- 
--static struct driver_d imx7_pgc_domain_driver = {
-+static struct driver_d imx_pgc_domain_driver = {
- 	.name = "imx-pgc",
--	.probe = imx7_pgc_domain_probe,
--	.id_table = imx7_pgc_domain_id,
-+	.probe = imx_pgc_domain_probe,
-+	.id_table = imx_pgc_domain_id,
- };
--coredevice_platform_driver(imx7_pgc_domain_driver);
-+coredevice_platform_driver(imx_pgc_domain_driver);
- 
- static int imx_gpcv2_probe(struct device_d *dev)
- {
-+	static const struct imx_pgc_domain_data *domain_data;
- 	struct device_node *pgc_np, *np;
- 	struct resource *res;
- 	void __iomem *base;
--	int ret;
-+	int ret;	
- 
- 	pgc_np = of_get_child_by_name(dev->device_node, "pgc");
- 	if (!pgc_np) {
-@@ -263,9 +275,11 @@ static int imx_gpcv2_probe(struct device_d *dev)
- 
- 	base = IOMEM(res->start);
- 
-+	domain_data = of_device_get_match_data(dev);
-+
- 	for_each_child_of_node(pgc_np, np) {
- 		struct device_d *pd_dev;
--		struct imx7_pgc_domain *domain;
-+		struct imx_pgc_domain *domain;
- 		u32 domain_index;
- 		ret = of_property_read_u32(np, "reg", &domain_index);
- 		if (ret) {
-@@ -273,18 +287,18 @@ static int imx_gpcv2_probe(struct device_d *dev)
- 			return ret;
- 		}
- 
--		if (domain_index >= ARRAY_SIZE(imx7_pgc_domains)) {
-+		if (domain_index >= domain_data->domains_num) {
- 			dev_warn(dev,
- 				 "Domain index %d is out of bounds\n",
- 				 domain_index);
- 			continue;
- 		}
- 
--		domain = xmemdup(&imx7_pgc_domains[domain_index],
--				 sizeof(imx7_pgc_domains[domain_index]));
-+		domain = xmemdup(&domain_data->domains[domain_index],
-+				 sizeof(domain_data->domains[domain_index]));
- 		domain->base = base;
--		domain->genpd.power_on = imx7_gpc_pu_pgc_sw_pup_req;
--		domain->genpd.power_off = imx7_gpc_pu_pgc_sw_pdn_req;
-+		domain->genpd.power_on = imx_gpc_pu_pgc_sw_pup_req;
-+		domain->genpd.power_off = imx_gpc_pu_pgc_sw_pdn_req;
- 
- 		pd_dev = xzalloc(sizeof(*pd_dev));
- 		pd_dev->device_node = np;
-@@ -292,7 +306,7 @@ static int imx_gpcv2_probe(struct device_d *dev)
- 		pd_dev->parent = dev;
- 		pd_dev->priv = domain;
- 		pd_dev->device_node = np;
--		dev_set_name(pd_dev, imx7_pgc_domain_id[0].name);
-+		dev_set_name(pd_dev, imx_pgc_domain_id[0].name);
- 
- 		ret = platform_device_register(pd_dev);
- 		if (ret)
-@@ -303,7 +317,7 @@ static int imx_gpcv2_probe(struct device_d *dev)
- }
- 
- static const struct of_device_id imx_gpcv2_dt_ids[] = {
--	{ .compatible = "fsl,imx7d-gpc" },
-+	{ .compatible = "fsl,imx7d-gpc", .data = &imx7_pgc_domain_data },
- 	{ }
+ 	[IMX7_POWER_DOMAIN_USB_HSIC_PHY] = {
+@@ -190,11 +190,11 @@ static const struct imx_pgc_domain imx7_pgc_domains[] = {
+ 			.name      = "usb-hsic-phy",
+ 		},
+ 		.bits  = {
+-			.pxx = USB_HSIC_PHY_SW_Pxx_REQ,
+-			.map = USB_HSIC_PHY_A_DOMAIN,
++			.pxx = IMX7_USB_HSIC_PHY_SW_Pxx_REQ,
++			.map = IMX7_USB_HSIC_PHY_A_DOMAIN,
+ 	},
+ 		.voltage   = 1200000,
+-		.pgc	   = PGC_USB_HSIC,
++		.pgc	   = IMX7_PGC_USB_HSIC,
+ 	},
  };
  
 -- 
