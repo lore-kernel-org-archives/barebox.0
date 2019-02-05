@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x443.google.com ([2a00:1450:4864:20::443])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gqk2P-00023r-U1
- for barebox@lists.infradead.org; Mon, 04 Feb 2019 19:36:15 +0000
-Received: by mail-wr1-x443.google.com with SMTP id z3so1178725wrv.3
- for <barebox@lists.infradead.org>; Mon, 04 Feb 2019 11:36:12 -0800 (PST)
+ id 1gqwZO-0006Gx-GZ
+ for barebox@lists.infradead.org; Tue, 05 Feb 2019 08:59:07 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue,  5 Feb 2019 09:59:00 +0100
+Message-Id: <20190205085901.2271-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-References: <20190129065549.29161-1-andrew.smirnov@gmail.com>
- <20190129065549.29161-18-andrew.smirnov@gmail.com>
- <20190204135749.f2xoc6vli5od7htl@pengutronix.de>
-In-Reply-To: <20190204135749.f2xoc6vli5od7htl@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 4 Feb 2019 11:35:59 -0800
-Message-ID: <CAHQ1cqFVHQz0Aa2hRV8PpY=seZcBaVd_JQLhRWSkFoDk3eG3pQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,61 +19,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 17/19] commands: md: Do not use memmap()
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] scripts: imx-image: Be more informative on open errors
+To: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Feb 4, 2019 at 5:57 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Mon, Jan 28, 2019 at 10:55:47PM -0800, Andrey Smirnov wrote:
-> > Codepaths using memmap() in md.c don't do any boundary checks, so it
-> > can be easily made to read past the underlying file's
-> > boundary. For example on i.MX8MQ based board with 4GiB or RAM we get:
-> >
-> > md -b -s /dev/ram0 0xfffffff0
-> > fffffff0: 00 00 00 00 00 00 08 0c  00 02 20 00 20 00 05 20   .......... . ..
-> > 100000000: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-> > 100000010: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-> > 100000020: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-> > 100000030: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-> > 100000040: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-> > 100000050: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-> > 100000060: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-> > 100000070: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-> > 100000080: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-> > 100000090: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-> > 1000000a0: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-> > 1000000b0: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-> > 1000000c0: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-> > 1000000d0: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-> > 1000000e0: xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx  ................
-> >
-> > Drop the memmap() realted codepath, so we can realy on boundary
-> > checking done by file I/O layer.
-> >
-> > Note that this change has a cosmetic side effect, before:
->
-> With this change we can no longer see that the underlying memory cannot
-> be accessed 'xx'. I find this feature very useful and don't want to
-> loose it.
+When opening a file fails then consistently print a message which
+file we cannot open and why. In one place no error checking was done at
+all, so add this.
 
-Sad to hear that. I was hoping we can use this as a stepping stone to
-get rid of memory_display() altogether.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ scripts/imx/imx-image.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-> If we want to do size checking we can do this, well, by checking the
-> size. We could add offset/size parameters to memmap().
->
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index 34a072039d..4933703fdc 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -153,7 +153,8 @@ static int extract_key(const char *certfile, uint8_t **modulus, int *modulus_len
+ 
+ 	fp = fopen(certfile, "r");
+ 	if (!fp) {
+-		fprintf(stderr, "unable to open certfile: %s\n", certfile);
++		fprintf(stderr, "unable to open certfile %s: %s\n", certfile,
++			strerror(errno));
+ 		return -errno;
+ 	}
+ 
+@@ -458,7 +459,8 @@ static void write_dcd(const char *outfile)
+ 
+ 	outfd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+ 	if (outfd < 0) {
+-		perror("open");
++		fprintf(stderr, "Cannot open %s for wrinting: %s\n", outfile,
++			strerror(errno));
+ 		exit(1);
+ 	}
+ 
+@@ -671,6 +673,11 @@ static int hab_sign(struct config_data *data)
+ 	}
+ 
+ 	outfd = open(data->outfile, O_WRONLY | O_APPEND);
++	if (outfd < 0) {
++		fprintf(stderr, "Cannot open %s for writing: %s\n", data->outfile,
++			strerror(errno));
++		exit(1);
++	}
+ 
+ 	ret = xwrite(outfd, buf, csf_space);
+ 	if (ret < 0) {
+@@ -695,7 +702,7 @@ static void *read_file(const char *filename, size_t *size)
+ 
+ 	fd = open(filename, O_RDONLY);
+ 	if (fd < 0) {
+-		perror("open");
++		fprintf(stderr, "Cannot open %s: %s\n", filename, strerror(errno));
+ 		exit(1);
+ 	}
+ 
+@@ -930,7 +937,8 @@ int main(int argc, char *argv[])
+ 
+ 	outfd = open(data.outfile, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+ 	if (outfd < 0) {
+-		perror("open");
++		fprintf(stderr, "Cannot open %s for writing: %s\n", data.outfile,
++			strerror(errno));
+ 		exit(1);
+ 	}
+ 
+-- 
+2.20.1
 
-I'll leave that to next person who'll try to tackle this bug.
-
-> So, dropped this patch for now.
->
-
-"fs: Introduce mem_read_nofail()" should probably be dropped as well
-since it was added in support of this.
-
-Thanks,
-Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
