@@ -1,24 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward501o.mail.yandex.net ([37.140.190.203])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gr12q-00081E-Bf
- for barebox@lists.infradead.org; Tue, 05 Feb 2019 13:45:51 +0000
-From: Seraphim Dolbilov <s.dlblv@ya.ru>
-In-Reply-To: <20190205115238.jep3ych42bz5licz@pengutronix.de>
-References: <33796811548166043@iva7-4f557d6b60d4.qloud-c.yandex.net>
- <20190122144240.t7bknlqpipjpzeda@pengutronix.de>
- <12201721548173536@iva5-750e13568e4d.qloud-c.yandex.net>
- <20190123091134.2ibecc3f2sxgr6gc@pengutronix.de>
- <39543571548237706@iva8-6be7d23653d9.qloud-c.yandex.net>
- <20190123101735.faeyxjmmfxogvwqt@pengutronix.de>
- <8696391548418684@myt4-929fb874f3f2.qloud-c.yandex.net>
- <61845721548425461@sas2-80cfc068821c.qloud-c.yandex.net>
- <20190128084615.ssynohnulsd4sjwi@pengutronix.de>
- <5044551549275222@myt3-2475c4d2af83.qloud-c.yandex.net>
- <20190205115238.jep3ych42bz5licz@pengutronix.de>
+ id 1gqzNx-0002va-4Z
+ for barebox@lists.infradead.org; Tue, 05 Feb 2019 11:59:30 +0000
+Date: Tue, 5 Feb 2019 12:59:27 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190205115927.nyirklt3cz2lw6by@pengutronix.de>
+References: <20190204102937.GA2663@lenoch>
 MIME-Version: 1.0
-Date: Tue, 05 Feb 2019 16:45:33 +0300
-Message-Id: <25715461549374333@sas1-4b7566131ec9.qloud-c.yandex.net>
+Content-Disposition: inline
+In-Reply-To: <20190204102937.GA2663@lenoch>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,26 +18,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [HELP] DT isues
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] dts: Revert at91 switch to new PMC clock bindings
+To: Ladislav Michl <ladis@linux-mips.org>
+Cc: barebox@lists.infradead.org
 
-CgowNS4wMi4yMDE5LCAxNDo1MiwgIlNhc2NoYSBIYXVlciIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXgu
-ZGU+Ogo+IEkgaGF2ZSBubyBpbmRpY2F0aW9uIHRoYXQgb2ZfZGVsZXRlX25vZGUoKSBkb2Vzbid0
-IHdvcmsuIEFyZSB5b3Ugc3VyZQo+IHlvdSBhcmUgZGVsZXRpbmcgbm9kZXMgZnJvbSB0aGUgc2Ft
-ZSB0cmVlIHRoYXQgeW91IGFjdHVhbGx5IHNob3cgd2l0aAo+IG9mX2R1bXA/Cj4KPiBOb3RlIHRo
-YXQgb2ZfZGVsZXRlX25vZGUoKSBvbmx5IGRlbGV0ZXMgZnJvbSB0aGUgY3VycmVudCBiYXJlYm94
-IGRldmljZQo+IHRyZWUuIFdoZW4geW91IHN0YXJ0IExpbnV4IHdpdGggYW5vdGhlciBkZXZpY2V0
-cmVlIHRoZW4gdGhlIG5vZGUgd2lsbAo+IGJlIHRoZXJlIGFnYWluIG9mIGNvdXJzZS4gSWYgeW91
-IHdhbnQgdG8gZGVsZXRlIGEgbm9kZSBmcm9tIHRoZSBMaW51eAo+IERldmljZSB0cmVlIHRoZW4g
-aGF2ZSBhIGxvb2sgYXQgdGhlIC1mIG9wdGlvbiB0byB0aGUgb2Zfbm9kZSBjb21tYW5kLgoKU29y
-cnksIGl0IHdhcyBteSBmYXVsdCwgZXZlcnl0aGluZyBpcyBPSy4gSSBoYXZlIGJlZW4gY2FsbGlu
-ZyBpdCBmcm9tIGJsb2NrIApvZiBjb2RlIHdoaWNoIHdhcyBuZXZlciBjb25kaXRpb25hbGx5IHJl
-YWNoZWQuCi0twqAKWW91cnMgc2luY2VyZWx5LApTZXJhcGhpbSBEb2xiaWxvdgoKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
-aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi Ladis,
+
+On Mon, Feb 04, 2019 at 11:29:37AM +0100, Ladislav Michl wrote:
+> Recent DTS update brought in switch to the new PMC clock
+> bindings, however we do not support that yet. Revert this
+> change until PMC clock bindings support is implemented.
+> 
+> Fixes: 33fdc89d4cbd ("dts: update to v5.0-rc1")
+> Signed-off-by: Ladislav Michl <ladis@linux-mips.org>
+> ---
+>  Disclaimer: Runtime tested only on at91sam9g20.
+> 
+>  dts/src/arm/at91sam9260.dtsi       | 308 ++++++++++++++++++++++++---
+>  dts/src/arm/at91sam9261.dtsi       | 287 +++++++++++++++++++++++--
+>  dts/src/arm/at91sam9263.dtsi       | 315 +++++++++++++++++++++++++---
+>  dts/src/arm/at91sam9g15.dtsi       |   4 -
+>  dts/src/arm/at91sam9g20.dtsi       |  23 +-
+>  dts/src/arm/at91sam9g25.dtsi       |   4 -
+>  dts/src/arm/at91sam9g25ek.dts      |   4 +-
+>  dts/src/arm/at91sam9g35.dtsi       |   4 -
+>  dts/src/arm/at91sam9rl.dtsi        | 239 +++++++++++++++++++--
+>  dts/src/arm/at91sam9x25.dtsi       |   4 -
+>  dts/src/arm/at91sam9x35.dtsi       |   4 -
+>  dts/src/arm/at91sam9x5.dtsi        | 326 ++++++++++++++++++++++++++---
+>  dts/src/arm/at91sam9x5_can.dtsi    |  18 +-
+>  dts/src/arm/at91sam9x5_isi.dtsi    |  11 +-
+>  dts/src/arm/at91sam9x5_lcd.dtsi    |  19 +-
+>  dts/src/arm/at91sam9x5_macb0.dtsi  |  11 +-
+>  dts/src/arm/at91sam9x5_macb1.dtsi  |  11 +-
+>  dts/src/arm/at91sam9x5_usart3.dtsi |  11 +-
+>  18 files changed, 1434 insertions(+), 169 deletions(-)
+
+dts/ contains a 1:1 copy from the upstream devicetree-rebasing
+repository. I can't apply any patches to this directory.
+
+You would have to merge the changes to the changes to the corresponding
+files in arch/arm/dts. I'm not sure how feasible this is in this case
+since not only the clock nodes are changed, but also the references to
+the clocks.
+
+For sure it should be enough to fix the trees you actually can test and
+care about.
+
+Sascha
+
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
