@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gr8fv-00035n-52
- for barebox@lists.infradead.org; Tue, 05 Feb 2019 21:54:47 +0000
-Received: by mail-pf1-x442.google.com with SMTP id c73so2105441pfe.13
- for <barebox@lists.infradead.org>; Tue, 05 Feb 2019 13:54:38 -0800 (PST)
+ id 1gr8g1-0003Dc-Kh
+ for barebox@lists.infradead.org; Tue, 05 Feb 2019 21:54:51 +0000
+Received: by mail-pl1-x641.google.com with SMTP id k15so2118273pls.8
+ for <barebox@lists.infradead.org>; Tue, 05 Feb 2019 13:54:45 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue,  5 Feb 2019 13:54:05 -0800
-Message-Id: <20190205215411.589-10-andrew.smirnov@gmail.com>
+Date: Tue,  5 Feb 2019 13:54:10 -0800
+Message-Id: <20190205215411.589-15-andrew.smirnov@gmail.com>
 In-Reply-To: <20190205215411.589-1-andrew.smirnov@gmail.com>
 References: <20190205215411.589-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,150 +23,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 09/15] reset: imx7: Add plubming to support multiple IP
- variants
+Subject: [PATCH v2 14/15] PCI: imx6: Convert DIRECT_SPEED_CHANGE quirk code to
+ use a flag
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit cffaab878178c7842ab38690070d665adb3f41fd
+Port of a Linux commit 4c458bb347ae016e75f6c61dab95ce530f4ff6fc
 
-  In order to enable supporting i.MX8MQ with this driver, convert it to
-  expect variant specific bits to be passed via driver data.
+  Both i.MX7D and i.MX8MQ have the same behaviour when it comes to
+  clearing DIRECT_SPEED_CHANGE bit when no speed change occurs, so to
+  handle variants correctly add a flag instead of checking the IP block
+  variant.
 
-  Cc: p.zabel@pengutronix.de
+  Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+  [lorenzo.pieralisi@arm.com: updated log]
+  Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+  Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+  Cc: Bjorn Helgaas <bhelgaas@google.com>
   Cc: Fabio Estevam <fabio.estevam@nxp.com>
-  Cc: cphealy@gmail.com
-  Cc: l.stach@pengutronix.de
+  Cc: Chris Healy <cphealy@gmail.com>
+  Cc: Lucas Stach <l.stach@pengutronix.de>
   Cc: Leonard Crestez <leonard.crestez@nxp.com>
   Cc: "A.s. Dong" <aisheng.dong@nxp.com>
   Cc: Richard Zhu <hongxing.zhu@nxp.com>
-  Cc: Rob Herring <robh@kernel.org>
-  Cc: devicetree@vger.kernel.org
-  Cc: linux-imx@nxp.com
-  Cc: linux-arm-kernel@lists.infradead.org
-  Cc: linux-kernel@vger.kernel.org
-  Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/reset/reset-imx7.c | 50 +++++++++++++++++++++++++++-----------
- 1 file changed, 36 insertions(+), 14 deletions(-)
+ drivers/pci/pci-imx6.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/reset/reset-imx7.c b/drivers/reset/reset-imx7.c
-index 6dc5de16a..f723dc28e 100644
---- a/drivers/reset/reset-imx7.c
-+++ b/drivers/reset/reset-imx7.c
-@@ -22,10 +22,22 @@
- #include <linux/reset-controller.h>
- #include <mfd/syscon.h>
- #include <regmap.h>
-+#include <of_device.h>
-+
-+struct imx7_src_signal {
-+	unsigned int offset, bit;
-+};
-+
-+struct imx7_src_variant {
-+	const struct imx7_src_signal *signals;
-+	unsigned int signals_num;
-+	struct reset_control_ops ops;
-+};
- 
- struct imx7_src {
- 	struct reset_controller_dev rcdev;
- 	struct regmap *regmap;
-+	const struct imx7_src_signal *signals;
+diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
+index 2911a019c..d77c24990 100644
+--- a/drivers/pci/pci-imx6.c
++++ b/drivers/pci/pci-imx6.c
+@@ -43,6 +43,7 @@ enum imx6_pcie_variants {
  };
  
- enum imx7_src_registers {
-@@ -40,9 +52,14 @@ enum imx7_src_registers {
- 	SRC_DDRC_RCR		= 0x1000,
- };
+ #define IMX6_PCIE_FLAG_IMX6_PHY			BIT(0)
++#define IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE	BIT(1)
  
--struct imx7_src_signal {
--	unsigned int offset, bit;
--};
-+static int imx7_reset_update(struct imx7_src *imx7src,
-+			     unsigned long id, unsigned int value)
-+{
-+	const struct imx7_src_signal *signal = &imx7src->signals[id];
-+
-+	return regmap_update_bits(imx7src->regmap,
-+				  signal->offset, signal->bit, value);
-+}
+ struct imx6_pcie_drvdata {
+ 	enum imx6_pcie_variants variant;
+@@ -524,7 +525,8 @@ static int imx6_pcie_establish_link(struct imx6_pcie *imx6_pcie)
+ 		tmp |= PORT_LOGIC_SPEED_CHANGE;
+ 		dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, tmp);
  
- static const struct imx7_src_signal imx7_src_signals[IMX7_RESET_NUM] = {
- 	[IMX7_RESET_A7_CORE_POR_RESET0] = { SRC_A7RCR0, BIT(0) },
-@@ -81,8 +98,8 @@ static int imx7_reset_set(struct reset_controller_dev *rcdev,
- 			  unsigned long id, bool assert)
- {
- 	struct imx7_src *imx7src = to_imx7_src(rcdev);
--	const struct imx7_src_signal *signal = &imx7_src_signals[id];
--	unsigned int value = assert ? signal->bit : 0;;
-+	const unsigned int bit = imx7src->signals[id].bit;
-+	unsigned int value = assert ? bit : 0;
- 
- 	switch (id) {
- 	case IMX7_RESET_PCIEPHY:
-@@ -95,12 +112,11 @@ static int imx7_reset_set(struct reset_controller_dev *rcdev,
- 		break;
- 
- 	case IMX7_RESET_PCIE_CTRL_APPS_EN:
--		value = (assert) ? 0 : signal->bit;
-+		value = assert ? 0 : bit;
- 		break;
- 	}
- 
--	return regmap_update_bits(imx7src->regmap,
--				  signal->offset, signal->bit, value);
-+	return imx7_reset_update(imx7src, id, value);
- }
- 
- static int imx7_reset_assert(struct reset_controller_dev *rcdev,
-@@ -115,31 +131,37 @@ static int imx7_reset_deassert(struct reset_controller_dev *rcdev,
- 	return imx7_reset_set(rcdev, id, false);
- }
- 
--static struct reset_control_ops imx7_reset_ops = {
--	.assert		= imx7_reset_assert,
--	.deassert	= imx7_reset_deassert,
-+static const struct imx7_src_variant variant_imx7 = {
-+	.signals = imx7_src_signals,
-+	.signals_num = ARRAY_SIZE(imx7_src_signals),
-+	.ops = {
-+		.assert   = imx7_reset_assert,
-+		.deassert = imx7_reset_deassert,
-+	},
- };
- 
- static int imx7_reset_probe(struct device_d *dev)
- {
- 	struct imx7_src *imx7src;
-+	const struct imx7_src_variant *variant = of_device_get_match_data(dev);
- 
- 	imx7src = xzalloc(sizeof(*imx7src));
-+	imx7src->signals = variant->signals;
- 	imx7src->regmap = syscon_node_to_regmap(dev->device_node);
- 	if (IS_ERR(imx7src->regmap)) {
- 		dev_err(dev, "Unable to get imx7-src regmap");
- 		return PTR_ERR(imx7src->regmap);
- 	}
- 
--	imx7src->rcdev.nr_resets = IMX7_RESET_NUM;
--	imx7src->rcdev.ops       = &imx7_reset_ops;
-+	imx7src->rcdev.nr_resets = variant->signals_num;
-+	imx7src->rcdev.ops       = &variant->ops;
- 	imx7src->rcdev.of_node   = dev->device_node;
- 
- 	return reset_controller_register(&imx7src->rcdev);
- }
- 
- static const struct of_device_id imx7_reset_dt_ids[] = {
--	{ .compatible = "fsl,imx7d-src", },
-+	{ .compatible = "fsl,imx7d-src", .data = &variant_imx7 },
- 	{ /* sentinel */ },
- };
- 
+-		if (imx6_pcie->drvdata->variant != IMX7D) {
++		if (imx6_pcie->drvdata->flags &
++		    IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE) {
+ 			/*
+ 			 * On i.MX7, DIRECT_SPEED_CHANGE behaves
+ 			 * differently from i.MX6 family when no link
+@@ -762,11 +764,13 @@ static void imx6_pcie_remove(struct device_d *dev)
+ static const struct imx6_pcie_drvdata drvdata[] = {
+ 	[IMX6Q] = {
+ 		.variant = IMX6Q,
+-		.flags = IMX6_PCIE_FLAG_IMX6_PHY,
++		.flags = IMX6_PCIE_FLAG_IMX6_PHY |
++			 IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE,
+ 	},
+ 	[IMX6QP] = {
+ 		.variant = IMX6QP,
+-		.flags = IMX6_PCIE_FLAG_IMX6_PHY,
++		.flags = IMX6_PCIE_FLAG_IMX6_PHY |
++			 IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE,
+ 	},
+ 	[IMX7D] = {
+ 		.variant = IMX7D,
 -- 
 2.20.1
 
