@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gr8fr-00030H-8u
- for barebox@lists.infradead.org; Tue, 05 Feb 2019 21:54:38 +0000
-Received: by mail-pl1-x643.google.com with SMTP id a14so2111905plm.12
- for <barebox@lists.infradead.org>; Tue, 05 Feb 2019 13:54:34 -0800 (PST)
+ id 1gr8ft-00034X-RR
+ for barebox@lists.infradead.org; Tue, 05 Feb 2019 21:54:43 +0000
+Received: by mail-pf1-x444.google.com with SMTP id b7so2112636pfi.8
+ for <barebox@lists.infradead.org>; Tue, 05 Feb 2019 13:54:37 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue,  5 Feb 2019 13:54:01 -0800
-Message-Id: <20190205215411.589-6-andrew.smirnov@gmail.com>
+Date: Tue,  5 Feb 2019 13:54:04 -0800
+Message-Id: <20190205215411.589-9-andrew.smirnov@gmail.com>
 In-Reply-To: <20190205215411.589-1-andrew.smirnov@gmail.com>
 References: <20190205215411.589-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,46 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 05/15] soc: imx: gpcv2: Switch to SPDX identifier
+Subject: [PATCH v2 08/15] reset: Constify "ops" in struct reset_controller_dev
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of a Linux commit 8d8e3b7d8f06f69005d829d4a195b00ef976004b
-
-  Adopt the SPDX license identifier headers to ease license compliance
-  management.
-
-  Signed-off-by: Fabio Estevam <fabio.estevam@nxp.com>
-  Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/soc/imx/gpcv2.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/reset/reset-socfpga.c    | 2 +-
+ include/linux/reset-controller.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/imx/gpcv2.c b/drivers/soc/imx/gpcv2.c
-index 0b428bfc1..7bf45d42b 100644
---- a/drivers/soc/imx/gpcv2.c
-+++ b/drivers/soc/imx/gpcv2.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: GPL-2.0+
- /*
-  * Copyright 2017 Impinj, Inc
-  * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-@@ -5,13 +6,6 @@
-  * Based on the code of analogus driver:
-  *
-  * Copyright 2015-2017 Pengutronix, Lucas Stach <kernel@pengutronix.de>
-- *
-- * The code contained herein is licensed under the GNU General Public
-- * License. You may obtain a copy of the GNU General Public License
-- * Version 2 or later at the following locations:
-- *
-- * http://www.opensource.org/licenses/gpl-license.html
-- * http://www.gnu.org/copyleft/gpl.html
-  */
+diff --git a/drivers/reset/reset-socfpga.c b/drivers/reset/reset-socfpga.c
+index b6faa0217..9b499f23c 100644
+--- a/drivers/reset/reset-socfpga.c
++++ b/drivers/reset/reset-socfpga.c
+@@ -73,7 +73,7 @@ static int socfpga_reset_deassert(struct reset_controller_dev *rcdev,
+ 	return 0;
+ }
  
- #include <of_device.h>
+-static struct reset_control_ops socfpga_reset_ops = {
++static const struct reset_control_ops socfpga_reset_ops = {
+ 	.assert		= socfpga_reset_assert,
+ 	.deassert	= socfpga_reset_deassert,
+ };
+diff --git a/include/linux/reset-controller.h b/include/linux/reset-controller.h
+index d8265486a..aff03a9c6 100644
+--- a/include/linux/reset-controller.h
++++ b/include/linux/reset-controller.h
+@@ -35,7 +35,7 @@ struct of_phandle_args;
+  * @nr_resets: number of reset controls in this reset controller device
+  */
+ struct reset_controller_dev {
+-	struct reset_control_ops *ops;
++	const struct reset_control_ops *ops;
+ 	struct list_head list;
+ 	struct device_node *of_node;
+ 	int of_reset_n_cells;
 -- 
 2.20.1
 
