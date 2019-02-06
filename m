@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1greUy-0004Dr-Ve
- for barebox@lists.infradead.org; Thu, 07 Feb 2019 07:53:30 +0000
-Date: Thu, 7 Feb 2019 08:53:24 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190207075324.ejnoa4higewdxuhq@pengutronix.de>
-References: <20190205215411.589-1-andrew.smirnov@gmail.com>
+ id 1grKX7-0001Cu-JP
+ for barebox@lists.infradead.org; Wed, 06 Feb 2019 10:34:23 +0000
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Date: Wed,  6 Feb 2019 11:34:02 +0100
+Message-Id: <20190206103403.3622-1-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190205215411.589-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,84 +15,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 00/15] PCIE support for i.MX8MQ
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] common: state: fix typo
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Feb 05, 2019 at 01:53:56PM -0800, Andrey Smirnov wrote:
-> This series contains port of the various Linux patches needed to
-> enable support of PCIE IP block on i.MX8MQ SoCs.
-> 
-> Feedback is welcome!
-> 
-> Changes since [v1]:
-> 
->     - Added proper SHA1s and removed RFC tag from last four patches
->       since their Linux counterparts were accepted to PCI tree
-> 
-> Thanks,
-> Andrey Smirnov
-
-Applied, thanks
-
-Sascha
-
-> 
-> [v1] http://lists.infradead.org/pipermail/barebox/2019-January/036899.html
-> 
-> Andrey Smirnov (15):
->   PCI: dwc: Fix pointer width cast problem
->   ARM: aarch64: Add PCI fixups section to linker script
->   soc: imx: gpcv2: use A_CORE instread of A7 for more i.MX platforms
->   soc: imx: gpcv2: make pgc driver more generic for other i.MX platforms
->   soc: imx: gpcv2: Switch to SPDX identifier
->   soc: imx: gpcv2: prefix i.MX7 specific defines
->   soc: imx: gpcv2: add support for i.MX8MQ SoC
->   reset: Constify "ops" in struct reset_controller_dev
->   reset: imx7: Add plubming to support multiple IP variants
->   include: Import dt-bindings/reset/imx8mq-reset.h
->   reset: imx7: Add support for i.MX8MQ IP block variant
->   PCI: imx6: Introduce drvdata
->   PCI: imx6: Mark PHY functions as i.MX6 specific
->   PCI: imx6: Convert DIRECT_SPEED_CHANGE quirk code to use a flag
->   PCI: imx6: Add support for i.MX8MQ
-> 
->  arch/arm/lib64/barebox.lds.S             |  12 +
->  arch/arm/mach-imx/Kconfig                |   1 +
->  drivers/pci/Kconfig                      |   4 +-
->  drivers/pci/pci-imx6.c                   | 149 ++++++++++--
->  drivers/pci/pcie-designware-host.c       |   6 +-
->  drivers/reset/reset-imx7.c               | 172 +++++++++++--
->  drivers/reset/reset-socfpga.c            |   2 +-
->  drivers/soc/imx/Kconfig                  |   8 +-
->  drivers/soc/imx/Makefile                 |   2 +-
->  drivers/soc/imx/gpcv2.c                  | 297 ++++++++++++++++++-----
->  include/dt-bindings/reset/imx8mq-reset.h |  64 +++++
->  include/linux/reset-controller.h         |   2 +-
->  12 files changed, 614 insertions(+), 105 deletions(-)
->  create mode 100644 include/dt-bindings/reset/imx8mq-reset.h
-> 
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4K
+LS0tCiBjb21tb24vc3RhdGUvYmFja2VuZF9mb3JtYXRfcmF3LmMgfCA0ICsrLS0KIGNvbW1vbi9z
+dGF0ZS9zdGF0ZS5jICAgICAgICAgICAgICB8IDIgKy0KIGNvbW1vbi9zdGF0ZS9zdGF0ZS5oICAg
+ICAgICAgICAgICB8IDIgKy0KIDMgZmlsZXMgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCA0IGRl
+bGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX2Zvcm1hdF9yYXcu
+YyBiL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX2Zvcm1hdF9yYXcuYwppbmRleCA0MzY5Zjc2ZTM3NmYu
+LjVhNzExNDlkMzQ0MyAxMDA2NDQKLS0tIGEvY29tbW9uL3N0YXRlL2JhY2tlbmRfZm9ybWF0X3Jh
+dy5jCisrKyBiL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX2Zvcm1hdF9yYXcuYwpAQCAtMTI3LDcgKzEy
+Nyw3IEBAIHN0YXRpYyBpbnQgYmFja2VuZF9mb3JtYXRfcmF3X3ZlcmlmeShzdHJ1Y3Qgc3RhdGVf
+YmFja2VuZF9mb3JtYXQgKmZvcm1hdCwKIAkJcmV0dXJuIC1FSU5WQUw7CiAJfQogCi0JaWYgKGJh
+Y2tlbmRfcmF3LT5hbGdvICYmICEoZmxhZ3MgJiBTVEFURV9GTEFHX05PX0FVVEhFTlRJRklDQVRJ
+T04pKSB7CisJaWYgKGJhY2tlbmRfcmF3LT5hbGdvICYmICEoZmxhZ3MgJiBTVEFURV9GTEFHX05P
+X0FVVEhFTlRJQ0FUSU9OKSkgewogCQlyZXQgPSBiYWNrZW5kX3Jhd19kaWdlc3RfaW5pdChiYWNr
+ZW5kX3Jhdyk7CiAJCWlmIChyZXQpCiAJCQlyZXR1cm4gcmV0OwpAQCAtMTUzLDcgKzE1Myw3IEBA
+IHN0YXRpYyBpbnQgYmFja2VuZF9mb3JtYXRfcmF3X3ZlcmlmeShzdHJ1Y3Qgc3RhdGVfYmFja2Vu
+ZF9mb3JtYXQgKmZvcm1hdCwKIAogCSpsZW5wID0gaGVhZGVyLT5kYXRhX2xlbiArIHNpemVvZigq
+aGVhZGVyKTsKIAotCWlmIChiYWNrZW5kX3Jhdy0+YWxnbyAmJiAhKGZsYWdzICYgU1RBVEVfRkxB
+R19OT19BVVRIRU5USUZJQ0FUSU9OKSkgeworCWlmIChiYWNrZW5kX3Jhdy0+YWxnbyAmJiAhKGZs
+YWdzICYgU1RBVEVfRkxBR19OT19BVVRIRU5USUNBVElPTikpIHsKIAkJY29uc3Qgdm9pZCAqaG1h
+YyA9IGRhdGEgKyBoZWFkZXItPmRhdGFfbGVuOwogCiAJCS8qIGhtYWMgb3ZlciBoZWFkZXIgYW5k
+IGRhdGEgKi8KZGlmZiAtLWdpdCBhL2NvbW1vbi9zdGF0ZS9zdGF0ZS5jIGIvY29tbW9uL3N0YXRl
+L3N0YXRlLmMKaW5kZXggNTRjNTcyMzJlNjI2Li5kM2UwNDhiOTkwNzggMTAwNjQ0Ci0tLSBhL2Nv
+bW1vbi9zdGF0ZS9zdGF0ZS5jCisrKyBiL2NvbW1vbi9zdGF0ZS9zdGF0ZS5jCkBAIC0xMjgsNyAr
+MTI4LDcgQEAgaW50IHN0YXRlX2xvYWQoc3RydWN0IHN0YXRlICpzdGF0ZSkKIAogaW50IHN0YXRl
+X2xvYWRfbm9fYXV0aChzdHJ1Y3Qgc3RhdGUgKnN0YXRlKQogewotCXJldHVybiBzdGF0ZV9kb19s
+b2FkKHN0YXRlLCBTVEFURV9GTEFHX05PX0FVVEhFTlRJRklDQVRJT04pOworCXJldHVybiBzdGF0
+ZV9kb19sb2FkKHN0YXRlLCBTVEFURV9GTEFHX05PX0FVVEhFTlRJQ0FUSU9OKTsKIH0KIAogc3Rh
+dGljIGludCBzdGF0ZV9mb3JtYXRfaW5pdChzdHJ1Y3Qgc3RhdGUgKnN0YXRlLCBjb25zdCBjaGFy
+ICpiYWNrZW5kX2Zvcm1hdCwKZGlmZiAtLWdpdCBhL2NvbW1vbi9zdGF0ZS9zdGF0ZS5oIGIvY29t
+bW9uL3N0YXRlL3N0YXRlLmgKaW5kZXggM2EwNjYyZmQyNTk0Li45MTJkNmQ0ODQ4MjMgMTAwNjQ0
+Ci0tLSBhL2NvbW1vbi9zdGF0ZS9zdGF0ZS5oCisrKyBiL2NvbW1vbi9zdGF0ZS9zdGF0ZS5oCkBA
+IC02LDcgKzYsNyBAQCBzdHJ1Y3Qgc3RhdGU7CiBzdHJ1Y3QgbXRkX2luZm9fdXNlcjsKIAogZW51
+bSBzdGF0ZV9mbGFncyB7Ci0JU1RBVEVfRkxBR19OT19BVVRIRU5USUZJQ0FUSU9OID0gKDEgPDwg
+MCksCisJU1RBVEVfRkxBR19OT19BVVRIRU5USUNBVElPTiA9ICgxIDw8IDApLAogfTsKIAogZW51
+bSBzdGF0ZV92YXJpYWJsZV90eXBlIHsKLS0gCjIuMjAuMQoKCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
+bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
+c3RpbmZvL2JhcmVib3gK
