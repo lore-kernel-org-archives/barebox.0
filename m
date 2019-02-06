@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1grHxc-0001gn-IA
- for barebox@lists.infradead.org; Wed, 06 Feb 2019 07:49:37 +0000
+ id 1grHxU-0001d5-Q5
+ for barebox@lists.infradead.org; Wed, 06 Feb 2019 07:49:26 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  6 Feb 2019 08:49:13 +0100
-Message-Id: <20190206074921.11115-1-s.hauer@pengutronix.de>
+Date: Wed,  6 Feb 2019 08:49:17 +0100
+Message-Id: <20190206074921.11115-5-s.hauer@pengutronix.de>
+In-Reply-To: <20190206074921.11115-1-s.hauer@pengutronix.de>
+References: <20190206074921.11115-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,43 +21,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/8] MMC: esdhc: Add Layerscape support
+Subject: [PATCH 4/8] mci: imx-esdhc: make clkidx configurable
 To: Barebox List <barebox@lists.infradead.org>
 
-This adds support for the esdhc controller found found on Layerscape
-SoCs. It is essentially the same controller as found on i.MX SoCs, but
-with bigendian accesses. Some preparation needs to be done to drop
-architecture specific stuff from the driver.
+Other architectures using this driver may need a different clk_id to
+find its clock. Make this configurable as a preparation for layerscape
+support.
 
-Layerscape support itself is in progress but still needs some time.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mci/imx-esdhc.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-Sascha
-
-Sascha Hauer (8):
-  mci: imx-esdhc: Do not reset twice
-  mci: imx-esdhc: use dev_id
-  mci: imx-esdhc: move platform_data
-  mci: imx-esdhc: make clkidx configurable
-  mci: imx-esdhc: remove unnecessary include
-  mci: imx-esdhc: implement static inline io wrappers
-  mci: imx-esdhc: Add bigendian register access support
-  mci: imx-esdhc: Add layerscape support
-
- arch/arm/mach-imx/devices.c                   |   9 +-
- .../arm/mach-imx/include/mach/devices-imx25.h |   4 +-
- .../arm/mach-imx/include/mach/devices-imx35.h |   6 +-
- .../arm/mach-imx/include/mach/devices-imx50.h |   8 +-
- .../arm/mach-imx/include/mach/devices-imx51.h |   6 +-
- .../arm/mach-imx/include/mach/devices-imx53.h |   8 +-
- arch/arm/mach-imx/include/mach/devices-imx6.h |  20 --
- arch/arm/mach-imx/include/mach/devices.h      |   5 +-
- drivers/mci/Kconfig                           |   2 +-
- drivers/mci/imx-esdhc.c                       | 286 ++++++++++--------
- drivers/mci/imx-esdhc.h                       |   6 -
- .../platform_data/mmc-esdhc-imx.h             |   0
- 12 files changed, 195 insertions(+), 165 deletions(-)
- rename arch/arm/mach-imx/include/mach/esdhc.h => include/platform_data/mmc-esdhc-imx.h (100%)
-
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 8027f46262..06fc69f405 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -87,6 +87,7 @@
+ 
+ struct esdhc_soc_data {
+ 	u32 flags;
++	const char *clkidx;
+ };
+ 
+ struct fsl_esdhc_host {
+@@ -617,7 +618,7 @@ static int fsl_esdhc_probe(struct device_d *dev)
+ 
+ 	dma_set_mask(dev, DMA_BIT_MASK(32));
+ 
+-	host->clk = clk_get(dev, "per");
++	host->clk = clk_get(dev, socdata->clkidx);
+ 	if (IS_ERR(host->clk))
+ 		return PTR_ERR(host->clk);
+ 
+@@ -679,25 +680,30 @@ static int fsl_esdhc_probe(struct device_d *dev)
+ 
+ static struct esdhc_soc_data esdhc_imx25_data = {
+ 	.flags = ESDHC_FLAG_ENGCM07207,
++	.clkidx = "per",
+ };
+ 
+ static struct esdhc_soc_data esdhc_imx53_data = {
+ 	.flags = ESDHC_FLAG_MULTIBLK_NO_INT,
++	.clkidx = "per",
+ };
+ 
+ static struct esdhc_soc_data usdhc_imx6q_data = {
+ 	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_MAN_TUNING,
++	.clkidx = "per",
+ };
+ 
+ static struct esdhc_soc_data usdhc_imx6sl_data = {
+ 	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
+ 	       | ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_ERR004536
+ 	       | ESDHC_FLAG_HS200,
++	.clkidx = "per",
+ };
+ 
+ static struct esdhc_soc_data usdhc_imx6sx_data = {
+ 	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
+ 	       | ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200,
++	.clkidx = "per",
+ };
+ 
+ static __maybe_unused struct of_device_id fsl_esdhc_compatible[] = {
 -- 
 2.20.1
 
