@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x342.google.com ([2a00:1450:4864:20::342])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1grHmI-00071z-Qr
- for barebox@lists.infradead.org; Wed, 06 Feb 2019 07:37:52 +0000
-Received: by mail-wm1-x342.google.com with SMTP id p6so1493795wmc.1
- for <barebox@lists.infradead.org>; Tue, 05 Feb 2019 23:37:50 -0800 (PST)
+ id 1grHxc-0001gn-IA
+ for barebox@lists.infradead.org; Wed, 06 Feb 2019 07:49:37 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed,  6 Feb 2019 08:49:13 +0100
+Message-Id: <20190206074921.11115-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-References: <20190204144641.19600-1-s.hauer@pengutronix.de>
- <CAHQ1cqG1i_AcMBymMLMekokRd6HozomtZYDVznruixs0Z1XVxA@mail.gmail.com>
- <20190206073324.3r3zuogav6bqnkzr@pengutronix.de>
-In-Reply-To: <20190206073324.3r3zuogav6bqnkzr@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 5 Feb 2019 23:37:37 -0800
-Message-ID: <CAHQ1cqEnjH-2nTCALyD-HM1G84-Lu+jR3GjS39bYyHuvB2EMwQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,52 +19,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/5] 32-bit lseek and /dev/mem fixes/improvements
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 0/8] MMC: esdhc: Add Layerscape support
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Feb 5, 2019 at 11:33 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Tue, Feb 05, 2019 at 01:44:31PM -0800, Andrey Smirnov wrote:
-> > On Mon, Feb 4, 2019 at 6:46 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > >
-> > > This series ontop of Andreys series (minus the patches that I have
-> > > reverted) makes /dev/mem work for the whole 64bit address space without
-> > > hopefully special casing too much. "fs: set errno in ftruncate()" and
-> > > "fs: devfs: forbid truncation when cdev has no truncate operation" are
-> > > not directly related, I stumbled upon these while working on the
-> > > patches.
-> > >
-> > > See the full series in -next. Comments welcome, if somethings wrong with
-> > > it we can still change.
-> > >
-> >
-> > Not sure why, but the following patches:
-> >
-> > "fs: Report actual data processed by mem_copy()"
-> > "fs: Share code between mem_write()/mem_read()"
->
-> I applied these two now (although squashed into a single commit)...
->
-> >
-> > appear to be missing and, as a result:
-> >
-> > "fs: Avoid division in mem_copy()"
->
-> ...and rewrote this commit message.
->
-> >
-> > doesn't actually have mem_copy() function in it. Did the two patches
-> > above just slipped through the cracks or was there a particular reason
-> > you dropped them?
->
-> I thought they wouldn't apply anymore, but I was mistaken. Indeed they
-> do apply.
+This adds support for the esdhc controller found found on Layerscape
+SoCs. It is essentially the same controller as found on i.MX SoCs, but
+with bigendian accesses. Some preparation needs to be done to drop
+architecture specific stuff from the driver.
 
-OK, cool, good to hear they are back!
+Layerscape support itself is in progress but still needs some time.
 
-Thanks,
-Andrey Smirnov
+Sascha
+
+Sascha Hauer (8):
+  mci: imx-esdhc: Do not reset twice
+  mci: imx-esdhc: use dev_id
+  mci: imx-esdhc: move platform_data
+  mci: imx-esdhc: make clkidx configurable
+  mci: imx-esdhc: remove unnecessary include
+  mci: imx-esdhc: implement static inline io wrappers
+  mci: imx-esdhc: Add bigendian register access support
+  mci: imx-esdhc: Add layerscape support
+
+ arch/arm/mach-imx/devices.c                   |   9 +-
+ .../arm/mach-imx/include/mach/devices-imx25.h |   4 +-
+ .../arm/mach-imx/include/mach/devices-imx35.h |   6 +-
+ .../arm/mach-imx/include/mach/devices-imx50.h |   8 +-
+ .../arm/mach-imx/include/mach/devices-imx51.h |   6 +-
+ .../arm/mach-imx/include/mach/devices-imx53.h |   8 +-
+ arch/arm/mach-imx/include/mach/devices-imx6.h |  20 --
+ arch/arm/mach-imx/include/mach/devices.h      |   5 +-
+ drivers/mci/Kconfig                           |   2 +-
+ drivers/mci/imx-esdhc.c                       | 286 ++++++++++--------
+ drivers/mci/imx-esdhc.h                       |   6 -
+ .../platform_data/mmc-esdhc-imx.h             |   0
+ 12 files changed, 195 insertions(+), 165 deletions(-)
+ rename arch/arm/mach-imx/include/mach/esdhc.h => include/platform_data/mmc-esdhc-imx.h (100%)
+
+-- 
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
