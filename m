@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gt6Jx-0005Bk-SR
- for barebox@lists.infradead.org; Mon, 11 Feb 2019 07:48:13 +0000
-Date: Mon, 11 Feb 2019 08:48:01 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190211074801.uvpjk6d22jwpfijh@pengutronix.de>
+ id 1grYOk-0003a3-98
+ for barebox@lists.infradead.org; Thu, 07 Feb 2019 01:22:40 +0000
+Received: by mail-pg1-x543.google.com with SMTP id n2so3767664pgm.3
+ for <barebox@lists.infradead.org>; Wed, 06 Feb 2019 17:22:38 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed,  6 Feb 2019 17:22:03 -0800
+Message-Id: <20190207012214.5060-6-andrew.smirnov@gmail.com>
+In-Reply-To: <20190207012214.5060-1-andrew.smirnov@gmail.com>
 References: <20190207012214.5060-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190207012214.5060-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,70 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/16] E1000 driver AArch64 related fixes
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 05/16] net/e1000: Fix debug print warning
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Wed, Feb 06, 2019 at 05:21:58PM -0800, Andrey Smirnov wrote:
-> Everyone:
-> 
-> This series contains various fixes/changes I made in order to get
-> E1000 driver to work on AArch64/i.MX8MQ as well as generic code
-> improvement patches. Hopefully each patch is self-explanatory.
-> 
-> Feedback is welcome!
-> 
-> Thanks,
-> Andrey Smirnov
+Cast eeprom->word_size to int, so it would match its printf specifier
+to avoid getting errors when building on AArch64.
 
-Applied, thanks
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/net/e1000/eeprom.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Sascha
-
-> 
-> Andrey Smirnov (16):
->   ARM: Select HAS_DMA for AArch64
->   include: Import io-64-nonatomic-*.h from Linux
->   net/e1000: Don't use coherent memory for Rx buffer
->   net/e1000: Convert e1000_transmit to use dma_map_single()
->   net/e1000: Fix debug print warning
->   net/e1000: Fix incorrect "Rx ready" check
->   net/e1000: Get rid of pointer arithmetic in e1000_poll
->   net/e1000: Improve Rx descriptor handling in e1000_poll()
->   net/e1000: Remove pointer arithmetic in e1000_transmit()
->   net/e1000: Improve Tx descriptor handling in e1000_transmit
->   net/e1000: Make use of readl_poll_timeout() in e1000_transmit()
->   net/e1000: Rename fill_rx() to e1000_fill_rx()
->   net/e1000: Remove pointer arithmetic from e1000_fill_rx()
->   net/e1000: Consolidate next index calculation code
->   net/e1000: Improve RX buffer handling in e1000_fill_rx()
->   net/e1000: Do not hardcode TDBAH and RDBAH to 0
-> 
->  arch/arm/cpu/Kconfig            |   1 +
->  drivers/net/e1000/e1000.h       |   1 +
->  drivers/net/e1000/eeprom.c      |   3 +-
->  drivers/net/e1000/main.c        | 113 ++++++++++++++++++--------------
->  include/io-64-nonatomic-hi-lo.h |  32 +++++++++
->  include/io-64-nonatomic-lo-hi.h |  32 +++++++++
->  6 files changed, 131 insertions(+), 51 deletions(-)
->  create mode 100644 include/io-64-nonatomic-hi-lo.h
->  create mode 100644 include/io-64-nonatomic-lo-hi.h
-> 
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
+index 01f6addbc..5b34e9b8d 100644
+--- a/drivers/net/e1000/eeprom.c
++++ b/drivers/net/e1000/eeprom.c
+@@ -1000,7 +1000,8 @@ int32_t e1000_read_eeprom(struct e1000_hw *hw, uint16_t offset,
+ 		(words > eeprom->word_size - offset) ||
+ 		(words == 0)) {
+ 		dev_dbg(hw->dev, "\"words\" parameter out of bounds."
+-			"Words = %d, size = %d\n", offset, eeprom->word_size);
++			"Words = %d, size = %d\n", offset,
++			(int)eeprom->word_size);
+ 		return -E1000_ERR_EEPROM;
+ 	}
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
