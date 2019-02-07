@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm1-x344.google.com ([2a00:1450:4864:20::344])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1greVg-0004Kx-Ix
- for barebox@lists.infradead.org; Thu, 07 Feb 2019 07:54:14 +0000
-Date: Thu, 7 Feb 2019 08:54:10 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190207075410.7hwbsm2dlfwltqob@pengutronix.de>
-References: <20190206103403.3622-1-u.oelmann@pengutronix.de>
+ id 1grY5b-0005iL-8y
+ for barebox@lists.infradead.org; Thu, 07 Feb 2019 01:02:52 +0000
+Received: by mail-wm1-x344.google.com with SMTP id m22so4894001wml.3
+ for <barebox@lists.infradead.org>; Wed, 06 Feb 2019 17:02:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190206103403.3622-1-u.oelmann@pengutronix.de>
+References: <20190206074921.11115-1-s.hauer@pengutronix.de>
+ <20190206074921.11115-9-s.hauer@pengutronix.de>
+In-Reply-To: <20190206074921.11115-9-s.hauer@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 6 Feb 2019 17:02:37 -0800
+Message-ID: <CAHQ1cqHdBOn_pkzfuWVk6rVZjiUOgn3iBnNvcURsqe1TBjcXug@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,106 +20,96 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] common: state: fix typo
-To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
+Subject: Re: [PATCH 8/8] mci: imx-esdhc: Add layerscape support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Feb 06, 2019 at 11:34:02AM +0100, Ulrich =D6lmann wrote:
-> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
+On Tue, Feb 5, 2019 at 11:49 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>
+> This adds support for the esdhc controller found on Layerscape SoCs.
+> This means adding the compatible and a driver data to access the
+> controller in bigendian mode.
+>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  common/state/backend_format_raw.c | 4 ++--
->  common/state/state.c              | 2 +-
->  common/state/state.h              | 2 +-
->  3 files changed, 4 insertions(+), 4 deletions(-)
+>  drivers/mci/Kconfig     |  2 +-
+>  drivers/mci/imx-esdhc.c | 11 +++++++++++
+>  2 files changed, 12 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+> index 954f957bc7..2075151d67 100644
+> --- a/drivers/mci/Kconfig
+> +++ b/drivers/mci/Kconfig
+> @@ -82,7 +82,7 @@ config MCI_IMX
+>
+>  config MCI_IMX_ESDHC
+>         bool "i.MX esdhc"
+> -       depends on ARCH_IMX
+> +       depends on ARCH_IMX || ARCH_LAYERSCAPE
+>         help
+>           Enable this entry to add support to read and write SD cards on a
+>           Freescale i.MX25/35/51 based system.
+> diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+> index 58c262782f..10c981ad5d 100644
+> --- a/drivers/mci/imx-esdhc.c
+> +++ b/drivers/mci/imx-esdhc.c
+> @@ -69,6 +69,8 @@
+>  #define ESDHC_FLAG_HAVE_CAP1           BIT(6)
+>  /* Need to access registers in bigendian mode */
+>  #define ESDHC_FLAG_BIGENDIAN           BIT(7)
+> +/* Enable cache snooping */
+> +#define ESDHC_FLAG_CACHE_SNOOPING      BIT(8)
+>
+>  /*
+>   * The IP has errata ERR004536
+> @@ -612,6 +614,10 @@ static int esdhc_init(struct mci_host *mci, struct device_d *dev)
+>         /* RSTA doesn't reset MMC_BOOT register, so manually reset it */
+>         esdhc_write32(host, SDHCI_MMC_BOOT, 0);
+>
+> +       /* Enable cache snooping */
+> +       if (host->socdata->flags & ESDHC_FLAG_CACHE_SNOOPING)
+> +               esdhc_write32(host, 0x40c, 0x40);
 
-Applied, thanks
+I think importing ESDHC_DMA_SYSCTL and ESDHC_DMA_SNOOP from Linux and
+using them instead of magic number would improve readability. Also,
+should this be esdhc_setbits32() instead esdhc_write32() to avoid
+clearing other, unrelated, bits?
 
-Sascha
-
-> =
-
-> diff --git a/common/state/backend_format_raw.c b/common/state/backend_for=
-mat_raw.c
-> index 4369f76e376f..5a71149d3443 100644
-> --- a/common/state/backend_format_raw.c
-> +++ b/common/state/backend_format_raw.c
-> @@ -127,7 +127,7 @@ static int backend_format_raw_verify(struct state_bac=
-kend_format *format,
->  		return -EINVAL;
->  	}
->  =
-
-> -	if (backend_raw->algo && !(flags & STATE_FLAG_NO_AUTHENTIFICATION)) {
-> +	if (backend_raw->algo && !(flags & STATE_FLAG_NO_AUTHENTICATION)) {
->  		ret =3D backend_raw_digest_init(backend_raw);
->  		if (ret)
->  			return ret;
-> @@ -153,7 +153,7 @@ static int backend_format_raw_verify(struct state_bac=
-kend_format *format,
->  =
-
->  	*lenp =3D header->data_len + sizeof(*header);
->  =
-
-> -	if (backend_raw->algo && !(flags & STATE_FLAG_NO_AUTHENTIFICATION)) {
-> +	if (backend_raw->algo && !(flags & STATE_FLAG_NO_AUTHENTICATION)) {
->  		const void *hmac =3D data + header->data_len;
->  =
-
->  		/* hmac over header and data */
-> diff --git a/common/state/state.c b/common/state/state.c
-> index 54c57232e626..d3e048b99078 100644
-> --- a/common/state/state.c
-> +++ b/common/state/state.c
-> @@ -128,7 +128,7 @@ int state_load(struct state *state)
->  =
-
->  int state_load_no_auth(struct state *state)
->  {
-> -	return state_do_load(state, STATE_FLAG_NO_AUTHENTIFICATION);
-> +	return state_do_load(state, STATE_FLAG_NO_AUTHENTICATION);
->  }
->  =
-
->  static int state_format_init(struct state *state, const char *backend_fo=
-rmat,
-> diff --git a/common/state/state.h b/common/state/state.h
-> index 3a0662fd2594..912d6d484823 100644
-> --- a/common/state/state.h
-> +++ b/common/state/state.h
-> @@ -6,7 +6,7 @@ struct state;
->  struct mtd_info_user;
->  =
-
->  enum state_flags {
-> -	STATE_FLAG_NO_AUTHENTIFICATION =3D (1 << 0),
-> +	STATE_FLAG_NO_AUTHENTICATION =3D (1 << 0),
+> +
+>         /* Set the initial clock speed */
+>         set_sysctl(mci, 400000);
+>
+> @@ -747,6 +753,10 @@ static struct esdhc_soc_data usdhc_imx6sx_data = {
+>         .clkidx = "per",
 >  };
->  =
-
->  enum state_variable_type {
-> -- =
-
+>
+> +static struct esdhc_soc_data esdhc_ls_data = {
+> +       .flags = ESDHC_FLAG_MULTIBLK_NO_INT | ESDHC_FLAG_BIGENDIAN,
+> +};
+> +
+>  static __maybe_unused struct of_device_id fsl_esdhc_compatible[] = {
+>         { .compatible = "fsl,imx25-esdhc",  .data = &esdhc_imx25_data  },
+>         { .compatible = "fsl,imx50-esdhc",  .data = &esdhc_imx53_data  },
+> @@ -756,6 +766,7 @@ static __maybe_unused struct of_device_id fsl_esdhc_compatible[] = {
+>         { .compatible = "fsl,imx6sl-usdhc", .data = &usdhc_imx6sl_data },
+>         { .compatible = "fsl,imx6sx-usdhc", .data = &usdhc_imx6sx_data },
+>         { .compatible = "fsl,imx8mq-usdhc", .data = &usdhc_imx6sx_data },
+> +       { .compatible = "fsl,ls1046a-esdhc",.data = &esdhc_ls_data  },
+>         { /* sentinel */ }
+>  };
+>
+> --
 > 2.20.1
-> =
-
-> =
-
+>
+>
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
