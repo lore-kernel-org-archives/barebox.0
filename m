@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gt6pH-0002IQ-DB
- for barebox@lists.infradead.org; Mon, 11 Feb 2019 08:20:29 +0000
-Date: Mon, 11 Feb 2019 09:20:23 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190211082023.up4tbownps6yyvmo@pengutronix.de>
-References: <20190206184122.14423-1-christian.hemp@posteo.de>
+ id 1grYOg-0003Y7-1l
+ for barebox@lists.infradead.org; Thu, 07 Feb 2019 01:22:35 +0000
+Received: by mail-pf1-x444.google.com with SMTP id u6so3985237pfh.11
+ for <barebox@lists.infradead.org>; Wed, 06 Feb 2019 17:22:31 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed,  6 Feb 2019 17:21:58 -0800
+Message-Id: <20190207012214.5060-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190206184122.14423-1-christian.hemp@posteo.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,70 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: phyCORE-i.MX8M SOM support
-To: Christian Hemp <christian.hemp@posteo.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 00/16] E1000 driver AArch64 related fixes
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hi Christian,
+Everyone:
 
-On Wed, Feb 06, 2019 at 07:41:22PM +0100, Christian Hemp wrote:
-> The phyCORE-i.MX8M aka PCL-066 is a SoM containing a i.MX8M SoC.
-> 
-> phyCORE-i.MX8M:
->  - 1GB LPDDR4 RAM
->  - eMMC
->  - microSD
->  - Ethernet
-> > +
-> diff --git a/arch/arm/dts/imx8mq-phytec-phycore-som.dts b/arch/arm/dts/imx8mq-phytec-phycore-som.dts
-> new file mode 100644
-> index 000000000..7b566e32b
-> --- /dev/null
-> +++ b/arch/arm/dts/imx8mq-phytec-phycore-som.dts
-> @@ -0,0 +1,328 @@
-> +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-> +/*
-> + * Copyright 2018 Christian Hemp <christian.hemp@posteo.de>
-> + */
-> +
-> +/dts-v1/;
-> +
-> +#include <arm64/freescale/imx8mq.dtsi>
-> +#include <dt-bindings/net/ti-dp83867.h>
-> +#include "imx8mq.dtsi"
-> +#include "imx8mq-ddrc.dtsi"
-> +
-> +/ {
-> +	model = "Phytec phyCORE-i.MX8";
-> +	compatible = "phytec,imx8mq-pcl066", "fsl,imx8mq";
-> +
-> +	chosen {
-> +		stdout-path = &uart1;
-> +
-> +		environment-emmc {
-> +			compatible = "barebox,environment";
-> +			device-path = &usdhc1, "partname:barebox-environment";
-> +			status = "disabled";
-> +		};
-> +
-> +		environment-sd {
-> +			compatible = "barebox,environment";
-> +			device-path = &usdhc2, "partname:barebox-environment";
-> +			status = "disabled";
-> +		};
+This series contains various fixes/changes I made in order to get
+E1000 driver to work on AArch64/i.MX8MQ as well as generic code
+improvement patches. Hopefully each patch is self-explanatory.
 
-I pretty much prefer adding a phandle to the partition itself rather
-than using this "partname:" mechanism.
+Feedback is welcome!
 
-Otherwise the patch looks good to me.
+Thanks,
+Andrey Smirnov
 
-Sascha
+Andrey Smirnov (16):
+  ARM: Select HAS_DMA for AArch64
+  include: Import io-64-nonatomic-*.h from Linux
+  net/e1000: Don't use coherent memory for Rx buffer
+  net/e1000: Convert e1000_transmit to use dma_map_single()
+  net/e1000: Fix debug print warning
+  net/e1000: Fix incorrect "Rx ready" check
+  net/e1000: Get rid of pointer arithmetic in e1000_poll
+  net/e1000: Improve Rx descriptor handling in e1000_poll()
+  net/e1000: Remove pointer arithmetic in e1000_transmit()
+  net/e1000: Improve Tx descriptor handling in e1000_transmit
+  net/e1000: Make use of readl_poll_timeout() in e1000_transmit()
+  net/e1000: Rename fill_rx() to e1000_fill_rx()
+  net/e1000: Remove pointer arithmetic from e1000_fill_rx()
+  net/e1000: Consolidate next index calculation code
+  net/e1000: Improve RX buffer handling in e1000_fill_rx()
+  net/e1000: Do not hardcode TDBAH and RDBAH to 0
+
+ arch/arm/cpu/Kconfig            |   1 +
+ drivers/net/e1000/e1000.h       |   1 +
+ drivers/net/e1000/eeprom.c      |   3 +-
+ drivers/net/e1000/main.c        | 113 ++++++++++++++++++--------------
+ include/io-64-nonatomic-hi-lo.h |  32 +++++++++
+ include/io-64-nonatomic-lo-hi.h |  32 +++++++++
+ 6 files changed, 131 insertions(+), 51 deletions(-)
+ create mode 100644 include/io-64-nonatomic-hi-lo.h
+ create mode 100644 include/io-64-nonatomic-lo-hi.h
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
