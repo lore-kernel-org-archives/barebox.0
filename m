@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1grYOg-0003Y7-1l
- for barebox@lists.infradead.org; Thu, 07 Feb 2019 01:22:35 +0000
-Received: by mail-pf1-x444.google.com with SMTP id u6so3985237pfh.11
- for <barebox@lists.infradead.org>; Wed, 06 Feb 2019 17:22:31 -0800 (PST)
+ id 1grYOg-0003YC-Gz
+ for barebox@lists.infradead.org; Thu, 07 Feb 2019 01:22:36 +0000
+Received: by mail-pg1-x542.google.com with SMTP id g189so3763496pgc.5
+ for <barebox@lists.infradead.org>; Wed, 06 Feb 2019 17:22:34 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Feb 2019 17:21:58 -0800
-Message-Id: <20190207012214.5060-1-andrew.smirnov@gmail.com>
+Date: Wed,  6 Feb 2019 17:22:00 -0800
+Message-Id: <20190207012214.5060-3-andrew.smirnov@gmail.com>
+In-Reply-To: <20190207012214.5060-1-andrew.smirnov@gmail.com>
+References: <20190207012214.5060-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,49 +23,97 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/16] E1000 driver AArch64 related fixes
+Subject: [PATCH 02/16] include: Import io-64-nonatomic-*.h from Linux
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Everyone:
+Import io-64-nonatomic-*.h from Linux to be able to use various
+non-atomic 64-bit I/O accessors.
 
-This series contains various fixes/changes I made in order to get
-E1000 driver to work on AArch64/i.MX8MQ as well as generic code
-improvement patches. Hopefully each patch is self-explanatory.
-
-Feedback is welcome!
-
-Thanks,
-Andrey Smirnov
-
-Andrey Smirnov (16):
-  ARM: Select HAS_DMA for AArch64
-  include: Import io-64-nonatomic-*.h from Linux
-  net/e1000: Don't use coherent memory for Rx buffer
-  net/e1000: Convert e1000_transmit to use dma_map_single()
-  net/e1000: Fix debug print warning
-  net/e1000: Fix incorrect "Rx ready" check
-  net/e1000: Get rid of pointer arithmetic in e1000_poll
-  net/e1000: Improve Rx descriptor handling in e1000_poll()
-  net/e1000: Remove pointer arithmetic in e1000_transmit()
-  net/e1000: Improve Tx descriptor handling in e1000_transmit
-  net/e1000: Make use of readl_poll_timeout() in e1000_transmit()
-  net/e1000: Rename fill_rx() to e1000_fill_rx()
-  net/e1000: Remove pointer arithmetic from e1000_fill_rx()
-  net/e1000: Consolidate next index calculation code
-  net/e1000: Improve RX buffer handling in e1000_fill_rx()
-  net/e1000: Do not hardcode TDBAH and RDBAH to 0
-
- arch/arm/cpu/Kconfig            |   1 +
- drivers/net/e1000/e1000.h       |   1 +
- drivers/net/e1000/eeprom.c      |   3 +-
- drivers/net/e1000/main.c        | 113 ++++++++++++++++++--------------
- include/io-64-nonatomic-hi-lo.h |  32 +++++++++
- include/io-64-nonatomic-lo-hi.h |  32 +++++++++
- 6 files changed, 131 insertions(+), 51 deletions(-)
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ include/io-64-nonatomic-hi-lo.h | 32 ++++++++++++++++++++++++++++++++
+ include/io-64-nonatomic-lo-hi.h | 32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 64 insertions(+)
  create mode 100644 include/io-64-nonatomic-hi-lo.h
  create mode 100644 include/io-64-nonatomic-lo-hi.h
 
+diff --git a/include/io-64-nonatomic-hi-lo.h b/include/io-64-nonatomic-hi-lo.h
+new file mode 100644
+index 000000000..3393e6317
+--- /dev/null
++++ b/include/io-64-nonatomic-hi-lo.h
+@@ -0,0 +1,32 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_IO_64_NONATOMIC_HI_LO_H_
++#define _LINUX_IO_64_NONATOMIC_HI_LO_H_
++
++#include <io.h>
++
++static inline __u64 hi_lo_readq(const volatile void __iomem *addr)
++{
++	const volatile u32 __iomem *p = addr;
++	u32 low, high;
++
++	high = readl(p + 1);
++	low = readl(p);
++
++	return low + ((u64)high << 32);
++}
++
++static inline void hi_lo_writeq(__u64 val, volatile void __iomem *addr)
++{
++	writel(val >> 32, addr + 4);
++	writel(val, addr);
++}
++
++#ifndef readq
++#define readq hi_lo_readq
++#endif
++
++#ifndef writeq
++#define writeq hi_lo_writeq
++#endif
++
++#endif	/* _LINUX_IO_64_NONATOMIC_HI_LO_H_ */
+diff --git a/include/io-64-nonatomic-lo-hi.h b/include/io-64-nonatomic-lo-hi.h
+new file mode 100644
+index 000000000..62b402279
+--- /dev/null
++++ b/include/io-64-nonatomic-lo-hi.h
+@@ -0,0 +1,32 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_IO_64_NONATOMIC_LO_HI_H_
++#define _LINUX_IO_64_NONATOMIC_LO_HI_H_
++
++#include <io.h>
++
++static inline __u64 lo_hi_readq(const volatile void __iomem *addr)
++{
++	const volatile u32 __iomem *p = addr;
++	u32 low, high;
++
++	low = readl(p);
++	high = readl(p + 1);
++
++	return low + ((u64)high << 32);
++}
++
++static inline void lo_hi_writeq(__u64 val, volatile void __iomem *addr)
++{
++	writel(val, addr);
++	writel(val >> 32, addr + 4);
++}
++
++#ifndef readq
++#define readq lo_hi_readq
++#endif
++
++#ifndef writeq
++#define writeq lo_hi_writeq
++#endif
++
++#endif	/* _LINUX_IO_64_NONATOMIC_LO_HI_H_ */
 -- 
 2.20.1
 
