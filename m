@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gs0ak-0001PY-Sz
- for barebox@lists.infradead.org; Fri, 08 Feb 2019 07:28:56 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Fri,  8 Feb 2019 08:28:51 +0100
-Message-Id: <20190208072851.10544-1-o.rempel@pengutronix.de>
+ id 1grYOh-0003Yl-AB
+ for barebox@lists.infradead.org; Thu, 07 Feb 2019 01:22:36 +0000
+Received: by mail-pg1-x542.google.com with SMTP id d72so3757150pga.9
+ for <barebox@lists.infradead.org>; Wed, 06 Feb 2019 17:22:35 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed,  6 Feb 2019 17:22:01 -0800
+Message-Id: <20190207012214.5060-4-andrew.smirnov@gmail.com>
+In-Reply-To: <20190207012214.5060-1-andrew.smirnov@gmail.com>
+References: <20190207012214.5060-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,53 +23,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1] Documentation: efi: provide watchdog documentation
+Subject: [PATCH 03/16] net/e1000: Don't use coherent memory for Rx buffer
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+In order to avoid issues on AArch64, convert the driver to use regular
+memory and add appropriate DMA sync calls. Drop needless (uchar *)
+cast while at it.
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- Documentation/boards/efi.rst | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/net/e1000/e1000.h |  1 +
+ drivers/net/e1000/main.c  | 18 ++++++++++++++----
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/boards/efi.rst b/Documentation/boards/efi.rst
-index f59bb1d5ba..a3241b6ed9 100644
---- a/Documentation/boards/efi.rst
-+++ b/Documentation/boards/efi.rst
-@@ -327,3 +327,33 @@ compile EDK2.
-                    mov     %fs, %rax
-                    pushq   %rax
+diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
+index 0a9e107c0..52ad3d4cd 100644
+--- a/drivers/net/e1000/e1000.h
++++ b/drivers/net/e1000/e1000.h
+@@ -2182,6 +2182,7 @@ struct e1000_hw {
+ 	struct e1000_tx_desc *tx_base;
+ 	struct e1000_rx_desc *rx_base;
+ 	unsigned char *packet;
++	dma_addr_t packet_dma;
  
-+(U)EFI Watchdog
-+---------------
+ 	int tx_tail;
+ 	int rx_tail, rx_last;
+diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
+index 0ef8fd623..7358763f9 100644
+--- a/drivers/net/e1000/main.c
++++ b/drivers/net/e1000/main.c
+@@ -3215,7 +3215,7 @@ static void fill_rx(struct e1000_hw *hw)
+ 	for (i = 0; i < 4; i++)
+ 		*bla++ = 0;
+ 
+-	rd->buffer_addr = cpu_to_le64((unsigned long)hw->packet);
++	rd->buffer_addr = cpu_to_le64(hw->packet_dma);
+ 
+ 	e1000_write_reg(hw, E1000_RDT, hw->rx_tail);
+ }
+@@ -3406,9 +3406,11 @@ static int e1000_poll(struct eth_device *edev)
+ 
+ 	len = le32_to_cpu(rd->length);
+ 
+-	dma_sync_single_for_cpu((unsigned long)hw->packet, len, DMA_FROM_DEVICE);
++	dma_sync_single_for_cpu(hw->packet_dma, len, DMA_FROM_DEVICE);
+ 
+-	net_receive(edev, (uchar *)hw->packet, len);
++	net_receive(edev, hw->packet, len);
 +
-+(U)EFI provides basic watchdog support. Depending on the system implementation
-+it can be a software or hardware watchdog. Within the (U)EFI specification it
-+is described as following:
-+"If the watchdog timer expires, the event is logged by the firmware. The system
-+may then either reset with the Runtime Service ResetSystem(), or perform a
-+platform specific action that must eventually cause the platform to be reset.
-+The watchdog timer is armed before the firmware's boot manager invokes an EFI
-+boot option.  The watchdog must be set to a period of 5 minutes. The EFI Image
-+may reset or disable the watchdog timer as needed. If control is returned to
-+the firmware's boot manager, the watchdog timer must be disabled.  The watchdog
-+timer is only used during boot services. On successful completion of
-+ExitBootServices() the watchdog timer is disabled." See page 186:
-+https://uefi.org/sites/default/files/resources/UEFI_Spec_2_1_D.pdf
++	dma_sync_single_for_device(hw->packet_dma, len, DMA_FROM_DEVICE);
+ 	fill_rx(hw);
+ 	return 1;
+ }
+@@ -3561,7 +3563,6 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 
+ 	hw->tx_base = dma_alloc_coherent(16 * sizeof(*hw->tx_base), DMA_ADDRESS_BROKEN);
+ 	hw->rx_base = dma_alloc_coherent(16 * sizeof(*hw->rx_base), DMA_ADDRESS_BROKEN);
+-	hw->packet = dma_alloc_coherent(4096, DMA_ADDRESS_BROKEN);
+ 
+ 	edev = &hw->edev;
+ 
+@@ -3570,6 +3571,15 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	pdev->dev.priv = hw;
+ 	edev->priv = hw;
+ 
++	hw->packet = dma_alloc(PAGE_SIZE);
++	if (!hw->packet)
++		return -ENOMEM;
 +
-+Current linux kernel (v5.0) will execute ExitBootServices() during the early
-+boot stage and thus will automatically disable the (U)EFI watchdog. Since it is
-+a proper behavior according to the (U)EFI specification, it is impossible to
-+protect full boot chain by using this watchdog. It is recommended to use
-+alternative hardware watchdog, preferably started before bootloader. If (U)EFI
-+firmware lacks this feature, bootloader should be able to start an alternative
-+hardware watchdog on its own. Before implementing this kind of workaround
-+please make sure (U)EFI watchdog is not using the same hardware as alternative
-+watchdog.
++	hw->packet_dma = dma_map_single(hw->dev, hw->packet, PAGE_SIZE,
++					DMA_FROM_DEVICE);
++	if (dma_mapping_error(hw->dev, hw->packet_dma))
++		return -EFAULT;
 +
-+Nevertheless, barebox is providing access to the (U)EFI SetWatchdogTimer()
-+interface over internal watchdog framework.
-+
+ 	hw->hw_addr = pci_iomap(pdev, 0);
+ 
+ 	/* MAC and Phy settings */
 -- 
 2.20.1
 
