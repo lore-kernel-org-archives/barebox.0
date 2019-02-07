@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1grYOv-0003mg-D2
- for barebox@lists.infradead.org; Thu, 07 Feb 2019 01:22:54 +0000
-Received: by mail-pg1-x543.google.com with SMTP id c25so3764821pgb.4
- for <barebox@lists.infradead.org>; Wed, 06 Feb 2019 17:22:49 -0800 (PST)
+ id 1grYOw-0003o2-Q1
+ for barebox@lists.infradead.org; Thu, 07 Feb 2019 01:22:55 +0000
+Received: by mail-pf1-x443.google.com with SMTP id i12so3995483pfo.7
+ for <barebox@lists.infradead.org>; Wed, 06 Feb 2019 17:22:50 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Feb 2019 17:22:13 -0800
-Message-Id: <20190207012214.5060-16-andrew.smirnov@gmail.com>
+Date: Wed,  6 Feb 2019 17:22:14 -0800
+Message-Id: <20190207012214.5060-17-andrew.smirnov@gmail.com>
 In-Reply-To: <20190207012214.5060-1-andrew.smirnov@gmail.com>
 References: <20190207012214.5060-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,49 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/16] net/e1000: Improve RX buffer handling in e1000_fill_rx()
+Subject: [PATCH 16/16] net/e1000: Do not hardcode TDBAH and RDBAH to 0
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Drop explicit "volatile" specifier for struct e1000_rx_desc, "bla"
-variable as well as explicit endiannes fix, by using little endian IO
-accessors (readl, writel, etc.)
+While there currently no user of e1000 driver that places those rings
+beyond 4GiB boundary, there's also no real reason not to initialize
+those registers properly.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/e1000/main.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/net/e1000/main.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
-index 01330f5a5..c6b6906ce 100644
+index c6b6906ce..774e3d030 100644
 --- a/drivers/net/e1000/main.c
 +++ b/drivers/net/e1000/main.c
-@@ -3205,18 +3205,17 @@ static int e1000_bd_next_index(int index)
+@@ -3232,9 +3232,10 @@ static void e1000_configure_tx(struct e1000_hw *hw)
+ 	unsigned long tctl;
+ 	unsigned long tipg, tarc;
+ 	uint32_t ipgr1, ipgr2;
++	const unsigned long tx_base = (unsigned long)hw->tx_base;
  
- static void e1000_fill_rx(struct e1000_hw *hw)
+-	e1000_write_reg(hw, E1000_TDBAL, (unsigned long)hw->tx_base);
+-	e1000_write_reg(hw, E1000_TDBAH, 0);
++	e1000_write_reg(hw, E1000_TDBAL, lower_32_bits(tx_base));
++	e1000_write_reg(hw, E1000_TDBAH, upper_32_bits(tx_base));
+ 
+ 	e1000_write_reg(hw, E1000_TDLEN, 128);
+ 
+@@ -3350,6 +3351,7 @@ static void e1000_setup_rctl(struct e1000_hw *hw)
+ static void e1000_configure_rx(struct e1000_hw *hw)
  {
--	volatile struct e1000_rx_desc *rd = &hw->rx_base[hw->rx_tail];
--	volatile u32 *bla;
--	int i;
-+	struct e1000_rx_desc *rd = &hw->rx_base[hw->rx_tail];
+ 	unsigned long rctl, ctrl_ext;
++	const unsigned long rx_base = (unsigned long)hw->rx_base;
  
- 	hw->rx_last = hw->rx_tail;
- 	hw->rx_tail = e1000_bd_next_index(hw->rx_tail);
+ 	hw->rx_tail = 0;
+ 	/* make sure receives are disabled while setting up the descriptors */
+@@ -3371,8 +3373,8 @@ static void e1000_configure_rx(struct e1000_hw *hw)
+ 		e1000_write_flush(hw);
+ 	}
+ 	/* Setup the Base and Length of the Rx Descriptor Ring */
+-	e1000_write_reg(hw, E1000_RDBAL, (unsigned long)hw->rx_base);
+-	e1000_write_reg(hw, E1000_RDBAH, 0);
++	e1000_write_reg(hw, E1000_RDBAL, lower_32_bits(rx_base));
++	e1000_write_reg(hw, E1000_RDBAH, upper_32_bits(rx_base));
  
--	bla = (void *)rd;
--	for (i = 0; i < 4; i++)
--		*bla++ = 0;
--
--	rd->buffer_addr = cpu_to_le64(hw->packet_dma);
-+	writeq(hw->packet_dma, &rd->buffer_addr);
-+	writew(0, &rd->length);
-+	writew(0, &rd->csum);
-+	writeb(0, &rd->status);
-+	writeb(0, &rd->errors);
-+	writew(0, &rd->special);
+ 	e1000_write_reg(hw, E1000_RDLEN, 128);
  
- 	e1000_write_reg(hw, E1000_RDT, hw->rx_tail);
- }
 -- 
 2.20.1
 
