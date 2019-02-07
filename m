@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1grYOg-0003YC-Gz
- for barebox@lists.infradead.org; Thu, 07 Feb 2019 01:22:36 +0000
-Received: by mail-pg1-x542.google.com with SMTP id g189so3763496pgc.5
- for <barebox@lists.infradead.org>; Wed, 06 Feb 2019 17:22:34 -0800 (PST)
+ id 1grYOj-0003ZM-HJ
+ for barebox@lists.infradead.org; Thu, 07 Feb 2019 01:22:39 +0000
+Received: by mail-pg1-x543.google.com with SMTP id v28so3751377pgk.10
+ for <barebox@lists.infradead.org>; Wed, 06 Feb 2019 17:22:37 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Feb 2019 17:22:00 -0800
-Message-Id: <20190207012214.5060-3-andrew.smirnov@gmail.com>
+Date: Wed,  6 Feb 2019 17:22:02 -0800
+Message-Id: <20190207012214.5060-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20190207012214.5060-1-andrew.smirnov@gmail.com>
 References: <20190207012214.5060-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,97 +23,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/16] include: Import io-64-nonatomic-*.h from Linux
+Subject: [PATCH 04/16] net/e1000: Convert e1000_transmit to use
+ dma_map_single()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Import io-64-nonatomic-*.h from Linux to be able to use various
-non-atomic 64-bit I/O accessors.
+Convert e1000_transmit to use dma_map_single()/dma_unmap_single(),
+which is more apporpirate in this case, since it will account for
+phys/virtual address difference as well as allow us to check for DMA
+mapping failure.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- include/io-64-nonatomic-hi-lo.h | 32 ++++++++++++++++++++++++++++++++
- include/io-64-nonatomic-lo-hi.h | 32 ++++++++++++++++++++++++++++++++
- 2 files changed, 64 insertions(+)
- create mode 100644 include/io-64-nonatomic-hi-lo.h
- create mode 100644 include/io-64-nonatomic-lo-hi.h
+ drivers/net/e1000/main.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/include/io-64-nonatomic-hi-lo.h b/include/io-64-nonatomic-hi-lo.h
-new file mode 100644
-index 000000000..3393e6317
---- /dev/null
-+++ b/include/io-64-nonatomic-hi-lo.h
-@@ -0,0 +1,32 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_IO_64_NONATOMIC_HI_LO_H_
-+#define _LINUX_IO_64_NONATOMIC_HI_LO_H_
+diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
+index 7358763f9..5ab4eb3fd 100644
+--- a/drivers/net/e1000/main.c
++++ b/drivers/net/e1000/main.c
+@@ -36,11 +36,6 @@ tested on both gig copper and gig fiber boards
+ #include <dma.h>
+ #include "e1000.h"
+ 
+-static u32 inline virt_to_bus(struct pci_dev *pdev, void *adr)
+-{
+-	return (u32)adr;
+-}
+-
+ #define PCI_VENDOR_ID_INTEL	0x8086
+ 
+ 
+@@ -3420,15 +3415,20 @@ static int e1000_transmit(struct eth_device *edev, void *txpacket, int length)
+ 	struct e1000_hw *hw = edev->priv;
+ 	volatile struct e1000_tx_desc *txp;
+ 	uint64_t to;
++	dma_addr_t dma;
++	int ret = 0;
+ 
+ 	txp = hw->tx_base + hw->tx_tail;
+ 	hw->tx_tail = (hw->tx_tail + 1) % 8;
+ 
+-	txp->buffer_addr = cpu_to_le64(virt_to_bus(hw->pdev, txpacket));
+ 	txp->lower.data = cpu_to_le32(hw->txd_cmd | length);
+ 	txp->upper.data = 0;
+ 
+-	dma_sync_single_for_device((unsigned long)txpacket, length, DMA_TO_DEVICE);
++	dma = dma_map_single(hw->dev, txpacket, length, DMA_TO_DEVICE);
++	if (dma_mapping_error(hw->dev, dma))
++		return -EFAULT;
 +
-+#include <io.h>
++	txp->buffer_addr = cpu_to_le64(dma);
+ 
+ 	e1000_write_reg(hw, E1000_TDT, hw->tx_tail);
+ 
+@@ -3440,11 +3440,14 @@ static int e1000_transmit(struct eth_device *edev, void *txpacket, int length)
+ 			break;
+ 		if (is_timeout(to, MSECOND)) {
+ 			dev_dbg(hw->dev, "e1000: tx timeout\n");
+-			return -ETIMEDOUT;
++			ret = -ETIMEDOUT;
++			break;
+ 		}
+ 	}
+ 
+-	return 0;
++	dma_unmap_single(hw->dev, dma, length, DMA_TO_DEVICE);
 +
-+static inline __u64 hi_lo_readq(const volatile void __iomem *addr)
-+{
-+	const volatile u32 __iomem *p = addr;
-+	u32 low, high;
-+
-+	high = readl(p + 1);
-+	low = readl(p);
-+
-+	return low + ((u64)high << 32);
-+}
-+
-+static inline void hi_lo_writeq(__u64 val, volatile void __iomem *addr)
-+{
-+	writel(val >> 32, addr + 4);
-+	writel(val, addr);
-+}
-+
-+#ifndef readq
-+#define readq hi_lo_readq
-+#endif
-+
-+#ifndef writeq
-+#define writeq hi_lo_writeq
-+#endif
-+
-+#endif	/* _LINUX_IO_64_NONATOMIC_HI_LO_H_ */
-diff --git a/include/io-64-nonatomic-lo-hi.h b/include/io-64-nonatomic-lo-hi.h
-new file mode 100644
-index 000000000..62b402279
---- /dev/null
-+++ b/include/io-64-nonatomic-lo-hi.h
-@@ -0,0 +1,32 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_IO_64_NONATOMIC_LO_HI_H_
-+#define _LINUX_IO_64_NONATOMIC_LO_HI_H_
-+
-+#include <io.h>
-+
-+static inline __u64 lo_hi_readq(const volatile void __iomem *addr)
-+{
-+	const volatile u32 __iomem *p = addr;
-+	u32 low, high;
-+
-+	low = readl(p);
-+	high = readl(p + 1);
-+
-+	return low + ((u64)high << 32);
-+}
-+
-+static inline void lo_hi_writeq(__u64 val, volatile void __iomem *addr)
-+{
-+	writel(val, addr);
-+	writel(val >> 32, addr + 4);
-+}
-+
-+#ifndef readq
-+#define readq lo_hi_readq
-+#endif
-+
-+#ifndef writeq
-+#define writeq lo_hi_writeq
-+#endif
-+
-+#endif	/* _LINUX_IO_64_NONATOMIC_LO_HI_H_ */
++	return ret;
+ }
+ 
+ static void e1000_disable(struct eth_device *edev)
 -- 
 2.20.1
 
