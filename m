@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from calrissian.rohieb.name ([81.20.132.56] helo=rohieb.name)
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1grsKr-0005iq-Rp
- for barebox@lists.infradead.org; Thu, 07 Feb 2019 22:40:00 +0000
-From: Roland Hieber <rohieb@rohieb.name>
-Date: Thu,  7 Feb 2019 23:39:02 +0100
-Message-Id: <20190207223906.24394-2-rohieb@rohieb.name>
-In-Reply-To: <20190207223906.24394-1-rohieb@rohieb.name>
+Received: from mout.gmx.net ([212.227.17.22])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1grz1i-0003Eq-NF
+ for barebox@lists.infradead.org; Fri, 08 Feb 2019 05:48:41 +0000
 References: <20190207223906.24394-1-rohieb@rohieb.name>
+From: Oleksij Rempel <linux@rempel-privat.de>
+Message-ID: <068ce15e-1a72-9b02-2b1f-40a5d32523a0@rempel-privat.de>
+Date: Fri, 8 Feb 2019 06:48:26 +0100
 MIME-Version: 1.0
+In-Reply-To: <20190207223906.24394-1-rohieb@rohieb.name>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,351 +17,622 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1870203868965598704=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] include: add SPDX GPL-2.0-or-later license tags where
+Subject: Re: [PATCH 1/6] include: add SPDX GPL-2.0-only license tags where
  applicable
-To: barebox@lists.infradead.org
-Cc: rhi@pengutronix.de, Roland Hieber <rohieb@rohieb.name>
+To: Roland Hieber <rohieb@rohieb.name>, barebox@lists.infradead.org
+Cc: rhi@pengutronix.de
 
-U2lnbmVkLW9mZi1ieTogUm9sYW5kIEhpZWJlciA8cm9oaWViQHJvaGllYi5uYW1lPgotLS0KIGlu
-Y2x1ZGUvYXRhX2RyaXZlLmggICAgfCAxICsKIGluY2x1ZGUvY29tbWFuZC5oICAgICAgfCAxICsK
-IGluY2x1ZGUvY29tbW9uLmggICAgICAgfCAxICsKIGluY2x1ZGUvY29uc29sZS5oICAgICAgfCAx
-ICsKIGluY2x1ZGUvZGVidWdfbGwuaCAgICAgfCAxICsKIGluY2x1ZGUvZGlza3MuaCAgICAgICAg
-fCAxICsKIGluY2x1ZGUvZHJpdmVyLmggICAgICAgfCAxICsKIGluY2x1ZGUvZW52aXJvbm1lbnQu
-aCAgfCAxICsKIGluY2x1ZGUvaGFiLmggICAgICAgICAgfCAxICsKIGluY2x1ZGUvaW1hZ2UtZml0
-LmggICAgfCAxICsKIGluY2x1ZGUvaW1hZ2UuaCAgICAgICAgfCAxICsKIGluY2x1ZGUvaW50X3Nx
-cnQuaCAgICAgfCAxICsKIGluY2x1ZGUvanRhZy5oICAgICAgICAgfCAxICsKIGluY2x1ZGUva2Zp
-Zm8uaCAgICAgICAgfCAxICsKIGluY2x1ZGUvbWNpLmggICAgICAgICAgfCAxICsKIGluY2x1ZGUv
-b2ZfZ3Bpby5oICAgICAgfCAxICsKIGluY2x1ZGUvcGFydC5oICAgICAgICAgfCAxICsKIGluY2x1
-ZGUvcmVzZXRfc291cmNlLmggfCAxICsKIGluY2x1ZGUvcnRjLmggICAgICAgICAgfCAxICsKIGlu
-Y2x1ZGUvc19yZWNvcmQuaCAgICAgfCAxICsKIGluY2x1ZGUvc2NzaS5oICAgICAgICAgfCAxICsK
-IGluY2x1ZGUvc3RtcC1kZXZpY2UuaCAgfCAxICsKIGluY2x1ZGUvd2F0Y2hkb2cuaCAgICAgfCAx
-ICsKIDIzIGZpbGVzIGNoYW5nZWQsIDIzIGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS9pbmNs
-dWRlL2F0YV9kcml2ZS5oIGIvaW5jbHVkZS9hdGFfZHJpdmUuaAppbmRleCAxMTY4NWVlZjEyLi42
-NzQ2NGFiOGRlIDEwMDY0NAotLS0gYS9pbmNsdWRlL2F0YV9kcml2ZS5oCisrKyBiL2luY2x1ZGUv
-YXRhX2RyaXZlLmgKQEAgLTEsMTUgKzEsMTYgQEAKKy8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVy
-OiBHUEwtMi4wLW9yLWxhdGVyICovCiAvKgogICogU2VlIGZpbGUgQ1JFRElUUyBmb3IgbGlzdCBv
-ZiBwZW9wbGUgd2hvIGNvbnRyaWJ1dGVkIHRvIHRoaXMKICAqIHByb2plY3QuCiAgKgogICogVGhp
-cyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9v
-cgogICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGlj
-IExpY2Vuc2UgYXMKICAqIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9u
-OyBlaXRoZXIgdmVyc2lvbiAyIG9mCiAgKiB0aGUgTGljZW5zZSwgb3IgKGF0IHlvdXIgb3B0aW9u
-KSBhbnkgbGF0ZXIgdmVyc2lvbi4KICAqCiAgKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQg
-aW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKICAqIGJ1dCBXSVRIT1VUIEFOWSBX
-QVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCiAgKiBNRVJDSEFO
-VEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCiAg
-KiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgogICovCiAKZGlm
-ZiAtLWdpdCBhL2luY2x1ZGUvY29tbWFuZC5oIGIvaW5jbHVkZS9jb21tYW5kLmgKaW5kZXggMGFm
-YzVjNzU1MC4uY2JhZWI3NGQ0ZiAxMDA2NDQKLS0tIGEvaW5jbHVkZS9jb21tYW5kLmgKKysrIGIv
-aW5jbHVkZS9jb21tYW5kLmgKQEAgLTEsMTUgKzEsMTYgQEAKKy8qIFNQRFgtTGljZW5zZS1JZGVu
-dGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyICovCiAvKgogICogKEMpIENvcHlyaWdodCAyMDAwCiAg
-KiBXb2xmZ2FuZyBEZW5rLCBERU5YIFNvZnR3YXJlIEVuZ2luZWVyaW5nLCB3ZEBkZW54LmRlLgog
-ICoKICAqIFNlZSBmaWxlIENSRURJVFMgZm9yIGxpc3Qgb2YgcGVvcGxlIHdobyBjb250cmlidXRl
-ZCB0byB0aGlzCiAgKiBwcm9qZWN0LgogICoKICAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3
-YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IKICAqIG1vZGlmeSBpdCB1bmRlciB0
-aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzCiAgKiBwdWJsaXNo
-ZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZgog
-ICogdGhlIExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCiAg
-KgogICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2ls
-bCBiZSB1c2VmdWwsCiAgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0
-aGUgaW1wbGllZCB3YXJyYW50eSBvZgogICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9S
-IEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9jb21t
-b24uaCBiL2luY2x1ZGUvY29tbW9uLmgKaW5kZXggMTFkMjZjYjNkYi4uYTZmMzk4N2M1MiAxMDA2
-NDQKLS0tIGEvaW5jbHVkZS9jb21tb24uaAorKysgYi9pbmNsdWRlL2NvbW1vbi5oCkBAIC0xLDE1
-ICsxLDE2IEBACisvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAq
-LwogLyoKICAqIChDKSBDb3B5cmlnaHQgMjAwMC0yMDA0CiAgKiBXb2xmZ2FuZyBEZW5rLCBERU5Y
-IFNvZnR3YXJlIEVuZ2luZWVyaW5nLCB3ZEBkZW54LmRlLgogICoKICAqIFNlZSBmaWxlIENSRURJ
-VFMgZm9yIGxpc3Qgb2YgcGVvcGxlIHdobyBjb250cmlidXRlZCB0byB0aGlzCiAgKiBwcm9qZWN0
-LgogICoKICAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJp
-YnV0ZSBpdCBhbmQvb3IKICAqIG1vZGlmeSBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBH
-ZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzCiAgKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdh
-cmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZgogICogdGhlIExpY2Vuc2UsIG9yIChh
-dCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCiAgKgogICogVGhpcyBwcm9ncmFtIGlz
-IGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCiAgKiBidXQg
-V0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBv
-ZgogICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NF
-LgkgU2VlIHRoZQpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9jb25zb2xlLmggYi9pbmNsdWRlL2NvbnNv
-bGUuaAppbmRleCA2NzM5MjEzMzFkLi5mYmNlYTA2ZjFkIDEwMDY0NAotLS0gYS9pbmNsdWRlL2Nv
-bnNvbGUuaAorKysgYi9pbmNsdWRlL2NvbnNvbGUuaApAQCAtMSwxNSArMSwxNiBAQAorLyogU1BE
-WC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb3ItbGF0ZXIgKi8KIC8qCiAgKiAoQykgQ29w
-eXJpZ2h0IDIwMDAKICAqIFBhb2xvIFNjYWZmYXJkaSwgQUlSVkVOVCBTQU0gcy5wLmEgLSBSSU1J
-TkkoSVRBTFkpLCBhcnNlbmlvQHRpbi5pdAogICoKICAqIFNlZSBmaWxlIENSRURJVFMgZm9yIGxp
-c3Qgb2YgcGVvcGxlIHdobyBjb250cmlidXRlZCB0byB0aGlzCiAgKiBwcm9qZWN0LgogICoKICAq
-IFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBh
-bmQvb3IKICAqIG1vZGlmeSBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1
-YmxpYyBMaWNlbnNlIGFzCiAgKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRh
-dGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZgogICogdGhlIExpY2Vuc2UsIG9yIChhdCB5b3VyIG9w
-dGlvbikgYW55IGxhdGVyIHZlcnNpb24uCiAgKgogICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1
-dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCiAgKiBidXQgV0lUSE9VVCBB
-TlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgogICogTUVS
-Q0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRo
-ZQpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9kZWJ1Z19sbC5oIGIvaW5jbHVkZS9kZWJ1Z19sbC5oCmlu
-ZGV4IDUwNDc1MTYzOTkuLmZiODUyMDU2MzYgMTAwNjQ0Ci0tLSBhL2luY2x1ZGUvZGVidWdfbGwu
-aAorKysgYi9pbmNsdWRlL2RlYnVnX2xsLmgKQEAgLTEsMTUgKzEsMTYgQEAKKy8qIFNQRFgtTGlj
-ZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyICovCiAvKgogICogZGVidWdfbGwuaAog
-ICoKICAqICB3cml0dGVuIGJ5IE1hcmMgU2luZ2VyCiAgKiAgMTIgRmViIDIwMDUKICAqCiAgKiAg
-Q29weXJpZ2h0IChDKSAyMDA1IE1hcmMgU2luZ2VyCiAgKgogICogVGhpcyBwcm9ncmFtIGlzIGZy
-ZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vcgogICogbW9kaWZ5IGl0
-IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMKICAq
-IHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lv
-biAyIG9mIHRoZQogICogTGljZW5zZSwgb3IgKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVy
-c2lvbi4KICAqCiAgKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhh
-dCBpdCB3aWxsIGJlIHVzZWZ1bCwgYnV0CiAgKiBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91
-dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCmRpZmYgLS1naXQgYS9pbmNsdWRlL2Rpc2tz
-LmggYi9pbmNsdWRlL2Rpc2tzLmgKaW5kZXggOTkzMjc1MGEyNC4uZDVhMWEzODYxNCAxMDA2NDQK
-LS0tIGEvaW5jbHVkZS9kaXNrcy5oCisrKyBiL2luY2x1ZGUvZGlza3MuaApAQCAtMSwxNSArMSwx
-NiBAQAorLyogU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb3ItbGF0ZXIgKi8KIC8q
-CiAgKiBTZWUgZmlsZSBDUkVESVRTIGZvciBsaXN0IG9mIHBlb3BsZSB3aG8gY29udHJpYnV0ZWQg
-dG8gdGhpcwogICogcHJvamVjdC4KICAqCiAgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2Fy
-ZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29yCiAgKiBtb2RpZnkgaXQgdW5kZXIgdGhl
-IHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcwogICogcHVibGlzaGVk
-IGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb247IGVpdGhlciB2ZXJzaW9uIDIgb2YKICAq
-IHRoZSBMaWNlbnNlLCBvciAoYXQgeW91ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgogICoK
-ICAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwg
-YmUgdXNlZnVsLAogICogYnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhl
-IGltcGxpZWQgd2FycmFudHkgb2YKICAqIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBB
-IFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0aGUKICAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNl
-bnNlIGZvciBtb3JlIGRldGFpbHMuCiAgKi8KIApkaWZmIC0tZ2l0IGEvaW5jbHVkZS9kcml2ZXIu
-aCBiL2luY2x1ZGUvZHJpdmVyLmgKaW5kZXggN2RhMTg0ZDNhYi4uNWEwMDZiODJjNiAxMDA2NDQK
-LS0tIGEvaW5jbHVkZS9kcml2ZXIuaAorKysgYi9pbmNsdWRlL2RyaXZlci5oCkBAIC0xLDE1ICsx
-LDE2IEBACisvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAqLwog
-LyoKICAqIChDKSAyMDA3IFBlbmd1dHJvbml4LCBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0
-cm9uaXguZGU+CiAgKgogICogU2VlIGZpbGUgQ1JFRElUUyBmb3IgbGlzdCBvZiBwZW9wbGUgd2hv
-IGNvbnRyaWJ1dGVkIHRvIHRoaXMKICAqIHByb2plY3QuCiAgKgogICogVGhpcyBwcm9ncmFtIGlz
-IGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vcgogICogbW9kaWZ5
-IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMK
-ICAqIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVy
-c2lvbiAyIG9mCiAgKiB0aGUgTGljZW5zZSwgb3IgKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIg
-dmVyc2lvbi4KICAqCiAgKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUg
-dGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKICAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0
-aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCiAgKiBNRVJDSEFOVEFCSUxJVFkgb3Ig
-RklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCiAgKiBHTlUgR2VuZXJh
-bCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9l
-bnZpcm9ubWVudC5oIGIvaW5jbHVkZS9lbnZpcm9ubWVudC5oCmluZGV4IDUyZWFmZTk4ODIuLjU0
-MDlhYTFlYzAgMTAwNjQ0Ci0tLSBhL2luY2x1ZGUvZW52aXJvbm1lbnQuaAorKysgYi9pbmNsdWRl
-L2Vudmlyb25tZW50LmgKQEAgLTEsMTUgKzEsMTYgQEAKKy8qIFNQRFgtTGljZW5zZS1JZGVudGlm
-aWVyOiBHUEwtMi4wLW9yLWxhdGVyICovCiAvKgogICogKEMpIENvcHlyaWdodCAyMDAyCiAgKiBX
-b2xmZ2FuZyBEZW5rLCBERU5YIFNvZnR3YXJlIEVuZ2luZWVyaW5nLCB3ZEBkZW54LmRlLgogICoK
-ICAqIFNlZSBmaWxlIENSRURJVFMgZm9yIGxpc3Qgb2YgcGVvcGxlIHdobyBjb250cmlidXRlZCB0
-byB0aGlzCiAgKiBwcm9qZWN0LgogICoKICAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJl
-OyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IKICAqIG1vZGlmeSBpdCB1bmRlciB0aGUg
-dGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzCiAgKiBwdWJsaXNoZWQg
-YnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZgogICog
-dGhlIExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCiAgKgog
-ICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBi
-ZSB1c2VmdWwsCiAgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUg
-aW1wbGllZCB3YXJyYW50eSBvZgogICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEg
-UEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9oYWIuaCBi
-L2luY2x1ZGUvaGFiLmgKaW5kZXggYWJmY2UxODczNi4uNDk5NzZjOGU3NyAxMDA2NDQKLS0tIGEv
-aW5jbHVkZS9oYWIuaAorKysgYi9pbmNsdWRlL2hhYi5oCkBAIC0xLDE1ICsxLDE2IEBACisvKiBT
-UERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAqLwogLyoKICAqIENvcHly
-aWdodCAoQykgMjAxNCwgMjAxNSBNYXJjIEtsZWluZS1CdWRkZSA8bWtsQHBlbmd1dHJvbml4LmRl
-PgogICoKICAqIFNlZSBmaWxlIENSRURJVFMgZm9yIGxpc3Qgb2YgcGVvcGxlIHdobyBjb250cmli
-dXRlZCB0byB0aGlzCiAgKiBwcm9qZWN0LgogICoKICAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNv
-ZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IKICAqIG1vZGlmeSBpdCB1bmRl
-ciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzCiAgKiBwdWJs
-aXNoZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBv
-ZgogICogdGhlIExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24u
-CiAgKgogICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQg
-d2lsbCBiZSB1c2VmdWwsCiAgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZl
-biB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgogICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1Mg
-Rk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQogICogR05VIEdlbmVyYWwgUHVibGlj
-IExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KZGlmZiAtLWdpdCBhL2luY2x1ZGUvaW1hZ2UtZml0
-LmggYi9pbmNsdWRlL2ltYWdlLWZpdC5oCmluZGV4IGZjMDg4M2I1ZGMuLmIyZmEzNmQ4MWUgMTAw
-NjQ0Ci0tLSBhL2luY2x1ZGUvaW1hZ2UtZml0LmgKKysrIGIvaW5jbHVkZS9pbWFnZS1maXQuaApA
-QCAtMSwxNSArMSwxNiBAQAorLyogU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb3It
-bGF0ZXIgKi8KIC8qCiAgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiBy
-ZWRpc3RyaWJ1dGUgaXQgYW5kL29yIG1vZGlmeQogICogaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRo
-ZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcyBwdWJsaXNoZWQgYnkKICAqIHRoZSBGcmVl
-IFNvZnR3YXJlIEZvdW5kYXRpb247IGVpdGhlciB2ZXJzaW9uIDIgb2YgdGhlIExpY2Vuc2UsIG9y
-CiAgKiAoYXQgeW91ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgogICoKICAqIFRoaXMgcHJv
-Z3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAog
-ICogYnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2Fy
-cmFudHkgb2YKICAqIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIg
-UFVSUE9TRS4gIFNlZSB0aGUKICAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBtb3Jl
-IGRldGFpbHMuCiAgKgogICogWW91IHNob3VsZCBoYXZlIHJlY2VpdmVkIGEgY29weSBvZiB0aGUg
-R05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UKICAqIGFsb25nIHdpdGggdGhpcyBwcm9ncmFtOyBp
-ZiBub3QsIHNlZSA8aHR0cDovL3d3dy5nbnUub3JnL2xpY2Vuc2VzLz4uCiAgKgogICogQ29weXJp
-Z2h0IChDKSBKYW4gTMO8YmJlLCAyMDE0CmRpZmYgLS1naXQgYS9pbmNsdWRlL2ltYWdlLmggYi9p
-bmNsdWRlL2ltYWdlLmgKaW5kZXggYWRkOWM4NTg3NC4uNDUzOGEwNjhiNCAxMDA2NDQKLS0tIGEv
-aW5jbHVkZS9pbWFnZS5oCisrKyBiL2luY2x1ZGUvaW1hZ2UuaApAQCAtMSwxNSArMSwxNiBAQAor
-LyogU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb3ItbGF0ZXIgKi8KIC8qCiAgKiAo
-QykgQ29weXJpZ2h0IDIwMDAtMjAwNQogICogV29sZmdhbmcgRGVuaywgREVOWCBTb2Z0d2FyZSBF
-bmdpbmVlcmluZywgd2RAZGVueC5kZS4KICAqCiAgKiBTZWUgZmlsZSBDUkVESVRTIGZvciBsaXN0
-IG9mIHBlb3BsZSB3aG8gY29udHJpYnV0ZWQgdG8gdGhpcwogICogcHJvamVjdC4KICAqCiAgKiBU
-aGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5k
-L29yCiAgKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJs
-aWMgTGljZW5zZSBhcwogICogcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRp
-b247IGVpdGhlciB2ZXJzaW9uIDIgb2YKICAqIHRoZSBMaWNlbnNlLCBvciAoYXQgeW91ciBvcHRp
-b24pIGFueSBsYXRlciB2ZXJzaW9uLgogICoKICAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRl
-ZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAogICogYnV0IFdJVEhPVVQgQU5Z
-IFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YKICAqIE1FUkNI
-QU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4JIFNlZSB0aGUK
-ZGlmZiAtLWdpdCBhL2luY2x1ZGUvaW50X3NxcnQuaCBiL2luY2x1ZGUvaW50X3NxcnQuaAppbmRl
-eCA1NWZiNGZiZTY2Li4xOTJkM2Q2NDYxIDEwMDY0NAotLS0gYS9pbmNsdWRlL2ludF9zcXJ0LmgK
-KysrIGIvaW5jbHVkZS9pbnRfc3FydC5oCkBAIC0xLDE1ICsxLDE2IEBACisvKiBTUERYLUxpY2Vu
-c2UtSWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAqLwogLyoKICAqIFNlZSBmaWxlIENSRURJ
-VFMgZm9yIGxpc3Qgb2YgcGVvcGxlIHdobyBjb250cmlidXRlZCB0byB0aGlzCiAgKiBwcm9qZWN0
-LgogICoKICAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJp
-YnV0ZSBpdCBhbmQvb3IKICAqIG1vZGlmeSBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBH
-ZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzCiAgKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdh
-cmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZgogICogdGhlIExpY2Vuc2UsIG9yIChh
-dCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCiAgKgogICogVGhpcyBwcm9ncmFtIGlz
-IGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCiAgKiBidXQg
-V0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBv
-ZgogICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NF
-LiAgU2VlIHRoZQogICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWls
-cy4KICAqCiAgKi8KZGlmZiAtLWdpdCBhL2luY2x1ZGUvanRhZy5oIGIvaW5jbHVkZS9qdGFnLmgK
-aW5kZXggMjZjOTVmYjMwNy4uYzZlM2U5ZDQ3ZSAxMDA2NDQKLS0tIGEvaW5jbHVkZS9qdGFnLmgK
-KysrIGIvaW5jbHVkZS9qdGFnLmgKQEAgLTEsMTUgKzEsMTYgQEAKKy8qIFNQRFgtTGljZW5zZS1J
-ZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyICovCiAvKgogICogaW5jbHVkZS9saW51eC9qdGFn
-LmgKICAqCiAgKiBXcml0dGVuIEF1ZyAyMDA5IGJ5IERhdmlkZSBSaXp6byA8ZWxwYS5yaXp6b0Bn
-bWFpbC5jb20+CiAgKgogICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4g
-cmVkaXN0cmlidXRlIGl0IGFuZC9vciBtb2RpZnkKICAqIGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0
-aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMgcHVibGlzaGVkIGJ5CiAgKiB0aGUgRnJl
-ZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mIHRoZSBMaWNlbnNlLCBv
-cgogICogKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4KICAqCiAgKiBUaGlzIHBy
-b2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwK
-ICAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdh
-cnJhbnR5IG9mCiAgKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFS
-IFBVUlBPU0UuICBTZWUgdGhlCiAgKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9y
-ZSBkZXRhaWxzLgogICoKZGlmZiAtLWdpdCBhL2luY2x1ZGUva2ZpZm8uaCBiL2luY2x1ZGUva2Zp
-Zm8uaAppbmRleCAyNTg4MGY0NjI2Li42NmQwYTRkYTFhIDEwMDY0NAotLS0gYS9pbmNsdWRlL2tm
-aWZvLmgKKysrIGIvaW5jbHVkZS9rZmlmby5oCkBAIC0xLDE1ICsxLDE2IEBACisvKiBTUERYLUxp
-Y2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAqLwogLyoKICAqIEEgc2ltcGxlIGtl
-cm5lbCBGSUZPIGltcGxlbWVudGF0aW9uLgogICoKICAqIENvcHlyaWdodCAoQykgMjAwNCBTdGVs
-aWFuIFBvcCA8c3RlbGlhbkBwb3BpZXMubmV0PgogICoKICAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVl
-IHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IgbW9kaWZ5CiAgKiBpdCB1
-bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzIHB1Ymxp
-c2hlZCBieQogICogdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24g
-MiBvZiB0aGUgTGljZW5zZSwgb3IKICAqIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNp
-b24uCiAgKgogICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQg
-aXQgd2lsbCBiZSB1c2VmdWwsCiAgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQg
-ZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgogICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5F
-U1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQogICogR05VIEdlbmVyYWwgUHVi
-bGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KICAqLwpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9t
-Y2kuaCBiL2luY2x1ZGUvbWNpLmgKaW5kZXggMDcyMDA4ZWY5ZC4uM2QxOGQ0ZjgxNSAxMDA2NDQK
-LS0tIGEvaW5jbHVkZS9tY2kuaAorKysgYi9pbmNsdWRlL21jaS5oCkBAIC0xLDE1ICsxLDE2IEBA
-CisvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAqLwogLyoKICAq
-IChDKSBDb3B5cmlnaHQgMjAxMCBKdWVyZ2VuIEJlaXNlcnQsIFBlbmd1dHJvbml4CiAgKgogICog
-VGhpcyBjb2RlIGlzIHBhcnRpYWxseSBiYXNlZCBvbiB1LWJvb3QgY29kZToKICAqCiAgKiBDb3B5
-cmlnaHQgMjAwOCwgRnJlZXNjYWxlIFNlbWljb25kdWN0b3IsIEluYwogICogQW5keSBGbGVtaW5n
-CiAgKgogICogQmFzZWQgKGxvb3NlbHkpIG9uIHRoZSBMaW51eCBjb2RlCiAgKgogICogU2VlIGZp
-bGUgQ1JFRElUUyBmb3IgbGlzdCBvZiBwZW9wbGUgd2hvIGNvbnRyaWJ1dGVkIHRvIHRoaXMKICAq
-IHByb2plY3QuCiAgKgogICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4g
-cmVkaXN0cmlidXRlIGl0IGFuZC9vcgogICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0
-aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMKZGlmZiAtLWdpdCBhL2luY2x1ZGUvb2Zf
-Z3Bpby5oIGIvaW5jbHVkZS9vZl9ncGlvLmgKaW5kZXggOTVhNDU0YzY4My4uMDc2YWUzM2Q1MyAx
-MDA2NDQKLS0tIGEvaW5jbHVkZS9vZl9ncGlvLmgKKysrIGIvaW5jbHVkZS9vZl9ncGlvLmgKQEAg
-LTEsMTUgKzEsMTYgQEAKKy8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxh
-dGVyICovCiAvKgogICogT0YgaGVscGVycyBmb3IgdGhlIEdQSU8gQVBJCiAgKgogICogYmFzZWQg
-b24gTGludXggT0ZfR1BJTyBBUEkKICAqCiAgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2Fy
-ZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29yIG1vZGlmeQogICogaXQgdW5kZXIgdGhl
-IHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcyBwdWJsaXNoZWQgYnkK
-ICAqIHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb247IGVpdGhlciB2ZXJzaW9uIDIgb2YgdGhl
-IExpY2Vuc2UsIG9yCiAgKiAoYXQgeW91ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgogICov
-CiAKICNpZm5kZWYgX19PRl9HUElPX0gKICNkZWZpbmUgX19PRl9HUElPX0gKIAogLyoKZGlmZiAt
-LWdpdCBhL2luY2x1ZGUvcGFydC5oIGIvaW5jbHVkZS9wYXJ0LmgKaW5kZXggZDRkNDBmNmVjOS4u
-Yjg4Nzk2MGUwZSAxMDA2NDQKLS0tIGEvaW5jbHVkZS9wYXJ0LmgKKysrIGIvaW5jbHVkZS9wYXJ0
-LmgKQEAgLTEsMTUgKzEsMTYgQEAKKy8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4w
-LW9yLWxhdGVyICovCiAvKgogICogKEMpIENvcHlyaWdodCAyMDAwLTIwMDQKICAqIFdvbGZnYW5n
-IERlbmssIERFTlggU29mdHdhcmUgRW5naW5lZXJpbmcsIHdkQGRlbnguZGUuCiAgKgogICogU2Vl
-IGZpbGUgQ1JFRElUUyBmb3IgbGlzdCBvZiBwZW9wbGUgd2hvIGNvbnRyaWJ1dGVkIHRvIHRoaXMK
-ICAqIHByb2plY3QuCiAgKgogICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBj
-YW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vcgogICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBv
-ZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMKICAqIHB1Ymxpc2hlZCBieSB0aGUg
-RnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mCiAgKiB0aGUgTGlj
-ZW5zZSwgb3IgKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4KICAqCiAgKiBUaGlz
-IHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1
-bCwKICAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVk
-IHdhcnJhbnR5IG9mCiAgKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNV
-TEFSIFBVUlBPU0UuCSBTZWUgdGhlCmRpZmYgLS1naXQgYS9pbmNsdWRlL3Jlc2V0X3NvdXJjZS5o
-IGIvaW5jbHVkZS9yZXNldF9zb3VyY2UuaAppbmRleCA4NmU0MTVhYmNmLi41ZDkyN2I3NGM3IDEw
-MDY0NAotLS0gYS9pbmNsdWRlL3Jlc2V0X3NvdXJjZS5oCisrKyBiL2luY2x1ZGUvcmVzZXRfc291
-cmNlLmgKQEAgLTEsMTUgKzEsMTYgQEAKKy8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwt
-Mi4wLW9yLWxhdGVyICovCiAvKgogICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlv
-dSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vcgogICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0ZXJt
-cyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMKICAqIHB1Ymxpc2hlZCBieSB0
-aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mCiAgKiB0aGUg
-TGljZW5zZSwgb3IgKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4KICAqCiAgKiBU
-aGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVz
-ZWZ1bCwKICAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBs
-aWVkIHdhcnJhbnR5IG9mCiAgKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJU
-SUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCiAgKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBm
-b3IgbW9yZSBkZXRhaWxzLgogICovCiAKICNpZm5kZWYgX19JTkNMVURFX1JFU0VUX1NPVVJDRV9I
-CiAjIGRlZmluZSBfX0lOQ0xVREVfUkVTRVRfU09VUkNFX0gKIApkaWZmIC0tZ2l0IGEvaW5jbHVk
-ZS9ydGMuaCBiL2luY2x1ZGUvcnRjLmgKaW5kZXggNjAwZGM0NmM0MS4uN2JkZTIzYTg2NCAxMDA2
-NDQKLS0tIGEvaW5jbHVkZS9ydGMuaAorKysgYi9pbmNsdWRlL3J0Yy5oCkBAIC0xLDE1ICsxLDE2
-IEBACisvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAqLwogLyoK
-ICAqIChDKSBDb3B5cmlnaHQgMjAwMQogICogV29sZmdhbmcgRGVuaywgREVOWCBTb2Z0d2FyZSBF
-bmdpbmVlcmluZywgd2RAZGVueC5kZS4KICAqCiAgKiBTZWUgZmlsZSBDUkVESVRTIGZvciBsaXN0
-IG9mIHBlb3BsZSB3aG8gY29udHJpYnV0ZWQgdG8gdGhpcwogICogcHJvamVjdC4KICAqCiAgKiBU
-aGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5k
-L29yCiAgKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJs
-aWMgTGljZW5zZSBhcwogICogcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRp
-b247IGVpdGhlciB2ZXJzaW9uIDIgb2YKICAqIHRoZSBMaWNlbnNlLCBvciAoYXQgeW91ciBvcHRp
-b24pIGFueSBsYXRlciB2ZXJzaW9uLgogICoKICAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRl
-ZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAogICogYnV0IFdJVEhPVVQgQU5Z
-IFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YKICAqIE1FUkNI
-QU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0aGUK
-ZGlmZiAtLWdpdCBhL2luY2x1ZGUvc19yZWNvcmQuaCBiL2luY2x1ZGUvc19yZWNvcmQuaAppbmRl
-eCA4NGI0NzE5NTE5Li45NjUwMGYxOGFkIDEwMDY0NAotLS0gYS9pbmNsdWRlL3NfcmVjb3JkLmgK
-KysrIGIvaW5jbHVkZS9zX3JlY29yZC5oCkBAIC0xLDE1ICsxLDE2IEBACisvKiBTUERYLUxpY2Vu
-c2UtSWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAqLwogLyoKICAqIChDKSBDb3B5cmlnaHQg
-MjAwMAogICogV29sZmdhbmcgRGVuaywgREVOWCBTb2Z0d2FyZSBFbmdpbmVlcmluZywgd2RAZGVu
-eC5kZS4KICAqCiAgKiBTZWUgZmlsZSBDUkVESVRTIGZvciBsaXN0IG9mIHBlb3BsZSB3aG8gY29u
-dHJpYnV0ZWQgdG8gdGhpcwogICogcHJvamVjdC4KICAqCiAgKiBUaGlzIHByb2dyYW0gaXMgZnJl
-ZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29yCiAgKiBtb2RpZnkgaXQg
-dW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcwogICog
-cHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb247IGVpdGhlciB2ZXJzaW9u
-IDIgb2YKICAqIHRoZSBMaWNlbnNlLCBvciAoYXQgeW91ciBvcHRpb24pIGFueSBsYXRlciB2ZXJz
-aW9uLgogICoKICAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0
-IGl0IHdpbGwgYmUgdXNlZnVsLAogICogYnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0
-IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YKICAqIE1FUkNIQU5UQUJJTElUWSBvciBGSVRO
-RVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0aGUKZGlmZiAtLWdpdCBhL2luY2x1
-ZGUvc2NzaS5oIGIvaW5jbHVkZS9zY3NpLmgKaW5kZXggMDA3NTBhY2FjOC4uM2I5MTA0YzNkZSAx
-MDA2NDQKLS0tIGEvaW5jbHVkZS9zY3NpLmgKKysrIGIvaW5jbHVkZS9zY3NpLmgKQEAgLTEsMTUg
-KzEsMTYgQEAKKy8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyICov
-CiAvKgogICogKEMpIENvcHlyaWdodCAyMDAxCiAgKiBEZW5pcyBQZXRlciwgTVBMIEFHIFN3aXR6
-ZXJsYW5kCiAgKgogICogU2VlIGZpbGUgQ1JFRElUUyBmb3IgbGlzdCBvZiBwZW9wbGUgd2hvIGNv
-bnRyaWJ1dGVkIHRvIHRoaXMKICAqIHByb2plY3QuCiAgKgogICogVGhpcyBwcm9ncmFtIGlzIGZy
-ZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vcgogICogbW9kaWZ5IGl0
-IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMKICAq
-IHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lv
-biAyIG9mCiAgKiB0aGUgTGljZW5zZSwgb3IgKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVy
-c2lvbi4KICAqCiAgKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhh
-dCBpdCB3aWxsIGJlIHVzZWZ1bCwKICAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91
-dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCiAgKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklU
-TkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCmRpZmYgLS1naXQgYS9pbmNs
-dWRlL3N0bXAtZGV2aWNlLmggYi9pbmNsdWRlL3N0bXAtZGV2aWNlLmgKaW5kZXggOWI1YmVlNDcx
-Mi4uNzJjNGU4YjE4NSAxMDA2NDQKLS0tIGEvaW5jbHVkZS9zdG1wLWRldmljZS5oCisrKyBiL2lu
-Y2x1ZGUvc3RtcC1kZXZpY2UuaApAQCAtMSwxNSArMSwxNiBAQAorLyogU1BEWC1MaWNlbnNlLUlk
-ZW50aWZpZXI6IEdQTC0yLjAtb3ItbGF0ZXIgKi8KIC8qCiAgKiBiYXNpYyBmdW5jdGlvbnMgZm9y
-IGRldmljZXMgZm9sbG93aW5nIHRoZSAic3RtcCIgc3R5bGUgcmVnaXN0ZXIgbGF5b3V0CiAgKgog
-ICogQ29weXJpZ2h0IChDKSAyMDExIFdvbGZyYW0gU2FuZywgUGVuZ3V0cm9uaXggZS5LLgogICoK
-ICAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBp
-dCBhbmQvb3IgbW9kaWZ5CiAgKiBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFs
-IFB1YmxpYyBMaWNlbnNlIGFzIHB1Ymxpc2hlZCBieQogICogdGhlIEZyZWUgU29mdHdhcmUgRm91
-bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZiB0aGUgTGljZW5zZSwgb3IKICAqIChhdCB5b3Vy
-IG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCiAgKi8KIAogI2lmbmRlZiBfX1NUTVBfREVWSUNF
-X0hfXwogI2RlZmluZSBfX1NUTVBfREVWSUNFX0hfXwogCiAjaW5jbHVkZSA8bGludXgvY29tcGls
-ZXIuaD4KZGlmZiAtLWdpdCBhL2luY2x1ZGUvd2F0Y2hkb2cuaCBiL2luY2x1ZGUvd2F0Y2hkb2cu
-aAppbmRleCAwZGI0MjYzYTMxLi5lMzM4YmYwZDY1IDEwMDY0NAotLS0gYS9pbmNsdWRlL3dhdGNo
-ZG9nLmgKKysrIGIvaW5jbHVkZS93YXRjaGRvZy5oCkBAIC0xLDE1ICsxLDE2IEBACisvKiBTUERY
-LUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAqLwogLyoKICAqIFRoaXMgcHJv
-Z3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IgbW9k
-aWZ5CiAgKiBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNl
-bnNlIGFzIHB1Ymxpc2hlZCBieQogICogdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0
-aGVyIHZlcnNpb24gMiBvZiB0aGUgTGljZW5zZSwgb3IKICAqIChhdCB5b3VyIG9wdGlvbikgYW55
-IGxhdGVyIHZlcnNpb24uCiAgKgogICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRo
-ZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCiAgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFO
-VFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgogICogTUVSQ0hBTlRBQklM
-SVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQogICogR05V
-IEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KICAqLwogCiAjaWZuZGVm
-IElOQ0xVREVfV0FUQ0hET0dfSAogIyBkZWZpbmUgSU5DTFVERV9XQVRDSERPR19ICiAKLS0gCjIu
-MTkuMgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJh
-cmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
-dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============1870203868965598704==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="qK8mKqTXuqJsVA7lHzY6C7cErGCVszVQJ"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--qK8mKqTXuqJsVA7lHzY6C7cErGCVszVQJ
+Content-Type: multipart/mixed; boundary="fpxWvGmkCL6RkoCFHpqUmH0J3d084E6FQ";
+ protected-headers="v1"
+From: Oleksij Rempel <linux@rempel-privat.de>
+To: Roland Hieber <rohieb@rohieb.name>, barebox@lists.infradead.org
+Cc: rhi@pengutronix.de
+Message-ID: <068ce15e-1a72-9b02-2b1f-40a5d32523a0@rempel-privat.de>
+Subject: Re: [PATCH 1/6] include: add SPDX GPL-2.0-only license tags where
+ applicable
+References: <20190207223906.24394-1-rohieb@rohieb.name>
+In-Reply-To: <20190207223906.24394-1-rohieb@rohieb.name>
+
+--fpxWvGmkCL6RkoCFHpqUmH0J3d084E6FQ
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+
+Hi Roland,
+
+please remove deprecated license headers in same patch.
+
+Am 07.02.19 um 23:39 schrieb Roland Hieber:
+> Interpret "GPLv2" as "GPLv2 only".
+>=20
+> Signed-off-by: Roland Hieber <rohieb@rohieb.name>
+> ---
+>  include/aimage.h            | 1 +
+>  include/aiodev.h            | 1 +
+>  include/binfmt.h            | 1 +
+>  include/bootstrap.h         | 1 +
+>  include/bpkfs.h             | 1 +
+>  include/ddr_spd.h           | 1 +
+>  include/dhcp.h              | 1 +
+>  include/digest.h            | 1 +
+>  include/dma.h               | 1 +
+>  include/firmware.h          | 1 +
+>  include/getopt.h            | 1 +
+>  include/local_mac_address.h | 1 +
+>  include/menu.h              | 1 +
+>  include/of_graph.h          | 1 +
+>  include/of_mtd.h            | 1 +
+>  include/of_net.h            | 1 +
+>  include/password.h          | 1 +
+>  include/pbl.h               | 1 +
+>  include/poller.h            | 1 +
+>  include/shell.h             | 1 +
+>  include/uimagefs.h          | 1 +
+>  include/w1_mac_address.h    | 1 +
+>  include/xymodem.h           | 1 +
+>  23 files changed, 23 insertions(+)
+>=20
+> diff --git a/include/aimage.h b/include/aimage.h
+> index 9702b7d35c..0c7dda39ce 100644
+> --- a/include/aimage.h
+> +++ b/include/aimage.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * (C) Copyright 2011 Jean-Christhophe PLAGNIOL-VILLARD <plagniol@jcro=
+soft.com>
+>   *
+>   * Android boot image
+>   *
+>   * Under GPLv2 only
+>   */
+> =20
+>  #ifndef __AIMAGE_H__
+>  #define __AIMAGE_H__
+> =20
+>  #define BOOT_MAGIC	"ANDROID!"
+>  #define BOOT_MAGIC_SIZE	8
+>  #define BOOT_NAME_SIZE	16
+>  #define BOOT_ARGS_SIZE	512
+> diff --git a/include/aiodev.h b/include/aiodev.h
+> index 5e38b4fab5..5f41554ad1 100644
+> --- a/include/aiodev.h
+> +++ b/include/aiodev.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * core.c - Code implementing core functionality of AIODEV susbsystem
+>   *
+>   * Copyright (c) 2015 Sascha Hauer <s.hauer@pengutronix.de>, Pengutron=
+ix
+>   * Copyright (c) 2015 Zodiac Inflight Innovation
+>   *
+>   * See file CREDITS for list of people who contributed to this
+>   * project.
+>   *
+>   * This program is free software; you can redistribute it and/or modif=
+y
+>   * it under the terms of the GNU General Public License version 2
+>   * as published by the Free Software Foundation.
+>   *
+>   * This program is distributed in the hope that it will be useful,
+>   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> diff --git a/include/binfmt.h b/include/binfmt.h
+> index 46b627e36d..b1fd2a72e8 100644
+> --- a/include/binfmt.h
+> +++ b/include/binfmt.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcros=
+oft.com>
+>   *
+>   * GPL v2
+>   */
+> =20
+>  #ifndef __BFMT_H__
+>  #define __BFMT_H__
+> =20
+>  #include <filetype.h>
+>  #include <linux/list.h>
+> =20
+>  struct binfmt_hook {
+>  	enum filetype type;
+>  	int (*hook)(struct binfmt_hook *b, char *file, int argc, char **argv)=
+;
+> diff --git a/include/bootstrap.h b/include/bootstrap.h
+> index d3ee6be47c..6100f7be2f 100644
+> --- a/include/bootstrap.h
+> +++ b/include/bootstrap.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcroso=
+ft.com>
+>   *
+>   * Under GPLv2
+>   */
+> =20
+>  #ifndef __BOOSTRAP_H__
+>  #define __BOOSTRAP_H__
+> =20
+>  #include <common.h>
+> =20
+>  #define bootstrap_err(fmt, arg...) printf(fmt, ##arg)
+> =20
+>  typedef void (*kernel_entry_func)(int zero, int arch, void *params);
+>  void bootstrap_boot(kernel_entry_func func, bool barebox);
+> diff --git a/include/bpkfs.h b/include/bpkfs.h
+> index ccb56c1419..49fbd5d48e 100644
+> --- a/include/bpkfs.h
+> +++ b/include/bpkfs.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * Copyright (c) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcros=
+oft.com>
+>   *
+>   * under GPLv2 only
+>   */
+> =20
+>  #ifndef __BPKFS_H__
+>  #define __BPKFS_H__
+> =20
+>  #include <linux/types.h>
+>  #include <linux/list.h>
+> =20
+>  #define BPKFS_TYPE_BL	0x50424c00
+>  #define BPKFS_TYPE_BLV	0x50424c56
+>  #define BPKFS_TYPE_DSC	0x44456343
+> diff --git a/include/ddr_spd.h b/include/ddr_spd.h
+> index 01fe73c615..18bb7c2751 100644
+> --- a/include/ddr_spd.h
+> +++ b/include/ddr_spd.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * Copyright 2008 Freescale Semiconductor, Inc.
+>   *
+>   * This program is free software; you can redistribute it and/or
+>   * modify it under the terms of the GNU General Public License
+>   * Version 2 as published by the Free Software Foundation.
+>   */
+> =20
+>  #ifndef _DDR_SPD_H_
+>  #define _DDR_SPD_H_
+> =20
+>  /*
+>   * Format from "JEDEC Appendix X: Serial Presence Detects for DDR2 SDR=
+AM",
+>   * SPD Revision 1.2
+>   */
+> diff --git a/include/dhcp.h b/include/dhcp.h
+> index 0dced8e9fa..55ffb10789 100644
+> --- a/include/dhcp.h
+> +++ b/include/dhcp.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * Copyright (C) 2015 PHYTEC Messtechnik GmbH,
+>   * Author: Wadim Egorov <w.egorov@phytec.de>
+>   *
+>   * This program is free software; you can redistribute it and/or modif=
+y
+>   * it under the terms of the GNU General Public License version 2 as
+>   * published by the Free Software Foundation.
+>   */
+> =20
+>  #ifndef __DHCP_H__
+>  #define __DHCP_H__
+> =20
+>  #define DHCP_DEFAULT_RETRY 20
+> =20
+>  struct dhcp_req_param {
+> diff --git a/include/digest.h b/include/digest.h
+> index a1cdbb2d7a..d001057527 100644
+> --- a/include/digest.h
+> +++ b/include/digest.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * (C) Copyright 2008-2010 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@=
+jcrosoft.com>
+>   *
+>   * See file CREDITS for list of people who contributed to this
+>   * project.
+>   *
+>   * This program is free software; you can redistribute it and/or
+>   * modify it under the terms of the GNU General Public License as
+>   * published by the Free Software Foundation; version 2 of
+>   * the License.
+>   *
+>   * This program is distributed in the hope that it will be useful,
+>   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+>   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+>   * GNU General Public License for more details.
+> diff --git a/include/dma.h b/include/dma.h
+> index 7f95782635..c7ff5b8944 100644
+> --- a/include/dma.h
+> +++ b/include/dma.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * Copyright (C) 2012 by Marc Kleine-Budde <mkl@pengutronix.de>
+>   *
+>   * This file is released under the GPLv2
+>   *
+>   */
+> =20
+>  #ifndef __DMA_H
+>  #define __DMA_H
+> =20
+>  #include <malloc.h>
+>  #include <xfuncs.h>
+> =20
+>  #include <dma-dir.h>
+>  #include <asm/dma.h>
+> diff --git a/include/firmware.h b/include/firmware.h
+> index 284e0f9705..e3b1bd98be 100644
+> --- a/include/firmware.h
+> +++ b/include/firmware.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * Copyright (c) 2013 Juergen Beisert <kernel@pengutronix.de>, Pengutr=
+onix
+>   *
+>   * This program is free software; you can redistribute it and/or modif=
+y
+>   * it under the terms of the GNU General Public License version 2
+>   * as published by the Free Software Foundation.
+>   *
+>   * This program is distributed in the hope that it will be useful,
+>   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+>   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+>   * GNU General Public License for more details.
+>   */
+> =20
+>  #ifndef FIRMWARE_H
+>  #define FIRMWARE_H
+> diff --git a/include/getopt.h b/include/getopt.h
+> index 4f48ba8fd9..b215cfa2b7 100644
+> --- a/include/getopt.h
+> +++ b/include/getopt.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * getopt.h - a simple getopt(3) implementation.
+>   *
+>   * Copyright (c) 2007 Sascha Hauer <s.hauer@pengutronix.de>, Pengutron=
+ix
+>   *
+>   * This program is free software; you can redistribute it and/or modif=
+y
+>   * it under the terms of the GNU General Public License version 2
+>   * as published by the Free Software Foundation.
+>   *
+>   * This program is distributed in the hope that it will be useful,
+>   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+>   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+>   * GNU General Public License for more details.
+>   *
+>   */
+> diff --git a/include/local_mac_address.h b/include/local_mac_address.h
+> index 3d1ec66b1f..12cdf319c8 100644
+> --- a/include/local_mac_address.h
+> +++ b/include/local_mac_address.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcroso=
+ft.com>
+>   *
+>   * Under GPLv2 only
+>   */
+> =20
+>  #ifndef __LOCAL_MAC_ADDRESS_H__
+>  #define __LOCAL_MAC_ADDRESS_H__
+> =20
+>  #include <net.h>
+> =20
+>  /**
+>   * local_mac_address_register - use random number with fix
+>   * OUI provided device to provide an Ethernet address
+>   * @ethid: ethernet device id
+> diff --git a/include/menu.h b/include/menu.h
+> index 2fef064499..97545a1740 100644
+> --- a/include/menu.h
+> +++ b/include/menu.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * (C) Copyright 2009-2010 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@=
+jcrosoft.com>
+>   *
+>   * See file CREDITS for list of people who contributed to this
+>   * project.
+>   *
+>   * This program is free software; you can redistribute it and/or
+>   * modify it under the terms of the GNU General Public License as
+>   * published by the Free Software Foundation; version 2 of
+>   * the License.
+>   *
+>   * This program is distributed in the hope that it will be useful,
+>   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+>   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+>   * GNU General Public License for more details.
+> diff --git a/include/of_graph.h b/include/of_graph.h
+> index 254dd2ca28..7a6c556bf3 100644
+> --- a/include/of_graph.h
+> +++ b/include/of_graph.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * OF graph binding parsing helpers
+>   *
+>   * Copyright (C) 2012 - 2013 Samsung Electronics Co., Ltd.
+>   * Author: Sylwester Nawrocki <s.nawrocki@samsung.com>
+>   *
+>   * Copyright (C) 2012 Renesas Electronics Corp.
+>   * Author: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+>   *
+>   * This program is free software; you can redistribute it and/or modif=
+y
+>   * it under the terms of version 2 of the GNU General Public License a=
+s
+>   * published by the Free Software Foundation.
+>   */
+>  #ifndef __LINUX_OF_GRAPH_H
+>  #define __LINUX_OF_GRAPH_H
+> diff --git a/include/of_mtd.h b/include/of_mtd.h
+> index 9f5b8a2796..9396523a79 100644
+> --- a/include/of_mtd.h
+> +++ b/include/of_mtd.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * Copyright 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.=
+com>
+>   *
+>   * OF helpers for mtd.
+>   *
+>   * This file is released under the GPLv2
+>   */
+> =20
+>  #ifndef __LINUX_OF_MTD_H
+>  #define __LINUX_OF_MTD_H
+> =20
+>  #include <of.h>
+> =20
+>  int of_get_nand_ecc_mode(struct device_node *np);
+>  int of_get_nand_ecc_step_size(struct device_node *np);
+> diff --git a/include/of_net.h b/include/of_net.h
+> index 0f6ef200d5..8b5a1435ad 100644
+> --- a/include/of_net.h
+> +++ b/include/of_net.h
+> @@ -1,14 +1,15 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * OF helpers for network devices.
+>   *
+>   * This file is released under the GPLv2
+>   */
+> =20
+>  #ifndef __LINUX_OF_NET_H
+>  #define __LINUX_OF_NET_H
+> =20
+>  #include <of.h>
+>  int of_get_phy_mode(struct device_node *np);
+>  const void *of_get_mac_address(struct device_node *np);
+> =20
+>  #endif /* __LINUX_OF_NET_H */
+> diff --git a/include/password.h b/include/password.h
+> index 8b9961815f..4b4e7c9497 100644
+> --- a/include/password.h
+> +++ b/include/password.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * Copyright (c) 2008-2010 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@=
+jcrosoft.com>
+>   *
+>   * See file CREDITS for list of people who contributed to this
+>   * project.
+>   *
+>   * This program is free software; you can redistribute it and/or modif=
+y
+>   * it under the terms of the GNU General Public License version 2
+>   * as published by the Free Software Foundation.
+>   *
+>   * This program is distributed in the hope that it will be useful,
+>   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+>   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+>   * GNU General Public License for more details.
+>   *
+> diff --git a/include/pbl.h b/include/pbl.h
+> index 787bd8293f..594d8d0273 100644
+> --- a/include/pbl.h
+> +++ b/include/pbl.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcros=
+oft.com>
+>   *
+>   * Under GPLv2
+>   */
+> =20
+>  #ifndef __PBL_H__
+>  #define __PBL_H__
+> =20
+>  extern unsigned long free_mem_ptr;
+>  extern unsigned long free_mem_end_ptr;
+> =20
+>  void pbl_barebox_uncompress(void *dest, void *compressed_start, unsign=
+ed int len);
+> =20
+>  #ifdef __PBL__
+> diff --git a/include/poller.h b/include/poller.h
+> index 35a2271d69..9b2e7e1d7b 100644
+> --- a/include/poller.h
+> +++ b/include/poller.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * Copyright (C) 2010 Marc Kleine-Budde <mkl@pengutronix.de>
+>   *
+>   * This file is released under the GPLv2
+>   *
+>   */
+> =20
+>  #ifndef POLLER_H
+>  #define POLLER_H
+> =20
+>  #include <linux/list.h>
+> =20
+>  struct poller_struct {
+>  	void (*func)(struct poller_struct *poller);
+>  	int registered;
+> diff --git a/include/shell.h b/include/shell.h
+> index 65dad0e1d1..b446743337 100644
+> --- a/include/shell.h
+> +++ b/include/shell.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * (C) Copyright 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcros=
+oft.com>
+>   *
+>   * Under GPLv2 only
+>   */
+> =20
+>  #ifndef __SHELL_H__
+>  #define __SHELL_H__
+> =20
+>  int shell_get_last_return_code(void);
+> =20
+>  int run_shell(void);
+> =20
+>  #ifdef CONFIG_SHELL_HUSH
+>  char *shell_expand(char *str);
+> diff --git a/include/uimagefs.h b/include/uimagefs.h
+> index 3f58589b73..9a32a77c16 100644
+> --- a/include/uimagefs.h
+> +++ b/include/uimagefs.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * Copyright (c) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcros=
+oft.com>
+>   *
+>   * under GPLv2 only
+>   */
+> =20
+>  #ifndef __UIMAGEFS_H__
+>  #define __UIMAGEFS_H__
+> =20
+>  #include <linux/types.h>
+>  #include <linux/list.h>
+>  #include <image.h>
+>  #include <ioctl.h>
+> =20
+>  #define UIMAGEFS_METADATA	_IOR('U', 100, struct image_header)
+> diff --git a/include/w1_mac_address.h b/include/w1_mac_address.h
+> index cd4be765f7..2d499a3690 100644
+> --- a/include/w1_mac_address.h
+> +++ b/include/w1_mac_address.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcroso=
+ft.com>
+>   *
+>   * Under GPLv2 only
+>   */
+> =20
+>  #ifndef __W1_MAC_ADDRESS_H__
+>  #define __W1_MAC_ADDRESS_H__
+> =20
+>  /**
+>   * w1_local_mac_address_register - use the first 3 byte of the id of a=
+ 1-wire
+>   * or 6 if no OUI provided device to provide an Ethernet address
+>   * @ethid: ethernet device id
+>   * @oui: Ethernet OUI (3 bytes)
+>   * @w1_dev: 1-wire device name
+> diff --git a/include/xymodem.h b/include/xymodem.h
+> index 917cecc003..82a36bfe7d 100644
+> --- a/include/xymodem.h
+> +++ b/include/xymodem.h
+> @@ -1,15 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * Handles the X-Modem, Y-Modem and Y-Modem/G protocols
+>   *
+>   * Copyright (C) 2008 Robert Jarzmik
+>   *
+>   * This program is free software; you can redistribute it and/or modif=
+y
+>   * it under the terms of the GNU General Public License as published b=
+y
+>   * the Free Software Foundation; either version 2 of the License, or
+>   * (at your option) any later version.
+>   *
+>   * This program is distributed in the hope that it will be useful,
+>   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+>   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+>   * GNU General Public License for more details.
+>   */
+>=20
+
+
+--=20
+Regards,
+Oleksij
+
+
+--fpxWvGmkCL6RkoCFHpqUmH0J3d084E6FQ--
+
+--qK8mKqTXuqJsVA7lHzY6C7cErGCVszVQJ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEpENFL0P3hvQ7p0DDdQOiSHVI77QFAlxdGCoACgkQdQOiSHVI
+77RUhAf9FOBNOlt+/FB89MmGoAccF39dS32gnXmpKkfHjOwbgR4aBu6eVkgXc+09
+Nb/4ZEQkiXSR2NZvn7LOJ2ClplbmmQNp0vIIYVQo8U3sDtDYEhz8sG3QefIHbYdC
+M7f1h3rfmmHgEHa9lwfAELTUeqCBIbfGTTrBoEocvXEJx/l9WzZ3Lsne8lIcz3ci
+0aIQf4zTSOkk835F/GCxjobnUyEXRXUg9cekOS8pJ4naT2tNVuNUv61Sl64oiBrg
+3t+U7h7zpaqEAiDykcGKqUj0ERfX65vvKdkdu6hlSY8aphcaVcmQGl6ZbMb4yXr0
+j+rfDmb5BTGYh2RC5bjl/27J+jUWNQ==
+=AuOz
+-----END PGP SIGNATURE-----
+
+--qK8mKqTXuqJsVA7lHzY6C7cErGCVszVQJ--
+
+
+--===============1870203868965598704==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============1870203868965598704==--
