@@ -1,15 +1,29 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gt6nK-0000q4-Ig
- for barebox@lists.infradead.org; Mon, 11 Feb 2019 08:18:28 +0000
-References: <20190208055348.28848-1-o.rempel@pengutronix.de>
- <20190211080509.cyf52jfhnnmoopzx@pengutronix.de>
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <f2c8d896-6279-178c-9172-d0189b957d49@pengutronix.de>
-Date: Mon, 11 Feb 2019 09:18:22 +0100
+ id 1gs8Ov-0003Sn-N4
+ for barebox@lists.infradead.org; Fri, 08 Feb 2019 15:49:15 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id F3B0927E05A3
+ for <barebox@lists.infradead.org>; Fri,  8 Feb 2019 16:49:09 +0100 (CET)
+Received: from zimbra2.kalray.eu ([127.0.0.1])
+ by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10032)
+ with ESMTP id R_mT7L9LSjYd for <barebox@lists.infradead.org>;
+ Fri,  8 Feb 2019 16:49:09 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id A9E5527E05A4
+ for <barebox@lists.infradead.org>; Fri,  8 Feb 2019 16:49:09 +0100 (CET)
+Received: from zimbra2.kalray.eu ([127.0.0.1])
+ by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id hIxBAWQW-Oln for <barebox@lists.infradead.org>;
+ Fri,  8 Feb 2019 16:49:09 +0100 (CET)
+Received: from junon.lin.mbt.kalray.eu (unknown [192.168.37.161])
+ by zimbra2.kalray.eu (Postfix) with ESMTPSA id 969E027E05A3
+ for <barebox@lists.infradead.org>; Fri,  8 Feb 2019 16:49:09 +0100 (CET)
+From: Yann Sionneau <ysionneau@kalray.eu>
+Message-ID: <05f625c3-e8ab-157c-2c48-d82d5fc5953a@kalray.eu>
+Date: Fri, 8 Feb 2019 16:49:09 +0100
 MIME-Version: 1.0
-In-Reply-To: <20190211080509.cyf52jfhnnmoopzx@pengutronix.de>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,44 +37,49 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1] MIPS: ath79: art: fix SPDX-License-Identifier
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: mci: SDHC generic driver? refactor dove-sdhci?
+To: barebox@lists.infradead.org
 
+Hello,
 
+I've written a driver for snps,dw-mshc, which is compatible with SDHC spec.
 
-On 11.02.19 09:05, Sascha Hauer wrote:
-> On Fri, Feb 08, 2019 at 06:53:48AM +0100, Oleksij Rempel wrote:
->> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
->> ---
->>   arch/mips/mach-ath79/art.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/mips/mach-ath79/art.c b/arch/mips/mach-ath79/art.c
->> index 984d087363..efc02d611d 100644
->> --- a/arch/mips/mach-ath79/art.c
->> +++ b/arch/mips/mach-ath79/art.c
->> @@ -1,4 +1,4 @@
->> -// SPDX-License-Identifier: GPL-2.
->> +// SPDX-License-Identifier: GPL-2.0-or-later
-> 
-> If you say "fix" then an explanation why the previous version was wrong
-> would be good.
+Basically I've just copy pasted the dove-sdhci.c one and modified a few 
+lines to add:
 
-You right,
+* support for host_v4 mode
 
-there is no official format for "GPL-2." it should be "GPL-2.0"/"GPL-2.0-only" or
-"GPL-2.0+"/"GPL-2.0-or-later". Since, i'm only author of this file and by default I prefer 
-"GPL-2.0-or-later", the fix is to set this SPDX-License-Identifier.
+* 64 bit addressing
 
-Kind regards,
-Oleksij Rempel
+* 64-bit SDMA
+
+* PIO mode
+
+* Support for 10-bit clock divider (max divider of 2046 instead of 256)
+
+Chosing between SDMA and PIO is done with Kconfig defines at compile 
+time. It's either one or the other.
+
+Since snps,dw-mshc and dove-sdhci share the same code, because both 
+respect SDHC spec I would propose to rename dove-sdhci.c into sdhci.c 
+and remove all dove mentions inside.
+
+Then write a dove-sdhci.c which registers via the sdhci generic layer 
+and same thing for dw-mshc.
+
+This allows lot of code sharing between SDHC compatible devices and also 
+eases a lot the writing of new drivers.
+
+Would that be OK?
+
+Thanks!
+
+Best regards,
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+Yann
+
 
 _______________________________________________
 barebox mailing list
