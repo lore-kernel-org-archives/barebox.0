@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gtDKA-0008RD-OQ
- for barebox@lists.infradead.org; Mon, 11 Feb 2019 15:16:48 +0000
+ id 1gtDKA-0008Qw-VI
+ for barebox@lists.infradead.org; Mon, 11 Feb 2019 15:16:49 +0000
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 11 Feb 2019 16:16:37 +0100
-Message-Id: <1549898200-32688-5-git-send-email-t.remmet@phytec.de>
+Date: Mon, 11 Feb 2019 16:16:38 +0100
+Message-Id: <1549898200-32688-6-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1549898200-32688-1-git-send-email-t.remmet@phytec.de>
 References: <1549898200-32688-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,75 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] drivers: of: Add function to enable and register a device
- by alias
+Subject: [PATCH 5/7] arm: mach-omap: am335x_generic: Enable nodes by alias
+ where needed
 To: barebox@lists.infradead.org
 
-In some cases node names are not unique and passing the full path is really long.
-So make add a new device by passing the alias string possible.
+With the interconnet target module hierarchy the node names used to enable boot
+devices are not unique any more. Find those nodes by alias now.
 
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/of/platform.c | 19 +++++++++++++++++++
- include/of.h          |  8 ++++++++
- 2 files changed, 27 insertions(+)
+ arch/arm/mach-omap/am33xx_generic.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index ef8969ca8b19..d3795d799a13 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -207,6 +207,25 @@ struct device_d *of_device_enable_and_register_by_name(const char *name)
- }
- EXPORT_SYMBOL(of_device_enable_and_register_by_name);
- 
-+/**
-+ * of_device_enable_and_register_by_alias - Enable and register device by alias
-+ * @name: alias of the device node
-+ *
-+ * Returns pointer to created platform device, or NULL if a device was not
-+ * registered. Unavailable devices will not get registered.
-+ */
-+struct device_d *of_device_enable_and_register_by_alias(const char *alias)
-+{
-+	struct device_node *node;
-+
-+	node = of_find_node_by_alias(NULL, alias);
-+	if (!node)
-+		return NULL;
-+
-+	return of_device_enable_and_register(node);
-+}
-+EXPORT_SYMBOL(of_device_enable_and_register_by_alias);
-+
- #ifdef CONFIG_ARM_AMBA
- static struct device_d *of_amba_device_create(struct device_node *np)
- {
-diff --git a/include/of.h b/include/of.h
-index 184acb474136..b5f54dd4e5b5 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -255,6 +255,8 @@ extern int of_platform_populate(struct device_node *root,
- extern struct device_d *of_find_device_by_node(struct device_node *np);
- extern struct device_d *of_device_enable_and_register(struct device_node *np);
- extern struct device_d *of_device_enable_and_register_by_name(const char *name);
-+extern struct device_d *of_device_enable_and_register_by_alias(
-+							const char *alias);
- 
- struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node);
- int of_parse_partitions(struct cdev *cdev, struct device_node *node);
-@@ -670,6 +672,12 @@ static inline struct device_d *of_device_enable_and_register_by_name(
- 	return NULL;
- }
- 
-+static inline struct device_d *of_device_enable_and_register_by_alias(
-+				const char *alias)
-+{
-+	return NULL;
-+}
-+
- static inline int of_register_fixup(int (*fixup)(struct device_node *, void *),
- 				void *context)
- {
+diff --git a/arch/arm/mach-omap/am33xx_generic.c b/arch/arm/mach-omap/am33xx_generic.c
+index fe3c4a8b175a..7577df761cb7 100644
+--- a/arch/arm/mach-omap/am33xx_generic.c
++++ b/arch/arm/mach-omap/am33xx_generic.c
+@@ -474,18 +474,18 @@ int am33xx_of_register_bootdevice(void)
+ 	switch (bootsource_get()) {
+ 	case BOOTSOURCE_MMC:
+ 		if (bootsource_get_instance() == 0)
+-			dev = of_device_enable_and_register_by_name("mmc@48060000");
++			dev = of_device_enable_and_register_by_alias("mmc0");
+ 		else
+-			dev = of_device_enable_and_register_by_name("mmc@481d8000");
++			dev = of_device_enable_and_register_by_alias("mmc1");
+ 		break;
+ 	case BOOTSOURCE_NAND:
+ 		dev = of_device_enable_and_register_by_name("gpmc@50000000");
+ 		break;
+ 	case BOOTSOURCE_SPI:
+-		dev = of_device_enable_and_register_by_name("spi@48030000");
++		dev = of_device_enable_and_register_by_alias("spi0");
+ 		break;
+ 	case BOOTSOURCE_NET:
+-		dev = of_device_enable_and_register_by_name("ethernet@4a100000");
++		dev = of_device_enable_and_register_by_alias("ethernet0");
+ 		break;
+ 	default:
+ 		/* Use nand fallback */
 -- 
 2.7.4
 
