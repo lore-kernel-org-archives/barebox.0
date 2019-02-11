@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gt8mf-0002qo-2X
- for barebox@lists.infradead.org; Mon, 11 Feb 2019 10:25:54 +0000
-Date: Mon, 11 Feb 2019 11:25:47 +0100
+ id 1gt9Q6-0004NF-9d
+ for barebox@lists.infradead.org; Mon, 11 Feb 2019 11:06:51 +0000
+Date: Mon, 11 Feb 2019 12:06:36 +0100
 From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190211102547.jg7flk2o7yyrems5@pengutronix.de>
+Message-ID: <20190211110636.strxlrorw5h5poxw@pengutronix.de>
 References: <20190207223906.24394-1-rohieb@rohieb.name>
  <068ce15e-1a72-9b02-2b1f-40a5d32523a0@rempel-privat.de>
  <20190208085902.4strzly224joqupn@pengutronix.de>
- <680f947e-ec3d-18bf-0c4b-daeb871b9bd3@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <680f947e-ec3d-18bf-0c4b-daeb871b9bd3@pengutronix.de>
+In-Reply-To: <20190208085902.4strzly224joqupn@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,85 +20,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/6] include: add SPDX GPL-2.0-only license tags where
  applicable
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-T24gRnJpLCBGZWIgMDgsIDIwMTkgYXQgMTA6MDk6MTlBTSArMDEwMCwgQWhtYWQgRmF0b3VtIHdy
-b3RlOgo+IAo+IAo+IE9uIDgvMi8xOSAwOTo1OSwgUm9sYW5kIEhpZWJlciB3cm90ZToKPiA+IE9u
-IEZyaSwgRmViIDA4LCAyMDE5IGF0IDA2OjQ4OjI2QU0gKzAxMDAsIE9sZWtzaWogUmVtcGVsIHdy
-b3RlOgo+ID4+IEhpIFJvbGFuZCwKPiA+Pgo+ID4+IHBsZWFzZSByZW1vdmUgZGVwcmVjYXRlZCBs
-aWNlbnNlIGhlYWRlcnMgaW4gc2FtZSBwYXRjaC4KPiA+IAo+ID4gSSBkZWNpZGVkIHRvIGxlYXZl
-IHRoZW0gdG8gcmVjb3JkIHRoZSBvcmlnaW5hbCBhdXRob3IncyBpbnRlbnQuIFRoZXJlCj4gPiBh
-cmUgc2V2ZXJhbCB2YXJpYXRpb25zIG9uIHRoZSBHUEwgaGVhZGVycyBpbiB0aGUgcHJvamVjdCwg
-dGhlIG9uZQo+ID4gZXh0cmVtZSBpcyB0aGUgZnVsbCBHUEwgbGljZW5zZSBoZWFkZXIgaW5jbHVk
-aW5nIGEgd2FycmFudHkgZGlzY2xhaW1lciwKPiA+IGJ1dCB0aGUgb3RoZXIgZXh0cmVtZSBpcyBv
-bmx5IGEgIkdQTHYyIiBhbmQgbm90aGluZyBtb3JlLiBXZSBjYW4gZGVjaWRlCj4gPiBvbiB0aGUg
-cHJvamVjdCBsZXZlbCB0byBhcHBseSB0aGUgd2FycmFudHkgZGlzY2xhaW1lci4gQnV0IGJ5IHJl
-bW92aW5nCj4gPiB0aGUgbGljZW5zZSBoZWFkZXJzIGZyb20gaW5kaXZpZHVhbCBmaWxlcywgdGhl
-IG9yaWdpbmFsIGF1dGhvciBpbnRlbnQgaXMKPiA+IGxvc3Qg4oCTIG1heWJlIHRoZSBkaWRuJ3Qg
-d2FudCB0byBpbmNsdWRlIHRoZSBkaXNjbGFpbWVyLCBtYXliZSB0aGV5Cj4gPiBkaWRuJ3QgY2Fy
-ZSwgaW4gYW55IGNhc2UgaXQgaXMgbm90IGluIG91ciBwb3NzaWJpbGl0eSB0byBkZWNpZGUgb3Zl
-cgo+ID4gdGhlaXIgY29weXJpZ2h0IG1hdHRlcnMgYW5kIGZvciBtb3N0IG9mIHRoZSBjYXNlcyBp
-dCBpcyB0b28gbGF0ZSB0bwo+ID4gdHJhY2sgc29tZSBvZiB0aGUgcGVvcGxlIGRvd24gYW5kIGFz
-ayB0aGVtLgo+ID4gCj4gPiBUaGlzIGFsbCBiZWNvbWVzIGltcG9ydGFudCB3aGVuIHNvbWVvbmUg
-Zm9ya3Mgb3VyIGZpbGVzIHRvIGEgbmV3Cj4gPiBwcm9qZWN0LiBBbmQgaWYgdGhhdCBzb21lb25l
-IGRvZXMgbm90IGtub3cgd2hhdCB0aGUgU1BEWCBsaWNlbnNlIHRhZ3MKPiA+IGFjdHVhbGx5IG1l
-YW4sIGl0J3MgYmV0dGVyIHRvIGhhdmUgdGhlIG9yaWdpbmFsIGRvY3VtZW50YXRpb24gb24gdGhl
-Cj4gPiBmaWxlIGxldmVsLgo+ID4gCj4gPiBJIG5vdGljZWQgdGhhdCBMaW51eCB1c3VhbGx5IHJl
-bW92ZXMgdGhlIGxpY2Vuc2UgaGVhZGVycyBhbmQgb25seSBrZWVwcwo+ID4gdGhlIGNvcHlyaWdo
-dCBsaW5lcywgYnV0IEkgd2Fzbid0IGFibGUgdG8gZmluZCBhbnkgcmVhc29uIGZvciB0aGF0LiBE
-bwo+ID4geW91IGhhdmUgbW9yZSBpbnNpZ2h0IGhlcmU/Cj4gCj4gKE9ibGlnYXRvcnkgSUFOQUwp
-CgooTWUgbmVpdGhlcikKCj4gV2l0aCB0aGUgY29weXJpZ2h0LCB0aGUgYXV0aG9yIHN0YXRlcyB0
-aGVpciByaWdodCB0byBkZWFsIGFzIHRoZXkKPiBzZWUgZml0IHdpdGggdGhlIHNvdXJjZSBjb2Rl
-LiBGb3IgZXhhbXBsZSB0aGV5IG1heSByZWxpY2Vuc2UuIFJlcGxhY2luZyB0aGUKPiBjb3B5cmln
-aHQgd2l0aCBhIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyIHdvbid0IHByZXNlcnZlIHRoaXMgaW5m
-b3JtYXRpb24uCgpUaGF0IHNvdW5kcyBsaWtlIGFuIGFyZ3VtZW50IGZvciBsZWF2aW5nIHRoZSBj
-b3B5cmlnaHQgaGVhZGVycyBpbiB0aGUKaW5kaXZpZHVhbCBmaWxlcz8KCj4gVGhlIGxpY2Vuc2Ug
-aXRzZWxmIGdyYW50cyByaWdodHMgdG8gb3RoZXJzIGFuZCwgaWYgaXQncyBhIHN0YW5kYXJkIG9u
-ZSwKPiBjb3VsZCBiZSByZWZlcmVuY2VkIGJ5IHRoZSBJZGVudGlmaWVyLCB3aGlsZSB0aGUgZnVs
-bCB0ZXh0IGlzIHJlcHJvZHVjZWQKPiBvbmx5IG9uY2UgYXQgc29tZSBjZW50cmFsIGxvY2F0aW9u
-IChzZWUgbXkgTElDRU5TRVMgZGlyZWN0b3J5IHBhdGNoIGJlbG93KS4KClRoZXJlIGFyZSB0d28g
-cGFydHMgaW52b2x2ZWQgd2hlbiBhcHBseWluZyB0aGUgR1BMLiBPbmUgcGFydCBpcyB0aGUgR1BM
-Cml0c2VsZiwgd2hpY2ggaXMgd3JpdHRlbiBieSB0aGUgRlNGLCBhbmQgaXMgdGhlIGdlbmVyaWMg
-bGljZW5zZSBncmFudGluZwpyaWdodHMgYW5kIGR1dGllcyB0byB1c2VycyBvZiB0aGUgcHJvZ3Jh
-bSBmb3Igd29ya3MgdGhhdCBhcmUgbGljZW5zZWQKdW5kZXIgdGhlIEdQTC4gIFRoZSBzZWNvbmQg
-cGFydCBpcyB0aGUgYWN0dWFsIGNvcHlyaWdodCBzdGF0ZW1lbnQsIHdoaWNoCmlzIHdyaXR0ZW4g
-YnkgdGhlIGF1dGhvciBvZiB0aGUgKHJlc3BlY3RpdmUgcGFydCBvZiB0aGUpIGNvZGUsIGFuZCB3
-aGljaAptdXN0IG1lbnRpb24gdGhhdCBhIHNvdXJjZSBmaWxlIGlzIGFjdHVhbGx5IGxpY2Vuc2Vk
-IHVuZGVyIHRoZSBHUEwuClRoaXMgcGFydCB1c3VhbGx5LCBidXQgbm90IGFsd2F5cywgYWxzbyBj
-b250YWlucyBhIHdhcnJhbnR5IGRpc2NsYWltZXIuCkFsdGhvdWdoIHRoYXQgc2Vjb25kIHBhcnQg
-aXMgcHJlLWZvcm11bGF0ZWQgaW4gdGhlIGFwcGVuZGl4ICJIb3cgdG8KQXBwbHkgVGhlc2UgVGVy
-bXMgdG8gWW91ciBOZXcgUHJvZ3JhbXMiIG9mIHRoZSBHUEwsIGl0IGNhbiBiZSBzZWVuIGluIG15
-CnBhdGNoIHRoYXQgdGhlIGNvcHlyaWdodCBzdGF0ZW1lbnQgaGlzdG9yaWNhbGx5IGhhcyBzZXZl
-cmFsIGRpZmZlcmVudAp2YXJpYW50cywgcmFuZ2luZyBmcm9tICJ0aGlzIGlzIEdQTHYyIiB0byB0
-aGUgZnVsbCB0ZXh0IHRoYXQgaXMKcmVjb21tZW5kZWQgaW4gdGhlIEdQTCBhcHBlbmRpeCAoYW5k
-IGFsc28gaW4gdGhlIEdQTCBGQVEgWzFdKS4gSXQgaXMgdGhlCmF1dGhvcidzIHNvbGUgcmlnaHQg
-dG8gY2hvb3NlIHRoZSBleGFjdCBjb25kaXRpb25zIGluIHRoZSBjb3B5cmlnaHQKc3RhdGVtZW50
-IG9uIHRoZSBmaWxlIGxldmVsLCBhbmQgSSB0aGluayBieSByZWR1Y2luZyB0aG9zZSBsaWNlbnNl
-CmhlYWRlcnMgdG8gb25seSB0aGUgY29weXJpZ2h0IGxpbmUgdHJhbnNncmVzc2VzIHRoYXQgcmln
-aHQuIEFuZCwgYXMgSQpzYWlkLCB0aGUgZnVsbCBjb3B5cmlnaHQgc3RhdGVtZW50IGFsc28gc2Vy
-dmVzIGFzIGEgZmFsbGJhY2sgaW4gY2FzZSB0aGUKZmlsZSBpcyBjb3BpZWQgdG8gYSBwcm9qZWN0
-IHRoYXQgZG9lcyBub3QgdXNlIHRoZSBmdWxsIFNQRFggcHJvY2Vzcy4gSQphbHNvIGRvdWJ0IHRo
-YXQgYSBzaW5nbGUgIlNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wIiBsaW5lIHdvdWxk
-CmJlIHN1ZmZpY2llbnQgdG8gaW1wbHkgZXZlcnl0aGluZyB0aGF0IGlzIHdyaXR0ZW4gaW4gdGhl
-IGZ1bGwgY29weXJpZ2h0CnN0YXRlbWVudCBmb3IgZXZlcnkgcG9zc2libGUgdXNlciBvZiB0aGUg
-c291cmNlIGNvZGUuCgpJIHdlbGNvbWUgeW91ciBwYXRjaCBmb3IgYWRkaW5nIHRoZSBMSUNFTlNF
-Uy8qIGZpbGVzLCBidXQgSSBkb24ndCB0aGluawppdCBzb2x2ZWQgdGhlIHByb2JsZW0gbWVudGlv
-bmVkIGFib3ZlLCBhcyBMSUNFTlNFUy9wcmVmZXJyZWQvR1BMLTIuMAphbHNvIG9ubHkgY29udGFp
-bnMgdGhlIHRleHQgb2YgdGhlIGdlbmVyaWMgR1BMLCBhbmQgbm90IHRoZSBhdXRob3JzJwpjb3B5
-cmlnaHQgc3RhdGVtZW50LgoKW2ZhcV06IGh0dHBzOi8vd3d3LmdudS5vcmcvbGljZW5zZXMvZ3Bs
-LWZhcS5lbi5odG1sI05vdGljZUluU291cmNlRmlsZQoKIC0gUm9sYW5kCgotLSAKUm9sYW5kIEhp
-ZWJlciAgICAgICAgICAgICAgICAgICAgIHwgci5oaWViZXJAcGVuZ3V0cm9uaXguZGUgICAgIHwK
-UGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgIHwgaHR0cHM6Ly93d3cucGVuZ3V0cm9u
-aXguZGUvIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltIHwgUGhvbmU6ICs0OS01
-MTIxLTIwNjkxNy01MDg2IHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgIHwgRmF4
-OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
-cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
-cmVib3gK
+On Fri, Feb 08, 2019 at 09:59:02AM +0100, Roland Hieber wrote:
+> I noticed that Linux usually removes the license headers and only keeps
+> the copyright lines, but I wasn't able to find any reason for that. Do
+> you have more insight here?
+
+I tried to google around a bit, and found several discussions, which all
+end in "SPDX is an industry-wide accepted standard" [1] and
+"SPDX-License-Identifiers are a legally binding shorthand" [2], but
+without further elaboration :-/
+
+[1]: https://patchwork.kernel.org/patch/10045625/#21135079
+[2]: e.g. here https://lore.kernel.org/patchwork/patch/854656/ or
+     in the commit message of [1] too
+
+ - Roland
+
+-- 
+Roland Hieber                     | r.hieber@pengutronix.de     |
+Pengutronix e.K.                  | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
