@@ -1,16 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gtZOd-0007SP-Tv
- for barebox@lists.infradead.org; Tue, 12 Feb 2019 14:50:53 +0000
-Received: by mail-lf1-x12d.google.com with SMTP id l10so2190714lfh.9
- for <barebox@lists.infradead.org>; Tue, 12 Feb 2019 06:50:49 -0800 (PST)
-Date: Tue, 12 Feb 2019 17:50:45 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20190212175045.d8af82f1a3fdc47c21957d72@gmail.com>
-In-Reply-To: <1549976247670.75244@mixed-mode.de>
-References: <1549976247670.75244@mixed-mode.de>
-Mime-Version: 1.0
+ id 1gtDCr-00044K-BZ
+ for barebox@lists.infradead.org; Mon, 11 Feb 2019 15:09:14 +0000
+Received: by mail-wm1-x330.google.com with SMTP id t200so17696844wmt.0
+ for <barebox@lists.infradead.org>; Mon, 11 Feb 2019 07:09:12 -0800 (PST)
+Received: from [192.168.106.167] (77-111-10-47.ipv4.tusmobil.si.
+ [77.111.10.47])
+ by smtp.gmail.com with ESMTPSA id h17sm5985811wrq.17.2019.02.11.07.09.10
+ for <barebox@lists.infradead.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 11 Feb 2019 07:09:10 -0800 (PST)
+From: =?UTF-8?B?VG9tYcW+IMWgb2xj?= <tomaz.solc@klevio.com>
+Message-ID: <eb738c4f-0594-566f-e3e8-67e71d3b3b32@klevio.com>
+Date: Mon, 11 Feb 2019 16:09:09 +0100
+MIME-Version: 1.0
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,55 +24,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox support for Arm Cortex-M0 Boards
-To: Kai Che <Kai.Che@mixed-mode.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Accessing MMC/SD card storage on Raspberry Pi
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Tue, 12 Feb 2019 12:57:26 +0000
-Kai Che <Kai.Che@mixed-mode.de> wrote:
-
-Hi!
-
-> does barebox support any kind of Arm-Cortex M0 Boards? e.g. STM32F0 or si=
-miliar?
-
-At the moment barebox does not support ARM-Cortex.
-I suppose there is no problem to port barebox to STM32.
-However STM32F0 definitely is not a preferred STM32 target chip for porting.
-Barebox is intended to be a BOOTLOADER. Barebox is intended to load somethi=
-ng into RAM.
-STM32F098VC is an advanced STMF0 family chip in terms of RAM and ROM size.
-STM32F098VC has 256 KB of flash ROM and 32 KB of SRAM.
-I suppose that barebox can be linked to put code into flash ROM (e.g. see R=
-OMKERNEL
-option for blackfin linux kernel port) and 32 KB of RAM can be enough for d=
-ata
-but IMHO 32 KB is not enough for comfort and useful work.
-
-AFAIR It is possible to run risc-v barebox (both code and data) inside 192 =
-KB RAM memory
-space in a VERY VERY MINIMAL configuration, just demo.
-
-Barebox can be really useful on linux-capable STM32 chips and board, e.g.
-STM32F429 DISCO board (https://www.st.com/en/evaluation-tools/32f429idiscov=
-ery.html)
-
-> I couldn't find any mention of such a board in the board support section =
-of=A0the documentation.
-> =
-
-> I hope I didn't overlook something.
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RGVhciBhbGwsCgpJJ3ZlIGJlZW4gdHJ5aW5nIHRvIHNldCB1cCBCYXJlYm94IG9uIGEgUmFzcGJl
+cnJ5IFBpIENvbXB1dGUgTW9kdWxlIDMuIApBZnRlciBzb21lIHNtYWxsIGZpeGVzIChzZWUgYmVs
+b3cpIEkndmUgZ290IDIwMTkuMDEuMCB0byBib290IHRvIGEgCmNvbW1hbmQgbGluZSBvbiB0aGUg
+c2VyaWFsIHBvcnQuIEhvd2V2ZXIgSSBjYW4ndCBnZXQgYWNjZXNzIHRvIHRoZSBNTUMgCnN0b3Jh
+Z2UgdG8gbG9hZCBhIGtlcm5lbCAoIm5vIC9kZXYvZGlzazAuMC4gdXNpbmcgZGVmYXVsdCBlbnYi
+KQoKTG9va2luZyBhdCB0aGUgc291cmNlLCBpdCBzZWVtcyB0aGF0IGEgImJjbTI4MzUtc2Rob3N0
+IiBkcml2ZXIgaXMgCm1pc3NpbmcgKGJjbTI4MzVfbWNpIHNlZW1zIHRvIG9ubHkgYmUgdXNlZCBm
+b3IgdGhlIG90aGVyIFNESU8gaW50ZXJmYWNlIAp0b3dhcmRzIHRoZSB3aXJlbGVzcyBpbnRlcmZh
+Y2Ugb24gb3RoZXIgUi4gUGlzKSBJcyBNTUMgc3RvcmFnZSBpbmRlZWQgCm5vdCBzdXBwb3J0ZWQg
+b24gUi4gUGkgYXQgdGhlIG1vbWVudCBvciBhbSBJIG1pc3Npbmcgc29tZXRoaW5nPwoKVGhhbmtz
+ClRvbWHFvgoKCgoKQSBsaXN0IG9mIHRoaW5ncyBJIG5lZWRlZCB0byBkbyB0byBib290IG9uIFIu
+IFBpIENNMywganVzdCBpbiBjYXNlIGl0J3MgCnVzZWZ1bCBmb3Igc29tZW9uZSBlbHNlOgoKQWRk
+IGJvYXJkIHJldiAxMCB0byBycGlfbW9kZWxzX25ld19zY2hlbWUgaW4gcnBpLWNvbW1vbi5jCgpO
+b3RlIHRoYXQgcnBpX21vZGVsX2luaXQoKSBzZWdmYXVsdHMgaWYgYm9hcmQgcmV2IGlzIG5vdCBm
+b3VuZCBpbiB0aGUgCmxpc3QgYmVjYXVzZSBtb2RlbCByZW1haW5zIE5VTEwuCgpVc2UgZGV2aWNl
+IHRyZWUgaW4gYmNtMjgzNy1ycGktY20zLWlvMy5kdHMuIE1vc3QgaW1wb3J0YW50bHksIHRoaXMg
+CmRpc2FibGVzIHRoZSBiY20yODM1X21jaSBkcml2ZXIsIHdoaWNoIG90aGVyd2lzZSBoYW5ncyBv
+biBib290IChJJ20gCmd1ZXNzaW5nIHVuc3VjY2Vzc2Z1bGx5IHRyeWluZyB0byBpbml0IHRoZSBl
+bXB0eSBTRElPIGJ1cyB3aGVyZSB0aGVyZSAKd291bGQgb3RoZXJ3aXNlIGJlIGEgd2lyZWxlc3Mg
+aW50ZXJmYWNlIG9uIFIuUGkgMy4pLgoKCmRpZmYgLXJ1IGEvYXJjaC9hcm0vYm9hcmRzL3Jhc3Bi
+ZXJyeS1waS9ycGktY29tbW9uLmMgCmIvYXJjaC9hcm0vYm9hcmRzL3Jhc3BiZXJyeS1waS9ycGkt
+Y29tbW9uLmMKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3Jhc3BiZXJyeS1waS9ycGktY29tbW9uLmMg
+MjAxOS0wMi0wNyAKMTU6Mzc6NDkuMTgxMzYwMTY0ICswMTAwCisrKyBiL2FyY2gvYXJtL2JvYXJk
+cy9yYXNwYmVycnktcGkvcnBpLWNvbW1vbi5jIDIwMTktMDItMTEgCjA4OjQ4OjM2LjAwMDAwMDAw
+MCArMDEwMApAQCAtMTc1LDYgKzE3NSw3IEBACiAgICAgICAgIFJQSV9NT0RFTCgwLCAiVW5rbm93
+biBtb2RlbCIsIE5VTEwpLAogICAgICAgICBSUElfTU9ERUwoQkNNMjgzNl9CT0FSRF9SRVZfMl9C
+LCAiMiBNb2RlbCBCIiwgcnBpX2JfcGx1c19pbml0KSwKICAgICAgICAgUlBJX01PREVMKEJDTTI4
+MzdfQk9BUkRfUkVWXzNfQiwgIjMgTW9kZWwgQiIsIHJwaV9iX3BsdXNfaW5pdCksCisgICAgICAg
+UlBJX01PREVMKDEwLCAiQ29tcHV0ZSBNb2R1bGUgMyIsIE5VTEwpLAogICAgICAgICBSUElfTU9E
+RUwoQkNNMjgzNV9CT0FSRF9SRVZfWkVSTywgIlplcm8iLCBycGlfYl9wbHVzX2luaXQpLAogICAg
+ICAgICBSUElfTU9ERUwoQkNNMjgzNV9CT0FSRF9SRVZfWkVST19XLCAiWmVybyBXIiwgcnBpX2Jf
+cGx1c19pbml0KSwKICB9OwpAQCAtMjUxLDYgKzI1Miw5IEBACgogIHN0YXRpYyB2b2lkIHJwaV9t
+b2RlbF9pbml0KHZvaWQpCiAgeworICAgICAgIGlmICghbW9kZWwpCisgICAgICAgICAgICAgICBy
+ZXR1cm47CisKICAgICAgICAgaWYgKCFtb2RlbC0+aW5pdCkKICAgICAgICAgICAgICAgICByZXR1
+cm47CmRpZmYgLXJ1IGEvYXJjaC9hcm0vZHRzL2JjbTI4MzctcnBpLTMuZHRzIGIvYXJjaC9hcm0v
+ZHRzL2JjbTI4MzctcnBpLTMuZHRzCi0tLSBhL2FyY2gvYXJtL2R0cy9iY20yODM3LXJwaS0zLmR0
+cyAgICAyMDE5LTAxLTE0IDA5OjA1OjQ0LjAwMDAwMDAwMCArMDEwMAorKysgYi9hcmNoL2FybS9k
+dHMvYmNtMjgzNy1ycGktMy5kdHMgICAgMjAxOS0wMi0xMSAwOTo0OTo1NS4wMDAwMDAwMDAgKzAx
+MDAKQEAgLTEsNCArMSw1IEBACi0jaW5jbHVkZSA8YXJtNjQvYnJvYWRjb20vYmNtMjgzNy1ycGkt
+My1iLmR0cz4KKy8vI2luY2x1ZGUgPGFybTY0L2Jyb2FkY29tL2JjbTI4MzctcnBpLTMtYi5kdHM+
+CisjaW5jbHVkZSA8YXJtL2JjbTI4MzctcnBpLWNtMy1pbzMuZHRzPgoKICAvIHsKICAgICAgICAg
+Y2hvc2VuIHsKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
+bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
