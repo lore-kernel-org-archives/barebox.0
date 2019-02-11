@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gtplK-0004BL-Fh
- for barebox@lists.infradead.org; Wed, 13 Feb 2019 08:19:24 +0000
-Message-ID: <e810351bb446451f584595f17c88b6de38f27436.camel@phytec.de>
+ id 1gtCoy-0007RE-GG
+ for barebox@lists.infradead.org; Mon, 11 Feb 2019 14:44:44 +0000
+Message-ID: <21f6fae81ddfaa473b00005ce2e44b692f7861c8.camel@phytec.de>
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 13 Feb 2019 09:19:19 +0100
-In-Reply-To: <CAHQ1cqHH_o962ApYEuwAS6aC6Tckitazqet0jDVxhgJ9VOAhgg@mail.gmail.com>
-References: <1549898200-32688-1-git-send-email-t.remmet@phytec.de>
- <1549898200-32688-2-git-send-email-t.remmet@phytec.de>
- <CAHQ1cqGq51BYSwNZ+8YDWHxgeBTEkpVBMguu5_P-SiqkBRoDXg@mail.gmail.com>
- <cce155c6376da68152e9e2e6771c873a0027ba3a.camel@phytec.de>
- <CAHQ1cqHH_o962ApYEuwAS6aC6Tckitazqet0jDVxhgJ9VOAhgg@mail.gmail.com>
+Date: Mon, 11 Feb 2019 15:44:28 +0100
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,72 +19,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] drivers: bus: Add ti-sysc bus driver
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: AM335x broken
+To: Barebox List <barebox@lists.infradead.org>, Sascha Hauer <s.hauer@pengutronix.de>
 
-Am Dienstag, den 12.02.2019, 16:56 -0800 schrieb Andrey Smirnov:
-> On Tue, Feb 12, 2019 at 5:13 AM Teresa Remmet <t.remmet@phytec.de>
-> wrote:
-> > 
-> > Hello Andrey,
-> > 
-> > Am Montag, den 11.02.2019, 18:57 -0800 schrieb Andrey Smirnov:
-> > > On Mon, Feb 11, 2019 at 7:16 AM Teresa Remmet <t.remmet@phytec.de
-> > > >
-> > > wrote:
-> > > > 
-> > > > Adds minimal support for the sysc interconnect target module
-> > > > found
-> > > > on many TI SoCs. With this device tree includes have been
-> > > > rearagned.
-> > > > We need the driver to probe the child devices of the bus.
-> > > > 
-> > > > Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
-> > > > ---
-> > > > 
-> > > > +
-> > > > +static const struct of_device_id sysc_match_table[] = {
-> > > > +       { .compatible = "simple-bus", },
-> > > > +       { /* sentinel */ },
-> > > > +};
-> > > > +
-> > > > +static int ti_sysc_probe(struct device_d *dev)
-> > > > +{
-> > > > +       int ret;
-> > > > +
-> > > > +       ret = of_platform_populate(dev->device_node,
-> > > > sysc_match_table, dev);
-> > > 
-> > > Is sysc_match_table really necessary? AFAIK that argument can be
-> > > NULL
-> > > unless on of the child nodes needs to be treated like a platform
-> > > bus
-> > > as well.
-> > 
-> > My first attempted was using NULL but this does not work. As for
-> > example the pinmux node (pinmux@800) is child of a simple-bus. And
-> > the
-> > simple-bus itself is a child of a ti-sysc node. See
-> > dts/src/arm/am33xx-
-> > l4.dtsi.
-> > The kernel does it the same way.
-> > 
-> 
-> Ah, I see, your use-case does require child nodes to be treated as a
-> platform bus. FWIW, there's also globally visible
-> of_default_bus_match_table that can probably replace
-> sysc_match_table.
+Hello,
 
-Yes, will add this in v2. 
+AM335x is broken on current master in multiple ways. 
+NAND and and SPI boot are not working right now as the image size can
+not be found:
 
-Thanks,
+barebox 2019.01.0-00305-g96abbe544e19 #1682 Mon Feb 11 15:20:00 CET
+2019
+
+
+Board: Phytec phyCORE AM335x
+nand: ONFI flash detected
+nand: NAND device: Manufacturer ID: 0x2c, Chip ID: 0xdc (Micron
+MT29F4G08ABADAH4), 512Mi
+B, page size: 2048, OOB size: 64
+booting from NAND
+failed to get image size
+trying to load image from backup partition.
+failed to get image size
+booting failed
+
+I bisected the issue down to:
+commit 5c0e16591d9471a345b77a41fde76de34f301f6b
+Author: Sascha Hauer <s.hauer@pengutronix.de>
+Date:   Wed Jan 16 10:15:55 2019 +0100
+
+    images: Drop unnecessary fix_size
+    
+    Now that we compile the compressed binary into the decompressor we
+    no longer need fix_size but can use the linker to fill in the image
+    size into the binary.
+    
+    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+Reverting this patch helps. But what is the correct solution?
+
+The other problem was introduced by the lastest device tree update from
+kernel. The device tree includes have been changed to use the
+interconnect target module hierarchy. So neither MLO or barebox are
+starting. I will send fixes for this shortly.
+
+Regards,
 Teresa
 
 
-> 
-> Thanks,
-> Andrey Smirnov
+
+
 
 
 _______________________________________________
