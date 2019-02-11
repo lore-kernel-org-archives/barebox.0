@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-eopbgr140047.outbound.protection.outlook.com
+ ([40.107.14.47] helo=EUR01-VE1-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1guHn4-0005IJ-BY
- for barebox@lists.infradead.org; Thu, 14 Feb 2019 14:15:04 +0000
-Date: Thu, 14 Feb 2019 15:15:00 +0100
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190214141500.fc6x2ryqoyb52v5h@pengutronix.de>
-References: <20190214132429.7463-1-tomaz.solc@tablix.org>
- <20190214132429.7463-8-tomaz.solc@tablix.org>
+ id 1gtCIJ-0001zr-8c
+ for barebox@lists.infradead.org; Mon, 11 Feb 2019 14:10:50 +0000
+From: =?iso-8859-1?Q?Thomas_H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
+Date: Mon, 11 Feb 2019 14:10:40 +0000
+Message-ID: <1549894227-18660-1-git-send-email-thomas.haemmerle@wolfvision.net>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190214132429.7463-8-tomaz.solc@tablix.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,136 +21,726 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/7] ARM: rpi: Add device tree for Compute Module 3.
-To: Tomaz Solc <tomaz.solc@tablix.org>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] firmware-zynqmp: port from linux
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Cc: =?iso-8859-1?Q?Thomas_H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
 
-Hi Tomaz,
+From: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
 
-On Thu, Feb 14, 2019 at 02:24:29PM +0100, Tomaz Solc wrote:
-> Compute Module needs "no-sd" property on the MMC interface otherwise
-> mci-bcm2835 hangs on SD card probe.
-> 
-> The switch to uart0 introduced in ab76f9d0 doesn't currently work on Compute
-> Module.
-> ---
->  arch/arm/boards/raspberry-pi/lowlevel.c | 10 ++++++++++
->  arch/arm/dts/Makefile                   |  1 +
->  arch/arm/dts/bcm2837-rpi-cm3.dts        | 26 ++++++++++++++++++++++++++
->  arch/arm/mach-bcm283x/Kconfig           |  6 ++++++
->  images/Makefile.bcm283x                 |  6 +++++-
->  5 files changed, 48 insertions(+), 1 deletion(-)
->  create mode 100644 arch/arm/dts/bcm2837-rpi-cm3.dts
-> 
-> diff --git a/arch/arm/boards/raspberry-pi/lowlevel.c b/arch/arm/boards/raspberry-pi/lowlevel.c
-> index 34c935092..1a3d39421 100644
-> --- a/arch/arm/boards/raspberry-pi/lowlevel.c
-> +++ b/arch/arm/boards/raspberry-pi/lowlevel.c
-> @@ -33,3 +33,13 @@ ENTRY_FUNCTION(start_raspberry_pi3, r0, r1, r2)
->  
->  	barebox_arm_entry(BCM2835_SDRAM_BASE, SZ_512M, fdt);
->  }
-> +
-> +extern char __dtb_bcm2837_rpi_cm3_start[];
-> +ENTRY_FUNCTION(start_raspberry_pi_cm3, r0, r1, r2)
-> +{
-> +	void *fdt = __dtb_bcm2837_rpi_cm3_start + get_runtime_offset();
-> +
-> +	arm_cpu_lowlevel_init();
-> +
-> +	barebox_arm_entry(BCM2835_SDRAM_BASE, SZ_512M, fdt);
-> +}
-> diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-> index 3cdee1ffb..82595f9b7 100644
-> --- a/arch/arm/dts/Makefile
-> +++ b/arch/arm/dts/Makefile
-> @@ -75,6 +75,7 @@ pbl-dtb-$(CONFIG_MACH_REALQ7) += imx6q-dmo-edmqmx6.dtb.o
->  pbl-dtb-$(CONFIG_MACH_RPI) += bcm2835-rpi.dtb.o
->  pbl-dtb-$(CONFIG_MACH_RPI2) += bcm2836-rpi-2.dtb.o
->  pbl-dtb-$(CONFIG_MACH_RPI3) += bcm2837-rpi-3.dtb.o
-> +pbl-dtb-$(CONFIG_MACH_RPI_CM3) += bcm2837-rpi-cm3.dtb.o
->  pbl-dtb-$(CONFIG_MACH_SABRELITE) += imx6q-sabrelite.dtb.o imx6dl-sabrelite.dtb.o
->  pbl-dtb-$(CONFIG_MACH_SABRESD) += imx6q-sabresd.dtb.o
->  pbl-dtb-$(CONFIG_MACH_FREESCALE_IMX6SX_SABRESDB) += imx6sx-sdb.dtb.o
-> diff --git a/arch/arm/dts/bcm2837-rpi-cm3.dts b/arch/arm/dts/bcm2837-rpi-cm3.dts
-> new file mode 100644
-> index 000000000..636db9a1e
-> --- /dev/null
-> +++ b/arch/arm/dts/bcm2837-rpi-cm3.dts
-> @@ -0,0 +1,26 @@
-> +#include <arm64/broadcom/bcm2837-rpi-3-b.dts>
+Port Xilinx Zynq MPSoC Firmware layer driver from linux.
 
-This upstream dts only includes arm/bcm2837-rpi-3-b.dts, and there is
-also a arch/arm/boot/dts/bcm2837-rpi-cm3.dtsi that does more than just
-arm/bcm2837-rpi-3-b.dts, maybe include that one instead?
+Signed-off-by: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
+---
+ arch/arm/Kconfig                                   |   1 +
+ arch/arm/mach-zynqmp/Makefile                      |   2 +-
+ arch/arm/mach-zynqmp/firmware-zynqmp.c             | 601 +++++++++++++++++++++
+ .../arm/mach-zynqmp/include/mach/firmware-zynqmp.h |  66 +++
+ 4 files changed, 669 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/mach-zynqmp/firmware-zynqmp.c
+ create mode 100644 arch/arm/mach-zynqmp/include/mach/firmware-zynqmp.h
 
-> +
-> +/ {
-> +	chosen {
-> +		stdout-path = &uart0;
-> +	};
-> +
-> +	memory {
-> +		reg = <0x0 0x0>;
-> +	};
-> +};
-> +
-> +&uart0 {
-> +	status = "okay";
-> +	/delete-node/ bluetooth;
-> +};
-> +
-> +&sdhci {
-> +	pinctrl-0 = <&emmc_gpio48>;
-> +	no-sd;
-> +	/delete-node/ wifi@1;
-> +};
-> +
-> +&sdhost {
-> +	status = "disabled";
-> +};
-> diff --git a/arch/arm/mach-bcm283x/Kconfig b/arch/arm/mach-bcm283x/Kconfig
-> index af2f88c47..bb5f75dc9 100644
-> --- a/arch/arm/mach-bcm283x/Kconfig
-> +++ b/arch/arm/mach-bcm283x/Kconfig
-> @@ -25,6 +25,12 @@ config MACH_RPI3
->  	select MACH_RPI_COMMON
->  	select ARM_SECURE_MONITOR
->  
-> +config MACH_RPI_CM3
-> +	bool "RaspberryPi Compute Module 3 (BCM2837/CORTEX-A53)"
-> +	select CPU_V7
-> +	select MACH_RPI_COMMON
-> +	select ARM_SECURE_MONITOR
-> +
->  endmenu
->  
->  config MACH_RPI_DEBUG_UART_BASE
-> diff --git a/images/Makefile.bcm283x b/images/Makefile.bcm283x
-> index 9199f153d..2189f266e 100644
-> --- a/images/Makefile.bcm283x
-> +++ b/images/Makefile.bcm283x
-> @@ -12,4 +12,8 @@ image-$(CONFIG_MACH_RPI2) += barebox-raspberry-pi-2.img
->  
->  pblb-$(CONFIG_MACH_RPI3) += start_raspberry_pi3
->  FILE_barebox-raspberry-pi-3.img = start_raspberry_pi3.pblb
-> -image-$(CONFIG_MACH_RPI3) += barebox-raspberry-pi-3.img
-> \ No newline at end of file
-> +image-$(CONFIG_MACH_RPI3) += barebox-raspberry-pi-3.img
-> +
-> +pblb-$(CONFIG_MACH_RPI_CM3) += start_raspberry_pi_cm3
-> +FILE_barebox-raspberry-pi-cm3.img = start_raspberry_pi_cm3.pblb
-> +image-$(CONFIG_MACH_RPI_CM3) += barebox-raspberry-pi-cm3.img
-
-Please re-add the missing newline at the end.
-
- - Roland
-
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index c1f385b..fdbe5b7 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -250,6 +250,7 @@ config ARCH_ZYNQMP
+ 	select CPU_V8
+ 	select HAS_DEBUG_LL
+ 	select HAVE_PBL_MULTI_IMAGES
++	select ARM_SMCCC
+ 	select COMMON_CLK
+ 	select COMMON_CLK_OF_PROVIDER
+ 	select CLKDEV_LOOKUP
+diff --git a/arch/arm/mach-zynqmp/Makefile b/arch/arm/mach-zynqmp/Makefile
+index c601374..021efc9 100644
+--- a/arch/arm/mach-zynqmp/Makefile
++++ b/arch/arm/mach-zynqmp/Makefile
+@@ -1,2 +1,2 @@
+ # SPDX-License-Identifier: GPL-2.0-or-later
+-obj- := __dummy__.o
++obj-y += firmware-zynqmp.o
+diff --git a/arch/arm/mach-zynqmp/firmware-zynqmp.c b/arch/arm/mach-zynqmp/firmware-zynqmp.c
+new file mode 100644
+index 0000000..420f052f
+--- /dev/null
++++ b/arch/arm/mach-zynqmp/firmware-zynqmp.c
+@@ -0,0 +1,601 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Xilinx Zynq MPSoC Firmware layer
++ *
++ * Copyright (c) 2018 Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
++ *
++ * based on Linux xlnx-zynqmp
++ *
++ *  Michal Simek <michal.simek@xilinx.com>
++ *  Davorin Mista <davorin.mista@aggios.com>
++ *  Jolly Shah <jollys@xilinx.com>
++ *  Rajan Vaja <rajanv@xilinx.com>
++ */
++
++#include <common.h>
++#include <init.h>
++#include <linux/arm-smccc.h>
++
++#include <mach/firmware-zynqmp.h>
++
++#define ZYNQMP_PM_VERSION_MAJOR	1
++#define ZYNQMP_PM_VERSION_MINOR	0
++
++#define ZYNQMP_PM_VERSION	((ZYNQMP_PM_VERSION_MAJOR << 16) | \
++					ZYNQMP_PM_VERSION_MINOR)
++
++#define ZYNQMP_TZ_VERSION_MAJOR 1
++#define ZYNQMP_TZ_VERSION_MINOR 0
++
++#define ZYNQMP_TZ_VERSION	((ZYNQMP_TZ_VERSION_MAJOR << 16) | \
++				ZYNQMP_TZ_VERSION_MINOR)
++
++#define PAYLOAD_ARG_CNT         4
++
++/* SMC SIP service Call Function Identifier Prefix */
++#define PM_SIP_SVC		0xC2000000
++
++enum pm_ret_status {
++	XST_PM_SUCCESS = 0,
++	XST_PM_INTERNAL = 2000,
++	XST_PM_CONFLICT,
++	XST_PM_NO_ACCESS,
++	XST_PM_INVALID_NODE,
++	XST_PM_DOUBLE_REQ,
++	XST_PM_ABORT_SUSPEND,
++};
++
++enum pm_api_id {
++	PM_GET_API_VERSION = 1,
++	PM_FPGA_LOAD = 22,
++	PM_FPGA_GET_STATUS,
++	PM_IOCTL = 34,
++	PM_QUERY_DATA,
++	PM_CLOCK_ENABLE,
++	PM_CLOCK_DISABLE,
++	PM_CLOCK_GETSTATE,
++	PM_CLOCK_SETDIVIDER,
++	PM_CLOCK_GETDIVIDER,
++	PM_CLOCK_SETRATE,
++	PM_CLOCK_GETRATE,
++	PM_CLOCK_SETPARENT,
++	PM_CLOCK_GETPARENT,
++	PM_EFUSE_ACCESS = 53,
++	PM_GET_TRUSTZONE_VERSION = 0xA03,
++};
++
++/**
++ * zynqmp_pm_ret_code() - Convert PMU-FW error codes to Linux error codes
++ * @ret_status:		PMUFW return code
++ *
++ * Return: corresponding Linux error code
++ */
++static int zynqmp_pm_ret_code(u32 ret_status)
++{
++	switch (ret_status) {
++	case XST_PM_SUCCESS:
++	case XST_PM_DOUBLE_REQ:
++		return 0;
++	case XST_PM_NO_ACCESS:
++		return -EACCES;
++	case XST_PM_ABORT_SUSPEND:
++		return -ECANCELED;
++	case XST_PM_INTERNAL:
++	case XST_PM_CONFLICT:
++	case XST_PM_INVALID_NODE:
++	default:
++		return -EINVAL;
++	}
++}
++
++static noinline int do_fw_call_fail(u64 arg0, u64 arg1, u64 arg2,
++				    u32 *ret_payload)
++{
++	return -ENODEV;
++}
++
++/*
++ * PM function call wrapper
++ * Invoke do_fw_call_smc or do_fw_call_hvc, depending on the configuration
++ */
++static int (*do_fw_call)(u64, u64, u64, u32 *ret_payload) = do_fw_call_fail;
++
++/**
++ * do_fw_call_smc() - Call system-level platform management layer (SMC)
++ * @arg0:		Argument 0 to SMC call
++ * @arg1:		Argument 1 to SMC call
++ * @arg2:		Argument 2 to SMC call
++ * @ret_payload:	Returned value array
++ *
++ * Invoke platform management function via SMC call (no hypervisor present).
++ *
++ * Return: Returns status, either success or error+reason
++ */
++static noinline int do_fw_call_smc(u64 arg0, u64 arg1, u64 arg2,
++				   u32 *ret_payload)
++{
++	struct arm_smccc_res res;
++
++	arm_smccc_smc(arg0, arg1, arg2, 0, 0, 0, 0, 0, &res);
++
++	if (ret_payload) {
++		ret_payload[0] = lower_32_bits(res.a0);
++		ret_payload[1] = upper_32_bits(res.a0);
++		ret_payload[2] = lower_32_bits(res.a1);
++		ret_payload[3] = upper_32_bits(res.a1);
++	}
++
++	return zynqmp_pm_ret_code((enum pm_ret_status)res.a0);
++}
++
++/**
++ * do_fw_call_hvc() - Call system-level platform management layer (HVC)
++ * @arg0:		Argument 0 to HVC call
++ * @arg1:		Argument 1 to HVC call
++ * @arg2:		Argument 2 to HVC call
++ * @ret_payload:	Returned value array
++ *
++ * Invoke platform management function via HVC
++ * HVC-based for communication through hypervisor
++ * (no direct communication with ATF).
++ *
++ * Return: Returns status, either success or error+reason
++ */
++static noinline int do_fw_call_hvc(u64 arg0, u64 arg1, u64 arg2,
++				   u32 *ret_payload)
++{
++	struct arm_smccc_res res;
++
++	arm_smccc_hvc(arg0, arg1, arg2, 0, 0, 0, 0, 0, &res);
++
++	if (ret_payload) {
++		ret_payload[0] = lower_32_bits(res.a0);
++		ret_payload[1] = upper_32_bits(res.a0);
++		ret_payload[2] = lower_32_bits(res.a1);
++		ret_payload[3] = upper_32_bits(res.a1);
++	}
++
++	return zynqmp_pm_ret_code((enum pm_ret_status)res.a0);
++}
++
++/**
++ * zynqmp_pm_invoke_fn() - Invoke the system-level platform management layer
++ *			   caller function depending on the configuration
++ * @pm_api_id:		Requested PM-API call
++ * @arg0:		Argument 0 to requested PM-API call
++ * @arg1:		Argument 1 to requested PM-API call
++ * @arg2:		Argument 2 to requested PM-API call
++ * @arg3:		Argument 3 to requested PM-API call
++ * @ret_payload:	Returned value array
++ *
++ * Invoke platform management function for SMC or HVC call, depending on
++ * configuration.
++ * Following SMC Calling Convention (SMCCC) for SMC64:
++ * Pm Function Identifier,
++ * PM_SIP_SVC + PM_API_ID =
++ *	((SMC_TYPE_FAST << FUNCID_TYPE_SHIFT)
++ *	((SMC_64) << FUNCID_CC_SHIFT)
++ *	((SIP_START) << FUNCID_OEN_SHIFT)
++ *	((PM_API_ID) & FUNCID_NUM_MASK))
++ *
++ * PM_SIP_SVC	- Registered ZynqMP SIP Service Call.
++ * PM_API_ID	- Platform Management API ID.
++ *
++ * Return: Returns status, either success or error+reason
++ */
++static int zynqmp_pm_invoke_fn(u32 pm_api_id, u32 arg0, u32 arg1,
++			u32 arg2, u32 arg3, u32 *ret_payload)
++{
++	/*
++	 * Added SIP service call Function Identifier
++	 * Make sure to stay in x0 register
++	 */
++	u64 smc_arg[4];
++
++	smc_arg[0] = PM_SIP_SVC | pm_api_id;
++	smc_arg[1] = ((u64)arg1 << 32) | arg0;
++	smc_arg[2] = ((u64)arg3 << 32) | arg2;
++
++	return do_fw_call(smc_arg[0], smc_arg[1], smc_arg[2], ret_payload);
++}
++
++static u32 pm_api_version;
++static u32 pm_tz_version;
++
++/**
++ * zynqmp_pm_get_api_version() - Get version number of PMU PM firmware
++ * @version:	Returned version value
++ *
++ * Return: Returns status, either success or error+reason
++ */
++static int zynqmp_pm_get_api_version(u32 *version)
++{
++	u32 ret_payload[PAYLOAD_ARG_CNT];
++	int ret;
++
++	if (!version)
++		return -EINVAL;
++
++	/* Check is PM API version already verified */
++	if (pm_api_version > 0) {
++		*version = pm_api_version;
++		return 0;
++	}
++	ret = zynqmp_pm_invoke_fn(PM_GET_API_VERSION, 0, 0, 0, 0, ret_payload);
++	*version = ret_payload[1];
++
++	return ret;
++}
++
++/**
++ * zynqmp_pm_get_trustzone_version() - Get secure trustzone firmware version
++ * @version:	Returned version value
++ *
++ * Return: Returns status, either success or error+reason
++ */
++static int zynqmp_pm_get_trustzone_version(u32 *version)
++{
++	u32 ret_payload[PAYLOAD_ARG_CNT];
++	int ret;
++
++	if (!version)
++		return -EINVAL;
++
++	/* Check is PM trustzone version already verified */
++	if (pm_tz_version > 0) {
++		*version = pm_tz_version;
++		return 0;
++	}
++	ret = zynqmp_pm_invoke_fn(PM_GET_TRUSTZONE_VERSION, 0, 0,
++				  0, 0, ret_payload);
++	*version = ret_payload[1];
++
++	return ret;
++}
++
++/**
++ * get_set_conduit_method() - Choose SMC or HVC based communication
++ * @np:		Pointer to the device_node structure
++ *
++ * Use SMC or HVC-based functions to communicate with EL2/EL3.
++ *
++ * Return: Returns 0 on success or error code
++ */
++static int get_set_conduit_method(struct device_node *np)
++{
++	const char *method;
++
++	if (of_property_read_string(np, "method", &method)) {
++		pr_warn("%s missing \"method\" property\n", __func__);
++		return -ENXIO;
++	}
++
++	if (!strcmp("hvc", method)) {
++		do_fw_call = do_fw_call_hvc;
++	} else if (!strcmp("smc", method)) {
++		do_fw_call = do_fw_call_smc;
++	} else {
++		pr_warn("%s Invalid \"method\" property: %s\n",
++			__func__, method);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++/**
++ * zynqmp_pm_query_data() - Get query data from firmware
++ * @qdata:	Variable to the zynqmp_pm_query_data structure
++ * @out:	Returned output value
++ *
++ * Return: Returns status, either success or error+reason
++ */
++static int zynqmp_pm_query_data(struct zynqmp_pm_query_data qdata, u32 *out)
++{
++	int ret;
++
++	ret = zynqmp_pm_invoke_fn(PM_QUERY_DATA, qdata.qid, qdata.arg1,
++				  qdata.arg2, qdata.arg3, out);
++
++	/*
++	 * For clock name query, all bytes in SMC response are clock name
++	 * characters and return code is always success. For invalid clocks,
++	 * clock name bytes would be zeros.
++	 */
++	return qdata.qid == PM_QID_CLOCK_GET_NAME ? 0 : ret;
++}
++
++/**
++ * zynqmp_pm_clock_enable() - Enable the clock for given id
++ * @clock_id:	ID of the clock to be enabled
++ *
++ * This function is used by master to enable the clock
++ * including peripherals and PLL clocks.
++ *
++ * Return: Returns status, either success or error+reason
++ */
++static int zynqmp_pm_clock_enable(u32 clock_id)
++{
++	return zynqmp_pm_invoke_fn(PM_CLOCK_ENABLE, clock_id, 0, 0, 0, NULL);
++}
++
++/**
++ * zynqmp_pm_clock_disable() - Disable the clock for given id
++ * @clock_id:	ID of the clock to be disable
++ *
++ * This function is used by master to disable the clock
++ * including peripherals and PLL clocks.
++ *
++ * Return: Returns status, either success or error+reason
++ */
++static int zynqmp_pm_clock_disable(u32 clock_id)
++{
++	return zynqmp_pm_invoke_fn(PM_CLOCK_DISABLE, clock_id, 0, 0, 0, NULL);
++}
++
++/**
++ * zynqmp_pm_clock_getstate() - Get the clock state for given id
++ * @clock_id:	ID of the clock to be queried
++ * @state:	1/0 (Enabled/Disabled)
++ *
++ * This function is used by master to get the state of clock
++ * including peripherals and PLL clocks.
++ *
++ * Return: Returns status, either success or error+reason
++ */
++static int zynqmp_pm_clock_getstate(u32 clock_id, u32 *state)
++{
++	u32 ret_payload[PAYLOAD_ARG_CNT];
++	int ret;
++
++	ret = zynqmp_pm_invoke_fn(PM_CLOCK_GETSTATE, clock_id, 0,
++				  0, 0, ret_payload);
++	*state = ret_payload[1];
++
++	return ret;
++}
++
++/**
++ * zynqmp_pm_clock_setdivider() - Set the clock divider for given id
++ * @clock_id:	ID of the clock
++ * @divider:	divider value
++ *
++ * This function is used by master to set divider for any clock
++ * to achieve desired rate.
++ *
++ * Return: Returns status, either success or error+reason
++ */
++static int zynqmp_pm_clock_setdivider(u32 clock_id, u32 divider)
++{
++	return zynqmp_pm_invoke_fn(PM_CLOCK_SETDIVIDER, clock_id, divider,
++				   0, 0, NULL);
++}
++
++/**
++ * zynqmp_pm_clock_getdivider() - Get the clock divider for given id
++ * @clock_id:	ID of the clock
++ * @divider:	divider value
++ *
++ * This function is used by master to get divider values
++ * for any clock.
++ *
++ * Return: Returns status, either success or error+reason
++ */
++static int zynqmp_pm_clock_getdivider(u32 clock_id, u32 *divider)
++{
++	u32 ret_payload[PAYLOAD_ARG_CNT];
++	int ret;
++
++	ret = zynqmp_pm_invoke_fn(PM_CLOCK_GETDIVIDER, clock_id, 0,
++				  0, 0, ret_payload);
++	*divider = ret_payload[1];
++
++	return ret;
++}
++
++/**
++ * zynqmp_pm_clock_setrate() - Set the clock rate for given id
++ * @clock_id:	ID of the clock
++ * @rate:	rate value in hz
++ *
++ * This function is used by master to set rate for any clock.
++ *
++ * Return: Returns status, either success or error+reason
++ */
++static int zynqmp_pm_clock_setrate(u32 clock_id, u64 rate)
++{
++	return zynqmp_pm_invoke_fn(PM_CLOCK_SETRATE, clock_id,
++				   lower_32_bits(rate),
++				   upper_32_bits(rate),
++				   0, NULL);
++}
++
++/**
++ * zynqmp_pm_clock_getrate() - Get the clock rate for given id
++ * @clock_id:	ID of the clock
++ * @rate:	rate value in hz
++ *
++ * This function is used by master to get rate
++ * for any clock.
++ *
++ * Return: Returns status, either success or error+reason
++ */
++static int zynqmp_pm_clock_getrate(u32 clock_id, u64 *rate)
++{
++	u32 ret_payload[PAYLOAD_ARG_CNT];
++	int ret;
++
++	ret = zynqmp_pm_invoke_fn(PM_CLOCK_GETRATE, clock_id, 0,
++				  0, 0, ret_payload);
++	*rate = ((u64)ret_payload[2] << 32) | ret_payload[1];
++
++	return ret;
++}
++
++/**
++ * zynqmp_pm_clock_setparent() - Set the clock parent for given id
++ * @clock_id:	ID of the clock
++ * @parent_id:	parent id
++ *
++ * This function is used by master to set parent for any clock.
++ *
++ * Return: Returns status, either success or error+reason
++ */
++static int zynqmp_pm_clock_setparent(u32 clock_id, u32 parent_id)
++{
++	return zynqmp_pm_invoke_fn(PM_CLOCK_SETPARENT, clock_id,
++				   parent_id, 0, 0, NULL);
++}
++
++/**
++ * zynqmp_pm_clock_getparent() - Get the clock parent for given id
++ * @clock_id:	ID of the clock
++ * @parent_id:	parent id
++ *
++ * This function is used by master to get parent index
++ * for any clock.
++ *
++ * Return: Returns status, either success or error+reason
++ */
++static int zynqmp_pm_clock_getparent(u32 clock_id, u32 *parent_id)
++{
++	u32 ret_payload[PAYLOAD_ARG_CNT];
++	int ret;
++
++	ret = zynqmp_pm_invoke_fn(PM_CLOCK_GETPARENT, clock_id, 0,
++				  0, 0, ret_payload);
++	*parent_id = ret_payload[1];
++
++	return ret;
++}
++
++/**
++ * zynqmp_is_valid_ioctl() - Check whether IOCTL ID is valid or not
++ * @ioctl_id:	IOCTL ID
++ *
++ * Return: 1 if IOCTL is valid else 0
++ */
++static inline int zynqmp_is_valid_ioctl(u32 ioctl_id)
++{
++	switch (ioctl_id) {
++	case IOCTL_SET_PLL_FRAC_MODE:
++	case IOCTL_GET_PLL_FRAC_MODE:
++	case IOCTL_SET_PLL_FRAC_DATA:
++	case IOCTL_GET_PLL_FRAC_DATA:
++		return 1;
++	default:
++		return 0;
++	}
++}
++
++/**
++ * zynqmp_pm_ioctl() - PM IOCTL API for device control and configs
++ * @node_id:	Node ID of the device
++ * @ioctl_id:	ID of the requested IOCTL
++ * @arg1:	Argument 1 to requested IOCTL call
++ * @arg2:	Argument 2 to requested IOCTL call
++ * @out:	Returned output value
++ *
++ * This function calls IOCTL to firmware for device control and configuration.
++ *
++ * Return: Returns status, either success or error+reason
++ */
++static int zynqmp_pm_ioctl(u32 node_id, u32 ioctl_id, u32 arg1, u32 arg2,
++			   u32 *out)
++{
++	if (!zynqmp_is_valid_ioctl(ioctl_id))
++		return -EINVAL;
++
++	return zynqmp_pm_invoke_fn(PM_IOCTL, node_id, ioctl_id,
++				   arg1, arg2, out);
++}
++
++static const struct zynqmp_eemi_ops eemi_ops = {
++	.get_api_version = zynqmp_pm_get_api_version,
++	.query_data = zynqmp_pm_query_data,
++	.clock_enable = zynqmp_pm_clock_enable,
++	.clock_disable = zynqmp_pm_clock_disable,
++	.clock_getstate = zynqmp_pm_clock_getstate,
++	.clock_setdivider = zynqmp_pm_clock_setdivider,
++	.clock_getdivider = zynqmp_pm_clock_getdivider,
++	.clock_setrate = zynqmp_pm_clock_setrate,
++	.clock_getrate = zynqmp_pm_clock_getrate,
++	.clock_setparent = zynqmp_pm_clock_setparent,
++	.clock_getparent = zynqmp_pm_clock_getparent,
++	.ioctl = zynqmp_pm_ioctl,
++};
++
++/**
++ * zynqmp_pm_get_eemi_ops - Get eemi ops functions
++ *
++ * Return: Pointer of eemi_ops structure
++ */
++const struct zynqmp_eemi_ops *zynqmp_pm_get_eemi_ops(void)
++{
++	return &eemi_ops;
++}
++EXPORT_SYMBOL_GPL(zynqmp_pm_get_eemi_ops);
++
++
++static int zynqmp_firmware_probe(struct device_d *dev)
++{
++	int ret;
++
++	ret = get_set_conduit_method(dev->device_node);
++	if (ret)
++		goto out;
++
++	zynqmp_pm_get_api_version(&pm_api_version);
++	if (pm_api_version < ZYNQMP_PM_VERSION) {
++		dev_err(dev, "Platform Management API version error."
++				"Expected: v%d.%d - Found: v%d.%d\n",
++				ZYNQMP_PM_VERSION_MAJOR,
++				ZYNQMP_PM_VERSION_MINOR,
++				pm_api_version >> 16, pm_api_version & 0xFFFF);
++		ret = -1;
++		goto out;
++	}
++	dev_dbg(dev, "Platform Management API v%d.%d\n",
++			pm_api_version >> 16, pm_api_version & 0xFFFF);
++
++	ret = zynqmp_pm_get_trustzone_version(&pm_tz_version);
++	if (ret) {
++		dev_err(dev, "Legacy trustzone found without version support\n");
++		ret = -1;
++		goto out;
++	}
++
++	if (pm_tz_version < ZYNQMP_TZ_VERSION) {
++		dev_err(dev, "Trustzone version error."
++				"Expected: v%d.%d - Found: v%d.%d\n",
++				ZYNQMP_TZ_VERSION_MAJOR,
++				ZYNQMP_TZ_VERSION_MINOR,
++				pm_tz_version >> 16, pm_tz_version & 0xFFFF);
++		ret = -1;
++		goto out;
++	}
++	dev_dbg(dev, "Trustzone version v%d.%d\n",
++			pm_tz_version >> 16, pm_tz_version & 0xFFFF);
++
++out:
++	if (ret)
++		do_fw_call = do_fw_call_fail;
++	return ret;
++}
++
++static struct of_device_id zynqmp_firmware_id_table[] = {
++	{ .compatible = "xlnx,zynqmp-firmware", },
++	{}
++};
++
++static struct driver_d zynqmp_firmware_driver = {
++	.name = "zynqmp_firmware",
++	.probe = zynqmp_firmware_probe,
++	.of_compatible = DRV_OF_COMPAT(zynqmp_firmware_id_table),
++};
++
++static int zynqmp_firmware_init(void)
++{
++	return platform_driver_register(&zynqmp_firmware_driver);
++}
++core_initcall(zynqmp_firmware_init);
+diff --git a/arch/arm/mach-zynqmp/include/mach/firmware-zynqmp.h b/arch/arm/mach-zynqmp/include/mach/firmware-zynqmp.h
+new file mode 100644
+index 0000000..7a65f78
+--- /dev/null
++++ b/arch/arm/mach-zynqmp/include/mach/firmware-zynqmp.h
+@@ -0,0 +1,66 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Xilinx Zynq MPSoC Firmware layer
++ *
++ * Copyright (c) 2018 Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
++ *
++ * based on Linux xlnx-zynqmp
++ *
++ *  Michal Simek <michal.simek@xilinx.com>
++ *  Davorin Mista <davorin.mista@aggios.com>
++ *  Jolly Shah <jollys@xilinx.com>
++ *  Rajan Vaja <rajanv@xilinx.com>
++ */
++
++#ifndef FIRMWARE_ZYNQMP_H_
++#define FIRMWARE_ZYNQMP_H_
++
++enum pm_ioctl_id {
++	IOCTL_SET_PLL_FRAC_MODE = 8,
++	IOCTL_GET_PLL_FRAC_MODE,
++	IOCTL_SET_PLL_FRAC_DATA,
++	IOCTL_GET_PLL_FRAC_DATA,
++};
++
++enum pm_query_id {
++	PM_QID_INVALID,
++	PM_QID_CLOCK_GET_NAME,
++	PM_QID_CLOCK_GET_TOPOLOGY,
++	PM_QID_CLOCK_GET_FIXEDFACTOR_PARAMS,
++	PM_QID_CLOCK_GET_PARENTS,
++	PM_QID_CLOCK_GET_ATTRIBUTES,
++	PM_QID_CLOCK_GET_NUM_CLOCKS = 12,
++};
++
++/**
++ * struct zynqmp_pm_query_data - PM query data
++ * @qid:	query ID
++ * @arg1:	Argument 1 of query data
++ * @arg2:	Argument 2 of query data
++ * @arg3:	Argument 3 of query data
++ */
++struct zynqmp_pm_query_data {
++	u32 qid;
++	u32 arg1;
++	u32 arg2;
++	u32 arg3;
++};
++
++struct zynqmp_eemi_ops {
++	int (*get_api_version)(u32 *version);
++	int (*query_data)(struct zynqmp_pm_query_data qdata, u32 *out);
++	int (*clock_enable)(u32 clock_id);
++	int (*clock_disable)(u32 clock_id);
++	int (*clock_getstate)(u32 clock_id, u32 *state);
++	int (*clock_setdivider)(u32 clock_id, u32 divider);
++	int (*clock_getdivider)(u32 clock_id, u32 *divider);
++	int (*clock_setrate)(u32 clock_id, u64 rate);
++	int (*clock_getrate)(u32 clock_id, u64 *rate);
++	int (*clock_setparent)(u32 clock_id, u32 parent_id);
++	int (*clock_getparent)(u32 clock_id, u32 *parent_id);
++	int (*ioctl)(u32 node_id, u32 ioctl_id, u32 arg1, u32 arg2, u32 *out);
++};
++
++const struct zynqmp_eemi_ops *zynqmp_pm_get_eemi_ops(void);
++
++#endif /* FIRMWARE_ZYNQMP_H_ */
 -- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.7.4
+
 
 _______________________________________________
 barebox mailing list
