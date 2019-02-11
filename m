@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gtDK6-0008Qw-0C
- for barebox@lists.infradead.org; Mon, 11 Feb 2019 15:16:44 +0000
+ id 1gtDK8-0008RD-Ta
+ for barebox@lists.infradead.org; Mon, 11 Feb 2019 15:16:46 +0000
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 11 Feb 2019 16:16:33 +0100
-Message-Id: <1549898200-32688-1-git-send-email-t.remmet@phytec.de>
+Date: Mon, 11 Feb 2019 16:16:35 +0100
+Message-Id: <1549898200-32688-3-git-send-email-t.remmet@phytec.de>
+In-Reply-To: <1549898200-32688-1-git-send-email-t.remmet@phytec.de>
+References: <1549898200-32688-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,43 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/7] Add ti-sysc bus driver
+Subject: [PATCH 2/7] arm: configs: omap_defconfig: Enable ti-sysc bus driver
 To: barebox@lists.infradead.org
 
-Hello,
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ arch/arm/configs/omap_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-with the device tree update to v5.0-rc2 most of the barebox devices
-could not be enabled or probed any more. The am33xx*.dtsi files
-have been updated to the interconnect target module hierarchy.
-To make barebox working again we need a ti-sysc bus driver to
-register the child devices of the ti-sysc bus.
-
-Teresa
-
-Teresa Remmet (7):
-  drivers: bus: Add ti-sysc bus driver
-  arm: configs: omap_defconfig: Enable ti-sysc bus driver
-  arm: configs: am33xx_mlo_defconfig: Enable ti-sysc bus driver
-  drivers: of: Add function to enable and register a device by alias
-  arm: mach-omap: am335x_generic: Enable nodes by alias where needed
-  net: ethernet: cpsw: cpsw-phy-sel: Use phandle for phy sel
-  arm: dts: am335x-phytec: Use phy-handle instead of phy_id
-
- arch/arm/configs/am335x_mlo_defconfig       |  2 +-
- arch/arm/configs/omap_defconfig             |  2 +-
- arch/arm/dts/am335x-phytec-phycard-som.dtsi |  7 ++++-
- arch/arm/dts/am335x-phytec-phycore-som.dtsi |  7 ++++-
- arch/arm/dts/am335x-phytec-phyflex-som.dtsi | 12 ++++++--
- arch/arm/mach-omap/am33xx_generic.c         |  8 ++---
- drivers/bus/Kconfig                         |  7 +++++
- drivers/bus/Makefile                        |  1 +
- drivers/bus/ti-sysc.c                       | 45 +++++++++++++++++++++++++++++
- drivers/net/cpsw.c                          | 17 +++++++----
- drivers/of/platform.c                       | 19 ++++++++++++
- include/of.h                                |  8 +++++
- 12 files changed, 119 insertions(+), 16 deletions(-)
- create mode 100644 drivers/bus/ti-sysc.c
-
+diff --git a/arch/arm/configs/omap_defconfig b/arch/arm/configs/omap_defconfig
+index 128027a6406b..8615283453d4 100644
+--- a/arch/arm/configs/omap_defconfig
++++ b/arch/arm/configs/omap_defconfig
+@@ -97,7 +97,6 @@ CONFIG_CMD_BOOTCHOOSER=y
+ CONFIG_NET=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_NETCONSOLE=y
+-CONFIG_NET_RESOLV=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+@@ -141,6 +140,7 @@ CONFIG_WATCHDOG_OMAP=y
+ CONFIG_GPIO_GENERIC_PLATFORM=y
+ CONFIG_PINCTRL_SINGLE=y
+ CONFIG_BUS_OMAP_GPMC=y
++CONFIG_TI_SYSC=y
+ CONFIG_FS_EXT4=y
+ CONFIG_FS_TFTP=y
+ CONFIG_FS_NFS=y
 -- 
 2.7.4
 
