@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1grYOh-0003Yl-AB
- for barebox@lists.infradead.org; Thu, 07 Feb 2019 01:22:36 +0000
-Received: by mail-pg1-x542.google.com with SMTP id d72so3757150pga.9
- for <barebox@lists.infradead.org>; Wed, 06 Feb 2019 17:22:35 -0800 (PST)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Feb 2019 17:22:01 -0800
-Message-Id: <20190207012214.5060-4-andrew.smirnov@gmail.com>
-In-Reply-To: <20190207012214.5060-1-andrew.smirnov@gmail.com>
-References: <20190207012214.5060-1-andrew.smirnov@gmail.com>
+ id 1gt6Mz-0006kh-4o
+ for barebox@lists.infradead.org; Mon, 11 Feb 2019 07:51:14 +0000
+Date: Mon, 11 Feb 2019 08:51:11 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190211075111.3nkxyejnpzrqh3gh@pengutronix.de>
+References: <20190207095625.11582-1-o.rempel@pengutronix.de>
+ <20190207095625.11582-2-o.rempel@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190207095625.11582-2-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,86 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/16] net/e1000: Don't use coherent memory for Rx buffer
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH v1 2/3] watchdog: add (U)EFI watchdog driver
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-In order to avoid issues on AArch64, convert the driver to use regular
-memory and add appropriate DMA sync calls. Drop needless (uchar *)
-cast while at it.
+On Thu, Feb 07, 2019 at 10:56:24AM +0100, Oleksij Rempel wrote:
+> This driver is using SetWatchdogTimer() UEFI interface and was
+> tested on iBASE MI991AF Mini-ITX motherboard.
+> 
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  common/efi/efi.c           |  9 ++++-
+>  drivers/watchdog/Kconfig   |  6 ++++
+>  drivers/watchdog/Makefile  |  1 +
+>  drivers/watchdog/efi_wdt.c | 69 ++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 84 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/watchdog/efi_wdt.c
+> 
+> +#define to_efi_wdt(h) container_of(h, struct efi_wdt_priv, wd)
+> +
+> +static int efi_wdt_set_timeout(struct watchdog *wd, unsigned timeout)
+> +{
+> +	struct efi_wdt_priv *priv = to_efi_wdt(wd);
+> +	efi_status_t efiret;
+> +
+> +	efiret = BS->set_watchdog_timer(timeout, 0, 0, NULL);
+> +	if (EFI_ERROR(efiret))
+> +		dev_err(priv->dev, "filed to set EFI watchdog: %lx\n", efiret);
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- drivers/net/e1000/e1000.h |  1 +
- drivers/net/e1000/main.c  | 18 ++++++++++++++----
- 2 files changed, 15 insertions(+), 4 deletions(-)
+Shouldn't you return an error here?
 
-diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
-index 0a9e107c0..52ad3d4cd 100644
---- a/drivers/net/e1000/e1000.h
-+++ b/drivers/net/e1000/e1000.h
-@@ -2182,6 +2182,7 @@ struct e1000_hw {
- 	struct e1000_tx_desc *tx_base;
- 	struct e1000_rx_desc *rx_base;
- 	unsigned char *packet;
-+	dma_addr_t packet_dma;
- 
- 	int tx_tail;
- 	int rx_tail, rx_last;
-diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
-index 0ef8fd623..7358763f9 100644
---- a/drivers/net/e1000/main.c
-+++ b/drivers/net/e1000/main.c
-@@ -3215,7 +3215,7 @@ static void fill_rx(struct e1000_hw *hw)
- 	for (i = 0; i < 4; i++)
- 		*bla++ = 0;
- 
--	rd->buffer_addr = cpu_to_le64((unsigned long)hw->packet);
-+	rd->buffer_addr = cpu_to_le64(hw->packet_dma);
- 
- 	e1000_write_reg(hw, E1000_RDT, hw->rx_tail);
- }
-@@ -3406,9 +3406,11 @@ static int e1000_poll(struct eth_device *edev)
- 
- 	len = le32_to_cpu(rd->length);
- 
--	dma_sync_single_for_cpu((unsigned long)hw->packet, len, DMA_FROM_DEVICE);
-+	dma_sync_single_for_cpu(hw->packet_dma, len, DMA_FROM_DEVICE);
- 
--	net_receive(edev, (uchar *)hw->packet, len);
-+	net_receive(edev, hw->packet, len);
-+
-+	dma_sync_single_for_device(hw->packet_dma, len, DMA_FROM_DEVICE);
- 	fill_rx(hw);
- 	return 1;
- }
-@@ -3561,7 +3563,6 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 
- 	hw->tx_base = dma_alloc_coherent(16 * sizeof(*hw->tx_base), DMA_ADDRESS_BROKEN);
- 	hw->rx_base = dma_alloc_coherent(16 * sizeof(*hw->rx_base), DMA_ADDRESS_BROKEN);
--	hw->packet = dma_alloc_coherent(4096, DMA_ADDRESS_BROKEN);
- 
- 	edev = &hw->edev;
- 
-@@ -3570,6 +3571,15 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	pdev->dev.priv = hw;
- 	edev->priv = hw;
- 
-+	hw->packet = dma_alloc(PAGE_SIZE);
-+	if (!hw->packet)
-+		return -ENOMEM;
-+
-+	hw->packet_dma = dma_map_single(hw->dev, hw->packet, PAGE_SIZE,
-+					DMA_FROM_DEVICE);
-+	if (dma_mapping_error(hw->dev, hw->packet_dma))
-+		return -EFAULT;
-+
- 	hw->hw_addr = pci_iomap(pdev, 0);
- 
- 	/* MAC and Phy settings */
+> +	.name = "efi-wdt",
+> +	.probe = efi_wdt_probe,
+> +};
+> +
+> +static int efi_wdt_initcall(void)
+> +{
+> +	return platform_driver_register(&efi_wdt_driver);
+> +}
+> +device_initcall(efi_wdt_initcall);
+
+device_platform_driver instead?
+
+Sascha
+
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
