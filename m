@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gtj4y-00082K-Ju
- for barebox@lists.infradead.org; Wed, 13 Feb 2019 01:11:13 +0000
-Received: by mail-pl1-x643.google.com with SMTP id g9so334058plo.3
- for <barebox@lists.infradead.org>; Tue, 12 Feb 2019 17:11:12 -0800 (PST)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Feb 2019 17:11:04 -0800
-Message-Id: <20190213011104.21602-1-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gtDK6-0008Qw-0C
+ for barebox@lists.infradead.org; Mon, 11 Feb 2019 15:16:44 +0000
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Mon, 11 Feb 2019 16:16:33 +0100
+Message-Id: <1549898200-32688-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,38 +14,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX8MQ: Check CPU type in imx8mq_init_syscnt_frequency()
+Subject: [PATCH 0/7] Add ti-sysc bus driver
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add code to make sure that imx8mq_init_syscnt_frequency() is only
-executed on i.MX8MQ.
+Hello,
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- arch/arm/mach-imx/imx8mq.c | 3 +++
- 1 file changed, 3 insertions(+)
+with the device tree update to v5.0-rc2 most of the barebox devices
+could not be enabled or probed any more. The am33xx*.dtsi files
+have been updated to the interconnect target module hierarchy.
+To make barebox working again we need a ti-sysc bus driver to
+register the child devices of the ti-sysc bus.
 
-diff --git a/arch/arm/mach-imx/imx8mq.c b/arch/arm/mach-imx/imx8mq.c
-index d887092ce..3f6b433a5 100644
---- a/arch/arm/mach-imx/imx8mq.c
-+++ b/arch/arm/mach-imx/imx8mq.c
-@@ -29,6 +29,9 @@
- 
- static int imx8mq_init_syscnt_frequency(void)
- {
-+	if (!cpu_is_mx8mq())
-+		return 0;
-+
- 	if (current_el() == 3) {
- 		void __iomem *syscnt = IOMEM(MX8MQ_SYSCNT_CTRL_BASE_ADDR);
- 		/*
+Teresa
+
+Teresa Remmet (7):
+  drivers: bus: Add ti-sysc bus driver
+  arm: configs: omap_defconfig: Enable ti-sysc bus driver
+  arm: configs: am33xx_mlo_defconfig: Enable ti-sysc bus driver
+  drivers: of: Add function to enable and register a device by alias
+  arm: mach-omap: am335x_generic: Enable nodes by alias where needed
+  net: ethernet: cpsw: cpsw-phy-sel: Use phandle for phy sel
+  arm: dts: am335x-phytec: Use phy-handle instead of phy_id
+
+ arch/arm/configs/am335x_mlo_defconfig       |  2 +-
+ arch/arm/configs/omap_defconfig             |  2 +-
+ arch/arm/dts/am335x-phytec-phycard-som.dtsi |  7 ++++-
+ arch/arm/dts/am335x-phytec-phycore-som.dtsi |  7 ++++-
+ arch/arm/dts/am335x-phytec-phyflex-som.dtsi | 12 ++++++--
+ arch/arm/mach-omap/am33xx_generic.c         |  8 ++---
+ drivers/bus/Kconfig                         |  7 +++++
+ drivers/bus/Makefile                        |  1 +
+ drivers/bus/ti-sysc.c                       | 45 +++++++++++++++++++++++++++++
+ drivers/net/cpsw.c                          | 17 +++++++----
+ drivers/of/platform.c                       | 19 ++++++++++++
+ include/of.h                                |  8 +++++
+ 12 files changed, 119 insertions(+), 16 deletions(-)
+ create mode 100644 drivers/bus/ti-sysc.c
+
 -- 
-2.20.1
+2.7.4
 
 
 _______________________________________________
