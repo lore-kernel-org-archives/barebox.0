@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.15.15])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gtc52-0008FQ-2M
- for barebox@lists.infradead.org; Tue, 12 Feb 2019 17:42:49 +0000
-References: <38a77a39-1131-deed-993c-5f4f197f41ce@data-modul.com>
-From: Oleksij Rempel <linux@rempel-privat.de>
-Message-ID: <7b2c6a9b-a41d-9a57-7290-960d7f7402fc@rempel-privat.de>
-Date: Tue, 12 Feb 2019 18:42:41 +0100
+ id 1gtNvs-00087m-7M
+ for barebox@lists.infradead.org; Tue, 12 Feb 2019 02:36:25 +0000
+Received: by mail-pl1-x643.google.com with SMTP id f90so514592plb.10
+ for <barebox@lists.infradead.org>; Mon, 11 Feb 2019 18:36:24 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 11 Feb 2019 18:36:17 -0800
+Message-Id: <20190212023617.28291-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <38a77a39-1131-deed-993c-5f4f197f41ce@data-modul.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,93 +17,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============7247929741761311410=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: cortex-m4 in Barebox
-To: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: i.MX8MQ: Add code to report HDMI/eDP firmware version
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============7247929741761311410==
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="WexiCbdZX8SqxDUJu3m7NMxcOenK4qIAm"
+Port code found in cdn_dp_load_firmware() in Linux kernel to check if
+HDMI firmware is running and, if so, report its version.
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---WexiCbdZX8SqxDUJu3m7NMxcOenK4qIAm
-Content-Type: multipart/mixed; boundary="Y5CYAggKfHPB6KP7noyw9z0zz9VfspjGN";
- protected-headers="v1"
-From: Oleksij Rempel <linux@rempel-privat.de>
-To: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>,
- "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Message-ID: <7b2c6a9b-a41d-9a57-7290-960d7f7402fc@rempel-privat.de>
-Subject: Re: cortex-m4 in Barebox
-References: <38a77a39-1131-deed-993c-5f4f197f41ce@data-modul.com>
-In-Reply-To: <38a77a39-1131-deed-993c-5f4f197f41ce@data-modul.com>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/mach-imx/imx8mq.c | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
---Y5CYAggKfHPB6KP7noyw9z0zz9VfspjGN
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+diff --git a/arch/arm/mach-imx/imx8mq.c b/arch/arm/mach-imx/imx8mq.c
+index 4d00da5f0..18822333c 100644
+--- a/arch/arm/mach-imx/imx8mq.c
++++ b/arch/arm/mach-imx/imx8mq.c
+@@ -21,6 +21,7 @@
+ #include <mach/imx8mq.h>
+ #include <mach/reset-reason.h>
+ 
++#include <linux/iopoll.h>
+ #include <linux/arm-smccc.h>
+ 
+ #define FSL_SIP_BUILDINFO			0xC2000003
+@@ -81,3 +82,39 @@ int imx8mq_init(void)
+ 
+ 	return 0;
+ }
++
++#define KEEP_ALIVE			0x18
++#define VER_L				0x1c
++#define VER_H				0x20
++#define VER_LIB_L_ADDR			0x24
++#define VER_LIB_H_ADDR			0x28
++#define FW_ALIVE_TIMEOUT_US		100000
++
++static int imx8mq_report_hdmi_firmware(void)
++{
++	void __iomem *hdmi = IOMEM(MX8MQ_HDMI_CTRL_BASE_ADDR);
++	u16 ver_lib, ver;
++	u32 reg;
++	int ret;
++
++	/* check the keep alive register to make sure fw working */
++	ret = readl_poll_timeout(hdmi + KEEP_ALIVE,
++				 reg, reg, FW_ALIVE_TIMEOUT_US);
++	if (ret < 0) {
++		pr_info("HDMI firmware is not running\n");
++		return 0;
++	}
++
++	ver = readl(hdmi + VER_H) & 0xff;
++	ver <<= 8;
++	ver |= readl(hdmi + VER_L) & 0xff;
++
++	ver_lib = readl(hdmi + VER_LIB_H_ADDR) & 0xff;
++	ver_lib <<= 8;
++	ver_lib |= readl(hdmi + VER_LIB_L_ADDR) & 0xff;
++
++	pr_info("HDMI firmware ver: %d ver_lib: %d\n", ver, ver_lib);
++
++	return 0;
++}
++console_initcall(imx8mq_report_hdmi_firmware);
+-- 
+2.20.1
 
-Hi,
-
-Am 12.02.19 um 15:22 schrieb Yazdani, Reyhaneh:
-> Hello everyone,
->=20
-> I am using imx8m-evk board. To boot a cortex-m4 in the system, in u-boo=
-t, there
-> is a bootaux command, which runs the m4-image and boot cortex-m4.
->=20
-> Is there any command available in Barebox to boot m4? Totally, what is =
-available
-> in Barebox regarding cortex-m4?
->=20
-> Thanks in advance,
-
-There are no special commands to do so.
-I was thinking about porting remoteproc from linux to barebox. So we can
-reuse existing images and be able to patch devicetree just before linux
-start.
-
-Right now I have no time for this, so patches are welcome.
-
---=20
-Regards,
-Oleksij
-
-
---Y5CYAggKfHPB6KP7noyw9z0zz9VfspjGN--
-
---WexiCbdZX8SqxDUJu3m7NMxcOenK4qIAm
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEpENFL0P3hvQ7p0DDdQOiSHVI77QFAlxjBZEACgkQdQOiSHVI
-77QOxggAsIFSv7sg8M6RBQqEeSHv6XQiyseKbygo+XvlHk2pqCsX7llRbahZBhs7
-aUZqtXdOOYrrraVgDN2nYgsPTkHVOqfjntEFUQKIOmjgb6EYWYO3QJH0lJKn6b+l
-pejE0s5E8lRIp+t4j5IExAA/SqssI57Bw9sd3M6LXU22O+/nIgshudRIhkYHJg3u
-vqVi1p9DdO1x5hfMKNLlPLWHCMES6U1p3ZEyLqBnrI35YW999/J/8eZRhUbpMSpS
-U7beFIqYkpv0+pfbGfNjXk6EfhMPO9NKf39YQ7Z9pve0vqqfzufaU1QIXCaCPgK9
-lKEA9GbwsjSByiUfxj+0FVozVmnEgQ==
-=fIl/
------END PGP SIGNATURE-----
-
---WexiCbdZX8SqxDUJu3m7NMxcOenK4qIAm--
-
-
---===============7247929741761311410==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============7247929741761311410==--
