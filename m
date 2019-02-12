@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wr1-x441.google.com ([2a00:1450:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gtUa3-00029Z-MZ
- for barebox@lists.infradead.org; Tue, 12 Feb 2019 09:42:23 +0000
-Message-ID: <1549964536.2546.23.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 12 Feb 2019 10:42:16 +0100
-In-Reply-To: <20190212023617.28291-1-andrew.smirnov@gmail.com>
+ id 1gtdPm-0007jH-Ba
+ for barebox@lists.infradead.org; Tue, 12 Feb 2019 19:08:19 +0000
+Received: by mail-wr1-x441.google.com with SMTP id r2so3941459wrv.10
+ for <barebox@lists.infradead.org>; Tue, 12 Feb 2019 11:08:17 -0800 (PST)
+MIME-Version: 1.0
 References: <20190212023617.28291-1-andrew.smirnov@gmail.com>
-Mime-Version: 1.0
+ <1549964536.2546.23.camel@pengutronix.de>
+In-Reply-To: <1549964536.2546.23.camel@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 12 Feb 2019 11:08:04 -0800
+Message-ID: <CAHQ1cqF40dmKx_SYpuWQrMN-q-JKbBcO-vyw7eAJF6Y6gzVPyA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,48 +20,90 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ARM: i.MX8MQ: Add code to report HDMI/eDP firmware version
-To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-QW0gTW9udGFnLCBkZW4gMTEuMDIuMjAxOSwgMTg6MzYgLTA4MDAgc2NocmllYiBBbmRyZXkgU21p
-cm5vdjoKPiBQb3J0IGNvZGUgZm91bmQgaW4gY2RuX2RwX2xvYWRfZmlybXdhcmUoKSBpbiBMaW51
-eCBrZXJuZWwgdG8gY2hlY2sgaWYKPiBIRE1JIGZpcm13YXJlIGlzIHJ1bm5pbmcgYW5kLCBpZiBz
-bywgcmVwb3J0IGl0cyB2ZXJzaW9uLgo+IAo+ID4gU2lnbmVkLW9mZi1ieTogQW5kcmV5IFNtaXJu
-b3YgPGFuZHJldy5zbWlybm92QGdtYWlsLmNvbT4KPiAtLS0KPiDCoGFyY2gvYXJtL21hY2gtaW14
-L2lteDhtcS5jIHwgMzcgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+IMKg
-MSBmaWxlIGNoYW5nZWQsIDM3IGluc2VydGlvbnMoKykKPiAKPiBkaWZmIC0tZ2l0IGEvYXJjaC9h
-cm0vbWFjaC1pbXgvaW14OG1xLmMgYi9hcmNoL2FybS9tYWNoLWlteC9pbXg4bXEuYwo+IGluZGV4
-IDRkMDBkYTVmMC4uMTg4MjIzMzNjIDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL21hY2gtaW14L2lt
-eDhtcS5jCj4gKysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW14OG1xLmMKPiBAQCAtMjEsNiArMjEs
-NyBAQAo+IMKgI2luY2x1ZGUgPG1hY2gvaW14OG1xLmg+Cj4gwqAjaW5jbHVkZSA8bWFjaC9yZXNl
-dC1yZWFzb24uaD4KPiDCoAo+ICsjaW5jbHVkZSA8bGludXgvaW9wb2xsLmg+Cj4gwqAjaW5jbHVk
-ZSA8bGludXgvYXJtLXNtY2NjLmg+Cj4gwqAKPiA+IMKgI2RlZmluZSBGU0xfU0lQX0JVSUxESU5G
-TwkJCTB4QzIwMDAwMDMKPiBAQCAtODEsMyArODIsMzkgQEAgaW50IGlteDhtcV9pbml0KHZvaWQp
-Cj4gwqAKPiA+IMKgCXJldHVybiAwOwo+IMKgfQo+ICsKPiA+ICsjZGVmaW5lIEtFRVBfQUxJVkUJ
-CQkweDE4Cj4gPiArI2RlZmluZSBWRVJfTAkJCQkweDFjCj4gPiArI2RlZmluZSBWRVJfSAkJCQkw
-eDIwCj4gPiArI2RlZmluZSBWRVJfTElCX0xfQUREUgkJCTB4MjQKPiA+ICsjZGVmaW5lIFZFUl9M
-SUJfSF9BRERSCQkJMHgyOAo+ID4gKyNkZWZpbmUgRldfQUxJVkVfVElNRU9VVF9VUwkJMTAwMDAw
-Cj4gKwo+ICtzdGF0aWMgaW50IGlteDhtcV9yZXBvcnRfaGRtaV9maXJtd2FyZSh2b2lkKQo+ICt7
-Cj4gPiArCXZvaWQgX19pb21lbSAqaGRtaSA9IElPTUVNKE1YOE1RX0hETUlfQ1RSTF9CQVNFX0FE
-RFIpOwo+ID4gKwl1MTYgdmVyX2xpYiwgdmVyOwo+ID4gKwl1MzIgcmVnOwo+ID4gKwlpbnQgcmV0
-Owo+ICsKClRoaXMgaXMgbWlzc2luZyBhIGNoZWNrIHRvIGJhaWwgb3V0IGlmIHdlIGFyZW4ndCBy
-dW5uaW5nIG9uIGEgaS5NWDhNUS4KCj4gKwkvKiBjaGVjayB0aGUga2VlcCBhbGl2ZSByZWdpc3Rl
-ciB0byBtYWtlIHN1cmUgZncgd29ya2luZyAqLwo+ID4gKwlyZXQgPSByZWFkbF9wb2xsX3RpbWVv
-dXQoaGRtaSArIEtFRVBfQUxJVkUsCj4gPiArCQkJCcKgcmVnLCByZWcsIEZXX0FMSVZFX1RJTUVP
-VVRfVVMpOwo+ID4gKwlpZiAocmV0IDwgMCkgewo+ID4gKwkJcHJfaW5mbygiSERNSSBmaXJtd2Fy
-ZSBpcyBub3QgcnVubmluZ1xuIik7Cj4gPiArCQlyZXR1cm4gMDsKPiA+ICsJfQo+ICsKPiA+ICsJ
-dmVyID0gcmVhZGwoaGRtaSArIFZFUl9IKSAmIDB4ZmY7Cj4gPiArCXZlciA8PD0gODsKPiA+ICsJ
-dmVyIHw9IHJlYWRsKGhkbWkgKyBWRVJfTCkgJiAweGZmOwo+ICsKPiA+ICsJdmVyX2xpYiA9IHJl
-YWRsKGhkbWkgKyBWRVJfTElCX0hfQUREUikgJiAweGZmOwo+ID4gKwl2ZXJfbGliIDw8PSA4Owo+
-ID4gKwl2ZXJfbGliIHw9IHJlYWRsKGhkbWkgKyBWRVJfTElCX0xfQUREUikgJiAweGZmOwo+ICsK
-PiArCXByX2luZm8oIkhETUkgZmlybXdhcmUgdmVyOiAlZCB2ZXJfbGliOiAlZFxuIiwgdmVyLCB2
-ZXJfbGliKTsKCk1heWJlICJIRE1JIFRYIiBvciAiSERQIiBoZXJlLCBhcyB0aGlzIHNob3VsZCBl
-cXVhbGx5IGFwcGx5IHRvIGVEUApmaXJtd2FyZSwgcmlnaHQ/CgpSZWdhcmRzLApMdWNhcwoKPiAr
-Cj4gPiArCXJldHVybiAwOwo+ICt9Cj4gK2NvbnNvbGVfaW5pdGNhbGwoaW14OG1xX3JlcG9ydF9o
-ZG1pX2Zpcm13YXJlKTsKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Tue, Feb 12, 2019 at 1:42 AM Lucas Stach <l.stach@pengutronix.de> wrote:
+>
+> Am Montag, den 11.02.2019, 18:36 -0800 schrieb Andrey Smirnov:
+> > Port code found in cdn_dp_load_firmware() in Linux kernel to check if
+> > HDMI firmware is running and, if so, report its version.
+> >
+> > > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> > ---
+> >  arch/arm/mach-imx/imx8mq.c | 37 +++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 37 insertions(+)
+> >
+> > diff --git a/arch/arm/mach-imx/imx8mq.c b/arch/arm/mach-imx/imx8mq.c
+> > index 4d00da5f0..18822333c 100644
+> > --- a/arch/arm/mach-imx/imx8mq.c
+> > +++ b/arch/arm/mach-imx/imx8mq.c
+> > @@ -21,6 +21,7 @@
+> >  #include <mach/imx8mq.h>
+> >  #include <mach/reset-reason.h>
+> >
+> > +#include <linux/iopoll.h>
+> >  #include <linux/arm-smccc.h>
+> >
+> > >  #define FSL_SIP_BUILDINFO                  0xC2000003
+> > @@ -81,3 +82,39 @@ int imx8mq_init(void)
+> >
+> > >     return 0;
+> >  }
+> > +
+> > > +#define KEEP_ALIVE                 0x18
+> > > +#define VER_L                              0x1c
+> > > +#define VER_H                              0x20
+> > > +#define VER_LIB_L_ADDR                     0x24
+> > > +#define VER_LIB_H_ADDR                     0x28
+> > > +#define FW_ALIVE_TIMEOUT_US                100000
+> > +
+> > +static int imx8mq_report_hdmi_firmware(void)
+> > +{
+> > > +   void __iomem *hdmi = IOMEM(MX8MQ_HDMI_CTRL_BASE_ADDR);
+> > > +   u16 ver_lib, ver;
+> > > +   u32 reg;
+> > > +   int ret;
+> > +
+>
+> This is missing a check to bail out if we aren't running on a i.MX8MQ.
+>
+
+Ugh, missed this one. Thanks for noticing!
+
+> > +     /* check the keep alive register to make sure fw working */
+> > > +   ret = readl_poll_timeout(hdmi + KEEP_ALIVE,
+> > > +                            reg, reg, FW_ALIVE_TIMEOUT_US);
+> > > +   if (ret < 0) {
+> > > +           pr_info("HDMI firmware is not running\n");
+> > > +           return 0;
+> > > +   }
+> > +
+> > > +   ver = readl(hdmi + VER_H) & 0xff;
+> > > +   ver <<= 8;
+> > > +   ver |= readl(hdmi + VER_L) & 0xff;
+> > +
+> > > +   ver_lib = readl(hdmi + VER_LIB_H_ADDR) & 0xff;
+> > > +   ver_lib <<= 8;
+> > > +   ver_lib |= readl(hdmi + VER_LIB_L_ADDR) & 0xff;
+> > +
+> > +     pr_info("HDMI firmware ver: %d ver_lib: %d\n", ver, ver_lib);
+>
+> Maybe "HDMI TX" or "HDP" here, as this should equally apply to eDP
+> firmware, right?
+>
+
+Yeah, it should work for both. Will change to "HDP" in v2.
+
+Thanks,
+Andrey Smirnov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
