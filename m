@@ -1,18 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x444.google.com ([2a00:1450:4864:20::444])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gta1d-0000X4-Lh
- for barebox@lists.infradead.org; Tue, 12 Feb 2019 15:31:11 +0000
-Received: by mail-wr1-x444.google.com with SMTP id i12so3184349wrw.0
- for <barebox@lists.infradead.org>; Tue, 12 Feb 2019 07:31:09 -0800 (PST)
-References: <eb738c4f-0594-566f-e3e8-67e71d3b3b32@klevio.com>
- <20190212112240.sjrrrcdmysdyr3iy@pengutronix.de>
-From: =?UTF-8?B?VG9tYcW+IMWgb2xj?= <tomaz.solc@klevio.com>
-Message-ID: <f803fb6f-763b-7027-a11e-086ad48b0054@klevio.com>
-Date: Tue, 12 Feb 2019 16:31:05 +0100
+Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat
+ Linux)) id 1gtYwn-0002qI-Pw
+ for barebox@lists.infradead.org; Tue, 12 Feb 2019 14:22:07 +0000
+Received: from mail2.data-modul.de (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BB46A3E14C
+ for <barebox@lists.infradead.org>; Tue, 12 Feb 2019 15:21:19 +0100 (CET)
+Received: from mail2.data-modul.de (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B07633E14A
+ for <barebox@lists.infradead.org>; Tue, 12 Feb 2019 15:21:19 +0100 (CET)
+Received: from mail.data-modul.de (unknown [10.1.1.120])
+ by mail2.data-modul.de (Postfix) with ESMTPS
+ for <barebox@lists.infradead.org>; Tue, 12 Feb 2019 15:21:19 +0100 (CET)
+From: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+Date: Tue, 12 Feb 2019 14:22:33 +0000
+Message-ID: <38a77a39-1131-deed-993c-5f4f197f41ce@data-modul.com>
+Content-Language: de-DE
+Content-ID: <147572F9D5BAC148A405D5CFDB1FDFAA@data-modul.com>
 MIME-Version: 1.0
-In-Reply-To: <20190212112240.sjrrrcdmysdyr3iy@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,58 +26,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Accessing MMC/SD card storage on Raspberry Pi
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Moritz Augsburger <ml+barebox@moritz.augsburger.name>
+Subject: cortex-m4 in Barebox
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-SGkKCk9uIDEyLiAwMi4gMTkgMTI6MjIsIFJvbGFuZCBIaWViZXIgd3JvdGU6Cj4gSWYgSSByZW1l
-bWJlciBjb3JyZWN0bHksIHRoZXJlIHdhcyBhIHBhdGNoIGNoYW5naW5nIHRoYXQgYmVoYXZpb3Vy
-Li4uIEFoCj4geWVzLCBjb21taXQgYWJjMDQ0NzQ0MGQ2IFswXToKPiAKPiAgICAgIEFSTTogZHRz
-OiBiY20yODM1LXJwaTogcmUtZW5hYmxlIGJvb3RpbmcgZnJvbSBTRCBjYXJkCj4gCj4gICAgICBL
-ZXJuZWwgY29tbWl0IGExOWFkZjhkODZlODIyZWJhNTAyNDg2NTI0MTI3NTk1MzcyYzg1ZjYgWzBd
-IGNoYW5nZWQgdGhlCj4gICAgICBSUGkxIGRldmljZSB0cmVlIGZyb20gJnNkaGNpIHRvICZzZGhv
-c3QsIHdoaWNoIHdhcyBpbXBvcnRlZCBpbiBiYXJlYm94Cj4gICAgICBjb21taXQgZDE0Yjg0NGIw
-ODYzNWM3MTdmYjUyYTI5NGVkOGQ2ODcyZTI2MDMxNS4gSXQgc2VlbXMgdGhhdCBiYXJlYm94Cj4g
-ICAgICBkb2VzIG5vdCBoYXZlIGEgZHJpdmVyIGZvciBicmNtLGJjbTI4MzUtc2Rob3N0ICh5ZXQp
-LCB3aGljaCByZXN1bHRlZCBpbgo+ICAgICAgYmFyZWJveCB1bmFibGUgdG8gYm9vdCBmcm9tIFNE
-IGNhcmQuIEhvd2V2ZXIsIHRoZSBkcml2ZXIgZm9yCj4gICAgICBicmNtLGJjbTI4MzUtc2RoY2kg
-d29ya2VkIGZpbmUgaW4gdGhlIHBhc3QuCj4gCj4gICAgICBBbHRob3VnaCB0aGUgdXBzdHJlYW0g
-Y2hhbmdlIHdhcyBtYWRlIGZvciBnb29kIHJlYXNvbnMsIHRoZSBzaW1wbGVzdAo+ICAgICAgY2hh
-bmdlIGZvciBiYXJlYm94IGZvciBub3cgaXMgdG8gcmV2ZXJ0IHRvIHVzaW5nICZzZGhjaSBhbmQg
-ZGlzYWJsZQo+ICAgICAgJnNkaG9zdC4KPiAKPiBbMF06IGh0dHBzOi8vZ2l0LnBlbmd1dHJvbml4
-LmRlL2NnaXQvYmFyZWJveC9jb21taXQvP2g9bWFzdGVyJmlkPWFiYzA0NDc0NDBkNgo+IAo+IFRo
-ZSAic29sdXRpb24iIHdhcyBhIHNtYWxsIGRldmljZSB0cmVlIGZpeC4gQ291bGQgdGhpcyBiZSBy
-ZWxhdGVkIHRvCj4geW91ciBwcm9ibGVtPyBVbmZvcnR1bmF0ZWx5IG5vIG9uZSBoZXJlIGhhcyBh
-IFJQaSBDb21wdXRlIE1vZHVsZSwgYnV0Cj4gdGhlcmUgd2VyZSBhbHJlYWR5IHNpbWlsYXIgcXVl
-c3Rpb25zIGluIHRoZSBsYXN0IG1vbnRoLiAoQ2MgTW9yaXR6KQoKQWgsIHRoYW5rcyBmb3IgcG9p
-bnRpbmcgdGhpcyBvdXQuIFRoYXQgY29tbWl0IG9ubHkgdG91Y2hlZCBkZXZpY2UgdHJlZSAKZm9y
-IFIuUGkgMS4gSSB0cmllZCB0byBkbyBzb21ldGhpbmcgc2ltaWxhciBvbiBDb21wdXRlIE1vZHVs
-ZSAzIGJ5IAphZGRpbmcgdGhlIGZvbGxvd2luZyBpbnRvIGJjbTI4MzctcnBpLTMuZHRzOgoKJnNk
-aGNpIHsKCXBpbmN0cmwtMCA9IDwmZW1tY19ncGlvNDg+OwoJL2RlbGV0ZS1wcm9wZXJ0eS8gbW1j
-LXB3cnNlcTsKCS9kZWxldGUtcHJvcGVydHkvIG5vbi1yZW1vdmFibGU7CgkvZGVsZXRlLXByb3Bl
-cnR5LyAjYWRkcmVzcy1jZWxsczsKCS9kZWxldGUtcHJvcGVydHkvICNzaXplLWNlbGxzOwoJL2Rl
-bGV0ZS1ub2RlLyB3aWZpQDE7Cn07Cgomc2Rob3N0IHsKCXN0YXR1cyA9ICJkaXNhYmxlZCI7Cn07
-CgpVbmZvcnR1bmF0ZWx5IGl0IGZhaWxzIHRvIGJvb3QgbGlrZSB0aGF0IHdpdGggdGhlIGxhc3Qg
-dGhpbmdzIHByaW50ZWQgCm91dCBiZWluZzoKCmluaXRjYWxsLT4gcnBpX2RldmljZXNfaW5pdCsw
-eDAvMHgxMzgKcmVnaXN0ZXJfZGV2aWNlOiBiY20yODM1X2ZiMApiY20yODM1X21jaSAzZjMwMDAw
-MC5zZGhjaUA3ZTMwMDAwMC5vZjogV2FudGVkIDQwMDAwMCBoeiwgcmV0dXJuaW5nIApkaXZpZGVy
-IDMxMyAoNjI2KSB3aGljaCB5aWVsZHMgMzk5MzYxIGh6CmJjbTI4MzVfbWNpIDNmMzAwMDAwLnNk
-aGNpQDdlMzAwMDAwLm9mOiBDaGFuZ2luZyBidXMgd2lkdGggdG8gMQpiY20yODM1X21jaSAzZjMw
-MDAwMC5zZGhjaUA3ZTMwMDAwMC5vZjogSU8gc2V0dGluZ3M6IGJ1cyB3aWR0aD0wLCAKZnJlcXVl
-bmN5PTQwMDAwMCBIegpiY20yODM1X21jaSAzZjMwMDAwMC5zZGhjaUA3ZTMwMDAwMC5vZjogQ2hh
-bmdpbmcgYnVzIHdpZHRoIHRvIDEKYmNtMjgzNV9tY2kgM2YzMDAwMDAuc2RoY2lAN2UzMDAwMDAu
-b2Y6IElPIHNldHRpbmdzOiBidXMgd2lkdGg9MCwgCmZyZXF1ZW5jeT00MDAwMDAgSHoKCk9uZSBw
-b3NzaWJsZSByZWFzb24gZm9yIHRoaXMgbWlnaHQgYmUgdGhhdCBwaW4gZnVuY3Rpb25zIGFyZW4n
-dCAKcmUtYXNzaWduZWQuIEkgdGhpbmsgcGluY3RybCBpc24ndCBpbXBsZW1lbnRlZCBmb3IgYmNt
-MjgzNS4gSXQgcHJvYmFibHkgCndvcmtzIG9uIFIuUGkgMSBiZWNhdXNlIHRoZXJlIGZpcm13YXJl
-IGFscmVhZHkgYXNzaWducyBjb3JyZWN0IHBpbiAKZnVuY3Rpb25zIGJ5IGRlZmF1bHQgYmVmb3Jl
-IGp1bXBpbmcgdG8gQmVhcmJveC4KCkknbGwgc2VlIGlmIEkgY2FuIGltcGxlbWVudCBwaW5jdHJs
-LiBJdCBzaG91bGRuJ3QgYmUgbXVjaCB3b3JrIHNpbmNlIAptb3N0IHRoaW5ncyBhbHJlYWR5IHNl
-ZW0gdG8gYmUgaW1wbGVtZW50ZWQgaW4gZ3Bpby1iY20yODM1LmMuCgpCZXN0IHJlZ2FyZHMKVG9t
-YcW+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
-Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+SGVsbG8gZXZlcnlvbmUsDQoNCkkgYW0gdXNpbmcgaW14OG0tZXZrIGJvYXJkLiBUbyBib290IGEg
+Y29ydGV4LW00IGluIHRoZSBzeXN0ZW0sIGluIHUtYm9vdCwgdGhlcmUNCmlzIGEgYm9vdGF1eCBj
+b21tYW5kLCB3aGljaCBydW5zIHRoZSBtNC1pbWFnZSBhbmQgYm9vdCBjb3J0ZXgtbTQuDQoNCklz
+IHRoZXJlIGFueSBjb21tYW5kIGF2YWlsYWJsZSBpbiBCYXJlYm94IHRvIGJvb3QgbTQ/IFRvdGFs
+bHksIHdoYXQgaXMgYXZhaWxhYmxlDQppbiBCYXJlYm94IHJlZ2FyZGluZyBjb3J0ZXgtbTQ/DQoN
+ClRoYW5rcyBpbiBhZHZhbmNlLA0KDQpCZXN0LA0KUmV5aGFuZWgNCi0tDQpSZXloYW5laCBZYXpk
+YW5pDQpEYXRhIE1vZHVsIEFHICAgICAgICAgICAgICAgICAgICAgICAgICAgIFRFTDogICAgKzQ5
+LTg5LTU2MDE3LTE1NA0KRW1iZWRkZWQgZGV2ZWxvcG1lbnQgICAgICAgICAgICAgICAgIEZBWDog
+ICAgKzQ5LTg5LTU2MDE3LTExOQ0KTGludXggLSBEZXZlbG9wbWVudCAgICAgICAgICAgICAgICAg
+ICAgICBSRzogSFItTXVlbmNoZW4gQi04NTU5MQ0KTGFuZHNiZXJnZXIgU3RyLiAzMjIgRC04MDY4
+NyBNdWVuY2hlbiAtIGh0dHA6Ly93d3cuZGF0YS1tb2R1bC5jb20NCg0KVmVydHJhdWxpY2hlIEUt
+TWFpbCB2b24gLyBDb25maWRlbnRpYWwgZS1tYWlsIGZyb206IERBVEEgTU9EVUwgQUcNClZvcnN0
+YW5kIC8gQ0VPOiBEci4gRmxvcmlhbiBQZXNhaGwNClZvcnNpdHplbmRlIGRlcyBBdWZzaWNodHNy
+YXRlcyAvIENoYWlyd29tYW4gb2YgdGhlIFN1cGVydmlzb3J5IEJvYXJkOiBLcmlzdGluIEQuIFJ1
+c3NlbGwNClNpdHogZGVyIEdlc2VsbHNjaGFmdCAvIFJlZ2lzdGVyZWQgT2ZmaWNlOiBNw7xuY2hl
+bg0KUmVnaXN0ZXJnZXJpY2h0IC8gUmVnaXN0cmF0aW9uIENvdXJ0OiBNw7xuY2hlbiBIYW5kZWxz
+cmVnaXN0ZXIgQiA4NSA1OTENCg0KDQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
+ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
+b3gK
