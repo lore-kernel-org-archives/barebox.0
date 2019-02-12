@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gtRkK-0007P4-EU
+ id 1gtRkG-0007LS-RR
  for barebox@lists.infradead.org; Tue, 12 Feb 2019 06:41:09 +0000
-Received: by mail-pl1-x62e.google.com with SMTP id y10so840452plp.0
- for <barebox@lists.infradead.org>; Mon, 11 Feb 2019 22:40:44 -0800 (PST)
+Received: by mail-pg1-x542.google.com with SMTP id d72so784373pga.9
+ for <barebox@lists.infradead.org>; Mon, 11 Feb 2019 22:40:40 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Feb 2019 22:40:22 -0800
-Message-Id: <20190212064022.26154-9-andrew.smirnov@gmail.com>
+Date: Mon, 11 Feb 2019 22:40:18 -0800
+Message-Id: <20190212064022.26154-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20190212064022.26154-1-andrew.smirnov@gmail.com>
 References: <20190212064022.26154-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,2860 +23,3016 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] drivers: Import a very basic NVME implementation from
- Linux
+Subject: [PATCH 4/8] include: Sync up pci_ids.h with 4.20-rc1
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Import a very abridged NVME implementation from Linux kernel in order
-to be able to access NVME storage attached via PCIe.
+Sync up pci_ids.h with 4.20-rc1 to get PCI IDs of devices currently
+not present in our copy of pci_ids.h.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/Kconfig            |    1 +
- drivers/Makefile           |    1 +
- drivers/nvme/Kconfig       |    5 +
- drivers/nvme/Makefile      |    1 +
- drivers/nvme/host/Kconfig  |   11 +
- drivers/nvme/host/Makefile |    9 +
- drivers/nvme/host/core.c   |  614 +++++++++++++++++
- drivers/nvme/host/nvme.h   |  148 +++++
- drivers/nvme/host/pci.c    |  697 ++++++++++++++++++++
- include/linux/nvme.h       | 1271 ++++++++++++++++++++++++++++++++++++
- 10 files changed, 2758 insertions(+)
- create mode 100644 drivers/nvme/Kconfig
- create mode 100644 drivers/nvme/Makefile
- create mode 100644 drivers/nvme/host/Kconfig
- create mode 100644 drivers/nvme/host/Makefile
- create mode 100644 drivers/nvme/host/core.c
- create mode 100644 drivers/nvme/host/nvme.h
- create mode 100644 drivers/nvme/host/pci.c
- create mode 100644 include/linux/nvme.h
+ include/linux/pci_ids.h | 2952 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 2952 insertions(+)
 
-diff --git a/drivers/Kconfig b/drivers/Kconfig
-index c6c2eb14d..d6fbcbfe1 100644
---- a/drivers/Kconfig
-+++ b/drivers/Kconfig
-@@ -39,5 +39,6 @@ source "drivers/phy/Kconfig"
- source "drivers/crypto/Kconfig"
- source "drivers/memory/Kconfig"
- source "drivers/soc/imx/Kconfig"
-+source "drivers/nvme/Kconfig"
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index 17ac7fdb6..69f0abe1b 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -1,3 +1,4 @@
++/* SPDX-License-Identifier: GPL-2.0 */
+ /*
+  *	PCI Class, Vendor and Device IDs
+  *
+@@ -6,6 +7,8 @@
+  *	Do not add new entries to this file unless the definitions
+  *	are shared between multiple drivers.
+  */
++#ifndef _LINUX_PCI_IDS_H
++#define _LINUX_PCI_IDS_H
  
- endmenu
-diff --git a/drivers/Makefile b/drivers/Makefile
-index 752fd6624..65fd488ce 100644
---- a/drivers/Makefile
-+++ b/drivers/Makefile
-@@ -39,3 +39,4 @@ obj-$(CONFIG_CRYPTO_HW) += crypto/
- obj-$(CONFIG_AIODEV) += aiodev/
- obj-y	+= memory/
- obj-y	+= soc/imx/
-+obj-y	+= nvme/
-diff --git a/drivers/nvme/Kconfig b/drivers/nvme/Kconfig
-new file mode 100644
-index 000000000..27ac9654a
---- /dev/null
-+++ b/drivers/nvme/Kconfig
-@@ -0,0 +1,5 @@
-+menu "NVME Support"
-+
-+source "drivers/nvme/host/Kconfig"
-+
-+endmenu
-diff --git a/drivers/nvme/Makefile b/drivers/nvme/Makefile
-new file mode 100644
-index 000000000..6d7d51c80
---- /dev/null
-+++ b/drivers/nvme/Makefile
-@@ -0,0 +1 @@
-+obj-y		+= host/
-diff --git a/drivers/nvme/host/Kconfig b/drivers/nvme/host/Kconfig
-new file mode 100644
-index 000000000..8888c8900
---- /dev/null
-+++ b/drivers/nvme/host/Kconfig
-@@ -0,0 +1,11 @@
-+config NVME_CORE
-+	bool
-+
-+config BLK_DEV_NVME
-+	bool "NVM Express block device"
-+	depends on PCI && BLOCK
-+	select NVME_CORE
-+	---help---
-+	  The NVM Express driver is for solid state drives directly
-+	  connected to the PCI or PCI Express bus.  If you know you
-+	  don't have one of these, it is safe to answer N.
-diff --git a/drivers/nvme/host/Makefile b/drivers/nvme/host/Makefile
-new file mode 100644
-index 000000000..9afbc0d2e
---- /dev/null
-+++ b/drivers/nvme/host/Makefile
-@@ -0,0 +1,9 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+ccflags-y				+= -I$(src)
-+
-+obj-$(CONFIG_NVME_CORE)			+= nvme-core.o
-+obj-$(CONFIG_BLK_DEV_NVME)		+= nvme.o
-+
-+nvme-core-y				:= core.o
-+nvme-y					+= pci.o
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-new file mode 100644
-index 000000000..e0984708b
---- /dev/null
-+++ b/drivers/nvme/host/core.c
-@@ -0,0 +1,614 @@
-+#include <common.h>
-+
-+#include "nvme.h"
-+
-+int __nvme_submit_sync_cmd(struct nvme_ctrl *ctrl,
-+			   struct nvme_command *cmd,
-+			   union nvme_result *result,
-+			   void *buffer, unsigned bufflen,
-+			   unsigned timeout, int qid)
-+{
-+	return ctrl->ops->submit_sync_cmd(ctrl, cmd, result, buffer, bufflen,
-+					  timeout, qid);
-+}
-+EXPORT_SYMBOL_GPL(__nvme_submit_sync_cmd);
-+
-+int nvme_submit_sync_cmd(struct nvme_ctrl *ctrl,
-+			 struct nvme_command *cmd,
-+			 void *buffer, unsigned bufflen)
-+{
-+	return __nvme_submit_sync_cmd(ctrl, cmd, NULL, buffer, bufflen, 0,
-+				      NVME_QID_ADMIN);
-+}
-+EXPORT_SYMBOL_GPL(nvme_sec_submit);
-+
-+static int nvme_identify_ctrl(struct nvme_ctrl *dev, struct nvme_id_ctrl **id)
-+{
-+	struct nvme_command c = { };
-+	int error;
-+
-+	/* gcc-4.4.4 (at least) has issues with initializers and anon unions */
-+	c.identify.opcode = nvme_admin_identify;
-+	c.identify.cns = NVME_ID_CNS_CTRL;
-+
-+	*id = kmalloc(sizeof(struct nvme_id_ctrl), GFP_KERNEL);
-+	if (!*id)
-+		return -ENOMEM;
-+
-+	error = nvme_submit_sync_cmd(dev, &c, *id,
-+				     sizeof(struct nvme_id_ctrl));
-+	if (error)
-+		kfree(*id);
-+
-+	return error;
-+}
-+
-+static int
-+nvme_set_features(struct nvme_ctrl *dev, unsigned fid, unsigned dword11,
-+		  void *buffer, size_t buflen, u32 *result)
-+{
-+	struct nvme_command c;
-+	union nvme_result res;
-+	int ret;
-+
-+	memset(&c, 0, sizeof(c));
-+	c.features.opcode = nvme_admin_set_features;
-+	c.features.fid = cpu_to_le32(fid);
-+	c.features.dword11 = cpu_to_le32(dword11);
-+
-+	ret = __nvme_submit_sync_cmd(dev, &c, &res, buffer, buflen, 0,
-+				     NVME_QID_ADMIN);
-+	if (ret >= 0 && result)
-+		*result = le32_to_cpu(res.u32);
-+	return ret;
-+}
-+
-+int nvme_set_queue_count(struct nvme_ctrl *ctrl, int *count)
-+{
-+	u32 q_count = (*count - 1) | ((*count - 1) << 16);
-+	u32 result;
-+	int status, nr_io_queues;
-+
-+	status = nvme_set_features(ctrl, NVME_FEAT_NUM_QUEUES, q_count, NULL, 0,
-+			&result);
-+	if (status < 0)
-+		return status;
-+
-+	/*
-+	 * Degraded controllers might return an error when setting the queue
-+	 * count.  We still want to be able to bring them online and offer
-+	 * access to the admin queue, as that might be only way to fix them up.
-+	 */
-+	if (status > 0) {
-+		dev_err(ctrl->dev, "Could not set queue count (%d)\n", status);
-+		*count = 0;
-+	} else {
-+		nr_io_queues = min(result & 0xffff, result >> 16) + 1;
-+		*count = min(*count, nr_io_queues);
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(nvme_set_queue_count);
-+
-+static int nvme_wait_ready(struct nvme_ctrl *ctrl, u64 cap, bool enabled)
-+{
-+	uint64_t start = get_time_ns();
-+	unsigned long timeout =
-+		((NVME_CAP_TIMEOUT(cap) + 1) * HZ / 2);
-+	u32 csts, bit = enabled ? NVME_CSTS_RDY : 0;
-+	int ret;
-+
-+	while ((ret = ctrl->ops->reg_read32(ctrl, NVME_REG_CSTS, &csts)) == 0) {
-+		if (csts == ~0)
-+			return -ENODEV;
-+		if ((csts & NVME_CSTS_RDY) == bit)
-+			break;
-+
-+		mdelay(100);
-+
-+		if (is_timeout(start, timeout)) {
-+			dev_err(ctrl->dev,
-+				"Device not ready; aborting %s\n", enabled ?
-+						"initialisation" : "reset");
-+			return -ENODEV;
-+		}
-+	}
-+
-+	return ret;
-+}
-+
-+static int nvme_identify_ns_list(struct nvme_ctrl *dev, unsigned nsid, __le32 *ns_list)
-+{
-+	struct nvme_command c = { };
-+
-+	c.identify.opcode = nvme_admin_identify;
-+	c.identify.cns = NVME_ID_CNS_NS_ACTIVE_LIST;
-+	c.identify.nsid = cpu_to_le32(nsid);
-+	return nvme_submit_sync_cmd(dev, &c, ns_list, NVME_IDENTIFY_DATA_SIZE);
-+}
-+
-+static struct nvme_id_ns *nvme_identify_ns(struct nvme_ctrl *ctrl,
-+		unsigned nsid)
-+{
-+	struct nvme_id_ns *id;
-+	struct nvme_command c = { };
-+	int error;
-+
-+	/* gcc-4.4.4 (at least) has issues with initializers and anon unions */
-+	c.identify.opcode = nvme_admin_identify;
-+	c.identify.nsid = cpu_to_le32(nsid);
-+	c.identify.cns = NVME_ID_CNS_NS;
-+
-+	id = kmalloc(sizeof(*id), GFP_KERNEL);
-+	if (!id)
-+		return NULL;
-+
-+	error = nvme_submit_sync_cmd(ctrl, &c, id, sizeof(*id));
-+	if (error) {
-+		dev_warn(ctrl->dev, "Identify namespace failed\n");
-+		kfree(id);
-+		return NULL;
-+	}
-+
-+	return id;
-+}
-+
-+static struct nvme_ns_head *nvme_alloc_ns_head(struct nvme_ctrl *ctrl,
-+		unsigned nsid, struct nvme_id_ns *id)
-+{
-+	static int instance = 1;
-+	struct nvme_ns_head *head;
-+	int ret = -ENOMEM;
-+
-+	head = kzalloc(sizeof(*head), GFP_KERNEL);
-+	if (!head)
-+		goto out;
-+
-+	head->instance = instance++;
-+	head->ns_id = nsid;
-+
-+	return head;
-+out:
-+	return ERR_PTR(ret);
-+}
-+
-+static int nvme_init_ns_head(struct nvme_ns *ns, unsigned nsid,
-+		struct nvme_id_ns *id)
-+{
-+	struct nvme_ctrl *ctrl = ns->ctrl;
-+	const bool is_shared = id->nmic & (1 << 0);
-+	struct nvme_ns_head *head = NULL;
-+
-+	if (is_shared) {
-+		dev_info(ctrl->dev, "Skipping shared namespace %u\n", nsid);
-+		return -ENOTSUPP;
-+	}
-+
-+	head = nvme_alloc_ns_head(ctrl, nsid, id);
-+	if (IS_ERR(head))
-+		return PTR_ERR(head);
-+
-+	ns->head = head;
-+
-+	return 0;
-+}
-+
-+#define DISK_NAME_LEN			32
-+
-+static void nvme_update_disk_info(struct block_device *blk, struct nvme_ns *ns,
-+				  struct nvme_id_ns *id)
-+{
-+	blk->blockbits = ns->lba_shift;
-+	blk->num_blocks = le64_to_cpup(&id->nsze);
-+
-+	ns->readonly = id->nsattr & (1 << 0);
-+}
-+
-+static void __nvme_revalidate_disk(struct block_device *blk,
-+				   struct nvme_id_ns *id)
-+{
-+	struct nvme_ns *ns = to_nvme_ns(blk);
-+
-+	/*
-+	 * If identify namespace failed, use default 512 byte block size so
-+	 * block layer can use before failing read/write for 0 capacity.
-+	 */
-+	ns->lba_shift = id->lbaf[id->flbas & NVME_NS_FLBAS_LBA_MASK].ds;
-+	if (ns->lba_shift == 0)
-+		ns->lba_shift = 9;
-+
-+	nvme_update_disk_info(blk, ns, id);
-+}
-+
-+static void nvme_setup_rw(struct nvme_ns *ns, struct nvme_command *cmnd,
-+			  int block, int num_block)
-+{
-+	cmnd->rw.nsid = cpu_to_le32(ns->head->ns_id);
-+	cmnd->rw.slba = cpu_to_le64(nvme_block_nr(ns, block));
-+	cmnd->rw.length = cpu_to_le16(num_block - 1);
-+	cmnd->rw.control = 0;
-+	cmnd->rw.dsmgmt = 0;
-+}
-+
-+static void nvme_setup_flush(struct nvme_ns *ns, struct nvme_command *cmnd)
-+{
-+	memset(cmnd, 0, sizeof(*cmnd));
-+	cmnd->common.opcode = nvme_cmd_flush;
-+	cmnd->common.nsid = cpu_to_le32(ns->head->ns_id);
-+}
-+
-+static int nvme_submit_sync_rw(struct nvme_ns *ns, struct nvme_command *cmnd,
-+			       void *buffer, int block, int num_blocks)
-+{
-+	/*
-+	 * ns->ctrl->max_hw_sectors is in units of 512 bytes, so we
-+	 * need to make sure we adjust it to discovered lba_shift
-+	 */
-+	const u32 max_hw_sectors =
-+		ns->ctrl->max_hw_sectors >> (ns->lba_shift - 9);
-+	int ret;
-+
-+	if (num_blocks > max_hw_sectors) {
-+		while (num_blocks) {
-+			const int chunk = min_t(int, num_blocks,
-+						max_hw_sectors);
-+
-+			ret = nvme_submit_sync_rw(ns, cmnd, buffer, block,
-+						  chunk);
-+			if (ret)
-+				break;
-+
-+			num_blocks -= chunk;
-+			buffer += chunk;
-+			block += chunk;
-+		}
-+
-+		return ret;
-+	}
-+
-+	nvme_setup_rw(ns, cmnd, block, num_blocks);
-+
-+	ret = __nvme_submit_sync_cmd(ns->ctrl, cmnd, NULL, buffer,
-+				     num_blocks << ns->lba_shift,
-+				     0, NVME_QID_IO);
-+
-+	if (ret) {
-+		dev_err(ns->ctrl->dev,
-+			"I/O failed: block: %d, num blocks: %d, status code type: %xh, status code %02xh\n",
-+			block, num_blocks, (ret >> 8) & 0xf,
-+			ret & 0xff);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+
-+static int nvme_block_device_read(struct block_device *blk, void *buffer,
-+				  int block, int num_blocks)
-+{
-+	struct nvme_ns *ns = to_nvme_ns(blk);
-+	struct nvme_command cmnd = { };
-+
-+	cmnd.rw.opcode = nvme_cmd_read;
-+
-+	return nvme_submit_sync_rw(ns, &cmnd, buffer, block, num_blocks);
-+}
-+
-+static int __maybe_unused
-+nvme_block_device_write(struct block_device *blk, const void *buffer,
-+			int block, int num_blocks)
-+{
-+	struct nvme_ns *ns = to_nvme_ns(blk);
-+	struct nvme_command cmnd = { };
-+
-+	if (ns->readonly)
-+		return -EINVAL;
-+
-+	cmnd.rw.opcode = nvme_cmd_write;
-+
-+	return nvme_submit_sync_rw(ns, &cmnd, (void *)buffer, block,
-+				   num_blocks);
-+}
-+
-+static int __maybe_unused nvme_block_device_flush(struct block_device *blk)
-+{
-+	struct nvme_ns *ns = to_nvme_ns(blk);
-+	struct nvme_command cmnd = { };
-+
-+	nvme_setup_flush(ns, &cmnd);
-+
-+	return __nvme_submit_sync_cmd(ns->ctrl, &cmnd, NULL, NULL,
-+				      0, 0, NVME_QID_IO);
-+}
-+
-+static struct block_device_ops nvme_block_device_ops = {
-+	.read = nvme_block_device_read,
-+#ifdef CONFIG_BLOCK_WRITE
-+	.write = nvme_block_device_write,
-+	.flush = nvme_block_device_flush,
-+#endif
-+};
-+
-+static void nvme_alloc_ns(struct nvme_ctrl *ctrl, unsigned nsid)
-+{
-+	struct nvme_ns *ns;
-+	struct nvme_id_ns *id;
-+	char disk_name[DISK_NAME_LEN];
-+	int ret, flags;
-+
-+	ns = kzalloc(sizeof(*ns), GFP_KERNEL);
-+	if (!ns)
-+		return;
-+
-+	ns->ctrl = ctrl;
-+	ns->lba_shift = 9; /* set to a default value for 512 until
-+			    * disk is validated */
-+
-+	id = nvme_identify_ns(ctrl, nsid);
-+	if (!id)
-+		goto out_free_ns;
-+
-+	if (id->ncap == 0)
-+		goto out_free_id;
-+
-+	if (nvme_init_ns_head(ns, nsid, id))
-+		goto out_free_id;
-+
-+	nvme_set_disk_name(disk_name, ns, ctrl, &flags);
-+
-+	ns->blk.dev = ctrl->dev;
-+	ns->blk.ops = &nvme_block_device_ops;
-+	ns->blk.cdev.name = strdup(disk_name);
-+
-+	__nvme_revalidate_disk(&ns->blk, id);
-+	kfree(id);
-+
-+	ret = blockdevice_register(&ns->blk);
-+	if (ret) {
-+		dev_err(ctrl->dev, "Cannot register block device (%d)\n", ret);
-+		goto out_free_id;
-+	}
-+
-+	return;
-+out_free_id:
-+	kfree(id);
-+out_free_ns:
-+	kfree(ns);
-+}
-+
-+static int nvme_scan_ns_list(struct nvme_ctrl *ctrl, unsigned nn)
-+{
-+	__le32 *ns_list;
-+	unsigned i, j, nsid, prev = 0, num_lists = DIV_ROUND_UP(nn, 1024);
-+	int ret = 0;
-+
-+	ns_list = kzalloc(NVME_IDENTIFY_DATA_SIZE, GFP_KERNEL);
-+	if (!ns_list)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < num_lists; i++) {
-+		ret = nvme_identify_ns_list(ctrl, prev, ns_list);
-+		if (ret)
-+			goto out;
-+
-+		for (j = 0; j < min(nn, 1024U); j++) {
-+			nsid = le32_to_cpu(ns_list[j]);
-+			if (!nsid)
-+				goto out;
-+
-+			nvme_alloc_ns(ctrl, nsid);
-+		}
-+		nn -= j;
-+	}
-+ out:
-+	kfree(ns_list);
-+	return ret;
-+}
-+
-+static void nvme_scan_ns_sequential(struct nvme_ctrl *ctrl, unsigned nn)
-+{
-+	unsigned i;
-+
-+	for (i = 1; i <= nn; i++)
-+		nvme_alloc_ns(ctrl, i);
-+}
-+
-+static void nvme_scan_work(struct nvme_ctrl *ctrl)
-+{
-+	struct nvme_id_ctrl *id;
-+	unsigned nn;
-+
-+	if (nvme_identify_ctrl(ctrl, &id))
-+		return;
-+
-+	nn = le32_to_cpu(id->nn);
-+	if (ctrl->vs >= NVME_VS(1, 1, 0)) {
-+		if (!nvme_scan_ns_list(ctrl, nn))
-+			goto out_free_id;
-+	}
-+	nvme_scan_ns_sequential(ctrl, nn);
-+out_free_id:
-+	kfree(id);
-+}
-+
-+void nvme_start_ctrl(struct nvme_ctrl *ctrl)
-+{
-+	if (ctrl->queue_count > 1)
-+		nvme_scan_work(ctrl);
-+}
-+EXPORT_SYMBOL_GPL(nvme_start_ctrl);
+ /* Device classes and subclasses */
+ 
+@@ -21,8 +24,10 @@
+ #define PCI_CLASS_STORAGE_SATA		0x0106
+ #define PCI_CLASS_STORAGE_SATA_AHCI	0x010601
+ #define PCI_CLASS_STORAGE_SAS		0x0107
++#define PCI_CLASS_STORAGE_EXPRESS	0x010802
+ #define PCI_CLASS_STORAGE_OTHER		0x0180
+ 
++
+ #define PCI_BASE_CLASS_NETWORK		0x02
+ #define PCI_CLASS_NETWORK_ETHERNET	0x0200
+ #define PCI_CLASS_NETWORK_TOKEN_RING	0x0201
+@@ -40,6 +45,7 @@
+ #define PCI_CLASS_MULTIMEDIA_VIDEO	0x0400
+ #define PCI_CLASS_MULTIMEDIA_AUDIO	0x0401
+ #define PCI_CLASS_MULTIMEDIA_PHONE	0x0402
++#define PCI_CLASS_MULTIMEDIA_HD_AUDIO	0x0403
+ #define PCI_CLASS_MULTIMEDIA_OTHER	0x0480
+ 
+ #define PCI_BASE_CLASS_MEMORY		0x05
+@@ -108,8 +114,13 @@
+ #define PCI_CLASS_SERIAL_USB_OHCI	0x0c0310
+ #define PCI_CLASS_SERIAL_USB_EHCI	0x0c0320
+ #define PCI_CLASS_SERIAL_USB_XHCI	0x0c0330
++#define PCI_CLASS_SERIAL_USB_DEVICE	0x0c03fe
+ #define PCI_CLASS_SERIAL_FIBER		0x0c04
+ #define PCI_CLASS_SERIAL_SMBUS		0x0c05
++#define PCI_CLASS_SERIAL_IPMI		0x0c07
++#define PCI_CLASS_SERIAL_IPMI_SMIC	0x0c0700
++#define PCI_CLASS_SERIAL_IPMI_KCS	0x0c0701
++#define PCI_CLASS_SERIAL_IPMI_BT	0x0c0702
+ 
+ #define PCI_BASE_CLASS_WIRELESS			0x0d
+ #define PCI_CLASS_WIRELESS_RF_CONTROLLER	0x0d10
+@@ -137,5 +148,2946 @@
+ 
+ /* Vendors and devices.  Sort key: vendor first, device next. */
+ 
++#define PCI_VENDOR_ID_TTTECH		0x0357
++#define PCI_DEVICE_ID_TTTECH_MC322	0x000a
++
++#define PCI_VENDOR_ID_DYNALINK		0x0675
++#define PCI_DEVICE_ID_DYNALINK_IS64PH	0x1702
++
++#define PCI_VENDOR_ID_UBIQUITI		0x0777
++
++#define PCI_VENDOR_ID_BERKOM			0x0871
++#define PCI_DEVICE_ID_BERKOM_A1T		0xffa1
++#define PCI_DEVICE_ID_BERKOM_T_CONCEPT		0xffa2
++#define PCI_DEVICE_ID_BERKOM_A4T		0xffa4
++#define PCI_DEVICE_ID_BERKOM_SCITEL_QUADRO	0xffa8
++
++#define PCI_VENDOR_ID_COMPAQ		0x0e11
++#define PCI_DEVICE_ID_COMPAQ_TOKENRING	0x0508
++#define PCI_DEVICE_ID_COMPAQ_TACHYON	0xa0fc
++#define PCI_DEVICE_ID_COMPAQ_SMART2P	0xae10
++#define PCI_DEVICE_ID_COMPAQ_NETEL100	0xae32
++#define PCI_DEVICE_ID_COMPAQ_NETEL10	0xae34
++#define PCI_DEVICE_ID_COMPAQ_TRIFLEX_IDE 0xae33
++#define PCI_DEVICE_ID_COMPAQ_NETFLEX3I	0xae35
++#define PCI_DEVICE_ID_COMPAQ_NETEL100D	0xae40
++#define PCI_DEVICE_ID_COMPAQ_NETEL100PI	0xae43
++#define PCI_DEVICE_ID_COMPAQ_NETEL100I	0xb011
++#define PCI_DEVICE_ID_COMPAQ_CISS	0xb060
++#define PCI_DEVICE_ID_COMPAQ_CISSB	0xb178
++#define PCI_DEVICE_ID_COMPAQ_CISSC	0x46
++#define PCI_DEVICE_ID_COMPAQ_THUNDER	0xf130
++#define PCI_DEVICE_ID_COMPAQ_NETFLEX3B	0xf150
++
++#define PCI_VENDOR_ID_NCR		0x1000
++#define PCI_VENDOR_ID_LSI_LOGIC		0x1000
++#define PCI_DEVICE_ID_NCR_53C810	0x0001
++#define PCI_DEVICE_ID_NCR_53C820	0x0002
++#define PCI_DEVICE_ID_NCR_53C825	0x0003
++#define PCI_DEVICE_ID_NCR_53C815	0x0004
++#define PCI_DEVICE_ID_LSI_53C810AP	0x0005
++#define PCI_DEVICE_ID_NCR_53C860	0x0006
++#define PCI_DEVICE_ID_LSI_53C1510	0x000a
++#define PCI_DEVICE_ID_NCR_53C896	0x000b
++#define PCI_DEVICE_ID_NCR_53C895	0x000c
++#define PCI_DEVICE_ID_NCR_53C885	0x000d
++#define PCI_DEVICE_ID_NCR_53C875	0x000f
++#define PCI_DEVICE_ID_NCR_53C1510	0x0010
++#define PCI_DEVICE_ID_LSI_53C895A	0x0012
++#define PCI_DEVICE_ID_LSI_53C875A	0x0013
++#define PCI_DEVICE_ID_LSI_53C1010_33	0x0020
++#define PCI_DEVICE_ID_LSI_53C1010_66	0x0021
++#define PCI_DEVICE_ID_LSI_53C1030	0x0030
++#define PCI_DEVICE_ID_LSI_1030_53C1035	0x0032
++#define PCI_DEVICE_ID_LSI_53C1035	0x0040
++#define PCI_DEVICE_ID_NCR_53C875J	0x008f
++#define PCI_DEVICE_ID_LSI_FC909		0x0621
++#define PCI_DEVICE_ID_LSI_FC929		0x0622
++#define PCI_DEVICE_ID_LSI_FC929_LAN	0x0623
++#define PCI_DEVICE_ID_LSI_FC919		0x0624
++#define PCI_DEVICE_ID_LSI_FC919_LAN	0x0625
++#define PCI_DEVICE_ID_LSI_FC929X	0x0626
++#define PCI_DEVICE_ID_LSI_FC939X	0x0642
++#define PCI_DEVICE_ID_LSI_FC949X	0x0640
++#define PCI_DEVICE_ID_LSI_FC949ES	0x0646
++#define PCI_DEVICE_ID_LSI_FC919X	0x0628
++#define PCI_DEVICE_ID_NCR_YELLOWFIN	0x0701
++#define PCI_DEVICE_ID_LSI_61C102	0x0901
++#define PCI_DEVICE_ID_LSI_63C815	0x1000
++#define PCI_DEVICE_ID_LSI_SAS1064	0x0050
++#define PCI_DEVICE_ID_LSI_SAS1064R	0x0411
++#define PCI_DEVICE_ID_LSI_SAS1066	0x005E
++#define PCI_DEVICE_ID_LSI_SAS1068	0x0054
++#define PCI_DEVICE_ID_LSI_SAS1064A	0x005C
++#define PCI_DEVICE_ID_LSI_SAS1064E	0x0056
++#define PCI_DEVICE_ID_LSI_SAS1066E	0x005A
++#define PCI_DEVICE_ID_LSI_SAS1068E	0x0058
++#define PCI_DEVICE_ID_LSI_SAS1078	0x0060
++
++#define PCI_VENDOR_ID_ATI		0x1002
++/* Mach64 */
++#define PCI_DEVICE_ID_ATI_68800		0x4158
++#define PCI_DEVICE_ID_ATI_215CT222	0x4354
++#define PCI_DEVICE_ID_ATI_210888CX	0x4358
++#define PCI_DEVICE_ID_ATI_215ET222	0x4554
++/* Mach64 / Rage */
++#define PCI_DEVICE_ID_ATI_215GB		0x4742
++#define PCI_DEVICE_ID_ATI_215GD		0x4744
++#define PCI_DEVICE_ID_ATI_215GI		0x4749
++#define PCI_DEVICE_ID_ATI_215GP		0x4750
++#define PCI_DEVICE_ID_ATI_215GQ		0x4751
++#define PCI_DEVICE_ID_ATI_215XL		0x4752
++#define PCI_DEVICE_ID_ATI_215GT		0x4754
++#define PCI_DEVICE_ID_ATI_215GTB	0x4755
++#define PCI_DEVICE_ID_ATI_215_IV	0x4756
++#define PCI_DEVICE_ID_ATI_215_IW	0x4757
++#define PCI_DEVICE_ID_ATI_215_IZ	0x475A
++#define PCI_DEVICE_ID_ATI_210888GX	0x4758
++#define PCI_DEVICE_ID_ATI_215_LB	0x4c42
++#define PCI_DEVICE_ID_ATI_215_LD	0x4c44
++#define PCI_DEVICE_ID_ATI_215_LG	0x4c47
++#define PCI_DEVICE_ID_ATI_215_LI	0x4c49
++#define PCI_DEVICE_ID_ATI_215_LM	0x4c4D
++#define PCI_DEVICE_ID_ATI_215_LN	0x4c4E
++#define PCI_DEVICE_ID_ATI_215_LR	0x4c52
++#define PCI_DEVICE_ID_ATI_215_LS	0x4c53
++#define PCI_DEVICE_ID_ATI_264_LT	0x4c54
++/* Mach64 VT */
++#define PCI_DEVICE_ID_ATI_264VT		0x5654
++#define PCI_DEVICE_ID_ATI_264VU		0x5655
++#define PCI_DEVICE_ID_ATI_264VV		0x5656
++/* Rage128 GL */
++#define PCI_DEVICE_ID_ATI_RAGE128_RE	0x5245
++#define PCI_DEVICE_ID_ATI_RAGE128_RF	0x5246
++#define PCI_DEVICE_ID_ATI_RAGE128_RG	0x5247
++/* Rage128 VR */
++#define PCI_DEVICE_ID_ATI_RAGE128_RK	0x524b
++#define PCI_DEVICE_ID_ATI_RAGE128_RL	0x524c
++#define PCI_DEVICE_ID_ATI_RAGE128_SE	0x5345
++#define PCI_DEVICE_ID_ATI_RAGE128_SF	0x5346
++#define PCI_DEVICE_ID_ATI_RAGE128_SG	0x5347
++#define PCI_DEVICE_ID_ATI_RAGE128_SH	0x5348
++#define PCI_DEVICE_ID_ATI_RAGE128_SK	0x534b
++#define PCI_DEVICE_ID_ATI_RAGE128_SL	0x534c
++#define PCI_DEVICE_ID_ATI_RAGE128_SM	0x534d
++#define PCI_DEVICE_ID_ATI_RAGE128_SN	0x534e
++/* Rage128 Ultra */
++#define PCI_DEVICE_ID_ATI_RAGE128_TF	0x5446
++#define PCI_DEVICE_ID_ATI_RAGE128_TL	0x544c
++#define PCI_DEVICE_ID_ATI_RAGE128_TR	0x5452
++#define PCI_DEVICE_ID_ATI_RAGE128_TS	0x5453
++#define PCI_DEVICE_ID_ATI_RAGE128_TT	0x5454
++#define PCI_DEVICE_ID_ATI_RAGE128_TU	0x5455
++/* Rage128 M3 */
++#define PCI_DEVICE_ID_ATI_RAGE128_LE	0x4c45
++#define PCI_DEVICE_ID_ATI_RAGE128_LF	0x4c46
++/* Rage128 M4 */
++#define PCI_DEVICE_ID_ATI_RAGE128_MF    0x4d46
++#define PCI_DEVICE_ID_ATI_RAGE128_ML    0x4d4c
++/* Rage128 Pro GL */
++#define PCI_DEVICE_ID_ATI_RAGE128_PA	0x5041
++#define PCI_DEVICE_ID_ATI_RAGE128_PB	0x5042
++#define PCI_DEVICE_ID_ATI_RAGE128_PC	0x5043
++#define PCI_DEVICE_ID_ATI_RAGE128_PD	0x5044
++#define PCI_DEVICE_ID_ATI_RAGE128_PE	0x5045
++#define PCI_DEVICE_ID_ATI_RAGE128_PF	0x5046
++/* Rage128 Pro VR */
++#define PCI_DEVICE_ID_ATI_RAGE128_PG	0x5047
++#define PCI_DEVICE_ID_ATI_RAGE128_PH	0x5048
++#define PCI_DEVICE_ID_ATI_RAGE128_PI	0x5049
++#define PCI_DEVICE_ID_ATI_RAGE128_PJ	0x504A
++#define PCI_DEVICE_ID_ATI_RAGE128_PK	0x504B
++#define PCI_DEVICE_ID_ATI_RAGE128_PL	0x504C
++#define PCI_DEVICE_ID_ATI_RAGE128_PM	0x504D
++#define PCI_DEVICE_ID_ATI_RAGE128_PN	0x504E
++#define PCI_DEVICE_ID_ATI_RAGE128_PO	0x504F
++#define PCI_DEVICE_ID_ATI_RAGE128_PP	0x5050
++#define PCI_DEVICE_ID_ATI_RAGE128_PQ	0x5051
++#define PCI_DEVICE_ID_ATI_RAGE128_PR	0x5052
++#define PCI_DEVICE_ID_ATI_RAGE128_PS	0x5053
++#define PCI_DEVICE_ID_ATI_RAGE128_PT	0x5054
++#define PCI_DEVICE_ID_ATI_RAGE128_PU	0x5055
++#define PCI_DEVICE_ID_ATI_RAGE128_PV	0x5056
++#define PCI_DEVICE_ID_ATI_RAGE128_PW	0x5057
++#define PCI_DEVICE_ID_ATI_RAGE128_PX	0x5058
++/* Rage128 M4 */
++/* Radeon R100 */
++#define PCI_DEVICE_ID_ATI_RADEON_QD	0x5144
++#define PCI_DEVICE_ID_ATI_RADEON_QE	0x5145
++#define PCI_DEVICE_ID_ATI_RADEON_QF	0x5146
++#define PCI_DEVICE_ID_ATI_RADEON_QG	0x5147
++/* Radeon RV100 (VE) */
++#define PCI_DEVICE_ID_ATI_RADEON_QY	0x5159
++#define PCI_DEVICE_ID_ATI_RADEON_QZ	0x515a
++/* Radeon R200 (8500) */
++#define PCI_DEVICE_ID_ATI_RADEON_QL	0x514c
++#define PCI_DEVICE_ID_ATI_RADEON_QN	0x514e
++#define PCI_DEVICE_ID_ATI_RADEON_QO	0x514f
++#define PCI_DEVICE_ID_ATI_RADEON_Ql	0x516c
++#define PCI_DEVICE_ID_ATI_RADEON_BB	0x4242
++/* Radeon R200 (9100) */
++#define PCI_DEVICE_ID_ATI_RADEON_QM	0x514d
++/* Radeon RV200 (7500) */
++#define PCI_DEVICE_ID_ATI_RADEON_QW	0x5157
++#define PCI_DEVICE_ID_ATI_RADEON_QX	0x5158
++/* Radeon NV-100 */
++/* Radeon RV250 (9000) */
++#define PCI_DEVICE_ID_ATI_RADEON_Id	0x4964
++#define PCI_DEVICE_ID_ATI_RADEON_Ie	0x4965
++#define PCI_DEVICE_ID_ATI_RADEON_If	0x4966
++#define PCI_DEVICE_ID_ATI_RADEON_Ig	0x4967
++/* Radeon RV280 (9200) */
++#define PCI_DEVICE_ID_ATI_RADEON_Ya	0x5961
++#define PCI_DEVICE_ID_ATI_RADEON_Yd	0x5964
++/* Radeon R300 (9500) */
++/* Radeon R300 (9700) */
++#define PCI_DEVICE_ID_ATI_RADEON_ND	0x4e44
++#define PCI_DEVICE_ID_ATI_RADEON_NE	0x4e45
++#define PCI_DEVICE_ID_ATI_RADEON_NF	0x4e46
++#define PCI_DEVICE_ID_ATI_RADEON_NG	0x4e47
++/* Radeon R350 (9800) */
++/* Radeon RV350 (9600) */
++/* Radeon M6 */
++#define PCI_DEVICE_ID_ATI_RADEON_LY	0x4c59
++#define PCI_DEVICE_ID_ATI_RADEON_LZ	0x4c5a
++/* Radeon M7 */
++#define PCI_DEVICE_ID_ATI_RADEON_LW	0x4c57
++#define PCI_DEVICE_ID_ATI_RADEON_LX	0x4c58
++/* Radeon M9 */
++#define PCI_DEVICE_ID_ATI_RADEON_Ld	0x4c64
++#define PCI_DEVICE_ID_ATI_RADEON_Le	0x4c65
++#define PCI_DEVICE_ID_ATI_RADEON_Lf	0x4c66
++#define PCI_DEVICE_ID_ATI_RADEON_Lg	0x4c67
++/* Radeon */
++/* RadeonIGP */
++#define PCI_DEVICE_ID_ATI_RS100		0xcab0
++#define PCI_DEVICE_ID_ATI_RS200		0xcab2
++#define PCI_DEVICE_ID_ATI_RS200_B	0xcbb2
++#define PCI_DEVICE_ID_ATI_RS250		0xcab3
++#define PCI_DEVICE_ID_ATI_RS300_100	0x5830
++#define PCI_DEVICE_ID_ATI_RS300_133	0x5831
++#define PCI_DEVICE_ID_ATI_RS300_166	0x5832
++#define PCI_DEVICE_ID_ATI_RS300_200	0x5833
++#define PCI_DEVICE_ID_ATI_RS350_100     0x7830
++#define PCI_DEVICE_ID_ATI_RS350_133     0x7831
++#define PCI_DEVICE_ID_ATI_RS350_166     0x7832
++#define PCI_DEVICE_ID_ATI_RS350_200     0x7833
++#define PCI_DEVICE_ID_ATI_RS400_100     0x5a30
++#define PCI_DEVICE_ID_ATI_RS400_133     0x5a31
++#define PCI_DEVICE_ID_ATI_RS400_166     0x5a32
++#define PCI_DEVICE_ID_ATI_RS400_200     0x5a33
++#define PCI_DEVICE_ID_ATI_RS480         0x5950
++/* ATI IXP Chipset */
++#define PCI_DEVICE_ID_ATI_IXP200_IDE	0x4349
++#define PCI_DEVICE_ID_ATI_IXP200_SMBUS	0x4353
++#define PCI_DEVICE_ID_ATI_IXP300_SMBUS	0x4363
++#define PCI_DEVICE_ID_ATI_IXP300_IDE	0x4369
++#define PCI_DEVICE_ID_ATI_IXP300_SATA   0x436e
++#define PCI_DEVICE_ID_ATI_IXP400_SMBUS	0x4372
++#define PCI_DEVICE_ID_ATI_IXP400_IDE	0x4376
++#define PCI_DEVICE_ID_ATI_IXP400_SATA   0x4379
++#define PCI_DEVICE_ID_ATI_IXP400_SATA2	0x437a
++#define PCI_DEVICE_ID_ATI_IXP600_SATA	0x4380
++#define PCI_DEVICE_ID_ATI_SBX00_SMBUS	0x4385
++#define PCI_DEVICE_ID_ATI_IXP600_IDE	0x438c
++#define PCI_DEVICE_ID_ATI_IXP700_SATA	0x4390
++#define PCI_DEVICE_ID_ATI_IXP700_IDE	0x439c
++
++#define PCI_VENDOR_ID_VLSI		0x1004
++#define PCI_DEVICE_ID_VLSI_82C592	0x0005
++#define PCI_DEVICE_ID_VLSI_82C593	0x0006
++#define PCI_DEVICE_ID_VLSI_82C594	0x0007
++#define PCI_DEVICE_ID_VLSI_82C597	0x0009
++#define PCI_DEVICE_ID_VLSI_82C541	0x000c
++#define PCI_DEVICE_ID_VLSI_82C543	0x000d
++#define PCI_DEVICE_ID_VLSI_82C532	0x0101
++#define PCI_DEVICE_ID_VLSI_82C534	0x0102
++#define PCI_DEVICE_ID_VLSI_82C535	0x0104
++#define PCI_DEVICE_ID_VLSI_82C147	0x0105
++#define PCI_DEVICE_ID_VLSI_VAS96011	0x0702
++
++/* AMD RD890 Chipset */
++#define PCI_DEVICE_ID_RD890_IOMMU	0x5a23
++
++#define PCI_VENDOR_ID_ADL		0x1005
++#define PCI_DEVICE_ID_ADL_2301		0x2301
++
++#define PCI_VENDOR_ID_NS		0x100b
++#define PCI_DEVICE_ID_NS_87415		0x0002
++#define PCI_DEVICE_ID_NS_87560_LIO	0x000e
++#define PCI_DEVICE_ID_NS_87560_USB	0x0012
++#define PCI_DEVICE_ID_NS_83815		0x0020
++#define PCI_DEVICE_ID_NS_83820		0x0022
++#define PCI_DEVICE_ID_NS_CS5535_ISA	0x002b
++#define PCI_DEVICE_ID_NS_CS5535_IDE	0x002d
++#define PCI_DEVICE_ID_NS_CS5535_AUDIO	0x002e
++#define PCI_DEVICE_ID_NS_CS5535_USB	0x002f
++#define PCI_DEVICE_ID_NS_GX_VIDEO	0x0030
++#define PCI_DEVICE_ID_NS_SATURN		0x0035
++#define PCI_DEVICE_ID_NS_SCx200_BRIDGE	0x0500
++#define PCI_DEVICE_ID_NS_SCx200_SMI	0x0501
++#define PCI_DEVICE_ID_NS_SCx200_IDE	0x0502
++#define PCI_DEVICE_ID_NS_SCx200_AUDIO	0x0503
++#define PCI_DEVICE_ID_NS_SCx200_VIDEO	0x0504
++#define PCI_DEVICE_ID_NS_SCx200_XBUS	0x0505
++#define PCI_DEVICE_ID_NS_SC1100_BRIDGE	0x0510
++#define PCI_DEVICE_ID_NS_SC1100_SMI	0x0511
++#define PCI_DEVICE_ID_NS_SC1100_XBUS	0x0515
++#define PCI_DEVICE_ID_NS_87410		0xd001
++
++#define PCI_DEVICE_ID_NS_GX_HOST_BRIDGE  0x0028
++
++#define PCI_VENDOR_ID_TSENG		0x100c
++#define PCI_DEVICE_ID_TSENG_W32P_2	0x3202
++#define PCI_DEVICE_ID_TSENG_W32P_b	0x3205
++#define PCI_DEVICE_ID_TSENG_W32P_c	0x3206
++#define PCI_DEVICE_ID_TSENG_W32P_d	0x3207
++#define PCI_DEVICE_ID_TSENG_ET6000	0x3208
++
++#define PCI_VENDOR_ID_WEITEK		0x100e
++#define PCI_DEVICE_ID_WEITEK_P9000	0x9001
++#define PCI_DEVICE_ID_WEITEK_P9100	0x9100
++
++#define PCI_VENDOR_ID_DEC		0x1011
++#define PCI_DEVICE_ID_DEC_BRD		0x0001
++#define PCI_DEVICE_ID_DEC_TULIP		0x0002
++#define PCI_DEVICE_ID_DEC_TGA		0x0004
++#define PCI_DEVICE_ID_DEC_TULIP_FAST	0x0009
++#define PCI_DEVICE_ID_DEC_TGA2		0x000D
++#define PCI_DEVICE_ID_DEC_FDDI		0x000F
++#define PCI_DEVICE_ID_DEC_TULIP_PLUS	0x0014
++#define PCI_DEVICE_ID_DEC_21142		0x0019
++#define PCI_DEVICE_ID_DEC_21052		0x0021
++#define PCI_DEVICE_ID_DEC_21150		0x0022
++#define PCI_DEVICE_ID_DEC_21152		0x0024
++#define PCI_DEVICE_ID_DEC_21153		0x0025
++#define PCI_DEVICE_ID_DEC_21154		0x0026
++#define PCI_DEVICE_ID_DEC_21285		0x1065
++#define PCI_DEVICE_ID_COMPAQ_42XX	0x0046
++
++#define PCI_VENDOR_ID_CIRRUS		0x1013
++#define PCI_DEVICE_ID_CIRRUS_7548	0x0038
++#define PCI_DEVICE_ID_CIRRUS_5430	0x00a0
++#define PCI_DEVICE_ID_CIRRUS_5434_4	0x00a4
++#define PCI_DEVICE_ID_CIRRUS_5434_8	0x00a8
++#define PCI_DEVICE_ID_CIRRUS_5436	0x00ac
++#define PCI_DEVICE_ID_CIRRUS_5446	0x00b8
++#define PCI_DEVICE_ID_CIRRUS_5480	0x00bc
++#define PCI_DEVICE_ID_CIRRUS_5462	0x00d0
++#define PCI_DEVICE_ID_CIRRUS_5464	0x00d4
++#define PCI_DEVICE_ID_CIRRUS_5465	0x00d6
++#define PCI_DEVICE_ID_CIRRUS_6729	0x1100
++#define PCI_DEVICE_ID_CIRRUS_6832	0x1110
++#define PCI_DEVICE_ID_CIRRUS_7543	0x1202
++#define PCI_DEVICE_ID_CIRRUS_4610	0x6001
++#define PCI_DEVICE_ID_CIRRUS_4612	0x6003
++#define PCI_DEVICE_ID_CIRRUS_4615	0x6004
++
++#define PCI_VENDOR_ID_IBM		0x1014
++#define PCI_DEVICE_ID_IBM_TR		0x0018
++#define PCI_DEVICE_ID_IBM_TR_WAKE	0x003e
++#define PCI_DEVICE_ID_IBM_CPC710_PCI64	0x00fc
++#define PCI_DEVICE_ID_IBM_SNIPE		0x0180
++#define PCI_DEVICE_ID_IBM_CITRINE		0x028C
++#define PCI_DEVICE_ID_IBM_GEMSTONE		0xB166
++#define PCI_DEVICE_ID_IBM_OBSIDIAN		0x02BD
++#define PCI_DEVICE_ID_IBM_ICOM_DEV_ID_1	0x0031
++#define PCI_DEVICE_ID_IBM_ICOM_DEV_ID_2	0x0219
++#define PCI_DEVICE_ID_IBM_ICOM_V2_TWO_PORTS_RVX		0x021A
++#define PCI_DEVICE_ID_IBM_ICOM_V2_ONE_PORT_RVX_ONE_PORT_MDM	0x0251
++#define PCI_DEVICE_ID_IBM_ICOM_V2_ONE_PORT_RVX_ONE_PORT_MDM_PCIE 0x0361
++#define PCI_DEVICE_ID_IBM_ICOM_FOUR_PORT_MODEL	0x252
++
++#define PCI_SUBVENDOR_ID_IBM		0x1014
++#define PCI_SUBDEVICE_ID_IBM_SATURN_SERIAL_ONE_PORT	0x03d4
++
++#define PCI_VENDOR_ID_UNISYS		0x1018
++#define PCI_DEVICE_ID_UNISYS_DMA_DIRECTOR 0x001C
++
++#define PCI_VENDOR_ID_COMPEX2		0x101a /* pci.ids says "AT&T GIS (NCR)" */
++#define PCI_DEVICE_ID_COMPEX2_100VG	0x0005
++
++#define PCI_VENDOR_ID_WD		0x101c
++#define PCI_DEVICE_ID_WD_90C		0xc24a
++
++#define PCI_VENDOR_ID_AMI		0x101e
++#define PCI_DEVICE_ID_AMI_MEGARAID3	0x1960
++#define PCI_DEVICE_ID_AMI_MEGARAID	0x9010
++#define PCI_DEVICE_ID_AMI_MEGARAID2	0x9060
++
++#define PCI_VENDOR_ID_AMD		0x1022
++#define PCI_DEVICE_ID_AMD_K8_NB		0x1100
++#define PCI_DEVICE_ID_AMD_K8_NB_ADDRMAP	0x1101
++#define PCI_DEVICE_ID_AMD_K8_NB_MEMCTL	0x1102
++#define PCI_DEVICE_ID_AMD_K8_NB_MISC	0x1103
++#define PCI_DEVICE_ID_AMD_10H_NB_HT	0x1200
++#define PCI_DEVICE_ID_AMD_10H_NB_MAP	0x1201
++#define PCI_DEVICE_ID_AMD_10H_NB_DRAM	0x1202
++#define PCI_DEVICE_ID_AMD_10H_NB_MISC	0x1203
++#define PCI_DEVICE_ID_AMD_10H_NB_LINK	0x1204
++#define PCI_DEVICE_ID_AMD_11H_NB_HT	0x1300
++#define PCI_DEVICE_ID_AMD_11H_NB_MAP	0x1301
++#define PCI_DEVICE_ID_AMD_11H_NB_DRAM	0x1302
++#define PCI_DEVICE_ID_AMD_11H_NB_MISC	0x1303
++#define PCI_DEVICE_ID_AMD_11H_NB_LINK	0x1304
++#define PCI_DEVICE_ID_AMD_15H_M10H_F3	0x1403
++#define PCI_DEVICE_ID_AMD_15H_M30H_NB_F3 0x141d
++#define PCI_DEVICE_ID_AMD_15H_M30H_NB_F4 0x141e
++#define PCI_DEVICE_ID_AMD_15H_M60H_NB_F3 0x1573
++#define PCI_DEVICE_ID_AMD_15H_M60H_NB_F4 0x1574
++#define PCI_DEVICE_ID_AMD_15H_NB_F0	0x1600
++#define PCI_DEVICE_ID_AMD_15H_NB_F1	0x1601
++#define PCI_DEVICE_ID_AMD_15H_NB_F2	0x1602
++#define PCI_DEVICE_ID_AMD_15H_NB_F3	0x1603
++#define PCI_DEVICE_ID_AMD_15H_NB_F4	0x1604
++#define PCI_DEVICE_ID_AMD_15H_NB_F5	0x1605
++#define PCI_DEVICE_ID_AMD_16H_NB_F3	0x1533
++#define PCI_DEVICE_ID_AMD_16H_NB_F4	0x1534
++#define PCI_DEVICE_ID_AMD_16H_M30H_NB_F3 0x1583
++#define PCI_DEVICE_ID_AMD_16H_M30H_NB_F4 0x1584
++#define PCI_DEVICE_ID_AMD_CNB17H_F3	0x1703
++#define PCI_DEVICE_ID_AMD_LANCE		0x2000
++#define PCI_DEVICE_ID_AMD_LANCE_HOME	0x2001
++#define PCI_DEVICE_ID_AMD_SCSI		0x2020
++#define PCI_DEVICE_ID_AMD_SERENADE	0x36c0
++#define PCI_DEVICE_ID_AMD_FE_GATE_7006	0x7006
++#define PCI_DEVICE_ID_AMD_FE_GATE_7007	0x7007
++#define PCI_DEVICE_ID_AMD_FE_GATE_700C	0x700C
++#define PCI_DEVICE_ID_AMD_FE_GATE_700E	0x700E
++#define PCI_DEVICE_ID_AMD_COBRA_7401	0x7401
++#define PCI_DEVICE_ID_AMD_VIPER_7409	0x7409
++#define PCI_DEVICE_ID_AMD_VIPER_740B	0x740B
++#define PCI_DEVICE_ID_AMD_VIPER_7410	0x7410
++#define PCI_DEVICE_ID_AMD_VIPER_7411	0x7411
++#define PCI_DEVICE_ID_AMD_VIPER_7413	0x7413
++#define PCI_DEVICE_ID_AMD_VIPER_7440	0x7440
++#define PCI_DEVICE_ID_AMD_OPUS_7441	0x7441
++#define PCI_DEVICE_ID_AMD_OPUS_7443	0x7443
++#define PCI_DEVICE_ID_AMD_VIPER_7443	0x7443
++#define PCI_DEVICE_ID_AMD_OPUS_7445	0x7445
++#define PCI_DEVICE_ID_AMD_GOLAM_7450	0x7450
++#define PCI_DEVICE_ID_AMD_8111_PCI	0x7460
++#define PCI_DEVICE_ID_AMD_8111_LPC	0x7468
++#define PCI_DEVICE_ID_AMD_8111_IDE	0x7469
++#define PCI_DEVICE_ID_AMD_8111_SMBUS2	0x746a
++#define PCI_DEVICE_ID_AMD_8111_SMBUS	0x746b
++#define PCI_DEVICE_ID_AMD_8111_AUDIO	0x746d
++#define PCI_DEVICE_ID_AMD_8151_0	0x7454
++#define PCI_DEVICE_ID_AMD_8131_BRIDGE	0x7450
++#define PCI_DEVICE_ID_AMD_8131_APIC	0x7451
++#define PCI_DEVICE_ID_AMD_8132_BRIDGE	0x7458
++#define PCI_DEVICE_ID_AMD_NL_USB	0x7912
++#define PCI_DEVICE_ID_AMD_CS5535_IDE    0x208F
++#define PCI_DEVICE_ID_AMD_CS5536_ISA    0x2090
++#define PCI_DEVICE_ID_AMD_CS5536_FLASH  0x2091
++#define PCI_DEVICE_ID_AMD_CS5536_AUDIO  0x2093
++#define PCI_DEVICE_ID_AMD_CS5536_OHC    0x2094
++#define PCI_DEVICE_ID_AMD_CS5536_EHC    0x2095
++#define PCI_DEVICE_ID_AMD_CS5536_UDC    0x2096
++#define PCI_DEVICE_ID_AMD_CS5536_UOC    0x2097
++#define PCI_DEVICE_ID_AMD_CS5536_DEV_IDE    0x2092
++#define PCI_DEVICE_ID_AMD_CS5536_IDE    0x209A
++#define PCI_DEVICE_ID_AMD_LX_VIDEO  0x2081
++#define PCI_DEVICE_ID_AMD_LX_AES    0x2082
++#define PCI_DEVICE_ID_AMD_HUDSON2_SATA_IDE	0x7800
++#define PCI_DEVICE_ID_AMD_HUDSON2_SMBUS		0x780b
++#define PCI_DEVICE_ID_AMD_HUDSON2_IDE		0x780c
++#define PCI_DEVICE_ID_AMD_KERNCZ_SMBUS  0x790b
++
++#define PCI_VENDOR_ID_TRIDENT		0x1023
++#define PCI_DEVICE_ID_TRIDENT_4DWAVE_DX	0x2000
++#define PCI_DEVICE_ID_TRIDENT_4DWAVE_NX	0x2001
++#define PCI_DEVICE_ID_TRIDENT_9320	0x9320
++#define PCI_DEVICE_ID_TRIDENT_9388	0x9388
++#define PCI_DEVICE_ID_TRIDENT_9397	0x9397
++#define PCI_DEVICE_ID_TRIDENT_939A	0x939A
++#define PCI_DEVICE_ID_TRIDENT_9520	0x9520
++#define PCI_DEVICE_ID_TRIDENT_9525	0x9525
++#define PCI_DEVICE_ID_TRIDENT_9420	0x9420
++#define PCI_DEVICE_ID_TRIDENT_9440	0x9440
++#define PCI_DEVICE_ID_TRIDENT_9660	0x9660
++#define PCI_DEVICE_ID_TRIDENT_9750	0x9750
++#define PCI_DEVICE_ID_TRIDENT_9850	0x9850
++#define PCI_DEVICE_ID_TRIDENT_9880	0x9880
++#define PCI_DEVICE_ID_TRIDENT_8400	0x8400
++#define PCI_DEVICE_ID_TRIDENT_8420	0x8420
++#define PCI_DEVICE_ID_TRIDENT_8500	0x8500
++
++#define PCI_VENDOR_ID_AI		0x1025
++#define PCI_DEVICE_ID_AI_M1435		0x1435
++
++#define PCI_VENDOR_ID_DELL		0x1028
++#define PCI_DEVICE_ID_DELL_RACIII	0x0008
++#define PCI_DEVICE_ID_DELL_RAC4		0x0012
++#define PCI_DEVICE_ID_DELL_PERC5	0x0015
++
++#define PCI_VENDOR_ID_MATROX		0x102B
++#define PCI_DEVICE_ID_MATROX_MGA_2	0x0518
++#define PCI_DEVICE_ID_MATROX_MIL	0x0519
++#define PCI_DEVICE_ID_MATROX_MYS	0x051A
++#define PCI_DEVICE_ID_MATROX_MIL_2	0x051b
++#define PCI_DEVICE_ID_MATROX_MYS_AGP	0x051e
++#define PCI_DEVICE_ID_MATROX_MIL_2_AGP	0x051f
++#define PCI_DEVICE_ID_MATROX_MGA_IMP	0x0d10
++#define PCI_DEVICE_ID_MATROX_G100_MM	0x1000
++#define PCI_DEVICE_ID_MATROX_G100_AGP	0x1001
++#define PCI_DEVICE_ID_MATROX_G200_PCI	0x0520
++#define PCI_DEVICE_ID_MATROX_G200_AGP	0x0521
++#define	PCI_DEVICE_ID_MATROX_G400	0x0525
++#define	PCI_DEVICE_ID_MATROX_G200EV_PCI	0x0530
++#define PCI_DEVICE_ID_MATROX_G550	0x2527
++#define PCI_DEVICE_ID_MATROX_VIA	0x4536
++
++#define PCI_VENDOR_ID_MOBILITY_ELECTRONICS	0x14f2
++
++#define PCI_VENDOR_ID_CT		0x102c
++#define PCI_DEVICE_ID_CT_69000		0x00c0
++#define PCI_DEVICE_ID_CT_65545		0x00d8
++#define PCI_DEVICE_ID_CT_65548		0x00dc
++#define PCI_DEVICE_ID_CT_65550		0x00e0
++#define PCI_DEVICE_ID_CT_65554		0x00e4
++#define PCI_DEVICE_ID_CT_65555		0x00e5
++
++#define PCI_VENDOR_ID_MIRO		0x1031
++#define PCI_DEVICE_ID_MIRO_36050	0x5601
++#define PCI_DEVICE_ID_MIRO_DC10PLUS	0x7efe
++#define PCI_DEVICE_ID_MIRO_DC30PLUS	0xd801
++
++#define PCI_VENDOR_ID_NEC		0x1033
++#define PCI_DEVICE_ID_NEC_CBUS_1	0x0001 /* PCI-Cbus Bridge */
++#define PCI_DEVICE_ID_NEC_LOCAL		0x0002 /* Local Bridge */
++#define PCI_DEVICE_ID_NEC_ATM		0x0003 /* ATM LAN Controller */
++#define PCI_DEVICE_ID_NEC_R4000		0x0004 /* R4000 Bridge */
++#define PCI_DEVICE_ID_NEC_486		0x0005 /* 486 Like Peripheral Bus Bridge */
++#define PCI_DEVICE_ID_NEC_ACCEL_1	0x0006 /* Graphic Accelerator */
++#define PCI_DEVICE_ID_NEC_UXBUS		0x0007 /* UX-Bus Bridge */
++#define PCI_DEVICE_ID_NEC_ACCEL_2	0x0008 /* Graphic Accelerator */
++#define PCI_DEVICE_ID_NEC_GRAPH		0x0009 /* PCI-CoreGraph Bridge */
++#define PCI_DEVICE_ID_NEC_VL		0x0016 /* PCI-VL Bridge */
++#define PCI_DEVICE_ID_NEC_STARALPHA2	0x002c /* STAR ALPHA2 */
++#define PCI_DEVICE_ID_NEC_CBUS_2	0x002d /* PCI-Cbus Bridge */
++#define PCI_DEVICE_ID_NEC_USB		0x0035 /* PCI-USB Host */
++#define PCI_DEVICE_ID_NEC_CBUS_3	0x003b
++#define PCI_DEVICE_ID_NEC_NAPCCARD	0x003e
++#define PCI_DEVICE_ID_NEC_PCX2		0x0046 /* PowerVR */
++#define PCI_DEVICE_ID_NEC_VRC5476       0x009b
++#define PCI_DEVICE_ID_NEC_VRC4173	0x00a5
++#define PCI_DEVICE_ID_NEC_VRC5477_AC97  0x00a6
++#define PCI_DEVICE_ID_NEC_PC9821CS01    0x800c /* PC-9821-CS01 */
++#define PCI_DEVICE_ID_NEC_PC9821NRB06   0x800d /* PC-9821NR-B06 */
++
++#define PCI_VENDOR_ID_FD		0x1036
++#define PCI_DEVICE_ID_FD_36C70		0x0000
++
++#define PCI_VENDOR_ID_SI		0x1039
++#define PCI_DEVICE_ID_SI_5591_AGP	0x0001
++#define PCI_DEVICE_ID_SI_6202		0x0002
++#define PCI_DEVICE_ID_SI_503		0x0008
++#define PCI_DEVICE_ID_SI_ACPI		0x0009
++#define PCI_DEVICE_ID_SI_SMBUS		0x0016
++#define PCI_DEVICE_ID_SI_LPC		0x0018
++#define PCI_DEVICE_ID_SI_5597_VGA	0x0200
++#define PCI_DEVICE_ID_SI_6205		0x0205
++#define PCI_DEVICE_ID_SI_501		0x0406
++#define PCI_DEVICE_ID_SI_496		0x0496
++#define PCI_DEVICE_ID_SI_300		0x0300
++#define PCI_DEVICE_ID_SI_315H		0x0310
++#define PCI_DEVICE_ID_SI_315		0x0315
++#define PCI_DEVICE_ID_SI_315PRO		0x0325
++#define PCI_DEVICE_ID_SI_530		0x0530
++#define PCI_DEVICE_ID_SI_540		0x0540
++#define PCI_DEVICE_ID_SI_550		0x0550
++#define PCI_DEVICE_ID_SI_540_VGA	0x5300
++#define PCI_DEVICE_ID_SI_550_VGA	0x5315
++#define PCI_DEVICE_ID_SI_620		0x0620
++#define PCI_DEVICE_ID_SI_630		0x0630
++#define PCI_DEVICE_ID_SI_633		0x0633
++#define PCI_DEVICE_ID_SI_635		0x0635
++#define PCI_DEVICE_ID_SI_640		0x0640
++#define PCI_DEVICE_ID_SI_645		0x0645
++#define PCI_DEVICE_ID_SI_646		0x0646
++#define PCI_DEVICE_ID_SI_648		0x0648
++#define PCI_DEVICE_ID_SI_650		0x0650
++#define PCI_DEVICE_ID_SI_651		0x0651
++#define PCI_DEVICE_ID_SI_655		0x0655
++#define PCI_DEVICE_ID_SI_661		0x0661
++#define PCI_DEVICE_ID_SI_730		0x0730
++#define PCI_DEVICE_ID_SI_733		0x0733
++#define PCI_DEVICE_ID_SI_630_VGA	0x6300
++#define PCI_DEVICE_ID_SI_735		0x0735
++#define PCI_DEVICE_ID_SI_740		0x0740
++#define PCI_DEVICE_ID_SI_741		0x0741
++#define PCI_DEVICE_ID_SI_745		0x0745
++#define PCI_DEVICE_ID_SI_746		0x0746
++#define PCI_DEVICE_ID_SI_755		0x0755
++#define PCI_DEVICE_ID_SI_760		0x0760
++#define PCI_DEVICE_ID_SI_900		0x0900
++#define PCI_DEVICE_ID_SI_961		0x0961
++#define PCI_DEVICE_ID_SI_962		0x0962
++#define PCI_DEVICE_ID_SI_963		0x0963
++#define PCI_DEVICE_ID_SI_965		0x0965
++#define PCI_DEVICE_ID_SI_966		0x0966
++#define PCI_DEVICE_ID_SI_968		0x0968
++#define PCI_DEVICE_ID_SI_1180		0x1180
++#define PCI_DEVICE_ID_SI_5511		0x5511
++#define PCI_DEVICE_ID_SI_5513		0x5513
++#define PCI_DEVICE_ID_SI_5517		0x5517
++#define PCI_DEVICE_ID_SI_5518		0x5518
++#define PCI_DEVICE_ID_SI_5571		0x5571
++#define PCI_DEVICE_ID_SI_5581		0x5581
++#define PCI_DEVICE_ID_SI_5582		0x5582
++#define PCI_DEVICE_ID_SI_5591		0x5591
++#define PCI_DEVICE_ID_SI_5596		0x5596
++#define PCI_DEVICE_ID_SI_5597		0x5597
++#define PCI_DEVICE_ID_SI_5598		0x5598
++#define PCI_DEVICE_ID_SI_5600		0x5600
++#define PCI_DEVICE_ID_SI_7012		0x7012
++#define PCI_DEVICE_ID_SI_7013		0x7013
++#define PCI_DEVICE_ID_SI_7016		0x7016
++#define PCI_DEVICE_ID_SI_7018		0x7018
++
++#define PCI_VENDOR_ID_HP		0x103c
++#define PCI_VENDOR_ID_HP_3PAR		0x1590
++#define PCI_DEVICE_ID_HP_VISUALIZE_EG	0x1005
++#define PCI_DEVICE_ID_HP_VISUALIZE_FX6	0x1006
++#define PCI_DEVICE_ID_HP_VISUALIZE_FX4	0x1008
++#define PCI_DEVICE_ID_HP_VISUALIZE_FX2	0x100a
++#define PCI_DEVICE_ID_HP_TACHYON	0x1028
++#define PCI_DEVICE_ID_HP_TACHLITE	0x1029
++#define PCI_DEVICE_ID_HP_J2585A		0x1030
++#define PCI_DEVICE_ID_HP_J2585B		0x1031
++#define PCI_DEVICE_ID_HP_J2973A		0x1040
++#define PCI_DEVICE_ID_HP_J2970A		0x1042
++#define PCI_DEVICE_ID_HP_DIVA		0x1048
++#define PCI_DEVICE_ID_HP_DIVA_TOSCA1	0x1049
++#define PCI_DEVICE_ID_HP_DIVA_TOSCA2	0x104A
++#define PCI_DEVICE_ID_HP_DIVA_MAESTRO	0x104B
++#define PCI_DEVICE_ID_HP_REO_IOC	0x10f1
++#define PCI_DEVICE_ID_HP_VISUALIZE_FXE	0x108b
++#define PCI_DEVICE_ID_HP_DIVA_HALFDOME	0x1223
++#define PCI_DEVICE_ID_HP_DIVA_KEYSTONE	0x1226
++#define PCI_DEVICE_ID_HP_DIVA_POWERBAR	0x1227
++#define PCI_DEVICE_ID_HP_ZX1_IOC	0x122a
++#define PCI_DEVICE_ID_HP_PCIX_LBA	0x122e
++#define PCI_DEVICE_ID_HP_SX1000_IOC	0x127c
++#define PCI_DEVICE_ID_HP_DIVA_EVEREST	0x1282
++#define PCI_DEVICE_ID_HP_DIVA_AUX	0x1290
++#define PCI_DEVICE_ID_HP_DIVA_RMP3	0x1301
++#define PCI_DEVICE_ID_HP_DIVA_HURRICANE	0x132a
++#define PCI_DEVICE_ID_HP_CISSA		0x3220
++#define PCI_DEVICE_ID_HP_CISSC		0x3230
++#define PCI_DEVICE_ID_HP_CISSD		0x3238
++#define PCI_DEVICE_ID_HP_CISSE		0x323a
++#define PCI_DEVICE_ID_HP_CISSF		0x323b
++#define PCI_DEVICE_ID_HP_CISSH		0x323c
++#define PCI_DEVICE_ID_HP_CISSI		0x3239
++#define PCI_DEVICE_ID_HP_ZX2_IOC	0x4031
++
++#define PCI_VENDOR_ID_PCTECH		0x1042
++#define PCI_DEVICE_ID_PCTECH_RZ1000	0x1000
++#define PCI_DEVICE_ID_PCTECH_RZ1001	0x1001
++#define PCI_DEVICE_ID_PCTECH_SAMURAI_IDE 0x3020
++
++#define PCI_VENDOR_ID_ASUSTEK		0x1043
++#define PCI_DEVICE_ID_ASUSTEK_0675	0x0675
++
++#define PCI_VENDOR_ID_DPT		0x1044
++#define PCI_DEVICE_ID_DPT		0xa400
++
++#define PCI_VENDOR_ID_OPTI		0x1045
++#define PCI_DEVICE_ID_OPTI_82C558	0xc558
++#define PCI_DEVICE_ID_OPTI_82C621	0xc621
++#define PCI_DEVICE_ID_OPTI_82C700	0xc700
++#define PCI_DEVICE_ID_OPTI_82C825	0xd568
++
++#define PCI_VENDOR_ID_ELSA		0x1048
++#define PCI_DEVICE_ID_ELSA_MICROLINK	0x1000
++#define PCI_DEVICE_ID_ELSA_QS3000	0x3000
++
++#define PCI_VENDOR_ID_STMICRO		0x104A
++#define PCI_DEVICE_ID_STMICRO_USB_HOST	0xCC00
++#define PCI_DEVICE_ID_STMICRO_USB_OHCI	0xCC01
++#define PCI_DEVICE_ID_STMICRO_USB_OTG	0xCC02
++#define PCI_DEVICE_ID_STMICRO_UART_HWFC 0xCC03
++#define PCI_DEVICE_ID_STMICRO_UART_NO_HWFC	0xCC04
++#define PCI_DEVICE_ID_STMICRO_SOC_DMA	0xCC05
++#define PCI_DEVICE_ID_STMICRO_SATA	0xCC06
++#define PCI_DEVICE_ID_STMICRO_I2C	0xCC07
++#define PCI_DEVICE_ID_STMICRO_SPI_HS	0xCC08
++#define PCI_DEVICE_ID_STMICRO_MAC	0xCC09
++#define PCI_DEVICE_ID_STMICRO_SDIO_EMMC 0xCC0A
++#define PCI_DEVICE_ID_STMICRO_SDIO	0xCC0B
++#define PCI_DEVICE_ID_STMICRO_GPIO	0xCC0C
++#define PCI_DEVICE_ID_STMICRO_VIP	0xCC0D
++#define PCI_DEVICE_ID_STMICRO_AUDIO_ROUTER_DMA	0xCC0E
++#define PCI_DEVICE_ID_STMICRO_AUDIO_ROUTER_SRCS 0xCC0F
++#define PCI_DEVICE_ID_STMICRO_AUDIO_ROUTER_MSPS 0xCC10
++#define PCI_DEVICE_ID_STMICRO_CAN	0xCC11
++#define PCI_DEVICE_ID_STMICRO_MLB	0xCC12
++#define PCI_DEVICE_ID_STMICRO_DBP	0xCC13
++#define PCI_DEVICE_ID_STMICRO_SATA_PHY	0xCC14
++#define PCI_DEVICE_ID_STMICRO_ESRAM	0xCC15
++#define PCI_DEVICE_ID_STMICRO_VIC	0xCC16
++
++#define PCI_VENDOR_ID_BUSLOGIC		      0x104B
++#define PCI_DEVICE_ID_BUSLOGIC_MULTIMASTER_NC 0x0140
++#define PCI_DEVICE_ID_BUSLOGIC_MULTIMASTER    0x1040
++#define PCI_DEVICE_ID_BUSLOGIC_FLASHPOINT     0x8130
++
++#define PCI_VENDOR_ID_TI		0x104c
++#define PCI_DEVICE_ID_TI_TVP4020	0x3d07
++#define PCI_DEVICE_ID_TI_4450		0x8011
++#define PCI_DEVICE_ID_TI_XX21_XX11	0x8031
++#define PCI_DEVICE_ID_TI_XX21_XX11_FM	0x8033
++#define PCI_DEVICE_ID_TI_XX21_XX11_SD	0x8034
++#define PCI_DEVICE_ID_TI_X515		0x8036
++#define PCI_DEVICE_ID_TI_XX12		0x8039
++#define PCI_DEVICE_ID_TI_XX12_FM	0x803b
++#define PCI_DEVICE_ID_TI_XIO2000A	0x8231
++#define PCI_DEVICE_ID_TI_1130		0xac12
++#define PCI_DEVICE_ID_TI_1031		0xac13
++#define PCI_DEVICE_ID_TI_1131		0xac15
++#define PCI_DEVICE_ID_TI_1250		0xac16
++#define PCI_DEVICE_ID_TI_1220		0xac17
++#define PCI_DEVICE_ID_TI_1221		0xac19
++#define PCI_DEVICE_ID_TI_1210		0xac1a
++#define PCI_DEVICE_ID_TI_1450		0xac1b
++#define PCI_DEVICE_ID_TI_1225		0xac1c
++#define PCI_DEVICE_ID_TI_1251A		0xac1d
++#define PCI_DEVICE_ID_TI_1211		0xac1e
++#define PCI_DEVICE_ID_TI_1251B		0xac1f
++#define PCI_DEVICE_ID_TI_4410		0xac41
++#define PCI_DEVICE_ID_TI_4451		0xac42
++#define PCI_DEVICE_ID_TI_4510		0xac44
++#define PCI_DEVICE_ID_TI_4520		0xac46
++#define PCI_DEVICE_ID_TI_7510		0xac47
++#define PCI_DEVICE_ID_TI_7610		0xac48
++#define PCI_DEVICE_ID_TI_7410		0xac49
++#define PCI_DEVICE_ID_TI_1410		0xac50
++#define PCI_DEVICE_ID_TI_1420		0xac51
++#define PCI_DEVICE_ID_TI_1451A		0xac52
++#define PCI_DEVICE_ID_TI_1620		0xac54
++#define PCI_DEVICE_ID_TI_1520		0xac55
++#define PCI_DEVICE_ID_TI_1510		0xac56
++#define PCI_DEVICE_ID_TI_X620		0xac8d
++#define PCI_DEVICE_ID_TI_X420		0xac8e
++#define PCI_DEVICE_ID_TI_XX20_FM	0xac8f
++#define PCI_DEVICE_ID_TI_DRA74x		0xb500
++#define PCI_DEVICE_ID_TI_DRA72x		0xb501
++
++#define PCI_VENDOR_ID_SONY		0x104d
++
++/* Winbond have two vendor IDs! See 0x10ad as well */
++#define PCI_VENDOR_ID_WINBOND2		0x1050
++#define PCI_DEVICE_ID_WINBOND2_89C940F	0x5a5a
++#define PCI_DEVICE_ID_WINBOND2_6692	0x6692
++
++#define PCI_VENDOR_ID_ANIGMA		0x1051
++#define PCI_DEVICE_ID_ANIGMA_MC145575	0x0100
++
++#define PCI_VENDOR_ID_EFAR		0x1055
++#define PCI_DEVICE_ID_EFAR_SLC90E66_1	0x9130
++#define PCI_DEVICE_ID_EFAR_SLC90E66_3	0x9463
++
++#define PCI_VENDOR_ID_MOTOROLA		0x1057
++#define PCI_DEVICE_ID_MOTOROLA_MPC105	0x0001
++#define PCI_DEVICE_ID_MOTOROLA_MPC106	0x0002
++#define PCI_DEVICE_ID_MOTOROLA_MPC107	0x0004
++#define PCI_DEVICE_ID_MOTOROLA_RAVEN	0x4801
++#define PCI_DEVICE_ID_MOTOROLA_FALCON	0x4802
++#define PCI_DEVICE_ID_MOTOROLA_HAWK	0x4803
++#define PCI_DEVICE_ID_MOTOROLA_HARRIER	0x480b
++#define PCI_DEVICE_ID_MOTOROLA_MPC5200	0x5803
++#define PCI_DEVICE_ID_MOTOROLA_MPC5200B	0x5809
++
++#define PCI_VENDOR_ID_PROMISE		0x105a
++#define PCI_DEVICE_ID_PROMISE_20265	0x0d30
++#define PCI_DEVICE_ID_PROMISE_20267	0x4d30
++#define PCI_DEVICE_ID_PROMISE_20246	0x4d33
++#define PCI_DEVICE_ID_PROMISE_20262	0x4d38
++#define PCI_DEVICE_ID_PROMISE_20263	0x0D38
++#define PCI_DEVICE_ID_PROMISE_20268	0x4d68
++#define PCI_DEVICE_ID_PROMISE_20269	0x4d69
++#define PCI_DEVICE_ID_PROMISE_20270	0x6268
++#define PCI_DEVICE_ID_PROMISE_20271	0x6269
++#define PCI_DEVICE_ID_PROMISE_20275	0x1275
++#define PCI_DEVICE_ID_PROMISE_20276	0x5275
++#define PCI_DEVICE_ID_PROMISE_20277	0x7275
++
++#define PCI_VENDOR_ID_FOXCONN		0x105b
++
++#define PCI_VENDOR_ID_UMC		0x1060
++#define PCI_DEVICE_ID_UMC_UM8673F	0x0101
++#define PCI_DEVICE_ID_UMC_UM8886BF	0x673a
++#define PCI_DEVICE_ID_UMC_UM8886A	0x886a
++
++#define PCI_VENDOR_ID_PICOPOWER		0x1066
++#define PCI_DEVICE_ID_PICOPOWER_PT86C523	0x0002
++#define PCI_DEVICE_ID_PICOPOWER_PT86C523BBP	0x8002
++
++#define PCI_VENDOR_ID_MYLEX		0x1069
++#define PCI_DEVICE_ID_MYLEX_DAC960_P	0x0001
++#define PCI_DEVICE_ID_MYLEX_DAC960_PD	0x0002
++#define PCI_DEVICE_ID_MYLEX_DAC960_PG	0x0010
++#define PCI_DEVICE_ID_MYLEX_DAC960_LA	0x0020
++#define PCI_DEVICE_ID_MYLEX_DAC960_LP	0x0050
++#define PCI_DEVICE_ID_MYLEX_DAC960_BA	0xBA56
++#define PCI_DEVICE_ID_MYLEX_DAC960_GEM	0xB166
++
++#define PCI_VENDOR_ID_APPLE		0x106b
++#define PCI_DEVICE_ID_APPLE_BANDIT	0x0001
++#define PCI_DEVICE_ID_APPLE_HYDRA	0x000e
++#define PCI_DEVICE_ID_APPLE_UNI_N_FW	0x0018
++#define PCI_DEVICE_ID_APPLE_UNI_N_AGP	0x0020
++#define PCI_DEVICE_ID_APPLE_UNI_N_GMAC	0x0021
++#define PCI_DEVICE_ID_APPLE_UNI_N_GMACP	0x0024
++#define PCI_DEVICE_ID_APPLE_UNI_N_AGP_P	0x0027
++#define PCI_DEVICE_ID_APPLE_UNI_N_AGP15	0x002d
++#define PCI_DEVICE_ID_APPLE_UNI_N_PCI15	0x002e
++#define PCI_DEVICE_ID_APPLE_UNI_N_GMAC2	0x0032
++#define PCI_DEVICE_ID_APPLE_UNI_N_ATA	0x0033
++#define PCI_DEVICE_ID_APPLE_UNI_N_AGP2	0x0034
++#define PCI_DEVICE_ID_APPLE_IPID_ATA100	0x003b
++#define PCI_DEVICE_ID_APPLE_K2_ATA100	0x0043
++#define PCI_DEVICE_ID_APPLE_U3_AGP	0x004b
++#define PCI_DEVICE_ID_APPLE_K2_GMAC	0x004c
++#define PCI_DEVICE_ID_APPLE_SH_ATA      0x0050
++#define PCI_DEVICE_ID_APPLE_SH_SUNGEM   0x0051
++#define PCI_DEVICE_ID_APPLE_U3L_AGP	0x0058
++#define PCI_DEVICE_ID_APPLE_U3H_AGP	0x0059
++#define PCI_DEVICE_ID_APPLE_U4_PCIE	0x005b
++#define PCI_DEVICE_ID_APPLE_IPID2_AGP	0x0066
++#define PCI_DEVICE_ID_APPLE_IPID2_ATA	0x0069
++#define PCI_DEVICE_ID_APPLE_IPID2_FW	0x006a
++#define PCI_DEVICE_ID_APPLE_IPID2_GMAC	0x006b
++#define PCI_DEVICE_ID_APPLE_TIGON3	0x1645
++
++#define PCI_VENDOR_ID_YAMAHA		0x1073
++#define PCI_DEVICE_ID_YAMAHA_724	0x0004
++#define PCI_DEVICE_ID_YAMAHA_724F	0x000d
++#define PCI_DEVICE_ID_YAMAHA_740	0x000a
++#define PCI_DEVICE_ID_YAMAHA_740C	0x000c
++#define PCI_DEVICE_ID_YAMAHA_744	0x0010
++#define PCI_DEVICE_ID_YAMAHA_754	0x0012
++
++#define PCI_VENDOR_ID_QLOGIC		0x1077
++#define PCI_DEVICE_ID_QLOGIC_ISP10160	0x1016
++#define PCI_DEVICE_ID_QLOGIC_ISP1020	0x1020
++#define PCI_DEVICE_ID_QLOGIC_ISP1080	0x1080
++#define PCI_DEVICE_ID_QLOGIC_ISP12160	0x1216
++#define PCI_DEVICE_ID_QLOGIC_ISP1240	0x1240
++#define PCI_DEVICE_ID_QLOGIC_ISP1280	0x1280
++#define PCI_DEVICE_ID_QLOGIC_ISP2100	0x2100
++#define PCI_DEVICE_ID_QLOGIC_ISP2200	0x2200
++#define PCI_DEVICE_ID_QLOGIC_ISP2300	0x2300
++#define PCI_DEVICE_ID_QLOGIC_ISP2312	0x2312
++#define PCI_DEVICE_ID_QLOGIC_ISP2322	0x2322
++#define PCI_DEVICE_ID_QLOGIC_ISP6312	0x6312
++#define PCI_DEVICE_ID_QLOGIC_ISP6322	0x6322
++#define PCI_DEVICE_ID_QLOGIC_ISP2422	0x2422
++#define PCI_DEVICE_ID_QLOGIC_ISP2432	0x2432
++#define PCI_DEVICE_ID_QLOGIC_ISP2512	0x2512
++#define PCI_DEVICE_ID_QLOGIC_ISP2522	0x2522
++#define PCI_DEVICE_ID_QLOGIC_ISP5422	0x5422
++#define PCI_DEVICE_ID_QLOGIC_ISP5432	0x5432
++
++#define PCI_VENDOR_ID_CYRIX		0x1078
++#define PCI_DEVICE_ID_CYRIX_5510	0x0000
++#define PCI_DEVICE_ID_CYRIX_PCI_MASTER	0x0001
++#define PCI_DEVICE_ID_CYRIX_5520	0x0002
++#define PCI_DEVICE_ID_CYRIX_5530_LEGACY	0x0100
++#define PCI_DEVICE_ID_CYRIX_5530_IDE	0x0102
++#define PCI_DEVICE_ID_CYRIX_5530_AUDIO	0x0103
++#define PCI_DEVICE_ID_CYRIX_5530_VIDEO	0x0104
++
++#define PCI_VENDOR_ID_CONTAQ		0x1080
++#define PCI_DEVICE_ID_CONTAQ_82C693	0xc693
++
++#define PCI_VENDOR_ID_OLICOM		0x108d
++#define PCI_DEVICE_ID_OLICOM_OC2325	0x0012
++#define PCI_DEVICE_ID_OLICOM_OC2183	0x0013
++#define PCI_DEVICE_ID_OLICOM_OC2326	0x0014
++
++#define PCI_VENDOR_ID_SUN		0x108e
++#define PCI_DEVICE_ID_SUN_EBUS		0x1000
++#define PCI_DEVICE_ID_SUN_HAPPYMEAL	0x1001
++#define PCI_DEVICE_ID_SUN_RIO_EBUS	0x1100
++#define PCI_DEVICE_ID_SUN_RIO_GEM	0x1101
++#define PCI_DEVICE_ID_SUN_RIO_1394	0x1102
++#define PCI_DEVICE_ID_SUN_RIO_USB	0x1103
++#define PCI_DEVICE_ID_SUN_GEM		0x2bad
++#define PCI_DEVICE_ID_SUN_SIMBA		0x5000
++#define PCI_DEVICE_ID_SUN_PBM		0x8000
++#define PCI_DEVICE_ID_SUN_SCHIZO	0x8001
++#define PCI_DEVICE_ID_SUN_SABRE		0xa000
++#define PCI_DEVICE_ID_SUN_HUMMINGBIRD	0xa001
++#define PCI_DEVICE_ID_SUN_TOMATILLO	0xa801
++#define PCI_DEVICE_ID_SUN_CASSINI	0xabba
++
++#define PCI_VENDOR_ID_NI		0x1093
++#define PCI_DEVICE_ID_NI_PCI2322	0xd130
++#define PCI_DEVICE_ID_NI_PCI2324	0xd140
++#define PCI_DEVICE_ID_NI_PCI2328	0xd150
++#define PCI_DEVICE_ID_NI_PXI8422_2322	0xd190
++#define PCI_DEVICE_ID_NI_PXI8422_2324	0xd1a0
++#define PCI_DEVICE_ID_NI_PXI8420_2322	0xd1d0
++#define PCI_DEVICE_ID_NI_PXI8420_2324	0xd1e0
++#define PCI_DEVICE_ID_NI_PXI8420_2328	0xd1f0
++#define PCI_DEVICE_ID_NI_PXI8420_23216	0xd1f1
++#define PCI_DEVICE_ID_NI_PCI2322I	0xd250
++#define PCI_DEVICE_ID_NI_PCI2324I	0xd270
++#define PCI_DEVICE_ID_NI_PCI23216	0xd2b0
++#define PCI_DEVICE_ID_NI_PXI8430_2322	0x7080
++#define PCI_DEVICE_ID_NI_PCI8430_2322	0x70db
++#define PCI_DEVICE_ID_NI_PXI8430_2324	0x70dd
++#define PCI_DEVICE_ID_NI_PCI8430_2324	0x70df
++#define PCI_DEVICE_ID_NI_PXI8430_2328	0x70e2
++#define PCI_DEVICE_ID_NI_PCI8430_2328	0x70e4
++#define PCI_DEVICE_ID_NI_PXI8430_23216	0x70e6
++#define PCI_DEVICE_ID_NI_PCI8430_23216	0x70e7
++#define PCI_DEVICE_ID_NI_PXI8432_2322	0x70e8
++#define PCI_DEVICE_ID_NI_PCI8432_2322	0x70ea
++#define PCI_DEVICE_ID_NI_PXI8432_2324	0x70ec
++#define PCI_DEVICE_ID_NI_PCI8432_2324	0x70ee
++
++#define PCI_VENDOR_ID_CMD		0x1095
++#define PCI_DEVICE_ID_CMD_643		0x0643
++#define PCI_DEVICE_ID_CMD_646		0x0646
++#define PCI_DEVICE_ID_CMD_648		0x0648
++#define PCI_DEVICE_ID_CMD_649		0x0649
++
++#define PCI_DEVICE_ID_SII_680		0x0680
++#define PCI_DEVICE_ID_SII_3112		0x3112
++#define PCI_DEVICE_ID_SII_1210SA	0x0240
++
++#define PCI_VENDOR_ID_BROOKTREE		0x109e
++#define PCI_DEVICE_ID_BROOKTREE_878	0x0878
++#define PCI_DEVICE_ID_BROOKTREE_879	0x0879
++
++#define PCI_VENDOR_ID_SGI		0x10a9
++#define PCI_DEVICE_ID_SGI_IOC3		0x0003
++#define PCI_DEVICE_ID_SGI_LITHIUM	0x1002
++#define PCI_DEVICE_ID_SGI_IOC4		0x100a
++
++#define PCI_VENDOR_ID_WINBOND		0x10ad
++#define PCI_DEVICE_ID_WINBOND_82C105	0x0105
++#define PCI_DEVICE_ID_WINBOND_83C553	0x0565
++
++#define PCI_VENDOR_ID_PLX		0x10b5
++#define PCI_DEVICE_ID_PLX_R685		0x1030
++#define PCI_DEVICE_ID_PLX_ROMULUS	0x106a
++#define PCI_DEVICE_ID_PLX_SPCOM800	0x1076
++#define PCI_DEVICE_ID_PLX_1077		0x1077
++#define PCI_DEVICE_ID_PLX_SPCOM200	0x1103
++#define PCI_DEVICE_ID_PLX_DJINN_ITOO	0x1151
++#define PCI_DEVICE_ID_PLX_R753		0x1152
++#define PCI_DEVICE_ID_PLX_OLITEC	0x1187
++#define PCI_DEVICE_ID_PLX_PCI200SYN	0x3196
++#define PCI_DEVICE_ID_PLX_9030          0x9030
++#define PCI_DEVICE_ID_PLX_9050		0x9050
++#define PCI_DEVICE_ID_PLX_9056		0x9056
++#define PCI_DEVICE_ID_PLX_9080		0x9080
++#define PCI_DEVICE_ID_PLX_GTEK_SERIAL2	0xa001
++
++#define PCI_VENDOR_ID_MADGE		0x10b6
++#define PCI_DEVICE_ID_MADGE_MK2		0x0002
++
++#define PCI_VENDOR_ID_3COM		0x10b7
++#define PCI_DEVICE_ID_3COM_3C985	0x0001
++#define PCI_DEVICE_ID_3COM_3C940	0x1700
++#define PCI_DEVICE_ID_3COM_3C339	0x3390
++#define PCI_DEVICE_ID_3COM_3C359	0x3590
++#define PCI_DEVICE_ID_3COM_3C940B	0x80eb
++#define PCI_DEVICE_ID_3COM_3CR990	0x9900
++#define PCI_DEVICE_ID_3COM_3CR990_TX_95	0x9902
++#define PCI_DEVICE_ID_3COM_3CR990_TX_97	0x9903
++#define PCI_DEVICE_ID_3COM_3CR990B	0x9904
++#define PCI_DEVICE_ID_3COM_3CR990_FX	0x9905
++#define PCI_DEVICE_ID_3COM_3CR990SVR95	0x9908
++#define PCI_DEVICE_ID_3COM_3CR990SVR97	0x9909
++#define PCI_DEVICE_ID_3COM_3CR990SVR	0x990a
++
++#define PCI_VENDOR_ID_AL		0x10b9
++#define PCI_DEVICE_ID_AL_M1533		0x1533
++#define PCI_DEVICE_ID_AL_M1535 		0x1535
++#define PCI_DEVICE_ID_AL_M1541		0x1541
++#define PCI_DEVICE_ID_AL_M1563		0x1563
++#define PCI_DEVICE_ID_AL_M1621		0x1621
++#define PCI_DEVICE_ID_AL_M1631		0x1631
++#define PCI_DEVICE_ID_AL_M1632		0x1632
++#define PCI_DEVICE_ID_AL_M1641		0x1641
++#define PCI_DEVICE_ID_AL_M1644		0x1644
++#define PCI_DEVICE_ID_AL_M1647		0x1647
++#define PCI_DEVICE_ID_AL_M1651		0x1651
++#define PCI_DEVICE_ID_AL_M1671		0x1671
++#define PCI_DEVICE_ID_AL_M1681		0x1681
++#define PCI_DEVICE_ID_AL_M1683		0x1683
++#define PCI_DEVICE_ID_AL_M1689		0x1689
++#define PCI_DEVICE_ID_AL_M5219		0x5219
++#define PCI_DEVICE_ID_AL_M5228		0x5228
++#define PCI_DEVICE_ID_AL_M5229		0x5229
++#define PCI_DEVICE_ID_AL_M5451		0x5451
++#define PCI_DEVICE_ID_AL_M7101		0x7101
++
++#define PCI_VENDOR_ID_NEOMAGIC		0x10c8
++#define PCI_DEVICE_ID_NEOMAGIC_NM256AV_AUDIO 0x8005
++#define PCI_DEVICE_ID_NEOMAGIC_NM256ZX_AUDIO 0x8006
++#define PCI_DEVICE_ID_NEOMAGIC_NM256XL_PLUS_AUDIO 0x8016
++
++#define PCI_VENDOR_ID_TCONRAD		0x10da
++#define PCI_DEVICE_ID_TCONRAD_TOKENRING	0x0508
++
++#define PCI_VENDOR_ID_NVIDIA			0x10de
++#define PCI_DEVICE_ID_NVIDIA_TNT		0x0020
++#define PCI_DEVICE_ID_NVIDIA_TNT2		0x0028
++#define PCI_DEVICE_ID_NVIDIA_UTNT2		0x0029
++#define PCI_DEVICE_ID_NVIDIA_TNT_UNKNOWN        0x002a
++#define PCI_DEVICE_ID_NVIDIA_VTNT2		0x002C
++#define PCI_DEVICE_ID_NVIDIA_UVTNT2		0x002D
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP04_SMBUS	0x0034
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP04_IDE	0x0035
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP04_SATA	0x0036
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP04_SATA2	0x003e
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_6800_ULTRA 0x0040
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_6800       0x0041
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_6800_LE    0x0042
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_6800_GT    0x0045
++#define PCI_DEVICE_ID_NVIDIA_QUADRO_FX_4000     0x004E
++#define PCI_DEVICE_ID_NVIDIA_NFORCE4_SMBUS	0x0052
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_CK804_IDE	0x0053
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_CK804_SATA	0x0054
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_CK804_SATA2	0x0055
++#define PCI_DEVICE_ID_NVIDIA_CK804_AUDIO	0x0059
++#define PCI_DEVICE_ID_NVIDIA_CK804_PCIE		0x005d
++#define PCI_DEVICE_ID_NVIDIA_NFORCE2_SMBUS	0x0064
++#define PCI_DEVICE_ID_NVIDIA_NFORCE2_IDE	0x0065
++#define PCI_DEVICE_ID_NVIDIA_MCP2_MODEM		0x0069
++#define PCI_DEVICE_ID_NVIDIA_MCP2_AUDIO		0x006a
++#define PCI_DEVICE_ID_NVIDIA_NFORCE2S_SMBUS	0x0084
++#define PCI_DEVICE_ID_NVIDIA_NFORCE2S_IDE	0x0085
++#define PCI_DEVICE_ID_NVIDIA_MCP2S_MODEM	0x0089
++#define PCI_DEVICE_ID_NVIDIA_CK8_AUDIO		0x008a
++#define PCI_DEVICE_ID_NVIDIA_NFORCE2S_SATA	0x008e
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_7800_GT   0x0090
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_7800_GTX	0x0091
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_GO_7800   0x0098
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_GO_7800_GTX 0x0099
++#define PCI_DEVICE_ID_NVIDIA_ITNT2		0x00A0
++#define PCI_DEVICE_ID_GEFORCE_6800A             0x00c1
++#define PCI_DEVICE_ID_GEFORCE_6800A_LE          0x00c2
++#define PCI_DEVICE_ID_GEFORCE_GO_6800           0x00c8
++#define PCI_DEVICE_ID_GEFORCE_GO_6800_ULTRA     0x00c9
++#define PCI_DEVICE_ID_QUADRO_FX_GO1400          0x00cc
++#define PCI_DEVICE_ID_QUADRO_FX_1400            0x00ce
++#define PCI_DEVICE_ID_NVIDIA_NFORCE3		0x00d1
++#define PCI_DEVICE_ID_NVIDIA_NFORCE3_SMBUS	0x00d4
++#define PCI_DEVICE_ID_NVIDIA_NFORCE3_IDE	0x00d5
++#define PCI_DEVICE_ID_NVIDIA_MCP3_MODEM		0x00d9
++#define PCI_DEVICE_ID_NVIDIA_MCP3_AUDIO		0x00da
++#define PCI_DEVICE_ID_NVIDIA_NFORCE3S		0x00e1
++#define PCI_DEVICE_ID_NVIDIA_NFORCE3S_SATA	0x00e3
++#define PCI_DEVICE_ID_NVIDIA_NFORCE3S_SMBUS	0x00e4
++#define PCI_DEVICE_ID_NVIDIA_NFORCE3S_IDE	0x00e5
++#define PCI_DEVICE_ID_NVIDIA_CK8S_AUDIO		0x00ea
++#define PCI_DEVICE_ID_NVIDIA_NFORCE3S_SATA2	0x00ee
++#define PCIE_DEVICE_ID_NVIDIA_GEFORCE_6800_ALT1 0x00f0
++#define PCIE_DEVICE_ID_NVIDIA_GEFORCE_6600_ALT1 0x00f1
++#define PCIE_DEVICE_ID_NVIDIA_GEFORCE_6600_ALT2 0x00f2
++#define PCIE_DEVICE_ID_NVIDIA_GEFORCE_6200_ALT1 0x00f3
++#define PCIE_DEVICE_ID_NVIDIA_GEFORCE_6800_GT   0x00f9
++#define PCIE_DEVICE_ID_NVIDIA_QUADRO_NVS280	0x00fd
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_SDR	0x0100
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_DDR	0x0101
++#define PCI_DEVICE_ID_NVIDIA_QUADRO		0x0103
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE2_MX	0x0110
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE2_MX2	0x0111
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE2_GO	0x0112
++#define PCI_DEVICE_ID_NVIDIA_QUADRO2_MXR	0x0113
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_6600_GT	0x0140
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_6600	0x0141
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_6610_XL	0x0145
++#define PCI_DEVICE_ID_NVIDIA_QUADRO_FX_540	0x014E
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_6200	0x014F
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE2_GTS	0x0150
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE2_GTS2	0x0151
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE2_ULTRA	0x0152
++#define PCI_DEVICE_ID_NVIDIA_QUADRO2_PRO	0x0153
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_6200_TURBOCACHE 0x0161
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_GO_6200    0x0164
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_GO_6250    0x0166
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_GO_6200_1  0x0167
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_GO_6250_1  0x0168
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_MX_460	0x0170
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_MX_440	0x0171
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_MX_420	0x0172
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_MX_440_SE	0x0173
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_440_GO	0x0174
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_420_GO	0x0175
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_420_GO_M32 0x0176
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_460_GO    0x0177
++#define PCI_DEVICE_ID_NVIDIA_QUADRO4_500XGL	0x0178
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_440_GO_M64 0x0179
++#define PCI_DEVICE_ID_NVIDIA_QUADRO4_200	0x017A
++#define PCI_DEVICE_ID_NVIDIA_QUADRO4_550XGL	0x017B
++#define PCI_DEVICE_ID_NVIDIA_QUADRO4_500_GOGL	0x017C
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_410_GO_M16 0x017D
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_MX_440_8X 0x0181
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_MX_440SE_8X 0x0182
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_MX_420_8X 0x0183
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_MX_4000   0x0185
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_448_GO    0x0186
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_488_GO    0x0187
++#define PCI_DEVICE_ID_NVIDIA_QUADRO4_580_XGL    0x0188
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_MX_MAC    0x0189
++#define PCI_DEVICE_ID_NVIDIA_QUADRO4_280_NVS    0x018A
++#define PCI_DEVICE_ID_NVIDIA_QUADRO4_380_XGL    0x018B
++#define PCI_DEVICE_ID_NVIDIA_IGEFORCE2		0x01a0
++#define PCI_DEVICE_ID_NVIDIA_NFORCE		0x01a4
++#define PCI_DEVICE_ID_NVIDIA_MCP1_AUDIO		0x01b1
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_SMBUS	0x01b4
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_IDE		0x01bc
++#define PCI_DEVICE_ID_NVIDIA_MCP1_MODEM		0x01c1
++#define PCI_DEVICE_ID_NVIDIA_NFORCE2		0x01e0
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE3		0x0200
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE3_1		0x0201
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE3_2		0x0202
++#define PCI_DEVICE_ID_NVIDIA_QUADRO_DDC		0x0203
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_6800B      0x0211
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_6800B_LE   0x0212
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_6800B_GT   0x0215
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_TI_4600	0x0250
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_TI_4400	0x0251
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_TI_4200	0x0253
++#define PCI_DEVICE_ID_NVIDIA_QUADRO4_900XGL	0x0258
++#define PCI_DEVICE_ID_NVIDIA_QUADRO4_750XGL	0x0259
++#define PCI_DEVICE_ID_NVIDIA_QUADRO4_700XGL	0x025B
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP51_SMBUS	0x0264
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP51_IDE	0x0265
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP51_SATA	0x0266
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP51_SATA2	0x0267
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP55_SMBUS	0x0368
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP55_IDE	0x036E
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP55_SATA	0x037E
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP55_SATA2	0x037F
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_TI_4800	0x0280
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_TI_4800_8X    0x0281
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_TI_4800SE     0x0282
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE4_4200_GO       0x0286
++#define PCI_DEVICE_ID_NVIDIA_QUADRO4_980_XGL        0x0288
++#define PCI_DEVICE_ID_NVIDIA_QUADRO4_780_XGL        0x0289
++#define PCI_DEVICE_ID_NVIDIA_QUADRO4_700_GOGL       0x028C
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5800_ULTRA  0x0301
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5800        0x0302
++#define PCI_DEVICE_ID_NVIDIA_QUADRO_FX_2000         0x0308
++#define PCI_DEVICE_ID_NVIDIA_QUADRO_FX_1000         0x0309
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5600_ULTRA  0x0311
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5600        0x0312
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5600SE      0x0314
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_GO5600      0x031A
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_GO5650      0x031B
++#define PCI_DEVICE_ID_NVIDIA_QUADRO_FX_GO700        0x031C
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5200        0x0320
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5200_ULTRA  0x0321
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5200_1      0x0322
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5200SE      0x0323
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_GO5200      0x0324
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_GO5250      0x0325
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5500        0x0326
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5100        0x0327
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_GO5250_32   0x0328
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_GO_5200	    0x0329
++#define PCI_DEVICE_ID_NVIDIA_QUADRO_NVS_280_PCI     0x032A
++#define PCI_DEVICE_ID_NVIDIA_QUADRO_FX_500          0x032B
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_GO5300      0x032C
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_GO5100      0x032D
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5900_ULTRA  0x0330
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5900        0x0331
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5900XT      0x0332
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5950_ULTRA  0x0333
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5900ZT      0x0334
++#define PCI_DEVICE_ID_NVIDIA_QUADRO_FX_3000         0x0338
++#define PCI_DEVICE_ID_NVIDIA_QUADRO_FX_700          0x033F
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5700_ULTRA  0x0341
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5700        0x0342
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5700LE      0x0343
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_5700VE      0x0344
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_GO5700_1    0x0347
++#define PCI_DEVICE_ID_NVIDIA_GEFORCE_FX_GO5700_2    0x0348
++#define PCI_DEVICE_ID_NVIDIA_QUADRO_FX_GO1000       0x034C
++#define PCI_DEVICE_ID_NVIDIA_QUADRO_FX_1100         0x034E
++#define PCI_DEVICE_ID_NVIDIA_MCP55_BRIDGE_V0	    0x0360
++#define PCI_DEVICE_ID_NVIDIA_MCP55_BRIDGE_V4	    0x0364
++#define PCI_DEVICE_ID_NVIDIA_NVENET_15              0x0373
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP61_SATA      0x03E7
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP61_SMBUS	    0x03EB
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP61_IDE       0x03EC
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP61_SATA2     0x03F6
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP61_SATA3     0x03F7
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP65_SMBUS	    0x0446
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP65_IDE	    0x0448
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP67_SMBUS     0x0542
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP67_IDE       0x0560
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP73_IDE       0x056C
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP78S_SMBUS    0x0752
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP77_IDE       0x0759
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP73_SMBUS     0x07D8
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP79_SMBUS     0x0AA2
++#define PCI_DEVICE_ID_NVIDIA_NFORCE_MCP89_SATA	    0x0D85
++
++#define PCI_VENDOR_ID_IMS		0x10e0
++#define PCI_DEVICE_ID_IMS_TT128		0x9128
++#define PCI_DEVICE_ID_IMS_TT3D		0x9135
++
++#define PCI_VENDOR_ID_AMCC		0x10e8
++#define PCI_VENDOR_ID_AMPERE		0x1def
++
++#define PCI_VENDOR_ID_INTERG		0x10ea
++#define PCI_DEVICE_ID_INTERG_1682	0x1682
++#define PCI_DEVICE_ID_INTERG_2000	0x2000
++#define PCI_DEVICE_ID_INTERG_2010	0x2010
++#define PCI_DEVICE_ID_INTERG_5000	0x5000
++#define PCI_DEVICE_ID_INTERG_5050	0x5050
++
+ #define PCI_VENDOR_ID_REALTEK		0x10ec
+ #define PCI_DEVICE_ID_REALTEK_8139	0x8139
++
++#define PCI_VENDOR_ID_XILINX		0x10ee
++#define PCI_DEVICE_ID_RME_DIGI96	0x3fc0
++#define PCI_DEVICE_ID_RME_DIGI96_8	0x3fc1
++#define PCI_DEVICE_ID_RME_DIGI96_8_PRO	0x3fc2
++#define PCI_DEVICE_ID_RME_DIGI96_8_PAD_OR_PST 0x3fc3
++#define PCI_DEVICE_ID_XILINX_HAMMERFALL_DSP 0x3fc5
++#define PCI_DEVICE_ID_XILINX_HAMMERFALL_DSP_MADI 0x3fc6
++
++#define PCI_VENDOR_ID_INIT		0x1101
++
++#define PCI_VENDOR_ID_CREATIVE		0x1102 /* duplicate: ECTIVA */
++#define PCI_DEVICE_ID_CREATIVE_EMU10K1	0x0002
++#define PCI_DEVICE_ID_CREATIVE_20K1	0x0005
++#define PCI_DEVICE_ID_CREATIVE_20K2	0x000b
++#define PCI_SUBDEVICE_ID_CREATIVE_SB0760	0x0024
++#define PCI_SUBDEVICE_ID_CREATIVE_SB08801	0x0041
++#define PCI_SUBDEVICE_ID_CREATIVE_SB08802	0x0042
++#define PCI_SUBDEVICE_ID_CREATIVE_SB08803	0x0043
++#define PCI_SUBDEVICE_ID_CREATIVE_SB1270	0x0062
++#define PCI_SUBDEVICE_ID_CREATIVE_HENDRIX	0x6000
++
++#define PCI_VENDOR_ID_ECTIVA		0x1102 /* duplicate: CREATIVE */
++#define PCI_DEVICE_ID_ECTIVA_EV1938	0x8938
++
++#define PCI_VENDOR_ID_TTI		0x1103
++#define PCI_DEVICE_ID_TTI_HPT343	0x0003
++#define PCI_DEVICE_ID_TTI_HPT366	0x0004
++#define PCI_DEVICE_ID_TTI_HPT372	0x0005
++#define PCI_DEVICE_ID_TTI_HPT302	0x0006
++#define PCI_DEVICE_ID_TTI_HPT371	0x0007
++#define PCI_DEVICE_ID_TTI_HPT374	0x0008
++#define PCI_DEVICE_ID_TTI_HPT372N	0x0009	/* apparently a 372N variant? */
++
++#define PCI_VENDOR_ID_SIGMA		0x1105
++
++#define PCI_VENDOR_ID_VIA		0x1106
++#define PCI_DEVICE_ID_VIA_8763_0	0x0198
++#define PCI_DEVICE_ID_VIA_8380_0	0x0204
++#define PCI_DEVICE_ID_VIA_3238_0	0x0238
++#define PCI_DEVICE_ID_VIA_PT880		0x0258
++#define PCI_DEVICE_ID_VIA_PT880ULTRA	0x0308
++#define PCI_DEVICE_ID_VIA_PX8X0_0	0x0259
++#define PCI_DEVICE_ID_VIA_3269_0	0x0269
++#define PCI_DEVICE_ID_VIA_K8T800PRO_0	0x0282
++#define PCI_DEVICE_ID_VIA_3296_0	0x0296
++#define PCI_DEVICE_ID_VIA_8363_0	0x0305
++#define PCI_DEVICE_ID_VIA_P4M800CE	0x0314
++#define PCI_DEVICE_ID_VIA_P4M890	0x0327
++#define PCI_DEVICE_ID_VIA_VT3324	0x0324
++#define PCI_DEVICE_ID_VIA_VT3336	0x0336
++#define PCI_DEVICE_ID_VIA_VT3351	0x0351
++#define PCI_DEVICE_ID_VIA_VT3364	0x0364
++#define PCI_DEVICE_ID_VIA_8371_0	0x0391
++#define PCI_DEVICE_ID_VIA_6415		0x0415
++#define PCI_DEVICE_ID_VIA_8501_0	0x0501
++#define PCI_DEVICE_ID_VIA_82C561	0x0561
++#define PCI_DEVICE_ID_VIA_82C586_1	0x0571
++#define PCI_DEVICE_ID_VIA_82C576	0x0576
++#define PCI_DEVICE_ID_VIA_82C586_0	0x0586
++#define PCI_DEVICE_ID_VIA_82C596	0x0596
++#define PCI_DEVICE_ID_VIA_82C597_0	0x0597
++#define PCI_DEVICE_ID_VIA_82C598_0	0x0598
++#define PCI_DEVICE_ID_VIA_8601_0	0x0601
++#define PCI_DEVICE_ID_VIA_8605_0	0x0605
++#define PCI_DEVICE_ID_VIA_82C686	0x0686
++#define PCI_DEVICE_ID_VIA_82C691_0	0x0691
++#define PCI_DEVICE_ID_VIA_82C576_1	0x1571
++#define PCI_DEVICE_ID_VIA_82C586_2	0x3038
++#define PCI_DEVICE_ID_VIA_82C586_3	0x3040
++#define PCI_DEVICE_ID_VIA_82C596_3	0x3050
++#define PCI_DEVICE_ID_VIA_82C596B_3	0x3051
++#define PCI_DEVICE_ID_VIA_82C686_4	0x3057
++#define PCI_DEVICE_ID_VIA_82C686_5	0x3058
++#define PCI_DEVICE_ID_VIA_8233_5	0x3059
++#define PCI_DEVICE_ID_VIA_8233_0	0x3074
++#define PCI_DEVICE_ID_VIA_8633_0	0x3091
++#define PCI_DEVICE_ID_VIA_8367_0	0x3099
++#define PCI_DEVICE_ID_VIA_8653_0	0x3101
++#define PCI_DEVICE_ID_VIA_8622		0x3102
++#define PCI_DEVICE_ID_VIA_8235_USB_2	0x3104
++#define PCI_DEVICE_ID_VIA_8233C_0	0x3109
++#define PCI_DEVICE_ID_VIA_8361		0x3112
++#define PCI_DEVICE_ID_VIA_XM266		0x3116
++#define PCI_DEVICE_ID_VIA_612X		0x3119
++#define PCI_DEVICE_ID_VIA_862X_0	0x3123
++#define PCI_DEVICE_ID_VIA_8753_0	0x3128
++#define PCI_DEVICE_ID_VIA_8233A		0x3147
++#define PCI_DEVICE_ID_VIA_8703_51_0	0x3148
++#define PCI_DEVICE_ID_VIA_8237_SATA	0x3149
++#define PCI_DEVICE_ID_VIA_XN266		0x3156
++#define PCI_DEVICE_ID_VIA_6410		0x3164
++#define PCI_DEVICE_ID_VIA_8754C_0	0x3168
++#define PCI_DEVICE_ID_VIA_8235		0x3177
++#define PCI_DEVICE_ID_VIA_8385_0	0x3188
++#define PCI_DEVICE_ID_VIA_8377_0	0x3189
++#define PCI_DEVICE_ID_VIA_8378_0	0x3205
++#define PCI_DEVICE_ID_VIA_8783_0	0x3208
++#define PCI_DEVICE_ID_VIA_8237		0x3227
++#define PCI_DEVICE_ID_VIA_8251		0x3287
++#define PCI_DEVICE_ID_VIA_8261		0x3402
++#define PCI_DEVICE_ID_VIA_8237A		0x3337
++#define PCI_DEVICE_ID_VIA_8237S		0x3372
++#define PCI_DEVICE_ID_VIA_SATA_EIDE	0x5324
++#define PCI_DEVICE_ID_VIA_8231		0x8231
++#define PCI_DEVICE_ID_VIA_8231_4	0x8235
++#define PCI_DEVICE_ID_VIA_8365_1	0x8305
++#define PCI_DEVICE_ID_VIA_CX700		0x8324
++#define PCI_DEVICE_ID_VIA_CX700_IDE	0x0581
++#define PCI_DEVICE_ID_VIA_VX800		0x8353
++#define PCI_DEVICE_ID_VIA_VX855		0x8409
++#define PCI_DEVICE_ID_VIA_VX900		0x8410
++#define PCI_DEVICE_ID_VIA_8371_1	0x8391
++#define PCI_DEVICE_ID_VIA_82C598_1	0x8598
++#define PCI_DEVICE_ID_VIA_838X_1	0xB188
++#define PCI_DEVICE_ID_VIA_83_87XX_1	0xB198
++#define PCI_DEVICE_ID_VIA_VX855_IDE	0xC409
++#define PCI_DEVICE_ID_VIA_ANON		0xFFFF
++
++#define PCI_VENDOR_ID_SIEMENS           0x110A
++#define PCI_DEVICE_ID_SIEMENS_DSCC4     0x2102
++
++#define PCI_VENDOR_ID_VORTEX		0x1119
++#define PCI_DEVICE_ID_VORTEX_GDT60x0	0x0000
++#define PCI_DEVICE_ID_VORTEX_GDT6000B	0x0001
++#define PCI_DEVICE_ID_VORTEX_GDT6x10	0x0002
++#define PCI_DEVICE_ID_VORTEX_GDT6x20	0x0003
++#define PCI_DEVICE_ID_VORTEX_GDT6530	0x0004
++#define PCI_DEVICE_ID_VORTEX_GDT6550	0x0005
++#define PCI_DEVICE_ID_VORTEX_GDT6x17	0x0006
++#define PCI_DEVICE_ID_VORTEX_GDT6x27	0x0007
++#define PCI_DEVICE_ID_VORTEX_GDT6537	0x0008
++#define PCI_DEVICE_ID_VORTEX_GDT6557	0x0009
++#define PCI_DEVICE_ID_VORTEX_GDT6x15	0x000a
++#define PCI_DEVICE_ID_VORTEX_GDT6x25	0x000b
++#define PCI_DEVICE_ID_VORTEX_GDT6535	0x000c
++#define PCI_DEVICE_ID_VORTEX_GDT6555	0x000d
++#define PCI_DEVICE_ID_VORTEX_GDT6x17RP	0x0100
++#define PCI_DEVICE_ID_VORTEX_GDT6x27RP	0x0101
++#define PCI_DEVICE_ID_VORTEX_GDT6537RP	0x0102
++#define PCI_DEVICE_ID_VORTEX_GDT6557RP	0x0103
++#define PCI_DEVICE_ID_VORTEX_GDT6x11RP	0x0104
++#define PCI_DEVICE_ID_VORTEX_GDT6x21RP	0x0105
++
++#define PCI_VENDOR_ID_EF		0x111a
++#define PCI_DEVICE_ID_EF_ATM_FPGA	0x0000
++#define PCI_DEVICE_ID_EF_ATM_ASIC	0x0002
++#define PCI_DEVICE_ID_EF_ATM_LANAI2	0x0003
++#define PCI_DEVICE_ID_EF_ATM_LANAIHB	0x0005
++
++#define PCI_VENDOR_ID_IDT		0x111d
++#define PCI_DEVICE_ID_IDT_IDT77201	0x0001
++
++#define PCI_VENDOR_ID_FORE		0x1127
++#define PCI_DEVICE_ID_FORE_PCA200E	0x0300
++
++#define PCI_VENDOR_ID_PHILIPS		0x1131
++#define PCI_DEVICE_ID_PHILIPS_SAA7146	0x7146
++#define PCI_DEVICE_ID_PHILIPS_SAA9730	0x9730
++
++#define PCI_VENDOR_ID_EICON		0x1133
++#define PCI_DEVICE_ID_EICON_DIVA20	0xe002
++#define PCI_DEVICE_ID_EICON_DIVA20_U	0xe004
++#define PCI_DEVICE_ID_EICON_DIVA201	0xe005
++#define PCI_DEVICE_ID_EICON_DIVA202	0xe00b
++#define PCI_DEVICE_ID_EICON_MAESTRA	0xe010
++#define PCI_DEVICE_ID_EICON_MAESTRAQ	0xe012
++#define PCI_DEVICE_ID_EICON_MAESTRAQ_U	0xe013
++#define PCI_DEVICE_ID_EICON_MAESTRAP	0xe014
++
++#define PCI_VENDOR_ID_CISCO		0x1137
++
++#define PCI_VENDOR_ID_ZIATECH		0x1138
++#define PCI_DEVICE_ID_ZIATECH_5550_HC	0x5550
++
++
++#define PCI_VENDOR_ID_SYSKONNECT	0x1148
++#define PCI_DEVICE_ID_SYSKONNECT_TR	0x4200
++#define PCI_DEVICE_ID_SYSKONNECT_GE	0x4300
++#define PCI_DEVICE_ID_SYSKONNECT_YU	0x4320
++#define PCI_DEVICE_ID_SYSKONNECT_9DXX	0x4400
++#define PCI_DEVICE_ID_SYSKONNECT_9MXX	0x4500
++
++#define PCI_VENDOR_ID_DIGI		0x114f
++#define PCI_DEVICE_ID_DIGI_DF_M_IOM2_E	0x0070
++#define PCI_DEVICE_ID_DIGI_DF_M_E	0x0071
++#define PCI_DEVICE_ID_DIGI_DF_M_IOM2_A	0x0072
++#define PCI_DEVICE_ID_DIGI_DF_M_A	0x0073
++#define PCI_DEVICE_ID_DIGI_NEO_8	0x00B1
++#define PCI_DEVICE_ID_NEO_2DB9          0x00C8
++#define PCI_DEVICE_ID_NEO_2DB9PRI       0x00C9
++#define PCI_DEVICE_ID_NEO_2RJ45         0x00CA
++#define PCI_DEVICE_ID_NEO_2RJ45PRI      0x00CB
++#define PCIE_DEVICE_ID_NEO_4_IBM        0x00F4
++
++#define PCI_VENDOR_ID_XIRCOM		0x115d
++#define PCI_DEVICE_ID_XIRCOM_RBM56G	0x0101
++#define PCI_DEVICE_ID_XIRCOM_X3201_MDM	0x0103
++
++#define PCI_VENDOR_ID_SERVERWORKS	  0x1166
++#define PCI_DEVICE_ID_SERVERWORKS_HE	  0x0008
++#define PCI_DEVICE_ID_SERVERWORKS_LE	  0x0009
++#define PCI_DEVICE_ID_SERVERWORKS_GCNB_LE 0x0017
++#define PCI_DEVICE_ID_SERVERWORKS_HT1000_PXB	0x0036
++#define PCI_DEVICE_ID_SERVERWORKS_EPB	  0x0103
++#define PCI_DEVICE_ID_SERVERWORKS_HT2000_PCIE	0x0132
++#define PCI_DEVICE_ID_SERVERWORKS_OSB4	  0x0200
++#define PCI_DEVICE_ID_SERVERWORKS_CSB5	  0x0201
++#define PCI_DEVICE_ID_SERVERWORKS_CSB6    0x0203
++#define PCI_DEVICE_ID_SERVERWORKS_HT1000SB 0x0205
++#define PCI_DEVICE_ID_SERVERWORKS_OSB4IDE 0x0211
++#define PCI_DEVICE_ID_SERVERWORKS_CSB5IDE 0x0212
++#define PCI_DEVICE_ID_SERVERWORKS_CSB6IDE 0x0213
++#define PCI_DEVICE_ID_SERVERWORKS_HT1000IDE 0x0214
++#define PCI_DEVICE_ID_SERVERWORKS_CSB6IDE2 0x0217
++#define PCI_DEVICE_ID_SERVERWORKS_CSB6LPC 0x0227
++#define PCI_DEVICE_ID_SERVERWORKS_HT1100LD 0x0408
++
++#define PCI_VENDOR_ID_ALTERA		0x1172
++
++#define PCI_VENDOR_ID_SBE		0x1176
++#define PCI_DEVICE_ID_SBE_WANXL100	0x0301
++#define PCI_DEVICE_ID_SBE_WANXL200	0x0302
++#define PCI_DEVICE_ID_SBE_WANXL400	0x0104
++#define PCI_SUBDEVICE_ID_SBE_T3E3	0x0009
++#define PCI_SUBDEVICE_ID_SBE_2T3E3_P0	0x0901
++#define PCI_SUBDEVICE_ID_SBE_2T3E3_P1	0x0902
++
++#define PCI_VENDOR_ID_TOSHIBA		0x1179
++#define PCI_DEVICE_ID_TOSHIBA_PICCOLO_1	0x0101
++#define PCI_DEVICE_ID_TOSHIBA_PICCOLO_2	0x0102
++#define PCI_DEVICE_ID_TOSHIBA_PICCOLO_3	0x0103
++#define PCI_DEVICE_ID_TOSHIBA_PICCOLO_5	0x0105
++#define PCI_DEVICE_ID_TOSHIBA_TOPIC95	0x060a
++#define PCI_DEVICE_ID_TOSHIBA_TOPIC97	0x060f
++#define PCI_DEVICE_ID_TOSHIBA_TOPIC100	0x0617
++
++#define PCI_VENDOR_ID_TOSHIBA_2		0x102f
++#define PCI_DEVICE_ID_TOSHIBA_TC35815CF	0x0030
++#define PCI_DEVICE_ID_TOSHIBA_TC35815_NWU	0x0031
++#define PCI_DEVICE_ID_TOSHIBA_TC35815_TX4939	0x0032
++#define PCI_DEVICE_ID_TOSHIBA_TC86C001_IDE	0x0105
++#define PCI_DEVICE_ID_TOSHIBA_TC86C001_MISC	0x0108
++#define PCI_DEVICE_ID_TOSHIBA_SPIDER_NET 0x01b3
++
++#define PCI_VENDOR_ID_ATTO		0x117c
++
++#define PCI_VENDOR_ID_RICOH		0x1180
++#define PCI_DEVICE_ID_RICOH_RL5C465	0x0465
++#define PCI_DEVICE_ID_RICOH_RL5C466	0x0466
++#define PCI_DEVICE_ID_RICOH_RL5C475	0x0475
++#define PCI_DEVICE_ID_RICOH_RL5C476	0x0476
++#define PCI_DEVICE_ID_RICOH_RL5C478	0x0478
++#define PCI_DEVICE_ID_RICOH_R5C822	0x0822
++#define PCI_DEVICE_ID_RICOH_R5CE822	0xe822
++#define PCI_DEVICE_ID_RICOH_R5CE823	0xe823
++#define PCI_DEVICE_ID_RICOH_R5C832	0x0832
++#define PCI_DEVICE_ID_RICOH_R5C843	0x0843
++
++#define PCI_VENDOR_ID_DLINK		0x1186
++#define PCI_DEVICE_ID_DLINK_DGE510T	0x4c00
++
++#define PCI_VENDOR_ID_ARTOP		0x1191
++#define PCI_DEVICE_ID_ARTOP_ATP850UF	0x0005
++#define PCI_DEVICE_ID_ARTOP_ATP860	0x0006
++#define PCI_DEVICE_ID_ARTOP_ATP860R	0x0007
++#define PCI_DEVICE_ID_ARTOP_ATP865	0x0008
++#define PCI_DEVICE_ID_ARTOP_ATP865R	0x0009
++#define PCI_DEVICE_ID_ARTOP_ATP867A	0x000A
++#define PCI_DEVICE_ID_ARTOP_ATP867B	0x000B
++#define PCI_DEVICE_ID_ARTOP_AEC7610	0x8002
++#define PCI_DEVICE_ID_ARTOP_AEC7612UW	0x8010
++#define PCI_DEVICE_ID_ARTOP_AEC7612U	0x8020
++#define PCI_DEVICE_ID_ARTOP_AEC7612S	0x8030
++#define PCI_DEVICE_ID_ARTOP_AEC7612D	0x8040
++#define PCI_DEVICE_ID_ARTOP_AEC7612SUW	0x8050
++#define PCI_DEVICE_ID_ARTOP_8060	0x8060
++
++#define PCI_VENDOR_ID_ZEITNET		0x1193
++#define PCI_DEVICE_ID_ZEITNET_1221	0x0001
++#define PCI_DEVICE_ID_ZEITNET_1225	0x0002
++
++#define PCI_VENDOR_ID_FUJITSU_ME	0x119e
++#define PCI_DEVICE_ID_FUJITSU_FS155	0x0001
++#define PCI_DEVICE_ID_FUJITSU_FS50	0x0003
++
++#define PCI_SUBVENDOR_ID_KEYSPAN	0x11a9
++#define PCI_SUBDEVICE_ID_KEYSPAN_SX2	0x5334
++
++#define PCI_VENDOR_ID_MARVELL		0x11ab
++#define PCI_VENDOR_ID_MARVELL_EXT	0x1b4b
++#define PCI_DEVICE_ID_MARVELL_GT64111	0x4146
++#define PCI_DEVICE_ID_MARVELL_GT64260	0x6430
++#define PCI_DEVICE_ID_MARVELL_MV64360	0x6460
++#define PCI_DEVICE_ID_MARVELL_MV64460	0x6480
++#define PCI_DEVICE_ID_MARVELL_88ALP01_NAND	0x4100
++#define PCI_DEVICE_ID_MARVELL_88ALP01_SD	0x4101
++#define PCI_DEVICE_ID_MARVELL_88ALP01_CCIC	0x4102
++
++#define PCI_VENDOR_ID_V3		0x11b0
++#define PCI_DEVICE_ID_V3_V960		0x0001
++#define PCI_DEVICE_ID_V3_V351		0x0002
++
++#define PCI_VENDOR_ID_ATT		0x11c1
++#define PCI_DEVICE_ID_ATT_VENUS_MODEM	0x480
++
++#define PCI_VENDOR_ID_SPECIALIX		0x11cb
++#define PCI_SUBDEVICE_ID_SPECIALIX_SPEED4 0xa004
++
++#define PCI_VENDOR_ID_ANALOG_DEVICES	0x11d4
++#define PCI_DEVICE_ID_AD1889JS		0x1889
++
++#define PCI_DEVICE_ID_SEGA_BBA		0x1234
++
++#define PCI_VENDOR_ID_ZORAN		0x11de
++#define PCI_DEVICE_ID_ZORAN_36057	0x6057
++#define PCI_DEVICE_ID_ZORAN_36120	0x6120
++
++#define PCI_VENDOR_ID_COMPEX		0x11f6
++#define PCI_DEVICE_ID_COMPEX_ENET100VG4	0x0112
++
++#define PCI_VENDOR_ID_PMC_Sierra	0x11f8
++#define PCI_VENDOR_ID_MICROSEMI		0x11f8
++
++#define PCI_VENDOR_ID_RP		0x11fe
++#define PCI_DEVICE_ID_RP32INTF		0x0001
++#define PCI_DEVICE_ID_RP8INTF		0x0002
++#define PCI_DEVICE_ID_RP16INTF		0x0003
++#define PCI_DEVICE_ID_RP4QUAD		0x0004
++#define PCI_DEVICE_ID_RP8OCTA		0x0005
++#define PCI_DEVICE_ID_RP8J		0x0006
++#define PCI_DEVICE_ID_RP4J		0x0007
++#define PCI_DEVICE_ID_RP8SNI		0x0008
++#define PCI_DEVICE_ID_RP16SNI		0x0009
++#define PCI_DEVICE_ID_RPP4		0x000A
++#define PCI_DEVICE_ID_RPP8		0x000B
++#define PCI_DEVICE_ID_RP4M		0x000D
++#define PCI_DEVICE_ID_RP2_232		0x000E
++#define PCI_DEVICE_ID_RP2_422		0x000F
++#define PCI_DEVICE_ID_URP32INTF		0x0801
++#define PCI_DEVICE_ID_URP8INTF		0x0802
++#define PCI_DEVICE_ID_URP16INTF		0x0803
++#define PCI_DEVICE_ID_URP8OCTA		0x0805
++#define PCI_DEVICE_ID_UPCI_RM3_8PORT	0x080C
++#define PCI_DEVICE_ID_UPCI_RM3_4PORT	0x080D
++#define PCI_DEVICE_ID_CRP16INTF		0x0903
++
++#define PCI_VENDOR_ID_CYCLADES		0x120e
++#define PCI_DEVICE_ID_CYCLOM_Y_Lo	0x0100
++#define PCI_DEVICE_ID_CYCLOM_Y_Hi	0x0101
++#define PCI_DEVICE_ID_CYCLOM_4Y_Lo	0x0102
++#define PCI_DEVICE_ID_CYCLOM_4Y_Hi	0x0103
++#define PCI_DEVICE_ID_CYCLOM_8Y_Lo	0x0104
++#define PCI_DEVICE_ID_CYCLOM_8Y_Hi	0x0105
++#define PCI_DEVICE_ID_CYCLOM_Z_Lo	0x0200
++#define PCI_DEVICE_ID_CYCLOM_Z_Hi	0x0201
++#define PCI_DEVICE_ID_PC300_RX_2	0x0300
++#define PCI_DEVICE_ID_PC300_RX_1	0x0301
++#define PCI_DEVICE_ID_PC300_TE_2	0x0310
++#define PCI_DEVICE_ID_PC300_TE_1	0x0311
++#define PCI_DEVICE_ID_PC300_TE_M_2	0x0320
++#define PCI_DEVICE_ID_PC300_TE_M_1	0x0321
++
++#define PCI_VENDOR_ID_ESSENTIAL		0x120f
++#define PCI_DEVICE_ID_ESSENTIAL_ROADRUNNER	0x0001
++
++#define PCI_VENDOR_ID_O2		0x1217
++#define PCI_DEVICE_ID_O2_6729		0x6729
++#define PCI_DEVICE_ID_O2_6730		0x673a
++#define PCI_DEVICE_ID_O2_6832		0x6832
++#define PCI_DEVICE_ID_O2_6836		0x6836
++#define PCI_DEVICE_ID_O2_6812		0x6872
++#define PCI_DEVICE_ID_O2_6933		0x6933
++#define PCI_DEVICE_ID_O2_8120		0x8120
++#define PCI_DEVICE_ID_O2_8220		0x8220
++#define PCI_DEVICE_ID_O2_8221		0x8221
++#define PCI_DEVICE_ID_O2_8320		0x8320
++#define PCI_DEVICE_ID_O2_8321		0x8321
++
++#define PCI_VENDOR_ID_3DFX		0x121a
++#define PCI_DEVICE_ID_3DFX_VOODOO	0x0001
++#define PCI_DEVICE_ID_3DFX_VOODOO2	0x0002
++#define PCI_DEVICE_ID_3DFX_BANSHEE	0x0003
++#define PCI_DEVICE_ID_3DFX_VOODOO3	0x0005
++#define PCI_DEVICE_ID_3DFX_VOODOO5	0x0009
++
++#define PCI_VENDOR_ID_AVM		0x1244
++#define PCI_DEVICE_ID_AVM_B1		0x0700
++#define PCI_DEVICE_ID_AVM_C4		0x0800
++#define PCI_DEVICE_ID_AVM_A1		0x0a00
++#define PCI_DEVICE_ID_AVM_A1_V2		0x0e00
++#define PCI_DEVICE_ID_AVM_C2		0x1100
++#define PCI_DEVICE_ID_AVM_T1		0x1200
++
++#define PCI_VENDOR_ID_STALLION		0x124d
++
++/* Allied Telesyn */
++#define PCI_VENDOR_ID_AT    		0x1259
++#define PCI_SUBDEVICE_ID_AT_2700FX	0x2701
++#define PCI_SUBDEVICE_ID_AT_2701FX	0x2703
++
++#define PCI_VENDOR_ID_ESS		0x125d
++#define PCI_DEVICE_ID_ESS_ESS1968	0x1968
++#define PCI_DEVICE_ID_ESS_ESS1978	0x1978
++#define PCI_DEVICE_ID_ESS_ALLEGRO_1	0x1988
++#define PCI_DEVICE_ID_ESS_ALLEGRO	0x1989
++#define PCI_DEVICE_ID_ESS_CANYON3D_2LE	0x1990
++#define PCI_DEVICE_ID_ESS_CANYON3D_2	0x1992
++#define PCI_DEVICE_ID_ESS_MAESTRO3	0x1998
++#define PCI_DEVICE_ID_ESS_MAESTRO3_1	0x1999
++#define PCI_DEVICE_ID_ESS_MAESTRO3_HW	0x199a
++#define PCI_DEVICE_ID_ESS_MAESTRO3_2	0x199b
++
++#define PCI_VENDOR_ID_SATSAGEM		0x1267
++#define PCI_DEVICE_ID_SATSAGEM_NICCY	0x1016
++
++#define PCI_VENDOR_ID_ENSONIQ		0x1274
++#define PCI_DEVICE_ID_ENSONIQ_CT5880	0x5880
++#define PCI_DEVICE_ID_ENSONIQ_ES1370	0x5000
++#define PCI_DEVICE_ID_ENSONIQ_ES1371	0x1371
++
++#define PCI_VENDOR_ID_TRANSMETA		0x1279
++#define PCI_DEVICE_ID_EFFICEON		0x0060
++
++#define PCI_VENDOR_ID_ROCKWELL		0x127A
++
++#define PCI_VENDOR_ID_ITE		0x1283
++#define PCI_DEVICE_ID_ITE_8172		0x8172
++#define PCI_DEVICE_ID_ITE_8211		0x8211
++#define PCI_DEVICE_ID_ITE_8212		0x8212
++#define PCI_DEVICE_ID_ITE_8213		0x8213
++#define PCI_DEVICE_ID_ITE_8152		0x8152
++#define PCI_DEVICE_ID_ITE_8872		0x8872
++#define PCI_DEVICE_ID_ITE_IT8330G_0	0xe886
++
++/* formerly Platform Tech */
++#define PCI_DEVICE_ID_ESS_ESS0100	0x0100
++
++#define PCI_VENDOR_ID_ALTEON		0x12ae
++
++#define PCI_SUBVENDOR_ID_CONNECT_TECH			0x12c4
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH8_232		0x0001
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH4_232		0x0002
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH2_232		0x0003
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH8_485		0x0004
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH8_485_4_4	0x0005
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH4_485		0x0006
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH4_485_2_2	0x0007
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH2_485		0x0008
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH8_485_2_6	0x0009
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH081101V1	0x000A
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH041101V1	0x000B
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH2_20MHZ		0x000C
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_BH2_PTM		0x000D
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_NT960PCI		0x0100
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_TITAN_2		0x0201
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_TITAN_4		0x0202
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_232	0x0300
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_232	0x0301
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_232	0x0302
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_1_1	0x0310
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_2	0x0311
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_4	0x0312
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2	0x0320
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4	0x0321
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8	0x0322
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_485	0x0330
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_485	0x0331
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_485	0x0332
++
++#define PCI_VENDOR_ID_NVIDIA_SGS	0x12d2
++#define PCI_DEVICE_ID_NVIDIA_SGS_RIVA128 0x0018
++
++#define PCI_SUBVENDOR_ID_CHASE_PCIFAST		0x12E0
++#define PCI_SUBDEVICE_ID_CHASE_PCIFAST4		0x0031
++#define PCI_SUBDEVICE_ID_CHASE_PCIFAST8		0x0021
++#define PCI_SUBDEVICE_ID_CHASE_PCIFAST16	0x0011
++#define PCI_SUBDEVICE_ID_CHASE_PCIFAST16FMC	0x0041
++#define PCI_SUBVENDOR_ID_CHASE_PCIRAS		0x124D
++#define PCI_SUBDEVICE_ID_CHASE_PCIRAS4		0xF001
++#define PCI_SUBDEVICE_ID_CHASE_PCIRAS8		0xF010
++
++#define PCI_VENDOR_ID_AUREAL		0x12eb
++#define PCI_DEVICE_ID_AUREAL_VORTEX_1	0x0001
++#define PCI_DEVICE_ID_AUREAL_VORTEX_2	0x0002
++#define PCI_DEVICE_ID_AUREAL_ADVANTAGE	0x0003
++
++#define PCI_VENDOR_ID_ELECTRONICDESIGNGMBH 0x12f8
++#define PCI_DEVICE_ID_LML_33R10		0x8a02
++
++#define PCI_VENDOR_ID_ESDGMBH		0x12fe
++#define PCI_DEVICE_ID_ESDGMBH_CPCIASIO4 0x0111
++
++#define PCI_VENDOR_ID_CB		0x1307	/* Measurement Computing */
++
++#define PCI_VENDOR_ID_SIIG		0x131f
++#define PCI_SUBVENDOR_ID_SIIG		0x131f
++#define PCI_DEVICE_ID_SIIG_1S_10x_550	0x1000
++#define PCI_DEVICE_ID_SIIG_1S_10x_650	0x1001
++#define PCI_DEVICE_ID_SIIG_1S_10x_850	0x1002
++#define PCI_DEVICE_ID_SIIG_1S1P_10x_550	0x1010
++#define PCI_DEVICE_ID_SIIG_1S1P_10x_650	0x1011
++#define PCI_DEVICE_ID_SIIG_1S1P_10x_850	0x1012
++#define PCI_DEVICE_ID_SIIG_1P_10x	0x1020
++#define PCI_DEVICE_ID_SIIG_2P_10x	0x1021
++#define PCI_DEVICE_ID_SIIG_2S_10x_550	0x1030
++#define PCI_DEVICE_ID_SIIG_2S_10x_650	0x1031
++#define PCI_DEVICE_ID_SIIG_2S_10x_850	0x1032
++#define PCI_DEVICE_ID_SIIG_2S1P_10x_550	0x1034
++#define PCI_DEVICE_ID_SIIG_2S1P_10x_650	0x1035
++#define PCI_DEVICE_ID_SIIG_2S1P_10x_850	0x1036
++#define PCI_DEVICE_ID_SIIG_4S_10x_550	0x1050
++#define PCI_DEVICE_ID_SIIG_4S_10x_650	0x1051
++#define PCI_DEVICE_ID_SIIG_4S_10x_850	0x1052
++#define PCI_DEVICE_ID_SIIG_1S_20x_550	0x2000
++#define PCI_DEVICE_ID_SIIG_1S_20x_650	0x2001
++#define PCI_DEVICE_ID_SIIG_1S_20x_850	0x2002
++#define PCI_DEVICE_ID_SIIG_1P_20x	0x2020
++#define PCI_DEVICE_ID_SIIG_2P_20x	0x2021
++#define PCI_DEVICE_ID_SIIG_2S_20x_550	0x2030
++#define PCI_DEVICE_ID_SIIG_2S_20x_650	0x2031
++#define PCI_DEVICE_ID_SIIG_2S_20x_850	0x2032
++#define PCI_DEVICE_ID_SIIG_2P1S_20x_550	0x2040
++#define PCI_DEVICE_ID_SIIG_2P1S_20x_650	0x2041
++#define PCI_DEVICE_ID_SIIG_2P1S_20x_850	0x2042
++#define PCI_DEVICE_ID_SIIG_1S1P_20x_550	0x2010
++#define PCI_DEVICE_ID_SIIG_1S1P_20x_650	0x2011
++#define PCI_DEVICE_ID_SIIG_1S1P_20x_850	0x2012
++#define PCI_DEVICE_ID_SIIG_4S_20x_550	0x2050
++#define PCI_DEVICE_ID_SIIG_4S_20x_650	0x2051
++#define PCI_DEVICE_ID_SIIG_4S_20x_850	0x2052
++#define PCI_DEVICE_ID_SIIG_2S1P_20x_550	0x2060
++#define PCI_DEVICE_ID_SIIG_2S1P_20x_650	0x2061
++#define PCI_DEVICE_ID_SIIG_2S1P_20x_850	0x2062
++#define PCI_DEVICE_ID_SIIG_8S_20x_550	0x2080
++#define PCI_DEVICE_ID_SIIG_8S_20x_650	0x2081
++#define PCI_DEVICE_ID_SIIG_8S_20x_850	0x2082
++#define PCI_SUBDEVICE_ID_SIIG_QUARTET_SERIAL	0x2050
++
++#define PCI_VENDOR_ID_RADISYS		0x1331
++
++#define PCI_VENDOR_ID_MICRO_MEMORY		0x1332
++#define PCI_DEVICE_ID_MICRO_MEMORY_5415CN	0x5415
++#define PCI_DEVICE_ID_MICRO_MEMORY_5425CN	0x5425
++#define PCI_DEVICE_ID_MICRO_MEMORY_6155		0x6155
++
++#define PCI_VENDOR_ID_DOMEX		0x134a
++#define PCI_DEVICE_ID_DOMEX_DMX3191D	0x0001
++
++#define PCI_VENDOR_ID_INTASHIELD	0x135a
++#define PCI_DEVICE_ID_INTASHIELD_IS200	0x0d80
++#define PCI_DEVICE_ID_INTASHIELD_IS400	0x0dc0
++
++#define PCI_VENDOR_ID_QUATECH		0x135C
++#define PCI_DEVICE_ID_QUATECH_QSC100	0x0010
++#define PCI_DEVICE_ID_QUATECH_DSC100	0x0020
++#define PCI_DEVICE_ID_QUATECH_DSC200	0x0030
++#define PCI_DEVICE_ID_QUATECH_QSC200	0x0040
++#define PCI_DEVICE_ID_QUATECH_ESC100D	0x0050
++#define PCI_DEVICE_ID_QUATECH_ESC100M	0x0060
++#define PCI_DEVICE_ID_QUATECH_QSCP100	0x0120
++#define PCI_DEVICE_ID_QUATECH_DSCP100	0x0130
++#define PCI_DEVICE_ID_QUATECH_QSCP200	0x0140
++#define PCI_DEVICE_ID_QUATECH_DSCP200	0x0150
++#define PCI_DEVICE_ID_QUATECH_QSCLP100	0x0170
++#define PCI_DEVICE_ID_QUATECH_DSCLP100	0x0180
++#define PCI_DEVICE_ID_QUATECH_DSC100E	0x0181
++#define PCI_DEVICE_ID_QUATECH_SSCLP100	0x0190
++#define PCI_DEVICE_ID_QUATECH_QSCLP200	0x01A0
++#define PCI_DEVICE_ID_QUATECH_DSCLP200	0x01B0
++#define PCI_DEVICE_ID_QUATECH_DSC200E	0x01B1
++#define PCI_DEVICE_ID_QUATECH_SSCLP200	0x01C0
++#define PCI_DEVICE_ID_QUATECH_ESCLP100	0x01E0
++#define PCI_DEVICE_ID_QUATECH_SPPXP_100 0x0278
++
++#define PCI_VENDOR_ID_SEALEVEL		0x135e
++#define PCI_DEVICE_ID_SEALEVEL_U530	0x7101
++#define PCI_DEVICE_ID_SEALEVEL_UCOMM2	0x7201
++#define PCI_DEVICE_ID_SEALEVEL_UCOMM422	0x7402
++#define PCI_DEVICE_ID_SEALEVEL_UCOMM232	0x7202
++#define PCI_DEVICE_ID_SEALEVEL_COMM4	0x7401
++#define PCI_DEVICE_ID_SEALEVEL_COMM8	0x7801
++#define PCI_DEVICE_ID_SEALEVEL_7803	0x7803
++#define PCI_DEVICE_ID_SEALEVEL_UCOMM8	0x7804
++
++#define PCI_VENDOR_ID_HYPERCOPE		0x1365
++#define PCI_DEVICE_ID_HYPERCOPE_PLX	0x9050
++#define PCI_SUBDEVICE_ID_HYPERCOPE_OLD_ERGO	0x0104
++#define PCI_SUBDEVICE_ID_HYPERCOPE_ERGO		0x0106
++#define PCI_SUBDEVICE_ID_HYPERCOPE_METRO	0x0107
++#define PCI_SUBDEVICE_ID_HYPERCOPE_CHAMP2	0x0108
++
++#define PCI_VENDOR_ID_DIGIGRAM		0x1369
++#define PCI_SUBDEVICE_ID_DIGIGRAM_LX6464ES_SERIAL_SUBSYSTEM	0xc001
++#define PCI_SUBDEVICE_ID_DIGIGRAM_LX6464ES_CAE_SERIAL_SUBSYSTEM	0xc002
++
++#define PCI_VENDOR_ID_KAWASAKI		0x136b
++#define PCI_DEVICE_ID_MCHIP_KL5A72002	0xff01
++
++#define PCI_VENDOR_ID_CNET		0x1371
++#define PCI_DEVICE_ID_CNET_GIGACARD	0x434e
++
++#define PCI_VENDOR_ID_LMC		0x1376
++#define PCI_DEVICE_ID_LMC_HSSI		0x0003
++#define PCI_DEVICE_ID_LMC_DS3		0x0004
++#define PCI_DEVICE_ID_LMC_SSI		0x0005
++#define PCI_DEVICE_ID_LMC_T1		0x0006
++
++#define PCI_VENDOR_ID_NETGEAR		0x1385
++#define PCI_DEVICE_ID_NETGEAR_GA620	0x620a
++
++#define PCI_VENDOR_ID_APPLICOM		0x1389
++#define PCI_DEVICE_ID_APPLICOM_PCIGENERIC 0x0001
++#define PCI_DEVICE_ID_APPLICOM_PCI2000IBS_CAN 0x0002
++#define PCI_DEVICE_ID_APPLICOM_PCI2000PFB 0x0003
++
++#define PCI_VENDOR_ID_MOXA		0x1393
++#define PCI_DEVICE_ID_MOXA_RC7000	0x0001
++#define PCI_DEVICE_ID_MOXA_CP102	0x1020
++#define PCI_DEVICE_ID_MOXA_CP102UL	0x1021
++#define PCI_DEVICE_ID_MOXA_CP102U	0x1022
++#define PCI_DEVICE_ID_MOXA_C104		0x1040
++#define PCI_DEVICE_ID_MOXA_CP104U	0x1041
++#define PCI_DEVICE_ID_MOXA_CP104JU	0x1042
++#define PCI_DEVICE_ID_MOXA_CP104EL	0x1043
++#define PCI_DEVICE_ID_MOXA_CT114	0x1140
++#define PCI_DEVICE_ID_MOXA_CP114	0x1141
++#define PCI_DEVICE_ID_MOXA_CP118U	0x1180
++#define PCI_DEVICE_ID_MOXA_CP118EL	0x1181
++#define PCI_DEVICE_ID_MOXA_CP132	0x1320
++#define PCI_DEVICE_ID_MOXA_CP132U	0x1321
++#define PCI_DEVICE_ID_MOXA_CP134U	0x1340
++#define PCI_DEVICE_ID_MOXA_C168		0x1680
++#define PCI_DEVICE_ID_MOXA_CP168U	0x1681
++#define PCI_DEVICE_ID_MOXA_CP168EL	0x1682
++#define PCI_DEVICE_ID_MOXA_CP204J	0x2040
++#define PCI_DEVICE_ID_MOXA_C218		0x2180
++#define PCI_DEVICE_ID_MOXA_C320		0x3200
++
++#define PCI_VENDOR_ID_CCD		0x1397
++#define PCI_DEVICE_ID_CCD_HFC4S		0x08B4
++#define PCI_SUBDEVICE_ID_CCD_PMX2S	0x1234
++#define PCI_DEVICE_ID_CCD_HFC8S		0x16B8
++#define PCI_DEVICE_ID_CCD_2BD0		0x2bd0
++#define PCI_DEVICE_ID_CCD_HFCE1		0x30B1
++#define PCI_SUBDEVICE_ID_CCD_SPD4S	0x3136
++#define PCI_SUBDEVICE_ID_CCD_SPDE1	0x3137
++#define PCI_DEVICE_ID_CCD_B000		0xb000
++#define PCI_DEVICE_ID_CCD_B006		0xb006
++#define PCI_DEVICE_ID_CCD_B007		0xb007
++#define PCI_DEVICE_ID_CCD_B008		0xb008
++#define PCI_DEVICE_ID_CCD_B009		0xb009
++#define PCI_DEVICE_ID_CCD_B00A		0xb00a
++#define PCI_DEVICE_ID_CCD_B00B		0xb00b
++#define PCI_DEVICE_ID_CCD_B00C		0xb00c
++#define PCI_DEVICE_ID_CCD_B100		0xb100
++#define PCI_SUBDEVICE_ID_CCD_IOB4ST	0xB520
++#define PCI_SUBDEVICE_ID_CCD_IOB8STR	0xB521
++#define PCI_SUBDEVICE_ID_CCD_IOB8ST	0xB522
++#define PCI_SUBDEVICE_ID_CCD_IOB1E1	0xB523
++#define PCI_SUBDEVICE_ID_CCD_SWYX4S	0xB540
++#define PCI_SUBDEVICE_ID_CCD_JH4S20	0xB550
++#define PCI_SUBDEVICE_ID_CCD_IOB8ST_1	0xB552
++#define PCI_SUBDEVICE_ID_CCD_JHSE1	0xB553
++#define PCI_SUBDEVICE_ID_CCD_JH8S	0xB55B
++#define PCI_SUBDEVICE_ID_CCD_BN4S	0xB560
++#define PCI_SUBDEVICE_ID_CCD_BN8S	0xB562
++#define PCI_SUBDEVICE_ID_CCD_BNE1	0xB563
++#define PCI_SUBDEVICE_ID_CCD_BNE1D	0xB564
++#define PCI_SUBDEVICE_ID_CCD_BNE1DP	0xB565
++#define PCI_SUBDEVICE_ID_CCD_BN2S	0xB566
++#define PCI_SUBDEVICE_ID_CCD_BN1SM	0xB567
++#define PCI_SUBDEVICE_ID_CCD_BN4SM	0xB568
++#define PCI_SUBDEVICE_ID_CCD_BN2SM	0xB569
++#define PCI_SUBDEVICE_ID_CCD_BNE1M	0xB56A
++#define PCI_SUBDEVICE_ID_CCD_BN8SP	0xB56B
++#define PCI_SUBDEVICE_ID_CCD_HFC4S	0xB620
++#define PCI_SUBDEVICE_ID_CCD_HFC8S	0xB622
++#define PCI_DEVICE_ID_CCD_B700		0xb700
++#define PCI_DEVICE_ID_CCD_B701		0xb701
++#define PCI_SUBDEVICE_ID_CCD_HFCE1	0xC523
++#define PCI_SUBDEVICE_ID_CCD_OV2S	0xE884
++#define PCI_SUBDEVICE_ID_CCD_OV4S	0xE888
++#define PCI_SUBDEVICE_ID_CCD_OV8S	0xE998
++
++#define PCI_VENDOR_ID_EXAR		0x13a8
++#define PCI_DEVICE_ID_EXAR_XR17C152	0x0152
++#define PCI_DEVICE_ID_EXAR_XR17C154	0x0154
++#define PCI_DEVICE_ID_EXAR_XR17C158	0x0158
++#define PCI_DEVICE_ID_EXAR_XR17V352	0x0352
++#define PCI_DEVICE_ID_EXAR_XR17V354	0x0354
++#define PCI_DEVICE_ID_EXAR_XR17V358	0x0358
++
++#define PCI_VENDOR_ID_MICROGATE		0x13c0
++#define PCI_DEVICE_ID_MICROGATE_USC	0x0010
++#define PCI_DEVICE_ID_MICROGATE_SCA	0x0030
++
++#define PCI_VENDOR_ID_3WARE		0x13C1
++#define PCI_DEVICE_ID_3WARE_1000	0x1000
++#define PCI_DEVICE_ID_3WARE_7000	0x1001
++#define PCI_DEVICE_ID_3WARE_9000	0x1002
++
++#define PCI_VENDOR_ID_IOMEGA		0x13ca
++#define PCI_DEVICE_ID_IOMEGA_BUZ	0x4231
++
++#define PCI_VENDOR_ID_ABOCOM		0x13D1
++#define PCI_DEVICE_ID_ABOCOM_2BD1       0x2BD1
++
++#define PCI_VENDOR_ID_SUNDANCE		0x13f0
++
++#define PCI_VENDOR_ID_CMEDIA		0x13f6
++#define PCI_DEVICE_ID_CMEDIA_CM8338A	0x0100
++#define PCI_DEVICE_ID_CMEDIA_CM8338B	0x0101
++#define PCI_DEVICE_ID_CMEDIA_CM8738	0x0111
++#define PCI_DEVICE_ID_CMEDIA_CM8738B	0x0112
++
++#define PCI_VENDOR_ID_ADVANTECH		0x13fe
++
++#define PCI_VENDOR_ID_MEILHAUS		0x1402
++
++#define PCI_VENDOR_ID_LAVA		0x1407
++#define PCI_DEVICE_ID_LAVA_DSERIAL	0x0100 /* 2x 16550 */
++#define PCI_DEVICE_ID_LAVA_QUATRO_A	0x0101 /* 2x 16550, half of 4 port */
++#define PCI_DEVICE_ID_LAVA_QUATRO_B	0x0102 /* 2x 16550, half of 4 port */
++#define PCI_DEVICE_ID_LAVA_QUATTRO_A	0x0120 /* 2x 16550A, half of 4 port */
++#define PCI_DEVICE_ID_LAVA_QUATTRO_B	0x0121 /* 2x 16550A, half of 4 port */
++#define PCI_DEVICE_ID_LAVA_OCTO_A	0x0180 /* 4x 16550A, half of 8 port */
++#define PCI_DEVICE_ID_LAVA_OCTO_B	0x0181 /* 4x 16550A, half of 8 port */
++#define PCI_DEVICE_ID_LAVA_PORT_PLUS	0x0200 /* 2x 16650 */
++#define PCI_DEVICE_ID_LAVA_QUAD_A	0x0201 /* 2x 16650, half of 4 port */
++#define PCI_DEVICE_ID_LAVA_QUAD_B	0x0202 /* 2x 16650, half of 4 port */
++#define PCI_DEVICE_ID_LAVA_SSERIAL	0x0500 /* 1x 16550 */
++#define PCI_DEVICE_ID_LAVA_PORT_650	0x0600 /* 1x 16650 */
++#define PCI_DEVICE_ID_LAVA_PARALLEL	0x8000
++#define PCI_DEVICE_ID_LAVA_DUAL_PAR_A	0x8002 /* The Lava Dual Parallel is */
++#define PCI_DEVICE_ID_LAVA_DUAL_PAR_B	0x8003 /* two PCI devices on a card */
++#define PCI_DEVICE_ID_LAVA_BOCA_IOPPAR	0x8800
++
++#define PCI_VENDOR_ID_TIMEDIA		0x1409
++#define PCI_DEVICE_ID_TIMEDIA_1889	0x7168
++
++#define PCI_VENDOR_ID_ICE		0x1412
++#define PCI_DEVICE_ID_ICE_1712		0x1712
++#define PCI_DEVICE_ID_VT1724		0x1724
++
++#define PCI_VENDOR_ID_OXSEMI		0x1415
++#define PCI_DEVICE_ID_OXSEMI_12PCI840	0x8403
++#define PCI_DEVICE_ID_OXSEMI_PCIe840		0xC000
++#define PCI_DEVICE_ID_OXSEMI_PCIe840_G		0xC004
++#define PCI_DEVICE_ID_OXSEMI_PCIe952_0		0xC100
++#define PCI_DEVICE_ID_OXSEMI_PCIe952_0_G	0xC104
++#define PCI_DEVICE_ID_OXSEMI_PCIe952_1		0xC110
++#define PCI_DEVICE_ID_OXSEMI_PCIe952_1_G	0xC114
++#define PCI_DEVICE_ID_OXSEMI_PCIe952_1_U	0xC118
++#define PCI_DEVICE_ID_OXSEMI_PCIe952_1_GU	0xC11C
++#define PCI_DEVICE_ID_OXSEMI_16PCI954	0x9501
++#define PCI_DEVICE_ID_OXSEMI_C950	0x950B
++#define PCI_DEVICE_ID_OXSEMI_16PCI95N	0x9511
++#define PCI_DEVICE_ID_OXSEMI_16PCI954PP	0x9513
++#define PCI_DEVICE_ID_OXSEMI_16PCI952	0x9521
++#define PCI_DEVICE_ID_OXSEMI_16PCI952PP	0x9523
++#define PCI_SUBDEVICE_ID_OXSEMI_C950	0x0001
++
++#define PCI_VENDOR_ID_CHELSIO		0x1425
++
++#define PCI_VENDOR_ID_ADLINK		0x144a
++
++#define PCI_VENDOR_ID_SAMSUNG		0x144d
++
++#define PCI_VENDOR_ID_GIGABYTE		0x1458
++
++#define PCI_VENDOR_ID_AMBIT		0x1468
++
++#define PCI_VENDOR_ID_MYRICOM		0x14c1
++
++#define PCI_VENDOR_ID_MEDIATEK		0x14c3
++
++#define PCI_VENDOR_ID_TITAN		0x14D2
++#define PCI_DEVICE_ID_TITAN_010L	0x8001
++#define PCI_DEVICE_ID_TITAN_100L	0x8010
++#define PCI_DEVICE_ID_TITAN_110L	0x8011
++#define PCI_DEVICE_ID_TITAN_200L	0x8020
++#define PCI_DEVICE_ID_TITAN_210L	0x8021
++#define PCI_DEVICE_ID_TITAN_400L	0x8040
++#define PCI_DEVICE_ID_TITAN_800L	0x8080
++#define PCI_DEVICE_ID_TITAN_100		0xA001
++#define PCI_DEVICE_ID_TITAN_200		0xA005
++#define PCI_DEVICE_ID_TITAN_400		0xA003
++#define PCI_DEVICE_ID_TITAN_800B	0xA004
++
++#define PCI_VENDOR_ID_PANACOM		0x14d4
++#define PCI_DEVICE_ID_PANACOM_QUADMODEM	0x0400
++#define PCI_DEVICE_ID_PANACOM_DUALMODEM	0x0402
++
++#define PCI_VENDOR_ID_SIPACKETS		0x14d9
++#define PCI_DEVICE_ID_SP1011		0x0010
++
++#define PCI_VENDOR_ID_AFAVLAB		0x14db
++#define PCI_DEVICE_ID_AFAVLAB_P028	0x2180
++#define PCI_DEVICE_ID_AFAVLAB_P030	0x2182
++#define PCI_SUBDEVICE_ID_AFAVLAB_P061		0x2150
++
++#define PCI_VENDOR_ID_AMPLICON		0x14dc
++
++#define PCI_VENDOR_ID_BCM_GVC          0x14a4
++#define PCI_VENDOR_ID_BROADCOM		0x14e4
++#define PCI_DEVICE_ID_TIGON3_5752	0x1600
++#define PCI_DEVICE_ID_TIGON3_5752M	0x1601
++#define PCI_DEVICE_ID_NX2_5709		0x1639
++#define PCI_DEVICE_ID_NX2_5709S		0x163a
++#define PCI_DEVICE_ID_TIGON3_5700	0x1644
++#define PCI_DEVICE_ID_TIGON3_5701	0x1645
++#define PCI_DEVICE_ID_TIGON3_5702	0x1646
++#define PCI_DEVICE_ID_TIGON3_5703	0x1647
++#define PCI_DEVICE_ID_TIGON3_5704	0x1648
++#define PCI_DEVICE_ID_TIGON3_5704S_2	0x1649
++#define PCI_DEVICE_ID_NX2_5706		0x164a
++#define PCI_DEVICE_ID_NX2_5708		0x164c
++#define PCI_DEVICE_ID_TIGON3_5702FE	0x164d
++#define PCI_DEVICE_ID_NX2_57710		0x164e
++#define PCI_DEVICE_ID_NX2_57711		0x164f
++#define PCI_DEVICE_ID_NX2_57711E	0x1650
++#define PCI_DEVICE_ID_TIGON3_5705	0x1653
++#define PCI_DEVICE_ID_TIGON3_5705_2	0x1654
++#define PCI_DEVICE_ID_TIGON3_5719	0x1657
++#define PCI_DEVICE_ID_TIGON3_5721	0x1659
++#define PCI_DEVICE_ID_TIGON3_5722	0x165a
++#define PCI_DEVICE_ID_TIGON3_5723	0x165b
++#define PCI_DEVICE_ID_TIGON3_5705M	0x165d
++#define PCI_DEVICE_ID_TIGON3_5705M_2	0x165e
++#define PCI_DEVICE_ID_NX2_57712		0x1662
++#define PCI_DEVICE_ID_NX2_57712E	0x1663
++#define PCI_DEVICE_ID_NX2_57712_MF	0x1663
++#define PCI_DEVICE_ID_TIGON3_5714	0x1668
++#define PCI_DEVICE_ID_TIGON3_5714S	0x1669
++#define PCI_DEVICE_ID_TIGON3_5780	0x166a
++#define PCI_DEVICE_ID_TIGON3_5780S	0x166b
++#define PCI_DEVICE_ID_TIGON3_5705F	0x166e
++#define PCI_DEVICE_ID_NX2_57712_VF	0x166f
++#define PCI_DEVICE_ID_TIGON3_5754M	0x1672
++#define PCI_DEVICE_ID_TIGON3_5755M	0x1673
++#define PCI_DEVICE_ID_TIGON3_5756	0x1674
++#define PCI_DEVICE_ID_TIGON3_5750	0x1676
++#define PCI_DEVICE_ID_TIGON3_5751	0x1677
++#define PCI_DEVICE_ID_TIGON3_5715	0x1678
++#define PCI_DEVICE_ID_TIGON3_5715S	0x1679
++#define PCI_DEVICE_ID_TIGON3_5754	0x167a
++#define PCI_DEVICE_ID_TIGON3_5755	0x167b
++#define PCI_DEVICE_ID_TIGON3_5751M	0x167d
++#define PCI_DEVICE_ID_TIGON3_5751F	0x167e
++#define PCI_DEVICE_ID_TIGON3_5787F	0x167f
++#define PCI_DEVICE_ID_TIGON3_5761E	0x1680
++#define PCI_DEVICE_ID_TIGON3_5761	0x1681
++#define PCI_DEVICE_ID_TIGON3_5764	0x1684
++#define PCI_DEVICE_ID_NX2_57800		0x168a
++#define PCI_DEVICE_ID_NX2_57840		0x168d
++#define PCI_DEVICE_ID_NX2_57810		0x168e
++#define PCI_DEVICE_ID_TIGON3_5787M	0x1693
++#define PCI_DEVICE_ID_TIGON3_5782	0x1696
++#define PCI_DEVICE_ID_TIGON3_5784	0x1698
++#define PCI_DEVICE_ID_TIGON3_5786	0x169a
++#define PCI_DEVICE_ID_TIGON3_5787	0x169b
++#define PCI_DEVICE_ID_TIGON3_5788	0x169c
++#define PCI_DEVICE_ID_TIGON3_5789	0x169d
++#define PCI_DEVICE_ID_NX2_57840_4_10	0x16a1
++#define PCI_DEVICE_ID_NX2_57840_2_20	0x16a2
++#define PCI_DEVICE_ID_NX2_57840_MF	0x16a4
++#define PCI_DEVICE_ID_NX2_57800_MF	0x16a5
++#define PCI_DEVICE_ID_TIGON3_5702X	0x16a6
++#define PCI_DEVICE_ID_TIGON3_5703X	0x16a7
++#define PCI_DEVICE_ID_TIGON3_5704S	0x16a8
++#define PCI_DEVICE_ID_NX2_57800_VF	0x16a9
++#define PCI_DEVICE_ID_NX2_5706S		0x16aa
++#define PCI_DEVICE_ID_NX2_5708S		0x16ac
++#define PCI_DEVICE_ID_NX2_57840_VF	0x16ad
++#define PCI_DEVICE_ID_NX2_57810_MF	0x16ae
++#define PCI_DEVICE_ID_NX2_57810_VF	0x16af
++#define PCI_DEVICE_ID_TIGON3_5702A3	0x16c6
++#define PCI_DEVICE_ID_TIGON3_5703A3	0x16c7
++#define PCI_DEVICE_ID_TIGON3_5781	0x16dd
++#define PCI_DEVICE_ID_TIGON3_5753	0x16f7
++#define PCI_DEVICE_ID_TIGON3_5753M	0x16fd
++#define PCI_DEVICE_ID_TIGON3_5753F	0x16fe
++#define PCI_DEVICE_ID_TIGON3_5901	0x170d
++#define PCI_DEVICE_ID_BCM4401B1		0x170c
++#define PCI_DEVICE_ID_TIGON3_5901_2	0x170e
++#define PCI_DEVICE_ID_TIGON3_5906	0x1712
++#define PCI_DEVICE_ID_TIGON3_5906M	0x1713
++#define PCI_DEVICE_ID_BCM4401		0x4401
++#define PCI_DEVICE_ID_BCM4401B0		0x4402
++
++#define PCI_VENDOR_ID_TOPIC		0x151f
++#define PCI_DEVICE_ID_TOPIC_TP560	0x0000
++
++#define PCI_VENDOR_ID_MAINPINE		0x1522
++#define PCI_DEVICE_ID_MAINPINE_PBRIDGE	0x0100
++#define PCI_VENDOR_ID_ENE		0x1524
++#define PCI_DEVICE_ID_ENE_CB710_FLASH	0x0510
++#define PCI_DEVICE_ID_ENE_CB712_SD	0x0550
++#define PCI_DEVICE_ID_ENE_CB712_SD_2	0x0551
++#define PCI_DEVICE_ID_ENE_CB714_SD	0x0750
++#define PCI_DEVICE_ID_ENE_CB714_SD_2	0x0751
++#define PCI_DEVICE_ID_ENE_1211		0x1211
++#define PCI_DEVICE_ID_ENE_1225		0x1225
++#define PCI_DEVICE_ID_ENE_1410		0x1410
++#define PCI_DEVICE_ID_ENE_710		0x1411
++#define PCI_DEVICE_ID_ENE_712		0x1412
++#define PCI_DEVICE_ID_ENE_1420		0x1420
++#define PCI_DEVICE_ID_ENE_720		0x1421
++#define PCI_DEVICE_ID_ENE_722		0x1422
++
++#define PCI_SUBVENDOR_ID_PERLE          0x155f
++#define PCI_SUBDEVICE_ID_PCI_RAS4       0xf001
++#define PCI_SUBDEVICE_ID_PCI_RAS8       0xf010
++
++#define PCI_VENDOR_ID_SYBA		0x1592
++#define PCI_DEVICE_ID_SYBA_2P_EPP	0x0782
++#define PCI_DEVICE_ID_SYBA_1P_ECP	0x0783
++
++#define PCI_VENDOR_ID_MORETON		0x15aa
++#define PCI_DEVICE_ID_RASTEL_2PORT	0x2000
++
++#define PCI_VENDOR_ID_VMWARE		0x15ad
++#define PCI_DEVICE_ID_VMWARE_VMXNET3	0x07b0
++
++#define PCI_VENDOR_ID_ZOLTRIX		0x15b0
++#define PCI_DEVICE_ID_ZOLTRIX_2BD0	0x2bd0
++
++#define PCI_VENDOR_ID_MELLANOX		0x15b3
++#define PCI_DEVICE_ID_MELLANOX_CONNECTX3	0x1003
++#define PCI_DEVICE_ID_MELLANOX_CONNECTX3_PRO	0x1007
++#define PCI_DEVICE_ID_MELLANOX_CONNECTIB	0x1011
++#define PCI_DEVICE_ID_MELLANOX_CONNECTX4	0x1013
++#define PCI_DEVICE_ID_MELLANOX_CONNECTX4_LX	0x1015
++#define PCI_DEVICE_ID_MELLANOX_TAVOR		0x5a44
++#define PCI_DEVICE_ID_MELLANOX_TAVOR_BRIDGE	0x5a46
++#define PCI_DEVICE_ID_MELLANOX_SINAI_OLD	0x5e8c
++#define PCI_DEVICE_ID_MELLANOX_SINAI		0x6274
++#define PCI_DEVICE_ID_MELLANOX_ARBEL_COMPAT	0x6278
++#define PCI_DEVICE_ID_MELLANOX_ARBEL		0x6282
++#define PCI_DEVICE_ID_MELLANOX_HERMON_SDR	0x6340
++#define PCI_DEVICE_ID_MELLANOX_HERMON_DDR	0x634a
++#define PCI_DEVICE_ID_MELLANOX_HERMON_QDR	0x6354
++#define PCI_DEVICE_ID_MELLANOX_HERMON_EN	0x6368
++#define PCI_DEVICE_ID_MELLANOX_CONNECTX_EN	0x6372
++#define PCI_DEVICE_ID_MELLANOX_HERMON_DDR_GEN2	0x6732
++#define PCI_DEVICE_ID_MELLANOX_HERMON_QDR_GEN2	0x673c
++#define PCI_DEVICE_ID_MELLANOX_CONNECTX_EN_5_GEN2 0x6746
++#define PCI_DEVICE_ID_MELLANOX_HERMON_EN_GEN2	0x6750
++#define PCI_DEVICE_ID_MELLANOX_CONNECTX_EN_T_GEN2 0x675a
++#define PCI_DEVICE_ID_MELLANOX_CONNECTX_EN_GEN2	0x6764
++#define PCI_DEVICE_ID_MELLANOX_CONNECTX2	0x676e
++
++#define PCI_VENDOR_ID_DFI		0x15bd
++
++#define PCI_VENDOR_ID_QUICKNET		0x15e2
++#define PCI_DEVICE_ID_QUICKNET_XJ	0x0500
 +
 +/*
-+ * If the device has been passed off to us in an enabled state, just clear
-+ * the enabled bit.  The spec says we should set the 'shutdown notification
-+ * bits', but doing so may cause the device to complete commands to the
-+ * admin queue ... and we don't know what memory that might be pointing at!
++ * ADDI-DATA GmbH communication cards <info@addi-data.com>
 + */
-+int nvme_disable_ctrl(struct nvme_ctrl *ctrl, u64 cap)
-+{
-+	int ret;
-+
-+	ctrl->ctrl_config &= ~NVME_CC_SHN_MASK;
-+	ctrl->ctrl_config &= ~NVME_CC_ENABLE;
-+
-+	ret = ctrl->ops->reg_write32(ctrl, NVME_REG_CC, ctrl->ctrl_config);
-+	if (ret)
-+		return ret;
-+
-+	return nvme_wait_ready(ctrl, cap, false);
-+}
-+EXPORT_SYMBOL_GPL(nvme_disable_ctrl);
-+
-+int nvme_enable_ctrl(struct nvme_ctrl *ctrl, u64 cap)
-+{
-+	/*
-+	 * Default to a 4K page size, with the intention to update this
-+	 * path in the future to accomodate architectures with differing
-+	 * kernel and IO page sizes.
-+	 */
-+	unsigned dev_page_min = NVME_CAP_MPSMIN(cap) + 12, page_shift = 12;
-+	int ret;
-+
-+	if (page_shift < dev_page_min) {
-+		dev_err(ctrl->dev,
-+			"Minimum device page size %u too large for host (%u)\n",
-+			1 << dev_page_min, 1 << page_shift);
-+		return -ENODEV;
-+	}
-+
-+	ctrl->page_size = 1 << page_shift;
-+
-+	ctrl->ctrl_config = NVME_CC_CSS_NVM;
-+	ctrl->ctrl_config |= (page_shift - 12) << NVME_CC_MPS_SHIFT;
-+	ctrl->ctrl_config |= NVME_CC_AMS_RR | NVME_CC_SHN_NONE;
-+	ctrl->ctrl_config |= NVME_CC_IOSQES | NVME_CC_IOCQES;
-+	ctrl->ctrl_config |= NVME_CC_ENABLE;
-+
-+	ret = ctrl->ops->reg_write32(ctrl, NVME_REG_CC, ctrl->ctrl_config);
-+	if (ret)
-+		return ret;
-+	return nvme_wait_ready(ctrl, cap, true);
-+}
-+EXPORT_SYMBOL_GPL(nvme_enable_ctrl);
-+
-+int nvme_shutdown_ctrl(struct nvme_ctrl *ctrl)
-+{
-+	uint64_t start = get_time_ns();
-+	unsigned long timeout = SHUTDOWN_TIMEOUT;
-+	u32 csts;
-+	int ret;
-+
-+	ctrl->ctrl_config &= ~NVME_CC_SHN_MASK;
-+	ctrl->ctrl_config |= NVME_CC_SHN_NORMAL;
-+
-+	ret = ctrl->ops->reg_write32(ctrl, NVME_REG_CC, ctrl->ctrl_config);
-+	if (ret)
-+		return ret;
-+
-+	while ((ret = ctrl->ops->reg_read32(ctrl, NVME_REG_CSTS, &csts)) == 0) {
-+		if ((csts & NVME_CSTS_SHST_MASK) == NVME_CSTS_SHST_CMPLT)
-+			break;
-+
-+		mdelay(100);
-+
-+		if (is_timeout(start, timeout)) {
-+			dev_err(ctrl->dev,
-+				"Device shutdown incomplete; abort shutdown\n");
-+			return -ENODEV;
-+		}
-+	}
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(nvme_shutdown_ctrl);
-+
-+#define NVME_ID_MAX_LEN		41
-+
-+static void nvme_print(struct nvme_ctrl *ctrl, const char *prefix,
-+		       const char *_string, size_t _length)
-+{
-+	char string[NVME_ID_MAX_LEN];
-+	const size_t length = min(_length, sizeof(string) - 1);
-+
-+	memcpy(string, _string, length);
-+	string[length - 1] = '\0';
-+
-+	dev_info(ctrl->dev, "%s: %s\n", prefix, string);
-+}
-+
-+static int nvme_init_subsystem(struct nvme_ctrl *ctrl, struct nvme_id_ctrl *id)
-+{
-+	nvme_print(ctrl, "serial",   id->sn, sizeof(id->sn));
-+	nvme_print(ctrl, "model",    id->mn, sizeof(id->mn));
-+	nvme_print(ctrl, "firmware", id->fr, sizeof(id->fr));
-+
-+	return 0;
-+}
-+
-+/*
-+ * Initialize the cached copies of the Identify data and various controller
-+ * register in our nvme_ctrl structure.  This should be called as soon as
-+ * the admin queue is fully up and running.
-+ */
-+int nvme_init_identify(struct nvme_ctrl *ctrl)
-+{
-+	struct nvme_id_ctrl *id;
-+	u64 cap;
-+	int ret, page_shift;
-+	u32 max_hw_sectors;
-+
-+	ret = ctrl->ops->reg_read32(ctrl, NVME_REG_VS, &ctrl->vs);
-+	if (ret) {
-+		dev_err(ctrl->dev, "Reading VS failed (%d)\n", ret);
-+		return ret;
-+	}
-+
-+	ret = ctrl->ops->reg_read64(ctrl, NVME_REG_CAP, &cap);
-+	if (ret) {
-+		dev_err(ctrl->dev, "Reading CAP failed (%d)\n", ret);
-+		return ret;
-+	}
-+	page_shift = NVME_CAP_MPSMIN(cap) + 12;
-+
-+	ret = nvme_identify_ctrl(ctrl, &id);
-+	if (ret) {
-+		dev_err(ctrl->dev, "Identify Controller failed (%d)\n", ret);
-+		return -EIO;
-+	}
-+
-+	ret = nvme_init_subsystem(ctrl, id);
-+	if (ret)
-+		return ret;
-+
-+	if (id->mdts)
-+		max_hw_sectors = 1 << (id->mdts + page_shift - 9);
-+	else
-+		max_hw_sectors = UINT_MAX;
-+	ctrl->max_hw_sectors =
-+		min_not_zero(ctrl->max_hw_sectors, max_hw_sectors);
-+
-+	kfree(id);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(nvme_init_identify);
-+
-+
-+/*
-+ * Initialize a NVMe controller structures.  This needs to be called during
-+ * earliest initialization so that we have the initialized structured around
-+ * during probing.
-+ */
-+int nvme_init_ctrl(struct nvme_ctrl *ctrl, struct device_d *dev,
-+		   const struct nvme_ctrl_ops *ops)
-+{
-+	static int instance = 0;
-+
-+	ctrl->dev = dev;
-+	ctrl->ops = ops;
-+	ctrl->instance = instance++;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(nvme_init_ctrl);
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-new file mode 100644
-index 000000000..4ec4aef97
---- /dev/null
-+++ b/drivers/nvme/host/nvme.h
-@@ -0,0 +1,148 @@
-+/*
-+ * Copyright (c) 2011-2014, Intel Corporation.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ */
-+
-+#ifndef _NVME_H
-+#define _NVME_H
-+
-+#include <linux/nvme.h>
-+#include <dma.h>
-+#include <block.h>
-+
-+#define ADMIN_TIMEOUT		(60 * HZ)
-+#define SHUTDOWN_TIMEOUT	( 5 * HZ)
-+
-+/*
-+ * Common request structure for NVMe passthrough.  All drivers must have
-+ * this structure as the first member of their request-private data.
-+ */
-+struct nvme_request {
-+	struct nvme_command	*cmd;
-+	union nvme_result	result;
-+	u16			status;
-+
-+	void *buffer;
-+	unsigned int buffer_len;
-+	dma_addr_t buffer_dma_addr;
-+	enum dma_data_direction dma_dir;
-+};
-+
-+struct nvme_ctrl {
-+	const struct nvme_ctrl_ops *ops;
-+	struct device_d *dev;
-+	int instance;
-+
-+	u32 ctrl_config;
-+	u32 queue_count;
-+	u64 cap;
-+	u32 page_size;
-+	u32 max_hw_sectors;
-+	u32 vs;
-+};
-+
-+/*
-+ * Anchor structure for namespaces.  There is one for each namespace in a
-+ * NVMe subsystem that any of our controllers can see, and the namespace
-+ * structure for each controller is chained of it.  For private namespaces
-+ * there is a 1:1 relation to our namespace structures, that is ->list
-+ * only ever has a single entry for private namespaces.
-+ */
-+struct nvme_ns_head {
-+	unsigned		ns_id;
-+	int			instance;
-+};
-+
-+struct nvme_ns {
-+	struct nvme_ctrl *ctrl;
-+	struct nvme_ns_head *head;
-+	struct block_device blk;
-+
-+	int lba_shift;
-+	bool readonly;
-+};
-+
-+static inline struct nvme_ns *to_nvme_ns(struct block_device *blk)
-+{
-+	return container_of(blk, struct nvme_ns, blk);
-+}
-+
-+struct nvme_ctrl_ops {
-+	int (*reg_read32)(struct nvme_ctrl *ctrl, u32 off, u32 *val);
-+	int (*reg_write32)(struct nvme_ctrl *ctrl, u32 off, u32 val);
-+	int (*reg_read64)(struct nvme_ctrl *ctrl, u32 off, u64 *val);
-+
-+	int (*submit_sync_cmd)(struct nvme_ctrl *ctrl,
-+			       struct nvme_command *cmd,
-+			       union nvme_result *result,
-+			       void *buffer,
-+			       unsigned bufflen,
-+			       unsigned timeout, int qid);
-+};
-+
-+static inline bool nvme_ctrl_ready(struct nvme_ctrl *ctrl)
-+{
-+	u32 val = 0;
-+
-+	if (ctrl->ops->reg_read32(ctrl, NVME_REG_CSTS, &val))
-+		return false;
-+	return val & NVME_CSTS_RDY;
-+}
-+
-+static inline u64 nvme_block_nr(struct nvme_ns *ns, sector_t sector)
-+{
-+	return (sector >> (ns->lba_shift - 9));
-+}
-+
-+static inline void nvme_end_request(struct nvme_request *rq, __le16 status,
-+		union nvme_result result)
-+{
-+	rq->status = le16_to_cpu(status) >> 1;
-+	rq->result = result;
-+}
-+
-+int nvme_disable_ctrl(struct nvme_ctrl *ctrl, u64 cap);
-+int nvme_enable_ctrl(struct nvme_ctrl *ctrl, u64 cap);
-+int nvme_shutdown_ctrl(struct nvme_ctrl *ctrl);
-+int nvme_init_ctrl(struct nvme_ctrl *ctrl, struct device_d *dev,
-+		   const struct nvme_ctrl_ops *ops);
-+void nvme_start_ctrl(struct nvme_ctrl *ctrl);
-+int nvme_init_identify(struct nvme_ctrl *ctrl);
-+
-+enum nvme_queue_id {
-+	NVME_QID_ADMIN,
-+	NVME_QID_IO,
-+	NVME_QID_NUM,
-+	NVME_QID_ANY = -1,
-+};
-+
-+int __nvme_submit_sync_cmd(struct nvme_ctrl *ctrl,
-+			   struct nvme_command *cmd,
-+			   union nvme_result *result,
-+			   void *buffer, unsigned bufflen,
-+			   unsigned timeout, int qid);
-+int nvme_submit_sync_cmd(struct nvme_ctrl *ctrl,
-+			 struct nvme_command *cmd,
-+			 void *buffer, unsigned bufflen);
-+
-+
-+int nvme_set_queue_count(struct nvme_ctrl *ctrl, int *count);
-+/*
-+ * Without the multipath code enabled, multiple controller per subsystems are
-+ * visible as devices and thus we cannot use the subsystem instance.
-+ */
-+static inline void nvme_set_disk_name(char *disk_name, struct nvme_ns *ns,
-+				      struct nvme_ctrl *ctrl, int *flags)
-+{
-+	sprintf(disk_name, "nvme%dn%d", ctrl->instance, ns->head->instance);
-+}
-+
-+#endif /* _NVME_H */
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-new file mode 100644
-index 000000000..387bc45a7
---- /dev/null
-+++ b/drivers/nvme/host/pci.c
-@@ -0,0 +1,697 @@
-+
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <io-64-nonatomic-lo-hi.h>
-+#include <linux/pci.h>
-+
-+#include <dma.h>
-+
-+#include "nvme.h"
-+
-+#define SQ_SIZE(depth)		(depth * sizeof(struct nvme_command))
-+#define CQ_SIZE(depth)		(depth * sizeof(struct nvme_completion))
-+
-+#define NVME_MAX_KB_SZ	4096
-+
-+static int io_queue_depth = 2;
-+
-+struct nvme_dev;
-+
-+/*
-+ * An NVM Express queue.  Each device has at least two (one for admin
-+ * commands and one for I/O commands).
-+ */
-+struct nvme_queue {
-+	struct nvme_dev *dev;
-+	struct nvme_request *req;
-+	struct nvme_command *sq_cmds;
-+	volatile struct nvme_completion *cqes;
-+	dma_addr_t sq_dma_addr;
-+	dma_addr_t cq_dma_addr;
-+	u32 __iomem *q_db;
-+	u16 q_depth;
-+	u16 sq_tail;
-+	u16 cq_head;
-+	u16 qid;
-+	u8 cq_phase;
-+
-+	u16 counter;
-+};
-+
-+/*
-+ * Represents an NVM Express device.  Each nvme_dev is a PCI function.
-+ */
-+struct nvme_dev {
-+	struct nvme_queue queues[NVME_QID_NUM];
-+	u32 __iomem *dbs;
-+	struct device_d *dev;
-+	unsigned online_queues;
-+	unsigned max_qid;
-+	int q_depth;
-+	u32 db_stride;
-+	void __iomem *bar;
-+	bool subsystem;
-+	struct nvme_ctrl ctrl;
-+	__le64 *prp_pool;
-+	unsigned int prp_pool_size;
-+	dma_addr_t prp_dma;
-+};
-+
-+static inline struct nvme_dev *to_nvme_dev(struct nvme_ctrl *ctrl)
-+{
-+	return container_of(ctrl, struct nvme_dev, ctrl);
-+}
-+
-+static int nvme_pci_setup_prps(struct nvme_dev *dev,
-+			       const struct nvme_request *req,
-+			       struct nvme_rw_command *cmnd)
-+{
-+	int length = req->buffer_len;
-+	const int page_size = dev->ctrl.page_size;
-+	dma_addr_t dma_addr = req->buffer_dma_addr;
-+	u32 offset = dma_addr & (page_size - 1);
-+	u64 prp1 = dma_addr;
-+	__le64 *prp_list;
-+	int i, nprps;
-+	dma_addr_t prp_dma;
-+
-+
-+	length -= (page_size - offset);
-+	if (length <= 0) {
-+		prp_dma = 0;
-+		goto done;
-+	}
-+
-+	dma_addr += (page_size - offset);
-+
-+	if (length <= page_size) {
-+		prp_dma = dma_addr;
-+		goto done;
-+	}
-+
-+	nprps = DIV_ROUND_UP(length, page_size);
-+	if (nprps > dev->prp_pool_size) {
-+		dma_free_coherent(dev->prp_pool, dev->prp_dma,
-+				  dev->prp_pool_size * sizeof(u64));
-+		dev->prp_pool_size = nprps;
-+		dev->prp_pool = dma_alloc_coherent(nprps * sizeof(u64),
-+						   &dev->prp_dma);
-+	}
-+
-+	prp_list = dev->prp_pool;
-+	prp_dma  = dev->prp_dma;
-+
-+	i = 0;
-+	for (;;) {
-+		if (i == page_size >> 3) {
-+			__le64 *old_prp_list = prp_list;
-+			prp_list = &prp_list[i];
-+			prp_dma += page_size;
-+			prp_list[0] = old_prp_list[i - 1];
-+			old_prp_list[i - 1] = cpu_to_le64(prp_dma);
-+			i = 1;
-+		}
-+
-+		prp_list[i++] = cpu_to_le64(dma_addr);
-+		dma_addr += page_size;
-+		length -= page_size;
-+		if (length <= 0)
-+			break;
-+	}
-+
-+done:
-+	cmnd->dptr.prp1 = cpu_to_le64(prp1);
-+	cmnd->dptr.prp2 = cpu_to_le64(prp_dma);
-+
-+	return 0;
-+}
-+
-+static int nvme_map_data(struct nvme_dev *dev, struct nvme_request *req)
-+{
-+	if (!req->buffer || !req->buffer_len)
-+		return 0;
-+
-+	req->buffer_dma_addr = dma_map_single(dev->dev, req->buffer,
-+					      req->buffer_len, req->dma_dir);
-+	if (dma_mapping_error(dev->dev, req->buffer_dma_addr))
-+		return -EFAULT;
-+
-+	return nvme_pci_setup_prps(dev, req, &req->cmd->rw);
-+}
-+
-+static void nvme_unmap_data(struct nvme_dev *dev, struct nvme_request *req)
-+{
-+	if (!req->buffer || !req->buffer_len)
-+		return;
-+
-+	dma_unmap_single(dev->dev, req->buffer_dma_addr, req->buffer_len,
-+			 req->dma_dir);
-+}
-+
-+static int nvme_alloc_queue(struct nvme_dev *dev, int qid, int depth)
-+{
-+	struct nvme_queue *nvmeq = &dev->queues[qid];
-+
-+	if (dev->ctrl.queue_count > qid)
-+		return 0;
-+
-+	nvmeq->cqes = dma_alloc_coherent(CQ_SIZE(depth),
-+					 &nvmeq->cq_dma_addr);
-+	if (!nvmeq->cqes)
-+		goto free_nvmeq;
-+
-+	nvmeq->sq_cmds = dma_alloc_coherent(SQ_SIZE(depth),
-+					    &nvmeq->sq_dma_addr);
-+	if (!nvmeq->sq_cmds)
-+		goto free_cqdma;
-+
-+	nvmeq->dev = dev;
-+	nvmeq->cq_head = 0;
-+	nvmeq->cq_phase = 1;
-+	nvmeq->q_db = &dev->dbs[qid * 2 * dev->db_stride];
-+	nvmeq->q_depth = depth;
-+	nvmeq->qid = qid;
-+	dev->ctrl.queue_count++;
-+
-+	return 0;
-+
-+ free_cqdma:
-+	dma_free_coherent((void *)nvmeq->cqes, nvmeq->cq_dma_addr,
-+			  CQ_SIZE(depth));
-+ free_nvmeq:
-+	return -ENOMEM;
-+}
-+
-+static int adapter_delete_queue(struct nvme_dev *dev, u8 opcode, u16 id)
-+{
-+	struct nvme_command c;
-+
-+	memset(&c, 0, sizeof(c));
-+	c.delete_queue.opcode = opcode;
-+	c.delete_queue.qid = cpu_to_le16(id);
-+
-+	return nvme_submit_sync_cmd(&dev->ctrl, &c, NULL, 0);
-+}
-+
-+static int adapter_alloc_cq(struct nvme_dev *dev, u16 qid,
-+		struct nvme_queue *nvmeq, s16 vector)
-+{
-+	struct nvme_command c;
-+	int flags = NVME_QUEUE_PHYS_CONTIG | NVME_CQ_IRQ_ENABLED;
-+
-+	/*
-+	 * Note: we (ab)use the fact that the prp fields survive if no data
-+	 * is attached to the request.
-+	 */
-+	memset(&c, 0, sizeof(c));
-+	c.create_cq.opcode = nvme_admin_create_cq;
-+	c.create_cq.prp1 = cpu_to_le64(nvmeq->cq_dma_addr);
-+	c.create_cq.cqid = cpu_to_le16(qid);
-+	c.create_cq.qsize = cpu_to_le16(nvmeq->q_depth - 1);
-+	c.create_cq.cq_flags = cpu_to_le16(flags);
-+	c.create_cq.irq_vector = cpu_to_le16(vector);
-+
-+	return nvme_submit_sync_cmd(&dev->ctrl, &c, NULL, 0);
-+}
-+
-+static int adapter_alloc_sq(struct nvme_dev *dev, u16 qid,
-+			    struct nvme_queue *nvmeq)
-+{
-+	struct nvme_command c;
-+	int flags = NVME_QUEUE_PHYS_CONTIG;
-+
-+	/*
-+	 * Note: we (ab)use the fact that the prp fields survive if no data
-+	 * is attached to the request.
-+	 */
-+	memset(&c, 0, sizeof(c));
-+	c.create_sq.opcode = nvme_admin_create_sq;
-+	c.create_sq.prp1 = cpu_to_le64(nvmeq->sq_dma_addr);
-+	c.create_sq.sqid = cpu_to_le16(qid);
-+	c.create_sq.qsize = cpu_to_le16(nvmeq->q_depth - 1);
-+	c.create_sq.sq_flags = cpu_to_le16(flags);
-+	c.create_sq.cqid = cpu_to_le16(qid);
-+
-+	return nvme_submit_sync_cmd(&dev->ctrl, &c, NULL, 0);
-+}
-+
-+static int adapter_delete_cq(struct nvme_dev *dev, u16 cqid)
-+{
-+	return adapter_delete_queue(dev, nvme_admin_delete_cq, cqid);
-+}
-+
-+static void nvme_init_queue(struct nvme_queue *nvmeq, u16 qid)
-+{
-+	struct nvme_dev *dev = nvmeq->dev;
-+
-+	nvmeq->sq_tail = 0;
-+	nvmeq->cq_head = 0;
-+	nvmeq->cq_phase = 1;
-+	nvmeq->q_db = &dev->dbs[qid * 2 * dev->db_stride];
-+	dev->online_queues++;
-+}
-+
-+static int nvme_create_queue(struct nvme_queue *nvmeq, int qid)
-+{
-+	struct nvme_dev *dev = nvmeq->dev;
-+	int result;
-+	s16 vector;
-+
-+	vector = 0;
-+	result = adapter_alloc_cq(dev, qid, nvmeq, vector);
-+	if (result)
-+		return result;
-+
-+	result = adapter_alloc_sq(dev, qid, nvmeq);
-+	if (result < 0)
-+		return result;
-+	else if (result)
-+		goto release_cq;
-+
-+	nvme_init_queue(nvmeq, qid);
-+
-+	return result;
-+
-+release_cq:
-+	adapter_delete_cq(dev, qid);
-+	return result;
-+}
-+
-+/**
-+ * nvme_submit_cmd() - Copy a command into a queue and ring the doorbell
-+ * @nvmeq: The queue to use
-+ * @cmd: The command to send
-+ */
-+static void nvme_submit_cmd(struct nvme_queue *nvmeq, struct nvme_command *cmd)
-+{
-+	memcpy(&nvmeq->sq_cmds[nvmeq->sq_tail], cmd, sizeof(*cmd));
-+
-+	if (++nvmeq->sq_tail == nvmeq->q_depth)
-+		nvmeq->sq_tail = 0;
-+	writel(nvmeq->sq_tail, nvmeq->q_db);
-+}
-+
-+/* We read the CQE phase first to check if the rest of the entry is valid */
-+static inline bool nvme_cqe_pending(struct nvme_queue *nvmeq)
-+{
-+	return (le16_to_cpu(nvmeq->cqes[nvmeq->cq_head].status) & 1) ==
-+			nvmeq->cq_phase;
-+}
-+
-+static inline void nvme_ring_cq_doorbell(struct nvme_queue *nvmeq)
-+{
-+	u16 head = nvmeq->cq_head;
-+
-+	writel(head, nvmeq->q_db + nvmeq->dev->db_stride);
-+}
-+
-+static inline void nvme_handle_cqe(struct nvme_queue *nvmeq, u16 idx)
-+{
-+	volatile struct nvme_completion *cqe = &nvmeq->cqes[idx];
-+	struct nvme_request *req = nvmeq->req;
-+
-+	if (unlikely(cqe->command_id >= nvmeq->q_depth)) {
-+		dev_warn(nvmeq->dev->ctrl.dev,
-+			"invalid id %d completed on queue %d\n",
-+			cqe->command_id, le16_to_cpu(cqe->sq_id));
-+		return;
-+	}
-+
-+	if (WARN_ON(cqe->command_id != req->cmd->common.command_id))
-+		return;
-+
-+	nvme_end_request(req, cqe->status, cqe->result);
-+}
-+
-+static void nvme_complete_cqes(struct nvme_queue *nvmeq, u16 start, u16 end)
-+{
-+	while (start != end) {
-+		nvme_handle_cqe(nvmeq, start);
-+		if (++start == nvmeq->q_depth)
-+			start = 0;
-+	}
-+}
-+
-+static inline void nvme_update_cq_head(struct nvme_queue *nvmeq)
-+{
-+	if (++nvmeq->cq_head == nvmeq->q_depth) {
-+		nvmeq->cq_head = 0;
-+		nvmeq->cq_phase = !nvmeq->cq_phase;
-+	}
-+}
-+
-+static inline bool nvme_process_cq(struct nvme_queue *nvmeq, u16 *start,
-+		u16 *end, int tag)
-+{
-+	bool found = false;
-+
-+	*start = nvmeq->cq_head;
-+	while (!found && nvme_cqe_pending(nvmeq)) {
-+		if (nvmeq->cqes[nvmeq->cq_head].command_id == tag)
-+			found = true;
-+		nvme_update_cq_head(nvmeq);
-+	}
-+	*end = nvmeq->cq_head;
-+
-+	if (*start != *end)
-+		nvme_ring_cq_doorbell(nvmeq);
-+	return found;
-+}
-+
-+static bool nvme_poll(struct nvme_queue *nvmeq, unsigned int tag)
-+{
-+	u16 start, end;
-+	bool found;
-+
-+	if (!nvme_cqe_pending(nvmeq))
-+		return false;
-+
-+	found = nvme_process_cq(nvmeq, &start, &end, tag);
-+
-+	nvme_complete_cqes(nvmeq, start, end);
-+	return found;
-+}
-+
-+static int nvme_pci_submit_sync_cmd(struct nvme_ctrl *ctrl,
-+				    struct nvme_command *cmd,
-+				    union nvme_result *result,
-+				    void *buffer,
-+				    unsigned int buffer_len,
-+				    unsigned timeout, int qid)
-+{
-+	struct nvme_dev *dev = to_nvme_dev(ctrl);
-+	struct nvme_queue *nvmeq = &dev->queues[qid];
-+	struct nvme_request req = { };
-+	const u16 tag = nvmeq->counter++ & (nvmeq->q_depth - 1);
-+	enum dma_data_direction dma_dir;
-+	int ret;
-+
-+	switch (qid) {
-+	case NVME_QID_ADMIN:
-+		switch (cmd->common.opcode) {
-+		case nvme_admin_create_sq:
-+		case nvme_admin_create_cq:
-+		case nvme_admin_delete_sq:
-+		case nvme_admin_delete_cq:
-+		case nvme_admin_set_features:
-+			dma_dir = DMA_TO_DEVICE;
-+			break;
-+		case nvme_admin_identify:
-+			dma_dir = DMA_FROM_DEVICE;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		break;
-+	case NVME_QID_IO:
-+		switch (cmd->rw.opcode) {
-+		case nvme_cmd_write:
-+			dma_dir = DMA_TO_DEVICE;
-+			break;
-+		case nvme_cmd_read:
-+			dma_dir = DMA_FROM_DEVICE;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	cmd->common.command_id = tag;
-+
-+	timeout = timeout ?: ADMIN_TIMEOUT;
-+
-+	req.cmd        = cmd;
-+	req.buffer     = buffer;
-+	req.buffer_len = buffer_len;
-+	req.dma_dir    = dma_dir;
-+
-+	ret = nvme_map_data(dev, &req);
-+	if (ret) {
-+		dev_err(dev->dev, "Failed to map request data\n");
-+		return ret;
-+	}
-+
-+	nvme_submit_cmd(nvmeq, cmd);
-+
-+	nvmeq->req = &req;
-+	ret = wait_on_timeout(timeout, nvme_poll(nvmeq, tag));
-+	nvmeq->req = NULL;
-+
-+	nvme_unmap_data(dev, &req);
-+
-+	if (result)
-+		*result = req.result;
-+
-+	return ret ?: req.status;
-+}
-+
-+static int nvme_pci_configure_admin_queue(struct nvme_dev *dev)
-+{
-+	int result;
-+	u32 aqa;
-+	struct nvme_queue *nvmeq;
-+
-+	dev->subsystem = readl(dev->bar + NVME_REG_VS) >= NVME_VS(1, 1, 0) ?
-+				NVME_CAP_NSSRC(dev->ctrl.cap) : 0;
-+
-+	if (dev->subsystem &&
-+	    (readl(dev->bar + NVME_REG_CSTS) & NVME_CSTS_NSSRO))
-+		writel(NVME_CSTS_NSSRO, dev->bar + NVME_REG_CSTS);
-+
-+	result = nvme_disable_ctrl(&dev->ctrl, dev->ctrl.cap);
-+	if (result < 0)
-+		return result;
-+
-+	result = nvme_alloc_queue(dev, NVME_QID_ADMIN, NVME_AQ_DEPTH);
-+	if (result)
-+		return result;
-+
-+	nvmeq = &dev->queues[NVME_QID_ADMIN];
-+	aqa = nvmeq->q_depth - 1;
-+	aqa |= aqa << 16;
-+
-+	writel(aqa, dev->bar + NVME_REG_AQA);
-+	writeq(nvmeq->sq_dma_addr, dev->bar + NVME_REG_ASQ);
-+	writeq(nvmeq->cq_dma_addr, dev->bar + NVME_REG_ACQ);
-+
-+	result = nvme_enable_ctrl(&dev->ctrl, dev->ctrl.cap);
-+	if (result)
-+		return result;
-+
-+	nvme_init_queue(nvmeq, NVME_QID_ADMIN);
-+
-+	return result;
-+}
-+
-+static int nvme_create_io_queues(struct nvme_dev *dev)
-+{
-+	unsigned i, max;
-+	int ret = 0;
-+
-+	for (i = dev->ctrl.queue_count; i <= dev->max_qid; i++) {
-+		if (nvme_alloc_queue(dev, i, dev->q_depth)) {
-+			ret = -ENOMEM;
-+			break;
-+		}
-+	}
-+
-+	max = min(dev->max_qid, dev->ctrl.queue_count - 1);
-+	for (i = dev->online_queues; i <= max; i++) {
-+		ret = nvme_create_queue(&dev->queues[i], i);
-+		if (ret)
-+			break;
-+	}
-+
-+	/*
-+	 * Ignore failing Create SQ/CQ commands, we can continue with less
-+	 * than the desired amount of queues, and even a controller without
-+	 * I/O queues can still be used to issue admin commands.  This might
-+	 * be useful to upgrade a buggy firmware for example.
-+	 */
-+	return ret >= 0 ? 0 : ret;
-+}
-+
-+static int nvme_setup_io_queues(struct nvme_dev *dev)
-+{
-+	int result, nr_io_queues;
-+
-+	nr_io_queues = NVME_QID_NUM - 1;
-+	result = nvme_set_queue_count(&dev->ctrl, &nr_io_queues);
-+	if (result < 0)
-+		return result;
-+
-+	dev->max_qid = nr_io_queues;
-+
-+	return nvme_create_io_queues(dev);
-+}
-+
-+static int nvme_pci_enable(struct nvme_dev *dev)
-+{
-+	struct pci_dev *pdev = to_pci_dev(dev->dev);
-+
-+	if (pci_enable_device(pdev))
-+		return -ENOMEM;
-+
-+	pci_set_master(pdev);
-+
-+	if (readl(dev->bar + NVME_REG_CSTS) == -1)
-+		return -ENODEV;
-+
-+	dev->ctrl.cap = readq(dev->bar + NVME_REG_CAP);
-+
-+	dev->q_depth = min_t(int, NVME_CAP_MQES(dev->ctrl.cap) + 1,
-+			     io_queue_depth);
-+	dev->db_stride = 1 << NVME_CAP_STRIDE(dev->ctrl.cap);
-+	dev->dbs = dev->bar + 4096;
-+
-+	return 0;
-+}
-+
-+static void nvme_reset_work(struct nvme_dev *dev)
-+{
-+	int result = -ENODEV;
-+
-+	result = nvme_pci_enable(dev);
-+	if (result)
-+		goto out;
-+
-+	result = nvme_pci_configure_admin_queue(dev);
-+	if (result)
-+		goto out;
-+
-+	/*
-+	 * Limit the max command size to prevent iod->sg allocations going
-+	 * over a single page.
-+	 */
-+	dev->ctrl.max_hw_sectors = NVME_MAX_KB_SZ << 1;
-+
-+	result = nvme_init_identify(&dev->ctrl);
-+	if (result)
-+		goto out;
-+
-+	result = nvme_setup_io_queues(dev);
-+	if (result) {
-+		dev_err(dev->ctrl.dev, "IO queues not created\n");
-+		goto out;
-+	}
-+
-+	nvme_start_ctrl(&dev->ctrl);
-+out:
-+	return;
-+}
-+
-+static int nvme_pci_reg_read32(struct nvme_ctrl *ctrl, u32 off, u32 *val)
-+{
-+	*val = readl(to_nvme_dev(ctrl)->bar + off);
-+	return 0;
-+}
-+
-+static int nvme_pci_reg_write32(struct nvme_ctrl *ctrl, u32 off, u32 val)
-+{
-+	writel(val, to_nvme_dev(ctrl)->bar + off);
-+	return 0;
-+}
-+
-+static int nvme_pci_reg_read64(struct nvme_ctrl *ctrl, u32 off, u64 *val)
-+{
-+	*val = readq(to_nvme_dev(ctrl)->bar + off);
-+	return 0;
-+}
-+
-+static const struct nvme_ctrl_ops nvme_pci_ctrl_ops = {
-+	.reg_read32		= nvme_pci_reg_read32,
-+	.reg_write32		= nvme_pci_reg_write32,
-+	.reg_read64		= nvme_pci_reg_read64,
-+	.submit_sync_cmd	= nvme_pci_submit_sync_cmd,
-+};
-+
-+static void nvme_dev_map(struct nvme_dev *dev)
-+{
-+	struct pci_dev *pdev = to_pci_dev(dev->dev);
-+
-+	dev->bar = pci_iomap(pdev, 0);
-+}
-+
-+static void nvme_delete_queue(struct nvme_queue *nvmeq, u8 opcode)
-+{
-+	int ret;
-+	ret = adapter_delete_queue(nvmeq->dev, opcode, nvmeq->qid);
-+	if (ret < 0)
-+		dev_err(nvmeq->dev->dev, "%s: %s\n", __func__,
-+			strerror(-ret));
-+	else if (ret)
-+		dev_err(nvmeq->dev->dev,
-+			"%s: status code type: %xh, status code %02xh\n",
-+			__func__, (ret >> 8) & 0xf, ret & 0xff);
-+}
-+
-+static void nvme_disable_io_queues(struct nvme_dev *dev)
-+{
-+	int i, queues = dev->online_queues - 1;
-+
-+	for (i = queues; i > 0; i--) {
-+		nvme_delete_queue(&dev->queues[i], nvme_admin_delete_sq);
-+		nvme_delete_queue(&dev->queues[i], nvme_admin_delete_cq);
-+	}
-+}
-+
-+static void nvme_disable_admin_queue(struct nvme_dev *dev)
-+{
-+	struct nvme_queue *nvmeq = &dev->queues[0];
-+	u16 start, end;
-+
-+	nvme_shutdown_ctrl(&dev->ctrl);
-+	nvme_process_cq(nvmeq, &start, &end, -1);
-+	nvme_complete_cqes(nvmeq, start, end);
-+}
-+
-+static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-+{
-+	struct nvme_dev *dev;
-+	int result;
-+
-+	dev = xzalloc(sizeof(*dev));
-+	dev->dev = &pdev->dev;
-+	pdev->dev.priv = dev;
-+
-+	nvme_dev_map(dev);
-+	result = nvme_init_ctrl(&dev->ctrl, &pdev->dev, &nvme_pci_ctrl_ops);
-+	if (result)
-+		return result;
-+
-+	nvme_reset_work(dev);
-+
-+	return 0;
-+}
-+
-+static void nvme_remove(struct pci_dev *pdev)
-+{
-+	struct nvme_dev *dev = pdev->dev.priv;
-+	bool dead = true;
-+
-+	u32 csts = readl(dev->bar + NVME_REG_CSTS);
-+
-+	dead = !!((csts & NVME_CSTS_CFS) || !(csts & NVME_CSTS_RDY));
-+
-+	if (!dead && dev->ctrl.queue_count > 0) {
-+		nvme_disable_io_queues(dev);
-+		nvme_disable_admin_queue(dev);
-+	}
-+}
-+
-+static const struct pci_device_id nvme_id_table[] = {
-+	{ PCI_DEVICE_CLASS(PCI_CLASS_STORAGE_EXPRESS, PCI_ANY_ID) },
-+	{ 0, },
-+};
-+
-+static struct pci_driver nvme_driver = {
-+	.name		= "nvme",
-+	.id_table	= nvme_id_table,
-+	.probe		= nvme_probe,
-+	.remove		= nvme_remove,
-+};
-+device_pci_driver(nvme_driver);
-diff --git a/include/linux/nvme.h b/include/linux/nvme.h
-new file mode 100644
-index 000000000..818dbe933
---- /dev/null
-+++ b/include/linux/nvme.h
-@@ -0,0 +1,1271 @@
-+/*
-+ * Definitions for the NVM Express interface
-+ * Copyright (c) 2011-2014, Intel Corporation.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ */
-+
-+#ifndef _LINUX_NVME_H
-+#define _LINUX_NVME_H
-+
-+#include <linux/types.h>
-+#include <linux/uuid.h>
-+
-+/* NQN names in commands fields specified one size */
-+#define NVMF_NQN_FIELD_LEN	256
-+
-+/* However the max length of a qualified name is another size */
-+#define NVMF_NQN_SIZE		223
-+
-+#define NVMF_TRSVCID_SIZE	32
-+#define NVMF_TRADDR_SIZE	256
-+#define NVMF_TSAS_SIZE		256
-+
-+#define NVME_DISC_SUBSYS_NAME	"nqn.2014-08.org.nvmexpress.discovery"
-+
-+#define NVME_RDMA_IP_PORT	4420
-+
-+#define NVME_NSID_ALL		0xffffffff
-+
-+enum nvme_subsys_type {
-+	NVME_NQN_DISC	= 1,		/* Discovery type target subsystem */
-+	NVME_NQN_NVME	= 2,		/* NVME type target subsystem */
-+};
-+
-+/* Address Family codes for Discovery Log Page entry ADRFAM field */
-+enum {
-+	NVMF_ADDR_FAMILY_PCI	= 0,	/* PCIe */
-+	NVMF_ADDR_FAMILY_IP4	= 1,	/* IP4 */
-+	NVMF_ADDR_FAMILY_IP6	= 2,	/* IP6 */
-+	NVMF_ADDR_FAMILY_IB	= 3,	/* InfiniBand */
-+	NVMF_ADDR_FAMILY_FC	= 4,	/* Fibre Channel */
-+};
-+
-+/* Transport Type codes for Discovery Log Page entry TRTYPE field */
-+enum {
-+	NVMF_TRTYPE_RDMA	= 1,	/* RDMA */
-+	NVMF_TRTYPE_FC		= 2,	/* Fibre Channel */
-+	NVMF_TRTYPE_LOOP	= 254,	/* Reserved for host usage */
-+	NVMF_TRTYPE_MAX,
-+};
-+
-+/* Transport Requirements codes for Discovery Log Page entry TREQ field */
-+enum {
-+	NVMF_TREQ_NOT_SPECIFIED	= 0,	/* Not specified */
-+	NVMF_TREQ_REQUIRED	= 1,	/* Required */
-+	NVMF_TREQ_NOT_REQUIRED	= 2,	/* Not Required */
-+};
-+
-+/* RDMA QP Service Type codes for Discovery Log Page entry TSAS
-+ * RDMA_QPTYPE field
-+ */
-+enum {
-+	NVMF_RDMA_QPTYPE_CONNECTED	= 1, /* Reliable Connected */
-+	NVMF_RDMA_QPTYPE_DATAGRAM	= 2, /* Reliable Datagram */
-+};
-+
-+/* RDMA QP Service Type codes for Discovery Log Page entry TSAS
-+ * RDMA_QPTYPE field
-+ */
-+enum {
-+	NVMF_RDMA_PRTYPE_NOT_SPECIFIED	= 1, /* No Provider Specified */
-+	NVMF_RDMA_PRTYPE_IB		= 2, /* InfiniBand */
-+	NVMF_RDMA_PRTYPE_ROCE		= 3, /* InfiniBand RoCE */
-+	NVMF_RDMA_PRTYPE_ROCEV2		= 4, /* InfiniBand RoCEV2 */
-+	NVMF_RDMA_PRTYPE_IWARP		= 5, /* IWARP */
-+};
-+
-+/* RDMA Connection Management Service Type codes for Discovery Log Page
-+ * entry TSAS RDMA_CMS field
-+ */
-+enum {
-+	NVMF_RDMA_CMS_RDMA_CM	= 1, /* Sockets based endpoint addressing */
-+};
-+
-+#define NVME_AQ_DEPTH		32
-+#define NVME_NR_AEN_COMMANDS	1
-+#define NVME_AQ_BLK_MQ_DEPTH	(NVME_AQ_DEPTH - NVME_NR_AEN_COMMANDS)
-+
-+/*
-+ * Subtract one to leave an empty queue entry for 'Full Queue' condition. See
-+ * NVM-Express 1.2 specification, section 4.1.2.
-+ */
-+#define NVME_AQ_MQ_TAG_DEPTH	(NVME_AQ_BLK_MQ_DEPTH - 1)
-+
-+enum {
-+	NVME_REG_CAP	= 0x0000,	/* Controller Capabilities */
-+	NVME_REG_VS	= 0x0008,	/* Version */
-+	NVME_REG_INTMS	= 0x000c,	/* Interrupt Mask Set */
-+	NVME_REG_INTMC	= 0x0010,	/* Interrupt Mask Clear */
-+	NVME_REG_CC	= 0x0014,	/* Controller Configuration */
-+	NVME_REG_CSTS	= 0x001c,	/* Controller Status */
-+	NVME_REG_NSSR	= 0x0020,	/* NVM Subsystem Reset */
-+	NVME_REG_AQA	= 0x0024,	/* Admin Queue Attributes */
-+	NVME_REG_ASQ	= 0x0028,	/* Admin SQ Base Address */
-+	NVME_REG_ACQ	= 0x0030,	/* Admin CQ Base Address */
-+	NVME_REG_CMBLOC = 0x0038,	/* Controller Memory Buffer Location */
-+	NVME_REG_CMBSZ	= 0x003c,	/* Controller Memory Buffer Size */
-+	NVME_REG_DBS	= 0x1000,	/* SQ 0 Tail Doorbell */
-+};
-+
-+#define NVME_CAP_MQES(cap)	((cap) & 0xffff)
-+#define NVME_CAP_TIMEOUT(cap)	(((cap) >> 24) & 0xff)
-+#define NVME_CAP_STRIDE(cap)	(((cap) >> 32) & 0xf)
-+#define NVME_CAP_NSSRC(cap)	(((cap) >> 36) & 0x1)
-+#define NVME_CAP_MPSMIN(cap)	(((cap) >> 48) & 0xf)
-+#define NVME_CAP_MPSMAX(cap)	(((cap) >> 52) & 0xf)
-+
-+#define NVME_CMB_BIR(cmbloc)	((cmbloc) & 0x7)
-+#define NVME_CMB_OFST(cmbloc)	(((cmbloc) >> 12) & 0xfffff)
-+
-+enum {
-+	NVME_CMBSZ_SQS		= 1 << 0,
-+	NVME_CMBSZ_CQS		= 1 << 1,
-+	NVME_CMBSZ_LISTS	= 1 << 2,
-+	NVME_CMBSZ_RDS		= 1 << 3,
-+	NVME_CMBSZ_WDS		= 1 << 4,
-+
-+	NVME_CMBSZ_SZ_SHIFT	= 12,
-+	NVME_CMBSZ_SZ_MASK	= 0xfffff,
-+
-+	NVME_CMBSZ_SZU_SHIFT	= 8,
-+	NVME_CMBSZ_SZU_MASK	= 0xf,
-+};
-+
-+/*
-+ * Submission and Completion Queue Entry Sizes for the NVM command set.
-+ * (In bytes and specified as a power of two (2^n)).
-+ */
-+#define NVME_NVM_IOSQES		6
-+#define NVME_NVM_IOCQES		4
-+
-+enum {
-+	NVME_CC_ENABLE		= 1 << 0,
-+	NVME_CC_CSS_NVM		= 0 << 4,
-+	NVME_CC_EN_SHIFT	= 0,
-+	NVME_CC_CSS_SHIFT	= 4,
-+	NVME_CC_MPS_SHIFT	= 7,
-+	NVME_CC_AMS_SHIFT	= 11,
-+	NVME_CC_SHN_SHIFT	= 14,
-+	NVME_CC_IOSQES_SHIFT	= 16,
-+	NVME_CC_IOCQES_SHIFT	= 20,
-+	NVME_CC_AMS_RR		= 0 << NVME_CC_AMS_SHIFT,
-+	NVME_CC_AMS_WRRU	= 1 << NVME_CC_AMS_SHIFT,
-+	NVME_CC_AMS_VS		= 7 << NVME_CC_AMS_SHIFT,
-+	NVME_CC_SHN_NONE	= 0 << NVME_CC_SHN_SHIFT,
-+	NVME_CC_SHN_NORMAL	= 1 << NVME_CC_SHN_SHIFT,
-+	NVME_CC_SHN_ABRUPT	= 2 << NVME_CC_SHN_SHIFT,
-+	NVME_CC_SHN_MASK	= 3 << NVME_CC_SHN_SHIFT,
-+	NVME_CC_IOSQES		= NVME_NVM_IOSQES << NVME_CC_IOSQES_SHIFT,
-+	NVME_CC_IOCQES		= NVME_NVM_IOCQES << NVME_CC_IOCQES_SHIFT,
-+	NVME_CSTS_RDY		= 1 << 0,
-+	NVME_CSTS_CFS		= 1 << 1,
-+	NVME_CSTS_NSSRO		= 1 << 4,
-+	NVME_CSTS_PP		= 1 << 5,
-+	NVME_CSTS_SHST_NORMAL	= 0 << 2,
-+	NVME_CSTS_SHST_OCCUR	= 1 << 2,
-+	NVME_CSTS_SHST_CMPLT	= 2 << 2,
-+	NVME_CSTS_SHST_MASK	= 3 << 2,
-+};
-+
-+struct nvme_id_power_state {
-+	__le16			max_power;	/* centiwatts */
-+	__u8			rsvd2;
-+	__u8			flags;
-+	__le32			entry_lat;	/* microseconds */
-+	__le32			exit_lat;	/* microseconds */
-+	__u8			read_tput;
-+	__u8			read_lat;
-+	__u8			write_tput;
-+	__u8			write_lat;
-+	__le16			idle_power;
-+	__u8			idle_scale;
-+	__u8			rsvd19;
-+	__le16			active_power;
-+	__u8			active_work_scale;
-+	__u8			rsvd23[9];
-+};
-+
-+enum {
-+	NVME_PS_FLAGS_MAX_POWER_SCALE	= 1 << 0,
-+	NVME_PS_FLAGS_NON_OP_STATE	= 1 << 1,
-+};
-+
-+struct nvme_id_ctrl {
-+	__le16			vid;
-+	__le16			ssvid;
-+	char			sn[20];
-+	char			mn[40];
-+	char			fr[8];
-+	__u8			rab;
-+	__u8			ieee[3];
-+	__u8			cmic;
-+	__u8			mdts;
-+	__le16			cntlid;
-+	__le32			ver;
-+	__le32			rtd3r;
-+	__le32			rtd3e;
-+	__le32			oaes;
-+	__le32			ctratt;
-+	__u8			rsvd100[156];
-+	__le16			oacs;
-+	__u8			acl;
-+	__u8			aerl;
-+	__u8			frmw;
-+	__u8			lpa;
-+	__u8			elpe;
-+	__u8			npss;
-+	__u8			avscc;
-+	__u8			apsta;
-+	__le16			wctemp;
-+	__le16			cctemp;
-+	__le16			mtfa;
-+	__le32			hmpre;
-+	__le32			hmmin;
-+	__u8			tnvmcap[16];
-+	__u8			unvmcap[16];
-+	__le32			rpmbs;
-+	__le16			edstt;
-+	__u8			dsto;
-+	__u8			fwug;
-+	__le16			kas;
-+	__le16			hctma;
-+	__le16			mntmt;
-+	__le16			mxtmt;
-+	__le32			sanicap;
-+	__le32			hmminds;
-+	__le16			hmmaxd;
-+	__u8			rsvd338[4];
-+	__u8			anatt;
-+	__u8			anacap;
-+	__le32			anagrpmax;
-+	__le32			nanagrpid;
-+	__u8			rsvd352[160];
-+	__u8			sqes;
-+	__u8			cqes;
-+	__le16			maxcmd;
-+	__le32			nn;
-+	__le16			oncs;
-+	__le16			fuses;
-+	__u8			fna;
-+	__u8			vwc;
-+	__le16			awun;
-+	__le16			awupf;
-+	__u8			nvscc;
-+	__u8			nwpc;
-+	__le16			acwu;
-+	__u8			rsvd534[2];
-+	__le32			sgls;
-+	__le32			mnan;
-+	__u8			rsvd544[224];
-+	char			subnqn[256];
-+	__u8			rsvd1024[768];
-+	__le32			ioccsz;
-+	__le32			iorcsz;
-+	__le16			icdoff;
-+	__u8			ctrattr;
-+	__u8			msdbd;
-+	__u8			rsvd1804[244];
-+	struct nvme_id_power_state	psd[32];
-+	__u8			vs[1024];
-+};
-+
-+enum {
-+	NVME_CTRL_ONCS_COMPARE			= 1 << 0,
-+	NVME_CTRL_ONCS_WRITE_UNCORRECTABLE	= 1 << 1,
-+	NVME_CTRL_ONCS_DSM			= 1 << 2,
-+	NVME_CTRL_ONCS_WRITE_ZEROES		= 1 << 3,
-+	NVME_CTRL_ONCS_TIMESTAMP		= 1 << 6,
-+	NVME_CTRL_VWC_PRESENT			= 1 << 0,
-+	NVME_CTRL_OACS_SEC_SUPP                 = 1 << 0,
-+	NVME_CTRL_OACS_DIRECTIVES		= 1 << 5,
-+	NVME_CTRL_OACS_DBBUF_SUPP		= 1 << 8,
-+	NVME_CTRL_LPA_CMD_EFFECTS_LOG		= 1 << 1,
-+};
-+
-+struct nvme_lbaf {
-+	__le16			ms;
-+	__u8			ds;
-+	__u8			rp;
-+};
-+
-+struct nvme_id_ns {
-+	__le64			nsze;
-+	__le64			ncap;
-+	__le64			nuse;
-+	__u8			nsfeat;
-+	__u8			nlbaf;
-+	__u8			flbas;
-+	__u8			mc;
-+	__u8			dpc;
-+	__u8			dps;
-+	__u8			nmic;
-+	__u8			rescap;
-+	__u8			fpi;
-+	__u8			rsvd33;
-+	__le16			nawun;
-+	__le16			nawupf;
-+	__le16			nacwu;
-+	__le16			nabsn;
-+	__le16			nabo;
-+	__le16			nabspf;
-+	__le16			noiob;
-+	__u8			nvmcap[16];
-+	__u8			rsvd64[28];
-+	__le32			anagrpid;
-+	__u8			rsvd96[3];
-+	__u8			nsattr;
-+	__u8			rsvd100[4];
-+	__u8			nguid[16];
-+	__u8			eui64[8];
-+	struct nvme_lbaf	lbaf[16];
-+	__u8			rsvd192[192];
-+	__u8			vs[3712];
-+};
-+
-+enum {
-+	NVME_ID_CNS_NS			= 0x00,
-+	NVME_ID_CNS_CTRL		= 0x01,
-+	NVME_ID_CNS_NS_ACTIVE_LIST	= 0x02,
-+	NVME_ID_CNS_NS_DESC_LIST	= 0x03,
-+	NVME_ID_CNS_NS_PRESENT_LIST	= 0x10,
-+	NVME_ID_CNS_NS_PRESENT		= 0x11,
-+	NVME_ID_CNS_CTRL_NS_LIST	= 0x12,
-+	NVME_ID_CNS_CTRL_LIST		= 0x13,
-+};
-+
-+enum {
-+	NVME_DIR_IDENTIFY		= 0x00,
-+	NVME_DIR_STREAMS		= 0x01,
-+	NVME_DIR_SND_ID_OP_ENABLE	= 0x01,
-+	NVME_DIR_SND_ST_OP_REL_ID	= 0x01,
-+	NVME_DIR_SND_ST_OP_REL_RSC	= 0x02,
-+	NVME_DIR_RCV_ID_OP_PARAM	= 0x01,
-+	NVME_DIR_RCV_ST_OP_PARAM	= 0x01,
-+	NVME_DIR_RCV_ST_OP_STATUS	= 0x02,
-+	NVME_DIR_RCV_ST_OP_RESOURCE	= 0x03,
-+	NVME_DIR_ENDIR			= 0x01,
-+};
-+
-+enum {
-+	NVME_NS_FEAT_THIN	= 1 << 0,
-+	NVME_NS_FLBAS_LBA_MASK	= 0xf,
-+	NVME_NS_FLBAS_META_EXT	= 0x10,
-+	NVME_LBAF_RP_BEST	= 0,
-+	NVME_LBAF_RP_BETTER	= 1,
-+	NVME_LBAF_RP_GOOD	= 2,
-+	NVME_LBAF_RP_DEGRADED	= 3,
-+	NVME_NS_DPC_PI_LAST	= 1 << 4,
-+	NVME_NS_DPC_PI_FIRST	= 1 << 3,
-+	NVME_NS_DPC_PI_TYPE3	= 1 << 2,
-+	NVME_NS_DPC_PI_TYPE2	= 1 << 1,
-+	NVME_NS_DPC_PI_TYPE1	= 1 << 0,
-+	NVME_NS_DPS_PI_FIRST	= 1 << 3,
-+	NVME_NS_DPS_PI_MASK	= 0x7,
-+	NVME_NS_DPS_PI_TYPE1	= 1,
-+	NVME_NS_DPS_PI_TYPE2	= 2,
-+	NVME_NS_DPS_PI_TYPE3	= 3,
-+};
-+
-+struct nvme_ns_id_desc {
-+	__u8 nidt;
-+	__u8 nidl;
-+	__le16 reserved;
-+};
-+
-+#define NVME_NIDT_EUI64_LEN	8
-+#define NVME_NIDT_NGUID_LEN	16
-+#define NVME_NIDT_UUID_LEN	16
-+
-+enum {
-+	NVME_NIDT_EUI64		= 0x01,
-+	NVME_NIDT_NGUID		= 0x02,
-+	NVME_NIDT_UUID		= 0x03,
-+};
-+
-+struct nvme_smart_log {
-+	__u8			critical_warning;
-+	__u8			temperature[2];
-+	__u8			avail_spare;
-+	__u8			spare_thresh;
-+	__u8			percent_used;
-+	__u8			rsvd6[26];
-+	__u8			data_units_read[16];
-+	__u8			data_units_written[16];
-+	__u8			host_reads[16];
-+	__u8			host_writes[16];
-+	__u8			ctrl_busy_time[16];
-+	__u8			power_cycles[16];
-+	__u8			power_on_hours[16];
-+	__u8			unsafe_shutdowns[16];
-+	__u8			media_errors[16];
-+	__u8			num_err_log_entries[16];
-+	__le32			warning_temp_time;
-+	__le32			critical_comp_time;
-+	__le16			temp_sensor[8];
-+	__u8			rsvd216[296];
-+};
-+
-+struct nvme_fw_slot_info_log {
-+	__u8			afi;
-+	__u8			rsvd1[7];
-+	__le64			frs[7];
-+	__u8			rsvd64[448];
-+};
-+
-+enum {
-+	NVME_CMD_EFFECTS_CSUPP		= 1 << 0,
-+	NVME_CMD_EFFECTS_LBCC		= 1 << 1,
-+	NVME_CMD_EFFECTS_NCC		= 1 << 2,
-+	NVME_CMD_EFFECTS_NIC		= 1 << 3,
-+	NVME_CMD_EFFECTS_CCC		= 1 << 4,
-+	NVME_CMD_EFFECTS_CSE_MASK	= 3 << 16,
-+};
-+
-+struct nvme_effects_log {
-+	__le32 acs[256];
-+	__le32 iocs[256];
-+	__u8   resv[2048];
-+};
-+
-+enum nvme_ana_state {
-+	NVME_ANA_OPTIMIZED		= 0x01,
-+	NVME_ANA_NONOPTIMIZED		= 0x02,
-+	NVME_ANA_INACCESSIBLE		= 0x03,
-+	NVME_ANA_PERSISTENT_LOSS	= 0x04,
-+	NVME_ANA_CHANGE			= 0x0f,
-+};
-+
-+struct nvme_ana_group_desc {
-+	__le32	grpid;
-+	__le32	nnsids;
-+	__le64	chgcnt;
-+	__u8	state;
-+	__u8	rsvd17[15];
-+	__le32	nsids[];
-+};
-+
-+/* flag for the log specific field of the ANA log */
-+#define NVME_ANA_LOG_RGO	(1 << 0)
-+
-+struct nvme_ana_rsp_hdr {
-+	__le64	chgcnt;
-+	__le16	ngrps;
-+	__le16	rsvd10[3];
-+};
-+
-+enum {
-+	NVME_SMART_CRIT_SPARE		= 1 << 0,
-+	NVME_SMART_CRIT_TEMPERATURE	= 1 << 1,
-+	NVME_SMART_CRIT_RELIABILITY	= 1 << 2,
-+	NVME_SMART_CRIT_MEDIA		= 1 << 3,
-+	NVME_SMART_CRIT_VOLATILE_MEMORY	= 1 << 4,
-+};
-+
-+enum {
-+	NVME_AER_ERROR			= 0,
-+	NVME_AER_SMART			= 1,
-+	NVME_AER_NOTICE			= 2,
-+	NVME_AER_CSS			= 6,
-+	NVME_AER_VS			= 7,
-+};
-+
-+enum {
-+	NVME_AER_NOTICE_NS_CHANGED	= 0x00,
-+	NVME_AER_NOTICE_FW_ACT_STARTING = 0x01,
-+	NVME_AER_NOTICE_ANA		= 0x03,
-+};
-+
-+enum {
-+	NVME_AEN_CFG_NS_ATTR		= 1 << 8,
-+	NVME_AEN_CFG_FW_ACT		= 1 << 9,
-+	NVME_AEN_CFG_ANA_CHANGE		= 1 << 11,
-+};
-+
-+struct nvme_lba_range_type {
-+	__u8			type;
-+	__u8			attributes;
-+	__u8			rsvd2[14];
-+	__u64			slba;
-+	__u64			nlb;
-+	__u8			guid[16];
-+	__u8			rsvd48[16];
-+};
-+
-+enum {
-+	NVME_LBART_TYPE_FS	= 0x01,
-+	NVME_LBART_TYPE_RAID	= 0x02,
-+	NVME_LBART_TYPE_CACHE	= 0x03,
-+	NVME_LBART_TYPE_SWAP	= 0x04,
-+
-+	NVME_LBART_ATTRIB_TEMP	= 1 << 0,
-+	NVME_LBART_ATTRIB_HIDE	= 1 << 1,
-+};
-+
-+struct nvme_reservation_status {
-+	__le32	gen;
-+	__u8	rtype;
-+	__u8	regctl[2];
-+	__u8	resv5[2];
-+	__u8	ptpls;
-+	__u8	resv10[13];
-+	struct {
-+		__le16	cntlid;
-+		__u8	rcsts;
-+		__u8	resv3[5];
-+		__le64	hostid;
-+		__le64	rkey;
-+	} regctl_ds[];
-+};
-+
-+enum nvme_async_event_type {
-+	NVME_AER_TYPE_ERROR	= 0,
-+	NVME_AER_TYPE_SMART	= 1,
-+	NVME_AER_TYPE_NOTICE	= 2,
-+};
-+
-+/* I/O commands */
-+
-+enum nvme_opcode {
-+	nvme_cmd_flush		= 0x00,
-+	nvme_cmd_write		= 0x01,
-+	nvme_cmd_read		= 0x02,
-+	nvme_cmd_write_uncor	= 0x04,
-+	nvme_cmd_compare	= 0x05,
-+	nvme_cmd_write_zeroes	= 0x08,
-+	nvme_cmd_dsm		= 0x09,
-+	nvme_cmd_resv_register	= 0x0d,
-+	nvme_cmd_resv_report	= 0x0e,
-+	nvme_cmd_resv_acquire	= 0x11,
-+	nvme_cmd_resv_release	= 0x15,
-+};
-+
-+/*
-+ * Descriptor subtype - lower 4 bits of nvme_(keyed_)sgl_desc identifier
-+ *
-+ * @NVME_SGL_FMT_ADDRESS:     absolute address of the data block
-+ * @NVME_SGL_FMT_OFFSET:      relative offset of the in-capsule data block
-+ * @NVME_SGL_FMT_TRANSPORT_A: transport defined format, value 0xA
-+ * @NVME_SGL_FMT_INVALIDATE:  RDMA transport specific remote invalidation
-+ *                            request subtype
-+ */
-+enum {
-+	NVME_SGL_FMT_ADDRESS		= 0x00,
-+	NVME_SGL_FMT_OFFSET		= 0x01,
-+	NVME_SGL_FMT_TRANSPORT_A	= 0x0A,
-+	NVME_SGL_FMT_INVALIDATE		= 0x0f,
-+};
-+
-+/*
-+ * Descriptor type - upper 4 bits of nvme_(keyed_)sgl_desc identifier
-+ *
-+ * For struct nvme_sgl_desc:
-+ *   @NVME_SGL_FMT_DATA_DESC:		data block descriptor
-+ *   @NVME_SGL_FMT_SEG_DESC:		sgl segment descriptor
-+ *   @NVME_SGL_FMT_LAST_SEG_DESC:	last sgl segment descriptor
-+ *
-+ * For struct nvme_keyed_sgl_desc:
-+ *   @NVME_KEY_SGL_FMT_DATA_DESC:	keyed data block descriptor
-+ *
-+ * Transport-specific SGL types:
-+ *   @NVME_TRANSPORT_SGL_DATA_DESC:	Transport SGL data dlock descriptor
-+ */
-+enum {
-+	NVME_SGL_FMT_DATA_DESC		= 0x00,
-+	NVME_SGL_FMT_SEG_DESC		= 0x02,
-+	NVME_SGL_FMT_LAST_SEG_DESC	= 0x03,
-+	NVME_KEY_SGL_FMT_DATA_DESC	= 0x04,
-+	NVME_TRANSPORT_SGL_DATA_DESC	= 0x05,
-+};
-+
-+struct nvme_sgl_desc {
-+	__le64	addr;
-+	__le32	length;
-+	__u8	rsvd[3];
-+	__u8	type;
-+};
-+
-+struct nvme_keyed_sgl_desc {
-+	__le64	addr;
-+	__u8	length[3];
-+	__u8	key[4];
-+	__u8	type;
-+};
-+
-+union nvme_data_ptr {
-+	struct {
-+		__le64	prp1;
-+		__le64	prp2;
-+	};
-+	struct nvme_sgl_desc	sgl;
-+	struct nvme_keyed_sgl_desc ksgl;
-+};
-+
-+/*
-+ * Lowest two bits of our flags field (FUSE field in the spec):
-+ *
-+ * @NVME_CMD_FUSE_FIRST:   Fused Operation, first command
-+ * @NVME_CMD_FUSE_SECOND:  Fused Operation, second command
-+ *
-+ * Highest two bits in our flags field (PSDT field in the spec):
-+ *
-+ * @NVME_CMD_PSDT_SGL_METABUF:	Use SGLS for this transfer,
-+ *	If used, MPTR contains addr of single physical buffer (byte aligned).
-+ * @NVME_CMD_PSDT_SGL_METASEG:	Use SGLS for this transfer,
-+ *	If used, MPTR contains an address of an SGL segment containing
-+ *	exactly 1 SGL descriptor (qword aligned).
-+ */
-+enum {
-+	NVME_CMD_FUSE_FIRST	= (1 << 0),
-+	NVME_CMD_FUSE_SECOND	= (1 << 1),
-+
-+	NVME_CMD_SGL_METABUF	= (1 << 6),
-+	NVME_CMD_SGL_METASEG	= (1 << 7),
-+	NVME_CMD_SGL_ALL	= NVME_CMD_SGL_METABUF | NVME_CMD_SGL_METASEG,
-+};
-+
-+struct nvme_common_command {
-+	__u8			opcode;
-+	__u8			flags;
-+	__u16			command_id;
-+	__le32			nsid;
-+	__le32			cdw2[2];
-+	__le64			metadata;
-+	union nvme_data_ptr	dptr;
-+	__le32			cdw10[6];
-+};
-+
-+struct nvme_rw_command {
-+	__u8			opcode;
-+	__u8			flags;
-+	__u16			command_id;
-+	__le32			nsid;
-+	__u64			rsvd2;
-+	__le64			metadata;
-+	union nvme_data_ptr	dptr;
-+	__le64			slba;
-+	__le16			length;
-+	__le16			control;
-+	__le32			dsmgmt;
-+	__le32			reftag;
-+	__le16			apptag;
-+	__le16			appmask;
-+};
-+
-+enum {
-+	NVME_RW_LR			= 1 << 15,
-+	NVME_RW_FUA			= 1 << 14,
-+	NVME_RW_DSM_FREQ_UNSPEC		= 0,
-+	NVME_RW_DSM_FREQ_TYPICAL	= 1,
-+	NVME_RW_DSM_FREQ_RARE		= 2,
-+	NVME_RW_DSM_FREQ_READS		= 3,
-+	NVME_RW_DSM_FREQ_WRITES		= 4,
-+	NVME_RW_DSM_FREQ_RW		= 5,
-+	NVME_RW_DSM_FREQ_ONCE		= 6,
-+	NVME_RW_DSM_FREQ_PREFETCH	= 7,
-+	NVME_RW_DSM_FREQ_TEMP		= 8,
-+	NVME_RW_DSM_LATENCY_NONE	= 0 << 4,
-+	NVME_RW_DSM_LATENCY_IDLE	= 1 << 4,
-+	NVME_RW_DSM_LATENCY_NORM	= 2 << 4,
-+	NVME_RW_DSM_LATENCY_LOW		= 3 << 4,
-+	NVME_RW_DSM_SEQ_REQ		= 1 << 6,
-+	NVME_RW_DSM_COMPRESSED		= 1 << 7,
-+	NVME_RW_PRINFO_PRCHK_REF	= 1 << 10,
-+	NVME_RW_PRINFO_PRCHK_APP	= 1 << 11,
-+	NVME_RW_PRINFO_PRCHK_GUARD	= 1 << 12,
-+	NVME_RW_PRINFO_PRACT		= 1 << 13,
-+	NVME_RW_DTYPE_STREAMS		= 1 << 4,
-+};
-+
-+struct nvme_dsm_cmd {
-+	__u8			opcode;
-+	__u8			flags;
-+	__u16			command_id;
-+	__le32			nsid;
-+	__u64			rsvd2[2];
-+	union nvme_data_ptr	dptr;
-+	__le32			nr;
-+	__le32			attributes;
-+	__u32			rsvd12[4];
-+};
-+
-+enum {
-+	NVME_DSMGMT_IDR		= 1 << 0,
-+	NVME_DSMGMT_IDW		= 1 << 1,
-+	NVME_DSMGMT_AD		= 1 << 2,
-+};
-+
-+#define NVME_DSM_MAX_RANGES	256
-+
-+struct nvme_dsm_range {
-+	__le32			cattr;
-+	__le32			nlb;
-+	__le64			slba;
-+};
-+
-+struct nvme_write_zeroes_cmd {
-+	__u8			opcode;
-+	__u8			flags;
-+	__u16			command_id;
-+	__le32			nsid;
-+	__u64			rsvd2;
-+	__le64			metadata;
-+	union nvme_data_ptr	dptr;
-+	__le64			slba;
-+	__le16			length;
-+	__le16			control;
-+	__le32			dsmgmt;
-+	__le32			reftag;
-+	__le16			apptag;
-+	__le16			appmask;
-+};
-+
-+/* Features */
-+
-+struct nvme_feat_auto_pst {
-+	__le64 entries[32];
-+};
-+
-+enum {
-+	NVME_HOST_MEM_ENABLE	= (1 << 0),
-+	NVME_HOST_MEM_RETURN	= (1 << 1),
-+};
-+
-+/* Admin commands */
-+
-+enum nvme_admin_opcode {
-+	nvme_admin_delete_sq		= 0x00,
-+	nvme_admin_create_sq		= 0x01,
-+	nvme_admin_get_log_page		= 0x02,
-+	nvme_admin_delete_cq		= 0x04,
-+	nvme_admin_create_cq		= 0x05,
-+	nvme_admin_identify		= 0x06,
-+	nvme_admin_abort_cmd		= 0x08,
-+	nvme_admin_set_features		= 0x09,
-+	nvme_admin_get_features		= 0x0a,
-+	nvme_admin_async_event		= 0x0c,
-+	nvme_admin_ns_mgmt		= 0x0d,
-+	nvme_admin_activate_fw		= 0x10,
-+	nvme_admin_download_fw		= 0x11,
-+	nvme_admin_ns_attach		= 0x15,
-+	nvme_admin_keep_alive		= 0x18,
-+	nvme_admin_directive_send	= 0x19,
-+	nvme_admin_directive_recv	= 0x1a,
-+	nvme_admin_dbbuf		= 0x7C,
-+	nvme_admin_format_nvm		= 0x80,
-+	nvme_admin_security_send	= 0x81,
-+	nvme_admin_security_recv	= 0x82,
-+	nvme_admin_sanitize_nvm		= 0x84,
-+};
-+
-+enum {
-+	NVME_QUEUE_PHYS_CONTIG	= (1 << 0),
-+	NVME_CQ_IRQ_ENABLED	= (1 << 1),
-+	NVME_SQ_PRIO_URGENT	= (0 << 1),
-+	NVME_SQ_PRIO_HIGH	= (1 << 1),
-+	NVME_SQ_PRIO_MEDIUM	= (2 << 1),
-+	NVME_SQ_PRIO_LOW	= (3 << 1),
-+	NVME_FEAT_ARBITRATION	= 0x01,
-+	NVME_FEAT_POWER_MGMT	= 0x02,
-+	NVME_FEAT_LBA_RANGE	= 0x03,
-+	NVME_FEAT_TEMP_THRESH	= 0x04,
-+	NVME_FEAT_ERR_RECOVERY	= 0x05,
-+	NVME_FEAT_VOLATILE_WC	= 0x06,
-+	NVME_FEAT_NUM_QUEUES	= 0x07,
-+	NVME_FEAT_IRQ_COALESCE	= 0x08,
-+	NVME_FEAT_IRQ_CONFIG	= 0x09,
-+	NVME_FEAT_WRITE_ATOMIC	= 0x0a,
-+	NVME_FEAT_ASYNC_EVENT	= 0x0b,
-+	NVME_FEAT_AUTO_PST	= 0x0c,
-+	NVME_FEAT_HOST_MEM_BUF	= 0x0d,
-+	NVME_FEAT_TIMESTAMP	= 0x0e,
-+	NVME_FEAT_KATO		= 0x0f,
-+	NVME_FEAT_HCTM		= 0x10,
-+	NVME_FEAT_NOPSC		= 0x11,
-+	NVME_FEAT_RRL		= 0x12,
-+	NVME_FEAT_PLM_CONFIG	= 0x13,
-+	NVME_FEAT_PLM_WINDOW	= 0x14,
-+	NVME_FEAT_SW_PROGRESS	= 0x80,
-+	NVME_FEAT_HOST_ID	= 0x81,
-+	NVME_FEAT_RESV_MASK	= 0x82,
-+	NVME_FEAT_RESV_PERSIST	= 0x83,
-+	NVME_FEAT_WRITE_PROTECT	= 0x84,
-+	NVME_LOG_ERROR		= 0x01,
-+	NVME_LOG_SMART		= 0x02,
-+	NVME_LOG_FW_SLOT	= 0x03,
-+	NVME_LOG_CHANGED_NS	= 0x04,
-+	NVME_LOG_CMD_EFFECTS	= 0x05,
-+	NVME_LOG_ANA		= 0x0c,
-+	NVME_LOG_DISC		= 0x70,
-+	NVME_LOG_RESERVATION	= 0x80,
-+	NVME_FWACT_REPL		= (0 << 3),
-+	NVME_FWACT_REPL_ACTV	= (1 << 3),
-+	NVME_FWACT_ACTV		= (2 << 3),
-+};
-+
-+/* NVMe Namespace Write Protect State */
-+enum {
-+	NVME_NS_NO_WRITE_PROTECT = 0,
-+	NVME_NS_WRITE_PROTECT,
-+	NVME_NS_WRITE_PROTECT_POWER_CYCLE,
-+	NVME_NS_WRITE_PROTECT_PERMANENT,
-+};
-+
-+#define NVME_MAX_CHANGED_NAMESPACES	1024
-+
-+struct nvme_identify {
-+	__u8			opcode;
-+	__u8			flags;
-+	__u16			command_id;
-+	__le32			nsid;
-+	__u64			rsvd2[2];
-+	union nvme_data_ptr	dptr;
-+	__u8			cns;
-+	__u8			rsvd3;
-+	__le16			ctrlid;
-+	__u32			rsvd11[5];
-+};
-+
-+#define NVME_IDENTIFY_DATA_SIZE 4096
-+
-+struct nvme_features {
-+	__u8			opcode;
-+	__u8			flags;
-+	__u16			command_id;
-+	__le32			nsid;
-+	__u64			rsvd2[2];
-+	union nvme_data_ptr	dptr;
-+	__le32			fid;
-+	__le32			dword11;
-+	__le32                  dword12;
-+	__le32                  dword13;
-+	__le32                  dword14;
-+	__le32                  dword15;
-+};
-+
-+struct nvme_host_mem_buf_desc {
-+	__le64			addr;
-+	__le32			size;
-+	__u32			rsvd;
-+};
-+
-+struct nvme_create_cq {
-+	__u8			opcode;
-+	__u8			flags;
-+	__u16			command_id;
-+	__u32			rsvd1[5];
-+	__le64			prp1;
-+	__u64			rsvd8;
-+	__le16			cqid;
-+	__le16			qsize;
-+	__le16			cq_flags;
-+	__le16			irq_vector;
-+	__u32			rsvd12[4];
-+};
-+
-+struct nvme_create_sq {
-+	__u8			opcode;
-+	__u8			flags;
-+	__u16			command_id;
-+	__u32			rsvd1[5];
-+	__le64			prp1;
-+	__u64			rsvd8;
-+	__le16			sqid;
-+	__le16			qsize;
-+	__le16			sq_flags;
-+	__le16			cqid;
-+	__u32			rsvd12[4];
-+};
-+
-+struct nvme_delete_queue {
-+	__u8			opcode;
-+	__u8			flags;
-+	__u16			command_id;
-+	__u32			rsvd1[9];
-+	__le16			qid;
-+	__u16			rsvd10;
-+	__u32			rsvd11[5];
-+};
-+
-+struct nvme_abort_cmd {
-+	__u8			opcode;
-+	__u8			flags;
-+	__u16			command_id;
-+	__u32			rsvd1[9];
-+	__le16			sqid;
-+	__u16			cid;
-+	__u32			rsvd11[5];
-+};
-+
-+struct nvme_download_firmware {
-+	__u8			opcode;
-+	__u8			flags;
-+	__u16			command_id;
-+	__u32			rsvd1[5];
-+	union nvme_data_ptr	dptr;
-+	__le32			numd;
-+	__le32			offset;
-+	__u32			rsvd12[4];
-+};
-+
-+struct nvme_format_cmd {
-+	__u8			opcode;
-+	__u8			flags;
-+	__u16			command_id;
-+	__le32			nsid;
-+	__u64			rsvd2[4];
-+	__le32			cdw10;
-+	__u32			rsvd11[5];
-+};
-+
-+struct nvme_get_log_page_command {
-+	__u8			opcode;
-+	__u8			flags;
-+	__u16			command_id;
-+	__le32			nsid;
-+	__u64			rsvd2[2];
-+	union nvme_data_ptr	dptr;
-+	__u8			lid;
-+	__u8			lsp; /* upper 4 bits reserved */
-+	__le16			numdl;
-+	__le16			numdu;
-+	__u16			rsvd11;
-+	__le32			lpol;
-+	__le32			lpou;
-+	__u32			rsvd14[2];
-+};
-+
-+struct nvme_directive_cmd {
-+	__u8			opcode;
-+	__u8			flags;
-+	__u16			command_id;
-+	__le32			nsid;
-+	__u64			rsvd2[2];
-+	union nvme_data_ptr	dptr;
-+	__le32			numd;
-+	__u8			doper;
-+	__u8			dtype;
-+	__le16			dspec;
-+	__u8			endir;
-+	__u8			tdtype;
-+	__u16			rsvd15;
-+
-+	__u32			rsvd16[3];
-+};
-+
-+/*
-+ * Fabrics subcommands.
-+ */
-+enum nvmf_fabrics_opcode {
-+	nvme_fabrics_command		= 0x7f,
-+};
-+
-+enum nvmf_capsule_command {
-+	nvme_fabrics_type_property_set	= 0x00,
-+	nvme_fabrics_type_connect	= 0x01,
-+	nvme_fabrics_type_property_get	= 0x04,
-+};
-+
-+struct nvmf_common_command {
-+	__u8	opcode;
-+	__u8	resv1;
-+	__u16	command_id;
-+	__u8	fctype;
-+	__u8	resv2[35];
-+	__u8	ts[24];
-+};
-+
-+/*
-+ * The legal cntlid range a NVMe Target will provide.
-+ * Note that cntlid of value 0 is considered illegal in the fabrics world.
-+ * Devices based on earlier specs did not have the subsystem concept;
-+ * therefore, those devices had their cntlid value set to 0 as a result.
-+ */
-+#define NVME_CNTLID_MIN		1
-+#define NVME_CNTLID_MAX		0xffef
-+#define NVME_CNTLID_DYNAMIC	0xffff
-+
-+#define MAX_DISC_LOGS	255
-+
-+/* Discovery log page entry */
-+struct nvmf_disc_rsp_page_entry {
-+	__u8		trtype;
-+	__u8		adrfam;
-+	__u8		subtype;
-+	__u8		treq;
-+	__le16		portid;
-+	__le16		cntlid;
-+	__le16		asqsz;
-+	__u8		resv8[22];
-+	char		trsvcid[NVMF_TRSVCID_SIZE];
-+	__u8		resv64[192];
-+	char		subnqn[NVMF_NQN_FIELD_LEN];
-+	char		traddr[NVMF_TRADDR_SIZE];
-+	union tsas {
-+		char		common[NVMF_TSAS_SIZE];
-+		struct rdma {
-+			__u8	qptype;
-+			__u8	prtype;
-+			__u8	cms;
-+			__u8	resv3[5];
-+			__u16	pkey;
-+			__u8	resv10[246];
-+		} rdma;
-+	} tsas;
-+};
-+
-+/* Discovery log page header */
-+struct nvmf_disc_rsp_page_hdr {
-+	__le64		genctr;
-+	__le64		numrec;
-+	__le16		recfmt;
-+	__u8		resv14[1006];
-+	struct nvmf_disc_rsp_page_entry entries[0];
-+};
-+
-+struct nvmf_connect_command {
-+	__u8		opcode;
-+	__u8		resv1;
-+	__u16		command_id;
-+	__u8		fctype;
-+	__u8		resv2[19];
-+	union nvme_data_ptr dptr;
-+	__le16		recfmt;
-+	__le16		qid;
-+	__le16		sqsize;
-+	__u8		cattr;
-+	__u8		resv3;
-+	__le32		kato;
-+	__u8		resv4[12];
-+};
-+
-+struct nvmf_connect_data {
-+	uuid_t		hostid;
-+	__le16		cntlid;
-+	char		resv4[238];
-+	char		subsysnqn[NVMF_NQN_FIELD_LEN];
-+	char		hostnqn[NVMF_NQN_FIELD_LEN];
-+	char		resv5[256];
-+};
-+
-+struct nvmf_property_set_command {
-+	__u8		opcode;
-+	__u8		resv1;
-+	__u16		command_id;
-+	__u8		fctype;
-+	__u8		resv2[35];
-+	__u8		attrib;
-+	__u8		resv3[3];
-+	__le32		offset;
-+	__le64		value;
-+	__u8		resv4[8];
-+};
-+
-+struct nvmf_property_get_command {
-+	__u8		opcode;
-+	__u8		resv1;
-+	__u16		command_id;
-+	__u8		fctype;
-+	__u8		resv2[35];
-+	__u8		attrib;
-+	__u8		resv3[3];
-+	__le32		offset;
-+	__u8		resv4[16];
-+};
-+
-+struct nvme_dbbuf {
-+	__u8			opcode;
-+	__u8			flags;
-+	__u16			command_id;
-+	__u32			rsvd1[5];
-+	__le64			prp1;
-+	__le64			prp2;
-+	__u32			rsvd12[6];
-+};
-+
-+struct streams_directive_params {
-+	__le16	msl;
-+	__le16	nssa;
-+	__le16	nsso;
-+	__u8	rsvd[10];
-+	__le32	sws;
-+	__le16	sgs;
-+	__le16	nsa;
-+	__le16	nso;
-+	__u8	rsvd2[6];
-+};
-+
-+struct nvme_command {
-+	union {
-+		struct nvme_common_command common;
-+		struct nvme_rw_command rw;
-+		struct nvme_identify identify;
-+		struct nvme_features features;
-+		struct nvme_create_cq create_cq;
-+		struct nvme_create_sq create_sq;
-+		struct nvme_delete_queue delete_queue;
-+		struct nvme_download_firmware dlfw;
-+		struct nvme_format_cmd format;
-+		struct nvme_dsm_cmd dsm;
-+		struct nvme_write_zeroes_cmd write_zeroes;
-+		struct nvme_abort_cmd abort;
-+		struct nvme_get_log_page_command get_log_page;
-+		struct nvmf_common_command fabrics;
-+		struct nvmf_connect_command connect;
-+		struct nvmf_property_set_command prop_set;
-+		struct nvmf_property_get_command prop_get;
-+		struct nvme_dbbuf dbbuf;
-+		struct nvme_directive_cmd directive;
-+	};
-+};
-+
-+static inline bool nvme_is_write(struct nvme_command *cmd)
-+{
-+	/*
-+	 * What a mess...
-+	 *
-+	 * Why can't we simply have a Fabrics In and Fabrics out command?
-+	 */
-+	if (unlikely(cmd->common.opcode == nvme_fabrics_command))
-+		return cmd->fabrics.fctype & 1;
-+	return cmd->common.opcode & 1;
-+}
-+
-+enum {
-+	/*
-+	 * Generic Command Status:
-+	 */
-+	NVME_SC_SUCCESS			= 0x0,
-+	NVME_SC_INVALID_OPCODE		= 0x1,
-+	NVME_SC_INVALID_FIELD		= 0x2,
-+	NVME_SC_CMDID_CONFLICT		= 0x3,
-+	NVME_SC_DATA_XFER_ERROR		= 0x4,
-+	NVME_SC_POWER_LOSS		= 0x5,
-+	NVME_SC_INTERNAL		= 0x6,
-+	NVME_SC_ABORT_REQ		= 0x7,
-+	NVME_SC_ABORT_QUEUE		= 0x8,
-+	NVME_SC_FUSED_FAIL		= 0x9,
-+	NVME_SC_FUSED_MISSING		= 0xa,
-+	NVME_SC_INVALID_NS		= 0xb,
-+	NVME_SC_CMD_SEQ_ERROR		= 0xc,
-+	NVME_SC_SGL_INVALID_LAST	= 0xd,
-+	NVME_SC_SGL_INVALID_COUNT	= 0xe,
-+	NVME_SC_SGL_INVALID_DATA	= 0xf,
-+	NVME_SC_SGL_INVALID_METADATA	= 0x10,
-+	NVME_SC_SGL_INVALID_TYPE	= 0x11,
-+
-+	NVME_SC_SGL_INVALID_OFFSET	= 0x16,
-+	NVME_SC_SGL_INVALID_SUBTYPE	= 0x17,
-+
-+	NVME_SC_NS_WRITE_PROTECTED	= 0x20,
-+
-+	NVME_SC_LBA_RANGE		= 0x80,
-+	NVME_SC_CAP_EXCEEDED		= 0x81,
-+	NVME_SC_NS_NOT_READY		= 0x82,
-+	NVME_SC_RESERVATION_CONFLICT	= 0x83,
-+
-+	/*
-+	 * Command Specific Status:
-+	 */
-+	NVME_SC_CQ_INVALID		= 0x100,
-+	NVME_SC_QID_INVALID		= 0x101,
-+	NVME_SC_QUEUE_SIZE		= 0x102,
-+	NVME_SC_ABORT_LIMIT		= 0x103,
-+	NVME_SC_ABORT_MISSING		= 0x104,
-+	NVME_SC_ASYNC_LIMIT		= 0x105,
-+	NVME_SC_FIRMWARE_SLOT		= 0x106,
-+	NVME_SC_FIRMWARE_IMAGE		= 0x107,
-+	NVME_SC_INVALID_VECTOR		= 0x108,
-+	NVME_SC_INVALID_LOG_PAGE	= 0x109,
-+	NVME_SC_INVALID_FORMAT		= 0x10a,
-+	NVME_SC_FW_NEEDS_CONV_RESET	= 0x10b,
-+	NVME_SC_INVALID_QUEUE		= 0x10c,
-+	NVME_SC_FEATURE_NOT_SAVEABLE	= 0x10d,
-+	NVME_SC_FEATURE_NOT_CHANGEABLE	= 0x10e,
-+	NVME_SC_FEATURE_NOT_PER_NS	= 0x10f,
-+	NVME_SC_FW_NEEDS_SUBSYS_RESET	= 0x110,
-+	NVME_SC_FW_NEEDS_RESET		= 0x111,
-+	NVME_SC_FW_NEEDS_MAX_TIME	= 0x112,
-+	NVME_SC_FW_ACIVATE_PROHIBITED	= 0x113,
-+	NVME_SC_OVERLAPPING_RANGE	= 0x114,
-+	NVME_SC_NS_INSUFFICENT_CAP	= 0x115,
-+	NVME_SC_NS_ID_UNAVAILABLE	= 0x116,
-+	NVME_SC_NS_ALREADY_ATTACHED	= 0x118,
-+	NVME_SC_NS_IS_PRIVATE		= 0x119,
-+	NVME_SC_NS_NOT_ATTACHED		= 0x11a,
-+	NVME_SC_THIN_PROV_NOT_SUPP	= 0x11b,
-+	NVME_SC_CTRL_LIST_INVALID	= 0x11c,
-+
-+	/*
-+	 * I/O Command Set Specific - NVM commands:
-+	 */
-+	NVME_SC_BAD_ATTRIBUTES		= 0x180,
-+	NVME_SC_INVALID_PI		= 0x181,
-+	NVME_SC_READ_ONLY		= 0x182,
-+	NVME_SC_ONCS_NOT_SUPPORTED	= 0x183,
-+
-+	/*
-+	 * I/O Command Set Specific - Fabrics commands:
-+	 */
-+	NVME_SC_CONNECT_FORMAT		= 0x180,
-+	NVME_SC_CONNECT_CTRL_BUSY	= 0x181,
-+	NVME_SC_CONNECT_INVALID_PARAM	= 0x182,
-+	NVME_SC_CONNECT_RESTART_DISC	= 0x183,
-+	NVME_SC_CONNECT_INVALID_HOST	= 0x184,
-+
-+	NVME_SC_DISCOVERY_RESTART	= 0x190,
-+	NVME_SC_AUTH_REQUIRED		= 0x191,
-+
-+	/*
-+	 * Media and Data Integrity Errors:
-+	 */
-+	NVME_SC_WRITE_FAULT		= 0x280,
-+	NVME_SC_READ_ERROR		= 0x281,
-+	NVME_SC_GUARD_CHECK		= 0x282,
-+	NVME_SC_APPTAG_CHECK		= 0x283,
-+	NVME_SC_REFTAG_CHECK		= 0x284,
-+	NVME_SC_COMPARE_FAILED		= 0x285,
-+	NVME_SC_ACCESS_DENIED		= 0x286,
-+	NVME_SC_UNWRITTEN_BLOCK		= 0x287,
-+
-+	/*
-+	 * Path-related Errors:
-+	 */
-+	NVME_SC_ANA_PERSISTENT_LOSS	= 0x301,
-+	NVME_SC_ANA_INACCESSIBLE	= 0x302,
-+	NVME_SC_ANA_TRANSITION		= 0x303,
-+	NVME_SC_HOST_PATH_ERROR		= 0x370,
-+
-+	NVME_SC_DNR			= 0x4000,
-+};
-+
-+struct nvme_completion {
-+	/*
-+	 * Used by Admin and Fabrics commands to return data:
-+	 */
-+	union nvme_result {
-+		__le16	u16;
-+		__le32	u32;
-+		__le64	u64;
-+	} result;
-+	__le16	sq_head;	/* how much of this queue may be reclaimed */
-+	__le16	sq_id;		/* submission queue that generated this entry */
-+	__u16	command_id;	/* of the command which completed */
-+	__le16	status;		/* did the command fail, and if so, why? */
-+};
-+
-+#define NVME_VS(major, minor, tertiary) \
-+	(((major) << 16) | ((minor) << 8) | (tertiary))
-+
-+#define NVME_MAJOR(ver)		((ver) >> 16)
-+#define NVME_MINOR(ver)		(((ver) >> 8) & 0xff)
-+#define NVME_TERTIARY(ver)	((ver) & 0xff)
-+
-+#endif /* _LINUX_NVME_H */
++#define PCI_VENDOR_ID_ADDIDATA                 0x15B8
++#define PCI_DEVICE_ID_ADDIDATA_APCI7500        0x7000
++#define PCI_DEVICE_ID_ADDIDATA_APCI7420        0x7001
++#define PCI_DEVICE_ID_ADDIDATA_APCI7300        0x7002
++#define PCI_DEVICE_ID_ADDIDATA_APCI7500_2      0x7009
++#define PCI_DEVICE_ID_ADDIDATA_APCI7420_2      0x700A
++#define PCI_DEVICE_ID_ADDIDATA_APCI7300_2      0x700B
++#define PCI_DEVICE_ID_ADDIDATA_APCI7500_3      0x700C
++#define PCI_DEVICE_ID_ADDIDATA_APCI7420_3      0x700D
++#define PCI_DEVICE_ID_ADDIDATA_APCI7300_3      0x700E
++#define PCI_DEVICE_ID_ADDIDATA_APCI7800_3      0x700F
++#define PCI_DEVICE_ID_ADDIDATA_APCIe7300       0x7010
++#define PCI_DEVICE_ID_ADDIDATA_APCIe7420       0x7011
++#define PCI_DEVICE_ID_ADDIDATA_APCIe7500       0x7012
++#define PCI_DEVICE_ID_ADDIDATA_APCIe7800       0x7013
++
++#define PCI_VENDOR_ID_PDC		0x15e9
++
++#define PCI_VENDOR_ID_FARSITE           0x1619
++#define PCI_DEVICE_ID_FARSITE_T2P       0x0400
++#define PCI_DEVICE_ID_FARSITE_T4P       0x0440
++#define PCI_DEVICE_ID_FARSITE_T1U       0x0610
++#define PCI_DEVICE_ID_FARSITE_T2U       0x0620
++#define PCI_DEVICE_ID_FARSITE_T4U       0x0640
++#define PCI_DEVICE_ID_FARSITE_TE1       0x1610
++#define PCI_DEVICE_ID_FARSITE_TE1C      0x1612
++
++#define PCI_VENDOR_ID_ARIMA		0x161f
++
++#define PCI_VENDOR_ID_BROCADE		0x1657
++#define PCI_DEVICE_ID_BROCADE_CT	0x0014
++#define PCI_DEVICE_ID_BROCADE_FC_8G1P	0x0017
++#define PCI_DEVICE_ID_BROCADE_CT_FC	0x0021
++
++#define PCI_VENDOR_ID_SIBYTE		0x166d
++#define PCI_DEVICE_ID_BCM1250_PCI	0x0001
++#define PCI_DEVICE_ID_BCM1250_HT	0x0002
++
++#define PCI_VENDOR_ID_ATHEROS		0x168c
++
++#define PCI_VENDOR_ID_NETCELL		0x169c
++#define PCI_DEVICE_ID_REVOLUTION	0x0044
++
++#define PCI_VENDOR_ID_CENATEK		0x16CA
++#define PCI_DEVICE_ID_CENATEK_IDE	0x0001
++
++#define PCI_VENDOR_ID_SYNOPSYS		0x16c3
++
++#define PCI_VENDOR_ID_VITESSE		0x1725
++#define PCI_DEVICE_ID_VITESSE_VSC7174	0x7174
++
++#define PCI_VENDOR_ID_LINKSYS		0x1737
++#define PCI_DEVICE_ID_LINKSYS_EG1064	0x1064
++
++#define PCI_VENDOR_ID_ALTIMA		0x173b
++#define PCI_DEVICE_ID_ALTIMA_AC1000	0x03e8
++#define PCI_DEVICE_ID_ALTIMA_AC1001	0x03e9
++#define PCI_DEVICE_ID_ALTIMA_AC9100	0x03ea
++#define PCI_DEVICE_ID_ALTIMA_AC1003	0x03eb
++
++#define PCI_VENDOR_ID_CAVIUM		0x177d
++
++#define PCI_VENDOR_ID_TECHWELL		0x1797
++#define PCI_DEVICE_ID_TECHWELL_6800	0x6800
++#define PCI_DEVICE_ID_TECHWELL_6801	0x6801
++#define PCI_DEVICE_ID_TECHWELL_6804	0x6804
++#define PCI_DEVICE_ID_TECHWELL_6816_1	0x6810
++#define PCI_DEVICE_ID_TECHWELL_6816_2	0x6811
++#define PCI_DEVICE_ID_TECHWELL_6816_3	0x6812
++#define PCI_DEVICE_ID_TECHWELL_6816_4	0x6813
++
++#define PCI_VENDOR_ID_BELKIN		0x1799
++#define PCI_DEVICE_ID_BELKIN_F5D7010V7	0x701f
++
++#define PCI_VENDOR_ID_RDC		0x17f3
++#define PCI_DEVICE_ID_RDC_R6020		0x6020
++#define PCI_DEVICE_ID_RDC_R6030		0x6030
++#define PCI_DEVICE_ID_RDC_R6040		0x6040
++#define PCI_DEVICE_ID_RDC_R6060		0x6060
++#define PCI_DEVICE_ID_RDC_R6061		0x6061
++#define PCI_DEVICE_ID_RDC_D1010		0x1010
++
++#define PCI_VENDOR_ID_LENOVO		0x17aa
++
++#define PCI_VENDOR_ID_QCOM		0x17cb
++
++#define PCI_VENDOR_ID_CDNS		0x17cd
++
++#define PCI_VENDOR_ID_ARECA		0x17d3
++#define PCI_DEVICE_ID_ARECA_1110	0x1110
++#define PCI_DEVICE_ID_ARECA_1120	0x1120
++#define PCI_DEVICE_ID_ARECA_1130	0x1130
++#define PCI_DEVICE_ID_ARECA_1160	0x1160
++#define PCI_DEVICE_ID_ARECA_1170	0x1170
++#define PCI_DEVICE_ID_ARECA_1200	0x1200
++#define PCI_DEVICE_ID_ARECA_1201	0x1201
++#define PCI_DEVICE_ID_ARECA_1202	0x1202
++#define PCI_DEVICE_ID_ARECA_1210	0x1210
++#define PCI_DEVICE_ID_ARECA_1220	0x1220
++#define PCI_DEVICE_ID_ARECA_1230	0x1230
++#define PCI_DEVICE_ID_ARECA_1260	0x1260
++#define PCI_DEVICE_ID_ARECA_1270	0x1270
++#define PCI_DEVICE_ID_ARECA_1280	0x1280
++#define PCI_DEVICE_ID_ARECA_1380	0x1380
++#define PCI_DEVICE_ID_ARECA_1381	0x1381
++#define PCI_DEVICE_ID_ARECA_1680	0x1680
++#define PCI_DEVICE_ID_ARECA_1681	0x1681
++
++#define PCI_VENDOR_ID_S2IO		0x17d5
++#define	PCI_DEVICE_ID_S2IO_WIN		0x5731
++#define	PCI_DEVICE_ID_S2IO_UNI		0x5831
++#define PCI_DEVICE_ID_HERC_WIN		0x5732
++#define PCI_DEVICE_ID_HERC_UNI		0x5832
++
++#define PCI_VENDOR_ID_SITECOM		0x182d
++#define PCI_DEVICE_ID_SITECOM_DC105V2	0x3069
++
++#define PCI_VENDOR_ID_TOPSPIN		0x1867
++
++#define PCI_VENDOR_ID_COMMTECH		0x18f7
++
++#define PCI_VENDOR_ID_SILAN		0x1904
++
++#define PCI_VENDOR_ID_RENESAS		0x1912
++#define PCI_DEVICE_ID_RENESAS_SH7781	0x0001
++#define PCI_DEVICE_ID_RENESAS_SH7780	0x0002
++#define PCI_DEVICE_ID_RENESAS_SH7763	0x0004
++#define PCI_DEVICE_ID_RENESAS_SH7785	0x0007
++#define PCI_DEVICE_ID_RENESAS_SH7786	0x0010
++
++#define PCI_VENDOR_ID_SOLARFLARE	0x1924
++#define PCI_DEVICE_ID_SOLARFLARE_SFC4000A_0	0x0703
++#define PCI_DEVICE_ID_SOLARFLARE_SFC4000A_1	0x6703
++#define PCI_DEVICE_ID_SOLARFLARE_SFC4000B	0x0710
++
++#define PCI_VENDOR_ID_TDI               0x192E
++#define PCI_DEVICE_ID_TDI_EHCI          0x0101
++
++#define PCI_VENDOR_ID_FREESCALE		0x1957
++#define PCI_DEVICE_ID_MPC8308		0xc006
++#define PCI_DEVICE_ID_MPC8315E		0x00b4
++#define PCI_DEVICE_ID_MPC8315		0x00b5
++#define PCI_DEVICE_ID_MPC8314E		0x00b6
++#define PCI_DEVICE_ID_MPC8314		0x00b7
++#define PCI_DEVICE_ID_MPC8378E		0x00c4
++#define PCI_DEVICE_ID_MPC8378		0x00c5
++#define PCI_DEVICE_ID_MPC8377E		0x00c6
++#define PCI_DEVICE_ID_MPC8377		0x00c7
++#define PCI_DEVICE_ID_MPC8548E		0x0012
++#define PCI_DEVICE_ID_MPC8548		0x0013
++#define PCI_DEVICE_ID_MPC8543E		0x0014
++#define PCI_DEVICE_ID_MPC8543		0x0015
++#define PCI_DEVICE_ID_MPC8547E		0x0018
++#define PCI_DEVICE_ID_MPC8545E		0x0019
++#define PCI_DEVICE_ID_MPC8545		0x001a
++#define PCI_DEVICE_ID_MPC8569E		0x0061
++#define PCI_DEVICE_ID_MPC8569		0x0060
++#define PCI_DEVICE_ID_MPC8568E		0x0020
++#define PCI_DEVICE_ID_MPC8568		0x0021
++#define PCI_DEVICE_ID_MPC8567E		0x0022
++#define PCI_DEVICE_ID_MPC8567		0x0023
++#define PCI_DEVICE_ID_MPC8533E		0x0030
++#define PCI_DEVICE_ID_MPC8533		0x0031
++#define PCI_DEVICE_ID_MPC8544E		0x0032
++#define PCI_DEVICE_ID_MPC8544		0x0033
++#define PCI_DEVICE_ID_MPC8572E		0x0040
++#define PCI_DEVICE_ID_MPC8572		0x0041
++#define PCI_DEVICE_ID_MPC8536E		0x0050
++#define PCI_DEVICE_ID_MPC8536		0x0051
++#define PCI_DEVICE_ID_P2020E		0x0070
++#define PCI_DEVICE_ID_P2020		0x0071
++#define PCI_DEVICE_ID_P2010E		0x0078
++#define PCI_DEVICE_ID_P2010		0x0079
++#define PCI_DEVICE_ID_P1020E		0x0100
++#define PCI_DEVICE_ID_P1020		0x0101
++#define PCI_DEVICE_ID_P1021E		0x0102
++#define PCI_DEVICE_ID_P1021		0x0103
++#define PCI_DEVICE_ID_P1011E		0x0108
++#define PCI_DEVICE_ID_P1011		0x0109
++#define PCI_DEVICE_ID_P1022E		0x0110
++#define PCI_DEVICE_ID_P1022		0x0111
++#define PCI_DEVICE_ID_P1013E		0x0118
++#define PCI_DEVICE_ID_P1013		0x0119
++#define PCI_DEVICE_ID_P4080E		0x0400
++#define PCI_DEVICE_ID_P4080		0x0401
++#define PCI_DEVICE_ID_P4040E		0x0408
++#define PCI_DEVICE_ID_P4040		0x0409
++#define PCI_DEVICE_ID_P2040E		0x0410
++#define PCI_DEVICE_ID_P2040		0x0411
++#define PCI_DEVICE_ID_P3041E		0x041E
++#define PCI_DEVICE_ID_P3041		0x041F
++#define PCI_DEVICE_ID_P5020E		0x0420
++#define PCI_DEVICE_ID_P5020		0x0421
++#define PCI_DEVICE_ID_P5010E		0x0428
++#define PCI_DEVICE_ID_P5010		0x0429
++#define PCI_DEVICE_ID_MPC8641		0x7010
++#define PCI_DEVICE_ID_MPC8641D		0x7011
++#define PCI_DEVICE_ID_MPC8610		0x7018
++
++#define PCI_VENDOR_ID_PASEMI		0x1959
++
++#define PCI_VENDOR_ID_ATTANSIC		0x1969
++#define PCI_DEVICE_ID_ATTANSIC_L1	0x1048
++#define PCI_DEVICE_ID_ATTANSIC_L2	0x2048
++
++#define PCI_VENDOR_ID_JMICRON		0x197B
++#define PCI_DEVICE_ID_JMICRON_JMB360	0x2360
++#define PCI_DEVICE_ID_JMICRON_JMB361	0x2361
++#define PCI_DEVICE_ID_JMICRON_JMB362	0x2362
++#define PCI_DEVICE_ID_JMICRON_JMB363	0x2363
++#define PCI_DEVICE_ID_JMICRON_JMB364	0x2364
++#define PCI_DEVICE_ID_JMICRON_JMB365	0x2365
++#define PCI_DEVICE_ID_JMICRON_JMB366	0x2366
++#define PCI_DEVICE_ID_JMICRON_JMB368	0x2368
++#define PCI_DEVICE_ID_JMICRON_JMB369	0x2369
++#define PCI_DEVICE_ID_JMICRON_JMB38X_SD	0x2381
++#define PCI_DEVICE_ID_JMICRON_JMB38X_MMC 0x2382
++#define PCI_DEVICE_ID_JMICRON_JMB38X_MS	0x2383
++#define PCI_DEVICE_ID_JMICRON_JMB385_MS	0x2388
++#define PCI_DEVICE_ID_JMICRON_JMB388_SD	0x2391
++#define PCI_DEVICE_ID_JMICRON_JMB388_ESD 0x2392
++#define PCI_DEVICE_ID_JMICRON_JMB390_MS	0x2393
++
++#define PCI_VENDOR_ID_KORENIX		0x1982
++#define PCI_DEVICE_ID_KORENIX_JETCARDF0	0x1600
++#define PCI_DEVICE_ID_KORENIX_JETCARDF1	0x16ff
++#define PCI_DEVICE_ID_KORENIX_JETCARDF2	0x1700
++#define PCI_DEVICE_ID_KORENIX_JETCARDF3	0x17ff
++
++#define PCI_VENDOR_ID_HUAWEI         	0x19e5
++
++#define PCI_VENDOR_ID_NETRONOME		0x19ee
++#define PCI_DEVICE_ID_NETRONOME_NFP4000	0x4000
++#define PCI_DEVICE_ID_NETRONOME_NFP5000	0x5000
++#define PCI_DEVICE_ID_NETRONOME_NFP6000	0x6000
++#define PCI_DEVICE_ID_NETRONOME_NFP6000_VF	0x6003
++
++#define PCI_VENDOR_ID_QMI		0x1a32
++
++#define PCI_VENDOR_ID_AZWAVE		0x1a3b
++
++#define PCI_VENDOR_ID_REDHAT_QUMRANET    0x1af4
++#define PCI_SUBVENDOR_ID_REDHAT_QUMRANET 0x1af4
++#define PCI_SUBDEVICE_ID_QEMU            0x1100
++
++#define PCI_VENDOR_ID_ASMEDIA		0x1b21
++
++#define PCI_VENDOR_ID_CIRCUITCO		0x1cc8
++#define PCI_SUBSYSTEM_ID_CIRCUITCO_MINNOWBOARD	0x0001
++
++#define PCI_VENDOR_ID_AMAZON		0x1d0f
++
++#define PCI_VENDOR_ID_HYGON		0x1d94
++
++#define PCI_VENDOR_ID_TEKRAM		0x1de1
++#define PCI_DEVICE_ID_TEKRAM_DC290	0xdc29
++
++#define PCI_VENDOR_ID_TEHUTI		0x1fc9
++#define PCI_DEVICE_ID_TEHUTI_3009	0x3009
++#define PCI_DEVICE_ID_TEHUTI_3010	0x3010
++#define PCI_DEVICE_ID_TEHUTI_3014	0x3014
++
++#define PCI_VENDOR_ID_SUNIX		0x1fd4
++#define PCI_DEVICE_ID_SUNIX_1999	0x1999
++
++#define PCI_VENDOR_ID_HINT             0x3388
++#define PCI_DEVICE_ID_HINT_VXPROII_IDE 0x8013
++
++#define PCI_VENDOR_ID_3DLABS		0x3d3d
++#define PCI_DEVICE_ID_3DLABS_PERMEDIA2	0x0007
++#define PCI_DEVICE_ID_3DLABS_PERMEDIA2V	0x0009
++
++#define PCI_VENDOR_ID_NETXEN		0x4040
++#define PCI_DEVICE_ID_NX2031_10GXSR	0x0001
++#define PCI_DEVICE_ID_NX2031_10GCX4	0x0002
++#define PCI_DEVICE_ID_NX2031_4GCU	0x0003
++#define PCI_DEVICE_ID_NX2031_IMEZ	0x0004
++#define PCI_DEVICE_ID_NX2031_HMEZ	0x0005
++#define PCI_DEVICE_ID_NX2031_XG_MGMT	0x0024
++#define PCI_DEVICE_ID_NX2031_XG_MGMT2	0x0025
++#define PCI_DEVICE_ID_NX3031		0x0100
++
++#define PCI_VENDOR_ID_AKS		0x416c
++#define PCI_DEVICE_ID_AKS_ALADDINCARD	0x0100
++
++#define PCI_VENDOR_ID_ACCESSIO		0x494f
++#define PCI_DEVICE_ID_ACCESSIO_WDG_CSM	0x22c0
++
++#define PCI_VENDOR_ID_S3		0x5333
++#define PCI_DEVICE_ID_S3_TRIO		0x8811
++#define PCI_DEVICE_ID_S3_868		0x8880
++#define PCI_DEVICE_ID_S3_968		0x88f0
++#define PCI_DEVICE_ID_S3_SAVAGE4	0x8a25
++#define PCI_DEVICE_ID_S3_PROSAVAGE8	0x8d04
++#define PCI_DEVICE_ID_S3_SONICVIBES	0xca00
++
++#define PCI_VENDOR_ID_DUNORD		0x5544
++#define PCI_DEVICE_ID_DUNORD_I3000	0x0001
++
++#define PCI_VENDOR_ID_DCI		0x6666
++#define PCI_DEVICE_ID_DCI_PCCOM4	0x0001
++#define PCI_DEVICE_ID_DCI_PCCOM8	0x0002
++#define PCI_DEVICE_ID_DCI_PCCOM2	0x0004
++
++#define PCI_VENDOR_ID_INTEL		0x8086
++#define PCI_DEVICE_ID_INTEL_EESSC	0x0008
++#define PCI_DEVICE_ID_INTEL_PXHD_0	0x0320
++#define PCI_DEVICE_ID_INTEL_PXHD_1	0x0321
++#define PCI_DEVICE_ID_INTEL_PXH_0	0x0329
++#define PCI_DEVICE_ID_INTEL_PXH_1	0x032A
++#define PCI_DEVICE_ID_INTEL_PXHV	0x032C
++#define PCI_DEVICE_ID_INTEL_80332_0	0x0330
++#define PCI_DEVICE_ID_INTEL_80332_1	0x0332
++#define PCI_DEVICE_ID_INTEL_80333_0	0x0370
++#define PCI_DEVICE_ID_INTEL_80333_1	0x0372
++#define PCI_DEVICE_ID_INTEL_82375	0x0482
++#define PCI_DEVICE_ID_INTEL_82424	0x0483
++#define PCI_DEVICE_ID_INTEL_82378	0x0484
++#define PCI_DEVICE_ID_INTEL_MRST_SD0	0x0807
++#define PCI_DEVICE_ID_INTEL_MRST_SD1	0x0808
++#define PCI_DEVICE_ID_INTEL_MFD_SD	0x0820
++#define PCI_DEVICE_ID_INTEL_MFD_SDIO1	0x0821
++#define PCI_DEVICE_ID_INTEL_MFD_SDIO2	0x0822
++#define PCI_DEVICE_ID_INTEL_MFD_EMMC0	0x0823
++#define PCI_DEVICE_ID_INTEL_MFD_EMMC1	0x0824
++#define PCI_DEVICE_ID_INTEL_MRST_SD2	0x084F
++#define PCI_DEVICE_ID_INTEL_QUARK_X1000_ILB	0x095E
++#define PCI_DEVICE_ID_INTEL_I960	0x0960
++#define PCI_DEVICE_ID_INTEL_I960RM	0x0962
++#define PCI_DEVICE_ID_INTEL_CENTERTON_ILB	0x0c60
++#define PCI_DEVICE_ID_INTEL_8257X_SOL	0x1062
++#define PCI_DEVICE_ID_INTEL_82573E_SOL	0x1085
++#define PCI_DEVICE_ID_INTEL_82573L_SOL	0x108F
++#define PCI_DEVICE_ID_INTEL_82815_MC	0x1130
++#define PCI_DEVICE_ID_INTEL_82815_CGC	0x1132
++#define PCI_DEVICE_ID_INTEL_82092AA_0	0x1221
++#define PCI_DEVICE_ID_INTEL_7505_0	0x2550
++#define PCI_DEVICE_ID_INTEL_7205_0	0x255d
++#define PCI_DEVICE_ID_INTEL_82437	0x122d
++#define PCI_DEVICE_ID_INTEL_82371FB_0	0x122e
++#define PCI_DEVICE_ID_INTEL_82371FB_1	0x1230
++#define PCI_DEVICE_ID_INTEL_82371MX	0x1234
++#define PCI_DEVICE_ID_INTEL_82441	0x1237
++#define PCI_DEVICE_ID_INTEL_82380FB	0x124b
++#define PCI_DEVICE_ID_INTEL_82439	0x1250
++#define PCI_DEVICE_ID_INTEL_LIGHT_RIDGE             0x1513 /* Tbt 1 Gen 1 */
++#define PCI_DEVICE_ID_INTEL_EAGLE_RIDGE             0x151a
++#define PCI_DEVICE_ID_INTEL_LIGHT_PEAK              0x151b
++#define PCI_DEVICE_ID_INTEL_CACTUS_RIDGE_4C         0x1547 /* Tbt 1 Gen 2 */
++#define PCI_DEVICE_ID_INTEL_CACTUS_RIDGE_2C         0x1548
++#define PCI_DEVICE_ID_INTEL_PORT_RIDGE              0x1549
++#define PCI_DEVICE_ID_INTEL_REDWOOD_RIDGE_2C_NHI    0x1566 /* Tbt 1 Gen 3 */
++#define PCI_DEVICE_ID_INTEL_REDWOOD_RIDGE_2C_BRIDGE 0x1567
++#define PCI_DEVICE_ID_INTEL_REDWOOD_RIDGE_4C_NHI    0x1568
++#define PCI_DEVICE_ID_INTEL_REDWOOD_RIDGE_4C_BRIDGE 0x1569
++#define PCI_DEVICE_ID_INTEL_FALCON_RIDGE_2C_NHI     0x156a /* Thunderbolt 2 */
++#define PCI_DEVICE_ID_INTEL_FALCON_RIDGE_2C_BRIDGE  0x156b
++#define PCI_DEVICE_ID_INTEL_FALCON_RIDGE_4C_NHI     0x156c
++#define PCI_DEVICE_ID_INTEL_FALCON_RIDGE_4C_BRIDGE  0x156d
++#define PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_2C_NHI     0x1575 /* Thunderbolt 3 */
++#define PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_2C_BRIDGE  0x1576
++#define PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_4C_NHI     0x1577
++#define PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_4C_BRIDGE  0x1578
++#define PCI_DEVICE_ID_INTEL_80960_RP	0x1960
++#define PCI_DEVICE_ID_INTEL_82840_HB	0x1a21
++#define PCI_DEVICE_ID_INTEL_82845_HB	0x1a30
++#define PCI_DEVICE_ID_INTEL_IOAT	0x1a38
++#define PCI_DEVICE_ID_INTEL_COUGARPOINT_LPC_MIN	0x1c41
++#define PCI_DEVICE_ID_INTEL_COUGARPOINT_LPC_MAX	0x1c5f
++#define PCI_DEVICE_ID_INTEL_PATSBURG_LPC_0	0x1d40
++#define PCI_DEVICE_ID_INTEL_PATSBURG_LPC_1	0x1d41
++#define PCI_DEVICE_ID_INTEL_PANTHERPOINT_XHCI	0x1e31
++#define PCI_DEVICE_ID_INTEL_PANTHERPOINT_LPC_MIN	0x1e40
++#define PCI_DEVICE_ID_INTEL_PANTHERPOINT_LPC_MAX	0x1e5f
++#define PCI_DEVICE_ID_INTEL_VMD_201D	0x201d
++#define PCI_DEVICE_ID_INTEL_DH89XXCC_LPC_MIN	0x2310
++#define PCI_DEVICE_ID_INTEL_DH89XXCC_LPC_MAX	0x231f
++#define PCI_DEVICE_ID_INTEL_82801AA_0	0x2410
++#define PCI_DEVICE_ID_INTEL_82801AA_1	0x2411
++#define PCI_DEVICE_ID_INTEL_82801AA_3	0x2413
++#define PCI_DEVICE_ID_INTEL_82801AA_5	0x2415
++#define PCI_DEVICE_ID_INTEL_82801AA_6	0x2416
++#define PCI_DEVICE_ID_INTEL_82801AA_8	0x2418
++#define PCI_DEVICE_ID_INTEL_82801AB_0	0x2420
++#define PCI_DEVICE_ID_INTEL_82801AB_1	0x2421
++#define PCI_DEVICE_ID_INTEL_82801AB_3	0x2423
++#define PCI_DEVICE_ID_INTEL_82801AB_5	0x2425
++#define PCI_DEVICE_ID_INTEL_82801AB_6	0x2426
++#define PCI_DEVICE_ID_INTEL_82801AB_8	0x2428
++#define PCI_DEVICE_ID_INTEL_82801BA_0	0x2440
++#define PCI_DEVICE_ID_INTEL_82801BA_2	0x2443
++#define PCI_DEVICE_ID_INTEL_82801BA_4	0x2445
++#define PCI_DEVICE_ID_INTEL_82801BA_6	0x2448
++#define PCI_DEVICE_ID_INTEL_82801BA_8	0x244a
++#define PCI_DEVICE_ID_INTEL_82801BA_9	0x244b
++#define PCI_DEVICE_ID_INTEL_82801BA_10	0x244c
++#define PCI_DEVICE_ID_INTEL_82801BA_11	0x244e
++#define PCI_DEVICE_ID_INTEL_82801E_0	0x2450
++#define PCI_DEVICE_ID_INTEL_82801E_11	0x245b
++#define PCI_DEVICE_ID_INTEL_82801CA_0	0x2480
++#define PCI_DEVICE_ID_INTEL_82801CA_3	0x2483
++#define PCI_DEVICE_ID_INTEL_82801CA_5	0x2485
++#define PCI_DEVICE_ID_INTEL_82801CA_6	0x2486
++#define PCI_DEVICE_ID_INTEL_82801CA_10	0x248a
++#define PCI_DEVICE_ID_INTEL_82801CA_11	0x248b
++#define PCI_DEVICE_ID_INTEL_82801CA_12	0x248c
++#define PCI_DEVICE_ID_INTEL_82801DB_0	0x24c0
++#define PCI_DEVICE_ID_INTEL_82801DB_1	0x24c1
++#define PCI_DEVICE_ID_INTEL_82801DB_2	0x24c2
++#define PCI_DEVICE_ID_INTEL_82801DB_3	0x24c3
++#define PCI_DEVICE_ID_INTEL_82801DB_5	0x24c5
++#define PCI_DEVICE_ID_INTEL_82801DB_6	0x24c6
++#define PCI_DEVICE_ID_INTEL_82801DB_9	0x24c9
++#define PCI_DEVICE_ID_INTEL_82801DB_10	0x24ca
++#define PCI_DEVICE_ID_INTEL_82801DB_11	0x24cb
++#define PCI_DEVICE_ID_INTEL_82801DB_12  0x24cc
++#define PCI_DEVICE_ID_INTEL_82801EB_0	0x24d0
++#define PCI_DEVICE_ID_INTEL_82801EB_1	0x24d1
++#define PCI_DEVICE_ID_INTEL_82801EB_3	0x24d3
++#define PCI_DEVICE_ID_INTEL_82801EB_5	0x24d5
++#define PCI_DEVICE_ID_INTEL_82801EB_6	0x24d6
++#define PCI_DEVICE_ID_INTEL_82801EB_11	0x24db
++#define PCI_DEVICE_ID_INTEL_82801EB_12	0x24dc
++#define PCI_DEVICE_ID_INTEL_82801EB_13	0x24dd
++#define PCI_DEVICE_ID_INTEL_ESB_1	0x25a1
++#define PCI_DEVICE_ID_INTEL_ESB_2	0x25a2
++#define PCI_DEVICE_ID_INTEL_ESB_4	0x25a4
++#define PCI_DEVICE_ID_INTEL_ESB_5	0x25a6
++#define PCI_DEVICE_ID_INTEL_ESB_9	0x25ab
++#define PCI_DEVICE_ID_INTEL_ESB_10	0x25ac
++#define PCI_DEVICE_ID_INTEL_82820_HB	0x2500
++#define PCI_DEVICE_ID_INTEL_82820_UP_HB	0x2501
++#define PCI_DEVICE_ID_INTEL_82850_HB	0x2530
++#define PCI_DEVICE_ID_INTEL_82860_HB	0x2531
++#define PCI_DEVICE_ID_INTEL_E7501_MCH	0x254c
++#define PCI_DEVICE_ID_INTEL_82845G_HB	0x2560
++#define PCI_DEVICE_ID_INTEL_82845G_IG	0x2562
++#define PCI_DEVICE_ID_INTEL_82865_HB	0x2570
++#define PCI_DEVICE_ID_INTEL_82865_IG	0x2572
++#define PCI_DEVICE_ID_INTEL_82875_HB	0x2578
++#define PCI_DEVICE_ID_INTEL_82915G_HB	0x2580
++#define PCI_DEVICE_ID_INTEL_82915G_IG	0x2582
++#define PCI_DEVICE_ID_INTEL_82915GM_HB	0x2590
++#define PCI_DEVICE_ID_INTEL_82915GM_IG	0x2592
++#define PCI_DEVICE_ID_INTEL_5000_ERR	0x25F0
++#define PCI_DEVICE_ID_INTEL_5000_FBD0	0x25F5
++#define PCI_DEVICE_ID_INTEL_5000_FBD1	0x25F6
++#define PCI_DEVICE_ID_INTEL_82945G_HB	0x2770
++#define PCI_DEVICE_ID_INTEL_82945G_IG	0x2772
++#define PCI_DEVICE_ID_INTEL_3000_HB	0x2778
++#define PCI_DEVICE_ID_INTEL_82945GM_HB	0x27A0
++#define PCI_DEVICE_ID_INTEL_82945GM_IG	0x27A2
++#define PCI_DEVICE_ID_INTEL_ICH6_0	0x2640
++#define PCI_DEVICE_ID_INTEL_ICH6_1	0x2641
++#define PCI_DEVICE_ID_INTEL_ICH6_2	0x2642
++#define PCI_DEVICE_ID_INTEL_ICH6_16	0x266a
++#define PCI_DEVICE_ID_INTEL_ICH6_17	0x266d
++#define PCI_DEVICE_ID_INTEL_ICH6_18	0x266e
++#define PCI_DEVICE_ID_INTEL_ICH6_19	0x266f
++#define PCI_DEVICE_ID_INTEL_ESB2_0	0x2670
++#define PCI_DEVICE_ID_INTEL_ESB2_14	0x2698
++#define PCI_DEVICE_ID_INTEL_ESB2_17	0x269b
++#define PCI_DEVICE_ID_INTEL_ESB2_18	0x269e
++#define PCI_DEVICE_ID_INTEL_ICH7_0	0x27b8
++#define PCI_DEVICE_ID_INTEL_ICH7_1	0x27b9
++#define PCI_DEVICE_ID_INTEL_ICH7_30	0x27b0
++#define PCI_DEVICE_ID_INTEL_TGP_LPC	0x27bc
++#define PCI_DEVICE_ID_INTEL_ICH7_31	0x27bd
++#define PCI_DEVICE_ID_INTEL_ICH7_17	0x27da
++#define PCI_DEVICE_ID_INTEL_ICH7_19	0x27dd
++#define PCI_DEVICE_ID_INTEL_ICH7_20	0x27de
++#define PCI_DEVICE_ID_INTEL_ICH7_21	0x27df
++#define PCI_DEVICE_ID_INTEL_ICH8_0	0x2810
++#define PCI_DEVICE_ID_INTEL_ICH8_1	0x2811
++#define PCI_DEVICE_ID_INTEL_ICH8_2	0x2812
++#define PCI_DEVICE_ID_INTEL_ICH8_3	0x2814
++#define PCI_DEVICE_ID_INTEL_ICH8_4	0x2815
++#define PCI_DEVICE_ID_INTEL_ICH8_5	0x283e
++#define PCI_DEVICE_ID_INTEL_ICH8_6	0x2850
++#define PCI_DEVICE_ID_INTEL_VMD_28C0	0x28c0
++#define PCI_DEVICE_ID_INTEL_ICH9_0	0x2910
++#define PCI_DEVICE_ID_INTEL_ICH9_1	0x2917
++#define PCI_DEVICE_ID_INTEL_ICH9_2	0x2912
++#define PCI_DEVICE_ID_INTEL_ICH9_3	0x2913
++#define PCI_DEVICE_ID_INTEL_ICH9_4	0x2914
++#define PCI_DEVICE_ID_INTEL_ICH9_5	0x2919
++#define PCI_DEVICE_ID_INTEL_ICH9_6	0x2930
++#define PCI_DEVICE_ID_INTEL_ICH9_7	0x2916
++#define PCI_DEVICE_ID_INTEL_ICH9_8	0x2918
++#define PCI_DEVICE_ID_INTEL_I7_MCR	0x2c18
++#define PCI_DEVICE_ID_INTEL_I7_MC_TAD	0x2c19
++#define PCI_DEVICE_ID_INTEL_I7_MC_RAS	0x2c1a
++#define PCI_DEVICE_ID_INTEL_I7_MC_TEST	0x2c1c
++#define PCI_DEVICE_ID_INTEL_I7_MC_CH0_CTRL  0x2c20
++#define PCI_DEVICE_ID_INTEL_I7_MC_CH0_ADDR  0x2c21
++#define PCI_DEVICE_ID_INTEL_I7_MC_CH0_RANK  0x2c22
++#define PCI_DEVICE_ID_INTEL_I7_MC_CH0_TC    0x2c23
++#define PCI_DEVICE_ID_INTEL_I7_MC_CH1_CTRL  0x2c28
++#define PCI_DEVICE_ID_INTEL_I7_MC_CH1_ADDR  0x2c29
++#define PCI_DEVICE_ID_INTEL_I7_MC_CH1_RANK  0x2c2a
++#define PCI_DEVICE_ID_INTEL_I7_MC_CH1_TC    0x2c2b
++#define PCI_DEVICE_ID_INTEL_I7_MC_CH2_CTRL  0x2c30
++#define PCI_DEVICE_ID_INTEL_I7_MC_CH2_ADDR  0x2c31
++#define PCI_DEVICE_ID_INTEL_I7_MC_CH2_RANK  0x2c32
++#define PCI_DEVICE_ID_INTEL_I7_MC_CH2_TC    0x2c33
++#define PCI_DEVICE_ID_INTEL_I7_NONCORE	0x2c41
++#define PCI_DEVICE_ID_INTEL_I7_NONCORE_ALT 0x2c40
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_NONCORE     0x2c50
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_NONCORE_ALT 0x2c51
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_NONCORE_REV2 0x2c70
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_SAD         0x2c81
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_QPI_LINK0   0x2c90
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_QPI_PHY0    0x2c91
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MCR         0x2c98
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_TAD      0x2c99
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_TEST     0x2c9C
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH0_CTRL 0x2ca0
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH0_ADDR 0x2ca1
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH0_RANK 0x2ca2
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH0_TC   0x2ca3
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH1_CTRL 0x2ca8
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH1_ADDR 0x2ca9
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH1_RANK 0x2caa
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH1_TC   0x2cab
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MCR_REV2          0x2d98
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_TAD_REV2       0x2d99
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_RAS_REV2       0x2d9a
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_TEST_REV2      0x2d9c
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH0_CTRL_REV2  0x2da0
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH0_ADDR_REV2  0x2da1
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH0_RANK_REV2  0x2da2
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH0_TC_REV2    0x2da3
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH1_CTRL_REV2  0x2da8
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH1_ADDR_REV2  0x2da9
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH1_RANK_REV2  0x2daa
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH1_TC_REV2    0x2dab
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH2_CTRL_REV2  0x2db0
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH2_ADDR_REV2  0x2db1
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH2_RANK_REV2  0x2db2
++#define PCI_DEVICE_ID_INTEL_LYNNFIELD_MC_CH2_TC_REV2    0x2db3
++#define PCI_DEVICE_ID_INTEL_82855PM_HB	0x3340
++#define PCI_DEVICE_ID_INTEL_IOAT_TBG4	0x3429
++#define PCI_DEVICE_ID_INTEL_IOAT_TBG5	0x342a
++#define PCI_DEVICE_ID_INTEL_IOAT_TBG6	0x342b
++#define PCI_DEVICE_ID_INTEL_IOAT_TBG7	0x342c
++#define PCI_DEVICE_ID_INTEL_X58_HUB_MGMT 0x342e
++#define PCI_DEVICE_ID_INTEL_IOAT_TBG0	0x3430
++#define PCI_DEVICE_ID_INTEL_IOAT_TBG1	0x3431
++#define PCI_DEVICE_ID_INTEL_IOAT_TBG2	0x3432
++#define PCI_DEVICE_ID_INTEL_IOAT_TBG3	0x3433
++#define PCI_DEVICE_ID_INTEL_82830_HB	0x3575
++#define PCI_DEVICE_ID_INTEL_82830_CGC	0x3577
++#define PCI_DEVICE_ID_INTEL_82854_HB	0x358c
++#define PCI_DEVICE_ID_INTEL_82854_IG	0x358e
++#define PCI_DEVICE_ID_INTEL_82855GM_HB	0x3580
++#define PCI_DEVICE_ID_INTEL_82855GM_IG	0x3582
++#define PCI_DEVICE_ID_INTEL_E7520_MCH	0x3590
++#define PCI_DEVICE_ID_INTEL_E7320_MCH	0x3592
++#define PCI_DEVICE_ID_INTEL_MCH_PA	0x3595
++#define PCI_DEVICE_ID_INTEL_MCH_PA1	0x3596
++#define PCI_DEVICE_ID_INTEL_MCH_PB	0x3597
++#define PCI_DEVICE_ID_INTEL_MCH_PB1	0x3598
++#define PCI_DEVICE_ID_INTEL_MCH_PC	0x3599
++#define PCI_DEVICE_ID_INTEL_MCH_PC1	0x359a
++#define PCI_DEVICE_ID_INTEL_E7525_MCH	0x359e
++#define PCI_DEVICE_ID_INTEL_I7300_MCH_ERR 0x360c
++#define PCI_DEVICE_ID_INTEL_I7300_MCH_FB0 0x360f
++#define PCI_DEVICE_ID_INTEL_I7300_MCH_FB1 0x3610
++#define PCI_DEVICE_ID_INTEL_IOAT_CNB	0x360b
++#define PCI_DEVICE_ID_INTEL_FBD_CNB	0x360c
++#define PCI_DEVICE_ID_INTEL_IOAT_JSF0	0x3710
++#define PCI_DEVICE_ID_INTEL_IOAT_JSF1	0x3711
++#define PCI_DEVICE_ID_INTEL_IOAT_JSF2	0x3712
++#define PCI_DEVICE_ID_INTEL_IOAT_JSF3	0x3713
++#define PCI_DEVICE_ID_INTEL_IOAT_JSF4	0x3714
++#define PCI_DEVICE_ID_INTEL_IOAT_JSF5	0x3715
++#define PCI_DEVICE_ID_INTEL_IOAT_JSF6	0x3716
++#define PCI_DEVICE_ID_INTEL_IOAT_JSF7	0x3717
++#define PCI_DEVICE_ID_INTEL_IOAT_JSF8	0x3718
++#define PCI_DEVICE_ID_INTEL_IOAT_JSF9	0x3719
++#define PCI_DEVICE_ID_INTEL_ICH10_0	0x3a14
++#define PCI_DEVICE_ID_INTEL_ICH10_1	0x3a16
++#define PCI_DEVICE_ID_INTEL_ICH10_2	0x3a18
++#define PCI_DEVICE_ID_INTEL_ICH10_3	0x3a1a
++#define PCI_DEVICE_ID_INTEL_ICH10_4	0x3a30
++#define PCI_DEVICE_ID_INTEL_ICH10_5	0x3a60
++#define PCI_DEVICE_ID_INTEL_5_3400_SERIES_LPC_MIN	0x3b00
++#define PCI_DEVICE_ID_INTEL_5_3400_SERIES_LPC_MAX	0x3b1f
++#define PCI_DEVICE_ID_INTEL_IOAT_SNB0	0x3c20
++#define PCI_DEVICE_ID_INTEL_IOAT_SNB1	0x3c21
++#define PCI_DEVICE_ID_INTEL_IOAT_SNB2	0x3c22
++#define PCI_DEVICE_ID_INTEL_IOAT_SNB3	0x3c23
++#define PCI_DEVICE_ID_INTEL_IOAT_SNB4	0x3c24
++#define PCI_DEVICE_ID_INTEL_IOAT_SNB5	0x3c25
++#define PCI_DEVICE_ID_INTEL_IOAT_SNB6	0x3c26
++#define PCI_DEVICE_ID_INTEL_IOAT_SNB7	0x3c27
++#define PCI_DEVICE_ID_INTEL_IOAT_SNB8	0x3c2e
++#define PCI_DEVICE_ID_INTEL_IOAT_SNB9	0x3c2f
++#define PCI_DEVICE_ID_INTEL_UNC_HA	0x3c46
++#define PCI_DEVICE_ID_INTEL_UNC_IMC0	0x3cb0
++#define PCI_DEVICE_ID_INTEL_UNC_IMC1	0x3cb1
++#define PCI_DEVICE_ID_INTEL_UNC_IMC2	0x3cb4
++#define PCI_DEVICE_ID_INTEL_UNC_IMC3	0x3cb5
++#define PCI_DEVICE_ID_INTEL_UNC_QPI0	0x3c41
++#define PCI_DEVICE_ID_INTEL_UNC_QPI1	0x3c42
++#define PCI_DEVICE_ID_INTEL_UNC_R2PCIE	0x3c43
++#define PCI_DEVICE_ID_INTEL_UNC_R3QPI0	0x3c44
++#define PCI_DEVICE_ID_INTEL_UNC_R3QPI1	0x3c45
++#define PCI_DEVICE_ID_INTEL_SBRIDGE_IMC_RAS	0x3c71	/* 15.1 */
++#define PCI_DEVICE_ID_INTEL_SBRIDGE_IMC_ERR0	0x3c72	/* 16.2 */
++#define PCI_DEVICE_ID_INTEL_SBRIDGE_IMC_ERR1	0x3c73	/* 16.3 */
++#define PCI_DEVICE_ID_INTEL_SBRIDGE_IMC_ERR2	0x3c76	/* 16.6 */
++#define PCI_DEVICE_ID_INTEL_SBRIDGE_IMC_ERR3	0x3c77	/* 16.7 */
++#define PCI_DEVICE_ID_INTEL_SBRIDGE_IMC_HA0	0x3ca0	/* 14.0 */
++#define PCI_DEVICE_ID_INTEL_SBRIDGE_IMC_TA	0x3ca8	/* 15.0 */
++#define PCI_DEVICE_ID_INTEL_SBRIDGE_IMC_TAD0	0x3caa	/* 15.2 */
++#define PCI_DEVICE_ID_INTEL_SBRIDGE_IMC_TAD1	0x3cab	/* 15.3 */
++#define PCI_DEVICE_ID_INTEL_SBRIDGE_IMC_TAD2	0x3cac	/* 15.4 */
++#define PCI_DEVICE_ID_INTEL_SBRIDGE_IMC_TAD3	0x3cad	/* 15.5 */
++#define PCI_DEVICE_ID_INTEL_SBRIDGE_IMC_DDRIO	0x3cb8	/* 17.0 */
++#define PCI_DEVICE_ID_INTEL_JAKETOWN_UBOX	0x3ce0
++#define PCI_DEVICE_ID_INTEL_SBRIDGE_SAD0	0x3cf4	/* 12.6 */
++#define PCI_DEVICE_ID_INTEL_SBRIDGE_BR		0x3cf5	/* 13.6 */
++#define PCI_DEVICE_ID_INTEL_SBRIDGE_SAD1	0x3cf6	/* 12.7 */
++#define PCI_DEVICE_ID_INTEL_IOAT_SNB	0x402f
++#define PCI_DEVICE_ID_INTEL_5100_16	0x65f0
++#define PCI_DEVICE_ID_INTEL_5100_19	0x65f3
++#define PCI_DEVICE_ID_INTEL_5100_21	0x65f5
++#define PCI_DEVICE_ID_INTEL_5100_22	0x65f6
++#define PCI_DEVICE_ID_INTEL_5400_ERR	0x4030
++#define PCI_DEVICE_ID_INTEL_5400_FBD0	0x4035
++#define PCI_DEVICE_ID_INTEL_5400_FBD1	0x4036
++#define PCI_DEVICE_ID_INTEL_IOAT_SCNB	0x65ff
++#define PCI_DEVICE_ID_INTEL_EP80579_0	0x5031
++#define PCI_DEVICE_ID_INTEL_EP80579_1	0x5032
++#define PCI_DEVICE_ID_INTEL_82371SB_0	0x7000
++#define PCI_DEVICE_ID_INTEL_82371SB_1	0x7010
++#define PCI_DEVICE_ID_INTEL_82371SB_2	0x7020
++#define PCI_DEVICE_ID_INTEL_82437VX	0x7030
++#define PCI_DEVICE_ID_INTEL_82439TX	0x7100
++#define PCI_DEVICE_ID_INTEL_82371AB_0	0x7110
++#define PCI_DEVICE_ID_INTEL_82371AB	0x7111
++#define PCI_DEVICE_ID_INTEL_82371AB_2	0x7112
++#define PCI_DEVICE_ID_INTEL_82371AB_3	0x7113
++#define PCI_DEVICE_ID_INTEL_82810_MC1	0x7120
++#define PCI_DEVICE_ID_INTEL_82810_IG1	0x7121
++#define PCI_DEVICE_ID_INTEL_82810_MC3	0x7122
++#define PCI_DEVICE_ID_INTEL_82810_IG3	0x7123
++#define PCI_DEVICE_ID_INTEL_82810E_MC	0x7124
++#define PCI_DEVICE_ID_INTEL_82810E_IG	0x7125
++#define PCI_DEVICE_ID_INTEL_82443LX_0	0x7180
++#define PCI_DEVICE_ID_INTEL_82443LX_1	0x7181
++#define PCI_DEVICE_ID_INTEL_82443BX_0	0x7190
++#define PCI_DEVICE_ID_INTEL_82443BX_1	0x7191
++#define PCI_DEVICE_ID_INTEL_82443BX_2	0x7192
++#define PCI_DEVICE_ID_INTEL_440MX	0x7195
++#define PCI_DEVICE_ID_INTEL_440MX_6	0x7196
++#define PCI_DEVICE_ID_INTEL_82443MX_0	0x7198
++#define PCI_DEVICE_ID_INTEL_82443MX_1	0x7199
++#define PCI_DEVICE_ID_INTEL_82443MX_3	0x719b
++#define PCI_DEVICE_ID_INTEL_82443GX_0	0x71a0
++#define PCI_DEVICE_ID_INTEL_82443GX_2	0x71a2
++#define PCI_DEVICE_ID_INTEL_82372FB_1	0x7601
++#define PCI_DEVICE_ID_INTEL_SCH_LPC	0x8119
++#define PCI_DEVICE_ID_INTEL_SCH_IDE	0x811a
++#define PCI_DEVICE_ID_INTEL_E6XX_CU	0x8183
++#define PCI_DEVICE_ID_INTEL_ITC_LPC	0x8186
++#define PCI_DEVICE_ID_INTEL_82454GX	0x84c4
++#define PCI_DEVICE_ID_INTEL_82450GX	0x84c5
++#define PCI_DEVICE_ID_INTEL_82451NX	0x84ca
++#define PCI_DEVICE_ID_INTEL_82454NX     0x84cb
++#define PCI_DEVICE_ID_INTEL_84460GX	0x84ea
++#define PCI_DEVICE_ID_INTEL_IXP4XX	0x8500
++#define PCI_DEVICE_ID_INTEL_IXP2800	0x9004
++#define PCI_DEVICE_ID_INTEL_S21152BB	0xb152
++
++#define PCI_VENDOR_ID_SCALEMP		0x8686
++#define PCI_DEVICE_ID_SCALEMP_VSMP_CTL	0x1010
++
++#define PCI_VENDOR_ID_COMPUTONE		0x8e0e
++#define PCI_DEVICE_ID_COMPUTONE_PG	0x0302
++#define PCI_SUBVENDOR_ID_COMPUTONE	0x8e0e
++#define PCI_SUBDEVICE_ID_COMPUTONE_PG4	0x0001
++#define PCI_SUBDEVICE_ID_COMPUTONE_PG8	0x0002
++#define PCI_SUBDEVICE_ID_COMPUTONE_PG6	0x0003
++
++#define PCI_VENDOR_ID_KTI		0x8e2e
++
++#define PCI_VENDOR_ID_ADAPTEC		0x9004
++#define PCI_DEVICE_ID_ADAPTEC_7810	0x1078
++#define PCI_DEVICE_ID_ADAPTEC_7821	0x2178
++#define PCI_DEVICE_ID_ADAPTEC_38602	0x3860
++#define PCI_DEVICE_ID_ADAPTEC_7850	0x5078
++#define PCI_DEVICE_ID_ADAPTEC_7855	0x5578
++#define PCI_DEVICE_ID_ADAPTEC_3860	0x6038
++#define PCI_DEVICE_ID_ADAPTEC_1480A	0x6075
++#define PCI_DEVICE_ID_ADAPTEC_7860	0x6078
++#define PCI_DEVICE_ID_ADAPTEC_7861	0x6178
++#define PCI_DEVICE_ID_ADAPTEC_7870	0x7078
++#define PCI_DEVICE_ID_ADAPTEC_7871	0x7178
++#define PCI_DEVICE_ID_ADAPTEC_7872	0x7278
++#define PCI_DEVICE_ID_ADAPTEC_7873	0x7378
++#define PCI_DEVICE_ID_ADAPTEC_7874	0x7478
++#define PCI_DEVICE_ID_ADAPTEC_7895	0x7895
++#define PCI_DEVICE_ID_ADAPTEC_7880	0x8078
++#define PCI_DEVICE_ID_ADAPTEC_7881	0x8178
++#define PCI_DEVICE_ID_ADAPTEC_7882	0x8278
++#define PCI_DEVICE_ID_ADAPTEC_7883	0x8378
++#define PCI_DEVICE_ID_ADAPTEC_7884	0x8478
++#define PCI_DEVICE_ID_ADAPTEC_7885	0x8578
++#define PCI_DEVICE_ID_ADAPTEC_7886	0x8678
++#define PCI_DEVICE_ID_ADAPTEC_7887	0x8778
++#define PCI_DEVICE_ID_ADAPTEC_7888	0x8878
++
++#define PCI_VENDOR_ID_ADAPTEC2		0x9005
++#define PCI_DEVICE_ID_ADAPTEC2_2940U2	0x0010
++#define PCI_DEVICE_ID_ADAPTEC2_2930U2	0x0011
++#define PCI_DEVICE_ID_ADAPTEC2_7890B	0x0013
++#define PCI_DEVICE_ID_ADAPTEC2_7890	0x001f
++#define PCI_DEVICE_ID_ADAPTEC2_3940U2	0x0050
++#define PCI_DEVICE_ID_ADAPTEC2_3950U2D	0x0051
++#define PCI_DEVICE_ID_ADAPTEC2_7896	0x005f
++#define PCI_DEVICE_ID_ADAPTEC2_7892A	0x0080
++#define PCI_DEVICE_ID_ADAPTEC2_7892B	0x0081
++#define PCI_DEVICE_ID_ADAPTEC2_7892D	0x0083
++#define PCI_DEVICE_ID_ADAPTEC2_7892P	0x008f
++#define PCI_DEVICE_ID_ADAPTEC2_7899A	0x00c0
++#define PCI_DEVICE_ID_ADAPTEC2_7899B	0x00c1
++#define PCI_DEVICE_ID_ADAPTEC2_7899D	0x00c3
++#define PCI_DEVICE_ID_ADAPTEC2_7899P	0x00cf
++#define PCI_DEVICE_ID_ADAPTEC2_OBSIDIAN   0x0500
++#define PCI_DEVICE_ID_ADAPTEC2_SCAMP	0x0503
++
++#define PCI_VENDOR_ID_HOLTEK		0x9412
++#define PCI_DEVICE_ID_HOLTEK_6565	0x6565
++
++#define PCI_VENDOR_ID_NETMOS		0x9710
++#define PCI_DEVICE_ID_NETMOS_9705	0x9705
++#define PCI_DEVICE_ID_NETMOS_9715	0x9715
++#define PCI_DEVICE_ID_NETMOS_9735	0x9735
++#define PCI_DEVICE_ID_NETMOS_9745	0x9745
++#define PCI_DEVICE_ID_NETMOS_9755	0x9755
++#define PCI_DEVICE_ID_NETMOS_9805	0x9805
++#define PCI_DEVICE_ID_NETMOS_9815	0x9815
++#define PCI_DEVICE_ID_NETMOS_9835	0x9835
++#define PCI_DEVICE_ID_NETMOS_9845	0x9845
++#define PCI_DEVICE_ID_NETMOS_9855	0x9855
++#define PCI_DEVICE_ID_NETMOS_9865	0x9865
++#define PCI_DEVICE_ID_NETMOS_9900	0x9900
++#define PCI_DEVICE_ID_NETMOS_9901	0x9901
++#define PCI_DEVICE_ID_NETMOS_9904	0x9904
++#define PCI_DEVICE_ID_NETMOS_9912	0x9912
++#define PCI_DEVICE_ID_NETMOS_9922	0x9922
++
++#define PCI_VENDOR_ID_3COM_2		0xa727
++
++#define PCI_VENDOR_ID_DIGIUM		0xd161
++#define PCI_DEVICE_ID_DIGIUM_HFC4S	0xb410
++
++#define PCI_SUBVENDOR_ID_EXSYS		0xd84d
++#define PCI_SUBDEVICE_ID_EXSYS_4014	0x4014
++#define PCI_SUBDEVICE_ID_EXSYS_4055	0x4055
++
++#define PCI_VENDOR_ID_TIGERJET		0xe159
++#define PCI_DEVICE_ID_TIGERJET_300	0x0001
++#define PCI_DEVICE_ID_TIGERJET_100	0x0002
++
++#define PCI_VENDOR_ID_XILINX_RME	0xea60
++#define PCI_DEVICE_ID_RME_DIGI32	0x9896
++#define PCI_DEVICE_ID_RME_DIGI32_PRO	0x9897
++#define PCI_DEVICE_ID_RME_DIGI32_8	0x9898
++
++#define PCI_VENDOR_ID_XEN		0x5853
++#define PCI_DEVICE_ID_XEN_PLATFORM	0x0001
++
++#define PCI_VENDOR_ID_OCZ		0x1b85
++
++#define PCI_VENDOR_ID_NCUBE		0x10ff
++
++#endif /* _LINUX_PCI_IDS_H */
 -- 
 2.20.1
 
