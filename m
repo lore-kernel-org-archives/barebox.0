@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gtNnn-0005De-Hh
- for barebox@lists.infradead.org; Tue, 12 Feb 2019 02:28:05 +0000
-Received: by mail-pl1-x643.google.com with SMTP id o6so495364pls.13
- for <barebox@lists.infradead.org>; Mon, 11 Feb 2019 18:28:03 -0800 (PST)
+ id 1gtNnr-0005Dx-Sk
+ for barebox@lists.infradead.org; Tue, 12 Feb 2019 02:28:10 +0000
+Received: by mail-pf1-x441.google.com with SMTP id j3so497875pfi.12
+ for <barebox@lists.infradead.org>; Mon, 11 Feb 2019 18:28:04 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Feb 2019 18:27:48 -0800
-Message-Id: <20190212022749.18301-2-andrew.smirnov@gmail.com>
+Date: Mon, 11 Feb 2019 18:27:49 -0800
+Message-Id: <20190212022749.18301-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20190212022749.18301-1-andrew.smirnov@gmail.com>
 References: <20190212022749.18301-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,41 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: i.MX8MQ: Read only ROM version major
+Subject: [PATCH 3/3] ARM: i.MX8MQ: Add corner case for Rev 2.1 silicon
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Don't read all 32-bits located at IMX8MQ_ROM_VERSION_*0 since that,
-besides ROM version major in LSB, willl also contain minor components
-which we don't account for in the following checks. Change the code to
-only read LSB instead.
+Rev 2.1 of i.MX8MQ silicon needs a special check different from
+predecessor. Add all of the neccessary code to do just that (based on
+similar code in vendor U-Boot tree).
 
-This is a port of a vendor U-Boot[1] commit
-0377dc881a96b46d858643dfaa5f9ef0dd4acccc ("MLK-19465 imx8mq: Fix cpu
-rev issue on B0.1 chip")
-
-[1] https://source.codeaurora.org/external/imx/uboot-imx
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/imx8mq.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/mach-imx/include/mach/imx8mq.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/arch/arm/mach-imx/include/mach/imx8mq.h b/arch/arm/mach-imx/include/mach/imx8mq.h
-index 2a7cf9977..d69ec8145 100644
+index d69ec8145..08dc06fdb 100644
 --- a/arch/arm/mach-imx/include/mach/imx8mq.h
 +++ b/arch/arm/mach-imx/include/mach/imx8mq.h
-@@ -30,9 +30,9 @@ static inline int imx8mq_cpu_revision(void)
+@@ -9,6 +9,8 @@
+ 
+ #define IMX8MQ_ROM_VERSION_A0	0x800
+ #define IMX8MQ_ROM_VERSION_B0	0x83C
++#define IMX8MQ_OCOTP_VERSION_B1 0x40
++#define IMX8MQ_OCOTP_VERSION_B1_MAGIC	0xff0055aa
+ 
+ #define MX8MQ_ANATOP_DIGPROG	0x6c
+ 
+@@ -20,12 +22,19 @@
+ static inline int imx8mq_cpu_revision(void)
+ {
+ 	void __iomem *anatop = IOMEM(MX8MQ_ANATOP_BASE_ADDR);
++	void __iomem *ocotp = IOMEM(MX8MQ_OCOTP_BASE_ADDR);
+ 	uint32_t revision = FIELD_GET(DIGPROG_MINOR,
+ 				      readl(anatop + MX8MQ_ANATOP_DIGPROG));
+ 	uint32_t rom_version;
+ 
+ 	if (revision != IMX_CHIP_REV_1_0)
+ 		return revision;
++	/*
++	 * For B1 chip we need to check OCOTP
++	 */
++	if (readl(ocotp + IMX8MQ_OCOTP_VERSION_B1) ==
++	    IMX8MQ_OCOTP_VERSION_B1_MAGIC)
++		return IMX_CHIP_REV_2_1;
+ 	/*
  	 * For B0 chip, the DIGPROG is not updated, still TO1.0.
  	 * we have to check ROM version further
- 	 */
--	rom_version = readl(IOMEM(IMX8MQ_ROM_VERSION_A0));
-+	rom_version = readb(IOMEM(IMX8MQ_ROM_VERSION_A0));
- 	if (rom_version != IMX_CHIP_REV_1_0) {
--		rom_version = readl(IOMEM(IMX8MQ_ROM_VERSION_B0));
-+		rom_version = readb(IOMEM(IMX8MQ_ROM_VERSION_B0));
- 		if (rom_version >= IMX_CHIP_REV_2_0)
- 			revision = IMX_CHIP_REV_2_0;
- 	}
 -- 
 2.20.1
 
