@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gtDK6-0008RD-Uf
- for barebox@lists.infradead.org; Mon, 11 Feb 2019 15:16:44 +0000
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Mon, 11 Feb 2019 16:16:34 +0100
-Message-Id: <1549898200-32688-2-git-send-email-t.remmet@phytec.de>
-In-Reply-To: <1549898200-32688-1-git-send-email-t.remmet@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gtT9R-0002ZB-GQ
+ for barebox@lists.infradead.org; Tue, 12 Feb 2019 08:10:47 +0000
+Date: Tue, 12 Feb 2019 09:10:43 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190212081043.viptqq7sge5zjtdg@pengutronix.de>
 References: <1549898200-32688-1-git-send-email-t.remmet@phytec.de>
+ <1549898200-32688-2-git-send-email-t.remmet@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1549898200-32688-2-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,107 +19,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] drivers: bus: Add ti-sysc bus driver
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/7] drivers: bus: Add ti-sysc bus driver
+To: Teresa Remmet <t.remmet@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Adds minimal support for the sysc interconnect target module found
-on many TI SoCs. With this device tree includes have been rearagned.
-We need the driver to probe the child devices of the bus.
+On Mon, Feb 11, 2019 at 04:16:34PM +0100, Teresa Remmet wrote:
+> Adds minimal support for the sysc interconnect target module found
+> on many TI SoCs. With this device tree includes have been rearagned.
+> We need the driver to probe the child devices of the bus.
+> 
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+> ---
+>  drivers/bus/Kconfig   |  7 +++++++
+>  drivers/bus/Makefile  |  1 +
+>  drivers/bus/ti-sysc.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 53 insertions(+)
+>  create mode 100644 drivers/bus/ti-sysc.c
+> 
+> diff --git a/drivers/bus/Kconfig b/drivers/bus/Kconfig
+> index 202df59762e8..7d35a663fdb5 100644
+> --- a/drivers/bus/Kconfig
+> +++ b/drivers/bus/Kconfig
+> @@ -6,6 +6,13 @@ config BUS_OMAP_GPMC
+>  	depends on OMAP_GPMC
+>  	bool "TI OMAP/AM33xx GPMC support"
+>  
+> +config TI_SYSC
+> +	depends on ARCH_OMAP
+> +	bool "TI sysc interconnect target module driver"
+> +	help
+> +          Generic driver for Texas Instruments interconnect target module
+> +          found on many TI SoCs.
 
-Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
----
- drivers/bus/Kconfig   |  7 +++++++
- drivers/bus/Makefile  |  1 +
- drivers/bus/ti-sysc.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 53 insertions(+)
- create mode 100644 drivers/bus/ti-sysc.c
+Can we default 'y' this option or select it from the SoCs that need it?
 
-diff --git a/drivers/bus/Kconfig b/drivers/bus/Kconfig
-index 202df59762e8..7d35a663fdb5 100644
---- a/drivers/bus/Kconfig
-+++ b/drivers/bus/Kconfig
-@@ -6,6 +6,13 @@ config BUS_OMAP_GPMC
- 	depends on OMAP_GPMC
- 	bool "TI OMAP/AM33xx GPMC support"
- 
-+config TI_SYSC
-+	depends on ARCH_OMAP
-+	bool "TI sysc interconnect target module driver"
-+	help
-+          Generic driver for Texas Instruments interconnect target module
-+          found on many TI SoCs.
-+
- config IMX_WEIM
- 	depends on ARCH_IMX
- 	bool "i.MX WEIM driver"
-diff --git a/drivers/bus/Makefile b/drivers/bus/Makefile
-index 4b7aa888aba8..ba5cee40636b 100644
---- a/drivers/bus/Makefile
-+++ b/drivers/bus/Makefile
-@@ -1,3 +1,4 @@
- obj-$(CONFIG_BUS_OMAP_GPMC)	+= omap-gpmc.o
- obj-$(CONFIG_IMX_WEIM)		+= imx-weim.o
- obj-$(CONFIG_MVEBU_MBUS)	+= mvebu-mbus.o
-+obj-$(CONFIG_TI_SYSC)		+= ti-sysc.o
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-new file mode 100644
-index 000000000000..b42ee7c895c7
---- /dev/null
-+++ b/drivers/bus/ti-sysc.c
-@@ -0,0 +1,45 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (C) 2019 Phytec Messtechnik GmbH, Teresa Remmet <t.remmet@phytec.de>
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <of.h>
-+#include <linux/err.h>
-+
-+static const struct of_device_id sysc_match_table[] = {
-+	{ .compatible = "simple-bus", },
-+	{ /* sentinel */ },
-+};
-+
-+static int ti_sysc_probe(struct device_d *dev)
-+{
-+	int ret;
-+
-+	ret = of_platform_populate(dev->device_node, sysc_match_table, dev);
-+	if (ret)
-+		dev_err(dev, "%s fail to create devices.\n",
-+					dev->device_node->full_name);
-+	return ret;
-+};
-+
-+static struct of_device_id ti_sysc_dt_ids[] = {
-+	{ .compatible = "ti,sysc-omap4",},
-+	{ .compatible = "ti,sysc-omap4-simple",},
-+	{ .compatible = "ti,sysc-omap4-timer",},
-+	{ .compatible = "ti,sysc-omap2",},
-+	{ },
-+};
-+
-+static struct driver_d ti_sysc_driver = {
-+	.name = "ti-sysc",
-+	.probe = ti_sysc_probe,
-+	.of_compatible = DRV_OF_COMPAT(ti_sysc_dt_ids),
-+};
-+
-+static int ti_sysc_init(void)
-+{
-+	return platform_driver_register(&ti_sysc_driver);
-+}
-+postcore_initcall(ti_sysc_init);
+Sascha
+
 -- 
-2.7.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
