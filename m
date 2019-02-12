@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gteac-000723-Py
- for barebox@lists.infradead.org; Tue, 12 Feb 2019 20:23:36 +0000
-Date: Tue, 12 Feb 2019 21:23:32 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190212202332.illgomcrw3wkokmv@pengutronix.de>
-References: <20190212151041.17507-1-m.felsch@pengutronix.de>
+ id 1gtNnm-0005DM-GS
+ for barebox@lists.infradead.org; Tue, 12 Feb 2019 02:28:03 +0000
+Received: by mail-pf1-x444.google.com with SMTP id z9so523629pfi.2
+ for <barebox@lists.infradead.org>; Mon, 11 Feb 2019 18:28:02 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 11 Feb 2019 18:27:47 -0800
+Message-Id: <20190212022749.18301-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190212151041.17507-1-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +21,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] of: base: add helper to rename a node
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org, mfe@pengutronix.de
+Subject: [PATCH 1/3] ARM: i.MX8MQ: Invert the logic in imx8mq_cpu_revision()
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Tue, Feb 12, 2019 at 04:10:40PM +0100, Marco Felsch wrote:
-> Sometimes it can be necessary to rename a node, e.g. a upstream node was
-> renamed and the whole board logic depends on the old naming scheme.
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
-> Note:
-> In my v1 this patch was required for the followed, but now it isn't. So
-> feel free to add or drop it. IMHO it can be a useful helper in the
-> future.
+Invert the logic in imx8mq_cpu_revision() and convert it to use early
+return. This is done in perparation for more corner case logic added
+in the following commits. No functional change intended.
 
-Indeed it can be, but as it's currently unused I only applied 2/2.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/mach-imx/include/mach/imx8mq.h | 26 ++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-Sascha
-
+diff --git a/arch/arm/mach-imx/include/mach/imx8mq.h b/arch/arm/mach-imx/include/mach/imx8mq.h
+index f4a537d2b..2a7cf9977 100644
+--- a/arch/arm/mach-imx/include/mach/imx8mq.h
++++ b/arch/arm/mach-imx/include/mach/imx8mq.h
+@@ -22,19 +22,19 @@ static inline int imx8mq_cpu_revision(void)
+ 	void __iomem *anatop = IOMEM(MX8MQ_ANATOP_BASE_ADDR);
+ 	uint32_t revision = FIELD_GET(DIGPROG_MINOR,
+ 				      readl(anatop + MX8MQ_ANATOP_DIGPROG));
+-
+-	if (revision == IMX_CHIP_REV_1_0) {
+-		uint32_t rom_version;
+-		/*
+-		 * For B0 chip, the DIGPROG is not updated, still TO1.0.
+-		 * we have to check ROM version further
+-		 */
+-		rom_version = readl(IOMEM(IMX8MQ_ROM_VERSION_A0));
+-		if (rom_version != IMX_CHIP_REV_1_0) {
+-			rom_version = readl(IOMEM(IMX8MQ_ROM_VERSION_B0));
+-			if (rom_version >= IMX_CHIP_REV_2_0)
+-				revision = IMX_CHIP_REV_2_0;
+-		}
++	uint32_t rom_version;
++
++	if (revision != IMX_CHIP_REV_1_0)
++		return revision;
++	/*
++	 * For B0 chip, the DIGPROG is not updated, still TO1.0.
++	 * we have to check ROM version further
++	 */
++	rom_version = readl(IOMEM(IMX8MQ_ROM_VERSION_A0));
++	if (rom_version != IMX_CHIP_REV_1_0) {
++		rom_version = readl(IOMEM(IMX8MQ_ROM_VERSION_B0));
++		if (rom_version >= IMX_CHIP_REV_2_0)
++			revision = IMX_CHIP_REV_2_0;
+ 	}
+ 
+ 	return revision;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
