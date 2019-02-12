@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gt9Q6-0004NF-9d
- for barebox@lists.infradead.org; Mon, 11 Feb 2019 11:06:51 +0000
-Date: Mon, 11 Feb 2019 12:06:36 +0100
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190211110636.strxlrorw5h5poxw@pengutronix.de>
-References: <20190207223906.24394-1-rohieb@rohieb.name>
- <068ce15e-1a72-9b02-2b1f-40a5d32523a0@rempel-privat.de>
- <20190208085902.4strzly224joqupn@pengutronix.de>
+ id 1gtRk9-0007HD-Ap
+ for barebox@lists.infradead.org; Tue, 12 Feb 2019 06:40:34 +0000
+Received: by mail-pf1-x444.google.com with SMTP id f132so823494pfa.6
+ for <barebox@lists.infradead.org>; Mon, 11 Feb 2019 22:40:33 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 11 Feb 2019 22:40:14 -0800
+Message-Id: <20190212064022.26154-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190208085902.4strzly224joqupn@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,32 +21,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/6] include: add SPDX GPL-2.0-only license tags where
- applicable
+Subject: [PATCH 0/8] NVME support
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Fri, Feb 08, 2019 at 09:59:02AM +0100, Roland Hieber wrote:
-> I noticed that Linux usually removes the license headers and only keeps
-> the copyright lines, but I wasn't able to find any reason for that. Do
-> you have more insight here?
+Everyone:
 
-I tried to google around a bit, and found several discussions, which all
-end in "SPDX is an industry-wide accepted standard" [1] and
-"SPDX-License-Identifiers are a legally binding shorthand" [2], but
-without further elaboration :-/
+This series contains all of the changes I made in order to add support
+for NVME storage in Barebox. Majority of the code was adapted directly
+from Linux kernel and I tried to keep it as close to the original as
+possible. Only a very basic featureset was implemented:
 
-[1]: https://patchwork.kernel.org/patch/10045625/#21135079
-[2]: e.g. here https://lore.kernel.org/patchwork/patch/854656/ or
-     in the commit message of [1] too
+    - For obvious reason all of the request both to admin and I/O
+      queue are fully blocking/syncronous, so none of the I/O
+      operations are done in parallel
 
- - Roland
+    - PRP list only DMA (no SGL lists support)
+
+    - No support for shared namespaces
+
+    - No support for transports other than PCIe. All of the pluming to
+      add support for it should be there, however.
+
+    - Host memory buffer support is not implemented
+
+Feedback is welcome!
+
+Thanks,
+Andrey Smirnov
+
+Andrey Smirnov (8):
+  PCI: Fix to_pci_dev() macro
+  PCI: Introduce device_pci_driver()
+  drivers: Make use of device_pci_driver()
+  include: Sync up pci_ids.h with 4.20-rc1
+  include: Add definitnion for HZ
+  include: Import uuid.h for Linux
+  include: Import min_not_zero() macro from Linux
+  drivers: Import a very basic NVME implementation from Linux
+
+ drivers/Kconfig             |    1 +
+ drivers/Makefile            |    1 +
+ drivers/net/e1000/main.c    |    7 +-
+ drivers/net/rtl8139.c       |    7 +-
+ drivers/net/rtl8169.c       |    7 +-
+ drivers/nvme/Kconfig        |    5 +
+ drivers/nvme/Makefile       |    1 +
+ drivers/nvme/host/Kconfig   |   11 +
+ drivers/nvme/host/Makefile  |    9 +
+ drivers/nvme/host/core.c    |  614 ++++++++
+ drivers/nvme/host/nvme.h    |  148 ++
+ drivers/nvme/host/pci.c     |  697 +++++++++
+ drivers/usb/host/xhci-pci.c |    7 +-
+ include/clock.h             |    2 +
+ include/linux/kernel.h      |   10 +
+ include/linux/nvme.h        | 1271 +++++++++++++++
+ include/linux/pci.h         |    7 +-
+ include/linux/pci_ids.h     | 2952 +++++++++++++++++++++++++++++++++++
+ include/linux/uuid.h        |   96 ++
+ include/uapi/linux/uuid.h   |   42 +
+ 20 files changed, 5870 insertions(+), 25 deletions(-)
+ create mode 100644 drivers/nvme/Kconfig
+ create mode 100644 drivers/nvme/Makefile
+ create mode 100644 drivers/nvme/host/Kconfig
+ create mode 100644 drivers/nvme/host/Makefile
+ create mode 100644 drivers/nvme/host/core.c
+ create mode 100644 drivers/nvme/host/nvme.h
+ create mode 100644 drivers/nvme/host/pci.c
+ create mode 100644 include/linux/nvme.h
+ create mode 100644 include/linux/uuid.h
+ create mode 100644 include/uapi/linux/uuid.h
 
 -- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
