@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x243.google.com ([2a00:1450:4864:20::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gtepm-0005fl-JA
- for barebox@lists.infradead.org; Tue, 12 Feb 2019 20:39:16 +0000
-Date: Tue, 12 Feb 2019 21:39:12 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190212203912.hf2kok7lpgmy6wrp@pengutronix.de>
-References: <20190211164400.14663-1-m.felsch@pengutronix.de>
+ id 1gtRea-00042x-H5
+ for barebox@lists.infradead.org; Tue, 12 Feb 2019 06:34:49 +0000
+Received: by mail-lj1-x243.google.com with SMTP id f24-v6so1241664ljk.0
+ for <barebox@lists.infradead.org>; Mon, 11 Feb 2019 22:34:46 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Tue, 12 Feb 2019 09:34:39 +0300
+Message-Id: <20190212063439.29866-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190211164400.14663-1-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,56 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: phy: micrel: backport ksz9031 125MHz ref-clk
- workaround
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org, mfe@pengutronix.de
+Subject: [PATCH] nvmem: eeprom_93xx46: fix whitespaces
+To: barebox@lists.infradead.org
 
-On Mon, Feb 11, 2019 at 05:44:00PM +0100, Marco Felsch wrote:
-> This patch backports linux commit e1b505a60366 ("net: phy: micrel: add
-> 125MHz reference clock workaround").
-> 
-> 8<--------------------- The original commit message -------------------
-> 
-> net: phy: micrel: add 125MHz reference clock workaround
-> 
-> The micrel KSZ9031 phy has a optional clock pin (CLK125_NDO) which can be
-> used as reference clock for the MAC unit. The clock signal must meet the
-> RGMII requirements to ensure the correct data transmission between the
-> MAC and the PHY. The KSZ9031 phy does not fulfill the duty cycle
-> requirement if the phy is configured as slave. For a complete
-> describtion look at the errata sheets: DS80000691D or DS80000692D.
-> 
-> The errata sheet recommends to force the phy into master mode whenever
-> there is a 1000Base-T link-up as work around. Only set the
-> "micrel,force-master" property if you use the phy reference clock provided
-> by CLK125_NDO pin as MAC reference clock in your application.
-> 
-> Attenation, this workaround is only usable if the link partner can
-> be configured to slave mode for 1000Base-T.
-> 
-> Signed-off-by: Markus Niebel <Markus.Niebel@tqs.de>
-> [m.felsch@pengutronix.de: fix dt-binding documentation]
-> [m.felsch@pengutronix.de: use already existing result var for read/write]
-> [m.felsch@pengutronix.de: add error handling]
-> [m.felsch@pengutronix.de: add more comments]
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> Signed-off-by: David S. Miller <davem@davemloft.net>
-> 8<---------------------------------------------------------------------
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/nvmem/eeprom_93xx46.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-Applied, thanks
-
-Sascha
-
+diff --git a/drivers/nvmem/eeprom_93xx46.c b/drivers/nvmem/eeprom_93xx46.c
+index d96ba32d07..49ed396dc2 100644
+--- a/drivers/nvmem/eeprom_93xx46.c
++++ b/drivers/nvmem/eeprom_93xx46.c
+@@ -339,7 +339,7 @@ static int eeprom_93xx46_probe_dt(struct spi_device *spi)
+ 	if (of_property_read_bool(np, "read-only"))
+ 		pd->flags |= EE_READONLY;
+ 
+-	pd->select =of_get_named_gpio_flags(np, "select", 0, &of_flags);
++	pd->select = of_get_named_gpio_flags(np, "select", 0, &of_flags);
+ 	if (gpio_is_valid(pd->select)) {
+ 		char *name;
+ 
+@@ -441,6 +441,3 @@ static struct driver_d eeprom_93xx46_driver = {
+ 	.of_compatible = DRV_OF_COMPAT(eeprom_93xx46_of_table),
+ };
+ device_spi_driver(eeprom_93xx46_driver);
+-
+-
+-
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
