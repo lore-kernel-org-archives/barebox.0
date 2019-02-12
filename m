@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gtYP3-00042B-EP
- for barebox@lists.infradead.org; Tue, 12 Feb 2019 13:47:15 +0000
+ id 1gtZOd-0007SP-Tv
+ for barebox@lists.infradead.org; Tue, 12 Feb 2019 14:50:53 +0000
+Received: by mail-lf1-x12d.google.com with SMTP id l10so2190714lfh.9
+ for <barebox@lists.infradead.org>; Tue, 12 Feb 2019 06:50:49 -0800 (PST)
+Date: Tue, 12 Feb 2019 17:50:45 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20190212175045.d8af82f1a3fdc47c21957d72@gmail.com>
+In-Reply-To: <1549976247670.75244@mixed-mode.de>
 References: <1549976247670.75244@mixed-mode.de>
- <20190212133429.6i35ehvsl5xy5w2b@pengutronix.de>
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <0680d772-4149-0dac-279d-ec3cfd1214a9@pengutronix.de>
-Date: Tue, 12 Feb 2019 14:47:08 +0100
-MIME-Version: 1.0
-In-Reply-To: <20190212133429.6i35ehvsl5xy5w2b@pengutronix.de>
-Content-Language: en-US
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,32 +19,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Barebox support for Arm Cortex-M0 Boards
-To: Roland Hieber <rhi@pengutronix.de>, Kai Che <Kai.Che@mixed-mode.de>
+To: Kai Che <Kai.Che@mixed-mode.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-CgpPbiAxMi4wMi4xOSAxNDozNCwgUm9sYW5kIEhpZWJlciB3cm90ZToKPiBPbiBUdWUsIEZlYiAx
-MiwgMjAxOSBhdCAxMjo1NzoyNlBNICswMDAwLCBLYWkgQ2hlIHdyb3RlOgo+PiBIaSBldmVyeW9u
-ZSwKPj4KPj4gZG9lcyBiYXJlYm94IHN1cHBvcnQgYW55IGtpbmQgb2YgQXJtLUNvcnRleCBNMCBC
-b2FyZHM/IGUuZy4gU1RNMzJGMCBvciBzaW1pbGlhcj8KPiAKPj4KPj4gSSBjb3VsZG4ndCBmaW5k
-IGFueSBtZW50aW9uIG9mIHN1Y2ggYSBib2FyZCBpbiB0aGUgYm9hcmQgc3VwcG9ydCBzZWN0aW9u
-IG9mwqB0aGUgZG9jdW1lbnRhdGlvbi4KPj4KPj4gSSBob3BlIEkgZGlkbid0IG92ZXJsb29rIHNv
-bWV0aGluZy4KPiAKPiBJJ3ZlIG5vdCBzZWVuIGFueSBDb3J0ZXgtTSBzdXBwb3J0IGZvciBiYXJl
-Ym94IHlldCwgYnV0IEkgdGhpbmsgaXQgd291bGQKPiBtYWtlIGEgZ3JlYXQgcmVzZWFyY2ggcHJv
-amVjdCA6KSBCYXJlYm94IGRvZXMgbm90IG5lZWQgYSBNTVUgYXMgZmFyIGFzIEkKPiBrbm93LgoK
-SSBoYXZlIHVzZWQgaXQgb24gb2xkIFVTQiBNSVBTIGJhc2VkIFdpRmkgYWRhcHRlciwgaW5zdGVh
-ZCBvZiBvcmlnaW5hbCBmaXJtd2FyZS4gSXQgaGFzIApzaW1pbGFyIHNwZWNpZmljYXRpb24uIFNv
-LCBJIGFzc3VtZSBpdCB3b3VsZCB3b3JrIGZvciBTVE0zMkYwLiBObyBpZGVhIGlmIGl0IG1ha2Ug
-c2Vuc2UuCgpLaW5kIHJlZ2FyZHMsCk9sZWtzaWogUmVtcGVsCgotLSAKUGVuZ3V0cm9uaXggZS5L
-LiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3
-dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBH
-ZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVz
-aGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Tue, 12 Feb 2019 12:57:26 +0000
+Kai Che <Kai.Che@mixed-mode.de> wrote:
+
+Hi!
+
+> does barebox support any kind of Arm-Cortex M0 Boards? e.g. STM32F0 or si=
+miliar?
+
+At the moment barebox does not support ARM-Cortex.
+I suppose there is no problem to port barebox to STM32.
+However STM32F0 definitely is not a preferred STM32 target chip for porting.
+Barebox is intended to be a BOOTLOADER. Barebox is intended to load somethi=
+ng into RAM.
+STM32F098VC is an advanced STMF0 family chip in terms of RAM and ROM size.
+STM32F098VC has 256 KB of flash ROM and 32 KB of SRAM.
+I suppose that barebox can be linked to put code into flash ROM (e.g. see R=
+OMKERNEL
+option for blackfin linux kernel port) and 32 KB of RAM can be enough for d=
+ata
+but IMHO 32 KB is not enough for comfort and useful work.
+
+AFAIR It is possible to run risc-v barebox (both code and data) inside 192 =
+KB RAM memory
+space in a VERY VERY MINIMAL configuration, just demo.
+
+Barebox can be really useful on linux-capable STM32 chips and board, e.g.
+STM32F429 DISCO board (https://www.st.com/en/evaluation-tools/32f429idiscov=
+ery.html)
+
+> I couldn't find any mention of such a board in the board support section =
+of=A0the documentation.
+> =
+
+> I hope I didn't overlook something.
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
