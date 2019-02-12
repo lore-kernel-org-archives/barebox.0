@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gteT7-00054G-Kq
- for barebox@lists.infradead.org; Tue, 12 Feb 2019 20:15:51 +0000
-Date: Tue, 12 Feb 2019 21:15:46 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190212201546.7a7htuw3bm2nceqp@pengutronix.de>
-References: <20190212145110.13119-1-tomaz.solc@tablix.org>
+ id 1gtZhu-0005wg-PW
+ for barebox@lists.infradead.org; Tue, 12 Feb 2019 15:10:48 +0000
+From: Marco Felsch <m.felsch@pengutronix.de>
+Date: Tue, 12 Feb 2019 16:10:40 +0100
+Message-Id: <20190212151041.17507-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190212145110.13119-1-tomaz.solc@tablix.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,60 +19,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: rpi: avoid NULL dereference on unknown rev.
-To: Tomaz Solc <tomaz.solc@tablix.org>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 1/2] of: base: add helper to rename a node
+To: barebox@lists.infradead.org
+Cc: mfe@pengutronix.de
 
-On Tue, Feb 12, 2019 at 03:51:10PM +0100, Tomaz Solc wrote:
-> "model" pointer is NULL if current board revision isn't in the list of known
-> boards.
-> ---
->  arch/arm/boards/raspberry-pi/rpi-common.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+Sometimes it can be necessary to rename a node, e.g. a upstream node was
+renamed and the whole board logic depends on the old naming scheme.
 
-Applied, thanks
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+Note:
+In my v1 this patch was required for the followed, but now it isn't. So
+feel free to add or drop it. IMHO it can be a useful helper in the
+future.
 
-Sascha
+Changelog:
+v2:
+ - const name parameter
+ - free names before adding new ones
+ - drop unnecessary else-path
+ - adapt commit message
 
-> 
-> diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-> index 650b26ce7..b2febec99 100644
-> --- a/arch/arm/boards/raspberry-pi/rpi-common.c
-> +++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-> @@ -180,7 +180,7 @@ const struct rpi_model rpi_models_new_scheme[] = {
->  };
->  
->  static int rpi_board_rev = 0;
-> -const struct rpi_model *model;
-> +const struct rpi_model *model = NULL;
->  
->  static void rpi_get_board_rev(void)
->  {
-> @@ -251,6 +251,9 @@ unknown_rev:
->  
->  static void rpi_model_init(void)
->  {
-> +	if (!model)
-> +		return;
-> +
->  	if (!model->init)
->  		return;
->  
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+ drivers/of/base.c | 18 ++++++++++++++++++
+ include/of.h      |  5 +++++
+ 2 files changed, 23 insertions(+)
 
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index b082f0c656..48f1270baa 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2094,6 +2094,24 @@ void of_delete_node(struct device_node *node)
+ 		of_set_root_node(NULL);
+ }
+ 
++void of_rename_node(struct device_node *node, const char *name)
++{
++	struct device_node *parent;
++
++	if (!node)
++		return;
++
++	parent = node->parent;
++	if (parent) {
++		/* only child nodes have names */
++		free(node->name);
++		free(node->full_name);
++
++		node->name = xstrdup(name);
++		node->full_name = basprintf("%s/%s", parent->full_name, name);
++	}
++}
++
+ int of_device_is_stdout_path(struct device_d *dev)
+ {
+ 	struct device_node *dn;
+diff --git a/include/of.h b/include/of.h
+index 184acb4741..f829690865 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -158,6 +158,7 @@ extern struct device_node *of_create_node(struct device_node *root,
+ extern struct device_node *of_copy_node(struct device_node *parent,
+ 				const struct device_node *other);
+ extern void of_delete_node(struct device_node *node);
++extern void of_rename_node(struct device_node *node, const char *name);
+ 
+ extern const char *of_get_machine_compatible(void);
+ extern int of_machine_is_compatible(const char *compat);
+@@ -605,6 +606,10 @@ static inline void of_delete_node(struct device_node *node)
+ {
+ }
+ 
++static inline void of_rename_node(struct device_node *node, const char *name)
++{
++}
++
+ static inline int of_machine_is_compatible(const char *compat)
+ {
+ 	return 0;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
