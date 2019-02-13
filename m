@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gvP7F-0008Ha-04
- for barebox@lists.infradead.org; Sun, 17 Feb 2019 16:16:30 +0000
-Received: by mail-lf1-x141.google.com with SMTP id u21so10537555lfu.1
- for <barebox@lists.infradead.org>; Sun, 17 Feb 2019 08:16:28 -0800 (PST)
-From: Sam Ravnborg <sam@ravnborg.org>
-Date: Sun, 17 Feb 2019 17:16:05 +0100
-Message-Id: <20190217161609.11305-6-sam@ravnborg.org>
-In-Reply-To: <20190217161609.11305-1-sam@ravnborg.org>
-References: <20190217161609.11305-1-sam@ravnborg.org>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gtpzy-0001lB-W8
+ for barebox@lists.infradead.org; Wed, 13 Feb 2019 08:34:32 +0000
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Wed, 13 Feb 2019 09:34:22 +0100
+Message-Id: <1550046868-19264-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,207 +19,99 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/9] clk: at91: add at91sam9rl
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH v2 1/7] drivers: bus: Add ti-sysc bus driver
+To: barebox@lists.infradead.org
 
-Add at91sam9rl as part of supporting the PMC bindings for ARM at91.
-The file will be wired into the build in a follow-up patch.
+Adds minimal support for the sysc interconnect target module found
+on many TI SoCs. With this device tree includes have been rearagned.
+We need the driver to probe the child devices of the bus.
 
-The file is a copy from kernel 5.0-rc6 modified to build
-with barebox.
-
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/clk/at91/at91sam9rl.c | 177 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 177 insertions(+)
- create mode 100644 drivers/clk/at91/at91sam9rl.c
+Changes in v2:
+- set driver in Kconfig to default y
+- Use postcore_platform_driver() call
+- Use global of_default_bus_match_table() instead of local table
 
-diff --git a/drivers/clk/at91/at91sam9rl.c b/drivers/clk/at91/at91sam9rl.c
+ drivers/bus/Kconfig   |  8 ++++++++
+ drivers/bus/Makefile  |  1 +
+ drivers/bus/ti-sysc.c | 37 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 46 insertions(+)
+ create mode 100644 drivers/bus/ti-sysc.c
+
+diff --git a/drivers/bus/Kconfig b/drivers/bus/Kconfig
+index 202df59762e8..219982d878a8 100644
+--- a/drivers/bus/Kconfig
++++ b/drivers/bus/Kconfig
+@@ -6,6 +6,14 @@ config BUS_OMAP_GPMC
+ 	depends on OMAP_GPMC
+ 	bool "TI OMAP/AM33xx GPMC support"
+ 
++config TI_SYSC
++	depends on ARCH_OMAP
++	bool "TI sysc interconnect target module driver"
++	default y
++	help
++	  Generic driver for Texas Instruments interconnect target module
++	  found on many TI SoCs.
++
+ config IMX_WEIM
+ 	depends on ARCH_IMX
+ 	bool "i.MX WEIM driver"
+diff --git a/drivers/bus/Makefile b/drivers/bus/Makefile
+index 4b7aa888aba8..ba5cee40636b 100644
+--- a/drivers/bus/Makefile
++++ b/drivers/bus/Makefile
+@@ -1,3 +1,4 @@
+ obj-$(CONFIG_BUS_OMAP_GPMC)	+= omap-gpmc.o
+ obj-$(CONFIG_IMX_WEIM)		+= imx-weim.o
+ obj-$(CONFIG_MVEBU_MBUS)	+= mvebu-mbus.o
++obj-$(CONFIG_TI_SYSC)		+= ti-sysc.o
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
 new file mode 100644
-index 000000000..82acb3825
+index 000000000000..af52d839bdd5
 --- /dev/null
-+++ b/drivers/clk/at91/at91sam9rl.c
-@@ -0,0 +1,177 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/drivers/bus/ti-sysc.c
+@@ -0,0 +1,37 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (C) 2019 Phytec Messtechnik GmbH, Teresa Remmet <t.remmet@phytec.de>
++ */
 +
-+#include <driver.h>
-+#include <regmap.h>
-+#include <stdio.h>
-+#include <mfd/syscon.h>
++#include <common.h>
++#include <init.h>
++#include <of.h>
++#include <linux/err.h>
 +
-+#include <linux/clk.h>
-+#include <linux/slab.h>
-+#include <linux/types.h>
-+
-+#include <dt-bindings/clock/at91.h>
-+
-+#include "pmc.h"
-+
-+static const struct clk_master_characteristics sam9rl_mck_characteristics = {
-+	.output = { .min = 0, .max = 94000000 },
-+	.divisors = { 1, 2, 4, 0 },
-+};
-+
-+static u8 sam9rl_plla_out[] = { 0, 2 };
-+
-+static struct clk_range sam9rl_plla_outputs[] = {
-+	{ .min = 80000000, .max = 200000000 },
-+	{ .min = 190000000, .max = 240000000 },
-+};
-+
-+static const struct clk_pll_characteristics sam9rl_plla_characteristics = {
-+	.input = { .min = 1000000, .max = 32000000 },
-+	.num_output = ARRAY_SIZE(sam9rl_plla_outputs),
-+	.output = sam9rl_plla_outputs,
-+	.out = sam9rl_plla_out,
-+};
-+
-+static const struct {
-+	char *n;
-+	char *p;
-+	u8 id;
-+} at91sam9rl_systemck[] = {
-+	{ .n = "pck0",  .p = "prog0",    .id = 8 },
-+	{ .n = "pck1",  .p = "prog1",    .id = 9 },
-+};
-+
-+static const struct {
-+	char *n;
-+	u8 id;
-+} at91sam9rl_periphck[] = {
-+	{ .n = "pioA_clk",   .id = 2, },
-+	{ .n = "pioB_clk",   .id = 3, },
-+	{ .n = "pioC_clk",   .id = 4, },
-+	{ .n = "pioD_clk",   .id = 5, },
-+	{ .n = "usart0_clk", .id = 6, },
-+	{ .n = "usart1_clk", .id = 7, },
-+	{ .n = "usart2_clk", .id = 8, },
-+	{ .n = "usart3_clk", .id = 9, },
-+	{ .n = "mci0_clk",   .id = 10, },
-+	{ .n = "twi0_clk",   .id = 11, },
-+	{ .n = "twi1_clk",   .id = 12, },
-+	{ .n = "spi0_clk",   .id = 13, },
-+	{ .n = "ssc0_clk",   .id = 14, },
-+	{ .n = "ssc1_clk",   .id = 15, },
-+	{ .n = "tc0_clk",    .id = 16, },
-+	{ .n = "tc1_clk",    .id = 17, },
-+	{ .n = "tc2_clk",    .id = 18, },
-+	{ .n = "pwm_clk",    .id = 19, },
-+	{ .n = "adc_clk",    .id = 20, },
-+	{ .n = "dma0_clk",   .id = 21, },
-+	{ .n = "udphs_clk",  .id = 22, },
-+	{ .n = "lcd_clk",    .id = 23, },
-+};
-+
-+static void __init at91sam9rl_pmc_setup(struct device_node *np)
++static int ti_sysc_probe(struct device_d *dev)
 +{
-+	const char *slck_name, *mainxtal_name;
-+	struct pmc_data *at91sam9rl_pmc;
-+	const char *parent_names[6];
-+	struct regmap *regmap;
-+	struct clk *hw;
-+	int i;
++	int ret;
 +
-+	i = of_property_match_string(np, "clock-names", "slow_clk");
-+	if (i < 0)
-+		return;
++	ret = of_platform_populate(dev->device_node,
++					of_default_bus_match_table, dev);
++	if (ret)
++		dev_err(dev, "%s fail to create devices.\n",
++					dev->device_node->full_name);
++	return ret;
++};
 +
-+	slck_name = of_clk_get_parent_name(np, i);
++static struct of_device_id ti_sysc_dt_ids[] = {
++	{ .compatible = "ti,sysc-omap4",},
++	{ .compatible = "ti,sysc-omap4-simple",},
++	{ .compatible = "ti,sysc-omap4-timer",},
++	{ .compatible = "ti,sysc-omap2",},
++	{ },
++};
 +
-+	i = of_property_match_string(np, "clock-names", "main_xtal");
-+	if (i < 0)
-+		return;
-+	mainxtal_name = of_clk_get_parent_name(np, i);
++static struct driver_d ti_sysc_driver = {
++	.name = "ti-sysc",
++	.probe = ti_sysc_probe,
++	.of_compatible = DRV_OF_COMPAT(ti_sysc_dt_ids),
++};
 +
-+	regmap = syscon_node_to_regmap(np);
-+	if (IS_ERR(regmap))
-+		return;
-+
-+	at91sam9rl_pmc = pmc_data_allocate(PMC_MAIN + 1,
-+					   nck(at91sam9rl_systemck),
-+					   nck(at91sam9rl_periphck), 0);
-+	if (!at91sam9rl_pmc)
-+		return;
-+
-+	hw = at91_clk_register_rm9200_main(regmap, "mainck", mainxtal_name);
-+	if (IS_ERR(hw))
-+		goto err_free;
-+
-+	at91sam9rl_pmc->chws[PMC_MAIN] = hw;
-+
-+	hw = at91_clk_register_pll(regmap, "pllack", "mainck", 0,
-+				   &at91rm9200_pll_layout,
-+				   &sam9rl_plla_characteristics);
-+	if (IS_ERR(hw))
-+		goto err_free;
-+
-+	hw = at91_clk_register_utmi(regmap, NULL, "utmick", "mainck");
-+	if (IS_ERR(hw))
-+		goto err_free;
-+
-+	at91sam9rl_pmc->chws[PMC_UTMI] = hw;
-+
-+	parent_names[0] = slck_name;
-+	parent_names[1] = "mainck";
-+	parent_names[2] = "pllack";
-+	parent_names[3] = "utmick";
-+	hw = at91_clk_register_master(regmap, "masterck", 4, parent_names,
-+				      &at91rm9200_master_layout,
-+				      &sam9rl_mck_characteristics);
-+	if (IS_ERR(hw))
-+		goto err_free;
-+
-+	at91sam9rl_pmc->chws[PMC_MCK] = hw;
-+
-+	parent_names[0] = slck_name;
-+	parent_names[1] = "mainck";
-+	parent_names[2] = "pllack";
-+	parent_names[3] = "utmick";
-+	parent_names[4] = "masterck";
-+	for (i = 0; i < 2; i++) {
-+		char *name;
-+
-+		name = xasprintf("prog%d", i);
-+
-+		hw = at91_clk_register_programmable(regmap, name,
-+						    parent_names, 5, i,
-+						    &at91rm9200_programmable_layout);
-+		if (IS_ERR(hw))
-+			goto err_free;
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(at91sam9rl_systemck); i++) {
-+		hw = at91_clk_register_system(regmap, at91sam9rl_systemck[i].n,
-+					      at91sam9rl_systemck[i].p,
-+					      at91sam9rl_systemck[i].id);
-+		if (IS_ERR(hw))
-+			goto err_free;
-+
-+		at91sam9rl_pmc->shws[at91sam9rl_systemck[i].id] = hw;
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(at91sam9rl_periphck); i++) {
-+		hw = at91_clk_register_peripheral(regmap,
-+						  at91sam9rl_periphck[i].n,
-+						  "masterck",
-+						  at91sam9rl_periphck[i].id);
-+		if (IS_ERR(hw))
-+			goto err_free;
-+
-+		at91sam9rl_pmc->phws[at91sam9rl_periphck[i].id] = hw;
-+	}
-+
-+	of_clk_add_provider(np, of_clk_hw_pmc_get, at91sam9rl_pmc);
-+
-+	return;
-+
-+err_free:
-+	pmc_data_free(at91sam9rl_pmc);
-+}
-+CLK_OF_DECLARE_DRIVER(at91sam9rl_pmc, "atmel,at91sam9rl-pmc", at91sam9rl_pmc_setup);
++postcore_platform_driver(ti_sysc_driver);
 -- 
-2.12.0
+2.7.4
 
 
 _______________________________________________
