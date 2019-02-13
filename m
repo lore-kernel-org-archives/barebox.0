@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gtq07-0001lB-6K
- for barebox@lists.infradead.org; Wed, 13 Feb 2019 08:34:45 +0000
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 13 Feb 2019 09:34:28 +0100
-Message-Id: <1550046868-19264-7-git-send-email-t.remmet@phytec.de>
-In-Reply-To: <1550046868-19264-1-git-send-email-t.remmet@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gu0FB-00015N-4T
+ for barebox@lists.infradead.org; Wed, 13 Feb 2019 19:30:54 +0000
+Date: Wed, 13 Feb 2019 20:30:49 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190213193049.ecvyoxjklbgpokw3@pengutronix.de>
 References: <1550046868-19264-1-git-send-email-t.remmet@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1550046868-19264-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,116 +18,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 7/7] arm: dts: am335x-phytec: Use phy-handle instead of
- phy_id
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 1/7] drivers: bus: Add ti-sysc bus driver
+To: Teresa Remmet <t.remmet@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Update am335x-phytec som device trees and use phy-handle instead of phy_id.
+On Wed, Feb 13, 2019 at 09:34:22AM +0100, Teresa Remmet wrote:
+> Adds minimal support for the sysc interconnect target module found
+> on many TI SoCs. With this device tree includes have been rearagned.
+> We need the driver to probe the child devices of the bus.
+> 
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+> ---
+> Changes in v2:
+> - set driver in Kconfig to default y
+> - Use postcore_platform_driver() call
+> - Use global of_default_bus_match_table() instead of local table
 
-Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
----
- arch/arm/dts/am335x-phytec-phycard-som.dtsi |  7 ++++++-
- arch/arm/dts/am335x-phytec-phycore-som.dtsi |  7 ++++++-
- arch/arm/dts/am335x-phytec-phyflex-som.dtsi | 12 ++++++++++--
- 3 files changed, 22 insertions(+), 4 deletions(-)
+Applied to master, thanks
 
-diff --git a/arch/arm/dts/am335x-phytec-phycard-som.dtsi b/arch/arm/dts/am335x-phytec-phycard-som.dtsi
-index 6a0442916bcb..2320ca18070f 100644
---- a/arch/arm/dts/am335x-phytec-phycard-som.dtsi
-+++ b/arch/arm/dts/am335x-phytec-phycard-som.dtsi
-@@ -122,6 +122,10 @@
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&davinci_mdio_default>;
- 	status = "okay";
-+
-+	phy0: ethernet-phy@0 {
-+		reg = <0>;
-+	};
- };
- 
- &phy_sel {
-@@ -129,8 +133,9 @@
- };
- 
- &cpsw_emac0 {
--	phy_id = <&davinci_mdio>, <0>;
-+	phy-handle = <&phy0>;
- 	phy-mode = "rmii";
-+	dual_emac_res_vlan = <1>;
- };
- 
- &mac {
-diff --git a/arch/arm/dts/am335x-phytec-phycore-som.dtsi b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
-index cb2d30a15ccd..0601f5ab7ba5 100644
---- a/arch/arm/dts/am335x-phytec-phycore-som.dtsi
-+++ b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
-@@ -244,6 +244,10 @@
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&davinci_mdio_default>;
- 	status = "okay";
-+
-+	phy0: ethernet-phy@0 {
-+		reg = <0>;
-+	};
- };
- 
- &phy_sel {
-@@ -251,8 +255,9 @@
- };
- 
- &cpsw_emac0 {
--	phy_id = <&davinci_mdio>, <0>;
-+	phy-handle = <&phy0>;
- 	phy-mode = "rmii";
-+	dual_emac_res_vlan = <1>;
- };
- 
- &mac {
-diff --git a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
-index 465d3fa16cd7..4d0a91398843 100644
---- a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
-+++ b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
-@@ -197,6 +197,14 @@
- 	pinctrl-names = "default", "sleep";
- 	pinctrl-0 = <&davinci_mdio_default>;
- 	status = "okay";
-+
-+	phy0: ethernet-phy@0 {
-+		reg = <1>;
-+	};
-+
-+	phy1: ethernet-phy@1 {
-+		reg = <2>;
-+	};
- };
- 
- &phy_sel {
-@@ -204,7 +212,7 @@
- };
- 
- &cpsw_emac0 {
--	phy_id = <&davinci_mdio>, <1>;
-+	phy-handle = <&phy0>;
- 	phy-mode = "rgmii";
- 	dual_emac_res_vlan = <1>;
- 
-@@ -221,7 +229,7 @@
- };
- 
- &cpsw_emac1 {
--	phy_id = <&davinci_mdio>, <2>;
-+	phy-handle = <&phy1>;
- 	phy-mode = "rmii";
- 	dual_emac_res_vlan = <2>;
- 	status = "disabled";
+Sascha
+
+
 -- 
-2.7.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
