@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gteqT-0005lR-PN
- for barebox@lists.infradead.org; Tue, 12 Feb 2019 20:39:59 +0000
-Date: Tue, 12 Feb 2019 21:39:56 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190212203956.mf5vx6up5wvqsi4y@pengutronix.de>
-References: <20190212063439.29866-1-antonynpavlov@gmail.com>
+ id 1gtj3D-0005zO-7D
+ for barebox@lists.infradead.org; Wed, 13 Feb 2019 01:09:25 +0000
+Received: by mail-pl1-x644.google.com with SMTP id s1so316342plp.9
+ for <barebox@lists.infradead.org>; Tue, 12 Feb 2019 17:09:22 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 12 Feb 2019 17:09:07 -0800
+Message-Id: <20190213010907.20429-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190212063439.29866-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +21,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] nvmem: eeprom_93xx46: fix whitespaces
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] ARM: i.MX8MQ: Add code to report HDMI/eDP firmware version
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Tue, Feb 12, 2019 at 09:34:39AM +0300, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  drivers/nvmem/eeprom_93xx46.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+Port code found in cdn_dp_load_firmware() in Linux kernel to check if
+HDMI firmware is running and, if so, report its version.
 
-Applied, thanks
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
 
-Sascha
+Changes since [v1]:
 
-> 
-> diff --git a/drivers/nvmem/eeprom_93xx46.c b/drivers/nvmem/eeprom_93xx46.c
-> index d96ba32d07..49ed396dc2 100644
-> --- a/drivers/nvmem/eeprom_93xx46.c
-> +++ b/drivers/nvmem/eeprom_93xx46.c
-> @@ -339,7 +339,7 @@ static int eeprom_93xx46_probe_dt(struct spi_device *spi)
->  	if (of_property_read_bool(np, "read-only"))
->  		pd->flags |= EE_READONLY;
->  
-> -	pd->select =of_get_named_gpio_flags(np, "select", 0, &of_flags);
-> +	pd->select = of_get_named_gpio_flags(np, "select", 0, &of_flags);
->  	if (gpio_is_valid(pd->select)) {
->  		char *name;
->  
-> @@ -441,6 +441,3 @@ static struct driver_d eeprom_93xx46_driver = {
->  	.of_compatible = DRV_OF_COMPAT(eeprom_93xx46_of_table),
->  };
->  device_spi_driver(eeprom_93xx46_driver);
-> -
-> -
-> -
-> -- 
-> 2.20.1
-> 
-> 
+    - Added CPU type check to prevent execution on non-i.MX8MQ SoCs.
 
+    - Changes messages to say "HDP" instead of "HDMI", to clarify that
+      the check covers both HDMI _and_ eDP firmware.
+
+[v1] http://lists.infradead.org/pipermail/barebox/2019-February/037059.html
+
+ arch/arm/mach-imx/imx8mq.c | 40 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+
+diff --git a/arch/arm/mach-imx/imx8mq.c b/arch/arm/mach-imx/imx8mq.c
+index 4d00da5f0..d887092ce 100644
+--- a/arch/arm/mach-imx/imx8mq.c
++++ b/arch/arm/mach-imx/imx8mq.c
+@@ -21,6 +21,7 @@
+ #include <mach/imx8mq.h>
+ #include <mach/reset-reason.h>
+ 
++#include <linux/iopoll.h>
+ #include <linux/arm-smccc.h>
+ 
+ #define FSL_SIP_BUILDINFO			0xC2000003
+@@ -81,3 +82,42 @@ int imx8mq_init(void)
+ 
+ 	return 0;
+ }
++
++#define KEEP_ALIVE			0x18
++#define VER_L				0x1c
++#define VER_H				0x20
++#define VER_LIB_L_ADDR			0x24
++#define VER_LIB_H_ADDR			0x28
++#define FW_ALIVE_TIMEOUT_US		100000
++
++static int imx8mq_report_hdmi_firmware(void)
++{
++	void __iomem *hdmi = IOMEM(MX8MQ_HDMI_CTRL_BASE_ADDR);
++	u16 ver_lib, ver;
++	u32 reg;
++	int ret;
++
++	if (!cpu_is_mx8mq())
++		return 0;
++
++	/* check the keep alive register to make sure fw working */
++	ret = readl_poll_timeout(hdmi + KEEP_ALIVE,
++				 reg, reg, FW_ALIVE_TIMEOUT_US);
++	if (ret < 0) {
++		pr_info("HDP firmware is not running\n");
++		return 0;
++	}
++
++	ver = readl(hdmi + VER_H) & 0xff;
++	ver <<= 8;
++	ver |= readl(hdmi + VER_L) & 0xff;
++
++	ver_lib = readl(hdmi + VER_LIB_H_ADDR) & 0xff;
++	ver_lib <<= 8;
++	ver_lib |= readl(hdmi + VER_LIB_L_ADDR) & 0xff;
++
++	pr_info("HDP firmware ver: %d ver_lib: %d\n", ver, ver_lib);
++
++	return 0;
++}
++console_initcall(imx8mq_report_hdmi_firmware);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
