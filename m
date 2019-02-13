@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gtq04-0001lp-91
- for barebox@lists.infradead.org; Wed, 13 Feb 2019 08:34:40 +0000
+ id 1gtq07-0001lB-6K
+ for barebox@lists.infradead.org; Wed, 13 Feb 2019 08:34:45 +0000
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 13 Feb 2019 09:34:27 +0100
-Message-Id: <1550046868-19264-6-git-send-email-t.remmet@phytec.de>
+Date: Wed, 13 Feb 2019 09:34:28 +0100
+Message-Id: <1550046868-19264-7-git-send-email-t.remmet@phytec.de>
 In-Reply-To: <1550046868-19264-1-git-send-email-t.remmet@phytec.de>
 References: <1550046868-19264-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,61 +21,108 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 6/7] net: ethernet: cpsw: cpsw-phy-sel: Use phandle for phy
- sel
+Subject: [PATCH v2 7/7] arm: dts: am335x-phytec: Use phy-handle instead of
+ phy_id
 To: barebox@lists.infradead.org
 
-With the usage of the interconnect target module hierarchy in device tree the
-cpsw-phy-sel node moved to the system control module. An phandle has
-been added instead to the device tree include.
-
-Try to use the cpsw-phy-sel phandle first then fall back looking for the
-cpsw-phy-sel child.
-
-This patch is based on the upstream kernel patch:
-18eb8aea7fb2 ("net: ethernet: cpsw-phy-sel: prefer phandle for phy sel")
+Update am335x-phytec som device trees and use phy-handle instead of phy_id.
 
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/net/cpsw.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ arch/arm/dts/am335x-phytec-phycard-som.dtsi |  7 ++++++-
+ arch/arm/dts/am335x-phytec-phycore-som.dtsi |  7 ++++++-
+ arch/arm/dts/am335x-phytec-phyflex-som.dtsi | 12 ++++++++++--
+ 3 files changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
-index 432004ec9ca8..65f71c6fce5a 100644
---- a/drivers/net/cpsw.c
-+++ b/drivers/net/cpsw.c
-@@ -1053,6 +1053,7 @@ static int cpsw_probe_dt(struct cpsw_priv *priv)
- {
- 	struct device_d *dev = priv->dev;
- 	struct device_node *np = dev->device_node, *child;
-+	struct device_node *physel;
- 	int ret, i = 0;
+diff --git a/arch/arm/dts/am335x-phytec-phycard-som.dtsi b/arch/arm/dts/am335x-phytec-phycard-som.dtsi
+index 6a0442916bcb..2320ca18070f 100644
+--- a/arch/arm/dts/am335x-phytec-phycard-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phycard-som.dtsi
+@@ -122,6 +122,10 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&davinci_mdio_default>;
+ 	status = "okay";
++
++	phy0: ethernet-phy@0 {
++		reg = <0>;
++	};
+ };
  
- 	ret = of_property_read_u32(np, "slaves", &priv->num_slaves);
-@@ -1061,13 +1062,17 @@ static int cpsw_probe_dt(struct cpsw_priv *priv)
+ &phy_sel {
+@@ -129,8 +133,9 @@
+ };
  
- 	priv->slaves = xzalloc(sizeof(struct cpsw_slave) * priv->num_slaves);
+ &cpsw_emac0 {
+-	phy_id = <&davinci_mdio>, <0>;
++	phy-handle = <&phy0>;
+ 	phy-mode = "rmii";
++	dual_emac_res_vlan = <1>;
+ };
  
--	for_each_child_of_node(np, child) {
--		if (of_device_is_compatible(child, "ti,am3352-cpsw-phy-sel")) {
--			ret = cpsw_phy_sel_init(priv, child);
--			if (ret)
--				return ret;
--		}
-+	physel = of_parse_phandle(dev->device_node, "cpsw-phy-sel", 0);
-+	if (!physel) {
-+		physel = of_get_child_by_name(dev->device_node, "cpsw-phy-sel");
-+		if (!physel)
-+			dev_err(dev, "Phy mode node not found\n");
-+	}
-+	ret = cpsw_phy_sel_init(priv, physel);
-+	if (ret)
-+		return ret;
+ &mac {
+diff --git a/arch/arm/dts/am335x-phytec-phycore-som.dtsi b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
+index cb2d30a15ccd..0601f5ab7ba5 100644
+--- a/arch/arm/dts/am335x-phytec-phycore-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
+@@ -244,6 +244,10 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&davinci_mdio_default>;
+ 	status = "okay";
++
++	phy0: ethernet-phy@0 {
++		reg = <0>;
++	};
+ };
  
-+	for_each_child_of_node(np, child) {
- 		if (of_device_is_compatible(child, "ti,davinci_mdio")) {
- 			ret = of_pinctrl_select_state_default(child);
- 			if (ret)
+ &phy_sel {
+@@ -251,8 +255,9 @@
+ };
+ 
+ &cpsw_emac0 {
+-	phy_id = <&davinci_mdio>, <0>;
++	phy-handle = <&phy0>;
+ 	phy-mode = "rmii";
++	dual_emac_res_vlan = <1>;
+ };
+ 
+ &mac {
+diff --git a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
+index 465d3fa16cd7..4d0a91398843 100644
+--- a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
+@@ -197,6 +197,14 @@
+ 	pinctrl-names = "default", "sleep";
+ 	pinctrl-0 = <&davinci_mdio_default>;
+ 	status = "okay";
++
++	phy0: ethernet-phy@0 {
++		reg = <1>;
++	};
++
++	phy1: ethernet-phy@1 {
++		reg = <2>;
++	};
+ };
+ 
+ &phy_sel {
+@@ -204,7 +212,7 @@
+ };
+ 
+ &cpsw_emac0 {
+-	phy_id = <&davinci_mdio>, <1>;
++	phy-handle = <&phy0>;
+ 	phy-mode = "rgmii";
+ 	dual_emac_res_vlan = <1>;
+ 
+@@ -221,7 +229,7 @@
+ };
+ 
+ &cpsw_emac1 {
+-	phy_id = <&davinci_mdio>, <2>;
++	phy-handle = <&phy1>;
+ 	phy-mode = "rmii";
+ 	dual_emac_res_vlan = <2>;
+ 	status = "disabled";
 -- 
 2.7.4
 
