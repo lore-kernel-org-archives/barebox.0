@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gtj3D-0005zO-7D
- for barebox@lists.infradead.org; Wed, 13 Feb 2019 01:09:25 +0000
-Received: by mail-pl1-x644.google.com with SMTP id s1so316342plp.9
- for <barebox@lists.infradead.org>; Tue, 12 Feb 2019 17:09:22 -0800 (PST)
+ id 1gtj4y-00082K-Ju
+ for barebox@lists.infradead.org; Wed, 13 Feb 2019 01:11:13 +0000
+Received: by mail-pl1-x643.google.com with SMTP id g9so334058plo.3
+ for <barebox@lists.infradead.org>; Tue, 12 Feb 2019 17:11:12 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Feb 2019 17:09:07 -0800
-Message-Id: <20190213010907.20429-1-andrew.smirnov@gmail.com>
+Date: Tue, 12 Feb 2019 17:11:04 -0800
+Message-Id: <20190213011104.21602-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,83 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] ARM: i.MX8MQ: Add code to report HDMI/eDP firmware version
+Subject: [PATCH] ARM: i.MX8MQ: Check CPU type in imx8mq_init_syscnt_frequency()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port code found in cdn_dp_load_firmware() in Linux kernel to check if
-HDMI firmware is running and, if so, report its version.
+Add code to make sure that imx8mq_init_syscnt_frequency() is only
+executed on i.MX8MQ.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
-
-Changes since [v1]:
-
-    - Added CPU type check to prevent execution on non-i.MX8MQ SoCs.
-
-    - Changes messages to say "HDP" instead of "HDMI", to clarify that
-      the check covers both HDMI _and_ eDP firmware.
-
-[v1] http://lists.infradead.org/pipermail/barebox/2019-February/037059.html
-
- arch/arm/mach-imx/imx8mq.c | 40 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ arch/arm/mach-imx/imx8mq.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/arch/arm/mach-imx/imx8mq.c b/arch/arm/mach-imx/imx8mq.c
-index 4d00da5f0..d887092ce 100644
+index d887092ce..3f6b433a5 100644
 --- a/arch/arm/mach-imx/imx8mq.c
 +++ b/arch/arm/mach-imx/imx8mq.c
-@@ -21,6 +21,7 @@
- #include <mach/imx8mq.h>
- #include <mach/reset-reason.h>
+@@ -29,6 +29,9 @@
  
-+#include <linux/iopoll.h>
- #include <linux/arm-smccc.h>
- 
- #define FSL_SIP_BUILDINFO			0xC2000003
-@@ -81,3 +82,42 @@ int imx8mq_init(void)
- 
- 	return 0;
- }
-+
-+#define KEEP_ALIVE			0x18
-+#define VER_L				0x1c
-+#define VER_H				0x20
-+#define VER_LIB_L_ADDR			0x24
-+#define VER_LIB_H_ADDR			0x28
-+#define FW_ALIVE_TIMEOUT_US		100000
-+
-+static int imx8mq_report_hdmi_firmware(void)
-+{
-+	void __iomem *hdmi = IOMEM(MX8MQ_HDMI_CTRL_BASE_ADDR);
-+	u16 ver_lib, ver;
-+	u32 reg;
-+	int ret;
-+
+ static int imx8mq_init_syscnt_frequency(void)
+ {
 +	if (!cpu_is_mx8mq())
 +		return 0;
 +
-+	/* check the keep alive register to make sure fw working */
-+	ret = readl_poll_timeout(hdmi + KEEP_ALIVE,
-+				 reg, reg, FW_ALIVE_TIMEOUT_US);
-+	if (ret < 0) {
-+		pr_info("HDP firmware is not running\n");
-+		return 0;
-+	}
-+
-+	ver = readl(hdmi + VER_H) & 0xff;
-+	ver <<= 8;
-+	ver |= readl(hdmi + VER_L) & 0xff;
-+
-+	ver_lib = readl(hdmi + VER_LIB_H_ADDR) & 0xff;
-+	ver_lib <<= 8;
-+	ver_lib |= readl(hdmi + VER_LIB_L_ADDR) & 0xff;
-+
-+	pr_info("HDP firmware ver: %d ver_lib: %d\n", ver, ver_lib);
-+
-+	return 0;
-+}
-+console_initcall(imx8mq_report_hdmi_firmware);
+ 	if (current_el() == 3) {
+ 		void __iomem *syscnt = IOMEM(MX8MQ_SYSCNT_CTRL_BASE_ADDR);
+ 		/*
 -- 
 2.20.1
 
