@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from [2a00:ee2:100:3a01::1] (helo=chandra.tablix.org)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1guHQn-00052c-Cz
- for barebox@lists.infradead.org; Thu, 14 Feb 2019 13:52:04 +0000
-Date: Thu, 14 Feb 2019 14:51:57 +0100
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190214135157.sy2l2x6re3xspohu@pengutronix.de>
-References: <20190115103423.5233-1-rhi@pengutronix.de>
- <20190115103423.5233-3-rhi@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190115103423.5233-3-rhi@pengutronix.de>
+ id 1guH0e-0000pU-Rk
+ for barebox@lists.infradead.org; Thu, 14 Feb 2019 13:25:24 +0000
+From: Tomaz Solc <tomaz.solc@tablix.org>
+Date: Thu, 14 Feb 2019 14:24:22 +0100
+Message-Id: <20190214132429.7463-1-tomaz.solc@tablix.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,58 +14,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 3/3] amba: pl011: make locally used functions static
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/7] Fixing MMC access on Raspberry Pi CM3
+To: barebox@lists.infradead.org
+Cc: Tomaz Solc <tomaz.solc@tablix.org>
 
-Hi Sascha,
+Dear all,
 
-the other two patches in this series are on master now, but this one
-seems to have fallen through the cracks.
+These are the changes required to get Raspberry Pi CM3 to boot from the
+built-in MMC flash chip. With these patches applied, Barebox successfully boots
+a Raspbian system using the following commands:
 
- - Roland
+global linux.bootargs.base="earlyprintk console=tty0 console=ttyAMA0,115200
+root=/dev/mmcblk0p2 rootfstype=ext4 rootwait noinitrd"
 
-On Tue, Jan 15, 2019 at 11:34:23AM +0100, Roland Hieber wrote:
-> This function is not part of a public interface and only used locally.
-> 
-> Fixes the following build warning:
-> 
->     .../drivers/serial/amba-pl011.c:151:5: warning: no previous prototype for 'pl011_init_port' [-Wmissing-prototypes]
->      int pl011_init_port (struct console_device *cdev)
->          ^~~~~~~~~~~~~~~
-> 
-> Signed-off-by: Roland Hieber <rhi@pengutronix.de>
-> ---
->  drivers/serial/amba-pl011.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/serial/amba-pl011.c b/drivers/serial/amba-pl011.c
-> index 4c4067d5b5..99b82e3c03 100644
-> --- a/drivers/serial/amba-pl011.c
-> +++ b/drivers/serial/amba-pl011.c
-> @@ -148,7 +148,7 @@ static void pl011_rlcr(struct amba_uart_port *uart, u32 lcr)
->  	}
->  }
->  
-> -int pl011_init_port (struct console_device *cdev)
-> +static int pl011_init_port(struct console_device *cdev)
->  {
->  	struct amba_uart_port *uart = to_amba_uart_port(cdev);
->  
-> -- 
-> 2.20.1
-> 
-> 
+bootm -o /boot/bcm2710-rpi-cm3.dtb /boot/kernel7.img
+
+Overview of the changes:
+
+ - Implemented pinctrl driver hooks for BCM2835 GPIO, so that pinctrl-
+   directives in the device tree are honored.
+ - Added the missing device tree property parsing to mci-bcm2835 driver.
+ - Added a new Kconfig setting for the Compute Module 3 since a slightly
+   different device tree is required compared to Raspberry Pi 3.
+
+Slightly ugly parts:
+
+ - pinctrl needs to be initialized before mci. The only way I found to do this
+   is to change the link order, since mci is already started early using
+   coredevice_initcall().
+ - having a separate MACH_RPI_CM3 in addition to MACH_RPI3 seems an overkill,
+   but I couldn't find a clean way to just have a different device tree.
+
+Best regards
+Tomaz
+
+Tomaz Solc (7):
+  ARM: rpi: switch emmc from sdhost to sdhci
+  Kconfig: add pin controllers submenu.
+  pinctrl: bcm2835: move existing code from gpio.
+  pinctrl: bcm2835: register the pin controller.
+  mci: move after pinctrl in link order.
+  mci: bcm2835: parse other device tree properties.
+  ARM: rpi: Add device tree for Compute Module 3.
+
+ arch/arm/boards/raspberry-pi/lowlevel.c            | 10 +++++
+ arch/arm/configs/rpi_defconfig                     |  2 +-
+ arch/arm/dts/Makefile                              |  1 +
+ arch/arm/dts/bcm2837-rpi-3.dts                     |  9 ++++
+ arch/arm/dts/bcm2837-rpi-cm3.dts                   | 26 +++++++++++
+ arch/arm/mach-bcm283x/Kconfig                      |  6 +++
+ drivers/Makefile                                   |  2 +-
+ drivers/gpio/Kconfig                               |  4 --
+ drivers/gpio/Makefile                              |  1 -
+ drivers/mci/mci-bcm2835.c                          |  3 ++
+ drivers/pinctrl/Kconfig                            | 10 +++++
+ drivers/pinctrl/Makefile                           |  1 +
+ .../gpio-bcm2835.c => pinctrl/pinctrl-bcm2835.c}   | 52 +++++++++++++++++++++-
+ images/Makefile.bcm283x                            |  6 ++-
+ 14 files changed, 124 insertions(+), 9 deletions(-)
+ create mode 100644 arch/arm/dts/bcm2837-rpi-cm3.dts
+ rename drivers/{gpio/gpio-bcm2835.c => pinctrl/pinctrl-bcm2835.c} (77%)
 
 -- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
