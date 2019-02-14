@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from [2a00:ee2:100:3a01::1] (helo=chandra.tablix.org)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1guH0e-0000pU-Rk
- for barebox@lists.infradead.org; Thu, 14 Feb 2019 13:25:24 +0000
+ id 1guH0e-0000pC-Rs
+ for barebox@lists.infradead.org; Thu, 14 Feb 2019 13:25:12 +0000
 From: Tomaz Solc <tomaz.solc@tablix.org>
-Date: Thu, 14 Feb 2019 14:24:22 +0100
-Message-Id: <20190214132429.7463-1-tomaz.solc@tablix.org>
+Date: Thu, 14 Feb 2019 14:24:24 +0100
+Message-Id: <20190214132429.7463-3-tomaz.solc@tablix.org>
+In-Reply-To: <20190214132429.7463-1-tomaz.solc@tablix.org>
+References: <20190214132429.7463-1-tomaz.solc@tablix.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,67 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/7] Fixing MMC access on Raspberry Pi CM3
+Subject: [PATCH 2/7] Kconfig: add pin controllers submenu.
 To: barebox@lists.infradead.org
 Cc: Tomaz Solc <tomaz.solc@tablix.org>
 
-Dear all,
+---
+ drivers/pinctrl/Kconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-These are the changes required to get Raspberry Pi CM3 to boot from the
-built-in MMC flash chip. With these patches applied, Barebox successfully boots
-a Raspbian system using the following commands:
-
-global linux.bootargs.base="earlyprintk console=tty0 console=ttyAMA0,115200
-root=/dev/mmcblk0p2 rootfstype=ext4 rootwait noinitrd"
-
-bootm -o /boot/bcm2710-rpi-cm3.dtb /boot/kernel7.img
-
-Overview of the changes:
-
- - Implemented pinctrl driver hooks for BCM2835 GPIO, so that pinctrl-
-   directives in the device tree are honored.
- - Added the missing device tree property parsing to mci-bcm2835 driver.
- - Added a new Kconfig setting for the Compute Module 3 since a slightly
-   different device tree is required compared to Raspberry Pi 3.
-
-Slightly ugly parts:
-
- - pinctrl needs to be initialized before mci. The only way I found to do this
-   is to change the link order, since mci is already started early using
-   coredevice_initcall().
- - having a separate MACH_RPI_CM3 in addition to MACH_RPI3 seems an overkill,
-   but I couldn't find a clean way to just have a different device tree.
-
-Best regards
-Tomaz
-
-Tomaz Solc (7):
-  ARM: rpi: switch emmc from sdhost to sdhci
-  Kconfig: add pin controllers submenu.
-  pinctrl: bcm2835: move existing code from gpio.
-  pinctrl: bcm2835: register the pin controller.
-  mci: move after pinctrl in link order.
-  mci: bcm2835: parse other device tree properties.
-  ARM: rpi: Add device tree for Compute Module 3.
-
- arch/arm/boards/raspberry-pi/lowlevel.c            | 10 +++++
- arch/arm/configs/rpi_defconfig                     |  2 +-
- arch/arm/dts/Makefile                              |  1 +
- arch/arm/dts/bcm2837-rpi-3.dts                     |  9 ++++
- arch/arm/dts/bcm2837-rpi-cm3.dts                   | 26 +++++++++++
- arch/arm/mach-bcm283x/Kconfig                      |  6 +++
- drivers/Makefile                                   |  2 +-
- drivers/gpio/Kconfig                               |  4 --
- drivers/gpio/Makefile                              |  1 -
- drivers/mci/mci-bcm2835.c                          |  3 ++
- drivers/pinctrl/Kconfig                            | 10 +++++
- drivers/pinctrl/Makefile                           |  1 +
- .../gpio-bcm2835.c => pinctrl/pinctrl-bcm2835.c}   | 52 +++++++++++++++++++++-
- images/Makefile.bcm283x                            |  6 ++-
- 14 files changed, 124 insertions(+), 9 deletions(-)
- create mode 100644 arch/arm/dts/bcm2837-rpi-cm3.dts
- rename drivers/{gpio/gpio-bcm2835.c => pinctrl/pinctrl-bcm2835.c} (77%)
-
+diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
+index 12fff4f01..de83c124a 100644
+--- a/drivers/pinctrl/Kconfig
++++ b/drivers/pinctrl/Kconfig
+@@ -1,3 +1,5 @@
++menu "Pin controllers"
++
+ config PINCTRL
+ 	bool "Pin controller core support"
+ 	default y if OFDEVICE
+@@ -83,3 +85,5 @@ config PINCTRL_VF610
+ 	help
+ 	  Pinmux controller found on Vybrid VF610 family of SoCs
+ endif
++
++endmenu
 -- 
 2.11.0
 
