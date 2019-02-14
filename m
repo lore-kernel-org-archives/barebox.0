@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm1-x344.google.com ([2a00:1450:4864:20::344])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gvf9c-00058D-JS
- for barebox@lists.infradead.org; Mon, 18 Feb 2019 09:24:02 +0000
-References: <20190218071210.28062-1-o.rempel@pengutronix.de>
- <d71ee75b-55e0-fd12-bbdf-647fd7fa57c1@klevio.com>
- <5a89d7ae-1416-e900-daf2-06c851281334@pengutronix.de>
- <6e6e03d5-98ea-5872-d00b-5b1d8e5a53ff@klevio.com>
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <3c7b27d0-a513-b74f-2a84-2670f74a7e3c@pengutronix.de>
-Date: Mon, 18 Feb 2019 10:23:58 +0100
+ id 1guQWt-00068G-KI
+ for barebox@lists.infradead.org; Thu, 14 Feb 2019 23:34:56 +0000
+Received: by mail-wm1-x344.google.com with SMTP id a62so8158401wmh.4
+ for <barebox@lists.infradead.org>; Thu, 14 Feb 2019 15:34:54 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <6e6e03d5-98ea-5872-d00b-5b1d8e5a53ff@klevio.com>
-Content-Language: en-US
+References: <20190214132429.7463-1-tomaz.solc@tablix.org>
+ <20190214132429.7463-6-tomaz.solc@tablix.org>
+In-Reply-To: <20190214132429.7463-6-tomaz.solc@tablix.org>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Thu, 14 Feb 2019 15:34:42 -0800
+Message-ID: <CAHQ1cqEB2sVXmTi6jVn+6VX=SBaoz5dRUo-Z7spvV489ftLhew@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,66 +20,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3] Documentation: add watchdog documentation
-To: =?UTF-8?B?VG9tYcW+IMWgb2xj?= <tomaz.solc@klevio.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH 5/7] mci: move after pinctrl in link order.
+To: Tomaz Solc <tomaz.solc@tablix.org>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-CgpPbiAxOC4wMi4xOSAwOTo1NiwgVG9tYcW+IMWgb2xjIHdyb3RlOgo+IE9uIDE4LiAwMi4gMTkg
-MDk6MDYsIE9sZWtzaWogUmVtcGVsIHdyb3RlOgo+PiBPbiAxOC4wMi4xOSAwODo1NiwgVG9tYcW+
-IMWgb2xjIHdyb3RlOgo+Pj4gT24gMTguIDAyLiAxOSAwODoxMiwgT2xla3NpaiBSZW1wZWwgd3Jv
-dGU6Cj4+Pj4gK0luIGNhc2UgdGhlIGJvb3Rsb2FkZXIgaXMgcmVzcG9uc2libGUgZm9yIHdhdGNo
-ZG9nIGFjdGl2YXRpb24sIHRoZSBzeXN0ZW0gY2FuCj4+Pj4gK2JlIGNvbnNpZGVyZWQgYXMgZmFp
-bGVkIGJ5IGRlc2lnbi4KPj4+Cj4+PiBJIHRoaW5rIHRoaXMgaXMgdG9vIHN0cm9uZ2x5IHdvcmRl
-ZCBhbmQgSSB3b3VsZCBsZWF2ZSBvdXQgdGhpcyBsYXN0IHNlbnRlbmNlLiBJdCBzZWVtcyAKPj4+
-IGFycm9nYW50IGZvciBkb2N1bWVudGF0aW9uIHRvIGp1ZGdlIHdoYXQgaXMgImZhaWxlZCBieSBk
-ZXNpZ24iIGxpa2UgdGhpcywgd2l0aG91dCAKPj4+IGNvbnNpZGVyaW5nIGFueSBvdGhlciByZXF1
-aXJlbWVudHMgZm9yIGEgc3lzdGVtLgo+Pgo+PiBDYW4geW91IHBsZWFzZSBwcm92aWRlIGFuIGV4
-YW1wbGUgb2YgYSByZXF1aXJlbWVudCwgd2hpY2ggY2FuJ3QgYmUgY29uc2lkZXJlZCBhcyBiYWQg
-Cj4+IGRlc2lnbi4KPiAKPiBOb3QgZXZlcnl0aGluZyBpcyBhbiBhdmlvbmljcyBzeXN0ZW0gdGhh
-dCBuZWVkcyB0byBhZGRyZXNzIGNvc21pYyBwYXJ0aWNsZXMgb3Igd2hhdGV2ZXIuIAo+IFRoYXQg
-ZG9lc24ndCBtYWtlIGl0IGEgYmFkIGRlc2lnbiBhbmQgaXQncyBub3QgcmVhbGlzdGljIHRvIGV4
-cGVjdCBldmVyeXRoaW5nIHRvIGJlIG1hZGUgCj4gdXAgdG8gc3VjaCBzdGFuZGFyZHMuCgo6KSBz
-dXJlCgo+IERvY3VtZW50YXRpb24gY2FsbGluZyA5MCUgb2Ygc3lzdGVtcyBvdXQgdGhlcmUgImZh
-aWxlZCBieSBkZXNpZ24iIGlzIGp1c3QgZHJpdmluZyAKPiBwb3RlbnRpYWwgdXNlcnMgYXdheSBp
-biBteSBvcGluaW9uLiBJdCdzIG9rIHRvIG1ha2UgcGVvcGxlIGF3YXJlIG9mIHRoZSBsaW1pdGF0
-aW9ucyB0aG91Z2ggCj4gKGFuZCBJIHRoaW5rIHRoZSByZXN0IG9mIHlvdXIgdGV4dCBkb2VzIHRo
-YXQganVzdCBmaW5lKS4KPiAKPiBZb3UgbGlzdCBhbiBleGFtcGxlIHlvdXJzZWxmIGJlbG93IGlu
-IHRoZSB0ZXh0OiB0aGluZ3MgbGlrZSBuZXRib290IGNhbiBtYWtlIGJvb3QgdGltZSAKPiB1bnBy
-ZWRpY3RhYmxlIGVub3VnaCB0aGF0IHdhdGNoZG9nIG11c3QgYmUgZmVlZCBkdXJpbmcgYm9vdC4g
-QXJlIGFsbCBuZXRib290IHN5c3RlbXMgCj4gImZhaWxlZCBieSBkZXNpZ24iPwoKWWVzLCBpdCBp
-cyA6KSBhdCBsZWFzdCBmb3IgYSBwcm9kdWN0aW9uIHN5c3RlbS4gTWFraW5nIHNvbWUgdGhpbmcg
-YmFkIGZvciBkZXZlbG9wbWVudCwgZG8gCm5vdCBqdXN0aWZ5IG1ha2luZyBhIHByb2R1Y3Rpb24g
-c3lzdGVtIGluIGEgc2FtZSBiYWQgd2F5LgoKPiBTb21lIHN5c3RlbXMgZG9uJ3QgYWxsb3cgdGhl
-IHdhdGNoZG9nIHRvIGJlIGVuYWJsZWQgcGVybWFuZW50bHksIGJ1dCBuZWVkIHNvZnR3YXJlIHRv
-IAo+IGVuYWJsZSBpdCAoZXhhbXBsZTogYmNtMjgzNSkuIEJvb3Rsb2FkZXIgaXMgdGhlIGVhcmxp
-ZXN0IHBvaW50IHdoZXJlIHRoaXMgY2FuIGJlIGRvbmUuIAo+IFRoaXMgc29sdmVzIGEgYmFkIGtl
-cm5lbCB1cGRhdGUgKG1pZ2h0IGJlIGEgcmVxdWlyZW1lbnQgZm9yIGEgY29uc3VtZXIgZGV2aWNl
-KSwgYnV0IAo+IGRvZXNuJ3QgYWRkcmVzcyBwb3dlciBzdXBwbHkgZ2xpdGNoZXMgZHVyaW5nIGJv
-b3Rsb2FkZXIgb3BlcmF0aW9uIChtaWdodCBub3QgYmUgYSAKPiByZXF1aXJlbWVudCkuCj4gCj4g
-QW55d2F5LCBqdXN0IGFuIG9waW5pb24gZnJvbSBzb21lb25lIG5ldyB0byBCYXJlYm94LgoKVGhl
-IHBvaW50IG9mIHRoaXMgc2VudGVuY2UgaXMgdG8gbWFrZSBldmVyeWJvZHkgZmVlbCBiYWQgaWYg
-c3lzdGVtIGlzIGRlc2lnbmVkIGluIGEgYmFkIHdheS4uCgpKdXN0IG9uZSBleGFtcGxlLCBhbG1v
-c3QgYWxsIGNvbnN1bWVyIFdpRmkgcm91dGVyIGJhc2VkIG9uIFF1YWxjb21tIEF0aGVyb3MgYXJl
-IHdpdGggCmJyb2tlbiB3YXRjaGRvZy4gSXQgaXMgbm90IGF2aW9uaWNzLCBidXQgc29tZSB0aW1l
-cyB1c2VycyBzaG91bGQganVzdCBtYW51YWxseSByZXNldCBpdCAKYW5kIGl0IGlzIGJhZC4KCmJj
-bTI4MzUgd2l0aCBmaWxlZCBTRCBjYXJkLCB3aGljaCBzaG91bGQgYmUgcG93ZXIgY3ljbGVkLiBN
-b3N0IHByb2JhYmx5IG5vYm9keSB3aWxsIGRpZSBpZiAKaXQgd2lsbCBmYWlsLCBidXQgaXQganVz
-dCBiYWQuCgpJbiBtb3N0IGNhc2VzLCBpZiB5b3UgYXNrOiAiSXQgaXMgMjAxOSEhISBXaHkgdGhp
-cyBzeXN0ZW0gaGFzIG5vIHByb3BlciB3YXRjaGRvZz8hIHdoeSAKc2hvdWxkIGkgbWFudWFsbHkg
-cG93ZXIgY3ljbGUgbXkgcm91dGVyLCBUViwgbGFwdG9wIG9yIFBDIG9yIGV2ZW4gYSBSUGkiLiBU
-aGUgYW5zd2VyIHdpbGwgCmJlOiAiV2VsbCwgaXQgaXMgbm90IHNvIGltcG9ydGFudCwgLi4uIHdl
-IGRvIG5vdCBldmVuIGZlZWwgYmFkIGFib3V0IGl0IgoKSWYgc29tZSB0aGluZyBpcyBiYWQsIGl0
-IHNob3VsZCBiZSBjYWxsZWQgYXMgYmFkLiBObyBwb2xpdGljYWwgY29ycmVjdG5lc3MuLiBJIGhv
-cGUgeW91IAp1bmRlcnN0YW5kIG15IHBvaW50IDtECgpLaW5kIHJlZ2FyZHMsCk9sZWtzaWogUmVt
-cGVsCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAg
-ICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4g
-Ni04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0w
-ICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAg
-ICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+On Thu, Feb 14, 2019 at 5:26 AM Tomaz Solc <tomaz.solc@tablix.org> wrote:
+>
+> pinctrl driver needs to be initialized before mci driver or the pinctrl
+> device tree properties in the mci node are ignored. Since mci is already
+> initialized by the coredevice_initcall(), changing the link order is currently
+> the only way to ensure that.
+
+What about changing pinctrl_config_one() and device_probe() to do
+probe deferral if corresponding pinctl is missing? Would this work?
+
+Thanks,
+Andrey Smirnov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
