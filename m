@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-db3eur04on061a.outbound.protection.outlook.com
+ ([2a01:111:f400:fe0c::61a]
+ helo=EUR04-DB3-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gtTTq-0003FJ-HD
- for barebox@lists.infradead.org; Tue, 12 Feb 2019 08:31:52 +0000
-Date: Tue, 12 Feb 2019 09:31:48 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190212083148.w23wpevefvm3pezv@pengutronix.de>
+ id 1guI6X-0005CD-CY
+ for barebox@lists.infradead.org; Thu, 14 Feb 2019 14:35:11 +0000
+From: =?utf-8?B?VGhvbWFzIEjDpG1tZXJsZQ==?= <Thomas.Haemmerle@wolfvision.net>
+Date: Thu, 14 Feb 2019 14:35:00 +0000
+Message-ID: <79e74d64-d8f3-626b-cefc-1ea810242ec2@wolfvision.net>
 References: <1549894227-18660-1-git-send-email-thomas.haemmerle@wolfvision.net>
+ <20190212083148.w23wpevefvm3pezv@pengutronix.de>
+In-Reply-To: <20190212083148.w23wpevefvm3pezv@pengutronix.de>
+Content-Language: en-US
+Content-ID: <3C9FE8AD2D069A4C8F938EFD6632B037@eurprd08.prod.outlook.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1549894227-18660-1-git-send-email-thomas.haemmerle@wolfvision.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,96 +22,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] firmware-zynqmp: port from linux
-To: Thomas =?iso-8859-15?Q?H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Thomas,
-
-On Mon, Feb 11, 2019 at 02:10:40PM +0000, Thomas H=E4mmerle wrote:
-> From: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
-> =
-
-> Port Xilinx Zynq MPSoC Firmware layer driver from linux.
-> =
-
-> Signed-off-by: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
-> ---
->  arch/arm/Kconfig                                   |   1 +
->  arch/arm/mach-zynqmp/Makefile                      |   2 +-
->  arch/arm/mach-zynqmp/firmware-zynqmp.c             | 601 +++++++++++++++=
-++++++
->  .../arm/mach-zynqmp/include/mach/firmware-zynqmp.h |  66 +++
->  4 files changed, 669 insertions(+), 1 deletion(-)
->  create mode 100644 arch/arm/mach-zynqmp/firmware-zynqmp.c
->  create mode 100644 arch/arm/mach-zynqmp/include/mach/firmware-zynqmp.h
-> =
-
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index c1f385b..fdbe5b7 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -250,6 +250,7 @@ config ARCH_ZYNQMP
->  	select CPU_V8
->  	select HAS_DEBUG_LL
->  	select HAVE_PBL_MULTI_IMAGES
-> +	select ARM_SMCCC
->  	select COMMON_CLK
->  	select COMMON_CLK_OF_PROVIDER
->  	select CLKDEV_LOOKUP
-> diff --git a/arch/arm/mach-zynqmp/Makefile b/arch/arm/mach-zynqmp/Makefile
-> index c601374..021efc9 100644
-> --- a/arch/arm/mach-zynqmp/Makefile
-> +++ b/arch/arm/mach-zynqmp/Makefile
-> @@ -1,2 +1,2 @@
->  # SPDX-License-Identifier: GPL-2.0-or-later
-> -obj- :=3D __dummy__.o
-> +obj-y +=3D firmware-zynqmp.o
-> diff --git a/arch/arm/mach-zynqmp/firmware-zynqmp.c b/arch/arm/mach-zynqm=
-p/firmware-zynqmp.c
-
-
-Maybe drivers/firmware/ would be a more appropriate directory to put
-this driver in.
-
-> +static int zynqmp_firmware_probe(struct device_d *dev)
-> +{
-> +	int ret;
-> +
-> +	ret =3D get_set_conduit_method(dev->device_node);
-> +	if (ret)
-> +		goto out;
-> +
-> +	zynqmp_pm_get_api_version(&pm_api_version);
-> +	if (pm_api_version < ZYNQMP_PM_VERSION) {
-> +		dev_err(dev, "Platform Management API version error."
-> +				"Expected: v%d.%d - Found: v%d.%d\n",
-> +				ZYNQMP_PM_VERSION_MAJOR,
-> +				ZYNQMP_PM_VERSION_MINOR,
-> +				pm_api_version >> 16, pm_api_version & 0xFFFF);
-> +		ret =3D -1;
-> +		goto out;
-
--1 is -EPERM which is not a meaningful error code here. Please pick
-something appropriate from errno.h.
-
-Otherwise looks good. This looks like clock support. Are you planning to
-create a clk driver aswell?
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLA0KDQpPbiAxMi4wMi4xOSAwOTozMSwgU2FzY2hhIEhhdWVyIHdyb3RlOg0KPiBI
+aSBUaG9tYXMsDQo+IA0KPiBPbiBNb24sIEZlYiAxMSwgMjAxOSBhdCAwMjoxMDo0MFBNICswMDAw
+LCBUaG9tYXMgSMOkbW1lcmxlIHdyb3RlOg0KPj4gRnJvbTogVGhvbWFzIEhhZW1tZXJsZSA8dGhv
+bWFzLmhhZW1tZXJsZUB3b2xmdmlzaW9uLm5ldD4NCj4+DQo+PiBQb3J0IFhpbGlueCBaeW5xIE1Q
+U29DIEZpcm13YXJlIGxheWVyIGRyaXZlciBmcm9tIGxpbnV4Lg0KPj4NCj4+IFNpZ25lZC1vZmYt
+Ynk6IFRob21hcyBIYWVtbWVybGUgPHRob21hcy5oYWVtbWVybGVAd29sZnZpc2lvbi5uZXQ+DQo+
+PiAtLS0NCj4+ICAgYXJjaC9hcm0vS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgfCAgIDEgKw0KPj4gICBhcmNoL2FybS9tYWNoLXp5bnFtcC9NYWtlZmlsZSAgICAgICAg
+ICAgICAgICAgICAgICB8ICAgMiArLQ0KPj4gICBhcmNoL2FybS9tYWNoLXp5bnFtcC9maXJtd2Fy
+ZS16eW5xbXAuYyAgICAgICAgICAgICB8IDYwMSArKysrKysrKysrKysrKysrKysrKysNCj4+ICAg
+Li4uL2FybS9tYWNoLXp5bnFtcC9pbmNsdWRlL21hY2gvZmlybXdhcmUtenlucW1wLmggfCAgNjYg
+KysrDQo+PiAgIDQgZmlsZXMgY2hhbmdlZCwgNjY5IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24o
+LSkNCj4+ICAgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtenlucW1wL2Zpcm13YXJl
+LXp5bnFtcC5jDQo+PiAgIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9tYWNoLXp5bnFtcC9p
+bmNsdWRlL21hY2gvZmlybXdhcmUtenlucW1wLmgNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9h
+cm0vS2NvbmZpZyBiL2FyY2gvYXJtL0tjb25maWcNCj4+IGluZGV4IGMxZjM4NWIuLmZkYmU1Yjcg
+MTAwNjQ0DQo+PiAtLS0gYS9hcmNoL2FybS9LY29uZmlnDQo+PiArKysgYi9hcmNoL2FybS9LY29u
+ZmlnDQo+PiBAQCAtMjUwLDYgKzI1MCw3IEBAIGNvbmZpZyBBUkNIX1pZTlFNUA0KPj4gICAJc2Vs
+ZWN0IENQVV9WOA0KPj4gICAJc2VsZWN0IEhBU19ERUJVR19MTA0KPj4gICAJc2VsZWN0IEhBVkVf
+UEJMX01VTFRJX0lNQUdFUw0KPj4gKwlzZWxlY3QgQVJNX1NNQ0NDDQo+PiAgIAlzZWxlY3QgQ09N
+TU9OX0NMSw0KPj4gICAJc2VsZWN0IENPTU1PTl9DTEtfT0ZfUFJPVklERVINCj4+ICAgCXNlbGVj
+dCBDTEtERVZfTE9PS1VQDQo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC16eW5xbXAvTWFr
+ZWZpbGUgYi9hcmNoL2FybS9tYWNoLXp5bnFtcC9NYWtlZmlsZQ0KPj4gaW5kZXggYzYwMTM3NC4u
+MDIxZWZjOSAxMDA2NDQNCj4+IC0tLSBhL2FyY2gvYXJtL21hY2gtenlucW1wL01ha2VmaWxlDQo+
+PiArKysgYi9hcmNoL2FybS9tYWNoLXp5bnFtcC9NYWtlZmlsZQ0KPj4gQEAgLTEsMiArMSwyIEBA
+DQo+PiAgICMgU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb3ItbGF0ZXINCj4+IC1v
+YmotIDo9IF9fZHVtbXlfXy5vDQo+PiArb2JqLXkgKz0gZmlybXdhcmUtenlucW1wLm8NCj4+IGRp
+ZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLXp5bnFtcC9maXJtd2FyZS16eW5xbXAuYyBiL2FyY2gv
+YXJtL21hY2gtenlucW1wL2Zpcm13YXJlLXp5bnFtcC5jDQo+IA0KPiANCj4gTWF5YmUgZHJpdmVy
+cy9maXJtd2FyZS8gd291bGQgYmUgYSBtb3JlIGFwcHJvcHJpYXRlIGRpcmVjdG9yeSB0byBwdXQN
+Cj4gdGhpcyBkcml2ZXIgaW4uDQoNCkkgd2FzIG5vdCBzdXJlIHdoZXJlIHRvIHB1dCB0aGUgdGhp
+cyBkcml2ZXIgaW46DQoNCkluIGxpbnV4IGRyaXZlcnMvZmlybXdhcmUgaXMgdGhlIGxvY2F0aW9u
+IGZvciBkcml2ZXJzIHdoaWNoIGNvbW11bmljYXRlDQp3aXRoIGEgZmlybXdhcmUgKGxpa2UgdGhp
+cyBvbmUpLg0KDQpJbiBiYXJlYm94LCB0aGlzIGRpcmVjdG9yeSBjb250YWlucyBkcml2ZXJzIHRv
+IGxvYWQgZmlybXdhcmUgdG8gZGV2aWNlcw0KKHNvY2ZwZ2EuYyBmb3IgZXhhbXBsZSkuIFNpbmNl
+IEkgd2lsbCBhbHNvIGNyZWF0ZSBhIGRyaXZlciB0byBsb2FkIHRoZQ0KUEwgKHByb2dyYW1tYWJs
+ZSBsb2dpYykgb2YgWnlucU1QIHdoaWNoIEkgd2lsbCBwbGFjZSBpbg0KZHJpdmVycy9maXJtd2Fy
+ZSwgSSBkZWNpZGVkIHRvIHB1dCB0aGlzIGRyaXZlciB0byBhcmNoL2FybS4NCg0KPiANCj4+ICtz
+dGF0aWMgaW50IHp5bnFtcF9maXJtd2FyZV9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikNCj4+
+ICt7DQo+PiArCWludCByZXQ7DQo+PiArDQo+PiArCXJldCA9IGdldF9zZXRfY29uZHVpdF9tZXRo
+b2QoZGV2LT5kZXZpY2Vfbm9kZSk7DQo+PiArCWlmIChyZXQpDQo+PiArCQlnb3RvIG91dDsNCj4+
+ICsNCj4+ICsJenlucW1wX3BtX2dldF9hcGlfdmVyc2lvbigmcG1fYXBpX3ZlcnNpb24pOw0KPj4g
+KwlpZiAocG1fYXBpX3ZlcnNpb24gPCBaWU5RTVBfUE1fVkVSU0lPTikgew0KPj4gKwkJZGV2X2Vy
+cihkZXYsICJQbGF0Zm9ybSBNYW5hZ2VtZW50IEFQSSB2ZXJzaW9uIGVycm9yLiINCj4+ICsJCQkJ
+IkV4cGVjdGVkOiB2JWQuJWQgLSBGb3VuZDogdiVkLiVkXG4iLA0KPj4gKwkJCQlaWU5RTVBfUE1f
+VkVSU0lPTl9NQUpPUiwNCj4+ICsJCQkJWllOUU1QX1BNX1ZFUlNJT05fTUlOT1IsDQo+PiArCQkJ
+CXBtX2FwaV92ZXJzaW9uID4+IDE2LCBwbV9hcGlfdmVyc2lvbiAmIDB4RkZGRik7DQo+PiArCQly
+ZXQgPSAtMTsNCj4+ICsJCWdvdG8gb3V0Ow0KPiANCj4gLTEgaXMgLUVQRVJNIHdoaWNoIGlzIG5v
+dCBhIG1lYW5pbmdmdWwgZXJyb3IgY29kZSBoZXJlLiBQbGVhc2UgcGljaw0KPiBzb21ldGhpbmcg
+YXBwcm9wcmlhdGUgZnJvbSBlcnJuby5oLg0KDQpPZiBjb3Vyc2UgLSB3aWxsIGZpeCB0aGlzLg0K
+DQo+IA0KPiBPdGhlcndpc2UgbG9va3MgZ29vZC4gVGhpcyBsb29rcyBsaWtlIGNsb2NrIHN1cHBv
+cnQuIEFyZSB5b3UgcGxhbm5pbmcgdG8NCj4gY3JlYXRlIGEgY2xrIGRyaXZlciBhc3dlbGw/DQoN
+ClllcywgYSBjbGsgZHJpdmVyIGlzIGFsc28gcGxhbm5lZC4NCg0KVGhvbWFzDQpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
+dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
