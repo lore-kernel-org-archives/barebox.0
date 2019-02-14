@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1guS0N-00065c-7o
- for barebox@lists.infradead.org; Fri, 15 Feb 2019 01:09:28 +0000
-Received: by mail-wr1-x435.google.com with SMTP id v13so8579659wrw.5
- for <barebox@lists.infradead.org>; Thu, 14 Feb 2019 17:09:26 -0800 (PST)
+ id 1guCFz-0006Gq-Hd
+ for barebox@lists.infradead.org; Thu, 14 Feb 2019 08:20:33 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 14 Feb 2019 09:20:26 +0100
+Message-Id: <20190214082026.22614-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-References: <AM6PR08MB38486076429357D0BCA5B073EB660@AM6PR08MB3848.eurprd08.prod.outlook.com>
-In-Reply-To: <AM6PR08MB38486076429357D0BCA5B073EB660@AM6PR08MB3848.eurprd08.prod.outlook.com>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 14 Feb 2019 17:09:14 -0800
-Message-ID: <CAHQ1cqEo03zymuxuxUBcWtY+RKeekB5iTDAS6oijbYm3TXX7Yg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,32 +19,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Usage of mender - updating back to u-boot
-To: Patrick Schneider <patrick.schneider@bhtronik.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] kbuild: Add missing semicolon
+To: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Feb 13, 2019 at 9:21 AM Patrick Schneider
-<patrick.schneider@bhtronik.de> wrote:
->
-> Hi everyone,
->
-> for a customer (who wants to use mender) we need to switch from barebox to u-boot. Is it somehow possible to flash a u-boot image using a running barebox?
->
+Fixes: 4fafb35d925e5 ("kbuild: cherry-pick changes from Linux v5.0-rc3")
 
-In general, yes, you can write a U-Boot (or any) binary image to
-appropriate non-volatile memory device using "memcpy"(or plain "cp" if
-no special offset handling is needed). However the devil is really in
-the details and depending on the HW you are running on some particular
-use-cases/scenarios are not supported.
+The change cherry-picked from the Kernel commit 7d0ea2524202 ("kbuild: use
+'else ifeq' for checksrc to improve readability") also removed the
+trailing semicolons from the cmd_*checksrc lines. These were removed in
+kernel commit e5d289100d ("kbuild: remove trailing semicolon from cmd_*
+passed to if_changed_rule"), but seems the barebox Kbuild version is not
+yet ready for this change. Without the semicolons a make C=1 build fails
+with:
 
-> Or even better, does somebody know if mender is supported in barebox?
->
+No such file: echo
 
-No, I don't think mender is supported. Closest thing to mender that is
-supported would be RAUC: https://rauc.io/
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ scripts/Makefile.build | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks,
-Andrey Smirnov
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 2c45ea872f..db687d5f9e 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -86,10 +86,10 @@ __build: $(if $(KBUILD_BUILTIN),$(builtin-target) $(lib-target) $(pbl-target) $(
+ # Linus' kernel sanity checking tool
+ ifeq ($(KBUILD_CHECKSRC),1)
+   quiet_cmd_checksrc       = CHECK   $<
+-        cmd_checksrc       = $(CHECK) $(CHECKFLAGS) $(c_flags) $<
++        cmd_checksrc       = $(CHECK) $(CHECKFLAGS) $(c_flags) $< ;
+ else ifeq ($(KBUILD_CHECKSRC),2)
+   quiet_cmd_force_checksrc = CHECK   $<
+-        cmd_force_checksrc = $(CHECK) $(CHECKFLAGS) $(c_flags) $<
++        cmd_force_checksrc = $(CHECK) $(CHECKFLAGS) $(c_flags) $< ;
+ endif
+ 
+ # Compile C sources (.c)
+-- 
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
