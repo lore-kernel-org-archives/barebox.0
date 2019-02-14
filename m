@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2a00:ee2:100:3a01::1] (helo=chandra.tablix.org)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1guHBv-0007hR-5s
- for barebox@lists.infradead.org; Thu, 14 Feb 2019 13:36:41 +0000
-From: Tomaz Solc <tomaz.solc@tablix.org>
-Date: Thu, 14 Feb 2019 14:36:34 +0100
-Message-Id: <20190214133634.7669-1-tomaz.solc@tablix.org>
+ id 1guHQn-00052c-Cz
+ for barebox@lists.infradead.org; Thu, 14 Feb 2019 13:52:04 +0000
+Date: Thu, 14 Feb 2019 14:51:57 +0100
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20190214135157.sy2l2x6re3xspohu@pengutronix.de>
+References: <20190115103423.5233-1-rhi@pengutronix.de>
+ <20190115103423.5233-3-rhi@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190115103423.5233-3-rhi@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,46 +19,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] watchdog: bcm2835: set timeout_max.
-To: barebox@lists.infradead.org
-Cc: Tomaz Solc <tomaz.solc@tablix.org>
+Subject: Re: [PATCH v1 3/3] amba: pl011: make locally used functions static
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-BCM2835 watchdog timeout can be set to maximum 15 seconds (0xffffff >> 16).
----
- drivers/watchdog/bcm2835_wdt.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Hi Sascha,
 
-diff --git a/drivers/watchdog/bcm2835_wdt.c b/drivers/watchdog/bcm2835_wdt.c
-index d0c51ed9e..781626fa0 100644
---- a/drivers/watchdog/bcm2835_wdt.c
-+++ b/drivers/watchdog/bcm2835_wdt.c
-@@ -45,6 +45,10 @@
- 
- #define SECS_TO_WDOG_TICKS(x) ((x) << 16)
- 
-+/* Largest value where SECS_TO_WDOG_TICKS doesn't overflow 20 bits
-+ * (PM_WDOG_TIME_SET) */
-+#define WDOG_SECS_MAX 15
-+
- struct bcm2835_wd {
- 	struct watchdog wd;
- 	void __iomem *base;
-@@ -101,6 +105,7 @@ static int bcm2835_wd_probe(struct device_d *dev)
- 	}
- 	priv->base = IOMEM(iores->start);
- 	priv->wd.set_timeout = bcm2835_wd_set_timeout;
-+	priv->wd.timeout_max = WDOG_SECS_MAX;
- 	priv->wd.hwdev = dev;
- 	priv->dev = dev;
- 
+the other two patches in this series are on master now, but this one
+seems to have fallen through the cracks.
+
+ - Roland
+
+On Tue, Jan 15, 2019 at 11:34:23AM +0100, Roland Hieber wrote:
+> This function is not part of a public interface and only used locally.
+> 
+> Fixes the following build warning:
+> 
+>     .../drivers/serial/amba-pl011.c:151:5: warning: no previous prototype for 'pl011_init_port' [-Wmissing-prototypes]
+>      int pl011_init_port (struct console_device *cdev)
+>          ^~~~~~~~~~~~~~~
+> 
+> Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+> ---
+>  drivers/serial/amba-pl011.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/serial/amba-pl011.c b/drivers/serial/amba-pl011.c
+> index 4c4067d5b5..99b82e3c03 100644
+> --- a/drivers/serial/amba-pl011.c
+> +++ b/drivers/serial/amba-pl011.c
+> @@ -148,7 +148,7 @@ static void pl011_rlcr(struct amba_uart_port *uart, u32 lcr)
+>  	}
+>  }
+>  
+> -int pl011_init_port (struct console_device *cdev)
+> +static int pl011_init_port(struct console_device *cdev)
+>  {
+>  	struct amba_uart_port *uart = to_amba_uart_port(cdev);
+>  
+> -- 
+> 2.20.1
+> 
+> 
+
 -- 
-2.11.0
-
+Roland Hieber                     | r.hieber@pengutronix.de     |
+Pengutronix e.K.                  | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
