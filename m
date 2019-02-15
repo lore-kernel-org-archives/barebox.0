@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gucqR-0002sq-11
+ id 1gucqR-0002sr-2i
  for barebox@lists.infradead.org; Fri, 15 Feb 2019 12:44:01 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Fri, 15 Feb 2019 13:43:51 +0100
-Message-Id: <20190215124351.30374-5-o.rempel@pengutronix.de>
+Date: Fri, 15 Feb 2019 13:43:49 +0100
+Message-Id: <20190215124351.30374-3-o.rempel@pengutronix.de>
 In-Reply-To: <20190215124351.30374-1-o.rempel@pengutronix.de>
 References: <20190215124351.30374-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,67 +21,141 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/4] Documentation: efi: provide (U)EFI watchdog
- documentation
+Subject: [PATCH v2 2/4] watchdog: add (U)EFI driver
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
+This driver is using SetWatchdogTimer() UEFI interface and was
+tested on iBASE MI991AF Mini-ITX motherboard.
+
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- Documentation/boards/efi.rst | 36 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ common/efi/efi.c           |  9 +++++-
+ drivers/watchdog/Kconfig   |  6 ++++
+ drivers/watchdog/Makefile  |  1 +
+ drivers/watchdog/efi_wdt.c | 64 ++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 79 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/watchdog/efi_wdt.c
 
-diff --git a/Documentation/boards/efi.rst b/Documentation/boards/efi.rst
-index f59bb1d5ba..749acce811 100644
---- a/Documentation/boards/efi.rst
-+++ b/Documentation/boards/efi.rst
-@@ -216,7 +216,6 @@ has a device parameter ``devpath`` which contains its device path:
-   barebox:/ echo ${handle-00000000d0012198.devpath}
-   pci_root(0)/Pci(0x1d,0x0)/Usb(0x1,0x0)/Usb(0x2,0x0)
+diff --git a/common/efi/efi.c b/common/efi/efi.c
+index 1f451a157e..a7b25cbbe2 100644
+--- a/common/efi/efi.c
++++ b/common/efi/efi.c
+@@ -367,8 +367,15 @@ efi_status_t efi_main(efi_handle_t image, efi_system_table_t *sys_table)
  
--
- EFI variables
- -------------
+ static int efi_core_init(void)
+ {
+-	struct device_d *dev = device_alloc("efi-cs", DEVICE_ID_SINGLE);
++	struct device_d *dev;
++	int ret;
++
++	dev = device_alloc("efi-cs", DEVICE_ID_SINGLE);
++	ret = platform_device_register(dev);
++	if (ret)
++		return ret;
  
-@@ -327,3 +326,38 @@ compile EDK2.
-                    mov     %fs, %rax
-                    pushq   %rax
++	dev = device_alloc("efi-wdt", DEVICE_ID_SINGLE);
+ 	return platform_device_register(dev);
+ }
+ core_initcall(efi_core_init);
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index 02cc0feb61..2793ee93d9 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -22,6 +22,12 @@ config WATCHDOG_AR9344
+ 	help
+ 	  Add support for watchdog on the QCA AR9344 SoC.
  
-+(U)EFI Watchdog
-+---------------
++config WATCHDOG_EFI
++	bool "Generic EFI Watchdog Driver"
++	depends on EFI_BOOTUP
++	help
++	  Add support for the EFI watchdog.
 +
-+(U)EFI provides basic watchdog support. Depending on the system implementation
-+it can be a software or hardware watchdog. Within the (U)EFI specification it
-+is described as follows:
+ config WATCHDOG_DAVINCI
+ 	bool "TI Davinci"
+ 	depends on ARCH_DAVINCI
+diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+index faf06110a3..69189ba1f3 100644
+--- a/drivers/watchdog/Makefile
++++ b/drivers/watchdog/Makefile
+@@ -1,5 +1,6 @@
+ obj-$(CONFIG_WATCHDOG) += wd_core.o
+ obj-$(CONFIG_WATCHDOG_AR9344) += ar9344_wdt.o
++obj-$(CONFIG_WATCHDOG_EFI) += efi_wdt.o
+ obj-$(CONFIG_WATCHDOG_DAVINCI) += davinci_wdt.o
+ obj-$(CONFIG_WATCHDOG_OMAP) += omap_wdt.o
+ obj-$(CONFIG_WATCHDOG_MXS28) += im28wd.o
+diff --git a/drivers/watchdog/efi_wdt.c b/drivers/watchdog/efi_wdt.c
+new file mode 100644
+index 0000000000..8e3e51b7a9
+--- /dev/null
++++ b/drivers/watchdog/efi_wdt.c
+@@ -0,0 +1,64 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ *  Copyright (C) 2019 Oleksij Rempel <o.rempel@pengutronix.de>, Pengutronix
++ */
 +
-+.. epigraph::
++#include <common.h>
++#include <init.h>
++#include <driver.h>
++#include <efi.h>
++#include <efi/efi.h>
++#include <watchdog.h>
 +
-+   If the watchdog timer expires, the event is logged by the firmware. The system
-+   may then either reset with the Runtime Service ResetSystem(), or perform a
-+   platform specific action that must eventually cause the platform to be reset.
-+   The watchdog timer is armed before the firmware's boot manager invokes an EFI
-+   boot option.  The watchdog must be set to a period of 5 minutes. The EFI Image
-+   may reset or disable the watchdog timer as needed. If control is returned to
-+   the firmware's boot manager, the watchdog timer must be disabled.  The watchdog
-+   timer is only used during boot services. On successful completion of
-+   ExitBootServices() the watchdog timer is disabled.
++struct efi_wdt_priv {
++	struct watchdog		wd;
++	struct device_d		*dev;
++};
 +
-+See page 186:
-+https://uefi.org/sites/default/files/resources/UEFI_Spec_2_1_D.pdf
++#define to_efi_wdt(h) container_of(h, struct efi_wdt_priv, wd)
 +
-+Current linux kernel (v5.0) will execute ExitBootServices() during the early
-+boot stage and thus will automatically disable the (U)EFI watchdog. Since it is
-+a proper behavior according to the (U)EFI specification, it is impossible to
-+protect full boot chain by using this watchdog only. It is recommended to use
-+an alternative hardware watchdog, preferably started before the bootloader. If (U)EFI
-+firmware lacks this feature, the bootloader should be able to start an alternative
-+hardware watchdog on its own. Before implementing this kind of workaround
-+please make sure (U)EFI watchdog is not using the same hardware as the alternative
-+watchdog.
++static int efi_wdt_set_timeout(struct watchdog *wd, unsigned timeout)
++{
++	struct efi_wdt_priv *priv = to_efi_wdt(wd);
++	efi_status_t efiret;
 +
-+Nevertheless, barebox provides access to the (U)EFI SetWatchdogTimer()
-+interface over its internal watchdog framework.
++	efiret = BS->set_watchdog_timer(timeout, 0, 0, NULL);
++	if (EFI_ERROR(efiret)) {
++		dev_err(priv->dev, "filed to set EFI watchdog: %lx\n", efiret);
++		return -EINVAL;
++	}
 +
++	return 0;
++}
++
++static int efi_wdt_probe(struct device_d *dev)
++{
++	struct efi_wdt_priv *priv;
++	int ret;
++
++	priv = xzalloc(sizeof(*priv));
++
++	priv->wd.set_timeout = efi_wdt_set_timeout;
++	priv->wd.hwdev = dev;
++	priv->dev = dev;
++
++	dev->priv = priv;
++
++	priv->wd.timeout_max = U32_MAX;
++
++	ret = watchdog_register(&priv->wd);
++	if (ret)
++		goto on_error;
++
++	return 0;
++
++on_error:
++	free(priv);
++	return ret;
++}
++
++static struct driver_d efi_wdt_driver = {
++	.name = "efi-wdt",
++	.probe = efi_wdt_probe,
++};
++device_platform_driver(efi_wdt_driver);
 -- 
 2.20.1
 
