@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gw5Qm-0006vJ-8h
- for barebox@lists.infradead.org; Tue, 19 Feb 2019 13:27:31 +0000
-References: <20190218075202.10091-1-o.rempel@pengutronix.de>
- <48809c81-7785-4e84-b012-a66cfc697cd9@pengutronix.de>
- <20190219154524.7b17d385e0fdec276ce718fd@gmail.com>
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <932c09fb-6b35-d911-dcad-f6d4df3ed2c0@pengutronix.de>
-Date: Tue, 19 Feb 2019 14:27:26 +0100
+ id 1guZI6-0008Gs-Vn
+ for barebox@lists.infradead.org; Fri, 15 Feb 2019 08:56:16 +0000
+References: <20190207145801.6893-1-a.fatoum@pengutronix.de>
+ <20190211080020.5sjssmrhq26vl7tn@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <8bb4a983-9b6b-bb50-d2b4-7244ad18e27f@pengutronix.de>
+Date: Fri, 15 Feb 2019 09:56:10 +0100
 MIME-Version: 1.0
-In-Reply-To: <20190219154524.7b17d385e0fdec276ce718fd@gmail.com>
+In-Reply-To: <20190211080020.5sjssmrhq26vl7tn@pengutronix.de>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -20,36 +19,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 1/4] MIPS: relocation: pass ram size to pbl_main_entry
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] LICENSES: adopt Linux-like LICENSES directory structure
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
+On 11/2/19 09:00, Sascha Hauer wrote:
+> On Thu, Feb 07, 2019 at 03:58:03PM +0100, Ahmad Fatoum wrote:
+>> At the moment
+>>         grep -R --exclude-dir=build --exclude-dir=.git -P 'SPDX-License-Identifier:' | ack -v 'GPL-2.0'
 
+That last ack should've been a grep. Will fix in v2.
 
-On 19.02.19 13:45, Antony Pavlov wrote:
-> On Tue, 19 Feb 2019 09:34:43 +0100
-> Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-> 
->> Hi Antony,
 >>
->> your attention will be needed here..
+>> shows me 39 non-dually-licensed source code files (SoCFPGA) that have a
+>> BSD-3-Clause license _identifier_.
+>> There seems to be no barebox BSD-3-Clause license  _text_ however,
+>> which runs afoul of the first clause of the license.
+>>
+>> To account for this and future contributions which are licensed under
+>> non-GPL-2.0-but-compatible licenses, create a new LICENSES directory
+>> like the one Linux has, where licenses are located.
+>>
+>> The barebox jumptable exception was imported from U-Boot and mangled
+>> by a mass search and replace in a3ffa97f4. A rephrased version
+>> of this exception has the SPDX-License-Identifier: u-boot-exception-2.0
+>> which I suggest to adopt for barebox as well by referencing it
+>> in the COPYING file (with a note about the original project name,
+>> so it's understood what's meant by u-boot in the exception text).
 > 
-> Hi Oleksij!
+> Nice. Thanks for working on this.
 > 
-> Sorry but this week I'm on vacation.
+>> diff --git a/LICENSES/exceptions/u-boot-exception-2.0 b/LICENSES/exceptions/u-boot-exception-2.0
+>> new file mode 100644
+>> index 000000000000..c9b3cd981f51
+>> --- /dev/null
+>> +++ b/LICENSES/exceptions/u-boot-exception-2.0
+>> @@ -0,0 +1,15 @@
+>> +
+>> +GPL License Exception:
+>> +
+>> +Even though U-Boot in general is covered by the GPL-2.0/GPL-2.0+,
+>> +this does *not* cover the so-called "standalone" applications that
+>> +use U-Boot services by means of the jump table provided by U-Boot
+>> +exactly for this purpose - this is merely considered normal use of
+>> +U-Boot, and does *not* fall under the heading of "derived work".
+>> +
+>> +  The header files "include/image.h" and "arch/*/include/asm/u-boot.h"
+>> +define interfaces to U-Boot.  Including these (unmodified) header
+>> +files in another file is considered normal use of U-Boot, and does
+>> +*not* fall under the heading of "derived work".
 > 
-> Could you please push this patchseries to github?
+> I don't think we need this. barebox doesn't have (and never had since
+> the fork from U-Boot) these standalone applications. There is no
+> jumptable in barebox. What we do have is modules support, but these are
+> not covered by this text.
 
-done:
-https://github.com/olerem/barebox/tree/v2019.02.0/board/ath79-reloc-2019.02.18
+I can send out a v2 without the exception. Everything else is ok?
 
-
-Kind regards,
-Oleksij Rempel
+> 
+> Sascha
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
