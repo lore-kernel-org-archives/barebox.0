@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gvegx-0001ka-8L
- for barebox@lists.infradead.org; Mon, 18 Feb 2019 08:54:24 +0000
-Date: Mon, 18 Feb 2019 09:54:21 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190218085421.6wv4fr3z5tghny6v@pengutronix.de>
-References: <20190215124351.30374-1-o.rempel@pengutronix.de>
+ id 1guZN4-0002IV-In
+ for barebox@lists.infradead.org; Fri, 15 Feb 2019 09:01:26 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Fri, 15 Feb 2019 10:01:19 +0100
+Message-Id: <20190215090119.10069-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190215124351.30374-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/4] add (U)EFI watchdog
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] watchdog: fix WATCHDOG_POLLER menuconfig
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-On Fri, Feb 15, 2019 at 01:43:47PM +0100, Oleksij Rempel wrote:
-> changes v2:
-> - efi_wdt_set_timeout() should return error if we get error from (U)EFI
-> - use device_platform_driver()
-> - spelling and formatting fixes in the documentation.
-> 
-> Oleksij Rempel (4):
->   efi: add prototype and definition for set_watchdog_timer
->   watchdog: add (U)EFI driver
->   efi_defconfig: enable watchdog support
->   Documentation: efi: provide (U)EFI watchdog documentation
+make it properly represented by menuconfig
 
-Applied, thanks
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/watchdog/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
-
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index 96e91fc2ce..2793ee93d9 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -10,7 +10,7 @@ menuconfig WATCHDOG
+ 
+ if WATCHDOG
+ 
+-menuconfig WATCHDOG_POLLER
++config WATCHDOG_POLLER
+ 	bool "Watchdog periodic feeder support"
+ 	select POLLER
+ 	help
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
