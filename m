@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gucqR-0002st-10
- for barebox@lists.infradead.org; Fri, 15 Feb 2019 12:43:58 +0000
+ id 1gucqR-0002sk-0y
+ for barebox@lists.infradead.org; Fri, 15 Feb 2019 12:44:00 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Fri, 15 Feb 2019 13:43:50 +0100
-Message-Id: <20190215124351.30374-4-o.rempel@pengutronix.de>
+Date: Fri, 15 Feb 2019 13:43:48 +0100
+Message-Id: <20190215124351.30374-2-o.rempel@pengutronix.de>
 In-Reply-To: <20190215124351.30374-1-o.rempel@pengutronix.de>
 References: <20190215124351.30374-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,36 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/4] efi_defconfig: enable watchdog support
+Subject: [PATCH v2 1/4] efi: add prototype and definition for
+ set_watchdog_timer
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/x86/configs/efi_defconfig | 3 +++
- 1 file changed, 3 insertions(+)
+ include/efi.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/configs/efi_defconfig b/arch/x86/configs/efi_defconfig
-index fdf092e9ba..f489770eba 100644
---- a/arch/x86/configs/efi_defconfig
-+++ b/arch/x86/configs/efi_defconfig
-@@ -56,6 +56,7 @@ CONFIG_CMD_MM=y
- CONFIG_CMD_DETECT=y
- CONFIG_CMD_FLASH=y
- CONFIG_CMD_POWEROFF=y
-+CONFIG_CMD_WD=y
- CONFIG_CMD_2048=y
- CONFIG_CMD_BAREBOX_UPDATE=y
- CONFIG_CMD_OF_NODE=y
-@@ -71,6 +72,8 @@ CONFIG_DRIVER_SERIAL_NS16550=y
- CONFIG_DRIVER_NET_EFI_SNP=y
- # CONFIG_SPI is not set
- CONFIG_DISK=y
-+CONFIG_WATCHDOG=y
-+CONFIG_WATCHDOG_EFI=y
- CONFIG_FS_EXT4=y
- CONFIG_FS_TFTP=y
- CONFIG_FS_NFS=y
+diff --git a/include/efi.h b/include/efi.h
+index 7cc5fe05fa..218333f824 100644
+--- a/include/efi.h
++++ b/include/efi.h
+@@ -234,7 +234,10 @@ typedef struct {
+ 	efi_status_t (EFIAPI *exit_boot_services)(efi_handle_t, unsigned long);
+ 	void *get_next_monotonic_count;
+ 	efi_status_t (EFIAPI *stall)(unsigned long usecs);
+-	void *set_watchdog_timer;
++	efi_status_t (EFIAPI *set_watchdog_timer)(unsigned long timeout,
++						  uint64_t watchdog_code,
++						  unsigned long data_size,
++						  s16 *watchdog_data);
+ 	efi_status_t(EFIAPI *connect_controller)(efi_handle_t controller_handle,
+ 			efi_handle_t *driver_image_handle,
+ 			struct efi_device_path *remaining_device_path,
 -- 
 2.20.1
 
