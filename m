@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gveE1-0005OW-E8
- for barebox@lists.infradead.org; Mon, 18 Feb 2019 08:24:31 +0000
-Date: Mon, 18 Feb 2019 09:24:25 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190218082425.vaok5r4k3ob2vbdj@pengutronix.de>
-References: <20190212064022.26154-1-andrew.smirnov@gmail.com>
+ id 1gud20-0000XB-UX
+ for barebox@lists.infradead.org; Fri, 15 Feb 2019 12:55:54 +0000
+From: Enrico Jorns <ejo@pengutronix.de>
+Date: Fri, 15 Feb 2019 13:53:40 +0100
+Message-Id: <20190215125348.12851-1-ejo@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190212064022.26154-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/8] NVME support
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/8] Bootchooser Documentation Update
+To: barebox@lists.infradead.org
+Cc: Enrico Jorns <ejo@pengutronix.de>
 
-On Mon, Feb 11, 2019 at 10:40:14PM -0800, Andrey Smirnov wrote:
-> Everyone:
-> 
-> This series contains all of the changes I made in order to add support
-> for NVME storage in Barebox. Majority of the code was adapted directly
-> from Linux kernel and I tried to keep it as close to the original as
-> possible. Only a very basic featureset was implemented:
-> 
->     - For obvious reason all of the request both to admin and I/O
->       queue are fully blocking/syncronous, so none of the I/O
->       operations are done in parallel
-> 
->     - PRP list only DMA (no SGL lists support)
-> 
->     - No support for shared namespaces
-> 
->     - No support for transports other than PCIe. All of the pluming to
->       add support for it should be there, however.
-> 
->     - Host memory buffer support is not implemented
-> 
-> Feedback is welcome!
+This is a collection of some documentation updates, fixes and
+clarifications for the bootchooser framework.
 
-Looks good, so applied, thanks
+Enrico Jorns (8):
+  doc: bootchooser: fix typos etc.
+  doc: bootchooser: explicitly note configuration vs. storage backend
+  doc: bootchooser: be more explicit what bootchooser.state_prefix is
+    for
+  doc: bootchooser: be more explicit about attempts reset on successful
+    boot
+  doc: bootchooser: note how to actually start the bootchooser
+  doc: bootchooser: be more explicit about when the bootchooser
+    terminates
+  doc: bootchooser: add details about bootchooser.reset_attempts
+    handling
+  doc: bootchooser: add retry handling to algorithm description
 
-Sascha
+ Documentation/user/bootchooser.rst | 94 +++++++++++++++++++++++-------
+ 1 file changed, 72 insertions(+), 22 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
