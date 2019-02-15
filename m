@@ -1,20 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gubVd-0004Sg-F0
- for barebox@lists.infradead.org; Fri, 15 Feb 2019 11:18:23 +0000
-Date: Fri, 15 Feb 2019 12:18:19 +0100
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190215111819.di35ekv2p6yxbion@pengutronix.de>
-References: <20190207223906.24394-1-rohieb@rohieb.name>
- <068ce15e-1a72-9b02-2b1f-40a5d32523a0@rempel-privat.de>
- <20190208085902.4strzly224joqupn@pengutronix.de>
- <680f947e-ec3d-18bf-0c4b-daeb871b9bd3@pengutronix.de>
- <20190211102547.jg7flk2o7yyrems5@pengutronix.de>
- <18076f65-92b1-a6eb-c4ea-d52ae0b7031e@pengutronix.de>
+ id 1gucc4-0004yY-Ma
+ for barebox@lists.infradead.org; Fri, 15 Feb 2019 12:29:06 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Fri, 15 Feb 2019 13:29:00 +0100
+Message-Id: <20190215122900.3954-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <18076f65-92b1-a6eb-c4ea-d52ae0b7031e@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,62 +15,160 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/6] include: add SPDX GPL-2.0-only license tags where
- applicable
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Documentation: add watchdog documentation
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-T24gRnJpLCBGZWIgMTUsIDIwMTkgYXQgMDk6NTc6NTFBTSArMDEwMCwgQWhtYWQgRmF0b3VtIHdy
-b3RlOgo+IEhlbGxvLAo+IAo+IE9uIDExLzIvMTkgMTE6MjUsIFJvbGFuZCBIaWViZXIgd3JvdGU6
-Cj4gPiBPbiBGcmksIEZlYiAwOCwgMjAxOSBhdCAxMDowOToxOUFNICswMTAwLCBBaG1hZCBGYXRv
-dW0gd3JvdGU6Cj4gPj4KPiA+Pgo+ID4+IE9uIDgvMi8xOSAwOTo1OSwgUm9sYW5kIEhpZWJlciB3
-cm90ZToKPiA+Pj4gT24gRnJpLCBGZWIgMDgsIDIwMTkgYXQgMDY6NDg6MjZBTSArMDEwMCwgT2xl
-a3NpaiBSZW1wZWwgd3JvdGU6Cj4gPj4+PiBIaSBSb2xhbmQsCj4gPj4+Pgo+ID4+Pj4gcGxlYXNl
-IHJlbW92ZSBkZXByZWNhdGVkIGxpY2Vuc2UgaGVhZGVycyBpbiBzYW1lIHBhdGNoLgo+ID4+Pgo+
-ID4+PiBJIGRlY2lkZWQgdG8gbGVhdmUgdGhlbSB0byByZWNvcmQgdGhlIG9yaWdpbmFsIGF1dGhv
-cidzIGludGVudC4gVGhlcmUKPiA+Pj4gYXJlIHNldmVyYWwgdmFyaWF0aW9ucyBvbiB0aGUgR1BM
-IGhlYWRlcnMgaW4gdGhlIHByb2plY3QsIHRoZSBvbmUKPiA+Pj4gZXh0cmVtZSBpcyB0aGUgZnVs
-bCBHUEwgbGljZW5zZSBoZWFkZXIgaW5jbHVkaW5nIGEgd2FycmFudHkgZGlzY2xhaW1lciwKPiA+
-Pj4gYnV0IHRoZSBvdGhlciBleHRyZW1lIGlzIG9ubHkgYSAiR1BMdjIiIGFuZCBub3RoaW5nIG1v
-cmUuIFdlIGNhbiBkZWNpZGUKPiA+Pj4gb24gdGhlIHByb2plY3QgbGV2ZWwgdG8gYXBwbHkgdGhl
-IHdhcnJhbnR5IGRpc2NsYWltZXIuIEJ1dCBieSByZW1vdmluZwo+ID4+PiB0aGUgbGljZW5zZSBo
-ZWFkZXJzIGZyb20gaW5kaXZpZHVhbCBmaWxlcywgdGhlIG9yaWdpbmFsIGF1dGhvciBpbnRlbnQg
-aXMKPiA+Pj4gbG9zdCDigJMgbWF5YmUgdGhlIGRpZG4ndCB3YW50IHRvIGluY2x1ZGUgdGhlIGRp
-c2NsYWltZXIsIG1heWJlIHRoZXkKPiA+Pj4gZGlkbid0IGNhcmUsIGluIGFueSBjYXNlIGl0IGlz
-IG5vdCBpbiBvdXIgcG9zc2liaWxpdHkgdG8gZGVjaWRlIG92ZXIKPiA+Pj4gdGhlaXIgY29weXJp
-Z2h0IG1hdHRlcnMgYW5kIGZvciBtb3N0IG9mIHRoZSBjYXNlcyBpdCBpcyB0b28gbGF0ZSB0bwo+
-ID4+PiB0cmFjayBzb21lIG9mIHRoZSBwZW9wbGUgZG93biBhbmQgYXNrIHRoZW0uCj4gPj4+Cj4g
-Pj4+IFRoaXMgYWxsIGJlY29tZXMgaW1wb3J0YW50IHdoZW4gc29tZW9uZSBmb3JrcyBvdXIgZmls
-ZXMgdG8gYSBuZXcKPiA+Pj4gcHJvamVjdC4gQW5kIGlmIHRoYXQgc29tZW9uZSBkb2VzIG5vdCBr
-bm93IHdoYXQgdGhlIFNQRFggbGljZW5zZSB0YWdzCj4gPj4+IGFjdHVhbGx5IG1lYW4sIGl0J3Mg
-YmV0dGVyIHRvIGhhdmUgdGhlIG9yaWdpbmFsIGRvY3VtZW50YXRpb24gb24gdGhlCj4gPj4+IGZp
-bGUgbGV2ZWwuCj4gPj4+Cj4gPj4+IEkgbm90aWNlZCB0aGF0IExpbnV4IHVzdWFsbHkgcmVtb3Zl
-cyB0aGUgbGljZW5zZSBoZWFkZXJzIGFuZCBvbmx5IGtlZXBzCj4gPj4+IHRoZSBjb3B5cmlnaHQg
-bGluZXMsIGJ1dCBJIHdhc24ndCBhYmxlIHRvIGZpbmQgYW55IHJlYXNvbiBmb3IgdGhhdC4gRG8K
-PiA+Pj4geW91IGhhdmUgbW9yZSBpbnNpZ2h0IGhlcmU/Cj4gPj4KPiA+PiAoT2JsaWdhdG9yeSBJ
-QU5BTCkKPiA+IAo+ID4gKE1lIG5laXRoZXIpCj4gPiAKPiA+PiBXaXRoIHRoZSBjb3B5cmlnaHQs
-IHRoZSBhdXRob3Igc3RhdGVzIHRoZWlyIHJpZ2h0IHRvIGRlYWwgYXMgdGhleQo+ID4+IHNlZSBm
-aXQgd2l0aCB0aGUgc291cmNlIGNvZGUuIEZvciBleGFtcGxlIHRoZXkgbWF5IHJlbGljZW5zZS4g
-UmVwbGFjaW5nIHRoZQo+ID4+IGNvcHlyaWdodCB3aXRoIGEgU1BEWC1MaWNlbnNlLUlkZW50aWZp
-ZXIgd29uJ3QgcHJlc2VydmUgdGhpcyBpbmZvcm1hdGlvbi4KPiA+IAo+ID4gVGhhdCBzb3VuZHMg
-bGlrZSBhbiBhcmd1bWVudCBmb3IgbGVhdmluZyB0aGUgY29weXJpZ2h0IGhlYWRlcnMgaW4gdGhl
-Cj4gPiBpbmRpdmlkdWFsIGZpbGVzPwo+IAo+IFllcywgbGVhdmUgY29weXJpZ2h0L2F1dGhvcnNo
-aXAgbGluZXMsIGJ1dCByZXBsYWNlIGxpY2Vuc2UgdGV4dCB3aXRoCj4gU1BEWC1MaWNlbnNlLUlk
-ZW50aWZpZXIuCgpBaCwgd2UncmUgdGFsa2luZyBhYm91dCBkaWZmZXJlbnQgdGhpbmdzIHRoZW4u
-IEkgd2FzIHVzaW5nICJjb3B5cmlnaHQKaGVhZGVycyIgdG8gaW5jbHVkZSB0aGUgIihjKSBhdXRo
-b3IiIGxpbmUgYXMgd2VsbCBhcyB0aGUgbGljZW5zZSBzdGF0ZW1lbnQuCgpJIHRoaW5rIG15IGN1
-cnJlbnQgdmVyc2lvbiBvZiB0aGUgcGF0Y2ggZ2l2ZXMgdXMgYmVzdCBvZiBib3RoIHdvcmxkcywK
-ZG9jdW1lbnRhdGlvbiBvZiBhdXRob3IgaW50ZW50IGFzIHdlbGwgYXMgbWFjaGluZSByZWFkYWJp
-bGl0eSwgc28gSQpkb24ndCB0aGluayBhbnl0aGluZyBpcyBsb3N0IGhlcmUgYnkgYWRkaW5nIHRo
-ZSBTUERYIHRhZ3MuCgotLSAKUm9sYW5kIEhpZWJlciAgICAgICAgICAgICAgICAgICAgIHwgci5o
-aWViZXJAcGVuZ3V0cm9uaXguZGUgICAgIHwKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAg
-ICAgIHwgaHR0cHM6Ly93d3cucGVuZ3V0cm9uaXguZGUvIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEz
-NyBIaWxkZXNoZWltIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy01MDg2IHwKQW10c2dlcmljaHQg
-SGlsZGVzaGVpbSwgSFJBIDI2ODYgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
-bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ Documentation/user/user-manual.rst |   1 +
+ Documentation/user/watchdog.rst    | 116 +++++++++++++++++++++++++++++
+ 2 files changed, 117 insertions(+)
+ create mode 100644 Documentation/user/watchdog.rst
+
+diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
+index 516b760b1b..d5526de285 100644
+--- a/Documentation/user/user-manual.rst
++++ b/Documentation/user/user-manual.rst
+@@ -33,6 +33,7 @@ Contents:
+    system-reset
+    state
+    random
++   watchdog
+ 
+ * :ref:`search`
+ * :ref:`genindex`
+diff --git a/Documentation/user/watchdog.rst b/Documentation/user/watchdog.rst
+new file mode 100644
+index 0000000000..f2e703a250
+--- /dev/null
++++ b/Documentation/user/watchdog.rst
+@@ -0,0 +1,116 @@
++Watchdog Support
++================
++
++Warnings and Design Consideration
++---------------------------------
++
++A watchdog is the last line of defense on misbehaving systems. Thus, proper
++hardware and watchdog design considerations should be made to be able to reduce
++the impact of failing systems in the field. In the best case, the bootloader
++should not touch it at all. No watchdog feeding should be done until
++application-critical software (or a userspace service manager such as
++'systemd') was started.
++
++In case the bootloader is responsible for watchdog activation, the system can
++be considered as failed by design. The following threats can affect the system
++which are mostly addressable by properly designed watchdog and watchdog
++strategy:
++
++- software-based miss-configurations or bugs prevent the system from starting.
++- glitches caused by under-voltage, inappropriate power-on sequence or noisy
++  power supply.
++- physical damages caused by humidity, vibration or temperature.
++- temperature-based misbehavior of the system, e.g. clock is not running or
++  running with wrong frequency.
++- chemical reactions, e.g. some clock crystals will stop to work in contact
++  with Helium, see for example:
++  https://ifixit.org/blog/11986/iphones-are-allergic-to-helium/
++- failed storage prevents booting. NAND, SD, SSD, HDD, SPI-flash all of this
++  some day stop to work because their read/write cycles are exceeded.
++
++In all these cases, the bootloader won't be able to start and a properly
++designed watchdog may take some action. For example: recover the system by
++resetting it, or power it off to reduce the damage.
++
++Barebox Watchdog Functionality
++------------------------------
++
++Nevertheless, in some cases we are not able to influence the hardware design
++anymore or while developing one needs to be able to feed the watchdog to
++disable it from within the bootloader. For these scenarios barebox provides the
++watchdog framework with the following functionality and at least
++``CONFIG_WATCHDOG`` should be enabled:
++
++Polling
++~~~~~~~
++
++Watchdog polling/feeding allows to feed the watchdog and keep it running on one
++side and to not reset the system on the other side. It is needed on hardware
++with short-time watchdogs. For example the Atheros ar9331 watchdog has a
++maximal timeout of 7 seconds, so it may reset even on netboot.
++Or it can be used on systems where the watchdog is already running and can't be
++disabled, an example for that is the watchdog of the i.MX2 series.
++This functionally can be seen as a threat, since in error cases barebox will
++continue to feed the watchdog even if that is not desired. So, depending on
++your needs ``CONFIG_WATCHDOG_POLLER`` can be enabled or disabled at compile
++time. Even if barebox was built with watchdog polling support, it is not
++enabled by default. To start polling from command line run:
++
++.. code-block:: sh
++
++  wdog0.autoping=1
++
++The poller interval is not configurable, but fixed at 500ms and the watchdog
++timeout is configured by default to the maximum of the supported values by
++hardware. To change the timeout used by the poller, run:
++
++.. code-block:: sh
++
++  wdog0.timeout_cur=7
++
++To read the current watchdog's configuration, run:
++
++.. code-block:: sh
++
++  devinfo wdog0
++
++The output may look as follows where `timeout_cur` and `timeout_max` are
++measured in seconds:
++
++.. code-block:: sh
++
++  barebox@DPTechnics DPT-Module:/ devinfo wdog0
++  Parameters:
++    autoping: 1 (type: bool)
++    timeout_cur: 7 (type: uint32)
++    timeout_max: 10 (type: uint32)
++
++Use barebox' environment to persist these changes between reboots:
++
++.. code-block:: sh
++
++  nv dev.wdog0.autoping=1
++  nv dev.wdog0.timeout_cur=7
++
++Boot Watchdog Timeout
++~~~~~~~~~~~~~~~~~~~~~
++
++With this functionality barebox may start a watchdog or update the timeout of
++an already-running one, just before kicking the boot image. It can be
++configured temporarily via
++
++.. code-block:: sh
++
++  global boot.watchdog_timeout=10
++
++or persistently by
++
++.. code-block:: sh
++
++  nv boot.watchdog_timeout=10
++
++where the used value again is measured in seconds.
++
++On a system with multiple watchdogs, only the first one (wdog0) is affected by
++the boot.watchdog_timeout parameter.
++
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
