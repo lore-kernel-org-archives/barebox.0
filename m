@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gud20-0000XE-VU
+ id 1gud20-0000XF-Vm
  for barebox@lists.infradead.org; Fri, 15 Feb 2019 12:55:57 +0000
 From: Enrico Jorns <ejo@pengutronix.de>
-Date: Fri, 15 Feb 2019 13:53:47 +0100
-Message-Id: <20190215125348.12851-8-ejo@pengutronix.de>
+Date: Fri, 15 Feb 2019 13:53:48 +0100
+Message-Id: <20190215125348.12851-9-ejo@pengutronix.de>
 In-Reply-To: <20190215125348.12851-1-ejo@pengutronix.de>
 References: <20190215125348.12851-1-ejo@pengutronix.de>
 MIME-Version: 1.0
@@ -21,42 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] doc: bootchooser: add details about
- bootchooser.reset_attempts handling
+Subject: [PATCH 8/8] doc: bootchooser: add retry handling to algorithm
+ description
 To: barebox@lists.infradead.org
 Cc: Enrico Jorns <ejo@pengutronix.de>
 
-For understanding and correctly using the algorith it is useful to know
-when the values are evaluated.
-
 Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
 ---
- Documentation/user/bootchooser.rst | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ Documentation/user/bootchooser.rst | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/Documentation/user/bootchooser.rst b/Documentation/user/bootchooser.rst
-index 00ce896e37..ad809751dd 100644
+index ad809751dd..1680ea78ed 100644
 --- a/Documentation/user/bootchooser.rst
 +++ b/Documentation/user/bootchooser.rst
-@@ -88,11 +88,13 @@ controlled by the ``global.bootchooser.reset_attempts`` variable. It holds a
- list of space-separated flags. Possible values are:
+@@ -96,6 +96,11 @@ list of space-separated flags. Possible values are:
+   counters of all enabled targets are zero, the ``remaining_attempts``
+   counters of all enabled targets are reset to their defaults.
  
- - empty: counters will never be reset
--- ``power-on``: The ``remaining_attempts`` counters of all enabled boot targets are reset
--  after a ``power-on`` reset (``$global.system.reset="POR"``). This means after a power
--  cycle all boot targets will be tried again for the configured number of retries.
--- ``all-zero``: The ``remaining_attempts`` counters of all enabled boot targets are
--  reset when none of them has any ``remaining_attempts`` left.
-+- ``power-on``: When the bootchooser starts and a power-on reset
-+  (``$global.system.reset="POR"``) is detected, the ``remaining_attempts``
-+  counters of all enabled targets are reset to their defaults.
-+  This means after a power cycle all boot targets will be tried again for the configured number of retries.
-+- ``all-zero``: When the bootchooser starts and the ``remaining_attempts``
-+  counters of all enabled targets are zero, the ``remaining_attempts``
-+  counters of all enabled targets are reset to their defaults.
- 
++If ``global.bootchooser.retry`` is enabled (set to ``1``), the bootchooser
++algorithm will iterate through all valid boot targets (and decrease their
++counters) until one succeeds or none is left.
++If it is disabled only one attempt will be made for each bootchooser call.
++
  Marking a Boot as Successful
  ############################
+ 
 -- 
 2.20.1
 
