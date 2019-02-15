@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conssluserg-01.nifty.com ([210.131.2.80])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1guSi0-0003TL-Vf
- for barebox@lists.infradead.org; Fri, 15 Feb 2019 01:54:35 +0000
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com
- [209.85.221.181]) (authenticated)
- by conssluserg-01.nifty.com with ESMTP id x1F1s57S016143
- for <barebox@lists.infradead.org>; Fri, 15 Feb 2019 10:54:05 +0900
-Received: by mail-vk1-f181.google.com with SMTP id j68so1873571vke.13
- for <barebox@lists.infradead.org>; Thu, 14 Feb 2019 17:54:05 -0800 (PST)
+ id 1guZJh-0000Fx-Td
+ for barebox@lists.infradead.org; Fri, 15 Feb 2019 08:57:56 +0000
+References: <20190207223906.24394-1-rohieb@rohieb.name>
+ <068ce15e-1a72-9b02-2b1f-40a5d32523a0@rempel-privat.de>
+ <20190208085902.4strzly224joqupn@pengutronix.de>
+ <680f947e-ec3d-18bf-0c4b-daeb871b9bd3@pengutronix.de>
+ <20190211102547.jg7flk2o7yyrems5@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <18076f65-92b1-a6eb-c4ea-d52ae0b7031e@pengutronix.de>
+Date: Fri, 15 Feb 2019 09:57:51 +0100
 MIME-Version: 1.0
-References: <20190214082026.22614-1-s.hauer@pengutronix.de>
-In-Reply-To: <20190214082026.22614-1-s.hauer@pengutronix.de>
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Fri, 15 Feb 2019 10:53:28 +0900
-Message-ID: <CAK7LNAQmBjQN9ek5HTxjBV9zLwWG8faPpMkPTwrJdnULzhXqHw@mail.gmail.com>
+In-Reply-To: <20190211102547.jg7flk2o7yyrems5@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,79 +22,89 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] kbuild: Add missing semicolon
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/6] include: add SPDX GPL-2.0-only license tags where
+ applicable
+To: Roland Hieber <rhi@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Thu, Feb 14, 2019 at 5:20 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> Fixes: 4fafb35d925e5 ("kbuild: cherry-pick changes from Linux v5.0-rc3")
->
-> The change cherry-picked from the Kernel commit 7d0ea2524202 ("kbuild: use
-> 'else ifeq' for checksrc to improve readability") also removed the
-> trailing semicolons from the cmd_*checksrc lines. These were removed in
-> kernel commit e5d289100d ("kbuild: remove trailing semicolon from cmd_*
-> passed to if_changed_rule"), but seems the barebox Kbuild version is not
-> yet ready for this change. Without the semicolons a make C=1 build fails
-> with:
->
-> No such file: echo
-
-
-My bad - this change accidentally slipped in.
-
-It would be possible to sync if_changed* with latest Linux,
-but I agree that we should revert the offending lines for now.
-
-
-Reviewed-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-
-
-
->
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-> ---
->  scripts/Makefile.build | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> index 2c45ea872f..db687d5f9e 100644
-> --- a/scripts/Makefile.build
-> +++ b/scripts/Makefile.build
-> @@ -86,10 +86,10 @@ __build: $(if $(KBUILD_BUILTIN),$(builtin-target) $(lib-target) $(pbl-target) $(
->  # Linus' kernel sanity checking tool
->  ifeq ($(KBUILD_CHECKSRC),1)
->    quiet_cmd_checksrc       = CHECK   $<
-> -        cmd_checksrc       = $(CHECK) $(CHECKFLAGS) $(c_flags) $<
-> +        cmd_checksrc       = $(CHECK) $(CHECKFLAGS) $(c_flags) $< ;
->  else ifeq ($(KBUILD_CHECKSRC),2)
->    quiet_cmd_force_checksrc = CHECK   $<
-> -        cmd_force_checksrc = $(CHECK) $(CHECKFLAGS) $(c_flags) $<
-> +        cmd_force_checksrc = $(CHECK) $(CHECKFLAGS) $(c_flags) $< ;
->  endif
->
->  # Compile C sources (.c)
-> --
-> 2.20.1
->
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-
-
--- 
-Best Regards
-Masahiro Yamada
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sCgpPbiAxMS8yLzE5IDExOjI1LCBSb2xhbmQgSGllYmVyIHdyb3RlOgo+IE9uIEZyaSwg
+RmViIDA4LCAyMDE5IGF0IDEwOjA5OjE5QU0gKzAxMDAsIEFobWFkIEZhdG91bSB3cm90ZToKPj4K
+Pj4KPj4gT24gOC8yLzE5IDA5OjU5LCBSb2xhbmQgSGllYmVyIHdyb3RlOgo+Pj4gT24gRnJpLCBG
+ZWIgMDgsIDIwMTkgYXQgMDY6NDg6MjZBTSArMDEwMCwgT2xla3NpaiBSZW1wZWwgd3JvdGU6Cj4+
+Pj4gSGkgUm9sYW5kLAo+Pj4+Cj4+Pj4gcGxlYXNlIHJlbW92ZSBkZXByZWNhdGVkIGxpY2Vuc2Ug
+aGVhZGVycyBpbiBzYW1lIHBhdGNoLgo+Pj4KPj4+IEkgZGVjaWRlZCB0byBsZWF2ZSB0aGVtIHRv
+IHJlY29yZCB0aGUgb3JpZ2luYWwgYXV0aG9yJ3MgaW50ZW50LiBUaGVyZQo+Pj4gYXJlIHNldmVy
+YWwgdmFyaWF0aW9ucyBvbiB0aGUgR1BMIGhlYWRlcnMgaW4gdGhlIHByb2plY3QsIHRoZSBvbmUK
+Pj4+IGV4dHJlbWUgaXMgdGhlIGZ1bGwgR1BMIGxpY2Vuc2UgaGVhZGVyIGluY2x1ZGluZyBhIHdh
+cnJhbnR5IGRpc2NsYWltZXIsCj4+PiBidXQgdGhlIG90aGVyIGV4dHJlbWUgaXMgb25seSBhICJH
+UEx2MiIgYW5kIG5vdGhpbmcgbW9yZS4gV2UgY2FuIGRlY2lkZQo+Pj4gb24gdGhlIHByb2plY3Qg
+bGV2ZWwgdG8gYXBwbHkgdGhlIHdhcnJhbnR5IGRpc2NsYWltZXIuIEJ1dCBieSByZW1vdmluZwo+
+Pj4gdGhlIGxpY2Vuc2UgaGVhZGVycyBmcm9tIGluZGl2aWR1YWwgZmlsZXMsIHRoZSBvcmlnaW5h
+bCBhdXRob3IgaW50ZW50IGlzCj4+PiBsb3N0IOKAkyBtYXliZSB0aGUgZGlkbid0IHdhbnQgdG8g
+aW5jbHVkZSB0aGUgZGlzY2xhaW1lciwgbWF5YmUgdGhleQo+Pj4gZGlkbid0IGNhcmUsIGluIGFu
+eSBjYXNlIGl0IGlzIG5vdCBpbiBvdXIgcG9zc2liaWxpdHkgdG8gZGVjaWRlIG92ZXIKPj4+IHRo
+ZWlyIGNvcHlyaWdodCBtYXR0ZXJzIGFuZCBmb3IgbW9zdCBvZiB0aGUgY2FzZXMgaXQgaXMgdG9v
+IGxhdGUgdG8KPj4+IHRyYWNrIHNvbWUgb2YgdGhlIHBlb3BsZSBkb3duIGFuZCBhc2sgdGhlbS4K
+Pj4+Cj4+PiBUaGlzIGFsbCBiZWNvbWVzIGltcG9ydGFudCB3aGVuIHNvbWVvbmUgZm9ya3Mgb3Vy
+IGZpbGVzIHRvIGEgbmV3Cj4+PiBwcm9qZWN0LiBBbmQgaWYgdGhhdCBzb21lb25lIGRvZXMgbm90
+IGtub3cgd2hhdCB0aGUgU1BEWCBsaWNlbnNlIHRhZ3MKPj4+IGFjdHVhbGx5IG1lYW4sIGl0J3Mg
+YmV0dGVyIHRvIGhhdmUgdGhlIG9yaWdpbmFsIGRvY3VtZW50YXRpb24gb24gdGhlCj4+PiBmaWxl
+IGxldmVsLgo+Pj4KPj4+IEkgbm90aWNlZCB0aGF0IExpbnV4IHVzdWFsbHkgcmVtb3ZlcyB0aGUg
+bGljZW5zZSBoZWFkZXJzIGFuZCBvbmx5IGtlZXBzCj4+PiB0aGUgY29weXJpZ2h0IGxpbmVzLCBi
+dXQgSSB3YXNuJ3QgYWJsZSB0byBmaW5kIGFueSByZWFzb24gZm9yIHRoYXQuIERvCj4+PiB5b3Ug
+aGF2ZSBtb3JlIGluc2lnaHQgaGVyZT8KPj4KPj4gKE9ibGlnYXRvcnkgSUFOQUwpCj4gCj4gKE1l
+IG5laXRoZXIpCj4gCj4+IFdpdGggdGhlIGNvcHlyaWdodCwgdGhlIGF1dGhvciBzdGF0ZXMgdGhl
+aXIgcmlnaHQgdG8gZGVhbCBhcyB0aGV5Cj4+IHNlZSBmaXQgd2l0aCB0aGUgc291cmNlIGNvZGUu
+IEZvciBleGFtcGxlIHRoZXkgbWF5IHJlbGljZW5zZS4gUmVwbGFjaW5nIHRoZQo+PiBjb3B5cmln
+aHQgd2l0aCBhIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyIHdvbid0IHByZXNlcnZlIHRoaXMgaW5m
+b3JtYXRpb24uCj4gCj4gVGhhdCBzb3VuZHMgbGlrZSBhbiBhcmd1bWVudCBmb3IgbGVhdmluZyB0
+aGUgY29weXJpZ2h0IGhlYWRlcnMgaW4gdGhlCj4gaW5kaXZpZHVhbCBmaWxlcz8KClllcywgbGVh
+dmUgY29weXJpZ2h0L2F1dGhvcnNoaXAgbGluZXMsIGJ1dCByZXBsYWNlIGxpY2Vuc2UgdGV4dCB3
+aXRoClNQRFgtTGljZW5zZS1JZGVudGlmaWVyLgoKPiAKPj4gVGhlIGxpY2Vuc2UgaXRzZWxmIGdy
+YW50cyByaWdodHMgdG8gb3RoZXJzIGFuZCwgaWYgaXQncyBhIHN0YW5kYXJkIG9uZSwKPj4gY291
+bGQgYmUgcmVmZXJlbmNlZCBieSB0aGUgSWRlbnRpZmllciwgd2hpbGUgdGhlIGZ1bGwgdGV4dCBp
+cyByZXByb2R1Y2VkCj4+IG9ubHkgb25jZSBhdCBzb21lIGNlbnRyYWwgbG9jYXRpb24gKHNlZSBt
+eSBMSUNFTlNFUyBkaXJlY3RvcnkgcGF0Y2ggYmVsb3cpLgo+IAo+IFRoZXJlIGFyZSB0d28gcGFy
+dHMgaW52b2x2ZWQgd2hlbiBhcHBseWluZyB0aGUgR1BMLiBPbmUgcGFydCBpcyB0aGUgR1BMCj4g
+aXRzZWxmLCB3aGljaCBpcyB3cml0dGVuIGJ5IHRoZSBGU0YsIGFuZCBpcyB0aGUgZ2VuZXJpYyBs
+aWNlbnNlIGdyYW50aW5nCj4gcmlnaHRzIGFuZCBkdXRpZXMgdG8gdXNlcnMgb2YgdGhlIHByb2dy
+YW0gZm9yIHdvcmtzIHRoYXQgYXJlIGxpY2Vuc2VkCj4gdW5kZXIgdGhlIEdQTC4gIFRoZSBzZWNv
+bmQgcGFydCBpcyB0aGUgYWN0dWFsIGNvcHlyaWdodCBzdGF0ZW1lbnQsIHdoaWNoCj4gaXMgd3Jp
+dHRlbiBieSB0aGUgYXV0aG9yIG9mIHRoZSAocmVzcGVjdGl2ZSBwYXJ0IG9mIHRoZSkgY29kZSwg
+YW5kIHdoaWNoCj4gbXVzdCBtZW50aW9uIHRoYXQgYSBzb3VyY2UgZmlsZSBpcyBhY3R1YWxseSBs
+aWNlbnNlZCB1bmRlciB0aGUgR1BMLgo+IFRoaXMgcGFydCB1c3VhbGx5LCBidXQgbm90IGFsd2F5
+cywgYWxzbyBjb250YWlucyBhIHdhcnJhbnR5IGRpc2NsYWltZXIuCj4gQWx0aG91Z2ggdGhhdCBz
+ZWNvbmQgcGFydCBpcyBwcmUtZm9ybXVsYXRlZCBpbiB0aGUgYXBwZW5kaXggIkhvdyB0bwo+IEFw
+cGx5IFRoZXNlIFRlcm1zIHRvIFlvdXIgTmV3IFByb2dyYW1zIiBvZiB0aGUgR1BMLCBpdCBjYW4g
+YmUgc2VlbiBpbiBteQo+IHBhdGNoIHRoYXQgdGhlIGNvcHlyaWdodCBzdGF0ZW1lbnQgaGlzdG9y
+aWNhbGx5IGhhcyBzZXZlcmFsIGRpZmZlcmVudAo+IHZhcmlhbnRzLCByYW5naW5nIGZyb20gInRo
+aXMgaXMgR1BMdjIiIHRvIHRoZSBmdWxsIHRleHQgdGhhdCBpcwo+IHJlY29tbWVuZGVkIGluIHRo
+ZSBHUEwgYXBwZW5kaXggKGFuZCBhbHNvIGluIHRoZSBHUEwgRkFRIFsxXSkuIEl0IGlzIHRoZQo+
+IGF1dGhvcidzIHNvbGUgcmlnaHQgdG8gY2hvb3NlIHRoZSBleGFjdCBjb25kaXRpb25zIGluIHRo
+ZSBjb3B5cmlnaHQKPiBzdGF0ZW1lbnQgb24gdGhlIGZpbGUgbGV2ZWwsIGFuZCBJIHRoaW5rIGJ5
+IHJlZHVjaW5nIHRob3NlIGxpY2Vuc2UKPiBoZWFkZXJzIHRvIG9ubHkgdGhlIGNvcHlyaWdodCBs
+aW5lIHRyYW5zZ3Jlc3NlcyB0aGF0IHJpZ2h0LiBBbmQsIGFzIEkKPiBzYWlkLCB0aGUgZnVsbCBj
+b3B5cmlnaHQgc3RhdGVtZW50IGFsc28gc2VydmVzIGFzIGEgZmFsbGJhY2sgaW4gY2FzZSB0aGUK
+PiBmaWxlIGlzIGNvcGllZCB0byBhIHByb2plY3QgdGhhdCBkb2VzIG5vdCB1c2UgdGhlIGZ1bGwg
+U1BEWCBwcm9jZXNzLiBJCj4gYWxzbyBkb3VidCB0aGF0IGEgc2luZ2xlICJTUERYLUxpY2Vuc2Ut
+SWRlbnRpZmllcjogR1BMLTIuMCIgbGluZSB3b3VsZAo+IGJlIHN1ZmZpY2llbnQgdG8gaW1wbHkg
+ZXZlcnl0aGluZyB0aGF0IGlzIHdyaXR0ZW4gaW4gdGhlIGZ1bGwgY29weXJpZ2h0Cj4gc3RhdGVt
+ZW50IGZvciBldmVyeSBwb3NzaWJsZSB1c2VyIG9mIHRoZSBzb3VyY2UgY29kZS4KPiAKPiBJIHdl
+bGNvbWUgeW91ciBwYXRjaCBmb3IgYWRkaW5nIHRoZSBMSUNFTlNFUy8qIGZpbGVzLCBidXQgSSBk
+b24ndCB0aGluawo+IGl0IHNvbHZlZCB0aGUgcHJvYmxlbSBtZW50aW9uZWQgYWJvdmUsIGFzIExJ
+Q0VOU0VTL3ByZWZlcnJlZC9HUEwtMi4wCj4gYWxzbyBvbmx5IGNvbnRhaW5zIHRoZSB0ZXh0IG9m
+IHRoZSBnZW5lcmljIEdQTCwgYW5kIG5vdCB0aGUgYXV0aG9ycycKPiBjb3B5cmlnaHQgc3RhdGVt
+ZW50Lgo+IAo+IFtmYXFdOiBodHRwczovL3d3dy5nbnUub3JnL2xpY2Vuc2VzL2dwbC1mYXEuZW4u
+aHRtbCNOb3RpY2VJblNvdXJjZUZpbGUKPiAKPiAgLSBSb2xhbmQKPiAKCi0tIApQZW5ndXRyb25p
+eCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRw
+Oi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hl
+aW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBI
+aWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1
+NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
+ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
+cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
