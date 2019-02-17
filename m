@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gvP7B-0008G8-Ra
+ id 1gvP7B-0008Ft-Rb
  for barebox@lists.infradead.org; Sun, 17 Feb 2019 16:16:27 +0000
-Received: by mail-lf1-x141.google.com with SMTP id m11so10501159lfc.6
- for <barebox@lists.infradead.org>; Sun, 17 Feb 2019 08:16:25 -0800 (PST)
+Received: by mail-lf1-x141.google.com with SMTP id h10so10277767lfc.12
+ for <barebox@lists.infradead.org>; Sun, 17 Feb 2019 08:16:24 -0800 (PST)
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Sun, 17 Feb 2019 17:16:02 +0100
-Message-Id: <20190217161609.11305-3-sam@ravnborg.org>
+Date: Sun, 17 Feb 2019 17:16:01 +0100
+Message-Id: <20190217161609.11305-2-sam@ravnborg.org>
 In-Reply-To: <20190217161609.11305-1-sam@ravnborg.org>
 References: <20190217161609.11305-1-sam@ravnborg.org>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +18,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/9] arm: at91: fix at91_configure_usart6 warning
+Subject: [PATCH v2 1/9] clocksource: Do not mix depends and select for
+ ATMEL_PIT
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-QWRkIGRlY2xhcmF0aW9uIHRvIHNpbGVuY2UgZm9sbG93aW5nIHdhcm5pbmc6CgphcmNoL2FybS9t
-YWNoLWF0OTEvc2FtYTVkNF9kZXZpY2VzLmM6NDg3OjI0Ogp3YXJuaW5nOiBubyBwcmV2aW91cyBw
-cm90b3R5cGUgZm9yIOKAmGF0OTFfY29uZmlndXJlX3VzYXJ0NuKAmQoKU2lnbmVkLW9mZi1ieTog
-U2FtIFJhdm5ib3JnIDxzYW1AcmF2bmJvcmcub3JnPgotLS0KIGFyY2gvYXJtL21hY2gtYXQ5MS9p
-bmNsdWRlL21hY2gvYm9hcmQuaCB8IDEgKwogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCsp
-CgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1hdDkxL2luY2x1ZGUvbWFjaC9ib2FyZC5oIGIv
-YXJjaC9hcm0vbWFjaC1hdDkxL2luY2x1ZGUvbWFjaC9ib2FyZC5oCmluZGV4IDg4NmY4MWU5YS4u
-NGM0YjUxMTgwIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLWF0OTEvaW5jbHVkZS9tYWNoL2Jv
-YXJkLmgKKysrIGIvYXJjaC9hcm0vbWFjaC1hdDkxL2luY2x1ZGUvbWFjaC9ib2FyZC5oCkBAIC0x
-MDIsNiArMTAyLDcgQEAgcmVzb3VyY2Vfc2l6ZV90IF9faW5pdCBhdDkxX2NvbmZpZ3VyZV91c2Fy
-dDIodW5zaWduZWQgcGlucyk7CiByZXNvdXJjZV9zaXplX3QgX19pbml0IGF0OTFfY29uZmlndXJl
-X3VzYXJ0Myh1bnNpZ25lZCBwaW5zKTsKIHJlc291cmNlX3NpemVfdCBfX2luaXQgYXQ5MV9jb25m
-aWd1cmVfdXNhcnQ0KHVuc2lnbmVkIHBpbnMpOwogcmVzb3VyY2Vfc2l6ZV90IF9faW5pdCBhdDkx
-X2NvbmZpZ3VyZV91c2FydDUodW5zaWduZWQgcGlucyk7CityZXNvdXJjZV9zaXplX3QgX19pbml0
-IGF0OTFfY29uZmlndXJlX3VzYXJ0Nih1bnNpZ25lZCBwaW5zKTsKIAogI2lmIGRlZmluZWQoQ09O
-RklHX0RSSVZFUl9TRVJJQUxfQVRNRUwpCiBzdGF0aWMgaW5saW5lIHN0cnVjdCBkZXZpY2VfZCAq
-IGF0OTFfcmVnaXN0ZXJfdWFydCh1bnNpZ25lZCBpZCwgdW5zaWduZWQgcGlucykKLS0gCjIuMTIu
-MAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+CLOCKSOURCE_ATMEL_PIT was both set to yes using depends on
+and using select.
+Use only select to set this non-visible symbol to 'y'
+
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+---
+ drivers/clocksource/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index 7b04663d2..b0502c303 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -69,7 +69,6 @@ config CLOCKSOURCE_ROCKCHIP
+ 
+ config CLOCKSOURCE_ATMEL_PIT
+        bool
+-       depends on SOC_AT91SAM9 || SOC_SAMA5
+ 
+ config CLOCKSOURCE_ARMV8_TIMER
+ 	bool
+-- 
+2.12.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
