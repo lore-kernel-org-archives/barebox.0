@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gtvMD-00075J-0h
- for barebox@lists.infradead.org; Wed, 13 Feb 2019 14:17:50 +0000
-From: Jan Remmet <j.remmet@phytec.de>
-Date: Wed, 13 Feb 2019 15:17:46 +0100
-Message-Id: <1550067466-48228-1-git-send-email-j.remmet@phytec.de>
+Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gvP7F-0008Ha-04
+ for barebox@lists.infradead.org; Sun, 17 Feb 2019 16:16:30 +0000
+Received: by mail-lf1-x141.google.com with SMTP id u21so10537555lfu.1
+ for <barebox@lists.infradead.org>; Sun, 17 Feb 2019 08:16:28 -0800 (PST)
+From: Sam Ravnborg <sam@ravnborg.org>
+Date: Sun, 17 Feb 2019 17:16:05 +0100
+Message-Id: <20190217161609.11305-6-sam@ravnborg.org>
+In-Reply-To: <20190217161609.11305-1-sam@ravnborg.org>
+References: <20190217161609.11305-1-sam@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,204 +23,207 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands: nandtest: provide readonly test
-To: barebox@lists.infradead.org
+Subject: [PATCH v2 5/9] clk: at91: add at91sam9rl
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Test will read the device and report the corrected or failed ECC states.
+Add at91sam9rl as part of supporting the PMC bindings for ARM at91.
+The file will be wired into the build in a follow-up patch.
 
-Signed-off-by: Jan Remmet <j.remmet@phytec.de>
+The file is a copy from kernel 5.0-rc6 modified to build
+with barebox.
+
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- commands/nandtest.c | 125 ++++++++++++++++++++++++++++++++++------------------
- 1 file changed, 83 insertions(+), 42 deletions(-)
+ drivers/clk/at91/at91sam9rl.c | 177 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 177 insertions(+)
+ create mode 100644 drivers/clk/at91/at91sam9rl.c
 
-diff --git a/commands/nandtest.c b/commands/nandtest.c
-index 6d0b770f1642..112bb012a59d 100644
---- a/commands/nandtest.c
-+++ b/commands/nandtest.c
-@@ -67,6 +67,72 @@ static ssize_t __pwrite(int fd, const void *buf,
- 	return ret;
- }
- 
-+static int _read_get_stats(loff_t ofs, unsigned char *buf, loff_t totallength)
+diff --git a/drivers/clk/at91/at91sam9rl.c b/drivers/clk/at91/at91sam9rl.c
+new file mode 100644
+index 000000000..82acb3825
+--- /dev/null
++++ b/drivers/clk/at91/at91sam9rl.c
+@@ -0,0 +1,177 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <driver.h>
++#include <regmap.h>
++#include <stdio.h>
++#include <mfd/syscon.h>
++
++#include <linux/clk.h>
++#include <linux/slab.h>
++#include <linux/types.h>
++
++#include <dt-bindings/clock/at91.h>
++
++#include "pmc.h"
++
++static const struct clk_master_characteristics sam9rl_mck_characteristics = {
++	.output = { .min = 0, .max = 94000000 },
++	.divisors = { 1, 2, 4, 0 },
++};
++
++static u8 sam9rl_plla_out[] = { 0, 2 };
++
++static struct clk_range sam9rl_plla_outputs[] = {
++	{ .min = 80000000, .max = 200000000 },
++	{ .min = 190000000, .max = 240000000 },
++};
++
++static const struct clk_pll_characteristics sam9rl_plla_characteristics = {
++	.input = { .min = 1000000, .max = 32000000 },
++	.num_output = ARRAY_SIZE(sam9rl_plla_outputs),
++	.output = sam9rl_plla_outputs,
++	.out = sam9rl_plla_out,
++};
++
++static const struct {
++	char *n;
++	char *p;
++	u8 id;
++} at91sam9rl_systemck[] = {
++	{ .n = "pck0",  .p = "prog0",    .id = 8 },
++	{ .n = "pck1",  .p = "prog1",    .id = 9 },
++};
++
++static const struct {
++	char *n;
++	u8 id;
++} at91sam9rl_periphck[] = {
++	{ .n = "pioA_clk",   .id = 2, },
++	{ .n = "pioB_clk",   .id = 3, },
++	{ .n = "pioC_clk",   .id = 4, },
++	{ .n = "pioD_clk",   .id = 5, },
++	{ .n = "usart0_clk", .id = 6, },
++	{ .n = "usart1_clk", .id = 7, },
++	{ .n = "usart2_clk", .id = 8, },
++	{ .n = "usart3_clk", .id = 9, },
++	{ .n = "mci0_clk",   .id = 10, },
++	{ .n = "twi0_clk",   .id = 11, },
++	{ .n = "twi1_clk",   .id = 12, },
++	{ .n = "spi0_clk",   .id = 13, },
++	{ .n = "ssc0_clk",   .id = 14, },
++	{ .n = "ssc1_clk",   .id = 15, },
++	{ .n = "tc0_clk",    .id = 16, },
++	{ .n = "tc1_clk",    .id = 17, },
++	{ .n = "tc2_clk",    .id = 18, },
++	{ .n = "pwm_clk",    .id = 19, },
++	{ .n = "adc_clk",    .id = 20, },
++	{ .n = "dma0_clk",   .id = 21, },
++	{ .n = "udphs_clk",  .id = 22, },
++	{ .n = "lcd_clk",    .id = 23, },
++};
++
++static void __init at91sam9rl_pmc_setup(struct device_node *np)
 +{
-+	int ret;
++	const char *slck_name, *mainxtal_name;
++	struct pmc_data *at91sam9rl_pmc;
++	const char *parent_names[6];
++	struct regmap *regmap;
++	struct clk *hw;
++	int i;
 +
-+	/* Read data from offset */
-+	pread(fd, buf, meminfo.writesize, ofs);
++	i = of_property_match_string(np, "clock-names", "slow_clk");
++	if (i < 0)
++		return;
 +
-+	ret = ioctl(fd, ECCGETSTATS, &newstats);
-+	if (ret < 0) {
-+		perror("\nECCGETSTATS");
-+		return ret;
++	slck_name = of_clk_get_parent_name(np, i);
++
++	i = of_property_match_string(np, "clock-names", "main_xtal");
++	if (i < 0)
++		return;
++	mainxtal_name = of_clk_get_parent_name(np, i);
++
++	regmap = syscon_node_to_regmap(np);
++	if (IS_ERR(regmap))
++		return;
++
++	at91sam9rl_pmc = pmc_data_allocate(PMC_MAIN + 1,
++					   nck(at91sam9rl_systemck),
++					   nck(at91sam9rl_periphck), 0);
++	if (!at91sam9rl_pmc)
++		return;
++
++	hw = at91_clk_register_rm9200_main(regmap, "mainck", mainxtal_name);
++	if (IS_ERR(hw))
++		goto err_free;
++
++	at91sam9rl_pmc->chws[PMC_MAIN] = hw;
++
++	hw = at91_clk_register_pll(regmap, "pllack", "mainck", 0,
++				   &at91rm9200_pll_layout,
++				   &sam9rl_plla_characteristics);
++	if (IS_ERR(hw))
++		goto err_free;
++
++	hw = at91_clk_register_utmi(regmap, NULL, "utmick", "mainck");
++	if (IS_ERR(hw))
++		goto err_free;
++
++	at91sam9rl_pmc->chws[PMC_UTMI] = hw;
++
++	parent_names[0] = slck_name;
++	parent_names[1] = "mainck";
++	parent_names[2] = "pllack";
++	parent_names[3] = "utmick";
++	hw = at91_clk_register_master(regmap, "masterck", 4, parent_names,
++				      &at91rm9200_master_layout,
++				      &sam9rl_mck_characteristics);
++	if (IS_ERR(hw))
++		goto err_free;
++
++	at91sam9rl_pmc->chws[PMC_MCK] = hw;
++
++	parent_names[0] = slck_name;
++	parent_names[1] = "mainck";
++	parent_names[2] = "pllack";
++	parent_names[3] = "utmick";
++	parent_names[4] = "masterck";
++	for (i = 0; i < 2; i++) {
++		char *name;
++
++		name = xasprintf("prog%d", i);
++
++		hw = at91_clk_register_programmable(regmap, name,
++						    parent_names, 5, i,
++						    &at91rm9200_programmable_layout);
++		if (IS_ERR(hw))
++			goto err_free;
 +	}
 +
-+	if (newstats.corrected > oldstats.corrected) {
-+		printf("\n %d bit(s) ECC corrected at page 0x%08llx\n",
-+				newstats.corrected - oldstats.corrected,
-+				ofs + memregion.offset);
-+		init_progression_bar(totallength);
-+		show_progress(ofs);
-+		if ((newstats.corrected-oldstats.corrected) >=
-+				MAX_ECC_BITS) {
-+			/* Increment ECC stats that
-+			 * are over MAX_ECC_BITS */
-+			ecc_stats_over++;
-+		} else {
-+			/* Increment ECC stat value */
-+			ecc_stats[(newstats.corrected -
-+					oldstats.corrected) - 1]++;
-+		}
-+		/* Set oldstats to newstats */
-+		oldstats.corrected = newstats.corrected;
++	for (i = 0; i < ARRAY_SIZE(at91sam9rl_systemck); i++) {
++		hw = at91_clk_register_system(regmap, at91sam9rl_systemck[i].n,
++					      at91sam9rl_systemck[i].p,
++					      at91sam9rl_systemck[i].id);
++		if (IS_ERR(hw))
++			goto err_free;
++
++		at91sam9rl_pmc->shws[at91sam9rl_systemck[i].id] = hw;
 +	}
 +
-+	if (newstats.failed > oldstats.failed) {
-+		printf("\nECC failed at page 0x%08llx\n",
-+				ofs + memregion.offset);
-+		init_progression_bar(totallength);
-+		show_progress(ofs);
-+		oldstats.failed = newstats.failed;
-+		ecc_failed_cnt++;
++	for (i = 0; i < ARRAY_SIZE(at91sam9rl_periphck); i++) {
++		hw = at91_clk_register_peripheral(regmap,
++						  at91sam9rl_periphck[i].n,
++						  "masterck",
++						  at91sam9rl_periphck[i].id);
++		if (IS_ERR(hw))
++			goto err_free;
++
++		at91sam9rl_pmc->phws[at91sam9rl_periphck[i].id] = hw;
 +	}
 +
-+	return 0;
++	of_clk_add_provider(np, of_clk_hw_pmc_get, at91sam9rl_pmc);
++
++	return;
++
++err_free:
++	pmc_data_free(at91sam9rl_pmc);
 +}
-+
-+/*
-+ * Read and report correctec ECC bits.
-+ * Param ofs: offset on flash_device.
-+ * Param rbuf: pointer to allocated buffer to copy readed data.
-+ * Param length: length of testing area
-+ */
-+static int read_corrected(loff_t ofs, unsigned char *rbuf, loff_t length)
-+{
-+	unsigned int i;
-+	int ret;
-+
-+	for (i = 0; i < meminfo.erasesize;
-+			i += meminfo.writesize) {
-+		ret = _read_get_stats(ofs + i, rbuf + i, length);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
- /*
-  * Erase and write function.
-  * Param ofs: offset on flash_device.
-@@ -98,42 +164,9 @@ static int erase_and_write(loff_t ofs, unsigned char *data,
- 		__pwrite(fd, data + i, meminfo.writesize,
- 				ofs + i, length);
- 
--		/* Read data from offset */
--		pread(fd, rbuf + i, meminfo.writesize, ofs + i);
--
--		ret = ioctl(fd, ECCGETSTATS, &newstats);
--		if (ret < 0) {
--			perror("\nECCGETSTATS");
-+		ret = _read_get_stats(ofs + i, rbuf + i, length);
-+		if (ret)
- 			return ret;
--		}
--
--		if (newstats.corrected > oldstats.corrected) {
--			printf("\n %d bit(s) ECC corrected at page 0x%08llx\n",
--					newstats.corrected - oldstats.corrected,
--					ofs + memregion.offset + i);
--			init_progression_bar(length);
--			show_progress(ofs + i);
--			if ((newstats.corrected-oldstats.corrected) >=
--					MAX_ECC_BITS) {
--				/* Increment ECC stats that
--				 * are over MAX_ECC_BITS */
--				ecc_stats_over++;
--			} else {
--				/* Increment ECC stat value */
--				ecc_stats[(newstats.corrected -
--						oldstats.corrected) - 1]++;
--			}
--			/* Set oldstats to newstats */
--			oldstats.corrected = newstats.corrected;
--		}
--		if (newstats.failed > oldstats.failed) {
--			printf("\nECC failed at page 0x%08llx\n",
--					ofs + memregion.offset + i);
--			init_progression_bar(length);
--			show_progress(ofs + i);
--			oldstats.failed = newstats.failed;
--			ecc_failed_cnt++;
--		}
- 	}
- 
- 	/* Compared written data with read data.
-@@ -171,7 +204,7 @@ static void print_stats(int nr_passes, int length)
- /* Main program. */
- static int do_nandtest(int argc, char *argv[])
- {
--	int opt, do_nandtest_dev = -1, ret = -1;
-+	int opt, do_nandtest_dev = -1, do_nandtest_ro = 0, ret = -1;
- 	loff_t flash_offset = 0, test_ofs, length = 0;
- 	unsigned int nr_iterations = 1, iter;
- 	unsigned char *wbuf, *rbuf;
-@@ -183,7 +216,7 @@ static int do_nandtest(int argc, char *argv[])
- 
- 	memset(ecc_stats, 0, sizeof(*ecc_stats));
- 
--	while ((opt = getopt(argc, argv, "ms:i:o:l:t")) > 0) {
-+	while ((opt = getopt(argc, argv, "ms:i:o:l:tr")) > 0) {
- 		switch (opt) {
- 		case 'm':
- 			markbad = 1;
-@@ -203,6 +236,10 @@ static int do_nandtest(int argc, char *argv[])
- 		case 't':
- 			do_nandtest_dev = 1;
- 			break;
-+		case 'r':
-+			do_nandtest_dev = 1;
-+			do_nandtest_ro = 1;
-+			break;
- 		default:
- 			return COMMAND_ERROR_USAGE;
- 		}
-@@ -213,7 +250,7 @@ static int do_nandtest(int argc, char *argv[])
- 		return COMMAND_ERROR_USAGE;
- 
- 	if (do_nandtest_dev == -1) {
--		printf("Please add -t parameter to start nandtest.\n");
-+		printf("Please add -t or -r parameter to start nandtest.\n");
- 		return 0;
- 	}
- 
-@@ -306,10 +343,13 @@ static int do_nandtest(int argc, char *argv[])
- 				show_progress(test_ofs);
- 				continue;
- 			}
--
--			get_random_bytes(wbuf, meminfo.erasesize);
--			ret = erase_and_write(test_ofs, wbuf,
--					rbuf, length);
-+			if (do_nandtest_ro) {
-+				ret = read_corrected(test_ofs, rbuf, length);
-+			} else {
-+				get_random_bytes(wbuf, meminfo.erasesize);
-+				ret = erase_and_write(test_ofs, wbuf,
-+						rbuf, length);
-+			}
- 			if (ret < 0)
- 				goto err2;
- 		}
-@@ -339,6 +379,7 @@ err:
- BAREBOX_CMD_HELP_START(nandtest)
- BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT ("-t",  "Really do a nandtest on device")
-+BAREBOX_CMD_HELP_OPT ("-r",  "Readonly nandtest on device")
- BAREBOX_CMD_HELP_OPT ("-m",  "Mark blocks bad if they appear so")
- BAREBOX_CMD_HELP_OPT ("-s SEED",   "supply random seed")
- BAREBOX_CMD_HELP_OPT ("-i ITERATIONS",  "nNumber of iterations")
++CLK_OF_DECLARE_DRIVER(at91sam9rl_pmc, "atmel,at91sam9rl-pmc", at91sam9rl_pmc_setup);
 -- 
-2.7.4
+2.12.0
 
 
 _______________________________________________
