@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1guZN4-0002IV-In
- for barebox@lists.infradead.org; Fri, 15 Feb 2019 09:01:26 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Fri, 15 Feb 2019 10:01:19 +0100
-Message-Id: <20190215090119.10069-1-o.rempel@pengutronix.de>
+ id 1gvehk-00032F-E5
+ for barebox@lists.infradead.org; Mon, 18 Feb 2019 08:55:14 +0000
+Date: Mon, 18 Feb 2019 09:55:10 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190218085510.7qphvksfyozislgt@pengutronix.de>
+References: <20190215090119.10069-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190215090119.10069-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,33 +22,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] watchdog: fix WATCHDOG_POLLER menuconfig
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH] watchdog: fix WATCHDOG_POLLER menuconfig
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-make it properly represented by menuconfig
+On Fri, Feb 15, 2019 at 10:01:19AM +0100, Oleksij Rempel wrote:
+> make it properly represented by menuconfig
+> 
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  drivers/watchdog/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/watchdog/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index 96e91fc2ce..2793ee93d9 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -10,7 +10,7 @@ menuconfig WATCHDOG
- 
- if WATCHDOG
- 
--menuconfig WATCHDOG_POLLER
-+config WATCHDOG_POLLER
- 	bool "Watchdog periodic feeder support"
- 	select POLLER
- 	help
+Sascha
+
+> 
+> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+> index 96e91fc2ce..2793ee93d9 100644
+> --- a/drivers/watchdog/Kconfig
+> +++ b/drivers/watchdog/Kconfig
+> @@ -10,7 +10,7 @@ menuconfig WATCHDOG
+>  
+>  if WATCHDOG
+>  
+> -menuconfig WATCHDOG_POLLER
+> +config WATCHDOG_POLLER
+>  	bool "Watchdog periodic feeder support"
+>  	select POLLER
+>  	help
+> -- 
+> 2.20.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
