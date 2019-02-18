@@ -1,12 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm1-x341.google.com ([2a00:1450:4864:20::341])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gvd65-0003xF-E8
- for barebox@lists.infradead.org; Mon, 18 Feb 2019 07:12:15 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Mon, 18 Feb 2019 08:12:10 +0100
-Message-Id: <20190218071210.28062-1-o.rempel@pengutronix.de>
+ id 1gvdmv-0005TY-MC
+ for barebox@lists.infradead.org; Mon, 18 Feb 2019 07:56:31 +0000
+Received: by mail-wm1-x341.google.com with SMTP id a62so16311869wmh.4
+ for <barebox@lists.infradead.org>; Sun, 17 Feb 2019 23:56:28 -0800 (PST)
+Received: from [192.168.106.167] (77-111-10-47.ipv4.tusmobil.si.
+ [77.111.10.47])
+ by smtp.gmail.com with ESMTPSA id l21sm8674387wme.38.2019.02.17.23.56.26
+ for <barebox@lists.infradead.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Sun, 17 Feb 2019 23:56:26 -0800 (PST)
+References: <20190218071210.28062-1-o.rempel@pengutronix.de>
+From: =?UTF-8?B?VG9tYcW+IMWgb2xj?= <tomaz.solc@klevio.com>
+Message-ID: <d71ee75b-55e0-fd12-bbdf-647fd7fa57c1@klevio.com>
+Date: Mon, 18 Feb 2019 08:56:25 +0100
 MIME-Version: 1.0
+In-Reply-To: <20190218071210.28062-1-o.rempel@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,160 +26,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3] Documentation: add watchdog documentation
+Subject: Re: [PATCH v3] Documentation: add watchdog documentation
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- Documentation/user/user-manual.rst |   1 +
- Documentation/user/watchdog.rst    | 116 +++++++++++++++++++++++++++++
- 2 files changed, 117 insertions(+)
- create mode 100644 Documentation/user/watchdog.rst
-
-diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
-index 516b760b1b..d5526de285 100644
---- a/Documentation/user/user-manual.rst
-+++ b/Documentation/user/user-manual.rst
-@@ -33,6 +33,7 @@ Contents:
-    system-reset
-    state
-    random
-+   watchdog
- 
- * :ref:`search`
- * :ref:`genindex`
-diff --git a/Documentation/user/watchdog.rst b/Documentation/user/watchdog.rst
-new file mode 100644
-index 0000000000..87c63aa078
---- /dev/null
-+++ b/Documentation/user/watchdog.rst
-@@ -0,0 +1,116 @@
-+Watchdog Support
-+================
-+
-+Warnings and Design Consideration
-+---------------------------------
-+
-+A watchdog is the last line of defense on misbehaving systems. Thus, proper
-+hardware and watchdog design considerations should be made to be able to reduce
-+the impact of failing systems in the field. In the best case, the bootloader
-+should not touch it at all. No watchdog feeding should be done until
-+application-critical software (or a userspace service manager such as
-+'systemd') was started.
-+
-+In case the bootloader is responsible for watchdog activation, the system can
-+be considered as failed by design. The following threats can affect the system
-+which are mostly addressable by properly designed watchdog and watchdog
-+strategy:
-+
-+- software-based misconfigurations or bugs prevent the system from starting.
-+- glitches caused by under-voltage, inappropriate power-on sequence or noisy
-+  power supply.
-+- physical damages caused by humidity, vibration or temperature.
-+- temperature-based misbehavior of the system, e.g. clock is not running or
-+  running with wrong frequency.
-+- chemical reactions, e.g. some clock crystals will stop to work in contact
-+  with Helium, see for example:
-+  https://ifixit.org/blog/11986/iphones-are-allergic-to-helium/
-+- failed storage prevents booting. NAND, SD, SSD, HDD, SPI-flash all of this
-+  some day stop to work because their read/write cycles are exceeded.
-+
-+In all these cases, the bootloader won't be able to start and a properly
-+designed watchdog may take some action. For example: recover the system by
-+resetting it, or power it off to reduce the damage.
-+
-+Barebox Watchdog Functionality
-+------------------------------
-+
-+Nevertheless, in some cases we are not able to influence the hardware design
-+anymore or while developing one needs to be able to feed the watchdog to
-+disable it from within the bootloader. For these scenarios barebox provides the
-+watchdog framework with the following functionality and at least
-+``CONFIG_WATCHDOG`` should be enabled:
-+
-+Polling
-+~~~~~~~
-+
-+Watchdog polling/feeding allows to feed the watchdog and keep it running on one
-+side and to not reset the system on the other side. It is needed on hardware
-+with short-time watchdogs. For example the Atheros ar9331 watchdog has a
-+maximal timeout of 7 seconds, so it may reset even on netboot.
-+Or it can be used on systems where the watchdog is already running and can't be
-+disabled, an example for that is the watchdog of the i.MX2 series.
-+This functionally can be seen as a threat, since in error cases barebox will
-+continue to feed the watchdog even if that is not desired. So, depending on
-+your needs ``CONFIG_WATCHDOG_POLLER`` can be enabled or disabled at compile
-+time. Even if barebox was built with watchdog polling support, it is not
-+enabled by default. To start polling from command line run:
-+
-+.. code-block:: console
-+
-+  wdog0.autoping=1
-+
-+The poller interval is not configurable, but fixed at 500ms and the watchdog
-+timeout is configured by default to the maximum of the supported values by
-+hardware. To change the timeout used by the poller, run:
-+
-+.. code-block:: console
-+
-+  wdog0.timeout_cur=7
-+
-+To read the current watchdog's configuration, run:
-+
-+.. code-block:: console
-+
-+  devinfo wdog0
-+
-+The output may look as follows where ``timeout_cur`` and ``timeout_max`` are
-+measured in seconds:
-+
-+.. code-block:: console
-+
-+  barebox@DPTechnics DPT-Module:/ devinfo wdog0
-+  Parameters:
-+    autoping: 1 (type: bool)
-+    timeout_cur: 7 (type: uint32)
-+    timeout_max: 10 (type: uint32)
-+
-+Use barebox' environment to persist these changes between reboots:
-+
-+.. code-block:: console
-+
-+  nv dev.wdog0.autoping=1
-+  nv dev.wdog0.timeout_cur=7
-+
-+Boot Watchdog Timeout
-+~~~~~~~~~~~~~~~~~~~~~
-+
-+With this functionality barebox may start a watchdog or update the timeout of
-+an already-running one, just before kicking the boot image. It can be
-+configured temporarily via
-+
-+.. code-block:: console
-+
-+  global boot.watchdog_timeout=10
-+
-+or persistently by
-+
-+.. code-block:: console
-+
-+  nv boot.watchdog_timeout=10
-+
-+where the used value again is measured in seconds.
-+
-+On a system with multiple watchdogs, only the first one (wdog0) is affected by
-+the ``boot.watchdog_timeout`` parameter.
-+
--- 
-2.20.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMTguIDAyLiAxOSAwODoxMiwgT2xla3NpaiBSZW1wZWwgd3JvdGU6Cj4gK0Egd2F0Y2hkb2cg
+aXMgdGhlIGxhc3QgbGluZSBvZiBkZWZlbnNlIG9uIG1pc2JlaGF2aW5nIHN5c3RlbXMuIFRodXMs
+IHByb3Blcgo+ICtoYXJkd2FyZSBhbmQgd2F0Y2hkb2cgZGVzaWduIGNvbnNpZGVyYXRpb25zIHNo
+b3VsZCBiZSBtYWRlIHRvIGJlIGFibGUgdG8gcmVkdWNlCj4gK3RoZSBpbXBhY3Qgb2YgZmFpbGlu
+ZyBzeXN0ZW1zIGluIHRoZSBmaWVsZC4gSW4gdGhlIGJlc3QgY2FzZSwgdGhlIGJvb3Rsb2FkZXIK
+PiArc2hvdWxkIG5vdCB0b3VjaCBpdCBhdCBhbGwuIE5vIHdhdGNoZG9nIGZlZWRpbmcgc2hvdWxk
+IGJlIGRvbmUgdW50aWwKPiArYXBwbGljYXRpb24tY3JpdGljYWwgc29mdHdhcmUgKG9yIGEgdXNl
+cnNwYWNlIHNlcnZpY2UgbWFuYWdlciBzdWNoIGFzCj4gKydzeXN0ZW1kJykgd2FzIHN0YXJ0ZWQu
+Cj4gKwo+ICtJbiBjYXNlIHRoZSBib290bG9hZGVyIGlzIHJlc3BvbnNpYmxlIGZvciB3YXRjaGRv
+ZyBhY3RpdmF0aW9uLCB0aGUgc3lzdGVtIGNhbgo+ICtiZSBjb25zaWRlcmVkIGFzIGZhaWxlZCBi
+eSBkZXNpZ24uCgpJIHRoaW5rIHRoaXMgaXMgdG9vIHN0cm9uZ2x5IHdvcmRlZCBhbmQgSSB3b3Vs
+ZCBsZWF2ZSBvdXQgdGhpcyBsYXN0IApzZW50ZW5jZS4gSXQgc2VlbXMgYXJyb2dhbnQgZm9yIGRv
+Y3VtZW50YXRpb24gdG8ganVkZ2Ugd2hhdCBpcyAiZmFpbGVkIApieSBkZXNpZ24iIGxpa2UgdGhp
+cywgd2l0aG91dCBjb25zaWRlcmluZyBhbnkgb3RoZXIgcmVxdWlyZW1lbnRzIGZvciBhIApzeXN0
+ZW0uCgpTdWNoIGEgImZhaWxlZCIgd2F0Y2hkb2cgaXMgc3RpbGwgYmV0dGVyIHRoYW4gbm8gd2F0
+Y2hkb2cgaW4gbWFueSBjYXNlcyAKYW5kIHNvbWV0aW1lcyBpdCdzIHRoZSBvbmx5IG9wdGlvbiwg
+YXMgdGhlIHRleHQgaW4gbGF0ZXIgcGFyYWdyYXBocyAKZXhwbGFpbnMuIFRoZSBwYXJhZ3JhcGgg
+YWJvdmUgYWxyZWFkeSByZWNvbW1lbmRzIHRoYXQgaW4gdGhlIGlkZWFsIGNhc2UgCnRoZSBib290
+bG9hZGVyIHNob3VsZG4ndCB0b3VjaCB0aGUgd2F0Y2hkb2cuIEkgdGhpbmsgdGhhdCBpcyBlbm91
+Z2guCgpBbHNvLCBhcyBmYXIgYXMgSSBrbm93LCB0aGUgTGludXgga2VybmVsIHdpbGwgZmVlZCB0
+aGUgd2F0Y2hkb2cgb24gYSAKa2VybmVsIHRpbWVyIGR1cmluZyBib290IGFuZCB1bnRpbCBhIHVz
+ZXJzcGFjZSBwcm9jZXNzIGdyYWJzIAovZGV2L3dhdGNoZG9nLiBTbyBiYXNlZCBvbiB0aGlzIGJh
+c2ljYWxseSBhbGwgc3lzdGVtcyBiYXNlZCBvbiBMaW51eCBhcmUgCmFscmVhZHkgYSBmYWlsZWQg
+ZGVzaWduLgoKQmVzdCByZWdhcmRzClRvbWHFvgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
+bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
+YmFyZWJveAo=
