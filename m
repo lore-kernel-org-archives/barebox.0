@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from [2a00:ee2:100:3a01::1] (helo=chandra.tablix.org)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gw1JE-0000sA-IH
- for barebox@lists.infradead.org; Tue, 19 Feb 2019 09:03:31 +0000
-Date: Tue, 19 Feb 2019 10:03:20 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190219090320.wvdpacpxcaaizalu@pengutronix.de>
-References: <1549894227-18660-1-git-send-email-thomas.haemmerle@wolfvision.net>
- <20190212083148.w23wpevefvm3pezv@pengutronix.de>
- <79e74d64-d8f3-626b-cefc-1ea810242ec2@wolfvision.net>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <79e74d64-d8f3-626b-cefc-1ea810242ec2@wolfvision.net>
+ id 1gvh9y-0002VJ-Cs
+ for barebox@lists.infradead.org; Mon, 18 Feb 2019 11:32:41 +0000
+Received: from 77-111-10-47.ipv4.tusmobil.si ([77.111.10.47]
+ helo=muffin.lju.klevio.com)
+ by chandra.tablix.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.89) (envelope-from <tomaz.solc@tablix.org>)
+ id 1gvh9o-00081l-W3
+ for barebox@lists.infradead.org; Mon, 18 Feb 2019 12:32:21 +0100
+From: Tomaz Solc <tomaz.solc@tablix.org>
+Date: Mon, 18 Feb 2019 12:32:12 +0100
+Message-Id: <20190218113220.18649-1-tomaz.solc@tablix.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,92 +20,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] firmware-zynqmp: port from linux
-To: Thomas =?iso-8859-15?Q?H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH v2 0/8] Fixing MMC access on Raspberry Pi CM3
+To: barebox@lists.infradead.org
 
-On Thu, Feb 14, 2019 at 02:35:00PM +0000, Thomas H=E4mmerle wrote:
-> Hi Sascha,
-> =
+Changes from the first patch series:
 
-> On 12.02.19 09:31, Sascha Hauer wrote:
-> > Hi Thomas,
-> > =
+ - Base Compute Module 3 device tree off upstream device tree for CM3 + IO3
+   dev board, instead of R. Pi 3B.
+ - Keep Makefile.bcm283x without a newline at the end of file.
+ - Make mci init before pinctrl by moving mci-bcm2835 to device_initcall()
+   instead of changing link order.
+ - Add CONFIG_PINCTRL to rpi_defconfig.
 
-> > On Mon, Feb 11, 2019 at 02:10:40PM +0000, Thomas H=E4mmerle wrote:
-> >> From: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
-> >>
-> >> Port Xilinx Zynq MPSoC Firmware layer driver from linux.
-> >>
-> >> Signed-off-by: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
-> >> ---
-> >>   arch/arm/Kconfig                                   |   1 +
-> >>   arch/arm/mach-zynqmp/Makefile                      |   2 +-
-> >>   arch/arm/mach-zynqmp/firmware-zynqmp.c             | 601 +++++++++++=
-++++++++++
-> >>   .../arm/mach-zynqmp/include/mach/firmware-zynqmp.h |  66 +++
-> >>   4 files changed, 669 insertions(+), 1 deletion(-)
-> >>   create mode 100644 arch/arm/mach-zynqmp/firmware-zynqmp.c
-> >>   create mode 100644 arch/arm/mach-zynqmp/include/mach/firmware-zynqmp=
-.h
-> >>
-> >> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> >> index c1f385b..fdbe5b7 100644
-> >> --- a/arch/arm/Kconfig
-> >> +++ b/arch/arm/Kconfig
-> >> @@ -250,6 +250,7 @@ config ARCH_ZYNQMP
-> >>   	select CPU_V8
-> >>   	select HAS_DEBUG_LL
-> >>   	select HAVE_PBL_MULTI_IMAGES
-> >> +	select ARM_SMCCC
-> >>   	select COMMON_CLK
-> >>   	select COMMON_CLK_OF_PROVIDER
-> >>   	select CLKDEV_LOOKUP
-> >> diff --git a/arch/arm/mach-zynqmp/Makefile b/arch/arm/mach-zynqmp/Make=
-file
-> >> index c601374..021efc9 100644
-> >> --- a/arch/arm/mach-zynqmp/Makefile
-> >> +++ b/arch/arm/mach-zynqmp/Makefile
-> >> @@ -1,2 +1,2 @@
-> >>   # SPDX-License-Identifier: GPL-2.0-or-later
-> >> -obj- :=3D __dummy__.o
-> >> +obj-y +=3D firmware-zynqmp.o
-> >> diff --git a/arch/arm/mach-zynqmp/firmware-zynqmp.c b/arch/arm/mach-zy=
-nqmp/firmware-zynqmp.c
-> > =
+Best regards
+Tomaz
 
-> > =
+Tomaz Solc (8):
+  ARM: rpi: switch emmc from sdhost to sdhci
+  Kconfig: add pin controllers submenu.
+  pinctrl: bcm2835: move existing code from gpio.
+  pinctrl: bcm2835: register the pin controller.
+  mci: bcm2835: use device_initcall(), not coredev.
+  mci: bcm2835: parse other device tree properties.
+  ARM: rpi: Add device tree for Compute Module 3.
+  ARM: rpi: add CONFIG_PINCTRL to rpi_defconfig.
 
-> > Maybe drivers/firmware/ would be a more appropriate directory to put
-> > this driver in.
-> =
+ arch/arm/boards/raspberry-pi/lowlevel.c            | 10 +++++
+ arch/arm/configs/rpi_defconfig                     |  4 +-
+ arch/arm/dts/Makefile                              |  1 +
+ arch/arm/dts/bcm2837-rpi-3.dts                     |  9 ++++
+ arch/arm/dts/bcm2837-rpi-cm3.dts                   | 18 ++++++++
+ arch/arm/mach-bcm283x/Kconfig                      |  6 +++
+ drivers/gpio/Kconfig                               |  4 --
+ drivers/gpio/Makefile                              |  1 -
+ drivers/mci/mci-bcm2835.c                          |  5 ++-
+ drivers/pinctrl/Kconfig                            | 10 +++++
+ drivers/pinctrl/Makefile                           |  1 +
+ .../gpio-bcm2835.c => pinctrl/pinctrl-bcm2835.c}   | 52 +++++++++++++++++++++-
+ images/Makefile.bcm283x                            |  6 ++-
+ 13 files changed, 117 insertions(+), 10 deletions(-)
+ create mode 100644 arch/arm/dts/bcm2837-rpi-cm3.dts
+ rename drivers/{gpio/gpio-bcm2835.c => pinctrl/pinctrl-bcm2835.c} (77%)
 
-> I was not sure where to put the this driver in:
-> =
+-- 
+2.11.0
 
-> In linux drivers/firmware is the location for drivers which communicate
-> with a firmware (like this one).
-> =
-
-> In barebox, this directory contains drivers to load firmware to devices
-> (socfpga.c for example). Since I will also create a driver to load the
-> PL (programmable logic) of ZynqMP which I will place in
-> drivers/firmware, I decided to put this driver to arch/arm.
-
-Ok, then leave it there for now. I don't have a better idea either.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
