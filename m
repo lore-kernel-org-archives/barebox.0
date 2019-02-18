@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gveJa-0008Kj-2Y
- for barebox@lists.infradead.org; Mon, 18 Feb 2019 08:30:17 +0000
-Date: Mon, 18 Feb 2019 09:30:12 +0100
+ id 1gvebk-0006ZP-M3
+ for barebox@lists.infradead.org; Mon, 18 Feb 2019 08:49:02 +0000
+Date: Mon, 18 Feb 2019 09:48:59 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190218083011.5e5gf6qswd5gpddu@pengutronix.de>
-References: <20190215125348.12851-1-ejo@pengutronix.de>
+Message-ID: <20190218084859.kcqwqlx4ipsqpzfd@pengutronix.de>
+References: <20190214133634.7669-1-tomaz.solc@tablix.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190215125348.12851-1-ejo@pengutronix.de>
+In-Reply-To: <20190214133634.7669-1-tomaz.solc@tablix.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +22,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/8] Bootchooser Documentation Update
-To: Enrico Jorns <ejo@pengutronix.de>
+Subject: Re: [PATCH] watchdog: bcm2835: set timeout_max.
+To: Tomaz Solc <tomaz.solc@tablix.org>
 Cc: barebox@lists.infradead.org
 
-On Fri, Feb 15, 2019 at 01:53:40PM +0100, Enrico Jorns wrote:
-> This is a collection of some documentation updates, fixes and
-> clarifications for the bootchooser framework.
-> 
-> Enrico Jorns (8):
->   doc: bootchooser: fix typos etc.
->   doc: bootchooser: explicitly note configuration vs. storage backend
->   doc: bootchooser: be more explicit what bootchooser.state_prefix is
->     for
->   doc: bootchooser: be more explicit about attempts reset on successful
->     boot
->   doc: bootchooser: note how to actually start the bootchooser
->   doc: bootchooser: be more explicit about when the bootchooser
->     terminates
->   doc: bootchooser: add details about bootchooser.reset_attempts
->     handling
->   doc: bootchooser: add retry handling to algorithm description
-> 
->  Documentation/user/bootchooser.rst | 94 +++++++++++++++++++++++-------
->  1 file changed, 72 insertions(+), 22 deletions(-)
+On Thu, Feb 14, 2019 at 02:36:34PM +0100, Tomaz Solc wrote:
+> BCM2835 watchdog timeout can be set to maximum 15 seconds (0xffffff >> 16).
+> ---
+>  drivers/watchdog/bcm2835_wdt.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 
-Applied, thanks. I applied it to master to get it out on the website
-sooner.
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/drivers/watchdog/bcm2835_wdt.c b/drivers/watchdog/bcm2835_wdt.c
+> index d0c51ed9e..781626fa0 100644
+> --- a/drivers/watchdog/bcm2835_wdt.c
+> +++ b/drivers/watchdog/bcm2835_wdt.c
+> @@ -45,6 +45,10 @@
+>  
+>  #define SECS_TO_WDOG_TICKS(x) ((x) << 16)
+>  
+> +/* Largest value where SECS_TO_WDOG_TICKS doesn't overflow 20 bits
+> + * (PM_WDOG_TIME_SET) */
+> +#define WDOG_SECS_MAX 15
+> +
+>  struct bcm2835_wd {
+>  	struct watchdog wd;
+>  	void __iomem *base;
+> @@ -101,6 +105,7 @@ static int bcm2835_wd_probe(struct device_d *dev)
+>  	}
+>  	priv->base = IOMEM(iores->start);
+>  	priv->wd.set_timeout = bcm2835_wd_set_timeout;
+> +	priv->wd.timeout_max = WDOG_SECS_MAX;
+>  	priv->wd.hwdev = dev;
+>  	priv->dev = dev;
+>  
+> -- 
+> 2.11.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
