@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gvehk-00032F-E5
- for barebox@lists.infradead.org; Mon, 18 Feb 2019 08:55:14 +0000
-Date: Mon, 18 Feb 2019 09:55:10 +0100
+ id 1gveiw-0003Ng-Sb
+ for barebox@lists.infradead.org; Mon, 18 Feb 2019 08:56:28 +0000
+Date: Mon, 18 Feb 2019 09:56:24 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190218085510.7qphvksfyozislgt@pengutronix.de>
-References: <20190215090119.10069-1-o.rempel@pengutronix.de>
+Message-ID: <20190218085624.3jsiai2ooc5touil@pengutronix.de>
+References: <20190213010907.20429-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190215090119.10069-1-o.rempel@pengutronix.de>
+In-Reply-To: <20190213010907.20429-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +22,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] watchdog: fix WATCHDOG_POLLER menuconfig
-To: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH v2] ARM: i.MX8MQ: Add code to report HDMI/eDP firmware
+ version
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Feb 15, 2019 at 10:01:19AM +0100, Oleksij Rempel wrote:
-> make it properly represented by menuconfig
+On Tue, Feb 12, 2019 at 05:09:07PM -0800, Andrey Smirnov wrote:
+> Port code found in cdn_dp_load_firmware() in Linux kernel to check if
+> HDMI firmware is running and, if so, report its version.
 > 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  drivers/watchdog/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> Changes since [v1]:
+> 
+>     - Added CPU type check to prevent execution on non-i.MX8MQ SoCs.
+> 
+>     - Changes messages to say "HDP" instead of "HDMI", to clarify that
+>       the check covers both HDMI _and_ eDP firmware.
+> 
+> [v1] http://lists.infradead.org/pipermail/barebox/2019-February/037059.html
+> 
+>  arch/arm/mach-imx/imx8mq.c | 40 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 40 insertions(+)
 
 Applied, thanks
 
 Sascha
 
-> 
-> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-> index 96e91fc2ce..2793ee93d9 100644
-> --- a/drivers/watchdog/Kconfig
-> +++ b/drivers/watchdog/Kconfig
-> @@ -10,7 +10,7 @@ menuconfig WATCHDOG
->  
->  if WATCHDOG
->  
-> -menuconfig WATCHDOG_POLLER
-> +config WATCHDOG_POLLER
->  	bool "Watchdog periodic feeder support"
->  	select POLLER
->  	help
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
