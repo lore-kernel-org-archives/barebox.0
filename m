@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gvejW-0003UX-Jm
- for barebox@lists.infradead.org; Mon, 18 Feb 2019 08:57:04 +0000
-Date: Mon, 18 Feb 2019 09:57:00 +0100
+ id 1gveoA-0005Jz-Cc
+ for barebox@lists.infradead.org; Mon, 18 Feb 2019 09:01:57 +0000
+Date: Mon, 18 Feb 2019 10:01:48 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190218085700.2fp26wzixlrkqgt7@pengutronix.de>
-References: <20190213011104.21602-1-andrew.smirnov@gmail.com>
+Message-ID: <20190218090148.mgz3uyh2jukyjwmd@pengutronix.de>
+References: <1550067466-48228-1-git-send-email-j.remmet@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190213011104.21602-1-andrew.smirnov@gmail.com>
+In-Reply-To: <1550067466-48228-1-git-send-email-j.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,23 +22,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX8MQ: Check CPU type in
- imx8mq_init_syscnt_frequency()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH] commands: nandtest: provide readonly test
+To: Jan Remmet <j.remmet@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Feb 12, 2019 at 05:11:04PM -0800, Andrey Smirnov wrote:
-> Add code to make sure that imx8mq_init_syscnt_frequency() is only
-> executed on i.MX8MQ.
+On Wed, Feb 13, 2019 at 03:17:46PM +0100, Jan Remmet wrote:
+> Test will read the device and report the corrected or failed ECC states.
 > 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> Signed-off-by: Jan Remmet <j.remmet@phytec.de>
 > ---
->  arch/arm/mach-imx/imx8mq.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  commands/nandtest.c | 125 ++++++++++++++++++++++++++++++++++------------------
+>  1 file changed, 83 insertions(+), 42 deletions(-)
 
 Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
