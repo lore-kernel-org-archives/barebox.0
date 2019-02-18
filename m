@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lf1-x144.google.com ([2a00:1450:4864:20::144])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gvotg-0000i6-Ui
- for barebox@lists.infradead.org; Mon, 18 Feb 2019 19:48:14 +0000
-Received: by mail-lf1-x144.google.com with SMTP id m11so13160076lfc.6
- for <barebox@lists.infradead.org>; Mon, 18 Feb 2019 11:48:12 -0800 (PST)
+ id 1gvotf-0000h1-MO
+ for barebox@lists.infradead.org; Mon, 18 Feb 2019 19:48:15 +0000
+Received: by mail-lf1-x144.google.com with SMTP id v7so13187158lfd.2
+ for <barebox@lists.infradead.org>; Mon, 18 Feb 2019 11:48:11 -0800 (PST)
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Mon, 18 Feb 2019 20:47:56 +0100
-Message-Id: <20190218194759.9557-7-sam@ravnborg.org>
+Date: Mon, 18 Feb 2019 20:47:54 +0100
+Message-Id: <20190218194759.9557-5-sam@ravnborg.org>
 In-Reply-To: <20190218194759.9557-1-sam@ravnborg.org>
 References: <20190218194759.9557-1-sam@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -23,28 +23,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 6/9] clk: at91: add at91sam9x5
+Subject: [PATCH v3 4/9] clk: at91: add at91sam9260
 To: Barebox List <barebox@lists.infradead.org>, Sascha Hauer <s.hauer@pengutronix.de>, Ladislav Michl <ladis@linux-mips.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-Add at91sam9x5 as part of supporting the PMC bindings for ARM at91.
+Add at91sam9260 as part of supporting the PMC bindings for ARM at91.
 The file will be wired into the build in a follow-up patch.
 
 The file is a copy from kernel 5.0-rc6 modified to build
 with barebox.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Tested-by: Ladislav Michl <ladis@linux-mips.org>
 ---
- drivers/clk/at91/at91sam9x5.c | 315 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 315 insertions(+)
- create mode 100644 drivers/clk/at91/at91sam9x5.c
+ drivers/clk/at91/at91sam9260.c | 497 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 497 insertions(+)
+ create mode 100644 drivers/clk/at91/at91sam9260.c
 
-diff --git a/drivers/clk/at91/at91sam9x5.c b/drivers/clk/at91/at91sam9x5.c
+diff --git a/drivers/clk/at91/at91sam9260.c b/drivers/clk/at91/at91sam9260.c
 new file mode 100644
-index 000000000..5e0aacfbf
+index 000000000..ac67dcc8f
 --- /dev/null
-+++ b/drivers/clk/at91/at91sam9x5.c
-@@ -0,0 +1,315 @@
++++ b/drivers/clk/at91/at91sam9260.c
+@@ -0,0 +1,497 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
 +#include <driver.h>
@@ -60,46 +61,10 @@ index 000000000..5e0aacfbf
 +
 +#include "pmc.h"
 +
-+static const struct clk_master_characteristics mck_characteristics = {
-+	.output = { .min = 0, .max = 133333333 },
-+	.divisors = { 1, 2, 4, 3 },
-+	.have_div3_pres = 1,
-+};
-+
-+static u8 plla_out[] = { 0, 1, 2, 3, 0, 1, 2, 3 };
-+
-+static u16 plla_icpll[] = { 0, 0, 0, 0, 1, 1, 1, 1 };
-+
-+static struct clk_range plla_outputs[] = {
-+	{ .min = 745000000, .max = 800000000 },
-+	{ .min = 695000000, .max = 750000000 },
-+	{ .min = 645000000, .max = 700000000 },
-+	{ .min = 595000000, .max = 650000000 },
-+	{ .min = 545000000, .max = 600000000 },
-+	{ .min = 495000000, .max = 555000000 },
-+	{ .min = 445000000, .max = 500000000 },
-+	{ .min = 400000000, .max = 450000000 },
-+};
-+
-+static const struct clk_pll_characteristics plla_characteristics = {
-+	.input = { .min = 2000000, .max = 32000000 },
-+	.num_output = ARRAY_SIZE(plla_outputs),
-+	.output = plla_outputs,
-+	.icpll = plla_icpll,
-+	.out = plla_out,
-+};
-+
-+static const struct {
++struct sck {
 +	char *n;
 +	char *p;
 +	u8 id;
-+} at91sam9x5_systemck[] = {
-+	{ .n = "ddrck", .p = "masterck", .id = 2 },
-+	{ .n = "smdck", .p = "smdclk",   .id = 4 },
-+	{ .n = "uhpck", .p = "usbck",    .id = 6 },
-+	{ .n = "udpck", .p = "usbck",    .id = 7 },
-+	{ .n = "pck0",  .p = "prog0",    .id = 8 },
-+	{ .n = "pck1",  .p = "prog1",    .id = 9 },
 +};
 +
 +struct pck {
@@ -107,85 +72,330 @@ index 000000000..5e0aacfbf
 +	u8 id;
 +};
 +
-+static const struct pck at91sam9x5_periphck[] = {
-+	{ .n = "pioAB_clk",  .id = 2, },
-+	{ .n = "pioCD_clk",  .id = 3, },
-+	{ .n = "smd_clk",    .id = 4, },
-+	{ .n = "usart0_clk", .id = 5, },
-+	{ .n = "usart1_clk", .id = 6, },
-+	{ .n = "usart2_clk", .id = 7, },
-+	{ .n = "twi0_clk",   .id = 9, },
-+	{ .n = "twi1_clk",   .id = 10, },
-+	{ .n = "twi2_clk",   .id = 11, },
-+	{ .n = "mci0_clk",   .id = 12, },
-+	{ .n = "spi0_clk",   .id = 13, },
-+	{ .n = "spi1_clk",   .id = 14, },
-+	{ .n = "uart0_clk",  .id = 15, },
-+	{ .n = "uart1_clk",  .id = 16, },
-+	{ .n = "tcb0_clk",   .id = 17, },
-+	{ .n = "pwm_clk",    .id = 18, },
-+	{ .n = "adc_clk",    .id = 19, },
-+	{ .n = "dma0_clk",   .id = 20, },
-+	{ .n = "dma1_clk",   .id = 21, },
-+	{ .n = "uhphs_clk",  .id = 22, },
-+	{ .n = "udphs_clk",  .id = 23, },
-+	{ .n = "mci1_clk",   .id = 26, },
-+	{ .n = "ssc0_clk",   .id = 28, },
++struct at91sam926x_data {
++	const struct clk_pll_layout *plla_layout;
++	const struct clk_pll_characteristics *plla_characteristics;
++	const struct clk_pll_layout *pllb_layout;
++	const struct clk_pll_characteristics *pllb_characteristics;
++	const struct clk_master_characteristics *mck_characteristics;
++	const struct sck *sck;
++	const struct pck *pck;
++	u8 num_sck;
++	u8 num_pck;
++	u8 num_progck;
++	bool has_slck;
 +};
 +
-+static const struct pck at91sam9g15_periphck[] = {
-+	{ .n = "lcdc_clk", .id = 25, },
-+	{ /* sentinel */}
++static const struct clk_master_characteristics sam9260_mck_characteristics = {
++	.output = { .min = 0, .max = 105000000 },
++	.divisors = { 1, 2, 4, 0 },
 +};
 +
-+static const struct pck at91sam9g25_periphck[] = {
-+	{ .n = "usart3_clk", .id = 8, },
-+	{ .n = "macb0_clk", .id = 24, },
-+	{ .n = "isi_clk", .id = 25, },
-+	{ /* sentinel */}
++static u8 sam9260_plla_out[] = { 0, 2 };
++
++static u16 sam9260_plla_icpll[] = { 1, 1 };
++
++static struct clk_range sam9260_plla_outputs[] = {
++	{ .min = 80000000, .max = 160000000 },
++	{ .min = 150000000, .max = 240000000 },
 +};
 +
-+static const struct pck at91sam9g35_periphck[] = {
-+	{ .n = "macb0_clk", .id = 24, },
-+	{ .n = "lcdc_clk", .id = 25, },
-+	{ /* sentinel */}
++static const struct clk_pll_characteristics sam9260_plla_characteristics = {
++	.input = { .min = 1000000, .max = 32000000 },
++	.num_output = ARRAY_SIZE(sam9260_plla_outputs),
++	.output = sam9260_plla_outputs,
++	.icpll = sam9260_plla_icpll,
++	.out = sam9260_plla_out,
 +};
 +
-+static const struct pck at91sam9x25_periphck[] = {
-+	{ .n = "usart3_clk", .id = 8, },
-+	{ .n = "macb0_clk", .id = 24, },
-+	{ .n = "macb1_clk", .id = 27, },
-+	{ .n = "can0_clk", .id = 29, },
-+	{ .n = "can1_clk", .id = 30, },
-+	{ /* sentinel */}
++static u8 sam9260_pllb_out[] = { 1 };
++
++static u16 sam9260_pllb_icpll[] = { 1 };
++
++static struct clk_range sam9260_pllb_outputs[] = {
++	{ .min = 70000000, .max = 130000000 },
 +};
 +
-+static const struct pck at91sam9x35_periphck[] = {
-+	{ .n = "macb0_clk", .id = 24, },
-+	{ .n = "lcdc_clk", .id = 25, },
-+	{ .n = "can0_clk", .id = 29, },
-+	{ .n = "can1_clk", .id = 30, },
-+	{ /* sentinel */}
++static const struct clk_pll_characteristics sam9260_pllb_characteristics = {
++	.input = { .min = 1000000, .max = 5000000 },
++	.num_output = ARRAY_SIZE(sam9260_pllb_outputs),
++	.output = sam9260_pllb_outputs,
++	.icpll = sam9260_pllb_icpll,
++	.out = sam9260_pllb_out,
 +};
 +
-+static void __init at91sam9x5_pmc_setup(struct device_node *np,
-+					const struct pck *extra_pcks,
-+					bool has_lcdck)
++static const struct sck at91sam9260_systemck[] = {
++	{ .n = "uhpck", .p = "usbck",    .id = 6 },
++	{ .n = "udpck", .p = "usbck",    .id = 7 },
++	{ .n = "pck0",  .p = "prog0",    .id = 8 },
++	{ .n = "pck1",  .p = "prog1",    .id = 9 },
++};
++
++static const struct pck at91sam9260_periphck[] = {
++	{ .n = "pioA_clk",   .id = 2 },
++	{ .n = "pioB_clk",   .id = 3 },
++	{ .n = "pioC_clk",   .id = 4 },
++	{ .n = "adc_clk",    .id = 5 },
++	{ .n = "usart0_clk", .id = 6 },
++	{ .n = "usart1_clk", .id = 7 },
++	{ .n = "usart2_clk", .id = 8 },
++	{ .n = "mci0_clk",   .id = 9 },
++	{ .n = "udc_clk",    .id = 10 },
++	{ .n = "twi0_clk",   .id = 11 },
++	{ .n = "spi0_clk",   .id = 12 },
++	{ .n = "spi1_clk",   .id = 13 },
++	{ .n = "ssc0_clk",   .id = 14 },
++	{ .n = "tc0_clk",    .id = 17 },
++	{ .n = "tc1_clk",    .id = 18 },
++	{ .n = "tc2_clk",    .id = 19 },
++	{ .n = "ohci_clk",   .id = 20 },
++	{ .n = "macb0_clk",  .id = 21 },
++	{ .n = "isi_clk",    .id = 22 },
++	{ .n = "usart3_clk", .id = 23 },
++	{ .n = "uart0_clk",  .id = 24 },
++	{ .n = "uart1_clk",  .id = 25 },
++	{ .n = "tc3_clk",    .id = 26 },
++	{ .n = "tc4_clk",    .id = 27 },
++	{ .n = "tc5_clk",    .id = 28 },
++};
++
++static struct at91sam926x_data at91sam9260_data = {
++	.plla_layout = &at91rm9200_pll_layout,
++	.plla_characteristics = &sam9260_plla_characteristics,
++	.pllb_layout = &at91rm9200_pll_layout,
++	.pllb_characteristics = &sam9260_pllb_characteristics,
++	.mck_characteristics = &sam9260_mck_characteristics,
++	.sck = at91sam9260_systemck,
++	.num_sck = ARRAY_SIZE(at91sam9260_systemck),
++	.pck = at91sam9260_periphck,
++	.num_pck = ARRAY_SIZE(at91sam9260_periphck),
++	.num_progck = 2,
++	.has_slck = true,
++};
++
++static const struct clk_master_characteristics sam9g20_mck_characteristics = {
++	.output = { .min = 0, .max = 133000000 },
++	.divisors = { 1, 2, 4, 6 },
++};
++
++static u8 sam9g20_plla_out[] = { 0, 1, 2, 3, 0, 1, 2, 3 };
++
++static u16 sam9g20_plla_icpll[] = { 0, 0, 0, 0, 1, 1, 1, 1 };
++
++static struct clk_range sam9g20_plla_outputs[] = {
++	{ .min = 745000000, .max = 800000000 },
++	{ .min = 695000000, .max = 750000000 },
++	{ .min = 645000000, .max = 700000000 },
++	{ .min = 595000000, .max = 650000000 },
++	{ .min = 545000000, .max = 600000000 },
++	{ .min = 495000000, .max = 550000000 },
++	{ .min = 445000000, .max = 500000000 },
++	{ .min = 400000000, .max = 450000000 },
++};
++
++static const struct clk_pll_characteristics sam9g20_plla_characteristics = {
++	.input = { .min = 2000000, .max = 32000000 },
++	.num_output = ARRAY_SIZE(sam9g20_plla_outputs),
++	.output = sam9g20_plla_outputs,
++	.icpll = sam9g20_plla_icpll,
++	.out = sam9g20_plla_out,
++};
++
++static u8 sam9g20_pllb_out[] = { 0 };
++
++static u16 sam9g20_pllb_icpll[] = { 0 };
++
++static struct clk_range sam9g20_pllb_outputs[] = {
++	{ .min = 30000000, .max = 100000000 },
++};
++
++static const struct clk_pll_characteristics sam9g20_pllb_characteristics = {
++	.input = { .min = 2000000, .max = 32000000 },
++	.num_output = ARRAY_SIZE(sam9g20_pllb_outputs),
++	.output = sam9g20_pllb_outputs,
++	.icpll = sam9g20_pllb_icpll,
++	.out = sam9g20_pllb_out,
++};
++
++static struct at91sam926x_data at91sam9g20_data = {
++	.plla_layout = &at91sam9g45_pll_layout,
++	.plla_characteristics = &sam9g20_plla_characteristics,
++	.pllb_layout = &at91sam9g20_pllb_layout,
++	.pllb_characteristics = &sam9g20_pllb_characteristics,
++	.mck_characteristics = &sam9g20_mck_characteristics,
++	.sck = at91sam9260_systemck,
++	.num_sck = ARRAY_SIZE(at91sam9260_systemck),
++	.pck = at91sam9260_periphck,
++	.num_pck = ARRAY_SIZE(at91sam9260_periphck),
++	.num_progck = 2,
++	.has_slck = true,
++};
++
++static const struct clk_master_characteristics sam9261_mck_characteristics = {
++	.output = { .min = 0, .max = 94000000 },
++	.divisors = { 1, 2, 4, 0 },
++};
++
++static struct clk_range sam9261_plla_outputs[] = {
++	{ .min = 80000000, .max = 200000000 },
++	{ .min = 190000000, .max = 240000000 },
++};
++
++static const struct clk_pll_characteristics sam9261_plla_characteristics = {
++	.input = { .min = 1000000, .max = 32000000 },
++	.num_output = ARRAY_SIZE(sam9261_plla_outputs),
++	.output = sam9261_plla_outputs,
++	.icpll = sam9260_plla_icpll,
++	.out = sam9260_plla_out,
++};
++
++static u8 sam9261_pllb_out[] = { 1 };
++
++static u16 sam9261_pllb_icpll[] = { 1 };
++
++static struct clk_range sam9261_pllb_outputs[] = {
++	{ .min = 70000000, .max = 130000000 },
++};
++
++static const struct clk_pll_characteristics sam9261_pllb_characteristics = {
++	.input = { .min = 1000000, .max = 5000000 },
++	.num_output = ARRAY_SIZE(sam9261_pllb_outputs),
++	.output = sam9261_pllb_outputs,
++	.icpll = sam9261_pllb_icpll,
++	.out = sam9261_pllb_out,
++};
++
++static const struct sck at91sam9261_systemck[] = {
++	{ .n = "uhpck", .p = "usbck",    .id = 6 },
++	{ .n = "udpck", .p = "usbck",    .id = 7 },
++	{ .n = "pck0",  .p = "prog0",    .id = 8 },
++	{ .n = "pck1",  .p = "prog1",    .id = 9 },
++	{ .n = "pck2",  .p = "prog2",    .id = 10 },
++	{ .n = "pck3",  .p = "prog3",    .id = 11 },
++	{ .n = "hclk0", .p = "masterck", .id = 16 },
++	{ .n = "hclk1", .p = "masterck", .id = 17 },
++};
++
++static const struct pck at91sam9261_periphck[] = {
++	{ .n = "pioA_clk",   .id = 2, },
++	{ .n = "pioB_clk",   .id = 3, },
++	{ .n = "pioC_clk",   .id = 4, },
++	{ .n = "usart0_clk", .id = 6, },
++	{ .n = "usart1_clk", .id = 7, },
++	{ .n = "usart2_clk", .id = 8, },
++	{ .n = "mci0_clk",   .id = 9, },
++	{ .n = "udc_clk",    .id = 10, },
++	{ .n = "twi0_clk",   .id = 11, },
++	{ .n = "spi0_clk",   .id = 12, },
++	{ .n = "spi1_clk",   .id = 13, },
++	{ .n = "ssc0_clk",   .id = 14, },
++	{ .n = "ssc1_clk",   .id = 15, },
++	{ .n = "ssc2_clk",   .id = 16, },
++	{ .n = "tc0_clk",    .id = 17, },
++	{ .n = "tc1_clk",    .id = 18, },
++	{ .n = "tc2_clk",    .id = 19, },
++	{ .n = "ohci_clk",   .id = 20, },
++	{ .n = "lcd_clk",    .id = 21, },
++};
++
++static struct at91sam926x_data at91sam9261_data = {
++	.plla_layout = &at91rm9200_pll_layout,
++	.plla_characteristics = &sam9261_plla_characteristics,
++	.pllb_layout = &at91rm9200_pll_layout,
++	.pllb_characteristics = &sam9261_pllb_characteristics,
++	.mck_characteristics = &sam9261_mck_characteristics,
++	.sck = at91sam9261_systemck,
++	.num_sck = ARRAY_SIZE(at91sam9261_systemck),
++	.pck = at91sam9261_periphck,
++	.num_pck = ARRAY_SIZE(at91sam9261_periphck),
++	.num_progck = 4,
++};
++
++static const struct clk_master_characteristics sam9263_mck_characteristics = {
++	.output = { .min = 0, .max = 120000000 },
++	.divisors = { 1, 2, 4, 0 },
++};
++
++static struct clk_range sam9263_pll_outputs[] = {
++	{ .min = 80000000, .max = 200000000 },
++	{ .min = 190000000, .max = 240000000 },
++};
++
++static const struct clk_pll_characteristics sam9263_pll_characteristics = {
++	.input = { .min = 1000000, .max = 32000000 },
++	.num_output = ARRAY_SIZE(sam9263_pll_outputs),
++	.output = sam9263_pll_outputs,
++	.icpll = sam9260_plla_icpll,
++	.out = sam9260_plla_out,
++};
++
++static const struct sck at91sam9263_systemck[] = {
++	{ .n = "uhpck", .p = "usbck",    .id = 6 },
++	{ .n = "udpck", .p = "usbck",    .id = 7 },
++	{ .n = "pck0",  .p = "prog0",    .id = 8 },
++	{ .n = "pck1",  .p = "prog1",    .id = 9 },
++	{ .n = "pck2",  .p = "prog2",    .id = 10 },
++	{ .n = "pck3",  .p = "prog3",    .id = 11 },
++};
++
++static const struct pck at91sam9263_periphck[] = {
++	{ .n = "pioA_clk",   .id = 2, },
++	{ .n = "pioB_clk",   .id = 3, },
++	{ .n = "pioCDE_clk", .id = 4, },
++	{ .n = "usart0_clk", .id = 7, },
++	{ .n = "usart1_clk", .id = 8, },
++	{ .n = "usart2_clk", .id = 9, },
++	{ .n = "mci0_clk",   .id = 10, },
++	{ .n = "mci1_clk",   .id = 11, },
++	{ .n = "can_clk",    .id = 12, },
++	{ .n = "twi0_clk",   .id = 13, },
++	{ .n = "spi0_clk",   .id = 14, },
++	{ .n = "spi1_clk",   .id = 15, },
++	{ .n = "ssc0_clk",   .id = 16, },
++	{ .n = "ssc1_clk",   .id = 17, },
++	{ .n = "ac97_clk",   .id = 18, },
++	{ .n = "tcb_clk",    .id = 19, },
++	{ .n = "pwm_clk",    .id = 20, },
++	{ .n = "macb0_clk",  .id = 21, },
++	{ .n = "g2de_clk",   .id = 23, },
++	{ .n = "udc_clk",    .id = 24, },
++	{ .n = "isi_clk",    .id = 25, },
++	{ .n = "lcd_clk",    .id = 26, },
++	{ .n = "dma_clk",    .id = 27, },
++	{ .n = "ohci_clk",   .id = 29, },
++};
++
++static struct at91sam926x_data at91sam9263_data = {
++	.plla_layout = &at91rm9200_pll_layout,
++	.plla_characteristics = &sam9263_pll_characteristics,
++	.pllb_layout = &at91rm9200_pll_layout,
++	.pllb_characteristics = &sam9263_pll_characteristics,
++	.mck_characteristics = &sam9263_mck_characteristics,
++	.sck = at91sam9263_systemck,
++	.num_sck = ARRAY_SIZE(at91sam9263_systemck),
++	.pck = at91sam9263_periphck,
++	.num_pck = ARRAY_SIZE(at91sam9263_periphck),
++	.num_progck = 4,
++};
++
++static void __init at91sam926x_pmc_setup(struct device_node *np,
++					 struct at91sam926x_data *data)
 +{
-+	struct clk_range range = CLK_RANGE(0, 0);
-+	const char *slck_name, *mainxtal_name;
-+	struct pmc_data *at91sam9x5_pmc;
++	const char *slowxtal_name, *mainxtal_name;
++	struct pmc_data *at91sam9260_pmc;
++	u32 usb_div[] = { 1, 2, 4, 0 };
 +	const char *parent_names[6];
++	const char *slck_name;
 +	struct regmap *regmap;
 +	struct clk *hw;
 +	int i;
 +	bool bypass;
 +
-+	i = of_property_match_string(np, "clock-names", "slow_clk");
++	i = of_property_match_string(np, "clock-names", "slow_xtal");
 +	if (i < 0)
 +		return;
 +
-+	slck_name = of_clk_get_parent_name(np, i);
++	slowxtal_name = of_clk_get_parent_name(np, i);
 +
 +	i = of_property_match_string(np, "clock-names", "main_xtal");
 +	if (i < 0)
@@ -196,16 +406,11 @@ index 000000000..5e0aacfbf
 +	if (IS_ERR(regmap))
 +		return;
 +
-+	at91sam9x5_pmc = pmc_data_allocate(PMC_MAIN + 1,
-+					   nck(at91sam9x5_systemck),
-+					   nck(at91sam9x35_periphck), 0);
-+	if (!at91sam9x5_pmc)
++	at91sam9260_pmc = pmc_data_allocate(PMC_MAIN + 1,
++					    ndck(data->sck, data->num_sck),
++					    ndck(data->pck, data->num_pck), 0);
++	if (!at91sam9260_pmc)
 +		return;
-+
-+	hw = at91_clk_register_main_rc_osc(regmap, "main_rc_osc", 12000000,
-+					   50000000);
-+	if (IS_ERR(hw))
-+		goto err_free;
 +
 +	bypass = of_property_read_bool(np, "atmel,osc-bypass");
 +
@@ -214,152 +419,130 @@ index 000000000..5e0aacfbf
 +	if (IS_ERR(hw))
 +		goto err_free;
 +
-+	parent_names[0] = "main_rc_osc";
-+	parent_names[1] = "main_osc";
-+	hw = at91_clk_register_sam9x5_main(regmap, "mainck", parent_names, 2);
++	hw = at91_clk_register_rm9200_main(regmap, "mainck", "main_osc");
 +	if (IS_ERR(hw))
 +		goto err_free;
 +
-+	at91sam9x5_pmc->chws[PMC_MAIN] = hw;
++	at91sam9260_pmc->chws[PMC_MAIN] = hw;
++
++	if (data->has_slck) {
++		hw = clk_fixed("slow_rc_osc", 32768);
++		if (IS_ERR(hw))
++			goto err_free;
++
++		parent_names[0] = "slow_rc_osc";
++		parent_names[1] = "slow_xtal";
++		hw = at91_clk_register_sam9260_slow(regmap, "slck",
++						    parent_names, 2);
++		if (IS_ERR(hw))
++			goto err_free;
++
++		at91sam9260_pmc->chws[PMC_SLOW] = hw;
++		slck_name = "slck";
++	} else {
++		slck_name = slowxtal_name;
++	}
 +
 +	hw = at91_clk_register_pll(regmap, "pllack", "mainck", 0,
-+				   &at91rm9200_pll_layout, &plla_characteristics);
++				   data->plla_layout,
++				   data->plla_characteristics);
 +	if (IS_ERR(hw))
 +		goto err_free;
 +
-+	hw = at91_clk_register_plldiv(regmap, "plladivck", "pllack");
++	hw = at91_clk_register_pll(regmap, "pllbck", "mainck", 1,
++				   data->pllb_layout,
++				   data->pllb_characteristics);
 +	if (IS_ERR(hw))
 +		goto err_free;
-+
-+	hw = at91_clk_register_utmi(regmap, NULL, "utmick", "mainck");
-+	if (IS_ERR(hw))
-+		goto err_free;
-+
-+	at91sam9x5_pmc->chws[PMC_UTMI] = hw;
 +
 +	parent_names[0] = slck_name;
 +	parent_names[1] = "mainck";
-+	parent_names[2] = "plladivck";
-+	parent_names[3] = "utmick";
++	parent_names[2] = "pllack";
++	parent_names[3] = "pllbck";
 +	hw = at91_clk_register_master(regmap, "masterck", 4, parent_names,
-+				      &at91sam9x5_master_layout,
-+				      &mck_characteristics);
++				      &at91rm9200_master_layout,
++				      data->mck_characteristics);
 +	if (IS_ERR(hw))
 +		goto err_free;
 +
-+	at91sam9x5_pmc->chws[PMC_MCK] = hw;
++	at91sam9260_pmc->chws[PMC_MCK] = hw;
 +
-+	parent_names[0] = "plladivck";
-+	parent_names[1] = "utmick";
-+	hw = at91sam9x5_clk_register_usb(regmap, "usbck", parent_names, 2);
-+	if (IS_ERR(hw))
-+		goto err_free;
-+
-+	hw = at91sam9x5_clk_register_smd(regmap, "smdclk", parent_names, 2);
++	hw = at91rm9200_clk_register_usb(regmap, "usbck", "pllbck", usb_div);
 +	if (IS_ERR(hw))
 +		goto err_free;
 +
 +	parent_names[0] = slck_name;
 +	parent_names[1] = "mainck";
-+	parent_names[2] = "plladivck";
-+	parent_names[3] = "utmick";
-+	parent_names[4] = "mck";
-+	for (i = 0; i < 2; i++) {
++	parent_names[2] = "pllack";
++	parent_names[3] = "pllbck";
++	for (i = 0; i < data->num_progck; i++) {
 +		char *name;
 +
 +		name = xasprintf("prog%d", i);
 +
 +		hw = at91_clk_register_programmable(regmap, name,
-+						    parent_names, 5, i,
-+						    &at91sam9x5_programmable_layout);
++						    parent_names, 4, i,
++						    &at91rm9200_programmable_layout);
 +		if (IS_ERR(hw))
 +			goto err_free;
 +	}
 +
-+	for (i = 0; i < ARRAY_SIZE(at91sam9x5_systemck); i++) {
-+		hw = at91_clk_register_system(regmap, at91sam9x5_systemck[i].n,
-+					      at91sam9x5_systemck[i].p,
-+					      at91sam9x5_systemck[i].id);
++	for (i = 0; i < data->num_sck; i++) {
++		hw = at91_clk_register_system(regmap, data->sck[i].n,
++					      data->sck[i].p,
++					      data->sck[i].id);
 +		if (IS_ERR(hw))
 +			goto err_free;
 +
-+		at91sam9x5_pmc->shws[at91sam9x5_systemck[i].id] = hw;
++		at91sam9260_pmc->shws[data->sck[i].id] = hw;
 +	}
 +
-+	if (has_lcdck) {
-+		hw = at91_clk_register_system(regmap, "lcdck", "masterck", 3);
++	for (i = 0; i < data->num_pck; i++) {
++		hw = at91_clk_register_peripheral(regmap,
++						  data->pck[i].n,
++						  "masterck",
++						  data->pck[i].id);
 +		if (IS_ERR(hw))
 +			goto err_free;
 +
-+		at91sam9x5_pmc->shws[3] = hw;
++		at91sam9260_pmc->phws[data->pck[i].id] = hw;
 +	}
 +
-+	for (i = 0; i < ARRAY_SIZE(at91sam9x5_periphck); i++) {
-+		hw = at91_clk_register_sam9x5_peripheral(regmap,
-+							 at91sam9x5_periphck[i].n,
-+							 "masterck",
-+							 at91sam9x5_periphck[i].id,
-+							 &range);
-+		if (IS_ERR(hw))
-+			goto err_free;
-+
-+		at91sam9x5_pmc->phws[at91sam9x5_periphck[i].id] = hw;
-+	}
-+
-+	for (i = 0; extra_pcks[i].id; i++) {
-+		hw = at91_clk_register_sam9x5_peripheral(regmap,
-+							 extra_pcks[i].n,
-+							 "masterck",
-+							 extra_pcks[i].id,
-+							 &range);
-+		if (IS_ERR(hw))
-+			goto err_free;
-+
-+		at91sam9x5_pmc->phws[extra_pcks[i].id] = hw;
-+	}
-+
-+	of_clk_add_provider(np, of_clk_hw_pmc_get, at91sam9x5_pmc);
++	of_clk_add_provider(np, of_clk_hw_pmc_get, at91sam9260_pmc);
 +
 +	return;
 +
 +err_free:
-+	pmc_data_free(at91sam9x5_pmc);
++	pmc_data_free(at91sam9260_pmc);
 +}
 +
-+static void __init at91sam9g15_pmc_setup(struct device_node *np)
++static void __init at91sam9260_pmc_setup(struct device_node *np)
 +{
-+	at91sam9x5_pmc_setup(np, at91sam9g15_periphck, true);
++	at91sam926x_pmc_setup(np, &at91sam9260_data);
 +}
-+CLK_OF_DECLARE_DRIVER(at91sam9g15_pmc, "atmel,at91sam9g15-pmc",
-+		      at91sam9g15_pmc_setup);
++CLK_OF_DECLARE_DRIVER(at91sam9260_pmc, "atmel,at91sam9260-pmc",
++		      at91sam9260_pmc_setup);
 +
-+static void __init at91sam9g25_pmc_setup(struct device_node *np)
++static void __init at91sam9261_pmc_setup(struct device_node *np)
 +{
-+	at91sam9x5_pmc_setup(np, at91sam9g25_periphck, false);
++	at91sam926x_pmc_setup(np, &at91sam9261_data);
 +}
-+CLK_OF_DECLARE_DRIVER(at91sam9g25_pmc, "atmel,at91sam9g25-pmc",
-+		      at91sam9g25_pmc_setup);
++CLK_OF_DECLARE_DRIVER(at91sam9261_pmc, "atmel,at91sam9261-pmc",
++		      at91sam9261_pmc_setup);
 +
-+static void __init at91sam9g35_pmc_setup(struct device_node *np)
++static void __init at91sam9263_pmc_setup(struct device_node *np)
 +{
-+	at91sam9x5_pmc_setup(np, at91sam9g35_periphck, true);
++	at91sam926x_pmc_setup(np, &at91sam9263_data);
 +}
-+CLK_OF_DECLARE_DRIVER(at91sam9g35_pmc, "atmel,at91sam9g35-pmc",
-+		      at91sam9g35_pmc_setup);
++CLK_OF_DECLARE_DRIVER(at91sam9263_pmc, "atmel,at91sam9263-pmc",
++		      at91sam9263_pmc_setup);
 +
-+static void __init at91sam9x25_pmc_setup(struct device_node *np)
++static void __init at91sam9g20_pmc_setup(struct device_node *np)
 +{
-+	at91sam9x5_pmc_setup(np, at91sam9x25_periphck, false);
++	at91sam926x_pmc_setup(np, &at91sam9g20_data);
 +}
-+CLK_OF_DECLARE_DRIVER(at91sam9x25_pmc, "atmel,at91sam9x25-pmc",
-+		      at91sam9x25_pmc_setup);
-+
-+static void __init at91sam9x35_pmc_setup(struct device_node *np)
-+{
-+	at91sam9x5_pmc_setup(np, at91sam9x35_periphck, true);
-+}
-+CLK_OF_DECLARE_DRIVER(at91sam9x35_pmc, "atmel,at91sam9x35-pmc",
-+		      at91sam9x35_pmc_setup);
++CLK_OF_DECLARE_DRIVER(at91sam9g20_pmc, "atmel,at91sam9g20-pmc",
++		      at91sam9g20_pmc_setup);
 -- 
 2.12.0
 
