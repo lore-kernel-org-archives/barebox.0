@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from [2a00:ee2:100:3a01::1] (helo=chandra.tablix.org)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gvh9x-0002VK-AS
- for barebox@lists.infradead.org; Mon, 18 Feb 2019 11:32:33 +0000
+ id 1gvh9y-0002VL-Jf
+ for barebox@lists.infradead.org; Mon, 18 Feb 2019 11:32:35 +0000
 Received: from 77-111-10-47.ipv4.tusmobil.si ([77.111.10.47]
  helo=muffin.lju.klevio.com)
  by chandra.tablix.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.89) (envelope-from <tomaz.solc@tablix.org>)
- id 1gvh9p-00081l-P8
+ id 1gvh9p-00081l-Ui
  for barebox@lists.infradead.org; Mon, 18 Feb 2019 12:32:21 +0100
 From: Tomaz Solc <tomaz.solc@tablix.org>
-Date: Mon, 18 Feb 2019 12:32:17 +0100
-Message-Id: <20190218113220.18649-6-tomaz.solc@tablix.org>
+Date: Mon, 18 Feb 2019 12:32:18 +0100
+Message-Id: <20190218113220.18649-7-tomaz.solc@tablix.org>
 In-Reply-To: <20190218113220.18649-1-tomaz.solc@tablix.org>
 References: <20190218113220.18649-1-tomaz.solc@tablix.org>
 List-Id: <barebox.lists.infradead.org>
@@ -27,30 +27,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/8] mci: bcm2835: use device_initcall(), not coredev.
+Subject: [PATCH v2 6/8] mci: bcm2835: parse other device tree properties.
 To: barebox@lists.infradead.org
 
-pinctrl driver needs to be initialized before mci driver on Raspberry Pi.
-Otherwise the pinctrl device tree properties in the mci node are ignored.
-pinctrl is initialized by coredevice_initcall(), so moving mci-bcm2835 to
-device_initcall() ensures that it is initialized later.
-
-There is no reason for mci-bcm2835 to use coredevice_initcall(). Other mci
-drivers already use device_initcall().
+The driver was missing a call to mci_of_parse() which fills in properties such
+as "bus-width", "no-sd" into the mci_host struct.
 ---
- drivers/mci/mci-bcm2835.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mci/mci-bcm2835.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/mci/mci-bcm2835.c b/drivers/mci/mci-bcm2835.c
-index 9438e66af..e7dbb4f1d 100644
+index e7dbb4f1d..2ed125167 100644
 --- a/drivers/mci/mci-bcm2835.c
 +++ b/drivers/mci/mci-bcm2835.c
-@@ -561,4 +561,4 @@ static int bcm2835_mci_add(void)
- {
- 	return platform_driver_register(&bcm2835_mci_driver);
- }
--coredevice_initcall(bcm2835_mci_add);
-+device_initcall(bcm2835_mci_add);
+@@ -506,6 +506,9 @@ static int bcm2835_mci_probe(struct device_d *hw_dev)
+ 	host->mci.hw_dev = hw_dev;
+ 	host->hw_dev = hw_dev;
+ 	host->max_clock = clk_get_rate(clk);
++
++	mci_of_parse(&host->mci);
++
+ 	iores = dev_request_mem_resource(hw_dev, 0);
+ 	if (IS_ERR(iores)) {
+ 		dev_err(host->hw_dev, "Failed request mem region, aborting...\n");
 -- 
 2.11.0
 
