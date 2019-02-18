@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x243.google.com ([2a00:1450:4864:20::243])
+Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gvotf-0000gv-4q
- for barebox@lists.infradead.org; Mon, 18 Feb 2019 19:48:14 +0000
-Received: by mail-lj1-x243.google.com with SMTP id d14so4217984ljl.9
- for <barebox@lists.infradead.org>; Mon, 18 Feb 2019 11:48:09 -0800 (PST)
+ id 1gvote-0000gu-V9
+ for barebox@lists.infradead.org; Mon, 18 Feb 2019 19:48:12 +0000
+Received: by mail-lj1-x244.google.com with SMTP id j19so14598018ljg.5
+ for <barebox@lists.infradead.org>; Mon, 18 Feb 2019 11:48:08 -0800 (PST)
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Mon, 18 Feb 2019 20:47:52 +0100
-Message-Id: <20190218194759.9557-3-sam@ravnborg.org>
+Date: Mon, 18 Feb 2019 20:47:51 +0100
+Message-Id: <20190218194759.9557-2-sam@ravnborg.org>
 In-Reply-To: <20190218194759.9557-1-sam@ravnborg.org>
 References: <20190218194759.9557-1-sam@ravnborg.org>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,43 +19,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 2/9] clocksource: Do not mix depends and select for
- ATMEL_PIT
+Subject: [PATCH v3 1/9] arm: at91: fix at91_configure_usart6 warning
 To: Barebox List <barebox@lists.infradead.org>, Sascha Hauer <s.hauer@pengutronix.de>, Ladislav Michl <ladis@linux-mips.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-CLOCKSOURCE_ATMEL_PIT was both set to yes using depends on
-and using select.
-Use only select to set this non-visible symbol to 'y'
-
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Tested-by: Ladislav Michl <ladis@linux-mips.org>
----
- drivers/clocksource/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 7b04663d2..b0502c303 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -69,7 +69,6 @@ config CLOCKSOURCE_ROCKCHIP
- 
- config CLOCKSOURCE_ATMEL_PIT
-        bool
--       depends on SOC_AT91SAM9 || SOC_SAMA5
- 
- config CLOCKSOURCE_ARMV8_TIMER
- 	bool
--- 
-2.12.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QWRkIGRlY2xhcmF0aW9uIHRvIHNpbGVuY2UgZm9sbG93aW5nIHdhcm5pbmc6CgphcmNoL2FybS9t
+YWNoLWF0OTEvc2FtYTVkNF9kZXZpY2VzLmM6NDg3OjI0Ogp3YXJuaW5nOiBubyBwcmV2aW91cyBw
+cm90b3R5cGUgZm9yIOKAmGF0OTFfY29uZmlndXJlX3VzYXJ0NuKAmQoKU2lnbmVkLW9mZi1ieTog
+U2FtIFJhdm5ib3JnIDxzYW1AcmF2bmJvcmcub3JnPgotLS0KIGFyY2gvYXJtL21hY2gtYXQ5MS9p
+bmNsdWRlL21hY2gvYm9hcmQuaCB8IDEgKwogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCsp
+CgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1hdDkxL2luY2x1ZGUvbWFjaC9ib2FyZC5oIGIv
+YXJjaC9hcm0vbWFjaC1hdDkxL2luY2x1ZGUvbWFjaC9ib2FyZC5oCmluZGV4IDg4NmY4MWU5YS4u
+NGM0YjUxMTgwIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLWF0OTEvaW5jbHVkZS9tYWNoL2Jv
+YXJkLmgKKysrIGIvYXJjaC9hcm0vbWFjaC1hdDkxL2luY2x1ZGUvbWFjaC9ib2FyZC5oCkBAIC0x
+MDIsNiArMTAyLDcgQEAgcmVzb3VyY2Vfc2l6ZV90IF9faW5pdCBhdDkxX2NvbmZpZ3VyZV91c2Fy
+dDIodW5zaWduZWQgcGlucyk7CiByZXNvdXJjZV9zaXplX3QgX19pbml0IGF0OTFfY29uZmlndXJl
+X3VzYXJ0Myh1bnNpZ25lZCBwaW5zKTsKIHJlc291cmNlX3NpemVfdCBfX2luaXQgYXQ5MV9jb25m
+aWd1cmVfdXNhcnQ0KHVuc2lnbmVkIHBpbnMpOwogcmVzb3VyY2Vfc2l6ZV90IF9faW5pdCBhdDkx
+X2NvbmZpZ3VyZV91c2FydDUodW5zaWduZWQgcGlucyk7CityZXNvdXJjZV9zaXplX3QgX19pbml0
+IGF0OTFfY29uZmlndXJlX3VzYXJ0Nih1bnNpZ25lZCBwaW5zKTsKIAogI2lmIGRlZmluZWQoQ09O
+RklHX0RSSVZFUl9TRVJJQUxfQVRNRUwpCiBzdGF0aWMgaW5saW5lIHN0cnVjdCBkZXZpY2VfZCAq
+IGF0OTFfcmVnaXN0ZXJfdWFydCh1bnNpZ25lZCBpZCwgdW5zaWduZWQgcGlucykKLS0gCjIuMTIu
+MAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
+b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
+aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
