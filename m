@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gw53B-0004fI-Iq
- for barebox@lists.infradead.org; Tue, 19 Feb 2019 13:03:11 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue, 19 Feb 2019 14:03:02 +0100
-Message-Id: <20190219130302.12412-1-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <98063d5d-7da8-0034-bb66-223318d1f1a2@phytec.de>
-References: <98063d5d-7da8-0034-bb66-223318d1f1a2@phytec.de>
+ id 1gvdig-0003mE-Cy
+ for barebox@lists.infradead.org; Mon, 18 Feb 2019 07:52:09 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Mon, 18 Feb 2019 08:51:59 +0100
+Message-Id: <20190218075202.10091-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,212 +15,257 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3] ARM: dts: imx6*phytec*: switch to new partitioning scheme
-To: Stefan Riedmueller <s.riedmueller@phytec.de>, barebox@lists.infradead.org
+Subject: [PATCH v1 1/4] MIPS: relocation: pass ram size to pbl_main_entry
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-Qm90aCBMaW51eCBhbmQgYmFyZWJveCBzdXBwb3J0IHRoaXMgbmV3IHNjaGVtZSBhbmQgaXQncyB0
-aGUgYWN0dWFsbHkKdGhlIHJlY29tbWVuZGVkIG9uZS4KClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVp
-bmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQpIZWxsbywKCk9u
-IFR1ZSwgRmViIDE5LCAyMDE5IGF0IDExOjU0OjA3QU0gKzAxMDAsIFN0ZWZhbiBSaWVkbcO8bGxl
-ciB3cm90ZToKPiBPbiAxOS4wMi4xOSAxMToyOCwgVXdlIEtsZWluZS1Lw7ZuaWcgd3JvdGU6Cj4g
-PiBCb3RoIExpbnV4IGFuZCBiYXJlYm94IHN1cHBvcnQgdGhpcyBuZXcgc2NoZW1lIGFuZCBpdCdz
-IHRoZSBhY3R1YWxseQo+ID4gdGhlIHJlY29tbWVuZGVkIG9uZS4KPiA+IAo+ID4gU2lnbmVkLW9m
-Zi1ieTogVXdlIEtsZWluZS1Lw7ZuaWc8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgo+
-ID4gLS0tCj4gPiBPbiBUdWUsIEZlYiAxOSwgMjAxOSBhdCAxMTowODo1NkFNICswMTAwLCBTdGVm
-YW4gUmllZG3DvGxsZXIgd3JvdGU6Cj4gPiA+IHRoYW5rcyBmb3IgdGhlIHBhdGNoLgo+ID4gPiAK
-PiA+ID4gSW4gYXJjaC9hcm0vZHRzL2lteDZxZGwtcGh5dGVjLXBmbGEwMi5kdHNpIGFuZAo+ID4g
-PiBhcmNoL2FybS9kdHMvaW14NnFkbC1waHl0ZWMtcGh5Y29yZS1zb20uZHRzaSBhcmUgYWRkaXRp
-b25hbCBncG1pIHBhcnRpdGlvbnMuCj4gPiA+IERpZCB5b3UgbGVhdmUgdGhlbSBvdXQgZm9yIGEg
-cmVhc29uLiBJIHRoaW5rIHRoZXkgY2FuIGJlIG1hdGNoZWQgdG8gdGhlIG5ldwo+ID4gPiBzY2hl
-bWUgdG9vLgo+ID4gSSBkaWRuJ3Qgc2tpcCBzb21ldGhpbmcgb24gcHVycG9zZS4gSSBqdXN0IGRp
-ZG4ndCBub3RpY2UgdGhlcmUgYXJlIHR3bwo+ID4gcGFydGl0aW9uZWQgZGV2aWNlcy4gRml4ZWQg
-aGVyZSBpbiB2Mi4KPiAKPiBTb3JyeSB0byBib3RoZXIgeW91IGFnYWluLCBidXQgaXQgc2VlbXMg
-dGhlIGdwbWkgcGFydGl0aW9ucyBvbiB0aGUKPiBhcmNoL2FybS9kdHMvaW14NnFkbC1waHl0ZWMt
-cGh5Y29yZS1zb20uZHRzaSB3ZXJlIG1pc3NlZCBhZ2Fpbi4KCk9uIHJlcmVhZGluZyB5b3VyIG1h
-aWwgSSB3YXMgcmVhbGx5IHN1cnByaXNlZCB5b3Ugd3JvdGUgYWJvdXQgdHdvIGRldmljZQp0cmVl
-cy4gSSBvbmx5IG5vdGljZWQgb25lLCBhbmQgc28gSSBvbmx5IGZpeGVkIG9uZS4gU28gaXQncyBu
-b3QgeW91IHdobwpuZWVkIHRvIGJlIHNvcnJ5IC4uLiA6LXwKCkJlc3QgcmVnYXJkcwpVd2UKCiAu
-Li4vZHRzL2lteDZkbC1waHl0ZWMtcGh5Y29yZS1zb20tZW1tYy5kdHMgICAgfCAyMSArKystLS0K
-IC4uLi9kdHMvaW14NmRsLXBoeXRlYy1waHljb3JlLXNvbS1uYW5kLmR0cyAgICB8IDIxICsrKy0t
-LQogYXJjaC9hcm0vZHRzL2lteDZxLXBoeXRlYy1wY2FheGwzLmR0c2kgICAgICAgIHwgMzAgKysr
-Ky0tLS0KIC4uLi9hcm0vZHRzL2lteDZxLXBoeXRlYy1waHljb3JlLXNvbS1lbW1jLmR0cyB8IDIx
-ICsrKy0tLQogLi4uL2FybS9kdHMvaW14NnEtcGh5dGVjLXBoeWNvcmUtc29tLW5hbmQuZHRzIHwg
-MjUgKysrKy0tLQogYXJjaC9hcm0vZHRzL2lteDZxZGwtcGh5dGVjLXBmbGEwMi5kdHNpICAgICAg
-IHwgNzQgKysrKysrKysrLS0tLS0tLS0tCiBhcmNoL2FybS9kdHMvaW14NnFkbC1waHl0ZWMtcGh5
-Y29yZS1zb20uZHRzaSAgfCA3NSArKysrKysrKysrLS0tLS0tLS0tCiAuLi4vZHRzL2lteDZxcC1w
-aHl0ZWMtcGh5Y29yZS1zb20tbmFuZC5kdHMgICAgfCAyMSArKystLS0KIGFyY2gvYXJtL2R0cy9p
-bXg2dWwtcGh5dGVjLXBoeWNvcmUtc29tLmR0c2kgICB8IDI5ICsrKy0tLS0KIDkgZmlsZXMgY2hh
-bmdlZCwgMTc2IGluc2VydGlvbnMoKyksIDE0MSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9h
-cmNoL2FybS9kdHMvaW14NmRsLXBoeXRlYy1waHljb3JlLXNvbS1lbW1jLmR0cyBiL2FyY2gvYXJt
-L2R0cy9pbXg2ZGwtcGh5dGVjLXBoeWNvcmUtc29tLWVtbWMuZHRzCmluZGV4IDdlNGE1YWJhMmE3
-Ny4uZTYwMmI3N2U5OTQwIDEwMDY0NAotLS0gYS9hcmNoL2FybS9kdHMvaW14NmRsLXBoeXRlYy1w
-aHljb3JlLXNvbS1lbW1jLmR0cworKysgYi9hcmNoL2FybS9kdHMvaW14NmRsLXBoeXRlYy1waHlj
-b3JlLXNvbS1lbW1jLmR0cwpAQCAtNTIsMTcgKzUyLDIwIEBACiAmdXNkaGMxIHsKIAlzdGF0dXMg
-PSAib2theSI7CiAKLQkjYWRkcmVzcy1jZWxscyA9IDwxPjsKLQkjc2l6ZS1jZWxscyA9IDwxPjsK
-KwlwYXJ0aXRpb25zIHsKKwkJY29tcGF0aWJsZSA9ICJmaXhlZC1wYXJ0aXRpb25zIjsKKwkJI2Fk
-ZHJlc3MtY2VsbHMgPSA8MT47CisJCSNzaXplLWNlbGxzID0gPDE+OwogCi0JcGFydGl0aW9uQDAg
-ewotCQlsYWJlbCA9ICJiYXJlYm94IjsKLQkJcmVnID0gPDB4MCAweGUwMDAwPjsKLQl9OworCQlw
-YXJ0aXRpb25AMCB7CisJCQlsYWJlbCA9ICJiYXJlYm94IjsKKwkJCXJlZyA9IDwweDAgMHhlMDAw
-MD47CisJCX07CiAKLQlwYXJ0aXRpb25AZTAwMDAgewotCQlsYWJlbCA9ICJiYXJlYm94LWVudmly
-b25tZW50IjsKLQkJcmVnID0gPDB4ZTAwMDAgMHgyMDAwMD47CisJCXBhcnRpdGlvbkBlMDAwMCB7
-CisJCQlsYWJlbCA9ICJiYXJlYm94LWVudmlyb25tZW50IjsKKwkJCXJlZyA9IDwweGUwMDAwIDB4
-MjAwMDA+OworCQl9OwogCX07CiB9OwogCmRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvaW14NmRs
-LXBoeXRlYy1waHljb3JlLXNvbS1uYW5kLmR0cyBiL2FyY2gvYXJtL2R0cy9pbXg2ZGwtcGh5dGVj
-LXBoeWNvcmUtc29tLW5hbmQuZHRzCmluZGV4IGZmY2JkYzIxMzQ3MS4uNzdmMTQzNDM4YjUwIDEw
-MDY0NAotLS0gYS9hcmNoL2FybS9kdHMvaW14NmRsLXBoeXRlYy1waHljb3JlLXNvbS1uYW5kLmR0
-cworKysgYi9hcmNoL2FybS9kdHMvaW14NmRsLXBoeXRlYy1waHljb3JlLXNvbS1uYW5kLmR0cwpA
-QCAtNDcsMTYgKzQ3LDE5IEBACiAmdXNkaGMxIHsKIAlzdGF0dXMgPSAib2theSI7CiAKLQkjYWRk
-cmVzcy1jZWxscyA9IDwxPjsKLQkjc2l6ZS1jZWxscyA9IDwxPjsKKwlwYXJ0aXRpb25zIHsKKwkJ
-Y29tcGF0aWJsZSA9ICJmaXhlZC1wYXJ0aXRpb25zIjsKKwkJI2FkZHJlc3MtY2VsbHMgPSA8MT47
-CisJCSNzaXplLWNlbGxzID0gPDE+OwogCi0JcGFydGl0aW9uQDAgewotCQlsYWJlbCA9ICJiYXJl
-Ym94IjsKLQkJcmVnID0gPDB4MCAweGUwMDAwPjsKLQl9OworCQlwYXJ0aXRpb25AMCB7CisJCQls
-YWJlbCA9ICJiYXJlYm94IjsKKwkJCXJlZyA9IDwweDAgMHhlMDAwMD47CisJCX07CiAKLQlwYXJ0
-aXRpb25AZTAwMDAgewotCQlsYWJlbCA9ICJiYXJlYm94LWVudmlyb25tZW50IjsKLQkJcmVnID0g
-PDB4ZTAwMDAgMHgyMDAwMD47CisJCXBhcnRpdGlvbkBlMDAwMCB7CisJCQlsYWJlbCA9ICJiYXJl
-Ym94LWVudmlyb25tZW50IjsKKwkJCXJlZyA9IDwweGUwMDAwIDB4MjAwMDA+OworCQl9OwogCX07
-CiB9OwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL2lteDZxLXBoeXRlYy1wY2FheGwzLmR0c2kg
-Yi9hcmNoL2FybS9kdHMvaW14NnEtcGh5dGVjLXBjYWF4bDMuZHRzaQppbmRleCA2M2RkOTY2Yjg3
-NDYuLjY2YjU0N2FkOGVlZiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vZHRzL2lteDZxLXBoeXRlYy1w
-Y2FheGwzLmR0c2kKKysrIGIvYXJjaC9hcm0vZHRzL2lteDZxLXBoeXRlYy1wY2FheGwzLmR0c2kK
-QEAgLTEzMSwyMiArMTMxLDI2IEBACiAJcGluY3RybC0wID0gPCZwaW5jdHJsX2dwbWlfbmFuZD47
-CiAJbmFuZC1vbi1mbGFzaC1iYnQ7CiAJc3RhdHVzID0gIm9rYXkiOwotCSNhZGRyZXNzLWNlbGxz
-ID0gPDE+OwotCSNzaXplLWNlbGxzID0gPDE+OwogCi0JcGFydGl0aW9uQDAgewotCQlsYWJlbCA9
-ICJiYXJlYm94IjsKLQkJcmVnID0gPDB4MCAweDQwMDAwMD47Ci0JfTsKKwlwYXJ0aXRpb25zIHsK
-KwkJY29tcGF0aWJsZSA9ICJmaXhlZC1wYXJ0aXRpb25zIjsKKwkJI2FkZHJlc3MtY2VsbHMgPSA8
-MT47CisJCSNzaXplLWNlbGxzID0gPDE+OwogCi0JZW52aXJvbm1lbnRfbmFuZDogcGFydGl0aW9u
-QDQwMDAwMCB7Ci0JCWxhYmVsID0gImJhcmVib3gtZW52aXJvbm1lbnQiOwotCQlyZWcgPSA8MHg0
-MDAwMDAgMHgyMDAwMD47Ci0JfTsKKwkJcGFydGl0aW9uQDAgeworCQkJbGFiZWwgPSAiYmFyZWJv
-eCI7CisJCQlyZWcgPSA8MHgwIDB4NDAwMDAwPjsKKwkJfTsKIAotCXBhcnRpdGlvbkA0MjAwMDAg
-ewotCQlsYWJlbCA9ICJyb290IjsKLQkJcmVnID0gPDB4NDIwMDAwIDB4MD47CisJCWVudmlyb25t
-ZW50X25hbmQ6IHBhcnRpdGlvbkA0MDAwMDAgeworCQkJbGFiZWwgPSAiYmFyZWJveC1lbnZpcm9u
-bWVudCI7CisJCQlyZWcgPSA8MHg0MDAwMDAgMHgyMDAwMD47CisJCX07CisKKwkJcGFydGl0aW9u
-QDQyMDAwMCB7CisJCQlsYWJlbCA9ICJyb290IjsKKwkJCXJlZyA9IDwweDQyMDAwMCAweDA+Owor
-CQl9OwogCX07CiB9OwogCmRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvaW14NnEtcGh5dGVjLXBo
-eWNvcmUtc29tLWVtbWMuZHRzIGIvYXJjaC9hcm0vZHRzL2lteDZxLXBoeXRlYy1waHljb3JlLXNv
-bS1lbW1jLmR0cwppbmRleCA2ZTEyYjI2ZDM4YTIuLjk0YTcwMzg5ZjA4NCAxMDA2NDQKLS0tIGEv
-YXJjaC9hcm0vZHRzL2lteDZxLXBoeXRlYy1waHljb3JlLXNvbS1lbW1jLmR0cworKysgYi9hcmNo
-L2FybS9kdHMvaW14NnEtcGh5dGVjLXBoeWNvcmUtc29tLWVtbWMuZHRzCkBAIC01MSwxNyArNTEs
-MjAgQEAKICZ1c2RoYzEgewogCXN0YXR1cyA9ICJva2F5IjsKIAotCSNhZGRyZXNzLWNlbGxzID0g
-PDE+OwotCSNzaXplLWNlbGxzID0gPDE+OworCXBhcnRpdGlvbnMgeworCQljb21wYXRpYmxlID0g
-ImZpeGVkLXBhcnRpdGlvbnMiOworCQkjYWRkcmVzcy1jZWxscyA9IDwxPjsKKwkJI3NpemUtY2Vs
-bHMgPSA8MT47CiAKLQlwYXJ0aXRpb25AMCB7Ci0JCWxhYmVsID0gImJhcmVib3giOwotCQlyZWcg
-PSA8MHgwIDB4ZTAwMDA+OwotCX07CisJCXBhcnRpdGlvbkAwIHsKKwkJCWxhYmVsID0gImJhcmVi
-b3giOworCQkJcmVnID0gPDB4MCAweGUwMDAwPjsKKwkJfTsKIAotCXBhcnRpdGlvbkBlMDAwMCB7
-Ci0JCWxhYmVsID0gImJhcmVib3gtZW52aXJvbm1lbnQiOwotCQlyZWcgPSA8MHhlMDAwMCAweDIw
-MDAwPjsKKwkJcGFydGl0aW9uQGUwMDAwIHsKKwkJCWxhYmVsID0gImJhcmVib3gtZW52aXJvbm1l
-bnQiOworCQkJcmVnID0gPDB4ZTAwMDAgMHgyMDAwMD47CisJCX07CiAJfTsKIH07CiAKZGlmZiAt
-LWdpdCBhL2FyY2gvYXJtL2R0cy9pbXg2cS1waHl0ZWMtcGh5Y29yZS1zb20tbmFuZC5kdHMgYi9h
-cmNoL2FybS9kdHMvaW14NnEtcGh5dGVjLXBoeWNvcmUtc29tLW5hbmQuZHRzCmluZGV4IGQ5ZTM3
-YjdmY2FmYy4uNmQ4MmVjMzRkNmU1IDEwMDY0NAotLS0gYS9hcmNoL2FybS9kdHMvaW14NnEtcGh5
-dGVjLXBoeWNvcmUtc29tLW5hbmQuZHRzCisrKyBiL2FyY2gvYXJtL2R0cy9pbXg2cS1waHl0ZWMt
-cGh5Y29yZS1zb20tbmFuZC5kdHMKQEAgLTU2LDE2ICs1NiwxOSBAQAogJnVzZGhjMSB7CiAJc3Rh
-dHVzID0gIm9rYXkiOwogCi0JI2FkZHJlc3MtY2VsbHMgPSA8MT47Ci0JI3NpemUtY2VsbHMgPSA8
-MT47Ci0KLQlwYXJ0aXRpb25AMCB7Ci0JCWxhYmVsID0gImJhcmVib3giOwotCQlyZWcgPSA8MHgw
-IDB4ZTAwMDA+OwotCX07Ci0KLQlwYXJ0aXRpb25AZTAwMDAgewotCQlsYWJlbCA9ICJiYXJlYm94
-LWVudmlyb25tZW50IjsKLQkJcmVnID0gPDB4ZTAwMDAgMHgyMDAwMD47CisJcGFydGl0aW9ucyB7
-CisJCWNvbXBhdGlibGUgPSAiZml4ZWQtcGFydGl0aW9ucyI7CisJCSNhZGRyZXNzLWNlbGxzID0g
-PDE+OworCQkjc2l6ZS1jZWxscyA9IDwxPjsKKworCQlwYXJ0aXRpb25AMCB7CisJCQlsYWJlbCA9
-ICJiYXJlYm94IjsKKwkJCXJlZyA9IDwweDAgMHhlMDAwMD47CisJCX07CisKKwkJcGFydGl0aW9u
-QGUwMDAwIHsKKwkJCWxhYmVsID0gImJhcmVib3gtZW52aXJvbm1lbnQiOworCQkJcmVnID0gPDB4
-ZTAwMDAgMHgyMDAwMD47CisJCX07CiAJfTsKIH07CmRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMv
-aW14NnFkbC1waHl0ZWMtcGZsYTAyLmR0c2kgYi9hcmNoL2FybS9kdHMvaW14NnFkbC1waHl0ZWMt
-cGZsYTAyLmR0c2kKaW5kZXggOGJiOWVjOGRiN2M2Li5hYmE4NmEzZWMxYzQgMTAwNjQ0Ci0tLSBh
-L2FyY2gvYXJtL2R0cy9pbXg2cWRsLXBoeXRlYy1wZmxhMDIuZHRzaQorKysgYi9hcmNoL2FybS9k
-dHMvaW14NnFkbC1waHl0ZWMtcGZsYTAyLmR0c2kKQEAgLTU4LDI3ICs1OCwzMCBAQAogCiAmZWNz
-cGkzIHsKIAlmbGFzaDogZmxhc2hAMCB7Ci0JCSNhZGRyZXNzLWNlbGxzID0gPDE+OwotCQkjc2l6
-ZS1jZWxscyA9IDwxPjsKLQotCQlwYXJ0aXRpb25AMCB7Ci0JCQlsYWJlbCA9ICJiYXJlYm94IjsK
-LQkJCXJlZyA9IDwweDAgMHgxMDAwMDA+OwotCQl9OwotCi0JCXBhcnRpdGlvbkAxMDAwMDAgewot
-CQkJbGFiZWwgPSAiYmFyZWJveC1lbnZpcm9ubWVudCI7Ci0JCQlyZWcgPSA8MHgxMDAwMDAgMHgy
-MDAwMD47Ci0JCX07Ci0KLQkJcGFydGl0aW9uQDEyMDAwMCB7Ci0JCQlsYWJlbCA9ICJvZnRyZWUi
-OwotCQkJcmVnID0gPDB4MTIwMDAwIDB4MjAwMDA+OwotCQl9OwotCi0JCXBhcnRpdGlvbkAxNDAw
-MDAgewotCQkJbGFiZWwgPSAia2VybmVsIjsKLQkJCXJlZyA9IDwweDE0MDAwMCAweDA+OworCQlw
-YXJ0aXRpb25zIHsKKwkJCWNvbXBhdGlibGUgPSAiZml4ZWQtcGFydGl0aW9ucyI7CisJCQkjYWRk
-cmVzcy1jZWxscyA9IDwxPjsKKwkJCSNzaXplLWNlbGxzID0gPDE+OworCisJCQlwYXJ0aXRpb25A
-MCB7CisJCQkJbGFiZWwgPSAiYmFyZWJveCI7CisJCQkJcmVnID0gPDB4MCAweDEwMDAwMD47CisJ
-CQl9OworCisJCQlwYXJ0aXRpb25AMTAwMDAwIHsKKwkJCQlsYWJlbCA9ICJiYXJlYm94LWVudmly
-b25tZW50IjsKKwkJCQlyZWcgPSA8MHgxMDAwMDAgMHgyMDAwMD47CisJCQl9OworCisJCQlwYXJ0
-aXRpb25AMTIwMDAwIHsKKwkJCQlsYWJlbCA9ICJvZnRyZWUiOworCQkJCXJlZyA9IDwweDEyMDAw
-MCAweDIwMDAwPjsKKwkJCX07CisKKwkJCXBhcnRpdGlvbkAxNDAwMDAgeworCQkJCWxhYmVsID0g
-Imtlcm5lbCI7CisJCQkJcmVnID0gPDB4MTQwMDAwIDB4MD47CisJCQl9OwogCQl9OwogCX07CiB9
-OwpAQCAtMTAxLDIyICsxMDQsMjUgQEAKIH07CiAKICZncG1pIHsKLQkjYWRkcmVzcy1jZWxscyA9
-IDwxPjsKLQkjc2l6ZS1jZWxscyA9IDwxPjsKKwlwYXJ0aXRpb25zIHsKKwkJY29tcGF0aWJsZSA9
-ICJmaXhlZC1wYXJ0aXRpb25zIjsKKwkJI2FkZHJlc3MtY2VsbHMgPSA8MT47CisJCSNzaXplLWNl
-bGxzID0gPDE+OwogCi0JcGFydGl0aW9uQDAgewotCQlsYWJlbCA9ICJiYXJlYm94IjsKLQkJcmVn
-ID0gPDB4MCAweDQwMDAwMD47Ci0JfTsKKwkJcGFydGl0aW9uQDAgeworCQkJbGFiZWwgPSAiYmFy
-ZWJveCI7CisJCQlyZWcgPSA8MHgwIDB4NDAwMDAwPjsKKwkJfTsKIAotCXBhcnRpdGlvbkA0MDAw
-MDAgewotCQlsYWJlbCA9ICJiYXJlYm94LWVudmlyb25tZW50IjsKLQkJcmVnID0gPDB4NDAwMDAw
-IDB4MTAwMDAwPjsKLQl9OworCQlwYXJ0aXRpb25ANDAwMDAwIHsKKwkJCWxhYmVsID0gImJhcmVi
-b3gtZW52aXJvbm1lbnQiOworCQkJcmVnID0gPDB4NDAwMDAwIDB4MTAwMDAwPjsKKwkJfTsKIAot
-CXBhcnRpdGlvbkA1MDAwMDAgewotCQlsYWJlbCA9ICJyb290IjsKLQkJcmVnID0gPDB4NTAwMDAw
-IDB4MD47CisJCXBhcnRpdGlvbkA1MDAwMDAgeworCQkJbGFiZWwgPSAicm9vdCI7CisJCQlyZWcg
-PSA8MHg1MDAwMDAgMHgwPjsKKwkJfTsKIAl9OwogfTsKIApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
-ZHRzL2lteDZxZGwtcGh5dGVjLXBoeWNvcmUtc29tLmR0c2kgYi9hcmNoL2FybS9kdHMvaW14NnFk
-bC1waHl0ZWMtcGh5Y29yZS1zb20uZHRzaQppbmRleCAzYzE5N2RkZjAxOGIuLjhmZGUyN2JkMGMx
-NyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vZHRzL2lteDZxZGwtcGh5dGVjLXBoeWNvcmUtc29tLmR0
-c2kKKysrIGIvYXJjaC9hcm0vZHRzL2lteDZxZGwtcGh5dGVjLXBoeWNvcmUtc29tLmR0c2kKQEAg
-LTc2LDI3ICs3NiwzMCBAQAogCQlyZWcgPSA8MD47CiAJCXN0YXR1cyA9ICJkaXNhYmxlZCI7CiAK
-LQkJI2FkZHJlc3MtY2VsbHMgPSA8MT47Ci0JCSNzaXplLWNlbGxzID0gPDE+OwotCi0JCXBhcnRp
-dGlvbkAwIHsKLQkJCWxhYmVsID0gImJhcmVib3giOwotCQkJcmVnID0gPDB4MCAweDEwMDAwMD47
-Ci0JCX07Ci0KLQkJcGFydGl0aW9uQDEwMDAwMCB7Ci0JCQlsYWJlbCA9ICJiYXJlYm94LWVudmly
-b25tZW50IjsKLQkJCXJlZyA9IDwweDEwMDAwMCAweDIwMDAwPjsKLQkJfTsKLQotCQlwYXJ0aXRp
-b25AMTIwMDAwIHsKLQkJCWxhYmVsID0gIm9mdHJlZSI7Ci0JCQlyZWcgPSA8MHgxMjAwMDAgMHgy
-MDAwMD47Ci0JCX07Ci0KLQkJcGFydGl0aW9uQDE0MDAwMCB7Ci0JCQlsYWJlbCA9ICJrZXJuZWwi
-OwotCQkJcmVnID0gPDB4MTQwMDAwIDB4MD47CisJCXBhcnRpdGlvbnMgeworCQkJY29tcGF0aWJs
-ZSA9ICJmaXhlZC1wYXJ0aXRpb25zIjsKKwkJCSNhZGRyZXNzLWNlbGxzID0gPDE+OworCQkJI3Np
-emUtY2VsbHMgPSA8MT47CisKKwkJCXBhcnRpdGlvbkAwIHsKKwkJCQlsYWJlbCA9ICJiYXJlYm94
-IjsKKwkJCQlyZWcgPSA8MHgwIDB4MTAwMDAwPjsKKwkJCX07CisKKwkJCXBhcnRpdGlvbkAxMDAw
-MDAgeworCQkJCWxhYmVsID0gImJhcmVib3gtZW52aXJvbm1lbnQiOworCQkJCXJlZyA9IDwweDEw
-MDAwMCAweDIwMDAwPjsKKwkJCX07CisKKwkJCXBhcnRpdGlvbkAxMjAwMDAgeworCQkJCWxhYmVs
-ID0gIm9mdHJlZSI7CisJCQkJcmVnID0gPDB4MTIwMDAwIDB4MjAwMDA+OworCQkJfTsKKworCQkJ
-cGFydGl0aW9uQDE0MDAwMCB7CisJCQkJbGFiZWwgPSAia2VybmVsIjsKKwkJCQlyZWcgPSA8MHgx
-NDAwMDAgMHgwPjsKKwkJCX07CiAJCX07CiAJfTsKIH07CkBAIC0xMjYsMjIgKzEyOSwyNiBAQAog
-CXBpbmN0cmwtMCA9IDwmcGluY3RybF9ncG1pX25hbmQ+OwogCW5hbmQtb24tZmxhc2gtYmJ0Owog
-CXN0YXR1cyA9ICJkaXNhYmxlZCI7Ci0JI2FkZHJlc3MtY2VsbHMgPSA8MT47Ci0JI3NpemUtY2Vs
-bHMgPSA8MT47CiAKLQlwYXJ0aXRpb25AMCB7Ci0JCWxhYmVsID0gImJhcmVib3giOwotCQlyZWcg
-PSA8MHgwIDB4NDAwMDAwPjsKLQl9OworCXBhcnRpdGlvbnMgeworCQljb21wYXRpYmxlID0gImZp
-eGVkLXBhcnRpdGlvbnMiOworCQkjYWRkcmVzcy1jZWxscyA9IDwxPjsKKwkJI3NpemUtY2VsbHMg
-PSA8MT47CiAKLQlwYXJ0aXRpb25ANDAwMDAwIHsKLQkJbGFiZWwgPSAiYmFyZWJveC1lbnZpcm9u
-bWVudCI7Ci0JCXJlZyA9IDwweDQwMDAwMCAweDEwMDAwMD47Ci0JfTsKKwkJcGFydGl0aW9uQDAg
-eworCQkJbGFiZWwgPSAiYmFyZWJveCI7CisJCQlyZWcgPSA8MHgwIDB4NDAwMDAwPjsKKwkJfTsK
-IAotCXBhcnRpdGlvbkA1MDAwMDAgewotCQlsYWJlbCA9ICJyb290IjsKLQkJcmVnID0gPDB4NTAw
-MDAwIDB4MD47CisJCXBhcnRpdGlvbkA0MDAwMDAgeworCQkJbGFiZWwgPSAiYmFyZWJveC1lbnZp
-cm9ubWVudCI7CisJCQlyZWcgPSA8MHg0MDAwMDAgMHgxMDAwMDA+OworCQl9OworCisJCXBhcnRp
-dGlvbkA1MDAwMDAgeworCQkJbGFiZWwgPSAicm9vdCI7CisJCQlyZWcgPSA8MHg1MDAwMDAgMHgw
-PjsKKwkJfTsKIAl9OwogfTsKIApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL2lteDZxcC1waHl0
-ZWMtcGh5Y29yZS1zb20tbmFuZC5kdHMgYi9hcmNoL2FybS9kdHMvaW14NnFwLXBoeXRlYy1waHlj
-b3JlLXNvbS1uYW5kLmR0cwppbmRleCBjMjc1NjE0MmI1MzUuLjQzNzQ1N2NlNzUyMiAxMDA2NDQK
-LS0tIGEvYXJjaC9hcm0vZHRzL2lteDZxcC1waHl0ZWMtcGh5Y29yZS1zb20tbmFuZC5kdHMKKysr
-IGIvYXJjaC9hcm0vZHRzL2lteDZxcC1waHl0ZWMtcGh5Y29yZS1zb20tbmFuZC5kdHMKQEAgLTU0
-LDE2ICs1NCwxOSBAQAogJnVzZGhjMSB7CiAJc3RhdHVzID0gIm9rYXkiOwogCi0JI2FkZHJlc3Mt
-Y2VsbHMgPSA8MT47Ci0JI3NpemUtY2VsbHMgPSA8MT47CisJcGFydGl0aW9ucyB7CisJCWNvbXBh
-dGlibGUgPSAiZml4ZWQtcGFydGl0aW9ucyI7CisJCSNhZGRyZXNzLWNlbGxzID0gPDE+OworCQkj
-c2l6ZS1jZWxscyA9IDwxPjsKIAotCXBhcnRpdGlvbkAwIHsKLQkJbGFiZWwgPSAiYmFyZWJveCI7
-Ci0JCXJlZyA9IDwweDAgMHhlMDAwMD47Ci0JfTsKKwkJcGFydGl0aW9uQDAgeworCQkJbGFiZWwg
-PSAiYmFyZWJveCI7CisJCQlyZWcgPSA8MHgwIDB4ZTAwMDA+OworCQl9OwogCi0JcGFydGl0aW9u
-QGUwMDAwIHsKLQkJbGFiZWwgPSAiYmFyZWJveC1lbnZpcm9ubWVudCI7Ci0JCXJlZyA9IDwweGUw
-MDAwIDB4MjAwMDA+OworCQlwYXJ0aXRpb25AZTAwMDAgeworCQkJbGFiZWwgPSAiYmFyZWJveC1l
-bnZpcm9ubWVudCI7CisJCQlyZWcgPSA8MHhlMDAwMCAweDIwMDAwPjsKKwkJfTsKIAl9OwogfTsK
-ZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2R0cy9pbXg2dWwtcGh5dGVjLXBoeWNvcmUtc29tLmR0c2kg
-Yi9hcmNoL2FybS9kdHMvaW14NnVsLXBoeXRlYy1waHljb3JlLXNvbS5kdHNpCmluZGV4IDM5ODU0
-NmQ3YjkyZS4uOTY0ZjkxOTUwZDkzIDEwMDY0NAotLS0gYS9hcmNoL2FybS9kdHMvaW14NnVsLXBo
-eXRlYy1waHljb3JlLXNvbS5kdHNpCisrKyBiL2FyY2gvYXJtL2R0cy9pbXg2dWwtcGh5dGVjLXBo
-eWNvcmUtc29tLmR0c2kKQEAgLTUxLDIyICs1MSwyNSBAQAogCW5hbmQtb24tZmxhc2gtYmJ0Owog
-CXN0YXR1cyA9ICJkaXNhYmxlZCI7CiAKLQkjYWRkcmVzcy1jZWxscyA9IDwxPjsKLQkjc2l6ZS1j
-ZWxscyA9IDwxPjsKKwlwYXJ0aXRpb25zIHsKKwkJY29tcGF0aWJsZSA9ICJmaXhlZC1wYXJ0aXRp
-b25zIjsKKwkJI2FkZHJlc3MtY2VsbHMgPSA8MT47CisJCSNzaXplLWNlbGxzID0gPDE+OwogCi0J
-cGFydGl0aW9uQDAgewotCQlsYWJlbCA9ICJiYXJlYm94IjsKLQkJcmVnID0gPDB4MCAweDQwMDAw
-MD47Ci0JfTsKKwkJcGFydGl0aW9uQDAgeworCQkJbGFiZWwgPSAiYmFyZWJveCI7CisJCQlyZWcg
-PSA8MHgwIDB4NDAwMDAwPjsKKwkJfTsKIAotCXBhcnRpdGlvbkA0MDAwMDAgewotCQlsYWJlbCA9
-ICJiYXJlYm94LWVudmlyb25tZW50IjsKLQkJcmVnID0gPDB4NDAwMDAwIDB4MTAwMDAwPjsKLQl9
-OworCQlwYXJ0aXRpb25ANDAwMDAwIHsKKwkJCWxhYmVsID0gImJhcmVib3gtZW52aXJvbm1lbnQi
-OworCQkJcmVnID0gPDB4NDAwMDAwIDB4MTAwMDAwPjsKKwkJfTsKIAotCXBhcnRpdGlvbkA1MDAw
-MDAgewotCQlsYWJlbCA9ICJyb290IjsKLQkJcmVnID0gPDB4NTAwMDAwIDB4MD47CisJCXBhcnRp
-dGlvbkA1MDAwMDAgeworCQkJbGFiZWwgPSAicm9vdCI7CisJCQlyZWcgPSA8MHg1MDAwMDAgMHgw
-PjsKKwkJfTsKIAl9OwogfTsKIAotLSAKMi4yMC4xCgoKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
-cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
-Zm8vYmFyZWJveAo=
+From: Oleksij Rempel <linux@rempel-privat.de>
+
+To make barebox dynamically relocatable it should know
+the RAM size to be able to calculate proper new location.
+
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+---
+ arch/mips/boards/8devices-lima/lowlevel.S         | 3 ++-
+ arch/mips/boards/black-swift/lowlevel.S           | 3 ++-
+ arch/mips/boards/dlink-dir-320/lowlevel.S         | 3 ++-
+ arch/mips/boards/dptechnics-dpt-module/lowlevel.S | 3 ++-
+ arch/mips/boards/img-ci20/lowlevel.S              | 3 ++-
+ arch/mips/boards/loongson-ls1b/lowlevel.S         | 3 ++-
+ arch/mips/boards/qemu-malta/lowlevel.S            | 3 ++-
+ arch/mips/boards/ritmix-rzx50/lowlevel.S          | 3 ++-
+ arch/mips/boards/tplink-mr3020/lowlevel.S         | 3 ++-
+ arch/mips/boards/tplink-wdr4300/lowlevel.S        | 3 ++-
+ arch/mips/boot/main_entry-pbl.c                   | 5 +++--
+ arch/mips/include/asm/asm.h                       | 3 ++-
+ 12 files changed, 25 insertions(+), 13 deletions(-)
+
+diff --git a/arch/mips/boards/8devices-lima/lowlevel.S b/arch/mips/boards/8devices-lima/lowlevel.S
+index b53b23b42a..dd1ab6247d 100644
+--- a/arch/mips/boards/8devices-lima/lowlevel.S
++++ b/arch/mips/boards/8devices-lima/lowlevel.S
+@@ -11,6 +11,7 @@
+ #include <mach/pbl_macros.h>
+ #include <mach/pbl_ll_init_qca4531.h>
+ #include <asm/pbl_nmon.h>
++#include <linux/sizes.h>
+ 
+ ENTRY_FUNCTION(BOARD_PBL_START)
+ 
+@@ -38,4 +39,4 @@ skip_flash_test:
+ 	dcache_enable
+ skip_pll_ram_config:
+ 
+-ENTRY_FUNCTION_END(BOARD_PBL_START, qca4531_8devices_lima)
++ENTRY_FUNCTION_END(BOARD_PBL_START, qca4531_8devices_lima, SZ_64M)
+diff --git a/arch/mips/boards/black-swift/lowlevel.S b/arch/mips/boards/black-swift/lowlevel.S
+index 0ba77435f8..5c5afcdf09 100644
+--- a/arch/mips/boards/black-swift/lowlevel.S
++++ b/arch/mips/boards/black-swift/lowlevel.S
+@@ -11,9 +11,10 @@
+ #include <asm/asm.h>
+ #include <mach/pbl_macros.h>
+ #include <asm/pbl_nmon.h>
++#include <linux/sizes.h>
+ 
+ ENTRY_FUNCTION(BOARD_PBL_START)
+ 
+ 	ar9331_pbl_generic_start
+ 
+-ENTRY_FUNCTION_END(BOARD_PBL_START, black_swift)
++ENTRY_FUNCTION_END(BOARD_PBL_START, black_swift, SZ_64M)
+diff --git a/arch/mips/boards/dlink-dir-320/lowlevel.S b/arch/mips/boards/dlink-dir-320/lowlevel.S
+index 9f3bd5dead..da969bc74e 100644
+--- a/arch/mips/boards/dlink-dir-320/lowlevel.S
++++ b/arch/mips/boards/dlink-dir-320/lowlevel.S
+@@ -9,6 +9,7 @@
+ #include <asm/pbl_macros.h>
+ #include <mach/debug_ll.h>
+ #include <asm/pbl_nmon.h>
++#include <linux/sizes.h>
+ 
+ ENTRY_FUNCTION(BOARD_PBL_START)
+ 
+@@ -19,4 +20,4 @@ ENTRY_FUNCTION(BOARD_PBL_START)
+ 	/* CPU/SoC specific setup ... */
+ 	/* ... absent */
+ 
+-ENTRY_FUNCTION_END(BOARD_PBL_START, dlink_dir_320)
++ENTRY_FUNCTION_END(BOARD_PBL_START, dlink_dir_320, SZ_32M)
+diff --git a/arch/mips/boards/dptechnics-dpt-module/lowlevel.S b/arch/mips/boards/dptechnics-dpt-module/lowlevel.S
+index 28b8f4fac7..b5621963c3 100644
+--- a/arch/mips/boards/dptechnics-dpt-module/lowlevel.S
++++ b/arch/mips/boards/dptechnics-dpt-module/lowlevel.S
+@@ -12,9 +12,10 @@
+ #include <asm/pbl_macros.h>
+ #include <mach/pbl_macros.h>
+ #include <asm/pbl_nmon.h>
++#include <linux/sizes.h>
+ 
+ ENTRY_FUNCTION(BOARD_PBL_START)
+ 
+ 	ar9331_pbl_generic_start
+ 
+-ENTRY_FUNCTION_END(BOARD_PBL_START, ar9331_dptechnics_dpt_module)
++ENTRY_FUNCTION_END(BOARD_PBL_START, ar9331_dptechnics_dpt_module, SZ_64M)
+diff --git a/arch/mips/boards/img-ci20/lowlevel.S b/arch/mips/boards/img-ci20/lowlevel.S
+index 056df17bf8..0295e44d1a 100644
+--- a/arch/mips/boards/img-ci20/lowlevel.S
++++ b/arch/mips/boards/img-ci20/lowlevel.S
+@@ -10,6 +10,7 @@
+ #include <asm/pbl_macros.h>
+ #include <mach/debug_ll.h>
+ #include <asm/pbl_nmon.h>
++#include <linux/sizes.h>
+ 
+ ENTRY_FUNCTION(BOARD_PBL_START)
+ 
+@@ -23,4 +24,4 @@ ENTRY_FUNCTION(BOARD_PBL_START)
+ 	debug_ll_outc '.'
+ 	debug_ll_ns16550_outnl
+ 
+-ENTRY_FUNCTION_END(BOARD_PBL_START, img_ci20)
++ENTRY_FUNCTION_END(BOARD_PBL_START, img_ci20, SZ_1G)
+diff --git a/arch/mips/boards/loongson-ls1b/lowlevel.S b/arch/mips/boards/loongson-ls1b/lowlevel.S
+index 37744e9fac..c533df3ce5 100644
+--- a/arch/mips/boards/loongson-ls1b/lowlevel.S
++++ b/arch/mips/boards/loongson-ls1b/lowlevel.S
+@@ -9,6 +9,7 @@
+ #include <mach/loongson1.h>
+ #include <mach/debug_ll.h>
+ #include <asm/pbl_nmon.h>
++#include <linux/sizes.h>
+ 
+ ENTRY_FUNCTION(BOARD_PBL_START)
+ 
+@@ -21,4 +22,4 @@ ENTRY_FUNCTION(BOARD_PBL_START)
+ 	debug_ll_outc '.'
+ 	debug_ll_ns16550_outnl
+ 
+-ENTRY_FUNCTION_END(BOARD_PBL_START, loongson_ls1b)
++ENTRY_FUNCTION_END(BOARD_PBL_START, loongson_ls1b, SZ_64M)
+diff --git a/arch/mips/boards/qemu-malta/lowlevel.S b/arch/mips/boards/qemu-malta/lowlevel.S
+index 3861ae9e46..e4ecde45cf 100644
+--- a/arch/mips/boards/qemu-malta/lowlevel.S
++++ b/arch/mips/boards/qemu-malta/lowlevel.S
+@@ -10,6 +10,7 @@
+ #include <asm/asm.h>
+ #include <asm/pbl_macros.h>
+ #include <asm/pbl_nmon.h>
++#include <linux/sizes.h>
+ 
+ #include <asm/addrspace.h>
+ #include <asm/gt64120.h>
+@@ -82,4 +83,4 @@ __start:
+ 	li	t0, GT_LD(0x1bdfffff)
+ 	sw	t0, GT_PCI0M1HD_OFS(t1)
+ 
+-ENTRY_FUNCTION_END(BOARD_PBL_START, qemu_malta)
++ENTRY_FUNCTION_END(BOARD_PBL_START, qemu_malta, SZ_256M)
+diff --git a/arch/mips/boards/ritmix-rzx50/lowlevel.S b/arch/mips/boards/ritmix-rzx50/lowlevel.S
+index 7a9743835e..33810f67f5 100644
+--- a/arch/mips/boards/ritmix-rzx50/lowlevel.S
++++ b/arch/mips/boards/ritmix-rzx50/lowlevel.S
+@@ -10,6 +10,7 @@
+ #include <asm/pbl_macros.h>
+ #include <mach/debug_ll.h>
+ #include <asm/pbl_nmon.h>
++#include <linux/sizes.h>
+ 
+ ENTRY_FUNCTION(BOARD_PBL_START)
+ 
+@@ -23,4 +24,4 @@ ENTRY_FUNCTION(BOARD_PBL_START)
+ 	debug_ll_outc '.'
+ 	debug_ll_ns16550_outnl
+ 
+-ENTRY_FUNCTION_END(BOARD_PBL_START, rzx50)
++ENTRY_FUNCTION_END(BOARD_PBL_START, rzx50, SZ_64M)
+diff --git a/arch/mips/boards/tplink-mr3020/lowlevel.S b/arch/mips/boards/tplink-mr3020/lowlevel.S
+index 0a1c193c1e..b96292ecc4 100644
+--- a/arch/mips/boards/tplink-mr3020/lowlevel.S
++++ b/arch/mips/boards/tplink-mr3020/lowlevel.S
+@@ -11,9 +11,10 @@
+ #include <asm/asm.h>
+ #include <mach/pbl_macros.h>
+ #include <asm/pbl_nmon.h>
++#include <linux/sizes.h>
+ 
+ ENTRY_FUNCTION(BOARD_PBL_START)
+ 
+ 	ar9331_pbl_generic_start
+ 
+-ENTRY_FUNCTION_END(BOARD_PBL_START, tplink_mr3020)
++ENTRY_FUNCTION_END(BOARD_PBL_START, tplink_mr3020, SZ_32M)
+diff --git a/arch/mips/boards/tplink-wdr4300/lowlevel.S b/arch/mips/boards/tplink-wdr4300/lowlevel.S
+index 461b257f41..8aed5ddcf1 100644
+--- a/arch/mips/boards/tplink-wdr4300/lowlevel.S
++++ b/arch/mips/boards/tplink-wdr4300/lowlevel.S
+@@ -11,6 +11,7 @@
+ #include <mach/pbl_macros.h>
+ #include <mach/pbl_ll_init_ar9344_1.1.h>
+ #include <asm/pbl_nmon.h>
++#include <linux/sizes.h>
+ 
+ ENTRY_FUNCTION(BOARD_PBL_START)
+ 
+@@ -35,4 +36,4 @@ skip_flash_test:
+ 
+ skip_pll_ram_config:
+ 
+-ENTRY_FUNCTION_END(BOARD_PBL_START, ar9344_tl_wdr4300_v1.7)
++ENTRY_FUNCTION_END(BOARD_PBL_START, ar9344_tl_wdr4300_v1.7, SZ_128M)
+diff --git a/arch/mips/boot/main_entry-pbl.c b/arch/mips/boot/main_entry-pbl.c
+index b40887b064..28eaa8791f 100644
+--- a/arch/mips/boot/main_entry-pbl.c
++++ b/arch/mips/boot/main_entry-pbl.c
+@@ -18,7 +18,7 @@ extern void *input_data_end;
+ unsigned long free_mem_ptr;
+ unsigned long free_mem_end_ptr;
+ 
+-void pbl_main_entry(void *fdt, void *fdt_end);
++void pbl_main_entry(void *fdt, void *fdt_end, u32 ram_size);
+ 
+ static unsigned long *ttb;
+ 
+@@ -33,7 +33,8 @@ static void barebox_uncompress(void *compressed_start, unsigned int len)
+ 	pbl_barebox_uncompress((void*)TEXT_BASE, compressed_start, len);
+ }
+ 
+-void __section(.text_entry) pbl_main_entry(void *fdt, void *fdt_end)
++void __section(.text_entry) pbl_main_entry(void *fdt, void *fdt_end,
++					   u32 ram_size)
+ {
+ 	u32 pg_start, pg_end, pg_len, fdt_len;
+ 	void *fdt_new;
+diff --git a/arch/mips/include/asm/asm.h b/arch/mips/include/asm/asm.h
+index 7d2b673bd9..a85467ceed 100644
+--- a/arch/mips/include/asm/asm.h
++++ b/arch/mips/include/asm/asm.h
+@@ -89,13 +89,14 @@ EXPORT(symbol)
+ /*
+  * ENTRY_FUNCTION_END - mark end of entry function
+  */
+-#define ENTRY_FUNCTION_END(symbol, dtb)			\
++#define ENTRY_FUNCTION_END(symbol, dtb, ram_size)	\
+ 	mips_nmon;					\
+ 	copy_to_link_location	symbol;			\
+ 	stack_setup;					\
+ 							\
+ 	la	a0, __dtb_ ## dtb##_start;		\
+ 	la	a1, __dtb_ ## dtb##_end;		\
++	li	a2, ram_size;				\
+ 	la	v0, pbl_main_entry;			\
+ 	jal	v0;					\
+ 	 nop;						\
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
