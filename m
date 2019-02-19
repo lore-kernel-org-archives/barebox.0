@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gw6F8-0005Ea-Gr
- for barebox@lists.infradead.org; Tue, 19 Feb 2019 14:19:32 +0000
-References: <20190207145801.6893-1-a.fatoum@pengutronix.de>
- <20190211080020.5sjssmrhq26vl7tn@pengutronix.de>
- <8bb4a983-9b6b-bb50-d2b4-7244ad18e27f@pengutronix.de>
- <20190218083105.tl4j5jjp7l42rnpz@pengutronix.de>
- <20190218121218.GA1835@ravnborg.org>
+ id 1gw6CY-0003oP-Qr
+ for barebox@lists.infradead.org; Tue, 19 Feb 2019 14:16:53 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <afa@pengutronix.de>) id 1gw6CX-0008Dr-3I
+ for barebox@lists.infradead.org; Tue, 19 Feb 2019 15:16:49 +0100
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92-RC5)
+ (envelope-from <afa@pengutronix.de>) id 1gw6CW-00089Q-Qq
+ for barebox@lists.infradead.org; Tue, 19 Feb 2019 15:16:48 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <2c597443-0999-c8a9-4051-196043821db3@pengutronix.de>
-Date: Tue, 19 Feb 2019 15:19:28 +0100
+Date: Tue, 19 Feb 2019 15:16:45 +0100
+Message-Id: <20190219141647.2537-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20190218121218.GA1835@ravnborg.org>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,35 +27,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] LICENSES: adopt Linux-like LICENSES directory structure
-To: Sam Ravnborg <sam@ravnborg.org>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 0/2] LICENSES: adopt Linux-like LICENSES directory structure
+To: barebox@lists.infradead.org
 
-Hello Sam
+Changes since v1:
+- fixed grep pipeline in commit message
+- removed u-boot jumptable exception as suggested by Sascha
+- added follow-up commit with updated checkpatch.pl as suggested by Sam
+- added empty exceptions/ and other/ directories
 
-On 18/2/19 13:12, Sam Ravnborg wrote:
-> 
-> While on the LICENSE topic.
-> Could you update checkpatch to recognize SPDX entries too?
-> 
+Ahmad Fatoum (2):
+  LICENSES: adopt Linux-like LICENSES directory structure
+  scripts/checkpatch.pl: rebase on top of upstream v5.0-rc6
 
-I've included a patch with an updated checkpatch.pl in the v2
-I just sent out.
-
-Cheers
-Ahmad
-
-
-
-> 
-> 	Sam
-> 
+ COPYING                          |  300 +-
+ LICENSES/exceptions/.gitignore   |    0
+ LICENSES/other/.gitignore        |    0
+ LICENSES/preferred/BSD-3-Clause  |   36 +
+ LICENSES/preferred/GPL-2.0       |  299 ++
+ scripts/checkpatch.pl            | 4682 ++++++++++++++++++++++++++----
+ scripts/cleanfile                |  178 ++
+ scripts/cleanpatch               |  260 ++
+ scripts/const_structs.checkpatch |    0
+ scripts/get_maintainer.pl        |   11 +
+ scripts/spdxcheck.py             |  286 ++
+ scripts/spelling.txt             | 1344 +++++++++
+ 12 files changed, 6509 insertions(+), 887 deletions(-)
+ create mode 100644 LICENSES/exceptions/.gitignore
+ create mode 100644 LICENSES/other/.gitignore
+ create mode 100644 LICENSES/preferred/BSD-3-Clause
+ create mode 100644 LICENSES/preferred/GPL-2.0
+ create mode 100755 scripts/cleanfile
+ create mode 100755 scripts/cleanpatch
+ create mode 100644 scripts/const_structs.checkpatch
+ create mode 100755 scripts/get_maintainer.pl
+ create mode 100755 scripts/spdxcheck.py
+ create mode 100644 scripts/spelling.txt
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
