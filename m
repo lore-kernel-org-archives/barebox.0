@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gwMjT-0002SK-7F
- for barebox@lists.infradead.org; Wed, 20 Feb 2019 07:55:56 +0000
-Date: Wed, 20 Feb 2019 08:55:52 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190220075552.uwkd46bevpdl775t@pengutronix.de>
-References: <20190219120612.728-1-a.fatoum@pengutronix.de>
- <20190219120612.728-3-a.fatoum@pengutronix.de>
- <20190219204233.GA14204@ravnborg.org>
- <7820ced1-0a40-9bad-85ac-f3711161b96a@pengutronix.de>
+ id 1gw3i0-00054T-Hc
+ for barebox@lists.infradead.org; Tue, 19 Feb 2019 11:37:10 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 19 Feb 2019 12:36:58 +0100
+Message-Id: <20190219113700.10172-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <7820ced1-0a40-9bad-85ac-f3711161b96a@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,65 +19,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] ARM: at91: debug_ll: make UART base address
- configurable
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH 0/2] scripts/dtc: Update to upstream version v1.4.7
+To: barebox@lists.infradead.org
 
-On Tue, Feb 19, 2019 at 10:10:02PM +0100, Ahmad Fatoum wrote:
-> Hello Sam,
-> 
-> On 19/2/19 21:42, Sam Ravnborg wrote:
-> > Hi Ahmad.
-> > 
-> > On Tue, Feb 19, 2019 at 01:06:10PM +0100, Ahmad Fatoum wrote:
-> >> This is in line with other platforms such as i.MX, which allow
-> >> specifying a debug port. As we can't use port indices because
-> >> the UARTs aren't mapped consecutively, allow specifying a hex
-> >> base at configuration time.
-> >>
-> >> A side effect of this patch is that sama5d4's HAVE_AT91_DBGU2
-> >> is now honored as well. Previously anything besides DBGU0
-> >> defaulted to DBGU1.
-> > 
-> > This approch hardcoded the DBGU address based on the configuration.
-> > Can you somehow come up with something that is run-time configured?
-> 
-> I think it should remain build-time configurable, to account for cases
-> such as when the designated debug port isn't usable for whatever reason
-> (e.g. its exposed via a USB-to-UART bridge and you want to use a proper
-> UART, because you hate that the disconnection on power cycle..).
+To play around with the new /omit-if-no-ref/ feature, I've enabled
+update-dtc-source.sh for barebox and used it to update dtc to v1.4.7.
 
-Something like this should work:
+The second patch also reinstates the dtc-lexer.l and dtc-parser.y
+files which were erroneously deleted in 
+273dbe5f87 ("kbuild: generate lexer and parser during build instead of shipping").
 
-config AT91_DEBUG_DEFAULT_BASE
-	hex
-	default 0xfffff200 if AT91_DBGU_AT91RM9200
-	default 0xffffee00 if AT91_DBGU_AT91SAM9263
-	default 0xfc069000 if AT91_DBGU_AT91SAMA5D4
+Ahmad Fatoum (2):
+  scripts/dtc: fix update-dtc-source.sh for barebox use
+  scripts/dtc: Update to upstream version v1.4.7
 
-choice
-	prompt "Choose Lowlevel debug UART"
-
-config AT91_DBGU_AT91RM9200
-	bool "AT91RM9200, AT91SAM926[01], AT91SAM9x5, AT91SAM9N12"
-config AT91_DBGU_AT91SAM9263
-	bool "AT91SAM9263, AT91SAM9G45, ARCH_SAMA5D3"
-config AT91_DBGU_AT91SAMA5D4
-	bool "AT91SAMA5D4"
-endchoice
-
-This lets you choose the right one if multiple SoCs are enabled during
-build. Of course it only works if you choose the correct one for the SoC
-you are running on later.
-
-Sascha
+ scripts/dtc/checks.c                 |  199 ++-
+ scripts/dtc/data.c                   |    4 +-
+ scripts/dtc/dtc-lexer.l              |  313 ++++
+ scripts/dtc/dtc-lexer.lex.c_shipped  | 2253 -------------------------
+ scripts/dtc/dtc-parser.tab.c_shipped | 2332 --------------------------
+ scripts/dtc/dtc-parser.tab.h_shipped |  125 --
+ scripts/dtc/dtc-parser.y             |  560 +++++++
+ scripts/dtc/dtc.h                    |   12 +
+ scripts/dtc/fdt.c                    |   81 +-
+ scripts/dtc/fdt_addresses.c          |   35 +-
+ scripts/dtc/fdt_overlay.c            |    6 +-
+ scripts/dtc/fdt_ro.c                 |  199 ++-
+ scripts/dtc/fdt_rw.c                 |   28 +-
+ scripts/dtc/fdt_sw.c                 |  109 +-
+ scripts/dtc/fdtdump.c                |  163 --
+ scripts/dtc/fdtget.c                 |    8 +-
+ scripts/dtc/fdtput.c                 |  362 ----
+ scripts/dtc/flattree.c               |    2 +-
+ scripts/dtc/libfdt.h                 |   76 +-
+ scripts/dtc/libfdt_env.h             |    1 +
+ scripts/dtc/libfdt_internal.h        |    5 +-
+ scripts/dtc/livetree.c               |   38 +-
+ scripts/dtc/treesource.c             |  222 ++-
+ scripts/dtc/update-dtc-source.sh     |   23 +-
+ scripts/dtc/util.c                   |   23 +-
+ scripts/dtc/util.h                   |   20 +-
+ scripts/dtc/version_gen.h            |    2 +-
+ 27 files changed, 1713 insertions(+), 5488 deletions(-)
+ create mode 100644 scripts/dtc/dtc-lexer.l
+ delete mode 100644 scripts/dtc/dtc-lexer.lex.c_shipped
+ delete mode 100644 scripts/dtc/dtc-parser.tab.c_shipped
+ delete mode 100644 scripts/dtc/dtc-parser.tab.h_shipped
+ create mode 100644 scripts/dtc/dtc-parser.y
+ delete mode 100644 scripts/dtc/fdtdump.c
+ delete mode 100644 scripts/dtc/fdtput.c
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
