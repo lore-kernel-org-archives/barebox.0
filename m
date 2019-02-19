@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gw4AC-0006nR-3t
- for barebox@lists.infradead.org; Tue, 19 Feb 2019 12:06:19 +0000
+ id 1gw4AC-0006nT-3s
+ for barebox@lists.infradead.org; Tue, 19 Feb 2019 12:06:21 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <afa@pengutronix.de>) id 1gw4A9-0001yp-MD
+ (envelope-from <afa@pengutronix.de>) id 1gw4A9-0001yq-Nj
  for barebox@lists.infradead.org; Tue, 19 Feb 2019 13:06:13 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92-RC5)
- (envelope-from <afa@pengutronix.de>) id 1gw4A9-0003od-Bs
+ (envelope-from <afa@pengutronix.de>) id 1gw4A9-0003pM-DY
  for barebox@lists.infradead.org; Tue, 19 Feb 2019 13:06:13 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 19 Feb 2019 13:06:11 +0100
-Message-Id: <20190219120612.728-4-a.fatoum@pengutronix.de>
+Date: Tue, 19 Feb 2019 13:06:12 +0100
+Message-Id: <20190219120612.728-5-a.fatoum@pengutronix.de>
 In-Reply-To: <20190219120612.728-1-a.fatoum@pengutronix.de>
 References: <20190219120612.728-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -29,128 +29,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] ARM: at91: fix at91sama5_get_ddram_size for sama5d4
+Subject: [PATCH 4/4] ARM: at91: remove duplicate get_ddram_size code
 To: barebox@lists.infradead.org
 
-at91sama5_get_ddram_size() is despite the name specific to the
-sama5d3 which it was added alongside of. sama5d4 board code continues
-to use it, but accessing SAMA5D3_BASE_MPDDRC (0xffffea00) on
-a sama5d4 should result in a Data Abort (Datasheet Figure 5-1)..
+Both at91_get_ddram_size and at91sama5_get_ddram_size are the
+same if is_sdram == false and is_nb == true.
 
-Fix this by giving at91sama5_get_ddram_size the mpddrc base
-address as argument and adjust call sites appropriately.
+is_sdram is always false, because according to the sama5d{2,3,4}
+datasheets, the lowest possible value for AT91_DDRSDRC_MD is 3
+(i.e. none of them supports SDR SDRAM).
 
-This change was not tested on a sama5d4.
+Therefore have at91sama5_get_ddram_size call at91_get_ddram_size
+with is_nb == true and remove the duplicate code.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/sama5d3_xplained/lowlevel.c       | 2 +-
- arch/arm/boards/sama5d3xek/lowlevel.c             | 2 +-
- arch/arm/boards/sama5d4_xplained/lowlevel.c       | 2 +-
- arch/arm/boards/sama5d4ek/lowlevel.c              | 2 +-
- arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h | 6 ++----
- arch/arm/mach-at91/sama5d3_devices.c              | 2 +-
- arch/arm/mach-at91/sama5d4_devices.c              | 2 +-
- 7 files changed, 8 insertions(+), 10 deletions(-)
+ .../mach-at91/include/mach/at91sam9_ddrsdr.h  | 27 ++-----------------
+ 1 file changed, 2 insertions(+), 25 deletions(-)
 
-diff --git a/arch/arm/boards/sama5d3_xplained/lowlevel.c b/arch/arm/boards/sama5d3_xplained/lowlevel.c
-index b791f2a03cc7..56003c6330ec 100644
---- a/arch/arm/boards/sama5d3_xplained/lowlevel.c
-+++ b/arch/arm/boards/sama5d3_xplained/lowlevel.c
-@@ -19,5 +19,5 @@ void __naked __bare_init barebox_arm_reset_vector(void)
- 
- 	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE - 16);
- 
--	barebox_arm_entry(SAMA5_DDRCS, at91sama5_get_ddram_size(), NULL);
-+	barebox_arm_entry(SAMA5_DDRCS, at91sama5_get_ddram_size(IOMEM(SAMA5D3_BASE_MPDDRC)), NULL);
- }
-diff --git a/arch/arm/boards/sama5d3xek/lowlevel.c b/arch/arm/boards/sama5d3xek/lowlevel.c
-index b791f2a03cc7..56003c6330ec 100644
---- a/arch/arm/boards/sama5d3xek/lowlevel.c
-+++ b/arch/arm/boards/sama5d3xek/lowlevel.c
-@@ -19,5 +19,5 @@ void __naked __bare_init barebox_arm_reset_vector(void)
- 
- 	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE - 16);
- 
--	barebox_arm_entry(SAMA5_DDRCS, at91sama5_get_ddram_size(), NULL);
-+	barebox_arm_entry(SAMA5_DDRCS, at91sama5_get_ddram_size(IOMEM(SAMA5D3_BASE_MPDDRC)), NULL);
- }
-diff --git a/arch/arm/boards/sama5d4_xplained/lowlevel.c b/arch/arm/boards/sama5d4_xplained/lowlevel.c
-index b791f2a03cc7..82993c83551b 100644
---- a/arch/arm/boards/sama5d4_xplained/lowlevel.c
-+++ b/arch/arm/boards/sama5d4_xplained/lowlevel.c
-@@ -19,5 +19,5 @@ void __naked __bare_init barebox_arm_reset_vector(void)
- 
- 	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE - 16);
- 
--	barebox_arm_entry(SAMA5_DDRCS, at91sama5_get_ddram_size(), NULL);
-+	barebox_arm_entry(SAMA5_DDRCS, at91sama5_get_ddram_size(IOMEM(SAMA5D4_BASE_MPDDRC)), NULL);
- }
-diff --git a/arch/arm/boards/sama5d4ek/lowlevel.c b/arch/arm/boards/sama5d4ek/lowlevel.c
-index b791f2a03cc7..82993c83551b 100644
---- a/arch/arm/boards/sama5d4ek/lowlevel.c
-+++ b/arch/arm/boards/sama5d4ek/lowlevel.c
-@@ -19,5 +19,5 @@ void __naked __bare_init barebox_arm_reset_vector(void)
- 
- 	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE - 16);
- 
--	barebox_arm_entry(SAMA5_DDRCS, at91sama5_get_ddram_size(), NULL);
-+	barebox_arm_entry(SAMA5_DDRCS, at91sama5_get_ddram_size(IOMEM(SAMA5D4_BASE_MPDDRC)), NULL);
- }
 diff --git a/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h b/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h
-index b0c003cd1e05..a775d3b19691 100644
+index a775d3b19691..795eb0ce9a9f 100644
 --- a/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h
 +++ b/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h
-@@ -222,13 +222,11 @@ static inline u32 at91sam9n12_get_ddram_size(void)
- #endif
- 
- #ifdef CONFIG_SOC_SAMA5
--#include <mach/sama5d3.h>
--static inline u32 at91sama5_get_ddram_size(void)
-+static inline u32 at91sama5_get_ddram_size(void __iomem *base)
- {
- 	u32 cr;
- 	u32 mdr;
- 	u32 size;
--	void * __iomem base = IOMEM(SAMA5D3_BASE_MPDDRC);
- 
+@@ -148,6 +148,7 @@ static inline u32 at91_get_ddram_size(void * __iomem base, bool is_nb)
  	cr = readl(base + AT91_DDRSDRC_CR);
  	mdr = readl(base + AT91_DDRSDRC_MDR);
-@@ -253,7 +251,7 @@ static inline u32 at91sama5_get_ddram_size(void)
- 	return size;
+ 
++	/* will always be false for sama5d2, sama5d3 or sama5d4 */
+ 	is_sdram = (mdr & AT91_DDRSDRC_MD) <= AT91_DDRSDRC_MD_LOW_POWER_SDR;
+ 
+ 	/* Formula:
+@@ -224,31 +225,7 @@ static inline u32 at91sam9n12_get_ddram_size(void)
+ #ifdef CONFIG_SOC_SAMA5
+ static inline u32 at91sama5_get_ddram_size(void __iomem *base)
+ {
+-	u32 cr;
+-	u32 mdr;
+-	u32 size;
+-
+-	cr = readl(base + AT91_DDRSDRC_CR);
+-	mdr = readl(base + AT91_DDRSDRC_MDR);
+-
+-	/* Formula:
+-	 * size = bank << (col + row + 1);
+-	 * if (bandwidth == 32 bits)
+-	 *	size <<= 1;
+-	 */
+-	size = 1;
+-	/* COL */
+-	size += (cr & AT91_DDRSDRC_NC) + 9;
+-	/* ROW */
+-	size += ((cr & AT91_DDRSDRC_NR) >> 2) + 11;
+-	/* BANK */
+-	size = ((cr & AT91_DDRSDRC_NB) ? 8 : 4) << size;
+-
+-	/* bandwidth */
+-	if (!(mdr & AT91_DDRSDRC_DBW))
+-		size <<= 1;
+-
+-	return size;
++	return at91_get_ddram_size(base, true);
  }
  #else
--static inline u32 at91sama5_get_ddram_size(void)
-+static inline u32 at91sama5_get_ddram_size(void __iomem *base)
- {
- 	return 0;
- }
-diff --git a/arch/arm/mach-at91/sama5d3_devices.c b/arch/arm/mach-at91/sama5d3_devices.c
-index f5075b39374f..b61d2b309ce0 100644
---- a/arch/arm/mach-at91/sama5d3_devices.c
-+++ b/arch/arm/mach-at91/sama5d3_devices.c
-@@ -28,7 +28,7 @@
- void at91_add_device_sdram(u32 size)
- {
- 	if (!size)
--		size = at91sama5_get_ddram_size();
-+		size = at91sama5_get_ddram_size(IOMEM(SAMA5D3_BASE_MPDDRC));
- 
- 	arm_add_mem_device("ram0", SAMA5_DDRCS, size);
- 	add_mem_device("sram0", SAMA5D3_SRAM_BASE,
-diff --git a/arch/arm/mach-at91/sama5d4_devices.c b/arch/arm/mach-at91/sama5d4_devices.c
-index 4064e4441f9f..546d0888bfd8 100644
---- a/arch/arm/mach-at91/sama5d4_devices.c
-+++ b/arch/arm/mach-at91/sama5d4_devices.c
-@@ -29,7 +29,7 @@
- void at91_add_device_sdram(u32 size)
- {
- 	if (!size)
--		size = at91sama5_get_ddram_size();
-+		size = at91sama5_get_ddram_size(IOMEM(SAMA5D4_BASE_MPDDRC));
- 
- 	arm_add_mem_device("ram0", SAMA5_DDRCS, size);
- 	add_mem_device("sram0", SAMA5D4_SRAM_BASE,
+ static inline u32 at91sama5_get_ddram_size(void __iomem *base)
 -- 
 2.20.1
 
