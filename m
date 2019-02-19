@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gw2Hb-0004Wi-4D
- for barebox@lists.infradead.org; Tue, 19 Feb 2019 10:05:48 +0000
-Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
- (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
- id S23990392AbfBSKFnMx3Ge (ORCPT
- <rfc822;barebox@lists.infradead.org>);
- Tue, 19 Feb 2019 11:05:43 +0100
-Date: Tue, 19 Feb 2019 11:05:42 +0100
-From: Ladislav Michl <ladis@linux-mips.org>
-Message-ID: <20190219100542.GA8982@lenoch>
+Received: from asavdk3.altibox.net ([109.247.116.14])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gw2Ft-0002tf-KB
+ for barebox@lists.infradead.org; Tue, 19 Feb 2019 10:04:03 +0000
+Date: Tue, 19 Feb 2019 11:01:53 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20190219100153.GA31091@ravnborg.org>
 References: <20190217161609.11305-1-sam@ravnborg.org>
  <20190218081014.ea4m7vcsndojdgwf@pengutronix.de>
  <20190218195906.GA23542@ravnborg.org>
@@ -32,7 +27,7 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2 0/9] at91: Support PMC clock bindings
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>, Sam Ravnborg <sam@ravnborg.org>
+Cc: Barebox List <barebox@lists.infradead.org>
 
 On Tue, Feb 19, 2019 at 10:05:31AM +0100, Sascha Hauer wrote:
 > On Mon, Feb 18, 2019 at 08:59:06PM +0100, Sam Ravnborg wrote:
@@ -48,10 +43,10 @@ On Tue, Feb 19, 2019 at 10:05:31AM +0100, Sascha Hauer wrote:
 > 
 > All good, Ladis already reminded me that you wanted to send a v2 so I
 > haven't pushed it yet. I can still take v2.
+Ahmad sent a fixup! to add compat because sam5d3 do not yet support the new clock binding.
+Let me integrate these and send a V3.
 
-I guess you mean v3 here, plus Ahmad's fixups :). That would work for me.
-
-	ladis
+	Sam
 
 _______________________________________________
 barebox mailing list
