@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gw95j-00011n-9Q
- for barebox@lists.infradead.org; Tue, 19 Feb 2019 17:22:09 +0000
+ id 1gw95j-00011l-93
+ for barebox@lists.infradead.org; Tue, 19 Feb 2019 17:22:06 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <afa@pengutronix.de>) id 1gw95h-0002UA-Qv
+ (envelope-from <afa@pengutronix.de>) id 1gw95h-0002UC-RY
  for barebox@lists.infradead.org; Tue, 19 Feb 2019 18:21:57 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92-RC5)
- (envelope-from <afa@pengutronix.de>) id 1gw95c-00064Y-6o
+ (envelope-from <afa@pengutronix.de>) id 1gw95c-00064v-7b
  for barebox@lists.infradead.org; Tue, 19 Feb 2019 18:21:52 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 19 Feb 2019 18:21:48 +0100
-Message-Id: <20190219172150.11901-15-a.fatoum@pengutronix.de>
+Date: Tue, 19 Feb 2019 18:21:50 +0100
+Message-Id: <20190219172150.11901-17-a.fatoum@pengutronix.de>
 In-Reply-To: <20190219172150.11901-1-a.fatoum@pengutronix.de>
 References: <20190219172150.11901-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -29,312 +29,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 14/16] ARM: at91: microchip-ksz9477-evb: implement first
- stage
+Subject: [PATCH v2 16/16] doc: microchip-ksz9477-evb: add documentation
 To: barebox@lists.infradead.org
-
-This imports the low level init code from at91bootstrap
-https://github.com/linux4sam/at91bootstrap/blob/v3.8.12/board/sama5d3_xplained/sama5d3_xplained.c
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- .../boards/microchip-ksz9477-evb/lowlevel.c   | 194 +++++++++++++++++-
- arch/arm/mach-at91/Kconfig                    |   2 +
- arch/arm/mach-at91/include/mach/at91_pmc.h    |   8 +
- arch/arm/mach-at91/include/mach/sama5d3.h     |   1 +
- images/Makefile.at91                          |   4 +
- 5 files changed, 205 insertions(+), 4 deletions(-)
+ .../boards/at91/microchip-ksz9477-evb.rst     | 38 ++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c b/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c
-index 4293f8aaa57d..2813743c0765 100644
---- a/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c
-+++ b/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c
-@@ -1,7 +1,7 @@
- /*
-  * Copyright (C) 2018 Ahmad Fatoum, Pengutronix
-  *
-- * Under GPLv2
-+ * SPDX-License-Identifier: GPL-2.0-only
-  */
+diff --git a/Documentation/boards/at91/microchip-ksz9477-evb.rst b/Documentation/boards/at91/microchip-ksz9477-evb.rst
+index 4c4c4aecbfb3..2a68c2a552cd 100644
+--- a/Documentation/boards/at91/microchip-ksz9477-evb.rst
++++ b/Documentation/boards/at91/microchip-ksz9477-evb.rst
+@@ -1,11 +1,45 @@
+ Microchip KSZ 9477 Evaluation board
+ ===================================
  
- #include <common.h>
-@@ -10,18 +10,204 @@
- #include <asm/barebox-arm-head.h>
- #include <asm/barebox-arm.h>
+-This is an evaluation board for a switch that uses the at91sam9x5 CPU.
++This is an evaluation board for the KSZ9477 switch that uses the sama5d36 CPU.
+ The board uses Device Tree and supports multi image.
  
--#include <mach/hardware.h>
-+#include <debug_ll.h>
-+#include <linux/kconfig.h>
-+#include <mach/at91_dbgu.h>
-+#include <mach/at91_ddrsdrc.h>
-+#include <mach/at91_lowlevel_clock.h>
-+#include <mach/at91_pio.h>
-+#include <mach/at91_pmc.h>
-+#include <mach/at91_wdt.h>
-+#include <mach/ddramc.h>
-+#include <mach/early_udelay.h>
-+#include <mach/gpio.h>
-+#include <mach/iomux.h>
+-Building barebox:
++Building barebox as second stage bootloader:
  
-+/* PCK = 528MHz, MCK = 132MHz */
-+#define MASTER_CLOCK	132000000
-+
-+#define PMC_BASE IOMEM(SAMA5D3_BASE_PMC)
-+#define sama5d3_pmc_enable_periph_clock(clk) \
-+	at91_pmc_enable_periph_clock(PMC_BASE, clk)
-+
-+#define BAUDRATE(mck, baud) \
-+	((((((mck) * 10) / ((baud) * 16)) % 10) >= 5) ? \
-+	(mck / (baud * 16) + 1) : ((mck) / (baud * 16)))
-+
-+
-+static void configure_piob_pin(unsigned int pin)
-+{
-+	void __iomem *pio = IOMEM(SAMA5D3_BASE_PIOB);
-+	u32 mask = pin_to_mask(pin);
-+
-+	at91_mux_disable_interrupt(pio, mask);
-+	at91_mux_set_pullup(pio, mask, 0);
-+	at91_mux_pio3_set_pulldown(pio, mask, 0);
-+
-+	at91_mux_pio3_set_A_periph(pio, mask);
-+
-+	at91_mux_gpio_disable(pio, mask);
-+}
-+
-+static noinline void dbgu_init(void)
-+{
-+	sama5d3_pmc_enable_periph_clock(SAMA5D3_ID_PIOB);
-+
-+	configure_piob_pin(AT91_PIN_PB30);
-+	configure_piob_pin(AT91_PIN_PB31);
-+
-+	sama5d3_pmc_enable_periph_clock(SAMA5D3_ID_DBGU);
-+	at91_dbgu_setup_ll(AT91_BASE_DBGU1, BAUDRATE(MASTER_CLOCK, 115200));
-+
-+	putc_ll('>');
-+}
-+
-+static void ddramc_reg_config(struct at91_ddramc_register *ddramc_config)
-+{
-+	ddramc_config->mdr = (AT91C_DDRC2_DBW_32_BITS
-+				| AT91C_DDRC2_MD_DDR2_SDRAM);
-+
-+	ddramc_config->cr = (AT91C_DDRC2_NC_DDR10_SDR9
-+				| AT91C_DDRC2_NR_13
-+				| AT91C_DDRC2_CAS_3
-+				| AT91C_DDRC2_DISABLE_RESET_DLL
-+				| AT91C_DDRC2_ENABLE_DLL
-+				| AT91C_DDRC2_ENRDM_ENABLE
-+				| AT91C_DDRC2_NB_BANKS_8
-+				| AT91C_DDRC2_NDQS_DISABLED
-+				| AT91C_DDRC2_DECOD_INTERLEAVED
-+				| AT91C_DDRC2_UNAL_SUPPORTED);
-+
-+	/*
-+	 * The DDR2-SDRAM device requires a refresh every 15.625 us or 7.81 us.
-+	 * With a 133 MHz frequency, the refresh timer count register must to be
-+	 * set with (15.625 x 133 MHz) ~ 2084 i.e. 0x824
-+	 * or (7.81 x 133 MHz) ~ 1039 i.e. 0x40F.
-+	 */
-+	ddramc_config->rtr = 0x40F;     /* Refresh timer: 7.812us */
-+
-+	/* One clock cycle @ 133 MHz = 7.5 ns */
-+	ddramc_config->t0pr = (AT91C_DDRC2_TRAS_(6)	/* 6 * 7.5 = 45 ns */
-+			| AT91C_DDRC2_TRCD_(2)		/* 2 * 7.5 = 22.5 ns */
-+			| AT91C_DDRC2_TWR_(2)		/* 2 * 7.5 = 15   ns */
-+			| AT91C_DDRC2_TRC_(8)		/* 8 * 7.5 = 75   ns */
-+			| AT91C_DDRC2_TRP_(2)		/* 2 * 7.5 = 15   ns */
-+			| AT91C_DDRC2_TRRD_(2)		/* 2 * 7.5 = 15   ns */
-+			| AT91C_DDRC2_TWTR_(2)		/* 2 clock cycles min */
-+			| AT91C_DDRC2_TMRD_(2));	/* 2 clock cycles */
-+
-+	ddramc_config->t1pr = (AT91C_DDRC2_TXP_(2)	/* 2 clock cycles */
-+			| AT91C_DDRC2_TXSRD_(200)	/* 200 clock cycles */
-+			| AT91C_DDRC2_TXSNR_(19)	/* 19 * 7.5 = 142.5 ns */
-+			| AT91C_DDRC2_TRFC_(17));	/* 17 * 7.5 = 127.5 ns */
-+
-+	ddramc_config->t2pr = (AT91C_DDRC2_TFAW_(6)	/* 6 * 7.5 = 45 ns */
-+			| AT91C_DDRC2_TRTP_(2)		/* 2 clock cycles min */
-+			| AT91C_DDRC2_TRPA_(2)		/* 2 * 7.5 = 15 ns */
-+			| AT91C_DDRC2_TXARDS_(8)	/* = TXARD */
-+			| AT91C_DDRC2_TXARD_(8));	/* MR12 = 1 */
-+}
-+
-+static void sama5d3_ddramc_init(void)
-+{
-+	struct at91_ddramc_register ddramc_reg;
-+	u32 reg;
-+
-+	ddramc_reg_config(&ddramc_reg);
-+
-+	/* enable ddr2 clock */
-+	sama5d3_pmc_enable_periph_clock(SAMA5D3_ID_MPDDRC);
-+	at91_pmc_enable_system_clock(PMC_BASE, AT91CAP9_PMC_DDR);
-+
-+
-+	/* Init the special register for sama5d3x */
-+	/* MPDDRC DLL Slave Offset Register: DDR2 configuration */
-+	reg = AT91C_MPDDRC_S0OFF_1
-+		| AT91C_MPDDRC_S2OFF_1
-+		| AT91C_MPDDRC_S3OFF_1;
-+	writel(reg, SAMA5D3_BASE_MPDDRC + AT91C_MPDDRC_DLL_SOR);
-+
-+	/* MPDDRC DLL Master Offset Register */
-+	/* write master + clk90 offset */
-+	reg = AT91C_MPDDRC_MOFF_7
-+		| AT91C_MPDDRC_CLK90OFF_31
-+		| AT91C_MPDDRC_SELOFF_ENABLED | AT91C_MPDDRC_KEY;
-+	writel(reg, SAMA5D3_BASE_MPDDRC + AT91C_MPDDRC_DLL_MOR);
-+
-+	/* MPDDRC I/O Calibration Register */
-+	/* DDR2 RZQ = 50 Ohm */
-+	/* TZQIO = 4 */
-+	reg = AT91C_MPDDRC_RDIV_DDR2_RZQ_50
-+		| AT91C_MPDDRC_TZQIO_4;
-+	writel(reg, SAMA5D3_BASE_MPDDRC + AT91C_MPDDRC_IO_CALIBR);
-+
-+	/* DDRAM2 Controller initialize */
-+	at91_ddram_initialize(SAMA5D3_BASE_MPDDRC, SAMA5_DDRCS, &ddramc_reg);
-+}
-+
-+extern char __dtb_z_at91_microchip_ksz9477_evb_boot_bin_start[];
- extern char __dtb_z_at91_microchip_ksz9477_evb_start[];
+ .. code-block:: sh
  
--ENTRY_FUNCTION(start_sama5d3_xplained_ung8071, r0, r1, r2)
-+static noinline void board_init(void)
- {
--	void *fdt;
-+	void *fdt = NULL;
+   make ARCH=arm microchip_ksz9477_evb_defconfig
 +
-+	at91_wdt_disable(IOMEM(SAMA5D3_BASE_WDT));
-+	at91_lowlevel_clock_init(PMC_BASE);
++There are also a separate defconfig for operating barebox as first stage
++bootloader originating from SD Card.
++This configuration doesn't yet support device-tree use as the NVM bootloader
++(SoC ROM code) requires the first stage bootloader to fit into 64K.
 +
-+	/* At this stage the main oscillator
-+	 * is supposed to be enabled PCK = MCK = MOSC
-+	 */
++Generally, the first stage may comes from any of the following boot
++sources (in that order):
 +
-+	/* Configure PLLA = MOSC * (PLL_MULA + 1) / PLL_DIVA */
-+	at91_pmc_cfg_plla(PMC_BASE, AT91_PMC3_MUL_(43) | AT91_PMC_OUT_0
-+			  | AT91_PMC_PLLCOUNT
-+			  | AT91_PMC_DIV_BYPASS);
++* SPI0 CS0 Flash
++* SD Card
++* NAND Flash
++* SPI0 CS1 Flash
++* I2C EEPROM
 +
-+	/* Initialize PLLA charge pump */
-+	at91_pmc_init_pll(PMC_BASE, AT91_PMC_IPLLA_3);
++After being loaded into SRAM by the NVM bootloader, the first stage does low
++level clock initialization, configuration of the DDRAM controller and
++bootstraps the second stage boot loader.
 +
-+	/* Switch PCK/MCK on Main clock output */
-+	at91_pmc_cfg_mck(PMC_BASE, AT91SAM9_PMC_MDIV_4 | AT91_PMC_CSS_MAIN);
++SD Card Bootstrap
++-----------------
 +
-+	/* Switch PCK/MCK on PLLA output */
-+	at91_pmc_cfg_mck(PMC_BASE, AT91SAM9_PMC_MDIV_4 | AT91_PMC_CSS_PLLA);
++For boot from SD card, barebox additionally needs to be configured as
++first stage bootloader:
 +
-+	if (IS_ENABLED(CONFIG_DEBUG_LL))
-+		dbgu_init();
++.. code-block:: sh
 +
-+	early_udelay_init(PMC_BASE, IOMEM(SAMA5D3_BASE_PIT),
-+			  SAMA5D3_ID_PIT, MASTER_CLOCK);
++  make ARCH=arm microchip_ksz9477_evb_bootstrap_mmc_defconfig
 +
-+	sama5d3_ddramc_init();
- 
-+	fdt = __dtb_z_at91_microchip_ksz9477_evb_boot_bin_start + get_runtime_offset();
-+
-+	barebox_arm_entry(SAMA5_DDRCS, SZ_256M, fdt);
-+}
-+
-+ENTRY_FUNCTION(start_sama5d3_xplained_ung8071_boot_bin, r0, r1, r2)
-+{
- 	arm_cpu_lowlevel_init();
- 
- 	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE - 16);
- 
-+	relocate_to_current_adr();
-+	setup_c();
-+	barrier();
-+
-+	board_init();
-+}
-+
-+ENTRY_FUNCTION(start_sama5d3_xplained_ung8071, r0, r1, r2)
-+{
-+	void *fdt;
-+
-+	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE - 16);
-+
-+	if (IS_ENABLED(CONFIG_DEBUG_LL))
-+		dbgu_init();
-+
- 	fdt = __dtb_z_at91_microchip_ksz9477_evb_start + get_runtime_offset();
- 
- 	barebox_arm_entry(SAMA5_DDRCS, SZ_256M, fdt);
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 7b8c07c3ba97..5d5b4f2b6e60 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -202,6 +202,7 @@ config ARCH_SAMA5D3
- 	select SOC_SAMA5D3
- 	select HAS_MACB
- 	select HAVE_MACH_ARM_HEAD
-+	select HAVE_AT91_LOAD_BAREBOX_SRAM
- 
- config ARCH_SAMA5D4
- 	bool "SAMA5D4"
-@@ -556,6 +557,7 @@ config MACH_MICROCHIP_KSZ9477_EVB
- 	select OFDEVICE
- 	select COMMON_CLK_OF_PROVIDER
- 	select ARM_USE_COMPRESSED_DTB
-+	select HAVE_AT91_BOOTSTRAP
- 	help
- 	  Select this if you are using Microchip's EVB-KSZ9477 Evaluation Kit.
- 
-diff --git a/arch/arm/mach-at91/include/mach/at91_pmc.h b/arch/arm/mach-at91/include/mach/at91_pmc.h
-index 22e296ef4152..dace1fc61c52 100644
---- a/arch/arm/mach-at91/include/mach/at91_pmc.h
-+++ b/arch/arm/mach-at91/include/mach/at91_pmc.h
-@@ -63,9 +63,17 @@
- #define	AT91_CKGR_PLLAR		0x28			/* PLL A Register */
- #define	AT91_CKGR_PLLBR		0x2c			/* PLL B Register */
- #define		AT91_PMC_DIV		(0xff  <<  0)		/* Divider */
-+#define			AT91_PMC_DIV_BYPASS	(1 << 0)		/* Divider bypass */
- #define		AT91_PMC_PLLCOUNT	(0x3f  <<  8)		/* PLL Counter */
- #define		AT91_PMC_OUT		(3     << 14)		/* PLL Clock Frequency Range */
-+#define			AT91_PMC_OUT_0		(0 << 14)
-+#define			AT91_PMC_OUT_1		(1 << 14)
-+#define			AT91_PMC_OUT_2		(2 << 14)
-+#define			AT91_PMC_OUT_3		(3 << 14)
- #define		AT91_PMC_MUL		(0x7ff << 16)		/* PLL Multiplier */
-+#define			AT91_PMC_MUL_(n)		(((n) << 16) & AT91_PMC_MUL)
-+#define		AT91_PMC3_MUL		(0x7f << 18)		/* PLL Multiplier [SAMA5 only]*/
-+#define			AT91_PMC3_MUL_(n)		(((n) << 18) & AT91_PMC3_MUL)
- #define		AT91_PMC_USBDIV		(3     << 28)		/* USB Divisor (PLLB only) */
- #define			AT91_PMC_USBDIV_1		(0 << 28)
- #define			AT91_PMC_USBDIV_2		(1 << 28)
-diff --git a/arch/arm/mach-at91/include/mach/sama5d3.h b/arch/arm/mach-at91/include/mach/sama5d3.h
-index f0e53610c6c0..da6e825593e6 100644
---- a/arch/arm/mach-at91/include/mach/sama5d3.h
-+++ b/arch/arm/mach-at91/include/mach/sama5d3.h
-@@ -87,6 +87,7 @@
- #define SAMA5D3_BASE_PIOC	0xfffff600
- #define SAMA5D3_BASE_PIOD	0xfffff800
- #define SAMA5D3_BASE_PIOE	0xfffffa00
-+#define SAMA5D3_BASE_PMC	0xfffffc00
- #define SAMA5D3_BASE_MPDDRC	0xffffea00
- #define	SAMA5D3_BASE_HSMC	0xffffc000
- #define SAMA5D3_BASE_RSTC	0xfffffe00
-diff --git a/images/Makefile.at91 b/images/Makefile.at91
-index 3f1dd57f6c58..f8afa2a240cd 100644
---- a/images/Makefile.at91
-+++ b/images/Makefile.at91
-@@ -14,6 +14,10 @@ pblb-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += start_sama5d3_xplained_ung8071
- FILE_barebox-microchip-ksz9477-evb.img = start_sama5d3_xplained_ung8071.pblb
- at91-barebox-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += barebox-microchip-ksz9477-evb.img
- 
-+pblb-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += start_sama5d3_xplained_ung8071_boot_bin
-+FILE_barebox-microchip-ksz9477-evb-boot.bin.img = start_sama5d3_xplained_ung8071_boot_bin.pblb
-+at91-boot-bin-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += barebox-microchip-ksz9477-evb-boot.bin.img
-+
- ifdef CONFIG_AT91_LOAD_BAREBOX_SRAM
- image-y += $(at91-boot-bin-y)
- else
++The resulting barebox image must be renamed to ``BOOT.BIN``
++and located in the root directory of the first FAT16/32 partition
++on the SD Card/eMMC. After initialization, ``BOOT.BIN`` will look
++for a ``barebox.bin`` in the same directory and load and execute it
++from SDRAM.
 -- 
 2.20.1
 
