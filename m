@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gpBnc-0008Gz-TC
- for barebox@lists.infradead.org; Thu, 31 Jan 2019 12:50:35 +0000
-Received: by mail-lf1-x135.google.com with SMTP id z13so2197234lfe.11
- for <barebox@lists.infradead.org>; Thu, 31 Jan 2019 04:50:32 -0800 (PST)
-Date: Thu, 31 Jan 2019 15:50:28 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20190131125028.glbnt55zmhqowi6p@localhost.localdomain>
-References: <20190129065549.29161-1-andrew.smirnov@gmail.com>
- <20190129065549.29161-19-andrew.smirnov@gmail.com>
- <20190129084847.spkfbeksb7xne46g@pengutronix.de>
- <CAHQ1cqGm+VUgZDScpPVTDuPX89FNSr1JiecqBah_o2piNT-ayg@mail.gmail.com>
- <20190131105452.smetw36klsxmvtaq@localhost.localdomain>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gw2Kh-0004h2-82
+ for barebox@lists.infradead.org; Tue, 19 Feb 2019 10:09:01 +0000
+References: <20190218210837.11846-1-u.kleine-koenig@pengutronix.de>
+From: =?UTF-8?Q?Stefan_Riedm=c3=bcller?= <s.riedmueller@phytec.de>
+Message-ID: <752e3df7-2d58-84c0-2966-7226c36a1802@phytec.de>
+Date: Tue, 19 Feb 2019 11:08:56 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190131105452.smetw36klsxmvtaq@localhost.localdomain>
+In-Reply-To: <20190218210837.11846-1-u.kleine-koenig@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,49 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 18/19] drivers: mem: Create file to access second half
- of 64-bit memory
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] ARM: dts: imx6*phytec*: switch to new partitioning scheme
+To: barebox@lists.infradead.org
+Cc: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
 
-On Thu, Jan 31, 2019 at 01:54:52PM +0300, Peter Mamonov wrote:
-> Hello, Andrey,
-> 
-> > In order to allow access to second half of address space on 64-bit
-> > machines, add code that creates /dev/highmem dedicated for that.
-> > 
-> > Note that due to maximum file size being limited to MAX_LFS_FILESIZE
-> > or 0x7fff_ffff_ffff_ffff bytes at addresses 0x7fff_ffff_ffff_ffff and
-> > 0xffff_ffff_ffff_ffff cannot be access through /dev/mem and
-> > /dev/hightmem correspondingly.
-> 
-> Does it imply using `-s /dev/highmem` argument when accessing addresses beyond 
-> MAX_LFS_FILESIZE? That's not very convenient:
-> 
-> 	$ git grep -l /dev/mem
-> 	commands/crc.c
-> 	commands/digest.c
-> 	commands/disasm.c
-> 	commands/md.c
-> 	commands/memcmp.c
-> 	commands/memcpy.c
-> 	commands/memset.c
-> 	commands/mm.c
-> 	commands/mw.c
-
-I've forgotten to mention, that all meaningful MIPS64 virtual addresses  
-belong to the 2nd half of the address space. Except for user segment addresses 
-which are not used in barebox.
-
-> 
-> Regards,
-> Peter
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgVXdlLAoKdGhhbmtzIGZvciB0aGUgcGF0Y2guCgpJbiBhcmNoL2FybS9kdHMvaW14NnFkbC1w
+aHl0ZWMtcGZsYTAyLmR0c2kgYW5kIAphcmNoL2FybS9kdHMvaW14NnFkbC1waHl0ZWMtcGh5Y29y
+ZS1zb20uZHRzaSBhcmUgYWRkaXRpb25hbCBncG1pIHBhcnRpdGlvbnMuIERpZCAKeW91IGxlYXZl
+IHRoZW0gb3V0IGZvciBhIHJlYXNvbi4gSSB0aGluayB0aGV5IGNhbiBiZSBtYXRjaGVkIHRvIHRo
+ZSBuZXcgc2NoZW1lIHRvby4KClN0ZWZhbgoKT24gMTguMDIuMTkgMjI6MDgsIFV3ZSBLbGVpbmUt
+S8O2bmlnIHdyb3RlOgo+IEJvdGggTGludXggYW5kIGJhcmVib3ggc3VwcG9ydCB0aGlzIG5ldyBz
+Y2hlbWUgYW5kIGl0J3MgdGhlIGFjdHVhbGx5Cj4gdGhlIHJlY29tbWVuZGVkIG9uZS4KPiAKPiBT
+aWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZzx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9u
+aXguZGU+Cj4gLS0tCj4gICAuLi4vZHRzL2lteDZkbC1waHl0ZWMtcGh5Y29yZS1zb20tZW1tYy5k
+dHMgICAgfCAyMSArKysrKy0tLS0KPiAgIC4uLi9kdHMvaW14NmRsLXBoeXRlYy1waHljb3JlLXNv
+bS1uYW5kLmR0cyAgICB8IDIxICsrKysrLS0tLQo+ICAgYXJjaC9hcm0vZHRzL2lteDZxLXBoeXRl
+Yy1wY2FheGwzLmR0c2kgICAgICAgIHwgMzAgKysrKysrKy0tLS0tLQo+ICAgLi4uL2FybS9kdHMv
+aW14NnEtcGh5dGVjLXBoeWNvcmUtc29tLWVtbWMuZHRzIHwgMjEgKysrKystLS0tCj4gICAuLi4v
+YXJtL2R0cy9pbXg2cS1waHl0ZWMtcGh5Y29yZS1zb20tbmFuZC5kdHMgfCAyNSArKysrKystLS0t
+LQo+ICAgYXJjaC9hcm0vZHRzL2lteDZxZGwtcGh5dGVjLXBmbGEwMi5kdHNpICAgICAgIHwgNDUg
+KysrKysrKysrKy0tLS0tLS0tLQo+ICAgYXJjaC9hcm0vZHRzL2lteDZxZGwtcGh5dGVjLXBoeWNv
+cmUtc29tLmR0c2kgIHwgNDUgKysrKysrKysrKy0tLS0tLS0tLQo+ICAgLi4uL2R0cy9pbXg2cXAt
+cGh5dGVjLXBoeWNvcmUtc29tLW5hbmQuZHRzICAgIHwgMjEgKysrKystLS0tCj4gICBhcmNoL2Fy
+bS9kdHMvaW14NnVsLXBoeXRlYy1waHljb3JlLXNvbS5kdHNpICAgfCAyOSArKysrKystLS0tLS0K
+PiAgIDkgZmlsZXMgY2hhbmdlZCwgMTQzIGluc2VydGlvbnMoKyksIDExNSBkZWxldGlvbnMoLSkK
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
+bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
+cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
