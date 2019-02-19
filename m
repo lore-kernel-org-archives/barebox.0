@@ -1,26 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x341.google.com ([2a00:1450:4864:20::341])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gvfdQ-0004hm-F3
- for barebox@lists.infradead.org; Mon, 18 Feb 2019 09:54:50 +0000
-Received: by mail-wm1-x341.google.com with SMTP id x10so16250677wmg.2
- for <barebox@lists.infradead.org>; Mon, 18 Feb 2019 01:54:46 -0800 (PST)
-Received: from [192.168.106.167] (77-111-10-47.ipv4.tusmobil.si.
- [77.111.10.47])
- by smtp.gmail.com with ESMTPSA id s8sm26752405wrn.44.2019.02.18.01.54.43
- for <barebox@lists.infradead.org>
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 18 Feb 2019 01:54:44 -0800 (PST)
-Subject: Re: [PATCH 5/7] mci: move after pinctrl in link order.
-References: <20190214132429.7463-1-tomaz.solc@tablix.org>
- <20190214132429.7463-6-tomaz.solc@tablix.org>
- <20190218084244.j5eoggrgfgedsuuo@pengutronix.de>
-From: =?UTF-8?B?VG9tYcW+IMWgb2xj?= <tomaz.solc@klevio.com>
-Message-ID: <a0535f65-c8e3-4e01-9be7-fb9b1a896ee5@klevio.com>
-Date: Mon, 18 Feb 2019 10:54:43 +0100
+ id 1gw1JE-0000sA-IH
+ for barebox@lists.infradead.org; Tue, 19 Feb 2019 09:03:31 +0000
+Date: Tue, 19 Feb 2019 10:03:20 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190219090320.wvdpacpxcaaizalu@pengutronix.de>
+References: <1549894227-18660-1-git-send-email-thomas.haemmerle@wolfvision.net>
+ <20190212083148.w23wpevefvm3pezv@pengutronix.de>
+ <79e74d64-d8f3-626b-cefc-1ea810242ec2@wolfvision.net>
 MIME-Version: 1.0
-In-Reply-To: <20190218084244.j5eoggrgfgedsuuo@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <79e74d64-d8f3-626b-cefc-1ea810242ec2@wolfvision.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,32 +20,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] firmware-zynqmp: port from linux
+To: Thomas =?iso-8859-15?Q?H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-T24gMTguIDAyLiAxOSAwOTo0MiwgU2FzY2hhIEhhdWVyIHdyb3RlOgo+IE9uIFRodSwgRmViIDE0
-LCAyMDE5IGF0IDAyOjI0OjI3UE0gKzAxMDAsIFRvbWF6IFNvbGMgd3JvdGU6Cj4+IHBpbmN0cmwg
-ZHJpdmVyIG5lZWRzIHRvIGJlIGluaXRpYWxpemVkIGJlZm9yZSBtY2kgZHJpdmVyIG9yIHRoZSBw
-aW5jdHJsCj4+IGRldmljZSB0cmVlIHByb3BlcnRpZXMgaW4gdGhlIG1jaSBub2RlIGFyZSBpZ25v
-cmVkLiBTaW5jZSBtY2kgaXMgYWxyZWFkeQo+PiBpbml0aWFsaXplZCBieSB0aGUgY29yZWRldmlj
-ZV9pbml0Y2FsbCgpLCBjaGFuZ2luZyB0aGUgbGluayBvcmRlciBpcyBjdXJyZW50bHkKPj4gdGhl
-IG9ubHkgd2F5IHRvIGVuc3VyZSB0aGF0Lgo+IAo+IFRoZSBzYW1lIGFwcGxpZXMgbW9zdCBvdGhl
-ciBzdWJzeXN0ZW1zLCBzbyBpbnN0ZWFkIG9mIG1vdmluZyBtY2kgZG93biBJCj4gd291bGQgcmF0
-aGVyIHN1Z2dlc3QgdG8gbW92ZSBwaW5jdHJsIHVwLgo+IAo+IFRoZSBvdGhlciB0aGluZyBpczog
-V2h5IGRvZXMgdGhlIGJjbTI4MzUgbWNpIGRyaXZlciB1c2UgY29yZWRldmljZV9pbml0Y2FsbCgp
-Cj4gYXQgYWxsPyBOb3JtYWxseSBpdCBzaG91bGQgYmUgYSBkZXZpY2VfaW5pdGNhbGwoKS4gU2lu
-Y2UgdGhlCj4gY29yZWRldmljZV9pbml0Y2FsbCgpIGdvZXMgYmFjayB0byB0aGUgaW5pdGlhbCBj
-b21taXQgb2YgdGhlIGRyaXZlciBJCj4gc3VzcGVjdCB0aGVyZSBpcyBubyBzcGVjaWFsIHJlYXNv
-biBmb3IgdGhhdCBkZWNpc2lvbiBhbmQgc28gSSB0aGluayB3ZQo+IHNob3VsZCBqdXN0IGNoYW5n
-ZSB0byBkZXZpY2VfaW5pdGNhbGwoKS4KCkdvb2QgcG9pbnQuIEkgY2hlY2tlZCBvdGhlciBkcml2
-ZXJzIHVuZGVyIG1jaS8gYW5kIGl0IHNlZW1zIHRoZXkgYWxsIHVzZSAKZGV2aWNlX2luaXRjYWxs
-KCkuIEkgdGhvdWdodCB0aGF0IHN0b3JhZ2UgbXVzdCBjb21lIGJlZm9yZSAKZnNfaW5pdGNhbGwo
-KSwgYnV0IHRoYXQgaXMgbm90IGFjdHVhbGx5IHRoZSBjYXNlLiBBcyBmYXIgYXMgSSBjYW4gc2Vl
-LCAKbm90aGluZyBicmVha3MgYnkgbW92aW5nIG1jaS1iY20yODM1IHRvIGRldmljZV9pbml0Y2Fs
-bCgpLiBJJ2xsIHVwZGF0ZSAKdGhlIHBhdGNoLgoKQmVzdCByZWdhcmRzClRvbWHFvgoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
-IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Thu, Feb 14, 2019 at 02:35:00PM +0000, Thomas H=E4mmerle wrote:
+> Hi Sascha,
+> =
+
+> On 12.02.19 09:31, Sascha Hauer wrote:
+> > Hi Thomas,
+> > =
+
+> > On Mon, Feb 11, 2019 at 02:10:40PM +0000, Thomas H=E4mmerle wrote:
+> >> From: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
+> >>
+> >> Port Xilinx Zynq MPSoC Firmware layer driver from linux.
+> >>
+> >> Signed-off-by: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
+> >> ---
+> >>   arch/arm/Kconfig                                   |   1 +
+> >>   arch/arm/mach-zynqmp/Makefile                      |   2 +-
+> >>   arch/arm/mach-zynqmp/firmware-zynqmp.c             | 601 +++++++++++=
+++++++++++
+> >>   .../arm/mach-zynqmp/include/mach/firmware-zynqmp.h |  66 +++
+> >>   4 files changed, 669 insertions(+), 1 deletion(-)
+> >>   create mode 100644 arch/arm/mach-zynqmp/firmware-zynqmp.c
+> >>   create mode 100644 arch/arm/mach-zynqmp/include/mach/firmware-zynqmp=
+.h
+> >>
+> >> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> >> index c1f385b..fdbe5b7 100644
+> >> --- a/arch/arm/Kconfig
+> >> +++ b/arch/arm/Kconfig
+> >> @@ -250,6 +250,7 @@ config ARCH_ZYNQMP
+> >>   	select CPU_V8
+> >>   	select HAS_DEBUG_LL
+> >>   	select HAVE_PBL_MULTI_IMAGES
+> >> +	select ARM_SMCCC
+> >>   	select COMMON_CLK
+> >>   	select COMMON_CLK_OF_PROVIDER
+> >>   	select CLKDEV_LOOKUP
+> >> diff --git a/arch/arm/mach-zynqmp/Makefile b/arch/arm/mach-zynqmp/Make=
+file
+> >> index c601374..021efc9 100644
+> >> --- a/arch/arm/mach-zynqmp/Makefile
+> >> +++ b/arch/arm/mach-zynqmp/Makefile
+> >> @@ -1,2 +1,2 @@
+> >>   # SPDX-License-Identifier: GPL-2.0-or-later
+> >> -obj- :=3D __dummy__.o
+> >> +obj-y +=3D firmware-zynqmp.o
+> >> diff --git a/arch/arm/mach-zynqmp/firmware-zynqmp.c b/arch/arm/mach-zy=
+nqmp/firmware-zynqmp.c
+> > =
+
+> > =
+
+> > Maybe drivers/firmware/ would be a more appropriate directory to put
+> > this driver in.
+> =
+
+> I was not sure where to put the this driver in:
+> =
+
+> In linux drivers/firmware is the location for drivers which communicate
+> with a firmware (like this one).
+> =
+
+> In barebox, this directory contains drivers to load firmware to devices
+> (socfpga.c for example). Since I will also create a driver to load the
+> PL (programmable logic) of ZynqMP which I will place in
+> drivers/firmware, I decided to put this driver to arch/arm.
+
+Ok, then leave it there for now. I don't have a better idea either.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
