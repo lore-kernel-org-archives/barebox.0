@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gwMKE-0002ka-DW
- for barebox@lists.infradead.org; Wed, 20 Feb 2019 07:29:52 +0000
-Received: by mail-pf1-x442.google.com with SMTP id q17so11478497pfh.10
- for <barebox@lists.infradead.org>; Tue, 19 Feb 2019 23:29:50 -0800 (PST)
+ id 1gwMKF-0002lg-Ix
+ for barebox@lists.infradead.org; Wed, 20 Feb 2019 07:29:53 +0000
+Received: by mail-pf1-x443.google.com with SMTP id g6so11467679pfh.13
+ for <barebox@lists.infradead.org>; Tue, 19 Feb 2019 23:29:51 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 19 Feb 2019 23:29:09 -0800
-Message-Id: <20190220072930.14300-5-andrew.smirnov@gmail.com>
+Date: Tue, 19 Feb 2019 23:29:10 -0800
+Message-Id: <20190220072930.14300-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20190220072930.14300-1-andrew.smirnov@gmail.com>
 References: <20190220072930.14300-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,30 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/25] usb: xhci-hcd: Make sure to initialize xhci->rings_list
+Subject: [PATCH 05/25] usb: xhci-hcd: Drop pointless bitwise or
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Make sure to initialize xhci->rings_list, otherwise any use of the
-driver will result in a crash.
+On_hs_hub is a boolean, not a bitfiled, so usage of bitwise or is
+unnecessary. Replace it with a regular assignement operator.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/host/xhci-hcd.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/host/xhci-hcd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/usb/host/xhci-hcd.c b/drivers/usb/host/xhci-hcd.c
-index a01f9fe38..cdce0d5ec 100644
+index cdce0d5ec..f97a334f0 100644
 --- a/drivers/usb/host/xhci-hcd.c
 +++ b/drivers/usb/host/xhci-hcd.c
-@@ -1470,6 +1470,7 @@ int xhci_register(struct device_d *dev, struct xhci_data *data)
- 	xhci = xzalloc(sizeof(*xhci));
- 	host = &xhci->host;
- 	INIT_LIST_HEAD(&xhci->vdev_list);
-+	INIT_LIST_HEAD(&xhci->rings_list);
- 	xhci->dev = dev;
- 	xhci->cap_regs = data->regs;
- 	xhci->op_regs = (void __iomem *)xhci->cap_regs +
+@@ -849,7 +849,7 @@ static int xhci_virtdev_init(struct xhci_virtual_device *vdev)
+ 		if (top_dev->parent->descriptor->bDeviceClass == USB_CLASS_HUB &&
+ 		    top_dev->parent->speed != USB_SPEED_LOW &&
+ 		    top_dev->parent->speed != USB_SPEED_FULL) {
+-			on_hs_hub |= true;
++			on_hs_hub = true;
+ 			if (!hs_slot_id) {
+ 				struct xhci_virtual_device *vhub =
+ 					xhci_find_virtdev(xhci, top_dev->parent);
 -- 
 2.20.1
 
