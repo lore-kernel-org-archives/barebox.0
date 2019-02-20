@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gwMKW-0003Qu-Rf
- for barebox@lists.infradead.org; Wed, 20 Feb 2019 07:30:19 +0000
-Received: by mail-pf1-x444.google.com with SMTP id s22so11495809pfh.4
- for <barebox@lists.infradead.org>; Tue, 19 Feb 2019 23:30:08 -0800 (PST)
+ id 1gwMKY-0003aI-S5
+ for barebox@lists.infradead.org; Wed, 20 Feb 2019 07:30:25 +0000
+Received: by mail-pg1-x544.google.com with SMTP id u9so7896358pgo.7
+ for <barebox@lists.infradead.org>; Tue, 19 Feb 2019 23:30:10 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 19 Feb 2019 23:29:26 -0800
-Message-Id: <20190220072930.14300-22-andrew.smirnov@gmail.com>
+Date: Tue, 19 Feb 2019 23:29:28 -0800
+Message-Id: <20190220072930.14300-24-andrew.smirnov@gmail.com>
 In-Reply-To: <20190220072930.14300-1-andrew.smirnov@gmail.com>
 References: <20190220072930.14300-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,296 +23,231 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 21/25] clk: Import a subset of clk_bulk API from Linux
+Subject: [PATCH 23/25] lib: Port basic Linux kernel NLS functions
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Import a subset of clk_bulk API from Linux to support porting kernel
-code that uses it.
+Port basic Linux kernel NLS functions: utf8_to_utf32() and
+utf8s_to_utf16s() in order to support porting kernel code that uses
+them.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/clk/Makefile   |   3 +-
- drivers/clk/clk-bulk.c | 102 +++++++++++++++++++++++++++++++++++++++++
- include/linux/clk.h    |  98 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 202 insertions(+), 1 deletion(-)
- create mode 100644 drivers/clk/clk-bulk.c
+ include/linux/nls.h |  40 ++++++++++++++
+ lib/Kconfig         |   3 +
+ lib/Makefile        |   1 +
+ lib/nls_base.c      | 131 ++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 175 insertions(+)
+ create mode 100644 include/linux/nls.h
+ create mode 100644 lib/nls_base.c
 
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index cd4026c94..34c44fff9 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -1,7 +1,8 @@
- obj-$(CONFIG_COMMON_CLK)	+= clk.o clk-fixed.o clk-divider.o clk-fixed-factor.o \
- 				clk-mux.o clk-gate.o clk-composite.o \
- 				clk-fractional-divider.o clk-conf.o \
--				clk-gate-shared.o clk-gpio.o
-+				clk-gate-shared.o clk-gpio.o \
-+				clk-bulk.o
- obj-$(CONFIG_CLKDEV_LOOKUP)	+= clkdev.o
- 
- obj-$(CONFIG_ARCH_MVEBU)	+= mvebu/
-diff --git a/drivers/clk/clk-bulk.c b/drivers/clk/clk-bulk.c
+diff --git a/include/linux/nls.h b/include/linux/nls.h
 new file mode 100644
-index 000000000..ddbe32f9c
+index 000000000..62fb7b5a9
 --- /dev/null
-+++ b/drivers/clk/clk-bulk.c
-@@ -0,0 +1,102 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright 2017 NXP
++++ b/include/linux/nls.h
+@@ -0,0 +1,40 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_NLS_H
++#define _LINUX_NLS_H
++
++/* Unicode has changed over the years.  Unicode code points no longer
++ * fit into 16 bits; as of Unicode 5 valid code points range from 0
++ * to 0x10ffff (17 planes, where each plane holds 65536 code points).
 + *
-+ * Dong Aisheng <aisheng.dong@nxp.com>
++ * The original decision to represent Unicode characters as 16-bit
++ * wchar_t values is now outdated.  But plane 0 still includes the
++ * most commonly used characters, so we will retain it.  The newer
++ * 32-bit unicode_t type can be used when it is necessary to
++ * represent the full Unicode character set.
 + */
 +
-+#include <common.h>
-+#include <errno.h>
-+#include <malloc.h>
-+#include <stringlist.h>
-+#include <complete.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <linux/clk/clk-conf.h>
++/* Plane-0 Unicode character */
++typedef u16 wchar_t;
++#define MAX_WCHAR_T	0xffff
 +
-+void clk_bulk_put(int num_clks, struct clk_bulk_data *clks)
-+{
-+	while (--num_clks >= 0) {
-+		clk_put(clks[num_clks].clk);
-+		clks[num_clks].clk = NULL;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(clk_bulk_put);
++/* Arbitrary Unicode character */
++typedef u32 unicode_t;
 +
-+int __must_check clk_bulk_get(struct device_d *dev, int num_clks,
-+			      struct clk_bulk_data *clks)
-+{
-+	int ret;
-+	int i;
++/* this value hold the maximum octet of charset */
++#define NLS_MAX_CHARSET_SIZE 6 /* for UTF-8 */
 +
-+	for (i = 0; i < num_clks; i++)
-+		clks[i].clk = NULL;
-+
-+	for (i = 0; i < num_clks; i++) {
-+		clks[i].clk = clk_get(dev, clks[i].id);
-+		if (IS_ERR(clks[i].clk)) {
-+			ret = PTR_ERR(clks[i].clk);
-+			if (ret != -EPROBE_DEFER)
-+				dev_err(dev, "Failed to get clk '%s': %d\n",
-+					clks[i].id, ret);
-+			clks[i].clk = NULL;
-+			goto err;
-+		}
-+	}
-+
-+	return 0;
-+
-+err:
-+	clk_bulk_put(i, clks);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL(clk_bulk_get);
-+
-+/**
-+ * clk_bulk_disable - gate a set of clocks
-+ * @num_clks: the number of clk_bulk_data
-+ * @clks: the clk_bulk_data table being gated
-+ *
-+ * clk_bulk_disable must not sleep, which differentiates it from
-+ * clk_bulk_unprepare. clk_bulk_disable must be called before
-+ * clk_bulk_unprepare.
-+ */
-+void clk_bulk_disable(int num_clks, const struct clk_bulk_data *clks)
-+{
-+
-+	while (--num_clks >= 0)
-+		clk_disable(clks[num_clks].clk);
-+}
-+EXPORT_SYMBOL_GPL(clk_bulk_disable);
-+
-+/**
-+ * clk_bulk_enable - ungate a set of clocks
-+ * @num_clks: the number of clk_bulk_data
-+ * @clks: the clk_bulk_data table being ungated
-+ *
-+ * clk_bulk_enable must not sleep
-+ * Returns 0 on success, -EERROR otherwise.
-+ */
-+int __must_check clk_bulk_enable(int num_clks, const struct clk_bulk_data *clks)
-+{
-+	int ret;
-+	int i;
-+
-+	for (i = 0; i < num_clks; i++) {
-+		ret = clk_enable(clks[i].clk);
-+		if (ret) {
-+			pr_err("Failed to enable clk '%s': %d\n",
-+				clks[i].id, ret);
-+			goto err;
-+		}
-+	}
-+
-+	return 0;
-+
-+err:
-+	clk_bulk_disable(i, clks);
-+
-+	return  ret;
-+}
-+EXPORT_SYMBOL_GPL(clk_bulk_enable);
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 38c86e0b4..961fc89ba 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -25,6 +25,22 @@ struct device_d;
-  */
- struct clk;
- 
-+/**
-+ * struct clk_bulk_data - Data used for bulk clk operations.
-+ *
-+ * @id: clock consumer ID
-+ * @clk: struct clk * to store the associated clock
-+ *
-+ * The CLK APIs provide a series of clk_bulk_() API calls as
-+ * a convenience to consumers which require multiple clks.  This
-+ * structure is used to manage data for these calls.
-+ */
-+struct clk_bulk_data {
-+	const char		*id;
-+	struct clk		*clk;
++/* Byte order for UTF-16 strings */
++enum utf16_endian {
++	UTF16_HOST_ENDIAN,
++	UTF16_LITTLE_ENDIAN,
++	UTF16_BIG_ENDIAN
 +};
 +
++/* nls_base.c */
 +
- #ifdef CONFIG_HAVE_CLK
++extern int utf8_to_utf32(const u8 *s, int len, unicode_t *pu);
++extern int utf8s_to_utf16s(const u8 *s, int len,
++		enum utf16_endian endian, wchar_t *pwcs, int maxlen);
++
++#endif /* _LINUX_NLS_H */
++
+diff --git a/lib/Kconfig b/lib/Kconfig
+index e048aded8..44f30d824 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -148,4 +148,7 @@ config GENERIC_LIB_LSHRDI3
+ config GENERIC_LIB_MULDI3
+ 	bool
  
- /**
-@@ -44,6 +60,29 @@ struct clk;
-  */
- struct clk *clk_get(struct device_d *dev, const char *id);
++config NLS
++        bool "Native language support"
++
+ endmenu
+diff --git a/lib/Makefile b/lib/Makefile
+index e72aa6655..763516d41 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -67,6 +67,7 @@ obj-y			+= parseopt.o
+ obj-y			+= clz_ctz.o
+ obj-$(CONFIG_CRC_CCITT) += crc-ccitt.o
+ obj-$(CONFIG_CRC8)	+= crc8.o
++obj-$(CONFIG_NLS)	+= nls_base.o
  
-+/**
-+ * clk_bulk_get - lookup and obtain a number of references to clock producer.
-+ * @dev: device for clock "consumer"
-+ * @num_clks: the number of clk_bulk_data
-+ * @clks: the clk_bulk_data table of consumer
+ # GCC library routines
+ obj-$(CONFIG_GENERIC_LIB_ASHLDI3) += ashldi3.o
+diff --git a/lib/nls_base.c b/lib/nls_base.c
+new file mode 100644
+index 000000000..cd6a5ff12
+--- /dev/null
++++ b/lib/nls_base.c
+@@ -0,0 +1,131 @@
++/*
++ * linux/fs/nls/nls_base.c
 + *
-+ * This helper function allows drivers to get several clk consumers in one
-+ * operation. If any of the clk cannot be acquired then any clks
-+ * that were obtained will be freed before returning to the caller.
++ * Native language support--charsets and unicode translations.
++ * By Gordon Chaffee 1996, 1997
 + *
-+ * Returns 0 if all clocks specified in clk_bulk_data table are obtained
-+ * successfully, or valid IS_ERR() condition containing errno.
-+ * The implementation uses @dev and @clk_bulk_data.id to determine the
-+ * clock consumer, and thereby the clock producer.
-+ * The clock returned is stored in each @clk_bulk_data.clk field.
++ * Unicode based case conversion 1999 by Wolfram Pienkoss
 + *
-+ * Drivers must assume that the clock source is not enabled.
-+ *
-+ * clk_bulk_get should not be called from within interrupt context.
 + */
-+int __must_check clk_bulk_get(struct device_d *dev, int num_clks,
-+			      struct clk_bulk_data *clks);
++#include <common.h>
++#include <linux/nls.h>
 +
- /**
-  * clk_enable - inform the system when the clock source should be running.
-  * @clk: clock source
-@@ -54,6 +93,18 @@ struct clk *clk_get(struct device_d *dev, const char *id);
-  */
- int clk_enable(struct clk *clk);
- 
-+/**
-+ * clk_bulk_enable - inform the system when the set of clks should be running.
-+ * @num_clks: the number of clk_bulk_data
-+ * @clks: the clk_bulk_data table of consumer
-+ *
-+ * May be called from atomic contexts.
-+ *
-+ * Returns success (0) or negative errno.
++/*
++ * Sample implementation from Unicode home page.
++ * http://www.stonehand.com/unicode/standard/fss-utf.html
 + */
-+int __must_check clk_bulk_enable(int num_clks,
-+				 const struct clk_bulk_data *clks);
++struct utf8_table {
++	int     cmask;
++	int     cval;
++	int     shift;
++	long    lmask;
++	long    lval;
++};
 +
- /**
-  * clk_disable - inform the system when the clock source is no longer required.
-  * @clk: clock source
-@@ -68,6 +119,24 @@ int clk_enable(struct clk *clk);
-  */
- void clk_disable(struct clk *clk);
- 
-+/**
-+ * clk_bulk_disable - inform the system when the set of clks is no
-+ *		      longer required.
-+ * @num_clks: the number of clk_bulk_data
-+ * @clks: the clk_bulk_data table of consumer
-+ *
-+ * Inform the system that a set of clks is no longer required by
-+ * a driver and may be shut down.
-+ *
-+ * May be called from atomic contexts.
-+ *
-+ * Implementation detail: if the set of clks is shared between
-+ * multiple drivers, clk_bulk_enable() calls must be balanced by the
-+ * same number of clk_bulk_disable() calls for the clock source to be
-+ * disabled.
-+ */
-+void clk_bulk_disable(int num_clks, const struct clk_bulk_data *clks);
-+
- /**
-  * clk_get_rate - obtain the current clock rate (in Hz) for a clock source.
-  *		  This is only valid once the clock source has been enabled.
-@@ -75,6 +144,19 @@ void clk_disable(struct clk *clk);
-  */
- unsigned long clk_get_rate(struct clk *clk);
- 
-+/**
-+ * clk_bulk_put	- "free" the clock source
-+ * @num_clks: the number of clk_bulk_data
-+ * @clks: the clk_bulk_data table of consumer
-+ *
-+ * Note: drivers must ensure that all clk_bulk_enable calls made on this
-+ * clock source are balanced by clk_bulk_disable calls prior to calling
-+ * this function.
-+ *
-+ * clk_bulk_put should not be called from within interrupt context.
-+ */
-+void clk_bulk_put(int num_clks, struct clk_bulk_data *clks);
-+
- /*
-  * The remaining APIs are optional for machine class support.
-  */
-@@ -153,15 +235,31 @@ static inline struct clk *clk_get(struct device_d *dev, const char *id)
- 	return NULL;
- }
- 
-+static inline int __must_check clk_bulk_get(struct device_d *dev, int num_clks,
-+					    struct clk_bulk_data *clks)
++static const struct utf8_table utf8_table[] =
 +{
-+	return 0;
++    {0x80,  0x00,   0*6,    0x7F,           0,         /* 1 byte sequence */},
++    {0xE0,  0xC0,   1*6,    0x7FF,          0x80,      /* 2 byte sequence */},
++    {0xF0,  0xE0,   2*6,    0xFFFF,         0x800,     /* 3 byte sequence */},
++    {0xF8,  0xF0,   3*6,    0x1FFFFF,       0x10000,   /* 4 byte sequence */},
++    {0xFC,  0xF8,   4*6,    0x3FFFFFF,      0x200000,  /* 5 byte sequence */},
++    {0xFE,  0xFC,   5*6,    0x7FFFFFFF,     0x4000000, /* 6 byte sequence */},
++    {0,						       /* end of table    */}
++};
++
++#define UNICODE_MAX	0x0010ffff
++#define PLANE_SIZE	0x00010000
++
++#define SURROGATE_MASK	0xfffff800
++#define SURROGATE_PAIR	0x0000d800
++#define SURROGATE_LOW	0x00000400
++#define SURROGATE_BITS	0x000003ff
++
++int utf8_to_utf32(const u8 *s, int inlen, unicode_t *pu)
++{
++	unsigned long l;
++	int c0, c, nc;
++	const struct utf8_table *t;
++
++	nc = 0;
++	c0 = *s;
++	l = c0;
++	for (t = utf8_table; t->cmask; t++) {
++		nc++;
++		if ((c0 & t->cmask) == t->cval) {
++			l &= t->lmask;
++			if (l < t->lval || l > UNICODE_MAX ||
++					(l & SURROGATE_MASK) == SURROGATE_PAIR)
++				return -1;
++			*pu = (unicode_t) l;
++			return nc;
++		}
++		if (inlen <= nc)
++			return -1;
++		s++;
++		c = (*s ^ 0x80) & 0xFF;
++		if (c & 0xC0)
++			return -1;
++		l = (l << 6) | c;
++	}
++	return -1;
++}
++EXPORT_SYMBOL(utf8_to_utf32);
++
++static inline void put_utf16(wchar_t *s, unsigned c, enum utf16_endian endian)
++{
++	switch (endian) {
++	default:
++		*s = (wchar_t) c;
++		break;
++	case UTF16_LITTLE_ENDIAN:
++		*s = __cpu_to_le16(c);
++		break;
++	case UTF16_BIG_ENDIAN:
++		*s = __cpu_to_be16(c);
++		break;
++	}
 +}
 +
-+static inline void clk_bulk_put(int num_clks, struct clk_bulk_data *clks) {}
-+
- static inline int clk_enable(struct clk *clk)
- {
- 	return 0;
- }
- 
-+static inline int __must_check clk_bulk_enable(int num_clks, struct clk_bulk_data *clks)
++int utf8s_to_utf16s(const u8 *s, int inlen, enum utf16_endian endian,
++		wchar_t *pwcs, int maxout)
 +{
-+	return 0;
++	u16 *op;
++	int size;
++	unicode_t u;
++
++	op = pwcs;
++	while (inlen > 0 && maxout > 0 && *s) {
++		if (*s & 0x80) {
++			size = utf8_to_utf32(s, inlen, &u);
++			if (size < 0)
++				return -EINVAL;
++			s += size;
++			inlen -= size;
++
++			if (u >= PLANE_SIZE) {
++				if (maxout < 2)
++					break;
++				u -= PLANE_SIZE;
++				put_utf16(op++, SURROGATE_PAIR |
++						((u >> 10) & SURROGATE_BITS),
++						endian);
++				put_utf16(op++, SURROGATE_PAIR |
++						SURROGATE_LOW |
++						(u & SURROGATE_BITS),
++						endian);
++				maxout -= 2;
++			} else {
++				put_utf16(op++, u, endian);
++				maxout--;
++			}
++		} else {
++			put_utf16(op++, *s++, endian);
++			inlen--;
++			maxout--;
++		}
++	}
++	return op - pwcs;
 +}
++EXPORT_SYMBOL(utf8s_to_utf16s);
 +
- static inline void clk_disable(struct clk *clk)
- {
- }
- 
-+static inline void clk_bulk_disable(int num_clks,
-+				    struct clk_bulk_data *clks) {}
-+
- static inline unsigned long clk_get_rate(struct clk *clk)
- {
- 	return 0;
 -- 
 2.20.1
 
