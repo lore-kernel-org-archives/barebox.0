@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gwMKN-0002uY-7T
- for barebox@lists.infradead.org; Wed, 20 Feb 2019 07:30:01 +0000
-Received: by mail-pl1-x644.google.com with SMTP id d15so4623943plr.1
- for <barebox@lists.infradead.org>; Tue, 19 Feb 2019 23:29:59 -0800 (PST)
+ id 1gwMKP-0002x1-Ke
+ for barebox@lists.infradead.org; Wed, 20 Feb 2019 07:30:06 +0000
+Received: by mail-pl1-x642.google.com with SMTP id m10so2103758plt.10
+ for <barebox@lists.infradead.org>; Tue, 19 Feb 2019 23:30:01 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 19 Feb 2019 23:29:17 -0800
-Message-Id: <20190220072930.14300-13-andrew.smirnov@gmail.com>
+Date: Tue, 19 Feb 2019 23:29:19 -0800
+Message-Id: <20190220072930.14300-15-andrew.smirnov@gmail.com>
 In-Reply-To: <20190220072930.14300-1-andrew.smirnov@gmail.com>
 References: <20190220072930.14300-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,44 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/25] usb: xhci-hcd: Drop 'dma' field from struct xhci_hcd
+Subject: [PATCH 14/25] usb: xhci-hcd: Initialize TRT flag for xHCI >= 1.0
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Drop 'dma' field from struct xhci_hcd since it is not really used
-anywhere.
+Initialize TRT flag for xHCI >= 1.0, not just == 1.0. This is what
+Linux xHCI driver does.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
  drivers/usb/host/xhci-hcd.c | 2 +-
- drivers/usb/host/xhci.h     | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/usb/host/xhci-hcd.c b/drivers/usb/host/xhci-hcd.c
-index b0e9a0c56..6a6291620 100644
+index c8327c88f..517446379 100644
 --- a/drivers/usb/host/xhci-hcd.c
 +++ b/drivers/usb/host/xhci-hcd.c
-@@ -1359,7 +1359,7 @@ static void xhci_dma_alloc(struct xhci_hcd *xhci)
- 	num_ep = max(MAX_EP_RINGS, MIN_EP_RINGS + num_ep);
- 	xhci->dma_size += num_ep * sz_ep;
- 
--	p = xhci->dma = dma_alloc_coherent(xhci->dma_size, DMA_ADDRESS_BROKEN);
-+	p = dma_alloc_coherent(xhci->dma_size, DMA_ADDRESS_BROKEN);
- 
- 	xhci->sp = p; p += sz_sp;
- 	xhci->dcbaa = p; p += sz_dca;
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 9f2d57675..dfbfe579b 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1242,7 +1242,6 @@ struct xhci_hcd {
- 	int num_sp;
- 	int page_size;
- 	int page_shift;
--	void *dma;
- 	size_t dma_size;
- 	__le64 *dcbaa;
- 	void *sp;
+@@ -1248,7 +1248,7 @@ static int xhci_submit_control(struct usb_device *udev, unsigned long pipe,
+ 	field[1] = le16_to_cpu(req->length) << 16 |
+ 		le16_to_cpu(req->index);
+ 	flags = TRB_TYPE(TRB_SETUP) | TRB_IDT;
+-	if (xhci->hci_version == 0x100 && length > 0) {
++	if (xhci->hci_version >= 0x100 && length > 0) {
+ 		if (req->requesttype & USB_DIR_IN)
+ 			flags |= TRB_TX_TYPE(TRB_DATA_IN);
+ 		else
 -- 
 2.20.1
 
