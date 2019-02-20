@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gwMKR-00033s-Hy
- for barebox@lists.infradead.org; Wed, 20 Feb 2019 07:30:12 +0000
-Received: by mail-pl1-x641.google.com with SMTP id c4so6734117pls.11
- for <barebox@lists.infradead.org>; Tue, 19 Feb 2019 23:30:03 -0800 (PST)
+ id 1gwMKS-00037g-HZ
+ for barebox@lists.infradead.org; Wed, 20 Feb 2019 07:30:11 +0000
+Received: by mail-pf1-x443.google.com with SMTP id n74so11479350pfi.9
+ for <barebox@lists.infradead.org>; Tue, 19 Feb 2019 23:30:04 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 19 Feb 2019 23:29:21 -0800
-Message-Id: <20190220072930.14300-17-andrew.smirnov@gmail.com>
+Date: Tue, 19 Feb 2019 23:29:22 -0800
+Message-Id: <20190220072930.14300-18-andrew.smirnov@gmail.com>
 In-Reply-To: <20190220072930.14300-1-andrew.smirnov@gmail.com>
 References: <20190220072930.14300-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,53 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 16/25] usb: xhci-hcd: Make use of lo_hi_readq/writeq()
+Subject: [PATCH 17/25] phy: core: Assume EPROBE_DEFER in
+ of_phy_provider_lookup()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Make use of lo_hi_readq/writeq() to implement xhci_read/write_64()
-helpers, same as it is done in the Linux kernel.
+In order to support PHY driver probe deferral change the code to
+assume EPROBE_DEFER instead of ENODEV when requested PHY is missing
+from phy_provider_list.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/host/xhci.h | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ drivers/phy/phy-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index dfbfe579b..84a14dd1f 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -24,6 +24,8 @@
- #ifndef __XHCI_H
- #define __XHCI_H
+diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
+index 9d6288fc0..066a887a2 100644
+--- a/drivers/phy/phy-core.c
++++ b/drivers/phy/phy-core.c
+@@ -227,7 +227,7 @@ static struct phy_provider *of_phy_provider_lookup(struct device_node *node)
+ 				return phy_provider;
+ 	}
  
-+#include <io-64-nonatomic-lo-hi.h>
-+
- #define NUM_COMMAND_TRBS	8
- #define NUM_TRANSFER_TRBS	8
- #define NUM_EVENT_SEGM		1	/* only one supported */
-@@ -1165,19 +1167,11 @@ struct xhci_erst_entry {
-  */
- static inline u64 xhci_read_64(__le64 __iomem *regs)
- {
--	__u32 __iomem *ptr = (__u32 __iomem *)regs;
--	u64 val_lo = readl(ptr);
--	u64 val_hi = readl(ptr + 1);
--	return val_lo + (val_hi << 32);
-+	return lo_hi_readq(regs);
- }
- static inline void xhci_write_64(const u64 val, __le64 __iomem *regs)
- {
--	__u32 __iomem *ptr = (__u32 __iomem *)regs;
--	u32 val_lo = lower_32_bits(val);
--	u32 val_hi = upper_32_bits(val);
--
--	writel(val_lo, ptr);
--	writel(val_hi, ptr + 1);
-+	lo_hi_writeq(val, regs);
+-	return ERR_PTR(-ENODEV);
++	return ERR_PTR(-EPROBE_DEFER);
  }
  
- /*
+ /**
+@@ -254,7 +254,7 @@ static struct phy *_of_phy_get(struct device_node *np, int index)
+ 
+ 	phy_provider = of_phy_provider_lookup(args.np);
+ 	if (IS_ERR(phy_provider)) {
+-		return ERR_PTR(-ENODEV);
++		return ERR_CAST(phy_provider);
+ 	}
+ 
+ 	return phy_provider->of_xlate(phy_provider->dev, &args);
 -- 
 2.20.1
 
