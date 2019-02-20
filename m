@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x341.google.com ([2a00:1450:4864:20::341])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gwPpv-0007oU-TH
- for barebox@lists.infradead.org; Wed, 20 Feb 2019 11:14:49 +0000
-Received: by mail-wm1-x341.google.com with SMTP id m1so6226706wml.2
- for <barebox@lists.infradead.org>; Wed, 20 Feb 2019 03:14:47 -0800 (PST)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1gwQ30-0000Lr-QQ
+ for barebox@lists.infradead.org; Wed, 20 Feb 2019 11:28:21 +0000
+Date: Wed, 20 Feb 2019 12:28:15 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190220112815.un3mcqu37mhnnecq@pengutronix.de>
 References: <20190218155712.21254-1-tomaz.solc@tablix.org>
  <20190220085741.lbv5zsyv3ur5grl6@pengutronix.de>
-From: =?UTF-8?B?VG9tYcW+IMWgb2xj?= <tomaz.solc@klevio.com>
-Message-ID: <67fcde46-447e-8c16-3a1e-d7106700904b@klevio.com>
-Date: Wed, 20 Feb 2019 12:14:43 +0100
+ <67fcde46-447e-8c16-3a1e-d7106700904b@klevio.com>
 MIME-Version: 1.0
-In-Reply-To: <20190220085741.lbv5zsyv3ur5grl6@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <67fcde46-447e-8c16-3a1e-d7106700904b@klevio.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,89 +20,122 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] genenv: create a gcc-like .d file for depenencies.
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: =?iso-8859-15?Q?Toma=B8_=A6olc?= <tomaz.solc@klevio.com>
 Cc: barebox@lists.infradead.org
 
-SGkgU2FzY2hhLAoKT24gMjAuIDAyLiAxOSAwOTo1NywgU2FzY2hhIEhhdWVyIHdyb3RlOgo+IEhp
-IFRvbWF6LAo+IAo+IE9uIE1vbiwgRmViIDE4LCAyMDE5IGF0IDA0OjU3OjEyUE0gKzAxMDAsIFRv
-bWF6IFNvbGMgd3JvdGU6Cj4+IFdpdGggdGhpcyBjb21taXQgZ2VuZW52IGNyZWF0ZXMgYSAuZCBm
-aWxlLCBzaW1pbGFyIHRvIHRob3NlIGNyZWF0ZWQgYnkgZ2NjIHRvCj4+IHRyYWNrIEMgaGVhZGVy
-IGRlcGVuZGVuY2llcy4gVGhpcyBpcyB0aGVuIHBhc3NlZCB0byBLYnVpbGQgd2l0aCBpZl9jaGFu
-Z2VkX2RlcAo+PiBpbiB0aGUgTWFrZWZpbGUuIFRoaXMgbWFrZXMgbWFrZSByZS1ydW4gZ2VuZW52
-IGlmIGFueSBzb3VyY2UgZW52aXJvbm1lbnQgZmlsZXMgYXJlCj4+IGNoYW5nZWQuIEhvd2V2ZXIs
-IG5ldyBlbnZpcm9ubWVudCBmaWxlcyBhcmUgc3RpbGwgbm90IGRldGVjdGVkIGF1dG9tYXRpY2Fs
-bHkuCj4gCj4gUGxlYXNlIHRyeSB0aGUgYXR0YWNoZWQgcGF0Y2guIEl0IHNob3VsZCBzb2x2ZSB0
-aGlzIGlzc3VlIG9uY2UgYW5kIGZvcgo+IGFsbC4gV2l0aCB0aGlzIHRoZSBlbnZpcm9ubWVudHMg
-YXJlIGFsd2F5cyBidWlsdCwgYnV0IG9ubHkgaWYgdGhleSBoYXZlCj4gYWN0dWFsbHkgY2hhbmdl
-ZCB0aGVuIHRoZSBjb3JyZXNwb25kaW5nIC5TIGZpbGVzIGFyZSBidWlsdC4KClVuZm9ydHVuYXRl
-bHkgd2l0aCB5b3VyIHBhdGNoIHRoZSBmaW5hbCBpbWFnZSBzdGlsbCBnZXRzIHJlYnVpbHQgd2l0
-aCBhIApzdGFsZSBlbnZpcm9ubWVudCB1bmxlc3MgSSBkZWxldGUgZGVmYXVsdGVudi9iYXJlYm94
-X2RlZmF1bHRfZW52LgoKU2VlIHRyYW5zY3JpcHQgYmVsbG93LCB3aGVyZSBJJ20gdXNpbmcgeW91
-ciBwYXRjaC4gSSBtb2RpZnkgb25lIAplbnZpcm9ubWVudCBmaWxlIGZvciBSYXNwYmVycnkgUGku
-IEFmdGVyIGp1c3QgY2FsbGluZyAibWFrZSIsIHRoZSBpbWFnZSAKZG9lc24ndCBpbmNsdWRlIHRo
-ZSBjaGFuZ2UuCgpCZXN0IHJlZ2FyZHMKVG9tYcW+CgokIG1ha2UgcnBpX2RlZmNvbmZpZwokIG1h
-a2UKWy4uLl0KJCBzdHJpbmdzIGltYWdlcy9iYXJlYm94LXJhc3BiZXJyeS1waS0zLmltZyB8IGdy
-ZXAgZ2xvYmFsLnRlc3QKJCBlY2hvIGdsb2JhbC50ZXN0PSJmb28iID4+IAphcmNoL2FybS9ib2Fy
-ZHMvcmFzcGJlcnJ5LXBpL2Vudi9pbml0L2Jvb3RhcmdzLWJhc2UKJCBtYWtlCm1ha2VbMV06ICdp
-bmNsdWRlL2dlbmVyYXRlZC9tYWNoLXR5cGVzLmgnIGlzIHVwIHRvIGRhdGUuCiAgIENISyAgICAg
-aW5jbHVkZS9nZW5lcmF0ZWQvdmVyc2lvbi5oCiAgIENISyAgICAgaW5jbHVkZS9nZW5lcmF0ZWQv
-dXRzcmVsZWFzZS5oCiAgIFVQRCAgICAgaW5jbHVkZS9nZW5lcmF0ZWQvdXRzcmVsZWFzZS5oCiAg
-IENSRUFURSAgaW5jbHVkZS9jb25maWcuaAogICBDSEsgICAgIGluY2x1ZGUvZ2VuZXJhdGVkL2Nv
-bXBpbGUuaAogICBDQyAgICAgIGNvbW1vbi92ZXJzaW9uLm8KICAgQ0MgICAgICBjb21tb24vZ2xv
-YmFsdmFyLm8KICAgQ0hLICAgICBpbmNsdWRlL2dlbmVyYXRlZC9wYXNzd2QuaAogICBMRCAgICAg
-IGNvbW1vbi9idWlsdC1pbi5vCiAgIEVOViAgICAgZGVmYXVsdGVudi9kZWZhdWx0ZW52LTItYmFz
-ZS5iYmVudgogICBHRU4gICAgIC52ZXJzaW9uCiAgIENISyAgICAgaW5jbHVkZS9nZW5lcmF0ZWQv
-Y29tcGlsZS5oCiAgIFVQRCAgICAgaW5jbHVkZS9nZW5lcmF0ZWQvY29tcGlsZS5oCiAgIENDICAg
-ICAgY29tbW9uL3ZlcnNpb24ubwogICBDSEsgICAgIGluY2x1ZGUvZ2VuZXJhdGVkL3Bhc3N3ZC5o
-CiAgIExEICAgICAgY29tbW9uL2J1aWx0LWluLm8KICAgTEQgICAgICAudG1wX2JhcmVib3gxCiAg
-IEtTWU0gICAgLnRtcF9rYWxsc3ltczEuUwogICBBUyAgICAgIC50bXBfa2FsbHN5bXMxLm8KICAg
-TEQgICAgICAudG1wX2JhcmVib3gyCiAgIEtTWU0gICAgLnRtcF9rYWxsc3ltczIuUwogICBBUyAg
-ICAgIC50bXBfa2FsbHN5bXMyLm8KICAgTEQgICAgICBiYXJlYm94CiAgIFNZU01BUCAgU3lzdGVt
-Lm1hcAogICBPQkpDT1BZIGJhcmVib3guYmluCiAgIFNISVBQRURfUyBpbWFnZXMvYmFyZWJveC56
-CiAgIEFTICAgICAgaW1hZ2VzL3BpZ2d5Lm8KICAgTEQgICAgICBpbWFnZXMvc3RhcnRfcmFzcGJl
-cnJ5X3BpMS5wYmwKICAgT0JKQ09QWUIgaW1hZ2VzL3N0YXJ0X3Jhc3BiZXJyeV9waTEucGJsYgog
-ICBTSElQUEVEIGltYWdlcy9iYXJlYm94LXJhc3BiZXJyeS1waS0xLmltZwogICBMRCAgICAgIGlt
-YWdlcy9zdGFydF9yYXNwYmVycnlfcGkyLnBibAogICBPQkpDT1BZQiBpbWFnZXMvc3RhcnRfcmFz
-cGJlcnJ5X3BpMi5wYmxiCiAgIFNISVBQRUQgaW1hZ2VzL2JhcmVib3gtcmFzcGJlcnJ5LXBpLTIu
-aW1nCiAgIExEICAgICAgaW1hZ2VzL3N0YXJ0X3Jhc3BiZXJyeV9waTMucGJsCiAgIE9CSkNPUFlC
-IGltYWdlcy9zdGFydF9yYXNwYmVycnlfcGkzLnBibGIKICAgU0hJUFBFRCBpbWFnZXMvYmFyZWJv
-eC1yYXNwYmVycnktcGktMy5pbWcKICAgTE4gICAgICBpbWFnZXMvLi4vYmFyZWJveC1mbGFzaC1p
-bWFnZQppbWFnZXMgYnVpbHQ6CmJhcmVib3gtcmFzcGJlcnJ5LXBpLTEuaW1nCmJhcmVib3gtcmFz
-cGJlcnJ5LXBpLTIuaW1nCmJhcmVib3gtcmFzcGJlcnJ5LXBpLTMuaW1nCiQgc3RyaW5ncyBpbWFn
-ZXMvYmFyZWJveC1yYXNwYmVycnktcGktMy5pbWcgfCBncmVwIGdsb2JhbC50ZXN0CiQgcm0gZGVm
-YXVsdGVudi9iYXJlYm94X2RlZmF1bHRfZW52CiQgbWFrZQptYWtlWzFdOiAnaW5jbHVkZS9nZW5l
-cmF0ZWQvbWFjaC10eXBlcy5oJyBpcyB1cCB0byBkYXRlLgogICBDSEsgICAgIGluY2x1ZGUvZ2Vu
-ZXJhdGVkL3ZlcnNpb24uaAogICBDSEsgICAgIGluY2x1ZGUvZ2VuZXJhdGVkL3V0c3JlbGVhc2Uu
-aAogICBDUkVBVEUgIGluY2x1ZGUvY29uZmlnLmgKICAgQ0hLICAgICBpbmNsdWRlL2dlbmVyYXRl
-ZC9jb21waWxlLmgKICAgQ0hLICAgICBpbmNsdWRlL2dlbmVyYXRlZC9wYXNzd2QuaAogICBFTlYg
-ICAgIGRlZmF1bHRlbnYvYmFyZWJveF9kZWZhdWx0X2VudgogICBFTlZIICAgIGRlZmF1bHRlbnYv
-YmFyZWJveF9kZWZhdWx0X2Vudi5oCiAgIENDICAgICAgZGVmYXVsdGVudi9kZWZhdWx0ZW52Lm8K
-ICAgRU5WICAgICBkZWZhdWx0ZW52L2RlZmF1bHRlbnYtMi1iYXNlLmJiZW52CiAgIExEICAgICAg
-ZGVmYXVsdGVudi9idWlsdC1pbi5vCiAgIEdFTiAgICAgLnZlcnNpb24KICAgQ0hLICAgICBpbmNs
-dWRlL2dlbmVyYXRlZC9jb21waWxlLmgKICAgVVBEICAgICBpbmNsdWRlL2dlbmVyYXRlZC9jb21w
-aWxlLmgKICAgQ0MgICAgICBjb21tb24vdmVyc2lvbi5vCiAgIENISyAgICAgaW5jbHVkZS9nZW5l
-cmF0ZWQvcGFzc3dkLmgKICAgTEQgICAgICBjb21tb24vYnVpbHQtaW4ubwogICBMRCAgICAgIC50
-bXBfYmFyZWJveDEKICAgS1NZTSAgICAudG1wX2thbGxzeW1zMS5TCiAgIEFTICAgICAgLnRtcF9r
-YWxsc3ltczEubwogICBMRCAgICAgIC50bXBfYmFyZWJveDIKICAgS1NZTSAgICAudG1wX2thbGxz
-eW1zMi5TCiAgIEFTICAgICAgLnRtcF9rYWxsc3ltczIubwogICBMRCAgICAgIGJhcmVib3gKICAg
-U1lTTUFQICBTeXN0ZW0ubWFwCiAgIE9CSkNPUFkgYmFyZWJveC5iaW4KICAgU0hJUFBFRF9TIGlt
-YWdlcy9iYXJlYm94LnoKICAgQVMgICAgICBpbWFnZXMvcGlnZ3kubwogICBMRCAgICAgIGltYWdl
-cy9zdGFydF9yYXNwYmVycnlfcGkxLnBibAogICBPQkpDT1BZQiBpbWFnZXMvc3RhcnRfcmFzcGJl
-cnJ5X3BpMS5wYmxiCiAgIFNISVBQRUQgaW1hZ2VzL2JhcmVib3gtcmFzcGJlcnJ5LXBpLTEuaW1n
-CiAgIExEICAgICAgaW1hZ2VzL3N0YXJ0X3Jhc3BiZXJyeV9waTIucGJsCiAgIE9CSkNPUFlCIGlt
-YWdlcy9zdGFydF9yYXNwYmVycnlfcGkyLnBibGIKICAgU0hJUFBFRCBpbWFnZXMvYmFyZWJveC1y
-YXNwYmVycnktcGktMi5pbWcKICAgTEQgICAgICBpbWFnZXMvc3RhcnRfcmFzcGJlcnJ5X3BpMy5w
-YmwKICAgT0JKQ09QWUIgaW1hZ2VzL3N0YXJ0X3Jhc3BiZXJyeV9waTMucGJsYgogICBTSElQUEVE
-IGltYWdlcy9iYXJlYm94LXJhc3BiZXJyeS1waS0zLmltZwogICBMTiAgICAgIGltYWdlcy8uLi9i
-YXJlYm94LWZsYXNoLWltYWdlCmltYWdlcyBidWlsdDoKYmFyZWJveC1yYXNwYmVycnktcGktMS5p
-bWcKYmFyZWJveC1yYXNwYmVycnktcGktMi5pbWcKYmFyZWJveC1yYXNwYmVycnktcGktMy5pbWcK
-JCBzdHJpbmdzIGltYWdlcy9iYXJlYm94LXJhc3BiZXJyeS1waS0zLmltZyB8IGdyZXAgZ2xvYmFs
-LnRlc3QKZ2xvYmFsLnRlc3Q9Zm9vCiQKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+On Wed, Feb 20, 2019 at 12:14:43PM +0100, Toma=B8 =A6olc wrote:
+> Hi Sascha,
+> =
+
+> On 20. 02. 19 09:57, Sascha Hauer wrote:
+> > Hi Tomaz,
+> > =
+
+> > On Mon, Feb 18, 2019 at 04:57:12PM +0100, Tomaz Solc wrote:
+> > > With this commit genenv creates a .d file, similar to those created b=
+y gcc to
+> > > track C header dependencies. This is then passed to Kbuild with if_ch=
+anged_dep
+> > > in the Makefile. This makes make re-run genenv if any source environm=
+ent files are
+> > > changed. However, new environment files are still not detected automa=
+tically.
+> > =
+
+> > Please try the attached patch. It should solve this issue once and for
+> > all. With this the environments are always built, but only if they have
+> > actually changed then the corresponding .S files are built.
+> =
+
+> Unfortunately with your patch the final image still gets rebuilt with a
+> stale environment unless I delete defaultenv/barebox_default_env.
+> =
+
+> See transcript bellow, where I'm using your patch. I modify one environme=
+nt
+> file for Raspberry Pi. After just calling "make", the image doesn't inclu=
+de
+> the change.
+
+Right, I missed the environment snippet that is generated from
+CONFIG_DEFAULT_ENVIRONMENT_PATH which is generated at a different place.
+Please try this updated patch.
+
+Sascha
+
+-----------------------------------8<-------------------------------
+
+From c41a478e59a74b66a3de5c597224f02e0b39fa12 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 20 Feb 2019 09:45:32 +0100
+Subject: [PATCH] defaultenv: Fix dependencies
+
+The defaultenv should be rebuilt once a file in it has changed.
+the genenv script always generates the environment file to a temporary
+file. Only if it has changed to the last target file the temporary file
+is moved over the target file. This means we always have to call genenv,
+thus replace "if_changed" with "cmd".
+With this dependencies are correctly tracked. New or changed files
+result in new image builds whereas unchanged environments do not
+unnecessarily result in new images.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ defaultenv/Makefile  | 2 +-
+ scripts/Makefile.lib | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/defaultenv/Makefile b/defaultenv/Makefile
+index f313b04e84..03b329c4dd 100644
+--- a/defaultenv/Makefile
++++ b/defaultenv/Makefile
+@@ -14,7 +14,7 @@ quiet_cmd_env_default =3D ENV     $@
+ cmd_env_default =3D ($(srctree)/scripts/genenv $(srctree) $(objtree) $@ $(=
+CONFIG_DEFAULT_ENVIRONMENT_PATH))
+ =
+
+ $(obj)/barebox_default_env: FORCE
+-	$(call if_changed,env_default)
++	$(call cmd,env_default)
+ =
+
+ quiet_cmd_env_h =3D ENVH    $@
+ cmd_env_h =3D cat $< | (cd $(obj) && $(objtree)/scripts/bin2c "__aligned(4=
+) default_environment") > $@; \
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 7b8643bf57..561247ab34 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -325,7 +325,7 @@ quiet_cmd_env =3D ENV     $@
+ cmd_env=3D$(srctree)/scripts/genenv $(srctree) $(objtree) $@ $<
+ =
+
+ %.bbenv$(DEFAULT_COMPRESSION_SUFFIX): % FORCE
+-	$(call if_changed,env)
++	$(call cmd,env)
+ =
+
+ # Bzip2
+ # ------------------------------------------------------------------------=
+---
+-- =
+
+2.20.1
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
