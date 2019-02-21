@@ -1,19 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from chandra.tablix.org ([193.95.199.109])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gwkfC-00075I-AJ
- for barebox@lists.infradead.org; Thu, 21 Feb 2019 09:29:12 +0000
-Received: from 77-111-10-47.ipv4.tusmobil.si ([77.111.10.47]
- helo=muffin.lju.klevio.com)
- by chandra.tablix.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.89) (envelope-from <tomaz.solc@tablix.org>)
- id 1gwkev-0001EJ-Lc
- for barebox@lists.infradead.org; Thu, 21 Feb 2019 10:28:49 +0100
-From: Tomaz Solc <tomaz.solc@tablix.org>
-Date: Thu, 21 Feb 2019 10:28:47 +0100
-Message-Id: <20190221092848.4488-3-tomaz.solc@tablix.org>
-In-Reply-To: <20190221092848.4488-1-tomaz.solc@tablix.org>
-References: <20190221092848.4488-1-tomaz.solc@tablix.org>
+ id 1gwlXy-0007wq-A3
+ for barebox@lists.infradead.org; Thu, 21 Feb 2019 10:25:43 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu, 21 Feb 2019 11:25:30 +0100
+Message-Id: <20190221102531.25291-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,241 +15,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: rpi: save fdt that was passed from VideoCore
+Subject: [PATCH 1/2] imd: create new helper macro to add data from oftree to
+ image meta data
 To: barebox@lists.infradead.org
+Cc: "Thorsten K . Scherer" <t.scherer@eckelmann.de>
 
-On Raspberry Pi, VideoCore firmware creates a device tree that contains
-information about peripherals that were initialized by VideoCore based
-on settings in config.txt. Normally this device tree is passed to the
-Linux kernel via a pointer in the r2 register. A bootloader needs to
-pass this device tree to the kernel, or some peripherals will not work
-correctly.
-
-Since the VideoCore device tree is not compatible with barebox, we can't
-just pass it to barebox_arm_entry() as the internal barebox device tree.
-
-This commit makes the prebootloader code copy the device tree from
-VideoCore into a scrap RAM area just above the area reserved for the
-bootloader. Board initialization code in the bootloader proper then
-copies it into a file /vc.dtb. The bootloader environment is then free
-to pass this file to the kernel at boot (e.g. via bootm -o).
----
- Documentation/boards/bcm2835.rst          |  4 ++
- arch/arm/boards/raspberry-pi/lowlevel.c   | 68 ++++++++++++++++++++++---------
- arch/arm/boards/raspberry-pi/lowlevel.h   |  9 ++++
- arch/arm/boards/raspberry-pi/rpi-common.c | 34 ++++++++++++++++
- 4 files changed, 96 insertions(+), 19 deletions(-)
- create mode 100644 arch/arm/boards/raspberry-pi/lowlevel.h
-
-diff --git a/Documentation/boards/bcm2835.rst b/Documentation/boards/bcm2835.rst
-index ea80d5834..95e910896 100644
---- a/Documentation/boards/bcm2835.rst
-+++ b/Documentation/boards/bcm2835.rst
-@@ -30,5 +30,9 @@ Raspberry Pi
- 
-   6. Turn board's power on.
- 
-+VideoCore firmware creates a device tree based on the entries in ``config.txt``. This file is available to the Barebox environment in the file ``/vc.dtb``. For example, to boot a kernel shipped with Raspbian::
-+
-+    bootm -o /vc.dtb /boot/kernel7.img
-+
- .. _Raspberry Pi firmware: https://codeload.github.com/raspberrypi/firmware/zip/80e1fbeb78f9df06701d28c0ed3a3060a3f557ef
- .. _documentation for config.txt: https://www.raspberrypi.org/documentation/configuration/config-txt/
-diff --git a/arch/arm/boards/raspberry-pi/lowlevel.c b/arch/arm/boards/raspberry-pi/lowlevel.c
-index 1a3d39421..4b64f5d1d 100644
---- a/arch/arm/boards/raspberry-pi/lowlevel.c
-+++ b/arch/arm/boards/raspberry-pi/lowlevel.c
-@@ -3,43 +3,73 @@
- #include <common.h>
- #include <linux/sizes.h>
- #include <mach/platform.h>
-+#include <of.h>
- 
--extern char __dtb_bcm2835_rpi_start[];
--ENTRY_FUNCTION(start_raspberry_pi1, r0, r1, r2)
-+#include "lowlevel.h"
-+
-+static void copy_vc_fdt(void *dest, void *src, unsigned long max_size)
- {
--	void *fdt = __dtb_bcm2835_rpi_start + get_runtime_offset();
-+	struct fdt_header *oftree_src = src;
-+	struct fdt_header *oftree_dest = dest;
- 
--	arm_cpu_lowlevel_init();
-+	unsigned long size = be32_to_cpu(oftree_src->totalsize);
-+	if (size > max_size) {
-+		oftree_dest->magic = cpu_to_be32(VIDEOCORE_FDT_ERROR);
-+		/* Save an error code after the magic value for easier
-+		 * debugging. We can't print out anything this early */
-+		oftree_dest->totalsize = cpu_to_be32(ENOMEM);
-+		return;
-+	}
- 
--	barebox_arm_entry(BCM2835_SDRAM_BASE, SZ_128M, fdt);
-+	memmove(dest, src, size);
- }
- 
--extern char __dtb_bcm2836_rpi_2_start[];
--ENTRY_FUNCTION(start_raspberry_pi2, r0, r1, r2)
-+/* Must be inline since stack isn't setup yet. */
-+static inline void start_raspberry_pi(unsigned long memsize, void *fdt,
-+								void *vc_fdt)
- {
--	void *fdt = __dtb_bcm2836_rpi_2_start + get_runtime_offset();
-+	void *saved_vc_fdt;
-+	unsigned long membase = BCM2835_SDRAM_BASE;
-+
-+	/* A pointer to the FDT created by VideoCore was passed to us in r2. We
-+	 * reserve some memory just above the region used for Basebox and copy
-+	 * this FDT there. We fetch it from there later in rpi_devices_init().*/
-+	memsize -= VIDEOCORE_FDT_SZ;
- 
- 	arm_cpu_lowlevel_init();
- 
--	barebox_arm_entry(BCM2835_SDRAM_BASE, SZ_512M, fdt);
-+	/* Copied from barebox_arm_entry(). We need stack here early
-+	 * for normal function calls to work. */
-+	arm_setup_stack(arm_mem_stack_top(membase, membase + memsize) - 16);
-+
-+	fdt += get_runtime_offset();
-+
-+	saved_vc_fdt = (void *)(membase + memsize);
-+	copy_vc_fdt(saved_vc_fdt, vc_fdt, VIDEOCORE_FDT_SZ);
-+
-+	barebox_arm_entry(membase, memsize, fdt);
- }
- 
--extern char __dtb_bcm2837_rpi_3_start[];
--ENTRY_FUNCTION(start_raspberry_pi3, r0, r1, r2)
-+extern char __dtb_bcm2835_rpi_start[];
-+ENTRY_FUNCTION(start_raspberry_pi1, r0, r1, r2)
- {
--	void *fdt = __dtb_bcm2837_rpi_3_start + get_runtime_offset();
-+	start_raspberry_pi(SZ_128M, __dtb_bcm2835_rpi_start, (void *)r2);
-+}
- 
--	arm_cpu_lowlevel_init();
-+extern char __dtb_bcm2836_rpi_2_start[];
-+ENTRY_FUNCTION(start_raspberry_pi2, r0, r1, r2)
-+{
-+	start_raspberry_pi(SZ_512M, __dtb_bcm2836_rpi_2_start, (void *)r2);
-+}
- 
--	barebox_arm_entry(BCM2835_SDRAM_BASE, SZ_512M, fdt);
-+extern char __dtb_bcm2837_rpi_3_start[];
-+ENTRY_FUNCTION(start_raspberry_pi3, r0, r1, r2)
-+{
-+	start_raspberry_pi(SZ_512M, __dtb_bcm2837_rpi_3_start, (void *)r2);
- }
- 
- extern char __dtb_bcm2837_rpi_cm3_start[];
- ENTRY_FUNCTION(start_raspberry_pi_cm3, r0, r1, r2)
- {
--	void *fdt = __dtb_bcm2837_rpi_cm3_start + get_runtime_offset();
--
--	arm_cpu_lowlevel_init();
--
--	barebox_arm_entry(BCM2835_SDRAM_BASE, SZ_512M, fdt);
-+	start_raspberry_pi(SZ_512M, __dtb_bcm2837_rpi_cm3_start, (void *)r2);
- }
-diff --git a/arch/arm/boards/raspberry-pi/lowlevel.h b/arch/arm/boards/raspberry-pi/lowlevel.h
-new file mode 100644
-index 000000000..9ef9135b2
---- /dev/null
-+++ b/arch/arm/boards/raspberry-pi/lowlevel.h
-@@ -0,0 +1,9 @@
-+#ifndef __ARCH_ARM_BOARDS_LOWLEVEL_H__
-+#define __ARCH_ARM_BOARDS_LOWLEVEL_H__
-+
-+#include <linux/sizes.h>
-+
-+#define VIDEOCORE_FDT_SZ SZ_1M
-+#define VIDEOCORE_FDT_ERROR 0xdeadfeed
-+
-+#endif /* __ARCH_ARM_BOARDS_LOWLEVEL_H__ */
-diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-index b5d16a15c..f17384857 100644
---- a/arch/arm/boards/raspberry-pi/rpi-common.c
-+++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-@@ -16,21 +16,26 @@
- #include <common.h>
- #include <init.h>
- #include <fs.h>
-+#include <of.h>
- #include <linux/stat.h>
- #include <linux/clk.h>
- #include <linux/clkdev.h>
- #include <envfs.h>
- #include <malloc.h>
-+#include <libfile.h>
- #include <gpio.h>
- #include <net.h>
- #include <led.h>
- #include <asm/armlinux.h>
-+#include <asm/barebox-arm.h>
- #include <generated/mach-types.h>
-+#include <linux/sizes.h>
- 
- #include <mach/core.h>
- #include <mach/mbox.h>
- 
- #include "rpi.h"
-+#include "lowlevel.h"
- 
- struct msg_get_arm_mem {
- 	struct bcm2835_mbox_hdr hdr;
-@@ -370,12 +375,41 @@ static int rpi_env_init(void)
- 	return 0;
- }
- 
-+static void rpi_vc_fdt(void)
-+{
-+	void *saved_vc_fdt;
-+	struct fdt_header *oftree;
-+	unsigned long magic, size;
-+
-+	/* VideoCore FDT was copied in PBL just above Barebox memory */
-+	saved_vc_fdt = (void *)(arm_mem_endmem_get());
-+
-+	oftree = saved_vc_fdt;
-+	magic = be32_to_cpu(oftree->magic);
-+	if (magic != FDT_MAGIC) {
-+		printf("videocore fdt saved in pbl has invalid magic\n");
-+
-+		if (magic == VIDEOCORE_FDT_ERROR) {
-+			printf("there was an error copying fdt in pbl: %d\n",
-+					be32_to_cpu(oftree->totalsize));
-+		}
-+		return;
-+	}
-+
-+	size = be32_to_cpu(oftree->totalsize);
-+	if (write_file("/vc.dtb", saved_vc_fdt, size)) {
-+		printf("failed to save videocore fdt to a file\n");
-+		return;
-+	}
-+}
-+
- static int rpi_devices_init(void)
- {
- 	rpi_model_init();
- 	bcm2835_register_fb();
- 	armlinux_set_architecture(MACH_TYPE_BCM2708);
- 	rpi_env_init();
-+	rpi_vc_fdt();
- 	return 0;
- }
- late_initcall(rpi_devices_init);
--- 
-2.11.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
+b25peC5kZT4KLS0tCiBpbmNsdWRlL2ltYWdlLW1ldGFkYXRhLmggfCA0ICsrKysKIHNjcmlwdHMv
+Z2VuLWR0Yi1zICAgICAgICB8IDQgKystLQogMiBmaWxlcyBjaGFuZ2VkLCA2IGluc2VydGlvbnMo
+KyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9pbWFnZS1tZXRhZGF0YS5o
+IGIvaW5jbHVkZS9pbWFnZS1tZXRhZGF0YS5oCmluZGV4IDg3MzliZmZiOTJlMS4uNTkwNGQ5NWFj
+ZDM3IDEwMDY0NAotLS0gYS9pbmNsdWRlL2ltYWdlLW1ldGFkYXRhLmgKKysrIGIvaW5jbHVkZS9p
+bWFnZS1tZXRhZGF0YS5oCkBAIC0xMTgsNiArMTE4LDEwIEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBp
+bWRfdXNlZChjb25zdCB2b2lkICp1bnVzZWQpCiAKICNkZWZpbmUgSU1EX1VTRUQoX25hbWUpIFwK
+IAlpbWRfdXNlZCgmX19iYXJlYm94X2ltZF8jI19uYW1lKQorI2RlZmluZSBJTURfVVNFRF9PRihf
+bmFtZSkgKHsgXAorCWV4dGVybiBjaGFyIF9fYmFyZWJveF9pbWRfT0ZfICMjIF9uYW1lW107IFwK
+KwlpbWRfdXNlZCgmX19iYXJlYm94X2ltZF9PRl8gIyMgX25hbWUpOyBcCisJfSkKIAogI2VuZGlm
+IC8qIF9fQkFSRUJPWF9fICovCiAKZGlmZiAtLWdpdCBhL3NjcmlwdHMvZ2VuLWR0Yi1zIGIvc2Ny
+aXB0cy9nZW4tZHRiLXMKaW5kZXggMmI0NGZmYjM2MWViLi5jMzE0NGRmODUxYmYgMTAwNzU1Ci0t
+LSBhL3NjcmlwdHMvZ2VuLWR0Yi1zCisrKyBiL3NjcmlwdHMvZ2VuLWR0Yi1zCkBAIC0xOCw4ICsx
+OCw4IEBAIEZEVEdFVD1zY3JpcHRzL2R0Yy9mZHRnZXQKIAogaWYgWyAiJGltZCIgPSAieSIgXTsg
+dGhlbgogCWVjaG8gIi5zZWN0aW9uIC5iYXJlYm94X2ltZF8wLiR7bmFtZX0sXCJhXCIiCi0JZWNo
+byAiLmdsb2JhbCBfX2ltZF8ke25hbWV9X3N0YXJ0IgotCWVjaG8gIl9faW1kXyR7bmFtZX1fc3Rh
+cnQ6IgorCWVjaG8gIi5nbG9iYWwgX19iYXJlYm94X2ltZF9PRl8ke25hbWV9IgorCWVjaG8gIl9f
+YmFyZWJveF9pbWRfT0ZfJHtuYW1lfToiCiAKIAljb21wYXQ9JCgkRkRUR0VUIC1kIG5vdGZvdW5k
+IC10IGJpICIkZHRiIiAvIGNvbXBhdGlibGUgfCBzZWQgInNeIF4sXmciKQogCWlmIFsgIiRjb21w
+YXQiICE9ICJub3Rmb3VuZCIgXTsgdGhlbgotLSAKMi4yMC4xCgoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
+eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
+bGlzdGluZm8vYmFyZWJveAo=
