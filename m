@@ -1,21 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gx6H6-0000A3-W7
- for barebox@lists.infradead.org; Fri, 22 Feb 2019 08:33:42 +0000
-Date: Fri, 22 Feb 2019 09:33:39 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190222083339.p5i5xlk42whfoi5s@pengutronix.de>
-References: <AM0PR08MB384249D802EC267A6302BAE7EB7E0@AM0PR08MB3842.eurprd08.prod.outlook.com>
- <20190221104117.d7hiqozklqnjzfgg@pengutronix.de>
- <AM0PR08MB3842B2EF6AB7D8EE2E009CE8EB7E0@AM0PR08MB3842.eurprd08.prod.outlook.com>
- <20190221133151.apxmkxdu72glcvwa@pengutronix.de>
- <AM0PR08MB3842E348B4CD31892B48EF19EB7E0@AM0PR08MB3842.eurprd08.prod.outlook.com>
- <20190222075742.7hwttuneh7vjvdd3@pengutronix.de>
- <AM0PR08MB3842CDAAFDCF1C1EA5865F11EB7F0@AM0PR08MB3842.eurprd08.prod.outlook.com>
+ id 1gx73n-0003fn-TY
+ for barebox@lists.infradead.org; Fri, 22 Feb 2019 09:24:01 +0000
+Date: Fri, 22 Feb 2019 10:23:56 +0100
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20190222092356.goklob5zbue54vms@pengutronix.de>
+References: <20190115103423.5233-1-rhi@pengutronix.de>
+ <20190115103423.5233-3-rhi@pengutronix.de>
+ <20190214135157.sy2l2x6re3xspohu@pengutronix.de>
+ <20190218085217.ebept7wmi2vmqf77@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <AM0PR08MB3842CDAAFDCF1C1EA5865F11EB7F0@AM0PR08MB3842.eurprd08.prod.outlook.com>
+In-Reply-To: <20190218085217.ebept7wmi2vmqf77@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,32 +25,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: i.MX6ul USB serial downloader and Barebox
-To: Patrick Schneider <patrick.schneider@bhtronik.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH v1 3/3] amba: pl011: make locally used functions static
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Fri, Feb 22, 2019 at 08:12:49AM +0000, Patrick Schneider wrote:
-> Hi again,
-> thanks for that suggestion, I'll look into that, because 'no console
-> interaction' would indeed be the preferable way to go here.  But in
-> the production process we also need to burn some ocotp fuses (which we
-> would do by automated console commands atm).  Is it possible to send
-> commands over usb in gadget mode?
+On Mon, Feb 18, 2019 at 09:52:17AM +0100, Sascha Hauer wrote:
+> On Thu, Feb 14, 2019 at 02:51:57PM +0100, Roland Hieber wrote:
+> > Hi Sascha,
+> > 
+> > the other two patches in this series are on master now, but this one
+> > seems to have fallen through the cracks.
+> 
+> Not really. Your patch indeed isn't applied, but we got the same from
+> Sam: 864fb024cf ("serial: amba-pl011: fix "no previous prototype for
+> 'pl011_init_port'" warning")
 
-Yes. One possibility is to use "fastboot oem exec <cmd>". This can be a
-bit tricky since the fastboot string length is very limited (64 bytes I
-think). The other possibility is to create a multi gadget which also
-creates a console. See the global.usbgadget.acm option. With this you
-can remote control barebox via a USB serial console. You might want to
-look into the labgrid project which integrates all this nicely.
+Ahh, that's the things you don't notice when creating patches on top of
+an old master :-) Thanks for your explanation!
 
-Sascha
+ - Roland
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Roland Hieber                     | r.hieber@pengutronix.de     |
+Pengutronix e.K.                  | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
