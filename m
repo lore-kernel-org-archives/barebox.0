@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gx5Ey-0006tM-2n
- for barebox@lists.infradead.org; Fri, 22 Feb 2019 07:27:25 +0000
-Date: Fri, 22 Feb 2019 08:27:21 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190222072721.eoeqhmb2shsqognh@pengutronix.de>
+ id 1gxUO3-0003RS-59
+ for barebox@lists.infradead.org; Sat, 23 Feb 2019 10:18:28 +0000
+Date: Sat, 23 Feb 2019 11:16:12 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20190223101612.GA24086@ravnborg.org>
 References: <20190220072930.14300-1-andrew.smirnov@gmail.com>
+ <20190220072930.14300-3-andrew.smirnov@gmail.com>
+ <f18cf7da-6ca0-d3b6-0a77-9da7bef39276@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190220072930.14300-1-andrew.smirnov@gmail.com>
+In-Reply-To: <f18cf7da-6ca0-d3b6-0a77-9da7bef39276@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +24,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/25] i.MX8MQ USB support
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 02/25] usb: xhci-hcd: Do not zero out DMA coherent memory
+To: Yann Sionneau <ysionneau@kalray.eu>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
 
-On Tue, Feb 19, 2019 at 11:29:05PM -0800, Andrey Smirnov wrote:
-> Everyone:
+On Wed, Feb 20, 2019 at 10:29:49AM +0100, Yann Sionneau wrote:
+> I'm not sure dma_alloc_coherent() should return zeroed out memory.
 > 
-> This series contains changes I made while working on adding USB
-> support for ZII i.MX8MQ boards. There are several distinct parts in
-> this series:
+> I'm pretty sure it does not.
 > 
->  1. xHCI fixes, features and improvements
->  2. PHY driver deferral support
->  3. i.MX8MQ USB PHY driver
->  4. DWC3 USB support and related patches
->  5. USB251x USB hub and related patches
-> 
-> First four are neccessary for i.MX8MQ in general and last part is ZII
-> specific only. Hopefully all patches are self explanatory.
-> 
-> Tested on ZII i.MX8MQ boards.
-> 
-> Feedback is welcome!
+> mips arch seems to memset it to 0, but not all arch do that.
 
-Nice work. That'll safe me some time when adding USB support for
-Layerscape ;)
+Christoph Hellwig had a patch series that zeroed memory for
+all archs on dma_alloc_coherent() and friends.
+https://lkml.org/lkml/2018/12/14/103
 
-Applied, thanks
+barebox should do the same as I see it.
 
-Sascha
+I recall the patch series is applied but I did not check.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+	Sam
 
 _______________________________________________
 barebox mailing list
