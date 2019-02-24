@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gyYjo-00013h-3f
- for barebox@lists.infradead.org; Tue, 26 Feb 2019 09:09:21 +0000
+ id 1gxt4I-0004m4-VH
+ for barebox@lists.infradead.org; Sun, 24 Feb 2019 12:39:49 +0000
+Date: Sun, 24 Feb 2019 13:35:29 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20190224123529.GA19669@ravnborg.org>
 References: <20190219120612.728-1-a.fatoum@pengutronix.de>
- <20190219120612.728-3-a.fatoum@pengutronix.de>
- <20190219204233.GA14204@ravnborg.org>
- <7820ced1-0a40-9bad-85ac-f3711161b96a@pengutronix.de>
- <20190220075552.uwkd46bevpdl775t@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <6be6c901-8f12-6239-d3f8-0cf1aed3153f@pengutronix.de>
-Date: Tue, 26 Feb 2019 10:09:18 +0100
+ <20190219120612.728-5-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20190220075552.uwkd46bevpdl775t@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20190219120612.728-5-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,73 +23,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] ARM: at91: debug_ll: make UART base address
- configurable
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Sam Ravnborg <sam@ravnborg.org>
+Subject: Re: [PATCH 4/4] ARM: at91: remove duplicate get_ddram_size code
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hello Sascha,
+Hi Ahmad.
 
-On 20/2/19 08:55, Sascha Hauer wrote:
-> On Tue, Feb 19, 2019 at 10:10:02PM +0100, Ahmad Fatoum wrote:
->> Hello Sam,
->>
->> On 19/2/19 21:42, Sam Ravnborg wrote:
->>> Hi Ahmad.
->>>
->>> On Tue, Feb 19, 2019 at 01:06:10PM +0100, Ahmad Fatoum wrote:
->>>> This is in line with other platforms such as i.MX, which allow
->>>> specifying a debug port. As we can't use port indices because
->>>> the UARTs aren't mapped consecutively, allow specifying a hex
->>>> base at configuration time.
->>>>
->>>> A side effect of this patch is that sama5d4's HAVE_AT91_DBGU2
->>>> is now honored as well. Previously anything besides DBGU0
->>>> defaulted to DBGU1.
->>>
->>> This approch hardcoded the DBGU address based on the configuration.
->>> Can you somehow come up with something that is run-time configured?
->>
->> I think it should remain build-time configurable, to account for cases
->> such as when the designated debug port isn't usable for whatever reason
->> (e.g. its exposed via a USB-to-UART bridge and you want to use a proper
->> UART, because you hate that the disconnection on power cycle..).
+On Tue, Feb 19, 2019 at 01:06:12PM +0100, Ahmad Fatoum wrote:
+> Both at91_get_ddram_size and at91sama5_get_ddram_size are the
+> same if is_sdram == false and is_nb == true.
 > 
-> Something like this should work:
+> is_sdram is always false, because according to the sama5d{2,3,4}
+> datasheets, the lowest possible value for AT91_DDRSDRC_MD is 3
+> (i.e. none of them supports SDR SDRAM).
 > 
-> config AT91_DEBUG_DEFAULT_BASE
-> 	hex
-> 	default 0xfffff200 if AT91_DBGU_AT91RM9200
-> 	default 0xffffee00 if AT91_DBGU_AT91SAM9263
-> 	default 0xfc069000 if AT91_DBGU_AT91SAMA5D4
-> 
-> choice
-> 	prompt "Choose Lowlevel debug UART"
-> 
-> config AT91_DBGU_AT91RM9200
-> 	bool "AT91RM9200, AT91SAM926[01], AT91SAM9x5, AT91SAM9N12"
-> config AT91_DBGU_AT91SAM9263
-> 	bool "AT91SAM9263, AT91SAM9G45, ARCH_SAMA5D3"
-> config AT91_DBGU_AT91SAMA5D4
-> 	bool "AT91SAMA5D4"
-> endchoice
-> 
-> This lets you choose the right one if multiple SoCs are enabled during
-> build. Of course it only works if you choose the correct one for the SoC
-> you are running on later.
+> Therefore have at91sama5_get_ddram_size call at91_get_ddram_size
+> with is_nb == true and remove the duplicate code.
 
-I would like to keep it configurable, i.e. the user can choose which
-UART port to choose. Is this ok? 
+This patch breaks the build of sama5d4_xplained and sama5d4ek.
+The root cause is the use of wrong definitions.
+Following patch fixes this:
 
-> 
-> Sascha
-> 
+If you apply this patch before the offending patch you
+can add my:
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Tested-by: Sam Ravnborg <sam@ravnborg.org>
 
+For all patches in this series.
+
+	Sam
+
+From 050e9fa72d67e5f5c6cb4b95c18d52e4c3e31625 Mon Sep 17 00:00:00 2001
+From: Sam Ravnborg <sam@ravnborg.org>
+Date: Sun, 24 Feb 2019 13:31:08 +0100
+Subject: [PATCH 1/3] arm: sama5d4: fix stack setup
+
+The code that configure the stack uses sama5d3 constants.
+Fix this to use the proper sama5d4 constants.
+
+Boot tested on sama5d4_xplained.
+
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+---
+ arch/arm/boards/sama5d4_xplained/lowlevel.c | 2 +-
+ arch/arm/boards/sama5d4ek/lowlevel.c        | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/boards/sama5d4_xplained/lowlevel.c b/arch/arm/boards/sama5d4_xplained/lowlevel.c
+index b791f2a03..d4d27d2ec 100644
+--- a/arch/arm/boards/sama5d4_xplained/lowlevel.c
++++ b/arch/arm/boards/sama5d4_xplained/lowlevel.c
+@@ -17,7 +17,7 @@ void __naked __bare_init barebox_arm_reset_vector(void)
+ {
+ 	arm_cpu_lowlevel_init();
+ 
+-	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE - 16);
++	arm_setup_stack(SAMA5D4_SRAM_BASE + SAMA5D4_SRAM_SIZE - 16);
+ 
+ 	barebox_arm_entry(SAMA5_DDRCS, at91sama5_get_ddram_size(), NULL);
+ }
+diff --git a/arch/arm/boards/sama5d4ek/lowlevel.c b/arch/arm/boards/sama5d4ek/lowlevel.c
+index b791f2a03..d4d27d2ec 100644
+--- a/arch/arm/boards/sama5d4ek/lowlevel.c
++++ b/arch/arm/boards/sama5d4ek/lowlevel.c
+@@ -17,7 +17,7 @@ void __naked __bare_init barebox_arm_reset_vector(void)
+ {
+ 	arm_cpu_lowlevel_init();
+ 
+-	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE - 16);
++	arm_setup_stack(SAMA5D4_SRAM_BASE + SAMA5D4_SRAM_SIZE - 16);
+ 
+ 	barebox_arm_entry(SAMA5_DDRCS, at91sama5_get_ddram_size(), NULL);
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.12.0
+
 
 _______________________________________________
 barebox mailing list
