@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x242.google.com ([2a00:1450:4864:20::242])
+Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gxyti-0007Ti-I0
+ id 1gxytj-0007Tk-7d
  for barebox@lists.infradead.org; Sun, 24 Feb 2019 18:53:13 +0000
-Received: by mail-lj1-x242.google.com with SMTP id z25so5516220ljk.8
+Received: by mail-lj1-x244.google.com with SMTP id l5so5545978lje.1
  for <barebox@lists.infradead.org>; Sun, 24 Feb 2019 10:53:10 -0800 (PST)
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Sun, 24 Feb 2019 19:52:50 +0100
-Message-Id: <20190224185259.28458-3-sam@ravnborg.org>
+Date: Sun, 24 Feb 2019 19:52:51 +0100
+Message-Id: <20190224185259.28458-4-sam@ravnborg.org>
 In-Reply-To: <20190224185259.28458-1-sam@ravnborg.org>
 References: <20190224185259.28458-1-sam@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -23,70 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 02/11] regmap: Implement
- syscon_regmap_lookup_by_compatible()
+Subject: [PATCH v4 03/11] clocksource: Do not mix depends and select for
+ ATMEL_PIT
 To: Barebox List <barebox@lists.infradead.org>, Sascha Hauer <s.hauer@pengutronix.de>, Ladislav Michl <ladis@linux-mips.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+CLOCKSOURCE_ATMEL_PIT was both set to yes using depends on
+and using select.
+Use only select to set this non-visible symbol to 'y'
 
-Implement syscon_regmap_lookup_by_compatible() to simplify porting kernel code.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Tested-by: Ladislav Michl <ladis@linux-mips.org>
 ---
- drivers/mfd/syscon.c | 14 ++++++++++++++
- include/mfd/syscon.h |  5 +++++
- 2 files changed, 19 insertions(+)
+ drivers/clocksource/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 30ed65f73..b1ff1b1ea 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -160,6 +160,20 @@ struct regmap *syscon_node_to_regmap(struct device_node *np)
- 	return syscon->regmap;
- }
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index 7b04663d2..b0502c303 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -69,7 +69,6 @@ config CLOCKSOURCE_ROCKCHIP
  
-+struct regmap *syscon_regmap_lookup_by_compatible(const char *s)
-+{
-+	struct device_node *syscon_np;
-+	struct regmap *regmap;
-+
-+	syscon_np = of_find_compatible_node(NULL, NULL, s);
-+	if (!syscon_np)
-+		return ERR_PTR(-ENODEV);
-+
-+	regmap = syscon_node_to_regmap(syscon_np);
-+
-+	return regmap;
-+}
-+
- static int syscon_probe(struct device_d *dev)
- {
- 	struct syscon *syscon;
-diff --git a/include/mfd/syscon.h b/include/mfd/syscon.h
-index 63b893e4a..902f9fa2f 100644
---- a/include/mfd/syscon.h
-+++ b/include/mfd/syscon.h
-@@ -21,6 +21,7 @@ void __iomem *syscon_base_lookup_by_pdevname(const char *s);
- void __iomem *syscon_base_lookup_by_phandle
- 	(struct device_node *np, const char *property);
- struct regmap *syscon_node_to_regmap(struct device_node *np);
-+struct regmap *syscon_regmap_lookup_by_compatible(const char *s);
- #else
- static inline void __iomem *syscon_base_lookup_by_pdevname(const char *s)
- {
-@@ -37,6 +38,10 @@ static inline struct regmap *syscon_node_to_regmap(struct device_node *np)
- {
- 	return ERR_PTR(-ENOSYS);
- }
-+static inline struct regmap *syscon_regmap_lookup_by_compatible(const char *s)
-+{
-+	return ERR_PTR(-ENOSYS);
-+}
- #endif
+ config CLOCKSOURCE_ATMEL_PIT
+        bool
+-       depends on SOC_AT91SAM9 || SOC_SAMA5
  
- #endif
+ config CLOCKSOURCE_ARMV8_TIMER
+ 	bool
 -- 
 2.12.0
 
