@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
+Received: from mail-lj1-x242.google.com ([2a00:1450:4864:20::242])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gxytj-0007Tk-7d
+ id 1gxytk-0007UL-1z
  for barebox@lists.infradead.org; Sun, 24 Feb 2019 18:53:13 +0000
-Received: by mail-lj1-x244.google.com with SMTP id l5so5545978lje.1
- for <barebox@lists.infradead.org>; Sun, 24 Feb 2019 10:53:10 -0800 (PST)
+Received: by mail-lj1-x242.google.com with SMTP id v10so5541627lji.3
+ for <barebox@lists.infradead.org>; Sun, 24 Feb 2019 10:53:11 -0800 (PST)
 From: Sam Ravnborg <sam@ravnborg.org>
-Date: Sun, 24 Feb 2019 19:52:51 +0100
-Message-Id: <20190224185259.28458-4-sam@ravnborg.org>
+Date: Sun, 24 Feb 2019 19:52:52 +0100
+Message-Id: <20190224185259.28458-5-sam@ravnborg.org>
 In-Reply-To: <20190224185259.28458-1-sam@ravnborg.org>
 References: <20190224185259.28458-1-sam@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
@@ -23,33 +23,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 03/11] clocksource: Do not mix depends and select for
- ATMEL_PIT
+Subject: [PATCH v4 04/11] arm: at91: add SOC_SAMA5{D2,D3,D4}
 To: Barebox List <barebox@lists.infradead.org>, Sascha Hauer <s.hauer@pengutronix.de>, Ladislav Michl <ladis@linux-mips.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 
-CLOCKSOURCE_ATMEL_PIT was both set to yes using depends on
-and using select.
-Use only select to set this non-visible symbol to 'y'
+This split allows us to distingush between the SOC types.
+The SOC symbols will be used in following patches.
+SOC_SAMA5D2 is essential unused for now,, and only added
+to prepare for future use
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 Tested-by: Ladislav Michl <ladis@linux-mips.org>
 ---
- drivers/clocksource/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm/mach-at91/Kconfig | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 7b04663d2..b0502c303 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -69,7 +69,6 @@ config CLOCKSOURCE_ROCKCHIP
- 
- config CLOCKSOURCE_ATMEL_PIT
-        bool
--       depends on SOC_AT91SAM9 || SOC_SAMA5
- 
- config CLOCKSOURCE_ARMV8_TIMER
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index b101e61d2..bb398716f 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -57,6 +57,22 @@ config SOC_AT91SAM9
+ config SOC_SAMA5
  	bool
+ 	select CPU_V7
++
++config SOC_SAMA5D2
++	bool
++	select SOC_SAMA5
++	select AT91SAM9_SMC
++	select CLOCKSOURCE_ATMEL_PIT
++
++config SOC_SAMA5D3
++	bool
++	select SOC_SAMA5
++	select AT91SAM9_SMC
++	select CLOCKSOURCE_ATMEL_PIT
++
++config SOC_SAMA5D4
++	bool
++	select SOC_SAMA5
+ 	select AT91SAM9_SMC
+ 	select CLOCKSOURCE_ATMEL_PIT
+ 
+@@ -188,14 +204,14 @@ config ARCH_AT91SAM9N12
+ 
+ config ARCH_SAMA5D3
+ 	bool "SAMA5D3x"
+-	select SOC_SAMA5
++	select SOC_SAMA5D3
+ 	select HAVE_AT91_DBGU1
+ 	select HAS_MACB
+ 	select HAVE_MACH_ARM_HEAD
+ 
+ config ARCH_SAMA5D4
+ 	bool "SAMA5D4"
+-	select SOC_SAMA5
++	select SOC_SAMA5D4
+ 	select HAVE_AT91_DBGU2
+ 	select HAS_MACB
+ 	select HAVE_MACH_ARM_HEAD
 -- 
 2.12.0
 
