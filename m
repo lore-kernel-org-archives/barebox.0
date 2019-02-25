@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gyeY5-0001bu-KC
- for barebox@lists.infradead.org; Tue, 26 Feb 2019 15:21:39 +0000
-Date: Tue, 26 Feb 2019 16:21:35 +0100
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190226152135.mjojjptfqsmwjkva@pengutronix.de>
-References: <20190221092848.4488-1-tomaz.solc@tablix.org>
- <20190221092848.4488-4-tomaz.solc@tablix.org>
+ id 1gyA87-0007Jr-BX
+ for barebox@lists.infradead.org; Mon, 25 Feb 2019 06:52:48 +0000
+Received: by mail-pg1-x543.google.com with SMTP id m1so4022861pgq.8
+ for <barebox@lists.infradead.org>; Sun, 24 Feb 2019 22:52:46 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Sun, 24 Feb 2019 22:52:29 -0800
+Message-Id: <20190225065229.3386-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190221092848.4488-4-tomaz.solc@tablix.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,214 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] commands: add of_bootargs command.
-To: Tomaz Solc <tomaz.solc@tablix.org>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] usb: imx: Do not disable VBUS on ehci_register()'s success
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Vivien Didelot <vivien.didelot@gmail.com>
 
-On Thu, Feb 21, 2019 at 10:28:48AM +0100, Tomaz Solc wrote:
-> When booting a Raspberry Pi, it is useful to extract bootargs from the
-> device tree that was created by the VideoCore firmware. These bootargs
-> contain for example settings for the framebuffer that the kernel needs
-> to properly set the video output.
-> 
-> This commit adds an of_bootargs command that extracts a bootargs
-> property from a device tree and saves it to a global variable.
-> 
-> For example, a bootloader environment can use this command to extract
-> the bootargs to linux.bootargs.vc, which then gets included into the
-> final bootargs for the kernel using CONFIG_FLEXIBLE_BOOTARGS.
-> ---
->  Documentation/boards/bcm2835.rst |  4 ++
->  commands/Kconfig                 | 13 ++++++
->  commands/Makefile                |  1 +
->  commands/of_bootargs.c           | 99 ++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 117 insertions(+)
->  create mode 100644 commands/of_bootargs.c
-> 
-> diff --git a/Documentation/boards/bcm2835.rst b/Documentation/boards/bcm2835.rst
-> index 95e910896..b8a6c18ea 100644
-> --- a/Documentation/boards/bcm2835.rst
-> +++ b/Documentation/boards/bcm2835.rst
-> @@ -34,5 +34,9 @@ VideoCore firmware creates a device tree based on the entries in ``config.txt``.
->  
->      bootm -o /vc.dtb /boot/kernel7.img
->  
-> +VideoCore device tree also contains the kernel command-line that is constructed from ``cmdline.txt`` and other parameters internally determined by the VideoCore firmware. Normally in Barebox this command-line gets overwritten by the Linux bootargs (see :ref:`booting_linux`). You can extract the VideoCore command-line from the device tree using the following command::
-> +
-> +    of_bootargs /vc.dtb linux.bootargs.vc
-> +
->  .. _Raspberry Pi firmware: https://codeload.github.com/raspberrypi/firmware/zip/80e1fbeb78f9df06701d28c0ed3a3060a3f557ef
->  .. _documentation for config.txt: https://www.raspberrypi.org/documentation/configuration/config-txt/
-> diff --git a/commands/Kconfig b/commands/Kconfig
-> index c14332c9d..0ae6d526f 100644
-> --- a/commands/Kconfig
-> +++ b/commands/Kconfig
-> @@ -2015,6 +2015,19 @@ config CMD_OF_DUMP
->  	  Options:
->  		-f <dtb>	work on <dtb> instead of internal devicetree
->  
-> +config CMD_OF_BOOTARGS
-> +	tristate
-> +	select OFTREE
-> +	prompt "of_bootargs"
-> +	help
-> +	  Extract bootargs from a device tree into a global variable
-> +
-> +	  Usage: of_bootargs [DTB] [VAR]
-> +
-> +	  DTB is path to a device tree file (e.g. /vc.dtb).
-> +	  VAR is a name of the global variable to set (e.g. linux.bootargs.vc)
-> +
-> +
->  config CMD_OF_NODE
->  	tristate
->  	select OFTREE
-> diff --git a/commands/Makefile b/commands/Makefile
-> index 358671bb5..f554f6041 100644
-> --- a/commands/Makefile
-> +++ b/commands/Makefile
-> @@ -76,6 +76,7 @@ obj-$(CONFIG_CMD_OFTREE)	+= oftree.o
->  obj-$(CONFIG_CMD_OF_PROPERTY)	+= of_property.o
->  obj-$(CONFIG_CMD_OF_NODE)	+= of_node.o
->  obj-$(CONFIG_CMD_OF_DUMP)	+= of_dump.o
-> +obj-$(CONFIG_CMD_OF_BOOTARGS)	+= of_bootargs.o
->  obj-$(CONFIG_CMD_OF_DISPLAY_TIMINGS)	+= of_display_timings.o
->  obj-$(CONFIG_CMD_OF_FIXUP_STATUS)	+= of_fixup_status.o
->  obj-$(CONFIG_CMD_MAGICVAR)	+= magicvar.o
-> diff --git a/commands/of_bootargs.c b/commands/of_bootargs.c
-> new file mode 100644
-> index 000000000..93e7b74b1
-> --- /dev/null
-> +++ b/commands/of_bootargs.c
-> @@ -0,0 +1,99 @@
-> +/*
-> + * of_dump.c - dump devicetrees to the console
-> + *
-> + * Copyright (c) 2014 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+Original code was written to exit early on ehci_register()'s
+success. As a part of e3eb0c729b, however, it was modified to to early
+exit on failure instead. This resulted in VBUS being erroneously
+disabled after EHCI controller was added, thus breaking USB on some
+i.MX boards (confirmed on ZII's RDU2).
 
-Is this true? :-)
+Fixes: e3eb0c729b ("usb: host: ehci: add ehci_unregister()")
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Vivien Didelot <vivien.didelot@gmail.com>
+---
+ drivers/usb/imx/chipidea-imx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-And please add a SPDX-License-Identifier to the new files. See [9] for
-an explanation (and replace "Linux" by "barebox" in your head when
-reading it :))
-
-[9]: https://www.kernel.org/doc/html/latest/process/license-rules.html
-
-> + *
-> + * See file CREDITS for list of people who contributed to this
-> + * project.
-
-Leave out this paragraph, that file does not exist.
-
- - Roland
-
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2
-> + * as published by the Free Software Foundation.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + */
-> +
-> +#include <common.h>
-> +#include <libfile.h>
-> +#include <of.h>
-> +#include <command.h>
-> +#include <malloc.h>
-> +#include <complete.h>
-> +#include <linux/ctype.h>
-> +#include <errno.h>
-> +#include <linux/err.h>
-> +#include <globalvar.h>
-> +
-> +static int do_of_bootargs(int argc, char *argv[])
-> +{
-> +	int ret = 0;
-> +	struct device_node *root = NULL, *node;
-> +	char *dtbfile, *varname;
-> +	void *fdt;
-> +
-> +	size_t size;
-> +	const char *cmdline;
-> +
-> +	if (argc != 3) {
-> +		return COMMAND_ERROR_USAGE;
-> +	}
-> +
-> +	dtbfile = argv[1];
-> +	varname = argv[2];
-> +
-> +	fdt = read_file(dtbfile, &size);
-> +	if (!fdt) {
-> +		printf("unable to read %s: %s\n", dtbfile, strerror(errno));
-> +		return -errno;
-> +	}
-> +
-> +	root = of_unflatten_dtb(fdt);
-> +
-> +	free(fdt);
-> +
-> +	if (IS_ERR(root)) {
-> +		ret = PTR_ERR(root);
-> +		root = NULL;
-> +		goto out;
-> +	}
-> +
-> +	node = of_find_node_by_path_from(root, "/chosen");
-> +	if (!node) {
-> +		printf("no /chosen node\n");
-> +		ret = -ENOENT;
-> +		goto out;
-> +	}
-> +
-> +	cmdline = of_get_property(node, "bootargs", NULL);
-> +	if (!cmdline) {
-> +		printf("no bootargs property in the /chosen node\n");
-> +		ret = -ENOENT;
-> +		goto out;
-> +	}
-> +
-> +	globalvar_add_simple(varname, cmdline);
-> +
-> +out:
-> +	if (root)
-> +		of_delete_node(root);
-> +
-> +	return ret;
-> +}
-> +
-> +BAREBOX_CMD_HELP_START(of_bootargs)
-> +BAREBOX_CMD_HELP_TEXT("DTB is path to a device tree file (e.g. /vc.dtb).")
-> +BAREBOX_CMD_HELP_TEXT("VAR is a name of the global variable to set (e.g. linux.bootargs.vc)")
-> +BAREBOX_CMD_HELP_END
-> +
-> +BAREBOX_CMD_START(of_bootargs)
-> +	.cmd		= do_of_bootargs,
-> +	BAREBOX_CMD_DESC("extract bootargs from a device tree into a global variable")
-> +	BAREBOX_CMD_OPTS("[DTB] [VAR]")
-> +	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-> +	BAREBOX_CMD_COMPLETE(devicetree_file_complete)
-> +	BAREBOX_CMD_HELP(cmd_of_bootargs_help)
-> +BAREBOX_CMD_END
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
+index 879221770..6c60c383f 100644
+--- a/drivers/usb/imx/chipidea-imx.c
++++ b/drivers/usb/imx/chipidea-imx.c
+@@ -201,14 +201,14 @@ static int ci_register_role(struct imx_chipidea *ci)
+ 				return ret;
+ 
+ 			ehci = ehci_register(ci->dev, &ci->data);
+-			if (IS_ERR(ehci))
++			if (IS_ERR(ehci)) {
++				regulator_disable(ci->vbus);
+ 				return PTR_ERR(ehci);
++			}
+ 
+ 			ci->ehci = ehci;
+ 
+ 			ci->dev->detect = ci_ehci_detect;
+-
+-			regulator_disable(ci->vbus);
+ 		} else {
+ 			dev_err(ci->dev, "Host support not available\n");
+ 			return -ENODEV;
 -- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
