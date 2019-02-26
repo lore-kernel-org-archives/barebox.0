@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gyBv0-0001B5-Qt
- for barebox@lists.infradead.org; Mon, 25 Feb 2019 08:47:24 +0000
-Date: Mon, 25 Feb 2019 09:47:20 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190225084720.gtnqk7ej37hgl5qz@pengutronix.de>
+ id 1gyYeU-00077o-7Q
+ for barebox@lists.infradead.org; Tue, 26 Feb 2019 09:03:52 +0000
 References: <20190224185259.28458-1-sam@ravnborg.org>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <c12c9d12-4ac8-a595-c138-1b1adfd54fbb@pengutronix.de>
+Date: Tue, 26 Feb 2019 10:03:45 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
 In-Reply-To: <20190224185259.28458-1-sam@ravnborg.org>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,40 +18,89 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v4 0/11] at91: Support PMC clock bindings
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>, Ladislav Michl <ladis@linux-mips.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Sam Ravnborg <sam@ravnborg.org>, Barebox List <barebox@lists.infradead.org>, Sascha Hauer <s.hauer@pengutronix.de>, Ladislav Michl <ladis@linux-mips.org>
 
-On Sun, Feb 24, 2019 at 07:52:48PM +0100, Sam Ravnborg wrote:
-> Hi all.
-> 
-> Sam Ravnborg (9):
->       arm: at91: fix at91_configure_usart6 warning
->       clocksource: Do not mix depends and select for ATMEL_PIT
->       arm: at91: add SOC_SAMA5{D2,D3,D4}
->       clk: at91: add at91sam9260
->       clk: at91: add at91sam9rl
->       clk: at91: add at91sam9x5
->       clk: at91: add sama5d2
->       clk: at91: add sama5d4
->       clk: at91: update to PMC bindings
-
-Applied, thanks
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMjQvMi8xOSAxOTo1MiwgU2FtIFJhdm5ib3JnIHdyb3RlOgo+IEhpIGFsbC4KPiAKPiBUaGUg
+Zm9sbG93aW5nIHBhdGNoc2V0IGFkZCBzdXBwb3J0cyBmb3IgdGhlIFBNQyBjbGsKPiBiaW5kaW5n
+cyBmb3IgYXQ5MS4KPiBUaGUgcGF0Y2hzZXQgd2FzIHRlc3RlZCBvbjoKPiAtIGF0OTFzYW05MjY0
+ZWsgLSBEVCBlbmFibGVkCj4gLSBzYW1hNWQ0LXhwbGFpbmVkIC0gbm9uIERUCj4gCj4gTGFkaXNs
+YXYgYW5kIEFobWFkIGRpZCBzb21lIGFkZGl0aW9uYWwgdGVzdGluZyBvbiB0aGUgYm9hcmRzIHRo
+ZXkgaGF2ZSBhdmFpbGFibGUuCj4gCj4gUGxlYXNlIGF3YWl0IGZlZWRiYWNrIGZyb20gQWhtYWQg
+YW5kIExhZGlzbGF2IGJlZm9yZSBhcHBseWluZyB0byBtYXN0ZXIuCgpJIGRvbid0IGhhdmUgdGhl
+IGhhcmR3YXJlIHRvIHRlc3QgdGhlc2UgYXQgdGhlIG1vbWVudCwKYnV0IGZyb20gdGhlIGNoYW5n
+ZWxvZywgSSBhc3N1bWUgaXQgc2hvdWxkIGJlIG9rYXkuCgo+IAo+IAo+IFRoZSBwYXRjaHNldCBp
+bmNsdWRlcyBzYW1hNWQyLmMgd2hpY2ggaXMgbm90IHVzZWQgdG9kYXkuCj4gSSBoYXZlIGEgc2Ft
+YTVkMjctc29tMS1layBib2FyZCB0aGF0IEkgaG9wZSB0byBmaW5kIHRpbWUgdG8gd29yawo+IHdp
+dGggYW5kIHRoZW4gdGhpcyB3aWxsIGJlIG5lZWRlZC4KPiAKPiBQYXRjaCB3YXMgbWFkZSBvbiB0
+b3Agb2YgYmFyZWJveCBtYXN0ZXI6Cj4gM2MyZGVlMmU3ZDYyYTMyYmE4NWY3YmY5NGJiN2FiZjVi
+NGYwOWRhYiAoImRvYzogYm9vdGNob29zZXI6IGFkZCByZXRyeSBoYW5kbGluZyB0byBhbGdvcml0
+aG0gZGVzY3JpcHRpb24iKQo+IAo+IE9uIHN0cmF5IHBhdGNoIHNuZWFrZWQgaW4gLSB0byBraWxs
+IGEgd2FybmluZy4KPiAKPiBUaGUgcGF0Y2hzZXQgdHJpZ2dlcnMgc29tZSBjaGVja3BhdGNoIHdh
+cm5pbmdzOgo+IC0gU1BEWCwgdGhlIGJhcmVib3ggdmFyaWFudCBvZiBjaGVja3BhdGNoIGlzIG1p
+c3Npbmcgc3VwcG9ydCBmb3IgdGhlc2UKPiAtIFRvbyBsb25nIGxpbmVzLiBBcyBjb2RlIGlzIGNv
+cGllZCBmcm9tIHRoZSBrZXJuZWwgSSBsZWZ0IHRoZW0gYXMtaXMKPiAKPiBDb21tZW50cy9yZXZp
+ZXcvdGVzdGluZyB2ZXJ5IHdlbGNvbWUhCj4gTm90ZTogSSBhbSBhdCBFbWJlZGRlZCBXb3JsZCBO
+w7xyZW5iZXJnIGZvciBhIGZldyBkYXlzLCBzbyBubyBzd2lmdAo+IHJlcHNvbnNlcyB0byBmZWVk
+YmFjay9jb21tZW50cy4KPiAKPiB2NDoKPiAtIGFkZGVkIGR0LWNvbXBhdCByZXF1aXJlZCBieSBz
+YW1hNWQzIChBaG1hZCkKPiAtIGFkZGVkIHN5c2Nvbl9yZWdtYXBfbG9va3VwX2J5X2NvbXBhdGli
+bGUgKEFobWFkKQo+IC0gUmViYXNlZCBvbiBtYXN0ZXIKPiAtIEFkZGVkIFNPQ19TQU1BNUQyIC0g
+YXMgaXQgaXMgdXNlZCBsYXRlcgo+ICAgTm90IHVzZWQgZm9yIG5vdywgYnV0IG5lZWRlZCBsYXRl
+cgo+IAo+IHYzOgo+IC0gZml4ZWQgYnVpbGQgYnJlYWthZ2UgaW4gc2FtYTVkNCBhbmQgY2xrLWgz
+Mm14Cj4gLSBhZGRlZCBUZXN0ZWQtYnk6IExhZGlzbGF2IE1pY2hsIDxsYWRpc0BsaW51eC1taXBz
+Lm9yZz4gdG8gcmVsZXZhbnQgcGF0Y2hlcwo+ICAgTm90IGFsbCwgYXMgb25seSBhIHN1YmV0IHdh
+cyBjb3ZlcmVkIGJ5IHRoZSB0ZXN0Cj4gCj4gdjI6Cj4gLSBTcGxpdCB1cCBpbiBzbWFsbGVyIHBh
+dGNoZXMKPiAtIEZpeCBidWlsZHMgaW4gdmFyaW91cyBjb25maWdzCj4gLSBSZXdvcmtlZCBLY29u
+ZmlnIGNoYW5nZXMKPiAtIEZpeCBjaGVja3BhdGNoIHdhcm5pbmdzIChtb3N0bHkgd2hpdGVzcGFj
+ZSkKPiAKPiB2MToKPiAtIFBvc3RlZCB0byBtYWlsaW5nIGxpc3QgYXMgYSBXSVAgcGF0Y2gKPiAK
+PiAgICAgICAgIFNhbQo+IAo+IAo+IEFobWFkIEZhdG91bSAoMik6Cj4gICAgICAgcmVnbWFwOiBJ
+bXBsZW1lbnQgc3lzY29uX3JlZ21hcF9sb29rdXBfYnlfY29tcGF0aWJsZSgpCj4gICAgICAgY2xr
+OiBhdDkxOiBhZGQgZHQtY29tcGF0IHRvIFBNQyBiaW5kaW5ncwo+IAo+IFNhbSBSYXZuYm9yZyAo
+OSk6Cj4gICAgICAgYXJtOiBhdDkxOiBmaXggYXQ5MV9jb25maWd1cmVfdXNhcnQ2IHdhcm5pbmcK
+PiAgICAgICBjbG9ja3NvdXJjZTogRG8gbm90IG1peCBkZXBlbmRzIGFuZCBzZWxlY3QgZm9yIEFU
+TUVMX1BJVAo+ICAgICAgIGFybTogYXQ5MTogYWRkIFNPQ19TQU1BNXtEMixEMyxENH0KPiAgICAg
+ICBjbGs6IGF0OTE6IGFkZCBhdDkxc2FtOTI2MAo+ICAgICAgIGNsazogYXQ5MTogYWRkIGF0OTFz
+YW05cmwKPiAgICAgICBjbGs6IGF0OTE6IGFkZCBhdDkxc2FtOXg1Cj4gICAgICAgY2xrOiBhdDkx
+OiBhZGQgc2FtYTVkMgo+ICAgICAgIGNsazogYXQ5MTogYWRkIHNhbWE1ZDQKPiAgICAgICBjbGs6
+IGF0OTE6IHVwZGF0ZSB0byBQTUMgYmluZGluZ3MKPiAKPiAgYXJjaC9hcm0vbWFjaC1hdDkxL0tj
+b25maWcgICAgICAgICAgICAgIHwgIDM3ICstCj4gIGFyY2gvYXJtL21hY2gtYXQ5MS9pbmNsdWRl
+L21hY2gvYm9hcmQuaCB8ICAgMSArCj4gIGRyaXZlcnMvY2xrL2F0OTEvTWFrZWZpbGUgICAgICAg
+ICAgICAgICB8ICAgNiArCj4gIGRyaXZlcnMvY2xrL2F0OTEvYXQ5MXNhbTkyNjAuYyAgICAgICAg
+ICB8IDQ5NyArKysrKysrKysrKysrKysrKwo+ICBkcml2ZXJzL2Nsay9hdDkxL2F0OTFzYW05cmwu
+YyAgICAgICAgICAgfCAxNzcgKysrKysrCj4gIGRyaXZlcnMvY2xrL2F0OTEvYXQ5MXNhbTl4NS5j
+ICAgICAgICAgICB8IDMxNSArKysrKysrKysrKwo+ICBkcml2ZXJzL2Nsay9hdDkxL2Nsay1nZW5l
+cmF0ZWQuYyAgICAgICAgfCAxODUgKystLS0tCj4gIGRyaXZlcnMvY2xrL2F0OTEvY2xrLWgzMm14
+LmMgICAgICAgICAgICB8ICA1NSArLQo+ICBkcml2ZXJzL2Nsay9hdDkxL2Nsay1tYWluLmMgICAg
+ICAgICAgICAgfCAxMTIgKy0tLQo+ICBkcml2ZXJzL2Nsay9hdDkxL2Nsay1tYXN0ZXIuYyAgICAg
+ICAgICAgfCAgOTQgKy0tLQo+ICBkcml2ZXJzL2Nsay9hdDkxL2Nsay1wZXJpcGhlcmFsLmMgICAg
+ICAgfCAgODIgKy0tCj4gIGRyaXZlcnMvY2xrL2F0OTEvY2xrLXBsbC5jICAgICAgICAgICAgICB8
+IDE3NCArLS0tLS0KPiAgZHJpdmVycy9jbGsvYXQ5MS9jbGstcGxsZGl2LmMgICAgICAgICAgIHwg
+IDI3ICstCj4gIGRyaXZlcnMvY2xrL2F0OTEvY2xrLXByb2dyYW1tYWJsZS5jICAgICB8ICA4MyAr
+LS0KPiAgZHJpdmVycy9jbGsvYXQ5MS9jbGstc2xvdy5jICAgICAgICAgICAgIHwgIDMzICstCj4g
+IGRyaXZlcnMvY2xrL2F0OTEvY2xrLXNtZC5jICAgICAgICAgICAgICB8ICAzMyArLQo+ICBkcml2
+ZXJzL2Nsay9hdDkxL2Nsay1zeXN0ZW0uYyAgICAgICAgICAgfCAgNDIgKy0KPiAgZHJpdmVycy9j
+bGsvYXQ5MS9jbGstdXNiLmMgICAgICAgICAgICAgIHwgIDk0ICstLS0KPiAgZHJpdmVycy9jbGsv
+YXQ5MS9jbGstdXRtaS5jICAgICAgICAgICAgIHwgMTAwICsrLS0KPiAgZHJpdmVycy9jbGsvYXQ5
+MS9kdC1jb21wYXQuYyAgICAgICAgICAgIHwgOTYxICsrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrCj4gIGRyaXZlcnMvY2xrL2F0OTEvcG1jLmMgICAgICAgICAgICAgICAgICB8IDI0OCAr
+KysrKysrKysKPiAgZHJpdmVycy9jbGsvYXQ5MS9wbWMuaCAgICAgICAgICAgICAgICAgIHwgMTY5
+ICsrKysrKwo+ICBkcml2ZXJzL2Nsay9hdDkxL3NhbWE1ZDIuYyAgICAgICAgICAgICAgfCAzNDIg
+KysrKysrKysrKysrCj4gIGRyaXZlcnMvY2xrL2F0OTEvc2FtYTVkNC5jICAgICAgICAgICAgICB8
+IDI3MCArKysrKysrKysKPiAgZHJpdmVycy9jbG9ja3NvdXJjZS9LY29uZmlnICAgICAgICAgICAg
+IHwgICAxIC0KPiAgZHJpdmVycy9tZmQvc3lzY29uLmMgICAgICAgICAgICAgICAgICAgIHwgIDE0
+ICsKPiAgaW5jbHVkZS9saW51eC9jbGsuaCAgICAgICAgICAgICAgICAgICAgIHwgICA3ICsKPiAg
+aW5jbHVkZS9tZmQvc3lzY29uLmggICAgICAgICAgICAgICAgICAgIHwgICA1ICsKPiAgaW5jbHVk
+ZS9zb2MvYXQ5MS9hdG1lbC1zZnIuaCAgICAgICAgICAgIHwgIDM0ICsrCj4gIDI5IGZpbGVzIGNo
+YW5nZWQsIDMyMjAgaW5zZXJ0aW9ucygrKSwgOTc4IGRlbGV0aW9ucygtKQo+IAoKLS0gClBlbmd1
+dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8
+IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGls
+ZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJp
+Y2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5
+MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
+L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
