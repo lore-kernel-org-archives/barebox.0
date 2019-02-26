@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gytlg-00071k-1T
- for barebox@lists.infradead.org; Wed, 27 Feb 2019 07:36:41 +0000
-Date: Wed, 27 Feb 2019 08:36:38 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190227073638.iiw4aqukpjccqmbu@pengutronix.de>
-References: <20190226200657.2722-1-andrew.smirnov@gmail.com>
+ id 1gyj0a-0001cP-Fh
+ for barebox@lists.infradead.org; Tue, 26 Feb 2019 20:07:21 +0000
+Received: by mail-pl1-x644.google.com with SMTP id c17so3573331plz.13
+ for <barebox@lists.infradead.org>; Tue, 26 Feb 2019 12:07:20 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 26 Feb 2019 12:07:12 -0800
+Message-Id: <20190226200712.3007-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190226200657.2722-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] include: Drop mem_memmap()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] drivers: Drop dummy_porbe()
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Tue, Feb 26, 2019 at 12:06:57PM -0800, Andrey Smirnov wrote:
-> Drop what looks like a leftover function prototype.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  include/driver.h | 1 -
->  1 file changed, 1 deletion(-)
+Drop dummy_porbe() due to lack of users in the tree.
 
-Applied, thanks
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/base/driver.c | 6 ------
+ include/driver.h      | 3 ---
+ 2 files changed, 9 deletions(-)
 
-Sascha
-
-> 
-> diff --git a/include/driver.h b/include/driver.h
-> index 731116d8f..0ed830d29 100644
-> --- a/include/driver.h
-> +++ b/include/driver.h
-> @@ -352,7 +352,6 @@ struct cdev;
->  /* These are used by drivers which work with direct memory accesses */
->  ssize_t mem_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags);
->  ssize_t mem_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags);
-> -int mem_memmap(struct cdev *cdev, void **map, int flags);
->  
->  /* Use this if you have nothing to do in your drivers probe function */
->  int dummy_probe(struct device_d *);
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 1fd6bbc01..eec2a2d8a 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -439,12 +439,6 @@ int generic_memmap_ro(struct cdev *cdev, void **map, int flags)
+ 	return generic_memmap_rw(cdev, map, flags);
+ }
+ 
+-int dummy_probe(struct device_d *dev)
+-{
+-	return 0;
+-}
+-EXPORT_SYMBOL(dummy_probe);
+-
+ /**
+  * dev_set_name - set a device name
+  * @dev: device
+diff --git a/include/driver.h b/include/driver.h
+index 0ed830d29..26c447015 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -353,9 +353,6 @@ struct cdev;
+ ssize_t mem_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags);
+ ssize_t mem_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags);
+ 
+-/* Use this if you have nothing to do in your drivers probe function */
+-int dummy_probe(struct device_d *);
+-
+ int generic_memmap_ro(struct cdev *dev, void **map, int flags);
+ int generic_memmap_rw(struct cdev *dev, void **map, int flags);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
