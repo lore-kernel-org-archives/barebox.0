@@ -1,16 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gyYlK-0002fl-5G
- for barebox@lists.infradead.org; Tue, 26 Feb 2019 09:10:55 +0000
+ id 1gyZTl-0005Te-GF
+ for barebox@lists.infradead.org; Tue, 26 Feb 2019 09:56:51 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=a3f-osx.local)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <a.fatoum@pengutronix.de>) id 1gyZTk-0001QD-0e
+ for barebox@lists.infradead.org; Tue, 26 Feb 2019 10:56:48 +0100
 References: <20190219120612.728-1-a.fatoum@pengutronix.de>
  <20190219120612.728-5-a.fatoum@pengutronix.de>
  <20190224123529.GA19669@ravnborg.org>
+ <923d36b1-7656-279b-0204-ef553cc82747@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <923d36b1-7656-279b-0204-ef553cc82747@pengutronix.de>
-Date: Tue, 26 Feb 2019 10:10:52 +0100
+Message-ID: <975489a1-8e81-56ef-b066-7a7041f5b759@pengutronix.de>
+Date: Tue, 26 Feb 2019 10:56:47 +0100
 MIME-Version: 1.0
-In-Reply-To: <20190224123529.GA19669@ravnborg.org>
+In-Reply-To: <923d36b1-7656-279b-0204-ef553cc82747@pengutronix.de>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,85 +31,21 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 4/4] ARM: at91: remove duplicate get_ddram_size code
-To: Sam Ravnborg <sam@ravnborg.org>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
 
-Hello Sam,
+Hello,
 
-On 24/2/19 13:35, Sam Ravnborg wrote:
-> Hi Ahmad.
-> 
-> On Tue, Feb 19, 2019 at 01:06:12PM +0100, Ahmad Fatoum wrote:
->> Both at91_get_ddram_size and at91sama5_get_ddram_size are the
->> same if is_sdram == false and is_nb == true.
->>
->> is_sdram is always false, because according to the sama5d{2,3,4}
->> datasheets, the lowest possible value for AT91_DDRSDRC_MD is 3
->> (i.e. none of them supports SDR SDRAM).
->>
->> Therefore have at91sama5_get_ddram_size call at91_get_ddram_size
->> with is_nb == true and remove the duplicate code.
-> 
-> This patch breaks the build of sama5d4_xplained and sama5d4ek.
-> The root cause is the use of wrong definitions.
-> Following patch fixes this:
-> 
-> If you apply this patch before the offending patch you
-> can add my:
-> Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-> Tested-by: Sam Ravnborg <sam@ravnborg.org>
-> 
-> For all patches in this series.
-> 
-> 	Sam
-> 
-> From 050e9fa72d67e5f5c6cb4b95c18d52e4c3e31625 Mon Sep 17 00:00:00 2001
-> From: Sam Ravnborg <sam@ravnborg.org>
-> Date: Sun, 24 Feb 2019 13:31:08 +0100
-> Subject: [PATCH 1/3] arm: sama5d4: fix stack setup
-> 
-> The code that configure the stack uses sama5d3 constants.
-> Fix this to use the proper sama5d4 constants.
-> 
-> Boot tested on sama5d4_xplained.
-> 
-> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> ---
->  arch/arm/boards/sama5d4_xplained/lowlevel.c | 2 +-
->  arch/arm/boards/sama5d4ek/lowlevel.c        | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm/boards/sama5d4_xplained/lowlevel.c b/arch/arm/boards/sama5d4_xplained/lowlevel.c
-> index b791f2a03..d4d27d2ec 100644
-> --- a/arch/arm/boards/sama5d4_xplained/lowlevel.c
-> +++ b/arch/arm/boards/sama5d4_xplained/lowlevel.c
-> @@ -17,7 +17,7 @@ void __naked __bare_init barebox_arm_reset_vector(void)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> -	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE - 16);
-> +	arm_setup_stack(SAMA5D4_SRAM_BASE + SAMA5D4_SRAM_SIZE - 16);
->  
->  	barebox_arm_entry(SAMA5_DDRCS, at91sama5_get_ddram_size(), NULL);
->  }
-> diff --git a/arch/arm/boards/sama5d4ek/lowlevel.c b/arch/arm/boards/sama5d4ek/lowlevel.c
-> index b791f2a03..d4d27d2ec 100644
-> --- a/arch/arm/boards/sama5d4ek/lowlevel.c
-> +++ b/arch/arm/boards/sama5d4ek/lowlevel.c
-> @@ -17,7 +17,7 @@ void __naked __bare_init barebox_arm_reset_vector(void)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> -	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE - 16);
-> +	arm_setup_stack(SAMA5D4_SRAM_BASE + SAMA5D4_SRAM_SIZE - 16);
->  
->  	barebox_arm_entry(SAMA5_DDRCS, at91sama5_get_ddram_size(), NULL);
->  }
+On 26/2/19 10:10, Ahmad Fatoum wrote:
+> Thanks for the review!
+> Sascha, if the series is otherwise ok, could you apply Sam's patch followed
+> by mine as suggested? Thanks. 
 > 
 
-Thanks for the review!
-Sascha, if the series is otherwise ok, could you apply Sam's patch followed
-by mine as suggested? Thanks. 
+While talking the series over with sha, I spotted a typo in debug_ll.h.
+I will prepare a v2 and send this out again.
+
+Cheers
+Ahmad
 
 -- 
 Pengutronix e.K.                           |                             |
