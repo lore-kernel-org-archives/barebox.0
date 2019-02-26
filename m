@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gyin2-0004GU-08
- for barebox@lists.infradead.org; Tue, 26 Feb 2019 19:53:21 +0000
-Received: by mail-pf1-x443.google.com with SMTP id n74so6735524pfi.9
- for <barebox@lists.infradead.org>; Tue, 26 Feb 2019 11:53:18 -0800 (PST)
+ id 1gyin2-0004Gl-9W
+ for barebox@lists.infradead.org; Tue, 26 Feb 2019 19:53:22 +0000
+Received: by mail-pg1-x542.google.com with SMTP id r124so6708263pgr.3
+ for <barebox@lists.infradead.org>; Tue, 26 Feb 2019 11:53:20 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 26 Feb 2019 11:53:00 -0800
-Message-Id: <20190226195303.24733-3-andrew.smirnov@gmail.com>
+Date: Tue, 26 Feb 2019 11:53:01 -0800
+Message-Id: <20190226195303.24733-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20190226195303.24733-1-andrew.smirnov@gmail.com>
 References: <20190226195303.24733-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,12 +23,12 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] fs: Make use of cdev_erase()
+Subject: [PATCH 4/6] fs: Make use of cdev_flush()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Drop extra checks and explicit indirect call in devfs_erase() in
-favour of using cdev_erase(), since it already does all of the above.
+Drop extra checks and explicit indirect call in devfs_flush() in
+favour of using cdev_flush(), since it already does all of the above.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
@@ -36,24 +36,21 @@ Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
  1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/fs/devfs.c b/fs/devfs.c
-index a7400df1c..ce04d0243 100644
+index ce04d0243..d088c1a66 100644
 --- a/fs/devfs.c
 +++ b/fs/devfs.c
-@@ -78,13 +78,10 @@ static int devfs_erase(struct device_d *_dev, FILE *f, loff_t count, loff_t offs
- 	if (cdev->flags & DEVFS_PARTITION_READONLY)
- 		return -EPERM;
+@@ -152,10 +152,7 @@ static int devfs_flush(struct device_d *_dev, FILE *f)
+ {
+ 	struct cdev *cdev = f->priv;
  
--	if (!cdev->ops->erase)
--		return -ENOSYS;
+-	if (cdev->ops->flush)
+-		return cdev->ops->flush(cdev);
 -
- 	if (count + offset > cdev->size)
- 		count = cdev->size - offset;
- 
--	return cdev->ops->erase(cdev, count, offset + cdev->offset);
-+	return cdev_erase(cdev, count, offset);
+-	return 0;
++	return cdev_flush(cdev);
  }
  
- static int devfs_protect(struct device_d *_dev, FILE *f, size_t count, loff_t offset, int prot)
+ static int devfs_ioctl(struct device_d *_dev, FILE *f, int request, void *buf)
 -- 
 2.20.1
 
