@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gytfH-0003pm-9b
- for barebox@lists.infradead.org; Wed, 27 Feb 2019 07:30:04 +0000
-Date: Wed, 27 Feb 2019 08:30:01 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190227073001.7afsrcp4ng7lht7h@pengutronix.de>
-References: <20190225102712.13750-1-o.rempel@pengutronix.de>
+ id 1gyimz-0004GH-Et
+ for barebox@lists.infradead.org; Tue, 26 Feb 2019 19:53:19 +0000
+Received: by mail-pl1-x641.google.com with SMTP id bj4so6724797plb.7
+ for <barebox@lists.infradead.org>; Tue, 26 Feb 2019 11:53:16 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 26 Feb 2019 11:52:58 -0800
+Message-Id: <20190226195303.24733-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190225102712.13750-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: ath79: increase malloc size to 8 MiB
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/6] fs: Drop needless OOM check
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Mon, Feb 25, 2019 at 11:27:12AM +0100, Oleksij Rempel wrote:
-> with 4 MiB we are not able even to start latest kernel.
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  arch/mips/configs/ath79_defconfig | 1 +
->  1 file changed, 1 insertion(+)
+Drop needless OOM check since xzalloc() will never return NULL.
 
-Applied. thanks
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ fs/fs.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Sascha
-
-
+diff --git a/fs/fs.c b/fs/fs.c
+index 1f6b3d346..65de82518 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -809,9 +809,6 @@ static int fillonedir(struct dir_context *ctx, const char *name, int namlen,
+ 	struct readdir_entry *entry;
+ 
+ 	entry = xzalloc(sizeof(*entry));
+-	if (!entry)
+-		return -ENOMEM;
+-
+ 	memcpy(entry->d.d_name, name, namlen);
+ 	list_add_tail(&entry->list, &rd->dir->entries);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
