@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mout02.posteo.de ([185.67.36.66])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gytmd-00078l-J9
- for barebox@lists.infradead.org; Wed, 27 Feb 2019 07:37:41 +0000
-Date: Wed, 27 Feb 2019 08:37:37 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190227073737.5a7vpvrlxgfo7xfg@pengutronix.de>
-References: <20190226200712.3007-1-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190226200712.3007-1-andrew.smirnov@gmail.com>
+ id 1gyjxT-00053P-LP
+ for barebox@lists.infradead.org; Tue, 26 Feb 2019 21:08:13 +0000
+Received: from submission (posteo.de [89.146.220.130]) 
+ by mout02.posteo.de (Postfix) with ESMTPS id 1C02F2400E6
+ for <barebox@lists.infradead.org>; Tue, 26 Feb 2019 22:08:05 +0100 (CET)
+From: Christian Hemp <christian.hemp@posteo.de>
+Date: Tue, 26 Feb 2019 22:07:49 +0100
+Message-Id: <20190226210749.8898-1-christian.hemp@posteo.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,33 +17,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] drivers: Drop dummy_porbe()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Documentation: imx8mq-evk: fix firmware path
+To: barebox@lists.infradead.org
+Cc: Christian Hemp <christian.hemp@posteo.de>
 
-On Tue, Feb 26, 2019 at 12:07:12PM -0800, Andrey Smirnov wrote:
-> Drop dummy_porbe() due to lack of users in the tree.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  drivers/base/driver.c | 6 ------
->  include/driver.h      | 3 ---
->  2 files changed, 9 deletions(-)
+Since commit: "da985aac8 firmware: drop the imx subdir" the firmware is
+not longer placed in imx subdir. So the subdir can be removed from the
+documentation.
 
-Applied, thanks
+Signed-off-by: Christian Hemp <christian.hemp@posteo.de>
+---
+ Documentation/boards/imx/nxp-imx8mq-evk.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
-
+diff --git a/Documentation/boards/imx/nxp-imx8mq-evk.rst b/Documentation/boards/imx/nxp-imx8mq-evk.rst
+index 8bad9455a..a8624130e 100644
+--- a/Documentation/boards/imx/nxp-imx8mq-evk.rst
++++ b/Documentation/boards/imx/nxp-imx8mq-evk.rst
+@@ -29,7 +29,7 @@ result in the following files:
+ - lpddr4_pmu_train_2d_imem.bin
+ 
+ As a last step of this process those files need to be placed in
+-"firmware/imx/"::
++"firmware/"::
+ 
+   for f in lpddr4_pmu_train_1d_dmem.bin  \
+            lpddr4_pmu_train_1d_imem.bin  \
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
