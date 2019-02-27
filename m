@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gyin3-0004Hj-De
- for barebox@lists.infradead.org; Tue, 26 Feb 2019 19:53:22 +0000
-Received: by mail-pl1-x643.google.com with SMTP id y5so6730679plk.8
- for <barebox@lists.infradead.org>; Tue, 26 Feb 2019 11:53:21 -0800 (PST)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 26 Feb 2019 11:53:02 -0800
-Message-Id: <20190226195303.24733-5-andrew.smirnov@gmail.com>
-In-Reply-To: <20190226195303.24733-1-andrew.smirnov@gmail.com>
+ id 1gytkU-0006pX-Uk
+ for barebox@lists.infradead.org; Wed, 27 Feb 2019 07:35:28 +0000
+Date: Wed, 27 Feb 2019 08:35:24 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190227073524.sqb5m5lgl3vlvw6v@pengutronix.de>
 References: <20190226195303.24733-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190226195303.24733-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,38 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/6] fs: Drop unused code in fstat()
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 1/6] fs: Drop needless OOM check
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- fs/fs.c | 3 ---
- 1 file changed, 3 deletions(-)
+On Tue, Feb 26, 2019 at 11:52:58AM -0800, Andrey Smirnov wrote:
+> Drop needless OOM check since xzalloc() will never return NULL.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  fs/fs.c | 3 ---
+>  1 file changed, 3 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 65de82518..878a18e17 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -848,15 +848,12 @@ static void stat_inode(struct inode *inode, struct stat *s)
- int fstat(int fd, struct stat *s)
- {
- 	FILE *f;
--	struct fs_device_d *fsdev;
- 
- 	if (check_fd(fd))
- 		return -errno;
- 
- 	f = &files[fd];
- 
--	fsdev = f->fsdev;
--
- 	stat_inode(f->f_inode, s);
- 
- 	return 0;
+Applied, thanks
+
+Sascha
+
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
