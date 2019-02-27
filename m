@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gypib-0002ce-CF
- for barebox@lists.infradead.org; Wed, 27 Feb 2019 03:17:14 +0000
-Received: by mail-pl1-x641.google.com with SMTP id q3so7263136pll.4
- for <barebox@lists.infradead.org>; Tue, 26 Feb 2019 19:17:13 -0800 (PST)
+ id 1gypiX-0002aw-U1
+ for barebox@lists.infradead.org; Wed, 27 Feb 2019 03:17:11 +0000
+Received: by mail-pl1-x643.google.com with SMTP id d15so7272208plr.1
+ for <barebox@lists.infradead.org>; Tue, 26 Feb 2019 19:17:09 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 26 Feb 2019 19:16:54 -0800
-Message-Id: <20190227031657.19896-5-andrew.smirnov@gmail.com>
+Date: Tue, 26 Feb 2019 19:16:51 -0800
+Message-Id: <20190227031657.19896-2-andrew.smirnov@gmail.com>
 In-Reply-To: <20190227031657.19896-1-andrew.smirnov@gmail.com>
 References: <20190227031657.19896-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,132 +23,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] ARM: imx8mq: Add nodes for PCIE1 and PCIE2 IP blocks
+Subject: [PATCH 1/7] PCI: imx6: Add code to request/control "pcie_aux" clock
+ for i.MX8MQ
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add node for PCE1 and PCIE2 IP block that is missing in upstream DTS. This patch
-should be reverted once that changes.
+Port of a Linux commit 29d6b80bc36be62ae38ed8ac3f7a426975fe7dfa
+
+  The PCIe IP block has an additional clock, "pcie_aux", that needs to
+  be controlled by the driver. Add code to support it.
+
+  Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+  Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+  Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+  Cc: Bjorn Helgaas <bhelgaas@google.com>
+  Cc: Fabio Estevam <fabio.estevam@nxp.com>
+  Cc: Chris Healy <cphealy@gmail.com>
+  Cc: Lucas Stach <l.stach@pengutronix.de>
+  Cc: Leonard Crestez <leonard.crestez@nxp.com>
+  Cc: "A.s. Dong" <aisheng.dong@nxp.com>
+  Cc: Richard Zhu <hongxing.zhu@nxp.com>
+  Cc: linux-imx@nxp.com
+  Cc: linux-arm-kernel@lists.infradead.org
+  Cc: linux-kernel@vger.kernel.org
+  Cc: linux-pci@vger.kernel.org
+  Cc: Rob Herring <robh@kernel.org>
+  Cc: devicetree@vger.kernel.org
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/imx8mq.dtsi | 89 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 89 insertions(+)
+ drivers/pci/pci-imx6.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/arm/dts/imx8mq.dtsi b/arch/arm/dts/imx8mq.dtsi
-index eece19a7a..153808b1c 100644
---- a/arch/arm/dts/imx8mq.dtsi
-+++ b/arch/arm/dts/imx8mq.dtsi
-@@ -4,6 +4,7 @@
-  * Copyright (C) 2017 Pengutronix, Lucas Stach <kernel@pengutronix.de>
-  */
+diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
+index 138b4ca8b..85307bad3 100644
+--- a/drivers/pci/pci-imx6.c
++++ b/drivers/pci/pci-imx6.c
+@@ -65,6 +65,7 @@ struct imx6_pcie {
+ 	struct clk		*pcie_bus;
+ 	struct clk		*pcie_phy;
+ 	struct clk		*pcie;
++	struct clk              *pcie_aux;
+ 	void __iomem		*iomuxc_gpr;
+ 	u32			controller_id;
+ 	struct reset_control	*pciephy_reset;
+@@ -299,8 +300,10 @@ static unsigned int imx6_pcie_grp_offset(const struct imx6_pcie *imx6_pcie)
  
-+#include <dt-bindings/reset/imx8mq-reset.h>
- #include <dt-bindings/thermal/thermal.h>
+ static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
+ {
++	struct device_d *dev = imx6_pcie->pci->dev;
+ 	u32 gpr1, gpr1x;
+ 	unsigned int offset;
++	int ret;
  
- / {
-@@ -126,6 +127,35 @@
- 				pgc {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
+ 	switch (imx6_pcie->drvdata->variant) {
+ 	case IMX6QP:
+@@ -323,6 +326,12 @@ static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
+ 	case IMX7D:
+ 		break;
+ 	case IMX8MQ:
++		ret = clk_enable(imx6_pcie->pcie_aux);
++		if (ret) {
++			dev_err(dev, "unable to enable pcie_aux clock\n");
++			return ret;
++		}
 +
-+					/*
-+					 * As per comment in ATF source code:
-+					 *
-+					 * PCIE1 and PCIE2 share the
-+					 * same reset signal, if we power
-+					 * down PCIE2, PCIE1 will be held
-+					 * in reset too.
-+					 *
-+					 * So instead of creating two
-+                                         * separate power domains for
-+                                         * PCIE1 and PCIE2. We create
-+                                         * a link between 1 and 10 and
-+                                         * use what was supposed to be
-+                                         * domain 1 as a shared PCIE
-+                                         * power domain powering both
-+                                         * PCIE1 and PCIE2 at the same
-+                                         * time
-+					 */
-+					pgc_pcie_phy: gpc_power_domain@1 {
-+						#power-domain-cells = <0>;
-+						reg = <1>;
-+						power-domains = <&pgc_pcie2_phy>;
-+					};
-+
-+					pgc_pcie2_phy: gpc_power_domain@10 {
-+						#power-domain-cells = <0>;
-+						reg = <10>;
-+					};
- 				};
- 			};
- 		};
-@@ -141,6 +171,65 @@
- 				status = "disabled";
- 			};
- 		};
-+
-+		pcie0: pcie@33800000 {
-+			compatible = "fsl,imx8mq-pcie";
-+			reg = <0x33800000 0x400000>,
-+			      <0x1ff00000 0x80000>;
-+			reg-names = "dbi", "config";
-+			#address-cells = <3>;
-+			#size-cells = <2>;
-+			device_type = "pci";
-+			bus-range = <0x00 0xff>;
-+			ranges = <0x81000000 0 0x00000000 0x1ff80000 0 0x00010000 /* downstream I/O 64KB */
-+		        	  0x82000000 0 0x18000000 0x18000000 0 0x07f00000>; /* non-prefetchable memory */
-+			num-lanes = <1>;
-+			interrupts = <GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "msi";
-+			#interrupt-cells = <1>;
-+			interrupt-map-mask = <0 0 0 0x7>;
-+			interrupt-map = <0 0 0 1 &gic GIC_SPI 125 IRQ_TYPE_LEVEL_HIGH>,
-+		        		<0 0 0 2 &gic GIC_SPI 124 IRQ_TYPE_LEVEL_HIGH>,
-+		        		<0 0 0 3 &gic GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>,
-+		        		<0 0 0 4 &gic GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>;
-+			fsl,max-link-speed = <2>;
-+			power-domains = <&pgc_pcie_phy>;
-+			resets = <&src IMX8MQ_RESET_PCIEPHY>,
-+		        	 <&src IMX8MQ_RESET_PCIE_CTRL_APPS_EN>,
-+		        	 <&src IMX8MQ_RESET_PCIE_CTRL_APPS_TURNOFF>;
-+			reset-names = "pciephy", "apps", "turnoff";
-+			fsl,controller-id = <0>;
-+			status = "disabled";
-+		};
-+
-+		pcie1: pcie@33c00000 {
-+			compatible = "fsl,imx8mq-pcie";
-+			reg = <0x33c00000 0x400000>,
-+			      <0x27f00000 0x80000>;
-+			reg-names = "dbi", "config";
-+			#address-cells = <3>;
-+			#size-cells = <2>;
-+			device_type = "pci";
-+			ranges =  <0x81000000 0 0x00000000 0x27f80000 0 0x00010000 /* downstream I/O 64KB */
-+				  0x82000000 0 0x20000000 0x20000000 0 0x07f00000>; /* non-prefetchable memory */
-+			num-lanes = <1>;
-+			interrupts = <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "msi";
-+			#interrupt-cells = <1>;
-+			interrupt-map-mask = <0 0 0 0x7>;
-+			interrupt-map = <0 0 0 1 &gic GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>,
-+					<0 0 0 2 &gic GIC_SPI 76 IRQ_TYPE_LEVEL_HIGH>,
-+					<0 0 0 3 &gic GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>,
-+					<0 0 0 4 &gic GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
-+			fsl,max-link-speed = <2>;
-+			power-domains = <&pgc_pcie_phy>;
-+			resets = <&src IMX8MQ_RESET_PCIEPHY2>,
-+		        	 <&src IMX8MQ_RESET_PCIE2_CTRL_APPS_EN>,
-+		        	 <&src IMX8MQ_RESET_PCIE2_CTRL_APPS_TURNOFF>;
-+			reset-names = "pciephy", "apps", "turnoff";
-+			fsl,controller-id = <1>;
-+			status = "disabled";
-+		};
- 	};
- };
+ 		offset = imx6_pcie_grp_offset(imx6_pcie);
+ 		/*
+ 		 * Set the over ride low and enabled
+@@ -742,6 +751,13 @@ static int imx6_pcie_probe(struct device_d *dev)
+ 		if (iores->start == IMX8MQ_PCIE2_BASE_ADDR)
+ 			imx6_pcie->controller_id = 1;
  
++		imx6_pcie->pcie_aux = clk_get(dev, "pcie_aux");
++		if (IS_ERR(imx6_pcie->pcie_aux)) {
++			dev_err(dev,
++				"pcie_aux clock source missing or invalid\n");
++			return PTR_ERR(imx6_pcie->pcie_aux);
++		}
++
+ 		goto imx7d_init;
+ 	case IMX7D:
+ 		imx6_pcie->iomuxc_gpr = IOMEM(MX7_IOMUXC_GPR_BASE_ADDR);
 -- 
 2.20.1
 
