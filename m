@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.megiteam.pl ([31.186.83.105])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gyw4e-0001c7-NH
- for barebox@lists.infradead.org; Wed, 27 Feb 2019 10:04:27 +0000
-References: <20190226130529.12517-1-m.niestroj@grinn-global.com>
- <20190227074636.s5ljrhjncx2uv5ei@pengutronix.de>
-From: Marcin =?utf-8?Q?Niestr=C3=B3j?= <m.niestroj@grinn-global.com>
-In-reply-to: <20190227074636.s5ljrhjncx2uv5ei@pengutronix.de>
-Date: Wed, 27 Feb 2019 11:04:18 +0100
-Message-ID: <8736o97djx.fsf@grinn-global.com>
-MIME-Version: 1.0
+ id 1gyx6Z-0002I7-QK
+ for barebox@lists.infradead.org; Wed, 27 Feb 2019 11:10:29 +0000
+Message-ID: <1551265823.2305.10.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 27 Feb 2019 12:10:23 +0100
+In-Reply-To: <20190227031657.19896-8-andrew.smirnov@gmail.com>
+References: <20190227031657.19896-1-andrew.smirnov@gmail.com>
+ <20190227031657.19896-8-andrew.smirnov@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,75 +18,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX6UL: liteSOM: depend on DDR controller settings
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Bartosz Bilas <b.bilas@grinn-global.com>
+Subject: Re: [PATCH 7/7] ARM: imx8mq-zii-ultra: Add USB related nodes
+To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
 
-
-Sascha Hauer <s.hauer@pengutronix.de> writes:
-
-> On Tue, Feb 26, 2019 at 02:05:29PM +0100, Marcin Niestroj wrote:
->> Initially we depended on DDR controller settings for liteSOM and liteboard. With
->> 33fdc89d4cbd ("dts: update to v5.0-rc1") a `device_type = "memory";` property
->> was added to imx6ul-litesom.dtsi file, which causes "ram0" to be added with
->> 512MB size (value in dtsi) instead of the real 256MB size that is configured in
->> barebox-grinn-liteboard-256mb.img. As a result Linux kernel fails to boot.
->>
->> Lets depend on DDR controller settings, by removing whole `/memory` node from
->> device tree. This makes barebox-grinn-liteboard-256mb.img able to boot Linux
->> kernel once again.
->
-> This issue should also be fixed by:
->
-> | commit 8a29e7b493c8c2aa57174c9e79c14b93c9807a4b
-> | Author: Marco Felsch <m.felsch@pengutronix.de>
-> | Date:   Tue Feb 12 16:10:41 2019 +0100
-> |
-> |     memory: of_fixup: adapt to new memory layout
-> |
-> |     Since kernel 4.16 the memory nodes got a @<reg> suffix so the fixup
-> |     won't work correctly anymore, because instead of adapting the extisting
-> |     one the fixup creates a new node and keeps the old (maybe incorrect)
-> |     node.
-> |
-> |     To be compatible with the old and new layout delete the found memory
-> |     node and create a new one. The new node follows the new @<reg> style.
-> |
-> |     The patch also renames the node parameter to make it clearer.
-> |
-> |     Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> |     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
->
-> I would prefer this patch as it solves the issue for all boards.
-
-We need this patch as well. The problem that I want to solve with
-liteboard is configuring memory banks, which is done much earlier. In
-current master branch a single memory bank is added from device-tree
-(of_probe -> ... -> of_add_memory_bank). In case of liteboard this is
-configured to 512MB. Then a imx6_mmdc_add_mem() is executed, which tries
-to add 256MB memory bank (in case of barebox-grinn-liteboard-256mb.img).
-This fails inside barebox_add_memory_bank(), because we get -EBUSY from
-request_iomem_region() there. This makes no problem in Barebox
-yet. However, when booting Linux kernel of_memory_fixup() function gets
-called. It sets 512MB in fdt once again, which results in boot failure
-when jumping into kernel.
-
-I agree, that it is better to solve this kind of issues for all
-boards. In order to achieve that we need to either:
-1) "overwrite" in imx6_mmdc_add_mem() what we have set in
-   of_add_memory_bank(),
-2) make sure imx6_mmdc_add_mem() gets called earlier than
-   of_add_memory_bank().
-
---
-Regards,
-Marcin
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gRGllbnN0YWcsIGRlbiAyNi4wMi4yMDE5LCAxOToxNiAtMDgwMCBzY2hyaWViIEFuZHJleSBT
+bWlybm92Ogo+IEFkZCBub2RlcyBmb3IgZXhwb3NlZCBVU0IgcG9ydHMgYXMgd2VsbCBhcyBVU0Ig
+aHViIGNvbm5lY3RlZCB0byBvbmUgb2YKPiB0aGVtLgo+IAo+ID4gU2lnbmVkLW9mZi1ieTogQW5k
+cmV5IFNtaXJub3YgPGFuZHJldy5zbWlybm92QGdtYWlsLmNvbT4KPiAtLS0KPiDCoGFyY2gvYXJt
+L2R0cy9pbXg4bXEtemlpLXVsdHJhLXJtYjMuZHRzIHzCoMKgNCArKysKPiDCoGFyY2gvYXJtL2R0
+cy9pbXg4bXEtemlpLXVsdHJhLmR0c2nCoMKgwqDCoMKgfCAzNCArKysrKysrKysrKysrKysrKysr
+KysrKysrKwo+IMKgMiBmaWxlcyBjaGFuZ2VkLCAzOCBpbnNlcnRpb25zKCspCj4gCj4gZGlmZiAt
+LWdpdCBhL2FyY2gvYXJtL2R0cy9pbXg4bXEtemlpLXVsdHJhLXJtYjMuZHRzIGIvYXJjaC9hcm0v
+ZHRzL2lteDhtcS16aWktdWx0cmEtcm1iMy5kdHMKPiBpbmRleCBiMmIzYTU2MGIuLjc4MjgwMDI5
+YiAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9kdHMvaW14OG1xLXppaS11bHRyYS1ybWIzLmR0cwo+
+ICsrKyBiL2FyY2gvYXJtL2R0cy9pbXg4bXEtemlpLXVsdHJhLXJtYjMuZHRzCj4gQEAgLTM3LDMg
+KzM3LDcgQEAKPiA+IMKgCQk+Owo+ID4gwqAJfTsKPiDCoH07Cj4gKwo+ICsmdXNiX2h1YiB7Cj4g
+Kwlwb3J0LXN3YXA9PDB4MDE+OwoKVGhpcyBpcyB3cm9uZy4gV2l0aCB0aGUgdXBzdHJlYW0gZHJp
+dmVyL2JpbmRpbmcgdGhpcyBzaG91bGQgYmU6CnN3YXAtZHgtbGFuZXMgPSA8MD47Cgo+ICt9Owo+
+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvaW14OG1xLXppaS11bHRyYS5kdHNpIGIvYXJjaC9h
+cm0vZHRzL2lteDhtcS16aWktdWx0cmEuZHRzaQo+IGluZGV4IDgzZDU3OTE2ZS4uZDQ2YTI2ZDgx
+IDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL2R0cy9pbXg4bXEtemlpLXVsdHJhLmR0c2kKPiArKysg
+Yi9hcmNoL2FybS9kdHMvaW14OG1xLXppaS11bHRyYS5kdHNpCj4gQEAgLTIyNiw2ICsyMjYsMTYg
+QEAKPiA+IMKgCXBpbmN0cmwtbmFtZXMgPSAiZGVmYXVsdCI7Cj4gPiDCoAlwaW5jdHJsLTAgPSA8
+JnBpbmN0cmxfaTJjMz47Cj4gPiDCoAlzdGF0dXMgPSAib2theSI7Cj4gKwo+ID4gPiArCXVzYl9o
+dWI6IHVzYjI1MTNiQDJjIHsKPiA+ICsJCWNvbXBhdGlibGUgPSAibWljcm9jaGlwLHVzYjI1MTNi
+IjsKPiA+ICsJCXBpbmN0cmwtbmFtZXMgPSAiZGVmYXVsdCI7Cj4gPiArCQlwaW5jdHJsLTAgPSA8
+JnBpbmN0cmxfdXNiMjUxM2I+Owo+ID4gKwkJI2FkZHJlc3MtY2VsbHM9PDE+Owo+ICsJCSNzaXpl
+LWNlbGxzPTwxPjsKCldoeSB0aGUgYWRkcmVzcy1jZWxscyBhbmQgc2l6ZS1jZWxscyBoZXJlPyBJ
+IGRvbid0IHNlZSB3aHkgdGhpcyBpcwpuZWVkZWQuCgpSZWdhcmRzLApMdWNhcwoKPiArCQlyZWcg
+PSA8MHgyYz47Cj4gPiArCQlyZXNldC1ncGlvcyA9IDwmZ3BpbzMgMjUgR1BJT19BQ1RJVkVfTE9X
+PjsKPiA+ICsJfTsKPiDCoH07Cj4gwqAKPiDCoCZpMmM0IHsKPiBAQCAtMzEyLDYgKzMyMiwyNCBA
+QAo+ID4gwqAJfTsKPiDCoH07Cj4gwqAKPiArJnVzYl9kd2MzXzAgewo+ID4gKwlzdGF0dXMgPSAi
+b2theSI7Cj4gPiArCWRyX21vZGUgPSAiaG9zdCI7Cj4gK307Cj4gKwo+ICsmdXNiM19waHkwIHsK
+PiA+ICsJc3RhdHVzID0gIm9rYXkiOwo+ICt9Owo+ICsKPiArJnVzYl9kd2MzXzEgewo+ID4gKwlz
+dGF0dXMgPSAib2theSI7Cj4gPiArCWRyX21vZGUgPSAiaG9zdCI7Cj4gK307Cj4gKwo+ICsmdXNi
+M19waHkxIHsKPiA+ICsJc3RhdHVzID0gIm9rYXkiOwo+ICt9Owo+ICsKPiDCoCZ1c2RoYzEgewo+
+ID4gwqAJcGluY3RybC1uYW1lcyA9ICJkZWZhdWx0IiwgInN0YXRlXzEwMG1oeiIsICJzdGF0ZV8y
+MDBtaHoiOwo+ID4gwqAJcGluY3RybC0wID0gPCZwaW5jdHJsX3VzZGhjMT47Cj4gQEAgLTQyNiw2
+ICs0NTQsMTIgQEAKPiA+IMKgCQk+Owo+ID4gwqAJfTsKPiDCoAo+ID4gKwlwaW5jdHJsX3VzYjI1
+MTNiOiB1c2IyNTEzYmdycCB7Cj4gPiArCQlmc2wscGlucyA9IDwKPiA+ICsJCQlNWDhNUV9JT01V
+WENfU0FJNV9NQ0xLX0dQSU8zX0lPMjXCoMKgwqDCoDB4NDEKPiA+ICsJCT47Cj4gPiArCX07Cj4g
+Kwo+ID4gwqAJcGluY3RybF91c2RoYzE6IHVzZGhjMWdycCB7Cj4gPiDCoAkJZnNsLHBpbnMgPSA8
+Cj4gPiA+IMKgCQkJTVg4TVFfSU9NVVhDX1NEMV9DTEtfVVNESEMxX0NMSwkJCTB4ODMKCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
+ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
