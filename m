@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from [2a00:ee2:100:3a01::1] (helo=chandra.tablix.org)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gyxEX-0004SU-Oz
- for barebox@lists.infradead.org; Wed, 27 Feb 2019 11:18:43 +0000
-Message-ID: <1551266319.2305.12.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 27 Feb 2019 12:18:39 +0100
-In-Reply-To: <20190227031657.19896-6-andrew.smirnov@gmail.com>
-References: <20190227031657.19896-1-andrew.smirnov@gmail.com>
- <20190227031657.19896-6-andrew.smirnov@gmail.com>
-Mime-Version: 1.0
+ id 1gyzAM-0004rb-L8
+ for barebox@lists.infradead.org; Wed, 27 Feb 2019 13:22:32 +0000
+Received: from 77-111-10-47.ipv4.tusmobil.si ([77.111.10.47]
+ helo=muffin.lju.klevio.com)
+ by chandra.tablix.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.89) (envelope-from <tomaz.solc@tablix.org>)
+ id 1gyzA7-00088i-Tj
+ for barebox@lists.infradead.org; Wed, 27 Feb 2019 14:22:15 +0100
+From: Tomaz Solc <tomaz.solc@tablix.org>
+Date: Wed, 27 Feb 2019 14:22:12 +0100
+Message-Id: <20190227132215.9765-1-tomaz.solc@tablix.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,67 +20,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/7] ARM: imx8mq-zii-ultra: Enable PCIE1 and PCIE2
-To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+Subject: [PATCH v2 0/3] VideoCore FDT interop for Raspberry Pi
+To: barebox@lists.infradead.org
 
-QW0gRGllbnN0YWcsIGRlbiAyNi4wMi4yMDE5LCAxOToxNiAtMDgwMCBzY2hyaWViIEFuZHJleSBT
-bWlybm92Ogo+IEVuYWJsZSBQQ0lFMSBhbmQgUENJRTIgdXNlZCBvbiBib3RoIFplc3QgYW5kIFJN
-QjMgYm9hcmRzLgo+IAo+ID4gU2lnbmVkLW9mZi1ieTogQW5kcmV5IFNtaXJub3YgPGFuZHJldy5z
-bWlybm92QGdtYWlsLmNvbT4KPiAtLS0KPiDCoGFyY2gvYXJtL2R0cy9pbXg4bXEtemlpLXVsdHJh
-LmR0c2kgfCA2MiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKPiDCoDEgZmlsZSBjaGFu
-Z2VkLCA2MiBpbnNlcnRpb25zKCspCj4gCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2R0cy9pbXg4
-bXEtemlpLXVsdHJhLmR0c2kgYi9hcmNoL2FybS9kdHMvaW14OG1xLXppaS11bHRyYS5kdHNpCj4g
-aW5kZXggYTZiMmI4OTY2Li44M2Q1NzkxNmUgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9hcm0vZHRzL2lt
-eDhtcS16aWktdWx0cmEuZHRzaQo+ICsrKyBiL2FyY2gvYXJtL2R0cy9pbXg4bXEtemlpLXVsdHJh
-LmR0c2kKPiBAQCAtMzcsNiArMzcsMTggQEAKPiA+IMKgCQlncGlvID0gPCZncGlvMiAxOSBHUElP
-X0FDVElWRV9ISUdIPjsKPiA+IMKgCQllbmFibGUtYWN0aXZlLWhpZ2g7Cj4gPiDCoAl9Owo+ICsK
-PiA+ICsJcGNpZTBfcmVmY2xrOiBwY2llMC1yZWZjbGsgewo+ID4gKwkJY29tcGF0aWJsZSA9ICJm
-aXhlZC1jbG9jayI7Cj4gPiArCQkjY2xvY2stY2VsbHMgPSA8MD47Cj4gPiArCQljbG9jay1mcmVx
-dWVuY3kgPSA8MTAwMDAwMDAwPjsKPiA+ICsJfTsKPiArCj4gPiArCXBjaWUxX3JlZmNsazogcGNp
-ZTAtcmVmY2xrIHsKPiA+ICsJCWNvbXBhdGlibGUgPSAiZml4ZWQtY2xvY2siOwo+ID4gKwkJI2Ns
-b2NrLWNlbGxzID0gPDA+Owo+ID4gKwkJY2xvY2stZnJlcXVlbmN5ID0gPDEwMDAwMDAwMD47Cj4g
-PiArCX07Cj4gwqB9Owo+IMKgCj4gwqAmZmVjMSB7Cj4gQEAgLTIyNyw2ICsyMzksNDIgQEAKPiA+
-IMKgCWJhcmVib3gscHJvdmlkZS1tYWMtYWRkcmVzcyA9IDwmZmVjMSAweDY0MD47Cj4gwqB9Owo+
-IMKgCj4gKyZwY2llMCB7Cj4gPiArCXBpbmN0cmwtbmFtZXMgPSAiZGVmYXVsdCI7Cj4gPiArCXBp
-bmN0cmwtMCA9IDwmcGluY3RybF9wY2llMD47Cj4gPiArCXJlc2V0LWdwaW8gPSA8JmdwaW8xIDMg
-R1BJT19BQ1RJVkVfTE9XPjsKPiA+ICsJY2xvY2tzID0gPCZjbGsgSU1YOE1RX0NMS19QQ0lFMV9S
-T09UPiwKPiA+ICsJCcKgPCZjbGsgSU1YOE1RX0NMS19QQ0lFMV9BVVg+LAo+ID4gKwkJwqA8JmNs
-ayBJTVg4TVFfQ0xLX1BDSUUxX1BIWT4sCj4gPiArCQnCoDwmcGNpZTBfcmVmY2xrPjsKPiA+ICsJ
-Y2xvY2stbmFtZXMgPSAicGNpZSIsICJwY2llX2F1eCIsICJwY2llX3BoeSIsICJwY2llX2J1cyI7
-Cj4gPiArCXN0YXR1cyA9ICJva2F5IjsKPiArfTsKPiArCj4gKyZwY2llMSB7Cj4gPiArCXBpbmN0
-cmwtbmFtZXMgPSAiZGVmYXVsdCI7Cj4gPiArCXBpbmN0cmwtMCA9IDwmcGluY3RybF9wY2llMT47
-Cj4gPiArCXJlc2V0LWdwaW8gPSA8JmdwaW8xIDYgR1BJT19BQ1RJVkVfTE9XPjsKPiA+ICsJY2xv
-Y2tzID0gPCZjbGsgSU1YOE1RX0NMS19QQ0lFMl9ST09UPiwKPiA+ICsJCcKgPCZjbGsgSU1YOE1R
-X0NMS19QQ0lFMl9BVVg+LAo+ID4gKwkJwqA8JmNsayBJTVg4TVFfQ0xLX1BDSUUyX1BIWT4sCj4g
-PiArCQnCoDwmcGNpZTFfcmVmY2xrPjsKPiA+ICsJY2xvY2stbmFtZXMgPSAicGNpZSIsICJwY2ll
-X2F1eCIsICJwY2llX3BoeSIsICJwY2llX2J1cyI7Cj4gPiArCXN0YXR1cyA9ICJva2F5IjsKPiAr
-Cj4gPiArCXBjaWVAMCwwIHsKPiArCQlyZWcgPSA8MHgwMDAwMDAgMCAwIDAgMD47CgpEcm9wIGxl
-YWRpbmcgemVyb3MgZnJvbSByZWcgcHJvcGVydGllcy4KCj4gKwo+ID4gKwkJI2FkZHJlc3MtY2Vs
-bHMgPSA8Mz47Cj4gPiArCQkjc2l6ZS1jZWxscyA9IDwyPjsKPiArCj4gKwkJLyogcGNpZSBlbmRw
-b2ludCAwMTowMC4wICovCj4gKwkJZXRoMTogaW50ZWwsaTIxMEBwY2llMCwwIHsKCk5vZGUgbmFt
-ZSB3aXRoICIsIiBzZWVtcyBzdHJhbmdlLgoKPiArCQkJcmVnID0gPDB4MDEwMDAwIDAgMCAwIDA+
-OwoKVGhpcyBzaG91bGQgYWxzbyBiZSAwIGluIHRoZSBmaXJzdCBjZWxsIG9mIHRoZSByZWcuIFRo
-ZSBidXMgbnVtYmVyIGlzCmRlZmluZWQgYnkgdGhlIERUIG5vZGUgaGllcmFyY2h5LiBXaGlsZSB0
-aGlzIG1pZ2h0IG1hdGNoIHdpdGggdGhlCmN1cnJlbnQgaW1wbGVtZW50YXRpb24sIHRoZSBQQ0ll
-IGVudW1lcmF0aW9uIGNvdWxkIGRlY2lkZSB0byBzdGFydCB0aGUKUENJZSBidXMgbnVtYmVyaW5n
-IGZyb20gYSBkaWZmZXJlbnQgYmFzZSBkdXJpbmcgZW51bWVyYXRpb24sIHNvIHRoZQpQQ0llIERU
-IG5vZGVzIHNob3VsZCBub3QgaGF2ZSBmaXhlZC9taXNsZWFkaW5nIGJ1cyBudW1iZXJzLiBBY3R1
-YWxseQp0aGV5IGFyZSBpZ25vcmVkIGR1cmluZyBtYXRjaGluZyBvZiB0aGUgbm9kZXMuCgoKPiAr
-CQl9Owo+ID4gKwl9Owo+ICt9Owo+ICsKPiDCoCZ1YXJ0MSB7Cj4gPiDCoAlwaW5jdHJsLW5hbWVz
-ID0gImRlZmF1bHQiOwo+ID4gwqAJcGluY3RybC0wID0gPCZwaW5jdHJsX3VhcnQxPjsKPiBAQCAt
-MzQ0LDYgKzM5MiwyMCBAQAo+ID4gwqAJCT47Cj4gPiDCoAl9Owo+IMKgCj4gPiArCXBpbmN0cmxf
-cGNpZTA6IHBjaWUwZ3JwIHsKPiA+ICsJCWZzbCxwaW5zID0gPAo+ID4gPiArCQkJTVg4TVFfSU9N
-VVhDX1VBUlQ0X1JYRF9QQ0lFMV9DTEtSRVFfQgkweDc2Cj4gPiA+ICsJCQlNWDhNUV9JT01VWENf
-R1BJTzFfSU8wM19HUElPMV9JTzMJMHgxNgo+ID4gKwkJPjsKPiA+ICsJfTsKPiArCj4gPiArCXBp
-bmN0cmxfcGNpZTE6IHBjaWUxZ3JwIHsKPiA+ICsJCWZzbCxwaW5zID0gPAo+ID4gPiArCQkJTVg4
-TVFfSU9NVVhDX1VBUlQ0X1RYRF9QQ0lFMl9DTEtSRVFfQgkweDc2Cj4gPiA+ICsJCQlNWDhNUV9J
-T01VWENfR1BJTzFfSU8wNl9HUElPMV9JTzYJMHgxNgo+ID4gKwkJPjsKPiA+ICsJfTsKPiArCj4g
-PiDCoAlwaW5jdHJsX3JlZ191c2RoYzI6IHJlZ3VzZGhjMmdycGdwaW8gewo+ID4gwqAJCWZzbCxw
-aW5zID0gPAo+ID4gPiDCoAkJCU1YOE1RX0lPTVVYQ19TRDJfUkVTRVRfQl9HUElPMl9JTzE5CQkw
-eDQxCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
-Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Changes from the first patch series:
+
+ - Drop of_bootargs command in favour of automatically extracting VideoCore
+   bootargs to vc.bootargs global in board initialization. Sorry for forgetting
+   to update the copyright header in of_bootargs.c. This file is gone now.
+ - Replace printf() with pr_err() for printing error messages in rpi-common.c.
+
+Best regards
+Tomaz
+
+Tomaz Solc (3):
+  ARM: start: save end of memory passed to start.
+  ARM: rpi: save fdt that was passed from VideoCore
+  ARM: rpi: save bootargs from VC FDT to vc.bootargs
+
+ Documentation/boards/bcm2835.rst          | 10 ++++
+ arch/arm/boards/raspberry-pi/lowlevel.c   | 68 ++++++++++++++++++--------
+ arch/arm/boards/raspberry-pi/lowlevel.h   |  9 ++++
+ arch/arm/boards/raspberry-pi/rpi-common.c | 81 +++++++++++++++++++++++++++++++
+ arch/arm/cpu/start.c                      |  8 +++
+ arch/arm/include/asm/barebox-arm.h        |  1 +
+ 6 files changed, 158 insertions(+), 19 deletions(-)
+ create mode 100644 arch/arm/boards/raspberry-pi/lowlevel.h
+
+-- 
+2.11.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
