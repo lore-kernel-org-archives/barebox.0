@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.megiteam.pl ([31.186.83.105])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gyhZL-0007SE-Ht
- for barebox@lists.infradead.org; Tue, 26 Feb 2019 18:35:10 +0000
+ id 1gytvK-0001r8-MM
+ for barebox@lists.infradead.org; Wed, 27 Feb 2019 07:46:40 +0000
+Date: Wed, 27 Feb 2019 08:46:36 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190227074636.s5ljrhjncx2uv5ei@pengutronix.de>
 References: <20190226130529.12517-1-m.niestroj@grinn-global.com>
-From: =?UTF-8?Q?Bartosz_Bi=c5=82as?= <b.bilas@grinn-global.com>
-Message-ID: <d89907aa-6202-352b-a228-40365519665a@grinn-global.com>
-Date: Tue, 26 Feb 2019 19:35:13 +0100
 MIME-Version: 1.0
+Content-Disposition: inline
 In-Reply-To: <20190226130529.12517-1-m.niestroj@grinn-global.com>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,60 +18,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ARM: i.MX6UL: liteSOM: depend on DDR controller settings
-To: Marcin Niestroj <m.niestroj@grinn-global.com>, barebox@lists.infradead.org
+To: Marcin Niestroj <m.niestroj@grinn-global.com>
+Cc: barebox@lists.infradead.org, Bartosz Bilas <b.bilas@grinn-global.com>
 
-Tested-by: Bartosz Bilas <b.bilas@grinn-global.com>
-
-On 26.02.2019 14:05, Marcin Niestroj wrote:
+On Tue, Feb 26, 2019 at 02:05:29PM +0100, Marcin Niestroj wrote:
 > Initially we depended on DDR controller settings for liteSOM and liteboard. With
 > 33fdc89d4cbd ("dts: update to v5.0-rc1") a `device_type = "memory";` property
 > was added to imx6ul-litesom.dtsi file, which causes "ram0" to be added with
 > 512MB size (value in dtsi) instead of the real 256MB size that is configured in
 > barebox-grinn-liteboard-256mb.img. As a result Linux kernel fails to boot.
->
+> 
 > Lets depend on DDR controller settings, by removing whole `/memory` node from
 > device tree. This makes barebox-grinn-liteboard-256mb.img able to boot Linux
 > kernel once again.
->
-> Reported-by: Bartosz Bilas <b.bilas@grinn-global.com>
-> Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
-> ---
->   arch/arm/dts/imx6ul-liteboard.dts | 1 +
->   arch/arm/dts/imx6ul-litesom.dtsi  | 8 ++++++++
->   2 files changed, 9 insertions(+)
->   create mode 100644 arch/arm/dts/imx6ul-litesom.dtsi
->
-> diff --git a/arch/arm/dts/imx6ul-liteboard.dts b/arch/arm/dts/imx6ul-liteboard.dts
-> index 03a4bfc78..eb34e11dd 100644
-> --- a/arch/arm/dts/imx6ul-liteboard.dts
-> +++ b/arch/arm/dts/imx6ul-liteboard.dts
-> @@ -42,6 +42,7 @@
->    */
->   
->   #include <arm/imx6ul-liteboard.dts>
-> +#include "imx6ul-litesom.dtsi"
->   
->   / {
->   	chosen {
-> diff --git a/arch/arm/dts/imx6ul-litesom.dtsi b/arch/arm/dts/imx6ul-litesom.dtsi
-> new file mode 100644
-> index 000000000..8b73bfdd6
-> --- /dev/null
-> +++ b/arch/arm/dts/imx6ul-litesom.dtsi
-> @@ -0,0 +1,8 @@
-> +/*
-> + * Include file to switch board DTS from using hardcoded memory node
-> + * to dynamic memory size detection based on DDR controller settings
-> + */
-> +
-> +/ {
-> +	/delete-node/ memory@80000000;
-> +};
+
+This issue should also be fixed by:
+
+| commit 8a29e7b493c8c2aa57174c9e79c14b93c9807a4b
+| Author: Marco Felsch <m.felsch@pengutronix.de>
+| Date:   Tue Feb 12 16:10:41 2019 +0100
+| 
+|     memory: of_fixup: adapt to new memory layout
+|     
+|     Since kernel 4.16 the memory nodes got a @<reg> suffix so the fixup
+|     won't work correctly anymore, because instead of adapting the extisting
+|     one the fixup creates a new node and keeps the old (maybe incorrect)
+|     node.
+|     
+|     To be compatible with the old and new layout delete the found memory
+|     node and create a new one. The new node follows the new @<reg> style.
+|     
+|     The patch also renames the node parameter to make it clearer.
+|     
+|     Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+|     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+I would prefer this patch as it solves the issue for all boards.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
