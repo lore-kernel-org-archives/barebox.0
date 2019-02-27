@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout02.posteo.de ([185.67.36.66])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gyjxT-00053P-LP
- for barebox@lists.infradead.org; Tue, 26 Feb 2019 21:08:13 +0000
-Received: from submission (posteo.de [89.146.220.130]) 
- by mout02.posteo.de (Postfix) with ESMTPS id 1C02F2400E6
- for <barebox@lists.infradead.org>; Tue, 26 Feb 2019 22:08:05 +0100 (CET)
-From: Christian Hemp <christian.hemp@posteo.de>
-Date: Tue, 26 Feb 2019 22:07:49 +0100
-Message-Id: <20190226210749.8898-1-christian.hemp@posteo.de>
+ id 1gytnb-0007Hs-KP
+ for barebox@lists.infradead.org; Wed, 27 Feb 2019 07:38:41 +0000
+Date: Wed, 27 Feb 2019 08:38:37 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190227073837.keyrulk76yur6eed@pengutronix.de>
+References: <20190226210749.8898-1-christian.hemp@posteo.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190226210749.8898-1-christian.hemp@posteo.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,40 +18,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation: imx8mq-evk: fix firmware path
-To: barebox@lists.infradead.org
-Cc: Christian Hemp <christian.hemp@posteo.de>
+Subject: Re: [PATCH] Documentation: imx8mq-evk: fix firmware path
+To: Christian Hemp <christian.hemp@posteo.de>
+Cc: barebox@lists.infradead.org
 
-Since commit: "da985aac8 firmware: drop the imx subdir" the firmware is
-not longer placed in imx subdir. So the subdir can be removed from the
-documentation.
+On Tue, Feb 26, 2019 at 10:07:49PM +0100, Christian Hemp wrote:
+> Since commit: "da985aac8 firmware: drop the imx subdir" the firmware is
+> not longer placed in imx subdir. So the subdir can be removed from the
+> documentation.
+> 
+> Signed-off-by: Christian Hemp <christian.hemp@posteo.de>
+> ---
+>  Documentation/boards/imx/nxp-imx8mq-evk.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Signed-off-by: Christian Hemp <christian.hemp@posteo.de>
----
- Documentation/boards/imx/nxp-imx8mq-evk.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied to master, thanks
 
-diff --git a/Documentation/boards/imx/nxp-imx8mq-evk.rst b/Documentation/boards/imx/nxp-imx8mq-evk.rst
-index 8bad9455a..a8624130e 100644
---- a/Documentation/boards/imx/nxp-imx8mq-evk.rst
-+++ b/Documentation/boards/imx/nxp-imx8mq-evk.rst
-@@ -29,7 +29,7 @@ result in the following files:
- - lpddr4_pmu_train_2d_imem.bin
- 
- As a last step of this process those files need to be placed in
--"firmware/imx/"::
-+"firmware/"::
- 
-   for f in lpddr4_pmu_train_1d_dmem.bin  \
-            lpddr4_pmu_train_1d_imem.bin  \
+Sascha
+
 -- 
-2.17.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
