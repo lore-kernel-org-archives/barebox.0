@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2a00:ee2:100:3a01::1] (helo=chandra.tablix.org)
+Received: from mail-wm1-x342.google.com ([2a00:1450:4864:20::342])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gyzAM-0004rY-Ld
- for barebox@lists.infradead.org; Wed, 27 Feb 2019 13:22:34 +0000
-Received: from 77-111-10-47.ipv4.tusmobil.si ([77.111.10.47]
- helo=muffin.lju.klevio.com)
- by chandra.tablix.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.89) (envelope-from <tomaz.solc@tablix.org>)
- id 1gyzA8-00088i-6L
- for barebox@lists.infradead.org; Wed, 27 Feb 2019 14:22:16 +0100
-From: Tomaz Solc <tomaz.solc@tablix.org>
-Date: Wed, 27 Feb 2019 14:22:14 +0100
-Message-Id: <20190227132215.9765-3-tomaz.solc@tablix.org>
-In-Reply-To: <20190227132215.9765-1-tomaz.solc@tablix.org>
-References: <20190227132215.9765-1-tomaz.solc@tablix.org>
+ id 1gzBej-0003a0-Am
+ for barebox@lists.infradead.org; Thu, 28 Feb 2019 02:42:42 +0000
+Received: by mail-wm1-x342.google.com with SMTP id n19so7710202wmi.1
+ for <barebox@lists.infradead.org>; Wed, 27 Feb 2019 18:42:40 -0800 (PST)
+MIME-Version: 1.0
+References: <20190227031657.19896-1-andrew.smirnov@gmail.com>
+ <20190227031657.19896-6-andrew.smirnov@gmail.com>
+ <1551266319.2305.12.camel@pengutronix.de>
+In-Reply-To: <1551266319.2305.12.camel@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 27 Feb 2019 18:42:26 -0800
+Message-ID: <CAHQ1cqHK5EwVW_b7M_EdOHH1vdFvoGNx-GgAFYn=XaoP63TcQg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,239 +21,132 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/3] ARM: rpi: save fdt that was passed from VideoCore
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 5/7] ARM: imx8mq-zii-ultra: Enable PCIE1 and PCIE2
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Raspberry Pi, VideoCore firmware creates a device tree that contains
-information about peripherals that were initialized by VideoCore based
-on settings in config.txt. Normally this device tree is passed to the
-Linux kernel via a pointer in the r2 register. A bootloader needs to
-pass this device tree to the kernel, or some peripherals will not work
-correctly.
+On Wed, Feb 27, 2019 at 3:18 AM Lucas Stach <l.stach@pengutronix.de> wrote:
+>
+> Am Dienstag, den 26.02.2019, 19:16 -0800 schrieb Andrey Smirnov:
+> > Enable PCIE1 and PCIE2 used on both Zest and RMB3 boards.
+> >
+> > > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> > ---
+> >  arch/arm/dts/imx8mq-zii-ultra.dtsi | 62 ++++++++++++++++++++++++++++++
+> >  1 file changed, 62 insertions(+)
+> >
+> > diff --git a/arch/arm/dts/imx8mq-zii-ultra.dtsi b/arch/arm/dts/imx8mq-zii-ultra.dtsi
+> > index a6b2b8966..83d57916e 100644
+> > --- a/arch/arm/dts/imx8mq-zii-ultra.dtsi
+> > +++ b/arch/arm/dts/imx8mq-zii-ultra.dtsi
+> > @@ -37,6 +37,18 @@
+> > >             gpio = <&gpio2 19 GPIO_ACTIVE_HIGH>;
+> > >             enable-active-high;
+> > >     };
+> > +
+> > > +   pcie0_refclk: pcie0-refclk {
+> > > +           compatible = "fixed-clock";
+> > > +           #clock-cells = <0>;
+> > > +           clock-frequency = <100000000>;
+> > > +   };
+> > +
+> > > +   pcie1_refclk: pcie0-refclk {
+> > > +           compatible = "fixed-clock";
+> > > +           #clock-cells = <0>;
+> > > +           clock-frequency = <100000000>;
+> > > +   };
+> >  };
+> >
+> >  &fec1 {
+> > @@ -227,6 +239,42 @@
+> > >     barebox,provide-mac-address = <&fec1 0x640>;
+> >  };
+> >
+> > +&pcie0 {
+> > > +   pinctrl-names = "default";
+> > > +   pinctrl-0 = <&pinctrl_pcie0>;
+> > > +   reset-gpio = <&gpio1 3 GPIO_ACTIVE_LOW>;
+> > > +   clocks = <&clk IMX8MQ_CLK_PCIE1_ROOT>,
+> > > +            <&clk IMX8MQ_CLK_PCIE1_AUX>,
+> > > +            <&clk IMX8MQ_CLK_PCIE1_PHY>,
+> > > +            <&pcie0_refclk>;
+> > > +   clock-names = "pcie", "pcie_aux", "pcie_phy", "pcie_bus";
+> > > +   status = "okay";
+> > +};
+> > +
+> > +&pcie1 {
+> > > +   pinctrl-names = "default";
+> > > +   pinctrl-0 = <&pinctrl_pcie1>;
+> > > +   reset-gpio = <&gpio1 6 GPIO_ACTIVE_LOW>;
+> > > +   clocks = <&clk IMX8MQ_CLK_PCIE2_ROOT>,
+> > > +            <&clk IMX8MQ_CLK_PCIE2_AUX>,
+> > > +            <&clk IMX8MQ_CLK_PCIE2_PHY>,
+> > > +            <&pcie1_refclk>;
+> > > +   clock-names = "pcie", "pcie_aux", "pcie_phy", "pcie_bus";
+> > > +   status = "okay";
+> > +
+> > > +   pcie@0,0 {
+> > +             reg = <0x000000 0 0 0 0>;
+>
+> Drop leading zeros from reg properties.
+>
+> > +
+> > > +           #address-cells = <3>;
+> > > +           #size-cells = <2>;
+> > +
+> > +             /* pcie endpoint 01:00.0 */
+> > +             eth1: intel,i210@pcie0,0 {
+>
+> Node name with "," seems strange.
+>
+> > +                     reg = <0x010000 0 0 0 0>;
+>
+> This should also be 0 in the first cell of the reg. The bus number is
+> defined by the DT node hierarchy. While this might match with the
+> current implementation, the PCIe enumeration could decide to start the
+> PCIe bus numbering from a different base during enumeration, so the
+> PCIe DT nodes should not have fixed/misleading bus numbers. Actually
+> they are ignored during matching of the nodes.
+>
 
-Since the VideoCore device tree is not compatible with barebox, we can't
-just pass it to barebox_arm_entry() as the internal barebox device tree.
+Noted, will send a fixup for this.
 
-This commit makes the prebootloader code copy the device tree from
-VideoCore into a scrap RAM area just above the area reserved for the
-bootloader. Board initialization code in the bootloader proper then
-copies it into a file /vc.dtb. The bootloader environment is then free
-to pass this file to the kernel at boot (e.g. via bootm -o).
----
- Documentation/boards/bcm2835.rst          |  4 ++
- arch/arm/boards/raspberry-pi/lowlevel.c   | 68 ++++++++++++++++++++++---------
- arch/arm/boards/raspberry-pi/lowlevel.h   |  9 ++++
- arch/arm/boards/raspberry-pi/rpi-common.c | 34 ++++++++++++++++
- 4 files changed, 96 insertions(+), 19 deletions(-)
- create mode 100644 arch/arm/boards/raspberry-pi/lowlevel.h
+Thanks
+Andrey Smirnov
 
-diff --git a/Documentation/boards/bcm2835.rst b/Documentation/boards/bcm2835.rst
-index ea80d5834..95e910896 100644
---- a/Documentation/boards/bcm2835.rst
-+++ b/Documentation/boards/bcm2835.rst
-@@ -30,5 +30,9 @@ Raspberry Pi
- 
-   6. Turn board's power on.
- 
-+VideoCore firmware creates a device tree based on the entries in ``config.txt``. This file is available to the Barebox environment in the file ``/vc.dtb``. For example, to boot a kernel shipped with Raspbian::
-+
-+    bootm -o /vc.dtb /boot/kernel7.img
-+
- .. _Raspberry Pi firmware: https://codeload.github.com/raspberrypi/firmware/zip/80e1fbeb78f9df06701d28c0ed3a3060a3f557ef
- .. _documentation for config.txt: https://www.raspberrypi.org/documentation/configuration/config-txt/
-diff --git a/arch/arm/boards/raspberry-pi/lowlevel.c b/arch/arm/boards/raspberry-pi/lowlevel.c
-index 1a3d39421..4b64f5d1d 100644
---- a/arch/arm/boards/raspberry-pi/lowlevel.c
-+++ b/arch/arm/boards/raspberry-pi/lowlevel.c
-@@ -3,43 +3,73 @@
- #include <common.h>
- #include <linux/sizes.h>
- #include <mach/platform.h>
-+#include <of.h>
- 
--extern char __dtb_bcm2835_rpi_start[];
--ENTRY_FUNCTION(start_raspberry_pi1, r0, r1, r2)
-+#include "lowlevel.h"
-+
-+static void copy_vc_fdt(void *dest, void *src, unsigned long max_size)
- {
--	void *fdt = __dtb_bcm2835_rpi_start + get_runtime_offset();
-+	struct fdt_header *oftree_src = src;
-+	struct fdt_header *oftree_dest = dest;
- 
--	arm_cpu_lowlevel_init();
-+	unsigned long size = be32_to_cpu(oftree_src->totalsize);
-+	if (size > max_size) {
-+		oftree_dest->magic = cpu_to_be32(VIDEOCORE_FDT_ERROR);
-+		/* Save an error code after the magic value for easier
-+		 * debugging. We can't print out anything this early */
-+		oftree_dest->totalsize = cpu_to_be32(ENOMEM);
-+		return;
-+	}
- 
--	barebox_arm_entry(BCM2835_SDRAM_BASE, SZ_128M, fdt);
-+	memmove(dest, src, size);
- }
- 
--extern char __dtb_bcm2836_rpi_2_start[];
--ENTRY_FUNCTION(start_raspberry_pi2, r0, r1, r2)
-+/* Must be inline since stack isn't setup yet. */
-+static inline void start_raspberry_pi(unsigned long memsize, void *fdt,
-+								void *vc_fdt)
- {
--	void *fdt = __dtb_bcm2836_rpi_2_start + get_runtime_offset();
-+	void *saved_vc_fdt;
-+	unsigned long membase = BCM2835_SDRAM_BASE;
-+
-+	/* A pointer to the FDT created by VideoCore was passed to us in r2. We
-+	 * reserve some memory just above the region used for Basebox and copy
-+	 * this FDT there. We fetch it from there later in rpi_devices_init().*/
-+	memsize -= VIDEOCORE_FDT_SZ;
- 
- 	arm_cpu_lowlevel_init();
- 
--	barebox_arm_entry(BCM2835_SDRAM_BASE, SZ_512M, fdt);
-+	/* Copied from barebox_arm_entry(). We need stack here early
-+	 * for normal function calls to work. */
-+	arm_setup_stack(arm_mem_stack_top(membase, membase + memsize) - 16);
-+
-+	fdt += get_runtime_offset();
-+
-+	saved_vc_fdt = (void *)(membase + memsize);
-+	copy_vc_fdt(saved_vc_fdt, vc_fdt, VIDEOCORE_FDT_SZ);
-+
-+	barebox_arm_entry(membase, memsize, fdt);
- }
- 
--extern char __dtb_bcm2837_rpi_3_start[];
--ENTRY_FUNCTION(start_raspberry_pi3, r0, r1, r2)
-+extern char __dtb_bcm2835_rpi_start[];
-+ENTRY_FUNCTION(start_raspberry_pi1, r0, r1, r2)
- {
--	void *fdt = __dtb_bcm2837_rpi_3_start + get_runtime_offset();
-+	start_raspberry_pi(SZ_128M, __dtb_bcm2835_rpi_start, (void *)r2);
-+}
- 
--	arm_cpu_lowlevel_init();
-+extern char __dtb_bcm2836_rpi_2_start[];
-+ENTRY_FUNCTION(start_raspberry_pi2, r0, r1, r2)
-+{
-+	start_raspberry_pi(SZ_512M, __dtb_bcm2836_rpi_2_start, (void *)r2);
-+}
- 
--	barebox_arm_entry(BCM2835_SDRAM_BASE, SZ_512M, fdt);
-+extern char __dtb_bcm2837_rpi_3_start[];
-+ENTRY_FUNCTION(start_raspberry_pi3, r0, r1, r2)
-+{
-+	start_raspberry_pi(SZ_512M, __dtb_bcm2837_rpi_3_start, (void *)r2);
- }
- 
- extern char __dtb_bcm2837_rpi_cm3_start[];
- ENTRY_FUNCTION(start_raspberry_pi_cm3, r0, r1, r2)
- {
--	void *fdt = __dtb_bcm2837_rpi_cm3_start + get_runtime_offset();
--
--	arm_cpu_lowlevel_init();
--
--	barebox_arm_entry(BCM2835_SDRAM_BASE, SZ_512M, fdt);
-+	start_raspberry_pi(SZ_512M, __dtb_bcm2837_rpi_cm3_start, (void *)r2);
- }
-diff --git a/arch/arm/boards/raspberry-pi/lowlevel.h b/arch/arm/boards/raspberry-pi/lowlevel.h
-new file mode 100644
-index 000000000..9ef9135b2
---- /dev/null
-+++ b/arch/arm/boards/raspberry-pi/lowlevel.h
-@@ -0,0 +1,9 @@
-+#ifndef __ARCH_ARM_BOARDS_LOWLEVEL_H__
-+#define __ARCH_ARM_BOARDS_LOWLEVEL_H__
-+
-+#include <linux/sizes.h>
-+
-+#define VIDEOCORE_FDT_SZ SZ_1M
-+#define VIDEOCORE_FDT_ERROR 0xdeadfeed
-+
-+#endif /* __ARCH_ARM_BOARDS_LOWLEVEL_H__ */
-diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-index b5d16a15c..fffa882a7 100644
---- a/arch/arm/boards/raspberry-pi/rpi-common.c
-+++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-@@ -16,21 +16,26 @@
- #include <common.h>
- #include <init.h>
- #include <fs.h>
-+#include <of.h>
- #include <linux/stat.h>
- #include <linux/clk.h>
- #include <linux/clkdev.h>
- #include <envfs.h>
- #include <malloc.h>
-+#include <libfile.h>
- #include <gpio.h>
- #include <net.h>
- #include <led.h>
- #include <asm/armlinux.h>
-+#include <asm/barebox-arm.h>
- #include <generated/mach-types.h>
-+#include <linux/sizes.h>
- 
- #include <mach/core.h>
- #include <mach/mbox.h>
- 
- #include "rpi.h"
-+#include "lowlevel.h"
- 
- struct msg_get_arm_mem {
- 	struct bcm2835_mbox_hdr hdr;
-@@ -370,12 +375,41 @@ static int rpi_env_init(void)
- 	return 0;
- }
- 
-+static void rpi_vc_fdt(void)
-+{
-+	void *saved_vc_fdt;
-+	struct fdt_header *oftree;
-+	unsigned long magic, size;
-+
-+	/* VideoCore FDT was copied in PBL just above Barebox memory */
-+	saved_vc_fdt = (void *)(arm_mem_endmem_get());
-+
-+	oftree = saved_vc_fdt;
-+	magic = be32_to_cpu(oftree->magic);
-+	if (magic != FDT_MAGIC) {
-+		pr_err("videocore fdt saved in pbl has invalid magic\n");
-+
-+		if (magic == VIDEOCORE_FDT_ERROR) {
-+			pr_err("there was an error copying fdt in pbl: %d\n",
-+					be32_to_cpu(oftree->totalsize));
-+		}
-+		return;
-+	}
-+
-+	size = be32_to_cpu(oftree->totalsize);
-+	if (write_file("/vc.dtb", saved_vc_fdt, size)) {
-+		pr_err("failed to save videocore fdt to a file\n");
-+		return;
-+	}
-+}
-+
- static int rpi_devices_init(void)
- {
- 	rpi_model_init();
- 	bcm2835_register_fb();
- 	armlinux_set_architecture(MACH_TYPE_BCM2708);
- 	rpi_env_init();
-+	rpi_vc_fdt();
- 	return 0;
- }
- late_initcall(rpi_devices_init);
--- 
-2.11.0
-
+>
+> > +             };
+> > > +   };
+> > +};
+> > +
+> >  &uart1 {
+> > >     pinctrl-names = "default";
+> > >     pinctrl-0 = <&pinctrl_uart1>;
+> > @@ -344,6 +392,20 @@
+> > >             >;
+> > >     };
+> >
+> > > +   pinctrl_pcie0: pcie0grp {
+> > > +           fsl,pins = <
+> > > > +                 MX8MQ_IOMUXC_UART4_RXD_PCIE1_CLKREQ_B   0x76
+> > > > +                 MX8MQ_IOMUXC_GPIO1_IO03_GPIO1_IO3       0x16
+> > > +           >;
+> > > +   };
+> > +
+> > > +   pinctrl_pcie1: pcie1grp {
+> > > +           fsl,pins = <
+> > > > +                 MX8MQ_IOMUXC_UART4_TXD_PCIE2_CLKREQ_B   0x76
+> > > > +                 MX8MQ_IOMUXC_GPIO1_IO06_GPIO1_IO6       0x16
+> > > +           >;
+> > > +   };
+> > +
+> > >     pinctrl_reg_usdhc2: regusdhc2grpgpio {
+> > >             fsl,pins = <
+> > > >                   MX8MQ_IOMUXC_SD2_RESET_B_GPIO2_IO19             0x41
 
 _______________________________________________
 barebox mailing list
