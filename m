@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gzbsn-0003ge-LS
- for barebox@lists.infradead.org; Fri, 01 Mar 2019 06:42:59 +0000
-Message-ID: <1551422571.3420.3.camel@pengutronix.de>
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Fri, 01 Mar 2019 07:42:51 +0100
-In-Reply-To: <20190228113900.16177-1-tomaz.solc@tablix.org>
+ id 1gzfs2-0005zR-AN
+ for barebox@lists.infradead.org; Fri, 01 Mar 2019 10:58:28 +0000
+Date: Fri, 1 Mar 2019 11:58:21 +0100
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20190301105821.6nbid4twzmti3edz@pengutronix.de>
 References: <20190228113900.16177-1-tomaz.solc@tablix.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190228113900.16177-1-tomaz.solc@tablix.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,97 +18,173 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ARM: rpi: refactor debug UART Kconfig settings.
-To: Tomaz Solc <tomaz.solc@tablix.org>, barebox@lists.infradead.org
+To: Tomaz Solc <tomaz.solc@tablix.org>
+Cc: barebox@lists.infradead.org
 
-T24gVGh1LCAyMDE5LTAyLTI4IGF0IDEyOjM5ICswMTAwLCBUb21heiBTb2xjIHdyb3RlOgo+IFRo
-aXMgZml4ZXMgdGhlIGZvbGxvd2luZyBpc3N1ZXMgaW4gdGhlIGRlYnVnIFVBUlQgY29uZmlnIGZv
-cgo+IFJhc3BiZXJyeQo+IFBpIGJvYXJkczoKPiAKPiBXaGVuIGRlYnVnIFVBUlQgc3VwcG9ydCBp
-cyBlbmFibGVkLCBvbmx5IFIuUGkgMSBvciAyLzMgYm9hcmRzCj4gY2FuIGJlIHN1cHBvcnRlZCBp
-biBhIHNpbmdsZSBidWlsZC4gSG93ZXZlciwgdGhpcyBsaW1pdGF0aW9uIHdhcyBub3QKPiBlbmZv
-cmNlZCBpbiB0aGUgImJvYXJkcyB0byBiZSBidWlsdCIgbWVudS4gRS5nLiBpdCB3YXMgcG9zc2li
-bGUgdG8KPiBidWlsZCBhIFIuUGkgMyBpbWFnZSB3aXRoIChub24tZnVuY3Rpb25hbCkgZGVidWcg
-VUFSVCBzdXBwb3J0IGZvcgo+IFIuUGkKPiAxLgo+IAo+IEluIGNvbnRyYXN0IHRvIG90aGVyIGFy
-Y2hpdGVjdHVyZXMsIFIuUGkgZGVidWcgVUFSVCBjb25maWcgd2FzIHBsYWNlZAo+IHVuZGVyIHRo
-ZSAiU3lzdGVtIFR5cGUiIG1lbnUsIG5vdCB1bmRlciB0aGUgIkRlYnVnZ2luZyAtPiBsb3ctbGV2
-ZWwKPiBkZWJ1Z2dpbmcgcG9ydCIuIFRoaXMgbWFkZSB0aGlzIHNldHRpbmcgZWFzeSB0byBtaXNz
-IHdoZW4gZW5hYmxpbmcKPiBsb3cKPiBsZXZlbCBkZWJ1ZyBtZXNhZ2VzLgo+IC0tLQo+IMKgYXJj
-aC9hcm0vbWFjaC1iY20yODN4L0tjb25maWfCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgfCAyNCArKysrLS0tLS0tLS0tLS0tLQo+IC0tLS0tCj4gwqBhcmNoL2FybS9tYWNoLWJjbTI4
-M3gvaW5jbHVkZS9tYWNoL2RlYnVnX2xsLmggfMKgwqA2ICsrKy0tLQo+IMKgY29tbW9uL0tjb25m
-aWfCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgfCAyOQo+ICsrKysrKysrKysrKysrKysrKysrKysrKysrKwo+IMKgMyBmaWxlcyBj
-aGFuZ2VkLCAzNiBpbnNlcnRpb25zKCspLCAyMyBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0
-IGEvYXJjaC9hcm0vbWFjaC1iY20yODN4L0tjb25maWcgYi9hcmNoL2FybS9tYWNoLQo+IGJjbTI4
-M3gvS2NvbmZpZwo+IGluZGV4IGJiNWY3NWRjOS4uZGY5MjA2ZDYxIDEwMDY0NAo+IC0tLSBhL2Fy
-Y2gvYXJtL21hY2gtYmNtMjgzeC9LY29uZmlnCj4gKysrIGIvYXJjaC9hcm0vbWFjaC1iY20yODN4
-L0tjb25maWcKPiBAQCAtMTMsNDQgKzEzLDI4IEBAIGNvbmZpZyBNQUNIX1JQSQo+IMKgCWJvb2wg
-IlJhc3BiZXJyeVBpIChCQ00yODM1L0FSTTExNzZKWkYtUykiCj4gwqAJc2VsZWN0IENQVV9WNgo+
-IMKgCXNlbGVjdCBNQUNIX1JQSV9DT01NT04KPiArCWRlcGVuZHMgb24gKCFERUJVR19MTCkgfHwg
-REVCVUdfUlBJMV9VQVJUCj4gwqAKPiDCoGNvbmZpZyBNQUNIX1JQSTIKPiDCoAlib29sICJSYXNw
-YmVycnlQaSAyIChCQ00yODM2L0NPUlRFWC1BNykiCj4gwqAJc2VsZWN0IENQVV9WNwo+IMKgCXNl
-bGVjdCBNQUNIX1JQSV9DT01NT04KPiArCWRlcGVuZHMgb24gKCFERUJVR19MTCkgfHwgREVCVUdf
-UlBJMl9VQVJUCj4gwqAKPiDCoGNvbmZpZyBNQUNIX1JQSTMKPiDCoAlib29sICJSYXNwYmVycnlQ
-aSAzIChCQ00yODM3L0NPUlRFWC1BNTMpIgo+IMKgCXNlbGVjdCBDUFVfVjcKPiDCoAlzZWxlY3Qg
-TUFDSF9SUElfQ09NTU9OCj4gwqAJc2VsZWN0IEFSTV9TRUNVUkVfTU9OSVRPUgo+ICsJZGVwZW5k
-cyBvbiAoIURFQlVHX0xMKSB8fCBERUJVR19SUEkyX1VBUlQKPiDCoAo+IMKgY29uZmlnIE1BQ0hf
-UlBJX0NNMwo+IMKgCWJvb2wgIlJhc3BiZXJyeVBpIENvbXB1dGUgTW9kdWxlIDMgKEJDTTI4Mzcv
-Q09SVEVYLUE1MykiCj4gwqAJc2VsZWN0IENQVV9WNwo+IMKgCXNlbGVjdCBNQUNIX1JQSV9DT01N
-T04KPiDCoAlzZWxlY3QgQVJNX1NFQ1VSRV9NT05JVE9SCj4gKwlkZXBlbmRzIG9uICghREVCVUdf
-TEwpIHx8IERFQlVHX1JQSTJfVUFSVAo+IMKgCj4gwqBlbmRtZW51Cj4gwqAKPiAtY29uZmlnIE1B
-Q0hfUlBJX0RFQlVHX1VBUlRfQkFTRQo+IC0JaGV4Cj4gLQlkZWZhdWx0IDB4MjAyMDEwMDAgaWYg
-TUFDSF9SUElfREVCVUdfVUFSVF9SUEkKPiAtCWRlZmF1bHQgMHgzZjIwMTAwMCBpZiBNQUNIX1JQ
-SV9ERUJVR19VQVJUX1JQSTIKPiAtCj4gLWlmIERFQlVHX0xMCj4gLQo+IC1jaG9pY2UKPiAtCXBy
-b21wdCAiTG93bGV2ZWwgZGVidWcgVUFSVCIKPiAtCj4gLWNvbmZpZyBNQUNIX1JQSV9ERUJVR19V
-QVJUX1JQSQo+IC0JYm9vbCAidXNlIFJhc3BiZXJyeVBpIDEgY29tcGF0aWJsZSBiYXNlIgo+IC0K
-PiAtY29uZmlnIE1BQ0hfUlBJX0RFQlVHX1VBUlRfUlBJMgo+IC0JYm9vbCAidXNlIFJhc3BiZXJy
-eVBpIDIgYW5kIDMgY29tcGF0aWJsZSBiYXNlIgo+IC0KPiAtZW5kY2hvaWNlCj4gLQo+IC1lbmRp
-Zgo+IC0KPiDCoGVuZGlmCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtYmNtMjgzeC9pbmNs
-dWRlL21hY2gvZGVidWdfbGwuaAo+IGIvYXJjaC9hcm0vbWFjaC1iY20yODN4L2luY2x1ZGUvbWFj
-aC9kZWJ1Z19sbC5oCj4gaW5kZXggYTYyNWE4YmRiLi5lNGE5MzU4MDAgMTAwNjQ0Cj4gLS0tIGEv
-YXJjaC9hcm0vbWFjaC1iY20yODN4L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oCj4gKysrIGIvYXJj
-aC9hcm0vbWFjaC1iY20yODN4L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oCj4gQEAgLTIwLDExICsy
-MCwxMSBAQAo+IMKgCj4gwqAjaW5jbHVkZSA8bWFjaC9wbGF0Zm9ybS5oPgo+IMKgCj4gLSNpZm5k
-ZWYgQ09ORklHX01BQ0hfUlBJX0RFQlVHX1VBUlRfQkFTRQo+IC0jZGVmaW5lIENPTkZJR19NQUNI
-X1JQSV9ERUJVR19VQVJUX0JBU0UgMAo+ICsjaWZuZGVmIENPTkZJR19ERUJVR19SUElfVUFSVF9C
-QVNFCj4gKyNkZWZpbmUgQ09ORklHX0RFQlVHX1JQSV9VQVJUX0JBU0UgMAo+IMKgI2VuZGlmCj4g
-wqAKPiAtI2RlZmluZSBERUJVR19MTF9VQVJUX0FERFIgQ09ORklHX01BQ0hfUlBJX0RFQlVHX1VB
-UlRfQkFTRQo+ICsjZGVmaW5lIERFQlVHX0xMX1VBUlRfQUREUiBDT05GSUdfREVCVUdfUlBJX1VB
-UlRfQkFTRQo+IMKgCj4gwqAjaW5jbHVkZSA8YXNtL2RlYnVnX2xsX3BsMDExLmg+Cj4gwqAKPiBk
-aWZmIC0tZ2l0IGEvY29tbW9uL0tjb25maWcgYi9jb21tb24vS2NvbmZpZwo+IGluZGV4IDIxYjMz
-ZjA2Zi4uN2UyYWMyZmViIDEwMDY0NAo+IC0tLSBhL2NvbW1vbi9LY29uZmlnCj4gKysrIGIvY29t
-bW9uL0tjb25maWcKPiBAQCAtMTE1OSw2ICsxMTU5LDI5IEBAIGNvbmZpZyBERUJVR19TT0NGUEdB
-X1VBUlQxCj4gwqAJwqDCoFNheSBZIGhlcmUgaWYgeW91IHdhbnQga2VybmVsIGxvdy1sZXZlbCBk
-ZWJ1Z2dpbmcgc3VwcG9ydAo+IMKgCcKgwqBvbiBTT0NGUEdBKEFycmlhIDEwKSBiYXNlZCBwbGF0
-Zm9ybXMuCj4gwqAKPiArY29uZmlnIERFQlVHX1JQSTFfVUFSVAo+ICsJYm9vbCAiUmFzcGJlcnJ5
-UGkgMSBsb3ctbGV2ZWwgZGVidWcgVUFSVCIKPiArCWRlcGVuZHMgb24gQVJDSF9CQ00yODNYCj4g
-KwloZWxwCj4gKwnCoMKgU2F5IFkgaGVyZSBpZiB5b3Ugd2FudCBsb3ctbGV2ZWwgZGVidWdnaW5n
-IHN1cHBvcnQgb24KPiArCcKgwqBSYXNwYmVycnlQaSAxIGJvYXJkcy4KPiArCj4gKwnCoMKgU2Vs
-ZWN0aW5nIHRoaXMgYWxzbyBsaW1pdHMgYXZhaWxhYmxlIGNob2ljZXMgaW4gImJvYXJkcyB0bwo+
-ICsJwqDCoGJlIGJ1aWx0IiB1bmRlciAic3lzdGVtIHR5cGUiLiBJZiB5b3Ugd2FudCB0byBidWls
-ZCBpbWFnZXMKPiArCcKgwqB0aGF0IHdvcmsgb24gYm90aCBSYXNwYmVycnlQaSAxIGFuZCAyLzMs
-IHlvdSBuZWVkIHRvCj4gZGVzZWxlY3QKPiArCcKgwqBsb3ctbGV2ZWwgZGVidWcuCj4gKwo+ICtj
-b25maWcgREVCVUdfUlBJMl9VQVJUCj4gKwlib29sICJSYXNwYmVycnlQaSAyLzMgbG93LWxldmVs
-IGRlYnVnIFVBUlQiCj4gKwlkZXBlbmRzIG9uIEFSQ0hfQkNNMjgzWAo+ICsJaGVscAo+ICsJwqDC
-oFNheSBZIGhlcmUgaWYgeW91IHdhbnQgbG93LWxldmVsIGRlYnVnZ2luZyBzdXBwb3J0IG9uCj4g
-KwnCoMKgUmFzcGJlcnJ5UGkgMiBhbmQgMyBib2FyZHMuCj4gKwo+ICsJwqDCoFNlbGVjdGluZyB0
-aGlzIGFsc28gbGltaXRzIGF2YWlsYWJsZSBjaG9pY2VzIGluICJib2FyZHMgdG8KPiArCcKgwqBi
-ZSBidWlsdCIgdW5kZXIgInN5c3RlbSB0eXBlIi4gSWYgeW91IHdhbnQgdG8gYnVpbGQgaW1hZ2Vz
-Cj4gKwnCoMKgdGhhdCB3b3JrIG9uIGJvdGggUmFzcGJlcnJ5UGkgMSBhbmQgMi8zLCB5b3UgbmVl
-ZCB0bwo+IGRlc2VsZWN0Cj4gKwnCoMKgbG93LWxldmVsIGRlYnVnLgo+IMKgCj4gwqBlbmRjaG9p
-Y2UKPiDCoAo+IEBAIC0xMjA5LDYgKzEyMzIsMTIgQEAgY29uZmlnIERFQlVHX1NPQ0ZQR0FfVUFS
-VF9QSFlTX0FERFIKPiDCoAlkZWZhdWx0IDB4ZmZjMDIxMDAgaWYgREVCVUdfU09DRlBHQV9VQVJU
-MQo+IMKgCWRlcGVuZHMgb24gQVJDSF9TT0NGUEdBCj4gwqAKPiArY29uZmlnIERFQlVHX1JQSV9V
-QVJUX0JBU0UKPiArCWhleAo+ICsJZGVmYXVsdCAweDIwMjAxMDAwIGlmIERFQlVHX1JQSTFfVUFS
-VAo+ICsJZGVmYXVsdCAweDNmMjAxMDAwIGlmIERFQlVHX1JQSTJfVUFSVAo+ICsJZGVwZW5kcyBv
-biBBUkNIX0JDTTI4M1gKPiArCj4gwqBjb25maWcgREVCVUdfU09DRlBHQV9VQVJUX0NMT0NLCj4g
-wqAJaW50ICJTb0NGUEdBIFVBUlQgZGVidWcgY2xvY2siIGlmIERFQlVHX0xMCj4gwqAJZGVmYXVs
-dCAxMDAwMDAwMDAgaWYgQVJDSF9TT0NGUEdBX0NZQ0xPTkU1CgpSZXZpZXdlZC1ieTogUm91dmVu
-IEN6ZXJ3aW5za2kgPHIuY3plcndpbnNraUBwZW5ndXRyb25peC5kZT4KCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Thu, Feb 28, 2019 at 12:39:00PM +0100, Tomaz Solc wrote:
+> This fixes the following issues in the debug UART config for Raspberry
+> Pi boards:
+> 
+> When debug UART support is enabled, only R.Pi 1 or 2/3 boards
+> can be supported in a single build. However, this limitation was not
+> enforced in the "boards to be built" menu. E.g. it was possible to
+> build a R.Pi 3 image with (non-functional) debug UART support for R.Pi
+> 1.
+> 
+> In contrast to other architectures, R.Pi debug UART config was placed
+> under the "System Type" menu, not under the "Debugging -> low-level
+> debugging port". This made this setting easy to miss when enabling low
+> level debug mesages.
+> ---
+>  arch/arm/mach-bcm283x/Kconfig                 | 24 ++++------------------
+>  arch/arm/mach-bcm283x/include/mach/debug_ll.h |  6 +++---
+>  common/Kconfig                                | 29 +++++++++++++++++++++++++++
+>  3 files changed, 36 insertions(+), 23 deletions(-)
+
+Reviewed-by: Roland Hieber <rhi@pengutronix.de>
+
+> 
+> diff --git a/arch/arm/mach-bcm283x/Kconfig b/arch/arm/mach-bcm283x/Kconfig
+> index bb5f75dc9..df9206d61 100644
+> --- a/arch/arm/mach-bcm283x/Kconfig
+> +++ b/arch/arm/mach-bcm283x/Kconfig
+> @@ -13,44 +13,28 @@ config MACH_RPI
+>  	bool "RaspberryPi (BCM2835/ARM1176JZF-S)"
+>  	select CPU_V6
+>  	select MACH_RPI_COMMON
+> +	depends on (!DEBUG_LL) || DEBUG_RPI1_UART
+>  
+>  config MACH_RPI2
+>  	bool "RaspberryPi 2 (BCM2836/CORTEX-A7)"
+>  	select CPU_V7
+>  	select MACH_RPI_COMMON
+> +	depends on (!DEBUG_LL) || DEBUG_RPI2_UART
+>  
+>  config MACH_RPI3
+>  	bool "RaspberryPi 3 (BCM2837/CORTEX-A53)"
+>  	select CPU_V7
+>  	select MACH_RPI_COMMON
+>  	select ARM_SECURE_MONITOR
+> +	depends on (!DEBUG_LL) || DEBUG_RPI2_UART
+>  
+>  config MACH_RPI_CM3
+>  	bool "RaspberryPi Compute Module 3 (BCM2837/CORTEX-A53)"
+>  	select CPU_V7
+>  	select MACH_RPI_COMMON
+>  	select ARM_SECURE_MONITOR
+> +	depends on (!DEBUG_LL) || DEBUG_RPI2_UART
+>  
+>  endmenu
+>  
+> -config MACH_RPI_DEBUG_UART_BASE
+> -	hex
+> -	default 0x20201000 if MACH_RPI_DEBUG_UART_RPI
+> -	default 0x3f201000 if MACH_RPI_DEBUG_UART_RPI2
+> -
+> -if DEBUG_LL
+> -
+> -choice
+> -	prompt "Lowlevel debug UART"
+> -
+> -config MACH_RPI_DEBUG_UART_RPI
+> -	bool "use RaspberryPi 1 compatible base"
+> -
+> -config MACH_RPI_DEBUG_UART_RPI2
+> -	bool "use RaspberryPi 2 and 3 compatible base"
+> -
+> -endchoice
+> -
+> -endif
+> -
+>  endif
+> diff --git a/arch/arm/mach-bcm283x/include/mach/debug_ll.h b/arch/arm/mach-bcm283x/include/mach/debug_ll.h
+> index a625a8bdb..e4a935800 100644
+> --- a/arch/arm/mach-bcm283x/include/mach/debug_ll.h
+> +++ b/arch/arm/mach-bcm283x/include/mach/debug_ll.h
+> @@ -20,11 +20,11 @@
+>  
+>  #include <mach/platform.h>
+>  
+> -#ifndef CONFIG_MACH_RPI_DEBUG_UART_BASE
+> -#define CONFIG_MACH_RPI_DEBUG_UART_BASE 0
+> +#ifndef CONFIG_DEBUG_RPI_UART_BASE
+> +#define CONFIG_DEBUG_RPI_UART_BASE 0
+>  #endif
+>  
+> -#define DEBUG_LL_UART_ADDR CONFIG_MACH_RPI_DEBUG_UART_BASE
+> +#define DEBUG_LL_UART_ADDR CONFIG_DEBUG_RPI_UART_BASE
+>  
+>  #include <asm/debug_ll_pl011.h>
+>  
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 21b33f06f..7e2ac2feb 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -1159,6 +1159,29 @@ config DEBUG_SOCFPGA_UART1
+>  	  Say Y here if you want kernel low-level debugging support
+>  	  on SOCFPGA(Arria 10) based platforms.
+>  
+> +config DEBUG_RPI1_UART
+> +	bool "RaspberryPi 1 low-level debug UART"
+> +	depends on ARCH_BCM283X
+> +	help
+> +	  Say Y here if you want low-level debugging support on
+> +	  RaspberryPi 1 boards.
+> +
+> +	  Selecting this also limits available choices in "boards to
+> +	  be built" under "system type". If you want to build images
+> +	  that work on both RaspberryPi 1 and 2/3, you need to deselect
+> +	  low-level debug.
+> +
+> +config DEBUG_RPI2_UART
+> +	bool "RaspberryPi 2/3 low-level debug UART"
+> +	depends on ARCH_BCM283X
+> +	help
+> +	  Say Y here if you want low-level debugging support on
+> +	  RaspberryPi 2 and 3 boards.
+> +
+> +	  Selecting this also limits available choices in "boards to
+> +	  be built" under "system type". If you want to build images
+> +	  that work on both RaspberryPi 1 and 2/3, you need to deselect
+> +	  low-level debug.
+>  
+>  endchoice
+>  
+> @@ -1209,6 +1232,12 @@ config DEBUG_SOCFPGA_UART_PHYS_ADDR
+>  	default 0xffc02100 if DEBUG_SOCFPGA_UART1
+>  	depends on ARCH_SOCFPGA
+>  
+> +config DEBUG_RPI_UART_BASE
+> +	hex
+> +	default 0x20201000 if DEBUG_RPI1_UART
+> +	default 0x3f201000 if DEBUG_RPI2_UART
+> +	depends on ARCH_BCM283X
+> +
+>  config DEBUG_SOCFPGA_UART_CLOCK
+>  	int "SoCFPGA UART debug clock" if DEBUG_LL
+>  	default 100000000 if ARCH_SOCFPGA_CYCLONE5
+> -- 
+> 2.11.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Roland Hieber                     | r.hieber@pengutronix.de     |
+Pengutronix e.K.                  | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
