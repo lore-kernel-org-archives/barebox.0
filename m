@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h0jkF-0001uW-BW
+ id 1h0jkF-0001uX-BW
  for barebox@lists.infradead.org; Mon, 04 Mar 2019 09:18:48 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Mar 2019 10:18:33 +0100
-Message-Id: <20190304091843.17839-1-s.hauer@pengutronix.de>
+Date: Mon,  4 Mar 2019 10:18:40 +0100
+Message-Id: <20190304091843.17839-8-s.hauer@pengutronix.de>
+In-Reply-To: <20190304091843.17839-1-s.hauer@pengutronix.de>
+References: <20190304091843.17839-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,38 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/10] i2c: i.MX more cleanup, early driver
+Subject: [PATCH 07/10] i2c: i.MX: remove unused define
 To: Barebox List <barebox@lists.infradead.org>
 
-These are more cleanups to the i.MX i2c driver. As the last patch an
-early i2c driver for use in PBL is added. This is needed for reading
-the SPD data for upcoming Layerscape support.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/i2c/busses/i2c-imx.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Sascha
-
-Sascha Hauer (10):
-  i2c: i.MX: remove unnecesary define
-  i2c: i.MX: remove unnecessary ifdef
-  i2c: i.MX: Fix FSL_I2C_DFSRR register offset
-  i2c: i.MX: remove unnecessary ifdef
-  i2c: i.MX: Consolidate status polling loops
-  i2c: i.MX: stop after read only in last transfer of a message
-  i2c: i.MX: remove unused define
-  i2c: i.MX: Read clock-frequency from device tree
-  i2c: i.MX: Create header file for register defines
-  i2c: i.MX: Add early driver for use in PBL
-
- drivers/i2c/Kconfig                |   3 +
- drivers/i2c/busses/Makefile        |   1 +
- drivers/i2c/busses/i2c-imx-early.c | 310 +++++++++++++++++++++++++++++
- drivers/i2c/busses/i2c-imx.c       | 157 ++++-----------
- drivers/i2c/busses/i2c-imx.h       |  52 +++++
- include/i2c/i2c-early.h            |  10 +
- 6 files changed, 419 insertions(+), 114 deletions(-)
- create mode 100644 drivers/i2c/busses/i2c-imx-early.c
- create mode 100644 drivers/i2c/busses/i2c-imx.h
- create mode 100644 include/i2c/i2c-early.h
-
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index c903d8dfd1..9ce6bb7533 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -99,9 +99,6 @@
+ #define I2CR_IEN_OPCODE_0	0x0
+ #define I2CR_IEN_OPCODE_1	I2CR_IEN
+ 
+-#define I2C_PM_TIMEOUT		10 /* ms */
+-
+-
+ /*
+  * sorted list of clock divider, register value pairs
+  * taken from table 26-5, p.26-9, Freescale i.MX
 -- 
 2.20.1
 
