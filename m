@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h0jkM-000201-RX
- for barebox@lists.infradead.org; Mon, 04 Mar 2019 09:19:00 +0000
+ id 1h0jkU-0002D7-Qx
+ for barebox@lists.infradead.org; Mon, 04 Mar 2019 09:19:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Mar 2019 10:18:38 +0100
-Message-Id: <20190304091843.17839-6-s.hauer@pengutronix.de>
+Date: Mon,  4 Mar 2019 10:18:42 +0100
+Message-Id: <20190304091843.17839-10-s.hauer@pengutronix.de>
 In-Reply-To: <20190304091843.17839-1-s.hauer@pengutronix.de>
 References: <20190304091843.17839-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,147 +21,135 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/10] i2c: i.MX: Consolidate status polling loops
+Subject: [PATCH 09/10] i2c: i.MX: Create header file for register defines
 To: Barebox List <barebox@lists.infradead.org>
 
-We poll for different bits in the status register in different
-functions. Instead of repeating the polling loops each time create
-a helper function for it.
+We'll add a stripped down driver variant for use in PBL. To share the
+register defines add a header file for them.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/i2c/busses/i2c-imx.c | 73 +++++++++++++++---------------------
- 1 file changed, 31 insertions(+), 42 deletions(-)
+ drivers/i2c/busses/i2c-imx.c | 47 +-------------------------------
+ drivers/i2c/busses/i2c-imx.h | 52 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 53 insertions(+), 46 deletions(-)
+ create mode 100644 drivers/i2c/busses/i2c-imx.h
 
 diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index 3d872a87d2..e169feb3fc 100644
+index 409c178e6a..4c7346063c 100644
 --- a/drivers/i2c/busses/i2c-imx.c
 +++ b/drivers/i2c/busses/i2c-imx.c
-@@ -209,46 +209,50 @@ static void i2c_fsl_dump_reg(struct i2c_adapter *adapter)
- 		(reg_sr & I2SR_RXAK ? 1 : 0));
- }
+@@ -49,52 +49,7 @@
+ #include <i2c/i2c.h>
+ #include <mach/clock.h>
  
--static int i2c_fsl_bus_busy(struct i2c_adapter *adapter, int for_busy)
-+static int i2c_fsl_poll_status(struct i2c_adapter *adapter, int timeout_ms,
-+			       uint8_t set, uint8_t clear)
- {
- 	struct fsl_i2c_struct *i2c_fsl = to_fsl_i2c_struct(adapter);
- 	uint64_t start;
--	unsigned int temp;
-+	uint8_t temp;
+-/* IMX I2C registers:
+- * the I2C register offset is different between SoCs,
+- * to provid support for all these chips, split the
+- * register offset into a fixed base address and a
+- * variable shift value, then the full register offset
+- * will be calculated by
+- * reg_off = ( reg_base_addr << reg_shift)
+- */
+-#define FSL_I2C_IADR	0x00	/* i2c slave address */
+-#define FSL_I2C_IFDR	0x01	/* i2c frequency divider */
+-#define FSL_I2C_I2CR	0x02	/* i2c control */
+-#define FSL_I2C_I2SR	0x03	/* i2c status */
+-#define FSL_I2C_I2DR	0x04	/* i2c transfer data */
+-#define FSL_I2C_DFSRR	0x05	/* i2c digital filter sampling rate */
+-
+-#define IMX_I2C_REGSHIFT	2
+-#define VF610_I2C_REGSHIFT	0
+-
+-
+-/* Bits of FSL I2C registers */
+-#define I2SR_RXAK	0x01
+-#define I2SR_IIF	0x02
+-#define I2SR_SRW	0x04
+-#define I2SR_IAL	0x10
+-#define I2SR_IBB	0x20
+-#define I2SR_IAAS	0x40
+-#define I2SR_ICF	0x80
+-#define I2CR_RSTA	0x04
+-#define I2CR_TXAK	0x08
+-#define I2CR_MTX	0x10
+-#define I2CR_MSTA	0x20
+-#define I2CR_IIEN	0x40
+-#define I2CR_IEN	0x80
+-
+-/* register bits different operating codes definition:
+- * 1) I2SR: Interrupt flags clear operation differ between SoCs:
+- * - write zero to clear(w0c) INT flag on i.MX,
+- * - but write one to clear(w1c) INT flag on Vybrid.
+- * 2) I2CR: I2C module enable operation also differ between SoCs:
+- * - set I2CR_IEN bit enable the module on i.MX,
+- * - but clear I2CR_IEN bit enable the module on Vybrid.
+- */
+-#define I2SR_CLR_OPCODE_W0C	0x0
+-#define I2SR_CLR_OPCODE_W1C	(I2SR_IAL | I2SR_IIF)
+-#define I2CR_IEN_OPCODE_0	0x0
+-#define I2CR_IEN_OPCODE_1	I2CR_IEN
++#include "i2c-imx.h"
  
- 	start = get_time_ns();
- 	while (1) {
- 		temp = fsl_i2c_read_reg(i2c_fsl, FSL_I2C_I2SR);
--		if (for_busy && (temp & I2SR_IBB))
--			break;
--		if (!for_busy && !(temp & I2SR_IBB))
--			break;
--		if (is_timeout(start, 500 * MSECOND)) {
--			dev_err(&adapter->dev,
--				 "<%s> timeout waiting for I2C bus %s\n",
--				 __func__,for_busy ? "busy" : "not busy");
-+		if (temp & set)
-+			return 0;
-+		if (~temp & clear)
-+			return 0;
+ /*
+  * sorted list of clock divider, register value pairs
+diff --git a/drivers/i2c/busses/i2c-imx.h b/drivers/i2c/busses/i2c-imx.h
+new file mode 100644
+index 0000000000..3e3e1317f2
+--- /dev/null
++++ b/drivers/i2c/busses/i2c-imx.h
+@@ -0,0 +1,52 @@
++#ifndef I2C_IMX_H
++#define I2C_IMX_H
 +
-+		if (is_timeout(start, timeout_ms * MSECOND)) {
-+			dev_dbg(&adapter->dev,
-+				 "timeout waiting for status %s 0x%02x, cur status: 0x%02x\n",
-+					set ? "set" : "clear",
-+					set ? set : clear,
-+					temp);
- 			return -EIO;
- 		}
- 	}
-+}
- 
--	return 0;
-+static int i2c_fsl_bus_busy(struct i2c_adapter *adapter)
-+{
-+	return i2c_fsl_poll_status(adapter, 500, I2SR_IBB, 0);
-+}
++/*
++ * IMX I2C registers:
++ * the I2C register offset is different between SoCs, to provide support for
++ * all these chips, split the register offset into a fixed base address and a
++ * variable shift value, then the full register offset will be calculated by:
++ * reg_off = reg_base_addr << reg_shift
++ */
++#define FSL_I2C_IADR	0x00	/* i2c slave address */
++#define FSL_I2C_IFDR	0x01	/* i2c frequency divider */
++#define FSL_I2C_I2CR	0x02	/* i2c control */
++#define FSL_I2C_I2SR	0x03	/* i2c status */
++#define FSL_I2C_I2DR	0x04	/* i2c transfer data */
++#define FSL_I2C_DFSRR	0x05	/* i2c digital filter sampling rate */
 +
-+static int i2c_fsl_bus_idle(struct i2c_adapter *adapter)
-+{
-+	return i2c_fsl_poll_status(adapter, 500, 0, I2SR_IBB);
- }
- 
- static int i2c_fsl_trx_complete(struct i2c_adapter *adapter)
- {
- 	struct fsl_i2c_struct *i2c_fsl = to_fsl_i2c_struct(adapter);
--	uint64_t start;
--
--	start = get_time_ns();
--	while (1) {
--		unsigned int reg = fsl_i2c_read_reg(i2c_fsl, FSL_I2C_I2SR);
--		if (reg & I2SR_IIF)
--			break;
-+	int ret;
- 
--		if (is_timeout(start, 100 * MSECOND)) {
--			dev_err(&adapter->dev, "<%s> TXR timeout\n", __func__);
--			return -EIO;
--		}
--	}
-+	ret = i2c_fsl_poll_status(adapter, 100, I2SR_IIF, 0);
-+	if (ret)
-+		return ret;
- 
- 	fsl_i2c_write_reg(i2c_fsl->hwdata->i2sr_clr_opcode,
- 			  i2c_fsl, FSL_I2C_I2SR);
-@@ -258,22 +262,7 @@ static int i2c_fsl_trx_complete(struct i2c_adapter *adapter)
- 
- static int i2c_fsl_acked(struct i2c_adapter *adapter)
- {
--	struct fsl_i2c_struct *i2c_fsl = to_fsl_i2c_struct(adapter);
--	uint64_t start;
--
--	start = get_time_ns();
--	while (1) {
--		unsigned int reg = fsl_i2c_read_reg(i2c_fsl, FSL_I2C_I2SR);
--		if (!(reg & I2SR_RXAK))
--			break;
--
--		if (is_timeout(start, MSECOND)) {
--			dev_dbg(&adapter->dev, "<%s> No ACK\n", __func__);
--			return -EIO;
--		}
--	}
--
--	return 0;
-+	return i2c_fsl_poll_status(adapter, 1, 0, I2SR_RXAK);
- }
- 
- static int i2c_fsl_start(struct i2c_adapter *adapter)
-@@ -302,7 +291,7 @@ static int i2c_fsl_start(struct i2c_adapter *adapter)
- 	temp |= I2CR_MSTA;
- 	fsl_i2c_write_reg(temp, i2c_fsl, FSL_I2C_I2CR);
- 
--	result = i2c_fsl_bus_busy(adapter, 1);
-+	result = i2c_fsl_bus_busy(adapter);
- 	if (result) {
- 		result = i2c_recover_bus(&i2c_fsl->adapter);
- 		if (result)
-@@ -334,7 +323,7 @@ static void i2c_fsl_stop(struct i2c_adapter *adapter)
- 	/* adding this delay helps on low bitrates */
- 	udelay(i2c_fsl->disable_delay);
- 
--	i2c_fsl_bus_busy(adapter, 0);
-+	i2c_fsl_bus_idle(adapter);
- }
- 
- #ifdef CONFIG_PPC
-@@ -550,7 +539,7 @@ static int i2c_fsl_xfer(struct i2c_adapter *adapter,
- 			temp |= I2CR_RSTA;
- 			fsl_i2c_write_reg(temp, i2c_fsl, FSL_I2C_I2CR);
- 
--			result = i2c_fsl_bus_busy(adapter, 1);
-+			result = i2c_fsl_bus_busy(adapter);
- 			if (result)
- 				goto fail0;
- 		}
++#define IMX_I2C_REGSHIFT	2
++#define VF610_I2C_REGSHIFT	0
++
++/* Bits of FSL I2C registers */
++#define I2SR_RXAK	0x01
++#define I2SR_IIF	0x02
++#define I2SR_SRW	0x04
++#define I2SR_IAL	0x10
++#define I2SR_IBB	0x20
++#define I2SR_IAAS	0x40
++#define I2SR_ICF	0x80
++#define I2CR_RSTA	0x04
++#define I2CR_TXAK	0x08
++#define I2CR_MTX	0x10
++#define I2CR_MSTA	0x20
++#define I2CR_IIEN	0x40
++#define I2CR_IEN	0x80
++
++/*
++ * register bits different operating codes definition:
++ *
++ * 1) I2SR: Interrupt flags clear operation differ between SoCs:
++ * - write zero to clear(w0c) INT flag on i.MX,
++ * - but write one to clear(w1c) INT flag on Vybrid.
++ *
++ * 2) I2CR: I2C module enable operation also differ between SoCs:
++ * - set I2CR_IEN bit enable the module on i.MX,
++ * - but clear I2CR_IEN bit enable the module on Vybrid.
++ */
++#define I2SR_CLR_OPCODE_W0C	0x0
++#define I2SR_CLR_OPCODE_W1C	(I2SR_IAL | I2SR_IIF)
++#define I2CR_IEN_OPCODE_0	0x0
++#define I2CR_IEN_OPCODE_1	I2CR_IEN
++
++#endif /* I2C_IMX_H */
 -- 
 2.20.1
 
