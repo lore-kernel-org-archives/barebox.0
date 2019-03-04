@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1gzfs2-0005zR-AN
- for barebox@lists.infradead.org; Fri, 01 Mar 2019 10:58:28 +0000
-Date: Fri, 1 Mar 2019 11:58:21 +0100
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190301105821.6nbid4twzmti3edz@pengutronix.de>
+ id 1h0iaa-0008B2-Eq
+ for barebox@lists.infradead.org; Mon, 04 Mar 2019 08:04:46 +0000
+Date: Mon, 4 Mar 2019 09:04:42 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190304080442.hjyncl4whxmrz2eu@pengutronix.de>
 References: <20190228113900.16177-1-tomaz.solc@tablix.org>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -41,94 +41,6 @@ On Thu, Feb 28, 2019 at 12:39:00PM +0100, Tomaz Solc wrote:
 > debugging port". This made this setting easy to miss when enabling low
 > level debug mesages.
 > ---
->  arch/arm/mach-bcm283x/Kconfig                 | 24 ++++------------------
->  arch/arm/mach-bcm283x/include/mach/debug_ll.h |  6 +++---
->  common/Kconfig                                | 29 +++++++++++++++++++++++++++
->  3 files changed, 36 insertions(+), 23 deletions(-)
-
-Reviewed-by: Roland Hieber <rhi@pengutronix.de>
-
-> 
-> diff --git a/arch/arm/mach-bcm283x/Kconfig b/arch/arm/mach-bcm283x/Kconfig
-> index bb5f75dc9..df9206d61 100644
-> --- a/arch/arm/mach-bcm283x/Kconfig
-> +++ b/arch/arm/mach-bcm283x/Kconfig
-> @@ -13,44 +13,28 @@ config MACH_RPI
->  	bool "RaspberryPi (BCM2835/ARM1176JZF-S)"
->  	select CPU_V6
->  	select MACH_RPI_COMMON
-> +	depends on (!DEBUG_LL) || DEBUG_RPI1_UART
->  
->  config MACH_RPI2
->  	bool "RaspberryPi 2 (BCM2836/CORTEX-A7)"
->  	select CPU_V7
->  	select MACH_RPI_COMMON
-> +	depends on (!DEBUG_LL) || DEBUG_RPI2_UART
->  
->  config MACH_RPI3
->  	bool "RaspberryPi 3 (BCM2837/CORTEX-A53)"
->  	select CPU_V7
->  	select MACH_RPI_COMMON
->  	select ARM_SECURE_MONITOR
-> +	depends on (!DEBUG_LL) || DEBUG_RPI2_UART
->  
->  config MACH_RPI_CM3
->  	bool "RaspberryPi Compute Module 3 (BCM2837/CORTEX-A53)"
->  	select CPU_V7
->  	select MACH_RPI_COMMON
->  	select ARM_SECURE_MONITOR
-> +	depends on (!DEBUG_LL) || DEBUG_RPI2_UART
->  
->  endmenu
->  
-> -config MACH_RPI_DEBUG_UART_BASE
-> -	hex
-> -	default 0x20201000 if MACH_RPI_DEBUG_UART_RPI
-> -	default 0x3f201000 if MACH_RPI_DEBUG_UART_RPI2
-> -
-> -if DEBUG_LL
-> -
-> -choice
-> -	prompt "Lowlevel debug UART"
-> -
-> -config MACH_RPI_DEBUG_UART_RPI
-> -	bool "use RaspberryPi 1 compatible base"
-> -
-> -config MACH_RPI_DEBUG_UART_RPI2
-> -	bool "use RaspberryPi 2 and 3 compatible base"
-> -
-> -endchoice
-> -
-> -endif
-> -
->  endif
-> diff --git a/arch/arm/mach-bcm283x/include/mach/debug_ll.h b/arch/arm/mach-bcm283x/include/mach/debug_ll.h
-> index a625a8bdb..e4a935800 100644
-> --- a/arch/arm/mach-bcm283x/include/mach/debug_ll.h
-> +++ b/arch/arm/mach-bcm283x/include/mach/debug_ll.h
-> @@ -20,11 +20,11 @@
->  
->  #include <mach/platform.h>
->  
-> -#ifndef CONFIG_MACH_RPI_DEBUG_UART_BASE
-> -#define CONFIG_MACH_RPI_DEBUG_UART_BASE 0
-> +#ifndef CONFIG_DEBUG_RPI_UART_BASE
-> +#define CONFIG_DEBUG_RPI_UART_BASE 0
->  #endif
->  
-> -#define DEBUG_LL_UART_ADDR CONFIG_MACH_RPI_DEBUG_UART_BASE
-> +#define DEBUG_LL_UART_ADDR CONFIG_DEBUG_RPI_UART_BASE
->  
->  #include <asm/debug_ll_pl011.h>
->  
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 21b33f06f..7e2ac2feb 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -1159,6 +1159,29 @@ config DEBUG_SOCFPGA_UART1
->  	  Say Y here if you want kernel low-level debugging support
->  	  on SOCFPGA(Arria 10) based platforms.
->  
 > +config DEBUG_RPI1_UART
 > +	bool "RaspberryPi 1 low-level debug UART"
 > +	depends on ARCH_BCM283X
@@ -140,49 +52,32 @@ Reviewed-by: Roland Hieber <rhi@pengutronix.de>
 > +	  be built" under "system type". If you want to build images
 > +	  that work on both RaspberryPi 1 and 2/3, you need to deselect
 > +	  low-level debug.
-> +
-> +config DEBUG_RPI2_UART
-> +	bool "RaspberryPi 2/3 low-level debug UART"
-> +	depends on ARCH_BCM283X
-> +	help
-> +	  Say Y here if you want low-level debugging support on
-> +	  RaspberryPi 2 and 3 boards.
-> +
-> +	  Selecting this also limits available choices in "boards to
-> +	  be built" under "system type". If you want to build images
-> +	  that work on both RaspberryPi 1 and 2/3, you need to deselect
-> +	  low-level debug.
->  
->  endchoice
->  
-> @@ -1209,6 +1232,12 @@ config DEBUG_SOCFPGA_UART_PHYS_ADDR
->  	default 0xffc02100 if DEBUG_SOCFPGA_UART1
->  	depends on ARCH_SOCFPGA
->  
-> +config DEBUG_RPI_UART_BASE
-> +	hex
-> +	default 0x20201000 if DEBUG_RPI1_UART
-> +	default 0x3f201000 if DEBUG_RPI2_UART
-> +	depends on ARCH_BCM283X
-> +
->  config DEBUG_SOCFPGA_UART_CLOCK
->  	int "SoCFPGA UART debug clock" if DEBUG_LL
->  	default 100000000 if ARCH_SOCFPGA_CYCLONE5
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+
+The idea behind debug_ll is that when you enable it the resulting image
+will only work on the system you chose the UART for. It's the same in
+the Kernel and we should probably adopt the text for barebox:
+
+          Note that selecting this option will limit the kernel to a single
+          UART definition, as specified below. Attempting to boot the kernel
+          image on a different platform *will not work*, so this option should
+          not be enabled for kernels that are intended to be portable.
+
+So that said, even with a debug UART enabled for Rpi1 we should still
+allow to build for Rpi2/3 although we know it won't work there.
+
+The reason is you might get failures only when multiple SoCs are
+selected. In that case you only want to enable early debugging support
+(for the SoC you are currently testing on) without changing other things
+in the config which might make your errors disappear.
+
+Sascha
+
 
 -- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
