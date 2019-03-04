@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h0jkF-0001uX-BW
- for barebox@lists.infradead.org; Mon, 04 Mar 2019 09:18:48 +0000
+ id 1h0jkF-0001ub-Bb
+ for barebox@lists.infradead.org; Mon, 04 Mar 2019 09:18:50 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Mar 2019 10:18:40 +0100
-Message-Id: <20190304091843.17839-8-s.hauer@pengutronix.de>
+Date: Mon,  4 Mar 2019 10:18:36 +0100
+Message-Id: <20190304091843.17839-4-s.hauer@pengutronix.de>
 In-Reply-To: <20190304091843.17839-1-s.hauer@pengutronix.de>
 References: <20190304091843.17839-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,28 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/10] i2c: i.MX: remove unused define
+Subject: [PATCH 03/10] i2c: i.MX: Fix FSL_I2C_DFSRR register offset
 To: Barebox List <barebox@lists.infradead.org>
+
+4ed5b77 ("i.MX: i2c: Add Vybrid support") introduced regshifts for the
+register offsets, but missed to adjust the register offset for the
+FSL_I2C_DFSRR register (which exists only on PowerPC). Fix this.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/i2c/busses/i2c-imx.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/i2c/busses/i2c-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index c903d8dfd1..9ce6bb7533 100644
+index 3323f2ccce..40d8527b7f 100644
 --- a/drivers/i2c/busses/i2c-imx.c
 +++ b/drivers/i2c/busses/i2c-imx.c
-@@ -99,9 +99,6 @@
- #define I2CR_IEN_OPCODE_0	0x0
- #define I2CR_IEN_OPCODE_1	I2CR_IEN
+@@ -65,7 +65,7 @@
+ #define FSL_I2C_I2CR	0x02	/* i2c control */
+ #define FSL_I2C_I2SR	0x03	/* i2c status */
+ #define FSL_I2C_I2DR	0x04	/* i2c transfer data */
+-#define FSL_I2C_DFSRR	0x14	/* i2c digital filter sampling rate */
++#define FSL_I2C_DFSRR	0x05	/* i2c digital filter sampling rate */
  
--#define I2C_PM_TIMEOUT		10 /* ms */
--
--
- /*
-  * sorted list of clock divider, register value pairs
-  * taken from table 26-5, p.26-9, Freescale i.MX
+ #define IMX_I2C_REGSHIFT	2
+ #define VF610_I2C_REGSHIFT	0
 -- 
 2.20.1
 
