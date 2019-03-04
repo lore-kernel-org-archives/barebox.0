@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h0jkF-0001uY-BZ
- for barebox@lists.infradead.org; Mon, 04 Mar 2019 09:18:50 +0000
+ id 1h0jkM-000203-S0
+ for barebox@lists.infradead.org; Mon, 04 Mar 2019 09:18:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Mar 2019 10:18:35 +0100
-Message-Id: <20190304091843.17839-3-s.hauer@pengutronix.de>
+Date: Mon,  4 Mar 2019 10:18:39 +0100
+Message-Id: <20190304091843.17839-7-s.hauer@pengutronix.de>
 In-Reply-To: <20190304091843.17839-1-s.hauer@pengutronix.de>
 References: <20190304091843.17839-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,29 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/10] i2c: i.MX: remove unnecessary ifdef
+Subject: [PATCH 06/10] i2c: i.MX: stop after read only in last transfer of a
+ message
 To: Barebox List <barebox@lists.infradead.org>
 
-No need to put the of_compatible field into ifdefs, remove them.
+Following the Linux driver the controller should be stopped in the
+read transfer path only after the last transfer of a message, but
+not when other transfers of the same message are following. Implement
+this behaviour for the barebox driver aswell.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/i2c/busses/i2c-imx.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/i2c/busses/i2c-imx.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index 508ec1d273..3323f2ccce 100644
+index e169feb3fc..c903d8dfd1 100644
 --- a/drivers/i2c/busses/i2c-imx.c
 +++ b/drivers/i2c/busses/i2c-imx.c
-@@ -722,8 +722,6 @@ static __maybe_unused struct of_device_id imx_i2c_dt_ids[] = {
- static struct driver_d i2c_fsl_driver = {
- 	.probe	= i2c_fsl_probe,
- 	.name	= "i2c-fsl",
--#ifndef CONFIG_PPC
- 	.of_compatible = DRV_OF_COMPAT(imx_i2c_dt_ids),
--#endif
- };
- coredevice_platform_driver(i2c_fsl_driver);
+@@ -469,7 +469,8 @@ static int i2c_fsl_write(struct i2c_adapter *adapter, struct i2c_msg *msg)
+ 	return 0;
+ }
+ 
+-static int i2c_fsl_read(struct i2c_adapter *adapter, struct i2c_msg *msg)
++static int i2c_fsl_read(struct i2c_adapter *adapter, struct i2c_msg *msg,
++			bool is_last)
+ {
+ 	struct fsl_i2c_struct *i2c_fsl = to_fsl_i2c_struct(adapter);
+ 	int i, result;
+@@ -500,7 +501,7 @@ static int i2c_fsl_read(struct i2c_adapter *adapter, struct i2c_msg *msg)
+ 		if (result)
+ 			return result;
+ 
+-		if (i == (msg->len - 1)) {
++		if (is_last && i == msg->len - 1) {
+ 			i2c_fsl_stop(adapter);
+ 		} else if (i == (msg->len - 2)) {
+ 			temp = fsl_i2c_read_reg(i2c_fsl, FSL_I2C_I2CR);
+@@ -547,7 +548,7 @@ static int i2c_fsl_xfer(struct i2c_adapter *adapter,
+ 
+ 		/* write/read data */
+ 		if (msgs[i].flags & I2C_M_RD)
+-			result = i2c_fsl_read(adapter, &msgs[i]);
++			result = i2c_fsl_read(adapter, &msgs[i], i == num - 1);
+ 		else
+ 			result = i2c_fsl_write(adapter, &msgs[i]);
+ 		if (result)
 -- 
 2.20.1
 
