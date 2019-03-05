@@ -1,15 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm1-x344.google.com ([2a00:1450:4864:20::344])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h0iaa-0008B2-Eq
- for barebox@lists.infradead.org; Mon, 04 Mar 2019 08:04:46 +0000
-Date: Mon, 4 Mar 2019 09:04:42 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190304080442.hjyncl4whxmrz2eu@pengutronix.de>
+ id 1h168J-00052p-6V
+ for barebox@lists.infradead.org; Tue, 05 Mar 2019 09:13:08 +0000
+Received: by mail-wm1-x344.google.com with SMTP id g20so1718867wmh.5
+ for <barebox@lists.infradead.org>; Tue, 05 Mar 2019 01:13:06 -0800 (PST)
+Received: from [192.168.106.167] (77-111-10-47.ipv4.tusmobil.si.
+ [77.111.10.47])
+ by smtp.gmail.com with ESMTPSA id w3sm8771183wrl.22.2019.03.05.01.13.04
+ for <barebox@lists.infradead.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 05 Mar 2019 01:13:04 -0800 (PST)
 References: <20190228113900.16177-1-tomaz.solc@tablix.org>
+ <20190304080442.hjyncl4whxmrz2eu@pengutronix.de>
+From: =?UTF-8?B?VG9tYcW+IMWgb2xj?= <tomaz.solc@klevio.com>
+Message-ID: <890b8bc1-68d2-1b7d-e4b8-071f63d53fd9@klevio.com>
+Date: Tue, 5 Mar 2019 10:13:04 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190228113900.16177-1-tomaz.solc@tablix.org>
+In-Reply-To: <20190304080442.hjyncl4whxmrz2eu@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,68 +27,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ARM: rpi: refactor debug UART Kconfig settings.
-To: Tomaz Solc <tomaz.solc@tablix.org>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
 
-On Thu, Feb 28, 2019 at 12:39:00PM +0100, Tomaz Solc wrote:
-> This fixes the following issues in the debug UART config for Raspberry
-> Pi boards:
-> 
-> When debug UART support is enabled, only R.Pi 1 or 2/3 boards
-> can be supported in a single build. However, this limitation was not
-> enforced in the "boards to be built" menu. E.g. it was possible to
-> build a R.Pi 3 image with (non-functional) debug UART support for R.Pi
-> 1.
-> 
-> In contrast to other architectures, R.Pi debug UART config was placed
-> under the "System Type" menu, not under the "Debugging -> low-level
-> debugging port". This made this setting easy to miss when enabling low
-> level debug mesages.
-> ---
-> +config DEBUG_RPI1_UART
-> +	bool "RaspberryPi 1 low-level debug UART"
-> +	depends on ARCH_BCM283X
-> +	help
-> +	  Say Y here if you want low-level debugging support on
-> +	  RaspberryPi 1 boards.
-> +
-> +	  Selecting this also limits available choices in "boards to
-> +	  be built" under "system type". If you want to build images
-> +	  that work on both RaspberryPi 1 and 2/3, you need to deselect
-> +	  low-level debug.
-
-The idea behind debug_ll is that when you enable it the resulting image
-will only work on the system you chose the UART for. It's the same in
-the Kernel and we should probably adopt the text for barebox:
-
-          Note that selecting this option will limit the kernel to a single
-          UART definition, as specified below. Attempting to boot the kernel
-          image on a different platform *will not work*, so this option should
-          not be enabled for kernels that are intended to be portable.
-
-So that said, even with a debug UART enabled for Rpi1 we should still
-allow to build for Rpi2/3 although we know it won't work there.
-
-The reason is you might get failures only when multiple SoCs are
-selected. In that case you only want to enable early debugging support
-(for the SoC you are currently testing on) without changing other things
-in the config which might make your errors disappear.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gNC4gMDMuIDE5IDA5OjA0LCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4gU28gdGhhdCBzYWlkLCBl
+dmVuIHdpdGggYSBkZWJ1ZyBVQVJUIGVuYWJsZWQgZm9yIFJwaTEgd2Ugc2hvdWxkIHN0aWxsCj4g
+YWxsb3cgdG8gYnVpbGQgZm9yIFJwaTIvMyBhbHRob3VnaCB3ZSBrbm93IGl0IHdvbid0IHdvcmsg
+dGhlcmUuCj4gCj4gVGhlIHJlYXNvbiBpcyB5b3UgbWlnaHQgZ2V0IGZhaWx1cmVzIG9ubHkgd2hl
+biBtdWx0aXBsZSBTb0NzIGFyZQo+IHNlbGVjdGVkLiBJbiB0aGF0IGNhc2UgeW91IG9ubHkgd2Fu
+dCB0byBlbmFibGUgZWFybHkgZGVidWdnaW5nIHN1cHBvcnQKPiAoZm9yIHRoZSBTb0MgeW91IGFy
+ZSBjdXJyZW50bHkgdGVzdGluZyBvbikgd2l0aG91dCBjaGFuZ2luZyBvdGhlciB0aGluZ3MKPiBp
+biB0aGUgY29uZmlnIHdoaWNoIG1pZ2h0IG1ha2UgeW91ciBlcnJvcnMgZGlzYXBwZWFyLgoKVGhh
+bmtzIGZvciB0aGUgY2xhcmlmaWNhdGlvbi4gSSd2ZSBzZW50IGFub3RoZXIgcGF0Y2ggc2VyaWVz
+IHRoYXQgCnJlbW92ZXMgdGhlIHJlc3RyaWN0aW9uIGZvciBib2FyZCBidWlsZHMgYW5kIGFkZHMg
+dGhlIGhlbHAgdGV4dC4KCk9uIHRoZSB0b3BpYyBvZiB0aGUgZGVidWcgVUFSVCwgSSd2ZSBhbHNv
+IG5vdGljZWQgdGhhdCBpdCdzIGEgYml0IHRyaWNreSAKdG8gZ2V0IGl0IHJ1bm5pbmcgb24gUmFz
+cGJlcnJ5IFBpIDMuIFRoZSBwcm9ibGVtIGlzIHRoYXQgdGhlIGRlYnVnIFVBUlQgCmlzIHVzaW5n
+IFBMMDExIGhhcmR3YXJlLCBidXQgdGhlIGNvbnNvbGUgaXMgbm93IHVzaW5nIG1pbml1YXJ0LgoK
+SW4gYWRkaXRpb24gdG8gZW5hYmxpbmcgaXQgaW4gbWVudWNvbmZpZywgSSBoYXZlIHRvIHJldmVy
+c2UgdGhlIGNvbW1pdCAKYWI3NmY5ZDAgKHN3aXRjaCB0byBtaW5pdWFydCBmb3Igc3Rkb3V0IGlu
+IHRoZSBkZXZpY2UgdHJlZSkgYW5kIGtlZXAgCiJkdG92ZXJsYXk9cGkzLW1pbml1YXJ0LWJ0IiBp
+biAiY29uZmlnLnR4dCIgKGluc3RydWN0aW9uIGZvciB0aGlzIHdhcyAKcmVtb3ZlZCBpbiBmMTMz
+MDUzNikuCgpCZXN0IHJlZ2FyZHMKVG9tYcW+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
+ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
+YXJlYm94Cg==
