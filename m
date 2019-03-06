@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h1T4W-0006qc-B1
+ id 1h1T4W-0006qX-Af
  for barebox@lists.infradead.org; Wed, 06 Mar 2019 09:42:47 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  6 Mar 2019 10:42:34 +0100
-Message-Id: <20190306094239.29413-1-s.hauer@pengutronix.de>
+Date: Wed,  6 Mar 2019 10:42:36 +0100
+Message-Id: <20190306094239.29413-3-s.hauer@pengutronix.de>
+In-Reply-To: <20190306094239.29413-1-s.hauer@pengutronix.de>
+References: <20190306094239.29413-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,39 +17,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5] ARM: rpi: refactor debug_ll
+Subject: [PATCH 2/5] debug_ll: Move pl011 header file to architecture
+ independent place
 To: Barebox List <barebox@lists.infradead.org>
 
-VGhpcyBwaWNrcyB1cCB0aGUgc2VyaWVzIGZyb20gVG9tYcW+IGFuZCBhbHNvIGFkZHMgbWluaSBV
-QVJUIGVhcmx5CmRlYnVnZ2luZyBzdXBwb3J0IHVzZWZ1bCBmb3IgdGhlIHJwaTMgd2hpY2ggY29t
-ZXMgdXAgd2l0aCB0aGlzClVBUlQgYnkgZGVmYXVsdC4KVGhlIG5zMTY1NTAgZWFybHkgZGVidWdn
-aW5nIHN1cHBvcnQgaXMgZG9uZSBpbiBhIGdlbmVyaWMgd2F5IHdoaWNoCkkgdGVzdGVkIG9uIExh
-eWVyc2NhcGUuIEkgZG9uJ3QgaGF2ZSBhbnkgcmFzcGJlcnJ5IHBpZXMgaGVyZSwgc28KdG90YWxs
-eSB1bnRlc3RlZCBvbiB0aGVzZSBib2FyZHMuCgpTYXNjaGEKClNhc2NoYSBIYXVlciAoNSk6CiAg
-QVJNOiBycGk6IE1vdmUgVUFSVCBiYXNlIGFkZHJlc3MgZGVmaW5pdGlvbnMgdG8gaGVhZGVyIGZp
-bGUKICBkZWJ1Z19sbDogTW92ZSBwbDAxMSBoZWFkZXIgZmlsZSB0byBhcmNoaXRlY3R1cmUgaW5k
-ZXBlbmRlbnQgcGxhY2UKICBkZWJ1Z19sbDogQWRkIG5zMTY1NTAgZWFybHkgZGVidWdnaW5nIGZ1
-bmN0aW9ucwogIEFSTTogcnBpOiBtb3ZlIGRlYnVnIFVBUlQgS2NvbmZpZyBzZXR0aW5ncwogIEFS
-TTogcnBpOiBBZGQgbWluaSBVQVJUIGRlYnVnX2xsIHN1cHBvcnQKCiBhcmNoL2FybS9ib2FyZHMv
-cmFzcGJlcnJ5LXBpL3JwaS1jb21tb24uYyAgICAgfCAgNSArLQogYXJjaC9hcm0vbWFjaC1iY20y
-ODN4L0tjb25maWcgICAgICAgICAgICAgICAgIHwgMjAgLS0tLS0tLQogYXJjaC9hcm0vbWFjaC1i
-Y20yODN4L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oIHwgNTEgKysrKysrKysrKysrKysrLS0KIGFy
-Y2gvYXJtL21hY2gtYmNtMjgzeC9pbmNsdWRlL21hY2gvcGxhdGZvcm0uaCB8ICA0ICsrCiAuLi4v
-YXJtL21hY2gtaGlnaGJhbmsvaW5jbHVkZS9tYWNoL2RlYnVnX2xsLmggfCAgMiArLQogYXJjaC9h
-cm0vbWFjaC1xZW11L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oICAgIHwgIDIgKy0KIC4uLi9tYWNo
-LXZlcnNhdGlsZS9pbmNsdWRlL21hY2gvZGVidWdfbGwuaCAgICB8ICAyICstCiAuLi4vYXJtL21h
-Y2gtdmV4cHJlc3MvaW5jbHVkZS9tYWNoL2RlYnVnX2xsLmggfCAgMiArLQogY29tbW9uL0tjb25m
-aWcgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgMTkgKysrKysrKwogaW5jbHVkZS9k
-ZWJ1Z19sbC9uczE2NTUwLmggICAgICAgICAgICAgICAgICAgIHwgNTYgKysrKysrKysrKysrKysr
-KysrKwogLi4uL2RlYnVnX2xsL3BsMDExLmggICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDAK
-IDExIGZpbGVzIGNoYW5nZWQsIDEzMCBpbnNlcnRpb25zKCspLCAzMyBkZWxldGlvbnMoLSkKIGNy
-ZWF0ZSBtb2RlIDEwMDY0NCBpbmNsdWRlL2RlYnVnX2xsL25zMTY1NTAuaAogcmVuYW1lIGFyY2gv
-YXJtL2luY2x1ZGUvYXNtL2RlYnVnX2xsX3BsMDExLmggPT4gaW5jbHVkZS9kZWJ1Z19sbC9wbDAx
-MS5oICgxMDAlKQoKLS0gCjIuMjAuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-bcm283x/include/mach/debug_ll.h                   | 2 +-
+ arch/arm/mach-highbank/include/mach/debug_ll.h                  | 2 +-
+ arch/arm/mach-qemu/include/mach/debug_ll.h                      | 2 +-
+ arch/arm/mach-versatile/include/mach/debug_ll.h                 | 2 +-
+ arch/arm/mach-vexpress/include/mach/debug_ll.h                  | 2 +-
+ .../include/asm/debug_ll_pl011.h => include/debug_ll/pl011.h    | 0
+ 6 files changed, 5 insertions(+), 5 deletions(-)
+ rename arch/arm/include/asm/debug_ll_pl011.h => include/debug_ll/pl011.h (100%)
+
+diff --git a/arch/arm/mach-bcm283x/include/mach/debug_ll.h b/arch/arm/mach-bcm283x/include/mach/debug_ll.h
+index a625a8bdb7..2e95bf8320 100644
+--- a/arch/arm/mach-bcm283x/include/mach/debug_ll.h
++++ b/arch/arm/mach-bcm283x/include/mach/debug_ll.h
+@@ -26,6 +26,6 @@
+ 
+ #define DEBUG_LL_UART_ADDR CONFIG_MACH_RPI_DEBUG_UART_BASE
+ 
+-#include <asm/debug_ll_pl011.h>
++#include <debug_ll/pl011.h>
+ 
+ #endif /* __MACH_BCM2835_DEBUG_LL_H__ */
+diff --git a/arch/arm/mach-highbank/include/mach/debug_ll.h b/arch/arm/mach-highbank/include/mach/debug_ll.h
+index 1820eb1d13..5d0fae80e7 100644
+--- a/arch/arm/mach-highbank/include/mach/debug_ll.h
++++ b/arch/arm/mach-highbank/include/mach/debug_ll.h
+@@ -9,6 +9,6 @@
+ 
+ #define DEBUG_LL_UART_ADDR 0xfff36000
+ 
+-#include <asm/debug_ll_pl011.h>
++#include <debug_ll/pl011.h>
+ 
+ #endif
+diff --git a/arch/arm/mach-qemu/include/mach/debug_ll.h b/arch/arm/mach-qemu/include/mach/debug_ll.h
+index 89b06923ad..d59f68ea19 100644
+--- a/arch/arm/mach-qemu/include/mach/debug_ll.h
++++ b/arch/arm/mach-qemu/include/mach/debug_ll.h
+@@ -19,6 +19,6 @@
+ #define DEBUG_LL_UART_ADDR DEBUG_LL_PHYS_BASE_RS1
+ #endif
+ 
+-#include <asm/debug_ll_pl011.h>
++#include <debug_ll/pl011.h>
+ 
+ #endif
+diff --git a/arch/arm/mach-versatile/include/mach/debug_ll.h b/arch/arm/mach-versatile/include/mach/debug_ll.h
+index e6ee877a54..073402c51a 100644
+--- a/arch/arm/mach-versatile/include/mach/debug_ll.h
++++ b/arch/arm/mach-versatile/include/mach/debug_ll.h
+@@ -18,6 +18,6 @@
+ 
+ #define DEBUG_LL_UART_ADDR 0x101F1000
+ 
+-#include <asm/debug_ll_pl011.h>
++#include <debug_ll/pl011.h>
+ 
+ #endif
+diff --git a/arch/arm/mach-vexpress/include/mach/debug_ll.h b/arch/arm/mach-vexpress/include/mach/debug_ll.h
+index 89b06923ad..d59f68ea19 100644
+--- a/arch/arm/mach-vexpress/include/mach/debug_ll.h
++++ b/arch/arm/mach-vexpress/include/mach/debug_ll.h
+@@ -19,6 +19,6 @@
+ #define DEBUG_LL_UART_ADDR DEBUG_LL_PHYS_BASE_RS1
+ #endif
+ 
+-#include <asm/debug_ll_pl011.h>
++#include <debug_ll/pl011.h>
+ 
+ #endif
+diff --git a/arch/arm/include/asm/debug_ll_pl011.h b/include/debug_ll/pl011.h
+similarity index 100%
+rename from arch/arm/include/asm/debug_ll_pl011.h
+rename to include/debug_ll/pl011.h
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
