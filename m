@@ -1,24 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x344.google.com ([2a00:1450:4864:20::344])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h168J-00052p-6V
- for barebox@lists.infradead.org; Tue, 05 Mar 2019 09:13:08 +0000
-Received: by mail-wm1-x344.google.com with SMTP id g20so1718867wmh.5
- for <barebox@lists.infradead.org>; Tue, 05 Mar 2019 01:13:06 -0800 (PST)
-Received: from [192.168.106.167] (77-111-10-47.ipv4.tusmobil.si.
- [77.111.10.47])
- by smtp.gmail.com with ESMTPSA id w3sm8771183wrl.22.2019.03.05.01.13.04
- for <barebox@lists.infradead.org>
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 05 Mar 2019 01:13:04 -0800 (PST)
+ id 1h1T6q-0000Le-GZ
+ for barebox@lists.infradead.org; Wed, 06 Mar 2019 09:45:10 +0000
+Date: Wed, 6 Mar 2019 10:45:06 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190306094506.s53yk4ipgs672vml@pengutronix.de>
 References: <20190228113900.16177-1-tomaz.solc@tablix.org>
  <20190304080442.hjyncl4whxmrz2eu@pengutronix.de>
-From: =?UTF-8?B?VG9tYcW+IMWgb2xj?= <tomaz.solc@klevio.com>
-Message-ID: <890b8bc1-68d2-1b7d-e4b8-071f63d53fd9@klevio.com>
-Date: Tue, 5 Mar 2019 10:13:04 +0100
+ <890b8bc1-68d2-1b7d-e4b8-071f63d53fd9@klevio.com>
 MIME-Version: 1.0
-In-Reply-To: <20190304080442.hjyncl4whxmrz2eu@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <890b8bc1-68d2-1b7d-e4b8-071f63d53fd9@klevio.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,32 +20,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ARM: rpi: refactor debug UART Kconfig settings.
-To: barebox@lists.infradead.org
+To: =?iso-8859-15?Q?Toma=B8_=A6olc?= <tomaz.solc@klevio.com>
+Cc: barebox@lists.infradead.org
 
-T24gNC4gMDMuIDE5IDA5OjA0LCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4gU28gdGhhdCBzYWlkLCBl
-dmVuIHdpdGggYSBkZWJ1ZyBVQVJUIGVuYWJsZWQgZm9yIFJwaTEgd2Ugc2hvdWxkIHN0aWxsCj4g
-YWxsb3cgdG8gYnVpbGQgZm9yIFJwaTIvMyBhbHRob3VnaCB3ZSBrbm93IGl0IHdvbid0IHdvcmsg
-dGhlcmUuCj4gCj4gVGhlIHJlYXNvbiBpcyB5b3UgbWlnaHQgZ2V0IGZhaWx1cmVzIG9ubHkgd2hl
-biBtdWx0aXBsZSBTb0NzIGFyZQo+IHNlbGVjdGVkLiBJbiB0aGF0IGNhc2UgeW91IG9ubHkgd2Fu
-dCB0byBlbmFibGUgZWFybHkgZGVidWdnaW5nIHN1cHBvcnQKPiAoZm9yIHRoZSBTb0MgeW91IGFy
-ZSBjdXJyZW50bHkgdGVzdGluZyBvbikgd2l0aG91dCBjaGFuZ2luZyBvdGhlciB0aGluZ3MKPiBp
-biB0aGUgY29uZmlnIHdoaWNoIG1pZ2h0IG1ha2UgeW91ciBlcnJvcnMgZGlzYXBwZWFyLgoKVGhh
-bmtzIGZvciB0aGUgY2xhcmlmaWNhdGlvbi4gSSd2ZSBzZW50IGFub3RoZXIgcGF0Y2ggc2VyaWVz
-IHRoYXQgCnJlbW92ZXMgdGhlIHJlc3RyaWN0aW9uIGZvciBib2FyZCBidWlsZHMgYW5kIGFkZHMg
-dGhlIGhlbHAgdGV4dC4KCk9uIHRoZSB0b3BpYyBvZiB0aGUgZGVidWcgVUFSVCwgSSd2ZSBhbHNv
-IG5vdGljZWQgdGhhdCBpdCdzIGEgYml0IHRyaWNreSAKdG8gZ2V0IGl0IHJ1bm5pbmcgb24gUmFz
-cGJlcnJ5IFBpIDMuIFRoZSBwcm9ibGVtIGlzIHRoYXQgdGhlIGRlYnVnIFVBUlQgCmlzIHVzaW5n
-IFBMMDExIGhhcmR3YXJlLCBidXQgdGhlIGNvbnNvbGUgaXMgbm93IHVzaW5nIG1pbml1YXJ0LgoK
-SW4gYWRkaXRpb24gdG8gZW5hYmxpbmcgaXQgaW4gbWVudWNvbmZpZywgSSBoYXZlIHRvIHJldmVy
-c2UgdGhlIGNvbW1pdCAKYWI3NmY5ZDAgKHN3aXRjaCB0byBtaW5pdWFydCBmb3Igc3Rkb3V0IGlu
-IHRoZSBkZXZpY2UgdHJlZSkgYW5kIGtlZXAgCiJkdG92ZXJsYXk9cGkzLW1pbml1YXJ0LWJ0IiBp
-biAiY29uZmlnLnR4dCIgKGluc3RydWN0aW9uIGZvciB0aGlzIHdhcyAKcmVtb3ZlZCBpbiBmMTMz
-MDUzNikuCgpCZXN0IHJlZ2FyZHMKVG9tYcW+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
-ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
-YXJlYm94Cg==
+Hi Toma=B8,
+
+On Tue, Mar 05, 2019 at 10:13:04AM +0100, Toma=B8 =A6olc wrote:
+> On 4. 03. 19 09:04, Sascha Hauer wrote:
+> > So that said, even with a debug UART enabled for Rpi1 we should still
+> > allow to build for Rpi2/3 although we know it won't work there.
+> > =
+
+> > The reason is you might get failures only when multiple SoCs are
+> > selected. In that case you only want to enable early debugging support
+> > (for the SoC you are currently testing on) without changing other things
+> > in the config which might make your errors disappear.
+> =
+
+> Thanks for the clarification. I've sent another patch series that removes
+> the restriction for board builds and adds the help text.
+> =
+
+> On the topic of the debug UART, I've also noticed that it's a bit tricky =
+to
+> get it running on Raspberry Pi 3. The problem is that the debug UART is
+> using PL011 hardware, but the console is now using miniuart.
+> =
+
+> In addition to enabling it in menuconfig, I have to reverse the commit
+> ab76f9d0 (switch to miniuart for stdout in the device tree) and keep
+> "dtoverlay=3Dpi3-miniuart-bt" in "config.txt" (instruction for this was
+> removed in f1330536).
+
+I just sent a series based on your patches adding mini UART support for
+the rpi3. I need the basic ns16550 early debugging code for Layerscape
+anyway, so it's a win-win ;) Tested on Layerscape, but not on rpi3, so
+I would be glad if you could test it.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
