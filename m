@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h1nma-0004tQ-1W
- for barebox@lists.infradead.org; Thu, 07 Mar 2019 07:49:37 +0000
-Received: by mail-pg1-x529.google.com with SMTP id h11so10627227pgl.0
- for <barebox@lists.infradead.org>; Wed, 06 Mar 2019 23:49:34 -0800 (PST)
+ id 1h1nmZ-0004tS-GF
+ for barebox@lists.infradead.org; Thu, 07 Mar 2019 07:49:36 +0000
+Received: by mail-pf1-x441.google.com with SMTP id n22so10810491pfa.3
+ for <barebox@lists.infradead.org>; Wed, 06 Mar 2019 23:49:35 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Mar 2019 23:49:09 -0800
-Message-Id: <20190307074926.20539-1-andrew.smirnov@gmail.com>
+Date: Wed,  6 Mar 2019 23:49:10 -0800
+Message-Id: <20190307074926.20539-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20190307074926.20539-1-andrew.smirnov@gmail.com>
+References: <20190307074926.20539-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,58 +23,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/17] lseek related fixes
+Subject: [PATCH 01/17] libfile: Make failure path of open_and_lseek()
+ consistent
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Everyone:
+Change the code of open_and_lseek() to make sure that opened file is
+closed in every failure path as well. While at it make sure we don't
+mix returning function return code and returning errno by opting to
+always return the former.
 
-As a follow up to lseek() related fixes that went in recently, I went
-throught all of the calls to it in the codebase I could find and fixed
-a number of type problems as well as some other minor issue. This
-series is the result. Hopefuly all of the patches are
-self-explanatory.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ lib/libfile.c | 26 ++++++++++++--------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
 
-Feedback is welcome!
-
-Thanks,
-Andrey Smirnov
-
-Andrey Smirnov (17):
-  libfile: Make failure path of open_and_lseek() consistent
-  common: Always return enum filetype in file_name_detect_type_offset()
-  MIPS: ath79: Use errno to get error code from open_and_lseek()
-  ARM: i.MX: bbu: Fix variable type in imx_bbu_external_nand_update()
-  ARM: i.MX: bbu: Fix lseek error check in
-    imx_bbu_external_nand_update()
-  ARM: i.MX: bbu: Fix lseek error check in
-    imx_bbu_internal_v2_write_nand_dbbt()
-  ARM: i.MX: bbu: Fix variable type in
-    imx_bbu_internal_v2_write_nand_dbbt()
-  bpkfs: Fix lseek error check in bpkfs_probe()
-  uimage: Fix lseek error check in uimage_verify()
-  uimage: Fix lseek error check in uimage_load()
-  uimage: Fix lseek error check in uimage_load_to_buf()
-  state: Fix lseek error check in state_backend_bucket_direct_read()
-  state: Fix lseek error check in state_backend_bucket_direct_write()
-  state: Fix lseek error check in state_mtd_peb_read()
-  state: Fix lseek error check in state_mtd_peb_write()
-  commands: loadxy: Make use of open_and_lseek()
-  commands: loadb: Make use of open_and_lseek()
-
- arch/arm/mach-imx/imx-bbu-external-nand.c | 10 ++++---
- arch/arm/mach-imx/imx-bbu-internal.c      | 10 ++++---
- arch/mips/mach-ath79/art.c                |  4 +--
- commands/loadb.c                          | 12 +--------
- commands/loadxy.c                         | 13 ++-------
- common/filetype.c                         |  4 +--
- common/state/backend_bucket_circular.c    | 14 +++++-----
- common/state/backend_bucket_direct.c      | 23 ++++++++--------
- common/uimage.c                           | 32 +++++++++++------------
- fs/bpkfs.c                                |  4 +--
- lib/libfile.c                             | 26 +++++++++---------
- 11 files changed, 65 insertions(+), 87 deletions(-)
-
+diff --git a/lib/libfile.c b/lib/libfile.c
+index 9a223d232..089749253 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -522,12 +522,12 @@ err_out1:
+  * @mode:	The file open mode
+  * @pos:	The position to lseek to
+  *
+- * Return: If successful this function returns a positive filedescriptor
+- *         number, otherwise a negative error code is returned
++ * Return: If successful this function returns a positive
++ *         filedescriptor number, otherwise -1 is returned
+  */
+ int open_and_lseek(const char *filename, int mode, loff_t pos)
+ {
+-	int fd, ret;
++	int fd;
+ 
+ 	fd = open(filename, mode);
+ 	if (fd < 0) {
+@@ -541,28 +541,26 @@ int open_and_lseek(const char *filename, int mode, loff_t pos)
+ 	if (mode & (O_WRONLY | O_RDWR)) {
+ 		struct stat s;
+ 
+-		ret = fstat(fd, &s);
+-		if (ret) {
++		if (fstat(fd, &s)) {
+ 			perror("fstat");
+-			return ret;
++			goto out;
+ 		}
+ 
+-		if (s.st_size < pos) {
+-			ret = ftruncate(fd, pos);
+-			if (ret) {
+-				perror("ftruncate");
+-				return ret;
+-			}
++		if (s.st_size < pos && ftruncate(fd, pos)) {
++			perror("ftruncate");
++			goto out;
+ 		}
+ 	}
+ 
+ 	if (lseek(fd, pos, SEEK_SET) != pos) {
+ 		perror("lseek");
+-		close(fd);
+-		return -errno;
++		goto out;
+ 	}
+ 
+ 	return fd;
++out:
++	close(fd);
++	return -1;
+ }
+ 
+ /**
 -- 
 2.20.1
 
