@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x342.google.com ([2a00:1450:4864:20::342])
+Received: from mail-wm1-x344.google.com ([2a00:1450:4864:20::344])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h1phz-0000TS-0R
- for barebox@lists.infradead.org; Thu, 07 Mar 2019 09:53:00 +0000
-Received: by mail-wm1-x342.google.com with SMTP id a188so8518602wmf.3
- for <barebox@lists.infradead.org>; Thu, 07 Mar 2019 01:52:58 -0800 (PST)
+ id 1h1ppl-0003ug-Rk
+ for barebox@lists.infradead.org; Thu, 07 Mar 2019 10:01:03 +0000
+Received: by mail-wm1-x344.google.com with SMTP id q187so8697405wme.5
+ for <barebox@lists.infradead.org>; Thu, 07 Mar 2019 02:01:01 -0800 (PST)
 References: <20190306094239.29413-1-s.hauer@pengutronix.de>
- <20190306094239.29413-5-s.hauer@pengutronix.de>
 From: =?UTF-8?B?VG9tYcW+IMWgb2xj?= <tomaz.solc@klevio.com>
-Message-ID: <3ea0ed3f-6780-f09d-6e3f-8dd9055dd7f7@klevio.com>
-Date: Thu, 7 Mar 2019 10:52:56 +0100
+Message-ID: <e1dca126-1e32-7cda-7a76-e7773e7be8bf@klevio.com>
+Date: Thu, 7 Mar 2019 11:00:59 +0100
 MIME-Version: 1.0
-In-Reply-To: <20190306094239.29413-5-s.hauer@pengutronix.de>
+In-Reply-To: <20190306094239.29413-1-s.hauer@pengutronix.de>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,87 +20,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] ARM: rpi: move debug UART Kconfig settings
+Subject: Re: [PATCH 0/5] ARM: rpi: refactor debug_ll
 To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
 
-Hi
-
-On 6. 03. 19 10:42, Sascha Hauer wrote:
-> In contrast to other architectures, R.Pi debug UART config was placed
-> under the "System Type" menu, not under the "Debugging -> low-level
-> debugging port". This made this setting easy to miss when enabling low
-> level debug mesages.
-> 
-> While at it use the existing base address defines rather than defining
-> them again in Kconfig.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->   arch/arm/mach-bcm283x/Kconfig                 | 20 -------------------
->   arch/arm/mach-bcm283x/include/mach/debug_ll.h | 12 +++++++----
->   common/Kconfig                                | 13 ++++++++++++
->   3 files changed, 21 insertions(+), 24 deletions(-)
-> 
-[...]
-
-> diff --git a/arch/arm/mach-bcm283x/include/mach/debug_ll.h b/arch/arm/mach-bcm283x/include/mach/debug_ll.h
-> index 2e95bf8320..2d2103e338 100644
-> --- a/arch/arm/mach-bcm283x/include/mach/debug_ll.h
-> +++ b/arch/arm/mach-bcm283x/include/mach/debug_ll.h
-> @@ -20,12 +20,16 @@
->   
->   #include <mach/platform.h>
->   
-> -#ifndef CONFIG_MACH_RPI_DEBUG_UART_BASE
-> -#define CONFIG_MACH_RPI_DEBUG_UART_BASE 0
-> -#endif
-> +#ifdef CONFIG_DEBUG_RPI1_UART
-> +
-> +#define DEBUG_LL_UART_ADDR BCM2835_PL011_BASE
-> +#include <debug_ll/pl011.h>
->   
-> -#define DEBUG_LL_UART_ADDR CONFIG_MACH_RPI_DEBUG_UART_BASE
-> +#elif defined CONFIG_DEBUG_RPI2_3_UART
-
-This elif should either be "CONFIG_DEBUG_RPI2_UART" or the Kconfig below 
-should set DEBUG_RPI2_3_UART.
-
->   
-> +#define DEBUG_LL_UART_ADDR BCM2836_PL011_BASE
->   #include <debug_ll/pl011.h>
->   
-> +#endif
-> +
->   #endif /* __MACH_BCM2835_DEBUG_LL_H__ */
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 21b33f06f7..563cf15fb1 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -1159,6 +1159,19 @@ config DEBUG_SOCFPGA_UART1
->   	  Say Y here if you want kernel low-level debugging support
->   	  on SOCFPGA(Arria 10) based platforms.
->   
-> +config DEBUG_RPI1_UART
-> +	bool "RaspberryPi 1 debug UART"
-> +	depends on ARCH_BCM283X
-> +	help
-> +	  Say Y here if you want low-level debugging support on
-> +	  RaspberryPi 1 boards.
-> +
-> +config DEBUG_RPI2_UART
-> +	bool "RaspberryPi 2/3 debug UART"
-> +	depends on ARCH_BCM283X
-> +	help
-> +	  Say Y here if you want low-level debugging support on
-> +	  RaspberryPi 2 and 3 boards.
->   
->   endchoice
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkKCkkgdHJpZWQgdGhpcyBzZXJpZXMgb24gUi5QaSAzQiAobWFrZSBycGlfZGVmY29uZmlnICsg
+CkRFQlVHX1JQSTNfTUlOSV9VQVJUKSBhbmQgQ29tcHV0ZSBNb2R1bGUgMyAobWFrZSBycGlfZGVm
+Y29uZmlnICsgCkRFQlVHX1JQSTJfVUFSVCkgYW5kIGFmdGVyIHRoZSB0d28gc21hbGwgZml4ZXMg
+SSBtZW50aW9uIGluIG15IG90aGVyIApyZXBsaWVzIHRoZXkgYm90aCB3b3JrIGFzIGV4cGVjdGVk
+LiBUaGFua3MhCgpCZXN0IHJlZ2FyZHMKVG9tYcW+CgpPbiA2LiAwMy4gMTkgMTA6NDIsIFNhc2No
+YSBIYXVlciB3cm90ZToKPiBUaGlzIHBpY2tzIHVwIHRoZSBzZXJpZXMgZnJvbSBUb21hxb4gYW5k
+IGFsc28gYWRkcyBtaW5pIFVBUlQgZWFybHkKPiBkZWJ1Z2dpbmcgc3VwcG9ydCB1c2VmdWwgZm9y
+IHRoZSBycGkzIHdoaWNoIGNvbWVzIHVwIHdpdGggdGhpcwo+IFVBUlQgYnkgZGVmYXVsdC4KPiBU
+aGUgbnMxNjU1MCBlYXJseSBkZWJ1Z2dpbmcgc3VwcG9ydCBpcyBkb25lIGluIGEgZ2VuZXJpYyB3
+YXkgd2hpY2gKPiBJIHRlc3RlZCBvbiBMYXllcnNjYXBlLiBJIGRvbid0IGhhdmUgYW55IHJhc3Bi
+ZXJyeSBwaWVzIGhlcmUsIHNvCj4gdG90YWxseSB1bnRlc3RlZCBvbiB0aGVzZSBib2FyZHMuCj4g
+Cj4gU2FzY2hhCj4gCj4gU2FzY2hhIEhhdWVyICg1KToKPiAgICBBUk06IHJwaTogTW92ZSBVQVJU
+IGJhc2UgYWRkcmVzcyBkZWZpbml0aW9ucyB0byBoZWFkZXIgZmlsZQo+ICAgIGRlYnVnX2xsOiBN
+b3ZlIHBsMDExIGhlYWRlciBmaWxlIHRvIGFyY2hpdGVjdHVyZSBpbmRlcGVuZGVudCBwbGFjZQo+
+ICAgIGRlYnVnX2xsOiBBZGQgbnMxNjU1MCBlYXJseSBkZWJ1Z2dpbmcgZnVuY3Rpb25zCj4gICAg
+QVJNOiBycGk6IG1vdmUgZGVidWcgVUFSVCBLY29uZmlnIHNldHRpbmdzCj4gICAgQVJNOiBycGk6
+IEFkZCBtaW5pIFVBUlQgZGVidWdfbGwgc3VwcG9ydAo+IAo+ICAgYXJjaC9hcm0vYm9hcmRzL3Jh
+c3BiZXJyeS1waS9ycGktY29tbW9uLmMgICAgIHwgIDUgKy0KPiAgIGFyY2gvYXJtL21hY2gtYmNt
+MjgzeC9LY29uZmlnICAgICAgICAgICAgICAgICB8IDIwIC0tLS0tLS0KPiAgIGFyY2gvYXJtL21h
+Y2gtYmNtMjgzeC9pbmNsdWRlL21hY2gvZGVidWdfbGwuaCB8IDUxICsrKysrKysrKysrKysrKy0t
+Cj4gICBhcmNoL2FybS9tYWNoLWJjbTI4M3gvaW5jbHVkZS9tYWNoL3BsYXRmb3JtLmggfCAgNCAr
+Kwo+ICAgLi4uL2FybS9tYWNoLWhpZ2hiYW5rL2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oIHwgIDIg
+Ky0KPiAgIGFyY2gvYXJtL21hY2gtcWVtdS9pbmNsdWRlL21hY2gvZGVidWdfbGwuaCAgICB8ICAy
+ICstCj4gICAuLi4vbWFjaC12ZXJzYXRpbGUvaW5jbHVkZS9tYWNoL2RlYnVnX2xsLmggICAgfCAg
+MiArLQo+ICAgLi4uL2FybS9tYWNoLXZleHByZXNzL2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oIHwg
+IDIgKy0KPiAgIGNvbW1vbi9LY29uZmlnICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
+IDE5ICsrKysrKysKPiAgIGluY2x1ZGUvZGVidWdfbGwvbnMxNjU1MC5oICAgICAgICAgICAgICAg
+ICAgICB8IDU2ICsrKysrKysrKysrKysrKysrKysKPiAgIC4uLi9kZWJ1Z19sbC9wbDAxMS5oICAg
+ICAgICAgICAgICAgICAgICAgICAgICB8ICAwCj4gICAxMSBmaWxlcyBjaGFuZ2VkLCAxMzAgaW5z
+ZXJ0aW9ucygrKSwgMzMgZGVsZXRpb25zKC0pCj4gICBjcmVhdGUgbW9kZSAxMDA2NDQgaW5jbHVk
+ZS9kZWJ1Z19sbC9uczE2NTUwLmgKPiAgIHJlbmFtZSBhcmNoL2FybS9pbmNsdWRlL2FzbS9kZWJ1
+Z19sbF9wbDAxMS5oID0+IGluY2x1ZGUvZGVidWdfbGwvcGwwMTEuaCAoMTAwJSkKPiAKCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
+ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
