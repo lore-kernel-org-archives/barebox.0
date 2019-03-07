@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h1nmn-0005AD-Bv
- for barebox@lists.infradead.org; Thu, 07 Mar 2019 07:49:54 +0000
-Received: by mail-pg1-x543.google.com with SMTP id 125so10374009pgc.12
- for <barebox@lists.infradead.org>; Wed, 06 Mar 2019 23:49:49 -0800 (PST)
+ id 1h1nmn-00058l-DR
+ for barebox@lists.infradead.org; Thu, 07 Mar 2019 07:49:55 +0000
+Received: by mail-pf1-x432.google.com with SMTP id n22so10810871pfa.3
+ for <barebox@lists.infradead.org>; Wed, 06 Mar 2019 23:49:48 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Mar 2019 23:49:22 -0800
-Message-Id: <20190307074926.20539-14-andrew.smirnov@gmail.com>
+Date: Wed,  6 Mar 2019 23:49:21 -0800
+Message-Id: <20190307074926.20539-13-andrew.smirnov@gmail.com>
 In-Reply-To: <20190307074926.20539-1-andrew.smirnov@gmail.com>
 References: <20190307074926.20539-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,8 +23,8 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/17] state: Fix lseek error check in
- state_backend_bucket_direct_write()
+Subject: [PATCH 12/17] state: Fix lseek error check in
+ state_backend_bucket_direct_read()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
@@ -34,16 +34,16 @@ code from 'errno'.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/state/backend_bucket_direct.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ common/state/backend_bucket_direct.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
-index 152431214..95ddb9310 100644
+index 1f00b0fb2..152431214 100644
 --- a/common/state/backend_bucket_direct.c
 +++ b/common/state/backend_bucket_direct.c
-@@ -113,10 +113,9 @@ static int state_backend_bucket_direct_write(struct state_backend_storage_bucket
- 	if (len > direct->max_size - sizeof(meta))
- 		return -E2BIG;
+@@ -56,10 +56,9 @@ static int state_backend_bucket_direct_read(struct state_backend_storage_bucket
+ 	void *buf;
+ 	int ret;
  
 -	ret = lseek(direct->fd, direct->offset, SEEK_SET);
 -	if (ret < 0) {
@@ -53,8 +53,24 @@ index 152431214..95ddb9310 100644
 +		dev_err(direct->dev, "Failed to seek file, %d\n", -errno);
 +		return -errno;
  	}
+ 	ret = read_full(direct->fd, &meta, sizeof(meta));
+ 	if (ret < 0) {
+@@ -77,10 +76,11 @@ static int state_backend_bucket_direct_read(struct state_backend_storage_bucket
+ 			return -EINVAL;
+ 		}
+ 		read_len = direct->max_size;
+-		ret = lseek(direct->fd, direct->offset, SEEK_SET);
+-		if (ret < 0) {
+-			dev_err(direct->dev, "Failed to seek file, %d\n", ret);
+-			return ret;
++		if (lseek(direct->fd, direct->offset, SEEK_SET) !=
++		    direct->offset) {
++			dev_err(direct->dev, "Failed to seek file, %d\n",
++				-errno);
++			return -errno;
+ 		}
+ 	}
  
- 	/* write the meta data only if there is head room */
 -- 
 2.20.1
 
