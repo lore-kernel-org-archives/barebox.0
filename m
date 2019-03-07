@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h1nVi-000753-0z
- for barebox@lists.infradead.org; Thu, 07 Mar 2019 07:32:12 +0000
-Date: Thu, 7 Mar 2019 08:32:07 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190307073207.jmj63dxxfkqif7fz@pengutronix.de>
+ id 1h1qX5-00048z-Io
+ for barebox@lists.infradead.org; Thu, 07 Mar 2019 10:45:49 +0000
 References: <20190219121018.29736-1-a.fatoum@pengutronix.de>
  <f40efe6a-d95a-d017-4758-47397e447435@pengutronix.de>
+ <20190307073207.jmj63dxxfkqif7fz@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <dd23860e-2072-ccfe-a83c-b6bf71de7aec@pengutronix.de>
+Date: Thu, 7 Mar 2019 11:45:40 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <f40efe6a-d95a-d017-4758-47397e447435@pengutronix.de>
+In-Reply-To: <20190307073207.jmj63dxxfkqif7fz@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,40 +26,53 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/2] images: pbl: verify CONFIG_BAREBOX_MAX_IMAGE_SIZE is
  not exceeded
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 04, 2019 at 03:16:51PM +0100, Ahmad Fatoum wrote:
-> Hello,
+On 3/7/19 8:32 AM, Sascha Hauer wrote:
+> On Mon, Mar 04, 2019 at 03:16:51PM +0100, Ahmad Fatoum wrote:
+>> Hello,
+>>
+>> On 19/2/19 13:10, Ahmad Fatoum wrote:
+>>> For platforms such as the at91, the boot ROM imposes an upper limit
+>>> on barebox file size.  Prior to 5a1a5ed253 ("ARM: images: use piggydata"),
+>>> BAREBOX_MAX_PBLX_SIZE seems to have been the way to go for limiting
+>>> the size of the final barebox binary when using the PBL.
+>>> With pblx removed, this variable is of no use, so have the existing
+>>> BAREBOX_MAX_IMAGE_SIZE replace its functionality.
+>>>
+>>> Currently BAREBOX_MAX_IMAGE_SIZE is only checked against in the non-PBL
+>>> case, so add a check in the PBL case as well.
+>>>
+>>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>>> ---
+>>>  arch/arm/configs/am335x_mlo_defconfig |  2 +-
+>>>  common/Kconfig                        | 10 ----------
+>>>  images/Makefile                       |  1 +
+>>>  3 files changed, 2 insertions(+), 11 deletions(-)
+>>>
+>>
+>> any news on these two patches?
 > 
-> On 19/2/19 13:10, Ahmad Fatoum wrote:
-> > For platforms such as the at91, the boot ROM imposes an upper limit
-> > on barebox file size.  Prior to 5a1a5ed253 ("ARM: images: use piggydata"),
-> > BAREBOX_MAX_PBLX_SIZE seems to have been the way to go for limiting
-> > the size of the final barebox binary when using the PBL.
-> > With pblx removed, this variable is of no use, so have the existing
-> > BAREBOX_MAX_IMAGE_SIZE replace its functionality.
-> > 
-> > Currently BAREBOX_MAX_IMAGE_SIZE is only checked against in the non-PBL
-> > case, so add a check in the PBL case as well.
-> > 
-> > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> > ---
-> >  arch/arm/configs/am335x_mlo_defconfig |  2 +-
-> >  common/Kconfig                        | 10 ----------
-> >  images/Makefile                       |  1 +
-> >  3 files changed, 2 insertions(+), 11 deletions(-)
-> > 
+> I applied the first one as I think it does nothing wrong. I am always
+> hesitating to apply such patches because I think we need to do this
+> better. For example when doing multi image builds different ROMs with
+> different size limitations might be involved, so putting the limitation
+> in Kconfig is wrong.
+
+Ah, I didn't think about multi-image when I wrote this patch. I am
+slowly getting it. Thanks for the feedback!
+
+Specifying it entry-point-wise in images/Makefile.* seems to be the better
+place then.
+
+Cheers
+Ahmad
+
 > 
-> any news on these two patches?
+> Sascha
+> 
 
-I applied the first one as I think it does nothing wrong. I am always
-hesitating to apply such patches because I think we need to do this
-better. For example when doing multi image builds different ROMs with
-different size limitations might be involved, so putting the limitation
-in Kconfig is wrong.
-
-Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
