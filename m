@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h1nma-0004tx-Ic
- for barebox@lists.infradead.org; Thu, 07 Mar 2019 07:49:38 +0000
-Received: by mail-pf1-x444.google.com with SMTP id n22so10810536pfa.3
- for <barebox@lists.infradead.org>; Wed, 06 Mar 2019 23:49:36 -0800 (PST)
+ id 1h1nmc-0004ud-PA
+ for barebox@lists.infradead.org; Thu, 07 Mar 2019 07:49:40 +0000
+Received: by mail-pg1-x541.google.com with SMTP id j3so10604977pgm.11
+ for <barebox@lists.infradead.org>; Wed, 06 Mar 2019 23:49:37 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Mar 2019 23:49:11 -0800
-Message-Id: <20190307074926.20539-3-andrew.smirnov@gmail.com>
+Date: Wed,  6 Mar 2019 23:49:12 -0800
+Message-Id: <20190307074926.20539-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20190307074926.20539-1-andrew.smirnov@gmail.com>
 References: <20190307074926.20539-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,42 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/17] common: Always return enum filetype in
- file_name_detect_type_offset()
+Subject: [PATCH 03/17] MIPS: ath79: Use errno to get error code from
+ open_and_lseek()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-None of the callers of file_name_detect_type_offset() are prepared to
-deal with negative error code. Change the code to return
-filetype_unknown if open_and_lseek() fails.
+Open_and_lseek() return actual error code via errno, so change the
+code to use it instead of return value.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/filetype.c | 4 ++--
+ arch/mips/mach-ath79/art.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/common/filetype.c b/common/filetype.c
-index f8b6bc895..fb029a773 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -383,7 +383,7 @@ enum filetype file_name_detect_type_offset(const char *filename, loff_t pos)
- 
- 	fd = open_and_lseek(filename, O_RDONLY, pos);
- 	if (fd < 0)
+diff --git a/arch/mips/mach-ath79/art.c b/arch/mips/mach-ath79/art.c
+index 984d08736..2a2099e9f 100644
+--- a/arch/mips/mach-ath79/art.c
++++ b/arch/mips/mach-ath79/art.c
+@@ -44,8 +44,8 @@ static int art_read_mac(struct device_d *dev, const char *file)
+ 	fd = open_and_lseek(file, O_RDONLY, AR93000_EPPROM_OFFSET);
+ 	if (fd < 0) {
+ 		dev_err(dev, "Failed to open eeprom path %s %d\n",
+-		       file, fd);
 -		return fd;
-+		goto out;
++		       file, -errno);
++		return -errno;
+ 	}
  
- 	buf = xzalloc(FILE_TYPE_SAFE_BUFSIZE);
- 
-@@ -396,7 +396,7 @@ enum filetype file_name_detect_type_offset(const char *filename, loff_t pos)
- err_out:
- 	close(fd);
- 	free(buf);
--
-+out:
- 	return type;
- }
- 
+ 	rbytes = read_full(fd, &eeprom, sizeof(eeprom));
 -- 
 2.20.1
 
