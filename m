@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h1nmi-00051B-1R
- for barebox@lists.infradead.org; Thu, 07 Mar 2019 07:49:47 +0000
-Received: by mail-pf1-x42c.google.com with SMTP id q17so10800985pfh.10
- for <barebox@lists.infradead.org>; Wed, 06 Mar 2019 23:49:43 -0800 (PST)
+ id 1h1nmj-00052n-A0
+ for barebox@lists.infradead.org; Thu, 07 Mar 2019 07:49:48 +0000
+Received: by mail-pf1-x430.google.com with SMTP id n74so10803182pfi.9
+ for <barebox@lists.infradead.org>; Wed, 06 Mar 2019 23:49:44 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 Mar 2019 23:49:17 -0800
-Message-Id: <20190307074926.20539-9-andrew.smirnov@gmail.com>
+Date: Wed,  6 Mar 2019 23:49:18 -0800
+Message-Id: <20190307074926.20539-10-andrew.smirnov@gmail.com>
 In-Reply-To: <20190307074926.20539-1-andrew.smirnov@gmail.com>
 References: <20190307074926.20539-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,7 +23,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/17] bpkfs: Fix lseek error check in bpkfs_probe()
+Subject: [PATCH 09/17] uimage: Fix lseek error check in uimage_verify()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
@@ -33,24 +33,28 @@ code from 'errno'.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- fs/bpkfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ common/uimage.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/bpkfs.c b/fs/bpkfs.c
-index 655cde09b..90d3a6bf1 100644
---- a/fs/bpkfs.c
-+++ b/fs/bpkfs.c
-@@ -455,9 +455,9 @@ static int bpkfs_probe(struct device_d *dev)
- 		list_add_tail(&d->list, &h->list_data);
- 		priv->nb_data_entries++;
+diff --git a/common/uimage.c b/common/uimage.c
+index 3273bc187..72b668e89 100644
+--- a/common/uimage.c
++++ b/common/uimage.c
+@@ -265,11 +265,12 @@ int uimage_verify(struct uimage_handle *handle)
+ {
+ 	u32 crc = 0;
+ 	int len, ret;
++	loff_t off;
+ 	void *buf;
  
--		ret = lseek(fd, d->size, SEEK_CUR);
--		if (ret < 0) {
-+		if (lseek(fd, d->size, SEEK_CUR) != d->size) {
- 			dev_err(dev, "could not seek: %s\n", errno_str());
-+			ret = -errno;
- 			goto err;
- 		}
+-	ret = lseek(handle->fd, sizeof(struct image_header), SEEK_SET);
+-	if (ret < 0)
+-		return ret;
++	off = sizeof(struct image_header);
++	if (lseek(handle->fd, off, SEEK_SET) != off)
++		return -errno;
+ 
+ 	buf = xmalloc(PAGE_SIZE);
  
 -- 
 2.20.1
