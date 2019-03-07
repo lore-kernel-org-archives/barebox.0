@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from forward500p.mail.yandex.net ([77.88.28.110])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h1t0p-0005W1-Jy
- for barebox@lists.infradead.org; Thu, 07 Mar 2019 13:24:45 +0000
-Date: Thu, 7 Mar 2019 14:24:35 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190307132435.6ublqhzg7oetk7qw@pengutronix.de>
+ id 1h1t8Q-0001s7-RW
+ for barebox@lists.infradead.org; Thu, 07 Mar 2019 13:32:32 +0000
+From: Seraphim Dolbilov <s.dlblv@ya.ru>
+In-Reply-To: <20190307132435.6ublqhzg7oetk7qw@pengutronix.de>
 References: <20190306094239.29413-1-s.hauer@pengutronix.de>
  <20190306094239.29413-6-s.hauer@pengutronix.de>
  <5ad113f6-f0a3-0243-5fd0-57453ed057c6@klevio.com>
+ <20190307132435.6ublqhzg7oetk7qw@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <5ad113f6-f0a3-0243-5fd0-57453ed057c6@klevio.com>
+Date: Thu, 07 Mar 2019 16:32:21 +0300
+Message-Id: <6858091551965541@iva4-406defa25fee.qloud-c.yandex.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,53 +20,19 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/5] ARM: rpi: Add mini UART debug_ll support
-To: =?iso-8859-15?Q?Toma=B8_=A6olc?= <tomaz.solc@klevio.com>
+Subject: [HELP] Kernel + initrd in FIT
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Mar 07, 2019 at 10:52:33AM +0100, Toma=B8 =A6olc wrote:
-> Hi
-> =
-
-> On 6. 03. 19 10:42, Sascha Hauer wrote:
-> > diff --git a/common/Kconfig b/common/Kconfig
-> > index 563cf15fb1..0c6acfcddb 100644
-> > --- a/common/Kconfig
-> > +++ b/common/Kconfig
-> > @@ -1173,6 +1173,12 @@ config DEBUG_RPI2_UART
-> >   	  Say Y here if you want low-level debugging support on
-> >   	  RaspberryPi 2 and 3 boards.
-> > +config DEBUG_RPI3_MINI_UART
-> > +	bool "RaspberryPi 3 mini UART
-> =
-
-> The line above is missing the closing double quote.
-> =
-
-> I also recommend changing the labels on other two UART options to say "PL=
-011
-> UART" instead of "debug UART" so that the difference is more obvious.
-> =
-
-> Can you also please include in this series my patch that expands the help
-> message for DEBUG_LL I sent earlier?
-
-Yes, applied that one. Thanks for testing and fixing ;)
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sCgpJJ20gaW50ZXJlc3RlZCBpbiB3YXkgQmFyZWJveCBwYXNzZXMgaW5pdHJkIHRvIGtl
+cm5lbCBpZiBib3RoIGFyZSB0YWtlbgpmcm9tIEZJVC4gV2hhdCBzaGFsbCBJIGRvLCBpZiBJIHdh
+bnQgbXkga2VybmVsIGFuZCBpbml0cmQgdG8gYmUgY29tcHJlc3NlZAppbiBhIHNpbmdsZSBGSVQg
+aW1hZ2U/IFdoYXQga2VybmVsIGJvb3QgcGFyYW1zIGFuZCBjb25maWcgb3B0aW9ucwpzaG91bGQg
+YmUgc2V0IHRoZW4/CgotLcKgCllvdXJzIHNpbmNlcmVseSwKU2VyYXBoaW0gRG9sYmlsb3YKCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
