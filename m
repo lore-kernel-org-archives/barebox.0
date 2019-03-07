@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h1qX5-00048z-Io
- for barebox@lists.infradead.org; Thu, 07 Mar 2019 10:45:49 +0000
-References: <20190219121018.29736-1-a.fatoum@pengutronix.de>
- <f40efe6a-d95a-d017-4758-47397e447435@pengutronix.de>
- <20190307073207.jmj63dxxfkqif7fz@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <dd23860e-2072-ccfe-a83c-b6bf71de7aec@pengutronix.de>
-Date: Thu, 7 Mar 2019 11:45:40 +0100
+ id 1h1nma-0004tQ-1W
+ for barebox@lists.infradead.org; Thu, 07 Mar 2019 07:49:37 +0000
+Received: by mail-pg1-x529.google.com with SMTP id h11so10627227pgl.0
+ for <barebox@lists.infradead.org>; Wed, 06 Mar 2019 23:49:34 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed,  6 Mar 2019 23:49:09 -0800
+Message-Id: <20190307074926.20539-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20190307073207.jmj63dxxfkqif7fz@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,61 +21,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] images: pbl: verify CONFIG_BAREBOX_MAX_IMAGE_SIZE is
- not exceeded
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 00/17] lseek related fixes
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On 3/7/19 8:32 AM, Sascha Hauer wrote:
-> On Mon, Mar 04, 2019 at 03:16:51PM +0100, Ahmad Fatoum wrote:
->> Hello,
->>
->> On 19/2/19 13:10, Ahmad Fatoum wrote:
->>> For platforms such as the at91, the boot ROM imposes an upper limit
->>> on barebox file size.  Prior to 5a1a5ed253 ("ARM: images: use piggydata"),
->>> BAREBOX_MAX_PBLX_SIZE seems to have been the way to go for limiting
->>> the size of the final barebox binary when using the PBL.
->>> With pblx removed, this variable is of no use, so have the existing
->>> BAREBOX_MAX_IMAGE_SIZE replace its functionality.
->>>
->>> Currently BAREBOX_MAX_IMAGE_SIZE is only checked against in the non-PBL
->>> case, so add a check in the PBL case as well.
->>>
->>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>> ---
->>>  arch/arm/configs/am335x_mlo_defconfig |  2 +-
->>>  common/Kconfig                        | 10 ----------
->>>  images/Makefile                       |  1 +
->>>  3 files changed, 2 insertions(+), 11 deletions(-)
->>>
->>
->> any news on these two patches?
-> 
-> I applied the first one as I think it does nothing wrong. I am always
-> hesitating to apply such patches because I think we need to do this
-> better. For example when doing multi image builds different ROMs with
-> different size limitations might be involved, so putting the limitation
-> in Kconfig is wrong.
+Everyone:
 
-Ah, I didn't think about multi-image when I wrote this patch. I am
-slowly getting it. Thanks for the feedback!
+As a follow up to lseek() related fixes that went in recently, I went
+throught all of the calls to it in the codebase I could find and fixed
+a number of type problems as well as some other minor issue. This
+series is the result. Hopefuly all of the patches are
+self-explanatory.
 
-Specifying it entry-point-wise in images/Makefile.* seems to be the better
-place then.
+Feedback is welcome!
 
-Cheers
-Ahmad
+Thanks,
+Andrey Smirnov
 
-> 
-> Sascha
-> 
+Andrey Smirnov (17):
+  libfile: Make failure path of open_and_lseek() consistent
+  common: Always return enum filetype in file_name_detect_type_offset()
+  MIPS: ath79: Use errno to get error code from open_and_lseek()
+  ARM: i.MX: bbu: Fix variable type in imx_bbu_external_nand_update()
+  ARM: i.MX: bbu: Fix lseek error check in
+    imx_bbu_external_nand_update()
+  ARM: i.MX: bbu: Fix lseek error check in
+    imx_bbu_internal_v2_write_nand_dbbt()
+  ARM: i.MX: bbu: Fix variable type in
+    imx_bbu_internal_v2_write_nand_dbbt()
+  bpkfs: Fix lseek error check in bpkfs_probe()
+  uimage: Fix lseek error check in uimage_verify()
+  uimage: Fix lseek error check in uimage_load()
+  uimage: Fix lseek error check in uimage_load_to_buf()
+  state: Fix lseek error check in state_backend_bucket_direct_read()
+  state: Fix lseek error check in state_backend_bucket_direct_write()
+  state: Fix lseek error check in state_mtd_peb_read()
+  state: Fix lseek error check in state_mtd_peb_write()
+  commands: loadxy: Make use of open_and_lseek()
+  commands: loadb: Make use of open_and_lseek()
 
+ arch/arm/mach-imx/imx-bbu-external-nand.c | 10 ++++---
+ arch/arm/mach-imx/imx-bbu-internal.c      | 10 ++++---
+ arch/mips/mach-ath79/art.c                |  4 +--
+ commands/loadb.c                          | 12 +--------
+ commands/loadxy.c                         | 13 ++-------
+ common/filetype.c                         |  4 +--
+ common/state/backend_bucket_circular.c    | 14 +++++-----
+ common/state/backend_bucket_direct.c      | 23 ++++++++--------
+ common/uimage.c                           | 32 +++++++++++------------
+ fs/bpkfs.c                                |  4 +--
+ lib/libfile.c                             | 26 +++++++++---------
+ 11 files changed, 65 insertions(+), 87 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
