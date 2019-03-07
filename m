@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h1nxn-0003S8-P7
- for barebox@lists.infradead.org; Thu, 07 Mar 2019 08:01:33 +0000
-Received: by mail-pg1-x544.google.com with SMTP id l11so10631553pgq.10
- for <barebox@lists.infradead.org>; Thu, 07 Mar 2019 00:01:11 -0800 (PST)
+ id 1h1nxl-0003Oo-Ih
+ for barebox@lists.infradead.org; Thu, 07 Mar 2019 08:01:32 +0000
+Received: by mail-pg1-x544.google.com with SMTP id h8so10635478pgp.6
+ for <barebox@lists.infradead.org>; Thu, 07 Mar 2019 00:01:09 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu,  7 Mar 2019 00:00:36 -0800
-Message-Id: <20190307080036.28028-27-andrew.smirnov@gmail.com>
+Date: Thu,  7 Mar 2019 00:00:34 -0800
+Message-Id: <20190307080036.28028-25-andrew.smirnov@gmail.com>
 In-Reply-To: <20190307080036.28028-1-andrew.smirnov@gmail.com>
 References: <20190307080036.28028-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,53 +23,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 26/26] usb: storage: Inline usb_limit_blk_cnt()
+Subject: [PATCH 24/26] usb: storage: Simplify I/O loop in usb_stor_blk_io()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Usb_limit_blk_cnt() has only one user so we may as well inline it.
+Simplify I/O loop a bit, by re-arranging things and dropping
+"sectors_done", "result" and "data" local variables.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/storage/usb.c | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ drivers/usb/storage/usb.c | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
-index 335f8033b..fda24d616 100644
+index dc63e8ab4..7df8a52b6 100644
 --- a/drivers/usb/storage/usb.c
 +++ b/drivers/usb/storage/usb.c
-@@ -269,16 +269,6 @@ static struct block_device_ops usb_mass_storage_ops = {
-  * Block device routines
-  ***********************************************************************/
+@@ -213,7 +213,6 @@ static int usb_stor_blk_io(struct block_device *disk_dev,
+ 						   blk);
+ 	struct us_data *us = pblk_dev->us;
+ 	struct device_d *dev = &us->pusb_dev->dev;
+-	unsigned sectors_done;
  
--static int usb_limit_blk_cnt(unsigned cnt)
--{
--	if (cnt > 0x7fffffff) {
--		pr_warn("Limiting device size due to 31 bit contraints\n");
--		return 0x7fffffff;
--	}
--
--	return (int)cnt;
--}
--
- /* Prepare a disk device */
- static int usb_stor_init_blkdev(struct us_blk_dev *pblk_dev)
- {
-@@ -314,7 +304,13 @@ static int usb_stor_init_blkdev(struct us_blk_dev *pblk_dev)
- 		return result;
+ 	/* ensure unit ready */
+ 	dev_dbg(dev, "Testing for unit ready\n");
+@@ -226,28 +225,23 @@ static int usb_stor_blk_io(struct block_device *disk_dev,
+ 	dev_dbg(dev, "%s %u block(s), starting from %d\n",
+ 		read ? "Read" : "Write",
+ 		sector_count, sector_start);
+-	sectors_done = 0;
++
+ 	while (sector_count > 0) {
+-		int result;
+ 		unsigned n = min(sector_count, US_MAX_IO_BLK);
+-		u8 *data = buffer + (sectors_done * SECTOR_SIZE);
+ 
+-		result = usb_stor_io_10(pblk_dev,
+-					read ? SCSI_READ10 : SCSI_WRITE10,
+-					(ulong)sector_start,
+-					data, n);
+-		if (result != 0) {
++		if (usb_stor_io_10(pblk_dev,
++				   read ? SCSI_READ10 : SCSI_WRITE10,
++				   sector_start,
++				   buffer, n)) {
+ 			dev_dbg(dev, "I/O error at sector %d\n", sector_start);
+ 			break;
+ 		}
+ 		sector_start += n;
+ 		sector_count -= n;
+-		sectors_done += n;
++		buffer += n * SECTOR_SIZE;
  	}
  
--	pblk_dev->blk.num_blocks = usb_limit_blk_cnt(last_lba + 1);
-+	if (last_lba > INT_MAX - 1) {
-+		last_lba = INT_MAX - 1;
-+		dev_warn(dev,
-+			 "Limiting device size due to 31 bit contraints\n");
-+	}
-+
-+	pblk_dev->blk.num_blocks = last_lba + 1;
- 	if (block_length != SECTOR_SIZE)
- 		pr_warn("Support only %d bytes sectors\n", SECTOR_SIZE);
- 	pblk_dev->blk.blockbits = SECTOR_SHIFT;
+-	dev_dbg(dev, "Successful I/O of %d blocks\n", sectors_done);
+-
+-	return (sector_count != 0) ? -EIO : 0;
++	return sector_count ? -EIO : 0;
+ }
+ 
+ /* Write a chunk of sectors to media */
 -- 
 2.20.1
 
