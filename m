@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h2DDO-0006GV-Ve
- for barebox@lists.infradead.org; Fri, 08 Mar 2019 10:59:07 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Fri,  8 Mar 2019 11:58:53 +0100
-Message-Id: <20190308105854.10089-4-o.rempel@pengutronix.de>
-In-Reply-To: <20190308105854.10089-1-o.rempel@pengutronix.de>
-References: <20190308105854.10089-1-o.rempel@pengutronix.de>
-MIME-Version: 1.0
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1h3LBK-00019G-1S
+ for barebox@lists.infradead.org; Mon, 11 Mar 2019 13:41:32 +0000
+From: David Brandt <d.brandt@phytec.de>
+Date: Mon, 11 Mar 2019 14:41:25 +0100
+Message-Id: <20190311134125.10946-1-d.brandt@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,177 +14,197 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/4] MIPS: relocation: do not use configurable memory layout
+Subject: [PATCH] commands: bootaux: New command bootaux for iMX
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-The relocator is not able to patch properly new location of
-the stack. To make it work properly it is better to disable
-HAVE_CONFIGURABLE_MEMORY_LAYOUT.
+This patch adds the bootaux command which starts
+auxiliary cores of iMX processors, currently only
+for iMX8MQ. This is based on the u-boot-imx
+command and shares the behaviour.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+The currently unnecessary parameter for the core
+to start is necessary for the iMX8QM and other
+processors having multiple auxiliary cores.
+
+Signed-off-by: David Brandt <d.brandt@phytec.de>
 ---
- arch/mips/Kconfig                  |  1 -
- arch/mips/boot/main_entry-pbl.c    |  4 ++--
- arch/mips/boot/main_entry.c        | 17 +++++++++++++++--
- arch/mips/include/asm/pbl_macros.h |  4 ++--
- arch/mips/lib/cpu-probe.c          | 14 ++++++++++++++
- arch/mips/lib/pbl.lds.S            |  2 +-
- 6 files changed, 34 insertions(+), 8 deletions(-)
+ arch/arm/mach-imx/imx8mq.c               | 37 +++++++++++++++
+ arch/arm/mach-imx/include/mach/generic.h |  4 ++
+ commands/Kconfig                         | 14 ++++++
+ commands/Makefile                        |  1 +
+ commands/bootaux.c                       | 58 ++++++++++++++++++++++++
+ 5 files changed, 114 insertions(+)
+ create mode 100644 commands/bootaux.c
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 49f238df58..b59c3a9e87 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -7,7 +7,6 @@ config MIPS
- 	select GENERIC_LIB_ASHRDI3
- 	select GENERIC_LIB_LSHRDI3
- 	select HAS_KALLSYMS
--	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
- 	select HAVE_CONFIGURABLE_TEXT_BASE
- 	select HAVE_PBL_MULTI_IMAGES
- 	select HAS_DMA
-diff --git a/arch/mips/boot/main_entry-pbl.c b/arch/mips/boot/main_entry-pbl.c
-index 60be645148..02ddd5ec24 100644
---- a/arch/mips/boot/main_entry-pbl.c
-+++ b/arch/mips/boot/main_entry-pbl.c
-@@ -25,7 +25,7 @@ static unsigned long *ttb;
- static void barebox_uncompress(void *compressed_start, unsigned int len)
- {
- 	/* set 128 KiB at the end of the MALLOC_BASE for early malloc */
--	free_mem_ptr = MALLOC_BASE + MALLOC_SIZE - SZ_128K;
-+	free_mem_ptr = TEXT_BASE - SZ_128K;
- 	free_mem_end_ptr = free_mem_ptr + SZ_128K;
+diff --git a/arch/arm/mach-imx/imx8mq.c b/arch/arm/mach-imx/imx8mq.c
+index 3f6b433a5..9e60a8bd7 100644
+--- a/arch/arm/mach-imx/imx8mq.c
++++ b/arch/arm/mach-imx/imx8mq.c
+@@ -123,4 +123,41 @@ static int imx8mq_report_hdmi_firmware(void)
  
- 	ttb = (void *)((free_mem_ptr - 0x4000) & ~0x3fff);
-@@ -52,7 +52,7 @@ void __section(.text_entry) pbl_main_entry(void *fdt, void *fdt_end,
- 	barebox_uncompress(&input_data, pg_len);
- 
- 	fdt_len = (u32)fdt_end - (u32)fdt;
--	fdt_new = (void *)PAGE_ALIGN_DOWN(STACK_BASE - fdt_len);
-+	fdt_new = (void *)PAGE_ALIGN_DOWN(TEXT_BASE - MALLOC_SIZE - STACK_SIZE - fdt_len);
- 	memcpy(fdt_new, fdt, fdt_len);
- 
- 	barebox = (void *)TEXT_BASE;
-diff --git a/arch/mips/boot/main_entry.c b/arch/mips/boot/main_entry.c
-index 84325da93a..5b88730b07 100644
---- a/arch/mips/boot/main_entry.c
-+++ b/arch/mips/boot/main_entry.c
-@@ -12,6 +12,7 @@
- #include <asm/cpu-features.h>
- #include <asm/mipsregs.h>
- #include <asm/addrspace.h>
-+#include <linux/sizes.h>
- 
- extern void handle_reserved(void);
- 
-@@ -61,6 +62,7 @@ static void trap_init(void)
- 
- extern void *glob_fdt;
- extern u32 glob_fdt_size;
-+extern unsigned long mips_stack_top;
- 
- /**
-  * Called plainly from assembler code
-@@ -69,6 +71,7 @@ extern u32 glob_fdt_size;
-  */
- void __bare_init main_entry(void *fdt, u32 fdt_size)
- {
-+	unsigned long malloc_start, malloc_end;
- 	/* clear the BSS first */
- 	memset(__bss_start, 0x00, __bss_stop - __bss_start);
- 
-@@ -82,8 +85,18 @@ void __bare_init main_entry(void *fdt, u32 fdt_size)
- 
- 	trap_init();
- 
--	mem_malloc_init((void *)MALLOC_BASE,
--			(void *)(MALLOC_BASE + MALLOC_SIZE - 1));
-+	malloc_end = _stext;
-+
-+	if (MALLOC_SIZE > 0)
-+		malloc_start = malloc_end - MALLOC_SIZE;
-+	else
-+		malloc_start = malloc_end - SZ_8M;
-+
-+	pr_debug("initializing malloc pool at 0x%08lx (size 0x%08lx)\n",
-+			malloc_start, malloc_end - malloc_start);
-+
-+	mem_malloc_init((void *)malloc_start, (void *)_stext - 1);
-+	mips_stack_top = malloc_start;
- 
- 	glob_fdt = fdt;
- 	glob_fdt_size = fdt_size;
-diff --git a/arch/mips/include/asm/pbl_macros.h b/arch/mips/include/asm/pbl_macros.h
-index e78d1afe6a..c62910ff60 100644
---- a/arch/mips/include/asm/pbl_macros.h
-+++ b/arch/mips/include/asm/pbl_macros.h
-@@ -187,7 +187,7 @@ copy_loop_exit:
- 	 *
- 	 */
- 
--#if (STACK_BASE + STACK_SIZE) % 16 != 0
-+#if (TEXT_BASE - MALLOC_SIZE) % 16 != 0
- #error stack pointer must be 16-byte-aligned
- #endif
- 
-@@ -196,7 +196,7 @@ copy_loop_exit:
- 	.set	noreorder
- 
- 	/* set stack pointer; reserve four 32-bit argument slots */
--	la	sp, STACK_BASE + STACK_SIZE - 16
-+	la	sp, (TEXT_BASE - MALLOC_SIZE - 16)
- 
- 	.set	pop
- 	.endm
-diff --git a/arch/mips/lib/cpu-probe.c b/arch/mips/lib/cpu-probe.c
-index cf63849743..2556a8b240 100644
---- a/arch/mips/lib/cpu-probe.c
-+++ b/arch/mips/lib/cpu-probe.c
-@@ -11,6 +11,9 @@
- #include <asm/mipsregs.h>
- #include <asm/cpu-info.h>
- #include <asm/cpu.h>
-+#include <memory.h>
-+#include <asm-generic/memory_layout.h>
-+#include <init.h>
- 
- const char *__cpu_name;
- struct cpuinfo_mips cpu_data[1];
-@@ -161,3 +164,14 @@ void cpu_probe(void)
- 		break;
- 	}
+ 	return 0;
  }
 +
-+unsigned long mips_stack_top;
++#ifdef CONFIG_CMD_BOOTAUX
 +
-+static int mips_request_stack(void)
++#define FSL_SIP_SRC             0xC2000005
++#define FSL_SIP_SRC_M4_START    0x00
++#define FSL_SIP_SRC_M4_STARTED  0x01
++int imx_auxiliary_core_up(u32 core_id, ulong boot_private_data)
 +{
-+	if (!request_sdram_region("stack", mips_stack_top - STACK_SIZE, STACK_SIZE))
-+		pr_err("Error: Cannot request SDRAM region for stack\n");
++	u32 stack, pc;
++	struct arm_smccc_res res;
++
++	if (!boot_private_data)
++		return -EINVAL;
++
++	stack = *(u32 *)boot_private_data;
++	pc = *(u32 *)(boot_private_data + 4);
++
++	/* Set the stack and pc to M4 bootROM */
++	writel(stack, MX8MQ_M4_BOOTROM_BASE_ADDR);
++	writel(pc, MX8MQ_M4_BOOTROM_BASE_ADDR + 4);
++
++	/* Enable M4 */
++	arm_smccc_smc(FSL_SIP_SRC, FSL_SIP_SRC_M4_START,
++			0, 0, 0, 0, 0, 0, &res);
++
++	return res.a0;
++}
++
++int imx_auxiliary_core_check_up(u32 core_id)
++{
++	struct arm_smccc_res res;
++	arm_smccc_smc(FSL_SIP_SRC, FSL_SIP_SRC_M4_STARTED,
++			0, 0, 0, 0, 0, 0, &res);
++	return res.a0;
++}
++#endif
++
+ console_initcall(imx8mq_report_hdmi_firmware);
+diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
+index be58da4da..59fcbc767 100644
+--- a/arch/arm/mach-imx/include/mach/generic.h
++++ b/arch/arm/mach-imx/include/mach/generic.h
+@@ -59,6 +59,10 @@ void imx6ul_cpu_lowlevel_init(void);
+ void imx7_cpu_lowlevel_init(void);
+ void vf610_cpu_lowlevel_init(void);
+ 
++/* processor specific functions to boot auxiliary core */
++int imx_auxiliary_core_up(u32 core_id, ulong boot_private_data);
++int imx_auxiliary_core_check_up(u32 core_id);
++
+ /* There's a off-by-one betweem the gpio bank number and the gpiochip */
+ /* range e.g. GPIO_1_5 is gpio 5 under linux */
+ #define IMX_GPIO_NR(bank, nr)		(((bank) - 1) * 32 + (nr))
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 4f5d84ac1..c39a84f23 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -270,6 +270,20 @@ config CMD_AT91_BOOT_TEST
+ 	  -j ADDR  jump address
+ 	  -s SRAM  SRAM device (default /dev/sram0)
+ 
++config CMD_BOOTAUX
++	tristate
++	default y
++	depends on ARCH_IMX8MQ
++	prompt "bootaux"
++	help
++	  Boot auxiliary core on NXP iMXP Processors.
++
++	  Usage: bootaux ADDRESS [CORE]
++
++	  Options:
++	  ADDRESS  load address
++	  CORE  auxiliary core to start, defaults to 0
++
+ config CMD_BOOT_ORDER
+ 	tristate
+ 	depends on ARCH_OMAP4
+diff --git a/commands/Makefile b/commands/Makefile
+index 358671bb5..c72b52c27 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -1,6 +1,7 @@
+ obj-$(CONFIG_STDDEV)		+= stddev.o
+ obj-$(CONFIG_CMD_DIGEST)	+= digest.o
+ obj-$(CONFIG_COMPILE_HASH)	+= hashsum.o
++obj-$(CONFIG_CMD_BOOTAUX)	+= bootaux.o
+ obj-$(CONFIG_CMD_BOOTM)		+= bootm.o
+ obj-$(CONFIG_CMD_UIMAGE)	+= uimage.o
+ obj-$(CONFIG_CMD_LINUX16)	+= linux16.o
+diff --git a/commands/bootaux.c b/commands/bootaux.c
+new file mode 100644
+index 000000000..62209bf3e
+--- /dev/null
++++ b/commands/bootaux.c
+@@ -0,0 +1,58 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * bootaux - boot auxiliary core
++ *
++ * Copyright (C) 2019 David Brandt <d.brandt@phytec.de>
++ *
++ * Based on code from u-boot-imx from Freescale Semiconductor, Inc.
++ *
++ */
++
++#include <command.h>
++#include <getopt.h>
++#include <memory.h>
++#include <malloc.h>
++#include <common.h>
++#include <errno.h>
++#include <memtest.h>
++#include <mmu.h>
++#include <mach/generic.h>
++
++static int do_bootaux(int argc, char *argv[])
++{
++	ulong addr;
++	int ret, up;
++	u32 core = 0;
++
++	if (argc < 2) {
++		printf("no load address given\n");
++		return 1;
++	}
++
++	if (argc > 2)
++		core = strict_strtoul(argv[2], NULL, 10);
++
++	up = imx_auxiliary_core_check_up(core);
++	if (up) {
++		printf("Auxiliary core %d is already up\n", core);
++		return 0;
++	}
++
++	addr = strict_strtoul(argv[1], NULL, 16);
++
++	printf("Starting auxiliary core %d at 0x%08lX ...\n", core, addr);
++
++	ret = imx_auxiliary_core_up(core, addr);
++	if (ret)
++		return 1;
 +
 +	return 0;
 +}
-+coredevice_initcall(mips_request_stack);
-diff --git a/arch/mips/lib/pbl.lds.S b/arch/mips/lib/pbl.lds.S
-index 1f0285dd6f..2be90b8e5f 100644
---- a/arch/mips/lib/pbl.lds.S
-+++ b/arch/mips/lib/pbl.lds.S
-@@ -10,7 +10,7 @@
- OUTPUT_ARCH("mips")
- SECTIONS
- {
--	. = HEAD_TEXT_BASE;
-+	. = TEXT_BASE - MALLOC_SIZE;
- 
- 	PRE_IMAGE
- 
++
++
++BAREBOX_CMD_START(bootaux)
++	.cmd		= do_bootaux,
++	BAREBOX_CMD_DESC("boot auxiliary core")
++	BAREBOX_CMD_OPTS("ADDR [CORE]")
++	BAREBOX_CMD_GROUP(CMD_GRP_BOOT)
++BAREBOX_CMD_END
 -- 
-2.20.1
+2.17.1
 
 
 _______________________________________________
