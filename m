@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h3HHO-0008Ep-8W
- for barebox@lists.infradead.org; Mon, 11 Mar 2019 09:31:31 +0000
+ id 1h3HHS-0008Gb-DW
+ for barebox@lists.infradead.org; Mon, 11 Mar 2019 09:31:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 11 Mar 2019 10:31:21 +0100
-Message-Id: <20190311093123.7956-13-s.hauer@pengutronix.de>
+Date: Mon, 11 Mar 2019 10:31:16 +0100
+Message-Id: <20190311093123.7956-8-s.hauer@pengutronix.de>
 In-Reply-To: <20190311093123.7956-1-s.hauer@pengutronix.de>
 References: <20190311093123.7956-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,352 +21,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/14] ARM: stm32mp1: Add serial driver
+Subject: [PATCH 07/14] clk: divider: Support CLK_DIVIDER_READ_ONLY flag
 To: Barebox List <barebox@lists.infradead.org>
+
+To support a readonly divider add the CLK_DIVIDER_READ_ONLY flag.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/serial/Kconfig        |   4 +
- drivers/serial/Makefile       |   1 +
- drivers/serial/serial_stm32.c | 246 ++++++++++++++++++++++++++++++++++
- drivers/serial/serial_stm32.h |  48 +++++++
- 4 files changed, 299 insertions(+)
- create mode 100644 drivers/serial/serial_stm32.c
- create mode 100644 drivers/serial/serial_stm32.h
+ drivers/clk/clk-divider.c         | 7 +++++++
+ drivers/clk/rockchip/clk-rk3188.c | 1 -
+ drivers/clk/rockchip/clk-rk3288.c | 1 -
+ include/linux/clk.h               | 1 +
+ 4 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index d462c11c16..f12ff93f6a 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -37,6 +37,10 @@ config DRIVER_SERIAL_IMX
- 	default y
- 	bool "i.MX serial driver"
+diff --git a/drivers/clk/clk-divider.c b/drivers/clk/clk-divider.c
+index 407aae78ea..d9d3407e75 100644
+--- a/drivers/clk/clk-divider.c
++++ b/drivers/clk/clk-divider.c
+@@ -203,8 +203,12 @@ static int clk_divider_bestdiv(struct clk *clk, unsigned long rate,
+ static long clk_divider_round_rate(struct clk *clk, unsigned long rate,
+ 		unsigned long *parent_rate)
+ {
++	struct clk_divider *divider = container_of(clk, struct clk_divider, clk);
+ 	int div;
  
-+config DRIVER_SERIAL_STM32
-+	depends on ARCH_STM32MP
-+	bool "stm32mp serial driver"
++	if (divider->flags & CLK_DIVIDER_READ_ONLY)
++		return clk_divider_recalc_rate(clk, *parent_rate);
 +
- config DRIVER_SERIAL_STM378X
- 	depends on ARCH_MXS
- 	default y
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index 3d9f735ed2..4174cc1ffb 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -13,6 +13,7 @@ obj-$(CONFIG_DRIVER_SERIAL_CLPS711X)		+= serial_clps711x.o
- obj-$(CONFIG_DRIVER_SERIAL_NS16550)		+= serial_ns16550.o
- obj-$(CONFIG_DRIVER_SERIAL_PL010)		+= serial_pl010.o
- obj-$(CONFIG_DRIVER_SERIAL_S3C)			+= serial_s3c.o
-+obj-$(CONFIG_DRIVER_SERIAL_STM32)		+= serial_stm32.o
- obj-$(CONFIG_DRIVER_SERIAL_ALTERA)		+= serial_altera.o
- obj-$(CONFIG_DRIVER_SERIAL_ALTERA_JTAG)		+= serial_altera_jtag.o
- obj-$(CONFIG_DRIVER_SERIAL_PXA)			+= serial_pxa.o
-diff --git a/drivers/serial/serial_stm32.c b/drivers/serial/serial_stm32.c
-new file mode 100644
-index 0000000000..a84e64e974
---- /dev/null
-+++ b/drivers/serial/serial_stm32.c
-@@ -0,0 +1,246 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright (C) 2016, STMicroelectronics - All Rights Reserved
-+ * Author(s): Vikas Manocha, <vikas.manocha@st.com> for STMicroelectronics.
-+ */
-+
-+#include <common.h>
-+#include <console.h>
-+#include <io.h>
-+#include <linux/clk.h>
-+#include <init.h>
-+#include <driver.h>
-+#include "serial_stm32.h"
-+
-+struct stm32_uart_info {
-+	u8 uart_enable_bit;	/* UART_CR1_UE */
-+	bool stm32f4;		/* true for STM32F4, false otherwise */
-+	bool has_fifo;
-+};
-+
-+struct stm32_uart {
-+	struct console_device cdev;
-+	void __iomem *base;
-+	struct clk *clk;
-+	bool stm32f4;
-+	bool has_fifo;
-+	int uart_enable_bit;
-+};
-+
-+static struct stm32_uart *to_stm32_uart(struct console_device *cdev)
-+{
-+	return container_of(cdev, struct stm32_uart, cdev);
-+}
-+
-+static int stm32_serial_setbaudrate(struct console_device *cdev, int baudrate)
-+{
-+	struct stm32_uart *stm32 = to_stm32_uart(cdev);
-+	void __iomem *base = stm32->base;
-+	bool stm32f4 = stm32->stm32f4;
-+	u32 int_div, mantissa, fraction, oversampling;
-+	unsigned long clock_rate;
-+
-+	clock_rate = clk_get_rate(stm32->clk);
-+
-+	int_div = DIV_ROUND_CLOSEST(clock_rate, baudrate);
-+
-+	if (int_div < 16) {
-+		oversampling = 8;
-+		setbits_le32(base + CR1_OFFSET(stm32f4), USART_CR1_OVER8);
-+	} else {
-+		oversampling = 16;
-+		clrbits_le32(base + CR1_OFFSET(stm32f4), USART_CR1_OVER8);
-+	}
-+
-+	mantissa = (int_div / oversampling) << USART_BRR_M_SHIFT;
-+	fraction = int_div % oversampling;
-+
-+	writel(mantissa | fraction, base + BRR_OFFSET(stm32f4));
-+
-+	return 0;
-+}
-+
-+static int stm32_serial_getc(struct console_device *cdev)
-+{
-+	struct stm32_uart *stm32 = to_stm32_uart(cdev);
-+	void __iomem *base = stm32->base;
-+	bool stm32f4 = stm32->stm32f4;
-+	u32 isr = readl(base + ISR_OFFSET(stm32f4));
-+
-+	if ((isr & USART_ISR_RXNE) == 0)
-+		return -EAGAIN;
-+
-+	if (isr & (USART_ISR_PE | USART_ISR_ORE)) {
-+		if (!stm32f4)
-+			setbits_le32(base + ICR_OFFSET,
-+				     USART_ICR_PCECF | USART_ICR_ORECF);
-+		else
-+			readl(base + RDR_OFFSET(stm32f4));
-+		return -EIO;
-+	}
-+
-+	return readl(base + RDR_OFFSET(stm32f4));
-+}
-+
-+static void stm32_serial_putc(struct console_device *cdev, char c)
-+{
-+	struct stm32_uart *stm32 = to_stm32_uart(cdev);
-+	void __iomem *base = stm32->base;
-+	bool stm32f4 = stm32->stm32f4;
-+
-+	while ((readl(base + ISR_OFFSET(stm32f4)) & USART_ISR_TXE) == 0);
-+
-+	writel(c, base + TDR_OFFSET(stm32f4));
-+}
-+
-+static int stm32_serial_tstc(struct console_device *cdev)
-+{
-+	struct stm32_uart *stm32 = to_stm32_uart(cdev);
-+	void __iomem *base = stm32->base;
-+	bool stm32f4 = stm32->stm32f4;
-+
-+	return readl(base + ISR_OFFSET(stm32f4)) & USART_ISR_RXNE ? 1 : 0;
-+}
-+
-+static void stm32_serial_flush(struct console_device *cdev)
-+{
-+	struct stm32_uart *stm32 = to_stm32_uart(cdev);
-+	void __iomem *base = stm32->base;
-+	bool stm32f4 = stm32->stm32f4;
-+
-+	while (!(readl(base + ISR_OFFSET(stm32f4)) & USART_ISR_TXE));
-+}
-+
-+static void stm32_serial_init(struct console_device *cdev)
-+{
-+	struct stm32_uart *stm32 = to_stm32_uart(cdev);
-+	void __iomem *base = stm32->base;
-+	bool stm32f4 = stm32->stm32f4;
-+	u8 uart_enable_bit = stm32->uart_enable_bit;
-+	u32 cr1;
-+
-+	cr1 = readl(base + CR1_OFFSET(stm32f4));
-+
-+	/* Disable uart-> enable fifo -> enable uart */
-+	cr1 &= ~(USART_CR1_RE | USART_CR1_TE | BIT(uart_enable_bit));
-+
-+	writel(cr1, base + CR1_OFFSET(stm32f4));
-+
-+	if (stm32->has_fifo)
-+		cr1 |= USART_CR1_FIFOEN;
-+
-+	cr1 &= ~(USART_CR1_PCE | USART_CR1_PS | USART_CR1_M1 | USART_CR1_M0);
-+
-+	cr1 |= USART_CR1_RE | USART_CR1_TE | BIT(uart_enable_bit);
-+
-+	writel(cr1, base + CR1_OFFSET(stm32f4));
-+}
-+
-+static int stm32_serial_probe(struct device_d *dev)
-+{
-+	int ret;
-+	struct console_device *cdev;
-+	struct stm32_uart *stm32;
-+	const char *devname;
-+	struct resource *res;
-+	struct stm32_uart_info *info;
-+
-+	ret = dev_get_drvdata(dev, (const void **)&info);
-+	if (ret)
-+		return ret;
-+
-+	stm32 = xzalloc(sizeof(*stm32));
-+	cdev = &stm32->cdev;
-+
-+	res = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(res)) {
-+		ret = PTR_ERR(res);
-+		goto err_free;
-+	}
-+	stm32->base = IOMEM(res->start);
-+
-+	stm32->has_fifo = info->has_fifo;
-+	stm32->stm32f4 = info->stm32f4;
-+	stm32->uart_enable_bit = info->uart_enable_bit;
-+
-+	stm32->clk = clk_get(dev, NULL);
-+	if (IS_ERR(stm32->clk)) {
-+		ret = PTR_ERR(stm32->clk);
-+		dev_err(dev, "Failed to get UART clock %d\n", ret);
-+		goto io_release;
-+	}
-+
-+	ret = clk_enable(stm32->clk);
-+	if (ret) {
-+		dev_err(dev, "Failed to enable UART clock %d\n", ret);
-+		goto io_release;
-+	}
-+
-+	cdev->dev    = dev;
-+	cdev->tstc   = stm32_serial_tstc;
-+	cdev->putc   = stm32_serial_putc;
-+	cdev->getc   = stm32_serial_getc;
-+	cdev->flush  = stm32_serial_flush;
-+	cdev->setbrg = stm32_serial_setbaudrate;
-+
-+	if (dev->device_node) {
-+		devname = of_alias_get(dev->device_node);
-+		if (devname) {
-+			cdev->devname = xstrdup(devname);
-+			cdev->devid   = DEVICE_ID_SINGLE;
-+		}
-+	}
-+
-+	stm32_serial_init(cdev);
-+
-+	ret = console_register(cdev);
-+	if (!ret)
+ 	div = clk_divider_bestdiv(clk, rate, parent_rate);
+ 
+ 	return *parent_rate / div;
+@@ -217,6 +221,9 @@ static int clk_divider_set_rate(struct clk *clk, unsigned long rate,
+ 	unsigned int div, value;
+ 	u32 val;
+ 
++	if (divider->flags & CLK_DIVIDER_READ_ONLY)
 +		return 0;
 +
-+	clk_put(stm32->clk);
-+io_release:
-+	release_region(res);
-+err_free:
-+	free(stm32);
-+
-+	return ret;
-+}
-+
-+struct stm32_uart_info stm32f4_info = {
-+	.stm32f4 = true,
-+	.uart_enable_bit = 13,
-+	.has_fifo = false,
-+};
-+
-+struct stm32_uart_info stm32f7_info = {
-+	.uart_enable_bit = 0,
-+	.stm32f4 = false,
-+	.has_fifo = true,
-+};
-+
-+struct stm32_uart_info stm32h7_info = {
-+	.uart_enable_bit = 0,
-+	.stm32f4 = false,
-+	.has_fifo = true,
-+};
-+
-+static struct of_device_id stm32_serial_dt_ids[] = {
-+	{
-+		.compatible = "st,stm32-uart",
-+		.data = &stm32f4_info
-+	}, {
-+		.compatible = "st,stm32f7-uart",
-+		.data = &stm32f7_info
-+	}, {
-+		.compatible = "st,stm32h7-uart",
-+		.data = &stm32h7_info
-+	}, {
-+	}
-+};
-+
-+static struct driver_d stm32_serial_driver = {
-+	.name   = "stm32-serial",
-+	.probe  = stm32_serial_probe,
-+	.of_compatible = DRV_OF_COMPAT(stm32_serial_dt_ids),
-+};
-+console_platform_driver(stm32_serial_driver);
-diff --git a/drivers/serial/serial_stm32.h b/drivers/serial/serial_stm32.h
-new file mode 100644
-index 0000000000..dd3e930c93
---- /dev/null
-+++ b/drivers/serial/serial_stm32.h
-@@ -0,0 +1,48 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/*
-+ * Copyright (C) 2016, STMicroelectronics - All Rights Reserved
-+ * Author(s): Vikas Manocha, <vikas.manocha@st.com> for STMicroelectronics.
-+ */
-+
-+#ifndef _SERIAL_STM32_
-+#define _SERIAL_STM32_
-+
-+#define CR1_OFFSET(x)	(x ? 0x0c : 0x00)
-+#define CR3_OFFSET(x)	(x ? 0x14 : 0x08)
-+#define BRR_OFFSET(x)	(x ? 0x08 : 0x0c)
-+#define ISR_OFFSET(x)	(x ? 0x00 : 0x1c)
-+
-+#define ICR_OFFSET	0x20
-+
-+/*
-+ * STM32F4 has one Data Register (DR) for received or transmitted
-+ * data, so map Receive Data Register (RDR) and Transmit Data
-+ * Register (TDR) at the same offset
-+ */
-+#define RDR_OFFSET(x)	(x ? 0x04 : 0x24)
-+#define TDR_OFFSET(x)	(x ? 0x04 : 0x28)
-+
-+#define USART_CR1_FIFOEN		BIT(29)
-+#define USART_CR1_M1			BIT(28)
-+#define USART_CR1_OVER8			BIT(15)
-+#define USART_CR1_M0			BIT(12)
-+#define USART_CR1_PCE			BIT(10)
-+#define USART_CR1_PS			BIT(9)
-+#define USART_CR1_TE			BIT(3)
-+#define USART_CR1_RE			BIT(2)
-+
-+#define USART_CR3_OVRDIS		BIT(12)
-+
-+#define USART_ISR_TXE			BIT(7)
-+#define USART_ISR_RXNE			BIT(5)
-+#define USART_ISR_ORE			BIT(3)
-+#define USART_ISR_PE			BIT(0)
-+
-+#define USART_BRR_F_MASK		GENMASK(7, 0)
-+#define USART_BRR_M_SHIFT		4
-+#define USART_BRR_M_MASK		GENMASK(15, 4)
-+
-+#define USART_ICR_ORECF			BIT(3)
-+#define USART_ICR_PCECF			BIT(0)
-+
-+#endif
+ 	if (clk->flags & CLK_SET_RATE_PARENT) {
+ 		unsigned long best_parent_rate = parent_rate;
+ 		div = clk_divider_bestdiv(clk, rate, &best_parent_rate);
+diff --git a/drivers/clk/rockchip/clk-rk3188.c b/drivers/clk/rockchip/clk-rk3188.c
+index 7dda2963e3..8ed3a6d894 100644
+--- a/drivers/clk/rockchip/clk-rk3188.c
++++ b/drivers/clk/rockchip/clk-rk3188.c
+@@ -26,7 +26,6 @@
+ #define RK3188_GRF_SOC_STATUS	0xac
+ 
+ #define CLK_SET_RATE_NO_REPARENT 0
+-#define CLK_DIVIDER_READ_ONLY 0
+ 
+ enum rk3188_plls {
+ 	apll, cpll, dpll, gpll,
+diff --git a/drivers/clk/rockchip/clk-rk3288.c b/drivers/clk/rockchip/clk-rk3288.c
+index bb111e1e0b..e7cc9c1b5b 100644
+--- a/drivers/clk/rockchip/clk-rk3288.c
++++ b/drivers/clk/rockchip/clk-rk3288.c
+@@ -26,7 +26,6 @@
+ #define RK3288_GRF_SOC_STATUS1	0x284
+ 
+ #define CLK_SET_RATE_NO_REPARENT 0
+-#define CLK_DIVIDER_READ_ONLY 0
+ 
+ enum rk3288_plls {
+ 	apll, dpll, cpll, gpll, npll,
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 65d163c78d..2de963e7e9 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -341,6 +341,7 @@ struct clk_divider {
+ 
+ #define CLK_DIVIDER_POWER_OF_TWO	(1 << 1)
+ #define CLK_DIVIDER_HIWORD_MASK		(1 << 3)
++#define CLK_DIVIDER_READ_ONLY		(1 << 5)
+ 
+ #define CLK_MUX_HIWORD_MASK		(1 << 2)
+ 
 -- 
 2.20.1
 
