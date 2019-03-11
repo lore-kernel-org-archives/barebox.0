@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h3HHM-0003ds-09
- for barebox@lists.infradead.org; Mon, 11 Mar 2019 09:31:30 +0000
+ id 1h3HHM-0003du-1t
+ for barebox@lists.infradead.org; Mon, 11 Mar 2019 09:31:31 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 01/14] clk: clk-composite: return parent_rate if no rate clk
-Date: Mon, 11 Mar 2019 10:31:10 +0100
-Message-Id: <20190311093123.7956-2-s.hauer@pengutronix.de>
+Subject: [PATCH 13/14] clocksource: Enable architected timer support for CPU_V7
+Date: Mon, 11 Mar 2019 10:31:22 +0100
+Message-Id: <20190311093123.7956-14-s.hauer@pengutronix.de>
 In-Reply-To: <20190311093123.7956-1-s.hauer@pengutronix.de>
 References: <20190311093123.7956-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -24,30 +24,68 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: Barebox List <barebox@lists.infradead.org>
 
-When a composite clock has no rate clock then it should output the
-parents rate.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clk/clk-composite.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm/include/asm/system.h     | 19 +++++++++++++++++++
+ drivers/clocksource/Kconfig       |  2 +-
+ drivers/clocksource/armv8-timer.c |  1 +
+ 3 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk-composite.c b/drivers/clk/clk-composite.c
-index 5d21a0e7e1..716f6805f3 100644
---- a/drivers/clk/clk-composite.c
-+++ b/drivers/clk/clk-composite.c
-@@ -54,7 +54,10 @@ static unsigned long clk_composite_recalc_rate(struct clk *clk,
- 	struct clk_composite *composite = to_clk_composite(clk);
- 	struct clk *rate_clk = composite->rate_clk;
+diff --git a/arch/arm/include/asm/system.h b/arch/arm/include/asm/system.h
+index 45eeb6e62c..e55b19a13c 100644
+--- a/arch/arm/include/asm/system.h
++++ b/arch/arm/include/asm/system.h
+@@ -126,6 +126,25 @@ static inline unsigned long get_cntpct(void)
  
--	return rate_clk ? rate_clk->ops->recalc_rate(rate_clk, parent_rate) : 0;
-+	if (rate_clk)
-+		return rate_clk->ops->recalc_rate(rate_clk, parent_rate);
+ 	return cntpct;
+ }
++#else
++static inline unsigned int get_cntfrq(void)
++{
++	unsigned int val;
 +
-+	return parent_rate;
++	asm volatile("mrc p15, 0, %0, c14, c0, 0" : "=r" (val));
++
++	return val;
++}
++
++static inline unsigned long long get_cntpct(void)
++{
++	unsigned long long cval;
++
++	isb();
++	asm volatile("mrrc p15, 0, %Q0, %R0, c14" : "=r" (cval));
++
++	return cval;
++}
+ 
+ #endif
+ static inline unsigned int get_cr(void)
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index b0502c3036..43c5bfc973 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -73,7 +73,7 @@ config CLOCKSOURCE_ATMEL_PIT
+ config CLOCKSOURCE_ARMV8_TIMER
+ 	bool
+ 	default y
+-	depends on ARM && CPU_64v8
++	depends on ARM && (CPU_64v8 || CPU_V7)
+ 
+ config CLOCKSOURCE_ARM_GLOBAL_TIMER
+ 	bool
+diff --git a/drivers/clocksource/armv8-timer.c b/drivers/clocksource/armv8-timer.c
+index 918232e0e0..3095f8cfc4 100644
+--- a/drivers/clocksource/armv8-timer.c
++++ b/drivers/clocksource/armv8-timer.c
+@@ -39,6 +39,7 @@ static int armv8_timer_probe(struct device_d *dev)
  }
  
- static long clk_composite_round_rate(struct clk *clk, unsigned long rate,
+ static struct of_device_id armv8_timer_dt_ids[] = {
++	{ .compatible = "arm,armv7-timer", },
+ 	{ .compatible = "arm,armv8-timer", },
+ 	{ }
+ };
 -- 
 2.20.1
 
