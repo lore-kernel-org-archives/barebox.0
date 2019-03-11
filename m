@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h3HHL-0001XH-Qf
- for barebox@lists.infradead.org; Mon, 11 Mar 2019 09:31:53 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1h3HHO-0008Eo-Ah
+ for barebox@lists.infradead.org; Mon, 11 Mar 2019 09:31:31 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 11 Mar 2019 10:31:09 +0100
-Message-Id: <20190311093123.7956-1-s.hauer@pengutronix.de>
+Date: Mon, 11 Mar 2019 10:31:19 +0100
+Message-Id: <20190311093123.7956-11-s.hauer@pengutronix.de>
+In-Reply-To: <20190311093123.7956-1-s.hauer@pengutronix.de>
+References: <20190311093123.7956-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,93 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/14] Add initial STMicroelectronics MP1 support
+Subject: [PATCH 10/14] clk: mux: Support CLK_SET_RATE_NO_REPARENT flag
 To: Barebox List <barebox@lists.infradead.org>
 
-This adds very basic STMicroelectronics MP1 support. No 1st stage so
-far, only the clock driver and UART driver have been ported. the only
-supported board right now is the DK2 development board. This is
-basically a "Let's see how far I can get in a single day" effort. Stay
-tuned for more, but currently this is more of a low priority
-project.
+Since barebox doesn't do reparenting on rate changes we only have
+to define the flag.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/clk/rockchip/clk-rk3188.c | 2 --
+ drivers/clk/rockchip/clk-rk3288.c | 2 --
+ include/linux/clk.h               | 1 +
+ 3 files changed, 1 insertion(+), 4 deletions(-)
 
-Sascha Hauer (14):
-  clk: clk-composite: return parent_rate if no rate clk
-  clk: parent_names should be const
-  clk: export clk_gate_is_enabled()
-  clk: Make CLK_IGNORE_UNUSED generic
-  clk: Support CLK_IS_CRITICAL flag
-  clk: divider: pass divider flags
-  clk: divider: Support CLK_DIVIDER_READ_ONLY flag
-  clk: mux: Support mux specific flags
-  clk: mux: Support CLK_MUX_READ_ONLY flag
-  clk: mux: Support CLK_SET_RATE_NO_REPARENT flag
-  ARM: stm32mp1: Add clk driver
-  ARM: stm32mp1: Add serial driver
-  clocksource: Enable architected timer support for CPU_V7
-  ARM: Add initial STM32MP1 support
-
- arch/arm/Kconfig                              |   11 +
- arch/arm/Makefile                             |    1 +
- arch/arm/boards/Makefile                      |    1 +
- arch/arm/boards/stm32mp157c-dk2/Makefile      |    2 +
- arch/arm/boards/stm32mp157c-dk2/board.c       |   16 +
- arch/arm/boards/stm32mp157c-dk2/lowlevel.c    |   18 +
- arch/arm/configs/stm32mp1_defconfig           |   98 +
- arch/arm/dts/Makefile                         |    1 +
- arch/arm/dts/stm32mp157a-dk1.dts              |   62 +
- arch/arm/dts/stm32mp157c-dk2.dts              |   14 +
- arch/arm/dts/stm32mp157c.dtsi                 |    7 +
- arch/arm/include/asm/system.h                 |   19 +
- arch/arm/mach-clps711x/clock.c                |    4 +-
- arch/arm/mach-stm32mp1/Kconfig                |   10 +
- arch/arm/mach-stm32mp1/Makefile               |    1 +
- .../arm/mach-stm32mp1/include/mach/debug_ll.h |   28 +
- arch/arm/mach-stm32mp1/include/mach/stm32.h   |   35 +
- drivers/clk/Makefile                          |    1 +
- drivers/clk/clk-composite.c                   |    7 +-
- drivers/clk/clk-divider.c                     |   35 +-
- drivers/clk/clk-gate.c                        |    2 +-
- drivers/clk/clk-mux.c                         |   24 +-
- drivers/clk/clk-stm32mp1.c                    | 1988 +++++++++++++++++
- drivers/clk/clk.c                             |    3 +
- drivers/clk/imx/clk-vf610.c                   |    2 +-
- drivers/clk/imx/clk.h                         |   33 +-
- drivers/clk/mxs/clk.h                         |    2 +-
- drivers/clk/rockchip/clk-pll.c                |    3 +-
- drivers/clk/rockchip/clk-rk3188.c             |    3 -
- drivers/clk/rockchip/clk-rk3288.c             |    3 -
- drivers/clk/rockchip/clk.c                    |   16 +-
- drivers/clk/rockchip/clk.h                    |    1 -
- drivers/clk/tegra/clk-periph.c                |    2 +-
- drivers/clocksource/Kconfig                   |    2 +-
- drivers/clocksource/armv8-timer.c             |    1 +
- drivers/serial/Kconfig                        |    4 +
- drivers/serial/Makefile                       |    1 +
- drivers/serial/serial_stm32.c                 |  246 ++
- drivers/serial/serial_stm32.h                 |   48 +
- images/Makefile                               |    1 +
- images/Makefile.stm32mp1                      |    8 +
- include/linux/clk.h                           |   41 +-
- 42 files changed, 2732 insertions(+), 73 deletions(-)
- create mode 100644 arch/arm/boards/stm32mp157c-dk2/Makefile
- create mode 100644 arch/arm/boards/stm32mp157c-dk2/board.c
- create mode 100644 arch/arm/boards/stm32mp157c-dk2/lowlevel.c
- create mode 100644 arch/arm/configs/stm32mp1_defconfig
- create mode 100644 arch/arm/dts/stm32mp157a-dk1.dts
- create mode 100644 arch/arm/dts/stm32mp157c-dk2.dts
- create mode 100644 arch/arm/dts/stm32mp157c.dtsi
- create mode 100644 arch/arm/mach-stm32mp1/Kconfig
- create mode 100644 arch/arm/mach-stm32mp1/Makefile
- create mode 100644 arch/arm/mach-stm32mp1/include/mach/debug_ll.h
- create mode 100644 arch/arm/mach-stm32mp1/include/mach/stm32.h
- create mode 100644 drivers/clk/clk-stm32mp1.c
- create mode 100644 drivers/serial/serial_stm32.c
- create mode 100644 drivers/serial/serial_stm32.h
- create mode 100644 images/Makefile.stm32mp1
-
+diff --git a/drivers/clk/rockchip/clk-rk3188.c b/drivers/clk/rockchip/clk-rk3188.c
+index 8ed3a6d894..9340739945 100644
+--- a/drivers/clk/rockchip/clk-rk3188.c
++++ b/drivers/clk/rockchip/clk-rk3188.c
+@@ -25,8 +25,6 @@
+ #define RK3066_GRF_SOC_STATUS	0x15c
+ #define RK3188_GRF_SOC_STATUS	0xac
+ 
+-#define CLK_SET_RATE_NO_REPARENT 0
+-
+ enum rk3188_plls {
+ 	apll, cpll, dpll, gpll,
+ };
+diff --git a/drivers/clk/rockchip/clk-rk3288.c b/drivers/clk/rockchip/clk-rk3288.c
+index e7cc9c1b5b..dcfaae2407 100644
+--- a/drivers/clk/rockchip/clk-rk3288.c
++++ b/drivers/clk/rockchip/clk-rk3288.c
+@@ -25,8 +25,6 @@
+ #define RK3288_GRF_SOC_CON(x)	(0x244 + x * 4)
+ #define RK3288_GRF_SOC_STATUS1	0x284
+ 
+-#define CLK_SET_RATE_NO_REPARENT 0
+-
+ enum rk3288_plls {
+ 	apll, dpll, cpll, gpll, npll,
+ };
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 2492608a15..b9c5e0ab04 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -286,6 +286,7 @@ static inline void clk_put(struct clk *clk)
+ 
+ #define CLK_SET_RATE_PARENT     (1 << 0) /* propagate rate change up one level */
+ #define CLK_IGNORE_UNUSED       (1 << 3) /* do not gate even if unused */
++#define CLK_SET_RATE_NO_REPARENT (1 << 7) /* don't re-parent on rate change */
+ #define CLK_IS_CRITICAL         (1 << 11) /* do not gate, ever */
+ /* parents need enable during gate/ungate, set rate and re-parent */
+ #define CLK_OPS_PARENT_ENABLE   (1 << 12)
 -- 
 2.20.1
 
