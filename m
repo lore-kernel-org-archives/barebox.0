@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h3Krh-0006Lb-UZ
- for barebox@lists.infradead.org; Mon, 11 Mar 2019 13:21:15 +0000
+ id 1h3Krp-0006RH-Nd
+ for barebox@lists.infradead.org; Mon, 11 Mar 2019 13:21:23 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 11 Mar 2019 14:21:11 +0100
-Message-Id: <20190311132111.27237-3-s.hauer@pengutronix.de>
+Date: Mon, 11 Mar 2019 14:21:10 +0100
+Message-Id: <20190311132111.27237-2-s.hauer@pengutronix.de>
 In-Reply-To: <20190311132111.27237-1-s.hauer@pengutronix.de>
 References: <20190311132111.27237-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,223 +21,271 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] realtek phy driver
+Subject: [PATCH 2/3] net: phy: Add register access helper functions for phys
 To: Barebox List <barebox@lists.infradead.org>
+
+Linux has phy helpers to access paged registers and to modify phy
+registers. Add them to barebox for upcoming realtek phy support.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/phy/Kconfig   |   5 ++
- drivers/net/phy/Makefile  |   1 +
- drivers/net/phy/realtek.c | 172 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 178 insertions(+)
- create mode 100644 drivers/net/phy/realtek.c
+ drivers/net/phy/Makefile   |   2 +-
+ drivers/net/phy/phy-core.c | 175 +++++++++++++++++++++++++++++++++++++
+ include/linux/phy.h        |  35 ++++++++
+ 3 files changed, 211 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/phy/phy-core.c
 
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 0665aefd99..c08b8257a7 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -48,6 +48,11 @@ config NATIONAL_PHY
- 	---help---
- 	  Currently supports the DP83865 PHY.
- 
-+config REALTEK_PHY
-+	bool "Driver for Realtek PHYs"
-+	---help---
-+	  Supports the Realtek 821x PHY.
-+
- config SMSC_PHY
- 	bool "Drivers for SMSC PHYs"
- 	---help---
 diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index 5dd9bd5fd3..7053b5762c 100644
+index 5f11a857d4..5dd9bd5fd3 100644
 --- a/drivers/net/phy/Makefile
 +++ b/drivers/net/phy/Makefile
-@@ -6,6 +6,7 @@ obj-$(CONFIG_LXT_PHY)		+= lxt.o
- obj-$(CONFIG_MARVELL_PHY)	+= marvell.o
- obj-$(CONFIG_MICREL_PHY)	+= micrel.o
- obj-$(CONFIG_NATIONAL_PHY)	+= national.o
-+obj-$(CONFIG_REALTEK_PHY)	+= realtek.o
- obj-$(CONFIG_SMSC_PHY)		+= smsc.o
- obj-$(CONFIG_NET_DSA_MV88E6XXX)	+= mv88e6xxx/
- 
-diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
+@@ -1,4 +1,4 @@
+-obj-y += phy.o mdio_bus.o
++obj-y += phy.o mdio_bus.o phy-core.o
+ obj-$(CONFIG_AR8327N_PHY)	+= ar8327.o
+ obj-$(CONFIG_AT803X_PHY)	+= at803x.o
+ obj-$(CONFIG_DAVICOM_PHY)	+= davicom.o
+diff --git a/drivers/net/phy/phy-core.c b/drivers/net/phy/phy-core.c
 new file mode 100644
-index 0000000000..4ae050128c
+index 0000000000..21daaa9a2b
 --- /dev/null
-+++ b/drivers/net/phy/realtek.c
-@@ -0,0 +1,172 @@
-+/*
-+ * drivers/net/phy/realtek.c
-+ *
-+ * Driver for Realtek PHYs
-+ *
-+ * Author: Johnson Leung <r58129@freescale.com>
-+ *
-+ * Copyright (c) 2004 Freescale Semiconductor, Inc.
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ *
-+ */
++++ b/drivers/net/phy/phy-core.c
+@@ -0,0 +1,175 @@
 +#include <common.h>
-+#include <init.h>
-+#include <linux/bitops.h>
 +#include <linux/phy.h>
 +
-+#define RTL821x_PHYSR				0x11
-+#define RTL821x_PHYSR_DUPLEX			BIT(13)
-+#define RTL821x_PHYSR_SPEED			GENMASK(15, 14)
-+
-+#define RTL821x_INER				0x12
-+#define RTL8211B_INER_INIT			0x6400
-+#define RTL8211E_INER_LINK_STATUS		BIT(10)
-+#define RTL8211F_INER_LINK_STATUS		BIT(4)
-+
-+#define RTL821x_INSR				0x13
-+
-+#define RTL821x_PAGE_SELECT			0x1f
-+
-+#define RTL8211F_INSR				0x1d
-+
-+#define RTL8211F_TX_DELAY			BIT(8)
-+
-+#define RTL8201F_ISR				0x1e
-+#define RTL8201F_IER				0x13
-+
-+#define RTL8366RB_POWER_SAVE			0x15
-+#define RTL8366RB_POWER_SAVE_ON			BIT(12)
-+
-+static int rtl821x_read_page(struct phy_device *phydev)
-+{
-+	return phy_read(phydev, RTL821x_PAGE_SELECT);
-+}
-+
-+static int rtl821x_write_page(struct phy_device *phydev, int page)
-+{
-+	return phy_write(phydev, RTL821x_PAGE_SELECT, page);
-+}
-+
-+static int rtl8211_config_aneg(struct phy_device *phydev)
++/**
++ * phy_modify - Convenience function for modifying a given PHY register
++ * @phydev: the phy_device struct
++ * @regnum: register number to write
++ * @mask: bit mask of bits to clear
++ * @set: new value of bits set in mask to write to @regnum
++ *
++ */
++int phy_modify(struct phy_device *phydev, u32 regnum, u16 mask, u16 set)
 +{
 +	int ret;
 +
-+	ret = genphy_config_aneg(phydev);
++	ret = phy_read(phydev, regnum);
 +	if (ret < 0)
 +		return ret;
 +
-+	/* Quirk was copied from vendor driver. Unfortunately it includes no
-+	 * description of the magic numbers.
-+	 */
-+	if (phydev->speed == SPEED_100 && phydev->autoneg == AUTONEG_DISABLE) {
-+		phy_write(phydev, 0x17, 0x2138);
-+		phy_write(phydev, 0x0e, 0x0260);
-+	} else {
-+		phy_write(phydev, 0x17, 0x2108);
-+		phy_write(phydev, 0x0e, 0x0000);
++	ret = phy_write(phydev, regnum, (ret & ~mask) | set);
++
++	return ret < 0 ? ret : 0;
++}
++
++static int phy_read_page(struct phy_device *phydev)
++{
++	struct phy_driver *phydrv = to_phy_driver(phydev->dev.driver);
++
++	return phydrv->read_page(phydev);
++}
++
++static int phy_write_page(struct phy_device *phydev, int page)
++{
++	struct phy_driver *phydrv = to_phy_driver(phydev->dev.driver);
++
++	return phydrv->write_page(phydev, page);
++}
++
++/**
++ * phy_save_page() - take the bus lock and save the current page
++ * @phydev: a pointer to a &struct phy_device
++ *
++ * Take the MDIO bus lock, and return the current page number. On error,
++ * returns a negative errno. phy_restore_page() must always be called
++ * after this, irrespective of success or failure of this call.
++ */
++int phy_save_page(struct phy_device *phydev)
++{
++	return phy_read_page(phydev);
++}
++
++/**
++ * phy_select_page() - take the bus lock, save the current page, and set a page
++ * @phydev: a pointer to a &struct phy_device
++ * @page: desired page
++ *
++ * Take the MDIO bus lock to protect against concurrent access, save the
++ * current PHY page, and set the current page.  On error, returns a
++ * negative errno, otherwise returns the previous page number.
++ * phy_restore_page() must always be called after this, irrespective
++ * of success or failure of this call.
++ */
++int phy_select_page(struct phy_device *phydev, int page)
++{
++	int ret, oldpage;
++
++	oldpage = ret = phy_save_page(phydev);
++	if (ret < 0)
++		return ret;
++
++	if (oldpage != page) {
++		ret = phy_write_page(phydev, page);
++		if (ret < 0)
++			return ret;
 +	}
 +
-+	return 0;
++	return oldpage;
 +}
 +
-+static int rtl8211c_config_init(struct phy_device *phydev)
++/**
++ * phy_restore_page() - restore the page register and release the bus lock
++ * @phydev: a pointer to a &struct phy_device
++ * @oldpage: the old page, return value from phy_save_page() or phy_select_page()
++ * @ret: operation's return code
++ *
++ * Release the MDIO bus lock, restoring @oldpage if it is a valid page.
++ * This function propagates the earliest error code from the group of
++ * operations.
++ *
++ * Returns:
++ *   @oldpage if it was a negative value, otherwise
++ *   @ret if it was a negative errno value, otherwise
++ *   phy_write_page()'s negative value if it were in error, otherwise
++ *   @ret.
++ */
++int phy_restore_page(struct phy_device *phydev, int oldpage, int ret)
 +{
-+	/* RTL8211C has an issue when operating in Gigabit slave mode */
-+	phy_set_bits(phydev, MII_CTRL1000,
-+		     CTL1000_ENABLE_MASTER | CTL1000_AS_MASTER);
++	int r;
 +
-+	return genphy_config_init(phydev);
-+}
++	if (oldpage >= 0) {
++		r = phy_write_page(phydev, oldpage);
 +
-+static int rtl8211f_config_init(struct phy_device *phydev)
-+{
-+	int ret;
-+	u16 val = 0;
-+
-+	ret = genphy_config_init(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* enable TX-delay for rgmii-id and rgmii-txid, otherwise disable it */
-+	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID ||
-+	    phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID)
-+		val = RTL8211F_TX_DELAY;
-+
-+	return phy_modify_paged(phydev, 0xd08, 0x11, RTL8211F_TX_DELAY, val);
-+}
-+
-+static int rtl8366rb_config_init(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	ret = genphy_config_init(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = phy_set_bits(phydev, RTL8366RB_POWER_SAVE,
-+			   RTL8366RB_POWER_SAVE_ON);
-+	if (ret) {
-+		dev_err(&phydev->dev, "error enabling power management\n");
++		/* Propagate the operation return code if the page write
++		 * was successful.
++		 */
++		if (ret >= 0 && r < 0)
++			ret = r;
++	} else {
++		/* Propagate the phy page selection error code */
++		ret = oldpage;
 +	}
 +
 +	return ret;
 +}
 +
-+static struct phy_driver realtek_drvs[] = {
-+	{
-+		PHY_ID_MATCH_EXACT(0x00008201),
-+		.drv.name	= "RTL8201CP Ethernet",
-+		.features	= PHY_BASIC_FEATURES,
-+	}, {
-+		PHY_ID_MATCH_EXACT(0x001cc816),
-+		.drv.name	= "RTL8201F Fast Ethernet",
-+		.features	= PHY_BASIC_FEATURES,
-+		.read_page	= rtl821x_read_page,
-+		.write_page	= rtl821x_write_page,
-+	}, {
-+		PHY_ID_MATCH_EXACT(0x001cc910),
-+		.drv.name	= "RTL8211 Gigabit Ethernet",
-+		.features	= PHY_GBIT_FEATURES,
-+		.config_aneg	= rtl8211_config_aneg,
-+	}, {
-+		PHY_ID_MATCH_EXACT(0x001cc912),
-+		.drv.name	= "RTL8211B Gigabit Ethernet",
-+		.features	= PHY_GBIT_FEATURES,
-+	}, {
-+		PHY_ID_MATCH_EXACT(0x001cc913),
-+		.drv.name	= "RTL8211C Gigabit Ethernet",
-+		.features	= PHY_GBIT_FEATURES,
-+		.config_init	= rtl8211c_config_init,
-+	}, {
-+		PHY_ID_MATCH_EXACT(0x001cc914),
-+		.drv.name	= "RTL8211DN Gigabit Ethernet",
-+		.features	= PHY_GBIT_FEATURES,
-+	}, {
-+		PHY_ID_MATCH_EXACT(0x001cc915),
-+		.drv.name	= "RTL8211E Gigabit Ethernet",
-+		.features	= PHY_GBIT_FEATURES,
-+	}, {
-+		PHY_ID_MATCH_EXACT(0x001cc916),
-+		.drv.name	= "RTL8211F Gigabit Ethernet",
-+		.features	= PHY_GBIT_FEATURES,
-+		.config_init	= &rtl8211f_config_init,
-+		.read_page	= rtl821x_read_page,
-+		.write_page	= rtl821x_write_page,
-+	}, {
-+		PHY_ID_MATCH_EXACT(0x001cc961),
-+		.drv.name	= "RTL8366RB Gigabit Ethernet",
-+		.features	= PHY_GBIT_FEATURES,
-+		.config_init	= &rtl8366rb_config_init,
-+	},
-+};
-+
-+static int __init realtek_phy_init(void)
++/**
++ * phy_read_paged() - Convenience function for reading a paged register
++ * @phydev: a pointer to a &struct phy_device
++ * @page: the page for the phy
++ * @regnum: register number
++ *
++ * Same rules as for phy_read().
++ */
++int phy_read_paged(struct phy_device *phydev, int page, u32 regnum)
 +{
-+	return phy_drivers_register(realtek_drvs,
-+				    ARRAY_SIZE(realtek_drvs));
++	int ret = 0, oldpage;
++
++	oldpage = phy_select_page(phydev, page);
++	if (oldpage >= 0)
++		ret = phy_read(phydev, regnum);
++
++	return phy_restore_page(phydev, oldpage, ret);
 +}
-+fs_initcall(realtek_phy_init);
++
++/**
++ * phy_write_paged() - Convenience function for writing a paged register
++ * @phydev: a pointer to a &struct phy_device
++ * @page: the page for the phy
++ * @regnum: register number
++ * @val: value to write
++ *
++ * Same rules as for phy_write().
++ */
++int phy_write_paged(struct phy_device *phydev, int page, u32 regnum, u16 val)
++{
++	int ret = 0, oldpage;
++
++	oldpage = phy_select_page(phydev, page);
++	if (oldpage >= 0)
++		ret = phy_write(phydev, regnum, val);
++
++	return phy_restore_page(phydev, oldpage, ret);
++}
++
++/**
++ * phy_modify_paged() - Convenience function for modifying a paged register
++ * @phydev: a pointer to a &struct phy_device
++ * @page: the page for the phy
++ * @regnum: register number
++ * @mask: bit mask of bits to clear
++ * @set: bit mask of bits to set
++ *
++ * Same rules as for phy_read() and phy_write().
++ */
++int phy_modify_paged(struct phy_device *phydev, int page, u32 regnum,
++		     u16 mask, u16 set)
++{
++	int ret = 0, oldpage;
++
++	oldpage = phy_select_page(phydev, page);
++	if (oldpage >= 0)
++		ret = phy_modify(phydev, regnum, mask, set);
++
++	return phy_restore_page(phydev, oldpage, ret);
++}
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index ce72861bfc..a9fdf44f1a 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -267,6 +267,9 @@ struct phy_driver {
+ 	/* Clears up any memory if needed */
+ 	void (*remove)(struct phy_device *phydev);
+ 
++	int (*read_page)(struct phy_device *phydev);
++	int (*write_page)(struct phy_device *phydev, int page);
++
+ 	struct driver_d	 drv;
+ };
+ #define to_phy_driver(d) ((d) ? container_of(d, struct phy_driver, drv) : NULL)
+@@ -293,6 +296,14 @@ struct phy_device *get_phy_device(struct mii_bus *bus, int addr);
+ int phy_init(void);
+ int phy_init_hw(struct phy_device *phydev);
+ 
++int phy_save_page(struct phy_device *phydev);
++int phy_select_page(struct phy_device *phydev, int page);
++int phy_restore_page(struct phy_device *phydev, int oldpage, int ret);
++int phy_read_paged(struct phy_device *phydev, int page, u32 regnum);
++int phy_write_paged(struct phy_device *phydev, int page, u32 regnum, u16 val);
++int phy_modify_paged(struct phy_device *phydev, int page, u32 regnum,
++		     u16 mask, u16 set);
++
+ struct phy_device *phy_device_create(struct mii_bus *bus, int addr, int phy_id);
+ int phy_register_device(struct phy_device* dev);
+ void phy_unregister_device(struct phy_device *phydev);
+@@ -318,6 +329,30 @@ static inline int phy_write(struct phy_device *phydev, u32 regnum, u16 val)
+ 	return mdiobus_write(phydev->bus, phydev->addr, regnum, val);
+ }
+ 
++int phy_modify(struct phy_device *phydev, u32 regnum, u16 mask, u16 set);
++
++/**
++ * phy_set_bits - Convenience function for setting bits in a PHY register
++ * @phydev: the phy_device struct
++ * @regnum: register number to write
++ * @val: bits to set
++ */
++static inline int phy_set_bits(struct phy_device *phydev, u32 regnum, u16 val)
++{
++	return phy_modify(phydev, regnum, 0, val);
++}
++
++/**
++ * phy_clear_bits - Convenience function for clearing bits in a PHY register
++ * @phydev: the phy_device struct
++ * @regnum: register number to write
++ * @val: bits to clear
++ */
++static inline int phy_clear_bits(struct phy_device *phydev, u32 regnum, u16 val)
++{
++	return phy_modify(phydev, regnum, val, 0);
++}
++
+ int phy_device_connect(struct eth_device *dev, struct mii_bus *bus, int addr,
+ 		       void (*adjust_link) (struct eth_device *edev),
+ 		       u32 flags, phy_interface_t interface);
 -- 
 2.20.1
 
