@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h3HHO-0008Eo-Ah
- for barebox@lists.infradead.org; Mon, 11 Mar 2019 09:31:31 +0000
+ id 1h3HHO-0008El-B6
+ for barebox@lists.infradead.org; Mon, 11 Mar 2019 09:31:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 11 Mar 2019 10:31:19 +0100
-Message-Id: <20190311093123.7956-11-s.hauer@pengutronix.de>
+Date: Mon, 11 Mar 2019 10:31:11 +0100
+Message-Id: <20190311093123.7956-3-s.hauer@pengutronix.de>
 In-Reply-To: <20190311093123.7956-1-s.hauer@pengutronix.de>
 References: <20190311093123.7956-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,57 +21,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/14] clk: mux: Support CLK_SET_RATE_NO_REPARENT flag
+Subject: [PATCH 02/14] clk: parent_names should be const
 To: Barebox List <barebox@lists.infradead.org>
 
-Since barebox doesn't do reparenting on rate changes we only have
-to define the flag.
+Not only the array of pointers should be const, but also the strings
+they point to. Add missing const.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clk/rockchip/clk-rk3188.c | 2 --
- drivers/clk/rockchip/clk-rk3288.c | 2 --
- include/linux/clk.h               | 1 +
- 3 files changed, 1 insertion(+), 4 deletions(-)
+ drivers/clk/clk-composite.c | 2 +-
+ drivers/clk/clk-mux.c       | 4 ++--
+ include/linux/clk.h         | 8 ++++----
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/clk/rockchip/clk-rk3188.c b/drivers/clk/rockchip/clk-rk3188.c
-index 8ed3a6d894..9340739945 100644
---- a/drivers/clk/rockchip/clk-rk3188.c
-+++ b/drivers/clk/rockchip/clk-rk3188.c
-@@ -25,8 +25,6 @@
- #define RK3066_GRF_SOC_STATUS	0x15c
- #define RK3188_GRF_SOC_STATUS	0xac
- 
--#define CLK_SET_RATE_NO_REPARENT 0
--
- enum rk3188_plls {
- 	apll, cpll, dpll, gpll,
+diff --git a/drivers/clk/clk-composite.c b/drivers/clk/clk-composite.c
+index 716f6805f3..e21ab98453 100644
+--- a/drivers/clk/clk-composite.c
++++ b/drivers/clk/clk-composite.c
+@@ -116,7 +116,7 @@ static struct clk_ops clk_composite_ops = {
  };
-diff --git a/drivers/clk/rockchip/clk-rk3288.c b/drivers/clk/rockchip/clk-rk3288.c
-index e7cc9c1b5b..dcfaae2407 100644
---- a/drivers/clk/rockchip/clk-rk3288.c
-+++ b/drivers/clk/rockchip/clk-rk3288.c
-@@ -25,8 +25,6 @@
- #define RK3288_GRF_SOC_CON(x)	(0x244 + x * 4)
- #define RK3288_GRF_SOC_STATUS1	0x284
  
--#define CLK_SET_RATE_NO_REPARENT 0
--
- enum rk3288_plls {
- 	apll, dpll, cpll, gpll, npll,
+ struct clk *clk_register_composite(const char *name,
+-			const char **parent_names, int num_parents,
++			const char * const *parent_names, int num_parents,
+ 			struct clk *mux_clk,
+ 			struct clk *rate_clk,
+ 			struct clk *gate_clk,
+diff --git a/drivers/clk/clk-mux.c b/drivers/clk/clk-mux.c
+index d5fe640dce..a108a72d63 100644
+--- a/drivers/clk/clk-mux.c
++++ b/drivers/clk/clk-mux.c
+@@ -52,7 +52,7 @@ struct clk_ops clk_mux_ops = {
  };
+ 
+ struct clk *clk_mux_alloc(const char *name, void __iomem *reg,
+-		u8 shift, u8 width, const char **parents, u8 num_parents,
++		u8 shift, u8 width, const char * const *parents, u8 num_parents,
+ 		unsigned flags)
+ {
+ 	struct clk_mux *m = xzalloc(sizeof(*m));
+@@ -77,7 +77,7 @@ void clk_mux_free(struct clk *clk_mux)
+ }
+ 
+ struct clk *clk_mux(const char *name, void __iomem *reg,
+-		u8 shift, u8 width, const char **parents, u8 num_parents, unsigned flags)
++		u8 shift, u8 width, const char * const *parents, u8 num_parents, unsigned flags)
+ {
+ 	struct clk *m;
+ 	int ret;
 diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 2492608a15..b9c5e0ab04 100644
+index ee888dc083..1f20eb2772 100644
 --- a/include/linux/clk.h
 +++ b/include/linux/clk.h
-@@ -286,6 +286,7 @@ static inline void clk_put(struct clk *clk)
+@@ -310,7 +310,7 @@ struct clk {
+ 	int enable_count;
+ 	struct list_head list;
+ 	const char *name;
+-	const char **parent_names;
++	const char * const *parent_names;
+ 	int num_parents;
  
- #define CLK_SET_RATE_PARENT     (1 << 0) /* propagate rate change up one level */
- #define CLK_IGNORE_UNUSED       (1 << 3) /* do not gate even if unused */
-+#define CLK_SET_RATE_NO_REPARENT (1 << 7) /* don't re-parent on rate change */
- #define CLK_IS_CRITICAL         (1 << 11) /* do not gate, ever */
- /* parents need enable during gate/ungate, set rate and re-parent */
- #define CLK_OPS_PARENT_ENABLE   (1 << 12)
+ 	struct clk **parents;
+@@ -384,11 +384,11 @@ struct clk_mux {
+ extern struct clk_ops clk_mux_ops;
+ 
+ struct clk *clk_mux_alloc(const char *name, void __iomem *reg,
+-		u8 shift, u8 width, const char **parents, u8 num_parents,
++		u8 shift, u8 width, const char * const *parents, u8 num_parents,
+ 		unsigned flags);
+ void clk_mux_free(struct clk *clk_mux);
+ struct clk *clk_mux(const char *name, void __iomem *reg,
+-		u8 shift, u8 width, const char **parents, u8 num_parents,
++		u8 shift, u8 width, const char * const *parents, u8 num_parents,
+ 		unsigned flags);
+ 
+ struct clk_gate {
+@@ -429,7 +429,7 @@ struct clk *clk_lookup(const char *name);
+ void clk_dump(int verbose);
+ 
+ struct clk *clk_register_composite(const char *name,
+-			const char **parent_names, int num_parents,
++			const char * const *parent_names, int num_parents,
+ 			struct clk *mux_clk,
+ 			struct clk *rate_clk,
+ 			struct clk *gate_clk,
 -- 
 2.20.1
 
