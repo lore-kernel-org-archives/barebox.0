@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h3zOw-00079E-T9
- for barebox@lists.infradead.org; Wed, 13 Mar 2019 08:38:15 +0000
-Date: Wed, 13 Mar 2019 09:35:22 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190313083521.utsjhbpaibqeqno5@pengutronix.de>
-References: <20190311093123.7956-1-s.hauer@pengutronix.de>
- <20190311093123.7956-15-s.hauer@pengutronix.de>
- <CAHQ1cqHvx-9vv=WP2+B0tG=npnLVaENOXw_4dOh_WNe=+R=y9Q@mail.gmail.com>
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1h3c6S-0001zW-4I
+ for barebox@lists.infradead.org; Tue, 12 Mar 2019 07:45:37 +0000
+Received: by mail-pf1-x444.google.com with SMTP id n74so1198911pfi.9
+ for <barebox@lists.infradead.org>; Tue, 12 Mar 2019 00:45:36 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 12 Mar 2019 00:45:22 -0700
+Message-Id: <20190312074525.6153-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqHvx-9vv=WP2+B0tG=npnLVaENOXw_4dOh_WNe=+R=y9Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,30 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 14/14] ARM: Add initial STM32MP1 support
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 0/3] Earlycon command line option support
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Mon, Mar 11, 2019 at 06:41:59PM -0700, Andrey Smirnov wrote:
-> > +static int dk2_postcore_init(void)
-> > +{
-> > +       if (!of_machine_is_compatible("st,stm32mp157c-dk2"))
-> > +               return 0;
-> > +
-> > +       arm_add_mem_device("ram0", 0xc0000000, SZ_512M);
-> > +
-> 
-> Minor nit: I think you can replace 0xc0000000 with STM32_DDR_BASE.
+Everyone:
 
-Indeed. Fixed, thanks
+This small series is something I came up with to avoid having to look
+up the syntax and manually specify earlycon kernel command line option
+every time I needed it. The series is purely optional in case I am not
+the only one who thinks this is useful.
 
-Sascha
+Feedback is welcome!
+
+Thanks,
+Andrey Smirnov
+
+Andrey Smirnov (3):
+  console: Add plumbing to expose earlycon/bootconsole parameter
+  serial: i.MX: Add code to export "earlycon" setting
+  serial: lpuart: Add code to export "earlycon" setting
+
+ Documentation/user/variables.rst |  1 +
+ common/console.c                 | 25 +++++++++++++++++++++++++
+ drivers/serial/serial_imx.c      |  3 +++
+ drivers/serial/serial_lpuart.c   |  1 +
+ include/console.h                |  1 +
+ 5 files changed, 31 insertions(+)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
