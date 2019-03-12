@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x443.google.com ([2a00:1450:4864:20::443])
+Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h3WX9-0004BL-Ir
- for barebox@lists.infradead.org; Tue, 12 Mar 2019 01:48:48 +0000
-Received: by mail-wr1-x443.google.com with SMTP id t18so913784wrx.2
- for <barebox@lists.infradead.org>; Mon, 11 Mar 2019 18:48:47 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190307074813.19664-1-andrew.smirnov@gmail.com>
- <20190311071325.2q3x2x3ntupsp4td@pengutronix.de>
-In-Reply-To: <20190311071325.2q3x2x3ntupsp4td@pengutronix.de>
+ id 1h3btW-0004uX-2X
+ for barebox@lists.infradead.org; Tue, 12 Mar 2019 07:32:15 +0000
+Received: by mail-pg1-x544.google.com with SMTP id k11so1149239pgb.8
+ for <barebox@lists.infradead.org>; Tue, 12 Mar 2019 00:32:13 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 11 Mar 2019 18:48:34 -0700
-Message-ID: <CAHQ1cqHuj_BD1hDV7ZpQXx7Ov817APWyV-q4OVm7wn6ADd4QuA@mail.gmail.com>
+Date: Tue, 12 Mar 2019 00:32:07 -0700
+Message-Id: <20190312073207.27847-1-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,52 +21,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usb: dwc3: Toggle GCTL.CORESOFTRESET as a first step
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] libfile: Make use of write_full() in copy_file()
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Mon, Mar 11, 2019 at 12:13 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Wed, Mar 06, 2019 at 11:48:13PM -0800, Andrey Smirnov wrote:
-> > Toggle GCTL.CORESOFTRESET before trying to access any of the block's
-> > registers. Without this additional step, first read of DWC3_GHWPARAMS*
-> > that follows results in assertion of GSTS.CSRTIMEOUT and IP block
-> > stuck in a non-functional state.
-> >
-> > Note that all above has only been observed on i.MX8MQ (ZII Zest board)
-> > for USB1 controller. USB2 doesn't seem to be affected by this.
-> >
-> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > ---
-> >  drivers/usb/dwc3/core.c | 17 +++++++++++++++++
-> >  1 file changed, 17 insertions(+)
-> >
-> > diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-> > index 2e7031a34..1fc24a441 100644
-> > --- a/drivers/usb/dwc3/core.c
-> > +++ b/drivers/usb/dwc3/core.c
-> > @@ -663,6 +663,21 @@ static void dwc3_check_params(struct dwc3 *dwc)
-> >       }
-> >  }
-> >
-> > +static void dwc3_coresoft_reset(struct dwc3 *dwc)
-> > +{
-> > +     u32 reg;
-> > +
-> > +     reg = dwc3_readl(dwc->regs, DWC3_GCTL);
-> > +     reg |= DWC3_GCTL_CORESOFTRESET;
-> > +     dwc3_writel(dwc->regs, DWC3_GCTL, reg);
-> > +
-> > +     mdelay(100);
->
-> 100ms is quite long. Isn't a shorter delay enough?
+Change copy_file() to rely on write_full() instead of re-implementing
+it locally.
 
-Hmm, not sure, that's the number I got from similar reset sequence
-found in U-Boot. I'll experiment on bringing it down and submit a v2
-if smaller delay is enough.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ lib/libfile.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
-Thanks,
-Andrey Smirnov
+diff --git a/lib/libfile.c b/lib/libfile.c
+index c069aee40..b42753c2b 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -329,10 +329,9 @@ int copy_file(const char *src, const char *dst, int verbose)
+ {
+ 	char *rw_buf = NULL;
+ 	int srcfd = 0, dstfd = 0;
+-	int r, w;
++	int r;
+ 	int ret = 1, err1 = 0;
+ 	int mode;
+-	void *buf;
+ 	int total = 0;
+ 	struct stat srcstat, dststat;
+ 
+@@ -376,18 +375,13 @@ int copy_file(const char *src, const char *dst, int verbose)
+ 		if (!r)
+ 			break;
+ 
+-		buf = rw_buf;
+-		while (r) {
+-			w = write(dstfd, buf, r);
+-			if (w < 0) {
+-				perror("write");
+-				goto out;
+-			}
+-			buf += w;
+-			r -= w;
+-			total += w;
++		if (write_full(dstfd, rw_buf, r) < 0) {
++			perror("write");
++			goto out;
+ 		}
+ 
++		total += r;
++
+ 		if (verbose) {
+ 			if (srcstat.st_size && srcstat.st_size != FILESIZE_MAX)
+ 				show_progress(total);
+-- 
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
