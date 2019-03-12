@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h3zRT-0007DR-Qf
- for barebox@lists.infradead.org; Wed, 13 Mar 2019 08:40:52 +0000
-Date: Wed, 13 Mar 2019 09:40:36 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190313084036.n6wqjaiiunhc47dg@pengutronix.de>
-References: <20190312072527.21772-1-andrew.smirnov@gmail.com>
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1h3bjq-00018V-3c
+ for barebox@lists.infradead.org; Tue, 12 Mar 2019 07:22:15 +0000
+Received: by mail-pf1-x443.google.com with SMTP id i19so1196492pfd.0
+ for <barebox@lists.infradead.org>; Tue, 12 Mar 2019 00:22:13 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 12 Mar 2019 00:21:48 -0700
+Message-Id: <20190312072150.19092-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190312072527.21772-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,33 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: zii-vf610-dev: Add ZII SPB4 board
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] fs: ramfs: Drop unused 'handle' filed from struct
+ ramfs_inode
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Tue, Mar 12, 2019 at 12:25:26AM -0700, Andrey Smirnov wrote:
-> Add support for Zodiac's VF610 based SPB4 board.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  arch/arm/boards/zii-vf610-dev/board.c    |   4 +-
->  arch/arm/boards/zii-vf610-dev/lowlevel.c |   5 +
->  arch/arm/dts/Makefile                    |   3 +-
->  arch/arm/dts/vf610-zii-spb4.dts          |  16 +
->  arch/arm/dts/vf610-zii-spb4.dtsi         | 365 +++++++++++++++++++++++
->  5 files changed, 391 insertions(+), 2 deletions(-)
->  create mode 100644 arch/arm/dts/vf610-zii-spb4.dts
->  create mode 100644 arch/arm/dts/vf610-zii-spb4.dtsi
+There are no users of this field in the code. Drop it.
 
-Applied, thanks
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ fs/ramfs.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Sascha
-
+diff --git a/fs/ramfs.c b/fs/ramfs.c
+index 3046afef3..94ecb0597 100644
+--- a/fs/ramfs.c
++++ b/fs/ramfs.c
+@@ -43,8 +43,6 @@ struct ramfs_inode {
+ 	char *symlink;
+ 	ulong mode;
+ 
+-	struct handle_d *handle;
+-
+ 	ulong size;
+ 	struct ramfs_chunk *data;
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
