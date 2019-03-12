@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h3eWq-0006tR-Ew
+ id 1h3eWq-0006tS-Ek
  for barebox@lists.infradead.org; Tue, 12 Mar 2019 10:21:03 +0000
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Tue, 12 Mar 2019 11:20:51 +0100
-Message-Id: <20190312102055.12386-3-m.tretter@pengutronix.de>
+Date: Tue, 12 Mar 2019 11:20:50 +0100
+Message-Id: <20190312102055.12386-2-m.tretter@pengutronix.de>
 In-Reply-To: <20190312102055.12386-1-m.tretter@pengutronix.de>
 References: <20190312102055.12386-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
@@ -21,34 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] ARM: zynqmp: populate zynqmp_firmware dt node
+Subject: [PATCH 1/6] of: populate "/firmware" while populating device tree
 To: barebox@lists.infradead.org
 Cc: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>, Michael Tretter <m.tretter@pengutronix.de>
 
 From: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
 
-The zynqmp_firmware node has sub-nodes for the various APIs to expose
-the platform management, as e.g. clock management. Therefore, the driver
-must populate the subnodes to initialize these drivers.
+The sub-nodes of "/firmware" are not populated, since it has no
+"compatible" property. Copy the behavior of Linux and call
+of_platform_populate() on the "/firmware" node to probe firmware
+drivers.
 
 Signed-off-by: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- arch/arm/mach-zynqmp/firmware-zynqmp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/of/base.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-zynqmp/firmware-zynqmp.c b/arch/arm/mach-zynqmp/firmware-zynqmp.c
-index a3ee992832..d7e2a66d0f 100644
---- a/arch/arm/mach-zynqmp/firmware-zynqmp.c
-+++ b/arch/arm/mach-zynqmp/firmware-zynqmp.c
-@@ -577,6 +577,7 @@ static int zynqmp_firmware_probe(struct device_d *dev)
- 	dev_dbg(dev, "Trustzone version v%d.%d\n",
- 			pm_tz_version >> 16, pm_tz_version & 0xFFFF);
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index b082f0c656..85c7953370 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1979,7 +1979,7 @@ const struct of_device_id of_default_bus_match_table[] = {
  
-+	of_platform_populate(dev->device_node, NULL, dev);
- out:
- 	if (ret)
- 		do_fw_call = do_fw_call_fail;
+ int of_probe(void)
+ {
+-	struct device_node *memory;
++	struct device_node *memory, *firmware;
+ 
+ 	if(!root_node)
+ 		return -ENODEV;
+@@ -1996,6 +1996,10 @@ int of_probe(void)
+ 	if (memory)
+ 		of_add_memory(memory, false);
+ 
++	firmware = of_find_node_by_path("/firmware");
++	if (firmware)
++		of_platform_populate(firmware, NULL, NULL);
++
+ 	of_clk_init(root_node, NULL);
+ 	of_platform_populate(root_node, of_default_bus_match_table, NULL);
+ 
 -- 
 2.20.1
 
