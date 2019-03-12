@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h3c6V-000216-Lv
- for barebox@lists.infradead.org; Tue, 12 Mar 2019 07:45:41 +0000
-Received: by mail-pg1-x543.google.com with SMTP id v12so1203286pgq.1
- for <barebox@lists.infradead.org>; Tue, 12 Mar 2019 00:45:39 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Mar 2019 00:45:25 -0700
-Message-Id: <20190312074525.6153-4-andrew.smirnov@gmail.com>
+ id 1h3dwh-00021Q-1J
+ for barebox@lists.infradead.org; Tue, 12 Mar 2019 09:43:40 +0000
+Message-ID: <1552383817.2453.25.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Tue, 12 Mar 2019 10:43:37 +0100
 In-Reply-To: <20190312074525.6153-1-andrew.smirnov@gmail.com>
 References: <20190312074525.6153-1-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,39 +17,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] serial: lpuart: Add code to export "earlycon" setting
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 0/3] Earlycon command line option support
+To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
 
-Add code to generate appropriate "earlycon" setting that can be passed
-to Linux kernel.
-
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- drivers/serial/serial_lpuart.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/serial/serial_lpuart.c b/drivers/serial/serial_lpuart.c
-index 246fc3d3a..40789d720 100644
---- a/drivers/serial/serial_lpuart.c
-+++ b/drivers/serial/serial_lpuart.c
-@@ -172,6 +172,7 @@ static int lpuart_serial_probe(struct device_d *dev)
- 	}
- 
- 	cdev->linux_console_name = "ttyLP";
-+	cdev->linux_bootconsole_name = basprintf("lpuart,0x%p", lpuart->base);
- 
- 	lpuart_setup(lpuart->base, clk_get_rate(lpuart->clk));
- 
--- 
-2.20.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgQW5kcmV5LAoKQW0gRGllbnN0YWcsIGRlbiAxMi4wMy4yMDE5LCAwMDo0NSAtMDcwMCBzY2hy
+aWViIEFuZHJleSBTbWlybm92Ogo+IEV2ZXJ5b25lOgo+IAo+IFRoaXMgc21hbGwgc2VyaWVzIGlz
+IHNvbWV0aGluZyBJIGNhbWUgdXAgd2l0aCB0byBhdm9pZCBoYXZpbmcgdG8gbG9vawo+IHVwIHRo
+ZSBzeW50YXggYW5kIG1hbnVhbGx5IHNwZWNpZnkgZWFybHljb24ga2VybmVsIGNvbW1hbmQgbGlu
+ZSBvcHRpb24KPiBldmVyeSB0aW1lIEkgbmVlZGVkIGl0LiBUaGUgc2VyaWVzIGlzIHB1cmVseSBv
+cHRpb25hbCBpbiBjYXNlIEkgYW0gbm90Cj4gdGhlIG9ubHkgb25lIHdobyB0aGlua3MgdGhpcyBp
+cyB1c2VmdWwuCj4gCj4gRmVlZGJhY2sgaXMgd2VsY29tZSEKPiAKPiBUaGFua3MsCj4gQW5kcmV5
+IFNtaXJub3YKPiAKPiBBbmRyZXkgU21pcm5vdiAoMyk6Cj4gwqAgY29uc29sZTogQWRkIHBsdW1i
+aW5nIHRvIGV4cG9zZSBlYXJseWNvbi9ib290Y29uc29sZSBwYXJhbWV0ZXIKPiDCoCBzZXJpYWw6
+IGkuTVg6IEFkZCBjb2RlIHRvIGV4cG9ydCAiZWFybHljb24iIHNldHRpbmcKPiDCoCBzZXJpYWw6
+IGxwdWFydDogQWRkIGNvZGUgdG8gZXhwb3J0ICJlYXJseWNvbiIgc2V0dGluZwo+IAo+IMKgRG9j
+dW1lbnRhdGlvbi91c2VyL3ZhcmlhYmxlcy5yc3QgfMKgwqAxICsKPiDCoGNvbW1vbi9jb25zb2xl
+LmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfCAyNSArKysrKysrKysrKysrKysr
+KysrKysrKysrCj4gwqBkcml2ZXJzL3NlcmlhbC9zZXJpYWxfaW14LmPCoMKgwqDCoMKgwqB8wqDC
+oDMgKysrCj4gwqBkcml2ZXJzL3NlcmlhbC9zZXJpYWxfbHB1YXJ0LmPCoMKgwqB8wqDCoDEgKwo+
+IMKgaW5jbHVkZS9jb25zb2xlLmjCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHzCoMKg
+MSArCj4gwqA1IGZpbGVzIGNoYW5nZWQsIDMxIGluc2VydGlvbnMoKykKCkkgZG9uJ3QgdGhpbmsg
+YW55IG9mIHRoaXMgaXMgbmVjZXNzYXJ5LiBGb3IgRFQgYmFzZWQgcGxhdGZvcm1zIGVhcmx5Y29u
+CndpbGwgdXNlIHRoZSBjb25zb2xlIHNwZWNpZmllZCB2aWEgdGhlICJzdGRvdXQtcGF0aCIgcHJv
+cGVydHksIHNvIGl0J3MKZW50aXJlbHkgc3VmZmljaWVudCB0byBhZGQgImVhcmx5Y29uIiB0byB0
+aGUga2VybmVsIGNvbW1hbmQgbGluZSBhbmQKdGhlIGtlcm5lbCB3aWxsIGRvIHRoZSByaWdodCB0
+aGluZy4gTm8gbmVlZCBmb3IgYW55IG1vcmUgZWxhYm9yYXRlCmtlcm5lbCBjb21tYW5kbGluZSBv
+cHRpb25zLgoKUmVnYXJkcywKTHVjYXMKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
+ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
+b3gK
