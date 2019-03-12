@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h3eWq-0006tS-Ek
+ id 1h3eWq-0006tT-El
  for barebox@lists.infradead.org; Tue, 12 Mar 2019 10:21:03 +0000
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Tue, 12 Mar 2019 11:20:50 +0100
-Message-Id: <20190312102055.12386-2-m.tretter@pengutronix.de>
+Date: Tue, 12 Mar 2019 11:20:54 +0100
+Message-Id: <20190312102055.12386-6-m.tretter@pengutronix.de>
 In-Reply-To: <20190312102055.12386-1-m.tretter@pengutronix.de>
 References: <20190312102055.12386-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
@@ -21,47 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] of: populate "/firmware" while populating device tree
+Subject: [PATCH 5/6] ARM: zynqmp: add firmware DT node
 To: barebox@lists.infradead.org
 Cc: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>, Michael Tretter <m.tretter@pengutronix.de>
 
 From: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
 
-The sub-nodes of "/firmware" are not populated, since it has no
-"compatible" property. Copy the behavior of Linux and call
-of_platform_populate() on the "/firmware" node to probe firmware
-drivers.
+Add firmware DT node in ZynqMP device tree. This node uses bindings as
+per new firmware interface driver.
 
 Signed-off-by: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- drivers/of/base.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm/dts/zynqmp-zcu104-revA.dts |  1 +
+ arch/arm/dts/zynqmp.dtsi            | 17 +++++++++++++++++
+ 2 files changed, 18 insertions(+)
+ create mode 100644 arch/arm/dts/zynqmp.dtsi
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index b082f0c656..85c7953370 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1979,7 +1979,7 @@ const struct of_device_id of_default_bus_match_table[] = {
+diff --git a/arch/arm/dts/zynqmp-zcu104-revA.dts b/arch/arm/dts/zynqmp-zcu104-revA.dts
+index 8c467ee970..88f5152c9d 100644
+--- a/arch/arm/dts/zynqmp-zcu104-revA.dts
++++ b/arch/arm/dts/zynqmp-zcu104-revA.dts
+@@ -8,3 +8,4 @@
+  */
  
- int of_probe(void)
- {
--	struct device_node *memory;
-+	struct device_node *memory, *firmware;
- 
- 	if(!root_node)
- 		return -ENODEV;
-@@ -1996,6 +1996,10 @@ int of_probe(void)
- 	if (memory)
- 		of_add_memory(memory, false);
- 
-+	firmware = of_find_node_by_path("/firmware");
-+	if (firmware)
-+		of_platform_populate(firmware, NULL, NULL);
+ #include <arm64/xilinx/zynqmp-zcu104-revA.dts>
++#include "zynqmp.dtsi"
+diff --git a/arch/arm/dts/zynqmp.dtsi b/arch/arm/dts/zynqmp.dtsi
+new file mode 100644
+index 0000000000..59984ee758
+--- /dev/null
++++ b/arch/arm/dts/zynqmp.dtsi
+@@ -0,0 +1,17 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * dts file for Xilinx ZynqMP
++ *
++ * (C) Copyright 2014 - 2015, Xilinx, Inc.
++ *
++ * Michal Simek <michal.simek@xilinx.com>
++ */
 +
- 	of_clk_init(root_node, NULL);
- 	of_platform_populate(root_node, of_default_bus_match_table, NULL);
- 
++/ {
++	firmware {
++		zynqmp_firmware: zynqmp-firmware {
++			compatible = "xlnx,zynqmp-firmware";
++			method = "smc";
++		};
++	};
++};
 -- 
 2.20.1
 
