@@ -1,12 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h40Oj-0001Xr-CY
- for barebox@lists.infradead.org; Wed, 13 Mar 2019 09:42:07 +0000
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1h40P0-0007zI-7X
+ for barebox@lists.infradead.org; Wed, 13 Mar 2019 09:42:22 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 02/15] Add Freescale QUICC Engine firmware support
-Date: Wed, 13 Mar 2019 10:41:49 +0100
-Message-Id: <20190313094202.14901-3-s.hauer@pengutronix.de>
+Date: Wed, 13 Mar 2019 10:41:53 +0100
+Message-Id: <20190313094202.14901-7-s.hauer@pengutronix.de>
 In-Reply-To: <20190313094202.14901-1-s.hauer@pengutronix.de>
 References: <20190313094202.14901-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -22,388 +21,112 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
+Subject: [PATCH 06/15] watchdog: imx: Add register accessor functions
 To: Barebox List <barebox@lists.infradead.org>
 
-The Freescale QUICC Engine found on Layerscape SoCs needs firmware
-loaded. This adds support for loading such a firmware.
+In preparation of adding big endian support in the next step.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/soc/fsl/qe.h  | 264 ++++++++++++++++++++++++++++++++++++++++++
- lib/Kconfig           |   4 +
- lib/Makefile          |   1 +
- lib/fsl-qe-firmware.c |  64 ++++++++++
- 4 files changed, 333 insertions(+)
- create mode 100644 include/soc/fsl/qe.h
- create mode 100644 lib/fsl-qe-firmware.c
+ drivers/watchdog/imxwd.c | 38 ++++++++++++++++++++++++--------------
+ 1 file changed, 24 insertions(+), 14 deletions(-)
 
-diff --git a/include/soc/fsl/qe.h b/include/soc/fsl/qe.h
-new file mode 100644
-index 0000000000..26afd92471
---- /dev/null
-+++ b/include/soc/fsl/qe.h
-@@ -0,0 +1,264 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/*
-+ * Copyright (C) 2006-2009 Freescale Semiconductor, Inc.
-+ *
-+ * Dave Liu <daveliu@freescale.com>
-+ * based on source code of Shlomi Gridish
-+ */
-+
-+#ifndef __QE_H__
-+#define __QE_H__
-+
-+#define QE_NUM_OF_BRGS	16
-+#define UCC_MAX_NUM	8
-+
-+#define QE_DATAONLY_BASE	0
-+#define QE_DATAONLY_SIZE	(QE_MURAM_SIZE - QE_DATAONLY_BASE)
-+
-+/* QE threads SNUM
-+*/
-+typedef enum qe_snum_state {
-+	QE_SNUM_STATE_USED,   /* used */
-+	QE_SNUM_STATE_FREE    /* free */
-+} qe_snum_state_e;
-+
-+typedef struct qe_snum {
-+	u8		num;   /* snum	*/
-+	qe_snum_state_e	state; /* state */
-+} qe_snum_t;
-+
-+/* QE RISC allocation
-+*/
-+#define	QE_RISC_ALLOCATION_RISC1	0x1  /* RISC 1 */
-+#define	QE_RISC_ALLOCATION_RISC2	0x2  /* RISC 2 */
-+#define	QE_RISC_ALLOCATION_RISC3	0x4  /* RISC 3 */
-+#define	QE_RISC_ALLOCATION_RISC4	0x8  /* RISC 4 */
-+#define	QE_RISC_ALLOCATION_RISC1_AND_RISC2 	(QE_RISC_ALLOCATION_RISC1 | \
-+						 QE_RISC_ALLOCATION_RISC2)
-+#define	QE_RISC_ALLOCATION_FOUR_RISCS	(QE_RISC_ALLOCATION_RISC1 | \
-+					 QE_RISC_ALLOCATION_RISC2 | \
-+					 QE_RISC_ALLOCATION_RISC3 | \
-+					 QE_RISC_ALLOCATION_RISC4)
-+
-+/* QE CECR commands for UCC fast.
-+*/
-+#define QE_CR_FLG			0x00010000
-+#define QE_RESET			0x80000000
-+#define QE_INIT_TX_RX			0x00000000
-+#define QE_INIT_RX			0x00000001
-+#define QE_INIT_TX			0x00000002
-+#define QE_ENTER_HUNT_MODE		0x00000003
-+#define QE_STOP_TX			0x00000004
-+#define QE_GRACEFUL_STOP_TX		0x00000005
-+#define QE_RESTART_TX			0x00000006
-+#define QE_SWITCH_COMMAND		0x00000007
-+#define QE_SET_GROUP_ADDRESS		0x00000008
-+#define QE_INSERT_CELL			0x00000009
-+#define QE_ATM_TRANSMIT			0x0000000a
-+#define QE_CELL_POOL_GET		0x0000000b
-+#define QE_CELL_POOL_PUT		0x0000000c
-+#define QE_IMA_HOST_CMD			0x0000000d
-+#define QE_ATM_MULTI_THREAD_INIT	0x00000011
-+#define QE_ASSIGN_PAGE			0x00000012
-+#define QE_START_FLOW_CONTROL		0x00000014
-+#define QE_STOP_FLOW_CONTROL		0x00000015
-+#define QE_ASSIGN_PAGE_TO_DEVICE	0x00000016
-+#define QE_GRACEFUL_STOP_RX		0x0000001a
-+#define QE_RESTART_RX			0x0000001b
-+
-+/* QE CECR Sub Block Code - sub block code of QE command.
-+*/
-+#define QE_CR_SUBBLOCK_INVALID		0x00000000
-+#define QE_CR_SUBBLOCK_USB		0x03200000
-+#define QE_CR_SUBBLOCK_UCCFAST1		0x02000000
-+#define QE_CR_SUBBLOCK_UCCFAST2		0x02200000
-+#define QE_CR_SUBBLOCK_UCCFAST3		0x02400000
-+#define QE_CR_SUBBLOCK_UCCFAST4		0x02600000
-+#define QE_CR_SUBBLOCK_UCCFAST5		0x02800000
-+#define QE_CR_SUBBLOCK_UCCFAST6		0x02a00000
-+#define QE_CR_SUBBLOCK_UCCFAST7		0x02c00000
-+#define QE_CR_SUBBLOCK_UCCFAST8		0x02e00000
-+#define QE_CR_SUBBLOCK_UCCSLOW1		0x00000000
-+#define QE_CR_SUBBLOCK_UCCSLOW2		0x00200000
-+#define QE_CR_SUBBLOCK_UCCSLOW3		0x00400000
-+#define QE_CR_SUBBLOCK_UCCSLOW4		0x00600000
-+#define QE_CR_SUBBLOCK_UCCSLOW5		0x00800000
-+#define QE_CR_SUBBLOCK_UCCSLOW6		0x00a00000
-+#define QE_CR_SUBBLOCK_UCCSLOW7		0x00c00000
-+#define QE_CR_SUBBLOCK_UCCSLOW8		0x00e00000
-+#define QE_CR_SUBBLOCK_MCC1		0x03800000
-+#define QE_CR_SUBBLOCK_MCC2		0x03a00000
-+#define QE_CR_SUBBLOCK_MCC3		0x03000000
-+#define QE_CR_SUBBLOCK_IDMA1		0x02800000
-+#define QE_CR_SUBBLOCK_IDMA2		0x02a00000
-+#define QE_CR_SUBBLOCK_IDMA3		0x02c00000
-+#define QE_CR_SUBBLOCK_IDMA4		0x02e00000
-+#define QE_CR_SUBBLOCK_HPAC		0x01e00000
-+#define QE_CR_SUBBLOCK_SPI1		0x01400000
-+#define QE_CR_SUBBLOCK_SPI2		0x01600000
-+#define QE_CR_SUBBLOCK_RAND		0x01c00000
-+#define QE_CR_SUBBLOCK_TIMER		0x01e00000
-+#define QE_CR_SUBBLOCK_GENERAL		0x03c00000
-+
-+/* QE CECR Protocol - For non-MCC, specifies mode for QE CECR command.
-+*/
-+#define QE_CR_PROTOCOL_UNSPECIFIED	0x00 /* For all other protocols */
-+#define QE_CR_PROTOCOL_HDLC_TRANSPARENT	0x00
-+#define QE_CR_PROTOCOL_ATM_POS		0x0A
-+#define QE_CR_PROTOCOL_ETHERNET		0x0C
-+#define QE_CR_PROTOCOL_L2_SWITCH	0x0D
-+#define QE_CR_PROTOCOL_SHIFT		6
-+
-+/* QE ASSIGN PAGE command
-+*/
-+#define QE_CR_ASSIGN_PAGE_SNUM_SHIFT	17
-+
-+/* Communication Direction.
-+*/
-+typedef enum comm_dir {
-+	COMM_DIR_NONE		= 0,
-+	COMM_DIR_RX		= 1,
-+	COMM_DIR_TX		= 2,
-+	COMM_DIR_RX_AND_TX	= 3
-+} comm_dir_e;
-+
-+/* Clocks and BRG's
-+*/
-+typedef enum qe_clock {
-+	QE_CLK_NONE = 0,
-+	QE_BRG1,     /* Baud Rate Generator  1 */
-+	QE_BRG2,     /* Baud Rate Generator  2 */
-+	QE_BRG3,     /* Baud Rate Generator  3 */
-+	QE_BRG4,     /* Baud Rate Generator  4 */
-+	QE_BRG5,     /* Baud Rate Generator  5 */
-+	QE_BRG6,     /* Baud Rate Generator  6 */
-+	QE_BRG7,     /* Baud Rate Generator  7 */
-+	QE_BRG8,     /* Baud Rate Generator  8 */
-+	QE_BRG9,     /* Baud Rate Generator  9 */
-+	QE_BRG10,    /* Baud Rate Generator 10 */
-+	QE_BRG11,    /* Baud Rate Generator 11 */
-+	QE_BRG12,    /* Baud Rate Generator 12 */
-+	QE_BRG13,    /* Baud Rate Generator 13 */
-+	QE_BRG14,    /* Baud Rate Generator 14 */
-+	QE_BRG15,    /* Baud Rate Generator 15 */
-+	QE_BRG16,    /* Baud Rate Generator 16 */
-+	QE_CLK1,     /* Clock  1	       */
-+	QE_CLK2,     /* Clock  2	       */
-+	QE_CLK3,     /* Clock  3	       */
-+	QE_CLK4,     /* Clock  4	       */
-+	QE_CLK5,     /* Clock  5	       */
-+	QE_CLK6,     /* Clock  6	       */
-+	QE_CLK7,     /* Clock  7	       */
-+	QE_CLK8,     /* Clock  8	       */
-+	QE_CLK9,     /* Clock  9	       */
-+	QE_CLK10,    /* Clock 10	       */
-+	QE_CLK11,    /* Clock 11	       */
-+	QE_CLK12,    /* Clock 12	       */
-+	QE_CLK13,    /* Clock 13	       */
-+	QE_CLK14,    /* Clock 14	       */
-+	QE_CLK15,    /* Clock 15	       */
-+	QE_CLK16,    /* Clock 16	       */
-+	QE_CLK17,    /* Clock 17	       */
-+	QE_CLK18,    /* Clock 18	       */
-+	QE_CLK19,    /* Clock 19	       */
-+	QE_CLK20,    /* Clock 20	       */
-+	QE_CLK21,    /* Clock 21	       */
-+	QE_CLK22,    /* Clock 22	       */
-+	QE_CLK23,    /* Clock 23	       */
-+	QE_CLK24,    /* Clock 24	       */
-+	QE_CLK_DUMMY
-+} qe_clock_e;
-+
-+/* QE CMXGCR register
-+*/
-+#define QE_CMXGCR_MII_ENET_MNG_MASK	0x00007000
-+#define QE_CMXGCR_MII_ENET_MNG_SHIFT	12
-+
-+/* QE CMXUCR registers
-+ */
-+#define QE_CMXUCR_TX_CLK_SRC_MASK	0x0000000F
-+
-+/* QE BRG configuration register
-+*/
-+#define QE_BRGC_ENABLE			0x00010000
-+#define QE_BRGC_DIVISOR_SHIFT		1
-+#define QE_BRGC_DIVISOR_MAX		0xFFF
-+#define QE_BRGC_DIV16			1
-+
-+/* QE SDMA registers
-+*/
-+#define QE_SDSR_BER1			0x02000000
-+#define QE_SDSR_BER2			0x01000000
-+
-+#define QE_SDMR_GLB_1_MSK		0x80000000
-+#define QE_SDMR_ADR_SEL			0x20000000
-+#define QE_SDMR_BER1_MSK		0x02000000
-+#define QE_SDMR_BER2_MSK		0x01000000
-+#define QE_SDMR_EB1_MSK			0x00800000
-+#define QE_SDMR_ER1_MSK			0x00080000
-+#define QE_SDMR_ER2_MSK			0x00040000
-+#define QE_SDMR_CEN_MASK		0x0000E000
-+#define QE_SDMR_SBER_1			0x00000200
-+#define QE_SDMR_SBER_2			0x00000200
-+#define QE_SDMR_EB1_PR_MASK		0x000000C0
-+#define QE_SDMR_ER1_PR			0x00000008
-+
-+#define QE_SDMR_CEN_SHIFT		13
-+#define QE_SDMR_EB1_PR_SHIFT		6
-+
-+#define QE_SDTM_MSNUM_SHIFT		24
-+
-+#define QE_SDEBCR_BA_MASK		0x01FFFFFF
-+
-+/* Communication Processor */
-+#define QE_CP_CERCR_MEE		0x8000	/* Multi-user RAM ECC enable */
-+#define QE_CP_CERCR_IEE		0x4000	/* Instruction RAM ECC enable */
-+#define QE_CP_CERCR_CIR		0x0800	/* Common instruction RAM */
-+
-+/* I-RAM */
-+#define QE_IRAM_IADD_AIE	0x80000000	/* Auto Increment Enable */
-+#define QE_IRAM_IADD_BADDR	0x00080000	/* Base Address */
-+#define QE_IRAM_READY		0x80000000
-+
-+/* Structure that defines QE firmware binary files.
-+ *
-+ * See doc/README.qe_firmware for a description of these fields.
-+ */
-+struct qe_firmware {
-+	struct qe_header {
-+		u32 length;	/* Length of the entire structure, in bytes */
-+		u8 magic[3];	/* Set to { 'Q', 'E', 'F' } */
-+		u8 version;	/* Version of this layout. First ver is '1' */
-+	} header;
-+	u8 id[62];		/* Null-terminated identifier string */
-+	u8 split;		/* 0 = shared I-RAM, 1 = split I-RAM */
-+	u8 count;		/* Number of microcode[] structures */
-+	struct {
-+		u16 model;	/* The SOC model  */
-+		u8 major;	/* The SOC revision major */
-+		u8 minor;	/* The SOC revision minor */
-+	} __attribute__ ((packed)) soc;
-+	u8 padding[4];		/* Reserved, for alignment */
-+	u64 extended_modes;	/* Extended modes */
-+	u32 vtraps[8];		/* Virtual trap addresses */
-+	u8 reserved[4];		/* Reserved, for future expansion */
-+	struct qe_microcode {
-+		u8 id[32];	/* Null-terminated identifier */
-+		u32 traps[16];	/* Trap addresses, 0 == ignore */
-+		u32 eccr;	/* The value for the ECCR register */
-+		u32 iram_offset;/* Offset into I-RAM for the code */
-+		u32 count;	/* Number of 32-bit words of the code */
-+		u32 code_offset;/* Offset of the actual microcode */
-+		u8 major;	/* The microcode version major */
-+		u8 minor;	/* The microcode version minor */
-+		u8 revision;	/* The microcode version revision */
-+		u8 padding;	/* Reserved, for alignment */
-+		u8 reserved[4];	/* Reserved, for future expansion */
-+	} __attribute__ ((packed)) microcode[1];
-+	/* All microcode binaries should be located here */
-+	/* CRC32 should be located here, after the microcode binaries */
-+} __attribute__ ((packed));
-+
-+int qe_validate_firmware(const struct qe_firmware *firmware, int size);
-+
-+#endif /* __QE_H__ */
-diff --git a/lib/Kconfig b/lib/Kconfig
-index b0839e6c6e..150d63b1ba 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -93,6 +93,10 @@ config IMAGE_SPARSE
- config STMP_DEVICE
- 	bool
+diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
+index 8dba662392..e2c3b9f96e 100644
+--- a/drivers/watchdog/imxwd.c
++++ b/drivers/watchdog/imxwd.c
+@@ -66,6 +66,16 @@ struct imx_wd {
+ /* valid for i.MX27, i.MX31, always '0' on i.MX25, i.MX35, i.MX51 */
+ #define WSTR_COLDSTART	(1 << 4)
  
-+config FSL_QE_FIRMWARE
-+	select CRC32
-+	bool
-+
- config RATP
- 	select CRC_ITU_T
- 	bool "RATP protocol support"
-diff --git a/lib/Makefile b/lib/Makefile
-index 763516d41a..8dabf4ae77 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -68,6 +68,7 @@ obj-y			+= clz_ctz.o
- obj-$(CONFIG_CRC_CCITT) += crc-ccitt.o
- obj-$(CONFIG_CRC8)	+= crc8.o
- obj-$(CONFIG_NLS)	+= nls_base.o
-+obj-$(CONFIG_FSL_QE_FIRMWARE) += fsl-qe-firmware.o
- 
- # GCC library routines
- obj-$(CONFIG_GENERIC_LIB_ASHLDI3) += ashldi3.o
-diff --git a/lib/fsl-qe-firmware.c b/lib/fsl-qe-firmware.c
-new file mode 100644
-index 0000000000..960703f561
---- /dev/null
-+++ b/lib/fsl-qe-firmware.c
-@@ -0,0 +1,64 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+
-+#include <common.h>
-+#include <crc.h>
-+#include <soc/fsl/qe.h>
-+
-+/*
-+ * qe_validate_firmware - Validate a QE firmware
-+ *
-+ * This function checks a QE firmware for validity. It checks the crc
-+ * and consistency of various fields. Returns 0 for success or a negative
-+ * error code otherwise.
-+ */
-+int qe_validate_firmware(const struct qe_firmware *firmware, int size)
++static void imxwd_write(struct imx_wd *priv, int reg, uint16_t val)
 +{
-+	u32 crc;
-+	size_t calc_size;
-+	int i;
-+	const struct qe_header *hdr = &firmware->header;
-+
-+	if (size < sizeof(*firmware)) {
-+		pr_err("firmware is too small\n");
-+		return -EINVAL;
-+	}
-+
-+	if ((hdr->magic[0] != 'Q') || (hdr->magic[1] != 'E') ||
-+		(hdr->magic[2] != 'F')) {
-+		pr_err("Data at %p is not a QE firmware\n", firmware);
-+		return -EPERM;
-+	}
-+
-+	if (size != be32_to_cpu(hdr->length)) {
-+		pr_err("Firmware size doesn't match size in header\n");
-+		return -EINVAL;
-+	}
-+
-+	if (hdr->version != 1) {
-+		pr_err("Unsupported firmware version %u\n", hdr->version);
-+		return -EPERM;
-+	}
-+
-+	calc_size = sizeof(*firmware) +
-+		    (firmware->count - 1) * sizeof(struct qe_microcode);
-+
-+	if (size < calc_size)
-+		return -EINVAL;
-+
-+	for (i = 0; i < firmware->count; i++)
-+		calc_size += sizeof(u32) *
-+			be32_to_cpu(firmware->microcode[i].count);
-+
-+	if (size != calc_size + sizeof(u32)) {
-+		pr_err("Invalid length in firmware header\n");
-+		return -EPERM;
-+	}
-+
-+	crc = be32_to_cpu(*(u32 *)((void *)firmware + calc_size));
-+	if (crc != (crc32_no_comp(0, (const void *)firmware, calc_size))) {
-+		pr_err("Firmware CRC is invalid\n");
-+		return -EIO;
-+	}
-+
-+	return 0;
++	writew(val, priv->base + reg);
 +}
++
++static uint16_t imxwd_read(struct imx_wd *priv, int reg)
++{
++	return readw(priv->base + reg);
++}
++
+ static int imx1_watchdog_set_timeout(struct imx_wd *priv, unsigned timeout)
+ {
+ 	u16 val;
+@@ -73,18 +83,18 @@ static int imx1_watchdog_set_timeout(struct imx_wd *priv, unsigned timeout)
+ 	dev_dbg(priv->dev, "%s: %d\n", __func__, timeout);
+ 
+ 	if (!timeout) {
+-		writew(IMX1_WDOG_WCR_WHALT, priv->base + IMX1_WDOG_WCR);
++		imxwd_write(priv, IMX1_WDOG_WCR, IMX1_WDOG_WCR_WHALT);
+ 		return 0;
+ 	}
+ 
+ 	val = (timeout * 2 - 1) << 8;
+ 
+-	writew(val, priv->base + IMX1_WDOG_WCR);
+-	writew(IMX1_WDOG_WCR_WDE | val, priv->base + IMX1_WDOG_WCR);
++	imxwd_write(priv, IMX1_WDOG_WCR, val);
++	imxwd_write(priv, IMX1_WDOG_WCR, IMX1_WDOG_WCR_WDE | val);
+ 
+ 	/* Write Service Sequence */
+-	writew(0x5555, priv->base + IMX1_WDOG_WSR);
+-	writew(0xaaaa, priv->base + IMX1_WDOG_WSR);
++	imxwd_write(priv, IMX1_WDOG_WSR, 0x5555);
++	imxwd_write(priv, IMX1_WDOG_WSR, 0xaaaa);
+ 
+ 	return 0;
+ }
+@@ -113,13 +123,13 @@ static int imx21_watchdog_set_timeout(struct imx_wd *priv, unsigned timeout)
+ 	 * set time and some write once bits first prior enabling the
+ 	 * watchdog according to the datasheet
+ 	 */
+-	writew(val, priv->base + IMX21_WDOG_WCR);
++	imxwd_write(priv, IMX21_WDOG_WCR, val);
+ 
+-	writew(IMX21_WDOG_WCR_WDE | val, priv->base + IMX21_WDOG_WCR);
++	imxwd_write(priv, IMX21_WDOG_WCR, IMX21_WDOG_WCR_WDE | val);
+ 
+ 	/* Write Service Sequence */
+-	writew(0x5555, priv->base + IMX21_WDOG_WSR);
+-	writew(0xaaaa, priv->base + IMX21_WDOG_WSR);
++	imxwd_write(priv, IMX21_WDOG_WSR, 0x5555);
++	imxwd_write(priv, IMX21_WDOG_WSR, 0xaaaa);
+ 
+ 	return 0;
+ }
+@@ -134,11 +144,11 @@ static void imx21_soc_reset(struct imx_wd *priv)
+ 	else
+ 		val |= IMX21_WDOG_WCR_WDA; /* do not assert ext-reset */
+ 
+-	writew(val, priv->base + IMX21_WDOG_WCR);
++	imxwd_write(priv, IMX21_WDOG_WCR, val);
+ 
+ 	/* Two additional writes due to errata ERR004346 */
+-	writew(val, priv->base + IMX21_WDOG_WCR);
+-	writew(val, priv->base + IMX21_WDOG_WCR);
++	imxwd_write(priv, IMX21_WDOG_WCR, val);
++	imxwd_write(priv, IMX21_WDOG_WCR, val);
+ }
+ 
+ static int imx_watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
+@@ -161,7 +171,7 @@ static void __noreturn imxwd_force_soc_reset(struct restart_handler *rst)
+ 
+ static void imx_watchdog_detect_reset_source(struct imx_wd *priv)
+ {
+-	u16 val = readw(priv->base + IMX21_WDOG_WSTR);
++	u16 val = imxwd_read(priv, IMX21_WDOG_WSTR);
+ 	int priority = RESET_SOURCE_DEFAULT_PRIORITY;
+ 
+ 	if (reset_source_get() == RESET_WDG)
+@@ -192,7 +202,7 @@ static int imx21_wd_init(struct imx_wd *priv)
+ 	/*
+ 	 * Disable watchdog powerdown counter
+ 	 */
+-	writew(0x0, priv->base + IMX21_WDOG_WMCR);
++	imxwd_write(priv, IMX21_WDOG_WMCR, 0x0);
+ 
+ 	return 0;
+ }
 -- 
 2.20.1
 
