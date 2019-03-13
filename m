@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h5nEZ-0007zc-Nk
- for barebox@lists.infradead.org; Mon, 18 Mar 2019 08:03:01 +0000
-Date: Mon, 18 Mar 2019 09:02:57 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190318080257.oqogbpmcc3ykcpmd@pengutronix.de>
-References: <20190313033147.20507-1-andrew.smirnov@gmail.com>
+ id 1h40ky-0005C6-6R
+ for barebox@lists.infradead.org; Wed, 13 Mar 2019 10:05:15 +0000
+Received: by mail-pf1-x443.google.com with SMTP id y124so1017438pfy.7
+ for <barebox@lists.infradead.org>; Wed, 13 Mar 2019 03:05:04 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 13 Mar 2019 00:25:19 -0700
+Message-Id: <20190313072519.25873-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190313033147.20507-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +21,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: i.MX7: Make sure CNTFRQ is initialized early
- enough
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] usb: dwc3: Toggle GCTL.CORESOFTRESET as a first step
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Tue, Mar 12, 2019 at 08:31:46PM -0700, Andrey Smirnov wrote:
-> We need to make sure that CNTFRQ is initialized before corresponding
-> clocksource driver tries to use it, otherwise we'll end up crashing
-> due to division by zero.
-> 
-> We can't convert imx7_timer_init() to be an initcall since it is an
-> i.MX7 specific task, but CPU type information won't be availible until
-> after imx_init() gets executed at postcore_initcall() level. To solve
-> this move all of the necessary code to be a part of
-> imx7_cpu_lowlevel_init().
-> 
-> Note, that original code both hardcoded frequency value to 8MHz as
-> well as tried to write it to the first element of the frequency mode
-> table which appears to be read-only on i.MX7. So while we are at it,
-> simplify the code by adding set_cntfrq() implementation for ARMv7 and
-> copy the code we already using for i.MX8MQ.
-> 
-> Fixes: dece70752 ("clocksource: Enable architected timer support for CPU_V7")
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  arch/arm/include/asm/system.h |  5 +++++
->  arch/arm/mach-imx/cpu_init.c  | 13 +++++++++++++
->  arch/arm/mach-imx/imx7.c      | 35 -----------------------------------
->  3 files changed, 18 insertions(+), 35 deletions(-)
+Toggle GCTL.CORESOFTRESET before trying to access any of the block's
+registers. Without this additional step, first read of DWC3_GHWPARAMS*
+that follows results in assertion of GSTS.CSRTIMEOUT and IP block
+stuck in a non-functional state.
 
-Applied, thanks
+Note that all above has only been observerd on i.MX8MQ (ZII Zest
+board) for USB1 controller. USB2 doesn't seem to be affected by this.
 
-Sascha
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
 
+Changes since [v1]:
 
+    - Dropped 100 ms delay
+    
+[v1] http://lists.infradead.org/pipermail/barebox/2019-March/037501.html
+
+ drivers/usb/dwc3/core.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 2e7031a34..60fd6318d 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -663,6 +663,25 @@ static void dwc3_check_params(struct dwc3 *dwc)
+ 	}
+ }
+ 
++static void dwc3_coresoft_reset(struct dwc3 *dwc)
++{
++	u32 reg;
++
++	reg = dwc3_readl(dwc->regs, DWC3_GCTL);
++	reg |= DWC3_GCTL_CORESOFTRESET;
++	dwc3_writel(dwc->regs, DWC3_GCTL, reg);
++
++	/*
++	 * Similar reset sequence in U-Boot has a 100ms delay here. In
++	 * practice reset sequence seem to work as expected even
++	 * without a delay.
++	 */
++
++	reg = dwc3_readl(dwc->regs, DWC3_GCTL);
++	reg &= ~DWC3_GCTL_CORESOFTRESET;
++	dwc3_writel(dwc->regs, DWC3_GCTL, reg);
++}
++
+ static int dwc3_probe(struct device_d *dev)
+ {
+ 	struct dwc3		*dwc;
+@@ -695,6 +714,8 @@ static int dwc3_probe(struct device_d *dev)
+ 	if (ret)
+ 		return ret;
+ 
++	dwc3_coresoft_reset(dwc);
++
+ 	dwc3_cache_hwparams(dwc);
+ 
+ 	ret = dwc3_core_init(dwc);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
