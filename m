@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h40P0-0007zI-7X
- for barebox@lists.infradead.org; Wed, 13 Mar 2019 09:42:22 +0000
+ id 1h40Ot-0007ys-5W
+ for barebox@lists.infradead.org; Wed, 13 Mar 2019 09:42:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 13 Mar 2019 10:41:53 +0100
-Message-Id: <20190313094202.14901-7-s.hauer@pengutronix.de>
+Date: Wed, 13 Mar 2019 10:42:02 +0100
+Message-Id: <20190313094202.14901-16-s.hauer@pengutronix.de>
 In-Reply-To: <20190313094202.14901-1-s.hauer@pengutronix.de>
 References: <20190313094202.14901-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,112 +21,132 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/15] watchdog: imx: Add register accessor functions
+Subject: [PATCH 15/15] ARM: Add layerscape_defconfig
 To: Barebox List <barebox@lists.infradead.org>
-
-In preparation of adding big endian support in the next step.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/watchdog/imxwd.c | 38 ++++++++++++++++++++++++--------------
- 1 file changed, 24 insertions(+), 14 deletions(-)
+ arch/arm/configs/layerscape_defconfig | 111 ++++++++++++++++++++++++++
+ 1 file changed, 111 insertions(+)
+ create mode 100644 arch/arm/configs/layerscape_defconfig
 
-diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
-index 8dba662392..e2c3b9f96e 100644
---- a/drivers/watchdog/imxwd.c
-+++ b/drivers/watchdog/imxwd.c
-@@ -66,6 +66,16 @@ struct imx_wd {
- /* valid for i.MX27, i.MX31, always '0' on i.MX25, i.MX35, i.MX51 */
- #define WSTR_COLDSTART	(1 << 4)
- 
-+static void imxwd_write(struct imx_wd *priv, int reg, uint16_t val)
-+{
-+	writew(val, priv->base + reg);
-+}
-+
-+static uint16_t imxwd_read(struct imx_wd *priv, int reg)
-+{
-+	return readw(priv->base + reg);
-+}
-+
- static int imx1_watchdog_set_timeout(struct imx_wd *priv, unsigned timeout)
- {
- 	u16 val;
-@@ -73,18 +83,18 @@ static int imx1_watchdog_set_timeout(struct imx_wd *priv, unsigned timeout)
- 	dev_dbg(priv->dev, "%s: %d\n", __func__, timeout);
- 
- 	if (!timeout) {
--		writew(IMX1_WDOG_WCR_WHALT, priv->base + IMX1_WDOG_WCR);
-+		imxwd_write(priv, IMX1_WDOG_WCR, IMX1_WDOG_WCR_WHALT);
- 		return 0;
- 	}
- 
- 	val = (timeout * 2 - 1) << 8;
- 
--	writew(val, priv->base + IMX1_WDOG_WCR);
--	writew(IMX1_WDOG_WCR_WDE | val, priv->base + IMX1_WDOG_WCR);
-+	imxwd_write(priv, IMX1_WDOG_WCR, val);
-+	imxwd_write(priv, IMX1_WDOG_WCR, IMX1_WDOG_WCR_WDE | val);
- 
- 	/* Write Service Sequence */
--	writew(0x5555, priv->base + IMX1_WDOG_WSR);
--	writew(0xaaaa, priv->base + IMX1_WDOG_WSR);
-+	imxwd_write(priv, IMX1_WDOG_WSR, 0x5555);
-+	imxwd_write(priv, IMX1_WDOG_WSR, 0xaaaa);
- 
- 	return 0;
- }
-@@ -113,13 +123,13 @@ static int imx21_watchdog_set_timeout(struct imx_wd *priv, unsigned timeout)
- 	 * set time and some write once bits first prior enabling the
- 	 * watchdog according to the datasheet
- 	 */
--	writew(val, priv->base + IMX21_WDOG_WCR);
-+	imxwd_write(priv, IMX21_WDOG_WCR, val);
- 
--	writew(IMX21_WDOG_WCR_WDE | val, priv->base + IMX21_WDOG_WCR);
-+	imxwd_write(priv, IMX21_WDOG_WCR, IMX21_WDOG_WCR_WDE | val);
- 
- 	/* Write Service Sequence */
--	writew(0x5555, priv->base + IMX21_WDOG_WSR);
--	writew(0xaaaa, priv->base + IMX21_WDOG_WSR);
-+	imxwd_write(priv, IMX21_WDOG_WSR, 0x5555);
-+	imxwd_write(priv, IMX21_WDOG_WSR, 0xaaaa);
- 
- 	return 0;
- }
-@@ -134,11 +144,11 @@ static void imx21_soc_reset(struct imx_wd *priv)
- 	else
- 		val |= IMX21_WDOG_WCR_WDA; /* do not assert ext-reset */
- 
--	writew(val, priv->base + IMX21_WDOG_WCR);
-+	imxwd_write(priv, IMX21_WDOG_WCR, val);
- 
- 	/* Two additional writes due to errata ERR004346 */
--	writew(val, priv->base + IMX21_WDOG_WCR);
--	writew(val, priv->base + IMX21_WDOG_WCR);
-+	imxwd_write(priv, IMX21_WDOG_WCR, val);
-+	imxwd_write(priv, IMX21_WDOG_WCR, val);
- }
- 
- static int imx_watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
-@@ -161,7 +171,7 @@ static void __noreturn imxwd_force_soc_reset(struct restart_handler *rst)
- 
- static void imx_watchdog_detect_reset_source(struct imx_wd *priv)
- {
--	u16 val = readw(priv->base + IMX21_WDOG_WSTR);
-+	u16 val = imxwd_read(priv, IMX21_WDOG_WSTR);
- 	int priority = RESET_SOURCE_DEFAULT_PRIORITY;
- 
- 	if (reset_source_get() == RESET_WDG)
-@@ -192,7 +202,7 @@ static int imx21_wd_init(struct imx_wd *priv)
- 	/*
- 	 * Disable watchdog powerdown counter
- 	 */
--	writew(0x0, priv->base + IMX21_WDOG_WMCR);
-+	imxwd_write(priv, IMX21_WDOG_WMCR, 0x0);
- 
- 	return 0;
- }
+diff --git a/arch/arm/configs/layerscape_defconfig b/arch/arm/configs/layerscape_defconfig
+new file mode 100644
+index 0000000000..dadbcc214c
+--- /dev/null
++++ b/arch/arm/configs/layerscape_defconfig
+@@ -0,0 +1,111 @@
++CONFIG_ARCH_LAYERSCAPE=y
++CONFIG_MACH_LS1046ARDB=y
++CONFIG_MACH_TQMLS1046A=y
++CONFIG_MMU=y
++CONFIG_MALLOC_SIZE=0x0
++CONFIG_MALLOC_TLSF=y
++CONFIG_KALLSYMS=y
++CONFIG_RELOCATABLE=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++CONFIG_BOOTM_SHOW_TYPE=y
++CONFIG_BOOTM_VERBOSE=y
++CONFIG_BOOTM_INITRD=y
++CONFIG_BOOTM_OFTREE=y
++CONFIG_BOOTM_OFTREE_UIMAGE=y
++CONFIG_BLSPEC=y
++CONFIG_CONSOLE_ACTIVATE_NONE=y
++CONFIG_CONSOLE_ALLOW_COLOR=y
++CONFIG_PBL_CONSOLE=y
++CONFIG_PARTITION_DISK_EFI=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_RESET_SOURCE=y
++CONFIG_DEBUG_LL=y
++CONFIG_CMD_DMESG=y
++CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_IMD=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_REGULATOR=y
++CONFIG_CMD_MMC_EXTCSD=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_UIMAGE=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_FILETYPE=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_UNCOMPRESS=y
++CONFIG_CMD_LET=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_READF=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_MENUTREE=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_CRC=y
++CONFIG_CMD_CRC_CMP=y
++CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_DETECT=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_LED=y
++CONFIG_CMD_SPI=y
++CONFIG_CMD_LED_TRIGGER=y
++CONFIG_CMD_WD=y
++CONFIG_CMD_BAREBOX_UPDATE=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIME=y
++CONFIG_NET=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_OFDEVICE=y
++CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_DRIVER_NET_FSL_FMAN=y
++CONFIG_DP83867_PHY=y
++CONFIG_REALTEK_PHY=y
++CONFIG_NET_DSA_MV88E6XXX=y
++CONFIG_I2C=y
++CONFIG_I2C_IMX=y
++CONFIG_MCI=y
++CONFIG_MCI_MMC_BOOT_PARTITIONS=y
++CONFIG_MCI_IMX_ESDHC=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_GPIO_OF=y
++CONFIG_LED_TRIGGERS=y
++CONFIG_EEPROM_AT25=y
++CONFIG_EEPROM_AT24=y
++CONFIG_WATCHDOG=y
++CONFIG_WATCHDOG_IMX=y
++CONFIG_NVMEM=y
++CONFIG_REGULATOR=y
++CONFIG_REGULATOR_FIXED=y
++CONFIG_FS_EXT4=y
++CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_WRITE=y
++CONFIG_FS_FAT_LFN=y
++CONFIG_ZLIB=y
++CONFIG_LZO_DECOMPRESS=y
 -- 
 2.20.1
 
