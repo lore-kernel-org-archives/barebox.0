@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h3aVo-0007zb-8s
- for barebox@lists.infradead.org; Tue, 12 Mar 2019 06:03:42 +0000
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1h3zN3-00075Y-9s
+ for barebox@lists.infradead.org; Wed, 13 Mar 2019 08:36:18 +0000
+Date: Wed, 13 Mar 2019 09:32:50 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190313083250.pwlsmaqrkyvr3m3q@pengutronix.de>
 References: <20190311134125.10946-1-d.brandt@phytec.de>
- <CAHQ1cqHAGSyzJbxeEKW6-Y8g79nv3iMZZGr-qy2pY401=V5b5w@mail.gmail.com>
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <8b6352d3-bc8d-4564-9eee-0e0eda70515e@pengutronix.de>
-Date: Tue, 12 Mar 2019 07:03:34 +0100
 MIME-Version: 1.0
-In-Reply-To: <CAHQ1cqHAGSyzJbxeEKW6-Y8g79nv3iMZZGr-qy2pY401=V5b5w@mail.gmail.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20190311134125.10946-1-d.brandt@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,58 +18,215 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] commands: bootaux: New command bootaux for iMX
-To: Andrey Smirnov <andrew.smirnov@gmail.com>, David Brandt <d.brandt@phytec.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+To: David Brandt <d.brandt@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Hi,
-
-On 12.03.19 02:37, Andrey Smirnov wrote:
-> On Mon, Mar 11, 2019 at 6:41 AM David Brandt <d.brandt@phytec.de> wrote:
->>
->> This patch adds the bootaux command which starts
->> auxiliary cores of iMX processors, currently only
->> for iMX8MQ. This is based on the u-boot-imx
->> command and shares the behaviour.
->>
->> The currently unnecessary parameter for the core
->> to start is necessary for the iMX8QM and other
->> processors having multiple auxiliary cores.
->>
+On Mon, Mar 11, 2019 at 02:41:25PM +0100, David Brandt wrote:
+> This patch adds the bootaux command which starts
+> auxiliary cores of iMX processors, currently only
+> for iMX8MQ. This is based on the u-boot-imx
+> command and shares the behaviour.
 > 
-> Not saying that there's anything wrong with this patch, but I am
-> guessing that upstream Linux will eventually implement this
-> functionality using remoteproc framework. Maybe now would be a good
-> time to add a very basic version of it to Barebox? Another option to
-> make this a little bit more flexible would be to implement this using
-> firmwaremgr framework similar to
-> drivers/frimware/{socfpga.c,altera_serial.c}. Anyway, just a couple of
-> suggestions that I had.
+> The currently unnecessary parameter for the core
+> to start is necessary for the iMX8QM and other
+> processors having multiple auxiliary cores.
+> 
+> Signed-off-by: David Brandt <d.brandt@phytec.de>
+> ---
+>  arch/arm/mach-imx/imx8mq.c               | 37 +++++++++++++++
+>  arch/arm/mach-imx/include/mach/generic.h |  4 ++
+>  commands/Kconfig                         | 14 ++++++
+>  commands/Makefile                        |  1 +
+>  commands/bootaux.c                       | 58 ++++++++++++++++++++++++
+>  5 files changed, 114 insertions(+)
+>  create mode 100644 commands/bootaux.c
+> 
+> diff --git a/arch/arm/mach-imx/imx8mq.c b/arch/arm/mach-imx/imx8mq.c
+> index 3f6b433a5..9e60a8bd7 100644
+> --- a/arch/arm/mach-imx/imx8mq.c
+> +++ b/arch/arm/mach-imx/imx8mq.c
+> @@ -123,4 +123,41 @@ static int imx8mq_report_hdmi_firmware(void)
+>  
+>  	return 0;
+>  }
+> +
+> +#ifdef CONFIG_CMD_BOOTAUX
+> +
+> +#define FSL_SIP_SRC             0xC2000005
+> +#define FSL_SIP_SRC_M4_START    0x00
+> +#define FSL_SIP_SRC_M4_STARTED  0x01
+> +int imx_auxiliary_core_up(u32 core_id, ulong boot_private_data)
+> +{
+> +	u32 stack, pc;
+> +	struct arm_smccc_res res;
+> +
+> +	if (!boot_private_data)
+> +		return -EINVAL;
+> +
+> +	stack = *(u32 *)boot_private_data;
+> +	pc = *(u32 *)(boot_private_data + 4);
+> +
+> +	/* Set the stack and pc to M4 bootROM */
+> +	writel(stack, MX8MQ_M4_BOOTROM_BASE_ADDR);
+> +	writel(pc, MX8MQ_M4_BOOTROM_BASE_ADDR + 4);
+> +
+> +	/* Enable M4 */
+> +	arm_smccc_smc(FSL_SIP_SRC, FSL_SIP_SRC_M4_START,
+> +			0, 0, 0, 0, 0, 0, &res);
+> +
+> +	return res.a0;
+> +}
+> +
+> +int imx_auxiliary_core_check_up(u32 core_id)
+> +{
+> +	struct arm_smccc_res res;
+> +	arm_smccc_smc(FSL_SIP_SRC, FSL_SIP_SRC_M4_STARTED,
+> +			0, 0, 0, 0, 0, 0, &res);
+> +	return res.a0;
+> +}
+> +#endif
+> +
+>  console_initcall(imx8mq_report_hdmi_firmware);
+> diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
+> index be58da4da..59fcbc767 100644
+> --- a/arch/arm/mach-imx/include/mach/generic.h
+> +++ b/arch/arm/mach-imx/include/mach/generic.h
+> @@ -59,6 +59,10 @@ void imx6ul_cpu_lowlevel_init(void);
+>  void imx7_cpu_lowlevel_init(void);
+>  void vf610_cpu_lowlevel_init(void);
+>  
+> +/* processor specific functions to boot auxiliary core */
+> +int imx_auxiliary_core_up(u32 core_id, ulong boot_private_data);
+> +int imx_auxiliary_core_check_up(u32 core_id);
+> +
+>  /* There's a off-by-one betweem the gpio bank number and the gpiochip */
+>  /* range e.g. GPIO_1_5 is gpio 5 under linux */
+>  #define IMX_GPIO_NR(bank, nr)		(((bank) - 1) * 32 + (nr))
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index 4f5d84ac1..c39a84f23 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -270,6 +270,20 @@ config CMD_AT91_BOOT_TEST
+>  	  -j ADDR  jump address
+>  	  -s SRAM  SRAM device (default /dev/sram0)
+>  
+> +config CMD_BOOTAUX
+> +	tristate
+> +	default y
+> +	depends on ARCH_IMX8MQ
+> +	prompt "bootaux"
+> +	help
+> +	  Boot auxiliary core on NXP iMXP Processors.
+> +
+> +	  Usage: bootaux ADDRESS [CORE]
+> +
+> +	  Options:
+> +	  ADDRESS  load address
+> +	  CORE  auxiliary core to start, defaults to 0
+> +
+>  config CMD_BOOT_ORDER
+>  	tristate
+>  	depends on ARCH_OMAP4
+> diff --git a/commands/Makefile b/commands/Makefile
+> index 358671bb5..c72b52c27 100644
+> --- a/commands/Makefile
+> +++ b/commands/Makefile
+> @@ -1,6 +1,7 @@
+>  obj-$(CONFIG_STDDEV)		+= stddev.o
+>  obj-$(CONFIG_CMD_DIGEST)	+= digest.o
+>  obj-$(CONFIG_COMPILE_HASH)	+= hashsum.o
+> +obj-$(CONFIG_CMD_BOOTAUX)	+= bootaux.o
+>  obj-$(CONFIG_CMD_BOOTM)		+= bootm.o
+>  obj-$(CONFIG_CMD_UIMAGE)	+= uimage.o
+>  obj-$(CONFIG_CMD_LINUX16)	+= linux16.o
+> diff --git a/commands/bootaux.c b/commands/bootaux.c
+> new file mode 100644
+> index 000000000..62209bf3e
+> --- /dev/null
+> +++ b/commands/bootaux.c
+> @@ -0,0 +1,58 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +/*
+> + * bootaux - boot auxiliary core
+> + *
+> + * Copyright (C) 2019 David Brandt <d.brandt@phytec.de>
+> + *
+> + * Based on code from u-boot-imx from Freescale Semiconductor, Inc.
+> + *
+> + */
+> +
+> +#include <command.h>
+> +#include <getopt.h>
+> +#include <memory.h>
+> +#include <malloc.h>
+> +#include <common.h>
+> +#include <errno.h>
+> +#include <memtest.h>
+> +#include <mmu.h>
+> +#include <mach/generic.h>
 
-I agree with remoteproc here.
+Please clean up the include list. Nothing from malloc.h, memtest.h and
+mmu.h seems to be used here.
 
-The task of remoteproc on linux is:
-- parse specially formated ELF file:
-- Register needed resources extracted from ELF
-- prepare clocks
-- do address translation
-- kick on the CPU
+> +
+> +static int do_bootaux(int argc, char *argv[])
+> +{
+> +	ulong addr;
+> +	int ret, up;
+> +	u32 core = 0;
+> +
+> +	if (argc < 2) {
+> +		printf("no load address given\n");
+> +		return 1;
+> +	}
+> +
+> +	if (argc > 2)
+> +		core = strict_strtoul(argv[2], NULL, 10);
 
-The main issue of linux part is to dunamically patch devicetree and tell master linux 
-instance about IP Cores which was migrated for master CPU to the slave CPU.
+We do not have strict_strtoul().
 
-With barebox this issues can be solved. First of all, barebox already has ELF parser. So 
-it can be reused. The drivers/remoteproc/imx_rproc.c from linux can probably be ported as 
-is. As soon as first step done, we would be able to patch devicetree in barebox and gave 
-it over to linux. So, we will be able to tell linux to let some clocks on and do not touch 
-reserved memory areas.
+Please do not specify the base. Normally we provide numbers as decimal
+and addresses as hexadecimal, but there's no reason to force this. If I
+specify a number without '0x' prefix I expect it to be treated as
+decimal.
 
-Kind regards,
-Oleksij Rempel
+Consider using getopt() here for the core parameter. Commands with multiple
+positional and sometimes even optional arguments tend to get very creepy
+over time.
+
+> +
+> +	up = imx_auxiliary_core_check_up(core);
+> +	if (up) {
+> +		printf("Auxiliary core %d is already up\n", core);
+> +		return 0;
+> +	}
+> +
+> +	addr = strict_strtoul(argv[1], NULL, 16);
+> +
+> +	printf("Starting auxiliary core %d at 0x%08lX ...\n", core, addr);
+> +
+> +	ret = imx_auxiliary_core_up(core, addr);
+
+How is this command supposed to be used? If I read the code correctly
+'addr' is not the address the aux core will start from, but is instead
+treated as a pointer to a struct of type:
+
+struct aux {
+	void *stack;
+	void *start_address;
+};
+
+Who sets this struct up? Wouldn't it be better to specify start_address
+and stack directly to the command? At least I would expect some
+information at which address the core is actually started and where its
+stack pointer is.
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
