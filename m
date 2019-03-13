@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h40Oj-0007xN-IU
- for barebox@lists.infradead.org; Wed, 13 Mar 2019 09:42:06 +0000
+ by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1h40Oj-0001Xt-NJ
+ for barebox@lists.infradead.org; Wed, 13 Mar 2019 09:42:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 13 Mar 2019 10:41:48 +0100
-Message-Id: <20190313094202.14901-2-s.hauer@pengutronix.de>
+Date: Wed, 13 Mar 2019 10:41:51 +0100
+Message-Id: <20190313094202.14901-5-s.hauer@pengutronix.de>
 In-Reply-To: <20190313094202.14901-1-s.hauer@pengutronix.de>
 References: <20190313094202.14901-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,34 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/15] mci: imx-esdhc: Actually enable cache snooping
+Subject: [PATCH 04/15] ARM: Add arm64 pbl udelay
 To: Barebox List <barebox@lists.infradead.org>
 
-15b64fd520 introduced the ESDHC_FLAG_CACHE_SNOOPING for layerscape
-support, but didn't actually set it for layerscape. Add the new
-flag to the layerscape SoC data.
-
-Fixes: 15b64fd520 ("mci: imx-esdhc: Add layerscape support")
+PBL often needs a way to udelay execution. Since we have a generic timer
+in ARMv8 we can implement a generic udelay.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/imx-esdhc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/lib64/Makefile |  2 +-
+ arch/arm/lib64/pbl.c    | 17 +++++++++++++++++
+ 2 files changed, 18 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/lib64/pbl.c
 
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index cedfb3db42..84c65d5d61 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -740,7 +740,8 @@ static struct esdhc_soc_data usdhc_imx6sx_data = {
- };
+diff --git a/arch/arm/lib64/Makefile b/arch/arm/lib64/Makefile
+index 4c0019fabe..5068431342 100644
+--- a/arch/arm/lib64/Makefile
++++ b/arch/arm/lib64/Makefile
+@@ -6,4 +6,4 @@ obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memset.o string.o
+ extra-y += barebox.lds
+ obj-pbl-y   += runtime-offset.o
  
- static struct esdhc_soc_data esdhc_ls_data = {
--	.flags = ESDHC_FLAG_MULTIBLK_NO_INT | ESDHC_FLAG_BIGENDIAN,
-+	.flags = ESDHC_FLAG_MULTIBLK_NO_INT | ESDHC_FLAG_BIGENDIAN |
-+		 ESDHC_FLAG_CACHE_SNOOPING,
- };
- 
- static __maybe_unused struct of_device_id fsl_esdhc_compatible[] = {
+-pbl-y	+= div0.o
++pbl-y	+= div0.o pbl.o
+diff --git a/arch/arm/lib64/pbl.c b/arch/arm/lib64/pbl.c
+new file mode 100644
+index 0000000000..0cef08e4d2
+--- /dev/null
++++ b/arch/arm/lib64/pbl.c
+@@ -0,0 +1,17 @@
++#include <asm/system.h>
++#include <clock.h>
++#include <common.h>
++
++void udelay(unsigned long us)
++{
++	unsigned long cntfrq = get_cntfrq();
++	unsigned long ticks = (us * cntfrq) / 1000000;
++	unsigned long start = get_cntpct();
++
++	while ((long)(start + ticks - get_cntpct()) > 0);
++}
++
++void mdelay(unsigned long ms)
++{
++	udelay(ms * 1000);
++}
 -- 
 2.20.1
 
