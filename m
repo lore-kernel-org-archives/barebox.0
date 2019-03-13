@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h3dwh-00021Q-1J
- for barebox@lists.infradead.org; Tue, 12 Mar 2019 09:43:40 +0000
-Message-ID: <1552383817.2453.25.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 12 Mar 2019 10:43:37 +0100
-In-Reply-To: <20190312074525.6153-1-andrew.smirnov@gmail.com>
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1h3zVl-0007GK-DT
+ for barebox@lists.infradead.org; Wed, 13 Mar 2019 08:45:18 +0000
+Date: Wed, 13 Mar 2019 09:45:15 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190313084515.3uae3luepv4ixqii@pengutronix.de>
 References: <20190312074525.6153-1-andrew.smirnov@gmail.com>
-Mime-Version: 1.0
+ <1552383817.2453.25.camel@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1552383817.2453.25.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,36 +19,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 0/3] Earlycon command line option support
-To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
 
-SGkgQW5kcmV5LAoKQW0gRGllbnN0YWcsIGRlbiAxMi4wMy4yMDE5LCAwMDo0NSAtMDcwMCBzY2hy
-aWViIEFuZHJleSBTbWlybm92Ogo+IEV2ZXJ5b25lOgo+IAo+IFRoaXMgc21hbGwgc2VyaWVzIGlz
-IHNvbWV0aGluZyBJIGNhbWUgdXAgd2l0aCB0byBhdm9pZCBoYXZpbmcgdG8gbG9vawo+IHVwIHRo
-ZSBzeW50YXggYW5kIG1hbnVhbGx5IHNwZWNpZnkgZWFybHljb24ga2VybmVsIGNvbW1hbmQgbGlu
-ZSBvcHRpb24KPiBldmVyeSB0aW1lIEkgbmVlZGVkIGl0LiBUaGUgc2VyaWVzIGlzIHB1cmVseSBv
-cHRpb25hbCBpbiBjYXNlIEkgYW0gbm90Cj4gdGhlIG9ubHkgb25lIHdobyB0aGlua3MgdGhpcyBp
-cyB1c2VmdWwuCj4gCj4gRmVlZGJhY2sgaXMgd2VsY29tZSEKPiAKPiBUaGFua3MsCj4gQW5kcmV5
-IFNtaXJub3YKPiAKPiBBbmRyZXkgU21pcm5vdiAoMyk6Cj4gwqAgY29uc29sZTogQWRkIHBsdW1i
-aW5nIHRvIGV4cG9zZSBlYXJseWNvbi9ib290Y29uc29sZSBwYXJhbWV0ZXIKPiDCoCBzZXJpYWw6
-IGkuTVg6IEFkZCBjb2RlIHRvIGV4cG9ydCAiZWFybHljb24iIHNldHRpbmcKPiDCoCBzZXJpYWw6
-IGxwdWFydDogQWRkIGNvZGUgdG8gZXhwb3J0ICJlYXJseWNvbiIgc2V0dGluZwo+IAo+IMKgRG9j
-dW1lbnRhdGlvbi91c2VyL3ZhcmlhYmxlcy5yc3QgfMKgwqAxICsKPiDCoGNvbW1vbi9jb25zb2xl
-LmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfCAyNSArKysrKysrKysrKysrKysr
-KysrKysrKysrCj4gwqBkcml2ZXJzL3NlcmlhbC9zZXJpYWxfaW14LmPCoMKgwqDCoMKgwqB8wqDC
-oDMgKysrCj4gwqBkcml2ZXJzL3NlcmlhbC9zZXJpYWxfbHB1YXJ0LmPCoMKgwqB8wqDCoDEgKwo+
-IMKgaW5jbHVkZS9jb25zb2xlLmjCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHzCoMKg
-MSArCj4gwqA1IGZpbGVzIGNoYW5nZWQsIDMxIGluc2VydGlvbnMoKykKCkkgZG9uJ3QgdGhpbmsg
-YW55IG9mIHRoaXMgaXMgbmVjZXNzYXJ5LiBGb3IgRFQgYmFzZWQgcGxhdGZvcm1zIGVhcmx5Y29u
-CndpbGwgdXNlIHRoZSBjb25zb2xlIHNwZWNpZmllZCB2aWEgdGhlICJzdGRvdXQtcGF0aCIgcHJv
-cGVydHksIHNvIGl0J3MKZW50aXJlbHkgc3VmZmljaWVudCB0byBhZGQgImVhcmx5Y29uIiB0byB0
-aGUga2VybmVsIGNvbW1hbmQgbGluZSBhbmQKdGhlIGtlcm5lbCB3aWxsIGRvIHRoZSByaWdodCB0
-aGluZy4gTm8gbmVlZCBmb3IgYW55IG1vcmUgZWxhYm9yYXRlCmtlcm5lbCBjb21tYW5kbGluZSBv
-cHRpb25zLgoKUmVnYXJkcywKTHVjYXMKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+On Tue, Mar 12, 2019 at 10:43:37AM +0100, Lucas Stach wrote:
+> Hi Andrey,
+> =
+
+> Am Dienstag, den 12.03.2019, 00:45 -0700 schrieb Andrey Smirnov:
+> > Everyone:
+> > =
+
+> > This small series is something I came up with to avoid having to look
+> > up the syntax and manually specify earlycon kernel command line option
+> > every time I needed it. The series is purely optional in case I am not
+> > the only one who thinks this is useful.
+> > =
+
+> > Feedback is welcome!
+> > =
+
+> > Thanks,
+> > Andrey Smirnov
+> > =
+
+> > Andrey Smirnov (3):
+> > =A0 console: Add plumbing to expose earlycon/bootconsole parameter
+> > =A0 serial: i.MX: Add code to export "earlycon" setting
+> > =A0 serial: lpuart: Add code to export "earlycon" setting
+> > =
+
+> > =A0Documentation/user/variables.rst |=A0=A01 +
+> > =A0common/console.c=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0|=
+ 25 +++++++++++++++++++++++++
+> > =A0drivers/serial/serial_imx.c=A0=A0=A0=A0=A0=A0|=A0=A03 +++
+> > =A0drivers/serial/serial_lpuart.c=A0=A0=A0|=A0=A01 +
+> > =A0include/console.h=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0|=
+=A0=A01 +
+> > =A05 files changed, 31 insertions(+)
+> =
+
+> I don't think any of this is necessary. For DT based platforms earlycon
+> will use the console specified via the "stdout-path" property, so it's
+> entirely sufficient to add "earlycon" to the kernel command line and
+> the kernel will do the right thing. No need for any more elaborate
+> kernel commandline options.
+
+I'm with Lucas here unless some good arguments come up why this is
+needed.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
