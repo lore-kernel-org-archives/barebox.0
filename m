@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h3bjs-000191-Fj
- for barebox@lists.infradead.org; Tue, 12 Mar 2019 07:22:17 +0000
-Received: by mail-pf1-x42e.google.com with SMTP id d25so1165978pfn.8
- for <barebox@lists.infradead.org>; Tue, 12 Mar 2019 00:22:16 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Mar 2019 00:21:50 -0700
-Message-Id: <20190312072150.19092-3-andrew.smirnov@gmail.com>
-In-Reply-To: <20190312072150.19092-1-andrew.smirnov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1h3zOF-00076X-O7
+ for barebox@lists.infradead.org; Wed, 13 Mar 2019 08:37:32 +0000
+Date: Wed, 13 Mar 2019 09:37:16 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190313083716.ijjqxrespr7uwib3@pengutronix.de>
 References: <20190312072150.19092-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190312072150.19092-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,38 +22,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] fs: ramfs: Drop unnecessary check in ramfs_mknod()
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 1/3] fs: ramfs: Drop unused 'handle' filed from struct
+ ramfs_inode
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-There's already an early exit statement triggered by "inode" being
-NULL. Drop an extra check that will always be true.
+On Tue, Mar 12, 2019 at 12:21:48AM -0700, Andrey Smirnov wrote:
+> There are no users of this field in the code. Drop it.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  fs/ramfs.c | 2 --
+>  1 file changed, 2 deletions(-)
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- fs/ramfs.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+Applied, thanks
 
-diff --git a/fs/ramfs.c b/fs/ramfs.c
-index eec7cfb5b..7e7dc7aca 100644
---- a/fs/ramfs.c
-+++ b/fs/ramfs.c
-@@ -131,10 +131,8 @@ ramfs_mknod(struct inode *dir, struct dentry *dentry, umode_t mode)
- 	if (!inode)
- 		return -ENOSPC;
- 
--	if (inode) {
--		d_instantiate(dentry, inode);
--		dget(dentry);   /* Extra count - pin the dentry in core */
--	}
-+	d_instantiate(dentry, inode);
-+	dget(dentry);   /* Extra count - pin the dentry in core */
- 
- 	return 0;
- }
+Sascha
+
+> 
+> diff --git a/fs/ramfs.c b/fs/ramfs.c
+> index 3046afef3..94ecb0597 100644
+> --- a/fs/ramfs.c
+> +++ b/fs/ramfs.c
+> @@ -43,8 +43,6 @@ struct ramfs_inode {
+>  	char *symlink;
+>  	ulong mode;
+>  
+> -	struct handle_d *handle;
+> -
+>  	ulong size;
+>  	struct ramfs_chunk *data;
+>  
+> -- 
+> 2.20.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
