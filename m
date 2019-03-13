@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h3bsI-0004fB-SI
- for barebox@lists.infradead.org; Tue, 12 Mar 2019 07:31:00 +0000
-Received: by mail-pg1-x542.google.com with SMTP id l11so1137545pgq.10
- for <barebox@lists.infradead.org>; Tue, 12 Mar 2019 00:30:58 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 12 Mar 2019 00:30:49 -0700
-Message-Id: <20190312073049.26055-2-andrew.smirnov@gmail.com>
-In-Reply-To: <20190312073049.26055-1-andrew.smirnov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1h3zS6-0007E8-GQ
+ for barebox@lists.infradead.org; Wed, 13 Mar 2019 08:41:31 +0000
+Date: Wed, 13 Mar 2019 09:41:28 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190313084128.y6zmlpdrpdvoojqy@pengutronix.de>
 References: <20190312073049.26055-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190312073049.26055-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,31 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] commands: memcpy: Make use of min_t()
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 1/2] commands: memcpy: Make use of write_full()
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- commands/memcpy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Tue, Mar 12, 2019 at 12:30:48AM -0700, Andrey Smirnov wrote:
+> Change memcpy to rely on write_full() instead of re-implementing it
+> locally.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  commands/memcpy.c | 18 ++++--------------
+>  1 file changed, 4 insertions(+), 14 deletions(-)
 
-diff --git a/commands/memcpy.c b/commands/memcpy.c
-index 803f06e57..ef25fb7b2 100644
---- a/commands/memcpy.c
-+++ b/commands/memcpy.c
-@@ -86,7 +86,7 @@ static int do_memcpy(int argc, char *argv[])
- 	while (count > 0) {
- 		int now, r;
- 
--		now = min((loff_t)RW_BUF_SIZE, count);
-+		now = min_t(loff_t, RW_BUF_SIZE, count);
- 
- 		r = read(sourcefd, buf, now);
- 		if (r < 0) {
+Applied, thanks
+
+Sascha
+
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
