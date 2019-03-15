@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h4iva-0004sG-0c
- for barebox@lists.infradead.org; Fri, 15 Mar 2019 09:14:59 +0000
+ id 1h4iva-0004sI-2V
+ for barebox@lists.infradead.org; Fri, 15 Mar 2019 09:15:00 +0000
 From: Juergen Borleis <jbe@pengutronix.de>
-Date: Fri, 15 Mar 2019 10:14:48 +0100
-Message-Id: <20190315091453.22393-10-jbe@pengutronix.de>
+Date: Fri, 15 Mar 2019 10:14:40 +0100
+Message-Id: <20190315091453.22393-2-jbe@pengutronix.de>
 In-Reply-To: <20190315091453.22393-1-jbe@pengutronix.de>
 References: <20190315091453.22393-1-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,150 +21,150 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/15] pstore: Switch pstore_mkfile to pass record
+Subject: [PATCH 02/15] pstore/ram: add Device Tree bindings
 To: barebox@lists.infradead.org
-Cc: Kees Cook <keescook@chromium.org>
+Cc: Kees Cook <keescook@chromium.org>, Greg Hackmann <ghackmann@google.com>
 
-From: Kees Cook <keescook@chromium.org>
+From: Greg Hackmann <ghackmann@google.com>
 
-Instead of the long list of arguments, just pass the new record struct.
+ramoops is one of the remaining places where ARM vendors still rely on
+board-specific shims.  Device Tree lets us replace those shims with
+generic code.
 
+These bindings mirror the ramoops module parameters, with two small
+differences:
+
+(1) dump_oops becomes an optional "no-dump-oops" property, since ramoops
+sets dump_oops=1 by default.
+
+(2) mem_type=1 becomes the more self-explanatory "unbuffered" property.
+
+Signed-off-by: Greg Hackmann <ghackmann@google.com>
+[fixed platform_get_drvdata() crash, thanks to Brian Norris]
+[switched from u64 to u32 to simplify code, various whitespace fixes]
+[use dev_of_node() to gain code-elimination for CONFIG_OF=n]
 Signed-off-by: Kees Cook <keescook@chromium.org>
+[p.zabel@pengutronix.de: ported to Barebox from Linux commit 35da60941e44]
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 ---
- fs/pstore/fs.c       | 45 ++++++++++++++++++++++++---------------------
- fs/pstore/internal.h |  4 +---
- fs/pstore/platform.c |  6 +-----
- 3 files changed, 26 insertions(+), 29 deletions(-)
+ fs/pstore/ram.c | 83 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 83 insertions(+)
 
-diff --git a/fs/pstore/fs.c b/fs/pstore/fs.c
-index 9a7e0b5526..e9c7ae7adb 100644
---- a/fs/pstore/fs.c
-+++ b/fs/pstore/fs.c
-@@ -52,68 +52,71 @@ struct pstore_private {
-  * Load it up with "size" bytes of data from "buf".
-  * Set the mtime & ctime to the date that this record was originally stored.
-  */
--int pstore_mkfile(enum pstore_type_id type, char *psname, u64 id, int count,
--		  char *data, bool compressed, size_t size,
--		  struct pstore_info *psi)
-+int pstore_mkfile(struct pstore_record *record)
+diff --git a/fs/pstore/ram.c b/fs/pstore/ram.c
+index fe65959791..98c11e456d 100644
+--- a/fs/pstore/ram.c
++++ b/fs/pstore/ram.c
+@@ -36,6 +36,8 @@
+ #include <globalvar.h>
+ #include <init.h>
+ #include <common.h>
++#include <of.h>
++#include <of_address.h>
+ 
+ #define RAMOOPS_KERNMSG_HDR "===="
+ #define MIN_MEM_SIZE 4096UL
+@@ -349,6 +351,74 @@ static int ramoops_init_prz(struct ramoops_context *cxt,
+ 	return 0;
+ }
+ 
++static int ramoops_parse_dt_size(struct device_d *dev,
++				 const char *propname, u32 *value)
++{
++	u32 val32 = 0;
++	int ret;
++
++	ret = of_property_read_u32(dev->device_node, propname, &val32);
++	if (ret < 0 && ret != -EINVAL) {
++		dev_err(dev, "failed to parse property %s: %d\n",
++			propname, ret);
++		return ret;
++	}
++
++	if (val32 > INT_MAX) {
++		dev_err(dev, "%s %u > INT_MAX\n", propname, val32);
++		return -EOVERFLOW;
++	}
++
++	*value = val32;
++	return 0;
++}
++
++static int ramoops_parse_dt(struct device_d *dev,
++			    struct ramoops_platform_data *pdata)
++{
++	struct device_node *of_node = dev->device_node;
++	struct device_node *mem_region;
++	struct resource res;
++	u32 value;
++	int ret;
++
++	mem_region = of_parse_phandle(of_node, "memory-region", 0);
++	if (!mem_region) {
++		dev_err(dev, "no memory-region phandle\n");
++		return -ENODEV;
++	}
++
++	ret = of_address_to_resource(mem_region, 0, &res);
++	if (ret) {
++		dev_err(dev,
++			"failed to translate memory-region to resource: %d\n",
++			ret);
++		return ret;
++	}
++
++	pdata->mem_size = resource_size(&res);
++	pdata->mem_address = res.start;
++	pdata->mem_type = of_property_read_bool(of_node, "unbuffered");
++	pdata->dump_oops = !of_property_read_bool(of_node, "no-dump-oops");
++
++#define parse_size(name, field) {					\
++		ret = ramoops_parse_dt_size(dev, name, &value);		\
++		if (ret < 0)						\
++		return ret;						\
++		field = value;						\
++	}
++
++       parse_size("record-size", pdata->record_size);
++       parse_size("console-size", pdata->console_size);
++       parse_size("ftrace-size", pdata->ftrace_size);
++       parse_size("pmsg-size", pdata->pmsg_size);
++       parse_size("ecc-size", pdata->ecc_info.ecc_size);
++
++#undef parse_size
++
++       return 0;
++}
++
+ static int ramoops_probe(struct device_d *dev)
  {
- 	struct pstore_private	*private, *pos;
-+	size_t			size = record->size;
+ 	struct ramoops_platform_data *pdata = dummy_data;
+@@ -358,6 +428,18 @@ static int ramoops_probe(struct device_d *dev)
+ 	int err = -EINVAL;
+ 	char kernelargs[512];
  
- 	list_for_each_entry(pos, &allpstore, list) {
--		if (pos->type == type && pos->id == id && pos->psi == psi)
-+		if (pos->type == record->type &&
-+		    pos->id == record->id &&
-+		    pos->psi == record->psi)
- 			return -EEXIST;
- 	}
- 
- 	private = xzalloc(sizeof(*private) + size);
--	private->type = type;
--	private->id = id;
--	private->count = count;
--	private->psi = psi;
-+	private->type = record->type;
-+	private->id = record->id;
-+	private->count = record->count;
-+	private->psi = record->psi;
- 
--	switch (type) {
-+	switch (record->type) {
- 	case PSTORE_TYPE_DMESG:
- 		scnprintf(private->name, sizeof(private->name),
--			  "dmesg-%s-%lld%s", psname, id,
--			  compressed ? ".enc.z" : "");
-+			  "dmesg-%s-%lld%s", record->psi->name, record->id,
-+			  record->compressed ? ".enc.z" : "");
- 		break;
- 	case PSTORE_TYPE_CONSOLE:
- 		scnprintf(private->name, sizeof(private->name),
--			  "console-%s-%lld", psname, id);
-+			  "console-%s-%lld", record->psi->name, record->id);
- 		break;
- 	case PSTORE_TYPE_FTRACE:
- 		scnprintf(private->name, sizeof(private->name),
--			  "ftrace-%s-%lld", psname, id);
-+			  "ftrace-%s-%lld", record->psi->name, record->id);
- 		break;
- 	case PSTORE_TYPE_MCE:
- 		scnprintf(private->name, sizeof(private->name),
--			  "mce-%s-%lld", psname, id);
-+			  "mce-%s-%lld", record->psi->name, record->id);
- 		break;
- 	case PSTORE_TYPE_PPC_RTAS:
- 		scnprintf(private->name, sizeof(private->name),
--			  "rtas-%s-%lld", psname, id);
-+			  "rtas-%s-%lld", record->psi->name, record->id);
- 		break;
- 	case PSTORE_TYPE_PPC_OF:
- 		scnprintf(private->name, sizeof(private->name),
--			  "powerpc-ofw-%s-%lld", psname, id);
-+			  "powerpc-ofw-%s-%lld", record->psi->name, record->id);
- 		break;
- 	case PSTORE_TYPE_PPC_COMMON:
- 		scnprintf(private->name, sizeof(private->name),
--			  "powerpc-common-%s-%lld", psname, id);
-+			  "powerpc-common-%s-%lld", record->psi->name,
-+			  record->id);
- 		break;
- 	case PSTORE_TYPE_PMSG:
- 		scnprintf(private->name, sizeof(private->name),
--			  "pmsg-%s-%lld", psname, id);
-+			  "pmsg-%s-%lld", record->psi->name, record->id);
- 		break;
- 	case PSTORE_TYPE_UNKNOWN:
- 		scnprintf(private->name, sizeof(private->name),
--			  "unknown-%s-%lld", psname, id);
-+			  "unknown-%s-%lld", record->psi->name, record->id);
- 		break;
- 	default:
- 		scnprintf(private->name, sizeof(private->name),
--			  "type%d-%s-%lld", type, psname, id);
-+			  "type%d-%s-%lld", record->type, record->psi->name,
-+			  record->id);
- 		break;
- 	}
- 
--	memcpy(private->data, data, size);
-+	memcpy(private->data, record->buf, size);
- 	private->size = size;
- 
- 	list_add(&private->list, &allpstore);
-diff --git a/fs/pstore/internal.h b/fs/pstore/internal.h
-index 0a8df1f4e2..6b507e4bd3 100644
---- a/fs/pstore/internal.h
-+++ b/fs/pstore/internal.h
-@@ -11,9 +11,7 @@ extern struct pstore_info *psinfo;
- 
- extern void	pstore_set_kmsg_bytes(int);
- extern void	pstore_get_records(int);
--extern int	pstore_mkfile(enum pstore_type_id, char *psname, u64 id,
--			      int count, char *data, bool compressed,
--			      size_t size, struct pstore_info *psi);
-+extern int	pstore_mkfile(struct pstore_record *record);
- extern int	pstore_is_mounted(void);
- 
- #endif
-diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
-index 5d0018693b..bad735e574 100644
---- a/fs/pstore/platform.c
-+++ b/fs/pstore/platform.c
-@@ -190,11 +190,7 @@ void pstore_get_records(int quiet)
- 			pr_err("barebox does not have ramoops compression support\n");
- 			continue;
- 		}
--		rc = pstore_mkfile(record.type, psi->name, record.id,
--				   record.count, record.buf,
--				   record.compressed,
--				   record.size,
--				   record.psi);
-+		rc = pstore_mkfile(&record);
- 		if (unzipped_len < 0) {
- 			/* Free buffer other than big oops */
- 			kfree(record.buf);
++	if (IS_ENABLED(CONFIG_OFTREE) && !pdata) {
++		pdata = kzalloc(sizeof(*pdata), GFP_KERNEL);
++		if (!pdata) {
++			err = -ENOMEM;
++			goto fail_out;
++		}
++
++		err = ramoops_parse_dt(dev, pdata);
++		if (err < 0)
++			goto fail_out;
++	}
++
+ 	/* Only a single ramoops area allowed at a time, so fail extra
+ 	 * probes.
+ 	 */
+@@ -473,6 +555,7 @@ fail_init_fprz:
+ fail_init_cprz:
+ 	ramoops_free_przs(cxt);
+ fail_out:
++	kfree(pdata);
+ 	return err;
+ }
+ unsigned long arm_mem_ramoops_get(void);
 -- 
 2.11.0
 
