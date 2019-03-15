@@ -1,20 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h4iva-0004sL-2q
+ id 1h4iva-0004sG-0c
  for barebox@lists.infradead.org; Fri, 15 Mar 2019 09:14:59 +0000
-Received: from ginster.hi.pengutronix.de
- ([2001:67c:670:100:2e4d:54ff:fe67:bfa5] helo=ginster)
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <jbe@pengutronix.de>) id 1h4ivW-000442-Pr
- for barebox@lists.infradead.org; Fri, 15 Mar 2019 10:14:54 +0100
-Received: from jbe by ginster with local (Exim 4.89)
- (envelope-from <jbe@pengutronix.de>) id 1h4ivW-0005qW-11
- for barebox@lists.infradead.org; Fri, 15 Mar 2019 10:14:54 +0100
 From: Juergen Borleis <jbe@pengutronix.de>
-Date: Fri, 15 Mar 2019 10:14:53 +0100
-Message-Id: <20190315091453.22393-15-jbe@pengutronix.de>
+Date: Fri, 15 Mar 2019 10:14:48 +0100
+Message-Id: <20190315091453.22393-10-jbe@pengutronix.de>
 In-Reply-To: <20190315091453.22393-1-jbe@pengutronix.de>
 References: <20190315091453.22393-1-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -30,62 +21,150 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/15] pstore/doc: fix layout
+Subject: [PATCH 10/15] pstore: Switch pstore_mkfile to pass record
 To: barebox@lists.infradead.org
+Cc: Kees Cook <keescook@chromium.org>
 
-Emphasise keywords and paths.
+From: Kees Cook <keescook@chromium.org>
 
-Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
+Instead of the long list of arguments, just pass the new record struct.
+
+Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- Documentation/filesystems/pstore.rst | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ fs/pstore/fs.c       | 45 ++++++++++++++++++++++++---------------------
+ fs/pstore/internal.h |  4 +---
+ fs/pstore/platform.c |  6 +-----
+ 3 files changed, 26 insertions(+), 29 deletions(-)
 
-diff --git a/Documentation/filesystems/pstore.rst b/Documentation/filesystems/pstore.rst
-index 00a5a05537..b8c2cb825c 100644
---- a/Documentation/filesystems/pstore.rst
-+++ b/Documentation/filesystems/pstore.rst
-@@ -1,17 +1,17 @@
- .. index:: pstore (filesystem)
+diff --git a/fs/pstore/fs.c b/fs/pstore/fs.c
+index 9a7e0b5526..e9c7ae7adb 100644
+--- a/fs/pstore/fs.c
++++ b/fs/pstore/fs.c
+@@ -52,68 +52,71 @@ struct pstore_private {
+  * Load it up with "size" bytes of data from "buf".
+  * Set the mtime & ctime to the date that this record was originally stored.
+  */
+-int pstore_mkfile(enum pstore_type_id type, char *psname, u64 id, int count,
+-		  char *data, bool compressed, size_t size,
+-		  struct pstore_info *psi)
++int pstore_mkfile(struct pstore_record *record)
+ {
+ 	struct pstore_private	*private, *pos;
++	size_t			size = record->size;
  
--pstore filesystem with RAM backend (RAMOOPS)
--============================================
-+*pstore* filesystem with RAM backend (RAMOOPS)
-+==============================================
+ 	list_for_each_entry(pos, &allpstore, list) {
+-		if (pos->type == type && pos->id == id && pos->psi == psi)
++		if (pos->type == record->type &&
++		    pos->id == record->id &&
++		    pos->psi == record->psi)
+ 			return -EEXIST;
+ 	}
  
--Barebox supports the pstore filesystem known from the kernel. The main backend
-+Barebox supports the *pstore* filesystem known from the kernel. The main backend
- implementation is RAM. All other backends are currently not implemented by
- Barebox.
+ 	private = xzalloc(sizeof(*private) + size);
+-	private->type = type;
+-	private->id = id;
+-	private->count = count;
+-	private->psi = psi;
++	private->type = record->type;
++	private->id = record->id;
++	private->count = record->count;
++	private->psi = record->psi;
  
--pstore is a filesystem to store kernel log or kernel panic messages. These
-+*pstore* is a filesystem to store kernel log or kernel panic messages. These
- messages are stored by the kernel in a specified RAM area which is never
- overwritten by any user. This data can be accessed after a reboot through
--/pstore in Barebox or the kernel. The pstore filesystem is automatically mounted
--at boot:
-+``/pstore`` in Barebox or the kernel. The *pstore* filesystem is automatically
-+mounted at boot:
+-	switch (type) {
++	switch (record->type) {
+ 	case PSTORE_TYPE_DMESG:
+ 		scnprintf(private->name, sizeof(private->name),
+-			  "dmesg-%s-%lld%s", psname, id,
+-			  compressed ? ".enc.z" : "");
++			  "dmesg-%s-%lld%s", record->psi->name, record->id,
++			  record->compressed ? ".enc.z" : "");
+ 		break;
+ 	case PSTORE_TYPE_CONSOLE:
+ 		scnprintf(private->name, sizeof(private->name),
+-			  "console-%s-%lld", psname, id);
++			  "console-%s-%lld", record->psi->name, record->id);
+ 		break;
+ 	case PSTORE_TYPE_FTRACE:
+ 		scnprintf(private->name, sizeof(private->name),
+-			  "ftrace-%s-%lld", psname, id);
++			  "ftrace-%s-%lld", record->psi->name, record->id);
+ 		break;
+ 	case PSTORE_TYPE_MCE:
+ 		scnprintf(private->name, sizeof(private->name),
+-			  "mce-%s-%lld", psname, id);
++			  "mce-%s-%lld", record->psi->name, record->id);
+ 		break;
+ 	case PSTORE_TYPE_PPC_RTAS:
+ 		scnprintf(private->name, sizeof(private->name),
+-			  "rtas-%s-%lld", psname, id);
++			  "rtas-%s-%lld", record->psi->name, record->id);
+ 		break;
+ 	case PSTORE_TYPE_PPC_OF:
+ 		scnprintf(private->name, sizeof(private->name),
+-			  "powerpc-ofw-%s-%lld", psname, id);
++			  "powerpc-ofw-%s-%lld", record->psi->name, record->id);
+ 		break;
+ 	case PSTORE_TYPE_PPC_COMMON:
+ 		scnprintf(private->name, sizeof(private->name),
+-			  "powerpc-common-%s-%lld", psname, id);
++			  "powerpc-common-%s-%lld", record->psi->name,
++			  record->id);
+ 		break;
+ 	case PSTORE_TYPE_PMSG:
+ 		scnprintf(private->name, sizeof(private->name),
+-			  "pmsg-%s-%lld", psname, id);
++			  "pmsg-%s-%lld", record->psi->name, record->id);
+ 		break;
+ 	case PSTORE_TYPE_UNKNOWN:
+ 		scnprintf(private->name, sizeof(private->name),
+-			  "unknown-%s-%lld", psname, id);
++			  "unknown-%s-%lld", record->psi->name, record->id);
+ 		break;
+ 	default:
+ 		scnprintf(private->name, sizeof(private->name),
+-			  "type%d-%s-%lld", type, psname, id);
++			  "type%d-%s-%lld", record->type, record->psi->name,
++			  record->id);
+ 		break;
+ 	}
  
- .. code-block:: none
+-	memcpy(private->data, data, size);
++	memcpy(private->data, record->buf, size);
+ 	private->size = size;
  
-@@ -19,7 +19,7 @@ at boot:
- 	none on /dev type devfs
- 	none on /pstore type pstore
+ 	list_add(&private->list, &allpstore);
+diff --git a/fs/pstore/internal.h b/fs/pstore/internal.h
+index 0a8df1f4e2..6b507e4bd3 100644
+--- a/fs/pstore/internal.h
++++ b/fs/pstore/internal.h
+@@ -11,9 +11,7 @@ extern struct pstore_info *psinfo;
  
--pstore may add additional warnings during boot due to wrong ECCs (no data
-+*pstore* may add additional warnings during boot due to wrong ECCs (no data
- written):
+ extern void	pstore_set_kmsg_bytes(int);
+ extern void	pstore_get_records(int);
+-extern int	pstore_mkfile(enum pstore_type_id, char *psname, u64 id,
+-			      int count, char *data, bool compressed,
+-			      size_t size, struct pstore_info *psi);
++extern int	pstore_mkfile(struct pstore_record *record);
+ extern int	pstore_is_mounted(void);
  
- .. code-block:: none
-@@ -40,7 +40,7 @@ written):
-   pstore: Registered ramoops as persistent store backend
-   ramoops: attached 0x200000@0x1fdf4000, ecc: 16/0
- 
--To use pstore/RAMOOPS both Barebox and Kernel have to be compiled with pstore
-+To use *pstore/RAMOOPS* both Barebox and Kernel have to be compiled with *pstore*
- and RAM backend support. The kernel receives the parameters describing the
- layout via devicetree or - as a fallback - over the kernel command line.
- To ensure both worlds are using the same memory layout, the required
+ #endif
+diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
+index 5d0018693b..bad735e574 100644
+--- a/fs/pstore/platform.c
++++ b/fs/pstore/platform.c
+@@ -190,11 +190,7 @@ void pstore_get_records(int quiet)
+ 			pr_err("barebox does not have ramoops compression support\n");
+ 			continue;
+ 		}
+-		rc = pstore_mkfile(record.type, psi->name, record.id,
+-				   record.count, record.buf,
+-				   record.compressed,
+-				   record.size,
+-				   record.psi);
++		rc = pstore_mkfile(&record);
+ 		if (unzipped_len < 0) {
+ 			/* Free buffer other than big oops */
+ 			kfree(record.buf);
 -- 
 2.11.0
 
