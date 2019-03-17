@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vs10.datenmanufaktur-hosting.net ([213.160.73.65]
+ helo=vs81.iboxed.net)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h5nys-0002pn-9C
- for barebox@lists.infradead.org; Mon, 18 Mar 2019 08:50:52 +0000
-Date: Mon, 18 Mar 2019 09:50:48 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190318085048.usftlmveu7ure6lw@pengutronix.de>
-References: <20190315223139.11882-1-user@vserver64>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190315223139.11882-1-user@vserver64>
+ id 1h5TWb-0005oM-Nh
+ for barebox@lists.infradead.org; Sun, 17 Mar 2019 11:00:19 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Sun, 17 Mar 2019 11:00:17 +0000
+Message-Id: <20190317110017.23902-1-user@vserver64>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,38 +15,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] mci: imx-esdhc: resolve conflicting flags
-To: Alexander Kurz <akurz@blala.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: Makefile: restore kindle3 imxcfg-y setting
+To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Alexander Kurz <akurz@blala.de>
 
-On Fri, Mar 15, 2019 at 10:31:39PM +0000, Alexander Kurz wrote:
-> From: Alexander Kurz <akurz@blala.de>
-> 
-> With commit 3354adee3920 ("mci: imx-esdhc: Add bigendian register access
-> support") and commit 15b64fd520c2 ("mci: imx-esdhc: Add layerscape support")
-> two ESDHC_FLAGs got assigned to already existing values. This conflict made
-> the imx6sl usdhc appear to be big endian.
-> Resolve this conflict by assign the new flags to the next vacant values.
-> 
-> Signed-off-by: Alexander Kurz <akurz@blala.de>
-> ---
->  drivers/mci/imx-esdhc.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
+From: Alexander Kurz <akurz@blala.de>
 
-Took this one instead.
+Commit 45f38c1a846f ("ARM: Makefile: Drop unnecessary imxcfg-y settings")
+dropped the imximg generation for the kindle3. This device is not covered
+within multiimage support and can be configured with kindle3_defconfig.
 
-Sascha
+Signed-off-by: Alexander Kurz <akurz@blala.de>
+---
+ arch/arm/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 9b0e34f50..48d8bcb2f 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -259,6 +259,7 @@ imxcfg-$(CONFIG_MACH_FREESCALE_MX35_3STACK) += $(boarddir)/freescale-mx35-3ds/fl
+ imxcfg-$(CONFIG_MACH_EUKREA_CPUIMX25) += $(boarddir)/eukrea_cpuimx25/flash-header.imxcfg
+ imxcfg-$(CONFIG_MACH_EUKREA_CPUIMX35) += $(boarddir)/eukrea_cpuimx35/flash-header.imxcfg
+ imxcfg-$(CONFIG_MACH_PCM043) += $(boarddir)/phytec-phycore-imx35/flash-header.imxcfg
++imxcfg-$(CONFIG_MACH_KINDLE3) += $(boarddir)/kindle3/flash-header.imxcfg
+ ifneq ($(imxcfg-y),)
+ CFG_barebox.imximg := $(imxcfg-y)
+ KBUILD_IMAGE  := barebox.imximg
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
