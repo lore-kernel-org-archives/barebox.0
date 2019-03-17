@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vs10.datenmanufaktur-hosting.net ([213.160.73.65]
+ helo=vs81.iboxed.net)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h5o06-0002w5-84
- for barebox@lists.infradead.org; Mon, 18 Mar 2019 08:52:08 +0000
-Date: Mon, 18 Mar 2019 09:52:03 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190318085203.br52emit5bstw5u6@pengutronix.de>
-References: <20190317110017.23902-1-user@vserver64>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190317110017.23902-1-user@vserver64>
+ id 1h5Ts1-000324-Fg
+ for barebox@lists.infradead.org; Sun, 17 Mar 2019 11:22:27 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Sun, 17 Mar 2019 11:22:33 +0000
+Message-Id: <20190317112234.24126-1-user@vserver64>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,36 +15,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: Makefile: restore kindle3 imxcfg-y setting
-To: Alexander Kurz <akurz@blala.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] ARM Kindle3 defconfig: enable MMU
+To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Alexander Kurz <akurz@blala.de>
 
-On Sun, Mar 17, 2019 at 11:00:17AM +0000, Alexander Kurz wrote:
-> From: Alexander Kurz <akurz@blala.de>
-> 
-> Commit 45f38c1a846f ("ARM: Makefile: Drop unnecessary imxcfg-y settings")
-> dropped the imximg generation for the kindle3. This device is not covered
-> within multiimage support and can be configured with kindle3_defconfig.
-> 
-> Signed-off-by: Alexander Kurz <akurz@blala.de>
-> ---
->  arch/arm/Makefile | 1 +
->  1 file changed, 1 insertion(+)
+From: Alexander Kurz <akurz@blala.de>
 
-Applied to master, thanks
+With the MMU enabled, a memtest runs 14 times faster.
 
-Sascha
+Signed-off-by: Alexander Kurz <akurz@blala.de>
+---
+ arch/arm/configs/kindle3_defconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-
+diff --git a/arch/arm/configs/kindle3_defconfig b/arch/arm/configs/kindle3_defconfig
+index a4e08dfad..98691c3a8 100644
+--- a/arch/arm/configs/kindle3_defconfig
++++ b/arch/arm/configs/kindle3_defconfig
+@@ -2,7 +2,6 @@ CONFIG_ARCH_IMX=y
+ CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x30000
+ CONFIG_MACH_KINDLE3=y
+ CONFIG_IMX_IIM=y
+-CONFIG_ARCH_IMX_USBLOADER=y
+ CONFIG_AEABI=y
+ CONFIG_ARM_BOARD_APPEND_ATAG=y
+ CONFIG_ARM_BOARD_PREPEND_ATAG=y
+@@ -10,6 +9,7 @@ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_PBL_IMAGE=y
+ CONFIG_PBL_RELOCATABLE=y
+ CONFIG_IMAGE_COMPRESSION_XZKERN=y
++CONFIG_MMU=y
+ CONFIG_MALLOC_SIZE=0x2000000
+ CONFIG_MALLOC_TLSF=y
+ CONFIG_RELOCATABLE=y
+@@ -64,3 +64,4 @@ CONFIG_FS_EXT4=y
+ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_WRITE=y
+ CONFIG_FS_FAT_LFN=y
++CONFIG_ARCH_IMX_USBLOADER=y
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
