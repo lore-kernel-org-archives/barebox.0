@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h5pJ8-0003iZ-SG
- for barebox@lists.infradead.org; Mon, 18 Mar 2019 10:16:08 +0000
-Date: Mon, 18 Mar 2019 11:15:48 +0100
+ id 1h5oMc-0003Vg-LL
+ for barebox@lists.infradead.org; Mon, 18 Mar 2019 09:15:29 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190318101548.7xrlmvgl75umyn2n@pengutronix.de>
-References: <20190311134125.10946-1-d.brandt@phytec.de>
- <20190313144109.1066-1-d.brandt@phytec.de>
+Date: Mon, 18 Mar 2019 10:14:43 +0100
+Message-Id: <20190318091454.11386-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190313144109.1066-1-d.brandt@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,108 +19,142 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] commands: bootaux: New command bootaux for iMX
-To: David Brandt <d.brandt@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 00/11] Fix -Wmissing-prototypes warnings
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi David,
-
-On Wed, Mar 13, 2019 at 03:41:09PM +0100, David Brandt wrote:
-> This patch add the bootaux command which starts
-> auxiliary cores of iMX processors, currently only
-> iMX8MQ. This is based on the u-boot-imx command.
-> 
-> The currently unnecessary parameter for the core
-> to start is necessary for the iMX8QM and other
-> processors having multiple auxiliary cores.
-> 
-> Signed-off-by: David Brandt <d.brandt@phytec.de>
-> ---
-> Changes v1->v2:
-> - removed ifdef around imx_auxiliary functions
->   in arch/arm/mach-imx/imx8mq.c
-> - cleaned up includes in commands/bootaux.c
-> - clarified what ADDR is and what is done
-> - core is now specified with -c option
-> - added some checks and message to hint what
->   could be wrong
-> - use kstrtouint/kstrtoul
-> ---
->  arch/arm/mach-imx/imx8mq.c               | 37 ++++++++++++
->  arch/arm/mach-imx/include/mach/generic.h |  4 ++
->  commands/Kconfig                         | 16 ++++++
->  commands/Makefile                        |  1 +
->  commands/bootaux.c                       | 73 ++++++++++++++++++++++++
->  5 files changed, 131 insertions(+)
->  create mode 100644 commands/bootaux.c
-> 
-> diff --git a/arch/arm/mach-imx/imx8mq.c b/arch/arm/mach-imx/imx8mq.c
-> index 3f6b433a5..98c62b58d 100644
-> --- a/arch/arm/mach-imx/imx8mq.c
-> +++ b/arch/arm/mach-imx/imx8mq.c
-> @@ -124,3 +124,40 @@ static int imx8mq_report_hdmi_firmware(void)
->  	return 0;
->  }
->  console_initcall(imx8mq_report_hdmi_firmware);
-> +
-> +#define FSL_SIP_SRC             0xC2000005
-> +#define FSL_SIP_SRC_M4_START    0x00
-> +#define FSL_SIP_SRC_M4_STARTED  0x01
-> +int imx_auxiliary_core_up(unsigned int core_id, ulong boot_private_data)
-> +{
-> +	u32 stack, pc;
-> +	struct arm_smccc_res res;
-> +
-> +	if (core_id || !boot_private_data)
-> +		return -EINVAL;
-> +
-> +	stack = *(u32 *)boot_private_data;
-> +	pc = *(u32 *)(boot_private_data + 4);
-> +
-> +	/* Set the stack and pc to M4 bootROM */
-> +	writel(stack, MX8MQ_M4_BOOTROM_BASE_ADDR);
-> +	writel(pc, MX8MQ_M4_BOOTROM_BASE_ADDR + 4);
-> +
-> +	/* Enable M4 */
-> +	arm_smccc_smc(FSL_SIP_SRC, FSL_SIP_SRC_M4_START,
-> +			0, 0, 0, 0, 0, 0, &res);
-> +
-> +	return res.a0;
-> +}
-
-I think this needs more work. First of all we have
-imx_auxiliary_core_up(), but this function is i.MX8 specific, i.MX6/7
-need other methods. Similar to this "bootaux" is a generic command name,
-but here i.MX specific functions are called. The typical U-Boot way
-would be to add #ifdefs to it until it works for other known cases and
-until the code is completely unreadable. Fortunately we don't do U-Boot
-here, so we'll need some kind of cpu core registration function and a
-generic command could show a list of registered cores and start a
-particular one.
-That would fit well with the already existing devicetree binding for the
-auxiliary i.MX cores, see bindings/remoteproc/imx-rproc.txt, compatible
-"fsl,imx7d-cm4" and "fsl,imx6sx-cm4". The code for the aux cores could
-then be simply written as regular drivers.
-
-Also we should make sure that the memory area used for the aux core
-isn't passed to Linux. I would expect some convenience here for the user
-so that he doesn't have to adjust the devicetrees manually.
-
-I agree with Oleksij here that remoteproc is the right approach for
-doing this.
-
-Overall I think these aux cores are a hot topic and we should do it
-right rather than fast. Merging a trivial approach for it would just
-give the impression that a SoC specific quick hack is the way to go
-for others, but I'm quite sure we can do better.
+This series fixes a a ton of -Wmissing-prototypes warnings. We add
+missing includes and make locally used functions static. There's even
+one case fixed where we actually had conflicting prototypes without
+noticing it. Hurray, fixed!
 
 Sascha
 
+
+Sascha Hauer (11):
+  ARM: semihosting: Fix function prototype
+  treewide: Make locally used functions static
+  treewide: Add missing includes
+  ARM: i.MX: external-nand-boot: remove unused i.MX21 entry
+  ARM: boards: Harmonize barebox_arm_reset_vector() prototype
+  ARM: sha256: Remove unused functions
+  ARM: sha256: Remove unused header file
+  ARM: PXA: Provide prototype for pxa_clear_reset_source()
+  bus: mvebu-mbus: Add missing whitespace
+  mfd: twl-core: Add missing prototype for twlcore_get()
+  fs: squashfs: Remove unused function
+
+ arch/arm/boards/animeo_ip/lowlevel.c          |   2 +-
+ arch/arm/boards/archosg9/lowlevel.c           |   4 +-
+ arch/arm/boards/at91rm9200ek/lowlevel.c       |   2 +-
+ arch/arm/boards/at91sam9260ek/lowlevel.c      |   2 +-
+ arch/arm/boards/at91sam9261ek/lowlevel_init.c |   2 +-
+ arch/arm/boards/at91sam9m10g45ek/lowlevel.c   |   2 +-
+ arch/arm/boards/at91sam9m10ihd/lowlevel.c     |   2 +-
+ arch/arm/boards/at91sam9n12ek/lowlevel.c      |   2 +-
+ arch/arm/boards/avnet-zedboard/lowlevel.c     |   2 +-
+ arch/arm/boards/canon-a1100/lowlevel.c        |   2 +-
+ arch/arm/boards/chumby_falconwing/lowlevel.c  |   2 +-
+ arch/arm/boards/clep7212/lowlevel.c           |   2 +-
+ .../boards/crystalfontz-cfa10036/hwdetect.c   |   2 +
+ .../boards/crystalfontz-cfa10036/lowlevel.c   |   2 +-
+ arch/arm/boards/dss11/lowlevel.c              |   2 +-
+ arch/arm/boards/eukrea_cpuimx25/lowlevel.c    |   2 +-
+ arch/arm/boards/eukrea_cpuimx35/lowlevel.c    |   2 +-
+ arch/arm/boards/eukrea_cpuimx51/lowlevel.c    |   2 +-
+ arch/arm/boards/freescale-mx23-evk/lowlevel.c |   2 +-
+ arch/arm/boards/freescale-mx53-smd/lowlevel.c |   2 +-
+ .../boards/friendlyarm-mini6410/lowlevel.c    |   2 +-
+ .../arm/boards/friendlyarm-tiny210/lowlevel.c |   5 +-
+ .../boards/friendlyarm-tiny6410/lowlevel.c    |   2 +-
+ .../boards/friendlyarm-tiny6410/tiny6410.c    |   2 +
+ arch/arm/boards/guf-cupid/lowlevel.c          |   3 +-
+ arch/arm/boards/guf-neso/lowlevel.c           |   2 +-
+ arch/arm/boards/haba-knx/lowlevel.c           |   2 +-
+ arch/arm/boards/highbank/lowlevel.c           |   2 +-
+ arch/arm/boards/imx233-olinuxino/lowlevel.c   |   2 +-
+ arch/arm/boards/karo-tx51/lowlevel.c          |   2 +-
+ arch/arm/boards/kindle3/kindle3.c             |   2 +-
+ arch/arm/boards/kindle3/lowlevel.c            |   2 +-
+ arch/arm/boards/lubbock/lowlevel.c            |   2 +-
+ arch/arm/boards/mainstone/lowlevel.c          |   2 +-
+ arch/arm/boards/mioa701/lowlevel.c            |   2 +-
+ arch/arm/boards/module-mb7707/lowlevel.c      |   2 +-
+ arch/arm/boards/mx31moboard/lowlevel.c        |   2 +-
+ arch/arm/boards/nhk8815/lowlevel.c            |   2 +-
+ arch/arm/boards/omap343xdsp/lowlevel.c        |   4 +-
+ arch/arm/boards/omap3evm/lowlevel.c           |   4 +-
+ arch/arm/boards/panda/lowlevel.c              |   4 +-
+ .../boards/phytec-phycard-imx27/lowlevel.c    |   2 +-
+ .../boards/phytec-phycard-omap3/lowlevel.c    |   8 +-
+ .../boards/phytec-phycard-omap4/lowlevel.c    |   4 +-
+ .../boards/phytec-phycore-imx31/lowlevel.c    |   2 +-
+ .../boards/phytec-phycore-imx35/lowlevel.c    |   2 +-
+ .../boards/phytec-phycore-omap4460/lowlevel.c |   4 +-
+ arch/arm/boards/pm9261/lowlevel_init.c        |   2 +-
+ arch/arm/boards/pm9263/lowlevel_init.c        |   2 +-
+ arch/arm/boards/pm9g45/lowlevel.c             |   2 +-
+ arch/arm/boards/qemu-virt64/lowlevel.c        |   2 +-
+ arch/arm/boards/qil-a926x/lowlevel.c          |   2 +-
+ arch/arm/boards/sama5d3_xplained/lowlevel.c   |   2 +-
+ arch/arm/boards/sama5d3xek/lowlevel.c         |   2 +-
+ arch/arm/boards/sama5d4_xplained/lowlevel.c   |   2 +-
+ arch/arm/boards/sama5d4ek/lowlevel.c          |   2 +-
+ arch/arm/boards/telit-evk-pro3/lowlevel.c     |   2 +-
+ .../arm/boards/tny-a926x/tny_a9260_lowlevel.c |   2 +-
+ .../arm/boards/tny-a926x/tny_a9263_lowlevel.c |   2 +-
+ .../arm/boards/usb-a926x/usb_a9260_lowlevel.c |   2 +-
+ .../arm/boards/usb-a926x/usb_a9263_lowlevel.c |   2 +-
+ arch/arm/boards/versatile/lowlevel.c          |   2 +-
+ arch/arm/boards/virt2real/lowlevel.c          |   2 +-
+ arch/arm/boards/zylonite/lowlevel.c           |   2 +-
+ arch/arm/crypto/sha1_glue.c                   |   4 +-
+ arch/arm/crypto/sha256_glue.c                 |  26 +----
+ arch/arm/crypto/sha256_glue.h                 |  23 ----
+ arch/arm/include/asm/barebox-arm-head.h       |   1 +
+ arch/arm/lib32/semihosting.c                  |   3 +-
+ arch/arm/mach-clps711x/devices.c              |   1 +
+ arch/arm/mach-ep93xx/gpio.c                   |   1 +
+ arch/arm/mach-ep93xx/led.c                    |   2 +
+ arch/arm/mach-highbank/reset.c                |   2 +-
+ arch/arm/mach-imx/cpu_init.c                  |   1 +
+ arch/arm/mach-imx/external-nand-boot.c        |  31 ++---
+ arch/arm/mach-mvebu/common.c                  |   1 +
+ arch/arm/mach-mvebu/include/mach/bbu.h        |   2 +-
+ arch/arm/mach-mxs/mem-init.c                  |  10 +-
+ arch/arm/mach-mxs/power.c                     |   1 +
+ arch/arm/mach-mxs/usb-imx23.c                 |   1 +
+ arch/arm/mach-mxs/usb-imx28.c                 |   1 +
+ arch/arm/mach-netx/clocksource.c              |   2 +-
+ arch/arm/mach-netx/generic.c                  |   3 +-
+ arch/arm/mach-nomadik/8815.c                  |   1 +
+ arch/arm/mach-omap/omap4_twl6030_mmc.c        |   1 +
+ arch/arm/mach-pxa/clocksource.c               |   2 +-
+ arch/arm/mach-pxa/common.c                    |   2 -
+ arch/arm/mach-pxa/gpio.c                      |   1 +
+ arch/arm/mach-pxa/include/mach/hardware.h     |   4 +
+ arch/arm/mach-samsung/clocks-s3c64xx.c        |   2 +-
+ arch/arm/mach-samsung/clocks-s5pcxx.c         |   4 +-
+ common/bootchooser.c                          |   2 +-
+ crypto/keystore.c                             |   1 +
+ drivers/bus/mvebu-mbus.c                      |   2 +-
+ drivers/clk/mvebu/common.c                    |   4 +-
+ drivers/clk/mxs/clk-imx23.c                   |   2 +-
+ drivers/clk/mxs/clk-imx28.c                   |   2 +-
+ drivers/clocksource/mvebu.c                   |   2 +-
+ drivers/mfd/lp3972.c                          |   1 +
+ drivers/net/mvneta.c                          |   2 +-
+ drivers/usb/otg/twl4030.c                     |   2 +-
+ drivers/w1/slaves/w1_ds2431.c                 |   2 +-
+ fs/bpkfs.c                                    |   2 +-
+ fs/squashfs/namei.c                           | 108 ------------------
+ fs/uimagefs.c                                 |   2 +-
+ include/mfd/twl-core.h                        |   7 +-
+ 106 files changed, 140 insertions(+), 284 deletions(-)
+ delete mode 100644 arch/arm/crypto/sha256_glue.h
+
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
