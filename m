@@ -1,17 +1,29 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h6WOO-0007ga-RR
- for barebox@lists.infradead.org; Wed, 20 Mar 2019 08:16:09 +0000
-Date: Wed, 20 Mar 2019 09:16:07 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190320081607.prrfhjc7cgrzskns@pengutronix.de>
-References: <20190313094202.14901-1-s.hauer@pengutronix.de>
- <20190313094202.14901-5-s.hauer@pengutronix.de>
- <CAHQ1cqFa97quXr6AW12AJKSbQ4+pN_TG71dNG83RrHVDBGSs8Q@mail.gmail.com>
+ id 1h5xkl-0003na-A9
+ for barebox@lists.infradead.org; Mon, 18 Mar 2019 19:16:57 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id AE20127E037F
+ for <barebox@lists.infradead.org>; Mon, 18 Mar 2019 20:16:48 +0100 (CET)
+Received: from zimbra2.kalray.eu ([127.0.0.1])
+ by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10032)
+ with ESMTP id Aj4wCVBPt8sY for <barebox@lists.infradead.org>;
+ Mon, 18 Mar 2019 20:16:48 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 2FB7627E03B6
+ for <barebox@lists.infradead.org>; Mon, 18 Mar 2019 20:16:48 +0100 (CET)
+Received: from zimbra2.kalray.eu ([127.0.0.1])
+ by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id sllJxb-IO66j for <barebox@lists.infradead.org>;
+ Mon, 18 Mar 2019 20:16:48 +0100 (CET)
+Received: from zimbra2.kalray.eu (zimbra2.kalray.eu [192.168.40.202])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 1644327E037F
+ for <barebox@lists.infradead.org>; Mon, 18 Mar 2019 20:16:48 +0100 (CET)
+Date: Mon, 18 Mar 2019 20:16:47 +0100 (CET)
+From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
+Message-ID: <2115635878.3947318.1552936607997.JavaMail.zimbra@kalray.eu>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqFa97quXr6AW12AJKSbQ4+pN_TG71dNG83RrHVDBGSs8Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,41 +32,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/15] ARM: Add arm64 pbl udelay
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] elf: add 64 bits elf support
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Mar 19, 2019 at 11:12:19AM -0700, Andrey Smirnov wrote:
-> On Wed, Mar 13, 2019 at 3:27 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> >
-> > PBL often needs a way to udelay execution. Since we have a generic timer
-> > in ARMv8 we can implement a generic udelay.
-> >
-> 
-> Now that get_cntpct() and get_cntfrq() are implemented for ARMv7 we
-> can probably extend this to both ARMv8 and ARMv7.
-
-Yes, we could do this. The problem is that this works only on ARMv7
-cores that have this timer. What about the others? PBL code that depends
-on udelay() can then only run on these cores. Arguably we already have
-this problem when I introduce the symbol for ARMv8, but it probably gets
-worse when we start using udelay in more places in PBL.
-Any idea for a way to implement a udelay for the older cores?
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBwYXRjaCBhZGQgZWxmNjQgbG9hZGluZyBzdXBwb3J0IHRvIHRoZSBlbGYgbG9hZGVyLiBT
+aW5jZQplbGYzMiBhbmQgZWxmNjQgdXNlcyBjb21wbGV0ZWx5IGRpZmZlcmVudCB0eXBlcywgdG8g
+YXZvaWQgY29weWluZyBhbGwKdGhlIGNvZGUgYW5kIHNpbXBseSByZXBsYWNlIGVsZjMyIHdpdGgg
+ZWxmNjQsIHVzZSBhIG1hY3JvIHdoaWNoIHdpbGwKcmV0dXJuIHRoZSBhcHByb3ByaWF0ZSBmaWVs
+ZCBmb3IgZWFjaCB0eXBlIG9mIGhlYWRlci4gVGhpcyBtYWNybwpnZW5lcmF0ZXMgZ2V0dGVyIGZv
+ciBlbGYgc3RydWN0dXJlcyBhY2NvcmRpbmcgdG8gdGhlIGNsYXNzIG9mIHRoZSBsb2FkZWQKZWxm
+LgpBbGwgZGlyZWN0IGVsZiBzdHJ1Y3QgZGVyZWZlcmVuY2UgYXJlIHRoZW4gcmVwbGFjZWQgYnkg
+Y2FsbCB0byBnZW5lcmF0ZWQKZnVuY3Rpb25zLiBUaGlzIGFsbG93cyB0byBrZWVwIGEgY29tbW9u
+IGxvYWRlciBjb2RlIGV2ZW4gaWYgdHlwZXMgYXJlCmRpZmZlcmVudC4KClNpZ25lZC1vZmYtYnk6
+IENsw6ltZW50IEzDqWdlciA8Y2xlbWVudC5sZWdlckBrYWxyYXkuZXU+Ci0tLQogY29tbW9uL2Vs
+Zi5jICB8IDQ2ICsrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
+IGluY2x1ZGUvZWxmLmggfCAyNyArKysrKysrKysrKysrKysrKysrKysrKysrKysKIDIgZmlsZXMg
+Y2hhbmdlZCwgNTAgaW5zZXJ0aW9ucygrKSwgMjMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEv
+Y29tbW9uL2VsZi5jIGIvY29tbW9uL2VsZi5jCmluZGV4IDhlZGYzODg1Ni4uYmZiODc4OTU0IDEw
+MDY0NAotLS0gYS9jb21tb24vZWxmLmMKKysrIGIvY29tbW9uL2VsZi5jCkBAIC00MywzMSArNDMs
+MzIgQEAgc3RhdGljIHZvaWQgZWxmX3JlbGVhc2VfcmVnaW9ucyhzdHJ1Y3QgZWxmX2ltYWdlICpl
+bGYpCiAJfQogfQogCi0KIHN0YXRpYyBpbnQgbG9hZF9lbGZfcGhkcl9zZWdtZW50KHN0cnVjdCBl
+bGZfaW1hZ2UgKmVsZiwgdm9pZCAqc3JjLAotCQkJCSBFbGYzMl9QaGRyICpwaGRyKQorCQkJCSB2
+b2lkICpwaGRyKQogewotCXZvaWQgKmRzdCA9ICh2b2lkICopcGhkci0+cF9wYWRkcjsKKwl2b2lk
+ICpkc3QgPSAodm9pZCAqKSBlbGZfcGhkcl9wX3BhZGRyKGVsZiwgcGhkcik7CiAJaW50IHJldDsK
+Kwl1bnNpZ25lZCBsb25nIHBfZmlsZXN6ID0gZWxmX3BoZHJfcF9maWxlc3ooZWxmLCBwaGRyKTsK
+Kwl1bnNpZ25lZCBsb25nIHBfbWVtc3ogPSBlbGZfcGhkcl9wX21lbXN6KGVsZiwgcGhkcik7CiAK
+IAkvKiB3ZSBjYXJlIG9ubHkgYWJvdXQgUFRfTE9BRCBzZWdtZW50cyAqLwotCWlmIChwaGRyLT5w
+X3R5cGUgIT0gUFRfTE9BRCkKKwlpZiAoZWxmX3BoZHJfcF90eXBlKGVsZiwgcGhkcikgIT0gUFRf
+TE9BRCkKIAkJcmV0dXJuIDA7CiAKLQlpZiAoIXBoZHItPnBfZmlsZXN6KQorCWlmICghcF9maWxl
+c3opCiAJCXJldHVybiAwOwogCi0JcHJfZGVidWcoIkxvYWRpbmcgcGhkciB0byAweCVwICglaSBi
+eXRlcylcbiIsIGRzdCwgcGhkci0+cF9maWxlc3opOworCXByX2RlYnVnKCJMb2FkaW5nIHBoZHIg
+dG8gMHglcCAoJWxkIGJ5dGVzKVxuIiwgZHN0LCBwX2ZpbGVzeik7CiAKLQlyZXQgPSBlbGZfcmVx
+dWVzdF9yZWdpb24oZWxmLCAocmVzb3VyY2Vfc2l6ZV90KWRzdCwgcGhkci0+cF9maWxlc3opOwor
+CXJldCA9IGVsZl9yZXF1ZXN0X3JlZ2lvbihlbGYsIChyZXNvdXJjZV9zaXplX3QpZHN0LCBwX2Zp
+bGVzeik7CiAJaWYgKHJldCkKIAkJcmV0dXJuIHJldDsKIAotCW1lbWNweShkc3QsIHNyYywgcGhk
+ci0+cF9maWxlc3opOworCW1lbWNweShkc3QsIHNyYywgcF9maWxlc3opOwogCi0JaWYgKHBoZHIt
+PnBfZmlsZXN6IDwgcGhkci0+cF9tZW1zeikKLQkJbWVtc2V0KGRzdCArIHBoZHItPnBfZmlsZXN6
+LCAweDAwLAotCQkgICAgICAgcGhkci0+cF9tZW1zeiAtIHBoZHItPnBfZmlsZXN6KTsKKwlpZiAo
+cF9maWxlc3ogPCBwX21lbXN6KQorCQltZW1zZXQoZHN0ICsgcF9maWxlc3osIDB4MDAsCisJCSAg
+ICAgICBwX21lbXN6IC0gcF9maWxlc3opOwogCiAJcmV0dXJuIDA7CiB9CkBAIC03NSwxNCArNzYs
+MTMgQEAgc3RhdGljIGludCBsb2FkX2VsZl9waGRyX3NlZ21lbnQoc3RydWN0IGVsZl9pbWFnZSAq
+ZWxmLCB2b2lkICpzcmMsCiBzdGF0aWMgaW50IGxvYWRfZWxmX2ltYWdlX3BoZHIoc3RydWN0IGVs
+Zl9pbWFnZSAqZWxmKQogewogCXZvaWQgKmJ1ZiA9IGVsZi0+YnVmOwotCUVsZjMyX0VoZHIgKmVo
+ZHIgPSBidWY7Ci0JRWxmMzJfUGhkciAqcGhkciA9IChFbGYzMl9QaGRyICopKGJ1ZiArIGVoZHIt
+PmVfcGhvZmYpOworCXZvaWQgKnBoZHIgPSAodm9pZCAqKSAoYnVmICsgZWxmX2hkcl9lX3Bob2Zm
+KGVsZiwgYnVmKSk7CiAJaW50IGksIHJldDsKIAotCWVsZi0+ZW50cnkgPSBlaGRyLT5lX2VudHJ5
+OworCWVsZi0+ZW50cnkgPSBlbGZfaGRyX2VfZW50cnkoZWxmLCBidWYpOwogCi0JZm9yIChpID0g
+MDsgaSA8IGVoZHItPmVfcGhudW07ICsraSkgewotCQl2b2lkICpzcmMgPSBidWYgKyBwaGRyLT5w
+X29mZnNldDsKKwlmb3IgKGkgPSAwOyBpIDwgZWxmX2hkcl9lX3BobnVtKGVsZiwgYnVmKSA7ICsr
+aSkgeworCQl2b2lkICpzcmMgPSBidWYgKyBlbGZfcGhkcl9wX29mZnNldChlbGYsIHBoZHIpOwog
+CiAJCXJldCA9IGxvYWRfZWxmX3BoZHJfc2VnbWVudChlbGYsIHNyYywgcGhkcik7CiAJCS8qIGlu
+IGNhc2Ugb2YgZXJyb3IgZWxmX2xvYWRfaW1hZ2UoKSBjYWxsZXIgc2hvdWxkIGNsZWFuIHVwIGFu
+ZApAQCAtOTAsMjIgKzkwLDIyIEBAIHN0YXRpYyBpbnQgbG9hZF9lbGZfaW1hZ2VfcGhkcihzdHJ1
+Y3QgZWxmX2ltYWdlICplbGYpCiAJCWlmIChyZXQpCiAJCQlyZXR1cm4gcmV0OwogCi0JCSsrcGhk
+cjsKKwkJcGhkciArPSBlbGZfc2l6ZV9vZl9waGRyKGVsZik7CiAJfQogCiAJcmV0dXJuIDA7CiB9
+CiAKLXN0YXRpYyBpbnQgZWxmX2NoZWNrX2ltYWdlKHZvaWQgKmJ1ZikKK3N0YXRpYyBpbnQgZWxm
+X2NoZWNrX2ltYWdlKHN0cnVjdCBlbGZfaW1hZ2UgKmVsZikKIHsKLQlFbGYzMl9FaGRyICplaGRy
+ID0gKEVsZjMyX0VoZHIgKilidWY7Ci0KLQlpZiAoc3RybmNtcChidWYsIEVMRk1BRywgU0VMRk1B
+RykpIHsKKwlpZiAoc3RybmNtcChlbGYtPmJ1ZiwgRUxGTUFHLCBTRUxGTUFHKSkgewogCQlwcl9l
+cnIoIkVMRiBtYWdpYyBub3QgZm91bmQuXG4iKTsKIAkJcmV0dXJuIC1FSU5WQUw7CiAJfQogCi0J
+aWYgKGVoZHItPmVfdHlwZSAhPSBFVF9FWEVDKSB7CisJZWxmLT5jbGFzcyA9ICgoY2hhciAqKSBl
+bGYtPmJ1ZilbRUlfQ0xBU1NdOworCisJaWYgKGVsZl9oZHJfZV90eXBlKGVsZiwgZWxmLT5idWYp
+ICE9IEVUX0VYRUMpIHsKIAkJcHJfZXJyKCJOb24gRVhFQyBFTEYgaW1hZ2UuXG4iKTsKIAkJcmV0
+dXJuIC1FTk9FWEVDOwogCX0KQEAgLTEyNCw3ICsxMjQsNyBAQCBzdHJ1Y3QgZWxmX2ltYWdlICpl
+bGZfbG9hZF9pbWFnZSh2b2lkICpidWYpCiAKIAllbGYtPmJ1ZiA9IGJ1ZjsKIAotCXJldCA9IGVs
+Zl9jaGVja19pbWFnZShidWYpOworCXJldCA9IGVsZl9jaGVja19pbWFnZShlbGYpOwogCWlmIChy
+ZXQpCiAJCXJldHVybiBFUlJfUFRSKHJldCk7CiAKZGlmZiAtLWdpdCBhL2luY2x1ZGUvZWxmLmgg
+Yi9pbmNsdWRlL2VsZi5oCmluZGV4IDkyYzhkOWMxMi4uMTg5YTM0NTY2IDEwMDY0NAotLS0gYS9p
+bmNsdWRlL2VsZi5oCisrKyBiL2luY2x1ZGUvZWxmLmgKQEAgLTQwMCw2ICs0MDAsNyBAQCBzdGF0
+aWMgaW5saW5lIHZvaWQgYXJjaF93cml0ZV9ub3RlcyhzdHJ1Y3QgZmlsZSAqZmlsZSkgeyB9CiAK
+IHN0cnVjdCBlbGZfaW1hZ2UgewogCXN0cnVjdCBsaXN0X2hlYWQgbGlzdDsKKwl1bnNpZ25lZCBs
+b25nIGNsYXNzOwogCXVuc2lnbmVkIGxvbmcgZW50cnk7CiAJdm9pZCAqYnVmOwogfTsKQEAgLTQw
+Nyw0ICs0MDgsMzAgQEAgc3RydWN0IGVsZl9pbWFnZSB7CiBzdHJ1Y3QgZWxmX2ltYWdlICplbGZf
+bG9hZF9pbWFnZSh2b2lkICpidWYpOwogdm9pZCBlbGZfcmVsZWFzZV9pbWFnZShzdHJ1Y3QgZWxm
+X2ltYWdlICplbGYpOwogCisjZGVmaW5lIEVMRl9HRVRfRklFTEQoX19zLCBfX2ZpZWxkLCBfX3R5
+cGUpIFwKK3N0YXRpYyBpbmxpbmUgX190eXBlIGVsZl8jI19fcyMjXyMjX19maWVsZChzdHJ1Y3Qg
+ZWxmX2ltYWdlICplbGYsIHZvaWQgKmFyZykgeyBcCisJaWYgKGVsZi0+Y2xhc3MgPT0gRUxGQ0xB
+U1MzMikgXAorCQlyZXR1cm4gKF9fdHlwZSkgKChzdHJ1Y3QgZWxmMzJfIyNfX3MgKikgYXJnKS0+
+X19maWVsZDsgXAorCWVsc2UgXAorCQlyZXR1cm4gKF9fdHlwZSkgKChzdHJ1Y3QgZWxmNjRfIyNf
+X3MgKikgYXJnKS0+X19maWVsZDsgXAorfQorCitFTEZfR0VUX0ZJRUxEKGhkciwgZV9lbnRyeSwg
+dW5zaWduZWQgbG9uZykKK0VMRl9HRVRfRklFTEQoaGRyLCBlX3BobnVtLCB1bnNpZ25lZCBsb25n
+KQorRUxGX0dFVF9GSUVMRChoZHIsIGVfcGhvZmYsIHVuc2lnbmVkIGxvbmcpCitFTEZfR0VUX0ZJ
+RUxEKGhkciwgZV90eXBlLCB1bnNpZ25lZCBsb25nKQorRUxGX0dFVF9GSUVMRChwaGRyLCBwX3Bh
+ZGRyLCB1bnNpZ25lZCBsb25nKQorRUxGX0dFVF9GSUVMRChwaGRyLCBwX2ZpbGVzeiwgdW5zaWdu
+ZWQgbG9uZykKK0VMRl9HRVRfRklFTEQocGhkciwgcF9tZW1zeiwgdW5zaWduZWQgbG9uZykKK0VM
+Rl9HRVRfRklFTEQocGhkciwgcF90eXBlLCB1bnNpZ25lZCBsb25nKQorRUxGX0dFVF9GSUVMRChw
+aGRyLCBwX29mZnNldCwgdW5zaWduZWQgbG9uZykKKworc3RhdGljIGlubGluZSB1bnNpZ25lZCBs
+b25nIGVsZl9zaXplX29mX3BoZHIoc3RydWN0IGVsZl9pbWFnZSAqZWxmKQoreworCWlmIChlbGYt
+PmNsYXNzID09IEVMRkNMQVNTMzIpCisJCXJldHVybiBzaXplb2YoRWxmMzJfUGhkcik7CisJZWxz
+ZQorCQlyZXR1cm4gc2l6ZW9mKEVsZjY0X1BoZHIpOworfQorCiAjZW5kaWYgLyogX0xJTlVYX0VM
+Rl9IICovCi0tIAoyLjE1LjAuMjc2Lmc4OWVhNzk5CgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3Rz
+LmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9iYXJlYm94Cg==
