@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h94AB-0003J6-EE
- for barebox@lists.infradead.org; Wed, 27 Mar 2019 08:44:01 +0000
-Date: Wed, 27 Mar 2019 09:43:53 +0100
+ id 1h5olZ-0004vq-Vy
+ for barebox@lists.infradead.org; Mon, 18 Mar 2019 09:41:11 +0000
+Date: Mon, 18 Mar 2019 10:41:07 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190327084352.ru7dhruclkvm2z3y@pengutronix.de>
-References: <20190327074449.nnvbk5wfbiax5f45@pengutronix.de>
- <20190327083010.3171-1-tomaz.solc@tablix.org>
+Message-ID: <20190318094107.fky5eo2sjmseaszb@pengutronix.de>
+References: <20190308105854.10089-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190327083010.3171-1-tomaz.solc@tablix.org>
+In-Reply-To: <20190308105854.10089-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,62 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] ARM: rpi: add board revision for Compute Module 3+
-To: Tomaz Solc <tomaz.solc@tablix.org>
+Subject: Re: [PATCH v2 0/4] MIPS: add relocation support
+To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Mar 27, 2019 at 09:30:10AM +0100, Tomaz Solc wrote:
-> Raspberry Pi Compute Module 3+ was released in January 2019.
+On Fri, Mar 08, 2019 at 11:58:50AM +0100, Oleksij Rempel wrote:
+> with this patches, same main binary version of barebox xan be reused
+> on different board with different RAM size.
+> The barebox will find best possible location for it self depending
+> on RAM size information provided by PBL.
 > 
-> Source for the new board revision code:
+> changes v2:
+> - don't remove no-pic flag to avoid confusion.
+> - don't set ggdb flag for barebox tools.
 > 
-> https://www.raspberrypi.org/documentation/hardware/raspberrypi/revision-codes/README.md
-> 
-> Signed-off-by: Tomaz Solc <tomaz.solc@tablix.org>
-> ---
+> Oleksij Rempel (4):
+>   MIPS: relocation: pass ram size to pbl_main_entry
+>   MIPS: relocation: add relocation support
+>   MIPS: relocation: do not use configurable memory layout
+>   MIPS: remove request_sdram_region "fdt"
 
-Applied, thanks
+Applied for now. Antony, if you have objections feel free to comment.
 
 Sascha
 
->  arch/arm/boards/raspberry-pi/rpi-common.c | 2 ++
->  arch/arm/mach-bcm283x/include/mach/mbox.h | 1 +
->  2 files changed, 3 insertions(+)
-> 
-> diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-> index 60cea7f8e..bc877f853 100644
-> --- a/arch/arm/boards/raspberry-pi/rpi-common.c
-> +++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-> @@ -197,6 +197,8 @@ const struct rpi_model rpi_models_new_scheme[] = {
->  	RPI_MODEL(BCM2835_BOARD_REV_ZERO_W, 	"Zero W", 	rpi_b_plus_init),
->  	RPI_MODEL(BCM2837B0_BOARD_REV_3B_PLUS, 	"Model 3 B+", 	rpi_b_plus_init ),
->  	RPI_MODEL(BCM2837B0_BOARD_REV_3A_PLUS, 	"Nodel 3 A+", 	rpi_b_plus_init),
-> +	RPI_MODEL(0xf, "Unknown model", NULL),
-> +	RPI_MODEL(BCM2837B0_BOARD_REV_CM3_PLUS, "Compute Module 3+", NULL),
->  };
->  
->  static int rpi_board_rev = 0;
-> diff --git a/arch/arm/mach-bcm283x/include/mach/mbox.h b/arch/arm/mach-bcm283x/include/mach/mbox.h
-> index e4f6cb675..6db961b80 100644
-> --- a/arch/arm/mach-bcm283x/include/mach/mbox.h
-> +++ b/arch/arm/mach-bcm283x/include/mach/mbox.h
-> @@ -166,6 +166,7 @@ struct bcm2835_mbox_tag_hdr {
->  #define BCM2835_BOARD_REV_ZERO_W   	0x0c
->  #define BCM2837B0_BOARD_REV_3B_PLUS   	0x0d
->  #define BCM2837B0_BOARD_REV_3A_PLUS   	0x0e
-> +#define BCM2837B0_BOARD_REV_CM3_PLUS	0x10
->  
->  struct bcm2835_mbox_tag_get_board_rev {
->  	struct bcm2835_mbox_tag_hdr tag_hdr;
-> -- 
-> 2.11.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
