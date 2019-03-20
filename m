@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h6e5A-0006oD-PC
- for barebox@lists.infradead.org; Wed, 20 Mar 2019 16:28:51 +0000
-Date: Wed, 20 Mar 2019 17:28:44 +0100 (CET)
-From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
-Message-ID: <64949728.4732605.1553099324820.JavaMail.zimbra@kalray.eu>
-In-Reply-To: <1029133302.4680876.1553069889561.JavaMail.zimbra@kalray.eu>
-References: <2115635878.3947318.1552936607997.JavaMail.zimbra@kalray.eu>
- <20190320080506.xttdoivywbkaptx5@pengutronix.de>
- <1029133302.4680876.1553069889561.JavaMail.zimbra@kalray.eu>
+ id 1h6bWk-00074W-TS
+ for barebox@lists.infradead.org; Wed, 20 Mar 2019 13:45:08 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
+ helo=dude02.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <l.stach@pengutronix.de>) id 1h6bWh-0002u3-PS
+ for barebox@lists.infradead.org; Wed, 20 Mar 2019 14:45:03 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 20 Mar 2019 14:45:03 +0100
+Message-Id: <20190320134503.27194-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,189 +20,106 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] elf: add 64 bits elf support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: zii-common: reuse i210 config check for RDU3
+To: barebox@lists.infradead.org
 
-SGVyZSBpcyBhIFYyIHdoaWNoIHVzZXMgY29ycmVjdCB0eXBlIGZvciBlbGYgaGVhZGVyIGFjY2Vz
-cyBtYWNyb3MKKGluc3RlYWQgb2Ygc2ltcGx5IHVuc2lnbmVkIGxvbmcpLiBNb3Jlb3ZlciB0eXBl
-cyB1c2VkIGFyZSBub3cKb2YgZml4ZWQgc2l6ZSB0eXBlICh1NjQgaW5zdGVhZCBvZiB1bnNpZ25l
-ZCBsb25nKS4gVGhpcyBjb3VsZApwb3RlbnRpYWxseSBhbGxvdyBhIDMyYml0IGJhcmVib3ggdG8g
-bG9hZCBhIDY0Yml0IGVsZiB1c2luZyBzb21lIGN1c3RvbQpoYXJkd2FyZSB3aGljaCBzdXBwb3J0
-IDY0Yml0IGFkZHJlc3NpbmcgKERNQSBvciBzdWNoIHRoaW5nKS4KCgpUaGlzIHBhdGNoIGFkZCBl
-bGY2NCBsb2FkaW5nIHN1cHBvcnQgdG8gdGhlIGVsZiBsb2FkZXIuIFNpbmNlCmVsZjMyIGFuZCBl
-bGY2NCB1c2VzIGNvbXBsZXRlbHkgZGlmZmVyZW50IHR5cGVzLCB0byBhdm9pZCBjb3B5aW5nIGFs
-bAp0aGUgY29kZSBhbmQgc2ltcGx5IHJlcGxhY2UgZWxmMzIgd2l0aCBlbGY2NCwgdXNlIGEgbWFj
-cm8gd2hpY2ggd2lsbApyZXR1cm4gdGhlIGFwcHJvcHJpYXRlIGZpZWxkIGZvciBlYWNoIHR5cGUg
-b2YgaGVhZGVyLiBUaGlzIG1hY3JvCmdlbmVyYXRlcyBnZXR0ZXIgZm9yIGVsZiBzdHJ1Y3R1cmVz
-IGFjY29yZGluZyB0byB0aGUgY2xhc3Mgb2YgdGhlIGxvYWRlZAplbGYuCkFsbCBkaXJlY3QgZWxm
-IHN0cnVjdCBkZXJlZmVyZW5jZSBhcmUgdGhlbiByZXBsYWNlZCBieSBjYWxsIHRvIGdlbmVyYXRl
-ZApmdW5jdGlvbnMuIFRoaXMgYWxsb3dzIHRvIGtlZXAgYSBjb21tb24gbG9hZGVyIGNvZGUgZXZl
-biBpZiB0eXBlcyBhcmUKZGlmZmVyZW50LgotLS0KIGNvbW1vbi9lbGYuYyAgfCA0NSArKysrKysr
-KysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGluY2x1ZGUvZWxmLmggfCAy
-OSArKysrKysrKysrKysrKysrKysrKysrKysrKysrLQogMiBmaWxlcyBjaGFuZ2VkLCA1MSBpbnNl
-cnRpb25zKCspLCAyMyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9jb21tb24vZWxmLmMgYi9j
-b21tb24vZWxmLmMKaW5kZXggOGVkZjM4ODU2Li40NzMzYWNjYjAgMTAwNjQ0Ci0tLSBhL2NvbW1v
-bi9lbGYuYworKysgYi9jb21tb24vZWxmLmMKQEAgLTQ1LDI5ICs0NSwzMSBAQCBzdGF0aWMgdm9p
-ZCBlbGZfcmVsZWFzZV9yZWdpb25zKHN0cnVjdCBlbGZfaW1hZ2UgKmVsZikKIAogCiBzdGF0aWMg
-aW50IGxvYWRfZWxmX3BoZHJfc2VnbWVudChzdHJ1Y3QgZWxmX2ltYWdlICplbGYsIHZvaWQgKnNy
-YywKLQkJCQkgRWxmMzJfUGhkciAqcGhkcikKKwkJCQkgdm9pZCAqcGhkcikKIHsKLQl2b2lkICpk
-c3QgPSAodm9pZCAqKXBoZHItPnBfcGFkZHI7CisJdm9pZCAqZHN0ID0gKHZvaWQgKikgZWxmX3Bo
-ZHJfcF9wYWRkcihlbGYsIHBoZHIpOwogCWludCByZXQ7CisJdTY0IHBfZmlsZXN6ID0gZWxmX3Bo
-ZHJfcF9maWxlc3ooZWxmLCBwaGRyKTsKKwl1NjQgcF9tZW1zeiA9IGVsZl9waGRyX3BfbWVtc3oo
-ZWxmLCBwaGRyKTsKIAogCS8qIHdlIGNhcmUgb25seSBhYm91dCBQVF9MT0FEIHNlZ21lbnRzICov
-Ci0JaWYgKHBoZHItPnBfdHlwZSAhPSBQVF9MT0FEKQorCWlmIChlbGZfcGhkcl9wX3R5cGUoZWxm
-LCBwaGRyKSAhPSBQVF9MT0FEKQogCQlyZXR1cm4gMDsKIAotCWlmICghcGhkci0+cF9maWxlc3op
-CisJaWYgKCFwX2ZpbGVzeikKIAkJcmV0dXJuIDA7CiAKLQlwcl9kZWJ1ZygiTG9hZGluZyBwaGRy
-IHRvIDB4JXAgKCVpIGJ5dGVzKVxuIiwgZHN0LCBwaGRyLT5wX2ZpbGVzeik7CisJcHJfZGVidWco
-IkxvYWRpbmcgcGhkciB0byAweCVwICglbGx1IGJ5dGVzKVxuIiwgZHN0LCBwX2ZpbGVzeik7CiAK
-LQlyZXQgPSBlbGZfcmVxdWVzdF9yZWdpb24oZWxmLCAocmVzb3VyY2Vfc2l6ZV90KWRzdCwgcGhk
-ci0+cF9maWxlc3opOworCXJldCA9IGVsZl9yZXF1ZXN0X3JlZ2lvbihlbGYsIChyZXNvdXJjZV9z
-aXplX3QpZHN0LCBwX2ZpbGVzeik7CiAJaWYgKHJldCkKIAkJcmV0dXJuIHJldDsKIAotCW1lbWNw
-eShkc3QsIHNyYywgcGhkci0+cF9maWxlc3opOworCW1lbWNweShkc3QsIHNyYywgcF9maWxlc3op
-OwogCi0JaWYgKHBoZHItPnBfZmlsZXN6IDwgcGhkci0+cF9tZW1zeikKLQkJbWVtc2V0KGRzdCAr
-IHBoZHItPnBfZmlsZXN6LCAweDAwLAotCQkgICAgICAgcGhkci0+cF9tZW1zeiAtIHBoZHItPnBf
-ZmlsZXN6KTsKKwlpZiAocF9maWxlc3ogPCBwX21lbXN6KQorCQltZW1zZXQoZHN0ICsgcF9maWxl
-c3osIDB4MDAsCisJCSAgICAgICBwX21lbXN6IC0gcF9maWxlc3opOwogCiAJcmV0dXJuIDA7CiB9
-CkBAIC03NSwxNCArNzcsMTMgQEAgc3RhdGljIGludCBsb2FkX2VsZl9waGRyX3NlZ21lbnQoc3Ry
-dWN0IGVsZl9pbWFnZSAqZWxmLCB2b2lkICpzcmMsCiBzdGF0aWMgaW50IGxvYWRfZWxmX2ltYWdl
-X3BoZHIoc3RydWN0IGVsZl9pbWFnZSAqZWxmKQogewogCXZvaWQgKmJ1ZiA9IGVsZi0+YnVmOwot
-CUVsZjMyX0VoZHIgKmVoZHIgPSBidWY7Ci0JRWxmMzJfUGhkciAqcGhkciA9IChFbGYzMl9QaGRy
-ICopKGJ1ZiArIGVoZHItPmVfcGhvZmYpOworCXZvaWQgKnBoZHIgPSAodm9pZCAqKSAoYnVmICsg
-ZWxmX2hkcl9lX3Bob2ZmKGVsZiwgYnVmKSk7CiAJaW50IGksIHJldDsKIAotCWVsZi0+ZW50cnkg
-PSBlaGRyLT5lX2VudHJ5OworCWVsZi0+ZW50cnkgPSBlbGZfaGRyX2VfZW50cnkoZWxmLCBidWYp
-OwogCi0JZm9yIChpID0gMDsgaSA8IGVoZHItPmVfcGhudW07ICsraSkgewotCQl2b2lkICpzcmMg
-PSBidWYgKyBwaGRyLT5wX29mZnNldDsKKwlmb3IgKGkgPSAwOyBpIDwgZWxmX2hkcl9lX3BobnVt
-KGVsZiwgYnVmKSA7ICsraSkgeworCQl2b2lkICpzcmMgPSBidWYgKyBlbGZfcGhkcl9wX29mZnNl
-dChlbGYsIHBoZHIpOwogCiAJCXJldCA9IGxvYWRfZWxmX3BoZHJfc2VnbWVudChlbGYsIHNyYywg
-cGhkcik7CiAJCS8qIGluIGNhc2Ugb2YgZXJyb3IgZWxmX2xvYWRfaW1hZ2UoKSBjYWxsZXIgc2hv
-dWxkIGNsZWFuIHVwIGFuZApAQCAtOTAsMjIgKzkxLDIyIEBAIHN0YXRpYyBpbnQgbG9hZF9lbGZf
-aW1hZ2VfcGhkcihzdHJ1Y3QgZWxmX2ltYWdlICplbGYpCiAJCWlmIChyZXQpCiAJCQlyZXR1cm4g
-cmV0OwogCi0JCSsrcGhkcjsKKwkJcGhkciArPSBlbGZfc2l6ZV9vZl9waGRyKGVsZik7CiAJfQog
-CiAJcmV0dXJuIDA7CiB9CiAKLXN0YXRpYyBpbnQgZWxmX2NoZWNrX2ltYWdlKHZvaWQgKmJ1ZikK
-K3N0YXRpYyBpbnQgZWxmX2NoZWNrX2ltYWdlKHN0cnVjdCBlbGZfaW1hZ2UgKmVsZikKIHsKLQlF
-bGYzMl9FaGRyICplaGRyID0gKEVsZjMyX0VoZHIgKilidWY7Ci0KLQlpZiAoc3RybmNtcChidWYs
-IEVMRk1BRywgU0VMRk1BRykpIHsKKwlpZiAoc3RybmNtcChlbGYtPmJ1ZiwgRUxGTUFHLCBTRUxG
-TUFHKSkgewogCQlwcl9lcnIoIkVMRiBtYWdpYyBub3QgZm91bmQuXG4iKTsKIAkJcmV0dXJuIC1F
-SU5WQUw7CiAJfQogCi0JaWYgKGVoZHItPmVfdHlwZSAhPSBFVF9FWEVDKSB7CisJZWxmLT5jbGFz
-cyA9ICgoY2hhciAqKSBlbGYtPmJ1ZilbRUlfQ0xBU1NdOworCisJaWYgKGVsZl9oZHJfZV90eXBl
-KGVsZiwgZWxmLT5idWYpICE9IEVUX0VYRUMpIHsKIAkJcHJfZXJyKCJOb24gRVhFQyBFTEYgaW1h
-Z2UuXG4iKTsKIAkJcmV0dXJuIC1FTk9FWEVDOwogCX0KQEAgLTEyNCw3ICsxMjUsNyBAQCBzdHJ1
-Y3QgZWxmX2ltYWdlICplbGZfbG9hZF9pbWFnZSh2b2lkICpidWYpCiAKIAllbGYtPmJ1ZiA9IGJ1
-ZjsKIAotCXJldCA9IGVsZl9jaGVja19pbWFnZShidWYpOworCXJldCA9IGVsZl9jaGVja19pbWFn
-ZShlbGYpOwogCWlmIChyZXQpCiAJCXJldHVybiBFUlJfUFRSKHJldCk7CiAKZGlmZiAtLWdpdCBh
-L2luY2x1ZGUvZWxmLmggYi9pbmNsdWRlL2VsZi5oCmluZGV4IDkyYzhkOWMxMi4uNjMzZjQ5OTJk
-IDEwMDY0NAotLS0gYS9pbmNsdWRlL2VsZi5oCisrKyBiL2luY2x1ZGUvZWxmLmgKQEAgLTQwMCwx
-MSArNDAwLDM4IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBhcmNoX3dyaXRlX25vdGVzKHN0cnVjdCBm
-aWxlICpmaWxlKSB7IH0KIAogc3RydWN0IGVsZl9pbWFnZSB7CiAJc3RydWN0IGxpc3RfaGVhZCBs
-aXN0OwotCXVuc2lnbmVkIGxvbmcgZW50cnk7CisJdTggY2xhc3M7CisJdTY0IGVudHJ5OwogCXZv
-aWQgKmJ1ZjsKIH07CiAKIHN0cnVjdCBlbGZfaW1hZ2UgKmVsZl9sb2FkX2ltYWdlKHZvaWQgKmJ1
-Zik7CiB2b2lkIGVsZl9yZWxlYXNlX2ltYWdlKHN0cnVjdCBlbGZfaW1hZ2UgKmVsZik7CiAKKyNk
-ZWZpbmUgRUxGX0dFVF9GSUVMRChfX3MsIF9fZmllbGQsIF9fdHlwZSkgXAorc3RhdGljIGlubGlu
-ZSBfX3R5cGUgZWxmXyMjX19zIyNfIyNfX2ZpZWxkKHN0cnVjdCBlbGZfaW1hZ2UgKmVsZiwgdm9p
-ZCAqYXJnKSB7IFwKKwlpZiAoZWxmLT5jbGFzcyA9PSBFTEZDTEFTUzMyKSBcCisJCXJldHVybiAo
-X190eXBlKSAoKHN0cnVjdCBlbGYzMl8jI19fcyAqKSBhcmcpLT5fX2ZpZWxkOyBcCisJZWxzZSBc
-CisJCXJldHVybiAoX190eXBlKSAoKHN0cnVjdCBlbGY2NF8jI19fcyAqKSBhcmcpLT5fX2ZpZWxk
-OyBcCit9CisKK0VMRl9HRVRfRklFTEQoaGRyLCBlX2VudHJ5LCB1NjQpCitFTEZfR0VUX0ZJRUxE
-KGhkciwgZV9waG51bSwgdTE2KQorRUxGX0dFVF9GSUVMRChoZHIsIGVfcGhvZmYsIHU2NCkKK0VM
-Rl9HRVRfRklFTEQoaGRyLCBlX3R5cGUsIHUxNikKK0VMRl9HRVRfRklFTEQocGhkciwgcF9wYWRk
-ciwgdTY0KQorRUxGX0dFVF9GSUVMRChwaGRyLCBwX2ZpbGVzeiwgdTY0KQorRUxGX0dFVF9GSUVM
-RChwaGRyLCBwX21lbXN6LCB1NjQpCitFTEZfR0VUX0ZJRUxEKHBoZHIsIHBfdHlwZSwgdTMyKQor
-RUxGX0dFVF9GSUVMRChwaGRyLCBwX29mZnNldCwgdTY0KQorCitzdGF0aWMgaW5saW5lIHVuc2ln
-bmVkIGxvbmcgZWxmX3NpemVfb2ZfcGhkcihzdHJ1Y3QgZWxmX2ltYWdlICplbGYpCit7CisJaWYg
-KGVsZi0+Y2xhc3MgPT0gRUxGQ0xBU1MzMikKKwkJcmV0dXJuIHNpemVvZihFbGYzMl9QaGRyKTsK
-KwllbHNlCisJCXJldHVybiBzaXplb2YoRWxmNjRfUGhkcik7Cit9CisKICNlbmRpZiAvKiBfTElO
-VVhfRUxGX0ggKi8KLS0gCjIuMTUuMC4yNzYuZzg5ZWE3OTkKCgoKCj4gSGkgU2FzY2hhLAo+IAo+
-PiBIaSBDbMOpbWVudCwKPj4gCj4+IE9uIE1vbiwgTWFyIDE4LCAyMDE5IGF0IDA4OjE2OjQ3UE0g
-KzAxMDAsIENsw6ltZW50IExlZ2VyIHdyb3RlOgo+Pj4gVGhpcyBwYXRjaCBhZGQgZWxmNjQgbG9h
-ZGluZyBzdXBwb3J0IHRvIHRoZSBlbGYgbG9hZGVyLiBTaW5jZQo+Pj4gZWxmMzIgYW5kIGVsZjY0
-IHVzZXMgY29tcGxldGVseSBkaWZmZXJlbnQgdHlwZXMsIHRvIGF2b2lkIGNvcHlpbmcgYWxsCj4+
-PiB0aGUgY29kZSBhbmQgc2ltcGx5IHJlcGxhY2UgZWxmMzIgd2l0aCBlbGY2NCwgdXNlIGEgbWFj
-cm8gd2hpY2ggd2lsbAo+Pj4gcmV0dXJuIHRoZSBhcHByb3ByaWF0ZSBmaWVsZCBmb3IgZWFjaCB0
-eXBlIG9mIGhlYWRlci4gVGhpcyBtYWNybwo+Pj4gZ2VuZXJhdGVzIGdldHRlciBmb3IgZWxmIHN0
-cnVjdHVyZXMgYWNjb3JkaW5nIHRvIHRoZSBjbGFzcyBvZiB0aGUgbG9hZGVkCj4+PiBlbGYuCj4+
-PiBBbGwgZGlyZWN0IGVsZiBzdHJ1Y3QgZGVyZWZlcmVuY2UgYXJlIHRoZW4gcmVwbGFjZWQgYnkg
-Y2FsbCB0byBnZW5lcmF0ZWQKPj4+IGZ1bmN0aW9ucy4gVGhpcyBhbGxvd3MgdG8ga2VlcCBhIGNv
-bW1vbiBsb2FkZXIgY29kZSBldmVuIGlmIHR5cGVzIGFyZQo+Pj4gZGlmZmVyZW50Lgo+Pj4gCj4+
-PiBTaWduZWQtb2ZmLWJ5OiBDbMOpbWVudCBMw6lnZXIgPGNsZW1lbnQubGVnZXJAa2FscmF5LmV1
-Pgo+Pj4gLS0tCj4+PiAgY29tbW9uL2VsZi5jICB8IDQ2ICsrKysrKysrKysrKysrKysrKysrKysr
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPj4+ICBpbmNsdWRlL2VsZi5oIHwgMjcgKysrKysrKysr
-KysrKysrKysrKysrKysrKysrCj4+PiAgMiBmaWxlcyBjaGFuZ2VkLCA1MCBpbnNlcnRpb25zKCsp
-LCAyMyBkZWxldGlvbnMoLSkKPj4+IAo+Pj4gZGlmZiAtLWdpdCBhL2NvbW1vbi9lbGYuYyBiL2Nv
-bW1vbi9lbGYuYwo+Pj4gaW5kZXggOGVkZjM4ODU2Li5iZmI4Nzg5NTQgMTAwNjQ0Cj4+PiAtLS0g
-YS9jb21tb24vZWxmLmMKPj4+ICsrKyBiL2NvbW1vbi9lbGYuYwo+Pj4gQEAgLTQzLDMxICs0Mywz
-MiBAQCBzdGF0aWMgdm9pZCBlbGZfcmVsZWFzZV9yZWdpb25zKHN0cnVjdCBlbGZfaW1hZ2UgKmVs
-ZikKPj4+ICAJfQo+Pj4gIH0KPj4+ICAKPj4+IC0KPj4+ICBzdGF0aWMgaW50IGxvYWRfZWxmX3Bo
-ZHJfc2VnbWVudChzdHJ1Y3QgZWxmX2ltYWdlICplbGYsIHZvaWQgKnNyYywKPj4+IC0JCQkJIEVs
-ZjMyX1BoZHIgKnBoZHIpCj4+PiArCQkJCSB2b2lkICpwaGRyKQo+Pj4gIHsKPj4+IC0Jdm9pZCAq
-ZHN0ID0gKHZvaWQgKilwaGRyLT5wX3BhZGRyOwo+Pj4gKwl2b2lkICpkc3QgPSAodm9pZCAqKSBl
-bGZfcGhkcl9wX3BhZGRyKGVsZiwgcGhkcik7Cj4+PiAgCWludCByZXQ7Cj4+PiArCXVuc2lnbmVk
-IGxvbmcgcF9maWxlc3ogPSBlbGZfcGhkcl9wX2ZpbGVzeihlbGYsIHBoZHIpOwo+Pj4gKwl1bnNp
-Z25lZCBsb25nIHBfbWVtc3ogPSBlbGZfcGhkcl9wX21lbXN6KGVsZiwgcGhkcik7Cj4+PiAgCj4+
-PiAgCS8qIHdlIGNhcmUgb25seSBhYm91dCBQVF9MT0FEIHNlZ21lbnRzICovCj4+PiAtCWlmIChw
-aGRyLT5wX3R5cGUgIT0gUFRfTE9BRCkKPj4+ICsJaWYgKGVsZl9waGRyX3BfdHlwZShlbGYsIHBo
-ZHIpICE9IFBUX0xPQUQpCj4+PiAgCQlyZXR1cm4gMDsKPj4+ICAKPj4+IC0JaWYgKCFwaGRyLT5w
-X2ZpbGVzeikKPj4+ICsJaWYgKCFwX2ZpbGVzeikKPj4+ICAJCXJldHVybiAwOwo+Pj4gIAo+Pj4g
-LQlwcl9kZWJ1ZygiTG9hZGluZyBwaGRyIHRvIDB4JXAgKCVpIGJ5dGVzKVxuIiwgZHN0LCBwaGRy
-LT5wX2ZpbGVzeik7Cj4+PiArCXByX2RlYnVnKCJMb2FkaW5nIHBoZHIgdG8gMHglcCAoJWxkIGJ5
-dGVzKVxuIiwgZHN0LCBwX2ZpbGVzeik7Cj4+IAo+PiAlbHUgZm9yIHBfZmlsZXN6Pwo+IAo+IElu
-ZGVlZCwgSSBtaXNzZWQgdGhpcyBvbmUuCj4gCj4+IAo+Pj4gQEAgLTQwMCw2ICs0MDAsNyBAQCBz
-dGF0aWMgaW5saW5lIHZvaWQgYXJjaF93cml0ZV9ub3RlcyhzdHJ1Y3QgZmlsZSAqZmlsZSkgeyB9
-Cj4+PiAgCj4+PiAgc3RydWN0IGVsZl9pbWFnZSB7Cj4+PiAgCXN0cnVjdCBsaXN0X2hlYWQgbGlz
-dDsKPj4+ICsJdW5zaWduZWQgbG9uZyBjbGFzczsKPj4+ICAJdW5zaWduZWQgbG9uZyBlbnRyeTsK
-Pj4+ICAJdm9pZCAqYnVmOwo+Pj4gIH07Cj4+PiBAQCAtNDA3LDQgKzQwOCwzMCBAQCBzdHJ1Y3Qg
-ZWxmX2ltYWdlIHsKPj4+ICBzdHJ1Y3QgZWxmX2ltYWdlICplbGZfbG9hZF9pbWFnZSh2b2lkICpi
-dWYpOwo+Pj4gIHZvaWQgZWxmX3JlbGVhc2VfaW1hZ2Uoc3RydWN0IGVsZl9pbWFnZSAqZWxmKTsK
-Pj4+ICAKPj4+ICsjZGVmaW5lIEVMRl9HRVRfRklFTEQoX19zLCBfX2ZpZWxkLCBfX3R5cGUpIFwK
-Pj4+ICtzdGF0aWMgaW5saW5lIF9fdHlwZSBlbGZfIyNfX3MjI18jI19fZmllbGQoc3RydWN0IGVs
-Zl9pbWFnZSAqZWxmLCB2b2lkICphcmcpIHsKPj4+IFwKPj4+ICsJaWYgKGVsZi0+Y2xhc3MgPT0g
-RUxGQ0xBU1MzMikgXAo+Pj4gKwkJcmV0dXJuIChfX3R5cGUpICgoc3RydWN0IGVsZjMyXyMjX19z
-ICopIGFyZyktPl9fZmllbGQ7IFwKPj4+ICsJZWxzZSBcCj4+PiArCQlyZXR1cm4gKF9fdHlwZSkg
-KChzdHJ1Y3QgZWxmNjRfIyNfX3MgKikgYXJnKS0+X19maWVsZDsgXAo+Pj4gK30KPj4+ICsKPj4+
-ICtFTEZfR0VUX0ZJRUxEKGhkciwgZV9lbnRyeSwgdW5zaWduZWQgbG9uZykKPj4+ICtFTEZfR0VU
-X0ZJRUxEKGhkciwgZV9waG51bSwgdW5zaWduZWQgbG9uZykKPj4+ICtFTEZfR0VUX0ZJRUxEKGhk
-ciwgZV9waG9mZiwgdW5zaWduZWQgbG9uZykKPj4+ICtFTEZfR0VUX0ZJRUxEKGhkciwgZV90eXBl
-LCB1bnNpZ25lZCBsb25nKQo+Pj4gK0VMRl9HRVRfRklFTEQocGhkciwgcF9wYWRkciwgdW5zaWdu
-ZWQgbG9uZykKPj4+ICtFTEZfR0VUX0ZJRUxEKHBoZHIsIHBfZmlsZXN6LCB1bnNpZ25lZCBsb25n
-KQo+Pj4gK0VMRl9HRVRfRklFTEQocGhkciwgcF9tZW1zeiwgdW5zaWduZWQgbG9uZykKPj4+ICtF
-TEZfR0VUX0ZJRUxEKHBoZHIsIHBfdHlwZSwgdW5zaWduZWQgbG9uZykKPj4+ICtFTEZfR0VUX0ZJ
-RUxEKHBoZHIsIHBfb2Zmc2V0LCB1bnNpZ25lZCBsb25nKQo+PiAKPj4gV2hlbiBpdCdzIGFsd2F5
-cyB1bnNpZ25lZCBsb25nIHdoeSBkbyB3ZSBoYXZlIHRvIHBhc3MgaW4gdGhlIHR5cGUgYXMgYW4K
-Pj4gYXJndW1lbnQ/Cj4gCj4gQWN0dWFsbHksIHNvbWUgb2YgdGhlbSBzaG91bGQgbm90IGJlIGRl
-ZmluZWQgYXMgSSBkaWQuCj4gRm9yIGluc3RhbmNlLCB0aGUgZV90eXBlIGlzIGFuIGhhbGYgaW4g
-Ym90aCBlbGYzMiBhbmQgZWxmNjQgc28gaXQgc2hvdWxkCj4gYmUgZGVmaW5lZCBhcyB1MTYuCj4g
-Cj4gU29tZSBvdGhlciBhcHByb2FjaGVzIHRvIGhhbmRsZSBib3RoIDY0Yml0cy8zMmJpdHMgZWxm
-IHdlcmUgdG8gY29weQo+IHRoZSB3aG9sZSBsb2FkaW5nIGNvZGUgYW5kIHMvZWxmMzIvZWxmNjQu
-IFNpbmNlIHRoZSBjb2RlIGluIGJhcmVib3ggaXMKPiBub3Qgc28gYmlnLCBtYXliZSBJIGNvdWxk
-IGRvIHRoYXQuCj4gCj4+IAo+PiBJIGFtIHVuZGVjaWRlZCBpZiB0aGlzIGlzIHRoZSByaWdodCBh
-cHByb2FjaC4gInVuc2lnbmVkIGxvbmciIGlzIHdyb25nCj4+IHdoZW4gYSBFTEYgZmlsZSBmb3Ig
-YSBmb3JlaWduIGFyY2hpdGVjdHVyZSBpcyBsb2FkZWQuIFRoaXMgY2FuIGhhcHBlbgo+PiBmb3Ig
-ZXhhbXBsZSB3aGVuIGNvZGUgZm9yIHRoZSBDb3J0ZXggTTQgY29yZXMgaXMgbG9hZGVkIGZyb20g
-dGhlIDY0Yml0Cj4+IENvcnRleCBBIGNvcmVzIGlzIGxvYWRlZCBvbiBhbiBpLk1YOCBmb3IgZXhh
-bXBsZS4gVXNpbmcgdGhlIGJpZ2dlciB0eXBlcwo+PiB0aGVuIGlzIG5vdCBhIHByb2JsZW0sIGJ1
-dCBtYXliZSBpdCBjb3VsZCBoYXBwZW4gdGhlIG90aGVyIHdheSByb3VuZCwKPj4gbG9hZGluZyBh
-IDY0Yml0IEVMRiBvbiBhIDMyYml0IGFyY2hpdGVjdHVyZT8KPiAKPiBJIHdhcyB0aGlua2luZyBh
-Ym91dCB0aGlzIG9uZS4gSSB0cmllZCBsb2FkaW5nIDMyYml0IGFuZCA2NGJpdCBlbGYgZnJvbQo+
-IGEgNjRiaXQgY29yZSBidXQgaW5kZWVkLCBub3QgdGhlIG90aGVyIHdheS4gSWYgc28sIHRoZW4g
-YWRkcmVzc2VzIHdpbGwKPiBiZSB0cnVuY2F0ZWQgYnV0IHNpbmNlIHRoZSBwcm9jZXNzb3Igd2ls
-bCBub3QgYmUgYWJsZSB0byBhY2Nlc3MgYQo+IDY0IGJpdHMgbWVtb3J5IHNwYWNlLCBJIGd1ZXNz
-IGl0J3Mgbm90IHBvc3NpYmxlICh1bmxlc3MgeW91IGhhdmUgc29tZQo+IERNQSB3aGljaCBjYW4g
-YWNjZXNzIHRoZSB1cHBlciBtZW1vcnkgYnV0IHRoaXMgd2lsbCBwcm9iYWJseSBub3QgYmUKPiBo
-YW5kbGVkIGJ5IGJhcmVib3ggZWxmIGxvYWRlcikuCj4gCj4+IAo+PiBJIGNhbid0IHNlZSBhIHJl
-YWwgcHJvYmxlbSBoZXJlLCBJIGp1c3Qgd2FudGVkIHRvIG5vdGUuIEFyZSB0aGVyZSBvdGhlcgo+
-PiBvcGluaW9ucz8KPj4gCj4+IFNhc2NoYQo+PiAKPj4gLS0KPj4gUGVuZ3V0cm9uaXggZS5LLiAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwK
-Pj4gSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3
-dy5wZW5ndXRyb25peC5kZS8gIHwKPj4gUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWlt
-LCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKPj4gQW10c2dlcmljaHQg
-SGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01
-NTU1IHwKPiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-Xwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4g
-aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94CgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
-bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
-ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+The i210 on the RDU3 must be configured in the same way as on RDU2.
+Move the config check/patching to the common directory and add the
+compatible of the RDU3 boards.
+
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/boards/zii-common/board.c     | 30 ++++++++++++++++++++++++++
+ arch/arm/boards/zii-imx6q-rdu2/board.c | 29 -------------------------
+ 2 files changed, 30 insertions(+), 29 deletions(-)
+
+diff --git a/arch/arm/boards/zii-common/board.c b/arch/arm/boards/zii-common/board.c
+index 254b09a7a768..1a9dadf5fb09 100644
+--- a/arch/arm/boards/zii-common/board.c
++++ b/arch/arm/boards/zii-common/board.c
+@@ -42,3 +42,33 @@ static int rdu_networkconfig(void)
+ 	return 0;
+ }
+ late_initcall(rdu_networkconfig);
++
++#define I210_CFGWORD_PCIID_157B		0x157b1a11
++static int rdu_i210_invm(void)
++{
++	int fd;
++	u32 val;
++
++	if (!of_machine_is_compatible("zii,imx6q-zii-rdu2") &&
++	    !of_machine_is_compatible("zii,imx6qp-zii-rdu2") &&
++	    !of_machine_is_compatible("zii,imx8mq-ultra"))
++		return 0;
++
++	fd = open("/dev/e1000-invm0", O_RDWR);
++	if (fd < 0) {
++		pr_err("could not open e1000 iNVM device!\n");
++		return fd;
++	}
++
++	pread(fd, &val, sizeof(val), 0);
++	if (val == I210_CFGWORD_PCIID_157B) {
++		pr_debug("i210 already programmed correctly\n");
++		return 0;
++	}
++
++	val = I210_CFGWORD_PCIID_157B;
++	pwrite(fd, &val, sizeof(val), 0);
++
++	return 0;
++}
++late_initcall(rdu_i210_invm);
+diff --git a/arch/arm/boards/zii-imx6q-rdu2/board.c b/arch/arm/boards/zii-imx6q-rdu2/board.c
+index 344a654f23f1..6adb0b1c6fbc 100644
+--- a/arch/arm/boards/zii-imx6q-rdu2/board.c
++++ b/arch/arm/boards/zii-imx6q-rdu2/board.c
+@@ -214,35 +214,6 @@ static int rdu2_ethernet_init(void)
+ }
+ late_initcall(rdu2_ethernet_init);
+ 
+-#define I210_CFGWORD_PCIID_157B	0x157b1a11
+-static int rdu2_i210_invm(void)
+-{
+-	int fd;
+-	u32 val;
+-
+-	if (!of_machine_is_compatible("zii,imx6q-zii-rdu2") &&
+-	    !of_machine_is_compatible("zii,imx6qp-zii-rdu2"))
+-		return 0;
+-
+-	fd = open("/dev/e1000-invm0", O_RDWR);
+-	if (fd < 0) {
+-		pr_err("could not open e1000 iNVM device!\n");
+-		return fd;
+-	}
+-
+-	pread(fd, &val, sizeof(val), 0);
+-	if (val == I210_CFGWORD_PCIID_157B) {
+-		pr_debug("i210 already programmed correctly\n");
+-		return 0;
+-	}
+-
+-	val = I210_CFGWORD_PCIID_157B;
+-	pwrite(fd, &val, sizeof(val), 0);
+-
+-	return 0;
+-}
+-late_initcall(rdu2_i210_invm);
+-
+ static int rdu2_fixup_egalax_ts(struct device_node *root, void *context)
+ {
+ 	struct device_node *np;
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
