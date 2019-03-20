@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-08.nifty.com ([210.131.2.75])
+Received: from mail-qt1-x843.google.com ([2607:f8b0:4864:20::843])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h6Vxz-0002tW-Am
- for barebox@lists.infradead.org; Wed, 20 Mar 2019 07:48:53 +0000
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Wed, 20 Mar 2019 16:48:33 +0900
-Message-Id: <1553068113-13704-1-git-send-email-yamada.masahiro@socionext.com>
+ id 1h6THz-00005T-O3
+ for barebox@lists.infradead.org; Wed, 20 Mar 2019 04:57:21 +0000
+Received: by mail-qt1-x843.google.com with SMTP id s1so1101026qte.5
+ for <barebox@lists.infradead.org>; Tue, 19 Mar 2019 21:57:19 -0700 (PDT)
+MIME-Version: 1.0
+From: Lewis Zhou <lewisou@gmail.com>
+Date: Wed, 20 Mar 2019 12:57:07 +0800
+Message-ID: <CAD_Pvub19JJgwwkZrNX7iz47f-jib5hiUgE+8Z=2cSf80=YygQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,123 +17,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] linux/kernel.h: split *_MAX and *_MIN macros into
- <linux/limits.h>
+Subject: selected processor does not support `rev r7,r7'
 To: barebox@lists.infradead.org
 
-Copy include/linuxlimits.h from Linux 5.1-rc1
-(removing #include <uapi/linux/limits.h>).
+Hi
 
-While we are here, add SPDX License tag to <linux/kernel.h>.
+I got a compiling error, please see the log below:
 
-Based on the following Linux commits:
+lewis@lewis-ubuntu:~/OpenProj/barebox$ make ARCH=arm
+CROSS_COMPILE=arm-cortex_a8-linux-gnueabihf- am335x_mlo_defconfig
+#
+# configuration written to .config
+#
 
- - 54d50897d544 ("linux/kernel.h: split *_MAX and *_MIN macros
-   into <linux/limits.h>")
+lewis@lewis-ubuntu:~/OpenProj/barebox$ make ARCH=arm
+CROSS_COMPILE=arm-corte-linux-gnueabihf-
+  Generating include/generated/mach-types.h
+  CHK     include/generated/version.h
+  CHK     include/generated/utsrelease.h
+  CREATE  include/config.h
+  HOSTCC  scripts/basic/fixdep
+  CC      arch/arm/lib/asm-offsets.s
+  GEN     include/generated/asm-offsets.h
+  HOSTCC  scripts/dtc/dtc.o
+  HOSTCC  scripts/dtc/flattree.o
+  HOSTCC  scripts/dtc/fstree.o
+  HOSTCC  scripts/dtc/data.o
+  HOSTCC  scripts/dtc/livetree.o
+  HOSTCC  scripts/dtc/treesource.o
+  HOSTCC  scripts/dtc/srcpos.o
+  HOSTCC  scripts/dtc/checks.o
+  HOSTCC  scripts/dtc/util.o
+  HOSTCC  scripts/dtc/dtc-lexer.lex.o
+  HOSTCC  scripts/dtc/dtc-parser.tab.o
+  HOSTLD  scripts/dtc/dtc
+  HOSTCC  scripts/dtc/fdtget.o
+  HOSTCC  scripts/dtc/fdt.o
+  HOSTCC  scripts/dtc/fdt_ro.o
+  HOSTCC  scripts/dtc/fdt_strerror.o
+  HOSTCC  scripts/dtc/fdt_wip.o
+  HOSTCC  scripts/dtc/fdt_overlay.o
+  HOSTCC  scripts/dtc/fdt_empty_tree.o
+  HOSTCC  scripts/dtc/fdt_rw.o
+  HOSTCC  scripts/dtc/fdt_sw.o
+  HOSTLD  scripts/dtc/fdtget
+  CC      scripts/mod/empty.o
+  HOSTCC  scripts/mod/mk_elfconfig
+  MKELF   scripts/mod/elfconfig.h
+  HOSTCC  scripts/mod/modpost.o
+  HOSTCC  scripts/mod/sumversion.o
+  HOSTLD  scripts/mod/modpost
+  HOSTCC  scripts/bin2c
+  HOSTCC  scripts/mkimage
+  HOSTCC  scripts/fix_size
+  HOSTCC  scripts/bareboxenv
+  HOSTCC  scripts/bareboxcrc32
+  HOSTCC  scripts/kernel-install
+  HOSTCC  scripts/omap_signGP
+  HOSTCC  scripts/mk-omap-image
+  CC      common/memory.o
+{standard input}: Assembler messages:
+{standard input}:123: Error: selected processor does not support `rev
+r7,r7' in Thumb mode
+{standard input}:135: Error: selected processor does not support `rev
+r7,r7' in Thumb mode
+scripts/Makefile.build:249: recipe for target 'common/memory.o' failed
+make[1]: *** [common/memory.o] Error 1
+Makefile:785: recipe for target 'common' failed
+make: *** [common] Error 2
+lewis@lewis-ubuntu:~/OpenProj/barebox$
 
- - 2dc0e68d5ada ("linux/kernel.h: use 'short' to define USHRT_MAX,
-   SHRT_MAX, SHRT_MIN")
 
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
----
-
- include/linux/kernel.h | 29 ++---------------------------
- include/linux/limits.h | 35 +++++++++++++++++++++++++++++++++++
- 2 files changed, 37 insertions(+), 27 deletions(-)
- create mode 100644 include/linux/limits.h
-
-diff --git a/include/linux/kernel.h b/include/linux/kernel.h
-index 849c079..b320f7e 100644
---- a/include/linux/kernel.h
-+++ b/include/linux/kernel.h
-@@ -1,36 +1,11 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
- #ifndef _LINUX_KERNEL_H
- #define _LINUX_KERNEL_H
- 
- #include <linux/compiler.h>
- #include <linux/bug.h>
- #include <linux/barebox-wrapper.h>
--
--#define USHRT_MAX	((u16)(~0U))
--#define SHRT_MAX	((s16)(USHRT_MAX>>1))
--#define SHRT_MIN	((s16)(-SHRT_MAX - 1))
--#define INT_MAX		((int)(~0U>>1))
--#define INT_MIN		(-INT_MAX - 1)
--#define UINT_MAX	(~0U)
--#define LONG_MAX	((long)(~0UL>>1))
--#define LONG_MIN	(-LONG_MAX - 1)
--#define ULONG_MAX	(~0UL)
--#define LLONG_MAX	((long long)(~0ULL>>1))
--#define LLONG_MIN	(-LLONG_MAX - 1)
--#define ULLONG_MAX	(~0ULL)
--#define SIZE_MAX	(~(size_t)0)
--
--#define U8_MAX		((u8)~0U)
--#define S8_MAX		((s8)(U8_MAX>>1))
--#define S8_MIN		((s8)(-S8_MAX - 1))
--#define U16_MAX		((u16)~0U)
--#define S16_MAX		((s16)(U16_MAX>>1))
--#define S16_MIN		((s16)(-S16_MAX - 1))
--#define U32_MAX		((u32)~0U)
--#define S32_MAX		((s32)(U32_MAX>>1))
--#define S32_MIN		((s32)(-S32_MAX - 1))
--#define U64_MAX		((u64)~0ULL)
--#define S64_MAX		((s64)(U64_MAX>>1))
--#define S64_MIN		((s64)(-S64_MAX - 1))
-+#include <linux/limits.h>
- 
- #define ALIGN(x, a)		__ALIGN_MASK(x, (typeof(x))(a) - 1)
- #define ALIGN_DOWN(x, a)	ALIGN((x) - ((a) - 1), (a))
-diff --git a/include/linux/limits.h b/include/linux/limits.h
-new file mode 100644
-index 0000000..bda9c94
---- /dev/null
-+++ b/include/linux/limits.h
-@@ -0,0 +1,35 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_LIMITS_H
-+#define _LINUX_LIMITS_H
-+
-+#include <linux/types.h>
-+
-+#define USHRT_MAX	((unsigned short)~0U)
-+#define SHRT_MAX	((short)(USHRT_MAX >> 1))
-+#define SHRT_MIN	((short)(-SHRT_MAX - 1))
-+#define INT_MAX		((int)(~0U >> 1))
-+#define INT_MIN		(-INT_MAX - 1)
-+#define UINT_MAX	(~0U)
-+#define LONG_MAX	((long)(~0UL >> 1))
-+#define LONG_MIN	(-LONG_MAX - 1)
-+#define ULONG_MAX	(~0UL)
-+#define LLONG_MAX	((long long)(~0ULL >> 1))
-+#define LLONG_MIN	(-LLONG_MAX - 1)
-+#define ULLONG_MAX	(~0ULL)
-+#define SIZE_MAX	(~(size_t)0)
-+#define PHYS_ADDR_MAX	(~(phys_addr_t)0)
-+
-+#define U8_MAX		((u8)~0U)
-+#define S8_MAX		((s8)(U8_MAX >> 1))
-+#define S8_MIN		((s8)(-S8_MAX - 1))
-+#define U16_MAX		((u16)~0U)
-+#define S16_MAX		((s16)(U16_MAX >> 1))
-+#define S16_MIN		((s16)(-S16_MAX - 1))
-+#define U32_MAX		((u32)~0U)
-+#define S32_MAX		((s32)(U32_MAX >> 1))
-+#define S32_MIN		((s32)(-S32_MAX - 1))
-+#define U64_MAX		((u64)~0ULL)
-+#define S64_MAX		((s64)(U64_MAX >> 1))
-+#define S64_MIN		((s64)(-S64_MAX - 1))
-+
-+#endif /* _LINUX_LIMITS_H */
--- 
-2.7.4
-
+Kind regards,
+Lewis
 
 _______________________________________________
 barebox mailing list
