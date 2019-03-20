@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h6WDk-0002WC-Uq
- for barebox@lists.infradead.org; Wed, 20 Mar 2019 08:05:11 +0000
-Date: Wed, 20 Mar 2019 09:05:06 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190320080506.xttdoivywbkaptx5@pengutronix.de>
+ id 1h6WQQ-0008AW-He
+ for barebox@lists.infradead.org; Wed, 20 Mar 2019 08:18:16 +0000
+Date: Wed, 20 Mar 2019 09:18:09 +0100 (CET)
+From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
+Message-ID: <1029133302.4680876.1553069889561.JavaMail.zimbra@kalray.eu>
+In-Reply-To: <20190320080506.xttdoivywbkaptx5@pengutronix.de>
 References: <2115635878.3947318.1552936607997.JavaMail.zimbra@kalray.eu>
+ <20190320080506.xttdoivywbkaptx5@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <2115635878.3947318.1552936607997.JavaMail.zimbra@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,129 +18,95 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] elf: add 64 bits elf support
-To: =?iso-8859-15?Q?Cl=E9ment?= Leger <cleger@kalray.eu>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi Cl=E9ment,
-
-On Mon, Mar 18, 2019 at 08:16:47PM +0100, Cl=E9ment Leger wrote:
-> This patch add elf64 loading support to the elf loader. Since
-> elf32 and elf64 uses completely different types, to avoid copying all
-> the code and simply replace elf32 with elf64, use a macro which will
-> return the appropriate field for each type of header. This macro
-> generates getter for elf structures according to the class of the loaded
-> elf.
-> All direct elf struct dereference are then replaced by call to generated
-> functions. This allows to keep a common loader code even if types are
-> different.
-> =
-
-> Signed-off-by: Cl=E9ment L=E9ger <clement.leger@kalray.eu>
-> ---
->  common/elf.c  | 46 +++++++++++++++++++++++-----------------------
->  include/elf.h | 27 +++++++++++++++++++++++++++
->  2 files changed, 50 insertions(+), 23 deletions(-)
-> =
-
-> diff --git a/common/elf.c b/common/elf.c
-> index 8edf38856..bfb878954 100644
-> --- a/common/elf.c
-> +++ b/common/elf.c
-> @@ -43,31 +43,32 @@ static void elf_release_regions(struct elf_image *elf)
->  	}
->  }
->  =
-
-> -
->  static int load_elf_phdr_segment(struct elf_image *elf, void *src,
-> -				 Elf32_Phdr *phdr)
-> +				 void *phdr)
->  {
-> -	void *dst =3D (void *)phdr->p_paddr;
-> +	void *dst =3D (void *) elf_phdr_p_paddr(elf, phdr);
->  	int ret;
-> +	unsigned long p_filesz =3D elf_phdr_p_filesz(elf, phdr);
-> +	unsigned long p_memsz =3D elf_phdr_p_memsz(elf, phdr);
->  =
-
->  	/* we care only about PT_LOAD segments */
-> -	if (phdr->p_type !=3D PT_LOAD)
-> +	if (elf_phdr_p_type(elf, phdr) !=3D PT_LOAD)
->  		return 0;
->  =
-
-> -	if (!phdr->p_filesz)
-> +	if (!p_filesz)
->  		return 0;
->  =
-
-> -	pr_debug("Loading phdr to 0x%p (%i bytes)\n", dst, phdr->p_filesz);
-> +	pr_debug("Loading phdr to 0x%p (%ld bytes)\n", dst, p_filesz);
-
-%lu for p_filesz?
-
-> @@ -400,6 +400,7 @@ static inline void arch_write_notes(struct file *file=
-) { }
->  =
-
->  struct elf_image {
->  	struct list_head list;
-> +	unsigned long class;
->  	unsigned long entry;
->  	void *buf;
->  };
-> @@ -407,4 +408,30 @@ struct elf_image {
->  struct elf_image *elf_load_image(void *buf);
->  void elf_release_image(struct elf_image *elf);
->  =
-
-> +#define ELF_GET_FIELD(__s, __field, __type) \
-> +static inline __type elf_##__s##_##__field(struct elf_image *elf, void *=
-arg) { \
-> +	if (elf->class =3D=3D ELFCLASS32) \
-> +		return (__type) ((struct elf32_##__s *) arg)->__field; \
-> +	else \
-> +		return (__type) ((struct elf64_##__s *) arg)->__field; \
-> +}
-> +
-> +ELF_GET_FIELD(hdr, e_entry, unsigned long)
-> +ELF_GET_FIELD(hdr, e_phnum, unsigned long)
-> +ELF_GET_FIELD(hdr, e_phoff, unsigned long)
-> +ELF_GET_FIELD(hdr, e_type, unsigned long)
-> +ELF_GET_FIELD(phdr, p_paddr, unsigned long)
-> +ELF_GET_FIELD(phdr, p_filesz, unsigned long)
-> +ELF_GET_FIELD(phdr, p_memsz, unsigned long)
-> +ELF_GET_FIELD(phdr, p_type, unsigned long)
-> +ELF_GET_FIELD(phdr, p_offset, unsigned long)
-
-When it's always unsigned long why do we have to pass in the type as an
-argument?
-
-I am undecided if this is the right approach. "unsigned long" is wrong
-when a ELF file for a foreign architecture is loaded. This can happen
-for example when code for the Cortex M4 cores is loaded from the 64bit
-Cortex A cores is loaded on an i.MX8 for example. Using the bigger types
-then is not a problem, but maybe it could happen the other way round,
-loading a 64bit ELF on a 32bit architecture?
-
-I can't see a real problem here, I just wanted to note. Are there other
-opinions?
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKPiBIaSBDbMOpbWVudCwKPiAKPiBPbiBNb24sIE1hciAxOCwgMjAxOSBhdCAw
+ODoxNjo0N1BNICswMTAwLCBDbMOpbWVudCBMZWdlciB3cm90ZToKPj4gVGhpcyBwYXRjaCBhZGQg
+ZWxmNjQgbG9hZGluZyBzdXBwb3J0IHRvIHRoZSBlbGYgbG9hZGVyLiBTaW5jZQo+PiBlbGYzMiBh
+bmQgZWxmNjQgdXNlcyBjb21wbGV0ZWx5IGRpZmZlcmVudCB0eXBlcywgdG8gYXZvaWQgY29weWlu
+ZyBhbGwKPj4gdGhlIGNvZGUgYW5kIHNpbXBseSByZXBsYWNlIGVsZjMyIHdpdGggZWxmNjQsIHVz
+ZSBhIG1hY3JvIHdoaWNoIHdpbGwKPj4gcmV0dXJuIHRoZSBhcHByb3ByaWF0ZSBmaWVsZCBmb3Ig
+ZWFjaCB0eXBlIG9mIGhlYWRlci4gVGhpcyBtYWNybwo+PiBnZW5lcmF0ZXMgZ2V0dGVyIGZvciBl
+bGYgc3RydWN0dXJlcyBhY2NvcmRpbmcgdG8gdGhlIGNsYXNzIG9mIHRoZSBsb2FkZWQKPj4gZWxm
+Lgo+PiBBbGwgZGlyZWN0IGVsZiBzdHJ1Y3QgZGVyZWZlcmVuY2UgYXJlIHRoZW4gcmVwbGFjZWQg
+YnkgY2FsbCB0byBnZW5lcmF0ZWQKPj4gZnVuY3Rpb25zLiBUaGlzIGFsbG93cyB0byBrZWVwIGEg
+Y29tbW9uIGxvYWRlciBjb2RlIGV2ZW4gaWYgdHlwZXMgYXJlCj4+IGRpZmZlcmVudC4KPj4gCj4+
+IFNpZ25lZC1vZmYtYnk6IENsw6ltZW50IEzDqWdlciA8Y2xlbWVudC5sZWdlckBrYWxyYXkuZXU+
+Cj4+IC0tLQo+PiAgY29tbW9uL2VsZi5jICB8IDQ2ICsrKysrKysrKysrKysrKysrKysrKysrLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0KPj4gIGluY2x1ZGUvZWxmLmggfCAyNyArKysrKysrKysrKysr
+KysrKysrKysrKysrKysKPj4gIDIgZmlsZXMgY2hhbmdlZCwgNTAgaW5zZXJ0aW9ucygrKSwgMjMg
+ZGVsZXRpb25zKC0pCj4+IAo+PiBkaWZmIC0tZ2l0IGEvY29tbW9uL2VsZi5jIGIvY29tbW9uL2Vs
+Zi5jCj4+IGluZGV4IDhlZGYzODg1Ni4uYmZiODc4OTU0IDEwMDY0NAo+PiAtLS0gYS9jb21tb24v
+ZWxmLmMKPj4gKysrIGIvY29tbW9uL2VsZi5jCj4+IEBAIC00MywzMSArNDMsMzIgQEAgc3RhdGlj
+IHZvaWQgZWxmX3JlbGVhc2VfcmVnaW9ucyhzdHJ1Y3QgZWxmX2ltYWdlICplbGYpCj4+ICAJfQo+
+PiAgfQo+PiAgCj4+IC0KPj4gIHN0YXRpYyBpbnQgbG9hZF9lbGZfcGhkcl9zZWdtZW50KHN0cnVj
+dCBlbGZfaW1hZ2UgKmVsZiwgdm9pZCAqc3JjLAo+PiAtCQkJCSBFbGYzMl9QaGRyICpwaGRyKQo+
+PiArCQkJCSB2b2lkICpwaGRyKQo+PiAgewo+PiAtCXZvaWQgKmRzdCA9ICh2b2lkICopcGhkci0+
+cF9wYWRkcjsKPj4gKwl2b2lkICpkc3QgPSAodm9pZCAqKSBlbGZfcGhkcl9wX3BhZGRyKGVsZiwg
+cGhkcik7Cj4+ICAJaW50IHJldDsKPj4gKwl1bnNpZ25lZCBsb25nIHBfZmlsZXN6ID0gZWxmX3Bo
+ZHJfcF9maWxlc3ooZWxmLCBwaGRyKTsKPj4gKwl1bnNpZ25lZCBsb25nIHBfbWVtc3ogPSBlbGZf
+cGhkcl9wX21lbXN6KGVsZiwgcGhkcik7Cj4+ICAKPj4gIAkvKiB3ZSBjYXJlIG9ubHkgYWJvdXQg
+UFRfTE9BRCBzZWdtZW50cyAqLwo+PiAtCWlmIChwaGRyLT5wX3R5cGUgIT0gUFRfTE9BRCkKPj4g
+KwlpZiAoZWxmX3BoZHJfcF90eXBlKGVsZiwgcGhkcikgIT0gUFRfTE9BRCkKPj4gIAkJcmV0dXJu
+IDA7Cj4+ICAKPj4gLQlpZiAoIXBoZHItPnBfZmlsZXN6KQo+PiArCWlmICghcF9maWxlc3opCj4+
+ICAJCXJldHVybiAwOwo+PiAgCj4+IC0JcHJfZGVidWcoIkxvYWRpbmcgcGhkciB0byAweCVwICgl
+aSBieXRlcylcbiIsIGRzdCwgcGhkci0+cF9maWxlc3opOwo+PiArCXByX2RlYnVnKCJMb2FkaW5n
+IHBoZHIgdG8gMHglcCAoJWxkIGJ5dGVzKVxuIiwgZHN0LCBwX2ZpbGVzeik7Cj4gCj4gJWx1IGZv
+ciBwX2ZpbGVzej8KCkluZGVlZCwgSSBtaXNzZWQgdGhpcyBvbmUuCgo+IAo+PiBAQCAtNDAwLDYg
+KzQwMCw3IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBhcmNoX3dyaXRlX25vdGVzKHN0cnVjdCBmaWxl
+ICpmaWxlKSB7IH0KPj4gIAo+PiAgc3RydWN0IGVsZl9pbWFnZSB7Cj4+ICAJc3RydWN0IGxpc3Rf
+aGVhZCBsaXN0Owo+PiArCXVuc2lnbmVkIGxvbmcgY2xhc3M7Cj4+ICAJdW5zaWduZWQgbG9uZyBl
+bnRyeTsKPj4gIAl2b2lkICpidWY7Cj4+ICB9Owo+PiBAQCAtNDA3LDQgKzQwOCwzMCBAQCBzdHJ1
+Y3QgZWxmX2ltYWdlIHsKPj4gIHN0cnVjdCBlbGZfaW1hZ2UgKmVsZl9sb2FkX2ltYWdlKHZvaWQg
+KmJ1Zik7Cj4+ICB2b2lkIGVsZl9yZWxlYXNlX2ltYWdlKHN0cnVjdCBlbGZfaW1hZ2UgKmVsZik7
+Cj4+ICAKPj4gKyNkZWZpbmUgRUxGX0dFVF9GSUVMRChfX3MsIF9fZmllbGQsIF9fdHlwZSkgXAo+
+PiArc3RhdGljIGlubGluZSBfX3R5cGUgZWxmXyMjX19zIyNfIyNfX2ZpZWxkKHN0cnVjdCBlbGZf
+aW1hZ2UgKmVsZiwgdm9pZCAqYXJnKSB7Cj4+IFwKPj4gKwlpZiAoZWxmLT5jbGFzcyA9PSBFTEZD
+TEFTUzMyKSBcCj4+ICsJCXJldHVybiAoX190eXBlKSAoKHN0cnVjdCBlbGYzMl8jI19fcyAqKSBh
+cmcpLT5fX2ZpZWxkOyBcCj4+ICsJZWxzZSBcCj4+ICsJCXJldHVybiAoX190eXBlKSAoKHN0cnVj
+dCBlbGY2NF8jI19fcyAqKSBhcmcpLT5fX2ZpZWxkOyBcCj4+ICt9Cj4+ICsKPj4gK0VMRl9HRVRf
+RklFTEQoaGRyLCBlX2VudHJ5LCB1bnNpZ25lZCBsb25nKQo+PiArRUxGX0dFVF9GSUVMRChoZHIs
+IGVfcGhudW0sIHVuc2lnbmVkIGxvbmcpCj4+ICtFTEZfR0VUX0ZJRUxEKGhkciwgZV9waG9mZiwg
+dW5zaWduZWQgbG9uZykKPj4gK0VMRl9HRVRfRklFTEQoaGRyLCBlX3R5cGUsIHVuc2lnbmVkIGxv
+bmcpCj4+ICtFTEZfR0VUX0ZJRUxEKHBoZHIsIHBfcGFkZHIsIHVuc2lnbmVkIGxvbmcpCj4+ICtF
+TEZfR0VUX0ZJRUxEKHBoZHIsIHBfZmlsZXN6LCB1bnNpZ25lZCBsb25nKQo+PiArRUxGX0dFVF9G
+SUVMRChwaGRyLCBwX21lbXN6LCB1bnNpZ25lZCBsb25nKQo+PiArRUxGX0dFVF9GSUVMRChwaGRy
+LCBwX3R5cGUsIHVuc2lnbmVkIGxvbmcpCj4+ICtFTEZfR0VUX0ZJRUxEKHBoZHIsIHBfb2Zmc2V0
+LCB1bnNpZ25lZCBsb25nKQo+IAo+IFdoZW4gaXQncyBhbHdheXMgdW5zaWduZWQgbG9uZyB3aHkg
+ZG8gd2UgaGF2ZSB0byBwYXNzIGluIHRoZSB0eXBlIGFzIGFuCj4gYXJndW1lbnQ/CgpBY3R1YWxs
+eSwgc29tZSBvZiB0aGVtIHNob3VsZCBub3QgYmUgZGVmaW5lZCBhcyBJIGRpZC4KRm9yIGluc3Rh
+bmNlLCB0aGUgZV90eXBlIGlzIGFuIGhhbGYgaW4gYm90aCBlbGYzMiBhbmQgZWxmNjQgc28gaXQg
+c2hvdWxkCmJlIGRlZmluZWQgYXMgdTE2LgoKU29tZSBvdGhlciBhcHByb2FjaGVzIHRvIGhhbmRs
+ZSBib3RoIDY0Yml0cy8zMmJpdHMgZWxmIHdlcmUgdG8gY29weQp0aGUgd2hvbGUgbG9hZGluZyBj
+b2RlIGFuZCBzL2VsZjMyL2VsZjY0LiBTaW5jZSB0aGUgY29kZSBpbiBiYXJlYm94IGlzCm5vdCBz
+byBiaWcsIG1heWJlIEkgY291bGQgZG8gdGhhdC4KCj4gCj4gSSBhbSB1bmRlY2lkZWQgaWYgdGhp
+cyBpcyB0aGUgcmlnaHQgYXBwcm9hY2guICJ1bnNpZ25lZCBsb25nIiBpcyB3cm9uZwo+IHdoZW4g
+YSBFTEYgZmlsZSBmb3IgYSBmb3JlaWduIGFyY2hpdGVjdHVyZSBpcyBsb2FkZWQuIFRoaXMgY2Fu
+IGhhcHBlbgo+IGZvciBleGFtcGxlIHdoZW4gY29kZSBmb3IgdGhlIENvcnRleCBNNCBjb3JlcyBp
+cyBsb2FkZWQgZnJvbSB0aGUgNjRiaXQKPiBDb3J0ZXggQSBjb3JlcyBpcyBsb2FkZWQgb24gYW4g
+aS5NWDggZm9yIGV4YW1wbGUuIFVzaW5nIHRoZSBiaWdnZXIgdHlwZXMKPiB0aGVuIGlzIG5vdCBh
+IHByb2JsZW0sIGJ1dCBtYXliZSBpdCBjb3VsZCBoYXBwZW4gdGhlIG90aGVyIHdheSByb3VuZCwK
+PiBsb2FkaW5nIGEgNjRiaXQgRUxGIG9uIGEgMzJiaXQgYXJjaGl0ZWN0dXJlPwoKSSB3YXMgdGhp
+bmtpbmcgYWJvdXQgdGhpcyBvbmUuIEkgdHJpZWQgbG9hZGluZyAzMmJpdCBhbmQgNjRiaXQgZWxm
+IGZyb20KYSA2NGJpdCBjb3JlIGJ1dCBpbmRlZWQsIG5vdCB0aGUgb3RoZXIgd2F5LiBJZiBzbywg
+dGhlbiBhZGRyZXNzZXMgd2lsbApiZSB0cnVuY2F0ZWQgYnV0IHNpbmNlIHRoZSBwcm9jZXNzb3Ig
+d2lsbCBub3QgYmUgYWJsZSB0byBhY2Nlc3MgYQo2NCBiaXRzIG1lbW9yeSBzcGFjZSwgSSBndWVz
+cyBpdCdzIG5vdCBwb3NzaWJsZSAodW5sZXNzIHlvdSBoYXZlIHNvbWUKRE1BIHdoaWNoIGNhbiBh
+Y2Nlc3MgdGhlIHVwcGVyIG1lbW9yeSBidXQgdGhpcyB3aWxsIHByb2JhYmx5IG5vdCBiZQpoYW5k
+bGVkIGJ5IGJhcmVib3ggZWxmIGxvYWRlcikuCgo+IAo+IEkgY2FuJ3Qgc2VlIGEgcmVhbCBwcm9i
+bGVtIGhlcmUsIEkganVzdCB3YW50ZWQgdG8gbm90ZS4gQXJlIHRoZXJlIG90aGVyCj4gb3Bpbmlv
+bnM/Cj4gCj4gU2FzY2hhCj4gCj4gLS0KPiBQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfAo+IEluZHVzdHJpYWwg
+TGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXgu
+ZGUvICB8Cj4gUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhv
+bmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKPiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEg
+MjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
+c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
