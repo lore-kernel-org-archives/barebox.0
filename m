@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h6s2O-0007g0-UC
- for barebox@lists.infradead.org; Thu, 21 Mar 2019 07:22:54 +0000
-Date: Thu, 21 Mar 2019 08:22:51 +0100
+ id 1h6s1A-0007Zh-1q
+ for barebox@lists.infradead.org; Thu, 21 Mar 2019 07:21:37 +0000
+Date: Thu, 21 Mar 2019 08:21:32 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190321072251.whokrxebwpt6qv5f@pengutronix.de>
-References: <20190320134503.27194-1-l.stach@pengutronix.de>
+Message-ID: <20190321072131.tt4xeiq7hzlgt7ey@pengutronix.de>
+References: <1553068113-13704-1-git-send-email-yamada.masahiro@socionext.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190320134503.27194-1-l.stach@pengutronix.de>
+In-Reply-To: <1553068113-13704-1-git-send-email-yamada.masahiro@socionext.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,20 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: zii-common: reuse i210 config check for RDU3
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH] linux/kernel.h: split *_MAX and *_MIN macros into
+ <linux/limits.h>
+To: Masahiro Yamada <yamada.masahiro@socionext.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Mar 20, 2019 at 02:45:03PM +0100, Lucas Stach wrote:
-> The i210 on the RDU3 must be configured in the same way as on RDU2.
-> Move the config check/patching to the common directory and add the
-> compatible of the RDU3 boards.
+On Wed, Mar 20, 2019 at 04:48:33PM +0900, Masahiro Yamada wrote:
+> Copy include/linuxlimits.h from Linux 5.1-rc1
+> (removing #include <uapi/linux/limits.h>).
 > 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> While we are here, add SPDX License tag to <linux/kernel.h>.
+> 
+> Based on the following Linux commits:
+> 
+>  - 54d50897d544 ("linux/kernel.h: split *_MAX and *_MIN macros
+>    into <linux/limits.h>")
+> 
+>  - 2dc0e68d5ada ("linux/kernel.h: use 'short' to define USHRT_MAX,
+>    SHRT_MAX, SHRT_MIN")
+> 
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 > ---
->  arch/arm/boards/zii-common/board.c     | 30 ++++++++++++++++++++++++++
->  arch/arm/boards/zii-imx6q-rdu2/board.c | 29 -------------------------
->  2 files changed, 30 insertions(+), 29 deletions(-)
 
 Applied, thanks
 
