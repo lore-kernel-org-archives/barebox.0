@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
+Received: from mail-qt1-x82e.google.com ([2607:f8b0:4864:20::82e])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1h7Dru-0003wY-C8
- for barebox@lists.infradead.org; Fri, 22 Mar 2019 06:41:35 +0000
-Received: by mail-wr1-x442.google.com with SMTP id q1so1072135wrp.0
- for <barebox@lists.infradead.org>; Thu, 21 Mar 2019 23:41:29 -0700 (PDT)
+ id 1h6m7K-0002Zu-B8
+ for barebox@lists.infradead.org; Thu, 21 Mar 2019 01:03:35 +0000
+Received: by mail-qt1-x82e.google.com with SMTP id t28so4893554qte.6
+ for <barebox@lists.infradead.org>; Wed, 20 Mar 2019 18:03:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190313094202.14901-1-s.hauer@pengutronix.de>
- <20190313094202.14901-5-s.hauer@pengutronix.de>
- <CAHQ1cqFa97quXr6AW12AJKSbQ4+pN_TG71dNG83RrHVDBGSs8Q@mail.gmail.com>
- <20190320081607.prrfhjc7cgrzskns@pengutronix.de>
-In-Reply-To: <20190320081607.prrfhjc7cgrzskns@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 21 Mar 2019 23:41:16 -0700
-Message-ID: <CAHQ1cqGwj+JybkwKhH9AK51NOpeaoGyfk+cW7-med+bM0H1FBw@mail.gmail.com>
+References: <CAD_Pvub19JJgwwkZrNX7iz47f-jib5hiUgE+8Z=2cSf80=YygQ@mail.gmail.com>
+ <20190320075215.7j36mofzoewd5qfa@pengutronix.de>
+In-Reply-To: <20190320075215.7j36mofzoewd5qfa@pengutronix.de>
+From: Lewis Zhou <lewisou@gmail.com>
+Date: Thu, 21 Mar 2019 09:03:21 +0800
+Message-ID: <CAD_PvuYxnQJT7VVe0DKRZa-VHJN+Rz-tb9KLudtd+My8CBXhLg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,42 +24,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/15] ARM: Add arm64 pbl udelay
+Subject: Re: selected processor does not support `rev r7,r7'
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Cc: barebox@lists.infradead.org
 
-On Wed, Mar 20, 2019 at 1:16 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+Hi Sascha,
+
+The toolchain was compiled by crosstool-NG. It used the default config
+arm-cortex_a8-linux-gnueabi but with the hardware float enabled. So
+the toolchain was arm-cortex_a8-linux-gnueabihf-.
+
+I have tested the gcc-arm-linux-gnueabihf package. That works fine.
+
+Kind regards,
+Lewis
+
+On Wed, Mar 20, 2019 at 3:52 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
 >
-> On Tue, Mar 19, 2019 at 11:12:19AM -0700, Andrey Smirnov wrote:
-> > On Wed, Mar 13, 2019 at 3:27 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > >
-> > > PBL often needs a way to udelay execution. Since we have a generic timer
-> > > in ARMv8 we can implement a generic udelay.
-> > >
+> On Wed, Mar 20, 2019 at 12:57:07PM +0800, Lewis Zhou wrote:
+> > Hi
 > >
-> > Now that get_cntpct() and get_cntfrq() are implemented for ARMv7 we
-> > can probably extend this to both ARMv8 and ARMv7.
+> > I got a compiling error, please see the log below:
+> >
+> > lewis@lewis-ubuntu:~/OpenProj/barebox$ make ARCH=arm
+> > CROSS_COMPILE=arm-cortex_a8-linux-gnueabihf- am335x_mlo_defconfig
+> > #
+> > # configuration written to .config
+> > #
+> >
+> > lewis@lewis-ubuntu:~/OpenProj/barebox$ make ARCH=arm
+> > CROSS_COMPILE=arm-corte-linux-gnueabihf-
 >
-> Yes, we could do this. The problem is that this works only on ARMv7
-> cores that have this timer. What about the others? PBL code that depends
-> on udelay() can then only run on these cores. Arguably we already have
-> this problem when I introduce the symbol for ARMv8, but it probably gets
-> worse when we start using udelay in more places in PBL.
-> Any idea for a way to implement a udelay for the older cores?
+> > {standard input}: Assembler messages:
+> > {standard input}:123: Error: selected processor does not support `rev
+> > r7,r7' in Thumb mode
+> > {standard input}:135: Error: selected processor does not support `rev
+> > r7,r7' in Thumb mode
+> > scripts/Makefile.build:249: recipe for target 'common/memory.o' failed
+> > make[1]: *** [common/memory.o] Error 1
 >
-
-Yeah, throwing ARMv4 and ARMv5 into the mix does complicate this. The
-only solution that I can think of so far, would be to keep udealy() a
-static inline, header-only function and then strategically include
-that header in places that we know are ARMv7 only. As for ARMv4 and
-v5, I can't think of a universal way of implementing a delay function,
-so there's probably not much that we can do there.
-
-Anyway, my original message was just a suggestion, having this
-function even for just ARMv8 is an improvement already.
-
-Thanks,
-Andrey Smirnov
+> This works here, so this is probably toolchain related. Which toolchain
+> with which versions do you use? Since you are on an Ubuntu system, have
+> you tried the one from the gcc-arm-linux-gnueabihf package?
+>
+> Sascha
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
