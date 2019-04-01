@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hAu1R-0005N6-6e
- for barebox@lists.infradead.org; Mon, 01 Apr 2019 10:18:42 +0000
+ id 1hAu1V-0005QH-Cn
+ for barebox@lists.infradead.org; Mon, 01 Apr 2019 10:18:43 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  1 Apr 2019 12:18:14 +0200
-Message-Id: <20190401101822.7392-7-a.fatoum@pengutronix.de>
+Date: Mon,  1 Apr 2019 12:18:12 +0200
+Message-Id: <20190401101822.7392-5-a.fatoum@pengutronix.de>
 In-Reply-To: <20190401101822.7392-1-a.fatoum@pengutronix.de>
 References: <20190401101822.7392-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,369 +21,288 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 06/15] ARM: at91: import lowlevel clock initialization from
- at91bootstrap
+Subject: [PATCH v3 04/15] ARM: at91: replace at91sam9_ddrsdr.h with
+ at91bootstrap's at91_ddrsdrc.h
 To: barebox@lists.infradead.org
 Cc: sam@ravnborg.org
 
-For use by future at91 first stage bootloaders, this commit imports
-https://github.com/linux4sam/at91bootstrap/blob/v3.8.12/driver/pmc.c
+Instead of adding missing definitions to the existing at91sam9_ddrsdr.h
+and adapting the incoming DDRAM initialization code from at91bootstrap,
+just replace the lightly used existing header with:
+https://github.com/linux4sam/at91bootstrap/blob/v3.8.12/include/arch/at91_ddrsdrc.h
+
+For easier comprehension, the replacement is done in three steps:
+This last step copies the memory size querying functions from at91sam9_ddrsdr.h
+to at91_ddrsdrc.h, then deletes it and fixes all references.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-at91/Makefile                   |   1 +
- arch/arm/mach-at91/at91_pmc_ll.c              | 184 ++++++++++++++++++
- arch/arm/mach-at91/include/mach/at91_pmc.h    |  24 ++-
- arch/arm/mach-at91/include/mach/at91_pmc_ll.h |  78 ++++++++
- 4 files changed, 284 insertions(+), 3 deletions(-)
- create mode 100644 arch/arm/mach-at91/at91_pmc_ll.c
- create mode 100644 arch/arm/mach-at91/include/mach/at91_pmc_ll.h
+ arch/arm/boards/at91sam9m10g45ek/lowlevel.c   |  2 +-
+ arch/arm/boards/at91sam9m10ihd/lowlevel.c     |  2 +-
+ arch/arm/boards/at91sam9n12ek/lowlevel.c      |  2 +-
+ arch/arm/boards/at91sam9x5ek/lowlevel.c       |  2 +-
+ arch/arm/boards/pm9g45/lowlevel.c             |  3 +-
+ arch/arm/boards/sama5d3_xplained/lowlevel.c   |  2 +-
+ arch/arm/boards/sama5d3xek/lowlevel.c         |  2 +-
+ arch/arm/boards/sama5d4_xplained/lowlevel.c   |  2 +-
+ arch/arm/boards/sama5d4ek/lowlevel.c          |  2 +-
+ arch/arm/mach-at91/at91sam9g45_devices.c      |  2 +-
+ arch/arm/mach-at91/at91sam9g45_reset.S        |  2 +-
+ arch/arm/mach-at91/at91sam9n12_devices.c      |  2 +-
+ arch/arm/mach-at91/at91sam9x5_devices.c       |  2 +-
+ .../arm/mach-at91/include/mach/at91_ddrsdrc.h | 44 +++++++++++++++++++
+ arch/arm/mach-at91/sama5d3_devices.c          |  2 +-
+ arch/arm/mach-at91/sama5d4_devices.c          |  2 +-
+ 16 files changed, 60 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index d81683ac121a..91b06c085107 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -1,4 +1,5 @@
- obj-y += setup.o
-+pbl-y += at91_pmc_ll.o
+diff --git a/arch/arm/boards/at91sam9m10g45ek/lowlevel.c b/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
+index d5deedfc37b5..add97c641998 100644
+--- a/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
++++ b/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
+@@ -11,7 +11,7 @@
+ #include <asm/barebox-arm.h>
  
- ifeq ($(CONFIG_COMMON_CLK_OF_PROVIDER),)
- obj-y += clock.o
-diff --git a/arch/arm/mach-at91/at91_pmc_ll.c b/arch/arm/mach-at91/at91_pmc_ll.c
-new file mode 100644
-index 000000000000..bb3b3e6cf970
---- /dev/null
-+++ b/arch/arm/mach-at91/at91_pmc_ll.c
-@@ -0,0 +1,184 @@
-+// SPDX-License-Identifier: BSD-1-Clause
-+/*
-+ * Copyright (c) 2006, Atmel Corporation
-+ */
+ #include <mach/hardware.h>
+-#include <mach/at91sam9_ddrsdr.h>
++#include <mach/at91_ddrsdrc.h>
+ 
+ void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
+ {
+diff --git a/arch/arm/boards/at91sam9m10ihd/lowlevel.c b/arch/arm/boards/at91sam9m10ihd/lowlevel.c
+index 24d41cfa70ea..92988d1945e8 100644
+--- a/arch/arm/boards/at91sam9m10ihd/lowlevel.c
++++ b/arch/arm/boards/at91sam9m10ihd/lowlevel.c
+@@ -10,7 +10,7 @@
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
+ 
+-#include <mach/at91sam9_ddrsdr.h>
++#include <mach/at91_ddrsdrc.h>
+ #include <mach/at91sam9g45.h>
+ #include <mach/hardware.h>
+ 
+diff --git a/arch/arm/boards/at91sam9n12ek/lowlevel.c b/arch/arm/boards/at91sam9n12ek/lowlevel.c
+index 094fd941bc8c..9f460f71a896 100644
+--- a/arch/arm/boards/at91sam9n12ek/lowlevel.c
++++ b/arch/arm/boards/at91sam9n12ek/lowlevel.c
+@@ -10,7 +10,7 @@
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
+ 
+-#include <mach/at91sam9_ddrsdr.h>
++#include <mach/at91_ddrsdrc.h>
+ #include <mach/hardware.h>
+ 
+ void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
+diff --git a/arch/arm/boards/at91sam9x5ek/lowlevel.c b/arch/arm/boards/at91sam9x5ek/lowlevel.c
+index 14c239408d6a..d87c0a99f424 100644
+--- a/arch/arm/boards/at91sam9x5ek/lowlevel.c
++++ b/arch/arm/boards/at91sam9x5ek/lowlevel.c
+@@ -1,6 +1,6 @@
+ #include <common.h>
+ #include <linux/sizes.h>
+-#include <mach/at91sam9_ddrsdr.h>
++#include <mach/at91_ddrsdrc.h>
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/pm9g45/lowlevel.c b/arch/arm/boards/pm9g45/lowlevel.c
+index fbf2b655c708..ec2ab7262245 100644
+--- a/arch/arm/boards/pm9g45/lowlevel.c
++++ b/arch/arm/boards/pm9g45/lowlevel.c
+@@ -10,7 +10,8 @@
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
+ 
+-#include <mach/at91sam9_ddrsdr.h>
++#include <mach/at91_ddrsdrc.h>
 +
+ #include <mach/hardware.h>
+ 
+ void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
+diff --git a/arch/arm/boards/sama5d3_xplained/lowlevel.c b/arch/arm/boards/sama5d3_xplained/lowlevel.c
+index 31c176a3a4c2..37384a160651 100644
+--- a/arch/arm/boards/sama5d3_xplained/lowlevel.c
++++ b/arch/arm/boards/sama5d3_xplained/lowlevel.c
+@@ -10,7 +10,7 @@
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
+ 
+-#include <mach/at91sam9_ddrsdr.h>
++#include <mach/at91_ddrsdrc.h>
+ #include <mach/hardware.h>
+ 
+ void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
+diff --git a/arch/arm/boards/sama5d3xek/lowlevel.c b/arch/arm/boards/sama5d3xek/lowlevel.c
+index 31c176a3a4c2..37384a160651 100644
+--- a/arch/arm/boards/sama5d3xek/lowlevel.c
++++ b/arch/arm/boards/sama5d3xek/lowlevel.c
+@@ -10,7 +10,7 @@
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
+ 
+-#include <mach/at91sam9_ddrsdr.h>
++#include <mach/at91_ddrsdrc.h>
+ #include <mach/hardware.h>
+ 
+ void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
+diff --git a/arch/arm/boards/sama5d4_xplained/lowlevel.c b/arch/arm/boards/sama5d4_xplained/lowlevel.c
+index 47cadfe6750c..89f0b8202eb1 100644
+--- a/arch/arm/boards/sama5d4_xplained/lowlevel.c
++++ b/arch/arm/boards/sama5d4_xplained/lowlevel.c
+@@ -10,7 +10,7 @@
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
+ 
+-#include <mach/at91sam9_ddrsdr.h>
++#include <mach/at91_ddrsdrc.h>
+ #include <mach/hardware.h>
+ 
+ void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
+diff --git a/arch/arm/boards/sama5d4ek/lowlevel.c b/arch/arm/boards/sama5d4ek/lowlevel.c
+index 47cadfe6750c..89f0b8202eb1 100644
+--- a/arch/arm/boards/sama5d4ek/lowlevel.c
++++ b/arch/arm/boards/sama5d4ek/lowlevel.c
+@@ -10,7 +10,7 @@
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
+ 
+-#include <mach/at91sam9_ddrsdr.h>
++#include <mach/at91_ddrsdrc.h>
+ #include <mach/hardware.h>
+ 
+ void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
+diff --git a/arch/arm/mach-at91/at91sam9g45_devices.c b/arch/arm/mach-at91/at91sam9g45_devices.c
+index df0c8a4e4f4e..ed655863e5c9 100644
+--- a/arch/arm/mach-at91/at91sam9g45_devices.c
++++ b/arch/arm/mach-at91/at91sam9g45_devices.c
+@@ -17,7 +17,7 @@
+ #include <mach/hardware.h>
+ #include <mach/at91_pmc.h>
+ #include <mach/at91sam9g45_matrix.h>
+-#include <mach/at91sam9_ddrsdr.h>
++#include <mach/at91_ddrsdrc.h>
+ #include <mach/at91_rtt.h>
+ #include <mach/board.h>
+ #include <mach/iomux.h>
+diff --git a/arch/arm/mach-at91/at91sam9g45_reset.S b/arch/arm/mach-at91/at91sam9g45_reset.S
+index 085683c7f9d8..9077871d7203 100644
+--- a/arch/arm/mach-at91/at91sam9g45_reset.S
++++ b/arch/arm/mach-at91/at91sam9g45_reset.S
+@@ -12,7 +12,7 @@
+ 
+ #include <linux/linkage.h>
+ #include <mach/hardware.h>
+-#include <mach/at91sam9_ddrsdr.h>
++#include <mach/at91_ddrsdrc.h>
+ #include <mach/at91_rstc.h>
+ 
+ 			.arm
+diff --git a/arch/arm/mach-at91/at91sam9n12_devices.c b/arch/arm/mach-at91/at91sam9n12_devices.c
+index 3ee07568f2c7..6ed7e4fdec41 100644
+--- a/arch/arm/mach-at91/at91sam9n12_devices.c
++++ b/arch/arm/mach-at91/at91sam9n12_devices.c
+@@ -18,7 +18,7 @@
+ #include <mach/board.h>
+ #include <mach/at91_pmc.h>
+ #include <mach/at91sam9n12_matrix.h>
+-#include <mach/at91sam9_ddrsdr.h>
++#include <mach/at91_ddrsdrc.h>
+ #include <mach/iomux.h>
+ #include <mach/cpu.h>
+ #include <i2c/i2c-gpio.h>
+diff --git a/arch/arm/mach-at91/at91sam9x5_devices.c b/arch/arm/mach-at91/at91sam9x5_devices.c
+index f794d9ae8f73..e85d712293ac 100644
+--- a/arch/arm/mach-at91/at91sam9x5_devices.c
++++ b/arch/arm/mach-at91/at91sam9x5_devices.c
+@@ -17,7 +17,7 @@
+ #include <mach/board.h>
+ #include <mach/at91_pmc.h>
+ #include <mach/at91sam9x5_matrix.h>
+-#include <mach/at91sam9_ddrsdr.h>
++#include <mach/at91_ddrsdrc.h>
+ #include <mach/iomux.h>
+ #include <mach/cpu.h>
+ #include <i2c/i2c-gpio.h>
+diff --git a/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h b/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h
+index 57d0d8f489c4..7e68e7dd63eb 100644
+--- a/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h
++++ b/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h
+@@ -285,4 +285,48 @@
+ #define AT91C_DDRC2_WPVS	(0x1UL << 0)
+ #define AT91C_DDRC2_WPSRC	(0xFFFFUL << 8)
+ 
++#ifndef __ASSEMBLY__
 +#include <common.h>
-+#include <mach/at91_pmc_ll.h>
++#include <io.h>
 +
-+#define at91_pmc_write(off, val) writel(val, pmc_base + off)
-+#define at91_pmc_read(off) readl(pmc_base + off)
-+
-+void at91_pmc_init(void __iomem *pmc_base, unsigned int flags)
++static inline u32 at91_get_ddram_size(void * __iomem base, bool is_nb)
 +{
-+	u32 tmp;
++	u32 cr;
++	u32 mdr;
++	u32 size;
++	bool is_sdram;
 +
-+	/*
-+	 * Switch the master clock to the slow clock without modifying other
-+	 * parameters. It is assumed that ROM code set H32MXDIV, PLLADIV2,
-+	 * PCK_DIV3.
++	cr = readl(base + AT91C_HDDRSDRC2_CR);
++	mdr = readl(base + AT91C_HDDRSDRC2_MDR);
++
++	/* will always be false for sama5d2, sama5d3 or sama5d4 */
++	is_sdram = (mdr & AT91C_DDRC2_MD) <= AT91C_DDRC2_MD_LP_SDR_SDRAM;
++
++	/* Formula:
++	 * size = bank << (col + row + 1);
++	 * if (bandwidth == 32 bits)
++	 *	size <<= 1;
 +	 */
-+	tmp = at91_pmc_read(AT91_PMC_MCKR);
-+	tmp &= ~AT91_PMC_ALT_PCKR_CSS;
-+	tmp |= AT91_PMC_CSS_SLOW;
-+	at91_pmc_write(AT91_PMC_MCKR, tmp);
-+
-+	while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MCKRDY))
-+		;
-+
-+	if (flags & AT91_PMC_LL_FLAG_SAM9X5_PMC) {
-+		/*
-+		 * Enable the Main Crystal Oscillator
-+		 * tST_max = 2ms
-+		 * Startup Time: 32768 * 2ms / 8 = 8
-+		 */
-+		tmp = at91_pmc_read(AT91_CKGR_MOR);
-+		tmp &= ~AT91_PMC_OSCOUNT;
-+		tmp &= ~AT91_PMC_KEY_MASK;
-+		tmp |= AT91_PMC_MOSCEN;
-+		tmp |= AT91_PMC_OSCOUNT_(8);
-+		tmp |= AT91_PMC_KEY;
-+		at91_pmc_write(AT91_CKGR_MOR, tmp);
-+
-+		while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MOSCS))
-+			;
-+
-+		if (flags & AT91_PMC_LL_FLAG_MEASURE_XTAL) {
-+			/* Enable a measurement of the Main Crystal Oscillator */
-+			tmp = at91_pmc_read(AT91_CKGR_MCFR);
-+			tmp |= AT91_PMC_CCSS_XTAL_OSC;
-+			tmp |= AT91_PMC_RCMEAS;
-+			at91_pmc_write(AT91_CKGR_MCFR, tmp);
-+
-+			while (!(at91_pmc_read(AT91_CKGR_MCFR) & AT91_PMC_MAINRDY))
-+				;
-+		}
-+
-+
-+		/* Switch from internal 12MHz RC to the Main Crystal Oscillator */
-+		tmp = at91_pmc_read(AT91_CKGR_MOR);
-+		tmp &= ~AT91_PMC_OSCBYPASS;
-+		tmp &= ~AT91_PMC_KEY_MASK;
-+		tmp |= AT91_PMC_KEY;
-+		at91_pmc_write(AT91_CKGR_MOR, tmp);
-+
-+		tmp = at91_pmc_read(AT91_CKGR_MOR);
-+		tmp |= AT91_PMC_MOSCSEL;
-+		tmp &= ~AT91_PMC_KEY_MASK;
-+		tmp |= AT91_PMC_KEY;
-+		at91_pmc_write(AT91_CKGR_MOR, tmp);
-+
-+		while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MOSCSELS))
-+			;
-+
-+		if (flags & AT91_PMC_LL_FLAG_DISABLE_RC) {
-+			/* Disable the 12MHz RC Oscillator */
-+			tmp = at91_pmc_read(AT91_CKGR_MOR);
-+			tmp &= ~AT91_PMC_MOSCRCEN;
-+			tmp &= ~AT91_PMC_KEY_MASK;
-+			tmp |= AT91_PMC_KEY;
-+			at91_pmc_write(AT91_CKGR_MOR, tmp);
-+		}
-+
-+	} else {
-+		/*
-+		 * Enable the Main Crystal Oscillator
-+		 * tST_max = 2ms
-+		 * Startup Time: 32768 * 2ms / 8 = 8
-+		 */
-+		tmp = at91_pmc_read(AT91_CKGR_MOR);
-+		tmp &= ~AT91_PMC_OSCOUNT;
-+		tmp |= AT91_PMC_MOSCEN;
-+		tmp |= AT91_PMC_OSCOUNT_(8);
-+		at91_pmc_write(AT91_CKGR_MOR, tmp);
-+
-+		while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MOSCS))
-+			;
-+	}
-+
-+	/* After stablization, switch to Main Clock */
-+	if ((at91_pmc_read(AT91_PMC_MCKR) & AT91_PMC_ALT_PCKR_CSS) == AT91_PMC_CSS_SLOW) {
-+		tmp = at91_pmc_read(AT91_PMC_MCKR);
-+		tmp &= ~(0x1 << 13);
-+		tmp &= ~AT91_PMC_ALT_PCKR_CSS;
-+		tmp |= AT91_PMC_CSS_MAIN;
-+		at91_pmc_write(AT91_PMC_MCKR, tmp);
-+
-+		while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MCKRDY))
-+			;
-+
-+		tmp &= ~AT91_PMC_PRES;
-+		tmp |= AT91_PMC_PRES_1;
-+		at91_pmc_write(AT91_PMC_MCKR, tmp);
-+
-+		while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MCKRDY))
-+			;
-+	}
-+}
-+
-+void at91_pmc_cfg_plla(void __iomem *pmc_base, u32 pmc_pllar,
-+		       unsigned int __always_unused flags)
-+{
-+	/* Always disable PLL before configuring it */
-+	at91_pmc_write(AT91_CKGR_PLLAR, AT91_PMC_PLLA_WR_ERRATA);
-+	at91_pmc_write(AT91_CKGR_PLLAR, AT91_PMC_PLLA_WR_ERRATA | pmc_pllar);
-+
-+	while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_LOCKA))
-+		;
-+}
-+
-+void at91_pmc_cfg_mck(void __iomem *pmc_base, u32 pmc_mckr, unsigned int flags)
-+{
-+	u32 tmp;
-+
-+	/*
-+	 * Program the PRES field in the AT91_PMC_MCKR register
-+	 */
-+	tmp = at91_pmc_read(AT91_PMC_MCKR);
-+	tmp &= ~(0x1 << 13);
-+
-+	if (flags & AT91_PMC_LL_FLAG_SAM9X5_PMC) {
-+		tmp &= ~AT91_PMC_ALT_PRES;
-+		tmp |= pmc_mckr & AT91_PMC_ALT_PRES;
-+	} else {
-+		tmp &= ~AT91_PMC_PRES;
-+		tmp |= pmc_mckr & AT91_PMC_PRES;
-+	}
-+	at91_pmc_write(AT91_PMC_MCKR, tmp);
-+
-+	/*
-+	 * Program the MDIV field in the AT91_PMC_MCKR register
-+	 */
-+	tmp = at91_pmc_read(AT91_PMC_MCKR);
-+	tmp &= ~AT91_PMC_MDIV;
-+	tmp |= pmc_mckr & AT91_PMC_MDIV;
-+	at91_pmc_write(AT91_PMC_MCKR, tmp);
-+
-+	/*
-+	 * Program the PLLADIV2 field in the AT91_PMC_MCKR register
-+	 */
-+	tmp = at91_pmc_read(AT91_PMC_MCKR);
-+	tmp &= ~AT91_PMC_PLLADIV2;
-+	tmp |= pmc_mckr & AT91_PMC_PLLADIV2;
-+	at91_pmc_write(AT91_PMC_MCKR, tmp);
-+
-+	/*
-+	 * Program the H32MXDIV field in the AT91_PMC_MCKR register
-+	 */
-+	tmp = at91_pmc_read(AT91_PMC_MCKR);
-+	tmp &= ~AT91_PMC_H32MXDIV;
-+	tmp |= pmc_mckr & AT91_PMC_H32MXDIV;
-+	at91_pmc_write(AT91_PMC_MCKR, tmp);
-+
-+	/*
-+	 * Program the CSS field in the AT91_PMC_MCKR register,
-+	 * wait for MCKRDY bit to be set in the PMC_SR register
-+	 */
-+	tmp = at91_pmc_read(AT91_PMC_MCKR);
-+	tmp &= ~AT91_PMC_ALT_PCKR_CSS;
-+	tmp |= pmc_mckr & AT91_PMC_ALT_PCKR_CSS;
-+	at91_pmc_write(AT91_PMC_MCKR, tmp);
-+
-+	while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MCKRDY))
-+		;
-+}
-diff --git a/arch/arm/mach-at91/include/mach/at91_pmc.h b/arch/arm/mach-at91/include/mach/at91_pmc.h
-index bbbd497afaed..4d60becefbab 100644
---- a/arch/arm/mach-at91/include/mach/at91_pmc.h
-+++ b/arch/arm/mach-at91/include/mach/at91_pmc.h
-@@ -50,14 +50,19 @@
- #define		AT91_PMC_OSCBYPASS	(1    <<  1)		/* Oscillator Bypass */
- #define		AT91_PMC_MOSCRCEN	(1    <<  3)		/* Main On-Chip RC Oscillator Enable [some SAM9] */
- #define		AT91_PMC_OSCOUNT	(0xff <<  8)		/* Main Oscillator Start-up Time */
--#define		AT91_PMC_KEY		(0x37 << 16)		/* MOR Writing Key */
-+#define			AT91_PMC_OSCOUNT_(x) ((x) << 8)
-+#define		AT91_PMC_KEY_MASK	(0xff << 16)		/* MOR Writing Key */
-+#define			AT91_PMC_KEY		(0x37 << 16)
- #define		AT91_PMC_MOSCSEL	(1    << 24)		/* Main Oscillator Selection [some SAM9] */
- #define		AT91_PMC_CFDEN		(1    << 25)		/* Clock Failure Detector Enable [some SAM9] */
- 
- #define	AT91_CKGR_MCFR		0x24			/* Main Clock Frequency Register */
- #define		AT91_PMC_MAINF		(0xffff <<  0)		/* Main Clock Frequency */
--#define		AT91_PMC_MAINRDY	(1	<< 16)		/* Main Clock Ready */
--
-+#define		AT91_PMC_MAINRDY        (1      << 16)          /* Main Clock Frequency Measure Ready */
-+#define		AT91_PMC_RCMEAS         (1      << 20)          /* RC Oscillator Frequency Measure (write-only) */
-+#define		AT91_PMC_CCSS           (1      << 24)          /* Counter Clock Source Selection */
-+#define			AT91_PMC_CCSS_RC_OSC    (0      << 24)          /* MAINF counter clock is the RC oscillator. */
-+#define			AT91_PMC_CCSS_XTAL_OSC  (1      << 24)          /* MAINF counter clock is the crystal oscillator. */
- #define	AT91_CKGR_PLLAR		0x28			/* PLL A Register */
- #define	AT91_CKGR_PLLBR		0x2c			/* PLL B Register */
- #define		AT91_PMC_DIV		(0xff  <<  0)		/* Divider */
-@@ -133,6 +138,7 @@
- #define			AT91_PMC_CSSMCK_MCK		(1 << 8)
- 
- #define	AT91_PMC_IER		0x60			/* Interrupt Enable Register */
-+#define		AT91_PMC_MOSCXTS	(1 << 0)		/* Oscillator Startup Time */
- #define	AT91_PMC_IDR		0x64			/* Interrupt Disable Register */
- #define	AT91_PMC_SR		0x68			/* Status Register */
- #define		AT91_PMC_MOSCS		(1 <<  0)		/* MOSCS Flag */
-@@ -148,6 +154,17 @@
- #define		AT91_PMC_MOSCRCS	(1 << 17)		/* Main On-Chip RC [some SAM9] */
- #define		AT91_PMC_CFDEV		(1 << 18)		/* Clock Failure Detector Event [some SAM9] */
- #define	AT91_PMC_IMR		0x6c			/* Interrupt Mask Register */
-+#define	AT91_PMC_PLLICPR	0x80			/* PLL Charge Pump Current Register */
-+#define		AT91_PMC_ICPPLLA	(0xf <<  0)
-+#define			AT91_PMC_ICPPLLA_0		(0 <<  0)
-+#define			AT91_PMC_ICPPLLA_1		(1 <<  0)
-+#define		AT91_PMC_REALLOCK	(0x1 <<  7)
-+#define		AT91_PMC_IPLLA		(0xf <<  8)
-+#define			AT91_PMC_IPLLA_0		(0 <<  8)
-+#define			AT91_PMC_IPLLA_1		(1 <<  8)
-+#define			AT91_PMC_IPLLA_2		(2 <<  8)
-+#define			AT91_PMC_IPLLA_3		(3 <<  8)
-+
- 
- #define AT91_PMC_PROT		0xe4			/* Write Protect Mode Register [some SAM9] */
- #define		AT91_PMC_WPEN		(0x1  <<  0)		/* Write Protect Enable */
-@@ -163,6 +180,7 @@
- #define AT91_PMC_PCR		0x10c			/* Peripheral Control Register [some SAM9] */
- #define		AT91_PMC_PCR_PID	(0x3f  <<  0)		/* Peripheral ID */
- #define		AT91_PMC_PCR_CMD	(0x1  <<  12)		/* Command */
-+#define		AT91_PMC_PCR_DIV_MASK	(0x3  <<  16)
- #define		AT91_PMC_PCR_DIV(n)	((n) <<  16)	/* Divisor value */
- #define			AT91_PMC_PCR_DIV0	0x0		/* Peripheral clock is MCK */
- #define			AT91_PMC_PCR_DIV2	0x1		/* Peripheral clock is MCK/2 */
-diff --git a/arch/arm/mach-at91/include/mach/at91_pmc_ll.h b/arch/arm/mach-at91/include/mach/at91_pmc_ll.h
-new file mode 100644
-index 000000000000..eda40e8e12e7
---- /dev/null
-+++ b/arch/arm/mach-at91/include/mach/at91_pmc_ll.h
-@@ -0,0 +1,78 @@
-+// SPDX-License-Identifier: BSD-1-Clause
-+/*
-+ * Copyright (c) 2006, Atmel Corporation
-+ */
-+
-+#ifndef AT91_PMC_LL_H
-+#define AT91_PMC_LL_H
-+
-+#include <errno.h>
-+#include <asm/io.h>
-+#include <mach/at91_pmc.h>
-+
-+#define AT91_PMC_LL_FLAG_SAM9X5_PMC	(1 << 0)
-+#define AT91_PMC_LL_FLAG_MEASURE_XTAL	(1 << 1)
-+#define AT91_PMC_LL_FLAG_DISABLE_RC	(1 << 2)
-+
-+#define AT91_PMC_LL_AT91RM9200	(0)
-+#define AT91_PMC_LL_AT91SAM9260	(0)
-+#define AT91_PMC_LL_AT91SAM9261	(0)
-+#define AT91_PMC_LL_AT91SAM9263	(0)
-+#define AT91_PMC_LL_AT91SAM9G45	(0)
-+#define AT91_PMC_LL_AT91SAM9X5	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
-+				 AT91_PMC_LL_FLAG_DISABLE_RC)
-+#define AT91_PMC_LL_AT91SAM9N12	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
-+				 AT91_PMC_LL_FLAG_DISABLE_RC)
-+#define AT91_PMC_LL_SAMA5D2	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
-+				 AT91_PMC_LL_FLAG_MEASURE_XTAL)
-+#define AT91_PMC_LL_SAMA5D3	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
-+				 AT91_PMC_LL_FLAG_DISABLE_RC)
-+#define AT91_PMC_LL_SAMA5D4	(AT91_PMC_LL_FLAG_SAM9X5_PMC)
-+
-+void at91_pmc_init(void __iomem *pmc_base, unsigned int flags);
-+void at91_pmc_cfg_mck(void __iomem *pmc_base, u32 pmc_mckr, unsigned int flags);
-+void at91_pmc_cfg_plla(void __iomem *pmc_base, u32 pmc_pllar, unsigned int flags);
-+
-+static inline void at91_pmc_init_pll(void __iomem *pmc_base, u32 pmc_pllicpr)
-+{
-+	writel(pmc_pllicpr, pmc_base + AT91_PMC_PLLICPR);
-+}
-+
-+static inline void at91_pmc_enable_system_clock(void __iomem *pmc_base,
-+						unsigned clock_id)
-+{
-+	writel(clock_id, pmc_base +  AT91_PMC_SCER);
-+}
-+
-+static inline int at91_pmc_enable_periph_clock(void __iomem *pmc_base,
-+					       unsigned periph_id)
-+{
-+	u32 mask = 0x01 << (periph_id % 32);
-+
-+	if ((periph_id / 32) == 1)
-+		writel(mask, pmc_base + AT91_PMC_PCER1);
-+	else if ((periph_id / 32) == 0)
-+		writel(mask, pmc_base + AT91_PMC_PCER);
++	size = 1;
++	/* COL */
++	size += (cr & AT91C_DDRC2_NC) + 8;
++	if (!is_sdram)
++		size ++;
++	/* ROW */
++	size += ((cr & AT91C_DDRC2_NR) >> 2) + 11;
++	/* BANK */
++	if (is_nb)
++		size = ((cr & AT91C_DDRC2_NB_BANKS) ? 8 : 4) << size;
 +	else
-+		return -EINVAL;
++		size = 4 << size;
 +
-+	return 0;
++	/* bandwidth */
++	if (!(mdr & AT91C_DDRC2_DBW))
++		size <<= 1;
++
++	return size;
 +}
 +
-+static inline int at91_pmc_sam9x5_enable_periph_clock(void __iomem *pmc_base,
-+						      unsigned periph_id)
-+{
-+       u32 pcr = periph_id;
++#endif /* __ASSEMBLY__ */
 +
-+       if (periph_id >= 0x80) /* 7 bits only */
-+               return -EINVAL;
-+
-+       writel(pcr, pmc_base + AT91_PMC_PCR);
-+       pcr |= readl(pmc_base + AT91_PMC_PCR) & AT91_PMC_PCR_DIV_MASK;
-+       pcr |= AT91_PMC_PCR_CMD | AT91_PMC_PCR_EN;
-+       writel(pcr, pmc_base + AT91_PMC_PCR);
-+
-+       return 0;
-+}
-+
-+#endif
+ #endif /* __AT91_DDRSDRC_H__ */
+diff --git a/arch/arm/mach-at91/sama5d3_devices.c b/arch/arm/mach-at91/sama5d3_devices.c
+index 479e81f0f588..35e66de3f5f7 100644
+--- a/arch/arm/mach-at91/sama5d3_devices.c
++++ b/arch/arm/mach-at91/sama5d3_devices.c
+@@ -18,7 +18,7 @@
+ #include <mach/board.h>
+ #include <mach/at91_pmc.h>
+ #include <mach/at91sam9x5_matrix.h>
+-#include <mach/at91sam9_ddrsdr.h>
++#include <mach/at91_ddrsdrc.h>
+ #include <mach/iomux.h>
+ #include <mach/cpu.h>
+ #include <i2c/i2c-gpio.h>
+diff --git a/arch/arm/mach-at91/sama5d4_devices.c b/arch/arm/mach-at91/sama5d4_devices.c
+index 4a6683981595..c9c3960258eb 100644
+--- a/arch/arm/mach-at91/sama5d4_devices.c
++++ b/arch/arm/mach-at91/sama5d4_devices.c
+@@ -19,7 +19,7 @@
+ #include <mach/board.h>
+ #include <mach/at91_pmc.h>
+ #include <mach/at91sam9x5_matrix.h>
+-#include <mach/at91sam9_ddrsdr.h>
++#include <mach/at91_ddrsdrc.h>
+ #include <mach/iomux.h>
+ #include <mach/cpu.h>
+ #include <i2c/i2c-gpio.h>
 -- 
 2.20.1
 
