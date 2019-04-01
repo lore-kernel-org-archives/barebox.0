@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hAuFu-00057W-Ow
- for barebox@lists.infradead.org; Mon, 01 Apr 2019 10:33:32 +0000
+ id 1hAu1R-0005NA-6h
+ for barebox@lists.infradead.org; Mon, 01 Apr 2019 10:18:38 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  1 Apr 2019 12:32:57 +0200
-Message-Id: <20190401103256.17914-1-a.fatoum@pengutronix.de>
+Date: Mon,  1 Apr 2019 12:18:08 +0200
+Message-Id: <20190401101822.7392-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,143 +19,145 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] clk: at91: fix compilation errors in sama5d2.c
+Subject: [PATCH v3 00/15] ARM: at91: microchip-kz9477-evb: support first stage
+ boot
 To: barebox@lists.infradead.org
 Cc: sam@ravnborg.org
 
-sama5d2 was added along with the update to the upstream
-device tree bindings, but wasn't wired in anywhere.
+This is (the hopefully final and bestest) v3 of a series that pulls in
+enough of at91bootstrap to make barebox usable as first stage bootloader
+for the SAMA5 family of AT91 SoCs.
 
-To prepare for usage in future sama5d2 support, fix
-compilation errors related to absence of locks and
-unavailability of audio/i2s clock/pll handling.
+Besides incorporating feedback on v2 (mainly multi-image support), I've also
+reinstated code paths needed by the sama5d2, whose port I worked a bit on.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/clk/at91/sama5d2.c | 52 +++++---------------------------------
- 1 file changed, 6 insertions(+), 46 deletions(-)
+This patchset applies on top of v2 of "ARM: at91: misc fixes and
+cleanup", which I sent out an hour ago. As with v2, it leaves
+the user the option to select OFDEVICE for the first stage. I haven't
+managed to get a small enough of-based barebox that still works though.
+The included defconfig uses board code instead, which makes the MMC
+first stage fit into 49K.
 
-diff --git a/drivers/clk/at91/sama5d2.c b/drivers/clk/at91/sama5d2.c
-index dc15f7d9cbf3..7627c584ac08 100644
---- a/drivers/clk/at91/sama5d2.c
-+++ b/drivers/clk/at91/sama5d2.c
-@@ -84,8 +84,6 @@ static const struct {
- 	{ .n = "trng_clk",    .id = 47, .r = { .min = 0, .max = 83000000 }, },
- 	{ .n = "pdmic_clk",   .id = 48, .r = { .min = 0, .max = 83000000 }, },
- 	{ .n = "securam_clk", .id = 51, },
--	{ .n = "i2s0_clk",    .id = 54, .r = { .min = 0, .max = 83000000 }, },
--	{ .n = "i2s1_clk",    .id = 55, .r = { .min = 0, .max = 83000000 }, },
- 	{ .n = "can0_clk",    .id = 56, .r = { .min = 0, .max = 83000000 }, },
- 	{ .n = "can1_clk",    .id = 57, .r = { .min = 0, .max = 83000000 }, },
- 	{ .n = "classd_clk",  .id = 59, .r = { .min = 0, .max = 83000000 }, },
-@@ -123,8 +121,6 @@ static const struct {
- 	{ .n = "pwm_gclk",    .id = 38, .r = { .min = 0, .max = 83000000 }, },
- 	{ .n = "isc_gclk",    .id = 46, },
- 	{ .n = "pdmic_gclk",  .id = 48, },
--	{ .n = "i2s0_gclk",   .id = 54, .pll = true },
--	{ .n = "i2s1_gclk",   .id = 55, .pll = true },
- 	{ .n = "can0_gclk",   .id = 56, .r = { .min = 0, .max = 80000000 }, },
- 	{ .n = "can1_gclk",   .id = 57, .r = { .min = 0, .max = 80000000 }, },
- 	{ .n = "classd_gclk", .id = 59, .r = { .min = 0, .max = 100000000 },
-@@ -136,7 +132,7 @@ static void __init sama5d2_pmc_setup(struct device_node *np)
- 	struct clk_range range = CLK_RANGE(0, 0);
- 	const char *slck_name, *mainxtal_name;
- 	struct pmc_data *sama5d2_pmc;
--	const char *parent_names[6];
-+	const char *parent_names[5];
- 	struct regmap *regmap, *regmap_sfr;
- 	struct clk *hw;
- 	int i;
-@@ -157,7 +153,7 @@ static void __init sama5d2_pmc_setup(struct device_node *np)
- 	if (IS_ERR(regmap))
- 		return;
- 
--	sama5d2_pmc = pmc_data_allocate(PMC_I2S1_MUX + 1,
-+	sama5d2_pmc = pmc_data_allocate(PMC_MCK2 + 1,
- 					nck(sama5d2_systemck),
- 					nck(sama5d2_periph32ck),
- 					nck(sama5d2_gck));
-@@ -193,21 +189,6 @@ static void __init sama5d2_pmc_setup(struct device_node *np)
- 	if (IS_ERR(hw))
- 		goto err_free;
- 
--	hw = at91_clk_register_audio_pll_frac(regmap, "audiopll_fracck",
--					      "mainck");
--	if (IS_ERR(hw))
--		goto err_free;
--
--	hw = at91_clk_register_audio_pll_pad(regmap, "audiopll_padck",
--					     "audiopll_fracck");
--	if (IS_ERR(hw))
--		goto err_free;
--
--	hw = at91_clk_register_audio_pll_pmc(regmap, "audiopll_pmcck",
--					     "audiopll_fracck");
--	if (IS_ERR(hw))
--		goto err_free;
--
- 	regmap_sfr = syscon_regmap_lookup_by_compatible("atmel,sama5d2-sfr");
- 	if (IS_ERR(regmap_sfr))
- 		regmap_sfr = NULL;
-@@ -270,7 +251,7 @@ static void __init sama5d2_pmc_setup(struct device_node *np)
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(sama5d2_periphck); i++) {
--		hw = at91_clk_register_sam9x5_peripheral(regmap, &pmc_pcr_lock,
-+		hw = at91_clk_register_sam9x5_peripheral(regmap,
- 							 sama5d2_periphck[i].n,
- 							 "masterck",
- 							 sama5d2_periphck[i].id,
-@@ -282,7 +263,7 @@ static void __init sama5d2_pmc_setup(struct device_node *np)
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(sama5d2_periph32ck); i++) {
--		hw = at91_clk_register_sam9x5_peripheral(regmap, &pmc_pcr_lock,
-+		hw = at91_clk_register_sam9x5_peripheral(regmap,
- 							 sama5d2_periph32ck[i].n,
- 							 "h32mxck",
- 							 sama5d2_periph32ck[i].id,
-@@ -298,11 +279,10 @@ static void __init sama5d2_pmc_setup(struct device_node *np)
- 	parent_names[2] = "plladivck";
- 	parent_names[3] = "utmick";
- 	parent_names[4] = "mck";
--	parent_names[5] = "audiopll_pmcck";
- 	for (i = 0; i < ARRAY_SIZE(sama5d2_gck); i++) {
--		hw = at91_clk_register_generated(regmap, &pmc_pcr_lock,
-+		hw = at91_clk_register_generated(regmap,
- 						 sama5d2_gck[i].n,
--						 parent_names, 6,
-+						 parent_names, 5,
- 						 sama5d2_gck[i].id,
- 						 sama5d2_gck[i].pll,
- 						 &sama5d2_gck[i].r);
-@@ -312,26 +292,6 @@ static void __init sama5d2_pmc_setup(struct device_node *np)
- 		sama5d2_pmc->ghws[sama5d2_gck[i].id] = hw;
- 	}
- 
--	if (regmap_sfr) {
--		parent_names[0] = "i2s0_clk";
--		parent_names[1] = "i2s0_gclk";
--		hw = at91_clk_i2s_mux_register(regmap_sfr, "i2s0_muxclk",
--					       parent_names, 2, 0);
--		if (IS_ERR(hw))
--			goto err_free;
--
--		sama5d2_pmc->chws[PMC_I2S0_MUX] = hw;
--
--		parent_names[0] = "i2s1_clk";
--		parent_names[1] = "i2s1_gclk";
--		hw = at91_clk_i2s_mux_register(regmap_sfr, "i2s1_muxclk",
--					       parent_names, 2, 1);
--		if (IS_ERR(hw))
--			goto err_free;
--
--		sama5d2_pmc->chws[PMC_I2S1_MUX] = hw;
--	}
--
- 	of_clk_add_provider(np, of_clk_hw_pmc_get, sama5d2_pmc);
- 
- 	return;
+Changes since v2 <20190219172150.11901-1-a.fatoum@pengutronix.de>:
+  - addressed Roland's feedback: commits now indicate where they
+    copy code from if any
+  - SoC-specific get_ddram_size and associated #ifdeffery was removed
+    as suggested by Sascha. This series was rebased on-top.
+  - lowlevel_clock was renamed to at91_pmc_ll because I like that
+    name more
+  - removed instances of IS_ENABLED in generic code for multi-image
+    support. One instance could be inferred from function argument,
+    the rest now accepts a flags parameter.
+  - reinstated sama5d2 specific SDRAM and PMC initialization code
+    as well as necessary register offset definitions
+  - added missing Atmel copyright/disclaimer in the evb's lowlevel.c
+    as requested by Roland. Other files have the Atmel copyright,
+    the disclaimer looks compatible with the newly added
+    LICENSES/BSD-1-Clause
+  - removed board code define for multi-image build support as per
+    Sascha's comment
+  - adjusted code to use the new MAX_PBL_IMAGE_SIZE for indicating
+    maximum first stage bootloader size
+
+Changes since v1 <20190116174559.17416-1-a.fatoum@pengutronix.de>:
+  - dropped removal of h32mx code, it was just touched by
+    ARM: at91: microchip-kz9477-evb: support first stage boot and might
+    be useful for future ports
+  - dropped removal of sama5d3_matrix.h, already mainline via
+    f722f2a12 ("ARM: at91: delete unused mach/sama5d3_matrix.h")
+  - added commit with BSD-1-Clause license text
+  - split the migration to the at91bootstrap header for SDRAM defines
+    into 3 separate commits for better comprehension as suggested by Sam
+  - arch-prefixed globally visible functions/defines
+  - copied over some helper functions from at91bootstrap for board init,
+    or moved them to headers, so board code can look more like at91bootstrap
+    board code
+  - moved some helper function into headers, so they can be used in
+    multiple boards in future
+  - replaced all __raw_{read,write}T with {read,write}T
+  - added separate entry point for first stage, like am335x does
+  - added build-time size check for first stage
+  - renamed _first_stage suffix to _bootstrap, for symmetry with
+    the other at91sam9261
+  - compressed the DTB
+  - added infrastructure for future device tree based first stage
+  - added documentation as suggested by Sam
+  - changed NAND partition layout in board code as suggested by Sascha
+  - stylistic fixes here and there
+
+Ahmad Fatoum (15):
+  LICENSES: add BSD-1-Clause license
+  ARM: at91: import at91bootstrap's at91_ddrsdrc.h
+  ARM: at91: migrate at91sam9_ddrsdr.h to use at91bootstrap's
+    at91_ddrsdrc.h
+  ARM: at91: replace at91sam9_ddrsdr.h with at91bootstrap's
+    at91_ddrsdrc.h
+  ARM: at91: watchdog: implement at91_wdt_disable
+  ARM: at91: import lowlevel clock initialization from at91bootstrap
+  ARM: at91: import early_udelay from at91bootstrap
+  ARM: at91: import low level DDRAMC initialization code from
+    at91bootstrap
+  ARM: at91: import lowlevel dbgu UART init code from at91bootstrap
+  images: at91: differentiate between first and second stage images
+  ARM: at91: microchip-ksz9477-evb: use compressed DTB
+  ARM: dts: microchip-ksz9477-evb: add dummy first stage device tree
+  ARM: at91: microchip-ksz9477-evb: implement first stage
+  ARM: at91: microchip-ksz9477: provide board code fallback
+  doc: microchip-ksz9477-evb: add documentation
+
+ .../boards/at91/microchip-ksz9477-evb.rst     |  38 +-
+ LICENSES/other/X11                            |  28 +
+ LICENSES/preferred/BSD-1-Clause               |  15 +
+ arch/arm/boards/at91sam9m10g45ek/lowlevel.c   |   2 +-
+ arch/arm/boards/at91sam9m10ihd/lowlevel.c     |   2 +-
+ arch/arm/boards/at91sam9n12ek/lowlevel.c      |   2 +-
+ arch/arm/boards/at91sam9x5ek/lowlevel.c       |   2 +-
+ .../arm/boards/microchip-ksz9477-evb/Makefile |   3 +
+ arch/arm/boards/microchip-ksz9477-evb/board.c | 127 +++++
+ .../boards/microchip-ksz9477-evb/lowlevel.c   | 213 +++++++-
+ arch/arm/boards/pm9g45/lowlevel.c             |   3 +-
+ arch/arm/boards/sama5d3_xplained/lowlevel.c   |   2 +-
+ arch/arm/boards/sama5d3xek/lowlevel.c         |   2 +-
+ arch/arm/boards/sama5d4_xplained/lowlevel.c   |   2 +-
+ arch/arm/boards/sama5d4ek/lowlevel.c          |   2 +-
+ ...rochip_ksz9477_evb_bootstrap_mmc_defconfig |  24 +
+ arch/arm/dts/Makefile                         |   4 +-
+ .../at91-microchip-ksz9477-evb-boot-bin.dts   |  13 +
+ arch/arm/mach-at91/Kconfig                    |  17 +-
+ arch/arm/mach-at91/Makefile                   |   3 +
+ arch/arm/mach-at91/at91_pmc_ll.c              | 184 +++++++
+ arch/arm/mach-at91/at91sam9g45_devices.c      |   2 +-
+ arch/arm/mach-at91/at91sam9g45_reset.S        |   8 +-
+ arch/arm/mach-at91/at91sam9n12_devices.c      |   2 +-
+ arch/arm/mach-at91/at91sam9x5_devices.c       |   2 +-
+ arch/arm/mach-at91/ddramc.c                   | 507 ++++++++++++++++++
+ arch/arm/mach-at91/early_udelay.c             |  56 ++
+ arch/arm/mach-at91/include/mach/at91_dbgu.h   |  57 +-
+ .../arm/mach-at91/include/mach/at91_ddrsdrc.h | 332 ++++++++++++
+ arch/arm/mach-at91/include/mach/at91_pmc.h    |  32 +-
+ arch/arm/mach-at91/include/mach/at91_pmc_ll.h |  89 +++
+ arch/arm/mach-at91/include/mach/at91_wdt.h    |  16 +
+ .../mach-at91/include/mach/at91sam9_ddrsdr.h  | 138 +----
+ arch/arm/mach-at91/include/mach/ddramc.h      |  36 ++
+ .../arm/mach-at91/include/mach/early_udelay.h |  14 +
+ arch/arm/mach-at91/include/mach/sama5d3.h     |   1 +
+ arch/arm/mach-at91/sama5d3_devices.c          |   2 +-
+ arch/arm/mach-at91/sama5d4_devices.c          |   2 +-
+ images/Makefile.at91                          |  17 +-
+ 39 files changed, 1835 insertions(+), 166 deletions(-)
+ create mode 100644 LICENSES/other/X11
+ create mode 100644 LICENSES/preferred/BSD-1-Clause
+ create mode 100644 arch/arm/boards/microchip-ksz9477-evb/board.c
+ create mode 100644 arch/arm/configs/microchip_ksz9477_evb_bootstrap_mmc_defconfig
+ create mode 100644 arch/arm/dts/at91-microchip-ksz9477-evb-boot-bin.dts
+ create mode 100644 arch/arm/mach-at91/at91_pmc_ll.c
+ create mode 100644 arch/arm/mach-at91/ddramc.c
+ create mode 100644 arch/arm/mach-at91/early_udelay.c
+ create mode 100644 arch/arm/mach-at91/include/mach/at91_ddrsdrc.h
+ create mode 100644 arch/arm/mach-at91/include/mach/at91_pmc_ll.h
+ create mode 100644 arch/arm/mach-at91/include/mach/ddramc.h
+ create mode 100644 arch/arm/mach-at91/include/mach/early_udelay.h
+
 -- 
 2.20.1
 
