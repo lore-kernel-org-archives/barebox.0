@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hAu1V-0005QF-C9
- for barebox@lists.infradead.org; Mon, 01 Apr 2019 10:18:41 +0000
+ id 1hAu1R-0005N6-6e
+ for barebox@lists.infradead.org; Mon, 01 Apr 2019 10:18:42 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  1 Apr 2019 12:18:22 +0200
-Message-Id: <20190401101822.7392-15-a.fatoum@pengutronix.de>
+Date: Mon,  1 Apr 2019 12:18:14 +0200
+Message-Id: <20190401101822.7392-7-a.fatoum@pengutronix.de>
 In-Reply-To: <20190401101822.7392-1-a.fatoum@pengutronix.de>
 References: <20190401101822.7392-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,256 +21,369 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 14/15] ARM: at91: microchip-ksz9477: provide board code
- fallback
+Subject: [PATCH v3 06/15] ARM: at91: import lowlevel clock initialization from
+ at91bootstrap
 To: barebox@lists.infradead.org
 Cc: sam@ravnborg.org
 
-The newly added device tree based first stage fails to load the second
-stage from MMC, which might be in relation to a preceding atmel_mci
-"command/data timeout" message.
-
-Due to this and because it's not clear yet how viable it's to use the device
-tree for the size-constrained first stage anyway, make CONFIG_OFDEVICE
-configurable and provide a legacy board code based fallback whenever it's
-unselected. The resulting image is 48K big with PBL_CONSOLE compared to
-72K for the device tree based version without PBL_CONSOLE.
-
-If barebox can be shrunk further and the device tree support in the
-first stage was fixed, this commit could be reverted for full device
-tree goodness.
-
-The board code is a stripped down version of the sama5d3_xplained board's.
+For use by future at91 first stage bootloaders, this commit imports
+https://github.com/linux4sam/at91bootstrap/blob/v3.8.12/driver/pmc.c
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- .../arm/boards/microchip-ksz9477-evb/Makefile |   3 +
- arch/arm/boards/microchip-ksz9477-evb/board.c | 127 ++++++++++++++++++
- .../boards/microchip-ksz9477-evb/lowlevel.c   |   3 +-
- ...rochip_ksz9477_evb_bootstrap_mmc_defconfig |  24 ++++
- arch/arm/mach-at91/Kconfig                    |  14 +-
- 5 files changed, 167 insertions(+), 4 deletions(-)
- create mode 100644 arch/arm/boards/microchip-ksz9477-evb/board.c
- create mode 100644 arch/arm/configs/microchip_ksz9477_evb_bootstrap_mmc_defconfig
+ arch/arm/mach-at91/Makefile                   |   1 +
+ arch/arm/mach-at91/at91_pmc_ll.c              | 184 ++++++++++++++++++
+ arch/arm/mach-at91/include/mach/at91_pmc.h    |  24 ++-
+ arch/arm/mach-at91/include/mach/at91_pmc_ll.h |  78 ++++++++
+ 4 files changed, 284 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm/mach-at91/at91_pmc_ll.c
+ create mode 100644 arch/arm/mach-at91/include/mach/at91_pmc_ll.h
 
-diff --git a/arch/arm/boards/microchip-ksz9477-evb/Makefile b/arch/arm/boards/microchip-ksz9477-evb/Makefile
-index b08c4a93ca27..8d0379a3f59f 100644
---- a/arch/arm/boards/microchip-ksz9477-evb/Makefile
-+++ b/arch/arm/boards/microchip-ksz9477-evb/Makefile
-@@ -1 +1,4 @@
- lwl-y += lowlevel.o
-+ifeq ($(CONFIG_MACH_MICROCHIP_KSZ9477_EVB_DT),)
-+obj-y += board.o
-+endif
-diff --git a/arch/arm/boards/microchip-ksz9477-evb/board.c b/arch/arm/boards/microchip-ksz9477-evb/board.c
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index d81683ac121a..91b06c085107 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -1,4 +1,5 @@
+ obj-y += setup.o
++pbl-y += at91_pmc_ll.o
+ 
+ ifeq ($(CONFIG_COMMON_CLK_OF_PROVIDER),)
+ obj-y += clock.o
+diff --git a/arch/arm/mach-at91/at91_pmc_ll.c b/arch/arm/mach-at91/at91_pmc_ll.c
 new file mode 100644
-index 000000000000..455b9aca3ab0
+index 000000000000..bb3b3e6cf970
 --- /dev/null
-+++ b/arch/arm/boards/microchip-ksz9477-evb/board.c
-@@ -0,0 +1,127 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
++++ b/arch/arm/mach-at91/at91_pmc_ll.c
+@@ -0,0 +1,184 @@
++// SPDX-License-Identifier: BSD-1-Clause
 +/*
-+ * Copyright (C) 2014 Bo Shen <voice.shen@gmail.com>
++ * Copyright (c) 2006, Atmel Corporation
 + */
 +
-+#include <init.h>
-+#include <mach/board.h>
-+#include <mach/iomux.h>
++#include <common.h>
++#include <mach/at91_pmc_ll.h>
 +
-+#if defined(CONFIG_NAND_ATMEL)
-+static struct atmel_nand_data nand_pdata = {
-+	.ale		= 21,
-+	.cle		= 22,
-+	.det_pin	= -EINVAL,
-+	.rdy_pin	= -EINVAL,
-+	.enable_pin	= -EINVAL,
-+	.ecc_mode	= NAND_ECC_HW,
-+	.has_pmecc	= 1,
-+	.pmecc_sector_size = 512,
-+	.pmecc_corr_cap = 4,
-+	.bus_width_16	= 1,
-+	.on_flash_bbt	= 1,
-+};
++#define at91_pmc_write(off, val) writel(val, pmc_base + off)
++#define at91_pmc_read(off) readl(pmc_base + off)
 +
-+static struct sam9_smc_config sama5d3_xplained_nand_smc_config = {
-+	.ncs_read_setup		= 1,
-+	.nrd_setup		= 2,
-+	.ncs_write_setup	= 1,
-+	.nwe_setup		= 2,
-+
-+	.ncs_read_pulse		= 5,
-+	.nrd_pulse		= 3,
-+	.ncs_write_pulse	= 5,
-+	.nwe_pulse		= 3,
-+
-+	.read_cycle		= 8,
-+	.write_cycle		= 8,
-+
-+	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE | AT91_SMC_EXNWMODE_DISABLE,
-+	.tdf_cycles		= 3,
-+
-+	.tclr			= 3,
-+	.tadl			= 10,
-+	.tar			= 3,
-+	.ocms			= 0,
-+	.trr			= 4,
-+	.twb			= 5,
-+	.rbnsel			= 3,
-+	.nfsel			= 1
-+};
-+
-+static void ek_add_device_nand(void)
++void at91_pmc_init(void __iomem *pmc_base, unsigned int flags)
 +{
-+	struct clk *clk = clk_get(NULL, "smc_clk");
++	u32 tmp;
 +
-+	clk_enable(clk);
++	/*
++	 * Switch the master clock to the slow clock without modifying other
++	 * parameters. It is assumed that ROM code set H32MXDIV, PLLADIV2,
++	 * PCK_DIV3.
++	 */
++	tmp = at91_pmc_read(AT91_PMC_MCKR);
++	tmp &= ~AT91_PMC_ALT_PCKR_CSS;
++	tmp |= AT91_PMC_CSS_SLOW;
++	at91_pmc_write(AT91_PMC_MCKR, tmp);
 +
-+	/* setup bus-width (8 or 16) */
-+	if (nand_pdata.bus_width_16)
-+		sama5d3_xplained_nand_smc_config.mode |= AT91_SMC_DBW_16;
-+	else
-+		sama5d3_xplained_nand_smc_config.mode |= AT91_SMC_DBW_8;
++	while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MCKRDY))
++		;
 +
-+	/* configure chip-select 3 (NAND) */
-+	sama5_smc_configure(0, 3, &sama5d3_xplained_nand_smc_config);
++	if (flags & AT91_PMC_LL_FLAG_SAM9X5_PMC) {
++		/*
++		 * Enable the Main Crystal Oscillator
++		 * tST_max = 2ms
++		 * Startup Time: 32768 * 2ms / 8 = 8
++		 */
++		tmp = at91_pmc_read(AT91_CKGR_MOR);
++		tmp &= ~AT91_PMC_OSCOUNT;
++		tmp &= ~AT91_PMC_KEY_MASK;
++		tmp |= AT91_PMC_MOSCEN;
++		tmp |= AT91_PMC_OSCOUNT_(8);
++		tmp |= AT91_PMC_KEY;
++		at91_pmc_write(AT91_CKGR_MOR, tmp);
 +
-+	at91_add_device_nand(&nand_pdata);
-+}
-+#else
-+static void ek_add_device_nand(void) {}
-+#endif
++		while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MOSCS))
++			;
 +
-+#if defined(CONFIG_MCI_ATMEL)
-+/*
-+ * MCI (SD/MMC)
-+ */
-+static struct atmel_mci_platform_data mci0_data = {
-+	.bus_width	= 8,
-+	.detect_pin	= AT91_PIN_PE0,
-+	.wp_pin		= -EINVAL,
-+};
++		if (flags & AT91_PMC_LL_FLAG_MEASURE_XTAL) {
++			/* Enable a measurement of the Main Crystal Oscillator */
++			tmp = at91_pmc_read(AT91_CKGR_MCFR);
++			tmp |= AT91_PMC_CCSS_XTAL_OSC;
++			tmp |= AT91_PMC_RCMEAS;
++			at91_pmc_write(AT91_CKGR_MCFR, tmp);
 +
-+static void ek_add_device_mci(void)
-+{
-+	/* MMC0 */
-+	at91_add_device_mci(0, &mci0_data);
-+}
-+#else
-+static void ek_add_device_mci(void) {}
-+#endif
++			while (!(at91_pmc_read(AT91_CKGR_MCFR) & AT91_PMC_MAINRDY))
++				;
++		}
 +
-+static int sama5d3_xplained_mem_init(void)
-+{
-+	at91_add_device_sdram(0);
 +
-+	return 0;
-+}
-+mem_initcall(sama5d3_xplained_mem_init);
++		/* Switch from internal 12MHz RC to the Main Crystal Oscillator */
++		tmp = at91_pmc_read(AT91_CKGR_MOR);
++		tmp &= ~AT91_PMC_OSCBYPASS;
++		tmp &= ~AT91_PMC_KEY_MASK;
++		tmp |= AT91_PMC_KEY;
++		at91_pmc_write(AT91_CKGR_MOR, tmp);
 +
-+static const struct devfs_partition sama5d3_xplained_nand0_partitions[] = {
-+	{
-+		.offset = 0x00000,
-+		.size = SZ_256K,
-+		.flags = DEVFS_PARTITION_FIXED,
-+		.name = "at91bootstrap_raw",
-+		.bbname = "at91bootstrap",
-+	}, {
-+		.offset = DEVFS_PARTITION_APPEND, /* 256 KiB */
-+		.size = SZ_1M,
-+		.flags = DEVFS_PARTITION_FIXED,
-+		.name = "self_raw",
-+		.bbname = "self0",
-+	}, {
-+		/* sentinel */
++		tmp = at91_pmc_read(AT91_CKGR_MOR);
++		tmp |= AT91_PMC_MOSCSEL;
++		tmp &= ~AT91_PMC_KEY_MASK;
++		tmp |= AT91_PMC_KEY;
++		at91_pmc_write(AT91_CKGR_MOR, tmp);
++
++		while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MOSCSELS))
++			;
++
++		if (flags & AT91_PMC_LL_FLAG_DISABLE_RC) {
++			/* Disable the 12MHz RC Oscillator */
++			tmp = at91_pmc_read(AT91_CKGR_MOR);
++			tmp &= ~AT91_PMC_MOSCRCEN;
++			tmp &= ~AT91_PMC_KEY_MASK;
++			tmp |= AT91_PMC_KEY;
++			at91_pmc_write(AT91_CKGR_MOR, tmp);
++		}
++
++	} else {
++		/*
++		 * Enable the Main Crystal Oscillator
++		 * tST_max = 2ms
++		 * Startup Time: 32768 * 2ms / 8 = 8
++		 */
++		tmp = at91_pmc_read(AT91_CKGR_MOR);
++		tmp &= ~AT91_PMC_OSCOUNT;
++		tmp |= AT91_PMC_MOSCEN;
++		tmp |= AT91_PMC_OSCOUNT_(8);
++		at91_pmc_write(AT91_CKGR_MOR, tmp);
++
++		while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MOSCS))
++			;
 +	}
-+};
 +
-+static int sama5d3_xplained_devices_init(void)
++	/* After stablization, switch to Main Clock */
++	if ((at91_pmc_read(AT91_PMC_MCKR) & AT91_PMC_ALT_PCKR_CSS) == AT91_PMC_CSS_SLOW) {
++		tmp = at91_pmc_read(AT91_PMC_MCKR);
++		tmp &= ~(0x1 << 13);
++		tmp &= ~AT91_PMC_ALT_PCKR_CSS;
++		tmp |= AT91_PMC_CSS_MAIN;
++		at91_pmc_write(AT91_PMC_MCKR, tmp);
++
++		while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MCKRDY))
++			;
++
++		tmp &= ~AT91_PMC_PRES;
++		tmp |= AT91_PMC_PRES_1;
++		at91_pmc_write(AT91_PMC_MCKR, tmp);
++
++		while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MCKRDY))
++			;
++	}
++}
++
++void at91_pmc_cfg_plla(void __iomem *pmc_base, u32 pmc_pllar,
++		       unsigned int __always_unused flags)
 +{
-+	ek_add_device_nand();
-+	ek_add_device_mci();
++	/* Always disable PLL before configuring it */
++	at91_pmc_write(AT91_CKGR_PLLAR, AT91_PMC_PLLA_WR_ERRATA);
++	at91_pmc_write(AT91_CKGR_PLLAR, AT91_PMC_PLLA_WR_ERRATA | pmc_pllar);
 +
-+	devfs_create_partitions("nand0", sama5d3_xplained_nand0_partitions);
++	while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_LOCKA))
++		;
++}
++
++void at91_pmc_cfg_mck(void __iomem *pmc_base, u32 pmc_mckr, unsigned int flags)
++{
++	u32 tmp;
++
++	/*
++	 * Program the PRES field in the AT91_PMC_MCKR register
++	 */
++	tmp = at91_pmc_read(AT91_PMC_MCKR);
++	tmp &= ~(0x1 << 13);
++
++	if (flags & AT91_PMC_LL_FLAG_SAM9X5_PMC) {
++		tmp &= ~AT91_PMC_ALT_PRES;
++		tmp |= pmc_mckr & AT91_PMC_ALT_PRES;
++	} else {
++		tmp &= ~AT91_PMC_PRES;
++		tmp |= pmc_mckr & AT91_PMC_PRES;
++	}
++	at91_pmc_write(AT91_PMC_MCKR, tmp);
++
++	/*
++	 * Program the MDIV field in the AT91_PMC_MCKR register
++	 */
++	tmp = at91_pmc_read(AT91_PMC_MCKR);
++	tmp &= ~AT91_PMC_MDIV;
++	tmp |= pmc_mckr & AT91_PMC_MDIV;
++	at91_pmc_write(AT91_PMC_MCKR, tmp);
++
++	/*
++	 * Program the PLLADIV2 field in the AT91_PMC_MCKR register
++	 */
++	tmp = at91_pmc_read(AT91_PMC_MCKR);
++	tmp &= ~AT91_PMC_PLLADIV2;
++	tmp |= pmc_mckr & AT91_PMC_PLLADIV2;
++	at91_pmc_write(AT91_PMC_MCKR, tmp);
++
++	/*
++	 * Program the H32MXDIV field in the AT91_PMC_MCKR register
++	 */
++	tmp = at91_pmc_read(AT91_PMC_MCKR);
++	tmp &= ~AT91_PMC_H32MXDIV;
++	tmp |= pmc_mckr & AT91_PMC_H32MXDIV;
++	at91_pmc_write(AT91_PMC_MCKR, tmp);
++
++	/*
++	 * Program the CSS field in the AT91_PMC_MCKR register,
++	 * wait for MCKRDY bit to be set in the PMC_SR register
++	 */
++	tmp = at91_pmc_read(AT91_PMC_MCKR);
++	tmp &= ~AT91_PMC_ALT_PCKR_CSS;
++	tmp |= pmc_mckr & AT91_PMC_ALT_PCKR_CSS;
++	at91_pmc_write(AT91_PMC_MCKR, tmp);
++
++	while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MCKRDY))
++		;
++}
+diff --git a/arch/arm/mach-at91/include/mach/at91_pmc.h b/arch/arm/mach-at91/include/mach/at91_pmc.h
+index bbbd497afaed..4d60becefbab 100644
+--- a/arch/arm/mach-at91/include/mach/at91_pmc.h
++++ b/arch/arm/mach-at91/include/mach/at91_pmc.h
+@@ -50,14 +50,19 @@
+ #define		AT91_PMC_OSCBYPASS	(1    <<  1)		/* Oscillator Bypass */
+ #define		AT91_PMC_MOSCRCEN	(1    <<  3)		/* Main On-Chip RC Oscillator Enable [some SAM9] */
+ #define		AT91_PMC_OSCOUNT	(0xff <<  8)		/* Main Oscillator Start-up Time */
+-#define		AT91_PMC_KEY		(0x37 << 16)		/* MOR Writing Key */
++#define			AT91_PMC_OSCOUNT_(x) ((x) << 8)
++#define		AT91_PMC_KEY_MASK	(0xff << 16)		/* MOR Writing Key */
++#define			AT91_PMC_KEY		(0x37 << 16)
+ #define		AT91_PMC_MOSCSEL	(1    << 24)		/* Main Oscillator Selection [some SAM9] */
+ #define		AT91_PMC_CFDEN		(1    << 25)		/* Clock Failure Detector Enable [some SAM9] */
+ 
+ #define	AT91_CKGR_MCFR		0x24			/* Main Clock Frequency Register */
+ #define		AT91_PMC_MAINF		(0xffff <<  0)		/* Main Clock Frequency */
+-#define		AT91_PMC_MAINRDY	(1	<< 16)		/* Main Clock Ready */
+-
++#define		AT91_PMC_MAINRDY        (1      << 16)          /* Main Clock Frequency Measure Ready */
++#define		AT91_PMC_RCMEAS         (1      << 20)          /* RC Oscillator Frequency Measure (write-only) */
++#define		AT91_PMC_CCSS           (1      << 24)          /* Counter Clock Source Selection */
++#define			AT91_PMC_CCSS_RC_OSC    (0      << 24)          /* MAINF counter clock is the RC oscillator. */
++#define			AT91_PMC_CCSS_XTAL_OSC  (1      << 24)          /* MAINF counter clock is the crystal oscillator. */
+ #define	AT91_CKGR_PLLAR		0x28			/* PLL A Register */
+ #define	AT91_CKGR_PLLBR		0x2c			/* PLL B Register */
+ #define		AT91_PMC_DIV		(0xff  <<  0)		/* Divider */
+@@ -133,6 +138,7 @@
+ #define			AT91_PMC_CSSMCK_MCK		(1 << 8)
+ 
+ #define	AT91_PMC_IER		0x60			/* Interrupt Enable Register */
++#define		AT91_PMC_MOSCXTS	(1 << 0)		/* Oscillator Startup Time */
+ #define	AT91_PMC_IDR		0x64			/* Interrupt Disable Register */
+ #define	AT91_PMC_SR		0x68			/* Status Register */
+ #define		AT91_PMC_MOSCS		(1 <<  0)		/* MOSCS Flag */
+@@ -148,6 +154,17 @@
+ #define		AT91_PMC_MOSCRCS	(1 << 17)		/* Main On-Chip RC [some SAM9] */
+ #define		AT91_PMC_CFDEV		(1 << 18)		/* Clock Failure Detector Event [some SAM9] */
+ #define	AT91_PMC_IMR		0x6c			/* Interrupt Mask Register */
++#define	AT91_PMC_PLLICPR	0x80			/* PLL Charge Pump Current Register */
++#define		AT91_PMC_ICPPLLA	(0xf <<  0)
++#define			AT91_PMC_ICPPLLA_0		(0 <<  0)
++#define			AT91_PMC_ICPPLLA_1		(1 <<  0)
++#define		AT91_PMC_REALLOCK	(0x1 <<  7)
++#define		AT91_PMC_IPLLA		(0xf <<  8)
++#define			AT91_PMC_IPLLA_0		(0 <<  8)
++#define			AT91_PMC_IPLLA_1		(1 <<  8)
++#define			AT91_PMC_IPLLA_2		(2 <<  8)
++#define			AT91_PMC_IPLLA_3		(3 <<  8)
++
+ 
+ #define AT91_PMC_PROT		0xe4			/* Write Protect Mode Register [some SAM9] */
+ #define		AT91_PMC_WPEN		(0x1  <<  0)		/* Write Protect Enable */
+@@ -163,6 +180,7 @@
+ #define AT91_PMC_PCR		0x10c			/* Peripheral Control Register [some SAM9] */
+ #define		AT91_PMC_PCR_PID	(0x3f  <<  0)		/* Peripheral ID */
+ #define		AT91_PMC_PCR_CMD	(0x1  <<  12)		/* Command */
++#define		AT91_PMC_PCR_DIV_MASK	(0x3  <<  16)
+ #define		AT91_PMC_PCR_DIV(n)	((n) <<  16)	/* Divisor value */
+ #define			AT91_PMC_PCR_DIV0	0x0		/* Peripheral clock is MCK */
+ #define			AT91_PMC_PCR_DIV2	0x1		/* Peripheral clock is MCK/2 */
+diff --git a/arch/arm/mach-at91/include/mach/at91_pmc_ll.h b/arch/arm/mach-at91/include/mach/at91_pmc_ll.h
+new file mode 100644
+index 000000000000..eda40e8e12e7
+--- /dev/null
++++ b/arch/arm/mach-at91/include/mach/at91_pmc_ll.h
+@@ -0,0 +1,78 @@
++// SPDX-License-Identifier: BSD-1-Clause
++/*
++ * Copyright (c) 2006, Atmel Corporation
++ */
++
++#ifndef AT91_PMC_LL_H
++#define AT91_PMC_LL_H
++
++#include <errno.h>
++#include <asm/io.h>
++#include <mach/at91_pmc.h>
++
++#define AT91_PMC_LL_FLAG_SAM9X5_PMC	(1 << 0)
++#define AT91_PMC_LL_FLAG_MEASURE_XTAL	(1 << 1)
++#define AT91_PMC_LL_FLAG_DISABLE_RC	(1 << 2)
++
++#define AT91_PMC_LL_AT91RM9200	(0)
++#define AT91_PMC_LL_AT91SAM9260	(0)
++#define AT91_PMC_LL_AT91SAM9261	(0)
++#define AT91_PMC_LL_AT91SAM9263	(0)
++#define AT91_PMC_LL_AT91SAM9G45	(0)
++#define AT91_PMC_LL_AT91SAM9X5	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
++				 AT91_PMC_LL_FLAG_DISABLE_RC)
++#define AT91_PMC_LL_AT91SAM9N12	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
++				 AT91_PMC_LL_FLAG_DISABLE_RC)
++#define AT91_PMC_LL_SAMA5D2	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
++				 AT91_PMC_LL_FLAG_MEASURE_XTAL)
++#define AT91_PMC_LL_SAMA5D3	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
++				 AT91_PMC_LL_FLAG_DISABLE_RC)
++#define AT91_PMC_LL_SAMA5D4	(AT91_PMC_LL_FLAG_SAM9X5_PMC)
++
++void at91_pmc_init(void __iomem *pmc_base, unsigned int flags);
++void at91_pmc_cfg_mck(void __iomem *pmc_base, u32 pmc_mckr, unsigned int flags);
++void at91_pmc_cfg_plla(void __iomem *pmc_base, u32 pmc_pllar, unsigned int flags);
++
++static inline void at91_pmc_init_pll(void __iomem *pmc_base, u32 pmc_pllicpr)
++{
++	writel(pmc_pllicpr, pmc_base + AT91_PMC_PLLICPR);
++}
++
++static inline void at91_pmc_enable_system_clock(void __iomem *pmc_base,
++						unsigned clock_id)
++{
++	writel(clock_id, pmc_base +  AT91_PMC_SCER);
++}
++
++static inline int at91_pmc_enable_periph_clock(void __iomem *pmc_base,
++					       unsigned periph_id)
++{
++	u32 mask = 0x01 << (periph_id % 32);
++
++	if ((periph_id / 32) == 1)
++		writel(mask, pmc_base + AT91_PMC_PCER1);
++	else if ((periph_id / 32) == 0)
++		writel(mask, pmc_base + AT91_PMC_PCER);
++	else
++		return -EINVAL;
 +
 +	return 0;
 +}
-+device_initcall(sama5d3_xplained_devices_init);
-diff --git a/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c b/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c
-index cf44021bdfb7..bf9a4aed6183 100644
---- a/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c
-+++ b/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c
-@@ -195,7 +195,8 @@ static noinline void board_init(void)
- 
- 	sama5d3_ddramc_init();
- 
--	fdt = __dtb_z_at91_microchip_ksz9477_evb_boot_bin_start + get_runtime_offset();
-+	if (IS_ENABLED(CONFIG_MACH_MICROCHIP_KSZ9477_EVB_DT))
-+		fdt = __dtb_z_at91_microchip_ksz9477_evb_boot_bin_start + get_runtime_offset();
- 
- 	barebox_arm_entry(SAMA5_DDRCS, SZ_256M, fdt);
- }
-diff --git a/arch/arm/configs/microchip_ksz9477_evb_bootstrap_mmc_defconfig b/arch/arm/configs/microchip_ksz9477_evb_bootstrap_mmc_defconfig
-new file mode 100644
-index 000000000000..8af85bc10613
---- /dev/null
-+++ b/arch/arm/configs/microchip_ksz9477_evb_bootstrap_mmc_defconfig
-@@ -0,0 +1,24 @@
-+CONFIG_ARCH_SAMA5D3=y
-+CONFIG_AT91_MULTI_BOARDS=y
-+CONFIG_MACH_MICROCHIP_KSZ9477_EVB=y
-+CONFIG_AT91_BOOTSTRAP=y
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_RELOCATABLE=y
-+CONFIG_PROMPT="BOOT.BIN:"
-+CONFIG_SHELL_NONE=y
-+# CONFIG_TIMESTAMP is not set
-+CONFIG_CONSOLE_SIMPLE=y
-+CONFIG_PBL_CONSOLE=y
-+CONFIG_DEFAULT_LOGLEVEL=6
-+CONFIG_DEBUG_LL=y
-+# CONFIG_SPI is not set
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+# CONFIG_MCI_WRITE is not set
-+CONFIG_MCI_ATMEL=y
-+CONFIG_MFD_SYSCON=y
-+# CONFIG_FS_RAMFS is not set
-+# CONFIG_FS_DEVFS is not set
-+CONFIG_FS_FAT=y
-+CONFIG_BOOTSTRAP_DEVFS=y
-+CONFIG_BOOTSTRAP_DISK=y
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index e72e37c2bf9e..827b05a23496 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -18,6 +18,15 @@ config MACH_AT91SAM9263EK_DT
- 	  Enabled for at91sam9263ek - evaluation kit.
- 	  But only if we need the device tree (bootstrap do not use DT)
- 
-+config MACH_MICROCHIP_KSZ9477_EVB_DT
-+	def_bool y
-+	depends on MACH_MICROCHIP_KSZ9477_EVB && OFDEVICE
-+	select ARM_USE_COMPRESSED_DTB
-+	help
-+	  Enabled for Microchip KSZ9477 - evaluation kit.
-+	  But only if we need the device tree (bootstrap doesn't yet work with
-+	  DT)
 +
- config HAVE_AT91_SMD
- 	bool
- 
-@@ -546,9 +555,8 @@ config MACH_AT91SAM9X5EK
- config MACH_MICROCHIP_KSZ9477_EVB
- 	bool "Microchip EVB-KSZ9477 Evaluation Kit"
- 	depends on ARCH_SAMA5D3
--	select OFDEVICE
--	select COMMON_CLK_OF_PROVIDER
--	select ARM_USE_COMPRESSED_DTB
-+	select OFDEVICE if !AT91_LOAD_BAREBOX_SRAM
-+	select COMMON_CLK_OF_PROVIDER if OFDEVICE
- 	select HAVE_AT91_BOOTSTRAP
- 	help
- 	  Select this if you are using Microchip's EVB-KSZ9477 Evaluation Kit.
++static inline int at91_pmc_sam9x5_enable_periph_clock(void __iomem *pmc_base,
++						      unsigned periph_id)
++{
++       u32 pcr = periph_id;
++
++       if (periph_id >= 0x80) /* 7 bits only */
++               return -EINVAL;
++
++       writel(pcr, pmc_base + AT91_PMC_PCR);
++       pcr |= readl(pmc_base + AT91_PMC_PCR) & AT91_PMC_PCR_DIV_MASK;
++       pcr |= AT91_PMC_PCR_CMD | AT91_PMC_PCR_EN;
++       writel(pcr, pmc_base + AT91_PMC_PCR);
++
++       return 0;
++}
++
++#endif
 -- 
 2.20.1
 
