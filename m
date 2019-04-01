@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hB3I0-0006ki-Lc
- for barebox@lists.infradead.org; Mon, 01 Apr 2019 20:12:18 +0000
+ id 1hB3I2-0006lR-Uf
+ for barebox@lists.infradead.org; Mon, 01 Apr 2019 20:12:21 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  1 Apr 2019 22:12:06 +0200
-Message-Id: <20190401201210.17975-3-a.fatoum@pengutronix.de>
+Date: Mon,  1 Apr 2019 22:12:08 +0200
+Message-Id: <20190401201210.17975-5-a.fatoum@pengutronix.de>
 In-Reply-To: <20190401201210.17975-1-a.fatoum@pengutronix.de>
 References: <20190401201210.17975-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,64 +21,119 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] clk: imx6: Mask mmdc_ch1 handshake for periph2_sel and
- mmdc_ch1_axi_podf
+Subject: [PATCH 4/6] clk: imx6: define an enum for ldb mux inputs
 To: barebox@lists.infradead.org
 Cc: pza@pengutronix.de, lst@pengutronix.de, sha@pengutronix.de
 
-From: Philipp Zabel <p.zabel@pengutronix.de>
+For better readability should this code be reviewed
+in future, replace the hardcoded input numbers
+with an enum.
 
-MMDC CH1 is not used on i.MX6Q, so the handshake needed to change the
-parent of periph2_sel or the divider of mmdc_ch1_axi_podf will never
-succeed.
-Disable the handshake mechanism to allow changing the frequency of
-mmdc_ch1_axi, allowing to use it as a possible source for the LDB DI
-clock.
+This is just a cosmetic change and was verified
+to not affect clk-imx6.o.
 
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Fabio Estevam <fabio.estevam@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-[afa: ported to barebox from Linux commit f13abeff2c]
-[afa: moved call site to where it would've been moved in following commit]
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/clk/imx/clk-imx6.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/clk/imx/clk-imx6.c | 41 +++++++++++++++++++++++---------------
+ 1 file changed, 25 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/clk/imx/clk-imx6.c b/drivers/clk/imx/clk-imx6.c
-index 88c4bcde1cb3..21cbc77c50c5 100644
+index d12b494d578c..f527d1d5e565 100644
 --- a/drivers/clk/imx/clk-imx6.c
 +++ b/drivers/clk/imx/clk-imx6.c
-@@ -299,6 +299,19 @@ static struct clk_div_table video_div_table[] = {
- 	{ /* sentinel */ }
+@@ -213,12 +213,20 @@ static const char *ipu_sels[] = {
+ 	"pll3_pfd1_540m",
  };
  
-+#define CCM_CCDR		0x04
++enum ldb_di_sel { /* for use in init_ldb_clks */
++	LDB_DI_SEL_PLL5_VIDEO_DIV	= 0,
++	LDB_DI_SEL_PLL2_PFD0_352M	= 1,
++	LDB_DI_SEL_PLL2_PFD2_396M	= 2,
++	LDB_DI_SEL_MMDC_CH1_AXI		= 3,
++	LDB_DI_SEL_PLL3_USB_OTG		= 4,
++};
 +
-+#define CCDR_MMDC_CH1_MASK	BIT(16)
-+
-+static void __init imx6q_mmdc_ch1_mask_handshake(void __iomem *ccm_base)
-+{
-+	unsigned int reg;
-+
-+	reg = readl(ccm_base + CCM_CCDR);
-+	reg |= CCDR_MMDC_CH1_MASK;
-+	writel(reg, ccm_base + CCM_CCDR);
-+}
-+
- static void imx6_add_video_clks(void __iomem *anab, void __iomem *cb)
- {
- 	clks[IMX6QDL_CLK_PLL5_POST_DIV] = imx_clk_divider_table("pll5_post_div", "pll5_video", anab + 0xa0, 19, 2, post_div_table);
-@@ -306,6 +319,9 @@ static void imx6_add_video_clks(void __iomem *anab, void __iomem *cb)
+ static const char *ldb_di_sels[] = {
+-	"pll5_video_div",
+-	"pll2_pfd0_352m",
+-	"pll2_pfd2_396m",
+-	"mmdc_ch1_axi_podf",
+-	"pll3_usb_otg",
++	[LDB_DI_SEL_PLL5_VIDEO_DIV]	= "pll5_video_div",
++	[LDB_DI_SEL_PLL2_PFD0_352M]	= "pll2_pfd0_352m",
++	[LDB_DI_SEL_PLL2_PFD2_396M]	= "pll2_pfd2_396m",
++	[LDB_DI_SEL_MMDC_CH1_AXI]	= "mmdc_ch1_axi_podf",
++	[LDB_DI_SEL_PLL3_USB_OTG]	= "pll3_usb_otg",
+ };
  
- 	clks[IMX6QDL_CLK_IPU1_SEL]         = imx_clk_mux("ipu1_sel",         cb + 0x3c, 9,  2, ipu_sels,          ARRAY_SIZE(ipu_sels));
- 	clks[IMX6QDL_CLK_IPU2_SEL]         = imx_clk_mux("ipu2_sel",         cb + 0x3c, 14, 2, ipu_sels,          ARRAY_SIZE(ipu_sels));
-+
-+	imx6q_mmdc_ch1_mask_handshake(cb);
-+
- 	clks[IMX6QDL_CLK_LDB_DI0_SEL]      = imx_clk_mux_p("ldb_di0_sel",      cb + 0x2c, 9,  3, ldb_di_sels,       ARRAY_SIZE(ldb_di_sels));
- 	clks[IMX6QDL_CLK_LDB_DI1_SEL]      = imx_clk_mux_p("ldb_di1_sel",      cb + 0x2c, 12, 3, ldb_di_sels,       ARRAY_SIZE(ldb_di_sels));
- 	clks[IMX6QDL_CLK_IPU1_DI0_PRE_SEL] = imx_clk_mux_p("ipu1_di0_pre_sel", cb + 0x34, 6,  3, ipu_di_pre_sels,   ARRAY_SIZE(ipu_di_pre_sels));
+ static const char *ipu_di_pre_sels[] = {
+@@ -311,23 +319,23 @@ static int ldb_di_sel_by_clock_id(int clock_id)
+ 	case IMX6QDL_CLK_PLL5_VIDEO_DIV:
+ 		if (!cpu_has_working_video_pll_post_div())
+ 			return -ENOENT;
+-		return 0;
++		return LDB_DI_SEL_PLL5_VIDEO_DIV;
+ 	case IMX6QDL_CLK_PLL2_PFD0_352M:
+-		return 1;
++		return LDB_DI_SEL_PLL2_PFD0_352M;
+ 	case IMX6QDL_CLK_PLL2_PFD2_396M:
+-		return 2;
++		return LDB_DI_SEL_PLL2_PFD2_396M;
+ 	case IMX6QDL_CLK_MMDC_CH1_AXI:
+-		return 3;
++		return LDB_DI_SEL_MMDC_CH1_AXI;
+ 	case IMX6QDL_CLK_PLL3_USB_OTG:
+-		return 4;
++		return LDB_DI_SEL_PLL3_USB_OTG;
+ 	default:
+ 		return -ENOENT;
+ 	}
+ }
+ 
+ static void of_assigned_ldb_sels(struct device_node *node,
+-				 unsigned int *ldb_di0_sel,
+-				 unsigned int *ldb_di1_sel)
++				 enum ldb_di_sel *ldb_di0_sel,
++				 enum ldb_di_sel *ldb_di1_sel)
+ {
+ 	struct of_phandle_args clkspec;
+ 	int index, rc, num_parents;
+@@ -466,7 +474,7 @@ static void mmdc_ch1_reenable(void __iomem *ccm_base)
+ static void init_ldb_clks(struct device_node *np, void __iomem *ccm_base)
+ {
+ 	unsigned int reg;
+-	unsigned int sel[2][4];
++	enum ldb_di_sel sel[2][4];
+ 	int i;
+ 
+ 	reg = readl(ccm_base + CCM_CS2CDR);
+@@ -481,14 +489,14 @@ static void init_ldb_clks(struct device_node *np, void __iomem *ccm_base)
+ 	 * these configurations had their ldb_diN_sel clocks reparented.
+ 	 */
+ 	if (!(cpu_is_mx6s() && imx_silicon_revision() == IMX_CHIP_REV_1_0)) {
+-		sel[0][3] = sel[1][3] = 0;
++		sel[0][3] = sel[1][3] = LDB_DI_SEL_PLL5_VIDEO_DIV;
+ 	}
+ 
+ 	of_assigned_ldb_sels(np, &sel[0][3], &sel[1][3]);
+ 
+ 	for (i = 0; i < 2; i++) {
+ 		/* Warn if a glitch might have been introduced already */
+-		if (sel[i][0] != 3) {
++		if (sel[i][0] != LDB_DI_SEL_MMDC_CH1_AXI) {
+ 			pr_warn("ccm: ldb_di%d_sel already changed from reset value: %d\n",
+ 				i, sel[i][0]);
+ 		}
+@@ -497,7 +505,8 @@ static void init_ldb_clks(struct device_node *np, void __iomem *ccm_base)
+ 			continue;
+ 
+ 		/* Only switch to or from pll2_pfd2_396m if it is disabled */
+-		if ((sel[i][0] == 2 || sel[i][3] == 2) &&
++		if ((sel[i][0] == LDB_DI_SEL_PLL2_PFD2_396M ||
++		     sel[i][3] == LDB_DI_SEL_PLL2_PFD2_396M) &&
+ 		    (clk_get_parent(clks[IMX6QDL_CLK_PERIPH_PRE]) ==
+ 		     clks[IMX6QDL_CLK_PLL2_PFD2_396M])) {
+ 			pr_err("ccm: ldb_di%d_sel: couldn't disable pll2_pfd2_396m\n",
 -- 
 2.20.1
 
