@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hB3I0-0006kG-24
- for barebox@lists.infradead.org; Mon, 01 Apr 2019 20:12:17 +0000
+ id 1hB3I0-0006ki-Lc
+ for barebox@lists.infradead.org; Mon, 01 Apr 2019 20:12:18 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  1 Apr 2019 22:12:05 +0200
-Message-Id: <20190401201210.17975-2-a.fatoum@pengutronix.de>
+Date: Mon,  1 Apr 2019 22:12:06 +0200
+Message-Id: <20190401201210.17975-3-a.fatoum@pengutronix.de>
 In-Reply-To: <20190401201210.17975-1-a.fatoum@pengutronix.de>
 References: <20190401201210.17975-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,62 +21,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] clk: imx6: provide helper to check if video PLL post
- dividers work
+Subject: [PATCH 2/6] clk: imx6: Mask mmdc_ch1 handshake for periph2_sel and
+ mmdc_ch1_axi_podf
 To: barebox@lists.infradead.org
 Cc: pza@pengutronix.de, lst@pengutronix.de, sha@pengutronix.de
 
-Audio/Video PLL post dividers don't work on i.MX6q revision 1.0.
-This helper can be reused in the upcoming workaround patch for
-erratum ERR009219.
+From: Philipp Zabel <p.zabel@pengutronix.de>
 
-The check in the helper has been inverted to make it clearer which
-platforms are affected. Old call site was adjusted to spell
-out what is really happening nowadays (with clk-imx6.c covering
-more variants than just i.MX6Quad and DualLite):
+MMDC CH1 is not used on i.MX6Q, so the handshake needed to change the
+parent of periph2_sel or the divider of mmdc_ch1_axi_podf will never
+succeed.
+Disable the handshake mechanism to allow changing the frequency of
+mmdc_ch1_axi, allowing to use it as a possible source for the LDB DI
+clock.
 
-   !rev1.0 || mx6dl
-== !rev1.0 || !!mx6dl
-== !(rev1.0 && !mx6dl)
-== !(rev1.0 && (mx6s || mx6q || mx6qp || mx6d || mx6dp))
-== !(rev1.0 && ((mx6q || mx6d) || (mx6s || mx6qp || mx6dp)))
-== !((rev1.0 && (mx6q || mx6d)) || (rev1.0 && (mx6s || mx6qp || mx6dp)))
-== (!(rev1.0 && (mx6q || mx6d)) && !(rev1.0 && (mx6s || mx6qp || mx6dp)))
-== cpu_has_working_video_pll_post_div() && !(rev1.0 && (mx6s || mx6qp || mx6dp))
-
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Fabio Estevam <fabio.estevam@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+[afa: ported to barebox from Linux commit f13abeff2c]
+[afa: moved call site to where it would've been moved in following commit]
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/clk/imx/clk-imx6.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/clk/imx/clk-imx6.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
 diff --git a/drivers/clk/imx/clk-imx6.c b/drivers/clk/imx/clk-imx6.c
-index 35b995dae24e..88c4bcde1cb3 100644
+index 88c4bcde1cb3..21cbc77c50c5 100644
 --- a/drivers/clk/imx/clk-imx6.c
 +++ b/drivers/clk/imx/clk-imx6.c
-@@ -64,6 +64,12 @@ static inline int cpu_is_plus(void)
- 	return cpu_is_mx6qp() || cpu_is_mx6dp();
- }
+@@ -299,6 +299,19 @@ static struct clk_div_table video_div_table[] = {
+ 	{ /* sentinel */ }
+ };
  
-+/* Audio/Video PLL post dividers don't work on i.MX6q revision 1.0 */
-+static inline int cpu_has_working_video_pll_post_div(void) {
-+	return !((cpu_is_mx6q() || cpu_is_mx6d()) &&
-+		 imx_silicon_revision() == IMX_CHIP_REV_1_0);
++#define CCM_CCDR		0x04
++
++#define CCDR_MMDC_CH1_MASK	BIT(16)
++
++static void __init imx6q_mmdc_ch1_mask_handshake(void __iomem *ccm_base)
++{
++	unsigned int reg;
++
++	reg = readl(ccm_base + CCM_CCDR);
++	reg |= CCDR_MMDC_CH1_MASK;
++	writel(reg, ccm_base + CCM_CCDR);
 +}
 +
- static const char *step_sels[] = {
- 	"osc",
- 	"pll2_pfd2_396m",
-@@ -341,8 +347,8 @@ static void imx6_add_video_clks(void __iomem *anab, void __iomem *cb)
- 	clk_set_parent(clks[IMX6QDL_CLK_IPU2_DI0_PRE_SEL], clks[IMX6QDL_CLK_PLL5_VIDEO_DIV]);
- 	clk_set_parent(clks[IMX6QDL_CLK_IPU2_DI1_PRE_SEL], clks[IMX6QDL_CLK_PLL5_VIDEO_DIV]);
+ static void imx6_add_video_clks(void __iomem *anab, void __iomem *cb)
+ {
+ 	clks[IMX6QDL_CLK_PLL5_POST_DIV] = imx_clk_divider_table("pll5_post_div", "pll5_video", anab + 0xa0, 19, 2, post_div_table);
+@@ -306,6 +319,9 @@ static void imx6_add_video_clks(void __iomem *anab, void __iomem *cb)
  
--	if ((imx_silicon_revision() != IMX_CHIP_REV_1_0) ||
--	    cpu_is_mx6dl()) {
-+	if (cpu_has_working_video_pll_post_div() &&
-+	    !((cpu_is_plus() || cpu_is_mx6s()) && imx_silicon_revision() == IMX_CHIP_REV_1_0)) {
- 		clk_set_parent(clks[IMX6QDL_CLK_LDB_DI0_SEL], clks[IMX6QDL_CLK_PLL5_VIDEO_DIV]);
- 		clk_set_parent(clks[IMX6QDL_CLK_LDB_DI1_SEL], clks[IMX6QDL_CLK_PLL5_VIDEO_DIV]);
- 	}
+ 	clks[IMX6QDL_CLK_IPU1_SEL]         = imx_clk_mux("ipu1_sel",         cb + 0x3c, 9,  2, ipu_sels,          ARRAY_SIZE(ipu_sels));
+ 	clks[IMX6QDL_CLK_IPU2_SEL]         = imx_clk_mux("ipu2_sel",         cb + 0x3c, 14, 2, ipu_sels,          ARRAY_SIZE(ipu_sels));
++
++	imx6q_mmdc_ch1_mask_handshake(cb);
++
+ 	clks[IMX6QDL_CLK_LDB_DI0_SEL]      = imx_clk_mux_p("ldb_di0_sel",      cb + 0x2c, 9,  3, ldb_di_sels,       ARRAY_SIZE(ldb_di_sels));
+ 	clks[IMX6QDL_CLK_LDB_DI1_SEL]      = imx_clk_mux_p("ldb_di1_sel",      cb + 0x2c, 12, 3, ldb_di_sels,       ARRAY_SIZE(ldb_di_sels));
+ 	clks[IMX6QDL_CLK_IPU1_DI0_PRE_SEL] = imx_clk_mux_p("ipu1_di0_pre_sel", cb + 0x34, 6,  3, ipu_di_pre_sels,   ARRAY_SIZE(ipu_di_pre_sels));
 -- 
 2.20.1
 
