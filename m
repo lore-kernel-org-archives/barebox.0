@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hAu1R-0005N5-6i
+ id 1hAu1R-0005NC-6g
  for barebox@lists.infradead.org; Mon, 01 Apr 2019 10:18:34 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  1 Apr 2019 12:18:18 +0200
-Message-Id: <20190401101822.7392-11-a.fatoum@pengutronix.de>
+Date: Mon,  1 Apr 2019 12:18:23 +0200
+Message-Id: <20190401101822.7392-16-a.fatoum@pengutronix.de>
 In-Reply-To: <20190401101822.7392-1-a.fatoum@pengutronix.de>
 References: <20190401101822.7392-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,61 +21,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 10/15] images: at91: differentiate between first and second
- stage images
+Subject: [PATCH v3 15/15] doc: microchip-ksz9477-evb: add documentation
 To: barebox@lists.infradead.org
 Cc: sam@ravnborg.org
 
-Incoming microchip-ksz9477-evb first stage will add one more entry point
-for the first stage. As there is a little reason to use the same piggy
-data for both images (BOOT.BIN, the first stage, is limited to 64K), have
-CONFIG_AT91_LOAD_BAREBOX_SRAM decide which stage should be built.
-
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-at91/Kconfig |  2 +-
- images/Makefile.at91       | 12 +++++++++---
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ .../boards/at91/microchip-ksz9477-evb.rst     | 38 ++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 8e1bf0629ab7..60f427d7d483 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -615,7 +615,7 @@ config AT91_BOOTSTRAP
- 	select BOOTSTRAP
+diff --git a/Documentation/boards/at91/microchip-ksz9477-evb.rst b/Documentation/boards/at91/microchip-ksz9477-evb.rst
+index 4c4c4aecbfb3..2a68c2a552cd 100644
+--- a/Documentation/boards/at91/microchip-ksz9477-evb.rst
++++ b/Documentation/boards/at91/microchip-ksz9477-evb.rst
+@@ -1,11 +1,45 @@
+ Microchip KSZ 9477 Evaluation board
+ ===================================
  
- config AT91_LOAD_BAREBOX_SRAM
--	bool "at91 load barebox in sram"
-+	bool "at91 barebox image will be loaded into SRAM"
- 	depends on SHELL_NONE || HAVE_AT91_LOAD_BAREBOX_SRAM
- 	default y if SHELL_NONE
+-This is an evaluation board for a switch that uses the at91sam9x5 CPU.
++This is an evaluation board for the KSZ9477 switch that uses the sama5d36 CPU.
+ The board uses Device Tree and supports multi image.
  
-diff --git a/images/Makefile.at91 b/images/Makefile.at91
-index acdb591d2452..3f1dd57f6c58 100644
---- a/images/Makefile.at91
-+++ b/images/Makefile.at91
-@@ -4,12 +4,18 @@
+-Building barebox:
++Building barebox as second stage bootloader:
  
- pblb-$(CONFIG_MACH_AT91SAM9X5EK) += start_at91sam9x5ek
- FILE_barebox-at91sam9x5ek.img = start_at91sam9x5ek.pblb
--image-$(CONFIG_MACH_AT91SAM9X5EK) += barebox-at91sam9x5ek.img
-+at91-barebox-$(CONFIG_MACH_AT91SAM9X5EK) += barebox-at91sam9x5ek.img
+ .. code-block:: sh
  
- pblb-$(CONFIG_MACH_AT91SAM9263EK) += start_at91sam9263ek
- FILE_barebox-at91sam9263ek.img = start_at91sam9263ek.pblb
--image-$(CONFIG_MACH_AT91SAM9263EK) += barebox-at91sam9263ek.img
-+at91-barebox-$(CONFIG_MACH_AT91SAM9263EK) += barebox-at91sam9263ek.img
- 
- pblb-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += start_sama5d3_xplained_ung8071
- FILE_barebox-microchip-ksz9477-evb.img = start_sama5d3_xplained_ung8071.pblb
--image-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += barebox-microchip-ksz9477-evb.img
-+at91-barebox-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += barebox-microchip-ksz9477-evb.img
+   make ARCH=arm microchip_ksz9477_evb_defconfig
 +
-+ifdef CONFIG_AT91_LOAD_BAREBOX_SRAM
-+image-y += $(at91-boot-bin-y)
-+else
-+image-y += $(at91-barebox-y)
-+endif
++There are also a separate defconfig for operating barebox as first stage
++bootloader originating from SD Card.
++This configuration doesn't yet support device-tree use as the NVM bootloader
++(SoC ROM code) requires the first stage bootloader to fit into 64K.
++
++Generally, the first stage may comes from any of the following boot
++sources (in that order):
++
++* SPI0 CS0 Flash
++* SD Card
++* NAND Flash
++* SPI0 CS1 Flash
++* I2C EEPROM
++
++After being loaded into SRAM by the NVM bootloader, the first stage does low
++level clock initialization, configuration of the DDRAM controller and
++bootstraps the second stage boot loader.
++
++SD Card Bootstrap
++-----------------
++
++For boot from SD card, barebox additionally needs to be configured as
++first stage bootloader:
++
++.. code-block:: sh
++
++  make ARCH=arm microchip_ksz9477_evb_bootstrap_mmc_defconfig
++
++The resulting barebox image must be renamed to ``BOOT.BIN``
++and located in the root directory of the first FAT16/32 partition
++on the SD Card/eMMC. After initialization, ``BOOT.BIN`` will look
++for a ``barebox.bin`` in the same directory and load and execute it
++from SDRAM.
 -- 
 2.20.1
 
