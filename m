@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hAu1R-0005NE-6k
- for barebox@lists.infradead.org; Mon, 01 Apr 2019 10:18:39 +0000
+ id 1hAu1V-0005QF-C9
+ for barebox@lists.infradead.org; Mon, 01 Apr 2019 10:18:41 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  1 Apr 2019 12:18:15 +0200
-Message-Id: <20190401101822.7392-8-a.fatoum@pengutronix.de>
+Date: Mon,  1 Apr 2019 12:18:22 +0200
+Message-Id: <20190401101822.7392-15-a.fatoum@pengutronix.de>
 In-Reply-To: <20190401101822.7392-1-a.fatoum@pengutronix.de>
 References: <20190401101822.7392-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,153 +21,256 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 07/15] ARM: at91: import early_udelay from at91bootstrap
+Subject: [PATCH v3 14/15] ARM: at91: microchip-ksz9477: provide board code
+ fallback
 To: barebox@lists.infradead.org
 Cc: sam@ravnborg.org
 
-For use by the incoming at91bootstrap DDRAMC initialization code,
-this commit provides an early_udelay function usable in PBL imported from
-https://github.com/linux4sam/at91bootstrap/blob/v3.8.12/driver/at91_pit.c
+The newly added device tree based first stage fails to load the second
+stage from MMC, which might be in relation to a preceding atmel_mci
+"command/data timeout" message.
+
+Due to this and because it's not clear yet how viable it's to use the device
+tree for the size-constrained first stage anyway, make CONFIG_OFDEVICE
+configurable and provide a legacy board code based fallback whenever it's
+unselected. The resulting image is 48K big with PBL_CONSOLE compared to
+72K for the device tree based version without PBL_CONSOLE.
+
+If barebox can be shrunk further and the device tree support in the
+first stage was fixed, this commit could be reverted for full device
+tree goodness.
+
+The board code is a stripped down version of the sama5d3_xplained board's.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-at91/Makefile                   |  1 +
- arch/arm/mach-at91/early_udelay.c             | 56 +++++++++++++++++++
- arch/arm/mach-at91/include/mach/at91_pmc_ll.h | 13 ++++-
- .../arm/mach-at91/include/mach/early_udelay.h | 14 +++++
- 4 files changed, 83 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/mach-at91/early_udelay.c
- create mode 100644 arch/arm/mach-at91/include/mach/early_udelay.h
+ .../arm/boards/microchip-ksz9477-evb/Makefile |   3 +
+ arch/arm/boards/microchip-ksz9477-evb/board.c | 127 ++++++++++++++++++
+ .../boards/microchip-ksz9477-evb/lowlevel.c   |   3 +-
+ ...rochip_ksz9477_evb_bootstrap_mmc_defconfig |  24 ++++
+ arch/arm/mach-at91/Kconfig                    |  14 +-
+ 5 files changed, 167 insertions(+), 4 deletions(-)
+ create mode 100644 arch/arm/boards/microchip-ksz9477-evb/board.c
+ create mode 100644 arch/arm/configs/microchip_ksz9477_evb_bootstrap_mmc_defconfig
 
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index 91b06c085107..25a7916c34e4 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -1,5 +1,6 @@
- obj-y += setup.o
- pbl-y += at91_pmc_ll.o
-+pbl-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) += early_udelay.o
- 
- ifeq ($(CONFIG_COMMON_CLK_OF_PROVIDER),)
- obj-y += clock.o
-diff --git a/arch/arm/mach-at91/early_udelay.c b/arch/arm/mach-at91/early_udelay.c
+diff --git a/arch/arm/boards/microchip-ksz9477-evb/Makefile b/arch/arm/boards/microchip-ksz9477-evb/Makefile
+index b08c4a93ca27..8d0379a3f59f 100644
+--- a/arch/arm/boards/microchip-ksz9477-evb/Makefile
++++ b/arch/arm/boards/microchip-ksz9477-evb/Makefile
+@@ -1 +1,4 @@
+ lwl-y += lowlevel.o
++ifeq ($(CONFIG_MACH_MICROCHIP_KSZ9477_EVB_DT),)
++obj-y += board.o
++endif
+diff --git a/arch/arm/boards/microchip-ksz9477-evb/board.c b/arch/arm/boards/microchip-ksz9477-evb/board.c
 new file mode 100644
-index 000000000000..632e797bebe9
+index 000000000000..455b9aca3ab0
 --- /dev/null
-+++ b/arch/arm/mach-at91/early_udelay.c
-@@ -0,0 +1,56 @@
-+// SPDX-License-Identifier: BSD-1-Clause
++++ b/arch/arm/boards/microchip-ksz9477-evb/board.c
+@@ -0,0 +1,127 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
-+ * Copyright (c) 2012, Atmel Corporation
++ * Copyright (C) 2014 Bo Shen <voice.shen@gmail.com>
 + */
 +
-+#include <mach/hardware.h>
-+#include <asm/io.h>
-+#include <mach/at91_pmc_ll.h>
-+#include <mach/at91_pit.h>
-+#include <mach/early_udelay.h>
++#include <init.h>
++#include <mach/board.h>
++#include <mach/iomux.h>
 +
-+static unsigned int master_clock;
-+static void __iomem *pmc, *pit;
-+static bool has_h32mxdiv;
++#if defined(CONFIG_NAND_ATMEL)
++static struct atmel_nand_data nand_pdata = {
++	.ale		= 21,
++	.cle		= 22,
++	.det_pin	= -EINVAL,
++	.rdy_pin	= -EINVAL,
++	.enable_pin	= -EINVAL,
++	.ecc_mode	= NAND_ECC_HW,
++	.has_pmecc	= 1,
++	.pmecc_sector_size = 512,
++	.pmecc_corr_cap = 4,
++	.bus_width_16	= 1,
++	.on_flash_bbt	= 1,
++};
 +
-+/* Because the below statement is used in the function:
-+ *	((MASTER_CLOCK >> 10) * usec) is used,
-+ * to our 32-bit system. the argu "usec" maximum value is:
-+ * supposed "MASTER_CLOCK" is 132M.
-+ *	132000000 / 1024 = 128906
-+ *	(0xffffffff) / 128906 = 33318.
-+ * So the maximum delay time is 33318 us.
-+ */
-+/* requires PIT to be initialized, but not the clocksource framework */
-+void early_udelay(unsigned int usec)
++static struct sam9_smc_config sama5d3_xplained_nand_smc_config = {
++	.ncs_read_setup		= 1,
++	.nrd_setup		= 2,
++	.ncs_write_setup	= 1,
++	.nwe_setup		= 2,
++
++	.ncs_read_pulse		= 5,
++	.nrd_pulse		= 3,
++	.ncs_write_pulse	= 5,
++	.nwe_pulse		= 3,
++
++	.read_cycle		= 8,
++	.write_cycle		= 8,
++
++	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE | AT91_SMC_EXNWMODE_DISABLE,
++	.tdf_cycles		= 3,
++
++	.tclr			= 3,
++	.tadl			= 10,
++	.tar			= 3,
++	.ocms			= 0,
++	.trr			= 4,
++	.twb			= 5,
++	.rbnsel			= 3,
++	.nfsel			= 1
++};
++
++static void ek_add_device_nand(void)
 +{
-+	unsigned int delay;
-+	unsigned int current;
-+	unsigned int base = readl(pit + AT91_PIT_PIIR);
++	struct clk *clk = clk_get(NULL, "smc_clk");
 +
-+	if (has_h32mxdiv)
-+		master_clock /= 2;
++	clk_enable(clk);
 +
-+	delay = ((master_clock >> 10) * usec) >> 14;
++	/* setup bus-width (8 or 16) */
++	if (nand_pdata.bus_width_16)
++		sama5d3_xplained_nand_smc_config.mode |= AT91_SMC_DBW_16;
++	else
++		sama5d3_xplained_nand_smc_config.mode |= AT91_SMC_DBW_8;
 +
-+	do {
-+		current = readl(pit + AT91_PIT_PIIR);
-+		current -= base;
-+	} while (current < delay);
++	/* configure chip-select 3 (NAND) */
++	sama5_smc_configure(0, 3, &sama5d3_xplained_nand_smc_config);
++
++	at91_add_device_nand(&nand_pdata);
 +}
-+
-+void early_udelay_init(void __iomem *pmc_base,
-+		       void __iomem *pit_base,
-+		       unsigned int clock,
-+		       unsigned int master_clock_rate,
-+		       unsigned int flags)
-+{
-+	master_clock = master_clock_rate;
-+	pmc = pmc_base;
-+	pit = pit_base;
-+	has_h32mxdiv = at91_pmc_check_mck_h32mxdiv(pmc, flags);
-+
-+	writel(AT91_PIT_PIV | AT91_PIT_PITEN, pit + AT91_PIT_MR);
-+
-+	at91_pmc_enable_periph_clock(pmc_base, clock);
-+}
-diff --git a/arch/arm/mach-at91/include/mach/at91_pmc_ll.h b/arch/arm/mach-at91/include/mach/at91_pmc_ll.h
-index eda40e8e12e7..e3d3e3ad59db 100644
---- a/arch/arm/mach-at91/include/mach/at91_pmc_ll.h
-+++ b/arch/arm/mach-at91/include/mach/at91_pmc_ll.h
-@@ -13,6 +13,7 @@
- #define AT91_PMC_LL_FLAG_SAM9X5_PMC	(1 << 0)
- #define AT91_PMC_LL_FLAG_MEASURE_XTAL	(1 << 1)
- #define AT91_PMC_LL_FLAG_DISABLE_RC	(1 << 2)
-+#define AT91_PMC_LL_FLAG_H32MXDIV	(1 << 3)
- 
- #define AT91_PMC_LL_AT91RM9200	(0)
- #define AT91_PMC_LL_AT91SAM9260	(0)
-@@ -27,7 +28,8 @@
- 				 AT91_PMC_LL_FLAG_MEASURE_XTAL)
- #define AT91_PMC_LL_SAMA5D3	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
- 				 AT91_PMC_LL_FLAG_DISABLE_RC)
--#define AT91_PMC_LL_SAMA5D4	(AT91_PMC_LL_FLAG_SAM9X5_PMC)
-+#define AT91_PMC_LL_SAMA5D4	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
-+				 AT91_PMC_LL_FLAG_H32MXDIV)
- 
- void at91_pmc_init(void __iomem *pmc_base, unsigned int flags);
- void at91_pmc_cfg_mck(void __iomem *pmc_base, u32 pmc_mckr, unsigned int flags);
-@@ -75,4 +77,13 @@ static inline int at91_pmc_sam9x5_enable_periph_clock(void __iomem *pmc_base,
-        return 0;
- }
- 
-+static inline bool at91_pmc_check_mck_h32mxdiv(void __iomem *pmc_base,
-+					       unsigned flags)
-+{
-+	if (flags & AT91_PMC_LL_FLAG_H32MXDIV)
-+		return readl(pmc_base + AT91_PMC_MCKR) & AT91_PMC_H32MXDIV;
-+
-+	return false;
-+}
-+
- #endif
-diff --git a/arch/arm/mach-at91/include/mach/early_udelay.h b/arch/arm/mach-at91/include/mach/early_udelay.h
-new file mode 100644
-index 000000000000..1c1b0123fee8
---- /dev/null
-+++ b/arch/arm/mach-at91/include/mach/early_udelay.h
-@@ -0,0 +1,14 @@
-+#ifndef __EARLY_UDELAY_H__
-+#define __EARLY_UDELAY_H__
-+
-+#include <linux/compiler.h>
-+
-+/* requires PIT to be initialized, but not the clocksource framework */
-+void early_udelay(unsigned int usec);
-+void early_udelay_init(void __iomem *pmc_base,
-+		       void __iomem *pit_base,
-+		       unsigned int clock,
-+		       unsigned int master_clock_rate,
-+		       unsigned int flags);
-+
++#else
++static void ek_add_device_nand(void) {}
 +#endif
++
++#if defined(CONFIG_MCI_ATMEL)
++/*
++ * MCI (SD/MMC)
++ */
++static struct atmel_mci_platform_data mci0_data = {
++	.bus_width	= 8,
++	.detect_pin	= AT91_PIN_PE0,
++	.wp_pin		= -EINVAL,
++};
++
++static void ek_add_device_mci(void)
++{
++	/* MMC0 */
++	at91_add_device_mci(0, &mci0_data);
++}
++#else
++static void ek_add_device_mci(void) {}
++#endif
++
++static int sama5d3_xplained_mem_init(void)
++{
++	at91_add_device_sdram(0);
++
++	return 0;
++}
++mem_initcall(sama5d3_xplained_mem_init);
++
++static const struct devfs_partition sama5d3_xplained_nand0_partitions[] = {
++	{
++		.offset = 0x00000,
++		.size = SZ_256K,
++		.flags = DEVFS_PARTITION_FIXED,
++		.name = "at91bootstrap_raw",
++		.bbname = "at91bootstrap",
++	}, {
++		.offset = DEVFS_PARTITION_APPEND, /* 256 KiB */
++		.size = SZ_1M,
++		.flags = DEVFS_PARTITION_FIXED,
++		.name = "self_raw",
++		.bbname = "self0",
++	}, {
++		/* sentinel */
++	}
++};
++
++static int sama5d3_xplained_devices_init(void)
++{
++	ek_add_device_nand();
++	ek_add_device_mci();
++
++	devfs_create_partitions("nand0", sama5d3_xplained_nand0_partitions);
++
++	return 0;
++}
++device_initcall(sama5d3_xplained_devices_init);
+diff --git a/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c b/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c
+index cf44021bdfb7..bf9a4aed6183 100644
+--- a/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c
++++ b/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c
+@@ -195,7 +195,8 @@ static noinline void board_init(void)
+ 
+ 	sama5d3_ddramc_init();
+ 
+-	fdt = __dtb_z_at91_microchip_ksz9477_evb_boot_bin_start + get_runtime_offset();
++	if (IS_ENABLED(CONFIG_MACH_MICROCHIP_KSZ9477_EVB_DT))
++		fdt = __dtb_z_at91_microchip_ksz9477_evb_boot_bin_start + get_runtime_offset();
+ 
+ 	barebox_arm_entry(SAMA5_DDRCS, SZ_256M, fdt);
+ }
+diff --git a/arch/arm/configs/microchip_ksz9477_evb_bootstrap_mmc_defconfig b/arch/arm/configs/microchip_ksz9477_evb_bootstrap_mmc_defconfig
+new file mode 100644
+index 000000000000..8af85bc10613
+--- /dev/null
++++ b/arch/arm/configs/microchip_ksz9477_evb_bootstrap_mmc_defconfig
+@@ -0,0 +1,24 @@
++CONFIG_ARCH_SAMA5D3=y
++CONFIG_AT91_MULTI_BOARDS=y
++CONFIG_MACH_MICROCHIP_KSZ9477_EVB=y
++CONFIG_AT91_BOOTSTRAP=y
++CONFIG_MALLOC_TLSF=y
++CONFIG_RELOCATABLE=y
++CONFIG_PROMPT="BOOT.BIN:"
++CONFIG_SHELL_NONE=y
++# CONFIG_TIMESTAMP is not set
++CONFIG_CONSOLE_SIMPLE=y
++CONFIG_PBL_CONSOLE=y
++CONFIG_DEFAULT_LOGLEVEL=6
++CONFIG_DEBUG_LL=y
++# CONFIG_SPI is not set
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++# CONFIG_MCI_WRITE is not set
++CONFIG_MCI_ATMEL=y
++CONFIG_MFD_SYSCON=y
++# CONFIG_FS_RAMFS is not set
++# CONFIG_FS_DEVFS is not set
++CONFIG_FS_FAT=y
++CONFIG_BOOTSTRAP_DEVFS=y
++CONFIG_BOOTSTRAP_DISK=y
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index e72e37c2bf9e..827b05a23496 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -18,6 +18,15 @@ config MACH_AT91SAM9263EK_DT
+ 	  Enabled for at91sam9263ek - evaluation kit.
+ 	  But only if we need the device tree (bootstrap do not use DT)
+ 
++config MACH_MICROCHIP_KSZ9477_EVB_DT
++	def_bool y
++	depends on MACH_MICROCHIP_KSZ9477_EVB && OFDEVICE
++	select ARM_USE_COMPRESSED_DTB
++	help
++	  Enabled for Microchip KSZ9477 - evaluation kit.
++	  But only if we need the device tree (bootstrap doesn't yet work with
++	  DT)
++
+ config HAVE_AT91_SMD
+ 	bool
+ 
+@@ -546,9 +555,8 @@ config MACH_AT91SAM9X5EK
+ config MACH_MICROCHIP_KSZ9477_EVB
+ 	bool "Microchip EVB-KSZ9477 Evaluation Kit"
+ 	depends on ARCH_SAMA5D3
+-	select OFDEVICE
+-	select COMMON_CLK_OF_PROVIDER
+-	select ARM_USE_COMPRESSED_DTB
++	select OFDEVICE if !AT91_LOAD_BAREBOX_SRAM
++	select COMMON_CLK_OF_PROVIDER if OFDEVICE
+ 	select HAVE_AT91_BOOTSTRAP
+ 	help
+ 	  Select this if you are using Microchip's EVB-KSZ9477 Evaluation Kit.
 -- 
 2.20.1
 
