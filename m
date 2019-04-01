@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hAu1V-0005QH-Cn
- for barebox@lists.infradead.org; Mon, 01 Apr 2019 10:18:43 +0000
+ id 1hAu1V-0005NG-RO
+ for barebox@lists.infradead.org; Mon, 01 Apr 2019 10:18:48 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  1 Apr 2019 12:18:12 +0200
-Message-Id: <20190401101822.7392-5-a.fatoum@pengutronix.de>
+Date: Mon,  1 Apr 2019 12:18:20 +0200
+Message-Id: <20190401101822.7392-13-a.fatoum@pengutronix.de>
 In-Reply-To: <20190401101822.7392-1-a.fatoum@pengutronix.de>
 References: <20190401101822.7392-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,288 +21,97 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 04/15] ARM: at91: replace at91sam9_ddrsdr.h with
- at91bootstrap's at91_ddrsdrc.h
+Subject: [PATCH v3 12/15] ARM: dts: microchip-ksz9477-evb: add dummy first
+ stage device tree
 To: barebox@lists.infradead.org
 Cc: sam@ravnborg.org
 
-Instead of adding missing definitions to the existing at91sam9_ddrsdr.h
-and adapting the incoming DDRAM initialization code from at91bootstrap,
-just replace the lightly used existing header with:
-https://github.com/linux4sam/at91bootstrap/blob/v3.8.12/include/arch/at91_ddrsdrc.h
+The existing device tree is too big for the 64K byte constrained
+first stage.
+Because of the size limitation it might be better to only use
+the device tree for the second stage. This increases user-friendliness
+by leaving space for PBL_CONSOLE.
 
-For easier comprehension, the replacement is done in three steps:
-This last step copies the memory size querying functions from at91sam9_ddrsdr.h
-to at91_ddrsdrc.h, then deletes it and fixes all references.
+For now provide a slightly smaller smaller *-boot-bin.dts device tree
+for first stage, which can be further stripped in future commits.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/at91sam9m10g45ek/lowlevel.c   |  2 +-
- arch/arm/boards/at91sam9m10ihd/lowlevel.c     |  2 +-
- arch/arm/boards/at91sam9n12ek/lowlevel.c      |  2 +-
- arch/arm/boards/at91sam9x5ek/lowlevel.c       |  2 +-
- arch/arm/boards/pm9g45/lowlevel.c             |  3 +-
- arch/arm/boards/sama5d3_xplained/lowlevel.c   |  2 +-
- arch/arm/boards/sama5d3xek/lowlevel.c         |  2 +-
- arch/arm/boards/sama5d4_xplained/lowlevel.c   |  2 +-
- arch/arm/boards/sama5d4ek/lowlevel.c          |  2 +-
- arch/arm/mach-at91/at91sam9g45_devices.c      |  2 +-
- arch/arm/mach-at91/at91sam9g45_reset.S        |  2 +-
- arch/arm/mach-at91/at91sam9n12_devices.c      |  2 +-
- arch/arm/mach-at91/at91sam9x5_devices.c       |  2 +-
- .../arm/mach-at91/include/mach/at91_ddrsdrc.h | 44 +++++++++++++++++++
- arch/arm/mach-at91/sama5d3_devices.c          |  2 +-
- arch/arm/mach-at91/sama5d4_devices.c          |  2 +-
- 16 files changed, 60 insertions(+), 15 deletions(-)
+ LICENSES/other/X11                            | 28 +++++++++++++++++++
+ arch/arm/dts/Makefile                         |  4 ++-
+ .../at91-microchip-ksz9477-evb-boot-bin.dts   | 13 +++++++++
+ 3 files changed, 44 insertions(+), 1 deletion(-)
+ create mode 100644 LICENSES/other/X11
+ create mode 100644 arch/arm/dts/at91-microchip-ksz9477-evb-boot-bin.dts
 
-diff --git a/arch/arm/boards/at91sam9m10g45ek/lowlevel.c b/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
-index d5deedfc37b5..add97c641998 100644
---- a/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
-+++ b/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
-@@ -11,7 +11,7 @@
- #include <asm/barebox-arm.h>
- 
- #include <mach/hardware.h>
--#include <mach/at91sam9_ddrsdr.h>
-+#include <mach/at91_ddrsdrc.h>
- 
- void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
- {
-diff --git a/arch/arm/boards/at91sam9m10ihd/lowlevel.c b/arch/arm/boards/at91sam9m10ihd/lowlevel.c
-index 24d41cfa70ea..92988d1945e8 100644
---- a/arch/arm/boards/at91sam9m10ihd/lowlevel.c
-+++ b/arch/arm/boards/at91sam9m10ihd/lowlevel.c
-@@ -10,7 +10,7 @@
- #include <asm/barebox-arm-head.h>
- #include <asm/barebox-arm.h>
- 
--#include <mach/at91sam9_ddrsdr.h>
-+#include <mach/at91_ddrsdrc.h>
- #include <mach/at91sam9g45.h>
- #include <mach/hardware.h>
- 
-diff --git a/arch/arm/boards/at91sam9n12ek/lowlevel.c b/arch/arm/boards/at91sam9n12ek/lowlevel.c
-index 094fd941bc8c..9f460f71a896 100644
---- a/arch/arm/boards/at91sam9n12ek/lowlevel.c
-+++ b/arch/arm/boards/at91sam9n12ek/lowlevel.c
-@@ -10,7 +10,7 @@
- #include <asm/barebox-arm-head.h>
- #include <asm/barebox-arm.h>
- 
--#include <mach/at91sam9_ddrsdr.h>
-+#include <mach/at91_ddrsdrc.h>
- #include <mach/hardware.h>
- 
- void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
-diff --git a/arch/arm/boards/at91sam9x5ek/lowlevel.c b/arch/arm/boards/at91sam9x5ek/lowlevel.c
-index 14c239408d6a..d87c0a99f424 100644
---- a/arch/arm/boards/at91sam9x5ek/lowlevel.c
-+++ b/arch/arm/boards/at91sam9x5ek/lowlevel.c
-@@ -1,6 +1,6 @@
- #include <common.h>
- #include <linux/sizes.h>
--#include <mach/at91sam9_ddrsdr.h>
-+#include <mach/at91_ddrsdrc.h>
- #include <asm/barebox-arm-head.h>
- #include <asm/barebox-arm.h>
- #include <io.h>
-diff --git a/arch/arm/boards/pm9g45/lowlevel.c b/arch/arm/boards/pm9g45/lowlevel.c
-index fbf2b655c708..ec2ab7262245 100644
---- a/arch/arm/boards/pm9g45/lowlevel.c
-+++ b/arch/arm/boards/pm9g45/lowlevel.c
-@@ -10,7 +10,8 @@
- #include <asm/barebox-arm-head.h>
- #include <asm/barebox-arm.h>
- 
--#include <mach/at91sam9_ddrsdr.h>
-+#include <mach/at91_ddrsdrc.h>
+diff --git a/LICENSES/other/X11 b/LICENSES/other/X11
+new file mode 100644
+index 000000000000..fcbafbf7dc75
+--- /dev/null
++++ b/LICENSES/other/X11
+@@ -0,0 +1,28 @@
++Valid-License-Identifier: X11
++SPDX-URL: https://spdx.org/licenses/X11.html
++Usage-Guide:
++  To use the X11 put the following SPDX tag/value pair into a comment
++  according to the placement guidelines in the licensing rules
++  documentation:
++    SPDX-License-Identifier: X11
++License-Text:
 +
- #include <mach/hardware.h>
- 
- void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
-diff --git a/arch/arm/boards/sama5d3_xplained/lowlevel.c b/arch/arm/boards/sama5d3_xplained/lowlevel.c
-index 31c176a3a4c2..37384a160651 100644
---- a/arch/arm/boards/sama5d3_xplained/lowlevel.c
-+++ b/arch/arm/boards/sama5d3_xplained/lowlevel.c
-@@ -10,7 +10,7 @@
- #include <asm/barebox-arm-head.h>
- #include <asm/barebox-arm.h>
- 
--#include <mach/at91sam9_ddrsdr.h>
-+#include <mach/at91_ddrsdrc.h>
- #include <mach/hardware.h>
- 
- void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
-diff --git a/arch/arm/boards/sama5d3xek/lowlevel.c b/arch/arm/boards/sama5d3xek/lowlevel.c
-index 31c176a3a4c2..37384a160651 100644
---- a/arch/arm/boards/sama5d3xek/lowlevel.c
-+++ b/arch/arm/boards/sama5d3xek/lowlevel.c
-@@ -10,7 +10,7 @@
- #include <asm/barebox-arm-head.h>
- #include <asm/barebox-arm.h>
- 
--#include <mach/at91sam9_ddrsdr.h>
-+#include <mach/at91_ddrsdrc.h>
- #include <mach/hardware.h>
- 
- void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
-diff --git a/arch/arm/boards/sama5d4_xplained/lowlevel.c b/arch/arm/boards/sama5d4_xplained/lowlevel.c
-index 47cadfe6750c..89f0b8202eb1 100644
---- a/arch/arm/boards/sama5d4_xplained/lowlevel.c
-+++ b/arch/arm/boards/sama5d4_xplained/lowlevel.c
-@@ -10,7 +10,7 @@
- #include <asm/barebox-arm-head.h>
- #include <asm/barebox-arm.h>
- 
--#include <mach/at91sam9_ddrsdr.h>
-+#include <mach/at91_ddrsdrc.h>
- #include <mach/hardware.h>
- 
- void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
-diff --git a/arch/arm/boards/sama5d4ek/lowlevel.c b/arch/arm/boards/sama5d4ek/lowlevel.c
-index 47cadfe6750c..89f0b8202eb1 100644
---- a/arch/arm/boards/sama5d4ek/lowlevel.c
-+++ b/arch/arm/boards/sama5d4ek/lowlevel.c
-@@ -10,7 +10,7 @@
- #include <asm/barebox-arm-head.h>
- #include <asm/barebox-arm.h>
- 
--#include <mach/at91sam9_ddrsdr.h>
-+#include <mach/at91_ddrsdrc.h>
- #include <mach/hardware.h>
- 
- void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
-diff --git a/arch/arm/mach-at91/at91sam9g45_devices.c b/arch/arm/mach-at91/at91sam9g45_devices.c
-index df0c8a4e4f4e..ed655863e5c9 100644
---- a/arch/arm/mach-at91/at91sam9g45_devices.c
-+++ b/arch/arm/mach-at91/at91sam9g45_devices.c
-@@ -17,7 +17,7 @@
- #include <mach/hardware.h>
- #include <mach/at91_pmc.h>
- #include <mach/at91sam9g45_matrix.h>
--#include <mach/at91sam9_ddrsdr.h>
-+#include <mach/at91_ddrsdrc.h>
- #include <mach/at91_rtt.h>
- #include <mach/board.h>
- #include <mach/iomux.h>
-diff --git a/arch/arm/mach-at91/at91sam9g45_reset.S b/arch/arm/mach-at91/at91sam9g45_reset.S
-index 085683c7f9d8..9077871d7203 100644
---- a/arch/arm/mach-at91/at91sam9g45_reset.S
-+++ b/arch/arm/mach-at91/at91sam9g45_reset.S
-@@ -12,7 +12,7 @@
- 
- #include <linux/linkage.h>
- #include <mach/hardware.h>
--#include <mach/at91sam9_ddrsdr.h>
-+#include <mach/at91_ddrsdrc.h>
- #include <mach/at91_rstc.h>
- 
- 			.arm
-diff --git a/arch/arm/mach-at91/at91sam9n12_devices.c b/arch/arm/mach-at91/at91sam9n12_devices.c
-index 3ee07568f2c7..6ed7e4fdec41 100644
---- a/arch/arm/mach-at91/at91sam9n12_devices.c
-+++ b/arch/arm/mach-at91/at91sam9n12_devices.c
-@@ -18,7 +18,7 @@
- #include <mach/board.h>
- #include <mach/at91_pmc.h>
- #include <mach/at91sam9n12_matrix.h>
--#include <mach/at91sam9_ddrsdr.h>
-+#include <mach/at91_ddrsdrc.h>
- #include <mach/iomux.h>
- #include <mach/cpu.h>
- #include <i2c/i2c-gpio.h>
-diff --git a/arch/arm/mach-at91/at91sam9x5_devices.c b/arch/arm/mach-at91/at91sam9x5_devices.c
-index f794d9ae8f73..e85d712293ac 100644
---- a/arch/arm/mach-at91/at91sam9x5_devices.c
-+++ b/arch/arm/mach-at91/at91sam9x5_devices.c
-@@ -17,7 +17,7 @@
- #include <mach/board.h>
- #include <mach/at91_pmc.h>
- #include <mach/at91sam9x5_matrix.h>
--#include <mach/at91sam9_ddrsdr.h>
-+#include <mach/at91_ddrsdrc.h>
- #include <mach/iomux.h>
- #include <mach/cpu.h>
- #include <i2c/i2c-gpio.h>
-diff --git a/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h b/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h
-index 57d0d8f489c4..7e68e7dd63eb 100644
---- a/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h
-+++ b/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h
-@@ -285,4 +285,48 @@
- #define AT91C_DDRC2_WPVS	(0x1UL << 0)
- #define AT91C_DDRC2_WPSRC	(0xFFFFUL << 8)
- 
-+#ifndef __ASSEMBLY__
-+#include <common.h>
-+#include <io.h>
 +
-+static inline u32 at91_get_ddram_size(void * __iomem base, bool is_nb)
-+{
-+	u32 cr;
-+	u32 mdr;
-+	u32 size;
-+	bool is_sdram;
++X11 License
 +
-+	cr = readl(base + AT91C_HDDRSDRC2_CR);
-+	mdr = readl(base + AT91C_HDDRSDRC2_MDR);
++Permission is hereby granted, free of charge, to any person obtaining a
++copy of this software and associated documentation files (the "Software"),
++to deal in the Software without restriction, including without limitation
++the rights to use, copy, modify, merge, publish, distribute, sublicense,
++and/or sell copies of the Software, and to permit persons to whom the
++Software is furnished to do so, subject to the following conditions:
 +
-+	/* will always be false for sama5d2, sama5d3 or sama5d4 */
-+	is_sdram = (mdr & AT91C_DDRC2_MD) <= AT91C_DDRC2_MD_LP_SDR_SDRAM;
++The above copyright notice and this permission notice shall be included in
++all copies or substantial portions of the Software.
 +
-+	/* Formula:
-+	 * size = bank << (col + row + 1);
-+	 * if (bandwidth == 32 bits)
-+	 *	size <<= 1;
-+	 */
-+	size = 1;
-+	/* COL */
-+	size += (cr & AT91C_DDRC2_NC) + 8;
-+	if (!is_sdram)
-+		size ++;
-+	/* ROW */
-+	size += ((cr & AT91C_DDRC2_NR) >> 2) + 11;
-+	/* BANK */
-+	if (is_nb)
-+		size = ((cr & AT91C_DDRC2_NB_BANKS) ? 8 : 4) << size;
-+	else
-+		size = 4 << size;
++THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++X CONSORTIUM BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
++IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
++CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 1c6129816daf..64c068334713 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -127,7 +127,9 @@ pbl-dtb-$(CONFIG_MACH_ZII_VF610_DEV) += \
+ 	vf610-zii-scu4-aib.dtb.o	\
+ 	vf610-zii-spb4.dtb.o
+ pbl-dtb-$(CONFIG_MACH_AT91SAM9263EK_DT) += at91sam9263ek.dtb.o
+-pbl-dtb-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += at91-microchip-ksz9477-evb.dtb.o
++pbl-dtb-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += \
++	at91-microchip-ksz9477-evb.dtb.o 	\
++	at91-microchip-ksz9477-evb-boot-bin.dtb.o
+ pbl-dtb-$(CONFIG_MACH_AT91SAM9X5EK) += at91sam9x5ek.dtb.o
+ pbl-dtb-$(CONFIG_MACH_XILINX_ZCU104) += zynqmp-zcu104-revA.dtb.o
+ 
+diff --git a/arch/arm/dts/at91-microchip-ksz9477-evb-boot-bin.dts b/arch/arm/dts/at91-microchip-ksz9477-evb-boot-bin.dts
+new file mode 100644
+index 000000000000..8823204bcbc7
+--- /dev/null
++++ b/arch/arm/dts/at91-microchip-ksz9477-evb-boot-bin.dts
+@@ -0,0 +1,13 @@
++/*
++ * at91-microchip-ksz9477-evb-boot-bin.dts - First Stage Device Tree for EVB-KSZ9477
++ *
++ * Copyright (C) 2019 Ahmad Fatoum <a.fatoum@pengutronix.de>
++ *
++ * SPDX-License-Identifier: (GPL-2.0-only OR X11)
++ */
++#include "at91-microchip-ksz9477-evb.dts"
 +
-+	/* bandwidth */
-+	if (!(mdr & AT91C_DDRC2_DBW))
-+		size <<= 1;
-+
-+	return size;
-+}
-+
-+#endif /* __ASSEMBLY__ */
-+
- #endif /* __AT91_DDRSDRC_H__ */
-diff --git a/arch/arm/mach-at91/sama5d3_devices.c b/arch/arm/mach-at91/sama5d3_devices.c
-index 479e81f0f588..35e66de3f5f7 100644
---- a/arch/arm/mach-at91/sama5d3_devices.c
-+++ b/arch/arm/mach-at91/sama5d3_devices.c
-@@ -18,7 +18,7 @@
- #include <mach/board.h>
- #include <mach/at91_pmc.h>
- #include <mach/at91sam9x5_matrix.h>
--#include <mach/at91sam9_ddrsdr.h>
-+#include <mach/at91_ddrsdrc.h>
- #include <mach/iomux.h>
- #include <mach/cpu.h>
- #include <i2c/i2c-gpio.h>
-diff --git a/arch/arm/mach-at91/sama5d4_devices.c b/arch/arm/mach-at91/sama5d4_devices.c
-index 4a6683981595..c9c3960258eb 100644
---- a/arch/arm/mach-at91/sama5d4_devices.c
-+++ b/arch/arm/mach-at91/sama5d4_devices.c
-@@ -19,7 +19,7 @@
- #include <mach/board.h>
- #include <mach/at91_pmc.h>
- #include <mach/at91sam9x5_matrix.h>
--#include <mach/at91sam9_ddrsdr.h>
-+#include <mach/at91_ddrsdrc.h>
- #include <mach/iomux.h>
- #include <mach/cpu.h>
- #include <i2c/i2c-gpio.h>
++/delete-node/ &spi1;
++/delete-node/ &macb0;
++/delete-node/ &macb1;
++/delete-node/ &pinctrl_spi_ksz;
 -- 
 2.20.1
 
