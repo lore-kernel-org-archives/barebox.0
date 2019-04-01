@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hBcbg-0001Tm-QU
- for barebox@lists.infradead.org; Wed, 03 Apr 2019 09:54:58 +0000
-References: <20190401101822.7392-1-a.fatoum@pengutronix.de>
- <20190401101822.7392-5-a.fatoum@pengutronix.de>
- <20190402172521.GA18142@ravnborg.org>
- <8be2df02-cd5f-f879-8041-0c2cad0e0c19@pengutronix.de>
- <20190402191837.GA5916@ravnborg.org>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <deb6cddb-835f-6580-7c1d-2f82d432ff37@pengutronix.de>
-Date: Wed, 3 Apr 2019 11:54:55 +0200
+ id 1hB3oW-0001Nq-69
+ for barebox@lists.infradead.org; Mon, 01 Apr 2019 20:45:54 +0000
+Date: Mon, 1 Apr 2019 22:45:48 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20190401204548.GB2534@ravnborg.org>
+References: <20190401093106.4595-1-a.fatoum@pengutronix.de>
+ <20190401093106.4595-8-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20190402191837.GA5916@ravnborg.org>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20190401093106.4595-8-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,61 +23,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 04/15] ARM: at91: replace at91sam9_ddrsdr.h with
- at91bootstrap's at91_ddrsdrc.h
-To: Sam Ravnborg <sam@ravnborg.org>
+Subject: Re: [PATCH v2 07/10] ARM: at91: remove at91sam9n12_get_ddram_size
+ helper
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi,
-
-On 2/4/19 21:18, Sam Ravnborg wrote:
-> Hi Ahmad.
+On Mon, Apr 01, 2019 at 11:31:03AM +0200, Ahmad Fatoum wrote:
+> Substitute the current #ifdefery in at91sam9_ddrsdr.h by
+> open-coding at91sam9n12_get_ddram_size wherever it was called.
 > 
->>>
->>> If we introduced the following small helpers we could simplify the call sites
->>> to just use at91_get_ddram_size(AT91SAM9G45_BASE_DDRSDRC0) and similar.
->>>
->>> static inline u32 at91_get_ddram_size(void __force __iomem * addr)
->>> {
->>> 	return __at91_get_ddram_size(IOMEM(addr), true);
->>> }
->>>
->>> static inline u32 at91sam9g45_get_ddram_size(void __force __iomem * addr)
->>> {
->>> 	return __at91_get_ddram_size(IOMEM(addr), false);
->>> }
->>
->> That would still require the pointer cast to pacify the -Wint-conversion.
->> And (void*)ADDR looks only marginally better IOMEM(ADDR) IMO
->> at the cost of having sparse miss passing memory pointers
->> (__force __iomem would be equivalent to just __attribute__((noderef)), wouldn't it?)
->>
->> My preference would've been that AT91SAM9G45_BASE_DDRSDRC0 already expands
->> to a void __iomem *.
-> The main idea was to get rid of the bool argument and use more explicit function
-> names. Moving IOMEM() was the added extra.
-
-Ah, I see now what you mean. I'll respin the series anyway, so I'll revert to
-what I did in the previous series version (SoC-family-specific helper).
-
-> 
->> We could do that in a follow-up patch.
-> Agreed, maybe later if we do it.
-> The original patch in this mail was fine.
-> 
-> You can add my:
-> Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-> 
-> If you respin the series.
-> 
-> 	Sam
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> Suggested-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 
 _______________________________________________
 barebox mailing list
