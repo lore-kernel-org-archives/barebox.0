@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hBMQF-0004G7-4P
- for barebox@lists.infradead.org; Tue, 02 Apr 2019 16:38:04 +0000
-Date: Tue, 2 Apr 2019 18:37:56 +0200
+ id 1hB3oK-0001KH-Ke
+ for barebox@lists.infradead.org; Mon, 01 Apr 2019 20:45:42 +0000
+Date: Mon, 1 Apr 2019 22:45:31 +0200
 From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20190402163756.GA7902@ravnborg.org>
+Message-ID: <20190401204531.GA2534@ravnborg.org>
 References: <20190401093106.4595-1-a.fatoum@pengutronix.de>
- <20190401213427.6365-1-a.fatoum@pengutronix.de>
+ <20190401093106.4595-7-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190401213427.6365-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20190401093106.4595-7-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,23 +23,16 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 11/10] clk: at91: fix warning about missing const-safety
+Subject: Re: [PATCH v2 06/10] ARM: at91: remove at91sam9g45_get_ddram_size
+ helper
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Apr 01, 2019 at 11:34:27PM +0200, Ahmad Fatoum wrote:
-> compiling clk-generated.c results in:
+On Mon, Apr 01, 2019 at 11:31:02AM +0200, Ahmad Fatoum wrote:
+> Substitute the current #ifdefery in at91sam9_ddrsdr.h by
+> open-coding at91sam9g45_get_ddram_size wherever it was called.
 > 
-> warning: passing argument 1 of 'memcpy' discards 'const' qualifier from
-> pointer target type [-Wdiscarded-qualifiers]
->   memcpy(gck->hw.parent_names, parent_names, parents_array_size);
->          ~~~~~~~^~~~~~~~~~~~~
-> 
-> Avoid this by replacing the xzalloc+memcpy pair with xmemdup.
-> Zero-initialization of the buffer isn't necessary, because
-> memcpy spans the whole buffer.
-> 
-> Suggested-by: Sam Ravnborg <sam@ravnborg.org>
+> Suggested-by: Sascha Hauer <s.hauer@pengutronix.de>
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 
