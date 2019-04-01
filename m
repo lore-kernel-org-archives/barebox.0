@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hAx7j-0003Qq-W1
- for barebox@lists.infradead.org; Mon, 01 Apr 2019 13:37:18 +0000
-References: <20190401101822.7392-1-a.fatoum@pengutronix.de>
- <20190401101822.7392-14-a.fatoum@pengutronix.de>
- <20190401123758.ubx75kuc6shvuht3@pengutronix.de>
+ id 1hAu1R-0005ND-6l
+ for barebox@lists.infradead.org; Mon, 01 Apr 2019 10:18:42 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <f565381a-13f3-0303-7f23-142d2a73fd8b@pengutronix.de>
-Date: Mon, 1 Apr 2019 15:37:14 +0200
+Date: Mon,  1 Apr 2019 12:18:10 +0200
+Message-Id: <20190401101822.7392-3-a.fatoum@pengutronix.de>
+In-Reply-To: <20190401101822.7392-1-a.fatoum@pengutronix.de>
+References: <20190401101822.7392-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20190401123758.ubx75kuc6shvuht3@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,356 +21,321 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 13/15] ARM: at91: microchip-ksz9477-evb: implement
- first stage
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: barebox@lists.infradead.org, sam@ravnborg.org
+Subject: [PATCH v3 02/15] ARM: at91: import at91bootstrap's at91_ddrsdrc.h
+To: barebox@lists.infradead.org
+Cc: sam@ravnborg.org
 
-On 4/1/19 2:37 PM, Roland Hieber wrote:
-> On Mon, Apr 01, 2019 at 12:18:21PM +0200, Ahmad Fatoum wrote:
->> This imports the low level init code from at91bootstrap
->> https://github.com/linux4sam/at91bootstrap/blob/v3.8.12/board/sama5d3_xplained/sama5d3_xplained.c
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  .../boards/microchip-ksz9477-evb/lowlevel.c   | 208 +++++++++++++++++-
->>  arch/arm/mach-at91/Kconfig                    |   2 +
->>  arch/arm/mach-at91/include/mach/at91_pmc.h    |   8 +
->>  arch/arm/mach-at91/include/mach/sama5d3.h     |   1 +
->>  images/Makefile.at91                          |   5 +
->>  5 files changed, 220 insertions(+), 4 deletions(-)
->>
->> diff --git a/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c b/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c
->> index 4293f8aaa57d..cf44021bdfb7 100644
->> --- a/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c
->> +++ b/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c
->> @@ -1,7 +1,19 @@
->> +// SPDX-License-Identifier: GPL-2.0-only AND BSD-1-Clause
->>  /*
->> + * Copyright (c) 2014, Atmel Corporation
->>   * Copyright (C) 2018 Ahmad Fatoum, Pengutronix
->>   *
->> - * Under GPLv2
->> + *
->> + * DISCLAIMER: THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR
->> + * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
->> + * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
->> + * DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR ANY DIRECT, INDIRECT,
->> + * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
->> + * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
->> + * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
->> + * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
->> + * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
->> + * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
->>   */
-> 
-> Here you included the original disclaimer? For what reason? :)
+Instead of adding missing definitions to the existing at91sam9_ddrsdr.h
+and adapting the incoming DDRAM initialization code from at91bootstrap,
+just replace the lightly used existing header with:
+https://github.com/linux4sam/at91bootstrap/blob/v3.8.12/include/arch/at91_ddrsdrc.h
 
-Was already writing the cover letter and was too lazy to do the
-git send-email spiel again.
+For easier comprehension, the replacement is done in three steps:
+Here the header is imported.
 
-> 
->  - Roland
-> 
->>  
->>  #include <common.h>
->> @@ -10,18 +22,206 @@
->>  #include <asm/barebox-arm-head.h>
->>  #include <asm/barebox-arm.h>
->>  
->> -#include <mach/hardware.h>
->> +#include <debug_ll.h>
->> +#include <linux/kconfig.h>
->> +#include <mach/at91_dbgu.h>
->> +#include <mach/at91_ddrsdrc.h>
->> +#include <mach/at91_pmc_ll.h>
->> +#include <mach/at91_pio.h>
->> +#include <mach/at91_wdt.h>
->> +#include <mach/ddramc.h>
->> +#include <mach/early_udelay.h>
->> +#include <mach/gpio.h>
->> +#include <mach/iomux.h>
->> +
->> +/* PCK = 528MHz, MCK = 132MHz */
->> +#define MASTER_CLOCK	132000000
->> +
->> +#define PMC_BASE IOMEM(SAMA5D3_BASE_PMC)
->> +#define sama5d3_pmc_enable_periph_clock(clk) \
->> +	at91_pmc_enable_periph_clock(PMC_BASE, clk)
->> +
->> +#define BAUDRATE(mck, baud) \
->> +	((((((mck) * 10) / ((baud) * 16)) % 10) >= 5) ? \
->> +	(mck / (baud * 16) + 1) : ((mck) / (baud * 16)))
->> +
->> +
->> +static void configure_periph_a_piob_pin(unsigned int pin)
->> +{
->> +	void __iomem *pio = IOMEM(SAMA5D3_BASE_PIOB);
->> +	u32 mask = pin_to_mask(pin);
->> +
->> +	at91_mux_disable_interrupt(pio, mask);
->> +	at91_mux_set_pullup(pio, mask, 0);
->> +	at91_mux_pio3_set_pulldown(pio, mask, 0);
->> +
->> +	at91_mux_pio3_set_A_periph(pio, mask);
->> +
->> +	at91_mux_gpio_disable(pio, mask);
->> +}
->> +
->> +static noinline void dbgu_init(void)
->> +{
->> +	sama5d3_pmc_enable_periph_clock(SAMA5D3_ID_PIOB);
->> +
->> +	configure_periph_a_piob_pin(AT91_PIN_PB30);
->> +	configure_periph_a_piob_pin(AT91_PIN_PB31);
->> +
->> +	sama5d3_pmc_enable_periph_clock(SAMA5D3_ID_DBGU);
->> +	at91_dbgu_setup_ll(AT91_BASE_DBGU1, BAUDRATE(MASTER_CLOCK, 115200));
->> +
->> +	putc_ll('>');
->> +}
->> +
->> +static void ddramc_reg_config(struct at91_ddramc_register *ddramc_config)
->> +{
->> +	ddramc_config->mdr = (AT91C_DDRC2_DBW_32_BITS
->> +				| AT91C_DDRC2_MD_DDR2_SDRAM);
->> +
->> +	ddramc_config->cr = (AT91C_DDRC2_NC_DDR10_SDR9
->> +				| AT91C_DDRC2_NR_13
->> +				| AT91C_DDRC2_CAS_3
->> +				| AT91C_DDRC2_DISABLE_RESET_DLL
->> +				| AT91C_DDRC2_ENABLE_DLL
->> +				| AT91C_DDRC2_ENRDM_ENABLE
->> +				| AT91C_DDRC2_NB_BANKS_8
->> +				| AT91C_DDRC2_NDQS_DISABLED
->> +				| AT91C_DDRC2_DECOD_INTERLEAVED
->> +				| AT91C_DDRC2_UNAL_SUPPORTED);
->> +
->> +	/*
->> +	 * The DDR2-SDRAM device requires a refresh every 15.625 us or 7.81 us.
->> +	 * With a 133 MHz frequency, the refresh timer count register must to be
->> +	 * set with (15.625 x 133 MHz) ~ 2084 i.e. 0x824
->> +	 * or (7.81 x 133 MHz) ~ 1039 i.e. 0x40F.
->> +	 */
->> +	ddramc_config->rtr = 0x40F;     /* Refresh timer: 7.812us */
->> +
->> +	/* One clock cycle @ 133 MHz = 7.5 ns */
->> +	ddramc_config->t0pr = (AT91C_DDRC2_TRAS_(6)	/* 6 * 7.5 = 45 ns */
->> +			| AT91C_DDRC2_TRCD_(2)		/* 2 * 7.5 = 22.5 ns */
->> +			| AT91C_DDRC2_TWR_(2)		/* 2 * 7.5 = 15   ns */
->> +			| AT91C_DDRC2_TRC_(8)		/* 8 * 7.5 = 75   ns */
->> +			| AT91C_DDRC2_TRP_(2)		/* 2 * 7.5 = 15   ns */
->> +			| AT91C_DDRC2_TRRD_(2)		/* 2 * 7.5 = 15   ns */
->> +			| AT91C_DDRC2_TWTR_(2)		/* 2 clock cycles min */
->> +			| AT91C_DDRC2_TMRD_(2));	/* 2 clock cycles */
->> +
->> +	ddramc_config->t1pr = (AT91C_DDRC2_TXP_(2)	/* 2 clock cycles */
->> +			| AT91C_DDRC2_TXSRD_(200)	/* 200 clock cycles */
->> +			| AT91C_DDRC2_TXSNR_(19)	/* 19 * 7.5 = 142.5 ns */
->> +			| AT91C_DDRC2_TRFC_(17));	/* 17 * 7.5 = 127.5 ns */
->> +
->> +	ddramc_config->t2pr = (AT91C_DDRC2_TFAW_(6)	/* 6 * 7.5 = 45 ns */
->> +			| AT91C_DDRC2_TRTP_(2)		/* 2 clock cycles min */
->> +			| AT91C_DDRC2_TRPA_(2)		/* 2 * 7.5 = 15 ns */
->> +			| AT91C_DDRC2_TXARDS_(8)	/* = TXARD */
->> +			| AT91C_DDRC2_TXARD_(8));	/* MR12 = 1 */
->> +}
->> +
->> +static void sama5d3_ddramc_init(void)
->> +{
->> +	struct at91_ddramc_register ddramc_reg;
->> +	u32 reg;
->> +
->> +	ddramc_reg_config(&ddramc_reg);
->> +
->> +	/* enable ddr2 clock */
->> +	sama5d3_pmc_enable_periph_clock(SAMA5D3_ID_MPDDRC);
->> +	at91_pmc_enable_system_clock(PMC_BASE, AT91CAP9_PMC_DDR);
->> +
->> +
->> +	/* Init the special register for sama5d3x */
->> +	/* MPDDRC DLL Slave Offset Register: DDR2 configuration */
->> +	reg = AT91C_MPDDRC_S0OFF_1
->> +		| AT91C_MPDDRC_S2OFF_1
->> +		| AT91C_MPDDRC_S3OFF_1;
->> +	writel(reg, SAMA5D3_BASE_MPDDRC + AT91C_MPDDRC_DLL_SOR);
->>  
->> +	/* MPDDRC DLL Master Offset Register */
->> +	/* write master + clk90 offset */
->> +	reg = AT91C_MPDDRC_MOFF_7
->> +		| AT91C_MPDDRC_CLK90OFF_31
->> +		| AT91C_MPDDRC_SELOFF_ENABLED | AT91C_MPDDRC_KEY;
->> +	writel(reg, SAMA5D3_BASE_MPDDRC + AT91C_MPDDRC_DLL_MOR);
->> +
->> +	/* MPDDRC I/O Calibration Register */
->> +	/* DDR2 RZQ = 50 Ohm */
->> +	/* TZQIO = 4 */
->> +	reg = AT91C_MPDDRC_RDIV_DDR2_RZQ_50
->> +		| AT91C_MPDDRC_TZQIO_4;
->> +	writel(reg, SAMA5D3_BASE_MPDDRC + AT91C_MPDDRC_IO_CALIBR);
->> +
->> +	/* DDRAM2 Controller initialize */
->> +	at91_ddram_initialize(SAMA5D3_BASE_MPDDRC, SAMA5_DDRCS, &ddramc_reg);
->> +}
->> +
->> +extern char __dtb_z_at91_microchip_ksz9477_evb_boot_bin_start[];
->>  extern char __dtb_z_at91_microchip_ksz9477_evb_start[];
->>  
->> -ENTRY_FUNCTION(start_sama5d3_xplained_ung8071, r0, r1, r2)
->> +static noinline void board_init(void)
->>  {
->> -	void *fdt;
->> +	void *fdt = NULL;
->> +
->> +	at91_wdt_disable(IOMEM(SAMA5D3_BASE_WDT));
->> +	at91_pmc_init(PMC_BASE, AT91_PMC_LL_SAMA5D3);
->> +
->> +	/* At this stage the main oscillator
->> +	 * is supposed to be enabled PCK = MCK = MOSC
->> +	 */
->> +
->> +	/* Configure PLLA = MOSC * (PLL_MULA + 1) / PLL_DIVA */
->> +	at91_pmc_cfg_plla(PMC_BASE, AT91_PMC3_MUL_(43) | AT91_PMC_OUT_0
->> +			  | AT91_PMC_PLLCOUNT
->> +			  | AT91_PMC_DIV_BYPASS,
->> +			  AT91_PMC_LL_SAMA5D3);
->> +
->> +	/* Initialize PLLA charge pump */
->> +	at91_pmc_init_pll(PMC_BASE, AT91_PMC_IPLLA_3);
->> +
->> +	/* Switch PCK/MCK on Main clock output */
->> +	at91_pmc_cfg_mck(PMC_BASE, AT91SAM9_PMC_MDIV_4 | AT91_PMC_CSS_MAIN,
->> +			 AT91_PMC_LL_SAMA5D3);
->> +
->> +	/* Switch PCK/MCK on PLLA output */
->> +	at91_pmc_cfg_mck(PMC_BASE, AT91SAM9_PMC_MDIV_4 | AT91_PMC_CSS_PLLA,
->> +			 AT91_PMC_LL_SAMA5D3);
->> +
->> +	if (IS_ENABLED(CONFIG_DEBUG_LL))
->> +		dbgu_init();
->> +
->> +	early_udelay_init(PMC_BASE, IOMEM(SAMA5D3_BASE_PIT),
->> +			  SAMA5D3_ID_PIT, MASTER_CLOCK, AT91_PMC_LL_SAMA5D3);
->> +
->> +	sama5d3_ddramc_init();
->>  
->> +	fdt = __dtb_z_at91_microchip_ksz9477_evb_boot_bin_start + get_runtime_offset();
->> +
->> +	barebox_arm_entry(SAMA5_DDRCS, SZ_256M, fdt);
->> +}
->> +
->> +ENTRY_FUNCTION(start_sama5d3_xplained_ung8071_boot_bin, r0, r1, r2)
->> +{
->>  	arm_cpu_lowlevel_init();
->>  
->>  	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE - 16);
->>  
->> +	relocate_to_current_adr();
->> +	setup_c();
->> +	barrier();
->> +
->> +	board_init();
->> +}
->> +
->> +ENTRY_FUNCTION(start_sama5d3_xplained_ung8071, r0, r1, r2)
->> +{
->> +	void *fdt;
->> +
->> +	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE - 16);
->> +
->> +	if (IS_ENABLED(CONFIG_DEBUG_LL))
->> +		dbgu_init();
->> +
->>  	fdt = __dtb_z_at91_microchip_ksz9477_evb_start + get_runtime_offset();
->>  
->>  	barebox_arm_entry(SAMA5_DDRCS, SZ_256M, fdt);
->> diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
->> index 1401b8cfc9bb..e72e37c2bf9e 100644
->> --- a/arch/arm/mach-at91/Kconfig
->> +++ b/arch/arm/mach-at91/Kconfig
->> @@ -200,6 +200,7 @@ config ARCH_SAMA5D3
->>  	select SOC_SAMA5D3
->>  	select HAS_MACB
->>  	select HAVE_MACH_ARM_HEAD
->> +	select HAVE_AT91_LOAD_BAREBOX_SRAM
->>  
->>  config ARCH_SAMA5D4
->>  	bool "SAMA5D4"
->> @@ -548,6 +549,7 @@ config MACH_MICROCHIP_KSZ9477_EVB
->>  	select OFDEVICE
->>  	select COMMON_CLK_OF_PROVIDER
->>  	select ARM_USE_COMPRESSED_DTB
->> +	select HAVE_AT91_BOOTSTRAP
->>  	help
->>  	  Select this if you are using Microchip's EVB-KSZ9477 Evaluation Kit.
->>  
->> diff --git a/arch/arm/mach-at91/include/mach/at91_pmc.h b/arch/arm/mach-at91/include/mach/at91_pmc.h
->> index 4d60becefbab..dfc0fa63017f 100644
->> --- a/arch/arm/mach-at91/include/mach/at91_pmc.h
->> +++ b/arch/arm/mach-at91/include/mach/at91_pmc.h
->> @@ -66,9 +66,17 @@
->>  #define	AT91_CKGR_PLLAR		0x28			/* PLL A Register */
->>  #define	AT91_CKGR_PLLBR		0x2c			/* PLL B Register */
->>  #define		AT91_PMC_DIV		(0xff  <<  0)		/* Divider */
->> +#define			AT91_PMC_DIV_BYPASS	(1 << 0)		/* Divider bypass */
->>  #define		AT91_PMC_PLLCOUNT	(0x3f  <<  8)		/* PLL Counter */
->>  #define		AT91_PMC_OUT		(3     << 14)		/* PLL Clock Frequency Range */
->> +#define			AT91_PMC_OUT_0		(0 << 14)
->> +#define			AT91_PMC_OUT_1		(1 << 14)
->> +#define			AT91_PMC_OUT_2		(2 << 14)
->> +#define			AT91_PMC_OUT_3		(3 << 14)
->>  #define		AT91_PMC_MUL		(0x7ff << 16)		/* PLL Multiplier */
->> +#define			AT91_PMC_MUL_(n)		(((n) << 16) & AT91_PMC_MUL)
->> +#define		AT91_PMC3_MUL		(0x7f << 18)		/* PLL Multiplier [SAMA5 only]*/
->> +#define			AT91_PMC3_MUL_(n)		(((n) << 18) & AT91_PMC3_MUL)
->>  #define		AT91_PMC_USBDIV		(3     << 28)		/* USB Divisor (PLLB only) */
->>  #define			AT91_PMC_USBDIV_1		(0 << 28)
->>  #define			AT91_PMC_USBDIV_2		(1 << 28)
->> diff --git a/arch/arm/mach-at91/include/mach/sama5d3.h b/arch/arm/mach-at91/include/mach/sama5d3.h
->> index f0e53610c6c0..da6e825593e6 100644
->> --- a/arch/arm/mach-at91/include/mach/sama5d3.h
->> +++ b/arch/arm/mach-at91/include/mach/sama5d3.h
->> @@ -87,6 +87,7 @@
->>  #define SAMA5D3_BASE_PIOC	0xfffff600
->>  #define SAMA5D3_BASE_PIOD	0xfffff800
->>  #define SAMA5D3_BASE_PIOE	0xfffffa00
->> +#define SAMA5D3_BASE_PMC	0xfffffc00
->>  #define SAMA5D3_BASE_MPDDRC	0xffffea00
->>  #define	SAMA5D3_BASE_HSMC	0xffffc000
->>  #define SAMA5D3_BASE_RSTC	0xfffffe00
->> diff --git a/images/Makefile.at91 b/images/Makefile.at91
->> index 3f1dd57f6c58..3c3be0a30f66 100644
->> --- a/images/Makefile.at91
->> +++ b/images/Makefile.at91
->> @@ -14,6 +14,11 @@ pblb-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += start_sama5d3_xplained_ung8071
->>  FILE_barebox-microchip-ksz9477-evb.img = start_sama5d3_xplained_ung8071.pblb
->>  at91-barebox-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += barebox-microchip-ksz9477-evb.img
->>  
->> +pblb-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += start_sama5d3_xplained_ung8071_boot_bin
->> +MAX_PBL_IMAGE_SIZE_start_sama5d3_xplained_ung8071_boot_bin = 0x10000
->> +FILE_barebox-microchip-ksz9477-evb-boot.bin.img = start_sama5d3_xplained_ung8071_boot_bin.pblb
->> +at91-boot-bin-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += barebox-microchip-ksz9477-evb-boot.bin.img
->> +
->>  ifdef CONFIG_AT91_LOAD_BAREBOX_SRAM
->>  image-y += $(at91-boot-bin-y)
->>  else
->> -- 
->> 2.20.1
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
-> 
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ .../arm/mach-at91/include/mach/at91_ddrsdrc.h | 288 ++++++++++++++++++
+ 1 file changed, 288 insertions(+)
+ create mode 100644 arch/arm/mach-at91/include/mach/at91_ddrsdrc.h
 
-
+diff --git a/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h b/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h
+new file mode 100644
+index 000000000000..57d0d8f489c4
+--- /dev/null
++++ b/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h
+@@ -0,0 +1,288 @@
++// SPDX-License-Identifier: BSD-1-Clause
++/*
++ * Copyright (c) 2006, Atmel Corporation
++ */
++#ifndef __AT91_DDRSDRC_H__
++#define __AT91_DDRSDRC_H__
++
++/**** Register offset in AT91S_HDDRSDRC2 structure ***/
++#define AT91C_HDDRSDRC2_MR		0x00	/* Mode Register */
++#define AT91C_HDDRSDRC2_RTR		0x04	/* Refresh Timer Register */
++#define AT91C_HDDRSDRC2_CR		0x08	/* Configuration Register */
++#define AT91C_HDDRSDRC2_T0PR		0x0C	/* Timing Parameter 0 Register */
++#define AT91C_HDDRSDRC2_T1PR		0x10	/* Timing Parameter 1 Register */
++#define AT91C_HDDRSDRC2_T2PR		0x14	/* Timing Parameter 2 Register */
++#define AT91C_HDDRSDRC2_T3PR		0x18	/* Timing Parameter 3 Register */
++#define AT91C_HDDRSDRC2_LPR		0x1C	/* Low-power Register */
++#define AT91C_HDDRSDRC2_MDR		0x20	/* Memory Device Register */
++#define AT91C_HDDRSDRC2_DLL		0x24	/* DLL Information Register */
++#define AT91C_HDDRSDRC2_HS		0x2C	/* High Speed Register */
++
++/* below items defined for sama5d3x */
++#define	AT91C_MPDDRC_LPDDR2_HS		0x24	/* MPDDRC LPDDR2 High Speed Register */
++#define	AT91C_MPDDRC_LPDDR2_LPR		0x28	/* MPDDRC LPDDR2 Low-power Register */
++#define	AT91C_MPDDRC_LPDDR2_CAL_MR4	0x2C	/* MPDDRC LPDDR2 Calibration and MR4 Register */
++#define	AT91C_MPDDRC_LPDDR2_TIM_CAL	0x30	/* MPDDRC LPDDR2 Timing Calibration Register */
++#define	AT91C_MPDDRC_IO_CALIBR		0x34	/* MPDDRC IO Calibration */
++#define	AT91C_MPDDRC_OCMS		0x38	/* MPDDRC OCMS Register */
++#define	AT91C_MPDDRC_OCMS_KEY1		0x3C	/* MPDDRC OCMS KEY1 Register */
++#define	AT91C_MPDDRC_OCMS_KEY2		0x40	/* MPDDRC OCMS KEY2 Register */
++/* 0x54 ~ 0x70 Reserved */
++#define	AT91C_MPDDRC_DLL_MOR		0x74	/* MPDDRC DLL Master Offset Register */
++#define	AT91C_MPDDRC_DLL_SOR		0x78	/* MPDDRC DLL Slave Offset Register */
++#define	AT91C_MPDDRC_DLL_MSR		0x7C	/* MPDDRC DLL Master Status Register */
++#define	AT91C_MPDDRC_DLL_S0SR		0x80	/* MPDDRC DLL Slave 0 Status Register */
++#define	AT91C_MPDDRC_DLL_S1SR		0x84	/* MPDDRC DLL Slave 1 Status Register */
++
++#define AT91C_MPDDRC_RD_DATA_PATH	0x5C	/* MPDDRC Read Data Path */
++
++/* 0x94 ~ 0xE0 Reserved */
++#define AT91C_HDDRSDRC2_WPCR		0xE4	/* Write Protect Mode Register */
++#define AT91C_HDDRSDRC2_WPSR		0xE8	/* Write Protect Status Register */
++
++/* -------- HDDRSDRC2_MR : (HDDRSDRC2 Offset: 0x0) Mode Register --------*/
++#define AT91C_DDRC2_MODE	(0x7UL << 0)
++#define 	AT91C_DDRC2_MODE_NORMAL_CMD		(0x0UL)
++#define 	AT91C_DDRC2_MODE_NOP_CMD		(0x1UL)
++#define 	AT91C_DDRC2_MODE_PRCGALL_CMD		(0x2UL)
++#define 	AT91C_DDRC2_MODE_LMR_CMD		(0x3UL)
++#define 	AT91C_DDRC2_MODE_RFSH_CMD		(0x4UL)
++#define 	AT91C_DDRC2_MODE_EXT_LMR_CMD		(0x5UL)
++#define 	AT91C_DDRC2_MODE_DEEP_CMD		(0x6UL)
++#define		AT91C_DDRC2_MODE_LPDDR2_CMD		(0x7UL)
++#define AT91C_DDRC2_MRS(value)	(value << 8)
++
++/* -------- HDDRSDRC2_RTR : (HDDRSDRC2 Offset: 0x4) Refresh Timer Register -------- */
++#define AT91C_DDRC2_COUNT	(0xFFFUL << 0)
++
++/* -------- HDDRSDRC2_CR : (HDDRSDRC2 Offset: 0x8) Configuration Register --------*/
++#define AT91C_DDRC2_NC		(0x3UL <<  0)
++#define 	AT91C_DDRC2_NC_DDR9_SDR8	(0x0UL)
++#define 	AT91C_DDRC2_NC_DDR10_SDR9	(0x1UL)
++#define 	AT91C_DDRC2_NC_DDR11_SDR10	(0x2UL)
++#define 	AT91C_DDRC2_NC_DDR12_SDR11	(0x3UL)
++#define AT91C_DDRC2_NR		(0x3UL << 2)
++#define 	AT91C_DDRC2_NR_11		(0x0UL << 2)
++#define 	AT91C_DDRC2_NR_12		(0x1UL << 2)
++#define 	AT91C_DDRC2_NR_13		(0x2UL << 2)
++#define 	AT91C_DDRC2_NR_14		(0x3UL << 2)
++#define AT91C_DDRC2_CAS		(0x7UL << 4)
++#define 	AT91C_DDRC2_CAS_2		(0x2UL << 4)
++#define 	AT91C_DDRC2_CAS_3		(0x3UL << 4)
++#define 	AT91C_DDRC2_CAS_4		(0x4UL << 4)
++#define 	AT91C_DDRC2_CAS_5		(0x5UL << 4)
++#define 	AT91C_DDRC2_CAS_6		(0x6UL << 4)
++#define AT91C_DDRC2_RESET_DLL		(0x1UL << 7)
++#define 	AT91C_DDRC2_DISABLE_RESET_DLL	(0x0UL << 7)
++#define 	AT91C_DDRC2_ENABLE_RESET_DLL	(0x1UL << 7)
++#define AT91C_DDRC2_DIC_DS	(0x1UL << 8)
++#define		AT91C_DDRC2_NORMAL_STRENGTH_RZQ6	(0x0UL << 8)
++#define		AT91C_DDRC2_WEAK_STRENGTH_RZQ7		(0x1UL << 8)
++#define AT91C_DDRC2_DLL	(0x1UL << 9)
++#define 	AT91C_DDRC2_ENABLE_DLL		(0x0UL << 9)
++#define 	AT91C_DDRC2_DISABLE_DLL		(0x1UL << 9)
++#define AT91C_DDRC2_ZQ		(0x03 << 10)
++#define		AT91C_DDRC2_ZQ_INIT		(0x0 << 10)
++#define		AT91C_DDRC2_ZQ_LONG		(0x1 << 10)
++#define		AT91C_DDRC2_ZQ_SHORT		(0x2 << 10)
++#define		AT91C_DDRC2_ZQ_RESET		(0x3 << 10)
++#define AT91C_DDRC2_OCD		(0x7UL << 12)
++#define 	AT91C_DDRC2_OCD_EXIT		(0x0UL << 12)
++#define 	AT91C_DDRC2_OCD_DEFAULT		(0x7UL << 12)
++#define AT91C_DDRC2_EBISHARE	(0x1UL << 16)
++#define AT91C_DDRC2_DQMS	(0x1UL << 16)
++#define		AT91C_DDRC2_DQMS_NOT_SHARED	(0x0UL << 16)
++#define		AT91C_DDRC2_DQMS_SHARED		(0x1UL << 16)
++#define AT91C_DDRC2_ENRDM	(0x1UL << 17)
++#define 	AT91C_DDRC2_ENRDM_DISABLE	(0x0UL << 17)
++#define 	AT91C_DDRC2_ENRDM_ENABLE	(0x1UL << 17)
++#define AT91C_DDRC2_ACTBST	(0x1UL << 18)
++#define AT91C_DDRC2_NB_BANKS	(0x1UL << 20)
++#define 	AT91C_DDRC2_NB_BANKS_4		(0x0UL << 20)
++#define 	AT91C_DDRC2_NB_BANKS_8		(0x1UL << 20)
++#define AT91C_DDRC2_NDQS	(0x1UL << 21)	/* Not DQS(sama5d3x only) */
++#define 	AT91C_DDRC2_NDQS_ENABLED	(0x0UL << 21)
++#define 	AT91C_DDRC2_NDQS_DISABLED	(0x1UL << 21)
++#define AT91C_DDRC2_DECOD	(0x1UL << 22)
++#define 	AT91C_DDRC2_DECOD_SEQUENTIAL	(0x0UL << 22)
++#define 	AT91C_DDRC2_DECOD_INTERLEAVED	(0x1UL << 22)
++#define AT91C_DDRC2_UNAL	(0x1UL << 23)	/* Support Unaligned Access(sama5d3x only) */
++#define 	AT91C_DDRC2_UNAL_UNSUPPORTED		(0x0UL << 23)
++#define 	AT91C_DDRC2_UNAL_SUPPORTED		(0x1UL << 23)
++
++/* -------- HDDRSDRC2_T0PR : (HDDRSDRC2 Offset: 0xc) Timing0 Register --------*/
++#define AT91C_DDRC2_TRAS	(0xFUL <<  0)
++#define		AT91C_DDRC2_TRAS_(x)		(x & 0x0f)
++#define	AT91C_DDRC2_TRCD	(0xFUL <<  4)
++#define		AT91C_DDRC2_TRCD_(x)		((x & 0x0f) << 4)
++#define	AT91C_DDRC2_TWR		(0xFUL << 8)
++#define		AT91C_DDRC2_TWR_(x)		((x & 0x0f) << 8)
++#define	AT91C_DDRC2_TRC		(0xFUL << 12)
++#define		AT91C_DDRC2_TRC_(x)		((x & 0x0f) << 12)
++#define	AT91C_DDRC2_TRP		(0xFUL << 16)
++#define		AT91C_DDRC2_TRP_(x)		((x & 0x0f) << 16)
++#define	AT91C_DDRC2_TRRD	(0xFUL << 20)
++#define		AT91C_DDRC2_TRRD_(x)		((x & 0x0f) << 20)
++#define	AT91C_DDRC2_TWTR	(0xFUL << 24)
++#define		AT91C_DDRC2_TWTR_(x)		((x & 0x0f) << 24)
++#define	AT91C_DDRC2_TMRD	(0xFUL << 28)
++#define		AT91C_DDRC2_TMRD_(x)		((x & 0x0f) << 28)
++
++/* -------- HDDRSDRC2_T1PR : (HDDRSDRC2 Offset: 0x10) Timing1 Register -------- */
++#define	AT91C_DDRC2_TRFC	(0x7FUL <<  0)
++#define		AT91C_DDRC2_TRFC_(x)		(x & 0x7f)
++#define	AT91C_DDRC2_TXSNR	(0xFFUL << 8)
++#define		AT91C_DDRC2_TXSNR_(x)		((x & 0xff) << 8)
++#define AT91C_DDRC2_TXSRD	(0xFFUL << 16)
++#define		AT91C_DDRC2_TXSRD_(x)		((x & 0xff) << 16)
++#define	AT91C_DDRC2_TXP		(0xFUL << 24)
++#define		AT91C_DDRC2_TXP_(x)		((x & 0x0f) << 24)
++
++/* -------- HDDRSDRC2_T2PR : (HDDRSDRC2 Offset: 0x14) Timing2 Register --------*/
++#define	AT91C_DDRC2_TXARD	(0xFUL << 0)
++#define		AT91C_DDRC2_TXARD_(x)		(x & 0x0f)
++#define	AT91C_DDRC2_TXARDS	(0xFUL << 4)
++#define		AT91C_DDRC2_TXARDS_(x)		((x & 0x0f) << 4)
++#define	AT91C_DDRC2_TRPA	(0xFUL << 8)
++#define		AT91C_DDRC2_TRPA_(x)		((x & 0x0f) << 8)
++#define	AT91C_DDRC2_TRT		(0xFUL << 12)
++#define		AT91C_DDRC2_TRTP_(x)		((x & 0x0f) << 12)
++#define	AT91C_DDRC2_TFA		(0xFUL << 16)
++#define		AT91C_DDRC2_TFAW_(x)		((x & 0x0f) << 16)
++
++/* -------- HDDRSDRC2_LPR : (HDDRSDRC2 Offset: 0x1c) --------*/
++#define AT91C_DDRC2_LPCB	(0x3UL << 0)
++#define 	AT91C_DDRC2_LPCB_DISABLED	(0x0UL)
++#define 	AT91C_DDRC2_LPCB_SELFREFRESH	(0x1UL)
++#define 	AT91C_DDRC2_LPCB_POWERDOWN	(0x2UL)
++#define 	AT91C_DDRC2_LPCB_DEEP_PWD	(0x3UL)
++#define AT91C_DDRC2_CLK_FR	(0x1UL << 2)
++#define AT91C_DDRC2_PASR	(0x7UL << 4)
++#define		AT91C_DDRC2_PASR_(x)		((x & 0x7) << 4)
++#define AT91C_DDRC2_DS		(0x7UL << 8)
++#define		AT91C_DDRC2_DS_(x)		((x & 0x7) << 8)
++#define AT91C_DDRC2_TIMEOUT	(0x3UL << 12)
++#define 	AT91C_DDRC2_TIMEOUT_0		(0x0UL << 12)
++#define 	AT91C_DDRC2_TIMEOUT_64		(0x1UL << 12)
++#define 	AT91C_DDRC2_TIMEOUT_128		(0x2UL << 12)
++#define 	AT91C_DDRC2_TIMEOUT_Reserved	(0x3UL << 12)
++#define AT91C_DDRC2_ADPE	(0x1UL << 16)
++#define 	AT91C_DDRC2_ADPE_FAST		(0x0UL << 16)
++#define 	AT91C_DDRC2_ADPE_SLOW		(0x1UL << 16)
++#define AT91C_DDRC2_UPD_MR	(0x3UL << 20)
++#define		AT91C_DDRC2_UPD_MR_NO_UPDATE		(0x0UL << 20)
++#define		AT91C_DDRC2_UPD_MR_SHARED_BUS		(0x1UL << 20)
++#define		AT91C_DDRC2_UPD_MR_NO_SHARED_BUS	(0x2UL << 20)
++#define AT91C_DDRC2_SELF_DONE	(0x1UL << 25)
++
++/* -------- HDDRSDRC2_MDR : (HDDRSDRC2 Offset: 0x20) Memory Device Register -------- */
++#define AT91C_DDRC2_MD		(0x7UL << 0)
++#define 	AT91C_DDRC2_MD_SDR_SDRAM	(0x0UL)
++#define 	AT91C_DDRC2_MD_LP_SDR_SDRAM	(0x1UL)
++#define 	AT91C_DDRC2_MD_DDR_SDRAM	(0x2UL)
++#define 	AT91C_DDRC2_MD_LP_DDR_SDRAM	(0x3UL)
++#define 	AT91C_DDRC2_MD_DDR3_SDRAM	(0x4UL)
++#define 	AT91C_DDRC2_MD_LPDDR3_SDRAM	(0x5UL)
++#define 	AT91C_DDRC2_MD_DDR2_SDRAM	(0x6UL)
++#define		AT91C_DDRC2_MD_LPDDR2_SDRAM	(0x7UL)
++#define AT91C_DDRC2_DBW		(0x1UL << 4)
++#define 	AT91C_DDRC2_DBW_32_BITS		(0x0UL << 4)
++#define 	AT91C_DDRC2_DBW_16_BITS		(0x1UL << 4)
++
++/* -------- HDDRSDRC2_DLL : (HDDRSDRC2 Offset: 0x24) DLL Information Register --------*/
++#define AT91C_DDRC2_MDINC	(0x1UL << 0)
++#define AT91C_DDRC2_MDDEC	(0x1UL << 1)
++#define AT91C_DDRC2_MDOVF	(0x1UL << 2)
++#define AT91C_DDRC2_MDVAL	(0xFFUL << 8)
++
++/* ------- MPDDRC_LPDDR2_LPR (offset: 0x28) */
++#define AT91C_LPDDRC2_BK_MASK_PASR(value)	(value << 0)
++#define AT91C_LPDDRC2_SEG_MASK(value)		(value << 8)
++#define AT91C_LPDDRC2_DS(value)			(value << 24)
++
++/* -------- HDDRSDRC2_HS : (HDDRSDRC2 Offset: 0x2c) High Speed Register --------*/
++#define AT91C_DDRC2_NO_ANT	(0x1UL << 2)
++
++/* -------- MPDDRC_LPDDR2_CAL_MR4: (MPDDRC Offset: 0x2c) Calibration and MR4 Register --------*/
++#define AT91C_DDRC2_COUNT_CAL_MASK	(0xFFFFUL)
++#define AT91C_DDRC2_COUNT_CAL(value)	(((value) & AT91C_DDRC2_COUNT_CAL_MASK) << 0)
++
++/* -------- MPDDRC_LPDDR2_TIM_CAL : (MPDDRC Offset: 0x30) */
++#define AT91C_DDRC2_ZQCS(value)	(value << 0)
++
++/* -------- MPDDRC_IO_CALIBR : (MPDDRC Offset: 0x34) IO Calibration --------*/
++#define AT91C_MPDDRC_RDIV	(0x7UL << 0)
++#define 	AT91C_MPDDRC_RDIV_LPDDR2_RZQ_34		(0x1UL << 0)
++#define 	AT91C_MPDDRC_RDIV_LPDDR2_RZQ_48		(0x3UL << 0)
++#define 	AT91C_MPDDRC_RDIV_LPDDR2_RZQ_60		(0x4UL << 0)
++#define 	AT91C_MPDDRC_RDIV_LPDDR2_RZQ_120	(0x7UL << 0)
++
++#define 	AT91C_MPDDRC_RDIV_DDR2_RZQ_33_3		(0x2UL << 0)
++#define 	AT91C_MPDDRC_RDIV_DDR2_RZQ_50		(0x4UL << 0)
++#define		AT91C_MPDDRC_RDIV_DDR2_RZQ_66_7		(0x6UL << 0)
++#define 	AT91C_MPDDRC_RDIV_DDR2_RZQ_100		(0x7UL << 0)
++
++#define		AT91C_MPDDRC_RDIV_LPDDR3_RZQ_38		(0x02UL << 0)
++#define		AT91C_MPDDRC_RDIV_LPDDR3_RZQ_46		(0x03UL << 0)
++#define		AT91C_MPDDRC_RDIV_LPDDR3_RZQ_57		(0x04UL << 0)
++#define		AT91C_MPDDRC_RDIV_LPDDR3_RZQ_77		(0x06UL << 0)
++#define		AT91C_MPDDRC_RDIV_LPDDR3_RZQ_115	(0x07UL << 0)
++
++#define	AT91C_MPDDRC_ENABLE_CALIB	(0x01 << 4)
++#define		AT91C_MPDDRC_DISABLE_CALIB		(0x00 << 4)
++#define		AT91C_MPDDRC_EN_CALIB		(0x01 << 4)
++
++#define	AT91C_MPDDRC_TZQIO	(0x7FUL << 8)
++#define	AT91C_MPDDRC_TZQIO_(x)		((x) << 8)
++#define		AT91C_MPDDRC_TZQIO_0	(0x0UL << 8)
++#define		AT91C_MPDDRC_TZQIO_1	(0x1UL << 8)
++#define		AT91C_MPDDRC_TZQIO_3	(0x3UL << 8)
++#define		AT91C_MPDDRC_TZQIO_4	(0x4UL << 8)
++#define		AT91C_MPDDRC_TZQIO_5	(0x5UL << 8)
++#define		AT91C_MPDDRC_TZQIO_31	(0x1FUL << 8)
++
++#define	AT91C_MPDDRC_CALCODEP	(0xFUL << 16)
++#define		AT91C_MPDDRC_CALCODEP_(x)	((x) << 16)
++
++#define	AT91C_MPDDRC_CALCODEN	(0xFUL << 20)
++#define		AT91C_MPDDRC_CALCODEN_(x)	((x) << 20)
++
++/* ---- MPDDRC_RD_DATA_PATH : (MPDDRC Offset: 0x5c) MPDDRC Read Data Path */
++#define AT91_MPDDRC_SHIFT_SAMPLING	(0x03 << 0)
++#define		AT91C_MPDDRC_RD_DATA_PATH_NO_SHIFT	(0x00 << 0)
++#define		AT91C_MPDDRC_RD_DATA_PATH_ONE_CYCLES	(0x01 << 0)
++#define		AT91C_MPDDRC_RD_DATA_PATH_TWO_CYCLES	(0x02 << 0)
++#define		AT91C_MPDDRC_RD_DATA_PATH_THREE_CYCLES	(0x03 << 0)
++
++/* -------- MPDDRC_DLL_MOR : (MPDDRC Offset: 0x74) DLL Master Offset Register --------*/
++#define AT91C_MPDDRC_MOFF(value)	(value << 0)
++#define 	AT91C_MPDDRC_MOFF_1	(0x1UL << 0)
++#define 	AT91C_MPDDRC_MOFF_7	(0x7UL << 0)
++#define AT91C_MPDDRC_CLK90OFF(value)		(value << 8)
++#define 	AT91C_MPDDRC_CLK90OFF_1		(0x1UL << 8)
++#define 	AT91C_MPDDRC_CLK90OFF_31	(0x1FUL << 8)
++#define AT91C_MPDDRC_SELOFF	(0x1UL << 16)
++#define 	AT91C_MPDDRC_SELOFF_DISABLED	(0x0UL << 16)
++#define 	AT91C_MPDDRC_SELOFF_ENABLED	(0x1UL << 16)
++#define AT91C_MPDDRC_KEY	(0xC5UL << 24)
++
++/* -------- MPDDRC_DLL_SOR : (MPDDRC Offset: 0x78) DLL Slave Offset Register --------*/
++#define AT91C_MPDDRC_S0OFF_1	(0x1UL << 0)
++#define AT91C_MPDDRC_S1OFF_1	(0x1UL << 8)
++#define AT91C_MPDDRC_S2OFF_1	(0x1UL << 16)
++#define AT91C_MPDDRC_S3OFF_1	(0x1UL << 24)
++
++#define AT91C_MPDDRC_S0OFF(value)	(value << 0)
++#define AT91C_MPDDRC_S1OFF(value)	(value << 8)
++#define AT91C_MPDDRC_S2OFF(value)	(value << 16)
++#define AT91C_MPDDRC_S3OFF(value)	(value << 24)
++
++/* -------- HDDRSDRC2_WPCR : (HDDRSDRC2 Offset: 0xe4) Write Protect Control Register --------*/
++#define AT91C_DDRC2_WPEN	(0x1UL << 0)
++#define AT91C_DDRC2_WPKEY	(0xFFFFFFUL << 8)
++
++/* -------- HDDRSDRC2_WPSR : (HDDRSDRC2 Offset: 0xe8) Write Protect Status Register --------*/
++#define AT91C_DDRC2_WPVS	(0x1UL << 0)
++#define AT91C_DDRC2_WPSRC	(0xFFFFUL << 8)
++
++#endif /* __AT91_DDRSDRC_H__ */
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
