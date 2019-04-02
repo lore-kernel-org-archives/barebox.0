@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hBOxD-0004el-Ut
- for barebox@lists.infradead.org; Tue, 02 Apr 2019 19:20:17 +0000
-Date: Tue, 2 Apr 2019 21:20:11 +0200
+ id 1hBNQE-00047r-LA
+ for barebox@lists.infradead.org; Tue, 02 Apr 2019 17:42:08 +0000
+Date: Tue, 2 Apr 2019 19:42:03 +0200
 From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20190402192011.GB5916@ravnborg.org>
+Message-ID: <20190402174203.GC18142@ravnborg.org>
 References: <20190401101822.7392-1-a.fatoum@pengutronix.de>
- <20190401101822.7392-6-a.fatoum@pengutronix.de>
- <20190402173810.GB18142@ravnborg.org>
- <5cee40c5-5473-d878-befc-bf758a7c849c@pengutronix.de>
+ <20190401101822.7392-7-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <5cee40c5-5473-d878-befc-bf758a7c849c@pengutronix.de>
+In-Reply-To: <20190401101822.7392-7-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,56 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 05/15] ARM: at91: watchdog: implement at91_wdt_disable
+Subject: Re: [PATCH v3 06/15] ARM: at91: import lowlevel clock initialization
+ from at91bootstrap
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Apr 02, 2019 at 08:39:56PM +0200, Ahmad Fatoum wrote:
-> Hello Sam,
-> 
-> On 2/4/19 19:38, Sam Ravnborg wrote:
-> > Hi Ahmad.
-> > 
-> > On Mon, Apr 01, 2019 at 12:18:13PM +0200, Ahmad Fatoum wrote:
-> >> Low level init code might want to disable the watchdog in PBL.
-> >> Provide a helper to do so.
-> >>
-> >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> >> ---
-> >>  arch/arm/mach-at91/include/mach/at91_wdt.h | 16 ++++++++++++++++
-> >>  1 file changed, 16 insertions(+)
-> >>
-> >> diff --git a/arch/arm/mach-at91/include/mach/at91_wdt.h b/arch/arm/mach-at91/include/mach/at91_wdt.h
-> >> index 36d37b9d2d64..d295d35d1b5c 100644
-> >> --- a/arch/arm/mach-at91/include/mach/at91_wdt.h
-> >> +++ b/arch/arm/mach-at91/include/mach/at91_wdt.h
-> >> @@ -35,4 +35,20 @@
-> >>  #define		AT91_WDT_WDUNF		(1 << 0)		/* Watchdog Underflow */
-> >>  #define		AT91_WDT_WDERR		(1 << 1)		/* Watchdog Error */
-> >>  
-> >> +#ifndef __ASSEMBLY__
-> >> +// SPDX-License-Identifier: BSD-1-Clause
-> >> +/*
-> >> + * Copyright (c) 2006, Atmel Corporation
-> >> + */
-> >> +
-> >> +#include <asm-generic/io.h>
-> >> +
-> >> +static inline void at91_wdt_disable(void __iomem *wdt_base)
-> > 
-> > As we are copying a lot of code from at91bootstrap could
-> > we then use the same name for this function:
-> > driver/at91_wdt.c:void at91_disable_wdt(void)
-> 
-> ${arch}_${subsystem}_${function} seems to be the usual naming scheme
-> for "globals". Why differ? I don't see the utility of copying
-> the at91bootstrap name.
+Hi Ahmad.
 
-Yeah, keep it in line with barebox is better.
-It was more a something I stumbled upon comment.
+On Mon, Apr 01, 2019 at 12:18:14PM +0200, Ahmad Fatoum wrote:
+> For use by future at91 first stage bootloaders, this commit imports
+> https://github.com/linux4sam/at91bootstrap/blob/v3.8.12/driver/pmc.c
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/mach-at91/Makefile                   |   1 +
+>  arch/arm/mach-at91/at91_pmc_ll.c              | 184 ++++++++++++++++++
+>  arch/arm/mach-at91/include/mach/at91_pmc.h    |  24 ++-
+>  arch/arm/mach-at91/include/mach/at91_pmc_ll.h |  78 ++++++++
+>  4 files changed, 284 insertions(+), 3 deletions(-)
+>  create mode 100644 arch/arm/mach-at91/at91_pmc_ll.c
+>  create mode 100644 arch/arm/mach-at91/include/mach/at91_pmc_ll.h
+> 
+> diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+> index d81683ac121a..91b06c085107 100644
+> --- a/arch/arm/mach-at91/Makefile
+> +++ b/arch/arm/mach-at91/Makefile
+> @@ -1,4 +1,5 @@
+>  obj-y += setup.o
+> +pbl-y += at91_pmc_ll.o
 
-Here you can also add my:
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Will this always make my pbl image larger or do we have some linker
+magic that throws away the unused code?
+If the pbl image become larger then we need to add this in a conditional manner
+as we cannot allow this for all at91 variants.
 
 	Sam
 
