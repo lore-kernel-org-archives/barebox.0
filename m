@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hBNoC-0004mD-DR
- for barebox@lists.infradead.org; Tue, 02 Apr 2019 18:06:53 +0000
-Date: Tue, 2 Apr 2019 20:06:49 +0200
+ id 1hBNMV-0002T8-8s
+ for barebox@lists.infradead.org; Tue, 02 Apr 2019 17:38:16 +0000
+Date: Tue, 2 Apr 2019 19:38:10 +0200
 From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20190402180649.GA20557@ravnborg.org>
+Message-ID: <20190402173810.GB18142@ravnborg.org>
 References: <20190401101822.7392-1-a.fatoum@pengutronix.de>
+ <20190401101822.7392-6-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190401101822.7392-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20190401101822.7392-6-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,25 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 00/15] ARM: at91: microchip-kz9477-evb: support first
- stage boot
+Subject: Re: [PATCH v3 05/15] ARM: at91: watchdog: implement at91_wdt_disable
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
 Hi Ahmad.
 
-It is super that you are working on this and I hope we can have bootstrap
-support for more at91 variants in the near future.
+On Mon, Apr 01, 2019 at 12:18:13PM +0200, Ahmad Fatoum wrote:
+> Low level init code might want to disable the watchdog in PBL.
+> Provide a helper to do so.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/mach-at91/include/mach/at91_wdt.h | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/arch/arm/mach-at91/include/mach/at91_wdt.h b/arch/arm/mach-at91/include/mach/at91_wdt.h
+> index 36d37b9d2d64..d295d35d1b5c 100644
+> --- a/arch/arm/mach-at91/include/mach/at91_wdt.h
+> +++ b/arch/arm/mach-at91/include/mach/at91_wdt.h
+> @@ -35,4 +35,20 @@
+>  #define		AT91_WDT_WDUNF		(1 << 0)		/* Watchdog Underflow */
+>  #define		AT91_WDT_WDERR		(1 << 1)		/* Watchdog Error */
+>  
+> +#ifndef __ASSEMBLY__
+> +// SPDX-License-Identifier: BSD-1-Clause
+> +/*
+> + * Copyright (c) 2006, Atmel Corporation
+> + */
+> +
+> +#include <asm-generic/io.h>
+> +
+> +static inline void at91_wdt_disable(void __iomem *wdt_base)
 
-> This is (the hopefully final and bestest) v3 of a series that pulls in
-> enough of at91bootstrap to make barebox usable as first stage bootloader
-> for the SAMA5 family of AT91 SoCs.
+As we are copying a lot of code from at91bootstrap could
+we then use the same name for this function:
+driver/at91_wdt.c:void at91_disable_wdt(void)
 
-Sorry for gettting back to this patch set only now.
-I have been through all patches and there was a few minor
-comments here and there.
-
-Let me know if this triggers any questions.
+In at91bootstrap the address is a build time constant,
+but passing it as an value is better.
+So that part I do not ask you to consider to copy.
 
 	Sam
 
