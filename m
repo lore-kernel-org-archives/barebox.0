@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hBcYs-0000L2-3O
- for barebox@lists.infradead.org; Wed, 03 Apr 2019 09:52:03 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=a3f-osx.local)
- by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <a.fatoum@pengutronix.de>) id 1hBcYq-0008Sh-Cu
- for barebox@lists.infradead.org; Wed, 03 Apr 2019 11:52:00 +0200
-References: <20190401201210.17975-1-a.fatoum@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <bbe97cb3-2e21-2eb2-a727-5b1014d3fd73@pengutronix.de>
-Date: Wed, 3 Apr 2019 11:52:00 +0200
+ id 1hBNX6-0006gH-ON
+ for barebox@lists.infradead.org; Tue, 02 Apr 2019 17:49:14 +0000
+Date: Tue, 2 Apr 2019 19:49:08 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20190402174908.GD18142@ravnborg.org>
+References: <20190401101822.7392-1-a.fatoum@pengutronix.de>
+ <20190401101822.7392-11-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20190401201210.17975-1-a.fatoum@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20190401101822.7392-11-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,33 +23,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/6] clk: imx6: work around LDB hang caused by ERR009219
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v3 10/15] images: at91: differentiate between first and
+ second stage images
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On 1/4/19 22:12, Ahmad Fatoum wrote:
-> The erratum already has a Linux workaround. On barebox, it can currently
-> happen if there's an appropriate assigned-clock-parents property or the
-> reparenting happens (i.e. CONFIG_DRIVER_VIDEO_IMX_IPUV3 is selected on a
-> board with the aforementioned CPU/Revision pairs). Linux has removed the
-> reparenting along with the bug fix. If barebox did this, boards that
-> depended on the reparenting may be broken.
+Hi Ahmad.
 
-After a discussion with Philipp and Sascha, I'll rearrange this patch series:
-Patch 6/6 will wander to the start of the series and will remove the quirk of
-the ldb _sometimes_ having pll5_video_div as parent and instead never set it
-by default, like the kernel does now but potentially breaking boards that
-depended on barebox setting this. 
+On Mon, Apr 01, 2019 at 12:18:18PM +0200, Ahmad Fatoum wrote:
+> Incoming microchip-ksz9477-evb first stage will add one more entry point
+> for the first stage. As there is a little reason to use the same piggy
+> data for both images (BOOT.BIN, the first stage, is limited to 64K), have
+> CONFIG_AT91_LOAD_BAREBOX_SRAM decide which stage should be built.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/mach-at91/Kconfig |  2 +-
+>  images/Makefile.at91       | 12 +++++++++---
+>  2 files changed, 10 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+> index 8e1bf0629ab7..60f427d7d483 100644
+> --- a/arch/arm/mach-at91/Kconfig
+> +++ b/arch/arm/mach-at91/Kconfig
+> @@ -615,7 +615,7 @@ config AT91_BOOTSTRAP
+>  	select BOOTSTRAP
+>  
+>  config AT91_LOAD_BAREBOX_SRAM
+> -	bool "at91 load barebox in sram"
+> +	bool "at91 barebox image will be loaded into SRAM"
+>  	depends on SHELL_NONE || HAVE_AT91_LOAD_BAREBOX_SRAM
+>  	default y if SHELL_NONE
+>  
+> diff --git a/images/Makefile.at91 b/images/Makefile.at91
+> index acdb591d2452..3f1dd57f6c58 100644
+> --- a/images/Makefile.at91
+> +++ b/images/Makefile.at91
+> @@ -4,12 +4,18 @@
+>  
+>  pblb-$(CONFIG_MACH_AT91SAM9X5EK) += start_at91sam9x5ek
+>  FILE_barebox-at91sam9x5ek.img = start_at91sam9x5ek.pblb
+> -image-$(CONFIG_MACH_AT91SAM9X5EK) += barebox-at91sam9x5ek.img
+> +at91-barebox-$(CONFIG_MACH_AT91SAM9X5EK) += barebox-at91sam9x5ek.img
+>  
+>  pblb-$(CONFIG_MACH_AT91SAM9263EK) += start_at91sam9263ek
+>  FILE_barebox-at91sam9263ek.img = start_at91sam9263ek.pblb
+> -image-$(CONFIG_MACH_AT91SAM9263EK) += barebox-at91sam9263ek.img
+> +at91-barebox-$(CONFIG_MACH_AT91SAM9263EK) += barebox-at91sam9263ek.img
+>  
+>  pblb-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += start_sama5d3_xplained_ung8071
+>  FILE_barebox-microchip-ksz9477-evb.img = start_sama5d3_xplained_ung8071.pblb
+> -image-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += barebox-microchip-ksz9477-evb.img
+> +at91-barebox-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += barebox-microchip-ksz9477-evb.img
+> +
+> +ifdef CONFIG_AT91_LOAD_BAREBOX_SRAM
+> +image-y += $(at91-boot-bin-y)
+> +else
+> +image-y += $(at91-barebox-y)
+> +endif
 
-Now with the need for the funny conditionals removed, I can squash 1/6, 3/6, 4/6,
-without much loss of comprehensibility (not that it was particularly comprehensible
-before..).
+I cannot follow what you do in the line "image-y += $(at91-boot-bin-y)".
+Could you try to elaborate.
 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+	Sam
 
 _______________________________________________
 barebox mailing list
