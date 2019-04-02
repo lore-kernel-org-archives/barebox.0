@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hBb3F-00061S-Pk
- for barebox@lists.infradead.org; Wed, 03 Apr 2019 08:15:19 +0000
-Date: Wed, 3 Apr 2019 10:15:15 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190403081515.37zvy6f6yvo3liya@pengutronix.de>
+ id 1hBNA4-0002LG-Qe
+ for barebox@lists.infradead.org; Tue, 02 Apr 2019 17:25:26 +0000
+Date: Tue, 2 Apr 2019 19:25:21 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20190402172521.GA18142@ravnborg.org>
 References: <20190401101822.7392-1-a.fatoum@pengutronix.de>
- <20190401101822.7392-15-a.fatoum@pengutronix.de>
+ <20190401101822.7392-5-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190401101822.7392-15-a.fatoum@pengutronix.de>
+In-Reply-To: <20190401101822.7392-5-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,66 +23,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 14/15] ARM: at91: microchip-ksz9477: provide board
- code fallback
+Subject: Re: [PATCH v3 04/15] ARM: at91: replace at91sam9_ddrsdr.h with
+ at91bootstrap's at91_ddrsdrc.h
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, sam@ravnborg.org
+Cc: barebox@lists.infradead.org
 
-On Mon, Apr 01, 2019 at 12:18:22PM +0200, Ahmad Fatoum wrote:
-> The newly added device tree based first stage fails to load the second
-> stage from MMC, which might be in relation to a preceding atmel_mci
-> "command/data timeout" message.
-> 
-> Due to this and because it's not clear yet how viable it's to use the device
-> tree for the size-constrained first stage anyway, make CONFIG_OFDEVICE
-> configurable and provide a legacy board code based fallback whenever it's
-> unselected. The resulting image is 48K big with PBL_CONSOLE compared to
-> 72K for the device tree based version without PBL_CONSOLE.
+Hi Ahmad.
 
-So where is the size limit for this SoC?
-
+On Mon, Apr 01, 2019 at 12:18:12PM +0200, Ahmad Fatoum wrote:
+> Instead of adding missing definitions to the existing at91sam9_ddrsdr.h
+> and adapting the incoming DDRAM initialization code from at91bootstrap,
+> just replace the lightly used existing header with:
+> https://github.com/linux4sam/at91bootstrap/blob/v3.8.12/include/arch/at91_ddrsdrc.h
 > 
-> If barebox can be shrunk further and the device tree support in the
-> first stage was fixed, this commit could be reverted for full device
-> tree goodness.
-> 
-> The board code is a stripped down version of the sama5d3_xplained board's.
+> For easier comprehension, the replacement is done in three steps:
+> This last step copies the memory size querying functions from at91sam9_ddrsdr.h
+> to at91_ddrsdrc.h, then deletes it and fixes all references.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  .../arm/boards/microchip-ksz9477-evb/Makefile |   3 +
->  arch/arm/boards/microchip-ksz9477-evb/board.c | 127 ++++++++++++++++++
->  .../boards/microchip-ksz9477-evb/lowlevel.c   |   3 +-
->  ...rochip_ksz9477_evb_bootstrap_mmc_defconfig |  24 ++++
->  arch/arm/mach-at91/Kconfig                    |  14 +-
->  5 files changed, 167 insertions(+), 4 deletions(-)
->  create mode 100644 arch/arm/boards/microchip-ksz9477-evb/board.c
->  create mode 100644 arch/arm/configs/microchip_ksz9477_evb_bootstrap_mmc_defconfig
 
-I'd like to keep the number of defconfigs small, I'm not keen on adding
-such a specialized defconfig.
 
-Do we need a full barebox as first stage anyway? I made good experience
-on i.MX with adding specialized lowlevel drivers for MMC and NAND.
-
-> +	.ocms			= 0,
-> +	.trr			= 4,
-> +	.twb			= 5,
-> +	.rbnsel			= 3,
-> +	.nfsel			= 1
-> +};
+> diff --git a/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h b/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h
+> index 57d0d8f489c4..7e68e7dd63eb 100644
+> --- a/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h
+> +++ b/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h
+> @@ -285,4 +285,48 @@
+>  #define AT91C_DDRC2_WPVS	(0x1UL << 0)
+>  #define AT91C_DDRC2_WPSRC	(0xFFFFUL << 8)
+>  
+> +#ifndef __ASSEMBLY__
+> +#include <common.h>
+> +#include <io.h>
 > +
-> +static void ek_add_device_nand(void)
+> +static inline u32 at91_get_ddram_size(void * __iomem base, bool is_nb)
+> +{
 
-ek_?
+I should have brought this up in the previous patch-set, but it continue to itch me.
+So you get the feedback here....
 
-Sascha
+We have at91_get_ddram_size(IOMEM(xxx), {true or false})
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+If we introduced the following small helpers we could simplify the call sites
+to just use at91_get_ddram_size(AT91SAM9G45_BASE_DDRSDRC0) and similar.
+
+static inline u32 at91_get_ddram_size(void __force __iomem * addr)
+{
+	return __at91_get_ddram_size(IOMEM(addr), true);
+}
+
+static inline u32 at91sam9g45_get_ddram_size(void __force __iomem * addr)
+{
+	return __at91_get_ddram_size(IOMEM(addr), false);
+}
+
+But then for the few call sites it is not really worth it anyway.
+Anyway, just a small itch. Just ignore it.
+
+	Sam
 
 _______________________________________________
 barebox mailing list
