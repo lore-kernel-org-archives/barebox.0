@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hAxqN-0005lw-KN
- for barebox@lists.infradead.org; Mon, 01 Apr 2019 14:23:25 +0000
-Date: Mon, 1 Apr 2019 16:23:21 +0200
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190401142321.z7a2lrfca3ogkksx@pengutronix.de>
-References: <20190401101822.7392-1-a.fatoum@pengutronix.de>
- <20190401101822.7392-3-a.fatoum@pengutronix.de>
- <20190401123232.dbk72tfuxmq5lvdy@pengutronix.de>
- <7e87f069-4573-97dc-1d38-c6ce520d3fcc@pengutronix.de>
+ id 1hBMvd-0003Ic-BS
+ for barebox@lists.infradead.org; Tue, 02 Apr 2019 17:10:30 +0000
+Date: Tue, 2 Apr 2019 19:10:24 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20190402171024.GB7902@ravnborg.org>
+References: <20190401103256.17914-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <7e87f069-4573-97dc-1d38-c6ce520d3fcc@pengutronix.de>
+In-Reply-To: <20190401103256.17914-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,60 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 02/15] ARM: at91: import at91bootstrap's at91_ddrsdrc.h
+Subject: Re: [PATCH] clk: at91: fix compilation errors in sama5d2.c
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, sam@ravnborg.org
+Cc: barebox@lists.infradead.org
 
-On Mon, Apr 01, 2019 at 03:36:06PM +0200, Ahmad Fatoum wrote:
-> Hello Roland,
+Hi Ahmad.
+
+Thanks for looking into this.
+
+On Mon, Apr 01, 2019 at 12:32:57PM +0200, Ahmad Fatoum wrote:
+> sama5d2 was added along with the update to the upstream
+> device tree bindings, but wasn't wired in anywhere.
 > 
-> On 4/1/19 2:32 PM, Roland Hieber wrote:
-> > On Mon, Apr 01, 2019 at 12:18:10PM +0200, Ahmad Fatoum wrote:
-> >> Instead of adding missing definitions to the existing at91sam9_ddrsdr.h
-> >> and adapting the incoming DDRAM initialization code from at91bootstrap,
-> >> just replace the lightly used existing header with:
-> >> https://github.com/linux4sam/at91bootstrap/blob/v3.8.12/include/arch/at91_ddrsdrc.h
-> >>
-> >> For easier comprehension, the replacement is done in three steps:
-> >> Here the header is imported.
-> >>
-> >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> >> ---
-> >>  .../arm/mach-at91/include/mach/at91_ddrsdrc.h | 288 ++++++++++++++++++
-> >>  1 file changed, 288 insertions(+)
-> >>  create mode 100644 arch/arm/mach-at91/include/mach/at91_ddrsdrc.h
-> >>
-> >> diff --git a/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h b/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h
-> >> new file mode 100644
-> >> index 000000000000..57d0d8f489c4
-> >> --- /dev/null
-> >> +++ b/arch/arm/mach-at91/include/mach/at91_ddrsdrc.h
-> >> @@ -0,0 +1,288 @@
-> >> +// SPDX-License-Identifier: BSD-1-Clause
-> > 
-> > I've told you this in our personal converation before, but I'll happily
-> > repeat it here for a broader audience: The original GitHub source says
-> > 
-> >     * DISCLAIMER: THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR
-> >     * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-> >     * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
-> >     * DISCLAIMED.
-> > 
-> > which additionally disclaims warranty for "NON-INFRINGEMENT", which is
-> > not in BSD-1-Clause text you added in the previous commit. I regard this
-> > as a substantive change of the licensing conditions according to the
-> > SPDX License List Matching Guidelines [s] and rather use the original
-> > license headers here as long as there is no SPDX license identifier for
-> > it.
-> To restate my opinion:
-> Atmel already disclaims ANY EXPRESS or IMPLIED WARRANTIES, which should
-> include NON-INFRINGEMENT regardless if whether it was explicitly listed
-> or not.
+> To prepare for usage in future sama5d2 support, fix
+> compilation errors related to absence of locks and
+> unavailability of audio/i2s clock/pll handling.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Ah, good, it seems I misinterpreted your argument earlier. Sorry, so no
-objections from my side then.
+Another approach could have been to stub out the
+non-existing functions to make diff between the kernel
+and the barebox variant smaller.
 
- - Roland
+Did you consider that approach?
+
+The whole section in CONFIG_HAVE_AT91_AUDIO_PLL in dt-compat.c
+is also something we could drop btw. if we go the "drop all audio" stuff
+from clk. Also prototypes in pmc.h
+
+The patch itself looked fine. But I think that from a maintenance point of
+view should stub us out of it.
+Let me know what you think.
+
+	Sam
+
 
 _______________________________________________
 barebox mailing list
