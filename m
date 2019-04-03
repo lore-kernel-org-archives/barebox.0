@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hBa9t-0005AY-7Q
- for barebox@lists.infradead.org; Wed, 03 Apr 2019 07:18:10 +0000
-Date: Wed, 3 Apr 2019 09:18:00 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190403071800.dczv5jnlqbg5qodz@pengutronix.de>
+ id 1hBcdC-0002oP-FN
+ for barebox@lists.infradead.org; Wed, 03 Apr 2019 09:56:31 +0000
 References: <20190401093106.4595-1-a.fatoum@pengutronix.de>
  <20190401093106.4595-7-a.fatoum@pengutronix.de>
+ <20190403071800.dczv5jnlqbg5qodz@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <4d3b99c8-ff37-6c3c-19fe-a57aee1a968e@pengutronix.de>
+Date: Wed, 3 Apr 2019 11:56:28 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190401093106.4595-7-a.fatoum@pengutronix.de>
+In-Reply-To: <20190403071800.dczv5jnlqbg5qodz@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,40 +26,17 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2 06/10] ARM: at91: remove at91sam9g45_get_ddram_size
  helper
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org, sam@ravnborg.org
 
-On Mon, Apr 01, 2019 at 11:31:02AM +0200, Ahmad Fatoum wrote:
-> Substitute the current #ifdefery in at91sam9_ddrsdr.h by
-> open-coding at91sam9g45_get_ddram_size wherever it was called.
-> 
-> Suggested-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Hello,
 
-> -#ifdef CONFIG_SOC_AT91SAM9G45
-> -#include <mach/at91sam9g45.h>
-> -static inline u32 at91sam9g45_get_ddram_size(int bank)
-> -{
-> -	switch (bank) {
-> -	case 0:
-> -		return at91_get_ddram_size(IOMEM(AT91SAM9G45_BASE_DDRSDRC0), false);
-> -	case 1:
-> -		return at91_get_ddram_size(IOMEM(AT91SAM9G45_BASE_DDRSDRC1), false);
-> -	default:
-> -		return 0;
-> -	}
-> -}
-> -#else
-> -static inline u32 at91sam9g45_get_ddram_size(int bank)
-> -{
-> -	return 0;
-> -}
-> -#endif
+On 3/4/19 09:18, Sascha Hauer wrote:
+> Indeed you can remove the #ifdefs, but wouldn't it look nicer just to
 
-Indeed you can remove the #ifdefs, but wouldn't it look nicer just to
-keep at91sam9g45_get_ddram_size() and friends?
+I assume you mean adding a base address parameter, but have the helper
+sets the second argument? Ye, I can do that.
 
-Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
