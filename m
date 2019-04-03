@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hBNim-00039k-AR
- for barebox@lists.infradead.org; Tue, 02 Apr 2019 18:01:17 +0000
-Date: Tue, 2 Apr 2019 20:01:13 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20190402180113.GE18142@ravnborg.org>
+ id 1hBb3F-00061S-Pk
+ for barebox@lists.infradead.org; Wed, 03 Apr 2019 08:15:19 +0000
+Date: Wed, 3 Apr 2019 10:15:15 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190403081515.37zvy6f6yvo3liya@pengutronix.de>
 References: <20190401101822.7392-1-a.fatoum@pengutronix.de>
  <20190401101822.7392-15-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -26,41 +26,63 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v3 14/15] ARM: at91: microchip-ksz9477: provide board
  code fallback
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-
-Hi Ahmad.
+Cc: barebox@lists.infradead.org, sam@ravnborg.org
 
 On Mon, Apr 01, 2019 at 12:18:22PM +0200, Ahmad Fatoum wrote:
 > The newly added device tree based first stage fails to load the second
 > stage from MMC, which might be in relation to a preceding atmel_mci
 > "command/data timeout" message.
+> 
+> Due to this and because it's not clear yet how viable it's to use the device
+> tree for the size-constrained first stage anyway, make CONFIG_OFDEVICE
+> configurable and provide a legacy board code based fallback whenever it's
+> unselected. The resulting image is 48K big with PBL_CONSOLE compared to
+> 72K for the device tree based version without PBL_CONSOLE.
 
-I had similar troubles with MMC on at91sam9263.
-After some digging the fix was simple:
-See 5feabc1e6737742f1cf6a1c41921f68b4dbb5c10 ("arm: at91: fix clock to mci1 for at91sam9263")
+So where is the size limit for this SoC?
 
-Maybe you are hit by something as simple as this?
+> 
+> If barebox can be shrunk further and the device tree support in the
+> first stage was fixed, this commit could be reverted for full device
+> tree goodness.
+> 
+> The board code is a stripped down version of the sama5d3_xplained board's.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  .../arm/boards/microchip-ksz9477-evb/Makefile |   3 +
+>  arch/arm/boards/microchip-ksz9477-evb/board.c | 127 ++++++++++++++++++
+>  .../boards/microchip-ksz9477-evb/lowlevel.c   |   3 +-
+>  ...rochip_ksz9477_evb_bootstrap_mmc_defconfig |  24 ++++
+>  arch/arm/mach-at91/Kconfig                    |  14 +-
+>  5 files changed, 167 insertions(+), 4 deletions(-)
+>  create mode 100644 arch/arm/boards/microchip-ksz9477-evb/board.c
+>  create mode 100644 arch/arm/configs/microchip_ksz9477_evb_bootstrap_mmc_defconfig
 
+I'd like to keep the number of defconfigs small, I'm not keen on adding
+such a specialized defconfig.
+
+Do we need a full barebox as first stage anyway? I made good experience
+on i.MX with adding specialized lowlevel drivers for MMC and NAND.
+
+> +	.ocms			= 0,
+> +	.trr			= 4,
+> +	.twb			= 5,
+> +	.rbnsel			= 3,
+> +	.nfsel			= 1
+> +};
 > +
-> +static const struct devfs_partition sama5d3_xplained_nand0_partitions[] = {
-> +	{
-> +		.offset = 0x00000,
-> +		.size = SZ_256K,
-> +		.flags = DEVFS_PARTITION_FIXED,
-> +		.name = "at91bootstrap_raw",
-> +		.bbname = "at91bootstrap",
-> +	},
-Strange partition name now we use barebox as first stage.
+> +static void ek_add_device_nand(void)
 
+ek_?
 
-> +++ b/arch/arm/configs/microchip_ksz9477_evb_bootstrap_mmc_defconfig
+Sascha
 
-Naming confuses me.
-Do we stick to the name "first stage" or do we use "bootstrap"?
-For me they are the same, but I get confused when we use both.
-
-
-	Sam
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
