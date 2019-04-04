@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hCMFp-0008KF-AR
- for barebox@lists.infradead.org; Fri, 05 Apr 2019 10:39:26 +0000
-Date: Fri, 5 Apr 2019 12:39:23 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190405103923.ingk2iup3dvw2umy@pengutronix.de>
+ id 1hC3k6-0007eB-1m
+ for barebox@lists.infradead.org; Thu, 04 Apr 2019 14:53:29 +0000
+From: Michael Tretter <m.tretter@pengutronix.de>
+Date: Thu,  4 Apr 2019 16:53:20 +0200
+Message-Id: <20190404145320.11465-8-m.tretter@pengutronix.de>
+In-Reply-To: <20190404145320.11465-1-m.tretter@pengutronix.de>
 References: <20190404145320.11465-1-m.tretter@pengutronix.de>
- <20190404145320.11465-7-m.tretter@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190404145320.11465-7-m.tretter@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,90 +21,147 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 6/7] firmware: add support for fpga-regions
-To: Michael Tretter <m.tretter@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [RFC PATCH 7/7] blspec: add support for devicetree overlays
+To: barebox@lists.infradead.org
+Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-On Thu, Apr 04, 2019 at 04:53:19PM +0200, Michael Tretter wrote:
-> The Barebox fpga-region driver is merely glue code between the
-> devicetree overlay support and the various firmware handlers.
-> 
-> The driver registers notifiers for each fpga-region in the devicetree.
-> If an overlay is registered for a fpga-region, it uses the referenced
-> firmware handler to load the specified firmware image.
-> 
-> +#include <common.h>
-> +#include <globalvar.h>
-> +#include <firmware.h>
-> +#include <init.h>
-> +#include <magicvar.h>
-> +#include <of.h>
-> +
-> +char *firmware_path;
+Read the devicetree-overlay property from the blspec entry, set the
+firmware search-path based on the blspec root and register a devicetree
+overlay when booting the blspec entry.
 
-static?
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+---
+ Documentation/user/booting-linux.rst |  4 ++++
+ common/blspec.c                      | 10 ++++++++
+ common/bootm.c                       | 35 ++++++++++++++++++++++++++++
+ include/bootm.h                      |  1 +
+ 4 files changed, 50 insertions(+)
 
-> +
-> +struct fpga_region {
-> +	struct device_d *dev;
-> +	struct notifier_block nb;
-> +	struct firmware_mgr *mgr;
-> +};
-> +
-> +	if (action != OF_OVERLAY_PRE_APPLY) {
-> +		dev_dbg(region->dev, "only interested in pre-apply hook\n");
-> +		return 0;
-> +	}
-> +
-> +	if (nd->target != region->dev->device_node) {
-> +		dev_dbg(region->dev, "%s is not overlay target %s\n",
-> +			nd->target->name, region->dev->device_node->name);
-> +		return 0;
-> +	}
-> +
-> +	err = of_property_read_string(nd->target,
-> +				      "firmware-name", &firmware_name);
-> +	if (err != -EINVAL) {
-
-of_property_read_string could also return other error codes. I think you
-should test for err == 0 here, maybe bail out with an error on other,
-unexpected error codes.
-
-> +		dev_dbg(region->dev,
-> +			"%s has already been programmed with firmware %s\n",
-> +			nd->target->name, firmware_name);
-> +		return 0;
-> +	}
-> +
-> +static int of_fpga_region_probe(struct device_d *dev)
-> +{
-> +	struct device_node *np = dev->device_node;
-> +	struct fpga_region *region;
-> +	struct firmware_mgr *mgr;
-> +	int err;
-> +
-> +	mgr = of_fpga_region_get_mgr(np);
-> +	if (!mgr) {
-> +		pr_err("cannot find firmware loader for %s\n", np->name);
-
-dev_err
-
-> +		return -EINVAL;
-> +	}
-> +
-> +	region = kzalloc(sizeof(*region), GFP_KERNEL);
-> +	if (!region)
-> +		return -ENOMEM;
-
-You can use xzalloc here.
-
-Sascha
-
+diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
+index 437f4e80ca..12cd505e71 100644
+--- a/Documentation/user/booting-linux.rst
++++ b/Documentation/user/booting-linux.rst
+@@ -232,6 +232,10 @@ device where the entry is found on. This makes it possible to use the same rootf
+ image on different devices without having to specify a different root= option each
+ time.
+ 
++Additionally to the options defined in the original spec, Barebox has the
++``devicetree-overlay`` option. This is a string value that refer to overlays
++that will be applied to the device tree before passing it to Linux.
++
+ Network boot
+ ------------
+ 
+diff --git a/common/blspec.c b/common/blspec.c
+index 41f2a4c534..d0f2f3b228 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -54,6 +54,7 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
+ 	struct blspec_entry *entry = container_of(be, struct blspec_entry, entry);
+ 	int ret;
+ 	const char *abspath, *devicetree, *options, *initrd, *linuximage;
++	const char *devicetree_overlay;
+ 	const char *appendroot;
+ 	struct bootm_data data = {
+ 		.initrd_address = UIMAGE_INVALID_ADDRESS,
+@@ -69,6 +70,7 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
+ 	initrd = blspec_entry_var_get(entry, "initrd");
+ 	options = blspec_entry_var_get(entry, "options");
+ 	linuximage = blspec_entry_var_get(entry, "linux");
++	devicetree_overlay = blspec_entry_var_get(entry, "devicetree-overlay");
+ 
+ 	if (entry->rootpath)
+ 		abspath = entry->rootpath;
+@@ -88,6 +90,13 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
+ 		}
+ 	}
+ 
++	if (devicetree_overlay) {
++		data.oftree_overlay_file = basprintf("%s/%s", abspath,
++						     devicetree_overlay);
++		setenv("global.firmware.path",
++		       basprintf("%s/%s", abspath, "lib/firmware/"));
++	}
++
+ 	if (initrd)
+ 		data.initrd_file = basprintf("%s/%s", abspath, initrd);
+ 
+@@ -114,6 +123,7 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
+ 	if (ret)
+ 		pr_err("Booting failed\n");
+ err_out:
++	free((char *)data.oftree_overlay_file);
+ 	free((char *)data.oftree_file);
+ 	free((char *)data.initrd_file);
+ 	free((char *)data.os_file);
+diff --git a/common/bootm.c b/common/bootm.c
+index 36f6c41bbd..a796e89857 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -499,6 +499,32 @@ static int bootm_open_os_uimage(struct image_data *data)
+ 	return 0;
+ }
+ 
++static int bootm_apply_oftree_overlay(const char *path)
++{
++	int ret;
++	struct fdt_header *fdt;
++	struct device_node *root;
++
++	fdt = read_file(path, NULL);
++	if (!fdt) {
++		printf("Unable to read \"%s\"\n", path);
++		return -EINVAL;
++	}
++
++	root = of_unflatten_dtb(fdt);
++	if (IS_ERR(root)) {
++		printf("\"%s\" is not a valid devicetree\n", path);
++		return -EINVAL;
++	}
++
++	ret = of_register_overlay(root);
++	if (ret)
++		pr_warn("Failed to register devicetree overlay \"%s\"\n",
++			path);
++
++	return 0;
++}
++
+ static void bootm_print_info(struct image_data *data)
+ {
+ 	if (data->os_res)
+@@ -631,6 +657,15 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		}
+ 	}
+ 
++	if (bootm_data->oftree_overlay_file) {
++		ret = bootm_apply_oftree_overlay(bootm_data->oftree_overlay_file);
++		if (ret) {
++			printf("Applying device tree overlay failed with: %s\n",
++					strerror(-ret));
++			ret = 0;
++		}
++	}
++
+ 	if (bootm_data->appendroot) {
+ 		char *rootarg;
+ 
+diff --git a/include/bootm.h b/include/bootm.h
+index fdc73f711a..d5afd3f018 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -16,6 +16,7 @@ struct bootm_data {
+ 	const char *os_file;
+ 	const char *initrd_file;
+ 	const char *oftree_file;
++	const char *oftree_overlay_file;
+ 	int verbose;
+ 	enum bootm_verify verify;
+ 	bool force;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
