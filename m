@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hBcsA-0004fI-HT
- for barebox@lists.infradead.org; Wed, 03 Apr 2019 10:12:00 +0000
-Date: Wed, 3 Apr 2019 12:11:56 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190403101156.adugyhyrtvvmseji@pengutronix.de>
-References: <20190401093106.4595-1-a.fatoum@pengutronix.de>
- <20190401093106.4595-7-a.fatoum@pengutronix.de>
- <20190403071800.dczv5jnlqbg5qodz@pengutronix.de>
- <4d3b99c8-ff37-6c3c-19fe-a57aee1a968e@pengutronix.de>
+ id 1hC3k6-0007e5-1A
+ for barebox@lists.infradead.org; Thu, 04 Apr 2019 14:53:28 +0000
+From: Michael Tretter <m.tretter@pengutronix.de>
+Date: Thu,  4 Apr 2019 16:53:13 +0200
+Message-Id: <20190404145320.11465-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4d3b99c8-ff37-6c3c-19fe-a57aee1a968e@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,29 +19,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 06/10] ARM: at91: remove at91sam9g45_get_ddram_size
- helper
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, sam@ravnborg.org
+Subject: [RFC PATCH 0/7] Device Tree Overlay Support
+To: barebox@lists.infradead.org
+Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-On Wed, Apr 03, 2019 at 11:56:28AM +0200, Ahmad Fatoum wrote:
-> Hello,
-> 
-> On 3/4/19 09:18, Sascha Hauer wrote:
-> > Indeed you can remove the #ifdefs, but wouldn't it look nicer just to
-> 
-> I assume you mean adding a base address parameter, but have the helper
-> sets the second argument? Ye, I can do that.
+Hello,
 
-No, I mean remove the ifdefs and only that.
+This series adds devicetree overlay support loosely based on the Linux drivers
+and a fpga-region driver to program an FPGA based on a devicetree overlay.
 
-Sascha
+The overlay is registered as a fixup, which is necessary to apply the overlay
+either on the build-in device tree or external device trees that are passed to
+Linux.
+
+The overlay driver uses notifiers to notify other drivers before and after an
+overlay is applied. This allows other drivers to react on overlays, e.g., to
+program an FPGA. If other drivers report an error from the notifier, the error
+will be ignored and the overlay will be applied anyway.
+
+The fpga-region driver understands the firmware-name property and loads a
+firmware if the firmware-name property is added to a device node. The binding
+defines that the firmware is searched in the firmware search path. The
+global.firmware.path variable stores this path and allows other drivers or the
+user to specify the search path. Not sure if this is a good variable name for
+that.
+
+I extended the blspec and allow to specify a device tree overlay with the
+"devicetree-overlay" key. The overlay is applied before booting the OS from
+that blspec entry.
+
+Michael
+
+Michael Tretter (7):
+  commands: unify newlines for options
+  dtc: add -@ option to enable __symbols__
+  of: add support for devicetree overlays
+  commands: add oftree -o option for overlays
+  firmware: allow to find manager by device node
+  firmware: add support for fpga-regions
+  blspec: add support for devicetree overlays
+
+ Documentation/user/booting-linux.rst |   4 +
+ commands/crc.c                       |   4 +-
+ commands/firmwareload.c              |   4 +-
+ commands/of_display_timings.c        |   8 +-
+ commands/of_dump.c                   |   6 +-
+ commands/of_fixup_status.c           |   2 +-
+ commands/oftree.c                    |  41 +++-
+ common/blspec.c                      |  10 +
+ common/bootm.c                       |  35 ++++
+ common/firmware.c                    |  18 ++
+ drivers/firmware/Kconfig             |   7 +
+ drivers/firmware/Makefile            |   1 +
+ drivers/firmware/of-fpga-region.c    | 153 +++++++++++++++
+ drivers/of/Kconfig                   |   9 +
+ drivers/of/Makefile                  |   1 +
+ drivers/of/overlay.c                 | 251 ++++++++++++++++++++++++
+ drivers/of/resolver.c                | 278 +++++++++++++++++++++++++++
+ include/bootm.h                      |   1 +
+ include/firmware.h                   |   1 +
+ include/of.h                         |  42 ++++
+ scripts/Makefile.lib                 |   2 +-
+ 21 files changed, 860 insertions(+), 18 deletions(-)
+ create mode 100644 drivers/firmware/of-fpga-region.c
+ create mode 100644 drivers/of/overlay.c
+ create mode 100644 drivers/of/resolver.c
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
