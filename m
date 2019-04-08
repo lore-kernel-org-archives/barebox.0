@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qt1-x836.google.com ([2607:f8b0:4864:20::836])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hDO8Q-0004vw-Rg
- for barebox@lists.infradead.org; Mon, 08 Apr 2019 06:52:05 +0000
-Received: by mail-qt1-x836.google.com with SMTP id z17so14100242qts.13
- for <barebox@lists.infradead.org>; Sun, 07 Apr 2019 23:51:59 -0700 (PDT)
+ id 1hDPRm-0006Ny-Rr
+ for barebox@lists.infradead.org; Mon, 08 Apr 2019 08:16:09 +0000
+Date: Mon, 8 Apr 2019 10:16:02 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190408081602.ipogefy6uy6uioto@pengutronix.de>
 MIME-Version: 1.0
-References: <CAEp+FuB1y=LgWF6ZDV2JhT+=Qch1H9f6zGqLPgb4Em4E0wriRw@mail.gmail.com>
- <20190404195131.i2uqsk6xiaxtdai4@pengutronix.de>
- <CAEp+FuD8vFFPTDibkxS=wJ6uT0OrV2E1s6JjiyZn-ThLR-j09w@mail.gmail.com>
- <20190408062900.h4mo4k75aagtlgml@pengutronix.de>
-In-Reply-To: <20190408062900.h4mo4k75aagtlgml@pengutronix.de>
-From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
-Date: Mon, 8 Apr 2019 08:51:47 +0200
-Message-ID: <CAEp+FuBdStoLJnTN9mdMv=peTMhiF7-AD=9gqWGFXpbxRitoRw@mail.gmail.com>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,93 +20,313 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: ECC nand 74 code error in barebox 2018.04.10
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Boards possibly broken due to dts merge of v5.1-rc1
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Teresa Remmet <t.remmet@phytec.de>, Jan Remmet <j.remmet@phytec.de>
 
-Ok, thank you for the advice. I will try that.
-I did more tests and I think that the ECC errors I was getting in the
-first post I have them only if the FIT image is greater than 50 MB. It
-does not matter the ECC/BBT options in bootloader/kernel or the kernel
-version.
-Do you know any limitation of the UBI FS in terms of image/partition size?
+Hi,
 
-Thanks,
-       Mihaita
+I had to squash the attached patch into the patch of the v5.1-rc1 dts
+kernel merge. Some boards may be broken due to this, please check if
+the changes make sense and work.
 
-On Mon, Apr 8, 2019 at 8:29 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Fri, Apr 05, 2019 at 06:23:07PM +0200, Mihaita Ivascu wrote:
-> > Hello,
-> >
-> >     Yes both linux and barebox drivers use bbt. In fact the message
-> > above related to ECC error in BBT I see them as well in dmesg when
-> > loading kernel:
-> >
-> > >nand_bbt: ECC error in BBT at 0x00001ffe0005
-> > >nand_bbt: ECC error in BBT at 0x00001ffc0005
-> >
-> >
-> >   I have disabled hardware ECC and enabled Software BCH ECC in barebox
-> > menuconfig with the intention to have the same ECC as in kernel where
-> > I have only software ECC option and now I have the following situation
-> > in barebox:
->
-> You *always* want to use hardware ECC on i.MX. I don't know why you
-> think that you only have software ECC in the kernel, I am pretty sure
-> you can do hardware ECC in the FSL Kernel aswell.
->
-> >
-> > Board: Phytec phyCORE-i.MX6 Ultra Lite SOM
-> > detected i.MX6 UltraLite revision 1.2
-> > mdio_bus: miibus0: probed
-> > eth0: got preset MAC address: 50:2d:f4:14:96:09
-> > nand: ONFI flash detected
-> > nand: NAND device: Manufacturer ID: 0x2c, Chip ID: 0xdc (Micron
-> > MT29F4G08ABADAH4), 512MiB, page size: 2048, OOB size: 64
-> > nand: Invalid NAND_ECC_MODE 2
-> > BUG: failure at
-> > ~/Projects/barebox/2018.04.0-phy1-r7.0/git/drivers/mtd/nand/nand_base.c:3699/nand_scan_tail()!
-> > BUG!
-> > [<9fd71451>] (unwind_backtrace+0x1/0x58) from [<9fd00d9d>] (panic+0x1d/0x34)
-> > [<9fd00d9d>] (panic+0x1d/0x34) from [<9fd1272d>] (nand_scan_tail+0x99/0x3dc)
-> > [<9fd1272d>] (nand_scan_tail+0x99/0x3dc) from [<9fd15cf9>]
-> > (mxs_nand_probe+0x40d/0x43c)
-> > [<9fd15cf9>] (mxs_nand_probe+0x40d/0x43c) from [<9fd0c595>]
-> > (device_probe+0x21/0x68)
-> > [<9fd0c595>] (device_probe+0x21/0x68) from [<9fd0c601>] (match.part.0+0x25/0x2c)
-> > [<9fd0c601>] (match.part.0+0x25/0x2c) from [<9fd0c7df>]
-> > (register_driver+0x5b/0x78)
-> > [<9fd0c7df>] (register_driver+0x5b/0x78) from [<9fd00acb>]
-> > (start_barebox+0x1b/0x98)
-> > [<9fd00acb>] (start_barebox+0x1b/0x98) from [<9fd6faa1>]
-> > (barebox_non_pbl_start+0xd5/0xf8)
-> > [<9fd6faa1>] (barebox_non_pbl_start+0xd5/0xf8) from [<9fd00005>]
-> > (__bare_init_start+0x1/0xc)
-> > ### ERROR ### Please RESET the board ###
-> >
-> >    I cannot recover it now.
->
-> You mean you have flashed this version and can't update anymore because
-> you don't get to the prompt?
->
-> To make your life easier you always start a new barebox image from the
-> flashed one rather than flashing it directly.
->
-> You can refer to the PhyCORE documentation how to enable alternative
-> boot sources. Most convenient should be USB boot in which case you can
-> use the imx-usb-loader tool to upload a new barebox image.
->
-> Once you got that I suggest that you erase your whole NAND as the next
-> step.
->
-> Sascha
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha
+
+----------------------8<---------------------------------
+
+From 147937abd8f901024aecfc91402175194b0b37ce Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 8 Apr 2019 10:09:19 +0200
+Subject: [PATCH] fixup! dts: update to v5.1-rc1
+
+---
+ arch/arm/dts/am335x-afi-gf.dts              |   4 -
+ arch/arm/dts/am335x-baltos-minimal.dts      |   4 -
+ arch/arm/dts/am335x-phytec-phycard-som.dtsi |   4 -
+ arch/arm/dts/am335x-phytec-phycore-som.dtsi |   4 -
+ arch/arm/dts/am335x-phytec-phyflex-som.dtsi |   4 -
+ arch/arm/dts/imx6qdl-phytec-pfla02.dtsi     |  17 ---
+ arch/arm/dts/imx8mq.dtsi                    | 135 +-------------------
+ 7 files changed, 2 insertions(+), 170 deletions(-)
+
+diff --git a/arch/arm/dts/am335x-afi-gf.dts b/arch/arm/dts/am335x-afi-gf.dts
+index d0860b8905..961fe2e241 100644
+--- a/arch/arm/dts/am335x-afi-gf.dts
++++ b/arch/arm/dts/am335x-afi-gf.dts
+@@ -367,10 +367,6 @@
+ 	status = "okay";
+ };
+ 
+-&phy_sel {
+-	rmii-clock-ext;
+-};
+-
+ &am33xx_pinmux {
+ 	dcan0_pins: pinmux_dcan0_pins {
+ 		pinctrl-single,pins = <
+diff --git a/arch/arm/dts/am335x-baltos-minimal.dts b/arch/arm/dts/am335x-baltos-minimal.dts
+index f939cf6406..137c177b2f 100644
+--- a/arch/arm/dts/am335x-baltos-minimal.dts
++++ b/arch/arm/dts/am335x-baltos-minimal.dts
+@@ -423,10 +423,6 @@
+ 	dual_emac_res_vlan = <2>;
+ };
+ 
+-&phy_sel {
+-	rmii-clock-ext = <1>;
+-};
+-
+ &mmc1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&mmc1_pins>;
+diff --git a/arch/arm/dts/am335x-phytec-phycard-som.dtsi b/arch/arm/dts/am335x-phytec-phycard-som.dtsi
+index 2320ca1807..1d45d60dc0 100644
+--- a/arch/arm/dts/am335x-phytec-phycard-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phycard-som.dtsi
+@@ -128,10 +128,6 @@
+ 	};
+ };
+ 
+-&phy_sel {
+-	rmii-clock-ext;
+-};
+-
+ &cpsw_emac0 {
+ 	phy-handle = <&phy0>;
+ 	phy-mode = "rmii";
+diff --git a/arch/arm/dts/am335x-phytec-phycore-som.dtsi b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
+index 0601f5ab7b..ae3f70acdd 100644
+--- a/arch/arm/dts/am335x-phytec-phycore-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
+@@ -250,10 +250,6 @@
+ 	};
+ };
+ 
+-&phy_sel {
+-	rmii-clock-ext;
+-};
+-
+ &cpsw_emac0 {
+ 	phy-handle = <&phy0>;
+ 	phy-mode = "rmii";
+diff --git a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
+index 4d0a913988..0325c81346 100644
+--- a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
+@@ -207,10 +207,6 @@
+ 	};
+ };
+ 
+-&phy_sel {
+-	rmii-clock-ext;
+-};
+-
+ &cpsw_emac0 {
+ 	phy-handle = <&phy0>;
+ 	phy-mode = "rgmii";
+diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+index aba86a3ec1..f0bba2e098 100644
+--- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+@@ -86,23 +86,6 @@
+ 	};
+ };
+ 
+-&fec {
+-	phy-handle = <&ethphy>;
+-	phy-reset-duration = <10>; /* in msecs */
+-
+-	mdio {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		ethphy: ethernet-phy@3 {
+-			reg = <3>;
+-
+-			txc-skew-ps = <1680>;
+-			rxc-skew-ps = <1860>;
+-		};
+-	};
+-};
+-
+ &gpmi {
+ 	partitions {
+ 		compatible = "fixed-partitions";
+diff --git a/arch/arm/dts/imx8mq.dtsi b/arch/arm/dts/imx8mq.dtsi
+index d6a4c715bd..d1d8bdaa0e 100644
+--- a/arch/arm/dts/imx8mq.dtsi
++++ b/arch/arm/dts/imx8mq.dtsi
+@@ -16,7 +16,6 @@
+ 		gpio4 = &gpio5;
+ 		mmc0 = &usdhc1;
+ 		mmc1 = &usdhc2;
+-		spi0 = &ecspi1;
+ 	};
+ 
+ 	thermal-zones {
+@@ -113,136 +112,6 @@
+ 				reg = <0x30390000 0x10000>;
+ 				#reset-cells = <1>;
+ 			};
+-
+-			gpc: gpc@303a0000 {
+-				compatible = "fsl,imx8mq-gpc", "fsl,imx7d-gpc";
+-				reg = <0x303a0000 0x10000>;
+-				#power-domain-cells = <1>;
+-
+-				interrupt-controller;
+-				interrupts = <GIC_SPI 87 IRQ_TYPE_LEVEL_HIGH>;
+-				#interrupt-cells = <3>;
+-				interrupt-parent = <&gic>;
+-
+-				pgc {
+-					#address-cells = <1>;
+-					#size-cells = <0>;
+-
+-					/*
+-					 * As per comment in ATF source code:
+-					 *
+-					 * PCIE1 and PCIE2 share the
+-					 * same reset signal, if we power
+-					 * down PCIE2, PCIE1 will be held
+-					 * in reset too.
+-					 *
+-					 * So instead of creating two
+-                                         * separate power domains for
+-                                         * PCIE1 and PCIE2. We create
+-                                         * a link between 1 and 10 and
+-                                         * use what was supposed to be
+-                                         * domain 1 as a shared PCIE
+-                                         * power domain powering both
+-                                         * PCIE1 and PCIE2 at the same
+-                                         * time
+-					 */
+-					pgc_pcie_phy: gpc_power_domain@1 {
+-						#power-domain-cells = <0>;
+-						reg = <1>;
+-						power-domains = <&pgc_pcie2_phy>;
+-					};
+-
+-					pgc_otg1: power-domain@2 {
+-						#power-domain-cells = <0>;
+-						reg = <2>;
+-					};
+-
+-					pgc_otg2: power-domain@3 {
+-						#power-domain-cells = <0>;
+-						reg = <3>;
+-					};
+-
+-					pgc_pcie2_phy: gpc_power_domain@10 {
+-						#power-domain-cells = <0>;
+-						reg = <10>;
+-					};
+-				};
+-			};
+-		};
+-
+-		bus@30800000 {
+-			ecspi1: ecspi@30820000 {
+-				compatible = "fsl,imx8mq-ecspi", "fsl,imx51-ecspi";
+-				reg = <0x30820000 0x10000>;
+-				interrupts = <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>;
+-				clocks = <&clk IMX8MQ_CLK_ECSPI1_ROOT>,
+-				<&clk IMX8MQ_CLK_ECSPI1_ROOT>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-		};
+-
+-
+-		usb_dwc3_0: usb@38100000 {
+-			compatible = "fsl,imx8mq-dwc3", "snps,dwc3";
+-			reg = <0x38100000 0x10000>;
+-			clocks = <&clk IMX8MQ_CLK_USB_BUS>,
+-			         <&clk IMX8MQ_CLK_USB_CORE_REF>,
+-			         <&clk IMX8MQ_CLK_USB1_CTRL_ROOT>;
+-			clock-names = "bus_early", "ref", "suspend";
+-			assigned-clocks = <&clk IMX8MQ_CLK_USB_BUS>,
+-			                  <&clk IMX8MQ_CLK_USB_CORE_REF>;
+-			assigned-clock-parents = <&clk IMX8MQ_SYS2_PLL_500M>,
+-			                         <&clk IMX8MQ_SYS1_PLL_100M>;
+-			assigned-clock-rates = <500000000>, <100000000>;
+-			interrupts = <GIC_SPI 40 IRQ_TYPE_LEVEL_HIGH>;
+-			phys = <&usb3_phy0>, <&usb3_phy0>;
+-			phy-names = "usb2-phy", "usb3-phy";
+-			power-domains = <&pgc_otg1>;
+-			status = "disabled";
+-		};
+-
+-		usb3_phy0: phy@381f0040 {
+-			compatible = "fsl,imx8mq-usb-phy";
+-			reg = <0x381f0040 0x40>;
+-			clocks = <&clk IMX8MQ_CLK_USB1_PHY_ROOT>;
+-			clock-names = "phy";
+-			assigned-clocks = <&clk IMX8MQ_CLK_USB_PHY_REF>;
+-			assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_100M>;
+-			assigned-clock-rates = <100000000>;
+-			#phy-cells = <0>;
+-			status = "disabled";
+-		};
+-
+-		usb_dwc3_1: usb@38200000 {
+-			compatible = "fsl,imx8mq-dwc3", "snps,dwc3";
+-			reg = <0x38200000 0x10000>;
+-			clocks = <&clk IMX8MQ_CLK_USB_BUS>,
+-			         <&clk IMX8MQ_CLK_USB_CORE_REF>,
+-			         <&clk IMX8MQ_CLK_USB2_CTRL_ROOT>;
+-			clock-names = "bus_early", "ref", "suspend";
+-			assigned-clocks = <&clk IMX8MQ_CLK_USB_BUS>,
+-			                  <&clk IMX8MQ_CLK_USB_CORE_REF>;
+-			assigned-clock-parents = <&clk IMX8MQ_SYS2_PLL_500M>,
+-			                         <&clk IMX8MQ_SYS1_PLL_100M>;
+-			assigned-clock-rates = <500000000>, <100000000>;
+-			interrupts = <GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH>;
+-			phys = <&usb3_phy1>, <&usb3_phy1>;
+-			phy-names = "usb2-phy", "usb3-phy";
+-			power-domains = <&pgc_otg2>;
+-			status = "disabled";
+-		};
+-
+-		usb3_phy1: phy@382f0040 {
+-			compatible = "fsl,imx8mq-usb-phy";
+-			reg = <0x382f0040 0x40>;
+-			clocks = <&clk IMX8MQ_CLK_USB2_PHY_ROOT>;
+-			clock-names = "phy";
+-			assigned-clocks = <&clk IMX8MQ_CLK_USB_PHY_REF>;
+-			assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_100M>;
+-			assigned-clock-rates = <100000000>;
+-			#phy-cells = <0>;
+-			status = "disabled";
+ 		};
+ 
+ 		pcie0: pcie@33800000 {
+@@ -266,7 +135,7 @@
+ 					<0 0 0 3 &gic GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>,
+ 					<0 0 0 4 &gic GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>;
+ 			fsl,max-link-speed = <2>;
+-			power-domains = <&pgc_pcie_phy>;
++			power-domains = <&pgc_pcie1>;
+ 			resets = <&src IMX8MQ_RESET_PCIEPHY>,
+ 				 <&src IMX8MQ_RESET_PCIE_CTRL_APPS_EN>,
+ 				 <&src IMX8MQ_RESET_PCIE_CTRL_APPS_TURNOFF>;
+@@ -295,7 +164,7 @@
+ 					<0 0 0 3 &gic GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>,
+ 					<0 0 0 4 &gic GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
+ 			fsl,max-link-speed = <2>;
+-			power-domains = <&pgc_pcie_phy>;
++			power-domains = <&pgc_pcie1>;
+ 			resets = <&src IMX8MQ_RESET_PCIEPHY2>,
+ 				 <&src IMX8MQ_RESET_PCIE2_CTRL_APPS_EN>,
+ 				 <&src IMX8MQ_RESET_PCIE2_CTRL_APPS_TURNOFF>;
+-- 
+2.20.1
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
