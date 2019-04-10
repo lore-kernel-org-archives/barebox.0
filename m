@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp93.iad3b.emailsrvr.com ([146.20.161.93])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hDUyQ-0002SH-3R
- for barebox@lists.infradead.org; Mon, 08 Apr 2019 14:10:11 +0000
-Received: from smtp4.relay.iad3b.emailsrvr.com (localhost [127.0.0.1])
- by smtp4.relay.iad3b.emailsrvr.com (SMTP Server) with ESMTP id CEA4A201B2
- for <barebox@lists.infradead.org>; Mon,  8 Apr 2019 10:10:07 -0400 (EDT)
-Received: by smtp4.relay.iad3b.emailsrvr.com (Authenticated sender:
- abbotti-AT-mev.co.uk) with ESMTPSA id 7FFD1200BC
- for <barebox@lists.infradead.org>; Mon,  8 Apr 2019 10:10:07 -0400 (EDT)
-From: Ian Abbott <abbotti@mev.co.uk>
-Message-ID: <67655ee5-da5f-2b99-2d1d-ab6c66e4dd48@mev.co.uk>
-Date: Mon, 8 Apr 2019 15:10:06 +0100
+ id 1hE6bn-0004aV-G7
+ for barebox@lists.infradead.org; Wed, 10 Apr 2019 06:21:21 +0000
+Date: Wed, 10 Apr 2019 08:21:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190410062117.hy6az4zojslvtvfs@pengutronix.de>
+References: <67655ee5-da5f-2b99-2d1d-ab6c66e4dd48@mev.co.uk>
 MIME-Version: 1.0
-Content-Language: en-GB
+Content-Disposition: inline
+In-Reply-To: <67655ee5-da5f-2b99-2d1d-ab6c66e4dd48@mev.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: watchdog_disable() in Cyclone V reset manager
-To: barebox@lists.infradead.org
+Subject: Re: watchdog_disable() in Cyclone V reset manager
+To: Ian Abbott <abbotti@mev.co.uk>
+Cc: barebox@lists.infradead.org
 
-ImFyY2gvYXJtL21hY2gtc29jZnBnYS9jeWNsb25lNS1yZXNldC1tYW5hZ2VyLmMiIGRlZmluZXMg
-YSBnbG9iYWwgCmZ1bmN0aW9uICd2b2lkIHdhdGNoZG9nX2Rpc2FibGUodm9pZCknLiAgTm90aGlu
-ZyBjYWxscyBpdC4gIFRoZSBjb21waWxlciAKaXNzdWVzIGEgd2FybmluZzoKCi9tbnQvbGluZGF0
-YS93b3JrL2FiYm90dGkvYmFyZWJveF9naXQvYmFyZWJveC1uZXh0L2FyY2gvYXJtL21hY2gtc29j
-ZnBnYS9jeWNsb25lNS1yZXNldC1tYW5hZ2VyLmM6MjY6NjogCndhcm5pbmc6IG5vIHByZXZpb3Vz
-IHByb3RvdHlwZSBmb3Ig4oCYd2F0Y2hkb2dfZGlzYWJsZeKAmSBbLVdtaXNzaW5nLXByb3RvdHlw
-ZXNdCiAgdm9pZCB3YXRjaGRvZ19kaXNhYmxlKHZvaWQpCiAgICAgICBefn5+fn5+fn5+fn5+fn5+
-CgpTaW5jZSBub3RoaW5nIGluIHRoZSBzaGlwcGVkIGNvZGUgY2FsbHMgaXQsIHNob3VsZCB3ZSBn
-ZXQgcmlkIG9mIGl0PyAgSWYgCm5vdCwgaXQgc2hvdWxkIGJlIGRlY2xhcmVkIGluIGEgaGVhZGVy
-IGZpbGUgc29tZXdoZXJlLgoKLS0gCi09KCBJYW4gQWJib3R0IDxhYmJvdHRpQG1ldi5jby51az4g
-fHwgV2ViOiB3d3cubWV2LmNvLnVrICk9LQotPSggTUVWIEx0ZC4gaXMgYSBjb21wYW55IHJlZ2lz
-dGVyZWQgaW4gRW5nbGFuZCAmIFdhbGVzLiApPS0KLT0oIFJlZ2lzdGVyZWQgbnVtYmVyOiAwMjg2
-MjI2OC4gIFJlZ2lzdGVyZWQgYWRkcmVzczogICAgKT0tCi09KCAxNSBXZXN0IFBhcmsgUm9hZCwg
-QnJhbWhhbGwsIFNUT0NLUE9SVCwgU0s3IDNKWiwgVUsuICk9LQoKX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
-eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
-bGlzdGluZm8vYmFyZWJveAo=
+T24gTW9uLCBBcHIgMDgsIDIwMTkgYXQgMDM6MTA6MDZQTSArMDEwMCwgSWFuIEFiYm90dCB3cm90
+ZToKPiAiYXJjaC9hcm0vbWFjaC1zb2NmcGdhL2N5Y2xvbmU1LXJlc2V0LW1hbmFnZXIuYyIgZGVm
+aW5lcyBhIGdsb2JhbCBmdW5jdGlvbgo+ICd2b2lkIHdhdGNoZG9nX2Rpc2FibGUodm9pZCknLiAg
+Tm90aGluZyBjYWxscyBpdC4gIFRoZSBjb21waWxlciBpc3N1ZXMgYQo+IHdhcm5pbmc6Cj4gCj4g
+L21udC9saW5kYXRhL3dvcmsvYWJib3R0aS9iYXJlYm94X2dpdC9iYXJlYm94LW5leHQvYXJjaC9h
+cm0vbWFjaC1zb2NmcGdhL2N5Y2xvbmU1LXJlc2V0LW1hbmFnZXIuYzoyNjo2Ogo+IHdhcm5pbmc6
+IG5vIHByZXZpb3VzIHByb3RvdHlwZSBmb3Ig4oCYd2F0Y2hkb2dfZGlzYWJsZeKAmSBbLVdtaXNz
+aW5nLXByb3RvdHlwZXNdCj4gIHZvaWQgd2F0Y2hkb2dfZGlzYWJsZSh2b2lkKQo+ICAgICAgIF5+
+fn5+fn5+fn5+fn5+fn4KPiAKPiBTaW5jZSBub3RoaW5nIGluIHRoZSBzaGlwcGVkIGNvZGUgY2Fs
+bHMgaXQsIHNob3VsZCB3ZSBnZXQgcmlkIG9mIGl0PyAgSWYKPiBub3QsIGl0IHNob3VsZCBiZSBk
+ZWNsYXJlZCBpbiBhIGhlYWRlciBmaWxlIHNvbWV3aGVyZS4KCndhdGNoZG9nX2Rpc2FibGUoKSBn
+b2VzIGJhY2sgdG8gdGhlIGluaXRpYWwgc29jZnBnYSBjb21taXQsIHNvIHdoZW4Kbm90aGluZyB1
+c2VzIGl0IG5vdyBJIHRoaW5rIHdlIGNhbiByZW1vdmUgaXQuIFRoZSB3YXRjaGRvZyBkaXNhYmxp
+bmcKbWF5IGFsc28gYmUgaGFuZGxlZCBhbHJlYWR5IGluIHNvY2ZwZ2FfbG93bGV2ZWxfaW5pdCgp
+IHdoaWNoIGFsc28KdG91Y2hlcyB0aGUgc2FtZSByZWdpc3RlcnMuCgpTYXNjaGEKCi0tIApQZW5n
+dXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAg
+fCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhp
+bGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2Vy
+aWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2
+OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
