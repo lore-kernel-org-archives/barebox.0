@@ -1,22 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hEUgQ-0002rm-5A
- for barebox@lists.infradead.org; Thu, 11 Apr 2019 08:03:43 +0000
-Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
- (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
- id S23990946AbfDKIDjWcn86 (ORCPT
- <rfc822;barebox@lists.infradead.org>);
- Thu, 11 Apr 2019 10:03:39 +0200
-Date: Thu, 11 Apr 2019 10:03:38 +0200
-From: Ladislav Michl <ladis@linux-mips.org>
-Message-ID: <20190411080338.GA15306@lenoch>
-References: <4eb7d5fd.88a6.16a01876e6b.Coremail.zzs213@126.com>
- <20190410062640.wihtakf6ojom54uk@pengutronix.de>
- <20190410164937.GA2467@lenoch>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1hEWOF-0006et-2l
+ for barebox@lists.infradead.org; Thu, 11 Apr 2019 09:53:04 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 11 Apr 2019 11:52:58 +0200
+Message-Id: <20190411095258.27952-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190410164937.GA2467@lenoch>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,58 +15,92 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: maybe bug in common/ddr_spd.c
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, =?UTF-8?B?5byg5b+g5bGx?= <zzs213@126.com>
+Subject: [PATCH] hab/caam: Fix compilation of caam driver when hab is disabled
+To: Barebox List <barebox@lists.infradead.org>
 
-T24gV2VkLCBBcHIgMTAsIDIwMTkgYXQgMDY6NDk6MzhQTSArMDIwMCwgTGFkaXNsYXYgTWljaGwg
-d3JvdGU6Cj4gT24gV2VkLCBBcHIgMTAsIDIwMTkgYXQgMDg6MjY6NDBBTSArMDIwMCwgU2FzY2hh
-IEhhdWVyIHdyb3RlOgo+ID4gT24gVHVlLCBBcHIgMDksIDIwMTkgYXQgMDU6NTY6NTNQTSArMDgw
-MCwg5byg5b+g5bGxIHdyb3RlOgo+ID4gPiBNYXliZSB0aGlzIGlzIGEgYnVnLCBJJ20gbm90IHN1
-cmUKPiA+ID4gCj4gPiA+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tODwtLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSAKPiA+ID4gRnJvbSA1NTUwOWYzNTlhYmJiMWY1YzI0
-ZTlmMGMyYjljZmYxNjdmNjJhZTRkIE1vbiBTZXAgMTcgMDA6MDA6MDAgMjAwMQo+ID4gPiBGcm9t
-OiA9P1VURi04P3E/PUU1PUJDPUEwPUU1PUJGPUEwPUU1PUIxPUIxPz0gPHp6czIxM0AxMjYuY29t
-Pgo+ID4gPiBEYXRlOiBNb24sIDggQXByIDIwMTkgMTQ6MzQ6MDAgKzA4MDAKPiA+ID4gU3ViamVj
-dDogW1BBVENIXSBidWdmaXg6IGNoZWNrIGRkciBtb2RfcmFua3MKPiA+ID4gTUlNRS1WZXJzaW9u
-OiAxLjAKPiA+ID4gQ29udGVudC1UeXBlOiB0ZXh0L3BsYWluOyBjaGFyc2V0PVVURi04Cj4gPiA+
-IENvbnRlbnQtVHJhbnNmZXItRW5jb2Rpbmc6IDhiaXQKPiA+ID4gCj4gPiA+IFNpZ25lZC1vZmYt
-Ynk6IOW8oOW/oOWxsSA8enpzMjEzQDEyNi5jb20+Cj4gPiA+IC0tLQo+ID4gPiAgY29tbW9uL2Rk
-cl9zcGQuYyB8IDIgKy0KPiA+ID4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBk
-ZWxldGlvbigtKQo+ID4gPiAKPiA+ID4gZGlmZiAtLWdpdCBhL2NvbW1vbi9kZHJfc3BkLmMgYi9j
-b21tb24vZGRyX3NwZC5jCj4gPiA+IGluZGV4IGVjMzQzZWY1YS4uMjc3ZDQxOGU5IDEwMDY0NAo+
-ID4gPiAtLS0gYS9jb21tb24vZGRyX3NwZC5jCj4gPiA+ICsrKyBiL2NvbW1vbi9kZHJfc3BkLmMK
-PiA+ID4gQEAgLTI1Myw3ICsyNTMsNyBAQCB2b2lkIGRkcl9zcGRfcHJpbnQodWludDhfdCAqcmVj
-b3JkKQo+ID4gPiAgCQlwcmludGYoIkVycm9yIG1vZHVsZSB0eXBlXG4iKTsKPiA+ID4gIAo+ID4g
-PiAgCXByaW50ZigiJS00OHMgIiwgIkRSQU0gUGFja2FnZSAiKTsKPiA+ID4gLQlpZiAoKHMtPm1v
-ZF9yYW5rcyAmIDB4MTApID09IDEpCj4gPiA+ICsJaWYgKChzLT5tb2RfcmFua3MgJiAweDEwKSAh
-PSAwKQo+ID4gCj4gPiBGb3Igc3VyZSB0aGlzIGlzIGJ1Z2d5LiBBcHBsaWVkLCB0aGFua3MKPiAK
-PiBJIGtub3cgaXQgaXMgdG9vIGxhdGUgYWxyZWFkeSwgYnV0IGlzbid0Cj4gCWlmIChzLT5tb2Rf
-cmFua3MgJiAweDEwKQo+IGEgYml0IG1vcmUgdXN1YWwgZml4PwoKSG1tLCBhY3R1YWxseSB0aGVy
-ZSdzIHNvbWUgbW9yZSBjb21wYXJzaW9uIHdvcnRoIHZlcmlmeWluZyBhcyBzaG93bgpiZWxsb3c6
-CgpkaWZmIC0tZ2l0IGEvY29tbW9uL2Rkcl9zcGQuYyBiL2NvbW1vbi9kZHJfc3BkLmMKaW5kZXgg
-MGJhNWVhY2VhLi43YzlhYmVlYWQgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9kZHJfc3BkLmMKKysrIGIv
-Y29tbW9uL2Rkcl9zcGQuYwpAQCAtMjU2LDcgKzI1Niw3IEBAIHZvaWQgZGRyX3NwZF9wcmludCh1
-aW50OF90ICpyZWNvcmQpCiAJY3RpbWUgPSBkZHIyX3NkcmFtX2N0aW1lKHMtPmNsa19jeWNsZSk7
-CiAJZGRyY2xrID0gMiAqICgxMDAwMDAgLyBjdGltZSk7CiAJdGJpdHMgPSAocy0+cmVzXzcgPDwg
-OCkgKyAocy0+ZGF0YXcpOwotCWlmICgocy0+Y29uZmlnICYgMHgwMykgPT0gMSkKKwlpZiAocy0+
-Y29uZmlnICYgMHgwMSkKIAkJdGJpdHMgPSB0Yml0cyAtIDg7CiAKIAlwY2NsayA9IGRkcmNsayAq
-IHRiaXRzIC8gODsKQEAgLTMyNSw3ICszMjUsNyBAQCB2b2lkIGRkcl9zcGRfcHJpbnQodWludDhf
-dCAqcmVjb3JkKQogCQlwcmludGYoIkVycm9yIG1vZHVsZSB0eXBlXG4iKTsKIAogCXByaW50Zigi
-JS00OHMgIiwgIkRSQU0gUGFja2FnZSAiKTsKLQlpZiAoKHMtPm1vZF9yYW5rcyAmIDB4MTApID09
-IDEpCisJaWYgKHMtPm1vZF9yYW5rcyAmIDB4MTApCiAJCXByaW50ZigiU3RhY2tcbiIpOwogCWVs
-c2UKIAkJcHJpbnRmKCJQbGFuYXJcbiIpOwpAQCAtMzQxLDcgKzM0MSw3IEBAIHZvaWQgZGRyX3Nw
-ZF9wcmludCh1aW50OF90ICpyZWNvcmQpCiAJaWYgKHBhcml0eSA9PSAwKQogCQlwcmludGYoIk5v
-IFBhcml0eVxuIik7CiAKLQlpZiAoKHBhcml0eSAmIDB4MDMpID09IDB4MDEpCisJaWYgKHBhcml0
-eSAmIDB4MDEpCiAJCXByaW50ZigiRGF0YSBQYXJpdHlcbiIpOwogCWlmIChwYXJpdHkgJiAweDAy
-KQogCQlwcmludGYoIkRhdGEgRUNDXG4iKTsKQEAgLTM0OSw3ICszNDksNyBAQCB2b2lkIGRkcl9z
-cGRfcHJpbnQodWludDhfdCAqcmVjb3JkKQogCWlmIChwYXJpdHkgJiAweDA0KQogCQlwcmludGYo
-IkFkZHJlc3MvQ29tbWFuZCBQYXJpdHlcbiIpOwogCi0JaWYgKChzLT5yZWZyZXNoID4+IDcpID09
-IDEpCisJaWYgKHMtPnJlZnJlc2ggJiAweDgwKQogCQlyZWYgPSAiLSBTZWxmIFJlZnJlc2giOwog
-CWVsc2UKIAkJcmVmID0gIiAiOwoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
-b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+The caam driver needs the variable habv4_need_rng_software_self_test,
+but this is only declared when HABV4 is enabled. Instead of exporting
+a variable rather provide a function to test if a software selftest
+of the random number generator is needed.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/crypto/caam/ctrl.c | 3 +--
+ drivers/hab/habv4.c        | 9 +++++++--
+ include/hab.h              | 7 +++++--
+ 3 files changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/crypto/caam/ctrl.c b/drivers/crypto/caam/ctrl.c
+index 39910131b1..4fe3eea3e6 100644
+--- a/drivers/crypto/caam/ctrl.c
++++ b/drivers/crypto/caam/ctrl.c
+@@ -573,8 +573,7 @@ static int caam_probe(struct device_d *dev)
+ 	cha_vid_ls = rd_reg32(&ctrl->perfmon.cha_id_ls);
+ 
+ 	/* habv4_need_rng_software_self_test is determined by habv4_get_status() */
+-	if (IS_ENABLED(CONFIG_CRYPTO_DEV_FSL_CAAM_RNG_SELF_TEST) &&
+-	    habv4_need_rng_software_self_test) {
++	if (caam_need_rng_software_selftest()) {
+ 		u8 caam_era;
+ 		u8 rngvid;
+ 		u8 rngrev;
+diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
+index ca95c01e7b..6d2aabff59 100644
+--- a/drivers/hab/habv4.c
++++ b/drivers/hab/habv4.c
+@@ -392,8 +392,13 @@ static void habv4_display_event(uint8_t *data, uint32_t len)
+  * self-test in ROM code. In this case, an HAB event is generated, and a
+  * software self-test should be run. This variable is set to @c true by
+  * habv4_get_status() when this occurs. */
+-bool habv4_need_rng_software_self_test = false;
+-EXPORT_SYMBOL(habv4_need_rng_software_self_test);
++static bool habv4_need_rng_software_self_test;
++
++bool caam_need_rng_software_selftest(void)
++{
++	return IS_ENABLED(CONFIG_CRYPTO_DEV_FSL_CAAM_RNG_SELF_TEST) &&
++		habv4_need_rng_software_self_test)
++}
+ 
+ #define RNG_FAIL_EVENT_SIZE 36
+ static uint8_t habv4_known_rng_fail_events[][RNG_FAIL_EVENT_SIZE] = {
+diff --git a/include/hab.h b/include/hab.h
+index 30eace7685..a74b7dafce 100644
+--- a/include/hab.h
++++ b/include/hab.h
+@@ -20,11 +20,10 @@
+ 
+ #include <errno.h>
+ 
+-extern bool habv4_need_rng_software_self_test;
+-
+ #ifdef CONFIG_HABV4
+ int imx28_hab_get_status(void);
+ int imx6_hab_get_status(void);
++bool caam_need_rng_software_selftest(void);
+ #else
+ static inline int imx28_hab_get_status(void)
+ {
+@@ -34,6 +33,10 @@ static inline int imx6_hab_get_status(void)
+ {
+ 	return -EPERM;
+ }
++static inline bool caam_need_rng_software_selftest(void)
++{
++	return false;
++}
+ #endif
+ 
+ #ifdef CONFIG_HABV3
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
