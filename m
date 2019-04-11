@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vs10.datenmanufaktur-hosting.net ([213.160.73.65]
+ helo=vs81.iboxed.net)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hIqt9-0001CR-Ka
- for barebox@lists.infradead.org; Tue, 23 Apr 2019 08:35:01 +0000
-Date: Tue, 23 Apr 2019 10:34:49 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190423083449.r7sgpuhzc6vwrfja@pengutronix.de>
-References: <20190411154326.1750-1-l.stach@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190411154326.1750-1-l.stach@pengutronix.de>
+ id 1hEeov-0006O4-Fz
+ for barebox@lists.infradead.org; Thu, 11 Apr 2019 18:53:10 +0000
+From: Alexander Kurz <akurz@blala.de>
+Date: Thu, 11 Apr 2019 18:53:42 +0000
+Message-Id: <20190411185342.12492-1-user@vserver64>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +15,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: imx8mq: link PCIE1 and PCIE2 power domains
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mtd: spi-nor: add Winbond W25Q40BW
+To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Alexander Kurz <akurz@blala.de>
 
-On Thu, Apr 11, 2019 at 05:43:26PM +0200, Lucas Stach wrote:
-> Those two power domains can only be used together. The link between
-> the two has been dropped with the dts merge of v5.1-rc1. Fix this.
-> 
-> Fortunately the i.MX8MQ PCIe support will land in Linux 5.2, so we
-> can drop all those PCIe related local DT overrides with the next big
-> dts upstream sync.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  arch/arm/dts/imx8mq.dtsi | 4 ++++
->  1 file changed, 4 insertions(+)
+From: Alexander Kurz <akurz@blala.de>
 
-Applied, thanks
+This 4MBit SPI chip can be found in Kindle Voyage devices
 
-Sascha
+Signed-off-by: Alexander Kurz <akurz@blala.de>
+---
+ drivers/mtd/spi-nor/spi-nor.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-
+diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+index 85b55c698..6ff9c2738 100644
+--- a/drivers/mtd/spi-nor/spi-nor.c
++++ b/drivers/mtd/spi-nor/spi-nor.c
+@@ -649,6 +649,7 @@ static const struct spi_device_id spi_nor_ids[] = {
+ 	{ "w25q16dw", INFO(0xef6015, 0, 64 * 1024, 32, SECT_4K) },
+ 	{ "w25q32", INFO(0xef4016, 0, 64 * 1024,  64, SECT_4K) },
+ 	{ "w25q32dw", INFO(0xef6016, 0, 64 * 1024,  64, SECT_4K) },
++	{ "w25q40bw", INFO(0xef5013, 0, 64 * 1024,  8, SECT_4K) },
+ 	{ "w25x64", INFO(0xef3017, 0, 64 * 1024, 128, SECT_4K) },
+ 	{ "w25q64", INFO(0xef4017, 0, 64 * 1024, 128, SECT_4K) },
+ 	{ "w25q64dw", INFO(0xef6017, 0, 64 * 1024, 128, SECT_4K) },
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.11.0
+
 
 _______________________________________________
 barebox mailing list
