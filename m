@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hEpiX-0005LD-Ve
- for barebox@lists.infradead.org; Fri, 12 Apr 2019 06:31:19 +0000
+ id 1hEpiR-0005Jr-3Z
+ for barebox@lists.infradead.org; Fri, 12 Apr 2019 06:31:13 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 12 Apr 2019 08:31:06 +0200
-Message-Id: <20190412063107.26791-1-s.hauer@pengutronix.de>
+Date: Fri, 12 Apr 2019 08:31:07 +0200
+Message-Id: <20190412063107.26791-2-s.hauer@pengutronix.de>
+In-Reply-To: <20190412063107.26791-1-s.hauer@pengutronix.de>
+References: <20190412063107.26791-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,76 +21,677 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: i.MX25: Add some more clocks
+Subject: [PATCH 2/2] Add i.MX25 rtc driver
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+This adds a RTC driver for the Freescale i.MX25. This is done more
+to get access to the nonvolatile general purpose register than it
+is done to read the clock.
 
-Add some clocks needed for:
-- RNGB
-- SCC
-- Dryice RTC
-
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/include/mach/imx25-regs.h | 2 ++
- drivers/clk/imx/clk-imx25.c                 | 7 ++++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/rtc/Kconfig     |   6 +
+ drivers/rtc/Makefile    |   1 +
+ drivers/rtc/rtc-imxdi.c | 623 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 630 insertions(+)
+ create mode 100644 drivers/rtc/rtc-imxdi.c
 
-diff --git a/arch/arm/mach-imx/include/mach/imx25-regs.h b/arch/arm/mach-imx/include/mach/imx25-regs.h
-index 71812764c9..5974897a16 100644
---- a/arch/arm/mach-imx/include/mach/imx25-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx25-regs.h
-@@ -62,12 +62,14 @@
- #define MX25_SSI2_BASE_ADDR		0x50014000
- #define MX25_SSI1_BASE_ADDR		0x50034000
- #define MX25_NFC_BASE_ADDR		0xbb000000
-+#define MX25_SCC_BASE_ADDR		0x53fac000
- #define MX25_IIM_BASE_ADDR		0x53ff0000
- #define MX25_DRYICE_BASE_ADDR		0x53ffc000
- #define MX25_ESDHC1_BASE_ADDR		0x53fb4000
- #define MX25_ESDHC2_BASE_ADDR		0x53fb8000
- #define MX25_LCDC_BASE_ADDR		0x53fbc000
- #define MX25_KPP_BASE_ADDR		0x43fa8000
-+#define MX25_RNGB_BASE_ADDR		0x53fb0000
- #define MX25_SDMA_BASE_ADDR		0x53fd4000
- #define MX25_USB_BASE_ADDR		0x53ff4000
- #define MX25_USB_OTG_BASE_ADDR			(MX25_USB_BASE_ADDR + 0x0000)
-diff --git a/drivers/clk/imx/clk-imx25.c b/drivers/clk/imx/clk-imx25.c
-index baa42e14f4..ce4fbed68c 100644
---- a/drivers/clk/imx/clk-imx25.c
-+++ b/drivers/clk/imx/clk-imx25.c
-@@ -95,7 +95,7 @@ static int imx25_ccm_probe(struct device_d *dev)
+diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
+index 7d181949ee..9d2c6e614b 100644
+--- a/drivers/rtc/Kconfig
++++ b/drivers/rtc/Kconfig
+@@ -38,6 +38,12 @@ config RTC_DRV_ABRACON
  
- 	writel((1 << 3) | (1 << 4) | (1 << 5) | (1 << 6) | (1 << 8) | (1 << 9) |
- 			(1 << 10) | (1 << 15) |	(1 << 19) | (1 << 21) | (1 << 22) |
--			(1 << 23) | (1 << 24) | (1 << 28),
-+			(1 << 23) | (1 << 24) | (1 << 25) | (1 << 28),
- 			base + CCM_CGCR0);
+ endif # I2C
  
- 	writel((1 << 5) | (1 << 6) | (1 << 7) | (1 << 8) | (1 << 13) | (1 << 14) |
-@@ -152,7 +152,9 @@ static int imx25_ccm_probe(struct device_d *dev)
- 	clks[lcdc_ahb] = imx_clk_gate("lcdc_ahb", "ahb", base + CCM_CGCR0, 24);
- 	clks[lcdc_ipg] = imx_clk_gate("lcdc_ipg", "ipg", base + CCM_CGCR1, 29);
- 	clks[lcdc_ipg_per] = imx_clk_gate("lcdc_ipg_per", "per7", base + CCM_CGCR0, 7);
-+	clks[scc_ipg] = imx_clk_gate("scc_ipg", "ipg", base + CCM_CGCR2, 5);
- 	clks[rngb_ipg] = imx_clk_gate("rngb_ipg", "ipg", base + CCM_CGCR2, 3);
-+	clks[dryice_ipg] = imx_clk_gate("dryice_ipg", "ipg", base + CCM_CGCR1, 8);
++config RTC_DRV_IMXDI
++	tristate "Freescale IMX DryIce Real Time Clock"
++	depends on ARCH_IMX
++	help
++	   Support for Freescale IMX DryIce RTC
++
+ config RTC_DRV_JZ4740
+ 	tristate "Ingenic JZ4740 RTC"
+ 	depends on MACH_MIPS_XBURST
+diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
+index 68741c26a1..1308beff38 100644
+--- a/drivers/rtc/Makefile
++++ b/drivers/rtc/Makefile
+@@ -9,4 +9,5 @@ obj-$(CONFIG_RTC_CLASS)         += class.o
  
- 	clkdev_add_physbase(clks[per15], MX25_UART1_BASE_ADDR, NULL);
- 	clkdev_add_physbase(clks[per15], MX25_UART2_BASE_ADDR, NULL);
-@@ -176,6 +178,9 @@ static int imx25_ccm_probe(struct device_d *dev)
- 	clkdev_add_physbase(clks[lcdc_ipg_per], MX25_LCDC_BASE_ADDR, "per");
- 	clkdev_add_physbase(clks[lcdc_ipg], MX25_LCDC_BASE_ADDR, "ipg");
- 	clkdev_add_physbase(clks[lcdc_ahb], MX25_LCDC_BASE_ADDR, "ahb");
-+	clkdev_add_physbase(clks[scc_ipg], MX25_SCC_BASE_ADDR, "ipg");
-+	clkdev_add_physbase(clks[rngb_ipg], MX25_RNGB_BASE_ADDR, "ipg");
-+	clkdev_add_physbase(clks[dryice_ipg], MX25_DRYICE_BASE_ADDR, NULL);
- 
- 	return 0;
- }
+ obj-$(CONFIG_RTC_DRV_ABRACON)   += rtc-abracon.o
+ obj-$(CONFIG_RTC_DRV_DS1307)    += rtc-ds1307.o
++obj-$(CONFIG_RTC_DRV_IMXDI)	+= rtc-imxdi.o
+ obj-$(CONFIG_RTC_DRV_JZ4740)	+= rtc-jz4740.o
+diff --git a/drivers/rtc/rtc-imxdi.c b/drivers/rtc/rtc-imxdi.c
+new file mode 100644
+index 0000000000..8fcaf631ff
+--- /dev/null
++++ b/drivers/rtc/rtc-imxdi.c
+@@ -0,0 +1,623 @@
++/*
++ * Copyright 2008-2009 Freescale Semiconductor, Inc. All Rights Reserved.
++ * Copyright 2010 Orex Computed Radiography
++ */
++
++/*
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
++
++/* based on rtc-mc13892.c */
++
++/*
++ * This driver uses the 47-bit 32 kHz counter in the Freescale DryIce block
++ * to implement a Linux RTC. Times and alarms are truncated to seconds.
++ * Since the RTC framework performs API locking via rtc->ops_lock the
++ * only simultaneous accesses we need to deal with is updating DryIce
++ * registers while servicing an alarm.
++ *
++ * Note that reading the DSR (DryIce Status Register) automatically clears
++ * the WCF (Write Complete Flag). All DryIce writes are synchronized to the
++ * LP (Low Power) domain and set the WCF upon completion. Writes to the
++ * DIER (DryIce Interrupt Enable Register) are the only exception. These
++ * occur at normal bus speeds and do not set WCF.  Periodic interrupts are
++ * not supported by the hardware.
++ */
++
++#include <common.h>
++#include <driver.h>
++#include <init.h>
++#include <rtc.h>
++#include <io.h>
++#include <linux/clk.h>
++#include <linux/rtc.h>
++#include <linux/nvmem-provider.h>
++
++/* DryIce Register Definitions */
++
++#define DTCMR     0x00           /* Time Counter MSB Reg */
++#define DTCLR     0x04           /* Time Counter LSB Reg */
++
++#define DCAMR     0x08           /* Clock Alarm MSB Reg */
++#define DCALR     0x0c           /* Clock Alarm LSB Reg */
++#define DCAMR_UNSET  0xFFFFFFFF  /* doomsday - 1 sec */
++
++#define DCR       0x10           /* Control Reg */
++#define DCR_TDCHL (1 << 30)      /* Tamper-detect configuration hard lock */
++#define DCR_TDCSL (1 << 29)      /* Tamper-detect configuration soft lock */
++#define DCR_KSSL  (1 << 27)      /* Key-select soft lock */
++#define DCR_MCHL  (1 << 20)      /* Monotonic-counter hard lock */
++#define DCR_MCSL  (1 << 19)      /* Monotonic-counter soft lock */
++#define DCR_TCHL  (1 << 18)      /* Timer-counter hard lock */
++#define DCR_TCSL  (1 << 17)      /* Timer-counter soft lock */
++#define DCR_FSHL  (1 << 16)      /* Failure state hard lock */
++#define DCR_TCE   (1 << 3)       /* Time Counter Enable */
++#define DCR_MCE   (1 << 2)       /* Monotonic Counter Enable */
++
++#define DSR       0x14           /* Status Reg */
++#define DSR_WTD   (1 << 23)      /* Wire-mesh tamper detected */
++#define DSR_ETBD  (1 << 22)      /* External tamper B detected */
++#define DSR_ETAD  (1 << 21)      /* External tamper A detected */
++#define DSR_EBD   (1 << 20)      /* External boot detected */
++#define DSR_SAD   (1 << 19)      /* SCC alarm detected */
++#define DSR_TTD   (1 << 18)      /* Temperature tamper detected */
++#define DSR_CTD   (1 << 17)      /* Clock tamper detected */
++#define DSR_VTD   (1 << 16)      /* Voltage tamper detected */
++#define DSR_WBF   (1 << 10)      /* Write Busy Flag (synchronous) */
++#define DSR_WNF   (1 << 9)       /* Write Next Flag (synchronous) */
++#define DSR_WCF   (1 << 8)       /* Write Complete Flag (synchronous)*/
++#define DSR_WEF   (1 << 7)       /* Write Error Flag */
++#define DSR_CAF   (1 << 4)       /* Clock Alarm Flag */
++#define DSR_MCO   (1 << 3)       /* monotonic counter overflow */
++#define DSR_TCO   (1 << 2)       /* time counter overflow */
++#define DSR_NVF   (1 << 1)       /* Non-Valid Flag */
++#define DSR_SVF   (1 << 0)       /* Security Violation Flag */
++
++#define DIER      0x18           /* Interrupt Enable Reg (synchronous) */
++#define DIER_WNIE (1 << 9)       /* Write Next Interrupt Enable */
++#define DIER_WCIE (1 << 8)       /* Write Complete Interrupt Enable */
++#define DIER_WEIE (1 << 7)       /* Write Error Interrupt Enable */
++#define DIER_CAIE (1 << 4)       /* Clock Alarm Interrupt Enable */
++#define DIER_SVIE (1 << 0)       /* Security-violation Interrupt Enable */
++
++#define DMCR      0x1c           /* DryIce Monotonic Counter Reg */
++
++#define DTCR      0x28           /* DryIce Tamper Configuration Reg */
++#define DTCR_MOE  (1 << 9)       /* monotonic overflow enabled */
++#define DTCR_TOE  (1 << 8)       /* time overflow enabled */
++#define DTCR_WTE  (1 << 7)       /* wire-mesh tamper enabled */
++#define DTCR_ETBE (1 << 6)       /* external B tamper enabled */
++#define DTCR_ETAE (1 << 5)       /* external A tamper enabled */
++#define DTCR_EBE  (1 << 4)       /* external boot tamper enabled */
++#define DTCR_SAIE (1 << 3)       /* SCC enabled */
++#define DTCR_TTE  (1 << 2)       /* temperature tamper enabled */
++#define DTCR_CTE  (1 << 1)       /* clock tamper enabled */
++#define DTCR_VTE  (1 << 0)       /* voltage tamper enabled */
++
++#define DGPR      0x3c           /* DryIce General Purpose Reg */
++
++/**
++ * struct imxdi_dev - private imxdi rtc data
++ * @dev: pionter to dev
++ * @rtc: pointer to rtc struct
++ * @ioaddr: IO registers pointer
++ * @clk: input reference clock
++ * @dsr: copy of the DSR register
++ */
++struct imxdi_dev {
++	struct device_d *dev;
++	struct rtc_device rtc;
++	void __iomem *ioaddr;
++	struct clk *clk;
++	u32 dsr;
++	struct nvmem_device *nvmem;
++};
++
++/* Some background:
++ *
++ * The DryIce unit is a complex security/tamper monitor device. To be able do
++ * its job in a useful manner it runs a bigger statemachine to bring it into
++ * security/tamper failure state and once again to bring it out of this state.
++ *
++ * This unit can be in one of three states:
++ *
++ * - "NON-VALID STATE"
++ *   always after the battery power was removed
++ * - "FAILURE STATE"
++ *   if one of the enabled security events has happened
++ * - "VALID STATE"
++ *   if the unit works as expected
++ *
++ * Everything stops when the unit enters the failure state including the RTC
++ * counter (to be able to detect the time the security event happened).
++ *
++ * The following events (when enabled) let the DryIce unit enter the failure
++ * state:
++ *
++ * - wire-mesh-tamper detect
++ * - external tamper B detect
++ * - external tamper A detect
++ * - temperature tamper detect
++ * - clock tamper detect
++ * - voltage tamper detect
++ * - RTC counter overflow
++ * - monotonic counter overflow
++ * - external boot
++ *
++ * If we find the DryIce unit in "FAILURE STATE" and the TDCHL cleared, we
++ * can only detect this state. In this case the unit is completely locked and
++ * must force a second "SYSTEM POR" to bring the DryIce into the
++ * "NON-VALID STATE" + "FAILURE STATE" where a recovery is possible.
++ * If the TDCHL is set in the "FAILURE STATE" we are out of luck. In this case
++ * a battery power cycle is required.
++ *
++ * In the "NON-VALID STATE" + "FAILURE STATE" we can clear the "FAILURE STATE"
++ * and recover the DryIce unit. By clearing the "NON-VALID STATE" as the last
++ * task, we bring back this unit into life.
++ */
++
++/*
++ * Do a write into the unit without interrupt support.
++ * We do not need to check the WEF here, because the only reason this kind of
++ * write error can happen is if we write to the unit twice within the 122 us
++ * interval. This cannot happen, since we are using this function only while
++ * setting up the unit.
++ */
++static void di_write_busy_wait(const struct imxdi_dev *imxdi, u32 val,
++			       unsigned reg)
++{
++	/* do the register write */
++	writel(val, imxdi->ioaddr + reg);
++
++	/*
++	 * now it takes four 32,768 kHz clock cycles to take
++	 * the change into effect = 122 us
++	 */
++	udelay(130);
++}
++
++static void di_what_is_to_be_done(struct imxdi_dev *imxdi,
++				  const char *power_supply)
++{
++	dev_emerg(imxdi->dev, "Please cycle the %s power supply in order to get the DryIce/RTC unit working again\n",
++		  power_supply);
++}
++
++static int di_handle_failure_state(struct imxdi_dev *imxdi, u32 dsr)
++{
++	u32 dcr;
++
++	dev_dbg(imxdi->dev, "DSR register reports: %08X\n", dsr);
++
++	dcr = readl(imxdi->ioaddr + DCR);
++
++	if (dcr & DCR_FSHL) {
++		/* we are out of luck */
++		di_what_is_to_be_done(imxdi, "battery");
++		return -ENODEV;
++	}
++	/*
++	 * with the next SYSTEM POR we will transit from the "FAILURE STATE"
++	 * into the "NON-VALID STATE" + "FAILURE STATE"
++	 */
++	di_what_is_to_be_done(imxdi, "main");
++
++	return -ENODEV;
++}
++
++static int di_handle_valid_state(struct imxdi_dev *imxdi, u32 dsr)
++{
++	/* initialize alarm */
++	di_write_busy_wait(imxdi, DCAMR_UNSET, DCAMR);
++	di_write_busy_wait(imxdi, 0, DCALR);
++
++	/* clear alarm flag */
++	if (dsr & DSR_CAF)
++		di_write_busy_wait(imxdi, DSR_CAF, DSR);
++
++	return 0;
++}
++
++static int di_handle_invalid_state(struct imxdi_dev *imxdi, u32 dsr)
++{
++	u32 dcr, sec;
++
++	/*
++	 * lets disable all sources which can force the DryIce unit into
++	 * the "FAILURE STATE" for now
++	 */
++	di_write_busy_wait(imxdi, 0x00000000, DTCR);
++	/* and lets protect them at runtime from any change */
++	di_write_busy_wait(imxdi, DCR_TDCSL, DCR);
++
++	sec = readl(imxdi->ioaddr + DTCMR);
++	if (sec != 0)
++		dev_warn(imxdi->dev,
++			 "The security violation has happened at %u seconds\n",
++			 sec);
++	/*
++	 * the timer cannot be set/modified if
++	 * - the TCHL or TCSL bit is set in DCR
++	 */
++	dcr = readl(imxdi->ioaddr + DCR);
++	if (!(dcr & DCR_TCE)) {
++		if (dcr & DCR_TCHL) {
++			/* we are out of luck */
++			di_what_is_to_be_done(imxdi, "battery");
++			return -ENODEV;
++		}
++		if (dcr & DCR_TCSL) {
++			di_what_is_to_be_done(imxdi, "main");
++			return -ENODEV;
++		}
++	}
++	/*
++	 * - the timer counter stops/is stopped if
++	 *   - its overflow flag is set (TCO in DSR)
++	 *      -> clear overflow bit to make it count again
++	 *   - NVF is set in DSR
++	 *      -> clear non-valid bit to make it count again
++	 *   - its TCE (DCR) is cleared
++	 *      -> set TCE to make it count
++	 *   - it was never set before
++	 *      -> write a time into it (required again if the NVF was set)
++	 */
++	/* state handled */
++	di_write_busy_wait(imxdi, DSR_NVF, DSR);
++	/* clear overflow flag */
++	di_write_busy_wait(imxdi, DSR_TCO, DSR);
++	/* enable the counter */
++	di_write_busy_wait(imxdi, dcr | DCR_TCE, DCR);
++	/* set and trigger it to make it count */
++	di_write_busy_wait(imxdi, sec, DTCMR);
++
++	/* now prepare for the valid state */
++	return di_handle_valid_state(imxdi, __raw_readl(imxdi->ioaddr + DSR));
++}
++
++static int di_handle_invalid_and_failure_state(struct imxdi_dev *imxdi, u32 dsr)
++{
++	u32 dcr;
++
++	/*
++	 * now we must first remove the tamper sources in order to get the
++	 * device out of the "FAILURE STATE"
++	 * To disable any of the following sources we need to modify the DTCR
++	 */
++	if (dsr & (DSR_WTD | DSR_ETBD | DSR_ETAD | DSR_EBD | DSR_SAD |
++			DSR_TTD | DSR_CTD | DSR_VTD | DSR_MCO | DSR_TCO)) {
++		dcr = __raw_readl(imxdi->ioaddr + DCR);
++		if (dcr & DCR_TDCHL) {
++			/*
++			 * the tamper register is locked. We cannot disable the
++			 * tamper detection. The TDCHL can only be reset by a
++			 * DRYICE POR, but we cannot force a DRYICE POR in
++			 * softwere because we are still in "FAILURE STATE".
++			 * We need a DRYICE POR via battery power cycling....
++			 */
++			/*
++			 * out of luck!
++			 * we cannot disable them without a DRYICE POR
++			 */
++			di_what_is_to_be_done(imxdi, "battery");
++			return -ENODEV;
++		}
++		if (dcr & DCR_TDCSL) {
++			/* a soft lock can be removed by a SYSTEM POR */
++			di_what_is_to_be_done(imxdi, "main");
++			return -ENODEV;
++		}
++	}
++
++	/* disable all sources */
++	di_write_busy_wait(imxdi, 0x00000000, DTCR);
++
++	/* clear the status bits now */
++	di_write_busy_wait(imxdi, dsr & (DSR_WTD | DSR_ETBD | DSR_ETAD |
++			DSR_EBD | DSR_SAD | DSR_TTD | DSR_CTD | DSR_VTD |
++			DSR_MCO | DSR_TCO), DSR);
++
++	dsr = readl(imxdi->ioaddr + DSR);
++	if ((dsr & ~(DSR_NVF | DSR_SVF | DSR_WBF | DSR_WNF |
++			DSR_WCF | DSR_WEF)) != 0)
++		dev_warn(imxdi->dev,
++			 "There are still some sources of pain in DSR: %08x!\n",
++			 dsr & ~(DSR_NVF | DSR_SVF | DSR_WBF | DSR_WNF |
++				 DSR_WCF | DSR_WEF));
++
++	/*
++	 * now we are trying to clear the "Security-violation flag" to
++	 * get the DryIce out of this state
++	 */
++	di_write_busy_wait(imxdi, DSR_SVF, DSR);
++
++	/* success? */
++	dsr = readl(imxdi->ioaddr + DSR);
++	if (dsr & DSR_SVF) {
++		dev_crit(imxdi->dev,
++			 "Cannot clear the security violation flag. We are ending up in an endless loop!\n");
++		/* last resort */
++		di_what_is_to_be_done(imxdi, "battery");
++		return -ENODEV;
++	}
++
++	/*
++	 * now we have left the "FAILURE STATE" and ending up in the
++	 * "NON-VALID STATE" time to recover everything
++	 */
++	return di_handle_invalid_state(imxdi, dsr);
++}
++
++static int di_handle_state(struct imxdi_dev *imxdi)
++{
++	int rc;
++	u32 dsr;
++
++	dsr = readl(imxdi->ioaddr + DSR);
++
++	switch (dsr & (DSR_NVF | DSR_SVF)) {
++	case DSR_NVF:
++		dev_warn(imxdi->dev, "Invalid stated unit detected\n");
++		rc = di_handle_invalid_state(imxdi, dsr);
++		break;
++	case DSR_SVF:
++		dev_warn(imxdi->dev, "Failure stated unit detected\n");
++		rc = di_handle_failure_state(imxdi, dsr);
++		break;
++	case DSR_NVF | DSR_SVF:
++		dev_warn(imxdi->dev,
++			 "Failure+Invalid stated unit detected\n");
++		rc = di_handle_invalid_and_failure_state(imxdi, dsr);
++		break;
++	default:
++		dev_notice(imxdi->dev, "Unlocked unit detected\n");
++		rc = di_handle_valid_state(imxdi, dsr);
++	}
++
++	return rc;
++}
++
++/*
++ * This function attempts to clear the dryice write-error flag.
++ *
++ * A dryice write error is similar to a bus fault and should not occur in
++ * normal operation.  Clearing the flag requires another write, so the root
++ * cause of the problem may need to be fixed before the flag can be cleared.
++ */
++static void clear_write_error(struct imxdi_dev *imxdi)
++{
++	int cnt;
++
++	dev_warn(imxdi->dev, "WARNING: Register write error!\n");
++
++	/* clear the write error flag */
++	writel(DSR_WEF, imxdi->ioaddr + DSR);
++
++	/* wait for it to take effect */
++	for (cnt = 0; cnt < 1000; cnt++) {
++		if ((readl(imxdi->ioaddr + DSR) & DSR_WEF) == 0)
++			return;
++		udelay(10);
++	}
++	dev_err(imxdi->dev,
++			"ERROR: Cannot clear write-error flag!\n");
++}
++
++/*
++ * Write a dryice register and wait until it completes.
++ *
++ * This function uses interrupts to determine when the
++ * write has completed.
++ */
++static int di_write_wait(struct imxdi_dev *imxdi, u32 val, int reg)
++{
++	int rc = 0;
++	uint32_t dsr;
++	uint64_t start;
++
++	/* do the register write */
++	writel(val, imxdi->ioaddr + reg);
++
++	start = get_time_ns();
++
++	/* wait for the write to finish */
++	while (1) {
++		dsr = readl(imxdi->ioaddr + DSR);
++
++		if (dsr & (DSR_WCF | DSR_WEF))
++			break;
++		if (is_timeout(start, MSECOND))
++			return -EIO;
++	}
++
++	/* check for write error */
++	if (dsr & DSR_WEF) {
++		clear_write_error(imxdi);
++		rc = -EIO;
++	}
++
++	return rc;
++}
++
++static struct imxdi_dev *to_imxdi_dev(struct rtc_device *rtc)
++{
++	return container_of(rtc, struct imxdi_dev, rtc);
++}
++
++/*
++ * read the seconds portion of the current time from the dryice time counter
++ */
++static int dryice_rtc_read_time(struct rtc_device *rtc, struct rtc_time *tm)
++{
++	struct imxdi_dev *imxdi = to_imxdi_dev(rtc);
++	unsigned long now;
++
++	now = readl(imxdi->ioaddr + DTCMR);
++	rtc_time_to_tm(now, tm);
++
++	return 0;
++}
++
++/*
++ * set the seconds portion of dryice time counter and clear the
++ * fractional part.
++ */
++static int dryice_rtc_set_time(struct rtc_device *rtc, struct rtc_time *tm)
++{
++	struct imxdi_dev *imxdi = to_imxdi_dev(rtc);
++	u32 dcr, dsr;
++	int ret;
++	unsigned long secs;
++
++	ret = rtc_tm_to_time(tm, &secs);
++	if (ret)
++		return ret;
++
++	dcr = readl(imxdi->ioaddr + DCR);
++	dsr = readl(imxdi->ioaddr + DSR);
++
++	if (!(dcr & DCR_TCE) || (dsr & DSR_SVF)) {
++		if (dcr & DCR_TCHL) {
++			/* we are even more out of luck */
++			di_what_is_to_be_done(imxdi, "battery");
++			return -EPERM;
++		}
++		if ((dcr & DCR_TCSL) || (dsr & DSR_SVF)) {
++			/* we are out of luck for now */
++			di_what_is_to_be_done(imxdi, "main");
++			return -EPERM;
++		}
++	}
++
++	/* zero the fractional part first */
++	ret = di_write_wait(imxdi, 0, DTCLR);
++	if (ret)
++		return ret;
++
++	ret = di_write_wait(imxdi, secs, DTCMR);
++	if (ret)
++		return ret;
++
++	return di_write_wait(imxdi, readl(imxdi->ioaddr + DCR) | DCR_TCE, DCR);
++}
++
++static const struct rtc_class_ops dryice_rtc_ops = {
++	.read_time = dryice_rtc_read_time,
++	.set_time = dryice_rtc_set_time,
++};
++
++static int nvstore_write(struct device_d *dev, const int reg, const void *val,
++			 int bytes)
++{
++	struct imxdi_dev *imxdi = dev->parent->priv;
++	const u32 *val32 = val;
++
++	if (bytes != 4)
++		return 0;
++
++	writel(*val32, imxdi->ioaddr + DGPR);
++
++	return 0;
++}
++
++static int nvstore_read(struct device_d *dev, const int reg, void *val,
++			int bytes)
++{
++	struct imxdi_dev *imxdi = dev->parent->priv;
++	u32 *val32 = val;
++
++	if (bytes != 4)
++		return 0;
++
++	*val32 = readl(imxdi->ioaddr + DGPR);
++
++	return 0;
++}
++
++static struct nvmem_bus nvstore_nvmem_bus = {
++	.write = nvstore_write,
++	.read  = nvstore_read,
++};
++
++static struct nvmem_config nvstore_nvmem_config = {
++	.name = "nvstore",
++	.stride = 4,
++	.word_size = 4,
++	.size = 4,
++	.bus = &nvstore_nvmem_bus,
++};
++
++static int __init dryice_rtc_probe(struct device_d *dev)
++{
++	struct resource *res;
++	struct imxdi_dev *imxdi;
++	int ret;
++
++	imxdi = xzalloc(sizeof(*imxdi));
++
++	imxdi->dev = dev;
++	imxdi->rtc.ops = &dryice_rtc_ops;
++
++	res = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(res))
++		return PTR_ERR(res);
++
++	imxdi->ioaddr = IOMEM(res->start);
++
++	imxdi->clk = clk_get(dev, NULL);
++	if (IS_ERR(imxdi->clk))
++		return PTR_ERR(imxdi->clk);
++
++	ret = clk_enable(imxdi->clk);
++	if (ret)
++		return ret;
++
++	/*
++	 * Initialize dryice hardware
++	 */
++
++	/* mask all interrupts */
++	writel(0, imxdi->ioaddr + DIER);
++
++	ret = di_handle_state(imxdi);
++	if (ret)
++		goto err;
++
++	dev->priv = imxdi;
++
++	nvstore_nvmem_config.dev = dev;
++
++	imxdi->nvmem = nvmem_register(&nvstore_nvmem_config);
++	if (IS_ENABLED(CONFIG_NVMEM) && IS_ERR(imxdi->nvmem)) {
++		ret = PTR_ERR(imxdi->nvmem);
++		goto err;
++	}
++
++	ret = rtc_register(&imxdi->rtc);
++	if (ret)
++		goto err;
++
++	return 0;
++
++err:
++	clk_disable(imxdi->clk);
++
++	return ret;
++}
++
++static __maybe_unused const struct of_device_id dryice_dt_ids[] = {
++	{ .compatible = "fsl,imx25-rtc" },
++	{ /* sentinel */ }
++};
++
++static struct driver_d dryice_rtc_driver = {
++        .name   = "imx-di-rtc",
++        .probe  = dryice_rtc_probe,
++        .of_compatible = DRV_OF_COMPAT(dryice_dt_ids),
++};
++device_platform_driver(dryice_rtc_driver);
 -- 
 2.20.1
 
