@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-eopbgr820120.outbound.protection.outlook.com
+ ([40.107.82.120] helo=NAM01-SN1-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hJbmr-0003NB-6T
- for barebox@lists.infradead.org; Thu, 25 Apr 2019 10:39:30 +0000
-References: <20190423171852.26126-1-a.fatoum@pengutronix.de>
- <20190423171852.26126-3-a.fatoum@pengutronix.de>
- <20190423174149.GB8801@ravnborg.org>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <ef8de050-c0b3-c87a-b136-b48e216cb441@pengutronix.de>
-Date: Thu, 25 Apr 2019 12:39:25 +0200
-MIME-Version: 1.0
-In-Reply-To: <20190423174149.GB8801@ravnborg.org>
+ id 1hG0pg-0004Zf-CT
+ for barebox@lists.infradead.org; Mon, 15 Apr 2019 12:35:33 +0000
+From: "Barbier, Renaud" <renaud.barbier@abaco.com>
+Date: Mon, 15 Apr 2019 12:35:24 +0000
+Message-ID: <1555331684-25431-1-git-send-email-renaud.barbier@abaco.com>
 Content-Language: en-US
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,40 +17,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] ARM: imx: work around i.MX6UL ERR008958 (ARM errata
- 814220)
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: barebox@lists.infradead.org, ore@pengutronix.de, rcz@pengutronix.de
+Subject: [PATCH 0/2] Company name change
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Cc: "Barbier, Renaud" <renaud.barbier@abaco.com>
 
-CgpPbiAyMy80LzE5IDE5OjQxLCBTYW0gUmF2bmJvcmcgd3JvdGU6Cj4gSGkgQWhtYWQuCj4gCj4g
-T24gVHVlLCBBcHIgMjMsIDIwMTkgYXQgMDc6MTg6NDlQTSArMDIwMCwgQWhtYWQgRmF0b3VtIHdy
-b3RlOgo+PiBUaGUgQ29ydGV4LUE3IGluIGJvdGggdGhlIGkuTVg2VUxbMV0gYW5kIGkuTVg2VUxM
-WzJdIGlzIGFmZmVjdGVkIGJ5IHRoZQo+PiBlcnJhdGEgRVJSMDA4OTU4ICJBcm0vTVA6IDgxNDIy
-MOKAlEItQ2FjaGUgbWFpbnRlbmFuY2UgYnkgc2V0L3dheSBvcGVyYXRpb25zCj4+IGNhbiBleGVj
-dXRlIG91dCBvZiBvcmRlciIuCj4+Cj4+IHNlbGVjdCBBUk1fRVJSQVRBXzgxNDIyMCB0byBhZGRy
-ZXNzIHRoaXMuCj4+Cj4+IFsxXTogaHR0cHM6Ly93d3cubnhwLmNvbS9kb2NzL2VuL2VycmF0YS9J
-TVg2VUxDRS5wZGYKPj4gWzJdOiBodHRwczovL3d3dy5ueHAuY29tL2RvY3MvZW4vZXJyYXRhL0lN
-WDZVTExDRS5wZGYKPj4KPj4gU2lnbmVkLW9mZi1ieTogQWhtYWQgRmF0b3VtIDxhLmZhdG91bUBw
-ZW5ndXRyb25peC5kZT4KPj4gLS0tCj4+ICBhcmNoL2FybS9tYWNoLWlteC9LY29uZmlnIHwgMSAr
-Cj4+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykKPj4KPj4gZGlmZiAtLWdpdCBhL2Fy
-Y2gvYXJtL21hY2gtaW14L0tjb25maWcgYi9hcmNoL2FybS9tYWNoLWlteC9LY29uZmlnCj4+IGlu
-ZGV4IGQ0N2RkMzU0NzcxMi4uYjE1ZTZkZmRmZDliIDEwMDY0NAo+PiAtLS0gYS9hcmNoL2FybS9t
-YWNoLWlteC9LY29uZmlnCj4+ICsrKyBiL2FyY2gvYXJtL21hY2gtaW14L0tjb25maWcKPj4gQEAg
-LTE2NCw2ICsxNjQsNyBAQCBjb25maWcgQVJDSF9JTVg2U1gKPj4gIGNvbmZpZyBBUkNIX0lNWDZV
-TAo+PiAgCWJvb2wKPj4gIAlzZWxlY3QgQVJDSF9JTVg2Cj4+ICsJc2VsZWN0IEFSTV9FUlJBVEFf
-ODE0MjIwCj4gCj4gU2VsZWN0aW5nIGEgdmlzaWJsZSBvcHRpb24gaXMgY29uc2lkZXJlZCBiYWQg
-cHJhY3RpY2UuCj4gSWYgQVJNX0VSUkFUQV84MTQyMjAgd2FzIGRlZmluZWQgd2l0aG91dCBhIHBy
-b21wdCBpdCB3b3VsZCBoYXZlIGJlZW4KPiBmaW5lLgoKQWgsIGdvb2QgdG8ga25vdy4KClRoYW5r
-cwoKPiAKPiAJU2FtCj4gCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBT
-b2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwK
-UGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01
-MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAg
-ICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
-bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2JhcmVib3gK
+As the previous owner GE has sold on the company and we are now known as
+Abaco Systems Inc., we have a contractual requirement to remove references
+to GE in the code (but copyright), directories and files names.
+
+Renaud Barbier (2):
+  owc: directories and files renaming
+  owc: remove references to GE.
+
+ arch/ppc/Makefile                                  |    2 +-
+ arch/ppc/boards/geip-da923rc/Makefile              |    7 -
+ arch/ppc/boards/geip-da923rc/config.h              |   53 -----
+ arch/ppc/boards/geip-da923rc/da923rc.c             |  218 -------------------
+ arch/ppc/boards/geip-da923rc/ddr.c                 |  169 ---------------
+ .../geip-da923rc/defaultenv-geip-da923rc/bin/boot  |    9 -
+ .../geip-da923rc/defaultenv-geip-da923rc/bin/init  |   26 ---
+ .../geip-da923rc/defaultenv-geip-da923rc/config    |    4 -
+ arch/ppc/boards/geip-da923rc/law.c                 |   24 ---
+ arch/ppc/boards/geip-da923rc/nand.c                |   94 ---------
+ arch/ppc/boards/geip-da923rc/product_data.c        |   83 --------
+ arch/ppc/boards/geip-da923rc/product_data.h        |   62 ------
+ arch/ppc/boards/geip-da923rc/tlb.c                 |   69 ------
+ arch/ppc/boards/owc-da923rc/Makefile               |    7 +
+ arch/ppc/boards/owc-da923rc/config.h               |   53 +++++
+ arch/ppc/boards/owc-da923rc/da923rc.c              |  219 ++++++++++++++++++++
+ arch/ppc/boards/owc-da923rc/ddr.c                  |  169 +++++++++++++++
+ .../owc-da923rc/defaultenv-owc-da923rc/bin/boot    |    9 +
+ .../owc-da923rc/defaultenv-owc-da923rc/bin/init    |   26 +++
+ .../owc-da923rc/defaultenv-owc-da923rc/config      |    4 +
+ arch/ppc/boards/owc-da923rc/law.c                  |   24 +++
+ arch/ppc/boards/owc-da923rc/nand.c                 |   94 +++++++++
+ arch/ppc/boards/owc-da923rc/product_data.c         |   84 ++++++++
+ arch/ppc/boards/owc-da923rc/product_data.h         |   63 ++++++
+ arch/ppc/boards/owc-da923rc/tlb.c                  |   69 ++++++
+ arch/ppc/configs/da923rc_defconfig                 |   51 -----
+ arch/ppc/configs/owc_da923rc_defconfig             |   51 +++++
+ 27 files changed, 873 insertions(+), 870 deletions(-)
+ delete mode 100644 arch/ppc/boards/geip-da923rc/Makefile
+ delete mode 100644 arch/ppc/boards/geip-da923rc/config.h
+ delete mode 100644 arch/ppc/boards/geip-da923rc/da923rc.c
+ delete mode 100644 arch/ppc/boards/geip-da923rc/ddr.c
+ delete mode 100644 arch/ppc/boards/geip-da923rc/defaultenv-geip-da923rc/bin/boot
+ delete mode 100644 arch/ppc/boards/geip-da923rc/defaultenv-geip-da923rc/bin/init
+ delete mode 100644 arch/ppc/boards/geip-da923rc/defaultenv-geip-da923rc/config
+ delete mode 100644 arch/ppc/boards/geip-da923rc/law.c
+ delete mode 100644 arch/ppc/boards/geip-da923rc/nand.c
+ delete mode 100644 arch/ppc/boards/geip-da923rc/product_data.c
+ delete mode 100644 arch/ppc/boards/geip-da923rc/product_data.h
+ delete mode 100644 arch/ppc/boards/geip-da923rc/tlb.c
+ create mode 100644 arch/ppc/boards/owc-da923rc/Makefile
+ create mode 100644 arch/ppc/boards/owc-da923rc/config.h
+ create mode 100644 arch/ppc/boards/owc-da923rc/da923rc.c
+ create mode 100644 arch/ppc/boards/owc-da923rc/ddr.c
+ create mode 100644 arch/ppc/boards/owc-da923rc/defaultenv-owc-da923rc/bin/boot
+ create mode 100644 arch/ppc/boards/owc-da923rc/defaultenv-owc-da923rc/bin/init
+ create mode 100644 arch/ppc/boards/owc-da923rc/defaultenv-owc-da923rc/config
+ create mode 100644 arch/ppc/boards/owc-da923rc/law.c
+ create mode 100644 arch/ppc/boards/owc-da923rc/nand.c
+ create mode 100644 arch/ppc/boards/owc-da923rc/product_data.c
+ create mode 100644 arch/ppc/boards/owc-da923rc/product_data.h
+ create mode 100644 arch/ppc/boards/owc-da923rc/tlb.c
+ delete mode 100644 arch/ppc/configs/da923rc_defconfig
+ create mode 100644 arch/ppc/configs/owc_da923rc_defconfig
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
