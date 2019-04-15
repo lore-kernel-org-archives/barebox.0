@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hFpNa-0004yW-PH
- for barebox@lists.infradead.org; Mon, 15 Apr 2019 00:21:48 +0000
-Received: by mail-pf1-x444.google.com with SMTP id c8so7675321pfd.10
- for <barebox@lists.infradead.org>; Sun, 14 Apr 2019 17:21:46 -0700 (PDT)
+ id 1hFpNc-0004yv-Gm
+ for barebox@lists.infradead.org; Mon, 15 Apr 2019 00:21:49 +0000
+Received: by mail-pf1-x441.google.com with SMTP id 8so7697100pfr.4
+ for <barebox@lists.infradead.org>; Sun, 14 Apr 2019 17:21:47 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 14 Apr 2019 17:21:20 -0700
-Message-Id: <20190415002121.15988-2-andrew.smirnov@gmail.com>
+Date: Sun, 14 Apr 2019 17:21:21 -0700
+Message-Id: <20190415002121.15988-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20190415002121.15988-1-andrew.smirnov@gmail.com>
 References: <20190415002121.15988-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,44 +23,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: zii-imx51-rdu1: Use -fno-tree-switch-conversion
- -fno-jump-tables
+Subject: [PATCH 3/3] ARM: zii-imx8mq-dev: Drop unnecessary barrier() in switch
+ statement
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Chris Healy <cphealy@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>
 
-Original and very poor workaround no longer works against GCC8, so
-drop it and replace with a proper solution that should've been used in
-the first place - specifying -fno-tree-switch-conversion
--fno-jump-tables as CFLAGS when building lowlevel.c
-
-Tested to work with:
-
-    - GCC 8.2.1 (arm-none-eabi)
-    - GCC 7.1.0 (arm-none-eabi)
-    - GCC 4.8.4 (armv7l-timesys-linux-gnueabihf)
+AArch64 uses PC-relative addressing instead of absolute one for data
+lookups, so compiling switch statement into a LUT shouldn't be a
+problem regardless if relocation happened or not. Disassembly of PBL
+code looks almost exactly the same with or without this workaround, so
+it is clearly not needed. Drop it.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Heiner Kallweit <hkallweit1@gmail.com>
 Cc: Chris Healy <cphealy@gmail.com>
 ---
- arch/arm/boards/zii-imx51-rdu1/Makefile   | 1 +
- arch/arm/boards/zii-imx51-rdu1/lowlevel.c | 7 -------
- 2 files changed, 1 insertion(+), 7 deletions(-)
+ arch/arm/boards/zii-imx8mq-dev/lowlevel.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/arch/arm/boards/zii-imx51-rdu1/Makefile b/arch/arm/boards/zii-imx51-rdu1/Makefile
-index 7f2569bda..a17cf5684 100644
---- a/arch/arm/boards/zii-imx51-rdu1/Makefile
-+++ b/arch/arm/boards/zii-imx51-rdu1/Makefile
-@@ -1,3 +1,4 @@
- obj-y += board.o
-+CFLAGS_pbl-lowlevel.o := -fno-tree-switch-conversion -fno-jump-tables
- lwl-y += lowlevel.o
- bbenv-y += defaultenv-rdu1
-diff --git a/arch/arm/boards/zii-imx51-rdu1/lowlevel.c b/arch/arm/boards/zii-imx51-rdu1/lowlevel.c
-index 849c5624c..da05b0564 100644
---- a/arch/arm/boards/zii-imx51-rdu1/lowlevel.c
-+++ b/arch/arm/boards/zii-imx51-rdu1/lowlevel.c
-@@ -84,13 +84,6 @@ ENTRY_FUNCTION(start_imx51_zii_rdu1, r0, r1, r2)
+diff --git a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
+index 0fd2ddfca..33c007e05 100644
+--- a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
++++ b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
+@@ -179,13 +179,6 @@ ENTRY_FUNCTION(start_zii_imx8mq_dev, r0, r1, r2)
  
  	switch (system_type) {
  	default:
