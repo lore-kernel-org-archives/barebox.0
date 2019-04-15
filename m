@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hFpNa-0004yV-EA
- for barebox@lists.infradead.org; Mon, 15 Apr 2019 00:21:47 +0000
-Received: by mail-pl1-x643.google.com with SMTP id w23so7683830ply.4
- for <barebox@lists.infradead.org>; Sun, 14 Apr 2019 17:21:45 -0700 (PDT)
+ id 1hFpNa-0004yW-PH
+ for barebox@lists.infradead.org; Mon, 15 Apr 2019 00:21:48 +0000
+Received: by mail-pf1-x444.google.com with SMTP id c8so7675321pfd.10
+ for <barebox@lists.infradead.org>; Sun, 14 Apr 2019 17:21:46 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 14 Apr 2019 17:21:19 -0700
-Message-Id: <20190415002121.15988-1-andrew.smirnov@gmail.com>
+Date: Sun, 14 Apr 2019 17:21:20 -0700
+Message-Id: <20190415002121.15988-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20190415002121.15988-1-andrew.smirnov@gmail.com>
+References: <20190415002121.15988-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,7 +23,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] ARM: zii-vf610-dev: Use -fno-tree-switch-conversion
+Subject: [PATCH 2/3] ARM: zii-imx51-rdu1: Use -fno-tree-switch-conversion
  -fno-jump-tables
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Chris Healy <cphealy@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>
@@ -41,41 +43,31 @@ Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Heiner Kallweit <hkallweit1@gmail.com>
 Cc: Chris Healy <cphealy@gmail.com>
 ---
- arch/arm/boards/zii-vf610-dev/Makefile   |  1 +
- arch/arm/boards/zii-vf610-dev/lowlevel.c | 17 -----------------
- 2 files changed, 1 insertion(+), 17 deletions(-)
+ arch/arm/boards/zii-imx51-rdu1/Makefile   | 1 +
+ arch/arm/boards/zii-imx51-rdu1/lowlevel.c | 7 -------
+ 2 files changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/arch/arm/boards/zii-vf610-dev/Makefile b/arch/arm/boards/zii-vf610-dev/Makefile
-index 1297d815e..3c3a3f238 100644
---- a/arch/arm/boards/zii-vf610-dev/Makefile
-+++ b/arch/arm/boards/zii-vf610-dev/Makefile
+diff --git a/arch/arm/boards/zii-imx51-rdu1/Makefile b/arch/arm/boards/zii-imx51-rdu1/Makefile
+index 7f2569bda..a17cf5684 100644
+--- a/arch/arm/boards/zii-imx51-rdu1/Makefile
++++ b/arch/arm/boards/zii-imx51-rdu1/Makefile
 @@ -1,3 +1,4 @@
  obj-y += board.o
 +CFLAGS_pbl-lowlevel.o := -fno-tree-switch-conversion -fno-jump-tables
  lwl-y += lowlevel.o
- bbenv-y += defaultenv-zii-vf610-dev
-diff --git a/arch/arm/boards/zii-vf610-dev/lowlevel.c b/arch/arm/boards/zii-vf610-dev/lowlevel.c
-index a1859eeae..b320fbc0c 100644
---- a/arch/arm/boards/zii-vf610-dev/lowlevel.c
-+++ b/arch/arm/boards/zii-vf610-dev/lowlevel.c
-@@ -95,23 +95,6 @@ ENTRY_FUNCTION(start_zii_vf610_dev, r0, r1, r2)
+ bbenv-y += defaultenv-rdu1
+diff --git a/arch/arm/boards/zii-imx51-rdu1/lowlevel.c b/arch/arm/boards/zii-imx51-rdu1/lowlevel.c
+index 849c5624c..da05b0564 100644
+--- a/arch/arm/boards/zii-imx51-rdu1/lowlevel.c
++++ b/arch/arm/boards/zii-imx51-rdu1/lowlevel.c
+@@ -84,13 +84,6 @@ ENTRY_FUNCTION(start_imx51_zii_rdu1, r0, r1, r2)
  
  	switch (system_type) {
  	default:
 -		/*
--		 * GCC can be smart enough to, when DEBUG_LL is
--		 * disabled, reduce this switch statement to a LUT
--		 * fetch. Unfortunately here, this early in the boot
--		 * process before any relocation/address fixups could
--		 * happen, the address of that LUT used by the code is
--		 * incorrect and any access to it would result in
--		 * bogus values.
--		 *
--		 * Adding the following barrier() statement seem to
--		 * force the compiler to always translate this block
--		 * to a sequence of consecutive checks and jumps with
--		 * relative fetches, which should work with or without
--		 * relocation/fixups.
+-		 * see similar code in
+-		 * arch/arm/boards/zii-vf610-dev/lowlevel.c for
+-		 * reasoning for placing barrier() below.
 -		 */
 -		barrier();
 -
