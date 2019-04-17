@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wr1-x444.google.com ([2a00:1450:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hFveT-0003kN-Id
- for barebox@lists.infradead.org; Mon, 15 Apr 2019 07:03:39 +0000
-References: <20190413084928.27923-1-r.czerwinski@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <d3680052-5383-a954-25e0-4901be74afc1@pengutronix.de>
-Date: Mon, 15 Apr 2019 09:03:32 +0200
+ id 1hGheG-0006Xj-AA
+ for barebox@lists.infradead.org; Wed, 17 Apr 2019 10:18:37 +0000
+Received: by mail-wr1-x444.google.com with SMTP id s15so31153128wra.12
+ for <barebox@lists.infradead.org>; Wed, 17 Apr 2019 03:18:35 -0700 (PDT)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Wed, 17 Apr 2019 13:18:15 +0300
+Message-Id: <20190417101815.29318-1-pmamonov@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20190413084928.27923-1-r.czerwinski@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,69 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: imx: disable IPU QoS setup for i.MX6 UL/ULL
-To: barebox@lists.infradead.org
-Cc: lst@pengutronix.de
+Subject: [PATCH] usb: storage: fix capacity detection on 64 bit systems
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-Hello Rouven,
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+---
+ drivers/usb/storage/usb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-On 13/4/19 10:49, Rouven Czerwinski wrote:
-> Neither of the two devices has an IPU, disable the setup for both SoCs.
-> 
-> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-> ---
->  arch/arm/mach-imx/imx6.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-> index 01b4274ed3..6c08f22b7a 100644
-> --- a/arch/arm/mach-imx/imx6.c
-> +++ b/arch/arm/mach-imx/imx6.c
-> @@ -117,7 +117,8 @@ static void imx6_setup_ipu_qos(void)
->  	uint32_t val;
->  
->  	if (!cpu_mx6_is_mx6q() && !cpu_mx6_is_mx6d() &&
-> -	    !cpu_mx6_is_mx6dl() && cpu_mx6_is_mx6s())
-> +	    !cpu_mx6_is_mx6dl() && (cpu_mx6_is_mx6s() || cpu_mx6_is_mx6ul() ||
-> +				    cpu_is_mx6ull()))
-
-That looks wrong to me. The patch that introduced it was 4e6e8f73e9
-("ARM: imx6: don't execute IPU QoS setup on MX6 SX/SL"), but instead
-it bails at the Solo, not the SX and SL.
-
-It seems to me, the original intent was
-  	if (!cpu_mx6_is_mx6q() && !cpu_mx6_is_mx6d() &&
- 	    !cpu_mx6_is_mx6dl() && !cpu_mx6_is_mx6s())
-
-which would be correct and solve your issue with the UL(L) as well.
-Applying such a change however would break backwards-compatibility,
-but it was agreed[1] that fixing these quriky conditionals at the
-cost of backwards-compatibility is acceptable.
-
-
-Generally, you should always explicitly list the _affected_ SoC variants in
-such conditionals, not the one which _aren't currently_ affected.
-Otherwise you risk inconsistencies when code is updated to support newer
-SoC variants.
-
-[1]: Message-Id:<bbe97cb3-2e21-2eb2-a727-5b1014d3fd73@pengutronix.de>
-
-
-Cheers
-Ahmad
+diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
+index 8218bb2a71..18f69f8478 100644
+--- a/drivers/usb/storage/usb.c
++++ b/drivers/usb/storage/usb.c
+@@ -316,7 +316,7 @@ static int usb_stor_init_blkdev(struct us_blk_dev *pblk_dev)
+ {
+ 	struct us_data *us = pblk_dev->us;
+ 	ccb us_ccb;
+-	unsigned long *pcap;
++	u32 *pcap;
+ 	int result = 0;
  
-
-
->  		return;
->  
->  	val = readl(iomux + IOMUXC_GPR4);
-> 
-
+ 	us_ccb.pdata = us_io_buf;
+@@ -357,7 +357,7 @@ static int usb_stor_init_blkdev(struct us_blk_dev *pblk_dev)
+ 		result = -EIO;
+ 		goto Exit;
+ 	}
+-	pcap = (unsigned long *)us_ccb.pdata;
++	pcap = (u32 *)us_ccb.pdata;
+ 	US_DEBUGP("Read Capacity returns: 0x%lx, 0x%lx\n", pcap[0], pcap[1]);
+ 	pblk_dev->blk.num_blocks = usb_limit_blk_cnt(be32_to_cpu(pcap[0]) + 1);
+ 	if (be32_to_cpu(pcap[1]) != SECTOR_SIZE)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
