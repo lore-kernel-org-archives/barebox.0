@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hH35h-0006vC-Mi
- for barebox@lists.infradead.org; Thu, 18 Apr 2019 09:12:23 +0000
-Received: by mail-lf1-x141.google.com with SMTP id d12so1059170lfk.6
- for <barebox@lists.infradead.org>; Thu, 18 Apr 2019 02:12:21 -0700 (PDT)
-Date: Thu, 18 Apr 2019 12:12:07 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20190418091206.b4uau4xk4oodnqdn@localhost.localdomain>
-References: <20190417101815.29318-1-pmamonov@gmail.com>
- <CAHQ1cqHOGf8C8CPeUGxmQX-5zzZqaNXWmAFdEemO2989RZki+Q@mail.gmail.com>
+ id 1hI8OM-00046i-8q
+ for barebox@lists.infradead.org; Sun, 21 Apr 2019 09:04:08 +0000
+References: <20190401101822.7392-1-a.fatoum@pengutronix.de>
+ <20190401101822.7392-2-a.fatoum@pengutronix.de>
+ <20190401122022.dxalht4gjgoo7uoa@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <1522404d-6e89-5be3-41a1-1f77b3355374@pengutronix.de>
+Date: Sun, 21 Apr 2019 11:03:53 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqHOGf8C8CPeUGxmQX-5zzZqaNXWmAFdEemO2989RZki+Q@mail.gmail.com>
+In-Reply-To: <20190401122022.dxalht4gjgoo7uoa@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,66 +24,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usb: storage: fix capacity detection on 64 bit systems
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v3 01/15] LICENSES: add BSD-1-Clause license
+To: Roland Hieber <rhi@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi, Andrey,
-
-On Wed, Apr 17, 2019 at 12:11:57PM -0700, Andrey Smirnov wrote:
-> On Wed, Apr 17, 2019 at 3:18 AM Peter Mamonov <pmamonov@gmail.com> wrote:
-> >
+On 1/4/19 14:20, Roland Hieber wrote:
+> On Mon, Apr 01, 2019 at 12:18:09PM +0200, Ahmad Fatoum wrote:
+>> Incoming sama5d3 bootstrap code has been ported from the at91bootstrap
+>> project and is licensed under a 1-clause BSD license. To remove
+>> boilerplate legal text there, place the license at a fixed location
+>> and only note SPDX-License-Identifier and Copyright in the source files.
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  LICENSES/preferred/BSD-1-Clause | 15 +++++++++++++++
+>>  1 file changed, 15 insertions(+)
+>>  create mode 100644 LICENSES/preferred/BSD-1-Clause
+>>
+>> diff --git a/LICENSES/preferred/BSD-1-Clause b/LICENSES/preferred/BSD-1-Clause
+>> new file mode 100644
+>> index 000000000000..f80acdf3b15f
+>> --- /dev/null
+>> +++ b/LICENSES/preferred/BSD-1-Clause
+>> @@ -0,0 +1,15 @@
+>> +Valid-License-Identifier: BSD-1-Clause
+>> +SPDX-URL: https://spdx.org/licenses/BSD-1-Clause.html
+>> +Usage-Guide:
+>> +  To use the BSD 1-clause License put the following SPDX tag/value pair
+>> +  into a comment according to the placement guidelines in the licensing
+>> +  rules documentation:
+>> +    SPDX-License-Identifier: BSD-1-Clause
+>> +License-Text:
+>> +
+>> +Copyright (c) <year> <owner> All rights reserved.
+>> +
+>> +Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+>> +
+>> +1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+>> +THIS SOFTWARE IS PROVIDED BY Berkeley Software Design, Inc. "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL Berkeley Software Design, Inc. BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 > 
-> Peter:
-> 
-> This was fixed in
-> http://lists.infradead.org/pipermail/barebox/2019-March/037526.html.
-> Latest next should contain that patch.
+> I would replace "Berkeley Software Design, Inc." with "the copyright
+> holder" here. In the link given in the SPDX-URL field these parts are
+> marked as placeholders in red text, which does not transfer well over to
+> plain text. :)
 
-Sorry, I missed this message as well as `%lx` in my patch :)
-
-Thanks,
-Peter
+Oh forgot to change that. Thanks, will do.
 
 > 
-> Thanks,
-> Andrey Smirnov
+> I would also hard-line-wrap the text to 80 characters to make it better
+> readable, but I guess that is a matter of personal preference.
 > 
-> > Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> > ---
-> >  drivers/usb/storage/usb.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
-> > index 8218bb2a71..18f69f8478 100644
-> > --- a/drivers/usb/storage/usb.c
-> > +++ b/drivers/usb/storage/usb.c
-> > @@ -316,7 +316,7 @@ static int usb_stor_init_blkdev(struct us_blk_dev *pblk_dev)
-> >  {
-> >         struct us_data *us = pblk_dev->us;
-> >         ccb us_ccb;
-> > -       unsigned long *pcap;
-> > +       u32 *pcap;
-> >         int result = 0;
-> >
-> >         us_ccb.pdata = us_io_buf;
-> > @@ -357,7 +357,7 @@ static int usb_stor_init_blkdev(struct us_blk_dev *pblk_dev)
-> >                 result = -EIO;
-> >                 goto Exit;
-> >         }
-> > -       pcap = (unsigned long *)us_ccb.pdata;
-> > +       pcap = (u32 *)us_ccb.pdata;
-> >         US_DEBUGP("Read Capacity returns: 0x%lx, 0x%lx\n", pcap[0], pcap[1]);
-> >         pblk_dev->blk.num_blocks = usb_limit_blk_cnt(be32_to_cpu(pcap[0]) + 1);
-> >         if (be32_to_cpu(pcap[1]) != SECTOR_SIZE)
-> > --
-> > 2.20.1
-> >
-> >
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
+>  - Roland
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
