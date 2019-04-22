@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hIrnz-0001ba-S8
- for barebox@lists.infradead.org; Tue, 23 Apr 2019 09:33:37 +0000
-Date: Tue, 23 Apr 2019 11:33:33 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190423093333.47ymjtktn2dhq42c@pengutronix.de>
-References: <20190415002121.15988-1-andrew.smirnov@gmail.com>
+Received: from m15-112.126.com ([220.181.15.112])
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1hIPOn-00075U-CW
+ for barebox@lists.infradead.org; Mon, 22 Apr 2019 03:13:44 +0000
+From: =?UTF-8?B?5byg5b+g5bGx?= <zzs213@126.com>
+Message-ID: <d2890d42-bc87-3c65-4be4-6a2c748b9ddb@126.com>
+Date: Mon, 22 Apr 2019 11:13:30 +0800
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190415002121.15988-1-andrew.smirnov@gmail.com>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,42 +16,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] ARM: zii-vf610-dev: Use -fno-tree-switch-conversion
- -fno-jump-tables
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org, Chris Healy <cphealy@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>
+Subject: Why sbrk clear the increased memory region
+To: barebox@lists.infradead.org
 
-On Sun, Apr 14, 2019 at 05:21:19PM -0700, Andrey Smirnov wrote:
-> Original and very poor workaround no longer works against GCC8, so
-> drop it and replace with a proper solution that should've been used in
-> the first place - specifying -fno-tree-switch-conversion
-> -fno-jump-tables as CFLAGS when building lowlevel.c
-> 
-> Tested to work with:
-> 
->     - GCC 8.2.1 (arm-none-eabi)
->     - GCC 7.1.0 (arm-none-eabi)
->     - GCC 4.8.4 (armv7l-timesys-linux-gnueabihf)
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> Cc: Heiner Kallweit <hkallweit1@gmail.com>
-> Cc: Chris Healy <cphealy@gmail.com>
-
-Applied, thanks
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+UmVjZW50bHksIEknbSB1c2luZyBiYXJlYm94IGluIGEgZGVlcCBlbWJlZGRlZCBwcm9qZWN0LCBh
+bmQgbmVlZCBzb21lIGZ1bnRjdGlvbnMKaW4gbGliYy9saWJtLCBTbyBJIGxpbmtlZCBiYXJlYm94
+IHdpdGggbmV3bGliCgpCdXQgd2hlbmV2ZXIgbmV3bGliIGNhbGwgc2JyayB3aXRoIG5lZ3RpdmUg
+YGluY3JlbWVudGAsIGJhcmVib3ggY3Jhc2guCgpUaGUgcmVhc29uIGlzIHNicmsgY2xlYW4gbWVt
+b3J5IHJlZ2lvbiB1c2luZyBgaW5jcmVtZW50YC4KCldoeSBzYnJrIG11c3QgY2xlYXIgdGhlIGlu
+Y3JlYXNlZCBtZW1vcnkgcmVnaW9uPyAKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+ODwtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSAKRnJvbSBkYmFhNjU4YjYwZmU0MTNlMWQx
+ODE4YWZhZDEzYTUzZTdhZDAwMGNlIE1vbiBTZXAgMTcgMDA6MDA6MDAgMjAwMQpGcm9tOiA9P1VU
+Ri04P3E/PUU1PUJDPUEwPUU1PUJGPUEwPUU1PUIxPUIxPz0gPHp6czIxM0AxMjYuY29tPgpEYXRl
+OiBNb24sIDIyIEFwciAyMDE5IDExOjAxOjMzICswODAwClN1YmplY3Q6IFtQQVRDSF0gb25seSBj
+bGVhciBtZW1vcnkgd2hlbiBpbmNyZWFzaW5nIGhlYWQgc2l6ZQpNSU1FLVZlcnNpb246IDEuMApD
+b250ZW50LVR5cGU6IHRleHQvcGxhaW47IGNoYXJzZXQ9VVRGLTgKQ29udGVudC1UcmFuc2Zlci1F
+bmNvZGluZzogOGJpdAoKU2lnbmVkLW9mZi1ieTog5byg5b+g5bGxIDx6enMyMTNAMTI2LmNvbT4K
+LS0tCiBjb21tb24vbWVtb3J5LmMgfCAyICstCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24o
+KyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9jb21tb24vbWVtb3J5LmMgYi9jb21tb24v
+bWVtb3J5LmMKaW5kZXggOGYwYjU5ODkxLi4wYTg3MDBkMjggMTAwNjQ0Ci0tLSBhL2NvbW1vbi9t
+ZW1vcnkuYworKysgYi9jb21tb24vbWVtb3J5LmMKQEAgLTEyMiw3ICsxMjIsNyBAQCB2b2lkICpz
+YnJrKHB0cmRpZmZfdCBpbmNyZW1lbnQpCiAJdm9pZCAqb2xkID0gc2Jya19ub196ZXJvKGluY3Jl
+bWVudCk7CiAKIAkvKiBPbmx5IGNsZWFyIGluY3JlbWVudCwgaWYgdmFsaWQgYWRkcmVzcyB3YXMg
+cmV0dXJuZWQgKi8KLQlpZiAob2xkICE9IE5VTEwpCisJaWYgKChvbGQgIT0gTlVMTCkgJiYgKGlu
+Y3JlbWVudCA+IDApKQogCQltZW1zZXQob2xkLCAwLCBpbmNyZW1lbnQpOwogCiAJcmV0dXJuIG9s
+ZDsKLS0gCjIuMjEuMAoKLS0gCkJlc3QgUmVnYXJkcywKenpzCgoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
+eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
+bGlzdGluZm8vYmFyZWJveAo=
