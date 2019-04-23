@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hFpNc-0004yv-Gm
- for barebox@lists.infradead.org; Mon, 15 Apr 2019 00:21:49 +0000
-Received: by mail-pf1-x441.google.com with SMTP id 8so7697100pfr.4
- for <barebox@lists.infradead.org>; Sun, 14 Apr 2019 17:21:47 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 14 Apr 2019 17:21:21 -0700
-Message-Id: <20190415002121.15988-3-andrew.smirnov@gmail.com>
-In-Reply-To: <20190415002121.15988-1-andrew.smirnov@gmail.com>
+ id 1hIrnz-0001ba-S8
+ for barebox@lists.infradead.org; Tue, 23 Apr 2019 09:33:37 +0000
+Date: Tue, 23 Apr 2019 11:33:33 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190423093333.47ymjtktn2dhq42c@pengutronix.de>
 References: <20190415002121.15988-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190415002121.15988-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,45 +22,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] ARM: zii-imx8mq-dev: Drop unnecessary barrier() in switch
- statement
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Chris Healy <cphealy@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>
+Subject: Re: [PATCH 1/3] ARM: zii-vf610-dev: Use -fno-tree-switch-conversion
+ -fno-jump-tables
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org, Chris Healy <cphealy@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>
 
-AArch64 uses PC-relative addressing instead of absolute one for data
-lookups, so compiling switch statement into a LUT shouldn't be a
-problem regardless if relocation happened or not. Disassembly of PBL
-code looks almost exactly the same with or without this workaround, so
-it is clearly not needed. Drop it.
+On Sun, Apr 14, 2019 at 05:21:19PM -0700, Andrey Smirnov wrote:
+> Original and very poor workaround no longer works against GCC8, so
+> drop it and replace with a proper solution that should've been used in
+> the first place - specifying -fno-tree-switch-conversion
+> -fno-jump-tables as CFLAGS when building lowlevel.c
+> 
+> Tested to work with:
+> 
+>     - GCC 8.2.1 (arm-none-eabi)
+>     - GCC 7.1.0 (arm-none-eabi)
+>     - GCC 4.8.4 (armv7l-timesys-linux-gnueabihf)
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> Cc: Heiner Kallweit <hkallweit1@gmail.com>
+> Cc: Chris Healy <cphealy@gmail.com>
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Chris Healy <cphealy@gmail.com>
----
- arch/arm/boards/zii-imx8mq-dev/lowlevel.c | 7 -------
- 1 file changed, 7 deletions(-)
+Applied, thanks
 
-diff --git a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
-index 0fd2ddfca..33c007e05 100644
---- a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
-+++ b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
-@@ -179,13 +179,6 @@ ENTRY_FUNCTION(start_zii_imx8mq_dev, r0, r1, r2)
- 
- 	switch (system_type) {
- 	default:
--		/*
--		 * see similar code in
--		 * arch/arm/boards/zii-vf610-dev/lowlevel.c for
--		 * reasoning for placing barrier() below.
--		 */
--		barrier();
--
- 		if (IS_ENABLED(CONFIG_DEBUG_LL)) {
- 			relocate_to_current_adr();
- 			setup_c();
+Sascha
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
