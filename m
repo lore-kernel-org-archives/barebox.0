@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from chandra.tablix.org ([2a00:ee2:100:3a01::1])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hGKhC-000855-Sr
- for barebox@lists.infradead.org; Tue, 16 Apr 2019 09:48:08 +0000
-Received: from 213.172.225.144.ipv4.telemach.net ([213.172.225.144]
- helo=muffin.lju.klevio.com)
- by chandra.tablix.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.89) (envelope-from <tomaz.solc@tablix.org>)
- id 1hGKgv-0006DS-Ak
- for barebox@lists.infradead.org; Tue, 16 Apr 2019 11:47:49 +0200
-From: Tomaz Solc <tomaz.solc@tablix.org>
-Date: Tue, 16 Apr 2019 11:47:48 +0200
-Message-Id: <20190416094748.14548-1-tomaz.solc@tablix.org>
+ id 1hIs5l-0001q2-92
+ for barebox@lists.infradead.org; Tue, 23 Apr 2019 09:52:14 +0000
+Date: Tue, 23 Apr 2019 11:51:55 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190423095155.e4jqocyvn3nxywkn@pengutronix.de>
+References: <20190416094748.14548-1-tomaz.solc@tablix.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190416094748.14548-1-tomaz.solc@tablix.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,45 +18,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] doc: variables: nv vars are saved automatically.
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] doc: variables: nv vars are saved automatically.
+To: Tomaz Solc <tomaz.solc@tablix.org>
+Cc: barebox@lists.infradead.org
 
-In recent barebox versions, nv variables are saved automatically upon reset or
-kernel start (console message "nv variable modified, will save nv variables on
-shutdown" warns about that). There is no need to explicitly call saveenv.
+On Tue, Apr 16, 2019 at 11:47:48AM +0200, Tomaz Solc wrote:
+> In recent barebox versions, nv variables are saved automatically upon reset or
+> kernel start (console message "nv variable modified, will save nv variables on
+> shutdown" warns about that). There is no need to explicitly call saveenv.
+> 
+> This change was introduced in 3fadbdae.
+> ---
+>  Documentation/user/variables.rst | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
 
-This change was introduced in 3fadbdae.
----
- Documentation/user/variables.rst | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+Applied, thanks
 
-diff --git a/Documentation/user/variables.rst b/Documentation/user/variables.rst
-index ddfd48574..cb1296c06 100644
---- a/Documentation/user/variables.rst
-+++ b/Documentation/user/variables.rst
-@@ -46,9 +46,11 @@ currently running barebox, while changing a nv variable changes the
- behaviour persistently over reboots.
- 
- nv variables can be created or removed with the :ref:`command_nv`
--command. The nv variables are made persistent using the environment
--facilities of barebox, so a :ref:`command_saveenv` must be issued to store the
--actual values.
-+command.
-+
-+The nv variables are made persistent using the environment facilities of
-+barebox. They are saved automatically to the storage medium whenever barebox
-+shuts down (that is, a :ref:`command_reset` is issued or a kernel is started).
- 
- examples:
- 
+Sascha
+
 -- 
-2.11.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
