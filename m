@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hEbrO-0002B0-A6
- for barebox@lists.infradead.org; Thu, 11 Apr 2019 15:43:32 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
- helo=dude02.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.89)
- (envelope-from <l.stach@pengutronix.de>) id 1hEbrK-0005J8-OR
- for barebox@lists.infradead.org; Thu, 11 Apr 2019 17:43:26 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu, 11 Apr 2019 17:43:26 +0200
-Message-Id: <20190411154326.1750-1-l.stach@pengutronix.de>
+ id 1hIqt9-0001CR-Ka
+ for barebox@lists.infradead.org; Tue, 23 Apr 2019 08:35:01 +0000
+Date: Tue, 23 Apr 2019 10:34:49 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190423083449.r7sgpuhzc6vwrfja@pengutronix.de>
+References: <20190411154326.1750-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190411154326.1750-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,36 +22,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: imx8mq: link PCIE1 and PCIE2 power domains
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: imx8mq: link PCIE1 and PCIE2 power domains
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Those two power domains can only be used together. The link between
-the two has been dropped with the dts merge of v5.1-rc1. Fix this.
+On Thu, Apr 11, 2019 at 05:43:26PM +0200, Lucas Stach wrote:
+> Those two power domains can only be used together. The link between
+> the two has been dropped with the dts merge of v5.1-rc1. Fix this.
+> 
+> Fortunately the i.MX8MQ PCIe support will land in Linux 5.2, so we
+> can drop all those PCIe related local DT overrides with the next big
+> dts upstream sync.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  arch/arm/dts/imx8mq.dtsi | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-Fortunately the i.MX8MQ PCIe support will land in Linux 5.2, so we
-can drop all those PCIe related local DT overrides with the next big
-dts upstream sync.
+Applied, thanks
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- arch/arm/dts/imx8mq.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+Sascha
 
-diff --git a/arch/arm/dts/imx8mq.dtsi b/arch/arm/dts/imx8mq.dtsi
-index d1d8bdaa0ee1..1d596152383f 100644
---- a/arch/arm/dts/imx8mq.dtsi
-+++ b/arch/arm/dts/imx8mq.dtsi
-@@ -198,3 +198,7 @@
- 			       <25000000>,
- 			       <125000000>;
- };
-+
-+&pgc_pcie1 {
-+	power-domains = <&pgc_pcie2>;
-+};
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
