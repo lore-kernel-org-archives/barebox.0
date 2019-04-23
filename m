@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hIs5l-0001q2-92
- for barebox@lists.infradead.org; Tue, 23 Apr 2019 09:52:14 +0000
-Date: Tue, 23 Apr 2019 11:51:55 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190423095155.e4jqocyvn3nxywkn@pengutronix.de>
-References: <20190416094748.14548-1-tomaz.solc@tablix.org>
+ id 1hIz4P-0003tM-EZ
+ for barebox@lists.infradead.org; Tue, 23 Apr 2019 17:19:02 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 23 Apr 2019 19:18:47 +0200
+Message-Id: <20190423171852.26126-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190416094748.14548-1-tomaz.solc@tablix.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +19,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] doc: variables: nv vars are saved automatically.
-To: Tomaz Solc <tomaz.solc@tablix.org>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/5] ARM: mmu: misc armv7 cache/MMU fixes
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, lst@pengutronix.de, ore@pengutronix.de, rcz@pengutronix.de
 
-On Tue, Apr 16, 2019 at 11:47:48AM +0200, Tomaz Solc wrote:
-> In recent barebox versions, nv variables are saved automatically upon reset or
-> kernel start (console message "nv variable modified, will save nv variables on
-> shutdown" warns about that). There is no need to explicitly call saveenv.
-> 
-> This change was introduced in 3fadbdae.
-> ---
->  Documentation/user/variables.rst | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+This series fixes a number of potential caching issues with armv7.
 
-Applied, thanks
+They are:
 
-Sascha
+- Cortex-A7 erratum #814220
+  Because of this erratum, the CPU may reorder cache maintenance operations
+  when it shouldn't.
+- Wrong Cache invalidation order for Cortex-A7
+  On the Cortex-A7, the L2 cache needs to be invalidated before the L1 cache.
+- Device memory isn't marked NX (Never eXecute)
+  NX prevents the CPU instruction prefetcher from inadvertently
+  accessing memory mapped devices
+
+
+We haven't observed these actually causing problems with barebox,
+so testing the changes is a bit tricky. I ran these changes on:
+
+- Cortex-A5 (SAMA5D3, -marm, first stage in SRAM, second in SDRAM)
+- Cortex-A7 (i.MX6UL, -marm, architected L2 cache, barebox in SDRAM)
+- Cortex-A7 (i.MX6UL, -mthumb (2), architected L2 cache, barebox in SDRAM)
+- Cortex-A9 (i.MX6Q,  -mthumb (2), barebox in SDRAM)
+
+and verified that:
+
+- barebox can still start up
+- barebox PBL can still invoke barebox proper
+- barebox can still boot itself over the network
+- barebox can still boot a kernel
+- barebox can do all of the above with CONFIG_MMU_EARLY=y and =n
+
+Ahmad Fatoum (5):
+  ARM: cache-armv7: add work-around for errata 814220
+  ARM: imx: work around i.MX6UL ERR008958 (ARM errata 814220)
+  ARM: cache-armv7: start invalidation from outer levels
+  ARM: mmu: remove doubly defined macro
+  ARM: mmu: mark uncached regions as eXecute never on v7
+
+ arch/arm/Kconfig           | 12 ++++++++++++
+ arch/arm/cpu/cache-armv7.S | 15 ++++++++++++++-
+ arch/arm/cpu/mmu-early.c   | 27 ++++++++++++++++++++++++---
+ arch/arm/cpu/mmu.c         | 16 ++++++++++------
+ arch/arm/cpu/mmu.h         |  8 +++++++-
+ arch/arm/mach-imx/Kconfig  |  1 +
+ 6 files changed, 68 insertions(+), 11 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
