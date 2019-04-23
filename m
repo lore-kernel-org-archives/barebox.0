@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hJbCy-0004A5-4F
- for barebox@lists.infradead.org; Thu, 25 Apr 2019 10:02:25 +0000
-Message-ID: <1556186542.2584.9.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu, 25 Apr 2019 12:02:22 +0200
-In-Reply-To: <20190423171852.26126-2-a.fatoum@pengutronix.de>
+ id 1hIzOa-0004Qw-FB
+ for barebox@lists.infradead.org; Tue, 23 Apr 2019 17:39:54 +0000
+Date: Tue, 23 Apr 2019 19:39:44 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20190423173944.GA8801@ravnborg.org>
 References: <20190423171852.26126-1-a.fatoum@pengutronix.de>
  <20190423171852.26126-2-a.fatoum@pengutronix.de>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190423171852.26126-2-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,64 +19,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/5] ARM: cache-armv7: add work-around for errata 814220
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-Cc: ore@pengutronix.de, rcz@pengutronix.de
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, lst@pengutronix.de, ore@pengutronix.de, rcz@pengutronix.de
 
-QW0gRGllbnN0YWcsIGRlbiAyMy4wNC4yMDE5LCAxOToxOCArMDIwMCBzY2hyaWViIEFobWFkIEZh
-dG91bToKPiBUaGUgdjcgQVJNIHN0YXRlcyB0aGF0IGFsbCBjYWNoZSBhbmQgYnJhbmNoIHByZWRp
-Y3RvciBtYWludGVuYW5jZSBvcGVyYXRpb25zCj4gdGhhdCBkbyBub3Qgc3BlY2lmeSBhbiBhZGRy
-ZXNzIGV4ZWN1dGUsIHJlbGF0aXZlIHRvIGVhY2ggb3RoZXIsIGluIHByb2dyYW0KPiBvcmRlci4g
-SG93ZXZlciwgYmVjYXVzZSBvZiB0aGlzIGVycmF0dW0sIGFuIEwyIHNldC93YXkgY2FjaGUgbWFp
-bnRlbmFuY2UKPiBvcGVyYXRpb24gY2FuIG92ZXJ0YWtlIGFuIEwxIHNldC93YXkgY2FjaGUgbWFp
-bnRlbmFuY2Ugb3BlcmF0aW9uLCB0aGlzIHdvdWxkCj4gY2F1c2UgdGhlIGRhdGEgY29ycnVwdGlv
-bi4KPiAKPiBUaGlzIEVSUkFUQSBhZmZlY3RlZCB0aGUgQ29ydGV4LUE3IGFuZCBwcmVzZW50IGlu
-IHIwcDIsIHIwcDMsIHIwcDQsIHIwcDUuCj4gCj4gVGhpcyBwYXRjaCBpcyB0aGUgU1cgd29ya2Fy
-b3VuZCBieSBhZGRpbmcgYSBEU0IgYmVmb3JlIGNoYW5naW5nIGNhY2hlIGxldmVscyBhcwo+IHRo
-ZSBBUk0gRVJSQVRBOiBBUk0vTVA6IDgxNDIyMCB0b2xkIGluIHRoZSBBUk0gRVJSQVRBIGRvY3Vt
-ZW50YXRpb24uCj4gCj4gU2lnbmVkLW9mZi1ieTogSmFzb24gTGl1IDxyNjQzNDNAZnJlZXNjYWxl
-LmNvbT4KPiBTaWduZWQtb2ZmLWJ5OiBCZW5qYW1pbiBHYWlnbmFyZCA8YmVuamFtaW4uZ2FpZ25h
-cmRAbGluYXJvLm9yZz4KPiBBY2tlZC1ieTogQXJuZCBCZXJnbWFubiA8YXJuZEBhcm5kYi5kZT4K
-PiBbYWZhOiBwaWNrZWQgZnJvbSBMS01MOiA8MjAxOTAyMTQwODMxNDUuMTUxNDgtMS1iZW5qYW1p
-bi5nYWlnbmFyZEBsaW5hcm8ub3JnPl0KPiBbYWZhOiBlZGl0ZWQgY29tbWl0IG1lc3NhZ2UgaGVh
-ZGxpbmVdCj4gU2lnbmVkLW9mZi1ieTogQWhtYWQgRmF0b3VtIDxhLmZhdG91bUBwZW5ndXRyb25p
-eC5kZT4KPiAtLS0KPiDCoGFyY2gvYXJtL0tjb25maWfCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfCAx
-MiArKysrKysrKysrKysKPiDCoGFyY2gvYXJtL2NwdS9jYWNoZS1hcm12Ny5TIHzCoMKgMyArKysK
-PiDCoDIgZmlsZXMgY2hhbmdlZCwgMTUgaW5zZXJ0aW9ucygrKQo+IAo+IGRpZmYgLS1naXQgYS9h
-cmNoL2FybS9LY29uZmlnIGIvYXJjaC9hcm0vS2NvbmZpZwo+IGluZGV4IGE2ODNjOWM4NjY2MS4u
-ZmM2MjI2NDBhYTJiIDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL0tjb25maWcKPiArKysgYi9hcmNo
-L2FybS9LY29uZmlnCj4gQEAgLTQ0OCw0ICs0NDgsMTYgQEAgY29uZmlnIEFSTV9QU0NJX0RFQlVH
-Cj4gwqAJwqDCoHB1dGMgZnVuY3Rpb24uCj4gwqAJwqDCoE9ubHkgdXNlIGZvciBkZWJ1Z2dpbmcu
-Cj4gwqAKPiArY29uZmlnIEFSTV9FUlJBVEFfODE0MjIwCj4gK8KgwqDCoMKgwqDCoMKgYm9vbCAi
-QVJNIGVycmF0YTogQ2FjaGUgbWFpbnRlbmFuY2UgYnkgc2V0L3dheSBvcGVyYXRpb25zIGNhbiBl
-eGVjdXRlIG91dCBvZiBvcmRlciIKPiArwqDCoMKgwqDCoMKgwqBkZXBlbmRzIG9uIENQVV9WNwo+
-ICvCoMKgwqDCoMKgwqDCoGhlbHAKPiArwqDCoMKgwqDCoMKgwqDCoMKgVGhlIHY3IEFSTSBzdGF0
-ZXMgdGhhdCBhbGwgY2FjaGUgYW5kIGJyYW5jaCBwcmVkaWN0b3IgbWFpbnRlbmFuY2UKPiArwqDC
-oMKgwqDCoMKgwqDCoMKgb3BlcmF0aW9ucyB0aGF0IGRvIG5vdCBzcGVjaWZ5IGFuIGFkZHJlc3Mg
-ZXhlY3V0ZSwgcmVsYXRpdmUgdG8KPiArwqDCoMKgwqDCoMKgwqDCoMKgZWFjaCBvdGhlciwgaW4g
-cHJvZ3JhbSBvcmRlci4KPiArwqDCoMKgwqDCoMKgwqDCoMKgSG93ZXZlciwgYmVjYXVzZSBvZiB0
-aGlzIGVycmF0dW0sIGFuIEwyIHNldC93YXkgY2FjaGUgbWFpbnRlbmFuY2UKPiArwqDCoMKgwqDC
-oMKgwqDCoMKgb3BlcmF0aW9uIGNhbiBvdmVydGFrZSBhbiBMMSBzZXQvd2F5IGNhY2hlIG1haW50
-ZW5hbmNlIG9wZXJhdGlvbi4KPiArwqDCoMKgwqDCoMKgwqDCoMKgVGhpcyBFUlJBVEEgb25seSBh
-ZmZlY3RlZCB0aGUgQ29ydGV4LUE3IGFuZCBwcmVzZW50IGluIHIwcDIsIHIwcDMsCj4gK8KgwqDC
-oMKgwqDCoMKgwqDCoHIwcDQsIHIwcDUuCj4gKwo+IMKgZW5kbWVudQo+IGRpZmYgLS1naXQgYS9h
-cmNoL2FybS9jcHUvY2FjaGUtYXJtdjcuUyBiL2FyY2gvYXJtL2NwdS9jYWNoZS1hcm12Ny5TCj4g
-aW5kZXggN2ExYzVjMDE4OTRjLi4wZWIwZWNmZWU3NTYgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9hcm0v
-Y3B1L2NhY2hlLWFybXY3LlMKPiArKysgYi9hcmNoL2FybS9jcHUvY2FjaGUtYXJtdjcuUwo+IEBA
-IC0xMjAsNiArMTIwLDkgQEAgVEhVTUIoCQlpdGUJZXEJCQkpCj4gwqBza2lwOgo+IMKgCQlhZGQJ
-cjEyLCByMTIsICMyCQlAIGluY3JlbWVudCBjYWNoZSBudW1iZXIKPiDCoAkJY21wCXIzLCByMTIK
-PiArI2lmZGVmIENPTkZJR19BUk1fRVJSQVRBXzgxNDIyMAo+ICsJCWRzYgo+ICsjZW5kaWYKCkkg
-ZG9uJ3QgdGhpbmsgd2UgbmVlZCBhIEtjb25maWcgb3B0aW9uIGhlcmUuIFRoaXMgZnVuY3Rpb24g
-aXMgbm90CnJlYWxseSBwZXJmb3JtYW5jZSBjcml0aWNhbC4gVGhlIHNob3J0IHBpcGVsaW5lIHN0
-YWxsIGludHJvZHVjZWQgYnkgdGhlCmRzYiB3aGVuIHN3aXRjaGluZyB0aGUgY2FjaGUgbGV2ZWwg
-aXMgbWlub3IgY29tcGFyZWQgdG8gdGhlIHRpbWUgaXQKdGFrZXMgdG8gYWN0dWFsbHkgbW92ZSB0
-aGUgY2FjaGUgYmxvY2tzIG9uIGEgY2xlYW4uCgpKdXN0IGFsd2F5cyBleGVjdXRlIHRoZSBzZGIg
-YW5kIGFkZCBhIGNvbW1lbnQgb24gd2h5IGl0IGlzIG5lZWRlZC4KClJlZ2FyZHMsCkx1Y2FzCgo+
-IMKgCQliZ3QJbG9vcDEKPiDCoGZpbmlzaGVkOgo+IMKgCQlsZG1mZAlzcCEsIHtyNC1yMTF9Cgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi Ahmad.
+
+On Tue, Apr 23, 2019 at 07:18:48PM +0200, Ahmad Fatoum wrote:
+> The v7 ARM states that all cache and branch predictor maintenance operations
+> that do not specify an address execute, relative to each other, in program
+> order. However, because of this erratum, an L2 set/way cache maintenance
+> operation can overtake an L1 set/way cache maintenance operation, this would
+> cause the data corruption.
+> 
+> This ERRATA affected the Cortex-A7 and present in r0p2, r0p3, r0p4, r0p5.
+> 
+> This patch is the SW workaround by adding a DSB before changing cache levels as
+> the ARM ERRATA: ARM/MP: 814220 told in the ARM ERRATA documentation.
+> 
+> Signed-off-by: Jason Liu <r64343@freescale.com>
+> Signed-off-by: Benjamin Gaignard <benjamin.gaignard@linaro.org>
+> Acked-by: Arnd Bergmann <arnd@arndb.de>
+> [afa: picked from LKML: <20190214083145.15148-1-benjamin.gaignard@linaro.org>]
+> [afa: edited commit message headline]
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/Kconfig           | 12 ++++++++++++
+>  arch/arm/cpu/cache-armv7.S |  3 +++
+>  2 files changed, 15 insertions(+)
+> 
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index a683c9c86661..fc622640aa2b 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -448,4 +448,16 @@ config ARM_PSCI_DEBUG
+>  	  putc function.
+>  	  Only use for debugging.
+>  
+> +config ARM_ERRATA_814220
+> +       bool "ARM errata: Cache maintenance by set/way operations can execute out of order"
+> +       depends on CPU_V7
+> +       help
+> +         The v7 ARM states that all cache and branch predictor maintenance
+> +         operations that do not specify an address execute, relative to
+> +         each other, in program order.
+I have a hard time parsing the above. Seems like the last part of the
+sentence is maybe missing?
+
+> +         However, because of this erratum, an L2 set/way cache maintenance
+> +         operation can overtake an L1 set/way cache maintenance operation.
+> +         This ERRATA only affected the Cortex-A7 and present in r0p2, r0p3,
+> +         r0p4, r0p5.
+It would be good to say that this should be enabled if so-and-so.
+
+also consider the cost to have it always enabled. It is a single asm
+instruction but I do not know the impact on a typical boot.
+
+	Sam
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
