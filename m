@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hJF7A-0008U9-Q3
- for barebox@lists.infradead.org; Wed, 24 Apr 2019 10:26:58 +0000
+ id 1hJF7F-0008VT-IF
+ for barebox@lists.infradead.org; Wed, 24 Apr 2019 10:27:04 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 24 Apr 2019 12:26:49 +0200
-Message-Id: <20190424102650.9257-3-s.hauer@pengutronix.de>
+Date: Wed, 24 Apr 2019 12:26:48 +0200
+Message-Id: <20190424102650.9257-2-s.hauer@pengutronix.de>
 In-Reply-To: <20190424102650.9257-1-s.hauer@pengutronix.de>
 References: <20190424102650.9257-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,82 +21,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] console_countdown: Add pattern list
+Subject: [PATCH 2/4] console: forbid ctrlc during startup
 To: Barebox List <barebox@lists.infradead.org>
 
-This adds an optional string argument to console_countdown() which can
-hold a list of keys which also abort the countdown.
+When global.autoboot_abort_key is set to ctrl-c then the user is
+expected to press ctrl-c to get to the prompt. The user might press
+ctrl-c before the init script runs the "timeout" command. In this
+case the init script is aborted at arbitrary places which leads to
+inconsistent results depending on the place it is aborted.
+
+This patch introduces the global.console.ctrlc_allowed variable.
+When this variable is set to false ctrl-c is ignored entirely.
+The variable is set to false by default and changed to true in
+the init script.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/timeout.c          |  2 +-
- common/console_countdown.c  | 19 ++++++++++++++++++-
- include/console_countdown.h |  2 +-
- 3 files changed, 20 insertions(+), 3 deletions(-)
+ common/console.c                      | 24 ++++++++++++++++++++++++
+ defaultenv/defaultenv-2-base/bin/init |  2 ++
+ include/console.h                     |  3 +++
+ 3 files changed, 29 insertions(+)
 
-diff --git a/commands/timeout.c b/commands/timeout.c
-index d197cedd8b..db88900287 100644
---- a/commands/timeout.c
-+++ b/commands/timeout.c
-@@ -61,7 +61,7 @@ static int do_timeout(int argc, char *argv[])
- 		return COMMAND_ERROR_USAGE;
+diff --git a/common/console.c b/common/console.c
+index b6685ecf6a..406722a1da 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -575,6 +575,7 @@ void console_flush(void)
+ EXPORT_SYMBOL(console_flush);
  
- 	timeout = simple_strtoul(argv[optind], NULL, 0);
--	ret = console_countdown(timeout, flags, str);
-+	ret = console_countdown(timeout, flags, NULL, str);
+ static int ctrlc_abort;
++static int ctrlc_allowed;
  
- 	if (varname && str[0])
- 		setenv(varname, str);
-diff --git a/common/console_countdown.c b/common/console_countdown.c
-index 36da1ce577..8d09894c30 100644
---- a/common/console_countdown.c
-+++ b/common/console_countdown.c
-@@ -30,7 +30,22 @@ void console_countdown_abort(void)
- 	console_countdown_timeout_abort = true;
+ void ctrlc_handled(void)
+ {
+@@ -586,6 +587,9 @@ int ctrlc(void)
+ {
+ 	int ret = 0;
+ 
++	if (!ctrlc_allowed)
++		return 0;
++
+ 	if (ctrlc_abort)
+ 		return 1;
+ 
+@@ -605,5 +609,25 @@ int ctrlc(void)
  }
+ EXPORT_SYMBOL(ctrlc);
  
--int console_countdown(int timeout_s, unsigned flags, char *out_key)
-+static int key_in_list(char key, const char *keys)
++static int console_ctrlc_init(void)
 +{
-+	if (!keys)
-+		return false;
++	globalvar_add_simple_bool("console.ctrlc_allowed", &ctrlc_allowed);
++	return 0;
++}
++device_initcall(console_ctrlc_init);
 +
-+	while (*keys) {
-+		if (key == *keys)
-+			return true;
-+		keys++;
-+	}
-+
-+	return false;
++void console_ctrlc_allow(void)
++{
++	ctrlc_allowed = 1;
 +}
 +
-+int console_countdown(int timeout_s, unsigned flags, const char *keys,
-+		      char *out_key)
- {
- 	uint64_t start, second;
- 	int countdown, ret = -EINTR;
-@@ -48,6 +63,8 @@ int console_countdown(int timeout_s, unsigned flags, char *out_key)
- 		if (tstc()) {
- 			key = getchar();
- 			if (key >= 0) {
-+				if (key_in_list(key, keys))
-+					goto out;
- 				if (flags & CONSOLE_COUNTDOWN_ANYKEY)
- 					goto out;
- 				if (flags & CONSOLE_COUNTDOWN_RETURN && key == '\n')
-diff --git a/include/console_countdown.h b/include/console_countdown.h
-index c6c2d5c00e..88cadf11ec 100644
---- a/include/console_countdown.h
-+++ b/include/console_countdown.h
-@@ -7,7 +7,7 @@
- #define CONSOLE_COUNTDOWN_CTRLC (1 << 4)
- #define CONSOLE_COUNTDOWN_EXTERN (1 << 5)
++void console_ctrlc_forbid(void)
++{
++	ctrlc_allowed = 0;
++}
++
++BAREBOX_MAGICVAR_NAMED(global_console_ctrlc_allowed, global.console.ctrlc_allowed,
++		"If true, scripts can be aborted with ctrl-c");
++
+ BAREBOX_MAGICVAR_NAMED(global_linux_bootargs_console, global.linux.bootargs.console,
+ 		"console= argument for Linux from the stdout-path property in /chosen node");
+diff --git a/defaultenv/defaultenv-2-base/bin/init b/defaultenv/defaultenv-2-base/bin/init
+index 8d02e3d3ab..a5d3a984f7 100644
+--- a/defaultenv/defaultenv-2-base/bin/init
++++ b/defaultenv/defaultenv-2-base/bin/init
+@@ -60,6 +60,8 @@ if [ "$autoboot" = 0 ]; then
+ 	autoboot="$?"
+ fi
  
--int console_countdown(int timeout_s, unsigned flags, char *out_key);
-+int console_countdown(int timeout_s, unsigned flags, const char *keys, char *out_key);
- void console_countdown_abort(void);
++global.console.ctrlc_allowed=true
++
+ if [ "${key}" = "q" ]; then
+ 	exit
+ fi
+diff --git a/include/console.h b/include/console.h
+index 673921331d..4062e5abf6 100644
+--- a/include/console.h
++++ b/include/console.h
+@@ -207,4 +207,7 @@ static inline void pbl_set_putc(void (*putcf)(void *ctx, int c), void *ctx) {}
  
- #endif /* __CONSOLE_COUNTDOWN_H */
+ bool console_allow_color(void);
+ 
++void console_ctrlc_allow(void);
++void console_ctrlc_forbid(void);
++
+ #endif
 -- 
 2.20.1
 
