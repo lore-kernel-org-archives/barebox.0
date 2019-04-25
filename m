@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hIz7K-0005qv-1m
- for barebox@lists.infradead.org; Tue, 23 Apr 2019 17:22:03 +0000
+ id 1hJb84-0001Yx-E0
+ for barebox@lists.infradead.org; Thu, 25 Apr 2019 09:57:22 +0000
+Message-ID: <1556186236.2584.7.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 25 Apr 2019 11:57:16 +0200
+In-Reply-To: <bf60018a-fcf5-20cb-1650-35aabe7d3658@pengutronix.de>
 References: <20190423171852.26126-1-a.fatoum@pengutronix.de>
  <20190423171852.26126-4-a.fatoum@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <bf60018a-fcf5-20cb-1650-35aabe7d3658@pengutronix.de>
-Date: Tue, 23 Apr 2019 19:21:58 +0200
-MIME-Version: 1.0
-In-Reply-To: <20190423171852.26126-4-a.fatoum@pengutronix.de>
-Content-Language: en-US
+ <bf60018a-fcf5-20cb-1650-35aabe7d3658@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,118 +19,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 3/5] ARM: cache-armv7: start invalidation from outer levels
-To: lst@pengutronix.de
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 4/23/19 7:18 PM, Ahmad Fatoum wrote:
-> The ARM Cortex-A Series Programmer's Guide notes[1]:
->> Some care is required with cache maintenance activity in multi-core
-
-Unfortunately, the only error scenario I could find in the ARM docs
-was this one here, which presumes a multi-core system.
-
-Lucas, do you have a better example in context of barebox on how things
-could go awry without this patch?
-
-
->> systems that include a L2C-310 L2 cache (or similar). Cleaning or
->> invalidating the L1 cache and L2 cache will not be a single atomic
->> operation. A core might therefore perform cache maintenance on
->> a particular address in both L1 and L2 caches only as two discrete
->> steps. If another core were to access the affected address between
->> those two actions, a coherency problem can occur. Such problems can
->> be avoided by following two simple rules.
->>
->> * When cleaning, always clean the innermost (L1) cache first and then
->>   clean the outer cache(s).
->> * When invalidating, always invalidate the outermost cache first and
->>   the L1 cache last.
-> 
-> The current code correctly iterates from inner to outer cache levels
-> when flushing/cleaning (r8 == 0), invalidation (r8 == 1) occurs in the
-> same direction though. Adjust the invalidation iteration order to start
-> from the outermost cache instead.
-> 
-> Equivalent C-Code:
-> 
-> 	enum cache_op { CACHE_FLUSH = 0, CACHE_INVAL = 1 };
-> 	register enum cache_op operation asm("r8");
-> 	register int i asm("r12");
-> 	register int limit asm("r3") = max_cache_level << 1; // e.g. 4 with L2 max
-> 
-> 	+if (operation == CACHE_FLUSH) {
-> 	 	i = 0;
-> 	+} else {
-> 	+	i = limit - 2;
-> 	+}
-> 
-> 	 bool loop_again;
-> 	 do {
-> 		/* [snip] */
-> 	+	if (operation == CACHE_FLUSH) {
-> 			i += 2;
-> 			loop_again = limit > i;
-> 	+	} else {
-> 	+		loop_again = i > 0;
-> 	+		i -= 2;
-> 	+	}
-> 	} while (loop_again);
-> 
-> [1]: 18.6 "TLB and cache maintenance broadcast", Version 4.0
-> 
-> Suggested-by: Lucas Stach <l.stach@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/arm/cpu/cache-armv7.S | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/cpu/cache-armv7.S b/arch/arm/cpu/cache-armv7.S
-> index 0eb0ecfee756..b2d70bece7b9 100644
-> --- a/arch/arm/cpu/cache-armv7.S
-> +++ b/arch/arm/cpu/cache-armv7.S
-> @@ -83,7 +83,10 @@ hierarchical:
->  		ands	r3, r0, #0x7000000	@ extract loc from clidr
->  		mov	r3, r3, lsr #23		@ left align loc bit field
->  		beq	finished		@ if loc is 0, then no need to clean
-> -		mov	r12, #0			@ start clean at cache level 0
-> +		cmp	r8, #0
-> +THUMB(		ite	eq			)
-> +		moveq	r12, #0
-> +		subne	r12, r3, #2		@ start invalidate at outmost cache level
->  loop1:
->  		add	r2, r12, r12, lsr #1	@ work out 3x current cache level
->  		mov	r1, r0, lsr r2		@ extract cache type bits from clidr
-> @@ -118,8 +121,15 @@ THUMB(		ite	eq			)
->  		subs	r7, r7, #1		@ decrement the index
->  		bge	loop2
->  skip:
-> +		cmp	r8, #0
-> +		bne	inval_check
->  		add	r12, r12, #2		@ increment cache number
->  		cmp	r3, r12
-> +		b	loop_end_check
-> +inval_check:
-> +		cmp	r12, #0
-> +		sub	r12, r12, #2		@ decrement cache number
-> +loop_end_check:
->  #ifdef CONFIG_ARM_ERRATA_814220
->  		dsb
->  #endif
-> 
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gRGllbnN0YWcsIGRlbiAyMy4wNC4yMDE5LCAxOToyMSArMDIwMCBzY2hyaWViIEFobWFkIEZh
+dG91bToKPiBPbiA0LzIzLzE5IDc6MTggUE0sIEFobWFkIEZhdG91bSB3cm90ZToKPiA+IFRoZSBB
+Uk0gQ29ydGV4LUEgU2VyaWVzIFByb2dyYW1tZXIncyBHdWlkZSBub3Rlc1sxXToKPiA+ID4gU29t
+ZSBjYXJlIGlzIHJlcXVpcmVkIHdpdGggY2FjaGUgbWFpbnRlbmFuY2UgYWN0aXZpdHkgaW4gbXVs
+dGktY29yZQo+IAo+IFVuZm9ydHVuYXRlbHksIHRoZSBvbmx5IGVycm9yIHNjZW5hcmlvIEkgY291
+bGQgZmluZCBpbiB0aGUgQVJNIGRvY3MKPiB3YXMgdGhpcyBvbmUgaGVyZSwgd2hpY2ggcHJlc3Vt
+ZXMgYSBtdWx0aS1jb3JlIHN5c3RlbS4KPiAKPiBMdWNhcywgZG8geW91IGhhdmUgYSBiZXR0ZXIg
+ZXhhbXBsZSBpbiBjb250ZXh0IG9mIGJhcmVib3ggb24gaG93IHRoaW5ncwo+IGNvdWxkIGdvIGF3
+cnkgd2l0aG91dCB0aGlzIHBhdGNoPwoKSW4gdGhlIEJhcmVib3ggY2FzZSB3ZSBkb24ndCBjYXJl
+IGFib3V0IFNNUCwgYnV0IGFib3V0IHRoZSBIVwpwcmVmZXRjaGVyLCB3aGljaCBpcyBhbiBpbmRl
+cGVuZGVudCBtYXN0ZXIgYW5kIGlzbid0IGJvdW5kIGJ5IHRoZQppbnN0cnVjdGlvbnMgZXhlY3V0
+ZWQgb24gdGhlIGNvcmUuCgpTbyB0aGUgc2VxdWVuY2UgdGhhdCBjb3VsZCBnbyB3cm9uZyBpbiBC
+YXJlYm94IGlzIGFzIGZvbGxvd3M6CjEuIENQVSBjb3JlIHN0YXJ0cyBpbnZhbGlkYXRpbmcgYXQg
+TDEgY2FjaGUgbGV2ZWwKMi4gSFcgcHJlZmV0Y2hlciBkZWNpZGVzIHRoYXQgYSBzcGVjaWZpYyBh
+ZGRyZXNzIHNob3VsZCBiZSBicm91Z2h0IGludG8KdGhlIEwxIGNhY2hlLgozLiBIVyBwcmVmZXRj
+aGVyIGZpbmRzIGEgdmFsaWQgYmxvY2sgZm9yIHRoZSByZXF1ZXN0ZWQgYWRkcmVzcyBpbiBMMgpj
+YWNoZSBhbmQgbW92ZXMgY2FjaGVkIGRhdGEgZnJvbSBMMiB0byBMMS4KNC4gT25seSBub3cgQ1BV
+IGNvcmUgaW52YWxpZGF0ZXMgTDIgY2FjaGUuCgpJbiB0aGUgYWJvdmUgc2VxdWVuY2Ugd2Ugbm93
+IGhhdmUgaW52YWxpZCBkYXRhIGluIHRoZSBMMSBjYWNoZSBsaW5lLgpUaGUgY29ycmVjdCBzZXF1
+ZW5jZSB3aWxsIGF2b2lkIHRoaXMgaXNzdWU6CgoxLiBDUFUgY29yZSBzdGFydHMgaW52YWxpZGF0
+aW5nIGF0IEwyIGNhY2hlIGxldmVsCjIuIEhXIHByZWZldGNoZXIgZGVjaWRlcyB0aGF0IGEgc3Bl
+Y2lmaWMgYWRkcmVzcyBzaG91bGQgYmUgYnJvdWdodCBpbnRvCnRoZSBMMSBjYWNoZS4KMy4gSFcg
+cHJlZmV0Y2hlciBzZWVzIGludmFsaWQgdGFncyBmb3IgdGhlIHJlcXVlc3RlZCBhZGRyZXNzIGlu
+IEwyCmNhY2hlIGFuZCBicmluZ3MgaW4gdGhlIGRhdGEgZnJvbSBleHRlcm5hbCBtZW1vcnkuCjQu
+IENQVSBjb3JlIGludmFsaWRhdGVzIEwxIGNhY2hlLCBkaXNjYXJkaW5nIHRoZSBwcmVmZXRjaGVk
+IGRhdGEuCgpXaXRoIHRoZSBjb3JyZWN0IHNlcXVlbmNlIHdlIG5ldmVyIGVuZCB1cCB3aXRoIGlu
+dmFsaWQgZGF0YSBpbiB2YWxpZApjYWNoZSBsaW5lcywgd2UganVzdCB3YXN0ZSBzb21lIGV4dGVy
+bmFsIG1lbW9yeSBiYW5kd2lkdGggb24gdGhlCmRpc2NhcmRlZCBwcmVmZXRjaC4KClJlZ2FyZHMs
+Ckx1Y2FzCgo+IAo+ID4gPiBzeXN0ZW1zIHRoYXQgaW5jbHVkZSBhIEwyQy0zMTAgTDIgY2FjaGUg
+KG9yIHNpbWlsYXIpLiBDbGVhbmluZyBvcgo+ID4gPiBpbnZhbGlkYXRpbmcgdGhlIEwxIGNhY2hl
+IGFuZCBMMiBjYWNoZSB3aWxsIG5vdCBiZSBhIHNpbmdsZSBhdG9taWMKPiA+ID4gb3BlcmF0aW9u
+LiBBIGNvcmUgbWlnaHQgdGhlcmVmb3JlIHBlcmZvcm0gY2FjaGUgbWFpbnRlbmFuY2Ugb24KPiA+
+ID4gYSBwYXJ0aWN1bGFyIGFkZHJlc3MgaW4gYm90aCBMMSBhbmQgTDIgY2FjaGVzIG9ubHkgYXMg
+dHdvIGRpc2NyZXRlCj4gPiA+IHN0ZXBzLiBJZiBhbm90aGVyIGNvcmUgd2VyZSB0byBhY2Nlc3Mg
+dGhlIGFmZmVjdGVkIGFkZHJlc3MgYmV0d2Vlbgo+ID4gPiB0aG9zZSB0d28gYWN0aW9ucywgYSBj
+b2hlcmVuY3kgcHJvYmxlbSBjYW4gb2NjdXIuIFN1Y2ggcHJvYmxlbXMgY2FuCj4gPiA+IGJlIGF2
+b2lkZWQgYnkgZm9sbG93aW5nIHR3byBzaW1wbGUgcnVsZXMuCj4gPiA+IAo+ID4gPiAqIFdoZW4g
+Y2xlYW5pbmcsIGFsd2F5cyBjbGVhbiB0aGUgaW5uZXJtb3N0IChMMSkgY2FjaGUgZmlyc3QgYW5k
+IHRoZW4KPiA+ID4gwqAgY2xlYW4gdGhlIG91dGVyIGNhY2hlKHMpLgo+ID4gPiAqIFdoZW4gaW52
+YWxpZGF0aW5nLCBhbHdheXMgaW52YWxpZGF0ZSB0aGUgb3V0ZXJtb3N0IGNhY2hlIGZpcnN0IGFu
+ZAo+ID4gPiDCoCB0aGUgTDEgY2FjaGUgbGFzdC4KPiA+IAo+ID4gVGhlIGN1cnJlbnQgY29kZSBj
+b3JyZWN0bHkgaXRlcmF0ZXMgZnJvbSBpbm5lciB0byBvdXRlciBjYWNoZSBsZXZlbHMKPiA+IHdo
+ZW4gZmx1c2hpbmcvY2xlYW5pbmcgKHI4ID09IDApLCBpbnZhbGlkYXRpb24gKHI4ID09IDEpIG9j
+Y3VycyBpbiB0aGUKPiA+IHNhbWUgZGlyZWN0aW9uIHRob3VnaC4gQWRqdXN0IHRoZSBpbnZhbGlk
+YXRpb24gaXRlcmF0aW9uIG9yZGVyIHRvIHN0YXJ0Cj4gPiBmcm9tIHRoZSBvdXRlcm1vc3QgY2Fj
+aGUgaW5zdGVhZC4KPiA+IAo+ID4gRXF1aXZhbGVudCBDLUNvZGU6Cj4gPiAKPiA+IAllbnVtIGNh
+Y2hlX29wIHsgQ0FDSEVfRkxVU0ggPSAwLCBDQUNIRV9JTlZBTCA9IDEgfTsKPiA+IAlyZWdpc3Rl
+ciBlbnVtIGNhY2hlX29wIG9wZXJhdGlvbiBhc20oInI4Iik7Cj4gPiAJcmVnaXN0ZXIgaW50IGkg
+YXNtKCJyMTIiKTsKPiA+IAlyZWdpc3RlciBpbnQgbGltaXQgYXNtKCJyMyIpID0gbWF4X2NhY2hl
+X2xldmVsIDw8IDE7IC8vIGUuZy4gNCB3aXRoIEwyIG1heAo+ID4gCj4gPiAJK2lmIChvcGVyYXRp
+b24gPT0gQ0FDSEVfRkxVU0gpIHsKPiA+ID4gPiAJwqAJaSA9IDA7Cj4gPiAJK30gZWxzZSB7Cj4g
+PiA+ID4gCSsJaSA9IGxpbWl0IC0gMjsKPiA+IAkrfQo+ID4gCj4gPiAJIGJvb2wgbG9vcF9hZ2Fp
+bjsKPiA+IAkgZG8gewo+ID4gPiA+IAkJLyogW3NuaXBdICovCj4gPiA+ID4gCSsJaWYgKG9wZXJh
+dGlvbiA9PSBDQUNIRV9GTFVTSCkgewo+ID4gPiA+IAkJCWkgKz0gMjsKPiA+ID4gPiAJCQlsb29w
+X2FnYWluID0gbGltaXQgPiBpOwo+ID4gPiA+IAkrCX0gZWxzZSB7Cj4gPiA+ID4gCSsJCWxvb3Bf
+YWdhaW4gPSBpID4gMDsKPiA+ID4gPiAJKwkJaSAtPSAyOwo+ID4gPiA+IAkrCX0KPiA+IAl9IHdo
+aWxlIChsb29wX2FnYWluKTsKPiA+IAo+ID4gWzFdOiAxOC42ICJUTEIgYW5kIGNhY2hlIG1haW50
+ZW5hbmNlIGJyb2FkY2FzdCIsIFZlcnNpb24gNC4wCj4gPiAKPiA+ID4gPiBTdWdnZXN0ZWQtYnk6
+IEx1Y2FzIFN0YWNoIDxsLnN0YWNoQHBlbmd1dHJvbml4LmRlPgo+ID4gPiA+IFNpZ25lZC1vZmYt
+Ynk6IEFobWFkIEZhdG91bSA8YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGU+Cj4gPiAtLS0KPiA+IMKg
+YXJjaC9hcm0vY3B1L2NhY2hlLWFybXY3LlMgfCAxMiArKysrKysrKysrKy0KPiA+IMKgMSBmaWxl
+IGNoYW5nZWQsIDExIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKPiA+IAo+ID4gZGlmZiAt
+LWdpdCBhL2FyY2gvYXJtL2NwdS9jYWNoZS1hcm12Ny5TIGIvYXJjaC9hcm0vY3B1L2NhY2hlLWFy
+bXY3LlMKPiA+IGluZGV4IDBlYjBlY2ZlZTc1Ni4uYjJkNzBiZWNlN2I5IDEwMDY0NAo+ID4gLS0t
+IGEvYXJjaC9hcm0vY3B1L2NhY2hlLWFybXY3LlMKPiA+ICsrKyBiL2FyY2gvYXJtL2NwdS9jYWNo
+ZS1hcm12Ny5TCj4gPiBAQCAtODMsNyArODMsMTAgQEAgaGllcmFyY2hpY2FsOgo+ID4gPiA+ID4g
+PiA+ID4gwqAJCWFuZHMJcjMsIHIwLCAjMHg3MDAwMDAwCUAgZXh0cmFjdCBsb2MgZnJvbSBjbGlk
+cgo+ID4gPiA+ID4gPiA+ID4gwqAJCW1vdglyMywgcjMsIGxzciAjMjMJCUAgbGVmdCBhbGlnbiBs
+b2MgYml0IGZpZWxkCj4gPiA+ID4gPiA+ID4gPiDCoAkJYmVxCWZpbmlzaGVkCQlAIGlmIGxvYyBp
+cyAwLCB0aGVuIG5vIG5lZWQgdG8gY2xlYW4KPiA+ID4gPiA+ID4gPiA+IC0JCW1vdglyMTIsICMw
+CQkJQCBzdGFydCBjbGVhbiBhdCBjYWNoZSBsZXZlbCAwCj4gPiA+ID4gPiA+ICsJCWNtcAlyOCwg
+IzAKPiA+ID4gPiA+ID4gPiA+ICtUSFVNQigJCWl0ZQllcQkJCSkKPiA+ID4gPiA+ID4gKwkJbW92
+ZXEJcjEyLCAjMAo+ID4gPiA+ID4gPiA+ID4gKwkJc3VibmUJcjEyLCByMywgIzIJCUAgc3RhcnQg
+aW52YWxpZGF0ZSBhdCBvdXRtb3N0IGNhY2hlIGxldmVsCj4gPiDCoGxvb3AxOgo+ID4gPiA+ID4g
+PiA+ID4gwqAJCWFkZAlyMiwgcjEyLCByMTIsIGxzciAjMQlAIHdvcmsgb3V0IDN4IGN1cnJlbnQg
+Y2FjaGUgbGV2ZWwKPiA+ID4gPiA+ID4gPiA+IMKgCQltb3YJcjEsIHIwLCBsc3IgcjIJCUAgZXh0
+cmFjdCBjYWNoZSB0eXBlIGJpdHMgZnJvbSBjbGlkcgo+ID4gPiA+ID4gPiA+ID4gQEAgLTExOCw4
+ICsxMjEsMTUgQEAgVEhVTUIoCQlpdGUJZXEJCQkpCj4gPiA+ID4gPiA+ID4gPiDCoAkJc3Vicwly
+NywgcjcsICMxCQlAIGRlY3JlbWVudCB0aGUgaW5kZXgKPiA+ID4gPiA+ID4gwqAJCWJnZQlsb29w
+Mgo+ID4gwqBza2lwOgo+ID4gPiA+ID4gPiArCQljbXAJcjgsICMwCj4gPiA+ID4gPiA+ICsJCWJu
+ZQlpbnZhbF9jaGVjawo+ID4gPiA+ID4gPiA+ID4gwqAJCWFkZAlyMTIsIHIxMiwgIzIJCUAgaW5j
+cmVtZW50IGNhY2hlIG51bWJlcgo+ID4gPiA+ID4gPiDCoAkJY21wCXIzLCByMTIKPiA+ID4gPiA+
+ID4gKwkJYglsb29wX2VuZF9jaGVjawo+ID4gK2ludmFsX2NoZWNrOgo+ID4gPiA+ID4gPiArCQlj
+bXAJcjEyLCAjMAo+ID4gPiA+ID4gPiA+ID4gKwkJc3ViCXIxMiwgcjEyLCAjMgkJQCBkZWNyZW1l
+bnQgY2FjaGUgbnVtYmVyCj4gPiArbG9vcF9lbmRfY2hlY2s6Cj4gPiDCoCNpZmRlZiBDT05GSUdf
+QVJNX0VSUkFUQV84MTQyMjAKPiA+ID4gPiDCoAkJZHNiCj4gPiDCoCNlbmRpZgo+ID4gCj4gCj4g
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
+IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
