@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hL0EF-0007Q6-0J
- for barebox@lists.infradead.org; Mon, 29 Apr 2019 06:57:38 +0000
-Date: Mon, 29 Apr 2019 08:57:26 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190429065726.n2sezyznkd3ggjwi@pengutronix.de>
-References: <20190424102650.9257-1-s.hauer@pengutronix.de>
- <20190424102650.9257-4-s.hauer@pengutronix.de>
- <20190426123705.payrtca5k5a3ilsj@pengutronix.de>
+ id 1hJfQb-0007PM-0x
+ for barebox@lists.infradead.org; Thu, 25 Apr 2019 14:32:46 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 25 Apr 2019 16:32:28 +0200
+Message-Id: <20190425143232.25405-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190426123705.payrtca5k5a3ilsj@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,34 +19,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] defaultenv: Convert init script to C
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v2 0/4] ARM: mmu: misc armv7 cache/MMU fixes
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, lst@pengutronix.de, sam@ravnborg.org
 
-On Fri, Apr 26, 2019 at 02:37:05PM +0200, Roland Hieber wrote:
-> Hi Sascha,
-> 
-> small note: one might want to interrupt long-running processes during
-> the init sequence, e.g. if an init script contains a "dhcp" call or does
-> some NFS mount, but the board is currently not connected to the network.
+This series fixes a number of potential caching issues with armv7.
 
-Do you have a better example? You shouldn't run dhcp in an init script.
+They are:
 
-> Now it is no longer possible to interrupt such processes, even when
-> global.autoboot_abort_key is set to anything else than "ctrl-c". Was
-> this use case considered?
+- Cortex-A7 erratum #814220
+  Because of this erratum, the CPU may reorder cache maintenance operations
+  when it shouldn't.
+- Wrong Cache invalidation order for Cortex-A7
+  On the Cortex-A7, the L2 cache needs to be invalidated before the L1 cache.
+- Device memory isn't marked NX (Never eXecute)
+  NX prevents the CPU instruction prefetcher from inadvertently
+  accessing memory mapped devices
 
-You can't abort the init sequence, but you can prevent it from being
-executed at all. So when you are in such a situation, reset the board
-and use ctrl-c or 'q' to not run the init sequence.
 
-Sascha
+We haven't observed these actually causing problems with barebox,
+so testing the changes is a bit tricky. I ran these changes on:
+
+- Cortex-A5 (SAMA5D3, -marm, first stage in SRAM, second in SDRAM)
+- Cortex-A7 (i.MX6UL, -marm, architected L2 cache, barebox in SDRAM)
+- Cortex-A7 (i.MX6UL, -mthumb (2), architected L2 cache, barebox in SDRAM)
+- Cortex-A9 (i.MX6Q,  -mthumb (2), barebox in SDRAM)
+
+and verified that:
+
+- barebox can still start up
+- barebox PBL can still invoke barebox proper
+- barebox can still boot itself over the network
+- barebox can still boot a kernel
+- barebox can do all of the above with CONFIG_MMU_EARLY=y and =n
+
+
+Changes since v1:
+ - edited commit messages to quote Lucas mails for context
+ - remove Kconfig option around erratum #814220 and made the barrier
+   unconditional
+ - dropped the i.MX6UL patch that selected the now removed Kconfig
+   option
+
+Ahmad Fatoum (4):
+  ARM: cache-armv7: work around Cortex-A7 erratum 814220
+  ARM: cache-armv7: start invalidation from outer levels
+  ARM: mmu: remove doubly defined macro
+  ARM: mmu: mark uncached regions as eXecute never on v7
+
+ arch/arm/cpu/cache-armv7.S | 13 ++++++++++++-
+ arch/arm/cpu/mmu-early.c   | 27 ++++++++++++++++++++++++---
+ arch/arm/cpu/mmu.c         | 16 ++++++++++------
+ arch/arm/cpu/mmu.h         |  8 +++++++-
+ 4 files changed, 53 insertions(+), 11 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
