@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hJfQh-0007SP-3i
+ id 1hJfQh-0007SI-0k
  for barebox@lists.infradead.org; Thu, 25 Apr 2019 14:32:52 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 25 Apr 2019 16:32:31 +0200
-Message-Id: <20190425143232.25405-4-a.fatoum@pengutronix.de>
+Date: Thu, 25 Apr 2019 16:32:29 +0200
+Message-Id: <20190425143232.25405-2-a.fatoum@pengutronix.de>
 In-Reply-To: <20190425143232.25405-1-a.fatoum@pengutronix.de>
 References: <20190425143232.25405-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -17,39 +17,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/4] ARM: mmu: remove doubly defined macro
+Subject: [PATCH v2 1/4] ARM: cache-armv7: work around Cortex-A7 erratum 814220
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, lst@pengutronix.de, sam@ravnborg.org
 
-PMD_SECT_DEF_CACHED is defined along with PMD_SECT_DEF_UNCACHED
-in mmu.h, which is included two lines prior.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/cpu/mmu.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 29816ad56324..ed27d1e4b654 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -34,7 +34,6 @@
- 
- #include "mmu.h"
- 
--#define PMD_SECT_DEF_CACHED (PMD_SECT_WB | PMD_SECT_DEF_UNCACHED)
- #define PTRS_PER_PTE		(PGDIR_SIZE / PAGE_SIZE)
- #define ARCH_MAP_WRITECOMBINE	((unsigned)-1)
- 
--- 
-2.20.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBwYXRjaCBpcyBiYXNlZCBvbiAwZTlhODdiYiBmcm9tIHRoZSBsaW51eC1pbXgga2VybmVs
+OgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KfCBBUk0vTVA6IDgxNDIyMOKAlEItQ2FjaGUgbWFpbnRl
+bmFuY2UgYnkgc2V0L3dheSBvcGVyYXRpb25zIGNhbiBleGVjdXRlCnwgCW91dCBvZiBvcmRlci4K
+fAp8IERlc2NyaXB0aW9uOgp8IFRoZSB2NyBBUk0gc3RhdGVzIHRoYXQgYWxsIGNhY2hlIGFuZCBi
+cmFuY2ggcHJlZGljdG9yIG1haW50ZW5hbmNlIG9wZXJhdGlvbnMKfCB0aGF0IGRvIG5vdCBzcGVj
+aWZ5IGFuIGFkZHJlc3MgZXhlY3V0ZSwgcmVsYXRpdmUgdG8gZWFjaCBvdGhlciwgaW4gcHJvZ3Jh
+bQp8IG9yZGVyLiBIb3dldmVyLCBiZWNhdXNlIG9mIHRoaXMgZXJyYXR1bSwgYW4gTDIgc2V0L3dh
+eSBjYWNoZSBtYWludGVuYW5jZQp8IG9wZXJhdGlvbiBjYW4gb3ZlcnRha2UgYW4gTDEgc2V0L3dh
+eSBjYWNoZSBtYWludGVuYW5jZSBvcGVyYXRpb24sIHRoaXMgd291bGQKfCBjYXVzZSB0aGUgZGF0
+YSBjb3JydXB0aW9uLgp8CnwgVGhpcyBFUlJBVEEgYWZmZWN0ZWQgdGhlIENvcnRleC1BNyBhbmQg
+cHJlc2VudCBpbiByMHAyLCByMHAzLCByMHA0LCByMHA1Lgp8CnwgVGhpcyBwYXRjaCBpcyB0aGUg
+U1cgd29ya2Fyb3VuZCBieSBhZGRpbmcgYSBEU0IgYmVmb3JlIGNoYW5naW5nIGNhY2hlIGxldmVs
+cwp8IGFzIHRoZSBBUk0gRVJSQVRBOiBBUk0vTVA6IDgxNDIyMCB0b2xkIGluIHRoZSBBUk0gRVJS
+QVRBIGRvY3VtZW50YXRpb24uCnwgU2lnbmVkLW9mZi1ieTogSmFzb24gTGl1IDxyNjQzNDNAZnJl
+ZXNjYWxlLmNvbT4KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCgpJdCB3YXMgbGF0ZXIgcG9zdGVkIHRv
+IExLTUwgZm9yIExpbnV4IGluY2x1c2lvbiwgYnV0IGlzIG5vdCB5ZXQgbWFpbmxpbmU6CjwyMDE5
+MDIxNDA4MzE0NS4xNTE0OC0xLWJlbmphbWluLmdhaWduYXJkQGxpbmFyby5vcmc+CgpVbmxpa2Ug
+dGhlIExpbnV4IHZlcnNpb24sIHdlIGRvbid0IG1ha2UgdGhlIGJhcnJpZXIgZGVwZW5kZW50IG9u
+IGEKS2NvbmZpZyBvcHRpb24gYW5kIGFsd2F5cyBleGVjdXRlIHRoZSBkc2I6CgpPbiAyNS80LzE5
+IDEyOjAyLCBMdWNhcyBTdGFjaCB3cm90ZToKPiBJIGRvbid0IHRoaW5rIHdlIG5lZWQgYSBLY29u
+ZmlnIG9wdGlvbiBoZXJlLiBUaGlzIGZ1bmN0aW9uIGlzIG5vdAo+IHJlYWxseSBwZXJmb3JtYW5j
+ZSBjcml0aWNhbC4gVGhlIHNob3J0IHBpcGVsaW5lIHN0YWxsIGludHJvZHVjZWQgYnkgdGhlCj4g
+ZHNiIHdoZW4gc3dpdGNoaW5nIHRoZSBjYWNoZSBsZXZlbCBpcyBtaW5vciBjb21wYXJlZCB0byB0
+aGUgdGltZSBpdAo+IHRha2VzIHRvIGFjdHVhbGx5IG1vdmUgdGhlIGNhY2hlIGJsb2NrcyBvbiBh
+IGNsZWFuLgo+Cj4gSnVzdCBhbHdheXMgZXhlY3V0ZSB0aGUgW2RzYl0gYW5kIGFkZCBhIGNvbW1l
+bnQgb24gd2h5IGl0IGlzIG5lZWRlZC4KClNpZ25lZC1vZmYtYnk6IEFobWFkIEZhdG91bSA8YS5m
+YXRvdW1AcGVuZ3V0cm9uaXguZGU+Ci0tLQogYXJjaC9hcm0vY3B1L2NhY2hlLWFybXY3LlMgfCAx
+ICsKIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJt
+L2NwdS9jYWNoZS1hcm12Ny5TIGIvYXJjaC9hcm0vY3B1L2NhY2hlLWFybXY3LlMKaW5kZXggN2Ex
+YzVjMDE4OTRjLi45NDg3ZGQwM2Y2Y2MgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2NwdS9jYWNoZS1h
+cm12Ny5TCisrKyBiL2FyY2gvYXJtL2NwdS9jYWNoZS1hcm12Ny5TCkBAIC0xMjAsNiArMTIwLDcg
+QEAgVEhVTUIoCQlpdGUJZXEJCQkpCiBza2lwOgogCQlhZGQJcjEyLCByMTIsICMyCQlAIGluY3Jl
+bWVudCBjYWNoZSBudW1iZXIKIAkJY21wCXIzLCByMTIKKwkJZHNiCQkJCUAgd29yay1hcm91bmQg
+Q29ydGV4LUE3IGVycmF0dW0gODE0MjIwCiAJCWJndAlsb29wMQogZmluaXNoZWQ6CiAJCWxkbWZk
+CXNwISwge3I0LXIxMX0KLS0gCjIuMjAuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
+cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
+cmVib3gK
