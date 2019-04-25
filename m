@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hJfQh-0007SI-0k
- for barebox@lists.infradead.org; Thu, 25 Apr 2019 14:32:52 +0000
+ id 1hJfQp-0007dp-50
+ for barebox@lists.infradead.org; Thu, 25 Apr 2019 14:33:06 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 25 Apr 2019 16:32:29 +0200
-Message-Id: <20190425143232.25405-2-a.fatoum@pengutronix.de>
+Date: Thu, 25 Apr 2019 16:32:32 +0200
+Message-Id: <20190425143232.25405-5-a.fatoum@pengutronix.de>
 In-Reply-To: <20190425143232.25405-1-a.fatoum@pengutronix.de>
 References: <20190425143232.25405-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -17,51 +17,192 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/4] ARM: cache-armv7: work around Cortex-A7 erratum 814220
+Subject: [PATCH v2 4/4] ARM: mmu: mark uncached regions as eXecute never on v7
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, lst@pengutronix.de, sam@ravnborg.org
 
-VGhpcyBwYXRjaCBpcyBiYXNlZCBvbiAwZTlhODdiYiBmcm9tIHRoZSBsaW51eC1pbXgga2VybmVs
-OgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KfCBBUk0vTVA6IDgxNDIyMOKAlEItQ2FjaGUgbWFpbnRl
-bmFuY2UgYnkgc2V0L3dheSBvcGVyYXRpb25zIGNhbiBleGVjdXRlCnwgCW91dCBvZiBvcmRlci4K
-fAp8IERlc2NyaXB0aW9uOgp8IFRoZSB2NyBBUk0gc3RhdGVzIHRoYXQgYWxsIGNhY2hlIGFuZCBi
-cmFuY2ggcHJlZGljdG9yIG1haW50ZW5hbmNlIG9wZXJhdGlvbnMKfCB0aGF0IGRvIG5vdCBzcGVj
-aWZ5IGFuIGFkZHJlc3MgZXhlY3V0ZSwgcmVsYXRpdmUgdG8gZWFjaCBvdGhlciwgaW4gcHJvZ3Jh
-bQp8IG9yZGVyLiBIb3dldmVyLCBiZWNhdXNlIG9mIHRoaXMgZXJyYXR1bSwgYW4gTDIgc2V0L3dh
-eSBjYWNoZSBtYWludGVuYW5jZQp8IG9wZXJhdGlvbiBjYW4gb3ZlcnRha2UgYW4gTDEgc2V0L3dh
-eSBjYWNoZSBtYWludGVuYW5jZSBvcGVyYXRpb24sIHRoaXMgd291bGQKfCBjYXVzZSB0aGUgZGF0
-YSBjb3JydXB0aW9uLgp8CnwgVGhpcyBFUlJBVEEgYWZmZWN0ZWQgdGhlIENvcnRleC1BNyBhbmQg
-cHJlc2VudCBpbiByMHAyLCByMHAzLCByMHA0LCByMHA1Lgp8CnwgVGhpcyBwYXRjaCBpcyB0aGUg
-U1cgd29ya2Fyb3VuZCBieSBhZGRpbmcgYSBEU0IgYmVmb3JlIGNoYW5naW5nIGNhY2hlIGxldmVs
-cwp8IGFzIHRoZSBBUk0gRVJSQVRBOiBBUk0vTVA6IDgxNDIyMCB0b2xkIGluIHRoZSBBUk0gRVJS
-QVRBIGRvY3VtZW50YXRpb24uCnwgU2lnbmVkLW9mZi1ieTogSmFzb24gTGl1IDxyNjQzNDNAZnJl
-ZXNjYWxlLmNvbT4KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCgpJdCB3YXMgbGF0ZXIgcG9zdGVkIHRv
-IExLTUwgZm9yIExpbnV4IGluY2x1c2lvbiwgYnV0IGlzIG5vdCB5ZXQgbWFpbmxpbmU6CjwyMDE5
-MDIxNDA4MzE0NS4xNTE0OC0xLWJlbmphbWluLmdhaWduYXJkQGxpbmFyby5vcmc+CgpVbmxpa2Ug
-dGhlIExpbnV4IHZlcnNpb24sIHdlIGRvbid0IG1ha2UgdGhlIGJhcnJpZXIgZGVwZW5kZW50IG9u
-IGEKS2NvbmZpZyBvcHRpb24gYW5kIGFsd2F5cyBleGVjdXRlIHRoZSBkc2I6CgpPbiAyNS80LzE5
-IDEyOjAyLCBMdWNhcyBTdGFjaCB3cm90ZToKPiBJIGRvbid0IHRoaW5rIHdlIG5lZWQgYSBLY29u
-ZmlnIG9wdGlvbiBoZXJlLiBUaGlzIGZ1bmN0aW9uIGlzIG5vdAo+IHJlYWxseSBwZXJmb3JtYW5j
-ZSBjcml0aWNhbC4gVGhlIHNob3J0IHBpcGVsaW5lIHN0YWxsIGludHJvZHVjZWQgYnkgdGhlCj4g
-ZHNiIHdoZW4gc3dpdGNoaW5nIHRoZSBjYWNoZSBsZXZlbCBpcyBtaW5vciBjb21wYXJlZCB0byB0
-aGUgdGltZSBpdAo+IHRha2VzIHRvIGFjdHVhbGx5IG1vdmUgdGhlIGNhY2hlIGJsb2NrcyBvbiBh
-IGNsZWFuLgo+Cj4gSnVzdCBhbHdheXMgZXhlY3V0ZSB0aGUgW2RzYl0gYW5kIGFkZCBhIGNvbW1l
-bnQgb24gd2h5IGl0IGlzIG5lZWRlZC4KClNpZ25lZC1vZmYtYnk6IEFobWFkIEZhdG91bSA8YS5m
-YXRvdW1AcGVuZ3V0cm9uaXguZGU+Ci0tLQogYXJjaC9hcm0vY3B1L2NhY2hlLWFybXY3LlMgfCAx
-ICsKIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJt
-L2NwdS9jYWNoZS1hcm12Ny5TIGIvYXJjaC9hcm0vY3B1L2NhY2hlLWFybXY3LlMKaW5kZXggN2Ex
-YzVjMDE4OTRjLi45NDg3ZGQwM2Y2Y2MgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2NwdS9jYWNoZS1h
-cm12Ny5TCisrKyBiL2FyY2gvYXJtL2NwdS9jYWNoZS1hcm12Ny5TCkBAIC0xMjAsNiArMTIwLDcg
-QEAgVEhVTUIoCQlpdGUJZXEJCQkpCiBza2lwOgogCQlhZGQJcjEyLCByMTIsICMyCQlAIGluY3Jl
-bWVudCBjYWNoZSBudW1iZXIKIAkJY21wCXIzLCByMTIKKwkJZHNiCQkJCUAgd29yay1hcm91bmQg
-Q29ydGV4LUE3IGVycmF0dW0gODE0MjIwCiAJCWJndAlsb29wMQogZmluaXNoZWQ6CiAJCWxkbWZk
-CXNwISwge3I0LXIxMX0KLS0gCjIuMjAuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
-cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
-cmVib3gK
+The ARM Cortex-A Series Programmer's Guide notes[1]:
+> When set, the Execute Never (XN) bit in the translation table entry
+> prevents speculative instruction fetches taking place from desired
+> memory locations and will cause a prefetch abort to occur if execution
+> from the memory location is attempted.
+>
+> Typically device memory regions are marked as execute never to prevent
+> accidental execution from such locations, and to prevent undesirable
+> side-effects which might be caused by speculative instruction fetches.
+
+Heed the advice and mark uncached memory with the XN bit, when the
+CPU is >=v7.
+
+It's possible that there are SoCs that have a section shared between
+device memory and the on-chip RAM hosting the PBL.
+In such a section, every page except for the OCRAM's should be mapped XN,
+but as we know of no SoC with such an OCRAM layout, we ignore this
+possibility for now and let mmu_early_enable map sections only.
+
+[1]: 9.6.3 "Execute Never", Version 4.0
+
+Suggested-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/cpu/mmu-early.c | 27 ++++++++++++++++++++++++---
+ arch/arm/cpu/mmu.c       | 15 ++++++++++-----
+ arch/arm/cpu/mmu.h       |  8 +++++++-
+ 3 files changed, 41 insertions(+), 9 deletions(-)
+
+diff --git a/arch/arm/cpu/mmu-early.c b/arch/arm/cpu/mmu-early.c
+index d39a03ed95d6..2f5876fc46d8 100644
+--- a/arch/arm/cpu/mmu-early.c
++++ b/arch/arm/cpu/mmu-early.c
+@@ -5,17 +5,20 @@
+ #include <asm/memory.h>
+ #include <asm/system.h>
+ #include <asm/cache.h>
++#include <asm-generic/sections.h>
+ 
+ #include "mmu.h"
+ 
+ static uint32_t *ttb;
+ 
+-static void map_cachable(unsigned long start, unsigned long size)
++static inline void map_region(unsigned long start, unsigned long size,
++			      uint64_t flags)
++
+ {
+ 	start = ALIGN_DOWN(start, SZ_1M);
+ 	size  = ALIGN(size, SZ_1M);
+ 
+-	create_sections(ttb, start, start + size - 1, PMD_SECT_DEF_CACHED);
++	create_sections(ttb, start, start + size - 1, flags);
+ }
+ 
+ void mmu_early_enable(unsigned long membase, unsigned long memsize,
+@@ -28,9 +31,27 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize,
+ 	set_ttbr(ttb);
+ 	set_domain(DOMAIN_MANAGER);
+ 
++	/*
++	 * This marks the whole address space as uncachable as well as
++	 * unexecutable if possible
++	 */
+ 	create_flat_mapping(ttb);
+ 
+-	map_cachable(membase, memsize);
++	/*
++	 * There can be SoCs that have a section shared between device memory
++	 * and the on-chip RAM hosting the PBL. Thus mark this section
++	 * uncachable, but executable.
++	 * On such SoCs, executing from OCRAM could cause the instruction
++	 * prefetcher to speculatively access that device memory, triggering
++	 * potential errant behavior.
++	 *
++	 * If your SoC has such a memory layout, you should rewrite the code
++	 * here to map the OCRAM page-wise.
++	 */
++	map_region((unsigned long)_stext, _etext - _stext, PMD_SECT_DEF_UNCACHED);
++
++	/* maps main memory as cachable */
++	map_region(membase, memsize, PMD_SECT_DEF_CACHED);
+ 
+ 	__mmu_cache_on();
+ }
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index ed27d1e4b654..123e19e9e55c 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -57,11 +57,13 @@ static inline void tlb_invalidate(void)
+ }
+ 
+ #define PTE_FLAGS_CACHED_V7 (PTE_EXT_TEX(1) | PTE_BUFFERABLE | PTE_CACHEABLE)
+-#define PTE_FLAGS_WC_V7 PTE_EXT_TEX(1)
+-#define PTE_FLAGS_UNCACHED_V7 (0)
++#define PTE_FLAGS_WC_V7 (PTE_EXT_TEX(1) | PTE_EXT_XN)
++#define PTE_FLAGS_UNCACHED_V7 PTE_EXT_XN
+ #define PTE_FLAGS_CACHED_V4 (PTE_SMALL_AP_UNO_SRW | PTE_BUFFERABLE | PTE_CACHEABLE)
+ #define PTE_FLAGS_UNCACHED_V4 PTE_SMALL_AP_UNO_SRW
+-#define PGD_FLAGS_WC_V7 (PMD_SECT_TEX(1) | PMD_TYPE_SECT | PMD_SECT_BUFFERABLE)
++#define PGD_FLAGS_WC_V7 (PMD_SECT_TEX(1) | PMD_TYPE_SECT | PMD_SECT_BUFFERABLE | \
++			 PMD_SECT_XN)
++#define PGD_FLAGS_UNCACHED_V7 (PMD_SECT_DEF_UNCACHED | PMD_SECT_XN)
+ 
+ /*
+  * PTE flags to set cached and uncached areas.
+@@ -71,6 +73,7 @@ static uint32_t pte_flags_cached;
+ static uint32_t pte_flags_wc;
+ static uint32_t pte_flags_uncached;
+ static uint32_t pgd_flags_wc;
++static uint32_t pgd_flags_uncached;
+ 
+ #define PTE_MASK ((1 << 12) - 1)
+ 
+@@ -163,7 +166,7 @@ int arch_remap_range(void *start, size_t size, unsigned flags)
+ 		break;
+ 	case MAP_UNCACHED:
+ 		pte_flags = pte_flags_uncached;
+-		pgd_flags = PMD_SECT_DEF_UNCACHED;
++		pgd_flags = pgd_flags_uncached;
+ 		break;
+ 	case ARCH_MAP_WRITECOMBINE:
+ 		pte_flags = pte_flags_wc;
+@@ -246,7 +249,7 @@ void *map_io_sections(unsigned long phys, void *_start, size_t size)
+ 	unsigned long start = (unsigned long)_start, sec;
+ 
+ 	for (sec = start; sec < start + size; sec += PGDIR_SIZE, phys += PGDIR_SIZE)
+-		ttb[pgd_index(sec)] = phys | PMD_SECT_DEF_UNCACHED;
++		ttb[pgd_index(sec)] = phys | pgd_flags_uncached;
+ 
+ 	dma_flush_range(ttb, 0x4000);
+ 	tlb_invalidate();
+@@ -410,11 +413,13 @@ void __mmu_init(bool mmu_on)
+ 		pte_flags_cached = PTE_FLAGS_CACHED_V7;
+ 		pte_flags_wc = PTE_FLAGS_WC_V7;
+ 		pgd_flags_wc = PGD_FLAGS_WC_V7;
++		pgd_flags_uncached = PGD_FLAGS_UNCACHED_V7;
+ 		pte_flags_uncached = PTE_FLAGS_UNCACHED_V7;
+ 	} else {
+ 		pte_flags_cached = PTE_FLAGS_CACHED_V4;
+ 		pte_flags_wc = PTE_FLAGS_UNCACHED_V4;
+ 		pgd_flags_wc = PMD_SECT_DEF_UNCACHED;
++		pgd_flags_uncached = PMD_SECT_DEF_UNCACHED;
+ 		pte_flags_uncached = PTE_FLAGS_UNCACHED_V4;
+ 	}
+ 
+diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
+index 338728aacd3b..c911ee209f51 100644
+--- a/arch/arm/cpu/mmu.h
++++ b/arch/arm/cpu/mmu.h
+@@ -3,6 +3,7 @@
+ 
+ #include <asm/pgtable.h>
+ #include <linux/sizes.h>
++#include <asm/system_info.h>
+ 
+ #include "mmu-common.h"
+ 
+@@ -62,8 +63,13 @@ create_sections(uint32_t *ttb, unsigned long first,
+ 
+ static inline void create_flat_mapping(uint32_t *ttb)
+ {
++	unsigned int flags = PMD_SECT_DEF_UNCACHED;
++
++	if (cpu_architecture() >= CPU_ARCH_ARMv7)
++		flags |= PMD_SECT_XN;
++
+ 	/* create a flat mapping using 1MiB sections */
+-	create_sections(ttb, 0, 0xffffffff, PMD_SECT_DEF_UNCACHED);
++	create_sections(ttb, 0, 0xffffffff, flags);
+ }
+ 
+ #endif /* __ARM_MMU_H */
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
