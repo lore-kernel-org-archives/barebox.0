@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hJit2-0006uX-RC
- for barebox@lists.infradead.org; Thu, 25 Apr 2019 18:14:22 +0000
-Received: by mail-wm1-x32f.google.com with SMTP id 4so467335wmf.1
- for <barebox@lists.infradead.org>; Thu, 25 Apr 2019 11:14:17 -0700 (PDT)
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Message-ID: <0b4e8036-c8d2-abef-8ee7-d28994e552a8@gmail.com>
-Date: Thu, 25 Apr 2019 20:14:10 +0200
+ id 1hJtzU-00040y-Eg
+ for barebox@lists.infradead.org; Fri, 26 Apr 2019 06:05:46 +0000
+Date: Fri, 26 Apr 2019 08:05:42 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190426060542.v4tybl24ngvfvf5v@pengutronix.de>
+References: <0b4e8036-c8d2-abef-8ee7-d28994e552a8@gmail.com>
 MIME-Version: 1.0
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <0b4e8036-c8d2-abef-8ee7-d28994e552a8@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,20 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Porting Clause 45 PHY support to Barebox
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: Porting Clause 45 PHY support to Barebox
+To: Heiner Kallweit <hkallweit1@gmail.com>
 Cc: barebox@lists.infradead.org
 
-I'd like to port Clause 45 PHY support and more recent Linux phylib
-extensions to Barebox. Ideally it should be possible later to apply
-most Linux patches as-is on Barebox. Before I start two questions:
+Hi Heiner,
 
-- Any guidelines what it typically takes to port Linux Kernel code
-  to Barebox? (I suppose at least removing mutexes + spinlocks, changing
-  all interrupts to polling)
-- Especially regarding drivers/net/phy: any plans I should be aware of?
+On Thu, Apr 25, 2019 at 08:14:10PM +0200, Heiner Kallweit wrote:
+> I'd like to port Clause 45 PHY support and more recent Linux phylib
+> extensions to Barebox. Ideally it should be possible later to apply
+> most Linux patches as-is on Barebox. Before I start two questions:
+> 
+> - Any guidelines what it typically takes to port Linux Kernel code
+>   to Barebox? (I suppose at least removing mutexes + spinlocks, changing
+>   all interrupts to polling)
 
-Heiner
+Well yes, and that's about it. Sometimes you have to simplify the code,
+sometimes you have to update some header files we have from Linux.
+
+> - Especially regarding drivers/net/phy: any plans I should be aware of?
+
+Much of the code is from Linux, but there's also much barebox original
+code. I don't think the goal should be that it looks identically in the
+end.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
