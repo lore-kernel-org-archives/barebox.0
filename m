@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hL0Fj-0007ZM-7g
- for barebox@lists.infradead.org; Mon, 29 Apr 2019 06:59:04 +0000
-Date: Mon, 29 Apr 2019 08:59:00 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190429065900.n7tczvxxnm55nsay@pengutronix.de>
-References: <20190425143232.25405-1-a.fatoum@pengutronix.de>
+ id 1hK0R9-0001uQ-CM
+ for barebox@lists.infradead.org; Fri, 26 Apr 2019 12:58:44 +0000
+From: Marco Felsch <m.felsch@pengutronix.de>
+Date: Fri, 26 Apr 2019 14:58:33 +0200
+Message-Id: <20190426125833.17367-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190425143232.25405-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,33 +19,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/4] ARM: mmu: misc armv7 cache/MMU fixes
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, lst@pengutronix.de, sam@ravnborg.org
+Subject: [PATCH] fs: nfs: ensure rpc_req message is send
+To: barebox@lists.infradead.org
+Cc: mfe@pengutronix.de
 
-On Thu, Apr 25, 2019 at 04:32:28PM +0200, Ahmad Fatoum wrote:
-> This series fixes a number of potential caching issues with armv7.
-> 
-> They are:
-> 
-> - Cortex-A7 erratum #814220
->   Because of this erratum, the CPU may reorder cache maintenance operations
->   when it shouldn't.
-> - Wrong Cache invalidation order for Cortex-A7
->   On the Cortex-A7, the L2 cache needs to be invalidated before the L1 cache.
-> - Device memory isn't marked NX (Never eXecute)
->   NX prevents the CPU instruction prefetcher from inadvertently
->   accessing memory mapped devices
+Currently we send a rpc message without checking if the send was
+succesfull and poll for a answer from the server. If the server didn't
+answer within the NFS_TIMEOUT window we send the package again. In case
+the package send wasn't successful we always run in that timeout. This
+gets even worse if the package send fails more than one time.
 
-Applied, thanks
+Check if the package send was successful and resend the package if it
+wasn't to fix this behaviour.
 
-Sascha
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+ fs/nfs.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
+diff --git a/fs/nfs.c b/fs/nfs.c
+index 574fb85fb6..d606ccd1e9 100644
+--- a/fs/nfs.c
++++ b/fs/nfs.c
+@@ -436,9 +436,20 @@ static struct packet *rpc_req(struct nfs_priv *npriv, int rpc_prog,
+ 
+ 	npriv->con->udp->uh_dport = hton16(dport);
+ 
++	nfs_timer_start = get_time_ns();
++
+ again:
+ 	ret = net_udp_send(npriv->con,
+ 			sizeof(pkt) + datalen * sizeof(uint32_t));
++	if (ret) {
++		if (is_timeout(nfs_timer_start, NFS_TIMEOUT)) {
++			tries++;
++			if (tries == NFS_MAX_RESEND)
++				return ERR_PTR(-ETIMEDOUT);
++		}
++
++		goto again;
++	}
+ 
+ 	nfs_timer_start = get_time_ns();
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
