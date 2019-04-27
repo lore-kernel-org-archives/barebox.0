@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hL0Ot-0007B2-5B
- for barebox@lists.infradead.org; Mon, 29 Apr 2019 07:08:32 +0000
-Date: Mon, 29 Apr 2019 09:08:24 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190429070824.wot6p5bselz73juc@pengutronix.de>
-References: <96430d9a-d2dc-d5a4-ce9d-caedf4977f0d@gmail.com>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1hKSCA-0003kQ-In
+ for barebox@lists.infradead.org; Sat, 27 Apr 2019 18:37:09 +0000
+Received: from antimon.fritz.box (a89-183-44-132.net-htp.de [89.183.44.132])
+ by lynxeye.de (Postfix) with ESMTPA id B45EEE741C4
+ for <barebox@lists.infradead.org>; Sat, 27 Apr 2019 20:36:30 +0200 (CEST)
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Sat, 27 Apr 2019 20:36:23 +0200
+Message-Id: <20190427183627.22549-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <96430d9a-d2dc-d5a4-ce9d-caedf4977f0d@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +22,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] clk: vf610: improve handling case that cpu frequency
- can't be changed
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+Subject: [PATCH 0/4] BCM283x sdhost driver
+To: barebox@lists.infradead.org
 
-On Sat, Apr 27, 2019 at 12:09:05PM +0200, Heiner Kallweit wrote:
-> Currently we get a nasty error message if the cpu clock can't be
-> changed:
-> DDRC is clocked by PLL1, can't switch CPU clockinitcall vf610_switch_cpu_clock+0x1/0x198 failed: Invalid argument
-> 
-> So let's do the following:
-> - factor out the check from vf610_switch_cpu_clock_to_500mhz() and
->   vf610_switch_cpu_clock_to_400mhz
-> - if clock can't be changed, don't treat it as an error
-> - don't call clock notifier chain if clock can't be changed
-> - add trailing newline to the warning message
-> 
-> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-> ---
->  drivers/clk/imx/clk-vf610.c | 33 ++++++++++++++++++---------------
->  1 file changed, 18 insertions(+), 15 deletions(-)
+It's a rainy day and someone asked for it on the mailing list, so here
+it is: This series adds the driver for the BCM283x sdhost controller,
+ported from U-Boot, and enables it on the Raspberry Pi 3.
 
-Applied, thanks
+Have fun,
+Lucas
 
-Sascha
+Lucas Stach (4):
+  mci: add driver for BCM283x sdhost core
+  ARM: rpi: add clock for sdhost
+  ARM: rpi: enable sdhost driver in defconfig
+  ARM: rpi3: remove swapped sdhci and sdhost
+
+ arch/arm/boards/raspberry-pi/rpi-common.c |   8 +
+ arch/arm/configs/rpi_defconfig            |   2 +-
+ arch/arm/dts/bcm2837-rpi-3.dts            |   5 -
+ drivers/mci/Kconfig                       |   4 +
+ drivers/mci/Makefile                      |   1 +
+ drivers/mci/bcm2835-sdhost.c              | 657 ++++++++++++++++++++++
+ 6 files changed, 671 insertions(+), 6 deletions(-)
+ create mode 100644 drivers/mci/bcm2835-sdhost.c
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
