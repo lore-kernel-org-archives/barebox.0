@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
+Received: from mail-wr1-x444.google.com ([2a00:1450:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hL0JV-0004K1-LY
- for barebox@lists.infradead.org; Mon, 29 Apr 2019 07:03:41 +0000
-Date: Mon, 29 Apr 2019 09:02:55 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190429070255.vqjtjobxksuizw5a@pengutronix.de>
-References: <20190426125833.17367-1-m.felsch@pengutronix.de>
+ id 1hKKGg-0003Hi-Me
+ for barebox@lists.infradead.org; Sat, 27 Apr 2019 10:09:16 +0000
+Received: by mail-wr1-x444.google.com with SMTP id b1so8006483wru.3
+ for <barebox@lists.infradead.org>; Sat, 27 Apr 2019 03:09:12 -0700 (PDT)
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Message-ID: <96430d9a-d2dc-d5a4-ce9d-caedf4977f0d@gmail.com>
+Date: Sat, 27 Apr 2019 12:09:05 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190426125833.17367-1-m.felsch@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,70 +22,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fs: nfs: ensure rpc_req message is send
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org, mfe@pengutronix.de
+Subject: [PATCH] clk: vf610: improve handling case that cpu frequency can't be
+ changed
+To: Sascha Hauer <s.hauer@pengutronix.de>, Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Fri, Apr 26, 2019 at 02:58:33PM +0200, Marco Felsch wrote:
-> Currently we send a rpc message without checking if the send was
-> succesfull and poll for a answer from the server. If the server didn't
-> answer within the NFS_TIMEOUT window we send the package again. In case
-> the package send wasn't successful we always run in that timeout. This
-> gets even worse if the package send fails more than one time.
-> 
-> Check if the package send was successful and resend the package if it
-> wasn't to fix this behaviour.
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
->  fs/nfs.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+Currently we get a nasty error message if the cpu clock can't be
+changed:
+DDRC is clocked by PLL1, can't switch CPU clockinitcall vf610_switch_cpu_clock+0x1/0x198 failed: Invalid argument
 
-Applied, thanks
+So let's do the following:
+- factor out the check from vf610_switch_cpu_clock_to_500mhz() and
+  vf610_switch_cpu_clock_to_400mhz
+- if clock can't be changed, don't treat it as an error
+- don't call clock notifier chain if clock can't be changed
+- add trailing newline to the warning message
 
-Sascha
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+---
+ drivers/clk/imx/clk-vf610.c | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-> 
-> diff --git a/fs/nfs.c b/fs/nfs.c
-> index 574fb85fb6..d606ccd1e9 100644
-> --- a/fs/nfs.c
-> +++ b/fs/nfs.c
-> @@ -436,9 +436,20 @@ static struct packet *rpc_req(struct nfs_priv *npriv, int rpc_prog,
->  
->  	npriv->con->udp->uh_dport = hton16(dport);
->  
-> +	nfs_timer_start = get_time_ns();
-> +
->  again:
->  	ret = net_udp_send(npriv->con,
->  			sizeof(pkt) + datalen * sizeof(uint32_t));
-> +	if (ret) {
-> +		if (is_timeout(nfs_timer_start, NFS_TIMEOUT)) {
-> +			tries++;
-> +			if (tries == NFS_MAX_RESEND)
-> +				return ERR_PTR(-ETIMEDOUT);
-> +		}
-> +
-> +		goto again;
-> +	}
->  
->  	nfs_timer_start = get_time_ns();
->  
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/clk/imx/clk-vf610.c b/drivers/clk/imx/clk-vf610.c
+index 1b1b881..d70f441 100644
+--- a/drivers/clk/imx/clk-vf610.c
++++ b/drivers/clk/imx/clk-vf610.c
+@@ -459,26 +459,30 @@ enum {
+ 	DDRMC_CR117_AXI0_FITYPEREG_SYNC = 0b01 << 16,
+ };
+ 
+-static int vf610_switch_cpu_clock_to_500mhz(void)
++static bool vf610_cpu_clk_changeable(void)
+ {
+-	int ret;
+-
+ 	/*
+ 	 * When switching A5 CPU to 500Mhz we expect DDRC to be
+ 	 * clocked by PLL2_PFD2 and the system to be configured in
+ 	 * asynchronous mode.
+-	 *
+-	 * We also can't just use default PFD1 output of PLL1 due to
+-	 * Errata e6235, so we have to re-clock the PLL itself and use
+-	 * its output to clock the CPU directly.
+ 	 */
+-
+ 	if (clk_get_parent(clk[VF610_CLK_DDR_SEL]) != clk[VF610_CLK_PLL2_PFD2]) {
+-		pr_warn("DDRC is clocked by PLL1, can't switch CPU clock");
+-		return -EINVAL;
++		pr_warn("DDRC is clocked by PLL1, can't switch CPU clock\n");
++		return false;
+ 	}
+ 
++	return true;
++}
++
++static int vf610_switch_cpu_clock_to_500mhz(void)
++{
++	int ret;
++
+ 	/*
++	 * We can't just use default PFD1 output of PLL1 due to
++	 * Errata e6235, so we have to re-clock the PLL itself and use
++	 * its output to clock the CPU directly.
++	 *
+ 	 * Code below alters the frequency of PLL1, and doing so would
+ 	 * require us to wait for PLL1 lock before proceeding to
+ 	 * select it as a clock source again.
+@@ -533,11 +537,6 @@ static int vf610_switch_cpu_clock_to_400mhz(void)
+ 	uint32_t cr117;
+ 	void * __iomem ddrmc = IOMEM(VF610_DDR_BASE_ADDR);
+ 
+-	if (clk_get_parent(clk[VF610_CLK_DDR_SEL]) != clk[VF610_CLK_PLL2_PFD2]) {
+-		pr_warn("DDRC is clocked by PLL1, can't switch CPU clock");
+-		return -EINVAL;
+-	}
+-
+ 	ret = clk_set_parent(clk[VF610_CLK_PLL2_PFD_SEL], clk[VF610_CLK_PLL2_PFD2]);
+ 	if (ret < 0) {
+ 		pr_crit("Unable to re-parent '%s'\n",
+@@ -595,10 +594,14 @@ static int vf610_switch_cpu_clock(void)
+ 		return 0;
+ 
+ 	case VF610_SPEED_500:
++		if (!vf610_cpu_clk_changeable())
++			return 0;
+ 		ret = vf610_switch_cpu_clock_to_500mhz();
+ 		break;
+ 
+ 	case VF610_SPEED_400:
++		if (!vf610_cpu_clk_changeable())
++			return 0;
+ 		ret = vf610_switch_cpu_clock_to_400mhz();
+ 		break;
+ 	}
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.21.0
+
 
 _______________________________________________
 barebox mailing list
