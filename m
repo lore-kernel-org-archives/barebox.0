@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hJfWl-0000ti-7R
- for barebox@lists.infradead.org; Thu, 25 Apr 2019 14:39:08 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <afa@pengutronix.de>) id 1hJfWj-00070w-Ex
- for barebox@lists.infradead.org; Thu, 25 Apr 2019 16:39:05 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92-RC6)
- (envelope-from <afa@pengutronix.de>) id 1hJfWj-0007Mj-6F
- for barebox@lists.infradead.org; Thu, 25 Apr 2019 16:39:05 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 25 Apr 2019 16:38:56 +0200
-Message-Id: <20190425143856.19917-1-a.fatoum@pengutronix.de>
-In-Reply-To: <20190425143232.25405-3-a.fatoum@pengutronix.de>
-References: <20190425143232.25405-3-a.fatoum@pengutronix.de>
+ id 1hL0Fj-0007ZM-7g
+ for barebox@lists.infradead.org; Mon, 29 Apr 2019 06:59:04 +0000
+Date: Mon, 29 Apr 2019 08:59:00 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190429065900.n7tczvxxnm55nsay@pengutronix.de>
+References: <20190425143232.25405-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190425143232.25405-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,30 +22,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/4] fixup! ARM: cache-armv7: start invalidation from outer
- levels
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 0/4] ARM: mmu: misc armv7 cache/MMU fixes
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, lst@pengutronix.de, sam@ravnborg.org
 
----
- arch/arm/cpu/cache-armv7.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Thu, Apr 25, 2019 at 04:32:28PM +0200, Ahmad Fatoum wrote:
+> This series fixes a number of potential caching issues with armv7.
+> 
+> They are:
+> 
+> - Cortex-A7 erratum #814220
+>   Because of this erratum, the CPU may reorder cache maintenance operations
+>   when it shouldn't.
+> - Wrong Cache invalidation order for Cortex-A7
+>   On the Cortex-A7, the L2 cache needs to be invalidated before the L1 cache.
+> - Device memory isn't marked NX (Never eXecute)
+>   NX prevents the CPU instruction prefetcher from inadvertently
+>   accessing memory mapped devices
 
-diff --git a/arch/arm/cpu/cache-armv7.S b/arch/arm/cpu/cache-armv7.S
-index 21e189cda1d7..6a8aff8bb12c 100644
---- a/arch/arm/cpu/cache-armv7.S
-+++ b/arch/arm/cpu/cache-armv7.S
-@@ -130,7 +130,7 @@ inval_check:
- 		cmp	r12, #0
- 		sub	r12, r12, #2		@ decrement cache number
- loop_end_check:
--		dsb
-+		dsb				@ work-around Cortex-A7 erratum 814220
- 		bgt	loop1
- finished:
- 		ldmfd	sp!, {r4-r11}
+Applied, thanks
+
+Sascha
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
