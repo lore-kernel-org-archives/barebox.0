@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it1-x142.google.com ([2607:f8b0:4864:20::142])
+Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hKrXS-0003TN-I7
- for barebox@lists.infradead.org; Sun, 28 Apr 2019 21:40:47 +0000
-Received: by mail-it1-x142.google.com with SMTP id q14so13672652itk.0
- for <barebox@lists.infradead.org>; Sun, 28 Apr 2019 14:40:45 -0700 (PDT)
-MIME-Version: 1.0
+ id 1hL0Ot-0007B2-5B
+ for barebox@lists.infradead.org; Mon, 29 Apr 2019 07:08:32 +0000
+Date: Mon, 29 Apr 2019 09:08:24 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190429070824.wot6p5bselz73juc@pengutronix.de>
 References: <96430d9a-d2dc-d5a4-ce9d-caedf4977f0d@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
 In-Reply-To: <96430d9a-d2dc-d5a4-ce9d-caedf4977f0d@gmail.com>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 28 Apr 2019 14:40:32 -0700
-Message-ID: <CAHQ1cqGs2Z7w+r8E_D3d6WEE3L1Lbi7K0AeWyinOS3AzWY0zjg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,33 +25,34 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] clk: vf610: improve handling case that cpu frequency
  can't be changed
 To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
 
-On Sat, Apr 27, 2019 at 3:09 AM Heiner Kallweit <hkallweit1@gmail.com> wrote:
->
+On Sat, Apr 27, 2019 at 12:09:05PM +0200, Heiner Kallweit wrote:
 > Currently we get a nasty error message if the cpu clock can't be
 > changed:
 > DDRC is clocked by PLL1, can't switch CPU clockinitcall vf610_switch_cpu_clock+0x1/0x198 failed: Invalid argument
->
+> 
 > So let's do the following:
 > - factor out the check from vf610_switch_cpu_clock_to_500mhz() and
 >   vf610_switch_cpu_clock_to_400mhz
 > - if clock can't be changed, don't treat it as an error
 > - don't call clock notifier chain if clock can't be changed
 > - add trailing newline to the warning message
->
+> 
 > Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> ---
+>  drivers/clk/imx/clk-vf610.c | 33 ++++++++++++++++++---------------
+>  1 file changed, 18 insertions(+), 15 deletions(-)
 
-Minor nit: it might've been a bit simpler to create
-vf610_cpu_clk_unchangable(), so you wouldn't have to invert the result
-in every usecase.
+Applied, thanks
 
-Regardless the code is fine as is as, so:
+Sascha
 
-Reviewed-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-
-Thanks,
-Andrey Smirnov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
