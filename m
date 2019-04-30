@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from magratgarlick.emantor.de ([78.46.208.201]
+ helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hLMy3-0007xE-Rf
- for barebox@lists.infradead.org; Tue, 30 Apr 2019 07:14:21 +0000
-References: <20190430070106.29002-1-o.rempel@pengutronix.de>
- <CAHQ1cqF5dH5eynBggtgUg3EygDN2svRm94Nh527==oPgj0kVfA@mail.gmail.com>
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <f75f0648-895a-a69b-a494-960c330065b4@pengutronix.de>
-Date: Tue, 30 Apr 2019 09:14:16 +0200
+ id 1hLJFD-00057X-UK
+ for barebox@lists.infradead.org; Tue, 30 Apr 2019 03:15:49 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue, 30 Apr 2019 05:15:24 +0200
+Message-Id: <20190430031524.18810-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <CAHQ1cqF5dH5eynBggtgUg3EygDN2svRm94Nh527==oPgj0kVfA@mail.gmail.com>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,88 +16,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1] Documentation: imx: add documentation for RioTboard
-To: Andrey Smirnov <andrew.smirnov@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH v2] ARM: imx: disable IPU QoS setup for correct SoCs
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-CgpPbiAzMC4wNC4xOSAwOToxMCwgQW5kcmV5IFNtaXJub3Ygd3JvdGU6Cj4gT24gVHVlLCBBcHIg
-MzAsIDIwMTkgYXQgMTI6MDEgQU0gT2xla3NpaiBSZW1wZWwgPG8ucmVtcGVsQHBlbmd1dHJvbml4
-LmRlPiB3cm90ZToKPj4KPj4gU2lnbmVkLW9mZi1ieTogT2xla3NpaiBSZW1wZWwgPG8ucmVtcGVs
-QHBlbmd1dHJvbml4LmRlPgo+PiAtLS0KPj4gICAuLi4vYm9hcmRzL2lteC9lbWJlc3QtaS5teDZz
-LXJpb3Rib2FyZC5yc3QgICAgfCAxMzMgKysrKysrKysrKysrKysrKysrCj4+ICAgMSBmaWxlIGNo
-YW5nZWQsIDEzMyBpbnNlcnRpb25zKCspCj4+ICAgY3JlYXRlIG1vZGUgMTAwNjQ0IERvY3VtZW50
-YXRpb24vYm9hcmRzL2lteC9lbWJlc3QtaS5teDZzLXJpb3Rib2FyZC5yc3QKPj4KPj4gZGlmZiAt
-LWdpdCBhL0RvY3VtZW50YXRpb24vYm9hcmRzL2lteC9lbWJlc3QtaS5teDZzLXJpb3Rib2FyZC5y
-c3QgYi9Eb2N1bWVudGF0aW9uL2JvYXJkcy9pbXgvZW1iZXN0LWkubXg2cy1yaW90Ym9hcmQucnN0
-Cj4+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4+IGluZGV4IDAwMDAwMDAwMDAuLjE3YjYzMGRhZWEK
-Pj4gLS0tIC9kZXYvbnVsbAo+PiArKysgYi9Eb2N1bWVudGF0aW9uL2JvYXJkcy9pbXgvZW1iZXN0
-LWkubXg2cy1yaW90Ym9hcmQucnN0Cj4+IEBAIC0wLDAgKzEsMTMzIEBACj4+ICtFbWJlc3QgUklv
-VGJvYXJkCj4+ICs9PT09PT09PT09PT09PT09Cj4+ICsKPj4gK1JJb1Rib2FyZCBTdGFuZGFyZCBr
-aXQKPj4gKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPj4gKwo+PiAraHR0cDovL3d3dy5lbWJlc3Qt
-dGVjaC5jb20vcHJvZF92aWV3LmFzcHg/VHlwZUlkPTc0JklkPTM0NSZGSWQ9dDM6NzQ6Mwo+PiAr
-Cj4+ICtHZW5lcmFsIEZlYXR1cmVzOgo+PiArICAqIFByb2R1Y3QgRGltZW5zaW9uczogNzVtbSB4
-IDEyMG1tCj4+ICsgICogT3BlcmF0aW5nIFRlbXBlcmF0dXJlOiAwIH4gNTDihIMKPj4gKyAgKiBP
-cGVyYXRpbmcgSHVtaWRpdHk6IDIwJSB+IDkwJSAobm9uLWNvbmRlbnNpbmcpCj4+ICsgICogREMt
-aW7vvJo1Vi80QQo+PiArCj4+ICtQcm9jZXNzb3I6Cj4+ICsgICogaS5NWCA2U29sbyBiYXNlZCBv
-biBBUk0gQ29ydGV44oSiLUE5Cj4+ICsgICogMzIgS2J5dGUgTDEgaW5zdHJ1Y3Rpb24gYnVmZmVy
-Cj4+ICsgICogMzIgS2J5dGUgTDEgZGF0YSBidWZmZXIKPj4gKyAgKiBQcml2YXRlIGNvdW50ZXIg
-YW5kIHdhdGNoZG9nCj4+ICsgICogQ29ydGV4LUE5IE5FT04gTVBFIChtZWRpYSBwcm9jZXNzaW5n
-IGVuZ2luZSkgY29wcm9jZXNzb3IKPj4gKwo+PiArT24tQm9hcmQgTWVtb3JpZXM6Cj4+ICsgICog
-NEdCeXRlIGVNTUMKPj4gKyAgKiAyKjUxMk1CIEREUjMgU0RSQU0KPj4gKwo+PiArT25lLUJvYXJk
-IEludGVyZmFjZXMvQnV0dG9uczoKPj4gKwo+PiArICAqIEF1ZGlvIGlucHV0L291dHB1dCBpbnRl
-cmZhY2VzCj4+ICsgICogQSBMVkRTIGludGVyZmFjZQo+PiArICAqIEEgSERNSSBpbnRlcmZhY2UK
-Pj4gKyAgKiBBIExDRCBkaXNwbGF5IGludGVyZmFjZSAoZXhwYW5zaW9uIGludGVyZmFjZSkKPj4g
-KyAgKiBBIGRpZ2l0YWwgY2FtZXJhIGludGVyZmFjZQo+PiArICAqIEEgTUlQSSBpbnRlcmZhY2UK
-Pj4gKyAgKiA0IFRUTC1sZXZlbCBzZXJpYWwgaW50ZXJmYWNlcyAob25lIGZvciBkZWJ1Z2dpbmcs
-IHRoZSByZXN0IGZvciBleHBhbnNpb24pCj4+ICsgICogNCBoaWdoLXNwZWVkIFVTQjIuMCBob3N0
-IGludGVyZmFjZXMgKDQ4ME1icHMpCj4+ICsgICogQSBoaWdoLXNwZWVkIFVTQjIuMCBPVEcgaW50
-ZXJmYWNlICg0ODBNYnBzKQo+PiArICAqIEEgU0QgY2FyZCBzbG90Cj4+ICsgICogQSBURiBjYXJk
-IHNsb3QKPj4gKyAgKiBBIDEwLzEwME0vMUdicHMgUko0NSBpbnRlcmZhY2UKPj4gKyAgKiAyIEky
-QyBpbnRlcmZhY2VzIChleHBhbnNpb24gaW50ZXJmYWNlcykKPj4gKyAgKiAyIFNQSSBpbnRlcmZh
-Y2VzIChleHBhbnNpb24gaW50ZXJmYWNlcykKPj4gKyAgKiAzIFBXTSBpbnRlcmZhY2VzIChleHBh
-bnNpb24gaW50ZXJmYWNlcykKPj4gKyAgKiBBIEdQSU8gaW50ZXJmYWNlIChleHBhbnNpb24gaW50
-ZXJmYWNlcykKPj4gKyAgKiBBIEpUQUcgaW50ZXJmYWNlCj4+ICsgICogQSBib290LW1vZGUgc3dp
-dGNoCj4+ICsgICogNCBMRURzICgxIHN5c3RlbSBMRUQsIDIgY3VzdG9tIExFRCwgMSBvcGVuIFNE
-QSBMRUQpCj4+ICsgICogQSByZXNldCBidXR0b24KPj4gKwo+PiArSG93IHRvIGJ1aWxkIGJhcmVi
-b3ggZm9yIEVtYmVzdCBSSW9UYm9hcmQKPj4gKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tCj4+ICsKPj4gK1VzaW5nIHRoZSBkZWZhdWx0IGNvbmZpZ3VyYXRpb246Cj4+
-ICsKPj4gKy4uIGNvZGUtYmxvY2s6OiBzaAo+PiArCj4+ICsgIG1ha2UgQVJDSD1hcm0gaW14X3Y3
-X2RlZmNvbmZpZwo+PiArCj4+ICtCdWlsZCB0aGUgYmluYXJ5IGltYWdlOgo+PiArCj4+ICsuLiBj
-b2RlLWJsb2NrOjogc2gKPj4gKwo+PiArICBtYWtlIEFSQ0g9YXJtIENST1NTX0NPTVBJTEU9YXJt
-djdjb21waWxlcgo+PiArCj4+ICsuLiBub3RlOjogcmVwbGFjZSBgYGFybXY3Y29tcGlsZXJgYCB3
-aXRoIHlvdXIgQVJNIHY3IGNyb3NzIGNvbXBpbGVyIHByZWZpeCwKPj4gKyBlLmcuOiBgYGFybS1s
-aW51eC1nbnVlYWJpaGYtYGAKPj4gKwo+PiArVGhlIHJlc3VsdGluZyBiaW5hcnkgaW1hZ2UgdG8g
-YmUgZmxhc2hlZCB3aWxsIGJlIGBgaW1hZ2VzL2JhcmVib3gtZW1iZXN0LWlteDZzLXJpb3Rib2Fy
-ZC5pbWdgYC4KPj4gKwo+PiArUmVwbGFjaW5nIFUtQm9vdCB3aXRoIGJhcmVib3gKPj4gKy0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCj4+ICsKPj4gKyAgMS4gQ29ubmVjdCB0byB0aGUgYm9h
-cmRzJ3MgVUFSVCAoMTE1MjAwIDhOMSk7Cj4+ICsKPj4gKyAgMi4gVHVybiBib2FyZCdzIHBvd2Vy
-IG9uOwo+PiArCj4+ICsgIDMuIFdhaXQgYGBIaXQgYW55IGtleSB0byBzdG9wIGF1dG9ib290OiAy
-YGAgcHJvbXB0IGFuZCBwcmVzcyBhbnkga2V5Owo+PiArCj4+ICsgIDQuIFVwbG9hZCBiYXJlYm94
-IGltYWdlIHRvIHRoZSBib2FyZCB2aWEgdGZ0cCBhbmQgc3RhcnQgaXQKPj4gKwo+PiArLi4gY29k
-ZS1ibG9jazo6IG5vbmUKPj4gKwo+PiArICBNWDZTb2xvIFJJb1Rib2FyZCBVLUJvb3QgPiBzZXRl
-bnYgZXRoYWRkciBkMjoyZDpjZTo4ODpmNDpmMQo+PiArICBNWDZTb2xvIFJJb1Rib2FyZCBVLUJv
-b3QgPiB0ZnRwYm9vdCAweDIwODAwMDAwIDE5Mi4xNjguMjMuNDpvcmUtYmFyZWJveC1yaW90Ym9h
-cmQKPj4gKyAgLS0tLXBoeV9hZGRyPTB4NCwgaWQ9IDB4NGRkMDcyCj4+ICsgIEZFQzogTGluayBp
-cyBVcCA3OTZkCj4+ICsgIFVzaW5nIEZFQzAgZGV2aWNlCj4+ICsgIFRGVFAgZnJvbSBzZXJ2ZXIg
-MTkyLjE2OC4yMy40OyBvdXIgSVAgYWRkcmVzcyBpcyAxOTIuMTY4LjEuMTAzCj4+ICsgIEZpbGVu
-YW1lICdvcmUtYmFyZWJveC1yaW90Ym9hcmQnLgo+PiArICBMb2FkIGFkZHJlc3M6IDB4MjA4MDAw
-MDAKPj4gKyAgTG9hZGluZzogIyMgV2FybmluZzogZ2F0ZXdheWlwIG5lZWRlZCBidXQgbm90IHNl
-dAo+PiArICAjIyBXYXJuaW5nOiBnYXRld2F5aXAgbmVlZGVkIGJ1dCBub3Qgc2V0Cj4+ICsgICMj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjCj4+ICsgIGRvbmUKPj4g
-KyAgQnl0ZXMgdHJhbnNmZXJyZWQgPSA2Mzc5NDcgKDliYmZiIGhleCkKPj4gKyAgTVg2U29sbyBS
-SW9UYm9hcmQgVS1Cb290ID4gZ28gMHgyMDgwMDAwMAo+PiArCj4+ICsgIHRhcnRpbmcgYXBwbGlj
-YXRpb24gYXQgMHgyMDgwMDAwMCAuLi4KPiAKPiBOb3QgdGhhdCBpdCBjaGFuZ2VzIG11Y2gsIGJ1
-dCBpcyB0aGlzIGEgY29weSBwYXN0IG1pc2hhcCwgb3IgaXMgIlMiCj4gKG9yICJzIikgaW4gInN0
-YXJ0aW5nIiBhYm92ZSByZWFsbHkgbWlzc2luZz8KClVmZi4uIHJpZ2h0LiBJdCBpcyBtaXNoYXAu
-IHRoeCEKCktpbmQgcmVnYXJkcywKT2xla3NpaiBSZW1wZWwKCi0tIApQZW5ndXRyb25peCBlLksu
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-fApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3
-LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdl
-cm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNo
-ZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
-YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+The condition was introduced in 4e6e8f73e9 ("ARM: imx6: don't
+execute IPU QoS setup on MX6 SX/SL"), but instead it bails at
+the Solo, not the SX and SL.
+
+The original intent was most probably to add an exception for
+the i.MX6 Solo as well, so everything else is skipped, including
+the SX, SL and now the UL and ULL. Fix the code to reflect this.
+
+On the SX, SL, UL, ULL, this now avoids writes to memory, which
+isn't described in the datasheets. On the S, it now configures
+the QoS settings.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+---
+ arch/arm/mach-imx/imx6.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+index 01b4274ed3..e898be9ab5 100644
+--- a/arch/arm/mach-imx/imx6.c
++++ b/arch/arm/mach-imx/imx6.c
+@@ -117,7 +117,7 @@ static void imx6_setup_ipu_qos(void)
+ 	uint32_t val;
+ 
+ 	if (!cpu_mx6_is_mx6q() && !cpu_mx6_is_mx6d() &&
+-	    !cpu_mx6_is_mx6dl() && cpu_mx6_is_mx6s())
++	    !cpu_mx6_is_mx6dl() && !cpu_mx6_is_mx6s())
+ 		return;
+ 
+ 	val = readl(iomux + IOMUXC_GPR4);
+-- 
+2.21.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
