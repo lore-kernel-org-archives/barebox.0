@@ -1,12 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201]
- helo=margratgarlick.emantor.de)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hLJFD-00057X-UK
- for barebox@lists.infradead.org; Tue, 30 Apr 2019 03:15:49 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue, 30 Apr 2019 05:15:24 +0200
-Message-Id: <20190430031524.18810-1-r.czerwinski@pengutronix.de>
+ id 1hLN24-0001wf-Rg
+ for barebox@lists.infradead.org; Tue, 30 Apr 2019 07:18:30 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Tue, 30 Apr 2019 09:18:25 +0200
+Message-Id: <20190430071825.21845-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -16,50 +15,95 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] ARM: imx: disable IPU QoS setup for correct SoCs
+Subject: [PATCH v2] Documentation: imx: add documentation for RioTboard
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-The condition was introduced in 4e6e8f73e9 ("ARM: imx6: don't
-execute IPU QoS setup on MX6 SX/SL"), but instead it bails at
-the Solo, not the SX and SL.
-
-The original intent was most probably to add an exception for
-the i.MX6 Solo as well, so everything else is skipped, including
-the SX, SL and now the UL and ULL. Fix the code to reflect this.
-
-On the SX, SL, UL, ULL, this now avoids writes to memory, which
-isn't described in the datasheets. On the S, it now configures
-the QoS settings.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
- arch/arm/mach-imx/imx6.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-index 01b4274ed3..e898be9ab5 100644
---- a/arch/arm/mach-imx/imx6.c
-+++ b/arch/arm/mach-imx/imx6.c
-@@ -117,7 +117,7 @@ static void imx6_setup_ipu_qos(void)
- 	uint32_t val;
- 
- 	if (!cpu_mx6_is_mx6q() && !cpu_mx6_is_mx6d() &&
--	    !cpu_mx6_is_mx6dl() && cpu_mx6_is_mx6s())
-+	    !cpu_mx6_is_mx6dl() && !cpu_mx6_is_mx6s())
- 		return;
- 
- 	val = readl(iomux + IOMUXC_GPR4);
--- 
-2.21.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogT2xla3NpaiBSZW1wZWwgPG8ucmVtcGVsQHBlbmd1dHJvbml4LmRlPgot
+LS0KIC4uLi9ib2FyZHMvaW14L2VtYmVzdC1pLm14NnMtcmlvdGJvYXJkLnJzdCAgICB8IDEzMyAr
+KysrKysrKysrKysrKysrKysKIDEgZmlsZSBjaGFuZ2VkLCAxMzMgaW5zZXJ0aW9ucygrKQogY3Jl
+YXRlIG1vZGUgMTAwNjQ0IERvY3VtZW50YXRpb24vYm9hcmRzL2lteC9lbWJlc3QtaS5teDZzLXJp
+b3Rib2FyZC5yc3QKCmRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2JvYXJkcy9pbXgvZW1iZXN0
+LWkubXg2cy1yaW90Ym9hcmQucnN0IGIvRG9jdW1lbnRhdGlvbi9ib2FyZHMvaW14L2VtYmVzdC1p
+Lm14NnMtcmlvdGJvYXJkLnJzdApuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAw
+Li5lMTIzM2Q1NmI0Ci0tLSAvZGV2L251bGwKKysrIGIvRG9jdW1lbnRhdGlvbi9ib2FyZHMvaW14
+L2VtYmVzdC1pLm14NnMtcmlvdGJvYXJkLnJzdApAQCAtMCwwICsxLDEzMyBAQAorRW1iZXN0IFJJ
+b1Rib2FyZAorPT09PT09PT09PT09PT09PQorCitSSW9UYm9hcmQgU3RhbmRhcmQga2l0CistLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tCisKK2h0dHA6Ly93d3cuZW1iZXN0LXRlY2guY29tL3Byb2Rfdmll
+dy5hc3B4P1R5cGVJZD03NCZJZD0zNDUmRklkPXQzOjc0OjMKKworR2VuZXJhbCBGZWF0dXJlczoK
+KyAgKiBQcm9kdWN0IERpbWVuc2lvbnM6IDc1bW0geCAxMjBtbQorICAqIE9wZXJhdGluZyBUZW1w
+ZXJhdHVyZTogMCB+IDUw4oSDCisgICogT3BlcmF0aW5nIEh1bWlkaXR5OiAyMCUgfiA5MCUgKG5v
+bi1jb25kZW5zaW5nKQorICAqIERDLWlu77yaNVYvNEEKKworUHJvY2Vzc29yOgorICAqIGkuTVgg
+NlNvbG8gYmFzZWQgb24gQVJNIENvcnRleOKEoi1BOQorICAqIDMyIEtieXRlIEwxIGluc3RydWN0
+aW9uIGJ1ZmZlcgorICAqIDMyIEtieXRlIEwxIGRhdGEgYnVmZmVyCisgICogUHJpdmF0ZSBjb3Vu
+dGVyIGFuZCB3YXRjaGRvZworICAqIENvcnRleC1BOSBORU9OIE1QRSAobWVkaWEgcHJvY2Vzc2lu
+ZyBlbmdpbmUpIGNvcHJvY2Vzc29yCisKK09uLUJvYXJkIE1lbW9yaWVzOgorICAqIDRHQnl0ZSBl
+TU1DCisgICogMio1MTJNQiBERFIzIFNEUkFNCisKK09uZS1Cb2FyZCBJbnRlcmZhY2VzL0J1dHRv
+bnM6CisKKyAgKiBBdWRpbyBpbnB1dC9vdXRwdXQgaW50ZXJmYWNlcworICAqIEEgTFZEUyBpbnRl
+cmZhY2UKKyAgKiBBIEhETUkgaW50ZXJmYWNlCisgICogQSBMQ0QgZGlzcGxheSBpbnRlcmZhY2Ug
+KGV4cGFuc2lvbiBpbnRlcmZhY2UpCisgICogQSBkaWdpdGFsIGNhbWVyYSBpbnRlcmZhY2UKKyAg
+KiBBIE1JUEkgaW50ZXJmYWNlCisgICogNCBUVEwtbGV2ZWwgc2VyaWFsIGludGVyZmFjZXMgKG9u
+ZSBmb3IgZGVidWdnaW5nLCB0aGUgcmVzdCBmb3IgZXhwYW5zaW9uKQorICAqIDQgaGlnaC1zcGVl
+ZCBVU0IyLjAgaG9zdCBpbnRlcmZhY2VzICg0ODBNYnBzKQorICAqIEEgaGlnaC1zcGVlZCBVU0Iy
+LjAgT1RHIGludGVyZmFjZSAoNDgwTWJwcykKKyAgKiBBIFNEIGNhcmQgc2xvdAorICAqIEEgVEYg
+Y2FyZCBzbG90CisgICogQSAxMC8xMDBNLzFHYnBzIFJKNDUgaW50ZXJmYWNlCisgICogMiBJMkMg
+aW50ZXJmYWNlcyAoZXhwYW5zaW9uIGludGVyZmFjZXMpCisgICogMiBTUEkgaW50ZXJmYWNlcyAo
+ZXhwYW5zaW9uIGludGVyZmFjZXMpCisgICogMyBQV00gaW50ZXJmYWNlcyAoZXhwYW5zaW9uIGlu
+dGVyZmFjZXMpCisgICogQSBHUElPIGludGVyZmFjZSAoZXhwYW5zaW9uIGludGVyZmFjZXMpCisg
+ICogQSBKVEFHIGludGVyZmFjZQorICAqIEEgYm9vdC1tb2RlIHN3aXRjaAorICAqIDQgTEVEcyAo
+MSBzeXN0ZW0gTEVELCAyIGN1c3RvbSBMRUQsIDEgb3BlbiBTREEgTEVEKQorICAqIEEgcmVzZXQg
+YnV0dG9uCisKK0hvdyB0byBidWlsZCBiYXJlYm94IGZvciBFbWJlc3QgUklvVGJvYXJkCistLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQorCitVc2luZyB0aGUgZGVmYXVs
+dCBjb25maWd1cmF0aW9uOgorCisuLiBjb2RlLWJsb2NrOjogc2gKKworICBtYWtlIEFSQ0g9YXJt
+IGlteF92N19kZWZjb25maWcKKworQnVpbGQgdGhlIGJpbmFyeSBpbWFnZToKKworLi4gY29kZS1i
+bG9jazo6IHNoCisKKyAgbWFrZSBBUkNIPWFybSBDUk9TU19DT01QSUxFPWFybXY3Y29tcGlsZXIK
+KworLi4gbm90ZTo6IHJlcGxhY2UgYGBhcm12N2NvbXBpbGVyYGAgd2l0aCB5b3VyIEFSTSB2NyBj
+cm9zcyBjb21waWxlciBwcmVmaXgsCisgZS5nLjogYGBhcm0tbGludXgtZ251ZWFiaWhmLWBgCisK
+K1RoZSByZXN1bHRpbmcgYmluYXJ5IGltYWdlIHRvIGJlIGZsYXNoZWQgd2lsbCBiZSBgYGltYWdl
+cy9iYXJlYm94LWVtYmVzdC1pbXg2cy1yaW90Ym9hcmQuaW1nYGAuCisKK1JlcGxhY2luZyBVLUJv
+b3Qgd2l0aCBiYXJlYm94CistLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQorCisgIDEuIENv
+bm5lY3QgdG8gdGhlIGJvYXJkcydzIFVBUlQgKDExNTIwMCA4TjEpOworCisgIDIuIFR1cm4gYm9h
+cmQncyBwb3dlciBvbjsKKworICAzLiBXYWl0IGBgSGl0IGFueSBrZXkgdG8gc3RvcCBhdXRvYm9v
+dDogMmBgIHByb21wdCBhbmQgcHJlc3MgYW55IGtleTsKKworICA0LiBVcGxvYWQgYmFyZWJveCBp
+bWFnZSB0byB0aGUgYm9hcmQgdmlhIHRmdHAgYW5kIHN0YXJ0IGl0CisKKy4uIGNvZGUtYmxvY2s6
+OiBub25lCisKKyAgTVg2U29sbyBSSW9UYm9hcmQgVS1Cb290ID4gc2V0ZW52IGV0aGFkZHIgZDI6
+MmQ6Y2U6ODg6ZjQ6ZjEKKyAgTVg2U29sbyBSSW9UYm9hcmQgVS1Cb290ID4gdGZ0cGJvb3QgMHgy
+MDgwMDAwMCAxOTIuMTY4LjIzLjQ6b3JlLWJhcmVib3gtcmlvdGJvYXJkCisgIC0tLS1waHlfYWRk
+cj0weDQsIGlkPSAweDRkZDA3MgorICBGRUM6IExpbmsgaXMgVXAgNzk2ZAorICBVc2luZyBGRUMw
+IGRldmljZQorICBURlRQIGZyb20gc2VydmVyIDE5Mi4xNjguMjMuNDsgb3VyIElQIGFkZHJlc3Mg
+aXMgMTkyLjE2OC4xLjEwMworICBGaWxlbmFtZSAnb3JlLWJhcmVib3gtcmlvdGJvYXJkJy4KKyAg
+TG9hZCBhZGRyZXNzOiAweDIwODAwMDAwCisgIExvYWRpbmc6ICMjIFdhcm5pbmc6IGdhdGV3YXlp
+cCBuZWVkZWQgYnV0IG5vdCBzZXQKKyAgIyMgV2FybmluZzogZ2F0ZXdheWlwIG5lZWRlZCBidXQg
+bm90IHNldAorICAjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIwor
+ICBkb25lCisgIEJ5dGVzIHRyYW5zZmVycmVkID0gNjM3OTQ3ICg5YmJmYiBoZXgpCisgIE1YNlNv
+bG8gUklvVGJvYXJkIFUtQm9vdCA+IGdvIDB4MjA4MDAwMDAKKworICAjIyBTdGFydGluZyBhcHBs
+aWNhdGlvbiBhdCAweDIwODAwMDAwIC4uLgorCisgIGJhcmVib3ggMjAxOS4wNC4wLTAwMTUxLWc4
+Njc2MjI0OGRlICMzOTEgTW9uIEFwciAyOSAxNDo0MTo1OCBDRVNUIDIwMTkKKworICBCb2FyZDog
+UklvVGJvYXJkIGkuTVg2UworICBkZXRlY3RlZCBpLk1YNiBTb2xvIHJldmlzaW9uIDEuMQorICBp
+Lk1YIHJlc2V0IHJlYXNvbiBQT1IgKFNSU1I6IDB4MDAwMDAwMDEpCisgIG1kaW9fYnVzOiBtaWli
+dXMwOiBwcm9iZWQKKyAgaW14LXVzYiAyMTg0MjAwLnVzYkAyMTg0MjAwLm9mOiBVU0IgRUhDSSAx
+LjAwCisgIGlteC1lc2RoYyAyMTk0MDAwLnVzZGhjQDIxOTQwMDAub2Y6IHJlZ2lzdGVyZWQgYXMg
+bW1jMQorICBpbXgtZXNkaGMgMjE5ODAwMC51c2RoY0AyMTk4MDAwLm9mOiByZWdpc3RlcmVkIGFz
+IG1tYzIKKyAgaW14LWVzZGhjIDIxOWMwMDAudXNkaGNAMjE5YzAwMC5vZjogcmVnaXN0ZXJlZCBh
+cyBtbWMzCisgIGlteC1pcHV2MyAyNDAwMDAwLmlwdUAyNDAwMDAwLm9mOiBJUFV2M0ggcHJvYmVk
+CisgIGlteC1oZG1pIDEyMDAwMC5oZG1pQDEyMDAwMC5vZjogRGV0ZWN0ZWQgSERNSSBjb250cm9s
+bGVyIDB4MTM6MHgxYToweGEwOjB4YzEKKyAgbmV0Y29uc29sZTogcmVnaXN0ZXJlZCBhcyBuZXRj
+b25zb2xlLTEKKyAgbWFsbG9jIHNwYWNlOiAweDJmZWZiNWUwIC0+IDB4NGZkZjZiYmYgKHNpemUg
+NTExIE1pQikKKyAgbW1jMzogZGV0ZWN0ZWQgTU1DIGNhcmQgdmVyc2lvbiA0LjQxCisgIG1tYzM6
+IHJlZ2lzdGVyZWQgbW1jMy5ib290MAorICBtbWMzOiByZWdpc3RlcmVkIG1tYzMuYm9vdDEKKyAg
+bW1jMzogcmVnaXN0ZXJlZCBtbWMzCisgIHBhcnRpdGlvbiBtbWMzLjMgbm90IGNvbXBsZXRlbHkg
+aW5zaWRlIGRldmljZSBtbWMzCisgIG1tYzM6IEZhaWxlZCB0byByZWdpc3RlciBwYXJ0aXRpb24g
+MyBvbiBtbWMzICgtMjIpCisgIGVudmZzOiBubyBlbnZmcyAobWFnaWMgbWlzbWF0Y2gpIC0gZW52
+ZnMgbmV2ZXIgd3JpdHRlbj8KKyAgcnVubmluZyAvZW52L2Jpbi9pbml0Li4uCisKKyAgSGl0IG0g
+Zm9yIG1lbnUgb3IgYW55IGtleSB0byBzdG9wIGF1dG9ib290OiAgICAyCisKKyAgdHlwZSBleGl0
+IHRvIGdldCB0byB0aGUgbWVudQorICBiYXJlYm94QFJJb1Rib2FyZCBpLk1YNlM6LyAKKy4uCisK
+KyAgNS4gSW5zdGFsbCBiYXJlYm94IHRvIHRoZSBlTU1DCisKKy4uIGNvZGUtYmxvY2s6OiBub25l
+CisKKyAgYmFyZWJveEBSSW9UYm9hcmQgaS5NWDZTOi8gY3AgL21udC90ZnRwL29yZS1iYXJlYm94
+LXJpb3Rib2FyZCAvZGV2L21tYzMuYmFyZWJveCAKKy4uCi0tIAoyLjIwLjEKCgpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
+dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
