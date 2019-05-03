@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hMUa1-0003nl-Ve
+ id 1hMUa1-0003nh-Tm
  for barebox@lists.infradead.org; Fri, 03 May 2019 09:34:12 +0000
 Received: from [2001:67c:670:c0a8:d4b8:1dff:fe64:e144] (helo=unicorn)
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <str@pengutronix.de>) id 1hMUZy-000888-CH
+ (envelope-from <str@pengutronix.de>) id 1hMUZy-00088C-CB
  for barebox@lists.infradead.org; Fri, 03 May 2019 11:34:06 +0200
 Received: from str by unicorn with local (Exim 4.89)
- (envelope-from <str@pengutronix.de>) id 1hMUZx-0007G4-TR
+ (envelope-from <str@pengutronix.de>) id 1hMUZx-0007G7-VF
  for barebox@lists.infradead.org; Fri, 03 May 2019 11:34:05 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri,  3 May 2019 11:33:59 +0200
-Message-Id: <08e78c904dc4c5b81909a7f1f7233614796a821b.1556875750.git-series.s.trumtrar@pengutronix.de>
+Date: Fri,  3 May 2019 11:34:00 +0200
+Message-Id: <2c719e26b64aae260ce65ff47d22a4fe06ca9e5e.1556875750.git-series.s.trumtrar@pengutronix.de>
 In-Reply-To: <cover.f11bd6763969bb7d206b1b29aa16d5758acb980a.1556875750.git-series.s.trumtrar@pengutronix.de>
 References: <cover.f11bd6763969bb7d206b1b29aa16d5758acb980a.1556875750.git-series.s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
@@ -29,125 +29,271 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/10] mtd: spi-nor: provide default erase_sector
- implementation
+Subject: [PATCH 10/10] mtd: devices: m25p80: use the spi_mem_xx() API
 To: Barebox List <barebox@lists.infradead.org>
 
-Based on the Linux v4.4 patch
+This is the barebox adoption of the linux v4.16 patch
 
-commit c67cbb839da9cc2757eabfa128556db6a2baf160
-Author:     Brian Norris <computersforpeace@gmail.com>
-AuthorDate: Tue Nov 10 12:15:27 2015 -0800
-Commit:     Brian Norris <computersforpeace@gmail.com>
-CommitDate: Thu Nov 19 13:34:44 2015 -0800
+  4120f8d158ef904fb305b27e4a4524649faf3096
+  Author:     Boris Brezillon <bbrezillon@kernel.org>
+  AuthorDate: Thu Apr 26 18:18:19 2018 +0200
+  Commit:     Mark Brown <broonie@kernel.org>
+  CommitDate: Fri May 11 11:33:51 2018 +0900
 
-    mtd: spi-nor: provide default erase_sector implementation
+  mtd: spi-nor: Use the spi_mem_xx() API
 
-    Some spi-nor drivers perform sector erase by duplicating their
-    write_reg() command. Let's not require that the driver fill this out,
-    and provide a default instead.
+  The spi_mem_xxx() API has been introduced to replace the
+  spi_flash_read() one. Make use of it so we can get rid of
+  spi_flash_read().
 
-    Tested on m25p80.c and Medatek's MT8173 SPI NOR flash driver.
+  Note that using spi_mem_xx() also simplifies the code because this API
+  takes care of using the regular spi_sync() interface when the optimized
+  ->mem_ops interface is not implemented by the controller.
 
-    Signed-off-by: Brian Norris <computersforpeace@gmail.com>
+  Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
+  Reviewed-by: Frieder Schrempf <frieder.schrempf@exceet.de>
+  Tested-by: Frieder Schrempf <frieder.schrempf@exceet.de>
+  Signed-off-by: Mark Brown <broonie@kernel.org>
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/mtd/spi-nor/spi-nor.c | 37 ++++++++++++++++++++++++++++++++----
- include/linux/mtd/spi-nor.h   |  3 ++-
- 2 files changed, 35 insertions(+), 5 deletions(-)
+ drivers/mtd/devices/Kconfig  |   1 +-
+ drivers/mtd/devices/m25p80.c | 142 +++++++++++++++---------------------
+ 2 files changed, 62 insertions(+), 81 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index e086d868e2e3..9f72df39f015 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -25,6 +25,7 @@
- #include <spi/flash.h>
+diff --git a/drivers/mtd/devices/Kconfig b/drivers/mtd/devices/Kconfig
+index 9c3925bde135..25db10a9b2cb 100644
+--- a/drivers/mtd/devices/Kconfig
++++ b/drivers/mtd/devices/Kconfig
+@@ -23,6 +23,7 @@ config MTD_M25P80
+ 	tristate "Support most SPI Flash chips (AT26DF, M25P, W25X, ...)"
+ 	depends on SPI
+ 	select MTD_SPI_NOR
++	select SPI_MEM
+ 	help
+ 	  This enables access to most modern SPI flash chips, used for
+ 	  program and data storage. Series supported include Atmel AT26DF,
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index 8c4659ce11e0..a6098b9c5856 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -27,12 +27,13 @@
+ #include <clock.h>
+ #include <linux/mtd/mtd.h>
+ #include <linux/mtd/spi-nor.h>
++#include <linux/spi/spi-mem.h>
+ #include <linux/mod_devicetable.h>
  
- #define SPI_NOR_MAX_ID_LEN	6
-+#define SPI_NOR_MAX_ADDR_WIDTH	4
+ #define MAX_CMD_SIZE		6
  
- /*
-  * For everything but full-chip erase; probably could be much smaller, but kept
-@@ -435,6 +436,29 @@ static void spi_nor_unlock_and_unprep(struct spi_nor *nor, enum spi_nor_ops ops)
+ struct m25p {
+-	struct spi_device	*spi;
++	struct spi_mem		*spimem;
+ 	struct spi_nor		spi_nor;
+ 	struct mtd_info		mtd;
+ 	u8			command[MAX_CMD_SIZE];
+@@ -41,70 +42,60 @@ struct m25p {
+ static int m25p80_read_reg(struct spi_nor *nor, u8 code, u8 *val, int len)
+ {
+ 	struct m25p *flash = nor->priv;
+-	struct spi_device *spi = flash->spi;
++	struct spi_mem_op op = SPI_MEM_OP(SPI_MEM_OP_CMD(code, 1),
++					  SPI_MEM_OP_NO_ADDR,
++					  SPI_MEM_OP_NO_DUMMY,
++					  SPI_MEM_OP_DATA_IN(len, val, 1));
+ 	int ret;
+ 
+-	ret = spi_write_then_read(spi, &code, 1, val, len);
+-	if (ret < 0)
+-		dev_err(&spi->dev, "error %d reading %x\n", ret, code);
++	ret = spi_mem_exec_op(flash->spimem, &op);
++ 	if (ret < 0)
++		dev_err(&flash->spimem->spi->dev, "error %d reading %x\n", ret,
++			code);
+ 
+ 	return ret;
+ }
+ 
+-static void m25p_addr2cmd(struct spi_nor *nor, unsigned int addr, u8 *cmd)
+-{
+-	/* opcode is in cmd[0] */
+-	cmd[1] = addr >> (nor->addr_width * 8 -  8);
+-	cmd[2] = addr >> (nor->addr_width * 8 - 16);
+-	cmd[3] = addr >> (nor->addr_width * 8 - 24);
+-	cmd[4] = addr >> (nor->addr_width * 8 - 32);
+-}
+-
+-static int m25p_cmdsz(struct spi_nor *nor)
+-{
+-	return 1 + nor->addr_width;
+-}
+-
+ static int m25p80_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
+ {
+ 	struct m25p *flash = nor->priv;
+-	struct spi_device *spi = flash->spi;
++	struct spi_mem_op op = SPI_MEM_OP(SPI_MEM_OP_CMD(opcode, 1),
++					  SPI_MEM_OP_NO_ADDR,
++					  SPI_MEM_OP_NO_DUMMY,
++					  SPI_MEM_OP_DATA_OUT(len, buf, 1));
+ 
+-	flash->command[0] = opcode;
+-	if (buf)
+-		memcpy(&flash->command[1], buf, len);
+-
+-	return spi_write(spi, flash->command, len + 1);
++	return spi_mem_exec_op(flash->spimem, &op);
+ }
+ 
+ static void m25p80_write(struct spi_nor *nor, loff_t to, size_t len,
+ 			 size_t *retlen, const u_char *buf)
+ {
+ 	struct m25p *flash = nor->priv;
+-	struct spi_device *spi = flash->spi;
+-	struct spi_transfer t[2] = {};
+-	struct spi_message m;
+-	int cmd_sz = m25p_cmdsz(nor);
++	struct spi_mem_op op =
++		SPI_MEM_OP(SPI_MEM_OP_CMD(nor->program_opcode, 1),
++			   SPI_MEM_OP_ADDR(nor->addr_width, to, 1),
++			   SPI_MEM_OP_NO_DUMMY,
++			   SPI_MEM_OP_DATA_OUT(len, buf, 1));
++	int ret;
+ 
+-	spi_message_init(&m);
++	op.cmd.buswidth = spi_nor_get_protocol_inst_nbits(nor->write_proto);
++	op.addr.buswidth = spi_nor_get_protocol_addr_nbits(nor->write_proto);
++	op.data.buswidth = spi_nor_get_protocol_data_nbits(nor->write_proto);
+ 
+ 	if (nor->program_opcode == SPINOR_OP_AAI_WP && nor->sst_write_second)
+-		cmd_sz = 1;
+-
+-	flash->command[0] = nor->program_opcode;
+-	m25p_addr2cmd(nor, to, flash->command);
++		op.addr.nbytes = 0;
+ 
+-	t[0].tx_buf = flash->command;
+-	t[0].len = cmd_sz;
+-	spi_message_add_tail(&t[0], &m);
++	ret = spi_mem_adjust_op_size(flash->spimem, &op);
++	if (ret)
++		return;
+ 
+-	t[1].tx_buf = buf;
+-	t[1].len = len;
+-	spi_message_add_tail(&t[1], &m);
++	op.data.nbytes = len < op.data.nbytes ? len : op.data.nbytes;
+ 
+-	spi_sync(spi, &m);
++	ret = spi_mem_exec_op(flash->spimem, &op);
++	if (ret)
++		return;
+ 
+-	*retlen += m.actual_length - cmd_sz;
++	*retlen = op.data.nbytes;
  }
  
  /*
-+ * Initiate the erasure of a single sector
-+ */
-+static int spi_nor_erase_sector(struct spi_nor *nor, u32 addr)
-+{
-+	u8 buf[SPI_NOR_MAX_ADDR_WIDTH];
-+	int i;
-+
-+	if (nor->erase)
-+		return nor->erase(nor, addr);
-+
-+	/*
-+	 * Default implementation, if driver doesn't have a specialized HW
-+	 * control
-+	 */
-+	for (i = nor->addr_width - 1; i >= 0; i--) {
-+		buf[i] = addr & 0xff;
-+		addr >>= 8;
-+	}
-+
-+	return nor->write_reg(nor, nor->erase_opcode, buf, nor->addr_width);
-+}
-+
-+/*
-  * Erase an address range on the nor chip.  The address range may extend
-  * one or more erase sectors.  Return an error is there is a problem erasing.
-  */
-@@ -498,10 +522,9 @@ static int spi_nor_erase(struct mtd_info *mtd, struct erase_info *instr)
- 		while (len) {
- 			write_enable(nor);
- 
--			if (nor->erase(nor, addr)) {
--				ret = -EIO;
-+			ret = spi_nor_erase_sector(nor, addr);
-+			if (ret)
- 				goto erase_err;
--			}
- 
- 			addr += mtd->erasesize;
- 			len -= mtd->erasesize;
-@@ -988,7 +1011,7 @@ static int spansion_quad_enable(struct spi_nor *nor)
- static int spi_nor_check(struct spi_nor *nor)
+@@ -115,46 +106,35 @@ static int m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+ 		       size_t *retlen, u_char *buf)
  {
- 	if (!nor->dev || !nor->read || !nor->write ||
--		!nor->read_reg || !nor->write_reg || !nor->erase) {
-+		!nor->read_reg || !nor->write_reg) {
- 		pr_err("spi-nor: please fill all the necessary fields!\n");
- 		return -EINVAL;
- 	}
-@@ -1394,6 +1417,12 @@ int spi_nor_scan(struct spi_nor *nor, const char *name,
- 		nor->addr_width = 3;
- 	}
+ 	struct m25p *flash = nor->priv;
+-	struct spi_device *spi = flash->spi;
+-	struct spi_transfer t[2];
+-	struct spi_message m;
+-	unsigned int dummy = nor->read_dummy;
+-
+-	/* convert the dummy cycles to the number of bytes */
+-	dummy /= 8;
+-
+-	spi_message_init(&m);
+-	memset(t, 0, (sizeof t));
+-
+-	flash->command[0] = nor->read_opcode;
+-	m25p_addr2cmd(nor, from, flash->command);
+-
+-	t[0].tx_buf = flash->command;
+-	t[0].len = m25p_cmdsz(nor) + dummy;
+-	spi_message_add_tail(&t[0], &m);
+-
+-	t[1].rx_buf = buf;
+-	t[1].len = len;
+-	spi_message_add_tail(&t[1], &m);
+-
+-	spi_sync(spi, &m);
+-
+-	*retlen = m.actual_length - m25p_cmdsz(nor) - dummy;
+-	return 0;
+-}
++	struct spi_mem_op op =
++		SPI_MEM_OP(SPI_MEM_OP_CMD(nor->read_opcode, 1),
++			   SPI_MEM_OP_ADDR(nor->addr_width, from, 1),
++			   SPI_MEM_OP_DUMMY(nor->read_dummy, 1),
++			   SPI_MEM_OP_DATA_IN(len, buf, 1));
++	size_t remaining = len;
++	int ret;
  
-+	if (nor->addr_width > SPI_NOR_MAX_ADDR_WIDTH) {
-+		dev_err(dev, "address width is too large: %u\n",
-+			nor->addr_width);
-+		return -EINVAL;
-+	}
-+
- 	dev_info(dev, "%s (%lld Kbytes)\n", id->name,
- 			(long long)mtd->size >> 10);
+-static int m25p80_erase(struct spi_nor *nor, loff_t offset)
+-{
+-	struct m25p *flash = nor->priv;
++	op.cmd.buswidth = spi_nor_get_protocol_inst_nbits(nor->read_proto);
++	op.addr.buswidth = spi_nor_get_protocol_addr_nbits(nor->read_proto);
++	op.dummy.buswidth = op.addr.buswidth;
++	op.data.buswidth = spi_nor_get_protocol_data_nbits(nor->read_proto);
  
-diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-index eec5a890ebef..33413ff955bb 100644
---- a/include/linux/mtd/spi-nor.h
-+++ b/include/linux/mtd/spi-nor.h
-@@ -214,7 +214,8 @@ enum spi_nor_option_flags {
-  * @read:		[DRIVER-SPECIFIC] read data from the SPI NOR
-  * @write:		[DRIVER-SPECIFIC] write data to the SPI NOR
-  * @erase:		[DRIVER-SPECIFIC] erase a sector of the SPI NOR
-- *			at the offset @offs
-+ *			at the offset @offs; if not provided by the driver,
-+ *			spi-nor will send the erase opcode via write_reg()
-  * @priv:		the private data
-  */
- struct spi_nor {
+-	dev_dbg(nor->dev, "%dKiB at 0x%08x\n",
+-			flash->mtd.erasesize / 1024, (u32)offset);
++	op.dummy.nbytes = (nor->read_dummy * op.dummy.buswidth) / 8;
+ 
+-	/* Set up command buffer. */
+-	flash->command[0] = nor->erase_opcode;
+-	m25p_addr2cmd(nor, offset, flash->command);
++	while (remaining) {
++		op.data.nbytes = remaining < UINT_MAX ? remaining : UINT_MAX;
++		ret = spi_mem_adjust_op_size(flash->spimem, &op);
++		if (ret)
++ 			return ret;
++		ret = spi_mem_exec_op(flash->spimem, &op);
++		if (ret)
++			return ret;
++		op.addr.val += op.data.nbytes;
++		remaining -= op.data.nbytes;
++		op.data.buf.in += op.data.nbytes;
++ 	}
+ 
+-	spi_write(flash->spi, flash->command, m25p_cmdsz(nor));
++	*retlen = len;
+ 
+ 	return 0;
+ }
+@@ -228,6 +208,7 @@ static const struct platform_device_id m25p_ids[] = {
+ static int m25p_probe(struct device_d *dev)
+ {
+ 	struct spi_device *spi = (struct spi_device *)dev->type_data;
++	struct spi_mem *spimem = spi->mem;
+ 	struct flash_platform_data	*data;
+ 	struct m25p			*flash;
+ 	struct spi_nor			*nor;
+@@ -250,17 +231,16 @@ static int m25p_probe(struct device_d *dev)
+ 	/* install the hooks */
+ 	nor->read = m25p80_read;
+ 	nor->write = m25p80_write;
+-	nor->erase = m25p80_erase;
+ 	nor->write_reg = m25p80_write_reg;
+ 	nor->read_reg = m25p80_read_reg;
+ 
+-	nor->dev = dev;
++	nor->dev = &spimem->spi->dev;
+ 	nor->mtd = &flash->mtd;
+ 	nor->priv = flash;
+ 
+ 	flash->mtd.priv = nor;
+ 	flash->mtd.parent = &spi->dev;
+-	flash->spi = spi;
++	flash->spimem = spimem;
+ 
+ 	if (spi->mode & SPI_RX_QUAD)
+ 		hwcaps.mask |= SNOR_HWCAPS_READ_1_1_4;
 -- 
 git-series 0.9.1
 
