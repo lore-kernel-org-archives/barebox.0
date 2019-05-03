@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hMUa2-0003nf-4R
+ id 1hMUa1-0003nj-Uy
  for barebox@lists.infradead.org; Fri, 03 May 2019 09:34:15 +0000
 Received: from [2001:67c:670:c0a8:d4b8:1dff:fe64:e144] (helo=unicorn)
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <str@pengutronix.de>) id 1hMUZx-00087p-Sh
- for barebox@lists.infradead.org; Fri, 03 May 2019 11:34:05 +0200
+ (envelope-from <str@pengutronix.de>) id 1hMUZy-00087t-5Z
+ for barebox@lists.infradead.org; Fri, 03 May 2019 11:34:06 +0200
 Received: from str by unicorn with local (Exim 4.89)
- (envelope-from <str@pengutronix.de>) id 1hMUZx-0007Fj-Gn
+ (envelope-from <str@pengutronix.de>) id 1hMUZx-0007Fs-Lu
  for barebox@lists.infradead.org; Fri, 03 May 2019 11:34:05 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri,  3 May 2019 11:33:52 +0200
-Message-Id: <66bf01c678b62668909177d16748247669c71dfa.1556875750.git-series.s.trumtrar@pengutronix.de>
+Date: Fri,  3 May 2019 11:33:55 +0200
+Message-Id: <4fcfb40618d740302a8c211448895fb0eedd46b5.1556875750.git-series.s.trumtrar@pengutronix.de>
 In-Reply-To: <cover.f11bd6763969bb7d206b1b29aa16d5758acb980a.1556875750.git-series.s.trumtrar@pengutronix.de>
 References: <cover.f11bd6763969bb7d206b1b29aa16d5758acb980a.1556875750.git-series.s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
@@ -29,383 +29,163 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/10] spi: Generalize SPI "master" to "controller"
+Subject: [PATCH 05/10] mtd: spi-nor: remove unused write_enable from write_reg
 To: Barebox List <barebox@lists.infradead.org>
 
-Sync with Linux v5.1-rc1.
+Based on the Linux v4.2 commit:
 
-This is the barebox adoption of the commit
+  commit f9f3ce835ddce3c669eee869253105f88819888b
+  Author:     Jagan Teki <jteki@openedev.com>
+  AuthorDate: Wed Aug 19 15:26:44 2015 +0530
+  Commit:     Brian Norris <computersforpeace@gmail.com>
+  CommitDate: Fri Sep 11 16:04:55 2015 -0700
 
-  commit 8caab75fd2c2a92667cbb1cd315720bede3feaa9
-  Author: Geert Uytterhoeven <geert+renesas@glider.be>
-  Date:   Tue Jun 13 13:23:52 2017 +0200
+      mtd: spi-nor: Zap unneeded write_enable from write_reg
 
-      spi: Generalize SPI "master" to "controller"
+      The 'write_enable' argument is unused and unneeded, so remove it from
+      the API.
 
-      Now struct spi_master is used for both SPI master and slave controllers,
-      it makes sense to rename it to struct spi_controller, and replace
-      "master" by "controller" where appropriate.
-
-      For now this conversion is done for SPI core infrastructure only.
-      Wrappers are provided for backwards compatibility, until all SPI drivers
-      have been converted.
-
-      Noteworthy details:
-	- SPI_MASTER_GPIO_SS is retained, as it only makes sense for SPI
-	  master controllers,
-	- spi_busnum_to_master() is retained, as it looks up masters only,
-	- A new field spi_device.controller is added, but spi_device.master is
-	  retained for compatibility (both are always initialized by
-	  spi_alloc_device()),
-	- spi_flash_read() is used by SPI masters only.
-
-      Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-      Signed-off-by: Mark Brown <broonie@kernel.org>
+      Signed-off-by: Jagan Teki <jteki@openedev.com>
+      Cc: David Woodhouse <dwmw2@infradead.org>
+      Cc: Han Xu <han.xu@freescale.com>
+      [Brian: fixed for nxp-spifi.c]
+      Signed-off-by: Brian Norris <computersforpeace@gmail.com>
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- commands/spi.c    | 16 +++++------
- drivers/spi/spi.c | 71 ++++++++++++++++++++++++------------------------
- include/spi/spi.h | 30 ++++++++++++--------
- 3 files changed, 62 insertions(+), 55 deletions(-)
+ drivers/mtd/devices/m25p80.c          |  3 +--
+ drivers/mtd/spi-nor/cadence-quadspi.c |  5 ++---
+ drivers/mtd/spi-nor/spi-nor.c         | 16 ++++++++--------
+ include/linux/mtd/spi-nor.h           |  3 +--
+ 4 files changed, 12 insertions(+), 15 deletions(-)
 
-diff --git a/commands/spi.c b/commands/spi.c
-index 7bf193b0bbbb..55a0e255af17 100644
---- a/commands/spi.c
-+++ b/commands/spi.c
-@@ -62,21 +62,21 @@ static int do_spi(int argc, char *argv[])
- 		return COMMAND_ERROR_USAGE;
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index 8a67792125e3..de1d325cff97 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -65,8 +65,7 @@ static int m25p_cmdsz(struct spi_nor *nor)
+ 	return 1 + nor->addr_width;
+ }
  
- 
--	spi.master = spi_get_master(bus);
--	if (!spi.master) {
-+	spi.controller = spi_get_controller(bus);
-+	if (!spi.controller) {
- 		printf("spi bus %d not found\n", bus);
- 		return -ENODEV;
- 	}
- 
--	if (spi.chip_select >= spi.master->num_chipselect) {
--		printf("spi chip select (%d) >= master num chipselect (%d)\n",
--			spi.chip_select, spi.master->num_chipselect);
-+	if (spi.chip_select >= spi.controller->num_chipselect) {
-+		printf("spi chip select (%d) >= controller num chipselect (%d)\n",
-+			spi.chip_select, spi.controller->num_chipselect);
- 		return -EINVAL;
- 	}
- 
--	ret = spi.master->setup(&spi);
-+	ret = spi.controller->setup(&spi);
- 	if (ret) {
--		printf("can not setup the master (%d)\n", ret);
-+		printf("can not setup the controller (%d)\n", ret);
+-static int m25p80_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len,
+-			    int wr_en)
++static int m25p80_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
+ {
+ 	struct m25p *flash = nor->priv;
+ 	struct spi_device *spi = flash->spi;
+diff --git a/drivers/mtd/spi-nor/cadence-quadspi.c b/drivers/mtd/spi-nor/cadence-quadspi.c
+index 4142f0de7dcb..781f3b72908e 100644
+--- a/drivers/mtd/spi-nor/cadence-quadspi.c
++++ b/drivers/mtd/spi-nor/cadence-quadspi.c
+@@ -972,7 +972,7 @@ static int cqspi_erase(struct spi_nor *nor, loff_t offs)
  		return ret;
- 	}
  
-@@ -93,7 +93,7 @@ static int do_spi(int argc, char *argv[])
- 	byte_per_word = max(spi.bits_per_word / 8, 1);
- 	if (verbose) {
- 		printf("device config\n");
--		printf("    bus_num       = %d\n", spi.master->bus_num);
-+		printf("    bus_num       = %d\n", spi.controller->bus_num);
- 		printf("    max_speed_hz  = %d\n", spi.max_speed_hz);
- 		printf("    chip_select   = %d\n", spi.chip_select);
- 		printf("    mode          = 0x%x\n", spi.mode);
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 25bb988794a9..7756304f1981 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -54,22 +54,22 @@ static LIST_HEAD(board_list);
-  *
-  * Returns the new device, or NULL.
-  */
--struct spi_device *spi_new_device(struct spi_master *master,
-+struct spi_device *spi_new_device(struct spi_controller *ctrl,
- 				  struct spi_board_info *chip)
- {
- 	struct spi_device	*proxy;
- 	int			status;
+ 	/* Send write enable, then erase commands. */
+-	ret = nor->write_reg(nor, SPINOR_OP_WREN, NULL, 0, 0);
++	ret = nor->write_reg(nor, SPINOR_OP_WREN, NULL, 0);
+ 	if (ret)
+ 		return ret;
  
- 	/* Chipselects are numbered 0..max; validate. */
--	if (chip->chip_select >= master->num_chipselect) {
-+	if (chip->chip_select >= ctrl->num_chipselect) {
- 		debug("cs%d > max %d\n",
- 			chip->chip_select,
--			master->num_chipselect);
-+			ctrl->num_chipselect);
- 		return NULL;
- 	}
- 
- 	proxy = xzalloc(sizeof *proxy);
--	proxy->master = master;
-+	proxy->master = ctrl;
- 	proxy->chip_select = chip->chip_select;
- 	proxy->max_speed_hz = chip->max_speed_hz;
- 	proxy->mode = chip->mode;
-@@ -81,10 +81,11 @@ struct spi_device *spi_new_device(struct spi_master *master,
- 	proxy->dev.id = DEVICE_ID_DYNAMIC;
- 	proxy->dev.type_data = proxy;
- 	proxy->dev.device_node = chip->device_node;
--	proxy->dev.parent = master->dev;
-+	proxy->dev.parent = ctrl->dev;
-+	proxy->master = proxy->controller = ctrl;
- 
- 	/* drivers may modify this initial i/o setup */
--	status = master->setup(proxy);
-+	status = ctrl->setup(proxy);
- 	if (status < 0) {
- 		printf("can't setup %s, status %d\n",
- 				proxy->dev.name, status);
-@@ -100,12 +101,12 @@ fail:
- }
- EXPORT_SYMBOL(spi_new_device);
- 
--static void spi_of_register_slaves(struct spi_master *master)
-+static void spi_of_register_slaves(struct spi_controller *ctrl)
- {
- 	struct device_node *n;
- 	struct spi_board_info chip;
- 	struct property *reg;
--	struct device_node *node = master->dev->device_node;
-+	struct device_node *node = ctrl->dev->device_node;
- 
- 	if (!IS_ENABLED(CONFIG_OFDEVICE))
- 		return;
-@@ -116,7 +117,7 @@ static void spi_of_register_slaves(struct spi_master *master)
- 	for_each_available_child_of_node(node, n) {
- 		memset(&chip, 0, sizeof(chip));
- 		chip.name = xstrdup(n->name);
--		chip.bus_num = master->bus_num;
-+		chip.bus_num = ctrl->bus_num;
- 		/* Mode (clock phase/polarity/etc.) */
- 		if (of_property_read_bool(n, "spi-cpha"))
- 			chip.mode |= SPI_CPHA;
-@@ -171,7 +172,7 @@ spi_register_board_info(struct spi_board_info const *info, int n)
- 	return 0;
+@@ -995,8 +995,7 @@ static int cqspi_read_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
+ 	return ret;
  }
  
--static void scan_boardinfo(struct spi_master *master)
-+static void scan_boardinfo(struct spi_controller *ctrl)
+-static int cqspi_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len,
+-			   int write_enable)
++static int cqspi_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
  {
- 	struct boardinfo	*bi;
+ 	int ret = 0;
  
-@@ -180,27 +181,27 @@ static void scan_boardinfo(struct spi_master *master)
- 		unsigned		n;
- 
- 		for (n = bi->n_board_info; n > 0; n--, chip++) {
--			debug("%s %d %d\n", __FUNCTION__, chip->bus_num, master->bus_num);
--			if (chip->bus_num != master->bus_num)
-+			debug("%s %d %d\n", __FUNCTION__, chip->bus_num, ctrl->bus_num);
-+			if (chip->bus_num != ctrl->bus_num)
- 				continue;
- 			/* NOTE: this relies on spi_new_device to
- 			 * issue diagnostics when given bogus inputs
- 			 */
--			(void) spi_new_device(master, chip);
-+			(void) spi_new_device(ctrl, chip);
- 		}
- 	}
+diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+index 851ac1c33e7f..ff0dca80f417 100644
+--- a/drivers/mtd/spi-nor/spi-nor.c
++++ b/drivers/mtd/spi-nor/spi-nor.c
+@@ -153,7 +153,7 @@ static inline int spi_nor_read_dummy_cycles(struct spi_nor *nor)
+ static inline int write_sr(struct spi_nor *nor, u8 val)
+ {
+ 	nor->cmd_buf[0] = val;
+-	return nor->write_reg(nor, SPINOR_OP_WRSR, nor->cmd_buf, 1, 0);
++	return nor->write_reg(nor, SPINOR_OP_WRSR, nor->cmd_buf, 1);
  }
- 
--static LIST_HEAD(spi_master_list);
-+static LIST_HEAD(spi_controller_list);
- 
- /**
-- * spi_register_master - register SPI master controller
-- * @master: initialized master, originally from spi_alloc_master()
-+ * spi_register_ctrl - register SPI ctrl controller
-+ * @ctrl: initialized ctrl, originally from spi_alloc_ctrl()
-  * Context: can sleep
-  *
-- * SPI master controllers connect to their drivers using some non-SPI bus,
-+ * SPI controllers connect to their drivers using some non-SPI bus,
-  * such as the platform bus.  The final stage of probe() in that code
-- * includes calling spi_register_master() to hook up to this SPI bus glue.
-+ * includes calling spi_register_ctrl() to hook up to this SPI bus glue.
-  *
-  * SPI controllers use board specific (often SOC specific) bus numbers,
-  * and board-specific addressing for SPI devices combines those numbers
-@@ -209,47 +210,47 @@ static LIST_HEAD(spi_master_list);
-  * chip is at which address.
-  *
-  * This must be called from context that can sleep.  It returns zero on
-- * success, else a negative error code (dropping the master's refcount).
-+ * success, else a negative error code (dropping the ctrl's refcount).
-  * After a successful return, the caller is responsible for calling
-- * spi_unregister_master().
-+ * spi_unregister_ctrl().
-  */
--int spi_register_master(struct spi_master *master)
-+int spi_register_controller(struct spi_controller *ctrl)
- {
- 	static int dyn_bus_id = (1 << 15) - 1;
- 	int			status = -ENODEV;
- 
--	debug("%s: %s:%d\n", __func__, master->dev->name, master->dev->id);
-+	debug("%s: %s:%d\n", __func__, ctrl->dev->name, ctrl->dev->id);
- 
- 	/* even if it's just one always-selected device, there must
- 	 * be at least one chipselect
- 	 */
--	if (master->num_chipselect == 0)
-+	if (ctrl->num_chipselect == 0)
- 		return -EINVAL;
- 
--	if ((master->bus_num < 0) && master->dev->device_node)
--		master->bus_num = of_alias_get_id(master->dev->device_node, "spi");
-+	if ((ctrl->bus_num < 0) && ctrl->dev->device_node)
-+		ctrl->bus_num = of_alias_get_id(ctrl->dev->device_node, "spi");
- 
- 	/* convention:  dynamically assigned bus IDs count down from the max */
--	if (master->bus_num < 0)
--		master->bus_num = dyn_bus_id--;
-+	if (ctrl->bus_num < 0)
-+		ctrl->bus_num = dyn_bus_id--;
- 
--	list_add_tail(&master->list, &spi_master_list);
-+	list_add_tail(&ctrl->list, &spi_controller_list);
- 
--	spi_of_register_slaves(master);
-+	spi_of_register_slaves(ctrl);
- 
- 	/* populate children from any spi device tables */
--	scan_boardinfo(master);
-+	scan_boardinfo(ctrl);
- 	status = 0;
- 
- 	return status;
- }
--EXPORT_SYMBOL(spi_register_master);
-+EXPORT_SYMBOL(spi_register_ctrl);
- 
--struct spi_master *spi_get_master(int bus)
-+struct spi_controller *spi_get_controller(int bus)
- {
--	struct spi_master* m;
-+	struct spi_controller* m;
- 
--	list_for_each_entry(m, &spi_master_list, list) {
-+	list_for_each_entry(m, &spi_controller_list, list) {
- 		if (m->bus_num == bus)
- 			return m;
- 	}
-@@ -259,7 +260,7 @@ struct spi_master *spi_get_master(int bus)
- 
- int spi_sync(struct spi_device *spi, struct spi_message *message)
- {
--	return spi->master->transfer(spi, message);
-+	return spi->controller->transfer(spi, message);
- }
- 
- /**
-diff --git a/include/spi/spi.h b/include/spi/spi.h
-index 620e5e57b4f8..8c6927da4107 100644
---- a/include/spi/spi.h
-+++ b/include/spi/spi.h
-@@ -20,13 +20,14 @@ struct spi_board_info {
- };
- 
- /**
-- * struct spi_device - Master side proxy for an SPI slave device
-+ * struct spi_device - Controller side proxy for an SPI slave device
-  * @dev: Driver model representation of the device.
-- * @master: SPI controller used with the device.
-+ * @controller: SPI controller used with the device.
-+ * @master: Copy of controller, for backwards compatibility
-  * @max_speed_hz: Maximum clock rate to be used with this chip
-  *	(on this board); may be changed by the device's driver.
-  *	The spi_transfer.speed_hz can override this for each transfer.
-- * @chip_select: Chipselect, distinguishing chips handled by @master.
-+ * @chip_select: Chipselect, distinguishing chips handled by @controller.
-  * @mode: The spi mode defines how data is clocked out and in.
-  *	This may be changed by the device's driver.
-  *	The "active low" default for chipselect mode can be overridden
-@@ -59,7 +60,8 @@ struct spi_board_info {
-  */
- struct spi_device {
- 	struct device_d		dev;
--	struct spi_master	*master;
-+	struct spi_controller	*controller;
-+	struct spi_controller	*master;	/* compatibility layer */
- 	u32			max_speed_hz;
- 	u8			chip_select;
- 	u8			mode;
-@@ -93,7 +95,7 @@ struct spi_device {
- struct spi_message;
- 
- /**
-- * struct spi_master - interface to SPI master controller
-+ * struct spi_controller - interface to SPI master or slave controller
-  * @dev: device interface to this driver
-  * @bus_num: board-specific (and often SOC-specific) identifier for a
-  *	given SPI controller.
-@@ -108,8 +110,9 @@ struct spi_message;
-  *	the device whose settings are being modified.
-  * @transfer: adds a message to the controller's transfer queue.
-  * @cleanup: frees controller-specific state
-+ * @list: link with the global spi_controller list
-  *
-- * Each SPI master controller can communicate with one or more @spi_device
-+ * Each SPI controller can communicate with one or more @spi_device
-  * children.  These make a small bus, sharing MOSI, MISO and SCK signals
-  * but not chip select signals.  Each device may be configured to use a
-  * different clock rate, since those shared signals are ignored unless
-@@ -120,7 +123,7 @@ struct spi_message;
-  * an SPI slave device.  For each such message it queues, it calls the
-  * message's completion function when the transaction completes.
-  */
--struct spi_master {
-+struct spi_controller {
- 	struct device_d *dev;
- 
- 	/* other than negative (== assign one dynamically), bus_num is fully
-@@ -147,7 +150,7 @@ struct spi_master {
- 	 *   any other request management
- 	 * + To a given spi_device, message queueing is pure fifo
- 	 *
--	 * + The master's main job is to process its message queue,
-+	 * + The controller's main job is to process its message queue,
- 	 *   selecting a chip then transferring data
- 	 * + If there are multiple spi_device children, the i/o queue
- 	 *   arbitration algorithm is unspecified (round robin, fifo,
-@@ -161,12 +164,15 @@ struct spi_master {
- 	int			(*transfer)(struct spi_device *spi,
- 						struct spi_message *mesg);
- 
--	/* called on release() to free memory provided by spi_master */
-+	/* called on release() to free memory provided by spi_controller */
- 	void			(*cleanup)(struct spi_device *spi);
- 
- 	struct list_head list;
- };
- 
-+#define spi_master  			spi_controller
-+#define spi_register_master(_ctrl)	spi_register_controller(_ctrl)
-+
- /*---------------------------------------------------------------------------*/
  
  /*
-@@ -341,9 +347,9 @@ spi_transfer_del(struct spi_transfer *t)
- 
- int spi_sync(struct spi_device *spi, struct spi_message *message);
- 
--struct spi_device *spi_new_device(struct spi_master *master,
-+struct spi_device *spi_new_device(struct spi_controller *ctrl,
- 				  struct spi_board_info *chip);
--int spi_register_master(struct spi_master *master);
-+int spi_register_controller(struct spi_controller *ctrl);
- 
- #ifdef CONFIG_SPI
- int spi_register_board_info(struct spi_board_info const *info, int num);
-@@ -431,7 +437,7 @@ static inline ssize_t spi_w8r8(struct spi_device *spi, u8 cmd)
- 
- extern struct bus_type spi_bus;
- 
--struct spi_master *spi_get_master(int bus);
-+struct spi_controller *spi_get_controller(int bus);
- 
- static inline int spi_driver_register(struct driver_d *drv)
+@@ -162,7 +162,7 @@ static inline int write_sr(struct spi_nor *nor, u8 val)
+  */
+ static inline int write_enable(struct spi_nor *nor)
  {
+-	return nor->write_reg(nor, SPINOR_OP_WREN, NULL, 0, 0);
++	return nor->write_reg(nor, SPINOR_OP_WREN, NULL, 0);
+ }
+ 
+ /*
+@@ -170,7 +170,7 @@ static inline int write_enable(struct spi_nor *nor)
+  */
+ static inline int write_disable(struct spi_nor *nor)
+ {
+-	return nor->write_reg(nor, SPINOR_OP_WRDI, NULL, 0, 0);
++	return nor->write_reg(nor, SPINOR_OP_WRDI, NULL, 0);
+ }
+ 
+ static inline struct spi_nor *mtd_to_spi_nor(struct mtd_info *mtd)
+@@ -196,7 +196,7 @@ static inline int set_4byte(struct spi_nor *nor, struct flash_info *info,
+ 			write_enable(nor);
+ 
+ 		cmd = enable ? SPINOR_OP_EN4B : SPINOR_OP_EX4B;
+-		status = nor->write_reg(nor, cmd, NULL, 0, 0);
++		status = nor->write_reg(nor, cmd, NULL, 0);
+ 		if (need_wren)
+ 			write_disable(nor);
+ 
+@@ -204,7 +204,7 @@ static inline int set_4byte(struct spi_nor *nor, struct flash_info *info,
+ 	default:
+ 		/* Spansion style */
+ 		nor->cmd_buf[0] = enable << 7;
+-		return nor->write_reg(nor, SPINOR_OP_BRWR, nor->cmd_buf, 1, 0);
++		return nor->write_reg(nor, SPINOR_OP_BRWR, nor->cmd_buf, 1);
+ 	}
+ }
+ static inline int spi_nor_sr_ready(struct spi_nor *nor)
+@@ -279,7 +279,7 @@ static int erase_chip(struct spi_nor *nor)
+ {
+ 	dev_dbg(nor->dev, " %lldKiB\n", (long long)(nor->mtd->size >> 10));
+ 
+-	return nor->write_reg(nor, SPINOR_OP_CHIP_ERASE, NULL, 0, 0);
++	return nor->write_reg(nor, SPINOR_OP_CHIP_ERASE, NULL, 0);
+ }
+ 
+ static int spi_nor_lock_and_prep(struct spi_nor *nor, enum spi_nor_ops ops)
+@@ -827,7 +827,7 @@ static int macronix_quad_enable(struct spi_nor *nor)
+ 	write_enable(nor);
+ 
+ 	nor->cmd_buf[0] = val | SR_QUAD_EN_MX;
+-	nor->write_reg(nor, SPINOR_OP_WRSR, nor->cmd_buf, 1, 0);
++	nor->write_reg(nor, SPINOR_OP_WRSR, nor->cmd_buf, 1);
+ 
+ 	if (spi_nor_wait_till_ready(nor))
+ 		return 1;
+@@ -852,7 +852,7 @@ static int write_sr_cr(struct spi_nor *nor, u16 val)
+ 	nor->cmd_buf[0] = val & 0xff;
+ 	nor->cmd_buf[1] = (val >> 8);
+ 
+-	return nor->write_reg(nor, SPINOR_OP_WRSR, nor->cmd_buf, 2, 0);
++	return nor->write_reg(nor, SPINOR_OP_WRSR, nor->cmd_buf, 2);
+ }
+ 
+ static int spansion_quad_enable(struct spi_nor *nor)
+diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
+index de9ac08ef173..ec6825471b60 100644
+--- a/include/linux/mtd/spi-nor.h
++++ b/include/linux/mtd/spi-nor.h
+@@ -175,8 +175,7 @@ struct spi_nor {
+ 	int (*write_xfer)(struct spi_nor *nor, struct spi_nor_xfer_cfg *cfg,
+ 			  u8 *buf, size_t len);
+ 	int (*read_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int len);
+-	int (*write_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int len,
+-			int write_enable);
++	int (*write_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int len);
+ 
+ 	int (*read)(struct spi_nor *nor, loff_t from,
+ 			size_t len, size_t *retlen, u_char *read_buf);
 -- 
 git-series 0.9.1
 
