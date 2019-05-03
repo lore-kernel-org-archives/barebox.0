@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hMUa2-0003ni-4T
- for barebox@lists.infradead.org; Fri, 03 May 2019 09:34:16 +0000
+ id 1hMUa2-0003nk-0g
+ for barebox@lists.infradead.org; Fri, 03 May 2019 09:34:17 +0000
 Received: from [2001:67c:670:c0a8:d4b8:1dff:fe64:e144] (helo=unicorn)
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <str@pengutronix.de>) id 1hMUZy-00087x-80
+ (envelope-from <str@pengutronix.de>) id 1hMUZy-00087r-3I
  for barebox@lists.infradead.org; Fri, 03 May 2019 11:34:06 +0200
 Received: from str by unicorn with local (Exim 4.89)
- (envelope-from <str@pengutronix.de>) id 1hMUZx-0007Fy-PU
+ (envelope-from <str@pengutronix.de>) id 1hMUZx-0007Fp-KN
  for barebox@lists.infradead.org; Fri, 03 May 2019 11:34:05 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri,  3 May 2019 11:33:57 +0200
-Message-Id: <8f431d140306180d1f941886ea1023c3b5236abe.1556875750.git-series.s.trumtrar@pengutronix.de>
+Date: Fri,  3 May 2019 11:33:54 +0200
+Message-Id: <49d6a617c19eda8f4e9127970409cc9d3743fdff.1556875750.git-series.s.trumtrar@pengutronix.de>
 In-Reply-To: <cover.f11bd6763969bb7d206b1b29aa16d5758acb980a.1556875750.git-series.s.trumtrar@pengutronix.de>
 References: <cover.f11bd6763969bb7d206b1b29aa16d5758acb980a.1556875750.git-series.s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
@@ -29,955 +29,1152 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/10] spi: add driver for Freescale QSPI controller
+Subject: [PATCH 04/10] spi: Extend the core to ease integration of SPI memory
+ controllers
 To: Barebox List <barebox@lists.infradead.org>
 
-This is based on the Linux v5.1-rc1 driver introduced with the commit:
+Sync with Linux v5.1-rc1.
 
-  commit 84d043185dbe0d1b4f6db575bd91c834d37e2f78
-  Refs: v5.0-rc1-1-g84d043185dbe
-  Author:     Frieder Schrempf <frieder.schrempf@kontron.de>
-  AuthorDate: Mon Jan 7 09:29:47 2019 +0000
-  Commit:     Mark Brown <broonie@kernel.org>
-  CommitDate: Mon Jan 7 16:56:24 2019 +0000
+This is the barebox adoption of the commit
 
-      spi: Add a driver for the Freescale/NXP QuadSPI controller
+  commit c36ff266dc82f4ae797a6f3513c6ffa344f7f1c7
+  Author: Boris Brezillon <boris.brezillon@bootlin.com>
+  Date:   Thu Apr 26 18:18:14 2018 +0200
 
-      This driver is derived from the SPI NOR driver at
-      mtd/spi-nor/fsl-quadspi.c. It uses the new SPI memory interface
-      of the SPI framework to issue flash memory operations to up to
-      four connected flash chips (2 buses with 2 CS each).
+      spi: Extend the core to ease integration of SPI memory controllers
 
-      The controller does not support generic SPI messages.
+      Some controllers are exposing high-level interfaces to access various
+      kind of SPI memories. Unfortunately they do not fit in the current
+      spi_controller model and usually have drivers placed in
+      drivers/mtd/spi-nor which are only supporting SPI NORs and not SPI
+      memories in general.
 
-      This patch also disables the build of the "old" driver and reuses
-      its Kconfig option CONFIG_SPI_FSL_QUADSPI to replace it.
+      This is an attempt at defining a SPI memory interface which works for
+      all kinds of SPI memories (NORs, NANDs, SRAMs).
 
-      Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-      Acked-by: Han Xu <han.xu@nxp.com>
-      Reviewed-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-      Tested-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-      Tested-by: Han Xu <han.xu@nxp.com>
-      Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
+      Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
+      Reviewed-by: Frieder Schrempf <frieder.schrempf@exceet.de>
+      Tested-by: Frieder Schrempf <frieder.schrempf@exceet.de>
       Signed-off-by: Mark Brown <broonie@kernel.org>
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/spi/Kconfig        |  11 +-
- drivers/spi/Makefile       |   1 +-
- drivers/spi/spi-fsl-qspi.c | 869 ++++++++++++++++++++++++++++++++++++++-
- 3 files changed, 881 insertions(+)
- create mode 100644 drivers/spi/spi-fsl-qspi.c
+ drivers/mtd/spi-nor/spi-nor.c |  38 +--
+ drivers/spi/Kconfig           |   7 +-
+ drivers/spi/Makefile          |   1 +-
+ drivers/spi/spi-mem.c         | 524 +++++++++++++++++++++++++++++++++++-
+ drivers/spi/spi.c             |  39 +++-
+ include/linux/spi/spi-mem.h   | 307 +++++++++++++++++++++-
+ include/spi/spi.h             |  55 ++++-
+ 7 files changed, 948 insertions(+), 23 deletions(-)
+ create mode 100644 drivers/spi/spi-mem.c
+ create mode 100644 include/linux/spi/spi-mem.h
 
+diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+index 85b55c6982ab..851ac1c33e7f 100644
+--- a/drivers/mtd/spi-nor/spi-nor.c
++++ b/drivers/mtd/spi-nor/spi-nor.c
+@@ -784,7 +784,8 @@ static int spi_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 	size_t *retlen, const u_char *buf)
+ {
+ 	struct spi_nor *nor = mtd_to_spi_nor(mtd);
+-	u32 page_offset, page_size, i;
++	size_t page_offset, page_remain, i;
++	size_t retval;
+ 	int ret;
+ 
+ 	dev_dbg(nor->dev, "to 0x%08x, len %zd\n", (u32)to, len);
+@@ -793,32 +794,23 @@ static int spi_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 	if (ret)
+ 		return ret;
+ 
+-	write_enable(nor);
+-
+-	page_offset = to & (nor->page_size - 1);
+-
+-	/* do all the bytes fit onto one page? */
+-	if (page_offset + len <= nor->page_size) {
+-		nor->write(nor, to, len, retlen, buf);
+-	} else {
+-		/* the size of data remaining on the first page */
+-		page_size = nor->page_size - page_offset;
+-		nor->write(nor, to, page_size, retlen, buf);
++	for (i = 0; i < len; ) {
++		ssize_t written;
+ 
+-		/* write everything in nor->page_size chunks */
+-		for (i = page_size; i < len; i += page_size) {
+-			page_size = len - i;
+-			if (page_size > nor->page_size)
+-				page_size = nor->page_size;
++		page_offset = (to + i) & (nor->page_size - 1);
++		page_remain = min_t(size_t, nor->page_size - page_offset,
++				    len - i);
+ 
+-			ret = spi_nor_wait_till_ready(nor);
+-			if (ret)
+-				goto write_err;
++		write_enable(nor);
++		nor->write(nor, to + i, page_remain, &retval, buf + i);
++		written = retval;
+ 
+-			write_enable(nor);
++		ret = spi_nor_wait_till_ready(nor);
++		if (ret)
++			goto write_err;
+ 
+-			nor->write(nor, to + i, page_size, retlen, buf + i);
+-		}
++		*retlen += written;
++		i += written;
+ 	}
+ 
+ 	ret = spi_nor_wait_till_ready(nor);
 diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 650292541f76..d687105ea488 100644
+index fed628c58994..650292541f76 100644
 --- a/drivers/spi/Kconfig
 +++ b/drivers/spi/Kconfig
-@@ -25,6 +25,17 @@ config DRIVER_SPI_ATMEL
- 	bool "Atmel (AT91) SPI Master driver"
- 	depends on ARCH_AT91
+@@ -6,6 +6,13 @@ config SPI
  
-+config DRIVER_SPI_FSL_QUADSPI
-+	bool "Freescale QSPI controller"
-+	depends on ARCH_IMX25 || ARCH_IMX31 || ARCH_IMX35 || ARCH_IMX50 || ARCH_IMX53 || ARCH_LAYERSCAPE
-+	depends on SPI_MEM
+ if SPI
+ 
++config SPI_MEM
++	bool "SPI memory extension"
 +	help
-+	  This enables support for the Quad SPI controller in master mode.
-+          Up to four flash chips can be connected on two buses with two
-+          chipselects each.
-+          This controller does not support generic SPI messages. It only
-+          supports the high-level SPI memory interface.
++	  Enable this option if you want to enable the SPI memory extension.
++	  This extension is meant to simplify interaction with SPI memories
++	  by providing a high-level interface to send memory-like commands.
 +
- config DRIVER_SPI_GPIO
- 	bool "GPIO SPI Master driver"
- 	depends on GPIOLIB
+ config DRIVER_SPI_ALTERA
+ 	bool "Altera SPI Master driver"
+ 	depends on NIOS2
 diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 841d67d32651..dd8a8cb8b04a 100644
+index 2329cbfb8da4..841d67d32651 100644
 --- a/drivers/spi/Makefile
 +++ b/drivers/spi/Makefile
-@@ -2,6 +2,7 @@ obj-$(CONFIG_SPI) += spi.o
- obj-$(CONFIG_SPI_MEM) += spi-mem.o
+@@ -1,4 +1,5 @@
+ obj-$(CONFIG_SPI) += spi.o
++obj-$(CONFIG_SPI_MEM) += spi-mem.o
  obj-$(CONFIG_DRIVER_SPI_ATH79) += ath79_spi.o
  obj-$(CONFIG_DRIVER_SPI_GPIO) += gpio_spi.o
-+obj-$(CONFIG_DRIVER_SPI_FSL_QUADSPI) += spi-fsl-qspi.o
  obj-$(CONFIG_DRIVER_SPI_IMX) += imx_spi.o
- obj-$(CONFIG_DRIVER_SPI_MVEBU) += mvebu_spi.o
- obj-$(CONFIG_DRIVER_SPI_MXS) += mxs_spi.o
-diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
 new file mode 100644
-index 000000000000..e22c3099fe72
+index 000000000000..b438ed3dcc7a
 --- /dev/null
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -0,0 +1,869 @@
++++ b/drivers/spi/spi-mem.c
+@@ -0,0 +1,524 @@
 +// SPDX-License-Identifier: GPL-2.0+
-+
 +/*
-+ * Freescale QuadSPI driver.
-+ *
-+ * Copyright (C) 2013 Freescale Semiconductor, Inc.
++ * Copyright (C) 2018 Exceet Electronics GmbH
 + * Copyright (C) 2018 Bootlin
-+ * Copyright (C) 2018 exceet electronics GmbH
-+ * Copyright (C) 2018 Kontron Electronics GmbH
 + *
-+ * Transition to SPI MEM interface:
-+ * Authors:
-+ *     Boris Brezillon <bbrezillon@kernel.org>
-+ *     Frieder Schrempf <frieder.schrempf@kontron.de>
-+ *     Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-+ *     Suresh Gupta <suresh.gupta@nxp.com>
-+ *
-+ * Based on the original fsl-quadspi.c spi-nor driver:
-+ * Author: Freescale Semiconductor, Inc.
-+ *
++ * Author: Boris Brezillon <boris.brezillon@bootlin.com>
 + */
-+
 +#include <common.h>
-+#include <driver.h>
-+#include <errno.h>
-+#include <init.h>
-+#include <io.h>
-+#include <linux/bitops.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <linux/iopoll.h>
-+#include <linux/mutex.h>
-+#include <linux/sizes.h>
-+#include <of.h>
-+#include <of_device.h>
-+
-+#include <spi/spi.h>
++#include <module.h>
++#include <linux/kernel.h>
 +#include <linux/spi/spi-mem.h>
++#include <spi/spi.h>
 +
-+/*
-+ * The driver only uses one single LUT entry, that is updated on
-+ * each call of exec_op(). Index 0 is preset at boot with a basic
-+ * read operation, so let's use the last entry (15).
-+ */
-+#define	SEQID_LUT			15
++#define SPI_MEM_MAX_BUSWIDTH		8
 +
-+/* Registers used by the driver */
-+#define QUADSPI_MCR			0x00
-+#define QUADSPI_MCR_RESERVED_MASK	GENMASK(19, 16)
-+#define QUADSPI_MCR_MDIS_MASK		BIT(14)
-+#define QUADSPI_MCR_CLR_TXF_MASK	BIT(11)
-+#define QUADSPI_MCR_CLR_RXF_MASK	BIT(10)
-+#define QUADSPI_MCR_DDR_EN_MASK		BIT(7)
-+#define QUADSPI_MCR_END_CFG_MASK	GENMASK(3, 2)
-+#define QUADSPI_MCR_SWRSTHD_MASK	BIT(1)
-+#define QUADSPI_MCR_SWRSTSD_MASK	BIT(0)
-+
-+#define QUADSPI_IPCR			0x08
-+#define QUADSPI_IPCR_SEQID(x)		((x) << 24)
-+
-+#define QUADSPI_BUF3CR			0x1c
-+#define QUADSPI_BUF3CR_ALLMST_MASK	BIT(31)
-+#define QUADSPI_BUF3CR_ADATSZ(x)	((x) << 8)
-+#define QUADSPI_BUF3CR_ADATSZ_MASK	GENMASK(15, 8)
-+
-+#define QUADSPI_BFGENCR			0x20
-+#define QUADSPI_BFGENCR_SEQID(x)	((x) << 12)
-+
-+#define QUADSPI_BUF0IND			0x30
-+#define QUADSPI_BUF1IND			0x34
-+#define QUADSPI_BUF2IND			0x38
-+#define QUADSPI_SFAR			0x100
-+
-+#define QUADSPI_SMPR			0x108
-+#define QUADSPI_SMPR_DDRSMP_MASK	GENMASK(18, 16)
-+#define QUADSPI_SMPR_FSDLY_MASK		BIT(6)
-+#define QUADSPI_SMPR_FSPHS_MASK		BIT(5)
-+#define QUADSPI_SMPR_HSENA_MASK		BIT(0)
-+
-+#define QUADSPI_RBCT			0x110
-+#define QUADSPI_RBCT_WMRK_MASK		GENMASK(4, 0)
-+#define QUADSPI_RBCT_RXBRD_USEIPS	BIT(8)
-+
-+#define QUADSPI_TBSR			0x150
-+#define QUADSPI_TBDR			0x154
-+
-+#define QUADSPI_SR			0x15c
-+#define QUADSPI_SR_BUSY_MASK		BIT(0)
-+#define QUADSPI_SR_IP_ACC_MASK		BIT(1)
-+#define QUADSPI_SR_AHB_ACC_MASK		BIT(2)
-+
-+#define QUADSPI_FR			0x160
-+#define QUADSPI_FR_TFF_MASK		BIT(0)
-+
-+#define QUADSPI_SPTRCLR			0x16c
-+#define QUADSPI_SPTRCLR_IPPTRC		BIT(8)
-+#define QUADSPI_SPTRCLR_BFPTRC		BIT(0)
-+
-+#define QUADSPI_SFA1AD			0x180
-+#define QUADSPI_SFA2AD			0x184
-+#define QUADSPI_SFB1AD			0x188
-+#define QUADSPI_SFB2AD			0x18c
-+#define QUADSPI_RBDR(x)			(0x200 + ((x) * 4))
-+
-+#define QUADSPI_LUTKEY			0x300
-+#define QUADSPI_LUTKEY_VALUE		0x5AF05AF0
-+
-+#define QUADSPI_LCKCR			0x304
-+#define QUADSPI_LCKER_LOCK		BIT(0)
-+#define QUADSPI_LCKER_UNLOCK		BIT(1)
-+
-+#define QUADSPI_RSER			0x164
-+#define QUADSPI_RSER_TFIE		BIT(0)
-+
-+#define QUADSPI_LUT_BASE		0x310
-+#define QUADSPI_LUT_OFFSET		(SEQID_LUT * 4 * 4)
-+#define QUADSPI_LUT_REG(idx) \
-+	(QUADSPI_LUT_BASE + QUADSPI_LUT_OFFSET + (idx) * 4)
-+
-+/* Instruction set for the LUT register */
-+#define LUT_STOP		0
-+#define LUT_CMD			1
-+#define LUT_ADDR		2
-+#define LUT_DUMMY		3
-+#define LUT_MODE		4
-+#define LUT_MODE2		5
-+#define LUT_MODE4		6
-+#define LUT_FSL_READ		7
-+#define LUT_FSL_WRITE		8
-+#define LUT_JMP_ON_CS		9
-+#define LUT_ADDR_DDR		10
-+#define LUT_MODE_DDR		11
-+#define LUT_MODE2_DDR		12
-+#define LUT_MODE4_DDR		13
-+#define LUT_FSL_READ_DDR	14
-+#define LUT_FSL_WRITE_DDR	15
-+#define LUT_DATA_LEARN		16
-+
-+/*
-+ * The PAD definitions for LUT register.
-+ *
-+ * The pad stands for the number of IO lines [0:3].
-+ * For example, the quad read needs four IO lines,
-+ * so you should use LUT_PAD(4).
-+ */
-+#define LUT_PAD(x) (fls(x) - 1)
-+
-+/*
-+ * Macro for constructing the LUT entries with the following
-+ * register layout:
-+ *
-+ *  ---------------------------------------------------
-+ *  | INSTR1 | PAD1 | OPRND1 | INSTR0 | PAD0 | OPRND0 |
-+ *  ---------------------------------------------------
-+ */
-+#define LUT_DEF(idx, ins, pad, opr)					\
-+	((((ins) << 10) | ((pad) << 8) | (opr)) << (((idx) % 2) * 16))
-+
-+/* Controller needs driver to swap endianness */
-+#define QUADSPI_QUIRK_SWAP_ENDIAN	BIT(0)
-+
-+/* Controller needs 4x internal clock */
-+#define QUADSPI_QUIRK_4X_INT_CLK	BIT(1)
-+
-+/*
-+ * TKT253890, the controller needs the driver to fill the txfifo with
-+ * 16 bytes at least to trigger a data transfer, even though the extra
-+ * data won't be transferred.
-+ */
-+#define QUADSPI_QUIRK_TKT253890		BIT(2)
-+
-+/* TKT245618, the controller cannot wake up from wait mode */
-+#define QUADSPI_QUIRK_TKT245618		BIT(3)
-+
-+/*
-+ * Controller adds QSPI_AMBA_BASE (base address of the mapped memory)
-+ * internally. No need to add it when setting SFXXAD and SFAR registers
-+ */
-+#define QUADSPI_QUIRK_BASE_INTERNAL	BIT(4)
-+
-+struct fsl_qspi_devtype_data {
-+	unsigned int rxfifo;
-+	unsigned int txfifo;
-+	unsigned int ahb_buf_size;
-+	unsigned int quirks;
-+	bool little_endian;
-+};
-+
-+static const struct fsl_qspi_devtype_data vybrid_data = {
-+	.rxfifo = SZ_128,
-+	.txfifo = SZ_64,
-+	.ahb_buf_size = SZ_1K,
-+	.quirks = QUADSPI_QUIRK_SWAP_ENDIAN,
-+	.little_endian = true,
-+};
-+
-+static const struct fsl_qspi_devtype_data imx6sx_data = {
-+	.rxfifo = SZ_128,
-+	.txfifo = SZ_512,
-+	.ahb_buf_size = SZ_1K,
-+	.quirks = QUADSPI_QUIRK_4X_INT_CLK | QUADSPI_QUIRK_TKT245618,
-+	.little_endian = true,
-+};
-+
-+static const struct fsl_qspi_devtype_data imx7d_data = {
-+	.rxfifo = SZ_512,
-+	.txfifo = SZ_512,
-+	.ahb_buf_size = SZ_1K,
-+	.quirks = QUADSPI_QUIRK_TKT253890 | QUADSPI_QUIRK_4X_INT_CLK,
-+	.little_endian = true,
-+};
-+
-+static const struct fsl_qspi_devtype_data imx6ul_data = {
-+	.rxfifo = SZ_128,
-+	.txfifo = SZ_512,
-+	.ahb_buf_size = SZ_1K,
-+	.quirks = QUADSPI_QUIRK_TKT253890 | QUADSPI_QUIRK_4X_INT_CLK,
-+	.little_endian = true,
-+};
-+
-+static const struct fsl_qspi_devtype_data ls1021a_data = {
-+	.rxfifo = SZ_128,
-+	.txfifo = SZ_64,
-+	.ahb_buf_size = SZ_1K,
-+	.quirks = 0,
-+	.little_endian = false,
-+};
-+
-+static const struct fsl_qspi_devtype_data ls2080a_data = {
-+	.rxfifo = SZ_128,
-+	.txfifo = SZ_64,
-+	.ahb_buf_size = SZ_1K,
-+	.quirks = QUADSPI_QUIRK_TKT253890 | QUADSPI_QUIRK_BASE_INTERNAL,
-+	.little_endian = true,
-+};
-+
-+struct fsl_qspi {
-+	void __iomem *iobase;
-+	void __iomem *ahb_addr;
-+	u32 memmap_phy;
-+	struct clk *clk, *clk_en;
-+	struct device_d *dev;
-+	struct spi_controller ctlr;
-+	const struct fsl_qspi_devtype_data *devtype_data;
-+	struct mutex lock;
-+	int selected;
-+};
-+
-+static inline int needs_swap_endian(struct fsl_qspi *q)
++static int spi_check_buswidth_req(struct spi_mem *mem, u8 buswidth, bool tx)
 +{
-+	return q->devtype_data->quirks & QUADSPI_QUIRK_SWAP_ENDIAN;
-+}
++	u32 mode = mem->spi->mode;
 +
-+static inline int needs_4x_clock(struct fsl_qspi *q)
-+{
-+	return q->devtype_data->quirks & QUADSPI_QUIRK_4X_INT_CLK;
-+}
-+
-+static inline int needs_fill_txfifo(struct fsl_qspi *q)
-+{
-+	return q->devtype_data->quirks & QUADSPI_QUIRK_TKT253890;
-+}
-+
-+static inline int needs_amba_base_offset(struct fsl_qspi *q)
-+{
-+	return !(q->devtype_data->quirks & QUADSPI_QUIRK_BASE_INTERNAL);
-+}
-+
-+/*
-+ * An IC bug makes it necessary to rearrange the 32-bit data.
-+ * Later chips, such as IMX6SLX, have fixed this bug.
-+ */
-+static inline u32 fsl_qspi_endian_xchg(struct fsl_qspi *q, u32 a)
-+{
-+	return needs_swap_endian(q) ? __swab32(a) : a;
-+}
-+
-+/*
-+ * R/W functions for big- or little-endian registers:
-+ * The QSPI controller's endianness is independent of
-+ * the CPU core's endianness. So far, although the CPU
-+ * core is little-endian the QSPI controller can use
-+ * big-endian or little-endian.
-+ */
-+static void qspi_writel(struct fsl_qspi *q, u32 val, void __iomem *addr)
-+{
-+	if (q->devtype_data->little_endian)
-+		iowrite32(val, addr);
-+	else
-+		iowrite32be(val, addr);
-+}
-+
-+static u32 qspi_readl(struct fsl_qspi *q, void __iomem *addr)
-+{
-+	if (q->devtype_data->little_endian)
-+		return ioread32(addr);
-+
-+	return ioread32be(addr);
-+}
-+
-+static int fsl_qspi_check_buswidth(struct fsl_qspi *q, u8 width)
-+{
-+	switch (width) {
++	switch (buswidth) {
 +	case 1:
-+	case 2:
-+	case 4:
 +		return 0;
++
++	case 2:
++		if ((tx && (mode & (SPI_TX_DUAL | SPI_TX_QUAD))) ||
++		    (!tx && (mode & (SPI_RX_DUAL | SPI_RX_QUAD))))
++			return 0;
++
++		break;
++
++	case 4:
++		if ((tx && (mode & SPI_TX_QUAD)) ||
++		    (!tx && (mode & SPI_RX_QUAD)))
++			return 0;
++
++		break;
++
++	case 8:
++		if ((tx && (mode & SPI_TX_OCTAL)) ||
++		    (!tx && (mode & SPI_RX_OCTAL)))
++			return 0;
++
++		break;
++
++	default:
++		break;
 +	}
 +
 +	return -ENOTSUPP;
 +}
 +
-+static bool fsl_qspi_supports_op(struct spi_mem *mem,
-+				 const struct spi_mem_op *op)
++static bool spi_mem_default_supports_op(struct spi_mem *mem,
++					const struct spi_mem_op *op)
 +{
-+	struct fsl_qspi *q = spi_controller_get_devdata(mem->spi->controller);
-+	int ret;
-+
-+	ret = fsl_qspi_check_buswidth(q, op->cmd.buswidth);
-+
-+	if (op->addr.nbytes)
-+		ret |= fsl_qspi_check_buswidth(q, op->addr.buswidth);
-+
-+	if (op->dummy.nbytes)
-+		ret |= fsl_qspi_check_buswidth(q, op->dummy.buswidth);
-+
-+	if (op->data.nbytes)
-+		ret |= fsl_qspi_check_buswidth(q, op->data.buswidth);
-+
-+	if (ret)
++	if (spi_check_buswidth_req(mem, op->cmd.buswidth, true))
 +		return false;
 +
-+	/*
-+	 * The number of instructions needed for the op, needs
-+	 * to fit into a single LUT entry.
-+	 */
-+	if (op->addr.nbytes +
-+	   (op->dummy.nbytes ? 1:0) +
-+	   (op->data.nbytes ? 1:0) > 6)
++	if (op->addr.nbytes &&
++	    spi_check_buswidth_req(mem, op->addr.buswidth, true))
 +		return false;
 +
-+	/* Max 64 dummy clock cycles supported */
 +	if (op->dummy.nbytes &&
-+	    (op->dummy.nbytes * 8 / op->dummy.buswidth > 64))
++	    spi_check_buswidth_req(mem, op->dummy.buswidth, true))
 +		return false;
 +
-+	/* Max data length, check controller limits and alignment */
-+	if (op->data.dir == SPI_MEM_DATA_IN &&
-+	    (op->data.nbytes > q->devtype_data->ahb_buf_size ||
-+	     (op->data.nbytes > q->devtype_data->rxfifo - 4 &&
-+	      !IS_ALIGNED(op->data.nbytes, 8))))
++	if (op->data.dir != SPI_MEM_NO_DATA &&
++	    spi_check_buswidth_req(mem, op->data.buswidth,
++				   op->data.dir == SPI_MEM_DATA_OUT))
 +		return false;
 +
-+	if (op->data.dir == SPI_MEM_DATA_OUT &&
-+	    op->data.nbytes > q->devtype_data->txfifo)
++	return true;
++}
++EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
++
++static bool spi_mem_buswidth_is_valid(u8 buswidth)
++{
++	if (hweight8(buswidth) > 1 || buswidth > SPI_MEM_MAX_BUSWIDTH)
 +		return false;
 +
 +	return true;
 +}
 +
-+static void fsl_qspi_prepare_lut(struct fsl_qspi *q,
-+				 const struct spi_mem_op *op)
++static int spi_mem_check_op(const struct spi_mem_op *op)
 +{
-+	void __iomem *base = q->iobase;
-+	u32 lutval[4] = {};
-+	int lutidx = 1, i;
++	if (!op->cmd.buswidth)
++		return -EINVAL;
 +
-+	lutval[0] |= LUT_DEF(0, LUT_CMD, LUT_PAD(op->cmd.buswidth),
-+			     op->cmd.opcode);
++	if ((op->addr.nbytes && !op->addr.buswidth) ||
++	    (op->dummy.nbytes && !op->dummy.buswidth) ||
++	    (op->data.nbytes && !op->data.buswidth))
++		return -EINVAL;
++
++	if (!spi_mem_buswidth_is_valid(op->cmd.buswidth) ||
++	    !spi_mem_buswidth_is_valid(op->addr.buswidth) ||
++	    !spi_mem_buswidth_is_valid(op->dummy.buswidth) ||
++	    !spi_mem_buswidth_is_valid(op->data.buswidth))
++		return -EINVAL;
++
++	return 0;
++}
++
++static bool spi_mem_internal_supports_op(struct spi_mem *mem,
++					 const struct spi_mem_op *op)
++{
++	struct spi_controller *ctlr = mem->spi->controller;
++
++	if (ctlr->mem_ops && ctlr->mem_ops->supports_op)
++		return ctlr->mem_ops->supports_op(mem, op);
++
++	return spi_mem_default_supports_op(mem, op);
++}
++
++/**
++ * spi_mem_supports_op() - Check if a memory device and the controller it is
++ *			   connected to support a specific memory operation
++ * @mem: the SPI memory
++ * @op: the memory operation to check
++ *
++ * Some controllers are only supporting Single or Dual IOs, others might only
++ * support specific opcodes, or it can even be that the controller and device
++ * both support Quad IOs but the hardware prevents you from using it because
++ * only 2 IO lines are connected.
++ *
++ * This function checks whether a specific operation is supported.
++ *
++ * Return: true if @op is supported, false otherwise.
++ */
++bool spi_mem_supports_op(struct spi_mem *mem, const struct spi_mem_op *op)
++{
++	if (spi_mem_check_op(op))
++		return false;
++
++	return spi_mem_internal_supports_op(mem, op);
++}
++EXPORT_SYMBOL_GPL(spi_mem_supports_op);
++
++static int spi_mem_access_start(struct spi_mem *mem)
++{
++	return 0;
++}
++
++static void spi_mem_access_end(struct spi_mem *mem)
++{
++	return;
++}
++
++/**
++ * spi_mem_exec_op() - Execute a memory operation
++ * @mem: the SPI memory
++ * @op: the memory operation to execute
++ *
++ * Executes a memory operation.
++ *
++ * This function first checks that @op is supported and then tries to execute
++ * it.
++ *
++ * Return: 0 in case of success, a negative error code otherwise.
++ */
++int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
++{
++	unsigned int tmpbufsize, xferpos = 0, totalxferlen = 0;
++	struct spi_controller *ctlr = mem->spi->controller;
++	struct spi_transfer xfers[4] = { };
++	struct spi_message msg;
++	u8 *tmpbuf;
++	int ret;
++
++	ret = spi_mem_check_op(op);
++	if (ret)
++		return ret;
++
++	if (!spi_mem_internal_supports_op(mem, op))
++		return -ENOTSUPP;
++
++	if (ctlr->mem_ops) {
++		ret = spi_mem_access_start(mem);
++		if (ret)
++			return ret;
++
++		ret = ctlr->mem_ops->exec_op(mem, op);
++
++		spi_mem_access_end(mem);
++
++		/*
++		 * Some controllers only optimize specific paths (typically the
++		 * read path) and expect the core to use the regular SPI
++		 * interface in other cases.
++		 */
++		if (!ret || ret != -ENOTSUPP)
++			return ret;
++	}
++
++	tmpbufsize = sizeof(op->cmd.opcode) + op->addr.nbytes +
++		     op->dummy.nbytes;
 +
 +	/*
-+	 * For some unknown reason, using LUT_ADDR doesn't work in some
-+	 * cases (at least with only one byte long addresses), so
-+	 * let's use LUT_MODE to write the address bytes one by one
++	 * Allocate a buffer to transmit the CMD, ADDR cycles with kmalloc() so
++	 * we're guaranteed that this buffer is DMA-able, as required by the
++	 * SPI layer.
 +	 */
-+	for (i = 0; i < op->addr.nbytes; i++) {
-+		u8 addrbyte = op->addr.val >> (8 * (op->addr.nbytes - i - 1));
++	tmpbuf = kzalloc(tmpbufsize, GFP_KERNEL);
++	if (!tmpbuf)
++		return -ENOMEM;
 +
-+		lutval[lutidx / 2] |= LUT_DEF(lutidx, LUT_MODE,
-+					      LUT_PAD(op->addr.buswidth),
-+					      addrbyte);
-+		lutidx++;
++	spi_message_init(&msg);
++
++	tmpbuf[0] = op->cmd.opcode;
++	xfers[xferpos].tx_buf = tmpbuf;
++	xfers[xferpos].len = sizeof(op->cmd.opcode);
++	spi_message_add_tail(&xfers[xferpos], &msg);
++	xferpos++;
++	totalxferlen++;
++
++	if (op->addr.nbytes) {
++		int i;
++
++		for (i = 0; i < op->addr.nbytes; i++)
++			tmpbuf[i + 1] = op->addr.val >>
++					(8 * (op->addr.nbytes - i - 1));
++
++		xfers[xferpos].tx_buf = tmpbuf + 1;
++		xfers[xferpos].len = op->addr.nbytes;
++		spi_message_add_tail(&xfers[xferpos], &msg);
++		xferpos++;
++		totalxferlen += op->addr.nbytes;
 +	}
 +
 +	if (op->dummy.nbytes) {
-+		lutval[lutidx / 2] |= LUT_DEF(lutidx, LUT_DUMMY,
-+					      LUT_PAD(op->dummy.buswidth),
-+					      op->dummy.nbytes * 8 /
-+					      op->dummy.buswidth);
-+		lutidx++;
++		memset(tmpbuf + op->addr.nbytes + 1, 0xff, op->dummy.nbytes);
++		xfers[xferpos].tx_buf = tmpbuf + op->addr.nbytes + 1;
++		xfers[xferpos].len = op->dummy.nbytes;
++		spi_message_add_tail(&xfers[xferpos], &msg);
++		xferpos++;
++		totalxferlen += op->dummy.nbytes;
 +	}
 +
 +	if (op->data.nbytes) {
-+		lutval[lutidx / 2] |= LUT_DEF(lutidx,
-+					      op->data.dir == SPI_MEM_DATA_IN ?
-+					      LUT_FSL_READ : LUT_FSL_WRITE,
-+					      LUT_PAD(op->data.buswidth),
-+					      0);
-+		lutidx++;
++		if (op->data.dir == SPI_MEM_DATA_IN)
++			xfers[xferpos].rx_buf = op->data.buf.in;
++		else
++			xfers[xferpos].tx_buf = op->data.buf.out;
++
++		xfers[xferpos].len = op->data.nbytes;
++		spi_message_add_tail(&xfers[xferpos], &msg);
++		xferpos++;
++		totalxferlen += op->data.nbytes;
 +	}
 +
-+	lutval[lutidx / 2] |= LUT_DEF(lutidx, LUT_STOP, 0, 0);
++	ret = spi_sync(mem->spi, &msg);
 +
-+	/* unlock LUT */
-+	qspi_writel(q, QUADSPI_LUTKEY_VALUE, q->iobase + QUADSPI_LUTKEY);
-+	qspi_writel(q, QUADSPI_LCKER_UNLOCK, q->iobase + QUADSPI_LCKCR);
++	kfree(tmpbuf);
 +
-+	/* fill LUT */
-+	for (i = 0; i < ARRAY_SIZE(lutval); i++)
-+		qspi_writel(q, lutval[i], base + QUADSPI_LUT_REG(i));
-+
-+	/* lock LUT */
-+	qspi_writel(q, QUADSPI_LUTKEY_VALUE, q->iobase + QUADSPI_LUTKEY);
-+	qspi_writel(q, QUADSPI_LCKER_LOCK, q->iobase + QUADSPI_LCKCR);
-+}
-+
-+static int fsl_qspi_clk_prep_enable(struct fsl_qspi *q)
-+{
-+	int ret;
-+
-+	ret = clk_enable(q->clk_en);
 +	if (ret)
 +		return ret;
 +
-+	ret = clk_enable(q->clk);
-+	if (ret) {
-+		clk_disable(q->clk_en);
-+		return ret;
-+	}
++	if (msg.actual_length != totalxferlen)
++		return -EIO;
 +
 +	return 0;
 +}
++EXPORT_SYMBOL_GPL(spi_mem_exec_op);
 +
-+static void fsl_qspi_clk_disable_unprep(struct fsl_qspi *q)
-+{
-+	clk_disable(q->clk);
-+	clk_disable(q->clk_en);
-+}
-+
-+/*
-+ * If we have changed the content of the flash by writing or erasing, or if we
-+ * read from flash with a different offset into the page buffer, we need to
-+ * invalidate the AHB buffer. If we do not do so, we may read out the wrong
-+ * data. The spec tells us reset the AHB domain and Serial Flash domain at
-+ * the same time.
++/**
++ * spi_mem_get_name() - Return the SPI mem device name to be used by the
++ *			upper layer if necessary
++ * @mem: the SPI memory
++ *
++ * This function allows SPI mem users to retrieve the SPI mem device name.
++ * It is useful if the upper layer needs to expose a custom name for
++ * compatibility reasons.
++ *
++ * Return: a string containing the name of the memory device to be used
++ *	   by the SPI mem user
 + */
-+static void fsl_qspi_invalidate(struct fsl_qspi *q)
++const char *spi_mem_get_name(struct spi_mem *mem)
 +{
-+	u32 reg;
-+
-+	reg = qspi_readl(q, q->iobase + QUADSPI_MCR);
-+	reg |= QUADSPI_MCR_SWRSTHD_MASK | QUADSPI_MCR_SWRSTSD_MASK;
-+	qspi_writel(q, reg, q->iobase + QUADSPI_MCR);
-+
-+	/*
-+	 * The minimum delay : 1 AHB + 2 SFCK clocks.
-+	 * Delay 1 us is enough.
-+	 */
-+	udelay(1);
-+
-+	reg &= ~(QUADSPI_MCR_SWRSTHD_MASK | QUADSPI_MCR_SWRSTSD_MASK);
-+	qspi_writel(q, reg, q->iobase + QUADSPI_MCR);
++	return mem->name;
 +}
++EXPORT_SYMBOL_GPL(spi_mem_get_name);
 +
-+static void fsl_qspi_select_mem(struct fsl_qspi *q, struct spi_device *spi)
++/**
++ * spi_mem_adjust_op_size() - Adjust the data size of a SPI mem operation to
++ *			      match controller limitations
++ * @mem: the SPI memory
++ * @op: the operation to adjust
++ *
++ * Some controllers have FIFO limitations and must split a data transfer
++ * operation into multiple ones, others require a specific alignment for
++ * optimized accesses. This function allows SPI mem drivers to split a single
++ * operation into multiple sub-operations when required.
++ *
++ * Return: a negative error code if the controller can't properly adjust @op,
++ *	   0 otherwise. Note that @op->data.nbytes will be updated if @op
++ *	   can't be handled in a single step.
++ */
++int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
 +{
-+	unsigned long rate = spi->max_speed_hz;
-+	int ret;
++	struct spi_controller *ctlr = mem->spi->controller;
++	size_t len;
 +
-+	if (q->selected == spi->chip_select)
-+		return;
++	len = sizeof(op->cmd.opcode) + op->addr.nbytes + op->dummy.nbytes;
 +
-+	if (needs_4x_clock(q))
-+		rate *= 4;
++	if (ctlr->mem_ops && ctlr->mem_ops->adjust_op_size)
++		return ctlr->mem_ops->adjust_op_size(mem, op);
 +
-+	fsl_qspi_clk_disable_unprep(q);
++	if (!ctlr->mem_ops || !ctlr->mem_ops->exec_op) {
++		if (len > spi_max_transfer_size(mem->spi))
++			return -EINVAL;
 +
-+	ret = clk_set_rate(q->clk, rate);
-+	if (ret)
-+		return;
-+
-+	ret = fsl_qspi_clk_prep_enable(q);
-+	if (ret)
-+		return;
-+
-+	q->selected = spi->chip_select;
-+
-+	fsl_qspi_invalidate(q);
-+}
-+
-+static void fsl_qspi_read_ahb(struct fsl_qspi *q, const struct spi_mem_op *op)
-+{
-+	memcpy(op->data.buf.in,
-+	       q->ahb_addr + q->selected * q->devtype_data->ahb_buf_size,
-+	       op->data.nbytes);
-+}
-+
-+static void fsl_qspi_fill_txfifo(struct fsl_qspi *q,
-+				 const struct spi_mem_op *op)
-+{
-+	void __iomem *base = q->iobase;
-+	int i;
-+	u32 val;
-+
-+	for (i = 0; i < ALIGN_DOWN(op->data.nbytes, 4); i += 4) {
-+		memcpy(&val, op->data.buf.out + i, 4);
-+		val = fsl_qspi_endian_xchg(q, val);
-+		qspi_writel(q, val, base + QUADSPI_TBDR);
-+	}
-+
-+	if (i < op->data.nbytes) {
-+		memcpy(&val, op->data.buf.out + i, op->data.nbytes - i);
-+		val = fsl_qspi_endian_xchg(q, val);
-+		qspi_writel(q, val, base + QUADSPI_TBDR);
-+	}
-+
-+	if (needs_fill_txfifo(q)) {
-+		for (i = op->data.nbytes; i < 16; i += 4)
-+			qspi_writel(q, 0, base + QUADSPI_TBDR);
-+	}
-+}
-+
-+static void fsl_qspi_read_rxfifo(struct fsl_qspi *q,
-+			  const struct spi_mem_op *op)
-+{
-+	void __iomem *base = q->iobase;
-+	int i;
-+	u8 *buf = op->data.buf.in;
-+	u32 val;
-+
-+	for (i = 0; i < ALIGN_DOWN(op->data.nbytes, 4); i += 4) {
-+		val = qspi_readl(q, base + QUADSPI_RBDR(i / 4));
-+		val = fsl_qspi_endian_xchg(q, val);
-+		memcpy(buf + i, &val, 4);
-+	}
-+
-+	if (i < op->data.nbytes) {
-+		val = qspi_readl(q, base + QUADSPI_RBDR(i / 4));
-+		val = fsl_qspi_endian_xchg(q, val);
-+		memcpy(buf + i, &val, op->data.nbytes - i);
-+	}
-+}
-+
-+static int fsl_qspi_do_op(struct fsl_qspi *q, const struct spi_mem_op *op)
-+{
-+	void __iomem *base = q->iobase;
-+	uint64_t timeout = 1000;
-+	uint64_t start;
-+	u32 reg;
-+
-+	/*
-+	 * Always start the sequence at the same index since we update
-+	 * the LUT at each exec_op() call. And also specify the DATA
-+	 * length, since it's has not been specified in the LUT.
-+	 */
-+	qspi_writel(q, op->data.nbytes | QUADSPI_IPCR_SEQID(SEQID_LUT),
-+		    base + QUADSPI_IPCR);
-+
-+	start = get_time_ns();
-+	do {
-+		reg = qspi_readl(q, q->iobase + QUADSPI_FR);
-+		if (reg & QUADSPI_FR_TFF_MASK) {
-+			/* clear interrupt */
-+			qspi_writel(q, reg, q->iobase + QUADSPI_FR);
-+			if (op->data.nbytes && op->data.dir == SPI_MEM_DATA_IN)
-+				fsl_qspi_read_rxfifo(q, op);
-+			return 0;
-+		}
-+
-+	} while (!is_timeout(start, timeout * MSECOND));
-+
-+	return -ETIMEDOUT;
-+}
-+
-+static int fsl_qspi_readl_poll_tout(struct fsl_qspi *q, void __iomem *base,
-+				    u32 mask, u32 delay_us, u32 timeout_us)
-+{
-+	uint64_t timeout = MSEC_PER_SEC * timeout_us;
-+	u32 reg;
-+
-+	if (!q->devtype_data->little_endian)
-+		mask = (u32)cpu_to_be32(mask);
-+
-+	return readl_poll_timeout(base, reg, !(reg & mask), timeout);
-+}
-+
-+static int fsl_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
-+{
-+	struct fsl_qspi *q = spi_controller_get_devdata(mem->spi->controller);
-+	void __iomem *base;
-+	u32 addr_offset = 0;
-+	int err = 0;
-+
-+	base = q->iobase;
-+
-+	mutex_lock(&q->lock);
-+
-+	/* wait for the controller being ready */
-+	fsl_qspi_readl_poll_tout(q, base + QUADSPI_SR, (QUADSPI_SR_IP_ACC_MASK |
-+				 QUADSPI_SR_AHB_ACC_MASK), 10, 1000);
-+
-+	fsl_qspi_select_mem(q, mem->spi);
-+
-+	if (needs_amba_base_offset(q))
-+		addr_offset = q->memmap_phy;
-+
-+	qspi_writel(q,
-+		    q->selected * q->devtype_data->ahb_buf_size + addr_offset,
-+		    base + QUADSPI_SFAR);
-+
-+	qspi_writel(q, qspi_readl(q, base + QUADSPI_MCR) |
-+		    QUADSPI_MCR_CLR_RXF_MASK | QUADSPI_MCR_CLR_TXF_MASK,
-+		    base + QUADSPI_MCR);
-+
-+	qspi_writel(q, QUADSPI_SPTRCLR_BFPTRC | QUADSPI_SPTRCLR_IPPTRC,
-+		    base + QUADSPI_SPTRCLR);
-+
-+	fsl_qspi_prepare_lut(q, op);
-+
-+	/*
-+	 * If we have large chunks of data, we read them through the AHB bus
-+	 * by accessing the mapped memory. In all other cases we use
-+	 * IP commands to access the flash.
-+	 */
-+	if (op->data.nbytes > (q->devtype_data->rxfifo - 4) &&
-+	    op->data.dir == SPI_MEM_DATA_IN) {
-+		fsl_qspi_read_ahb(q, op);
-+	} else {
-+		qspi_writel(q, QUADSPI_RBCT_WMRK_MASK |
-+			    QUADSPI_RBCT_RXBRD_USEIPS, base + QUADSPI_RBCT);
-+
-+		if (op->data.nbytes && op->data.dir == SPI_MEM_DATA_OUT)
-+			fsl_qspi_fill_txfifo(q, op);
-+
-+		err = fsl_qspi_do_op(q, op);
-+	}
-+
-+	/* Invalidate the data in the AHB buffer. */
-+	fsl_qspi_invalidate(q);
-+
-+	mutex_unlock(&q->lock);
-+
-+	return err;
-+}
-+
-+static int fsl_qspi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
-+{
-+	struct fsl_qspi *q = spi_controller_get_devdata(mem->spi->controller);
-+
-+	if (op->data.dir == SPI_MEM_DATA_OUT) {
-+		if (op->data.nbytes > q->devtype_data->txfifo)
-+			op->data.nbytes = q->devtype_data->txfifo;
-+	} else {
-+		if (op->data.nbytes > q->devtype_data->ahb_buf_size)
-+			op->data.nbytes = q->devtype_data->ahb_buf_size;
-+		else if (op->data.nbytes > (q->devtype_data->rxfifo - 4))
-+			op->data.nbytes = ALIGN_DOWN(op->data.nbytes, 8);
++		op->data.nbytes = min3((size_t)op->data.nbytes,
++				      spi_max_transfer_size(mem->spi),
++				      spi_max_message_size(mem->spi) -
++				      len);
++		if (!op->data.nbytes)
++			return -EINVAL;
 +	}
 +
 +	return 0;
 +}
++EXPORT_SYMBOL_GPL(spi_mem_adjust_op_size);
 +
-+static int fsl_qspi_setup(struct spi_device *spi)
++static ssize_t spi_mem_no_dirmap_read(struct spi_mem_dirmap_desc *desc,
++				      u64 offs, size_t len, void *buf)
 +{
-+	struct fsl_qspi *q = container_of(spi->controller, struct fsl_qspi, ctlr);
-+	void __iomem *base = q->iobase;
-+	u32 reg, addr_offset = 0;
++	struct spi_mem_op op = desc->info.op_tmpl;
 +	int ret;
 +
-+	/* disable and unprepare clock to avoid glitch pass to controller */
-+	fsl_qspi_clk_disable_unprep(q);
-+
-+	/* the default frequency, we will change it later if necessary. */
-+	ret = clk_set_rate(q->clk, 66000000);
++	op.addr.val = desc->info.offset + offs;
++	op.data.buf.in = buf;
++	op.data.nbytes = len;
++	ret = spi_mem_adjust_op_size(desc->mem, &op);
 +	if (ret)
 +		return ret;
 +
-+	ret = fsl_qspi_clk_prep_enable(q);
++	ret = spi_mem_exec_op(desc->mem, &op);
 +	if (ret)
 +		return ret;
 +
-+	/* Reset the module */
-+	qspi_writel(q, QUADSPI_MCR_SWRSTSD_MASK | QUADSPI_MCR_SWRSTHD_MASK,
-+		    base + QUADSPI_MCR);
-+	udelay(1);
-+
-+	/* Disable the module */
-+	qspi_writel(q, QUADSPI_MCR_MDIS_MASK | QUADSPI_MCR_RESERVED_MASK,
-+		    base + QUADSPI_MCR);
-+
-+	reg = qspi_readl(q, base + QUADSPI_SMPR);
-+	qspi_writel(q, reg & ~(QUADSPI_SMPR_FSDLY_MASK
-+			| QUADSPI_SMPR_FSPHS_MASK
-+			| QUADSPI_SMPR_HSENA_MASK
-+			| QUADSPI_SMPR_DDRSMP_MASK), base + QUADSPI_SMPR);
-+
-+	/* We only use the buffer3 for AHB read */
-+	qspi_writel(q, 0, base + QUADSPI_BUF0IND);
-+	qspi_writel(q, 0, base + QUADSPI_BUF1IND);
-+	qspi_writel(q, 0, base + QUADSPI_BUF2IND);
-+
-+	qspi_writel(q, QUADSPI_BFGENCR_SEQID(SEQID_LUT),
-+		    q->iobase + QUADSPI_BFGENCR);
-+	qspi_writel(q, QUADSPI_RBCT_WMRK_MASK, base + QUADSPI_RBCT);
-+	qspi_writel(q, QUADSPI_BUF3CR_ALLMST_MASK |
-+		    QUADSPI_BUF3CR_ADATSZ(q->devtype_data->ahb_buf_size / 8),
-+		    base + QUADSPI_BUF3CR);
-+
-+	if (needs_amba_base_offset(q))
-+		addr_offset = q->memmap_phy;
-+
-+	/*
-+	 * In HW there can be a maximum of four chips on two buses with
-+	 * two chip selects on each bus. We use four chip selects in SW
-+	 * to differentiate between the four chips.
-+	 * We use ahb_buf_size for each chip and set SFA1AD, SFA2AD, SFB1AD,
-+	 * SFB2AD accordingly.
-+	 */
-+	qspi_writel(q, q->devtype_data->ahb_buf_size + addr_offset,
-+		    base + QUADSPI_SFA1AD);
-+	qspi_writel(q, q->devtype_data->ahb_buf_size * 2 + addr_offset,
-+		    base + QUADSPI_SFA2AD);
-+	qspi_writel(q, q->devtype_data->ahb_buf_size * 3 + addr_offset,
-+		    base + QUADSPI_SFB1AD);
-+	qspi_writel(q, q->devtype_data->ahb_buf_size * 4 + addr_offset,
-+		    base + QUADSPI_SFB2AD);
-+
-+	q->selected = -1;
-+
-+	/* Enable the module */
-+	qspi_writel(q, QUADSPI_MCR_RESERVED_MASK | QUADSPI_MCR_END_CFG_MASK,
-+		    base + QUADSPI_MCR);
-+
-+	/* clear all interrupt status */
-+	qspi_writel(q, 0xffffffff, q->iobase + QUADSPI_FR);
-+
-+	/* enable the interrupt */
-+	qspi_writel(q, QUADSPI_RSER_TFIE, q->iobase + QUADSPI_RSER);
-+
-+	return 0;
++	return op.data.nbytes;
 +}
 +
-+static const char *fsl_qspi_get_name(struct spi_mem *mem)
++static ssize_t spi_mem_no_dirmap_write(struct spi_mem_dirmap_desc *desc,
++				       u64 offs, size_t len, const void *buf)
 +{
-+	struct fsl_qspi *q = spi_controller_get_devdata(mem->spi->controller);
-+	struct device_d *dev = &mem->spi->dev;
-+	const char *name;
++	struct spi_mem_op op = desc->info.op_tmpl;
++	int ret;
 +
-+	/*
-+	 * In order to keep mtdparts compatible with the old MTD driver at
-+	 * mtd/spi-nor/fsl-quadspi.c, we set a custom name derived from the
-+	 * platform_device of the controller.
-+	 */
-+	if (of_get_available_child_count(q->dev->device_node) == 1)
-+		return dev_name(q->dev);
++	op.addr.val = desc->info.offset + offs;
++	op.data.buf.out = buf;
++	op.data.nbytes = len;
++	ret = spi_mem_adjust_op_size(desc->mem, &op);
++	if (ret)
++		return ret;
 +
-+	name = basprintf("%s-%d", dev_name(q->dev), mem->spi->chip_select);
-+	if (!name) {
-+		dev_err(dev, "failed to get memory for custom flash name\n");
++	ret = spi_mem_exec_op(desc->mem, &op);
++	if (ret)
++		return ret;
++
++	return op.data.nbytes;
++}
++
++/**
++ * spi_mem_dirmap_create() - Create a direct mapping descriptor
++ * @mem: SPI mem device this direct mapping should be created for
++ * @info: direct mapping information
++ *
++ * This function is creating a direct mapping descriptor which can then be used
++ * to access the memory using spi_mem_dirmap_read() or spi_mem_dirmap_write().
++ * If the SPI controller driver does not support direct mapping, this function
++ * fallback to an implementation using spi_mem_exec_op(), so that the caller
++ * doesn't have to bother implementing a fallback on his own.
++ *
++ * Return: a valid pointer in case of success, and ERR_PTR() otherwise.
++ */
++struct spi_mem_dirmap_desc *
++spi_mem_dirmap_create(struct spi_mem *mem,
++		      const struct spi_mem_dirmap_info *info)
++{
++	struct spi_controller *ctlr = mem->spi->controller;
++	struct spi_mem_dirmap_desc *desc;
++	int ret = -ENOTSUPP;
++
++	/* Make sure the number of address cycles is between 1 and 8 bytes. */
++	if (!info->op_tmpl.addr.nbytes || info->op_tmpl.addr.nbytes > 8)
++		return ERR_PTR(-EINVAL);
++
++	/* data.dir should either be SPI_MEM_DATA_IN or SPI_MEM_DATA_OUT. */
++	if (info->op_tmpl.data.dir == SPI_MEM_NO_DATA)
++		return ERR_PTR(-EINVAL);
++
++	desc = kzalloc(sizeof(*desc), GFP_KERNEL);
++	if (!desc)
 +		return ERR_PTR(-ENOMEM);
-+	}
 +
-+	return name;
-+}
++	desc->mem = mem;
++	desc->info = *info;
++	if (ctlr->mem_ops && ctlr->mem_ops->dirmap_create)
++		ret = ctlr->mem_ops->dirmap_create(desc);
 +
-+static const struct spi_controller_mem_ops fsl_qspi_mem_ops = {
-+	.adjust_op_size = fsl_qspi_adjust_op_size,
-+	.supports_op = fsl_qspi_supports_op,
-+	.exec_op = fsl_qspi_exec_op,
-+	.get_name = fsl_qspi_get_name,
-+};
-+
-+static int fsl_qspi_probe(struct device_d *dev)
-+{
-+	struct spi_controller *ctlr;
-+	struct resource *res;
-+	struct fsl_qspi *q;
-+	int ret;
-+
-+	q = xzalloc(sizeof(*q));
-+
-+	ctlr = &q->ctlr;
-+
-+	/* /\* ctlr->mode_bits = SPI_RX_DUAL | SPI_RX_QUAD | *\/ */
-+	/* /\* 		  SPI_TX_DUAL | SPI_TX_QUAD; *\/ */
-+
-+	q->dev = dev;
-+	q->devtype_data = of_device_get_match_data(dev);
-+	if (!q->devtype_data) {
-+		ret = -ENODEV;
-+		goto err_put_ctrl;
-+	}
-+
-+	ctlr->dev = dev;
-+	ctlr->bus_num = dev->id;
-+	ctlr->setup = fsl_qspi_setup;
-+	ctlr->num_chipselect = 4;
-+	ctlr->mem_ops = &fsl_qspi_mem_ops;
-+
-+	spi_controller_set_devdata(ctlr, q);
-+
-+	/* find the resources */
-+	res = dev_request_mem_resource(dev, 0);
-+	q->iobase = IOMEM(res->start);
-+	if (IS_ERR(q->iobase)) {
-+		ret = PTR_ERR(q->iobase);
-+		goto err_put_ctrl;
-+	}
-+
-+	res = dev_request_mem_resource(dev, 1);
-+	q->ahb_addr = IOMEM(res->start);
-+	if (IS_ERR(q->ahb_addr)) {
-+		ret = PTR_ERR(q->ahb_addr);
-+		goto err_put_ctrl;
-+	}
-+
-+	q->memmap_phy = res->start;
-+
-+	/* find the clocks */
-+	q->clk_en = clk_get(dev, "qspi_en");
-+	if (IS_ERR(q->clk_en)) {
-+		ret = PTR_ERR(q->clk_en);
-+		goto err_put_ctrl;
-+	}
-+
-+	q->clk = clk_get(dev, "qspi");
-+	if (IS_ERR(q->clk)) {
-+		ret = PTR_ERR(q->clk);
-+		goto err_put_ctrl;
-+	}
-+
-+	ret = fsl_qspi_clk_prep_enable(q);
 +	if (ret) {
-+		dev_err(dev, "can not enable the clock\n");
-+		goto err_put_ctrl;
++		desc->nodirmap = true;
++		if (!spi_mem_supports_op(desc->mem, &desc->info.op_tmpl))
++			ret = -ENOTSUPP;
++		else
++			ret = 0;
 +	}
 +
-+	mutex_init(&q->lock);
++	if (ret) {
++		kfree(desc);
++		return ERR_PTR(ret);
++	}
 +
-+	ret = spi_register_controller(ctlr);
-+	if (ret)
-+		goto err_disable_clk;
++	return desc;
++}
++EXPORT_SYMBOL_GPL(spi_mem_dirmap_create);
 +
-+	return 0;
++/**
++ * spi_mem_dirmap_destroy() - Destroy a direct mapping descriptor
++ * @desc: the direct mapping descriptor to destroy
++ * @info: direct mapping information
++ *
++ * This function destroys a direct mapping descriptor previously created by
++ * spi_mem_dirmap_create().
++ */
++void spi_mem_dirmap_destroy(struct spi_mem_dirmap_desc *desc)
++{
++	struct spi_controller *ctlr = desc->mem->spi->controller;
 +
-+err_disable_clk:
-+	fsl_qspi_clk_disable_unprep(q);
++	if (!desc->nodirmap && ctlr->mem_ops && ctlr->mem_ops->dirmap_destroy)
++		ctlr->mem_ops->dirmap_destroy(desc);
++}
++EXPORT_SYMBOL_GPL(spi_mem_dirmap_destroy);
 +
-+err_put_ctrl:
-+	dev_err(dev, "Freescale QuadSPI probe failed\n");
++/**
++ * spi_mem_dirmap_dirmap_read() - Read data through a direct mapping
++ * @desc: direct mapping descriptor
++ * @offs: offset to start reading from. Note that this is not an absolute
++ *	  offset, but the offset within the direct mapping which already has
++ *	  its own offset
++ * @len: length in bytes
++ * @buf: destination buffer. This buffer must be DMA-able
++ *
++ * This function reads data from a memory device using a direct mapping
++ * previously instantiated with spi_mem_dirmap_create().
++ *
++ * Return: the amount of data read from the memory device or a negative error
++ * code. Note that the returned size might be smaller than @len, and the caller
++ * is responsible for calling spi_mem_dirmap_read() again when that happens.
++ */
++ssize_t spi_mem_dirmap_read(struct spi_mem_dirmap_desc *desc,
++			    u64 offs, size_t len, void *buf)
++{
++	struct spi_controller *ctlr = desc->mem->spi->controller;
++	ssize_t ret;
++
++	if (desc->info.op_tmpl.data.dir != SPI_MEM_DATA_IN)
++		return -EINVAL;
++
++	if (!len)
++		return 0;
++
++	if (desc->nodirmap) {
++		ret = spi_mem_no_dirmap_read(desc, offs, len, buf);
++	} else if (ctlr->mem_ops && ctlr->mem_ops->dirmap_read) {
++		ret = spi_mem_access_start(desc->mem);
++		if (ret)
++			return ret;
++
++		ret = ctlr->mem_ops->dirmap_read(desc, offs, len, buf);
++
++		spi_mem_access_end(desc->mem);
++	} else {
++		ret = -ENOTSUPP;
++	}
++
 +	return ret;
 +}
++EXPORT_SYMBOL_GPL(spi_mem_dirmap_read);
 +
-+static const struct of_device_id fsl_qspi_dt_ids[] = {
-+	{ .compatible = "fsl,vf610-qspi", .data = &vybrid_data, },
-+	{ .compatible = "fsl,imx6sx-qspi", .data = &imx6sx_data, },
-+	{ .compatible = "fsl,imx7d-qspi", .data = &imx7d_data, },
-+	{ .compatible = "fsl,imx6ul-qspi", .data = &imx6ul_data, },
-+	{ .compatible = "fsl,ls1021a-qspi", .data = &ls1021a_data, },
-+	{ .compatible = "fsl,ls2080a-qspi", .data = &ls2080a_data, },
-+	{ /* sentinel */ }
++/**
++ * spi_mem_dirmap_dirmap_write() - Write data through a direct mapping
++ * @desc: direct mapping descriptor
++ * @offs: offset to start writing from. Note that this is not an absolute
++ *	  offset, but the offset within the direct mapping which already has
++ *	  its own offset
++ * @len: length in bytes
++ * @buf: source buffer. This buffer must be DMA-able
++ *
++ * This function writes data to a memory device using a direct mapping
++ * previously instantiated with spi_mem_dirmap_create().
++ *
++ * Return: the amount of data written to the memory device or a negative error
++ * code. Note that the returned size might be smaller than @len, and the caller
++ * is responsible for calling spi_mem_dirmap_write() again when that happens.
++ */
++ssize_t spi_mem_dirmap_write(struct spi_mem_dirmap_desc *desc,
++			     u64 offs, size_t len, const void *buf)
++{
++	struct spi_controller *ctlr = desc->mem->spi->controller;
++	ssize_t ret;
++
++	if (desc->info.op_tmpl.data.dir != SPI_MEM_DATA_OUT)
++		return -EINVAL;
++
++	if (!len)
++		return 0;
++
++	if (desc->nodirmap) {
++		ret = spi_mem_no_dirmap_write(desc, offs, len, buf);
++	} else if (ctlr->mem_ops && ctlr->mem_ops->dirmap_write) {
++		ret = spi_mem_access_start(desc->mem);
++		if (ret)
++			return ret;
++
++		ret = ctlr->mem_ops->dirmap_write(desc, offs, len, buf);
++
++		spi_mem_access_end(desc->mem);
++	} else {
++		ret = -ENOTSUPP;
++	}
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(spi_mem_dirmap_write);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 7756304f1981..d9311d4af508 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -19,6 +19,7 @@
+  */
+ 
+ #include <common.h>
++#include <linux/spi/spi-mem.h>
+ #include <spi/spi.h>
+ #include <xfuncs.h>
+ #include <malloc.h>
+@@ -58,6 +59,7 @@ struct spi_device *spi_new_device(struct spi_controller *ctrl,
+ 				  struct spi_board_info *chip)
+ {
+ 	struct spi_device	*proxy;
++	struct spi_mem		*mem;
+ 	int			status;
+ 
+ 	/* Chipselects are numbered 0..max; validate. */
+@@ -84,6 +86,15 @@ struct spi_device *spi_new_device(struct spi_controller *ctrl,
+ 	proxy->dev.parent = ctrl->dev;
+ 	proxy->master = proxy->controller = ctrl;
+ 
++	mem = xzalloc(sizeof *mem);
++	mem->spi = proxy;
++
++	if (ctrl->mem_ops && ctrl->mem_ops->get_name)
++		mem->name = ctrl->mem_ops->get_name(mem);
++	else
++		mem->name = dev_name(&proxy->dev);
++	proxy->mem = mem;
++
+ 	/* drivers may modify this initial i/o setup */
+ 	status = ctrl->setup(proxy);
+ 	if (status < 0) {
+@@ -194,6 +205,26 @@ static void scan_boardinfo(struct spi_controller *ctrl)
+ 
+ static LIST_HEAD(spi_controller_list);
+ 
++static int spi_controller_check_ops(struct spi_controller *ctlr)
++{
++	/*
++	 * The controller may implement only the high-level SPI-memory like
++	 * operations if it does not support regular SPI transfers, and this is
++	 * valid use case.
++	 * If ->mem_ops is NULL, we request that at least one of the
++	 * ->transfer_xxx() method be implemented.
++	 */
++	if (ctlr->mem_ops) {
++		if (!ctlr->mem_ops->exec_op)
++			return -EINVAL;
++	} else if (!ctlr->transfer) {
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++
+ /**
+  * spi_register_ctrl - register SPI ctrl controller
+  * @ctrl: initialized ctrl, originally from spi_alloc_ctrl()
+@@ -221,6 +252,14 @@ int spi_register_controller(struct spi_controller *ctrl)
+ 
+ 	debug("%s: %s:%d\n", __func__, ctrl->dev->name, ctrl->dev->id);
+ 
++	/*
++	 * Make sure all necessary hooks are implemented before registering
++	 * the SPI controller.
++	 */
++	status = spi_controller_check_ops(ctrl);
++	if (status)
++		return status;
++
+ 	/* even if it's just one always-selected device, there must
+ 	 * be at least one chipselect
+ 	 */
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+new file mode 100644
+index 000000000000..f65104d2d198
+--- /dev/null
++++ b/include/linux/spi/spi-mem.h
+@@ -0,0 +1,307 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright (C) 2018 Exceet Electronics GmbH
++ * Copyright (C) 2018 Bootlin
++ *
++ * Author:
++ *	Peter Pan <peterpandong@micron.com>
++ *	Boris Brezillon <boris.brezillon@bootlin.com>
++ */
++
++#ifndef __LINUX_SPI_MEM_H
++#define __LINUX_SPI_MEM_H
++
++#include <spi/spi.h>
++
++#define SPI_MEM_OP_CMD(__opcode, __buswidth)			\
++	{							\
++		.buswidth = __buswidth,				\
++		.opcode = __opcode,				\
++	}
++
++#define SPI_MEM_OP_ADDR(__nbytes, __val, __buswidth)		\
++	{							\
++		.nbytes = __nbytes,				\
++		.val = __val,					\
++		.buswidth = __buswidth,				\
++	}
++
++#define SPI_MEM_OP_NO_ADDR	{ }
++
++#define SPI_MEM_OP_DUMMY(__nbytes, __buswidth)			\
++	{							\
++		.nbytes = __nbytes,				\
++		.buswidth = __buswidth,				\
++	}
++
++#define SPI_MEM_OP_NO_DUMMY	{ }
++
++#define SPI_MEM_OP_DATA_IN(__nbytes, __buf, __buswidth)		\
++	{							\
++		.dir = SPI_MEM_DATA_IN,				\
++		.nbytes = __nbytes,				\
++		.buf.in = __buf,				\
++		.buswidth = __buswidth,				\
++	}
++
++#define SPI_MEM_OP_DATA_OUT(__nbytes, __buf, __buswidth)	\
++	{							\
++		.dir = SPI_MEM_DATA_OUT,			\
++		.nbytes = __nbytes,				\
++		.buf.out = __buf,				\
++		.buswidth = __buswidth,				\
++	}
++
++#define SPI_MEM_OP_NO_DATA	{ }
++
++/**
++ * enum spi_mem_data_dir - describes the direction of a SPI memory data
++ *			   transfer from the controller perspective
++ * @SPI_MEM_NO_DATA: no data transferred
++ * @SPI_MEM_DATA_IN: data coming from the SPI memory
++ * @SPI_MEM_DATA_OUT: data sent to the SPI memory
++ */
++enum spi_mem_data_dir {
++	SPI_MEM_NO_DATA,
++	SPI_MEM_DATA_IN,
++	SPI_MEM_DATA_OUT,
 +};
 +
-+static struct driver_d fsl_qspi_driver = {
-+	.name		= "fsl-quadspi",
-+	.probe          = fsl_qspi_probe,
-+	.of_compatible	= DRV_OF_COMPAT(fsl_qspi_dt_ids),
++/**
++ * struct spi_mem_op - describes a SPI memory operation
++ * @cmd.buswidth: number of IO lines used to transmit the command
++ * @cmd.opcode: operation opcode
++ * @addr.nbytes: number of address bytes to send. Can be zero if the operation
++ *		 does not need to send an address
++ * @addr.buswidth: number of IO lines used to transmit the address cycles
++ * @addr.val: address value. This value is always sent MSB first on the bus.
++ *	      Note that only @addr.nbytes are taken into account in this
++ *	      address value, so users should make sure the value fits in the
++ *	      assigned number of bytes.
++ * @dummy.nbytes: number of dummy bytes to send after an opcode or address. Can
++ *		  be zero if the operation does not require dummy bytes
++ * @dummy.buswidth: number of IO lanes used to transmit the dummy bytes
++ * @data.buswidth: number of IO lanes used to send/receive the data
++ * @data.dir: direction of the transfer
++ * @data.nbytes: number of data bytes to send/receive. Can be zero if the
++ *		 operation does not involve transferring data
++ * @data.buf.in: input buffer (must be DMA-able)
++ * @data.buf.out: output buffer (must be DMA-able)
++ */
++struct spi_mem_op {
++	struct {
++		u8 buswidth;
++		u8 opcode;
++	} cmd;
++
++	struct {
++		u8 nbytes;
++		u8 buswidth;
++		u64 val;
++	} addr;
++
++	struct {
++		u8 nbytes;
++		u8 buswidth;
++	} dummy;
++
++	struct {
++		u8 buswidth;
++		enum spi_mem_data_dir dir;
++		unsigned int nbytes;
++		union {
++			void *in;
++			const void *out;
++		} buf;
++	} data;
 +};
-+device_platform_driver(fsl_qspi_driver);
++
++#define SPI_MEM_OP(__cmd, __addr, __dummy, __data)		\
++	{							\
++		.cmd = __cmd,					\
++		.addr = __addr,					\
++		.dummy = __dummy,				\
++		.data = __data,					\
++	}
++
++/**
++ * struct spi_mem_dirmap_info - Direct mapping information
++ * @op_tmpl: operation template that should be used by the direct mapping when
++ *	     the memory device is accessed
++ * @offset: absolute offset this direct mapping is pointing to
++ * @length: length in byte of this direct mapping
++ *
++ * These information are used by the controller specific implementation to know
++ * the portion of memory that is directly mapped and the spi_mem_op that should
++ * be used to access the device.
++ * A direct mapping is only valid for one direction (read or write) and this
++ * direction is directly encoded in the ->op_tmpl.data.dir field.
++ */
++struct spi_mem_dirmap_info {
++	struct spi_mem_op op_tmpl;
++	u64 offset;
++	u64 length;
++};
++
++/**
++ * struct spi_mem_dirmap_desc - Direct mapping descriptor
++ * @mem: the SPI memory device this direct mapping is attached to
++ * @info: information passed at direct mapping creation time
++ * @nodirmap: set to 1 if the SPI controller does not implement
++ *	      ->mem_ops->dirmap_create() or when this function returned an
++ *	      error. If @nodirmap is true, all spi_mem_dirmap_{read,write}()
++ *	      calls will use spi_mem_exec_op() to access the memory. This is a
++ *	      degraded mode that allows spi_mem drivers to use the same code
++ *	      no matter whether the controller supports direct mapping or not
++ * @priv: field pointing to controller specific data
++ *
++ * Common part of a direct mapping descriptor. This object is created by
++ * spi_mem_dirmap_create() and controller implementation of ->create_dirmap()
++ * can create/attach direct mapping resources to the descriptor in the ->priv
++ * field.
++ */
++struct spi_mem_dirmap_desc {
++	struct spi_mem *mem;
++	struct spi_mem_dirmap_info info;
++	unsigned int nodirmap;
++	void *priv;
++};
++
++/**
++ * struct spi_mem - describes a SPI memory device
++ * @spi: the underlying SPI device
++ * @drvpriv: spi_mem_driver private data
++ * @name: name of the SPI memory device
++ *
++ * Extra information that describe the SPI memory device and may be needed by
++ * the controller to properly handle this device should be placed here.
++ *
++ * One example would be the device size since some controller expose their SPI
++ * mem devices through a io-mapped region.
++ */
++struct spi_mem {
++	struct spi_device *spi;
++	void *drvpriv;
++	const char *name;
++};
++
++/**
++ * struct spi_mem_set_drvdata() - attach driver private data to a SPI mem
++ *				  device
++ * @mem: memory device
++ * @data: data to attach to the memory device
++ */
++static inline void spi_mem_set_drvdata(struct spi_mem *mem, void *data)
++{
++	mem->drvpriv = data;
++}
++
++/**
++ * struct spi_mem_get_drvdata() - get driver private data attached to a SPI mem
++ *				  device
++ * @mem: memory device
++ *
++ * Return: the data attached to the mem device.
++ */
++static inline void *spi_mem_get_drvdata(struct spi_mem *mem)
++{
++	return mem->drvpriv;
++}
++
++/**
++ * struct spi_controller_mem_ops - SPI memory operations
++ * @adjust_op_size: shrink the data xfer of an operation to match controller's
++ *		    limitations (can be alignment of max RX/TX size
++ *		    limitations)
++ * @supports_op: check if an operation is supported by the controller
++ * @exec_op: execute a SPI memory operation
++ * @get_name: get a custom name for the SPI mem device from the controller.
++ *	      This might be needed if the controller driver has been ported
++ *	      to use the SPI mem layer and a custom name is used to keep
++ *	      mtdparts compatible.
++ *	      Note that if the implementation of this function allocates memory
++ *	      dynamically, then it should do so with devm_xxx(), as we don't
++ *	      have a ->free_name() function.
++ * @dirmap_create: create a direct mapping descriptor that can later be used to
++ *		   access the memory device. This method is optional
++ * @dirmap_destroy: destroy a memory descriptor previous created by
++ *		    ->dirmap_create()
++ * @dirmap_read: read data from the memory device using the direct mapping
++ *		 created by ->dirmap_create(). The function can return less
++ *		 data than requested (for example when the request is crossing
++ *		 the currently mapped area), and the caller of
++ *		 spi_mem_dirmap_read() is responsible for calling it again in
++ *		 this case.
++ * @dirmap_write: write data to the memory device using the direct mapping
++ *		  created by ->dirmap_create(). The function can return less
++ *		  data than requested (for example when the request is crossing
++ *		  the currently mapped area), and the caller of
++ *		  spi_mem_dirmap_write() is responsible for calling it again in
++ *		  this case.
++ *
++ * This interface should be implemented by SPI controllers providing an
++ * high-level interface to execute SPI memory operation, which is usually the
++ * case for QSPI controllers.
++ *
++ * Note on ->dirmap_{read,write}(): drivers should avoid accessing the direct
++ * mapping from the CPU because doing that can stall the CPU waiting for the
++ * SPI mem transaction to finish, and this will make real-time maintainers
++ * unhappy and might make your system less reactive. Instead, drivers should
++ * use DMA to access this direct mapping.
++ */
++struct spi_controller_mem_ops {
++	int (*adjust_op_size)(struct spi_mem *mem, struct spi_mem_op *op);
++	bool (*supports_op)(struct spi_mem *mem,
++			    const struct spi_mem_op *op);
++	int (*exec_op)(struct spi_mem *mem,
++		       const struct spi_mem_op *op);
++	const char *(*get_name)(struct spi_mem *mem);
++	int (*dirmap_create)(struct spi_mem_dirmap_desc *desc);
++	void (*dirmap_destroy)(struct spi_mem_dirmap_desc *desc);
++	ssize_t (*dirmap_read)(struct spi_mem_dirmap_desc *desc,
++			       u64 offs, size_t len, void *buf);
++	ssize_t (*dirmap_write)(struct spi_mem_dirmap_desc *desc,
++				u64 offs, size_t len, const void *buf);
++};
++
++/**
++ * struct spi_mem_driver - SPI memory driver
++ * @spidrv: inherit from a SPI driver
++ * @probe: probe a SPI memory. Usually where detection/initialization takes
++ *	   place
++ * @remove: remove a SPI memory
++ *
++ * This is just a thin wrapper around a spi_driver. The core takes care of
++ * allocating the spi_mem object and forwarding the probe/remove
++ * request to the spi_mem_driver. The reason we use this wrapper is because
++ * we might have to stuff more information into the spi_mem struct to let
++ * SPI controllers know more about the SPI memory they interact with, and
++ * having this intermediate layer allows us to do that without adding more
++ * useless fields to the spi_device object.
++ */
++struct spi_mem_driver {
++	struct driver_d spidrv;
++	int (*probe)(struct spi_mem *mem);
++	int (*remove)(struct spi_mem *mem);
++};
++
++int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op);
++
++bool spi_mem_supports_op(struct spi_mem *mem,
++			 const struct spi_mem_op *op);
++
++int spi_mem_exec_op(struct spi_mem *mem,
++		    const struct spi_mem_op *op);
++
++const char *spi_mem_get_name(struct spi_mem *mem);
++
++struct spi_mem_dirmap_desc *
++spi_mem_dirmap_create(struct spi_mem *mem,
++		      const struct spi_mem_dirmap_info *info);
++void spi_mem_dirmap_destroy(struct spi_mem_dirmap_desc *desc);
++ssize_t spi_mem_dirmap_read(struct spi_mem_dirmap_desc *desc,
++			    u64 offs, size_t len, void *buf);
++ssize_t spi_mem_dirmap_write(struct spi_mem_dirmap_desc *desc,
++			     u64 offs, size_t len, const void *buf);
++
++#endif /* __LINUX_SPI_MEM_H */
+diff --git a/include/spi/spi.h b/include/spi/spi.h
+index 6eeaf254c713..bdcda0bb603c 100644
+--- a/include/spi/spi.h
++++ b/include/spi/spi.h
+@@ -2,8 +2,12 @@
+ #define __INCLUDE_SPI_H
+ 
+ #include <driver.h>
++#include <linux/err.h>
++#include <linux/kernel.h>
+ #include <linux/string.h>
+ 
++struct spi_controller_mem_ops;
++
+ struct spi_board_info {
+ 	char	*name;
+ 	int 	max_speed_hz;
+@@ -62,6 +66,7 @@ struct spi_device {
+ 	struct device_d		dev;
+ 	struct spi_controller	*controller;
+ 	struct spi_controller	*master;	/* compatibility layer */
++	struct spi_mem		*mem;
+ 	u32			max_speed_hz;
+ 	u8			chip_select;
+ 	u8			mode;
+@@ -109,6 +114,13 @@ struct spi_message;
+  * @dev: device interface to this driver
+  * @bus_num: board-specific (and often SOC-specific) identifier for a
+  *	given SPI controller.
++ * @mem_ops: optimized/dedicated operations for interactions with SPI
++ *      memory. This field is optional and should only be implemented
++ *      if the controller has native support for memory like operations.
++ * @max_transfer_size: function that returns the max transfer size for
++ *	a &spi_device; may be %NULL, so the default %SIZE_MAX will be used.
++ * @max_message_size: function that returns the max message size for
++ *	a &spi_device; may be %NULL, so the default %SIZE_MAX will be used.
+  * @num_chipselect: chipselects are used to distinguish individual
+  *	SPI slaves, and are numbered from zero to num_chipselects.
+  *	each slave has a chipselect signal, but it's common that not
+@@ -144,6 +156,15 @@ struct spi_controller {
+ 	 */
+ 	s16			bus_num;
+ 
++	/* Optimized handlers for SPI memory-like operations */
++	const struct spi_controller_mem_ops *mem_ops;
++	/*
++	 * on some hardware transfer size may be constrained
++	 * the limit may depend on device transfer settings
++	 */
++	size_t (*max_transfer_size)(struct spi_device *spi);
++	size_t (*max_message_size)(struct spi_device *spi);
++
+ 	/* chipselects will be integral to many controllers; some others
+ 	 * might use board-specific GPIOs.
+ 	 */
+@@ -180,6 +201,40 @@ struct spi_controller {
+ 	struct list_head list;
+ };
+ 
++static inline void *spi_controller_get_devdata(struct spi_controller *ctlr)
++{
++	if (ctlr->dev->platform_data)
++		return ctlr->dev->platform_data;
++	else
++		return ERR_PTR(-EINVAL);
++}
++
++static inline void spi_controller_set_devdata(struct spi_controller *ctlr,
++					      void *data)
++{
++	ctlr->dev->platform_data = data;
++}
++
++static inline size_t spi_max_message_size(struct spi_device *spi)
++{
++	struct spi_controller *ctrl = spi->controller;
++	if (!ctrl->max_transfer_size)
++		return SIZE_MAX;
++	return ctrl->max_transfer_size(spi);
++}
++
++static inline size_t spi_max_transfer_size(struct spi_device *spi)
++{
++	struct spi_controller *ctrl = spi->controller;
++	size_t tr_max = SIZE_MAX;
++	size_t msg_max = spi_max_message_size(spi);
++
++	if (ctrl->max_transfer_size)
++		tr_max = ctrl->max_transfer_size(spi);
++
++	return min(tr_max, msg_max);
++}
++
+ #define spi_master  			spi_controller
+ #define spi_register_master(_ctrl)	spi_register_controller(_ctrl)
+ 
 -- 
 git-series 0.9.1
 
