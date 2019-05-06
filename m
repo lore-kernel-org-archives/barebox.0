@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hMaVN-0003bm-0o
- for barebox@lists.infradead.org; Fri, 03 May 2019 15:54:09 +0000
-From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Fri,  3 May 2019 17:53:39 +0200
-Message-Id: <20190503155339.811-1-m.tretter@pengutronix.de>
+ id 1hNXFI-0008J0-1h
+ for barebox@lists.infradead.org; Mon, 06 May 2019 06:37:05 +0000
+Date: Mon, 6 May 2019 08:37:01 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190506063701.fz57ijesri4fliic@pengutronix.de>
+References: <20190503155339.811-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190503155339.811-1-m.tretter@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,45 +18,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: aarch64: do not use 32bit optimized find bit functions
-To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Thomas=20H=C3=A4mmerle?= <Thomas.Haemmerle@wolfvision.net>, Michael Tretter <m.tretter@pengutronix.de>
+Subject: Re: [PATCH] ARM: aarch64: do not use 32bit optimized find bit
+ functions
+To: Michael Tretter <m.tretter@pengutronix.de>
+Cc: barebox@lists.infradead.org, Thomas =?iso-8859-15?Q?H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
 
-VGhlIG9wdGltaXplZCBmaW5kIGJpdCBmdW5jdGlvbnMgYXJlIG9ubHkgaW1wbGVtZW50ZWQgZm9y
-IDMyIGJpdCBhbmQgYXJlCm5vdCBidWlsdCBvbiBhYXJjaDY0IHN5c3RlbXMuIFRoZXJlZm9yZSwg
-Zm9yIGV4YW1wbGUgYm9vdGNob29zZXIgY2Fubm90CmJlIGJ1aWxkIGZvciBhYXJjaDY0LgoKU2Vs
-ZWN0IHRoZSBnZW5lcmljIGZpbmRfYml0IGltcGxlbWVudGF0aW9ucyBvbiBhYXJjaDY0LgoKQXMg
-dGhlIGRlY2lzaW9uLCBpZiBsaWI2NCBvciBsaWIzMiBpcyBidWlsZCBvciBub3QsIGRpcmVjdGx5
-IGRlcGVuZHMgb24KQ1BVX1Y4LCB0aGUgZ2VuZXJpYyBpbXBsZW1lbnRhdGlvbiBhbHNvIHNob3Vs
-ZCBiZSB1c2VkIGlmIENQVV9WOCBpcwpzZWxlY3RlZC4KClJlcG9ydGVkLWJ5OiBUaG9tYXMgSMOk
-bW1lcmxlIDxUaG9tYXMuSGFlbW1lcmxlQHdvbGZ2aXNpb24ubmV0PgpTaWduZWQtb2ZmLWJ5OiBN
-aWNoYWVsIFRyZXR0ZXIgPG0udHJldHRlckBwZW5ndXRyb25peC5kZT4KLS0tCiBhcmNoL2FybS9j
-cHUvS2NvbmZpZyAgICAgICAgICB8IDEgKwogYXJjaC9hcm0vaW5jbHVkZS9hc20vYml0b3BzLmgg
-fCA4ICsrKysrKysrCiAyIGZpbGVzIGNoYW5nZWQsIDkgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdp
-dCBhL2FyY2gvYXJtL2NwdS9LY29uZmlnIGIvYXJjaC9hcm0vY3B1L0tjb25maWcKaW5kZXggMjU3
-NzEwMzI5My4uZjhhYmJjY2ZjYSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vY3B1L0tjb25maWcKKysr
-IGIvYXJjaC9hcm0vY3B1L0tjb25maWcKQEAgLTg2LDYgKzg2LDcgQEAgY29uZmlnIENQVV9WOAog
-CXNlbGVjdCBDUFVfNjR2OAogCXNlbGVjdCBDUFVfU1VQUE9SVFNfNjRCSVRfS0VSTkVMCiAJc2Vs
-ZWN0IEFSTV9FWENFUFRJT05TCisJc2VsZWN0IEdFTkVSSUNfRklORF9ORVhUX0JJVAogCiBjb25m
-aWcgQ1BVX1hTQzMKICAgICAgICAgYm9vbApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vaW5jbHVkZS9h
-c20vYml0b3BzLmggYi9hcmNoL2FybS9pbmNsdWRlL2FzbS9iaXRvcHMuaAppbmRleCAzNDhhNzZi
-MmMxLi5kOGE0ZDliNjY3IDEwMDY0NAotLS0gYS9hcmNoL2FybS9pbmNsdWRlL2FzbS9iaXRvcHMu
-aAorKysgYi9hcmNoL2FybS9pbmNsdWRlL2FzbS9iaXRvcHMuaApAQCAtODIsNiArODIsMTIgQEAg
-c3RhdGljIGlubGluZSBpbnQgdGVzdF9iaXQoaW50IG5yLCBjb25zdCB2b2lkICogYWRkcikKICNk
-ZWZpbmUgdGVzdF9hbmRfY2xlYXJfYml0KHgsIHkpCV9fdGVzdF9hbmRfY2xlYXJfYml0KHgsIHkp
-CiAjZGVmaW5lIHRlc3RfYW5kX2NoYW5nZV9iaXQoeCwgeSkJX190ZXN0X2FuZF9jaGFuZ2VfYml0
-KHgsIHkpCiAKKyNpZmRlZiBDT05GSUdfQ1BVX1Y4CisKKyNpbmNsdWRlIDxhc20tZ2VuZXJpYy9i
-aXRvcHMvZmluZC5oPgorCisjZWxzZSAvKiBDT05GSUdfQ1BVX1Y4ICovCisKICNpZm5kZWYgX19B
-Uk1FQl9fCiAvKgogICogVGhlc2UgYXJlIHRoZSBsaXR0bGUgZW5kaWFuIGRlZmluaXRpb25zLgpA
-QCAtMTE1LDYgKzEyMSw4IEBAIGV4dGVybiBpbnQgX2ZpbmRfbmV4dF9iaXRfYmUoY29uc3QgdW5z
-aWduZWQgbG9uZyAqcCwgaW50IHNpemUsIGludCBvZmZzZXQpOwogCiAjZW5kaWYJCS8qIF9fQVJN
-RUJfXyAqLwogCisjZW5kaWYgLyogQ09ORklHX0NQVV9WOCAqLworCiAjaWYgZGVmaW5lZCAoQ09O
-RklHX0NQVV8zMikgJiYgZGVmaW5lZChfX0xJTlVYX0FSTV9BUkNIX18pICYmIChfX0xJTlVYX0FS
-TV9BUkNIX18gPj0gNSkKIHN0YXRpYyBpbmxpbmUgaW50IGNvbnN0YW50X2ZscyhpbnQgeCkKIHsK
-LS0gCjIuMjAuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
-Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Fri, May 03, 2019 at 05:53:39PM +0200, Michael Tretter wrote:
+> The optimized find bit functions are only implemented for 32 bit and are
+> not built on aarch64 systems. Therefore, for example bootchooser cannot
+> be build for aarch64.
+> =
+
+> Select the generic find_bit implementations on aarch64.
+> =
+
+> As the decision, if lib64 or lib32 is build or not, directly depends on
+> CPU_V8, the generic implementation also should be used if CPU_V8 is
+> selected.
+> =
+
+> Reported-by: Thomas H=E4mmerle <Thomas.Haemmerle@wolfvision.net>
+> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+> ---
+>  arch/arm/cpu/Kconfig          | 1 +
+>  arch/arm/include/asm/bitops.h | 8 ++++++++
+>  2 files changed, 9 insertions(+)
+
+Applied, thanks
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
