@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-eopbgr750131.outbound.protection.outlook.com
- ([40.107.75.131] helo=NAM02-BL2-obe.outbound.protection.outlook.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hMBZU-0004EO-Ql
- for barebox@lists.infradead.org; Thu, 02 May 2019 13:16:22 +0000
-From: "Barbier, Renaud" <renaud.barbier@abaco.com>
-Date: Thu, 2 May 2019 13:16:18 +0000
-Message-ID: <BN8PR16MB273864A412B5A00FA6A0AED191340@BN8PR16MB2738.namprd16.prod.outlook.com>
-References: <BYAPR16MB27449301E98456E00CC0EE32913B0@BYAPR16MB2744.namprd16.prod.outlook.com>
- <1556792512.2590.5.camel@pengutronix.de>
-In-Reply-To: <1556792512.2590.5.camel@pengutronix.de>
-Content-Language: en-US
+ id 1hNXA8-0005um-3F
+ for barebox@lists.infradead.org; Mon, 06 May 2019 06:31:46 +0000
+Date: Mon, 6 May 2019 08:31:30 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190506063130.vjfaeuexrlqtmjn7@pengutronix.de>
+References: <20190430031524.18810-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190430031524.18810-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,44 +18,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: cortex-a9 boot issue
-To: Lucas Stach <l.stach@pengutronix.de>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2] ARM: imx: disable IPU QoS setup for correct SoCs
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-VGhhbmtzLg0KQXQgcHJlc2VudCwgbm90IGNhbGxpbmcgdGhpcyBoeXBfaW5zdGFsbCBmdW5jdGlv
-biBzZWVtcyB0byBiZSBvaw0KDQpTaG91bGQgSSBoYXZlIHVzZWQgIGEgcHJlLWJvb3Rsb2FkZXI/
-IA0KV2hhdCBpcyB0aGUgYmFyZWJveC9BUk0gd2F5IEkgc2hvdWxkIGhhdmUgZm9sbG93ZWQ/IEkg
-Y29tZSBmcm9tIFBQQyBhbmQgbm90IGZhbWlsaWFyIHlldCB3aXRoIHRoZSBQQkwuDQoNCg0KPiAt
-LS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBMdWNhcyBTdGFjaCBbbWFpbHRvOmwu
-c3RhY2hAcGVuZ3V0cm9uaXguZGVdDQo+IFNlbnQ6IDAyIE1heSAyMDE5IDExOjIyDQo+IFRvOiBC
-YXJiaWVyLCBSZW5hdWQgPHJlbmF1ZC5iYXJiaWVyQGFiYWNvLmNvbT47DQo+IGJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZw0KPiBTdWJqZWN0OiBSZTogY29ydGV4LWE5IGJvb3QgaXNzdWUNCj4g
-DQo+IA0KPiANCj4gW0VYVEVSTkFMIFNPVVJDRV06IFRoaXMgZW1haWwgb3JpZ2luYXRlZCBmcm9t
-IG91dHNpZGUgQWJhY28uIERPIE5PVCBDTElDSw0KPiBhIGxpbmsgb3Igb3BlbiBhbiBhdHRhY2ht
-ZW50IHVubGVzcyB5b3Uga25vdyB0aGUgY29udGVudCBpcyBzYWZlIGFuZCBhcmUNCj4gZXhwZWN0
-aW5nIGl0IGZyb20gdGhlIHNlbmRlci4gSWYgaW4gZG91YnQsIGNvbnRhY3QgdGhlIHNlbmRlciBz
-ZXBhcmF0ZWx5IHRvDQo+IHZlcmlmeS4NCj4gDQo+IEhpIFJlbmF1ZCwNCj4gDQo+IEFtIE1pdHR3
-b2NoLCBkZW4gMDEuMDUuMjAxOSwgMTA6MzIgKzAwMDAgc2NocmllYiBCYXJiaWVyLCBSZW5hdWQ6
-DQo+ID4gSSBoYXZlIGFkZGVkIHN1cHBvcnQgZm9yIGEgY29ydGV4LWE5IG9mZiB0aGUgbWFzdGVy
-IGJyYW5jaC4NCj4gPg0KPiA+IEkgYW0gc2VlaW5nIGFuIGlzc3VlIHRvIGJvb3QgdG8gdGhlIHBy
-b21wdCBmb3VuZCBpbiB0aGUgZnVuY3Rpb24NCj4gPiBoeXBfaW5zdGFsbC4gVGhlIGFzc2VtYmx5
-IGNvZGUgaXMgYXMgZm9sbG93czoNCj4gPiAgICAgICBtcnMgICAgIHIxMiwgY3Bzcg0KPiA+ICAg
-ICAgIGFuZCAgICAgcjEyLCByMTIsICNNT0RFX01BU0sNCj4gPg0KPiA+ICAgICAgIEAgU2F2ZSB0
-aGUgaW5pdGlhbCBDUFUgc3RhdGUNCj4gPiAgICAgICBhZHIgICAgIHIwLCAuTF9fYm9vdF9jcHVf
-bW9kZV9vZmZzZXQNCj4gPiAgICAgICBsZHIgICAgIHIxLCBbcjBdDQo+ID4gICAgICAgc3RyICAg
-ICByMTIsIFtyMCwgcjFdwqDCoMKgPT09PiBJIGdldCBhbiBleGNlcHRpb24gaGVyZSBiZWNhdXNl
-DQo+ID4gdGhlIHJlZ2lzdGVyIHIxMiBpcyBiZWluZyB3cml0dGVuIHRvIFtyMCArIHIxXSB3aGlj
-aCBwb2ludHMgdG8gdGhlDQo+ID4gU1BJIE5PUiAgYm9vdCBmbGFzaC4NCj4gPg0KPiA+IENvbW1l
-bnRpbmcgb3V0IHRoZSBjYWxsIHRvIGFsbCBmdW5jdGlvbnMgY2FsbGluZyBoeXBfaW5zdGFsbCwg
-YmFyZWJveA0KPiA+IGRvZXMgZ2V0IHRvIHRoZSBwcm9tcHQuDQo+ID4NCj4gPiBJcyB0aGVyZSBz
-b21ldGhpbmcgSSBjb3VsZCBiZSBtaXNzaW5nIHRoYXQgd291bGQgcHV0IHRoZQ0KPiA+IF9fYm9v
-dF9jcHVfbW9kZSB2YXJpYWJsZSBpbiBhIHdyaXRhYmxlIGFyZWE/DQo+IA0KPiBObywgdGhpcyBj
-b2RlIHdhcyBqdXN0IG5vdCB3cml0dGVuIHdpdGggWElQIGluIG1pbmQgYW5kIEknbSBjdXJyZW50
-bHkNCj4gbm8gc3VyZSBob3cgdG8gaW1wcm92ZSB0aGlzLCBnaXZlbiBob3cgZWFybHkgdGhpcyBj
-b2RlIG5lZWRzIHRvIGJlDQo+IGV4ZWN1dGVkLg0KPiANCj4gUmVnYXJkcywNCj4gTHVjYXMNCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
-bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Tue, Apr 30, 2019 at 05:15:24AM +0200, Rouven Czerwinski wrote:
+> The condition was introduced in 4e6e8f73e9 ("ARM: imx6: don't
+> execute IPU QoS setup on MX6 SX/SL"), but instead it bails at
+> the Solo, not the SX and SL.
+> 
+> The original intent was most probably to add an exception for
+> the i.MX6 Solo as well, so everything else is skipped, including
+> the SX, SL and now the UL and ULL. Fix the code to reflect this.
+> 
+> On the SX, SL, UL, ULL, this now avoids writes to memory, which
+> isn't described in the datasheets. On the S, it now configures
+> the QoS settings.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+>  arch/arm/mach-imx/imx6.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Applied, thanks
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
