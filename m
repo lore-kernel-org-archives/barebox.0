@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hOmdb-0005hs-Ip
- for barebox@lists.infradead.org; Thu, 09 May 2019 17:15:21 +0000
-Date: Thu, 9 May 2019 19:15:17 +0200
+ id 1hOyua-0008Og-T6
+ for barebox@lists.infradead.org; Fri, 10 May 2019 06:21:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190509171517.eprn3vtmli7vccsb@pengutronix.de>
-References: <20190509064200.14871-1-antonynpavlov@gmail.com>
+Date: Fri, 10 May 2019 08:21:21 +0200
+Message-Id: <20190510062135.11534-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190509064200.14871-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,56 +19,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands/hwclock: align -n option help
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 00/14] More Layerscape patches
+To: Barebox List <barebox@lists.infradead.org>
 
-On Thu, May 09, 2019 at 09:42:00AM +0300, Antony Pavlov wrote:
-> Help string for hwclock -n option isn't aligned:
-> 
->   barebox@barebox sandbox:/ help hwclock
-> 
->   hwclock - query or set the hardware clock (RTC)
-> 
->   Options:
->           -f NAME                         RTC device name (default rtc0)
->           -e VARNAME                      store RTC readout into variable VARNAME
->           -n NTPSERVER            set RTC from NTP server
->           -s ccyymmddHHMM[.SS]            set time
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  commands/hwclock.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Applied, thanks
+This contains some more features for the Layerscape support, like
+boot source detection and QSPI booting support. TQMLS1046a board support
+is improved a lot.
 
 Sascha
 
-> 
-> diff --git a/commands/hwclock.c b/commands/hwclock.c
-> index 5073618675..1b5c2cd100 100644
-> --- a/commands/hwclock.c
-> +++ b/commands/hwclock.c
-> @@ -175,7 +175,7 @@ BAREBOX_CMD_HELP_START(hwclock)
->  BAREBOX_CMD_HELP_TEXT("Options:")
->  BAREBOX_CMD_HELP_OPT ("-f NAME\t\t\t", "RTC device name (default rtc0)")
->  BAREBOX_CMD_HELP_OPT ("-e VARNAME\t\t", "store RTC readout into variable VARNAME")
-> -BAREBOX_CMD_HELP_OPT ("-n NTPSERVER\t", "set RTC from NTP server")
-> +BAREBOX_CMD_HELP_OPT ("-n NTPSERVER\t\t", "set RTC from NTP server")
->  BAREBOX_CMD_HELP_OPT ("-s ccyymmddHHMM[.SS]\t", "set time")
->  BAREBOX_CMD_HELP_END
->  
-> -- 
-> 2.20.1
-> 
-> 
+Sascha Hauer (14):
+  bbu: In bbu_register_std_file_update detect device before accessing it
+  esdhc-xload: invalidate icache before jumping to image
+  ARM: Layerscape: ls1046a: Add bootsource detection support
+  ARM: Layerscape: pblimage: Drop pbl end command
+  ARM: Layerscape: Add QSPI boot support
+  ARM: Layerscape: ls1046a: Add automatic bootsource detection xload
+    function
+  ARM: Layerscape: ls1046a: Add bbu handlers
+  ARM: Layerscape: TQMLS1046a: configure qspi divider
+  ARM: Layerscape: TQMLS1046a: Sync qspi RCW from TQ U-Boot
+  ARM: Layerscape: TQMLS1046a: print life signs when debugging
+  ARM: Layerscape: TQMLS1046a: unify pbi files
+  ARM: Layerscape: TQMLS1046a: Support booting from QSPI
+  ARM: Layerscape: TQMLS1046a: Add environment and update handlers
+  ARM: Layerscape: Add device tree compatible to image metadata
+
+ arch/arm/boards/ls1046ardb/lowlevel.c         |  3 +
+ arch/arm/boards/tqmls1046a/board.c            | 27 +++++++++
+ arch/arm/boards/tqmls1046a/lowlevel.c         | 11 +++-
+ ...mls1046a_pbi_sd.cfg => tqmls1046a_pbi.cfg} |  2 +
+ .../boards/tqmls1046a/tqmls1046a_pbi_qspi.cfg | 33 -----------
+ .../tqmls1046a_rcw_qspi_3333_5559.cfg         |  8 +--
+ arch/arm/dts/fsl-tqmls1046a-mbls10xxa.dts     | 56 +++++++++++++++++++
+ arch/arm/mach-layerscape/Makefile             |  2 +
+ arch/arm/mach-layerscape/boot.c               | 39 +++++++++++++
+ arch/arm/mach-layerscape/include/mach/bbu.h   | 22 ++++++++
+ .../mach-layerscape/include/mach/layerscape.h |  2 +
+ arch/arm/mach-layerscape/include/mach/xload.h |  4 ++
+ arch/arm/mach-layerscape/xload-qspi.c         | 37 ++++++++++++
+ arch/arm/mach-layerscape/xload.c              | 24 ++++++++
+ common/bbu.c                                  |  2 +
+ drivers/mci/imx-esdhc-pbl.c                   |  3 +
+ images/Makefile.layerscape                    | 14 +++--
+ scripts/pblimage.c                            | 36 ++++++------
+ 18 files changed, 262 insertions(+), 63 deletions(-)
+ rename arch/arm/boards/tqmls1046a/{tqmls1046a_pbi_sd.cfg => tqmls1046a_pbi.cfg} (94%)
+ delete mode 100644 arch/arm/boards/tqmls1046a/tqmls1046a_pbi_qspi.cfg
+ create mode 100644 arch/arm/mach-layerscape/boot.c
+ create mode 100644 arch/arm/mach-layerscape/include/mach/bbu.h
+ create mode 100644 arch/arm/mach-layerscape/xload-qspi.c
+ create mode 100644 arch/arm/mach-layerscape/xload.c
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
