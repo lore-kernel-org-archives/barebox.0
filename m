@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hOyua-0008Oy-Sf
- for barebox@lists.infradead.org; Fri, 10 May 2019 06:21:50 +0000
+ id 1hOyua-0008Om-SQ
+ for barebox@lists.infradead.org; Fri, 10 May 2019 06:21:51 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 10 May 2019 08:21:35 +0200
-Message-Id: <20190510062135.11534-15-s.hauer@pengutronix.de>
+Date: Fri, 10 May 2019 08:21:29 +0200
+Message-Id: <20190510062135.11534-9-s.hauer@pengutronix.de>
 In-Reply-To: <20190510062135.11534-1-s.hauer@pengutronix.de>
 References: <20190510062135.11534-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,61 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/14] ARM: Layerscape: Add device tree compatible to image
- metadata
+Subject: [PATCH 08/14] ARM: Layerscape: TQMLS1046a: configure qspi divider
 To: Barebox List <barebox@lists.infradead.org>
-
-Enrich the image metadata with the device tree compatible string
-the image supports.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/ls1046ardb/lowlevel.c | 3 +++
- arch/arm/boards/tqmls1046a/lowlevel.c | 3 +++
- 2 files changed, 6 insertions(+)
+ arch/arm/boards/tqmls1046a/board.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/boards/ls1046ardb/lowlevel.c b/arch/arm/boards/ls1046ardb/lowlevel.c
-index 6de16063a7..0c95fbb035 100644
---- a/arch/arm/boards/ls1046ardb/lowlevel.c
-+++ b/arch/arm/boards/ls1046ardb/lowlevel.c
-@@ -3,6 +3,7 @@
- #include <common.h>
- #include <debug_ll.h>
- #include <ddr_spd.h>
-+#include <image-metadata.h>
- #include <platform_data/mmc-esdhc-imx.h>
- #include <i2c/i2c-early.h>
- #include <soc/fsl/fsl_ddr_sdram.h>
-@@ -201,6 +202,8 @@ static noinline __noreturn void ls1046ardb_r_entry(unsigned long memsize)
- 	debug_ll_init();
- 	ls1046a_init_lowlevel();
+diff --git a/arch/arm/boards/tqmls1046a/board.c b/arch/arm/boards/tqmls1046a/board.c
+index 4fc8e76d65..caf0f7ce38 100644
+--- a/arch/arm/boards/tqmls1046a/board.c
++++ b/arch/arm/boards/tqmls1046a/board.c
+@@ -32,6 +32,9 @@ static int tqmls1046a_postcore_init(void)
+ 	/* Configure iomux for i2c4 */
+ 	out_be32(&scfg->rcwpmuxcr0, 0x3300);
  
-+	IMD_USED_OF(fsl_ls1046a_rdb);
++	/* divide CGA1/CGA2 PLL by 24 to get QSPI interface clock */
++	out_be32(&scfg->qspi_cfg, 0x30100000);
 +
- 	i2c = ls1046_i2c_init(IOMEM(LSCH2_I2C1_BASE_ADDR));
- 	ret = spd_read_eeprom(i2c, i2c_fsl_xfer, 0x51, &spd_eeprom);
- 	if (ret) {
-diff --git a/arch/arm/boards/tqmls1046a/lowlevel.c b/arch/arm/boards/tqmls1046a/lowlevel.c
-index 2d0223ce89..dc0e179694 100644
---- a/arch/arm/boards/tqmls1046a/lowlevel.c
-+++ b/arch/arm/boards/tqmls1046a/lowlevel.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0+
- #include <common.h>
- #include <debug_ll.h>
-+#include <image-metadata.h>
- #include <platform_data/mmc-esdhc-imx.h>
- #include <soc/fsl/fsl_ddr_sdram.h>
- #include <soc/fsl/immap_lsch2.h>
-@@ -253,6 +254,8 @@ static noinline __noreturn void tqmls1046a_r_entry(void)
- 	udelay(500);
- 	putc_ll('>');
+ 	return 0;
+ }
  
-+	IMD_USED_OF(fsl_tqmls1046a_mbls10xxa);
-+
- 	fsl_ddr_set_memctl_regs(&ddrc[0], 0);
- 
- 	ls1046a_errata_post_ddr();
 -- 
 2.20.1
 
