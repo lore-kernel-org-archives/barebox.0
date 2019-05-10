@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hOyua-0008Oo-T3
- for barebox@lists.infradead.org; Fri, 10 May 2019 06:21:46 +0000
+ id 1hOyua-0008Oe-ST
+ for barebox@lists.infradead.org; Fri, 10 May 2019 06:21:47 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 10 May 2019 08:21:28 +0200
-Message-Id: <20190510062135.11534-8-s.hauer@pengutronix.de>
+Date: Fri, 10 May 2019 08:21:23 +0200
+Message-Id: <20190510062135.11534-3-s.hauer@pengutronix.de>
 In-Reply-To: <20190510062135.11534-1-s.hauer@pengutronix.de>
 References: <20190510062135.11534-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,47 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/14] ARM: Layerscape: ls1046a: Add bbu handlers
+Subject: [PATCH 02/14] esdhc-xload: invalidate icache before jumping to image
 To: Barebox List <barebox@lists.infradead.org>
-
-The barebox images can simply be written to the partitions, so we can
-use bbu_register_std_file_update() for updating to MMC and QSPI.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-layerscape/include/mach/bbu.h | 22 +++++++++++++++++++++
- 1 file changed, 22 insertions(+)
- create mode 100644 arch/arm/mach-layerscape/include/mach/bbu.h
+ drivers/mci/imx-esdhc-pbl.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/mach-layerscape/include/mach/bbu.h b/arch/arm/mach-layerscape/include/mach/bbu.h
-new file mode 100644
-index 0000000000..1ea0cbb11f
---- /dev/null
-+++ b/arch/arm/mach-layerscape/include/mach/bbu.h
-@@ -0,0 +1,22 @@
-+#ifndef __MACH_LAYERSCAPE_BBU_H
-+#define __MACH_LAYERSCAPE_BBU_H
+diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
+index 2bfe5c2f37..0251757a2a 100644
+--- a/drivers/mci/imx-esdhc-pbl.c
++++ b/drivers/mci/imx-esdhc-pbl.c
+@@ -16,6 +16,7 @@
+ #include <mci.h>
+ #include <linux/sizes.h>
+ #include <asm-generic/sections.h>
++#include <asm/cache.h>
+ #include <mach/xload.h>
+ #ifdef CONFIG_ARCH_IMX
+ #include <mach/atf.h>
+@@ -457,6 +458,8 @@ int ls1046a_esdhc_start_image(unsigned long r0, unsigned long r1, unsigned long
+ 		return ret;
+ 	}
+ 
++	icache_invalidate();
 +
-+#include <bbu.h>
-+
-+static inline int ls1046a_bbu_mmc_register_handler(const char *name,
-+						   const char *devicefile,
-+						   unsigned long flags)
-+{
-+	return bbu_register_std_file_update(name, flags, devicefile,
-+					    filetype_layerscape_image);
-+}
-+
-+static inline int ls1046a_bbu_qspi_register_handler(const char *name,
-+						    const char *devicefile,
-+						    unsigned long flags)
-+{
-+	return bbu_register_std_file_update(name, flags, devicefile,
-+					    filetype_layerscape_qspi_image);
-+}
-+
-+#endif /* __MACH_LAYERSCAPE_BBU_H */
-\ No newline at end of file
+ 	printf("Starting barebox\n");
+ 
+ 	barebox(r0, r1, r2);
 -- 
 2.20.1
 
