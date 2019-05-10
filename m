@@ -1,14 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hOyuh-000097-Bt
- for barebox@lists.infradead.org; Fri, 10 May 2019 06:21:57 +0000
+ id 1hOzch-00089k-2R
+ for barebox@lists.infradead.org; Fri, 10 May 2019 07:07:17 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <sha@pengutronix.de>) id 1hOzcf-0004GR-8c
+ for barebox@lists.infradead.org; Fri, 10 May 2019 09:07:13 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.89)
+ (envelope-from <sha@pengutronix.de>) id 1hOzce-0001sK-W6
+ for barebox@lists.infradead.org; Fri, 10 May 2019 09:07:13 +0200
+Date: Fri, 10 May 2019 09:07:12 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 10 May 2019 08:21:32 +0200
-Message-Id: <20190510062135.11534-12-s.hauer@pengutronix.de>
-In-Reply-To: <20190510062135.11534-1-s.hauer@pengutronix.de>
-References: <20190510062135.11534-1-s.hauer@pengutronix.de>
+Message-ID: <20190510070712.mmcy7sbriyisgzp7@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,99 +28,221 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/14] ARM: Layerscape: TQMLS1046a: unify pbi files
+Subject: v2019.05.0
 To: Barebox List <barebox@lists.infradead.org>
 
-This unifies the two different pbi files. With our approach for QSPI
-booting differences in the pbi files are not necessary:
+Hi All,
 
-- We do not do execute in place for QSPI, so we do not need different
-  image execution addresses
-- Setting up the QSPI clock doesn't hurt even for SD boot
+v2019.05.0 is out. This time we gained initial Layerscape support (for
+the LS1046a) and initial very basic STM32MP1 support. What I like best
+for this release is the improved pstore support. With pstore it's
+possible to access the last kernel log, possibly including oopses and
+panics. Also the barebox log is accessible from the running kernel.
+pstore has been present before, but with this release we got the device
+tree bindings, so now it's only a matter of putting the right thing
+into the device tree to use pstore. Give it a try, it's nice ;)
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- ...mls1046a_pbi_sd.cfg => tqmls1046a_pbi.cfg} |  2 ++
- .../boards/tqmls1046a/tqmls1046a_pbi_qspi.cfg | 33 -------------------
- images/Makefile.layerscape                    |  4 +--
- 3 files changed, 4 insertions(+), 35 deletions(-)
- rename arch/arm/boards/tqmls1046a/{tqmls1046a_pbi_sd.cfg => tqmls1046a_pbi.cfg} (94%)
- delete mode 100644 arch/arm/boards/tqmls1046a/tqmls1046a_pbi_qspi.cfg
+Sascha
 
-diff --git a/arch/arm/boards/tqmls1046a/tqmls1046a_pbi_sd.cfg b/arch/arm/boards/tqmls1046a/tqmls1046a_pbi.cfg
-similarity index 94%
-rename from arch/arm/boards/tqmls1046a/tqmls1046a_pbi_sd.cfg
-rename to arch/arm/boards/tqmls1046a/tqmls1046a_pbi.cfg
-index 7ac1398123..0a04afa770 100644
---- a/arch/arm/boards/tqmls1046a/tqmls1046a_pbi_sd.cfg
-+++ b/arch/arm/boards/tqmls1046a/tqmls1046a_pbi.cfg
-@@ -1,3 +1,5 @@
-+#Configure QSPI clock
-+0957015c 40100000
- #Configure Scratch register
- 09570600 00000000
- 09570604 10000000
-diff --git a/arch/arm/boards/tqmls1046a/tqmls1046a_pbi_qspi.cfg b/arch/arm/boards/tqmls1046a/tqmls1046a_pbi_qspi.cfg
-deleted file mode 100644
-index 32865ca2d0..0000000000
---- a/arch/arm/boards/tqmls1046a/tqmls1046a_pbi_qspi.cfg
-+++ /dev/null
-@@ -1,33 +0,0 @@
--#Configure QSPI clock
--0957015c 40100000
--#Configure Scratch register
--09570600 00000000
--09570604 40010000
--#Disable CCI barrier tranaction
--09570178 0000e010
--09180000 00000008
--#USB PHY frequency sel
--09570418 0000009c
--0957041c 0000009c
--09570420 0000009c
--#Serdes SATA
--09eb1300 80104e20
--09eb08dc 00502880
--#PEX gen3 link (errata A-010477)
--09570158 00000300
--89400890 01048000
--89500890 01048000
--89600890 01048000
--#PEX gen3 equalization preset values (errata A-008851)
--894008bc 01000000
--89400154 47474747
--89400158 47474747
--894008bc 00000000
--895008bc 01000000
--89500154 47474747
--89500158 47474747
--895008bc 00000000
--896008bc 01000000
--89600154 47474747
--89600158 47474747
--896008bc 00000000
-diff --git a/images/Makefile.layerscape b/images/Makefile.layerscape
-index 38e6648729..0f892aeb62 100644
---- a/images/Makefile.layerscape
-+++ b/images/Makefile.layerscape
-@@ -48,12 +48,12 @@ $(obj)/barebox-tqmls1046a-2nd.image: $(obj)/start_tqmls1046a.pblb
- 
- $(obj)/barebox-tqmls1046a-sd.image: $(obj)/start_tqmls1046a.pblb \
- 		$(board)/tqmls1046a/tqmls1046a_rcw_sd_3333_5559.cfg \
--		$(board)/tqmls1046a/tqmls1046a_pbi_sd.cfg
-+		$(board)/tqmls1046a/tqmls1046a_pbi.cfg
- 	$(call if_changed,lspbl_image)
- 
- $(obj)/barebox-tqmls1046a-qspi.image: $(obj)/start_tqmls1046a.pblb \
- 		$(board)/tqmls1046a/tqmls1046a_rcw_qspi_3333_5559.cfg \
--		$(board)/tqmls1046a/tqmls1046a_pbi_qspi.cfg
-+		$(board)/tqmls1046a/tqmls1046a_pbi.cfg
- 	$(call if_changed,lspbl_image)
- 
- image-$(CONFIG_MACH_TQMLS1046A) += barebox-tqmls1046a-sd.image \
+-------------------------8<--------------------------
+
+Alexander Kurz (4):
+      ARM Kindle3 defconfig: enable MMU
+      ARM Kindle3: switch on pull-ups for fiveway device
+      ARM: i.MX: extend kindle-mx50 defconfig
+      ARM: Makefile.imx: group and sort board entries
+
+Alexander Shiyan (1):
+      drivers: video: Fix parsing oftree timings
+
+Andrey Smirnov (56):
+      libfile: Make failure path of open_and_lseek() consistent
+      common: Always return enum filetype in file_name_detect_type_offset()
+      MIPS: ath79: Use errno to get error code from open_and_lseek()
+      ARM: i.MX: bbu: Fix variable type in imx_bbu_external_nand_update()
+      ARM: i.MX: bbu: Fix lseek error check in imx_bbu_external_nand_update()
+      ARM: i.MX: bbu: Fix lseek error check in imx_bbu_internal_v2_write_nand_dbbt()
+      ARM: i.MX: bbu: Fix variable type in imx_bbu_internal_v2_write_nand_dbbt()
+      bpkfs: Fix lseek error check in bpkfs_probe()
+      uimage: Fix lseek error check in uimage_verify()
+      uimage: Fix lseek error check in uimage_load()
+      uimage: Fix lseek error check in uimage_load_to_buf()
+      state: Fix lseek error check in state_backend_bucket_direct_read()
+      state: Fix lseek error check in state_backend_bucket_direct_write()
+      state: Fix lseek error check in state_mtd_peb_read()
+      state: Fix lseek error check in state_mtd_peb_write()
+      commands: loadxy: Make use of open_and_lseek()
+      usb: storage: Simplify memory allocation in usb_stor_probe()
+      usb: storage: Replace custom debug tracing with dev_dbg
+      usb: storage: Don't use "unsigned long" for 32-bit values
+      usb: storage: Make usb_stor_read_capacity() a standalone function
+      usb: storage: Make usb_stor_inquiry() a standalone function
+      usb: storage: Make usb_stor_test_unit_ready() a standalone function
+      usb: storage: Make usb_stor_read_10() a standalone function
+      usb: storage: Make usb_stor_write_10() a standalone function
+      usb: storage: Drop extra call to transport in usb_stor_write_10()
+      usb: storage: Share code for READ(10) and WRITE(10)
+      usb: storage: Make usb_stor_request_sense() a standalone function
+      usb: storage: Remove unused variables
+      usb: storage: Drop struct SCSI_cmd_block
+      usb: hub: Do not include <scsi.h>
+      ata: ahci: Do not include <scsi.h>
+      usb: storage: Drop unused fields in struct us_data
+      usb: storage: Drop unused us_blkdev_list
+      usb: storage: Introduce usb_stor_transport()
+      usb: storage: Use put_unaligned_be* helpers
+      usb: Drop usb_disable_asynch()
+      usb: storage: Drop unnecessary check in usb_stor_blk_io()
+      usb: storage: Drop needless macro
+      usb: storage: Use simple boolean to speficy read vs. write operation
+      usb: storage: Simplify I/O loop in usb_stor_blk_io()
+      usb: storage: Drop unnecessary assignment
+      usb: storage: Inline usb_limit_blk_cnt()
+      commands: loadb: Make use of open_and_lseek()
+      fs: ramfs: Drop unused 'handle' filed from struct ramfs_inode
+      fs: ramfs: Drop unused 'chunks' conter
+      fs: ramfs: Drop unnecessary check in ramfs_mknod()
+      ARM: zii-vf610-dev: Add ZII SPB4 board
+      ARM: zii-vf610-dev: Switch SCU4 AIB board to use upstream DTS
+      commands: memcpy: Make use of write_full()
+      commands: memcpy: Make use of min_t()
+      libfile: Make use of write_full() in copy_file()
+      ARM: i.MX7: Make sure CNTFRQ is initialized early enough
+      ARM: i.MX8MQ: Don't use cpu_is_mx8mq() at core_initcall level
+      usb: dwc3: Toggle GCTL.CORESOFTRESET as a first step
+      ARM: zii-common: introduce RDU part-number based fixup abstraction
+      ARM: rdu2: patch DSA config
+
+Bastian Krause (1):
+      common: extend BOOTM_FITIMAGE_SIGNATURE help text
+
+Christian Hemp (1):
+      ARM: dts: mx8mq-phytec-phycore-som: Add watchdog
+
+Greg Hackmann (1):
+      pstore/ram: add Device Tree bindings
+
+Ian Abbott (1):
+      clk: socfpga: fix compiler warnings for Cyclone5
+
+Juergen Borleis (1):
+      pstore/doc: fix layout
+
+Kees Cook (9):
+      ramoops: use DT reserved-memory bindings
+      pstore: Make ramoops_init_przs generic for other prz arrays
+      pstore/ram: Do not use stack VLA for parity workspace
+      pstore: improve error report for failed setup
+      pstore/ram: Clarify resource reservation labels
+      pstore: Extract common arguments into structure
+      pstore: Switch pstore_mkfile to pass record
+      pstore: Replace arguments for read() API
+      pstore: Replace arguments for write() API
+
+Lucas Stach (6):
+      ARM: add Zii common directory and move switch reset command
+      ARM: zii-common: add support for switch reset on RDU1
+      ARM: zii-common: fetch network config from SP
+      ARM: rdu2: Add p/n based fixups for touchscreen and display panel
+      ARM: zii-common: reuse i210 config check for RDU3
+      ARM: zii-imx8mq-dev: select ZII_COMMON
+
+Masahiro Yamada (2):
+      linux/kernel.h: split *_MAX and *_MIN macros into <linux/limits.h>
+      treewide: surround Kconfig file paths with double quotes
+
+Michael Tretter (5):
+      ARM: zynqmp: move PAYLOAD_ARG_CNT to firmware header
+      clk: add ZynqMP clock driver
+      ARM: zynqmp: switch to firmware clock driver
+      commands: unify newlines for options
+      ARM: aarch64: do not use 32bit optimized find bit functions
+
+Philipp Zabel (4):
+      ramoops: probe from device tree if OFTREE is enabled
+      pstore: add console support
+      pstore: pass ramoops configuration to kernel via device tree
+      pstore: ramoops: allow zapping invalid buffers in read-only mode
+
+Rouven Czerwinski (1):
+      ARM: imx: disable IPU QoS setup for correct SoCs
+
+Sascha Hauer (61):
+      clk: clk-composite: return parent_rate if no rate clk
+      clk: parent_names should be const
+      clk: export clk_gate_is_enabled()
+      clk: Make CLK_IGNORE_UNUSED generic
+      clk: Support CLK_IS_CRITICAL flag
+      clk: divider: pass divider flags
+      clk: divider: Support CLK_DIVIDER_READ_ONLY flag
+      clk: mux: Support mux specific flags
+      clk: mux: Support CLK_MUX_READ_ONLY flag
+      clk: mux: Support CLK_SET_RATE_NO_REPARENT flag
+      ARM: stm32mp1: Add clk driver
+      ARM: stm32mp1: Add serial driver
+      clocksource: Enable architected timer support for CPU_V7
+      net: phy: Add PHY_ID_MATCH_* macros
+      net: phy: Add register access helper functions for phys
+      realtek phy driver
+      ARM: Add initial STM32MP1 support
+      pbl multiimage: Allow to check image sizes
+      mci: imx-esdhc: Actually enable cache snooping
+      Add Freescale QUICC Engine firmware support
+      net: Add Freescale FMan ethernet support
+      ARM: Add arm64 pbl udelay
+      esdhc-xload: Add support for Layerscape
+      watchdog: imx: Add register accessor functions
+      watchdog: imx: Add big endian register access support
+      scripts: Add Layerscape image tool
+      i2c: i.MX: Add layerscape support
+      ddr: fsl: Add Freescale ddr driver
+      ARM: Add basic Layerscape support
+      clk: Add Layerscape clk support
+      ARM: Layerscape: Add LS1046a RDB board support
+      ARM: Layerscape: Add TQ TQMLS1046a board support
+      ARM: Add layerscape_defconfig
+      ARM: semihosting: Fix function prototype
+      treewide: Make locally used functions static
+      treewide: Add missing includes
+      ARM: i.MX: external-nand-boot: remove unused i.MX21 entry
+      ARM: boards: Harmonize barebox_arm_reset_vector() prototype
+      ARM: sha256: Remove unused functions
+      ARM: sha256: Remove unused header file
+      ARM: PXA: Provide prototype for pxa_clear_reset_source()
+      bus: mvebu-mbus: Add missing whitespace
+      mfd: twl-core: Add missing prototype for twlcore_get()
+      fs: squashfs: Remove unused function
+      dts: update to v5.1-rc1
+      dts: update to v5.1-rc2
+      dts: update to v5.1-rc3
+      Merge branch 'for-next/dts'
+      Merge branch 'for-next/imx'
+      Merge branch 'for-next/layerscape'
+      Merge branch 'for-next/lseek'
+      Merge branch 'for-next/misc'
+      Merge branch 'for-next/net'
+      Merge branch 'for-next/pstore'
+      Merge branch 'for-next/stm32'
+      Merge branch 'for-next/usb-storage'
+      Merge branch 'for-next/warnings'
+      Merge branch 'for-next/zynqmp'
+      hab: habv4_need_rng_software_self_test is needed without hab support
+      hab/caam: Fix compilation of caam driver when hab is disabled
+      Release v2019.05.0
+
+Thomas Haemmerle (3):
+      of: populate "/firmware" while populating device tree
+      ARM: zynqmp: populate zynqmp_firmware dt node
+      ARM: zynqmp: add firmware DT node
+
+Tomaz Solc (1):
+      ARM: rpi: add board revision for Compute Module 3+
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
