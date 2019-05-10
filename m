@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hOyua-0008Os-SP
+ id 1hOyua-0008Oo-T3
  for barebox@lists.infradead.org; Fri, 10 May 2019 06:21:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 10 May 2019 08:21:31 +0200
-Message-Id: <20190510062135.11534-11-s.hauer@pengutronix.de>
+Date: Fri, 10 May 2019 08:21:28 +0200
+Message-Id: <20190510062135.11534-8-s.hauer@pengutronix.de>
 In-Reply-To: <20190510062135.11534-1-s.hauer@pengutronix.de>
 References: <20190510062135.11534-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,38 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/14] ARM: Layerscape: TQMLS1046a: print life signs when
- debugging
+Subject: [PATCH 07/14] ARM: Layerscape: ls1046a: Add bbu handlers
 To: Barebox List <barebox@lists.infradead.org>
 
-Do the UART initialization after the SoC specific lowlevel setup and
-print the usual '>' when early debuging is enabled. To let this go out
-properly it seems we have to wait a small amount of time beforehand.
+The barebox images can simply be written to the partitions, so we can
+use bbu_register_std_file_update() for updating to MMC and QSPI.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/tqmls1046a/lowlevel.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm/mach-layerscape/include/mach/bbu.h | 22 +++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+ create mode 100644 arch/arm/mach-layerscape/include/mach/bbu.h
 
-diff --git a/arch/arm/boards/tqmls1046a/lowlevel.c b/arch/arm/boards/tqmls1046a/lowlevel.c
-index 88744a8f9b..9815925599 100644
---- a/arch/arm/boards/tqmls1046a/lowlevel.c
-+++ b/arch/arm/boards/tqmls1046a/lowlevel.c
-@@ -246,9 +246,13 @@ static noinline __noreturn void tqmls1046a_r_entry(void)
- 				  __dtb_fsl_tqmls1046a_mbls10xxa_start);
- 
- 	arm_cpu_lowlevel_init();
--	debug_ll_init();
- 	ls1046a_init_lowlevel();
- 
-+	debug_ll_init();
+diff --git a/arch/arm/mach-layerscape/include/mach/bbu.h b/arch/arm/mach-layerscape/include/mach/bbu.h
+new file mode 100644
+index 0000000000..1ea0cbb11f
+--- /dev/null
++++ b/arch/arm/mach-layerscape/include/mach/bbu.h
+@@ -0,0 +1,22 @@
++#ifndef __MACH_LAYERSCAPE_BBU_H
++#define __MACH_LAYERSCAPE_BBU_H
 +
-+	udelay(500);
-+	putc_ll('>');
++#include <bbu.h>
 +
- 	fsl_ddr_set_memctl_regs(&ddrc[0], 0);
- 
- 	ls1046a_errata_post_ddr();
++static inline int ls1046a_bbu_mmc_register_handler(const char *name,
++						   const char *devicefile,
++						   unsigned long flags)
++{
++	return bbu_register_std_file_update(name, flags, devicefile,
++					    filetype_layerscape_image);
++}
++
++static inline int ls1046a_bbu_qspi_register_handler(const char *name,
++						    const char *devicefile,
++						    unsigned long flags)
++{
++	return bbu_register_std_file_update(name, flags, devicefile,
++					    filetype_layerscape_qspi_image);
++}
++
++#endif /* __MACH_LAYERSCAPE_BBU_H */
+\ No newline at end of file
 -- 
 2.20.1
 
