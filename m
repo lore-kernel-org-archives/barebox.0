@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hOyua-0008Oi-Sd
- for barebox@lists.infradead.org; Fri, 10 May 2019 06:21:55 +0000
+ id 1hOyuh-000097-Bt
+ for barebox@lists.infradead.org; Fri, 10 May 2019 06:21:57 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 10 May 2019 08:21:25 +0200
-Message-Id: <20190510062135.11534-5-s.hauer@pengutronix.de>
+Date: Fri, 10 May 2019 08:21:32 +0200
+Message-Id: <20190510062135.11534-12-s.hauer@pengutronix.de>
 In-Reply-To: <20190510062135.11534-1-s.hauer@pengutronix.de>
 References: <20190510062135.11534-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,72 +21,96 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/14] ARM: Layerscape: pblimage: Drop pbl end command
+Subject: [PATCH 11/14] ARM: Layerscape: TQMLS1046a: unify pbi files
 To: Barebox List <barebox@lists.infradead.org>
 
-The PBL image tool includes two commands into the image. These are executed
-after the initial image has been uploaded but before the final CRC
-check. These commands are "flush" and "wait". According to the reference
-manual a "flush" command can be used to read back the the value just
-written to CCSR register space in order to let the previous write
-complete. This seems unnecessary as the last write was never to the CCSR
-register space. The "wait" command also seems unnecessary as the time
-parameter is 0. As all this end_cmd stuff goes back to the PowerPC times
-and everything still seems to work on Arm let's just remove it.
+This unifies the two different pbi files. With our approach for QSPI
+booting differences in the pbi files are not necessary:
+
+- We do not do execute in place for QSPI, so we do not need different
+  image execution addresses
+- Setting up the QSPI clock doesn't hurt even for SD boot
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/pblimage.c | 19 -------------------
- 1 file changed, 19 deletions(-)
+ ...mls1046a_pbi_sd.cfg => tqmls1046a_pbi.cfg} |  2 ++
+ .../boards/tqmls1046a/tqmls1046a_pbi_qspi.cfg | 33 -------------------
+ images/Makefile.layerscape                    |  4 +--
+ 3 files changed, 4 insertions(+), 35 deletions(-)
+ rename arch/arm/boards/tqmls1046a/{tqmls1046a_pbi_sd.cfg => tqmls1046a_pbi.cfg} (94%)
+ delete mode 100644 arch/arm/boards/tqmls1046a/tqmls1046a_pbi_qspi.cfg
 
-diff --git a/scripts/pblimage.c b/scripts/pblimage.c
-index 6e83c523e5..56256260c8 100644
---- a/scripts/pblimage.c
-+++ b/scripts/pblimage.c
-@@ -53,7 +53,6 @@ static int in_fd;
- static uint32_t pbl_cmd_initaddr;
- static uint32_t pbi_crc_cmd1;
- static uint32_t pbi_crc_cmd2;
--static uint32_t pbl_end_cmd[4];
+diff --git a/arch/arm/boards/tqmls1046a/tqmls1046a_pbi_sd.cfg b/arch/arm/boards/tqmls1046a/tqmls1046a_pbi.cfg
+similarity index 94%
+rename from arch/arm/boards/tqmls1046a/tqmls1046a_pbi_sd.cfg
+rename to arch/arm/boards/tqmls1046a/tqmls1046a_pbi.cfg
+index 7ac1398123..0a04afa770 100644
+--- a/arch/arm/boards/tqmls1046a/tqmls1046a_pbi_sd.cfg
++++ b/arch/arm/boards/tqmls1046a/tqmls1046a_pbi.cfg
+@@ -1,3 +1,5 @@
++#Configure QSPI clock
++0957015c 40100000
+ #Configure Scratch register
+ 09570600 00000000
+ 09570604 10000000
+diff --git a/arch/arm/boards/tqmls1046a/tqmls1046a_pbi_qspi.cfg b/arch/arm/boards/tqmls1046a/tqmls1046a_pbi_qspi.cfg
+deleted file mode 100644
+index 32865ca2d0..0000000000
+--- a/arch/arm/boards/tqmls1046a/tqmls1046a_pbi_qspi.cfg
++++ /dev/null
+@@ -1,33 +0,0 @@
+-#Configure QSPI clock
+-0957015c 40100000
+-#Configure Scratch register
+-09570600 00000000
+-09570604 40010000
+-#Disable CCI barrier tranaction
+-09570178 0000e010
+-09180000 00000008
+-#USB PHY frequency sel
+-09570418 0000009c
+-0957041c 0000009c
+-09570420 0000009c
+-#Serdes SATA
+-09eb1300 80104e20
+-09eb08dc 00502880
+-#PEX gen3 link (errata A-010477)
+-09570158 00000300
+-89400890 01048000
+-89500890 01048000
+-89600890 01048000
+-#PEX gen3 equalization preset values (errata A-008851)
+-894008bc 01000000
+-89400154 47474747
+-89400158 47474747
+-894008bc 00000000
+-895008bc 01000000
+-89500154 47474747
+-89500158 47474747
+-895008bc 00000000
+-896008bc 01000000
+-89600154 47474747
+-89600158 47474747
+-896008bc 00000000
+diff --git a/images/Makefile.layerscape b/images/Makefile.layerscape
+index 38e6648729..0f892aeb62 100644
+--- a/images/Makefile.layerscape
++++ b/images/Makefile.layerscape
+@@ -48,12 +48,12 @@ $(obj)/barebox-tqmls1046a-2nd.image: $(obj)/start_tqmls1046a.pblb
  
- enum arch {
- 	ARCH_ARM,
-@@ -210,16 +209,6 @@ static void pbl_parser(char *name)
- static void add_end_cmd(void)
- {
- 	uint32_t crc32_pbl;
--	int i;
--	unsigned char *p = (unsigned char *)&pbl_end_cmd;
--
--	for (i = 0; i < 4; i++)
--		pbl_end_cmd[i] = htobe32(pbl_end_cmd[i]);
--
--	for (i = 0; i < 16; i++) {
--		*pmem_buf++ = *p++;
--		pbl_size++;
--	}
+ $(obj)/barebox-tqmls1046a-sd.image: $(obj)/start_tqmls1046a.pblb \
+ 		$(board)/tqmls1046a/tqmls1046a_rcw_sd_3333_5559.cfg \
+-		$(board)/tqmls1046a/tqmls1046a_pbi_sd.cfg
++		$(board)/tqmls1046a/tqmls1046a_pbi.cfg
+ 	$(call if_changed,lspbl_image)
  
- 	/* Add PBI CRC command. */
- 	*pmem_buf++ = 0x08;
-@@ -297,18 +286,10 @@ static int pblimage_check_params(void)
- 		pbl_cmd_initaddr = loadaddr & PBL_ADDR_24BIT_MASK;
- 		pbl_cmd_initaddr |= PBL_ACS_CONT_CMD;
- 		pbl_cmd_initaddr += image_size;
--		pbl_end_cmd[0] = 0x09610000;
--		pbl_end_cmd[1] = 0x00000000;
--		pbl_end_cmd[2] = 0x096100c0;
--		pbl_end_cmd[3] = 0x00000000;
- 	} else {
- 		pbi_crc_cmd1 = 0x13;
- 		pbi_crc_cmd2 = 0x80;
- 		pbl_cmd_initaddr = 0x82000000;
--		pbl_end_cmd[0] = 0x091380c0;
--		pbl_end_cmd[1] = 0x00000000;
--		pbl_end_cmd[2] = 0x091380c0;
--		pbl_end_cmd[3] = 0x00000000;
- 	}
+ $(obj)/barebox-tqmls1046a-qspi.image: $(obj)/start_tqmls1046a.pblb \
+ 		$(board)/tqmls1046a/tqmls1046a_rcw_qspi_3333_5559.cfg \
+-		$(board)/tqmls1046a/tqmls1046a_pbi_qspi.cfg
++		$(board)/tqmls1046a/tqmls1046a_pbi.cfg
+ 	$(call if_changed,lspbl_image)
  
- 	next_pbl_cmd = pbl_cmd_initaddr;
+ image-$(CONFIG_MACH_TQMLS1046A) += barebox-tqmls1046a-sd.image \
 -- 
 2.20.1
 
