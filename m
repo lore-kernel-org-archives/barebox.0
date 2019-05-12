@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-eopbgr820089.outbound.protection.outlook.com
- ([40.107.82.89] helo=NAM01-SN1-obe.outbound.protection.outlook.com)
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hQMZZ-0005D0-JO
- for barebox@lists.infradead.org; Tue, 14 May 2019 01:49:43 +0000
-From: Cory Tusar <Cory.Tusar@zii.aero>
-Date: Tue, 14 May 2019 01:49:32 +0000
-Message-ID: <20190514014927.GD31272@zii.aero>
-References: <20190513235908.18693-1-andrew.smirnov@gmail.com>
-In-Reply-To: <20190513235908.18693-1-andrew.smirnov@gmail.com>
-Content-Language: en-US
-Content-ID: <2BCDA008C7DD99449A90D9DE822D1F87@namprd12.prod.outlook.com>
+ id 1hPwml-00074C-A3
+ for barebox@lists.infradead.org; Sun, 12 May 2019 22:17:36 +0000
+Received: by mail-ot1-x32a.google.com with SMTP id g18so9817002otj.11
+ for <barebox@lists.infradead.org>; Sun, 12 May 2019 15:17:34 -0700 (PDT)
 MIME-Version: 1.0
+From: Geordan Neukum <gneukum1@gmail.com>
+Date: Sun, 12 May 2019 22:17:19 +0000
+Message-ID: <CA+T6rvHH7Nd+xTAch5tQqJ6Y5tKKWHcfGjGuDp9BYJEjOvrxBA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,35 +21,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] serdev: Do not call .receive_buf() callback recursively
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: distclean removing LICENSES .gitignores
+To: barebox@lists.infradead.org
 
-On Mon, May 13, 2019 at 04:59:08PM -0700, Andrey Smirnov wrote:
-> Code implementing .receive_buf() callback can potentially call
-> serdev_device_write(), which will call serdev_device_poller(). We need
-> to make sure that such a call is a no-op in order to prevent
-> corrupting shared data buffer as well as breaking .receive_buf
-> callback that most likely does not expect that to happen.
->
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+When on the master branch, I noticed that running a "make distclean"
+will remove:
 
-Tested-by: Cory Tusar <cory.tusar@zii.aero>
+    - LICENSES/exceptions/.gitignore
+
+    - LICENSES/other/.gitignore
 
 
---
-Cory Tusar
-Senior Software Engineer
-Zodiac Inflight Innovations
-2929 E Imperial Hwy, Suite 170
-Brea, CA 92821
-(714) 203-0519
+It looks like this is due to matching the pattern '-o size 0' in the
+top-level barebox makefile under the distclean target.
 
-www.safran-aerosystems.com
+Is this the desired behavior? If not, I can go ahead and submit a
+patch that cleans up that target.
 
-________________________________
+Thanks,
+Geordan
 
-This email and any files transmitted with it are confidential & proprietary to Zodiac Inflight Innovations. This information is intended solely for the use of the individual or entity to which it is addressed. Access or transmittal of the information contained in this e-mail, in full or in part, to any other organization or persons is not authorized.
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
