@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hQ9tf-0001ZY-AZ
- for barebox@lists.infradead.org; Mon, 13 May 2019 12:17:36 +0000
-Date: Mon, 13 May 2019 14:17:33 +0200
+ id 1hQ9uV-0001fE-LJ
+ for barebox@lists.infradead.org; Mon, 13 May 2019 12:18:29 +0000
+Date: Mon, 13 May 2019 14:18:25 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190513121733.ltfzf2nn3opsw4b7@pengutronix.de>
-References: <1557540308-10843-1-git-send-email-yamada.masahiro@socionext.com>
+Message-ID: <20190513121825.zpzps2jf55ehkd6l@pengutronix.de>
+References: <1557540745-11523-1-git-send-email-yamada.masahiro@socionext.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1557540308-10843-1-git-send-email-yamada.masahiro@socionext.com>
+In-Reply-To: <1557540745-11523-1-git-send-email-yamada.masahiro@socionext.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +22,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arch: add KBUILD_DEFCONFIG to allow "make defconfig"
+Subject: Re: [PATCH] .gitignore: import some updates from Linux
 To: Masahiro Yamada <yamada.masahiro@socionext.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, May 11, 2019 at 11:05:08AM +0900, Masahiro Yamada wrote:
-> Currently, "make defconfig" is only supported for sandbox and x86.
+On Sat, May 11, 2019 at 11:12:25AM +0900, Masahiro Yamada wrote:
+> [1] sort the normal rule alphabetically again
 > 
-> I set KBUILD_DEFCONFIG to support "make defconfig" where I was able
-> to find a suitable one.
+> [2] add leading and trailing slashes to generated directories
+>    (based on Linux commit 1e35663e41360adf564a91811b29cc7e56ee9c39)
 > 
-> nios2 and openrisc have a single generic_defconfig, so it is definitely
-> good for KBUILD_DEFCONFIG.
-> 
-> For arm, mips, I assume qemu is a preferred choice over a real board.
-> 
-> blackfin has only one defconfig. Since it is inactive (it is gone in
-> Linux), so no more defconfig will come in.
-
-Yes, blackfin is dead. I should remove it from barebox. It hasn't seen
-an active commit for years now.
-
-> 
-> I am not sure about ppc and riscv, so I did not touch them.
+> [3] add more Kconfig presets
+>    (based on Linux commit 7fb1fc420f3b1cb27cce5aa1050eb5d9161d0944)
 > 
 > Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 > ---
@@ -52,6 +41,7 @@ an active commit for years now.
 Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
