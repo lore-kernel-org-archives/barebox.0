@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp117.ord1d.emailsrvr.com ([184.106.54.117])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hQ9uV-0001fE-LJ
- for barebox@lists.infradead.org; Mon, 13 May 2019 12:18:29 +0000
-Date: Mon, 13 May 2019 14:18:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190513121825.zpzps2jf55ehkd6l@pengutronix.de>
-References: <1557540745-11523-1-git-send-email-yamada.masahiro@socionext.com>
+ id 1hQ97H-0008G5-If
+ for barebox@lists.infradead.org; Mon, 13 May 2019 11:27:36 +0000
+References: <20190510070712.mmcy7sbriyisgzp7@pengutronix.de>
+From: Ian Abbott <abbotti@mev.co.uk>
+Message-ID: <b8c0d060-4f16-1895-df02-4c907a7392c4@mev.co.uk>
+Date: Mon, 13 May 2019 12:27:32 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1557540745-11523-1-git-send-email-yamada.masahiro@socionext.com>
+In-Reply-To: <20190510070712.mmcy7sbriyisgzp7@pengutronix.de>
+Content-Language: en-GB
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,36 +18,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] .gitignore: import some updates from Linux
-To: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: v2019.05.0
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
 
-On Sat, May 11, 2019 at 11:12:25AM +0900, Masahiro Yamada wrote:
-> [1] sort the normal rule alphabetically again
+On 10/05/2019 08:07, Sascha Hauer wrote:
+> Hi All,
 > 
-> [2] add leading and trailing slashes to generated directories
->    (based on Linux commit 1e35663e41360adf564a91811b29cc7e56ee9c39)
+> v2019.05.0 is out. This time we gained initial Layerscape support (for
+> the LS1046a) and initial very basic STM32MP1 support. What I like best
+> for this release is the improved pstore support. With pstore it's
+> possible to access the last kernel log, possibly including oopses and
+> panics. Also the barebox log is accessible from the running kernel.
+> pstore has been present before, but with this release we got the device
+> tree bindings, so now it's only a matter of putting the right thing
+> into the device tree to use pstore. Give it a try, it's nice ;)
 > 
-> [3] add more Kconfig presets
->    (based on Linux commit 7fb1fc420f3b1cb27cce5aa1050eb5d9161d0944)
-> 
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-> ---
+> Sascha
 
-Applied, thanks
+Hi Sascha,
 
-Sascha
+The official tarball seems to be missing from the download page.  Thanks.
 
+Best regards,
+Ian Abbott
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-=( Ian Abbott <abbotti@mev.co.uk> || Web: www.mev.co.uk )=-
+-=( MEV Ltd. is a company registered in England & Wales. )=-
+-=( Registered number: 02862268.  Registered address:    )=-
+-=( 15 West Park Road, Bramhall, STOCKPORT, SK7 3JZ, UK. )=-
 
 _______________________________________________
 barebox mailing list
