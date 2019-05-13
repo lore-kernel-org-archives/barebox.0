@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hPwml-00074C-A3
- for barebox@lists.infradead.org; Sun, 12 May 2019 22:17:36 +0000
-Received: by mail-ot1-x32a.google.com with SMTP id g18so9817002otj.11
- for <barebox@lists.infradead.org>; Sun, 12 May 2019 15:17:34 -0700 (PDT)
+ id 1hQCWN-000257-7Y
+ for barebox@lists.infradead.org; Mon, 13 May 2019 15:05:45 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=a3f-osx.local)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <a.fatoum@pengutronix.de>) id 1hQCWL-0002gP-NY
+ for barebox@lists.infradead.org; Mon, 13 May 2019 17:05:41 +0200
+References: <CA+T6rvHH7Nd+xTAch5tQqJ6Y5tKKWHcfGjGuDp9BYJEjOvrxBA@mail.gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <bafb7600-4351-2c80-d78f-35d59ae559ba@pengutronix.de>
+Date: Mon, 13 May 2019 17:05:39 +0200
 MIME-Version: 1.0
-From: Geordan Neukum <gneukum1@gmail.com>
-Date: Sun, 12 May 2019 22:17:19 +0000
-Message-ID: <CA+T6rvHH7Nd+xTAch5tQqJ6Y5tKKWHcfGjGuDp9BYJEjOvrxBA@mail.gmail.com>
+In-Reply-To: <CA+T6rvHH7Nd+xTAch5tQqJ6Y5tKKWHcfGjGuDp9BYJEjOvrxBA@mail.gmail.com>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,25 +27,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: distclean removing LICENSES .gitignores
+Subject: Re: distclean removing LICENSES .gitignores
 To: barebox@lists.infradead.org
 
-When on the master branch, I noticed that running a "make distclean"
-will remove:
+Hello Geordan,
 
-    - LICENSES/exceptions/.gitignore
+On 13/5/19 00:17, Geordan Neukum wrote:
+> When on the master branch, I noticed that running a "make distclean"
+> will remove:
+> 
+>     - LICENSES/exceptions/.gitignore
+> 
+>     - LICENSES/other/.gitignore
+> 
+> 
+> It looks like this is due to matching the pattern '-o size 0' in the
+> top-level barebox makefile under the distclean target.
+> 
+> Is this the desired behavior?
 
-    - LICENSES/other/.gitignore
+Nope, this behavior isn't desired. I added the files, to have git
+index the directories. IIRC, otherwise kernel checkpatch.pl laments their
+absence. Maybe we should add a comment describing the purpose and then
+these files aren't totally empty?
 
+> If not, I can go ahead and submit a
+> patch that cleans up that target.
 
-It looks like this is due to matching the pattern '-o size 0' in the
-top-level barebox makefile under the distclean target.
+Please go ahead.
 
-Is this the desired behavior? If not, I can go ahead and submit a
-patch that cleans up that target.
+Cheers
+Ahmad
 
-Thanks,
-Geordan
+> 
+> Thanks,
+> Geordan
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
