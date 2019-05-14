@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hQSnl-0006p3-Qh
- for barebox@lists.infradead.org; Tue, 14 May 2019 08:29:19 +0000
-References: <bafb7600-4351-2c80-d78f-35d59ae559ba@pengutronix.de>
- <20190514021954.11834-1-gneukum1@gmail.com>
- <f7c0782a-22df-9d1f-3699-de3cf220962d@mev.co.uk>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <03cd78b8-74dd-9b78-c8fa-9fce756df101@pengutronix.de>
-Date: Tue, 14 May 2019 10:28:41 +0200
+ id 1hQVfb-0007LY-0u
+ for barebox@lists.infradead.org; Tue, 14 May 2019 11:32:33 +0000
+Date: Tue, 14 May 2019 13:32:26 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190514113226.eon3i5irb5btxtjm@pengutronix.de>
+References: <20190513235944.19307-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <f7c0782a-22df-9d1f-3699-de3cf220962d@mev.co.uk>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20190513235944.19307-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,60 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] LICENSES: modify .gitignore files to be nonempty
-To: Ian Abbott <abbotti@mev.co.uk>, Geordan Neukum <gneukum1@gmail.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH] spi: Enable Freescale QSPI controller driver for VF610
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On 14/5/19 09:28, Ian Abbott wrote:
-> On 14/05/2019 03:19, Geordan Neukum wrote:
->> The .gitignore files under the LICENSES/exceptions and LICENSES/other
->> directories cannot have a size of 0 or else they are subject to removal
->> by the make target 'distclean'. Modify the .gitignore files to
->> ignore all files except for themselves. These .gitignores can be
->> updated further or removed outright as new licenses are added to these
->> directories in the future.
->>
->> Signed-off-by: Geordan Neukum <gneukum1@gmail.com>
->> ---
->>   LICENSES/exceptions/.gitignore | 4 ++++
->>   LICENSES/other/.gitignore      | 4 ++++
->>   2 files changed, 8 insertions(+)
->>
->> diff --git a/LICENSES/exceptions/.gitignore b/LICENSES/exceptions/.gitignore
->> index e69de29bb..d5e7eacf3 100644
->> --- a/LICENSES/exceptions/.gitignore
->> +++ b/LICENSES/exceptions/.gitignore
->> @@ -0,0 +1,4 @@
->> +# Ignore everything in this directory
->> +*
->> +# Except for this file
->> +!.gitignore
->> diff --git a/LICENSES/other/.gitignore b/LICENSES/other/.gitignore
->> index e69de29bb..d5e7eacf3 100644
->> --- a/LICENSES/other/.gitignore
->> +++ b/LICENSES/other/.gitignore
->> @@ -0,0 +1,4 @@
->> +# Ignore everything in this directory
->> +*
->> +# Except for this file
->> +!.gitignore
->>
+On Mon, May 13, 2019 at 04:59:44PM -0700, Andrey Smirnov wrote:
+> VF610 is supported by this driver, so modify its Kconfig entry to
+> reflect that.
 > 
-> I may be missing something, but why not have just a comment line?
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  drivers/spi/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index d687105ea..2e57457dc 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -27,7 +27,7 @@ config DRIVER_SPI_ATMEL
+>  
+>  config DRIVER_SPI_FSL_QUADSPI
+>  	bool "Freescale QSPI controller"
+> -	depends on ARCH_IMX25 || ARCH_IMX31 || ARCH_IMX35 || ARCH_IMX50 || ARCH_IMX53 || ARCH_LAYERSCAPE
+> +	depends on ARCH_IMX25 || ARCH_IMX31 || ARCH_IMX35 || ARCH_IMX50 || ARCH_IMX53 || ARCH_LAYERSCAPE || ARCH_VF610
 
-One side effect of doing it this way, that it's more likely to remind,
-whoever `git add`s files to these directories that the .gitignore needs to
-be removed (unless they have aliased git add to git add -f..).
+Not your fault, but this list is bogus. None of the i.MX SoCs actually
+has this hardware and the ones that have it are not in the list. We
+should rather remove this line entirely.
 
-Personally, I am fine with both ways, but I would prefer the comment
-to say something along the lines of:
-
-	# Placeholder as upstream checkpatch.pl requires this directory to exist
-	# This file can be removed when new files are added
-
-
-Cheers
-Ahmad
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
