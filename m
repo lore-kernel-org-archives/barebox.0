@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+Received: from mail-qk1-x742.google.com ([2607:f8b0:4864:20::742])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hTLlE-0001xR-Bb
- for barebox@lists.infradead.org; Wed, 22 May 2019 07:34:05 +0000
-Received: by mail-pl1-x641.google.com with SMTP id r18so629721pls.13
- for <barebox@lists.infradead.org>; Wed, 22 May 2019 00:34:03 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 22 May 2019 00:33:47 -0700
-Message-Id: <20190522073349.9004-1-andrew.smirnov@gmail.com>
+ id 1hQN3J-0008HW-Dl
+ for barebox@lists.infradead.org; Tue, 14 May 2019 02:20:26 +0000
+Received: by mail-qk1-x742.google.com with SMTP id a64so3615467qkg.5
+ for <barebox@lists.infradead.org>; Mon, 13 May 2019 19:20:24 -0700 (PDT)
+From: Geordan Neukum <gneukum1@gmail.com>
+Date: Tue, 14 May 2019 02:19:54 +0000
+Message-Id: <20190514021954.11834-1-gneukum1@gmail.com>
+In-Reply-To: <bafb7600-4351-2c80-d78f-35d59ae559ba@pengutronix.de>
+References: <bafb7600-4351-2c80-d78f-35d59ae559ba@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,32 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] usb: storage: Zero CDB out before sending it
+Subject: [PATCH] LICENSES: modify .gitignore files to be nonempty
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Geordan Neukum <gneukum1@gmail.com>, a.fatoum@pengutronix.de
 
-Since cbw.Length can be less that sizeof(cbw.CDB), add code to zero
-the whole struct out to avoid sending random stack data as a part of
-payload. There's no known case where this causes a problem, but it's a
-reasonable thing to do anyway.
+The .gitignore files under the LICENSES/exceptions and LICENSES/other
+directories cannot have a size of 0 or else they are subject to removal
+by the make target 'distclean'. Modify the .gitignore files to
+ignore all files except for themselves. These .gitignores can be
+updated further or removed outright as new licenses are added to these
+directories in the future.
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Signed-off-by: Geordan Neukum <gneukum1@gmail.com>
 ---
- drivers/usb/storage/transport.c | 1 +
- 1 file changed, 1 insertion(+)
+ LICENSES/exceptions/.gitignore | 4 ++++
+ LICENSES/other/.gitignore      | 4 ++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/usb/storage/transport.c b/drivers/usb/storage/transport.c
-index 48ccee207..5186508ba 100644
---- a/drivers/usb/storage/transport.c
-+++ b/drivers/usb/storage/transport.c
-@@ -115,6 +115,7 @@ int usb_stor_Bulk_transport(struct us_blk_dev *usb_blkdev,
- 	cbw.Length = cmdlen;
- 
- 	/* copy the command payload */
-+	memset(cbw.CDB, 0, sizeof(cbw.CDB));
- 	memcpy(cbw.CDB, cmd, cbw.Length);
- 
- 	/* send it to out endpoint */
+diff --git a/LICENSES/exceptions/.gitignore b/LICENSES/exceptions/.gitignore
+index e69de29bb..d5e7eacf3 100644
+--- a/LICENSES/exceptions/.gitignore
++++ b/LICENSES/exceptions/.gitignore
+@@ -0,0 +1,4 @@
++# Ignore everything in this directory
++*
++# Except for this file
++!.gitignore
+diff --git a/LICENSES/other/.gitignore b/LICENSES/other/.gitignore
+index e69de29bb..d5e7eacf3 100644
+--- a/LICENSES/other/.gitignore
++++ b/LICENSES/other/.gitignore
+@@ -0,0 +1,4 @@
++# Ignore everything in this directory
++*
++# Except for this file
++!.gitignore
 -- 
 2.21.0
 
