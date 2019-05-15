@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hQpdP-0005iX-Bb
- for barebox@lists.infradead.org; Wed, 15 May 2019 08:51:36 +0000
-References: <20190219141647.2537-1-a.fatoum@pengutronix.de>
- <20190219141647.2537-3-a.fatoum@pengutronix.de>
- <20190220101412.5032124aaf26a799c903ec9f@gmail.com>
- <7475eecb-5e8e-a827-f04e-b3d8d749edaf@pengutronix.de>
- <20190304102656.33754174e40b8cfa63f2d28a@gmail.com>
+ id 1hQqLJ-0005YZ-9l
+ for barebox@lists.infradead.org; Wed, 15 May 2019 09:37:00 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <afa@pengutronix.de>) id 1hQqLC-0002ti-6i
+ for barebox@lists.infradead.org; Wed, 15 May 2019 11:36:50 +0200
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92-RC6)
+ (envelope-from <afa@pengutronix.de>) id 1hQqL9-0001Lj-V1
+ for barebox@lists.infradead.org; Wed, 15 May 2019 11:36:47 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <2bd98823-d0bc-c811-2b6e-a8ebc5d65307@pengutronix.de>
-Date: Wed, 15 May 2019 10:51:31 +0200
+Date: Wed, 15 May 2019 11:36:40 +0200
+Message-Id: <20190515093644.9691-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20190304102656.33754174e40b8cfa63f2d28a@gmail.com>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,91 +27,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/2] scripts/checkpatch.pl: rebase on top of upstream
- v5.0-rc6
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 0/4] scripts/checkpatch.pl: rebase on top of upstream v5.1
+To: barebox@lists.infradead.org
 
-Hello Antony,
+"v1" is at <20190219141647.2537-3-a.fatoum@pengutronix.de>
 
-On 3/4/19 8:26 AM, Antony Pavlov wrote:
-> On Tue, 26 Feb 2019 10:55:40 +0100
-> Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
-> 
->> Hello Antony,
->>
->> On 20/2/19 08:14, Antony Pavlov wrote:
->>> On Tue, 19 Feb 2019 15:16:47 +0100
->>> Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->>>
->>>> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
->>>> index 4e17347a8481..48b39fbf962a 100755
->>>> --- a/scripts/checkpatch.pl
->>>> +++ b/scripts/checkpatch.pl
->>> ...
->>>
->>>> @@ -1555,13 +2997,9 @@ sub process {
->>>>  
->>>>  			my @compats = $rawline =~ /\"([a-zA-Z0-9\-\,\.\+_]+)\"/g;
->>>>  
->>>> -			# linux device tree files
->>>> -			my $dt_path = $root . "/dts/Bindings/";
->>>> +			my $dt_path = $root . "/Documentation/devicetree/bindings/";
->>>
->>> At the moment it looks like barebox uses both paths ("/dts/Bindings/" and "/Documentation/devicetree/bindings/")
->>> to store dt-related documentation.
->>
->> Missed this one. I can reinstate it in a v2. I think I should've caught all barebox specifics now.
->>
->>>
->>> The patch is very long and very hard to review.
->>
->> Any suggestion on a better way to do it? It's a straight copy from upstream with
->> some barebox specific changes applied on top, so I assume ensuring the barebox
->> changes are accounted for are all the review we need.
-> 
-> I propose to port checkpatch-related patches from linux one by one.
-> Of course you can join some patches into one please remember this
-> quote from https://www.kernel.org/doc/html/v4.17/process/submitting-patches.html#split-changes
-> 
->    The point to remember is that each patch should make an easily understood
->    change that can be verified by reviewers. Each patch should be justifiable
->    on its own merits.
+Changes since v1:
+  - added dts/Bindings to compatible search patch (by Antony)
+  - split barebox-specific changes into a separate commit (by Sascha)
+  - split checkpatch.pl dependencies into a separate commit
+  - changed spdxcheck.py to not require LICENSES/{exceptions, other}
+  - removed exceptions/, other/ directories
 
-Honestly, I don't see the utility in duplicating review effort for changes
-that already were accepted into the kernel. I think, so far, I got all barebox-specifics,
-so updating checkpatch.pl in future should be:
- - copy over upstream checkpatch.pl
- - cherry-pick last checkpatch.pl bareboxification patch
+Ahmad Fatoum (4):
+  LICENSES: remove empty other, exceptions directories
+  checkpatch: add upstream checkpatch v5.1 dependencies
+  checkpatch: import as-is from Linux v5.1
+  checkpatch: apply barebox-specific modifications
 
-Sure, barebx checkpatch.pl may be more easily broken by this approach,
-but it's not part of the build and issues can be fixed as they pop up.
-
-I will send out a v2 shortly that does this.
-
-
-> 
->>
->> I could for v2 include a scripts/checkpatch.patch which patches the corresponding
->> upstream checkpatch.pl into the barebox checkpatch.pl. That way reviewing would work
->> like this:
->>
->> - review checkpatch.patch
->> - $ patch -R < checkpatch.patch
->> - $ diff $LINUX/scripts/checkpatch.pl $BAREBOX/scripts/checkpatch.pl
->>
->> What do you think?
-> 
-> I suppose that we want to get new checkpatch features/bugfixes from linux kernel
-> but not minimize barebox checkpatch vs linux kernel checkpatch diff size.
-> 
-
+ LICENSES/exceptions/.gitignore   |    0
+ LICENSES/other/.gitignore        |    0
+ scripts/checkpatch.pl            | 4677 ++++++++++++++++++++++++++----
+ scripts/cleanfile                |  178 ++
+ scripts/cleanpatch               |  260 ++
+ scripts/const_structs.checkpatch |    2 +
+ scripts/get_maintainer.pl        |   11 +
+ scripts/spdxcheck.py             |  292 ++
+ scripts/spelling.txt             | 1413 +++++++++
+ 9 files changed, 6253 insertions(+), 580 deletions(-)
+ delete mode 100644 LICENSES/exceptions/.gitignore
+ delete mode 100644 LICENSES/other/.gitignore
+ create mode 100755 scripts/cleanfile
+ create mode 100755 scripts/cleanpatch
+ create mode 100644 scripts/const_structs.checkpatch
+ create mode 100755 scripts/get_maintainer.pl
+ create mode 100755 scripts/spdxcheck.py
+ create mode 100644 scripts/spelling.txt
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
