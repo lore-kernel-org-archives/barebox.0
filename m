@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hQrE4-0005tu-Lw
- for barebox@lists.infradead.org; Wed, 15 May 2019 10:33:34 +0000
-References: <20190515101058.13106-1-a.fatoum@pengutronix.de>
- <20190515101058.13106-2-a.fatoum@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <578a54e7-a67e-094b-1712-3cfaea26222a@pengutronix.de>
-Date: Wed, 15 May 2019 12:33:30 +0200
+ id 1hQoax-0002Oa-Ii
+ for barebox@lists.infradead.org; Wed, 15 May 2019 07:45:01 +0000
+Date: Wed, 15 May 2019 09:44:57 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190515074457.mh77wvyugj6efscl@pengutronix.de>
+References: <CA+T6rvHH7Nd+xTAch5tQqJ6Y5tKKWHcfGjGuDp9BYJEjOvrxBA@mail.gmail.com>
+ <bafb7600-4351-2c80-d78f-35d59ae559ba@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20190515101058.13106-2-a.fatoum@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <bafb7600-4351-2c80-d78f-35d59ae559ba@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,59 +19,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] mtd: spi-nor: Add support for IS25LP032/064
-To: barebox@lists.infradead.org
-Cc: uol@pengutronix.de
+Subject: Re: distclean removing LICENSES .gitignores
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-T24gMTUvNS8xOSAxMjoxMCwgQWhtYWQgRmF0b3VtIHdyb3RlOgo+IEZyb206IFV3ZSBLbGVpbmUt
-S8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Cj4gCj4gVGhlIGRhdGFzaGVl
-dCBpcyBwdWJsaWNhbGx5IGF2YWlsYWJsZSBhdAo+IGh0dHA6Ly93d3cuaXNzaS5jb20vV1cvcGRm
-L0lTMjVMUDAzMi0wNjQtMTI4LnBkZi4gVGhlIHBhcmFtZXRlcnMgZml0IHRvCj4gd2hhdCBpcyBh
-bHJlYWR5IGF2YWlsYWJsZSBmb3IgSVMyNUxQMTI4LzI1Ni4KClVuZm9ydHVuYXRlbHksIHRoaXMg
-ZG9lc24ndCBhcHBseSB0byBiYXJlYm94LCB3aGVyZSBpczI1bHAxMjggd2FzIGZpcnN0CmFkZGVk
-IHdpdGhvdXQgdGhlIFNFQ1RfNEsuCgpBZGRpbmcgaXQgbm93IGFmdGVyIHRoZSBmYWN0LCB3b3Vs
-ZCBicmVhayBiYXJlYm94IHN0YXRlIGlmIGl0IHdlcmUgbG9jYXRlZApvbiBzdWNoIGEgZmxhc2gg
-dW5kZXIgdGhlIHByZWNvbmRpdGlvbiB0aGF0IGJhcmVib3ggaXMgY29uZmlndXJlZCB3aXRoCkNP
-TkZJR19NVERfU1BJX05PUl9VU0VfNEtfU0VDVE9SUywgYnV0IExpbnV4IGlzbid0LgoKSGF2aW5n
-IGluY29uc2lzdGVudCB2YWx1ZXMgYmV0d2VlbiBrZXJuZWwgYW5kIGJhcmVib3ggZm9yCkNPTkZJ
-R19NVERfU1BJX05PUl9VU0VfNEtfU0VDVE9SUyBpcyB3cm9uZyBhbnl3YXksIGJ1dCBJIGFtIHdh
-cnkgb2YgbWFraW5nCml0IHdvcnNlLCBzbyBJIHJlZnJhaW5lZCBoZXJlIGZyb20gY2hhbmdpbmcg
-dGhlIGZsYWdzIHBhcmFtZXRlci4KCkkgaW50ZW5kIHRvIGNvcnJlY3QgdGhpcyB3aGVuIHRoZSBi
-YXJlYm94IHN0YXRlIGJpbmRpbmcgaXMgZXh0ZW5kZWQgdG8gc3VwcG9ydAphIGJhY2tlbmQtZXJh
-c2VzaXplIHByb3BlcnR5IGluIHRoZSBkZXZpY2UgdHJlZS4KClRocmVlIG1vcmUgTk9SIGZsYXNo
-ZXMgYXJlIGFmZmVjdGVkWzFdIGJ5IHRoZSBzYW1lIHByb2JsZW0gb2YKbGFja2luZyBTRUNUXzRL
-IGluIGJhcmVib3gsIGJ1dCBub3QgaW4ga2VybmVsOgoKZW4yNXM2NCwgbjI1cTEyOGExMSwgbjI1
-cTEyOGExMwoKSWYgbm8gb25lIGJlYXRzIG1lIHRvIGl0LCBJIHdpbGwgc2VlIGlmIEkgY2FuIGZp
-bmQgdGltZSB0byBhZGQKYmFja2VuZC1lcmFzZXNpemUgbmV4dCBtb250aC4KClsxXTogd2RpZmYg
-JEJBUkVCT1hkcml2ZXJzL210ZC9zcGktbm9yL3NwaS1ub3IuYyBcCiAgICAgICAgICAgJExJTlVY
-L2RyaXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5jIHwgZ3JlcCAneysuKjRLLiorfQoKQ2hlZXJz
-CkFobWFkCgo+IAo+IFNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1r
-b2VuaWdAcGVuZ3V0cm9uaXguZGU+Cj4gUmV2aWV3ZWQtYnk6IFR1ZG9yIEFtYmFydXMgPHR1ZG9y
-LmFtYmFydXNAbWljcm9jaGlwLmNvbT4KPiBTaWduZWQtb2ZmLWJ5OiBCb3JpcyBCcmV6aWxsb24g
-PGJvcmlzLmJyZXppbGxvbkBib290bGluLmNvbT4KPiBPcmlnaW46IExpbnV4IHY1LjAtcmMxLCBj
-b21taXQ6NGNjMTA2ZjhmMjQ1YmFlMGM0NTgyMjQ4MDQ3MzMyNDBjYjIyMzk0ZAo+IFNpZ25lZC1v
-ZmYtYnk6IEFobWFkIEZhdG91bSA8YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGU+Cj4gLS0tCj4gIGRy
-aXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5jIHwgMiArKwo+ICAxIGZpbGUgY2hhbmdlZCwgMiBp
-bnNlcnRpb25zKCspCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5v
-ci5jIGIvZHJpdmVycy9tdGQvc3BpLW5vci9zcGktbm9yLmMKPiBpbmRleCBiMTQyMTk3YjY1YjYu
-LmQ5NWMxYjE1NmM5ZiAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL210ZC9zcGktbm9yL3NwaS1ub3Iu
-Ywo+ICsrKyBiL2RyaXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5jCj4gQEAgLTY3MSw2ICs2NzEs
-OCBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IHNwaV9kZXZpY2VfaWQgc3BpX25vcl9pZHNbXSA9IHsK
-PiAgCXsgIjY0MHMzM2IiLCAgSU5GTygweDg5ODkxMywgMCwgNjQgKiAxMDI0LCAxMjgsIDApIH0s
-Cj4gIAo+ICAJLyogSVNTSSAqLwo+ICsJeyAiaXMyNWxwMDMyIiwgSU5GTygweDlkNjAxNiwgIDAs
-ICA2NCAqIDEwMjQsICA2NCwgU0VDVF80SyB8IFNQSV9OT1JfRFVBTF9SRUFEKSB9LAo+ICsJeyAi
-aXMyNWxwMDY0IiwgSU5GTygweDlkNjAxNywgIDAsICA2NCAqIDEwMjQsIDEyOCwgU0VDVF80SyB8
-IFNQSV9OT1JfRFVBTF9SRUFEKSB9LAo+ICAJeyAiaXMyNWxwMTI4IiwgSU5GTygweDlkNjAxOCwg
-IDAsICA2NCAqIDEwMjQsIDI1NiwgMCkgfSwKPiAgCj4gIAkvKiBNYWNyb25peCAqLwo+IAoKLS0g
-ClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAg
-ICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzEx
-MzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFt
-dHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEy
-MS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
-aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Mon, May 13, 2019 at 05:05:39PM +0200, Ahmad Fatoum wrote:
+> Hello Geordan,
+> 
+> On 13/5/19 00:17, Geordan Neukum wrote:
+> > When on the master branch, I noticed that running a "make distclean"
+> > will remove:
+> > 
+> >     - LICENSES/exceptions/.gitignore
+> > 
+> >     - LICENSES/other/.gitignore
+> > 
+> > 
+> > It looks like this is due to matching the pattern '-o size 0' in the
+> > top-level barebox makefile under the distclean target.
+> > 
+> > Is this the desired behavior?
+> 
+> Nope, this behavior isn't desired. I added the files, to have git
+> index the directories. IIRC, otherwise kernel checkpatch.pl laments their
+> absence. Maybe we should add a comment describing the purpose and then
+> these files aren't totally empty?
+
+barebox has its own checkpatch script which doesn't have the problem yet
+as it's copied from the kernel when there was no SPDX check, so we need
+an updated checkpatch to even get this problem ;)
+
+Then in the Kernel "other" was renamed to "deprecated", so with the
+current spdxcheck.py we get an exception in the kernel aswell. There
+were two patches sent for this on LKML:
+
+https://lkml.org/lkml/2019/5/11/158
+
+But honestly I don't know the intention why spdxcheck expects certain
+directories to exist instead of looking which directories are actually
+there.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
