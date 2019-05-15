@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-eopbgr780088.outbound.protection.outlook.com
- ([40.107.78.88] helo=NAM03-BY2-obe.outbound.protection.outlook.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hQXWI-0008Pq-Nm
- for barebox@lists.infradead.org; Tue, 14 May 2019 13:31:04 +0000
-From: Cory Tusar <Cory.Tusar@zii.aero>
-Date: Tue, 14 May 2019 13:30:57 +0000
-Message-ID: <20190514133054.GA13606@zii.aero>
-References: <20190513235944.19307-1-andrew.smirnov@gmail.com>
- <20190514113226.eon3i5irb5btxtjm@pengutronix.de>
-In-Reply-To: <20190514113226.eon3i5irb5btxtjm@pengutronix.de>
-Content-Language: en-US
-Content-ID: <4EA7D70830285A458834A5B6E1DB53ED@namprd12.prod.outlook.com>
+ id 1hQnlD-0000RL-MJ
+ for barebox@lists.infradead.org; Wed, 15 May 2019 06:51:33 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 15 May 2019 08:51:27 +0200
+Message-Id: <20190515065127.20914-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,55 +19,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] spi: Enable Freescale QSPI controller driver for VF610
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] spi: Kconfig: remove dependency list from Freescale QSPI
+ controller
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, May 14, 2019 at 01:32:26PM +0200, Sascha Hauer wrote:
-> On Mon, May 13, 2019 at 04:59:44PM -0700, Andrey Smirnov wrote:
-> > VF610 is supported by this driver, so modify its Kconfig entry to
-> > reflect that.
-> >
-> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > ---
-> >  drivers/spi/Kconfig | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> > index d687105ea..2e57457dc 100644
-> > --- a/drivers/spi/Kconfig
-> > +++ b/drivers/spi/Kconfig
-> > @@ -27,7 +27,7 @@ config DRIVER_SPI_ATMEL
-> >
-> >  config DRIVER_SPI_FSL_QUADSPI
-> >  bool "Freescale QSPI controller"
-> > -depends on ARCH_IMX25 || ARCH_IMX31 || ARCH_IMX35 || ARCH_IMX50 || ARCH_IMX53 || ARCH_LAYERSCAPE
-> > +depends on ARCH_IMX25 || ARCH_IMX31 || ARCH_IMX35 || ARCH_IMX50 || ARCH_IMX53 || ARCH_LAYERSCAPE || ARCH_VF610
->
-> Not your fault, but this list is bogus. None of the i.MX SoCs actually
-> has this hardware and the ones that have it are not in the list. We
-> should rather remove this line entirely.
+The dependency list for the Freescale QSPI controller doesn't match
+the SoCs the hardware is in at all. Remove the dependency entirely as
+the driver builds on all machines.
 
-Should be ARCH_MX6SX || ARCH_MX7 || ARCH_VF610 at the very least, no?
-I believe some of the the Layerscape SoCs use the same / very similar
-hardware block, but I don't know which ones off the top of my head.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/spi/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
--Cory
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index d687105ea4..86411a76ff 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -27,7 +27,6 @@ config DRIVER_SPI_ATMEL
+ 
+ config DRIVER_SPI_FSL_QUADSPI
+ 	bool "Freescale QSPI controller"
+-	depends on ARCH_IMX25 || ARCH_IMX31 || ARCH_IMX35 || ARCH_IMX50 || ARCH_IMX53 || ARCH_LAYERSCAPE
+ 	depends on SPI_MEM
+ 	help
+ 	  This enables support for the Quad SPI controller in master mode.
+-- 
+2.20.1
 
 
---
-Cory Tusar
-Senior Software Engineer
-Zodiac Inflight Innovations
-2929 E Imperial Hwy, Suite 170
-Brea, CA 92821
-(714) 203-0519
-
-www.safran-aerosystems.com
-
-________________________________
-
-This email and any files transmitted with it are confidential & proprietary to Zodiac Inflight Innovations. This information is intended solely for the use of the individual or entity to which it is addressed. Access or transmittal of the information contained in this e-mail, in full or in part, to any other organization or persons is not authorized.
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
