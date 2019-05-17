@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hSzMu-0001ur-7o
- for barebox@lists.infradead.org; Tue, 21 May 2019 07:39:30 +0000
-Date: Tue, 21 May 2019 09:39:26 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190521073926.zyniqgtskpakvjgi@pengutronix.de>
-References: <20190516141247.22717-1-r.czerwinski@pengutronix.de>
+ id 1hRmOd-0003wh-Pp
+ for barebox@lists.infradead.org; Fri, 17 May 2019 23:36:18 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <mgr@pengutronix.de>) id 1hRmOZ-0007R5-Pk
+ for barebox@lists.infradead.org; Sat, 18 May 2019 01:36:11 +0200
+Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <mgr@pengutronix.de>) id 1hRmOV-0007ns-VC
+ for barebox@lists.infradead.org; Sat, 18 May 2019 01:36:07 +0200
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Sat, 18 May 2019 01:36:06 +0200
+Message-Id: <20190517233606.28573-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190516141247.22717-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,233 +27,407 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] ARM: Initial OP-TEE support
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] gpio: add driver for PCF857x, PCA{85, 96}7x,
+ and MAX732[89] I2C GPIO expanders
+To: barebox@lists.infradead.org
 
-On Thu, May 16, 2019 at 04:12:47PM +0200, Rouven Czerwinski wrote:
-> diff --git a/arch/arm/cpu/start-kernel-optee.S b/arch/arm/cpu/start-kernel-optee.S
-> new file mode 100644
-> index 0000000000..ce5ac178a4
-> --- /dev/null
-> +++ b/arch/arm/cpu/start-kernel-optee.S
-> @@ -0,0 +1,14 @@
-> +#include <linux/linkage.h>
-> +
-> +ENTRY(start_kernel_optee)
-> +        /*
-> +         * r0 = optee
-> +         * r1 = kernel
-> +         * r2 = oftree
-> +         */
-> +         mov r4, r0
-> +         mov r0, #0
-> +         mov lr, r1
-> +         mov r1, #0
-> +         bx r4
-> +ENDPROC(start_kernel_optee)
+This driver was derived from the kernel driver gpio-pcf857x.c by removing
+locking and interrupt support.
 
-Please use tabs for indentation.
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+---
+ drivers/gpio/Kconfig            |  24 +++
+ drivers/gpio/Makefile           |   1 +
+ drivers/gpio/gpio-pcf857x.c     | 274 ++++++++++++++++++++++++++++++++
+ include/platform_data/pcf857x.h |  48 ++++++
+ 4 files changed, 347 insertions(+)
+ create mode 100644 drivers/gpio/gpio-pcf857x.c
+ create mode 100644 include/platform_data/pcf857x.h
 
-> diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-> index 6573c2ef74..1b1659b315 100644
-> --- a/arch/arm/cpu/start.c
-> +++ b/arch/arm/cpu/start.c
-> @@ -234,6 +234,9 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
->  
->  	mem_malloc_init((void *)malloc_start, (void *)malloc_end - 1);
->  
-> +	if (IS_ENABLED(CONFIG_BOOTM_OPTEE))
-> +		of_add_reserve_entry(endmem - OPTEE_SIZE, endmem - 1);
-> +
->  	pr_debug("starting barebox...\n");
->  
->  	start_barebox();
-> diff --git a/arch/arm/include/asm/armlinux.h b/arch/arm/include/asm/armlinux.h
-> index 135f11b860..6af98968fa 100644
-> --- a/arch/arm/include/asm/armlinux.h
-> +++ b/arch/arm/include/asm/armlinux.h
-> @@ -40,6 +40,6 @@ struct image_data;
->  
->  void start_linux(void *adr, int swap, unsigned long initrd_address,
->  		 unsigned long initrd_size, void *oftree,
-> -		 enum arm_security_state);
-> +		 enum arm_security_state, void *optee);
->  
->  #endif /* __ARCH_ARMLINUX_H */
-> diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-> index a11d34923d..d3432d3314 100644
-> --- a/arch/arm/include/asm/barebox-arm.h
-> +++ b/arch/arm/include/asm/barebox-arm.h
-> @@ -110,6 +110,15 @@ void *barebox_arm_boot_dtb(void);
->  static inline unsigned long arm_mem_stack_top(unsigned long membase,
->  					      unsigned long endmem)
->  {
-> +	/*
-> +	 * FIXME:
-
-I think the FIXME can go away. What else should we do about this issue
-here?
-
-> +	 * OP-TEE expects to be executed somewhere at the end of RAM.
-> +	 * Since we normally occupy all RAM at the end, move ourselves
-> +	 * a bit lower.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_BOOTM_OPTEE))
-> +		endmem -= OPTEE_SIZE;
-> +
->  	return endmem - SZ_64K;
->  }
->  
-> diff --git a/arch/arm/lib32/armlinux.c b/arch/arm/lib32/armlinux.c
-> index c970f029c5..1cb9fd2e51 100644
-> --- a/arch/arm/lib32/armlinux.c
-> +++ b/arch/arm/lib32/armlinux.c
-> @@ -258,9 +258,11 @@ static void setup_tags(unsigned long initrd_address,
->  
->  }
->  
-> +void start_kernel_optee(void *optee, void *kernel, void *oftree);
-> +
->  void start_linux(void *adr, int swap, unsigned long initrd_address,
->  		 unsigned long initrd_size, void *oftree,
-> -		 enum arm_security_state state)
-> +		 enum arm_security_state state, void *optee)
->  {
->  	void (*kernel)(int zero, int arch, void *params) = adr;
->  	void *params = NULL;
-> @@ -294,5 +296,9 @@ void start_linux(void *adr, int swap, unsigned long initrd_address,
->  		__asm__ __volatile__("mcr p15, 0, %0, c1, c0" :: "r" (reg));
->  	}
->  
-> -	kernel(0, architecture, params);
-> +	if (optee && IS_ENABLED(CONFIG_BOOTM_OPTEE)) {
-> +		start_kernel_optee(optee, kernel, oftree);
-> +	} else {
-> +		kernel(0, architecture, params);
-> +	}
->  }
-> diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
-> index 4cf570e577..c8b6d1d84b 100644
-> --- a/arch/arm/lib32/bootm.c
-> +++ b/arch/arm/lib32/bootm.c
-> @@ -19,6 +19,7 @@
->  #include <binfmt.h>
->  #include <restart.h>
->  #include <globalvar.h>
-> +#include <tee/optee.h>
->  
->  #include <asm/byteorder.h>
->  #include <asm/setup.h>
-> @@ -133,11 +134,75 @@ static int get_kernel_addresses(size_t image_size,
->  	return 0;
->  }
->  
-> +static int optee_verify_header_request_region(struct image_data *data, struct optee_header *hdr)
-> +{
-> +	int ret = 0;
-> +	if (hdr->magic != OPTEE_MAGIC) {
-> +		printf("Invalid header magic 0x%08x, expected 0x%08x\n",
-> +		       hdr->magic, OPTEE_MAGIC);
-
-Please use pr_* functions along with a pr_fmt() definition to give these
-messages some context.
-
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (hdr->arch != OPTEE_ARCH_ARM32 || hdr->init_load_addr_hi) {
-> +		printf("Only 32bit supported\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	data->tee_res = request_sdram_region("TEE", hdr->init_load_addr_lo, hdr->init_size);
-> +	if (!data->tee_res) {
-> +		printf("Cannot request SDRAM region 0x%08x-0x%08x: %s\n",
-> +		       hdr->init_load_addr_lo, hdr->init_load_addr_lo + hdr->init_size - 1,
-> +		       strerror(-EINVAL));
-> +		return -EINVAL;
-> +	}
-
-Is data->tee_res released anywhere in case of a later failure?
-
-> +
-> +	return ret;
-> +}
-> +
-> +static int bootm_load_tee_from_file(struct image_data *data)
-> +{
-> +	int fd, ret;
-> +	struct optee_header hdr;
-> +
-> +	fd = open(data->tee_file, O_RDONLY);
-> +        if (fd < 0) {
-> +		printf("Could not open file: %d\n", errno);
-> +		return -errno;
-> +	}
-
-There are some spaces here which should be tabs.
-
-I usually prefer "%s", strerror(errno)
-
-> +
-> +        if (read_full(fd, &hdr, sizeof(hdr)) < 0) {
-> +		printf("read failed: %d\n",errno);
-> +		ret = -errno;
-> +		goto out;
-> +	}
-> +
-> +        if (optee_verify_header_request_region(data, &hdr) < 0) {
-> +		printf("verify failed: %d\n",errno);
-> +		ret = -errno;
-> +		goto out;
-> +	}
-> +
-> +        if (read_full(fd, (void *)data->tee_res->start, hdr.init_size) < 0) {
-> +		printf("read header failed: %d\n",errno);
-> +		ret = -errno;
-> +		goto out;
-> +	}
-> +
-> +	printf("Read optee file to 0x%08x, size 0x%08x\n", data->tee_res->start, hdr.init_size);
-
-resource_size_t should be printed with %pa
-
-> +
-> +	ret = 0;
-> +out:
-> +	close(fd);
-> +
-> +	return ret;
-> +}
-> +
->  static int __do_bootm_linux(struct image_data *data, unsigned long free_mem,
->  			    int swap, void *fdt)
->  {
->  	unsigned long kernel;
->  	unsigned long initrd_start = 0, initrd_size = 0, initrd_end = 0;
-> +	void *tee;
->  	enum arm_security_state state = bootm_arm_security_state();
->  	void *fdt_load_address = NULL;
->  	int ret;
-> @@ -189,6 +254,15 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem,
->  			return ret;
->  	}
->  
-> +	if (IS_ENABLED(CONFIG_BOOTM_OPTEE)) {
-> +		if (data->tee_file) {
-
-	if (IS_ENABLED(CONFIG_BOOTM_OPTEE) && data->tee_file)
-
-To save an indention level?
-
-Sascha
-
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index c535904ed0..b3719cd92b 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -98,6 +98,30 @@ config GPIO_PCA953X
+ 
+ 	  40 bits: pca9505, pca9698
+ 
++config GPIO_PCF857X
++	tristate "PCF857x, PCA{85,96}7x, and MAX732[89] I2C GPIO expanders"
++	depends on I2C
++	help
++	  Say yes here to provide access to most "quasi-bidirectional" I2C
++	  GPIO expanders used for additional digital outputs or inputs.
++	  Most of these parts are from NXP, though TI is a second source for
++	  some of them.  Compatible models include:
++
++	  8 bits:   pcf8574, pcf8574a, pca8574, pca8574a,
++	            pca9670, pca9672, pca9674, pca9674a,
++	  	    max7328, max7329
++
++	  16 bits:  pcf8575, pcf8575c, pca8575,
++	            pca9671, pca9673, pca9675
++
++	  Your board setup code will need to declare the expanders in
++	  use, and assign numbers to the GPIOs they expose.  Those GPIOs
++	  can then be used from drivers and other kernel code, just like
++	  other GPIOs, but only accessible from task contexts.
++
++	  This driver provides an in-kernel interface to those GPIOs using
++	  platform-neutral GPIO calls.
++
+ config GPIO_PL061
+ 	bool "PrimeCell PL061 GPIO support"
+ 	depends on ARM_AMBA
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index 52280f0bb4..990df01788 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -14,6 +14,7 @@ obj-$(CONFIG_GPIO_MALTA_FPGA_I2C) += gpio-malta-fpga-i2c.o
+ obj-$(CONFIG_GPIO_ORION)	+= gpio-orion.o
+ obj-$(CONFIG_GPIO_OMAP)		+= gpio-omap.o
+ obj-$(CONFIG_GPIO_PCA953X)	+= gpio-pca953x.o
++obj-$(CONFIG_GPIO_PCF857X)	+= gpio-pcf857x.o
+ obj-$(CONFIG_GPIO_PL061)	+= gpio-pl061.o
+ obj-$(CONFIG_GPIO_STMPE)	+= gpio-stmpe.o
+ obj-$(CONFIG_GPIO_TEGRA)	+= gpio-tegra.o
+diff --git a/drivers/gpio/gpio-pcf857x.c b/drivers/gpio/gpio-pcf857x.c
+new file mode 100644
+index 0000000000..02ca39e45b
+--- /dev/null
++++ b/drivers/gpio/gpio-pcf857x.c
+@@ -0,0 +1,274 @@
++/*
++ * Driver for pcf857x, pca857x, and pca967x I2C GPIO expanders
++ *
++ * This code was ported from linux-5.1 kernel by Michael Grzeschik.
++ *
++ * Copyright (C) 2007 David Brownell
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ */
++
++#include <common.h>
++#include <malloc.h>
++#include <driver.h>
++#include <xfuncs.h>
++#include <errno.h>
++#include <i2c/i2c.h>
++
++#include <gpio.h>
++#include <platform_data/pcf857x.h>
++
++static const struct platform_device_id pcf857x_id[] = {
++	{ "pcf8574", 8 },
++	{ "pcf8574a", 8 },
++	{ "pca8574", 8 },
++	{ "pca9670", 8 },
++	{ "pca9672", 8 },
++	{ "pca9674", 8 },
++	{ "pcf8575", 16 },
++	{ "pca8575", 16 },
++	{ "pca9671", 16 },
++	{ "pca9673", 16 },
++	{ "pca9675", 16 },
++	{ "max7328", 8 },
++	{ "max7329", 8 },
++	{ }
++};
++
++/*
++ * The pcf857x, pca857x, and pca967x chips only expose one read and one
++ * write register.  Writing a "one" bit (to match the reset state) lets
++ * that pin be used as an input; it's not an open-drain model, but acts
++ * a bit like one.  This is described as "quasi-bidirectional"; read the
++ * chip documentation for details.
++ *
++ * Many other I2C GPIO expander chips (like the pca953x models) have
++ * more complex register models and more conventional circuitry using
++ * push/pull drivers.  They often use the same 0x20..0x27 addresses as
++ * pcf857x parts, making the "legacy" I2C driver model problematic.
++ */
++struct pcf857x {
++	struct gpio_chip	chip;
++	struct i2c_client	*client;
++	unsigned		out;		/* software latch */
++
++	int (*write)(struct i2c_client *client, unsigned data);
++	int (*read)(struct i2c_client *client);
++};
++
++static inline struct pcf857x *to_pcf(struct gpio_chip *gc)
++{
++	return container_of(gc, struct pcf857x, chip);
++}
++
++/*-------------------------------------------------------------------------*/
++
++/* Talk to 8-bit I/O expander */
++
++static int i2c_write_le8(struct i2c_client *client, unsigned data)
++{
++	return i2c_smbus_write_byte(client, data);
++}
++
++static int i2c_read_le8(struct i2c_client *client)
++{
++	return (int)i2c_smbus_read_byte(client);
++}
++
++/* Talk to 16-bit I/O expander */
++
++static int i2c_write_le16(struct i2c_client *client, unsigned word)
++{
++	u8 buf[2] = { word & 0xff, word >> 8, };
++	int ret;
++
++	ret = i2c_master_send(client, buf, 2);
++	return (ret < 0) ? ret : 0;
++}
++
++static int i2c_read_le16(struct i2c_client *client)
++{
++	u8 buf[2];
++	int ret;
++
++	ret = i2c_master_recv(client, buf, 2);
++	if (ret < 0)
++		return ret;
++	return (buf[1] << 8) | buf[0];
++}
++
++/*-------------------------------------------------------------------------*/
++
++static int pcf857x_input(struct gpio_chip *chip, unsigned offset)
++{
++	struct pcf857x	*gpio = to_pcf(chip);
++	int		ret;
++
++	gpio->out |= (1 << offset);
++	ret = gpio->write(gpio->client, gpio->out);
++
++	return ret;
++}
++
++static int pcf857x_get(struct gpio_chip *chip, unsigned offset)
++{
++	struct pcf857x	*gpio = to_pcf(chip);
++	int		value;
++
++	value = gpio->read(gpio->client);
++	return (value < 0) ? value : !!(value & (1 << offset));
++}
++
++static int pcf857x_output(struct gpio_chip *chip, unsigned offset, int value)
++{
++	struct pcf857x	*gpio = to_pcf(chip);
++	unsigned	bit = 1 << offset;
++	int		ret;
++
++	if (value)
++		gpio->out |= bit;
++	else
++		gpio->out &= ~bit;
++	ret = gpio->write(gpio->client, gpio->out);
++
++	return ret;
++}
++
++static void pcf857x_set(struct gpio_chip *chip, unsigned offset, int value)
++{
++	pcf857x_output(chip, offset, value);
++}
++
++/*-------------------------------------------------------------------------*/
++
++static struct gpio_ops pcf857x_gpio_ops = {
++	.direction_input  = pcf857x_input,
++	.direction_output = pcf857x_output,
++	.get = pcf857x_get,
++	.set = pcf857x_set,
++};
++
++static int pcf857x_probe(struct device_d *dev)
++{
++	struct i2c_client *client = to_i2c_client(dev);
++	struct pcf857x_platform_data	*pdata = dev->platform_data;
++	struct device_node		*np = dev->device_node;
++	struct pcf857x			*gpio;
++	unsigned long			driver_data;
++	unsigned int			n_latch = 0;
++	int				ret;
++
++	if (IS_ENABLED(CONFIG_OF) && np)
++		of_property_read_u32(np, "lines-initial-states", &n_latch);
++	else if (pdata)
++		n_latch = pdata->n_latch;
++
++	/* Allocate, initialize, and register this gpio_chip. */
++	gpio = xzalloc(sizeof(*gpio));
++	if (!gpio)
++		return -ENOMEM;
++
++	ret = dev_get_drvdata(dev, (const void **)&driver_data);
++	if (ret)
++		return ret;
++
++	gpio->chip.base			= pdata ? pdata->gpio_base : -1;
++	gpio->chip.ops			= &pcf857x_gpio_ops;
++	gpio->chip.ngpio		= driver_data;
++	gpio->chip.dev			= &client->dev;
++
++	/* NOTE:  the OnSemi jlc1562b is also largely compatible with
++	 * these parts, notably for output.  It has a low-resolution
++	 * DAC instead of pin change IRQs; and its inputs can be the
++	 * result of comparators.
++	 */
++
++	/* 8574 addresses are 0x20..0x27; 8574a uses 0x38..0x3f;
++	 * 9670, 9672, 9764, and 9764a use quite a variety.
++	 *
++	 * NOTE: we don't distinguish here between *4 and *4a parts.
++	 */
++	switch (gpio->chip.ngpio) {
++	case 8:
++		gpio->write	= i2c_write_le8;
++		gpio->read	= i2c_read_le8;
++		break;
++	/* '75/'75c addresses are 0x20..0x27, just like the '74;
++	 * the '75c doesn't have a current source pulling high.
++	 * 9671, 9673, and 9765 use quite a variety of addresses.
++	 *
++	 * NOTE: we don't distinguish here between '75 and '75c parts.
++	 */
++	case 16:
++		gpio->write	= i2c_write_le16;
++		gpio->read	= i2c_read_le16;
++		break;
++	default:
++		dev_warn(&client->dev, "unsupported number of gpios\n");
++		return -EINVAL;
++	}
++
++	gpio->client = client;
++
++	/* NOTE:  these chips have strange "quasi-bidirectional" I/O pins.
++	 * We can't actually know whether a pin is configured (a) as output
++	 * and driving the signal low, or (b) as input and reporting a low
++	 * value ... without knowing the last value written since the chip
++	 * came out of reset (if any).  We can't read the latched output.
++	 *
++	 * In short, the only reliable solution for setting up pin direction
++	 * is to do it explicitly.  The setup() method can do that, but it
++	 * may cause transient glitching since it can't know the last value
++	 * written (some pins may need to be driven low).
++	 *
++	 * Using n_latch avoids that trouble.  When left initialized to zero,
++	 * our software copy of the "latch" then matches the chip's all-ones
++	 * reset state.  Otherwise it flags pins to be driven low.
++	 */
++	gpio->out = ~n_latch;
++
++	ret = gpiochip_add(&gpio->chip);
++	if (ret)
++		return ret;
++
++	/* Let platform code set up the GPIOs and their users.
++	 * Now is the first time anyone could use them.
++	 */
++	if (pdata && pdata->setup) {
++		ret = pdata->setup(client,
++				gpio->chip.base, gpio->chip.ngpio,
++				pdata->context);
++		if (ret < 0)
++			dev_warn(&client->dev, "setup failed, %d\n", ret);
++	}
++
++	return ret;
++}
++
++static const struct of_device_id pcf857x_dt_ids[] = {
++	{ .compatible = "nxp,pcf8574", .data = (void *)8 },
++	{ .compatible = "nxp,pcf8574a", .data = (void *)8 },
++	{ .compatible = "nxp,pca8574", .data = (void *)8 },
++	{ .compatible = "nxp,pca9670", .data = (void *)8 },
++	{ .compatible = "nxp,pca9672", .data = (void *)8 },
++	{ .compatible = "nxp,pca9674", .data = (void *)8 },
++	{ .compatible = "nxp,pcf8575", .data = (void *)16 },
++	{ .compatible = "nxp,pca8575", .data = (void *)16 },
++	{ .compatible = "nxp,pca9671", .data = (void *)16 },
++	{ .compatible = "nxp,pca9673", .data = (void *)16 },
++	{ .compatible = "nxp,pca9675", .data = (void *)16 },
++	{ .compatible = "maxim,max7328", .data = (void *)8 },
++	{ .compatible = "maxim,max7329", .data = (void *)8 },
++	{ }
++};
++
++static struct driver_d pcf857x_driver = {
++	.name	= "pcf857x",
++	.probe	= pcf857x_probe,
++	.of_compatible = DRV_OF_COMPAT(pcf857x_dt_ids),
++	.id_table = pcf857x_id,
++};
++device_i2c_driver(pcf857x_driver);
+diff --git a/include/platform_data/pcf857x.h b/include/platform_data/pcf857x.h
+new file mode 100644
+index 0000000000..4a4a830d05
+--- /dev/null
++++ b/include/platform_data/pcf857x.h
+@@ -0,0 +1,48 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __LINUX_PCF857X_H
++#define __LINUX_PCF857X_H
++
++#include <linux/types.h>
++#include <i2c/i2c.h>
++
++/**
++ * struct pcf857x_platform_data - data to set up pcf857x driver
++ * @gpio_base: number of the chip's first GPIO
++ * @n_latch: optional bit-inverse of initial register value; if
++ *	you leave this initialized to zero the driver will act
++ *	like the chip was just reset
++ * @setup: optional callback issued once the GPIOs are valid
++ * @teardown: optional callback issued before the GPIOs are invalidated
++ * @context: optional parameter passed to setup() and teardown()
++ *
++ * In addition to the I2C_BOARD_INFO() state appropriate to each chip,
++ * the i2c_board_info used with the pcf875x driver must provide its
++ * platform_data (pointer to one of these structures) with at least
++ * the gpio_base value initialized.
++ *
++ * The @setup callback may be used with the kind of board-specific glue
++ * which hands the (now-valid) GPIOs to other drivers, or which puts
++ * devices in their initial states using these GPIOs.
++ *
++ * These GPIO chips are only "quasi-bidirectional"; read the chip specs
++ * to understand the behavior.  They don't have separate registers to
++ * record which pins are used for input or output, record which output
++ * values are driven, or provide access to input values.  That must be
++ * inferred by reading the chip's value and knowing the last value written
++ * to it.  If you leave n_latch initialized to zero, that last written
++ * value is presumed to be all ones (as if the chip were just reset).
++ */
++struct pcf857x_platform_data {
++	unsigned	gpio_base;
++	unsigned	n_latch;
++
++	int		(*setup)(struct i2c_client *client,
++					int gpio, unsigned ngpio,
++					void *context);
++	int		(*teardown)(struct i2c_client *client,
++					int gpio, unsigned ngpio,
++					void *context);
++	void		*context;
++};
++
++#endif /* __LINUX_PCF857X_H */
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
