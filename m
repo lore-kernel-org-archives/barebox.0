@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hRXNx-0001EP-HS
- for barebox@lists.infradead.org; Fri, 17 May 2019 07:34:35 +0000
-Date: Fri, 17 May 2019 09:34:31 +0200
+ id 1hRZib-0006ia-Om
+ for barebox@lists.infradead.org; Fri, 17 May 2019 10:04:04 +0000
+Date: Fri, 17 May 2019 12:03:59 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190517073431.vpkic5gmi5guervb@pengutronix.de>
-References: <20190516091839.8504-1-s.trumtrar@pengutronix.de>
+Message-ID: <20190517100359.73n7h6okfjwqexw4@pengutronix.de>
+References: <20190516051254.9309-1-yamada.masahiro@socionext.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190516091839.8504-1-s.trumtrar@pengutronix.de>
+In-Reply-To: <20190516051254.9309-1-yamada.masahiro@socionext.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,25 +22,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: spi: fix NULL pointer dereference
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] treewide: replace '---help---' with 'help' in Kconfig
+ files
+To: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: barebox@lists.infradead.org
 
-On Thu, May 16, 2019 at 11:18:39AM +0200, Steffen Trumtrar wrote:
-> The renaming of "master" to "controller" done in
->     812a9ddcdf211302a050cf8f61f7af577bc29a23
->     spi: Generalize SPI "master" to "controller"
+On Thu, May 16, 2019 at 02:12:54PM +0900, Masahiro Yamada wrote:
+> In Linux, '---help---' was deprecated in favor of 'help', and
+> this is checked by the recent checkpatch.pl
 > 
-> breaks the spi command, because the spi.master pointer is not assigned.
-> The pointer is kept for backwards compatability.
+> See Linux commit 84af7a6194e493fae312a2b7fa5a3b51f76d9282
 > 
-> Assign it, so that spi drivers that are still using "spi->master" can be
-> used.
+> The number of '---help---' is gradually decreasing in Linux, but there
+> are still lots. However, '---help---' will be completely killed when
+> the time comes.
 > 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> Fortunately, there are only some in Barebox. Replacing them is not hard.
+> 
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 > ---
->  commands/spi.c | 1 +
->  1 file changed, 1 insertion(+)
 
 Applied, thanks
 
