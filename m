@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hRWGE-0006VT-IQ
- for barebox@lists.infradead.org; Fri, 17 May 2019 06:22:32 +0000
-Date: Fri, 17 May 2019 08:22:25 +0200
+ id 1hRXNx-0001EP-HS
+ for barebox@lists.infradead.org; Fri, 17 May 2019 07:34:35 +0000
+Date: Fri, 17 May 2019 09:34:31 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190517062225.yjpbk45uubm6ertp@pengutronix.de>
-References: <20190513102805.4326-1-r.czerwinski@pengutronix.de>
+Message-ID: <20190517073431.vpkic5gmi5guervb@pengutronix.de>
+References: <20190516091839.8504-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190513102805.4326-1-r.czerwinski@pengutronix.de>
+In-Reply-To: <20190516091839.8504-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] ARM: i.MX6: add support for Digi CCIMX6UL SBC Pro
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] commands: spi: fix NULL pointer dereference
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, May 13, 2019 at 12:28:05PM +0200, Rouven Czerwinski wrote:
-> Add support for the Digi CCIMX6UL SBC Pro.
-> It is based on the Digi CCIMX6UL SOM with 256MB RAM and 256MB NAND
-> flash.
+On Thu, May 16, 2019 at 11:18:39AM +0200, Steffen Trumtrar wrote:
+> The renaming of "master" to "controller" done in
+>     812a9ddcdf211302a050cf8f61f7af577bc29a23
+>     spi: Generalize SPI "master" to "controller"
 > 
-> v2:
-> - fix includes
-> - rename folder to som
-> - switch to compressed dtb
-> - remove the unnecessary get_runtime_offset
-> all from Ahmad Fatoum
+> breaks the spi command, because the spi.master pointer is not assigned.
+> The pointer is kept for backwards compatability.
 > 
-> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> Assign it, so that spi drivers that are still using "spi->master" can be
+> used.
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > ---
+>  commands/spi.c | 1 +
+>  1 file changed, 1 insertion(+)
 
 Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
