@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hRZib-0006ia-Om
- for barebox@lists.infradead.org; Fri, 17 May 2019 10:04:04 +0000
-Date: Fri, 17 May 2019 12:03:59 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190517100359.73n7h6okfjwqexw4@pengutronix.de>
-References: <20190516051254.9309-1-yamada.masahiro@socionext.com>
+ id 1hRpVo-0005s7-RI
+ for barebox@lists.infradead.org; Sat, 18 May 2019 02:55:54 +0000
+Received: by mail-ot1-x32c.google.com with SMTP id l25so106533otp.8
+ for <barebox@lists.infradead.org>; Fri, 17 May 2019 19:55:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190516051254.9309-1-yamada.masahiro@socionext.com>
+From: Geordan Neukum <gneukum1@gmail.com>
+Date: Sat, 18 May 2019 02:55:32 +0000
+Message-ID: <CA+T6rvGEu1dvR0Xs0+v6cMQZZWHqvkcVL6+NkAiRa5CH7N=vrw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +21,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] treewide: replace '---help---' with 'help' in Kconfig
- files
-To: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: barebox@lists.infradead.org
+Subject: checkpatch warning about strict_strto* family of functions
+To: barebox@lists.infradead.org
 
-On Thu, May 16, 2019 at 02:12:54PM +0900, Masahiro Yamada wrote:
-> In Linux, '---help---' was deprecated in favor of 'help', and
-> this is checked by the recent checkpatch.pl
-> 
-> See Linux commit 84af7a6194e493fae312a2b7fa5a3b51f76d9282
-> 
-> The number of '---help---' is gradually decreasing in Linux, but there
-> are still lots. However, '---help---' will be completely killed when
-> the time comes.
-> 
-> Fortunately, there are only some in Barebox. Replacing them is not hard.
-> 
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-> ---
+Hi all,
 
-Applied, thanks
+    In running the current version of checkpatch in barebox, I noticed
+a warning that I *should* be using functions from the strict_strto*
+family over those in the simple_strto* family. It appears that the
+strict_strto* family is a linux-only thing. Any interest in porting
+those over? If not, we may want to consider removing or temporarily
+silencing that warning.
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Thanks,
+Geordan
 
 _______________________________________________
 barebox mailing list
