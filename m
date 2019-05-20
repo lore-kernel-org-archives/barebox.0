@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hT155-0003Qk-5Y
- for barebox@lists.infradead.org; Tue, 21 May 2019 09:29:12 +0000
-Date: Tue, 21 May 2019 11:29:09 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190521092909.rxl3wp4ozpzgekfd@pengutronix.de>
-References: <20190517233606.28573-1-m.grzeschik@pengutronix.de>
+ id 1hSn6M-0001Sm-J3
+ for barebox@lists.infradead.org; Mon, 20 May 2019 18:33:35 +0000
+Received: by mail-pg1-x541.google.com with SMTP id w22so7174348pgi.6
+ for <barebox@lists.infradead.org>; Mon, 20 May 2019 11:33:34 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 20 May 2019 11:33:25 -0700
+Message-Id: <20190520183325.22546-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190517233606.28573-1-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,58 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] gpio: add driver for PCF857x, PCA{85, 96}7x, and
- MAX732[89] I2C GPIO expanders
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: include: dma: Zero out DMA coherent memory in no-MMU case
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Sat, May 18, 2019 at 01:36:06AM +0200, Michael Grzeschik wrote:
-> +static int pcf857x_probe(struct device_d *dev)
-> +{
-> +	struct i2c_client *client = to_i2c_client(dev);
-> +	struct pcf857x_platform_data	*pdata = dev->platform_data;
-> +	struct device_node		*np = dev->device_node;
-> +	struct pcf857x			*gpio;
-> +	unsigned long			driver_data;
-> +	unsigned int			n_latch = 0;
-> +	int				ret;
-> +
-> +	if (IS_ENABLED(CONFIG_OF) && np)
-> +		of_property_read_u32(np, "lines-initial-states", &n_latch);
-> +	else if (pdata)
-> +		n_latch = pdata->n_latch;
-> +
-> +	/* Allocate, initialize, and register this gpio_chip. */
-> +	gpio = xzalloc(sizeof(*gpio));
-> +	if (!gpio)
-> +		return -ENOMEM;
+Add code to match the behavior of dma_alloc_coherent() when CONFIG_MMU
+is selected.
 
-xzalloc never returns NULL.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/include/asm/dma.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> +	ret = gpiochip_add(&gpio->chip);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Let platform code set up the GPIOs and their users.
-> +	 * Now is the first time anyone could use them.
-> +	 */
-> +	if (pdata && pdata->setup) {
-> +		ret = pdata->setup(client,
-> +				gpio->chip.base, gpio->chip.ngpio,
-> +				pdata->context);
-> +		if (ret < 0)
-> +			dev_warn(&client->dev, "setup failed, %d\n", ret);
-> +	}
-
-I don't think we want to have that pdata->setup() support.
-
-Sascha
-
+diff --git a/arch/arm/include/asm/dma.h b/arch/arm/include/asm/dma.h
+index bb7e62af0..15999a524 100644
+--- a/arch/arm/include/asm/dma.h
++++ b/arch/arm/include/asm/dma.h
+@@ -20,6 +20,8 @@ static inline void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
+ 	if (dma_handle)
+ 		*dma_handle = (dma_addr_t)ret;
+ 
++	memset(ret, 0, size);
++
+ 	return ret;
+ }
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.21.0
+
 
 _______________________________________________
 barebox mailing list
