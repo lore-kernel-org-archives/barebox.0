@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hSmxU-0004jP-Ck
- for barebox@lists.infradead.org; Mon, 20 May 2019 18:24:26 +0000
-Received: by mail-pf1-x442.google.com with SMTP id s11so7607081pfm.12
+ id 1hSmxU-0004jk-Sh
+ for barebox@lists.infradead.org; Mon, 20 May 2019 18:24:28 +0000
+Received: by mail-pg1-x543.google.com with SMTP id z3so7161986pgp.8
  for <barebox@lists.infradead.org>; Mon, 20 May 2019 11:24:24 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 20 May 2019 11:24:01 -0700
-Message-Id: <20190520182402.12753-5-andrew.smirnov@gmail.com>
+Date: Mon, 20 May 2019 11:24:02 -0700
+Message-Id: <20190520182402.12753-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20190520182402.12753-1-andrew.smirnov@gmail.com>
 References: <20190520182402.12753-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,111 +23,150 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] usb: imx-usb-phy: Disable charger detect during
- initialization
+Subject: [PATCH 5/5] ARM: i.MX: Drop unused usb-imx6.c
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-I can't find any erratas this is in refernce to, but apparently
-external changer detector needs to be disabled to prevent poor USB
-data signal quality. The problem manifest itself as a intermittent USB
-transfer corruption that happens to some device under and only under
-specific circumstances.
-
-In my case the failure was observed with Transcent SD/micro-SD card
-reader (05e3:0745 Genesys Logic, Inc. Logilink CR0012) when connected
-directly to front panel USB of ZII RDU2 board (the problem would go
-away if device was conntecte via a hub/USB-analyzer/male-female
-type A extender cable).
-
-Note that this fix is present in Linux kernel as well as some
-abandoned Barebox code removed in the next patch.
+Looks like usb-imx6.c was abandoned and there are no references to
+either of the functions difined there. Drop it.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/imx/imx-usb-phy.c | 37 +++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ arch/arm/mach-imx/Makefile   |   2 +-
+ arch/arm/mach-imx/usb-imx6.c | 111 -----------------------------------
+ 2 files changed, 1 insertion(+), 112 deletions(-)
+ delete mode 100644 arch/arm/mach-imx/usb-imx6.c
 
-diff --git a/drivers/usb/imx/imx-usb-phy.c b/drivers/usb/imx/imx-usb-phy.c
-index 306f84374..d4562285c 100644
---- a/drivers/usb/imx/imx-usb-phy.c
-+++ b/drivers/usb/imx/imx-usb-phy.c
-@@ -24,6 +24,7 @@
- #include <linux/clk.h>
- #include <linux/err.h>
- #include <stmp-device.h>
-+#include <mfd/syscon.h>
- 
- #define HW_USBPHY_PWD				0x00
- #define HW_USBPHY_TX				0x10
-@@ -35,12 +36,19 @@
- #define BM_USBPHY_CTRL_ENUTMILEVEL2		BIT(14)
- #define BM_USBPHY_CTRL_ENHOSTDISCONDETECT	BIT(1)
- 
-+#define ANADIG_USB1_CHRG_DETECT_SET		0x1b4
-+#define ANADIG_USB2_CHRG_DETECT_SET		0x214
-+#define ANADIG_USB1_CHRG_DETECT_EN_B		BIT(20)
-+#define ANADIG_USB1_CHRG_DETECT_CHK_CHRG_B	BIT(19)
-+
- struct imx_usbphy {
- 	struct usb_phy usb_phy;
- 	struct phy *phy;
- 	void __iomem *base;
-+	void __iomem *anatop;
- 	struct clk *clk;
- 	struct phy_provider *provider;
-+	int port_id;
- };
- 
- static int imx_usbphy_phy_init(struct phy *phy)
-@@ -61,6 +69,19 @@ static int imx_usbphy_phy_init(struct phy *phy)
- 	writel(BM_USBPHY_CTRL_ENUTMILEVEL3 | BM_USBPHY_CTRL_ENUTMILEVEL2,
- 	       imxphy->base + HW_USBPHY_CTRL_SET);
- 
-+	if (imxphy->anatop) {
-+		unsigned int reg = imxphy->port_id ?
-+			ANADIG_USB1_CHRG_DETECT_SET :
-+			ANADIG_USB2_CHRG_DETECT_SET;
-+		/*
-+		 * The external charger detector needs to be disabled,
-+		 * or the signal at DP will be poor
-+		 */
-+		writel(ANADIG_USB1_CHRG_DETECT_EN_B |
-+		       ANADIG_USB1_CHRG_DETECT_CHK_CHRG_B,
-+		       imxphy->anatop + reg);
-+	}
-+
- 	return 0;
- }
- 
-@@ -113,11 +134,27 @@ static const struct phy_ops imx_phy_ops = {
- static int imx_usbphy_probe(struct device_d *dev)
- {
- 	struct resource *iores;
-+	struct device_node *np = dev->device_node;
- 	int ret;
- 	struct imx_usbphy *imxphy;
- 
- 	imxphy = xzalloc(sizeof(*imxphy));
- 
-+	ret = of_alias_get_id(np, "usbphy");
-+	if (ret < 0) {
-+		dev_dbg(dev, "failed to get alias id, errno %d\n", ret);
-+		goto err_free;
-+	}
-+	imxphy->port_id = ret;
-+
-+	if (of_get_property(np, "fsl,anatop", NULL)) {
-+		imxphy->anatop =
-+			syscon_base_lookup_by_phandle(np, "fsl,anatop");
-+		ret = PTR_ERR_OR_ZERO(imxphy->anatop);
-+		if (ret)
-+			goto err_free;
-+	}
-+
- 	iores = dev_request_mem_resource(dev, 0);
- 	if (IS_ERR(iores)) {
- 		ret = PTR_ERR(iores);
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index b86025cc3..b16de2866 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -10,7 +10,7 @@ obj-$(CONFIG_ARCH_IMX51) += imx51.o imx5.o
+ pbl-$(CONFIG_ARCH_IMX51) += imx51.o imx5.o
+ obj-$(CONFIG_ARCH_IMX53) += imx53.o imx5.o esdctl-v4.o
+ pbl-$(CONFIG_ARCH_IMX53) += imx53.o imx5.o esdctl-v4.o
+-obj-$(CONFIG_ARCH_IMX6) += imx6.o usb-imx6.o
++obj-$(CONFIG_ARCH_IMX6) += imx6.o
+ CFLAGS_imx6.o := -march=armv7-a
+ lwl-$(CONFIG_ARCH_IMX6) += imx6-mmdc.o
+ obj-$(CONFIG_ARCH_IMX7) += imx7.o
+diff --git a/arch/arm/mach-imx/usb-imx6.c b/arch/arm/mach-imx/usb-imx6.c
+deleted file mode 100644
+index 4236bcb77..000000000
+--- a/arch/arm/mach-imx/usb-imx6.c
++++ /dev/null
+@@ -1,111 +0,0 @@
+-/*
+- * Copyright (C) 2012 Steffen Trumtrar, Pengutronix
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation.
+- *
+- */
+-
+-#include <common.h>
+-#include <io.h>
+-#include <mach/imx6-regs.h>
+-#include <mach/usb.h>
+-
+-#define SET				0x4
+-#define CLR				0x8
+-
+-#define USBPHY_CTRL			0x30
+-#define USB_OTG_CTRL			0x800
+-#define USB_UH1_CTRL			0x804
+-#define USB_UH2_CTRL			0x808
+-#define USB_UH3_CTRL			0x80c
+-
+-#define USB_UH1_USBCMD			0x340
+-
+-#define USB_CMD_RUNSTOP			(1 <<  0)
+-
+-#define USB_OVER_CUR_DIS		(1 <<  7)
+-#define USBPHY_CTRL_SFTRST		(1 << 31)
+-#define USBPHY_CTRL_CLKGATE		(1 << 30)
+-#define USBPHY_CTRL_ENUTMILEVEL3	(1 << 15)
+-#define USBPHY_CTRL_ENUTMILEVEL2	(1 << 14)
+-
+-#define USBPHY1_PLL_480_CTRL_EN		(1 << 13)
+-#define USBPHY1_PLL_480_CTRL_POWER	(1 << 12)
+-#define USBPHY1_PLL_480_CTRL_EN_USB_CLK	(1 <<  6)
+-#define USBPHY1_PLL_480_CTRL_BYPASS	(1 << 16)
+-
+-int imx6_usb_phy2_disable_oc(void)
+-{
+-	int val;
+-
+-	/* disable over current detection */
+-	val = readl(MX6_USBOH3_USB_BASE_ADDR + USB_UH1_CTRL);
+-	val |= USB_OVER_CUR_DIS;
+-	writel(val, MX6_USBOH3_USB_BASE_ADDR + USB_UH1_CTRL);
+-	val = readl(MX6_USBOH3_USB_BASE_ADDR + USB_UH2_CTRL);
+-	val |= USB_OVER_CUR_DIS;
+-	writel(val, MX6_USBOH3_USB_BASE_ADDR + USB_UH2_CTRL);
+-	val = readl(MX6_USBOH3_USB_BASE_ADDR + USB_UH3_CTRL);
+-	val |= USB_OVER_CUR_DIS;
+-	writel(val, MX6_USBOH3_USB_BASE_ADDR + USB_UH3_CTRL);
+-
+-	return 0;
+-}
+-
+-int imx6_usb_phy2_enable(void)
+-{
+-	int val;
+-
+-	/* disable external charger detector or DP will be poor */
+-	writel(0x00180000, MX6_ANATOP_BASE_ADDR + 0x1b0);
+-	writel(0x00180000, MX6_ANATOP_BASE_ADDR + 0x210);
+-
+-	/* enable usb pll */
+-	writel(USBPHY1_PLL_480_CTRL_EN |
+-	       USBPHY1_PLL_480_CTRL_POWER |
+-	       USBPHY1_PLL_480_CTRL_EN_USB_CLK, MX6_ANATOP_BASE_ADDR + 0x24);
+-
+-	/* turn OFF clk bypass */
+-	/* at least on imx6 v1.0 this essential for usb to work */
+-	/* FIXME: test on v1.1. Datasheet declares bit as reserved */
+-	writel(USBPHY1_PLL_480_CTRL_BYPASS, MX6_ANATOP_BASE_ADDR + 0x28);
+-
+-	/* stop then reset */
+-	val = readl(MX6_USBOH3_USB_BASE_ADDR + USB_UH1_USBCMD);
+-	val &= ~USB_CMD_RUNSTOP;
+-	writel(val, MX6_USBOH3_USB_BASE_ADDR + USB_UH1_USBCMD);
+-	while (readl(MX6_USBOH3_USB_BASE_ADDR + USB_UH1_USBCMD) & USB_CMD_RUNSTOP);
+-
+-	val = readl(MX6_USBOH3_USB_BASE_ADDR + USB_UH1_USBCMD);
+-	val |= USB_CMD_RESET;
+-	writel(val, MX6_USBOH3_USB_BASE_ADDR + USB_UH1_USBCMD);
+-	while (readl(MX6_USBOH3_USB_BASE_ADDR + USB_UH1_USBCMD) & USB_CMD_RESET);
+-
+-	/* reset usbphy */
+-	writel(USBPHY_CTRL_SFTRST, MX6_USBPHY2_BASE_ADDR + USBPHY_CTRL + SET);
+-	udelay(10);
+-	/* clr reset and clkgate */
+-	writel(USBPHY_CTRL_SFTRST | USBPHY_CTRL_CLKGATE, MX6_USBPHY2_BASE_ADDR + USBPHY_CTRL + CLR);
+-
+-	/* clr all pwd bits => power up phy */
+-	writel(0xffffffff, MX6_USBPHY2_BASE_ADDR + CLR);
+-
+-	/* set utmilvl2/3 */
+-	val = readl(MX6_USBPHY2_BASE_ADDR + USBPHY_CTRL);
+-	val |= USBPHY_CTRL_ENUTMILEVEL3 | USBPHY_CTRL_ENUTMILEVEL2;
+-	writel(val, MX6_USBPHY2_BASE_ADDR + USBPHY_CTRL + SET);
+-
+-	return 0;
+-}
 -- 
 2.21.0
 
