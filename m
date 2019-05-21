@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hTie6-0001Pi-8n
- for barebox@lists.infradead.org; Thu, 23 May 2019 08:00:16 +0000
-Date: Thu, 23 May 2019 10:00:12 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190523080012.mbluexhhb2fbzwy6@pengutronix.de>
-References: <20190522171728.10984-1-u.oelmann@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190522171728.10984-1-u.oelmann@pengutronix.de>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1hT600-0007Gd-PF
+ for barebox@lists.infradead.org; Tue, 21 May 2019 14:44:18 +0000
+From: Jan Remmet <j.remmet@phytec.de>
+Date: Tue, 21 May 2019 16:44:13 +0200
+Message-Id: <1558449853-28519-1-git-send-email-j.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +14,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] images: remove forgotten occurences of *.imx-sram-img
-To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] common: state: check length
+To: barebox@lists.infradead.org
 
-On Wed, May 22, 2019 at 07:17:28PM +0200, Ulrich =D6lmann wrote:
-> Starting with commit 5a1a5ed2537d ("ARM: images: use piggydata") this fil=
-e type
-> is not known anymore, so clean up.
-> =
+if written_length is read from a partial written bucket it may be to
+big and xmalloc will panic barebox.
 
-> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
-> ---
->  images/.gitignore | 1 -
->  images/Makefile   | 2 +-
->  2 files changed, 1 insertion(+), 2 deletions(-)
+Check if the value is sane.
 
-Applied, thanks
+Signed-off-by: Jan Remmet <j.remmet@phytec.de>
+---
+ common/state/backend_bucket_direct.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Sascha
+diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
+index 95ddb9310685..fc633eea8dec 100644
+--- a/common/state/backend_bucket_direct.c
++++ b/common/state/backend_bucket_direct.c
+@@ -67,6 +67,10 @@ static int state_backend_bucket_direct_read(struct state_backend_storage_bucket
+ 	}
+ 	if (meta.magic == direct_magic) {
+ 		read_len = meta.written_length;
++		if (read_len < 0 || read_len > direct->max_size) {
++			dev_err(direct->dev, "Wrong length in meta data\n");
++			return -EINVAL;
++		}
+ 	} else {
+ 		if (meta.magic != ~0 && !!meta.magic)
+ 			bucket->wrong_magic = 1;
+-- 
+2.7.4
 
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
