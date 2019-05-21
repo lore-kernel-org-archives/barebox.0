@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi1-x242.google.com ([2607:f8b0:4864:20::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hS23A-0002XG-Vd
- for barebox@lists.infradead.org; Sat, 18 May 2019 16:19:10 +0000
-Received: by mail-oi1-x242.google.com with SMTP id t187so7251764oie.10
- for <barebox@lists.infradead.org>; Sat, 18 May 2019 09:19:04 -0700 (PDT)
+ id 1hSz3s-00020z-PW
+ for barebox@lists.infradead.org; Tue, 21 May 2019 07:19:51 +0000
+Date: Tue, 21 May 2019 09:19:46 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190521071946.eqart5p7qszbowx5@pengutronix.de>
+References: <20190515093644.9691-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-References: <CA+T6rvGEu1dvR0Xs0+v6cMQZZWHqvkcVL6+NkAiRa5CH7N=vrw@mail.gmail.com>
-In-Reply-To: <CA+T6rvGEu1dvR0Xs0+v6cMQZZWHqvkcVL6+NkAiRa5CH7N=vrw@mail.gmail.com>
-From: Geordan Neukum <gneukum1@gmail.com>
-Date: Sat, 18 May 2019 16:18:44 +0000
-Message-ID: <CA+T6rvFKGmStoZ0SNEAKQNKkv0jKDETN7jspkoC=QmzcQ=TRbw@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20190515093644.9691-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,28 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: checkpatch warning about strict_strto* family of functions
-To: barebox@lists.infradead.org
-Cc: Geordan Neukum <gneukum1@gmail.com>
+Subject: Re: [PATCH v2 0/4] scripts/checkpatch.pl: rebase on top of upstream
+ v5.1
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Ah, disregard. Ahmad's work in the patch: 'checkpatch: import as-is
-from Linux v5.1' should resolve this. Sorry for the confusion.
+On Wed, May 15, 2019 at 11:36:40AM +0200, Ahmad Fatoum wrote:
+> "v1" is at <20190219141647.2537-3-a.fatoum@pengutronix.de>
+> 
+> Changes since v1:
+>   - added dts/Bindings to compatible search patch (by Antony)
+>   - split barebox-specific changes into a separate commit (by Sascha)
+>   - split checkpatch.pl dependencies into a separate commit
+>   - changed spdxcheck.py to not require LICENSES/{exceptions, other}
+>   - removed exceptions/, other/ directories
+> 
+> Ahmad Fatoum (4):
+>   LICENSES: remove empty other, exceptions directories
+>   checkpatch: add upstream checkpatch v5.1 dependencies
+>   checkpatch: import as-is from Linux v5.1
+>   checkpatch: apply barebox-specific modifications
 
-Geordan
+Applied, thanks
 
-On Sat, May 18, 2019 at 2:55 AM Geordan Neukum <gneukum1@gmail.com> wrote:
->
-> Hi all,
->
->     In running the current version of checkpatch in barebox, I noticed
-> a warning that I *should* be using functions from the strict_strto*
-> family over those in the simple_strto* family. It appears that the
-> strict_strto* family is a linux-only thing. Any interest in porting
-> those over? If not, we may want to consider removing or temporarily
-> silencing that warning.
->
-> Thanks,
-> Geordan
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
