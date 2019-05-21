@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hTky2-0005sA-VK
- for barebox@lists.infradead.org; Thu, 23 May 2019 10:29:00 +0000
-References: <20190521155626.9906-1-a.fatoum@pengutronix.de>
- <20190521155626.9906-2-a.fatoum@pengutronix.de>
- <1558605680.5135.4.camel@pengutronix.de>
+ id 1hT784-0006qU-Se
+ for barebox@lists.infradead.org; Tue, 21 May 2019 15:56:44 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <2b0a2e0d-e2f2-de05-de37-c4c0e41b2b37@pengutronix.de>
-Date: Thu, 23 May 2019 12:28:54 +0200
+Date: Tue, 21 May 2019 17:56:26 +0200
+Message-Id: <20190521155626.9906-6-a.fatoum@pengutronix.de>
+In-Reply-To: <20190521155626.9906-1-a.fatoum@pengutronix.de>
+References: <20190521155626.9906-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <1558605680.5135.4.camel@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,116 +21,114 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/5] clk: imx6: remove quirky
- clk_set_parent(LDB_diN_sel, pll5_video_div)
-To: Philipp Zabel <p.zabel@pengutronix.de>, barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, pza@pengutronix.de, Raphael Poggi <poggi.raph@gmail.com>
+Subject: [PATCH v2 5/5] clk: imx6: define an enum for ldb mux inputs
+To: barebox@lists.infradead.org
+Cc: pza@pengutronix.de, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
+For better readability should this code be reviewed
+in future, replace the hardcoded input numbers
+with an enum.
 
+This is just a cosmetic change and was verified
+to not affect clk-imx6.o.
 
-On 23/5/19 12:01, Philipp Zabel wrote:
-> On Tue, 2019-05-21 at 17:56 +0200, Ahmad Fatoum wrote:
->> barebox has inherited the clk_set_parent(ldb_diN_sel, pll5_video_div)
->> from upstream kernel commit 32f3b8da22 ("ARM i.MX6q: set the LDB serial
->> clock parent to the video PLL"), where it was enabled for all i.MX6Q
->> revisions after 1.0. It was applied whenever CONFIG_DRIVER_VIDEO_IMX_IPUV3
->> was defined.
->>
->> The kernel removed this reparenting again as a preventive measure
->> against ERR009219 in 03d576f202 ("clk: imx6: Make the LDB_DI0 and
->> LDB_DI1 clocks read-only").
->>
->> As the kernel used the device tree compatible, which is the same
->> for e.g. i.MX6Solo and DualLite, but barebox queried ANATOP which
->> lists different CPU types for i.MX6Solo and DualLite and because
->> i.MX6QuadPlus wasn't supported at first, barebox grew to do
->> the reparenting on the odd set of:
->>   - Quad and Dual rev >1.0
->>   - DualLite
->>   - Solo rev >1.0
->>   - QuadPlus and DualPlus rev >1.0
->>
->> On all of these, except for the QuadPlus and the DualPlus, this
->> reparenting may glitch the LDB so that it permanently locks up.
->>
->> By removing the reparenting in this commit, producing this glitch is
->> avoided, unless the device tree[1] reinstates the old behavior:
->>
->> 	&clks {
->> 		assigned-clocks = <&clks IMX6QDL_CLK_LDB_DI0_SEL>,
->> 				  <&clks IMX6QDL_CLK_LDB_DI1_SEL>;
->> 		assigned-clock-parents = <&clks IMX6QDL_CLK_PLL5_VIDEO_DIV>,
->> 					 <&clks IMX6QDL_CLK_PLL5_VIDEO_DIV>;
->> 	};
->>
->> Follow-up patches will explicitly check for this and do the reparenting
->> in a glitch-free manner.
->>
->> As of v2019.03.0, following mainline boards are potentially broken
->         ^^^^^^^^^^
-> This Barebox version is out of date.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/clk/imx/clk-imx6.c | 39 +++++++++++++++++++++++---------------
+ 1 file changed, 24 insertions(+), 15 deletions(-)
 
-git diff --name-status v2019.03.0..upstream/next arch/arm/dts | grep ^A.*imx6
-
-reports only one i.MX6UL board, so the list is still accurate,
-just the header isn't.
-
-
-> 
->> by this (i.e. they're supported by barebox, are in the list above,
->> had a LDB enabled and might be defining CONFIG_DRIVER_VIDEO_IMX_IPUV3):
->>   - imx6qdl-zii-rdu2.dtsi
->>   - imx6qdl-udoo.dtsi
->>   - imx6qdl-mba6x.dtsi
->>   - imx6q-var-custom.dts
->>   - imx6q-guf-santaro.dts
->>   - imx6q-embedsky-e9.dtsi
-> 
-> Besides RDU2 and Santaro these are all development boards.
-> UDOO, E9, and MBa6x have monitor connectors, so using PLL5 for LVDS may
-> be the wrong thing anyway, depending on the connected panel, and on
-> whether the HDMI/DVI connector is going to be used.
-> 
-> For RDU2 and Santaro I think we need the above DT change. Both don't
-> have HDMI connectors, which makes PLL5 the correct clock to use, and I
-> can't see any other place where LDB_DI clocks are switched to it.
-
-I see. Andrey and Sascha added those, so I'll leave it to them to decide.
+diff --git a/drivers/clk/imx/clk-imx6.c b/drivers/clk/imx/clk-imx6.c
+index 69586f04a21f..fd0a51f1dcda 100644
+--- a/drivers/clk/imx/clk-imx6.c
++++ b/drivers/clk/imx/clk-imx6.c
+@@ -213,12 +213,20 @@ static const char *ipu_sels[] = {
+ 	"pll3_pfd1_540m",
+ };
  
-
-> 
->> [1]: If barebox is configured to show a boot splash screen, this snippet
->>      should exist in the barebox device tree. If barebox acts on it, the
->>      kernel will show following warning:
->>          ccm: ldb_di0_sel already changed from reset value: 0
->>          ccm: ldb_di1_sel already changed from reset value: 0
->>      This warning is safe to ignore.
->>
->> Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
->> Cc: Raphael Poggi <poggi.raph@gmail.com>
->> Cc: Sascha Hauer <s.hauer@pengutronix.de>
->> Cc: Lucas Stach <l.stach@pengutronix.de>
->> Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> 
-> Apart from that,
-> Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-
-Thanks for the review!
-
-Cheers
-Ahmad
-
-> 
-> regards
-> Philipp
-> 
-
++enum ldb_di_sel { /* for use in init_ldb_clks */
++	LDB_DI_SEL_PLL5_VIDEO_DIV	= 0,
++	LDB_DI_SEL_PLL2_PFD0_352M	= 1,
++	LDB_DI_SEL_PLL2_PFD2_396M	= 2,
++	LDB_DI_SEL_MMDC_CH1_AXI		= 3,
++	LDB_DI_SEL_PLL3_USB_OTG		= 4,
++};
++
+ static const char *ldb_di_sels[] = {
+-	"pll5_video_div",
+-	"pll2_pfd0_352m",
+-	"pll2_pfd2_396m",
+-	"mmdc_ch1_axi_podf",
+-	"pll3_usb_otg",
++	[LDB_DI_SEL_PLL5_VIDEO_DIV]	= "pll5_video_div",
++	[LDB_DI_SEL_PLL2_PFD0_352M]	= "pll2_pfd0_352m",
++	[LDB_DI_SEL_PLL2_PFD2_396M]	= "pll2_pfd2_396m",
++	[LDB_DI_SEL_MMDC_CH1_AXI]	= "mmdc_ch1_axi_podf",
++	[LDB_DI_SEL_PLL3_USB_OTG]	= "pll3_usb_otg",
+ };
+ 
+ static const char *ipu_di_pre_sels[] = {
+@@ -311,23 +319,23 @@ static int ldb_di_sel_by_clock_id(int clock_id)
+ 	case IMX6QDL_CLK_PLL5_VIDEO_DIV:
+ 		if (!cpu_has_working_video_pll_post_div())
+ 			return -ENOENT;
+-		return 0;
++		return LDB_DI_SEL_PLL5_VIDEO_DIV;
+ 	case IMX6QDL_CLK_PLL2_PFD0_352M:
+-		return 1;
++		return LDB_DI_SEL_PLL2_PFD0_352M;
+ 	case IMX6QDL_CLK_PLL2_PFD2_396M:
+-		return 2;
++		return LDB_DI_SEL_PLL2_PFD2_396M;
+ 	case IMX6QDL_CLK_MMDC_CH1_AXI:
+-		return 3;
++		return LDB_DI_SEL_MMDC_CH1_AXI;
+ 	case IMX6QDL_CLK_PLL3_USB_OTG:
+-		return 4;
++		return LDB_DI_SEL_PLL3_USB_OTG;
+ 	default:
+ 		return -ENOENT;
+ 	}
+ }
+ 
+ static void of_assigned_ldb_sels(struct device_node *node,
+-				 unsigned int *ldb_di0_sel,
+-				 unsigned int *ldb_di1_sel)
++				 enum ldb_di_sel *ldb_di0_sel,
++				 enum ldb_di_sel *ldb_di1_sel)
+ {
+ 	struct of_phandle_args clkspec;
+ 	int index, rc, num_parents;
+@@ -466,7 +474,7 @@ static void mmdc_ch1_reenable(void __iomem *ccm_base)
+ static void init_ldb_clks(struct device_node *np, void __iomem *ccm_base)
+ {
+ 	unsigned int reg;
+-	unsigned int sel[2][4];
++	enum ldb_di_sel sel[2][4];
+ 	int i;
+ 
+ 	reg = readl(ccm_base + CCM_CS2CDR);
+@@ -480,7 +488,7 @@ static void init_ldb_clks(struct device_node *np, void __iomem *ccm_base)
+ 
+ 	for (i = 0; i < 2; i++) {
+ 		/* Warn if a glitch might have been introduced already */
+-		if (sel[i][0] != 3) {
++		if (sel[i][0] != LDB_DI_SEL_MMDC_CH1_AXI) {
+ 			pr_warn("ccm: ldb_di%d_sel already changed from reset value: %d\n",
+ 				i, sel[i][0]);
+ 		}
+@@ -489,7 +497,8 @@ static void init_ldb_clks(struct device_node *np, void __iomem *ccm_base)
+ 			continue;
+ 
+ 		/* Only switch to or from pll2_pfd2_396m if it is disabled */
+-		if ((sel[i][0] == 2 || sel[i][3] == 2) &&
++		if ((sel[i][0] == LDB_DI_SEL_PLL2_PFD2_396M ||
++		     sel[i][3] == LDB_DI_SEL_PLL2_PFD2_396M) &&
+ 		    (clk_get_parent(clks[IMX6QDL_CLK_PERIPH_PRE]) ==
+ 		     clks[IMX6QDL_CLK_PLL2_PFD2_396M])) {
+ 			pr_err("ccm: ldb_di%d_sel: couldn't disable pll2_pfd2_396m\n",
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
