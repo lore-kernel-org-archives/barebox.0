@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it1-x143.google.com ([2607:f8b0:4864:20::143])
+Received: from mail-qk1-x741.google.com ([2607:f8b0:4864:20::741])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hTGZr-0002Sm-R5
- for barebox@lists.infradead.org; Wed, 22 May 2019 02:02:01 +0000
-Received: by mail-it1-x143.google.com with SMTP id i10so1041865ite.0
- for <barebox@lists.infradead.org>; Tue, 21 May 2019 19:01:59 -0700 (PDT)
+ id 1hSssh-0003XR-8j
+ for barebox@lists.infradead.org; Tue, 21 May 2019 00:43:52 +0000
+Received: by mail-qk1-x741.google.com with SMTP id w25so9989319qkj.11
+ for <barebox@lists.infradead.org>; Mon, 20 May 2019 17:43:50 -0700 (PDT)
+From: Vivien Didelot <vivien.didelot@gmail.com>
+Date: Mon, 20 May 2019 20:43:45 -0400
+Message-Id: <20190521004345.2396-1-vivien.didelot@gmail.com>
 MIME-Version: 1.0
-References: <20190520182402.12753-1-andrew.smirnov@gmail.com>
- <20190520182402.12753-6-andrew.smirnov@gmail.com>
- <20190521093716.qywrzd2qvkrpcmwn@pengutronix.de>
- <20190521095025.i2kljfhh6j2tuhv5@pengutronix.de>
-In-Reply-To: <20190521095025.i2kljfhh6j2tuhv5@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 21 May 2019 19:01:46 -0700
-Message-ID: <CAHQ1cqGVhMXxwoj=mvEeehaRX6RFQEHPoSarJrNV+Of_CHdSxw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,57 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/5] ARM: i.MX: Drop unused usb-imx6.c
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: zii-vf610-dev: disable eth1
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Vivien Didelot <vivien.didelot@gmail.com>
 
-On Tue, May 21, 2019 at 2:50 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Tue, May 21, 2019 at 11:37:16AM +0200, Sascha Hauer wrote:
-> > On Mon, May 20, 2019 at 11:24:02AM -0700, Andrey Smirnov wrote:
-> > > Looks like usb-imx6.c was abandoned and there are no references to
-> > > either of the functions difined there. Drop it.
-> > >
-> > > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > > ---
-> > >  arch/arm/mach-imx/Makefile   |   2 +-
-> > >  arch/arm/mach-imx/usb-imx6.c | 111 -----------------------------------
-> > >  2 files changed, 1 insertion(+), 112 deletions(-)
-> > >  delete mode 100644 arch/arm/mach-imx/usb-imx6.c
-> > >
-> > > diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-> > > index b86025cc3..b16de2866 100644
-> > > --- a/arch/arm/mach-imx/Makefile
-> > > +++ b/arch/arm/mach-imx/Makefile
-> > > @@ -10,7 +10,7 @@ obj-$(CONFIG_ARCH_IMX51) += imx51.o imx5.o
-> > >  pbl-$(CONFIG_ARCH_IMX51) += imx51.o imx5.o
-> > >  obj-$(CONFIG_ARCH_IMX53) += imx53.o imx5.o esdctl-v4.o
-> > >  pbl-$(CONFIG_ARCH_IMX53) += imx53.o imx5.o esdctl-v4.o
-> > > -obj-$(CONFIG_ARCH_IMX6) += imx6.o usb-imx6.o
-> > > +obj-$(CONFIG_ARCH_IMX6) += imx6.o
-> > >  CFLAGS_imx6.o := -march=armv7-a
-> > >  lwl-$(CONFIG_ARCH_IMX6) += imx6-mmdc.o
-> > >  obj-$(CONFIG_ARCH_IMX7) += imx7.o
-> > > diff --git a/arch/arm/mach-imx/usb-imx6.c b/arch/arm/mach-imx/usb-imx6.c
-> > > deleted file mode 100644
-> > > index 4236bcb77..000000000
-> > > --- a/arch/arm/mach-imx/usb-imx6.c
-> > > +++ /dev/null
-> > > @@ -1,111 +0,0 @@
-> > > -
-> > > -int imx6_usb_phy2_disable_oc(void)
-> > > -{
-> >
-> > You leave the function prototypes in
-> > arch/arm/mach-imx/include/mach/usb.h. Could you remove them aswell?
->
-> Don't mind, I fixed this up while applying
->
+The current support for the ZII Dev Boards time out on eth1 when
+booting from net, which takes a while:
 
-I knew I was forgetting something! Thanks for fixing that!
+    Booting entry 'net'
+    eth0: 100Mbps full duplex link detected
+    T T T eth0: DHCP client bound to address 192.168.203.22
+    WARNING: eth1: No MAC address set. Using random address 3a:e8:f7:52:55:6d
+    T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T
+    Loading ARM Linux zImage '/mnt/tftp/none-linux-zii-dev-rev-b-2'
 
-Thanks,
-Andrey Smirnov
+eth1 is the DSA master interface and has no use within barebox,
+so disable the interface to allow Barebox to boot right away from eth0.
+
+Suggested-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Signed-off-by: Vivien Didelot <vivien.didelot@gmail.com>
+---
+ .../zii-vf610-dev/defaultenv-zii-vf610-dev/nv/dev.eth1.mode      | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/nv/dev.eth1.mode
+
+diff --git a/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/nv/dev.eth1.mode b/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/nv/dev.eth1.mode
+new file mode 100644
+index 000000000..87e7bdaae
+--- /dev/null
++++ b/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/nv/dev.eth1.mode
+@@ -0,0 +1 @@
++disabled
+\ No newline at end of file
+-- 
+2.21.0
+
 
 _______________________________________________
 barebox mailing list
