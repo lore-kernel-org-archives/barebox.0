@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hTLlf-0002IG-L6
- for barebox@lists.infradead.org; Wed, 22 May 2019 07:34:36 +0000
-Received: by mail-pg1-x544.google.com with SMTP id o11so678174pgm.13
- for <barebox@lists.infradead.org>; Wed, 22 May 2019 00:34:31 -0700 (PDT)
+ id 1hTLlh-0002Ke-47
+ for barebox@lists.infradead.org; Wed, 22 May 2019 07:34:38 +0000
+Received: by mail-pf1-x442.google.com with SMTP id v80so870849pfa.3
+ for <barebox@lists.infradead.org>; Wed, 22 May 2019 00:34:33 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 22 May 2019 00:34:07 -0700
-Message-Id: <20190522073414.9308-12-andrew.smirnov@gmail.com>
+Date: Wed, 22 May 2019 00:34:08 -0700
+Message-Id: <20190522073414.9308-13-andrew.smirnov@gmail.com>
 In-Reply-To: <20190522073414.9308-1-andrew.smirnov@gmail.com>
 References: <20190522073414.9308-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,40 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/18] usb: host: ehci: Drop needless assignments in
+Subject: [PATCH 12/18] usb: host: ehci: Use bool to simplify
  ehci_submit_async()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Neither of those is necessary, since both will be overwritten further
-down in the code.
+Change the type of 'c' to bool and drop the trigrah.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/host/ehci-hcd.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/host/ehci-hcd.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 7194a48c0..03ab56b30 100644
+index 03ab56b30..f0d899e82 100644
 --- a/drivers/usb/host/ehci-hcd.c
 +++ b/drivers/usb/host/ehci-hcd.c
-@@ -274,7 +274,7 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+@@ -273,7 +273,8 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 	uint32_t *tdp;
  	uint32_t endpt, token, usbsts;
  	uint32_t status;
- 	uint32_t c, toggle;
--	int ret = 0;
-+	int ret;
+-	uint32_t c, toggle;
++	uint32_t toggle;
++	bool c;
+ 	int ret;
  
  
- 	dev_dbg(ehci->dev, "pipe=%lx, buffer=%p, length=%d, req=%p\n", pipe,
-@@ -323,7 +323,6 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
- 	qh->qt_next = cpu_to_hc32(QT_NEXT_TERMINATE);
- 	qh->qt_altnext = cpu_to_hc32(QT_NEXT_TERMINATE);
+@@ -290,8 +291,7 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
  
--	td = NULL;
- 	tdp = &qh->qt_next;
- 
- 	toggle =
+ 	qh = &ehci->qh_list[1];
+ 	qh->qh_link = cpu_to_hc32((uint32_t)ehci->qh_list | QH_LINK_TYPE_QH);
+-	c = (dev->speed != USB_SPEED_HIGH &&
+-	     usb_pipeendpoint(pipe) == 0) ? 1 : 0;
++	c = dev->speed != USB_SPEED_HIGH && !usb_pipeendpoint(pipe);
+ 	endpt = QH_ENDPT1_RL(8) | QH_ENDPT1_C(c) |
+ 		QH_ENDPT1_MAXPKTLEN(usb_maxpacket(dev, pipe)) |
+ 		QH_ENDPT1_H(0) |
 -- 
 2.21.0
 
