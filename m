@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hTLli-0002Lh-14
- for barebox@lists.infradead.org; Wed, 22 May 2019 07:34:40 +0000
-Received: by mail-pg1-x543.google.com with SMTP id z3so868020pgp.8
- for <barebox@lists.infradead.org>; Wed, 22 May 2019 00:34:33 -0700 (PDT)
+ id 1hTLli-0002N5-OA
+ for barebox@lists.infradead.org; Wed, 22 May 2019 07:34:44 +0000
+Received: by mail-pf1-x441.google.com with SMTP id q17so855572pfq.8
+ for <barebox@lists.infradead.org>; Wed, 22 May 2019 00:34:34 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 22 May 2019 00:34:09 -0700
-Message-Id: <20190522073414.9308-14-andrew.smirnov@gmail.com>
+Date: Wed, 22 May 2019 00:34:10 -0700
+Message-Id: <20190522073414.9308-15-andrew.smirnov@gmail.com>
 In-Reply-To: <20190522073414.9308-1-andrew.smirnov@gmail.com>
 References: <20190522073414.9308-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,39 +23,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/18] usb: host: ehci: Add a comment explaing IOC setting for
- data
+Subject: [PATCH 14/18] usb: host: ehci: Replace explicit printf() with
+ dev_err()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add a comment explaining the rationale behinde QT_TOKEN_IOC(req ==
-NULL).
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/host/ehci-hcd.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/usb/host/ehci-hcd.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index f0d899e82..a6f497925 100644
+index a6f497925..050a3166e 100644
 --- a/drivers/usb/host/ehci-hcd.c
 +++ b/drivers/usb/host/ehci-hcd.c
-@@ -362,6 +362,15 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+@@ -542,7 +542,9 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 	case USB_REQ_SET_FEATURE | ((USB_DIR_OUT | USB_RT_PORT) << 8):
+ 	case USB_REQ_CLEAR_FEATURE | ((USB_DIR_OUT | USB_RT_PORT) << 8):
+ 		if (!port || port > CONFIG_SYS_USB_EHCI_MAX_ROOT_PORTS) {
+-			printf("The request port(%d) is not configured\n", port - 1);
++			dev_err(ehci->dev,
++				"The request port(%d) is not configured\n",
++				port - 1);
+ 			return -1;
+ 		}
+ 		status_reg = (uint32_t *)&ehci->hcor->or_portsc[port - 1];
+@@ -972,7 +974,8 @@ disable_periodic(struct ehci_host *ehci)
+ 	ret = handshake((uint32_t *)&hcor->or_usbsts,
+ 			STS_PSS, 0, 100 * 1000);
+ 	if (ret < 0) {
+-		printf("EHCI failed: timeout when disabling periodic list\n");
++		dev_err(ehci->dev,
++			"EHCI failed: timeout when disabling periodic list\n");
+ 		return -ETIMEDOUT;
+ 	}
+ 	return 0;
+@@ -993,7 +996,8 @@ enable_periodic(struct ehci_host *ehci)
+ 	ret = handshake((uint32_t *)&hcor->or_usbsts,
+ 			STS_PSS, STS_PSS, 100 * 1000);
+ 	if (ret < 0) {
+-		printf("EHCI failed: timeout when enabling periodic list\n");
++		dev_err(ehci->dev,
++			"EHCI failed: timeout when enabling periodic list\n");
+ 		return -ETIMEDOUT;
+ 	}
  
- 		ret = ehci_prepare_qtd(ehci->dev,
- 				       td, QT_TOKEN_DT(toggle) |
-+				       /*
-+					* We only want this qTD to
-+					* generate an interrupt if
-+					* this is a BULK
-+					* request. Otherwise, we'll
-+					* rely on following status
-+					* stage qTD's IOC to notify us
-+					* that transfer is complete
-+					*/
- 				       QT_TOKEN_IOC(req == NULL) |
- 				       QT_TOKEN_PID(pid),
- 				       buffer, length,
 -- 
 2.21.0
 
