@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hTLld-0002Em-Ar
- for barebox@lists.infradead.org; Wed, 22 May 2019 07:34:35 +0000
-Received: by mail-pf1-x444.google.com with SMTP id q17so855409pfq.8
- for <barebox@lists.infradead.org>; Wed, 22 May 2019 00:34:29 -0700 (PDT)
+ id 1hTLlf-0002Hb-6H
+ for barebox@lists.infradead.org; Wed, 22 May 2019 07:34:36 +0000
+Received: by mail-pl1-x643.google.com with SMTP id g9so643422plm.6
+ for <barebox@lists.infradead.org>; Wed, 22 May 2019 00:34:31 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 22 May 2019 00:34:04 -0700
-Message-Id: <20190522073414.9308-9-andrew.smirnov@gmail.com>
+Date: Wed, 22 May 2019 00:34:06 -0700
+Message-Id: <20190522073414.9308-11-andrew.smirnov@gmail.com>
 In-Reply-To: <20190522073414.9308-1-andrew.smirnov@gmail.com>
 References: <20190522073414.9308-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,67 +23,120 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/18] usb: host: ehci: Simplify ehci_td_buffer()
+Subject: [PATCH 10/18] usb: host: ehci: Simplify ehci_submit_async()'s epilogue
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Rework the code of ehci_td_buffer() with following trivial changes:
-
-    * Switch to using dma_addr_t for 'delta' and 'next'
-    * Convert while to for loop
-    * Replace explicit magic number with dedicated contants derived
-      via ARRAY_SIZE
-    * Use ALIGN_DOWN to calculate 'next'
-    * Return -ENOMEM instead of -1 when we ran out of buffers
+Re-organize the epilogue of ehci_submit_async() to bail out early if
+token is still marked as "active" and drop no longer necessary check
+for "dev->status != USB_ST_NOT_PROC". While at it return -EIO instead
+of -1 in the case of error.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/host/ehci-hcd.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/usb/host/ehci-hcd.c | 76 ++++++++++++++++++-------------------
+ 1 file changed, 38 insertions(+), 38 deletions(-)
 
 diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 9758e1ed7..6742a67de 100644
+index 2b890cbc9..7194a48c0 100644
 --- a/drivers/usb/host/ehci-hcd.c
 +++ b/drivers/usb/host/ehci-hcd.c
-@@ -31,6 +31,7 @@
- #include <of.h>
- #include <usb/ehci.h>
- #include <linux/err.h>
-+#include <linux/sizes.h>
+@@ -272,6 +272,7 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 	struct qTD *td;
+ 	uint32_t *tdp;
+ 	uint32_t endpt, token, usbsts;
++	uint32_t status;
+ 	uint32_t c, toggle;
+ 	int ret = 0;
  
- #include "ehci.h"
+@@ -425,50 +426,49 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 	ehci->qh_list->qh_link = cpu_to_hc32((uint32_t)ehci->qh_list | QH_LINK_TYPE_QH);
  
-@@ -186,24 +187,23 @@ out:
+ 	token = hc32_to_cpu(qh->qt_token);
+-	if (!(token & QT_TOKEN_STATUS_ACTIVE)) {
+-		uint32_t status;
++	if (token & QT_TOKEN_STATUS_ACTIVE) {
++		dev->act_len = 0;
++		dev_dbg(ehci->dev, "dev=%u, usbsts=%#x, p[1]=%#x, p[2]=%#x\n",
++			dev->devnum, ehci_readl(&ehci->hcor->or_usbsts),
++			ehci_readl(&ehci->hcor->or_portsc[0]),
++			ehci_readl(&ehci->hcor->or_portsc[1]));
++		return -EIO;
++	}
  
- static int ehci_td_buffer(struct qTD *td, dma_addr_t addr, size_t sz)
- {
--	uint32_t delta, next;
-+	const size_t buffer_count = ARRAY_SIZE(td->qt_buffer);
-+	dma_addr_t delta, next;
- 	int idx;
+-		dev_dbg(ehci->dev, "TOKEN=0x%08x\n", token);
++	dev_dbg(ehci->dev, "TOKEN=0x%08x\n", token);
  
--	idx = 0;
--	while (idx < 5) {
-+	for (idx = 0; idx < buffer_count; idx++) {
- 		td->qt_buffer[idx] = cpu_to_hc32(addr);
--		next = (addr + 4096) & ~4095;
-+		next = ALIGN_DOWN(addr + SZ_4K, SZ_4K);
- 		delta = next - addr;
- 		if (delta >= sz)
- 			break;
- 		sz -= delta;
- 		addr = next;
--		idx++;
+-		status = QT_TOKEN_GET_STATUS(token);
+-		status &= ~(QT_TOKEN_STATUS_SPLITXSTATE |
+-			    QT_TOKEN_STATUS_PERR);
++	status = QT_TOKEN_GET_STATUS(token);
++	status &= ~(QT_TOKEN_STATUS_SPLITXSTATE |
++		    QT_TOKEN_STATUS_PERR);
+ 
+-		switch (status) {
+-		case 0:
+-			toggle = QT_TOKEN_GET_DT(token);
+-			usb_settoggle(dev, usb_pipeendpoint(pipe),
+-				       usb_pipeout(pipe), toggle);
+-			dev->status = 0;
+-			break;
+-		case QT_TOKEN_STATUS_HALTED:
+-			dev->status = USB_ST_STALLED;
+-			break;
+-		case QT_TOKEN_STATUS_ACTIVE | QT_TOKEN_STATUS_DATBUFERR:
+-		case QT_TOKEN_STATUS_DATBUFERR:
+-			dev->status = USB_ST_BUF_ERR;
+-			break;
+-		case QT_TOKEN_STATUS_HALTED | QT_TOKEN_STATUS_BABBLEDET:
+-		case QT_TOKEN_STATUS_BABBLEDET:
+-			dev->status = USB_ST_BABBLE_DET;
+-			break;
+-		default:
+-			dev->status = USB_ST_CRC_ERR;
+-			if (status & QT_TOKEN_STATUS_HALTED)
+-				dev->status |= USB_ST_STALLED;
++	switch (status) {
++	case 0:
++		toggle = QT_TOKEN_GET_DT(token);
++		usb_settoggle(dev, usb_pipeendpoint(pipe),
++			      usb_pipeout(pipe), toggle);
++		dev->status = 0;
++		break;
++	case QT_TOKEN_STATUS_HALTED:
++		dev->status = USB_ST_STALLED;
++		break;
++	case QT_TOKEN_STATUS_ACTIVE | QT_TOKEN_STATUS_DATBUFERR:
++	case QT_TOKEN_STATUS_DATBUFERR:
++		dev->status = USB_ST_BUF_ERR;
++		break;
++	case QT_TOKEN_STATUS_HALTED | QT_TOKEN_STATUS_BABBLEDET:
++	case QT_TOKEN_STATUS_BABBLEDET:
++		dev->status = USB_ST_BABBLE_DET;
++		break;
++	default:
++		dev->status = USB_ST_CRC_ERR;
++		if (status & QT_TOKEN_STATUS_HALTED)
++			dev->status |= USB_ST_STALLED;
+ 
+-			break;
+-		}
+-		dev->act_len = length - QT_TOKEN_GET_TOTALBYTES(token);
+-	} else {
+-		dev->act_len = 0;
+-		dev_dbg(ehci->dev, "dev=%u, usbsts=%#x, p[1]=%#x, p[2]=%#x\n",
+-		      dev->devnum, ehci_readl(&ehci->hcor->or_usbsts),
+-		      ehci_readl(&ehci->hcor->or_portsc[0]),
+-		      ehci_readl(&ehci->hcor->or_portsc[1]));
++		break;
  	}
++	dev->act_len = length - QT_TOKEN_GET_TOTALBYTES(token);
  
--	if (idx == 5) {
-+	if (idx == buffer_count) {
- 		pr_debug("out of buffer pointers (%u bytes left)\n", sz);
--		return -1;
-+		return -ENOMEM;
- 	}
+-	return (dev->status != USB_ST_NOT_PROC) ? 0 : -1;
++	return 0;
+ }
  
- 	return 0;
+ #if defined(CONFIG_MACH_EFIKA_MX_SMARTBOOK) && defined(CONFIG_USB_ULPI)
 -- 
 2.21.0
 
