@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hTLli-0002N5-OA
- for barebox@lists.infradead.org; Wed, 22 May 2019 07:34:44 +0000
-Received: by mail-pf1-x441.google.com with SMTP id q17so855572pfq.8
- for <barebox@lists.infradead.org>; Wed, 22 May 2019 00:34:34 -0700 (PDT)
+ id 1hTLlk-0002OL-64
+ for barebox@lists.infradead.org; Wed, 22 May 2019 07:34:47 +0000
+Received: by mail-pl1-x642.google.com with SMTP id c5so636598pll.11
+ for <barebox@lists.infradead.org>; Wed, 22 May 2019 00:34:36 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 22 May 2019 00:34:10 -0700
-Message-Id: <20190522073414.9308-15-andrew.smirnov@gmail.com>
+Date: Wed, 22 May 2019 00:34:11 -0700
+Message-Id: <20190522073414.9308-16-andrew.smirnov@gmail.com>
 In-Reply-To: <20190522073414.9308-1-andrew.smirnov@gmail.com>
 References: <20190522073414.9308-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,51 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/18] usb: host: ehci: Replace explicit printf() with
- dev_err()
+Subject: [PATCH 15/18] usb: host: ehci: Drop explicit memset() in ehci_init()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Memory allocated by dma_alloc_coherent() is already zeroed out,
+ehci->qh_list[0] never changes during the operation of the driver and
+ehci->qh_list[1] will be explicitly initialized by ehci_submit_async()
+so this additional memset() shouldn't be necessary.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/host/ehci-hcd.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/usb/host/ehci-hcd.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index a6f497925..050a3166e 100644
+index 050a3166e..11c34d8a2 100644
 --- a/drivers/usb/host/ehci-hcd.c
 +++ b/drivers/usb/host/ehci-hcd.c
-@@ -542,7 +542,9 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
- 	case USB_REQ_SET_FEATURE | ((USB_DIR_OUT | USB_RT_PORT) << 8):
- 	case USB_REQ_CLEAR_FEATURE | ((USB_DIR_OUT | USB_RT_PORT) << 8):
- 		if (!port || port > CONFIG_SYS_USB_EHCI_MAX_ROOT_PORTS) {
--			printf("The request port(%d) is not configured\n", port - 1);
-+			dev_err(ehci->dev,
-+				"The request port(%d) is not configured\n",
-+				port - 1);
- 			return -1;
- 		}
- 		status_reg = (uint32_t *)&ehci->hcor->or_portsc[port - 1];
-@@ -972,7 +974,8 @@ disable_periodic(struct ehci_host *ehci)
- 	ret = handshake((uint32_t *)&hcor->or_usbsts,
- 			STS_PSS, 0, 100 * 1000);
- 	if (ret < 0) {
--		printf("EHCI failed: timeout when disabling periodic list\n");
-+		dev_err(ehci->dev,
-+			"EHCI failed: timeout when disabling periodic list\n");
- 		return -ETIMEDOUT;
- 	}
- 	return 0;
-@@ -993,7 +996,8 @@ enable_periodic(struct ehci_host *ehci)
- 	ret = handshake((uint32_t *)&hcor->or_usbsts,
- 			STS_PSS, STS_PSS, 100 * 1000);
- 	if (ret < 0) {
--		printf("EHCI failed: timeout when enabling periodic list\n");
-+		dev_err(ehci->dev,
-+			"EHCI failed: timeout when enabling periodic list\n");
- 		return -ETIMEDOUT;
+@@ -839,8 +839,6 @@ static int ehci_init(struct usb_host *host)
+ 			return ret;
  	}
  
+-	memset(ehci->qh_list, 0, sizeof(struct QH) * NUM_TD);
+-
+ 	ehci->qh_list->qh_link = cpu_to_hc32((uint32_t)ehci->qh_list | QH_LINK_TYPE_QH);
+ 	ehci->qh_list->qh_endpt1 = cpu_to_hc32(QH_ENDPT1_H(1) |
+ 					       QH_ENDPT1_EPS(USB_SPEED_HIGH));
 -- 
 2.21.0
 
