@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hTLlZ-0002AV-Sg
- for barebox@lists.infradead.org; Wed, 22 May 2019 07:34:27 +0000
-Received: by mail-pg1-x542.google.com with SMTP id f25so861179pgv.10
- for <barebox@lists.infradead.org>; Wed, 22 May 2019 00:34:25 -0700 (PDT)
+ id 1hTLla-0002BN-MT
+ for barebox@lists.infradead.org; Wed, 22 May 2019 07:34:30 +0000
+Received: by mail-pf1-x441.google.com with SMTP id n19so878558pfa.1
+ for <barebox@lists.infradead.org>; Wed, 22 May 2019 00:34:26 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 22 May 2019 00:33:59 -0700
-Message-Id: <20190522073414.9308-4-andrew.smirnov@gmail.com>
+Date: Wed, 22 May 2019 00:34:01 -0700
+Message-Id: <20190522073414.9308-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20190522073414.9308-1-andrew.smirnov@gmail.com>
 References: <20190522073414.9308-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,77 +23,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/18] usb: host: ehci: Use to USBSTS to wait for transfer
- completion
+Subject: [PATCH 05/18] usb: host: ehci: Drop unnecessary cleanup code
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Since we already set up our last qTD to have IOC flag set we may as
-well take advange of that and poll USBSTS to wait for transfer
-completion. Doesn't change much, but allows us to drop a custom
-polling loop and re-use handshake() instead.
+This looks like a leftover from U-Boot. Analogous code there would
+walk all qTDs and call ehci_free() on each one of them, but since we
+don't have anything of the sort it seems the whole loop can be
+dropped. Note that U-Boot dropped that code in
+de98e8b22a10676fd226318c92a9be7f519208ca
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/usb/host/ehci-hcd.c | 21 +++++++--------------
- drivers/usb/host/ehci.h     |  1 +
- 2 files changed, 8 insertions(+), 14 deletions(-)
+ drivers/usb/host/ehci-hcd.c | 23 ++++++++---------------
+ 1 file changed, 8 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 4ccaec743..0757ea44a 100644
+index fadb403a9..be875d402 100644
 --- a/drivers/usb/host/ehci-hcd.c
 +++ b/drivers/usb/host/ehci-hcd.c
-@@ -238,12 +238,10 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
- 	struct ehci_host *ehci = to_ehci(host);
- 	struct QH *qh;
- 	struct qTD *td;
--	volatile struct qTD *vtd;
- 	uint32_t *tdp;
- 	uint32_t endpt, token, usbsts;
- 	uint32_t c, toggle;
- 	int ret = 0, i;
--	uint64_t start, timeout_val;
- 
- 	dev_dbg(ehci->dev, "pipe=%lx, buffer=%p, length=%d, req=%p\n", pipe,
- 	      buffer, length, req);
-@@ -375,18 +373,13 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
- 		goto fail;
+@@ -308,9 +308,10 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 			QT_TOKEN_PID(QT_TOKEN_PID_SETUP) |
+ 			QT_TOKEN_STATUS(QT_TOKEN_STATUS_ACTIVE);
+ 		td->qt_token = cpu_to_hc32(token);
+-		if (ehci_td_buffer(td, req, sizeof(*req)) != 0) {
++		ret = ehci_td_buffer(td, req, sizeof(*req));
++		if (ret) {
+ 			dev_dbg(ehci->dev, "unable construct SETUP td\n");
+-			goto fail;
++			return ret;
+ 		}
+ 		*tdp = cpu_to_hc32((uint32_t) td);
+ 		tdp = &td->qt_next;
+@@ -331,9 +332,10 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 				     QT_TOKEN_PID_IN : QT_TOKEN_PID_OUT) |
+ 			QT_TOKEN_STATUS(QT_TOKEN_STATUS_ACTIVE);
+ 		td->qt_token = cpu_to_hc32(token);
+-		if (ehci_td_buffer(td, buffer, length) != 0) {
++		ret = ehci_td_buffer(td, buffer, length);
++		if (ret) {
+ 			dev_err(ehci->dev, "unable construct DATA td\n");
+-			goto fail;
++			return ret;
+ 		}
+ 		*tdp = cpu_to_hc32((uint32_t) td);
+ 		tdp = &td->qt_next;
+@@ -377,7 +379,7 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 	ret = ehci_enable_async_schedule(ehci, true);
+ 	if (ret < 0) {
+ 		dev_err(ehci->dev, "fail timeout STD_ASS set\n");
+-		goto fail;
++		return ret;
  	}
  
--	/* Wait for TDs to be processed. */
--	timeout_val = timeout_ms * MSECOND;
--	start = get_time_ns();
--	vtd = td;
--	do {
--		token = hc32_to_cpu(vtd->qt_token);
--		if (is_timeout_non_interruptible(start, timeout_val)) {
--			ehci_enable_async_schedule(ehci, false);
--			ehci_writel(&qh->qt_token, 0);
--			return -ETIMEDOUT;
--		}
--	} while (token & 0x80);
-+	ret = handshake(&ehci->hcor->or_usbsts, STS_USBINT, STS_USBINT,
-+			timeout_ms * 1000);
-+	if (ret < 0) {
-+		ehci_enable_async_schedule(ehci, false);
-+		ehci_writel(&qh->qt_token, 0);
-+		return -ETIMEDOUT;
-+	}
+ 	ret = handshake(&ehci->hcor->or_usbsts, STS_USBINT, STS_USBINT,
+@@ -401,7 +403,7 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 	ret = ehci_enable_async_schedule(ehci, false);
+ 	if (ret < 0) {
+ 		dev_err(ehci->dev, "fail timeout STD_ASS reset\n");
+-		goto fail;
++		return ret;
+ 	}
  
- 	if (IS_ENABLED(CONFIG_MMU)) {
- 		for (i = 0; i < NUM_TD; i ++) {
-diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
-index 39de76374..5b0920d0e 100644
---- a/drivers/usb/host/ehci.h
-+++ b/drivers/usb/host/ehci.h
-@@ -62,6 +62,7 @@ struct ehci_hcor {
- #define	STD_ASS		(1 << 15)
- #define STS_PSS         (1 << 14)
- #define STS_HALT	(1 << 12)
-+#define STS_USBINT	BIT(0)
- 	uint32_t or_usbintr;
- 	uint32_t or_frindex;
- 	uint32_t or_ctrldssegment;
+ 	ehci->qh_list->qh_link = cpu_to_hc32((uint32_t)ehci->qh_list | QH_LINK_TYPE_QH);
+@@ -451,15 +453,6 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 	}
+ 
+ 	return (dev->status != USB_ST_NOT_PROC) ? 0 : -1;
+-
+-fail:
+-	dev_err(ehci->dev, "fail1\n");
+-	td = (void *)hc32_to_cpu(qh->qt_next);
+-	while (td != (void *)QT_NEXT_TERMINATE) {
+-		qh->qt_next = td->qt_next;
+-		td = (void *)hc32_to_cpu(qh->qt_next);
+-	}
+-	return -1;
+ }
+ 
+ #if defined(CONFIG_MACH_EFIKA_MX_SMARTBOOK) && defined(CONFIG_USB_ULPI)
 -- 
 2.21.0
 
