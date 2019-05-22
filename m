@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hTht0-0005HW-Fo
- for barebox@lists.infradead.org; Thu, 23 May 2019 07:11:36 +0000
-Date: Thu, 23 May 2019 09:11:32 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190523071132.bwtxuiyivuyetvha@pengutronix.de>
-References: <20190522073349.9004-1-andrew.smirnov@gmail.com>
+ id 1hTLlW-00028X-9n
+ for barebox@lists.infradead.org; Wed, 22 May 2019 07:34:23 +0000
+Received: by mail-pl1-x643.google.com with SMTP id f97so645922plb.5
+ for <barebox@lists.infradead.org>; Wed, 22 May 2019 00:34:21 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 22 May 2019 00:33:56 -0700
+Message-Id: <20190522073414.9308-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190522073349.9004-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] usb: storage: Zero CDB out before sending it
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 00/18] EHCI improvements
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Wed, May 22, 2019 at 12:33:47AM -0700, Andrey Smirnov wrote:
-> Since cbw.Length can be less that sizeof(cbw.CDB), add code to zero
-> the whole struct out to avoid sending random stack data as a part of
-> payload. There's no known case where this causes a problem, but it's a
-> reasonable thing to do anyway.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  drivers/usb/storage/transport.c | 1 +
->  1 file changed, 1 insertion(+)
+Everyone:
 
-Applied, thanks
+This series is a number of improvements (or so I though) I made while
+woring with USB on i.MX6. All of the patches are optional, so if some
+of the changes don't seem like an improvmement they can be dropped.
 
-Sascha
+Feedback is welcome!
+
+Thanks,
+Andrey Smirnov
+
+Andrey Smirnov (18):
+  usb: host: ehci: Do not zero out DMA coherent memory
+  usb: host: ehci: Share code to enable/disable async schedule
+  usb: host: ehci: Use to USBSTS to wait for transfer completion
+  usb: host: ehci: Replace magic number with macros
+  usb: host: ehci: Drop unnecessary cleanup code
+  usb: host: ehci: Introduce ehci_prepare_qtd()
+  usb: host: ehci: Simplify qTD buffer synchronization
+  usb: host: ehci: Simplify ehci_td_buffer()
+  usb: host: ehci: Initialize qTDs explicitly
+  usb: host: ehci: Simplify ehci_submit_async()'s epilogue
+  usb: host: ehci: Drop needless assignments in ehci_submit_async()
+  usb: host: ehci: Use bool to simplify ehci_submit_async()
+  usb: host: ehci: Add a comment explaing IOC setting for data
+  usb: host: ehci: Replace explicit printf() with dev_err()
+  usb: host: ehci: Drop explicit memset() in ehci_init()
+  usb: host: ehci: Treat ehci->qh_list as an array
+  ush: host: ehci: Simplify QH initialization in ehci_submit_async()
+  usb: host: ehci: Allocate only NUM_QH queue heads for qh_list
+
+ drivers/usb/host/ehci-hcd.c | 377 +++++++++++++++++++-----------------
+ drivers/usb/host/ehci.h     |  52 +++--
+ 2 files changed, 242 insertions(+), 187 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.21.0
+
 
 _______________________________________________
 barebox mailing list
