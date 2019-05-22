@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hThpA-0003pt-Uh
- for barebox@lists.infradead.org; Thu, 23 May 2019 07:07:41 +0000
-Date: Thu, 23 May 2019 09:07:34 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190523070734.6kmwbjpi6d6fbbqt@pengutronix.de>
-References: <20190521004345.2396-1-vivien.didelot@gmail.com>
+ id 1hTLlE-0001xS-Gz
+ for barebox@lists.infradead.org; Wed, 22 May 2019 07:34:05 +0000
+Received: by mail-pg1-x544.google.com with SMTP id n2so858276pgp.11
+ for <barebox@lists.infradead.org>; Wed, 22 May 2019 00:34:04 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 22 May 2019 00:33:48 -0700
+Message-Id: <20190522073349.9004-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20190522073349.9004-1-andrew.smirnov@gmail.com>
+References: <20190522073349.9004-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190521004345.2396-1-vivien.didelot@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: zii-vf610-dev: disable eth1
-To: Vivien Didelot <vivien.didelot@gmail.com>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+Subject: [PATCH 2/3] usb: storage: Default to a single LUN
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Mon, May 20, 2019 at 08:43:45PM -0400, Vivien Didelot wrote:
-> The current support for the ZII Dev Boards time out on eth1 when
-> booting from net, which takes a while:
-> 
->     Booting entry 'net'
->     eth0: 100Mbps full duplex link detected
->     T T T eth0: DHCP client bound to address 192.168.203.22
->     WARNING: eth1: No MAC address set. Using random address 3a:e8:f7:52:55:6d
->     T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T
->     Loading ARM Linux zImage '/mnt/tftp/none-linux-zii-dev-rev-b-2'
-> 
-> eth1 is the DSA master interface and has no use within barebox,
-> so disable the interface to allow Barebox to boot right away from eth0.
-> 
-> Suggested-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> Signed-off-by: Vivien Didelot <vivien.didelot@gmail.com>
-> ---
+For loop below is:
 
-Applied, thanks
+	for (lun=0; lun<=us->max_lun; lun++)
+	    ...
 
-Sascha
+so we need to set max_lun to 0 in order to default to having only one
+LUN. Otherwise, we end up assuming the device has 2 valid LUNs.
 
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/usb/storage/usb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
+index fda24d616..79561ee6f 100644
+--- a/drivers/usb/storage/usb.c
++++ b/drivers/usb/storage/usb.c
+@@ -439,7 +439,7 @@ static int usb_stor_scan(struct usb_device *usbdev, struct us_data *us)
+ 	int num_devs = 0;
+ 
+ 	/* obtain the max LUN */
+-	us->max_lun = 1;
++	us->max_lun = 0;
+ 	if (us->protocol == US_PR_BULK)
+ 		us->max_lun = usb_stor_Bulk_max_lun(us);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.21.0
+
 
 _______________________________________________
 barebox mailing list
