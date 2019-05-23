@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qk1-x741.google.com ([2607:f8b0:4864:20::741])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hSssh-0003XR-8j
- for barebox@lists.infradead.org; Tue, 21 May 2019 00:43:52 +0000
-Received: by mail-qk1-x741.google.com with SMTP id w25so9989319qkj.11
- for <barebox@lists.infradead.org>; Mon, 20 May 2019 17:43:50 -0700 (PDT)
-From: Vivien Didelot <vivien.didelot@gmail.com>
-Date: Mon, 20 May 2019 20:43:45 -0400
-Message-Id: <20190521004345.2396-1-vivien.didelot@gmail.com>
+ id 1hThpA-0003pt-Uh
+ for barebox@lists.infradead.org; Thu, 23 May 2019 07:07:41 +0000
+Date: Thu, 23 May 2019 09:07:34 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190523070734.6kmwbjpi6d6fbbqt@pengutronix.de>
+References: <20190521004345.2396-1-vivien.didelot@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190521004345.2396-1-vivien.didelot@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,41 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: zii-vf610-dev: disable eth1
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Vivien Didelot <vivien.didelot@gmail.com>
+Subject: Re: [PATCH] ARM: zii-vf610-dev: disable eth1
+To: Vivien Didelot <vivien.didelot@gmail.com>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
 
-The current support for the ZII Dev Boards time out on eth1 when
-booting from net, which takes a while:
+On Mon, May 20, 2019 at 08:43:45PM -0400, Vivien Didelot wrote:
+> The current support for the ZII Dev Boards time out on eth1 when
+> booting from net, which takes a while:
+> 
+>     Booting entry 'net'
+>     eth0: 100Mbps full duplex link detected
+>     T T T eth0: DHCP client bound to address 192.168.203.22
+>     WARNING: eth1: No MAC address set. Using random address 3a:e8:f7:52:55:6d
+>     T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T
+>     Loading ARM Linux zImage '/mnt/tftp/none-linux-zii-dev-rev-b-2'
+> 
+> eth1 is the DSA master interface and has no use within barebox,
+> so disable the interface to allow Barebox to boot right away from eth0.
+> 
+> Suggested-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> Signed-off-by: Vivien Didelot <vivien.didelot@gmail.com>
+> ---
 
-    Booting entry 'net'
-    eth0: 100Mbps full duplex link detected
-    T T T eth0: DHCP client bound to address 192.168.203.22
-    WARNING: eth1: No MAC address set. Using random address 3a:e8:f7:52:55:6d
-    T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T T
-    Loading ARM Linux zImage '/mnt/tftp/none-linux-zii-dev-rev-b-2'
+Applied, thanks
 
-eth1 is the DSA master interface and has no use within barebox,
-so disable the interface to allow Barebox to boot right away from eth0.
+Sascha
 
-Suggested-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-Signed-off-by: Vivien Didelot <vivien.didelot@gmail.com>
----
- .../zii-vf610-dev/defaultenv-zii-vf610-dev/nv/dev.eth1.mode      | 1 +
- 1 file changed, 1 insertion(+)
- create mode 100644 arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/nv/dev.eth1.mode
-
-diff --git a/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/nv/dev.eth1.mode b/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/nv/dev.eth1.mode
-new file mode 100644
-index 000000000..87e7bdaae
---- /dev/null
-+++ b/arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/nv/dev.eth1.mode
-@@ -0,0 +1 @@
-+disabled
-\ No newline at end of file
 -- 
-2.21.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
