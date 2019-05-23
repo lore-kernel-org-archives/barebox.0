@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hTpoy-00022k-Lt
- for barebox@lists.infradead.org; Thu, 23 May 2019 15:39:59 +0000
+ id 1hTpoy-00022l-Ly
+ for barebox@lists.infradead.org; Thu, 23 May 2019 15:40:01 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 23 May 2019 17:39:43 +0200
-Message-Id: <20190523153943.7995-10-a.fatoum@pengutronix.de>
+Date: Thu, 23 May 2019 17:39:40 +0200
+Message-Id: <20190523153943.7995-7-a.fatoum@pengutronix.de>
 In-Reply-To: <20190523153943.7995-1-a.fatoum@pengutronix.de>
 References: <20190523153943.7995-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,56 +21,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 9/9] clk: at91: fix warning about missing const-safety
+Subject: [PATCH v3 6/9] arm: sama5d4: fix stack setup
 To: barebox@lists.infradead.org
 Cc: sam@ravnborg.org
 
-compiling clk-main.c and clk-generated.c results in:
+From: Sam Ravnborg <sam@ravnborg.org>
 
-warning: passing argument 1 of 'memcpy' discards 'const' qualifier from
-pointer target type [-Wdiscarded-qualifiers]
-  memcpy(clkmain->clk.parent_names, parent_names, parents_array_size);
-           ~~~~~~~~~~~~^~~~~~~~~~~~~
+The code that configure the stack uses sama5d3 constants.
+Fix this to use the proper sama5d4 constants.
 
-Avoid this by replacing the xzalloc+memcpy pair with xmemdup.
-Zero-initialization of the buffer isn't necessary, because
-memcpy spans the whole buffer.
+Boot tested on sama5d4_xplained.
 
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- drivers/clk/at91/clk-generated.c | 3 +--
- drivers/clk/at91/clk-main.c      | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ arch/arm/boards/sama5d4_xplained/lowlevel.c | 2 +-
+ arch/arm/boards/sama5d4ek/lowlevel.c        | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/at91/clk-generated.c b/drivers/clk/at91/clk-generated.c
-index 60516ca10f36..396c35f3a7b3 100644
---- a/drivers/clk/at91/clk-generated.c
-+++ b/drivers/clk/at91/clk-generated.c
-@@ -181,8 +181,7 @@ at91_clk_register_generated(struct regmap *regmap,
- 	gck->hw.ops = &generated_ops;
+diff --git a/arch/arm/boards/sama5d4_xplained/lowlevel.c b/arch/arm/boards/sama5d4_xplained/lowlevel.c
+index 0e25270142f2..8ae4e6e0d237 100644
+--- a/arch/arm/boards/sama5d4_xplained/lowlevel.c
++++ b/arch/arm/boards/sama5d4_xplained/lowlevel.c
+@@ -17,7 +17,7 @@ void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint
+ {
+ 	arm_cpu_lowlevel_init();
  
- 	parents_array_size = num_parents * sizeof(gck->hw.parent_names[0]);
--	gck->hw.parent_names = xzalloc(parents_array_size);
--	memcpy(gck->hw.parent_names, parent_names, parents_array_size);
-+	gck->hw.parent_names = xmemdup(parent_names, parents_array_size);
- 	gck->hw.num_parents = num_parents;
+-	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE - 16);
++	arm_setup_stack(SAMA5D4_SRAM_BASE + SAMA5D4_SRAM_SIZE - 16);
  
- 	/* gck->hw.flags = CLK_SET_RATE_GATE | CLK_SET_PARENT_GATE; */
-diff --git a/drivers/clk/at91/clk-main.c b/drivers/clk/at91/clk-main.c
-index 4d4127dd0016..abae35566c2f 100644
---- a/drivers/clk/at91/clk-main.c
-+++ b/drivers/clk/at91/clk-main.c
-@@ -455,8 +455,7 @@ at91_clk_register_sam9x5_main(struct regmap *regmap,
- 	clkmain->clk.name = name;
- 	clkmain->clk.ops = &sam9x5_main_ops;
- 	parents_array_size = num_parents * sizeof (clkmain->clk.parent_names[0]);
--	clkmain->clk.parent_names = xzalloc(parents_array_size);
--	memcpy(clkmain->clk.parent_names, parent_names, parents_array_size);
-+	clkmain->clk.parent_names = xmemdup(parent_names, parents_array_size);
- 	clkmain->clk.num_parents = num_parents;
+ 	barebox_arm_entry(SAMA5_DDRCS, at91sama5_get_ddram_size(), NULL);
+ }
+diff --git a/arch/arm/boards/sama5d4ek/lowlevel.c b/arch/arm/boards/sama5d4ek/lowlevel.c
+index 0e25270142f2..8ae4e6e0d237 100644
+--- a/arch/arm/boards/sama5d4ek/lowlevel.c
++++ b/arch/arm/boards/sama5d4ek/lowlevel.c
+@@ -17,7 +17,7 @@ void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint
+ {
+ 	arm_cpu_lowlevel_init();
  
- 	/* init.flags = CLK_SET_PARENT_GATE; */
+-	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE - 16);
++	arm_setup_stack(SAMA5D4_SRAM_BASE + SAMA5D4_SRAM_SIZE - 16);
+ 
+ 	barebox_arm_entry(SAMA5_DDRCS, at91sama5_get_ddram_size(), NULL);
+ }
 -- 
 2.20.1
 
