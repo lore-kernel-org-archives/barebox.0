@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hTLln-0002SV-2J
- for barebox@lists.infradead.org; Wed, 22 May 2019 07:34:52 +0000
-Received: by mail-pg1-x542.google.com with SMTP id v11so877460pgl.5
- for <barebox@lists.infradead.org>; Wed, 22 May 2019 00:34:39 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 22 May 2019 00:34:14 -0700
-Message-Id: <20190522073414.9308-19-andrew.smirnov@gmail.com>
-In-Reply-To: <20190522073414.9308-1-andrew.smirnov@gmail.com>
+ id 1hTibU-0008F6-Jr
+ for barebox@lists.infradead.org; Thu, 23 May 2019 07:57:34 +0000
+Date: Thu, 23 May 2019 09:57:30 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190523075730.iy6yli66zf2dm523@pengutronix.de>
 References: <20190522073414.9308-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190522073414.9308-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,34 +22,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/18] usb: host: ehci: Allocate only NUM_QH queue heads for
- qh_list
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 00/18] EHCI improvements
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Use NUM_QH, not NUM_TD to specify allocation size.
+On Wed, May 22, 2019 at 12:33:56AM -0700, Andrey Smirnov wrote:
+> Everyone:
+> 
+> This series is a number of improvements (or so I though) I made while
+> woring with USB on i.MX6. All of the patches are optional, so if some
+> of the changes don't seem like an improvmement they can be dropped.
+> 
+> Feedback is welcome!
+> 
+> Thanks,
+> Andrey Smirnov
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- drivers/usb/host/ehci-hcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index b336164f6..f3be177ce 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -1325,7 +1325,7 @@ struct ehci_host *ehci_register(struct device_d *dev, struct ehci_data *data)
- 	ehci->init = data->init;
- 	ehci->post_init = data->post_init;
- 
--	ehci->qh_list = dma_alloc_coherent(sizeof(struct QH) * NUM_TD,
-+	ehci->qh_list = dma_alloc_coherent(sizeof(struct QH) * NUM_QH,
- 					   DMA_ADDRESS_BROKEN);
- 	ehci->periodic_queue = dma_alloc_coherent(sizeof(struct QH),
- 						  DMA_ADDRESS_BROKEN);
+Sascha
+
+
 -- 
-2.21.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
