@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hTqi8-0004TB-Ay
- for barebox@lists.infradead.org; Thu, 23 May 2019 16:36:58 +0000
-Date: Thu, 23 May 2019 18:36:53 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20190523163653.GC6249@ravnborg.org>
-References: <20190523153943.7995-1-a.fatoum@pengutronix.de>
+ id 1hTr5i-0004wh-89
+ for barebox@lists.infradead.org; Thu, 23 May 2019 17:01:19 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <afa@pengutronix.de>) id 1hTr5g-0001Mf-Kt
+ for barebox@lists.infradead.org; Thu, 23 May 2019 19:01:16 +0200
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>) id 1hTr5g-0001DM-Ci
+ for barebox@lists.infradead.org; Thu, 23 May 2019 19:01:16 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 23 May 2019 19:01:14 +0200
+Message-Id: <20190523170114.4622-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190523153943.7995-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +27,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 0/9] ARM: at91: misc fixes and cleanup
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] clk: imx: vf610: correct __iomem 'qualifier' placement
+To: barebox@lists.infradead.org
 
-Hi Ahmad.
+__iomem applies to the IOMEM() pointee, not to the auto pointer
+that points at it. Move the annotation to correct this.
 
-On Thu, May 23, 2019 at 05:39:34PM +0200, Ahmad Fatoum wrote:
-> The fixes are the same as in v2. The cleanup was made cleaner
-> a bit.
-> 
-> Changes since v2:
->   - Collected Sam's Tested-by and Reviewed-by
->   - Reinstated *_get_ddram_size helpers, but without #ifdefs,
->     as suggested by Sascha
->   - While doing that, some more unnecessary #ifdef usage unraveled,
->     so added two patches for those as well
->   - Squashed in a fix for another const-safety warning, suggested by Sam
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/clk/imx/clk-vf610.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changes looks good. I did not test them this time.
-It will be a while before I get back to barebox hacking.
+diff --git a/drivers/clk/imx/clk-vf610.c b/drivers/clk/imx/clk-vf610.c
+index d70f4416cbe1..4f7e097a8945 100644
+--- a/drivers/clk/imx/clk-vf610.c
++++ b/drivers/clk/imx/clk-vf610.c
+@@ -535,7 +535,7 @@ static int vf610_switch_cpu_clock_to_400mhz(void)
+ {
+ 	int ret;
+ 	uint32_t cr117;
+-	void * __iomem ddrmc = IOMEM(VF610_DDR_BASE_ADDR);
++	void __iomem *ddrmc = IOMEM(VF610_DDR_BASE_ADDR);
+ 
+ 	ret = clk_set_parent(clk[VF610_CLK_PLL2_PFD_SEL], clk[VF610_CLK_PLL2_PFD2]);
+ 	if (ret < 0) {
+-- 
+2.20.1
 
-All patches are now:
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 
 _______________________________________________
 barebox mailing list
