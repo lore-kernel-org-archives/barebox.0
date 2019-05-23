@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hTpoy-00022r-M1
+ id 1hTpoy-00022k-Lt
  for barebox@lists.infradead.org; Thu, 23 May 2019 15:39:59 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 23 May 2019 17:39:42 +0200
-Message-Id: <20190523153943.7995-9-a.fatoum@pengutronix.de>
+Date: Thu, 23 May 2019 17:39:43 +0200
+Message-Id: <20190523153943.7995-10-a.fatoum@pengutronix.de>
 In-Reply-To: <20190523153943.7995-1-a.fatoum@pengutronix.de>
 References: <20190523153943.7995-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,85 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 8/9] ARM: at91: remove duplicate get_ddram_size code
+Subject: [PATCH v3 9/9] clk: at91: fix warning about missing const-safety
 To: barebox@lists.infradead.org
 Cc: sam@ravnborg.org
 
-Both at91_get_ddram_size and at91sama5_get_ddram_size are the
-same if is_sdram == false and is_nb == true.
+compiling clk-main.c and clk-generated.c results in:
 
-is_sdram is always false, because according to the sama5d{2,3,4}
-datasheets, the lowest possible value for AT91_DDRSDRC_MD is 3
-(i.e. none of them supports SDR SDRAM).
+warning: passing argument 1 of 'memcpy' discards 'const' qualifier from
+pointer target type [-Wdiscarded-qualifiers]
+  memcpy(clkmain->clk.parent_names, parent_names, parents_array_size);
+           ~~~~~~~~~~~~^~~~~~~~~~~~~
 
-Therefore replace calls to at91sama5_get_ddram_size with
-at91_get_ddram_size while is_nb == true and remove the duplicate code.
+Avoid this by replacing the xzalloc+memcpy pair with xmemdup.
+Zero-initialization of the buffer isn't necessary, because
+memcpy spans the whole buffer.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Tested-by: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- .../mach-at91/include/mach/at91sam9_ddrsdr.h  | 34 ++-----------------
- 1 file changed, 3 insertions(+), 31 deletions(-)
+ drivers/clk/at91/clk-generated.c | 3 +--
+ drivers/clk/at91/clk-main.c      | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h b/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h
-index 604c38d7e46c..34b2eed057c0 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h
-@@ -149,6 +149,7 @@ static inline u32 at91_get_ddram_size(void * __iomem base, bool is_nb)
- 	cr = readl(base + AT91_DDRSDRC_CR);
- 	mdr = readl(base + AT91_DDRSDRC_MDR);
+diff --git a/drivers/clk/at91/clk-generated.c b/drivers/clk/at91/clk-generated.c
+index 60516ca10f36..396c35f3a7b3 100644
+--- a/drivers/clk/at91/clk-generated.c
++++ b/drivers/clk/at91/clk-generated.c
+@@ -181,8 +181,7 @@ at91_clk_register_generated(struct regmap *regmap,
+ 	gck->hw.ops = &generated_ops;
  
-+	/* will always be false for sama5d2, sama5d3 or sama5d4 */
- 	is_sdram = (mdr & AT91_DDRSDRC_MD) <= AT91_DDRSDRC_MD_LOW_POWER_SDR;
+ 	parents_array_size = num_parents * sizeof(gck->hw.parent_names[0]);
+-	gck->hw.parent_names = xzalloc(parents_array_size);
+-	memcpy(gck->hw.parent_names, parent_names, parents_array_size);
++	gck->hw.parent_names = xmemdup(parent_names, parents_array_size);
+ 	gck->hw.num_parents = num_parents;
  
- 	/* Formula:
-@@ -198,43 +199,14 @@ static inline u32 at91sam9n12_get_ddram_size(void)
- 	return at91_get_ddram_size(IOMEM(AT91SAM9N12_BASE_DDRSDRC0), true);
- }
+ 	/* gck->hw.flags = CLK_SET_RATE_GATE | CLK_SET_PARENT_GATE; */
+diff --git a/drivers/clk/at91/clk-main.c b/drivers/clk/at91/clk-main.c
+index 4d4127dd0016..abae35566c2f 100644
+--- a/drivers/clk/at91/clk-main.c
++++ b/drivers/clk/at91/clk-main.c
+@@ -455,8 +455,7 @@ at91_clk_register_sam9x5_main(struct regmap *regmap,
+ 	clkmain->clk.name = name;
+ 	clkmain->clk.ops = &sam9x5_main_ops;
+ 	parents_array_size = num_parents * sizeof (clkmain->clk.parent_names[0]);
+-	clkmain->clk.parent_names = xzalloc(parents_array_size);
+-	memcpy(clkmain->clk.parent_names, parent_names, parents_array_size);
++	clkmain->clk.parent_names = xmemdup(parent_names, parents_array_size);
+ 	clkmain->clk.num_parents = num_parents;
  
--static inline u32 at91sama5_get_ddram_size(void __iomem *base)
--{
--	u32 cr;
--	u32 mdr;
--	u32 size;
--
--	cr = readl(base + AT91_DDRSDRC_CR);
--	mdr = readl(base + AT91_DDRSDRC_MDR);
--
--	/* Formula:
--	 * size = bank << (col + row + 1);
--	 * if (bandwidth == 32 bits)
--	 *	size <<= 1;
--	 */
--	size = 1;
--	/* COL */
--	size += (cr & AT91_DDRSDRC_NC) + 9;
--	/* ROW */
--	size += ((cr & AT91_DDRSDRC_NR) >> 2) + 11;
--	/* BANK */
--	size = ((cr & AT91_DDRSDRC_NB) ? 8 : 4) << size;
--
--	/* bandwidth */
--	if (!(mdr & AT91_DDRSDRC_DBW))
--		size <<= 1;
--
--	return size;
--}
--
- static inline u32 at91sama5d3_get_ddram_size(void)
- {
--	return at91sama5_get_ddram_size(IOMEM(SAMA5D3_BASE_MPDDRC));
-+	return at91_get_ddram_size(IOMEM(SAMA5D3_BASE_MPDDRC), true);
- }
- 
- static inline u32 at91sama5d4_get_ddram_size(void)
- {
--	return at91sama5_get_ddram_size(IOMEM(SAMA5D4_BASE_MPDDRC));
-+	return at91_get_ddram_size(IOMEM(SAMA5D4_BASE_MPDDRC), true);
- }
- 
- #endif
+ 	/* init.flags = CLK_SET_PARENT_GATE; */
 -- 
 2.20.1
 
