@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk3.altibox.net ([109.247.116.14])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hToj3-0003Ga-OB
- for barebox@lists.infradead.org; Thu, 23 May 2019 14:29:47 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 23 May 2019 16:29:32 +0200
-Message-Id: <20190523142932.14673-1-a.fatoum@pengutronix.de>
+ id 1hTqgL-0002rz-BD
+ for barebox@lists.infradead.org; Thu, 23 May 2019 16:35:07 +0000
+Date: Thu, 23 May 2019 18:34:55 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20190523163455.GA6249@ravnborg.org>
+References: <20190523142932.14673-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190523142932.14673-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,193 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/2] clk: at91: fix compilation errors in sama5d2.c
-To: barebox@lists.infradead.org
-Cc: sam@ravnborg.org
+Subject: Re: [PATCH v2 1/2] clk: at91: fix compilation errors in sama5d2.c
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-sama5d2.c was added alongside the update to the remaining clk drivers
-to support the new upstream device tree bindings, but wasn't wired in
-anywhere.
+Hi Ahmad.
 
-To prepare for usage in future sama5d2 support, fix compilation errors
-related to absence of locks and unavailability of audio/i2s clock/pll
-handling.
+On Thu, May 23, 2019 at 04:29:32PM +0200, Ahmad Fatoum wrote:
+> sama5d2.c was added alongside the update to the remaining clk drivers
+> to support the new upstream device tree bindings, but wasn't wired in
+> anywhere.
+> 
+> To prepare for usage in future sama5d2 support, fix compilation errors
+> related to absence of locks and unavailability of audio/i2s clock/pll
+> handling.
+> 
+> With this change, there are no users for the few definition-less at91
+> audio/i2s registration function declarations. So remove those as well.
 
-With this change, there are no users for the few definition-less at91
-audio/i2s registration function declarations. So remove those as well.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-
-	Changes since v2:
-	 - removed unused function declarations
-	 - added one more patch to remove dead audio/i2s code in the other files
-	
-	Both suggested by Sam Ravnborg.
-
- drivers/clk/at91/pmc.h     | 17 -------------
- drivers/clk/at91/sama5d2.c | 52 +++++---------------------------------
- 2 files changed, 6 insertions(+), 63 deletions(-)
-
-diff --git a/drivers/clk/at91/pmc.h b/drivers/clk/at91/pmc.h
-index 529498308f51..b553ea259c65 100644
---- a/drivers/clk/at91/pmc.h
-+++ b/drivers/clk/at91/pmc.h
-@@ -88,18 +88,6 @@ int of_at91_get_clk_range(struct device_node *np, const char *propname,
- 
- struct clk *of_clk_hw_pmc_get(struct of_phandle_args *clkspec, void *data);
- 
--struct clk *
--at91_clk_register_audio_pll_frac(struct regmap *regmap, const char *name,
--				 const char *parent_name);
--
--struct clk *
--at91_clk_register_audio_pll_pad(struct regmap *regmap, const char *name,
--				const char *parent_name);
--
--struct clk *
--at91_clk_register_audio_pll_pmc(struct regmap *regmap, const char *name,
--				const char *parent_name);
--
- struct clk *
- at91_clk_register_generated(struct regmap *regmap,
- 			    const char *name, const char **parent_names,
-@@ -110,11 +98,6 @@ struct clk *
- at91_clk_register_h32mx(struct regmap *regmap, const char *name,
- 			const char *parent_name);
- 
--struct clk *
--at91_clk_i2s_mux_register(struct regmap *regmap, const char *name,
--			  const char * const *parent_names,
--			  unsigned int num_parents, u8 bus_id);
--
- struct clk *
- at91_clk_register_main_rc_osc(struct regmap *regmap, const char *name,
- 			      u32 frequency, u32 accuracy);
-diff --git a/drivers/clk/at91/sama5d2.c b/drivers/clk/at91/sama5d2.c
-index dc15f7d9cbf3..7627c584ac08 100644
---- a/drivers/clk/at91/sama5d2.c
-+++ b/drivers/clk/at91/sama5d2.c
-@@ -84,8 +84,6 @@ static const struct {
- 	{ .n = "trng_clk",    .id = 47, .r = { .min = 0, .max = 83000000 }, },
- 	{ .n = "pdmic_clk",   .id = 48, .r = { .min = 0, .max = 83000000 }, },
- 	{ .n = "securam_clk", .id = 51, },
--	{ .n = "i2s0_clk",    .id = 54, .r = { .min = 0, .max = 83000000 }, },
--	{ .n = "i2s1_clk",    .id = 55, .r = { .min = 0, .max = 83000000 }, },
- 	{ .n = "can0_clk",    .id = 56, .r = { .min = 0, .max = 83000000 }, },
- 	{ .n = "can1_clk",    .id = 57, .r = { .min = 0, .max = 83000000 }, },
- 	{ .n = "classd_clk",  .id = 59, .r = { .min = 0, .max = 83000000 }, },
-@@ -123,8 +121,6 @@ static const struct {
- 	{ .n = "pwm_gclk",    .id = 38, .r = { .min = 0, .max = 83000000 }, },
- 	{ .n = "isc_gclk",    .id = 46, },
- 	{ .n = "pdmic_gclk",  .id = 48, },
--	{ .n = "i2s0_gclk",   .id = 54, .pll = true },
--	{ .n = "i2s1_gclk",   .id = 55, .pll = true },
- 	{ .n = "can0_gclk",   .id = 56, .r = { .min = 0, .max = 80000000 }, },
- 	{ .n = "can1_gclk",   .id = 57, .r = { .min = 0, .max = 80000000 }, },
- 	{ .n = "classd_gclk", .id = 59, .r = { .min = 0, .max = 100000000 },
-@@ -136,7 +132,7 @@ static void __init sama5d2_pmc_setup(struct device_node *np)
- 	struct clk_range range = CLK_RANGE(0, 0);
- 	const char *slck_name, *mainxtal_name;
- 	struct pmc_data *sama5d2_pmc;
--	const char *parent_names[6];
-+	const char *parent_names[5];
- 	struct regmap *regmap, *regmap_sfr;
- 	struct clk *hw;
- 	int i;
-@@ -157,7 +153,7 @@ static void __init sama5d2_pmc_setup(struct device_node *np)
- 	if (IS_ERR(regmap))
- 		return;
- 
--	sama5d2_pmc = pmc_data_allocate(PMC_I2S1_MUX + 1,
-+	sama5d2_pmc = pmc_data_allocate(PMC_MCK2 + 1,
- 					nck(sama5d2_systemck),
- 					nck(sama5d2_periph32ck),
- 					nck(sama5d2_gck));
-@@ -193,21 +189,6 @@ static void __init sama5d2_pmc_setup(struct device_node *np)
- 	if (IS_ERR(hw))
- 		goto err_free;
- 
--	hw = at91_clk_register_audio_pll_frac(regmap, "audiopll_fracck",
--					      "mainck");
--	if (IS_ERR(hw))
--		goto err_free;
--
--	hw = at91_clk_register_audio_pll_pad(regmap, "audiopll_padck",
--					     "audiopll_fracck");
--	if (IS_ERR(hw))
--		goto err_free;
--
--	hw = at91_clk_register_audio_pll_pmc(regmap, "audiopll_pmcck",
--					     "audiopll_fracck");
--	if (IS_ERR(hw))
--		goto err_free;
--
- 	regmap_sfr = syscon_regmap_lookup_by_compatible("atmel,sama5d2-sfr");
- 	if (IS_ERR(regmap_sfr))
- 		regmap_sfr = NULL;
-@@ -270,7 +251,7 @@ static void __init sama5d2_pmc_setup(struct device_node *np)
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(sama5d2_periphck); i++) {
--		hw = at91_clk_register_sam9x5_peripheral(regmap, &pmc_pcr_lock,
-+		hw = at91_clk_register_sam9x5_peripheral(regmap,
- 							 sama5d2_periphck[i].n,
- 							 "masterck",
- 							 sama5d2_periphck[i].id,
-@@ -282,7 +263,7 @@ static void __init sama5d2_pmc_setup(struct device_node *np)
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(sama5d2_periph32ck); i++) {
--		hw = at91_clk_register_sam9x5_peripheral(regmap, &pmc_pcr_lock,
-+		hw = at91_clk_register_sam9x5_peripheral(regmap,
- 							 sama5d2_periph32ck[i].n,
- 							 "h32mxck",
- 							 sama5d2_periph32ck[i].id,
-@@ -298,11 +279,10 @@ static void __init sama5d2_pmc_setup(struct device_node *np)
- 	parent_names[2] = "plladivck";
- 	parent_names[3] = "utmick";
- 	parent_names[4] = "mck";
--	parent_names[5] = "audiopll_pmcck";
- 	for (i = 0; i < ARRAY_SIZE(sama5d2_gck); i++) {
--		hw = at91_clk_register_generated(regmap, &pmc_pcr_lock,
-+		hw = at91_clk_register_generated(regmap,
- 						 sama5d2_gck[i].n,
--						 parent_names, 6,
-+						 parent_names, 5,
- 						 sama5d2_gck[i].id,
- 						 sama5d2_gck[i].pll,
- 						 &sama5d2_gck[i].r);
-@@ -312,26 +292,6 @@ static void __init sama5d2_pmc_setup(struct device_node *np)
- 		sama5d2_pmc->ghws[sama5d2_gck[i].id] = hw;
- 	}
- 
--	if (regmap_sfr) {
--		parent_names[0] = "i2s0_clk";
--		parent_names[1] = "i2s0_gclk";
--		hw = at91_clk_i2s_mux_register(regmap_sfr, "i2s0_muxclk",
--					       parent_names, 2, 0);
--		if (IS_ERR(hw))
--			goto err_free;
--
--		sama5d2_pmc->chws[PMC_I2S0_MUX] = hw;
--
--		parent_names[0] = "i2s1_clk";
--		parent_names[1] = "i2s1_gclk";
--		hw = at91_clk_i2s_mux_register(regmap_sfr, "i2s1_muxclk",
--					       parent_names, 2, 1);
--		if (IS_ERR(hw))
--			goto err_free;
--
--		sama5d2_pmc->chws[PMC_I2S1_MUX] = hw;
--	}
--
- 	of_clk_add_provider(np, of_clk_hw_pmc_get, sama5d2_pmc);
- 
- 	return;
--- 
-2.20.1
-
+Thanks for pciking this up.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 
 _______________________________________________
 barebox mailing list
