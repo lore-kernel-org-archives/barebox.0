@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hT784-0006qU-Se
- for barebox@lists.infradead.org; Tue, 21 May 2019 15:56:44 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 21 May 2019 17:56:26 +0200
-Message-Id: <20190521155626.9906-6-a.fatoum@pengutronix.de>
-In-Reply-To: <20190521155626.9906-1-a.fatoum@pengutronix.de>
+ id 1hTkZi-0002hW-6T
+ for barebox@lists.infradead.org; Thu, 23 May 2019 10:03:51 +0000
+Message-ID: <1558605828.5135.9.camel@pengutronix.de>
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Thu, 23 May 2019 12:03:48 +0200
+In-Reply-To: <20190521155626.9906-6-a.fatoum@pengutronix.de>
 References: <20190521155626.9906-1-a.fatoum@pengutronix.de>
-MIME-Version: 1.0
+ <20190521155626.9906-6-a.fatoum@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,114 +22,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/5] clk: imx6: define an enum for ldb mux inputs
-To: barebox@lists.infradead.org
-Cc: pza@pengutronix.de, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH v2 5/5] clk: imx6: define an enum for ldb mux inputs
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Cc: pza@pengutronix.de
 
-For better readability should this code be reviewed
-in future, replace the hardcoded input numbers
-with an enum.
+On Tue, 2019-05-21 at 17:56 +0200, Ahmad Fatoum wrote:
+> For better readability should this code be reviewed
+> in future, replace the hardcoded input numbers
+> with an enum.
+> 
+> This is just a cosmetic change and was verified
+> to not affect clk-imx6.o.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-This is just a cosmetic change and was verified
-to not affect clk-imx6.o.
+Is this something that should be proposed for the Linux kernel as well?
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/clk/imx/clk-imx6.c | 39 +++++++++++++++++++++++---------------
- 1 file changed, 24 insertions(+), 15 deletions(-)
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 
-diff --git a/drivers/clk/imx/clk-imx6.c b/drivers/clk/imx/clk-imx6.c
-index 69586f04a21f..fd0a51f1dcda 100644
---- a/drivers/clk/imx/clk-imx6.c
-+++ b/drivers/clk/imx/clk-imx6.c
-@@ -213,12 +213,20 @@ static const char *ipu_sels[] = {
- 	"pll3_pfd1_540m",
- };
- 
-+enum ldb_di_sel { /* for use in init_ldb_clks */
-+	LDB_DI_SEL_PLL5_VIDEO_DIV	= 0,
-+	LDB_DI_SEL_PLL2_PFD0_352M	= 1,
-+	LDB_DI_SEL_PLL2_PFD2_396M	= 2,
-+	LDB_DI_SEL_MMDC_CH1_AXI		= 3,
-+	LDB_DI_SEL_PLL3_USB_OTG		= 4,
-+};
-+
- static const char *ldb_di_sels[] = {
--	"pll5_video_div",
--	"pll2_pfd0_352m",
--	"pll2_pfd2_396m",
--	"mmdc_ch1_axi_podf",
--	"pll3_usb_otg",
-+	[LDB_DI_SEL_PLL5_VIDEO_DIV]	= "pll5_video_div",
-+	[LDB_DI_SEL_PLL2_PFD0_352M]	= "pll2_pfd0_352m",
-+	[LDB_DI_SEL_PLL2_PFD2_396M]	= "pll2_pfd2_396m",
-+	[LDB_DI_SEL_MMDC_CH1_AXI]	= "mmdc_ch1_axi_podf",
-+	[LDB_DI_SEL_PLL3_USB_OTG]	= "pll3_usb_otg",
- };
- 
- static const char *ipu_di_pre_sels[] = {
-@@ -311,23 +319,23 @@ static int ldb_di_sel_by_clock_id(int clock_id)
- 	case IMX6QDL_CLK_PLL5_VIDEO_DIV:
- 		if (!cpu_has_working_video_pll_post_div())
- 			return -ENOENT;
--		return 0;
-+		return LDB_DI_SEL_PLL5_VIDEO_DIV;
- 	case IMX6QDL_CLK_PLL2_PFD0_352M:
--		return 1;
-+		return LDB_DI_SEL_PLL2_PFD0_352M;
- 	case IMX6QDL_CLK_PLL2_PFD2_396M:
--		return 2;
-+		return LDB_DI_SEL_PLL2_PFD2_396M;
- 	case IMX6QDL_CLK_MMDC_CH1_AXI:
--		return 3;
-+		return LDB_DI_SEL_MMDC_CH1_AXI;
- 	case IMX6QDL_CLK_PLL3_USB_OTG:
--		return 4;
-+		return LDB_DI_SEL_PLL3_USB_OTG;
- 	default:
- 		return -ENOENT;
- 	}
- }
- 
- static void of_assigned_ldb_sels(struct device_node *node,
--				 unsigned int *ldb_di0_sel,
--				 unsigned int *ldb_di1_sel)
-+				 enum ldb_di_sel *ldb_di0_sel,
-+				 enum ldb_di_sel *ldb_di1_sel)
- {
- 	struct of_phandle_args clkspec;
- 	int index, rc, num_parents;
-@@ -466,7 +474,7 @@ static void mmdc_ch1_reenable(void __iomem *ccm_base)
- static void init_ldb_clks(struct device_node *np, void __iomem *ccm_base)
- {
- 	unsigned int reg;
--	unsigned int sel[2][4];
-+	enum ldb_di_sel sel[2][4];
- 	int i;
- 
- 	reg = readl(ccm_base + CCM_CS2CDR);
-@@ -480,7 +488,7 @@ static void init_ldb_clks(struct device_node *np, void __iomem *ccm_base)
- 
- 	for (i = 0; i < 2; i++) {
- 		/* Warn if a glitch might have been introduced already */
--		if (sel[i][0] != 3) {
-+		if (sel[i][0] != LDB_DI_SEL_MMDC_CH1_AXI) {
- 			pr_warn("ccm: ldb_di%d_sel already changed from reset value: %d\n",
- 				i, sel[i][0]);
- 		}
-@@ -489,7 +497,8 @@ static void init_ldb_clks(struct device_node *np, void __iomem *ccm_base)
- 			continue;
- 
- 		/* Only switch to or from pll2_pfd2_396m if it is disabled */
--		if ((sel[i][0] == 2 || sel[i][3] == 2) &&
-+		if ((sel[i][0] == LDB_DI_SEL_PLL2_PFD2_396M ||
-+		     sel[i][3] == LDB_DI_SEL_PLL2_PFD2_396M) &&
- 		    (clk_get_parent(clks[IMX6QDL_CLK_PERIPH_PRE]) ==
- 		     clks[IMX6QDL_CLK_PLL2_PFD2_396M])) {
- 			pr_err("ccm: ldb_di%d_sel: couldn't disable pll2_pfd2_396m\n",
--- 
-2.20.1
-
+regards
+Philipp
 
 _______________________________________________
 barebox mailing list
