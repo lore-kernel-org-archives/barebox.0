@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hU3lj-0004bB-CG
- for barebox@lists.infradead.org; Fri, 24 May 2019 06:33:32 +0000
-Date: Fri, 24 May 2019 08:33:29 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190524063329.ief3zvdwjp7o6qvf@pengutronix.de>
-References: <20190523170114.4622-1-a.fatoum@pengutronix.de>
+ id 1hU3jK-0004DU-1r
+ for barebox@lists.infradead.org; Fri, 24 May 2019 06:31:03 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <afa@pengutronix.de>) id 1hU3jI-0004lQ-IM
+ for barebox@lists.infradead.org; Fri, 24 May 2019 08:31:00 +0200
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>) id 1hU3jH-0005BW-5C
+ for barebox@lists.infradead.org; Fri, 24 May 2019 08:30:59 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 24 May 2019 08:30:56 +0200
+Message-Id: <20190524063056.19353-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190523170114.4622-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +27,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] clk: imx: vf610: correct __iomem 'qualifier' placement
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: at91: correct __iomem 'qualifier' placement
+To: barebox@lists.infradead.org
 
-On Thu, May 23, 2019 at 07:01:14PM +0200, Ahmad Fatoum wrote:
-> __iomem applies to the IOMEM() pointee, not to the auto pointer
-> that points at it. Move the annotation to correct this.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/clk/imx/clk-vf610.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+__iomem applies to the pointee, not to the auto pointer
+that points at it. Move the annotation to correct this.
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+There were only two instances of this and this is the patch
+for the second one.
 
-Sascha
+ arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h b/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h
+index 34b2eed057c0..496cf707014e 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h
+@@ -139,7 +139,7 @@ Banks [not SAM9G45] */
+ #include <io.h>
+ #include <mach/hardware.h>
+ 
+-static inline u32 at91_get_ddram_size(void * __iomem base, bool is_nb)
++static inline u32 at91_get_ddram_size(void __iomem *base, bool is_nb)
+ {
+ 	u32 cr;
+ 	u32 mdr;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
