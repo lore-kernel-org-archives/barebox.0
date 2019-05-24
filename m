@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-11.nifty.com ([210.131.2.78])
+Received: from conuserg-12.nifty.com ([210.131.2.79])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hU4M9-0001vv-Ji
- for barebox@lists.infradead.org; Fri, 24 May 2019 07:11:11 +0000
+ id 1hU4Zh-0006RO-1s
+ for barebox@lists.infradead.org; Fri, 24 May 2019 07:25:10 +0000
 From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Fri, 24 May 2019 16:10:51 +0900
-Message-Id: <20190524071051.32285-1-yamada.masahiro@socionext.com>
+Date: Fri, 24 May 2019 16:24:48 +0900
+Message-Id: <20190524072448.16110-1-yamada.masahiro@socionext.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,42 +19,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] kbuild: remove unneeded patterns from distclean
+Subject: [PATCH] kbuild: drop support for cc-ldoption
 To: barebox@lists.infradead.org
 
-Drop the following patterns based on Linux.
+Barebox is not using this macro.
 
-[1] -size 0
-   Linux commit f4b129f519f1bbd191dca2bf17d1137edf941fd1
+Linux commit 055efab3120bae7ab1ed841317774f3c953f6e1b killed this
+macro, so let's remove it from barebox too.
 
-[2] '.*.cmd'
-   Linux commit a03fcb50e816a69acffb13b5e56db75063aeba8a
+I see another cc-ldoption in dts/scripts/Kbuild.include, but did not
+touch it. In my understanding, the dts/ directory is synced with the
+upstream devicetree-rebasing project [1].
 
-[3] (second) '.*.orig' '.*.rej'
-   Linux commit f78271dfb77353c4d045f9735deebe21839fb2ed
+[1] git://git.kernel.org/pub/scm/linux/kernel/git/devicetree/devicetree-rebasing.git
 
 Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 ---
 
- Makefile | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ scripts/Kbuild.include | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 29347b678..1027ceceb 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1020,9 +1020,8 @@ PHONY += distclean
- distclean: mrproper
- 	@find $(srctree) $(RCS_FIND_IGNORE) \
- 		\( -name '*.orig' -o -name '*.rej' -o -name '*~' \
--		-o -name '*.bak' -o -name '#*#' -o -name '.*.orig' \
--		-o -name '.*.rej' -o -size 0 \
--		-o -name '*%' -o -name '.*.cmd' -o -name 'core' \) \
-+		-o -name '*.bak' -o -name '#*#' -o -name '*%' \
-+		-o -name 'core' \) \
- 		-type f -print | xargs rm -f
+diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
+index 5fa7f16e1..5e7255db3 100644
+--- a/scripts/Kbuild.include
++++ b/scripts/Kbuild.include
+@@ -129,11 +129,6 @@ cc-version = $(shell $(CONFIG_SHELL) $(srctree)/scripts/gcc-version.sh $(CC))
+ # Usage:  EXTRA_CFLAGS += $(call cc-ifversion, -lt, 0402, -O1)
+ cc-ifversion = $(shell [ $(call cc-version, $(CC)) $(1) $(2) ] && echo $(3))
  
- 
+-# cc-ldoption
+-# Usage: ldflags += $(call cc-ldoption, -Wl$(comma)--hash-style=both)
+-cc-ldoption = $(call try-run,\
+-	$(CC) $(1) -nostdlib -xc /dev/null -o "$$TMP",$(1),$(2))
+-
+ # ld-option
+ # Usage: LDFLAGS += $(call ld-option, -X)
+ ld-option = $(call try-run,\
 -- 
 2.17.1
 
