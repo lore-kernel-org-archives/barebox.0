@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-12.nifty.com ([210.131.2.79])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hU4Zh-0006RO-1s
- for barebox@lists.infradead.org; Fri, 24 May 2019 07:25:10 +0000
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Fri, 24 May 2019 16:24:48 +0900
-Message-Id: <20190524072448.16110-1-yamada.masahiro@socionext.com>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1hU8Rf-0004xi-Rk
+ for barebox@lists.infradead.org; Fri, 24 May 2019 11:33:09 +0000
+From: Maik Otto <m.otto@phytec.de>
+Date: Fri, 24 May 2019 13:32:55 +0200
+Message-Id: <1558697578-69121-1-git-send-email-m.otto@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +19,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] kbuild: drop support for cc-ldoption
+Subject: [PATCH 1/4] Makefile-imx: replace static variant to dynamic for
+ signing images
 To: barebox@lists.infradead.org
+Cc: Maik Otto <m.otto@phytec.de>
 
-Barebox is not using this macro.
+Insert in the Kconfig the selection for the build type signed, usb signed,
+encrypted/signed and  unsigned as basic for the replacement the static
+variant in the Makefile.imx
 
-Linux commit 055efab3120bae7ab1ed841317774f3c953f6e1b killed this
-macro, so let's remove it from barebox too.
-
-I see another cc-ldoption in dts/scripts/Kbuild.include, but did not
-touch it. In my understanding, the dts/ directory is synced with the
-upstream devicetree-rebasing project [1].
-
-[1] git://git.kernel.org/pub/scm/linux/kernel/git/devicetree/devicetree-rebasing.git
-
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Signed-off-by: Maik Otto <m.otto@phytec.de>
 ---
+ arch/arm/mach-imx/Kconfig | 25 +++++++++++++++++++++++++
+ images/Makefile.imx       |  1 +
+ 2 files changed, 26 insertions(+)
 
- scripts/Kbuild.include | 5 -----
- 1 file changed, 5 deletions(-)
-
-diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
-index 5fa7f16e1..5e7255db3 100644
---- a/scripts/Kbuild.include
-+++ b/scripts/Kbuild.include
-@@ -129,11 +129,6 @@ cc-version = $(shell $(CONFIG_SHELL) $(srctree)/scripts/gcc-version.sh $(CC))
- # Usage:  EXTRA_CFLAGS += $(call cc-ifversion, -lt, 0402, -O1)
- cc-ifversion = $(shell [ $(call cc-version, $(CC)) $(1) $(2) ] && echo $(3))
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 71d37ce..fdb4239 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -845,6 +845,24 @@ config HABV4_IMG_CRT_PEM
  
--# cc-ldoption
--# Usage: ldflags += $(call cc-ldoption, -Wl$(comma)--hash-style=both)
--cc-ldoption = $(call try-run,\
--	$(CC) $(1) -nostdlib -xc /dev/null -o "$$TMP",$(1),$(2))
--
- # ld-option
- # Usage: LDFLAGS += $(call ld-option, -X)
- ld-option = $(call try-run,\
+ endif
+ 
++if HABV4
++
++choice
++	prompt "Select Building Signed/Encrypted Bootloader"
++
++config HABV4_IMAGE_SIGNED
++	bool "build signed images"
++
++config HABV4_IMAGE_SIGNED_USB
++	bool "build signed images and signed USB images"
++
++config HABV4_IMAGE_SIGNED_ENCRYPTED
++	bool "build signed encrypted images"
++
++endchoice
++
++endif
++
+ config HABV3
+ 	tristate "HABv3 support"
+ 	select HAB
+@@ -870,6 +888,13 @@ config HABV3_IMG_CRT_DER
+ 
+ endif
+ 
++config IMX_IMG_SUFFIX
++	string
++	default "simximg" if HABV4_IMAGE_SIGNED
++	default "uimximg" if HABV4_IMAGE_SIGNED_USB
++	default "esimximg" if HABV4_IMAGE_SIGNED_ENCRYPTED
++	default "imximg"
++
+ endmenu
+ 
+ endif
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index e6f741c..0824b8c 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -22,6 +22,7 @@ $(obj)/%.img.dek: $(obj)/$$(FILE_$$(@F))
+ 	$(Q)if [ -z $(FILE_$(@F)) ]; then echo "FILE_$(@F) empty!"; false; fi
+ 	$(call if_changed,shipped)
+ 
++imximg_suffix := $(patsubst "%",%,${CONFIG_IMX_IMG_SUFFIX})
+ # ----------------------- i.MX25 based boards ---------------------------
+ pblb-$(CONFIG_MACH_TX25) += start_imx25_karo_tx25
+ FILE_barebox-karo-tx25.img = start_imx25_karo_tx25.pblb
 -- 
-2.17.1
+2.7.4
 
 
 _______________________________________________
