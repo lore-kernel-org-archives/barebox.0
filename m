@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-it1-x141.google.com ([2607:f8b0:4864:20::141])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVADN-0001pU-MI
- for barebox@lists.infradead.org; Mon, 27 May 2019 07:38:39 +0000
-References: <20190521155626.9906-1-a.fatoum@pengutronix.de>
- <20190521155626.9906-3-a.fatoum@pengutronix.de>
- <CAHQ1cqHCTcGXkZrzzeijctFrvme-6kofQUb-P3b9yzDx-4ewsg@mail.gmail.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <c153e9d2-5063-79b9-35f7-7d46f95d0266@pengutronix.de>
-Date: Mon, 27 May 2019 09:38:34 +0200
+ id 1hV17Q-0003B0-9R
+ for barebox@lists.infradead.org; Sun, 26 May 2019 21:55:53 +0000
+Received: by mail-it1-x141.google.com with SMTP id i63so21463463ita.3
+ for <barebox@lists.infradead.org>; Sun, 26 May 2019 14:55:48 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAHQ1cqHCTcGXkZrzzeijctFrvme-6kofQUb-P3b9yzDx-4ewsg@mail.gmail.com>
-Content-Language: en-US
+References: <20190521155626.9906-1-a.fatoum@pengutronix.de>
+ <20190521155626.9906-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20190521155626.9906-2-a.fatoum@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Sun, 26 May 2019 14:55:36 -0700
+Message-ID: <CAHQ1cqHnqQoUes2FoDgODkJdtFBFwk30r9ZnYm3BvjUwB0RyLQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,79 +24,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/5] clk: imx6: Make the LDB_DI0 and LDB_DI1 clocks
- read-only
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>, pza@pengutronix.de
+Subject: Re: [PATCH v2 1/5] clk: imx6: remove quirky
+ clk_set_parent(LDB_diN_sel, pll5_video_div)
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>, Raphael Poggi <poggi.raph@gmail.com>, pza@pengutronix.de
 
-Hello Andrey,
+On Tue, May 21, 2019 at 8:56 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+>
+> barebox has inherited the clk_set_parent(ldb_diN_sel, pll5_video_div)
+> from upstream kernel commit 32f3b8da22 ("ARM i.MX6q: set the LDB serial
+> clock parent to the video PLL"), where it was enabled for all i.MX6Q
+> revisions after 1.0. It was applied whenever CONFIG_DRIVER_VIDEO_IMX_IPUV3
+> was defined.
+>
+> The kernel removed this reparenting again as a preventive measure
+> against ERR009219 in 03d576f202 ("clk: imx6: Make the LDB_DI0 and
+> LDB_DI1 clocks read-only").
+>
+> As the kernel used the device tree compatible, which is the same
+> for e.g. i.MX6Solo and DualLite, but barebox queried ANATOP which
+> lists different CPU types for i.MX6Solo and DualLite and because
+> i.MX6QuadPlus wasn't supported at first, barebox grew to do
+> the reparenting on the odd set of:
+>   - Quad and Dual rev >1.0
+>   - DualLite
+>   - Solo rev >1.0
+>   - QuadPlus and DualPlus rev >1.0
+>
+> On all of these, except for the QuadPlus and the DualPlus, this
+> reparenting may glitch the LDB so that it permanently locks up.
+>
+> By removing the reparenting in this commit, producing this glitch is
+> avoided, unless the device tree[1] reinstates the old behavior:
+>
+>         &clks {
+>                 assigned-clocks = <&clks IMX6QDL_CLK_LDB_DI0_SEL>,
+>                                   <&clks IMX6QDL_CLK_LDB_DI1_SEL>;
+>                 assigned-clock-parents = <&clks IMX6QDL_CLK_PLL5_VIDEO_DIV>,
+>                                          <&clks IMX6QDL_CLK_PLL5_VIDEO_DIV>;
+>         };
+>
+> Follow-up patches will explicitly check for this and do the reparenting
+> in a glitch-free manner.
+>
+> As of v2019.03.0, following mainline boards are potentially broken
+> by this (i.e. they're supported by barebox, are in the list above,
+> had a LDB enabled and might be defining CONFIG_DRIVER_VIDEO_IMX_IPUV3):
+>   - imx6qdl-zii-rdu2.dtsi
 
-On 27/5/19 09:01, Andrey Smirnov wrote:
-> On Tue, May 21, 2019 at 8:56 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->>
->> From: Philipp Zabel <p.zabel@pengutronix.de>
->>
->> Due to incorrect placement of the clock gate cell in the ldb_di[x]_clk
->> tree, the glitchy parent mux of ldb_di[x]_clk can cause a glitch to
->> enter the ldb_di_ipu_div divider. If the divider gets locked up, no
->> ldb_di[x]_clk is generated, and the LVDS display will hang when the
->> ipu_di_clk is sourced from ldb_di_clk.
->>
->> To fix the problem, both the new and current parent of the ldb_di_clk
->> should be disabled before the switch. As this can not be guaranteed by
->> the clock framework during runtime, make the ldb_di[x]_sel muxes read-only.
->> A workaround to set the muxes once during boot could be added to the
->> kernel or bootloader.
->>
->> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
->> Signed-off-by: Fabio Estevam <fabio.estevam@nxp.com>
->> Signed-off-by: Shawn Guo <shawnguo@kernel.org>
->> [afa: ported from Linux kernel commit 03d576f202]
->> [afa: added exception for i.MX6QP, see kernel commit f4a0a6c309]
->> [afa: added cpu_has_err009219 helper function]
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  drivers/clk/imx/clk-imx6.c | 17 +++++++++++++++--
->>  drivers/clk/imx/clk.h      |  8 ++++++++
->>  2 files changed, 23 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/clk/imx/clk-imx6.c b/drivers/clk/imx/clk-imx6.c
->> index 319485f8521c..01b649ebbd26 100644
->> --- a/drivers/clk/imx/clk-imx6.c
->> +++ b/drivers/clk/imx/clk-imx6.c
->> @@ -64,6 +64,12 @@ static inline int cpu_is_plus(void)
->>         return cpu_is_mx6qp() || cpu_is_mx6dp();
->>  }
->>
->> +/* i.MX6 Quad/Dual/DualLite/Solo are all affected */
->> +static inline int cpu_has_err009219(void) {
-> 
-> That { should really be on a separate line.
-> 
->> +       return cpu_is_mx6d() || cpu_is_mx6q() ||
->> +               cpu_is_mx6dl() || cpu_is_mx6s();
->> +}
-> 
-> Hmm, imx_init() is executed at "postcore" and this function will be
-> called at "core" init-level. All of the cpu_is_mx6*() functions will
-> call cpu_is_mx6() which won't work right until imx_init() is called.
-> Are you sure this is working as intended? I think cpu_mx6_is_imx6*()
-> functions should be used instead. That's what I had to do on my board
-> at least. It looks that there's other unrelated code in this file that
-> might have this problem as well.
+This particular patch does break a non 6Q+ version of RDU2,  but the
+follow up ones in the series fix it, so it seems that no action is
+really necessary on my part.
 
-Thanks for spotting that. I will send out a v3 with this fixed.
-
-> 
-> Thanks,
-> Andrey Smirnov
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
