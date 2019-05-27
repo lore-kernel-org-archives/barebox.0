@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVK9a-0001as-DK
- for barebox@lists.infradead.org; Mon, 27 May 2019 18:15:23 +0000
-Received: by mail-pg1-x544.google.com with SMTP id w22so9466256pgi.6
- for <barebox@lists.infradead.org>; Mon, 27 May 2019 11:15:22 -0700 (PDT)
+ id 1hVK9b-0001bH-JW
+ for barebox@lists.infradead.org; Mon, 27 May 2019 18:15:25 +0000
+Received: by mail-pf1-x442.google.com with SMTP id r22so7071154pfh.9
+ for <barebox@lists.infradead.org>; Mon, 27 May 2019 11:15:23 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 27 May 2019 11:14:57 -0700
-Message-Id: <20190527181500.17456-5-andrew.smirnov@gmail.com>
+Date: Mon, 27 May 2019 11:14:58 -0700
+Message-Id: <20190527181500.17456-6-andrew.smirnov@gmail.com>
 In-Reply-To: <20190527181500.17456-1-andrew.smirnov@gmail.com>
 References: <20190527181500.17456-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,33 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/8] ahci: Do not zero out DMA coherent memory
+Subject: [PATCH 6/8] apbh: Use dma_alloc_coherent() to get DMA address
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Memory returned by dma_alloc_coherent() should already be zeroed
-out, so there's no need to do this explicitly.
+Avoid converting virtual address to physical by simple casting by
+making use of the fact that dma_alloc_coherent() can already return
+that information to us.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/ata/ahci.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/dma/apbh_dma.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index e6723a337..7dc09d00c 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -342,10 +342,6 @@ static int ahci_init_port(struct ahci_port *ahci_port)
- 		goto err_alloc2;
- 	}
+diff --git a/drivers/dma/apbh_dma.c b/drivers/dma/apbh_dma.c
+index 15a523ac8..3bee89f78 100644
+--- a/drivers/dma/apbh_dma.c
++++ b/drivers/dma/apbh_dma.c
+@@ -381,14 +381,15 @@ static int mxs_dma_release(int channel)
+ struct mxs_dma_desc *mxs_dma_desc_alloc(void)
+ {
+ 	struct mxs_dma_desc *pdesc;
++	dma_addr_t dma_address;
  
--	memset(ahci_port->cmd_slot, 0, AHCI_CMD_SLOT_SZ * 32);
--	memset((void *)ahci_port->rx_fis, 0, AHCI_RX_FIS_SZ);
--	memset(ahci_port->cmd_tbl, 0, AHCI_CMD_TBL_SZ);
--
- 	ahci_port_debug(ahci_port, "cmd_tbl_dma = 0x%p\n", ahci_port->cmd_tbl);
+ 	pdesc = dma_alloc_coherent(sizeof(struct mxs_dma_desc),
+-				   DMA_ADDRESS_BROKEN);
++				   &dma_address);
  
- 	ahci_port->cmd_tbl_sg = ahci_port->cmd_tbl + AHCI_CMD_TBL_HDR_SZ;
+ 	if (pdesc == NULL)
+ 		return NULL;
+ 
+-	pdesc->address = (dma_addr_t)pdesc;
++	pdesc->address = dma_address;
+ 
+ 	return pdesc;
+ };
 -- 
 2.21.0
 
