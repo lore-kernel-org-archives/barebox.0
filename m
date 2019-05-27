@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVCO5-0001nA-Mv
+ id 1hVCO5-0001nD-Mz
  for barebox@lists.infradead.org; Mon, 27 May 2019 09:57:52 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <afa@pengutronix.de>) id 1hVCO3-000225-On
+ (envelope-from <afa@pengutronix.de>) id 1hVCO3-00022C-SB
  for barebox@lists.infradead.org; Mon, 27 May 2019 11:57:47 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1hVCO2-0003EB-Tz
- for barebox@lists.infradead.org; Mon, 27 May 2019 11:57:46 +0200
+ (envelope-from <afa@pengutronix.de>) id 1hVCO3-0003FJ-19
+ for barebox@lists.infradead.org; Mon, 27 May 2019 11:57:47 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 27 May 2019 11:57:37 +0200
-Message-Id: <20190527095744.5923-12-a.fatoum@pengutronix.de>
+Date: Mon, 27 May 2019 11:57:44 +0200
+Message-Id: <20190527095744.5923-19-a.fatoum@pengutronix.de>
 In-Reply-To: <20190527095744.5923-1-a.fatoum@pengutronix.de>
 References: <20190527095744.5923-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -29,54 +29,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/18] scripts: mkimage: s/fdatasync/fsync/ on macOS & OpenBSD
+Subject: [PATCH 18/18] scripts: compiler.h: support BSDs as well
 To: barebox@lists.infradead.org
 
-fdatasync is an optional part of POSIX and mkimage uses the more general
-fsync on Sun and FreeBSD as an alternative. Add macOS[1] and OpenBSD to the
-list as well.
-
-This is in-line with what U-Boot does since 31cbe80c33
-("mkimage: fix compilation issues on OpenBSD").
-
-[1]: macOS >=10.7 does indeed define (but not declare anywhere) a seemingly
-     working fdatasync, but we won't consider this here.
+The BSDs have their endianness changing functions in <sys/endian.h> and
+define both _BYTE_ORDER as well as BYTE_ORDER (if strict POSIX conformance
+isn't requested). Extend the header to compile, so it supports these
+platforms as well.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- scripts/mkimage.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ scripts/compiler.h | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/mkimage.c b/scripts/mkimage.c
-index 891d7b6de71c..7d283c550930 100644
---- a/scripts/mkimage.c
-+++ b/scripts/mkimage.c
-@@ -572,7 +572,11 @@ NXTARG:		;
- 	}
+diff --git a/scripts/compiler.h b/scripts/compiler.h
+index 01b0de44f18a..0ad25f9e8da9 100644
+--- a/scripts/compiler.h
++++ b/scripts/compiler.h
+@@ -56,16 +56,22 @@
+ # else /* non apple __MACH__ */
+ #  include <machine/endian.h>
+ # endif /* __APPLE__ */
+-# define __BYTE_ORDER    BYTE_ORDER
+-# define __LITTLE_ENDIAN LITTLE_ENDIAN
+-# define __BIG_ENDIAN    BIG_ENDIAN
+ typedef unsigned long ulong;
+ typedef unsigned int  uint;
++#elif defined(__OpenBSD__) || defined(__FreeBSD__) || \
++      defined(__NetBSD__) || defined(__DragonFly__)
++# include <sys/endian.h>
+ #else /* assume Linux */
+ # include <endian.h>
+ # include <byteswap.h>
+ #endif
  
- 	/* We're a bit of paranoid */
--#if defined(_POSIX_SYNCHRONIZED_IO) && !defined(__sun__) && !defined(__FreeBSD__)
-+#if defined(_POSIX_SYNCHRONIZED_IO) && \
-+   !defined(__sun__) && \
-+   !defined(__FreeBSD__) && \
-+   !defined(__OpenBSD__) && \
-+   !defined(__APPLE__)
- 	(void) fdatasync (ifd);
- #else
- 	(void) fsync (ifd);
-@@ -622,7 +626,11 @@ NXTARG:		;
- 	(void) munmap((void *)ptr, sbuf.st_size);
- 
- 	/* We're a bit of paranoid */
--#if defined(_POSIX_SYNCHRONIZED_IO) && !defined(__sun__) && !defined(__FreeBSD__)
-+#if defined(_POSIX_SYNCHRONIZED_IO) && \
-+   !defined(__sun__) && \
-+   !defined(__FreeBSD__) && \
-+   !defined(__OpenBSD__) && \
-+   !defined(__APPLE__)
- 	(void) fdatasync (ifd);
- #else
- 	(void) fsync (ifd);
++#if defined(__BYTE_ORDER) && !defined(BYTE_ORDER)
++# define __BYTE_ORDER    BYTE_ORDER
++# define __BIG_ENDIAN    BIG_ENDIAN
++# define __LITTLE_ENDIAN LITTLE_ENDIAN
++#endif
++
+ typedef uint8_t __u8;
+ typedef uint16_t __u16;
+ typedef uint32_t __u32;
 -- 
 2.20.1
 
