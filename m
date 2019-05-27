@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVMzZ-00035p-8s
- for barebox@lists.infradead.org; Mon, 27 May 2019 21:17:15 +0000
-Date: Mon, 27 May 2019 23:15:04 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20190527211504.GA29216@ravnborg.org>
-References: <20190527204228.26363-1-m.grzeschik@pengutronix.de>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1hVFMB-0004r7-AR
+ for barebox@lists.infradead.org; Mon, 27 May 2019 13:08:04 +0000
+References: <1558697578-69121-1-git-send-email-m.otto@phytec.de>
+ <0552fb12e541c7e93ee389bccba26b5fede7b995.camel@pengutronix.de>
+From: Maik Otto <m.otto@phytec.de>
+Message-ID: <3d3cf5bb-b119-ee89-a5ed-7a210f7f285b@phytec.de>
+Date: Mon, 27 May 2019 15:08:00 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190527204228.26363-1-m.grzeschik@pengutronix.de>
+In-Reply-To: <0552fb12e541c7e93ee389bccba26b5fede7b995.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,256 +18,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3] gpio: add driver for PCF857x, PCA{85, 96}7x, and
- MAX732[89] I2C GPIO expanders
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Subject: Re: [PATCH 1/4] Makefile-imx: replace static variant to dynamic for
+ signing images
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Michael.
-
-On Mon, May 27, 2019 at 10:42:28PM +0200, Michael Grzeschik wrote:
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> ---
-> v1 -> v2:
-> 
-> - removed unnecessary chapter in kconfig helptext
-> - removed platform data setup and teardown callbacks
-> - removed error path for xzalloc
-> 
-> v2 -> v3:
-> 
-> - removed include/platform_data/pcf857x.h
-> - removed useage and comments of platform_data
-> 
->  drivers/gpio/Kconfig        |  16 +++
->  drivers/gpio/Makefile       |   1 +
->  drivers/gpio/gpio-pcf857x.c | 254 ++++++++++++++++++++++++++++++++++++
->  3 files changed, 271 insertions(+)
->  create mode 100644 drivers/gpio/gpio-pcf857x.c
-> 
-> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-> index c535904ed0..9bfa97160c 100644
-> --- a/drivers/gpio/Kconfig
-> +++ b/drivers/gpio/Kconfig
-> @@ -98,6 +98,22 @@ config GPIO_PCA953X
->  
->  	  40 bits: pca9505, pca9698
->  
-> +config GPIO_PCF857X
-> +	tristate "PCF857x, PCA{85,96}7x, and MAX732[89] I2C GPIO expanders"
-> +	depends on I2C
-This driver depends on CONFIG_OF, as the platform_data stuff is gone.
-
-> +	help
-> +	  Say yes here to provide access to most "quasi-bidirectional" I2C
-> +	  GPIO expanders used for additional digital outputs or inputs.
-> +	  Most of these parts are from NXP, though TI is a second source for
-> +	  some of them.  Compatible models include:
-> +
-> +	  8 bits:   pcf8574, pcf8574a, pca8574, pca8574a,
-> +	            pca9670, pca9672, pca9674, pca9674a,
-> +	  	    max7328, max7329
-> +
-> +	  16 bits:  pcf8575, pcf8575c, pca8575,
-> +	            pca9671, pca9673, pca9675
-> +
->  config GPIO_PL061
->  	bool "PrimeCell PL061 GPIO support"
->  	depends on ARM_AMBA
-> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-> index 52280f0bb4..990df01788 100644
-> --- a/drivers/gpio/Makefile
-> +++ b/drivers/gpio/Makefile
-> @@ -14,6 +14,7 @@ obj-$(CONFIG_GPIO_MALTA_FPGA_I2C) += gpio-malta-fpga-i2c.o
->  obj-$(CONFIG_GPIO_ORION)	+= gpio-orion.o
->  obj-$(CONFIG_GPIO_OMAP)		+= gpio-omap.o
->  obj-$(CONFIG_GPIO_PCA953X)	+= gpio-pca953x.o
-> +obj-$(CONFIG_GPIO_PCF857X)	+= gpio-pcf857x.o
->  obj-$(CONFIG_GPIO_PL061)	+= gpio-pl061.o
->  obj-$(CONFIG_GPIO_STMPE)	+= gpio-stmpe.o
->  obj-$(CONFIG_GPIO_TEGRA)	+= gpio-tegra.o
-> diff --git a/drivers/gpio/gpio-pcf857x.c b/drivers/gpio/gpio-pcf857x.c
-> new file mode 100644
-> index 0000000000..a10d5d8407
-> --- /dev/null
-> +++ b/drivers/gpio/gpio-pcf857x.c
-> @@ -0,0 +1,254 @@
-> +/*
-> + * Driver for pcf857x, pca857x, and pca967x I2C GPIO expanders
-> + *
-> + * This code was ported from linux-5.1 kernel by Michael Grzeschik.
-> + *
-> + * Copyright (C) 2007 David Brownell
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License as published by
-> + * the Free Software Foundation; either version 2 of the License, or
-> + * (at your option) any later version.
-> + */
-> +
-> +#include <common.h>
-> +#include <malloc.h>
-> +#include <driver.h>
-> +#include <xfuncs.h>
-> +#include <errno.h>
-> +#include <i2c/i2c.h>
-> +#include <gpio.h>
-> +
-> +static const struct platform_device_id pcf857x_id[] = {
-> +	{ "pcf8574", 8 },
-> +	{ "pcf8574a", 8 },
-> +	{ "pca8574", 8 },
-> +	{ "pca9670", 8 },
-> +	{ "pca9672", 8 },
-> +	{ "pca9674", 8 },
-> +	{ "pcf8575", 16 },
-> +	{ "pca8575", 16 },
-> +	{ "pca9671", 16 },
-> +	{ "pca9673", 16 },
-> +	{ "pca9675", 16 },
-> +	{ "max7328", 8 },
-> +	{ "max7329", 8 },
-> +	{ }
-> +};
-> +
-> +/*
-> + * The pcf857x, pca857x, and pca967x chips only expose one read and one
-> + * write register.  Writing a "one" bit (to match the reset state) lets
-> + * that pin be used as an input; it's not an open-drain model, but acts
-> + * a bit like one.  This is described as "quasi-bidirectional"; read the
-> + * chip documentation for details.
-> + *
-> + * Many other I2C GPIO expander chips (like the pca953x models) have
-> + * more complex register models and more conventional circuitry using
-> + * push/pull drivers.  They often use the same 0x20..0x27 addresses as
-> + * pcf857x parts, making the "legacy" I2C driver model problematic.
-> + */
-> +struct pcf857x {
-> +	struct gpio_chip	chip;
-> +	struct i2c_client	*client;
-> +	unsigned		out;		/* software latch */
-> +
-> +	int (*write)(struct i2c_client *client, unsigned data);
-> +	int (*read)(struct i2c_client *client);
-> +};
-> +
-> +static inline struct pcf857x *to_pcf(struct gpio_chip *gc)
-> +{
-> +	return container_of(gc, struct pcf857x, chip);
-> +}
-> +
-> +/*-------------------------------------------------------------------------*/
-> +
-> +/* Talk to 8-bit I/O expander */
-> +
-> +static int i2c_write_le8(struct i2c_client *client, unsigned data)
-> +{
-> +	return i2c_smbus_write_byte(client, data);
-> +}
-> +
-> +static int i2c_read_le8(struct i2c_client *client)
-> +{
-> +	return (int)i2c_smbus_read_byte(client);
-> +}
-> +
-> +/* Talk to 16-bit I/O expander */
-> +
-> +static int i2c_write_le16(struct i2c_client *client, unsigned word)
-> +{
-> +	u8 buf[2] = { word & 0xff, word >> 8, };
-> +	int ret;
-> +
-> +	ret = i2c_master_send(client, buf, 2);
-> +	return (ret < 0) ? ret : 0;
-> +}
-> +
-> +static int i2c_read_le16(struct i2c_client *client)
-> +{
-> +	u8 buf[2];
-> +	int ret;
-> +
-> +	ret = i2c_master_recv(client, buf, 2);
-> +	if (ret < 0)
-> +		return ret;
-> +	return (buf[1] << 8) | buf[0];
-> +}
-> +
-> +/*-------------------------------------------------------------------------*/
-> +
-> +static int pcf857x_input(struct gpio_chip *chip, unsigned offset)
-> +{
-> +	struct pcf857x	*gpio = to_pcf(chip);
-> +	int		ret;
-> +
-> +	gpio->out |= (1 << offset);
-> +	ret = gpio->write(gpio->client, gpio->out);
-> +
-> +	return ret;
-> +}
-> +
-> +static int pcf857x_get(struct gpio_chip *chip, unsigned offset)
-> +{
-> +	struct pcf857x	*gpio = to_pcf(chip);
-> +	int		value;
-> +
-> +	value = gpio->read(gpio->client);
-> +	return (value < 0) ? value : !!(value & (1 << offset));
-> +}
-> +
-> +static int pcf857x_output(struct gpio_chip *chip, unsigned offset, int value)
-> +{
-> +	struct pcf857x	*gpio = to_pcf(chip);
-> +	unsigned	bit = 1 << offset;
-> +	int		ret;
-> +
-> +	if (value)
-> +		gpio->out |= bit;
-> +	else
-> +		gpio->out &= ~bit;
-> +	ret = gpio->write(gpio->client, gpio->out);
-> +
-> +	return ret;
-> +}
-> +
-> +static void pcf857x_set(struct gpio_chip *chip, unsigned offset, int value)
-> +{
-> +	pcf857x_output(chip, offset, value);
-> +}
-> +
-> +/*-------------------------------------------------------------------------*/
-> +
-> +static struct gpio_ops pcf857x_gpio_ops = {
-> +	.direction_input  = pcf857x_input,
-> +	.direction_output = pcf857x_output,
-> +	.get = pcf857x_get,
-> +	.set = pcf857x_set,
-> +};
-> +
-> +static int pcf857x_probe(struct device_d *dev)
-> +{
-> +	struct i2c_client *client = to_i2c_client(dev);
-> +	struct device_node		*np = dev->device_node;
-> +	struct pcf857x			*gpio;
-> +	unsigned long			driver_data;
-> +	unsigned int			n_latch = 0;
-> +	int				ret;
-> +
-> +	if (IS_ENABLED(CONFIG_OF) && np)
-> +		of_property_read_u32(np, "lines-initial-states", &n_latch);
-So we no longer need the IS_ENABLED(CONFIG_OF) part.
-And consider what to do if np is NULL (error out?).
-
-With the few comments fixed:
-
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-
-	Sam
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgTXIuIEN6ZXJ3aW5za2ksCgppIHdpbGwgY2hhbmdlIHRoZSBwYXRjaGVzIGFuZCBtYWtlIGNo
+ZWNrYm94ZXMgZm9yIHRoZSBkaWZmZXJlbnQgaW1hZ2VzLgpteSBpZGVhIGlzIHRvIHVzZSBkaWZm
+ZXJlbnQgZmlsZSBleHRlbnNpb25zIGZvciB0aGUgaW1hZ2VzCmZvciBleGFtcGxlCi5pbWfCoMKg
+wqAgZm9yIG5vcm1hbAouc2ltZ8KgwqDCoCBmb3Igc2lnbmVkCi5lc2ltZ8KgwqDCoCBmb3IgZW5j
+cnlwdGVkIHNpZ25lZAoudXNpbWcgwqDCoMKgIGZvciB1c2Igc2lnbmVkCgp0aGUgb3RoZXIgaWRl
+YSBpcyB0byB1c2UgZGlmZmVyZW50IGZpbGVuYW1lcyBmb3IgdGhlIGltYWdlcy4KZm9yIGV4YW1w
+bGUKLXMuaW1nCi1lcy5pbWcKLXVzLmltZwoKbXkgZmF2b3JpdGUgaXMgdG8gdXNlIGRpZmZlcmVu
+dCBmaWxlIGV4dGVuc2lvbnMgZm9yIHRoZSBpbWFnZXMsIGJ1dCBpbQpub3Qgc2h1cmUgaXMgdGhp
+cyBvayBvciBjYW4gdGhpcyBoYXZlIG90aGVyIG5lZ2F0aXZlIGVmZmVjdHMuCnNvIHRoZSBzdGFu
+ZGFyZCBleHRlbnNpb24gaXMgLmltZwpXaGF0IGRvIHlvdSB0aGluayBhYm91dCB0aGUgZmlsZSBu
+YW1lIG9yIGZpbGUgZXh0ZW5zaW9uPwoKYmVzdCByZWdhcmRzCk1haWsgT3R0bwoKQW0gMjQuMDUu
+MjAxOSB1bSAxNDo1NSBzY2hyaWViIFJvdXZlbiBDemVyd2luc2tpOgo+IEhpLAo+Cj4gY29tbWVu
+dHMgYXMgYWx3YXlzIGJlbG93Lgo+Cj4gT24gRnJpLCAyMDE5LTA1LTI0IGF0IDEzOjMyICswMjAw
+LCBNYWlrIE90dG8gd3JvdGU6Cj4+IEluc2VydCBpbiB0aGUgS2NvbmZpZyB0aGUgc2VsZWN0aW9u
+IGZvciB0aGUgYnVpbGQgdHlwZSBzaWduZWQsIHVzYgo+PiBzaWduZWQsCj4+IGVuY3J5cHRlZC9z
+aWduZWQgYW5kICB1bnNpZ25lZCBhcyBiYXNpYyBmb3IgdGhlIHJlcGxhY2VtZW50IHRoZQo+PiBz
+dGF0aWMKPj4gdmFyaWFudCBpbiB0aGUgTWFrZWZpbGUuaW14Cj4+Cj4+IFNpZ25lZC1vZmYtYnk6
+IE1haWsgT3R0byA8bS5vdHRvQHBoeXRlYy5kZT4KPj4gLS0tCj4+ICBhcmNoL2FybS9tYWNoLWlt
+eC9LY29uZmlnIHwgMjUgKysrKysrKysrKysrKysrKysrKysrKysrKwo+PiAgaW1hZ2VzL01ha2Vm
+aWxlLmlteCAgICAgICB8ICAxICsKPj4gIDIgZmlsZXMgY2hhbmdlZCwgMjYgaW5zZXJ0aW9ucygr
+KQo+Pgo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvS2NvbmZpZyBiL2FyY2gvYXJt
+L21hY2gtaW14L0tjb25maWcKPj4gaW5kZXggNzFkMzdjZS4uZmRiNDIzOSAxMDA2NDQKPj4gLS0t
+IGEvYXJjaC9hcm0vbWFjaC1pbXgvS2NvbmZpZwo+PiArKysgYi9hcmNoL2FybS9tYWNoLWlteC9L
+Y29uZmlnCj4+IEBAIC04NDUsNiArODQ1LDI0IEBAIGNvbmZpZyBIQUJWNF9JTUdfQ1JUX1BFTQo+
+PiAgCj4+ICBlbmRpZgo+PiAgCj4+ICtpZiBIQUJWNAo+PiArCj4+ICtjaG9pY2UKPj4gKwlwcm9t
+cHQgIlNlbGVjdCBCdWlsZGluZyBTaWduZWQvRW5jcnlwdGVkIEJvb3Rsb2FkZXIiCj4+ICsKPj4g
+K2NvbmZpZyBIQUJWNF9JTUFHRV9TSUdORUQKPj4gKwlib29sICJidWlsZCBzaWduZWQgaW1hZ2Vz
+Igo+PiArCj4+ICtjb25maWcgSEFCVjRfSU1BR0VfU0lHTkVEX1VTQgo+PiArCWJvb2wgImJ1aWxk
+IHNpZ25lZCBpbWFnZXMgYW5kIHNpZ25lZCBVU0IgaW1hZ2VzIgo+PiArCj4+ICtjb25maWcgSEFC
+VjRfSU1BR0VfU0lHTkVEX0VOQ1JZUFRFRAo+PiArCWJvb2wgImJ1aWxkIHNpZ25lZCBlbmNyeXB0
+ZWQgaW1hZ2VzIgo+PiArCj4+ICtlbmRjaG9pY2UKPj4gKwo+PiArZW5kaWYKPiBUaGlzIGlzIGEg
+cmVncmVzc2lvbiBpbiBjb250cmFzdCB3aXRoIHRoZSBjdXJyZW50IHN5c3RlbS4gVGhlIGN1cnJl
+bnQKPiBzeXN0ZW1zIGFsbG93cyBhIGJ1aWxkIG9mIGFsbCB0aHJlZSBpbWFnZXMgKGFsYmVpdCB3
+aXRoIGEgbW9kaWZpY2F0aW9uCj4gdG8gTWFrZWZpbGUuaW14KSwgYW5kIGltbyB0aGlzIHNob3Vs
+ZCBiZSBhIHNlbGVjdGlvbiByYXRoZXIgdGhhbiBhCj4gY2hvaWNlLgo+Cj4gUmVnYXJkcywKPiBS
+b3V2ZW4gQ3plcndpbnNraQoKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
+cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
