@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVCOA-0001nB-Fh
+ id 1hVCOA-0001n9-Fp
  for barebox@lists.infradead.org; Mon, 27 May 2019 09:57:59 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <afa@pengutronix.de>) id 1hVCO3-000224-Og
+ (envelope-from <afa@pengutronix.de>) id 1hVCO3-000226-Om
  for barebox@lists.infradead.org; Mon, 27 May 2019 11:57:47 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1hVCO2-0003E2-TY
+ (envelope-from <afa@pengutronix.de>) id 1hVCO2-0003EK-UR
  for barebox@lists.infradead.org; Mon, 27 May 2019 11:57:46 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 27 May 2019 11:57:36 +0200
-Message-Id: <20190527095744.5923-11-a.fatoum@pengutronix.de>
+Date: Mon, 27 May 2019 11:57:38 +0200
+Message-Id: <20190527095744.5923-13-a.fatoum@pengutronix.de>
 In-Reply-To: <20190527095744.5923-1-a.fatoum@pengutronix.de>
 References: <20190527095744.5923-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -29,49 +29,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/18] scripts: use "compiler.h" endianness helpers
+Subject: [PATCH 12/18] scripts: removes uses of <asm*/errno.h> in favor of
+ <errno.h>
 To: barebox@lists.infradead.org
 
-<endian.h> may not exist on other systems, don't include it
-directly, but include "compiler.h", which either includes
-it or provides a suitable alternative if possible.
+We can't assume <asm/errno.h> to be available on non-Linux hosts.
+Furthermore, errno constants values aren't fixed and passing them
+to libc perror(3)/strerror (3) would yield wrong results.
+Fix this by using the standard <errno.h> header instead.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- scripts/fix_size.c      | 3 ++-
- scripts/imx/imx-image.c | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ scripts/bareboximd.c        | 1 -
+ scripts/include/linux/err.h | 2 +-
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/scripts/fix_size.c b/scripts/fix_size.c
-index cb074e3cbc85..e33edecf6591 100644
---- a/scripts/fix_size.c
-+++ b/scripts/fix_size.c
-@@ -9,7 +9,8 @@
- #include <unistd.h>
+diff --git a/scripts/bareboximd.c b/scripts/bareboximd.c
+index 81a59ec63c23..5ef91831c457 100644
+--- a/scripts/bareboximd.c
++++ b/scripts/bareboximd.c
+@@ -23,7 +23,6 @@
+ #include <stdio.h>
+ #include <sys/types.h>
  #include <stdint.h>
- #include <fcntl.h>
--#include <endian.h>
-+
-+#include "compiler.h"
- 
- int main(int argc, char**argv)
- {
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index a7f1421fa371..3a7b1c0ab2e1 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -26,10 +26,10 @@
+-#include <asm-generic/errno.h>
  #include <sys/types.h>
  #include <sys/stat.h>
  #include <fcntl.h>
--#include <endian.h>
- #include <linux/kernel.h>
- #include <sys/file.h>
- #include <mach/imx_cpu_types.h>
-+#include "../compiler.h"
+diff --git a/scripts/include/linux/err.h b/scripts/include/linux/err.h
+index bdc3dd8131d4..9982ab17babe 100644
+--- a/scripts/include/linux/err.h
++++ b/scripts/include/linux/err.h
+@@ -4,7 +4,7 @@
+ #include <linux/compiler.h>
+ #include <linux/types.h>
  
- #include "imx.h"
+-#include <asm/errno.h>
++#include <errno.h>
  
+ /*
+  * Original kernel header comment:
 -- 
 2.20.1
 
