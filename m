@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVM5R-0000RU-Cc
- for barebox@lists.infradead.org; Mon, 27 May 2019 20:19:17 +0000
-Received: by mail-pl1-x641.google.com with SMTP id g69so7402695plb.7
+ id 1hVM5Q-0000R1-WF
+ for barebox@lists.infradead.org; Mon, 27 May 2019 20:19:16 +0000
+Received: by mail-pf1-x443.google.com with SMTP id y11so5228718pfm.13
  for <barebox@lists.infradead.org>; Mon, 27 May 2019 13:19:12 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 27 May 2019 13:18:53 -0700
-Message-Id: <20190527201853.18853-8-andrew.smirnov@gmail.com>
+Date: Mon, 27 May 2019 13:18:52 -0700
+Message-Id: <20190527201853.18853-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20190527201853.18853-1-andrew.smirnov@gmail.com>
 References: <20190527201853.18853-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,38 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] ARM: rdu1: Add U-Boot environment partition
+Subject: [PATCH 6/7] ARM: rdu2: Add U-Boot environment partitions
 To: barebox@lists.infradead.org
-Cc: Cory Tusar <cory.tusar@zii.aero>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-From: Cory Tusar <cory.tusar@zii.aero>
-
-Signed-off-by: Cory Tusar <cory.tusar@zii.aero>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/imx51-zii-rdu1.dts | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ arch/arm/dts/imx6qdl-zii-rdu2.dtsi | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/arch/arm/dts/imx51-zii-rdu1.dts b/arch/arm/dts/imx51-zii-rdu1.dts
-index 01e46baf2..7400c8d77 100644
---- a/arch/arm/dts/imx51-zii-rdu1.dts
-+++ b/arch/arm/dts/imx51-zii-rdu1.dts
-@@ -23,6 +23,11 @@
+diff --git a/arch/arm/dts/imx6qdl-zii-rdu2.dtsi b/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
+index bfc75ba60..937fc5d67 100644
+--- a/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
++++ b/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
+@@ -47,6 +47,12 @@
  			compatible = "barebox,environment";
- 			device-path = &spinor, "partname:barebox-environment";
+ 			device-path = &nor_flash, "partname:barebox-environment";
  		};
 +
 +		ubootenv {
 +			compatible = "barebox,uboot-environment";
-+			device-path-0 = &esdhc1, "partname:uboot-environment-0";
++			device-path-0 = &usdhc4, "partname:uboot-environment-0";
++			device-path-1 = &usdhc4, "partname:uboot-environment-1";
 +		};
  	};
  
- 	aliases {
-@@ -61,6 +66,22 @@
- 	};
+ 	device-info {
+@@ -249,6 +255,27 @@
+ 	dr_mode = "otg";
  };
  
-+&esdhc1 {
++&usdhc4 {
 +	partitions {
 +		compatible = "fixed-partitions";
 +		#address-cells = <1>;
@@ -65,14 +64,19 @@ index 01e46baf2..7400c8d77 100644
 +		 */
 +		partition@c0000 {
 +			label = "uboot-environment-0";
-+			reg = <0xc0000 0x20000>;
++			reg = <0xc0000 0x4000>;
++		};
++
++		partition@cc800 {
++			label = "uboot-environment-1";
++			reg = <0xcc800 0x4000>;
 +		};
 +	};
 +};
 +
- &mdio_gpio {
- 	switch: switch@0 {};
- };
+ &gpio3 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_gpio3_hog>;
 -- 
 2.21.0
 
