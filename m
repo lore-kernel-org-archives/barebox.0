@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it1-x144.google.com ([2607:f8b0:4864:20::144])
+Received: from mail-io1-xd42.google.com ([2607:f8b0:4864:20::d42])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hV9gf-00055Q-SV
- for barebox@lists.infradead.org; Mon, 27 May 2019 07:04:51 +0000
-Received: by mail-it1-x144.google.com with SMTP id m3so25357975itl.1
- for <barebox@lists.infradead.org>; Mon, 27 May 2019 00:04:49 -0700 (PDT)
+ id 1hV9dN-00036k-2C
+ for barebox@lists.infradead.org; Mon, 27 May 2019 07:01:26 +0000
+Received: by mail-io1-xd42.google.com with SMTP id r185so7543331iod.6
+ for <barebox@lists.infradead.org>; Mon, 27 May 2019 00:01:24 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190521155626.9906-1-a.fatoum@pengutronix.de>
- <20190521155626.9906-5-a.fatoum@pengutronix.de>
-In-Reply-To: <20190521155626.9906-5-a.fatoum@pengutronix.de>
+ <20190521155626.9906-3-a.fatoum@pengutronix.de>
+In-Reply-To: <20190521155626.9906-3-a.fatoum@pengutronix.de>
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 27 May 2019 00:04:37 -0700
-Message-ID: <CAHQ1cqEDxoEcNmL+pWw3AaH14kKp1n7r13U+fDv=GKLTRyTdOw@mail.gmail.com>
+Date: Mon, 27 May 2019 00:01:12 -0700
+Message-ID: <CAHQ1cqHCTcGXkZrzzeijctFrvme-6kofQUb-P3b9yzDx-4ewsg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,14 +24,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 4/5] clk: imx6: Fix procedure to switch the parent of
- LDB_DI_CLK
+Subject: Re: [PATCH v2 2/5] clk: imx6: Make the LDB_DI0 and LDB_DI1 clocks
+ read-only
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>, pza@pengutronix.de
 
 On Tue, May 21, 2019 at 8:56 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
 >
-> From: Fabio Estevam <fabio.estevam@nxp.com>
+> From: Philipp Zabel <p.zabel@pengutronix.de>
 >
 > Due to incorrect placement of the clock gate cell in the ldb_di[x]_clk
 > tree, the glitchy parent mux of ldb_di[x]_clk can cause a glitch to
@@ -40,55 +40,47 @@ On Tue, May 21, 2019 at 8:56 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
 > ipu_di_clk is sourced from ldb_di_clk.
 >
 > To fix the problem, both the new and current parent of the ldb_di_clk
-> should be disabled before the switch. This patch ensures that correct
-> steps are followed when ldb_di_clk parent is switched in the beginning
-> of boot. The glitchy muxes are then registered as read-only. The clock
-> parent can be selected using the assigned-clocks and
-> assigned-clock-parents properties of the ccm device tree node:
+> should be disabled before the switch. As this can not be guaranteed by
+> the clock framework during runtime, make the ldb_di[x]_sel muxes read-only.
+> A workaround to set the muxes once during boot could be added to the
+> kernel or bootloader.
 >
->         &clks {
->                 assigned-clocks = <&clks IMX6QDL_CLK_LDB_DI0_SEL>,
->                                   <&clks IMX6QDL_CLK_LDB_DI1_SEL>;
->                 assigned-clock-parents = <&clks IMX6QDL_CLK_MMDC_CH1_AXI>,
->                                          <&clks IMX6QDL_CLK_PLL5_VIDEO_DIV>;
->         };
->
-> The issue is explained in detail in EB821 ("LDB Clock Switch Procedure &
-> i.MX6 Asynchronous Clock Switching Guidelines") [1].
->
-> [1] http://www.nxp.com/files/32bit/doc/eng_bulletin/EB821.pdf
->
-> Signed-off-by: Ranjani Vaidyanathan <Ranjani.Vaidyanathan@nxp.com>
-> Signed-off-by: Fabio Estevam <fabio.estevam@nxp.com>
 > Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-> Reviewed-by: Akshay Bhat <akshay.bhat@timesys.com>
-> Tested-by Joshua Clayton <stillcompiling@gmail.com>
-> Tested-by: Charles Kang <Charles.Kang@advantech.com.tw>
+> Signed-off-by: Fabio Estevam <fabio.estevam@nxp.com>
 > Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-> [afa: ported to barebox from Linux commit 5d283b0838]
+> [afa: ported from Linux kernel commit 03d576f202]
+> [afa: added exception for i.MX6QP, see kernel commit f4a0a6c309]
+> [afa: added cpu_has_err009219 helper function]
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  drivers/clk/imx/clk-imx6.c | 264 ++++++++++++++++++++++++++++++++++++-
->  1 file changed, 261 insertions(+), 3 deletions(-)
+>  drivers/clk/imx/clk-imx6.c | 17 +++++++++++++++--
+>  drivers/clk/imx/clk.h      |  8 ++++++++
+>  2 files changed, 23 insertions(+), 2 deletions(-)
 >
 > diff --git a/drivers/clk/imx/clk-imx6.c b/drivers/clk/imx/clk-imx6.c
-> index 22f33aee03e9..69586f04a21f 100644
+> index 319485f8521c..01b649ebbd26 100644
 > --- a/drivers/clk/imx/clk-imx6.c
 > +++ b/drivers/clk/imx/clk-imx6.c
 > @@ -64,6 +64,12 @@ static inline int cpu_is_plus(void)
 >         return cpu_is_mx6qp() || cpu_is_mx6dp();
 >  }
 >
-> +/* Audio/Video PLL post dividers don't work on i.MX6q revision 1.0 */
-> +static inline int cpu_has_working_video_pll_post_div(void) {
+> +/* i.MX6 Quad/Dual/DualLite/Solo are all affected */
+> +static inline int cpu_has_err009219(void) {
 
-Another { that should be on a new line.
+That { should really be on a separate line.
 
-> +       return !((cpu_is_mx6q() || cpu_is_mx6d()) &&
-> +                imx_silicon_revision() == IMX_CHIP_REV_1_0);
+> +       return cpu_is_mx6d() || cpu_is_mx6q() ||
+> +               cpu_is_mx6dl() || cpu_is_mx6s();
+> +}
 
-Same story with cpu_is_mx6*() here. Imx_silicon_revision() depends on
-imx_init() being called as well AFAIU.
+Hmm, imx_init() is executed at "postcore" and this function will be
+called at "core" init-level. All of the cpu_is_mx6*() functions will
+call cpu_is_mx6() which won't work right until imx_init() is called.
+Are you sure this is working as intended? I think cpu_mx6_is_imx6*()
+functions should be used instead. That's what I had to do on my board
+at least. It looks that there's other unrelated code in this file that
+might have this problem as well.
 
 Thanks,
 Andrey Smirnov
