@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVCO5-0001nD-Mz
+ id 1hVCO5-0001nF-Mx
  for barebox@lists.infradead.org; Mon, 27 May 2019 09:57:52 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <afa@pengutronix.de>) id 1hVCO3-00022C-SB
+ (envelope-from <afa@pengutronix.de>) id 1hVCO3-000227-TN
  for barebox@lists.infradead.org; Mon, 27 May 2019 11:57:47 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1hVCO3-0003FJ-19
- for barebox@lists.infradead.org; Mon, 27 May 2019 11:57:47 +0200
+ (envelope-from <afa@pengutronix.de>) id 1hVCO2-0003EX-Ux
+ for barebox@lists.infradead.org; Mon, 27 May 2019 11:57:46 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 27 May 2019 11:57:44 +0200
-Message-Id: <20190527095744.5923-19-a.fatoum@pengutronix.de>
+Date: Mon, 27 May 2019 11:57:39 +0200
+Message-Id: <20190527095744.5923-14-a.fatoum@pengutronix.de>
 In-Reply-To: <20190527095744.5923-1-a.fatoum@pengutronix.de>
 References: <20190527095744.5923-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -29,49 +29,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/18] scripts: compiler.h: support BSDs as well
+Subject: [PATCH 13/18] scripts: omap3-usb-loader: don't depend on unportable
+ le32toh
 To: barebox@lists.infradead.org
 
-The BSDs have their endianness changing functions in <sys/endian.h> and
-define both _BYTE_ORDER as well as BYTE_ORDER (if strict POSIX conformance
-isn't requested). Extend the header to compile, so it supports these
-platforms as well.
+The file already defines le32_to_cpu(), which does the same, so
+use it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- scripts/compiler.h | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ scripts/omap3-usb-loader.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/compiler.h b/scripts/compiler.h
-index 01b0de44f18a..0ad25f9e8da9 100644
---- a/scripts/compiler.h
-+++ b/scripts/compiler.h
-@@ -56,16 +56,22 @@
- # else /* non apple __MACH__ */
- #  include <machine/endian.h>
- # endif /* __APPLE__ */
--# define __BYTE_ORDER    BYTE_ORDER
--# define __LITTLE_ENDIAN LITTLE_ENDIAN
--# define __BIG_ENDIAN    BIG_ENDIAN
- typedef unsigned long ulong;
- typedef unsigned int  uint;
-+#elif defined(__OpenBSD__) || defined(__FreeBSD__) || \
-+      defined(__NetBSD__) || defined(__DragonFly__)
-+# include <sys/endian.h>
- #else /* assume Linux */
- # include <endian.h>
- # include <byteswap.h>
- #endif
+diff --git a/scripts/omap3-usb-loader.c b/scripts/omap3-usb-loader.c
+index 3ba9af06527c..73c5a6d97a53 100644
+--- a/scripts/omap3-usb-loader.c
++++ b/scripts/omap3-usb-loader.c
+@@ -403,7 +403,7 @@ static int transfer_first_stage(libusb_device_handle * handle, struct arg_state
+ 	data = file->data;
+ 	dbuf = data;
  
-+#if defined(__BYTE_ORDER) && !defined(BYTE_ORDER)
-+# define __BYTE_ORDER    BYTE_ORDER
-+# define __BIG_ENDIAN    BIG_ENDIAN
-+# define __LITTLE_ENDIAN LITTLE_ENDIAN
-+#endif
-+
- typedef uint8_t __u8;
- typedef uint16_t __u16;
- typedef uint32_t __u32;
+-	if (le32toh(dbuf[5]) == 0x45534843) {
++	if (le32_to_cpu(dbuf[5]) == 0x45534843) {
+ 		int chsettingssize = 512 + 2 * sizeof(uint32_t);
+ 
+ 		log_info("CHSETTINGS image detected. Skipping header\n");
 -- 
 2.20.1
 
