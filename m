@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVM5M-0000Oa-L3
- for barebox@lists.infradead.org; Mon, 27 May 2019 20:19:09 +0000
-Received: by mail-pg1-x543.google.com with SMTP id v11so9596551pgl.5
+ id 1hVM5N-0000Or-56
+ for barebox@lists.infradead.org; Mon, 27 May 2019 20:19:10 +0000
+Received: by mail-pg1-x542.google.com with SMTP id f25so9583608pgv.10
  for <barebox@lists.infradead.org>; Mon, 27 May 2019 13:19:08 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 27 May 2019 13:18:47 -0700
-Message-Id: <20190527201853.18853-2-andrew.smirnov@gmail.com>
+Date: Mon, 27 May 2019 13:18:48 -0700
+Message-Id: <20190527201853.18853-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20190527201853.18853-1-andrew.smirnov@gmail.com>
 References: <20190527201853.18853-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,41 +23,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] filetype: Add "U-Boot environmemnt variable data" filetype
+Subject: [PATCH 2/7] filetype: Allow specifying cdev's filetype explicitly
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Allow specifying cdev's filetype explicitly to support the cases where
+the type of a cdev is known apriori, yet cannot be determined by
+reading the cdev's content.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/filetype.c  | 2 ++
- include/filetype.h | 1 +
- 2 files changed, 3 insertions(+)
+ common/filetype.c | 6 ++++++
+ include/driver.h  | 2 ++
+ 2 files changed, 8 insertions(+)
 
 diff --git a/common/filetype.c b/common/filetype.c
-index e2d707b15..429911533 100644
+index 429911533..e4c8005b5 100644
 --- a/common/filetype.c
 +++ b/common/filetype.c
-@@ -77,6 +77,8 @@ static const struct filetype_str filetype_str[] = {
- 	[filetype_imx_image_v2] = { "i.MX image (v2)", "imx-image-v2" },
- 	[filetype_layerscape_image] = { "Layerscape image", "layerscape-PBL" },
- 	[filetype_layerscape_qspi_image] = { "Layerscape QSPI image", "layerscape-qspi-PBL" },
-+	[filetype_ubootvar] = { "U-Boot environmemnt variable data",
-+				"ubootvar" },
+@@ -425,6 +425,11 @@ enum filetype cdev_detect_type(const char *name)
+ 	if (!cdev)
+ 		return type;
+ 
++	if (cdev->filetype != filetype_unknown) {
++		type = cdev->filetype;
++		goto cdev_close;
++	}
++
+ 	buf = xzalloc(FILE_TYPE_SAFE_BUFSIZE);
+ 	ret = cdev_read(cdev, buf, FILE_TYPE_SAFE_BUFSIZE, 0, 0);
+ 	if (ret < 0)
+@@ -434,6 +439,7 @@ enum filetype cdev_detect_type(const char *name)
+ 
+ err_out:
+ 	free(buf);
++cdev_close:
+ 	cdev_close(cdev);
+ 	return type;
+ }
+diff --git a/include/driver.h b/include/driver.h
+index 26ec413bd..fe2d30ab5 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -22,6 +22,7 @@
+ #include <linux/list.h>
+ #include <linux/ioport.h>
+ #include <of.h>
++#include <filetype.h>
+ 
+ #define FORMAT_DRIVER_NAME_ID	"%s%d"
+ 
+@@ -464,6 +465,7 @@ struct cdev {
+ 	struct list_head link_entry, links;
+ 	struct list_head partition_entry, partitions;
+ 	struct cdev *master;
++	enum filetype filetype;
  };
  
- const char *file_type_to_string(enum filetype f)
-diff --git a/include/filetype.h b/include/filetype.h
-index dcb331a6c..f1be04e81 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -47,6 +47,7 @@ enum filetype {
- 	filetype_imx_image_v2,
- 	filetype_layerscape_image,
- 	filetype_layerscape_qspi_image,
-+	filetype_ubootvar,
- 	filetype_max,
- };
- 
+ int devfs_create(struct cdev *);
 -- 
 2.21.0
 
