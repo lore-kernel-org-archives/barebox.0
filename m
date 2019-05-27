@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVXbA-0001VM-V4
- for barebox@lists.infradead.org; Tue, 28 May 2019 08:36:46 +0000
-Date: Tue, 28 May 2019 10:36:43 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190528083643.7rv3nbofwiyp7yxl@pengutronix.de>
-References: <20190527095744.5923-1-a.fatoum@pengutronix.de>
+ id 1hVK9Y-0001a5-7y
+ for barebox@lists.infradead.org; Mon, 27 May 2019 18:15:22 +0000
+Received: by mail-pf1-x443.google.com with SMTP id s11so9939405pfm.12
+ for <barebox@lists.infradead.org>; Mon, 27 May 2019 11:15:19 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 27 May 2019 11:14:53 -0700
+Message-Id: <20190527181500.17456-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190527095744.5923-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,48 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/18] scripts: enable compilation on macOS
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/8] usb: ohci-hcd: Do not zero out DMA coherent memory
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Mon, May 27, 2019 at 11:57:26AM +0200, Ahmad Fatoum wrote:
-> With this patch series applied, imx_v7_defconfig along with the host
-> tools can be built on macOS. It should also pave the way for building
-> on the BSDs. Currently it still fails on NetBSD though:
-> 
-> 	In file included from scripts/mod/modpost.c:15:0:
-> 	scripts/mod/modpost.h:16:0: warning: "Elf_Ehdr" redefined
-> 	 #define Elf_Ehdr    Elf32_Ehdr
-> 	 ^
-> 	In file included from scripts/mod/modpost.h:10:0,
-> 			 from scripts/mod/modpost.c:15:
-> 	/usr/include/elf.h:1093:0: note: this is the location of the previous definition
-> 	 #define Elf_Ehdr Elf64_Ehdr
-> 	 ^
-> 
-> Issues addressed in the series can be split into three groups:
-> 
-> - host tools depend on glibc or Linux headers
-> 	replaced where appropriate with standard ISO/POSIX functionality
-> - build depends on GNU utilites:
-> 	only stat(1). fixed by importing the linux patch that uses ls
-> 	instead.
-> - endianness helpers
-> 	These aren't (yet) POSIX-standardized, so I extended compiler.h
-> 	to support macOS and the BSDs.
-> 
-> Only thing I can't yet compile is MXS_HOSTTOOLS, which depends on
-> pkg-config finding OpenSSL, but I guess that's something I need to fix
-> at my side.
+Memory returned by dma_alloc_coherent() should already be zeroed
+out, so there's no need to do this explicitly.
 
-Applied, thanks
- Sascha
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/usb/host/ohci-hcd.c | 2 --
+ 1 file changed, 2 deletions(-)
 
+diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
+index 612c3a103..924dc8e1f 100644
+--- a/drivers/usb/host/ohci-hcd.c
++++ b/drivers/usb/host/ohci-hcd.c
+@@ -1765,7 +1765,6 @@ static int ohci_init(struct usb_host *host)
+ 				       DMA_ADDRESS_BROKEN);
+ 	if (!ohci->ptd)
+ 		return -ENOMEM;
+-	memset(ohci->ptd, 0, sizeof(struct td) * NUM_TD);
+ 
+ 	ohci->disabled = 1;
+ 	ohci->irq = -1;
+@@ -1815,7 +1814,6 @@ static int ohci_probe(struct device_d *dev)
+ 					    DMA_ADDRESS_BROKEN);
+ 	if (!ohci->ohci_dev)
+ 		return -ENOMEM;
+-	memset(ohci->ohci_dev, 0, sizeof(*ohci->ohci_dev));
+ 
+ 	usb_register_host(host);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.21.0
+
 
 _______________________________________________
 barebox mailing list
