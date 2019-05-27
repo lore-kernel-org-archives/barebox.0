@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVCO5-0001nE-Mu
+ id 1hVCO5-0001nC-Mn
  for barebox@lists.infradead.org; Mon, 27 May 2019 09:57:52 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <afa@pengutronix.de>) id 1hVCO3-000228-US
+ (envelope-from <afa@pengutronix.de>) id 1hVCO3-000222-Q9
  for barebox@lists.infradead.org; Mon, 27 May 2019 11:57:47 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1hVCO2-0003Ei-VV
+ (envelope-from <afa@pengutronix.de>) id 1hVCO2-0003Dc-SK
  for barebox@lists.infradead.org; Mon, 27 May 2019 11:57:46 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 27 May 2019 11:57:40 +0200
-Message-Id: <20190527095744.5923-15-a.fatoum@pengutronix.de>
+Date: Mon, 27 May 2019 11:57:34 +0200
+Message-Id: <20190527095744.5923-9-a.fatoum@pengutronix.de>
 In-Reply-To: <20190527095744.5923-1-a.fatoum@pengutronix.de>
 References: <20190527095744.5923-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -29,31 +29,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/18] scripts: omap3-usb-loader: drop unneeded header
+Subject: [PATCH 08/18] scripts: bareboximd: remove usage of loff_t
 To: barebox@lists.infradead.org
 
-Declarations from the header aren't used anywhere, so drop it.
+loff_t is Linux-specific and unneeded at this place, as sizes are usually
+denoted with a size_t. As the signedness of max_size isn't relied on
+anywhere, replace it with a size_t.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- scripts/omap3-usb-loader.c | 4 ----
- 1 file changed, 4 deletions(-)
+ scripts/bareboximd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/omap3-usb-loader.c b/scripts/omap3-usb-loader.c
-index 73c5a6d97a53..ae6f1258df05 100644
---- a/scripts/omap3-usb-loader.c
-+++ b/scripts/omap3-usb-loader.c
-@@ -33,10 +33,6 @@
- #define OMAP_IS_BIG_ENDIAN
- #endif
+diff --git a/scripts/bareboximd.c b/scripts/bareboximd.c
+index 7d4cbeb9a83f..81a59ec63c23 100644
+--- a/scripts/bareboximd.c
++++ b/scripts/bareboximd.c
+@@ -58,7 +58,7 @@ int imd_command_setenv(const char *variable_name, const char *value)
+ 	return -EINVAL;
+ }
  
--#ifdef OMAP_IS_BIG_ENDIAN
--#include <arpa/inet.h>
--#endif
--
- #include <unistd.h>		/* for usleep and friends */
- #include <getopt.h>
- #include <errno.h>
+-static int read_file_2(const char *filename, size_t *size, void **outbuf, loff_t max_size)
++static int read_file_2(const char *filename, size_t *size, void **outbuf, size_t max_size)
+ {
+ 	off_t fsize;
+ 	ssize_t rsize;
 -- 
 2.20.1
 
