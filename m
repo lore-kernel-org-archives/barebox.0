@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVUvv-0006Ue-Qu
- for barebox@lists.infradead.org; Tue, 28 May 2019 05:46:03 +0000
-Received: by mail-pg1-x543.google.com with SMTP id n27so10262397pgm.4
+ id 1hVUvw-0006Us-7N
+ for barebox@lists.infradead.org; Tue, 28 May 2019 05:46:02 +0000
+Received: by mail-pg1-x541.google.com with SMTP id w22so10264085pgi.6
  for <barebox@lists.infradead.org>; Mon, 27 May 2019 22:45:59 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 27 May 2019 22:45:10 -0700
-Message-Id: <20190528054513.21313-2-andrew.smirnov@gmail.com>
+Date: Mon, 27 May 2019 22:45:13 -0700
+Message-Id: <20190528054513.21313-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20190528054513.21313-1-andrew.smirnov@gmail.com>
 References: <20190528054513.21313-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,358 +23,186 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] Documentation: Add zii-vf610-dev board documentation
+Subject: [PATCH 4/4] Documentation: zii-imx8mq-dev: Update OpenOCD usage
+ documentation
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add OpenOCD scipts and notes on usage for various ZII VF610 based
-boards.
+Update various files in zii-imx8mq-dev:
+
+    - Add bootstrap.sh to match other boards
+
+    - Cosmetic update to openocd.cfg to match the style of other ZII
+      boards
+
+    - Update readme.rst to reflecte the chagnes
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- .../boards/imx/zii-vf610-dev/bootstrap.sh     |   6 +
- .../boards/imx/zii-vf610-dev/openocd.cfg      | 259 ++++++++++++++++++
- .../boards/imx/zii-vf610-dev/readme.rst       |  52 ++++
- 3 files changed, 317 insertions(+)
- create mode 100755 Documentation/boards/imx/zii-vf610-dev/bootstrap.sh
- create mode 100644 Documentation/boards/imx/zii-vf610-dev/openocd.cfg
- create mode 100644 Documentation/boards/imx/zii-vf610-dev/readme.rst
+ .../boards/imx/zii-imx8mq-dev/bootstrap.sh    |  6 ++
+ .../boards/imx/zii-imx8mq-dev/openocd.cfg     | 99 ++++++++++---------
+ .../boards/imx/zii-imx8mq-dev/readme.rst      |  4 +-
+ 3 files changed, 59 insertions(+), 50 deletions(-)
+ create mode 100755 Documentation/boards/imx/zii-imx8mq-dev/bootstrap.sh
 
-diff --git a/Documentation/boards/imx/zii-vf610-dev/bootstrap.sh b/Documentation/boards/imx/zii-vf610-dev/bootstrap.sh
+diff --git a/Documentation/boards/imx/zii-imx8mq-dev/bootstrap.sh b/Documentation/boards/imx/zii-imx8mq-dev/bootstrap.sh
 new file mode 100755
-index 000000000..49bab0320
+index 000000000..7342e890e
 --- /dev/null
-+++ b/Documentation/boards/imx/zii-vf610-dev/bootstrap.sh
++++ b/Documentation/boards/imx/zii-imx8mq-dev/bootstrap.sh
 @@ -0,0 +1,6 @@
 +#!/bin/sh
 +
 +OPENOCD=${OPENOCD:-openocd}
 +DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 +
-+${OPENOCD} -f ${DIR}/openocd.cfg --command "adapter_khz 10000; init; safe_reset; start_barebox;"
-diff --git a/Documentation/boards/imx/zii-vf610-dev/openocd.cfg b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
-new file mode 100644
-index 000000000..509f9e33c
---- /dev/null
-+++ b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
-@@ -0,0 +1,259 @@
++${OPENOCD} -f ${DIR}/openocd.cfg --command "adapter_khz 10000; init; reset init; start_barebox"
+diff --git a/Documentation/boards/imx/zii-imx8mq-dev/openocd.cfg b/Documentation/boards/imx/zii-imx8mq-dev/openocd.cfg
+index 31f94227e..cc0bec6b7 100644
+--- a/Documentation/boards/imx/zii-imx8mq-dev/openocd.cfg
++++ b/Documentation/boards/imx/zii-imx8mq-dev/openocd.cfg
+@@ -1,3 +1,7 @@
 +#
-+# Board configuration file for the Zodiac VF6xx based boards
++# Board configuration file for the Zodiac RDU3 boards
 +#
 +
-+interface ftdi
-+ftdi_vid_pid 0x0403 0x6011
-+
-+ftdi_layout_init 0x0038 0x007b
-+ftdi_layout_signal nSRST -data 0x0010
-+ftdi_layout_signal LED -data 0x0020
-+
-+# select JTAG
-+transport select jtag
-+
-+# Board has a standard ARM-20 JTAG connector with
-+# nSRST available.
+ interface ftdi
+ ftdi_vid_pid 0x0403 0x6011
+ 
+@@ -5,13 +9,11 @@ ftdi_layout_init 0x0038 0x003b
+ ftdi_layout_signal nSRST -data 0x0010
+ ftdi_layout_signal LED -data 0x0020
+ 
+-# Board has a standard ARM-20 JTAG connector with
+-# nSRST available.
+-reset_config srst_only srst_push_pull connect_deassert_srst
+-
+ # select JTAG
+ transport select jtag
+ 
 +reset_config srst_only srst_push_pull connect_deassert_srst
 +
-+# set a slow default JTAG clock, can be overridden later
-+adapter_khz 1000
-+
-+# Source generic VF6xx target configuration
-+source [find target/vybrid_vf6xx.cfg]
-+source [find mem_helper.tcl]
-+
-+set ddr_init_failed 0
-+
-+proc check_bits_set_32 { addr mask } {
-+    while { [expr [mrw $addr] & $mask == 0] } { }
-+}
-+
-+proc ddr_init { } {
+ # set a slow default JTAG clock, can be overridden later
+ adapter_khz 1000
+ 
+@@ -27,60 +29,61 @@ source [find target/imx8m.cfg]
+ source [find mem_helper.tcl]
+ 
+ proc ddr_init { } {
+-     #
+-     # We use the same start address as is configured in our i.MX boot
+-     # header (address originally taken from U-Boot).
+-     #
+-     set IMX8MQ_TCM_BASE_ADDR	0x007e1000
+-     set IMX8MQ_TCM_MAX_SIZE	0x3f000
+-     #
+-     # Header word at offset 0x28 is not used on AArch64 and is just
+-     # filled with placeholder value 0xffff_ffff, see
+-     # arch/arm/include/asm/barebox-arm-head.h for more details
+-     #
+-     set RDU3_TCM_MAIC_LOCATION	[expr $IMX8MQ_TCM_BASE_ADDR + 0x28]
+-     set RDU3_TCM_MAGIC_REQUEST	0xdeadbeef
+-     set RDU3_TCM_MAGIC_REPLY	0xbaadf00d
+-
+-     echo "==== Uploading DDR helper ===="
+-
+-     halt
+-     load_image images/start_zii_imx8mq_dev.pblb \
+-     		$IMX8MQ_TCM_BASE_ADDR \
 +	echo "Bootstrap: Initializing DDR"
-+
-+	mww phys 0x40048220 0x00000180
-+	mww phys 0x40048224 0x00000180
-+	mww phys 0x40048228 0x00000180
-+	mww phys 0x4004822c 0x00000180
-+	mww phys 0x40048230 0x00000180
-+	mww phys 0x40048234 0x00000180
-+	mww phys 0x40048238 0x00000180
-+	mww phys 0x4004823c 0x00000180
-+	mww phys 0x40048240 0x00000180
-+	mww phys 0x40048244 0x00000180
-+	mww phys 0x40048248 0x00000180
-+	mww phys 0x4004824c 0x00000180
-+	mww phys 0x40048250 0x00000180
-+	mww phys 0x40048254 0x00000180
-+	mww phys 0x40048258 0x00000180
-+	mww phys 0x4004825c 0x00000180
-+	mww phys 0x40048260 0x00000180
-+	mww phys 0x40048264 0x00000180
-+	mww phys 0x40048268 0x00000180
-+	mww phys 0x4004826c 0x00000180
-+	mww phys 0x40048270 0x00000180
-+	mww phys 0x40048274 0x00010180
-+	mww phys 0x40048278 0x00000180
-+	mww phys 0x4004827c 0x00000180
-+	mww phys 0x40048280 0x00000180
-+	mww phys 0x40048284 0x00000180
-+	mww phys 0x40048288 0x00000180
-+	mww phys 0x4004828c 0x00000180
-+	mww phys 0x40048290 0x00000180
-+	mww phys 0x40048294 0x00000180
-+	mww phys 0x40048298 0x00000180
-+	mww phys 0x4004829c 0x00000180
-+	mww phys 0x400482a0 0x00000180
-+	mww phys 0x400482a4 0x00000180
-+	mww phys 0x400482a8 0x00000180
-+	mww phys 0x400482ac 0x00000180
-+	mww phys 0x400482b0 0x00000180
-+	mww phys 0x400482b4 0x00000180
-+	mww phys 0x400482b8 0x00000180
-+	mww phys 0x400482bc 0x00000180
-+	mww phys 0x400482c0 0x00000180
-+	mww phys 0x400482c4 0x00010180
-+	mww phys 0x400482c8 0x00010180
-+	mww phys 0x400482cc 0x00000180
-+	mww phys 0x400482d0 0x00000180
-+	mww phys 0x400482d4 0x00000180
-+	mww phys 0x400482d8 0x00000180
-+	mww phys 0x4004821c 0x00000180
-+
-+	mww phys 0x400482dc 0x00000180
-+	mww phys 0x400482e0 0x00000180
-+
-+	mww phys 0x400ae000 0x00000600
-+	mww phys 0x400ae008 0x00000005
-+	mww phys 0x400ae028 0x00013880
-+	mww phys 0x400ae02c 0x00030d40
-+	mww phys 0x400ae030 0x0000050c
-+	mww phys 0x400ae034 0x15040400
-+	mww phys 0x400ae038 0x1406040f
-+	mww phys 0x400ae040 0x04040000
-+	mww phys 0x400ae044 0x006db00c
-+	mww phys 0x400ae048 0x00000403
-+	mww phys 0x400ae050 0x01000000
-+	mww phys 0x400ae054 0x00060001
-+	mww phys 0x400ae058 0x000c0000
-+	mww phys 0x400ae05c 0x03000200
-+	mww phys 0x400ae060 0x00000006
-+	mww phys 0x400ae064 0x00010000
-+	mww phys 0x400ae068 0x0c300068
-+	mww phys 0x400ae070 0x00000000
-+	mww phys 0x400ae074 0x00000003
-+	mww phys 0x400ae078 0x0000000a
-+	mww phys 0x400ae07c 0x006c0200
-+	mww phys 0x400ae084 0x00010000
-+	mww phys 0x400ae088 0x00050500
-+	mww phys 0x400ae098 0x00000000
-+	mww phys 0x400ae09c 0x04001002
-+	mww phys 0x400ae0a4 0x00000001
-+	mww phys 0x400ae0c0 0x00460420
-+	mww phys 0x400ae108 0x01000200
-+	mww phys 0x400ae10c 0x00000040
-+	mww phys 0x400ae114 0x00000200
-+	mww phys 0x400ae118 0x00000040
-+	mww phys 0x400ae120 0x00000000
-+	mww phys 0x400ae124 0x0a010100
-+	mww phys 0x400ae128 0x01014040
-+	mww phys 0x400ae12c 0x01010101
-+	mww phys 0x400ae130 0x03030100
-+	mww phys 0x400ae134 0x01000101
-+	mww phys 0x400ae138 0x0700000c
-+	mww phys 0x400ae13c 0x00000000
-+	mww phys 0x400ae148 0x10000000
-+	mww phys 0x400ae15c 0x01000000
-+	mww phys 0x400ae160 0x00040000
-+	mww phys 0x400ae164 0x00000002
-+	mww phys 0x400ae16c 0x00020000
-+	mww phys 0x400ae180 0x00002819
-+	mww phys 0x400ae184 0x01000000
-+	mww phys 0x400ae188 0x00000000
-+	mww phys 0x400ae18c 0x00000000
-+	mww phys 0x400ae198 0x00010100
-+	mww phys 0x400ae1a4 0x00000000
-+	mww phys 0x400ae1a8 0x00000004
-+	mww phys 0x400ae1b8 0x00040000
-+	mww phys 0x400ae1d4 0x00000000
-+	mww phys 0x400ae1d8 0x01010000
-+	mww phys 0x400ae1e0 0x02020000
-+	mww phys 0x400ae1e4 0x00000202
-+	mww phys 0x400ae1e8 0x01010064
-+	mww phys 0x400ae1ec 0x00010101
-+	mww phys 0x400ae1f0 0x00000064
-+	mww phys 0x400ae1f8 0x00000800
-+	mww phys 0x400ae210 0x00000506
-+	mww phys 0x400ae224 0x00020000
-+	mww phys 0x400ae228 0x01000100
-+	mww phys 0x400ae22c 0x04070303
-+	mww phys 0x400ae230 0x00000040
-+	mww phys 0x400ae23c 0x06000080
-+	mww phys 0x400ae240 0x04070303
-+	mww phys 0x400ae244 0x00000040
-+	mww phys 0x400ae248 0x00000040
-+	mww phys 0x400ae24c 0x000f0000
-+	mww phys 0x400ae250 0x000f0000
-+	mww phys 0x400ae25c 0x00000101
-+	mww phys 0x400ae268 0x682c4000
-+	mww phys 0x400ae26c 0x00000081
-+	mww phys 0x400ae278 0x00000006
-+	mww phys 0x400ae284 0x00010606
-+
-+	mww phys 0x400ae400 0x00002613
-+	mww phys 0x400ae440 0x00002613
-+	mww phys 0x400ae404 0x00002615
-+	mww phys 0x400ae444 0x00002615
-+	mww phys 0x400ae408 0x00210000
-+	mww phys 0x400ae448 0x00210000
-+	mww phys 0x400ae488 0x00210000
-+	mww phys 0x400ae40c 0x0001012a
-+	mww phys 0x400ae44c 0x0001012a
-+	mww phys 0x400ae48c 0x0001012a
-+	mww phys 0x400ae410 0x00002400
-+	mww phys 0x400ae450 0x00002400
-+	mww phys 0x400ae490 0x00002400
-+	mww phys 0x400ae4c4 0x00000000
-+	mww phys 0x400ae4c8 0x00001100
-+	mww phys 0x400ae4d0 0x00010101
-+
-+	mww phys 0x400ae000 0x00000601
-+}
-+
-+proc clock_init { } {
-+	echo "Bootstrap: Initializing clocks"
 +	#
-+	# This code assumes that debugger would be unable to prevent
-+	# MaskROM initialization code from running before halting the
-+	# processor. TODO: Port the initial clock settings as
-+	# specified in TRM
++	# We use the same start address as is configured in our i.MX boot
++	# header (address originally taken from U-Boot).
 +	#
-+	# Ungate all of the peripheral clocks
++	set IMX8MQ_TCM_BASE_ADDR	0x007e1000
++	set IMX8MQ_TCM_MAX_SIZE	0x3f000
 +	#
-+	mww phys 0x4006b040 0xffffffff
-+	mww phys 0x4006b044 0xffffffff
-+	mww phys 0x4006b048 0xffffffff
-+	mww phys 0x4006b04c 0xffffffff
-+	mww phys 0x4006b050 0xffffffff
-+	mww phys 0x4006b058 0xffffffff
-+	mww phys 0x4006b05c 0xffffffff
-+	mww phys 0x4006b060 0xffffffff
-+	mww phys 0x4006b064 0xffffffff
-+	mww phys 0x4006b068 0xffffffff
-+	mww phys 0x4006b06c 0xffffffff
++	# Header word at offset 0x28 is not used on AArch64 and is just
++	# filled with placeholder value 0xffff_ffff, see
++	# arch/arm/include/asm/barebox-arm-head.h for more details
 +	#
-+	# There are two possibilities for clocking DDR controller: ARM
-+	# Cortex A core clock or PLL2 PFD4. Mask ROM configures ARM
-+	# Cortex A clock to run at 264Mhz which is not sufficient to
-+	# run DDR (it requres 300Mhz minimum) so instead we configure
-+	# PLL2 PFD4 as a DDR clock
-+	#
-+	# PLL2 on, Fout = Fin * 22
-+	#
-+	mww phys 0x40050030 0x00002001
++	set RDU3_TCM_MAIC_LOCATION	[expr $IMX8MQ_TCM_BASE_ADDR + 0x28]
++	set RDU3_TCM_MAGIC_REQUEST	0xdeadbeef
++	set RDU3_TCM_MAGIC_REPLY	0xbaadf00d
 +
-+	check_bits_set_32 0x40050030 0x80000000
++	echo "Bootstrap: Uploading DDR helper"
 +
-+	mww phys 0x4006b008 [expr [mrw 0x4006b008] & ~0x00000040]
-+	mww phys 0x4006b008 [expr [mrw 0x4006b008] | 0x00002000]
-+}
-+
-+# This function applies the initial configuration after a "reset init"
-+# command
-+proc board_init { } {
-+	global ddr_init_failed
-+	clock_init
-+
-+	if {[catch {ddr_init} errmsg]} {
-+		set ddr_init_failed 1
-+	} else {
-+		set ddr_init_failed 0
-+	}
-+}
-+
-+proc safe_reset {} {
-+	global ddr_init_failed
-+
-+	set status 5
-+	while { $status != 0 } {
-+		reset init
-+		if { $ddr_init_failed == 1 } {
-+			incr status -1
-+		} else {
-+			set status 0
-+		}
-+	}
-+}
-+
-+proc start_barebox { } {
-+	set VF610_DDR_BASE_ADDR 0x80000000
-+	echo "Bootstrap: Loading Barebox"
 +	halt
-+	load_image images/barebox-zii-vf610-dev.img $VF610_DDR_BASE_ADDR bin
-+	arm core_state arm
-+	echo [format "Bootstrap: Jumping to 0x%08x" $VF610_DDR_BASE_ADDR]
-+	resume $VF610_DDR_BASE_ADDR
++	load_image images/start_zii_imx8mq_dev.pblb \
++		$IMX8MQ_TCM_BASE_ADDR \
+ 		bin \
+ 		$IMX8MQ_TCM_BASE_ADDR \
+ 		$IMX8MQ_TCM_MAX_SIZE
+ 
+-     echo "==== Running DDR helper ===="
++	echo "Bootstrap: Running DDR helper"
+ 
+-     mww phys $RDU3_TCM_MAIC_LOCATION $RDU3_TCM_MAGIC_REQUEST
+-     resume $IMX8MQ_TCM_BASE_ADDR
++	mww phys $RDU3_TCM_MAIC_LOCATION $RDU3_TCM_MAGIC_REQUEST
++	resume $IMX8MQ_TCM_BASE_ADDR
+ 
+-     echo "==== Waiting for DDR helper to finish ===="
++	echo "Bootstrap: Waiting for DDR helper to finish"
+ 
+-     if {[catch {wait_halt} errmsg] ||
+-     	 [mrw $RDU3_TCM_MAIC_LOCATION] != $RDU3_TCM_MAGIC_REPLY} {
+-	echo "==== DDR initialization FAILED ===="
+-     } else {
+-	echo "==== DDR is ready ===="
+-     }
++	if {[catch {wait_halt} errmsg] ||
++	    [mrw $RDU3_TCM_MAIC_LOCATION] != $RDU3_TCM_MAGIC_REPLY} {
++		echo "Bootstrap: DDR initialization FAILED"
++	} else {
++		echo "Bootstrap: DDR is ready"
++	}
+ }
+ 
+ proc start_barebox {} {
+-     #
+-     # We have to place our image at MX8MQ_ATF_BL33_BASE_ADDR in order
+-     # to be able to initialize ATF firmware since that's where it
+-     # expects entry point to BL33 would be
+-     #
+-     set MX8MQ_ATF_BL33_BASE_ADDR	0x40200000
+-
+-     echo "==== Starting Barebox ===="
+-     load_image images/start_zii_imx8mq_dev.pblb $MX8MQ_ATF_BL33_BASE_ADDR bin
+-     resume $MX8MQ_ATF_BL33_BASE_ADDR
++	#
++	# We have to place our image at MX8MQ_ATF_BL33_BASE_ADDR in order
++	# to be able to initialize ATF firmware since that's where it
++	# expects entry point to BL33 would be
++	#
++	set MX8MQ_ATF_BL33_BASE_ADDR	0x40200000
++	echo "Bootstrap: Loading Barebox"
++	load_image images/start_zii_imx8mq_dev.pblb $MX8MQ_ATF_BL33_BASE_ADDR bin
++	echo [format "Bootstrap: Jumping to 0x%08x" $MX8MQ_ATF_BL33_BASE_ADDR]
++	resume $MX8MQ_ATF_BL33_BASE_ADDR
+ }
+ 
+-# proc board_init { } {
+-# 	ddr_init
+-# }
++proc board_init { } {
++	ddr_init
 +}
-+
-+${_TARGETNAME}0 configure -event reset-init { board_init }
-diff --git a/Documentation/boards/imx/zii-vf610-dev/readme.rst b/Documentation/boards/imx/zii-vf610-dev/readme.rst
-new file mode 100644
-index 000000000..9418a3a27
---- /dev/null
-+++ b/Documentation/boards/imx/zii-vf610-dev/readme.rst
-@@ -0,0 +1,52 @@
-+ZII VF610 Based Boards
-+======================
-+
-+Building Barebox
-+----------------
-+
-+To build Barebox for ZII VF610 based boards do the following:
-+
-+.. code-block:: sh
-+
-+  make ARCH=arm CROSS_COMPILE=<ARM toolchain prefix> mrproper
-+  make ARCH=arm CROSS_COMPILE=<ARM toolchain prefix> zii_vf610_dev_defconfig
-+  make ARCH=arm CROSS_COMPILE=<ARM toolchain prefix>
-+
-+Uploading Barebox via JTAG
-+--------------------------
-+
-+Barebox can be bootstrapped via JTAG using OpenOCD (latest master) as
-+follows:
-+
-+.. code-block:: sh
-+
+ 
+-# ${_TARGETNAME}.0 configure -event reset-init { board_init }
++${_TARGETNAME}.0 configure -event reset-init { board_init }
+diff --git a/Documentation/boards/imx/zii-imx8mq-dev/readme.rst b/Documentation/boards/imx/zii-imx8mq-dev/readme.rst
+index dc031e4af..363e00e6c 100644
+--- a/Documentation/boards/imx/zii-imx8mq-dev/readme.rst
++++ b/Documentation/boards/imx/zii-imx8mq-dev/readme.rst
+@@ -20,5 +20,5 @@ follows:
+ 
+ .. code-block:: sh
+ 
+-        cd barebox
+-        openocd -f Documentation/boards/imx/zii-imx8mq-dev/openocd.cfg --command "init; ddr_init; start_barebox"
 +  cd barebox
-+  Documentation/boards/imx/zii-vf610-dev/bootstrap.sh
-+
-+custom OpenOCD binary and options can be specified as follows:
-+
-+.. code-block:: sh
-+
-+  OPENOCD="../openocd/src/openocd -s ../openocd/tcl " Documentation/boards/imx/zii-vf610-dev/bootstrap.sh
-+
-+Writing Barebox to NVM
-+----------------------
-+
-+With exception of Dev boards, all of ZII's VF610 based boards should
-+come with eMMC. To permanently write Barebox to it do:
-+
-+.. code-block:: sh
-+
-+  barebox_update -t eMMC -y <barebox.img>
-+
-+This should also automaticaly configure your board to boot that
-+image. Note that original ZII stack's bootloader in eMMC should be
-+left intact. Barebox is configured to be programmed to one of MMC boot
-+partitions, whereas original bootloader is located in user partition.
-+
-+To restore the board to booting using original bootloader do:
-+
-+.. code-block:: sh
-+
-+  detect mmc0
-+  mmc0.boot=disabled
++  Documentation/boards/imx/zii-imx8mq-dev/bootstrap.sh
 -- 
 2.21.0
 
