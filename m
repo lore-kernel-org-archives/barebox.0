@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVVj5-0006Ii-F8
- for barebox@lists.infradead.org; Tue, 28 May 2019 06:36:49 +0000
-Message-ID: <6e4fd1a87381c4a95a2597729e7f1e0858f63c0b.camel@pengutronix.de>
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue, 28 May 2019 08:36:43 +0200
-In-Reply-To: <3d3cf5bb-b119-ee89-a5ed-7a210f7f285b@phytec.de>
-References: <1558697578-69121-1-git-send-email-m.otto@phytec.de>
- <0552fb12e541c7e93ee389bccba26b5fede7b995.camel@pengutronix.de>
- <3d3cf5bb-b119-ee89-a5ed-7a210f7f285b@phytec.de>
+ id 1hVXDT-00061H-FG
+ for barebox@lists.infradead.org; Tue, 28 May 2019 08:12:17 +0000
+Date: Tue, 28 May 2019 10:12:12 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190528081212.n3eqe5e6hpjjmrsd@pengutronix.de>
+References: <20190524071051.32285-1-yamada.masahiro@socionext.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190524071051.32285-1-yamada.masahiro@socionext.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,54 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] Makefile-imx: replace static variant to dynamic for
- signing images
-To: Maik Otto <m.otto@phytec.de>
+Subject: Re: [PATCH] kbuild: remove unneeded patterns from distclean
+To: Masahiro Yamada <yamada.masahiro@socionext.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, 2019-05-27 at 15:08 +0200, Maik Otto wrote:
-> Hi Mr. Czerwinski,
+On Fri, May 24, 2019 at 04:10:51PM +0900, Masahiro Yamada wrote:
+> Drop the following patterns based on Linux.
 > 
-> i will change the patches and make checkboxes for the different
-> images.
-> my idea is to use different file extensions for the images
-> for example
-> .img    for normal
-> .simg    for signed
-> .esimg    for encrypted signed
-> .usimg     for usb signed
+> [1] -size 0
+>    Linux commit f4b129f519f1bbd191dca2bf17d1137edf941fd1
 > 
-> the other idea is to use different filenames for the images.
-> for example
-> -s.img
-> -es.img
-> -us.img
+> [2] '.*.cmd'
+>    Linux commit a03fcb50e816a69acffb13b5e56db75063aeba8a
 > 
-> my favorite is to use different file extensions for the images, but
-> im
-> not shure is this ok or can this have other negative effects.
-> so the standard extension is .img
-> What do you think about the file name or file extension?
+> [3] (second) '.*.orig' '.*.rej'
+>    Linux commit f78271dfb77353c4d045f9735deebe21839fb2ed
+> 
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> ---
 
-Hm, I'm split on this. Normal images and signed images can be used in
-the same way, however booting a signed image using imx-usb-loader is
-only possible with the usb-signed image. Therefore the different file
-extensions are sensible.
-On the other hand all images contain the same data, keeping that in
-mind it does not make sense to provide different file extensions.
-I like a verbose filename version best, i.e:
--signed.img
--encrypted-signed.img
--signed-usb.img
+Applied, thanks
 
-Best Regards,
-Rouven Czerwinski
+Sascha
+
+
 -- 
-Pengutronix e.K.                           |            		 |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 _______________________________________________
 barebox mailing list
