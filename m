@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVM5Q-0000R1-WF
- for barebox@lists.infradead.org; Mon, 27 May 2019 20:19:16 +0000
-Received: by mail-pf1-x443.google.com with SMTP id y11so5228718pfm.13
- for <barebox@lists.infradead.org>; Mon, 27 May 2019 13:19:12 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 27 May 2019 13:18:52 -0700
-Message-Id: <20190527201853.18853-7-andrew.smirnov@gmail.com>
-In-Reply-To: <20190527201853.18853-1-andrew.smirnov@gmail.com>
+ id 1hVYrG-0001ZY-Uc
+ for barebox@lists.infradead.org; Tue, 28 May 2019 09:57:28 +0000
+Date: Tue, 28 May 2019 11:57:25 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190528095725.iihbkwnfah2h6l3n@pengutronix.de>
 References: <20190527201853.18853-1-andrew.smirnov@gmail.com>
+ <20190527201853.18853-7-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190527201853.18853-7-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,63 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] ARM: rdu2: Add U-Boot environment partitions
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 6/7] ARM: rdu2: Add U-Boot environment partitions
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- arch/arm/dts/imx6qdl-zii-rdu2.dtsi | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+On Mon, May 27, 2019 at 01:18:52PM -0700, Andrey Smirnov wrote:
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  arch/arm/dts/imx6qdl-zii-rdu2.dtsi | 27 +++++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
+> 
+> diff --git a/arch/arm/dts/imx6qdl-zii-rdu2.dtsi b/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
+> index bfc75ba60..937fc5d67 100644
+> --- a/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
+> +++ b/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
+> @@ -47,6 +47,12 @@
+>  			compatible = "barebox,environment";
+>  			device-path = &nor_flash, "partname:barebox-environment";
+>  		};
+> +
+> +		ubootenv {
+> +			compatible = "barebox,uboot-environment";
+> +			device-path-0 = &usdhc4, "partname:uboot-environment-0";
+> +			device-path-1 = &usdhc4, "partname:uboot-environment-1";
+> +		};
 
-diff --git a/arch/arm/dts/imx6qdl-zii-rdu2.dtsi b/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
-index bfc75ba60..937fc5d67 100644
---- a/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
-+++ b/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
-@@ -47,6 +47,12 @@
- 			compatible = "barebox,environment";
- 			device-path = &nor_flash, "partname:barebox-environment";
- 		};
-+
-+		ubootenv {
-+			compatible = "barebox,uboot-environment";
-+			device-path-0 = &usdhc4, "partname:uboot-environment-0";
-+			device-path-1 = &usdhc4, "partname:uboot-environment-1";
-+		};
- 	};
- 
- 	device-info {
-@@ -249,6 +255,27 @@
- 	dr_mode = "otg";
- };
- 
-+&usdhc4 {
-+	partitions {
-+		compatible = "fixed-partitions";
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		/*
-+		 * Layout info is taken from /etc/fw_env.config
-+		 */
-+		partition@c0000 {
-+			label = "uboot-environment-0";
-+			reg = <0xc0000 0x4000>;
-+		};
-+
-+		partition@cc800 {
-+			label = "uboot-environment-1";
-+			reg = <0xcc800 0x4000>;
-+		};
-+	};
-+};
-+
- &gpio3 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_gpio3_hog>;
+Please add a label to the partitions and point to them here directly
+rather than using the partname: string.
+
+Sascha
+
 -- 
-2.21.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
