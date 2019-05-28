@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVCOA-0001nG-HX
- for barebox@lists.infradead.org; Mon, 27 May 2019 09:57:57 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <afa@pengutronix.de>) id 1hVCO3-00022B-VM
- for barebox@lists.infradead.org; Mon, 27 May 2019 11:57:47 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1hVCO3-0003FA-0h
- for barebox@lists.infradead.org; Mon, 27 May 2019 11:57:47 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 27 May 2019 11:57:43 +0200
-Message-Id: <20190527095744.5923-18-a.fatoum@pengutronix.de>
-In-Reply-To: <20190527095744.5923-1-a.fatoum@pengutronix.de>
+ id 1hVXbA-0001VM-V4
+ for barebox@lists.infradead.org; Tue, 28 May 2019 08:36:46 +0000
+Date: Tue, 28 May 2019 10:36:43 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190528083643.7rv3nbofwiyp7yxl@pengutronix.de>
 References: <20190527095744.5923-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190527095744.5923-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,47 +22,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/18] scripts: compiler.h: use Linux <endian.h> as default
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 00/18] scripts: enable compilation on macOS
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Other systems mimic the GNU endianness headers, e.g. Cygwin. Instead of
-explicitly listing them, just make the Linux case the default case by
-moving it into the #else clause.
+On Mon, May 27, 2019 at 11:57:26AM +0200, Ahmad Fatoum wrote:
+> With this patch series applied, imx_v7_defconfig along with the host
+> tools can be built on macOS. It should also pave the way for building
+> on the BSDs. Currently it still fails on NetBSD though:
+> 
+> 	In file included from scripts/mod/modpost.c:15:0:
+> 	scripts/mod/modpost.h:16:0: warning: "Elf_Ehdr" redefined
+> 	 #define Elf_Ehdr    Elf32_Ehdr
+> 	 ^
+> 	In file included from scripts/mod/modpost.h:10:0,
+> 			 from scripts/mod/modpost.c:15:
+> 	/usr/include/elf.h:1093:0: note: this is the location of the previous definition
+> 	 #define Elf_Ehdr Elf64_Ehdr
+> 	 ^
+> 
+> Issues addressed in the series can be split into three groups:
+> 
+> - host tools depend on glibc or Linux headers
+> 	replaced where appropriate with standard ISO/POSIX functionality
+> - build depends on GNU utilites:
+> 	only stat(1). fixed by importing the linux patch that uses ls
+> 	instead.
+> - endianness helpers
+> 	These aren't (yet) POSIX-standardized, so I extended compiler.h
+> 	to support macOS and the BSDs.
+> 
+> Only thing I can't yet compile is MXS_HOSTTOOLS, which depends on
+> pkg-config finding OpenSSL, but I guess that's something I need to fix
+> at my side.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- scripts/compiler.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Applied, thanks
+ Sascha
 
-diff --git a/scripts/compiler.h b/scripts/compiler.h
-index ee2097aa3691..01b0de44f18a 100644
---- a/scripts/compiler.h
-+++ b/scripts/compiler.h
-@@ -38,10 +38,7 @@
- #define O_BINARY	0
- #endif
- 
--#ifdef __linux__
--# include <endian.h>
--# include <byteswap.h>
--#elif defined(__MACH__)
-+#if defined(__MACH__)
- # ifdef __APPLE__
- #  include <libkern/OSByteOrder.h>
- #  define htobe16(x) OSSwapHostToBigInt16(x)
-@@ -64,6 +61,9 @@
- # define __BIG_ENDIAN    BIG_ENDIAN
- typedef unsigned long ulong;
- typedef unsigned int  uint;
-+#else /* assume Linux */
-+# include <endian.h>
-+# include <byteswap.h>
- #endif
- 
- typedef uint8_t __u8;
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
