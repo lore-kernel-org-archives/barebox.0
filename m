@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVFMB-0004r7-AR
- for barebox@lists.infradead.org; Mon, 27 May 2019 13:08:04 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1hVVj5-0006Ii-F8
+ for barebox@lists.infradead.org; Tue, 28 May 2019 06:36:49 +0000
+Message-ID: <6e4fd1a87381c4a95a2597729e7f1e0858f63c0b.camel@pengutronix.de>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue, 28 May 2019 08:36:43 +0200
+In-Reply-To: <3d3cf5bb-b119-ee89-a5ed-7a210f7f285b@phytec.de>
 References: <1558697578-69121-1-git-send-email-m.otto@phytec.de>
  <0552fb12e541c7e93ee389bccba26b5fede7b995.camel@pengutronix.de>
-From: Maik Otto <m.otto@phytec.de>
-Message-ID: <3d3cf5bb-b119-ee89-a5ed-7a210f7f285b@phytec.de>
-Date: Mon, 27 May 2019 15:08:00 +0200
+ <3d3cf5bb-b119-ee89-a5ed-7a210f7f285b@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <0552fb12e541c7e93ee389bccba26b5fede7b995.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,50 +19,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/4] Makefile-imx: replace static variant to dynamic for
  signing images
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+To: Maik Otto <m.otto@phytec.de>
 Cc: barebox@lists.infradead.org
 
-SGkgTXIuIEN6ZXJ3aW5za2ksCgppIHdpbGwgY2hhbmdlIHRoZSBwYXRjaGVzIGFuZCBtYWtlIGNo
-ZWNrYm94ZXMgZm9yIHRoZSBkaWZmZXJlbnQgaW1hZ2VzLgpteSBpZGVhIGlzIHRvIHVzZSBkaWZm
-ZXJlbnQgZmlsZSBleHRlbnNpb25zIGZvciB0aGUgaW1hZ2VzCmZvciBleGFtcGxlCi5pbWfCoMKg
-wqAgZm9yIG5vcm1hbAouc2ltZ8KgwqDCoCBmb3Igc2lnbmVkCi5lc2ltZ8KgwqDCoCBmb3IgZW5j
-cnlwdGVkIHNpZ25lZAoudXNpbWcgwqDCoMKgIGZvciB1c2Igc2lnbmVkCgp0aGUgb3RoZXIgaWRl
-YSBpcyB0byB1c2UgZGlmZmVyZW50IGZpbGVuYW1lcyBmb3IgdGhlIGltYWdlcy4KZm9yIGV4YW1w
-bGUKLXMuaW1nCi1lcy5pbWcKLXVzLmltZwoKbXkgZmF2b3JpdGUgaXMgdG8gdXNlIGRpZmZlcmVu
-dCBmaWxlIGV4dGVuc2lvbnMgZm9yIHRoZSBpbWFnZXMsIGJ1dCBpbQpub3Qgc2h1cmUgaXMgdGhp
-cyBvayBvciBjYW4gdGhpcyBoYXZlIG90aGVyIG5lZ2F0aXZlIGVmZmVjdHMuCnNvIHRoZSBzdGFu
-ZGFyZCBleHRlbnNpb24gaXMgLmltZwpXaGF0IGRvIHlvdSB0aGluayBhYm91dCB0aGUgZmlsZSBu
-YW1lIG9yIGZpbGUgZXh0ZW5zaW9uPwoKYmVzdCByZWdhcmRzCk1haWsgT3R0bwoKQW0gMjQuMDUu
-MjAxOSB1bSAxNDo1NSBzY2hyaWViIFJvdXZlbiBDemVyd2luc2tpOgo+IEhpLAo+Cj4gY29tbWVu
-dHMgYXMgYWx3YXlzIGJlbG93Lgo+Cj4gT24gRnJpLCAyMDE5LTA1LTI0IGF0IDEzOjMyICswMjAw
-LCBNYWlrIE90dG8gd3JvdGU6Cj4+IEluc2VydCBpbiB0aGUgS2NvbmZpZyB0aGUgc2VsZWN0aW9u
-IGZvciB0aGUgYnVpbGQgdHlwZSBzaWduZWQsIHVzYgo+PiBzaWduZWQsCj4+IGVuY3J5cHRlZC9z
-aWduZWQgYW5kICB1bnNpZ25lZCBhcyBiYXNpYyBmb3IgdGhlIHJlcGxhY2VtZW50IHRoZQo+PiBz
-dGF0aWMKPj4gdmFyaWFudCBpbiB0aGUgTWFrZWZpbGUuaW14Cj4+Cj4+IFNpZ25lZC1vZmYtYnk6
-IE1haWsgT3R0byA8bS5vdHRvQHBoeXRlYy5kZT4KPj4gLS0tCj4+ICBhcmNoL2FybS9tYWNoLWlt
-eC9LY29uZmlnIHwgMjUgKysrKysrKysrKysrKysrKysrKysrKysrKwo+PiAgaW1hZ2VzL01ha2Vm
-aWxlLmlteCAgICAgICB8ICAxICsKPj4gIDIgZmlsZXMgY2hhbmdlZCwgMjYgaW5zZXJ0aW9ucygr
-KQo+Pgo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvS2NvbmZpZyBiL2FyY2gvYXJt
-L21hY2gtaW14L0tjb25maWcKPj4gaW5kZXggNzFkMzdjZS4uZmRiNDIzOSAxMDA2NDQKPj4gLS0t
-IGEvYXJjaC9hcm0vbWFjaC1pbXgvS2NvbmZpZwo+PiArKysgYi9hcmNoL2FybS9tYWNoLWlteC9L
-Y29uZmlnCj4+IEBAIC04NDUsNiArODQ1LDI0IEBAIGNvbmZpZyBIQUJWNF9JTUdfQ1JUX1BFTQo+
-PiAgCj4+ICBlbmRpZgo+PiAgCj4+ICtpZiBIQUJWNAo+PiArCj4+ICtjaG9pY2UKPj4gKwlwcm9t
-cHQgIlNlbGVjdCBCdWlsZGluZyBTaWduZWQvRW5jcnlwdGVkIEJvb3Rsb2FkZXIiCj4+ICsKPj4g
-K2NvbmZpZyBIQUJWNF9JTUFHRV9TSUdORUQKPj4gKwlib29sICJidWlsZCBzaWduZWQgaW1hZ2Vz
-Igo+PiArCj4+ICtjb25maWcgSEFCVjRfSU1BR0VfU0lHTkVEX1VTQgo+PiArCWJvb2wgImJ1aWxk
-IHNpZ25lZCBpbWFnZXMgYW5kIHNpZ25lZCBVU0IgaW1hZ2VzIgo+PiArCj4+ICtjb25maWcgSEFC
-VjRfSU1BR0VfU0lHTkVEX0VOQ1JZUFRFRAo+PiArCWJvb2wgImJ1aWxkIHNpZ25lZCBlbmNyeXB0
-ZWQgaW1hZ2VzIgo+PiArCj4+ICtlbmRjaG9pY2UKPj4gKwo+PiArZW5kaWYKPiBUaGlzIGlzIGEg
-cmVncmVzc2lvbiBpbiBjb250cmFzdCB3aXRoIHRoZSBjdXJyZW50IHN5c3RlbS4gVGhlIGN1cnJl
-bnQKPiBzeXN0ZW1zIGFsbG93cyBhIGJ1aWxkIG9mIGFsbCB0aHJlZSBpbWFnZXMgKGFsYmVpdCB3
-aXRoIGEgbW9kaWZpY2F0aW9uCj4gdG8gTWFrZWZpbGUuaW14KSwgYW5kIGltbyB0aGlzIHNob3Vs
-ZCBiZSBhIHNlbGVjdGlvbiByYXRoZXIgdGhhbiBhCj4gY2hvaWNlLgo+Cj4gUmVnYXJkcywKPiBS
-b3V2ZW4gQ3plcndpbnNraQoKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Mon, 2019-05-27 at 15:08 +0200, Maik Otto wrote:
+> Hi Mr. Czerwinski,
+> 
+> i will change the patches and make checkboxes for the different
+> images.
+> my idea is to use different file extensions for the images
+> for example
+> .img    for normal
+> .simg    for signed
+> .esimg    for encrypted signed
+> .usimg     for usb signed
+> 
+> the other idea is to use different filenames for the images.
+> for example
+> -s.img
+> -es.img
+> -us.img
+> 
+> my favorite is to use different file extensions for the images, but
+> im
+> not shure is this ok or can this have other negative effects.
+> so the standard extension is .img
+> What do you think about the file name or file extension?
+
+Hm, I'm split on this. Normal images and signed images can be used in
+the same way, however booting a signed image using imx-usb-loader is
+only possible with the usb-signed image. Therefore the different file
+extensions are sensible.
+On the other hand all images contain the same data, keeping that in
+mind it does not make sense to provide different file extensions.
+I like a verbose filename version best, i.e:
+-signed.img
+-encrypted-signed.img
+-signed-usb.img
+
+Best Regards,
+Rouven Czerwinski
+-- 
+Pengutronix e.K.                           |            		 |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
