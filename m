@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVXDh-0006AV-6v
- for barebox@lists.infradead.org; Tue, 28 May 2019 08:12:32 +0000
-Date: Tue, 28 May 2019 10:12:27 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190528081227.bha5tj7gsbwrfn5w@pengutronix.de>
-References: <20190524072448.16110-1-yamada.masahiro@socionext.com>
+ id 1hVV8V-0002v5-SO
+ for barebox@lists.infradead.org; Tue, 28 May 2019 05:59:01 +0000
+Received: by mail-pf1-x444.google.com with SMTP id s11so10767387pfm.12
+ for <barebox@lists.infradead.org>; Mon, 27 May 2019 22:58:59 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 27 May 2019 22:58:52 -0700
+Message-Id: <20190528055853.4863-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190524072448.16110-1-yamada.masahiro@socionext.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] kbuild: drop support for cc-ldoption
-To: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] libfile: Simplify read_full()
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Fri, May 24, 2019 at 04:24:48PM +0900, Masahiro Yamada wrote:
-> Barebox is not using this macro.
-> 
-> Linux commit 055efab3120bae7ab1ed841317774f3c953f6e1b killed this
-> macro, so let's remove it from barebox too.
-> 
-> I see another cc-ldoption in dts/scripts/Kbuild.include, but did not
-> touch it. In my understanding, the dts/ directory is synced with the
-> upstream devicetree-rebasing project [1].
-> 
-> [1] git://git.kernel.org/pub/scm/linux/kernel/git/devicetree/devicetree-rebasing.git
-> 
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-> ---
+We can figure out the amount of written data by substracting 'insize'
+from 'size' so there is no need to keep a separate counter for that.
 
-Applied, thanks
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ lib/libfile.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Sascha
-
-
+diff --git a/lib/libfile.c b/lib/libfile.c
+index eb12d158d..814cd9c2c 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -80,20 +80,18 @@ int read_full(int fd, void *buf, size_t size)
+ {
+ 	size_t insize = size;
+ 	int now;
+-	int total = 0;
+ 
+ 	while (size) {
+ 		now = read(fd, buf, size);
+ 		if (now == 0)
+-			return total;
++			break;
+ 		if (now < 0)
+ 			return now;
+-		total += now;
+ 		size -= now;
+ 		buf += now;
+ 	}
+ 
+-	return insize;
++	return insize - size;
+ }
+ EXPORT_SYMBOL(read_full);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.21.0
+
 
 _______________________________________________
 barebox mailing list
