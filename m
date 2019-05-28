@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVUvv-0006Ud-JF
- for barebox@lists.infradead.org; Tue, 28 May 2019 05:46:01 +0000
-Received: by mail-pl1-x641.google.com with SMTP id a5so7838962pls.12
+ id 1hVUvv-0006Ue-Qu
+ for barebox@lists.infradead.org; Tue, 28 May 2019 05:46:03 +0000
+Received: by mail-pg1-x543.google.com with SMTP id n27so10262397pgm.4
  for <barebox@lists.infradead.org>; Mon, 27 May 2019 22:45:59 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 27 May 2019 22:45:12 -0700
-Message-Id: <20190528054513.21313-4-andrew.smirnov@gmail.com>
+Date: Mon, 27 May 2019 22:45:10 -0700
+Message-Id: <20190528054513.21313-2-andrew.smirnov@gmail.com>
 In-Reply-To: <20190528054513.21313-1-andrew.smirnov@gmail.com>
 References: <20190528054513.21313-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,341 +23,318 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] Documentation: Add zii-imx6-rdu2 board documentation
+Subject: [PATCH 1/4] Documentation: Add zii-vf610-dev board documentation
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add OpenOCD scipts and notes on usage for various ZII i.MX6Q based
+Add OpenOCD scipts and notes on usage for various ZII VF610 based
 boards.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- .../boards/imx/zii-imx6-rdu2/bootstrap.sh     |   6 +
- .../boards/imx/zii-imx6-rdu2/openocd.cfg      | 282 ++++++++++++++++++
- .../boards/imx/zii-imx6-rdu2/readme.rst       |  30 ++
- 3 files changed, 318 insertions(+)
- create mode 100755 Documentation/boards/imx/zii-imx6-rdu2/bootstrap.sh
- create mode 100644 Documentation/boards/imx/zii-imx6-rdu2/openocd.cfg
- create mode 100644 Documentation/boards/imx/zii-imx6-rdu2/readme.rst
+ .../boards/imx/zii-vf610-dev/bootstrap.sh     |   6 +
+ .../boards/imx/zii-vf610-dev/openocd.cfg      | 259 ++++++++++++++++++
+ .../boards/imx/zii-vf610-dev/readme.rst       |  52 ++++
+ 3 files changed, 317 insertions(+)
+ create mode 100755 Documentation/boards/imx/zii-vf610-dev/bootstrap.sh
+ create mode 100644 Documentation/boards/imx/zii-vf610-dev/openocd.cfg
+ create mode 100644 Documentation/boards/imx/zii-vf610-dev/readme.rst
 
-diff --git a/Documentation/boards/imx/zii-imx6-rdu2/bootstrap.sh b/Documentation/boards/imx/zii-imx6-rdu2/bootstrap.sh
+diff --git a/Documentation/boards/imx/zii-vf610-dev/bootstrap.sh b/Documentation/boards/imx/zii-vf610-dev/bootstrap.sh
 new file mode 100755
-index 000000000..7342e890e
+index 000000000..49bab0320
 --- /dev/null
-+++ b/Documentation/boards/imx/zii-imx6-rdu2/bootstrap.sh
++++ b/Documentation/boards/imx/zii-vf610-dev/bootstrap.sh
 @@ -0,0 +1,6 @@
 +#!/bin/sh
 +
 +OPENOCD=${OPENOCD:-openocd}
 +DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 +
-+${OPENOCD} -f ${DIR}/openocd.cfg --command "adapter_khz 10000; init; reset init; start_barebox"
-diff --git a/Documentation/boards/imx/zii-imx6-rdu2/openocd.cfg b/Documentation/boards/imx/zii-imx6-rdu2/openocd.cfg
++${OPENOCD} -f ${DIR}/openocd.cfg --command "adapter_khz 10000; init; safe_reset; start_barebox;"
+diff --git a/Documentation/boards/imx/zii-vf610-dev/openocd.cfg b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
 new file mode 100644
-index 000000000..c5a65c44e
+index 000000000..509f9e33c
 --- /dev/null
-+++ b/Documentation/boards/imx/zii-imx6-rdu2/openocd.cfg
-@@ -0,0 +1,282 @@
++++ b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
+@@ -0,0 +1,259 @@
 +#
-+# Board configuration file for the Zodiac RDU2 boards (6Q/6Q+ based)
++# Board configuration file for the Zodiac VF6xx based boards
 +#
++
 +interface ftdi
 +ftdi_vid_pid 0x0403 0x6011
 +
-+ftdi_layout_init 0x0038 0x003b
++ftdi_layout_init 0x0038 0x007b
 +ftdi_layout_signal nSRST -data 0x0010
 +ftdi_layout_signal LED -data 0x0020
 +
 +# select JTAG
 +transport select jtag
 +
++# Board has a standard ARM-20 JTAG connector with
++# nSRST available.
 +reset_config srst_only srst_push_pull connect_deassert_srst
 +
 +# set a slow default JTAG clock, can be overridden later
 +adapter_khz 1000
 +
-+# delay after SRST goes inactive
-+adapter_nsrst_delay 30
-+
-+# board has i.MX6Q(+) with 4 Cortex-A9 cores
-+set CHIPNAME imx6q
-+set IMX_FLAVOUR q
-+
-+source [find target/imx6.cfg]
++# Source generic VF6xx target configuration
++source [find target/vybrid_vf6xx.cfg]
 +source [find mem_helper.tcl]
 +
-+proc disable_wdog { } {
-+	echo "Bootstrap: Disabling SoC watchdog"
-+	mwh phys 0x020bc000 0x30
-+}
++set ddr_init_failed 0
 +
-+proc ddr_init_imx6q { } {
-+	echo "Bootstrap: Initializing DDR for i.MX6Q"
-+
-+	mww phys 0x020e0798 0x000C0000
-+	mww phys 0x020e0758 0x00000000
-+	mww phys 0x020e0588 0x00000030
-+	mww phys 0x020e0594 0x00000030
-+	mww phys 0x020e056c 0x00000030
-+	mww phys 0x020e0578 0x00000030
-+	mww phys 0x020e074c 0x00000030
-+	mww phys 0x020e057c 0x00000030
-+	mww phys 0x020e058c 0x00000000
-+	mww phys 0x020e059c 0x00000030
-+	mww phys 0x020e05a0 0x00000030
-+	mww phys 0x020e078c 0x00000030
-+	mww phys 0x020e0750 0x00020000
-+	mww phys 0x020e05a8 0x00000028
-+	mww phys 0x020e05b0 0x00000028
-+	mww phys 0x020e0524 0x00000028
-+	mww phys 0x020e051c 0x00000028
-+	mww phys 0x020e0518 0x00000028
-+	mww phys 0x020e050c 0x00000028
-+	mww phys 0x020e05b8 0x00000028
-+	mww phys 0x020e05c0 0x00000028
-+	mww phys 0x020e0774 0x00020000
-+	mww phys 0x020e0784 0x00000028
-+	mww phys 0x020e0788 0x00000028
-+	mww phys 0x020e0794 0x00000028
-+	mww phys 0x020e079c 0x00000028
-+	mww phys 0x020e07a0 0x00000028
-+	mww phys 0x020e07a4 0x00000028
-+	mww phys 0x020e07a8 0x00000028
-+	mww phys 0x020e0748 0x00000028
-+	mww phys 0x020e05ac 0x00000028
-+	mww phys 0x020e05b4 0x00000028
-+	mww phys 0x020e0528 0x00000028
-+	mww phys 0x020e0520 0x00000028
-+	mww phys 0x020e0514 0x00000028
-+	mww phys 0x020e0510 0x00000028
-+	mww phys 0x020e05bc 0x00000028
-+	mww phys 0x020e05c4 0x00000028
-+	mww phys 0x021b0800 0xa1390003
-+	mww phys 0x021b080c 0x001F001F
-+	mww phys 0x021b0810 0x001F001F
-+	mww phys 0x021b480c 0x001F001F
-+	mww phys 0x021b4810 0x001F001F
-+	mww phys 0x021b083c 0x43260335
-+	mww phys 0x021b0840 0x031A030B
-+	mww phys 0x021b483c 0x4323033B
-+	mww phys 0x021b4840 0x0323026F
-+	mww phys 0x021b0848 0x483D4545
-+	mww phys 0x021b4848 0x44433E48
-+	mww phys 0x021b0850 0x41444840
-+	mww phys 0x021b4850 0x4835483E
-+	mww phys 0x021b081c 0x33333333
-+	mww phys 0x021b0820 0x33333333
-+	mww phys 0x021b0824 0x33333333
-+	mww phys 0x021b0828 0x33333333
-+	mww phys 0x021b481c 0x33333333
-+	mww phys 0x021b4820 0x33333333
-+	mww phys 0x021b4824 0x33333333
-+	mww phys 0x021b4828 0x33333333
-+	mww phys 0x021b08b8 0x00000800
-+	mww phys 0x021b48b8 0x00000800
-+	mww phys 0x021b0004 0x00020036
-+	mww phys 0x021b0008 0x09444040
-+	mww phys 0x021b000c 0x8A8F7955
-+	mww phys 0x021b0010 0xFF328F64
-+	mww phys 0x021b0014 0x01FF00DB
-+	mww phys 0x021b0018 0x00001740
-+	mww phys 0x021b001c 0x00008000
-+	mww phys 0x021b002c 0x000026d2
-+	mww phys 0x021b0030 0x008F1023
-+	mww phys 0x021b0040 0x00000047
-+	mww phys 0x021b0000 0x841A0000
-+	mww phys 0x021b001c 0x04088032
-+	mww phys 0x021b001c 0x00008033
-+	mww phys 0x021b001c 0x00048031
-+	mww phys 0x021b001c 0x09408030
-+	mww phys 0x021b001c 0x04008040
-+	mww phys 0x021b0020 0x00005800
-+	mww phys 0x021b0818 0x00011117
-+	mww phys 0x021b4818 0x00011117
-+	mww phys 0x021b0004 0x00025576
-+	mww phys 0x021b0404 0x00011006
-+	mww phys 0x021b001c 0x00000000
-+
-+	# set the default clock gate to save power
-+	mww phys 0x020c4068 0x00C03F3F
-+	mww phys 0x020c406c 0x0030FC03
-+	mww phys 0x020c4070 0x0FFFC000
-+	mww phys 0x020c4074 0x3FF00000
-+	mww phys 0x020c4078 0xFFFFF300
-+	mww phys 0x020c407c 0x0F0000F3
-+	mww phys 0x020c4080 0x00000FFF
-+
-+	# enable AXI cache for VDOA/VPU/IPU
-+	mww phys 0x020e0010 0xF00000CF
-+	# set IPU AXI-id0 Qos=0xf(bypass) AXI-id1 Qos=0x7
-+	mww phys 0x020e0018 0x007F007F
-+	mww phys 0x020e001c 0x007F007F
-+}
-+
-+proc ddr_init_imx6qp { } {
-+	echo "Bootstrap: Initializing DDR for i.MX6Q+"
-+
-+	mww phys 0x020e0798 0x000C0000
-+	mww phys 0x020e0758 0x00000000
-+	mww phys 0x020e0588 0x00000030
-+	mww phys 0x020e0594 0x00000030
-+	mww phys 0x020e056c 0x00000030
-+	mww phys 0x020e0578 0x00000030
-+	mww phys 0x020e074c 0x00000030
-+	mww phys 0x020e057c 0x00000030
-+	mww phys 0x020e058c 0x00000000
-+	mww phys 0x020e059c 0x00000030
-+	mww phys 0x020e05a0 0x00000030
-+	mww phys 0x020e078c 0x00000030
-+	mww phys 0x020e0750 0x00020000
-+	mww phys 0x020e05a8 0x00000030
-+	mww phys 0x020e05b0 0x00000030
-+	mww phys 0x020e0524 0x00000030
-+	mww phys 0x020e051c 0x00000030
-+	mww phys 0x020e0518 0x00000030
-+	mww phys 0x020e050c 0x00000030
-+	mww phys 0x020e05b8 0x00000030
-+	mww phys 0x020e05c0 0x00000030
-+	mww phys 0x020e0774 0x00020000
-+	mww phys 0x020e0784 0x00000030
-+	mww phys 0x020e0788 0x00000030
-+	mww phys 0x020e0794 0x00000030
-+	mww phys 0x020e079c 0x00000030
-+	mww phys 0x020e07a0 0x00000030
-+	mww phys 0x020e07a4 0x00000030
-+	mww phys 0x020e07a8 0x00000030
-+	mww phys 0x020e0748 0x00000030
-+	mww phys 0x020e05ac 0x00000030
-+	mww phys 0x020e05b4 0x00000030
-+	mww phys 0x020e0528 0x00000030
-+	mww phys 0x020e0520 0x00000030
-+	mww phys 0x020e0514 0x00000030
-+	mww phys 0x020e0510 0x00000030
-+	mww phys 0x020e05bc 0x00000030
-+	mww phys 0x020e05c4 0x00000030
-+	mww phys 0x021b0800 0xa1390003
-+	mww phys 0x021b080c 0x001b001e
-+	mww phys 0x021b0810 0x002e0029
-+	mww phys 0x021b480c 0x001b002a
-+	mww phys 0x021b4810 0x0019002c
-+	mww phys 0x021b083c 0x43240334
-+	mww phys 0x021b0840 0x0324031a
-+	mww phys 0x021b483c 0x43340344
-+	mww phys 0x021b4840 0x03280276
-+	mww phys 0x021b0848 0x44383A3E
-+	mww phys 0x021b4848 0x3C3C3846
-+	mww phys 0x021b0850 0x2e303230
-+	mww phys 0x021b4850 0x38283E34
-+	mww phys 0x021b081c 0x33333333
-+	mww phys 0x021b0820 0x33333333
-+	mww phys 0x021b0824 0x33333333
-+	mww phys 0x021b0828 0x33333333
-+	mww phys 0x021b481c 0x33333333
-+	mww phys 0x021b4820 0x33333333
-+	mww phys 0x021b4824 0x33333333
-+	mww phys 0x021b4828 0x33333333
-+	mww phys 0x021b08c0 0x24912492
-+	mww phys 0x021b48c0 0x24912492
-+	mww phys 0x021b08b8 0x00000800
-+	mww phys 0x021b48b8 0x00000800
-+	mww phys 0x021b0004 0x00020036
-+	mww phys 0x021b0008 0x09444040
-+	mww phys 0x021b000c 0x898E7955
-+	mww phys 0x021b0010 0xFF328F64
-+	mww phys 0x021b0014 0x01FF00DB
-+	mww phys 0x021b0018 0x00001740
-+	mww phys 0x021b001c 0x00008000
-+
-+	mww phys 0x021b002c 0x000026d2
-+	mww phys 0x021b0030 0x008E1023
-+	mww phys 0x021b0040 0x00000047
-+	mww phys 0x021b0400 0x14420000
-+	mww phys 0x021b0000 0x841A0000
-+	mww phys 0x00bb0008 0x00000004
-+	mww phys 0x00bb000c 0x2891E41A
-+	mww phys 0x00bb0038 0x00000564
-+	mww phys 0x00bb0014 0x00000040
-+	mww phys 0x00bb0028 0x00000020
-+	mww phys 0x00bb002c 0x00000020
-+	mww phys 0x021b001c 0x04088032
-+	mww phys 0x021b001c 0x00008033
-+	mww phys 0x021b001c 0x00048031
-+	mww phys 0x021b001c 0x09408030
-+	mww phys 0x021b001c 0x04008040
-+	mww phys 0x021b0020 0x00005800
-+	mww phys 0x021b0818 0x00011117
-+	mww phys 0x021b4818 0x00011117
-+	mww phys 0x021b0004 0x00025576
-+	mww phys 0x021b0404 0x00011006
-+	mww phys 0x021b001c 0x00000000
-+
-+	# set the default clock gate to save power
-+	mww phys 0x020c4068 0x00C03F3F
-+	mww phys 0x020c406c 0x0030FC03
-+	mww phys 0x020c4070 0x0FFFC000
-+	mww phys 0x020c4074 0x3FF00000
-+	mww phys 0x020c4078 0xFFFFF300
-+	mww phys 0x020c407c 0x0F0000F3
-+	mww phys 0x020c4080 0x00000FFF
-+
-+	# enable AXI cache for VDOA/VPU/IPU
-+	mww phys 0x020e0010 0xF00000CF
-+	# set IPU AXI-id1 Qos=0x1 AXI-id0/2/3 Qos=0x7
-+	mww phys 0x020e0018 0x77177717
-+	mww phys 0x020e001c 0x77177717
++proc check_bits_set_32 { addr mask } {
++    while { [expr [mrw $addr] & $mask == 0] } { }
 +}
 +
 +proc ddr_init { } {
-+	#
-+	# Steps to detect 6Q vs 6Q+ are borrowed from
-+	# arch/arm/mach-imx/inclue/mach/imx6.h
-+	#
-+	set MX6_ANATOP_BASE_ADDR 0x020c8000
-+	set IMX6_ANATOP_SI_REV   0x260
-+	set si_rev [mrw [expr $MX6_ANATOP_BASE_ADDR + $IMX6_ANATOP_SI_REV]]
-+	set rev_major [expr ($si_rev >> 8) & 0xF]
++	echo "Bootstrap: Initializing DDR"
 +
-+	if { $rev_major >= 1 } {
-+		ddr_init_imx6qp
++	mww phys 0x40048220 0x00000180
++	mww phys 0x40048224 0x00000180
++	mww phys 0x40048228 0x00000180
++	mww phys 0x4004822c 0x00000180
++	mww phys 0x40048230 0x00000180
++	mww phys 0x40048234 0x00000180
++	mww phys 0x40048238 0x00000180
++	mww phys 0x4004823c 0x00000180
++	mww phys 0x40048240 0x00000180
++	mww phys 0x40048244 0x00000180
++	mww phys 0x40048248 0x00000180
++	mww phys 0x4004824c 0x00000180
++	mww phys 0x40048250 0x00000180
++	mww phys 0x40048254 0x00000180
++	mww phys 0x40048258 0x00000180
++	mww phys 0x4004825c 0x00000180
++	mww phys 0x40048260 0x00000180
++	mww phys 0x40048264 0x00000180
++	mww phys 0x40048268 0x00000180
++	mww phys 0x4004826c 0x00000180
++	mww phys 0x40048270 0x00000180
++	mww phys 0x40048274 0x00010180
++	mww phys 0x40048278 0x00000180
++	mww phys 0x4004827c 0x00000180
++	mww phys 0x40048280 0x00000180
++	mww phys 0x40048284 0x00000180
++	mww phys 0x40048288 0x00000180
++	mww phys 0x4004828c 0x00000180
++	mww phys 0x40048290 0x00000180
++	mww phys 0x40048294 0x00000180
++	mww phys 0x40048298 0x00000180
++	mww phys 0x4004829c 0x00000180
++	mww phys 0x400482a0 0x00000180
++	mww phys 0x400482a4 0x00000180
++	mww phys 0x400482a8 0x00000180
++	mww phys 0x400482ac 0x00000180
++	mww phys 0x400482b0 0x00000180
++	mww phys 0x400482b4 0x00000180
++	mww phys 0x400482b8 0x00000180
++	mww phys 0x400482bc 0x00000180
++	mww phys 0x400482c0 0x00000180
++	mww phys 0x400482c4 0x00010180
++	mww phys 0x400482c8 0x00010180
++	mww phys 0x400482cc 0x00000180
++	mww phys 0x400482d0 0x00000180
++	mww phys 0x400482d4 0x00000180
++	mww phys 0x400482d8 0x00000180
++	mww phys 0x4004821c 0x00000180
++
++	mww phys 0x400482dc 0x00000180
++	mww phys 0x400482e0 0x00000180
++
++	mww phys 0x400ae000 0x00000600
++	mww phys 0x400ae008 0x00000005
++	mww phys 0x400ae028 0x00013880
++	mww phys 0x400ae02c 0x00030d40
++	mww phys 0x400ae030 0x0000050c
++	mww phys 0x400ae034 0x15040400
++	mww phys 0x400ae038 0x1406040f
++	mww phys 0x400ae040 0x04040000
++	mww phys 0x400ae044 0x006db00c
++	mww phys 0x400ae048 0x00000403
++	mww phys 0x400ae050 0x01000000
++	mww phys 0x400ae054 0x00060001
++	mww phys 0x400ae058 0x000c0000
++	mww phys 0x400ae05c 0x03000200
++	mww phys 0x400ae060 0x00000006
++	mww phys 0x400ae064 0x00010000
++	mww phys 0x400ae068 0x0c300068
++	mww phys 0x400ae070 0x00000000
++	mww phys 0x400ae074 0x00000003
++	mww phys 0x400ae078 0x0000000a
++	mww phys 0x400ae07c 0x006c0200
++	mww phys 0x400ae084 0x00010000
++	mww phys 0x400ae088 0x00050500
++	mww phys 0x400ae098 0x00000000
++	mww phys 0x400ae09c 0x04001002
++	mww phys 0x400ae0a4 0x00000001
++	mww phys 0x400ae0c0 0x00460420
++	mww phys 0x400ae108 0x01000200
++	mww phys 0x400ae10c 0x00000040
++	mww phys 0x400ae114 0x00000200
++	mww phys 0x400ae118 0x00000040
++	mww phys 0x400ae120 0x00000000
++	mww phys 0x400ae124 0x0a010100
++	mww phys 0x400ae128 0x01014040
++	mww phys 0x400ae12c 0x01010101
++	mww phys 0x400ae130 0x03030100
++	mww phys 0x400ae134 0x01000101
++	mww phys 0x400ae138 0x0700000c
++	mww phys 0x400ae13c 0x00000000
++	mww phys 0x400ae148 0x10000000
++	mww phys 0x400ae15c 0x01000000
++	mww phys 0x400ae160 0x00040000
++	mww phys 0x400ae164 0x00000002
++	mww phys 0x400ae16c 0x00020000
++	mww phys 0x400ae180 0x00002819
++	mww phys 0x400ae184 0x01000000
++	mww phys 0x400ae188 0x00000000
++	mww phys 0x400ae18c 0x00000000
++	mww phys 0x400ae198 0x00010100
++	mww phys 0x400ae1a4 0x00000000
++	mww phys 0x400ae1a8 0x00000004
++	mww phys 0x400ae1b8 0x00040000
++	mww phys 0x400ae1d4 0x00000000
++	mww phys 0x400ae1d8 0x01010000
++	mww phys 0x400ae1e0 0x02020000
++	mww phys 0x400ae1e4 0x00000202
++	mww phys 0x400ae1e8 0x01010064
++	mww phys 0x400ae1ec 0x00010101
++	mww phys 0x400ae1f0 0x00000064
++	mww phys 0x400ae1f8 0x00000800
++	mww phys 0x400ae210 0x00000506
++	mww phys 0x400ae224 0x00020000
++	mww phys 0x400ae228 0x01000100
++	mww phys 0x400ae22c 0x04070303
++	mww phys 0x400ae230 0x00000040
++	mww phys 0x400ae23c 0x06000080
++	mww phys 0x400ae240 0x04070303
++	mww phys 0x400ae244 0x00000040
++	mww phys 0x400ae248 0x00000040
++	mww phys 0x400ae24c 0x000f0000
++	mww phys 0x400ae250 0x000f0000
++	mww phys 0x400ae25c 0x00000101
++	mww phys 0x400ae268 0x682c4000
++	mww phys 0x400ae26c 0x00000081
++	mww phys 0x400ae278 0x00000006
++	mww phys 0x400ae284 0x00010606
++
++	mww phys 0x400ae400 0x00002613
++	mww phys 0x400ae440 0x00002613
++	mww phys 0x400ae404 0x00002615
++	mww phys 0x400ae444 0x00002615
++	mww phys 0x400ae408 0x00210000
++	mww phys 0x400ae448 0x00210000
++	mww phys 0x400ae488 0x00210000
++	mww phys 0x400ae40c 0x0001012a
++	mww phys 0x400ae44c 0x0001012a
++	mww phys 0x400ae48c 0x0001012a
++	mww phys 0x400ae410 0x00002400
++	mww phys 0x400ae450 0x00002400
++	mww phys 0x400ae490 0x00002400
++	mww phys 0x400ae4c4 0x00000000
++	mww phys 0x400ae4c8 0x00001100
++	mww phys 0x400ae4d0 0x00010101
++
++	mww phys 0x400ae000 0x00000601
++}
++
++proc clock_init { } {
++	echo "Bootstrap: Initializing clocks"
++	#
++	# This code assumes that debugger would be unable to prevent
++	# MaskROM initialization code from running before halting the
++	# processor. TODO: Port the initial clock settings as
++	# specified in TRM
++	#
++	# Ungate all of the peripheral clocks
++	#
++	mww phys 0x4006b040 0xffffffff
++	mww phys 0x4006b044 0xffffffff
++	mww phys 0x4006b048 0xffffffff
++	mww phys 0x4006b04c 0xffffffff
++	mww phys 0x4006b050 0xffffffff
++	mww phys 0x4006b058 0xffffffff
++	mww phys 0x4006b05c 0xffffffff
++	mww phys 0x4006b060 0xffffffff
++	mww phys 0x4006b064 0xffffffff
++	mww phys 0x4006b068 0xffffffff
++	mww phys 0x4006b06c 0xffffffff
++	#
++	# There are two possibilities for clocking DDR controller: ARM
++	# Cortex A core clock or PLL2 PFD4. Mask ROM configures ARM
++	# Cortex A clock to run at 264Mhz which is not sufficient to
++	# run DDR (it requres 300Mhz minimum) so instead we configure
++	# PLL2 PFD4 as a DDR clock
++	#
++	# PLL2 on, Fout = Fin * 22
++	#
++	mww phys 0x40050030 0x00002001
++
++	check_bits_set_32 0x40050030 0x80000000
++
++	mww phys 0x4006b008 [expr [mrw 0x4006b008] & ~0x00000040]
++	mww phys 0x4006b008 [expr [mrw 0x4006b008] | 0x00002000]
++}
++
++# This function applies the initial configuration after a "reset init"
++# command
++proc board_init { } {
++	global ddr_init_failed
++	clock_init
++
++	if {[catch {ddr_init} errmsg]} {
++		set ddr_init_failed 1
 +	} else {
-+		ddr_init_imx6q
++		set ddr_init_failed 0
++	}
++}
++
++proc safe_reset {} {
++	global ddr_init_failed
++
++	set status 5
++	while { $status != 0 } {
++		reset init
++		if { $ddr_init_failed == 1 } {
++			incr status -1
++		} else {
++			set status 0
++		}
 +	}
 +}
 +
 +proc start_barebox { } {
-+	set MX6_DDR_BASE_ADDR 0x10000000
++	set VF610_DDR_BASE_ADDR 0x80000000
 +	echo "Bootstrap: Loading Barebox"
 +	halt
-+	load_image images/barebox-zii-imx6-rdu2.img $MX6_DDR_BASE_ADDR bin
++	load_image images/barebox-zii-vf610-dev.img $VF610_DDR_BASE_ADDR bin
 +	arm core_state arm
-+	echo [format "Bootstrap: Jumping to 0x%08x" $MX6_DDR_BASE_ADDR]
-+	resume $MX6_DDR_BASE_ADDR
++	echo [format "Bootstrap: Jumping to 0x%08x" $VF610_DDR_BASE_ADDR]
++	resume $VF610_DDR_BASE_ADDR
 +}
 +
-+proc board_init { } {
-+	disable_wdog
-+	ddr_init
-+}
-+
-+${_TARGETNAME}.0 configure -event reset-init { board_init }
-diff --git a/Documentation/boards/imx/zii-imx6-rdu2/readme.rst b/Documentation/boards/imx/zii-imx6-rdu2/readme.rst
++${_TARGETNAME}0 configure -event reset-init { board_init }
+diff --git a/Documentation/boards/imx/zii-vf610-dev/readme.rst b/Documentation/boards/imx/zii-vf610-dev/readme.rst
 new file mode 100644
-index 000000000..155d30eae
+index 000000000..9418a3a27
 --- /dev/null
-+++ b/Documentation/boards/imx/zii-imx6-rdu2/readme.rst
-@@ -0,0 +1,30 @@
-+ZII i.MX6 RDU2 Boards
-+=====================
++++ b/Documentation/boards/imx/zii-vf610-dev/readme.rst
+@@ -0,0 +1,52 @@
++ZII VF610 Based Boards
++======================
 +
 +Building Barebox
 +----------------
 +
-+To build Barebox for ZII RDU2 boards do the following:
++To build Barebox for ZII VF610 based boards do the following:
 +
 +.. code-block:: sh
 +
 +  make ARCH=arm CROSS_COMPILE=<ARM toolchain prefix> mrproper
-+  make ARCH=arm CROSS_COMPILE=<ARM toolchain prefix> imx_v7_defconfig
++  make ARCH=arm CROSS_COMPILE=<ARM toolchain prefix> zii_vf610_dev_defconfig
 +  make ARCH=arm CROSS_COMPILE=<ARM toolchain prefix>
 +
 +Uploading Barebox via JTAG
@@ -369,13 +346,35 @@ index 000000000..155d30eae
 +.. code-block:: sh
 +
 +  cd barebox
-+  Documentation/boards/imx/zii-imx6-rdu2/bootstrap.sh
++  Documentation/boards/imx/zii-vf610-dev/bootstrap.sh
 +
 +custom OpenOCD binary and options can be specified as follows:
 +
 +.. code-block:: sh
 +
-+  OPENOCD="../openocd/src/openocd -s ../openocd/tcl " Documentation/boards/imx/zii-imx6-rdu2/bootstrap.sh
++  OPENOCD="../openocd/src/openocd -s ../openocd/tcl " Documentation/boards/imx/zii-vf610-dev/bootstrap.sh
++
++Writing Barebox to NVM
++----------------------
++
++With exception of Dev boards, all of ZII's VF610 based boards should
++come with eMMC. To permanently write Barebox to it do:
++
++.. code-block:: sh
++
++  barebox_update -t eMMC -y <barebox.img>
++
++This should also automaticaly configure your board to boot that
++image. Note that original ZII stack's bootloader in eMMC should be
++left intact. Barebox is configured to be programmed to one of MMC boot
++partitions, whereas original bootloader is located in user partition.
++
++To restore the board to booting using original bootloader do:
++
++.. code-block:: sh
++
++  detect mmc0
++  mmc0.boot=disabled
 -- 
 2.21.0
 
