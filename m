@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVySF-0000Tm-0D
- for barebox@lists.infradead.org; Wed, 29 May 2019 13:17:20 +0000
+ id 1hVySG-0000Tk-1N
+ for barebox@lists.infradead.org; Wed, 29 May 2019 13:17:21 +0000
 From: Roland Hieber <rhi@pengutronix.de>
-Date: Wed, 29 May 2019 15:16:57 +0200
-Message-Id: <20190529131656.21323-3-rhi@pengutronix.de>
+Date: Wed, 29 May 2019 15:16:56 +0200
+Message-Id: <20190529131656.21323-2-rhi@pengutronix.de>
 In-Reply-To: <20190528054513.21313-1-andrew.smirnov@gmail.com>
 References: <20190528054513.21313-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -21,7 +21,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] fixup! Documentation: Add zii-imx6-rdu2 board
+Subject: [PATCH 2/3] fixup! Documentation: Add zii-imx7d-rpu2 board
  documentation
 To: Barebox Mailing List <barebox@lists.infradead.org>
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Roland Hieber <rhi@pengutronix.de>
@@ -29,25 +29,47 @@ Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Roland Hieber <rhi@pengutronix.de
 Signed-off-by: Roland Hieber <rhi@pengutronix.de>
 
 ---
- Documentation/boards/imx/zii-imx6-rdu2/readme.rst | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ .../boards/imx/zii-imx7d-rpu2/readme.rst        | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/boards/imx/zii-imx6-rdu2/readme.rst b/Documentation/boards/imx/zii-imx6-rdu2/readme.rst
-index 155d30eaee21..4694f2e30ed0 100644
---- a/Documentation/boards/imx/zii-imx6-rdu2/readme.rst
-+++ b/Documentation/boards/imx/zii-imx6-rdu2/readme.rst
-@@ -23,8 +23,9 @@ follows:
+diff --git a/Documentation/boards/imx/zii-imx7d-rpu2/readme.rst b/Documentation/boards/imx/zii-imx7d-rpu2/readme.rst
+index 08d30c592d43..dd984ac17635 100644
+--- a/Documentation/boards/imx/zii-imx7d-rpu2/readme.rst
++++ b/Documentation/boards/imx/zii-imx7d-rpu2/readme.rst
+@@ -23,24 +23,25 @@ follows:
    cd barebox
-   Documentation/boards/imx/zii-imx6-rdu2/bootstrap.sh
+   Documentation/boards/imx/zii-imx7d-rpu2/bootstrap.sh
  
 -custom OpenOCD binary and options can be specified as follows:
 +A custom OpenOCD binary and options can be specified as follows:
  
  .. code-block:: sh
  
--  OPENOCD="../openocd/src/openocd -s ../openocd/tcl " Documentation/boards/imx/zii-imx6-rdu2/bootstrap.sh
+-  OPENOCD="../openocd/src/openocd -s ../openocd/tcl " Documentation/boards/imx/zii-imx7d-rpu2/bootstrap.sh
 +  OPENOCD="../openocd/src/openocd -s ../openocd/tcl " \
-+    Documentation/boards/imx/zii-imx6-rdu2/bootstrap.sh
++    Documentation/boards/imx/zii-imx7d-rpu2/bootstrap.sh
+ 
+ 
+ Disabling DSA in Embedeed Switch
+ --------------------------------
+ 
+-Booting Linux kernel that device ships with will re-configure on-board
+-switch into DSA mode, which woudl make Ethernet connection unusable in
+-Barebox. To undo that and re-configure switch into dumb/pass-through
+-mode do the following:
++Booting the Linux kernel that the device ships with will re-configure the on-board
++switch into DSA mode, which would make the Ethernet connection unusable in
++Barebox. To undo that and re-configure the switch into dumb/pass-through
++mode, do the following:
+ 
+ .. code-block:: sh
+ 
+   memset -b -d /dev/switch-eeprom 0x00 0xff 4
+ 
+-Once that doen, power cycling the device should force the switch to
+-re-read EEPROM and reconfigure itself.
++Once that is done, power cycling the device should force the switch to
++re-read the EEPROM and reconfigure itself.
 -- 
 2.20.1
 
