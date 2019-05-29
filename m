@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVXex-0003O8-Bg
- for barebox@lists.infradead.org; Tue, 28 May 2019 08:40:40 +0000
-Date: Tue, 28 May 2019 10:40:37 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190528084037.4bkrhj2scrqo4i2w@pengutronix.de>
+ id 1hVySF-0000Tm-0D
+ for barebox@lists.infradead.org; Wed, 29 May 2019 13:17:20 +0000
+From: Roland Hieber <rhi@pengutronix.de>
+Date: Wed, 29 May 2019 15:16:57 +0200
+Message-Id: <20190529131656.21323-3-rhi@pengutronix.de>
+In-Reply-To: <20190528054513.21313-1-andrew.smirnov@gmail.com>
 References: <20190528054513.21313-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190528054513.21313-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,38 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/4] ZII boards documentation update
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/3] fixup! Documentation: Add zii-imx6-rdu2 board
+ documentation
+To: Barebox Mailing List <barebox@lists.infradead.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Roland Hieber <rhi@pengutronix.de>
 
-On Mon, May 27, 2019 at 10:45:09PM -0700, Andrey Smirnov wrote:
-> Everyone:
-> 
-> This series contains patches adding various bit of documentation
-> covering ZII boards as well as OpenOCD configuration files I've been
-> using to updload Barebox. Each patch should be self explanatory.
-> 
-> Feedback is welcome!
-> 
-> Thanks,
-> Andrey Smirnov
-> 
-> Andrey Smirnov (4):
->   Documentation: Add zii-vf610-dev board documentation
->   Documentation: Add zii-imx7d-rpu2 board documentation
->   Documentation: Add zii-imx6-rdu2 board documentation
->   Documentation: zii-imx8mq-dev: Update OpenOCD usage documentation
+Signed-off-by: Roland Hieber <rhi@pengutronix.de>
 
-Applied, thanks
+---
+ Documentation/boards/imx/zii-imx6-rdu2/readme.rst | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Sascha
-
-
+diff --git a/Documentation/boards/imx/zii-imx6-rdu2/readme.rst b/Documentation/boards/imx/zii-imx6-rdu2/readme.rst
+index 155d30eaee21..4694f2e30ed0 100644
+--- a/Documentation/boards/imx/zii-imx6-rdu2/readme.rst
++++ b/Documentation/boards/imx/zii-imx6-rdu2/readme.rst
+@@ -23,8 +23,9 @@ follows:
+   cd barebox
+   Documentation/boards/imx/zii-imx6-rdu2/bootstrap.sh
+ 
+-custom OpenOCD binary and options can be specified as follows:
++A custom OpenOCD binary and options can be specified as follows:
+ 
+ .. code-block:: sh
+ 
+-  OPENOCD="../openocd/src/openocd -s ../openocd/tcl " Documentation/boards/imx/zii-imx6-rdu2/bootstrap.sh
++  OPENOCD="../openocd/src/openocd -s ../openocd/tcl " \
++    Documentation/boards/imx/zii-imx6-rdu2/bootstrap.sh
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
