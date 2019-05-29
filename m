@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it1-x144.google.com ([2607:f8b0:4864:20::144])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hVnG8-0000O4-1J
- for barebox@lists.infradead.org; Wed, 29 May 2019 01:20:05 +0000
-Received: by mail-it1-x144.google.com with SMTP id m3so956632itl.1
- for <barebox@lists.infradead.org>; Tue, 28 May 2019 18:20:03 -0700 (PDT)
-MIME-Version: 1.0
+ id 1hVr60-0006z4-He
+ for barebox@lists.infradead.org; Wed, 29 May 2019 05:25:54 +0000
+Date: Wed, 29 May 2019 07:25:46 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190529052546.o3wk5plv6gykyjou@pengutronix.de>
 References: <20190527201853.18853-1-andrew.smirnov@gmail.com>
  <20190527201853.18853-5-andrew.smirnov@gmail.com>
  <20190528093429.5lsf74vvrkngia2x@pengutronix.de>
-In-Reply-To: <20190528093429.5lsf74vvrkngia2x@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 28 May 2019 18:19:51 -0700
-Message-ID: <CAHQ1cqE+ghjtyvBGzORzKXTerQbEQ1c-r0yrSAu3-JwEcz4c8A@mail.gmail.com>
+ <CAHQ1cqE+ghjtyvBGzORzKXTerQbEQ1c-r0yrSAu3-JwEcz4c8A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAHQ1cqE+ghjtyvBGzORzKXTerQbEQ1c-r0yrSAu3-JwEcz4c8A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,370 +27,61 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 4/7] misc: Add a driver to expose U-Boot environment
  variable data
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Cory Tusar <cory.tusar@zii.aero>, Barebox List <barebox@lists.infradead.org>
 
-On Tue, May 28, 2019 at 2:34 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Mon, May 27, 2019 at 01:18:50PM -0700, Andrey Smirnov wrote:
-> > Add a driver to expose U-Boot environment variable data as a single
-> > mmap-able device. Not very useful on its own, it is a crucial
-> > low-level plumbing needed by filesystem driver introduced in the
-> > following commit.
->
-> It wasn't clear to me why we need this driver at all, so it might be
-> worth adding a comment that this is for handling redundant env.
->
+On Tue, May 28, 2019 at 06:19:51PM -0700, Andrey Smirnov wrote:
+> On Tue, May 28, 2019 at 2:34 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> >
+> > On Mon, May 27, 2019 at 01:18:50PM -0700, Andrey Smirnov wrote:
+> > > Add a driver to expose U-Boot environment variable data as a single
+> > > mmap-able device. Not very useful on its own, it is a crucial
+> > > low-level plumbing needed by filesystem driver introduced in the
+> > > following commit.
+> >
+> > It wasn't clear to me why we need this driver at all, so it might be
+> > worth adding a comment that this is for handling redundant env.
+> >
+> 
+> Was it before of after you read the Kconfig help that talks about it?
+> Asking to see if copying that text into commit would be enough, or if
+> should write a more detailed explanation.
 
-Was it before of after you read the Kconfig help that talks about it?
-Asking to see if copying that text into commit would be enough, or if
-should write a more detailed explanation.
+It was before I had read the Kconfig text. Indeed the Kconfig text makes
+it clear.
 
-> > +static int ubootvar_flush(struct cdev *cdev)
-> > +{
-> > +     struct device_d *dev = cdev->dev;
-> > +     struct ubootvar_data *ubdata = dev->priv;
-> > +     const char *path = ubdata->path[!ubdata->current];
-> > +     uint32_t crc = 0xffffffff;
-> > +     struct resource *mem;
-> > +     resource_size_t size;
-> > +     const void *data;
-> > +     int fd, ret = 0;
-> > +
-> > +     mem = dev_get_resource(dev, IORESOURCE_MEM, 0);
-> > +     if (IS_ERR(mem)) {
-> > +             dev_err(dev, "Failed to get associated memory resource\n");
-> > +             return PTR_ERR(mem);
-> > +     }
->
-> Resources of IORESOURCE_MEM are meant to describe an area in the
-> physical memory space. You shouldn't abuse it to describe some
-> arbitrarily allocated memory area. Why not simply put the pointers into
-> struct ubootvar_data?
->
-> > +
-> > +     fd = open(path, O_WRONLY);
-> > +     if (fd < 0) {
-> > +             dev_err(dev, "Failed to open %s\n", path);
-> > +             return -errno;
-> > +     }
-> > +     /*
-> > +      * FIXME: This code needs to do a proper protect/unprotect and
-> > +      * erase calls to work on MTD devices
-> > +      */
-> > +
-> > +     /*
-> > +      * Write a dummy CRC first as a way of invalidating the
-> > +      * environment in case we fail mid-flushing
-> > +      */
-> > +     if (write_full(fd, &crc, sizeof(crc)) != sizeof(crc)) {
-> > +             dev_err(dev, "Failed to write dummy CRC\n");
-> > +             ret = -errno;
-> > +             goto close_fd;
-> > +     }
-> > +
-> > +     if (ubdata->count > 1) {
-> > +             /*
-> > +              * FIXME: This assumes FLAG_INCREMENTAL
-> > +              */
-> > +             const uint8_t flag = ++ubdata->flag;
-> > +
-> > +             if (write_full(fd, &flag, sizeof(flag)) != sizeof(flag)) {
-> > +                     dev_dbg(dev, "Failed to write flag\n");
-> > +                     ret = -errno;
-> > +                     goto close_fd;
-> > +             }
-> > +     }
-> > +
-> > +     data = (const void *)mem->start;
-> > +     size = resource_size(mem);
-> > +
-> > +     /*
-> > +      * Write out and flush all of the new environement data
-> > +      */
->
-> s/environement/environment/
->
-> > +     if (write_full(fd, data, size) != size) {
-> > +             dev_dbg(dev, "Failed to write data\n");
-> > +             ret = -errno;
-> > +             goto close_fd;
-> > +     }
-> > +
-> > +     if (flush(fd)) {
-> > +             dev_dbg(dev, "Failed to flush written data\n");
-> > +             ret = -errno;
-> > +             goto close_fd;
-> > +     }
-> > +     /*
-> > +      * Now that all of the environment data is out, we can go back
-> > +      * to the start of the block and write correct CRC, to finish
-> > +      * the processs.
-> > +      */
-> > +     if (lseek(fd, 0, SEEK_SET) != 0) {
-> > +             dev_dbg(dev, "lseek() failed\n");
-> > +             ret = -errno;
-> > +             goto close_fd;
-> > +     }
-> > +
-> > +     crc = crc32(0, data, size);
-> > +     if (write_full(fd, &crc, sizeof(crc)) != sizeof(crc)) {
-> > +             dev_dbg(dev, "Failed to write valid CRC\n");
-> > +             ret = -errno;
-> > +             goto close_fd;
-> > +     }
-> > +     /*
-> > +      * Now that we've successfuly written new enviroment blob out,
-> > +      * swtich current partition.
->
-> s/swtich/switch/
->
-> > +      */
-> > +     ubdata->current = !ubdata->current;
-> > +
-> > +close_fd:
-> > +     close(fd);
-> > +     return ret;
-> > +}
-> > +
-> > +static struct cdev_operations ubootvar_ops = {
-> > +     .read = mem_read,
-> > +     .write = mem_write,
-> > +     .memmap = generic_memmap_rw,
->
-> Ok, now I understand this struct resource thingy, you want to reuse
-> mem_read and friends. Given that these functions are oneliners to
-> implement I still suggest implementing them.
->
+> > > +      */
+> > > +     ubdata->current = !ubdata->current;
+> > > +
+> > > +close_fd:
+> > > +     close(fd);
+> > > +     return ret;
+> > > +}
+> > > +
+> > > +static struct cdev_operations ubootvar_ops = {
+> > > +     .read = mem_read,
+> > > +     .write = mem_write,
+> > > +     .memmap = generic_memmap_rw,
+> >
+> > Ok, now I understand this struct resource thingy, you want to reuse
+> > mem_read and friends. Given that these functions are oneliners to
+> > implement I still suggest implementing them.
+> >
+> 
+> OK, I'll have to make mem_copy() visible globally for them to remain
+> one-liners, but that should be doable.
 
-OK, I'll have to make mem_copy() visible globally for them to remain
-one-liners, but that should be doable.
+You won't need mem_copy(), plain memcpy() is enough. mem_copy() is only for
+accessing registers in with the correct width, but that doesn't matter
+here.
 
-> > +     .flush = ubootvar_flush,
-> > +};
-> > +
-> > +static void ubootenv_info(struct device_d *dev)
-> > +{
-> > +     struct ubootvar_data *ubdata = dev->priv;
-> > +
-> > +     printf("Current environment copy: device-path-%d\n", ubdata->current);
-> > +}
-> > +
-> > +static int ubootenv_probe(struct device_d *dev)
-> > +{
-> > +     struct ubootvar_data *ubdata;
-> > +     unsigned int crc_ok = 0;
-> > +     int ret, i, count = 0;
-> > +     uint32_t crc[2];
-> > +     uint8_t flag[2];
-> > +     size_t size[2];
-> > +     void *blob[2] = { NULL, NULL };
-> > +     uint8_t *data[2];
-> > +
-> > +     /*
-> > +      * FIXME: Flag scheme is determined by the type of underlined
-> > +      * non-volatible device, so it should probably come from
-> > +      * Device Tree binding. Currently we just assume incremental
-> > +      * scheme since that is what is used on SD/eMMC devices.
-> > +      */
-> > +     enum ubootvar_flag_scheme flag_scheme = FLAG_INCREMENTAL;
-> > +
-> > +     ubdata = xzalloc(sizeof(*ubdata));
-> > +
-> > +     ret = of_find_path(dev->device_node, "device-path-0",
-> > +                        &ubdata->path[0],
-> > +                        OF_FIND_PATH_FLAGS_BB);
->
-> Maybe allow "device-path" without -x suffix when the U-Boot environment
-> is not redundant?
->
+Sascha
 
-I was modelling this after "pinctrl" property in which always has
-trailing "-0". I can add the support for "device-path" in v2, though.
-
-> > +     if (ret) {
-> > +             dev_err(dev, "Failed to find first device\n");
-> > +             goto out;
-> > +     }
-> > +
-> > +     count++;
-> > +
-> > +     if (!of_find_path(dev->device_node, "device-path-1",
-> > +                       &ubdata->path[1],
-> > +                       OF_FIND_PATH_FLAGS_BB)) {
-> > +             count++;
-> > +     } else {
-> > +             /*
-> > +              * If there's no redundant environment partition we
-> > +              * configure both paths to point to the same device,
-> > +              * so that writing logic could stay the same for both
-> > +              * redundant and non-redundant cases
-> > +              */
-> > +             ubdata->path[1] = ubdata->path[0];
->
-> ubdata->path[0] contains an allocated string, so we must be careful when
-> freeing this. You don't free it at all, so there's no problem currently.
-> I think you should either free it correctly in the error path or make
-> sure that both ubdata->path[0] and ubdata->path[1] contain allocated
-> strings.
->
-
-Oh, missed the fact that those strings are allocated. Will fix in v2.
-
-> > +     }
-> > +
-> > +     for (i = 0; i < count; i++) {
-> > +             data[i] = blob[i] = read_file(ubdata->path[i], &size[i]);
-> > +             if (!blob[i]) {
-> > +                     dev_err(dev, "Failed to read U-Boot environment\n");
-> > +                     ret = -EIO;
-> > +                     goto out;
-> > +             }
-> > +
-> > +             crc[i] = *(uint32_t *)data[i];
-> > +
-> > +             size[i] -= sizeof(uint32_t);
-> > +             data[i] += sizeof(uint32_t);
-> > +
-> > +             if (count > 1) {
-> > +                     /*
-> > +                      * When used in primary/redundant
-> > +                      * configuration, environment header has an
-> > +                      * additional "flag" byte
-> > +                      */
-> > +                     flag[i] = *data[i];
-> > +                     size[i] -= sizeof(uint8_t);
-> > +                     data[i] += sizeof(uint8_t);
-> > +             }
-> > +
-> > +             crc_ok |= (crc32(0, data[i], size[i]) == crc[i]) << i;
-> > +     }
-> > +
-> > +     switch (crc_ok) {
-> > +     case 0b00:
-> > +             ret = -EINVAL;
-> > +             dev_err(dev, "Bad CRC, can't continue further\n");
-> > +             goto out;
->
-> So when there's no valid U-Boot env is found (erased for example) then
-> this driver errors out and we won't have a chance to ever write
-> something there. Is this intended?
->
-
-The only use-case we have for this is to communicate data to already
-existing U-Boot installation with a valid environment data, so the
-scenario you are talking about never came up. I guess I can change the
-code to zero the buffered data out and proceed, so that FS layer would
-perceive this as an empty environment.
-
-> > +     case 0b11:
-> > +             /*
-> > +              * Both partition are valid, so we need to examine
-> > +              * flags to determine which one to use as current
-> > +              */
-> > +             switch (flag_scheme) {
-> > +             case FLAG_INCREMENTAL:
-> > +                     if ((flag[0] == 0xff && flag[1] == 0) ||
-> > +                         (flag[1] == 0xff && flag[0] == 0)) {
-> > +                             /*
-> > +                              * When flag overflow happens current
-> > +                              * partition is the one whose counter
-> > +                              * reached zero first. That is if
-> > +                              * flag[1] == 0 is true (1), then i
-> > +                              * would be 1 as well
-> > +                              */
-> > +                             i = flag[1] == 0;
-> > +                     } else {
-> > +                             /*
-> > +                              * In no-overflow case the partition
-> > +                              * with higher flag value is
-> > +                              * considered current
-> > +                              */
-> > +                             i = flag[1] > flag[0];
-> > +                     }
-> > +                     break;
-> > +             default:
-> > +                     ret = -EINVAL;
-> > +                     dev_err(dev, "Unknown flag scheme %u\n", flag_scheme);
-> > +                     goto out;
-> > +             }
-> > +             break;
-> > +     default:
-> > +             /*
-> > +              * Only one partition is valid, so the choice of the
-> > +              * current one is obvious
-> > +              */
-> > +             i = __ffs(crc_ok);
->
-> 'i' changes its meaning from a loop counter to the partition currently
-> used. This makes this code harder to read, could you use a separate
-> variable for the currently used partition?
->
-
-Sure, will do in v2.
-
-> > +             break;
-> > +     };
-> > +
-> > +     ret = device_add_resource(dev, "data", (resource_size_t)data[i],
-> > +                               size[i], IORESOURCE_MEM);
-> > +     if (ret) {
-> > +             dev_err(dev, "Failed to add resource\n");
-> > +             goto out;
-> > +     }
-> > +
-> > +     ubdata->cdev.name = basprintf("ubootvar%d",
-> > +                                   cdev_find_free_index("ubootvar"));
-> > +     ubdata->cdev.size = size[i];
-> > +     ubdata->cdev.ops = &ubootvar_ops;
-> > +     ubdata->cdev.dev = dev;
-> > +     ubdata->cdev.filetype = filetype_ubootvar;
-> > +     ubdata->current = i;
-> > +     ubdata->count = count;
-> > +     ubdata->flag = flag[i];
-> > +
-> > +     dev->priv = ubdata;
-> > +
-> > +     ret = devfs_create(&ubdata->cdev);
-> > +     if (ret) {
-> > +             dev_err(dev, "Failed to create corresponding cdev\n");
-> > +             goto out;
-> > +     }
-> > +
-> > +     cdev_create_default_automount(&ubdata->cdev);
-> > +
-> > +     if (count > 1) {
-> > +             /*
-> > +              * We won't be using read data from redundant
-> > +              * parttion, so we may as well free at this point
-> > +              */
-> > +             free(blob[!i]);
-> > +     }
-> > +
-> > +     dev->info = ubootenv_info;
-> > +
-> > +     return 0;
-> > +out:
-> > +     for (i = 0; i < count; i++)
-> > +             free(blob[i]);
-> > +
-> > +     free(ubdata);
-> > +
-> > +     return ret;
-> > +}
-> > +
-> > +static struct of_device_id ubootenv_dt_ids[] = {
-> > +     {
-> > +             .compatible = "barebox,uboot-environment",
->
-> Please add
-> Documentation/devicetree/bindings/barebox/barebox,uboot-environment.rst
->
-
-Will do.
-
-Thanks,
-Andrey Smirnov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
