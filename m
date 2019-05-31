@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hWdQh-0004q6-Az
- for barebox@lists.infradead.org; Fri, 31 May 2019 09:02:28 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <afa@pengutronix.de>) id 1hWdQf-0005Ib-Lr
- for barebox@lists.infradead.org; Fri, 31 May 2019 11:02:25 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1hWdQf-0005g3-Ec
- for barebox@lists.infradead.org; Fri, 31 May 2019 11:02:25 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 31 May 2019 11:02:23 +0200
-Message-Id: <20190531090224.21707-1-a.fatoum@pengutronix.de>
+ id 1hWimX-0003iX-Et
+ for barebox@lists.infradead.org; Fri, 31 May 2019 14:45:23 +0000
+Date: Fri, 31 May 2019 16:43:10 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20190531144310.GA10956@ravnborg.org>
+References: <20190531090224.21707-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190531090224.21707-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,53 +22,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: panic with a message when relocation type is unknown
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: panic with a message when relocation type is unknown
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Currently such failures result in a
+Hi Ahmad.
 
-	>00000000 00000000
+On Fri, May 31, 2019 at 11:02:23AM +0200, Ahmad Fatoum wrote:
+> Currently such failures result in a
+> 
+> 	>00000000 00000000
+> 
+> 	### ERROR ### Please RESET the board ###
+> 
+> With this patch this now becomes
+> 
+> 	>00000000 00000000
+> 	Unknown relocation type
+> 	### ERROR ### Please RESET the board ###
+> 
+> which improves user experience a little bit.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/cpu/common.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
+> index 821cafbf26c2..3668c5977ca9 100644
+> --- a/arch/arm/cpu/common.c
+> +++ b/arch/arm/cpu/common.c
+> @@ -78,7 +78,7 @@ void relocate_to_current_adr(void)
+>  			putc_ll(' ');
+>  			puthex_ll(rel->r_addend);
+>  			putc_ll('\n');
+> -			panic("");
+> +			panic("Unknown relocation type");
+>  		}
+>  
+>  		dstart += sizeof(*rel);
+> @@ -108,7 +108,7 @@ void relocate_to_current_adr(void)
+>  			putc_ll(' ');
+>  			puthex_ll(rel->r_offset);
+>  			putc_ll('\n');
+> -			panic("");
+> +			panic("Unknown relocation type");
 
-	### ERROR ### Please RESET the board ###
+If you added just a little bit more context then grepping the source
+for the error message would only result in one hit.
 
-With this patch this now becomes
+Like:
+"Unknown relocation type (addend)"
+"Unknown relocation type (offset)"
 
-	>00000000 00000000
-	Unknown relocation type
-	### ERROR ### Please RESET the board ###
+Or something like that.
 
-which improves user experience a little bit.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/cpu/common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
-index 821cafbf26c2..3668c5977ca9 100644
---- a/arch/arm/cpu/common.c
-+++ b/arch/arm/cpu/common.c
-@@ -78,7 +78,7 @@ void relocate_to_current_adr(void)
- 			putc_ll(' ');
- 			puthex_ll(rel->r_addend);
- 			putc_ll('\n');
--			panic("");
-+			panic("Unknown relocation type");
- 		}
- 
- 		dstart += sizeof(*rel);
-@@ -108,7 +108,7 @@ void relocate_to_current_adr(void)
- 			putc_ll(' ');
- 			puthex_ll(rel->r_offset);
- 			putc_ll('\n');
--			panic("");
-+			panic("Unknown relocation type");
- 		}
- 
- 		dstart += sizeof(*rel);
--- 
-2.20.1
-
+	Sam
 
 _______________________________________________
 barebox mailing list
