@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x144.google.com ([2a00:1450:4864:20::144])
+Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hXJCq-0003EQ-7h
- for barebox@lists.infradead.org; Sun, 02 Jun 2019 05:38:57 +0000
-Received: by mail-lf1-x144.google.com with SMTP id b11so11054835lfa.5
- for <barebox@lists.infradead.org>; Sat, 01 Jun 2019 22:38:53 -0700 (PDT)
+ id 1hXJDW-0003Jf-Cw
+ for barebox@lists.infradead.org; Sun, 02 Jun 2019 05:39:39 +0000
+Received: by mail-lj1-x244.google.com with SMTP id s21so2576985lji.8
+ for <barebox@lists.infradead.org>; Sat, 01 Jun 2019 22:39:37 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun,  2 Jun 2019 08:38:34 +0300
-Message-Id: <20190602053834.8950-1-antonynpavlov@gmail.com>
+Date: Sun,  2 Jun 2019 08:39:23 +0300
+Message-Id: <20190602053923.9099-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,27 +21,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] riscv: dts: erizo-generic: fix memory node name
+Subject: [PATCH] Documentation: add riscv mention
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/riscv/dts/erizo-generic.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/user/barebox.rst | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/dts/erizo-generic.dts b/arch/riscv/dts/erizo-generic.dts
-index d1f8d57168..29da01ef8e 100644
---- a/arch/riscv/dts/erizo-generic.dts
-+++ b/arch/riscv/dts/erizo-generic.dts
-@@ -7,7 +7,7 @@
- 	model = "generic Erizo SoC board";
- 	compatible = "miet-riscv-workgroup,erizo-generic-board";
+diff --git a/Documentation/user/barebox.rst b/Documentation/user/barebox.rst
+index 026ed1b9c0..1927fe4efc 100644
+--- a/Documentation/user/barebox.rst
++++ b/Documentation/user/barebox.rst
+@@ -58,6 +58,7 @@ variable. Currently, ``ARCH`` must be one of:
+ * nios2
+ * openrisc
+ * ppc
++* riscv
+ * sandbox
+ * x86
  
--	memory@0 {
-+	memory@80000000 {
- 		device_type = "memory";
- 		reg = <0x80000000 0x00800000>;
- 	};
 -- 
 2.20.1
 
