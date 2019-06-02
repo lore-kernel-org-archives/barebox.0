@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hbJ0H-0004rY-Hf
- for barebox@lists.infradead.org; Thu, 13 Jun 2019 06:14:31 +0000
-Date: Thu, 13 Jun 2019 08:14:27 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190613061427.bs7g4p4lpllxgugk@pengutronix.de>
-References: <20190611090204.5752-1-u.kleine-koenig@pengutronix.de>
+Received: from mail-lf1-x144.google.com ([2a00:1450:4864:20::144])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1hXJCq-0003EQ-7h
+ for barebox@lists.infradead.org; Sun, 02 Jun 2019 05:38:57 +0000
+Received: by mail-lf1-x144.google.com with SMTP id b11so11054835lfa.5
+ for <barebox@lists.infradead.org>; Sat, 01 Jun 2019 22:38:53 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Sun,  2 Jun 2019 08:38:34 +0300
+Message-Id: <20190602053834.8950-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190611090204.5752-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,40 +17,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] plathome-openblocks-a6: use image format 0
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] riscv: dts: erizo-generic: fix memory node name
+To: barebox@lists.infradead.org
 
-On Tue, Jun 11, 2019 at 11:02:01AM +0200, Uwe Kleine-K=F6nig wrote:
-> This machine is powered by a kirkwood processor which needs version 0.
-> =
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/riscv/dts/erizo-generic.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Fixes: 58390878bc30 ("plathome-openblocks-a6: provide a kwbimage.cfg file=
-")
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  arch/arm/boards/plathome-openblocks-a6/kwbimage.cfg | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> =
+diff --git a/arch/riscv/dts/erizo-generic.dts b/arch/riscv/dts/erizo-generic.dts
+index d1f8d57168..29da01ef8e 100644
+--- a/arch/riscv/dts/erizo-generic.dts
++++ b/arch/riscv/dts/erizo-generic.dts
+@@ -7,7 +7,7 @@
+ 	model = "generic Erizo SoC board";
+ 	compatible = "miet-riscv-workgroup,erizo-generic-board";
+ 
+-	memory@0 {
++	memory@80000000 {
+ 		device_type = "memory";
+ 		reg = <0x80000000 0x00800000>;
+ 	};
+-- 
+2.20.1
 
-> diff --git a/arch/arm/boards/plathome-openblocks-a6/kwbimage.cfg b/arch/a=
-rm/boards/plathome-openblocks-a6/kwbimage.cfg
-> index ba3011736fb7..037d4cfcddeb 100644
-
-Applied, thanks.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
