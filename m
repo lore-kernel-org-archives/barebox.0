@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-it1-x141.google.com ([2607:f8b0:4864:20::141])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hXsVd-0001Ck-6S
- for barebox@lists.infradead.org; Mon, 03 Jun 2019 19:20:42 +0000
-Received: by mail-it1-x141.google.com with SMTP id h11so28420870itf.5
- for <barebox@lists.infradead.org>; Mon, 03 Jun 2019 12:20:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190603190535.15346-1-a.fatoum@pengutronix.de>
-In-Reply-To: <20190603190535.15346-1-a.fatoum@pengutronix.de>
+ id 1hXse4-0003ks-Su
+ for barebox@lists.infradead.org; Mon, 03 Jun 2019 19:29:26 +0000
+Received: by mail-pg1-x543.google.com with SMTP id 83so2022996pgg.8
+ for <barebox@lists.infradead.org>; Mon, 03 Jun 2019 12:29:24 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 3 Jun 2019 12:20:28 -0700
-Message-ID: <CAHQ1cqGxnQSHQ9fuCikVMEGN5jOe7y7H4MXn6G3UhBov_TGq-w@mail.gmail.com>
+Date: Mon,  3 Jun 2019 12:28:57 -0700
+Message-Id: <20190603192857.28852-1-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,72 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: don't use stale errno when calling fb_open
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: rdu2: Initialize DEBUG_LL in entry function
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Mon, Jun 3, 2019 at 12:05 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->
-> fb_open returns a pointer and doesn't populate errno, which will
-> results in a stale errno being evaluated by perror() on failure.
-> Fix this by populating errno manually at call sites.
->
+When bootstrapping Barebox via JTAG rdu2_sram_setup() won't be
+executed resulting in non functional DEBUG_LL API. Move low-level UART
+initialization code to be a part of start_imx6_zii_rdu2() to avoid
+that problem.
 
-Why not just convert the code to use strerror() instead? Seems a bit
-more straightforward plus changing errno outside of our "POSIX/C"
-layer seems a bit out of place. Not a big deal though.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/boards/zii-imx6q-rdu2/lowlevel.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Thanks,
-Andrey Smirnov
+diff --git a/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c b/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
+index a5ac6f64c..9672a69bf 100644
+--- a/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
++++ b/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
+@@ -271,11 +271,6 @@ static noinline void rdu2_sram_setup(void)
+ 	enum bootsource bootsrc;
+ 	int instance;
+ 
+-	imx6_ungate_all_peripherals();
+-
+-	if (IS_ENABLED(CONFIG_DEBUG_LL))
+-		setup_uart();
+-
+ 	arm_setup_stack(0x00920000 - 8);
+ 	relocate_to_current_adr();
+ 	setup_c();
+@@ -296,6 +291,11 @@ ENTRY_FUNCTION(start_imx6_zii_rdu2, r0, r1, r2)
+ {
+ 	imx6_cpu_lowlevel_init();
+ 
++	imx6_ungate_all_peripherals();
++
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		setup_uart();
++
+ 	/*
+ 	 * When still running in SRAM, we need to setup the DRAM now and load
+ 	 * the remaining image.
+-- 
+2.21.0
 
-> While at it, correct the typo in the prefix passed to perror().
->
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  commands/fbtest.c | 5 +++--
->  commands/splash.c | 5 +++--
->  2 files changed, 6 insertions(+), 4 deletions(-)
->
-> diff --git a/commands/fbtest.c b/commands/fbtest.c
-> index e5dd8ba7fabf..2c589f77d3b8 100644
-> --- a/commands/fbtest.c
-> +++ b/commands/fbtest.c
-> @@ -271,8 +271,9 @@ static int do_fbtest(int argc, char *argv[])
->
->         sc = fb_open(fbdev);
->         if (IS_ERR(sc)) {
-> -               perror("fd_open");
-> -               return PTR_ERR(sc);
-> +               errno = PTR_ERR(sc);
-> +               perror("fb_open");
-> +               return errno;
->         }
->
->         if (!pattern_name) {
-> diff --git a/commands/splash.c b/commands/splash.c
-> index 2b70b296837e..75b3ee3fadaf 100644
-> --- a/commands/splash.c
-> +++ b/commands/splash.c
-> @@ -54,8 +54,9 @@ static int do_splash(int argc, char *argv[])
->
->         sc = fb_open(fbdev);
->         if (IS_ERR(sc)) {
-> -               perror("fd_open");
-> -               return PTR_ERR(sc);
-> +               errno = PTR_ERR(sc);
-> +               perror("fb_open");
-> +               return errno;
->         }
->
->         buf = gui_screen_render_buffer(sc);
-> --
-> 2.20.1
->
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
