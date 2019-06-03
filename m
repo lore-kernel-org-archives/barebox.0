@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hXse4-0003ks-Su
- for barebox@lists.infradead.org; Mon, 03 Jun 2019 19:29:26 +0000
-Received: by mail-pg1-x543.google.com with SMTP id 83so2022996pgg.8
- for <barebox@lists.infradead.org>; Mon, 03 Jun 2019 12:29:24 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  3 Jun 2019 12:28:57 -0700
-Message-Id: <20190603192857.28852-1-andrew.smirnov@gmail.com>
+ id 1hXsHS-0004yZ-UQ
+ for barebox@lists.infradead.org; Mon, 03 Jun 2019 19:06:05 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <afa@pengutronix.de>) id 1hXsHR-0007CV-CO
+ for barebox@lists.infradead.org; Mon, 03 Jun 2019 21:06:01 +0200
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>) id 1hXsHR-0004Vb-12
+ for barebox@lists.infradead.org; Mon, 03 Jun 2019 21:06:01 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon,  3 Jun 2019 21:05:53 +0200
+Message-Id: <20190603190559.16715-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,50 +27,127 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: rdu2: Initialize DEBUG_LL in entry function
+Subject: [PATCH 1/7] ARM: stm32mp1: rename to stm32mp
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-When bootstrapping Barebox via JTAG rdu2_sram_setup() won't be
-executed resulting in non functional DEBUG_LL API. Move low-level UART
-initialization code to be a part of start_imx6_zii_rdu2() to avoid
-that problem.
+Serial and clk driver both depend on CONFIG_ARCH_STM32MP1,
+so either the Kconfig symbol or their depend needs to change.
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Patches posted by the vendor to Linux, U-Boot and their BSP
+Yocto-Layer speak of a STM32MP-Family of which the STM32MP1
+is the first series, thus rename the arch by dropping the 1.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/zii-imx6q-rdu2/lowlevel.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/arm/Kconfig                                              | 4 ++--
+ arch/arm/Makefile                                             | 2 +-
+ arch/arm/configs/{stm32mp1_defconfig => stm32mp_defconfig}    | 2 +-
+ arch/arm/{mach-stm32mp1 => mach-stm32mp}/Kconfig              | 2 +-
+ arch/arm/{mach-stm32mp1 => mach-stm32mp}/Makefile             | 0
+ .../{mach-stm32mp1 => mach-stm32mp}/include/mach/debug_ll.h   | 0
+ arch/arm/{mach-stm32mp1 => mach-stm32mp}/include/mach/stm32.h | 0
+ images/Makefile                                               | 2 +-
+ images/{Makefile.stm32mp1 => Makefile.stm32mp}                | 0
+ 9 files changed, 6 insertions(+), 6 deletions(-)
+ rename arch/arm/configs/{stm32mp1_defconfig => stm32mp_defconfig} (98%)
+ rename arch/arm/{mach-stm32mp1 => mach-stm32mp}/Kconfig (87%)
+ rename arch/arm/{mach-stm32mp1 => mach-stm32mp}/Makefile (100%)
+ rename arch/arm/{mach-stm32mp1 => mach-stm32mp}/include/mach/debug_ll.h (100%)
+ rename arch/arm/{mach-stm32mp1 => mach-stm32mp}/include/mach/stm32.h (100%)
+ rename images/{Makefile.stm32mp1 => Makefile.stm32mp} (100%)
 
-diff --git a/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c b/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
-index a5ac6f64c..9672a69bf 100644
---- a/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
-+++ b/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
-@@ -271,11 +271,6 @@ static noinline void rdu2_sram_setup(void)
- 	enum bootsource bootsrc;
- 	int instance;
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 480c6f011797..1d4b6e09ce79 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -207,7 +207,7 @@ config ARCH_S3C64xx
+ 	select CPU_V6
+ 	select GENERIC_GPIO
  
--	imx6_ungate_all_peripherals();
--
--	if (IS_ENABLED(CONFIG_DEBUG_LL))
--		setup_uart();
--
- 	arm_setup_stack(0x00920000 - 8);
- 	relocate_to_current_adr();
- 	setup_c();
-@@ -296,6 +291,11 @@ ENTRY_FUNCTION(start_imx6_zii_rdu2, r0, r1, r2)
- {
- 	imx6_cpu_lowlevel_init();
+-config ARCH_STM32MP1
++config ARCH_STM32MP
+ 	bool "ST stm32mp1xx"
+ 	select CPU_V7
+ 	select HAVE_PBL_MULTI_IMAGES
+@@ -304,7 +304,7 @@ source "arch/arm/mach-pxa/Kconfig"
+ source "arch/arm/mach-rockchip/Kconfig"
+ source "arch/arm/mach-samsung/Kconfig"
+ source "arch/arm/mach-socfpga/Kconfig"
+-source "arch/arm/mach-stm32mp1/Kconfig"
++source "arch/arm/mach-stm32mp/Kconfig"
+ source "arch/arm/mach-versatile/Kconfig"
+ source "arch/arm/mach-vexpress/Kconfig"
+ source "arch/arm/mach-tegra/Kconfig"
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 4d54f339f15c..5cb46f661335 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -98,7 +98,7 @@ machine-$(CONFIG_ARCH_PXA)		:= pxa
+ machine-$(CONFIG_ARCH_ROCKCHIP)		:= rockchip
+ machine-$(CONFIG_ARCH_SAMSUNG)		:= samsung
+ machine-$(CONFIG_ARCH_SOCFPGA)		:= socfpga
+-machine-$(CONFIG_ARCH_STM32MP1)		:= stm32mp1
++machine-$(CONFIG_ARCH_STM32MP)		:= stm32mp
+ machine-$(CONFIG_ARCH_VERSATILE)	:= versatile
+ machine-$(CONFIG_ARCH_VEXPRESS)		:= vexpress
+ machine-$(CONFIG_ARCH_TEGRA)		:= tegra
+diff --git a/arch/arm/configs/stm32mp1_defconfig b/arch/arm/configs/stm32mp_defconfig
+similarity index 98%
+rename from arch/arm/configs/stm32mp1_defconfig
+rename to arch/arm/configs/stm32mp_defconfig
+index 2922ce3632e1..657b2edf57f2 100644
+--- a/arch/arm/configs/stm32mp1_defconfig
++++ b/arch/arm/configs/stm32mp_defconfig
+@@ -1,4 +1,4 @@
+-CONFIG_ARCH_STM32MP1=y
++CONFIG_ARCH_STM32MP=y
+ CONFIG_MACH_STM32MP157C_DK2=y
+ CONFIG_THUMB2_BAREBOX=y
+ CONFIG_ARM_BOARD_APPEND_ATAG=y
+diff --git a/arch/arm/mach-stm32mp1/Kconfig b/arch/arm/mach-stm32mp/Kconfig
+similarity index 87%
+rename from arch/arm/mach-stm32mp1/Kconfig
+rename to arch/arm/mach-stm32mp/Kconfig
+index cc7cf23cfb31..bcf7293c465b 100644
+--- a/arch/arm/mach-stm32mp1/Kconfig
++++ b/arch/arm/mach-stm32mp/Kconfig
+@@ -1,4 +1,4 @@
+-if ARCH_STM32MP1
++if ARCH_STM32MP
  
-+	imx6_ungate_all_peripherals();
-+
-+	if (IS_ENABLED(CONFIG_DEBUG_LL))
-+		setup_uart();
-+
- 	/*
- 	 * When still running in SRAM, we need to setup the DRAM now and load
- 	 * the remaining image.
+ config ARCH_STM32MP1157
+ 	bool
+diff --git a/arch/arm/mach-stm32mp1/Makefile b/arch/arm/mach-stm32mp/Makefile
+similarity index 100%
+rename from arch/arm/mach-stm32mp1/Makefile
+rename to arch/arm/mach-stm32mp/Makefile
+diff --git a/arch/arm/mach-stm32mp1/include/mach/debug_ll.h b/arch/arm/mach-stm32mp/include/mach/debug_ll.h
+similarity index 100%
+rename from arch/arm/mach-stm32mp1/include/mach/debug_ll.h
+rename to arch/arm/mach-stm32mp/include/mach/debug_ll.h
+diff --git a/arch/arm/mach-stm32mp1/include/mach/stm32.h b/arch/arm/mach-stm32mp/include/mach/stm32.h
+similarity index 100%
+rename from arch/arm/mach-stm32mp1/include/mach/stm32.h
+rename to arch/arm/mach-stm32mp/include/mach/stm32.h
+diff --git a/images/Makefile b/images/Makefile
+index 479647a82726..293e644319ea 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -140,7 +140,7 @@ include $(srctree)/images/Makefile.mxs
+ include $(srctree)/images/Makefile.omap3
+ include $(srctree)/images/Makefile.rockchip
+ include $(srctree)/images/Makefile.socfpga
+-include $(srctree)/images/Makefile.stm32mp1
++include $(srctree)/images/Makefile.stm32mp
+ include $(srctree)/images/Makefile.tegra
+ include $(srctree)/images/Makefile.vexpress
+ include $(srctree)/images/Makefile.xburst
+diff --git a/images/Makefile.stm32mp1 b/images/Makefile.stm32mp
+similarity index 100%
+rename from images/Makefile.stm32mp1
+rename to images/Makefile.stm32mp
 -- 
-2.21.0
+2.20.1
 
 
 _______________________________________________
