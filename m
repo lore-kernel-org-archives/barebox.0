@@ -1,11 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hXpGO-0007WP-Qj
- for barebox@lists.infradead.org; Mon, 03 Jun 2019 15:52:46 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Mon,  3 Jun 2019 17:52:37 +0200
-Message-Id: <20190603155237.17768-1-u.kleine-koenig@pengutronix.de>
+ id 1hXsH7-0004tL-UD
+ for barebox@lists.infradead.org; Mon, 03 Jun 2019 19:05:47 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <afa@pengutronix.de>) id 1hXsH3-00071t-JQ
+ for barebox@lists.infradead.org; Mon, 03 Jun 2019 21:05:37 +0200
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>) id 1hXsH3-00043X-CV
+ for barebox@lists.infradead.org; Mon, 03 Jun 2019 21:05:37 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon,  3 Jun 2019 21:05:35 +0200
+Message-Id: <20190603190535.15346-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,28 +23,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] plathome-openblocks-a6: provide a kwbimage.cfg file
+Subject: [PATCH] commands: don't use stale errno when calling fb_open
 To: barebox@lists.infradead.org
 
-U2luY2Ugc3VwcG9ydCBmb3IgT3BlbmJsb2NrcyBBNiB3YXMgaW50cm9kdWNlZCBpbiAyMDE0IGFu
-ZCBjb21taXQKOTA2YWZiNTMzMTg2ICgiQVJNOiBtdmVidTogQWRkIFBsYXQnaG9tZSdzIEtpcmt3
-b29kIE9wZW5ibG9ja3MgQTYgYm9hcmQKc3VwcG9ydCIpIHRoZXJlIGlzIG5vIGt3YmltYWdlIGNv
-bmZpZy4gVGhpcyBwYXRjaCBndWVzc2VzIHN1Y2ggYSBmaWxlCnRoYXQgYXQgbGVhc3QgbWFrZXMg
-YmFyZWJveCBjb21waWxlIGFnYWluIHdpdGgKQ09ORklHX01BQ0hfUExBVEhPTUVfT1BFTkJMT0NL
-U19BNj15LgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5p
-Z0BwZW5ndXRyb25peC5kZT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvcGxhdGhvbWUtb3BlbmJsb2Nr
-cy1hNi9rd2JpbWFnZS5jZmcgfCAzICsrKwogMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygr
-KQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9wbGF0aG9tZS1vcGVuYmxvY2tz
-LWE2L2t3YmltYWdlLmNmZwoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9wbGF0aG9tZS1v
-cGVuYmxvY2tzLWE2L2t3YmltYWdlLmNmZyBiL2FyY2gvYXJtL2JvYXJkcy9wbGF0aG9tZS1vcGVu
-YmxvY2tzLWE2L2t3YmltYWdlLmNmZwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAw
-MDAwMDAuLmJhMzAxMTczNmZiNwotLS0gL2Rldi9udWxsCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9w
-bGF0aG9tZS1vcGVuYmxvY2tzLWE2L2t3YmltYWdlLmNmZwpAQCAtMCwwICsxLDMgQEAKK1ZFUlNJ
-T04gMQorQk9PVF9GUk9NIG5hbmQKK0JJTkFSWSAuL2JpbmFyeS4wIDAwMDAwMDViIDAwMDAwMDY4
-Ci0tIAoyLjIwLjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
-cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+fb_open returns a pointer and doesn't populate errno, which will
+results in a stale errno being evaluated by perror() on failure.
+Fix this by populating errno manually at call sites.
+
+While at it, correct the typo in the prefix passed to perror().
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ commands/fbtest.c | 5 +++--
+ commands/splash.c | 5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/commands/fbtest.c b/commands/fbtest.c
+index e5dd8ba7fabf..2c589f77d3b8 100644
+--- a/commands/fbtest.c
++++ b/commands/fbtest.c
+@@ -271,8 +271,9 @@ static int do_fbtest(int argc, char *argv[])
+ 
+ 	sc = fb_open(fbdev);
+ 	if (IS_ERR(sc)) {
+-		perror("fd_open");
+-		return PTR_ERR(sc);
++		errno = PTR_ERR(sc);
++		perror("fb_open");
++		return errno;
+ 	}
+ 
+ 	if (!pattern_name) {
+diff --git a/commands/splash.c b/commands/splash.c
+index 2b70b296837e..75b3ee3fadaf 100644
+--- a/commands/splash.c
++++ b/commands/splash.c
+@@ -54,8 +54,9 @@ static int do_splash(int argc, char *argv[])
+ 
+ 	sc = fb_open(fbdev);
+ 	if (IS_ERR(sc)) {
+-		perror("fd_open");
+-		return PTR_ERR(sc);
++		errno = PTR_ERR(sc);
++		perror("fb_open");
++		return errno;
+ 	}
+ 
+ 	buf = gui_screen_render_buffer(sc);
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
