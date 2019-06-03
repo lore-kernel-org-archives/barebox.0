@@ -1,14 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hY1s1-0002Wp-3c
- for barebox@lists.infradead.org; Tue, 04 Jun 2019 05:20:27 +0000
-Received: by mail-pg1-x543.google.com with SMTP id a3so2231418pgb.3
- for <barebox@lists.infradead.org>; Mon, 03 Jun 2019 22:20:23 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  3 Jun 2019 22:19:56 -0700
-Message-Id: <20190604052003.3189-1-andrew.smirnov@gmail.com>
+ id 1hXfI2-0000CC-C4
+ for barebox@lists.infradead.org; Mon, 03 Jun 2019 05:13:48 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=a3f-osx.local)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+ (envelope-from <a.fatoum@pengutronix.de>) id 1hXfI0-0003lM-UY
+ for barebox@lists.infradead.org; Mon, 03 Jun 2019 07:13:44 +0200
+References: <20190602073101.21352-1-antonynpavlov@gmail.com>
+ <20190602073101.21352-3-antonynpavlov@gmail.com>
+ <037537a6-f2b3-7042-3459-9b27105011b4@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <939461e4-d47a-039b-3938-fafc4059826b@pengutronix.de>
+Date: Mon, 3 Jun 2019 07:13:44 +0200
 MIME-Version: 1.0
+In-Reply-To: <037537a6-f2b3-7042-3459-9b27105011b4@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,70 +29,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/7] U-Boot environment data as a filesystem
+Subject: Re: [RFC 2/4] serial: add litex UART driver
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Everyone:
 
-This series adds code needed to expose U-Boot environemnt variable
-data partition as a regular filesystem in Barebox. It currently only
-supports the use-case where environment is stored on SD/MMC device,
-since that is the only use-case I have access to for testing, however
-adding support for other cases should be relatively
-straightforward.
 
-Feedback is welcome!
+On 3/6/19 07:10, Ahmad Fatoum wrote:
+> On 2/6/19 09:30, Antony Pavlov wrote:
+>> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+>> ---
+>>  drivers/serial/Makefile       |  1 +
+>>  drivers/serial/serial_litex.c | 99 +++++++++++++++++++++++++++++++++++
+>>  2 files changed, 100 insertions(+)
+>>
+>> diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+>> index 4174cc1ffb..fa86aa8c05 100644
+>> --- a/drivers/serial/Makefile
+>> +++ b/drivers/serial/Makefile
 
-Changes since [v1]:
+>> +
+>> +#include <mach/debug_ll.h>
+> 
+> left-over header?
 
-    - ubootvar changed to not rely on struct resource
-    */mem_write/mem_read etc. and use a private pointer instead
-
-    - ubootvar changed to handle the case of no valid environment data
-      by allocation parition 0 as empty/new
-      
-    - Added documentation for ubootvarfs as well as ubootvar DT
-      bindings
-
-Thanks,
-Andrey Smirnov
-
-[v1] http://lists.infradead.org/pipermail/barebox/2019-May/038223.html
-
-Andrey Smirnov (6):
-  filetype: Add "U-Boot environmemnt variable data" filetype
-  filetype: Allow specifying cdev's filetype explicitly
-  drivers: Introduce late_platform_driver()
-  misc: Add a driver to expose U-Boot environment variable data
-  fs: Add a driver to access U-Boot environment variables
-  ARM: rdu2: Add U-Boot environment partitions
-
-Cory Tusar (1):
-  ARM: rdu1: Add U-Boot environment partition
-
- .../barebox/barebox,uboot-environment.rst     |  43 ++
- Documentation/filesystems/ubootvarfs.rst      |  28 +
- arch/arm/dts/imx51-zii-rdu1.dts               |  21 +
- arch/arm/dts/imx6qdl-zii-rdu2.dtsi            |  27 +
- common/filetype.c                             |   8 +
- drivers/misc/Kconfig                          |  12 +
- drivers/misc/Makefile                         |   1 +
- drivers/misc/ubootvar.c                       | 360 +++++++++++++
- fs/Kconfig                                    |   8 +
- fs/Makefile                                   |   1 +
- fs/ubootvarfs.c                               | 499 ++++++++++++++++++
- include/driver.h                              |   4 +
- include/filetype.h                            |   1 +
- 13 files changed, 1013 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/barebox/barebox,uboot-environment.rst
- create mode 100644 Documentation/filesystems/ubootvarfs.rst
- create mode 100644 drivers/misc/ubootvar.c
- create mode 100644 fs/ubootvarfs.c
+Ah never mind, it's used for the register definitions.
 
 -- 
-2.21.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
