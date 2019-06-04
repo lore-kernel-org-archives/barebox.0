@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hY3Hz-00016m-2P
- for barebox@lists.infradead.org; Tue, 04 Jun 2019 06:51:21 +0000
-Date: Tue, 4 Jun 2019 08:51:17 +0200
+ id 1hY3N3-0004yr-01
+ for barebox@lists.infradead.org; Tue, 04 Jun 2019 06:56:35 +0000
+Date: Tue, 4 Jun 2019 08:56:31 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190604065117.nhgay4nbswjmuwnx@pengutronix.de>
-References: <20190531074102.28035-1-a.fatoum@pengutronix.de>
+Message-ID: <20190604065631.xjvyua5soolae66u@pengutronix.de>
+References: <20190531102939.26054-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190531074102.28035-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20190531102939.26054-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +22,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH RFC] ARM: imx8: fix discrepancy between comment and code
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] ARM: zii-common: add missing stddef.h include
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, May 31, 2019 at 09:41:02AM +0200, Ahmad Fatoum wrote:
-> The comment speaks of a one second polling timeout, while the polling
-> is indefinite with timeout not accounted for. Thus change the comment
-> to reflect the actual behavior.
+On Fri, May 31, 2019 at 12:29:39PM +0200, Lucas Stach wrote:
+> It's required for size_t types.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 > ---
->  arch/arm/mach-imx/imx8-ddrc.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  arch/arm/boards/zii-common/pn-fixup.h | 2 ++
+>  1 file changed, 2 insertions(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/mach-imx/imx8-ddrc.c b/arch/arm/mach-imx/imx8-ddrc.c
-> index 18454a91533b..736865eb6f12 100644
-> --- a/arch/arm/mach-imx/imx8-ddrc.c
-> +++ b/arch/arm/mach-imx/imx8-ddrc.c
-> @@ -29,7 +29,7 @@ static u32 ddrc_phy_get_message(void __iomem *phy, int type)
+> diff --git a/arch/arm/boards/zii-common/pn-fixup.h b/arch/arm/boards/zii-common/pn-fixup.h
+> index 39b848bd00d3..925e8ad63491 100644
+> --- a/arch/arm/boards/zii-common/pn-fixup.h
+> +++ b/arch/arm/boards/zii-common/pn-fixup.h
+> @@ -15,6 +15,8 @@
+>  #ifndef __ZII_PN_FIXUP__
+>  #define __ZII_PN_FIXUP__
 >  
->  	/*
->  	 * When BIT0 set to 0, the PMU has a message for the user
-> -	 * 10ms seems not enough for poll message, so use 1s here.
-> +	 * Wait for it indefinitely.
->  	 */
->  	readl_poll_timeout(phy + DDRC_PHY_REG(0xd0004),
->  			   r, !(r & BIT(0)), 0);
-> @@ -104,4 +104,4 @@ void ddrc_phy_wait_training_complete(void __iomem *phy)
->  		putc_ll('\r');
->  		putc_ll('\n');
->  	}
-> -}
-> \ No newline at end of file
-> +}
+> +#include <linux/stddef.h>
+> +
+>  struct zii_pn_fixup {
+>  	const char *pn;
+>  	void (*callback) (const struct zii_pn_fixup *fixup);
 > -- 
 > 2.20.1
 > 
