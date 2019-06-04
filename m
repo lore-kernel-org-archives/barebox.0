@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hY4V5-0006Oa-Nr
- for barebox@lists.infradead.org; Tue, 04 Jun 2019 08:08:57 +0000
-Date: Tue, 4 Jun 2019 10:08:53 +0200
+ id 1hY4nm-0007uj-Mi
+ for barebox@lists.infradead.org; Tue, 04 Jun 2019 08:28:19 +0000
+Date: Tue, 4 Jun 2019 10:28:12 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190604080853.gna2e3lrkh5i22gz@pengutronix.de>
-References: <20190603190535.15346-1-a.fatoum@pengutronix.de>
+Message-ID: <20190604082812.qnn5hxv24pbq55pq@pengutronix.de>
+References: <20190603192857.28852-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190603190535.15346-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20190603192857.28852-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,43 +22,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: don't use stale errno when calling fb_open
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] ARM: rdu2: Initialize DEBUG_LL in entry function
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jun 03, 2019 at 09:05:35PM +0200, Ahmad Fatoum wrote:
-> fb_open returns a pointer and doesn't populate errno, which will
-> results in a stale errno being evaluated by perror() on failure.
-> Fix this by populating errno manually at call sites.
+On Mon, Jun 03, 2019 at 12:28:57PM -0700, Andrey Smirnov wrote:
+> When bootstrapping Barebox via JTAG rdu2_sram_setup() won't be
+> executed resulting in non functional DEBUG_LL API. Move low-level UART
+> initialization code to be a part of start_imx6_zii_rdu2() to avoid
+> that problem.
 > 
-> While at it, correct the typo in the prefix passed to perror().
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  commands/fbtest.c | 5 +++--
->  commands/splash.c | 5 +++--
->  2 files changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/commands/fbtest.c b/commands/fbtest.c
-> index e5dd8ba7fabf..2c589f77d3b8 100644
-> --- a/commands/fbtest.c
-> +++ b/commands/fbtest.c
-> @@ -271,8 +271,9 @@ static int do_fbtest(int argc, char *argv[])
->  
->  	sc = fb_open(fbdev);
->  	if (IS_ERR(sc)) {
-> -		perror("fd_open");
-> -		return PTR_ERR(sc);
-> +		errno = PTR_ERR(sc);
-> +		perror("fb_open");
-> +		return errno;
->  	}
+>  arch/arm/boards/zii-imx6q-rdu2/lowlevel.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
 
-I would also prefer a printf() message along with a strerror(). Setting
-a global variable when the result is only used in this function looks
-odd.
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c b/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
+> index a5ac6f64c..9672a69bf 100644
+> --- a/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
+> +++ b/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
+> @@ -271,11 +271,6 @@ static noinline void rdu2_sram_setup(void)
+>  	enum bootsource bootsrc;
+>  	int instance;
+>  
+> -	imx6_ungate_all_peripherals();
+> -
+> -	if (IS_ENABLED(CONFIG_DEBUG_LL))
+> -		setup_uart();
+> -
+>  	arm_setup_stack(0x00920000 - 8);
+>  	relocate_to_current_adr();
+>  	setup_c();
+> @@ -296,6 +291,11 @@ ENTRY_FUNCTION(start_imx6_zii_rdu2, r0, r1, r2)
+>  {
+>  	imx6_cpu_lowlevel_init();
+>  
+> +	imx6_ungate_all_peripherals();
+> +
+> +	if (IS_ENABLED(CONFIG_DEBUG_LL))
+> +		setup_uart();
+> +
+>  	/*
+>  	 * When still running in SRAM, we need to setup the DRAM now and load
+>  	 * the remaining image.
+> -- 
+> 2.21.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
