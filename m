@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-vs1-xe30.google.com ([2607:f8b0:4864:20::e30])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hYOIM-0002gM-D1
- for barebox@lists.infradead.org; Wed, 05 Jun 2019 05:17:08 +0000
-Date: Wed, 5 Jun 2019 07:17:03 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <20190605051703.gg6q43p5smhxzci4@pengutronix.de>
-References: <20190604105552.20619-1-pmamonov@gmail.com>
- <20190604124457.25u3p7mgfvxrbqjh@pengutronix.de>
- <20190604164311.z5zo4qrfqbt5zalf@localhost.localdomain>
+ id 1hY30R-0002QV-Gj
+ for barebox@lists.infradead.org; Tue, 04 Jun 2019 06:33:12 +0000
+Received: by mail-vs1-xe30.google.com with SMTP id o5so12840998vsq.4
+ for <barebox@lists.infradead.org>; Mon, 03 Jun 2019 23:33:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190604164311.z5zo4qrfqbt5zalf@localhost.localdomain>
+From: Valentina Rusu <skorpyon1992@gmail.com>
+Date: Tue, 4 Jun 2019 09:32:59 +0300
+Message-ID: <CAPYMOwmwmX3G0cHp6DSmw+GxRmENThtABnQdSS-2cL=kgfYYPg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,34 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: use anonymous labels in ENTRY_FUNCTION_END and
- STOP_WITH_DEBUG_EVENT macros
-To: Peter Mamonov <pmamonov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Raspberry Pi Barebox State Integration - SD card
+To: barebox@lists.infradead.org
 
-On Tue, Jun 04, 2019 at 07:43:12PM +0300, Peter Mamonov wrote:
-> Hi, Oleksij,
-> 
-> On Tue, Jun 04, 2019 at 02:44:57PM +0200, Oleksij Rempel wrote:
-> > On Tue, Jun 04, 2019 at 01:55:52PM +0300, Peter Mamonov wrote:
-> > > Use of global labels of the same name inside ENTRY_FUNCTION_END and
-> > > STOP_WITH_DEBUG_EVENT prevents simultaneous use of both macros. It also
-> > > prevents multiple use of one of them.
-> > 
-> > Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> > 
-> > @Peter, Do you use STOP_WITH_DEBUG_EVENT for something?
-> 
-> Actually no. I hit this problem when tried to use ENTRY_FUNCTION_END twice to 
-> choose relevant DTB depending on some conditions.
+    Hello guys,
 
-was you able to implement it?
+I want to integrate Barebox state for Raspberry Pi 3 in order to use
+it along Barebox bootchooser and RAUC software update.
+I have built my image using Yocto Pyro 2.3.2, barebox 2019.04.0 (added
+a recipe in my meta layer, based on meta-barebox).
+I have integrated Barebox bootchooser and tested it with some
+hardcoded values for the target priority and remaining attempts. Works
+fine.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+The issue to integrate Barebox state are the following:
+* we need to specify a backend for the "state" node;
+* the backend should point to an of partition on a non-volatile memory;
+* other boards have EEPROM, NAND besides SD card and they are
+described in the device tree; RPi has no such thing;
+* somehow I need to write the state on the SD card in a location where
+does not interfere with the partitions created (boot, rootfs, user
+partitions, etc);
+* the SD card device (mci0) is automatically detected at startup, and
+not described in the device tree;
+
+I need to know how should I proceed? How should I describe that
+"dynamic" device in my device tree, so I could point it in the
+"backend" variable of the state node?
+
+Thank you very much!
+
+      Best regards,
+       Vali.
 
 _______________________________________________
 barebox mailing list
