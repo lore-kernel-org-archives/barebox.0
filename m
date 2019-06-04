@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201]
- helo=margratgarlick.emantor.de)
- by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hZ8VN-0004Ym-7y
- for barebox@lists.infradead.org; Fri, 07 Jun 2019 06:37:39 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Fri,  7 Jun 2019 08:36:55 +0200
-Message-Id: <20190607063652.8961-3-r.czerwinski@pengutronix.de>
-In-Reply-To: <20190607063652.8961-1-r.czerwinski@pengutronix.de>
-References: <20190607063652.8961-1-r.czerwinski@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1hYCgS-00039c-MU
+ for barebox@lists.infradead.org; Tue, 04 Jun 2019 16:53:14 +0000
+From: Bastian Krause <bst@pengutronix.de>
+Date: Tue,  4 Jun 2019 18:53:06 +0200
+Message-Id: <20190604165308.15229-1-bst@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,130 +19,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/3] add gdb helper scripts to load barebox symbols
+Subject: [PATCH 1/3] scripts: imx-image: document -d, -e, -s, -u
 To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: Bastian Krause <bst@pengutronix.de>
 
-Add a gdb script with two helper functions which use the new
-pbl_barebox_break symbol to calculate the current barebox load address
-on the device and loads a barebox ELF file to this address.
-
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Signed-off-by: Bastian Krause <bst@pengutronix.de>
 ---
- Documentation/user/debugging.rst   | 21 +++++++++++
- Documentation/user/user-manual.rst |  1 +
- scripts/gdb/helper.py              | 60 ++++++++++++++++++++++++++++++
- 3 files changed, 82 insertions(+)
- create mode 100644 Documentation/user/debugging.rst
- create mode 100644 scripts/gdb/helper.py
+ scripts/imx/imx-image.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/Documentation/user/debugging.rst b/Documentation/user/debugging.rst
-new file mode 100644
-index 0000000000..15cb439043
---- /dev/null
-+++ b/Documentation/user/debugging.rst
-@@ -0,0 +1,21 @@
-+Debugging with OpenOCD
-+======================
-+
-+Barebox can be configured to break on prebootloader and main barebox entry. This
-+breakpoint can not be resumed and will stop the board to allow the user to
-+attach a JTAG debugger with OpenOCD. Additionally, barebox provides helper
-+scripts to load the symbols from the ELF binaries.
-+The python scripts require `pyelftools`.
-+To load the scripts into your gdb session, run the following command in the
-+barebox directory:
-+
-+.. code-block:: none
-+
-+    (gdb) source scripts/gdb/helper.py
-+
-+This makes two new commands available in gdb, `bb-load-symbols` and
-+`bb-skip-break`. `bb-load-symbols` can load either the main `barebox` file or
-+one of the .pbl files in the image directories. The board needs to be stopped in
-+either the prebootloader or main barebox breakpoint, and gdb needs to be
-+connected to OpenOCD. To continue booting the board, `bb-skip-break` jumps over
-+the breakpoint and continues the barebox execution.
-diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
-index 516b760b1b..f04981c3f0 100644
---- a/Documentation/user/user-manual.rst
-+++ b/Documentation/user/user-manual.rst
-@@ -33,6 +33,7 @@ Contents:
-    system-reset
-    state
-    random
-+   debugging
- 
- * :ref:`search`
- * :ref:`genindex`
-diff --git a/scripts/gdb/helper.py b/scripts/gdb/helper.py
-new file mode 100644
-index 0000000000..4041789890
---- /dev/null
-+++ b/scripts/gdb/helper.py
-@@ -0,0 +1,60 @@
-+#!/usr/bin/env python
-+
-+import gdb
-+
-+try:
-+    from elftools.elf.elffile import ELFFile
-+    from elftools.common.exceptions import ELFError
-+except ImportError:
-+    gdb.write("The barebox helper requires pyelftools\n", gdb.STDERR)
-+    exit(1)
-+
-+
-+class BBSymbols(gdb.Command):
-+
-+    def __init__(self):
-+        super(BBSymbols, self).__init__("bb-load-symbols", gdb.COMMAND_FILES,
-+                                        gdb.COMPLETE_FILENAME)
-+
-+    def invoke(self, argument, from_tty):
-+        path = argument
-+        f = open(path, 'rb')
-+
-+        try:
-+            elf = ELFFile(f)
-+        except ELFError:
-+            gdb.write("Selected file is not an ELF file\n", gdb.STDERR)
-+            return
-+
-+        section = elf.get_section_by_name(".symtab")
-+        if section is None:
-+            gdb.write("Section .symtab not found\n", gdb.STDERR)
-+            return
-+        symbol = section.get_symbol_by_name("pbl_barebox_break")
-+        if not symbol:
-+            gdb.write("Symbol pbl_barebox_break in section {} in file {} not found\n"
-+                      .format(section.name, self.path), gdb.STDERR)
-+            return
-+        symbol = symbol[0]
-+        pc = gdb.parse_and_eval("$pc")
-+        symbol_address = int(symbol.entry.st_value)
-+        address = int(pc) - symbol_address + 1
-+        gdb.execute("symbol-file")
-+        gdb.execute("add-symbol-file {} {}".format(path, address))
-+
-+
-+BBSymbols()
-+
-+
-+class BBSkip(gdb.Command):
-+
-+    def __init__(self):
-+        super(BBSkip, self).__init__("bb-skip-break", gdb.COMMAND_BREAKPOINTS)
-+
-+    def invoke(self, arg, from_tty):
-+        pc = gdb.parse_and_eval("$pc")
-+        nop_address = int(pc) + 2
-+        gdb.execute("jump *{}".format(nop_address))
-+
-+
-+BBSkip()
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index a7f1421fa3..90be8a9b9b 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -363,6 +363,15 @@ static void usage(const char *prgname)
+ 		"-b           add barebox header to image. If used, barebox recognizes\n"
+ 		"             the image as regular barebox image which can be used as\n"
+ 		"             second stage image\n"
++		"-d           write DCD table only\n"
++		"-e           prepare image for encryption and use Freescale's Code Signing\n"
++		"             to encrypt image. Note that the device-specific encapsulated\n"
++		"             DEK as cryptgraphic blob needs to be appended afterwards\n"
++		"-s           use Freescale's Code Signing Tool (CST) to sign the image\n"
++		"             'cst' is expected to be in PATH or given via the environment\n"
++		"             variable 'CST'\n"
++		"-u           create USB image suitable for imx-usb-loader\n"
++		"             necessary for signed images (-s) only\n"
+ 		"-h           this help\n", prgname);
+ 	exit(1);
+ }
 -- 
-2.21.0
+2.20.1
 
 
 _______________________________________________
