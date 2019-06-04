@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hY1s1-0002X8-H2
- for barebox@lists.infradead.org; Tue, 04 Jun 2019 05:20:27 +0000
-Received: by mail-pg1-x543.google.com with SMTP id 20so9637055pgr.4
- for <barebox@lists.infradead.org>; Mon, 03 Jun 2019 22:20:25 -0700 (PDT)
+ id 1hY1s4-0002XX-U6
+ for barebox@lists.infradead.org; Tue, 04 Jun 2019 05:20:30 +0000
+Received: by mail-pl1-x643.google.com with SMTP id i2so3519628plt.1
+ for <barebox@lists.infradead.org>; Mon, 03 Jun 2019 22:20:27 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  3 Jun 2019 22:19:58 -0700
-Message-Id: <20190604052003.3189-3-andrew.smirnov@gmail.com>
+Date: Mon,  3 Jun 2019 22:19:59 -0700
+Message-Id: <20190604052003.3189-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20190604052003.3189-1-andrew.smirnov@gmail.com>
 References: <20190604052003.3189-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,64 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/7] filetype: Allow specifying cdev's filetype explicitly
+Subject: [PATCH v2 3/7] drivers: Introduce late_platform_driver()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Allow specifying cdev's filetype explicitly to support the cases where
-the type of a cdev is known apriori, yet cannot be determined by
-reading the cdev's content.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/filetype.c | 6 ++++++
- include/driver.h  | 2 ++
- 2 files changed, 8 insertions(+)
+ include/driver.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/common/filetype.c b/common/filetype.c
-index 429911533..e4c8005b5 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -425,6 +425,11 @@ enum filetype cdev_detect_type(const char *name)
- 	if (!cdev)
- 		return type;
- 
-+	if (cdev->filetype != filetype_unknown) {
-+		type = cdev->filetype;
-+		goto cdev_close;
-+	}
-+
- 	buf = xzalloc(FILE_TYPE_SAFE_BUFSIZE);
- 	ret = cdev_read(cdev, buf, FILE_TYPE_SAFE_BUFSIZE, 0, 0);
- 	if (ret < 0)
-@@ -434,6 +439,7 @@ enum filetype cdev_detect_type(const char *name)
- 
- err_out:
- 	free(buf);
-+cdev_close:
- 	cdev_close(cdev);
- 	return type;
- }
 diff --git a/include/driver.h b/include/driver.h
-index 26ec413bd..fe2d30ab5 100644
+index fe2d30ab5..300603fa3 100644
 --- a/include/driver.h
 +++ b/include/driver.h
-@@ -22,6 +22,7 @@
- #include <linux/list.h>
- #include <linux/ioport.h>
- #include <of.h>
-+#include <filetype.h>
+@@ -420,6 +420,8 @@ int platform_driver_register(struct driver_d *drv);
+ 	register_driver_macro(device,platform,drv)
+ #define console_platform_driver(drv)	\
+ 	register_driver_macro(console,platform,drv)
++#define late_platform_driver(drv)	\
++	register_driver_macro(late,platform,drv)
  
- #define FORMAT_DRIVER_NAME_ID	"%s%d"
+ int platform_device_register(struct device_d *new_device);
  
-@@ -464,6 +465,7 @@ struct cdev {
- 	struct list_head link_entry, links;
- 	struct list_head partition_entry, partitions;
- 	struct cdev *master;
-+	enum filetype filetype;
- };
- 
- int devfs_create(struct cdev *);
 -- 
 2.21.0
 
