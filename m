@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from mail-it1-x142.google.com ([2607:f8b0:4864:20::142])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hY1s5-0002Yt-Se
- for barebox@lists.infradead.org; Tue, 04 Jun 2019 05:20:38 +0000
-Received: by mail-pl1-x643.google.com with SMTP id s24so7717161plr.8
- for <barebox@lists.infradead.org>; Mon, 03 Jun 2019 22:20:29 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  3 Jun 2019 22:20:01 -0700
-Message-Id: <20190604052003.3189-6-andrew.smirnov@gmail.com>
-In-Reply-To: <20190604052003.3189-1-andrew.smirnov@gmail.com>
-References: <20190604052003.3189-1-andrew.smirnov@gmail.com>
+ id 1hY2eq-0002gc-Ki
+ for barebox@lists.infradead.org; Tue, 04 Jun 2019 06:10:54 +0000
+Received: by mail-it1-x142.google.com with SMTP id a186so31606154itg.0
+ for <barebox@lists.infradead.org>; Mon, 03 Jun 2019 23:10:52 -0700 (PDT)
 MIME-Version: 1.0
+References: <20190531090224.21707-1-a.fatoum@pengutronix.de>
+ <CAHQ1cqEMhG-AYqzheMgnU+G_72ct6RM7ZesUJe9+aEeVhAAEEQ@mail.gmail.com>
+ <526b9d05-aba4-7d13-f409-0716b10e0176@pengutronix.de>
+In-Reply-To: <526b9d05-aba4-7d13-f409-0716b10e0176@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 3 Jun 2019 23:10:39 -0700
+Message-ID: <CAHQ1cqFkS2MGmhi-j2X8j8gtiKMH24QwNFmLkknpKvHHGRyLOg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,592 +25,129 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/7] fs: Add a driver to access U-Boot environment variables
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Cory Tusar <cory.tusar@zii.aero>
+Subject: Re: [PATCH] ARM: panic with a message when relocation type is unknown
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Add a driver working on top of ubootvar device and exposing U-Boot
-environment variable data as files.
+On Mon, Jun 3, 2019 at 6:03 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+>
+> Hello Andrey,
+>
+> On 31/5/19 20:56, Andrey Smirnov wrote:
+> > On Fri, May 31, 2019 at 2:02 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+> >>
+> >> Currently such failures result in a
+> >>
+> >>         >00000000 00000000
+> >>
+> >>         ### ERROR ### Please RESET the board ###
+> >>
+> >> With this patch this now becomes
+> >>
+> >>         >00000000 00000000
+> >>         Unknown relocation type
+> >>         ### ERROR ### Please RESET the board ###
+> >>
+> >> which improves user experience a little bit.
+> >>
+> >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> >> ---
+> >>  arch/arm/cpu/common.c | 4 ++--
+> >>  1 file changed, 2 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
+> >> index 821cafbf26c2..3668c5977ca9 100644
+> >> --- a/arch/arm/cpu/common.c
+> >> +++ b/arch/arm/cpu/common.c
+> >> @@ -78,7 +78,7 @@ void relocate_to_current_adr(void)
+> >>                         putc_ll(' ');
+> >>                         puthex_ll(rel->r_addend);
+> >>                         putc_ll('\n');
+> >> -                       panic("");
+> >> +                       panic("Unknown relocation type");
+> >>                 }
+> >>
+> >>                 dstart += sizeof(*rel);
+> >> @@ -108,7 +108,7 @@ void relocate_to_current_adr(void)
+> >>                         putc_ll(' ');
+> >>                         puthex_ll(rel->r_offset);
+> >>                         putc_ll('\n');
+> >> -                       panic("");
+> >> +                       panic("Unknown relocation type");
+> >
+> > Looking at this code makes me wonder if calls to panic() are even
+> > appropriate here. I am not sure there's any guarantee that by the time
+> > we get to this line relocation for "Unknown relocation type"(or
+> > original "") string would be processed and panic() would get right
+> > arguments not to mention all of the functions called as a part of
+> > panic() and their potential dependencies. Another thing about painc()
+> > is in PBL it completely ignores passed arguments, so no message will
+> > be printed there.
+> >
+> > Maybe it'd make sense to go in a different direction and drop calls to
+> > panic() altogether and replace them with:
+> >
+> > puts_ll(relocation_failed_message());
+> > hang();
+> >
+> > where relocation_failed_message() on ARM can be something like:
+> >
+> > .section .text.relocation_failed_message
+> > ENTRY(relocation_failed_message)
+> > push {lr}
+> > bl 1f
+> > .byte 'U, 'n, 'k, 'n, 'o, 'w, 'n, '\ , 'r, 'e, 'l, 'o, 'c, 'a, 't, 'i,
+> > 'o, 'n, '\ , 't, 'y, 'p, 'e, '\r, '\n, 0x00
+> > 1:
+> > mov r0, lr
+> > /* In case we are in thumb */
+> > bic r0, r0, #1
+> > pop {pc}
+> > ENDPROC(relocation_failed_message)
+> >
+> > to guarantee that it won't depend on relocation? Might be an overkill
+> > though, so take this with a grain of salt.
+>
+> In my particular case, the string literal was already being accessed relative
+> to the program counter.
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-Signed-off-by: Cory Tusar <cory.tusar@zii.aero>
----
- Documentation/filesystems/ubootvarfs.rst |  28 ++
- fs/Kconfig                               |   8 +
- fs/Makefile                              |   1 +
- fs/ubootvarfs.c                          | 499 +++++++++++++++++++++++
- 4 files changed, 536 insertions(+)
- create mode 100644 Documentation/filesystems/ubootvarfs.rst
- create mode 100644 fs/ubootvarfs.c
+I think that would really be arch dependent. If you were testing on
+AArch64, which is much better about PC-relative addressing, then yeah,
+that's what I'd expect. In the case of ARM however what we get is
+(RDU2 in my case):
 
-diff --git a/Documentation/filesystems/ubootvarfs.rst b/Documentation/filesystems/ubootvarfs.rst
-new file mode 100644
-index 000000000..0433b1294
---- /dev/null
-+++ b/Documentation/filesystems/ubootvarfs.rst
-@@ -0,0 +1,28 @@
-+.. index:: ubootvarfs (filesystem)
-+
-+.. _filesystems_ubootvarfs:
-+
-+U-Boot environment filesystem
-+=============================
-+
-+barebox supports accessing U-Boot environment contents as a regular
-+filesystems in both read and write modes.  U-Boot environment data
-+(ubootvar) device supports automount, so no explicit mount command
-+should be necessary and accessing the environment should be as easy
-+as:
-+
-+.. code-block:: console
-+
-+  barebox:/ ls -l /mnt/ubootvar0
-+
-+However the filesystem can be explicitly mounted with the following
-+command:
-+
-+.. code-block:: console
-+
-+  barebox:/ mount -t ubootvarfs /dev/device /mnt/path
-+
-+**NOTE** Current implementation of the filesystem driver uses lazy
-+synchronization, any changes made to the environment will not be
-+written to the medium until the filesystem is unmounted (will happen
-+automatically on Barebox shutdown)
-diff --git a/fs/Kconfig b/fs/Kconfig
-index e3a95321c..adf281a5b 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -118,4 +118,12 @@ config FS_RATP
- 	  This enables support for transferring files over RATP. A host can
- 	  export a directory which can then be mounted under barebox.
- 
-+config FS_UBOOTVARFS
-+	bool
-+	depends on UBOOTVAR
-+	prompt "U-Boot environment variable filesystem support"
-+	help
-+	  This filesystem driver provides access to U-Boot environment
-+	  variables.
-+
- endmenu
-diff --git a/fs/Makefile b/fs/Makefile
-index ac3e6a03a..9889a6507 100644
---- a/fs/Makefile
-+++ b/fs/Makefile
-@@ -18,3 +18,4 @@ obj-$(CONFIG_FS_SMHFS) += smhfs.o
- obj-$(CONFIG_FS_PSTORE) += pstore/
- obj-$(CONFIG_FS_SQUASHFS) += squashfs/
- obj-$(CONFIG_FS_RATP)	+= ratpfs.o
-+obj-$(CONFIG_FS_UBOOTVARFS) += ubootvarfs.o
-diff --git a/fs/ubootvarfs.c b/fs/ubootvarfs.c
-new file mode 100644
-index 000000000..81ec05d5e
---- /dev/null
-+++ b/fs/ubootvarfs.c
-@@ -0,0 +1,499 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright (C) 2019 Zodiac Inflight Innovations
-+ */
-+
-+#define pr_fmt(fmt) "ubootvarfs: " fmt
-+
-+#include <common.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <malloc.h>
-+#include <fs.h>
-+#include <string.h>
-+#include <errno.h>
-+#include <linux/stat.h>
-+#include <xfuncs.h>
-+#include <fcntl.h>
-+#include <efi.h>
-+#include <wchar.h>
-+#include <linux/err.h>
-+#include <linux/ctype.h>
-+
-+/**
-+ * Some theory of operation:
-+ *
-+ * U-Boot environment variable data is expected to be presented as a
-+ * single blob containing an arbitrary number "<key>=<value>\0" pairs
-+ * without any other auxiliary information (accomplished by ubootvar
-+ * driver)
-+ *
-+ * Filesystem driver code in this file parses above data an creates a
-+ * linked list of all of the "variables" found (see @ubootvarfs_var to
-+ * what information is recorded).
-+ *
-+ * With that in place reading or writing file data becomes as trivial
-+ * as looking up a variable in the linked list by name and then
-+ * memcpy()-ing bytes from its value region.
-+ *
-+ * The only moderately tricky part is re-sizing a given file/variable
-+ * since, given the underlying data format, it requires us to move all
-+ * of the key/value data that comes after the given file/variable as
-+ * well as to adjust all of the cached offsets stored in variable
-+ * linked list. See ubootvarfs_adjust() for the implementation
-+ * details.
-+ */
-+
-+/**
-+ * struct ubootvarfs_var - U-Boot environment key-value pair
-+ *
-+ * @list:	Linked list head
-+ * @name:	Pointer to memory containing key string (variable name)
-+ * @name_len:	Variable name's (above) length
-+ * @start:	Start of value in memory
-+ * @end:	End of value in memory
-+ */
-+struct ubootvarfs_var {
-+	struct list_head list;
-+	char *name;
-+	size_t name_len;
-+	char *start;
-+	char *end;
-+};
-+
-+/**
-+ * struct ubootvarfs_data - U-Boot environment data
-+ *
-+ * @var_list:	Linked list of all of the parsed variables
-+ * @fd:		File descriptor of underlying ubootvar device
-+ * @end:	End of U-boot environment
-+ * @limit:	U-boot environment limit (can't grow to go past the limit)
-+ */
-+struct ubootvarfs_data {
-+	struct list_head var_list;
-+	int fd;
-+	char *end;
-+	const char *limit;
-+};
-+
-+struct ubootvarfs_inode {
-+	struct inode inode;
-+	struct ubootvarfs_var *var;
-+	struct ubootvarfs_data *data;
-+};
-+
-+static struct ubootvarfs_inode *inode_to_node(struct inode *inode)
-+{
-+	return container_of(inode, struct ubootvarfs_inode, inode);
-+}
-+
-+static const struct inode_operations ubootvarfs_file_inode_operations;
-+static const struct file_operations ubootvarfs_dir_operations;
-+static const struct inode_operations ubootvarfs_dir_inode_operations;
-+static const struct file_operations ubootvarfs_file_operations;
-+
-+static struct inode *ubootvarfs_get_inode(struct super_block *sb,
-+					  const struct inode *dir,
-+					  umode_t mode,
-+					  struct ubootvarfs_var *var)
-+{
-+	struct inode *inode = new_inode(sb);
-+	struct ubootvarfs_inode *node;
-+
-+	if (!inode)
-+		return NULL;
-+
-+	inode->i_ino = get_next_ino();
-+	inode->i_mode = mode;
-+	if (var)
-+		inode->i_size = var->end - var->start;
-+
-+	node = inode_to_node(inode);
-+	node->var = var;
-+
-+	switch (mode & S_IFMT) {
-+	default:
-+		return NULL;
-+	case S_IFREG:
-+		inode->i_op = &ubootvarfs_file_inode_operations;
-+		inode->i_fop = &ubootvarfs_file_operations;
-+		break;
-+	case S_IFDIR:
-+		inode->i_op = &ubootvarfs_dir_inode_operations;
-+		inode->i_fop = &ubootvarfs_dir_operations;
-+		inc_nlink(inode);
-+		break;
-+	}
-+
-+	return inode;
-+}
-+
-+static struct ubootvarfs_var *
-+ubootvarfs_var_by_name(struct ubootvarfs_data *data, const char *name)
-+{
-+	struct ubootvarfs_var *var;
-+	const size_t len = strlen(name);
-+
-+	list_for_each_entry(var, &data->var_list, list) {
-+		if (len == var->name_len &&
-+		    !memcmp(name, var->name, var->name_len))
-+			return var;
-+	}
-+
-+	return NULL;
-+}
-+
-+static struct dentry *ubootvarfs_lookup(struct inode *dir,
-+					struct dentry *dentry,
-+					unsigned int flags)
-+{
-+	struct super_block *sb = dir->i_sb;
-+	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct ubootvarfs_data *data = fsdev->dev.priv;
-+	struct ubootvarfs_var *var;
-+	struct inode *inode;
-+
-+	var = ubootvarfs_var_by_name(data, dentry->name);
-+	if (!var)
-+		return NULL;
-+
-+	inode = ubootvarfs_get_inode(dir->i_sb, dir, S_IFREG | 0777, var);
-+	if (!inode)
-+		return ERR_PTR(-ENOMEM);
-+
-+	d_add(dentry, inode);
-+
-+	return NULL;
-+}
-+
-+static int ubootvarfs_iterate(struct file *file, struct dir_context *ctx)
-+{
-+	struct dentry *dentry = file->f_path.dentry;
-+	struct inode *inode = d_inode(dentry);
-+	struct ubootvarfs_inode *node = inode_to_node(inode);
-+	struct ubootvarfs_data *data = node->data;
-+	struct ubootvarfs_var *var;
-+
-+	dir_emit_dots(file, ctx);
-+
-+	list_for_each_entry(var, &data->var_list, list)
-+		dir_emit(ctx, var->name, var->name_len, 0, DT_REG);
-+
-+	return 0;
-+}
-+
-+static const struct file_operations ubootvarfs_dir_operations = {
-+	.iterate = ubootvarfs_iterate,
-+};
-+
-+/**
-+ * ubootvarfs_relocate_tail() - Move all of the data after given inode by delta
-+ *
-+ * @node:	Inode marking the start of the data
-+ * @delta:	Offset to move the data by
-+ *
-+ * This function move all of the environment data that starts after
-+ * the given @node by @delta bytes. In case the data is moved towards
-+ * the start of the environment data blob trailing leftover data is
-+ * zeroed out
-+ */
-+static void ubootvarfs_relocate_tail(struct ubootvarfs_inode *node,
-+				     int delta)
-+{
-+	struct ubootvarfs_var *var = node->var;
-+	struct ubootvarfs_data *data = node->data;
-+	const size_t n = data->end - var->start;
-+	void *src = var->end + 1;
-+
-+	memmove(src + delta, src, n);
-+
-+	data->end += delta;
-+
-+	if (delta < 0) {
-+		/*
-+		 * Remove all of the trailing leftovers
-+		 */
-+		memset(data->end, '\0', -delta);
-+	}
-+}
-+
-+/**
-+ * ubootvarfs_adjust() - Adjust the size of a variable blob
-+ *
-+ * @node:	Inode marking where to start adjustement from
-+ * @delta:	Offset to adjust by
-+ *
-+ * This function move all of the environment data that starts after
-+ * the given @node by @delta bytes and updates all of the affected
-+ * ubootvarfs_var's in varaible linked list
-+ */
-+static void ubootvarfs_adjust(struct ubootvarfs_inode *node,
-+			      int delta)
-+{
-+	struct ubootvarfs_var *var = node->var;
-+	struct ubootvarfs_data *data = node->data;
-+
-+	ubootvarfs_relocate_tail(node, delta);
-+
-+	list_for_each_entry_continue(var, &data->var_list, list) {
-+		var->name += delta;
-+		var->start += delta;
-+		var->end += delta;
-+	}
-+}
-+
-+static int ubootvarfs_unlink(struct inode *dir, struct dentry *dentry)
-+{
-+	struct inode *inode = d_inode(dentry);
-+
-+	if (inode) {
-+		struct ubootvarfs_inode *node = inode_to_node(inode);
-+		struct ubootvarfs_var *var = node->var;
-+		/*
-+		 * -1 at the end is to account for '\0' at the end
-+		 * that needs to be removed as well
-+		 */
-+		const int delta = var->name - var->end - 1;
-+
-+		ubootvarfs_adjust(node, delta);
-+
-+		list_del(&var->list);
-+		free(var);
-+	}
-+
-+	return simple_unlink(dir, dentry);
-+}
-+
-+static int ubootvarfs_create(struct inode *dir, struct dentry *dentry,
-+			     umode_t mode)
-+{
-+	struct super_block *sb = dir->i_sb;
-+	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct ubootvarfs_data *data = fsdev->dev.priv;
-+	struct inode *inode;
-+	struct ubootvarfs_var *var;
-+	size_t len = strlen(dentry->name);
-+	/*
-+	 * We'll be adding <varname>=\0\0 to the end of our data, so
-+	 * we need to make sure there's enough room for it. Note that
-+	 * + 3 is to accoutn for '=', and two '\0' from above
-+	 */
-+	if (data->end + len + 3 > data->limit)
-+		return -ENOSPC;
-+
-+	var = xmalloc(sizeof(*var));
-+
-+	var->name = data->end;
-+	memcpy(var->name, dentry->name, len);
-+	var->name_len = len;
-+	var->start = var->name + len;
-+	*var->start++ = '=';
-+	*var->start = '\0';
-+	var->end = var->start;
-+	data->end = var->end + 1;
-+	*data->end = '\0';
-+
-+	list_add_tail(&var->list, &data->var_list);
-+
-+	inode = ubootvarfs_get_inode(sb, dir, mode, var);
-+	d_instantiate(dentry, inode);
-+
-+	return 0;
-+}
-+
-+static const struct inode_operations ubootvarfs_dir_inode_operations = {
-+	.lookup = ubootvarfs_lookup,
-+	.unlink = ubootvarfs_unlink,
-+	.create = ubootvarfs_create,
-+};
-+
-+static struct inode *ubootvarfs_alloc_inode(struct super_block *sb)
-+{
-+	struct ubootvarfs_inode *node;
-+	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct ubootvarfs_data *data = fsdev->dev.priv;
-+
-+	node = xzalloc(sizeof(*node));
-+	node->data = data;
-+
-+	return &node->inode;
-+}
-+
-+static void ubootvarfs_destroy_inode(struct inode *inode)
-+{
-+	struct ubootvarfs_inode *node = inode_to_node(inode);
-+
-+	free(node->var);
-+	free(node);
-+}
-+
-+static const struct super_operations ubootvarfs_ops = {
-+	.alloc_inode = ubootvarfs_alloc_inode,
-+	.destroy_inode = ubootvarfs_destroy_inode,
-+};
-+
-+static int ubootvarfs_io(struct device_d *dev, FILE *f, void *buf,
-+			 size_t insize, bool read)
-+{
-+	struct inode *inode = f->f_inode;
-+	struct ubootvarfs_inode *node = inode_to_node(inode);
-+	void *ptr = node->var->start + f->pos;
-+
-+	if (read)
-+		memcpy(buf, ptr, insize);
-+	else
-+		memcpy(ptr, buf, insize);
-+
-+	return insize;
-+}
-+
-+static int ubootvarfs_read(struct device_d *dev, FILE *f, void *buf,
-+			   size_t insize)
-+{
-+	return ubootvarfs_io(dev, f, buf, insize, true);
-+}
-+
-+static int ubootvarfs_write(struct device_d *dev, FILE *f, const void *buf,
-+			    size_t insize)
-+{
-+	return ubootvarfs_io(dev, f, (void *)buf, insize, false);
-+}
-+
-+static int ubootvarfs_truncate(struct device_d *dev, FILE *f, loff_t size)
-+{
-+	struct inode *inode = f->f_inode;
-+	struct ubootvarfs_inode *node = inode_to_node(inode);
-+	struct ubootvarfs_data *data = node->data;
-+	struct ubootvarfs_var *var = node->var;
-+	const int delta = size - inode->i_size;
-+
-+	if (size == inode->i_size)
-+		return 0;
-+
-+	if (data->end + delta >= data->limit)
-+		return -ENOSPC;
-+
-+	ubootvarfs_adjust(node, delta);
-+
-+	if (delta > 0)
-+		memset(var->end, '\0', delta);
-+
-+	var->end += delta;
-+	*var->end = '\0';
-+
-+	return 0;
-+}
-+
-+static void ubootvarfs_parse(struct ubootvarfs_data *data, char *blob,
-+			     size_t size)
-+{
-+	struct ubootvarfs_var *var;
-+	const char *start = blob;
-+	size_t len;
-+	char *sep;
-+
-+	data->limit = blob + size;
-+	INIT_LIST_HEAD(&data->var_list);
-+
-+	while (*blob) {
-+		var = xmalloc(sizeof(*var));
-+		len = strnlen(blob, size);
-+
-+		var->name = blob;
-+		var->end  = blob + len;
-+
-+		sep = strchr(blob, '=');
-+		if (sep) {
-+			var->start = sep + 1;
-+			var->name_len = sep - blob;
-+
-+			list_add_tail(&var->list, &data->var_list);
-+		} else {
-+			pr_err("No separator in data @ 0x%08x. Skipped.",
-+			       blob - start);
-+			free(var);
-+		}
-+
-+		len++; /* account for '\0' */
-+		size -= len;
-+		blob += len;
-+	};
-+
-+	data->end = blob;
-+}
-+
-+static int ubootvarfs_probe(struct device_d *dev)
-+{
-+	struct inode *inode;
-+	struct ubootvarfs_data *data = xzalloc(sizeof(*data));
-+	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+	struct super_block *sb = &fsdev->sb;
-+	struct stat s;
-+	void *map;
-+	int ret;
-+
-+	dev->priv = data;
-+
-+	data->fd = open(fsdev->backingstore, O_RDWR);
-+	if (data->fd < 0) {
-+		ret = -errno;
-+		goto free_data;
-+	}
-+
-+	if (fstat(data->fd, &s) < 0) {
-+		ret = -errno;
-+		goto exit;
-+	}
-+
-+	map = memmap(data->fd, PROT_READ | PROT_WRITE);
-+	if (map == MAP_FAILED) {
-+		ret = -errno;
-+		goto exit;
-+	}
-+
-+	ubootvarfs_parse(data, map, s.st_size);
-+
-+	sb->s_op = &ubootvarfs_ops;
-+	inode = ubootvarfs_get_inode(sb, NULL, S_IFDIR, NULL);
-+	sb->s_root = d_make_root(inode);
-+
-+	/*
-+	 * We don't use cdev * directly, but this is needed for
-+	 * cdev_get_mount_path() to work right
-+	 */
-+	fsdev->cdev = cdev_by_name(devpath_to_name(fsdev->backingstore));
-+
-+	return 0;
-+exit:
-+	close(data->fd);
-+free_data:
-+	free(data);
-+	return ret;
-+}
-+
-+static void ubootvarfs_remove(struct device_d *dev)
-+{
-+	struct ubootvarfs_data *data = dev->priv;
-+
-+	flush(data->fd);
-+	close(data->fd);
-+	free(data);
-+}
-+
-+static struct fs_driver_d ubootvarfs_driver = {
-+	.truncate = ubootvarfs_truncate,
-+	.read = ubootvarfs_read,
-+	.write = ubootvarfs_write,
-+	.type = filetype_ubootvar,
-+	.drv = {
-+		.probe = ubootvarfs_probe,
-+		.remove = ubootvarfs_remove,
-+		.name = "ubootvarfs",
-+	}
-+};
-+
-+static int ubootvarfs_init(void)
-+{
-+	return register_fs_driver(&ubootvarfs_driver);
-+}
-+coredevice_initcall(ubootvarfs_init);
--- 
-2.21.0
+   7ad1a: 4805      ldr r0, [pc, #20] ; (7ad30 <relocate_to_current_adr+0x88>)
+   7ad1c: f786 fa5c bl 11d8 <panic>
+   7ad20: 000f9df0 .word 0x000f9df0
+   7ad24: 000f9e20 .word 0x000f9e20
+   7ad28: 000d4600 .word 0x000d4600
+   7ad2c: 000f9df0 .word 0x000f9df0
+   7ad30: 000a26be .word 0x000a26be
 
+as well as a corresponding relocation:
+
+arm-none-eabi-objdump -R barebox | grep 7ad30
+0007ad30 R_ARM_RELATIVE    *ABS*
+
+so, AFAICT, it's definitely going to have to be processed before it
+can be used. More so, even if the right string address is passed, we
+still would have to make sure that all of the functions that
+implementation of panic() is using are not a subject to the same
+problem. I think _that_ is a much bigger problem and that's why I
+think we should move away from using panic() in that particular part
+of the code base.
+
+> Do you know if GCC can be coerced to always do that?
+
+I don't think there's a way (to my knowledge, of course)  and I think
+on ARM you'd be facing a fundamental limitation on how far PC-relative
+addressing can reach. I tried placing the string right after the
+function with __attribute__((section(".text.relocate_to_current_adr.data")))
+but GCC didn't really pick it up and still used absolute address
+constant.
+
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
