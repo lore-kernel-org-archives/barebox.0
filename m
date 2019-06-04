@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2]
- helo=margratgarlick.emantor.de)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hYAb0-0002VZ-Ae
- for barebox@lists.infradead.org; Tue, 04 Jun 2019 14:39:28 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue,  4 Jun 2019 16:38:53 +0200
-Message-Id: <20190604143851.11928-3-r.czerwinski@pengutronix.de>
-In-Reply-To: <20190604143851.11928-1-r.czerwinski@pengutronix.de>
-References: <20190604143851.11928-1-r.czerwinski@pengutronix.de>
+ id 1hYB6X-0008Jg-F1
+ for barebox@lists.infradead.org; Tue, 04 Jun 2019 15:12:02 +0000
+References: <1558697578-69121-1-git-send-email-m.otto@phytec.de>
+ <1558697578-69121-3-git-send-email-m.otto@phytec.de>
+From: Bastian Krause <bst@pengutronix.de>
+Message-ID: <312ec99f-9b49-95a4-f2f0-4ebba41d0217@pengutronix.de>
+Date: Tue, 4 Jun 2019 17:11:55 +0200
 MIME-Version: 1.0
+In-Reply-To: <1558697578-69121-3-git-send-email-m.otto@phytec.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,152 +23,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] add gdb helper scripts to load barebox symbols
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH 3/4] i.mx6: signed boot: add habv4-imx6-gencsf.h to the
+ flash header of the PHYTEC boards
+To: Maik Otto <m.otto@phytec.de>, barebox@lists.infradead.org
 
-Add a gdb script with two helper functions which use the new
-pbl_barebox_break symbol to calculate the current barebox load address
-on the device and loads a barebox ELF file to this address.
+Hi,
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
- Documentation/user/debugging.rst   | 21 +++++++++++
- Documentation/user/user-manual.rst |  1 +
- common/Kconfig                     |  9 +++++
- scripts/gdb/helper.py              | 60 ++++++++++++++++++++++++++++++
- 4 files changed, 91 insertions(+)
- create mode 100644 Documentation/user/debugging.rst
- create mode 100644 scripts/gdb/helper.py
+On 5/24/19 1:32 PM, Maik Otto wrote:
+> the habv4-imx6-gencsf.h is necessary in the board flash header to build
+> a signed barebox
+> 
+> Signed-off-by: Maik Otto <m.otto@phytec.de>
+> ---
 
-diff --git a/Documentation/user/debugging.rst b/Documentation/user/debugging.rst
-new file mode 100644
-index 0000000000..15cb439043
---- /dev/null
-+++ b/Documentation/user/debugging.rst
-@@ -0,0 +1,21 @@
-+Debugging with OpenOCD
-+======================
-+
-+Barebox can be configured to break on prebootloader and main barebox entry. This
-+breakpoint can not be resumed and will stop the board to allow the user to
-+attach a JTAG debugger with OpenOCD. Additionally, barebox provides helper
-+scripts to load the symbols from the ELF binaries.
-+The python scripts require `pyelftools`.
-+To load the scripts into your gdb session, run the following command in the
-+barebox directory:
-+
-+.. code-block:: none
-+
-+    (gdb) source scripts/gdb/helper.py
-+
-+This makes two new commands available in gdb, `bb-load-symbols` and
-+`bb-skip-break`. `bb-load-symbols` can load either the main `barebox` file or
-+one of the .pbl files in the image directories. The board needs to be stopped in
-+either the prebootloader or main barebox breakpoint, and gdb needs to be
-+connected to OpenOCD. To continue booting the board, `bb-skip-break` jumps over
-+the breakpoint and continues the barebox execution.
-diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
-index 516b760b1b..f04981c3f0 100644
---- a/Documentation/user/user-manual.rst
-+++ b/Documentation/user/user-manual.rst
-@@ -33,6 +33,7 @@ Contents:
-    system-reset
-    state
-    random
-+   debugging
- 
- * :ref:`search`
- * :ref:`genindex`
-diff --git a/common/Kconfig b/common/Kconfig
-index 4124857a0a..c766e1ef64 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1252,6 +1252,15 @@ config PBL_BREAK
- 	  If this enabled, barebox will be compiled with BKPT instruction
- 	  on early pbl init. This option be used only with JTAG debugger!
- 
-+config GDB_SCRIPTS
-+	bool "Provide GDB scripts for barebox debugging"
-+	help
-+	  This creates the required links to GDB helper scripts in the
-+	  build directory. If you load barebox into gdb, the helper
-+	  scripts will be automatically imported by gdb as well, and
-+	  additional functions are available to analyze a Linux kernel
-+	  instance.
-+
- endmenu
- 
- config HAS_DEBUG_LL
-diff --git a/scripts/gdb/helper.py b/scripts/gdb/helper.py
-new file mode 100644
-index 0000000000..4041789890
---- /dev/null
-+++ b/scripts/gdb/helper.py
-@@ -0,0 +1,60 @@
-+#!/usr/bin/env python
-+
-+import gdb
-+
-+try:
-+    from elftools.elf.elffile import ELFFile
-+    from elftools.common.exceptions import ELFError
-+except ImportError:
-+    gdb.write("The barebox helper requires pyelftools\n", gdb.STDERR)
-+    exit(1)
-+
-+
-+class BBSymbols(gdb.Command):
-+
-+    def __init__(self):
-+        super(BBSymbols, self).__init__("bb-load-symbols", gdb.COMMAND_FILES,
-+                                        gdb.COMPLETE_FILENAME)
-+
-+    def invoke(self, argument, from_tty):
-+        path = argument
-+        f = open(path, 'rb')
-+
-+        try:
-+            elf = ELFFile(f)
-+        except ELFError:
-+            gdb.write("Selected file is not an ELF file\n", gdb.STDERR)
-+            return
-+
-+        section = elf.get_section_by_name(".symtab")
-+        if section is None:
-+            gdb.write("Section .symtab not found\n", gdb.STDERR)
-+            return
-+        symbol = section.get_symbol_by_name("pbl_barebox_break")
-+        if not symbol:
-+            gdb.write("Symbol pbl_barebox_break in section {} in file {} not found\n"
-+                      .format(section.name, self.path), gdb.STDERR)
-+            return
-+        symbol = symbol[0]
-+        pc = gdb.parse_and_eval("$pc")
-+        symbol_address = int(symbol.entry.st_value)
-+        address = int(pc) - symbol_address + 1
-+        gdb.execute("symbol-file")
-+        gdb.execute("add-symbol-file {} {}".format(path, address))
-+
-+
-+BBSymbols()
-+
-+
-+class BBSkip(gdb.Command):
-+
-+    def __init__(self):
-+        super(BBSkip, self).__init__("bb-skip-break", gdb.COMMAND_BREAKPOINTS)
-+
-+    def invoke(self, arg, from_tty):
-+        pc = gdb.parse_and_eval("$pc")
-+        nop_address = int(pc) + 2
-+        gdb.execute("jump *{}".format(nop_address))
-+
-+
-+BBSkip()
--- 
-2.21.0
+Including the CSF template snippet for all boards breaks building
+unsigned images, right?
 
+A "#ifdef CONFIG_HAB .. #endif" in
+arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h should fix this. To
+keep things consistent this should be also included in
+arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h.
+
+Regards,
+Bastian Krause
 
 _______________________________________________
 barebox mailing list
