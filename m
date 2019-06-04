@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hXKxd-00021k-9u
- for barebox@lists.infradead.org; Sun, 02 Jun 2019 07:31:23 +0000
-Received: by mail-lf1-x129.google.com with SMTP id m15so11127481lfh.4
- for <barebox@lists.infradead.org>; Sun, 02 Jun 2019 00:31:20 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun,  2 Jun 2019 10:30:59 +0300
-Message-Id: <20190602073101.21352-3-antonynpavlov@gmail.com>
-In-Reply-To: <20190602073101.21352-1-antonynpavlov@gmail.com>
-References: <20190602073101.21352-1-antonynpavlov@gmail.com>
+ id 1hY1s1-0002Wp-3c
+ for barebox@lists.infradead.org; Tue, 04 Jun 2019 05:20:27 +0000
+Received: by mail-pg1-x543.google.com with SMTP id a3so2231418pgb.3
+ for <barebox@lists.infradead.org>; Mon, 03 Jun 2019 22:20:23 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon,  3 Jun 2019 22:19:56 -0700
+Message-Id: <20190604052003.3189-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,131 +21,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 2/4] serial: add litex UART driver
+Subject: [PATCH v2 0/7] U-Boot environment data as a filesystem
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/serial/Makefile       |  1 +
- drivers/serial/serial_litex.c | 99 +++++++++++++++++++++++++++++++++++
- 2 files changed, 100 insertions(+)
+Everyone:
 
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index 4174cc1ffb..fa86aa8c05 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -23,3 +23,4 @@ obj-$(CONFIG_DRIVER_SERIAL_CADENCE)		+= serial_cadence.o
- obj-$(CONFIG_DRIVER_SERIAL_EFI_STDIO)		+= efi-stdio.o
- obj-$(CONFIG_DRIVER_SERIAL_DIGIC)		+= serial_digic.o
- obj-$(CONFIG_DRIVER_SERIAL_LPUART)		+= serial_lpuart.o
-+obj-$(CONFIG_MACH_LITEX)			+= serial_litex.o
-diff --git a/drivers/serial/serial_litex.c b/drivers/serial/serial_litex.c
-new file mode 100644
-index 0000000000..4a23921ac7
---- /dev/null
-+++ b/drivers/serial/serial_litex.c
-@@ -0,0 +1,99 @@
-+// SPDX-License-Identifier: GPL-2.
-+/*
-+ * Copyright (C) 2019 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <malloc.h>
-+#include <io.h>
-+
-+#include <mach/debug_ll.h>
-+
-+static inline uint32_t litex_serial_readb(struct console_device *cdev,
-+						uint32_t offset)
-+{
-+	void __iomem *base = cdev->dev->priv;
-+
-+	return readb(base + offset);
-+}
-+
-+static inline void litex_serial_writeb(struct console_device *cdev,
-+					uint32_t value, uint32_t offset)
-+{
-+	void __iomem *base = cdev->dev->priv;
-+
-+	writeb(value, base + offset);
-+}
-+
-+static void litex_serial_putc(struct console_device *cdev, char c)
-+{
-+	while (litex_serial_readb(cdev, UART_TXFULL))
-+		;
-+
-+	litex_serial_writeb(cdev, c, UART_RXTX);
-+}
-+
-+static int litex_serial_getc(struct console_device *cdev)
-+{
-+	int c;
-+
-+	while (litex_serial_readb(cdev, UART_RXEMPTY))
-+		;
-+
-+	c = litex_serial_readb(cdev, UART_RXTX);
-+
-+	/* refresh UART_RXEMPTY by writing UART_EV_RX to UART_EV_PENDING */
-+	litex_serial_writeb(cdev, UART_EV_RX, UART_EV_PENDING);
-+
-+	return c;
-+}
-+
-+static int litex_serial_tstc(struct console_device *cdev)
-+{
-+	if (litex_serial_readb(cdev, UART_RXEMPTY)) {
-+		return 0;
-+	}
-+
-+	return 1;
-+}
-+
-+static int litex_serial_probe(struct device_d *dev)
-+{
-+	struct resource *iores;
-+	struct console_device *cdev;
-+
-+	cdev = xzalloc(sizeof(struct console_device));
-+	iores = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(iores))
-+		return PTR_ERR(iores);
-+	dev->priv = IOMEM(iores->start);
-+	cdev->dev = dev;
-+	cdev->tstc = &litex_serial_tstc;
-+	cdev->putc = &litex_serial_putc;
-+	cdev->getc = &litex_serial_getc;
-+	cdev->setbrg = NULL;
-+
-+	console_register(cdev);
-+
-+	return 0;
-+}
-+
-+static __maybe_unused struct of_device_id litex_serial_dt_ids[] = {
-+	{
-+		.compatible = "litex,uart",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
-+static struct driver_d litex_serial_driver = {
-+	.name  = "litex-uart",
-+	.probe = litex_serial_probe,
-+	.of_compatible = DRV_OF_COMPAT(litex_serial_dt_ids),
-+};
-+console_platform_driver(litex_serial_driver);
+This series adds code needed to expose U-Boot environemnt variable
+data partition as a regular filesystem in Barebox. It currently only
+supports the use-case where environment is stored on SD/MMC device,
+since that is the only use-case I have access to for testing, however
+adding support for other cases should be relatively
+straightforward.
+
+Feedback is welcome!
+
+Changes since [v1]:
+
+    - ubootvar changed to not rely on struct resource
+    */mem_write/mem_read etc. and use a private pointer instead
+
+    - ubootvar changed to handle the case of no valid environment data
+      by allocation parition 0 as empty/new
+      
+    - Added documentation for ubootvarfs as well as ubootvar DT
+      bindings
+
+Thanks,
+Andrey Smirnov
+
+[v1] http://lists.infradead.org/pipermail/barebox/2019-May/038223.html
+
+Andrey Smirnov (6):
+  filetype: Add "U-Boot environmemnt variable data" filetype
+  filetype: Allow specifying cdev's filetype explicitly
+  drivers: Introduce late_platform_driver()
+  misc: Add a driver to expose U-Boot environment variable data
+  fs: Add a driver to access U-Boot environment variables
+  ARM: rdu2: Add U-Boot environment partitions
+
+Cory Tusar (1):
+  ARM: rdu1: Add U-Boot environment partition
+
+ .../barebox/barebox,uboot-environment.rst     |  43 ++
+ Documentation/filesystems/ubootvarfs.rst      |  28 +
+ arch/arm/dts/imx51-zii-rdu1.dts               |  21 +
+ arch/arm/dts/imx6qdl-zii-rdu2.dtsi            |  27 +
+ common/filetype.c                             |   8 +
+ drivers/misc/Kconfig                          |  12 +
+ drivers/misc/Makefile                         |   1 +
+ drivers/misc/ubootvar.c                       | 360 +++++++++++++
+ fs/Kconfig                                    |   8 +
+ fs/Makefile                                   |   1 +
+ fs/ubootvarfs.c                               | 499 ++++++++++++++++++
+ include/driver.h                              |   4 +
+ include/filetype.h                            |   1 +
+ 13 files changed, 1013 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/barebox/barebox,uboot-environment.rst
+ create mode 100644 Documentation/filesystems/ubootvarfs.rst
+ create mode 100644 drivers/misc/ubootvar.c
+ create mode 100644 fs/ubootvarfs.c
+
 -- 
-2.20.1
+2.21.0
 
 
 _______________________________________________
