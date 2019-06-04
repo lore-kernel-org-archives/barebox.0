@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hYB6X-0008Jg-F1
- for barebox@lists.infradead.org; Tue, 04 Jun 2019 15:12:02 +0000
-References: <1558697578-69121-1-git-send-email-m.otto@phytec.de>
- <1558697578-69121-3-git-send-email-m.otto@phytec.de>
-From: Bastian Krause <bst@pengutronix.de>
-Message-ID: <312ec99f-9b49-95a4-f2f0-4ebba41d0217@pengutronix.de>
-Date: Tue, 4 Jun 2019 17:11:55 +0200
+ id 1hY4Xk-0007jC-VF
+ for barebox@lists.infradead.org; Tue, 04 Jun 2019 08:11:42 +0000
+Date: Tue, 4 Jun 2019 10:11:39 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190604081139.kb2ond6ochfgosrg@pengutronix.de>
+References: <20190603190559.16715-1-a.fatoum@pengutronix.de>
+ <20190603190559.16715-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <1558697578-69121-3-git-send-email-m.otto@phytec.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20190603190559.16715-2-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,29 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] i.mx6: signed boot: add habv4-imx6-gencsf.h to the
- flash header of the PHYTEC boards
-To: Maik Otto <m.otto@phytec.de>, barebox@lists.infradead.org
+Subject: Re: [PATCH 2/7] reset_source: add new Brownout reset (BOR) source
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi,
-
-On 5/24/19 1:32 PM, Maik Otto wrote:
-> the habv4-imx6-gencsf.h is necessary in the board flash header to build
-> a signed barebox
+On Mon, Jun 03, 2019 at 09:05:54PM +0200, Ahmad Fatoum wrote:
+> The STM32MP1 can report brown out as reason for a reset,
+> which doesn't fit into existing reasons. Thus add a new
+> one to the enumeration.
 > 
-> Signed-off-by: Maik Otto <m.otto@phytec.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
+>  common/reset_source.c  | 1 +
+>  include/reset_source.h | 1 +
+>  2 files changed, 2 insertions(+)
+> 
+> diff --git a/common/reset_source.c b/common/reset_source.c
+> index 338d7b9acb30..0489724f3e7f 100644
+> --- a/common/reset_source.c
+> +++ b/common/reset_source.c
+> @@ -28,6 +28,7 @@ static const char * const reset_src_names[] = {
+>  	[RESET_JTAG] = "JTAG",
+>  	[RESET_THERM] = "THERM",
+>  	[RESET_EXT] = "EXT",
+> +	[RESET_BOR] = "BOR",
+>  };
+>  
+>  static enum reset_src_type reset_source;
+> diff --git a/include/reset_source.h b/include/reset_source.h
+> index 86e415abcf84..c124278ec674 100644
+> --- a/include/reset_source.h
+> +++ b/include/reset_source.h
+> @@ -22,6 +22,7 @@ enum reset_src_type {
+>  	RESET_JTAG,	/* JTAG reset */
+>  	RESET_THERM,	/* SoC shut down because of overtemperature */
+>  	RESET_EXT,	/* External reset through device pin */
+> +	RESET_BOR,	/* Brownout Reset */
 
-Including the CSF template snippet for all boards breaks building
-unsigned images, right?
+Reading "BOR" as "Brown Out Reset" is not very obvious. Maybe better use
+RESET_BROWNOUT and "BROWNOUT". That shouldn't be too long to read and
+write.
 
-A "#ifdef CONFIG_HAB .. #endif" in
-arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h should fix this. To
-keep things consistent this should be also included in
-arch/arm/mach-imx/include/mach/habv3-imx25-gencsf.h.
+Sascha
 
-Regards,
-Bastian Krause
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
