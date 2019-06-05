@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x243.google.com ([2a00:1450:4864:20::243])
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hY8oH-0005Hc-CT
- for barebox@lists.infradead.org; Tue, 04 Jun 2019 12:45:03 +0000
-Date: Tue, 4 Jun 2019 14:44:57 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <20190604124457.25u3p7mgfvxrbqjh@pengutronix.de>
+ id 1hYant-0003bk-Pf
+ for barebox@lists.infradead.org; Wed, 05 Jun 2019 18:38:31 +0000
+Received: by mail-lj1-x243.google.com with SMTP id s21so13455090lji.8
+ for <barebox@lists.infradead.org>; Wed, 05 Jun 2019 11:38:27 -0700 (PDT)
+Date: Wed, 5 Jun 2019 21:38:17 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20190605183817.w2vmyumiwo2tkszf@chr>
 References: <20190604105552.20619-1-pmamonov@gmail.com>
+ <20190604124457.25u3p7mgfvxrbqjh@pengutronix.de>
+ <20190604164311.z5zo4qrfqbt5zalf@localhost.localdomain>
+ <20190605051703.gg6q43p5smhxzci4@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190604105552.20619-1-pmamonov@gmail.com>
+In-Reply-To: <20190605051703.gg6q43p5smhxzci4@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,59 +29,49 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] MIPS: use anonymous labels in ENTRY_FUNCTION_END and
  STOP_WITH_DEBUG_EVENT macros
-To: Peter Mamonov <pmamonov@gmail.com>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 04, 2019 at 01:55:52PM +0300, Peter Mamonov wrote:
-> Use of global labels of the same name inside ENTRY_FUNCTION_END and
-> STOP_WITH_DEBUG_EVENT prevents simultaneous use of both macros. It also
-> prevents multiple use of one of them.
-
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-
-@Peter, Do you use STOP_WITH_DEBUG_EVENT for something?
-
-> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> ---
->  arch/mips/include/asm/asm.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+On Wed, Jun 05, 2019 at 07:17:03AM +0200, Oleksij Rempel wrote:
+> On Tue, Jun 04, 2019 at 07:43:12PM +0300, Peter Mamonov wrote:
+> > Hi, Oleksij,
+> > 
+> > On Tue, Jun 04, 2019 at 02:44:57PM +0200, Oleksij Rempel wrote:
+> > > On Tue, Jun 04, 2019 at 01:55:52PM +0300, Peter Mamonov wrote:
+> > > > Use of global labels of the same name inside ENTRY_FUNCTION_END and
+> > > > STOP_WITH_DEBUG_EVENT prevents simultaneous use of both macros. It also
+> > > > prevents multiple use of one of them.
+> > > 
+> > > Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> > > 
+> > > @Peter, Do you use STOP_WITH_DEBUG_EVENT for something?
+> > 
+> > Actually no. I hit this problem when tried to use ENTRY_FUNCTION_END twice to 
+> > choose relevant DTB depending on some conditions.
 > 
-> diff --git a/arch/mips/include/asm/asm.h b/arch/mips/include/asm/asm.h
-> index 019be4843b..be3a1bcdbc 100644
-> --- a/arch/mips/include/asm/asm.h
-> +++ b/arch/mips/include/asm/asm.h
-> @@ -100,8 +100,8 @@ EXPORT(symbol)
->  	 nop;						\
->  							\
->  	/* No return */					\
-> -__error:						\
-> -	b	__error;				\
-> +1:							\
-> +	b	1b;					\
->  	 nop;
->  
->  /*
-> @@ -114,8 +114,8 @@ __error:						\
->  	/* trigger a soft breakpoint for OpenOCD */	\
->  	SDBBP;						\
->  	/* position independent variant of dead loop */	\
-> -	__error:					\
-> -	b	__error;				\
-> +1:							\
-> +	b	1b;					\
->  	 nop;						\
->  	/* Call some code from .text section.		\
->  	 * It is needed to keep same linker script for	\
+> was you able to implement it?
+
+Yes, something like this:
+
+		<test a condition, put result into t0>
+
+		beq	t0, zero, use_other_dtb
+		 nop
+
+		ENTRY_FUNCTION_END(BOARD_PBL_START, some_dtb)
+
+	use_other_dtb:
+		ENTRY_FUNCTION_END(BOARD_PBL_START, other_dtb)
+
+Regards,
+Peter
+
+> 
 > -- 
-> 2.20.1
-> 
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
