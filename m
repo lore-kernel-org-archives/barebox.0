@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hZ926-0007ce-Me
- for barebox@lists.infradead.org; Fri, 07 Jun 2019 07:11:28 +0000
-Date: Fri, 7 Jun 2019 09:11:24 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190607071124.sozhmv2uoquycd4q@pengutronix.de>
-References: <20190602073101.21352-1-antonynpavlov@gmail.com>
- <20190602073101.21352-4-antonynpavlov@gmail.com>
+Received: from mout.gmx.net ([212.227.17.22])
+ by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1hYZA9-0007ld-Dm
+ for barebox@lists.infradead.org; Wed, 05 Jun 2019 16:53:24 +0000
+From: Oleksij Rempel <linux@rempel-privat.de>
+Date: Wed,  5 Jun 2019 18:52:39 +0200
+Message-Id: <20190605165242.17147-1-linux@rempel-privat.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190602073101.21352-4-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,51 +19,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 3/4] WIP: make it work on litex
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v1 1/4] add syscon_regmap_lookup_by_phandle() support
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-On Sun, Jun 02, 2019 at 10:31:00AM +0300, Antony Pavlov wrote:
->   * litex platform does not use ns16550 at all
->     so debug_ll_ns16550_init should be eliminated;
-> 
->   * there is no IH_ARCH_RISCV definition in include/image.h
->     at the moment, so the error stops compiling:
->         common/bootm.c: In function 'bootm_open_os_uimage':
->         common/bootm.c:491:34: error: 'IH_ARCH' undeclared (first use in this
->         function)
->         if (data->os->header.ih_arch != IH_ARCH) {
->                                         ^~~~~~~
+needed for remoteproc port
 
-U-Boot has IH_ARCH_RISCV already, you can copy it there.
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+---
+ drivers/mfd/syscon.c | 19 +++++++++++++++++++
+ include/mfd/syscon.h |  7 +++++++
+ 2 files changed, 26 insertions(+)
 
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  arch/riscv/boot/start.S | 2 --
->  common/bootm.c          | 2 ++
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/riscv/boot/start.S b/arch/riscv/boot/start.S
-> index d1dbe48b7b..fab23e926f 100644
-> --- a/arch/riscv/boot/start.S
-> +++ b/arch/riscv/boot/start.S
-> @@ -28,8 +28,6 @@
->  
->  .globl _start
->  _start:
-> -	debug_ll_ns16550_init
-> -
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index b1ff1b1ea..809941937 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -174,6 +174,25 @@ struct regmap *syscon_regmap_lookup_by_compatible(const char *s)
+ 	return regmap;
+ }
 
-This should be done by board code.
++struct regmap *syscon_regmap_lookup_by_phandle(struct device_node *np,
++					const char *property)
++{
++	struct device_node *syscon_np;
++	struct regmap *regmap;
++
++	if (property)
++		syscon_np = of_parse_phandle(np, property, 0);
++	else
++		syscon_np = np;
++
++	if (!syscon_np)
++		return ERR_PTR(-ENODEV);
++
++	regmap = syscon_node_to_regmap(syscon_np);
++
++	return regmap;
++}
++
+ static int syscon_probe(struct device_d *dev)
+ {
+ 	struct syscon *syscon;
+diff --git a/include/mfd/syscon.h b/include/mfd/syscon.h
+index 902f9fa2f..3e39c333f 100644
+--- a/include/mfd/syscon.h
++++ b/include/mfd/syscon.h
+@@ -22,6 +22,8 @@ void __iomem *syscon_base_lookup_by_phandle
+ 	(struct device_node *np, const char *property);
+ struct regmap *syscon_node_to_regmap(struct device_node *np);
+ struct regmap *syscon_regmap_lookup_by_compatible(const char *s);
++struct regmap *syscon_regmap_lookup_by_phandle(struct device_node *np,
++					const char *property);
+ #else
+ static inline void __iomem *syscon_base_lookup_by_pdevname(const char *s)
+ {
+@@ -42,6 +44,11 @@ static inline struct regmap *syscon_regmap_lookup_by_compatible(const char *s)
+ {
+ 	return ERR_PTR(-ENOSYS);
+ }
++struct regmap *syscon_regmap_lookup_by_phandle(struct device_node *np,
++					const char *property)
++{
++	return ERR_PTR(-ENOSYS);
++}
+ #endif
 
-Sascha
+ #endif
+--
+2.20.1
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
