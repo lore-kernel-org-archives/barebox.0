@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
+Received: from magratgarlick.emantor.de ([78.46.208.201]
+ helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hYPh5-0002KK-RQ
- for barebox@lists.infradead.org; Wed, 05 Jun 2019 06:46:45 +0000
-Received: by mail-lf1-x141.google.com with SMTP id j29so4327837lfk.10
- for <barebox@lists.infradead.org>; Tue, 04 Jun 2019 23:46:43 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  5 Jun 2019 09:46:12 +0300
-Message-Id: <20190605064612.13693-1-antonynpavlov@gmail.com>
+ id 1hYRMa-00017i-6u
+ for barebox@lists.infradead.org; Wed, 05 Jun 2019 08:33:41 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Wed,  5 Jun 2019 10:33:21 +0200
+Message-Id: <20190605083320.16130-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,29 +20,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] filetype: fix typo
+Subject: [PATCH] fixup! ARM: Initial OP-TEE support
 To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- common/filetype.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/lib32/bootm.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/common/filetype.c b/common/filetype.c
-index e2d707b156..9675009eb0 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -37,7 +37,7 @@ struct filetype_str {
- };
+diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
+index a653374e5f..180624445d 100644
+--- a/arch/arm/lib32/bootm.c
++++ b/arch/arm/lib32/bootm.c
+@@ -185,14 +185,13 @@ static int bootm_load_tee_from_file(struct image_data *data)
+ 	if (read_full(fd, (void *)data->tee_res->start, hdr.init_size) < 0) {
+ 		pr_err("%s", strerror(errno));
+ 		ret = -errno;
+-		goto out_res;
++		release_region(data->tee_res);
++		goto out;
+ 	}
  
- static const struct filetype_str filetype_str[] = {
--	[filetype_unknown] = { "unknown", "unkown" },
-+	[filetype_unknown] = { "unknown", "unknown" },
- 	[filetype_arm_zimage] = { "ARM Linux zImage", "arm-zimage" },
- 	[filetype_lzo_compressed] = { "LZO compressed", "lzo" },
- 	[filetype_lz4_compressed] = { "LZ4 compressed", "lz4" },
+ 	printf("Read optee file to %pa, size 0x%08x\n", (void *)data->tee_res->start, hdr.init_size);
+ 
+ 	ret = 0;
+-out_res:
+-	release_region(data->tee_res);
+ out:
+ 	close(fd);
+ 
 -- 
-2.20.1
+2.21.0
 
 
 _______________________________________________
