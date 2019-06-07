@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hYS6K-0007JF-MI
- for barebox@lists.infradead.org; Wed, 05 Jun 2019 09:20:58 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1hZ8Xk-0005Hq-I3
+ for barebox@lists.infradead.org; Fri, 07 Jun 2019 06:40:06 +0000
+Date: Fri, 7 Jun 2019 08:40:02 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190607064002.ibd4t4joyrmflspq@pengutronix.de>
 References: <20190604165308.15229-1-bst@pengutronix.de>
- <20190604165308.15229-3-bst@pengutronix.de>
-From: Ulrich =?utf-8?Q?=C3=96lmann?= <u.oelmann@pengutronix.de>
-In-reply-to: <20190604165308.15229-3-bst@pengutronix.de>
-Date: Wed, 05 Jun 2019 11:20:52 +0200
-Message-ID: <6rftooz8uj.fsf@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190604165308.15229-1-bst@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,74 +18,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] doc: boards: imx: add HAB section
-To: barebox@lists.infradead.org
-Cc: Bastian Krause <bst@pengutronix.de>
+Subject: Re: [PATCH 1/3] scripts: imx-image: document -d, -e, -s, -u
+To: Bastian Krause <bst@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-T24gVHVlLCBKdW4gMDQgMjAxOSBhdCAxODo1MyArMDIwMCwgQmFzdGlhbiBLcmF1c2UgPGJzdEBw
-ZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4gU2lnbmVkLW9mZi1ieTogQmFzdGlhbiBLcmF1c2UgPGJz
-dEBwZW5ndXRyb25peC5kZT4KPiAtLS0KPiAgRG9jdW1lbnRhdGlvbi9ib2FyZHMvaW14LnJzdCB8
-IDU5ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+ICAxIGZpbGUgY2hhbmdl
-ZCwgNTkgaW5zZXJ0aW9ucygrKQo+Cj4gZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vYm9hcmRz
-L2lteC5yc3QgYi9Eb2N1bWVudGF0aW9uL2JvYXJkcy9pbXgucnN0Cj4gaW5kZXggYWJkOWM3NjE1
-MS4uYmEwYTNiNzk4OCAxMDA2NDQKPiAtLS0gYS9Eb2N1bWVudGF0aW9uL2JvYXJkcy9pbXgucnN0
-Cj4gKysrIGIvRG9jdW1lbnRhdGlvbi9ib2FyZHMvaW14LnJzdAo+IEBAIC04Myw2ICs4Myw2NSBA
-QCBUaGUgaW1hZ2VzIGNhbiBhbHNvIGFsd2F5cyBiZSBzdGFydGVkIGFzIHNlY29uZCBzdGFnZSBv
-biB0aGUgdGFyZ2V0Ogo+ICAKPiAgICBiYXJlYm94QEJvYXJkIE5hbWU6LyBib290bSAvbW50L3Rm
-dHAvYmFyZWJveC1mcmVlc2NhbGUtaW14NTEtYmFiYmFnZS5pbWcKPiAgCj4gK0hpZ2ggQXNzdXJh
-bmNlIEJvb3QKPiArXl5eXl5eXl5eXl5eXl5eXl5eXgo+ICsKPiArSEFCIGlzIGEgTlhQIFJPTSBj
-b2RlIGZlYXR1cmUgd2hpY2ggaXMgYWJsZSB0byBhdXRoZW50aWNhdGUgc29mdHdhcmUgaW4KCnMv
-YSBOWFAvYW4gTlhQLwoKPiArZXh0ZXJuYWwgbWVtb3J5IGF0IGJvb3QgdGltZS4KPiArVGhpcyBp
-cyBkb25lIGJ5IHZlcmlmeWluZyBzaWduYXR1cmVzIGFzIGRlZmluZWQgaW4gdGhlIENvbW1hbmQg
-U2VxdWVuY2UgRklMRQoKcy9GSUxFL0ZpbGUvID8KCkJlc3QgcmVnYXJkcwpVbHJpY2gKCj4gKyhD
-U0YpIGFzIGNvbXBpbGVkIGludG8gdGhlIGkuTVggYm9vdCBoZWFkZXIuCj4gKwo+ICtiYXJlYm94
-IHN1cHBvcnRzIGdlbmVyYXRpbmcgc2lnbmVkIGltYWdlcywgc2lnbmVkIFVTQiBpbWFnZXMgc3Vp
-dGFibGUgZm9yCj4gKyppbXgtdXNiLWxvYWRlciogYW5kIGVuY3J5cHRlZCBpbWFnZXMuCj4gKwo+
-ICtJbiBjb250cmFzdCB0byBub3JtYWwgKHVuc2lnbmVkKSBpbWFnZXMgYm9vdGluZyBzaWduZWQg
-aW1hZ2VzIHZpYQo+ICtpbXgtdXNiLWxvYWRlciByZXF1aXJlcyBzcGVjaWFsIGltYWdlczoKPiAr
-RENEIGRhdGEgaXMgaW52YWxpZGF0ZWQgKERDRCBwb2ludGVyIHNldCB0byB6ZXJvKSwgdGhlIGlt
-YWdlIGlzIHRoZW4gc2lnbmVkIGFuZAo+ICthZnRlcndhcmRzIHRoZSBEQ0QgcG9pbnRlciBpcyBz
-ZXQgdG8gdGhlIERDRCBkYXRhIGFnYWluIChwcmFjdGljYWxseSBtYWtpbmcKPiArdGhlIHNpZ25h
-dHVyZSBpbnZhbGlkKS4KPiArVGhpcyB3b3JrcyBiZWNhdXNlIHRoZSBpbXgtdXNiLWxvYWRlciB0
-cmFuc21pdHMgdGhlIERDRCB0YWJsZSBzZXR1cCBwcmlvciB0bwo+ICt0aGUgYWN0dWFsIGltYWdl
-IHRvIHNldCB1cCB0aGUgUkFNIGluIG9yZGVyIHRvIGxvYWQgdGhlIGJhcmVib3ggaW1hZ2UuCj4g
-K05vdyB0aGUgRENEIHBvaW50ZXIgaXMgc2V0IHRvIHplcm8gKG1ha2luZyB0aGUgc2lnbmF0dXJl
-IHZhbGlkIGFnYWluKSBhbmQgdGhlCj4gK2ltYWdlIGlzIGxvYWRlZCBhbmQgdmVyaWZpZWQgYnkg
-dGhlIFJPTSBjb2RlLgo+ICsKPiArTm90ZSB0aGF0IHRoZSBkZXZpY2Utc3BlY2lmaWMgRGF0YSBF
-bmNyeXB0aW9uIEtleSAoREVLKSBibG9iIG5lZWRzIHRvIGJlCj4gK2FwcGVuZGVkIHRvIHRoZSBp
-bWFnZSBhZnRlciB0aGUgYnVpbGQgcHJvY2VzcyBmb3IgYXBwcm9wcmlhdGVseSBlbmNyeXB0ZWQK
-PiAraW1hZ2VzLgo+ICsKPiArSW4gb3JkZXIgdG8gZ2VuZXJhdGUgdGhlc2Ugc3BlY2lhbCBpbWFn
-ZSB0eXBlcyBiYXJlYm94IGlzIGVxdWlwcGVkIHdpdGgKPiArY29ycmVzcG9uZGluZyBzdGF0aWMg
-cGF0dGVybiBydWxlcyBpbiBgYGltYWdlcy9NYWtlZmlsZS5pbXhgYC4KPiArVW5saWtlIHRoZSB0
-eXBpY2FsIGBgaW14aW1nYGAgZmlsZSBleHRlbnNpb24gdGhlIGZvbGxvd2luZyBvbmVzIGFyZSB1
-c2VkIGZvcgo+ICt0aGVzZSBjYXNlczoKPiArCj4gKyogYGBzaW14aW1nYGA6IGdlbmVyYXRlIHNp
-Z25lZCBpbWFnZQo+ICsqIGBgdXNpbXhpbWdgYDogZ2VuZXJhdGUgc2lnbmVkIFVTQiBpbWFnZQo+
-ICsqIGBgZXNpbXhpbWdgYDogZ2VuZXJhdGUgZW5jcnlwdGVkIGFuZCBzaWduZWQgaW1hZ2UKPiAr
-Cj4gK1RoZSBpbXgtaW1hZ2UgdG9vbCBpcyB0aGVuIGF1dG9tYXRpY2FsbHkgY2FsbGVkIHdpdGgg
-dGhlIGFwcHJvcHJpYXRlIGZsYWdzCj4gK2R1cmluZyBpbWFnZSBjcmVhdGlvbi4KPiArVGhpcyBh
-Z2FpbiBjYWxscyBGcmVlc2NhbGUncyBDb2RlIFNpZ25pbmcgVG9vbCAoQ1NUKSB3aGljaCBtdXN0
-IGJlIGluc3RhbGxlZCBpbgo+ICt0aGUgcGF0aCBvciBnaXZlbiB2aWEgdGhlIGVudmlyb25tZW50
-IHZhcmlhYmxlICJDU1QiLgo+ICsKPiArQXNzdW1pbmcgYGBDT05GSUdfSEFCYGAgYW5kIGBgQ09O
-RklHX0hBQlY0YGAgYXJlIGVuYWJsZWQgdGhlIG5lY2Vzc2FyeQo+ICtrZXlzL2NlcnRpZmljYXRl
-cyBhcmUgZXhwZWN0ZWQgaW4gdGhlc2UgY29uZmlnIHZhcmlhYmxlcyAoYXNzdW1pbmcgSEFCdjQp
-Ogo+ICsKPiArLi4gY29kZS1ibG9jazo6IG5vbmUKPiArCj4gKyAgQ09ORklHX0hBQlY0X1RBQkxF
-X0JJTgo+ICsgIENPTkZJR19IQUJWNF9DU0ZfQ1JUX1BFTQo+ICsgIENPTkZJR19IQUJWNF9JTUdf
-Q1JUX1BFTQo+ICsKPiArQSBDU0YgdGVtcGxhdGUgaXMgbG9jYXRlZCBpbgo+ICtgYGFyY2gvYXJt
-L21hY2gtaW14L2luY2x1ZGUvbWFjaC9oYWJ2NC1pbXg2LWdlbmNzZi5oYGAgd2hpY2ggaXMgcHJl
-cHJvY2Vzc2VkCj4gK2J5IGJhcmVib3guCj4gK0l0IG11c3QgYmUgaW5jbHVkZWQgaW4gdGhlIGJv
-YXJkJ3MgZmxhc2ggaGVhZGVyOgo+ICsKPiArLi4gY29kZS1ibG9jazo6IG5vbmUKPiArCj4gKyAg
-I2luY2x1ZGUgPG1hY2gvaGFidjQtaW14Ni1nZW5jc2YuaD4KPiArCj4gK0FuYWxvZ291cyB0byBI
-QUJ2NCBvcHRpb25zIGFuZCBhIHRlbXBsYXRlIGV4aXN0IGZvciBIQUJ2My4KPiArCj4gIFVzaW5n
-IEdQVCBvbiBpLk1YCj4gIF5eXl5eXl5eXl5eXl5eXl5eCi0tIApQZW5ndXRyb25peCBlLksuICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgfCBVbHJpY2ggw5ZsbWFubiAgICAgICAgICAgICAgIHwK
-SW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5w
-ZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJt
-YW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVp
-bSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
-bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Tue, Jun 04, 2019 at 06:53:06PM +0200, Bastian Krause wrote:
+> Signed-off-by: Bastian Krause <bst@pengutronix.de>
+> ---
+>  scripts/imx/imx-image.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+> index a7f1421fa3..90be8a9b9b 100644
+> --- a/scripts/imx/imx-image.c
+> +++ b/scripts/imx/imx-image.c
+> @@ -363,6 +363,15 @@ static void usage(const char *prgname)
+>  		"-b           add barebox header to image. If used, barebox recognizes\n"
+>  		"             the image as regular barebox image which can be used as\n"
+>  		"             second stage image\n"
+> +		"-d           write DCD table only\n"
+> +		"-e           prepare image for encryption and use Freescale's Code Signing\n"
+> +		"             to encrypt image. Note that the device-specific encapsulated\n"
+> +		"             DEK as cryptgraphic blob needs to be appended afterwards\n"
+> +		"-s           use Freescale's Code Signing Tool (CST) to sign the image\n"
+> +		"             'cst' is expected to be in PATH or given via the environment\n"
+> +		"             variable 'CST'\n"
+> +		"-u           create USB image suitable for imx-usb-loader\n"
+> +		"             necessary for signed images (-s) only\n"
+>  		"-h           this help\n", prgname);
+>  	exit(1);
+>  }
+> -- 
+> 2.20.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
