@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hYxyV-0001Kx-2P
- for barebox@lists.infradead.org; Thu, 06 Jun 2019 19:23:00 +0000
-Received: by mail-lj1-x244.google.com with SMTP id o13so3129635lji.5
- for <barebox@lists.infradead.org>; Thu, 06 Jun 2019 12:22:58 -0700 (PDT)
-Date: Thu, 6 Jun 2019 22:22:43 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20190606192241.uxyxdxlsibtutyp4@chr>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1hZ8Nc-0000ol-Ts
+ for barebox@lists.infradead.org; Fri, 07 Jun 2019 06:29:38 +0000
+Date: Fri, 7 Jun 2019 08:29:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190607062930.hx64ikj5xw7c2t62@pengutronix.de>
 References: <20190604105552.20619-1-pmamonov@gmail.com>
- <20190604124457.25u3p7mgfvxrbqjh@pengutronix.de>
- <20190604164311.z5zo4qrfqbt5zalf@localhost.localdomain>
- <20190605051703.gg6q43p5smhxzci4@pengutronix.de>
- <20190605183817.w2vmyumiwo2tkszf@chr>
- <20190606042910.f5tl4vhprhtiwxl6@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190606042910.f5tl4vhprhtiwxl6@pengutronix.de>
+In-Reply-To: <20190604105552.20619-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,49 +24,65 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] MIPS: use anonymous labels in ENTRY_FUNCTION_END and
  STOP_WITH_DEBUG_EVENT macros
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: o.rempel@pengutronix.de, barebox@lists.infradead.org
 
-On Thu, Jun 06, 2019 at 06:29:10AM +0200, Oleksij Rempel wrote:
-> On Wed, Jun 05, 2019 at 09:38:17PM +0300, Peter Mamonov wrote:
-> > On Wed, Jun 05, 2019 at 07:17:03AM +0200, Oleksij Rempel wrote:
-> > > On Tue, Jun 04, 2019 at 07:43:12PM +0300, Peter Mamonov wrote:
-> > > > Hi, Oleksij,
-> > > > 
-> > > > On Tue, Jun 04, 2019 at 02:44:57PM +0200, Oleksij Rempel wrote:
-> > > > > On Tue, Jun 04, 2019 at 01:55:52PM +0300, Peter Mamonov wrote:
-> > > > > > Use of global labels of the same name inside ENTRY_FUNCTION_END and
-> > > > > > STOP_WITH_DEBUG_EVENT prevents simultaneous use of both macros. It also
-> > > > > > prevents multiple use of one of them.
-> > > > > 
-> > > > > Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> > > > > 
-> > > > > @Peter, Do you use STOP_WITH_DEBUG_EVENT for something?
-> > > > 
-> > > > Actually no. I hit this problem when tried to use ENTRY_FUNCTION_END twice to 
-> > > > choose relevant DTB depending on some conditions.
-> > > 
-> > > was you able to implement it?
-> > 
-> > Yes, something like this:
-> > 
-> > 		<test a condition, put result into t0>
-> > 
-> > 		beq	t0, zero, use_other_dtb
-> > 		 nop
-> > 
-> > 		ENTRY_FUNCTION_END(BOARD_PBL_START, some_dtb)
-> > 
-> > 	use_other_dtb:
-> > 		ENTRY_FUNCTION_END(BOARD_PBL_START, other_dtb)
+On Tue, Jun 04, 2019 at 01:55:52PM +0300, Peter Mamonov wrote:
+> Use of global labels of the same name inside ENTRY_FUNCTION_END and
+> STOP_WITH_DEBUG_EVENT prevents simultaneous use of both macros. It also
+> prevents multiple use of one of them.
 > 
-> nice!
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> ---
+>  arch/mips/include/asm/asm.h | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+
+Applied, thanks
+
+Sascha
+
 > 
-> Do you use latest barebox with dynamic relocation support?
+> diff --git a/arch/mips/include/asm/asm.h b/arch/mips/include/asm/asm.h
+> index 019be4843b..be3a1bcdbc 100644
+> --- a/arch/mips/include/asm/asm.h
+> +++ b/arch/mips/include/asm/asm.h
+> @@ -100,8 +100,8 @@ EXPORT(symbol)
+>  	 nop;						\
+>  							\
+>  	/* No return */					\
+> -__error:						\
+> -	b	__error;				\
+> +1:							\
+> +	b	1b;					\
+>  	 nop;
+>  
+>  /*
+> @@ -114,8 +114,8 @@ __error:						\
+>  	/* trigger a soft breakpoint for OpenOCD */	\
+>  	SDBBP;						\
+>  	/* position independent variant of dead loop */	\
+> -	__error:					\
+> -	b	__error;				\
+> +1:							\
+> +	b	1b;					\
+>  	 nop;						\
+>  	/* Call some code from .text section.		\
+>  	 * It is needed to keep same linker script for	\
+> -- 
+> 2.20.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-Not yet, I'm more than 200 commits behing `next`.
-
-Peter
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
