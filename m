@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hZ8w7-0005t2-WB
- for barebox@lists.infradead.org; Fri, 07 Jun 2019 07:05:26 +0000
-Date: Fri, 7 Jun 2019 09:05:14 +0200
+ id 1hZ926-0007ce-Me
+ for barebox@lists.infradead.org; Fri, 07 Jun 2019 07:11:28 +0000
+Date: Fri, 7 Jun 2019 09:11:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190607070513.bnqmj2qds223tixk@pengutronix.de>
-References: <20190604052003.3189-1-andrew.smirnov@gmail.com>
+Message-ID: <20190607071124.sozhmv2uoquycd4q@pengutronix.de>
+References: <20190602073101.21352-1-antonynpavlov@gmail.com>
+ <20190602073101.21352-4-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190604052003.3189-1-andrew.smirnov@gmail.com>
+In-Reply-To: <20190602073101.21352-4-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +23,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/7] U-Boot environment data as a filesystem
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [RFC 3/4] WIP: make it work on litex
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jun 03, 2019 at 10:19:56PM -0700, Andrey Smirnov wrote:
-> Everyone:
+On Sun, Jun 02, 2019 at 10:31:00AM +0300, Antony Pavlov wrote:
+>   * litex platform does not use ns16550 at all
+>     so debug_ll_ns16550_init should be eliminated;
 > 
-> This series adds code needed to expose U-Boot environemnt variable
-> data partition as a regular filesystem in Barebox. It currently only
-> supports the use-case where environment is stored on SD/MMC device,
-> since that is the only use-case I have access to for testing, however
-> adding support for other cases should be relatively
-> straightforward.
-> 
-> Feedback is welcome!
-> 
-> Changes since [v1]:
-> 
->     - ubootvar changed to not rely on struct resource
->     */mem_write/mem_read etc. and use a private pointer instead
-> 
->     - ubootvar changed to handle the case of no valid environment data
->       by allocation parition 0 as empty/new
->       
->     - Added documentation for ubootvarfs as well as ubootvar DT
->       bindings
-> 
-> Thanks,
-> Andrey Smirnov
+>   * there is no IH_ARCH_RISCV definition in include/image.h
+>     at the moment, so the error stops compiling:
+>         common/bootm.c: In function 'bootm_open_os_uimage':
+>         common/bootm.c:491:34: error: 'IH_ARCH' undeclared (first use in this
+>         function)
+>         if (data->os->header.ih_arch != IH_ARCH) {
+>                                         ^~~~~~~
 
-Applied, thanks
+U-Boot has IH_ARCH_RISCV already, you can copy it there.
+
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/riscv/boot/start.S | 2 --
+>  common/bootm.c          | 2 ++
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/riscv/boot/start.S b/arch/riscv/boot/start.S
+> index d1dbe48b7b..fab23e926f 100644
+> --- a/arch/riscv/boot/start.S
+> +++ b/arch/riscv/boot/start.S
+> @@ -28,8 +28,6 @@
+>  
+>  .globl _start
+>  _start:
+> -	debug_ll_ns16550_init
+> -
+
+This should be done by board code.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
