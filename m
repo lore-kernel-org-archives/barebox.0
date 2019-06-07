@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201]
- helo=margratgarlick.emantor.de)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hZ8y8-00063d-Fz
- for barebox@lists.infradead.org; Fri, 07 Jun 2019 07:07:22 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Fri,  7 Jun 2019 09:07:00 +0200
-Message-Id: <20190607070658.10919-3-r.czerwinski@pengutronix.de>
-In-Reply-To: <20190607070658.10919-1-r.czerwinski@pengutronix.de>
+ id 1hZ9Hh-0004BU-VK
+ for barebox@lists.infradead.org; Fri, 07 Jun 2019 07:27:35 +0000
+Date: Fri, 7 Jun 2019 09:27:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190607072731.zi2yehpfsywghevb@pengutronix.de>
 References: <20190607070658.10919-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190607070658.10919-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,131 +22,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 3/3] add gdb helper scripts to load barebox symbols
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH v3 1/3] remove CONFIG_DEBUG_INFO
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org, Oleksij Rempel <linux@rempel-privat.de>
 
-Add a gdb script with two helper functions which use the new
-pbl_barebox_break symbol to calculate the current barebox load address
-on the device and loads a barebox ELF file to this address.
+On Fri, Jun 07, 2019 at 09:06:57AM +0200, Rouven Czerwinski wrote:
+> From: Oleksij Rempel <linux@rempel-privat.de>
+> 
+> The ELF file should have debug symbols, the binary should have no symbols any way.
+> 
+> Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+>  Makefile       | 4 +---
+>  common/Kconfig | 6 ------
+>  2 files changed, 1 insertion(+), 9 deletions(-)
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
- Documentation/user/debugging.rst   | 21 +++++++++++
- Documentation/user/user-manual.rst |  1 +
- scripts/gdb/helper.py              | 60 ++++++++++++++++++++++++++++++
- 3 files changed, 82 insertions(+)
- create mode 100644 Documentation/user/debugging.rst
- create mode 100644 scripts/gdb/helper.py
+Applied, thanks
 
-diff --git a/Documentation/user/debugging.rst b/Documentation/user/debugging.rst
-new file mode 100644
-index 0000000000..15cb439043
---- /dev/null
-+++ b/Documentation/user/debugging.rst
-@@ -0,0 +1,21 @@
-+Debugging with OpenOCD
-+======================
-+
-+Barebox can be configured to break on prebootloader and main barebox entry. This
-+breakpoint can not be resumed and will stop the board to allow the user to
-+attach a JTAG debugger with OpenOCD. Additionally, barebox provides helper
-+scripts to load the symbols from the ELF binaries.
-+The python scripts require `pyelftools`.
-+To load the scripts into your gdb session, run the following command in the
-+barebox directory:
-+
-+.. code-block:: none
-+
-+    (gdb) source scripts/gdb/helper.py
-+
-+This makes two new commands available in gdb, `bb-load-symbols` and
-+`bb-skip-break`. `bb-load-symbols` can load either the main `barebox` file or
-+one of the .pbl files in the image directories. The board needs to be stopped in
-+either the prebootloader or main barebox breakpoint, and gdb needs to be
-+connected to OpenOCD. To continue booting the board, `bb-skip-break` jumps over
-+the breakpoint and continues the barebox execution.
-diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
-index 516b760b1b..f04981c3f0 100644
---- a/Documentation/user/user-manual.rst
-+++ b/Documentation/user/user-manual.rst
-@@ -33,6 +33,7 @@ Contents:
-    system-reset
-    state
-    random
-+   debugging
- 
- * :ref:`search`
- * :ref:`genindex`
-diff --git a/scripts/gdb/helper.py b/scripts/gdb/helper.py
-new file mode 100644
-index 0000000000..4041789890
---- /dev/null
-+++ b/scripts/gdb/helper.py
-@@ -0,0 +1,60 @@
-+#!/usr/bin/env python
-+
-+import gdb
-+
-+try:
-+    from elftools.elf.elffile import ELFFile
-+    from elftools.common.exceptions import ELFError
-+except ImportError:
-+    gdb.write("The barebox helper requires pyelftools\n", gdb.STDERR)
-+    exit(1)
-+
-+
-+class BBSymbols(gdb.Command):
-+
-+    def __init__(self):
-+        super(BBSymbols, self).__init__("bb-load-symbols", gdb.COMMAND_FILES,
-+                                        gdb.COMPLETE_FILENAME)
-+
-+    def invoke(self, argument, from_tty):
-+        path = argument
-+        f = open(path, 'rb')
-+
-+        try:
-+            elf = ELFFile(f)
-+        except ELFError:
-+            gdb.write("Selected file is not an ELF file\n", gdb.STDERR)
-+            return
-+
-+        section = elf.get_section_by_name(".symtab")
-+        if section is None:
-+            gdb.write("Section .symtab not found\n", gdb.STDERR)
-+            return
-+        symbol = section.get_symbol_by_name("pbl_barebox_break")
-+        if not symbol:
-+            gdb.write("Symbol pbl_barebox_break in section {} in file {} not found\n"
-+                      .format(section.name, self.path), gdb.STDERR)
-+            return
-+        symbol = symbol[0]
-+        pc = gdb.parse_and_eval("$pc")
-+        symbol_address = int(symbol.entry.st_value)
-+        address = int(pc) - symbol_address + 1
-+        gdb.execute("symbol-file")
-+        gdb.execute("add-symbol-file {} {}".format(path, address))
-+
-+
-+BBSymbols()
-+
-+
-+class BBSkip(gdb.Command):
-+
-+    def __init__(self):
-+        super(BBSkip, self).__init__("bb-skip-break", gdb.COMMAND_BREAKPOINTS)
-+
-+    def invoke(self, arg, from_tty):
-+        pc = gdb.parse_and_eval("$pc")
-+        nop_address = int(pc) + 2
-+        gdb.execute("jump *{}".format(nop_address))
-+
-+
-+BBSkip()
+Sascha
+
+> 
+> diff --git a/Makefile b/Makefile
+> index 29347b6780..900117e727 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -457,9 +457,7 @@ endif # $(dot-config)
+>  
+>  include $(srctree)/arch/$(ARCH)/Makefile
+>  
+> -ifdef CONFIG_DEBUG_INFO
+> -CFLAGS		+= -g
+> -endif
+> +CFLAGS		+= -ggdb3
+>  
+>  # Force gcc to behave correct even for buggy distributions
+>  CFLAGS          += $(call cc-option, -fno-stack-protector)
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 7832df5c55..ffb7537592 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -999,12 +999,6 @@ config DEFAULT_LOGLEVEL
+>  	  7    debug-level messages (debug)
+>  	  8    verbose debug messages (vdebug)
+>  
+> -config DEBUG_INFO
+> -	bool
+> -	prompt "enable debug symbols"
+> -	help
+> -	  Enable build of barebox with -g.
+> -
+>  config DEBUG_LL
+>  	bool
+>  	depends on HAS_DEBUG_LL
+> -- 
+> 2.21.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.21.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
