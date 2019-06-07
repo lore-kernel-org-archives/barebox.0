@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2]
+Received: from magratgarlick.emantor.de ([78.46.208.201]
  helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hZ8V9-0004OP-Oj
- for barebox@lists.infradead.org; Fri, 07 Jun 2019 06:37:25 +0000
+ id 1hZ8VN-0004Ym-7y
+ for barebox@lists.infradead.org; Fri, 07 Jun 2019 06:37:39 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Fri,  7 Jun 2019 08:36:53 +0200
-Message-Id: <20190607063652.8961-2-r.czerwinski@pengutronix.de>
+Date: Fri,  7 Jun 2019 08:36:55 +0200
+Message-Id: <20190607063652.8961-3-r.czerwinski@pengutronix.de>
 In-Reply-To: <20190607063652.8961-1-r.czerwinski@pengutronix.de>
 References: <20190607063652.8961-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -22,99 +22,128 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/3] add CONFIG_PBL_BREAK option
+Subject: [PATCH v2 3/3] add gdb helper scripts to load barebox symbols
 To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>, Oleksij Rempel <linux@rempel-privat.de>
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-From: Oleksij Rempel <linux@rempel-privat.de>
+Add a gdb script with two helper functions which use the new
+pbl_barebox_break symbol to calculate the current barebox load address
+on the device and loads a barebox ELF file to this address.
 
-With this option barebox will be build with breakpoint instruction
-in early pbl stage.
-
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/cpu/common.c              | 13 +++++++++++++
- arch/arm/cpu/start.c               |  2 ++
- arch/arm/include/asm/barebox-arm.h |  2 ++
- common/Kconfig                     |  7 +++++++
- 4 files changed, 24 insertions(+)
+ Documentation/user/debugging.rst   | 21 +++++++++++
+ Documentation/user/user-manual.rst |  1 +
+ scripts/gdb/helper.py              | 60 ++++++++++++++++++++++++++++++
+ 3 files changed, 82 insertions(+)
+ create mode 100644 Documentation/user/debugging.rst
+ create mode 100644 scripts/gdb/helper.py
 
-diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
-index 51fe7ed988..6fe3476aa2 100644
---- a/arch/arm/cpu/common.c
-+++ b/arch/arm/cpu/common.c
-@@ -30,6 +30,19 @@
- #define R_ARM_RELATIVE 23
- #define R_AARCH64_RELATIVE 1027
- 
-+void pbl_barebox_break(void)
-+{
-+	__asm__ __volatile__ (
-+#ifdef CONFIG_PBL_BREAK
-+		"bkpt #17\n"
-+		"nop\n"
-+#else
-+		"nop\n"
-+		"nop\n"
-+#endif
-+	);
-+}
+diff --git a/Documentation/user/debugging.rst b/Documentation/user/debugging.rst
+new file mode 100644
+index 0000000000..15cb439043
+--- /dev/null
++++ b/Documentation/user/debugging.rst
+@@ -0,0 +1,21 @@
++Debugging with OpenOCD
++======================
 +
- /*
-  * relocate binary to the currently running address
-  */
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 6573c2ef74..6bfc4da34c 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -168,6 +168,8 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
- 
- 	barrier();
- 
-+	pbl_barebox_break();
++Barebox can be configured to break on prebootloader and main barebox entry. This
++breakpoint can not be resumed and will stop the board to allow the user to
++attach a JTAG debugger with OpenOCD. Additionally, barebox provides helper
++scripts to load the symbols from the ELF binaries.
++The python scripts require `pyelftools`.
++To load the scripts into your gdb session, run the following command in the
++barebox directory:
 +
- 	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
- 
- 	arm_endmem = endmem;
-diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-index a11d34923d..12765b7277 100644
---- a/arch/arm/include/asm/barebox-arm.h
-+++ b/arch/arm/include/asm/barebox-arm.h
-@@ -55,6 +55,7 @@ static inline unsigned long global_variable_offset(void)
- }
- 
- void setup_c(void);
-+void pbl_barebox_break(void);
- void relocate_to_current_adr(void);
- void relocate_to_adr(unsigned long target);
- void __noreturn barebox_arm_entry(unsigned long membase, unsigned long memsize, void *boarddata);
-@@ -177,6 +178,7 @@ static inline unsigned long arm_mem_barebox_image(unsigned long membase,
- 				(uint32_t r0, uint32_t r1, uint32_t r2)	\
- 		{							\
- 			__barebox_arm_head();				\
-+			pbl_barebox_break();				\
- 			__##name(r0, r1, r2);				\
- 		}							\
- 		static void NAKED noinline __##name			\
-diff --git a/common/Kconfig b/common/Kconfig
-index ffb7537592..4124857a0a 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1245,6 +1245,13 @@ config DEBUG_INITCALLS
- 	help
- 	  If enabled this will print initcall traces.
- 
++.. code-block:: none
 +
-+config PBL_BREAK
-+	bool "Execute software break on pbl start"
-+	help
-+	  If this enabled, barebox will be compiled with BKPT instruction
-+	  on early pbl init. This option be used only with JTAG debugger!
++    (gdb) source scripts/gdb/helper.py
 +
- endmenu
++This makes two new commands available in gdb, `bb-load-symbols` and
++`bb-skip-break`. `bb-load-symbols` can load either the main `barebox` file or
++one of the .pbl files in the image directories. The board needs to be stopped in
++either the prebootloader or main barebox breakpoint, and gdb needs to be
++connected to OpenOCD. To continue booting the board, `bb-skip-break` jumps over
++the breakpoint and continues the barebox execution.
+diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
+index 516b760b1b..f04981c3f0 100644
+--- a/Documentation/user/user-manual.rst
++++ b/Documentation/user/user-manual.rst
+@@ -33,6 +33,7 @@ Contents:
+    system-reset
+    state
+    random
++   debugging
  
- config HAS_DEBUG_LL
+ * :ref:`search`
+ * :ref:`genindex`
+diff --git a/scripts/gdb/helper.py b/scripts/gdb/helper.py
+new file mode 100644
+index 0000000000..4041789890
+--- /dev/null
++++ b/scripts/gdb/helper.py
+@@ -0,0 +1,60 @@
++#!/usr/bin/env python
++
++import gdb
++
++try:
++    from elftools.elf.elffile import ELFFile
++    from elftools.common.exceptions import ELFError
++except ImportError:
++    gdb.write("The barebox helper requires pyelftools\n", gdb.STDERR)
++    exit(1)
++
++
++class BBSymbols(gdb.Command):
++
++    def __init__(self):
++        super(BBSymbols, self).__init__("bb-load-symbols", gdb.COMMAND_FILES,
++                                        gdb.COMPLETE_FILENAME)
++
++    def invoke(self, argument, from_tty):
++        path = argument
++        f = open(path, 'rb')
++
++        try:
++            elf = ELFFile(f)
++        except ELFError:
++            gdb.write("Selected file is not an ELF file\n", gdb.STDERR)
++            return
++
++        section = elf.get_section_by_name(".symtab")
++        if section is None:
++            gdb.write("Section .symtab not found\n", gdb.STDERR)
++            return
++        symbol = section.get_symbol_by_name("pbl_barebox_break")
++        if not symbol:
++            gdb.write("Symbol pbl_barebox_break in section {} in file {} not found\n"
++                      .format(section.name, self.path), gdb.STDERR)
++            return
++        symbol = symbol[0]
++        pc = gdb.parse_and_eval("$pc")
++        symbol_address = int(symbol.entry.st_value)
++        address = int(pc) - symbol_address + 1
++        gdb.execute("symbol-file")
++        gdb.execute("add-symbol-file {} {}".format(path, address))
++
++
++BBSymbols()
++
++
++class BBSkip(gdb.Command):
++
++    def __init__(self):
++        super(BBSkip, self).__init__("bb-skip-break", gdb.COMMAND_BREAKPOINTS)
++
++    def invoke(self, arg, from_tty):
++        pc = gdb.parse_and_eval("$pc")
++        nop_address = int(pc) + 2
++        gdb.execute("jump *{}".format(nop_address))
++
++
++BBSkip()
 -- 
 2.21.0
 
