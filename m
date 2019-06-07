@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vs1-xe42.google.com ([2607:f8b0:4864:20::e42])
+Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2]
+ helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1haMhL-0005Vg-ED
- for barebox@lists.infradead.org; Mon, 10 Jun 2019 15:59:04 +0000
-Received: by mail-vs1-xe42.google.com with SMTP id 190so2084399vsf.9
- for <barebox@lists.infradead.org>; Mon, 10 Jun 2019 08:59:02 -0700 (PDT)
-From: Vivien Didelot <vivien.didelot@gmail.com>
-Date: Mon, 10 Jun 2019 11:58:35 -0400
-Message-Id: <20190610155835.18304-1-vivien.didelot@gmail.com>
+ id 1hZ8y2-00061P-4e
+ for barebox@lists.infradead.org; Fri, 07 Jun 2019 07:07:15 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Fri,  7 Jun 2019 09:06:57 +0200
+Message-Id: <20190607070658.10919-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,40 +20,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: zii-rdu2: disable eth0 and eth1
+Subject: [PATCH v3 1/3] remove CONFIG_DEBUG_INFO
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Vivien Didelot <vivien.didelot@gmail.com>
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>, Oleksij Rempel <linux@rempel-privat.de>
 
-The current support for the ZII RDU2 Board times out on eth0 and eth1
-when booting 'net' from an alternative interface, like a USB Ethernet
-dongle. eth0 is the DSA master interface and has no use within barebox,
-as well as the gigabit interface eth1 which is wired to the switch
-port 0. Disable them to allow Barebox to boot right away from network.
+From: Oleksij Rempel <linux@rempel-privat.de>
 
-Signed-off-by: Vivien Didelot <vivien.didelot@gmail.com>
+The ELF file should have debug symbols, the binary should have no symbols any way.
+
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth0.mode | 1 +
- arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth1.mode | 1 +
- 2 files changed, 2 insertions(+)
- create mode 100644 arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth0.mode
- create mode 100644 arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth1.mode
+ Makefile       | 4 +---
+ common/Kconfig | 6 ------
+ 2 files changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth0.mode b/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth0.mode
-new file mode 100644
-index 000000000..87e7bdaae
---- /dev/null
-+++ b/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth0.mode
-@@ -0,0 +1 @@
-+disabled
-\ No newline at end of file
-diff --git a/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth1.mode b/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth1.mode
-new file mode 100644
-index 000000000..87e7bdaae
---- /dev/null
-+++ b/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth1.mode
-@@ -0,0 +1 @@
-+disabled
-\ No newline at end of file
+diff --git a/Makefile b/Makefile
+index 29347b6780..900117e727 100644
+--- a/Makefile
++++ b/Makefile
+@@ -457,9 +457,7 @@ endif # $(dot-config)
+ 
+ include $(srctree)/arch/$(ARCH)/Makefile
+ 
+-ifdef CONFIG_DEBUG_INFO
+-CFLAGS		+= -g
+-endif
++CFLAGS		+= -ggdb3
+ 
+ # Force gcc to behave correct even for buggy distributions
+ CFLAGS          += $(call cc-option, -fno-stack-protector)
+diff --git a/common/Kconfig b/common/Kconfig
+index 7832df5c55..ffb7537592 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -999,12 +999,6 @@ config DEFAULT_LOGLEVEL
+ 	  7    debug-level messages (debug)
+ 	  8    verbose debug messages (vdebug)
+ 
+-config DEBUG_INFO
+-	bool
+-	prompt "enable debug symbols"
+-	help
+-	  Enable build of barebox with -g.
+-
+ config DEBUG_LL
+ 	bool
+ 	depends on HAS_DEBUG_LL
 -- 
 2.21.0
 
