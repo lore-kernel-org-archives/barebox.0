@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.15.15])
+Received: from mail-vs1-xe42.google.com ([2607:f8b0:4864:20::e42])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hZ9MM-0005gq-K7
- for barebox@lists.infradead.org; Fri, 07 Jun 2019 07:32:24 +0000
-From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Fri,  7 Jun 2019 09:32:09 +0200
-Message-Id: <20190607073210.13915-3-linux@rempel-privat.de>
-In-Reply-To: <20190607073210.13915-1-linux@rempel-privat.de>
-References: <20190607073210.13915-1-linux@rempel-privat.de>
+ id 1haMhL-0005Vg-ED
+ for barebox@lists.infradead.org; Mon, 10 Jun 2019 15:59:04 +0000
+Received: by mail-vs1-xe42.google.com with SMTP id 190so2084399vsf.9
+ for <barebox@lists.infradead.org>; Mon, 10 Jun 2019 08:59:02 -0700 (PDT)
+From: Vivien Didelot <vivien.didelot@gmail.com>
+Date: Mon, 10 Jun 2019 11:58:35 -0400
+Message-Id: <20190610155835.18304-1-vivien.didelot@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,36 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/4] of: base: don't try to read cells_name property if no
- cells_name set
+Subject: [PATCH] ARM: zii-rdu2: disable eth0 and eth1
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Vivien Didelot <vivien.didelot@gmail.com>
 
-Some device tree node parsed by of_count_phandle_with_args() have no #*-cells
-parameter. To make linux device trees work with barebox, we should accept
-cells_name set to NULL, so sync this behavior with linux.
+The current support for the ZII RDU2 Board times out on eth0 and eth1
+when booting 'net' from an alternative interface, like a USB Ethernet
+dongle. eth0 is the DSA master interface and has no use within barebox,
+as well as the gigabit interface eth1 which is wired to the switch
+port 0. Disable them to allow Barebox to boot right away from network.
 
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+Signed-off-by: Vivien Didelot <vivien.didelot@gmail.com>
 ---
- drivers/of/base.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth0.mode | 1 +
+ arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth1.mode | 1 +
+ 2 files changed, 2 insertions(+)
+ create mode 100644 arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth0.mode
+ create mode 100644 arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth1.mode
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 838f530f8..d72c687ef 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1360,7 +1360,8 @@ static int __of_parse_phandle_with_args(const struct device_node *np,
- 					 np->full_name);
- 				goto err;
- 			}
--			if (of_property_read_u32(node, cells_name, &count)) {
-+			if (cells_name &&
-+			    of_property_read_u32(node, cells_name, &count)) {
- 				pr_err("%s: could not get %s for %s\n",
- 					 np->full_name, cells_name,
- 					 node->full_name);
---
-2.20.1
+diff --git a/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth0.mode b/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth0.mode
+new file mode 100644
+index 000000000..87e7bdaae
+--- /dev/null
++++ b/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth0.mode
+@@ -0,0 +1 @@
++disabled
+\ No newline at end of file
+diff --git a/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth1.mode b/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth1.mode
+new file mode 100644
+index 000000000..87e7bdaae
+--- /dev/null
++++ b/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/nv/dev.eth1.mode
+@@ -0,0 +1 @@
++disabled
+\ No newline at end of file
+-- 
+2.21.0
 
 
 _______________________________________________
