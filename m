@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2]
+ helo=margratgarlick.emantor.de)
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hac3W-0000bZ-LQ
- for barebox@lists.infradead.org; Tue, 11 Jun 2019 08:23:00 +0000
-Date: Tue, 11 Jun 2019 10:22:56 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190611082256.t7jzzaia3hlv7uia@pengutronix.de>
-References: <20190607070658.10919-1-r.czerwinski@pengutronix.de>
- <20190607070658.10919-2-r.czerwinski@pengutronix.de>
- <2b8e26bf-950a-b1ca-2310-83a7c306d678@pengutronix.de>
+ id 1haabJ-0002Ip-2s
+ for barebox@lists.infradead.org; Tue, 11 Jun 2019 06:49:46 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue, 11 Jun 2019 08:49:05 +0200
+Message-Id: <20190611064906.8938-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <2b8e26bf-950a-b1ca-2310-83a7c306d678@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,52 +20,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 2/3] add CONFIG_PBL_BREAK option
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, "ore@pengutronix.de" <ore@pengutronix.de>, rcz@pengutronix.de
+Subject: [PATCH 1/3] nvmem: ocotp: Elongate OCOTP_CTRL_ADDR field
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-On Sun, Jun 09, 2019 at 11:36:35PM +0200, Ahmad Fatoum wrote:
-> Hello Oleksij,
-> 
-> On 7/6/19 09:06, Rouven Czerwinski wrote:
-> > From: Oleksij Rempel <linux@rempel-privat.de>
-> > 
-> > With this option barebox will be build with breakpoint instruction
-> > in early pbl stage and on main barebox entry. Otherwise two nop
-> > instructions are generated which allow binary patching of existing
-> > barebox binaries.
-> 
-> At least arm-linux-gnueabihf-gcc (Debian 8.3.0-2) does some funny
-> reordering with the result that the barebox header may no longer be
-> at the very start of the image.
-> This results e.g. in bootm not working for stm32 bareboxes, because
-> file_detect_type no longer detects them as valid barebox ARM images.
-> 
-> Steps to reproduce with current next:
-> 
-> $ make stm32mp1_defconfig
-> $ make
-> $ xxd -l64 -g1 images/start_stm32mp157c_dk2.pblb
-> 00000000: 04 46 0d 46 16 46 00 00 01 90 8f e2 19 ff 2f e1  .F.F.F......../.
-> 00000010: 00 f0 22 f8 fe e7 fe e7 fe e7 fe e7 fe e7 fe e7  ..".............
-> 00000020: fe e7 fe e7 fe e7 fe e7 62 61 72 65 62 6f 78 00  ........barebox.
-> 00000030: 00 00 00 00 00 00 00 00 55 55 55 55 55 55 55 55  ........UUUUUUUU
-> 
-> Note how the new 8 bytes are not after the __barebox_arm_head as they should.
-> This leads to the barebox string being shifted from the
-> ARM_HEAD_MAGICWORD_OFFSET, where it's expected.
-> 
-> Could you take a look?
+Port of patch from linux-arm-kernel:
+| From: Bryan O'Donoghue <pure.logic@nexus-software.ie>
+|
+| nvmem: imx-ocotp: Elongate OCOTP_CTRL ADDR field to eight bits
+|
+| i.MX6 defines OCOTP_CTRLn:ADDR as seven bit address-field with a one bit
+| RSVD0 field, i.MX7 defines OCOTP_CTRLn:ADDR as a four bit address-field
+| with a four bit RSVD0 field.
+|
+| i.MX8 defines the OCOTP_CTRLn:ADDR bit-field as a full range eight bits.
+|
+| i.MX6 and i.MX7 should return zero for their respective RSVD0 bits and
+| ignore a write-back of zero where i.MX8 will make use of the full range.
+|
+| This patch expands the bit-field definition for all users to eight bits,
+| which is safe due to RSVD0 being a no-op for the i.MX6 and i.MX7.
 
-Yes, it doesn't work like this properly. I dropped 2/3 and 3/3 for now.
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+---
+ drivers/nvmem/ocotp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
+diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
+index 5b8b925cb4..ab543b475f 100644
+--- a/drivers/nvmem/ocotp.c
++++ b/drivers/nvmem/ocotp.c
+@@ -51,7 +51,7 @@
+ #define OCOTP_CTRL_WR_UNLOCK_KEY	0x3E77
+ #define OCOTP_CTRL_WR_UNLOCK_MASK	0xFFFF0000
+ #define OCOTP_CTRL_ADDR			0
+-#define OCOTP_CTRL_ADDR_MASK		0x0000007F
++#define OCOTP_CTRL_ADDR_MASK		0x000000FF
+ #define OCOTP_CTRL_BUSY			(1 << 8)
+ #define OCOTP_CTRL_ERROR		(1 << 9)
+ #define OCOTP_CTRL_RELOAD_SHADOWS	(1 << 10)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.22.0
+
 
 _______________________________________________
 barebox mailing list
