@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hYCgS-00039e-MW
- for barebox@lists.infradead.org; Tue, 04 Jun 2019 16:53:15 +0000
-From: Bastian Krause <bst@pengutronix.de>
-Date: Tue,  4 Jun 2019 18:53:08 +0200
-Message-Id: <20190604165308.15229-3-bst@pengutronix.de>
-In-Reply-To: <20190604165308.15229-1-bst@pengutronix.de>
-References: <20190604165308.15229-1-bst@pengutronix.de>
+Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2]
+ helo=margratgarlick.emantor.de)
+ by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1haad0-00046M-Dp
+ for barebox@lists.infradead.org; Tue, 11 Jun 2019 06:51:32 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue, 11 Jun 2019 08:51:21 +0200
+Message-Id: <20190611065121.9998-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,87 +20,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] doc: boards: imx: add HAB section
+Subject: [PATCH 3/3] nvmem: ocotp: Change TIMING calculation algorithm
 To: barebox@lists.infradead.org
-Cc: Bastian Krause <bst@pengutronix.de>
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Signed-off-by: Bastian Krause <bst@pengutronix.de>
+Port of patch from linux-arm-kernel:
+| From: Bryan O'Donoghue <pure.logic@nexus-software.ie>
+|
+| nvmem: imx-ocotp: Change TIMING calculation to u-boot algorithm
+|
+| The RELAX field of the OCOTP block is turning out as a zero on i.MX8MM.
+| This messes up the subsequent re-load of the fuse shadow registers.
+|
+| After some discussion with people @ NXP its clear we have missed a trick
+| here in Linux.
+|
+| The OCOTP fuse programming time has a physical minimum 'burn time' that is
+| not related to the ipg_clk.
+|
+| We need to define the RELAX, STROBE_READ and STROBE_PROG fields in terms of
+| desired timings to allow for the burn-in to safely complete. Right now only
+| the RELAX field is calculated in terms of an absolute time and we are
+| ending up with a value of zero.
+|
+| This patch inherits the u-boot timings for the OCOTP_TIMING calculation on
+| the i.MX6 and i.MX8. Those timings are known to work and critically specify
+| values such as STROBE_PROG as a minimum timing.
+
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- Documentation/boards/imx.rst | 59 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 59 insertions(+)
+ drivers/nvmem/ocotp.c | 38 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 34 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
-index abd9c76151..ba0a3b7988 100644
---- a/Documentation/boards/imx.rst
-+++ b/Documentation/boards/imx.rst
-@@ -83,6 +83,65 @@ The images can also always be started as second stage on the target:
+diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
+index c21327805b..3f9f162860 100644
+--- a/drivers/nvmem/ocotp.c
++++ b/drivers/nvmem/ocotp.c
+@@ -69,7 +69,9 @@
  
-   barebox@Board Name:/ bootm /mnt/tftp/barebox-freescale-imx51-babbage.img
+ /* Other definitions */
+ #define IMX6_OTP_DATA_ERROR_VAL		0xBADABADA
+-#define DEF_RELAX			20
++#define TIMING_STROBE_PROG_US		10
++#define TIMING_STROBE_READ_NS		37
++#define TIMING_RELAX_NS			17
+ #define MAC_OFFSET_0			(0x22 * 4)
+ #define IMX6UL_MAC_OFFSET_1		(0x23 * 4)
+ #define MAC_OFFSET_1			(0x24 * 4)
+@@ -119,11 +121,39 @@ static int imx6_ocotp_set_timing(struct ocotp_priv *priv)
+ 	u32 relax, strobe_read, strobe_prog;
+ 	u32 timing;
  
-+High Assurance Boot
-+^^^^^^^^^^^^^^^^^^^
-+
-+HAB is a NXP ROM code feature which is able to authenticate software in
-+external memory at boot time.
-+This is done by verifying signatures as defined in the Command Sequence FILE
-+(CSF) as compiled into the i.MX boot header.
-+
-+barebox supports generating signed images, signed USB images suitable for
-+*imx-usb-loader* and encrypted images.
-+
-+In contrast to normal (unsigned) images booting signed images via
-+imx-usb-loader requires special images:
-+DCD data is invalidated (DCD pointer set to zero), the image is then signed and
-+afterwards the DCD pointer is set to the DCD data again (practically making
-+the signature invalid).
-+This works because the imx-usb-loader transmits the DCD table setup prior to
-+the actual image to set up the RAM in order to load the barebox image.
-+Now the DCD pointer is set to zero (making the signature valid again) and the
-+image is loaded and verified by the ROM code.
-+
-+Note that the device-specific Data Encryption Key (DEK) blob needs to be
-+appended to the image after the build process for appropriately encrypted
-+images.
-+
-+In order to generate these special image types barebox is equipped with
-+corresponding static pattern rules in ``images/Makefile.imx``.
-+Unlike the typical ``imximg`` file extension the following ones are used for
-+these cases:
-+
-+* ``simximg``: generate signed image
-+* ``usimximg``: generate signed USB image
-+* ``esimximg``: generate encrypted and signed image
-+
-+The imx-image tool is then automatically called with the appropriate flags
-+during image creation.
-+This again calls Freescale's Code Signing Tool (CST) which must be installed in
-+the path or given via the environment variable "CST".
-+
-+Assuming ``CONFIG_HAB`` and ``CONFIG_HABV4`` are enabled the necessary
-+keys/certificates are expected in these config variables (assuming HABv4):
-+
-+.. code-block:: none
-+
-+  CONFIG_HABV4_TABLE_BIN
-+  CONFIG_HABV4_CSF_CRT_PEM
-+  CONFIG_HABV4_IMG_CRT_PEM
-+
-+A CSF template is located in
-+``arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h`` which is preprocessed
-+by barebox.
-+It must be included in the board's flash header:
-+
-+.. code-block:: none
-+
-+  #include <mach/habv4-imx6-gencsf.h>
-+
-+Analogous to HABv4 options and a template exist for HABv3.
-+
- Using GPT on i.MX
- ^^^^^^^^^^^^^^^^^
++	/*
++	 * Note: there are minimum timings required to ensure an OTP fuse burns
++	 * correctly that are independent of the ipg_clk. Those values are not
++	 * formally documented anywhere however, working from the minimum
++	 * timings given in u-boot we can say:
++	 *
++	 * - Minimum STROBE_PROG time is 10 microseconds. Intuitively 10
++	 *   microseconds feels about right as representative of a minimum time
++	 *   to physically burn out a fuse.
++	 *
++	 * - Minimum STROBE_READ i.e. the time to wait post OTP fuse burn before
++	 *   performing another read is 37 nanoseconds
++	 *
++	 * - Minimum RELAX timing is 17 nanoseconds. This final RELAX minimum
++	 *   timing is not entirely clear the documentation says "This
++	 *   count value specifies the time to add to all default timing
++	 *   parameters other than the Tpgm and Trd. It is given in number
++	 *   of ipg_clk periods." where Tpgm and Trd refer to STROBE_PROG
++	 *   and STROBE_READ respectively. What the other timing parameters
++	 *   are though, is not specified. Experience shows a zero RELAX
++	 *   value will mess up a re-load of the shadow registers post OTP
++	 *   burn.
++	 */
+ 	clk_rate = clk_get_rate(priv->clk);
  
+-	relax = clk_rate / (1000000000 / DEF_RELAX) - 1;
+-	strobe_prog = clk_rate / (1000000000 / 10000) + 2 * (DEF_RELAX + 1) - 1;
+-	strobe_read = clk_rate / (1000000000 / 40) + 2 * (DEF_RELAX + 1) - 1;
++	relax = DIV_ROUND_UP(clk_rate * TIMING_RELAX_NS, 1000000000) - 1;
++
++	strobe_read = DIV_ROUND_UP(clk_rate * TIMING_STROBE_READ_NS,
++				   1000000000);
++	strobe_read += 2 * (relax + 1) - 1;
++	strobe_prog = DIV_ROUND_CLOSEST(clk_rate * TIMING_STROBE_PROG_US,
++					1000000);
++	strobe_prog += 2 * (relax + 1) - 1;
+ 
+ 	timing = readl(priv->base + OCOTP_TIMING) & OCOTP_TIMING_WAIT_MASK;
+ 	timing |= BF(relax, OCOTP_TIMING_RELAX);
 -- 
-2.20.1
+2.22.0
 
 
 _______________________________________________
