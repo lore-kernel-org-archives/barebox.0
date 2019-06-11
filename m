@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qk1-x743.google.com ([2607:f8b0:4864:20::743])
+Received: from smtp125.ord1c.emailsrvr.com ([108.166.43.125])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1halFY-0007tN-Fc
- for barebox@lists.infradead.org; Tue, 11 Jun 2019 18:12:01 +0000
-Received: by mail-qk1-x743.google.com with SMTP id r6so8272203qkc.0
- for <barebox@lists.infradead.org>; Tue, 11 Jun 2019 11:11:59 -0700 (PDT)
-Date: Tue, 11 Jun 2019 14:11:57 -0400
-Message-ID: <20190611141157.GB17514@t480s.localdomain>
-From: Vivien Didelot <vivien.didelot@gmail.com>
-In-Reply-To: <35c8b85377b409b96f89d3307b211db0a7b2ab95.camel@pengutronix.de>
-References: <20190610155835.18304-1-vivien.didelot@gmail.com>
- <429f1bb0f0ae5c86d2d11be2e105eb5de6f59d1d.camel@pengutronix.de>
- <20190611104603.GC6199@t480s.localdomain>
- <35c8b85377b409b96f89d3307b211db0a7b2ab95.camel@pengutronix.de>
+ id 1hai8q-0004IE-Em
+ for barebox@lists.infradead.org; Tue, 11 Jun 2019 14:52:54 +0000
+Received: by smtp16.relay.ord1c.emailsrvr.com (Authenticated sender:
+ abbotti-AT-mev.co.uk) with ESMTPSA id 5DDBDC038E
+ for <barebox@lists.infradead.org>; Tue, 11 Jun 2019 10:52:49 -0400 (EDT)
+From: Ian Abbott <abbotti@mev.co.uk>
+Message-ID: <ccde5e10-c624-f8b1-93f8-48d76ff699bd@mev.co.uk>
+Date: Tue, 11 Jun 2019 15:52:48 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
+Content-Language: en-GB
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,32 +19,25 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: zii-rdu2: disable eth0 and eth1
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+Subject: Environment variables set by /env/bin/init disappear when script exits
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Lucas,
+Since commit 90df2a955e3c ("defaultenv: Convert init script to C"), if 
+the legacy /env/bin/init script is still being used, any environment 
+variables that were set in the script (such as the PS1 prompt) disappear 
+when the script exits.  I guess it is because the script is now run 
+directly by run_command(initfile) (initfile is "/env/bin/init") rather 
+than by run_command("source /env/bin/init").
 
-On Tue, 11 Jun 2019 20:02:48 +0200, Lucas Stach <l.stach@pengutronix.de> wrote:
-> > > As USB network boot requires additional hardware, I would say it's fair
-> > > to require to change the environment on the boards used for DSA
-> > > development.
-> > 
-> > I'd certainly agree with that if booting from a DSA slave is now possible.
-> 
-> For DSA development you will still need a USB network dongle, but for
-> all development that hasn't to do with the ethernet switch, netbooting
-> from Barebox works fine with the default configuration.
-
-For that reason I agree with you to keep this patch out-of-tree.
-
-
-Thank you,
-Vivien
+-- 
+-=( Ian Abbott <abbotti@mev.co.uk> || Web: www.mev.co.uk )=-
+-=( MEV Ltd. is a company registered in England & Wales. )=-
+-=( Registered number: 02862268.  Registered address:    )=-
+-=( 15 West Park Road, Bramhall, STOCKPORT, SK7 3JZ, UK. )=-
 
 _______________________________________________
 barebox mailing list
