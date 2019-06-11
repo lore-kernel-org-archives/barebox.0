@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.92 #3 (Red Hat Linux))
- id 1hZAcm-0001VF-Fu
- for barebox@lists.infradead.org; Fri, 07 Jun 2019 08:53:26 +0000
-Received: from brom.techweek.pengutronix.de (unknown [185.66.195.81])
- by lynxeye.de (Postfix) with ESMTPA id 7EF63E7414D
- for <barebox@lists.infradead.org>; Fri,  7 Jun 2019 10:52:47 +0200 (CEST)
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri,  7 Jun 2019 10:50:13 +0200
-Message-Id: <20190607085013.16134-1-l.stach@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1hacCy-0004oL-Ko
+ for barebox@lists.infradead.org; Tue, 11 Jun 2019 08:32:46 +0000
+Date: Tue, 11 Jun 2019 10:32:42 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190611083242.tnv5sgc2gfqyafll@pengutronix.de>
+References: <20190607085013.16134-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190607085013.16134-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +22,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: imx6sx-sdb: remove PHY reset GPIO from DT
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: imx6sx-sdb: remove PHY reset GPIO from DT
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-From: Lucas Stach <dev@lynxeye.de>
+On Fri, Jun 07, 2019 at 10:50:13AM +0200, Lucas Stach wrote:
+> From: Lucas Stach <dev@lynxeye.de>
+> 
+> The board file already has a more sophisticated PHY reset sequence,
+> so there is no need to do it in the driver.
+> 
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> ---
+>  arch/arm/dts/imx6sx-sdb.dts | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-The board file already has a more sophisticated PHY reset sequence,
-so there is no need to do it in the driver.
+Applied, thanks
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- arch/arm/dts/imx6sx-sdb.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+Sascha
 
-diff --git a/arch/arm/dts/imx6sx-sdb.dts b/arch/arm/dts/imx6sx-sdb.dts
-index 18d873ccf21e..8cf412a39f75 100644
---- a/arch/arm/dts/imx6sx-sdb.dts
-+++ b/arch/arm/dts/imx6sx-sdb.dts
-@@ -19,6 +19,10 @@
- 	};
- };
- 
-+&fec1 {
-+	/delete-property/ phy-reset-gpios;
-+};
-+
- &ocotp {
- 	barebox,provide-mac-address = <&fec1 0x620 &fec2 0x632>;
- };
+
 -- 
-2.21.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
