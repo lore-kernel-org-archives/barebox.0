@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hacCy-0004oL-Ko
- for barebox@lists.infradead.org; Tue, 11 Jun 2019 08:32:46 +0000
-Date: Tue, 11 Jun 2019 10:32:42 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190611083242.tnv5sgc2gfqyafll@pengutronix.de>
-References: <20190607085013.16134-1-l.stach@pengutronix.de>
+ id 1hacfS-0006pV-T5
+ for barebox@lists.infradead.org; Tue, 11 Jun 2019 09:02:12 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Tue, 11 Jun 2019 11:02:01 +0200
+Message-Id: <20190611090204.5752-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190607085013.16134-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +15,25 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: imx6sx-sdb: remove PHY reset GPIO from DT
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/4] plathome-openblocks-a6: use image format 0
+To: barebox@lists.infradead.org
 
-On Fri, Jun 07, 2019 at 10:50:13AM +0200, Lucas Stach wrote:
-> From: Lucas Stach <dev@lynxeye.de>
-> 
-> The board file already has a more sophisticated PHY reset sequence,
-> so there is no need to do it in the driver.
-> 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
-> ---
->  arch/arm/dts/imx6sx-sdb.dts | 4 ++++
->  1 file changed, 4 insertions(+)
-
-Applied, thanks
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBtYWNoaW5lIGlzIHBvd2VyZWQgYnkgYSBraXJrd29vZCBwcm9jZXNzb3Igd2hpY2ggbmVl
+ZHMgdmVyc2lvbiAwLgoKRml4ZXM6IDU4MzkwODc4YmMzMCAoInBsYXRob21lLW9wZW5ibG9ja3Mt
+YTY6IHByb3ZpZGUgYSBrd2JpbWFnZS5jZmcgZmlsZSIpClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVp
+bmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogYXJjaC9hcm0v
+Ym9hcmRzL3BsYXRob21lLW9wZW5ibG9ja3MtYTYva3diaW1hZ2UuY2ZnIHwgMiArLQogMSBmaWxl
+IGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEvYXJj
+aC9hcm0vYm9hcmRzL3BsYXRob21lLW9wZW5ibG9ja3MtYTYva3diaW1hZ2UuY2ZnIGIvYXJjaC9h
+cm0vYm9hcmRzL3BsYXRob21lLW9wZW5ibG9ja3MtYTYva3diaW1hZ2UuY2ZnCmluZGV4IGJhMzAx
+MTczNmZiNy4uMDM3ZDRjZmNkZGViIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcGxhdGhv
+bWUtb3BlbmJsb2Nrcy1hNi9rd2JpbWFnZS5jZmcKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BsYXRo
+b21lLW9wZW5ibG9ja3MtYTYva3diaW1hZ2UuY2ZnCkBAIC0xLDMgKzEsMyBAQAotVkVSU0lPTiAx
+CitWRVJTSU9OIDAKIEJPT1RfRlJPTSBuYW5kCiBCSU5BUlkgLi9iaW5hcnkuMCAwMDAwMDA1YiAw
+MDAwMDA2OAotLSAKMi4yMC4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
+b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
