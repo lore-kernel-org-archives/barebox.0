@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm1-x344.google.com ([2a00:1450:4864:20::344])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hbJAs-0002Xx-8J
- for barebox@lists.infradead.org; Thu, 13 Jun 2019 06:25:27 +0000
-Date: Thu, 13 Jun 2019 08:25:23 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190613062523.hz5xckmfyjl4mm4b@pengutronix.de>
-References: <20190611101635.22422-1-yamada.masahiro@socionext.com>
+ id 1hadrn-0002qa-9u
+ for barebox@lists.infradead.org; Tue, 11 Jun 2019 10:19:01 +0000
+Received: by mail-wm1-x344.google.com with SMTP id x15so2302172wmj.3
+ for <barebox@lists.infradead.org>; Tue, 11 Jun 2019 03:18:57 -0700 (PDT)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Tue, 11 Jun 2019 13:18:33 +0300
+Message-Id: <20190611101833.1840-1-pmamonov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190611101635.22422-1-yamada.masahiro@socionext.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] kbuild: do not drop -I without parameter
-To: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] pbl: report decompression failure
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-On Tue, Jun 11, 2019 at 07:16:35PM +0900, Masahiro Yamada wrote:
-> Linux commit 48f6e3cf5bc6dd0ee00405342ff310c3b1fedb35
-> [ Adjusted for barebox for some missing commits ]
-> 
-> The comment line for addtree says "skip if -I has no parameter".
-> 
-> What it actually does is "drop if -I has no parameter".  For example,
-> if you have the compiler flag '-I foo' (a space between), it will be
-> converted to 'foo'.  This completely changes the meaning.
-> 
-> What we want is, "do nothing" for -I without parameter so that
-> '-I foo' is kept as-is.
-> 
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-> ---
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+---
+ pbl/decomp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Applied this one and the Kconfig update ontop of it. Thanks,
-
-Sascha
-
+diff --git a/pbl/decomp.c b/pbl/decomp.c
+index c8014c403f..72a162309a 100644
+--- a/pbl/decomp.c
++++ b/pbl/decomp.c
+@@ -7,6 +7,7 @@
+ 
+ #include <common.h>
+ #include <pbl.h>
++#include <debug_ll.h>
+ 
+ #define STATIC static
+ 
+@@ -40,6 +41,9 @@ STATIC int decompress(u8 *input, int in_len,
+ 
+ static void noinline errorfn(char *error)
+ {
++	puts_ll("ERROR: ");
++	puts_ll(error);
++	puts_ll("\nHANG\n");
+ 	while (1);
+ }
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
