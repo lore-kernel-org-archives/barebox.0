@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp93.ord1d.emailsrvr.com ([184.106.54.93])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hazzE-0006Sc-JY
- for barebox@lists.infradead.org; Wed, 12 Jun 2019 09:56:14 +0000
-References: <20190612092400.4879-1-s.hauer@pengutronix.de>
-From: Bastian Krause <bst@pengutronix.de>
-Message-ID: <57750bc8-db93-be02-4519-e52194b09458@pengutronix.de>
-Date: Wed, 12 Jun 2019 11:56:04 +0200
+ id 1haznR-0007Xy-2T
+ for barebox@lists.infradead.org; Wed, 12 Jun 2019 09:43:58 +0000
+From: Ian Abbott <abbotti@mev.co.uk>
+Date: Wed, 12 Jun 2019 10:43:33 +0100
+Message-Id: <20190612094333.8648-1-abbotti@mev.co.uk>
 MIME-Version: 1.0
-In-Reply-To: <20190612092400.4879-1-s.hauer@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,21 +19,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] startup: Do not overwrite global.linux.bootargs.console
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] startup: execute /env/bin/init as part of the initial shell
+To: barebox@lists.infradead.org
+Cc: Ian Abbott <abbotti@mev.co.uk>
 
-On 6/12/19 11:24 AM, Sascha Hauer wrote:
-> global.linux.bootargs.console already exists. It is created during
-> console registration with a value, so do not overwrite it with an
-> empty value during init sequence. Instead create the variable if it
-> doesn't exist, but keep the old value if it does exist.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Commit 90df2a955e3c ("defaultenv: Convert init script to C")
+unintentionally changed the way the legacy "/env/bin/init" script is
+run, so that it runs in a sub-shell context, effectively changing
+`run_command("source /env/bin/init");` to
+`run_command("/env/bin/init");`.  Therefore, any changes to shell
+environment variables made by the script are undone when the script
+exits.  This patch reverts back to the old behavior.
 
-Tested-by: Bastian Krause <bst@pengutronix.de>
+Fixes: 90df2a955e3c ("defaultenv: Convert init script to C")
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+---
+ common/startup.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-Thanks,
-Bastian
+diff --git a/common/startup.c b/common/startup.c
+index 9fac0eabb..9345d131b 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -188,11 +188,12 @@ static bool test_abort(void)
+ 	return false;
+ }
+ 
++#define INITFILE "/env/bin/init"
++
+ static int run_init(void)
+ {
+ 	DIR *dir;
+ 	struct dirent *d;
+-	const char *initfile = "/env/bin/init";
+ 	const char *initdir = "/env/init";
+ 	const char *menufile = "/env/menu/mainmenu";
+ 	struct stat s;
+@@ -206,10 +207,10 @@ static int run_init(void)
+ 	setenv("PATH", "/env/bin");
+ 
+ 	/* Run legacy /env/bin/init if it exists */
+-	env_bin_init_exists = stat(initfile, &s) == 0;
++	env_bin_init_exists = stat(INITFILE, &s) == 0;
+ 	if (env_bin_init_exists) {
+-		pr_info("running %s...\n", initfile);
+-		run_command(initfile);
++		pr_info("running %s...\n", INITFILE);
++		run_command("source " INITFILE);
+ 		return 0;
+ 	}
+ 
+-- 
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
