@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp77.ord1c.emailsrvr.com ([108.166.43.77])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1haiaE-0005lR-H7
- for barebox@lists.infradead.org; Tue, 11 Jun 2019 15:21:12 +0000
-Received: by smtp10.relay.ord1c.emailsrvr.com (Authenticated sender:
- abbotti-AT-mev.co.uk) with ESMTPSA id 41596404AA
- for <barebox@lists.infradead.org>; Tue, 11 Jun 2019 11:21:08 -0400 (EDT)
+ id 1hawoP-0002a7-WF
+ for barebox@lists.infradead.org; Wed, 12 Jun 2019 06:32:47 +0000
+Date: Wed, 12 Jun 2019 08:32:42 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190612063242.5lqb6nfattoghtdc@pengutronix.de>
 References: <ccde5e10-c624-f8b1-93f8-48d76ff699bd@mev.co.uk>
-From: Ian Abbott <abbotti@mev.co.uk>
-Message-ID: <2ed1eda2-04b8-0ddc-0be0-793aae74f57d@mev.co.uk>
-Date: Tue, 11 Jun 2019 16:21:06 +0100
+ <2ed1eda2-04b8-0ddc-0be0-793aae74f57d@mev.co.uk>
 MIME-Version: 1.0
-In-Reply-To: <ccde5e10-c624-f8b1-93f8-48d76ff699bd@mev.co.uk>
-Content-Language: en-GB
+Content-Disposition: inline
+In-Reply-To: <2ed1eda2-04b8-0ddc-0be0-793aae74f57d@mev.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +19,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Environment variables set by /env/bin/init disappear when script
  exits
-To: barebox@lists.infradead.org
+To: Ian Abbott <abbotti@mev.co.uk>
+Cc: barebox@lists.infradead.org
 
-T24gMTEvMDYvMjAxOSAxNTo1MiwgSWFuIEFiYm90dCB3cm90ZToKPiBTaW5jZSBjb21taXQgOTBk
-ZjJhOTU1ZTNjICgiZGVmYXVsdGVudjogQ29udmVydCBpbml0IHNjcmlwdCB0byBDIiksIGlmIAo+
-IHRoZSBsZWdhY3kgL2Vudi9iaW4vaW5pdCBzY3JpcHQgaXMgc3RpbGwgYmVpbmcgdXNlZCwgYW55
-IGVudmlyb25tZW50IAo+IHZhcmlhYmxlcyB0aGF0IHdlcmUgc2V0IGluIHRoZSBzY3JpcHQgKHN1
-Y2ggYXMgdGhlIFBTMSBwcm9tcHQpIGRpc2FwcGVhciAKPiB3aGVuIHRoZSBzY3JpcHQgZXhpdHMu
-wqAgSSBndWVzcyBpdCBpcyBiZWNhdXNlIHRoZSBzY3JpcHQgaXMgbm93IHJ1biAKPiBkaXJlY3Rs
-eSBieSBydW5fY29tbWFuZChpbml0ZmlsZSkgKGluaXRmaWxlIGlzICIvZW52L2Jpbi9pbml0Iikg
-cmF0aGVyIAo+IHRoYW4gYnkgcnVuX2NvbW1hbmQoInNvdXJjZSAvZW52L2Jpbi9pbml0IikuCgpU
-aGlzIHNlZW1zIGVhc3kgdG8gZml4IGluICJjb21tb24vc3RhcnR1cC5jIiwgYXNzdW1pbmcgaXQg
-aXMgaW5kZWVkIGEgCmJ1Zy4gIFdoaWNoIG9mIHRoZSBmb2xsb3dpbmcgZml4ZXMgd291bGQgYmUg
-cHJlZmVyYWJsZT8KCjEuIENhbGwgcnVuX2NvbW1hbmQgd2l0aCBhIHN0cmluZyBsaXRlcmFsOgoK
-ICAgICBydW5fY29tbWFuZCgic291cmNlIC9lbnYvYmluL2luaXQiKTsKCjIuIENhbGwgcnVuX2Nv
-bW1hbmQgd2l0aCBhIHN0cmluZyBjb25zdGFudDoKCiAgICAgY29uc3QgY2hhciAqc291cmNlX2lu
-aXRmaWxlID0gInNvdXJjZSAvZW52L2Jpbi9pbml0IjsKCiAgICAgcnVuX2NvbW1hbmQoc291cmNl
-X2luaXRmaWxlKTsKCjMuIENhbGwgcnVuX2NvbW1hbmQgd2l0aCBhIGR5bmFtaWNhbGx5IGNvbnN0
-cnVjdGVkIHN0cmluZzoKCiAgICAgY2hhciAqc2NyOwoKICAgICBzY3IgPSBiYXNwcmludGYoInNv
-dXJjZSAlcyIsIGluaXRmaWxlKTsKICAgICBydW5fY29tbWFuZChzY3IpOwogICAgIGZyZWUoc2Ny
-KTsKCi0tIAotPSggSWFuIEFiYm90dCA8YWJib3R0aUBtZXYuY28udWs+IHx8IFdlYjogd3d3Lm1l
-di5jby51ayApPS0KLT0oIE1FViBMdGQuIGlzIGEgY29tcGFueSByZWdpc3RlcmVkIGluIEVuZ2xh
-bmQgJiBXYWxlcy4gKT0tCi09KCBSZWdpc3RlcmVkIG51bWJlcjogMDI4NjIyNjguICBSZWdpc3Rl
-cmVkIGFkZHJlc3M6ICAgICk9LQotPSggMTUgV2VzdCBQYXJrIFJvYWQsIEJyYW1oYWxsLCBTVE9D
-S1BPUlQsIFNLNyAzSlosIFVLLiApPS0KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+Hi Ian,
+
+On Tue, Jun 11, 2019 at 04:21:06PM +0100, Ian Abbott wrote:
+> On 11/06/2019 15:52, Ian Abbott wrote:
+> > Since commit 90df2a955e3c ("defaultenv: Convert init script to C"), if
+> > the legacy /env/bin/init script is still being used, any environment
+> > variables that were set in the script (such as the PS1 prompt) disappear
+> > when the script exits.=A0 I guess it is because the script is now run
+> > directly by run_command(initfile) (initfile is "/env/bin/init") rather
+> > than by run_command("source /env/bin/init").
+> =
+
+> This seems easy to fix in "common/startup.c", assuming it is indeed a bug.
+> Which of the following fixes would be preferable?
+
+Indeed this behaviour was not intended and should be fixed.
+
+> =
+
+> 1. Call run_command with a string literal:
+> =
+
+>     run_command("source /env/bin/init");
+
+I'd probably do something like this:
+
+#define INITFILE "/env/bin/init"
+
+	run_command("source " INITFILE);
+
+But I might decide differently if you ask me tomorrow, so do whatever
+looks best to you ;)
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
