@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hawoP-0002a7-WF
- for barebox@lists.infradead.org; Wed, 12 Jun 2019 06:32:47 +0000
-Date: Wed, 12 Jun 2019 08:32:42 +0200
+ id 1hazUD-00069Z-Ni
+ for barebox@lists.infradead.org; Wed, 12 Jun 2019 09:24:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190612063242.5lqb6nfattoghtdc@pengutronix.de>
-References: <ccde5e10-c624-f8b1-93f8-48d76ff699bd@mev.co.uk>
- <2ed1eda2-04b8-0ddc-0be0-793aae74f57d@mev.co.uk>
+Date: Wed, 12 Jun 2019 11:24:00 +0200
+Message-Id: <20190612092400.4879-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <2ed1eda2-04b8-0ddc-0be0-793aae74f57d@mev.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,56 +15,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Environment variables set by /env/bin/init disappear when script
- exits
-To: Ian Abbott <abbotti@mev.co.uk>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] startup: Do not overwrite global.linux.bootargs.console
+To: Barebox List <barebox@lists.infradead.org>
+Cc: bst@pengutronix.de
 
-Hi Ian,
+global.linux.bootargs.console already exists. It is created during
+console registration with a value, so do not overwrite it with an
+empty value during init sequence. Instead create the variable if it
+doesn't exist, but keep the old value if it does exist.
 
-On Tue, Jun 11, 2019 at 04:21:06PM +0100, Ian Abbott wrote:
-> On 11/06/2019 15:52, Ian Abbott wrote:
-> > Since commit 90df2a955e3c ("defaultenv: Convert init script to C"), if
-> > the legacy /env/bin/init script is still being used, any environment
-> > variables that were set in the script (such as the PS1 prompt) disappear
-> > when the script exits.=A0 I guess it is because the script is now run
-> > directly by run_command(initfile) (initfile is "/env/bin/init") rather
-> > than by run_command("source /env/bin/init").
-> =
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/startup.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-> This seems easy to fix in "common/startup.c", assuming it is indeed a bug.
-> Which of the following fixes would be preferable?
+diff --git a/common/startup.c b/common/startup.c
+index 9fac0eabbd..bbfa1edce0 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -155,7 +155,6 @@ static int global_autoboot_timeout = 3;
+ static char *global_boot_default;
+ static char *global_editcmd;
+ static char *global_linux_bootargs_base;
+-static char *global_linux_bootargs_console;
+ static char *global_linux_bootargs_dyn_ip;
+ static char *global_linux_bootargs_dyn_root;
+ static char *global_user;
+@@ -228,8 +227,7 @@ static int run_init(void)
+ 	globalvar_add_simple_string("editcmd", &global_editcmd);
+ 	globalvar_add_simple_string("linux.bootargs.base",
+ 				    &global_linux_bootargs_base);
+-	globalvar_add_simple_string("linux.bootargs.console",
+-				    &global_linux_bootargs_console);
++	globalvar_add_simple("linux.bootargs.console", NULL);
+ 	globalvar_add_simple_string("linux.bootargs.dyn.ip",
+ 				    &global_linux_bootargs_dyn_ip);
+ 	globalvar_add_simple_string("linux.bootargs.dyn.root",
+-- 
+2.20.1
 
-Indeed this behaviour was not intended and should be fixed.
-
-> =
-
-> 1. Call run_command with a string literal:
-> =
-
->     run_command("source /env/bin/init");
-
-I'd probably do something like this:
-
-#define INITFILE "/env/bin/init"
-
-	run_command("source " INITFILE);
-
-But I might decide differently if you ask me tomorrow, so do whatever
-looks best to you ;)
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
