@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hY4ml-0007nw-Iv
- for barebox@lists.infradead.org; Tue, 04 Jun 2019 08:27:13 +0000
-Date: Tue, 4 Jun 2019 10:27:09 +0200
+ by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1hbJ0H-0004rY-Hf
+ for barebox@lists.infradead.org; Thu, 13 Jun 2019 06:14:31 +0000
+Date: Thu, 13 Jun 2019 08:14:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190604082709.s4ctyojue4lxeec7@pengutronix.de>
-References: <20190603201243.25070-1-u.kleine-koenig@pengutronix.de>
+Message-ID: <20190613061427.bs7g4p4lpllxgugk@pengutronix.de>
+References: <20190611090204.5752-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190603201243.25070-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20190611090204.5752-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,60 +22,29 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] serial_ns16550: readd support for mvebu armada 38x
+Subject: Re: [PATCH 1/4] plathome-openblocks-a6: use image format 0
 To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jun 03, 2019 at 10:12:43PM +0200, Uwe Kleine-K=F6nig wrote:
-> The armada 38x device tree traditionally used "snps,dw-apb-uart" as
-> compatible for the internal UARTs. This was changed in Linux by commit
-> b7639b0b15dd ("serial: 8250_dw: Limit dw8250_tx_wait_empty quirk to
-> armada-38x devices") which was imported into barebox in e4067b75fb6c
-> ("dts: update to v4.18-rc1") to "marvell,armada-38x-uart".
+On Tue, Jun 11, 2019 at 11:02:01AM +0200, Uwe Kleine-K=F6nig wrote:
+> This machine is powered by a kirkwood processor which needs version 0.
 > =
 
-> Teach the driver about the new compatible to make the console work
-> again.
-> =
-
+> Fixes: 58390878bc30 ("plathome-openblocks-a6: provide a kwbimage.cfg file=
+")
 > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 > ---
->  drivers/serial/serial_ns16550.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  arch/arm/boards/plathome-openblocks-a6/kwbimage.cfg | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> =
 
-Applied, thanks
+> diff --git a/arch/arm/boards/plathome-openblocks-a6/kwbimage.cfg b/arch/a=
+rm/boards/plathome-openblocks-a6/kwbimage.cfg
+> index ba3011736fb7..037d4cfcddeb 100644
+
+Applied, thanks.
 
 Sascha
-
-> =
-
-> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16=
-550.c
-> index ccd082e495c3..4c84d27bdc1b 100644
-> --- a/drivers/serial/serial_ns16550.c
-> +++ b/drivers/serial/serial_ns16550.c
-> @@ -525,6 +525,9 @@ static struct of_device_id ns16550_serial_dt_ids[] =
-=3D {
->  	}, {
->  		.compatible =3D "snps,dw-apb-uart",
->  		.data =3D &ns16550_drvdata,
-> +	}, {
-> +		.compatible =3D "marvell,armada-38x-uart",
-> +		.data =3D &ns16550_drvdata,
->  	},
->  #if IS_ENABLED(CONFIG_ARCH_OMAP)
->  	{
-> -- =
-
-> 2.20.1
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 
 -- =
 
