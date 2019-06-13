@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x243.google.com ([2a00:1450:4864:20::243])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hbK0W-0005gO-Bu
- for barebox@lists.infradead.org; Thu, 13 Jun 2019 07:18:52 +0000
-Date: Thu, 13 Jun 2019 09:18:45 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190613071845.gbct6h5kg7mlpk3a@pengutronix.de>
-References: <70b8a552-c423-9e74-ae80-5385a90e35ba@mev.co.uk>
+ id 1hbP4H-00084d-E5
+ for barebox@lists.infradead.org; Thu, 13 Jun 2019 12:43:02 +0000
+Received: by mail-lj1-x243.google.com with SMTP id t28so18376809lje.9
+ for <barebox@lists.infradead.org>; Thu, 13 Jun 2019 05:43:00 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 13 Jun 2019 15:42:55 +0300
+Message-Id: <20190613124255.14940-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <70b8a552-c423-9e74-ae80-5385a90e35ba@mev.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Strange behaviour of 'exit' command
-To: Ian Abbott <abbotti@mev.co.uk>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] MIPS: fix 'assignment makes integer from pointer without a
+ cast' warning
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Hi Ian,
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/boot/main_entry.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Wed, Jun 12, 2019 at 11:42:24AM +0100, Ian Abbott wrote:
-> I noticed some strange behaviour in the 'hush' shell when the 'sh' and
-> 'exit' commands are used:
-> 
-> ---------------------------------
-> barebox:/ sh
-> barebox:/ exit
-> t: No such file or directory
-> barebox:/ echo $?
-> 127
-> barebox:/
-> ---------------------------------
-
-After some digging:
-
-in common/hush.c get_user_input() we have:
-
-	static char the_command[CONFIG_CBSIZE];
-
-This string is used for user input and is unfortunately shared between
-different shell instances. The 't' that is executed is the 't' from
-'exit'. Try ' exit' instead and you'll see the shell trying to execute
-'it' ;)
-
-the_command should be dynamically allocated, but since in_str is
-currently statically allocated there is no place in the code to free
-the_command again after usage.
-
-Sascha
-
+diff --git a/arch/mips/boot/main_entry.c b/arch/mips/boot/main_entry.c
+index 5b88730b07..4ae4457e7e 100644
+--- a/arch/mips/boot/main_entry.c
++++ b/arch/mips/boot/main_entry.c
+@@ -85,7 +85,7 @@ void __bare_init main_entry(void *fdt, u32 fdt_size)
+ 
+ 	trap_init();
+ 
+-	malloc_end = _stext;
++	malloc_end = (unsigned long)_stext;
+ 
+ 	if (MALLOC_SIZE > 0)
+ 		malloc_start = malloc_end - MALLOC_SIZE;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
