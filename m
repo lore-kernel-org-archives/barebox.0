@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hbJ1I-00070H-RA
- for barebox@lists.infradead.org; Thu, 13 Jun 2019 06:15:34 +0000
-Date: Thu, 13 Jun 2019 08:15:31 +0200
+ id 1hbJ2r-0007Af-7T
+ for barebox@lists.infradead.org; Thu, 13 Jun 2019 06:17:10 +0000
+Date: Thu, 13 Jun 2019 08:17:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190613061531.bbk4a5s7wrthmffy@pengutronix.de>
-References: <20190611091222.10461-1-a.fatoum@pengutronix.de>
+Message-ID: <20190613061707.nwgi2dj2sga5q45e@pengutronix.de>
+References: <20190611091253.12491-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190611091222.10461-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20190611091253.12491-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +22,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] commands: don't use stale errno when calling fb_open
+Subject: Re: [PATCH] treewide: remove stale mentions of CONFIG_OF in comments
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 11, 2019 at 11:12:22AM +0200, Ahmad Fatoum wrote:
-> fb_open returns a pointer and doesn't populate errno, which will
-> result in a stale errno being evaluated by perror() on failure.
-> Fix this by using strerror with the proper argument instead at call sites.
+On Tue, Jun 11, 2019 at 11:12:53AM +0200, Ahmad Fatoum wrote:
+> barebox doesn't define a CONFIG_OF kconfig option, but CONFIG_OFTREE
+> for the device tree handling and CONFIG_OFDEVICE for probing devices
+> out of the device tree.
 > 
-> While at it, correct the message prefix typo (s/fb_open/fb_open/).
+> Replace comment mentions of CONFIG_OF with mentions of either as
+> appropriate.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
-> Changes since v1:
->  * use strerror instead of perror/errno as suggested by Andrey & Sascha
->  * negated PTR_ERR output, so the error is positive
-> 
->  commands/fbtest.c | 5 +++--
->  commands/splash.c | 5 +++--
->  2 files changed, 6 insertions(+), 4 deletions(-)
+>  drivers/i2c/i2c-mux.c          | 2 +-
+>  drivers/usb/misc/usb251xb.c    | 4 ++--
+>  include/linux/nvmem-consumer.h | 2 +-
+>  include/of_device.h            | 4 ++--
+>  4 files changed, 6 insertions(+), 6 deletions(-)
 
 Applied, thanks
 
