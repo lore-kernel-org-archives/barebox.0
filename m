@@ -1,11 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from antares.kleine-koenig.org ([2a01:4f8:c0c:3a97::2])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hbiyZ-0003C4-ND
- for barebox@lists.infradead.org; Fri, 14 Jun 2019 09:58:29 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri, 14 Jun 2019 11:58:22 +0200
-Message-Id: <20190614095822.24184-1-u.kleine-koenig@pengutronix.de>
+ id 1hbsx5-0004RR-3p
+ for barebox@lists.infradead.org; Fri, 14 Jun 2019 20:37:39 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <mgr@pengutronix.de>) id 1hbsx0-0002PF-Pw
+ for barebox@lists.infradead.org; Fri, 14 Jun 2019 22:37:30 +0200
+Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <mgr@pengutronix.de>) id 1hbsx0-0005Fk-Ip
+ for barebox@lists.infradead.org; Fri, 14 Jun 2019 22:37:30 +0200
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Fri, 14 Jun 2019 22:37:26 +0200
+Message-Id: <20190614203726.20148-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,45 +23,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: spi-nor: Add support for ISSI flashes from Linux
+Subject: [PATCH] pcf857x: fix CONFIG_OF to OFDEVICE
 To: barebox@lists.infradead.org
 
-VGhlIGRlZmluaXRpb25zIGFyZSB0YWtlbiBmcm9tIExpbnV4J3Mgc3BpLW5vciBkcml2ZXIgYXMg
-b2YgdjUuMi1yYzQuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUt
-a29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGRyaXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5j
-IHwgMjEgKysrKysrKysrKysrKysrKysrKysrCiAxIGZpbGUgY2hhbmdlZCwgMjEgaW5zZXJ0aW9u
-cygrKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5jIGIvZHJpdmVy
-cy9tdGQvc3BpLW5vci9zcGktbm9yLmMKaW5kZXggNDNiZDQwMmY5ZmYyLi5iMjA1MmNlMGFmMDIg
-MTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5jCisrKyBiL2RyaXZlcnMv
-bXRkL3NwaS1ub3Ivc3BpLW5vci5jCkBAIC02NzEsNiArNjcxLDI3IEBAIHN0YXRpYyBjb25zdCBz
-dHJ1Y3Qgc3BpX2RldmljZV9pZCBzcGlfbm9yX2lkc1tdID0gewogCXsgIjY0MHMzM2IiLCAgSU5G
-TygweDg5ODkxMywgMCwgNjQgKiAxMDI0LCAxMjgsIDApIH0sCiAKIAkvKiBJU1NJICovCisJeyAi
-aXMyNWNkNTEyIiwgIElORk8oMHg3ZjlkMjAsIDAsICAzMiAqIDEwMjQsICAgMiwgU0VDVF80Sykg
-fSwKKwl7ICJpczI1bHEwNDBiIiwgSU5GTygweDlkNDAxMywgMCwgIDY0ICogMTAyNCwgICA4LAor
-CQkJICAgICBTRUNUXzRLIHwgU1BJX05PUl9EVUFMX1JFQUQgfCBTUElfTk9SX1FVQURfUkVBRCkg
-fSwKKwl7ICJpczI1bHAwMTZkIiwgSU5GTygweDlkNjAxNSwgMCwgIDY0ICogMTAyNCwgIDMyLAor
-CQkJICAgICBTRUNUXzRLIHwgU1BJX05PUl9EVUFMX1JFQUQgfCBTUElfTk9SX1FVQURfUkVBRCkg
-fSwKKwl7ICJpczI1bHAwODBkIiwgSU5GTygweDlkNjAxNCwgMCwgIDY0ICogMTAyNCwgIDE2LAor
-CQkJICAgICBTRUNUXzRLIHwgU1BJX05PUl9EVUFMX1JFQUQgfCBTUElfTk9SX1FVQURfUkVBRCkg
-fSwKKwl7ICJpczI1bHAwMzIiLCAgSU5GTygweDlkNjAxNiwgMCwgIDY0ICogMTAyNCwgIDY0LAor
-CQkJICAgICBTRUNUXzRLIHwgU1BJX05PUl9EVUFMX1JFQUQpIH0sCisJeyAiaXMyNWxwMDY0Iiwg
-IElORk8oMHg5ZDYwMTcsIDAsICA2NCAqIDEwMjQsIDEyOCwKKwkJCSAgICAgU0VDVF80SyB8IFNQ
-SV9OT1JfRFVBTF9SRUFEKSB9LAorCXsgImlzMjVscDEyOCIsICBJTkZPKDB4OWQ2MDE4LCAwLCAg
-NjQgKiAxMDI0LCAyNTYsCisJCQkgICAgIFNFQ1RfNEsgfCBTUElfTk9SX0RVQUxfUkVBRCkgfSwK
-Kwl7ICJpczI1bHAyNTYiLCAgSU5GTygweDlkNjAxOSwgMCwgIDY0ICogMTAyNCwgNTEyLAorCQkJ
-ICAgICBTRUNUXzRLIHwgU1BJX05PUl9EVUFMX1JFQUQgfCBTUElfTk9SX1FVQURfUkVBRCB8IFNQ
-SV9OT1JfNEJfT1BDT0RFUykgfSwKKwl7ICJpczI1d3AwMzIiLCAgSU5GTygweDlkNzAxNiwgMCwg
-IDY0ICogMTAyNCwgIDY0LAorCQkJICAgICBTRUNUXzRLIHwgU1BJX05PUl9EVUFMX1JFQUQgfCBT
-UElfTk9SX1FVQURfUkVBRCkgfSwKKwl7ICJpczI1d3AwNjQiLCAgSU5GTygweDlkNzAxNywgMCwg
-IDY0ICogMTAyNCwgMTI4LAorCQkJICAgICBTRUNUXzRLIHwgU1BJX05PUl9EVUFMX1JFQUQgfCBT
-UElfTk9SX1FVQURfUkVBRCkgfSwKKwl7ICJpczI1d3AxMjgiLCAgSU5GTygweDlkNzAxOCwgMCwg
-IDY0ICogMTAyNCwgMjU2LAorCQkJICAgICBTRUNUXzRLIHwgU1BJX05PUl9EVUFMX1JFQUQgfCBT
-UElfTk9SX1FVQURfUkVBRCkgfSwKIAl7ICJpczI1bHExMjgiLCBJTkZPKDB4OWQ2MDE4LCAgMCwg
-IDY0ICogMTAyNCwgMjU2LCAwKSB9LAogCiAJLyogTWFjcm9uaXggKi8KLS0gCjIuMjAuMQoKCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
-bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+There is not CONFIG_OF symbol. We fix this
+by using OFDEVICE instead.
+
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+---
+ drivers/gpio/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index 6a4de7fbc8..7a1503198b 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -101,7 +101,7 @@ config GPIO_PCA953X
+ config GPIO_PCF857X
+ 	tristate "PCF857x, PCA{85,96}7x, and MAX732[89] I2C GPIO expanders"
+ 	depends on I2C
+-	depends on CONFIG_OF
++	depends on OFDEVICE
+ 	help
+ 	  Say yes here to provide access to most "quasi-bidirectional" I2C
+ 	  GPIO expanders used for additional digital outputs or inputs.
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
