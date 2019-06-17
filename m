@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hcmpU-0002jW-7n
- for barebox@lists.infradead.org; Mon, 17 Jun 2019 08:17:30 +0000
-From: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
-Date: Mon, 17 Jun 2019 08:17:21 +0000
-Message-ID: <9e7c5465-29f3-7042-bcd9-e376b8c128b0@data-modul.com>
-References: <c0432719-ac26-629d-01a0-bcf4106f8357@data-modul.com>
- <CAHQ1cqHAz=ZAbUvThUOo8WcB74CgnoWdSgAEOTy_94TE81zwfQ@mail.gmail.com>
-In-Reply-To: <CAHQ1cqHAz=ZAbUvThUOo8WcB74CgnoWdSgAEOTy_94TE81zwfQ@mail.gmail.com>
-Content-Language: de-DE
-Content-ID: <1A9080C35AC6034CBBE75B84B060F8D3@data-modul.com>
+ id 1hcqUh-0007w9-4D
+ for barebox@lists.infradead.org; Mon, 17 Jun 2019 12:12:16 +0000
+Date: Mon, 17 Jun 2019 14:12:12 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190617121212.noz2xyz2r5g5iwiu@pengutronix.de>
+References: <20190613125848.15994-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190613125848.15994-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,58 +18,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Bringup Barebox on imx8mm
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [RFC] request_sdram_region: print error message
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-DQpPbiA2LzE0LzE5IDk6MTEgQU0sIEFuZHJleSBTbWlybm92IHdyb3RlOg0KPiBPbiBUaHUsIEp1
-biAxMywgMjAxOSBhdCA4OjE0IEFNIFlhemRhbmksIFJleWhhbmVoDQo+IDxSWWF6ZGFuaUBkYXRh
-LW1vZHVsLmNvbT4gd3JvdGU6DQo+Pg0KPj4gSGVsbG8gRXZlcnlvbmUsDQo+Pg0KPj4gSSBhbSB0
-cnlpbmcgdG8gYnJpbmd1cCBCYXJlYm94IG9uIGkuTVg4TU0tZXZrLg0KPj4NCj4+IEkgaGF2ZSBm
-b2xsb3dlZCBhbGwgdGhlIGNvbW1pdHMgcmVsYXRlZCB0byB0aGUgaS5NWDhNUSBhbmQgYWRkZWQg
-cHJvcGVyIGZpbGVzDQo+PiBhbmQgY2hhbmdlcyBmb3IgaS5NWDhNTS1ldmsgYm9hcmQuDQo+Pg0K
-Pj4gVGhlIHByb2JsZW0gaXMgQmFyZWJveCBzdG9wcyBhdCAiZGRyY19waHlfd2FpdF90cmFpbmlu
-Z19jb21wbGV0ZSIgZnVuY3Rpb24sDQo+PiBleGFjdGx5IGF0IHN1Yi1mdW5jdGlvbiAiZGRyY19w
-aHlfZ2V0X21lc3NhZ2UiLiBUaGUgcmVhZC12YWx1ZSBmcm9tIHRoZQ0KPj4NCj4+IHBoeSArIERE
-UkNfUEhZX1JFRygweGQwMDA0KSBpcyBub3QgY29ycmVjdCwgYW5kIGl0IHJlbWFpbnMgaW4gd2hp
-bGUgbG9vcC4NCj4+DQo+PiBJIHVzZWQgdGhlIGRkcl9pbml0IGFuZCBkZHJwaHlfdHJhaW4gZmls
-ZXMgcHJvZHVjZWQgZnJvbSBtc2NhbGVfZGRyX3Rvb2wgb2YgTlhQLA0KPj4gYW5kIGV2ZW4gY29t
-cGFyZWQgd2l0aCB0aGUgdmFsdWUgZnJvbSBVLWJvb3QuIEFsbCBhcmUgc2ltaWxhci4NCj4+DQo+
-PiBEb2VzIGFueSBib2R5IGhhdmUgYW4gaWRlYSB3aGF0IHdvdWxkIGJlIHRoZSBwcm9ibGVtPw0K
-Pj4NCj4NCj4gV2hhdCBhYm91dCBERFIgUEhZIGZpcm13YXJlPyBJcyBpdCB0aGUgc2FtZSBhcyBp
-biB3b3JraW5nIFUtYm9vdA0KPiBpbWFnZT8gRnJvbSB3aGF0IHlvdSBkZXNjcmliZSBpdCBzb3Vu
-ZHMgdGhhdCBERFIgUEhZIGlzIG5vdA0KPiByZXNwb25kaW5nLCBzbyBJIGFtIHdvbmRlcmluZyBp
-ZiBERFIgZmlybXdhcmUgaXMgcnVubmluZy4gQWxzbywgZGlkDQo+IHlvdSBjaGVjayB0aGF0IHZh
-cmlvdXMgbWVtb3J5IG9mZnNldHMgaW4sIHNheQ0KPiBhcmNoL2FybS9tYWNoLWlteC9pbmNsdWRl
-L21hY2gvaW14OC1kZHJjLmggYXJlIHZhbGlkIGZvciBpLk1YOE1NIGFuZA0KPiBhcmUgbm90IHZh
-bHVlcyB0aGF0IE1RIHNwZWNpZmljPyBBbm90aGVyIHRoaW5nIHRvIGRlYnVnIHRoaXMgd291bGQg
-YmUNCj4gdG8gdHJhY2UgYWxsIG9mIHRoZSByZWdpc3RlciByZWFkcy93cml0ZXMgaW4gd29ya2lu
-ZyBVLUJvb3QgdnMgQmFyZWJveA0KPiBhbmQgc2VlIHdoYXQgdGhlIGRpZmZlcmVuY2UgaXMuDQo+
-DQo+IEFueXdheSwganVzdCBteSAyIGNlbnRzLg0KPg0KPiBUaGFua3MsDQo+IEFuZHJleSBTbWly
-bm92DQo+DQoNClRoYW5rcyBBbmRyZXkuDQoNCkkgaGF2ZSByZWFkIGJhY2sgYWxsIHRoZSBERFIg
-aW5pdCB3cml0ZXMgYW5kIEkgYW0gd29uZGVyIHRoZSBwcm9ibGVtIGlzIHJlbGF0ZWQNCnRvIHdo
-ZW4gdGhlIEREUkMgY29uZmlnIHN0YXJ0cyAoZXZlbiBiZWZvcmUgbG9hZGluZyB0aGUgRmlybXdh
-cmUpLiBJdCBzZWVtcyBERFJDDQpjb25maWd1cmF0aW9uIGlzIG5vdCBhcHBsaWVkLCB3aGlsZSB3
-aGVuIEkgcmVhZCBiYWNrIHRoZSByZWdpc3RlcnMsIHRoZSB2YWx1ZXMNCmFyZSBhbGwgaWRlbnRp
-Y2FsIGFuZCBub3QgdGhlIG9uZSBzaG91bGQgYmUuDQoNClRoZSBwb2ludCBpcywgSSBzdGlsbCBj
-YW5ub3QgZmluZCB3aGljaCBjb25maWd1cmF0aW9uIHNob3VsZCBiZSBhcHBsaWVkIGJlZm9yZQ0K
-c3RhcnRpbmcgRERSQyBjb25maWd1cmF0aW9uLiBJIGhhdmUgdHJhY2VkIGFsbCByZWdpc3RlcnMg
-ci93IGluIEJhcmVib3ggYW5kDQpVLWJvb3QsIGJ1dCBubyBzdWNjZXNzLg0KDQpCZXN0LA0KUmV5
-aGFuZWgNCg0KDQoNCi0tDQpSZXloYW5laCBZYXpkYW5pDQpEYXRhIE1vZHVsIEFHICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIFRFTDogICAgKzQ5LTg5LTU2MDE3LTE1NA0KRW1iZWRkZWQgZGV2
-ZWxvcG1lbnQgICAgICAgICAgICAgICAgIEZBWDogICAgKzQ5LTg5LTU2MDE3LTExOQ0KTGludXgg
-LSBEZXZlbG9wbWVudCAgICAgICAgICAgICAgICAgICAgICBSRzogSFItTXVlbmNoZW4gQi04NTU5
-MQ0KTGFuZHNiZXJnZXIgU3RyLiAzMjIgRC04MDY4NyBNdWVuY2hlbiAtIGh0dHA6Ly93d3cuZGF0
-YS1tb2R1bC5jb20NCg0KVmVydHJhdWxpY2hlIEUtTWFpbCB2b24gLyBDb25maWRlbnRpYWwgZS1t
-YWlsIGZyb206IERBVEEgTU9EVUwgQUcNClZvcnN0YW5kIC8gQ0VPOiBEci4gRmxvcmlhbiBQZXNh
-aGwNClZvcnNpdHplbmRlIGRlcyBBdWZzaWNodHNyYXRlcyAvIENoYWlyd29tYW4gb2YgdGhlIFN1
-cGVydmlzb3J5IEJvYXJkOiBLcmlzdGluIEQuIFJ1c3NlbGwNClNpdHogZGVyIEdlc2VsbHNjaGFm
-dCAvIFJlZ2lzdGVyZWQgT2ZmaWNlOiBNw7xuY2hlbg0KUmVnaXN0ZXJnZXJpY2h0IC8gUmVnaXN0
-cmF0aW9uIENvdXJ0OiBNw7xuY2hlbiBIYW5kZWxzcmVnaXN0ZXIgQiA4NSA1OTENCg0KDQoNCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
-bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Thu, Jun 13, 2019 at 03:58:48PM +0300, Antony Pavlov wrote:
+> I have found that MIPS memory misconfiguration leads to
+> request_sdram_region() errors. But mem_malloc_resource()
+> has no error checks for request_sdram_region() result.
+> MIPS memory mapping needs additional changes this commit
+> is just RFC on request_sdram_region().
+> 
+> Can we embed error message into request_sdram_region()?
+
+In create_vector_table() failure of request_sdram_region() is expected
+and not an error, so putting an error message into
+request_sdram_region() is not a good idea. What we could do though
+is to print an error message based on a "verbose" input flag.
+
+> 
+> The commid introduce necessary chages but I have no idea
+> how to change this part of arch/arm/cpu/mmu.c:
+> 
+>     if (!request_sdram_region("ttb", (unsigned long)ttb, SZ_16K))
+>         /*
+>          * This can mean that:
+>          * - the early MMU code has put the ttb into a place
+>          *   which we don't have inside our available memory
+>          * - Somebody else has occupied the ttb region which means
+>          *   the ttb will get corrupted.
+>          */
+>         pr_crit("Critical Error: Can't request SDRAM region for ttb at %p\n",
+>                 ttb);
+
+I think the message should stay like it is.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
