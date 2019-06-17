@@ -1,19 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hdVh1-0006Mm-Qc
- for barebox@lists.infradead.org; Wed, 19 Jun 2019 08:11:45 +0000
-Date: Wed, 19 Jun 2019 10:11:39 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190619081139.lxzsiglys2ep33ad@pengutronix.de>
-References: <20190610084704.8996-1-yamada.masahiro@socionext.com>
- <20190617070524.bhcpfkv4thpouxax@pengutronix.de>
- <CAK7LNARR7VVym75CQR0dWgm8yLXoYS8AuZpezh9ye8AdwusAaA@mail.gmail.com>
- <20190618071112.lvukhhg2mxpdpbih@pengutronix.de>
- <CAK7LNAQJYg-hFepjHnj6kuF-aCZ95qCwfpeeDbs9BaaXt=56rQ@mail.gmail.com>
+ id 1hcsiE-0004hW-5k
+ for barebox@lists.infradead.org; Mon, 17 Jun 2019 14:34:23 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>) id 1hcsiC-0004Fj-Is
+ for barebox@lists.infradead.org; Mon, 17 Jun 2019 16:34:20 +0200
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>) id 1hcsiC-0008Qt-Aj
+ for barebox@lists.infradead.org; Mon, 17 Jun 2019 16:34:20 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 17 Jun 2019 16:34:16 +0200
+Message-Id: <20190617143418.32207-3-a.fatoum@pengutronix.de>
+In-Reply-To: <20190617143418.32207-1-a.fatoum@pengutronix.de>
+References: <20190617143418.32207-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAK7LNAQJYg-hFepjHnj6kuF-aCZ95qCwfpeeDbs9BaaXt=56rQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,116 +29,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] kconfig: update to Linux 5.2-rc4
-To: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v3 2/4] Documentation: reset-reason: document new BROWNOUT
+ reason
+To: barebox@lists.infradead.org
 
-On Tue, Jun 18, 2019 at 04:24:14PM +0900, Masahiro Yamada wrote:
-> On Tue, Jun 18, 2019 at 4:11 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> >
-> > On Mon, Jun 17, 2019 at 05:02:11PM +0900, Masahiro Yamada wrote:
-> > > Hi Sascha,
-> > >
-> > > On Mon, Jun 17, 2019 at 4:05 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > > >
-> > > > Hi Masahiro,
-> > > >
-> > > > On Mon, Jun 10, 2019 at 05:47:04PM +0900, Masahiro Yamada wrote:
-> > > > > @@ -854,7 +860,7 @@ define symlink-config-h
-> > > > >       fi
-> > > > >  endef
-> > > > >
-> > > > > -include/config.h: include/config/auto.conf
-> > > > > +include/config.h:
-> > > > >       $(Q)$(symlink-config-h)
-> > > >
-> > > > I had to revert this change. Without the dependency to
-> > > > include/config/auto.conf include/config.h won't get updated on Kconfig
-> > > > changes. Is reverting this change the right thing to do or do we have to
-> > > > do something else?
-> > >
-> > > You are right.
-> > >
-> > > Once include/config.h is created, it will never be updated.
-> > >
-> > > Reverting this hunk would work in most cases,
-> > > but I think it is strange to use timestamps to determine
-> > > whether a symbolic link is re-linked or not.
-> > >
-> > > If include/config.h is a symlink, it will end up with comparing
-> > > the timestamps between $(srctree)/$(BOARD)/config.h and
-> > > include/config/auto.conf, which is pointless.
-> > >
-> > >
-> > > I do not know why 'touch -a $@' is needed
-> > > when $(srctree)/$(BOARD)/config.h does not exist.
-> > >
-> > > How about this?
-> > >
-> > >
-> > >
-> > > diff --git a/Makefile b/Makefile
-> > > index 071b927068c4..196a2a2625c8 100644
-> > > --- a/Makefile
-> > > +++ b/Makefile
-> > > @@ -827,7 +827,7 @@ endif
-> > >  prepare2: prepare3 outputmakefile
-> > >
-> > >  prepare1: prepare2 include/generated/version.h include/generated/utsrelease.h \
-> > > -                   include/config.h
-> > > +                   symlink-config-h
-> > >
-> > >  ifneq ($(KBUILD_MODULES),)
-> > >         $(Q)mkdir -p $(MODVERDIR)
-> > > @@ -849,16 +849,14 @@ export CPPFLAGS_barebox.lds += -C -U$(ARCH)
-> > >
-> > >  define symlink-config-h
-> > >         if [ -f $(srctree)/$(BOARD)/config.h ]; then            \
-> > > -               $(kecho) '  SYMLINK $@ -> $(BOARD)/config.h';   \
-> > >                 ln -fsn $(srctree)/$(BOARD)/config.h $@;        \
-> > >         else                                                    \
-> > > -               [ -h $@ ] && rm -f $@;                          \
-> > > -               $(kecho) '  CREATE  $@';                        \
-> > > -               touch -a $@;                                    \
-> > > +               rm -f $@;                                       \
-> > >         fi
-> > >  endef
-> > >
-> > > -include/config.h:
-> > > +PHONY += symlink-config-h
-> > > +symlink-config-h:
-> > >         $(Q)$(symlink-config-h)
-> >
-> > This creates a link named "symlink-config-h" pointing to the boards
-> > config.h.
-> 
-> Oops, sorry.
-> 
-> I forgot to change the rule like follows:
-> 
-> ln -fsn $(srctree)/$(BOARD)/config.h include/config.h
-> 
-> 
-> 
-> > If I understand correctly then the idea is to always (re-)create the
-> > symlink. For this adding PHONY should be enough, no? At least in my test
-> > it seemed to do what it should.
-> 
-> Right.  Adding it to PHONY is enough.
-> Renaming include/config.h -> symlink-config-h is optional.
-> 
-> (My intention was to make it look like a phony target and that's it.)
+Now that enum reset_src_type has been extended by BROWNOUT as a reason,
+add it to the user documentation.
 
-Ok, thanks. For now I took the easy way out and squashed the adding of
-PHONY into the patch.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ Documentation/user/reset-reason.rst | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Sascha
-
+diff --git a/Documentation/user/reset-reason.rst b/Documentation/user/reset-reason.rst
+index 26d37f86dd3e..e46f2ca684ab 100644
+--- a/Documentation/user/reset-reason.rst
++++ b/Documentation/user/reset-reason.rst
+@@ -41,6 +41,10 @@ The following values can help to detect the reason why the bootloader runs:
+ * ``EXT`` (EXTernal): some SoCs have special device pins for external reset
+   signals other than the ``RST`` one. Application specific how to handle this
+   state.
++* ``BROWNOUT``: some SoCs detect undervoltage conditions and stay in reset
++  till the supply voltage crosses a predefined threshold voltage. This avoids
++  erratic behavior that may occur when running out-of-spec. Application specific
++  how to handle this state.
+ 
+ It depends on your board/SoC and its features if the hardware is able to detect
+ these reset reasons. Most of the time only ``POR`` and ``RST`` are supported
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
