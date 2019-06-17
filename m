@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conssluserg-03.nifty.com ([210.131.2.82])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1haduD-0006ch-1F
- for barebox@lists.infradead.org; Tue, 11 Jun 2019 10:21:32 +0000
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com
- [209.85.222.45]) (authenticated)
- by conssluserg-03.nifty.com with ESMTP id x5BAL9cq031812
- for <barebox@lists.infradead.org>; Tue, 11 Jun 2019 19:21:09 +0900
-Received: by mail-ua1-f45.google.com with SMTP id 7so4317851uah.1
- for <barebox@lists.infradead.org>; Tue, 11 Jun 2019 03:21:09 -0700 (PDT)
-MIME-Version: 1.0
+ id 1hclho-0001he-Q8
+ for barebox@lists.infradead.org; Mon, 17 Jun 2019 07:05:30 +0000
+Date: Mon, 17 Jun 2019 09:05:24 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190617070524.bhcpfkv4thpouxax@pengutronix.de>
 References: <20190610084704.8996-1-yamada.masahiro@socionext.com>
- <20190611090758.j5sr7zzgkdibxhbm@pengutronix.de>
-In-Reply-To: <20190611090758.j5sr7zzgkdibxhbm@pengutronix.de>
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Tue, 11 Jun 2019 19:20:32 +0900
-Message-ID: <CAK7LNASykybkHnXa_CO6X=rpVwhtBmzjg2+kL=J48jC7hoJt3w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190610084704.8996-1-yamada.masahiro@socionext.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,57 +23,32 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] kconfig: update to Linux 5.2-rc4
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+To: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: barebox@lists.infradead.org
 
-Hi Sascha,
+Hi Masahiro,
 
-On Tue, Jun 11, 2019 at 6:08 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> Hi,
-> On Mon, Jun 10, 2019 at 05:47:04PM +0900, Masahiro Yamada wrote:
-> > The previous sync was Linux 4.20. This updates Kconfig to Linux 5.2-rc4.
-> >
-> > I adjusted the top Makefile as well because Linux commit 058507195b53
-> > ("kbuild: move ".config not found!" message from Kconfig to Makefile")
-> > moved the .config check from Kconfig to Makefile.
-> >
-> > I also made auto.conf a mandatory include file, and remove it from the
-> > prerequisites of other targets. We are safe because Make is immediately
-> > terminated when syncconfig fails to generate auto.conf.
->
-> This doesn't work with out of tree builds, but it looks like it's not the
-> fault of this series make menuconfig fails with:
->
-> gcc -Wp,-MD,scripts/kconfig/.parser.tab.o.d -Iscripts/kconfig -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer /full/path/omitted/barebox/scripts/kconfig -c -o
-> scripts/kconfig/parser.tab.o scripts/kconfig/parser.tab.c
-> scripts/kconfig/parser.tab.c:79:10: fatal error: lkc.h: No such file or directory
->
-> As you can see the -I is missing before the "/full/path/..." string.
->
-> With this change:
->
-> -HOSTCFLAGS_lexer.lex.o := -I $(srctree)/$(src)
-> -HOSTCFLAGS_parser.tab.o        := -I $(srctree)/$(src)
-> +HOSTCFLAGS_lexer.lex.o := -I$(srctree)/$(src)
-> +HOSTCFLAGS_parser.tab.o        := -I$(srctree)/$(src)
->
-> it works as expected. I have no idea why this is happening. Could you
-> have a look?
+On Mon, Jun 10, 2019 at 05:47:04PM +0900, Masahiro Yamada wrote:
+> @@ -854,7 +860,7 @@ define symlink-config-h
+>  	fi
+>  endef
+>  
+> -include/config.h: include/config/auto.conf
+> +include/config.h:
+>  	$(Q)$(symlink-config-h)
 
+I had to revert this change. Without the dependency to
+include/config/auto.conf include/config.h won't get updated on Kconfig
+changes. Is reverting this change the right thing to do or do we have to
+do something else?
 
-My bad - I forgot that the nasty 'addtree' is still remaining in barebox.
-
-It is gone from the latest Linux, but we need treewide Makefile cleanups
-to kill it.
-
-I just cherry-picked 48f6e3cf5bc6dd0ee00405342ff310c3b1fedb35
-to move forward with a minimal change.
-
+Sascha
 
 -- 
-Best Regards
-Masahiro Yamada
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
