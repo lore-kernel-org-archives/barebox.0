@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hY4Q2-00047e-D3
- for barebox@lists.infradead.org; Tue, 04 Jun 2019 08:03:44 +0000
-Date: Tue, 4 Jun 2019 10:03:40 +0200
+ by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1hcqX5-0000K8-82
+ for barebox@lists.infradead.org; Mon, 17 Jun 2019 12:14:45 +0000
+Date: Mon, 17 Jun 2019 14:14:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190604080340.r7oxb2iukcron5aw@pengutronix.de>
-References: <20190531103218.27675-1-l.stach@pengutronix.de>
+Message-ID: <20190617121441.chjrqnf7pc2jfocm@pengutronix.de>
+References: <20190614095822.24184-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190531103218.27675-1-l.stach@pengutronix.de>
+In-Reply-To: <20190614095822.24184-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,54 +18,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: imx: rdu1: disable FEC node
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH] mtd: spi-nor: Add support for ISSI flashes from Linux
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, May 31, 2019 at 12:32:17PM +0200, Lucas Stach wrote:
-> Barebox doesn't support the needed DSA setup to make communication
-> with the FEC work.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+On Fri, Jun 14, 2019 at 11:58:22AM +0200, Uwe Kleine-K=F6nig wrote:
+> The definitions are taken from Linux's spi-nor driver as of v5.2-rc4.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 > ---
->  arch/arm/dts/imx51-zii-rdu1.dts | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
+>  drivers/mtd/spi-nor/spi-nor.c | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
 
 Applied, thanks
 
 Sascha
 
-> diff --git a/arch/arm/dts/imx51-zii-rdu1.dts b/arch/arm/dts/imx51-zii-rdu1.dts
-> index 01e46baf2d4e..1b5331f48bbc 100644
-> --- a/arch/arm/dts/imx51-zii-rdu1.dts
-> +++ b/arch/arm/dts/imx51-zii-rdu1.dts
-> @@ -91,6 +91,10 @@
->  	};
->  };
->  
-> +&fec {
-> +	status = "disabled";
-> +};
-> +
->  &iomuxc {
->  	pinctrl_usbh1: usbh1grp {
->  
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
--- 
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
