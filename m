@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-eopbgr680061.outbound.protection.outlook.com
- ([40.107.68.61] helo=NAM04-BN3-obe.outbound.protection.outlook.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hcw1n-0007Lk-QG
- for barebox@lists.infradead.org; Mon, 17 Jun 2019 18:06:49 +0000
-From: Cory Tusar <Cory.Tusar@zii.aero>
-Date: Mon, 17 Jun 2019 18:06:41 +0000
-Message-ID: <20190617180636.GA21299@zii.aero>
-References: <20190614203438.18900-1-cory.tusar@zii.aero>
- <20190614203438.18900-2-cory.tusar@zii.aero>
- <20190617122123.m24jeihvqfxt7tpf@pengutronix.de>
-In-Reply-To: <20190617122123.m24jeihvqfxt7tpf@pengutronix.de>
-Content-Language: en-US
-Content-ID: <592E1816691D3D45A97C7527617E3F0A@namprd12.prod.outlook.com>
+ id 1hcsTF-0005sJ-60
+ for barebox@lists.infradead.org; Mon, 17 Jun 2019 14:18:54 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>) id 1hcsTA-0002Pi-Lo
+ for barebox@lists.infradead.org; Mon, 17 Jun 2019 16:18:48 +0200
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>) id 1hcsTA-0006gE-EO
+ for barebox@lists.infradead.org; Mon, 17 Jun 2019 16:18:48 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 17 Jun 2019 16:18:46 +0200
+Message-Id: <20190617141846.25638-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -26,58 +27,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] common: boot: Instantiate storage for
- global.boot.machine_id
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Chris Healy <Chris.Healy@zii.aero>
+Subject: [PATCH] Documentation: user: suggest U-Boot's bootm, not go
+To: barebox@lists.infradead.org
 
-On Mon, Jun 17, 2019 at 02:21:23PM +0200, Sascha Hauer wrote:
-> On Fri, Jun 14, 2019 at 08:35:08PM +0000, Cory Tusar wrote:
-> > There are references throughout the documentation (and elsewhere in the
-> > boot code) regarding the use of machine-id in a bootloader spec file.
-> > However, there was no global storage allocated for this variable.
-> > 
-> > This commit adds the necessary storage and associated initialization.
-> > 
-> > Signed-off-by: Cory Tusar <cory.tusar@zii.aero>
-> > ---
-> >  common/boot.c | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> > 
-> > diff --git a/common/boot.c b/common/boot.c
-> > index 974eaf5d0..fae2ff935 100644
-> > --- a/common/boot.c
-> > +++ b/common/boot.c
-> > @@ -348,4 +348,13 @@ void bootsources_list(struct bootentries *bootentries)
-> >  		printf("%-20s %s\n", entry->title, entry->description);
-> >  }
-> >  
-> > +static int boot_init(void)
-> > +{
-> > +	globalvar_add_simple("boot.machine_id", NULL);
-> > +
-> > +	return 0;
-> > +}
-> > +late_initcall(boot_init);
-> 
-> There already is an initcall in this file adding a globalvar. Could you
-> add this change to the existing initcall and rename
-> init_boot_watchdog_timeout() to something more suitable?
+Unlike barebox, U-Boot's go command doesn't have any provisions
+for cache handling and as such, bootstrapping barebox via go can
+cause stale data to be erroneously executed as instructions.
 
-Will do.
+The official documentation[1] suggests use of bootm instead, which
+does the necessary flushing and invalidation. Update our documentation
+accordingly.
 
--Cory
+[1]: http://www.denx.de/wiki/view/DULG/UBootStandalone#Section_5.12.3.
 
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ Documentation/user/barebox.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/Documentation/user/barebox.rst b/Documentation/user/barebox.rst
+index 1927fe4efcc5..d82163a88634 100644
+--- a/Documentation/user/barebox.rst
++++ b/Documentation/user/barebox.rst
+@@ -206,12 +206,12 @@ board documentation for initial bringup.
+ 
+ barebox binaries are, where possible, designed to be startable second stage from another
+ bootloader. For example, if you have U-Boot running on your board, you can start barebox
+-with U-Boot's 'go' command:
++with U-Boot's ``bootm`` command:
+ 
+ .. code-block:: console
+ 
+   U-Boot: tftp $load_addr barebox.bin
+-  U-Boot: go $load_addr
++  U-Boot: bootm $load_addr
+ 
+ With barebox already running on your board, this can be used to chainload
+ another barebox. For instance, if you mounted a TFTP server to ``/mnt/tftp``
 -- 
-Cory Tusar
-Senior Software Engineer
-Zodiac Inflight Innovations
-2929 E Imperial Hwy, Suite 170
-Brea, CA 92821
-(714) 203-0519
+2.20.1
 
-www.safran-aerosystems.com
 
 _______________________________________________
 barebox mailing list
