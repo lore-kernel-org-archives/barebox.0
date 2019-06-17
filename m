@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hcsiE-0004hQ-5I
- for barebox@lists.infradead.org; Mon, 17 Jun 2019 14:34:24 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1hcsiC-0004Fh-H7
- for barebox@lists.infradead.org; Mon, 17 Jun 2019 16:34:20 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1hcsiC-0008Qo-9p
- for barebox@lists.infradead.org; Mon, 17 Jun 2019 16:34:20 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 17 Jun 2019 16:34:14 +0200
-Message-Id: <20190617143418.32207-1-a.fatoum@pengutronix.de>
+ id 1hclje-0001pm-0N
+ for barebox@lists.infradead.org; Mon, 17 Jun 2019 07:07:23 +0000
+Date: Mon, 17 Jun 2019 09:07:19 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190617070719.bgqolzz3log3gogf@pengutronix.de>
+References: <20190613124255.14940-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190613124255.14940-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,56 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 0/4] ARM: stm32mp: implement watchdog/reset handling
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] MIPS: fix 'assignment makes integer from pointer without
+ a cast' warning
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org, Oleksij Rempel <o.rempel@pengutronix.de>
 
-Originally, I thought about having poller enabled by default if the
-watchdog was active at barebox probe time, but I can't find a way
-to check if the IWDG is active or not, thus the driver probe doesn't
-touch the watchdog hardware anymore.
+On Thu, Jun 13, 2019 at 03:42:55PM +0300, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/mips/boot/main_entry.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
 
-Changes since v2:
- * Dropped already applied patches from v2
- * reran savedefconfig as prep and added the commit
- * documented BROWNOUT reason in Documentation/
- * removed enabling watchdog by default
- * renamed the file to stm32_wdt.c to stm32_iwdg.c, because there is
-   a distinct stm32_wwdg Watchdog as well
- * dropped &iwdg2 { status = "okay"; } because it's now part of the
-   upstream device tree
+Applied, thanks
 
-Changes since v1:
- * renamed BOR reset reason to BROWNOUT
- * replaced leading spaces with tabs
- * s/of_clk_get_by_name/clk_get/ in probe
- * moved RCC reset reason bit definitions into stm32_wdt.c
- * removed unnecessary indentation/alignment
- * had failures of reset reason & handler only print a warning
-   but not fail the driver probe. All of these by Sascha
- * fixed an instance of stm32mp1 after the subarch was renamed
-   to stm32mp, Spotted by Sam
- * Shortened the Kconfig label text for IWDG. Suggested by Roland
- * Dropped low level UART setup. It was incomplete and will be
-   included in the first stage supprot patchset instead.
+Sascha
 
-Ahmad Fatoum (4):
-  ARM: stm32mp1: rerun savedefconfig on stm32mp_defconfig
-  Documentation: reset-reason: document new BROWNOUT reason
-  watchdog: add stm32 watchdog and reset driver
-  ARM: stm32mp: enable watchdog in oftree and defconfig
-
- Documentation/user/reset-reason.rst |   4 +
- arch/arm/configs/stm32mp_defconfig  |   6 +-
- arch/arm/dts/stm32mp157c-dk2.dts    |   4 +
- drivers/watchdog/Kconfig            |   8 +
- drivers/watchdog/Makefile           |   1 +
- drivers/watchdog/stm32_iwdg.c       | 298 ++++++++++++++++++++++++++++
- 6 files changed, 319 insertions(+), 2 deletions(-)
- create mode 100644 drivers/watchdog/stm32_iwdg.c
 
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
