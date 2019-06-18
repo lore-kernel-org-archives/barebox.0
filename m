@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hd8oj-00065M-RZ
- for barebox@lists.infradead.org; Tue, 18 Jun 2019 07:46:11 +0000
-Date: Tue, 18 Jun 2019 09:46:06 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190618074606.iq3i6gb5yazs5bfq@pengutronix.de>
+Received: from m15-114.126.com ([220.181.15.114])
+ by bombadil.infradead.org with esmtp (Exim 4.92 #3 (Red Hat Linux))
+ id 1hdBBd-0004gL-EC
+ for barebox@lists.infradead.org; Tue, 18 Jun 2019 10:17:59 +0000
 References: <3bd6cd70.90d9.16b65a8086a.Coremail.zzs213@126.com>
+ <20190618074606.iq3i6gb5yazs5bfq@pengutronix.de>
+From: =?UTF-8?B?5byg5b+g5bGx?= <zzs213@126.com>
+Message-ID: <af35c2a1-420e-c2a4-0856-c6b667890a5e@126.com>
+Date: Tue, 18 Jun 2019 18:17:52 +0800
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <3bd6cd70.90d9.16b65a8086a.Coremail.zzs213@126.com>
+In-Reply-To: <20190618074606.iq3i6gb5yazs5bfq@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,99 +19,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: bugfix: _barebox_image_size wrong if enable
-To: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
-Cc: barebox <barebox@lists.infradead.org>
+To: barebox@lists.infradead.org
+Cc: =?UTF-8?B?5oiR?= <zzs213@126.com>
 
-T24gTW9uLCBKdW4gMTcsIDIwMTkgYXQgMDk6Mzc6MTlQTSArMDgwMCwg5byg5b+g5bGxIHdyb3Rl
-Ogo+IFdoZW4gYSBwYmwgaW1hZ2UgdW5jb21wcmVzcyBhbmQgY2FsbCB0aGUgbm9ybWFsIGJhcmVi
-b3gsIEluCj4gYmFyZWJveF9ub25fcGJsX3N0YXJ0KCkgaXQgc2hvdWxkIGNhbGwgcmVsb2NhdGVf
-dG9fYWRyKCkgdG8gcmVsb2NhdGUgYmFyZWJveAo+IHRvIGJhcmVib3hfYmFzZS4gT2Zjb3VzZSBD
-T05GSUdfUkVMT0NBVEFCTEUgZW5hYmxlZC4KPiAKPiBBbmQgYmFyZWJveF9iYXNlIGNhbGN1bGF0
-ZWQgYnk6Cj4gCj4gCSNkZWZpbmUgYmFyZWJveF9pbWFnZV9zaXplCSh1bnNpZ25lZCBpbnQpJl9i
-YXJlYm94X2ltYWdlX3NpemUKPiAKPiAJdW5zaWduZWQgbG9uZyBiYXJlYm94X3NpemUgPSBiYXJl
-Ym94X2ltYWdlX3NpemUgKwo+IAkJKCh1bnNpZ25lZCBsb25nKSZfX2Jzc19zdG9wIC0gKHVuc2ln
-bmVkIGxvbmcpJl9fYnNzX3N0YXJ0KTsKPiAKPiBfYmFyZWJveF9pbWFnZV9zaXplLCBfX2Jzc19z
-dG9wLCBfX2Jzc19zdGFydCBhbGwgZGVmaW5lZCBpbiBsaW5rc2NyaXB0Cj4gImFyY2gvYXJtL2xp
-YjMyL2JhcmVib3gubGRzLlMiCj4gCj4gQnV0IHdoZW4gSSBwcmludCB0aGVyZSB2YWx1ZSBpbiBm
-dW5jdGlvbiBiYXJlYm94X25vbl9wYmxfc3RhcnQoKSB3aXRoIHRoZQo+IGZsb3d3aW5nIGNvZGU6
-Cj4gCj4gCXB1dGNfbGwoJ1gnKTsKPiAJcHV0Y19sbCgnXHInKTsKPiAJcHV0Y19sbCgnXG4nKTsK
-PiAJUFVUSEVYX0xMKGJhcmVib3hfc2l6ZSk7Cj4gCXB1dGNfbGwoJ1xyJyk7Cj4gCXB1dGNfbGwo
-J1xuJyk7Cj4gCVBVVEhFWF9MTCgodW5zaWduZWQgbG9uZykmX19ic3Nfc3RhcnQpOwo+IAlwdXRj
-X2xsKCdccicpOwo+IAlwdXRjX2xsKCdcbicpOwo+IAlQVVRIRVhfTEwoKHVuc2lnbmVkIGxvbmcp
-Jl9fYnNzX3N0b3ApOwo+IAlwdXRjX2xsKCdccicpOwo+IAlwdXRjX2xsKCdcbicpOwo+IAo+IFRo
-ZSByZXN1bHQgYXMgZmxvd3c6Cj4gCj4gCVgKPiAJMDAwMDAwMDAKPiAJMDAwMDAwMDAKPiAJMDAw
-MDAwMDAKPiAKPiBJdCdzIHNvIHN0cmFuZ2UsIFNPIG9iamR1bXAgaXQ6Cj4gCj4gMDAwMTc0MjQg
-PGJhcmVib3hfbm9uX3BibF9zdGFydD46Cj4gICAgMTc0MjQ6ICAgICAgIGU1OWY2MWEwICAgICAg
-ICBsZHIgICAgIHI2LCBbcGMsICM0MTZdICA7IDE3NWNjIDxiYXJlYm94X25vbl9wYmxfc3RhcnQr
-MHgxYTg+Cj4gICAgMTc0Mjg6ICAgICAgIGUwODBhMDAxICAgICAgICBhZGQgICAgIHNsLCByMCwg
-cjEKPiAgICAxNzQyYzogICAgICAgZTU5ZjkxOWMgICAgICAgIGxkciAgICAgcjksIFtwYywgIzQx
-Ml0gIDsgMTc1ZDAgPGJhcmVib3hfbm9uX3BibF9zdGFydCsweDFhYz4KPiAgICAxNzQzMDogICAg
-ICAgZTFhMDgwMDAgICAgICAgIG1vdiAgICAgcjgsIHIwCj4gICAgMTc0MzQ6ICAgICAgIGU5MmQ0
-ODkwICAgICAgICBwdXNoICAgIHtyNCwgcjcsIGZwLCBscn0KPiAgICAxNzQzODogICAgICAgZTA4
-OTUwMDYgICAgICAgIGFkZCAgICAgcjUsIHI5LCByNgo+ICAgIDE3NDNjOiAgICAgICBlNTlmYjE5
-MCAgICAgICAgbGRyICAgICBmcCwgW3BjLCAjNDAwXSAgOyAxNzVkNCA8YmFyZWJveF9ub25fcGJs
-X3N0YXJ0KzB4MWIwPgo+ICAgIDE3NDQwOiAgICAgICBlM2EwMDA1OCAgICAgICAgbW92ICAgICBy
-MCwgIzg4IDsgMHg1OAo+ICAgIDE3NDQ0OiAgICAgICBlMWEwNzAwMiAgICAgICAgbW92ICAgICBy
-NywgcjIKPiAgICAxNzQ0ODogICAgICAgZWJmZmZjYTcgICAgICAgIGJsICAgICAgMTY2ZWMgPFBV
-VENfTEw+Cj4gICAgMTc0NGM6ICAgICAgIGUwNmI1MDA1ICAgICAgICByc2IgICAgIHI1LCBmcCwg
-cjUKPiAgICAxNzQ1MDogICAgICAgZTNhMDAwMGQgICAgICAgIG1vdiAgICAgcjAsICMxMwo+ICAg
-IDE3NDU0OiAgICAgICBlYmZmZmNhNCAgICAgICAgYmwgICAgICAxNjZlYyA8UFVUQ19MTD4KPiAg
-ICAxNzQ1ODogICAgICAgZTNhMDAwMGEgICAgICAgIG1vdiAgICAgcjAsICMxMAo+ICAgIDE3NDVj
-OiAgICAgICBlYmZmZmNhMiAgICAgICAgYmwgICAgICAxNjZlYyA8UFVUQ19MTD4KPiAgICAxNzQ2
-MDogICAgICAgZTFhMDAwMDUgICAgICAgIG1vdiAgICAgcjAsIHI1Cj4gICAgMTc0NjQ6ICAgICAg
-IGViZmZmZmUwICAgICAgICBibCAgICAgIDE3M2VjIDxQVVRIRVhfTEw+Cj4gICAgMTc0Njg6ICAg
-ICAgIGUzYTAwMDBkICAgICAgICBtb3YgICAgIHIwLCAjMTMKPiAgICAxNzQ2YzogICAgICAgZWJm
-ZmZjOWUgICAgICAgIGJsICAgICAgMTY2ZWMgPFBVVENfTEw+Cj4gICAgMTc0NzA6ICAgICAgIGUz
-YTAwMDBhICAgICAgICBtb3YgICAgIHIwLCAjMTAKPiAgICAxNzQ3NDogICAgICAgZWJmZmZjOWMg
-ICAgICAgIGJsICAgICAgMTY2ZWMgPFBVVENfTEw+Cj4gICAgMTc0Nzg6ICAgICAgIGUxYTAwMDBi
-ICAgICAgICBtb3YgICAgIHIwLCBmcAo+ICAgIDE3NDdjOiAgICAgICBlYmZmZmZkYSAgICAgICAg
-YmwgICAgICAxNzNlYyA8UFVUSEVYX0xMPgo+ICAgIDE3NDgwOiAgICAgICBlM2EwMDAwZCAgICAg
-ICAgbW92ICAgICByMCwgIzEzCj4gICAgMTc0ODQ6ICAgICAgIGViZmZmYzk4ICAgICAgICBibCAg
-ICAgIDE2NmVjIDxQVVRDX0xMPgo+ICAgIDE3NDg4OiAgICAgICBlM2EwMDAwYSAgICAgICAgbW92
-ICAgICByMCwgIzEwCj4gICAgMTc0OGM6ICAgICAgIGViZmZmYzk2ICAgICAgICBibCAgICAgIDE2
-NmVjIDxQVVRDX0xMPgo+ICAgIDE3NDkwOiAgICAgICBlMWEwMDAwNiAgICAgICAgbW92ICAgICBy
-MCwgcjYKPiAgICAxNzQ5NDogICAgICAgZTI0YTY5MDYgICAgICAgIHN1YiAgICAgcjYsIHNsLCAj
-OTgzMDQgIDsgMHgxODAwMAo+ICAgIDE3NDk4OiAgICAgICBlYmZmZmZkMyAgICAgICAgYmwgICAg
-ICAxNzNlYyA8UFVUSEVYX0xMPgo+ICAgIDE3NDljOiAgICAgICBlM2M2NmRmZiAgICAgICAgYmlj
-ICAgICByNiwgcjYsICMxNjMyMCAgOyAweDNmYzAKPiAgICAxNzRhMDogICAgICAgZTNhMDAwMGQg
-ICAgICAgIG1vdiAgICAgcjAsICMxMwo+ICAgIC4uLi4uLgo+ICAgIDE3NWM0OiAgICAgICBlYmZm
-YTJjNSAgICAgICAgYmwgICAgICBlMCA8bWVtX21hbGxvY19pbml0Pgo+ICAgIDE3NWM4OiAgICAg
-ICBlYmZmYTVhNSAgICAgICAgYmwgICAgICBjNjQgPHN0YXJ0X2JhcmVib3g+Cj4gICAgMTc1Y2M6
-ICAgICAgIDAwMDAwMDAwICAgICAgICBhbmRlcSAgIHIwLCByMCwgcjAKPiAgICAxNzVkMDogICAg
-ICAgMDAwMDAwMDAgICAgICAgIGFuZGVxICAgcjAsIHIwLCByMAo+ICAgIDE3NWQ0OiAgICAgICAw
-MDAwMDAwMCAgICAgICAgYW5kZXEgICByMCwgcjAsIHIwCj4gICAgMTc1ZDg6ICAgICAgIDAwMDIy
-NDQ4ICAgICAgICBhbmRlcSAgIHIyLCByMiwgcjgsIGFzciAjOAo+ICAgIDE3NWRjOiAgICAgICBk
-MDBkZmVlZCAgICAgICAgYW5kbGUgICBwYywgc3AsIHNwLCByb3IgIzI5Cj4gCj4gCj4gV2UgY2Fu
-IHNlZSBpdCBzYXZlIF9fYnNzX3N0YXJ0IGFuZCBfX2Jzc19zdG9wIGluIGxvY2FsIGxpdGVyYWwg
-cG9vbCBsb2NhdGVkIGF0Cj4gMTc1Y2MgYW5kIDE3NWQwLCBUaGUgdmFsdWUgaXMgemVyby4gIEJ1
-dCBpbiBiYXJlYm94Lm1hcCBpdCdzCj4gCj4gICAgICAgICAgICAgICAgIDB4MDAwMDAwMDAwMDAy
-MDdiMCAgICAgICAgICAgICAgICAuID0gQUxJR04gKDB4NCkKPiAgICAgICAgICAgICAgICAgMHgw
-MDAwMDAwMDAwMDIwN2IwICAgICAgICAgICAgICAgIF9fYnNzX3N0YXJ0ID0gLgo+IAkJLi4uLi4u
-Cj4gICAgICAgICAgICAgICAgIDB4MDAwMDAwMDAwMDAyMjQ1OCAgICAgICAgICAgICAgICBfX2Jz
-c19zdG9wID0gLgo+ICAgICAgICAgICAgICAgICAweDAwMDAwMDAwMDAwMjI0NTggICAgICAgICAg
-ICAgICAgX2VuZCA9IC4KPiAgICAgICAgICAgICAgICAgMHgwMDAwMDAwMDAwMDIwN2IwICAgICAg
-ICAgICAgICAgIF9iYXJlYm94X2ltYWdlX3NpemUgPSBfX2Jzc19zdGFydAo+IAo+IAo+IFdoeT8/
-IEl0J3Mgc28gc3RyYW5nZSEgSXMgaXQgYSBidWcgb2YgdG9vbGNoYWluPwoKTm8sIGl0IGlzIGNv
-cnJlY3RlZCBkdXJpbmcgcnVudGltZSBpbiByZWxvY2F0ZV90b19jdXJyZW50X2FkcigpLiBJdApz
-ZWVtcyBvbGRlciBjb21waWxlcnMgbmVlZCBhIHJ1bnRpbWUgcmVsb2NhdGlvbiBmaXh1cCBmb3Ig
-dGhpcy4KCkFGQUlSIHRoaXMgb25seSBoYXBwZW5lZCBmb3IgbGlua2VyIHZhcmlhYmxlcyB0aGF0
-IHBvaW50IHRvIGFic29sdXRlCmFkZHJlc3Nlcy4gRGlmZmVyZW5jZXMgYmV0d2VlbiBhZGRyZXNz
-ZXMgYWxzbyB3b3JrZWQgd2l0aCB0aGUgb2xkZXIKY29tcGlsZXJzLCBhbmQgSSB0aGluayB0aGlz
-IGlzIHdoYXQgeW91ciBwYXRjaCBkb2VzOiBXaXRoIHRoaXMgdGhlCmxpbmtlciBpcyBzbWFydCBl
-bm91Z2ggdG8gcmVjb2duaXplIF9iYXJlYm94X2ltYWdlX3NpemUgYXMgYSByZWxhdGl2ZQpzaXpl
-IGFuZCBub3QgYW4gYWJzb2x1dGUgYWRkcmVzcy4gU28gSSB0aGluayB5b3VyIHBhdGNoIGlzIGNv
-cnJlY3QuCgpVbmZvcnR1bmF0ZWx5IEkgY2FuJ3QgZmluZCBhbnkgdG9vbGNoYWluIGFueW1vcmUg
-dG8gcmVwcm9kdWNlIHRoaXMKaXNzdWUuCgpTYXNjaGEKCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwK
-SW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5w
-ZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJt
-YW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVp
-bSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
-bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+> No, it is corrected during runtime in relocate_to_current_adr(). It
+> seems older compilers need a runtime relocation fixup for this.
+
+Yes, in relocate_to_current_adr() the address all be fixed up.
+
+But if _barebox_image_size, __bss_start and __bss_stop all zero. the
+barebox_base calculated by arm_mem_barebox_image() would wrong. but because it
+align the base to 1M. So mostly it works fine. If the barebox size larger than
+1M. It should fail.
+
+>
+> AFAIR this only happened for linker variables that point to absolute
+> addresses. Differences between addresses also worked with the older
+> compilers, and I think this is what your patch does:
+
+No. my patch just for new toolchain. with old toolchain it has no effect,
+Because all of the size is zero.
+
+By using the newer toolchain:
+	arm-poky-eabi-gcc (GCC) 8.2.0
+	GNU ld (GNU Binutils) 2.31.1.20180818
+
+In barebox config file:
+        CONFIG_TEXT_BASE=0x23e00000
+        CONFIG_RELOCATABLE=y
+
+Without my patch, in barebox.map
+
+                0x000000000001ff40                __bss_start = .
+
+                0x0000000000021bec                __bss_stop = .
+                0x0000000000021bec                _end = .
+                0xffffffffdc21ff40                _barebox_image_size = (__bss_start - 0x23e00000)
+
+In code, printout barebox_base calculated by arm_mem_barebox_image():
+
+        barebox_image_size     : 0xdc21ff40
+        __bss_stop     : 0x00021bec
+        __bss_start     : 0x0001ff40
+        membase     : 0x20000000
+        endmem      : 0x60000000
+        barebox_base: 0x83d00000
+
+barebox_base outof memory region!
+
+After using my patch, the outpus is:
+
+        barebox_image_size     : 0x0001ff40
+        __bss_stop     : 0x00021bec
+        __bss_start     : 0x0001ff40
+        membase     : 0x20000000
+        endmem      : 0x60000000
+        barebox_base: 0x5ff00000
+
+
+-- 
+Best Regards,
+zzs
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
