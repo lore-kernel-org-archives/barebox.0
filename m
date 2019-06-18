@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-yw1-xc36.google.com ([2607:f8b0:4864:20::c36])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hd8zd-00045X-6B
- for barebox@lists.infradead.org; Tue, 18 Jun 2019 07:57:26 +0000
-Date: Tue, 18 Jun 2019 09:57:23 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190618075723.hnc5uabshtrypfda@pengutronix.de>
-References: <CAHBg2Ld_n600PKRkg1Ye+QviSYoguos5vheT6MWVQw3Nz4za4Q@mail.gmail.com>
+ id 1hd9qY-0004K5-HL
+ for barebox@lists.infradead.org; Tue, 18 Jun 2019 08:52:08 +0000
+Received: by mail-yw1-xc36.google.com with SMTP id l79so6381850ywe.11
+ for <barebox@lists.infradead.org>; Tue, 18 Jun 2019 01:52:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHBg2Ld_n600PKRkg1Ye+QviSYoguos5vheT6MWVQw3Nz4za4Q@mail.gmail.com>
+References: <CAHBg2Ld_n600PKRkg1Ye+QviSYoguos5vheT6MWVQw3Nz4za4Q@mail.gmail.com>
+ <20190618075723.hnc5uabshtrypfda@pengutronix.de>
+In-Reply-To: <20190618075723.hnc5uabshtrypfda@pengutronix.de>
+From: Rico Pahlisch <rico.pahlisch@kiwigrid.com>
+Date: Tue, 18 Jun 2019 10:51:53 +0200
+Message-ID: <CAHBg2Lcn_V+=1iEw2LS642bQyGuOkCxM0pM=ydL3nj27Ha-A8w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +20,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Raspberry CM3 eMMC Boot
-To: Rico Pahlisch <rico.pahlisch@kiwigrid.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Rico,
-
-On Mon, Jun 17, 2019 at 03:44:17PM +0200, Rico Pahlisch wrote:
-> Hello,
-> 
-> I try to boot from the internal eMMC with the raspberry CM3 barebox
-> build but I dont get a promt.
-> After changing the code barebox works fine. Does any one else have
-> problems with the raspberry 3 compute module.
-> 
-> diff --git a/drivers/pinctrl/pinctrl-bcm2835.c
-> b/drivers/pinctrl/pinctrl-bcm2835.c
-> index 5fd5740..56daa04 100644
-> --- a/drivers/pinctrl/pinctrl-bcm2835.c
-> +++ b/drivers/pinctrl/pinctrl-bcm2835.c
-> @@ -209,4 +209,4 @@ static int bcm2835_gpio_add(void)
->  {
->         return platform_driver_register(&bcm2835_gpio_driver);
->  }
-> -coredevice_initcall(bcm2835_gpio_add);
-> +device_initcall(bcm2835_gpio_add);
-
-I have no idea why this helps. Do you have any logs that explain the
-issue?
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBhcmUgdGhlIGxvZ3MgZmlyc3Qgd2l0aG91dCB0aGUgcGF0Y2ggYW5kIHRoZW4gd2l0aCBw
+YXRjaC4KT25seSB3aXRoIHRoZSBwYXRjaCBJIGdldCBhIGJhcmVib3ggcHJvbXQuCgpOb3Qgd29y
+a2luZyBsb2dzOgpCb2FyZDogUmFzcGJlcnJ5UGkgQ29tcHV0ZSBNb2R1bGUgMwpiY20yODM1LWdw
+aW8gM2YyMDAwMDAuZ3Bpb0A3ZTIwMDAwMC5vZjogcHJvYmVkIGdwaW9jaGlwLTEgd2l0aCBiYXNl
+IDAKYmNtMjgzNV9tY2kgM2YzMDAwMDAuc2RoY2lAN2UzMDAwMDAub2Y6IHJlZ2lzdGVyZWQgYXMg
+bWNpMAo8TlVMTD46IEZhaWxlZCB0byBnZXQgJ3ZtbWMnIHJlZ3VsYXRvci4KYmNtMjgzNS1zZGhv
+c3QgM2YyMDIwMDAubW1jQDdlMjAyMDAwLm9mOiByZWdpc3RlcmVkIGFzIG1jaTEKCldvcmtpbmcg
+bG9nczoKQm9hcmQ6IFJhc3BiZXJyeVBpIENvbXB1dGUgTW9kdWxlIDMKYmNtMjgzNV9tY2kgM2Yz
+MDAwMDAuc2RoY2lAN2UzMDAwMDAub2Y6IHJlZ2lzdGVyZWQgYXMgbWNpMAo8TlVMTD46IEZhaWxl
+ZCB0byBnZXQgJ3ZtbWMnIHJlZ3VsYXRvci4KYmNtMjgzNS1zZGhvc3QgM2YyMDIwMDAubW1jQDdl
+MjAyMDAwLm9mOiByZWdpc3RlcmVkIGFzIG1jaTEKbWNpMDogZGV0ZWN0ZWQgTU1DIGNhcmQgdmVy
+c2lvbiA1LjEKbWNpMDogcmVnaXN0ZXJlZCBkaXNrMApzdGF0ZTogTmV3IHN0YXRlIHJlZ2lzdGVy
+ZWQgJ3N0YXRlJwpzdGF0ZTogVXNpbmcgYnVja2V0IDBAMHgwMDAwMDAwMApiY20yODM1LWdwaW8g
+M2YyMDAwMDAuZ3Bpb0A3ZTIwMDAwMC5vZjogcHJvYmVkIGdwaW9jaGlwLTEgd2l0aCBiYXNlIDAK
+bWFsbG9jIHNwYWNlOiAweDBmZTdlMmUwIC0+IDB4MWZjZmM1YmYgKHNpemUgMjU0LjUgTWlCKQpl
+bnZpcm9ubWVudCBsb2FkIC9ib290L2JhcmVib3guZW52OiBObyBzdWNoIGZpbGUgb3IgZGlyZWN0
+b3J5Ck1heWJlIHlvdSBoYXZlIHRvIGNyZWF0ZSB0aGUgcGFydGl0aW9uLgoKQW0gRGkuLCAxOC4g
+SnVuaSAyMDE5IHVtIDA5OjU3IFVociBzY2hyaWViIFNhc2NoYSBIYXVlcgo8cy5oYXVlckBwZW5n
+dXRyb25peC5kZT46Cj4KPiBIaSBSaWNvLAo+Cj4gT24gTW9uLCBKdW4gMTcsIDIwMTkgYXQgMDM6
+NDQ6MTdQTSArMDIwMCwgUmljbyBQYWhsaXNjaCB3cm90ZToKPiA+IEhlbGxvLAo+ID4KPiA+IEkg
+dHJ5IHRvIGJvb3QgZnJvbSB0aGUgaW50ZXJuYWwgZU1NQyB3aXRoIHRoZSByYXNwYmVycnkgQ00z
+IGJhcmVib3gKPiA+IGJ1aWxkIGJ1dCBJIGRvbnQgZ2V0IGEgcHJvbXQuCj4gPiBBZnRlciBjaGFu
+Z2luZyB0aGUgY29kZSBiYXJlYm94IHdvcmtzIGZpbmUuIERvZXMgYW55IG9uZSBlbHNlIGhhdmUK
+PiA+IHByb2JsZW1zIHdpdGggdGhlIHJhc3BiZXJyeSAzIGNvbXB1dGUgbW9kdWxlLgo+ID4KPiA+
+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3BpbmN0cmwvcGluY3RybC1iY20yODM1LmMKPiA+IGIvZHJp
+dmVycy9waW5jdHJsL3BpbmN0cmwtYmNtMjgzNS5jCj4gPiBpbmRleCA1ZmQ1NzQwLi41NmRhYTA0
+IDEwMDY0NAo+ID4gLS0tIGEvZHJpdmVycy9waW5jdHJsL3BpbmN0cmwtYmNtMjgzNS5jCj4gPiAr
+KysgYi9kcml2ZXJzL3BpbmN0cmwvcGluY3RybC1iY20yODM1LmMKPiA+IEBAIC0yMDksNCArMjA5
+LDQgQEAgc3RhdGljIGludCBiY20yODM1X2dwaW9fYWRkKHZvaWQpCj4gPiAgewo+ID4gICAgICAg
+ICByZXR1cm4gcGxhdGZvcm1fZHJpdmVyX3JlZ2lzdGVyKCZiY20yODM1X2dwaW9fZHJpdmVyKTsK
+PiA+ICB9Cj4gPiAtY29yZWRldmljZV9pbml0Y2FsbChiY20yODM1X2dwaW9fYWRkKTsKPiA+ICtk
+ZXZpY2VfaW5pdGNhbGwoYmNtMjgzNV9ncGlvX2FkZCk7Cj4KPiBJIGhhdmUgbm8gaWRlYSB3aHkg
+dGhpcyBoZWxwcy4gRG8geW91IGhhdmUgYW55IGxvZ3MgdGhhdCBleHBsYWluIHRoZQo+IGlzc3Vl
+Pwo+Cj4gU2FzY2hhCj4KPgo+IC0tCj4gUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKPiBJbmR1c3RyaWFsIExp
+bnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRl
+LyAgfAo+IFBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25l
+OiArNDktNTEyMS0yMDY5MTctMCAgICB8Cj4gQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2
+ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCgoKLS0gCgpSaWNv
+IFBhaGxpc2NoClNlbmlvciBTb2Z0d2FyZSBEZXZlbG9wZXIKCktpd2lncmlkIEdtYkgKCktsZWlz
+dHN0cmHDn2UgMTAgYSDigJMgYyB8IDAxMTI5IERyZXNkZW4gfCBHZXJtYW55CgpyaWNvLnBhaGxp
+c2NoQGtpd2lncmlkLmNvbSB8IHd3dy5raXdpZ3JpZC5jb20KClJlZ2lzdGVyZWQgT2ZmaWNlLyBT
+aXR6IGRlciBHZXNlbGxzY2hhZnQ6IERyZXNkZW4KUmVnaXN0ZXJlZCBDb3VydC8gUmVnaXN0ZXJn
+ZXJpY2h0OiBBbXRzZ2VyaWNodCBEcmVzZGVuIHwgSFJCIDMwMDU4CkNoYWlybWFuIG9mIHRoZSBB
+ZHZpc29yeSBCb2FyZC8gQmVpcmF0c3ZvcnNpdHplbmRlcjogSGFucy1QZXRlciBWaWxsaXMKTWFu
+YWdpbmcgRGlyZWN0b3JzLyBHZXNjaMOkZnRzZsO8aHJlcjogTWF0dGhpYXMgSGVydGVsIChTcGVh
+a2VyLwpTcHJlY2hlciksIFRpbSBVbGJyaWNodAoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
+bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
+YmFyZWJveAo=
