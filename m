@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hdy74-0006if-Ha
- for barebox@lists.infradead.org; Thu, 20 Jun 2019 14:32:31 +0000
-Date: Thu, 20 Jun 2019 16:32:28 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190620143228.wfasxgzjdyd4l4yw@pengutronix.de>
-References: <20190617150751.3421-1-a.fatoum@pengutronix.de>
+ id 1hdAZd-0007dT-Vy
+ for barebox@lists.infradead.org; Tue, 18 Jun 2019 09:38:44 +0000
+Received: by mail-lf1-x12b.google.com with SMTP id b11so8745947lfa.5
+ for <barebox@lists.infradead.org>; Tue, 18 Jun 2019 02:38:39 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Tue, 18 Jun 2019 12:38:31 +0300
+Message-Id: <20190618093833.2005-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190617150751.3421-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 00/12] ARM: stm32mp: add drivers for GPIO, pinctrl
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [RFC 0/2] MIPS: fix code relocation routine
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-On Mon, Jun 17, 2019 at 05:07:39PM +0200, Ahmad Fatoum wrote:
-> Feedback welcome.
-> 
-> I still have a patch that ports designware_qos from U-Boot to barebox
-> sitting on my branch. It works fine, but it needs refactoring, so it
-> can reuse existing functionality in the generic designware MAC driver
-> that's already in barebox. That will take a while, but if there's interest
-> in it, I can push the current state somwhere till then.
-> 
-> Cheers,
-> Ahmad Fatoum (12):
->   ARM: dts: stm32mp157a-dk1.dts: include upstream dts before barebox'
->   ARM: dts: stm32mp: factor out common DK nodes into dtsi
->   gpiolib: add gpio_get_chip helper
->   driver: add stubs for hardware spinlocks
->   pinctrl: add driver for STM32 GPIO and pin multiplexer
->   ARM: dts: stm32mp157a-dk1: enable heartbeat and error LEDs
->   ARM: stm32mp: turn on GPIO related options
->   ARM: stm32mp157c-dk2: add board-specific sysconf fixups
->   ARM: psci: fix erroneous call of ->system_reset on system_off
->   ARM: sm: move get_gicd_base_address to header for reuse
->   ARM: stm32mp: implement PSCI support
->   ARM: stm32mp157c-dk2: boot kernel in nonsecure mode
+At the moment MIPS relocation code routine has at least two problems:
 
-Applied, thanks
+1. the first problem is fixed in the 'MIPS: relocate_code: fix barebox image size'
+   patch from this patchseries.
 
-Sascha
+2. relocate_code() calls flush_cache_all().
+   flush_cache_all() uses 'struct cpuinfo_mips current_cpu_data' data fields.
+   These data fields are initialized in r4k_cache_init().
 
+   However in the current implementation the r4k_cache_init() function
+   is called __AFTER__ relocate_code().
+
+   This cache problem can't be discovered via qemu.
+
+Antony Pavlov (2):
+  MIPS: lib/Makefile: fix whitespaces
+  MIPS: relocate_code: fix barebox image memcpy() size
+
+ arch/mips/lib/Makefile |  4 ++--
+ arch/mips/lib/reloc.c  | 11 +++++------
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
