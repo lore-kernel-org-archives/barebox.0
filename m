@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hctFj-0001MV-0F
- for barebox@lists.infradead.org; Mon, 17 Jun 2019 15:09:00 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=a3f-osx.local)
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>) id 1hctFf-0001P7-6T
- for barebox@lists.infradead.org; Mon, 17 Jun 2019 17:08:55 +0200
+ id 1hdWU9-0001bu-St
+ for barebox@lists.infradead.org; Wed, 19 Jun 2019 09:02:31 +0000
+Date: Wed, 19 Jun 2019 11:02:27 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190619090227.7tuka7edohcaezge@pengutronix.de>
 References: <20190617143418.32207-1-a.fatoum@pengutronix.de>
- <20190617143418.32207-2-a.fatoum@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <60fd67d8-e824-67a5-a4e9-f1916f7e4dbe@pengutronix.de>
-Date: Mon, 17 Jun 2019 17:08:54 +0200
 MIME-Version: 1.0
-In-Reply-To: <20190617143418.32207-2-a.fatoum@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20190617143418.32207-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,34 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 1/4] ARM: stm32mp1: rerun savedefconfig on
- stm32mp_defconfig
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v3 0/4] ARM: stm32mp: implement watchdog/reset handling
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Sascha, could you s/stm32mp1/stm32mp/ in the title if you apply it?
-Thanks
+On Mon, Jun 17, 2019 at 04:34:14PM +0200, Ahmad Fatoum wrote:
+> Originally, I thought about having poller enabled by default if the
+> watchdog was active at barebox probe time, but I can't find a way
+> to check if the IWDG is active or not, thus the driver probe doesn't
+> touch the watchdog hardware anymore.
+> 
+> Changes since v2:
+>  * Dropped already applied patches from v2
+>  * reran savedefconfig as prep and added the commit
+>  * documented BROWNOUT reason in Documentation/
+>  * removed enabling watchdog by default
+>  * renamed the file to stm32_wdt.c to stm32_iwdg.c, because there is
+>    a distinct stm32_wwdg Watchdog as well
+>  * dropped &iwdg2 { status = "okay"; } because it's now part of the
+>    upstream device tree
 
-On 17/6/19 16:34, Ahmad Fatoum wrote:
-> As CONFIG_LZO_DECOMPRESS is a dependency of ARM_USE_COMPRESSED_DTB, it's
-> no longer explicit in the defconfig. Rerun savedefconfig to get rid of it.
-> 
-> Fixes: 5414ccd16 ("ARM: stm32mp: stm32mp157c-dk2: compress the DTB")
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/arm/configs/stm32mp_defconfig | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/arch/arm/configs/stm32mp_defconfig b/arch/arm/configs/stm32mp_defconfig
-> index 657b2edf57f2..56065860adb3 100644
-> --- a/arch/arm/configs/stm32mp_defconfig
-> +++ b/arch/arm/configs/stm32mp_defconfig
-> @@ -94,5 +94,4 @@ CONFIG_FS_FAT=y
->  CONFIG_FS_FAT_WRITE=y
->  CONFIG_FS_FAT_LFN=y
->  CONFIG_ZLIB=y
-> -CONFIG_LZO_DECOMPRESS=y
->  CONFIG_CRC8=y
-> 
+Applied, thanks
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
