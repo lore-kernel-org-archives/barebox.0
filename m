@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1heEe8-0006Ci-Uf
- for barebox@lists.infradead.org; Fri, 21 Jun 2019 08:11:46 +0000
-Received: by mail-pg1-x541.google.com with SMTP id n2so2973877pgp.11
- for <barebox@lists.infradead.org>; Fri, 21 Jun 2019 01:11:44 -0700 (PDT)
+ id 1heEeB-0006Dn-05
+ for barebox@lists.infradead.org; Fri, 21 Jun 2019 08:11:48 +0000
+Received: by mail-pf1-x42d.google.com with SMTP id d126so3200730pfd.2
+ for <barebox@lists.infradead.org>; Fri, 21 Jun 2019 01:11:46 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 21 Jun 2019 01:11:11 -0700
-Message-Id: <20190621081116.18335-5-andrew.smirnov@gmail.com>
+Date: Fri, 21 Jun 2019 01:11:13 -0700
+Message-Id: <20190621081116.18335-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20190621081116.18335-1-andrew.smirnov@gmail.com>
 References: <20190621081116.18335-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,49 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/10] Documentation: zii-vf610-dev: Add necessary post reset
- delay
+Subject: [PATCH 07/10] Documentation: zii: Fix buggy check_bits_set_32
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-As observed on CFU1 board, without this delay we interrupt mask ROM
-code execution even before it sets up any PLLs correctly preventing
-Barebox from correctly starting up. Fixing this by adding PLL setup
-code to OpenOCD script helps somewhat and Barebox starts, howerver CPU
-started this way ends up being unstable crashing randomly during
-further Barebox use.
-
-Adding a simple 100 ms post reset delay resolves all of the described
-issues. This is also consistent with how other ZII boards are set up.
+Fix a buggy while loop expression, that, due to '==' operator's
+precedence (higher than that of '&') was always evaluating to false
+rendering busy loop into a no-op.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- Documentation/boards/imx/zii-vf610-dev/openocd.cfg | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ Documentation/boards/imx/zii-imx7d-rpu2/openocd.cfg | 2 +-
+ Documentation/boards/imx/zii-vf610-dev/openocd.cfg  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/Documentation/boards/imx/zii-imx7d-rpu2/openocd.cfg b/Documentation/boards/imx/zii-imx7d-rpu2/openocd.cfg
+index 675832b7c..33e3bce9d 100644
+--- a/Documentation/boards/imx/zii-imx7d-rpu2/openocd.cfg
++++ b/Documentation/boards/imx/zii-imx7d-rpu2/openocd.cfg
+@@ -32,7 +32,7 @@ proc disable_wdog { } {
+ set ddr_init_failed 0
+ 
+ proc check_bits_set_32 { addr mask } {
+-    while { [expr [mrw $addr] & $mask == 0] } { }
++    while { [expr [mrw $addr] & $mask] == 0 } { }
+ }
+ 
+ proc ddr_init { } {
 diff --git a/Documentation/boards/imx/zii-vf610-dev/openocd.cfg b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
-index 509f9e33c..0d0e0d578 100644
+index 611687d27..222f48711 100644
 --- a/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
 +++ b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
-@@ -19,6 +19,8 @@ reset_config srst_only srst_push_pull connect_deassert_srst
- # set a slow default JTAG clock, can be overridden later
- adapter_khz 1000
+@@ -28,7 +28,7 @@ source [find mem_helper.tcl]
+ set ddr_init_failed 0
  
-+adapter_nsrst_delay 100
-+
- # Source generic VF6xx target configuration
- source [find target/vybrid_vf6xx.cfg]
- source [find mem_helper.tcl]
-@@ -186,8 +188,7 @@ proc clock_init { } {
- 	#
- 	# This code assumes that debugger would be unable to prevent
- 	# MaskROM initialization code from running before halting the
--	# processor. TODO: Port the initial clock settings as
--	# specified in TRM
-+	# processor.
- 	#
- 	# Ungate all of the peripheral clocks
- 	#
+ proc check_bits_set_32 { addr mask } {
+-    while { [expr [mrw $addr] & $mask == 0] } { }
++    while { [expr [mrw $addr] & $mask] == 0 } { }
+ }
+ 
+ proc ddr_init { } {
 -- 
 2.21.0
 
