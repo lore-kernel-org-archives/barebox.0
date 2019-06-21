@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1heEeA-0006DZ-CB
- for barebox@lists.infradead.org; Fri, 21 Jun 2019 08:11:48 +0000
-Received: by mail-pl1-x644.google.com with SMTP id c14so2627002plo.0
- for <barebox@lists.infradead.org>; Fri, 21 Jun 2019 01:11:46 -0700 (PDT)
+ id 1heEeC-0006EI-7D
+ for barebox@lists.infradead.org; Fri, 21 Jun 2019 08:11:51 +0000
+Received: by mail-pf1-x436.google.com with SMTP id x15so3208506pfq.0
+ for <barebox@lists.infradead.org>; Fri, 21 Jun 2019 01:11:47 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 21 Jun 2019 01:11:12 -0700
-Message-Id: <20190621081116.18335-6-andrew.smirnov@gmail.com>
+Date: Fri, 21 Jun 2019 01:11:14 -0700
+Message-Id: <20190621081116.18335-8-andrew.smirnov@gmail.com>
 In-Reply-To: <20190621081116.18335-1-andrew.smirnov@gmail.com>
 References: <20190621081116.18335-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,329 +23,168 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/10] Documentation: zii-vf610-dev: Reconcile DDR setup with
- DCD
+Subject: [PATCH 08/10] ARM: Rename zii-imx7d-rpu2 to zii-imx7d-dev
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Reconcile DDR setup code with corresponding DCD line by line, to avoid
-having any doubts if the two are identical (there wer some minor
-differences).
+To prepare for addition of another ZII i.MX7D based board, i.MX7D
+RMU2, rename zii-imx7d-rpu2 to zii-imx7d-dev to avoid any image naming
+confusion.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- .../boards/imx/zii-vf610-dev/openocd.cfg      | 294 +++++++++---------
- 1 file changed, 151 insertions(+), 143 deletions(-)
+ .../imx/{zii-imx7d-rpu2 => zii-imx7d-dev}/bootstrap.sh    | 0
+ .../imx/{zii-imx7d-rpu2 => zii-imx7d-dev}/openocd.cfg     | 2 +-
+ .../imx/{zii-imx7d-rpu2 => zii-imx7d-dev}/readme.rst      | 4 ++--
+ arch/arm/boards/Makefile                                  | 2 +-
+ .../arm/boards/{zii-imx7d-rpu2 => zii-imx7d-dev}/Makefile | 0
+ arch/arm/boards/{zii-imx7d-rpu2 => zii-imx7d-dev}/board.c | 0
+ .../flash-header-zii-imx7d-dev.imxcfg}                    | 0
+ .../boards/{zii-imx7d-rpu2 => zii-imx7d-dev}/lowlevel.c   | 2 +-
+ arch/arm/dts/Makefile                                     | 2 +-
+ arch/arm/mach-imx/Kconfig                                 | 4 ++--
+ images/Makefile.imx                                       | 8 ++++----
+ 11 files changed, 12 insertions(+), 12 deletions(-)
+ rename Documentation/boards/imx/{zii-imx7d-rpu2 => zii-imx7d-dev}/bootstrap.sh (100%)
+ rename Documentation/boards/imx/{zii-imx7d-rpu2 => zii-imx7d-dev}/openocd.cfg (98%)
+ rename Documentation/boards/imx/{zii-imx7d-rpu2 => zii-imx7d-dev}/readme.rst (91%)
+ rename arch/arm/boards/{zii-imx7d-rpu2 => zii-imx7d-dev}/Makefile (100%)
+ rename arch/arm/boards/{zii-imx7d-rpu2 => zii-imx7d-dev}/board.c (100%)
+ rename arch/arm/boards/{zii-imx7d-rpu2/flash-header-zii-imx7d-rpu2.imxcfg => zii-imx7d-dev/flash-header-zii-imx7d-dev.imxcfg} (100%)
+ rename arch/arm/boards/{zii-imx7d-rpu2 => zii-imx7d-dev}/lowlevel.c (95%)
 
-diff --git a/Documentation/boards/imx/zii-vf610-dev/openocd.cfg b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
-index 0d0e0d578..611687d27 100644
---- a/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
-+++ b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
-@@ -34,153 +34,161 @@ proc check_bits_set_32 { addr mask } {
- proc ddr_init { } {
- 	echo "Bootstrap: Initializing DDR"
+diff --git a/Documentation/boards/imx/zii-imx7d-rpu2/bootstrap.sh b/Documentation/boards/imx/zii-imx7d-dev/bootstrap.sh
+similarity index 100%
+rename from Documentation/boards/imx/zii-imx7d-rpu2/bootstrap.sh
+rename to Documentation/boards/imx/zii-imx7d-dev/bootstrap.sh
+diff --git a/Documentation/boards/imx/zii-imx7d-rpu2/openocd.cfg b/Documentation/boards/imx/zii-imx7d-dev/openocd.cfg
+similarity index 98%
+rename from Documentation/boards/imx/zii-imx7d-rpu2/openocd.cfg
+rename to Documentation/boards/imx/zii-imx7d-dev/openocd.cfg
+index 33e3bce9d..f971c3fb2 100644
+--- a/Documentation/boards/imx/zii-imx7d-rpu2/openocd.cfg
++++ b/Documentation/boards/imx/zii-imx7d-dev/openocd.cfg
+@@ -132,7 +132,7 @@ proc start_barebox { } {
+ 	set MX7_DDR_BASE_ADDR 0x80000000
+  	echo "Bootstrap: Loading Barebox"
+ 	halt
+-	load_image images/barebox-zii-imx7d-rpu2.img $MX7_DDR_BASE_ADDR bin
++	load_image images/barebox-zii-imx7d-dev.img $MX7_DDR_BASE_ADDR bin
+ 	arm core_state arm
+ 	echo [format "Bootstrap: Jumping to 0x%08x" $MX7_DDR_BASE_ADDR]
+ 	resume $MX7_DDR_BASE_ADDR
+diff --git a/Documentation/boards/imx/zii-imx7d-rpu2/readme.rst b/Documentation/boards/imx/zii-imx7d-dev/readme.rst
+similarity index 91%
+rename from Documentation/boards/imx/zii-imx7d-rpu2/readme.rst
+rename to Documentation/boards/imx/zii-imx7d-dev/readme.rst
+index dd984ac17..d47bc90b0 100644
+--- a/Documentation/boards/imx/zii-imx7d-rpu2/readme.rst
++++ b/Documentation/boards/imx/zii-imx7d-dev/readme.rst
+@@ -21,14 +21,14 @@ follows:
+ .. code-block:: sh
  
--	mww phys 0x40048220 0x00000180
--	mww phys 0x40048224 0x00000180
--	mww phys 0x40048228 0x00000180
--	mww phys 0x4004822c 0x00000180
--	mww phys 0x40048230 0x00000180
--	mww phys 0x40048234 0x00000180
--	mww phys 0x40048238 0x00000180
--	mww phys 0x4004823c 0x00000180
--	mww phys 0x40048240 0x00000180
--	mww phys 0x40048244 0x00000180
--	mww phys 0x40048248 0x00000180
--	mww phys 0x4004824c 0x00000180
--	mww phys 0x40048250 0x00000180
--	mww phys 0x40048254 0x00000180
--	mww phys 0x40048258 0x00000180
--	mww phys 0x4004825c 0x00000180
--	mww phys 0x40048260 0x00000180
--	mww phys 0x40048264 0x00000180
--	mww phys 0x40048268 0x00000180
--	mww phys 0x4004826c 0x00000180
--	mww phys 0x40048270 0x00000180
--	mww phys 0x40048274 0x00010180
--	mww phys 0x40048278 0x00000180
--	mww phys 0x4004827c 0x00000180
--	mww phys 0x40048280 0x00000180
--	mww phys 0x40048284 0x00000180
--	mww phys 0x40048288 0x00000180
--	mww phys 0x4004828c 0x00000180
--	mww phys 0x40048290 0x00000180
--	mww phys 0x40048294 0x00000180
--	mww phys 0x40048298 0x00000180
--	mww phys 0x4004829c 0x00000180
--	mww phys 0x400482a0 0x00000180
--	mww phys 0x400482a4 0x00000180
--	mww phys 0x400482a8 0x00000180
--	mww phys 0x400482ac 0x00000180
--	mww phys 0x400482b0 0x00000180
--	mww phys 0x400482b4 0x00000180
--	mww phys 0x400482b8 0x00000180
--	mww phys 0x400482bc 0x00000180
--	mww phys 0x400482c0 0x00000180
--	mww phys 0x400482c4 0x00010180
--	mww phys 0x400482c8 0x00010180
--	mww phys 0x400482cc 0x00000180
--	mww phys 0x400482d0 0x00000180
--	mww phys 0x400482d4 0x00000180
--	mww phys 0x400482d8 0x00000180
--	mww phys 0x4004821c 0x00000180
-+	#
-+	# vf610-iomux-ddr-default.imxcfg
-+	#
-+	mww phys 0x40048220 0x00000180 ;# wm 32 VF610_PAD_DDR_A15__DDR_A_15   VF610_DDR_PAD_CTRL
-+	mww phys 0x40048224 0x00000180 ;# wm 32 VF610_PAD_DDR_A14__DDR_A_14   VF610_DDR_PAD_CTRL
-+	mww phys 0x40048228 0x00000180 ;# wm 32 VF610_PAD_DDR_A13__DDR_A_13   VF610_DDR_PAD_CTRL
-+	mww phys 0x4004822c 0x00000180 ;# wm 32 VF610_PAD_DDR_A12__DDR_A_12   VF610_DDR_PAD_CTRL
-+	mww phys 0x40048230 0x00000180 ;# wm 32 VF610_PAD_DDR_A11__DDR_A_11   VF610_DDR_PAD_CTRL
-+	mww phys 0x40048234 0x00000180 ;# wm 32 VF610_PAD_DDR_A10__DDR_A_10   VF610_DDR_PAD_CTRL
-+	mww phys 0x40048238 0x00000180 ;# wm 32 VF610_PAD_DDR_A9__DDR_A_9     VF610_DDR_PAD_CTRL
-+	mww phys 0x4004823c 0x00000180 ;# wm 32 VF610_PAD_DDR_A8__DDR_A_8     VF610_DDR_PAD_CTRL
-+	mww phys 0x40048240 0x00000180 ;# wm 32 VF610_PAD_DDR_A7__DDR_A_7     VF610_DDR_PAD_CTRL
-+	mww phys 0x40048244 0x00000180 ;# wm 32 VF610_PAD_DDR_A6__DDR_A_6     VF610_DDR_PAD_CTRL
-+	mww phys 0x40048248 0x00000180 ;# wm 32 VF610_PAD_DDR_A5__DDR_A_5     VF610_DDR_PAD_CTRL
-+	mww phys 0x4004824c 0x00000180 ;# wm 32 VF610_PAD_DDR_A4__DDR_A_4     VF610_DDR_PAD_CTRL
-+	mww phys 0x40048250 0x00000180 ;# wm 32 VF610_PAD_DDR_A3__DDR_A_3     VF610_DDR_PAD_CTRL
-+	mww phys 0x40048254 0x00000180 ;# wm 32 VF610_PAD_DDR_A2__DDR_A_2     VF610_DDR_PAD_CTRL
-+	mww phys 0x40048258 0x00000180 ;# wm 32 VF610_PAD_DDR_A1__DDR_A_1     VF610_DDR_PAD_CTRL
-+	mww phys 0x4004825c 0x00000180 ;# wm 32 VF610_PAD_DDR_A0__DDR_A_0     VF610_DDR_PAD_CTRL
-+	mww phys 0x40048260 0x00000180 ;# wm 32 VF610_PAD_DDR_BA2__DDR_BA_2   VF610_DDR_PAD_CTRL
-+	mww phys 0x40048264 0x00000180 ;# wm 32 VF610_PAD_DDR_BA1__DDR_BA_1   VF610_DDR_PAD_CTRL
-+	mww phys 0x40048268 0x00000180 ;# wm 32 VF610_PAD_DDR_BA0__DDR_BA_0   VF610_DDR_PAD_CTRL
-+	mww phys 0x4004826c 0x00000180 ;# wm 32 VF610_PAD_DDR_CAS__DDR_CAS_B  VF610_DDR_PAD_CTRL
-+	mww phys 0x40048270 0x00000180 ;# wm 32 VF610_PAD_DDR_CKE__DDR_CKE_0  VF610_DDR_PAD_CTRL
-+	mww phys 0x40048274 0x00010180 ;# wm 32 VF610_PAD_DDR_CLK__DDR_CLK_0  VF610_DDR_PAD_CTRL_1
-+	mww phys 0x40048278 0x00000180 ;# wm 32 VF610_PAD_DDR_CS__DDR_CS_B_0  VF610_DDR_PAD_CTRL
-+	mww phys 0x4004827c 0x00000180 ;# wm 32 VF610_PAD_DDR_D15__DDR_D_15   VF610_DDR_PAD_CTRL
-+	mww phys 0x40048280 0x00000180 ;# wm 32 VF610_PAD_DDR_D14__DDR_D_14   VF610_DDR_PAD_CTRL
-+	mww phys 0x40048284 0x00000180 ;# wm 32 VF610_PAD_DDR_D13__DDR_D_13   VF610_DDR_PAD_CTRL
-+	mww phys 0x40048288 0x00000180 ;# wm 32 VF610_PAD_DDR_D12__DDR_D_12   VF610_DDR_PAD_CTRL
-+	mww phys 0x4004828c 0x00000180 ;# wm 32 VF610_PAD_DDR_D11__DDR_D_11   VF610_DDR_PAD_CTRL
-+	mww phys 0x40048290 0x00000180 ;# wm 32 VF610_PAD_DDR_D10__DDR_D_10   VF610_DDR_PAD_CTRL
-+	mww phys 0x40048294 0x00000180 ;# wm 32 VF610_PAD_DDR_D9__DDR_D_9     VF610_DDR_PAD_CTRL
-+	mww phys 0x40048298 0x00000180 ;# wm 32 VF610_PAD_DDR_D8__DDR_D_8     VF610_DDR_PAD_CTRL
-+	mww phys 0x4004829c 0x00000180 ;# wm 32 VF610_PAD_DDR_D7__DDR_D_7     VF610_DDR_PAD_CTRL
-+	mww phys 0x400482a0 0x00000180 ;# wm 32 VF610_PAD_DDR_D6__DDR_D_6     VF610_DDR_PAD_CTRL
-+	mww phys 0x400482a4 0x00000180 ;# wm 32 VF610_PAD_DDR_D5__DDR_D_5     VF610_DDR_PAD_CTRL
-+	mww phys 0x400482a8 0x00000180 ;# wm 32 VF610_PAD_DDR_D4__DDR_D_4     VF610_DDR_PAD_CTRL
-+	mww phys 0x400482ac 0x00000180 ;# wm 32 VF610_PAD_DDR_D3__DDR_D_3     VF610_DDR_PAD_CTRL
-+	mww phys 0x400482b0 0x00000180 ;# wm 32 VF610_PAD_DDR_D2__DDR_D_2     VF610_DDR_PAD_CTRL
-+	mww phys 0x400482b4 0x00000180 ;# wm 32 VF610_PAD_DDR_D1__DDR_D_1     VF610_DDR_PAD_CTRL
-+	mww phys 0x400482b8 0x00000180 ;# wm 32 VF610_PAD_DDR_D0__DDR_D_0     VF610_DDR_PAD_CTRL
-+	mww phys 0x400482bc 0x00000180 ;# wm 32 VF610_PAD_DDR_DQM1__DDR_DQM_1 VF610_DDR_PAD_CTRL
-+	mww phys 0x400482c0 0x00000180 ;# wm 32 VF610_PAD_DDR_DQM0__DDR_DQM_0 VF610_DDR_PAD_CTRL
-+	mww phys 0x400482c4 0x00010180 ;# wm 32 VF610_PAD_DDR_DQS1__DDR_DQS_1 VF610_DDR_PAD_CTRL_1
-+	mww phys 0x400482c8 0x00010180 ;# wm 32 VF610_PAD_DDR_DQS0__DDR_DQS_0 VF610_DDR_PAD_CTRL_1
-+	mww phys 0x400482cc 0x00000180 ;# wm 32 VF610_PAD_DDR_RAS__DDR_RAS_B  VF610_DDR_PAD_CTRL
-+	mww phys 0x400482d0 0x00000180 ;# wm 32 VF610_PAD_DDR_WE__DDR_WE_B    VF610_DDR_PAD_CTRL
-+	mww phys 0x400482d4 0x00000180 ;# wm 32 VF610_PAD_DDR_ODT1__DDR_ODT_0 VF610_DDR_PAD_CTRL
-+	mww phys 0x400482d8 0x00000180 ;# wm 32 VF610_PAD_DDR_ODT0__DDR_ODT_1 VF610_DDR_PAD_CTRL
-+	mww phys 0x4004821c 0x00000180 ;# wm 32 VF610_PAD_DDR_RESETB          VF610_DDR_PAD_CTRL
-+
-+	mww phys 0x400482dc 0x00000180 ;# wm 32 VF610_PAD_DDR_DDRBYTE1__DDR_DDRBYTE1 VF610_DDR_PAD_CTRL
-+	mww phys 0x400482e0 0x00000180 ;# wm 32 VF610_PAD_DDR_DDRBYTE0__DDR_DDRBYTE0 VF610_DDR_PAD_CTRL
-+
-+	#
-+	# vf610-ddr-cr-default.imxcfg
-+	#
-+	mww phys 0x400ae000 0x00000600 ;# wm 32 DDRMC_CR00 DDRMC_CR00_DRAM_CLASS_DDR3
-+	mww phys 0x400ae008 0x00000005 ;# wm 32 DDRMC_CR02 0x00000005
-+	mww phys 0x400ae028 0x00013880 ;# wm 32 DDRMC_CR10 0x00013880
-+	mww phys 0x400ae02c 0x00030d40 ;# wm 32 DDRMC_CR11 0x00030d40
-+	mww phys 0x400ae030 0x0000050c ;# wm 32 DDRMC_CR12 0x0000050c
-+	mww phys 0x400ae034 0x15040400 ;# wm 32 DDRMC_CR13 0x15040400
-+	mww phys 0x400ae038 0x1406040f ;# wm 32 DDRMC_CR14 0x1406040f
-+	mww phys 0x400ae040 0x04040000 ;# wm 32 DDRMC_CR16 0x04040000
-+	mww phys 0x400ae044 0x006db00c ;# wm 32 DDRMC_CR17 0x006db00c
-+	mww phys 0x400ae048 0x00000403 ;# wm 32 DDRMC_CR18 0x00000403
-+	mww phys 0x400ae050 0x01000000 ;# wm 32 DDRMC_CR20 0x01000000
-+	mww phys 0x400ae054 0x00060001 ;# wm 32 DDRMC_CR21 0x00060001
-+	mww phys 0x400ae058 0x000c0000 ;# wm 32 DDRMC_CR22 0x000c0000
-+	mww phys 0x400ae05c 0x03000200 ;# wm 32 DDRMC_CR23 0x03000200
-+	mww phys 0x400ae060 0x00000006 ;# wm 32 DDRMC_CR24 0x00000006
-+	mww phys 0x400ae064 0x00010000 ;# wm 32 DDRMC_CR25 0x00010000
-+	mww phys 0x400ae068 0x0c30002c ;# wm 32 DDRMC_CR26 0x0c30002c
-+	mww phys 0x400ae070 0x00000000 ;# wm 32 DDRMC_CR28 0x00000000
-+	mww phys 0x400ae074 0x00000003 ;# wm 32 DDRMC_CR29 0x00000003
-+	mww phys 0x400ae078 0x0000000a ;# wm 32 DDRMC_CR30 0x0000000a
-+	mww phys 0x400ae07c 0x00300200 ;# wm 32 DDRMC_CR31 0x00300200
-+	mww phys 0x400ae084 0x00010000 ;# wm 32 DDRMC_CR33 0x00010000
-+	mww phys 0x400ae088 0x00050500 ;# wm 32 DDRMC_CR34 0x00050500
-+	mww phys 0x400ae098 0x00000000 ;# wm 32 DDRMC_CR38 0x00000000
-+	mww phys 0x400ae09c 0x04001002 ;# wm 32 DDRMC_CR39 0x04001002
-+	mww phys 0x400ae0a4 0x00000001 ;# wm 32 DDRMC_CR41 0x00000001
-+	mww phys 0x400ae0c0 0x00460420 ;# wm 32 DDRMC_CR48 0x00460420
-+	mww phys 0x400ae108 0x01000200 ;# wm 32 DDRMC_CR66 0x01000200
-+	mww phys 0x400ae10c 0x00000040 ;# wm 32 DDRMC_CR67 0x00000040
-+	mww phys 0x400ae114 0x00000200 ;# wm 32 DDRMC_CR69 0x00000200
-+	mww phys 0x400ae118 0x00000040 ;# wm 32 DDRMC_CR70 0x00000040
-+	mww phys 0x400ae120 0x00000000 ;# wm 32 DDRMC_CR72 0x00000000
-+	mww phys 0x400ae124 0x0a010300 ;# wm 32 DDRMC_CR73 0x0a010300
-+	mww phys 0x400ae128 0x01014040 ;# wm 32 DDRMC_CR74 0x01014040
-+	mww phys 0x400ae12c 0x01010101 ;# wm 32 DDRMC_CR75 0x01010101
-+	mww phys 0x400ae130 0x03030100 ;# wm 32 DDRMC_CR76 0x03030100
-+	mww phys 0x400ae134 0x01000101 ;# wm 32 DDRMC_CR77 0x01000101
-+	mww phys 0x400ae138 0x0700000c ;# wm 32 DDRMC_CR78 0x0700000c
-+	mww phys 0x400ae13c 0x00000000 ;# wm 32 DDRMC_CR79 0x00000000
-+	mww phys 0x400ae148 0x10000000 ;# wm 32 DDRMC_CR82 0x10000000
-+	mww phys 0x400ae15c 0x01000000 ;# wm 32 DDRMC_CR87 0x01000000
-+	mww phys 0x400ae160 0x00040000 ;# wm 32 DDRMC_CR88 0x00040000
-+	mww phys 0x400ae164 0x00000002 ;# wm 32 DDRMC_CR89 0x00000002
-+	mww phys 0x400ae16c 0x00020000 ;# wm 32 DDRMC_CR91 0x00020000
-+	mww phys 0x400ae180 0x00002819 ;# wm 32 DDRMC_CR96 0x00002819
-+	mww phys 0x400ae1d4 0x00000000 ;# wm 32 DDRMC_CR117 0x00000000
-+	mww phys 0x400ae1d8 0x01010000 ;# wm 32 DDRMC_CR118 0x01010000
-+	mww phys 0x400ae1e0 0x02020000 ;# wm 32 DDRMC_CR120 0x02020000
-+	mww phys 0x400ae1e4 0x00000202 ;# wm 32 DDRMC_CR121 0x00000202
-+	mww phys 0x400ae1e8 0x01010064 ;# wm 32 DDRMC_CR122 0x01010064
-+	mww phys 0x400ae1ec 0x00010101 ;# wm 32 DDRMC_CR123 0x00010101
-+	mww phys 0x400ae1f0 0x00000064 ;# wm 32 DDRMC_CR124 0x00000064
-+	mww phys 0x400ae1f8 0x00000800 ;# wm 32 DDRMC_CR126 0x00000800
-+	mww phys 0x400ae210 0x00000506 ;# wm 32 DDRMC_CR132 0x00000506
-+	mww phys 0x400ae224 0x00020000 ;# wm 32 DDRMC_CR137 0x00020000
-+	mww phys 0x400ae228 0x01000100 ;# wm 32 DDRMC_CR138 0x01000100
-+	mww phys 0x400ae22c 0x04070303 ;# wm 32 DDRMC_CR154 0x682c4000
-+	mww phys 0x400ae230 0x00000040 ;# wm 32 DDRMC_CR155 0x00000009
-+	mww phys 0x400ae23c 0x06000080 ;# wm 32 DDRMC_CR158 0x00000006
-+	mww phys 0x400ae240 0x04070303 ;# wm 32 DDRMC_CR161 0x00010606
-+
-+	#
-+	# flash-header-zii-vf610-dev.imxcfg
-+	#
-+	mww phys 0x400ae068 0x0c300068 ;# wm 32 DDRMC_CR26 0x0c300068
-+	mww phys 0x400ae07c 0x006c0200 ;# wm 32 DDRMC_CR31 0x006c0200
-+	mww phys 0x400ae124 0x0a010100 ;# wm 32 DDRMC_CR73 0x0a010100
-+
-+	#
-+	# vf610-ddr-phy-default.imxcfg
-+	#
-+	mww phys 0x400ae400 0x00002613 ;# wm 32 DDRMC_PHY00 DDRMC_PHY_DQ_TIMING
-+	mww phys 0x400ae440 0x00002613 ;# wm 32 DDRMC_PHY16 DDRMC_PHY_DQ_TIMING
-+	mww phys 0x400ae480 0x00002613 ;# wm 32 DDRMC_PHY32 DDRMC_PHY_DQ_TIMING
-+
-+	mww phys 0x400ae404 0x00002615 ;# wm 32 DDRMC_PHY01 DDRMC_PHY_DQS_TIMING
-+	mww phys 0x400ae444 0x00002615 ;# wm 32 DDRMC_PHY17 DDRMC_PHY_DQS_TIMING
-+
-+	mww phys 0x400ae408 0x00210000 ;# wm 32 DDRMC_PHY02 DDRMC_PHY_CTRL
-+	mww phys 0x400ae448 0x00210000 ;# wm 32 DDRMC_PHY18 DDRMC_PHY_CTRL
-+	mww phys 0x400ae488 0x00210000 ;# wm 32 DDRMC_PHY34 DDRMC_PHY_CTRL
-+
-+	mww phys 0x400ae40c 0x0001012a ;# wm 32 DDRMC_PHY03 DDRMC_PHY_MASTER_CTRL
-+	mww phys 0x400ae44c 0x0001012a ;# wm 32 DDRMC_PHY19 DDRMC_PHY_MASTER_CTRL
-+	mww phys 0x400ae48c 0x0001012a ;# wm 32 DDRMC_PHY35 DDRMC_PHY_MASTER_CTRL
+   cd barebox
+-  Documentation/boards/imx/zii-imx7d-rpu2/bootstrap.sh
++  Documentation/boards/imx/zii-imx7d-dev/bootstrap.sh
  
--	mww phys 0x400482dc 0x00000180
--	mww phys 0x400482e0 0x00000180
-+	mww phys 0x400ae410 0x00002400 ;# wm 32 DDRMC_PHY04 DDRMC_PHY_SLAVE_CTRL
-+	mww phys 0x400ae450 0x00002400 ;# wm 32 DDRMC_PHY20 DDRMC_PHY_SLAVE_CTRL
-+	mww phys 0x400ae490 0x00002400 ;# wm 32 DDRMC_PHY36 DDRMC_PHY_SLAVE_CTRL
+ A custom OpenOCD binary and options can be specified as follows:
  
--	mww phys 0x400ae000 0x00000600
--	mww phys 0x400ae008 0x00000005
--	mww phys 0x400ae028 0x00013880
--	mww phys 0x400ae02c 0x00030d40
--	mww phys 0x400ae030 0x0000050c
--	mww phys 0x400ae034 0x15040400
--	mww phys 0x400ae038 0x1406040f
--	mww phys 0x400ae040 0x04040000
--	mww phys 0x400ae044 0x006db00c
--	mww phys 0x400ae048 0x00000403
--	mww phys 0x400ae050 0x01000000
--	mww phys 0x400ae054 0x00060001
--	mww phys 0x400ae058 0x000c0000
--	mww phys 0x400ae05c 0x03000200
--	mww phys 0x400ae060 0x00000006
--	mww phys 0x400ae064 0x00010000
--	mww phys 0x400ae068 0x0c300068
--	mww phys 0x400ae070 0x00000000
--	mww phys 0x400ae074 0x00000003
--	mww phys 0x400ae078 0x0000000a
--	mww phys 0x400ae07c 0x006c0200
--	mww phys 0x400ae084 0x00010000
--	mww phys 0x400ae088 0x00050500
--	mww phys 0x400ae098 0x00000000
--	mww phys 0x400ae09c 0x04001002
--	mww phys 0x400ae0a4 0x00000001
--	mww phys 0x400ae0c0 0x00460420
--	mww phys 0x400ae108 0x01000200
--	mww phys 0x400ae10c 0x00000040
--	mww phys 0x400ae114 0x00000200
--	mww phys 0x400ae118 0x00000040
--	mww phys 0x400ae120 0x00000000
--	mww phys 0x400ae124 0x0a010100
--	mww phys 0x400ae128 0x01014040
--	mww phys 0x400ae12c 0x01010101
--	mww phys 0x400ae130 0x03030100
--	mww phys 0x400ae134 0x01000101
--	mww phys 0x400ae138 0x0700000c
--	mww phys 0x400ae13c 0x00000000
--	mww phys 0x400ae148 0x10000000
--	mww phys 0x400ae15c 0x01000000
--	mww phys 0x400ae160 0x00040000
--	mww phys 0x400ae164 0x00000002
--	mww phys 0x400ae16c 0x00020000
--	mww phys 0x400ae180 0x00002819
--	mww phys 0x400ae184 0x01000000
--	mww phys 0x400ae188 0x00000000
--	mww phys 0x400ae18c 0x00000000
--	mww phys 0x400ae198 0x00010100
--	mww phys 0x400ae1a4 0x00000000
--	mww phys 0x400ae1a8 0x00000004
--	mww phys 0x400ae1b8 0x00040000
--	mww phys 0x400ae1d4 0x00000000
--	mww phys 0x400ae1d8 0x01010000
--	mww phys 0x400ae1e0 0x02020000
--	mww phys 0x400ae1e4 0x00000202
--	mww phys 0x400ae1e8 0x01010064
--	mww phys 0x400ae1ec 0x00010101
--	mww phys 0x400ae1f0 0x00000064
--	mww phys 0x400ae1f8 0x00000800
--	mww phys 0x400ae210 0x00000506
--	mww phys 0x400ae224 0x00020000
--	mww phys 0x400ae228 0x01000100
--	mww phys 0x400ae22c 0x04070303
--	mww phys 0x400ae230 0x00000040
--	mww phys 0x400ae23c 0x06000080
--	mww phys 0x400ae240 0x04070303
--	mww phys 0x400ae244 0x00000040
--	mww phys 0x400ae248 0x00000040
--	mww phys 0x400ae24c 0x000f0000
--	mww phys 0x400ae250 0x000f0000
--	mww phys 0x400ae25c 0x00000101
--	mww phys 0x400ae268 0x682c4000
--	mww phys 0x400ae26c 0x00000081
--	mww phys 0x400ae278 0x00000006
--	mww phys 0x400ae284 0x00010606
-+	mww phys 0x400ae4c4 0x00000000 ;# wm 32 DDRMC_PHY49 DDRMC_PHY_OFF
-+	mww phys 0x400ae4c8 0x00001100 ;# wm 32 DDRMC_PHY50 DDRMC_PHY50_DDR3_MODE_EN_SW_HALF_CYCLE
-+	mww phys 0x400ae4d0 0x00010101 ;# wm 32 DDRMC_PHY52 DDRMC_PHY_PROC_PAD_ODT
+ .. code-block:: sh
  
--	mww phys 0x400ae400 0x00002613
--	mww phys 0x400ae440 0x00002613
--	mww phys 0x400ae404 0x00002615
--	mww phys 0x400ae444 0x00002615
--	mww phys 0x400ae408 0x00210000
--	mww phys 0x400ae448 0x00210000
--	mww phys 0x400ae488 0x00210000
--	mww phys 0x400ae40c 0x0001012a
--	mww phys 0x400ae44c 0x0001012a
--	mww phys 0x400ae48c 0x0001012a
--	mww phys 0x400ae410 0x00002400
--	mww phys 0x400ae450 0x00002400
--	mww phys 0x400ae490 0x00002400
--	mww phys 0x400ae4c4 0x00000000
--	mww phys 0x400ae4c8 0x00001100
--	mww phys 0x400ae4d0 0x00010101
-+	mww phys 0x400ae000 0x00000601 ;# wm 32 DDRMC_CR00 DDRMC_CR00_DRAM_CLASS_DDR3_START
+   OPENOCD="../openocd/src/openocd -s ../openocd/tcl " \
+-    Documentation/boards/imx/zii-imx7d-rpu2/bootstrap.sh
++    Documentation/boards/imx/zii-imx7d-dev/bootstrap.sh
  
--	mww phys 0x400ae000 0x00000601
-+	check_bits_set_32 0x400ae140 0x100
+ 
+ Disabling DSA in Embedeed Switch
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index bdf78d068..a814ab823 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -164,7 +164,7 @@ obj-$(CONFIG_MACH_ZII_RDU1)			+= zii-imx51-rdu1/
+ obj-$(CONFIG_MACH_ZII_RDU2)			+= zii-imx6q-rdu2/
+ obj-$(CONFIG_MACH_ZII_IMX8MQ_DEV)		+= zii-imx8mq-dev/
+ obj-$(CONFIG_MACH_ZII_VF610_DEV)		+= zii-vf610-dev/
+-obj-$(CONFIG_MACH_ZII_IMX7D_RPU2)		+= zii-imx7d-rpu2/
++obj-$(CONFIG_MACH_ZII_IMX7D_DEV)		+= zii-imx7d-dev/
+ obj-$(CONFIG_MACH_WAGO_PFC_AM35XX)		+= wago-pfc-am35xx/
+ obj-$(CONFIG_MACH_LS1046ARDB)			+= ls1046ardb/
+ obj-$(CONFIG_MACH_TQMLS1046A)			+= tqmls1046a/
+diff --git a/arch/arm/boards/zii-imx7d-rpu2/Makefile b/arch/arm/boards/zii-imx7d-dev/Makefile
+similarity index 100%
+rename from arch/arm/boards/zii-imx7d-rpu2/Makefile
+rename to arch/arm/boards/zii-imx7d-dev/Makefile
+diff --git a/arch/arm/boards/zii-imx7d-rpu2/board.c b/arch/arm/boards/zii-imx7d-dev/board.c
+similarity index 100%
+rename from arch/arm/boards/zii-imx7d-rpu2/board.c
+rename to arch/arm/boards/zii-imx7d-dev/board.c
+diff --git a/arch/arm/boards/zii-imx7d-rpu2/flash-header-zii-imx7d-rpu2.imxcfg b/arch/arm/boards/zii-imx7d-dev/flash-header-zii-imx7d-dev.imxcfg
+similarity index 100%
+rename from arch/arm/boards/zii-imx7d-rpu2/flash-header-zii-imx7d-rpu2.imxcfg
+rename to arch/arm/boards/zii-imx7d-dev/flash-header-zii-imx7d-dev.imxcfg
+diff --git a/arch/arm/boards/zii-imx7d-rpu2/lowlevel.c b/arch/arm/boards/zii-imx7d-dev/lowlevel.c
+similarity index 95%
+rename from arch/arm/boards/zii-imx7d-rpu2/lowlevel.c
+rename to arch/arm/boards/zii-imx7d-dev/lowlevel.c
+index 1eeab7d21..d7f8feb95 100644
+--- a/arch/arm/boards/zii-imx7d-rpu2/lowlevel.c
++++ b/arch/arm/boards/zii-imx7d-dev/lowlevel.c
+@@ -39,7 +39,7 @@ static inline void setup_uart(void)
+ 	putc_ll('>');
  }
  
- proc clock_init { } {
+-ENTRY_FUNCTION(start_zii_imx7d_rpu2, r0, r1, r2)
++ENTRY_FUNCTION(start_zii_imx7d_dev, r0, r1, r2)
+ {
+ 	imx7_cpu_lowlevel_init();
+ 
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 561653930..4c79b9880 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -133,7 +133,7 @@ pbl-dtb-$(CONFIG_MACH_MICROCHIP_KSZ9477_EVB) += at91-microchip-ksz9477-evb.dtb.o
+ pbl-dtb-$(CONFIG_MACH_AT91SAM9X5EK) += at91sam9x5ek.dtb.o
+ pbl-dtb-$(CONFIG_MACH_XILINX_ZCU104) += zynqmp-zcu104-revA.dtb.o
+ 
+-pbl-dtb-$(CONFIG_MACH_ZII_IMX7D_RPU2) += imx7d-zii-rpu2.dtb.o
++pbl-dtb-$(CONFIG_MACH_ZII_IMX7D_DEV) += imx7d-zii-rpu2.dtb.o
+ pbl-dtb-$(CONFIG_MACH_WAGO_PFC_AM35XX) += am35xx-pfc-750_820x.dtb.o
+ pbl-dtb-$(CONFIG_MACH_LS1046ARDB) += fsl-ls1046a-rdb.dtb.o
+ pbl-dtb-$(CONFIG_MACH_TQMLS1046A) += fsl-tqmls1046a-mbls10xxa.dtb.o
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 6a6aab634..b9374fe1d 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -461,8 +461,8 @@ config MACH_ZII_VF610_DEV
+ 	select ARCH_VF610
+ 	select CLKDEV_LOOKUP
+ 
+-config MACH_ZII_IMX7D_RPU2
+-	bool "ZII i.MX7D RPU2"
++config MACH_ZII_IMX7D_DEV
++	bool "ZII i.MX7D based devices"
+ 	select ARCH_IMX7
+ 
+ config MACH_PHYTEC_PHYCORE_IMX7
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 9a7187ac7..826e774aa 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -551,10 +551,10 @@ CFG_start_imx7s_element14_warp7.pblb.imximg = $(board)/element14-warp7/flash-hea
+ FILE_barebox-element14-imx7s-warp7.img = start_imx7s_element14_warp7.pblb.imximg
+ image-$(CONFIG_MACH_WARP7) += barebox-element14-imx7s-warp7.img
+ 
+-pblb-$(CONFIG_MACH_ZII_IMX7D_RPU2) += start_zii_imx7d_rpu2
+-CFG_start_zii_imx7d_rpu2.pblb.imximg = $(board)/zii-imx7d-rpu2/flash-header-zii-imx7d-rpu2.imxcfg
+-FILE_barebox-zii-imx7d-rpu2.img = start_zii_imx7d_rpu2.pblb.imximg
+-image-$(CONFIG_MACH_ZII_IMX7D_RPU2) += barebox-zii-imx7d-rpu2.img
++pblb-$(CONFIG_MACH_ZII_IMX7D_DEV) += start_zii_imx7d_dev
++CFG_start_zii_imx7d_dev.pblb.imximg = $(board)/zii-imx7d-dev/flash-header-zii-imx7d-dev.imxcfg
++FILE_barebox-zii-imx7d-dev.img = start_zii_imx7d_dev.pblb.imximg
++image-$(CONFIG_MACH_ZII_IMX7D_DEV) += barebox-zii-imx7d-dev.img
+ 
+ # ----------------------- i.MX8mq based boards --------------------------
+ pblb-$(CONFIG_MACH_NXP_IMX8MQ_EVK) += start_nxp_imx8mq_evk
 -- 
 2.21.0
 
