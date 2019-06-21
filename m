@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1heBtM-0004x7-S2
- for barebox@lists.infradead.org; Fri, 21 Jun 2019 05:15:18 +0000
-Received: by mail-lj1-x244.google.com with SMTP id 131so4810536ljf.4
- for <barebox@lists.infradead.org>; Thu, 20 Jun 2019 22:15:15 -0700 (PDT)
+ id 1heBza-0006rL-4J
+ for barebox@lists.infradead.org; Fri, 21 Jun 2019 05:21:43 +0000
+Received: by mail-lj1-x22b.google.com with SMTP id v18so4808845ljh.6
+ for <barebox@lists.infradead.org>; Thu, 20 Jun 2019 22:21:41 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 21 Jun 2019 08:15:07 +0300
-Message-Id: <20190621051507.11700-1-antonynpavlov@gmail.com>
+Date: Fri, 21 Jun 2019 08:21:34 +0300
+Message-Id: <20190621052138.12246-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,51 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MIPS: reloc: make flush_cache_all() usable
+Subject: [PATCH 0/4] MIPS: misc patches
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-flush_cache_all() uses 'struct cpuinfo_mips current_cpu_data' data fields.
-These data fields are initialized in r4k_cache_init().
+Antony Pavlov (4):
+  MIPS: Kconfig: move ARCH_TEXT_BASE to top mips Kconfig file
+  Documentation: user manual: update MIPS-specific targets
+  serial: ar933x: set linux_console_name
+  MIPS: dts: tplink-mr3020: add missing stdout-path property
 
-However in the current implementation the r4k_cache_init() function
-is called __AFTER__ relocate_code().
+ Documentation/user/barebox.rst  | 7 ++++---
+ arch/mips/Kconfig               | 4 ++++
+ arch/mips/dts/tplink-mr3020.dts | 2 ++
+ arch/mips/mach-ar231x/Kconfig   | 4 ----
+ arch/mips/mach-ath79/Kconfig    | 4 ----
+ arch/mips/mach-bcm47xx/Kconfig  | 4 ----
+ arch/mips/mach-loongson/Kconfig | 4 ----
+ arch/mips/mach-malta/Kconfig    | 4 ----
+ arch/mips/mach-xburst/Kconfig   | 4 ----
+ drivers/serial/serial_ar933x.c  | 1 +
+ 10 files changed, 11 insertions(+), 27 deletions(-)
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/lib/reloc.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/arch/mips/lib/reloc.c b/arch/mips/lib/reloc.c
-index 14ba6167dd..6f1cd6d82f 100644
---- a/arch/mips/lib/reloc.c
-+++ b/arch/mips/lib/reloc.c
-@@ -37,6 +37,7 @@
- #include <asm/mipsregs.h>
- #include <asm/relocs.h>
- #include <asm/sections.h>
-+#include <asm/cpu-features.h>
- #include <linux/sizes.h>
- #include <asm-generic/memory_layout.h>
- 
-@@ -157,6 +158,17 @@ void relocate_code(void *fdt, u32 fdt_size, u32 ram_size)
- 		apply_reloc(type, (void *)addr, off);
- 	}
- 
-+	/* clear the BSS first */
-+	memset(__bss_start, 0x00, bss_len);
-+
-+	cpu_probe();
-+
-+	if (cpu_has_4k_cache) {
-+		extern void r4k_cache_init(void);
-+
-+		r4k_cache_init();
-+	}
-+
- 	/* Ensure the icache is coherent */
- 	flush_cache_all();
- 
 -- 
 2.20.1
 
