@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x143.google.com ([2a00:1450:4864:20::143])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1heD9Z-0006x9-Ho
- for barebox@lists.infradead.org; Fri, 21 Jun 2019 06:36:06 +0000
-Received: by mail-lf1-x143.google.com with SMTP id z15so4139543lfh.13
- for <barebox@lists.infradead.org>; Thu, 20 Jun 2019 23:36:05 -0700 (PDT)
-Date: Fri, 21 Jun 2019 09:36:01 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20190621093601.6629865ed124a00ad440d4c7@gmail.com>
-In-Reply-To: <fe8306a3-59bf-2fed-2e92-aec546b15fdd@rempel-privat.de>
-References: <20190621052138.12246-1-antonynpavlov@gmail.com>
- <20190621052138.12246-5-antonynpavlov@gmail.com>
- <fe8306a3-59bf-2fed-2e92-aec546b15fdd@rempel-privat.de>
-Mime-Version: 1.0
+ id 1heEe6-0006Bc-6J
+ for barebox@lists.infradead.org; Fri, 21 Jun 2019 08:11:43 +0000
+Received: by mail-pf1-x441.google.com with SMTP id x15so3208354pfq.0
+ for <barebox@lists.infradead.org>; Fri, 21 Jun 2019 01:11:41 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Fri, 21 Jun 2019 01:11:07 -0700
+Message-Id: <20190621081116.18335-1-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,66 +17,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] MIPS: dts: tplink-mr3020: add missing stdout-path
- property
-To: Oleksij Rempel <linux@rempel-privat.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 01/10] ARM: i.MX: zii-vf610-dev-rev-b: Use SPDX tag in DTS
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Fri, 21 Jun 2019 08:06:53 +0200
-Oleksij Rempel <linux@rempel-privat.de> wrote:
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/dts/vf610-zii-dev-rev-b.dts | 42 ++--------------------------
+ 1 file changed, 2 insertions(+), 40 deletions(-)
 
-> Hi Antony,
-> =
+diff --git a/arch/arm/dts/vf610-zii-dev-rev-b.dts b/arch/arm/dts/vf610-zii-dev-rev-b.dts
+index ac0807c49..62112d848 100644
+--- a/arch/arm/dts/vf610-zii-dev-rev-b.dts
++++ b/arch/arm/dts/vf610-zii-dev-rev-b.dts
+@@ -1,45 +1,7 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++
+ /*
+  * Copyright (C) 2015, 2016 Zodiac Inflight Innovations
+- *
+- * Based on an original 'vf610-twr.dts' which is Copyright 2015,
+- * Freescale Semiconductor, Inc.
+- *
+- * This file is dual-licensed: you can use it either under the terms
+- * of the GPL or the X11 license, at your option. Note that this dual
+- * licensing only applies to this file, and not this project as a
+- * whole.
+- *
+- *  a) This file is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
+- *
+- *     This file is distributed in the hope that it will be useful
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- * Or, alternatively
+- *
+- *  b) Permission is hereby granted, free of charge, to any person
+- *     obtaining a copy of this software and associated documentation
+- *     files (the "Software"), to deal in the Software without
+- *     restriction, including without limitation the rights to use
+- *     copy, modify, merge, publish, distribute, sublicense, and/or
+- *     sell copies of the Software, and to permit persons to whom the
+- *     Software is furnished to do so, subject to the following
+- *     conditions:
+- *
+- *     The above copyright notice and this permission notice shall be
+- *     included in all copies or substantial portions of the Software.
+- *
+- *     THE SOFTWARE IS PROVIDED , WITHOUT WARRANTY OF ANY KIND
+- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY
+- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+- *     OTHER DEALINGS IN THE SOFTWARE.
+  */
+ 
+ #include <arm/vf610-zii-dev-rev-b.dts>
+-- 
+2.21.0
 
-> since you are playing with MR3020, you probably wont to test this kernel
-> with nfs boot:
-> https://github.com/olerem/linux-2.6/commits/v5.2/topic/ath79-upstream
-> =
-
-> The network driver is already in linux-next. The switch driver is on TODO.
-
-Thanks for the tip!
-
-At the moment I use OpenWrt Linux 4.14.88+ with Debian Jessie nfsroot.
-
-> Am 21.06.19 um 07:21 schrieb Antony Pavlov:
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > ---
-> >  arch/mips/dts/tplink-mr3020.dts | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/arch/mips/dts/tplink-mr3020.dts b/arch/mips/dts/tplink-mr3=
-020.dts
-> > index 982cffc250..e30eae1578 100644
-> > --- a/arch/mips/dts/tplink-mr3020.dts
-> > +++ b/arch/mips/dts/tplink-mr3020.dts
-> > @@ -7,6 +7,8 @@
-> >  	};
-> >
-> >  	chosen {
-> > +		stdout-path =3D &uart;
-> > +
-> >  		environment {
-> >  			compatible =3D "barebox,environment";
-> >  			device-path =3D &spiflash, "partname:barebox-environment";
-> >
-> =
-
-> =
-
-> --
-> Regards,
-> Oleksij
-
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
