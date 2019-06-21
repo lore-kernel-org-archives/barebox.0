@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1heEe6-0006Bc-6J
+ id 1heEe6-0006Bd-FE
  for barebox@lists.infradead.org; Fri, 21 Jun 2019 08:11:43 +0000
-Received: by mail-pf1-x441.google.com with SMTP id x15so3208354pfq.0
- for <barebox@lists.infradead.org>; Fri, 21 Jun 2019 01:11:41 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id k8so2625618plt.3
+ for <barebox@lists.infradead.org>; Fri, 21 Jun 2019 01:11:42 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 21 Jun 2019 01:11:07 -0700
-Message-Id: <20190621081116.18335-1-andrew.smirnov@gmail.com>
+Date: Fri, 21 Jun 2019 01:11:08 -0700
+Message-Id: <20190621081116.18335-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20190621081116.18335-1-andrew.smirnov@gmail.com>
+References: <20190621081116.18335-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,19 +23,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/10] ARM: i.MX: zii-vf610-dev-rev-b: Use SPDX tag in DTS
+Subject: [PATCH 02/10] ARM: i.MX: zii-vf610-dev-rev-c: Use SPDX tag in DTS
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/vf610-zii-dev-rev-b.dts | 42 ++--------------------------
+ arch/arm/dts/vf610-zii-dev-rev-c.dts | 42 ++--------------------------
  1 file changed, 2 insertions(+), 40 deletions(-)
 
-diff --git a/arch/arm/dts/vf610-zii-dev-rev-b.dts b/arch/arm/dts/vf610-zii-dev-rev-b.dts
-index ac0807c49..62112d848 100644
---- a/arch/arm/dts/vf610-zii-dev-rev-b.dts
-+++ b/arch/arm/dts/vf610-zii-dev-rev-b.dts
+diff --git a/arch/arm/dts/vf610-zii-dev-rev-c.dts b/arch/arm/dts/vf610-zii-dev-rev-c.dts
+index c6341a027..080d44614 100644
+--- a/arch/arm/dts/vf610-zii-dev-rev-c.dts
++++ b/arch/arm/dts/vf610-zii-dev-rev-c.dts
 @@ -1,45 +1,7 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +
@@ -81,7 +83,7 @@ index ac0807c49..62112d848 100644
 - *     OTHER DEALINGS IN THE SOFTWARE.
   */
  
- #include <arm/vf610-zii-dev-rev-b.dts>
+ #include <arm/vf610-zii-dev-rev-c.dts>
 -- 
 2.21.0
 
