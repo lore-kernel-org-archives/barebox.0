@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lj1-x241.google.com ([2a00:1450:4864:20::241])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1heBzb-0006rj-PX
- for barebox@lists.infradead.org; Fri, 21 Jun 2019 05:21:44 +0000
-Received: by mail-lj1-x241.google.com with SMTP id 131so4821867ljf.4
- for <barebox@lists.infradead.org>; Thu, 20 Jun 2019 22:21:43 -0700 (PDT)
+ id 1heBzc-0006s1-EW
+ for barebox@lists.infradead.org; Fri, 21 Jun 2019 05:21:45 +0000
+Received: by mail-lj1-x241.google.com with SMTP id 131so4821908ljf.4
+ for <barebox@lists.infradead.org>; Thu, 20 Jun 2019 22:21:44 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 21 Jun 2019 08:21:36 +0300
-Message-Id: <20190621052138.12246-3-antonynpavlov@gmail.com>
+Date: Fri, 21 Jun 2019 08:21:37 +0300
+Message-Id: <20190621052138.12246-4-antonynpavlov@gmail.com>
 In-Reply-To: <20190621052138.12246-1-antonynpavlov@gmail.com>
 References: <20190621052138.12246-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
@@ -23,34 +23,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] Documentation: user manual: update MIPS-specific targets
+Subject: [PATCH 3/4] serial: ar933x: set linux_console_name
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- Documentation/user/barebox.rst | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/serial/serial_ar933x.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/user/barebox.rst b/Documentation/user/barebox.rst
-index d82163a886..c021a4c743 100644
---- a/Documentation/user/barebox.rst
-+++ b/Documentation/user/barebox.rst
-@@ -112,11 +112,12 @@ targets, followed by the MIPS-specific ones:
-   Architecture specific targets (mips):
-     No architecture specific help defined for mips
+diff --git a/drivers/serial/serial_ar933x.c b/drivers/serial/serial_ar933x.c
+index 676b9fadf8..dda604652b 100644
+--- a/drivers/serial/serial_ar933x.c
++++ b/drivers/serial/serial_ar933x.c
+@@ -175,6 +175,7 @@ static int ar933x_serial_probe(struct device_d *dev)
+ 	cdev->putc = ar933x_serial_putc;
+ 	cdev->getc = ar933x_serial_getc;
+ 	cdev->setbrg = ar933x_serial_setbaudrate;
++	cdev->linux_console_name = "ttyATH";
  
-+    ath79_defconfig          - Build for ath79
-+    bcm47xx_defconfig        - Build for bcm47xx
-+    gxemul-malta_defconfig   - Build for gxemul-malta
-     loongson-ls1b_defconfig  - Build for loongson-ls1b
--    ritmix-rzx50_defconfig   - Build for ritmix-rzx50
--    tplink-mr3020_defconfig  - Build for tplink-mr3020
--    dlink-dir-320_defconfig  - Build for dlink-dir-320
-     qemu-malta_defconfig     - Build for qemu-malta
-+    xburst_defconfig         - Build for xburst
- 
- barebox supports building for multiple boards with a single config. If you
- can't find your board in the list, it may be supported by one of the multi-board
+ 	priv->clk = clk_get(dev, NULL);
+ 	if (IS_ERR(priv->clk)) {
 -- 
 2.20.1
 
