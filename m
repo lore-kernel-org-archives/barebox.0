@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1heEe7-0006CI-Hy
- for barebox@lists.infradead.org; Fri, 21 Jun 2019 08:11:45 +0000
-Received: by mail-pl1-x643.google.com with SMTP id k8so2625635plt.3
- for <barebox@lists.infradead.org>; Fri, 21 Jun 2019 01:11:43 -0700 (PDT)
+ id 1heEe8-0006Ci-Uf
+ for barebox@lists.infradead.org; Fri, 21 Jun 2019 08:11:46 +0000
+Received: by mail-pg1-x541.google.com with SMTP id n2so2973877pgp.11
+ for <barebox@lists.infradead.org>; Fri, 21 Jun 2019 01:11:44 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 21 Jun 2019 01:11:10 -0700
-Message-Id: <20190621081116.18335-4-andrew.smirnov@gmail.com>
+Date: Fri, 21 Jun 2019 01:11:11 -0700
+Message-Id: <20190621081116.18335-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20190621081116.18335-1-andrew.smirnov@gmail.com>
 References: <20190621081116.18335-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,31 +23,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/10] ARM: i.MX: zii-vf610-dev-rev-c: Fix DTS warning
+Subject: [PATCH 05/10] Documentation: zii-vf610-dev: Add necessary post reset
+ delay
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add missing #address-cells and #size-cells to fix a warning
+As observed on CFU1 board, without this delay we interrupt mask ROM
+code execution even before it sets up any PLLs correctly preventing
+Barebox from correctly starting up. Fixing this by adding PLL setup
+code to OpenOCD script helps somewhat and Barebox starts, howerver CPU
+started this way ends up being unstable crashing randomly during
+further Barebox use.
+
+Adding a simple 100 ms post reset delay resolves all of the described
+issues. This is also consistent with how other ZII boards are set up.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/vf610-zii-dev-rev-c.dts | 3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/boards/imx/zii-vf610-dev/openocd.cfg | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/dts/vf610-zii-dev-rev-c.dts b/arch/arm/dts/vf610-zii-dev-rev-c.dts
-index 080d44614..ecec0b183 100644
---- a/arch/arm/dts/vf610-zii-dev-rev-c.dts
-+++ b/arch/arm/dts/vf610-zii-dev-rev-c.dts
-@@ -22,6 +22,9 @@
+diff --git a/Documentation/boards/imx/zii-vf610-dev/openocd.cfg b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
+index 509f9e33c..0d0e0d578 100644
+--- a/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
++++ b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
+@@ -19,6 +19,8 @@ reset_config srst_only srst_push_pull connect_deassert_srst
+ # set a slow default JTAG clock, can be overridden later
+ adapter_khz 1000
  
- &dspi0 {
- 	m25p128@0 {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
++adapter_nsrst_delay 100
 +
- 		partition@0 {
- 			label = "bootloader";
- 			reg = <0x0 0x100000>;
+ # Source generic VF6xx target configuration
+ source [find target/vybrid_vf6xx.cfg]
+ source [find mem_helper.tcl]
+@@ -186,8 +188,7 @@ proc clock_init { } {
+ 	#
+ 	# This code assumes that debugger would be unable to prevent
+ 	# MaskROM initialization code from running before halting the
+-	# processor. TODO: Port the initial clock settings as
+-	# specified in TRM
++	# processor.
+ 	#
+ 	# Ungate all of the peripheral clocks
+ 	#
 -- 
 2.21.0
 
