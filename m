@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1heEe6-0006Bd-FE
- for barebox@lists.infradead.org; Fri, 21 Jun 2019 08:11:43 +0000
-Received: by mail-pl1-x642.google.com with SMTP id k8so2625618plt.3
+ id 1heEe6-0006C6-MM
+ for barebox@lists.infradead.org; Fri, 21 Jun 2019 08:11:44 +0000
+Received: by mail-pf1-x441.google.com with SMTP id 81so3169760pfy.13
  for <barebox@lists.infradead.org>; Fri, 21 Jun 2019 01:11:42 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 21 Jun 2019 01:11:08 -0700
-Message-Id: <20190621081116.18335-2-andrew.smirnov@gmail.com>
+Date: Fri, 21 Jun 2019 01:11:09 -0700
+Message-Id: <20190621081116.18335-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20190621081116.18335-1-andrew.smirnov@gmail.com>
 References: <20190621081116.18335-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,67 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/10] ARM: i.MX: zii-vf610-dev-rev-c: Use SPDX tag in DTS
+Subject: [PATCH 03/10] ARM: i.MX: zii-vf610-dev-rev-b: Fix DTS warning
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+Add missing #address-cells and #size-cells to fix a warning
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/vf610-zii-dev-rev-c.dts | 42 ++--------------------------
- 1 file changed, 2 insertions(+), 40 deletions(-)
+ arch/arm/dts/vf610-zii-dev-rev-b.dts | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/dts/vf610-zii-dev-rev-c.dts b/arch/arm/dts/vf610-zii-dev-rev-c.dts
-index c6341a027..080d44614 100644
---- a/arch/arm/dts/vf610-zii-dev-rev-c.dts
-+++ b/arch/arm/dts/vf610-zii-dev-rev-c.dts
-@@ -1,45 +1,7 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+diff --git a/arch/arm/dts/vf610-zii-dev-rev-b.dts b/arch/arm/dts/vf610-zii-dev-rev-b.dts
+index 62112d848..c90af91a9 100644
+--- a/arch/arm/dts/vf610-zii-dev-rev-b.dts
++++ b/arch/arm/dts/vf610-zii-dev-rev-b.dts
+@@ -11,6 +11,9 @@
+ / {
+ 	spi0 {
+ 		m25p128@0 {
++			#address-cells = <1>;
++			#size-cells = <0>;
 +
- /*
-  * Copyright (C) 2015, 2016 Zodiac Inflight Innovations
-- *
-- * Based on an original 'vf610-twr.dts' which is Copyright 2015,
-- * Freescale Semiconductor, Inc.
-- *
-- * This file is dual-licensed: you can use it either under the terms
-- * of the GPL or the X11 license, at your option. Note that this dual
-- * licensing only applies to this file, and not this project as a
-- * whole.
-- *
-- *  a) This file is free software; you can redistribute it and/or
-- *     modify it under the terms of the GNU General Public License
-- *     version 2 as published by the Free Software Foundation.
-- *
-- *     This file is distributed in the hope that it will be useful
-- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
-- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- *     GNU General Public License for more details.
-- *
-- * Or, alternatively
-- *
-- *  b) Permission is hereby granted, free of charge, to any person
-- *     obtaining a copy of this software and associated documentation
-- *     files (the "Software"), to deal in the Software without
-- *     restriction, including without limitation the rights to use
-- *     copy, modify, merge, publish, distribute, sublicense, and/or
-- *     sell copies of the Software, and to permit persons to whom the
-- *     Software is furnished to do so, subject to the following
-- *     conditions:
-- *
-- *     The above copyright notice and this permission notice shall be
-- *     included in all copies or substantial portions of the Software.
-- *
-- *     THE SOFTWARE IS PROVIDED , WITHOUT WARRANTY OF ANY KIND
-- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY
-- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-- *     OTHER DEALINGS IN THE SOFTWARE.
-  */
- 
- #include <arm/vf610-zii-dev-rev-c.dts>
+ 			partition@0 {
+ 				label = "bootloader";
+ 				reg = <0x0 0x100000>;
 -- 
 2.21.0
 
