@@ -1,23 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from enterprise02.smtp.diehl.com ([193.201.238.220])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hfO1A-0001mG-8D
- for barebox@lists.infradead.org; Mon, 24 Jun 2019 12:24:17 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <rhi@pengutronix.de>) id 1hfO18-0001W1-Hs
- for barebox@lists.infradead.org; Mon, 24 Jun 2019 14:24:14 +0200
-Received: from rhi by ptx.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <rhi@pengutronix.de>) id 1hfO18-0000Wi-A2
- for barebox@lists.infradead.org; Mon, 24 Jun 2019 14:24:14 +0200
-Date: Mon, 24 Jun 2019 14:24:14 +0200
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190624122414.gjwyyyw2rmgugxyy@pengutronix.de>
+ id 1hfMx1-0000Wd-Bb
+ for barebox@lists.infradead.org; Mon, 24 Jun 2019 11:15:57 +0000
+From: Denis OSTERLAND <denis.osterland@diehl.com>
+Date: Mon, 24 Jun 2019 11:15:44 +0000
+Message-ID: <1561374944.28933.40.camel@diehl.com>
 References: <20190624103642.19184-1-rhi@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
 In-Reply-To: <20190624103642.19184-1-rhi@pengutronix.de>
+Content-Language: en-US
+Content-ID: <7D2ABD378D2EE0459D9AB13D37A0FF2D@diehl.internal>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,60 +19,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] images: ignore i.MX signed (USB) images and outputs of
  imx-csf tool
-To: Barebox Mailing List <barebox@lists.infradead.org>
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Ah, please ignore, Rouven already sent a better patch [1] on Friday :-)
-
-[1]: 20190621092046.17389-1-r.czerwinski@pengutronix.de,
-     https://www.mail-archive.com/barebox@lists.infradead.org/msg31702.html
-
-On Mon, Jun 24, 2019 at 12:36:42PM +0200, Roland Hieber wrote:
-> Fixes: efd400504cdf4ae56224 ("images: imx: Add targets for signed images and signed usb images")
-> Signed-off-by: Roland Hieber <rhi@pengutronix.de>
-> ---
->  images/.gitignore | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/images/.gitignore b/images/.gitignore
-> index 7a7493781471..662ff6fd6d7b 100644
-> --- a/images/.gitignore
-> +++ b/images/.gitignore
-> @@ -5,6 +5,12 @@
->  *.imximg.prep
->  *.imximg.signed
->  *.imx-sram-img
-> +*.simximg
-> +*.simximg.csfbin
-> +*.uimximg
-> +*.uimximg.csfbin
-> +*.usimximg
-> +*.usimximg.csfbin
->  *.map
->  *.src
->  *.kwbimg
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgUm9sYW5kLA0KDQpBRkFJSyBjc2YgaXMgdGhlIGlucHV0IGZvcm1hdCBmb3IgY3N0IHRvb2wu
+DQpTbyBpdCBzaG91bGQgYmUgcy9jc2YvY3N0Ly4NCg0KUmVnYXJkcyBEZW5pcw0KDQpBbSBNb250
+YWcsIGRlbiAyNC4wNi4yMDE5LCAxMjozNiArMDIwMCBzY2hyaWViIFJvbGFuZCBIaWViZXI6DQo+
+IEZpeGVzOiBlZmQ0MDA1MDRjZGY0YWU1NjIyNCAoImltYWdlczogaW14OiBBZGQgdGFyZ2V0cyBm
+b3Igc2lnbmVkIGltYWdlcyBhbmQgc2lnbmVkIHVzYiBpbWFnZXMiKQ0KPiBTaWduZWQtb2ZmLWJ5
+OiBSb2xhbmQgSGllYmVyIDxyaGlAcGVuZ3V0cm9uaXguZGU+DQo+IC0tLQ0KPiDCoGltYWdlcy8u
+Z2l0aWdub3JlIHwgNiArKysrKysNCj4gwqAxIGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCsp
+DQo+IA0KPiBkaWZmIC0tZ2l0IGEvaW1hZ2VzLy5naXRpZ25vcmUgYi9pbWFnZXMvLmdpdGlnbm9y
+ZQ0KPiBpbmRleCA3YTc0OTM3ODE0NzEuLjY2MmZmNmZkNmQ3YiAxMDA2NDQNCj4gLS0tIGEvaW1h
+Z2VzLy5naXRpZ25vcmUNCj4gKysrIGIvaW1hZ2VzLy5naXRpZ25vcmUNCj4gQEAgLTUsNiArNSwx
+MiBAQA0KPiDCoCouaW14aW1nLnByZXANCj4gwqAqLmlteGltZy5zaWduZWQNCj4gwqAqLmlteC1z
+cmFtLWltZw0KPiArKi5zaW14aW1nDQo+ICsqLnNpbXhpbWcuY3NmYmluDQo+ICsqLnVpbXhpbWcN
+Cj4gKyoudWlteGltZy5jc2ZiaW4NCj4gKyoudXNpbXhpbWcNCj4gKyoudXNpbXhpbWcuY3NmYmlu
+DQo+IMKgKi5tYXANCj4gwqAqLnNyYw0KPiDCoCoua3diaW1nDQoNCkRpZWhsIENvbm5lY3Rpdml0
+eSBTb2x1dGlvbnMgR21iSA0KR2VzY2jDpGZ0c2bDvGhydW5nOiBIb3JzdCBMZW9uYmVyZ2VyDQpT
+aXR6IGRlciBHZXNlbGxzY2hhZnQ6IE7DvHJuYmVyZyAtIFJlZ2lzdGVyZ2VyaWNodDogQW10c2dl
+cmljaHQNCk7DvHJuYmVyZzogSFJCIDMyMzE1DQpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18NCg0KRGVyIEluaGFsdCBkZXIgdm9yc3RlaGVuZGVuIEUtTWFpbCBpc3Qg
+bmljaHQgcmVjaHRsaWNoIGJpbmRlbmQuIERpZXNlIEUtTWFpbCBlbnRoYWVsdCB2ZXJ0cmF1bGlj
+aGUgdW5kL29kZXIgcmVjaHRsaWNoIGdlc2NodWV0enRlIEluZm9ybWF0aW9uZW4uDQpJbmZvcm1p
+ZXJlbiBTaWUgdW5zIGJpdHRlLCB3ZW5uIFNpZSBkaWVzZSBFLU1haWwgZmFlbHNjaGxpY2hlcndl
+aXNlIGVyaGFsdGVuIGhhYmVuLiBCaXR0ZSBsb2VzY2hlbiBTaWUgaW4gZGllc2VtIEZhbGwgZGll
+IE5hY2hyaWNodC4NCkplZGUgdW5lcmxhdWJ0ZSBGb3JtIGRlciBSZXByb2R1a3Rpb24sIEJla2Fu
+bnRnYWJlLCBBZW5kZXJ1bmcsIFZlcnRlaWx1bmcgdW5kL29kZXIgUHVibGlrYXRpb24gZGllc2Vy
+IEUtTWFpbCBpc3Qgc3RyZW5nc3RlbnMgdW50ZXJzYWd0Lg0KLSBJbmZvcm1hdGlvbmVuIHp1bSBE
+YXRlbnNjaHV0eiwgaW5zYmVzb25kZXJlIHp1IElocmVuIFJlY2h0ZW4sIGVyaGFsdGVuIFNpZSB1
+bnRlciBodHRwczovL3d3dy5kaWVobC5jb20vZ3JvdXAvZGUvdHJhbnNwYXJlbnotdW5kLWluZm9y
+bWF0aW9uc3BmbGljaHRlbi8NCg0KVGhlIGNvbnRlbnRzIG9mIHRoZSBhYm92ZSBtZW50aW9uZWQg
+ZS1tYWlsIGlzIG5vdCBsZWdhbGx5IGJpbmRpbmcuIFRoaXMgZS1tYWlsIGNvbnRhaW5zIGNvbmZp
+ZGVudGlhbCBhbmQvb3IgbGVnYWxseSBwcm90ZWN0ZWQgaW5mb3JtYXRpb24uIFBsZWFzZSBpbmZv
+cm0gdXMgaWYgeW91IGhhdmUgcmVjZWl2ZWQgdGhpcyBlLW1haWwgYnkNCm1pc3Rha2UgYW5kIGRl
+bGV0ZSBpdCBpbiBzdWNoIGEgY2FzZS4gRWFjaCB1bmF1dGhvcml6ZWQgcmVwcm9kdWN0aW9uLCBk
+aXNjbG9zdXJlLCBhbHRlcmF0aW9uLCBkaXN0cmlidXRpb24gYW5kL29yIHB1YmxpY2F0aW9uIG9m
+IHRoaXMgZS1tYWlsIGlzIHN0cmljdGx5IHByb2hpYml0ZWQuIA0KLSBGb3IgZ2VuZXJhbCBpbmZv
+cm1hdGlvbiBvbiBkYXRhIHByb3RlY3Rpb24gYW5kIHlvdXIgcmVzcGVjdGl2ZSByaWdodHMgcGxl
+YXNlIHZpc2l0IGh0dHBzOi8vd3d3LmRpZWhsLmNvbS9ncm91cC9lbi90cmFuc3BhcmVuY3ktYW5k
+LWluZm9ybWF0aW9uLW9ibGlnYXRpb25zLw0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
+YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
+ZWJveAo=
