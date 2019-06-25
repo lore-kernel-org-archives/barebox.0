@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hfO6q-0004St-Un
- for barebox@lists.infradead.org; Mon, 24 Jun 2019 12:30:10 +0000
-Message-ID: <0dfe3495603bae2becd0ed6223b6e048c6a43c76.camel@pengutronix.de>
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon, 24 Jun 2019 14:30:05 +0200
-In-Reply-To: <1561374944.28933.40.camel@diehl.com>
-References: <20190624103642.19184-1-rhi@pengutronix.de>
- <1561374944.28933.40.camel@diehl.com>
+ id 1hfhVR-0001Qa-GX
+ for barebox@lists.infradead.org; Tue, 25 Jun 2019 09:12:52 +0000
+From: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+Date: Tue, 25 Jun 2019 09:12:44 +0000
+Message-ID: <c5d05019-b85c-fef8-0097-448da9ebe5bb@data-modul.com>
+References: <c0432719-ac26-629d-01a0-bcf4106f8357@data-modul.com>
+ <CAHQ1cqHAz=ZAbUvThUOo8WcB74CgnoWdSgAEOTy_94TE81zwfQ@mail.gmail.com>
+In-Reply-To: <CAHQ1cqHAz=ZAbUvThUOo8WcB74CgnoWdSgAEOTy_94TE81zwfQ@mail.gmail.com>
+Content-Language: de-DE
+Content-ID: <7AB8B0E955B315468FFB1C69258438D2@data-modul.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,40 +20,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] images: ignore i.MX signed (USB) images and outputs of
- imx-csf tool
-To: Denis OSTERLAND <denis.osterland@diehl.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: Bringup Barebox on imx8mm
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi,
-
-> AFAIK csf is the input format for cst tool.
-> So it should be s/csf/cst/.
-
-Yes and no. CSF (Command Sequence File) is the input format for the
-cst, however the cst outputs a csf binary blob containing the
-certificates, signatures and the required sequence of commands for the
-bootrom.
-.csfbin is the correct name either way because barebox uses these
-filenames as an intermediate step before appending the csf binary blob
-to the image:
-
-$ ls images/*csfbin
-images/start_nxp_imx8mq_evk.pblb.simximg.csfbin
-$
-
-I think changing the filename would not make much sense, since the
-csfbin still contains the same sequence of commands, albeit in a binary
-form with additional data attached.
-
-Hope this helps,
-Rouven Czerwinski
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sDQoNClRoZSBpc3N1ZSBpcyByZXNvbHZlZC4gSXQgd2FzIHJlbGF0ZWQgdG8gdGhlIERE
+UiBjbG9jayBpbml0LiBJdCB3YXMgbmVjZXNzYXJ5IHRvDQppbml0aWFsaXplIHRoZSBERFIgY2xv
+Y2sgYmVmb3JlIHN0YXJ0aW5nIGRkcl9pbml0KCk6DQoNCg0KLyogRERSIGNsb2NrIGluaXQqLw0K
+d3JpdGVsKCAweDMsIDB4MzAzODQwNTgpOw0Kd3JpdGVsKDB4MTEwMDAwMDAsIDB4MzAzOGEwMDAp
+Ow0Kd3JpdGVsKDB4MTEwMDAwMDAsMHgzMDM4YTA4MCk7DQp3cml0ZWwoMHgzLCAweDMwMzg0MDU0
+KTsNCg0KQmVzdCwNClJleWhhbmVoDQoNCk9uIDYvMTQvMTkgOToxMSBBTSwgQW5kcmV5IFNtaXJu
+b3Ygd3JvdGU6DQo+IE9uIFRodSwgSnVuIDEzLCAyMDE5IGF0IDg6MTQgQU0gWWF6ZGFuaSwgUmV5
+aGFuZWgNCj4gPFJZYXpkYW5pQGRhdGEtbW9kdWwuY29tPiB3cm90ZToNCj4+DQo+PiBIZWxsbyBF
+dmVyeW9uZSwNCj4+DQo+PiBJIGFtIHRyeWluZyB0byBicmluZ3VwIEJhcmVib3ggb24gaS5NWDhN
+TS1ldmsuDQo+Pg0KPj4gSSBoYXZlIGZvbGxvd2VkIGFsbCB0aGUgY29tbWl0cyByZWxhdGVkIHRv
+IHRoZSBpLk1YOE1RIGFuZCBhZGRlZCBwcm9wZXIgZmlsZXMNCj4+IGFuZCBjaGFuZ2VzIGZvciBp
+Lk1YOE1NLWV2ayBib2FyZC4NCj4+DQo+PiBUaGUgcHJvYmxlbSBpcyBCYXJlYm94IHN0b3BzIGF0
+ICJkZHJjX3BoeV93YWl0X3RyYWluaW5nX2NvbXBsZXRlIiBmdW5jdGlvbiwNCj4+IGV4YWN0bHkg
+YXQgc3ViLWZ1bmN0aW9uICJkZHJjX3BoeV9nZXRfbWVzc2FnZSIuIFRoZSByZWFkLXZhbHVlIGZy
+b20gdGhlDQo+Pg0KPj4gcGh5ICsgRERSQ19QSFlfUkVHKDB4ZDAwMDQpIGlzIG5vdCBjb3JyZWN0
+LCBhbmQgaXQgcmVtYWlucyBpbiB3aGlsZSBsb29wLg0KPj4NCj4+IEkgdXNlZCB0aGUgZGRyX2lu
+aXQgYW5kIGRkcnBoeV90cmFpbiBmaWxlcyBwcm9kdWNlZCBmcm9tIG1zY2FsZV9kZHJfdG9vbCBv
+ZiBOWFAsDQo+PiBhbmQgZXZlbiBjb21wYXJlZCB3aXRoIHRoZSB2YWx1ZSBmcm9tIFUtYm9vdC4g
+QWxsIGFyZSBzaW1pbGFyLg0KPj4NCj4+IERvZXMgYW55IGJvZHkgaGF2ZSBhbiBpZGVhIHdoYXQg
+d291bGQgYmUgdGhlIHByb2JsZW0/DQo+Pg0KPg0KPiBXaGF0IGFib3V0IEREUiBQSFkgZmlybXdh
+cmU/IElzIGl0IHRoZSBzYW1lIGFzIGluIHdvcmtpbmcgVS1ib290DQo+IGltYWdlPyBGcm9tIHdo
+YXQgeW91IGRlc2NyaWJlIGl0IHNvdW5kcyB0aGF0IEREUiBQSFkgaXMgbm90DQo+IHJlc3BvbmRp
+bmcsIHNvIEkgYW0gd29uZGVyaW5nIGlmIEREUiBmaXJtd2FyZSBpcyBydW5uaW5nLiBBbHNvLCBk
+aWQNCj4geW91IGNoZWNrIHRoYXQgdmFyaW91cyBtZW1vcnkgb2Zmc2V0cyBpbiwgc2F5DQo+IGFy
+Y2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXg4LWRkcmMuaCBhcmUgdmFsaWQgZm9yIGku
+TVg4TU0gYW5kDQo+IGFyZSBub3QgdmFsdWVzIHRoYXQgTVEgc3BlY2lmaWM/IEFub3RoZXIgdGhp
+bmcgdG8gZGVidWcgdGhpcyB3b3VsZCBiZQ0KPiB0byB0cmFjZSBhbGwgb2YgdGhlIHJlZ2lzdGVy
+IHJlYWRzL3dyaXRlcyBpbiB3b3JraW5nIFUtQm9vdCB2cyBCYXJlYm94DQo+IGFuZCBzZWUgd2hh
+dCB0aGUgZGlmZmVyZW5jZSBpcy4NCj4NCj4gQW55d2F5LCBqdXN0IG15IDIgY2VudHMuDQo+DQo+
+IFRoYW5rcywNCj4gQW5kcmV5IFNtaXJub3YNCj4NCg0KLS0NClJleWhhbmVoIFlhemRhbmkNCkRh
+dGEgTW9kdWwgQUcgICAgICAgICAgICAgICAgICAgICAgICAgICAgVEVMOiAgICArNDktODktNTYw
+MTctMTU0DQpFbWJlZGRlZCBkZXZlbG9wbWVudCAgICAgICAgICAgICAgICAgRkFYOiAgICArNDkt
+ODktNTYwMTctMTE5DQpMaW51eCAtIERldmVsb3BtZW50ICAgICAgICAgICAgICAgICAgICAgIFJH
+OiBIUi1NdWVuY2hlbiBCLTg1NTkxDQpMYW5kc2JlcmdlciBTdHIuIDMyMiBELTgwNjg3IE11ZW5j
+aGVuIC0gaHR0cDovL3d3dy5kYXRhLW1vZHVsLmNvbQ0KDQpWZXJ0cmF1bGljaGUgRS1NYWlsIHZv
+biAvIENvbmZpZGVudGlhbCBlLW1haWwgZnJvbTogREFUQSBNT0RVTCBBRw0KVm9yc3RhbmQgLyBD
+RU86IERyLiBGbG9yaWFuIFBlc2FobA0KVm9yc2l0emVuZGUgZGVzIEF1ZnNpY2h0c3JhdGVzIC8g
+Q2hhaXJ3b21hbiBvZiB0aGUgU3VwZXJ2aXNvcnkgQm9hcmQ6IEtyaXN0aW4gRC4gUnVzc2VsbA0K
+U2l0eiBkZXIgR2VzZWxsc2NoYWZ0IC8gUmVnaXN0ZXJlZCBPZmZpY2U6IE3DvG5jaGVuDQpSZWdp
+c3RlcmdlcmljaHQgLyBSZWdpc3RyYXRpb24gQ291cnQ6IE3DvG5jaGVuIEhhbmRlbHNyZWdpc3Rl
+ciBCIDg1IDU5MQ0KDQoNCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
