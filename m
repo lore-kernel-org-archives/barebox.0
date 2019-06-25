@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hffvm-0006ZH-RF
+ id 1hffvm-0006ZI-RR
  for barebox@lists.infradead.org; Tue, 25 Jun 2019 07:31:56 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue, 25 Jun 2019 09:31:45 +0200
-Message-Id: <20190625073146.26639-1-r.czerwinski@pengutronix.de>
+Date: Tue, 25 Jun 2019 09:31:46 +0200
+Message-Id: <20190625073146.26639-2-r.czerwinski@pengutronix.de>
+In-Reply-To: <20190625073146.26639-1-r.czerwinski@pengutronix.de>
+References: <20190625073146.26639-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,31 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] i.MX: HABv4: use min_t instead of min
+Subject: [PATCH 2/2] i.MX: HABv4: Reset index variable after error type
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-This fixes a compiler warning because len is size_t and
-RNG_FAIL_EVENT_SIZE was cast to uint32_t.
+The index variable is used for each error type, it should be reset to 0
+before retrieving the next error status, otherwise error messages are
+skipped if the preceding error type incremented index.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- drivers/hab/habv4.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hab/habv4.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
-index 496fbe3ccd..2e3e349b0b 100644
+index 2e3e349b0b..6a60be6853 100644
 --- a/drivers/hab/habv4.c
 +++ b/drivers/hab/habv4.c
-@@ -419,7 +419,7 @@ static bool is_known_rng_fail_event(const uint8_t *data, size_t len)
- 	int i;
- 	for (i = 0; i < ARRAY_SIZE(habv4_known_rng_fail_events); i++) {
- 		if (memcmp(data, habv4_known_rng_fail_events[i],
--			   min(len, (uint32_t)RNG_FAIL_EVENT_SIZE)) == 0) {
-+			   min_t(size_t, len, RNG_FAIL_EVENT_SIZE)) == 0) {
- 			return true;
- 		}
+@@ -469,6 +469,7 @@ static int habv4_get_status(const struct habv4_rvt *rvt)
  	}
+ 
+ 	len = sizeof(data);
++	index = 0;
+ 	while (rvt->report_event(HAB_STATUS_FAILURE, index, data, &len) == HAB_STATUS_SUCCESS) {
+ 		pr_err("-------- HAB failure Event %d --------\n", index);
+ 		pr_err("event data:\n");
+@@ -480,6 +481,7 @@ static int habv4_get_status(const struct habv4_rvt *rvt)
+ 
+ 	/* Check reason for stopping */
+ 	len = sizeof(data);
++	index = 0;
+ 	if (rvt->report_event(HAB_STATUS_ANY, index, NULL, &len) == HAB_STATUS_SUCCESS)
+ 		pr_err("ERROR: Recompile with larger event data buffer (at least %d bytes)\n\n", len);
+ 
 -- 
 2.22.0
 
