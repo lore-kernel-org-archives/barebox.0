@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hg01c-0005Yb-Ji
- for barebox@lists.infradead.org; Wed, 26 Jun 2019 04:59:18 +0000
+ id 1hg01L-0005M1-Eu
+ for barebox@lists.infradead.org; Wed, 26 Jun 2019 04:59:01 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Wed, 26 Jun 2019 06:58:54 +0200
-Message-Id: <fbb9cb60a43e436b80c74b7900c8ed6d108991d0.1561525118.git-series.r.czerwinski@pengutronix.de>
+Date: Wed, 26 Jun 2019 06:58:42 +0200
+Message-Id: <b204fd526de2fa87a692fda32e42cf7bc0413964.1561525118.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.a507585555be94a0fb8946fdfd851a30ab8b296f.1561525118.git-series.r.czerwinski@pengutronix.de>
 References: <cover.a507585555be94a0fb8946fdfd851a30ab8b296f.1561525118.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,145 +21,179 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/13] boards: nxp-mx8-evk: rework to different boot flow
+Subject: [PATCH 01/13] hab: implement interface for i.MX8MQ
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Rework the evk boot flow to use the new piggydata load function and
-install a trampoline for the TF-A setup. This allows the PBL boot
-process to stay in SRAM up until the verification of the piggydata is
-done and main barebox can be loaded
+The HAB interface for i.MX8MQ only implements the retrieval of status
+and events. The SoC status is retrieved using the TF-A SIP API found in
+the downstream imx TF-A. After calling into the TF-A the passed data
+structures need to be invalidated, since otherwise the cached zero value
+is used.
+Currently the TF-A report event call only supports FAILURE events.
+Testing the TF-A with other event types resulted in a freeze in the
+bootrom code, which was not investigated further.
+We instead walk the memory containing the events and retrieve the events
+ourselves. They are exposed using the same API.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg |  1 +-
- arch/arm/boards/nxp-imx8mq-evk/lowlevel.c                     | 78 +++----
- 2 files changed, 42 insertions(+), 37 deletions(-)
+ drivers/hab/hab.c   |   2 +-
+ drivers/hab/habv4.c | 112 +++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 113 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg b/arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
-index aff8321..11463fe 100644
---- a/arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
-+++ b/arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
-@@ -3,3 +3,4 @@ soc imx8mq
- loadaddr 0x007E1000
- max_load_size 0x3F000
- dcdofs 0x400
-+#include <mach/habv4-imx8-gencsf.h>
-diff --git a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-index 6451e5d..67dc876 100644
---- a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-+++ b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-@@ -53,18 +53,21 @@ static void setup_uart(void)
+diff --git a/drivers/hab/hab.c b/drivers/hab/hab.c
+index 03bb65e..a346e01 100644
+--- a/drivers/hab/hab.c
++++ b/drivers/hab/hab.c
+@@ -217,7 +217,7 @@ static struct imx_hab_ops *imx_get_hab_ops(void)
  
- static void nxp_imx8mq_evk_sram_setup(void)
- {
--	enum bootsource src = BOOTSOURCE_UNKNOWN;
--	int instance = BOOTSOURCE_INSTANCE_UNKNOWN;
--	int ret = -ENOTSUPP;
--
- 	ddr_init();
-+}
+ 	if (IS_ENABLED(CONFIG_HABV3) && (cpu_is_mx25() || cpu_is_mx35()))
+ 		tmp = &imx_hab_ops_iim;
+-	else if (IS_ENABLED(CONFIG_HABV4) && cpu_is_mx6())
++	else if (IS_ENABLED(CONFIG_HABV4) && (cpu_is_mx6() || cpu_is_mx8mq()))
+ 		tmp = &imx_hab_ops_ocotp;
+ 	else
+ 		return NULL;
+diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
+index 496fbe3..36e249a 100644
+--- a/drivers/hab/habv4.c
++++ b/drivers/hab/habv4.c
+@@ -22,8 +22,11 @@
+ #include <hab.h>
+ #include <init.h>
+ #include <types.h>
++#include <linux/arm-smccc.h>
++#include <asm/cache.h>
  
--	imx8_get_boot_source(&src, &instance);
--
--	if (src == BOOTSOURCE_MMC)
--		ret = imx8_esdhc_start_image(instance);
--
--	BUG_ON(ret);
-+static void nxp_imx8mq_evk_install_tfa_trampoline(void)
+ #include <mach/generic.h>
++#include <mach/imx8mq.h>
+ 
+ #define HABV4_RVT_IMX28 0xffff8af8
+ #define HABV4_RVT_IMX6_OLD 0x00000094
+@@ -177,6 +180,85 @@ struct habv4_rvt {
+ 	void (*failsafe)(void);
+ } __packed;
+ 
++#define FSL_SIP_HAB             0xC2000007
++#define FSL_SIP_HAB_AUTHENTICATE        0x00
++#define FSL_SIP_HAB_ENTRY               0x01
++#define FSL_SIP_HAB_EXIT                0x02
++#define FSL_SIP_HAB_REPORT_EVENT        0x03
++#define FSL_SIP_HAB_REPORT_STATUS       0x04
++#define FSL_SIP_HAB_FAILSAFE            0x05
++#define FSL_SIP_HAB_CHECK_TARGET        0x06
++
++static enum hab_status hab_sip_report_status(enum hab_config *config,
++					     enum hab_state *state)
 +{
++	struct arm_smccc_res res;
++
++	arm_smccc_smc(FSL_SIP_HAB, FSL_SIP_HAB_REPORT_STATUS,
++		      (unsigned long) config,
++		      (unsigned long) state, 0, 0, 0, 0, &res);
++	if (state)
++		v8_inv_dcache_range((unsigned long) state,
++				    (unsigned long)state + sizeof(*config));
++	if (config)
++		v8_inv_dcache_range((unsigned long) config,
++				    (unsigned long)config + sizeof(*state));
++	return (enum hab_status)res.a0;
++}
++
++static enum hab_status imx8_read_sram_events(enum hab_status status,
++					     uint32_t index, void *event,
++					     uint32_t *bytes)
++{
++	struct hab_event_record *events[10];
++	int num_events = 0;
++	char *sram = (char *)0x9061c0;
++	int i = 0;
++	int internal_index = 0;
++	char *end = 0;
++	struct hab_event_record *search;
++
 +	/*
-+	 * Create a trampoline which is places in DRAM and calls back into the
-+	 * PBL entry function found in the TCRAM. Register x0 is set to 1 to
-+	 * indicate that DRAM setup was already run.
++	 * AN12263 HABv4 Guidelines and Recommendations
++	 * recommends the address and size, however errors are usually contained
++	 * within the first bytes. Scan only the first few bytes to rule out
++	 * lots of false positives.
 +	 */
-+	int trampoline[4] = {0xd2840013, /* mov     x19, #0x2000 */
-+			     0xf2a00fd3, /* movk    x19, #0x7e, lsl #16 */
-+			     0xd2800020, /* mov     x0, #0x1 */
-+			     0xd61f0260};/* br      x19 */
-+	memcpy((void *)MX8MQ_ATF_BL33_BASE_ADDR, &trampoline,  16);
++	end = sram +  0x1a0;
++
++	while (sram < end) {
++		if (*sram == 0xdb) {
++			search = (void *)sram;
++			sram = sram + be16_to_cpu(search->hdr.len);
++			events[num_events] = search;
++			num_events++;
++		} else {
++			sram++;
++		}
++	}
++	while (i < num_events) {
++		if (events[i]->status == status) {
++			if (internal_index == index) {
++				*bytes = sizeof(struct hab_event_record) +
++					be16_to_cpu(events[i]->hdr.len);
++				if (event)
++					memcpy(event, events[i], *bytes);
++				return HAB_STATUS_SUCCESS;
++			} else {
++				internal_index++;
++			}
++		}
++		i++;
++	}
++	return HAB_STATUS_FAILURE;
++}
++
++struct habv4_rvt hab_smc_ops = {
++	.header = { .tag = 0xdd },
++	.report_event = imx8_read_sram_events,
++	.report_status = hab_sip_report_status,
++};
++
+ static const char *habv4_get_status_str(enum hab_status status)
+ {
+ 	switch (status) {
+@@ -507,6 +589,36 @@ int imx6_hab_get_status(void)
+ 	return -EINVAL;
  }
  
- /*
-@@ -75,50 +78,51 @@ static void nxp_imx8mq_evk_sram_setup(void)
-  * 1. MaskROM uploads PBL into OCRAM and that's where this function is
-  *    executed for the first time
-  *
-- * 2. DDR is initialized and full i.MX image is loaded to the
-- *    beginning of RAM
-+ * 2. DDR is initialized and the TF-A trampoline is installed in the
-+ *    DRAM.
-  *
-- * 3. start_nxp_imx8mq_evk, now in RAM, is executed again
-+ * 3. TF-A is executed and exits into the trampoline in RAM, which enters the
-+ *    PBL for the second time. DRAM setup done is indicated by a one in register
-+ *    x0 by the trampoline
-  *
-- * 4. BL31 blob is uploaded to OCRAM and the control is transfer to it
-+ * 4. The piggydata is loaded from the SD card and copied to the expected
-+ *    location in the DRAM.
-  *
-- * 5. BL31 exits EL3 into EL2 at address MX8MQ_ATF_BL33_BASE_ADDR,
-- *    executing start_nxp_imx8mq_evk() the third time
-- *
-- * 6. Standard barebox boot flow continues
-+ * 5. Standard barebox boot flow continues
-  */
- ENTRY_FUNCTION(start_nxp_imx8mq_evk, r0, r1, r2)
- {
-+	enum bootsource src = BOOTSOURCE_UNKNOWN;
-+	int instance = BOOTSOURCE_INSTANCE_UNKNOWN;
-+	int ret = -ENOTSUPP;
-+	const u8 *bl31;
-+	size_t bl31_size;
++static int imx8_hab_get_status(void)
++{
++	return habv4_get_status(&hab_smc_ops);
++}
 +
- 	imx8mq_cpu_lowlevel_init();
- 
- 	if (IS_ENABLED(CONFIG_DEBUG_LL))
- 		setup_uart();
- 
--	if (get_pc() < MX8MQ_DDR_CSD1_BASE_ADDR) {
--		/*
--		 * We assume that we were just loaded by MaskROM into
--		 * SRAM if we are not running from DDR. We also assume
--		 * that means DDR needs to be initialized for the
--		 * first time.
--		 */
--		nxp_imx8mq_evk_sram_setup();
--	}
- 	/*
--	 * Straight from the power-on we are at EL3, so the following
--	 * code _will_ load and jump to ATF.
--	 *
--	 * However when we are re-executed upon exit from ATF's
--	 * initialization routine, it is EL2 which means we'll skip
--	 * loadting ATF blob again
-+	 * if register r0 does not contain 1, we are running for the first time
-+	 * and need to initialize the DRAM, install the trampoline and run TF-A
-+	 * (BL31).
-+	 * Otherwise the 1 indicates that the DRAM setup and trampoline are
-+	 * already installed and TF-A has been run. In this case we can skip
- 	 */
--	if (current_el() == 3) {
--		const u8 *bl31;
--		size_t bl31_size;
--
-+	if (r0 != 1) {
-+		nxp_imx8mq_evk_sram_setup();
-+		nxp_imx8mq_evk_install_tfa_trampoline();
- 		get_builtin_firmware(imx8mq_bl31_bin, &bl31, &bl31_size);
- 		imx8mq_atf_load_bl31(bl31, bl31_size);
- 	}
- 
-+	imx8_get_boot_source(&src, &instance);
++static int init_imx8_hab_get_status(void)
++{
++	int ret = 0;
 +
-+	if (src == BOOTSOURCE_MMC)
-+		ret = imx8_esdhc_load_piggy(instance);
++	if (cpu_is_mx8mq())
++		ret = imx8_hab_get_status();
 +	else
-+		BUG_ON(ret);
- 	/*
- 	 * Standard entry we hit once we initialized both DDR and ATF
- 	 */
++		return 0;
++
++	/*
++	 * Nobody will check the return value if there were HAB errors, but the
++	 * initcall will fail spectaculously with a strange error message.
++	 */
++	if (ret == -EPERM)
++		return 0;
++	return ret;
++}
++
++/*
++ *
++ *
++ *
++ */
++postmmu_initcall(init_imx8_hab_get_status);
++
+ static int init_imx6_hab_get_status(void)
+ {
+ 	int ret = 0;
 -- 
 git-series 0.9.1
 
