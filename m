@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hg01Y-0005Uq-OD
+ id 1hg01Y-0005Ur-Pt
  for barebox@lists.infradead.org; Wed, 26 Jun 2019 04:59:15 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Wed, 26 Jun 2019 06:58:49 +0200
-Message-Id: <455284f255cb6d572968ed93834b9202f65f9b3a.1561525118.git-series.r.czerwinski@pengutronix.de>
+Date: Wed, 26 Jun 2019 06:58:52 +0200
+Message-Id: <cec1abc90d748218630f8cdb8142e7143c19919e.1561525118.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.a507585555be94a0fb8946fdfd851a30ab8b296f.1561525118.git-series.r.czerwinski@pengutronix.de>
 References: <cover.a507585555be94a0fb8946fdfd851a30ab8b296f.1561525118.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,102 +21,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/13] images: always build sha256sum into pbl
+Subject: [PATCH 11/13] mach-imx: add gencsf header for i.MX8MQ
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Create a sha256sum of the compressed barebox image and always add it to
-the PBL. We also add a custom linker section for ARM, to retrieve the
-sha256sum for piggydata verification.
+Add the required gencsf header for i.MX8MQ.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/lib/pbl.lds.S |  7 +++++++
- images/Makefile        | 22 +++++++++++++++++++---
- images/sha_sum.S       |  6 ++++++
- 3 files changed, 32 insertions(+), 3 deletions(-)
- create mode 100644 images/sha_sum.S
+ arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h | 59 +++++++++++++++-
+ 1 file changed, 59 insertions(+)
+ create mode 100644 arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h
 
-diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
-index d2f5ab2..01ed384 100644
---- a/arch/arm/lib/pbl.lds.S
-+++ b/arch/arm/lib/pbl.lds.S
-@@ -68,6 +68,13 @@ SECTIONS
- 	. = ALIGN(4);
- 	.data : { *(.data*) }
- 
-+	. = ALIGN(4);
-+	__shasum_start = .;
-+	.shasum : {
-+		KEEP(*(.shasum))
-+	}
-+	__shasum_end = .;
-+
- 	.rel_dyn_start : { *(.__rel_dyn_start) }
- #ifdef CONFIG_CPU_32
- 	.rel.dyn : { *(.rel*) }
-diff --git a/images/Makefile b/images/Makefile
-index e525e0d..9f23895 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -57,11 +57,12 @@ quiet_cmd_elf__ ?= LD      $@
-       cmd_elf__ ?= $(LD) $(LDFLAGS_barebox) --gc-sections		\
- 		-e $(2) -Map $@.map $(LDFLAGS_$(@F)) -o $@		\
- 		-T $(pbl-lds)						\
--		--start-group $(barebox-pbl-common) $(obj)/piggy.o --end-group
-+		--start-group $(barebox-pbl-common) $(obj)/piggy.o	\
-+		$(obj)/sha_sum.o --end-group
- 
- PBL_CPPFLAGS	+= -fdata-sections -ffunction-sections
- 
--$(obj)/%.pbl: $(pbl-lds) $(barebox-pbl-common) $(obj)/piggy.o FORCE
-+$(obj)/%.pbl: $(pbl-lds) $(barebox-pbl-common) $(obj)/piggy.o $(obj)/sha_sum.o FORCE
- 	$(call if_changed,elf__,$(*F))
- 
- $(obj)/%.pblb: $(obj)/%.pbl FORCE
-@@ -111,6 +112,21 @@ suffix_$(CONFIG_IMAGE_COMPRESSION_NONE) = comp_copy
- 
- $(obj)/piggy.o: $(obj)/barebox.z FORCE
- 
-+$(obj)/sha_sum.o: $(obj)/barebox.sha.bin FORCE
-+
-+quiet_cmd_sha256bin ?= SHA-BIN $@
-+      cmd_sha256bin ?= printf "$(shell awk '{printf $$1}' < $(obj)/barebox.sum | sed -e 's/../\\x&/g' )" > $@
-+
-+quiet_cmd_sha256sum ?= SHA     $@
-+      cmd_sha256sum ?= sha256sum $(obj)/barebox.z > $@
-+
-+$(obj)/barebox.sha.bin: $(obj)/barebox.sum FORCE
-+	$(call if_changed,sha256bin)
-+
-+$(obj)/barebox.sum: $(obj)/barebox.z FORCE
-+	$(call if_changed,sha256sum)
-+
-+
- # barebox.z - compressed barebox binary
- # ----------------------------------------------------------------
- $(obj)/barebox.z: $(obj)/../barebox.bin FORCE
-@@ -152,7 +168,7 @@ ifneq ($(pblx-y)$(pblx-),)
-   $(error pblx- has been removed. Please use pblb- instead.)
- endif
- 
--targets += $(image-y) pbl.lds barebox.x barebox.z piggy.o
-+targets += $(image-y) pbl.lds barebox.x barebox.z piggy.o sha_sum.o barebox.sha.bin barebox.sum
- targets += $(patsubst %,%.pblb,$(pblb-y))
- targets += $(patsubst %,%.pbl,$(pblb-y))
- targets += $(patsubst %,%.s,$(pblb-y))
-diff --git a/images/sha_sum.S b/images/sha_sum.S
+diff --git a/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h
 new file mode 100644
-index 0000000..1f9bd80
+index 0000000..34039ee
 --- /dev/null
-+++ b/images/sha_sum.S
-@@ -0,0 +1,6 @@
-+        .section .shasum,"a"
-+        .globl  sha_sum
-+sha_sum:
-+        .incbin "images/barebox.sha.bin"
-+        .globl  sha_sum_end
-+sha_sum_end:
++++ b/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h
+@@ -0,0 +1,59 @@
++/*
++ * This snippet can be included from a i.MX flash header configuration
++ * file for generating signed images. The necessary keys/certificates
++ * are expected in these config variables:
++ *
++ * CONFIG_HABV4_TABLE_BIN
++ * CONFIG_HABV4_CSF_CRT_PEM
++ * CONFIG_HABV4_IMG_CRT_PEM
++ */
++#if defined(CONFIG_HABV4) && defined(CONFIG_CPU_64)
++hab [Header]
++hab Version = 4.3
++hab Hash Algorithm = sha256
++hab Engine Configuration = 0
++hab Certificate Format = X509
++hab Signature Format = CMS
++hab Engine = CAAM
++
++hab [Install SRK]
++hab File = CONFIG_HABV4_TABLE_BIN
++hab # SRK index within SRK-Table 0..3
++hab Source index = 0
++
++hab [Install CSFK]
++/* target key index in keystore 1 */
++hab File = CONFIG_HABV4_CSF_CRT_PEM
++
++hab [Authenticate CSF]
++
++hab [Unlock]
++hab Engine = CAAM
++hab Features = RNG
++
++hab [Install Key]
++/* verification key index in key store (0, 2...4) */
++hab Verification index = 0
++/* target key index in key store (2...4) */
++hab Target index = 2
++hab File = CONFIG_HABV4_IMG_CRT_PEM
++
++hab [Authenticate Data]
++/* verification key index in key store (2...4) */
++hab Verification index = 2
++
++hab_blocks
++
++hab_encrypt [Install Secret Key]
++hab_encrypt Verification index = 0
++hab_encrypt Target index = 0
++hab_encrypt_key
++hab_encrypt_key_length 256
++hab_encrypt_blob_address
++
++hab_encrypt [Decrypt Data]
++hab_encrypt Verification index = 0
++hab_encrypt Mac Bytes = 16
++
++hab_encrypt_blocks
++#endif
 -- 
 git-series 0.9.1
 
