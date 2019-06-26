@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hgmo9-0005ZB-D4
- for barebox@lists.infradead.org; Fri, 28 Jun 2019 09:04:39 +0000
-Date: Fri, 28 Jun 2019 11:04:30 +0200
+ id 1hg1oa-0005fu-Kd
+ for barebox@lists.infradead.org; Wed, 26 Jun 2019 06:53:58 +0000
+Date: Wed, 26 Jun 2019 08:53:54 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190628090430.jjpxyr6a7skn76ae@pengutronix.de>
-References: <20190619104916.4128-1-antonynpavlov@gmail.com>
- <20190626071202.yvzsac4ysbalixm3@pengutronix.de>
- <20190628113226.fb03528ce02c085c039006f4@gmail.com>
+Message-ID: <20190626065354.26nnnj2drhntespt@pengutronix.de>
+References: <20190621051507.11700-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190628113226.fb03528ce02c085c039006f4@gmail.com>
+In-Reply-To: <20190621051507.11700-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,71 +22,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] sandbox: prevent segfault in tap_alloc()
+Subject: Re: [PATCH] MIPS: reloc: make flush_cache_all() usable
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org, Oleksij Rempel <o.rempel@pengutronix.de>
 
-On Fri, Jun 28, 2019 at 11:32:26AM +0300, Antony Pavlov wrote:
-> On Wed, 26 Jun 2019 09:12:02 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> > Hi Antony,
-> > 
-> > On Wed, Jun 19, 2019 at 01:49:16PM +0300, Antony Pavlov wrote:
-> > > Tap network interface initialization in sandbox
-> > > barebox leads to segfault under Debian Buster/Sid.
-> > > 
-> > > The problem is that strcpy(dev, ifr.ifr_name) inside
-> > > tap_alloc() tries to alter read-only data passed
-> > > by tap_probe() and barebox receives SIGSEGV.
-> > > 
-> > > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > > ---
-> > >  drivers/net/tap.c | 4 ++--
-> > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-> > > index 1fbfa085b1..d7e32f4875 100644
-> > > --- a/drivers/net/tap.c
-> > > +++ b/drivers/net/tap.c
-> > > @@ -14,7 +14,7 @@
-> > >  
-> > >  struct tap_priv {
-> > >  	int fd;
-> > > -	char *name;
-> > > +	char name[128];
-> > >  };
-> > >  
-> > >  static int tap_eth_send(struct eth_device *edev, void *packet, int length)
-> > > @@ -65,7 +65,7 @@ static int tap_probe(struct device_d *dev)
-> > >  	int ret = 0;
-> > >  
-> > >  	priv = xzalloc(sizeof(struct tap_priv));
-> > > -	priv->name = "barebox";
-> > > +	strncpy(priv->name, "barebox", sizeof(priv->name));
-> > >  
-> > >  	priv->fd = tap_alloc(priv->name);
-> > 
-> > Can we change the prototype of tap_alloc() to something like this:
-> > 
-> > int tap_alloc(const char *name, int *fd, char **outname);
-> > 
-> > outname would be an allocated string to be freed by the caller.
-> 
-> There is one problem.
-> tap_alloc works in the sandbox "os domain" (glibc *alloc&free etc),
-> the caller works in the "barebox domain" (barebox *alloc&free).
+Hi Antony,
 
-Oh, I didn't realize this.
-
+On Fri, Jun 21, 2019 at 08:15:07AM +0300, Antony Pavlov wrote:
+> flush_cache_all() uses 'struct cpuinfo_mips current_cpu_data' data fields.
+> These data fields are initialized in r4k_cache_init().
 > 
-> Can we just drop this outname?
-> nobody actually use it at the moment.
+> However in the current implementation the r4k_cache_init() function
+> is called __AFTER__ relocate_code().
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/mips/lib/reloc.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/arch/mips/lib/reloc.c b/arch/mips/lib/reloc.c
+> index 14ba6167dd..6f1cd6d82f 100644
+> --- a/arch/mips/lib/reloc.c
+> +++ b/arch/mips/lib/reloc.c
+> @@ -37,6 +37,7 @@
+>  #include <asm/mipsregs.h>
+>  #include <asm/relocs.h>
+>  #include <asm/sections.h>
+> +#include <asm/cpu-features.h>
+>  #include <linux/sizes.h>
+>  #include <asm-generic/memory_layout.h>
+>  
+> @@ -157,6 +158,17 @@ void relocate_code(void *fdt, u32 fdt_size, u32 ram_size)
+>  		apply_reloc(type, (void *)addr, off);
+>  	}
+>  
+> +	/* clear the BSS first */
+> +	memset(__bss_start, 0x00, bss_len);
+> +
+> +	cpu_probe();
+> +
+> +	if (cpu_has_4k_cache) {
+> +		extern void r4k_cache_init(void);
+> +
+> +		r4k_cache_init();
+> +	}
+> +
+>  	/* Ensure the icache is coherent */
+>  	flush_cache_all();
 
-Yes, let's just drop it.
+Can we initialize one field in current_cpu_data to something nonzero so
+that it goes out of the bss?
+
+Another way would be to pass cpu_probe() a pointer to a struct
+cpuinfo_mips allocated on the stack and then pass it to
+flush_cache_all().
+
+Clearing the bss twice doesn't look very nice.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
