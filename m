@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from m15-112.126.com ([220.181.15.112])
- by bombadil.infradead.org with esmtp (Exim 4.92 #3 (Red Hat Linux))
- id 1hfFnn-00027y-Oi
- for barebox@lists.infradead.org; Mon, 24 Jun 2019 03:37:57 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1hg2Eb-0001br-FA
+ for barebox@lists.infradead.org; Wed, 26 Jun 2019 07:20:50 +0000
+Date: Wed, 26 Jun 2019 09:20:46 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190626072046.g23bh6kjpvgt2yhx@pengutronix.de>
 References: <3bd6cd70.90d9.16b65a8086a.Coremail.zzs213@126.com>
  <20190618074606.iq3i6gb5yazs5bfq@pengutronix.de>
  <af35c2a1-420e-c2a4-0856-c6b667890a5e@126.com>
-From: =?UTF-8?B?5byg5b+g5bGx?= <zzs213@126.com>
-Message-ID: <4c912984-548c-9455-cf86-7260827559fa@126.com>
-Date: Mon, 24 Jun 2019 11:37:50 +0800
 MIME-Version: 1.0
+Content-Disposition: inline
 In-Reply-To: <af35c2a1-420e-c2a4-0856-c6b667890a5e@126.com>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,21 +20,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: bugfix: _barebox_image_size wrong if enable
-To: barebox@lists.infradead.org
+To: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
+Cc: barebox@lists.infradead.org
 
-How about this? Am wrong?
-
--- 
-Best Regards,
-zzs
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVHVlLCBKdW4gMTgsIDIwMTkgYXQgMDY6MTc6NTJQTSArMDgwMCwg5byg5b+g5bGxIHdyb3Rl
+Ogo+ID4gTm8sIGl0IGlzIGNvcnJlY3RlZCBkdXJpbmcgcnVudGltZSBpbiByZWxvY2F0ZV90b19j
+dXJyZW50X2FkcigpLiBJdAo+ID4gc2VlbXMgb2xkZXIgY29tcGlsZXJzIG5lZWQgYSBydW50aW1l
+IHJlbG9jYXRpb24gZml4dXAgZm9yIHRoaXMuCj4gCj4gWWVzLCBpbiByZWxvY2F0ZV90b19jdXJy
+ZW50X2FkcigpIHRoZSBhZGRyZXNzIGFsbCBiZSBmaXhlZCB1cC4KPiAKPiBCdXQgaWYgX2JhcmVi
+b3hfaW1hZ2Vfc2l6ZSwgX19ic3Nfc3RhcnQgYW5kIF9fYnNzX3N0b3AgYWxsIHplcm8uIHRoZQo+
+IGJhcmVib3hfYmFzZSBjYWxjdWxhdGVkIGJ5IGFybV9tZW1fYmFyZWJveF9pbWFnZSgpIHdvdWxk
+IHdyb25nLiBidXQgYmVjYXVzZSBpdAo+IGFsaWduIHRoZSBiYXNlIHRvIDFNLiBTbyBtb3N0bHkg
+aXQgd29ya3MgZmluZS4gSWYgdGhlIGJhcmVib3ggc2l6ZSBsYXJnZXIgdGhhbgo+IDFNLiBJdCBz
+aG91bGQgZmFpbC4KPiAKPiA+Cj4gPiBBRkFJUiB0aGlzIG9ubHkgaGFwcGVuZWQgZm9yIGxpbmtl
+ciB2YXJpYWJsZXMgdGhhdCBwb2ludCB0byBhYnNvbHV0ZQo+ID4gYWRkcmVzc2VzLiBEaWZmZXJl
+bmNlcyBiZXR3ZWVuIGFkZHJlc3NlcyBhbHNvIHdvcmtlZCB3aXRoIHRoZSBvbGRlcgo+ID4gY29t
+cGlsZXJzLCBhbmQgSSB0aGluayB0aGlzIGlzIHdoYXQgeW91ciBwYXRjaCBkb2VzOgo+IAo+IE5v
+LiBteSBwYXRjaCBqdXN0IGZvciBuZXcgdG9vbGNoYWluLiB3aXRoIG9sZCB0b29sY2hhaW4gaXQg
+aGFzIG5vIGVmZmVjdCwKPiBCZWNhdXNlIGFsbCBvZiB0aGUgc2l6ZSBpcyB6ZXJvLgo+IAo+IEJ5
+IHVzaW5nIHRoZSBuZXdlciB0b29sY2hhaW46Cj4gCWFybS1wb2t5LWVhYmktZ2NjIChHQ0MpIDgu
+Mi4wCj4gCUdOVSBsZCAoR05VIEJpbnV0aWxzKSAyLjMxLjEuMjAxODA4MTgKPiAKPiBJbiBiYXJl
+Ym94IGNvbmZpZyBmaWxlOgo+ICAgICAgICAgQ09ORklHX1RFWFRfQkFTRT0weDIzZTAwMDAwCj4g
+ICAgICAgICBDT05GSUdfUkVMT0NBVEFCTEU9eQoKV2l0aCBDT05GSUdfUkVMT0NBVEFCTEUgZW5h
+YmxlZCBURVhUX0JBU0Ugc2hvdWxkIGJlIDB4MCBhbmQgdGhpcyBzaG91bGQKYmUgZW5mb3JjZWQg
+YnkgS2NvbmZpZyBkZXBlbmRlbmNpZXMuIFdoaWNoIGJhcmVib3ggdmVyc2lvbiBhcmUgeW91IG9u
+CmFuZCB3aGljaCBTb0MgYXJlIHlvdSBjb21waWxpbmcgZm9yPwoKU2FzY2hhCgoKLS0gClBlbmd1
+dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8
+IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGls
+ZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJp
+Y2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5
+MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
+L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
