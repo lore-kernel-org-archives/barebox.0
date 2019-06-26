@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hg1dp-00015H-H8
- for barebox@lists.infradead.org; Wed, 26 Jun 2019 06:42:50 +0000
-Date: Wed, 26 Jun 2019 08:42:45 +0200
+ id 1hg1q6-00073q-SZ
+ for barebox@lists.infradead.org; Wed, 26 Jun 2019 06:55:32 +0000
+Date: Wed, 26 Jun 2019 08:55:29 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190626064245.tnwozifd6k7tthhc@pengutronix.de>
-References: <20190619084948.1307-1-m.felsch@pengutronix.de>
+Message-ID: <20190626065529.32slnoi62fnbhqln@pengutronix.de>
+References: <20190621052138.12246-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190619084948.1307-1-m.felsch@pengutronix.de>
+In-Reply-To: <20190621052138.12246-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,20 +22,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] i2c: gpio: fix sda/scl-gpios property support
-To: Marco Felsch <m.felsch@pengutronix.de>
+Subject: Re: [PATCH 0/4] MIPS: misc patches
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jun 19, 2019 at 10:49:48AM +0200, Marco Felsch wrote:
-> Fix checking the correct pins introduced by commit 5a17fc5863 ("i2c: gpio:
-> add sda/scl-gpios property support").
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
->  drivers/i2c/busses/i2c-gpio.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+On Fri, Jun 21, 2019 at 08:21:34AM +0300, Antony Pavlov wrote:
+> Antony Pavlov (4):
+>   MIPS: Kconfig: move ARCH_TEXT_BASE to top mips Kconfig file
+>   Documentation: user manual: update MIPS-specific targets
+>   serial: ar933x: set linux_console_name
+>   MIPS: dts: tplink-mr3020: add missing stdout-path property
 
-Squashed into the original commit, thanks
+Applied, thanks
 
 Sascha
 
