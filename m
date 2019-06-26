@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hg57Y-0005t5-IK
- for barebox@lists.infradead.org; Wed, 26 Jun 2019 10:25:45 +0000
-Message-ID: <a5b42175100fef802b9c1fab9f1df2338857bf4e.camel@pengutronix.de>
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Wed, 26 Jun 2019 12:25:43 +0200
-In-Reply-To: <A90A9CD973E33D419649C1614FE8006F62AEDE03@DEMUC-SMX001.data-modul.local>
+ id 1hg7iz-0000e0-FL
+ for barebox@lists.infradead.org; Wed, 26 Jun 2019 13:12:35 +0000
+From: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+Date: Wed, 26 Jun 2019 13:12:30 +0000
+Message-ID: <78ffa9ad-8012-0167-3f0e-5c8a286b2243@data-modul.com>
 References: <24b0cc8b-93b2-ccf8-9b9d-1d618584958e@data-modul.com>
  <c1496d83a1ba4d4a61d69bf04abe4c6965a235a3.camel@pengutronix.de>
  <A90A9CD973E33D419649C1614FE8006F62AEDE03@DEMUC-SMX001.data-modul.local>
+ <a5b42175100fef802b9c1fab9f1df2338857bf4e.camel@pengutronix.de>
+In-Reply-To: <a5b42175100fef802b9c1fab9f1df2338857bf4e.camel@pengutronix.de>
+Content-Language: de-DE
+Content-ID: <AA10A1ED5F4ABE478356B1AA412D2A75@data-modul.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,50 +22,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: AW: load BL31 on imx8mm and imx8mq
-To: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-> And what is the reason behind decreasing 16 from returning address:
-> 
-> MX8MQ_ATF_BL33_BASE_ADDR - 16
-> 
-> I removed "16" for im8mq in Barebox and still works.
-
-This puts some distance between the stack and your execution address.
-As long as nobody is writing to the stack pointer before increasing it
-you are save and your return address is not overwritte. Your probably
-save anyway since the instructions at the address
-MX8MQ_ATF_BL33_BASE_ADDR are only executed once and don't manipulate
-the stack.
-
-The stack pointer inherently has nothing to do with the return address,
-you just have to make sure that the stack pointer is pointing to a
-valid address, othwise you may get aborts on stack usage.
-
-> The PLAT_NS_IMAGE_OFFSET is identical for imx8mq and imx8mm. Do you
-> have any idea why the firmware is not returned to this address?
-> Do we need to enable any special timer or clock for this point?
-> I used the same firmware as I have used in UBoot, thus the firmware
-> itself should be correct.
-
-It may be a good idea to build the TF-A yourself and enable the debug
-output therein to make sure that TF-A is not missing a crucial setup
-step. The TF-A can be found a 
-https://source.codeaurora.org/external/imx/imx-atf/
-pick one of the release branches, enable the debug console in
-plat/imx/imx8mm/include/platform_def.h and build a Debug build with
-make plat=imx8mm DEBUG=1.
-
-Regards,
-Rouven
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+DQoNCk9uIDYvMjYvMTkgMTI6MjUgUE0sIFJvdXZlbiBDemVyd2luc2tpIHdyb3RlOg0KPj4gQW5k
+IHdoYXQgaXMgdGhlIHJlYXNvbiBiZWhpbmQgZGVjcmVhc2luZyAxNiBmcm9tIHJldHVybmluZyBh
+ZGRyZXNzOg0KPj4NCj4+IE1YOE1RX0FURl9CTDMzX0JBU0VfQUREUiAtIDE2DQo+Pg0KPj4gSSBy
+ZW1vdmVkICIxNiIgZm9yIGltOG1xIGluIEJhcmVib3ggYW5kIHN0aWxsIHdvcmtzLg0KPg0KPiBU
+aGlzIHB1dHMgc29tZSBkaXN0YW5jZSBiZXR3ZWVuIHRoZSBzdGFjayBhbmQgeW91ciBleGVjdXRp
+b24gYWRkcmVzcy4NCj4gQXMgbG9uZyBhcyBub2JvZHkgaXMgd3JpdGluZyB0byB0aGUgc3RhY2sg
+cG9pbnRlciBiZWZvcmUgaW5jcmVhc2luZyBpdA0KPiB5b3UgYXJlIHNhdmUgYW5kIHlvdXIgcmV0
+dXJuIGFkZHJlc3MgaXMgbm90IG92ZXJ3cml0dGUuIFlvdXIgcHJvYmFibHkNCj4gc2F2ZSBhbnl3
+YXkgc2luY2UgdGhlIGluc3RydWN0aW9ucyBhdCB0aGUgYWRkcmVzcw0KPiBNWDhNUV9BVEZfQkwz
+M19CQVNFX0FERFIgYXJlIG9ubHkgZXhlY3V0ZWQgb25jZSBhbmQgZG9uJ3QgbWFuaXB1bGF0ZQ0K
+PiB0aGUgc3RhY2suDQo+DQo+IFRoZSBzdGFjayBwb2ludGVyIGluaGVyZW50bHkgaGFzIG5vdGhp
+bmcgdG8gZG8gd2l0aCB0aGUgcmV0dXJuIGFkZHJlc3MsDQo+IHlvdSBqdXN0IGhhdmUgdG8gbWFr
+ZSBzdXJlIHRoYXQgdGhlIHN0YWNrIHBvaW50ZXIgaXMgcG9pbnRpbmcgdG8gYQ0KPiB2YWxpZCBh
+ZGRyZXNzLCBvdGh3aXNlIHlvdSBtYXkgZ2V0IGFib3J0cyBvbiBzdGFjayB1c2FnZS4NCg0KVGhh
+bmtzIGZvciB0aGUgZXhwbGFuYXRpb24NCj4NCj4+IFRoZSBQTEFUX05TX0lNQUdFX09GRlNFVCBp
+cyBpZGVudGljYWwgZm9yIGlteDhtcSBhbmQgaW14OG1tLiBEbyB5b3UNCj4+IGhhdmUgYW55IGlk
+ZWEgd2h5IHRoZSBmaXJtd2FyZSBpcyBub3QgcmV0dXJuZWQgdG8gdGhpcyBhZGRyZXNzPw0KPj4g
+RG8gd2UgbmVlZCB0byBlbmFibGUgYW55IHNwZWNpYWwgdGltZXIgb3IgY2xvY2sgZm9yIHRoaXMg
+cG9pbnQ/DQo+PiBJIHVzZWQgdGhlIHNhbWUgZmlybXdhcmUgYXMgSSBoYXZlIHVzZWQgaW4gVUJv
+b3QsIHRodXMgdGhlIGZpcm13YXJlDQo+PiBpdHNlbGYgc2hvdWxkIGJlIGNvcnJlY3QuDQo+DQo+
+IEl0IG1heSBiZSBhIGdvb2QgaWRlYSB0byBidWlsZCB0aGUgVEYtQSB5b3Vyc2VsZiBhbmQgZW5h
+YmxlIHRoZSBkZWJ1Zw0KPiBvdXRwdXQgdGhlcmVpbiB0byBtYWtlIHN1cmUgdGhhdCBURi1BIGlz
+IG5vdCBtaXNzaW5nIGEgY3J1Y2lhbCBzZXR1cA0KPiBzdGVwLiBUaGUgVEYtQSBjYW4gYmUgZm91
+bmQgYQ0KPiBodHRwczovL3NvdXJjZS5jb2RlYXVyb3JhLm9yZy9leHRlcm5hbC9pbXgvaW14LWF0
+Zi8NCj4gcGljayBvbmUgb2YgdGhlIHJlbGVhc2UgYnJhbmNoZXMsIGVuYWJsZSB0aGUgZGVidWcg
+Y29uc29sZSBpbg0KPiBwbGF0L2lteC9pbXg4bW0vaW5jbHVkZS9wbGF0Zm9ybV9kZWYuaCBhbmQg
+YnVpbGQgYSBEZWJ1ZyBidWlsZCB3aXRoDQo+IG1ha2UgcGxhdD1pbXg4bW0gREVCVUc9MS4NCg0K
+VGhpcyBoZWxwZWQgbWUgYSBsb3QuIEkgZm91bmQgdGhlIHJlYXNvbi4gQWN0dWFsbHkgdGhlIGZp
+cm13YXJlIGRpZCBub3QgZXhlY3V0ZQ0KdG8gdGhlIGVuZC4gSSBoYWQgdG8gY29uZmlndXJlIEdJ
+QyB0byBzeXNfcGxsMl8xMDBtIGluIHRoZSBmaXJzdCBzdGVwcyBvZiBsb3ctbGV2ZWwuDQoNCkJl
+c3QgcmVnYXJkcywNClJleWhhbmVoDQo+DQo+IFJlZ2FyZHMsDQo+IFJvdXZlbg0KPg0KDQotLQ0K
+UmV5aGFuZWggWWF6ZGFuaQ0KRGF0YSBNb2R1bCBBRyAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICBURUw6ICAgICs0OS04OS01NjAxNy0xNTQNCkVtYmVkZGVkIGRldmVsb3BtZW50ICAgICAgICAg
+ICAgICAgICBGQVg6ICAgICs0OS04OS01NjAxNy0xMTkNCkxpbnV4IC0gRGV2ZWxvcG1lbnQgICAg
+ICAgICAgICAgICAgICAgICAgUkc6IEhSLU11ZW5jaGVuIEItODU1OTENCkxhbmRzYmVyZ2VyIFN0
+ci4gMzIyIEQtODA2ODcgTXVlbmNoZW4gLSBodHRwOi8vd3d3LmRhdGEtbW9kdWwuY29tDQoNClZl
+cnRyYXVsaWNoZSBFLU1haWwgdm9uIC8gQ29uZmlkZW50aWFsIGUtbWFpbCBmcm9tOiBEQVRBIE1P
+RFVMIEFHDQpWb3JzdGFuZCAvIENFTzogRHIuIEZsb3JpYW4gUGVzYWhsDQpWb3JzaXR6ZW5kZSBk
+ZXMgQXVmc2ljaHRzcmF0ZXMgLyBDaGFpcndvbWFuIG9mIHRoZSBTdXBlcnZpc29yeSBCb2FyZDog
+S3Jpc3RpbiBELiBSdXNzZWxsDQpTaXR6IGRlciBHZXNlbGxzY2hhZnQgLyBSZWdpc3RlcmVkIE9m
+ZmljZTogTcO8bmNoZW4NClJlZ2lzdGVyZ2VyaWNodCAvIFJlZ2lzdHJhdGlvbiBDb3VydDogTcO8
+bmNoZW4gSGFuZGVsc3JlZ2lzdGVyIEIgODUgNTkxDQoNCg0KDQpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
+QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9iYXJlYm94Cg==
