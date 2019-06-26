@@ -1,15 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hg1xV-0001Ej-Tu
- for barebox@lists.infradead.org; Wed, 26 Jun 2019 07:03:11 +0000
-Date: Wed, 26 Jun 2019 09:03:08 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190626070308.kyetzg53yrptt4t7@pengutronix.de>
-References: <20190625073146.26639-1-r.czerwinski@pengutronix.de>
+ id 1hg3Zy-0002up-Ro
+ for barebox@lists.infradead.org; Wed, 26 Jun 2019 08:47:00 +0000
+Received: from mail2.data-modul.de (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 760903E0C9
+ for <barebox@lists.infradead.org>; Wed, 26 Jun 2019 10:46:57 +0200 (CEST)
+Received: from mail2.data-modul.de (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6B6B83E0C6
+ for <barebox@lists.infradead.org>; Wed, 26 Jun 2019 10:46:57 +0200 (CEST)
+Received: from mail.data-modul.de (unknown [10.1.1.120])
+ by mail2.data-modul.de (Postfix) with ESMTPS
+ for <barebox@lists.infradead.org>; Wed, 26 Jun 2019 10:46:57 +0200 (CEST)
+From: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+Date: Wed, 26 Jun 2019 08:46:56 +0000
+Message-ID: <24b0cc8b-93b2-ccf8-9b9d-1d618584958e@data-modul.com>
+Content-Language: de-DE
+Content-ID: <61443B0CBF2E1D45941C63BCFF481A4C@data-modul.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190625073146.26639-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,58 +26,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] i.MX: HABv4: use min_t instead of min
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: load BL31 on imx8mm and imx8mq
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Tue, Jun 25, 2019 at 09:31:45AM +0200, Rouven Czerwinski wrote:
-> This fixes a compiler warning because len is size_t and
-> RNG_FAIL_EVENT_SIZE was cast to uint32_t.
-> 
-> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-> ---
->  drivers/hab/habv4.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
-> index 496fbe3ccd..2e3e349b0b 100644
-> --- a/drivers/hab/habv4.c
-> +++ b/drivers/hab/habv4.c
-> @@ -419,7 +419,7 @@ static bool is_known_rng_fail_event(const uint8_t *data, size_t len)
->  	int i;
->  	for (i = 0; i < ARRAY_SIZE(habv4_known_rng_fail_events); i++) {
->  		if (memcmp(data, habv4_known_rng_fail_events[i],
-> -			   min(len, (uint32_t)RNG_FAIL_EVENT_SIZE)) == 0) {
-> +			   min_t(size_t, len, RNG_FAIL_EVENT_SIZE)) == 0) {
->  			return true;
->  		}
->  	}
-> -- 
-> 2.22.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gZXZlcnlvbmUsDQoNCg0KT24gdGhlIHByb2Nlc3Mgb2YgYnJpbmctdXAgaW14OG1tIGJv
+YXJkLCBJIGFtIGF0IHRoZSBwb2ludCB0aGF0IGxvYWQgYmwzMSBhbmQNCmp1bXAgdG8gQVRGLlVw
+b24gZXhpdCBmcm9tIEFURidzIGluaXRpYWxpemF0aW9uIHJvdXRpbmUsIHRoZSBleGVjdXRpb24g
+bGV2ZWwNCnNob3VsZCBiZSBFTDIuDQoNCk15IHF1ZXN0aW9uIGlzIGFib3V0IGlteDhtcV9hdGZf
+bG9hZF9ibDMxIGZ1bmN0aW9uLg0KQWZ0ZXIgY29weSBCTDMxIGludG8gT0NSQU0gYWRkcmVzcywg
+dGhlIGZ1bmN0aW9uIHNldHMgdXAgdGhlIHNwX2VsMiB0bw0KIk1YOE1RX0FURl9CTDMzX0JBU0Vf
+QUREUiAtIDE2Ii4NCg0KQ2FuIGFueW9uZSBleHBsYWluIG1lIHdoeSB0aGlzIGFkZHJlc3M/IEJl
+Y2F1c2UgSSBhbSB1c2luZyB0aGUgc2FtZSBhZGRyZXNzIGZvcg0KaW14OG1tIGFuZCBpdCBzZWVt
+cyBCYXJlYm94IGRvZXMgbm90IHJldHVybiB0byB0aGlzIHBvaW50Lg0KDQpCZXN0LA0KUmV5aGFu
+ZWgNCg0KLS0NClJleWhhbmVoIFlhemRhbmkNCkRhdGEgTW9kdWwgQUcgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgVEVMOiAgICArNDktODktNTYwMTctMTU0DQpFbWJlZGRlZCBkZXZlbG9wbWVu
+dCAgICAgICAgICAgICAgICAgRkFYOiAgICArNDktODktNTYwMTctMTE5DQpMaW51eCAtIERldmVs
+b3BtZW50ICAgICAgICAgICAgICAgICAgICAgIFJHOiBIUi1NdWVuY2hlbiBCLTg1NTkxDQpMYW5k
+c2JlcmdlciBTdHIuIDMyMiBELTgwNjg3IE11ZW5jaGVuIC0gaHR0cDovL3d3dy5kYXRhLW1vZHVs
+LmNvbQ0KDQpWZXJ0cmF1bGljaGUgRS1NYWlsIHZvbiAvIENvbmZpZGVudGlhbCBlLW1haWwgZnJv
+bTogREFUQSBNT0RVTCBBRw0KVm9yc3RhbmQgLyBDRU86IERyLiBGbG9yaWFuIFBlc2FobA0KVm9y
+c2l0emVuZGUgZGVzIEF1ZnNpY2h0c3JhdGVzIC8gQ2hhaXJ3b21hbiBvZiB0aGUgU3VwZXJ2aXNv
+cnkgQm9hcmQ6IEtyaXN0aW4gRC4gUnVzc2VsbA0KU2l0eiBkZXIgR2VzZWxsc2NoYWZ0IC8gUmVn
+aXN0ZXJlZCBPZmZpY2U6IE3DvG5jaGVuDQpSZWdpc3RlcmdlcmljaHQgLyBSZWdpc3RyYXRpb24g
+Q291cnQ6IE3DvG5jaGVuIEhhbmRlbHNyZWdpc3RlciBCIDg1IDU5MQ0KDQoNCg0KX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
+c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
