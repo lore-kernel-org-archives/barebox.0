@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hg4E2-00079f-Op
- for barebox@lists.infradead.org; Wed, 26 Jun 2019 09:28:23 +0000
-Message-ID: <c1496d83a1ba4d4a61d69bf04abe4c6965a235a3.camel@pengutronix.de>
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Wed, 26 Jun 2019 11:28:18 +0200
-In-Reply-To: <24b0cc8b-93b2-ccf8-9b9d-1d618584958e@data-modul.com>
+ id 1hg4aS-0007zq-Dj
+ for barebox@lists.infradead.org; Wed, 26 Jun 2019 09:51:34 +0000
+From: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+Date: Wed, 26 Jun 2019 09:51:28 +0000
+Message-ID: <A90A9CD973E33D419649C1614FE8006F62AEDE03@DEMUC-SMX001.data-modul.local>
 References: <24b0cc8b-93b2-ccf8-9b9d-1d618584958e@data-modul.com>
+ <c1496d83a1ba4d4a61d69bf04abe4c6965a235a3.camel@pengutronix.de>
+In-Reply-To: <c1496d83a1ba4d4a61d69bf04abe4c6965a235a3.camel@pengutronix.de>
+Content-Language: de-DE
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,44 +19,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: load BL31 on imx8mm and imx8mq
-To: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+Subject: AW: load BL31 on imx8mm and imx8mq
+To: 'Rouven Czerwinski' <r.czerwinski@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Wed, 2019-06-26 at 08:46 +0000, Yazdani, Reyhaneh wrote:
-> Hello everyone,
-> 
-> 
-> On the process of bring-up imx8mm board, I am at the point that load
-> bl31 and
-> jump to ATF.Upon exit from ATF's initialization routine, the
-> execution level
-> should be EL2.
-> 
-> My question is about imx8mq_atf_load_bl31 function.
-> After copy BL31 into OCRAM address, the function sets up the sp_el2
-> to
-> "MX8MQ_ATF_BL33_BASE_ADDR - 16".
-> 
-> Can anyone explain me why this address? Because I am using the same
-> address for
-> imx8mm and it seems Barebox does not return to this point.
-
-sp_el2 is the address for the stack pointer in el2. This is done so
-there is a stack pointer setup after returning from TF-A.
-The TF-A return address is compiled into the TF-A and may be different
-for the imx8mm. Looking into the TF-A PLAT_NS_IMAGE_OFFSET is set to
-0x40200000. So execution should continue after TF-A at this address.
-
-Regards,
-Rouven Czerwinski
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhhbmtzIFJvdXZlbi4NCg0KQW5kIHdoYXQgaXMgdGhlIHJlYXNvbiBiZWhpbmQgZGVjcmVhc2lu
+ZyAxNiBmcm9tIHJldHVybmluZyBhZGRyZXNzOg0KDQpNWDhNUV9BVEZfQkwzM19CQVNFX0FERFIg
+LSAxNg0KDQpJIHJlbW92ZWQgIjE2IiBmb3IgaW04bXEgaW4gQmFyZWJveCBhbmQgc3RpbGwgd29y
+a3MuDQoNClRoZSBQTEFUX05TX0lNQUdFX09GRlNFVCBpcyBpZGVudGljYWwgZm9yIGlteDhtcSBh
+bmQgaW14OG1tLiBEbyB5b3UgaGF2ZSBhbnkgaWRlYSB3aHkgdGhlIGZpcm13YXJlIGlzIG5vdCBy
+ZXR1cm5lZCB0byB0aGlzIGFkZHJlc3M/DQpEbyB3ZSBuZWVkIHRvIGVuYWJsZSBhbnkgc3BlY2lh
+bCB0aW1lciBvciBjbG9jayBmb3IgdGhpcyBwb2ludD8NCkkgdXNlZCB0aGUgc2FtZSBmaXJtd2Fy
+ZSBhcyBJIGhhdmUgdXNlZCBpbiBVQm9vdCwgdGh1cyB0aGUgZmlybXdhcmUgaXRzZWxmIHNob3Vs
+ZCBiZSBjb3JyZWN0Lg0KDQpCZXN0LA0KUmV5aGFuZWgNCg0KLS0tLS1VcnNwcsO8bmdsaWNoZSBO
+YWNocmljaHQtLS0tLQ0KVm9uOiBSb3V2ZW4gQ3plcndpbnNraSBbbWFpbHRvOnIuY3plcndpbnNr
+aUBwZW5ndXRyb25peC5kZV0NCkdlc2VuZGV0OiBXZWRuZXNkYXksIEp1bmUgMjYsIDIwMTkgMTE6
+MjggQU0NCkFuOiBZYXpkYW5pLCBSZXloYW5laA0KQ2M6IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
+Lm9yZw0KQmV0cmVmZjogUmU6IGxvYWQgQkwzMSBvbiBpbXg4bW0gYW5kIGlteDhtcQ0KDQpPbiBX
+ZWQsIDIwMTktMDYtMjYgYXQgMDg6NDYgKzAwMDAsIFlhemRhbmksIFJleWhhbmVoIHdyb3RlOg0K
+PiBIZWxsbyBldmVyeW9uZSwNCj4NCj4NCj4gT24gdGhlIHByb2Nlc3Mgb2YgYnJpbmctdXAgaW14
+OG1tIGJvYXJkLCBJIGFtIGF0IHRoZSBwb2ludCB0aGF0IGxvYWQNCj4gYmwzMSBhbmQNCj4ganVt
+cCB0byBBVEYuVXBvbiBleGl0IGZyb20gQVRGJ3MgaW5pdGlhbGl6YXRpb24gcm91dGluZSwgdGhl
+IGV4ZWN1dGlvbg0KPiBsZXZlbCBzaG91bGQgYmUgRUwyLg0KPg0KPiBNeSBxdWVzdGlvbiBpcyBh
+Ym91dCBpbXg4bXFfYXRmX2xvYWRfYmwzMSBmdW5jdGlvbi4NCj4gQWZ0ZXIgY29weSBCTDMxIGlu
+dG8gT0NSQU0gYWRkcmVzcywgdGhlIGZ1bmN0aW9uIHNldHMgdXAgdGhlIHNwX2VsMiB0bw0KPiAi
+TVg4TVFfQVRGX0JMMzNfQkFTRV9BRERSIC0gMTYiLg0KPg0KPiBDYW4gYW55b25lIGV4cGxhaW4g
+bWUgd2h5IHRoaXMgYWRkcmVzcz8gQmVjYXVzZSBJIGFtIHVzaW5nIHRoZSBzYW1lDQo+IGFkZHJl
+c3MgZm9yIGlteDhtbSBhbmQgaXQgc2VlbXMgQmFyZWJveCBkb2VzIG5vdCByZXR1cm4gdG8gdGhp
+cyBwb2ludC4NCg0Kc3BfZWwyIGlzIHRoZSBhZGRyZXNzIGZvciB0aGUgc3RhY2sgcG9pbnRlciBp
+biBlbDIuIFRoaXMgaXMgZG9uZSBzbyB0aGVyZSBpcyBhIHN0YWNrIHBvaW50ZXIgc2V0dXAgYWZ0
+ZXIgcmV0dXJuaW5nIGZyb20gVEYtQS4NClRoZSBURi1BIHJldHVybiBhZGRyZXNzIGlzIGNvbXBp
+bGVkIGludG8gdGhlIFRGLUEgYW5kIG1heSBiZSBkaWZmZXJlbnQgZm9yIHRoZSBpbXg4bW0uIExv
+b2tpbmcgaW50byB0aGUgVEYtQSBQTEFUX05TX0lNQUdFX09GRlNFVCBpcyBzZXQgdG8gMHg0MDIw
+MDAwMC4gU28gZXhlY3V0aW9uIHNob3VsZCBjb250aW51ZSBhZnRlciBURi1BIGF0IHRoaXMgYWRk
+cmVzcy4NCg0KUmVnYXJkcywNClJvdXZlbiBDemVyd2luc2tpDQoNCg0KVmVydHJhdWxpY2hlIEUt
+TWFpbCB2b24gLyBDb25maWRlbnRpYWwgZS1tYWlsIGZyb206IERBVEEgTU9EVUwgQUcNClZvcnN0
+YW5kIC8gQ0VPOiBEci4gRmxvcmlhbiBQZXNhaGwNClZvcnNpdHplbmRlIGRlcyBBdWZzaWNodHNy
+YXRlcyAvIENoYWlyd29tYW4gb2YgdGhlIFN1cGVydmlzb3J5IEJvYXJkOiBLcmlzdGluIEQuIFJ1
+c3NlbGwNClNpdHogZGVyIEdlc2VsbHNjaGFmdCAvIFJlZ2lzdGVyZWQgT2ZmaWNlOiBNw7xuY2hl
+bg0KUmVnaXN0ZXJnZXJpY2h0IC8gUmVnaXN0cmF0aW9uIENvdXJ0OiBNw7xuY2hlbiBIYW5kZWxz
+cmVnaXN0ZXIgQiA4NSA1OTENCg0KDQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
+ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
+b3gK
