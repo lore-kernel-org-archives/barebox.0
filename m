@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hg01P-0005Ng-PS
+ id 1hg01P-0005Ni-UV
  for barebox@lists.infradead.org; Wed, 26 Jun 2019 04:59:05 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Wed, 26 Jun 2019 06:58:46 +0200
-Message-Id: <a91917e722a601f835984958b8b1344806eede84.1561525118.git-series.r.czerwinski@pengutronix.de>
+Date: Wed, 26 Jun 2019 06:58:43 +0200
+Message-Id: <75a410d639c0a5172ce5465076812707dba9fb54.1561525118.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.a507585555be94a0fb8946fdfd851a30ab8b296f.1561525118.git-series.r.czerwinski@pengutronix.de>
 References: <cover.a507585555be94a0fb8946fdfd851a30ab8b296f.1561525118.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,109 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/13] esdhc-pbl: add piggy load function
+Subject: [PATCH 02/13] mach-imx: enable HAB on i.MX8MQ
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Add a function to load and copy the piggy data to the correct offset
-expected by barebox in the RAM. This way the PBL can later verify the
-piggydata before uncompressing and loading the main barebox.
+Enable HAB for i.MX8MQ. Since the status and report functions are now
+implemented, we can safely enable HABV4 for i.MX8MQ.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/mach-imx/include/mach/xload.h |  5 +++-
- arch/arm/mach-imx/xload-common.c       |  6 ++++-
- drivers/mci/imx-esdhc-pbl.c            | 46 +++++++++++++++++++++++++++-
- 3 files changed, 57 insertions(+)
+ arch/arm/mach-imx/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/xload.h b/arch/arm/mach-imx/include/mach/xload.h
-index 8f141bc..a605e76 100644
---- a/arch/arm/mach-imx/include/mach/xload.h
-+++ b/arch/arm/mach-imx/include/mach/xload.h
-@@ -6,7 +6,12 @@ int imx6_spi_load_image(int instance, unsigned int flash_offset, void *buf, int 
- int imx6_spi_start_image(int instance);
- int imx6_esdhc_start_image(int instance);
- int imx8_esdhc_start_image(int instance);
-+int imx8_esdhc_load_piggy(int instance);
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 71d37ce..3cb8820 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -784,10 +784,10 @@ config HABV4
+ 	select HAB
+ 	select NVMEM
+ 	select IMX_OCOTP
+-	depends on ARCH_IMX6
++	depends on ARCH_IMX6 || ARCH_IMX8MQ
+ 	depends on OFDEVICE
+ 	help
+-	  High Assurance Boot, as found on i.MX28/i.MX6.
++	  High Assurance Boot, as found on i.MX28/i.MX6/i.MX8MQ.
  
- int imx_image_size(void);
-+int piggydata_size(void);
-+
-+extern unsigned char input_data[];
-+extern unsigned char input_data_end[];
- 
- #endif /* __MACH_XLOAD_H */
-diff --git a/arch/arm/mach-imx/xload-common.c b/arch/arm/mach-imx/xload-common.c
-index c5727eb..bd64052 100644
---- a/arch/arm/mach-imx/xload-common.c
-+++ b/arch/arm/mach-imx/xload-common.c
-@@ -8,3 +8,9 @@ int imx_image_size(void)
- 	/* i.MX header is 4k */
- 	return barebox_image_size + SZ_4K;
- }
-+
-+int piggydata_size(void)
-+{
-+	return input_data_end - input_data;
-+}
-+
-diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
-index 35faf6d..75593e8 100644
---- a/drivers/mci/imx-esdhc-pbl.c
-+++ b/drivers/mci/imx-esdhc-pbl.c
-@@ -423,6 +423,52 @@ int imx8_esdhc_start_image(int instance)
- 	return esdhc_start_image(&esdhc, MX8MQ_DDR_CSD1_BASE_ADDR,
- 				 MX8MQ_ATF_BL33_BASE_ADDR, SZ_32K);
- }
-+
-+int imx8_esdhc_load_piggy(int instance)
-+{
-+	void *buf = (void *)MX8MQ_ATF_BL33_BASE_ADDR;
-+	struct imx_flash_header_v2 *hdr = NULL;
-+	void *bb = 0;
-+	struct esdhc esdhc;
-+	int ret, len;
-+	int offset = SZ_32K;
-+
-+
-+	switch (instance) {
-+	case 0:
-+		esdhc.regs = IOMEM(MX8MQ_USDHC1_BASE_ADDR);
-+		break;
-+	case 1:
-+		esdhc.regs = IOMEM(MX8MQ_USDHC2_BASE_ADDR);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	esdhc.is_be = 0;
-+	esdhc.is_mx6 = 1;
-+
-+	ret = esdhc_search_header(&esdhc, &hdr, buf, &offset);
-+	if (ret)
-+		return ret;
-+
-+	len = offset + hdr->boot_data.size + piggydata_size();
-+	len = ALIGN(len, SECTOR_SIZE);
-+
-+	ret = esdhc_read_blocks(&esdhc, buf, len);
-+
-+	/*
-+	 * Calculate location of the piggydata at the offset loaded into RAM
-+	 */
-+	buf = buf + offset + hdr->boot_data.size;
-+	/*
-+	 * Barebox expects the piggydata right behind the PBL in the beginning
-+	 * of RAM.
-+	 */
-+	bb = (void *) MX8MQ_DDR_CSD1_BASE_ADDR + barebox_pbl_size;
-+	memcpy(bb, buf, piggydata_size());
-+	return ret;
-+}
- #endif
- 
- #ifdef CONFIG_ARCH_LS1046
+ config HAB_CERTS_ENV
+ 	depends on HAB
 -- 
 git-series 0.9.1
 
