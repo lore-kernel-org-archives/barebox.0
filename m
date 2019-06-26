@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hg58H-00063A-DN
- for barebox@lists.infradead.org; Wed, 26 Jun 2019 10:26:30 +0000
-Date: Wed, 26 Jun 2019 12:26:26 +0200
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190626102626.vd7joceic5oaro7x@pengutronix.de>
+ id 1hg01U-0005QH-0E
+ for barebox@lists.infradead.org; Wed, 26 Jun 2019 04:59:09 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Wed, 26 Jun 2019 06:58:51 +0200
+Message-Id: <a07c0c37128f9f33cee472c963753999e57374c2.1561525118.git-series.r.czerwinski@pengutronix.de>
+In-Reply-To: <cover.a507585555be94a0fb8946fdfd851a30ab8b296f.1561525118.git-series.r.czerwinski@pengutronix.de>
 References: <cover.a507585555be94a0fb8946fdfd851a30ab8b296f.1561525118.git-series.r.czerwinski@pengutronix.de>
- <b204fd526de2fa87a692fda32e42cf7bc0413964.1561525118.git-series.r.czerwinski@pengutronix.de>
- <20190626073114.2ckfwxnueymn75hx@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190626073114.2ckfwxnueymn75hx@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,58 +21,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/13] hab: implement interface for i.MX8MQ
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: [PATCH 10/13] arm: uncompress: verify sha256 if enabled
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-On Wed, Jun 26, 2019 at 09:31:14AM +0200, Sascha Hauer wrote:
-> On Wed, Jun 26, 2019 at 06:58:42AM +0200, Rouven Czerwinski wrote:
-> > The HAB interface for i.MX8MQ only implements the retrieval of status
-> > and events. The SoC status is retrieved using the TF-A SIP API found in
-> > the downstream imx TF-A. After calling into the TF-A the passed data
-> > structures need to be invalidated, since otherwise the cached zero value
-> > is used.
-> > Currently the TF-A report event call only supports FAILURE events.
-> > Testing the TF-A with other event types resulted in a freeze in the
-> > bootrom code, which was not investigated further.
-> > We instead walk the memory containing the events and retrieve the events
-> > ourselves. They are exposed using the same API.
-> > 
-> > Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-> > ---
-> > +{
-> > +	return habv4_get_status(&hab_smc_ops);
-> > +}
-> > +
-> > +static int init_imx8_hab_get_status(void)
-> > +{
-> > +	int ret = 0;
-> > +
-> > +	if (cpu_is_mx8mq())
-> > +		ret = imx8_hab_get_status();
-> > +	else
-> > +		return 0;
-> > +
-> > +	/*
-> > +	 * Nobody will check the return value if there were HAB errors, but the
-> > +	 * initcall will fail spectaculously with a strange error message.
-> > +	 */
-> > +	if (ret == -EPERM)
-> > +		return 0;
-> 
-> Maybe just ignore the return value of imx8_hab_get_status() completely
-> and just add a comment that this is called for error printing only here?
+Add piggydata verification before the ARM uncompress function.
+This calculates the sha256sum of the compressed barebox binary and only
+continues if the builtin sha256sum matches the calculated sha256sum.
 
-This was probably copied from the i.MX6 HAB implementation, feel free to
-change it there too.
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+---
+ arch/arm/cpu/uncompress.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
- - Roland
-
+diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
+index e527165..ce5f2c1 100644
+--- a/arch/arm/cpu/uncompress.c
++++ b/arch/arm/cpu/uncompress.c
+@@ -42,14 +42,18 @@ unsigned long free_mem_end_ptr;
+ extern unsigned char input_data[];
+ extern unsigned char input_data_end[];
+ 
++extern unsigned char sha_sum[];
++extern unsigned char sha_sum_end[];
++
+ void __noreturn barebox_multi_pbl_start(unsigned long membase,
+ 		unsigned long memsize, void *boarddata)
+ {
+-	uint32_t pg_len, uncompressed_len;
++	uint32_t pg_len, uncompressed_len, pbl_hash_len;
+ 	void __noreturn (*barebox)(unsigned long, unsigned long, void *);
+ 	unsigned long endmem = membase + memsize;
+ 	unsigned long barebox_base;
+ 	void *pg_start, *pg_end;
++	void *pbl_hash_start, *pbl_hash_end;
+ 	unsigned long pc = get_pc();
+ 
+ 	pg_start = input_data + global_variable_offset();
+@@ -92,6 +96,18 @@ void __noreturn barebox_multi_pbl_start(unsigned long membase,
+ 	pr_debug("uncompressing barebox binary at 0x%p (size 0x%08x) to 0x%08lx (uncompressed size: 0x%08x)\n",
+ 			pg_start, pg_len, barebox_base, uncompressed_len);
+ 
++	if (IS_ENABLED(CONFIG_PBL_VERIFY_PIGGY)) {
++		pbl_hash_start = sha_sum + global_variable_offset();
++		pbl_hash_end = sha_sum_end + global_variable_offset();
++		pbl_hash_len = pbl_hash_end - pbl_hash_start;
++		if (pbl_barebox_verify(pg_start, pg_len, pbl_hash_start,
++				       pbl_hash_len) != 0) {
++			putc_ll('!');
++			pr_err("hash mismatch, refusing to decompress");
++			panic("hash mismatch, refusing to decompress");
++		}
++	}
++
+ 	pbl_barebox_uncompress((void*)barebox_base, pg_start, pg_len);
+ 
+ 	arm_early_mmu_cache_flush();
 -- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+git-series 0.9.1
 
 _______________________________________________
 barebox mailing list
