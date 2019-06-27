@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from chandra.tablix.org ([2a00:ee2:100:3a01::1])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hg3a4-0002ud-0r
- for barebox@lists.infradead.org; Wed, 26 Jun 2019 08:47:06 +0000
-From: Tomaz Solc <tomaz.solc@tablix.org>
-Date: Wed, 26 Jun 2019 10:46:49 +0200
-Message-Id: <20190626084649.3385-1-tomaz.solc@tablix.org>
+ id 1hgQN5-0002bw-Ne
+ for barebox@lists.infradead.org; Thu, 27 Jun 2019 09:07:13 +0000
+Date: Thu, 27 Jun 2019 11:07:08 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190627090708.yp6f6otwdnzjlrfd@pengutronix.de>
+References: <20190626084649.3385-1-tomaz.solc@tablix.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190626084649.3385-1-tomaz.solc@tablix.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,48 +18,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: rpi: use sdhost for eMMC access on CM3.
-To: barebox@lists.infradead.org
-Cc: Tomaz Solc <tomaz.solc@tablix.org>
+Subject: Re: [PATCH] ARM: rpi: use sdhost for eMMC access on CM3.
+To: Tomaz Solc <tomaz.solc@tablix.org>
+Cc: barebox@lists.infradead.org
 
-This commit removes the fix for the upstream devicetree where eMMC was remapped
-to the sdhci interface. This is no longer needed since sdhost driver is now
-functional in barebox. A similar change was done to the R.Pi 3 devicetree in
-9036d1db.
+On Wed, Jun 26, 2019 at 10:46:49AM +0200, Tomaz Solc wrote:
+> This commit removes the fix for the upstream devicetree where eMMC was remapped
+> to the sdhci interface. This is no longer needed since sdhost driver is now
+> functional in barebox. A similar change was done to the R.Pi 3 devicetree in
+> 9036d1db.
+> 
+> In fact, this remap prevented CM3 from booting if barebox was compiled with
+> CONFIG_MCI_BCM283X_SDHOST (in rpi_defconfig since b093468c). In that case both
+> sdhost and sdhci drivers were active and tried to set their corresponsing alt
+> functions for the same set of GPIOs at the same time.
+> 
+> Signed-off-by: Tomaz Solc <tomaz.solc@tablix.org>
+> ---
+>  arch/arm/dts/bcm2837-rpi-cm3.dts | 7 -------
+>  1 file changed, 7 deletions(-)
 
-In fact, this remap prevented CM3 from booting if barebox was compiled with
-CONFIG_MCI_BCM283X_SDHOST (in rpi_defconfig since b093468c). In that case both
-sdhost and sdhci drivers were active and tried to set their corresponsing alt
-functions for the same set of GPIOs at the same time.
+Applied to master, thanks
 
-Signed-off-by: Tomaz Solc <tomaz.solc@tablix.org>
----
- arch/arm/dts/bcm2837-rpi-cm3.dts | 7 -------
- 1 file changed, 7 deletions(-)
+Sascha
 
-diff --git a/arch/arm/dts/bcm2837-rpi-cm3.dts b/arch/arm/dts/bcm2837-rpi-cm3.dts
-index cfbffe175..01c1f9a67 100644
---- a/arch/arm/dts/bcm2837-rpi-cm3.dts
-+++ b/arch/arm/dts/bcm2837-rpi-cm3.dts
-@@ -9,10 +9,3 @@
- 		reg = <0x0 0x0>;
- 	};
- };
--
--&sdhci {
--	pinctrl-0 = <&emmc_gpio48>;
--	no-sd;
--	non-removable;
--	status = "okay";
--};
+
 -- 
-2.11.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
