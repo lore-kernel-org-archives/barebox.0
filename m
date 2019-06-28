@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.megiteam.pl ([31.186.83.105])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hgswR-0004i9-Ft
- for barebox@lists.infradead.org; Fri, 28 Jun 2019 15:37:36 +0000
+ id 1hgtF5-0004PE-UC
+ for barebox@lists.infradead.org; Fri, 28 Jun 2019 15:56:53 +0000
 From: Marcin Niestroj <m.niestroj@grinn-global.com>
-Date: Fri, 28 Jun 2019 17:37:27 +0200
-Message-Id: <20190628153727.17300-1-m.niestroj@grinn-global.com>
+Date: Fri, 28 Jun 2019 17:56:43 +0200
+Message-Id: <20190628155643.29318-1-m.niestroj@grinn-global.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,76 +19,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mfd: syscon: add syscon_regmap_lookup_by_phandle()
+Subject: [PATCH] serial: ns16550: support reg-offset device-tree property
 To: barebox@lists.infradead.org
 Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
 
-This function is handy when syscon is passed as phandle to device_node
-property.
+Some SoC have serial registers shifted by fixed offset. Support them by
+respecting 'reg-offset' device-tree property.
 
 Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
 ---
- drivers/mfd/syscon.c | 19 +++++++++++++++++++
- include/mfd/syscon.h |  9 +++++++++
- 2 files changed, 28 insertions(+)
+ drivers/serial/serial_ns16550.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index b1ff1b1ea..809941937 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -174,6 +174,25 @@ struct regmap *syscon_regmap_lookup_by_compatible(const char *s)
- 	return regmap;
- }
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index 4c84d27bd..3edeb0dcb 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -314,12 +314,15 @@ static int ns16550_tstc(struct console_device *cdev)
+ static void ns16550_probe_dt(struct device_d *dev, struct ns16550_priv *priv)
+ {
+ 	struct device_node *np = dev->device_node;
++	u32 offset;
+ 	u32 width = 1;
  
-+struct regmap *syscon_regmap_lookup_by_phandle(struct device_node *np,
-+					const char *property)
-+{
-+	struct device_node *syscon_np;
-+	struct regmap *regmap;
-+
-+	if (property)
-+		syscon_np = of_parse_phandle(np, property, 0);
-+	else
-+		syscon_np = np;
-+
-+	if (!syscon_np)
-+		return ERR_PTR(-ENODEV);
-+
-+	regmap = syscon_node_to_regmap(syscon_np);
-+
-+	return regmap;
-+}
-+
- static int syscon_probe(struct device_d *dev)
- {
- 	struct syscon *syscon;
-diff --git a/include/mfd/syscon.h b/include/mfd/syscon.h
-index 902f9fa2f..ac33f2d34 100644
---- a/include/mfd/syscon.h
-+++ b/include/mfd/syscon.h
-@@ -22,6 +22,9 @@ void __iomem *syscon_base_lookup_by_phandle
- 	(struct device_node *np, const char *property);
- struct regmap *syscon_node_to_regmap(struct device_node *np);
- struct regmap *syscon_regmap_lookup_by_compatible(const char *s);
-+extern struct regmap *syscon_regmap_lookup_by_phandle(
-+					struct device_node *np,
-+					const char *property);
- #else
- static inline void __iomem *syscon_base_lookup_by_pdevname(const char *s)
- {
-@@ -42,6 +45,12 @@ static inline struct regmap *syscon_regmap_lookup_by_compatible(const char *s)
- {
- 	return ERR_PTR(-ENOSYS);
- }
-+static inline struct regmap *syscon_regmap_lookup_by_phandle(
-+					struct device_node *np,
-+					const char *property)
-+{
-+	return ERR_PTR(-ENOSYS);
-+}
- #endif
+ 	if (!IS_ENABLED(CONFIG_OFDEVICE))
+ 		return;
  
- #endif
+ 	of_property_read_u32(np, "clock-frequency", &priv->plat.clock);
++	if (of_property_read_u32(np, "reg-offset", &offset) == 0)
++		priv->mmiobase += offset;
+ 	of_property_read_u32(np, "reg-shift", &priv->plat.shift);
+ 	of_property_read_u32(np, "reg-io-width", &width);
+ 	switch (width) {
 -- 
 2.21.0
 
