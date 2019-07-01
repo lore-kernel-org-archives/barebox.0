@@ -1,17 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conssluserg-03.nifty.com ([210.131.2.82])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hhqwh-0003V6-HX
- for barebox@lists.infradead.org; Mon, 01 Jul 2019 07:41:53 +0000
-Date: Mon, 1 Jul 2019 09:41:47 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190701074147.uzvalbnop5fbqnhw@pengutronix.de>
-References: <20190621051507.11700-1-antonynpavlov@gmail.com>
- <20190626065354.26nnnj2drhntespt@pengutronix.de>
- <20190628113545.9e490df487bea08fcd33df2b@gmail.com>
+ id 1hhvdA-00042r-36
+ for barebox@lists.infradead.org; Mon, 01 Jul 2019 12:42:02 +0000
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com
+ [209.85.222.47]) (authenticated)
+ by conssluserg-03.nifty.com with ESMTP id x61CfjTi015534
+ for <barebox@lists.infradead.org>; Mon, 1 Jul 2019 21:41:46 +0900
+Received: by mail-ua1-f47.google.com with SMTP id j2so5003346uaq.5
+ for <barebox@lists.infradead.org>; Mon, 01 Jul 2019 05:41:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190628113545.9e490df487bea08fcd33df2b@gmail.com>
+References: <20190620082509.20605-1-antonynpavlov@gmail.com>
+ <20190620085421.GA26493@ravnborg.org>
+ <20190620142945.mxvvrslfz6vp2wkn@pengutronix.de>
+In-Reply-To: <20190620142945.mxvvrslfz6vp2wkn@pengutronix.de>
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Mon, 1 Jul 2019 21:41:08 +0900
+Message-ID: <CAK7LNAR9LWpOyqu35c9__jdx5t0vQL2Hj3XbPXbGSCfdnmtptg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,93 +29,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: reloc: make flush_cache_all() usable
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH v2] treewide: remove CONFIG_DEBUG_INFO from defconfigs
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>, Sam Ravnborg <sam@ravnborg.org>, Oleksij Rempel <o.rempel@pengutronix.de>
 
-On Fri, Jun 28, 2019 at 11:35:45AM +0300, Antony Pavlov wrote:
-> On Wed, 26 Jun 2019 08:53:54 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> > Hi Antony,
-> > 
-> > On Fri, Jun 21, 2019 at 08:15:07AM +0300, Antony Pavlov wrote:
-> > > flush_cache_all() uses 'struct cpuinfo_mips current_cpu_data' data fields.
-> > > These data fields are initialized in r4k_cache_init().
-> > > 
-> > > However in the current implementation the r4k_cache_init() function
-> > > is called __AFTER__ relocate_code().
-> > > 
-> > > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > > ---
-> > >  arch/mips/lib/reloc.c | 12 ++++++++++++
-> > >  1 file changed, 12 insertions(+)
-> > > 
-> > > diff --git a/arch/mips/lib/reloc.c b/arch/mips/lib/reloc.c
-> > > index 14ba6167dd..6f1cd6d82f 100644
-> > > --- a/arch/mips/lib/reloc.c
-> > > +++ b/arch/mips/lib/reloc.c
-> > > @@ -37,6 +37,7 @@
-> > >  #include <asm/mipsregs.h>
-> > >  #include <asm/relocs.h>
-> > >  #include <asm/sections.h>
-> > > +#include <asm/cpu-features.h>
-> > >  #include <linux/sizes.h>
-> > >  #include <asm-generic/memory_layout.h>
-> > >  
-> > > @@ -157,6 +158,17 @@ void relocate_code(void *fdt, u32 fdt_size, u32 ram_size)
-> > >  		apply_reloc(type, (void *)addr, off);
-> > >  	}
-> > >  
-> > > +	/* clear the BSS first */
-> > > +	memset(__bss_start, 0x00, bss_len);
-> > > +
-> > > +	cpu_probe();
-> > > +
-> > > +	if (cpu_has_4k_cache) {
-> > > +		extern void r4k_cache_init(void);
-> > > +
-> > > +		r4k_cache_init();
-> > > +	}
-> > > +
-> > >  	/* Ensure the icache is coherent */
-> > >  	flush_cache_all();
-> > 
-> > Can we initialize one field in current_cpu_data to something nonzero so
-> > that it goes out of the bss?
-> 
-> Or clear only current_cpu_data and keep it in bss?
+On Thu, Jun 20, 2019 at 11:30 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>
+> On Thu, Jun 20, 2019 at 10:54:21AM +0200, Sam Ravnborg wrote:
+> > Hi Antony
+> >
+> > On Thu, Jun 20, 2019 at 11:25:09AM +0300, Antony Pavlov wrote:
+> > > The commit b917f7864115a35 ("remove CONFIG_DEBUG_INFO")
+> > > has dropped Kconfig DEBUG_INFO option however we
+> > > still have very many DEBUG_INFO mentions in defconfig
+> > > files. Drop them using sed:
+> > >
+> > >   find -iname '*defconfig' -type f -exec \
+> > >       sed -i "/CONFIG_DEBUG_INFO=y/d" {} ';'
+> > Another approach could be to regenerate all defconfigs.
+> > A little scripting around savedefconfig should do it.
+> >
+> > Then we would get rid of all obsolete symbols in one go - for all
+> > defconfigs.
+> >
+> > The generated defconfig would be the one that people would be using
+> > anyway, so there should be only a little risk to introduce new issues
+> > doing it this way.
+> >
+> > Willing to try this approcah - maybe across all architectures?
+>
+> I once thought the same and came up with this little thing:
+>
+> #!/bin/bash
+>
+> for a in arch/*; do
+>         arch=$(basename $a)
+>         for c in $a/configs/*; do
+>                 config=$(basename $c)
+>                 export ARCH=$arch
+>                 make $config && make savedefconfig && mv defconfig $c
+>         done
+> done
+>
+> Just tested, still works. Maybe I should just run this from time to time
+> and commit the result. What do you think?
 
-That would at least make it clear why this is done.
 
-That's important because otherwise some day somebody sends a patch
-"mips: remove duplicate clearing of bss" and I might apply it because
-it looks correct ;)
+U-Boot does this every release.
 
-There might be one problem with putting current_cpu_data into bss. I
-don't know much about MIPS booting, but in case the initial image is
-located in some potentially small SRAM then putting current_cpu_data
-into bss means that the SRAM has to be big enough for initial image and
-bss.
+Linux does not do this much,
+but it depends on the arch maintainer.
+(I sometimes saw this re-sync for arm64)
 
-> 
-> > Another way would be to pass cpu_probe() a pointer to a struct
-> > cpuinfo_mips allocated on the stack and then pass it to
-> > flush_cache_all().
-> > 
-> > Clearing the bss twice doesn't look very nice.
-> 
-> It's two diffrent bss segments: one before relocation and one after relocation.
+Personally, I do not want to see savedefconfig much.
+Even without sorting, "make defconfig" still produces
+the same .config file.
+It is a boundary of "clean-up" and "just a noise commit".
 
-Yes, I know, otherwise you could just drop the second bss clearing.
+In summary, it is up to you since you are the maintainer.
 
-Sascha
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards
+Masahiro Yamada
 
 _______________________________________________
 barebox mailing list
