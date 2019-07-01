@@ -1,22 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conssluserg-03.nifty.com ([210.131.2.82])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hhvdA-00042r-36
- for barebox@lists.infradead.org; Mon, 01 Jul 2019 12:42:02 +0000
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com
- [209.85.222.47]) (authenticated)
- by conssluserg-03.nifty.com with ESMTP id x61CfjTi015534
- for <barebox@lists.infradead.org>; Mon, 1 Jul 2019 21:41:46 +0900
-Received: by mail-ua1-f47.google.com with SMTP id j2so5003346uaq.5
- for <barebox@lists.infradead.org>; Mon, 01 Jul 2019 05:41:45 -0700 (PDT)
+ id 1hhpep-0001XO-W9
+ for barebox@lists.infradead.org; Mon, 01 Jul 2019 06:19:21 +0000
+Message-ID: <a833d9b85f9449df778aec4e990a284379190993.camel@pengutronix.de>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Mon, 01 Jul 2019 08:19:13 +0200
+In-Reply-To: <20190626075205.k5kkwumyougusmaz@pengutronix.de>
+References: <cover.a507585555be94a0fb8946fdfd851a30ab8b296f.1561525118.git-series.r.czerwinski@pengutronix.de>
+ <a07c0c37128f9f33cee472c963753999e57374c2.1561525118.git-series.r.czerwinski@pengutronix.de>
+ <20190626075205.k5kkwumyougusmaz@pengutronix.de>
 MIME-Version: 1.0
-References: <20190620082509.20605-1-antonynpavlov@gmail.com>
- <20190620085421.GA26493@ravnborg.org>
- <20190620142945.mxvvrslfz6vp2wkn@pengutronix.de>
-In-Reply-To: <20190620142945.mxvvrslfz6vp2wkn@pengutronix.de>
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Mon, 1 Jul 2019 21:41:08 +0900
-Message-ID: <CAK7LNAR9LWpOyqu35c9__jdx5t0vQL2Hj3XbPXbGSCfdnmtptg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,69 +23,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] treewide: remove CONFIG_DEBUG_INFO from defconfigs
+Subject: Re: [PATCH 10/13] arm: uncompress: verify sha256 if enabled
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>, Sam Ravnborg <sam@ravnborg.org>, Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Thu, Jun 20, 2019 at 11:30 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Thu, Jun 20, 2019 at 10:54:21AM +0200, Sam Ravnborg wrote:
-> > Hi Antony
-> >
-> > On Thu, Jun 20, 2019 at 11:25:09AM +0300, Antony Pavlov wrote:
-> > > The commit b917f7864115a35 ("remove CONFIG_DEBUG_INFO")
-> > > has dropped Kconfig DEBUG_INFO option however we
-> > > still have very many DEBUG_INFO mentions in defconfig
-> > > files. Drop them using sed:
-> > >
-> > >   find -iname '*defconfig' -type f -exec \
-> > >       sed -i "/CONFIG_DEBUG_INFO=y/d" {} ';'
-> > Another approach could be to regenerate all defconfigs.
-> > A little scripting around savedefconfig should do it.
-> >
-> > Then we would get rid of all obsolete symbols in one go - for all
-> > defconfigs.
-> >
-> > The generated defconfig would be the one that people would be using
-> > anyway, so there should be only a little risk to introduce new issues
-> > doing it this way.
-> >
-> > Willing to try this approcah - maybe across all architectures?
->
-> I once thought the same and came up with this little thing:
->
-> #!/bin/bash
->
-> for a in arch/*; do
->         arch=$(basename $a)
->         for c in $a/configs/*; do
->                 config=$(basename $c)
->                 export ARCH=$arch
->                 make $config && make savedefconfig && mv defconfig $c
->         done
-> done
->
-> Just tested, still works. Maybe I should just run this from time to time
-> and commit the result. What do you think?
+On Wed, 2019-06-26 at 09:52 +0200, Sascha Hauer wrote:
+> On Wed, Jun 26, 2019 at 06:58:51AM +0200, Rouven Czerwinski wrote:
+> > Add piggydata verification before the ARM uncompress function.
+> > This calculates the sha256sum of the compressed barebox binary and
+> > only
+> > continues if the builtin sha256sum matches the calculated
+> > sha256sum.
+> > 
+> > Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> > ---
+> >  arch/arm/cpu/uncompress.c | 18 +++++++++++++++++-
+> >  1 file changed, 17 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
+> > index e527165..ce5f2c1 100644
+> > --- a/arch/arm/cpu/uncompress.c
+> > +++ b/arch/arm/cpu/uncompress.c
+> > @@ -42,14 +42,18 @@ unsigned long free_mem_end_ptr;
+> >  extern unsigned char input_data[];
+> >  extern unsigned char input_data_end[];
+> >  
+> > +extern unsigned char sha_sum[];
+> > +extern unsigned char sha_sum_end[];
+> > +
+> >  void __noreturn barebox_multi_pbl_start(unsigned long membase,
+> >  		unsigned long memsize, void *boarddata)
+> >  {
+> > -	uint32_t pg_len, uncompressed_len;
+> > +	uint32_t pg_len, uncompressed_len, pbl_hash_len;
+> >  	void __noreturn (*barebox)(unsigned long, unsigned long, void
+> > *);
+> >  	unsigned long endmem = membase + memsize;
+> >  	unsigned long barebox_base;
+> >  	void *pg_start, *pg_end;
+> > +	void *pbl_hash_start, *pbl_hash_end;
+> >  	unsigned long pc = get_pc();
+> >  
+> >  	pg_start = input_data + global_variable_offset();
+> > @@ -92,6 +96,18 @@ void __noreturn barebox_multi_pbl_start(unsigned
+> > long membase,
+> >  	pr_debug("uncompressing barebox binary at 0x%p (size 0x%08x) to
+> > 0x%08lx (uncompressed size: 0x%08x)\n",
+> >  			pg_start, pg_len, barebox_base,
+> > uncompressed_len);
+> >  
+> > +	if (IS_ENABLED(CONFIG_PBL_VERIFY_PIGGY)) {
+> > +		pbl_hash_start = sha_sum + global_variable_offset();
+> > +		pbl_hash_end = sha_sum_end + global_variable_offset();
+> > +		pbl_hash_len = pbl_hash_end - pbl_hash_start;
+> > +		if (pbl_barebox_verify(pg_start, pg_len,
+> > pbl_hash_start,
+> > +				       pbl_hash_len) != 0) {
+> > +			putc_ll('!');
+> > +			pr_err("hash mismatch, refusing to
+> > decompress");
+> > +			panic("hash mismatch, refusing to decompress");
+> 
+> Isn't printing the string in panic() enough?
 
+Unfortunately not, pbl/misc.c defines panic as:
 
-U-Boot does this every release.
+void __noreturn panic(const char *fmt, ...)
+{
+	while(1);
+}
 
-Linux does not do this much,
-but it depends on the arch maintainer.
-(I sometimes saw this re-sync for arm64)
-
-Personally, I do not want to see savedefconfig much.
-Even without sorting, "make defconfig" still produces
-the same .config file.
-It is a boundary of "clean-up" and "just a noise commit".
-
-In summary, it is up to you since you are the maintainer.
-
-
+Rouven Czerwinski
 -- 
-Best Regards
-Masahiro Yamada
+Pengutronix e.K.                           |            		 |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 _______________________________________________
 barebox mailing list
