@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hiC85-0003Uf-Ay
- for barebox@lists.infradead.org; Tue, 02 Jul 2019 06:19:02 +0000
-Date: Tue, 2 Jul 2019 08:18:59 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190702061859.erfxd7zzvwwu2bba@pengutronix.de>
-References: <20190630111646.14992-1-gwenj@trabucayre.com>
+ id 1hhqzi-00048D-0W
+ for barebox@lists.infradead.org; Mon, 01 Jul 2019 07:44:59 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Mon,  1 Jul 2019 09:44:53 +0200
+Message-Id: <20190701074453.19760-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190630111646.14992-1-gwenj@trabucayre.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,33 +19,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] ARM: socfpga: terasic-de0-nano-soc: update handoff
- files to 18.1
-To: Gwenhael Goavec-Merou <gwenj@trabucayre.com>
-Cc: barebox@lists.infradead.org, Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
+Subject: [PATCH] mips: reloc: remove outdated comment
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-On Sun, Jun 30, 2019 at 01:16:44PM +0200, Gwenhael Goavec-Merou wrote:
-> From: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
-> 
-> xload on de0nanosoc stop to boot after:
-> SDRAM setup...
-> SDRAM calibration...
-> 
-> This patch fix SDRAM configuration and updates handoff to quartus2 18.1
-> 
-> Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
-> ---
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ arch/mips/lib/reloc.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-Applied, thanks
-
-Sascha
-
-
+diff --git a/arch/mips/lib/reloc.c b/arch/mips/lib/reloc.c
+index 9756d61666..49bf2ef2b7 100644
+--- a/arch/mips/lib/reloc.c
++++ b/arch/mips/lib/reloc.c
+@@ -108,17 +108,6 @@ static void apply_reloc(unsigned int type, void *addr, long off)
+ 	}
+ }
+ 
+-/**
+- * relocate_code() - Relocate Barebox, generally from flash to DDR
+- * @start_addr_sp: new stack pointer
+- * @new_gd: pointer to relocated global data
+- * @relocaddr: the address to relocate to
+- *
+- * Relocate Barebox from its current location (generally in flash) to a new one
+- * (generally in DDR). This function will copy the Barebox binary & apply
+- * relocations as necessary, then jump to board_init_r in the new build of
+- * Barebox. As such, this function does not return.
+- */
+ void relocate_code(void *fdt, u32 fdt_size, u32 ram_size)
+ {
+ 	unsigned long addr, length, bss_len;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
