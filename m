@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
+Received: from mail-lj1-x242.google.com ([2a00:1450:4864:20::242])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hiFa8-0000ce-TG
+ id 1hiFa9-0000cf-D2
  for barebox@lists.infradead.org; Tue, 02 Jul 2019 10:00:14 +0000
-Received: by mail-lj1-x244.google.com with SMTP id v18so16228109ljh.6
+Received: by mail-lj1-x242.google.com with SMTP id r9so16244520ljg.5
  for <barebox@lists.infradead.org>; Tue, 02 Jul 2019 03:00:11 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue,  2 Jul 2019 13:00:00 +0300
-Message-Id: <20190702100001.28530-3-antonynpavlov@gmail.com>
+Date: Tue,  2 Jul 2019 13:00:01 +0300
+Message-Id: <20190702100001.28530-4-antonynpavlov@gmail.com>
 In-Reply-To: <20190702100001.28530-1-antonynpavlov@gmail.com>
 References: <20190702100001.28530-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
@@ -19,26 +19,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] =?utf8?q?sandbox:=20eliminale=20no=20previous=20proto?=
- =?utf8?q?type=20for=20=E2=80=98sandbox=5Fadd=5Fdevice=E2=80=99=20warning?=
+Subject: [PATCH 3/3] sandbox: drop blank lines at EOF
 To: barebox@lists.infradead.org
 
-VGhlIHBhdGNoIGZpeGVzIHRoZSBmb2xsb3dpbmcgZ2NjLTguMy4wIHdhcm5pbmc6CgphcmNoL3Nh
-bmRib3gvYm9hcmQvZGV2aWNlcy5jOjEzOjU6IHdhcm5pbmc6IG5vIHByZXZpb3VzIHByb3RvdHlw
-ZSBmb3Ig4oCYc2FuZGJveF9hZGRfZGV2aWNl4oCZIFstV21pc3NpbmctcHJvdG90eXBlc10KIGlu
-dCBzYW5kYm94X2FkZF9kZXZpY2Uoc3RydWN0IGRldmljZV9kICpkZXYpCiAgICAgXn5+fn5+fn5+
-fn5+fn5+fn5+CgpTaWduZWQtb2ZmLWJ5OiBBbnRvbnkgUGF2bG92IDxhbnRvbnlucGF2bG92QGdt
-YWlsLmNvbT4KLS0tCiBhcmNoL3NhbmRib3gvYm9hcmQvZGV2aWNlcy5jIHwgMSArCiAxIGZpbGUg
-Y2hhbmdlZCwgMSBpbnNlcnRpb24oKykKCmRpZmYgLS1naXQgYS9hcmNoL3NhbmRib3gvYm9hcmQv
-ZGV2aWNlcy5jIGIvYXJjaC9zYW5kYm94L2JvYXJkL2RldmljZXMuYwppbmRleCAxMGQ2YjY3Y2M0
-Li4yNDJhMGQ3MThlIDEwMDY0NAotLS0gYS9hcmNoL3NhbmRib3gvYm9hcmQvZGV2aWNlcy5jCisr
-KyBiL2FyY2gvc2FuZGJveC9ib2FyZC9kZXZpY2VzLmMKQEAgLTYsNiArNiw3IEBACiAKICNpbmNs
-dWRlIDxjb21tb24uaD4KICNpbmNsdWRlIDxkcml2ZXIuaD4KKyNpbmNsdWRlIDxtYWNoL2xpbnV4
-Lmg+CiAjaW5jbHVkZSA8aW5pdC5oPgogCiBzdGF0aWMgTElTVF9IRUFEKHNhbmRib3hfZGV2aWNl
-X2xpc3QpOwotLSAKMi4yMC4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
-b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/sandbox/board/board.c   | 1 -
+ arch/sandbox/board/console.c | 1 -
+ 2 files changed, 2 deletions(-)
+
+diff --git a/arch/sandbox/board/board.c b/arch/sandbox/board/board.c
+index dcad3c249b..1f6392d15e 100644
+--- a/arch/sandbox/board/board.c
++++ b/arch/sandbox/board/board.c
+@@ -58,4 +58,3 @@ static int devices_init(void)
+ }
+ 
+ device_initcall(devices_init);
+-
+diff --git a/arch/sandbox/board/console.c b/arch/sandbox/board/console.c
+index 006bbd1a6e..4b251e9087 100644
+--- a/arch/sandbox/board/console.c
++++ b/arch/sandbox/board/console.c
+@@ -40,4 +40,3 @@ int barebox_register_console(int stdinfd, int stdoutfd)
+ 
+ 	return sandbox_add_device(dev);
+ }
+-
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
