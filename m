@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hkmA5-0006ax-In
- for barebox@lists.infradead.org; Tue, 09 Jul 2019 09:11:47 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  9 Jul 2019 11:11:31 +0200
-Message-Id: <20190709091131.12298-2-s.hauer@pengutronix.de>
-In-Reply-To: <20190709091131.12298-1-s.hauer@pengutronix.de>
-References: <20190709091131.12298-1-s.hauer@pengutronix.de>
-MIME-Version: 1.0
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.92 #3 (Red Hat Linux))
+ id 1hiI2e-0007q9-8j
+ for barebox@lists.infradead.org; Tue, 02 Jul 2019 12:37:50 +0000
+From: Stefan Riedmueller <s.riedmueller@phytec.de>
+Date: Tue, 2 Jul 2019 14:37:38 +0200
+Message-Id: <1562071065-367410-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,102 +14,253 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] pstore: remove unused code
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/8] ARM: phytec-som-imx6: Add low cost variant for imx6dl
+ phycore
+To: barebox@lists.infradead.org
 
-pstore_info->write() is unused, remove the code implementing it.
+The phyCORE-i.MX 6Solo/DualLight is available with low-cost and
+full-featured phyBOARD-Mira. One crucial difference is the supported
+max. ethernet speed. On the full-featured Mira it is 1000 MBit/s but on
+the low-cost Mira it is only 100 MBit/s. To cover this difference two
+different images are necessary for low-cost and full-featured. Thus a
+low-cost variant is added for the phyCORE-i.MX 6Solo with NAND and the
+phyCORE-i.MX 6 DualLight with eMMC.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 ---
- fs/pstore/platform.c   | 10 ----------
- fs/pstore/ram.c        | 17 -----------------
- include/linux/pstore.h |  2 --
- 3 files changed, 29 deletions(-)
+ arch/arm/boards/phytec-som-imx6/lowlevel.c         |  2 +
+ arch/arm/dts/Makefile                              |  2 +
+ arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts    |  2 +-
+ arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts | 65 ++++++++++++++++++++++
+ arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts | 57 +++++++++++++++++++
+ arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts    |  2 +-
+ images/Makefile.imx                                | 10 ++++
+ 7 files changed, 138 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts
+ create mode 100644 arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts
 
-diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
-index aafa5559dc..0a6fa38edc 100644
---- a/fs/pstore/platform.c
-+++ b/fs/pstore/platform.c
-@@ -79,14 +79,6 @@ static void pstore_console_capture_log(void)
- 	}
- }
+diff --git a/arch/arm/boards/phytec-som-imx6/lowlevel.c b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+index 915534ea9455..0f8d591b3a71 100644
+--- a/arch/arm/boards/phytec-som-imx6/lowlevel.c
++++ b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+@@ -109,8 +109,10 @@ PHYTEC_ENTRY(start_phytec_phyboard_subra_512mb_1bank, imx6dl_phytec_phyboard_sub
+ PHYTEC_ENTRY(start_phytec_phyboard_subra_1gib_1bank, imx6q_phytec_phyboard_subra, SZ_1G, false);
  
--static int pstore_write_compat(struct pstore_record *record)
--{
--	return record->psi->write_buf(record->type, record->reason,
--				      &record->id, record->part,
--				      psinfo->buf, record->compressed,
--				      record->size, record->psi);
--}
--
- /*
-  * platform specific persistent storage driver registers with
-  * us here. If pstore is already mounted, call the platform
-@@ -107,8 +99,6 @@ int pstore_register(struct pstore_info *psi)
- 		return -EBUSY;
- 	}
+ PHYTEC_ENTRY(start_phytec_phycore_imx6dl_som_nand_256mb, imx6dl_phytec_phycore_som_nand, SZ_256M, true);
++PHYTEC_ENTRY(start_phytec_phycore_imx6dl_som_lc_nand_256mb, imx6dl_phytec_phycore_som_lc_nand, SZ_256M, true);
+ PHYTEC_ENTRY(start_phytec_phycore_imx6dl_som_nand_1gib, imx6dl_phytec_phycore_som_nand, SZ_1G, true);
+ PHYTEC_ENTRY(start_phytec_phycore_imx6dl_som_emmc_1gib, imx6dl_phytec_phycore_som_emmc, SZ_1G, true);
++PHYTEC_ENTRY(start_phytec_phycore_imx6dl_som_lc_emmc_1gib, imx6dl_phytec_phycore_som_lc_emmc, SZ_1G, true);
+ PHYTEC_ENTRY(start_phytec_phycore_imx6q_som_nand_1gib, imx6q_phytec_phycore_som_nand, SZ_1G, true);
+ PHYTEC_ENTRY(start_phytec_phycore_imx6qp_som_nand_1gib, imx6qp_phytec_phycore_som_nand, SZ_1G, true);
+ PHYTEC_ENTRY(start_phytec_phycore_imx6q_som_emmc_1gib, imx6q_phytec_phycore_som_emmc, SZ_1G, true);
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 561653930b20..2a2d7a55b820 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -63,7 +63,9 @@ pbl-dtb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += imx6q-phytec-pbaa03.dtb.o \
+ 				imx6q-phytec-phycore-som-emmc.dtb.o \
+ 				imx6qp-phytec-phycore-som-nand.dtb.o \
+ 				imx6dl-phytec-phycore-som-nand.dtb.o \
++				imx6dl-phytec-phycore-som-lc-nand.dtb.o \
+ 				imx6dl-phytec-phycore-som-emmc.dtb.o \
++				imx6dl-phytec-phycore-som-lc-emmc.dtb.o \
+ 				imx6ul-phytec-phycore-som.dtb.o \
+ 				imx6ull-phytec-phycore-som-lc.dtb.o \
+ 				imx6ull-phytec-phycore-som.dtb.o
+diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
+index e602b77e9940..a04e37f80363 100644
+--- a/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
++++ b/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
+@@ -30,7 +30,7 @@
+ };
  
--	if (!psi->write)
--		psi->write = pstore_write_compat;
- 	psinfo = psi;
- 	mutex_init(&psinfo->read_mutex);
- 	spin_unlock(&pstore_lock);
-diff --git a/fs/pstore/ram.c b/fs/pstore/ram.c
-index 734d0c3c1d..86049f989e 100644
---- a/fs/pstore/ram.c
-+++ b/fs/pstore/ram.c
-@@ -609,22 +609,7 @@ static int ramoops_probe(struct device_d *dev)
- 		goto fail_init_mprz;
+ &ethphy {
+-	max-speed = <100>;
++	max-speed = <1000>;
+ };
  
- 	cxt->pstore.data = cxt;
--	/*
--	 * Console can handle any buffer size, so prefer LOG_LINE_MAX. If we
--	 * have to handle dumps, we must have at least record_size buffer. And
--	 * for ftrace, bufsize is irrelevant (if bufsize is 0, buf will be
--	 * ZERO_SIZE_PTR).
--	 */
--	if (cxt->console_size)
--		cxt->pstore.bufsize = 1024; /* LOG_LINE_MAX */
--	cxt->pstore.bufsize = max(cxt->record_size, cxt->pstore.bufsize);
--	cxt->pstore.buf = kmalloc(cxt->pstore.bufsize, GFP_KERNEL);
- 	spin_lock_init(&cxt->pstore.buf_lock);
--	if (!cxt->pstore.buf) {
--		pr_err("cannot allocate pstore buffer\n");
--		err = -ENOMEM;
--		goto fail_clear;
--	}
+ &fec {
+diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts b/arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts
+new file mode 100644
+index 000000000000..5d9727ec5b80
+--- /dev/null
++++ b/arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts
+@@ -0,0 +1,65 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
++/*
++ * Copyright (C) 2019 PHYTEC Messtechnik GmbH,
++ * Author: Stefan Riedmueller <s.riedmueller@phytec.de>
++ */
++
++/dts-v1/;
++
++#include <arm/imx6dl.dtsi>
++#include "imx6dl.dtsi"
++#include "imx6qdl-phytec-phycore-som.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-i.MX6 DualLite/SOLO with eMMC low-cost";
++	compatible = "phytec,imx6dl-pcm058-emmc", "fsl,imx6dl";
++};
++
++&ecspi1 {
++	status = "okay";
++};
++
++&eeprom {
++	status = "okay";
++};
++
++&ethphy {
++	max-speed = <100>;
++};
++
++&fec {
++	status = "okay";
++};
++
++&flash {
++	status = "okay";
++};
++
++&usbh1 {
++	status = "okay";
++};
++
++&usbotg {
++	status = "okay";
++};
++
++&usdhc1 {
++	status = "okay";
++
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	partition@0 {
++		label = "barebox";
++		reg = <0x0 0xe0000>;
++	};
++
++	partition@e0000 {
++		label = "barebox-environment";
++		reg = <0xe0000 0x20000>;
++	};
++};
++
++&usdhc4 {
++	status = "okay";
++};
+diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts b/arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts
+new file mode 100644
+index 000000000000..e119e4c0d4fc
+--- /dev/null
++++ b/arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts
+@@ -0,0 +1,57 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
++/*
++ * Copyright (C) 2019 PHYTEC Messtechnik GmbH,
++ * Author: Stefan Riedmueller <s.riedmueller@phytec.de>
++ */
++
++/dts-v1/;
++
++#include <arm/imx6dl.dtsi>
++#include "imx6dl.dtsi"
++#include "imx6qdl-phytec-phycore-som.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-i.MX6 Duallite/SOLO with NAND low-cost";
++	compatible = "phytec,imx6dl-pcm058-nand", "fsl,imx6dl";
++};
++
++&eeprom {
++	status = "okay";
++};
++
++&ethphy {
++	max-speed = <100>;
++};
++
++&fec {
++	status = "okay";
++};
++
++&gpmi {
++	status = "okay";
++};
++
++&usbh1 {
++	status = "okay";
++};
++
++&usbotg {
++	status = "okay";
++};
++
++&usdhc1 {
++	status = "okay";
++
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	partition@0 {
++		label = "barebox";
++		reg = <0x0 0xe0000>;
++	};
++
++	partition@e0000 {
++		label = "barebox-environment";
++		reg = <0xe0000 0x20000>;
++	};
++};
+diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts b/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
+index 77f143438b50..287d876e41ed 100644
+--- a/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
++++ b/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
+@@ -25,7 +25,7 @@
+ };
  
- 	err = pstore_register(&cxt->pstore);
- 	if (err) {
-@@ -661,9 +646,7 @@ static int ramoops_probe(struct device_d *dev)
- 	return 0;
+ &ethphy {
+-	max-speed = <100>;
++	max-speed = <1000>;
+ };
  
- fail_buf:
--	kfree(cxt->pstore.buf);
- fail_clear:
--	cxt->pstore.bufsize = 0;
- 	kfree(cxt->mprz);
- fail_init_mprz:
- 	kfree(cxt->fprz);
-diff --git a/include/linux/pstore.h b/include/linux/pstore.h
-index dabb639111..f598f31a54 100644
---- a/include/linux/pstore.h
-+++ b/include/linux/pstore.h
-@@ -64,8 +64,6 @@ struct pstore_record {
- struct pstore_info {
- 	struct module	*owner;
- 	char		*name;
--	char		*buf;
--	size_t		bufsize;
- 	int		flags;
- 	int		(*open)(struct pstore_info *psi);
- 	int		(*close)(struct pstore_info *psi);
+ &fec {
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 9a7187ac7807..95ed6392e3c6 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -443,11 +443,21 @@ CFG_start_phytec_phycore_imx6dl_som_nand_1gib.pblb.imximg = $(board)/phytec-som-
+ FILE_barebox-phytec-phycore-imx6dl-som-nand-1gib.img = start_phytec_phycore_imx6dl_som_nand_1gib.pblb.imximg
+ image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-phycore-imx6dl-som-nand-1gib.img
+ 
++pblb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += start_phytec_phycore_imx6dl_som_lc_nand_256mb
++CFG_start_phytec_phycore_imx6dl_som_lc_nand_256mb.pblb.imximg = $(board)/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg
++FILE_barebox-phytec-phycore-imx6dl-som-lc-nand-256mb.img = start_phytec_phycore_imx6dl_som_lc_nand_256mb.pblb.imximg
++image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-phycore-imx6dl-som-lc-nand-256mb.img
++
+ pblb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += start_phytec_phycore_imx6dl_som_emmc_1gib
+ CFG_start_phytec_phycore_imx6dl_som_emmc_1gib.pblb.imximg = $(board)/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg
+ FILE_barebox-phytec-phycore-imx6dl-som-emmc-1gib.img = start_phytec_phycore_imx6dl_som_emmc_1gib.pblb.imximg
+ image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-phycore-imx6dl-som-emmc-1gib.img
+ 
++pblb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += start_phytec_phycore_imx6dl_som_lc_emmc_1gib
++CFG_start_phytec_phycore_imx6dl_som_lc_emmc_1gib.pblb.imximg = $(board)/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg
++FILE_barebox-phytec-phycore-imx6dl-som-lc-emmc-1gib.img = start_phytec_phycore_imx6dl_som_lc_emmc_1gib.pblb.imximg
++image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-phycore-imx6dl-som-lc-emmc-1gib.img
++
+ pblb-$(CONFIG_MACH_KONTRON_SAMX6I) += start_imx6q_samx6i
+ CFG_start_imx6q_samx6i.pblb.imximg = $(board)/kontron-samx6i/flash-header-samx6i-quad.imxcfg
+ FILE_barebox-imx6q-samx6i.img = start_imx6q_samx6i.pblb.imximg
 -- 
-2.20.1
+2.7.4
 
 
 _______________________________________________
