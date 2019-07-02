@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtp (Exim 4.92 #3 (Red Hat Linux))
- id 1hiI2n-0007q9-2y
+ id 1hiI2p-0007qh-DA
  for barebox@lists.infradead.org; Tue, 02 Jul 2019 12:38:01 +0000
 From: Stefan Riedmueller <s.riedmueller@phytec.de>
-Date: Tue, 2 Jul 2019 14:37:44 +0200
-Message-Id: <1562071065-367410-7-git-send-email-s.riedmueller@phytec.de>
+Date: Tue, 2 Jul 2019 14:37:45 +0200
+Message-Id: <1562071065-367410-8-git-send-email-s.riedmueller@phytec.de>
 In-Reply-To: <1562071065-367410-1-git-send-email-s.riedmueller@phytec.de>
 References: <1562071065-367410-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,84 +21,114 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] ARM: dts: imx6ul: phycore: Add support for eMMC
+Subject: [PATCH 8/8] ARM: dts: imx6ul: phycore: Add phyCORE-i.MX 6ULL with eMMC
 To: barebox@lists.infradead.org
 
-Add support for phyCORE-i.MX 6UL/ULL modules with eMMC instead of NAND
-flash.
+Add a phyCORE-i.MX 6ULL with eMMC. It has following features:
+	- i.MX 6ULL Y2 792 MHz
+	- 512 MB RAM
+	- 4 GB eMMC
+	- 10/100 MBits Ethernet
+	- USB OTG
+	- USB Host
 
 Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 ---
- arch/arm/dts/imx6ul-phytec-phycore-som.dtsi | 42 +++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ arch/arm/boards/phytec-som-imx6/lowlevel.c       |  1 +
+ arch/arm/dts/Makefile                            |  3 +-
+ arch/arm/dts/imx6ull-phytec-phycore-som-emmc.dts | 43 ++++++++++++++++++++++++
+ images/Makefile.imx                              |  5 +++
+ 4 files changed, 51 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/dts/imx6ull-phytec-phycore-som-emmc.dts
 
-diff --git a/arch/arm/dts/imx6ul-phytec-phycore-som.dtsi b/arch/arm/dts/imx6ul-phytec-phycore-som.dtsi
-index 1ef9d547822e..0ec7eae1eff0 100644
---- a/arch/arm/dts/imx6ul-phytec-phycore-som.dtsi
-+++ b/arch/arm/dts/imx6ul-phytec-phycore-som.dtsi
-@@ -25,6 +25,12 @@
- 			device-path = &usdhc1, "partname:barebox-environment";
- 			status = "disabled";
- 		};
+diff --git a/arch/arm/boards/phytec-som-imx6/lowlevel.c b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+index 494087ab1479..07bb0ed1b569 100644
+--- a/arch/arm/boards/phytec-som-imx6/lowlevel.c
++++ b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+@@ -121,3 +121,4 @@ PHYTEC_ENTRY(start_phytec_phycore_imx6q_som_emmc_2gib, imx6q_phytec_phycore_som_
+ PHYTEC_ENTRY(start_phytec_phycore_imx6ul_som_nand_512mb, imx6ul_phytec_phycore_som_nand, SZ_512M, false);
+ PHYTEC_ENTRY(start_phytec_phycore_imx6ull_som_lc_nand_256mb, imx6ull_phytec_phycore_som_lc_nand, SZ_256M, false);
+ PHYTEC_ENTRY(start_phytec_phycore_imx6ull_som_nand_512mb, imx6ull_phytec_phycore_som_nand, SZ_512M, false);
++PHYTEC_ENTRY(start_phytec_phycore_imx6ull_som_emmc_512mb, imx6ull_phytec_phycore_som_emmc, SZ_512M, false);
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index c96f040ae311..87ddc57b899c 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -68,7 +68,8 @@ pbl-dtb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += imx6q-phytec-pbaa03.dtb.o \
+ 				imx6dl-phytec-phycore-som-lc-emmc.dtb.o \
+ 				imx6ul-phytec-phycore-som-nand.dtb.o \
+ 				imx6ull-phytec-phycore-som-lc-nand.dtb.o \
+-				imx6ull-phytec-phycore-som-nand.dtb.o
++				imx6ull-phytec-phycore-som-nand.dtb.o \
++				imx6ull-phytec-phycore-som-emmc.dtb.o
+ pbl-dtb-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7) += imx7d-phyboard-zeta.dtb.o
+ pbl-dtb-$(CONFIG_MACH_PHYTEC_SOM_IMX8MQ) += imx8mq-phytec-phycore-som.dtb.o
+ pbl-dtb-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += armada-xp-openblocks-ax3-4-bb.dtb.o
+diff --git a/arch/arm/dts/imx6ull-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6ull-phytec-phycore-som-emmc.dts
+new file mode 100644
+index 000000000000..aa162cc42d07
+--- /dev/null
++++ b/arch/arm/dts/imx6ull-phytec-phycore-som-emmc.dts
+@@ -0,0 +1,43 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
++/*
++ * Copyright (C) 2019 PHYTEC Messtechnik GmbH
++ * Author: Stefan Riedmueller <s.riedmueller@phytec.de>
++ */
 +
-+		environment-sd2 {
-+			compatible = "barebox,environment";
-+			device-path = &usdhc2, "partname:barebox-environment";
-+			status = "disabled";
-+		};
- 	};
- };
- 
-@@ -125,6 +131,27 @@
- 	};
- };
- 
-+&usdhc2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_usdhc2>;
-+	bus-width = <8>;
-+	non-removable;
-+	status = "disabled";
++/dts-v1/;
 +
-+	#address-cells = <1>;
-+	#size-cells = <1>;
++#include <arm/imx6ull.dtsi>
++#include "imx6ul-phytec-phycore-som.dtsi"
 +
-+	partition@0 {
-+		label = "barebox";
-+		reg = <0x0 0xe0000>;
-+	};
-+
-+	partition@e0000 {
-+		label = "barebox-environment";
-+		reg = <0xe0000 0x20000>;
-+	};
++/ {
++	model = "PHYTEC phyCORE-i.MX6 ULL SOM with eMMC";
++	compatible = "phytec,imx6ul-pcl063-emmc", "fsl,imx6ull";
 +};
 +
- &iomuxc {
-         pinctrl-names = "default";
- 
-@@ -196,6 +223,21 @@
- 				MX6UL_PAD_UART1_RTS_B__GPIO1_IO19       0x17059 /* SD1 CD */
- 			>;
- 		};
++&fec1 {
++	status = "okay";
++};
 +
-+		pinctrl_usdhc2: usdhc2grp {
-+			fsl,pins = <
-+				MX6UL_PAD_NAND_WE_B__USDHC2_CMD     	0x17059
-+				MX6UL_PAD_NAND_RE_B__USDHC2_CLK     	0x10059
-+				MX6UL_PAD_NAND_DATA00__USDHC2_DATA0 	0x17059
-+				MX6UL_PAD_NAND_DATA01__USDHC2_DATA1 	0x17059
-+				MX6UL_PAD_NAND_DATA02__USDHC2_DATA2 	0x17059
-+				MX6UL_PAD_NAND_DATA03__USDHC2_DATA3 	0x17059
-+				MX6UL_PAD_NAND_DATA04__USDHC2_DATA4 	0x17059
-+				MX6UL_PAD_NAND_DATA05__USDHC2_DATA5 	0x17059
-+				MX6UL_PAD_NAND_DATA06__USDHC2_DATA6 	0x17059
-+				MX6UL_PAD_NAND_DATA07__USDHC2_DATA7 	0x17059
-+			>;
-+		};
- 	};
- };
++&i2c1 {
++	status = "okay";
++};
++
++&uart1 {
++	status = "okay";
++};
++
++&usdhc1 {
++	status = "okay";
++};
++
++&usdhc2 {
++	status = "okay";
++};
++
++&usbotg1 {
++	status = "okay";
++};
++
++&usbotg2 {
++	status = "okay";
++};
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 8aedc906dc84..a287c11c4042 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -519,6 +519,11 @@ CFG_start_phytec_phycore_imx6ull_som_nand_512mb.pblb.imximg = $(board)/phytec-so
+ FILE_barebox-phytec-phycore-imx6ull-nand-512mb.img = start_phytec_phycore_imx6ull_som_nand_512mb.pblb.imximg
+ image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-phycore-imx6ull-nand-512mb.img
  
++pblb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += start_phytec_phycore_imx6ull_som_emmc_512mb
++CFG_start_phytec_phycore_imx6ull_som_emmc_512mb.pblb.imximg = $(board)/phytec-som-imx6/flash-header-phytec-pcl063-512mb.imxcfg
++FILE_barebox-phytec-phycore-imx6ull-emmc-512mb.img = start_phytec_phycore_imx6ull_som_emmc_512mb.pblb.imximg
++image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-phycore-imx6ull-emmc-512mb.img
++
+ pblb-$(CONFIG_MACH_TECHNEXION_PICO_HOBBIT) += start_imx6ul_pico_hobbit_256mb
+ CFG_start_imx6ul_pico_hobbit_256mb.pblb.imximg = $(board)/technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-256.imxcfg
+ FILE_barebox-imx6ul-pico-hobbit-256mb.img = start_imx6ul_pico_hobbit_256mb.pblb.imximg
 -- 
 2.7.4
 
