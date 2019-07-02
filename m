@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2])
+Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hiD3Q-0006cq-1a
- for barebox@lists.infradead.org; Tue, 02 Jul 2019 07:18:17 +0000
+ id 1hiD3U-0006d6-E2
+ for barebox@lists.infradead.org; Tue, 02 Jul 2019 07:18:22 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue,  2 Jul 2019 09:17:54 +0200
-Message-Id: <20190702071754.32431-1-r.czerwinski@pengutronix.de>
+Date: Tue,  2 Jul 2019 09:17:56 +0200
+Message-Id: <20190702071754.32431-2-r.czerwinski@pengutronix.de>
+In-Reply-To: <20190702071754.32431-1-r.czerwinski@pengutronix.de>
+References: <20190702071754.32431-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,37 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] blspec: invalidate only necessary bootm variables
+Subject: [PATCH 2/2] f_fastboot: remove only image from bootm variables
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Instead of removing all global bootm variables, remove only the ones
-which will be set by the blspec entries. This allows setting the
-bootm.tee variable to load OP-TEE for blspec entries or setting the
-image load address.
+Remove only the bootm.image variable which will be set by fastboot.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- common/blspec.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/f_fastboot.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/blspec.c b/common/blspec.c
-index 41f2a4c534..66e5033e35 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -63,7 +63,11 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
- 	};
+diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
+index bdf0c807df..82a202cc21 100644
+--- a/drivers/usb/gadget/f_fastboot.c
++++ b/drivers/usb/gadget/f_fastboot.c
+@@ -767,7 +767,7 @@ static void __maybe_unused cb_boot(struct f_fastboot *f_fb, const char *opt)
+ 	fastboot_tx_print(f_fb, FASTBOOT_MSG_INFO, "Booting kernel..\n");
  
  	globalvar_set_match("linux.bootargs.dyn.", "");
 -	globalvar_set_match("bootm.", "");
 +	globalvar_set_match("bootm.image", "");
-+	globalvar_set_match("bootm.oftree", "");
-+	globalvar_set_match("bootm.initrd", "");
-+
-+	bootm_data_init_defaults(&data);
  
- 	devicetree = blspec_entry_var_get(entry, "devicetree");
- 	initrd = blspec_entry_var_get(entry, "initrd");
+ 	data.os_file = xstrdup(FASTBOOT_TMPFILE);
+ 
 -- 
 2.22.0
 
