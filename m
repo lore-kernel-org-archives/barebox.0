@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hivZR-00012E-5D
- for barebox@lists.infradead.org; Thu, 04 Jul 2019 06:50:18 +0000
-Date: Thu, 4 Jul 2019 08:50:15 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190704065015.eggvxh7lgy6pcg33@pengutronix.de>
-References: <20190702100001.28530-1-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190702100001.28530-1-antonynpavlov@gmail.com>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.92 #3 (Red Hat Linux))
+ id 1hiIRs-0002ol-09
+ for barebox@lists.infradead.org; Tue, 02 Jul 2019 13:03:53 +0000
+From: Stefan Riedmueller <s.riedmueller@phytec.de>
+Date: Tue, 2 Jul 2019 15:03:49 +0200
+Message-Id: <1562072630-54127-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,24 +14,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] sandbox fixes
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] ARM: dts: imx6qdl: phycore: Set phy-reset-duration for fec
+To: barebox@lists.infradead.org
 
-T24gVHVlLCBKdWwgMDIsIDIwMTkgYXQgMTI6NTk6NThQTSArMDMwMCwgQW50b255IFBhdmxvdiB3
-cm90ZToKPiAKPiBBbnRvbnkgUGF2bG92ICgzKToKPiAgIHNhbmRib3g6IHByZXZlbnQgc2VnZmF1
-bHQgaW4gdGFwX2FsbG9jKCkKPiAgIHNhbmRib3g6IGVsaW1pbmFsZSBubyBwcmV2aW91cyBwcm90
-b3R5cGUgZm9yIOKAmHNhbmRib3hfYWRkX2RldmljZeKAmSB3YXJuaW5nCj4gICBzYW5kYm94OiBk
-cm9wIGJsYW5rIGxpbmVzIGF0IEVPRgoKQXBwbGllZCwgdGhhbmtzCgpTYXNjaGEKCi0tIApQZW5n
-dXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAg
-fCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhp
-bGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2Vy
-aWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2
-OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
-Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+The voltage of the ethernet phy needs to be stable before de-asserting
+the reset pin. Thus set the phy-reset-duration to 10 ms.
+
+Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+---
+ arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
+index 8fde27bd0c17..1d39368165db 100644
+--- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
+@@ -110,6 +110,7 @@
+ 	phy-handle = <&ethphy>;
+ 	phy-mode = "rgmii";
+ 	phy-reset-gpios = <&gpio1 14 GPIO_ACTIVE_LOW>;
++	phy-reset-duration = <10>; /* in msecs */
+ 	status = "disabled";
+ 
+ 	mdio {
+-- 
+2.7.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
