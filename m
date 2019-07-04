@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hivUH-0005gb-PC
- for barebox@lists.infradead.org; Thu, 04 Jul 2019 06:44:59 +0000
+ id 1hivUN-0005t8-VU
+ for barebox@lists.infradead.org; Thu, 04 Jul 2019 06:45:05 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  4 Jul 2019 08:44:50 +0200
-Message-Id: <20190704064453.11772-1-s.hauer@pengutronix.de>
+Date: Thu,  4 Jul 2019 08:44:52 +0200
+Message-Id: <20190704064453.11772-3-s.hauer@pengutronix.de>
+In-Reply-To: <20190704064453.11772-1-s.hauer@pengutronix.de>
+References: <20190704064453.11772-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,44 +21,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] startup: remove unused editcmd variable
+Subject: [PATCH 3/4] startup: Create boot related variables where they are used
 To: Barebox List <barebox@lists.infradead.org>
 
-Nobody uses global.editcmd, so remove it.
+global.boot.default, global.linux.bootargs.base and global.user are
+used in the boot code, so create them there.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/startup.c | 3 ---
- 1 file changed, 3 deletions(-)
+ common/boot.c    | 18 ++++++++++++++----
+ common/startup.c | 10 ----------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
+diff --git a/common/boot.c b/common/boot.c
+index 84b2ff9677..14d4fe9d64 100644
+--- a/common/boot.c
++++ b/common/boot.c
+@@ -119,12 +119,22 @@ void boot_set_watchdog_timeout(unsigned int timeout)
+ 	boot_watchdog_timeout = timeout;
+ }
+ 
+-static int init_boot_watchdog_timeout(void)
++static char *global_boot_default;
++static char *global_user;
++
++static int init_boot(void)
+ {
+-	return globalvar_add_simple_int("boot.watchdog_timeout",
+-			&boot_watchdog_timeout, "%u");
++	global_boot_default = xstrdup("net");
++	globalvar_add_simple_string("boot.default", &global_boot_default);
++	globalvar_add_simple_int("boot.watchdog_timeout",
++				 &boot_watchdog_timeout, "%u");
++	globalvar_add_simple("linux.bootargs.base", NULL);
++	global_user = xstrdup("none");
++	globalvar_add_simple_string("user", &global_user);
++
++	return 0;
+ }
+-late_initcall(init_boot_watchdog_timeout);
++late_initcall(init_boot);
+ 
+ BAREBOX_MAGICVAR_NAMED(global_watchdog_timeout, global.boot.watchdog_timeout,
+ 		"Watchdog enable timeout in seconds before booting");
 diff --git a/common/startup.c b/common/startup.c
-index 5686c0fb32..749db18e5a 100644
+index 7e5a167af1..b88c4a00d3 100644
 --- a/common/startup.c
 +++ b/common/startup.c
-@@ -153,7 +153,6 @@ static const char * const global_autoboot_abort_keys[] = {
+@@ -152,9 +152,6 @@ static const char * const global_autoboot_abort_keys[] = {
+ 	"ctrl-c",
  };
  static int global_autoboot_timeout = 3;
- static char *global_boot_default;
--static char *global_editcmd;
- static char *global_linux_bootargs_base;
- static char *global_linux_bootargs_dyn_ip;
- static char *global_linux_bootargs_dyn_root;
-@@ -213,7 +212,6 @@ static int run_init(void)
+-static char *global_boot_default;
+-static char *global_linux_bootargs_base;
+-static char *global_user;
+ 
+ static bool test_abort(void)
+ {
+@@ -210,19 +207,12 @@ static int run_init(void)
  		return 0;
  	}
  
--	global_editcmd = xstrdup("sedit");
- 	global_user = xstrdup("none");
- 	globalvar_add_simple_string("user", &global_user);
- 	global_boot_default = xstrdup("net");
-@@ -225,7 +223,6 @@ static int run_init(void)
+-	global_user = xstrdup("none");
+-	globalvar_add_simple_string("user", &global_user);
+-	global_boot_default = xstrdup("net");
+-
+ 	globalvar_add_simple_enum("autoboot_abort_key",
+ 				  &global_autoboot_abort_key,
+                                   global_autoboot_abort_keys,
+ 				  ARRAY_SIZE(global_autoboot_abort_keys));
  	globalvar_add_simple_int("autoboot_timeout",
  				 &global_autoboot_timeout, "%u");
- 	globalvar_add_simple_string("boot.default", &global_boot_default);
--	globalvar_add_simple_string("editcmd", &global_editcmd);
- 	globalvar_add_simple_string("linux.bootargs.base",
- 				    &global_linux_bootargs_base);
- 	globalvar_add_simple_string("linux.bootargs.dyn.ip",
+-	globalvar_add_simple_string("boot.default", &global_boot_default);
+-	globalvar_add_simple_string("linux.bootargs.base",
+-				    &global_linux_bootargs_base);
+ 
+ 	/* Unblank console cursor */
+ 	printf("\e[?25h");
 -- 
 2.20.1
 
