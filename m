@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hiC8Y-0003ar-Db
- for barebox@lists.infradead.org; Tue, 02 Jul 2019 06:19:31 +0000
-Date: Tue, 2 Jul 2019 08:19:28 +0200
+ id 1hivUH-0005gb-PC
+ for barebox@lists.infradead.org; Thu, 04 Jul 2019 06:44:59 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190702061928.mrq6fiazr5k4hacg@pengutronix.de>
-References: <20190701074453.19760-1-o.rempel@pengutronix.de>
+Date: Thu,  4 Jul 2019 08:44:50 +0200
+Message-Id: <20190704064453.11772-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190701074453.19760-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +19,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mips: reloc: remove outdated comment
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/4] startup: remove unused editcmd variable
+To: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Jul 01, 2019 at 09:44:53AM +0200, Oleksij Rempel wrote:
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  arch/mips/lib/reloc.c | 11 -----------
->  1 file changed, 11 deletions(-)
+Nobody uses global.editcmd, so remove it.
 
-Applied, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/startup.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Sascha
-
-
+diff --git a/common/startup.c b/common/startup.c
+index 5686c0fb32..749db18e5a 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -153,7 +153,6 @@ static const char * const global_autoboot_abort_keys[] = {
+ };
+ static int global_autoboot_timeout = 3;
+ static char *global_boot_default;
+-static char *global_editcmd;
+ static char *global_linux_bootargs_base;
+ static char *global_linux_bootargs_dyn_ip;
+ static char *global_linux_bootargs_dyn_root;
+@@ -213,7 +212,6 @@ static int run_init(void)
+ 		return 0;
+ 	}
+ 
+-	global_editcmd = xstrdup("sedit");
+ 	global_user = xstrdup("none");
+ 	globalvar_add_simple_string("user", &global_user);
+ 	global_boot_default = xstrdup("net");
+@@ -225,7 +223,6 @@ static int run_init(void)
+ 	globalvar_add_simple_int("autoboot_timeout",
+ 				 &global_autoboot_timeout, "%u");
+ 	globalvar_add_simple_string("boot.default", &global_boot_default);
+-	globalvar_add_simple_string("editcmd", &global_editcmd);
+ 	globalvar_add_simple_string("linux.bootargs.base",
+ 				    &global_linux_bootargs_base);
+ 	globalvar_add_simple_string("linux.bootargs.dyn.ip",
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
