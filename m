@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hiiTn-0003vt-QH
- for barebox@lists.infradead.org; Wed, 03 Jul 2019 16:51:38 +0000
+ id 1hiuTD-0004AW-Vm
+ for barebox@lists.infradead.org; Thu, 04 Jul 2019 05:39:49 +0000
 References: <20190617150751.3421-1-a.fatoum@pengutronix.de>
  <20190620143228.wfasxgzjdyd4l4yw@pengutronix.de>
+ <385c9d62-a0f0-ff3e-690e-511b36591b35@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <385c9d62-a0f0-ff3e-690e-511b36591b35@pengutronix.de>
-Date: Wed, 3 Jul 2019 18:51:31 +0200
+Message-ID: <b6952c7b-ddfe-87a6-eb56-9088dc62914c@pengutronix.de>
+Date: Thu, 4 Jul 2019 07:39:40 +0200
 MIME-Version: 1.0
-In-Reply-To: <20190620143228.wfasxgzjdyd4l4yw@pengutronix.de>
+In-Reply-To: <385c9d62-a0f0-ff3e-690e-511b36591b35@pengutronix.de>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,53 +20,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v1 00/12] ARM: stm32mp: add drivers for GPIO, pinctrl
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Robert Schwebel <rsc@pengutronix.de>, barebox@lists.infradead.org, mfe@pengutronix.de, lst@pengutronix.de
+To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
 
-SGVsbG8gU2FzY2hhLAoKT24gMjAvNi8xOSAxNjozMiwgU2FzY2hhIEhhdWVyIHdyb3RlOgo+IE9u
-IE1vbiwgSnVuIDE3LCAyMDE5IGF0IDA1OjA3OjM5UE0gKzAyMDAsIEFobWFkIEZhdG91bSB3cm90
-ZToKCj4+IEFobWFkIEZhdG91bSAoMTIpOgo+PiAgIEFSTTogc3RtMzJtcDE1N2MtZGsyOiBhZGQg
-Ym9hcmQtc3BlY2lmaWMgc3lzY29uZiBmaXh1cHMKClBsZWFzZSBkcm9wIHRoaXMgcGF0Y2ggZnJv
-bSBuZXh0LgoKPj4gICBBUk06IHBzY2k6IGZpeCBlcnJvbmVvdXMgY2FsbCBvZiAtPnN5c3RlbV9y
-ZXNldCBvbiBzeXN0ZW1fb2ZmCj4+ICAgQVJNOiBzdG0zMm1wOiBpbXBsZW1lbnQgUFNDSSBzdXBw
-b3J0Cj4+ICAgQVJNOiBzdG0zMm1wMTU3Yy1kazI6IGJvb3Qga2VybmVsIGluIG5vbnNlY3VyZSBt
-b2RlCgphcyB3ZWxsIGFzIHRoZXNlIHRocmVlLiBUaGVzZSBwYXRjaGVzIGR1cGxpY2F0ZSBmdW5j
-dGlvbmFsaXR5IGFscmVhZHkKZXhpc3RpbmcgaW4gdGhlIHVwc3RyZWFtIEFSTSBUcnVzdGVkIEZp
-cm13YXJlLUEgcmVwb3NpdG9yeS4KClNUTWljcm8gcHJvdmlkZXMgdHdvIGJvb3QgY2hhaW5zIGZv
-ciB0aGUgU1RNMzJNUC4gQSB0cnVzdGVkIGJvb3QgY2hhaW4sCndpdGggdGhlIFRGLUEgYXMgdGhl
-IGZpcnN0IHN0YWdlIGJvb3QgbG9hZGVyIGRvaW5nIHRoZSBTRFJBTSBpbml0CmFuZCBVLUJvb3Qg
-YXMgdGhlIHNlY29uZCBzdGFnZSBhcyB3ZWxsIGFzIGEgc2ltcGxpZmllZCBvbmUgd2hlcmUKVS1C
-b290IFNQTCBhY3RzIGFzIGEgZmlyc3Qgc3RhZ2UuCgpBZnRlciB0YWxraW5nIHRoaXMgb3ZlciB3
-aXRoIEx1Y2FzLCBJIG5vdyBzZWUgdGhhdCBiYXJlYm94IHNob3VsZApwcm9iYWJseSBub3QgZ28g
-ZG93biB0aGlzIHJvYWQgYW5kIGluc3RlYWQgc2V0dGxlIGZvciBzdXBwb3J0IG9mCm9uZSBvZiB0
-aGVzZSBib290IGNoYWlucy4KClNUTWljcm8ncyBkb2NzWzFdIHN0YXRlIHRoYXQKCj4gYXV0aGVu
-dGljYXRpb24gaXMgb3B0aW9uYWwgd2l0aCB0aGlzIGJvb3QgY2hhaW4sIHNvIGl0IGNhbiBydW4g
-b24gYW55IFNUTTMyTVAKPiBzZWN1cml0eSB2YXJpYW50ICh0aGF0IGlzLCB3aXRoIG9yIHdpdGhv
-dXQgdGhlIFNlY3VyZSBib290KS4KPiBUaGUgdHJ1c3RlZCBib290IGNoYWluIGlzIHRoZSBkZWZh
-dWx0IHNvbHV0aW9uIGRlbGl2ZXJlZCBieSBTVE1pY3JvZWxlY3Ryb25pY3MsCj4gd2l0aCBhIGNv
-bXBsZXRlIGZlYXR1cmUgc2V0IChmb3IgZXhhbXBsZSwgYWxsIEZsYXNoIGRldmljZXMgYXJlIHN1
-cHBvcnRlZCkuCgpXaGljaCBtYWtlcyBtZSBsZWFuIHRvd2FyZHMgc2V0dGxpbmcgZm9yIFRGLUEg
-YXMgZmlyc3Qgc3RhZ2UgYW5kIGhhdmUKYmFyZWJveCBmb2N1cyBvbiB0aGUgc2Vjb25kIHN0YWdl
-IGluc3RlYWQuIFNob3VsZCBpdCB0dXJuIG91dCwgd2Ugc2hvdWxkCmJlIGRvaW5nIGZpcnN0IHN0
-YWdlIGFzIHdlbGwsIHRoZXNlIGNhbiBhbHdheXMgYmUgcmVpbnN0YXRlZCBpbiBhIHdheSB0aGF0
-IGRvZXNuJ3QKYnJlYWsgdXNlIG9mIFRGLUEuIERyb3BwaW5nIHRoZW0gbm93IGFsbG93cyBhIGJv
-b3QgY2hhaW4gd2l0aAptYWlubGluZSBURi1BIC0+IGJhcmVib3ggd2l0aCBteSBuZXR3b3JrIHBh
-dGNoZXMgLT4gbWFpbmxpbmUgS2VybmVsCnRvIGZ1bmN0aW9uLgoKPj4gICBBUk06IHNtOiBtb3Zl
-IGdldF9naWNkX2Jhc2VfYWRkcmVzcyB0byBoZWFkZXIgZm9yIHJldXNlCgpDb3VsZCBiZSByZW1v
-dmVkIGFzIHdlbGwsIGJ1dCBpdCBkb2Vzbid0IGh1cnQgdG8gbGVhdmUgaXQgaW4uCkZ1dHVyZSBj
-b2RlIGZvciBvdGhlciBzdWJhcmNoZXMgbWF5IG5lZWQgdGhpcyBhcyB3ZWxsLgoKWzFdOiBodHRw
-czovL3dpa2kuc3QuY29tL3N0bTMybXB1L3dpa2kvQm9vdF9jaGFpbnNfb3ZlcnZpZXcgwrYyLjIu
-MQoKQ2hlZXJzCkFobWFkCgo+IAo+IEFwcGxpZWQsIHRoYW5rcwo+IAo+IFNhc2NoYQo+IAo+IAoK
-LS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAg
-ICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwg
-MzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8
-CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDkt
-NTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Sorry,
+
+On 3/7/19 18:51, Ahmad Fatoum wrote:
+>   ARM: psci: fix erroneous call of ->system_reset on system_off
+
+this one is a generic fix and should stay. To sum up, please drop:
+
+75624841ec85 ARM: stm32mp157c-dk2: boot kernel in nonsecure mode
+cc392cc3b5df ARM: stm32mp: implement PSCI support
+e7561dba5791 ARM: stm32mp157c-dk2: add board-specific sysconf fixups
+
+Thanks,
+Ahmad
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
