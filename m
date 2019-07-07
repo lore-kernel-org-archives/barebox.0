@@ -1,21 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x241.google.com ([2a00:1450:4864:20::241])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hiwR4-0006CU-21
- for barebox@lists.infradead.org; Thu, 04 Jul 2019 07:45:43 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>) id 1hiwR2-0005Vk-A2
- for barebox@lists.infradead.org; Thu, 04 Jul 2019 09:45:40 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <sha@pengutronix.de>) id 1hiwQx-0003qk-JP
- for barebox@lists.infradead.org; Thu, 04 Jul 2019 09:45:35 +0200
-Date: Thu, 4 Jul 2019 09:45:35 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190704074535.cowk32ujo5imiaep@pengutronix.de>
+ id 1hk0fx-0006N1-0R
+ for barebox@lists.infradead.org; Sun, 07 Jul 2019 06:29:30 +0000
+Received: by mail-lj1-x241.google.com with SMTP id 16so12789651ljv.10
+ for <barebox@lists.infradead.org>; Sat, 06 Jul 2019 23:29:27 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Sun,  7 Jul 2019 09:29:18 +0300
+Message-Id: <20190707062918.30097-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,24 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: v2019.06.1
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] scripts: add mips-relocs to .gitignore
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Hi All,
+mips-relocs generation was introduced in the commit
+28ed10d6a67c9f67 ("MIPS: relocation: add relocation
+support").
 
-I just released v2019.06.1 which contains two fixes for the recently
-converted init-script-to-c:
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ scripts/.gitignore | 1 +
+ 1 file changed, 1 insertion(+)
 
-f3a0ba62b0 startup: execute /env/bin/init as part of the initial shell
-d755a24939 startup: Do not overwrite global.linux.bootargs.console
-
-Sascha
-
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index 11ac77eb37..45c81bf8f4 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -28,3 +28,4 @@ mxs-usb-loader
+ /omap3-usb-loader
+ omap4_usbboot
+ omap3-usb-loader
++mips-relocs
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
