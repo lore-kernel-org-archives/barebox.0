@@ -1,12 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from your2.active-elements.de ([88.99.59.121] helo=atsonline.de)
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hl73f-0006el-CF
- for barebox@lists.infradead.org; Wed, 10 Jul 2019 07:30:32 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 10 Jul 2019 09:30:28 +0200
-Message-Id: <20190710073028.1387-1-s.hauer@pengutronix.de>
+ id 1hkUQ8-0003XU-T0
+ for barebox@lists.infradead.org; Mon, 08 Jul 2019 14:15:10 +0000
+Received: from Mail-10-6.ATS-Intranet.local (p57800e76.dip0.t-ipconnect.de
+ [87.128.14.118])
+ by xenon.active-elements.de (Postfix) with ESMTPSA id 1930D4021C06
+ for <barebox@lists.infradead.org>; Mon,  8 Jul 2019 16:15:01 +0200 (CEST)
+From: Andreas Geisenhainer <Andreas.Geisenhainer@atsonline.de>
+Message-ID: <875f8014-b696-b0dc-3c9b-0a9e2d573aa6@atsonline.de>
+Date: Mon, 8 Jul 2019 16:15:00 +0200
 MIME-Version: 1.0
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,68 +20,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: cpsw: adopt to upstream device tree changes
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Oselas 2018.12.0 toolchain seems to break barebox for AM335x
+To: barebox@lists.infradead.org
 
-Upstream device trees no longer have a "cpsw-phy-sel" property to find
-the phy_sel register, instead they have a child device of the pinctrl
-node compatible to "ti,am3352-phy-gmii-sel". Also the "rmii-clock-ext"
-property is no longer global to the cpsw but instead can be selected
-per slave. To adopt to these changes take the short way out for now
-and find the new node by its compatible and hardcode the "rmii-clock-ext"
-setting (which is set to true in am33xx-l4.dtsi and not overwritten
-by any board).
+Hello barebox mailinglist.
 
-This makes the cpsw driver work again. Tested on Beaglebone black
-board.
+While updating my local ptxdist setup I ran into the following problem.
 
-Fixes: 1dc748b3b2 ("dts: update to v5.1-rc1")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/net/cpsw.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+Updating the toolchain to OSELAS_2018.12.0 and copiling barebox
+it decided not to start anymore. To my surprise, compiling the
+exact same source with the previous OSELAS toolchain (2018.02.0)
+just works.
+I installed the toolchains through the official debian repository.
 
-diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
-index 65f71c6fce..df8981d02e 100644
---- a/drivers/net/cpsw.c
-+++ b/drivers/net/cpsw.c
-@@ -993,8 +993,13 @@ static int cpsw_phy_sel_init(struct cpsw_priv *priv, struct device_node *np)
- 
- 	phy_sel_addr = (void *)addr;
- 
--	if (of_property_read_bool(np, "rmii-clock-ext"))
--		rmii_clock_external = true;
-+	/*
-+	 * As of Linux-5.1 this is set to true in am33xx-l4.dtsi and not
-+	 * overwritten by any board. This is set to false in am437x-l4.dtsi
-+	 * though, so once we support this SoC we have to configure this from
-+	 * the device tree.
-+	 */
-+	rmii_clock_external = true;
- 
- 	return 0;
- }
-@@ -1062,11 +1067,10 @@ static int cpsw_probe_dt(struct cpsw_priv *priv)
- 
- 	priv->slaves = xzalloc(sizeof(struct cpsw_slave) * priv->num_slaves);
- 
--	physel = of_parse_phandle(dev->device_node, "cpsw-phy-sel", 0);
-+	physel = of_find_compatible_node(NULL, NULL, "ti,am3352-phy-gmii-sel");
- 	if (!physel) {
--		physel = of_get_child_by_name(dev->device_node, "cpsw-phy-sel");
--		if (!physel)
--			dev_err(dev, "Phy mode node not found\n");
-+		dev_err(dev, "Cannot find ti,am3352-phy-gmii-sel node\n");
-+		return -EINVAL;
- 	}
- 	ret = cpsw_phy_sel_init(priv, physel);
- 	if (ret)
+We're still running an older barebox (2015.09), so i grabed a
+stock, barebox 2019.06.1 and it produces the exact same behaviour.
+
+We're running barebox an a Phytec PhyCORE AM335x platform, and the
+behaviour does emerge for the default "barebox-am335x-phytec-phycore.img"
+image from barebox.
+
+* Exhibit A: barebox 2019.06.1 compiled with OSELAS_2018.12.0 (gcc 8.2.1)
+----------------------------------8<-------------------------------------
+barebox@sbo800:/mnt/10.0.1.6/rootbootm -vv -c barebox_2019.06.1_k1.img
+
+Loading ARM barebox image 'barebox_2019.06.1_k1.img'
+using internal devicetree
+OS image not yet relocated
+Passing control to OMAP barebox handler
+exitcall-> devices_shutdown+0x1/0x24
+exitcall-> arch_shutdown+0x1/0x1c
+---------------------------------->8-------------------------------------
+
+* Exhibit B: barebox 2019.06.1 compiled with OSELAS_2018.02.0 (gcc 7.3.1)
+----------------------------------8<-------------------------------------
+barebox@sbo800:/mnt/10.0.1.6/rootbootm -vv -c barebox_2019.06.1_k2.img
+
+Loading ARM barebox image 'barebox_2019.06.1_k2.img'
+using internal devicetree
+OS image not yet relocated
+Passing control to OMAP barebox handler
+exitcall-> devices_shutdown+0x1/0x24
+exitcall-> arch_shutdown+0x1/0x1c
+start.c: memory at 0x80000000, size 0x20000000
+start.c: found Compressed DTB in boarddata, copying to 0x9fdfd040
+start.c: initializing malloc pool at 0x8fefe820 (size 0x0fefe820)
+start.c: starting barebox...
+----------------------------------<8-------------------------------------
+
+What's the best course of action to debug this further?
+
+There's a slight possibility for a barebox config option to be the culprit,
+since i copied our local config into the extracted archive.
+But it does not really explain why this breaks.
+
+kind regards
+Andreas Geisenhainer
+
 -- 
-2.20.1
+        _
+   __ _| |_ ___
+  / _` | __/ __|
+| (_| | |_\__ \
+  \__,_|\__|___/
+Elektronik GmbH
 
 
 _______________________________________________
