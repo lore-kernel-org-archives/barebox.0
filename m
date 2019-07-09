@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hkmtf-0004vQ-ES
- for barebox@lists.infradead.org; Tue, 09 Jul 2019 09:58:52 +0000
-Date: Tue, 9 Jul 2019 11:58:49 +0200
+ id 1hknAQ-0002nR-9J
+ for barebox@lists.infradead.org; Tue, 09 Jul 2019 10:16:12 +0000
+Date: Tue, 9 Jul 2019 12:15:59 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190709095849.xm767fc4obdkacfw@pengutronix.de>
+Message-ID: <20190709101559.dj3ud35igitjcx5c@pengutronix.de>
 References: <20190708072510.4169-1-o.rempel@pengutronix.de>
- <20190708072510.4169-2-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190708072510.4169-2-o.rempel@pengutronix.de>
+In-Reply-To: <20190708072510.4169-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,53 +22,135 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] net: fec_imx: add regulator support
+Subject: Re: [PATCH 1/2] arm: port imx28-evk to devicetree
 To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jul 08, 2019 at 09:25:10AM +0200, Oleksij Rempel wrote:
-> at least imx28-evk need it to work with devicetree
-> 
+Hi Oleksij,
+
+On Mon, Jul 08, 2019 at 09:25:09AM +0200, Oleksij Rempel wrote:
 > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  drivers/net/fec_imx.c | 20 ++++++++++++++++++++
->  drivers/net/fec_imx.h |  1 +
->  2 files changed, 21 insertions(+)
+>  arch/arm/boards/freescale-mx28-evk/Makefile   |   1 -
+>  arch/arm/boards/freescale-mx28-evk/lowlevel.c |  10 +-
+>  arch/arm/boards/freescale-mx28-evk/mx28-evk.c | 306 ------------------
+>  arch/arm/configs/freescale-mx28-evk_defconfig |  11 +-
+>  arch/arm/dts/Makefile                         |   1 +
+>  arch/arm/dts/imx28-evk.dts                    |  40 +++
+>  6 files changed, 58 insertions(+), 311 deletions(-)
+>  delete mode 100644 arch/arm/boards/freescale-mx28-evk/mx28-evk.c
+>  create mode 100644 arch/arm/dts/imx28-evk.dts
 > 
-> diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-> index 38a29fc83e..10422d2e2d 100644
-> --- a/drivers/net/fec_imx.c
-> +++ b/drivers/net/fec_imx.c
-> @@ -19,6 +19,7 @@
->  #include <linux/err.h>
->  #include <of_net.h>
->  #include <of_gpio.h>
-> +#include <regulator.h>
->  #include <gpio.h>
->  #include <linux/iopoll.h>
+> diff --git a/arch/arm/boards/freescale-mx28-evk/Makefile b/arch/arm/boards/freescale-mx28-evk/Makefile
+> index a74ec2451b..b08c4a93ca 100644
+> --- a/arch/arm/boards/freescale-mx28-evk/Makefile
+> +++ b/arch/arm/boards/freescale-mx28-evk/Makefile
+> @@ -1,2 +1 @@
+> -obj-y += mx28-evk.o
+>  lwl-y += lowlevel.o
+> diff --git a/arch/arm/boards/freescale-mx28-evk/lowlevel.c b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+> index 22cae1374c..3062ecf3ce 100644
+> --- a/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+> +++ b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+> @@ -12,9 +12,17 @@
+>  #include <mach/iomux.h>
+>  #include <stmp-device.h>
 >  
-> @@ -776,6 +777,22 @@ static int fec_probe(struct device_d *dev)
->  	}
->  	fec->regs = IOMEM(iores->start);
->  
-> +	fec->reg_phy = regulator_get(dev, "phy");
-> +	if (!IS_ERR(fec->reg_phy)) {
-> +		ret = regulator_enable(fec->reg_phy);
-> +		if (ret) {
-> +			dev_err(dev,
-> +				"Failed to enable phy regulator: %d\n", ret);
-> +			goto disable_clk;
-> +		}
-> +	} else {
-> +		if (PTR_ERR(fec->reg_phy) == -EPROBE_DEFER) {
-> +			ret = -EPROBE_DEFER;
-> +			goto disable_clk;
-> +		}
-> +		fec->reg_phy = NULL;
-> +	}
+> +extern char __dtb_imx28_evk_start[];
+> +
+>  ENTRY_FUNCTION(start_barebox_freescale_mx28evk, r0, r1, r2)
+>  {
+> -	barebox_arm_entry(IMX_MEMORY_BASE, SZ_128M, NULL);
+> +	void *fdt;
+> +
+> +	pr_debug("here we are!\n");
 
-NULL is a valid regulator, you can call regulator_enable() on it. With
-this the code can be simplified a bit.
+functions using static strings shouldn't be used here. Yes, it's copied
+from the duckbill board code and it shouldn't be there aswell ;)
+
+> -static void mx28_evk_get_ethaddr(void)
+> -{
+> -	u8 mac_ocotp[3], mac[6];
+> -	int ret;
+> -
+> -	ret = mxs_ocotp_read(mac_ocotp, 3, 0);
+> -	if (ret != 3) {
+> -		pr_err("Reading MAC from OCOTP failed!\n");
+> -		return;
+> -	}
+> -
+> -	mac[0] = 0x00;
+> -	mac[1] = 0x04;
+> -	mac[2] = 0x9f;
+> -	mac[3] = mac_ocotp[2];
+> -	mac[4] = mac_ocotp[1];
+> -	mac[5] = mac_ocotp[0];
+> -
+> -	eth_register_ethaddr(0, mac);
+> -}
+
+Have you checked the MAC address is read from ocotp without this?
+
+> +&duart {
+> +	arm,primecell-periphid = <0x00041011>;
+> +};
+
+Is this needed? If yes, then we should create arch/arm/dts/imx28.dtsi
+and put it there as the duckbill does have this aswell.
+
+> +
+> +&ocotp {
+> +	status = "okay";
+> +};
+> +
+> +&gpmi {
+> +	partition@0 {
+> +		label = "boot";
+> +		reg = <0x0 0x80000>;
+> +	};
+> +
+> +	partition@80000 {
+> +		label = "environment";
+> +		reg = <0x80000 0x80000>;
+> +	};
+> +};
+> +
+> +&reg_fec_3v3 {
+> +	gpio = <&gpio2 15 1>;
+> +};
+
+Erm, no. Please don't silently change the polarity without even leaving
+a comment why this is done.
+
+Also, this is wrong. The binding says that the default for fixed gpio
+regulators is active-low. The presence of the enable-active-high
+property demotes a GPIO regulator as active-high. barebox doesn't handle
+this correctly, what you need is an adoption of Kernel commit:
+
+| commit a603a2b8d86ee93ee2107da8ca75fd854fd4ff32
+| Author: Linus Walleij <linus.walleij@linaro.org>
+| Date:   Sat Dec 30 16:26:36 2017 +0100
+| 
+|     gpio: of: Add special quirk to parse regulator flags
+|     
+|     While most GPIOs are indicated to be active low or open drain using
+|     their twocell flags, we have legacy regulator bindings to take into
+|     account.
+|     
+|     Add a quirk respecting the special boolean active-high and open
+|     drain flags when parsing regulator nodes for GPIOs.
+|     
+|     This makes it possible to get rid of duplicated inversion semantics
+|     handling in the regulator core and any regulator drivers parsing
+|     and handling this separately.
+|     
+|     Unfortunately the old regulator inversion semantics are specified
+|     such that the presence or absence of "enable-active-high" solely
+|     controls the semantics, so we cannot deprecate this in favor
+|     of the phandle-provided inversion flag, instead any such phandle
+|     inversion flag provided in the second cell of a GPIO handle must be
+|     actively ignored, so we print a warning to contain the situation
+|     and make things easy for the users.
 
 Sascha
 
