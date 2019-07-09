@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.92 #3 (Red Hat Linux))
- id 1hkmIG-0001ca-2b
- for barebox@lists.infradead.org; Tue, 09 Jul 2019 09:20:14 +0000
-References: <20190709085339.yvtusun63wqej5w5@pengutronix.de>
-From: =?UTF-8?Q?Stefan_Riedm=c3=bcller?= <s.riedmueller@phytec.de>
-Message-ID: <c810de6f-f0d9-fec2-7a7a-be6a5a9ec523@phytec.de>
-Date: Tue, 9 Jul 2019 11:20:10 +0200
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+ by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1hkkT2-0003T4-Co
+ for barebox@lists.infradead.org; Tue, 09 Jul 2019 07:23:14 +0000
+Received: by mail-pl1-x644.google.com with SMTP id m9so5934803pls.8
+ for <barebox@lists.infradead.org>; Tue, 09 Jul 2019 00:23:11 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue,  9 Jul 2019 00:22:53 -0700
+Message-Id: <20190709072253.22062-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20190709085339.yvtusun63wqej5w5@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,234 +17,102 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/8] ARM: dts: imx6qdl: phycore: Add state framework
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: Barebox Mailing List <barebox@lists.infradead.org>, Daniel Schultz <d.schultz@phytec.de>
+Subject: [PATCH] lib: Add missing arguments to memcpy_parse_options()
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Peter Mamonov <pmamonov@gmail.com>
 
-Hi Roland,
+Memcpy use-case differs from that of memcmp in default access type and
+destination file mode. This was missed in original commit that
+introduced memcpy_parse_options(). Add said parameters to
+memcpy_parse_options(), so the can be correctly specified depending on
+the use-case.
 
-On 09.07.19 10:53, Roland Hieber wrote:
-> <d.schultz@phytec.de>
-> Cc: barebox@lists.infradead.org
-> Bcc:
-> Subject: Re: [PATCH 2/8] ARM: dts: imx6qdl: phycore: Add state framework
-> Reply-To:
-> In-Reply-To: <1562071065-367410-2-git-send-email-s.riedmueller@phytec.de>
-> X-Sent-From: Pengutronix Hildesheim
-> X-URL: http://www.pengutronix.de/
-> X-IRC: #ptxdist @freenode
-> X-Accept-Language: de,en
-> X-Accept-Content-Type: text/plain
-> X-Uptime: 10:41:58 up 1 day, 14:52, 50 users,  load average: 0.08, 0.13, 0.10
-> 
-> Hi Stefan, Daniel,
-> 
-> On Tue, Jul 02, 2019 at 02:37:39PM +0200, Stefan Riedmueller wrote:
->> From: Daniel Schultz <d.schultz@phytec.de>
->>
->> Add the state framework with EEPROM backend.
->>
->> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
->> Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
->> ---
->>   arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts    |  1 +
->>   arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts |  1 +
->>   arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts |  1 +
->>   arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts    |  1 +
->>   arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts     |  1 +
->>   arch/arm/dts/imx6q-phytec-phycore-som-nand.dts     |  1 +
->>   arch/arm/dts/imx6qdl-phytec-state.dtsi             | 81 ++++++++++++++++++++++
->>   7 files changed, 87 insertions(+)
->>   create mode 100644 arch/arm/dts/imx6qdl-phytec-state.dtsi
->>
->> diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
->> index a04e37f80363..21cbb5f944c9 100644
->> --- a/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
->> +++ b/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
->> @@ -15,6 +15,7 @@
->>   #include <arm/imx6dl.dtsi>
->>   #include "imx6dl.dtsi"
->>   #include "imx6qdl-phytec-phycore-som.dtsi"
->> +#include "imx6qdl-phytec-state.dtsi"
->>   
->>   / {
->>   	model = "Phytec phyCORE-i.MX6 DualLite/SOLO with eMMC";
->> diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts b/arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts
->> index 5d9727ec5b80..b8efb95ee08a 100644
->> --- a/arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts
->> +++ b/arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts
->> @@ -9,6 +9,7 @@
->>   #include <arm/imx6dl.dtsi>
->>   #include "imx6dl.dtsi"
->>   #include "imx6qdl-phytec-phycore-som.dtsi"
->> +#include "imx6qdl-phytec-state.dtsi"
->>   
->>   / {
->>   	model = "PHYTEC phyCORE-i.MX6 DualLite/SOLO with eMMC low-cost";
->> diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts b/arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts
->> index e119e4c0d4fc..4d38d1698a48 100644
->> --- a/arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts
->> +++ b/arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts
->> @@ -9,6 +9,7 @@
->>   #include <arm/imx6dl.dtsi>
->>   #include "imx6dl.dtsi"
->>   #include "imx6qdl-phytec-phycore-som.dtsi"
->> +#include "imx6qdl-phytec-state.dtsi"
->>   
->>   / {
->>   	model = "PHYTEC phyCORE-i.MX6 Duallite/SOLO with NAND low-cost";
->> diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts b/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
->> index 287d876e41ed..3ad3723d2893 100644
->> --- a/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
->> +++ b/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
->> @@ -14,6 +14,7 @@
->>   #include <arm/imx6dl.dtsi>
->>   #include "imx6dl.dtsi"
->>   #include "imx6qdl-phytec-phycore-som.dtsi"
->> +#include "imx6qdl-phytec-state.dtsi"
->>   
->>   / {
->>   	model = "Phytec phyCORE-i.MX6 Duallite/SOLO with NAND";
->> diff --git a/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts
->> index 94a70389f084..7a86d5b94daf 100644
->> --- a/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts
->> +++ b/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts
->> @@ -14,6 +14,7 @@
->>   #include <arm/imx6q.dtsi>
->>   #include "imx6q.dtsi"
->>   #include "imx6qdl-phytec-phycore-som.dtsi"
->> +#include "imx6qdl-phytec-state.dtsi"
->>   
->>   / {
->>   	model = "Phytec phyCORE-i.MX6 Quad with eMMC";
->> diff --git a/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts b/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts
->> index 6d82ec34d6e5..96d1de224c9e 100644
->> --- a/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts
->> +++ b/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts
->> @@ -14,6 +14,7 @@
->>   #include <arm/imx6q.dtsi>
->>   #include "imx6q.dtsi"
->>   #include "imx6qdl-phytec-phycore-som.dtsi"
->> +#include "imx6qdl-phytec-state.dtsi"
->>   
->>   / {
->>   	model = "Phytec phyCORE-i.MX6 Quad with NAND";
->> diff --git a/arch/arm/dts/imx6qdl-phytec-state.dtsi b/arch/arm/dts/imx6qdl-phytec-state.dtsi
->> new file mode 100644
->> index 000000000000..76aa15f3e2f7
->> --- /dev/null
->> +++ b/arch/arm/dts/imx6qdl-phytec-state.dtsi
->> @@ -0,0 +1,81 @@
->> +// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
->> +/*
->> + * Copyright (C) 2019 PHYTEC Messtechnik GmbH,
->> + * Author: Daniel Schultz <d.schultz@phytec.de>
->> + */
->> +
->> +/ {
->> +	aliases {
->> +		state = &state;
->> +	};
->> +
->> +	state: imx6qdl_phytec_boot_state {
->> +		magic = <0x883b86a6>;
->> +		compatible = "barebox,state";
->> +		backend-type = "raw";
->> +		backend = <&backend_update_eeprom>;
->> +		backend-stridesize = <54>;
-> 
-> In order to be compatible with previous (and possibly future?) userspace
-> implementations, you should also set the backend-storage-type property.
-> We had cases in the past where userspace and barebox defaulted to
-> different storage types and could not understand each other.
-> 
-> (For reference: https://www.barebox.org/doc/2019.06.0/user/state.html )
+Fixes: ddf4cca339 ("commands: Introduce memcpy_parse_options()")
+Reported-by: Peter Mamonov <pmamonov@gmail.com>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ commands/memcmp.c | 3 ++-
+ commands/memcpy.c | 3 ++-
+ include/common.h  | 3 ++-
+ lib/misc.c        | 7 ++++---
+ 4 files changed, 10 insertions(+), 6 deletions(-)
 
-Thank you for the hint. I'll send a v2.
+diff --git a/commands/memcmp.c b/commands/memcmp.c
+index d1c4f5205..76fbe078f 100644
+--- a/commands/memcmp.c
++++ b/commands/memcmp.c
+@@ -42,7 +42,8 @@ static int do_memcmp(int argc, char *argv[])
+ 	int     ret = 1;
+ 	int     offset = 0;
+ 
+-	if (memcpy_parse_options(argc, argv, &sourcefd, &destfd, &count) < 0)
++	if (memcpy_parse_options(argc, argv, &sourcefd, &destfd, &count,
++				 O_RWSIZE_1, O_RDONLY) < 0)
+ 		return 1;
+ 
+ 	buf = xmalloc(RW_BUF_SIZE + RW_BUF_SIZE);
+diff --git a/commands/memcpy.c b/commands/memcpy.c
+index 5f0047f87..b2cea8c09 100644
+--- a/commands/memcpy.c
++++ b/commands/memcpy.c
+@@ -41,7 +41,8 @@ static int do_memcpy(int argc, char *argv[])
+ 	int ret = 0;
+ 	char *buf;
+ 
+-	if (memcpy_parse_options(argc, argv, &sourcefd, &destfd, &count) < 0)
++	if (memcpy_parse_options(argc, argv, &sourcefd, &destfd, &count,
++				 0, O_WRONLY | O_CREAT) < 0)
+ 		return 1;
+ 
+ 	buf = xmalloc(RW_BUF_SIZE);
+diff --git a/include/common.h b/include/common.h
+index b1294978d..a947406e1 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -117,7 +117,8 @@ void shutdown_barebox(void);
+ int mem_parse_options(int argc, char *argv[], char *optstr, int *mode,
+ 		char **sourcefile, char **destfile, int *swab);
+ int memcpy_parse_options(int argc, char *argv[], int *sourcefd,
+-			 int *destfd, loff_t *count);
++			 int *destfd, loff_t *count,
++			 int rwsize, int destmode);
+ #define RW_BUF_SIZE	(unsigned)4096
+ 
+ extern const char version_string[];
+diff --git a/lib/misc.c b/lib/misc.c
+index 18153bb4d..7add1fe3b 100644
+--- a/lib/misc.c
++++ b/lib/misc.c
+@@ -173,10 +173,11 @@ int mem_parse_options(int argc, char *argv[], char *optstr, int *mode,
+ }
+ 
+ int memcpy_parse_options(int argc, char *argv[], int *sourcefd,
+-			 int *destfd, loff_t *count)
++			 int *destfd, loff_t *count,
++			 int rwsize, int destmode)
+ {
+ 	loff_t dest, src;
+-	int mode = 0;
++	int mode = rwsize;
+ 	char *sourcefile = NULL;
+ 	char *destfile = NULL;
+ 	struct  stat statbuf;
+@@ -212,7 +213,7 @@ int memcpy_parse_options(int argc, char *argv[], int *sourcefd,
+ 	if (*sourcefd < 0)
+ 		return -1;
+ 
+-	*destfd = open_and_lseek(destfile, O_WRONLY | O_CREAT | mode, dest);
++	*destfd = open_and_lseek(destfile, mode | destmode, dest);
+ 	if (*destfd < 0) {
+ 		close(*sourcefd);
+ 		return -1;
+-- 
+2.21.0
 
-Stefan
-
-> 
->   - Roland
-> 
->> +
->> +		#address-cells = <1>;
->> +		#size-cells = <1>;
->> +		bootstate {
->> +			#address-cells = <1>;
->> +			#size-cells = <1>;
->> +			last_chosen {
->> +				reg = <0x0 0x4>;
->> +				type = "uint32";
->> +			};
->> +			system0 {
->> +				#address-cells = <1>;
->> +				#size-cells = <1>;
->> +				remaining_attempts {
->> +					reg = <0x4 0x4>;
->> +					type = "uint32";
->> +					default = <3>;
->> +				};
->> +				priority {
->> +					reg = <0x8 0x4>;
->> +					type = "uint32";
->> +					default = <21>;
->> +				};
->> +				ok {
->> +					reg = <0xc 0x4>;
->> +					type = "uint32";
->> +					default = <0>;
->> +				};
->> +			};
->> +			system1 {
->> +				#address-cells = <1>;
->> +				#size-cells = <1>;
->> +				remaining_attempts {
->> +					reg = <0x10 0x4>;
->> +					type = "uint32";
->> +					default = <3>;
->> +				};
->> +				priority {
->> +					reg = <0x14 0x4>;
->> +					type = "uint32";
->> +					default = <20>;
->> +				};
->> +				ok {
->> +					reg = <0x18 0x4>;
->> +					type = "uint32";
->> +					default = <0>;
->> +				};
->> +			};
->> +		};
->> +	};
->> +};
->> +
->> +&eeprom {
->> +	status = "okay";
->> +	partitions {
->> +		compatible = "fixed-partitions";
->> +		#size-cells = <1>;
->> +		#address-cells = <1>;
->> +		backend_update_eeprom: state@0 {
->> +			reg = <0x0 0x100>;
->> +			label = "update-eeprom";
->> +		};
->> +	};
->> +};
->> -- 
->> 2.7.4
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
-> 
 
 _______________________________________________
 barebox mailing list
