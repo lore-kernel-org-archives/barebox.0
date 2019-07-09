@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+Received: from mail-io1-xd31.google.com ([2607:f8b0:4864:20::d31])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hj523-00032v-NM
- for barebox@lists.infradead.org; Thu, 04 Jul 2019 16:56:28 +0000
-Received: by mail-lj1-x232.google.com with SMTP id v18so6734351ljh.6
- for <barebox@lists.infradead.org>; Thu, 04 Jul 2019 09:56:24 -0700 (PDT)
-Date: Thu, 4 Jul 2019 19:56:17 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20190704165617.cvdb34k5mi35jtwa@localhost.localdomain>
+ id 1hkiTh-0002Yy-OB
+ for barebox@lists.infradead.org; Tue, 09 Jul 2019 05:15:46 +0000
+Received: by mail-io1-xd31.google.com with SMTP id f4so24941981ioh.6
+ for <barebox@lists.infradead.org>; Mon, 08 Jul 2019 22:15:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
+References: <20190704165617.cvdb34k5mi35jtwa@localhost.localdomain>
+In-Reply-To: <20190704165617.cvdb34k5mi35jtwa@localhost.localdomain>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 8 Jul 2019 22:15:32 -0700
+Message-ID: <CAHQ1cqF+ort2dL7j1vj4UasQ--fecV3Whq40Wvi0Zq_2n9tCjw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,19 +23,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: memcmp command is broken
-To: andrew.smirnov@gmail.com, barebox@lists.infradead.org
+Subject: Re: memcmp command is broken
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi, Andrey,
+On Thu, Jul 4, 2019 at 9:56 AM Peter Mamonov <pmamonov@gmail.com> wrote:
+>
+> Hi, Andrey,
+>
+> Current `memcmp` command implementation is broken and fails with the error
+> message "read: Bad file number" when calls `read_full(destfd, ...)`. Guess this
+> is because `memcpy_parse_options()` opens `destfd` with `O_WRONLY` flag. Anyway
+> reverting "ddf4cca339 commands: Introduce memcpy_parse_options()" fixes the
+> problem.
+>
 
-Current `memcmp` command implementation is broken and fails with the error 
-message "read: Bad file number" when calls `read_full(destfd, ...)`. Guess this 
-is because `memcpy_parse_options()` opens `destfd` with `O_WRONLY` flag. Anyway 
-reverting "ddf4cca339 commands: Introduce memcpy_parse_options()" fixes the 
-problem.
+Yeah, you are right, sorry about that. I'll submit a fix shortly.
 
-Regards,
-Peter
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
