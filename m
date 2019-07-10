@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hlIvz-0003hq-Am
+ id 1hlIvz-0003hm-Ak
  for barebox@lists.infradead.org; Wed, 10 Jul 2019 20:11:26 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1hlIvx-00064d-61
+ (envelope-from <afa@pengutronix.de>) id 1hlIvx-00064a-61
  for barebox@lists.infradead.org; Wed, 10 Jul 2019 22:11:21 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1hlIvu-0001sy-Kn
+ (envelope-from <afa@pengutronix.de>) id 1hlIvu-0001sn-J0
  for barebox@lists.infradead.org; Wed, 10 Jul 2019 22:11:18 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 10 Jul 2019 22:11:12 +0200
-Message-Id: <20190710201112.9086-7-a.fatoum@pengutronix.de>
+Date: Wed, 10 Jul 2019 22:11:09 +0200
+Message-Id: <20190710201112.9086-4-a.fatoum@pengutronix.de>
 In-Reply-To: <20190710201112.9086-1-a.fatoum@pengutronix.de>
 References: <20190710201112.9086-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -29,275 +29,159 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] watchdog: add support for STPMIC1 integrated watchdog
+Subject: [PATCH 4/7] reset: add reset controller driver for STM32 RCC
 To: barebox@lists.infradead.org
 
-The driver adds support for the PMIC's watchdog, reset, poweroff
-and reset reason query capabilities.
+On the STM32MP, reset of the I2C, SPI and USB IPs occurs over the RCC.
+This driver adds support for the controller, so it may be reused by
+other drivers.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/watchdog/Kconfig       |   7 ++
- drivers/watchdog/Makefile      |   1 +
- drivers/watchdog/stpmic1_wdt.c | 224 +++++++++++++++++++++++++++++++++
- 3 files changed, 232 insertions(+)
- create mode 100644 drivers/watchdog/stpmic1_wdt.c
+ drivers/reset/Kconfig       |   5 ++
+ drivers/reset/Makefile      |   1 +
+ drivers/reset/reset-stm32.c | 109 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 115 insertions(+)
+ create mode 100644 drivers/reset/reset-stm32.c
 
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index 486ef784eb79..fbaab896d460 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -89,4 +89,11 @@ config STM32_IWDG_WATCHDOG
+diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
+index caf1dc9acb44..048f2081f82a 100644
+--- a/drivers/reset/Kconfig
++++ b/drivers/reset/Kconfig
+@@ -21,4 +21,9 @@ config RESET_IMX7
  	help
- 	  Enable to support configuration of the STM32's on-SoC IWDG watchdog.
- 	  Once started by the user, the IWDG can't be disabled.
-+
-+config STPMIC1_WATCHDOG
-+	bool "STPMIC1 Watchdog"
-+	depends on MFD_STPMIC1
+ 	  This enables the reset controller driver for i.MX7 SoCs.
+ 
++config RESET_STM32
++	bool "STM32 Reset Driver"
 +	help
-+	  Enable to support configuration of the stpmic1's built-in watchdog.
++	  This enables the reset controller driver for STM32MP and STM32 MCUs.
 +
  endif
-diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-index e731c632c9aa..1fbd780885cb 100644
---- a/drivers/watchdog/Makefile
-+++ b/drivers/watchdog/Makefile
-@@ -12,3 +12,4 @@ obj-$(CONFIG_WATCHDOG_ORION) += orion_wdt.o
- obj-$(CONFIG_ARCH_BCM283X) += bcm2835_wdt.o
- obj-$(CONFIG_RAVE_SP_WATCHDOG) += rave-sp-wdt.o
- obj-$(CONFIG_STM32_IWDG_WATCHDOG) += stm32_iwdg.o
-+obj-$(CONFIG_STPMIC1_WATCHDOG) += stpmic1_wdt.o
-diff --git a/drivers/watchdog/stpmic1_wdt.c b/drivers/watchdog/stpmic1_wdt.c
+diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
+index 0b55caa20445..8460c4b154f5 100644
+--- a/drivers/reset/Makefile
++++ b/drivers/reset/Makefile
+@@ -1,3 +1,4 @@
+ obj-$(CONFIG_RESET_CONTROLLER) += core.o
+ obj-$(CONFIG_ARCH_SOCFPGA) += reset-socfpga.o
+ obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
++obj-$(CONFIG_RESET_STM32) += reset-stm32.o
+diff --git a/drivers/reset/reset-stm32.c b/drivers/reset/reset-stm32.c
 new file mode 100644
-index 000000000000..9b37a5ae3b92
+index 000000000000..ff66fe310e1a
 --- /dev/null
-+++ b/drivers/watchdog/stpmic1_wdt.c
-@@ -0,0 +1,224 @@
-+// SPDX-License-Identifier: GPL-2.0+ OR BSD-3-Clause
++++ b/drivers/reset/reset-stm32.c
+@@ -0,0 +1,109 @@
++// SPDX-License-Identifier: GPL-2.0+
 +/*
-+ * Copyright (C) 2018, STMicroelectronics - All Rights Reserved
++ * Copyright (C) 2017, STMicroelectronics - All Rights Reserved
++ * Copyright (C) 2019, Ahmad Fatoum, Pengutronix
++ * Author(s): Patrice Chotard, <patrice.chotard@st.com> for STMicroelectronics.
 + */
 +
 +#include <common.h>
 +#include <init.h>
-+#include <watchdog.h>
++#include <linux/err.h>
++#include <linux/reset-controller.h>
 +#include <asm/io.h>
-+#include <of_device.h>
-+#include <linux/iopoll.h>
-+#include <poweroff.h>
-+#include <mfd/syscon.h>
-+#include <restart.h>
-+#include <reset_source.h>
 +
-+#define RESTART_SR		0x05
-+#define MAIN_CR			0x10
-+#define WCHDG_CR		0x1B
-+#define WCHDG_TIMER_CR		0x1C
++#define RCC_CL 0x4
 +
-+/* Restart Status Register (RESTART_SR) */
-+#define R_RST			BIT(0)
-+#define R_SWOFF			BIT(1)
-+#define R_WDG			BIT(2)
-+#define R_PKEYLKP		BIT(3)
-+#define R_VINOK_FA		BIT(4)
-+
-+/* Main PMIC Control Register (MAIN_CR) */
-+#define SWOFF                   BIT(0)
-+#define RREQ_EN                 BIT(1)
-+
-+/* Watchdog Control Register (WCHDG_CR) */
-+#define WDT_START		BIT(0)
-+#define WDT_PING		BIT(1)
-+#define WDT_START_MASK		BIT(0)
-+#define WDT_PING_MASK		BIT(1)
-+#define WDT_STOP		0
-+
-+#define PMIC_WDT_MIN_TIMEOUT 1
-+#define PMIC_WDT_MAX_TIMEOUT 256
-+#define PMIC_WDT_DEFAULT_TIMEOUT 30
-+
-+
-+struct stpmic1_reset_reason {
-+	uint32_t mask;
-+	enum reset_src_type type;
-+	int instance;
++struct stm32_reset {
++	void __iomem *base;
++	struct reset_controller_dev rcdev;
++	void (*reset)(void __iomem *reg, unsigned offset, bool assert);
 +};
 +
-+struct stpmic1_wdt {
-+	struct watchdog wdd;
-+	struct restart_handler restart;
-+	struct poweroff_handler poweroff;
-+	struct regmap *regmap;
-+	unsigned int timeout;
-+};
-+
-+static inline struct stpmic1_wdt *to_stpmic1_wdt(struct watchdog *wdd)
++static struct stm32_reset *to_stm32_reset(struct reset_controller_dev *rcdev)
 +{
-+	return container_of(wdd, struct stpmic1_wdt, wdd);
++	return container_of(rcdev, struct stm32_reset, rcdev);
 +}
 +
-+static int stpmic1_wdt_ping(struct regmap *regmap)
++static void stm32mp_reset(void __iomem *reg, unsigned offset, bool assert)
 +{
-+	return regmap_update_bits(regmap, WCHDG_CR, WDT_PING_MASK, WDT_PING);
++	if (assert)
++		offset += RCC_CL;
++
++	writel(BIT(offset), reg);
 +}
 +
-+static int stpmic1_wdt_start(struct regmap *regmap, unsigned int timeout)
++static void stm32mcu_reset(void __iomem *reg, unsigned offset, bool assert)
 +{
-+	int ret = regmap_write(regmap, WCHDG_TIMER_CR, timeout - 1);
-+	if (ret)
-+		return ret;
-+
-+	return regmap_update_bits(regmap, WCHDG_CR, WDT_START_MASK, WDT_START);
++	if (assert)
++		setbits_le32(reg, BIT(offset));
++	else
++		clrbits_le32(reg, BIT(offset));
 +}
 +
-+static int stpmic1_wdt_stop(struct regmap *regmap)
++static void stm32_reset(struct stm32_reset *priv, unsigned long id, bool assert)
 +{
-+	return regmap_update_bits(regmap, WCHDG_CR, WDT_START_MASK, WDT_STOP);
++	int bank = (id / BITS_PER_LONG) * 4;
++	int offset = id % BITS_PER_LONG;
++
++	priv->reset(priv->base + bank, offset, assert);
 +}
 +
-+static int stpmic1_wdt_set_timeout(struct watchdog *wdd, unsigned int timeout)
++static int stm32_reset_assert(struct reset_controller_dev *rcdev,
++			      unsigned long id)
 +{
-+	struct stpmic1_wdt *wdt = to_stpmic1_wdt(wdd);
-+	int ret;
-+
-+	if (!timeout)
-+		return stpmic1_wdt_stop(wdt->regmap);
-+
-+	if (timeout < PMIC_WDT_MIN_TIMEOUT || timeout > wdd->timeout_max)
-+		return -EINVAL;
-+
-+	if (wdt->timeout == timeout)
-+		return stpmic1_wdt_ping(wdt->regmap);
-+
-+	ret = stpmic1_wdt_start(wdt->regmap, timeout);
-+	if (ret)
-+		return ret;
-+
-+	wdt->timeout = timeout;
++	stm32_reset(to_stm32_reset(rcdev), id, true);
 +	return 0;
 +}
 +
-+static void __noreturn stpmic1_restart_handler(struct restart_handler *rst)
++static int stm32_reset_deassert(struct reset_controller_dev *rcdev,
++				unsigned long id)
 +{
-+	struct stpmic1_wdt *wdt = container_of(rst, struct stpmic1_wdt, restart);
-+
-+	regmap_write_bits(wdt->regmap, MAIN_CR,
-+			  SWOFF | RREQ_EN, SWOFF | RREQ_EN);
-+
-+	mdelay(1000);
-+	hang();
-+}
-+
-+static void __noreturn stpmic1_poweroff(struct poweroff_handler *handler)
-+{
-+	struct stpmic1_wdt *wdt = container_of(handler, struct stpmic1_wdt, poweroff);
-+
-+	shutdown_barebox();
-+
-+	regmap_write_bits(wdt->regmap, MAIN_CR,
-+			  SWOFF | RREQ_EN, SWOFF);
-+
-+	mdelay(1000);
-+	hang();
-+}
-+
-+static const struct stpmic1_reset_reason stpmic1_reset_reasons[] = {
-+	{ R_VINOK_FA,	RESET_BROWNOUT, 0 },
-+	{ R_PKEYLKP,	RESET_EXT, 0 },
-+	{ R_WDG,	RESET_WDG, 2 },
-+	{ R_SWOFF,	RESET_RST, 0 },
-+	{ R_RST,	RESET_EXT, 0 },
-+	{ /* sentinel */ }
-+};
-+
-+static int stpmic1_set_reset_reason(struct regmap *map)
-+{
-+	enum reset_src_type type = RESET_POR;
-+	u32 reg;
-+	int ret;
-+	int i, instance = 0;
-+
-+	ret = regmap_read(map, RESTART_SR, &reg);
-+	if (ret)
-+		return ret;
-+
-+	for (i = 0; stpmic1_reset_reasons[i].mask; i++) {
-+		if (reg & stpmic1_reset_reasons[i].mask) {
-+			type     = stpmic1_reset_reasons[i].type;
-+			instance = stpmic1_reset_reasons[i].instance;
-+			break;
-+		}
-+	}
-+
-+	reset_source_set_priority(type, 400);
-+	reset_source_set_instance(type, instance);
-+
-+	pr_info("STPMIC1 reset reason %s (RESTART_SR: 0x%08x)\n",
-+		reset_source_name(), reg);
-+
++	stm32_reset(to_stm32_reset(rcdev), id, false);
 +	return 0;
 +}
 +
-+static int stpmic1_wdt_probe(struct device_d *dev)
++static const struct reset_control_ops stm32_reset_ops = {
++	.assert		= stm32_reset_assert,
++	.deassert	= stm32_reset_deassert,
++};
++
++static int stm32_reset_probe(struct device_d *dev)
 +{
-+	struct stpmic1_wdt *wdt;
-+	struct watchdog *wdd;
++	struct stm32_reset *priv;
++	struct resource *iores;
 +	int ret;
 +
-+	wdt = xzalloc(sizeof(*wdt));
-+	wdt->regmap = dev->parent->priv;
-+
-+	wdd = &wdt->wdd;
-+	wdd->hwdev = dev;
-+	wdd->set_timeout = stpmic1_wdt_set_timeout;
-+	wdd->timeout_max = PMIC_WDT_MAX_TIMEOUT;
-+	wdd->timeout_cur = PMIC_WDT_DEFAULT_TIMEOUT;
-+
-+	/* have the watchdog reset, not power-off the system */
-+	regmap_write_bits(wdt->regmap, MAIN_CR, RREQ_EN, RREQ_EN);
-+
-+	ret = watchdog_register(wdd);
-+	if (ret) {
-+		dev_err(dev, "Failed to register watchdog device\n");
++	priv = xzalloc(sizeof(*priv));
++	ret = dev_get_drvdata(dev, (const void **)&priv->reset);
++	if (ret)
 +		return ret;
-+	}
 +
-+	wdt->restart.name = "stpmic1-reset";
-+	wdt->restart.restart = stpmic1_restart_handler;
-+	wdt->restart.priority = 300;
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
 +
-+	ret = restart_handler_register(&wdt->restart);
-+	if (ret)
-+		dev_warn(dev, "Cannot register restart handler\n");
++	priv->base = IOMEM(iores->start);
++	priv->rcdev.nr_resets = (iores->end - iores->start) * BITS_PER_BYTE;
++	priv->rcdev.ops = &stm32_reset_ops;
++	priv->rcdev.of_node = dev->device_node;
 +
-+	wdt->poweroff.name = "stpmic1-poweroff";
-+	wdt->poweroff.poweroff = stpmic1_poweroff;
-+	wdt->poweroff.priority = 200;
-+
-+	ret = poweroff_handler_register(&wdt->poweroff);
-+	if (ret)
-+		dev_warn(dev, "Cannot register poweroff handler\n");
-+
-+	stpmic1_set_reset_reason(wdt->regmap);
-+	if (ret)
-+		dev_warn(dev, "Cannot query reset reason\n");
-+
-+	dev_info(dev, "probed\n");
-+	return 0;
++	return reset_controller_register(&priv->rcdev);
 +}
 +
-+static __maybe_unused const struct of_device_id stpmic1_wdt_of_match[] = {
-+	{ .compatible = "st,stpmic1-wdt" },
-+	{ /* sentinel */ }
++static const struct of_device_id stm32_rcc_reset_dt_ids[] = {
++	{ .compatible = "st,stm32mp1-rcc", .data = stm32mp_reset },
++	{ .compatible = "st,stm32-rcc", .data = stm32mcu_reset },
++	{ /* sentinel */ },
 +};
 +
-+static struct driver_d stpmic1_wdt_driver = {
-+	.name  = "stpmic1-wdt",
-+	.probe = stpmic1_wdt_probe,
-+	.of_compatible = DRV_OF_COMPAT(stpmic1_wdt_of_match),
++static struct driver_d stm32_rcc_reset_driver = {
++	.name = "stm32_rcc_reset",
++	.probe = stm32_reset_probe,
++	.of_compatible = DRV_OF_COMPAT(stm32_rcc_reset_dt_ids),
 +};
-+device_platform_driver(stpmic1_wdt_driver);
++
++static int stm32_rcc_reset_init(void)
++{
++	return platform_driver_register(&stm32_rcc_reset_driver);
++}
++postcore_initcall(stm32_rcc_reset_init);
 -- 
 2.20.1
 
