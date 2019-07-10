@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtp (Exim 4.92 #3 (Red Hat Linux))
- id 1hlAbX-00051p-JG
- for barebox@lists.infradead.org; Wed, 10 Jul 2019 11:17:45 +0000
+ id 1hlAbZ-00051p-MQ
+ for barebox@lists.infradead.org; Wed, 10 Jul 2019 11:17:47 +0000
 From: Stefan Riedmueller <s.riedmueller@phytec.de>
-Date: Wed, 10 Jul 2019 13:17:31 +0200
-Message-Id: <1562757455-445159-4-git-send-email-s.riedmueller@phytec.de>
+Date: Wed, 10 Jul 2019 13:17:33 +0200
+Message-Id: <1562757455-445159-6-git-send-email-s.riedmueller@phytec.de>
 In-Reply-To: <1562757455-445159-1-git-send-email-s.riedmueller@phytec.de>
 References: <1562757455-445159-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,161 +21,132 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/8] ARM: dts: imx6ul: phycore: Add state framework
+Subject: [PATCH v2 6/8] ARM: phytec-som-imx: imx6ul: Add eMMC support
 To: barebox@lists.infradead.org
-Cc: Daniel Schultz <d.schultz@phytec.de>
 
-From: Daniel Schultz <d.schultz@phytec.de>
+Add initial support for phyCORE-i.MX 6UL/ULL with eMMC. Including board
+code and default environment.
 
-Add the state framework with EEPROM backend.
-
-Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 ---
-Changes in v2:
- - Added backend-storage-type
- - Added missing Signed-off-by
+No changes in v2
 ---
- arch/arm/dts/imx6ul-phytec-phycore-som.dts  |  5 ++
- arch/arm/dts/imx6ul-phytec-state.dtsi       | 82 +++++++++++++++++++++++++++++
- arch/arm/dts/imx6ull-phytec-phycore-som.dts |  5 ++
- 3 files changed, 92 insertions(+)
- create mode 100644 arch/arm/dts/imx6ul-phytec-state.dtsi
+ arch/arm/boards/phytec-som-imx6/board.c                | 18 +++++++++++++++---
+ .../defaultenv-physom-imx6ul-phycore/boot/emmc         |  5 +++++
+ .../defaultenv-physom-imx6ul-phycore/boot/mmc          |  5 +++++
+ .../defaultenv-physom-imx6ul-phycore/init/automount    |  5 +++++
+ .../defaultenv-physom-imx6ul-phycore/init/bootsource   | 17 +++++++++++++++++
+ 5 files changed, 47 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6ul-phycore/boot/emmc
+ create mode 100644 arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6ul-phycore/boot/mmc
+ create mode 100644 arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6ul-phycore/init/bootsource
 
-diff --git a/arch/arm/dts/imx6ul-phytec-phycore-som.dts b/arch/arm/dts/imx6ul-phytec-phycore-som.dts
-index 6d1876702d1b..11418ea7f038 100644
---- a/arch/arm/dts/imx6ul-phytec-phycore-som.dts
-+++ b/arch/arm/dts/imx6ul-phytec-phycore-som.dts
-@@ -14,6 +14,7 @@
+diff --git a/arch/arm/boards/phytec-som-imx6/board.c b/arch/arm/boards/phytec-som-imx6/board.c
+index cf50ad99b2fc..730115702bb0 100644
+--- a/arch/arm/boards/phytec-som-imx6/board.c
++++ b/arch/arm/boards/phytec-som-imx6/board.c
+@@ -190,7 +190,8 @@ static int physom_imx6_devices_init(void)
+ 		default_environment_path = "/chosen/environment-spinor";
+ 		default_envdev = "SPI NOR flash";
  
- #include <arm/imx6ul.dtsi>
- #include "imx6ul-phytec-phycore-som.dtsi"
-+#include "imx6ul-phytec-state.dtsi"
+-	} else if (of_machine_is_compatible("phytec,imx6ul-pcl063-nand")) {
++	} else if (of_machine_is_compatible("phytec,imx6ul-pcl063-nand")
++		|| of_machine_is_compatible("phytec,imx6ul-pcl063-emmc")) {
+ 		barebox_set_hostname("phyCORE-i.MX6UL");
+ 		default_environment_path = "/chosen/environment-nand";
+ 		default_envdev = "NAND flash";
+@@ -236,6 +237,10 @@ static int physom_imx6_devices_init(void)
+ 		imx6_bbu_internal_mmc_register_handler("mmc3",
+ 						"/dev/mmc3",
+ 						BBU_HANDLER_FLAG_DEFAULT);
++	} else if (of_machine_is_compatible("phytec,imx6ul-pcl063-emmc")) {
++		imx6_bbu_internal_mmc_register_handler("mmc1",
++						"/dev/mmc1",
++						BBU_HANDLER_FLAG_DEFAULT);
+ 	} else {
+ 		imx6_bbu_nand_register_handler("nand", BBU_HANDLER_FLAG_DEFAULT);
+ 	}
+@@ -243,13 +248,20 @@ static int physom_imx6_devices_init(void)
+ 	defaultenv_append_directory(defaultenv_physom_imx6);
  
- / {
- 	model = "Phytec phyCORE-i.MX6 Ultra Lite SOM";
-@@ -32,6 +33,10 @@
- 	status = "okay";
- };
+ 	/* Overwrite file /env/init/automount */
+-	if (of_machine_is_compatible("phytec,imx6qp-pcm058-nand")
++	if (of_machine_is_compatible("phytec,imx6q-pfla02")
++		|| of_machine_is_compatible("phytec,imx6dl-pfla02")
++		|| of_machine_is_compatible("phytec,imx6s-pfla02")
++		|| of_machine_is_compatible("phytec,imx6q-pcaaxl3")) {
++		defaultenv_append_directory(defaultenv_physom_imx6);
++	} else if (of_machine_is_compatible("phytec,imx6qp-pcm058-nand")
+ 		|| of_machine_is_compatible("phytec,imx6q-pcm058-nand")
+ 		|| of_machine_is_compatible("phytec,imx6q-pcm058-emmc")
+ 		|| of_machine_is_compatible("phytec,imx6dl-pcm058-nand")
+ 		|| of_machine_is_compatible("phytec,imx6dl-pcm058-emmc")) {
++		defaultenv_append_directory(defaultenv_physom_imx6);
+ 		defaultenv_append_directory(defaultenv_physom_imx6_phycore);
+-	} else if (of_machine_is_compatible("phytec,imx6ul-pcl063-nand")) {
++	} else if (of_machine_is_compatible("phytec,imx6ul-pcl063-nand")
++		|| of_machine_is_compatible("phytec,imx6ul-pcl063-emmc")) {
+ 		defaultenv_append_directory(defaultenv_physom_imx6ul_phycore);
+ 	}
  
-+&state {
-+	status = "okay";
-+};
-+
- &uart1 {
- 	status = "okay";
- };
-diff --git a/arch/arm/dts/imx6ul-phytec-state.dtsi b/arch/arm/dts/imx6ul-phytec-state.dtsi
+diff --git a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6ul-phycore/boot/emmc b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6ul-phycore/boot/emmc
 new file mode 100644
-index 000000000000..78a32ed96b03
+index 000000000000..15cba6f5ac1b
 --- /dev/null
-+++ b/arch/arm/dts/imx6ul-phytec-state.dtsi
-@@ -0,0 +1,82 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (C) 2019 PHYTEC Messtechnik GmbH,
-+ * Author: Stefan Riedmueller <s.riedmueller@phytec.de>
-+ */
++++ b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6ul-phycore/boot/emmc
+@@ -0,0 +1,5 @@
++#!/bin/sh
 +
-+/ {
-+	aliases {
-+		state = &state;
-+	};
++global.bootm.image="/mnt/emmc/zImage"
++global.bootm.oftree="/mnt/emmc/oftree"
++global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='discard,data=journal'"
+diff --git a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6ul-phycore/boot/mmc b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6ul-phycore/boot/mmc
+new file mode 100644
+index 000000000000..8de2efa997d9
+--- /dev/null
++++ b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6ul-phycore/boot/mmc
+@@ -0,0 +1,5 @@
++#!/bin/sh
 +
-+	state: imx6ul_phytec_boot_state {
-+		magic = <0x883b86a6>;
-+		compatible = "barebox,state";
-+		backend-type = "raw";
-+		backend = <&backend_update_eeprom>;
-+		backend-storage-type = "direct";
-+		backend-stridesize = <54>;
-+		status = "disabled";
-+
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		bootstate {
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			last_chosen {
-+				reg = <0x0 0x4>;
-+				type = "uint32";
-+			};
-+			system0 {
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+				remaining_attempts {
-+					reg = <0x4 0x4>;
-+					type = "uint32";
-+					default = <3>;
-+				};
-+				priority {
-+					reg = <0x8 0x4>;
-+					type = "uint32";
-+					default = <21>;
-+				};
-+				ok {
-+					reg = <0xc 0x4>;
-+					type = "uint32";
-+					default = <0>;
-+				};
-+			};
-+			system1 {
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+				remaining_attempts {
-+					reg = <0x10 0x4>;
-+					type = "uint32";
-+					default = <3>;
-+				};
-+				priority {
-+					reg = <0x14 0x4>;
-+					type = "uint32";
-+					default = <20>;
-+				};
-+				ok {
-+					reg = <0x18 0x4>;
-+					type = "uint32";
-+					default = <0>;
-+				};
-+			};
-+		};
-+	};
-+};
-+
-+&eeprom {
-+	partitions {
-+		compatible = "fixed-partitions";
-+		#size-cells = <1>;
-+		#address-cells = <1>;
-+		backend_update_eeprom: state@0 {
-+			reg = <0x0 0x100>;
-+			label = "update-eeprom";
-+		};
-+	};
-+};
-diff --git a/arch/arm/dts/imx6ull-phytec-phycore-som.dts b/arch/arm/dts/imx6ull-phytec-phycore-som.dts
-index 4d73010131ee..86f43a4632a7 100644
---- a/arch/arm/dts/imx6ull-phytec-phycore-som.dts
-+++ b/arch/arm/dts/imx6ull-phytec-phycore-som.dts
-@@ -14,6 +14,7 @@
++global.bootm.image="/mnt/mmc/zImage"
++global.bootm.oftree="/mnt/mmc/oftree"
++global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
+diff --git a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6ul-phycore/init/automount b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6ul-phycore/init/automount
+index 71d9086582d0..36759de7c679 100644
+--- a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6ul-phycore/init/automount
++++ b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6ul-phycore/init/automount
+@@ -7,3 +7,8 @@ automount /mnt/tftp 'ifup eth0 && mount -t tftp $eth0.serverip /mnt/tftp'
  
- #include <arm/imx6ull.dtsi>
- #include "imx6ul-phytec-phycore-som.dtsi"
-+#include "imx6ul-phytec-state.dtsi"
- 
- / {
- 	model = "Phytec phyCORE-i.MX6 ULL SOM";
-@@ -32,6 +33,10 @@
- 	status = "okay";
- };
- 
-+&state {
-+	status = "okay";
-+};
+ mkdir -p /mnt/mmc
+ automount -d /mnt/mmc 'mmc0.probe=1 && [ -e /dev/mmc0.0 ] && mount /dev/mmc0.0 /mnt/mmc'
 +
- &uart1 {
- 	status = "okay";
- };
++if [ -e /dev/mmc1 ]; then
++	mkdir -p /mnt/emmc
++	automount -d /mnt/emmc 'mmc1.probe=1 && [ -e /dev/mmc1.0 ] && mount /dev/mmc1.0 /mnt/emmc'
++fi
+diff --git a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6ul-phycore/init/bootsource b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6ul-phycore/init/bootsource
+new file mode 100644
+index 000000000000..beb7afe9c28e
+--- /dev/null
++++ b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6ul-phycore/init/bootsource
+@@ -0,0 +1,17 @@
++#!/bin/sh
++
++if [ -n "$nv.boot.default" ]; then
++	exit
++fi
++
++if [ $bootsource = mmc ]; then
++	if [ $bootsource_instance = 0 ]; then
++		global.boot.default="mmc emmc nand spi net"
++	elif [ $bootsource_instance = 1 ]; then
++		global.boot.default="emmc mmc nand spi net"
++	fi
++elif [ $bootsource = nand ]; then
++	global.boot.default="nand spi mmc net"
++elif [ $bootsource = net ]; then
++	global.boot.default="net nand spi mmc"
++fi
 -- 
 2.7.4
 
