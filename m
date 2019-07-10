@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hknBs-00031E-09
- for barebox@lists.infradead.org; Tue, 09 Jul 2019 10:17:41 +0000
-Date: Tue, 9 Jul 2019 12:17:37 +0200
+ id 1hl73f-0006el-CF
+ for barebox@lists.infradead.org; Wed, 10 Jul 2019 07:30:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190709101737.bypvzrpuqqiyspy5@pengutronix.de>
-References: <20190708132647.25324-1-a.fatoum@pengutronix.de>
+Date: Wed, 10 Jul 2019 09:30:28 +0200
+Message-Id: <20190710073028.1387-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190708132647.25324-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +19,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] pinctrl: stm32: add debug output in set_state callback
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] net: cpsw: adopt to upstream device tree changes
+To: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Jul 08, 2019 at 03:26:46PM +0200, Ahmad Fatoum wrote:
-> There's already a debug output whenever a pin is configured, extend this
-> by printing a "header" with the node name and how many pins configurations
-> will follow.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/pinctrl/pinctrl-stm32.c | 3 +++
->  1 file changed, 3 insertions(+)
+Upstream device trees no longer have a "cpsw-phy-sel" property to find
+the phy_sel register, instead they have a child device of the pinctrl
+node compatible to "ti,am3352-phy-gmii-sel". Also the "rmii-clock-ext"
+property is no longer global to the cpsw but instead can be selected
+per slave. To adopt to these changes take the short way out for now
+and find the new node by its compatible and hardcode the "rmii-clock-ext"
+setting (which is set to true in am33xx-l4.dtsi and not overwritten
+by any board).
 
-Applied, thanks
+This makes the cpsw driver work again. Tested on Beaglebone black
+board.
 
-Sascha
+Fixes: 1dc748b3b2 ("dts: update to v5.1-rc1")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/net/cpsw.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
+diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
+index 65f71c6fce..df8981d02e 100644
+--- a/drivers/net/cpsw.c
++++ b/drivers/net/cpsw.c
+@@ -993,8 +993,13 @@ static int cpsw_phy_sel_init(struct cpsw_priv *priv, struct device_node *np)
+ 
+ 	phy_sel_addr = (void *)addr;
+ 
+-	if (of_property_read_bool(np, "rmii-clock-ext"))
+-		rmii_clock_external = true;
++	/*
++	 * As of Linux-5.1 this is set to true in am33xx-l4.dtsi and not
++	 * overwritten by any board. This is set to false in am437x-l4.dtsi
++	 * though, so once we support this SoC we have to configure this from
++	 * the device tree.
++	 */
++	rmii_clock_external = true;
+ 
+ 	return 0;
+ }
+@@ -1062,11 +1067,10 @@ static int cpsw_probe_dt(struct cpsw_priv *priv)
+ 
+ 	priv->slaves = xzalloc(sizeof(struct cpsw_slave) * priv->num_slaves);
+ 
+-	physel = of_parse_phandle(dev->device_node, "cpsw-phy-sel", 0);
++	physel = of_find_compatible_node(NULL, NULL, "ti,am3352-phy-gmii-sel");
+ 	if (!physel) {
+-		physel = of_get_child_by_name(dev->device_node, "cpsw-phy-sel");
+-		if (!physel)
+-			dev_err(dev, "Phy mode node not found\n");
++		dev_err(dev, "Cannot find ti,am3352-phy-gmii-sel node\n");
++		return -EINVAL;
+ 	}
+ 	ret = cpsw_phy_sel_init(priv, physel);
+ 	if (ret)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
