@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hkmhu-0001Yv-Fg
- for barebox@lists.infradead.org; Tue, 09 Jul 2019 09:46:43 +0000
-Date: Tue, 9 Jul 2019 11:46:40 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190709094640.n2hrjjed5ghywsea@pengutronix.de>
+ id 1hlZ9K-00041K-Fo
+ for barebox@lists.infradead.org; Thu, 11 Jul 2019 13:30:17 +0000
+From: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+Date: Thu, 11 Jul 2019 13:30:09 +0000
+Message-ID: <70da4cd2-8c3a-55f4-711a-024d7f094939@data-modul.com>
 References: <14d5d82d-ddb0-89e2-84c0-00cb980dda2a@data-modul.com>
+ <20190709094640.n2hrjjed5ghywsea@pengutronix.de>
+In-Reply-To: <20190709094640.n2hrjjed5ghywsea@pengutronix.de>
+Content-Language: de-DE
+Content-ID: <6F2437BA5210AE46B1F0454977A93968@data-modul.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <14d5d82d-ddb0-89e2-84c0-00cb980dda2a@data-modul.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,55 +20,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: eMMC probe in imx8mm
-To: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Reyhaneh,
-
-On Fri, Jul 05, 2019 at 02:04:08PM +0000, Yazdani, Reyhaneh wrote:
-> Hello everyone,
-> 
-> I have brought up Barebox on imx8mm-evk board. Barebox is programmed on SD-card.
-> In the Barebox console, when I probe eMMC, I will receive I/O error.
-> 
-> Therefore, similar to the imx8mq device tree, I added clk node to assign
-> clock-parent and clock-rates of the assigned clock of the eMMC (usdhc3):
-> 
-> &clk {
->         assigned-clocks =  <&clk IMX8MM_CLK_USDHC3_ROOT>;
->         assigned-clock-parents =  <&clk IMX8MM_SYS_PLL1_400M>;
->         assigned-clock-rates = <200000000>;
-> };
-> 
-> Now, eMMC probe works and eMMC is detected. But when I want to boot from eMMC,
-> 
-> Loading ARM aarch64 Linux image '/mnt/mmc2/Image' takes about 13-14 seconds!!
-
-How big is this image?
-
-Is only the eMMC card so slow or the SD card aswell?
-
-Does clk_dump give you any clue which clock rate the usdhc controller
-actually has (and is it the same as the other controller with the SD
-card)?
-
-Just some questions, I am not very familiar with the i.MX8 clock tree.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+DQoNCk9uIDcvOS8xOSAxMTo0NiBBTSwgU2FzY2hhIEhhdWVyIHdyb3RlOg0KPiBIaSBSZXloYW5l
+aCwNCj4NCj4gT24gRnJpLCBKdWwgMDUsIDIwMTkgYXQgMDI6MDQ6MDhQTSArMDAwMCwgWWF6ZGFu
+aSwgUmV5aGFuZWggd3JvdGU6DQo+PiBIZWxsbyBldmVyeW9uZSwNCj4+DQo+PiBJIGhhdmUgYnJv
+dWdodCB1cCBCYXJlYm94IG9uIGlteDhtbS1ldmsgYm9hcmQuIEJhcmVib3ggaXMgcHJvZ3JhbW1l
+ZCBvbiBTRC1jYXJkLg0KPj4gSW4gdGhlIEJhcmVib3ggY29uc29sZSwgd2hlbiBJIHByb2JlIGVN
+TUMsIEkgd2lsbCByZWNlaXZlIEkvTyBlcnJvci4NCj4+DQo+PiBUaGVyZWZvcmUsIHNpbWlsYXIg
+dG8gdGhlIGlteDhtcSBkZXZpY2UgdHJlZSwgSSBhZGRlZCBjbGsgbm9kZSB0byBhc3NpZ24NCj4+
+IGNsb2NrLXBhcmVudCBhbmQgY2xvY2stcmF0ZXMgb2YgdGhlIGFzc2lnbmVkIGNsb2NrIG9mIHRo
+ZSBlTU1DICh1c2RoYzMpOg0KPj4NCj4+ICZjbGsgew0KPj4gICAgICAgICBhc3NpZ25lZC1jbG9j
+a3MgPSAgPCZjbGsgSU1YOE1NX0NMS19VU0RIQzNfUk9PVD47DQo+PiAgICAgICAgIGFzc2lnbmVk
+LWNsb2NrLXBhcmVudHMgPSAgPCZjbGsgSU1YOE1NX1NZU19QTEwxXzQwME0+Ow0KPj4gICAgICAg
+ICBhc3NpZ25lZC1jbG9jay1yYXRlcyA9IDwyMDAwMDAwMDA+Ow0KPj4gfTsNCj4+DQo+PiBOb3cs
+IGVNTUMgcHJvYmUgd29ya3MgYW5kIGVNTUMgaXMgZGV0ZWN0ZWQuIEJ1dCB3aGVuIEkgd2FudCB0
+byBib290IGZyb20gZU1NQywNCj4+DQo+PiBMb2FkaW5nIEFSTSBhYXJjaDY0IExpbnV4IGltYWdl
+ICcvbW50L21tYzIvSW1hZ2UnIHRha2VzIGFib3V0IDEzLTE0IHNlY29uZHMhIQ0KPg0KPiBIb3cg
+YmlnIGlzIHRoaXMgaW1hZ2U/DQo+DQo+IElzIG9ubHkgdGhlIGVNTUMgY2FyZCBzbyBzbG93IG9y
+IHRoZSBTRCBjYXJkIGFzd2VsbD8NCj4NCj4gRG9lcyBjbGtfZHVtcCBnaXZlIHlvdSBhbnkgY2x1
+ZSB3aGljaCBjbG9jayByYXRlIHRoZSB1c2RoYyBjb250cm9sbGVyDQo+IGFjdHVhbGx5IGhhcyAo
+YW5kIGlzIGl0IHRoZSBzYW1lIGFzIHRoZSBvdGhlciBjb250cm9sbGVyIHdpdGggdGhlIFNEDQo+
+IGNhcmQpPw0KPg0KPiBKdXN0IHNvbWUgcXVlc3Rpb25zLCBJIGFtIG5vdCB2ZXJ5IGZhbWlsaWFy
+IHdpdGggdGhlIGkuTVg4IGNsb2NrIHRyZWUuDQoNCg0KSGkgU2FzY2hhLA0KDQpJdCB3YXMgcmVs
+YXRlZCB0byB0aGUgbm8gaW5pdGlhbGl6YXRpb24gb2YgUExMLWNsb2NrLiBTWVNfUExMMSBpcyB1
+c2VkICBhcyBjbG9jaw0KcGFyZW50cyBmb3IgZU1NQyBhbmQgaXQgd2FzIG5vdCBpbml0aWFsaXpl
+ZCBpbiBjbG9jayBkcml2ZXIuDQoNCkJlc3QgcmVnYXJkcywNClJleWhhbmVoDQoNCg0KLS0NClJl
+eWhhbmVoIFlhemRhbmkNCkRhdGEgTW9kdWwgQUcgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+VEVMOiAgICArNDktODktNTYwMTctMTU0DQpFbWJlZGRlZCBkZXZlbG9wbWVudCAgICAgICAgICAg
+ICAgICAgRkFYOiAgICArNDktODktNTYwMTctMTE5DQpMaW51eCAtIERldmVsb3BtZW50ICAgICAg
+ICAgICAgICAgICAgICAgIFJHOiBIUi1NdWVuY2hlbiBCLTg1NTkxDQpMYW5kc2JlcmdlciBTdHIu
+IDMyMiBELTgwNjg3IE11ZW5jaGVuIC0gaHR0cDovL3d3dy5kYXRhLW1vZHVsLmNvbQ0KDQpWZXJ0
+cmF1bGljaGUgRS1NYWlsIHZvbiAvIENvbmZpZGVudGlhbCBlLW1haWwgZnJvbTogREFUQSBNT0RV
+TCBBRw0KVm9yc3RhbmQgLyBDRU86IERyLiBGbG9yaWFuIFBlc2FobA0KVm9yc2l0emVuZGUgZGVz
+IEF1ZnNpY2h0c3JhdGVzIC8gQ2hhaXJ3b21hbiBvZiB0aGUgU3VwZXJ2aXNvcnkgQm9hcmQ6IEty
+aXN0aW4gRC4gUnVzc2VsbA0KU2l0eiBkZXIgR2VzZWxsc2NoYWZ0IC8gUmVnaXN0ZXJlZCBPZmZp
+Y2U6IE3DvG5jaGVuDQpSZWdpc3RlcmdlcmljaHQgLyBSZWdpc3RyYXRpb24gQ291cnQ6IE3DvG5j
+aGVuIEhhbmRlbHNyZWdpc3RlciBCIDg1IDU5MQ0KDQoNCg0KX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
+aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
+dGluZm8vYmFyZWJveAo=
