@@ -1,21 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hlu3Y-00070J-Nz
- for barebox@lists.infradead.org; Fri, 12 Jul 2019 11:49:42 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1hlu3S-0007Jv-68
- for barebox@lists.infradead.org; Fri, 12 Jul 2019 13:49:34 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1hlu3O-0007D5-EU
- for barebox@lists.infradead.org; Fri, 12 Jul 2019 13:49:30 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 12 Jul 2019 13:49:18 +0200
-Message-Id: <20190712114917.27437-1-a.fatoum@pengutronix.de>
-In-Reply-To: <20190712102457.15339-5-a.fatoum@pengutronix.de>
-References: <20190712102457.15339-5-a.fatoum@pengutronix.de>
+ id 1hmOPd-0001Ts-Hi
+ for barebox@lists.infradead.org; Sat, 13 Jul 2019 20:14:31 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Sat, 13 Jul 2019 22:14:19 +0200
+Message-Id: <20190713201419.15395-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,37 +15,24 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! Documentation: boards: add initial STM32MP
- documentation
+Subject: [PATCH] dts/imx25: drop sram node
 To: barebox@lists.infradead.org
 
-Fix typo: TF-A is FSBL, barebox is SSBL
----
- Documentation/boards/stm32mp.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/Documentation/boards/stm32mp.rst b/Documentation/boards/stm32mp.rst
-index 7f787bac203e..8cbf36c3961e 100644
---- a/Documentation/boards/stm32mp.rst
-+++ b/Documentation/boards/stm32mp.rst
-@@ -16,7 +16,7 @@ SYSRAM and executed. The FSBL sets up the SDRAM, install a secure monitor and
- then the second stage boot loader (SSBL) is loaded into DRAM.
- 
- When building barebox, the resulting ``barebox-${board}.img`` file has the STM32
--header preprended, so it can be loaded directly as FSBL by the ARM TF-A
-+header preprended, so it can be loaded directly as SSBL by the ARM TF-A
- (https://github.com/ARM-software/arm-trusted-firmware). Each entry point has a
- header-less image ending in ``*.pblb`` as well.
- 
--- 
-2.20.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBub2RlIGlzIGluIGR0cy9zcmMvYXJtL2lteDI1LmR0c2kgc2luY2UgOTMxMzkyMGRmNmQz
+ICgiZHRzOiB1cGRhdGUKdG8gdjMuMTYtcmMxIikuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5l
+LUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGFyY2gvYXJtL2R0
+cy9pbXgyNS5kdHNpIHwgNyAtLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgNyBkZWxldGlvbnMoLSkK
+CmRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvaW14MjUuZHRzaSBiL2FyY2gvYXJtL2R0cy9pbXgy
+NS5kdHNpCmluZGV4IDJlMDY5ZTZmMDMxNC4uZWIzMDQ2MTc4MDMxIDEwMDY0NAotLS0gYS9hcmNo
+L2FybS9kdHMvaW14MjUuZHRzaQorKysgYi9hcmNoL2FybS9kdHMvaW14MjUuZHRzaQpAQCAtMTcs
+MTMgKzE3LDYgQEAKIAkJbW1jMCA9ICZlc2RoYzE7CiAJCW1tYzIgPSAmZXNkaGMyOwogCX07Ci0K
+LQlzb2MgewotCQlpcmFtOiBzcmFtQDc4MDAwMDAwIHsKLQkJCWNvbXBhdGlibGUgPSAibW1pby1z
+cmFtIjsKLQkJCXJlZyA9IDwweDc4MDAwMDAwIDB4MjAwMDA+OwotCQl9OwotCX07CiB9OwogCiAm
+dXNibWlzYyB7Ci0tIAoyLjIwLjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
+ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
+Cg==
