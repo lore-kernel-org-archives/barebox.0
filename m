@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hn2HL-0003wd-Br
- for barebox@lists.infradead.org; Mon, 15 Jul 2019 14:48:37 +0000
-References: <20190715135434.5666-1-s.hauer@pengutronix.de>
- <20190715135434.5666-2-s.hauer@pengutronix.de>
+ id 1hn2Nz-0006wU-03
+ for barebox@lists.infradead.org; Mon, 15 Jul 2019 14:55:28 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>) id 1hn2Nv-0004zX-QE
+ for barebox@lists.infradead.org; Mon, 15 Jul 2019 16:55:23 +0200
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>) id 1hn2Nv-0003sT-Cw
+ for barebox@lists.infradead.org; Mon, 15 Jul 2019 16:55:23 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <661933fb-ad95-c96b-e9b0-da0464af9718@pengutronix.de>
-Date: Mon, 15 Jul 2019 16:48:31 +0200
+Date: Mon, 15 Jul 2019 16:55:22 +0200
+Message-Id: <20190715145522.9589-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20190715135434.5666-2-s.hauer@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,47 +27,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] mtd: peb: Do not mark as bad in mtd_peb_torture()
-To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH] UBI: silence erroneous GCC warning about uninitialized read
+To: barebox@lists.infradead.org
 
-Hello Sascha,
+GCC reports following use of an uninitialized variable:
 
-On 15/7/19 15:54, Sascha Hauer wrote:
-> diff --git a/common/state/backend_bucket_circular.c b/common/state/backend_bucket_circular.c
-> index 4676730d05..9c106b7b63 100644
-> --- a/common/state/backend_bucket_circular.c
-> +++ b/common/state/backend_bucket_circular.c
-> @@ -95,6 +95,7 @@ static int state_mtd_peb_read(struct state_backend_storage_bucket_circular *circ
->  	if (ret == -EBADMSG) {
->  		ret = mtd_peb_torture(circ->mtd, circ->eraseblock);
->  		if (ret == -EIO) {
-> +			mtd_peb_mark_bad(mtd, circ->eraseblock);
+  ./drivers/mtd/ubi/eba.c: In function 'try_write_vid_and_data':
+  ./drivers/mtd/ubi/eba.c:904:9: warning:
+    'opnum' may be used uninitialized in this function [-Wmaybe-uninitialized]
+       err = ubi_wl_put_peb(ubi, vol_id, lnum, opnum, 0);
+             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There's no `mtd' in this scope. Do you mean `circ->mtd'?
+This is incorrect, because it's only called when err == 0 and opnum
+is always initialized if err == 0. Silence the warning by initializing
+a variable.
 
->  			dev_err(circ->dev, "Tortured eraseblock failed and is marked bad now, PEB %u\n",
->  				circ->eraseblock);
->  			return -EIO;
-> @@ -132,6 +133,7 @@ static int state_mtd_peb_write(struct state_backend_storage_bucket_circular *cir
->  	if (ret == -EBADMSG) {
->  		ret = mtd_peb_torture(circ->mtd, circ->eraseblock);
->  		if (ret == -EIO) {
-> +			mtd_peb_mark_bad(mtd, circ->eraseblock);
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/mtd/ubi/eba.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Likewise.
-
->  			dev_err(circ->dev, "Tortured eraseblock failed and is marked bad now, PEB %u\n",
->  				circ->eraseblock);
->  			return -EIO;
-
-Thanks,
-Ahmad
-
+diff --git a/drivers/mtd/ubi/eba.c b/drivers/mtd/ubi/eba.c
+index 3aae3029e5b6..cca6ec4ba915 100644
+--- a/drivers/mtd/ubi/eba.c
++++ b/drivers/mtd/ubi/eba.c
+@@ -865,7 +865,7 @@ static int try_write_vid_and_data(struct ubi_volume *vol, int lnum,
+ 				  int offset, int len)
+ {
+ 	struct ubi_device *ubi = vol->ubi;
+-	int pnum, opnum, err, vol_id = vol->vol_id;
++	int pnum, opnum = -1, err, vol_id = vol->vol_id;
+ 
+ 	pnum = ubi_wl_get_peb(ubi);
+ 	if (pnum < 0) {
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
