@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hhXqs-0005Lm-Kn
- for barebox@lists.infradead.org; Sun, 30 Jun 2019 11:18:36 +0000
-From: Gwenhael Goavec-Merou <gwenj@trabucayre.com>
-Date: Sun, 30 Jun 2019 13:16:46 +0200
-Message-Id: <20190630111646.14992-3-gwenj@trabucayre.com>
-In-Reply-To: <20190630111646.14992-1-gwenj@trabucayre.com>
-References: <20190630111646.14992-1-gwenj@trabucayre.com>
+ id 1hmumZ-0005iT-29
+ for barebox@lists.infradead.org; Mon, 15 Jul 2019 06:48:20 +0000
+Date: Mon, 15 Jul 2019 08:48:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190715064817.lznc6jttybbtg3ft@pengutronix.de>
+References: <20190713201419.15395-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190713201419.15395-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,38 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] ARM: socfpga: terasic-de0-nano-soc: statify
- sys_mgr_init_table
-To: barebox@lists.infradead.org
-Cc: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
+Subject: Re: [PATCH] dts/imx25: drop sram node
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-From: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
+On Sat, Jul 13, 2019 at 10:14:19PM +0200, Uwe Kleine-K=F6nig wrote:
+> This node is in dts/src/arm/imx25.dtsi since 9313920df6d3 ("dts: update
+> to v3.16-rc1").
+> =
 
-Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
----
- arch/arm/boards/terasic-de0-nano-soc/pinmux_config.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  arch/arm/dts/imx25.dtsi | 7 -------
+>  1 file changed, 7 deletions(-)
 
-diff --git a/arch/arm/boards/terasic-de0-nano-soc/pinmux_config.c b/arch/arm/boards/terasic-de0-nano-soc/pinmux_config.c
-index 1fc530deb..c06190181 100644
---- a/arch/arm/boards/terasic-de0-nano-soc/pinmux_config.c
-+++ b/arch/arm/boards/terasic-de0-nano-soc/pinmux_config.c
-@@ -29,7 +29,7 @@
- 
- #include <common.h>
- 
--unsigned long SECT(sys_mgr_init_table)[] = {
-+static unsigned long SECT(sys_mgr_init_table)[] = {
- 	0, /* EMACIO0 */
- 	2, /* EMACIO1 */
- 	2, /* EMACIO2 */
--- 
-2.21.0
+Applied, thanks
 
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
