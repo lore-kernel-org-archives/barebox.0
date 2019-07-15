@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hn1R7-0005bP-PM
- for barebox@lists.infradead.org; Mon, 15 Jul 2019 13:54:39 +0000
+ id 1hn1R7-0005bR-PP
+ for barebox@lists.infradead.org; Mon, 15 Jul 2019 13:54:40 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 15 Jul 2019 15:54:32 +0200
-Message-Id: <20190715135434.5666-1-s.hauer@pengutronix.de>
+Date: Mon, 15 Jul 2019 15:54:34 +0200
+Message-Id: <20190715135434.5666-3-s.hauer@pengutronix.de>
+In-Reply-To: <20190715135434.5666-1-s.hauer@pengutronix.de>
+References: <20190715135434.5666-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,92 +21,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] mtd: ubi: mark PEBs as bad on erase failure
+Subject: [PATCH 3/3] ubiformat: handle write errors correctly
 To: Barebox List <barebox@lists.infradead.org>
 
-70542a9c65 converted UBI to use mtd_peb_torture(). It was assumed that a
-block was marked as bad when it didn't pass the torture test. However,
-not all possibly bad blocks went through the torture test, so it could
-happen that a block that could not be erased was still kept as good
-block. This patch fixes this and explicitly calls ubi_io_mark_bad() when
-a block cannot be erased.
+This is a barebox adoption of mtd-utils commit
+d9cbf6a ("ubiformat: handle write errors correctly"):
 
-Fixes: 70542a9c65 ("mtd: ubi: Use mtd_peb_torture")
+|     ubiformat: handle write errors correctly
+|
+|     This issue was reported and analyzed by
+|     Anton Olofsson <anol.martinsson@gmail.com>:
+|
+|     when ubiformat encounters a write error while flashing the UBI image (which may
+|     come from a file of from stdout), it correctly marks the faulty eraseblock as
+|     bad and skips it. However, it also incorrectly drops the data buffer which was
+|     supposed to be written, and reads next block of data.
+|
+|     This patch fixes this issue - in case of a write error, we preserve the current
+|     data and write it to the next eraseblock, instead of dropping it.
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/ubi/io.c  | 29 +++++++++++++++++++++++++++++
- drivers/mtd/ubi/ubi.h |  1 +
- drivers/mtd/ubi/wl.c  |  5 +++++
- 3 files changed, 35 insertions(+)
+ common/ubiformat.c | 29 ++++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/mtd/ubi/io.c b/drivers/mtd/ubi/io.c
-index d0ea23b124..78458b58e1 100644
---- a/drivers/mtd/ubi/io.c
-+++ b/drivers/mtd/ubi/io.c
-@@ -356,6 +356,35 @@ int ubi_io_is_bad(const struct ubi_device *ubi, int pnum)
- 	return 0;
- }
+diff --git a/common/ubiformat.c b/common/ubiformat.c
+index 4f0df6fd5c..655c5323ba 100644
+--- a/common/ubiformat.c
++++ b/common/ubiformat.c
+@@ -188,6 +188,7 @@ static int flash_image(struct ubiformat_args *args, struct mtd_info *mtd,
+ 		       const struct ubigen_info *ui, struct ubi_scan_info *si)
+ {
+ 	int fd = 0, img_ebs, eb, written_ebs = 0, ret = -1, eb_cnt;
++	int skip_data_read = 0;
+ 	off_t st_size;
+ 	char *buf = NULL;
+ 	uint64_t lastprint = 0;
+@@ -266,17 +267,20 @@ static int flash_image(struct ubiformat_args *args, struct mtd_info *mtd,
+ 			continue;
+ 		}
  
-+/**
-+ * ubi_io_mark_bad - mark a physical eraseblock as bad.
-+ * @ubi: UBI device description object
-+ * @pnum: the physical eraseblock number to mark
-+ *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure.
-+ */
-+int ubi_io_mark_bad(const struct ubi_device *ubi, int pnum)
-+{
-+	int err;
-+	struct mtd_info *mtd = ubi->mtd;
-+
-+	ubi_assert(pnum >= 0 && pnum < ubi->peb_count);
-+
-+	if (ubi->ro_mode) {
-+		ubi_err(ubi, "read-only mode");
-+		return -EROFS;
-+	}
-+
-+	if (!ubi->bad_allowed)
-+		return 0;
-+
-+	err = mtd_block_markbad(mtd, (loff_t)pnum * ubi->peb_size);
-+	if (err)
-+		ubi_err(ubi, "cannot mark PEB %d bad, error %d", pnum, err);
-+	return err;
-+}
-+
- /**
-  * validate_ec_hdr - validate an erase counter header.
-  * @ubi: UBI device description object
-diff --git a/drivers/mtd/ubi/ubi.h b/drivers/mtd/ubi/ubi.h
-index b85d602055..922c1a3c8b 100644
---- a/drivers/mtd/ubi/ubi.h
-+++ b/drivers/mtd/ubi/ubi.h
-@@ -865,6 +865,7 @@ int ubi_io_write(struct ubi_device *ubi, const void *buf, int pnum, int offset,
- 		 int len);
- int ubi_io_sync_erase(struct ubi_device *ubi, int pnum, int torture);
- int ubi_io_is_bad(const struct ubi_device *ubi, int pnum);
-+int ubi_io_mark_bad(const struct ubi_device *ubi, int pnum);
- int ubi_io_read_ec_hdr(struct ubi_device *ubi, int pnum,
- 		       struct ubi_ec_hdr *ec_hdr, int verbose);
- int ubi_io_write_ec_hdr(struct ubi_device *ubi, int pnum,
-diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
-index fa1b813702..cf90ecfb23 100644
---- a/drivers/mtd/ubi/wl.c
-+++ b/drivers/mtd/ubi/wl.c
-@@ -1085,6 +1085,11 @@ static int __erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk)
- 		available_consumed = 1;
- 	}
+-		if (args->image) {
+-			err = read_full(fd, buf, mtd->erasesize);
+-			if (err < 0) {
+-				sys_errmsg("failed to read eraseblock %d from image",
+-					   written_ebs);
+-				goto out_close;
++		if (!skip_data_read) {
++			if (args->image) {
++				err = read_full(fd, buf, mtd->erasesize);
++				if (err < 0) {
++					sys_errmsg("failed to read eraseblock %d from image",
++						written_ebs);
++					goto out_close;
++				}
++			} else {
++				memcpy(buf, inbuf, mtd->erasesize);
++				inbuf += mtd->erasesize;
+ 			}
+-		} else {
+-			memcpy(buf, inbuf, mtd->erasesize);
+-			inbuf += mtd->erasesize;
+ 		}
++		skip_data_read = 0;
  
-+	ubi_msg(ubi, "mark PEB %d as bad", pnum);
-+	err = ubi_io_mark_bad(ubi, pnum);
-+	if (err)
-+		goto out_ro;
+ 		if (args->override_ec)
+ 			ec = args->ec;
+@@ -318,6 +322,13 @@ static int flash_image(struct ubiformat_args *args, struct mtd_info *mtd,
+ 				goto out_close;
+ 			}
+ 
++			/*
++			 * We have to make sure that we do not read next block
++			 * of data from the input image or stdin - we have to
++			 * write buf first instead.
++			 */
++                        skip_data_read = 1;
 +
- 	if (ubi->beb_rsvd_pebs > 0) {
- 		if (available_consumed) {
- 			/*
+ 			continue;
+ 		}
+ 		if (++written_ebs >= img_ebs)
 -- 
 2.20.1
 
