@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hmukw-0005EW-M2
- for barebox@lists.infradead.org; Mon, 15 Jul 2019 06:46:40 +0000
-Date: Mon, 15 Jul 2019 08:46:36 +0200
+ id 1hmwyl-0004H8-IK
+ for barebox@lists.infradead.org; Mon, 15 Jul 2019 09:09:04 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190715064636.mf53hsa3nkdcslad@pengutronix.de>
-References: <20190712102457.15339-1-a.fatoum@pengutronix.de>
+Date: Mon, 15 Jul 2019 11:09:00 +0200
+Message-Id: <20190715090900.19123-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190712102457.15339-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +19,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/5] ARM: stm32mp: fix some misnomers/typos
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, mfe@pengutronix.de
+Subject: [PATCH] ubiformat: improve generation of UBI image sequence
+To: Barebox List <barebox@lists.infradead.org>
 
-On Fri, Jul 12, 2019 at 12:24:53PM +0200, Ahmad Fatoum wrote:
-> The arch was renamed to stm32mp, so it doesn't look out of place when
-> the stm32mp2 is released. Fix spotted comments/labels with the old
-> name. While at it, fix a typo about the SoC name on the DK2 board.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/arm/Kconfig              | 2 +-
->  arch/arm/mach-stm32mp/Kconfig | 4 ++--
->  images/Makefile.stm32mp       | 2 +-
->  3 files changed, 4 insertions(+), 4 deletions(-)
+The UBI ec_hdr has an image_seq field. During attaching UBI expects
+that its value is the same for all eraseblocks. The value should be
+changed with every ubiformat and is used to detect half written images.
 
-Applied, thanks
+In barebox we use a pseudo random number generated with rand() for this
+value. The ubiformat command calls srand(get_time_ns()) to initialize
+the pseudo random numbber generator. This is done in the option parser,
+so when ubiformat() is called directly (from fastboot for example) the
+pseudo random number generator is not initialized and we get the same
+values after every barebox restart.
 
-Sascha
+This patch moves the pseudo random number generator initialization
+to the place where the numbers are generated. Also use random32()
+rather than rand() to generate 32bit values rather than 15bit values
+(0 - RAND_MAX).
 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/ubiformat.c | 1 -
+ common/ubiformat.c   | 6 ++++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/commands/ubiformat.c b/commands/ubiformat.c
+index a88672d6c2..7537e6b567 100644
+--- a/commands/ubiformat.c
++++ b/commands/ubiformat.c
+@@ -58,7 +58,6 @@
+ static int parse_opt(int argc, char *argv[], struct ubiformat_args *args,
+ 		     char **node)
+ {
+-	srand(get_time_ns());
+ 	memset(args, 0, sizeof(*args));
+ 
+ 	while (1) {
+diff --git a/common/ubiformat.c b/common/ubiformat.c
+index 1968bd98f8..fe02270b78 100644
+--- a/common/ubiformat.c
++++ b/common/ubiformat.c
+@@ -481,8 +481,10 @@ int ubiformat(struct mtd_info *mtd, struct ubiformat_args *args)
+ 	if (!args->ubi_ver)
+ 		args->ubi_ver = 1;
+ 
+-	if (!args->image_seq)
+-		args->image_seq = rand();
++	if (!args->image_seq) {
++		srand(get_time_ns());
++		args->image_seq = random32();
++	}
+ 
+ 	if (!is_power_of_2(mtd->writesize)) {
+ 		errmsg("min. I/O size is %d, but should be power of 2",
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
