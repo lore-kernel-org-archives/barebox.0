@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hnNqC-0000ER-Aw
- for barebox@lists.infradead.org; Tue, 16 Jul 2019 13:50:01 +0000
+ id 1hnNqK-000178-DN
+ for barebox@lists.infradead.org; Tue, 16 Jul 2019 13:50:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 16 Jul 2019 15:49:46 +0200
-Message-Id: <20190716134948.8609-3-s.hauer@pengutronix.de>
+Date: Tue, 16 Jul 2019 15:49:47 +0200
+Message-Id: <20190716134948.8609-4-s.hauer@pengutronix.de>
 In-Reply-To: <20190716134948.8609-1-s.hauer@pengutronix.de>
 References: <20190716134948.8609-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,8 +21,8 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] ARM: phyCORE-i.MX8M SOM: Do setup_c() before accessing
- global variables
+Subject: [PATCH 4/5] ARM: zii-imx8mq-dev: Do setup_c() before accessing global
+ variables
 To: Barebox List <barebox@lists.infradead.org>
 
 The lowlevel board code accesses global variables, so call
@@ -31,20 +31,20 @@ environment.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/phytec-som-imx8mq/lowlevel.c | 53 +++++++++++---------
- 1 file changed, 30 insertions(+), 23 deletions(-)
+ arch/arm/boards/zii-imx8mq-dev/lowlevel.c | 59 +++++++++++++----------
+ 1 file changed, 33 insertions(+), 26 deletions(-)
 
-diff --git a/arch/arm/boards/phytec-som-imx8mq/lowlevel.c b/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
-index e42e7a6fcc..4e52b92ad3 100644
---- a/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
-+++ b/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
-@@ -61,30 +61,8 @@ static void phytec_imx8mq_som_sram_setup(void)
- 	BUG_ON(ret);
- }
+diff --git a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
+index 33c007e05d..7eb8b684d2 100644
+--- a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
++++ b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
+@@ -120,36 +120,11 @@ static unsigned int get_system_type(void)
+ extern char __dtb_imx8mq_zii_ultra_rmb3_start[];
+ extern char __dtb_imx8mq_zii_ultra_zest_start[];
  
 -/*
-- * Power-on execution flow of start_phytec_phycore_imx8mq() might not be
-- * obvious for a very first read, so here's, hopefully helpful,
+- * Power-on execution flow of start_zii_imx8mq_dev() might not be
+- * obvious for a very frist read, so here's, hopefully helpful,
 - * summary:
 - *
 - * 1. MaskROM uploads PBL into OCRAM and that's where this function is
@@ -53,31 +53,37 @@ index e42e7a6fcc..4e52b92ad3 100644
 - * 2. DDR is initialized and full i.MX image is loaded to the
 - *    beginning of RAM
 - *
-- * 3. start_phytec_phycore_imx8mq, now in RAM, is executed again
+- * 3. start_nxp_imx8mq_evk, now in RAM, is executed again
 - *
 - * 4. BL31 blob is uploaded to OCRAM and the control is transfer to it
 - *
 - * 5. BL31 exits EL3 into EL2 at address MX8MQ_ATF_BL33_BASE_ADDR,
-- *    executing start_phytec_phycore_imx8mq() the third time
+- *    executing start_nxp_imx8mq_evk() the third time
 - *
 - * 6. Standard barebox boot flow continues
 - */
--ENTRY_FUNCTION(start_phytec_phycore_imx8mq, r0, r1, r2)
-+static __noreturn noinline void phytec_phycore_imx8mq_start(void)
+-ENTRY_FUNCTION(start_zii_imx8mq_dev, r0, r1, r2)
++static __noreturn noinline void zii_imx8mq_dev_start(void)
  {
+ 	unsigned int system_type;
+ 	void *fdt;
+ 
 -	imx8mq_cpu_lowlevel_init();
 -
- 	if (IS_ENABLED(CONFIG_DEBUG_LL))
- 		setup_uart();
- 
-@@ -118,3 +96,32 @@ ENTRY_FUNCTION(start_phytec_phycore_imx8mq, r0, r1, r2)
+-	if (IS_ENABLED(CONFIG_DEBUG_LL))
+-		setup_uart();
+-
+ 	if (get_pc() < MX8MQ_DDR_CSD1_BASE_ADDR) {
+ 		/*
+ 		 * We assume that we were just loaded by MaskROM into
+@@ -202,3 +177,35 @@ ENTRY_FUNCTION(start_zii_imx8mq_dev, r0, r1, r2)
  	 */
- 	imx8mq_barebox_entry(__dtb_imx8mq_phytec_phycore_som_start);
+ 	imx8mq_barebox_entry(fdt);
  }
 +
 +/*
-+ * Power-on execution flow of start_phytec_phycore_imx8mq() might not be
-+ * obvious for a very first read, so here's, hopefully helpful,
++ * Power-on execution flow of start_zii_imx8mq_dev() might not be
++ * obvious for a very frist read, so here's, hopefully helpful,
 + * summary:
 + *
 + * 1. MaskROM uploads PBL into OCRAM and that's where this function is
@@ -86,22 +92,25 @@ index e42e7a6fcc..4e52b92ad3 100644
 + * 2. DDR is initialized and full i.MX image is loaded to the
 + *    beginning of RAM
 + *
-+ * 3. start_phytec_phycore_imx8mq, now in RAM, is executed again
++ * 3. start_nxp_imx8mq_evk, now in RAM, is executed again
 + *
 + * 4. BL31 blob is uploaded to OCRAM and the control is transfer to it
 + *
 + * 5. BL31 exits EL3 into EL2 at address MX8MQ_ATF_BL33_BASE_ADDR,
-+ *    executing start_phytec_phycore_imx8mq() the third time
++ *    executing start_nxp_imx8mq_evk() the third time
 + *
 + * 6. Standard barebox boot flow continues
 + */
-+ENTRY_FUNCTION(start_phytec_phycore_imx8mq, r0, r1, r2)
++ENTRY_FUNCTION(start_zii_imx8mq_dev, r0, r1, r2)
 +{
 +	imx8mq_cpu_lowlevel_init();
 +	relocate_to_current_adr();
 +	setup_c();
++	
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		setup_uart();
 +
-+	phytec_phycore_imx8mq_start();
++	zii_imx8mq_dev_start();
 +}
 -- 
 2.20.1
