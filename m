@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hnKoU-0002un-Gj
+ id 1hnKoU-0002ul-GI
  for barebox@lists.infradead.org; Tue, 16 Jul 2019 10:36:03 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue, 16 Jul 2019 12:35:55 +0200
-Message-Id: <20190716103557.17446-1-o.rempel@pengutronix.de>
+Date: Tue, 16 Jul 2019 12:35:56 +0200
+Message-Id: <20190716103557.17446-2-o.rempel@pengutronix.de>
+In-Reply-To: <20190716103557.17446-1-o.rempel@pengutronix.de>
+References: <20190716103557.17446-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,99 +21,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/3] OF: gpio: Add special quirk to parse regulator flags
+Subject: [PATCH v2 2/3] net: fec_imx: add regulator support
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-To make fec work with devicetree on imx28-evk, partially port following
-kernel patch:
-
-|commit a603a2b8d86ee93ee2107da8ca75fd854fd4ff32
-|Author: Linus Walleij <linus.walleij@linaro.org>
-|Date:   Sat Dec 30 16:26:36 2017 +0100
-|
-|    gpio: of: Add special quirk to parse regulator flags
-|
-|    While most GPIOs are indicated to be active low or open drain using
-|    their twocell flags, we have legacy regulator bindings to take into
-|    account.
-|
-|    Add a quirk respecting the special boolean active-high and open
-|    drain flags when parsing regulator nodes for GPIOs.
-|
-|    This makes it possible to get rid of duplicated inversion semantics
-|    handling in the regulator core and any regulator drivers parsing
-|    and handling this separately.
-|
-|    Unfortunately the old regulator inversion semantics are specified
-|    such that the presence or absence of "enable-active-high" solely
-|    controls the semantics, so we cannot deprecate this in favor
-|    of the phandle-provided inversion flag, instead any such phandle
-|    inversion flag provided in the second cell of a GPIO handle must be
-|    actively ignored, so we print a warning to contain the situation
-|    and make things easy for the users.
-|
-|    Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+at least imx28-evk need it to work with devicetree
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/of/of_gpio.c | 35 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 34 insertions(+), 1 deletion(-)
+ drivers/net/fec_imx.c | 19 +++++++++++++++++++
+ drivers/net/fec_imx.h |  1 +
+ 2 files changed, 20 insertions(+)
 
-diff --git a/drivers/of/of_gpio.c b/drivers/of/of_gpio.c
-index dc8ae22776..9a8331ed18 100644
---- a/drivers/of/of_gpio.c
-+++ b/drivers/of/of_gpio.c
-@@ -4,6 +4,37 @@
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 38a29fc83e..31c9102189 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -19,6 +19,7 @@
+ #include <linux/err.h>
+ #include <of_net.h>
  #include <of_gpio.h>
++#include <regulator.h>
  #include <gpio.h>
+ #include <linux/iopoll.h>
  
-+static void of_gpio_flags_quirks(struct device_node *np,
-+				 const char *propname,
-+				 enum of_gpio_flags *flags,
-+				 int index)
-+{
-+	/*
-+	 * Some GPIO fixed regulator quirks.
-+	 * Note that active low is the default.
-+	 */
-+	if (IS_ENABLED(CONFIG_REGULATOR) &&
-+	    (of_device_is_compatible(np, "regulator-fixed") ||
-+	     of_device_is_compatible(np, "reg-fixed-voltage") ||
-+	     (!(strcmp(propname, "enable-gpio") &&
-+		strcmp(propname, "enable-gpios")) &&
-+	      of_device_is_compatible(np, "regulator-gpio")))) {
-+		/*
-+		 * The regulator GPIO handles are specified such that the
-+		 * presence or absence of "enable-active-high" solely controls
-+		 * the polarity of the GPIO line. Any phandle flags must
-+		 * be actively ignored.
-+		 */
-+		if (*flags & OF_GPIO_ACTIVE_LOW) {
-+			pr_warn("%s GPIO handle specifies active low - ignored\n",
-+				np->full_name);
-+			*flags &= ~OF_GPIO_ACTIVE_LOW;
-+		}
-+		if (!of_property_read_bool(np, "enable-active-high"))
-+			*flags |= OF_GPIO_ACTIVE_LOW;
-+	}
-+}
-+
- /**
-  * of_get_named_gpio_flags() - Get a GPIO number and flags to use with GPIO API
-  * @np:		device node to get GPIO from
-@@ -46,8 +77,10 @@ int of_get_named_gpio_flags(struct device_node *np, const char *propname,
- 		return ret;
+@@ -776,6 +777,21 @@ static int fec_probe(struct device_d *dev)
  	}
+ 	fec->regs = IOMEM(iores->start);
  
--	if (flags)
-+	if (flags) {
- 		*flags = out_args.args[1];
-+		of_gpio_flags_quirks(np, propname, flags, index);
++	fec->reg_phy = regulator_get(dev, "phy");
++	if (IS_ERR(fec->reg_phy)) {
++		if (PTR_ERR(fec->reg_phy) == -EPROBE_DEFER) {
++			ret = -EPROBE_DEFER;
++			goto disable_clk;
++		}
++		fec->reg_phy = NULL;
 +	}
++
++	ret = regulator_enable(fec->reg_phy);
++	if (ret) {
++		dev_err(dev, "Failed to enable phy regulator: %d\n", ret);
++		goto disable_clk;
++	}
++
+ 	phy_reset = of_get_named_gpio(dev->device_node, "phy-reset-gpios", 0);
+ 	if (gpio_is_valid(phy_reset)) {
+ 		of_property_read_u32(dev->device_node, "phy-reset-duration", &msec);
+@@ -868,6 +884,9 @@ free_gpio:
+ 	if (gpio_is_valid(phy_reset))
+ 		gpio_free(phy_reset);
+ release_res:
++	if (fec->reg_phy)
++		regulator_disable(fec->reg_phy);
++
+ 	release_region(iores);
+ disable_clk:
+ 	fec_clk_disable(fec);
+diff --git a/drivers/net/fec_imx.h b/drivers/net/fec_imx.h
+index 1a1fbc9872..d1ac92f0e3 100644
+--- a/drivers/net/fec_imx.h
++++ b/drivers/net/fec_imx.h
+@@ -152,6 +152,7 @@ struct fec_priv {
+ 	struct clk *clk[FEC_CLK_NUM];
+ 	struct clk *opt_clk[FEC_OPT_CLK_NUM];
+ 	enum fec_type type;
++	struct regulator *reg_phy;
+ };
  
- 	return ret;
- }
+ static inline int fec_is_imx27(struct fec_priv *priv)
 -- 
 2.20.1
 
