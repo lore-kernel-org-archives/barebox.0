@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hnJ8Z-0001Am-Vt
- for barebox@lists.infradead.org; Tue, 16 Jul 2019 08:48:41 +0000
-Date: Tue, 16 Jul 2019 10:48:36 +0200
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190716084836.ocr5hg6s3y34i7qt@pengutronix.de>
-References: <20190712102457.15339-1-a.fatoum@pengutronix.de>
- <20190712102457.15339-5-a.fatoum@pengutronix.de>
+ id 1hnNqS-0001WL-MW
+ for barebox@lists.infradead.org; Tue, 16 Jul 2019 13:50:18 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 16 Jul 2019 15:49:44 +0200
+Message-Id: <20190716134948.8609-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190712102457.15339-5-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,123 +19,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/5] Documentation: boards: add initial STM32MP
- documentation
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, mfe@pengutronix.de
+Subject: [PATCH 1/5] ARM: Fix global_variable_offset() for aarch64
+To: Barebox List <barebox@lists.infradead.org>
 
-On Fri, Jul 12, 2019 at 12:24:57PM +0200, Ahmad Fatoum wrote:
-> Support for the SoC is still in progress, but lets document
-> what we have now.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  Documentation/boards/stm32mp.rst | 73 ++++++++++++++++++++++++++++++++
->  1 file changed, 73 insertions(+)
->  create mode 100644 Documentation/boards/stm32mp.rst
-> 
-> diff --git a/Documentation/boards/stm32mp.rst b/Documentation/boards/stm32mp.rst
-> new file mode 100644
-> index 000000000000..7f787bac203e
-> --- /dev/null
-> +++ b/Documentation/boards/stm32mp.rst
-> @@ -0,0 +1,73 @@
-> +STMicroelectronics STM32MP
-> +==========================
-> +
-> +.. note::
-> +
-> +  Support for the STM32MP architecure in barebox is still in progress.
-> +  Bootstrapping an OS from mainline barebox is not yet supported.
-> +
-> +The STM32MP is a line of 32-bit ARM SoCs. They reuse peripherals of the
-> +STM32 line of microcontrollers and can have a STM32 MCU embedded as co-processor
-> +as well.
-> +
-> +The boot process of the STM32MP SoC is a two step process.
-> +The first stage boot loader (FSBL) is loaded by the ROM code into the built-in
-> +SYSRAM and executed. The FSBL sets up the SDRAM, install a secure monitor and
+Not all toolchains use pc relative addresses for global variables.
+Apparently the gcc 8.3.0 YOCTO toolchain uses absolute addresses.
+This means can't simply return 0 for global_variable_offset() but
+instead have to calculate the offset between the compile addresses
+for global variables and their runtime address.
+We do this by getting the address of a global variable pc relative
+explicitely in assembly and substracting that address from the
+location the C compiler thinks they are.
 
-Small typo here, s/install/installs/.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/include/asm/barebox-arm.h | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-> +then the second stage boot loader (SSBL) is loaded into DRAM.
-> +
-> +When building barebox, the resulting ``barebox-${board}.img`` file has the STM32
-> +header preprended, so it can be loaded directly as FSBL by the ARM TF-A
-> +(https://github.com/ARM-software/arm-trusted-firmware). Each entry point has a
-> +header-less image ending in ``*.pblb`` as well.
-> +
-> +Use of barebox as FSBL is not supported.
-> +
-> +Following boards are currently supported in barebox:
-> +
-
-None? :-)
-
- - Roland
-
-> +Building barebox
-> +----------------
-> +
-> +With multi-image and device trees, it's expected to have ``stm32mp_defconfig``
-> +as sole defconfig for all STM32MP boards::
-> +
-> +  make ARCH=arm stm32mp_defconfig
-> +
-> +The resulting images will be placed under ``images/``:
-> +
-> +::
-> +
-> +  barebox-stm32mp157c-dk2.img
-> +
-> +
-> +Flashing barebox
-> +----------------
-> +
-> +An appropriate image for the boot media can be generated with following
-> +``genimage(1)`` config::
-> +
-> +  image @STM32MP_BOARD@.img {
-> +      hdimage {
-> +          align = 1M
-> +          gpt = "true"
-> +      }
-> +      partition fsbl1 {
-> +          image = "tf-a-@STM32MP_BOARD@.stm32"
-> +          size = 256K
-> +      }
-> +      partition fsbl2 {
-> +          image = "tf-a-@STM32MP_BOARD@.stm32"
-> +          size = 256K
-> +      }
-> +      partition ssbl {
-> +          image = "barebox-@STM32MP_BOARD@.img"
-> +          size = 1M
-> +      }
-> +  }
-> +
-> +Image can then be flashed on e.g. a SD-Card.
-> +
-> +TODO
-> +----
-> +
-> +* Extend barebox MMCI support to support the SDMMC2
-> +* Extend barebox DesignWare MAC support to support the stmmac
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 9840482b23..8b2ecd9ab2 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -31,6 +31,7 @@
+ #include <linux/types.h>
+ #include <linux/compiler.h>
+ #include <asm/barebox-arm-head.h>
++#include <asm/sections.h>
+ 
+ /*
+  * We have a 4GiB address space split into 1MiB sections, with each
+@@ -43,15 +44,22 @@ unsigned long get_runtime_offset(void);
+ /* global_variable_offset() - Access global variables when not running at link address
+  *
+  * Get the offset of global variables when not running at the address we are
+- * linked at. ARM uses absolute addresses, so we must add the runtime offset
+- * whereas aarch64 uses PC relative addresses, so nothing must be done here.
++ * linked at.
+  */
+ static inline unsigned long global_variable_offset(void)
+ {
+-	if (IS_ENABLED(CONFIG_CPU_32))
+-		return get_runtime_offset();
+-	else
+-		return 0;
++#ifdef CONFIG_CPU_V8
++	unsigned long text;
++
++	__asm__ __volatile__(
++		"adr    %0, _text\n"
++		: "=r" (text)
++		:
++		: "memory");
++	return text - (unsigned long)_text;
++#else
++	return get_runtime_offset();
++#endif
+ }
+ 
+ void setup_c(void);
 -- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
