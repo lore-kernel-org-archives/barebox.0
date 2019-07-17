@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1ho1qj-000587-LA
- for barebox@lists.infradead.org; Thu, 18 Jul 2019 08:33:15 +0000
-Date: Thu, 18 Jul 2019 10:33:12 +0200
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190718083311.vhikec23phvx3lue@pengutronix.de>
+ id 1hnnNa-0005oV-NI
+ for barebox@lists.infradead.org; Wed, 17 Jul 2019 17:06:12 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 17 Jul 2019 19:05:59 +0200
+Message-Id: <20190717170604.23732-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20190717170604.23732-1-a.fatoum@pengutronix.de>
 References: <20190717170604.23732-1-a.fatoum@pengutronix.de>
- <20190717170604.23732-5-a.fatoum@pengutronix.de>
- <20190718081955.cn7sctee7fx54lw2@pengutronix.de>
- <9efd3017-ce12-3e36-6ed3-41db8aa163ce@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <9efd3017-ce12-3e36-6ed3-41db8aa163ce@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,57 +21,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 4/6] clk: imx6: Make the LDB_DI0 and LDB_DI1 clocks
- read-only
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+Subject: [PATCH v3 1/6] clk: imx6: fix use of cpu_is_mx6* before they are
+ initialized
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Thu, Jul 18, 2019 at 10:25:05AM +0200, Ahmad Fatoum wrote:
-> Hello Roland,
-> 
-> On 18/7/19 10:19, Roland Hieber wrote:
-> > On Wed, Jul 17, 2019 at 07:06:02PM +0200, Ahmad Fatoum wrote:
-> >> From: Philipp Zabel <p.zabel@pengutronix.de>
-> >>
-> >> Due to incorrect placement of the clock gate cell in the ldb_di[x]_clk
-> >> tree, the glitchy parent mux of ldb_di[x]_clk can cause a glitch to
-> >> enter the ldb_di_ipu_div divider. If the divider gets locked up, no
-> >> ldb_di[x]_clk is generated, and the LVDS display will hang when the
-> >> ipu_di_clk is sourced from ldb_di_clk.
-> >>
-> >> To fix the problem, both the new and current parent of the ldb_di_clk
-> >> should be disabled before the switch. As this can not be guaranteed by
-> >> the clock framework during runtime, make the ldb_di[x]_sel muxes read-only.
-> >> A workaround to set the muxes once during boot could be added to the
-> >> kernel or bootloader.
-> >>
-> >> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-> >> Signed-off-by: Fabio Estevam <fabio.estevam@nxp.com>
-> >> Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-> >> [afa: reviewed for barebox]
-> >> Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-> >> Tested-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> >> [afa: ported from Linux kernel commit 03d576f202]
-> > 
-> > Should this line be further above, or were the lines above all part of
-> > the Linux commit?
-> 
-> The first [afa: is the Demarcation line between kernel and barebox
-> commit message. If I moved the second [afa: further up it wouldn't be
-> that clear who did what..
+The cpu_is_mx6* macros rely on __imx_cpu_type, which is initialized
+dependent on device tree compatible at "postcore" init-level imx_init.
 
-Okay, until now I always read the footers like they were appended from
-top to bottom chronologically, so first reviewing it for barebox and
-only afterwards porting it from Linux doesn't make sense to me :-)
-I just haven't met your style in the wild yet.
+The imx6q-ccm driver, which uses the cpu_is_mx6* macros, is registered
+at "core" init-level, however. This results on the macro always returning
+false.
 
- - Roland
+Fix this by using the cpu_mx6_is_mx6* family of macros instead.
+These already require that that CPU is a MX6, which is safe because the
+the driver only matches against "fsl,imx6q-ccm".
 
+Only exception is the video5 pll reparenting. Here we will just
+maintain the old behavior as we will drop the if clause in a following
+commit anyway.
+
+Reported-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/clk/imx/clk-imx6.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/clk/imx/clk-imx6.c b/drivers/clk/imx/clk-imx6.c
+index 35b995dae24e..0b71a1322466 100644
+--- a/drivers/clk/imx/clk-imx6.c
++++ b/drivers/clk/imx/clk-imx6.c
+@@ -59,9 +59,9 @@
+ static struct clk *clks[IMX6QDL_CLK_END];
+ static struct clk_onecell_data clk_data;
+ 
+-static inline int cpu_is_plus(void)
++static inline int cpu_mx6_is_plus(void)
+ {
+-	return cpu_is_mx6qp() || cpu_is_mx6dp();
++	return cpu_mx6_is_mx6qp() || cpu_mx6_is_mx6dp();
+ }
+ 
+ static const char *step_sels[] = {
+@@ -341,8 +341,7 @@ static void imx6_add_video_clks(void __iomem *anab, void __iomem *cb)
+ 	clk_set_parent(clks[IMX6QDL_CLK_IPU2_DI0_PRE_SEL], clks[IMX6QDL_CLK_PLL5_VIDEO_DIV]);
+ 	clk_set_parent(clks[IMX6QDL_CLK_IPU2_DI1_PRE_SEL], clks[IMX6QDL_CLK_PLL5_VIDEO_DIV]);
+ 
+-	if ((imx_silicon_revision() != IMX_CHIP_REV_1_0) ||
+-	    cpu_is_mx6dl()) {
++	if (imx_silicon_revision() != IMX_CHIP_REV_1_0) {
+ 		clk_set_parent(clks[IMX6QDL_CLK_LDB_DI0_SEL], clks[IMX6QDL_CLK_PLL5_VIDEO_DIV]);
+ 		clk_set_parent(clks[IMX6QDL_CLK_LDB_DI1_SEL], clks[IMX6QDL_CLK_PLL5_VIDEO_DIV]);
+ 	}
+@@ -418,7 +417,7 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 	clks[IMX6QDL_CLK_USDHC2_SEL]       = imx_clk_mux("usdhc2_sel",       base + 0x1c, 17, 1, usdhc_sels,        ARRAY_SIZE(usdhc_sels));
+ 	clks[IMX6QDL_CLK_USDHC3_SEL]       = imx_clk_mux("usdhc3_sel",       base + 0x1c, 18, 1, usdhc_sels,        ARRAY_SIZE(usdhc_sels));
+ 	clks[IMX6QDL_CLK_USDHC4_SEL]       = imx_clk_mux("usdhc4_sel",       base + 0x1c, 19, 1, usdhc_sels,        ARRAY_SIZE(usdhc_sels));
+-	if (cpu_is_plus())
++	if (cpu_mx6_is_plus())
+ 		clks[IMX6QDL_CLK_ENFC_SEL]         = imx_clk_mux("enfc_sel",         base + 0x2c, 16, 2, enfc_sels_plus,    ARRAY_SIZE(enfc_sels_plus));
+ 	else
+ 		clks[IMX6QDL_CLK_ENFC_SEL]         = imx_clk_mux("enfc_sel",         base + 0x2c, 16, 2, enfc_sels,         ARRAY_SIZE(enfc_sels));
+@@ -469,7 +468,7 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 	clks[IMX6QDL_CLK_ECSPI2]       = imx_clk_gate2("ecspi2",        "ecspi_root",        base + 0x6c, 2);
+ 	clks[IMX6QDL_CLK_ECSPI3]       = imx_clk_gate2("ecspi3",        "ecspi_root",        base + 0x6c, 4);
+ 	clks[IMX6QDL_CLK_ECSPI4]       = imx_clk_gate2("ecspi4",        "ecspi_root",        base + 0x6c, 6);
+-	if (cpu_is_mx6dl())
++	if (cpu_mx6_is_mx6dl())
+ 		clks[IMX6DL_CLK_I2C4]  = imx_clk_gate2("i2c4",          "ipg_per",           base + 0x6c, 8);
+ 	else
+ 		clks[IMX6Q_CLK_ECSPI5] = imx_clk_gate2("ecspi5",        "ecspi_root",        base + 0x6c, 8);
 -- 
-Roland Hieber                     | r.hieber@pengutronix.de     |
-Pengutronix e.K.                  | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
