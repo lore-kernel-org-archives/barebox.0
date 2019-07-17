@@ -1,21 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hsllF-00012a-LR
- for barebox@lists.infradead.org; Wed, 31 Jul 2019 10:23:11 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=a3f-osx.local)
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>) id 1hsllE-0001a8-F3
- for barebox@lists.infradead.org; Wed, 31 Jul 2019 12:23:08 +0200
-References: <20190730154809.27903-1-a.fatoum@pengutronix.de>
- <00c7fcfb-f33a-17c4-d77f-e0ba23489e0b@pengutronix.de>
+ id 1hnnNg-0005pq-Dp
+ for barebox@lists.infradead.org; Wed, 17 Jul 2019 17:06:18 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <675f8bc6-54b3-ea9a-3896-fa286c245991@pengutronix.de>
-Date: Wed, 31 Jul 2019 12:23:08 +0200
+Date: Wed, 17 Jul 2019 19:05:58 +0200
+Message-Id: <20190717170604.23732-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <00c7fcfb-f33a-17c4-d77f-e0ba23489e0b@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,201 +19,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] console: fix out-of-bounds read in dputc(/dev/*, ...)
+Subject: [PATCH v3 0/6] clk: imx6: work around LDB hang caused by ERR009219
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On 30/7/19 17:53, Ahmad Fatoum wrote:
-> On 30/7/19 17:48, Ahmad Fatoum wrote:
->> Trying to output a single character via
->> 	echo -a /dev/serial0-1
->> currently results in garbage output after the newline, because console.c's
->> fops_write discards the buffer length and passes the buffer to
->> (struct cdev)::puts which only handles NUL-terminated strings.
->>
->> Fix this by amending (struct cdev)::puts with a new nbytes parameter,
->> which is correctly propagated.
->>
->> Fixes: 1233570798 ("console: expose consoles in devfs")
->> Cc: Bastian Krause <bst@pengutronix.de>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  common/console.c            | 12 ++++++------
->>  common/ratp/ratp.c          | 12 +++++-------
->>  drivers/serial/efi-stdio.c  |  5 +++--
->>  drivers/serial/serial_efi.c |  5 +++--
->>  fs/pstore/platform.c        |  7 ++++---
->>  include/console.h           |  2 +-
->>  6 files changed, 22 insertions(+), 21 deletions(-)
->>
->> diff --git a/common/console.c b/common/console.c
->> index 47ccf2e54de0..59218ea4e22f 100644
->> --- a/common/console.c
->> +++ b/common/console.c
->> @@ -253,17 +253,17 @@ static void console_set_stdoutpath(struct console_device *cdev)
->>  	free(str);
->>  }
->>  
->> -static int __console_puts(struct console_device *cdev, const char *s)
->> +static int __console_puts(struct console_device *cdev, const char *s,
->> +			  size_t nbytes)
->>  {
->> -	int n = 0;
->> +	int n;
->>  
->> -	while (*s) {
->> +	for (n = 0; n < nbytes; n++) {
->>  		if (*s == '\n') {
->>  			cdev->putc(cdev, '\r');
->>  			n++;
->>  		}
->>  		cdev->putc(cdev, *s);
->> -		n++;
->>  		s++;
->>  	}
->>  	return n;
->> @@ -298,7 +298,7 @@ static ssize_t fops_write(struct cdev* dev, const void* buf, size_t count,
->>  {
->>  	struct console_device *priv = dev->priv;
->>  
->> -	priv->puts(priv, buf);
->> +	priv->puts(priv, buf, count);
->>  
->>  	return 0;
->>  }
->> @@ -545,7 +545,7 @@ int console_puts(unsigned int ch, const char *str)
->>  	if (initialized == CONSOLE_INIT_FULL) {
->>  		for_each_console(cdev) {
->>  			if (cdev->f_active & ch) {
->> -				n = cdev->puts(cdev, str);
->> +				n = cdev->puts(cdev, str, strlen(str));
->>  			}
->>  		}
->>  		return n;
->> diff --git a/common/ratp/ratp.c b/common/ratp/ratp.c
->> index 9aea1786d684..e84ad221672a 100644
->> --- a/common/ratp/ratp.c
->> +++ b/common/ratp/ratp.c
->> @@ -259,19 +259,17 @@ static int ratp_console_tstc(struct console_device *cdev)
->>  	return kfifo_len(ctx->console_recv_fifo) ? 1 : 0;
->>  }
->>  
->> -static int ratp_console_puts(struct console_device *cdev, const char *s)
->> +static int ratp_console_puts(struct console_device *cdev, const char *s,
->> +			     size_t nbytes)
->>  {
->>  	struct ratp_ctx *ctx = container_of(cdev, struct ratp_ctx, ratp_console);
->> -	int len = 0;
->> -
->> -	len = strlen(s);
->>  
->>  	if (ratp_busy(&ctx->ratp))
->> -		return len;
->> +		return nbytes;
-> 
-> This didn't look right before. Should this be a return 0 instead?
-> Sascha?
+Short version:
 
-Changed to zero in v2.
+barebox always reparents the ldb_di[01] clocks to pll5_video_div.
+Due to a hardware erratum, this can trigger a glitch that causes
+LDB lock up.
 
-> 
->>  
->> -	kfifo_put(ctx->console_transmit_fifo, s, len);
->> +	kfifo_put(ctx->console_transmit_fifo, s, nbytes);
->>  
->> -	return len;
->> +	return nbytes;
->>  }
->>  
->>  static void ratp_console_putc(struct console_device *cdev, char c)
->> diff --git a/drivers/serial/efi-stdio.c b/drivers/serial/efi-stdio.c
->> index 0703f727e766..2ca89fa4f861 100644
->> --- a/drivers/serial/efi-stdio.c
->> +++ b/drivers/serial/efi-stdio.c
->> @@ -243,12 +243,13 @@ static int efi_process_key(struct efi_console_priv *priv, const char *inp)
->>  	return 1;
->>  }
->>  
->> -static int efi_console_puts(struct console_device *cdev, const char *s)
->> +static int efi_console_puts(struct console_device *cdev, const char *s,
->> +			    size_t nbytes)
->>  {
->>  	struct efi_console_priv *priv = to_efi(cdev);
->>  	int n = 0;
->>  
->> -	while (*s) {
->> +	while (nbytes--) {
->>  		if (*s == 27) {
->>  			priv->efi_console_buffer[n] = 0;
->>  			priv->out->output_string(priv->out,
->> diff --git a/drivers/serial/serial_efi.c b/drivers/serial/serial_efi.c
->> index f0a2b22c2bc2..667d51f622ec 100644
->> --- a/drivers/serial/serial_efi.c
->> +++ b/drivers/serial/serial_efi.c
->> @@ -130,13 +130,14 @@ static void efi_serial_putc(struct console_device *cdev, char c)
->>  	serial->write(serial, &buffersize, &c);
->>  }
->>  
->> -static int efi_serial_puts(struct console_device *cdev, const char *s)
->> +static int efi_serial_puts(struct console_device *cdev, const char *s,
->> +			   size_t nbytes)
->>  {
->>  	struct efi_serial_port *uart = to_efi_serial_port(cdev);
->>  	struct efi_serial_io_protocol *serial = uart->serial;
->>  	uint32_t control;
->>  	efi_status_t efiret;
->> -	unsigned long buffersize = strlen(s) * sizeof(char);
->> +	unsigned long buffersize = nbytes;
->>  
->>  	do {
->>  		efiret = serial->getcontrol(serial, &control);
->> diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
->> index 755363c30999..601bfca6b025 100644
->> --- a/fs/pstore/platform.c
->> +++ b/fs/pstore/platform.c
->> @@ -67,10 +67,11 @@ static void pstore_console_write(const char *s, unsigned c)
->>  	}
->>  }
->>  
->> -static int pstore_console_puts(struct console_device *cdev, const char *s)
->> +static int pstore_console_puts(struct console_device *cdev, const char *s,
->> +			       size_t nbytes)
->>  {
->> -	pstore_console_write(s, strlen(s));
->> -	return strlen(s);
->> +	pstore_console_write(s, nbytes);
->> +	return nbytes;
->>  }
->>  
->>  static void pstore_console_putc(struct console_device *cdev, char c)
->> diff --git a/include/console.h b/include/console.h
->> index 673921331db7..1d86a584a7f2 100644
->> --- a/include/console.h
->> +++ b/include/console.h
->> @@ -42,7 +42,7 @@ struct console_device {
->>  
->>  	int (*tstc)(struct console_device *cdev);
->>  	void (*putc)(struct console_device *cdev, char c);
->> -	int (*puts)(struct console_device *cdev, const char *s);
->> +	int (*puts)(struct console_device *cdev, const char *s, size_t nbytes);
-> 
-> Thoughts on renaming this to something else? Apparently non-matching function
-> pointers are just a warning with gcc 8.2.1 (OSELAS.Toolchain-2018.12.0).
-> I'd have preferred non-mainline serial drivers to completely fail to compile.
+Thus:
 
-Same concern for v2
+1) remove the automatic reparenting, like the kernel now does and
+   mark the affected clocks read only, so assigned-clock-parents
+   can't affect them
+2) parse assigned-clock-parents in the clk-imx6 code as well, but
+   there use a convoluted non-glitchy work around to apply them
 
-> 
->>  	int  (*getc)(struct console_device *cdev);
->>  	int (*setbrg)(struct console_device *cdev, int baudrate);
->>  	void (*flush)(struct console_device *cdev);
->>
-> 
+Long version available alongside v1 here:
+https://www.spinics.net/lists/u-boot-v2/msg37658.html
+and in the commit messages of the patches.
+v2 is available here:
+https://www.spinics.net/lists/u-boot-v2/msg37970.html
+
+Changes since v2:
+ - reordered commits to avoid intermittent breakage, final
+   diff unaffected
+ - prepended a commit fixing premature use of cpu_is_mx6
+ - fixed brace placement of cpu_(mx6_)?has_err009219
+ - changed commits to use cpu_mx6_is_mx6*, all suggested by Andrey
+ - updated commit messages, collected Andrey's Tested-By and
+   Philipp's Reviewed-By
+
+Changes since v1:
+ - reordered/squashed commits after discussion with Sascha and Phillip
+ - removed superfluous comment
+ - add MUX_READ_ONLY at the correct place in the MUX_READ_ONLY arguments
+
+Except for the last two, the total diff, is exactly the same
+as v1's.
+
+Ahmad Fatoum (3):
+  clk: imx6: fix use of cpu_is_mx6* before they are initialized
+  clk: imx6: remove quirky clk_set_parent(LDB_diN_sel, pll5_video_div)
+  clk: imx6: define an enum for ldb mux inputs
+
+Fabio Estevam (1):
+  clk: imx6: Fix procedure to switch the parent of LDB_DI_CLK
+
+Philipp Zabel (2):
+  clk: imx6: Mask mmdc_ch1 handshake for periph2_sel and
+    mmdc_ch1_axi_podf
+  clk: imx6: Make the LDB_DI0 and LDB_DI1 clocks read-only
+
+ drivers/clk/imx/clk-imx6.c | 329 ++++++++++++++++++++++++++++++++++---
+ drivers/clk/imx/clk.h      |   8 +
+ 2 files changed, 317 insertions(+), 20 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
