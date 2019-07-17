@@ -1,21 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hngcp-00013B-3K
- for barebox@lists.infradead.org; Wed, 17 Jul 2019 09:53:28 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=a3f-osx.local)
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>) id 1hngcm-0001E1-BL
- for barebox@lists.infradead.org; Wed, 17 Jul 2019 11:53:24 +0200
+ id 1hngYJ-0007mK-5u
+ for barebox@lists.infradead.org; Wed, 17 Jul 2019 09:48:48 +0000
+Date: Wed, 17 Jul 2019 11:48:45 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190717094845.nshhbzetbprptqst@pengutronix.de>
 References: <20190716105837.18237-1-bst@pengutronix.de>
  <20190716105837.18237-2-bst@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <ff3e5924-e1cd-0ede-d418-9541ba1fff4f@pengutronix.de>
-Date: Wed, 17 Jul 2019 11:53:23 +0200
 MIME-Version: 1.0
+Content-Disposition: inline
 In-Reply-To: <20190716105837.18237-2-bst@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,9 +25,10 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/3] common: machine_id: introduce machine id generation
  and pass id on
-To: barebox@lists.infradead.org
+To: Bastian Krause <bst@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On 16/7/19 12:58, Bastian Krause wrote:
+On Tue, Jul 16, 2019 at 12:58:36PM +0200, Bastian Krause wrote:
 > By default systemd generates a machine id on first boot and tries to
 > persist it (see `man machine-id`). When the root file system is read-only
 > systemd cannot persist the machine id. In case multiple redundant slots
@@ -75,9 +71,6 @@ On 16/7/19 12:58, Bastian Krause wrote:
 > +	depends on FLEXIBLE_BOOTARGS
 > +	select DIGEST
 > +	select DIGEST_SHA1_GENERIC
-
-Hmm, wouldn't it be better to depend on SHA1 to allow use of DIGEST_SHA1_ARM?
-
 > +	help
 > +	  Sets the linux.bootargs.machine_id global variable with a value of
 > +	  systemd.machine_id=UID. The UID is a persistent device-specific
@@ -126,9 +119,15 @@ Hmm, wouldn't it be better to depend on SHA1 to allow use of DIGEST_SHA1_ARM?
 > +
 > +
 > +void machine_id_set_hashable(void *hashable, size_t len)
+
+const void *
+
 > +{
 > +	__machine_id_hashable = hashable;
 > +	__machine_id_hashable_length = len;
+
+You should make a copy rather than storing the pointer.
+
 > +}
 > +
 > +static int machine_id_set_bootarg(void)
@@ -136,17 +135,21 @@ Hmm, wouldn't it be better to depend on SHA1 to allow use of DIGEST_SHA1_ARM?
 > +	struct digest *digest = NULL;
 > +	unsigned char machine_id[SHA1_DIGEST_SIZE];
 > +	char *hex_id;
-
-That should be an char hex_id[], no? You're writing into read-only memory here.
-
 > +	int ret = 0;
 > +
 > +	if (!__machine_id_hashable) {
 > +		pr_warn("No hashable set, will not pass id to kernel\n");
+
+I don't think this is worth a warning. With this series this will be
+issued for example on all non i.MX6 boards enabled in imx_v7_defconfig.
+
 > +		goto out;
 > +	}
 > +
 > +	hex_id = "systemd.machine_id=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+
+This string should be treated const, better allocate hex_id.
+
 > +
 > +	digest = digest_alloc_by_algo(HASH_ALGO_SHA1);
 > +	ret = digest_init(digest);
@@ -155,6 +158,9 @@ That should be an char hex_id[], no? You're writing into read-only memory here.
 > +
 > +	ret = digest_update(digest, &__machine_id_hashable,
 > +			    __machine_id_hashable_length);
+
+You are hashing the address of the __machine_id_hashable pointer here.
+
 > +	if (ret)
 > +		goto out;
 > +
@@ -183,9 +189,10 @@ That should be an char hex_id[], no? You're writing into read-only memory here.
 > +#define __MACHINE_ID_H__
 > +
 > +void machine_id_set_hashable(void *hashable, size_t len);
-> +
-> +#endif  /* __MACHINE_ID_H__ */
-> 
+
+You should add a static inline wrapper for CONFIG_MACHINE_ID disabled.
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
